@@ -13,10 +13,36 @@
 #include "agent_enemy_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "cover_point.h"
+#include "stalker_combat_config.h"
+
+const float MIN_SUITABLE_ENEMY_DISTANCE = 3.f;//10.f;
 
 struct CRemoveOldDangerCover {
-	IC	bool	operator()	(const CAgentLocationManager::CDangerLocationPtr &location) const
+	typedef CAgentMemberManager::MEMBER_STORAGE MEMBER_STORAGE;
+
+	CAgentMemberManager		*m_members;
+
+	IC			CRemoveOldDangerCover	(CAgentMemberManager *members)
 	{
+		VERIFY				(members);
+		m_members			= members;
+	}
+
+	IC	bool	operator()				(const CAgentLocationManager::CDangerLocationPtr &location) const
+	{
+#ifdef USE_NEW_COMBAT
+		if (!location->useful()) {
+			MEMBER_STORAGE::iterator		I = m_members->members().begin();
+			MEMBER_STORAGE::iterator		E = m_members->members().end();
+			for ( ; I != E; ++I) {
+				if (!location->mask().test(m_members->mask(&(*I)->object())))
+					continue;
+
+				(*I)->object().on_danger_location_remove	(*location);
+			}
+		}
+#endif // USE_NEW_COMBAT
+
 		return			(!location->useful());
 	}
 };
@@ -43,7 +69,7 @@ IC	CAgentLocationManager::CDangerLocationPtr CAgentLocationManager::location	(co
 	return				(0);
 }
 
-bool CAgentLocationManager::suitable	(CAI_Stalker *object, CCoverPoint *location, bool use_enemy_info) const
+bool CAgentLocationManager::suitable	(CAI_Stalker *object, const CCoverPoint *location, bool use_enemy_info) const
 {
 	CAgentMemberManager::const_iterator	I = this->object().member().members().begin(), B = I;
 	CAgentMemberManager::const_iterator	E = this->object().member().members().end();
@@ -70,14 +96,14 @@ bool CAgentLocationManager::suitable	(CAI_Stalker *object, CCoverPoint *location
 		CAgentEnemyManager::ENEMIES::const_iterator	I = this->object().enemy().enemies().begin();
 		CAgentEnemyManager::ENEMIES::const_iterator	E = this->object().enemy().enemies().end();
 		for ( ; I != E; ++I)
-			if ((*I).m_enemy_position.distance_to_sqr(location->position()) < _sqr(10.f))
+			if ((*I).m_enemy_position.distance_to_sqr(location->position()) < _sqr(MIN_SUITABLE_ENEMY_DISTANCE))
 				return				(false);
 	}
 
 	return							(true);
 }
 
-void CAgentLocationManager::make_suitable	(CAI_Stalker *object, CCoverPoint *location) const
+void CAgentLocationManager::make_suitable	(CAI_Stalker *object, const CCoverPoint *location) const
 {
 	this->object().member().member(object).cover(location);
 
@@ -96,13 +122,28 @@ void CAgentLocationManager::make_suitable	(CAI_Stalker *object, CCoverPoint *loc
 		// check if member cover is too close
 		if ((*I)->cover()->m_position.distance_to_sqr(location->position()) <= _sqr(5.f)) {
 //			Msg						("%6d : object [%s] disabled cover for object [%s]",Device.dwFrame,*object->cName(),*(*I)->object().cName());
-			(*I)->cover				(0);
+#ifdef USE_NEW_COMBAT
+			(*I)->object().on_cover_blocked	((*I)->cover());
+#endif // USE_NEW_COMBAT
+			(*I)->cover						(0);
 		}
 	}
 }
 
 void CAgentLocationManager::add	(CDangerLocationPtr location)
 {
+#ifdef USE_NEW_COMBAT
+	typedef CAgentMemberManager::MEMBER_STORAGE MEMBER_STORAGE;
+	MEMBER_STORAGE::iterator		I = object().member().members().begin();
+	MEMBER_STORAGE::iterator		E = object().member().members().end();
+	for ( ; I != E; ++I) {
+		if	(!location->mask().test(object().member().mask(&(*I)->object())))
+			continue;
+
+		(*I)->object().on_danger_location_add	(*location);
+	}
+#endif // USE_NEW_COMBAT
+
 	CDangerLocationPtr				danger = this->location(location->position());
 	if (!danger) {
 		m_danger_locations.push_back(location);
@@ -120,11 +161,11 @@ void CAgentLocationManager::add	(CDangerLocationPtr location)
 
 void CAgentLocationManager::remove_old_danger_covers	()
 {
-	LOCATIONS::iterator			I = remove_if(m_danger_locations.begin(),m_danger_locations.end(),CRemoveOldDangerCover());
+	LOCATIONS::iterator			I = remove_if(m_danger_locations.begin(),m_danger_locations.end(),CRemoveOldDangerCover(&object().member()));
 	m_danger_locations.erase	(I,m_danger_locations.end());
 }
 
-float CAgentLocationManager::danger		(CCoverPoint *cover, CAI_Stalker *member) const
+float CAgentLocationManager::danger		(const CCoverPoint *cover, CAI_Stalker *member) const
 {
 	float						result = 1;
 	squad_mask_type				mask = object().member().mask(member);
@@ -137,14 +178,15 @@ float CAgentLocationManager::danger		(CCoverPoint *cover, CAI_Stalker *member) c
 		if (!(*I)->mask().test(mask))
 			continue;
 
-		float		distance = 1.f + (*I)->position().distance_to(cover->position());
+		float					distance = 1.f + (*I)->position().distance_to(cover->position());
 		if (distance > (*I)->m_radius)
 			continue;
 
-		result		*= /**distance/(*I)->m_radius* /**/float(Device.dwTimeGlobal - (*I)->m_level_time)/float((*I)->m_interval);
+		result					*= 
+			float(Device.dwTimeGlobal - (*I)->m_level_time)/float((*I)->m_interval);
 	}
 
-	return			(result);
+	return						(result);
 }
 
 void CAgentLocationManager::update	()

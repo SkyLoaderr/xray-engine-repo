@@ -45,9 +45,9 @@ public:
 	IC		CPointQuadTree			*get_covers			();
 			void					clear				();
 	template <typename _evaluator_type, typename _restrictor_type>
-	IC		CCoverPoint				*best_cover			(const Fvector &position, float radius, _evaluator_type &evaluator, const _restrictor_type &restrictor) const;
+	IC		const CCoverPoint		*best_cover			(const Fvector &position, float radius, _evaluator_type &evaluator, const _restrictor_type &restrictor) const;
 	template <typename _evaluator_type>
-	IC		CCoverPoint				*best_cover			(const Fvector &position, float radius, _evaluator_type &evaluator) const;
+	IC		const CCoverPoint		*best_cover			(const Fvector &position, float radius, _evaluator_type &evaluator) const;
 	IC		bool					operator()			(const CCoverPoint *) const;
 	IC		float					weight				(const CCoverPoint *) const;
 	IC		void					finalize			(const CCoverPoint *) const;

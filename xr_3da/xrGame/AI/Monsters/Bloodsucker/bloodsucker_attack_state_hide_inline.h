@@ -131,7 +131,7 @@ void CBloodsuckerStateAttackHideAbstract::select_camp_point()
 	} 
 
 	if (m_target_node == u32(-1)) {
-		CCoverPoint	*point = object->CoverMan->find_cover(object->Position(),10.f,30.f);
+		const CCoverPoint	*point = object->CoverMan->find_cover(object->Position(),10.f,30.f);
 		if (point) {
 			m_target_node				= point->level_vertex_id	();
 		} 

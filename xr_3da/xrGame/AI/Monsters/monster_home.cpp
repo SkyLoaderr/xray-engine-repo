@@ -70,7 +70,7 @@ u32	CMonsterHome::get_place_in_cover()
 	const CPatrolPath::CVertex *vertex = m_path->vertex(Random.randI(m_path->vertex_count()));
 
 	// find cover
-	CCoverPoint *point = m_object->CoverMan->find_cover(vertex->data().position(), vertex->data().position(), m_radius_min, m_radius_min + (m_radius_max - m_radius_min)/2);
+	const CCoverPoint *point = m_object->CoverMan->find_cover(vertex->data().position(), vertex->data().position(), m_radius_min, m_radius_min + (m_radius_max - m_radius_min)/2);
 	if (point) return point->level_vertex_id();
 
 	return u32(-1);

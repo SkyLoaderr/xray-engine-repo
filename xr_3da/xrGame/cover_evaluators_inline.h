@@ -25,17 +25,17 @@ IC	CCoverEvaluatorBase::CCoverEvaluatorBase	(CRestrictedObject *object)
 	m_last_radius			= flt_max;
 }
 
-IC	CCoverPoint *CCoverEvaluatorBase::selected	() const
+IC	const CCoverPoint *CCoverEvaluatorBase::selected	() const
 {
 	return					(m_selected);
 }
 
-IC	void CCoverEvaluatorBase::set_inertia		(u32 inertia_time)
+IC	void CCoverEvaluatorBase::set_inertia				(u32 inertia_time)
 {
 	m_inertia_time			= inertia_time;
 }
 
-bool CCoverEvaluatorBase::inertia			(float radius)
+bool CCoverEvaluatorBase::inertia						(float radius)
 {
 //	m_actuality				= m_actuality && fsimilar(m_last_radius,radius);
 //	m_actuality				= m_actuality && ((m_last_radius + EPS_L) >= radius);
@@ -47,50 +47,56 @@ bool CCoverEvaluatorBase::inertia			(float radius)
 	return					(time_criteria && radius_criteria);// && (radius_criteria || m_selected));
 }
 
-IC	void CCoverEvaluatorBase::setup				()
+IC	void CCoverEvaluatorBase::setup						()
 {
 	m_initialized			= true;
 }
 
-IC	void CCoverEvaluatorBase::initialize		(const Fvector &start_position)
+IC	void CCoverEvaluatorBase::initialize				(const Fvector &start_position, bool fake_call)
 {
 	VERIFY					(initialized());
 	m_start_position		= start_position;
 	m_selected				= 0;
 	m_best_value			= 1000.f;
-	m_last_update			= Device.dwTimeGlobal;
+	if (!fake_call)
+		m_last_update		= Device.dwTimeGlobal;
 }
 
-IC	void CCoverEvaluatorBase::finalize			()
+IC	void CCoverEvaluatorBase::finalize					()
 {
 	m_initialized			= false;
 	m_actuality				= true;
 }
 
-IC	bool CCoverEvaluatorBase::initialized		() const
+IC	bool CCoverEvaluatorBase::initialized				() const
 {
 	return					(m_initialized);
 }
 
-IC	bool CCoverEvaluatorBase::accessible		(const Fvector &position)
+IC	bool CCoverEvaluatorBase::accessible				(const Fvector &position)
 {
 	return					(m_object ? object().accessible(position) : true);
 }
 
-IC	CRestrictedObject &CCoverEvaluatorBase::object	() const
+IC	CRestrictedObject &CCoverEvaluatorBase::object		() const
 {
 	VERIFY					(m_object);
 	return					(*m_object);
 }
 
-IC	bool CCoverEvaluatorBase::actual				() const
+IC	bool CCoverEvaluatorBase::actual					() const
 {
 	return					(m_actuality);
 }
 
-IC	void CCoverEvaluatorBase::invalidate			()
+IC	void CCoverEvaluatorBase::invalidate				()
 {
 	m_last_update			= 0;
+}
+
+IC	float CCoverEvaluatorBase::best_value				() const
+{
+	return					(m_best_value);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -107,9 +113,9 @@ IC	CCoverEvaluatorCloseToEnemy::CCoverEvaluatorCloseToEnemy	(CRestrictedObject *
 	m_current_distance		= flt_max;
 }
 
-IC	void CCoverEvaluatorCloseToEnemy::initialize(const Fvector &start_position)
+IC	void CCoverEvaluatorCloseToEnemy::initialize(const Fvector &start_position, bool fake_call)
 {
-	inherited::initialize	(start_position);
+	inherited::initialize	(start_position,fake_call);
 	m_current_distance		= m_start_position.distance_to(m_enemy_position);
 }
 

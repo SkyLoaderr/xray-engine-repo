@@ -252,7 +252,19 @@ void CEntity::net_Destroy	()
 void CEntity::KillEntity(u16 whoID)
 {
 	if (whoID != ID()) {
-		VERIFY			(m_killer_id == ALife::_OBJECT_ID(-1));
+#ifdef DEBUG
+		if (m_killer_id != ALife::_OBJECT_ID(-1)) {
+			Msg			("! Entity [%s][%s] already has killer with id %d, but new killer id arrived - %d",*cNameSect(),*cName(),m_killer_id,whoID);
+
+			CObject		*old_killer = Level().Objects.net_Find(m_killer_id);
+			Msg			("! Old killer is %s",old_killer ? *old_killer->cName() : "unknown");
+
+			CObject		*new_killer = Level().Objects.net_Find(whoID);
+			Msg			("! New killer is %s",new_killer ? *new_killer->cName() : "unknown");
+
+			VERIFY		(m_killer_id == ALife::_OBJECT_ID(-1));
+		}
+#endif
 		m_killer_id		= whoID;
 	}
 	else {

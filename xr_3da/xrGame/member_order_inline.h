@@ -66,12 +66,12 @@ IC	void CMemberOrder::selected_enemy			(u32 selected_enemy)
 	m_selected_enemy = selected_enemy;
 }
 
-IC	void CMemberOrder::cover					(CCoverPoint *object_cover) const
+IC	void CMemberOrder::cover					(const CCoverPoint *object_cover) const
 {
 	m_cover			= object_cover;
 }
 
-IC	CCoverPoint	*CMemberOrder::cover			() const
+IC	const CCoverPoint *CMemberOrder::cover		() const
 {
 	return			(m_cover);
 }

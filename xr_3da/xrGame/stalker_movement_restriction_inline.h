@@ -16,18 +16,18 @@ IC	CStalkerMovementRestrictor::CStalkerMovementRestrictor	(CAI_Stalker *object, 
 	m_notify_agent_manager	= notify_agent_manager;
 }
 
-IC	bool CStalkerMovementRestrictor::operator()				(CCoverPoint *cover) const
+IC	bool CStalkerMovementRestrictor::operator()				(const CCoverPoint *cover) const
 {
-	return				(m_agent_manager->location().suitable(m_object,cover,m_use_enemy_info));
+	return					(m_agent_manager->location().suitable(m_object,cover,m_use_enemy_info));
 }
 
-IC	float CStalkerMovementRestrictor::weight				(CCoverPoint *cover) const
+IC	float CStalkerMovementRestrictor::weight				(const CCoverPoint *cover) const
 {
-	return				(m_agent_manager->location().danger(cover,m_object));
+	return					(m_agent_manager->location().danger(cover,m_object));
 }
 
-IC	void CStalkerMovementRestrictor::finalize				(CCoverPoint *cover) const
+IC	void CStalkerMovementRestrictor::finalize				(const CCoverPoint *cover) const
 {
 	if (m_notify_agent_manager)
-		m_agent_manager->location().make_suitable(m_object,cover);
+		m_agent_manager->location().make_suitable	(m_object,cover);
 }

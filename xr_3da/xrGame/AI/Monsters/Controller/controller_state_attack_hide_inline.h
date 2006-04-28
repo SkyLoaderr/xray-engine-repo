@@ -89,7 +89,7 @@ void CStateControllerHideAbstract::select_target_point()
 	DBG().level_info(this).clear();
 #endif
 
-	CCoverPoint	*point = object->CoverMan->find_cover(object->EnemyMan.get_enemy_position(),10.f,30.f);
+	const CCoverPoint	*point = object->CoverMan->find_cover(object->EnemyMan.get_enemy_position(),10.f,30.f);
 	if (point) {
 		target.node					= point->level_vertex_id	();
 		target.position				= point->position			();

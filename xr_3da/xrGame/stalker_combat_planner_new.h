@@ -9,11 +9,10 @@
 #pragma once
 
 #include "action_planner_action_script.h"
-#include "stalker_combat_config.h"
 
 class CAI_Stalker;
 
-class CStalkerCombatPlanner : public CActionPlannerActionScript<CAI_Stalker> {
+class CStalkerCombatPlannerNew : public CActionPlannerActionScript<CAI_Stalker> {
 public:
 	enum {
 		POST_COMBAT_WAIT_INTERVAL = 3000,
@@ -30,20 +29,12 @@ protected:
 			void		add_evaluators				();
 			void		add_actions					();
 
-protected:
-#ifndef USE_NEW_COMBAT
-	IC		void		update_cover				();
-#endif // USE_NEW_COMBAT
-
 public:
-#ifdef USE_NEW_COMBAT
 			void xr_stdcall	on_best_cover_changed	(const CCoverPoint *new_cover, const CCoverPoint *old_cover);
-#endif // USE_NEW_COMBAT
-
 
 public:
-						CStalkerCombatPlanner		(CAI_Stalker *object = 0, LPCSTR action_name = "");
-	virtual				~CStalkerCombatPlanner		();
+						CStalkerCombatPlannerNew	(CAI_Stalker *object = 0, LPCSTR action_name = "");
+	virtual				~CStalkerCombatPlannerNew	();
 	virtual	void		setup						(CAI_Stalker *object, CPropertyStorage *storage);
 	virtual void		update						();
 	virtual void		initialize					();

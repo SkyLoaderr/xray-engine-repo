@@ -154,7 +154,7 @@ _value_type CStalkerPropertyEvaluatorDangerUnknownCoverActual::evaluate	()
 		object().m_ce_best->invalidate	();
 
 	bool								result = false, first_time = true;
-	CCoverPoint							*point, *last_cover = object().agent_manager().member().member(m_object).cover();
+	const CCoverPoint					*point, *last_cover = object().agent_manager().member().member(m_object).cover();
 	Fvector								position = object().memory().danger().selected()->position();
 	for (;;) {
 		object().m_ce_best->setup		(position,10.f,170.f,10.f);

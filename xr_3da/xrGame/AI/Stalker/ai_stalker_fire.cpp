@@ -175,7 +175,7 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 	}
 
 	if (g_Alive()) {
-		CCoverPoint			*cover = agent_manager().member().member(this).cover();
+		const CCoverPoint	*cover = agent_manager().member().member(this).cover();
 		if (cover && pHDS->initiator() && (pHDS->initiator()->ID() != ID()) && !fis_zero(pHDS->damage()) && brain().affect_cover())
 			agent_manager().location().add	(xr_new<CDangerCoverLocation>(cover,Device.dwTimeGlobal,DANGER_INTERVAL,DANGER_DISTANCE));
 
@@ -191,7 +191,7 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 			float					yaw, pitch;
 			D.getHP					(yaw,pitch);
 
-	#pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
+#pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
 			float					power_factor = m_power_fx_factor*pHDS->damage()/100.f;
 			clamp					(power_factor,0.f,1.f);
 			CKinematicsAnimated		*tpKinematics = smart_cast<CKinematicsAnimated*>(Visual());
@@ -232,11 +232,6 @@ void CAI_Stalker::OnItemDrop			(CInventoryItem *inventory_item)
 	CObjectHandler::OnItemDrop	(inventory_item);
 	m_item_actuality			= false;
 	m_sell_info_actuality		= false;
-}
-
-void CAI_Stalker::on_enemy_change		(const CEntityAlive *enemy)
-{
-	m_item_actuality			= false;
 }
 
 void CAI_Stalker::update_best_item_info	()
@@ -432,9 +427,16 @@ IC BOOL ray_query_callback	(collide::rq_result& result, LPVOID params)
 	ray_query_param						*param = (ray_query_param*)params;
 	float								power = param->m_holder->feel_vision_mtl_transp(result.O,result.element);
 	param->m_power						*= power;
+
+	if (power >= .05f) {
+		param->m_pick_distance			= result.range;
+		return							(true);
+	}
+
 	if (!result.O) {
 		if (param->m_power > param->m_power_threshold)
 			return						(true);
+
 		param->m_pick_distance			= result.range;
 		return							(false);
 	}
@@ -443,6 +445,7 @@ IC BOOL ray_query_callback	(collide::rq_result& result, LPVOID params)
 	if (!entity_alive) {
 		if (param->m_power > param->m_power_threshold)
 			return						(true);
+
 		param->m_pick_distance			= result.range;
 		return							(false);
 	}

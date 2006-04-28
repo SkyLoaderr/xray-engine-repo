@@ -18,7 +18,7 @@
 // CCoverEvaluatorCloseToEnemy
 //////////////////////////////////////////////////////////////////////////
 
-void CCoverEvaluatorCloseToEnemy::evaluate			(CCoverPoint *cover_point, float weight)
+void CCoverEvaluatorCloseToEnemy::evaluate			(const CCoverPoint *cover_point, float weight)
 {
 	float					enemy_distance	= m_enemy_position.distance_to(cover_point->position());
 	//float					my_distance		= m_start_position.distance_to(cover_point->position());
@@ -52,7 +52,7 @@ void CCoverEvaluatorCloseToEnemy::evaluate			(CCoverPoint *cover_point, float we
 // CCoverEvaluatorFarFromEnemy
 //////////////////////////////////////////////////////////////////////////
 
-void CCoverEvaluatorFarFromEnemy::evaluate			(CCoverPoint *cover_point, float weight)
+void CCoverEvaluatorFarFromEnemy::evaluate			(const CCoverPoint *cover_point, float weight)
 {
 	float					enemy_distance	= m_enemy_position.distance_to(cover_point->position());
 //	float					my_distance		= m_start_position.distance_to(cover_point->position());
@@ -82,7 +82,7 @@ void CCoverEvaluatorFarFromEnemy::evaluate			(CCoverPoint *cover_point, float we
 // CCoverEvaluatorBest
 //////////////////////////////////////////////////////////////////////////
 
-void CCoverEvaluatorBest::evaluate			(CCoverPoint *cover_point, float weight)
+void CCoverEvaluatorBest::evaluate			(const CCoverPoint *cover_point, float weight)
 {
 	if (fis_zero(weight))
 		return;
@@ -118,7 +118,7 @@ void CCoverEvaluatorBest::evaluate			(CCoverPoint *cover_point, float weight)
 // CCoverEvaluatorBestByTime
 //////////////////////////////////////////////////////////////////////////
 
-void CCoverEvaluatorBestByTime::evaluate		(CCoverPoint *cover_point, float weight)
+void CCoverEvaluatorBestByTime::evaluate		(const CCoverPoint *cover_point, float weight)
 {
 	if (fis_zero(weight))
 		return;
@@ -152,9 +152,9 @@ void CCoverEvaluatorBestByTime::evaluate		(CCoverPoint *cover_point, float weigh
 // CCoverEvaluatorAngle
 //////////////////////////////////////////////////////////////////////////
 
-void CCoverEvaluatorAngle::initialize		(const Fvector &start_position)
+void CCoverEvaluatorAngle::initialize		(const Fvector &start_position, bool fake_call)
 {
-	inherited::initialize		(start_position);
+	inherited::initialize		(start_position,fake_call);
 	m_best_alpha				= -1.f;
 	m_direction.sub				(m_start_position,m_enemy_position);
 	m_direction.normalize_safe	();
@@ -170,7 +170,7 @@ void CCoverEvaluatorAngle::initialize		(const Fvector &start_position)
 	m_best_direction.setHP		(m_best_angle,0.f);
 }
 
-void CCoverEvaluatorAngle::evaluate			(CCoverPoint *cover_point, float weight)
+void CCoverEvaluatorAngle::evaluate			(const CCoverPoint *cover_point, float weight)
 {
 	float					enemy_distance	= m_enemy_position.distance_to(cover_point->position());
 
@@ -195,7 +195,7 @@ void CCoverEvaluatorAngle::evaluate			(CCoverPoint *cover_point, float weight)
 // CCoverEvaluatorSafe
 //////////////////////////////////////////////////////////////////////////
 
-void CCoverEvaluatorSafe::evaluate			(CCoverPoint *cover_point, float weight)
+void CCoverEvaluatorSafe::evaluate			(const CCoverPoint *cover_point, float weight)
 {
 	if (m_start_position.distance_to(cover_point->position()) <= m_min_distance)
 		return;
@@ -224,7 +224,7 @@ void CCoverEvaluatorRandomGame::setup		(GameGraph::_GRAPH_ID game_vertex_id, flo
 	m_covers.clear			();
 }
 
-void CCoverEvaluatorRandomGame::evaluate	(CCoverPoint *cover_point, float weight)
+void CCoverEvaluatorRandomGame::evaluate	(const CCoverPoint *cover_point, float weight)
 {
 	if (m_start_position.distance_to_sqr(cover_point->position()) >= m_max_distance_sqr)
 		if (ai().cross_table().vertex(cover_point->level_vertex_id()).game_vertex_id() != m_game_vertex_id)
@@ -259,7 +259,7 @@ void CCoverEvaluatorAmbush::setup			(const Fvector &my_position, const Fvector &
 	m_min_enemy_distance	= min_enemy_distance;
 }
 
-void CCoverEvaluatorAmbush::evaluate		(CCoverPoint *cover_point, float weight)
+void CCoverEvaluatorAmbush::evaluate		(const CCoverPoint *cover_point, float weight)
 {
 //	float					enemy_distance = m_enemy_position.distance_to(cover_point->position());
 	float					my_distance = m_my_position.distance_to(cover_point->position());

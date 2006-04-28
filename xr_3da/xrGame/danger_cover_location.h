@@ -14,10 +14,10 @@ class CCoverPoint;
 
 class CDangerCoverLocation : public CDangerLocation {
 private:
-	CCoverPoint				*m_cover;
+	const CCoverPoint		*m_cover;
 	
 public:
-	IC						CDangerCoverLocation	(CCoverPoint *cover, u32 level_time, u32 interval, float radius, const squad_mask_type &mask = squad_mask_type(-1));
+	IC						CDangerCoverLocation	(const CCoverPoint *cover, u32 level_time, u32 interval, float radius, const squad_mask_type &mask = squad_mask_type(-1));
 	virtual const Fvector	&position				() const;
 };
 

@@ -31,7 +31,7 @@ void CStateMonsterDragAbstract::initialize()
 	CPHCapture *capture = object->character_physics_support()->movement()->PHCapture();
 	if (capture && !capture->Failed()) {
 		
-		CCoverPoint *point = object->CoverMan->find_cover(object->Position(), 10.f, 30.f);
+		const CCoverPoint *point = object->CoverMan->find_cover(object->Position(), 10.f, 30.f);
 		if (point) {
 			m_cover_position	= point->position();
 			m_cover_vertex_id	= point->level_vertex_id();

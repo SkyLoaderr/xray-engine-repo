@@ -37,10 +37,12 @@
 
 #define DISABLE_COVER_BEFORE_DETOUR
 
-const float TEMP_DANGER_DISTANCE = 5.f;
-const u32	TEMP_DANGER_INTERVAL = 120000;
+const float TEMP_DANGER_DISTANCE	= 5.f;
+const u32	TEMP_DANGER_INTERVAL	= 120000;
 
-const float	CLOSE_MOVE_DISTANCE	 = 10.f;
+const float	CLOSE_MOVE_DISTANCE		= 10.f;
+
+const u32	CROUCH_LOOK_OUT_DELTA	= 5000;
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
@@ -342,7 +344,7 @@ void CStalkerActionRetreatFromEnemy::execute		()
 	object().movement().set_mental_state			(eMentalStatePanic);
 
 	object().m_ce_far->setup			(mem_object.m_object_params.m_position,0.f,300.f);
-	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,true));
+	const CCoverPoint					*point = ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,true));
 	if (!point) {
 		object().m_ce_far->setup		(mem_object.m_object_params.m_position,0.f,300.f);
 		point							= ai().cover_manager().best_cover(object().Position(),50.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,true));
@@ -432,12 +434,17 @@ void CStalkerActionGetReadyToKill::execute		()
 
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
 	Fvector								position = mem_object.m_object_params.m_position;
+
+#ifndef USE_NEW_COMBAT
 	object().m_ce_best->setup			(position,10.f,170.f,10.f);
-	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_best,CStalkerMovementRestrictor(m_object,true));
+	const CCoverPoint					*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_best,CStalkerMovementRestrictor(m_object,true));
 	if (!point) {
 		object().m_ce_best->setup		(position,10.f,170.f,10.f);
 		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_best,CStalkerMovementRestrictor(m_object,true));
 	}
+#else // USE_NEW_COMBAT
+	const CCoverPoint					*point = object().best_cover(position);
+#endif // USE_NEW_COMBAT
 
 	if (point) {
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());
@@ -518,6 +525,16 @@ void CStalkerActionKillEnemy::execute			()
 	float								distance = object().memory().enemy().selected()->Position().distance_to(object().Position());
 	select_queue_params					(distance,min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
 	object().CObjectHandler::set_goal	(eObjectActionFire1,object().best_weapon(),min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
+
+#ifdef USE_NEW_COMBAT
+	if (object().memory().enemy().selected()) {
+		CMemoryInfo					mem_object = object().memory().memory(object().memory().enemy().selected());
+
+		if (mem_object.m_object) {
+			object().best_cover		(mem_object.m_object_params.m_position);
+		}
+	}
+#endif // USE_NEW_COMBAT
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -578,12 +595,16 @@ void CStalkerActionTakeCover::execute		()
 		object().movement().set_movement_type	(m_movement_type);
 
 	Fvector								position = mem_object.m_object_params.m_position;
+#ifndef USE_NEW_COMBAT
 	object().m_ce_best->setup			(position,10.f,170.f,10.f);
-	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_best,CStalkerMovementRestrictor(m_object,true));
+	const CCoverPoint					*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_best,CStalkerMovementRestrictor(m_object,true));
 	if (!point) {
 		object().m_ce_best->setup		(position,10.f,170.f,10.f);
 		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_best,CStalkerMovementRestrictor(m_object,true));
 	}
+#else // USE_NEW_COMBAT
+	const CCoverPoint					*point = object().best_cover(position);
+#endif // USE_NEW_COMBAT
 
 	if (point) {
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());
@@ -631,13 +652,17 @@ CStalkerActionLookOut::CStalkerActionLookOut(CAI_Stalker *object, LPCSTR action_
 	inherited(object,action_name)
 {
 	m_crouch_look_out_random.seed				(u32(CPU::QPC() & 0xffffffff));
+	m_last_change_time							= 0;
 }
 
 void CStalkerActionLookOut::initialize		()
 {
 	inherited::initialize						();
 	
-	m_storage->set_property						(eWorldPropertyUseCrouchToLookOut,	!!m_crouch_look_out_random.random(2));
+	if (Device.dwTimeGlobal >= m_last_change_time + CROUCH_LOOK_OUT_DELTA) {
+		m_storage->set_property					(eWorldPropertyUseCrouchToLookOut,	!!m_crouch_look_out_random.random(2));
+		m_last_change_time						= Device.dwTimeGlobal;
+	}
 
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
@@ -702,7 +727,7 @@ void CStalkerActionLookOut::execute		()
 
 	Fvector								position = mem_object.m_object_params.m_position;
 	object().m_ce_close->setup			(position,10.f,170.f,10.f);
-	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true,false));
+	const CCoverPoint					*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true,false));
 	if (!point || (point->position().similar(object().Position()) && object().movement().path_completed())) {
 		object().m_ce_close->setup		(position,10.f,170.f,10.f);
 		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true,false));
@@ -719,6 +744,16 @@ void CStalkerActionLookOut::execute		()
 		m_storage->set_property			(eWorldPropertyLookedOut,true);
 		object().movement().set_nearest_accessible_position	();
 	}
+
+#ifdef USE_NEW_COMBAT
+	if (object().memory().enemy().selected()) {
+		CMemoryInfo					mem_object = object().memory().memory(object().memory().enemy().selected());
+
+		if (mem_object.m_object) {
+			object().best_cover		(mem_object.m_object_params.m_position);
+		}
+	}
+#endif // USE_NEW_COMBAT
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -786,6 +821,16 @@ void CStalkerActionHoldPosition::execute		()
 		select_queue_params					(distance,min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
 		object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon(),min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
 	}
+
+#ifdef USE_NEW_COMBAT
+	if (object().memory().enemy().selected()) {
+		CMemoryInfo					mem_object = object().memory().memory(object().memory().enemy().selected());
+
+		if (mem_object.m_object) {
+			object().best_cover		(mem_object.m_object_params.m_position);
+		}
+	}
+#endif // USE_NEW_COMBAT
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -853,7 +898,7 @@ void CStalkerActionDetourEnemy::execute			()
 		Fvector								position = mem_object.m_object_params.m_position;
 		
 		object().m_ce_angle->setup			(position,10.f,object().ffGetRange(),mem_object.m_object_params.m_level_vertex_id);
-		CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_angle,CStalkerMovementRestrictor(m_object,true));
+		const CCoverPoint					*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_angle,CStalkerMovementRestrictor(m_object,true));
 		if (!point) {
 			object().m_ce_angle->setup		(position,10.f,object().ffGetRange(),mem_object.m_object_params.m_level_vertex_id);
 			point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_angle,CStalkerMovementRestrictor(m_object,true));
@@ -921,7 +966,7 @@ void CStalkerActionSearchEnemy::execute			()
 
 	if (object().movement().path_completed()) {
 		object().m_ce_ambush->setup		(mem_object.m_object_params.m_position,mem_object.m_self_params.m_position,10.f);
-		CCoverPoint						*point = ai().cover_manager().best_cover(mem_object.m_object_params.m_position,10.f,*object().m_ce_ambush,CStalkerMovementRestrictor(m_object,true));
+		const CCoverPoint				*point = ai().cover_manager().best_cover(mem_object.m_object_params.m_position,10.f,*object().m_ce_ambush,CStalkerMovementRestrictor(m_object,true));
 		if (!point) {
 			object().m_ce_ambush->setup	(mem_object.m_object_params.m_position,mem_object.m_self_params.m_position,10.f);
 			point						= ai().cover_manager().best_cover(mem_object.m_object_params.m_position,30.f,*object().m_ce_ambush,CStalkerMovementRestrictor(m_object,true));
@@ -1016,7 +1061,7 @@ void CStalkerActionGetDistance::execute					()
 		return;
 	
 	object().m_ce_best_by_time->setup	(position,10.f,object().ffGetRange(),10.f);
-	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_best_by_time,CStalkerMovementRestrictor(m_object,true));
+	const CCoverPoint					*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_best_by_time,CStalkerMovementRestrictor(m_object,true));
 	if (!point) {
 		object().m_ce_best_by_time->setup(position,10.f,object().ffGetRange(),10.f);
 		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_best_by_time,CStalkerMovementRestrictor(m_object,true));
@@ -1067,12 +1112,16 @@ void CStalkerActionHideFromGrenade::execute					()
 		return;
 
 	Fvector								position = object().memory().danger().selected()->position();
+#ifndef USE_NEW_COMBAT
 	object().m_ce_best->setup			(position,10.f,170.f,10.f);
-	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),15.f,*object().m_ce_best,CStalkerMovementRestrictor(m_object,false));
+	const CCoverPoint					*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_best,CStalkerMovementRestrictor(m_object,true));
 	if (!point) {
 		object().m_ce_best->setup		(position,10.f,170.f,10.f);
-		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_best,CStalkerMovementRestrictor(m_object,false));
+		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_best,CStalkerMovementRestrictor(m_object,true));
 	}
+#else // USE_NEW_COMBAT
+	const CCoverPoint					*point = object().best_cover(position);
+#endif // USE_NEW_COMBAT
 	
 	if (point) {
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());

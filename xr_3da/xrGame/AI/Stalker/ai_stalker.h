@@ -70,6 +70,7 @@ class CStalkerMovementManager;
 class CStalkerSoundDataVisitor;
 class CWeaponShotEffector;
 struct SBoneProtections;
+class CDangerLocation;
 
 class CAI_Stalker : 
 	public CCustomMonster, 
@@ -395,7 +396,6 @@ public:
 #ifdef DEBUG
 			void						debug_planner					(const script_planner *planner);
 #endif
-	virtual void						on_enemy_change					(const CEntityAlive *enemy);
 
 private:
 	u32				m_min_queue_size_far;
@@ -429,6 +429,42 @@ public:
 	IC		u32							min_queue_interval_close		() const;
 	IC		u32							max_queue_interval_close		() const;
 
+public:
+	typedef fastdelegate::FastDelegate<void (const CCoverPoint *, const CCoverPoint *)>	on_best_cover_changed_delegate;
+
+private:
+	typedef xr_vector<on_best_cover_changed_delegate>	cover_delegates;
+
+private:
+	cover_delegates						m_cover_delegates;
+	const CCoverPoint					*m_best_cover;
+	float								m_best_cover_value;
+	bool								m_best_cover_actual;
+	bool								m_best_cover_can_try_advance;
+	bool								m_best_cover_tried_advance;
+
+private:
+			float						best_cover_value					(const Fvector &position_to_cover_from);
+			const CCoverPoint			*find_best_cover					(const Fvector &position_to_cover_from);
+			void						update_best_cover_actuality			(const Fvector &position_to_cover_from);
+			void						on_best_cover_changed				(const CCoverPoint *new_cover, const CCoverPoint *old_cover);
+
+public:
+			void						best_cover_can_try_advance			();
+			const CCoverPoint			*best_cover							(const Fvector &position_to_cover_from);
+
+public:
+			void						subscribe_on_best_cover_changed		(const on_best_cover_changed_delegate &delegate);
+			void						unsubscribe_on_best_cover_changed	(const on_best_cover_changed_delegate &delegate);
+
+public:
+	virtual void						on_enemy_change						(const CEntityAlive *enemy);
+	virtual	void						on_restrictions_change				();
+			void						on_cover_blocked					(const CCoverPoint *cover);
+			void						on_danger_location_add				(const CDangerLocation &location);
+			void						on_danger_location_remove			(const CDangerLocation &location);
+
+public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CAI_Stalker)

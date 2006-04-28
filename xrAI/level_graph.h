@@ -244,7 +244,7 @@ private:
 
 private:
 	STrajectoryPoint	start, dest;
-	CCoverPoint			*m_best_point;
+	const CCoverPoint	*m_best_point;
 
 public:
 			void	render						();

@@ -54,7 +54,7 @@ void CStalkerActionDangerGrenadeTakeCover::execute							()
 	if (!object().memory().danger().selected())
 		return;
 
-	CCoverPoint				*point = object().agent_manager().member().member(&object()).cover();
+	const CCoverPoint		*point = object().agent_manager().member().member(&object()).cover();
 	if (point) {
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());
 		object().movement().set_desired_position	(&point->position());
@@ -174,7 +174,7 @@ void CStalkerActionDangerGrenadeTakeCoverAfterExplosion::execute							()
 	if (!object().memory().danger().selected())
 		return;
 
-	CCoverPoint				*point = object().agent_manager().member().member(&object()).cover();
+	const CCoverPoint		*point = object().agent_manager().member().member(&object()).cover();
 	if (point) {
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());
 		object().movement().set_desired_position	(&point->position());

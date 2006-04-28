@@ -4,7 +4,7 @@
 #include "../../ai_space.h"
 #include "../../level_graph.h"
 
-void CMonsterCorpseCoverEvaluator::evaluate			(CCoverPoint *cover_point, float weight)
+void CMonsterCorpseCoverEvaluator::evaluate			(const CCoverPoint *cover_point, float weight)
 {
 	float					my_distance		= m_start_position.distance_to(cover_point->position());
 

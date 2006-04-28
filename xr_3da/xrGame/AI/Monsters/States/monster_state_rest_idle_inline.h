@@ -29,7 +29,7 @@ void CStateMonsterRestIdleAbstract::initialize()
 	m_target_node = u32(-1);
 	
 	// try to get cover
-	CCoverPoint *point = object->CoverMan->find_cover(object->Position(), 5.f, 10.f);
+	const CCoverPoint *point = object->CoverMan->find_cover(object->Position(), 5.f, 10.f);
 	if (!point) {
 		point = object->CoverMan->find_cover(object->Position(), 10.f, 30.f);
 		if (!point) return;

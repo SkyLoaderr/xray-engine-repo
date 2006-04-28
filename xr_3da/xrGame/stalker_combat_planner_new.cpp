@@ -1,14 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: stalker_combat_planner.cpp
+//	Module 		: stalker_combat_planner_new.cpp
 //	Created 	: 25.03.2004
 //  Modified 	: 27.09.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Stalker combat planner
+//	Description : Stalker combat planner new(!?)
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "stalker_combat_planner.h"
-#include "stalker_combat_actions.h"
+#include "stalker_combat_planner_new.h"
+#include "stalker_combat_action_new.h"
 #include "stalker_danger_property_evaluators.h"
 #include "stalker_decision_space.h"
 #include "stalker_property_evaluators.h"
@@ -35,31 +35,27 @@
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
 
-CStalkerCombatPlanner::CStalkerCombatPlanner	(CAI_Stalker *object, LPCSTR action_name) :
+CStalkerCombatPlannerNew::CStalkerCombatPlannerNew	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited									(object,action_name)
 {
 }
 
-CStalkerCombatPlanner::~CStalkerCombatPlanner	()
+CStalkerCombatPlannerNew::~CStalkerCombatPlannerNew	()
 {
-#ifdef USE_NEW_COMBAT
 	CAI_Stalker::on_best_cover_changed_delegate	temp;
-	temp.bind									(this,&CStalkerCombatPlanner::on_best_cover_changed);
+	temp.bind									(this,&CStalkerCombatPlannerNew::on_best_cover_changed);
 	object().unsubscribe_on_best_cover_changed	(temp);
-#endif // USE_NEW_COMBAT
 }
 
-#ifdef USE_NEW_COMBAT
-void CStalkerCombatPlanner::on_best_cover_changed(const CCoverPoint *new_cover, const CCoverPoint *old_cover)
+void CStalkerCombatPlannerNew::on_best_cover_changed(const CCoverPoint *new_cover, const CCoverPoint *old_cover)
 {
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,			false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedOut,		false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyPositionHolded,	false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyEnemyDetoured,	false);
 }
-#endif // USE_NEW_COMBAT
 
-void CStalkerCombatPlanner::setup				(CAI_Stalker *object, CPropertyStorage *storage)
+void CStalkerCombatPlannerNew::setup				(CAI_Stalker *object, CPropertyStorage *storage)
 {
 	inherited::setup			(object,storage);
 
@@ -74,73 +70,12 @@ void CStalkerCombatPlanner::setup				(CAI_Stalker *object, CPropertyStorage *sto
 	add_evaluators			();
 	add_actions				();
 
-#ifdef USE_NEW_COMBAT
 	CAI_Stalker::on_best_cover_changed_delegate		temp;
-	temp.bind										(this,&CStalkerCombatPlanner::on_best_cover_changed);
+	temp.bind										(this,&CStalkerCombatPlannerNew::on_best_cover_changed);
 	this->object().subscribe_on_best_cover_changed	(temp);
-#endif // USE_NEW_COMBAT
 }
 
-#ifndef USE_NEW_COMBAT
-IC	void CStalkerCombatPlanner::update_cover	()
-{
-	if (!m_object->memory().enemy().selected())
-		return;
-
-	if (!m_object->brain().affect_cover())
-		return;
-
-	CMemoryInfo						memory_object = m_object->memory().memory(m_object->memory().enemy().selected());
-	if ((memory_object.m_last_level_time == m_last_level_time) && (m_object->memory().enemy().selected()->ID() == m_last_enemy_id))
-		return;
-
-	const CCoverPoint				*last_cover = object().agent_manager().member().member(m_object).cover();
-	if (!last_cover)
-		return;
-
-	m_last_enemy_id					= m_object->memory().enemy().selected()->ID();
-	m_last_level_time				= memory_object.m_last_level_time;
-
-	Fvector							position = memory_object.m_object_params.m_position;
-	m_object->m_ce_best->setup		(position,10.f,170.f,10.f);
-	const CCoverPoint				*point = ai().cover_manager().best_cover(m_object->Position(),10.f,*m_object->m_ce_best,CStalkerMovementRestrictor(m_object,true,false));
-	if (!point) {
-		m_object->m_ce_best->setup	(position,10.f,170.f,10.f);
-		point						= ai().cover_manager().best_cover(m_object->Position(),30.f,*m_object->m_ce_best,CStalkerMovementRestrictor(m_object,true,false));
-	}
-
-	if (point == last_cover)
-		return;
-
-#if 0
-	if (point && last_cover && m_object->memory().visual().visible_now(m_object->memory().enemy().selected())) {
-		if	(
-				CScriptActionPlanner::m_storage.property(eWorldPropertyInCover)
-				&&
-				m_object->agent_manager().location().suitable(m_object,last_cover,true)
-				&&
-				(m_object->agent_manager().location().danger(last_cover,m_object) <=
-				1.1f*m_object->agent_manager().location().danger(point,m_object))
-//				&&
-//				CScriptActionPlanner::m_storage.property(eWorldPropertyLookedOut)
-			) {
-//			Msg		("%6d : Cover saved for object %s!",Device.dwTimeGlobal,*m_object->cName());
-			return;
-		}
-	}
-#endif
-
-	m_object->agent_manager().location().make_suitable(m_object,point);
-
-//	Msg								("%6d Changing cover for stalker %s",Device.dwTimeGlobal,*m_object->cName());
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,			false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedOut,		false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyPositionHolded,	false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyEnemyDetoured,	false);
-}
-#endif // USE_NEW_COMBAT
-
-void CStalkerCombatPlanner::execute				()
+void CStalkerCombatPlannerNew::execute				()
 {
 	if (first_time())
 		object().agent_manager().member().register_in_combat(m_object);
@@ -148,20 +83,24 @@ void CStalkerCombatPlanner::execute				()
 	inherited::execute		();
 }
 
-void CStalkerCombatPlanner::update				()
+void CStalkerCombatPlannerNew::update				()
 {
-#ifndef USE_NEW_COMBAT
-	update_cover					();
-#endif // USE_NEW_COMBAT
-	inherited::update				();
+	if (object().memory().enemy().selected()) {
+		CMemoryInfo					mem_object = object().memory().memory(object().memory().enemy().selected());
+
+		if (mem_object.m_object) {
+			object().best_cover		(mem_object.m_object_params.m_position);
+		}
+	}
+
+	inherited::update		();
 	object().react_on_grenades		();
 	object().react_on_member_death	();
 }
 
-void CStalkerCombatPlanner::initialize			()
+void CStalkerCombatPlannerNew::initialize			()
 {
 	inherited::initialize	();
-
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,			false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedOut,		false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyPositionHolded,	false);
@@ -187,7 +126,7 @@ void CStalkerCombatPlanner::initialize			()
 			object().sound().play						(eStalkerSoundAlarm);
 }
 
-void CStalkerCombatPlanner::finalize			()
+void CStalkerCombatPlannerNew::finalize			()
 {
 	inherited::finalize		();
 
@@ -199,7 +138,7 @@ void CStalkerCombatPlanner::finalize			()
 //	object().sound().remove_active_sounds					(eStalkerSoundMaskNoDanger);
 }
 
-void CStalkerCombatPlanner::add_evaluators		()
+void CStalkerCombatPlannerNew::add_evaluators		()
 {
 	add_evaluator			(eWorldPropertyPureEnemy		,xr_new<CStalkerPropertyEvaluatorEnemies>			(m_object,"is_there_enemies",0));
 	add_evaluator			(eWorldPropertyEnemy			,xr_new<CStalkerPropertyEvaluatorEnemies>			(m_object,"is_there_enemies_delayed",POST_COMBAT_WAIT_INTERVAL));
@@ -218,7 +157,7 @@ void CStalkerCombatPlanner::add_evaluators		()
 	add_evaluator			(eWorldPropertyUseSuddenness	,xr_new<CStalkerPropertyEvaluatorMember>			(CScriptActionBase::m_storage,eWorldPropertyUseSuddenness,true,true,"use suddenness"));
 }
 
-void CStalkerCombatPlanner::add_actions			()
+void CStalkerCombatPlannerNew::add_actions			()
 {
 	CStalkerActionBase		*action;
 
@@ -235,11 +174,11 @@ void CStalkerCombatPlanner::add_actions			()
 	add_effect				(action,eWorldPropertyItemCanKill,	true);
 	add_operator			(eWorldOperatorMakeItemKilling,		action);
 
-	action					= xr_new<CStalkerActionRetreatFromEnemy>(m_object,"retreat_from_enemy");
+	action					= xr_new<CStalkerActionRetreatFromEnemyNew>(m_object,"retreat_from_enemy_new");
 	add_effect				(action,eWorldPropertyPureEnemy,	false);
 	add_operator			(eWorldOperatorRetreatFromEnemy,	action);
-	
-	action					= xr_new<CStalkerActionGetReadyToKill>	(m_object,"get_ready_to_kill");
+
+	action					= xr_new<CStalkerActionGetReadyToKillNew>	(m_object,"get_ready_to_kill");
 	add_condition			(action,eWorldPropertyDangerGrenade,false);
 	add_condition			(action,eWorldPropertyUseSuddenness,false);
 	add_condition			(action,eWorldPropertyItemToKill,	true);
@@ -258,7 +197,7 @@ void CStalkerCombatPlanner::add_actions			()
 	add_effect				(action,eWorldPropertyPureEnemy,	false);
 	add_operator			(eWorldOperatorKillEnemy,				action);
 
-	action					= xr_new<CStalkerActionTakeCover>		(m_object,"take_cover");
+	action					= xr_new<CStalkerActionTakeCoverNew>	(m_object,"take_cover");
 	add_condition			(action,eWorldPropertyDangerGrenade,false);
 	add_condition			(action,eWorldPropertyUseSuddenness,false);
 	add_condition			(action,eWorldPropertyItemToKill,	true);
@@ -316,13 +255,6 @@ void CStalkerCombatPlanner::add_actions			()
 	add_operator			(eWorldOperatorSearchEnemy,			action);
 	action->set_inertia_time(120000);
 
-	action					= xr_new<CStalkerActionPostCombatWait>	(m_object,"post_combat_wait");
-	add_condition			(action,eWorldPropertyDangerGrenade,false);
-	add_condition			(action,eWorldPropertyPureEnemy,	false);
-	add_condition			(action,eWorldPropertyEnemy,		true);
-	add_effect				(action,eWorldPropertyEnemy,		false);
-	add_operator			(eWorldOperatorPostCombatWait,		action);
-
 	action					= xr_new<CStalkerActionHideFromGrenade>	(m_object,"hide from grenade");
 	add_condition			(action,eWorldPropertyDangerGrenade,true);
 	add_effect				(action,eWorldPropertyEnemy,		false);
@@ -333,4 +265,11 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyUseSuddenness,true);
 	add_effect				(action,eWorldPropertyEnemy,		false);
 	add_operator			(eWorldOperatorSuddenAttack,		action);
+
+	action					= xr_new<CStalkerActionPostCombatWait>	(m_object,"post_combat_wait");
+	add_condition			(action,eWorldPropertyDangerGrenade,false);
+	add_condition			(action,eWorldPropertyPureEnemy,	false);
+	add_condition			(action,eWorldPropertyEnemy,		true);
+	add_effect				(action,eWorldPropertyEnemy,		false);
+	add_operator			(eWorldOperatorPostCombatWait,		action);
 }

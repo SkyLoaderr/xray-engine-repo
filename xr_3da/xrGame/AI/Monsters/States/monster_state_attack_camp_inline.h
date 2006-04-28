@@ -81,7 +81,7 @@ bool CStateMonsterAttackCampAbstract::check_start_conditions()
 	//if (EnemyMan.get_flags().is(FLAG_ENEMY_DOESNT_SEE_ME)) return false;
 
 	// try to get cover
-	CCoverPoint *point = object->CoverMan->find_cover(object->EnemyMan.get_enemy_position(), 10.f, 30.f);
+	const CCoverPoint *point = object->CoverMan->find_cover(object->EnemyMan.get_enemy_position(), 10.f, 30.f);
 	if (!point) return false;
 
 	m_target_node = point->level_vertex_id();

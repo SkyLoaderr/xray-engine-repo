@@ -10,6 +10,7 @@
 
 #include "stalker_base_action.h"
 #include "random32.h"
+#include "stalker_combat_config.h"
 
 class CCoverPoint;
 
@@ -142,6 +143,7 @@ protected:
 	typedef CStalkerActionCombatBase inherited;
 
 private:
+	u32					m_last_change_time;
 	CRandom32			m_crouch_look_out_random;
 
 public:
@@ -187,7 +189,7 @@ public:
 
 class CStalkerActionDetourEnemy : public CStalkerActionCombatBase {
 private:
-	CCoverPoint			*m_enemy_cover;
+	const CCoverPoint	*m_enemy_cover;
 
 protected:
 	typedef CStalkerActionCombatBase inherited;
@@ -205,7 +207,7 @@ public:
 
 class CStalkerActionSearchEnemy : public CStalkerActionCombatBase {
 private:
-	CCoverPoint			*m_enemy_cover;
+	const CCoverPoint	*m_enemy_cover;
 
 protected:
 	typedef CStalkerActionCombatBase inherited;

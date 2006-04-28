@@ -8,7 +8,7 @@
 
 #pragma once
 
-IC	CCoverManager::CPointQuadTree &CCoverManager::covers	() const
+IC	CCoverManager::CPointQuadTree &CCoverManager::covers		() const
 {
 	VERIFY					(m_covers);
 	return					(*m_covers);
@@ -53,14 +53,14 @@ IC	bool CCoverManager::inertia									(float radius, _evaluator_type &evaluator
 }
 
 template <typename _evaluator_type, typename _restrictor_type>
-IC	CCoverPoint *CCoverManager::best_cover(const Fvector &position, float radius, _evaluator_type &evaluator, const _restrictor_type &restrictor) const
+IC	const CCoverPoint *CCoverManager::best_cover				(const Fvector &position, float radius, _evaluator_type &evaluator, const _restrictor_type &restrictor) const
 {
 	START_PROFILE("Covers/best_cover")
 
 	if (inertia(radius,evaluator,restrictor))
 		return				(evaluator.selected());
 
-	CCoverPoint				*last = evaluator.selected();
+	const CCoverPoint		*last = evaluator.selected();
 
 	evaluator.initialize	(position);
 
@@ -104,21 +104,21 @@ IC	CCoverPoint *CCoverManager::best_cover(const Fvector &position, float radius,
 }
 
 template <typename _evaluator_type>
-IC	CCoverPoint	*CCoverManager::best_cover	(const Fvector &position, float radius, _evaluator_type &evaluator) const
+IC	const CCoverPoint *CCoverManager::best_cover				(const Fvector &position, float radius, _evaluator_type &evaluator) const
 {
 	return					(best_cover<_evaluator_type,CCoverManager>(position,radius,evaluator,*this));
 }
 
-IC	bool CCoverManager::operator()			(const CCoverPoint *) const
+IC	bool CCoverManager::operator()								(const CCoverPoint *) const
 {
 	return					(true);
 }
 
-IC	float CCoverManager::weight				(const CCoverPoint *) const
+IC	float CCoverManager::weight									(const CCoverPoint *) const
 {
 	return					(1.f);
 }
 
-IC	void CCoverManager::finalize			(const CCoverPoint *) const
+IC	void CCoverManager::finalize								(const CCoverPoint *) const
 {
 }

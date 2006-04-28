@@ -694,7 +694,7 @@ void CController::debug_on_key(int key)
 
 		//if (!fsimilar(P1.square_magnitude(),0.f) && 
 		//	!fsimilar(P2.square_magnitude(),0.f)) {
-		//	CCoverPoint *cover = CoverMan->find_cover(P1,P2,10.f,40.f);
+		//	const CCoverPoint *cover = CoverMan->find_cover(P1,P2,10.f,40.f);
 		//	if (cover) {
 		//		DBG().level_info(this).remove_item	(3);
 		//		DBG().level_info(this).add_item		(cover->position(),0.8f,COLOR_RED,3);
@@ -710,7 +710,7 @@ void CController::debug_on_key(int key)
 
 		if (!fsimilar(P1.square_magnitude(),0.f) && 
 			!fsimilar(P2.square_magnitude(),0.f)) {
-			CCoverPoint *cover = CoverMan->find_cover(P1,P2,10.f,40.f);
+			const CCoverPoint *cover = CoverMan->find_cover(P1,P2,10.f,40.f);
 			if (cover) {
 				DBG().level_info(this).remove_item	(3);
 				DBG().level_info(this).add_item		(cover->position(),0.8f,COLOR_RED,3);

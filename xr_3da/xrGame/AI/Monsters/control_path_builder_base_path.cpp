@@ -164,7 +164,7 @@ void CControlPathBuilderBase::find_node()
 	// находим с помощью каверов
 	if (m_cover_info.use_covers) {
 		m_cover_approach->setup	(m_target_found.position, m_cover_info.min_dist, m_cover_info.max_dist, m_cover_info.deviation);
-		CCoverPoint	*point = ai().cover_manager().best_cover(m_object->Position(),m_cover_info.radius,*m_cover_approach);
+		const CCoverPoint	*point = ai().cover_manager().best_cover(m_object->Position(),m_cover_info.radius,*m_cover_approach);
 		// нашли кавер?	
 		if (point) {
 			m_target_found.node				= point->m_level_vertex_id;

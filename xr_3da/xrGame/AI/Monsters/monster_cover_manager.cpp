@@ -37,7 +37,7 @@ public:
 	// manual setup
 	void		setup			(CBaseMonster *object, const Fvector &position, float min_pos_distance, float	max_pos_distance, float deviation = 0.f);
 
-	void		evaluate		(CCoverPoint *cover_point, float weight);
+	void		evaluate		(const CCoverPoint *cover_point, float weight);
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,17 +47,17 @@ public:
 	// setup internals here
 				CCoverPredicate				();
 	// called from cover_manager for every cover (for suitable cover)
-	bool		operator()					(CCoverPoint *cover) const 
+	bool		operator()					(const CCoverPoint *cover) const 
 	{
 		return true;
 	}
 	// must return a value that is transfered to cover evaluator
-	float		weight						(CCoverPoint *cover) const
+	float		weight						(const CCoverPoint *cover) const
 	{
 		return 1.f;
 	}
 
-	void		finalize					(CCoverPoint *cover) const
+	void		finalize					(const CCoverPoint *cover) const
 	{
 	}
 };
@@ -106,7 +106,7 @@ void CCoverEvaluator::initialize(const Fvector &start_position)
 }
 
 
-void CCoverEvaluator::evaluate(CCoverPoint *cover_point, float weight)
+void CCoverEvaluator::evaluate(const CCoverPoint *cover_point, float weight)
 {
 #ifdef DEBUG
 	//DBG().level_info(this).add_item(cover_point->position(), D3DCOLOR_XRGB(0,255,0));
@@ -163,19 +163,19 @@ void CMonsterCoverManager::load()
 	m_ce_best = xr_new<CCoverEvaluator>(&(m_object->control().path_builder().restrictions()));
 }
 
-CCoverPoint *CMonsterCoverManager::find_cover(const Fvector &position, float min_pos_distance, float max_pos_distance, float deviation)
+const CCoverPoint *CMonsterCoverManager::find_cover(const Fvector &position, float min_pos_distance, float max_pos_distance, float deviation)
 {
 	m_ce_best->setup	(m_object, position,min_pos_distance,max_pos_distance,deviation);
-	CCoverPoint			*point = ai().cover_manager().best_cover(m_object->Position(),30.f,*m_ce_best);
+	const CCoverPoint	*point = ai().cover_manager().best_cover(m_object->Position(),30.f,*m_ce_best);
 	
 	return				point;
 }
 
 // найти лучший ковер относительно "position"
-CCoverPoint *CMonsterCoverManager::find_cover(const Fvector &src_pos, const Fvector &dest_pos, float min_pos_distance, float	max_pos_distance, float deviation)
+const CCoverPoint *CMonsterCoverManager::find_cover(const Fvector &src_pos, const Fvector &dest_pos, float min_pos_distance, float	max_pos_distance, float deviation)
 {
 	m_ce_best->setup	(m_object, dest_pos, min_pos_distance,max_pos_distance,deviation);
-	CCoverPoint			*point = ai().cover_manager().best_cover(src_pos,30.f,*m_ce_best);
+	const CCoverPoint	*point = ai().cover_manager().best_cover(src_pos,30.f,*m_ce_best);
 	return				point;
 }
 

@@ -22,7 +22,7 @@ public:
 		m_max_distance			= max_enemy_distance;
 	}
 
-			void		evaluate			(CCoverPoint *cover_point, float weight);
+			void		evaluate			(const CCoverPoint *cover_point, float weight);
 };
 
 

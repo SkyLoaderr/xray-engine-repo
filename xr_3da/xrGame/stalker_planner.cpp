@@ -15,10 +15,11 @@
 #include "script_game_object.h"
 #include "stalker_alife_planner.h"
 #include "stalker_anomaly_planner.h"
-#include "stalker_combat_planner.h"
 #include "stalker_death_planner.h"
 #include "stalker_danger_planner.h"
 #include "stalker_alife_actions.h"
+#include "stalker_combat_planner.h"
+//#include "stalker_combat_planner_new.h"
 
 //#define GOAP_DEBUG
 
@@ -160,6 +161,7 @@ void CStalkerPlanner::add_actions			()
 	add_operator			(eWorldOperatorALifePlanner,planner);
 
 	planner					= xr_new<CStalkerCombatPlanner>(m_object,"combat_planner");
+//	planner					= xr_new<CStalkerCombatPlannerNew>(m_object,"combat_planner_new");
 	add_condition			(planner,eWorldPropertyAlive,			true);
 	add_condition			(planner,eWorldPropertyAnomaly,			false);
 	add_condition			(planner,eWorldPropertyEnemy,			true);
