@@ -33,6 +33,17 @@ class CController : public CBaseMonster {
 
 	bool				m_tube_at_once;
 
+	
+	//////////////////////////////////////////////////////////////////////////
+	struct SAuraSound {
+		ref_sound	left;
+		ref_sound	right;
+	} aura_sound;
+	SAuraSound		*current_aura_sound;
+	
+	float			aura_radius;
+
+	//////////////////////////////////////////////////////////////////////////
 
 public:	
 	CControllerPsyHit	*m_psy_hit;
@@ -121,7 +132,10 @@ public:
 			void	set_psy_fire_delay_default	();
 
 
+			void	update_aura_sounds			();
 	//-------------------------------------------------------------------
+
+	
 
 public: 
 
