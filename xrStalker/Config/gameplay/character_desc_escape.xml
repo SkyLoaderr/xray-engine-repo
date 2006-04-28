@@ -36,6 +36,7 @@
 		
 		<rank>434</rank>
 		<reputation>5</reputation>
+		<money min="600" max="2000" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
  
@@ -68,6 +69,7 @@
 		
 		<rank>502</rank>
 		<reputation>10</reputation>
+		<money min="600" max="2000" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		<panic_treshold>0</panic_treshold>
@@ -128,6 +130,7 @@
 		
 		<rank>196</rank>
 		<reputation>6</reputation>
+		<money min="200" max="600" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 
@@ -276,6 +279,7 @@
 		
 		<rank>140</rank>
 		<reputation>12</reputation>
+		<money min="200" max="600" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -303,6 +307,7 @@
 		
 		<rank>127</rank>
 		<reputation>-8</reputation>
+		<money min="200" max="600" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -330,6 +335,7 @@
 		
 		<rank>214</rank>
 		<reputation>9</reputation>
+		<money min="200" max="600" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -356,6 +362,7 @@
 		
 		<rank>175</rank>
 		<reputation>8</reputation>
+		<money min="200" max="600" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 
@@ -382,6 +389,7 @@
 		
 		<rank>268</rank>
 		<reputation>-10</reputation>
+		<money min="200" max="600" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -409,6 +417,7 @@
 		
 		<rank>133</rank>
 		<reputation>6</reputation>
+		<money min="200" max="600" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -436,6 +445,7 @@
 		
 		<rank>224</rank>
 		<reputation>18</reputation>
+		<money min="200" max="600" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -463,6 +473,7 @@
 		
 		<rank>58</rank>
 		<reputation>-2</reputation>
+		<money min="200" max="600" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -492,6 +503,7 @@
 		
 		<rank>279</rank>
 		<reputation>16</reputation>
+		<money min="200" max="600" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		
@@ -548,7 +560,7 @@
 		<class>esc_soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>423</rank>
+		<rank>223</rank>
 		<reputation>6</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -569,7 +581,7 @@
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default2" team_default = "1">
-		<name>GENERATE_NAME_private</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<bio>esc_soldier_regular_bio</bio>
 
@@ -605,7 +617,7 @@
 		<class>esc_soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>507</rank>
+		<rank>207</rank>
 		<reputation>10</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -626,14 +638,14 @@
 	</specific_character>
 
 	<specific_character id="esc_soldier_regular_default4" team_default = "1">
-		<name>GENERATE_NAME_sergeant</name>
+		<name>GENERATE_NAME_private</name>
 		<icon x="12" y="2"></icon>
 		<bio>esc_sergant_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>560</rank>
+		<rank>263</rank>
 		<reputation>-18</reputation>
 		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -691,7 +703,7 @@
 		<class>esc_soldier_blockpost_commander</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>796</rank>
+		<rank>906</rank>
 		<reputation>20</reputation>
 		
 		<snd_config>characters_voice\human_02\military\</snd_config>
@@ -718,7 +730,7 @@
 		<class>esc_soldier_blokpost</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>405</rank>
+		<rank>205</rank>
 		<reputation>0</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -746,7 +758,7 @@
 		<class>esc_soldier_blokpost</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
-		<rank>437</rank>
+		<rank>237</rank>
 		<reputation>-6</reputation>
 		
 		<snd_config>characters_voice\human_01\military\</snd_config>
@@ -767,7 +779,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_soldier_blokpost_default3" team_default = "1">
-		<name>GENERATE_NAME_private</name>
+		<name>GENERATE_NAME_sergeant</name>
 		<icon x="12" y="2"></icon>
 		<bio>esc_soldier_regular_bio</bio>
 
@@ -794,7 +806,7 @@
 	</specific_character>
 	
 	<specific_character id="esc_soldier_specnaz_default1" team_default = "1">
-		<name>GENERATE_NAME_sergeant</name>
+		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="14" y="2"></icon>
 		<bio>esc_specnaz_bio</bio>
 
@@ -821,7 +833,7 @@
 	</specific_character>
 	
 		<specific_character id="esc_soldier_specnaz_default2" team_default = "1">
-		<name>GENERATE_NAME_sergeant</name>
+		<name>GENERATE_NAME_lieutenant</name>
 		<icon x="14" y="2"></icon>
 		<bio>esc_specnaz_bio</bio>
 		
@@ -886,6 +898,7 @@
 		
 		<rank>593</rank>
 		<reputation>0</reputation>
+		<money min="600" max="2000" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_03\newbie\</snd_config>
 
