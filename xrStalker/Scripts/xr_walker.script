@@ -41,6 +41,8 @@ end
 
 function action_walker_activity:activate_scheme()
 	self.was_reset = false
+
+	self.st.signals = {}
 end
 
 function action_walker_activity:reset_scheme()
@@ -50,8 +52,6 @@ function action_walker_activity:reset_scheme()
 
 		--self.object:clear_animations()
 		printf( "walker: reset_scheme: npc=%s  start moving", self.object:name() )
-
-		self.st.signals = {}
 
 		if self.st.path_walk_info == nil then
 			self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
