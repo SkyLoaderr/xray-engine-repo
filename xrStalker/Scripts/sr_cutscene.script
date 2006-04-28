@@ -7,9 +7,6 @@ local state_nowhere = 0 --' схема только что включилась
 local state_inside = 1  --' актер внутри 
 local state_outside = 2 --' актер снаружи
 
-local start_time
-local ui_disabled = false
-
 ----------------------------------------------------------------------------------------------------
 
 class "action_cutscene"
@@ -21,7 +18,9 @@ function action_cutscene:__init( obj, storage )
 
 	self.object = obj
 	self.st = storage
-
+	self.start_time = 0
+	self.effector_idle = 0
+	self.ui_disabled = false
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -49,12 +48,12 @@ function action_cutscene:update( delta )
 		return
 	end	
 
-    if ui_disabled
+    if self.ui_disabled
     then
-        if (time_global() - start_time) >= 5000
+        if (time_global() - self.start_time) >= self.effector_idle
         then
             xr_effects.enable_ui(db.actor, nil)
-            ui_disabled = false
+            self.ui_disabled = false
         end
     end
 	
@@ -107,12 +106,12 @@ function action_cutscene:zone_enter()
     --' телепорт в выбранную точку
     xr_effects.teleport_actor(db.actor, nil, {self.st.point, self.st.look})
     level.add_pp_effector (self.st.pp_effector, 234, false)
-    level.add_cam_effector(self.st.cam_effector, 123, false)
+    self.effector_idle = 1000*level.add_cam_effector(self.st.cam_effector, 123, false)
 
     xr_effects.disable_ui(db.actor, nil)
-    ui_disabled = true
+    self.ui_disabled = true
 
-    start_time = time_global()
+    self.start_time = time_global()
     
 
 
