@@ -51,6 +51,9 @@ function action_zombie_shoot:initialize()
 	self.turn_time  = 0
 
 	self.st.cur_act = act_shoot
+
+	xr_sound.set_sound_play(self.object, "fight_enemy", 0)
+	xr_sound.set_sound(self.object, "zombied_fight_attack")
 end
 
 function action_zombie_shoot:set_state( state, be, pos )
@@ -81,10 +84,14 @@ function action_zombie_shoot:execute()
 	self.object:set_path_type( game_object.level_path )
 
 	if self.object:position():distance_to_sqr( self.enemy_last_seen_pos ) > 9 then
+--		printf( "dist > 9" )
+
 		if self.last_vid ~= self.enemy_last_seen_vid then
 			self.last_vid = self.enemy_last_seen_vid
 
 			utils.send_to_nearest_accessible_vertex( self.object, self.last_vid )
+
+--			printf( "send to nearest" )
 		end
 
 		if see then
@@ -116,7 +123,6 @@ function action_zombie_shoot:execute()
 				self.turn_time = time_global() + math.random( 5000, 7000 )
 
 				self:set_state( "guard_na", nil, self.enemy_last_seen_pos )
-
 			elseif self.turn_time < time_global() then
 				self.turn_time = time_global() + math.random( 3000, 5000 )
 
