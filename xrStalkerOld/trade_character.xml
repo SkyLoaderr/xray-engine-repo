@@ -11,27 +11,27 @@
 
 	<!-- RANK -->
 	<rank_caption x="15" y="141" width="125" height="15">
-		<text x="0" y="0" font="letterica16" r="216" g="186" b="140">rank</text>
+		<text x="0" y="0" font="letterica16" r="216" g="186" b="140"></text>
 	</rank_caption>
-	<rank_static x="50" y="141" width="125" height="15">
+	<rank_static x="0" y="141" width="125" height="15">
 		<text x="0" y="0" font="letterica16" r="240" g="217" b="182"></text>
 	</rank_static>
 	
 
 	<!-- COMMUNITY -->
 	<community_caption x="15" y="153" width="125" height="15">
-		<text x="0" y="0" font="letterica16" r="216" g="186" b="140">community</text>
+		<text x="0" y="0" font="letterica16" r="216" g="186" b="140"></text>
 	</community_caption>
-	<community_static x="90" y="153" width="125" height="15">
+	<community_static x="0" y="153" width="125" height="15">
 		<text x="0" y="0" font="letterica16" r="240" g="217" b="182"></text>
 	</community_static>
 
 
 	<!-- RELATION -->
 	<relation_caption x="15" y="166" width="125" height="15">
-		<text x="0" y="0" font="letterica16" r="216" g="186" b="140">relation</text>
+		<text x="0" y="0" font="letterica16" r="216" g="186" b="140"></text>
 	</relation_caption>
-	<relation_static x="60" y="166" width="125" height="15">
+	<relation_static x="0" y="166" width="125" height="15">
 		<text x="0" y="0" font="letterica16" r="240" g="217" b="182"></text>
 	</relation_static>
 
