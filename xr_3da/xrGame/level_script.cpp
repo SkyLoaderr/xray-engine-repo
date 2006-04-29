@@ -393,6 +393,17 @@ float add_cam_effector(LPCSTR fn, int id, bool cyclic)
 	return						e->GetAnimatorLength();
 }
 
+float add_cam_effector2(LPCSTR fn, int id, bool cyclic)
+{
+	CAnimatorCamEffector* e		= xr_new<CAnimatorCamEffector>();
+	e->m_bAbsolutePositioning	= true;
+	e->SetType					((ECamEffectorType)id);
+	e->SetCyclic				(cyclic);
+	e->Start					(fn);
+	Actor()->Cameras().AddCamEffector(e);
+	return						e->GetAnimatorLength();
+}
+
 void remove_cam_effector(int id)
 {
 	Actor()->Cameras().RemoveCamEffector((ECamEffectorType)id );
@@ -558,6 +569,7 @@ void CLevel::script_register(lua_State *L)
 		def("get_snd_volume",					&get_snd_volume),
 		def("set_snd_volume",					&set_snd_volume),
 		def("add_cam_effector",					&add_cam_effector),
+		def("add_cam_effector2",				&add_cam_effector2),
 		def("remove_cam_effector",				&remove_cam_effector),
 		def("add_pp_effector",					&add_pp_effector),
 		def("set_pp_effector_factor",			&set_pp_effector_factor),

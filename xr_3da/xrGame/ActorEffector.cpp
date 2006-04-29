@@ -118,6 +118,7 @@ CAnimatorCamEffector::CAnimatorCamEffector()
 {
 	m_bCyclic				= true;
 	m_objectAnimator		= xr_new<CObjectAnimator>();
+	m_bAbsolutePositioning	= false;
 }
 
 CAnimatorCamEffector::~CAnimatorCamEffector()
@@ -145,19 +146,24 @@ BOOL CAnimatorCamEffector::Process (Fvector &p, Fvector &d, Fvector &n, float& f
 	const Fmatrix& m			= m_objectAnimator->XFORM();
 	m_objectAnimator->Update	(Device.fTimeDelta);
 
-	Fmatrix Mdef;
-	Mdef.identity				();
-	Mdef.j						= n;
-	Mdef.k						= d;
-	Mdef.i.crossproduct			(n,d);
-	Mdef.c						= p;
+	if(!m_bAbsolutePositioning){
+		Fmatrix Mdef;
+		Mdef.identity				();
+		Mdef.j						= n;
+		Mdef.k						= d;
+		Mdef.i.crossproduct			(n,d);
+		Mdef.c						= p;
 
-	Fmatrix mr;
-	mr.mul						(Mdef,m);
-	d							= mr.k;
-	n							= mr.j;
-	p							= mr.c;
-
+		Fmatrix mr;
+		mr.mul						(Mdef,m);
+		d							= mr.k;
+		n							= mr.j;
+		p							= mr.c;
+	}else{
+		d							= m.k;
+		n							= m.j;
+		p							= m.c;
+	};
 	return						TRUE;
 }
 
