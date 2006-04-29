@@ -1149,6 +1149,9 @@
 							RelativePath=".\Config\text\eng\stable_dialog_manager.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\stable_dialog_manager_uni.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\stable_dialogs.xml">
 						</File>
 						<File
@@ -1192,6 +1195,12 @@
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\stable_dialogs_yantar.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\stable_statistic_caption.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\stable_stories.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\stable_storyline_info_aes.xml">
@@ -1387,6 +1396,9 @@
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\test_string.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\ui_st_mapdesc.xml">
 						</File>
 					</Filter>
 				</Filter>

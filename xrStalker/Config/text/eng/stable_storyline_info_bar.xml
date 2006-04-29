@@ -8,10 +8,10 @@
         <text>Radar is turned off at 8:30 and turned on again at 9:00</text>
     </string>
     <string id="descr_bar_crazy_veterans_quest">
-        <text>Barkeep: "We have one serious thing to do. There is a group of stalkers-veterans on the "wild territory" and recently the cases of single stalkers deaths \nbecame more frequent in their "region". Duty's people came to me and asked to deal with these veterans. Duty has irrefutable edivence of veterans' \nconnection to singles assassinations. The point is that Duty has an old treaty with them, which is impossible for them to be violated, while these guys are \nbecoming really impudent. To be short, Duty wants them to be taken out silently. The task is complex, but it is well paid. Duty is caring highly of their name. \nThus, they want to do everything silently. You're enough to eliminate their boss named "Lucky" and bring his PDA as a proof.</text>
+        <text>Barkeep: Duty steems highly its reputation and wants them to be taken out silently. \n You're enough to eliminate their boss named "Lucky" and bring his PDA as a proof.</text>
     </string>
     <string id="descr_bar_darklab_documents">
-        <text>Barkeep: "Stalkers have been interested in passage to the North, to the center, for a couple of years. But inasmuch as the passage is closed, and those who \npicked their way towards there haven't yet returned. There is an information about some kind of "brain scorcher", which blocks up the way to the North, but \nwhat kind of thing is that remains unknown. According to the documents, which you have fetched from Agroprom, something is becoming clear. It seems that \nthe "brain scorcher" has got an artificial nature. We need more data to tell more correctly. Lab X18 is mentioned in documents, which is said to be working on \nthis project. The descriptions meet the abandoned underground premises at Dark Valley, known as the "dark laboratory". It's necessary to search this \nlaboratory thoroughly. When Zone blew out, nobody had time to evacuate anything. For sure, a lot of stuff remained there. If you bring the document files \nabout the "antennas" or about the "oscillator", I'll pay you good. Besides, I'll share with you information on the oscillator. That's it. The task is dangerous, no \nquestions. What is happening there is unknown, moreover the Dark Valley has always been the unsafe place. So try to be really careful there."</text>
+        <text>Barkeep: So you have to get second key from Hog. Then you should get into the laboratory and \nobtain papers. Don't forget to buy suit protecting against radiation, you won't be able to force through \nthe Dark Valley without it, there is extremely high level of radiation.</text>
     </string>
     <string id="descr_bar_dolg_community_quest">
         <text>In order to join "Duty" you have to receive the approval of one of the most competent fighters of the faction. And prove the "Duty's" leader that you are worthy \nof being one of them.</text>
@@ -26,19 +26,34 @@
         <text>Captain Ivantsov: "...prior to making any conclusions, you must take a brief check-up. You have to find the archival file from the abandoned building accross \nthe way. The task is of the simple ones, just enter the building, grab the file and fetch it to me. What can ever be easier, right? When I have the file, than we'll \ndecide whether you suit Duty or not."</text>
     </string>
     <string id="descr_bar_hunter_rifle">
-        <text>Hunter: "Damn it, it seems that I've lost the family rifle at the wild territory. I was intending to shoot \nsome bloodsuckers, but ultimately has barely saved my ass. \nDamn it! Listen, fella, if you bring me my rifle, I'll reward you. I've earned a bit, and I will give you \neverything, just bring my rifle back to me. It belongs to my \nfamily, it was passed down from father to son during many generations. And what of it - I've lost it. It's \na part of me, it's... my precious. I'll give you everything, but pray bring it to me. I've lost it near \nBloodsucker's dwelling, I give you coorditates. And be carefull, they are very malicious.</text>
+        <text>Hunter: Bring me my rifle back. I've lost it near Bloodsucker's dwelling, I give you coorditates. And be \ncarefull, they are very malicious.</text>
     </string>
     <string id="descr_bar_kill_professor">
         <text>Wolfhound: "We've got a little hunt here. We've pressed the scientists, there behind the copter. By fellas are firing at them from time to time, in order not to let \nthem escape. So you join us, we'll be finishing them. If you help us, I'll give you the scientific suit, taken from the brought down helicopter. You target - \nprofessor Kruglov, kill him, otherwise he escapes during the battle, I know his kind. If you kill him - suit is yours, if not - your problems."</text>
     </string>
     <string id="descr_bar_radar_deactivate">
-        <text>Barkeep: "So, Branded One. You have the "Cap", so to cover yourself from the "brain scorcher", there is the time - from 08:30 till 09:00 and in the evening \n22:30 till 23:00. Totally you'll have half an hour reserve, during this time you'll have to break into the bunker and turn off the scorcher. What will go next is \nunknown, but I feel it is worth it. Generally speaking, it has to be turned off. You have all the necessary information. Good luck, Branded One. And one more \nthing... be careful."</text>
+        <text>Barkeep: "All we need is to reach antennas when emanation is lowered, and cut them off.</text>
     </string>
     <string id="descr_bar_resque_information">
-        <text>Kruglov: "Stalker, help! We were attacked by mercenaries, good few of our guys died. Help us, we won't stay in debt"\n\n"... be careful there, there are 15 men or else, we don't know exactly"</text>
+        <text>-breack through the ambush to scientists\nKruglov: "Stalker, help! We were attacked by mercenaries, good few of our guys died. Help us, we \nwon't stay in debt"\n\n"... be careful there, there are 15 men or else, we don't know exactly"</text>
     </string>
     <string id="descr_bar_x16_documents">
-        <text>Barkeep: "Well, that's clear. I don't want to upset you, but it's just a part of what we need. But here is the link to the other part. Go to the scientists, get the \ndocuments from x16."</text>
+        <text>Barkeep: "Go to the scientists, find out where X16 is and get the \nmissing part of the documents"</text>
+    </string>
+    <string id="journal_after_agroprom_documents">
+        <text>I've Looked through documents which found soldieries in former SRI. The conclusion is: this institute, \nlast years, before the meltdown was the protection of non governmental laboratory ?-18, which to all \nappearances conducted a certain mysterious experiment. Where a laboratory is – the documents \nhas no answer. It looks like militaries don't know about it either. Yeah. There appear more riddles. \nBut it can be a filament which merchants may require. Well, now a there's a way coming farther on \na north, to the merchant on the name Barman.</text>
+    </string>
+    <string id="journal_bar_darklab_documents">
+        <text>Yeah, it's a gloomy place this laboratory ?18... and its present dwellers...never even could think that \nsuch scums can exist in the world. I have found some documents. I understood a little from them \nthat there are certain technical specifications on some blocks to the emitters of Kaymanov. The fact \nis these blocks targeted at other laboratory which code is ?16 and to all appearances also is secret \none.</text>
+    </string>
+    <string id="journal_bar_x16_documents">
+        <text>Hemm, Merchants have really found out a lot of information as for these laboratories. It was a real \nsurprise for Barmen the information about emitters and about ?16. And he is sure now, that this \n«brain scorcher» is handmade. He thinks that this laboratory ?16 is not far from the camp of \nscientists near a lake Jantar. They are studying at this moment a radiation which has similar effect \nlike «scorcher». So now my way lies to scientific fraternity of the Zone.</text>
+    </string>
+    <string id="journal_before_darklab_documents">
+        <text>I've Met Barman. Having documents from Agroprom looked through, he assumed that this ?-18 \nwas in the so-called Dark Valley and offered to me to drop in there for the purpose of \ninformation and documents retrieval. He says he has sent Duty spies already with a task to get to \nthis cave. But they disappeared. A barman assumed that they became prisoners of the gangsters \nwhich have their base not far. And if it so, all that Duty spies found is the possession of the leader \nof gangsters - Hog. Barman, calls to the carefulness and obviously something holds back about \nthis cave. Well, all right, for a work: at first I have to talk to Hog, and if a «talk» will be \nsuccessful, then I go to the underground.</text>
+    </string>
+    <string id="journal_before_radar_task">
+        <text>Well, I am ready to go to "scorcher" I've found out from Madman about lowering of power of radiation \nand about a safe place, where I will be able to wait till this time. In other time my Psy-defence would \nnot be able to help me. I have to find enntrance into the underground bunker of laboratory ?19 and the \nway to the control room of the "brain scorcher's" antennas.</text>
     </string>
     <string id="rostok_tunel_gordon_diary">
         <text>12.01.2012 \n Damn that management. They can't give rest to the old man. "Black mess" firstly, then the odd city \nin Russia. Now again: go, dear Gordon, to the boudless \nsteppes of Ukraine. Here is your crow-bar and wish you good pastime.\n \n 20.03.2012 \n Made it in the Zone. I can hardly believe that there are no bears here? And whom else will I have to \nfight with here? Well, I'm getting used very hard. In \nAmerica all recognize me by a single glance and treat me with burgers for free. And here I had to sell \nmy crow-bar for the canned meat.\n \n 26.04.2012 \n The blow-out began. Barman told me to hide my american butt as soon as possible and not to show \nup. I've driven out several rats from the abandoned \ntunnel. I hope I could wait this damn foul weather through.</text>

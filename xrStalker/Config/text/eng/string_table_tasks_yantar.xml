@@ -1,12 +1,75 @@
+    <string id="yan_find_ghost">
+        <text>Get papers by Ghost</text>
+    </string>
+    <string id="yan_find_ghost_task">
+        <text>Get papers</text>
+    </string>
+    <string id="yan_find_lab">
+        <text>Live laboratory</text>
+    </string>
+    <string id="yan_find_labX16">
+        <text>Get into the X16 laboratory.</text>
+    </string>
     <string id="yan_find_scientist">
-        <text>Find the scientist!</text>
+        <text>Make radiation measurements.</text>
+    </string>
+    <string id="yan_find_vasilyev">
+        <text>Force your way to Valiliev's dead body.</text>
+    </string>
+    <string id="yan_find_vasilyev_pda">
+        <text>Get Vasiliev's PDA</text>
     </string>
     <string id="yan_kill_brain">
-        <text>Find and eliminate the Brain!</text>
+        <text>Turn off psy-emanation.</text>
+    </string>
+    <string id="yan_kill_brain_2">
+        <text>Get out of the laboratory</text>
     </string>
     <string id="yan_kill_brain_task">
-        <text>Eliminate the Brain!</text>
+        <text>Turn plant power off</text>
+    </string>
+    <string id="yan_provodnik_about_doctor">
+        <text>Talk to guide.</text>
+    </string>
+    <string id="yan_provodnik_task">
+        <text>Meet a guide</text>
     </string>
     <string id="yan_psi_zone_find">
-        <text>Accompany the scientist to the radiation zone.</text>
+        <text>Accompany Kruglov to the measurement place.</text>
+    </string>
+    <string id="yan_psi_zone_find_semenov">
+        <text>Accompany semenov to the measurement place.\n</text>
+    </string>
+    <string id="yan_return_to_bunker">
+        <text>Bring results to Sakharov</text>
+    </string>
+    <string id="yan_scientist_return">
+        <text>Talk to Sakharov</text>
+    </string>
+    <string id="yan_scientist_return_task">
+        <text>Talk to Sakharov\n</text>
+    </string>
+    <string id="yan_secret_tonnel">
+        <text>Get out through the secret tunnel</text>
+    </string>
+    <string id="yan_switcher_off_1">
+        <text>Switch off 1st control unit\n</text>
+    </string>
+    <string id="yan_switcher_off_2">
+        <text>Switch off 2nd control unit</text>
+    </string>
+    <string id="yan_switcher_off_3">
+        <text>Switch off 3rd control unit</text>
+    </string>
+    <string id="yan_talk_to_kruglov">
+        <text>Talk to Kruglov</text>
+    </string>
+    <string id="yan_talk_to_semenov">
+        <text>Talk to Semenov</text>
+    </string>
+    <string id="yan_vasilyev_pda">
+        <text>A note from Vasiliev's PDA</text>
+    </string>
+    <string id="yan_zombie_zone">
+        <text>Approximate location of X16 laboratory.</text>
     </string>

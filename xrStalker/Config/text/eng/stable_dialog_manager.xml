@@ -1,29 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
-    <string id="dm_general_action_info">
-        <text>What's happening here?</text>
-    </string>
-    <string id="dm_general_cool_info">
-        <text>What do you have interesting to tell me?</text>
-    </string>
-    <string id="dm_general_help_bandage">
-        <text>Take this bandage.</text>
-    </string>
-    <string id="dm_general_help_medkit">
-        <text>Take this first-aid kit.</text>
-    </string>
-    <string id="dm_general_trade_info">
-        <text>Interested in the information for money.</text>
-    </string>
-    <string id="dm_general_trade_info_caption">
-        <text>I can offer you the following:</text>
-    </string>
-    <string id="dm_general_trade_info_hasno">
-        <text>I can't offer you anything.</text>
-    </string>
-    <string id="dm_general_trade_info_nothing">
-        <text>Maybe another time.</text>
-    </string>
     <string id="dm_help_thanks_1">
         <text>Thanks, dude.</text>
     </string>

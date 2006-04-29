@@ -3,6 +3,33 @@
     <string id="agr_factory_krot_start_0">
         <text>Thanks for your help, stalker! If it weren't for your timely help, I would have been dead for now.</text>
     </string>
+    <string id="agr_factory_krot_start_10001">
+        <text>I'm looking for information concerning Gunslinger, maybe you know somethung?</text>
+    </string>
+    <string id="agr_factory_krot_start_10002">
+        <text>How can I get in those cellars?</text>
+    </string>
+    <string id="agr_factory_krot_start_15001">
+        <text>Gunslinger's cache.</text>
+    </string>
+    <string id="agr_factory_krot_start_15002">
+        <text>Thanks for the information</text>
+    </string>
+    <string id="agr_factory_krot_start_1501">
+        <text>Yeah, I heard about him, he used to earn his living here. There's a Gunslinger's cache somewhere in \nlocal cellars. They say it used to be a base of his grouping here.</text>
+    </string>
+    <string id="agr_factory_krot_start_1502">
+        <text>There is the only of many entrances, you will get through it in one of the basements connected with \neach other, well and there look by your own, I don't have any map, they are very long with in a \nnumber of \nrooms and pretty tangled.</text>
+    </string>
+    <string id="agr_factory_krot_start_2">
+        <text>I'm looking for the information about Gunslinger, seriy told me you know something.</text>
+    </string>
+    <string id="agr_factory_krot_start_30001">
+        <text>Thank you</text>
+    </string>
+    <string id="agr_factory_krot_start_3001">
+        <text>Yeah? we've looked for him too, but found nothing. I give you an information, maybe you're lucky. It is \nall information about cache we have.</text>
+    </string>
     <string id="agr_factory_stalker_about_0">
         <text>What are you doing in here?</text>
     </string>
@@ -19,303 +46,246 @@
         <text>It's at a stone's throw from here. Walk by road to the West - it leads straightly to one of the Institute's gates.</text>
     </string>
     <string id="agr_krot_about_agroprom_100">
-        <text>Who is fixed to Institute's terrotory?</text>
+        <text>They say militans are based there right now.</text>
     </string>
     <string id="agr_krot_about_agroprom_120">
-        <text>How is it better to get in there?</text>
+        <text>Thanks for the information</text>
     </string>
     <string id="agr_krot_about_agroprom_130">
         <text>Thanks.</text>
     </string>
     <string id="agr_krot_about_agroprom_20">
-        <text>There you might find the largest military base ever seen. I'm not up on how many of them are there, but my experience says that it's not less than a platoon there. They are well armed, and you won't succeed in breaking through, but if you decide to - they'll wipe you out without any hesitation.</text>
-    </string>
-    <string id="agr_krot_about_agroprom_30">
-        <text>It's better to be penetrated at night, but I guess that the base is heavily guarded in the nighttime, they've got outposts everywhere. Watch for the schedule of guards relieve, then you'll have a real chance to get into the territory undetected and leave it the same way. In general I've heard that there is a soldier hiding somewhere at the swamps, who escaped from this base. How haven't he been put away, I wonder? Press on him - he'll tell you everything.</text>
+        <text>There you might find the largest military base ever seen. I'm not up on how many of them are there, \nbut my experience says that it's not less than a platoon there. They are well armed, and you won't \nsucceed in breaking through, but if you decide to - they'll wipe you out without any hesitation. The \nbest time to get there is night. During day time tit is guarded. I heard there's a soldier from this base \nhiding in swamps</text>
     </string>
     <string id="agr_krot_actor_hasnot_met_seriy_0">
-        <text>I've saved you. Tell me, what are you doing here?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_krot_actor_hasnot_met_seriy_100">
-        <text>Stalker, thanks for your help, I own you my life. My team and I have found a decent place here to collect artifacts, and our base is at the factory.</text>
-    </string>
-    <string id="agr_krot_actor_hasnot_met_seriy_1000">
-        <text>Artifacts? Why then the militaries attacked you? I can hardly believe that it was over the artifacts!</text>
-    </string>
-    <string id="agr_krot_actor_hasnot_met_seriy_150">
-        <text>Yes, exactly artifacts. I don't know why they attacked us. I'm only trying to survive in this complicated world!</text>
-    </string>
-    <string id="agr_krot_actor_hasnot_met_seriy_1500">
-        <text>Tell me what: do you know anything about the stalker named Gunslinger?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_krot_actor_hasnot_met_seriy_200">
-        <text>Yes, I've heard about him, he was likely to make his living in these places, it's a pretty good spot here. But he has gone long ago, but I don't know exactly when and where. I know nothing more.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_krot_actor_hasnot_met_seriy_2000">
-        <text>I've saved you! Tell me, you weren't sitting here with no purpose, were you? Otherwise, why have the military task forces landed here?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_krot_actor_hasnot_met_seriy_250">
-        <text>Well, I know something more about Gunslinger.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_krot_actor_hasnot_met_seriy_2500">
-        <text>Yeah? I do need to know this!</text>
-    </string>
-    <string id="agr_krot_actor_hasnot_met_seriy_300">
-        <text>I've got an information about the location of the Gunslinger's cache! Truly the cache is located not at the factory, but under it! Can you see this hole? This is one of the entrances to the tunnels under the factory, and I don't even know the exact size of the dungeons, but the cache is somewhere there!</text>
-    </string>
-    <string id="agr_krot_actor_hasnot_met_seriy_3000">
-        <text>How can I find the cache?</text>
-    </string>
-    <string id="agr_krot_actor_hasnot_met_seriy_350">
-        <text>As a sign of gratitude I give you the flash-drive containing the information, look into everything further on your own.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_krot_actor_hasnot_met_seriy_3500">
-        <text>If you have tricked me, I'm gonna find you and finish what the militaries couldn't!</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_krot_actor_hasnot_met_seriy_400">
-        <text>I don't trick you. I know that no one believes no one here, but you've got a short choice.</text>
-    </string>
-    <string id="agr_krot_actor_hasnot_met_seriy_4000">
-        <text>You're right, have to go, see you!</text>
-    </string>
-    <string id="agr_krot_actor_met_seriy_0">
-        <text>Grey told me, that you knew something about Gunslinger's cache!</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_krot_actor_met_seriy_100">
-        <text>As far as you are Grey's friend, then it turns out that you are a friend of mine as well, especially after the mayhem with the militaries. If it were not for your timely help I guess I would have become the lunch for the blind dogs.</text>
-    </string>
-    <string id="agr_krot_actor_met_seriy_1000">
-        <text>Okay-okay. So what is with the cache?</text>
-    </string>
-    <string id="agr_krot_actor_met_seriy_150">
-        <text>I know where Gunslinger's cache is situated. It is right here at the Agroprom or better to say under it. Tunnels are everywhere, they lead under the factory and not only there. But as for myself, I haven't got any desire to go there - I'll have to save my ass from the militaries, cure the wounds. Go there yourself if you wish to. I'll copy the information on your PDA.</text>
-    </string>
-    <string id="agr_krot_actor_met_seriy_1500">
-        <text>How can I get into the tunnels?</text>
-    </string>
-    <string id="agr_krot_actor_met_seriy_200">
-        <text>This is one of the variety of entrances, you'll get into one of the tunnels through it and then do as you like, I've got no map of these tunnels, while they're very long with an abundance of rooms and being very tangled.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_krot_actor_met_seriy_2000">
-        <text>What else do you know?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_krot_actor_met_seriy_250">
-        <text>I know nothing more, I've already told you everything I knew, you'll have to act further on your own. Wish you luck.</text>
-    </string>
-    <string id="agr_krot_actor_met_seriy_2500">
-        <text>I have to go, take care!!!</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_krot_help_0">
-        <text>Help!</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_krot_help_10">
-        <text>Awright!</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_ratcatcher_start_0">
-        <text>Don't shoot, bro!</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_esc_0">
-        <text>What are you doing here?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_esc_20">
-        <text>It's not of your business.</text>
-    </string>
-    <string id="agr_stalker_esc_200">
-        <text>I'm just asking, calm down!</text>
-    </string>
-    <string id="agr_stalker_esc_30">
-        <text>And what's your business in it?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_esc_300">
-        <text>Clear, thanks.\n</text>
-    </string>
-    <string id="agr_stalker_esc_40">
-        <text>Alright, I'm coming from the factory, which lies westwards straight by the road. I don't know how, but our group has been detected by the militaries. I didn't wait for their return and left. Hopefully our guys has already fled, otherwise they won't have survived for long - you've seen the chopters, haven't you.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_esc_400">
-        <text>Clear, thanks.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_0">
-        <text>What interesting is happening here?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_1">
-        <text>Do you know about Ratsnarer? The information will cost you 30 cash.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_11">
-        <text>Deal.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_111">
-        <text>There is a local hero here, called Ratsnarer. He inhabits the bogs. He bred so many rats in the collectors that they will soon be eating cops alive.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_1111">
-        <text>Great. Thanks.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_1112">
-        <text>Tell me about the collectors in detail.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_11121">
-        <text>Collectors... Yes, usual stinky sewer system. Draws the waste waters aside from Agroprom to the nearest reservoir.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_111211">
-        <text>Great. Cheers. Take care.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_12">
-        <text>Yeah-yeah. Thanks.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_121">
-        <text>There is nothing more I can tell you.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_13">
-        <text>I haven't got sufficient funds.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_14">
-        <text>I'm not intersted in it.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_3">
-        <text>What's interesting happening here?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_31">
-        <text>Nothing at all.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher1_311">
-        <text>Got it. Bye!</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_0">
-        <text>I've got several questions.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_10">
-        <text>What do you want to know?</text>
-    </string>
-    <string id="agr_stalker_talk_about_ratcatcher_100">
-        <text>Where can I have a peaceful rest?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_1000">
-        <text>What's interesting around here?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_120">
-        <text>How many do you require?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_130">
-        <text>Here, take money, tell me where it is.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_131">
-        <text>Ah, screw you...</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_140">
-        <text>Thanks.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_20">
-        <text>Yeah, there is a place! But you'll have to pay a fair bit!</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_21">
-        <text>Everything was calm and quiet until recently. And now for some reason the militaries have blown up. They kill everyone. They've driven out bandits not long ago. Someone is said to make their way to the catacombs.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_30">
-        <text>Well, thirty and we're done?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_40">
-        <text>There is the way out of railway tunnel not far. It's quite dangerous in it in a dead end. At least no one \nhad been eaten asleep there. There is car at the radioactive bog, it's possible to settle there for a \nwhile. However the territory around it is radiated, so it's better to approach to the car from thewestern \nswamp side. And one more thing: we've seen a soldier there not so long ago, apparently from \nIntitute's base. He has been camping there for several days.Perhaps, he has flew off the handle - he's \ngonna die there alone.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_about_ratcatcher_9999">
-        <text>Bye!</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_level_0">
-        <text>Tell me about this place.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_level_1">
-        <text>This is the territory of Agroprom Research Institute. The building itself is situated on the south-west. And the large factory to the north - is manufacturing and technology base of the institute. The building was abandoned for a long time, it has passed into momories, there is nothing to steal from there whatsoever. But recently militaries started to search for something there actively.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_level_2">
-        <text>Tell me about the institute in detail.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_level_21">
-        <text>This is a legendary institute. Until the catastrophe in 1986 there was only the lone standing building of Gramineae selection and genetics institute. And there was an experimental field on the territory of the factory. After the accident the insitute has been closed and the field was burned. And then it was remembered, whitewashed, fenced around, barracks were built. Factory was constructed on the fields. I don't have a clue what were they doing in that institute, but they didn't spare money, I'm telling you.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_level_3">
-        <text>Tell me about the factory in detail.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_level_31">
-        <text>This factory has been built in the end of 80s. Supposedly with the aim to build and check the cars, which are capable to work up the radioactive soil. But as far as I know, no one has seen a single car there. Now it's totally empty. Only stalkers like to stop there. It's said that this place is a safe one if not to poke a nose into the dark corners.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_stalker_talk_level_4">
-        <text>Thanks.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_start_0">
-        <text>O! Humanlike has come! What have brought you here?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks1_0">
-        <text>Hello.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks1_01">
-        <text>What have you come here for?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks1_011">
-        <text>Tell me about the collector. How can I get in, where are the entrances and exits?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks1_0111">
-        <text>It's rather dangerous in collector now. There are six entrances. Two of them are on the Institute's territory - where the military base is. Institute's territory is patrolled. Captain has got the patrol schedule.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks1_01111">
-        <text>Where have you got all this information from?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks1_011111">
-        <text>Rats told me.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks1_0111111">
-        <text>Clear. See you. Good luck.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks1_012">
-        <text>I've got nothing. See you.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks1_013">
-        <text>Who are you?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks1_0134">
-        <text>I live here. If this stuff can be called a life. I'm breeding rats in collectors, bothering militaries in the Institute this way.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks1_0135">
-        <text>I'm Ratsnarer.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks1_01351">
-        <text>What are you doing in this swamp?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks1_123">
-        <text>Aaaa... got it... Unfortunately I'm not a character of this fairy tale. Hehehe...</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_0">
-        <text>What are you, greenhorn, doing here?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_10">
-        <text>I'm hiding. I don't want any problem. Don't shoot!</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_100">
-        <text>How did you get here? Whom are you hiding from? Say!</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_120">
-        <text>What are the catacombs?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_130">
-        <text>I need papers you've messed around with recently. Tell, where is it!</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_140">
-        <text>What are you planning to do next?</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_141">
-        <text>What are you planning to do next?\n</text>
-    </string>
-    <string id="agr_swamp_ratcatcher_talks_150">
-        <text>Well, come on, buzzard warrior.Don't you die of hunger.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_20">
-        <text>I'm from the reconnaissance detachment. We've been sent to the collectors, in order to examine what was happening under the base. There is a total mess. The others are most likely to be dead. But I have no desire to get back to the base. They always cut all ways for us in the Zone, damn bastards.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_30">
-        <text>Underground tunnels. They lead from the Institute outside its territory, I'll show you the exits. The maps of the catacombs themselves aren't in my posession.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_40">
-        <text> A captain manages all this. He has organized a staff on the third floor of institute. There are these \ndamned papers. But you have to reach there first.\n In the day-time territory is guarded. At night there are less patrols. After eleven evenings there is \nchanging of guard, at this time in the main building almost nobody is present. If you want to get \nthrough on the base, I say: you will not pass through the gates, the most \nreal way is - through these damned catacombs.\nHere is a flash with the plan of base -it's everything marked there.</text>
+        <text>This string was added automatically</text>
     </string>
     <string id="agr_swamp_ratcatcher_talks_50">
-        <text>Hem. I don't know. According to the military laws I'm supposed to be a slacker. And I need to get out \nsomehow. When we came here there was Zaporozhets in the garage, almost in working order. I \nreturned it to life in half an hour, and captain took it from me. He said it was according to army \nregulations. It were perfect to steal this Zaporozhets. It is more reliadle to flee on the wheels.\n\n</text>
+        <text>This string was added automatically</text>
     </string>
 </string_table>

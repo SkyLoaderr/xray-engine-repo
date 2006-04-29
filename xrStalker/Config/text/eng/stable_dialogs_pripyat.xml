@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
+    <string id="pri_followers_dlg_0">
+        <text>Talk our chief. He knows better the matter.</text>
+    </string>
+    <string id="pri_followers_dlg_1">
+        <text>OK</text>
+    </string>
     <string id="pri_followers_start_dlg_11">
         <text>Hi, Branded One. We are going to break through to the station. It's said that there are lots of nice stuff there. We can do good money. We have a map and I \nknow the safe way, are you going with us?</text>
     </string>
@@ -20,5 +26,17 @@
     </string>
     <string id="pri_followers_start_dlg_211">
         <text>Ок.</text>
+    </string>
+    <string id="pri_followers_start_dlg_31">
+        <text>Thank you Branded one for a help. This was a heavy fight. We will rest here.\nIf you go farther, I tell you about this place. If you turn back along a transition and go to the right, \nyou'll reach a bus terminal. But there is too opened and unsafe place.\nIf you pass ahead, you appear in front of a hotel. There is a base of monolith on the right of it. Those \nboys without a roof.\nBehind a base there is a stadium. We planned to make ourway to station through it. That is all.</text>
+    </string>
+    <string id="pri_followers_start_dlg_311">
+        <text>Thanks</text>
+    </string>
+    <string id="pri_followers_start_dlg_4">
+        <text>Take near the box grenades for grenade cup discharge, it can be usefull on our way</text>
+    </string>
+    <string id="pri_followers_start_dlg_41">
+        <text>Well, let's move</text>
     </string>
 </string_table>

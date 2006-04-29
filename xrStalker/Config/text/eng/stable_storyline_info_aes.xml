@@ -1,3 +1,9 @@
+    <string id="aes_military_task">
+        <text>Mission Monolith</text>
+    </string>
+    <string id="aes_military_task_head">
+        <text>Environment</text>
+    </string>
     <string id="aes_soldier_info">
-        <text>Plan of military operation\n\n Personnel:\n Operation commander:callsign «Quartet»\n Seven assault commando troops: «Peregrin» «Kite» «Hawk» «Kestrel» «Falcon» «Vulture» «Harrier».\n Snipers crew: «Owl»\n Support:\n Air: «Zero Eighteen» «Zero Thirty» «Zero Thirty One» «Forty Eight» «Forty Nine» «Fifty Two»\n «Fifty One» «Sixty four» «Sixti five» «Zero Ninty Eight» «Zero Ninty Seven»\n Ground: «Ironclad-1» «Ironclad-2» «Ironclad-3»\n Situation: Possible heavy resistance in the region of the bridge (23,45), gates (26,78), road along the main plant building (12,23-53,76). Probable usage of \nheavy weaponry by the enemy.\n Expected enemy strength 70-100 people. No armored machinery.\n Possible hard sniper coverage on the part of the enemy.\n Weather forecast: Vision – 700, possible presence of formerly unknown anomaly.</text>
+        <text>Plan of military operation\n\n Personnel:\n Operation commander:callsign «Quartet»\n Seven assault commando troops: «Peregrin» «Kite» «Hawk» «Kestrel» «Falcon» «Vulture» \n«Harrier».\n Snipers crew: «Owl»\n Support:\n Air: «Zero Eighteen» «Zero Thirty» «Zero Thirty One» «Forty Eight» «Forty Nine» «Fifty Two»\n «Fifty One» «Sixty four» «Sixti five» «Zero Ninty Eight» «Zero Ninty Seven»\n Ground: «Ironclad-1» «Ironclad-2» «Ironclad-3»\n Situation: Possible heavy resistance in the region of the bridge (23,45), gates (26,78), road along the \nmain plant building (12,23-53,76). Probable usage of \nheavy weaponry by the enemy.\n Expected enemy strength 70-100 people. No armored machinery.\n Possible hard sniper coverage on the part of the enemy.\n Weather forecast: Vision – 700, possible presence of formerly unknown anomaly.</text>
     </string>

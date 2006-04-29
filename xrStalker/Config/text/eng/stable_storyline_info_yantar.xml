@@ -1,1 +1,36 @@
-<string_table />
+    <string id="descr_yan_find_ghost_task">
+        <text>Vasiliev: "...it's coordinates of the entrance into the laboratory X16. An entrance is in basement of \ncentral building, the tasks of this building are unknown. Probably technical suplies for underground \noscillators: studying document from N*** exposes destiny of this project: it is large-scale \npsychotronic development of mass influence on...\n\n ...we have all necessary documents, we know how to disconnect an emitter. We continue to go \ndown with Ghost into a laboratory. Zombies are everywhere climbing on light...\n\n ...averything's going wrong, Ghost absolutely not responsible for his actions, talks some delirium. \nHe seems to be covered with a radiation. I gave up everything and leave through tunnels...\n\n ...am I on bogs, where bunker? Damn, damn, damn it!!! I can not define where I am! Sakharov's \ncoward, does not answer!!! What's going on??? ... zombies are all around, cartridges are coming to \nan end..."</text>
+    </string>
+    <string id="descr_yan_find_lab">
+        <text>Sakharov: "All you have to do it's to find the dead body of Vasiliev and obtain exact information \nabout the location of laboratory. Then get to the laboratory and find Ghost. Ghost knew how to \ndisconnect a emanation and how to get out from there."</text>
+    </string>
+    <string id="descr_yan_find_scientist">
+        <text>Sakharov: "If you and our employee will do measurings, I will give you the adjusted prototype which \nallows you to get to the laboratory."</text>
+    </string>
+    <string id="descr_yan_find_scientist_semenov">
+        <text>Sakharov: "If you and our employee will do measurings, I will give you the adjusted prototype which \nallows you to get to the laboratory."\n</text>
+    </string>
+    <string id="descr_yan_kill_brain">
+        <text>Sakharov: "Well done, Branded One, you got all the same to the laboratory. It is extremely important \nfor us to study plant which is in a laboratory. Try to cut it off, so that we would be able to explore \nher.\n\n ...listen, a prototype doesn't protect from a strong radiation during a long period of time. I foresaw \nsuch case, therefore when you will get under strong radiation a timer turns on. When time is up a \nprototype will not be able to protect you anymore. Be more careful, and do not forget about a timer."</text>
+    </string>
+    <string id="descr_yan_provodnik_task">
+        <text>Ghost: "Record of N257\n >>Guide, I will send a man to you, we have important information for Doctor, assist him\n >>Ghoust\n Good, but Ghost, not as at the last time, well you'd better come yourself, I want to talk with you'. I'll \nbe waiting as usual, in a camp near a bridge, don't disappear and look out army patrols."</text>
+    </string>
+    <string id="descr_yan_scientist_return_task">
+        <text>Sakharov: "What happened? Is he dead? Take measurements and turn back immediately!!!"</text>
+    </string>
+    <string id="journal_after_find_ghost">
+        <text>I am shocked! Ghost and and a person on the picture in PDA, attached to the task "kill Gunslinger", \nis the same man. I don't understand anything. It means that some error happened. But who assumed \nit? There's no answer yet. And there's no time. Zombies are climbing from all cracks. On a dead \nbody I found instruction, how to disconnect plant: it is necessary to turn off three knife-switchs on \nthree tiers of this giant device. After that it will be possible to turn off a basic knife-switch on a basic \nstand on the third tier. The area of the most powerful radiation spreads only within the limits of \nsphere so I got not more than 1 minute for turning off one of knife-switchs – my defence will not stand \nit. So I must disconnect knife-switchs one by one, each time going back into a safe place out of \nsphere till expiration of this minute.</text>
+    </string>
+    <string id="journal_after_kill_brain">
+        <text>So it is done with a «Psy-brain». The source of psy-radiation is turned off, and it was exactly it. All \nneighbourhood was under influencing of «psy-brain» plant- it zombified everyone, who was in the \narea of its action. I found out there is another plant in the laboratory of ?19 and probably it is «brain \nscorcher». I also found out, that these plants not always work on full power. There are periods when \nit lowers power of radiation for cooling its aggregates. As for Ghost. On a dead body I found the \nname of «common acquaintance» and fourth in a group of Gunslinger - Doctor. He helped for a long \ntime a group and executed, to all appearances, the role of «staff». It is possible to find him through \nstalker on a nickname «Guide» - which, often is on ? border. Well, Guide, look out of occasionally \ndying before we meet.</text>
+    </string>
+    <string id="journal_before_vasilyev_pda">
+        <text>Well, I almost in a step from one of the people of Gunslinger. Ghost went away in the underground \nlaboratory of ?16 with one of the scientist. There's just one "but" - I'll hardly find him alive. A scientist \nreturned from there alone and perished already on approach to the camp. Scientists gave me a \ncertain protective device for protecting from this unknown emanation. I hope it will justify itself. They \nwant me to worm into inward and turn off a source of emanation – so they will be able to study \neverything in this place. Well, God bless me..</text>
+    </string>
+    <string id="storyline_ghost_info">
+        <text>Ghost: "Record of N257\n >>Guide, I will send a man to you, we have important information for Doctor, assist him\n >>Ghoust\n Good, but Ghost, not as at the last time, well you'd better come yourself, I want to talk with you'. I'll \nbe waiting as usual, in a camp near a bridge, don't disappear and look out army patrols."\n\nRecord N384\n Vasiliev was scared at the last moment and instead turning off lower stands, just ran away, when a \ndoor was opened. We shouldn't have rely on him, Gunslinger did not trust these lyings dogs. My \nunique chance, is to get to the door before a controller...</text>
+    </string>
+    <string id="storyline_vasilyev_info">
+        <text>...it's coordinates of the entrance into the laboratory X16. An entrance is in basement of \ncentral building, the tasks of this building are unknown. Probably technical suplies for underground \noscillators: studying document from N*** exposes destiny of this project: it is large-scale \npsychotronic development of mass influence on...\n\n ...we have all necessary documents, we know how to disconnect an emitter. We continue to go \ndown with Ghost into a laboratory. Zombies are everywhere climbing on light...\n\n ...averything's going wrong, Ghost absolutely not responsible for his actions, talks some delirium. \nHe seems to be covered with a radiation. I gave up everything and leave through tunnels...\n\n ...am I on bogs, where bunker? Damn, damn, damn it!!! I can not define where I am! Sakharov's \ncoward, does not answer!!! What's going on??? ... zombies are all around, cartridges are coming to \nan end..."\n</text>
+    </string>

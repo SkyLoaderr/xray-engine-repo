@@ -2,11 +2,20 @@
         <text>SOS, militaries are cutting down our brothers-stalkers, men, everyone who can hear me - help!</text>
     </string>
     <string id="tips_agr_krot_sos1">
-        <text>Help. They will kill us!</text>
+        <text>Cops caught me in the yard. Help, brothers.</text>
     </string>
     <string id="tips_agr_krot_sos2">
         <text>All my guys have been knocked down!</text>
     </string>
+    <string id="tips_agr_stalker_help_1">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="tips_agr_stalker_help_2">
+        <text>This string was added automatically</text>
+    </string>
     <string id="tips_agr_trader_documents">
         <text>Branded one, I've told Barkeep about you - he has to deal with the traders in order to let you in. So get your body straight to him.</text>
+    </string>
+    <string id="tips_captain_name">
+        <text>Captain Maksimenko</text>
     </string>

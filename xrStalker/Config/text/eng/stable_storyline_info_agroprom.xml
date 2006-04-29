@@ -1,3 +1,9 @@
+    <string id="agr_journal_cache">
+        <text>Well, a cache gave out me further direction of search. I found flash-drive, which was used by the \ngroup of Gunslinger, as a kind of «log-book». There were not many reports, but it was enough to \nunderstand - Ghost and Fang were in the group of Gunslinger, except himself. It was mentioned \nsome «common acquaintance», but whether he entered this group is unknown. The fact is he gave \nconsiderable help the group of Gunslinger. After that, according to Ghost's report, Fang perished, \nwhen they got in an ambush. So we have the name of a man which knows Shooter exactly - it's \nGhost. At last something concrete. According to correspondence,I should search Gunslinger \nsomewhere in northlands of the Zone.</text>
+    </string>
+    <string id="agr_journal_krot">
+        <text>Well, meeting with Mole was productive - apparently cache of group it's reality and it is lockated in \nthe catacombs of Agroprom... i'm going to make way in caves. What is waiting for me there- it's \nunknown. I hope this cache will open my secret too.\n</text>
+    </string>
     <string id="agr_krot_secret_info">
         <text>Get down the spiral stairs to the room with columns. Walk through the room and approach the exit, find yourself in the large room with the pipes on the ceiling, \nproceed to the second exit, enter the pipe and turn left. In the end you'll find the path to the right. From the small room you move straight to the exit and turn \nright. Search for the hole in the wall, near the inscription "Warning! High voltage!". This is the entrance to Gunslinger's cache.</text>
     </string>
@@ -11,13 +17,13 @@
         <text>Report by investigating group.</text>
     </string>
     <string id="agr_nii_fab_mil_task">
-        <text>Operation "Agroprom"\nTasks:\n 1. Clear factory of stalkers\n 2. Join the group dislocated on the territory of the Agroprom RI \n 3. Protect staff  and papers till futher instructions.\n The staff is situated on the second floor of the main building of the institute.</text>
+        <text>Operation "Agroprom"\nTasks:\n 1. Clear factory of stalkers\n 2. Join the group dislocated on the territory of the Agroprom RI \n 3. Protect staff and papers till futher instructions.\n The staff is situated on the second floor of the main building of the institute.</text>
     </string>
     <string id="agr_nii_fab_mil_task_name">
         <text>Operation "Agroprom"</text>
     </string>
     <string id="agr_nii_security_plan">
-        <text>There are patrols, guards and towers marked on the plan. On the second floor is a staff. Papers are \nthere too.  In the day-time territory is guarded. At night there are less patrols. After eleven evenings \nthere is changing of guard, at this time in the main building almost nobody is present. If you want to \nget through on the base, I say: you will not pass through the gates, the most \nreal way is - through these damned catacombs.\n</text>
+        <text>There are patrols, guards and towers marked on the plan. On the second floor is a staff. Papers are \nthere too. In the day-time territory is guarded. At night there are less patrols. After eleven evenings \nthere is changing of guard, at this time in the main building almost nobody is present. If you want to \nget through on the base, I say: you will not pass through the gates, the most \nreal way is - through these damned catacombs.\n</text>
     </string>
     <string id="agr_nii_security_plan_name">
         <text>"Agroprom" Scientific Research Institute patrol plan</text>
@@ -30,6 +36,15 @@
     </string>
     <string id="agr_rats_n_soldiers_text">
         <text>Militaries are harassed by rats, which come from the collectors. Delinquent militaries are dispatched to the collectors.</text>
+    </string>
+    <string id="agr_task_case">
+        <text>Trader: When you steal case from former Agroprom SRI territory, bring it to Barmen. He manages a \nstalker bar named "100 Rontgen", it's on the former plant Rostok territory.</text>
+    </string>
+    <string id="article_agr_krot_sos">
+        <text>SOS, militants are trying to kill our stalker brother, men, everyone who can hear me-help!</text>
+    </string>
+    <string id="article_agr_krot_sos1">
+        <text>Mole: "Help! I'll de taken down!"</text>
     </string>
     <string id="storyline_gunslinger_cache_info">
         <text>We've found the entrance to Gunslinger's stash. There was nothing interesting. Go look there yourself if you like.</text>

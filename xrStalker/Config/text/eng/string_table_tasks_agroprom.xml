@@ -5,7 +5,7 @@
         <text>Save Mole</text>
     </string>
     <string id="agr_help_krot_0">
-        <text>Militaries have blocked Mole at the factory. He won't hold there for long</text>
+        <text>Help Mole to fight off militaries.</text>
     </string>
     <string id="agr_help_krot_1">
         <text>Eliminate the militaries</text>
@@ -17,13 +17,13 @@
         <text>Help Mole's stalkers</text>
     </string>
     <string id="agr_help_stalkers_0">
-        <text>Help Mole's stalkers withstand militaries at the factory</text>
+        <text>Help stalkers fight off militaries</text>
     </string>
     <string id="agr_help_stalkers_1">
         <text>Eliminate the militaries</text>
     </string>
     <string id="agr_help_stalkers_2">
-        <text>Save stalkers</text>
+        <text>Help stalkers fight off militaries\n</text>
     </string>
     <string id="agr_krot">
         <text>Meet the stalkers</text>
@@ -32,7 +32,7 @@
         <text>Receive information about the Gunslinger</text>
     </string>
     <string id="agr_meet_krot_band_0">
-        <text>Grey have told that Mole knows something</text>
+        <text>Get the information from Mole</text>
     </string>
     <string id="agr_meet_krot_band_1">
         <text>Meet the Mole's grouping</text>
@@ -44,7 +44,7 @@
         <text>Find the Gunslinger's grouping cache</text>
     </string>
     <string id="agroprom_find_gunslinger_cache_0">
-        <text>Find and search the Gunslinger's grouping cache. It may contain the information on how to find Gunslinger himself.</text>
+        <text>Find a the Gunslinger's grouping cache. I</text>
     </string>
     <string id="agroprom_find_gunslinger_cache_1">
         <text>Find the cache</text>

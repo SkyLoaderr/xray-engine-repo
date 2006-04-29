@@ -70,16 +70,16 @@
         <text>There's a pseudodog. A large specie, but quite beaten up. On the other hand, a very fierce one, same as my mother-in-law. I'm blessed to have never seen \nher.</text>
     </string>
     <string id="bar_arena_manager_game_200">
-        <text>Deal. One more thing. Put the stake on time you kill the monster within. If you do it - you win, otherwise - you lose. The less the time chosen, the bigger is the \nmoney won.</text>
+        <text>Deal. One more thing. Put the stake on time you kill the monster within. If you do it - you win, \notherwise - you lose. The less the time chosen, the bigger is the \nmoney won.\n30 seconds, tripple win.\nOne and a half minute, double win.\nWithout time limit. A half-stake win.</text>
     </string>
     <string id="bar_arena_manager_game_201">
         <text>30 seconds, tripple win.</text>
     </string>
     <string id="bar_arena_manager_game_202">
-        <text>One and a half minute, double win.</text>
+        <text>I'll try one and a half minute</text>
     </string>
     <string id="bar_arena_manager_game_203">
-        <text>Without time limit. A half-stake win.</text>
+        <text>I'll try without time limit.</text>
     </string>
     <string id="bar_arena_manager_game_204">
         <text>I changed my mind.</text>
@@ -88,13 +88,13 @@
         <text>Pooh, milksop. I will not return your money anyway.</text>
     </string>
     <string id="bar_arena_manager_game_21">
-        <text>I will try. Let your dog out.</text>
+        <text>I will try.</text>
     </string>
     <string id="bar_arena_manager_game_22">
         <text>No, I will not fight against the dog.</text>
     </string>
     <string id="bar_arena_manager_game_221">
-        <text>Our girl is afraid of doggie. Well, don't be upset.</text>
+        <text>Are you afraid? He-he, well, come next time</text>
     </string>
     <string id="bar_arena_manager_game_3">
         <text>There is a freak in gas-mask. Called Snork. Thin and feeble-looking, but quite agile, no worse than Jackie Chan. I saw a couple of his flicks when a child.</text>
@@ -178,7 +178,7 @@
         <text>What are the rules?</text>
     </string>
     <string id="bar_arena_manager_rules_1">
-        <text>Oh, the rules are pretty simple. I invented them myslef. There's a cage, and a mutant is let inside the cage. You pay money, so as choose a time you need to kill \nthe monster. If you make it - you get the win. If you don't cope with it - I keep the money. Should you die - I oblige to bury you with all the ceremonies as proper. \nThe less is the time you choose, the bigger is the win.</text>
+        <text>Oh, the rules are pretty simple. I invented them myslef. There's a cage, and a mutant is let inside the \ncage. You pay money, so as choose a time you need to kill \nthe monster. If you make it - you get the win. If you don't cope with it - I keep the money. Should you \ndie - I oblige to bury you with all the ceremonies as proper. \nThe less is the time you choose, the bigger is the win.</text>
     </string>
     <string id="bar_arena_manager_start_11">
         <text>Hi there! I've got a new pet. Wanna try your forces against it?</text>
@@ -208,7 +208,7 @@
         <text>Here's the PDA of Tyran. I got your task accomplished.</text>
     </string>
     <string id="bar_bar_barman_killer_ambush_1">
-        <text>Well, Branded One. Well done! What can I say!? You pleased me. To tell the truth I hesitated a bit, that you could manage to deal with them, while you came \nout alive, and you've dealt with everyone.</text>
+        <text>Well, Branded One. Well done! What can I say!? You pleased me. To tell the truth I hesitated a bit, \nthat you could manage to deal with them, while you came \nout alive, and you've dealt with everyone.</text>
     </string>
     <string id="bar_bar_barman_killer_ambush_2">
         <text>What's with the reward?</text>
@@ -241,13 +241,16 @@
         <text>What is it with him? Mooing something incomprehensible.</text>
     </string>
     <string id="bar_bar_barmen_about_psih_1">
-        <text>Damn me if I knew. Must have gone totally crazy. Perhaps some gulps of vodka could help, or an injection or something.</text>
+        <text>Damn me if I knew. Must have gone totally crazy. Perhaps some gulps of vodka could help, or an \ninjection or something.</text>
     </string>
     <string id="bar_bar_barmen_jobs_0">
         <text>Do you have work for me to do?</text>
     </string>
     <string id="bar_bar_barmen_jobs_1">
         <text>No, nothing available today.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_111">
+        <text>No, nothing for today</text>
     </string>
     <string id="bar_bar_barmen_jobs_2">
         <text>I've got work, but for veterans only.</text>
@@ -258,20 +261,23 @@
     <string id="bar_bar_barmen_jobs_22">
         <text>Sorry, I will not take this one for now.</text>
     </string>
+    <string id="bar_bar_barmen_jobs_221">
+        <text>No, nothing for today</text>
+    </string>
     <string id="bar_bar_barmen_jobs_2311">
-        <text>There's a serious affair. On the 'wild territory' there is a group of stalker veterans and I hear recently about frequent cases of death of lone stalkers in their 'region'. \nPeople from the Duty came to me asking to settle it with these veterans. The Duty have indisputable proof of the veterans involved in killing the loners. The thing \nis, they have an old agreement with Duty, which the Duty cannot violate, and the former guys got too insolent now. To cut it brief, teh Duty want them to be \nqueitly eliminated. The task is tough, but is well-paid.</text>
+        <text>There's a serious affair. On the 'wild territory' there is a group of stalker veterans and I hear recently \nabout frequent cases of death of lone stalkers in their 'region'. \nPeople from the Duty came to me asking to settle it with these veterans. The Duty have indisputable \nproof of the veterans involved in killing the loners. The thing \nis, they have an old agreement with Duty, which the Duty cannot violate, and the former guys got too \ninsolent now. To cut it brief, teh Duty want them to be \nqueitly eliminated. The task is tough, but is well-paid.</text>
     </string>
     <string id="bar_bar_barmen_jobs_23111">
         <text>Are there any other extra conditions? And it looks weird that the Duty let it go like this.</text>
     </string>
     <string id="bar_bar_barmen_jobs_231111">
-        <text>The Duty take care of their reputation. That's why they want to make it quietly. Eliminating the leader nicknamed "Lucky" and bringing his PDA as proof \nwould be enough for you.</text>
+        <text>The Duty take care of their reputation. That's why they want to make it quietly. Eliminating the leader \nnicknamed "Lucky" and bringing his PDA as proof \nwould be enough for you.</text>
     </string>
     <string id="bar_bar_barmen_jobs_2311111">
         <text>Deal. Hopefully I'll never regret it.</text>
     </string>
     <string id="bar_bar_barmen_jobs_23111111">
-        <text>Excellent decision, and I think there's hardly anything to regret here.</text>
+        <text>Excellent decision, and I think there's hardly a.nything to regret here</text>
     </string>
     <string id="bar_bar_barmen_jobs_2311112">
         <text>No, I won't go for it.</text>
@@ -279,8 +285,29 @@
     <string id="bar_bar_barmen_jobs_23111121">
         <text>As you wish, just remember that it's a good chance to gain the gratitude of the Duty guys.</text>
     </string>
+    <string id="bar_bar_barmen_jobs_24">
+        <text>Closer to the point, what am I to do?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_241">
+        <text>Your task is to eliminate the Tyran, the leader of the Mercenaries grouping. A squad of Mercenaries \nbroke into the wild territory and encamped on the building site. \nWatch out, part of the combatants sit in ambushes on the approach to building area. As soon as you \nbring me Tyran's PDA, the award is yours.\n\n</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_2411">
+        <text>Deal. Hopefully I won't regret this.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_24111">
+        <text>Excellent decision, and I think there's hardly a.nything to regret here\n</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_2412">
+        <text>No, I won't do it</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_24121">
+        <text>Well, as you wish</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_251">
+        <text>No, nothing for today</text>
+    </string>
     <string id="bar_bar_barmen_jobs_261">
-        <text>Your task is to eliminate the Tyran, the leader of the Mercenaries grouping. A squad of Mercenaries broke into the wild territory and encamped on the building site. \nWatch out, part of the combatants sit in ambushes on the approach to building area. As soon as you bring me Tyran's PDA, the award is yours.</text>
+        <text>Your task is to eliminate the Tyran, the leader of the Mercenaries grouping. A squad of Mercenaries \nbroke into the wild territory and encamped on the building site. \nWatch out, part of the combatants sit in ambushes on the approach to building area. As soon as you \nbring me Tyran's PDA, the award is yours.</text>
     </string>
     <string id="bar_bar_barmen_jobs_2611">
         <text>Deal. Hopefully I won't regret this.</text>
@@ -294,17 +321,20 @@
     <string id="bar_bar_barmen_jobs_26121">
         <text>As you desire.</text>
     </string>
+    <string id="bar_bar_barmen_jobs_266">
+        <text>No, nothing for today</text>
+    </string>
     <string id="bar_bar_barmen_jobs_271">
         <text>No sweat, Branded one. You haven't yet dealt with the veterans and already trying to do something else.</text>
     </string>
     <string id="bar_bar_barmen_jobs_3">
-        <text>There's an errand. But I have no intention to speak about it here. It's too noisy, and too many of extra ears. Should this be of interest, come, let's talk on our own.</text>
+        <text>I've got work, but for veterans only.\n</text>
     </string>
     <string id="bar_bar_barmen_jobs_31">
-        <text>I'm interested in more serious jobs.</text>
+        <text>Closer to the point. What's to be done?\n</text>
     </string>
     <string id="bar_bar_barmen_jobs_311">
-        <text>Let's go to my room. Garry will let you in.</text>
+        <text>No, nothing for today</text>
     </string>
     <string id="bar_bar_barmen_jobs_3111">
         <text>I'll take it. Hope I won't regret.</text>
@@ -321,41 +351,131 @@
     <string id="bar_bar_barmen_jobs_32">
         <text>No, I have no interest in it right now.</text>
     </string>
+    <string id="bar_bar_barmen_jobs_321">
+        <text>There's a serious affair. On the 'wild territory' there is a group of stalker veterans and I hear recently \nabout frequent cases of death of lone stalkers in their 'region'. \nPeople from the Duty came to me asking to settle it with these veterans. The Duty have indisputable \nproof of the veterans involved in killing the loners. The thing \nis, they have an old agreement with Duty, which the Duty cannot violate, and the former guys got too \ninsolent now. To cut it brief, teh Duty want them to be \nqueitly eliminated. The task is tough, but is well-paid.\n</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3211">
+        <text>Are there any additional conditions?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_32111">
+        <text>The Duty take care of their reputation. That's why they want to make it quietly. Eliminating the leader \nnicknamed "Lucky" and bringing his PDA as proof \nwould be enough for you.\n</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_32112">
+        <text>Deal</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_321121">
+        <text>Excellent decision. I don't think there's anything to regret here.\n\n\n</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_32113">
+        <text>No, I won't be picking this job.\n</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_321131">
+        <text>As you wish, just remember that it's a good chance to gain the gratitude of the Duty guys.\n</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_32121">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_331">
+        <text>Your task is to eliminate the Tyran, the leader of the Mercenaries grouping. A squad of Mercenaries \nbroke into the wild territory and encamped on the building site. \nWatch out, part of the combatants sit in ambushes on the approach to building area. As soon as you \nbring me Tyran's PDA, the award is yours.\n</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3312">
+        <text>Deal</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_33121">
+        <text>Excellent decision. I don't think there's anything to regret here.\n\n\n \n</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_3313">
+        <text>No, I won't take this job\n\n\n \n\n</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_33131">
+        <text>Well, as you wish</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_341">
+        <text>No, nothing for today</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_351">
+        <text>No, nothing for today</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_361">
+        <text>No, nothing for today</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_371">
+        <text>No, nothing for today</text>
+    </string>
     <string id="bar_bar_barmen_jobs_4">
         <text>There's a job and somethng else which I won't be disclosing here. If you want, we can discuss on our own.</text>
     </string>
     <string id="bar_bar_barmen_jobs_41">
         <text>Not now, next time.</text>
     </string>
+    <string id="bar_bar_barmen_jobs_441">
+        <text>There's work for veterans.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_442">
+        <text>Closer to the point, what am I to do?</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_443">
+        <text>Your task is to eliminate the Tyran, the leader of the Mercenaries grouping. A squad of Mercenaries \nbroke into the wild territory and encamped on the building site. \nWatch out, part of the combatants sit in ambushes on the approach to building area. As soon as you \nbring me Tyran's PDA, the award is yours.\n\n</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_4431">
+        <text>Deal. Hopefully I won't regret this.\n</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_44311">
+        <text>Excellent decision. I don't think there's nothing to regret here.\n\n\n \n\n</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_4432">
+        <text>No, I won't do it.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_44321">
+        <text>Well, as you wish.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_444">
+        <text>No, not interested in this moment</text>
+    </string>
     <string id="bar_bar_barmen_jobs_5">
         <text>No, nothing for today.</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_52">
+        <text>No, nothing for today. 1</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_531">
+        <text>No, nothing for today. 2</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_541">
+        <text>No, nothing for today. 3</text>
     </string>
     <string id="bar_bar_barmen_jobs_6">
         <text>No, nothing for today. 2</text>
     </string>
+    <string id="bar_bar_barmen_jobs_62">
+        <text>No, nothing for today. 2</text>
+    </string>
     <string id="bar_bar_barmen_jobs_7">
+        <text>No, nothing for today. 3</text>
+    </string>
+    <string id="bar_bar_barmen_jobs_72">
         <text>No, nothing for today. 3</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_0">
         <text>What's the job?</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_1">
-        <text>Stalkers have been for several years now interested in revealing the pass to the north, to the centre. But so far the passage is closed, and those who went there \nnever returned. There's info about some 'brain scorcher', who blocks the way to the north, but what is it - nobody knows. On the documents you brought from \nAgroprom, something starts to clarify. It looks like the 'brain scorcher' is of cosmetic nature. We need more data to tell for sure. In the documents laboratory X18 is \nmentioned to have allegedly also worked on the project. The descriptions match with neglected underground premises in the Dark Valley, known as 'dark \nlaboratory'.</text>
+        <text>Stalkers have been for several years now interested in revealing the pass to the north, to the centre. \nBut so far the passage is closed, and those who went there \nnever returned. There's info about some 'brain scorcher', who blocks the way to the north, but what is \nit - nobody knows. On the documents you brought from \nAgroprom, something starts to clarify. It looks like the 'brain scorcher' is of cosmetic nature. We \nneed more data to tell for sure. In the documents laboratory X18 is \nmentioned to have allegedly also worked on the project. The descriptions match with neglected \nunderground premises in the Dark Valley, known as 'dark \nlaboratory'.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_11">
         <text>Want me to go to the 'dark laboratory'? And what's the reward?</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_111">
-        <text>If you bring the folders with documents on 'antennae' or 'radiators', I will pay you lavishly. To achieve that you'll need to examine the laboratory thoroughly. When \nthe Zone blew out, no one had time to evacuate anything. Certainly there is a lot left there.</text>
+        <text>If you bring the folders with documents on 'antennae' or 'radiators', I will pay you lavishly. To achieve \nthat you'll need to examine the laboratory thoroughly. When the Zone blew out, no one had time to \nevacuate anything. Certainly there is a lot left there. So seek well. And one more, you won't come \nthrough, the radiation level is to high.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_1111">
-        <text>Alright, it's a deal.</text>
+        <text>I'll try, but I got a feeling you've sent a lot of stalkers there.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_11111">
-        <text>The task is dangerous, no doubt. What's going on there right now is unknown, moreover, the Dark Valley has always been an unsafe place. So, be careful there.</text>
+        <text>The task is dangerous, no doubt. What's going on there right now is unknown, moreover, the Dark \nValley has always been an unsafe place. Bandits have made a base there. I've sent peoples there, \nseveral Duty-scouts. Looks like they were killed by bandits. So it does make sence to visit Hog- \nbandits leader.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_111111">
-        <text>Somehow I apprehend you sending by far not the first stalker to death.</text>
+        <text>Fine</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_1112">
         <text>No, don't want to pick it up for now.</text>
@@ -364,7 +484,7 @@
         <text>It's your decision, Branded one. But keep in mind, this is the only link to help us solve the 'brain scorcher' and pass to the north. Sooner or later someone will have \nto deal with it.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_3">
-        <text>Listen here, Branded one. You've got the 'cap' to cover from 'brain scorcher', so as you've got the time when it's deactivated - in the morning from 08:30 till 09:00 \nand evenings from 22:30 till 23:00. All in all you have half an hour available, and you've got to enter the bunker and switch off the 'scorcher' within this time. What \nwill follow I don't know, but I sense it's worth it. \n</text>
+        <text>Listen here, Branded one. You've got the 'cap' to cover from 'brain scorcher', so as you've got the \ntime when it's deactivated All in all you have half an hour available, and you've got to enter the \nbunker and switch off the 'scorcher' within this time. What \nwill follow I don't know, but I feel it's worth it. \n</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_31">
         <text>Go on.</text>
@@ -385,7 +505,7 @@
         <text>Get ready, Branded one. Such an affair cannot lie in waiting for long.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_81">
-        <text>Hush! Ask loony how to shut off the scorcher first of all.</text>
+        <text>Hush! Ask loony first of all when the scorcher is shut off.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_complete_0">
         <text>I'm back. Quest complete.</text>
@@ -400,7 +520,7 @@
         <text>I brought folders from the laboratory, here you go.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_darklabdoc_done_1">
-        <text>Okay, well, generally everything's clear. I don't want to disappoint you, but it's only part of what we need. But there's a link to the second part here. Go to the \nscientists, get the documents from X16.</text>
+        <text>So, so... Hum... Well the situation clears up. As I supposed "brain scorcher" is handmade. It's some \nKaymanov's emitter and his parts were made in ?18... But, it gives us not much. We need to find an \nanswer to the question -"how to pass it". In these documents there is reference to the certain \nlaboratory of ?16, where the prepared blocks left...I do not know exactly where it is...There is \nreference that she is located on territory production complex near a lake Jantar...The scientists not \nfar away from there a mobile laboratory was broken up and they certainly will prompt more precisely. \nSo go to scientists, and make an effort to find this X16 and extract any interesting us \ninformation.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_darklabdoc_done_11">
         <text>I got damn in trouble for real.</text>
@@ -477,6 +597,30 @@
     <string id="bar_bar_barmen_start_162">
         <text>Hi, Branded One. Time elapses, but you don't change, still unsociable and lonely. Sit here, knock back, maybe you'll put on weight \na bit.</text>
     </string>
+    <string id="bar_bar_barmen_start_171">
+        <text>So, Branded One have do you X18 papers?</text>
+    </string>
+    <string id="bar_bar_barmen_start_172">
+        <text>Yes, here it is</text>
+    </string>
+    <string id="bar_bar_barmen_start_1721">
+        <text>Good, very good. Come let's take a look what have you got.</text>
+    </string>
+    <string id="bar_bar_barmen_start_17211">
+        <text>Let's go</text>
+    </string>
+    <string id="bar_bar_barmen_start_173">
+        <text>No</text>
+    </string>
+    <string id="bar_bar_barmen_start_1731">
+        <text>So why are you chilling out? Fetch papers! We can't proceed without it.</text>
+    </string>
+    <string id="bar_bar_barmen_start_181">
+        <text>What do you want, Branded One.</text>
+    </string>
+    <string id="bar_bar_barmen_start_182">
+        <text>Hello, Branded one. The time passes but you don't change, the same kind of loner. Sit, have a drink, \nmaybe you get kinder a bit.\n</text>
+    </string>
     <string id="bar_bar_barmen_start_2">
         <text>Hi, Branded one. Did you bring the documents from Agroprom?</text>
     </string>
@@ -484,7 +628,7 @@
         <text>No, there are no papers from Agroprom yet.</text>
     </string>
     <string id="bar_bar_barmen_start_211">
-        <text>That's crap, Branded one, pure crap. Do you understand how they are needed? And they are needed desperately, believe me. We've got a brain scorcher \nneighbouring, and we don't even know what it is. Go to get the documents immediately. All the talks will be later.</text>
+        <text>That's crap, Branded one, pure crap. Do you understand how they are needed? And they are needed \ndesperately, believe me. We've got a brain scorcher \nneighbouring, and we don't even know what it is. Go to get the documents immediately. All the talks \nwill be later.</text>
     </string>
     <string id="bar_bar_barmen_start_2111">
         <text>I think I get it.</text>
@@ -502,7 +646,88 @@
         <text>What is it, Branded one?</text>
     </string>
     <string id="bar_bar_barmen_start_4">
-        <text>Hello, Branded one. The time passes but you don't change, the same kind of loner. Sit, have a drink, maybe you get kinder a bit.</text>
+        <text>Hello, Branded one. The time passes but you don't change, the same kind of loner. Sit, have a drink, \nmaybe you get kinder a bit.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_11">
+        <text>So, let's start? Are you ready?</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_22">
+        <text>So, what are you waiting for?</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_33">
+        <text>According to the documents which you brought from Agroprom, something begins to clear up, but it \nis not enough information. There is information about certain "brains scorcher", which blocks up the \nway to the north, but what is it - nobody knows. The laboratory X18 is also mentioned, descriptions \ncoincide with neglected underground apartments in Dark Valley. It's unknown what is going on there, \nbesides gangsters founded their own base in a dark valley. We've sent some Duty spies in there, but \nthere is no news from them yet. In order to get to the laboratory you need two electronic keys, one of \nthem I give you, and it will be necessary to get the second one from Hog. He is the leader of \ngangsters.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_331">
+        <text>Go on</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_332">
+        <text>So, you have to get the second key from a laboratory from Hog. Then you have to get to the \nlaboratory and obtain documents. Do not forget to purchase a suit protecting from a radiation, you \nwon't force your way through to a dark \nvalley without it. There is too strong radiation level. Are you ready?</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_3321">
+        <text>I'll try.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_33211">
+        <text>Fine, I'll be waiting</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_3322">
+        <text>No, I won't do it yet.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_33221">
+        <text>As you wish, Branded One. But you should know, it's the only catch which can help to open our way \nto the North.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_41">
+        <text>So, Branded One. You have a protective prototype, against "scorcher", and you know time when \nplant is disconnected. During this time you must make your way into a bunker and cut off \n"scorcher". What will be then, I don't know. But I feel it worthy of it.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_411">
+        <text>Keep on</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_412">
+        <text>So, all we need is to reach antannas. when emanation is lowered, and cut them off. Can you do it?</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_4121">
+        <text>I can</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_41211">
+        <text>You've got all necessary information. Good luck, Branded One, and ...take care.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_4122">
+        <text>It's too difficult, I won't do it.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_41221">
+        <text>Get ready, Branded One. this case shouldn't wait to long.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_51">
+        <text>A situation clears up. As I supposed "brain scorcher" is handmade. It's some emitter Kaymanova \nand his parts were made in the same ?18. We need an answer to the question -"how to pass it". \nThere is a reference to the certain laboratory of ?16 in these documents, where the finished blocks \nwere sent. There is reference that it is located on territory of production complex near a lake Jantar. \nThere is scientists mobile laboratory not far away, and they certainly can tell you more precisely.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_511">
+        <text>Go on</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_512">
+        <text>Yeah, the situation isn't simple. You have to reach scientists and find out where X16 is, to obtain the \nmissing part of documents. Are you ready?</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_5121">
+        <text>Clear, over again...</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_5122">
+        <text>I'm ready.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_51221">
+        <text>Fine, I'll be waiting.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_5123">
+        <text>No, I'm not ready yet.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_51231">
+        <text>Get ready, Breanded One, this case should not wait too long.</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_61">
+        <text>What are waiting for?</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_71">
+        <text>What are waiting for?\n</text>
+    </string>
+    <string id="bar_bar_barmen_start_room_81">
+        <text>What are waiting for?\n</text>
     </string>
     <string id="bar_bar_barmen_talk_info_0">
         <text>I wanted to clarify some points.</text>
@@ -517,28 +742,28 @@
         <text>What do you know about Ginslinger?</text>
     </string>
     <string id="bar_bar_barmen_talk_info_31">
-        <text>Leader of one of the groupings. No one has seen him, but there were a lot of rumors about him, Ghost and Fang, having reached the center of the Zone. \nGunslinger and Fang dissappeared, while Ghost has been seen not so long ago. He came back alive, but being a little downcast.</text>
+        <text>As far as I know experienced stalker. "Worked" through the exits of norths from the Zone. There are \nfew who saw him here, but it is rumoured he with the group passed to the very center of the Zone.</text>
     </string>
     <string id="bar_bar_barmen_talk_info_4">
         <text>What do you know about stalker named Ghost?</text>
     </string>
     <string id="bar_bar_barmen_talk_info_41">
-        <text>Kind of eerie guy, tall, reserved, with long nose. Was good at shooting, and could sneak into anywhere, silently and undetected. He is said to have killed the \nleaded of one freaky faction... what was it? Oh, I remember! "The last day"... yeah, wild guys they were. He is said to be seen gone to the scientists.</text>
+        <text>Kind of guy from Gunslinger grouping. They say he can sneak into anywhere, silently and \nundetected. He is said to have killed the leaded of one freaky faction... what was it? Oh, I remember! \n"The last day"... yeah, wild guys they were. Concerning Ghoust, they say he work for scientists now, \nso if you need, you can find him near Jantar in scientists mobile laboratory.</text>
     </string>
     <string id="bar_bar_barmen_talk_info_51">
-        <text>Old stalker, who have dealt with his business. Lives at the bogs, I'll mark it on your map. In due time he was closely connected with Gunslinger's group.</text>
+        <text>Old stalker, who have dealt with his business. Lives at the bogs, I'll mark it on your map. In due time \nhe was closely connected with Gunslinger's group.</text>
     </string>
     <string id="bar_bar_barmen_talk_info_6">
         <text>What do you know about the stalker named Fang?</text>
     </string>
     <string id="bar_bar_barmen_talk_info_61">
-        <text>There've been such a guy, he was burring much. He was out of his mind, used to talked to himself, but fine on the other hand. Got lost in the center, together \nwith Gunslinger, however it's said that Gunslinger has returned.</text>
+        <text>There've been such a guy, he was burring much. He was out of his mind, used to talked to himself, \nbut fine on the other hand. I haven't seen him in the bar for a long time.</text>
     </string>
     <string id="bar_bar_barmen_talk_info_7">
         <text>Tell me about the mobile scientific laboratories.</text>
     </string>
     <string id="bar_bar_barmen_talk_info_71">
-        <text>As you have possibly heard, several governmental organizations are studying "glitches" of our Zone. Rumors say, that these experiments caused it to perk \nup. Gunslinger with his group tried to make out if it was really so, but eventually Gunslinger's group was destroyed and he himself fell missing. Although, the \ntruth is unknown to me, only conjectures. Scientific organizations leave in mobile scientific laboratories in the Zone, isolated from the external environment \nmetal bunkers, inside them is everything that is necessary to examine the Zone. We are in contact with one laboratory at Yantar. They are good guys, have \ndisclosed a lot of interesting information for us, we didn't stay in debt... hehe... mutually benefical barter, you got it.</text>
+        <text>Scientific organizations leave in mobile scientific laboratories in the Zone, isolated from the external \nenvironment metal bunkers, inside them is everything that is necessary to live. We are in contact \nwith one laboratory at Yantar. They are good guys, have disclosed a lot of interesting information for \nus, we didn't stay in debt... hehe... mutually benefical barter, you got it.</text>
     </string>
     <string id="bar_bar_barmen_talk_info_8">
         <text>What is the "wish master"?</text>
@@ -667,7 +892,7 @@
         <text>Damn.</text>
     </string>
     <string id="bar_bar_lisiy_talk_4">
-        <text>The Spotted one is rough, hardly can think reasonably. Can you try getting him talking? We need to find out the time of work of the 'brain scorcher'?</text>
+        <text>The Spotted one is rough, hardly can think reasonably. Can you try getting him talking? We need to \nfind out the time of work of the 'brain scorcher'?</text>
     </string>
     <string id="bar_bar_lisiy_talk_5">
         <text>No, no, no! I'm to blame for the Humpback's death, and the Spotted one's injuries too. At the toughest moment I betrayed them and ran away. I will not be able \nto look into the Spotted one's eyes now.</text>
@@ -730,13 +955,13 @@
         <text>I want to buy some information.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_21">
-        <text>To this moment I can only sell you information on Gunslinger's grouping. For a really nominal price of 1500 cash.</text>
+        <text>To this moment I can only sell you information on Gunslinger's grouping. For a really nominal price of \n1500 cash.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_211">
         <text>Okay, I buy it. Take 1500.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_2111">
-        <text>It is situated near the Agroprom RI, cache and the underground. Most likely, there is an information on faction's plans and the lists of faction members. The \ncoordinates of faction and cache are included.</text>
+        <text>It is situated near the Agroprom RI, cache and the underground. Most likely, there is an information \non faction's plans and the lists of faction members. The \ncoordinates of faction and cache are included.</text>
     </string>
     <string id="bar_bar_osvedomitel_trade_info_212">
         <text>No, I've changed my mind.</text>
@@ -871,7 +1096,7 @@
         <text>Can you tell me anything useful for the novice?</text>
     </string>
     <string id="bar_bar_visitors_10_start_7111">
-        <text>For the novice you say? Well, listen then. On the North, close at hand to the "brain scorcher", at the old military base one might find "Freedom" faction \nquarters. Notorious nihilists, anarchists and criminals. Champions of freedom, damn them all. Partisan scums.</text>
+        <text>For the novice you say? Well, listen then. On the North, close at hand to the "brain scorcher", at the \nold military base one might find "Freedom" faction quarters. Notorious nihilists, anarchists and \ncriminals. Champions of freedom, damn them all. Partisans, damn it. All what they are engaged in is \ndiversions against scientific groups, fire of army units and permanent fight with Duty, recently \npassing to little war on a survival. I can give you only one advice - never contact them, only crazy \naccepted there. If for your head there is not a reward, will not accept... Ha-ha... can you imagine it?\n</text>
     </string>
     <string id="bar_bar_visitors_10_start_71111">
         <text>Thanks for advise.</text>
@@ -917,6 +1142,39 @@
     </string>
     <string id="bar_bar_visitors_14_start_71111">
         <text>Maybe it's worth it, but I don't really want to risk my bacon once more.</text>
+    </string>
+    <string id="bar_bar_visitors_14_start_81">
+        <text>What do you want?</text>
+    </string>
+    <string id="bar_bar_visitors_14_start_82">
+        <text>Are you Bold one? I need to talk to you.</text>
+    </string>
+    <string id="bar_bar_visitors_14_start_83">
+        <text>I am, so what?</text>
+    </string>
+    <string id="bar_bar_visitors_14_start_84">
+        <text>Spotted was saved from Radar, and Humpback is dead, according to his words.</text>
+    </string>
+    <string id="bar_bar_visitors_14_start_85">
+        <text>Damn!</text>
+    </string>
+    <string id="bar_bar_visitors_14_start_86">
+        <text>Spotted is bad, doesn't understand anything. Could you try to talk to him? We need to know the \noperating time of "brain scorcher"</text>
+    </string>
+    <string id="bar_bar_visitors_14_start_87">
+        <text>No, no,no! Humpback is dead because of me, and spotted was injured. At the most difficult moment \nI escaped and left them. I can not look into his eyes.</text>
+    </string>
+    <string id="bar_bar_visitors_14_start_88">
+        <text>Tell me in details, what was happend.</text>
+    </string>
+    <string id="bar_bar_visitors_14_start_89">
+        <text>Me, Hunchback and Spotted were prepared for a long time to break through to the North. We failed \nonly the time period when emanation of "brain scorcher" fades, and Spotted obtained this \ninformation, I don't know from whom. We passed the floor of Radar, as "scorcher" was unexpectedly \nturned on. Spoted went crazy, he had lost consciousness and knocked down from a slope. I was in \npanic, and decided to give up everything and return. A Hunchback insisted to rescu? Spotted, but it \nwould be the pure suicide, to go down and pull Spotted the whole way back. I agreed with \nHunchback and he started to climb downward on a slope towards Spotted, untill the next splash of \n"scorcher" hit us. I regained consciousness already near a military base, till now I considered that \nthey perished, but alike Hunchback smuggled out of Spotted the cost of the life.</text>
+    </string>
+    <string id="bar_bar_visitors_14_start_90">
+        <text>Thanks for tthe story, Bold, I'll try to talk to Spotted.</text>
+    </string>
+    <string id="bar_bar_visitors_14_start_91">
+        <text>I'm sorry, Bro, I don't want to talk anymore, I'd better drink a bit...</text>
     </string>
     <string id="bar_bar_visitors_1_start_11">
         <text>... that Boar should have been erased long ago. If I knew who did this, I would have bought him a drink.</text>
@@ -1198,7 +1456,7 @@
         <text>Okay, I'll be back soon.</text>
     </string>
     <string id="bar_dolg_ivancov_test_start_1112">
-        <text>This deceptive easiness puts me on the guard. Probably, but not today.</text>
+        <text>No, I've canged my mind.</text>
     </string>
     <string id="bar_dolg_ivancov_test_start_1113">
         <text>I've already succeeded at the arena.</text>
@@ -1279,7 +1537,7 @@
         <text>I've pulled off your request - brought RG-6.</text>
     </string>
     <string id="bar_dolg_leader_quest_rg6_finish_1">
-        <text>Good work, soldier. That's exactly what we need. So what, Branded One, you've passed the tryout and I include you in our faction. From now on you are the private soldier of the Duty faction. I'll prepare current tasks for you. You'll be rewarded for accomplishing each of them, and perhaps, promoted as well.</text>
+        <text>Good work, soldier. That's exactly what we need. So what, Branded One, you've passed the tryout \nand I include you in our faction.</text>
     </string>
     <string id="bar_dolg_leader_quest_svoboda_leader_finish_0">
         <text>I've coped with my task - Freedom's leader is killed, here's his personal stuff.</text>
@@ -1298,6 +1556,18 @@
     </string>
     <string id="bar_dolg_leader_start_21">
         <text>What has led you to me, bro?</text>
+    </string>
+    <string id="bar_dolg_leader_start_31">
+        <text>So, have you bruoght RG6?</text>
+    </string>
+    <string id="bar_dolg_leader_start_311">
+        <text>Yes. here is RG6.</text>
+    </string>
+    <string id="bar_dolg_leader_start_3111">
+        <text>Good job, recruit. That is the ticket. Well that, Branded One, you passed verification and I with \ngladness will adopt you in our groupment.</text>
+    </string>
+    <string id="bar_dolg_leader_start_41">
+        <text>So, recruit, are you ready to swear Duty's oath?</text>
     </string>
     <string id="bar_dolg_leader_start_51">
         <text>War with Duty comes to an end, Branded One. You've made your contribution to the common cause and now I want to put a full stop in this war. I want you to gun down Freedom's leader.</text>
@@ -1402,7 +1672,7 @@
         <text>In the basement behind the hangar, I'll mark it on your map.</text>
     </string>
     <string id="bar_dolg_zastava_talk_21111">
-        <text>Thanks</text>
+        <text>Thanks for the information.</text>
     </string>
     <string id="bar_dolg_zastava_talk_212">
         <text>You said that there was the Duty's base somewhere. Tell me how can I reach it.</text>
@@ -1492,7 +1762,7 @@
         <text>There might be a use in examining the Zone.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_12121">
-        <text>Do you see it as well? How lovely is to find a conversable different from narrow-minded practician. I always say that the problem must be treated much broader, that the human yardsticks evaded. Maybe there is the harm from the Zone, but there can be benefit as well, and the benefit is huge I admit.</text>
+        <text>Do you see it as well? How lovely is to find a conversable different from narrow-minded practician. I \nalways say that the problem must be treated much broader, that the human yardsticks evaded. \nMaybe there is the harm from the Zone, but there can be benefit as well, and the benefit is huge I \nadmit.</text>
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_121211">
         <text>As a rule those "non narrow-minded practicians" can't survive in the Zone. That's the way the cookie crumbles.</text>
@@ -1508,6 +1778,12 @@
     </string>
     <string id="bar_ecolog_crush_professor_give_info_dp_14">
         <text>Unfortunately, I've got to go. Good luck.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_141">
+        <text>Laboratory X16? Hemm... Sakharov talked about something, but I can not remember. You are better \nto ask him, he is on Jantar, in a mobile laboratory.</text>
+    </string>
+    <string id="bar_ecolog_crush_professor_give_info_dp_15">
+        <text>Unfortunatelly it's time to go. Good luck!</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_101">
         <text>Branded One, stop them! They will perish us all!!!</text>
@@ -1570,10 +1846,10 @@
         <text>No more peril here, we can get out.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_5121">
-        <text>Thanks, Branded One for your help. Lets move on.</text>
+        <text>Lets move on.</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_61">
-        <text>There is somebody, Branded One. Go find out.</text>
+        <text>There is somebody, Branded One.Stop them, otherwise they croak us!</text>
     </string>
     <string id="bar_ecolog_crush_professor_start_611">
         <text>Okay, sit here silently, I'll find out everything.</text>
@@ -1598,6 +1874,12 @@
     </string>
     <string id="bar_ecolog_dialog_0">
         <text>Stalker, professor wants to talk to thee. Get to him, be so kind.</text>
+    </string>
+    <string id="bar_ecolog_dialog_11">
+        <text>This string was added automatically</text>
+    </string>
+    <string id="bar_ecolog_dialog_21">
+        <text>That's the end, Kruglov's dead!!!</text>
     </string>
     <string id="bar_scared_novice_start_11">
         <text>Hi! Are you going to the bar, yeah? I was also going there. But there is a slight problem, yeah? You will help me, yeah? Dogs are nearby, a lot of them. You \nalso hear them, aren't you? But only I am scared, you see? Let's go together, we'll definitely pass. You will help me, yeah?</text>
