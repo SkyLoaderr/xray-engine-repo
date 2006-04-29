@@ -106,7 +106,7 @@ function action_cutscene:zone_enter()
     --' телепорт в выбранную точку
     xr_effects.teleport_actor(db.actor, nil, {self.st.point, self.st.look})
     level.add_pp_effector (self.st.pp_effector, 234, false)
-    self.effector_idle = 1000*level.add_cam_effector(self.st.cam_effector, 123, false)
+    self.effector_idle = 1000*level.add_cam_effector2(self.st.cam_effector, 123, false)
 
     xr_effects.disable_ui(db.actor, nil)
     self.ui_disabled = true
