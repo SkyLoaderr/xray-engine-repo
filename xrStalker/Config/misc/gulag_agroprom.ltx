@@ -1108,6 +1108,18 @@ use_wpn = true
  no_retreat = true
  radius = 10
  danger = danger_condition@agr_factory_defence
+ ;on_info = {+agr_factory_spawn_spetsnaz} camper@agr_factory_defence_to_spec_walk_1
+ 
+ [camper@agr_factory_defence_to_spec_walk_1]
+ path_walk = to_spec_walk_1
+ path_look = to_spec_look
+ def_state_moving = raid
+ no_retreat = true
+ radius = 10
+ danger = danger_condition@agr_factory_defence
+ on_info = {+agr_factory_spawn_spetsnaz} camper@agr_factory_defence_to_spec_walk_1
+ 
+ 
  
  [logic@agr_factory_defence_waiting_stalker2]
  active = walker@agr_factory_defence_waiting_stalker2
