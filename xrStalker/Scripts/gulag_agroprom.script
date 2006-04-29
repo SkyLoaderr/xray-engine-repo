@@ -372,7 +372,7 @@ function load_job( sj, gname, type, squad, groups )
 		for i = 1, 6 do
 			t = { section = "logic@agr_factory_defence_to_well_walker"..i,
 				idle = 0, position_threshold = 150, 
-				prior = 0, state = {3},
+				prior = 4, state = {3},
 				squad = squad, group = groups[1],
 				in_rest = "", out_rest = ""
 			}

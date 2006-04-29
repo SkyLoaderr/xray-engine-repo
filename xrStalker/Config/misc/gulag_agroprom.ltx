@@ -1090,12 +1090,13 @@ use_wpn = true
  path_look = waiting_look_1
  combat_ignore_cond = combat_ignore@agr_factory_defence
  meet = no_meet
- on_info = {=rostok_dist_to_actor_le(10)} remark@agr_factory_defence_waiting_stalker1  %+agr_attack_begin%                    
+ on_info = {=rostok_dist_to_actor_le(5)} remark@agr_factory_defence_waiting_stalker1  %+agr_attack_begin%                    
  danger = danger_condition@agr_factory_defence
  
  [remark@agr_factory_defence_waiting_stalker1]
- anim = hide
+ anim = threat
  snd = agr_stalker_help_3
+ target = actor
  on_signal = sound_end | camper@agr_factory_defence_waiting_stalker1
  danger = danger_condition@agr_factory_defence
  combat_ignore_cond = always
@@ -1105,7 +1106,7 @@ use_wpn = true
  path_look = attack_camper_look
  def_state_moving = raid
  no_retreat = true
- radius = 25
+ radius = 10
  danger = danger_condition@agr_factory_defence
  
  [logic@agr_factory_defence_waiting_stalker2]
@@ -1125,7 +1126,7 @@ use_wpn = true
  path_look = attack_camper_look
  def_state_moving = raid
  no_retreat = true
- radius = 25
+ radius = 10
  danger = danger_condition@agr_factory_defence
  
  [logic@agr_factory_defence_waiting_stalker3]
@@ -1145,7 +1146,7 @@ use_wpn = true
  path_look = attack_camper_look
  def_state_moving = raid
  no_retreat = true 
- radius = 25
+ radius = 10
  danger = danger_condition@agr_factory_defence
  
  ;-------------------------------------------------------------------------------------------------
