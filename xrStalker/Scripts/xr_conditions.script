@@ -975,6 +975,29 @@ function rostok_gulag_inactive(actor, npc)
 	return false
 end
 
+function agr_factory_hold_inactive (actor, npc)
+	 local gulag = xr_gulag.get_gulag_by_name("agr_factory_hold")
+
+    if gulag == nil then
+		return true
+	end
+	
+	local val = 0
+	
+	for k,v in pairs(gulag.Object) do
+		if v == true or ( v:alive() and
+		   not(xr_wounded.is_heavy_wounded_by_id(k) or
+		       xr_wounded.is_psy_wounded_by_id(k)) )
+		then
+			val = val + 1
+		end
+	end
+	if val == 0 then 
+		return true
+	end
+	return false
+end
+
 function rostok_gulag_2_inactive(actor, npc)
 	 local gulag = xr_gulag.get_gulag_by_name("bar_freedom_chasers_attack")
 
