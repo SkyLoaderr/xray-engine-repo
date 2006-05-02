@@ -344,7 +344,7 @@ function gulag_population_active(actor, npc, p)
 	 local gulag = xr_gulag.get_gulag_by_name( p[1] )
 
     if gulag == nil then
-		return true
+		return 0
 	end
 	
 	local val = 0
