@@ -931,6 +931,48 @@ wounded = wounded@agr_factory_defence
 def_state_moving1 = patrol
 def_state_moving2 = assault
 def_state_moving3 = assault
+
+[logic@agr_factory_defence_krot_walker7]
+active = walker7@agr_factory_defence_krot
+actor_dialogs = actor_dialogs@agr_factory_defence
+
+[walker7@agr_factory_defence_krot]
+path_walk = krot_walk7
+;path_look = krot_look7
+meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence_ignore_corpses
+wounded = wounded@agr_factory_defence
+def_state_moving1 = patrol
+def_state_moving2 = assault
+def_state_moving3 = assault
+
+[logic@agr_factory_defence_krot_walker8]
+active = walker8@agr_factory_defence_krot
+actor_dialogs = actor_dialogs@agr_factory_defence
+
+[walker8@agr_factory_defence_krot]
+path_walk = krot_walk8
+;path_look = krot_look8
+meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence_ignore_corpses
+wounded = wounded@agr_factory_defence
+def_state_moving1 = patrol
+def_state_moving2 = assault
+def_state_moving3 = assault
+
+[logic@agr_factory_defence_krot_walker9]
+active = walker9@agr_factory_defence_krot
+actor_dialogs = actor_dialogs@agr_factory_defence
+
+[walker9@agr_factory_defence_krot]
+path_walk = krot_walk9
+;path_look = krot_look9
+meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence_ignore_corpses
+wounded = wounded@agr_factory_defence
+def_state_moving1 = patrol
+def_state_moving2 = assault
+def_state_moving3 = assault
 ;---------------- Бегут к колодцу и стоят там -----------------
 
 [actor_dialogs@agr_factory_defence]
@@ -1068,6 +1110,75 @@ path_walk = well_walk6
 path_look = well_look6
 meet = meet@agr_factory_defence
 danger = danger_condition@agr_factory_defence
+
+
+[logic@agr_factory_defence_to_well_walker7]
+active = walker7@agr_factory_defence_to_well
+actor_dialogs = actor_dialogs@agr_factory_defence
+combat_ignore = combat_ignore@agr_factory_defence
+
+[walker6@agr_factory_defence_to_well]
+path_walk = to_well_walk7
+on_signal = well | walker7@agr_factory_defence_well
+danger = danger_condition@agr_factory_defence
+wounded = wounded@agr_factory_defence
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
+combat_ignore = combat_ignore@agr_factory_defence
+
+
+[walker7@agr_factory_defence_well]
+path_walk = well_walk7
+path_look = well_look7
+meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
+
+[logic@agr_factory_defence_to_well_walker8]
+active = walker8@agr_factory_defence_to_well
+actor_dialogs = actor_dialogs@agr_factory_defence
+combat_ignore = combat_ignore@agr_factory_defence
+
+[walker8@agr_factory_defence_to_well]
+path_walk = to_well_walk8
+on_signal = well | walker6@agr_factory_defence_well
+danger = danger_condition@agr_factory_defence
+wounded = wounded@agr_factory_defence
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
+combat_ignore = combat_ignore@agr_factory_defence
+
+
+[walker8@agr_factory_defence_well]
+path_walk = well_walk8
+path_look = well_look8
+meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
+
+[logic@agr_factory_defence_to_well_walker9]
+active = walker9@agr_factory_defence_to_well
+actor_dialogs = actor_dialogs@agr_factory_defence
+combat_ignore = combat_ignore@agr_factory_defence
+
+[walker9@agr_factory_defence_to_well]
+path_walk = to_well_walk9
+on_signal = well | walker9@agr_factory_defence_well
+danger = danger_condition@agr_factory_defence
+wounded = wounded@agr_factory_defence
+def_state_moving1 = assault
+def_state_moving2 = assault
+def_state_moving3 = assault
+combat_ignore = combat_ignore@agr_factory_defence
+
+
+[walker9@agr_factory_defence_well]
+path_walk = well_walk9
+path_look = well_look9
+meet = meet@agr_factory_defence
+danger = danger_condition@agr_factory_defence
+
+
 
 
 [meet@agr_factory_defence]
