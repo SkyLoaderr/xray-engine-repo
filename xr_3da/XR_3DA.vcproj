@@ -1330,6 +1330,9 @@
 		<File
 			RelativePath=".\TODO.txt">
 		</File>
+		<File
+			RelativePath=".\VTune\XR_3DA.vpj">
+		</File>
 	</Files>
 	<Globals>
 		<Global
