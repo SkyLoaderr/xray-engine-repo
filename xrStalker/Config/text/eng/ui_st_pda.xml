@@ -16,7 +16,7 @@
         <text>Diary</text>
     </string>
     <string id="pda_btn_encyclopedia">
-        <text>Encyclopaedia</text>
+        <text>Encyclopedia</text>
     </string>
     <string id="pda_btn_failed">
         <text>Failed</text>
@@ -44,5 +44,44 @@
     </string>
     <string id="pda_btn_statistics">
         <text>Statistics</text>
+    </string>
+    <string id="st_pda_statistic_reputation">
+        <text>Reputation</text>
+    </string>
+    <string id="st_pda_statistic_score">
+        <text>Score</text>
+    </string>
+    <string id="st_pda_stalker_kills">
+        <text>Stalker kills</text>
+    </string>
+    <string id="st_pda_monster_kills">
+        <text>Monster kills</text>
+    </string>
+    <string id="st_pda_quest_complete">
+        <text>Quest complete</text>
+    </string>
+    <string id="st_pda_artefacts">
+        <text>Artefacts</text>
+    </string>
+    <string id="st_pda_total">
+        <text>Total</text>
+    </string>
+    <string id="st_detail_list_for_community_relations">
+        <text>community relations</text>
+    </string>
+    <string id="st_detail_list_for_stalkerkills">
+        <text>stalker kills</text>
+    </string>
+    <string id="st_detail_list_for_monsterkills">
+        <text>monster kills</text>
+    </string>
+    <string id="st_detail_list_for_quests">
+        <text>quests</text>
+    </string>
+    <string id="st_detail_list_for_artefacts">
+        <text>artefacts</text>
+    </string>
+    <string id="st_pda_top20">
+        <text>Top 20 Stalkers</text>
     </string>
 </string_table>
