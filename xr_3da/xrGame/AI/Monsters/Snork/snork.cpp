@@ -118,7 +118,7 @@ void CSnork::UpdateCL()
 	// test 
 	CObject *obj = Level().CurrentEntity();
 	if (!obj) return;
-	CCoverPoint *point = CoverMan->find_cover(obj->Position(), 10.f, 30.f);
+	const CCoverPoint *point = CoverMan->find_cover(obj->Position(), 10.f, 30.f);
 	
 	DBG().level_info(this).clear();
 	if (point) {

@@ -210,7 +210,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	{
 		MoneyDef().min_money	= uiXml.ReadAttribInt("money", 0, "min");
 		MoneyDef().max_money	= uiXml.ReadAttribInt("money", 0, "max");
-		MoneyDef().inf_money	= uiXml.ReadAttribInt("money", 0, "infinitive");
+		MoneyDef().inf_money	= !!uiXml.ReadAttribInt("money", 0, "infinitive");
 		MoneyDef().max_money	= _max(MoneyDef().max_money, MoneyDef().min_money); // :)
 
 	}else{

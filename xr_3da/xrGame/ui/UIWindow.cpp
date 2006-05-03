@@ -54,7 +54,7 @@ void draw_rect(Frect& r, u32 color)
 	pv->set(r.lt.x, r.rb.y, color, 0,0); ++pv;
 	pv->set(r.lt.x, r.lt.y, color, 0,0); ++pv;
 
-	std::ptrdiff_t p_cnt		= 5;
+//	std::ptrdiff_t p_cnt		= 5;
 	RCache.Vertex.Unlock		(5,dbg_draw_gm.stride());
 	RCache.set_Geometry			(dbg_draw_gm);
 	RCache.Render				(D3DPT_LINESTRIP,vOffset,4);
