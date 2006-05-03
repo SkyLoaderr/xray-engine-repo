@@ -34,10 +34,10 @@ bool CItemManager::useful			(const CGameObject *object) const
 	if (m_object->H_Parent())
 		return				(false);
 
-	if (m_object->movement().restrictions().accessible(m_object->Position()))
+	if (!m_object->movement().restrictions().accessible(m_object->Position()))
 		return				(false);
 
-	if (m_object->movement().restrictions().accessible(m_object->ai_location().level_vertex_id()))
+	if (!m_object->movement().restrictions().accessible(m_object->ai_location().level_vertex_id()))
 		return				(false);
 
 	const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(object);
@@ -74,12 +74,12 @@ void CItemManager::remove_links		(CObject *object)
 {
 	// since we use no members in CGameObject during search,
 	// we just use the pinter itself, we can just statically cast object
-	OBJECTS::iterator			I = std::find(m_objects.begin(),m_objects.end(),(CGameObject*)object);
+	OBJECTS::iterator		I = std::find(m_objects.begin(),m_objects.end(),(CGameObject*)object);
 	if (I != m_objects.end())
-		m_objects.erase			(I);
+		m_objects.erase		(I);
 
 	if (m_selected && (m_selected->ID() == object->ID()))
-		m_selected				= 0;
+		m_selected			= 0;
 }
 
 void CItemManager::on_restrictions_change	()
@@ -88,12 +88,12 @@ void CItemManager::on_restrictions_change	()
 		return;
 
 	if (!m_object->movement().restrictions().accessible(m_selected->ai_location().level_vertex_id())) {
-		m_selected				= 0;
+		m_selected			= 0;
 		return;
 	}
 
 	if (m_object->movement().restrictions().accessible(m_selected->Position()))
 		return;
 
-	m_selected					= 0;
+	m_selected				= 0;
 }
