@@ -326,7 +326,7 @@ sun_dir			=	-14.5, 292
 04:30:00	   		=	ev_031
 05:15:00	   		=	ev_04
 05:35:00			=	ev_05
-06:00:00			=	ev_06;06:15:00
+05:45:00			=	ev_05_ns;ev_06;06:15:00
 07:00:00			=	ev_07
 08:00:00			=	ev_08
 09:00:00			=	ev_09
@@ -578,6 +578,30 @@ sun_color		=	1.000, 0.384, 0.196
 sun_dir			=	-10, 293
 env_ambient		=	ambient_env_morning
 
+[ev_05_ns]
+flares			=   ;flares_sun_rise
+sky_texture		=	sky\sky_6_cube
+sky_rotation	=	0
+sky_color		=	1.0,    1.0,  	1.0
+clouds_texture	=	oblaka
+clouds_color	=	0.353, 0.333, 0.420, 0.5, 1.7
+far_plane		=	400
+fog_distance	=	400
+fog_color		=	0.353, 0.333, 0.420
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	0.0 
+wind_direction	=	0.0
+ambient			=	0.083, 0.078, 0.100
+lmap_color		=	1.0,	1.0,	1.0
+hemi_color		=	0.678, 0.663, 0.745,	1.0
+sun_color		=	0,0,0;1.000, 0.384, 0.196
+sun_dir			=	-10, 293
+env_ambient		=	ambient_env_morning
 
 [ev_06]
 flares			=  	;flares_sun_rise
