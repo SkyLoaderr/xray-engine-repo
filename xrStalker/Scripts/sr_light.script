@@ -7,7 +7,8 @@ local indoor_levels = {
 	l08u_brainlab = true,
 	l10u_bunker = true,
 	l12u_sarcofag = true,
-	l12u_control_monolith = true
+	l12u_control_monolith = true,
+	chugai_test = true
 }
 ---------------------------------------------------------------------------------------------------------------------
 class "action_light"
@@ -56,9 +57,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------
 function check_light(stalker)
-    if stalker == nil or 
-	   stalker:alive() == false
-	then 
+    if stalker == nil then 
        return 
     end
 
@@ -66,18 +65,26 @@ function check_light(stalker)
     if torch == nil then
        return
     end
-    
+
 	local light = false
 	local forced = false
-    --' Проверка по лайтзонам
-    for k,v in pairs(light_zones) do
-		if v:check_stalker(stalker) == true then
-			light = true
-		else 
-			light = false
-		end
+
+	if stalker:alive() == false then
+		light  = false
 		forced = true
-    end
+	end
+
+    --' Проверка по лайтзонам
+    if not forced then
+	    for k,v in pairs(light_zones) do
+			if v:check_stalker(stalker) == true then
+				light = true
+			else 
+				light = false
+			end
+			forced = true
+	    end
+	end
 
 	if not forced then
 		--' Проверка по времени суток (ночью всегда включено)

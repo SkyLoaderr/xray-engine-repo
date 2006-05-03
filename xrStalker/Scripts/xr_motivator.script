@@ -160,6 +160,8 @@ function motivator_binder:death_callback(victim, who)
 
 	self:clear_callbacks()
 
+	sr_light.check_light(self.object)
+
 	smart_terrain.on_death( self.object:id() )
 	
 	if(actor_stats.remove_from_ranking~=nil)then
