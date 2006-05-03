@@ -24,10 +24,10 @@ path_main = night_commander_sleep
 
 
 [logic@agr_nii_alarm_commander]
-active = walker@agr_nii_alarm_commander
+active = camper@agr_nii_alarm_commander
 info = info@agr_nii_about_rats
 
-[walker@agr_nii_alarm_commander]
+[camper@agr_nii_alarm_commander]
 radius = 8
 path_walk = alarm_commander_walk
 path_look = alarm_commander_look
@@ -1208,22 +1208,23 @@ use_wpn = true
  anim = threat
  snd = agr_stalker_help_3
  target = actor
- on_signal = sound_end | walker@agr_factory_defence_waiting_stalker1_1
+ on_signal = sound_end | camper@agr_factory_defence_waiting_stalker1
  danger = danger_condition@agr_factory_defence
  combat_ignore_cond = always
  
- [walker@agr_factory_defence_waiting_stalker1_1]
+ [camper@agr_factory_defence_waiting_stalker1]
  path_walk = attack_camper_1
  path_look = attack_camper_look
- def_state_moving1 = assault
- def_state_moving2 = assault
- def_state_moving3 = assault
+ def_state_moving = raid
+ no_retreat = true
+ radius = 10
  danger = danger_condition@agr_factory_defence
- on_signal = univ | walker1@agr_factory_defence_waiting_stalker1
+ on_signal = univ | camper1@agr_factory_defence_waiting_stalker1
  
- [walker1@agr_factory_defence_waiting_stalker1]
+ [camper1@agr_factory_defence_waiting_stalker1]
  path_walk = attack_camper_1
  path_look = attack_camper_look
+ def_state_moving = raid
  danger = danger_condition@agr_factory_defence 
  
  [logic@agr_factory_defence_waiting_stalker2]
@@ -1235,19 +1236,19 @@ use_wpn = true
  path_look = waiting_look_2
  combat_ignore_cond = combat_ignore@agr_factory_defence
  meet = no_meet
- on_info = {+agr_attack_begin} walker@agr_factory_defence_waiting_stalker2_1
+ on_info = {+agr_attack_begin} camper@agr_factory_defence_waiting_stalker2
  danger = danger_condition@agr_factory_defence
 
- [walker@agr_factory_defence_waiting_stalker2_1]
+ [camper@agr_factory_defence_waiting_stalker2]
  path_walk = attack_camper_2
  path_look = attack_camper_look
-  def_state_moving1 = assault
- def_state_moving2 = assault
- def_state_moving3 = assault
+ def_state_moving = raid
+ no_retreat = true
+ radius = 10
  danger = danger_condition@agr_factory_defence
- on_signal = univ | walker2@agr_factory_defence_waiting_stalker2
+ on_signal = univ | camper2@agr_factory_defence_waiting_stalker2
  
- [walker2@agr_factory_defence_waiting_stalker2]
+ [camper2@agr_factory_defence_waiting_stalker2]
  path_walk = attack_camper_2
  path_look = attack_camper_look
  def_state_moving = raid
@@ -1263,21 +1264,22 @@ use_wpn = true
  path_look = waiting_look_3
  combat_ignore_cond = combat_ignore@agr_factory_defence
  meet = no_meet
- on_info = {+agr_attack_begin} walker@agr_factory_defence_waiting_stalker3_1
+ on_info = {+agr_attack_begin} camper@agr_factory_defence_waiting_stalker3
  danger = danger_condition@agr_factory_defence
  
- [walker@agr_factory_defence_waiting_stalker3_1]
+ [camper@agr_factory_defence_waiting_stalker3]
  path_walk = attack_camper_3
  path_look = attack_camper_look
-  def_state_moving1 = assault
- def_state_moving2 = assault
- def_state_moving3 = assault
+ def_state_moving = raid
+ no_retreat = true 
+ radius = 10
  danger = danger_condition@agr_factory_defence
- on_signal = univ | walker3@agr_factory_defence_waiting_stalker3
+ on_signal = univ | camper3@agr_factory_defence_waiting_stalker3
  
- [walker3@agr_factory_defence_waiting_stalker3]
+ [camper3@agr_factory_defence_waiting_stalker3]
  path_walk = attack_camper_3
  path_look = attack_camper_look
+ def_state_moving = raid
  danger = danger_condition@agr_factory_defence 
  
  
