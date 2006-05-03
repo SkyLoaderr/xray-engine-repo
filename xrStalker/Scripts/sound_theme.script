@@ -414,7 +414,7 @@ theme = {
 	agr_stalker_help_1		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	agr_stalker_help_2		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	agr_stalker_help_3		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
-
+    agr_stalker_help_4		= {min_snd = 1, max_snd = 1, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	-- Radar
 
 	-- Bar Rostok Duty Guards
