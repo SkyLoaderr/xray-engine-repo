@@ -1201,7 +1201,7 @@ use_wpn = true
  path_look = waiting_look_1
  combat_ignore_cond = combat_ignore@agr_factory_defence
  meet = no_meet
- on_info = {=rostok_dist_to_actor_le(10) =see_actor} remark@agr_factory_defence_waiting_stalker1  %+agr_attack_begin%                    
+ on_info = {=rostok_dist_to_actor_le(15) =see_actor} remark@agr_factory_defence_waiting_stalker1  %+agr_attack_begin%                    
  danger = danger_condition@agr_factory_defence
  
  [remark@agr_factory_defence_waiting_stalker1]
@@ -1219,18 +1219,13 @@ use_wpn = true
  no_retreat = true
  radius = 10
  danger = danger_condition@agr_factory_defence
- ;on_info = {+agr_factory_spawn_spetsnaz} camper@agr_factory_defence_to_spec_walk_1
+ on_signal = univ | camper1@agr_factory_defence_waiting_stalker1
  
- [camper@agr_factory_defence_to_spec_walk_1]
- path_walk = to_spec_walk_1
- path_look = to_spec_look
+ [camper1@agr_factory_defence_waiting_stalker1]
+ path_walk = attack_camper_1
+ path_look = attack_camper_look
  def_state_moving = raid
- no_retreat = true
- radius = 10
- danger = danger_condition@agr_factory_defence
- on_info = {+agr_factory_spawn_spetsnaz} camper@agr_factory_defence_to_spec_walk_1
- 
- 
+ danger = danger_condition@agr_factory_defence 
  
  [logic@agr_factory_defence_waiting_stalker2]
  active = walker@agr_factory_defence_waiting_stalker2
@@ -1243,7 +1238,7 @@ use_wpn = true
  meet = no_meet
  on_info = {+agr_attack_begin} camper@agr_factory_defence_waiting_stalker2
  danger = danger_condition@agr_factory_defence
- 
+
  [camper@agr_factory_defence_waiting_stalker2]
  path_walk = attack_camper_2
  path_look = attack_camper_look
@@ -1251,6 +1246,14 @@ use_wpn = true
  no_retreat = true
  radius = 10
  danger = danger_condition@agr_factory_defence
+ on_signal = univ | camper2@agr_factory_defence_waiting_stalker2
+ 
+ [camper2@agr_factory_defence_waiting_stalker2]
+ path_walk = attack_camper_2
+ path_look = attack_camper_look
+ def_state_moving = raid
+ danger = danger_condition@agr_factory_defence 
+ 
  
  [logic@agr_factory_defence_waiting_stalker3]
  active = walker@agr_factory_defence_waiting_stalker3
@@ -1271,6 +1274,14 @@ use_wpn = true
  no_retreat = true 
  radius = 10
  danger = danger_condition@agr_factory_defence
+ on_signal = univ | camper3@agr_factory_defence_waiting_stalker3
+ 
+ [camper3@agr_factory_defence_waiting_stalker3]
+ path_walk = attack_camper_3
+ path_look = attack_camper_look
+ def_state_moving = raid
+ danger = danger_condition@agr_factory_defence 
+ 
  
  ;-------------------------------------------------------------------------------------------------
 ;-- AGROPROM Удерживающие Крота солдаты
