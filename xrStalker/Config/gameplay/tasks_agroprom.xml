@@ -64,6 +64,8 @@
 		<objective>
 			<text>agroprom_find_gunslinger_cache_2</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+            <map_location_type hint="agroprom_find_gunslinger_cache_0">green_location</map_location_type>
+            <object_story_id>agr_gunslinger_e3_documents</object_story_id>
             <function_complete>agroprom_tasks.have_gunslingers_flash</function_complete>
 		</objective>
 	</game_task>
