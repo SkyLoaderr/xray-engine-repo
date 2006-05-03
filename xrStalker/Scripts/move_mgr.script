@@ -277,6 +277,16 @@ function move_mgr:setup_movement_by_patrol_path()
 		-- Реально идем в вершину
 		self:update_movement_state()
 	end
+
+	local sect = self.object:section()
+
+	if sect == "stalker_zombied" or sect == "stalker_fresh_zombied" then
+		self.default_sound = "state"
+
+		xr_sound.set_sound(self.object, self.default_sound)
+	else
+		self.default_sound = nil
+	end
 end
 
 function move_mgr:arrived_to_first_waypoint()
@@ -578,7 +588,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			xr_sound.set_sound(self.object, nil)
 		end
 	else
-		xr_sound.set_sound(self.object, nil)
+		xr_sound.set_sound(self.object, self.default_sound)
 	end
 	-- </ЗВУК>
 
