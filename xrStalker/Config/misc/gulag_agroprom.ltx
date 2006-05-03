@@ -1208,11 +1208,11 @@ use_wpn = true
  anim = threat
  snd = agr_stalker_help_3
  target = actor
- on_signal = sound_end | walker@agr_factory_defence_waiting_stalker1
+ on_signal = sound_end | walker@agr_factory_defence_waiting_stalker1_1
  danger = danger_condition@agr_factory_defence
  combat_ignore_cond = always
  
- [walker@agr_factory_defence_waiting_stalker1]
+ [walker@agr_factory_defence_waiting_stalker1_1]
  path_walk = attack_camper_1
  path_look = attack_camper_look
  def_state_moving1 = assault
@@ -1235,10 +1235,10 @@ use_wpn = true
  path_look = waiting_look_2
  combat_ignore_cond = combat_ignore@agr_factory_defence
  meet = no_meet
- on_info = {+agr_attack_begin} walker@agr_factory_defence_waiting_stalker2
+ on_info = {+agr_attack_begin} walker@agr_factory_defence_waiting_stalker2_1
  danger = danger_condition@agr_factory_defence
 
- [walker@agr_factory_defence_waiting_stalker2]
+ [walker@agr_factory_defence_waiting_stalker2_1]
  path_walk = attack_camper_2
  path_look = attack_camper_look
   def_state_moving1 = assault
@@ -1263,10 +1263,10 @@ use_wpn = true
  path_look = waiting_look_3
  combat_ignore_cond = combat_ignore@agr_factory_defence
  meet = no_meet
- on_info = {+agr_attack_begin} walker@agr_factory_defence_waiting_stalker3
+ on_info = {+agr_attack_begin} walker@agr_factory_defence_waiting_stalker3_1
  danger = danger_condition@agr_factory_defence
  
- [walker@agr_factory_defence_waiting_stalker3]
+ [walker@agr_factory_defence_waiting_stalker3_1]
  path_walk = attack_camper_3
  path_look = attack_camper_look
   def_state_moving1 = assault
