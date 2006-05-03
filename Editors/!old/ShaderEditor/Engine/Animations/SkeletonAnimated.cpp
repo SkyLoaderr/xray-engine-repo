@@ -716,7 +716,7 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
                     	total		+= S[cnt].w;
 #ifdef DEBUG
 						if (!_valid(S[cnt].w/total)){
-							Debug.fatal		("TO ALEXMX VERY IMPORTANT: w: %f, total: %d, count: %d, real count: %d",S[cnt].w,total,count,BLEND_INST.Blend.size());
+							Debug.fatal		("TO ALEXMX VERY IMPORTANT: w: %f, total: %f, count: %d, real count: %d",S[cnt].w,total,count,BLEND_INST.Blend.size());
 						}
 #endif
                     	KEY_Interp	(Result,tmp, *S[cnt].K, clampr(S[cnt].w/total,0.f,1.f) );
