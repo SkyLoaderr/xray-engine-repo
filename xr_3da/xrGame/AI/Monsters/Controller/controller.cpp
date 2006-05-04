@@ -396,11 +396,10 @@ void CController::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
 	
-	if (g_Alive())
+	if (g_Alive()) {
 		UpdateControlled();
-
-	if (can_tube_fire())
-		tube_fire();
+		if (can_tube_fire()) tube_fire();
+	}
 
 	// DEBUG
 	test_covers();
@@ -517,6 +516,13 @@ void CController::set_psy_fire_delay_default()
 
 void CController::update_aura_sounds()
 {
+	if (!g_Alive() && current_aura_sound) {
+		if (current_aura_sound->left._feedback()) current_aura_sound->left.stop();
+		if (current_aura_sound->right._feedback()) current_aura_sound->right.stop();
+		current_aura_sound = 0;	
+		return;
+	}
+
 	float dist			= Actor()->Position().distance_to(Position());
 	bool actor_in_aura	= dist < aura_radius;
 	
