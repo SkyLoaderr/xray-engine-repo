@@ -6,6 +6,9 @@
 	<string id="ui_mm_newgame">
         <text>New Game</text>
     </string>
+	<string id="ui_mm_last_save">
+        <text>Last Saved</text>
+    </string>
     <string id="ui_mm_quit2windows">
         <text>Quit to Windows</text>
     </string>
