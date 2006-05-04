@@ -90,4 +90,45 @@
     <string id="ui_inv_weight">
         <text>Weight</text>
     </string>
+    
+    <string id="st_condition">
+        <text>condition</text>
+    </string>
+    <string id="st_move_to_bag">
+        <text>Move to bag</text>
+    </string>
+    <string id="st_move_on_belt">
+        <text>Move on belt</text>
+    </string>
+    <string id="st_drop">
+        <text>Drop item</text>
+    </string>
+    <string id="st_eat">
+        <text>Eat item</text>
+    </string>
+    <string id="st_drop_all">
+        <text>Drop all items in set</text>
+    </string>
+    <string id="st_unload_magazine">
+        <text>Unload magazine</text>
+    </string>
+    <string id="ui_inv_accuracy">
+        <text>Accuracy</text>
+    </string>
+    <string id="ui_inv_handling">
+        <text>Handling</text>
+    </string>
+    <string id="ui_inv_damage">
+        <text>Damage</text>
+    </string>
+    <string id="ui_inv_rate_of_fire">
+        <text>Rate of fire</text>
+    </string>
+    <string id="st_weight">
+        <text>weight</text>
+    </string>
+    <string id="st_base_cost">
+        <text>cost</text>
+    </string>
+    
 </string_table>

@@ -48,5 +48,9 @@
 	<string id="st_not_enough_money">
 		<text>Not enough money</text>
 	</string>
+
+	<string id="st_no_active_task">
+		<text>No active task</text>
+	</string>
     
 </string_table>
