@@ -55,7 +55,6 @@ CStats::~CStats()
 {
 	xr_delete		(pFont);
 }
-extern ENGINE_API BOOL bShowPauseString;
 
 void CStats::Show() 
 {
@@ -152,6 +151,7 @@ void CStats::Show()
 	float		f_base_size	= 8;	//F.GetSize();
 				F.SetSize	(f_base_size);
 
+/* moved to igame_level::on_render
 	if( Device.Pause() && !g_pGamePersistent->m_pMainUI->IsActive() && bShowPauseString){
 		float sz		= pFont->GetSize();
 		pFont->SetSize	(32);
@@ -161,7 +161,7 @@ void CStats::Show()
 		pFont->OnRender	();
 		pFont->SetSize	(sz);
 	}
-
+*/
 	if (vtune.enabled())	{
 		float sz		= pFont->GetSize();
 		pFont->SetSize	(16);
