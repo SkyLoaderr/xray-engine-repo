@@ -40,7 +40,7 @@
 const float TEMP_DANGER_DISTANCE	= 5.f;
 const u32	TEMP_DANGER_INTERVAL	= 120000;
 
-const float	CLOSE_MOVE_DISTANCE		= 10.f;
+const float	CLOSE_MOVE_DISTANCE		= -10.f;
 
 const u32	CROUCH_LOOK_OUT_DELTA	= 5000;
 
