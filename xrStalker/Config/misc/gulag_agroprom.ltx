@@ -1216,19 +1216,15 @@ use_wpn = true
  path_walk = attack_camper_1
  path_look = attack_camper_look
  def_state_moving = assault
- def_state_campering = threat
  no_retreat = true
  radius = 10
  danger = danger_condition@agr_factory_defence
- on_signal = univ | camper1@agr_factory_defence_waiting_stalker1
+ on_signal = univ | walker1@agr_factory_defence_waiting_stalker1
  
- [camper1@agr_factory_defence_waiting_stalker1]
+ [walker1@agr_factory_defence_waiting_stalker1]
  path_walk = attack_camper_1
  path_look = attack_camper_look
- def_state_moving = assault
- def_state_campering = threat
- danger = danger_condition@agr_factory_defence 
- 
+  
  [logic@agr_factory_defence_waiting_stalker2]
  active = walker@agr_factory_defence_waiting_stalker2
  combat_ignore = combat_ignore@agr_factory_defence
@@ -1245,18 +1241,14 @@ use_wpn = true
  path_walk = attack_camper_2
  path_look = attack_camper_look
  def_state_moving = assault
- def_state_campering = threat
  no_retreat = true
  radius = 10
  danger = danger_condition@agr_factory_defence
- on_signal = univ | camper2@agr_factory_defence_waiting_stalker2
+ on_signal = univ | walker1@agr_factory_defence_waiting_stalker2
  
- [camper2@agr_factory_defence_waiting_stalker2]
+ [walker1@agr_factory_defence_waiting_stalker2]
  path_walk = attack_camper_2
  path_look = attack_camper_look
- def_state_moving = assault
- def_state_campering = threat
- danger = danger_condition@agr_factory_defence 
  
  
  [logic@agr_factory_defence_waiting_stalker3]
@@ -1275,18 +1267,16 @@ use_wpn = true
  path_walk = attack_camper_3
  path_look = attack_camper_look
  def_state_moving = assault
- def_state_campering = threat
  no_retreat = true 
  radius = 10
  danger = danger_condition@agr_factory_defence
- on_signal = univ | camper3@agr_factory_defence_waiting_stalker3
+ on_signal = univ | walker1@agr_factory_defence_waiting_stalker3
  
- [camper3@agr_factory_defence_waiting_stalker3]
+ [walker1@agr_factory_defence_waiting_stalker3]
  path_walk = attack_camper_3
  path_look = attack_camper_look
- def_state_moving = assault
- def_state_campering = threat
- danger = danger_condition@agr_factory_defence 
+ 
+ 
  
  
  
