@@ -103,7 +103,7 @@
 		<objective>
 			<text>agr_help_krot_0</text>
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>agr_help_krot_done</infoportion_complete>
+			<infoportion_complete>agr_find_gunslinger_cache_start</infoportion_complete>
 			<infoportion_fail>agr_krot_dead</infoportion_fail>
 			<infoportion_set_fail>agr_help_krot_done</infoportion_set_fail>
 			<article>article_agr_krot_sos1</article>
