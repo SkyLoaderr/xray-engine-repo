@@ -102,7 +102,7 @@
             ammo_9x19_pbp = 1 \n
             wpn_l85 \n
             ammo_5.56x45_ap = 1 \n
-            f1 = 1 \n
+            grenade_f1 = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
@@ -130,7 +130,7 @@
             ammo_9x19_fmj = 1 \n
             wpn_lr300 \n
             ammo_5.56x45_ss190 = 1 \n
-            f1 = 2 \n
+            grenade_f1 = 2 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
@@ -266,7 +266,7 @@
             ammo_9x19_fmj = 1 \n
             wpn_l85 \n
             ammo_5.56x45_ap = 1 \n
-            f1 = 1 \n
+            grenade_f1 = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
@@ -295,7 +295,7 @@
             ammo_11.43x23_fmj = 1 \n
             wpn_lr300 \n
             ammo_5.56x45_ap = 2 \n
-            f1 = 1 \n
+            grenade_f1 = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>
@@ -324,7 +324,7 @@
             ammo_9x19_fmj  = 1 \n
             wpn_abakan \n
             ammo_5.45x39_ap = 2 \n
-            f1 = 1 \n
+            grenade_f1 = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>
@@ -354,7 +354,7 @@
             ammo_11.43x23_fmj = 1 \n
             wpn_lr300 \n
             ammo_5.56x45_ap = 2 \n
-            f1 = 2 \n
+            grenade_f1 = 2 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>
@@ -383,7 +383,7 @@
             ammo_9x19_fmj  = 1 \n
             wpn_svd \n
             ammo_7.62x54_7h14 = 2 \n
-            f1 = 1 \n
+            grenade_f1 = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>
@@ -415,7 +415,7 @@
             wpn_vintorez \n
             ammo_9x39_ap = 3 \n
             ammo_9x39_sp5 = 2 \n
-            f1 = 3 \n
+            grenade_f1 = 3 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>
@@ -446,7 +446,7 @@
             wpn_abakan \n
             ammo_5.45x39_ap = 2 \n
 			device_torch \n
-            f1 = 2 \n
+            grenade_f1 = 2 \n
 #include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -478,7 +478,7 @@
             wpn_abakan \n
             ammo_5.45x39_ap = 2 \n
 			device_torch \n
-            f1 = 1 \n
+            grenade_f1 = 1 \n
 #include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -540,7 +540,7 @@
             wpn_abakan \n
             ammo_5.45x39_ap = 2 \n
 			device_torch \n
-            f1 = 1 \n
+            grenade_f1 = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
