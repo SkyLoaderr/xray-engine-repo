@@ -1350,7 +1350,22 @@ function agr_weapon(actor, npc)
 	if 	actor ~= nil then actor:activate_slot(2)
 	end
 end
-
+function agr_hold_enemy(actor, npc)
+	local gulag = xr_gulag.get_gulag_by_name("agr_factory_hold")
+	
+	local h  = hit()
+	h.power     = 0.01
+	h.direction = vector():set( 1, 0, 0 )
+	h.draftsman = actor
+	h.impulse   = 1
+	h.type      = hit.wound
+	
+	for k, v in pairs(gulag.Object) do
+		if v ~= true and level.object_by_id( k ) ~= nil then
+			v:hit( h )
+		end
+	end	
+end
 --------------------------------------------------------- 
 -- PRIPYAT
 --------------------------------------------------------- 
