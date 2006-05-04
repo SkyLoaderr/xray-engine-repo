@@ -46,7 +46,7 @@ void CUIListBox::DeselectAll(){
 		(smart_cast<CUISelectable*>(*it))->SetSelected(false);
 	}
 }
-
+#include "../string_table.h"
 CUIListBoxItem* CUIListBox::AddItem(LPCSTR text){
 	CUIListBoxItem* pItem = xr_new<CUIListBoxItem>();
 	pItem->Init(0,0,this->GetDesiredChildWidth() - 5, m_def_item_height);
@@ -55,7 +55,7 @@ CUIListBoxItem* CUIListBox::AddItem(LPCSTR text){
 	else
 		pItem->InitTexture(*m_selection_texture);
 	pItem->SetSelected(false);
-	pItem->SetText(text);
+	pItem->SetText(*CStringTable().translate(text));
 	pItem->SetTextColor(m_text_color, m_text_color_s);
 	pItem->SetMessageTarget(this);
 	AddWindow(pItem, true);
