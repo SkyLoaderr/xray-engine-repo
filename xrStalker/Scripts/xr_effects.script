@@ -1345,6 +1345,10 @@ function agr_knockdown (npc)
 	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false)
     set_postprocess ("scripts\\earthshake.ltx")
 end
+function agr_weapon(actor, npc)
+	db.actor: 
+end
+
 --------------------------------------------------------- 
 -- PRIPYAT
 --------------------------------------------------------- 
