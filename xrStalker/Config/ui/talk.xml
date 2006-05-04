@@ -1,12 +1,13 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
 
-	<left_character_icon x="27" y="22" width="143" height="199">
-		<texture>ui\ui_trade_character</texture>
+	<left_character_icon x="25" y="32" width="211" height="218">
+		<texture>ui_charinfo_left</texture>
+		<texture_offset x="-11" y="0"/>
 	</left_character_icon>
 	
-	<right_character_icon x="843" y="22" width="143" height="199">
-		<texture mirror="h" width="141" height="199">ui\ui_trade_character</texture>
+	<right_character_icon x="820" y="32" width="143" height="218">
+		<texture>ui_charinfo_right</texture>
 	</right_character_icon>
 	
 	<!-- BUTTONS -->
