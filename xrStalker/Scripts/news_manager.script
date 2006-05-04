@@ -168,7 +168,9 @@ function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 		y = tips_icons[sender][2]
 	end
 	local news_text = "%c<255,160,160,160>".."tip".."\\n".."%c<default>"..game.translate_string(news_id)
-	actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
+--temporary for e3 by andy !!!	actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
+    local task_texture, task_rect = get_texture_info("ui_icons_task_monster_part", "ui_iconsTotalSmall_locations")
+	actor:give_game_news(news_text, task_texture, task_rect, timeout*1000, showtime)
 	return true
 end
 function send_tip_nosound(actor, news_id, timeout, sender)
@@ -194,7 +196,9 @@ function send_tip_nosound(actor, news_id, timeout, sender)
 		y = tips_icons[sender][2]
 	end
 	local news_text = "%c<255,160,160,160>".."tip".."\\n".."%c<default>"..game.translate_string(news_id)
-	actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
+--temporary for e3 by andy !!!		actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
+    local task_texture, task_rect = get_texture_info("ui_icons_task_monster_part", "ui_iconsTotalSmall_locations")
+	actor:give_game_news(news_text, task_texture, task_rect, timeout*1000, showtime)
 	return news_sound
 end
 
