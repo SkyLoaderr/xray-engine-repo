@@ -1346,7 +1346,9 @@ function agr_knockdown (npc)
     set_postprocess ("scripts\\earthshake.ltx")
 end
 function agr_weapon(actor, npc)
-	db.actor: 
+	local actor = db.actor	
+	if 	actor ~= nil then actor:activate_slot(2)
+	end
 end
 
 --------------------------------------------------------- 
