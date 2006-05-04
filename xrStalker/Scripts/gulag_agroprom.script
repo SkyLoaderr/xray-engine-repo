@@ -385,7 +385,7 @@ function load_job( sj, gname, type, squad, groups )
 				idle = 0, position_threshold = 150, 
 				prior = 0, state = {0,1},
 				squad = squad, group = groups[1],
-				in_rest = "", out_rest = "agr_space_restrictor_waiting_stalkers"
+				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
 		end
