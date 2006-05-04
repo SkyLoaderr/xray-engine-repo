@@ -11,10 +11,10 @@
 
 	<!-- RANK -->
 	<rank_caption x="23" y="150" width="153" height="15">
-		<text x="0" y="0" font="letterica16" r="216" g="186" b="140">HUY</text>
+		<text x="0" y="0" font="letterica16" r="216" g="186" b="140"></text>
 	</rank_caption>
 	<rank_static x="23" y="150" width="153" height="15">
-		<text x="0" y="0" font="letterica16" r="240" g="217" b="182" align="r">HUY</text>
+		<text x="0" y="0" font="letterica16" r="240" g="217" b="182" align="r"></text>
 	</rank_static>
 	
 
