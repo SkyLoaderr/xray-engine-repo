@@ -18,6 +18,7 @@ public:
 			void Init(CUIXml& xml_doc, LPCSTR path);
 	virtual void Update();
 	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
 			void SetVisibleMagnifier(bool f);
 
@@ -28,6 +29,11 @@ protected:
 		E_Finilize,
 		E_Stop
 	} EVENT;
+
+			void SelectBtn(int btn);
+			void SelectBtn(CUIWindow* btn);
+			int BtnCount();
+			void OnBtnClick();
 
 			void ProcessEvent(EVENT ev);
 
@@ -51,6 +57,8 @@ protected:
 
 	xr_vector<CUIStatic*>	m_buttons;
 	xr_vector<CUIStatic*>	m_buttons_new;
+	int						m_selected_btn;
+	int						m_page;
     CUIWindow*			m_selected;
 	CMMSound*			m_sound;
 

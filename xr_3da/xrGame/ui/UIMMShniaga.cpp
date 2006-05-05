@@ -34,6 +34,9 @@ CUIMMShniaga::CUIMMShniaga(){
 	m_run_time = 0;
 
 	m_flags.zero();	
+
+	m_selected_btn	= -1;
+	m_page			= -1;
 }
 
 CUIMMShniaga::~CUIMMShniaga(){
@@ -121,6 +124,7 @@ void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCST
 
 
 void CUIMMShniaga::ShowMain(){
+	m_page = 0;
 	m_view->Clear();
 	for (u32 i = 0; i<m_buttons.size(); i++)
 		m_view->AddWindow(m_buttons[i], false);
@@ -129,6 +133,7 @@ void CUIMMShniaga::ShowMain(){
 }
 
 void CUIMMShniaga::ShowNewGame(){
+	m_page = 1;
     m_view->Clear();
 	for (u32 i = 0; i<m_buttons_new.size(); i++)
 		m_view->AddWindow(m_buttons_new[i], false);
@@ -153,13 +158,40 @@ void CUIMMShniaga::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	if (IsButton(pWnd)){
 		switch (msg){
 			case STATIC_FOCUS_RECEIVED:
-				m_selected = pWnd;
-
-				ProcessEvent(E_Begin);
+				SelectBtn(pWnd);
 				break;
 		}
 
 	}
+}
+
+void CUIMMShniaga::SelectBtn(int btn){
+	R_ASSERT(btn >= 0);
+	if (0 ==m_page)
+        m_selected = m_buttons[btn];
+	else
+		m_selected = m_buttons_new[btn];
+	m_selected_btn = btn;
+	ProcessEvent(E_Begin);
+}
+
+void CUIMMShniaga::SelectBtn(CUIWindow* btn){
+	R_ASSERT(m_page >= 0);
+	for (int i = 0; i<(int)m_buttons.size(); i++){
+		if (0 == m_page){
+			if (m_buttons[i] == btn)
+			{
+				SelectBtn(i);
+				return;
+			}
+		}else if (1 == m_page){
+			if (m_buttons_new[i] == btn)
+			{
+				SelectBtn(i);
+				return;
+			}
+		}
+	}	
 }
 
 void CUIMMShniaga::Update(){
@@ -199,15 +231,57 @@ bool CUIMMShniaga::OnMouse(float x, float y, EUIMessages mouse_action){
 	Fvector2 pos = UI()->GetUICursor()->GetPos();
     if (WINDOW_LBUTTON_DOWN == mouse_action && m_magnifier->GetAbsoluteRect().in(pos.x, pos.y))
 	{
-		if (0 == xr_strcmp("btn_new_game", m_selected->WindowName()))
+		OnBtnClick();
+	}
+
+	return CUIWindow::OnMouse(x,y,mouse_action);
+}
+
+void CUIMMShniaga::OnBtnClick(){
+	if (0 == xr_strcmp("btn_new_game", m_selected->WindowName()))
             ShowNewGame();
 		else if (0 == xr_strcmp("btn_new_back", m_selected->WindowName()))
             ShowMain();
 		else
             GetMessageTarget()->SendMessage(m_selected, BUTTON_CLICKED);
+}
+
+#include <dinput.h>
+
+bool CUIMMShniaga::OnKeyboard(int dik, EUIMessages keyboard_action){
+
+	if (WINDOW_KEY_PRESSED == keyboard_action){
+		switch (dik){
+			case DIK_UP:
+				if (m_selected_btn > 0)
+					SelectBtn(m_selected_btn - 1);
+				return true;
+			case DIK_DOWN:
+				if (m_selected_btn < BtnCount() - 1)
+					SelectBtn(m_selected_btn + 1);
+				return true;
+			case DIK_RETURN:
+				OnBtnClick();
+				return true;
+			case DIK_ESCAPE:
+				if (1 == m_page)
+					ShowMain();
+				return true;
+		}
 	}
 
-	return CUIWindow::OnMouse(x,y,mouse_action);
+
+	return CUIWindow::OnKeyboard(dik, keyboard_action);
+}
+
+int CUIMMShniaga::BtnCount(){
+	R_ASSERT(-1);
+	if (m_page == 0)
+        return (int)m_buttons.size();
+	else if (m_page == 1)
+		return (int)m_buttons_new.size();
+	else 
+		return -1;
 }
 
 float CUIMMShniaga::pos(float x1, float x2, u32 t){

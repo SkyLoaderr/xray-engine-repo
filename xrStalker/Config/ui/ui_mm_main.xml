@@ -9,11 +9,11 @@
 		<texture>ui\ui_mm_fire</texture>
 	</fire_movie>
 
-	<shniaga_wnd x="599" y="419" width="392" height="280">
+	<shniaga_wnd x="590" y="419" width="392" height="280">
 		<buttons_region	x="110" y="0" width="164" height="280" always_show_scroll="false">
 		</buttons_region>
 		
-		<shniaga x="0" y="0" width="392" height="73">
+		<shniaga x="9" y="0" width="392" height="73">
 			<texture>ui_menu_move</texture>			
 			<magnifire x="76" y="22" width="232" height="36" stretch="1">
 				<texture>ui\ui_magnifier</texture>
