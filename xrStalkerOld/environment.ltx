@@ -326,7 +326,7 @@ sun_dir			=	-14.5, 292
 04:30:00	   		=	ev_031
 05:15:00	   		=	ev_04
 05:35:00			=	ev_05
-05:45:00			=	ev_06;06:15:00;ev_05_ns;
+06:15:00			=	ev_06
 07:00:00			=	ev_07
 08:00:00			=	ev_08
 09:00:00			=	ev_09
@@ -345,9 +345,6 @@ sun_dir			=	-14.5, 292
 22:00:00	   		=	ev_22
 23:00:00	   		=	ev_23
 00:00:00	   		=	ev_00
-
-
-
 
 
 [ev_01]
@@ -374,30 +371,6 @@ hemi_color		=	0.2,	0.2,	0.2, 0.1
 sun_color		=   0.1, 0.1, 0.1
 sun_dir			=	-31.0, 296
 env_ambient		=	ambient_env_night
-
-;dx9
-;flares			=	flares_moon	
-;sky_texture		=	sky\sky_14_cube
-;sky_rotation	=	0
-;sky_color		=	0.3,	0.3,	0.3
-;far_plane		=	200
-;fog_distance	=	200
-;fog_color		=	0.043, 0.043, 0.055
-;fog_density		=	0.9
-;rain_density	=	0.0
-;rain_color		=	1.0,	1.0,	1.0
-;thunderbolt		= 	
-;bolt_period		=	3.f
-;bolt_duration	=	0.25f
-;wind_velocity	=	0.0 
-;wind_direction	=	0.0
-;ambient			=	0.043, 0.043, 0.055
-;lmap_color		=	1.0,	1.0,	1.0
-;hemi_color		=	0.2,	0.2,	0.2, 0.1
-;sun_color		=   0.043, 0.043, 0.055
-;sun_dir			=	-31.0, 296
-env_ambient		=	ambient_env_night
-
 
 [ev_011]
 flares			=	flares_moon	
@@ -449,7 +422,6 @@ sun_color		=   0.1, 0.1, 0.1
 sun_dir			=	-31.0, 296
 env_ambient		=	ambient_env_night
 
-
 [ev_02]
 flares			=	
 sky_texture		=	sky\sky_13_cube_night
@@ -499,7 +471,6 @@ hemi_color		=	0.2,	0.2,	0.2,	1.0
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-3.0, 292
 
-
 [ev_031]
 flares			=	flares_gradient		
 sky_texture		=	sky\sky_5_cube
@@ -523,8 +494,6 @@ lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	0.30,	0.30,	0.30,	1.0
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-3.0, 292
-
-
 
 [ev_04]
 flares			=	flares_sun_rise
@@ -550,8 +519,6 @@ hemi_color		=   0.510, 0.510, 0.549,	1.0
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-6.0, 293
 env_ambient		=	ambient_env_morning
-
-
 
 [ev_05]
 flares			=   flares_sun_rise
@@ -628,7 +595,6 @@ sun_color		=	0.918, 0.576, 0.208;0,0,0;
 sun_dir			=	-14.0, 292
 env_ambient		=	ambient_env_morning
 
-
 [ev_07]
 flares			=   flares_sun_rise
 sky_texture		=	sky\sky_20_cube
@@ -654,17 +620,15 @@ sun_color		=	1.000, 0.706, 0.349;0,0,0;
 sun_dir			=	-18.0, 292
 env_ambient		=	ambient_env_morning
 
-
-
 [ev_08]
 flares			=	
 sky_texture		=	sky\sky_13_cube
 sky_rotation	=	0
 sky_color		=	1.0,    1.0,  	1.0
 clouds_texture	=	oblaka
-clouds_color	=	0.333, 0.341, 0.431, 0.0, 1.7
+clouds_color	=	0.333, 0.341, 0.431, 0.5, 1.7
 far_plane		=	250
-fog_distance	=	250
+fog_distance	=	200
 fog_color		=	0.408, 0.400, 0.408
 fog_density		=	0.9
 rain_density	=	0.0
@@ -677,11 +641,9 @@ wind_direction	=	0.0
 ambient			=	0.083, 0.078, 0.100
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	0.678, 0.663, 0.745,	1.0
-sun_color		=   0.1, 0.1, 0.1
+sun_color		=   0.2, 0.2, 0.2
 sun_dir			=	-22.0, 292
 env_ambient		=	ambient_env_rain
-
-
 
 [ev_09]
 flares			=   flares_default
@@ -707,7 +669,6 @@ hemi_color		=    0.675, 0.675, 0.620, 1
 sun_color		=	 0.50,    0.47,  	0.415
 sun_dir			=	-24.0, 292
 env_ambient		=	ambient_env_day
-
 
 [ev_10]
 flares			=   flares_gradient1
@@ -1007,7 +968,6 @@ hemi_color		=   0.55, 0.57, 0.647, 0.5
 sun_color		=	1.000, 0.384, 0.196
 sun_dir			=	-18.0, 291
 env_ambient		=	ambient_env_evening
-
 
 [ev_22]
 flares			=   flares_sun_rise
