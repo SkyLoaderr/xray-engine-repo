@@ -347,8 +347,13 @@ void CUIMainIngameWnd::Draw()
 				m_bShowHudCrosshair = true;
 			}
 
-			zoom_mode = true;
+			zoom_mode = true;			
 		}
+
+		if (scope_mode)
+			UI()->SetWnpScopeDraw(true);
+		else
+			UI()->SetWnpScopeDraw(false);
 	}
 		if(g_bShowHudInfo)
 		{
@@ -361,7 +366,7 @@ void CUIMainIngameWnd::Draw()
 			m_bShowHudCrosshair = false;
 			psHUD_Flags.set(HUD_CROSSHAIR_RT, TRUE);
 		}
-		RenderQuickInfos();
+		RenderQuickInfos();		
 
 #ifdef DEBUG 
 	if (g_bHudAdjustMode&&m_pWeapon) //draw firePoint,ShellPoint etc

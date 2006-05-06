@@ -4,6 +4,7 @@
 #include "PhysicsShell.h"
 #include "weaponammo.h"
 #include "UIStaticItem.h"
+#include "UI\UIStatic.h"
 #include "PHShellCreator.h"
 
 #include "ShootingObject.h"
@@ -229,6 +230,7 @@ protected:
 	float			m_fZoomRotateTime;
 	//текстура для снайперского прицела, в режиме приближения
 	CUIStaticItem	m_UIScope;
+	CUIStatic		m_UILens;
 	//коэффициент увеличения прицеливания
 	float			m_fIronSightZoomFactor;
 	//коэффициент увеличения прицела
@@ -247,7 +249,7 @@ public:
 	virtual void			OnZoomIn			();
 	virtual void			OnZoomOut			();
 			bool			IsZoomed			()	const	{return m_bZoomMode;};
-	CUIStaticItem*			ZoomTexture			();
+	CUIStaticItem*			ZoomTexture			();	
 			bool			ZoomHideCrosshair	()			{return m_bHideCrosshairInZoom || ZoomTexture();}
 
 	IC float				GetZoomFactor		() const		{	return m_fZoomFactor;	}

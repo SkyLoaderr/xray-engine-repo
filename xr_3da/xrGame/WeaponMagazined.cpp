@@ -823,6 +823,24 @@ void CWeaponMagazined::InitAddons()
 			if(m_UIScope.GetShader())
 				m_UIScope.GetShader().destroy();	
 			m_UIScope.Init(*scope_tex_name, "hud\\default", 0, 0, alNone);
+
+			if (pSettings->line_exist(*m_sScopeName, "lens_texture"))
+			{
+				shared_str lens_tex_name;
+				lens_tex_name = pSettings->r_string(*m_sScopeName, "lens_texture");			
+				if(m_UILens.GetShader())
+					m_UILens.GetShader().destroy();	
+				m_UILens.InitTexture(*lens_tex_name);
+
+				float x = pSettings->r_float(*m_sScopeName, "lens_texture_x");
+				float y = pSettings->r_float(*m_sScopeName, "lens_texture_y");
+				float w = pSettings->r_float(*m_sScopeName, "lens_texture_w");
+				float h = pSettings->r_float(*m_sScopeName, "lens_texture_h");
+
+				m_UILens.Init(x,y,w,h);
+				m_UILens.SetStretchTexture(true);
+				m_UILens.SetPPMode();
+			}
 		}
 		else if(m_eScopeStatus == ALife::eAddonPermanent)
 		{
@@ -833,6 +851,22 @@ void CWeaponMagazined::InitAddons()
 			if(m_UIScope.GetShader())
 				m_UIScope.GetShader().destroy();	
 			m_UIScope.Init(*scope_tex_name, "hud\\default", 0, 0, alNone);
+
+			if (pSettings->line_exist(cNameSect(), "lens_texture"))
+			{
+				shared_str lens_tex_name;
+				lens_tex_name = pSettings->r_string(cNameSect(), "lens_texture");			
+				if(m_UILens.GetShader())
+					m_UILens.GetShader().destroy();	
+				m_UILens.InitTexture(*lens_tex_name);
+
+				float x = pSettings->r_float(cNameSect(), "lens_texture_x");
+				float y = pSettings->r_float(cNameSect(), "lens_texture_y");
+				float w = pSettings->r_float(cNameSect(), "lens_texture_w");
+				float h = pSettings->r_float(cNameSect(), "lens_texture_h");
+				m_UILens.Init(x,y,w,h);				
+				m_UILens.SetStretchTexture(true);
+			}
 		}
 	}
 	else

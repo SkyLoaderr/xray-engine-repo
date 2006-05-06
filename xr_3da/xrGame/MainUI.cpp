@@ -292,6 +292,8 @@ void CMainUI::IR_OnMouseWheel(int direction)
 
 bool CMainUI::OnRenderPPUI_query()
 {
+	if (!m_Flags.is(flWpnScopeDraw))
+		return true;
 	return IsActive() && !m_Flags.is(flGameSaveScreenshot);
 }
 
@@ -304,13 +306,19 @@ void CMainUI::OnRender	()
 	Render->Render				();
 }
 
+void CMainUI::SetWnpScopeDraw(bool draw){
+	m_Flags.set(flWpnScopeDraw, draw);
+}
+
 void CMainUI::OnRenderPPUI_main	()
 {
-	if(!IsActive()) return;
+	if (!m_Flags.is(flWpnScopeDraw)){
+		if(!IsActive()) return;
 
-	if(m_Flags.is(flGameSaveScreenshot)){
-		return;
-	};
+		if(m_Flags.is(flGameSaveScreenshot)){
+			return;
+		};
+	}
 
 	m_bPostprocess = true;
 
@@ -328,7 +336,10 @@ void CMainUI::OnRenderPPUI_main	()
 
 void CMainUI::OnRenderPPUI_PP	()
 {
-	if(!IsActive()) return;
+	if (!m_Flags.is(flWpnScopeDraw)){
+		if(!IsActive()) 
+			return;
+	}
 	m_bPostprocess = true;
 	
 	xr_vector<CUIWindow*>::iterator it = m_pp_draw_wnds.begin();

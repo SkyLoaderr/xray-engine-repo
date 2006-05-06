@@ -1105,6 +1105,7 @@ void CWeapon::OnZoomIn()
 	m_bZoomMode = true;
 	m_fZoomFactor = CurrentZoomFactor();
 	StopHudInertion();
+	m_UILens.SetPPMode();
 }
 
 void CWeapon::OnZoomOut()
@@ -1113,6 +1114,7 @@ void CWeapon::OnZoomOut()
 	m_fZoomFactor = DEFAULT_FOV;
 
 	StartHudInertion();
+	m_UILens.ResetPPMode();
 }
 
 CUIStaticItem* CWeapon::ZoomTexture()
@@ -1415,6 +1417,8 @@ void CWeapon::OnDrawUI()
 			ZoomTexture()->SetPos	(0,0);
 			ZoomTexture()->SetRect	(0,0,UI_BASE_WIDTH, UI_BASE_HEIGHT);
 			ZoomTexture()->Render	();
+
+//			m_UILens.Draw();
 		}
 	}
 }

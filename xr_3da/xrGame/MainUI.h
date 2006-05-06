@@ -54,6 +54,7 @@ class CMainUI :
 		flNeedChangeCapture	= (1<<3),
 		flRestoreCursor		= (1<<4),
 		flGameSaveScreenshot= (1<<5),
+		flWpnScopeDraw		= (1<<6),
 	};
 	Flags8			m_Flags;
 	xr_stack<Frect> m_Scissors;
@@ -73,6 +74,7 @@ public:
 
 	virtual void	Activate						(bool bActive); 
 	virtual	bool	IsActive						(); 
+			void	SetWnpScopeDraw					(bool draw);
 
 	CFontManager*		Font						()							{return m_pFontManager;}
 	//IInputReceiver
