@@ -68,12 +68,12 @@ function action_wounded:execute ()
 		end
 	end
 
-	-- COMMENTED FOR E3
---	if self.object:relation(db.actor) == game_object.enemy then
+	
+	if self.object:relation(db.actor) == game_object.enemy then
 		self.object:disable_talk()
---	else
---		self.object:enable_talk()
---	end
+	else
+		self.object:enable_talk()
+	end
     
     
     
