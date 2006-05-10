@@ -839,7 +839,6 @@ void CWeaponMagazined::InitAddons()
 
 				m_UILens.Init(x,y,w,h);
 				m_UILens.SetStretchTexture(true);
-				m_UILens.SetPPMode();
 			}
 		}
 		else if(m_eScopeStatus == ALife::eAddonPermanent)
