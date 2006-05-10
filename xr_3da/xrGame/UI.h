@@ -2,7 +2,6 @@
 
 #include "UICursor.h"
 
-//#include "ui\UIMainIngameWnd.h"
 #include "UIDialogHolder.h"
 
 #define UI_BASE_WIDTH	1024.0f
@@ -24,27 +23,20 @@ class CUIMessagesWindow;
 class CDeviceResetNotifier :public pureDeviceReset
 {
 public:
-						CDeviceResetNotifier					();
-	virtual				~CDeviceResetNotifier					();
+						CDeviceResetNotifier					()	{Device.seqDeviceReset.Add(this,REG_PRIORITY_NORMAL);};
+	virtual				~CDeviceResetNotifier					()	{Device.seqDeviceReset.Remove(this);};
 	virtual void		OnDeviceReset							()	{};
 
 };
 
 
 
-class CUI			: public CDialogHolder //ISheduled
+class CUI			: public CDialogHolder
 {
-	typedef ISheduled inherited;
-
-	//whether to show main ingame indicators (health, weapon etc)
 	bool					m_bShowIndicators;
-
-
 	CUIGameCustom*			pUIGame;
 
-
-	bool					m_bCrosshair;			//был ли показан прицел-курсор HUD перед вызовом меню
-
+	bool					m_bCrosshair;
 
 public:
 	CHUDManager*			m_Parent;
@@ -75,5 +67,6 @@ public:
 	void					AddInfoMessage			(LPCSTR message);
 
 	virtual void			StartStopMenu			(CUIDialogWnd* pDialog, bool bDoHideIndicators);
+
 };
 

@@ -1,5 +1,3 @@
-#ifndef __XR_CUSTOMHUD_H__
-#define __XR_CUSTOMHUD_H__
 #pragma once
 
 #include "iinputreceiver.h"
@@ -34,9 +32,5 @@ public:
 	virtual		void		OnFrame					(){;}
 	virtual		void		OnEvent					(EVENT E, u64 P1, u64 P2){;}
 
-//	virtual		void		Hit						(int idx, float power){;}
-
 	virtual IC	CUI*		GetUI					()=0;
 };
-
-#endif //__XR_CUSTOMHUD_H__
