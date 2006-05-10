@@ -998,6 +998,9 @@ void CWeapon::UpdateHUDAddonsVisibility()
 {//actor only
 	if( H_Parent() != Level().CurrentEntity() )				return;
 	if(m_pHUD->IsHidden())									return;
+//	if(IsZoomed() && )
+
+
 	CKinematics* pHudVisual									= smart_cast<CKinematics*>(m_pHUD->Visual());
 	VERIFY(pHudVisual);
 	if (H_Parent() != Level().CurrentEntity()) pHudVisual	= NULL;

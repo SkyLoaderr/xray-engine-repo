@@ -224,23 +224,27 @@ void CCameraManager::ApplyDevice ()
 	Device.fASPECT				= fAspect;
 	Device.mProject.build_projection(deg2rad(fFov*fAspect), fAspect, VIEWPORT_NEAR, fFar);
 
+	if( g_pGamePersistent && g_pGamePersistent->m_pMainMenu->IsActive() )
+		ResetPP					();
+	else
+	{
+		// postprocess
+		IRender_Target*		T		= ::Render->getTarget();
+		T->set_duality_h			(pp_affected.duality.h);
+		T->set_duality_v			(pp_affected.duality.v);
+		T->set_blur					(pp_affected.blur);
+		T->set_gray					(pp_affected.gray);
+		T->set_noise				(pp_affected.noise.intensity);
 
-	// postprocess
-	IRender_Target*		T		= ::Render->getTarget();
-	T->set_duality_h			(pp_affected.duality.h);
-	T->set_duality_v			(pp_affected.duality.v);
-	T->set_blur					(pp_affected.blur);
-	T->set_gray					(pp_affected.gray);
-	T->set_noise				(pp_affected.noise.intensity);
+		clamp						(pp_affected.noise.grain,EPS_L,1000.0f);
 
-	clamp						(pp_affected.noise.grain,EPS_L,1000.0f);
+		T->set_noise_scale			(pp_affected.noise.grain);
 
-	T->set_noise_scale			(pp_affected.noise.grain);
-
-	T->set_noise_fps			(pp_affected.noise.fps);
-	T->set_color_base			(pp_affected.color_base);
-	T->set_color_gray			(pp_affected.color_gray);
-	T->set_color_add			(pp_affected.color_add);
+		T->set_noise_fps			(pp_affected.noise.fps);
+		T->set_color_base			(pp_affected.color_base);
+		T->set_color_gray			(pp_affected.color_gray);
+		T->set_color_add			(pp_affected.color_add);
+	}
 }
 
 void CCameraManager::ResetPP()

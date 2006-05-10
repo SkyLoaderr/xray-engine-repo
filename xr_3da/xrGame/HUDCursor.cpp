@@ -1,5 +1,5 @@
 // exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 14:13:00 , by user : Oles , from computer : OLES
-// HUDCursor.cpp: implementation of the CHUDCursor class.
+// HUDCursor.cpp: implementation of the CHUDTarget class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -63,7 +63,7 @@ IC	float	recon_maxspeed	()		{
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CHUDCursor::CHUDCursor	()
+CHUDTarget::CHUDTarget	()
 {    
 	fuzzyShowInfo		= 0.f;
 	RQ.range			= 0.f;
@@ -76,12 +76,12 @@ CHUDCursor::CHUDCursor	()
 	m_bShowCrosshair	= false;
 }
 
-CHUDCursor::~CHUDCursor	()
+CHUDTarget::~CHUDTarget	()
 {
 }
 
 
-void CHUDCursor::Load		()
+void CHUDTarget::Load		()
 {
 	HUDCrosshair.Load();
 }
@@ -102,7 +102,7 @@ ICF static BOOL pick_trace_callback(collide::rq_result& result, LPVOID params)
 	return FALSE;
 }
 
-void CHUDCursor::CursorOnFrame ()
+void CHUDTarget::CursorOnFrame ()
 {
 	Fvector				p1,dir;
 
@@ -125,7 +125,7 @@ void CHUDCursor::CursorOnFrame ()
 }
 
 extern ENGINE_API BOOL g_bRendering; 
-void CHUDCursor::Render()
+void CHUDTarget::Render()
 {
 	VERIFY		(g_bRendering);
 

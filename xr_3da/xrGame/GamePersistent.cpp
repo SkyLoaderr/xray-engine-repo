@@ -120,16 +120,16 @@ void CGamePersistent::OnAppStart()
 	GMLib.Load					();
 	init_game_globals			();
 	__super::OnAppStart			();
-	m_pMainUI					= xr_new<CMainUI>();
+	m_pMainMenu					= xr_new<CMainMenu>();
 }
 
 
 void CGamePersistent::OnAppEnd	()
 {
-	if(m_pMainUI->IsActive())
-		m_pMainUI->Activate(false);
+	if(m_pMainMenu->IsActive())
+		m_pMainMenu->Activate(false);
 
-	xr_delete					(m_pMainUI);
+	xr_delete					(m_pMainMenu);
 
 	__super::OnAppEnd			();
 

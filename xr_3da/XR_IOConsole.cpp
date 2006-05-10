@@ -96,7 +96,7 @@ void CConsole::OnRender	()
 
 	bGame	=false;	
 	if ( (g_pGameLevel && g_pGameLevel->bReady)||
-		 ( g_pGamePersistent && g_pGamePersistent->m_pMainUI && g_pGamePersistent->m_pMainUI->IsActive() ) )	
+		 ( g_pGamePersistent && g_pGamePersistent->m_pMainMenu && g_pGamePersistent->m_pMainMenu->IsActive() ) )	
 		 bGame = true;
 
 	if		(g_pGamePersistent->bDedicatedServer)				bGame = false;
@@ -163,7 +163,7 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	case DIK_ESCAPE:
 		if (!bHold) {
 			if  ( g_pGameLevel || 
-				( g_pGamePersistent && g_pGamePersistent->m_pMainUI && g_pGamePersistent->m_pMainUI->IsActive() ))
+				( g_pGamePersistent && g_pGamePersistent->m_pMainMenu && g_pGamePersistent->m_pMainMenu->IsActive() ))
 				Hide();
 		}
 		break;

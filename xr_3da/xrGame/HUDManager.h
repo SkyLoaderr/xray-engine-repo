@@ -1,17 +1,12 @@
-#ifndef __XR_HUDMANAGER_H__
-#define __XR_HUDMANAGER_H__
 #pragma once
 
 #include "../CustomHUD.h"
 #include "HitMarker.h"
 #include "UI.h"
 #include "MainUI.h"
-//namespace collide {
-//	struct rq_result;
-//};
-// refs
+
 class CContextMenu;
-class CHUDCursor;
+class CHUDTarget;
 
 struct CFontManager :public pureDeviceReset			{
 							CFontManager			();
@@ -52,14 +47,9 @@ class CHUDManager :
 {
 	friend class CUI;
 private:
-	// ui
 	CUI*					pUI;
-	// hit marker
 	CHitMarker				HitMarker;
-	// hud cursor
-	CHUDCursor*				m_pHUDCursor;
-
-
+	CHUDTarget*				m_pHUDTarget;
 public:
 							CHUDManager			();
 	virtual					~CHUDManager		();
@@ -87,6 +77,3 @@ public:
 
 	void					SetHitmarkType		(LPCSTR tex_name);
 };
-
-
-#endif // __XR_HUDMANAGER_H__

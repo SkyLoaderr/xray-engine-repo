@@ -3,7 +3,7 @@
 #pragma once
 
 #include "../IGame_Persistent.h"
-class CMainUI;
+class CMainMenu;
 class CUICursor;
 class CParticlesObject;
 class CUISequencer;

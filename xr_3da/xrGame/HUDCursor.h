@@ -1,5 +1,3 @@
-#ifndef __XR_HUDCURSOR_H__
-#define __XR_HUDCURSOR_H__
 #pragma once
 
 #include "HUDCrosshair.h"
@@ -8,7 +6,7 @@
 
 class CHUDManager;
 
-class CHUDCursor
+class CHUDTarget
 {
 	friend class CHUDManager;
 
@@ -20,11 +18,9 @@ class CHUDCursor
 	bool					m_bShowCrosshair;
 	CHUDCrosshair			HUDCrosshair;
 public:
-							CHUDCursor	();
-							~CHUDCursor	();
+							CHUDTarget	();
+							~CHUDTarget	();
 	void					CursorOnFrame ();
 	void					Render		();
 	void					Load		();
 };
-
-#endif //__XR_HUDCURSOR_H__

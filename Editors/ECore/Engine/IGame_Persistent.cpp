@@ -22,7 +22,7 @@ IGame_Persistent::IGame_Persistent	()
 	Device.seqAppActivate.Add		(this);
 	Device.seqAppDeactivate.Add		(this);
 
-	m_pMainUI						= NULL;
+	m_pMainMenu						= NULL;
 }
 
 IGame_Persistent::~IGame_Persistent	()

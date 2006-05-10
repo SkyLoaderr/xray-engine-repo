@@ -14,7 +14,7 @@
 #include "ui\UIBtnHint.h"
 
 extern CUICursor*	GetUICursor(){return UI()->GetUICursor();};
-extern CMainUI*		UI(){return (CMainUI*)(g_pGamePersistent->m_pMainUI);};
+extern CMainMenu*	UI(){return (CMainMenu*)(g_pGamePersistent->m_pMainMenu);};
 
 //----------------------------------------------------------------------------------
 void S2DVert::rotate_pt(const Fvector2& pivot, float cosA, float sinA)
@@ -106,13 +106,13 @@ sPoly2D* C2DFrustum::ClipPoly	(sPoly2D& S, sPoly2D& D) const
 }
 
 //----------------------------------------------------------------------------------
-CMainUI::CMainUI	()
+CMainMenu::CMainMenu	()
 {
 	m_Flags.zero				();
 	m_startDialog				= NULL;
 	m_pUICursor					= xr_new<CUICursor>();
 	m_pFontManager				= xr_new<CFontManager>();
-	g_pGamePersistent->m_pMainUI= this;
+	g_pGamePersistent->m_pMainMenu= this;
 	if (Device.bReady)			OnDeviceCreate();  	
 	ReadTextureInfo				();
 	CUIXmlInit::InitColorDefs	();
@@ -124,20 +124,18 @@ CMainUI::CMainUI	()
 	//m_pMessageSessionFull = NULL;
 }
 
-CMainUI::~CMainUI	()
+CMainMenu::~CMainMenu	()
 {
 	xr_delete						(g_btnHint);
 	xr_delete						(m_startDialog);
 	xr_delete						(m_pFontManager);
 	xr_delete						(m_pUICursor);
 	xr_delete						(m_pMessageBox);
-	//xr_delete						(m_pMessageInvalidPass);
-	//xr_delete						(m_pMessageSessionFull);
-	g_pGamePersistent->m_pMainUI	= NULL;
+	g_pGamePersistent->m_pMainMenu	= NULL;
 	CUITextureMaster::WriteLog		();
 }
 
-void CMainUI::ReadTextureInfo(){
+void CMainMenu::ReadTextureInfo(){
 	if (pSettings->section_exist("texture_desc"))
 	{
 		xr_string itemsList; 
@@ -155,9 +153,9 @@ void CMainUI::ReadTextureInfo(){
 	}
 }
 
-void CMainUI::Activate	(bool bActivate)
+void CMainMenu::Activate	(bool bActivate)
 {
-	if(!!m_Flags.is(flActive) == bActivate)	return;
+	if(!!m_Flags.test(flActive) == bActivate)	return;
 		
 	if(bActivate){
 		m_Flags.set					(flActive|flNeedChangeCapture,TRUE);
@@ -176,7 +174,7 @@ void CMainUI::Activate	(bool bActivate)
 
 		m_Flags.set					(flRestoreCursor,GetUICursor()->IsVisible());
 
-		if(!m_Flags.is(flRestorePause))
+		if(!m_Flags.test(flRestorePause))
 			Device.Pause			(TRUE);
 		::Sound->set_volume			(1.0f);// pause set to 0
 
@@ -208,54 +206,54 @@ void CMainUI::Activate	(bool bActivate)
 			Device.seqFrame.Add		(g_pGameLevel);
 			Device.seqRender.Add	(g_pGameLevel);
 		};
-		if(m_Flags.is(flRestoreConsole))
+		if(m_Flags.test(flRestoreConsole))
 			Console->Show			();
 
-		if(!m_Flags.is(flRestorePause))
+		if(!m_Flags.test(flRestorePause))
 			Device.Pause(FALSE);
 	
-		if(m_Flags.is(flRestoreCursor))
+		if(m_Flags.test(flRestoreCursor))
 			GetUICursor()->Show();
 	}
 }
-bool CMainUI::IsActive	()
+bool CMainMenu::IsActive	()
 {
-	return !!m_Flags.is(flActive);
+	return !!m_Flags.test(flActive);
 }
 
 
 //IInputReceiver
 static int mouse_button_2_key []	=	{MOUSE_1,MOUSE_2,MOUSE_3};
-void	CMainUI::IR_OnMousePress				(int btn)	
+void	CMainMenu::IR_OnMousePress				(int btn)	
 {	
 	if(!IsActive()) return;
 
 	IR_OnKeyboardPress(mouse_button_2_key[btn]);
 };
 
-void	CMainUI::IR_OnMouseRelease				(int btn)	
+void	CMainMenu::IR_OnMouseRelease				(int btn)	
 {
 	if(!IsActive()) return;
 	IR_OnKeyboardRelease(mouse_button_2_key[btn]);
 };
-void	CMainUI::IR_OnMouseHold					(int btn)	
+void	CMainMenu::IR_OnMouseHold					(int btn)	
 {
 	if(!IsActive()) return;
 	IR_OnKeyboardHold(mouse_button_2_key[btn]);
 };
 
-void	CMainUI::IR_OnMouseMove					(int x, int y)
+void	CMainMenu::IR_OnMouseMove					(int x, int y)
 {
 	if(!IsActive()) return;
 		MainInputReceiver()->IR_OnMouseMove(x, y);
 };
 
-void	CMainUI::IR_OnMouseStop					(int x, int y)
+void	CMainMenu::IR_OnMouseStop					(int x, int y)
 {
 	if(!IsActive()) return;
 };
 
-void	CMainUI::IR_OnKeyboardPress				(int dik)
+void	CMainMenu::IR_OnKeyboardPress				(int dik)
 {
 	if(!IsActive()) return;
 
@@ -272,50 +270,51 @@ void	CMainUI::IR_OnKeyboardPress				(int dik)
 	MainInputReceiver()->IR_OnKeyboardPress( dik);
 };
 
-void	CMainUI::IR_OnKeyboardRelease			(int dik)
+void	CMainMenu::IR_OnKeyboardRelease			(int dik)
 {
 	if(!IsActive()) return;
 	MainInputReceiver()->IR_OnKeyboardRelease(dik);
 };
 
-void	CMainUI::IR_OnKeyboardHold				(int dik)	
+void	CMainMenu::IR_OnKeyboardHold				(int dik)	
 {
 	if(!IsActive()) return;
 };
 
-void CMainUI::IR_OnMouseWheel(int direction)
+void CMainMenu::IR_OnMouseWheel(int direction)
 {
 	if(!IsActive()) return;
 	MainInputReceiver()->IR_OnMouseWheel(direction);
 }
 
 
-bool CMainUI::OnRenderPPUI_query()
+bool CMainMenu::OnRenderPPUI_query()
 {
-	if (!m_Flags.is(flWpnScopeDraw))
+	if (m_Flags.test(flWpnScopeDraw))
 		return true;
-	return IsActive() && !m_Flags.is(flGameSaveScreenshot);
+
+	return IsActive() && !m_Flags.test(flGameSaveScreenshot);
 }
 
 
-void CMainUI::OnRender	()
+void CMainMenu::OnRender	()
 {
-	if(m_Flags.is(flGameSaveScreenshot))
+	if(m_Flags.test(flGameSaveScreenshot))
 		return;
 
 	Render->Render				();
 }
 
-void CMainUI::SetWnpScopeDraw(bool draw){
+void CMainMenu::SetWnpScopeDraw(bool draw){
 	m_Flags.set(flWpnScopeDraw, draw);
 }
 
-void CMainUI::OnRenderPPUI_main	()
+void CMainMenu::OnRenderPPUI_main	()
 {
-	if (!m_Flags.is(flWpnScopeDraw)){
+	if (!m_Flags.test(flWpnScopeDraw)){
 		if(!IsActive()) return;
 
-		if(m_Flags.is(flGameSaveScreenshot)){
+		if(m_Flags.test(flGameSaveScreenshot)){
 			return;
 		};
 	}
@@ -334,13 +333,11 @@ void CMainUI::OnRenderPPUI_main	()
 	m_bPostprocess = false;
 }
 
-void CMainUI::OnRenderPPUI_PP	()
+void CMainMenu::OnRenderPPUI_PP	()
 {
-	if (!m_Flags.is(flWpnScopeDraw)){
-		if(!IsActive()) 
-			return;
-	}
-	m_bPostprocess = true;
+	if (!IsActive() && !m_Flags.test(flWpnScopeDraw)) return;
+
+	m_bPostprocess	= true;
 	
 	xr_vector<CUIWindow*>::iterator it = m_pp_draw_wnds.begin();
 	for(; it!=m_pp_draw_wnds.end();++it){
@@ -350,7 +347,7 @@ void CMainUI::OnRenderPPUI_PP	()
 }
 
 //pureFrame
-void	CMainUI::OnFrame		(void)
+void	CMainMenu::OnFrame		(void)
 {
 	m_2DFrustum.CreateFromRect	(Frect().set(	0.0f,
 												0.0f,
@@ -361,50 +358,50 @@ void	CMainUI::OnFrame		(void)
 	if(!IsActive() && m_startDialog){
 		xr_delete					(m_startDialog);
 	}
-	if (m_Flags.is(flNeedChangeCapture)){
+	if (m_Flags.test(flNeedChangeCapture)){
 		m_Flags.set					(flNeedChangeCapture,FALSE);
-		if (m_Flags.is(flActive))	IR_Capture();
+		if (m_Flags.test(flActive))	IR_Capture();
 		else						IR_Release();
 	}
 	CDialogHolder::OnFrame		();
 
 
 	//screenshot stuff
-	if(m_Flags.is(flGameSaveScreenshot) && Device.dwFrame > m_screenshotFrame  ){
+	if(m_Flags.test(flGameSaveScreenshot) && Device.dwFrame > m_screenshotFrame  ){
 		m_Flags.set					(flGameSaveScreenshot,FALSE);
 		::Render->Screenshot		(IRender_interface::SM_FOR_GAMESAVE, m_screenshot_name);
 		
-		if(g_pGameLevel && m_Flags.is(flActive)){
+		if(g_pGameLevel && m_Flags.test(flActive)){
 			Device.seqFrame.Remove	(g_pGameLevel);
 			Device.seqRender.Remove	(g_pGameLevel);
 		};
 
-		if(m_Flags.is(flRestoreConsole))
+		if(m_Flags.test(flRestoreConsole))
 			Console->Show			();
 	}
 
 }
 
-void CMainUI::OnDeviceCreate()
+void CMainMenu::OnDeviceCreate()
 {
 }
 
-void CMainUI::ClientToScreenScaled(Fvector2& dest, float left, float top)
+void CMainMenu::ClientToScreenScaled(Fvector2& dest, float left, float top)
 {
 	dest.set(ClientToScreenScaledX(left),	ClientToScreenScaledY(top));
 }
 
-float CMainUI::ClientToScreenScaledX(float left)
+float CMainMenu::ClientToScreenScaledX(float left)
 {
 	return left * GetScaleX();
 }
 
-float CMainUI::ClientToScreenScaledY(float top)
+float CMainMenu::ClientToScreenScaledY(float top)
 {
 	return top * GetScaleY();
 }
 
-void CMainUI::OutText(CGameFont *pFont, Frect r, float x, float y, LPCSTR fmt, ...)
+void CMainMenu::OutText(CGameFont *pFont, Frect r, float x, float y, LPCSTR fmt, ...)
 {
 	if (r.in(x, y))
 	{
@@ -430,13 +427,13 @@ void CMainUI::OutText(CGameFont *pFont, Frect r, float x, float y, LPCSTR fmt, .
 	}
 }
 
-Frect CMainUI::ScreenRect()
+Frect CMainMenu::ScreenRect()
 {
 	static Frect R={0.0f, 0.0f, UI_BASE_WIDTH, UI_BASE_HEIGHT};
 	return R;
 }
 
-void CMainUI::PushScissor(const Frect& r_tgt, bool overlapped)
+void CMainMenu::PushScissor(const Frect& r_tgt, bool overlapped)
 {
 //	return;
 	Frect r_top			= ScreenRect();
@@ -464,7 +461,7 @@ void CMainUI::PushScissor(const Frect& r_tgt, bool overlapped)
 	RCache.set_Scissor	(&r);
 }
 
-void CMainUI::PopScissor()
+void CMainMenu::PopScissor()
 {
 //	return;
 	VERIFY(!m_Scissors.empty());
@@ -484,14 +481,14 @@ void CMainUI::PopScissor()
 	}
 }
 
-void CMainUI::Screenshot						(IRender_interface::ScreenshotMode mode, LPCSTR name)
+void CMainMenu::Screenshot						(IRender_interface::ScreenshotMode mode, LPCSTR name)
 {
 	if(mode != IRender_interface::SM_FOR_GAMESAVE){
 		::Render->Screenshot		(mode,name);
 	}else{
 		m_Flags.set					(flGameSaveScreenshot, TRUE);
 		strcpy(m_screenshot_name,name);
-		if(g_pGameLevel && m_Flags.is(flActive)){
+		if(g_pGameLevel && m_Flags.test(flActive)){
 			Device.seqFrame.Add		(g_pGameLevel);
 			Device.seqRender.Add	(g_pGameLevel);
 		};
@@ -501,19 +498,19 @@ void CMainUI::Screenshot						(IRender_interface::ScreenshotMode mode, LPCSTR na
 	}
 }
 
-void CMainUI::RegisterPPDraw					(CUIWindow* w)
+void CMainMenu::RegisterPPDraw					(CUIWindow* w)
 {
 	UnregisterPPDraw				(w);
 	m_pp_draw_wnds.push_back		(w);
 }
 
-void CMainUI::UnregisterPPDraw				(CUIWindow* w)
+void CMainMenu::UnregisterPPDraw				(CUIWindow* w)
 {
 	xr_vector<CUIWindow*>::iterator it = remove( m_pp_draw_wnds.begin(), m_pp_draw_wnds.end(), w);
 	m_pp_draw_wnds.erase(it, m_pp_draw_wnds.end());
 }
 
-void CMainUI::OnInvalidHost(){
+void CMainMenu::OnInvalidHost(){
 	if (!m_pMessageBox)
 	{
         m_pMessageBox = xr_new<CUIMessageBoxEx>();		
@@ -523,7 +520,7 @@ void CMainUI::OnInvalidHost(){
 	StartStopMenu(m_pMessageBox, false);
 }
 
-void CMainUI::OnInvalidPass(){
+void CMainMenu::OnInvalidPass(){
 	if (!m_pMessageBox)
 	{
         m_pMessageBox = xr_new<CUIMessageBoxEx>();
@@ -533,7 +530,7 @@ void CMainUI::OnInvalidPass(){
 	StartStopMenu(m_pMessageBox, false);
 }
 
-void CMainUI::OnSessionFull(){
+void CMainMenu::OnSessionFull(){
 	if (!m_pMessageBox)
 	{
         m_pMessageBox = xr_new<CUIMessageBoxEx>();
@@ -543,7 +540,7 @@ void CMainUI::OnSessionFull(){
 	StartStopMenu(m_pMessageBox, false);
 }
 
-void CMainUI::OnServerReject(){
+void CMainMenu::OnServerReject(){
 	if (!m_pMessageBox)
 	{
         m_pMessageBox = xr_new<CUIMessageBoxEx>();

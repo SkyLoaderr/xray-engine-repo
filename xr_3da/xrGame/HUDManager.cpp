@@ -122,19 +122,14 @@ void CFontManager::OnDeviceReset()
 //--------------------------------------------------------------------
 CHUDManager::CHUDManager()
 { 
-	// #pragma todo("Yura, what is this and why? Oles.")
-	// Level().pHUD	= this;
-	
 	pUI						= 0;
-	// if (Device.bReady) OnDeviceCreate();
-
-	m_pHUDCursor			= xr_new<CHUDCursor>();
+	m_pHUDTarget			= xr_new<CHUDTarget>();
 }
 //--------------------------------------------------------------------
 CHUDManager::~CHUDManager()
 {
 	xr_delete			(pUI);
-	xr_delete			(m_pHUDCursor);
+	xr_delete			(m_pHUDTarget);
 }
 
 //--------------------------------------------------------------------
@@ -142,14 +137,14 @@ CHUDManager::~CHUDManager()
 void CHUDManager::Load()
 {
 	xr_delete			(pUI);
-	pUI				= xr_new<CUI> (this);
-	pUI->Load		();
+	pUI					= xr_new<CUI> (this);
+	pUI->Load			();
 }
 //--------------------------------------------------------------------
 void CHUDManager::OnFrame()
 {
 	if (pUI) pUI->UIOnFrame();
-	m_pHUDCursor->CursorOnFrame();
+	m_pHUDTarget->CursorOnFrame();
 }
 //--------------------------------------------------------------------
 
@@ -217,12 +212,12 @@ void  CHUDManager::RenderUI()
 //			GetUICursor()->Render();
 	}
 	if (psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT) && !bAlready)	
-		m_pHUDCursor->Render();
+		m_pHUDTarget->Render();
 	draw_wnds_rects();
 	// Recalc new scale factor if resolution was changed
 //	OnDeviceCreate();
 	CGameFont* pFont	= Font().pFontGraffiti50Russian;
-	if( Device.Pause() && !g_pGamePersistent->m_pMainUI->IsActive() && bShowPauseString){
+	if( Device.Pause() && !g_pGamePersistent->m_pMainMenu->IsActive() && bShowPauseString){
 		pFont->SetColor	(0x80FF0000	);
 		pFont->OutSet	(Device.dwWidth/2.0f-(pFont->SizeOf("Game paused")/2.0f),Device.dwHeight/2.0f);
 		pFont->OutNext	("Game paused");
@@ -238,17 +233,17 @@ void CHUDManager::OnEvent(EVENT E, u64 P1, u64 P2)
 
 collide::rq_result&	CHUDManager::GetCurrentRayQuery	() 
 {
-	return m_pHUDCursor->RQ;
+	return m_pHUDTarget->RQ;
 }
 
 void CHUDManager::SetCrosshairDisp	(float disp)
 {	
-	m_pHUDCursor->HUDCrosshair.SetDispersion(psHUD_Flags.test(HUD_CROSSHAIR_DYNAMIC) ? disp : 0.f);
+	m_pHUDTarget->HUDCrosshair.SetDispersion(psHUD_Flags.test(HUD_CROSSHAIR_DYNAMIC) ? disp : 0.f);
 }
 
 void  CHUDManager::ShowCrosshair	(bool show)
 {
-	m_pHUDCursor->m_bShowCrosshair = show;
+	m_pHUDTarget->m_bShowCrosshair = show;
 }
 
 

@@ -35,8 +35,8 @@ public:
 };
 //---------------------------------------------------------------------------------------
 
-class CMainUI :
-	public IMainUI,
+class CMainMenu :
+	public IMainMenu,
 	public IInputReceiver,
 	public pureRender,
 	public CDialogHolder
@@ -68,8 +68,8 @@ class CMainUI :
 	xr_vector<CUIWindow*>		m_pp_draw_wnds;
 
 public:
-					CMainUI							();
-	virtual			~CMainUI						();
+					CMainMenu							();
+	virtual			~CMainMenu						();
 	CUICursor*		GetUICursor						()							{return m_pUICursor;}
 
 	virtual void	Activate						(bool bActive); 
@@ -126,10 +126,7 @@ public:
 
 protected:
 	CUIMessageBoxEx*	m_pMessageBox;
-	/*InvalidHost;
-	CUIMessageBoxEx*	m_pMessageInvalidPass;
-	CUIMessageBoxEx*	m_pMessageSessionFull;*/
 };
 
-extern CUICursor*	GetUICursor();
-extern CMainUI*		UI();
+ extern CUICursor*	GetUICursor();
+ extern CMainMenu*	UI();
