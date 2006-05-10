@@ -7,7 +7,7 @@
 #include "gamemtllib.h"
 #include "../skeletoncustom.h"
 #include "profiler.h"
-#include "MainUI.h"
+#include "MainMenu.h"
 #include "UICursor.h"
 #include "game_base_space.h"
 #include "level.h"

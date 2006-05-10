@@ -6,7 +6,7 @@
 #include "game_cl_base.h"
 #include "PHCommander.h"
 #include "net_queue.h"
-#include "MainUI.h"
+#include "MainMenu.h"
 
 void CLevel::net_Stop		()
 {

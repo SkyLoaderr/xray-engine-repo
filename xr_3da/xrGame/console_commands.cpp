@@ -43,7 +43,7 @@
 #	include "PHDebug.h"
 #	include "ui/UIDebugFonts.h" 
 #endif
-#include "MainUI.h"
+#include "MainMenu.h"
 #	include "hudmanager.h"
 
 extern void show_smart_cast_stats		();

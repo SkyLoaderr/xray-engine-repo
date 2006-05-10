@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
 #include "UIWindow.h"
-#include "../MainUI.h"
+#include "../MainMenu.h"
 
 //poolSS< std::_List_nod<WINDOW_LIST::_Myt, uialloc<WINDOW_LIST::_Myt> >, 128>	ui_allocator;
 poolSS< _12b, 128>	ui_allocator;

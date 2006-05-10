@@ -8,7 +8,7 @@
 
 #include "StdAfx.h"
 #include "UITabButtonMP.h"
-#include "../MainUI.h"
+#include "../MainMenu.h"
 #include "../HUDManager.h"
 
 const int TEXT_INDENTION = 43;

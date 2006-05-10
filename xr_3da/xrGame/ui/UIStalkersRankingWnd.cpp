@@ -11,7 +11,7 @@
 #include "../InventoryOwner.h"
 #include "../Level.h"
 #include "../pda.h"
-#include "../MainUI.h"
+#include "../MainMenu.h"
 #include "../actor.h"
 #include "../xrServer_Objects_ALife_Monsters.h"
 

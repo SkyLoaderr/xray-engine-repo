@@ -8,7 +8,7 @@
 #include <dinput.h>
 #include "../level.h"
 #include "../string_table.h"
-#include "../MainUI.h"
+#include "../MainMenu.h"
 #include "../HUDManager.h"
 
 CUISpeechMenu::CUISpeechMenu(LPCSTR section_name){

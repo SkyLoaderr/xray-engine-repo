@@ -9,7 +9,7 @@
 #include "StdAfx.h"
 #include "UIOutfitInfo.h"
 #include "../HUDManager.h"
-#include "../MainUI.h"
+#include "../MainMenu.h"
 #include "../level.h"
 #include "../game_base_space.h"
 

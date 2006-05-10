@@ -3,7 +3,7 @@
 #include "../CustomHUD.h"
 #include "HitMarker.h"
 #include "UI.h"
-#include "MainUI.h"
+#include "MainMenu.h"
 
 class CContextMenu;
 class CHUDTarget;

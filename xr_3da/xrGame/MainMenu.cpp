@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "MainUI.h"
+#include "MainMenu.h"
 #include "UI/UIDialogWnd.h"
 #include "ui/UIMessageBoxEx.h"
 #include "UICursor.h"

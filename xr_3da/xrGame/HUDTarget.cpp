@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "hudcursor.h"
+#include "hudtarget.h"
 #include "hudmanager.h"
 #include "GameMtlLib.h"
 

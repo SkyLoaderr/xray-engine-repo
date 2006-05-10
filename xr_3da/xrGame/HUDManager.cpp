@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "HUDManager.h"
-#include "hudcursor.h"
+#include "hudtarget.h"
 
 #include "actor.h"
 #include "../igame_level.h"

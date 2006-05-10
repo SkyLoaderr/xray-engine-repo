@@ -9,7 +9,7 @@
 #include "StdAfx.h"
 #include "UIDebugFonts.h"
 #include "dinput.h"
-#include "../MainUI.h"
+#include "../MainMenu.h"
 #include "../hudmanager.h"
 
 

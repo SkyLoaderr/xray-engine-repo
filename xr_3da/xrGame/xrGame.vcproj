@@ -9641,10 +9641,10 @@
 			Name="UI"
 			Filter="">
 			<File
-				RelativePath=".\MainUI.cpp">
+				RelativePath=".\MainMenu.cpp">
 			</File>
 			<File
-				RelativePath=".\MainUI.h">
+				RelativePath=".\MainMenu.h">
 			</File>
 			<File
 				RelativePath=".\UI.cpp">
@@ -11164,10 +11164,10 @@
 					RelativePath=".\HUDCrosshair.h">
 				</File>
 				<File
-					RelativePath=".\HUDCursor.cpp">
+					RelativePath=".\HUDTarget.cpp">
 				</File>
 				<File
-					RelativePath=".\HUDCursor.h">
+					RelativePath=".\HUDTarget.h">
 				</File>
 				<File
 					RelativePath=".\UICursor.cpp">

@@ -6,7 +6,7 @@
 
 #include "HUDCrosshair.h"
 #include "UIStaticItem.h"
-#include "MainUI.h"
+#include "MainMenu.h"
 
 CHUDCrosshair::CHUDCrosshair	()
 {

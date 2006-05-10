@@ -3,7 +3,7 @@
 #include "UIScrollBar.h"
 #include "../object_broker.h"
 #include "UICellItem.h"
-#include "../MainUI.h"
+#include "../MainMenu.h"
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 
