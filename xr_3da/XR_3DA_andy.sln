@@ -133,13 +133,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrGameSpy", "xrGame\xrGameS
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ren_caption", "..\ren_caption\ren_caption.vcproj", "{EFAC99B5-282A-45D0-B6A8-F90B1DC0ABFE}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 25
+		SccNumberOfProjects = 24
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -235,10 +231,6 @@ Global
 		SccProjectUniqueName23 = xrGame\\xrGameSpy\\xrGameSpy.vcproj
 		SccProjectName23 = \u0022$/xr_3da/xrGame/xrGameSpy\u0022,\u0020MRDBAAAA
 		SccLocalPath23 = xrGame\\xrGameSpy
-		CanCheckoutShared = true
-		SccProjectUniqueName24 = ..\\ren_caption\\ren_caption.vcproj
-		SccProjectName24 = \u0022$/ren_caption\u0022,\u0020UWIBAAAA
-		SccLocalPath24 = ..\\ren_caption
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -472,16 +464,6 @@ Global
 		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Profile.Build.0 = Release|Win32
 		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Release.ActiveCfg = Release|Win32
 		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Release.Build.0 = Release|Win32
-		{EFAC99B5-282A-45D0-B6A8-F90B1DC0ABFE}.Debug.ActiveCfg = Debug|Win32
-		{EFAC99B5-282A-45D0-B6A8-F90B1DC0ABFE}.Debug.Build.0 = Debug|Win32
-		{EFAC99B5-282A-45D0-B6A8-F90B1DC0ABFE}.DebugNoExceptions.ActiveCfg = Debug|Win32
-		{EFAC99B5-282A-45D0-B6A8-F90B1DC0ABFE}.DebugNoExceptions.Build.0 = Debug|Win32
-		{EFAC99B5-282A-45D0-B6A8-F90B1DC0ABFE}.Mixed.ActiveCfg = Debug|Win32
-		{EFAC99B5-282A-45D0-B6A8-F90B1DC0ABFE}.Mixed.Build.0 = Debug|Win32
-		{EFAC99B5-282A-45D0-B6A8-F90B1DC0ABFE}.Profile.ActiveCfg = Release|Win32
-		{EFAC99B5-282A-45D0-B6A8-F90B1DC0ABFE}.Profile.Build.0 = Release|Win32
-		{EFAC99B5-282A-45D0-B6A8-F90B1DC0ABFE}.Release.ActiveCfg = Release|Win32
-		{EFAC99B5-282A-45D0-B6A8-F90B1DC0ABFE}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

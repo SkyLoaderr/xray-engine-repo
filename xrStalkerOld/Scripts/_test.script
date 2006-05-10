@@ -33,7 +33,7 @@ end
 
 
 function main()
-	level.add_cam_effector2("camera_effects\\agroprom_demo.anm", 123, false)
+--	level.add_cam_effector2("camera_effects\\agroprom_demo.anm", 123, false)
 	
 --	db.actor:activate_slot(db.actor:active_slot()+1)
 

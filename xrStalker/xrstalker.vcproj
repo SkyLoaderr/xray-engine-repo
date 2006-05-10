@@ -1908,7 +1908,13 @@
 					RelativePath=".\config\weathers\thunderbolt.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\weathers\weather_default.ltx">
+				</File>
+				<File
 					RelativePath=".\config\weathers\weather_map.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\weathers\weather_mp.ltx">
 				</File>
 				<File
 					RelativePath=".\config\weathers\weather_rain.ltx">

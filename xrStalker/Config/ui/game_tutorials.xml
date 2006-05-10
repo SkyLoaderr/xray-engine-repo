@@ -24,28 +24,45 @@
 		</item>
 	</intro_logo>
 	<intro_game>
-		<global_wnd x="0" y="0" width="1024" height="768">
+		<play_each_item>1</play_each_item>
+		<_global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
 				<window_name>back</window_name>
 				<texture>intro\intro_back</texture>
 			</auto_static>
+		</_global_wnd>
+		<global_wnd x="0" y="0" width="1" height="1">
+			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<window_name>back</window_name>
+			</auto_static>
 		</global_wnd>
-		<play_each_item>1</play_each_item>
-		<item type="video">
+		
+		<item>
+			<length_sec>1</length_sec>
+			<pause_state>off</pause_state>
+			<guard_key/>
+			<sound/>
+			<cursor_pos/>
+			<grab_input>1</grab_input>
+			<pda_section>pda_closed</pda_section>
+			<main_wnd/>
+		</item>
+		
+		<_item type="video">
 			<sound>intro\intro_stalker</sound>
 			<pause_state>on</pause_state>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture>intro\intro_stalker</texture>
 			</video_wnd>
-		</item>
-		<item type="video">
+		</_item>
+		<_item type="video">
 			<sound>intro\intro_mission</sound>
 			<pause_state>on</pause_state>
 			<delay>1</delay>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture>intro\intro_mission</texture>
 			</video_wnd>
-		</item>
+		</_item>
 <!--		<item type="video">
 			<grab_input>1</grab_input>
 			<sound>intro\intro_kill</sound>
