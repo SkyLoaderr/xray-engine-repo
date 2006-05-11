@@ -124,14 +124,20 @@ void CUIComboBox::OnFocusReceive(){
 }
 
 bool CUIComboBox::OnMouse(float x, float y, EUIMessages mouse_action){
-    if(CUIWindow::OnMouse(x, y, mouse_action)) return true;
+	if(CUIWindow::OnMouse(x, y, mouse_action)) 
+		return true;
 
-	bool CursorOverWindow = (0 <= x) && (GetWidth() >= x) && (0 <= y) && (GetHeight() >= y);
+	bool bCursorOverWindow = false;
+//	Frect r = GetWndRect();
+	bCursorOverWindow |= (0 <= x) && (GetWidth() >= x) && (0 <= y) && (GetHeight() >= y);
+	/*r = m_frameWnd.GetWndRect();
+	r.right += m_btn.GetWidth();
+	bCursorOverWindow |= (r.left <= x) && (r.right >= x) && (r.top <= y) && (r.bottom >= y);		*/
 
 	switch (m_eState){
 		case LIST_EXPANDED:			
 
-			if ((!CursorOverWindow) && mouse_action == WINDOW_LBUTTON_DOWN)
+			if ((!bCursorOverWindow) && mouse_action == WINDOW_LBUTTON_DOWN)
 			{
                 ShowList(false);
 				return true;
@@ -142,7 +148,9 @@ bool CUIComboBox::OnMouse(float x, float y, EUIMessages mouse_action){
 		default:
 			break;
 	}	
-	return false;
+	 
+
+        return false;
 }
 
 void CUIComboBox::SetState(UIState state){

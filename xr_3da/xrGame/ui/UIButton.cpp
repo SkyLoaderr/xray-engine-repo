@@ -84,8 +84,8 @@ bool  CUIButton::OnMouse(float x, float y, EUIMessages mouse_action)
 			HasChildMouseHandler())
 		return false;
 
-	if(mouse_action == WINDOW_MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
-		GetParent()->SetCapture(this, m_bCursorOverWindow);
+	//if(mouse_action == WINDOW_MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
+	//	GetParent()->SetCapture(this, m_bCursorOverWindow);
 
 	switch (m_ePressMode)
 	{
@@ -96,7 +96,7 @@ bool  CUIButton::OnMouse(float x, float y, EUIMessages mouse_action)
 			{
 				m_eButtonState = BUTTON_PUSHED;
 				GetMessageTarget()->SendMessage(this, BUTTON_DOWN, NULL);
-				GetParent()->SetCapture(this, true);
+//				GetParent()->SetCapture(this, true);
 			}
 		}
 		else if(m_eButtonState == BUTTON_PUSHED)
@@ -109,7 +109,7 @@ bool  CUIButton::OnMouse(float x, float y, EUIMessages mouse_action)
 				if (!m_bIsSwitch)
 					m_eButtonState = BUTTON_NORMAL;
 			
-				GetParent()->SetCapture(this, false);
+//				GetParent()->SetCapture(this, false);
 			}
 			else if(mouse_action == WINDOW_MOUSE_MOVE)
 			{
@@ -127,7 +127,7 @@ bool  CUIButton::OnMouse(float x, float y, EUIMessages mouse_action)
 			else if(mouse_action == WINDOW_LBUTTON_UP)
 			{
 				m_eButtonState = BUTTON_NORMAL;
-				GetParent()->SetCapture(this, false);
+//				GetParent()->SetCapture(this, false);
 			}
 		}
 		break;
@@ -138,12 +138,12 @@ bool  CUIButton::OnMouse(float x, float y, EUIMessages mouse_action)
 			if(m_bCursorOverWindow)
 			{
 				m_eButtonState = BUTTON_PUSHED;
-				GetParent()->SetCapture(this, true);
+//				GetParent()->SetCapture(this, true);
 			}
 			else
 			{
 				m_eButtonState = BUTTON_NORMAL;
-				GetParent()->SetCapture(this, false);
+//				GetParent()->SetCapture(this, false);
 			}
 		}
 		else if(mouse_action == WINDOW_LBUTTON_DOWN || mouse_action == WINDOW_LBUTTON_DB_CLICK)
