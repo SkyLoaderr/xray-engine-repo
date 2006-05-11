@@ -121,6 +121,7 @@ function main (need_items)
 
 
         db.actor:give_info_portion ("agr_factory_assault_start")
+        printf("fuck")
         db.actor:give_info_portion ("agroprom_find_stalker_phantom")
         db.actor:give_info_portion ("agr_krot_skirmish_start")
 
