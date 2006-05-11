@@ -1161,7 +1161,7 @@ function set_stalker_enemy (sid, draftsman)
     local h = hit ()
     h.power = 0
     h.direction = vector():set( 1, 0, 0 )
-    h.impulse = 1
+    h.impulse = 0
     h.draftsman = draftsman
     h.type = hit.strike
     npc:hit (h)
