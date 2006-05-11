@@ -165,6 +165,7 @@
 #	include	"climableobject.h"
 #	include "space_restrictor.h"
 #	include "smart_zone.h"
+#	include "InventoryBox.h"
 #endif
 
 #ifndef NO_XR_GAME
@@ -357,4 +358,7 @@ void CObjectFactory::register_classes	()
 	ADD(CClimableObject			,CSE_ALifeObjectClimable		,CLSID_OBJECT_CLIMABLE			,"obj_climable");
 	ADD(CPhysicsSkeletonObject	,CSE_ALifePHSkeletonObject		,CLSID_PH_SKELETON_OBJECT		,"obj_phskeleton");
 	ADD(CDestroyablePhysicsObject,CSE_ALifeObjectPhysic			,CLSID_PHYSICS_DESTROYABLE		,"obj_phys_destroyable");
+
+	ADD(CInventoryBox			,CSE_ALifeDynamicObjectVisual	,CLSID_INVENTORY_BOX			,"inventory_box");
+	
 }

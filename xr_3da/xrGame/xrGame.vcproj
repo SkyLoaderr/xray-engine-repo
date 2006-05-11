@@ -7977,6 +7977,16 @@
 							RelativePath=".\DelayedActionFuse.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="inventory_box"
+						Filter="">
+						<File
+							RelativePath=".\InventoryBox.cpp">
+						</File>
+						<File
+							RelativePath=".\InventoryBox.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Particles"

@@ -43,7 +43,6 @@ public:
 	virtual BOOL	net_Spawn					(CSE_Abstract* DC);
 	virtual void	net_Destroy					();
 	virtual void	Center						(Fvector& C) const;
-	virtual void	OnOwnershipTake				(u16 id);
 	virtual	void	NotificateDestroy			(CPHDestroyableNotificate *dn);
 	virtual float	BlowoutRadiusPercent		(CPhysicsShellHolder* GO);
 

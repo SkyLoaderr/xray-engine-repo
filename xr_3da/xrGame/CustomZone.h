@@ -76,7 +76,7 @@ public:
 	virtual		void	Postprocess						(float val)					{}
 	virtual		void	net_Relcase						(CObject* O	);
 	virtual		void	OnEvent							(NET_Packet& P, u16 type);
-	virtual		void	OnOwnershipTake					(u16 id);
+				void	OnOwnershipTake					(u16 id);
 
 				float	GetMaxPower						()							{return m_fMaxPower;}
 				void	SetMaxPower						(float p)					{m_fMaxPower = p;}

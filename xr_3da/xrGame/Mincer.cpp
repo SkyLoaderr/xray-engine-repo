@@ -117,18 +117,6 @@ void CMincer ::Center	(Fvector& C) const
 	C.set(Position());
 }
 
-
-void CMincer::OnOwnershipTake(u16 id)
-{
-	
-	//if(obj->CLS_ID ==CLSID_ARTEFACT)
-	{
-		inherited::OnOwnershipTake(id);
-		return;
-	}
-
-
-}
 void CMincer::NotificateDestroy			(CPHDestroyableNotificate *dn)
 {
 	Fvector dir;

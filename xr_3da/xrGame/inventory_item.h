@@ -201,43 +201,6 @@ protected:
 	virtual void				UpdateXForm	();
 
 protected:
-/*
-	struct net_update_IItem {	u32					dwTimeStamp;
-								SPHNetState			State;};
-
-	xr_deque<net_update_IItem>	NET_IItem;
-	/// spline coeff /////////////////////
-	float			SCoeff[3][4];
-
-#ifdef DEBUG
-	DEF_VECTOR		(VIS_POSITION, Fvector);
-	VIS_POSITION	LastVisPos;
-#endif
-
-	Fvector			IStartPos;
-	Fquaternion		IStartRot;
-
-	Fvector			IRecPos;
-	Fquaternion		IRecRot;
-
-	Fvector			IEndPos;
-	Fquaternion		IEndRot;	
-
-	SPHNetState		LastState;
-	SPHNetState		RecalculatedState;
-
-#ifdef DEBUG
-	SPHNetState		CheckState;
-#endif
-	SPHNetState		PredictedState;
-
-	bool			m_bInInterpolation		;
-	bool			m_bInterpolate			;
-	u32				m_dwIStartTime			;
-	u32				m_dwIEndTime			;
-	u32				m_dwILastUpdateTime		;
-*/
-
 	net_updateData*				m_net_updateData;
 	net_updateData*				NetSync						();
 	void						CalculateInterpolationParams();
