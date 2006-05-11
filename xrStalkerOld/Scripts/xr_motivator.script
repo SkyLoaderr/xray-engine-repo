@@ -343,52 +343,53 @@ function motivator_binder:load(reader)
 end
 
 function motivator_binder:hear_callback(self, who, sound_type, sound_position, sound_power)
-	if who:id() ~= self:id() then
-		local type = "NIL"
-		if bit_and(sound_type, snd_type.weapon) == snd_type.weapon then
-			type = "WPN"
-			if bit_and(sound_type, snd_type.weapon_shoot) == snd_type.weapon_shoot then
-				type = "WPN_shoot"
-			elseif bit_and(sound_type, snd_type.weapon_empty) == snd_type.weapon_empty then
-				type = "WPN_empty"
-			elseif bit_and(sound_type, snd_type.weapon_bullet_hit) == snd_type.weapon_bullet_hit then
-				type = "WPN_hit"
-			elseif bit_and(sound_type, snd_type.weapon_reload) == snd_type.weapon_reload then
-				type = "WPN_reload"
-			end
-		elseif bit_and(sound_type, snd_type.item) == snd_type.item then
-			type = "ITM"
-			if bit_and(sound_type, snd_type.item_pick_up) == snd_type.item_pick_up then
-				type = "ITM_pckup"
-			elseif bit_and(sound_type, snd_type.item_drop) == snd_type.item_drop then
-				type = "ITM_drop"
-			elseif bit_and(sound_type, snd_type.item_hide) == snd_type.item_hide then
-				type = "ITM_hide"
-			elseif bit_and(sound_type, snd_type.item_take) == snd_type.item_take then
-				type = "ITM_take"
-			elseif bit_and(sound_type, snd_type.item_use) == snd_type.item_use then
-				type = "ITM_use"
-			end
-		elseif bit_and(sound_type, snd_type.monster) == snd_type.monster then
-			type = "MST"
-			if bit_and(sound_type, snd_type.monster_die) == snd_type.monster_die then
-				type = "MST_die"
-			elseif bit_and(sound_type, snd_type.monster_injure) == snd_type.monster_injure then
-				type = "MST_damage"
-			elseif bit_and(sound_type, snd_type.monster_step) == snd_type.monster_step then
-				type = "MST_step"
-			elseif bit_and(sound_type, snd_type.monster_talk) == snd_type.monster_talk then
-				type = "MST_talk"
-			elseif bit_and(sound_type, snd_type.monster_attack) == snd_type.monster_attack then
-				type = "MST_attack"
-			elseif bit_and(sound_type, snd_type.monster_eat) == snd_type.monster_eat then
-				type = "MST_eat"
-			end
+--	if who:id() == self:id() then
+--		return
+--	end
+	local type = "NIL"
+	if bit_and(sound_type, snd_type.weapon) == snd_type.weapon then
+		type = "WPN"
+		if bit_and(sound_type, snd_type.weapon_shoot) == snd_type.weapon_shoot then
+			type = "WPN_shoot"
+		elseif bit_and(sound_type, snd_type.weapon_empty) == snd_type.weapon_empty then
+			type = "WPN_empty"
+		elseif bit_and(sound_type, snd_type.weapon_bullet_hit) == snd_type.weapon_bullet_hit then
+			type = "WPN_hit"
+		elseif bit_and(sound_type, snd_type.weapon_reload) == snd_type.weapon_reload then
+			type = "WPN_reload"
 		end
-		--if type ~= "NIL" then
-			printf("SND *%s* dist: %d [%f], %s", type, self:position():distance_to(who:position()), sound_power, who:name())
-		--end
+	elseif bit_and(sound_type, snd_type.item) == snd_type.item then
+		type = "ITM"
+		if bit_and(sound_type, snd_type.item_pick_up) == snd_type.item_pick_up then
+			type = "ITM_pckup"
+		elseif bit_and(sound_type, snd_type.item_drop) == snd_type.item_drop then
+			type = "ITM_drop"
+		elseif bit_and(sound_type, snd_type.item_hide) == snd_type.item_hide then
+			type = "ITM_hide"
+		elseif bit_and(sound_type, snd_type.item_take) == snd_type.item_take then
+			type = "ITM_take"
+		elseif bit_and(sound_type, snd_type.item_use) == snd_type.item_use then
+			type = "ITM_use"
+		end
+	elseif bit_and(sound_type, snd_type.monster) == snd_type.monster then
+		type = "MST"
+		if bit_and(sound_type, snd_type.monster_die) == snd_type.monster_die then
+			type = "MST_die"
+		elseif bit_and(sound_type, snd_type.monster_injure) == snd_type.monster_injure then
+			type = "MST_damage"
+		elseif bit_and(sound_type, snd_type.monster_step) == snd_type.monster_step then
+			type = "MST_step"
+		elseif bit_and(sound_type, snd_type.monster_talk) == snd_type.monster_talk then
+			type = "MST_talk"
+		elseif bit_and(sound_type, snd_type.monster_attack) == snd_type.monster_attack then
+			type = "MST_attack"
+		elseif bit_and(sound_type, snd_type.monster_eat) == snd_type.monster_eat then
+			type = "MST_eat"
+		end
 	end
+	--if type ~= "NIL" then
+		printf("SND *%s* dist: %d [%f], %s -> %s", type, self:position():distance_to(who:position()), sound_power, who:name(), self:name())
+	--end
 end
 
 function AddToMotivator(npc)
