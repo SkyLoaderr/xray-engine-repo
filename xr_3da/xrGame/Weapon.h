@@ -3,8 +3,6 @@
 
 #include "PhysicsShell.h"
 #include "weaponammo.h"
-#include "UIStaticItem.h"
-#include "UI\UIStatic.h"
 #include "PHShellCreator.h"
 
 #include "ShootingObject.h"
@@ -20,6 +18,7 @@ class CSE_ALifeItemWeapon;
 class CSE_ALifeItemWeaponAmmo;
 class CWeaponMagazined;
 class CParticlesObject;
+class CUIStaticItem;
 
 class CWeapon : public CHudItemObject,
 				public CShootingObject
@@ -229,8 +228,7 @@ protected:
 	//время приближения
 	float			m_fZoomRotateTime;
 	//текстура для снайперского прицела, в режиме приближения
-	CUIStaticItem	m_UIScope;
-	CUIStatic		m_UILens;
+	CUIStaticItem*	m_UIScope;
 	//коэффициент увеличения прицеливания
 	float			m_fIronSightZoomFactor;
 	//коэффициент увеличения прицела

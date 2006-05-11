@@ -76,10 +76,12 @@ CWeapon::CWeapon(LPCSTR name)
 	m_can_be_strapped		= false;
 	m_ef_main_weapon_type	= u32(-1);
 	m_ef_weapon_type		= u32(-1);
+	m_UIScope				= NULL;
 }
 
 CWeapon::~CWeapon		()
 {
+	xr_delete	(m_UIScope);
 }
 
 //void CWeapon::Hit(float P, Fvector &dir,	
@@ -1108,7 +1110,6 @@ void CWeapon::OnZoomIn()
 	m_bZoomMode = true;
 	m_fZoomFactor = CurrentZoomFactor();
 	StopHudInertion();
-	m_UILens.SetPPMode();
 }
 
 void CWeapon::OnZoomOut()
@@ -1117,15 +1118,11 @@ void CWeapon::OnZoomOut()
 	m_fZoomFactor = DEFAULT_FOV;
 
 	StartHudInertion();
-	m_UILens.ResetPPMode();
 }
 
 CUIStaticItem* CWeapon::ZoomTexture()
 {
-	if(m_UIScope.GetShader() && UseScopeTexture()) 
-		return &m_UIScope;
-	else 
-		return NULL;
+	return m_UIScope;
 }
 
 void CWeapon::SwitchState(u32 S)
