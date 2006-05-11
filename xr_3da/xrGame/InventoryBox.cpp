@@ -43,3 +43,15 @@ void CInventoryBox::net_Relcase(CObject* O)
 {
 	inherited::net_Relcase(O);
 }
+#include "inventory_item.h"
+void CInventoryBox::AddAvailableItems(TIItemContainer& items_container) const
+{
+	xr_vector<u16>::const_iterator it = m_items.begin();
+	xr_vector<u16>::const_iterator it_e = m_items.end();
+
+	for(;it!=it_e;++it)
+	{
+		PIItem itm = smart_cast<PIItem>(Level().Objects.net_Find(*it));VERIFY(itm);
+		items_container.push_back	(itm);
+	}
+}

@@ -44,7 +44,7 @@ class CUsableScriptObject;
 struct SShootingEffector;
 struct SSleepEffector;
 class  CSleepEffectorPP;
-
+class CInventoryBox;
 //class  CActorEffector;
 
 class	CHudItem;
@@ -409,6 +409,7 @@ protected:
 	CInventoryOwner*		m_pPersonWeLookingAt;
 	CHolderCustom*			m_pVehicleWeLookingAt;
 	CGameObject*			m_pObjectWeLookingAt;
+	CInventoryBox*			m_pInvBoxWeLookingAt;
 
 	// Tip for action for object we're looking at
 	shared_str				m_sDefaultObjAction;
@@ -416,6 +417,7 @@ protected:
 	shared_str				m_sDeadCharacterUseAction;
 	shared_str				m_sCarCharacterUseAction;
 	shared_str				m_sInventoryItemUseAction;
+	shared_str				m_sInventoryBoxUseAction;
 
 	//режим подбирания предметов
 	bool					m_bPickupMode;

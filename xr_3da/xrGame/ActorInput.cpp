@@ -23,6 +23,8 @@
 #include "string_table.h"
 #include "UI/UIStatic.h"
 #include "CharacterPhysicsSupport.h"
+#include "InventoryBox.h"
+
 void CActor::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())		return;
@@ -336,6 +338,11 @@ void CActor::ActorUse()
 
 	if(m_pUsableObject)m_pUsableObject->use(this);
 	
+	if(m_pInvBoxWeLookingAt){
+		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		if(pGameSP) pGameSP->StartCarBody(this, m_pInvBoxWeLookingAt );
+		return;
+	}
 
 	if(!m_pUsableObject||m_pUsableObject->nonscript_usable())
 	{

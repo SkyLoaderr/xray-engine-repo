@@ -36,15 +36,6 @@ BOOL CActor::feel_touch_contact		(CObject *O)
 	if(inventory_owner && inventory_owner != smart_cast<CInventoryOwner*>(this))
 		return TRUE;
 
-/**
-	CCustomZone	*custom_zone = smart_cast<CCustomZone*>(O);
-	if (!custom_zone)
-		return	(TRUE);
-
-	if (custom_zone->inside(Position()))
-		return	(TRUE);
-/**/
-
 	return		(FALSE);
 }
 

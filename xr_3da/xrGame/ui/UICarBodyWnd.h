@@ -1,20 +1,16 @@
 #pragma once
 
-
 #include "UIDialogWnd.h"
-//.#include "UIDragDropItem.h"
-//.#include "UIDragDropList.h"
-//.#include "UIProgressBar.h"
 #include "UIEditBox.h"
 #include "../inventory_space.h"
 
-//.class CInventoryOwner;
 class CUIDragDropListEx;
 class CUIItemInfo;
 class CUICharacterInfo;
 class CUIPropertiesBox;
 class CUIButton;
 class CUICellItem;
+class CInventoryBox;
 
 class CUICarBodyWnd: public CUIDialogWnd
 {
@@ -31,7 +27,7 @@ public:
 	virtual void			SendMessage					(CUIWindow *pWnd, s16 msg, void *pData);
 
 	void					InitCarBody					(CInventoryOwner* pOurInv, CInventoryOwner* pOthersInv);
-	
+	void					InitCarBody					(CInventoryOwner* pOur, CInventoryBox* pInvBox);
 	virtual void			Draw						();
 	virtual void			Update						();
 		
@@ -45,7 +41,9 @@ public:
 
 protected:
 	CInventoryOwner*		m_pOurObject;
+
 	CInventoryOwner*		m_pOthersObject;
+	CInventoryBox*			m_pInventoryBox;
 
 	CUIDragDropListEx*		m_pUIOurBagList;
 	CUIDragDropListEx*		m_pUIOthersBagList;
@@ -68,8 +66,6 @@ protected:
 	CUIPropertiesBox*		m_pUIPropertiesBox;
 	CUIButton*				m_pUITakeAll;
 
-	//для сортировки вещей
-	TIItemContainer			ruck_list;
 	CUICellItem*			m_pCurrentCellItem;
 
 	void					UpdateLists					();
@@ -80,8 +76,6 @@ protected:
 	bool					ToOurBag					();
 	bool					ToOthersBag					();
 	
-
-
 	void					SetCurrentItem				(CUICellItem* itm);
 	CUICellItem*			CurrentItem					();
 	PIItem					CurrentIItem				();

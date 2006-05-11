@@ -86,6 +86,8 @@
 #include "Script_Game_Object.h"
 #include "Game_Object_Space.h"
 #include "script_callback_ex.h"
+#include "InventoryBox.h"
+
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
@@ -401,6 +403,7 @@ void CActor::Load	(LPCSTR section )
 	m_sDeadCharacterUseAction		= string_table.translate("dead_character_use");
 	m_sCarCharacterUseAction		= string_table.translate("car_character_use");
 	m_sInventoryItemUseAction		= string_table.translate("inventory_item_use");
+	m_sInventoryBoxUseAction		= string_table.translate("inventory_box_use");
 	//---------------------------------------------------------------------
 	m_sHeadShotParticle	= READ_IF_EXISTS(pSettings,r_string,section,"HeadShotParticle",0);
 
@@ -1106,6 +1109,7 @@ void CActor::shedule_Update	(u32 DT)
 		
 		CGameObject						*game_object = smart_cast<CGameObject*>(RQ.O);
 		m_pUsableObject					= smart_cast<CUsableScriptObject*>(game_object);
+		m_pInvBoxWeLookingAt			= smart_cast<CInventoryBox*>(game_object);
 		inventory().m_pTarget			= smart_cast<PIItem>(game_object);
 		m_pPersonWeLookingAt			= smart_cast<CInventoryOwner*>(game_object);
 		m_pVehicleWeLookingAt			= smart_cast<CHolderCustom*>(game_object);
@@ -1130,6 +1134,8 @@ void CActor::shedule_Update	(u32 DT)
 
 				else if (inventory().m_pTarget)
 					m_sDefaultObjAction = m_sInventoryItemUseAction;
+				else if (m_pInvBoxWeLookingAt)
+					m_sDefaultObjAction = m_sInventoryBoxUseAction;
 				else 
 					m_sDefaultObjAction = NULL;
 			}
@@ -1143,6 +1149,7 @@ void CActor::shedule_Update	(u32 DT)
 		m_pUsableObject			= NULL;
 		m_pObjectWeLookingAt	= NULL;
 		m_pVehicleWeLookingAt	= NULL;
+		m_pInvBoxWeLookingAt	= NULL;
 	}
 
 //	UpdateSleep									();

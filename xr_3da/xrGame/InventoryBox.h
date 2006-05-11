@@ -10,4 +10,5 @@ public:
 	virtual		void	OnEvent							(NET_Packet& P, u16 type);
 	virtual		BOOL	net_Spawn						(CSE_Abstract* DC);
 	virtual		void	net_Relcase						(CObject* O	);
+				void	AddAvailableItems				(TIItemContainer& items_container) const;
 };

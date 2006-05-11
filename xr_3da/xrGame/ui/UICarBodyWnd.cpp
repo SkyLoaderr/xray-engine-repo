@@ -20,9 +20,12 @@
 #include "../alife_registry_wrappers.h"
 #include "UIButton.h"
 #include "UIListBoxItem.h"
+#include "../InventoryBox.h"
 
 #define				CAR_BODY_XML		"carbody_new.xml"
 #define				CARBODY_ITEM_XML	"carbody_item.xml"
+
+void move_item (u16 from_id, u16 to_id, u16 what_id);
 
 CUICarBodyWnd::CUICarBodyWnd()
 {
@@ -127,11 +130,27 @@ void CUICarBodyWnd::Init()
 
 }
 
+void CUICarBodyWnd::InitCarBody(CInventoryOwner* pOur, CInventoryBox* pInvBox)
+{
+    m_pOurObject									= pOur;
+	m_pOthersObject									= NULL;
+	m_pInventoryBox									= pInvBox;
+
+	u16 our_id										= smart_cast<CGameObject*>(m_pOurObject)->ID();
+	m_pUICharacterInfoLeft->InitCharacter			(our_id);
+	m_pUICharacterInfoRight->ClearInfo				();
+	m_pUIPropertiesBox->Hide						();
+	EnableAll										();
+	UpdateLists										();
+
+}
+
 void CUICarBodyWnd::InitCarBody(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 {
 
     m_pOurObject									= pOur;
 	m_pOthersObject									= pOthers;
+	m_pInventoryBox									= NULL;
 	
 	u16 our_id										= smart_cast<CGameObject*>(m_pOurObject)->ID();
 	u16 other_id									= smart_cast<CGameObject*>(m_pOthersObject)->ID();
@@ -145,7 +164,6 @@ void CUICarBodyWnd::InitCarBody(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 			m_pUICharacterInfoRight->InitCharacter	(other_id);
 		} else {
 			m_pUICharacterInfoRight->ClearInfo		();
-//.			return;
 		}
 	}
 
@@ -180,6 +198,7 @@ void CUICarBodyWnd::UpdateLists_delayed()
 
 void CUICarBodyWnd::UpdateLists()
 {
+	TIItemContainer								ruck_list;
 	m_pUIOurBagList->ClearAll					(true);
 	m_pUIOthersBagList->ClearAll				(true);
 
@@ -197,7 +216,11 @@ void CUICarBodyWnd::UpdateLists()
 
 
 	ruck_list.clear									();
-	m_pOthersObject->inventory().AddAvailableItems	(ruck_list, false);
+	if(m_pOthersObject)
+		m_pOthersObject->inventory().AddAvailableItems	(ruck_list, false);
+	else
+		m_pInventoryBox->AddAvailableItems			(ruck_list);
+
 	std::sort										(ruck_list.begin(),ruck_list.end(),InventoryUtilities::GreaterRoomInRuck);
 
 	//Чужой рюкзак
@@ -253,12 +276,14 @@ void CUICarBodyWnd::Update()
 {
 	if(	m_b_need_update||
 		m_pOurObject->inventory().ModifyFrame()==Device.dwFrame || 
-		m_pOthersObject->inventory().ModifyFrame()==Device.dwFrame)
+		(m_pOthersObject&&m_pOthersObject->inventory().ModifyFrame()==Device.dwFrame))
 
 		UpdateLists		();
 
-	if((smart_cast<CGameObject*>(m_pOurObject))->Position().distance_to((smart_cast<CGameObject*>(m_pOthersObject))->Position()) > 3.0f){
-			GetHolder()->StartStopMenu(this,true);
+	
+	if(m_pOthersObject && (smart_cast<CGameObject*>(m_pOurObject))->Position().distance_to((smart_cast<CGameObject*>(m_pOthersObject))->Position()) > 3.0f)
+	{
+		GetHolder()->StartStopMenu(this,true);
 	}
 	inherited::Update();
 }
@@ -302,17 +327,29 @@ void CUICarBodyWnd::SetCurrentItem(CUICellItem* itm)
 void CUICarBodyWnd::TakeAll()
 {
 	u32 cnt				= m_pUIOthersBagList->ItemsCount();
+	u16 tmp_id = 0;
+	if(m_pInventoryBox){
+		tmp_id	= (smart_cast<CGameObject*>(m_pOurObject))->ID();
+	}
+
 	for(u32 i=0; i<cnt; ++i)
 	{
 		CUICellItem*	ci = m_pUIOthersBagList->GetItemIdx(i);
 		for(u32 j=0; j<ci->ChildsCount(); ++j)
 		{
 			PIItem _itm		= (PIItem)(ci->Child(j)->m_pData);
-			TransferItem	(_itm, m_pOthersObject, m_pOurObject, false);
+			if(m_pOthersObject)
+				TransferItem	(_itm, m_pOthersObject, m_pOurObject, false);
+			else
+				move_item		(m_pInventoryBox->ID(), tmp_id, _itm->object().ID());
 		
 		}
 		PIItem itm		= (PIItem)(ci->m_pData);
-		TransferItem	(itm, m_pOthersObject, m_pOurObject, false);
+		if(m_pOthersObject)
+			TransferItem	(itm, m_pOthersObject, m_pOurObject, false);
+		else
+			move_item		(m_pInventoryBox->ID(), tmp_id, itm->object().ID());
+
 	}
 }
 
@@ -398,17 +435,28 @@ bool CUICarBodyWnd::OnItemDrop(CUICellItem* itm)
 	CUIDragDropListEx*	old_owner		= itm->OwnerList();
 	CUIDragDropListEx*	new_owner		= CUIDragDropListEx::m_drag_item->BackList();
 	
-	if(old_owner==new_owner || !old_owner || !new_owner)
-					return false;
-	if( TransferItem		(	CurrentIItem(),
-							(old_owner==m_pUIOthersBagList)?m_pOthersObject:m_pOurObject, 
-							(old_owner==m_pUIOurBagList)?m_pOthersObject:m_pOurObject, 
-							(old_owner==m_pUIOurBagList)
-						)
-		){
-		CUICellItem* ci					= old_owner->RemoveItem(CurrentItem(), false);
-		new_owner->SetItem				(ci);
+	if(old_owner==new_owner || !old_owner || !new_owner || (new_owner==m_pUIOthersBagList&&m_pInventoryBox))
+					return true;
+
+	if(m_pOthersObject)
+	{
+		if( TransferItem		(	CurrentIItem(),
+								(old_owner==m_pUIOthersBagList)?m_pOthersObject:m_pOurObject, 
+								(old_owner==m_pUIOurBagList)?m_pOthersObject:m_pOurObject, 
+								(old_owner==m_pUIOurBagList)
+							)
+			)
+		{
+			CUICellItem* ci					= old_owner->RemoveItem(CurrentItem(), false);
+			new_owner->SetItem				(ci);
 		}
+	}else
+	{
+		u16 tmp_id	= (smart_cast<CGameObject*>(m_pOurObject))->ID();
+		move_item				(m_pInventoryBox->ID(),tmp_id,CurrentIItem()->object().ID());
+		CUICellItem* ci			= old_owner->RemoveItem(CurrentItem(), false);
+		new_owner->SetItem		(ci);
+	}
 	SetCurrentItem					(NULL);
 
 	return				true;
@@ -424,19 +472,27 @@ bool CUICarBodyWnd::OnItemDbClick(CUICellItem* itm)
 	CUIDragDropListEx*	old_owner		= itm->OwnerList();
 	CUIDragDropListEx*	new_owner		= (old_owner==m_pUIOthersBagList)?m_pUIOurBagList:m_pUIOthersBagList;
 
-	if( TransferItem		(	CurrentIItem(),
-							(old_owner==m_pUIOthersBagList)?m_pOthersObject:m_pOurObject, 
-							(old_owner==m_pUIOurBagList)?m_pOthersObject:m_pOurObject, 
-							(old_owner==m_pUIOurBagList)
-							)
-		){
+	if(m_pOthersObject)
+	{
+		if( TransferItem		(	CurrentIItem(),
+								(old_owner==m_pUIOthersBagList)?m_pOthersObject:m_pOurObject, 
+								(old_owner==m_pUIOurBagList)?m_pOthersObject:m_pOurObject, 
+								(old_owner==m_pUIOurBagList)
+								)
+			)
+		{
+			CUICellItem* ci			= old_owner->RemoveItem(CurrentItem(), false);
+			new_owner->SetItem		(ci);
+		}
+	}else
+	{
+		if(old_owner==m_pUIOurBagList) return true;
+		u16 tmp_id				= (smart_cast<CGameObject*>(m_pOurObject))->ID();
+		move_item				(m_pInventoryBox->ID(),tmp_id,CurrentIItem()->object().ID());
+	}
+	SetCurrentItem				(NULL);
 
-	CUICellItem* ci			= old_owner->RemoveItem(CurrentItem(), false);
-	new_owner->SetItem		(ci);
-						}
-	SetCurrentItem			(NULL);
-
-	return				true;
+	return						true;
 }
 
 bool CUICarBodyWnd::OnItemSelected(CUICellItem* itm)
@@ -451,8 +507,30 @@ bool CUICarBodyWnd::OnItemRButtonClick(CUICellItem* itm)
 	return						false;
 }
 
+void move_item (u16 from_id, u16 to_id, u16 what_id)
+{
+	NET_Packet P;
+	CGameObject::u_EventGen					(	P,
+												GE_OWNERSHIP_REJECT,
+												from_id
+											);
+
+	P.w_u16									(what_id);
+	CGameObject::u_EventSend				(P);
+
+	//другому инвентарю - взять вещь 
+	CGameObject::u_EventGen					(	P,
+												GE_OWNERSHIP_TAKE,
+												to_id
+											);
+	P.w_u16									(what_id);
+	CGameObject::u_EventSend				(P);
+
+}
+
 bool CUICarBodyWnd::TransferItem(PIItem itm, CInventoryOwner* owner_from, CInventoryOwner* owner_to, bool b_check)
 {
+	VERIFY									(NULL==m_pInventoryBox);
 	CGameObject* go_from					= smart_cast<CGameObject*>(owner_from);
 	CGameObject* go_to						= smart_cast<CGameObject*>(owner_to);
 
@@ -465,22 +543,7 @@ bool CUICarBodyWnd::TransferItem(PIItem itm, CInventoryOwner* owner_from, CInven
 		if(invWeight+itmWeight >=maxWeight)	return false;
 	}
 
-	NET_Packet P;
-	go_from->u_EventGen						(	P,
-												GE_OWNERSHIP_REJECT,
-												go_from->ID()
-											);
-
-	P.w_u16									(u16(itm->object().ID()));
-	go_from->u_EventSend					(P);
-
-	//другому инвентарю - взять вещь 
-	go_to->u_EventGen						(	P,
-												GE_OWNERSHIP_TAKE,
-												go_to->ID()
-											);
-	P.w_u16									(u16(itm->object().ID()));
-	go_to->u_EventSend						(P);
+	move_item(go_from->ID(), go_to->ID(), itm->object().ID());
 
 	return true;
 }
