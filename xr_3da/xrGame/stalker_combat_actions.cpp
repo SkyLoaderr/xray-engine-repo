@@ -395,7 +395,8 @@ void CStalkerActionGetReadyToKill::initialize	()
 	inherited::initialize								();
 
 	m_body_state										= object().movement().body_state();
-	m_movement_type										= Random.randI(2) ? eMovementTypeRun : eMovementTypeWalk;
+//	m_movement_type										= Random.randI(2) ? eMovementTypeRun : eMovementTypeWalk;
+	m_movement_type										= eMovementTypeRun;
 
 	object().movement().set_desired_direction			(0);
 	object().movement().set_path_type					(MovementManager::ePathTypeLevelPath);
@@ -551,7 +552,8 @@ void CStalkerActionTakeCover::initialize		()
 	inherited::initialize						();
 
 	m_body_state								= object().movement().body_state();
-	m_movement_type								= Random.randI(2) ? eMovementTypeRun : eMovementTypeWalk;
+//	m_movement_type								= Random.randI(2) ? eMovementTypeRun : eMovementTypeWalk;
+	m_movement_type								= eMovementTypeWalk;
 
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
@@ -964,6 +966,8 @@ void CStalkerActionSearchEnemy::execute			()
 	if (!mem_object.m_object)
 		return;
 
+	object().sight().setup				(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
+
 	if (object().movement().path_completed()) {
 #if 0
 		object().m_ce_ambush->setup		(mem_object.m_object_params.m_position,mem_object.m_self_params.m_position,10.f);
@@ -995,8 +999,6 @@ void CStalkerActionSearchEnemy::execute			()
 		if (object().movement().path_completed() && completed())
 			object().memory().enable(object().memory().enemy().selected(),false);
 	}
-
-	object().sight().setup	(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 }
 
 //////////////////////////////////////////////////////////////////////////
