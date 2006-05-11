@@ -223,6 +223,9 @@
 	</string>
 	<string id="st_condition">
 		<text>состояние</text>
+	</string>
+	<string id="st_tip">
+		<text>сообщение</text>
 	</string>	
 </string_table>
 
