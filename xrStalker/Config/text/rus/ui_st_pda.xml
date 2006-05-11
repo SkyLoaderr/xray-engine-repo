@@ -225,7 +225,10 @@
 		<text>состояние</text>
 	</string>
 	<string id="st_tip">
-		<text>сообщение</text>
+		<text>Сообщение</text>
+	</string>
+	<string id="st_news">
+		<text>Новость</text>
 	</string>	
 </string_table>
 
