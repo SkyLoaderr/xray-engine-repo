@@ -33,8 +33,10 @@ void CInventoryBox::OnEvent(NET_Packet& P, u16 type)
 
 BOOL CInventoryBox::net_Spawn(CSE_Abstract* DC)
 {
-	inherited::net_Spawn(DC);
-	return TRUE;
+	inherited::net_Spawn	(DC);
+	setVisible				(TRUE);
+	setEnabled				(TRUE);
+	return					TRUE;
 }
 
 void CInventoryBox::net_Relcase(CObject* O)
