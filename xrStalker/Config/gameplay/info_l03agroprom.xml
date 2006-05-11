@@ -33,7 +33,7 @@
 
 	<info_portion id="agr_find_gunslinger_cache_start">
 		<task>agroprom_find_gunslinger_cache</task>
-		<article>storyline_gunslinger_cache_info</article>
+		<!--article>storyline_gunslinger_cache_info</article-->
 	</info_portion>
 	<info_portion id="agr_find_gunslinger_cache_found">
 	</info_portion>
