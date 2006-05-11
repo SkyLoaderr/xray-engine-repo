@@ -1102,6 +1102,7 @@ bool CUIXmlInit::InitAnimatedStatic(CUIXml &xml_doc, const char *path, int index
 	pWnd->SetAnimCols(animCols);
 	pWnd->SetAnimationDuration(animDuration);
 	pWnd->SetOffset(x,y);
+	pWnd->SetAnimPos(0.0f);
 	if (play) pWnd->Play();
 
 	return true;
