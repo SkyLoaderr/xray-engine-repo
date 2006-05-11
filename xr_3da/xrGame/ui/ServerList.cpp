@@ -9,6 +9,7 @@
 #include "UIListItemAdv.h"
 #include "UIMessageBoxEx.h"
 #include "TeamInfo.h"
+#include "../MainMenu.h"
 
 
 CGameSpy_Browser* g_gs_browser = NULL;
@@ -415,7 +416,7 @@ void CServerList::ConnectToSelected(){
 
 	if (item->GetInfo()->info.icons.pass)
 	{
-		UI()->StartStopMenu(m_message_box,true);
+		MainMenu()->StartStopMenu(m_message_box,true);
 	}
 	else
 	{

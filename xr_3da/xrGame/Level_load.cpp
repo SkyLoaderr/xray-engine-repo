@@ -12,6 +12,7 @@
 #include "gamemtllib.h"
 #include "PhysicsCommon.h"
 #include "level_sounds.h"
+#include "GamePersistent.h"
 
 //#define	OLES_REMAPPING
 //#define	ALEX_REMAPPING
@@ -42,7 +43,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 	pApp->LoadTitle						("Loading AI objects...");
 	string256							fn_game;
 	
-	if (g_pGamePersistent->GameType() == GAME_SINGLE && !ai().get_alife() && FS.exist(fn_game,"$level$","level.ai"))
+	if (GamePersistent().GameType() == GAME_SINGLE && !ai().get_alife() && FS.exist(fn_game,"$level$","level.ai"))
 		ai().load						(net_SessionName());
 
 	if (!ai().get_alife() && FS.exist(fn_game, "$level$", "level.game")) {

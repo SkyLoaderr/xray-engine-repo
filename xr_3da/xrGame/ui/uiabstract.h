@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../UICustomItem.h"
-
+#include "../ui_base.h"
 // Text & Font
 
 typedef CGameFont::EAligment ETextAlignment;

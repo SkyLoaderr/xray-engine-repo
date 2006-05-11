@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "UIScrollView.h"
 #include "UIScrollBar.h"
-#include "../MainMenu.h"
+#include "../ui_base.h"
+#include "../UICursor.h"
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 #include "../../xr_input.h"	

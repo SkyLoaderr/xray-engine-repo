@@ -10,7 +10,6 @@
 #include "stdafx.h"
 #include "UIDragDropItemMP.h"
 #include "UIBuyWeaponWnd.h"
-#include "../MainMenu.h"
 #include "../HUDManager.h"
 #include "Restrictions.h"
 

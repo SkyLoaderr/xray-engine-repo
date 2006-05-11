@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "uiprogressbar.h"
-#include "..\MainMenu.h"
 #include "UITextureMaster.h"
 
 CUIProgressBar::CUIProgressBar(void)

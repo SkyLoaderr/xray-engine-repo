@@ -2,6 +2,7 @@
 #include "hudmanager.h"
 #include "game_cl_base.h"
 #include "level.h"
+#include "GamePersistent.h"
 #include "UIGameCustom.h"
 #include "script_engine.h"
 #include "script_space.h"
@@ -53,7 +54,7 @@ void	game_cl_GameState::net_import_GameTime		(NET_Packet& P)
 	u64 OldTime = Level().GetEnvironmentGameTime();
 	Level().SetEnvironmentGameTimeFactor	(GameEnvironmentTime,EnvironmentTimeFactor);
 	if (OldTime > GameEnvironmentTime)
-		g_pGamePersistent->Environment.Invalidate();
+		GamePersistent().Environment.Invalidate();
 }
 
 void	game_cl_GameState::net_import_state	(NET_Packet& P)

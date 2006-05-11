@@ -9,7 +9,6 @@
 
 #include "StdAfx.h"
 #include "UI3tButton.h"
-#include "../MainMenu.h"
 #include "../../sound.h"
 #include "xrXmlParser.h"
 #include "UIXmlInit.h"

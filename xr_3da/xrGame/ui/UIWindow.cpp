@@ -3,9 +3,9 @@
 //////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
 #include "UIWindow.h"
+#include "../UICursor.h"
 #include "../MainMenu.h"
 
-//poolSS< std::_List_nod<WINDOW_LIST::_Myt, uialloc<WINDOW_LIST::_Myt> >, 128>	ui_allocator;
 poolSS< _12b, 128>	ui_allocator;
 
 //#define LOG_ALL_WNDS
@@ -54,7 +54,6 @@ void draw_rect(Frect& r, u32 color)
 	pv->set(r.lt.x, r.rb.y, color, 0,0); ++pv;
 	pv->set(r.lt.x, r.lt.y, color, 0,0); ++pv;
 
-//	std::ptrdiff_t p_cnt		= 5;
 	RCache.Vertex.Unlock		(5,dbg_draw_gm.stride());
 	RCache.set_Geometry			(dbg_draw_gm);
 	RCache.Render				(D3DPT_LINESTRIP,vOffset,4);
@@ -82,15 +81,15 @@ void draw_wnds_rects()
 void CUIWindow::SetPPMode()
 {
 	m_bPP					= true;
-	UI()->RegisterPPDraw	(this);
+	MainMenu()->RegisterPPDraw	(this);
 	Show					(false);
 };
 
 void CUIWindow::ResetPPMode()
 {
 	if(	GetPPMode() ){
-		UI()->UnregisterPPDraw	(this);
-		m_bPP					= false;
+		MainMenu()->UnregisterPPDraw	(this);
+		m_bPP							= false;
 	}
 }
 
@@ -134,7 +133,7 @@ CUIWindow::~CUIWindow()
 	DetachAll();
 
 	if(	GetPPMode() )
-		UI()->UnregisterPPDraw	(this);
+		MainMenu()->UnregisterPPDraw	(this);
 
 #ifdef LOG_ALL_WNDS
 	xr_vector<DBGList>::iterator _it = dbg_list_wnds.begin();

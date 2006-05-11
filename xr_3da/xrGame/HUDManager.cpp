@@ -9,6 +9,7 @@
 #include "actor.h"
 #include "../igame_level.h"
 #include "clsid_game.h"
+#include "GamePersistent.h"
 
 
 CFontManager::CFontManager()
@@ -217,7 +218,7 @@ void  CHUDManager::RenderUI()
 	// Recalc new scale factor if resolution was changed
 //	OnDeviceCreate();
 	CGameFont* pFont	= Font().pFontGraffiti50Russian;
-	if( Device.Pause() && !g_pGamePersistent->m_pMainMenu->IsActive() && bShowPauseString){
+	if( Device.Pause() && !GamePersistent().m_pMainMenu->IsActive() && bShowPauseString){
 		pFont->SetColor	(0x80FF0000	);
 		pFont->OutSet	(Device.dwWidth/2.0f-(pFont->SizeOf("Game paused")/2.0f),Device.dwHeight/2.0f);
 		pFont->OutNext	("Game paused");

@@ -4,8 +4,6 @@
 
 #include "UIDialogHolder.h"
 
-#define UI_BASE_WIDTH	1024.0f
-#define UI_BASE_HEIGHT	768.0f
 
 // refs
 class CHUDManager;

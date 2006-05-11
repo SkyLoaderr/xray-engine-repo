@@ -36,6 +36,7 @@
 #include "ui/UIOptConCom.h"
 #include "zone_effector.h"
 #include "GameTask.h"
+#include "MainMenu.h"
 
 //#define MASTER_GOLD;
 
@@ -43,7 +44,6 @@
 #	include "PHDebug.h"
 #	include "ui/UIDebugFonts.h" 
 #endif
-#include "MainMenu.h"
 #	include "hudmanager.h"
 
 extern void show_smart_cast_stats		();
@@ -835,7 +835,7 @@ public:
 #ifdef DEBUG
 		timer.Start				();
 #endif
-		UI()->Screenshot		(IRender_interface::SM_FOR_GAMESAVE,S1);
+		MainMenu()->Screenshot		(IRender_interface::SM_FOR_GAMESAVE,S1);
 
 #ifdef DEBUG
 		Msg						("Screenshot overhead : %f milliseconds",timer.GetElapsed_sec()*1000.f);
@@ -1913,7 +1913,7 @@ public:
 
 		bool bWhatToDo = TRUE;
 		if( 0==xr_strlen(args) ){
-			bWhatToDo = !UI()->IsActive();
+			bWhatToDo = !MainMenu()->IsActive();
 		};
 
 		if( EQ(args,"on")||EQ(args,"1") )
@@ -1922,7 +1922,7 @@ public:
 		if( EQ(args,"off")||EQ(args,"0") )
 			bWhatToDo = FALSE;
 
-		UI()->Activate( bWhatToDo );
+		MainMenu()->Activate( bWhatToDo );
 	}
 };
 

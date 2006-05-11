@@ -7,7 +7,6 @@
 #include "../script_space.h"
 #include <luabind\adopt_policy.hpp>
 #include "../GamePersistent.h"
-#include "../MainMenu.h"
 #include "UILabel.h"
 #include "UIMMShniaga.h"
 #include "UITextureMaster.h"

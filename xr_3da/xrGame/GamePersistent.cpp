@@ -120,6 +120,7 @@ void CGamePersistent::OnAppStart()
 	GMLib.Load					();
 	init_game_globals			();
 	__super::OnAppStart			();
+	m_pUI_core					= xr_new<ui_core>();
 	m_pMainMenu					= xr_new<CMainMenu>();
 }
 
@@ -130,6 +131,7 @@ void CGamePersistent::OnAppEnd	()
 		m_pMainMenu->Activate(false);
 
 	xr_delete					(m_pMainMenu);
+	xr_delete					(m_pUI_core);
 
 	__super::OnAppEnd			();
 
@@ -367,6 +369,13 @@ void CGamePersistent::OnFrame	()
 	if ((m_last_stats_frame + 1) < m_frame_counter)
 		profiler().clear		();
 #endif
+
+	m_pUI_core->m_2DFrustum.CreateFromRect	(Frect().set(	0.0f,
+												0.0f,
+												m_pUI_core->ClientToScreenScaledX(UI_BASE_WIDTH),
+												m_pUI_core->ClientToScreenScaledY(UI_BASE_HEIGHT)
+												));
+
 }
 
 void CGamePersistent::OnEvent(EVENT E, u64 P1, u64 P2)
@@ -420,17 +429,17 @@ void CGamePersistent::OnAppDeactivate	()
 
 bool CGamePersistent::OnRenderPPUI_query()
 {
-	return UI()->OnRenderPPUI_query();
+	return MainMenu()->OnRenderPPUI_query();
 	// enable PP or not
 }
 
 void CGamePersistent::OnRenderPPUI_main()
 {
 	// always
-	UI()->OnRenderPPUI_main();
+	MainMenu()->OnRenderPPUI_main();
 }
 
 void CGamePersistent::OnRenderPPUI_PP()
 {
-	UI()->OnRenderPPUI_PP();
+	MainMenu()->OnRenderPPUI_PP();
 }

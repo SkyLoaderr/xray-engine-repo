@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "UITextBanner.h"
-#include "../MainMenu.h"
 
 CUITextBanner::CUITextBanner()
 	:	m_bAnimate			(true),

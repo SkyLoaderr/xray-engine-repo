@@ -12,7 +12,6 @@
 #include "../HUDmanager.h"
 #include "UIXmlInit.h"
 #include "uilinestd.h"
-#include "../MainMenu.h"
 
 
 CUILines::CUILines()

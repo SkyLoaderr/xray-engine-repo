@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "UIOptionsItem.h"
 #include "UIOptionsManagerScript.h"
-//#include "../MainMenu.h"
 
 #include "../script_space.h"
 #include <luabind\adopt_policy.hpp>

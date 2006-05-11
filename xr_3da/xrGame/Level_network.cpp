@@ -285,23 +285,23 @@ void			CLevel::ClearAllObjects				()
 void				CLevel::OnInvalidHost			()
 {
 	IPureClient::OnInvalidHost();
-	UI()->OnInvalidHost();
+	MainMenu()->OnInvalidHost();
 };
 
 void				CLevel::OnInvalidPassword		()
 {
 	IPureClient::OnInvalidPassword();
-	UI()->OnInvalidPass();
+	MainMenu()->OnInvalidPass();
 };
 
 void				CLevel::OnSessionFull			()
 {
 	IPureClient::OnSessionFull();
-	UI()->OnSessionFull();
+	MainMenu()->OnSessionFull();
 }
 
 void				CLevel::OnConnectRejected		()
 {
 	IPureClient::OnConnectRejected();
-	UI()->OnServerReject();
+	MainMenu()->OnServerReject();
 };

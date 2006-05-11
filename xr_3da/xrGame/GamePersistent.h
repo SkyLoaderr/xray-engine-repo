@@ -7,6 +7,7 @@ class CMainMenu;
 class CUICursor;
 class CParticlesObject;
 class CUISequencer;
+struct ui_core;
 
 class CGamePersistent: 
 	public IGame_Persistent, 
@@ -36,6 +37,7 @@ class CGamePersistent:
 
 	u32					m_eGameType;
 public:
+	ui_core*			m_pUI_core;
 	IReader*			pDemoFile;
 	u32					uTime2Change;
 	EVENT				eDemoStart;

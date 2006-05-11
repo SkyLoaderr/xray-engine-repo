@@ -19,6 +19,7 @@ private:
 protected:
 	bool			IR_process					();
 public:
+	bool										m_bWorkInPause;
 	CUIDialogWnd								();
 	virtual ~ CUIDialogWnd						();
 
@@ -38,7 +39,7 @@ public:
 			void SetHolder						(CDialogHolder* h)	{m_pHolder = h;};
 	virtual bool StopAnyMove					(){return true;}
 	virtual bool NeedCursor						()const {return true;}
-	virtual bool WorkInPause					()const {return false;}
+	virtual bool WorkInPause					()const {return m_bWorkInPause;}
 			void SetWorkPhase					(u32 phase);
 			bool CheckPhase						();
 };

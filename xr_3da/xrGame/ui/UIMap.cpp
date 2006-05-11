@@ -4,7 +4,6 @@
 #include "../map_location.h"
 #include "../map_manager.h"
 #include "../map_spot.h"
-#include "../MainMenu.h"
 #include "UIMap.h"
 #include "UIMapWnd.h"
 #include "../../xr_input.h"		//remove me !!!

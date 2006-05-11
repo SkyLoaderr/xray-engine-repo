@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "UIInventoryWnd.h"
 #include "../actor.h"
-#include "../MainMenu.h"
 #include "../silencer.h"
 #include "../scope.h"
 #include "../grenadelauncher.h"

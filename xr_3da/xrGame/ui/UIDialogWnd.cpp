@@ -13,9 +13,10 @@
 
 CUIDialogWnd:: CUIDialogWnd()
 {
-	m_pHolder = NULL;
-	work_phase = 0;
-	Hide();
+	m_pHolder		= NULL;
+	work_phase		= 0;
+	m_bWorkInPause	= false;
+	Hide			();
 }
 
 CUIDialogWnd::~ CUIDialogWnd()
@@ -164,7 +165,8 @@ bool CUIDialogWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 bool CUIDialogWnd::IR_process()
 {
 	if(!IsEnabled())					return false;
-	if(UI()->IsActive())				return true;
+//. ???	if(UI()->IsActive())			return true;
+
 	if(Device.Pause()&&!WorkInPause())	return false;
 	return true;
 }

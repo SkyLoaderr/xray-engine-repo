@@ -9,7 +9,6 @@
 #include "UITabControl.h"
 #include "UITaskDescrWnd.h"
 #include "UI3tButton.h"
-#include "../MainMenu.h"
 #include "../HUDManager.h"
 #include <boost/function.hpp>
 #include <boost/bind.hpp>

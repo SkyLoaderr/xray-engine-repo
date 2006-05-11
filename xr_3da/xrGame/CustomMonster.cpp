@@ -41,7 +41,7 @@
 #include "characterphysicssupport.h"
 #include "ai/monsters/snork/snork.h"
 #include "ai/monsters/burer/burer.h"
-
+#include "GamePersistent.h"
 
 extern int g_AI_inactive_time;
 
@@ -491,9 +491,9 @@ void CCustomMonster::update_range_fov	(float &new_range, float &new_fov, float s
 {
 	const float	standard_far_plane			= eye_range;
 
-	float	current_fog_density				= g_pGamePersistent->Environment.CurrentEnv.fog_density	;	
+	float	current_fog_density				= GamePersistent().Environment.CurrentEnv.fog_density	;	
 	// 0=no_fog, 1=full_fog, >1 = super-fog
-	float	current_far_plane				= g_pGamePersistent->Environment.CurrentEnv.far_plane	;	
+	float	current_far_plane				= GamePersistent().Environment.CurrentEnv.far_plane	;	
 	// 300=standart, 50=super-fog
 
 	new_fov									= start_fov;

@@ -11,7 +11,6 @@
 #include "UIBuyWeaponStd.h"
 #include "UIBag.h"
 #include "UIInventoryUtilities.h"
-#include "../MainMenu.h"
 #include "../HUDManager.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"

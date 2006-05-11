@@ -349,11 +349,12 @@ void CUIMainIngameWnd::Draw()
 
 			zoom_mode = true;			
 		}
-
+/*
 		if (scope_mode)
 			UI()->SetWnpScopeDraw(true);
 		else
 			UI()->SetWnpScopeDraw(false);
+*/
 	}
 		if(g_bShowHudInfo)
 		{

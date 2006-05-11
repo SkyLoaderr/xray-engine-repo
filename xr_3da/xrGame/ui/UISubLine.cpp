@@ -9,7 +9,7 @@
 #include "StdAfx.h"
 #include "UISubLine.h"
 #include "uilinestd.h"
-#include "../MainMenu.h"
+#include "../ui_base.h"
 
 //#define LOG_ALL_LINES
 #ifdef LOG_ALL_LINES

@@ -2,7 +2,6 @@
 #include "UIProgressShape.h"
 
 #include "UIStatic.h"
-#include "../MainMenu.h"
 
 CUIProgressShape::CUIProgressShape(){
 	m_pBackground	= NULL;

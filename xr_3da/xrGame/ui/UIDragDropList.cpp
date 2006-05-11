@@ -7,7 +7,6 @@
 #include "uidragdroplist.h"
 #include "UIOutfitSlot.h"
 #include "../object_broker.h"
-#include "../MainMenu.h"
 
 #define SCROLLBAR_OFFSET_X 5
 #define SCROLLBAR_OFFSET_Y 0
