@@ -73,8 +73,12 @@
 	<game_task id="agroprom_find_stalker_phantom">
 		<title>agroprom_find_stalker_phantom</title>
 		<objective>
-			<text>agroprom_find_stalker_phantom_0</text>
+			<text>agroprom_find_stalker_phantom</text>
 			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>yan_provodnik_spawn</infoportion_complete>
+		</objective>
+		<objective>
+			<text>agroprom_find_stalker_phantom_0</text>
 			<infoportion_complete>yan_provodnik_spawn</infoportion_complete>
 		</objective>
 	</game_task>
