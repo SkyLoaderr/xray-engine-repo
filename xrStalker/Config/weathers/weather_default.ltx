@@ -144,8 +144,8 @@ wind_velocity	=	0.0
 wind_direction	=	0.0
 ambient			=	0.083, 0.078, 0.100
 lmap_color		=	1.0,	1.0,	1.0
-hemi_color		=	0.678, 0.663, 0.745,	1.0
-sun_color		=	 0.50, 0.47, 0.415
+hemi_color		=   0.660, 0.695, 0.745,  1
+sun_color		=	0.949, 0.784, 0.521
 sun_dir			=	-10, 291
 env_ambient		=	ambient_env_morning
 
@@ -169,8 +169,8 @@ wind_velocity	=	0.0
 wind_direction	=	0.0
 ambient			=	0.07,   0.07,  	0.07
 lmap_color		=	1.0,	1.0,	1.0
-hemi_color		=	0.45,   0.45,  	0.45,	1.0
-sun_color		=	0.0,    0.0,  	0.0
+hemi_color		=	0.678, 0.663, 0.745,	1.0
+sun_color		=	 0.50, 0.47, 0.415
 sun_dir			=	-25.0, 291
 env_ambient		=	ambient_env_rain
 
@@ -194,8 +194,8 @@ wind_velocity	=	0.0
 wind_direction	=	0.0
 ambient			=	0.11,  0.11, 	0.11
 lmap_color		=	1.0,    1.0,  	1.0
-hemi_color		=   0.82, 0.76, 0.88, 1
-sun_color		=	0.435, 0.393, 0.289
+hemi_color		=   0.660, 0.695, 0.745,  1
+sun_color		=	0.949, 0.784, 0.521
 sun_dir			=	-18.0, 291
 env_ambient		=	ambient_env_morning
 
@@ -220,7 +220,7 @@ wind_direction	=	0.0
 ambient			=	0.083, 0.078, 0.100
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	0.678, 0.663, 0.745,	1.0
-sun_color		=	0.435, 0.393, 0.289
+sun_color		=	 0.50,    0.47,  	0.415
 sun_dir			=	-22.0, 291
 env_ambient		=	ambient_env_rain
 
@@ -245,7 +245,7 @@ wind_direction	=	0.0
 ambient			=	0.10,   0.105,  	0.11
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=    0.675, 0.675, 0.620, 1
-sun_color		=	 0.50,    0.47,  	0.415
+sun_color		=	0.435, 0.393, 0.289
 sun_dir			=	-24.0, 291
 env_ambient		=	ambient_env_day
 
@@ -295,7 +295,7 @@ wind_direction	=	0.0
 ambient			=	0.09,   0.095,  	0.10
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	0.663, 0.706, 0.784,	1.0
-sun_color		=	0.506, 0.443, 0.302
+sun_color		=	0.606, 0.543, 0.502
 sun_dir			=	-30.0, 291
 env_ambient		=	ambient_env_day
 
@@ -320,7 +320,7 @@ wind_direction	=	0.0
 ambient			=	0.075,   0.075,  	0.077
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	0.598, 0.598, 0.622,	1.0
-sun_color		=	0.0,    0.0,  	0.0
+sun_color		=	0.606, 0.543, 0.502
 sun_dir			=	-28.0, 291
 env_ambient		=	ambient_env_rain
 
@@ -345,7 +345,7 @@ wind_direction	=	0.0
 ambient			=	0.06,   0.06,  	0.06
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	0.55,   0.55,  	0.55,	1.0
-sun_color		=	0.0,    0.0,  	0.0
+sun_color		=	0.606, 0.543, 0.502
 sun_dir			=	-28.0, 291
 env_ambient		=	ambient_env_0
 
@@ -395,12 +395,12 @@ wind_direction	=	0.0
 ambient			=	0.0925, 0.0941, 0.0980
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=   0.741, 0.753, 0.788,  1
-sun_color		=	0.0,    0.0,  	0.0
+sun_color		=	0.606, 0.543, 0.502
 sun_dir			=	-25.0, 291
 env_ambient		=	ambient_env_rain
 
 [dw_16]
-flares			= 	flares_default10
+flares			= 	flares_gradient
 sky_texture		=	sky\sky_9_cube
 sky_rotation	=	0
 sky_color		=	1.0,    1.0,  	1.0
@@ -412,8 +412,8 @@ fog_color		=	0.408, 0.400, 0.408
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
-thunderbolt		=
-bolt_period		=	3.f
+thunderbolt		=	thunderbolt_collection_default
+bolt_period		=	7.f  
 bolt_duration	=	0.25f
 wind_velocity	=	0.0
 wind_direction	=	0.0
@@ -425,7 +425,7 @@ sun_dir			=	-25.0, 291
 env_ambient		=	ambient_env_0
 
 [dw_17]
-flares			=	flares_default10
+flares			=	flares_gradient
 sky_texture		=	sky\sky_9_cube
 sky_rotation	=	0
 sky_color		=	0.50,	0.50,	0.50
@@ -437,15 +437,15 @@ fog_color		=	0.204, 0.200, 0.204
 fog_density		=	0.95
 rain_density	=	0.2
 rain_color		=	1.0,	1.0,	1.0
-thunderbolt		= 	thunderbolt_collection_default
-bolt_period		=	7.f
+thunderbolt		= 	
+bolt_period		=	3.f  
 bolt_duration	=	0.25f
 wind_velocity	=	0.0
 wind_direction	=	0.0
 ambient			=	0.03,   0.03,  	0.03
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	0.50,	0.50,	0.50, 1
-sun_color		=	0.0,    0.0,  	0.0
+sun_color		=	0.949, 0.784, 0.521
 sun_dir			=	-25.0, 291
 env_ambient		=	ambient_env_rain
 
@@ -470,7 +470,7 @@ wind_direction	=	0.0
 ambient			=	0.071,   0.07,  	0.079
 lmap_color		=	1.0,    1.0,  	1.0
 hemi_color		=   0.610, 0.606, 0.692, 1.0
-sun_color		=	1.000,  0.6,  0.3
+sun_color		=	0.949, 0.784, 0.521
 sun_dir			=	-24.0, 291
 env_ambient		=	ambient_env_morning
 
@@ -496,6 +496,7 @@ ambient			=	0.07,   0.07,  	0.07
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	0.5,    0.5,  	0.5,	1.0
 sun_color		=	0.0,    0.0,  	0.0
+sun_color		=	1.000,  0.6,  0.3
 sun_dir			=	-27.0, 291
 
 [dw_20]
