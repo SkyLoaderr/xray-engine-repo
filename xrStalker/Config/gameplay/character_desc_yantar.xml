@@ -11,6 +11,7 @@
 
 		<class>yan_general_ecolog</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
+		<money min="100000" max="110000" infinitive="1"></money>
 		
 		<rank>44</rank>
 		<reputation>50</reputation>
@@ -38,7 +39,7 @@
 
 		<class>yan_ecolog_help</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
-
+		<money min="2000" max="5000" infinitive="0"></money>
 		
 		<rank>698</rank>
 		<reputation>50</reputation>
@@ -66,7 +67,7 @@
 
 		<class>yan_Semenov</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
-
+		<money min="600" max="2000" infinitive="0"></money>
 		
 		<rank>440</rank>
 		<reputation>50</reputation>
@@ -92,7 +93,7 @@
 
 		<class>yan_Ecolog_vasilyev</class>
 		<community>ecolog</community> <terrain_sect>stalker_ecolog_terrain</terrain_sect>
-
+		
 		
 		<rank>32</rank>
 		<reputation>50</reputation>
