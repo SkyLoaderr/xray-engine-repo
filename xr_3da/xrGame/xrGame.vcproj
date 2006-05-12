@@ -10005,22 +10005,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="KeyBinding"
-					Filter="">
-					<File
-						RelativePath=".\ui\UIEditKeyBind.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIEditKeyBind.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIKeyBinding.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIKeyBinding.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="MM"
 					Filter="">
 					<File
@@ -10035,6 +10019,22 @@
 					<File
 						RelativePath=".\ui\UIMMShniaga.h">
 					</File>
+					<Filter
+						Name="KeyBinding"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIEditKeyBind.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIEditKeyBind.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIKeyBinding.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIKeyBinding.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="CharacterInfo"

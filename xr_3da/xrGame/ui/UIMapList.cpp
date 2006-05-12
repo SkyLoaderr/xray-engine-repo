@@ -394,6 +394,10 @@ void CUIMapList::OnBtnDownClick(){
 	m_pList2->MoveSelectedDown();
 }
 
+bool CUIMapList::IsEmpty(){
+	return 0 == m_pList2->GetSize();
+}
+
 
 
 bool GetToken(char** sx, char* e, char* token)

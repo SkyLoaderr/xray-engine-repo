@@ -51,6 +51,7 @@ public:
 	const char*		GetCommandLine(LPCSTR player_name);
 		GAME_TYPE	GetCurGameType();
 			void	StartDedicatedServer();
+			bool	IsEmpty();
 
 private:
 	const char*		GetCLGameModeName(); // CL - command line

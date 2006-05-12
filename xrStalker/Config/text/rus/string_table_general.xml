@@ -108,7 +108,7 @@
 		<text>Нет</text>
 	</string>
 	<string id="Btn_OK">
-		<text>Принять</text>
+		<text>OK</text>
 	</string>
 	<string id="Btn_Cancel">
 		<text>Отменить</text>

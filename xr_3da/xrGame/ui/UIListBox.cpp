@@ -139,8 +139,10 @@ void CUIListBox::MoveSelectedUp(){
 		if (smart_cast<CUISelectable*>(*it)->GetSelected())
 		{
 			WINDOW_LIST_it temp = it_prev;
-			*it_prev = *it;
-            *it = *temp;			
+			it_prev = it;
+            it = temp;
+			m_flags.set			(eNeedRecalc,TRUE);
+			return;
 		}
 	}
 }

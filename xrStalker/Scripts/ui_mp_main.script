@@ -199,9 +199,14 @@ function mp_main:OnBtn_Calncel()
 end
 
 function mp_main:OnBtn_Create()
+	if self.map_list:IsEmpty() then
+		self.message_box:Init("select_map")
+		self:GetHolder():start_stop_menu(self.message_box,true)
+		return 
+	end
 	local opt = COptionsManager()
-	local console = get_console()
-	--opt:SaveValues("mm_mp_server")
+	local console = get_console()	
+	opt:SaveValues("mm_mp_server")
 	self.map_list:SaveMapList()
 	self:GatherServerData()
 	if self.check_dedicated:GetCheck() then
@@ -379,7 +384,7 @@ function mp_main:GatherServerData()
 end
 
 function mp_main:OnBtn_Join()
-	local opt = COptionsManager()
+--	local opt = COptionsManager()
 --	opt:SaveValues("mm_mp_client")
 	
 	self.server_list:SetPlayerName(self.player_name:GetText())	

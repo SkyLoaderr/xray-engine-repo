@@ -66,6 +66,8 @@ bool CUIEditKeyBind::OnMouseDown(bool left_button){
 }
 
 bool CUIEditKeyBind::OnKeyboard(int dik, EUIMessages keyboard_action){
+	if (dik == MOUSE_1 || dik == MOUSE_2 || dik == MOUSE_3)
+		return false;
 	if (CUILabel::OnKeyboard(dik, keyboard_action))
 		return true;
 
