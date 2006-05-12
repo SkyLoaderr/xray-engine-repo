@@ -535,8 +535,10 @@ class CSE_InventoryBox :public CSE_ALifeDynamicObjectVisual
 public:
 						CSE_InventoryBox	(LPCSTR caSection):CSE_ALifeDynamicObjectVisual(caSection){};
 	virtual				~CSE_InventoryBox	(){};
+#ifdef XRGAME_EXPORTS
 	virtual void		add_offline			(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries);
 	virtual void		add_online			(const bool &update_registries);
+#endif
 };
 
 #pragma warning(pop)
