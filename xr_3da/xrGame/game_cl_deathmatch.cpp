@@ -146,8 +146,8 @@ void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
 	{
 	case GAME_PHASE_PLAYER_SCORES:
 		{
-			bool NeedSndMessage = xr_strlen(WinnerName) == 0;
 			P.r_stringZ(WinnerName);
+			bool NeedSndMessage = (xr_strlen(WinnerName) == 0);
 			if (NeedSndMessage && !xr_strcmp(WinnerName, local_player->getName()))
 			{
 				PlaySndMessage(ID_YOU_WON);
