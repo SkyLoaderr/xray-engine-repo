@@ -714,12 +714,20 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
                     for 		(int cnt=1; cnt<count; cnt++)
                     {
                     	total		+= S[cnt].w;
+						float d;
+						if (fis_zero(total))	d = 0.0f;
+						else
+							d = S[cnt].w/total;
+
+						clampr(d,0.f,1.f);
+
 #ifdef DEBUG
-						if (!_valid(S[cnt].w/total)){
+						if (!_valid(d)){
 							Debug.fatal		("TO ALEXMX VERY IMPORTANT: w: %f, total: %f, count: %d, real count: %d",S[cnt].w,total,count,BLEND_INST.Blend.size());
 						}
 #endif
-                    	KEY_Interp	(Result,tmp, *S[cnt].K, clampr(S[cnt].w/total,0.f,1.f) );
+
+                    	KEY_Interp	(Result,tmp, *S[cnt].K, d );
                         tmp 		= Result;
                     }
                 }

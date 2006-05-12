@@ -228,6 +228,22 @@ void CCameraManager::ApplyDevice ()
 		ResetPP					();
 	else
 	{
+		VERIFY(_valid(pp_affected.duality.h));
+		VERIFY(_valid(pp_affected.duality.v));
+		VERIFY(_valid(pp_affected.blur));
+		VERIFY(_valid(pp_affected.gray));
+		VERIFY(_valid(pp_affected.noise.intensity));
+		VERIFY(_valid(pp_affected.noise.grain));
+		VERIFY(_valid(pp_affected.noise.fps));
+		VERIFY(_valid(pp_affected.color_base.r));
+		VERIFY(_valid(pp_affected.color_base.g));
+		VERIFY(_valid(pp_affected.color_base.b));
+		VERIFY(_valid(pp_affected.color_gray.r));
+		VERIFY(_valid(pp_affected.color_gray.g));
+		VERIFY(_valid(pp_affected.color_gray.b));
+		VERIFY(_valid(pp_affected.color_add.r));
+		VERIFY(_valid(pp_affected.color_add.g));
+		VERIFY(_valid(pp_affected.color_add.b));
 		// postprocess
 		IRender_Target*		T		= ::Render->getTarget();
 		T->set_duality_h			(pp_affected.duality.h);
