@@ -81,6 +81,7 @@ HRESULT xrIDirect3D9::EnumAdapterModes(UINT Adapter,D3DFORMAT Format,UINT Mode,D
 HRESULT xrIDirect3D9::GetAdapterDisplayMode( UINT Adapter,D3DDISPLAYMODE* pMode)
 {
 	APIDEBUG("xrIDirect3D9::GetAdapterDisplayMode");
+	pMode->Format = D3DFMT_A8R8G8B8;
 	return HRESULT_Proc(S_OK);
 };
 HRESULT xrIDirect3D9::CheckDeviceType( UINT Adapter,D3DDEVTYPE DevType,D3DFORMAT AdapterFormat,D3DFORMAT BackBufferFormat,BOOL bWindowed)

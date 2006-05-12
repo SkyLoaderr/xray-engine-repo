@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "xrD3D9-Null.h"
+#include "xrD3D9-Null_OutProc.h"
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        DWORD  ul_reason_for_call, 
@@ -40,11 +41,14 @@ CxrD3D9Null::CxrD3D9Null()
  IDirect3D9 * WINAPI Direct3DCreate9(UINT SDKVersion)
 {
 	UINT cSDKVersion = D3D_SDK_VERSION;
+//	LogOut_File("In %x out %x", cSDKVersion, SDKVersion);
 	if (SDKVersion != cSDKVersion)
 	{
+//		LogOut_File("NULL");
 		return NULL;
 	}
 	xrIDirect3D9* I = new xrIDirect3D9();
+//	LogOut_File("%x", I);
 	return I;
 }
 
