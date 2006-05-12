@@ -84,7 +84,7 @@ void CWeaponPistol::OnH_B_Chield		()
 
 void CWeaponPistol::PlayAnimShow	()
 {
-	if(iAmmoElapsed > 1)
+	if(iAmmoElapsed >= 1)
 		m_opened = false;
 	else
 		m_opened = true;
