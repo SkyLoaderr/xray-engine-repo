@@ -87,7 +87,7 @@ public:
 	virtual void						statistic				( CSound_stats&  dest );
 
 	// listener
-	virtual const Fvector&				listener_position		( )=0;
+//	virtual const Fvector&				listener_position		( )=0;
 	virtual void						update_listener			(const Fvector& P, const Fvector& D, const Fvector& N, float dt)=0;
 	// eax listener
 	void								i_eax_commit_setting	();
