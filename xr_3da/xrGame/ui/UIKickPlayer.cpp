@@ -134,8 +134,9 @@ void CUIKickPlayer::Update(){
 	for (u32 i = 0; i<items.size(); i++){
 		game_PlayerState* p = reinterpret_cast<game_PlayerState*>(items[i]);
 		CUIListBoxItem* item = lst->AddItem(p->name);
-		item->SetID(u32(i+1));
+		item->SetID(u32(i/*+1*/));
 	}
 
-    lst->SetSelected(selected_item);
+	if (selected_item != u32(-1))
+        lst->SetSelected(selected_item);
 }
