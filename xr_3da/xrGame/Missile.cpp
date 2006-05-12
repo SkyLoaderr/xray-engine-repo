@@ -480,18 +480,22 @@ void CMissile::Hide()
 	else
 		SwitchState(MS_HIDDEN);
 }
-
+#include "inventory.h"
 void CMissile::setup_throw_params()
 {
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
 	MSG1("setup throw pars");
 	if(pActor)// && pActor->HUDview())
 	{
-		//		pActor->EffectorManager().affected_Matrix(trans);
 		Fmatrix trans;
 		trans.identity();
 		Fvector FirePos, FireDir;
-		pActor->g_fireParams(this, FirePos, FireDir);
+		if(pActor->inventory().ActiveItem()==this)
+			pActor->g_fireParams(this, FirePos, FireDir);
+		else{
+			FirePos				= XFORM().c;
+			FireDir				= XFORM().k;
+		}
 		trans.k.set(FireDir);
 		Fvector::generate_orthonormal_basis(trans.k, trans.j,trans.i);
 		trans.c.set(FirePos);
