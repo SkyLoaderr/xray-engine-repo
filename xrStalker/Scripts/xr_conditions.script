@@ -651,6 +651,54 @@ end
 ------------------------------------------------------------------------------------
 -- Special functions for Dark Valley
 ------------------------------------------------------------------------------------
+-- General combat ignore for bandits
+function val_bandits_ci(actor, npc)
+    local ig = {val_escort_captive_enemy = 400,
+                val_sacrifice_finish = 401,
+                val_prisoner_free = 402}
+
+	local enemy = db.storage[npc:id()].enemy
+	local sid
+	if enemy and enemy:alive() then
+	    sid = enemy:story_id()
+	    for v, i in pairs(ig) do
+		    if sid == i then
+		        if actor:has_info(v) then
+			        return false
+			    end
+			    return true
+		    end
+	    end
+	end
+	return false
+end
+
+-- Combat ignore for bandits with checking combat with actor checking
+function val_bandits_ci_actor(actor, npc, p)
+    local ig = {val_escort_captive_enemy = 400,
+                val_sacrifice_finish = 401,
+                val_prisoner_free = 402}
+
+	local enemy = db.storage[npc:id()].enemy
+	local sid
+	if enemy and enemy:alive() then
+	    if enemy:id() == actor:id() then
+            return npc:position():distance_to_sqr(actor:position()) >= p[1] * p[1]
+	    end
+
+	    sid = enemy:story_id()
+	    for v, i in pairs(ig) do
+		    if sid == i then
+		        if actor:has_info(v) then
+			        return false
+			    end
+			    return true
+		    end
+	    end
+	end
+	return false
+end
+
 -- параметры: [dist]
 function val_escort_captive_dist_to_guards_ge(actor, npc, p)
     local d2 = p[1] * p[1]
