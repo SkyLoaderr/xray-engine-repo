@@ -250,16 +250,16 @@ sun_color		=   0.55, 0.5, 0.45
 sun_dir			=	-22.0, 291
 env_ambient		=	ambient_env_day
 
-[dw_10]
-flares			=	flares_default10
+[dw_10]			;	dx8,dx9
+flares			=	flares_gradient
 sky_texture		=	sky\sky_21_cube
 sky_rotation	=	0
-sky_color		=	0.7, 0.7, 0.7
+sky_color		=	1.0, 1.0, 1.0
 clouds_texture	=	oblaka
-clouds_color	=	0.55, 0.6, 0.65, 0.1, 1.7
-far_plane		=	350
-fog_distance	=	340
-fog_color		=	0.055, 0.06, 0.065
+clouds_color	=	0.55, 0.6, 0.65, 0.3, 1.7
+far_plane		=	300
+fog_distance	=	290
+fog_color		=	0.678, 0.682, 0.612
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0, 1.0, 1.0
@@ -268,9 +268,9 @@ bolt_period		=	3.f
 bolt_duration	=	0.25f
 wind_velocity	=	20.0
 wind_direction	=	0.0
-ambient			=	0.055, 0.06, 0.065
+ambient			=	0.09, 0.095, 0.1
 lmap_color		=	1.0, 1.0, 1.0
-hemi_color		=	0.85, 0.9, 0.95, 1.0 
+hemi_color		=	0.625, 0.65, 0.625;0.85, 0.9, 0.95, 1.0 
 sun_color		=   0.0, 0.0, 0.0
 sun_dir			=	-24.0, 291
 env_ambient		=	ambient_env_day
