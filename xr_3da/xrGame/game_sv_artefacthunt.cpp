@@ -592,6 +592,8 @@ void		game_sv_ArtefactHunt::OnObjectEnterTeamBase	(u16 id, u16 zone_team)
 			game_PlayerState* ps = eActor->owner->ps;
 			if (ps) ps->setFlag(GAME_PLAYER_FLAG_ONBASE);
 
+			signal_Syncronize();
+
 			xr_vector<u16>& C			= eActor->children;
 			xr_vector<u16>::iterator c	= std::find	(C.begin(),C.end(),m_dwArtefactID);
 			if (C.end()!=c)

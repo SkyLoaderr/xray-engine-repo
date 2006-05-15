@@ -553,33 +553,6 @@ bool game_cl_ArtefactHunt::CanBeReady				()
 	return true;
 };
 
-///-------------------------------------------------------------------
-/*
-void game_cl_ArtefactHunt::OnObjectEnterTeamBase	(u16 player_id, u8 zone_team_id)
-{
-	game_PlayerState*	pl = GetPlayerByGameID (player_id);
-	if(!pl || !Level().CurrentEntity() )
-		return;
-
-	if (pl->GameID == Level().CurrentEntity()->ID() && pl->team == zone_team_id)
-	{
-//		m_bBuyEnabled = TRUE;
-	};
-
-};
-
-void game_cl_ArtefactHunt::OnObjectLeaveTeamBase	(u16 player_id, u8 zone_team_id)
-{
-	game_PlayerState*	pl = GetPlayerByGameID (player_id);
-	if(!pl || !Level().CurrentEntity() )
-		return;
-
-	if (pl->GameID == Level().CurrentEntity()->ID() && pl->team == zone_team_id)
-	{
-//		m_bBuyEnabled = FALSE;
-	};
-};
-*/
 char*	game_cl_ArtefactHunt::getTeamSection(int Team)
 {
 	switch (Team)
