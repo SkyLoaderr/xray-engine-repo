@@ -327,31 +327,6 @@ env_ambient		=	ambient_env_day
 
 [dw_13]
 flares			=	flares_default10
-sky_texture		=	sky\sky_9_cube
-sky_rotation	=	0
-sky_color		=	0.7, 0.7, 0.7
-clouds_texture	=	oblaka
-clouds_color	=	0.5, 0.55, 0.6, 0.0, 1.7
-far_plane		=	350
-fog_distance	=	340
-fog_color		=	0.05, 0.055, 0.06
-fog_density		=	0.9
-rain_density	=	0.0
-rain_color		=	1.0, 1.0, 1.0
-thunderbolt		= 
-bolt_period		=	3.f
-bolt_duration	=	0.25f
-wind_velocity	=	5.0
-wind_direction	=	0.0
-ambient			=	0.05, 0.055, 0.06
-lmap_color		=	1.0, 1.0, 1.0
-hemi_color		=	0.6, 0.65, 0.7, 1.0 
-sun_color		=   0.65, 0.6, 0.55
-sun_dir			=	-30.0, 291
-env_ambient		=	ambient_env_day
-
-[dw_14]
-flares			=	flares_default10
 sky_texture		=	sky\sky_19_cube
 sky_rotation	=	-10
 sky_color		=	0.8, 0.8, 0.8
@@ -375,7 +350,7 @@ sun_color		=   0.55, 0.5, 0.45
 sun_dir			=	-28.0, 291
 env_ambient		=	ambient_env_day
 
-[dw_15]
+[dw_14]
 flares			=	flares_default10
 sky_texture		=	sky\sky_11_cube
 sky_rotation	=	0
@@ -400,27 +375,52 @@ sun_color		=   0.25, 0.2, 0.15
 sun_dir			=	-24.0, 291
 env_ambient		=	ambient_env_day
 
+[dw_15]
+flares			=	flares_gradient
+sky_texture		=	sky\sky_9_cube
+sky_rotation	=	0
+sky_color		=	0.7, 0.7, 0.7
+clouds_texture	=	oblaka
+clouds_color	=	0.5, 0.55, 0.6, 0.0, 1.7
+far_plane		=	350
+fog_distance	=	340
+fog_color		=	0.05, 0.055, 0.06
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0, 1.0, 1.0
+thunderbolt		= 
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	5.0
+wind_direction	=	0.0
+ambient			=	0.05, 0.055, 0.06
+lmap_color		=	1.0, 1.0, 1.0
+hemi_color		=	0.7, 0.75, 0.8, 1.0 
+sun_color		=   0.25, 0.2, 0.15
+sun_dir			=	-30.0, 291
+env_ambient		=	ambient_env_day
+
 [dw_16]
 flares			=	;flares_gradient
 sky_texture		=	sky\sky_9_cube
 sky_rotation	=	0
 sky_color		=	0.5, 0.5, 0.5
 clouds_texture	=	oblaka
-clouds_color	=	0.4, 0.45, 0.5, 0.0, 1.7
+clouds_color	=	0.5, 0.55, 0.6, 0.5, 1.7
 far_plane		=	200
 fog_distance	=	190
-fog_color		=	0.04, 0.045, 0.05
+fog_color		=	0.05, 0.055, 0.06
 fog_density		=	0.9
-rain_density	=	1.0
+rain_density	=	0.5
 rain_color		=	1.0, 1.0, 1.0
 thunderbolt		=	thunderbolt_collection_default
 bolt_period		=	8.f
 bolt_duration	=	0.25f
 wind_velocity	=	25.0
 wind_direction	=	0.0
-ambient			=	0.04, 0.045, 0.05
+ambient			=	0.05, 0.055, 0.06
 lmap_color		=	1.0, 1.0, 1.0
-hemi_color		=	0.4, 0.45, 0.5, 1.0 
+hemi_color		=	0.5, 0.55, 0.6, 1.0 
 sun_color		=   0.0, 0.0, 0.0
 sun_dir			=	-22.0, 291
 env_ambient		=	ambient_env_rain
@@ -604,7 +604,7 @@ env_ambient		=	ambient_env_night
 flares			=	flares_moon
 sky_texture		=	sky\sky_13_cube_night
 sky_rotation	=	0
-sky_color		=	1.0, 1.0, 1.0
+sky_color		=	0.50, 0.50, 0.50;1.0, 1.0, 1.0
 clouds_texture	=	oblaka
 clouds_color	=	0.6, 0.65, 0.7, 0.0, 1.7
 far_plane		=	300
