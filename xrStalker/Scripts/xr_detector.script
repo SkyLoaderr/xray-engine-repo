@@ -18,7 +18,7 @@ function actor_detector:actor_exit()
 	--' »грок входит на опасную территорию (покидает разрешенную границу уровн€)
 	self.init_time = game.get_game_time()
 	
-	level.add_pp_effector ("dead_zone.ppe", 1001, true)
+	level.add_pp_effector("dead_zone.ppe", 1001, true)
 	level.set_pp_effector_factor(1001, 0.01)
 end
 function actor_detector:update()
@@ -29,8 +29,8 @@ function actor_detector:update()
 
 	--' ¬ зависимости от времени нахождени€ игрока внутри возрастает интенсивность.
 	--' »нтенсивность возрастает от 0 до 1. ѕри достижении порога начинает хитовать радиаци€.
-	local intence = math.min(1,math.max(0,game.get_game_time():diffSec(self.init_time)/(max_time - start_time)))
+	local intence = math.min(1,math.max(0.01,game.get_game_time():diffSec(self.init_time)/(max_time - start_time)))
 		
 	printf("%s", intence)
-	level.set_pp_effector_factor(1001, intence)
+	level.set_pp_effector_factor(1001, intence, 0.3)
 end
