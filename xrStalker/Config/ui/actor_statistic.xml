@@ -42,7 +42,7 @@
 
 	<!-- HEADER CHAR ICON -->
 	<chicon_frame_line x="8" y="16" width="284" height="27">
-        <title x="15" y="1" width="545" height="440">
+        <title x="15" y="1" width="250" height="27">
             <text font="letterica25" r="225" g="225" b="250"/>
         </title>
 		<texture>ui_string_02</texture>		

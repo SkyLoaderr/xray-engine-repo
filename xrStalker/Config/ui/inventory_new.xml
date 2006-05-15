@@ -55,12 +55,7 @@
 		<text font="graffiti22" r="238" g="153" b="26" align="c" vert_align="c"></text>
     </money_static>
 
-    <!-- SLEEP PARAMS WINDOW -->
-    <sleep_window x="370" y="672" width="260" height="53">
-        <texture>ui\ui_dg_sleep</texture>
-        <text>ui_inv_rest</text>
-    </sleep_window>
-    
+   
     <btn_sell_all x="370" y="672" width="157" height="48">
 		<texture>ui_button_main01</texture>
 		<text font="graffiti22" r="238" g="153" b="26">Sell All</text>
@@ -76,7 +71,7 @@
     <character_frame_window x="730" y="260" width="268" height="460">
 		<!--texture>ui_frame</texture-->        
         <!--left_top_texture x="5" y="10">ui\ui_inv_personal_over_t</left_top_texture-->
-        <title x="100" y="0" width="240" height="60">
+        <title x="80" y="-8" width="240" height="60">
 			<text font="graffiti22" r="231" g="153" b="22">ui_inv_personal</text>
         </title>
     </character_frame_window>
@@ -85,12 +80,6 @@
     <outfit_info_window x="20" y="33" width="268" height="460">
 		<text font="letterica16" r="240" g="217" b="182"/>
 	</outfit_info_window>
-
-    <!-- BELT STATIC BACKGROUND -->
-    <!--static x="10" y="140" width="1014" height="128">
-        <texture> ui\ui_inv_belt</texture>
-        <text x="25" y="2" font="graffiti22" r="231" g="153" b="22">ui_inv_belt</text>
-    </static-->
 
 	<!-- Drop button -->
     <drop_button x="230" y="413" width="110" height="60">

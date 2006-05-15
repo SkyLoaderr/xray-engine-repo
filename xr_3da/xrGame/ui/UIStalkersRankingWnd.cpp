@@ -111,13 +111,13 @@ void CUIStalkersRankingWnd::FillList()
 		int actor_place		= (int)std::distance(g_all_statistic_humans.begin(), it);
 
 		int sz = _min(g_all_statistic_humans.size(),20);
-//		int sz = g_all_statistic_humans.size();
 		for(int i=0; i<sz; ++i){
 			CSE_ALifeTraderAbstract* pT			= (g_all_statistic_humans[i]).trader;
-			if(pT==pActorAbstract || (i==19&&actor_place>19)  )
+			if(pT==pActorAbstract || (i==19&&actor_place>19)  ){
 				AddActorItem					(&uiXml, actor_place+1, pActorAbstract);
-			else
+			}else{
 				AddStalkerItem					(&uiXml, i+1, pT);
+			}
 		}
 
 		UIList->SetSelected						(UIList->GetItem(0) );

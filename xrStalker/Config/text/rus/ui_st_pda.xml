@@ -218,7 +218,7 @@
 	<string id="st_weight">
 		<text>вес</text>
 	</string>
-	<string id="st_basecost">
+	<string id="st_base_cost">
 		<text>цена</text>
 	</string>
 	<string id="st_condition">

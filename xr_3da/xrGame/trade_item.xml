@@ -23,7 +23,7 @@
 	</static_cost>
 
 
-	<descr_list x="16" y="69" width="477" height="130" item_height="15" always_show_scroll="0">
+	<descr_list x="16" y="69" width="477" height="130"  left_ident="16" always_show_scroll="0">
 		<font font="letterica16" r="240" g="217" b="182"/>
 	</descr_list>
     

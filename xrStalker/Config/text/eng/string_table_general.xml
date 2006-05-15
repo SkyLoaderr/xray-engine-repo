@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
+	<string id="ui_st_rank">
+		<text>rank</text>
+	</string>
+	<string id="ui_st_community">
+		<text>community</text>
+	</string>
+	<string id="ui_st_reputation">
+		<text>reputation</text>
+	</string>
+	<string id="ui_st_relation">
+		<text>relation</text>
+	</string>
+	
     <string id="AK-74">
         <text>AK-74</text>
     </string>

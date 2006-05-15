@@ -1,16 +1,16 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <!-- таблица строк общего назначения -->
 <string_table>
-	<string id="rank">
+	<string id="ui_st_rank">
 		<text>ранг</text>
 	</string>
-	<string id="community">
+	<string id="ui_st_community">
 		<text>группировка</text>
 	</string>
-	<string id="reputation">
+	<string id="ui_st_reputation">
 		<text>репутация</text>
 	</string>
-	<string id="relation">
+	<string id="ui_st_relation">
 		<text>отношение</text>
 	</string>
 

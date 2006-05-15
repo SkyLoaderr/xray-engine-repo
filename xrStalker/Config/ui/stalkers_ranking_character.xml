@@ -1,5 +1,4 @@
 <?xml version='1.0' encoding="UTF-8"?>
-<!-- CHARACTER INFO IN THE PDA DIALOG -->
 <window>
 
 	<!-- ICON -->
@@ -13,7 +12,7 @@
 	
 	<!-- RANK CAPTION -->
 	<rank_caption x="121" y="0" width="240" height="15">
-		<text x="0" y="0" font="letterica16" r="128" g="128" b="128">rank</text>
+		<text x="0" y="0" font="letterica16" r="128" g="128" b="128">ui_st_rank</text>
 	</rank_caption>
 
 	<!-- COMMUNITY -->
@@ -23,7 +22,7 @@
 
 	<!-- COMMUNITY CAPTION -->
 	<community_caption x="121" y="44" width="240" height="15">
-		<text x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">community</text>
+		<text x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">ui_st_community</text>
 	</community_caption>
 
 	<!-- RELATION -->
@@ -33,7 +32,7 @@
 
 	<!-- RELATION CAPTION -->
 	<relation_caption x="121" y="91" width="240" height="15">
-		<text x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">reputation</text>
+		<text x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">ui_st_reputation</text>
 	</relation_caption>
 
 	<!-- BIO -->

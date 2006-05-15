@@ -104,6 +104,8 @@ void CUIScrollView::RecalcSize			()
 
 	Fvector2			item_pos;
 	item_pos.set		(m_rightIndent, m_vertInterval + m_upIndent);
+	pad_size.y			+= m_upIndent;
+	pad_size.y			+= m_downIndent;
 
 	if(GetVertFlip()){
 		for(WINDOW_LIST::reverse_iterator it = m_pad->GetChildWndList().rbegin(); m_pad->GetChildWndList().rend() != it; ++it)
