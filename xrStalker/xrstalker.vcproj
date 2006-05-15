@@ -3224,6 +3224,9 @@
 						RelativePath=".\scripts\stalker_generic.script">
 					</File>
 					<File
+						RelativePath=".\scripts\xr_detector.script">
+					</File>
+					<File
 						RelativePath=".\scripts\xr_gulag.script">
 					</File>
 					<File

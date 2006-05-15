@@ -12,6 +12,7 @@ class "actor_binder" (object_binder)
 function actor_binder:__init (obj) super(obj)
 	self.bCheckStart = false
 	self.weather_manager = level_weathers.WeatherManager()
+	self.actor_detector = xr_detector.actor_detector()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:net_spawn(data)
@@ -89,11 +90,11 @@ function actor_binder:reinit()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:level_border_enter(npc, info_id)
---	printf("enter level border")
+	self.actor_detector:actor_enter()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:level_border_exit(npc, info_id)
---	printf("exit level border")
+	self.actor_detector:actor_exit()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:info_callback(npc, info_id)
@@ -170,6 +171,9 @@ function actor_binder:update(delta)
 
 	-- апдейт погоды
 	self.weather_manager:update()
+	
+	-- апдейт схемы детектора
+	self.actor_detector:update()
 	
 	--' Проверка потери жизни
 --[[
