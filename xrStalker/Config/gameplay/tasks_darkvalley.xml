@@ -199,12 +199,12 @@
     </objective>
     <objective key="1">
         <text>
-            bar_darklab_documents_3
+            bar_darklab_documents2_1
         </text>
         <icon height="50" width="50" x="200" y="100">
             ui\ui_icons_task
         </icon>
-        <map_location_type hint="bar_darklab_documents_3_hint">
+        <map_location_type hint="bar_darklab_documents2_1_hint">
             green_location
         </map_location_type>
         <object_story_id>
@@ -219,12 +219,12 @@
     </objective>
     <objective key="2">
         <text>
-            bar_darklab_documents_4
+            bar_darklab_documents2_2
         </text>
         <icon height="50" width="50" x="400" y="50">
             ui\ui_icons_task
         </icon>
-        <map_location_type hint="bar_darklab_documents_4_hint">
+        <map_location_type hint="bar_darklab_documents2_2_hint">
             blue_location
         </map_location_type>
         <object_story_id>
