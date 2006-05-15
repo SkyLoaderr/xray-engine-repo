@@ -165,14 +165,23 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 	if(m_start_time<0.0f)m_start_time=Device.fTimeGlobal;
 	if(m_bCyclic &&((Device.fTimeGlobal-m_start_time)>f_length)) m_start_time+=f_length;
 
+
 	Update					(Device.fTimeGlobal-m_start_time);
 
 	if(m_bStop)
 		m_factor			-=	Device.fTimeDelta*m_factor_speed;
-	else
+	else{
+		bool b = m_dest_factor>m_factor;
 		m_factor			+= m_factor_speed*Device.fTimeDelta*(m_dest_factor-m_factor);
+		
+		if(b)
+			clamp		(m_factor, 0.0001f, m_dest_factor);
+		else
+			clamp		(m_factor, m_dest_factor, 1.0f);
+	}
 
-	clamp					(m_factor, 0.0001f, 1.0f);
+	clamp				(m_factor, 0.0001f, 1.0f);
+
 
 	m_EffectorParams.color_base		+= pp_identity.color_base;
 	m_EffectorParams.color_gray		+= pp_identity.color_gray;

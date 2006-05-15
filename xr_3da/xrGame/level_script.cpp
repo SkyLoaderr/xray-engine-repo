@@ -461,12 +461,18 @@ void remove_pp_effector(int id)
 
 }
 
-void set_pp_effector_factor(int id, float f)
+void set_pp_effector_factor(int id, float f, float f_sp)
 {
 	CPostprocessAnimator*	pp	= smart_cast<CPostprocessAnimator*>(Actor()->Cameras().GetPPEffector((EEffectorPPType)id));
 
-	if(pp) pp->SetDesiredFactor(f,0.3f);
+	if(pp) pp->SetDesiredFactor(f,f_sp);
+}
 
+void set_pp_effector_factor2(int id, float f)
+{
+	CPostprocessAnimator*	pp	= smart_cast<CPostprocessAnimator*>(Actor()->Cameras().GetPPEffector((EEffectorPPType)id));
+
+	if(pp) pp->SetCurrentFactor(f);
 }
 
 #include "relation_registry.h"
@@ -573,6 +579,7 @@ void CLevel::script_register(lua_State *L)
 		def("remove_cam_effector",				&remove_cam_effector),
 		def("add_pp_effector",					&add_pp_effector),
 		def("set_pp_effector_factor",			&set_pp_effector_factor),
+		def("set_pp_effector_factor",			&set_pp_effector_factor2),
 		def("remove_pp_effector",				&remove_pp_effector),
 
 		def("add_complex_effector",				&add_complex_effector),

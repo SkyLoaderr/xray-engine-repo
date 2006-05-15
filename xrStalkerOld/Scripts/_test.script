@@ -1,3 +1,8 @@
+function main()
+--	level.add_pp_effector ("dead_zone.ppe", 1001, true)
+	level.set_pp_effector_factor(1001, 0.01)
+end
+
 -- run_string alife():create("medkit", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
 function cb1 ()
  local c = 1
@@ -32,7 +37,7 @@ function main123()
 end
 
 
-function main()
+function main111111()
 --	level.add_cam_effector2("camera_effects\\agroprom_demo.anm", 123, false)
 	
 --	db.actor:activate_slot(db.actor:active_slot()+1)
@@ -59,13 +64,13 @@ function main()
 
 end
 
-function main123456()
+function main_qqq()
    local h = hit()
-   h.power = 0.2
+   h.power = 1.0
    h.direction = vector():set(0, 0, 1)
    h.impulse = 0
    h.draftsman = db.actor
-   h.type = hit.wound
+   h.type = hit.fire_wound
    db.actor:hit(h)
 
 --burn  		1
