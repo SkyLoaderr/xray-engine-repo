@@ -63,8 +63,8 @@ function fill_phrase_table()
 		if phrase_ini:line_exist(id, "community") then
 			tt.community = phrase_ini:r_string(id, "community")
 		end
-		if phrase_ini:line_exist(id, "npc_сommunity") then
-			tt.npc_community = phrase_ini:r_string(id, "npc_сommunity")
+		if phrase_ini:line_exist(id, "npc_community") then
+			tt.npc_community = phrase_ini:r_string(id, "npc_community")
 		end
 		if phrase_ini:line_exist(id, "relation") then
 			tt.relation = phrase_ini:r_string(id, "relation")
@@ -372,18 +372,19 @@ function precondition(npc, actor, tbl, sel_tbl)
 	call_count = call_count + 1
 	return_value = tmp_tbl[call_count] ~= nil and tmp_tbl[call_count].avail == true
 	--' Проверка на повторяемость фраз.
-	if return_value == true then
-			if sel_tbl[npc:id()] ~= nil and sel_tbl[npc:id()] ~= tmp_tbl[call_count].phr_id then
-				return_value = false
+	if sel_tbl ~= nil then
+		if return_value == true then
+				if sel_tbl[npc:id()] ~= nil and sel_tbl[npc:id()] ~= tmp_tbl[call_count].phr_id then
+					return_value = false
+				end
+		else
+			--' Если обрабатывается фраза, которая была запомнена.
+			if sel_tbl[npc:id()] ~= nil and tmp_tbl[call_count] ~= nil and 
+			sel_tbl[npc:id()] == tmp_tbl[call_count].phr_id then
+				sel_tbl[npc:id()] = nil
 			end
-	else
-		--' Если обрабатывается фраза, которая была запомнена.
-		if sel_tbl[npc:id()] ~= nil and tmp_tbl[call_count] ~= nil and 
-		   sel_tbl[npc:id()] == tmp_tbl[call_count].phr_id then
-			sel_tbl[npc:id()] = nil
 		end
-	end
-	
+	end	
 	
 	
 	if call_count < max_count then
