@@ -174,7 +174,15 @@
         <icon height="50" width="50" x="100" y="50">
             ui\ui_icons_task
         </icon>
-        <map_location_type hint="bar_darklab_documents_2_hint">
+    </objective>
+    <objective key="3">
+        <text>
+            bar_darklab_documents_3
+        </text>
+        <icon height="50" width="50" x="100" y="50">
+            ui\ui_icons_task
+        </icon>
+        <map_location_type hint="bar_darklab_documents_3_hint">
             green_location
         </map_location_type>
         <object_story_id>
