@@ -361,7 +361,7 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>	
+		
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -393,7 +393,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -425,7 +424,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -457,7 +455,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
@@ -490,7 +487,6 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
