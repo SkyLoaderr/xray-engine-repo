@@ -150,6 +150,23 @@
             val_x18_door_open
         </infoportion_complete>
     </objective>
+    <objective key="4">
+        <text>
+            bar_darklab_documents_4
+        </text>
+        <icon height="50" width="50" x="100" y="50">
+            ui\ui_icons_task
+        </icon>
+        <map_location_type hint="bar_darklab_documents_4_hint">
+            green_location
+        </map_location_type>
+        <object_story_id>
+            val_zone_pipe
+        </object_story_id>
+        <infoportion_complete>
+            val_actor_on_bandits_base
+        </infoportion_complete>
+    </objective>
     <objective key="1">
         <text>
             bar_darklab_documents_1
