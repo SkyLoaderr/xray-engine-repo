@@ -612,7 +612,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
     local i, v, j = 0, 0, 0
     local restr, gr, prior, rst = 0, 0, 0, 0
     local ltx = ""
-    local combat_ignore = "combat_ignore_cond = {=check_fighting(400) -val_escort_captive_enemy}, {=check_fighting(401) -val_sacrifice_finish}, {=check_fighting(402) -val_prisoner_free}\n"
+    local combat_ignore = "combat_ignore_cond = {=val_bandits_ci}\n"
 
     -- ÁÎÐÎÂ
     t = { section = "logic@" .. gname .. "_leader_normal",
@@ -643,26 +643,27 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
     table.insert(sj, t)
 
     ltx = ltx.."[logic@" .. gname .. "_leader_normal]\n" ..
-               "active = walker1@" .. gname .. "_leader_normal\n" ..
+               "active = walker@" .. gname .. "_leader_normal\n" ..
                "on_death = death@" .. gname .. "_borov\n" ..
                "combat_ignore = combat_ignore\n" ..
 
                "[death@" .. gname .. "_borov]\n" ..
                "on_info = %+val_borov_dead%\n" ..
 
-               "[walker1@" .. gname .. "_leader_normal]\n" ..
+               "[walker@" .. gname .. "_leader_normal]\n" ..
                "path_walk = leader_walk\n" ..
                "path_look = leader_look\n" ..
                --"show_spot = false\n" ..
                combat_ignore ..
 
                "[logic@" .. gname .. "_leader_alarm]\n" ..
-               "active = walker1@" .. gname .. "_leader_alarm\n" ..
+               "active = camper@" .. gname .. "_leader_alarm\n" ..
                "combat_ignore = combat_ignore\n" ..
 
-               "[walker1@" .. gname .. "_leader_alarm]\n" ..
+               "[camper@" .. gname .. "_leader_alarm]\n" ..
                "path_walk = leader_alarm_walk\n" ..
                "path_look = leader_alarm_look\n" ..
+               "radius    = 20\n" ..
                --"show_spot = false\n" ..
                combat_ignore
 
@@ -761,7 +762,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                        "[walker@" .. gname .. "_kamp" .. i .. "_alarm" .. j .. "]\n" ..
                        "path_walk = kamp" .. i .. "_alarm_walk" .. j .. "\n" ..
                        "path_look = kamp" .. i .. "_alarm_look" .. j .. "\n" ..
-                       combat_ignore
+                       "combat_ignore_cond = {=val_bandits_ci_actor(35)}\n"
         end
     end
 
@@ -822,7 +823,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "[walker@" .. gname .. "_guard_alarm" .. i .. "]\n" ..
                    "path_walk = guard_alarm_walk" .. i .. "\n" ..
                    "path_look = guard_alarm_look" .. i .. "\n" ..
-                   combat_ignore
+                   "combat_ignore_cond = {=val_bandits_ci_actor(35)}\n"
     end
 
     for i = 1, quantity[2] do
@@ -842,7 +843,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "[walker@" .. gname .. "_patrol_alarm" .. i .. "]\n" ..
                    "path_walk = patrol_alarm_walk" .. i .. "\n" ..
                    "path_look = patrol_alarm_look" .. i .. "\n" ..
-                   combat_ignore
+                   "combat_ignore_cond = {=val_bandits_ci_actor(30)}\n"
     end
 
     for i = 1, quantity[3] do
@@ -870,7 +871,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "def_state_moving_fire = sneak_fire\n" ..
                    "def_state_campering = hide\n" ..
                    "def_state_campering_fire = hide_fire\n" ..
-                   combat_ignore
+                   "combat_ignore_cond = {=val_bandits_ci_actor(35)}\n"
     end
 
     for i = 1, quantity[4] do
@@ -889,7 +890,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "[walker@" .. gname .. "_sleeper_alarm" .. i .. "]\n" ..
                    "path_walk = sleeper_alarm_walk" .. i .. "\n" ..
                    "path_look = sleeper_alarm_look" .. i .. "\n" ..
-                   combat_ignore
+                   "combat_ignore_cond = {=val_bandits_ci_actor(30)}\n"
     end
 
     --ltx = ltx.."#include \"misc\\gulag_dark_valley.ltx\"\n"
