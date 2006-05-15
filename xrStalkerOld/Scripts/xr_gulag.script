@@ -346,7 +346,7 @@ function gulag:object_setup_online( obj_id, obj, need_setup_logic, need_setup_re
 		end
 
 		if need_setup_restrictors then
-			self:set_restrictions( obj, job.out_rest, job.in_rest )
+			self:set_restrictions( obj, job.out_rest, job.in_rest, job.info_rest )
 		end
 	end
 end
@@ -971,7 +971,7 @@ function gulag:beginJob( obj_id )
 	if self.Object[obj_id] ~= true then
 		local obj = self.Object[obj_id]
 
-		self:set_restrictions( obj, job.out_rest, job.in_rest )
+		self:set_restrictions( obj, job.out_rest, job.in_rest, job.info_rest )
 		self:setup_logic( obj, job.section )
 	end
 end
@@ -989,7 +989,7 @@ end
 
 -- установить объекту рестрикторы в онлайне.
 -- obj - game_object
-function gulag:set_restrictions(obj, r_out, r_in)
+function gulag:set_restrictions(obj, r_out, r_in, r_info)
 	printf( "RESTR NPC        : %s", obj:name() )
 	printf( "RESTR HAVE (IN)  : %s", obj:in_restrictions() )
 	printf( "RESTR HAVE (OUT) : %s", obj:out_restrictions() )
@@ -1049,12 +1049,19 @@ function gulag:set_restrictions(obj, r_out, r_in)
 
 	printf( "RESTR AFTER (IN) : %s", obj:in_restrictions()  )
 	printf( "RESTR AFTER (OUT): %s", obj:out_restrictions() )
+
+	-- информационный рестриктор
+	db.info_restr[obj:id()] = r_info
+
+	printf( "INFO  RESTR      : %s", utils.to_str( r_info ) )
 end
 
 -- убрать записи о том, что смарт устанавливал объекту рестрикторы.
 -- obj - game_object
 function gulag:clear_restrictors_info( obj_id )
 	self.restrictors[obj_id] = nil
+
+	db.info_restr[obj_id] = nil
 end
 
 -- получить работу, которую занимает объект
@@ -1086,7 +1093,7 @@ function gulag:free_obj( obj_id )
 		if self.Object[obj_id] ~= true and
 		   self.Object_begin_job[obj_id] == true
 		then
-			self:set_restrictions( self.Object[obj_id], "", "" )
+			self:set_restrictions( self.Object[obj_id], "", "", nil )
 		end
 	end
 end
@@ -1323,6 +1330,28 @@ function getCasualities( name_or_sid )
 	local gulag = get_gulag( name_or_sid )
 
 	return ( gulag and gulag:getCasualities() ) or 0
+end
+
+-- не находится ли источник информации внутри информационного рестриктора?
+-- функция кеширует game_object рестриктора
+function is_info_restricted( obj_id, info_pos )
+	local r = db.info_restr[obj_id]
+
+	if r == nil then
+		return false
+	end
+
+	if type(r) == "string" then
+		r = db.zone_by_name[r]
+
+		if r == nil then
+			return false
+		end
+
+		db.info_restr[obj_id] = r
+	end
+
+	return r:inside( info_pos )
 end
 
 -----------------------------------------------------------------------------------------------------------------
