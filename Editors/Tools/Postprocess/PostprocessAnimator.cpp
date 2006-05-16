@@ -133,6 +133,7 @@ void        CPostprocessAnimator::Stop       (float sp)
 	if(m_bStop)			return;
 	m_bStop				= true;
 	m_factor_speed		= sp;
+	VERIFY				(_valid(sp));
 }
 
 float       CPostprocessAnimator::GetLength                       ()
@@ -168,6 +169,7 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 
 	Update					(Device.fTimeGlobal-m_start_time);
 
+	VERIFY				(_valid(m_factor_speed));
 	if(m_bStop)
 		m_factor			-=	Device.fTimeDelta*m_factor_speed;
 	else{
@@ -224,6 +226,7 @@ void        CPostprocessAnimator::Create                          ()
 	m_factor			= 1.0f;
 	m_dest_factor		= 1.0f;
 	m_bStop				= false;
+	m_factor_speed		= 1.0f;
 	m_start_time		= -1.0f;
 
     m_Params[0] = xr_new<CPostProcessColor> (&m_EffectorParams.color_base);			//base color
