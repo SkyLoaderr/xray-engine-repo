@@ -236,7 +236,7 @@ void CUIBag::UpdateBuyPossibility(){
 		{
 			pDDItem = (CUIDragDropItemMP*)(*it);
 //			flag = !(pDDItem->GetCost() > money);
-			flag = (HasEnoughMoney(pDDItem));
+			flag = (pDDItem->m_bAlreadyPaid || HasEnoughMoney(pDDItem));
 			EnableDDItem(pDDItem, flag);
 			EnableDDItemByRank(pDDItem);
 		}

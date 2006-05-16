@@ -1106,6 +1106,7 @@ void	game_sv_mp::UpdatePlayersMoney		()
 		GenerateGameMessage (P);
 		P.w_u32		(GAME_EVENT_PLAYERS_MONEY_CHANGED);
 
+		P.w_s32(ps->money_for_round);
 		P.w_s32(ps->money_added);	
 		ps->money_added = 0;
 		P.w_u8(u8(ps->m_aBonusMoney.size() & 0xff));
@@ -1171,6 +1172,7 @@ void	game_sv_mp::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount)
 	ps->money_for_round = s32(TotalMoney);
 	//---------------------------------------
 	Game().m_WeaponUsageStatistic.OnPlayerAddMoney(ps, MoneyAmount);
+	//---------------------------------------	
 };
 //---------------------------------------------------------------------
 void	game_sv_mp::ReadOptions				(shared_str &options)

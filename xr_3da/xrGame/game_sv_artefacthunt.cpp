@@ -622,6 +622,8 @@ void		game_sv_ArtefactHunt::OnObjectLeaveTeamBase	(u16 id, u16 zone_team)
 		{
 			game_PlayerState* ps = eActor->owner->ps;
 			if (ps) ps->resetFlag(GAME_PLAYER_FLAG_ONBASE);
+
+			signal_Syncronize();
 		}
 		else
 		{

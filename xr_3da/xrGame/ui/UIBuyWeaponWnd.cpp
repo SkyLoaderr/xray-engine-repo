@@ -342,9 +342,8 @@ bool CUIBuyWeaponWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
 //		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(-GetItemPrice(pDDItemMP)));
-
 		pDDItemMP->m_bAlreadyPaid = true;
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(-GetItemPrice(pDDItemMP)));
 	}
 	return true;
 }
@@ -397,8 +396,8 @@ bool CUIBuyWeaponWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
 //		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 		pDDItemMP->m_bAlreadyPaid = true;
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 	}
 	return true;
 }
@@ -440,8 +439,8 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
 //		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 		pDDItemMP->m_bAlreadyPaid = true;		
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 	}
 
 	return true;
@@ -476,8 +475,8 @@ bool CUIBuyWeaponWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
 //		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 		pDDItemMP->m_bAlreadyPaid = true;
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 	}
 
 	return true;
@@ -510,8 +509,8 @@ bool CUIBuyWeaponWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
 //		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 		pDDItemMP->m_bAlreadyPaid = true;
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 	}
 
 	return true;
@@ -541,8 +540,8 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 		if (!pDDItemMP->m_bAlreadyPaid)
 		{
 //			this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
-			this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft( - GetItemPrice(pDDItemMP)));
 			pDDItemMP->m_bAlreadyPaid = true;
+			this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft( - GetItemPrice(pDDItemMP)));
 		}
 //		this_inventory->UpdateOutfit();
 		return true;
@@ -581,8 +580,8 @@ bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if (!pDDItemMP->m_bAlreadyPaid)
 	{
 //		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - GetItemPrice(pDDItemMP)); 
-		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 		pDDItemMP->m_bAlreadyPaid = true;
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyLeft(- GetItemPrice(pDDItemMP)));
 		UNHIGHTLIGHT_ITEM(pDDItemMP);
 	}
 

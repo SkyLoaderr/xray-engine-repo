@@ -941,8 +941,17 @@ bool	game_cl_mp::Is_Spectator_Camera_Allowed			(CSpectator::EActorCameras Camera
 void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
 {
 	if (!local_player) return;
-	s32 Money_Added = P.r_s32();
 	CUIGameDM* pUIDM = smart_cast<CUIGameDM*>(m_game_ui_custom);
+	local_player->money_for_round = P.r_s32();
+	{
+		if(pUIDM)
+		{
+			string256					MoneyStr;
+			itoa(local_player->money_for_round, MoneyStr, 10);
+			pUIDM->ChangeTotalMoneyIndicator	(MoneyStr);
+		}
+	}
+	s32 Money_Added = P.r_s32();
 	if (Money_Added != 0)
 	{
 		if(pUIDM)
