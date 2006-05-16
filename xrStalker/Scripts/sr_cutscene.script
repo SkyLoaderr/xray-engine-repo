@@ -29,7 +29,9 @@ end
 function action_cutscene:reset_scheme()
 
 	self.state = state_nowhere --' еще неясно, находится ли персонаж в пределах пространственного ограничителя или нет
-	
+
+    self.st.signals = {} --' обнуляем сигналы
+
 	self:switch_state(db.actor)
 
 end
@@ -54,6 +56,7 @@ function action_cutscene:update( delta )
         then
             xr_effects.enable_ui(db.actor, nil)
             self.ui_disabled = false
+            self.st.signals["priplili"] = true
         end
     end
 	
