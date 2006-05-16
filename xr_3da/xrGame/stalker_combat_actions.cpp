@@ -436,11 +436,11 @@ void CStalkerActionGetReadyToKill::execute		()
 
 	if (object().movement().detail().distance_to_target() < 5.f) {
 		m_movement_type					= eMovementTypeWalk;
-		object().sight().setup			(CSightAction(SightManager::eSightTypePathDirection));
+		object().sight().setup			(CSightAction(SightManager::eSightTypeCurrentDirection));
 	}
 	else {
 		m_movement_type					= eMovementTypeRun;
-		object().sight().setup			(CSightAction(SightManager::eSightTypeCurrentDirection));
+		object().sight().setup			(CSightAction(SightManager::eSightTypePathDirection));
 	}
 
 	if (object().movement().detail().distance_to_target() > CLOSE_MOVE_DISTANCE)

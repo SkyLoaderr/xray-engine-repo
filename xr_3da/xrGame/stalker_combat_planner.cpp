@@ -204,6 +204,7 @@ void CStalkerCombatPlanner::add_evaluators		()
 	add_evaluator			(eWorldPropertyPureEnemy		,xr_new<CStalkerPropertyEvaluatorEnemies>			(m_object,"is_there_enemies",0));
 	add_evaluator			(eWorldPropertyEnemy			,xr_new<CStalkerPropertyEvaluatorEnemies>			(m_object,"is_there_enemies_delayed",POST_COMBAT_WAIT_INTERVAL));
 	add_evaluator			(eWorldPropertySeeEnemy			,xr_new<CStalkerPropertyEvaluatorSeeEnemy>			(m_object,"see enemy"));
+	add_evaluator			(eWorldPropertyEnemySeeMe		,xr_new<CStalkerPropertyEvaluatorEnemySeeMe>		(m_object,"enemy see me"));
 	add_evaluator			(eWorldPropertyItemToKill		,xr_new<CStalkerPropertyEvaluatorItemToKill>		(m_object,"item to kill"));
 	add_evaluator			(eWorldPropertyItemCanKill		,xr_new<CStalkerPropertyEvaluatorItemCanKill>		(m_object,"item can kill"));
 	add_evaluator			(eWorldPropertyFoundItemToKill	,xr_new<CStalkerPropertyEvaluatorFoundItemToKill>	(m_object,"found item to kill"));
@@ -212,6 +213,7 @@ void CStalkerCombatPlanner::add_evaluators		()
 	add_evaluator			(eWorldPropertyReadyToDetour	,xr_new<CStalkerPropertyEvaluatorReadyToDetour>		(m_object,"ready to detour"));
 	add_evaluator			(eWorldPropertyPanic			,xr_new<CStalkerPropertyEvaluatorPanic>				(m_object,"panic"));
 	add_evaluator			(eWorldPropertyDangerGrenade	,xr_new<CStalkerPropertyEvaluatorGrenadeToExplode>	(m_object,"is there grenade to explode"));
+	
 	add_evaluator			(eWorldPropertyInCover			,xr_new<CStalkerPropertyEvaluatorMember>			(CScriptActionBase::m_storage,eWorldPropertyInCover,true,true,"in cover"));
 	add_evaluator			(eWorldPropertyLookedOut		,xr_new<CStalkerPropertyEvaluatorMember>			(CScriptActionBase::m_storage,eWorldPropertyLookedOut,true,true,"looked out"));
 	add_evaluator			(eWorldPropertyPositionHolded	,xr_new<CStalkerPropertyEvaluatorMember>			(CScriptActionBase::m_storage,eWorldPropertyPositionHolded,true,true,"position holded"));
@@ -310,6 +312,7 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertySeeEnemy,		false);
 	add_condition			(action,eWorldPropertyLookedOut,	true);
 	add_condition			(action,eWorldPropertyPositionHolded,true);
+	add_condition			(action,eWorldPropertyPanic,		false);
 	add_effect				(action,eWorldPropertyEnemyDetoured,true);
 	add_operator			(eWorldOperatorDetourEnemy,			action);
 
@@ -326,6 +329,22 @@ void CStalkerCombatPlanner::add_actions			()
 	add_effect				(action,eWorldPropertyPureEnemy,	false);
 	add_operator			(eWorldOperatorSearchEnemy,			action);
 	action->set_inertia_time(120000);
+
+	action					= xr_new<CStalkerActionKillEnemy>(m_object,"kill_if_not_visible");
+	add_condition			(action,eWorldPropertyDangerGrenade,false);
+	add_condition			(action,eWorldPropertyUseSuddenness,false);
+	add_condition			(action,eWorldPropertyReadyToKill,	true);
+//	add_condition			(action,eWorldPropertyReadyToDetour,true);
+//	add_condition			(action,eWorldPropertyInCover,		false);
+//	add_condition			(action,eWorldPropertyEnemyDetoured,false);
+	add_condition			(action,eWorldPropertySeeEnemy,		true);
+	add_condition			(action,eWorldPropertyEnemySeeMe,	false);
+//	add_condition			(action,eWorldPropertyLookedOut,	true);
+//	add_condition			(action,eWorldPropertyPositionHolded,true);
+//	add_effect				(action,eWorldPropertyEnemyDetoured,true);
+	add_condition			(action,eWorldPropertyPanic,		false);
+	add_effect				(action,eWorldPropertyPureEnemy,	false);
+	add_operator			(eWorldOperatorKillEnemyIfNotVisible,	action);
 
 	action					= xr_new<CStalkerActionPostCombatWait>	(m_object,"post_combat_wait");
 	add_condition			(action,eWorldPropertyDangerGrenade,false);

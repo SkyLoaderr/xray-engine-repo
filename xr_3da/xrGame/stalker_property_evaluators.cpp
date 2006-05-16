@@ -24,6 +24,8 @@
 #include "ai/stalker/ai_stalker.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "alife_human_brain.h"
+#include "actor.h"
+#include "actor_memory.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -108,6 +110,32 @@ CStalkerPropertyEvaluatorSeeEnemy::CStalkerPropertyEvaluatorSeeEnemy	(CAI_Stalke
 _value_type CStalkerPropertyEvaluatorSeeEnemy::evaluate	()
 {
 	return				(m_object->memory().enemy().selected() ? m_object->memory().visual().visible_now(m_object->memory().enemy().selected()) : false);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorEnemySeeMe
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerPropertyEvaluatorEnemySeeMe::CStalkerPropertyEvaluatorEnemySeeMe	(CAI_Stalker *object, LPCSTR evaluator_name) :
+	inherited		(object ? object->lua_game_object() : 0,evaluator_name)
+{
+}
+
+_value_type CStalkerPropertyEvaluatorEnemySeeMe::evaluate	()
+{
+	const CEntityAlive		*enemy = m_object->memory().enemy().selected();
+	if (!enemy)
+		return				(false);
+
+	const CCustomMonster	*enemy_monster = smart_cast<const CCustomMonster*>(enemy);
+	if (enemy_monster)
+		return				(enemy_monster->memory().visual().visible_now(m_object));
+
+	const CActor			*actor = smart_cast<const CActor*>(enemy);
+	if (actor)
+		return				(actor->memory().visual().visible_now(m_object));
+
+	return					(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
