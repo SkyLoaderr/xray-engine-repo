@@ -92,9 +92,10 @@ protected:
 private:
 	MonsterSpace::EBodyState		m_body_state;
 	MonsterSpace::EMovementType		m_movement_type;
+	bool							m_affect_properties;
 
 public:
-						CStalkerActionGetReadyToKill(CAI_Stalker *object, LPCSTR action_name = "");
+						CStalkerActionGetReadyToKill(bool affect_properties, CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();
 	virtual void		execute						();
 	virtual void		finalize					();

@@ -27,6 +27,7 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyItemCanKill,
 		eWorldPropertyFoundAmmo,
 		eWorldPropertyReadyToKill,
+		eWorldPropertyReadyToDetour,
 		eWorldPropertySeeEnemy,
 		eWorldPropertyPanic,
 		eWorldPropertyInCover,
@@ -83,6 +84,7 @@ namespace StalkerDecisionSpace {
 
 		eWorldOperatorAimEnemy,
 		eWorldOperatorGetReadyToKill,
+		eWorldOperatorGetReadyToDetour,
 		eWorldOperatorKillEnemy,
 		eWorldOperatorRetreatFromEnemy,
 		eWorldOperatorTakeCover,

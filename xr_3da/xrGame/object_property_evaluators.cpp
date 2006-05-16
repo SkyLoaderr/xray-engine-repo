@@ -79,6 +79,24 @@ CObjectPropertyEvaluatorEmpty::_value_type CObjectPropertyEvaluatorEmpty::evalua
 }
 
 //////////////////////////////////////////////////////////////////////////
+// CObjectPropertyEvaluatorFull
+//////////////////////////////////////////////////////////////////////////
+
+CObjectPropertyEvaluatorFull::CObjectPropertyEvaluatorFull	(CWeapon *item, CAI_Stalker *owner, u32 ammo_type) :
+	inherited		(item,owner),
+	m_ammo_type		(ammo_type)
+{
+}
+
+CObjectPropertyEvaluatorFull::_value_type CObjectPropertyEvaluatorFull::evaluate	()
+{
+	if (!m_ammo_type)
+		return		(_value_type(m_item->GetAmmoElapsed() == m_item->GetAmmoMagSize()));
+	else
+		return		(_value_type(false));
+}
+
+//////////////////////////////////////////////////////////////////////////
 // CObjectPropertyEvaluatorReady
 //////////////////////////////////////////////////////////////////////////
 

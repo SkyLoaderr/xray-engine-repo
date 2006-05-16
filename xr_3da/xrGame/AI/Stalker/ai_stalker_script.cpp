@@ -37,6 +37,7 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("property_item_can_kill",					StalkerDecisionSpace::eWorldPropertyItemCanKill),
 				luabind::value("property_found_ammo",						StalkerDecisionSpace::eWorldPropertyFoundAmmo),
 				luabind::value("property_ready_to_kill",					StalkerDecisionSpace::eWorldPropertyReadyToKill),
+				luabind::value("property_ready_to_detour",					StalkerDecisionSpace::eWorldPropertyReadyToDetour),
 				luabind::value("property_see_enemy",						StalkerDecisionSpace::eWorldPropertySeeEnemy),
 				luabind::value("property_panic",							StalkerDecisionSpace::eWorldPropertyPanic),
 				luabind::value("property_in_cover",							StalkerDecisionSpace::eWorldPropertyInCover),

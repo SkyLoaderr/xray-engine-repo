@@ -469,6 +469,9 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		if (weapon) {
 			HUD().Font().pFontSmall->OutNext("%s%s%sstrapped       : %s",indent,indent,indent,weapon_strapped(weapon) ? "+" : "-");
 			HUD().Font().pFontSmall->OutNext("%s%s%sunstrapped     : %s",indent,indent,indent,weapon_unstrapped(weapon) ? "+" : "-");
+			HUD().Font().pFontSmall->OutNext("%s%s%sammo           : %d",indent,indent,indent,weapon->GetAmmoElapsed());
+			HUD().Font().pFontSmall->OutNext("%s%s%smagazine       : %d",indent,indent,indent,weapon->GetAmmoMagSize());
+			HUD().Font().pFontSmall->OutNext("%s%s%stotal ammo     : %d",indent,indent,indent,weapon->GetAmmoCurrent());
 		}
 	}
 

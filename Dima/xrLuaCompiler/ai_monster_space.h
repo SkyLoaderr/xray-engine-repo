@@ -49,6 +49,8 @@ namespace MonsterSpace {
 		eObjectActionDrop,
 		eObjectActionAimReady1,
 		eObjectActionAimReady2,
+		eObjectActionAimForceFull1,
+		eObjectActionAimForceFull2,
 		// for scripts only
 		eObjectActionActivate,
 		eObjectActionDeactivate,

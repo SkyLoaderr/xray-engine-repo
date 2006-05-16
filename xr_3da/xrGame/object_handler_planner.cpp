@@ -25,20 +25,22 @@ using namespace ObjectHandlerSpace;
 IC	ObjectHandlerSpace::EWorldProperties CObjectHandlerPlanner::object_property(MonsterSpace::EObjectAction object_action) const
 {
 	switch (object_action) {
-		case MonsterSpace::eObjectActionSwitch1		: return(ObjectHandlerSpace::eWorldPropertySwitch1);
-		case MonsterSpace::eObjectActionSwitch2		: return(ObjectHandlerSpace::eWorldPropertySwitch2);
-		case MonsterSpace::eObjectActionAim1		: return(ObjectHandlerSpace::eWorldPropertyAimingReady1);
-		case MonsterSpace::eObjectActionAim2		: return(ObjectHandlerSpace::eWorldPropertyAiming2);
-		case MonsterSpace::eObjectActionFire1		: return(ObjectHandlerSpace::eWorldPropertyFiring1);
-		case MonsterSpace::eObjectActionFire2		: return(ObjectHandlerSpace::eWorldPropertyFiring2);
-		case MonsterSpace::eObjectActionIdle		: return(ObjectHandlerSpace::eWorldPropertyIdle);
-		case MonsterSpace::eObjectActionStrapped	: return(ObjectHandlerSpace::eWorldPropertyIdleStrap);
-		case MonsterSpace::eObjectActionDrop		: return(ObjectHandlerSpace::eWorldPropertyDropped);
-		case MonsterSpace::eObjectActionActivate	: return(ObjectHandlerSpace::eWorldPropertyIdle);
-		case MonsterSpace::eObjectActionDeactivate	: return(ObjectHandlerSpace::eWorldPropertyNoItemsIdle);
-		case MonsterSpace::eObjectActionAimReady1	: return(ObjectHandlerSpace::eWorldPropertyAimingReady1);
-		case MonsterSpace::eObjectActionAimReady2	: return(ObjectHandlerSpace::eWorldPropertyAimingReady2);
-		case MonsterSpace::eObjectActionUse			: return(ObjectHandlerSpace::eWorldPropertyUsed);
+		case MonsterSpace::eObjectActionSwitch1			: return(ObjectHandlerSpace::eWorldPropertySwitch1);
+		case MonsterSpace::eObjectActionSwitch2			: return(ObjectHandlerSpace::eWorldPropertySwitch2);
+		case MonsterSpace::eObjectActionAim1			: return(ObjectHandlerSpace::eWorldPropertyAimingReady1);
+		case MonsterSpace::eObjectActionAim2			: return(ObjectHandlerSpace::eWorldPropertyAiming2);
+		case MonsterSpace::eObjectActionFire1			: return(ObjectHandlerSpace::eWorldPropertyFiring1);
+		case MonsterSpace::eObjectActionFire2			: return(ObjectHandlerSpace::eWorldPropertyFiring2);
+		case MonsterSpace::eObjectActionIdle			: return(ObjectHandlerSpace::eWorldPropertyIdle);
+		case MonsterSpace::eObjectActionStrapped		: return(ObjectHandlerSpace::eWorldPropertyIdleStrap);
+		case MonsterSpace::eObjectActionDrop			: return(ObjectHandlerSpace::eWorldPropertyDropped);
+		case MonsterSpace::eObjectActionActivate		: return(ObjectHandlerSpace::eWorldPropertyIdle);
+		case MonsterSpace::eObjectActionDeactivate		: return(ObjectHandlerSpace::eWorldPropertyNoItemsIdle);
+		case MonsterSpace::eObjectActionAimReady1		: return(ObjectHandlerSpace::eWorldPropertyAimingReady1);
+		case MonsterSpace::eObjectActionAimReady2		: return(ObjectHandlerSpace::eWorldPropertyAimingReady2);
+		case MonsterSpace::eObjectActionAimForceFull1	: return(ObjectHandlerSpace::eWorldPropertyAimForceFull1);
+		case MonsterSpace::eObjectActionAimForceFull2	: return(ObjectHandlerSpace::eWorldPropertyAimForceFull2);
+		case MonsterSpace::eObjectActionUse				: return(ObjectHandlerSpace::eWorldPropertyUsed);
 		default							: NODEFAULT;
 	}
 #ifdef DEBUG
@@ -121,35 +123,39 @@ LPCSTR CObjectHandlerPlanner::action2string(const _action_id_type &id)
 		strcpy	(S,"no_items");
 	strcat		(S,":");
 	switch (action_state_id(id)) {
-		case ObjectHandlerSpace::eWorldOperatorShow			: {strcat(S,"Show");		break;}
-		case ObjectHandlerSpace::eWorldOperatorHide			: {strcat(S,"Hide");		break;}
-		case ObjectHandlerSpace::eWorldOperatorDrop			: {strcat(S,"Drop");		break;}
-		case ObjectHandlerSpace::eWorldOperatorStrapping	: {strcat(S,"Strapping");	break;}
-		case ObjectHandlerSpace::eWorldOperatorStrapping2Idle: {strcat(S,"Strapping to idle");	break;}
-		case ObjectHandlerSpace::eWorldOperatorUnstrapping	: {strcat(S,"Unstrapping"); break;}
+		case ObjectHandlerSpace::eWorldOperatorShow			: {strcat(S,"Show");					break;}
+		case ObjectHandlerSpace::eWorldOperatorHide			: {strcat(S,"Hide");					break;}
+		case ObjectHandlerSpace::eWorldOperatorDrop			: {strcat(S,"Drop");					break;}
+		case ObjectHandlerSpace::eWorldOperatorStrapping	: {strcat(S,"Strapping");				break;}
+		case ObjectHandlerSpace::eWorldOperatorStrapping2Idle: {strcat(S,"Strapping to idle");		break;}
+		case ObjectHandlerSpace::eWorldOperatorUnstrapping	: {strcat(S,"Unstrapping");				break;}
 		case ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle: {strcat(S,"Unstrapping to idle");	break;}
-		case ObjectHandlerSpace::eWorldOperatorStrapped		: {strcat(S,"StrappedIdle");break;}
-		case ObjectHandlerSpace::eWorldOperatorIdle			: {strcat(S,"Idle");		break;}
-		case ObjectHandlerSpace::eWorldOperatorAim1			: {strcat(S,"Aim1");		break;}
-		case ObjectHandlerSpace::eWorldOperatorAim2			: {strcat(S,"Aim2");		break;}
-		case ObjectHandlerSpace::eWorldOperatorReload1		: {strcat(S,"Reload1");		break;}
-		case ObjectHandlerSpace::eWorldOperatorReload2		: {strcat(S,"Reload2");		break;}
-		case ObjectHandlerSpace::eWorldOperatorFire1		: {strcat(S,"Fire1");		break;}
-		case ObjectHandlerSpace::eWorldOperatorFire2		: {strcat(S,"Fire2");		break;}
-		case ObjectHandlerSpace::eWorldOperatorAimingReady1	: {strcat(S,"AimingReady1");break;}
-		case ObjectHandlerSpace::eWorldOperatorAimingReady2	: {strcat(S,"AimingReady2");break;}
-		case ObjectHandlerSpace::eWorldOperatorSwitch1		: {strcat(S,"Switch1");		break;}
-		case ObjectHandlerSpace::eWorldOperatorSwitch2		: {strcat(S,"Switch2");		break;}
-		case ObjectHandlerSpace::eWorldOperatorQueueWait1	: {strcat(S,"QueueWait1");	break;}
-		case ObjectHandlerSpace::eWorldOperatorQueueWait2	: {strcat(S,"QueueWait1");	break;}
-		case ObjectHandlerSpace::eWorldOperatorThrowStart	: {strcat(S,"ThrowStart");	break;}
-		case ObjectHandlerSpace::eWorldOperatorThrowIdle	: {strcat(S,"ThrowIdle");	break;}
-		case ObjectHandlerSpace::eWorldOperatorThrow		: {strcat(S,"Throwing");	break;}
-		case ObjectHandlerSpace::eWorldOperatorThreaten		: {strcat(S,"Threaten");	break;}
-		case ObjectHandlerSpace::eWorldOperatorPrepare		: {strcat(S,"Preparing");	break;}
-		case ObjectHandlerSpace::eWorldOperatorUse			: {strcat(S,"Using");		break;}
-		case ObjectHandlerSpace::eWorldOperatorGetAmmo1		: {strcat(S,"GetAmmo1");	break;}
-		case ObjectHandlerSpace::eWorldOperatorGetAmmo2		: {strcat(S,"GetAmmo2");	break;}
+		case ObjectHandlerSpace::eWorldOperatorStrapped		: {strcat(S,"StrappedIdle");			break;}
+		case ObjectHandlerSpace::eWorldOperatorIdle			: {strcat(S,"Idle");					break;}
+		case ObjectHandlerSpace::eWorldOperatorAim1			: {strcat(S,"Aim1");					break;}
+		case ObjectHandlerSpace::eWorldOperatorAim2			: {strcat(S,"Aim2");					break;}
+		case ObjectHandlerSpace::eWorldOperatorReload1		: {strcat(S,"Reload1");					break;}
+		case ObjectHandlerSpace::eWorldOperatorReload2		: {strcat(S,"Reload2");					break;}
+		case ObjectHandlerSpace::eWorldOperatorForceReload1	: {strcat(S,"Force Reload1");			break;}
+		case ObjectHandlerSpace::eWorldOperatorForceReload2	: {strcat(S,"Force Reload2");			break;}
+		case ObjectHandlerSpace::eWorldOperatorFire1		: {strcat(S,"Fire1");					break;}
+		case ObjectHandlerSpace::eWorldOperatorFire2		: {strcat(S,"Fire2");					break;}
+		case ObjectHandlerSpace::eWorldOperatorAimingReady1	: {strcat(S,"AimingReady1");			break;}
+		case ObjectHandlerSpace::eWorldOperatorAimingReady2	: {strcat(S,"AimingReady2");			break;}
+		case ObjectHandlerSpace::eWorldOperatorSwitch1		: {strcat(S,"Switch1");					break;}
+		case ObjectHandlerSpace::eWorldOperatorSwitch2		: {strcat(S,"Switch2");					break;}
+		case ObjectHandlerSpace::eWorldOperatorQueueWait1	: {strcat(S,"QueueWait1");				break;}
+		case ObjectHandlerSpace::eWorldOperatorQueueWait2	: {strcat(S,"QueueWait1");				break;}
+		case ObjectHandlerSpace::eWorldOperatorThrowStart	: {strcat(S,"ThrowStart");				break;}
+		case ObjectHandlerSpace::eWorldOperatorThrowIdle	: {strcat(S,"ThrowIdle");				break;}
+		case ObjectHandlerSpace::eWorldOperatorThrow		: {strcat(S,"Throwing");				break;}
+		case ObjectHandlerSpace::eWorldOperatorThreaten		: {strcat(S,"Threaten");				break;}
+		case ObjectHandlerSpace::eWorldOperatorPrepare		: {strcat(S,"Preparing");				break;}
+		case ObjectHandlerSpace::eWorldOperatorUse			: {strcat(S,"Using");					break;}
+		case ObjectHandlerSpace::eWorldOperatorGetAmmo1		: {strcat(S,"GetAmmo1");				break;}
+		case ObjectHandlerSpace::eWorldOperatorGetAmmo2		: {strcat(S,"GetAmmo2");				break;}
+		case ObjectHandlerSpace::eWorldOperatorAimForceFull1: {strcat(S,"AimForceFull1");			break;}
+		case ObjectHandlerSpace::eWorldOperatorAimForceFull2: {strcat(S,"AimForceFull2");			break;}
 		default												: NODEFAULT;
 	}
 	return		(S);
@@ -167,38 +173,42 @@ LPCSTR CObjectHandlerPlanner::property2string(const _condition_type &id)
 		strcpy	(S,"no_items");
 	strcat		(S,":");
 	switch (action_state_id(id)) {
-		case ObjectHandlerSpace::eWorldPropertyHidden		: {strcat(S,"Hidden");		break;}
-		case ObjectHandlerSpace::eWorldPropertyStrapped		: {strcat(S,"Strapped");	break;}
-		case ObjectHandlerSpace::eWorldPropertyStrapped2Idle: {strcat(S,"Strapped to idle");break;}
-		case ObjectHandlerSpace::eWorldPropertySwitch1		: {strcat(S,"Switch1");		break;}
-		case ObjectHandlerSpace::eWorldPropertySwitch2		: {strcat(S,"Switch2");		break;}
-		case ObjectHandlerSpace::eWorldPropertyAimed1		: {strcat(S,"Aimed1");		break;}
-		case ObjectHandlerSpace::eWorldPropertyAimed2		: {strcat(S,"Aimed2");		break;}
-		case ObjectHandlerSpace::eWorldPropertyAiming1		: {strcat(S,"Aiming1");		break;}
-		case ObjectHandlerSpace::eWorldPropertyAiming2		: {strcat(S,"Aiming2");		break;}
-		case ObjectHandlerSpace::eWorldPropertyEmpty1		: {strcat(S,"Empty1");		break;}
-		case ObjectHandlerSpace::eWorldPropertyEmpty2		: {strcat(S,"Empty2");		break;}
-		case ObjectHandlerSpace::eWorldPropertyReady1		: {strcat(S,"Ready1");		break;}
-		case ObjectHandlerSpace::eWorldPropertyReady2		: {strcat(S,"Ready2");		break;}
-		case ObjectHandlerSpace::eWorldPropertyFiring1		: {strcat(S,"Firing1");		break;}
-		case ObjectHandlerSpace::eWorldPropertyFiring2		: {strcat(S,"Firing2");		break;}
-		case ObjectHandlerSpace::eWorldPropertyAimingReady1	: {strcat(S,"AimingReady1");break;}
-		case ObjectHandlerSpace::eWorldPropertyAimingReady2	: {strcat(S,"AimingReady2");break;}
-		case ObjectHandlerSpace::eWorldPropertyAmmo1		: {strcat(S,"Ammo1");		break;}
-		case ObjectHandlerSpace::eWorldPropertyAmmo2		: {strcat(S,"Ammo2");		break;}
-		case ObjectHandlerSpace::eWorldPropertyIdle			: {strcat(S,"Idle");		break;}
-		case ObjectHandlerSpace::eWorldPropertyIdleStrap	: {strcat(S,"IdleStrap");	break;}
-		case ObjectHandlerSpace::eWorldPropertyDropped		: {strcat(S,"Dropped");		break;}
-		case ObjectHandlerSpace::eWorldPropertyQueueWait1	: {strcat(S,"QueueWait1");	break;}
-		case ObjectHandlerSpace::eWorldPropertyQueueWait2	: {strcat(S,"QueueWait2");	break;}
-		case ObjectHandlerSpace::eWorldPropertyThrowStarted	: {strcat(S,"ThrowStarted");break;}
-		case ObjectHandlerSpace::eWorldPropertyThrowIdle	: {strcat(S,"ThrowIdle");	break;}
-		case ObjectHandlerSpace::eWorldPropertyThrow		: {strcat(S,"Throwing");	break;}
-		case ObjectHandlerSpace::eWorldPropertyThreaten		: {strcat(S,"Threaten");	break;}
-		case ObjectHandlerSpace::eWorldPropertyPrepared		: {strcat(S,"Prepared");	break;}
-		case ObjectHandlerSpace::eWorldPropertyUsed			: {strcat(S,"Used");		break;}
-		case ObjectHandlerSpace::eWorldPropertyUseEnough	: {strcat(S,"UseEnough");	break;}
-		case ObjectHandlerSpace::eWorldPropertyItemID		: {S[xr_strlen(S) - 1] = 0;	break;}
+		case ObjectHandlerSpace::eWorldPropertyHidden		: {strcat(S,"Hidden");				break;}
+		case ObjectHandlerSpace::eWorldPropertyStrapped		: {strcat(S,"Strapped");			break;}
+		case ObjectHandlerSpace::eWorldPropertyStrapped2Idle: {strcat(S,"Strapped to idle");	break;}
+		case ObjectHandlerSpace::eWorldPropertySwitch1		: {strcat(S,"Switch1");				break;}
+		case ObjectHandlerSpace::eWorldPropertySwitch2		: {strcat(S,"Switch2");				break;}
+		case ObjectHandlerSpace::eWorldPropertyAimed1		: {strcat(S,"Aimed1");				break;}
+		case ObjectHandlerSpace::eWorldPropertyAimed2		: {strcat(S,"Aimed2");				break;}
+		case ObjectHandlerSpace::eWorldPropertyAimForceFull1: {strcat(S,"AimedForceFull1");		break;}
+		case ObjectHandlerSpace::eWorldPropertyAimForceFull2: {strcat(S,"AimedForceFull2");		break;}
+		case ObjectHandlerSpace::eWorldPropertyAiming1		: {strcat(S,"Aiming1");				break;}
+		case ObjectHandlerSpace::eWorldPropertyAiming2		: {strcat(S,"Aiming2");				break;}
+		case ObjectHandlerSpace::eWorldPropertyEmpty1		: {strcat(S,"Empty1");				break;}
+		case ObjectHandlerSpace::eWorldPropertyEmpty2		: {strcat(S,"Empty2");				break;}
+		case ObjectHandlerSpace::eWorldPropertyFull1		: {strcat(S,"Full1");				break;}
+		case ObjectHandlerSpace::eWorldPropertyFull2		: {strcat(S,"Full2");				break;}
+		case ObjectHandlerSpace::eWorldPropertyReady1		: {strcat(S,"Ready1");				break;}
+		case ObjectHandlerSpace::eWorldPropertyReady2		: {strcat(S,"Ready2");				break;}
+		case ObjectHandlerSpace::eWorldPropertyFiring1		: {strcat(S,"Firing1");				break;}
+		case ObjectHandlerSpace::eWorldPropertyFiring2		: {strcat(S,"Firing2");				break;}
+		case ObjectHandlerSpace::eWorldPropertyAimingReady1	: {strcat(S,"AimingReady1");		break;}
+		case ObjectHandlerSpace::eWorldPropertyAimingReady2	: {strcat(S,"AimingReady2");		break;}
+		case ObjectHandlerSpace::eWorldPropertyAmmo1		: {strcat(S,"Ammo1");				break;}
+		case ObjectHandlerSpace::eWorldPropertyAmmo2		: {strcat(S,"Ammo2");				break;}
+		case ObjectHandlerSpace::eWorldPropertyIdle			: {strcat(S,"Idle");				break;}
+		case ObjectHandlerSpace::eWorldPropertyIdleStrap	: {strcat(S,"IdleStrap");			break;}
+		case ObjectHandlerSpace::eWorldPropertyDropped		: {strcat(S,"Dropped");				break;}
+		case ObjectHandlerSpace::eWorldPropertyQueueWait1	: {strcat(S,"QueueWait1");			break;}
+		case ObjectHandlerSpace::eWorldPropertyQueueWait2	: {strcat(S,"QueueWait2");			break;}
+		case ObjectHandlerSpace::eWorldPropertyThrowStarted	: {strcat(S,"ThrowStarted");		break;}
+		case ObjectHandlerSpace::eWorldPropertyThrowIdle	: {strcat(S,"ThrowIdle");			break;}
+		case ObjectHandlerSpace::eWorldPropertyThrow		: {strcat(S,"Throwing");			break;}
+		case ObjectHandlerSpace::eWorldPropertyThreaten		: {strcat(S,"Threaten");			break;}
+		case ObjectHandlerSpace::eWorldPropertyPrepared		: {strcat(S,"Prepared");			break;}
+		case ObjectHandlerSpace::eWorldPropertyUsed			: {strcat(S,"Used");				break;}
+		case ObjectHandlerSpace::eWorldPropertyUseEnough	: {strcat(S,"UseEnough");			break;}
+		case ObjectHandlerSpace::eWorldPropertyItemID		: {S[xr_strlen(S) - 1] = 0;			break;}
 		default												: NODEFAULT;
 	}
 	return		(S);

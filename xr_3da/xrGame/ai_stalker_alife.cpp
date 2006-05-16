@@ -362,7 +362,7 @@ bool CAI_Stalker::conflicted						(const CInventoryItem *item, const CWeapon *ne
 	if (!current_wepon_enough_ammo && new_wepon_enough_ammo)
 		return				(false);
 
-	if (!fsimilar(weapon->GetCondition(),new_weapon->GetCondition(),EPS_L))
+	if (!fsimilar(weapon->GetCondition(),new_weapon->GetCondition(),.05f))
 		return				(weapon->GetCondition() >= new_weapon->GetCondition());
 
 	if (weapon->ef_weapon_type() != new_weapon->ef_weapon_type())
@@ -373,7 +373,7 @@ bool CAI_Stalker::conflicted						(const CInventoryItem *item, const CWeapon *ne
 	if (weapon_rank != new_weapon_rank)
 		return				(weapon_rank >= new_weapon_rank);
 
-	return					(weapon->GetCondition() >= new_weapon->GetCondition());
+	return					(true);
 }
 
 bool CAI_Stalker::can_take							(CInventoryItem const * item)

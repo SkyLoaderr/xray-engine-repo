@@ -252,6 +252,7 @@ public:
 			bool						remember_item_to_kill	();
 			bool						remember_ammo			();
 			bool						ready_to_kill			();
+			bool						ready_to_detour			();
 			void						update_best_item_info	();
 	virtual float						GetWeaponAccuracy		() const;
 	virtual	void						spawn_supplies			();

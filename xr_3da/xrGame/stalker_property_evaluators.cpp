@@ -181,6 +181,20 @@ _value_type CStalkerPropertyEvaluatorReadyToKill::evaluate	()
 }
 
 //////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorReadyToDetour
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerPropertyEvaluatorReadyToDetour::CStalkerPropertyEvaluatorReadyToDetour	(CAI_Stalker *object, LPCSTR evaluator_name) :
+	inherited		(object ? object->lua_game_object() : 0,evaluator_name)
+{
+}
+
+_value_type CStalkerPropertyEvaluatorReadyToDetour::evaluate	()
+{
+	return				(m_object->ready_to_detour());
+}
+
+//////////////////////////////////////////////////////////////////////////
 // CStalkerPropertyEvaluatorAnomaly
 //////////////////////////////////////////////////////////////////////////
 

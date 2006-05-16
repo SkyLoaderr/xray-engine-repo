@@ -163,6 +163,7 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 
 void			CAI_Stalker::Hit					(SHit* pHDS)
 {
+	pHDS->power *= .1f;
 	//хит может меняться в зависимости от ранга (новички получают больше хита, чем ветераны)
 	SHit HDS = *pHDS;
 	HDS.power *= m_fRankImmunity;
@@ -401,6 +402,18 @@ bool CAI_Stalker::ready_to_kill			()
 	);
 }
 
+bool CAI_Stalker::ready_to_detour		()
+{
+	if (!ready_to_kill())
+		return			(false);
+
+	CWeapon				*weapon = smart_cast<CWeapon*>(m_best_item_to_kill);
+	if (!weapon)
+		return			(true);
+
+	return				(weapon->GetAmmoElapsed() > weapon->GetAmmoMagSize()/2);
+}
+
 class ray_query_param	{
 public:
 	CAI_Stalker				*m_holder;
@@ -581,6 +594,8 @@ bool CAI_Stalker::zoom_state			() const
 		// we need this 2 operators to prevent fov/range twitching
 		case ObjectHandlerSpace::eWorldOperatorReload1 :
 		case ObjectHandlerSpace::eWorldOperatorReload2 :
+		case ObjectHandlerSpace::eWorldOperatorForceReload1 :
+		case ObjectHandlerSpace::eWorldOperatorForceReload2 :
 			return			(true);
 	}
 

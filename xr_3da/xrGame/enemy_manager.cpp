@@ -22,6 +22,9 @@
 #include "ai_space.h"
 #include "profiler.h"
 
+#include "actor.h"
+#include "actor_memory.h"
+
 static const u32 ENEMY_INERTIA_TIME	= 2000;
 
 #define USE_EVALUATOR
@@ -68,33 +71,44 @@ float CEnemyManager::do_evaluate			(const CEntityAlive *object) const
 float CEnemyManager::evaluate				(const CEntityAlive *object) const
 {
 	if (object->CLS_ID == CLSID_OBJECT_ACTOR)
-		m_ready_to_save					= false;
+		m_ready_to_save		= false;
 
-	bool				visible = m_object->memory().visual().visible_now(object);
+	bool					visible = m_object->memory().visual().visible_now(object);
+	if (!visible) {
+		const CCustomMonster*monster = smart_cast<const CCustomMonster*>(object);
+		if (monster)
+			visible			= monster->memory().visual().visible_now(m_object);
+		else {
+			const CActor	*actor = smart_cast<const CActor*>(object);
+			if (actor)
+				visible		= actor->memory().visual().visible_now(m_object);
+		}
+	}
+
 	if (!visible && m_visible_now)
-		return			(1000.f);
+		return				(1000.f);
 	
-	m_visible_now		= visible;
+	m_visible_now			= visible;
 
 #ifdef USE_EVALUATOR
 	ai().ef_storage().non_alife().member_item()	= 0;
 	ai().ef_storage().non_alife().enemy_item()	= 0;
 	ai().ef_storage().non_alife().member()		= m_object;
 	ai().ef_storage().non_alife().enemy()		= object;
-	float				distance = m_object->Position().distance_to_sqr(object->Position());
-	return				(1000.f*(visible ? 0.f : 1.f) + distance/100.f + ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f);
+	float					distance = m_object->Position().distance_to_sqr(object->Position());
+	return					(1000.f*(visible ? 0.f : 1.f) + distance/100.f + ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f);
 #else
-	float				distance = m_object->Position().distance_to_sqr(object->Position());
-	distance			= !fis_zero(distance) ? distance : EPS_L;
-	return				(1000.f*(visible ? 0.f : 1.f) + 1.f/distance);
+	float					distance = m_object->Position().distance_to_sqr(object->Position());
+	distance				= !fis_zero(distance) ? distance : EPS_L;
+	return					(1000.f*(visible ? 0.f : 1.f) + 1.f/distance);
 #endif
 }
 
 bool CEnemyManager::expedient				(const CEntityAlive *object) const
 {
-	ai().ef_storage().non_alife().member()		= m_object;
+	ai().ef_storage().non_alife().member()	= m_object;
 	VERIFY									(ai().ef_storage().non_alife().member());
-	ai().ef_storage().non_alife().enemy()		= object;
+	ai().ef_storage().non_alife().enemy()	= object;
 
 	if (ai().ef_storage().m_pfExpediency->dwfGetDiscreteValue())
 		return				(true);

@@ -56,6 +56,9 @@ bool CAI_Stalker::useful		(const CItemManager *manager, const CGameObject *objec
 	if (!inventory_item || !inventory_item->useful_for_NPC())
 		return			(false);
 
+	if (!const_cast<CAI_Stalker*>(this)->can_take(inventory_item))
+		return			(false);
+
 	const CBolt			*bolt = smart_cast<const CBolt*>(object);
 	if (bolt)
 		return			(false);

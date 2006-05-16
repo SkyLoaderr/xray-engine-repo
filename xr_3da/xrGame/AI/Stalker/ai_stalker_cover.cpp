@@ -18,6 +18,12 @@
 
 extern const float MIN_SUITABLE_ENEMY_DISTANCE = 3.f;
 
+#ifdef _DEBUG
+static int g_advance_search_count		= 0;
+static int g_near_cover_search_count	= 0;
+static int g_far_cover_search_count		= 0;
+#endif
+
 void CAI_Stalker::subscribe_on_best_cover_changed	(const on_best_cover_changed_delegate &delegate)
 {
 	VERIFY								(m_cover_delegates.end() == std::find(m_cover_delegates.begin(),m_cover_delegates.end(),delegate));
@@ -42,13 +48,19 @@ void CAI_Stalker::on_best_cover_changed				(const CCoverPoint *new_cover, const 
 const CCoverPoint *CAI_Stalker::find_best_cover		(const Fvector &position_to_cover_from)
 {
 #ifdef _DEBUG
-		Msg									("* [%6d][%s] search for new cover performed",Device.dwTimeGlobal,*cName());
+//	Msg									("* [%6d][%s] search for new cover performed",Device.dwTimeGlobal,*cName());
+#endif
+#ifdef _DEBUG
+	++g_near_cover_search_count;
 #endif
 	m_ce_best->setup					(position_to_cover_from,MIN_SUITABLE_ENEMY_DISTANCE,170.f,MIN_SUITABLE_ENEMY_DISTANCE);
 	const CCoverPoint					*point = ai().cover_manager().best_cover(Position(),10.f,*m_ce_best,CStalkerMovementRestrictor(this,true));
 	if (point)
 		return							(point);
 
+#ifdef _DEBUG
+	++g_far_cover_search_count;
+#endif
 	m_ce_best->setup					(position_to_cover_from,10.f,170.f,10.f);
 	point								= ai().cover_manager().best_cover(Position(),30.f,*m_ce_best,CStalkerMovementRestrictor(this,true));
 	return								(point);
@@ -116,6 +128,9 @@ void CAI_Stalker::update_best_cover_actuality		(const Fvector &position_to_cover
 #ifdef _DEBUG
 	Msg									("* [%6d][%s] advance search performed",Device.dwTimeGlobal,*cName());
 #endif
+#ifdef _DEBUG
+	++g_advance_search_count;
+#endif
 	m_ce_best->setup					(position_to_cover_from,MIN_SUITABLE_ENEMY_DISTANCE,170.f,MIN_SUITABLE_ENEMY_DISTANCE);
 	m_best_cover						= ai().cover_manager().best_cover(Position(),10.f,*m_ce_best,CStalkerMovementRestrictor(this,true));
 }
@@ -156,7 +171,7 @@ void CAI_Stalker::on_enemy_change					(const CEntityAlive *enemy)
 	m_item_actuality					= false;
 	m_best_cover_actual					= false;
 #ifdef _DEBUG
-	Msg									("* [%6d][%s] on_enemy_change",Device.dwTimeGlobal,*cName());
+//	Msg									("* [%6d][%s] on_enemy_change",Device.dwTimeGlobal,*cName());
 #endif
 }
 
@@ -167,7 +182,7 @@ void CAI_Stalker::on_danger_location_add			(const CDangerLocation &location)
 
 	if (m_best_cover->position().distance_to_sqr(location.position()) <= _sqr(location.m_radius)) {
 #ifdef _DEBUG
-		Msg								("* [%6d][%s] on_danger_add",Device.dwTimeGlobal,*cName());
+//		Msg								("* [%6d][%s] on_danger_add",Device.dwTimeGlobal,*cName());
 #endif
 		m_best_cover_actual				= false;
 	}
@@ -178,7 +193,7 @@ void CAI_Stalker::on_danger_location_remove			(const CDangerLocation &location)
 	if (!m_best_cover) {
 		if (Position().distance_to_sqr(location.position()) <= _sqr(location.m_radius)) {
 #ifdef _DEBUG
-			Msg							("* [%6d][%s] on_danger_remove",Device.dwTimeGlobal,*cName());
+//			Msg							("* [%6d][%s] on_danger_remove",Device.dwTimeGlobal,*cName());
 #endif
 			m_best_cover_actual			= false;
 		}
@@ -188,7 +203,7 @@ void CAI_Stalker::on_danger_location_remove			(const CDangerLocation &location)
 
 	if (m_best_cover->position().distance_to_sqr(location.position()) <= _sqr(location.m_radius)) {
 #ifdef _DEBUG
-		Msg								("* [%6d][%s] on_danger_remove",Device.dwTimeGlobal,*cName());
+//		Msg								("* [%6d][%s] on_danger_remove",Device.dwTimeGlobal,*cName());
 #endif
 		m_best_cover_actual				= false;
 	}
@@ -197,7 +212,7 @@ void CAI_Stalker::on_danger_location_remove			(const CDangerLocation &location)
 void CAI_Stalker::on_cover_blocked					(const CCoverPoint *cover)
 {
 #ifdef _DEBUG
-	Msg									("* [%6d][%s] cover is blocked",Device.dwTimeGlobal,*cName());
+//	Msg									("* [%6d][%s] cover is blocked",Device.dwTimeGlobal,*cName());
 #endif
 	m_best_cover_actual					= false;
 }
