@@ -1,8 +1,8 @@
-    <article id="bar_ecolog_research_normal" name="Kruglov research" group="Kruglov research" article_type="info">
+    <article id="bar_ecolog_research_normal" name="Kruglov_research" group="memuars" article_type="info">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>bar_ecolog_research_normal</text>
     </article>
-    <article id="bar_ecolog_research_corrupted" name="Kruglov research" group="Kruglov research" article_type="info">
+    <article id="bar_ecolog_research_corrupted" name="Kruglov_research" group="memuars" article_type="info">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>bar_ecolog_research_corrupted</text>
     </article>
