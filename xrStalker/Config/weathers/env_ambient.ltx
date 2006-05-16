@@ -105,11 +105,16 @@ effect_period		= 230, 260					; <from,to>				(sec)
 effects				= ae0_effect_0	; <eff0,eff1..effN>		effects sect name
 
 [ambient_env_indoor]
-life_time			= 500
+sound_period		= 3, 5					; <from,to>				(sec)
+sounds				= ambient\crickets_1,ambient\crickets_2,ambient\crickets_3,ambient\crickets_1,ambient\crickets_2,ambient\crickets_3,ambient\crickets_1,ambient\crickets_2,ambient\crickets_3,ambient\rats_panic_1,ambient\random\rt_coo1-m,ambient\owl_1,ambient\owl_2,ambient\owl_3,ambient\howling_1,ambient\howling_2,monsters\tushkano\tush_howl_0		; <snd0,snd1..sndN>		sounds name
+effect_period		= 130, 160					; <from,to>				(sec)
+effects				= ae0_effect_0	; <eff0,eff1..effN>		effects sect name
+
+[ambient_env_indoor_old]
 sound_period		= 30, 45					; <from,to>				(sec)
 sounds				= ambient\underground\breath_1,ambient\underground\breath_2,ambient\underground\hit_2,ambient\underground\hit_1,ambient\rats_panic_1,ambient\underground\strange_noise_1,ambient\underground\strange_noise_2,ambient\underground\strange_noise_3,ambient\dropinpool1,ambient\floor_creak1,ambient\iron_moaning1		; <snd0,snd1..sndN>		sounds name
 effect_period		= 130, 160					; <from,to>				(sec)
-effects				= ambient_env_indoor; <eff0,eff1..effN>		effects sect name
+effects				= ; <eff0,eff1..effN>		effects sect name
 
 [ambient_env_tuman]
 sound_period		= 5, 10					; <from,to>				(sec)
