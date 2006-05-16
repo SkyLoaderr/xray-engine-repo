@@ -56,7 +56,7 @@ function action_cutscene:update( delta )
         then
             xr_effects.enable_ui(db.actor, nil)
             self.ui_disabled = false
-            self.st.signals["priplili"] = true
+            self.st.signals["cameff_end"] = true
         end
     end
 	
