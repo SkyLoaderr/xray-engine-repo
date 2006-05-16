@@ -22,7 +22,7 @@ CPseudoGigant::CPseudoGigant()
 	
 	com_man().add_ability(ControlCom::eControlRunAttack);
 	com_man().add_ability(ControlCom::eControlThreaten);
-	com_man().add_ability(ControlCom::eControlJump);
+	//com_man().add_ability(ControlCom::eControlJump);
 	com_man().add_ability(ControlCom::eControlRotationJump);
 }
 

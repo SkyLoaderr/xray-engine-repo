@@ -459,7 +459,7 @@ bool CBaseMonster::check_start_conditions(ControlCom::EControlType type)
 {
 	if (type == ControlCom::eControlRotationJump) {
 		EMonsterState state = StateMan->get_state_type();
-		if (!is_state(state, eStateAttack_Run)) return false;
+		if (state != eStateAttack_Run) return false;
 	} if (type == ControlCom::eControlMeleeJump) {
 		EMonsterState state = StateMan->get_state_type();
 		if (!is_state(state, eStateAttack_Run) && !is_state(state, eStateAttack_Melee)) return false;
