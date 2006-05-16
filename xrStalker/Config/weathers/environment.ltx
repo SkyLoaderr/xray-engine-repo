@@ -3,6 +3,7 @@
 #include "thunderbolt.ltx"
 
 #include "weather_default.ltx"
+#include "weather_sarkofag.ltx"
 #include "weather_mp.ltx"
 #include "weather_test.ltx"
 #include "weather_map.ltx"
@@ -12,7 +13,7 @@
 
 [weathers]
 map				= sect_map
-default			= sect_rain;sect_default_weather
+default			= sect_default_weather
 test			= sect_test
 stancia         = sect_stancia
 sarkofag        = sect_sarkofag
@@ -88,62 +89,6 @@ hemi_color		=	0.675, 0.675, 0.620, 1
 sun_color		=	0.353, 0.325, 0.306
 sun_dir			=	-10.0, 293
 env_ambient		=	ambient_env_tuman
-
-
-[sect_sarkofag]
-00:00:00		=	default_S_01
-12:00:00		=	default_S_02
-
-[default_S_01]
-flares			=	
-sky_texture		=	sky\sky_13_cube
-sky_rotation	=	0
-sky_color		=	0.50,	0.50,	0.50
-clouds_texture	=	oblaka
-clouds_color	=	0.204, 0.200, 0.204, 0.75, 1.7
-far_plane		=	120
-fog_distance	=	120
-fog_color		=	0.116, 0.115, 0.135
-fog_density		=	0.9
-rain_density	=	0.0
-rain_color		=	0.50,	0.50,	0.50
-thunderbolt		= 	
-bolt_period		=	7.f
-bolt_duration	=	0.25f
-wind_velocity	=	0.0 
-wind_direction	=	0.0
-ambient			=	0.066,   0.068,  	0.082
-lmap_color		=	1.0,    1.0,  	1.0
-hemi_color		=	1.0,    1.0,  	1.0,    1.0
-sun_color		=	0.00, 0.00, 0.00
-sun_dir			=	-40.0, 60.0
-env_ambient		=	ambient_env_indoor
-
-[default_S_02]
-flares			=	
-sky_texture		=	sky\sky_13_cube
-sky_rotation	=	0
-sky_color		=	0.50,	0.50,	0.50
-clouds_texture	=	oblaka
-clouds_color	=	0.204, 0.200, 0.204, 0.75, 1.7
-far_plane		=	120
-fog_distance	=	120
-fog_color		=	0.116, 0.115, 0.135
-fog_density		=	0.9
-rain_density	=	0.0
-rain_color		=	0.50,	0.50,	0.50
-thunderbolt		= 	
-bolt_period		=	7.f
-bolt_duration	=	0.25f
-wind_velocity	=	0.0 
-wind_direction	=	0.0
-ambient			=	0.066,   0.068,  	0.082
-lmap_color		=	1.0,    1.0,  	1.0
-hemi_color		=	1.0,    1.0,  	1.0,    1.0
-sun_color		=	0.000, 0.000, 0.000
-sun_dir			=	-40.0, 60.0
-env_ambient		=	ambient_env_indoor
-
 
 [sect_stancia]
 00:00:00		=	stancia_01
