@@ -159,6 +159,12 @@ function evaluator_danger:evaluate()
 		return false
 	end
 
+	-- Отсеиваем по информационным рестрикторам
+	if xr_gulag.is_info_restricted(self.object:id(), best_danger:position()) then
+		printf("DANGER [%s]->[%s] [FALSE] info restrictor", self.object:name(), best_danger_name)
+		return false
+	end
+
 	-- Отсеиваем тяжелораненых
 	if xr_wounded.is_heavy_wounded_by_id(self.object:id()) then
 		printf("DANGER [%s]->[%s] [FALSE] heavy_wounded", self.object:name(), best_danger_name)
