@@ -137,11 +137,11 @@ end
 
 function PsyAntenna:generate_phantoms()
 	if self.phantom_idle == nil then
-		self.phantom_idle = math.random(self.min_phantom_idle,self.max_phantom_idle)
+		self.phantom_idle = math.random(self.st.min_phantom_idle,self.st.max_phantom_idle)
 	end
 	if time_global() - self.phantom_time > self.phantom_idle then
 		self.phantom_time				= time_global()
-		self.phantom_idle = math.random(self.min_phantom_idle,self.max_phantom_idle)
+		self.phantom_idle = math.random(self.st.min_phantom_idle,self.st.max_phantom_idle)
 		if math.random() < self.phantom_spawn_probability then
 			if phantom_manager:phantom_count() < self.phantom_max then
 --[[				local yaw	 			= math.pi*2.0*math.random()
