@@ -55,7 +55,7 @@ function actor_detector:update()
 	end
 end
 function actor_detector:save(packet)
-	if self.init_time == nil then
+	if self.init_time == -1 then
 		packet:w_u8(0)
 	else
 		packet:w_u8(1)
@@ -68,5 +68,7 @@ function actor_detector:load(packet)
 	if flag == 1 then
 		self.init_time = utils.r_CTime(packet)
 		self.last_update_time = utils.r_CTime(packet)
+	else
+		self.init_time = -1
 	end
 end
