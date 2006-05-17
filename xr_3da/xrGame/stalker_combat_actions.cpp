@@ -408,7 +408,7 @@ void CStalkerActionGetReadyToKill::initialize	()
 	object().movement().set_detail_path_type			(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_nearest_accessible_position	();
 	object().movement().set_body_state					(m_body_state);
-	object().movement().set_movement_type				(eMovementTypeRun);
+//	object().movement().set_movement_type				(eMovementTypeRun);
 	object().movement().set_mental_state				(eMentalStateDanger);
 //	object().sight().setup								(CSightAction(SightManager::eSightTypePathDirection));
 	if (m_affect_properties) {
@@ -434,22 +434,20 @@ void CStalkerActionGetReadyToKill::execute		()
 	if (!object().memory().enemy().selected())
 		return;
 
-//	if (object().movement().detail().distance_to_target() < 10.f) {
-//		m_movement_type					= eMovementTypeWalk;
-//		object().sight().setup			(CSightAction(SightManager::eSightTypeCurrentDirection));
-//	}
-//	else {
-//		m_movement_type					= eMovementTypeRun;
-//		object().sight().setup			(CSightAction(SightManager::eSightTypePathDirection));
-//	}
-	m_movement_type					= eMovementTypeWalk;
-	object().sight().setup			(CSightAction(SightManager::eSightTypeCurrentDirection));
+	if (object().movement().detail().distance_to_target() < 20.f) {
+		object().movement().set_movement_type	(eMovementTypeWalk);
+		object().sight().setup					(CSightAction(SightManager::eSightTypeCurrentDirection));
+	}
+	else {
+		object().movement().set_movement_type	(eMovementTypeRun);
+		object().sight().setup					(CSightAction(SightManager::eSightTypePathDirection));
+	}
 
 	if (object().movement().detail().distance_to_target() > CLOSE_MOVE_DISTANCE)
 		object().movement().set_body_state		(eBodyStateStand);
-	else {
-		object().movement().set_movement_type	(m_movement_type);
-	}
+//	else {
+//		object().movement().set_movement_type	(m_movement_type);
+//	}
 
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
 	Fvector								position = mem_object.m_object_params.m_position;
