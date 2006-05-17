@@ -617,6 +617,15 @@ void CAI_Stalker::update_range_fov		(float &new_range, float &new_fov, float sta
 
 bool CAI_Stalker::fire_make_sense		()
 {
+	// if we do not have a weapon
+	if (!best_weapon())
+		return				(false);
+
+	// if we do not have automatic weapon
+	if (best_weapon()->object().ef_weapon_type() != 6)
+		return				(false);
+
+	// if we do not have an enemy
 	const CEntityAlive		*enemy = memory().enemy().selected();
 	if (!enemy)
 		return				(false);

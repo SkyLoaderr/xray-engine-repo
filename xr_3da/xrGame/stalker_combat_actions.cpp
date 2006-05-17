@@ -80,7 +80,7 @@ void CStalkerActionCombatBase::finalize				()
 
 void CStalkerActionCombatBase::select_queue_params	(const float &distance, u32 &min_queue_size, u32 &max_queue_size, u32 &min_queue_interval, u32 &max_queue_interval) const
 {
-	/**
+	/**/
 	int									weapon_type = 6;
 	if (object().best_weapon())
 		weapon_type						= object().best_weapon()->object().ef_weapon_type();
@@ -89,20 +89,20 @@ void CStalkerActionCombatBase::select_queue_params	(const float &distance, u32 &
 		// pistols
 		case 5 : {
 			if (distance > 30.f) {
-				min_queue_size					= 0;
+				min_queue_size					= 1;
 				max_queue_size					= 1;
 				min_queue_interval				= 3000;
 				max_queue_interval				= 4000;
 			}
 			else
 				if (distance > 15.f) {
-					min_queue_size				= 0;
+					min_queue_size				= 1;
 					max_queue_size				= 1;
 					min_queue_interval			= 1000;
 					max_queue_interval			= 1500;
 				}
 				else {
-					min_queue_size				= 0;
+					min_queue_size				= 1;
 					max_queue_size				= 1;
 					min_queue_interval			= 500;
 					max_queue_interval			= 1000;
@@ -113,20 +113,20 @@ void CStalkerActionCombatBase::select_queue_params	(const float &distance, u32 &
 		// shotguns
 		case 7 : {
 			if (distance > 30.f) {
-				min_queue_size					= 0;
+				min_queue_size					= 1;
 				max_queue_size					= 1;
 				min_queue_interval				= 3000;
 				max_queue_interval				= 4000;
 			}
 			else
 				if (distance > 15.f) {
-					min_queue_size				= 0;
+					min_queue_size				= 1;
 					max_queue_size				= 1;
 					min_queue_interval			= 2000;
 					max_queue_interval			= 3000;
 				}
 				else {
-					min_queue_size				= 0;
+					min_queue_size				= 1;
 					max_queue_size				= 1;
 					min_queue_interval			= 1000;
 					max_queue_interval			= 2000;
@@ -137,20 +137,20 @@ void CStalkerActionCombatBase::select_queue_params	(const float &distance, u32 &
 		// sniper rifles
 		case 8 : {
 			if (distance > 30.f) {
-				min_queue_size					= 0;
+				min_queue_size					= 1;
 				max_queue_size					= 1;
 				min_queue_interval				= 3000;
 				max_queue_interval				= 4000;
 			}
 			else
 				if (distance > 15.f) {
-					min_queue_size				= 0;
+					min_queue_size				= 1;
 					max_queue_size				= 1;
 					min_queue_interval			= 3000;
 					max_queue_interval			= 4000;
 				}
 				else {
-					min_queue_size				= 0;
+					min_queue_size				= 1;
 					max_queue_size				= 1;
 					min_queue_interval			= 3000;
 					max_queue_interval			= 4000;
@@ -180,7 +180,7 @@ void CStalkerActionCombatBase::select_queue_params	(const float &distance, u32 &
 				}
 		}
 	}
-	/**/
+	/**
 	if (distance > 30.f) {
 		min_queue_size					= object().min_queue_size_far();
 		max_queue_size					= object().max_queue_size_far();
@@ -833,9 +833,15 @@ void CStalkerActionHoldPosition::execute		()
 
 	object().sight().setup		(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 	
-	if (completed() && object().agent_manager().member().can_detour()) {
-		m_storage->set_property			(eWorldPropertyPositionHolded,true);
-		m_storage->set_property			(eWorldPropertyInCover,false);
+	if (completed()) {
+		if	(
+				object().agent_manager().member().can_detour() ||
+				!object().agent_manager().member().cover_detouring() ||
+				!fire_make_sense()
+			) {
+			m_storage->set_property			(eWorldPropertyPositionHolded,true);
+			m_storage->set_property			(eWorldPropertyInCover,false);
+		}
 	}
 
 	if (object().agent_manager().member().cover_detouring() && fire_make_sense()) {
