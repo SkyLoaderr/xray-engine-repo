@@ -23,6 +23,7 @@ local gulags = {val_escort = {comm = {"bandit", "dolg"}},
                 val_rob = {comm = true},
                 val_lager_bandits = {comm = {"bandit"}},
                 val_watchtower = {comm = true},
+                val_soldiers_raid = {comm = {"military"}},
                 offline_group = {}}
 
 -- Job -------------------------------------------------------------------
@@ -823,7 +824,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "[walker@" .. gname .. "_guard_alarm" .. i .. "]\n" ..
                    "path_walk = guard_alarm_walk" .. i .. "\n" ..
                    "path_look = guard_alarm_look" .. i .. "\n" ..
-                   "combat_ignore_cond = {=val_bandits_ci_actor(35)}\n"
+                   combat_ignore
     end
 
     for i = 1, quantity[2] do
@@ -843,7 +844,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "[walker@" .. gname .. "_patrol_alarm" .. i .. "]\n" ..
                    "path_walk = patrol_alarm_walk" .. i .. "\n" ..
                    "path_look = patrol_alarm_look" .. i .. "\n" ..
-                   "combat_ignore_cond = {=val_bandits_ci_actor(30)}\n"
+                   combat_ignore
     end
 
     for i = 1, quantity[3] do
@@ -978,6 +979,104 @@ gulags.offline_group.job = function(sj, gname, type, squad, groups)
     end
 
     gulags.offline_group.ltx = ltx
+end
+
+
+--------------------------------------------------------------------------
+-- Soldiers raid group
+--------------------------------------------------------------------------
+-- Predicates ------------------------------------------------------------
+
+-- Jobs ------------------------------------------------------------------
+gulags.val_soldiers_raid.job = function(sj, gname, type, squad, groups)
+    local i, ltx = 1, ""
+
+    local idstr = gname .. "_guard"
+    while level.patrol_path_exists(idstr .. "_" .. i .. "_walk") do
+        -- Необходимо вычитать количество работ из названия точки пути.
+        local way_name = idstr .. "_" .. i .. "_walk"
+
+        -- добавляем должность
+        t = { section = "logic@" .. idstr .. i,
+            idle = 0,
+            prior = 1, state = {0}, squad = squad, group = groups[1],
+            position_threshold = 10,
+            in_rest = "", out_rest = gname .. "_restr" --, info_rest = ""
+        }
+        table.insert(sj, t)
+
+        -- добавляем описание должности в лтх.
+        ltx = ltx.."[logic@" .. idstr .. i .. "]\n" ..
+                   "active = walker@" .. idstr .. i .. "\n" ..
+
+                   "[walker@" .. idstr .. i .. "]\n" ..
+                   --"meet                = meet@generic_lager_guard\n" ..
+                   "path_walk           = guard_" .. i .. "_walk\n" ..
+                   "def_state_moving1   = patrol\n" ..
+                   "def_state_moving2   = patrol\n"
+
+        if level.patrol_path_exists(idstr .. "_" .. i .. "_look") then
+            ltx = ltx.."path_look = guard_" .. i .. "_look\n"
+        end
+
+        i = i + 1
+    end
+
+    local j = 0
+    i = 1
+    idstr = gname .. "_raid"
+    while level.patrol_path_exists(idstr .. "_" .. i .. "_walk") do
+        -- Необходимо вычитать количество работ из названия точки пути.
+        local way_name = idstr .. "_" .. i .. "_walk"
+		local ptr = patrol(way_name)
+		local wp_prop = utils.parse_waypoint_data(way_name, ptr:flags(0), ptr:name(0))
+		if wp_prop.count ~= nil then
+			job_count = wp_prop.count
+		end
+
+		for j = 1, job_count do
+            -- добавляем должность
+            t = { section = "logic@" .. idstr .. i,
+                idle = 0,
+                prior = 1, state = {1}, squad = squad, group = groups[1],
+                position_threshold = 10,
+                in_rest = "", out_rest = gname .. "_restr"
+            }
+            table.insert(sj, t)
+        end
+
+        -- добавляем описание должности в лтх.
+        ltx = ltx.."[logic@" .. idstr .. i .. "]\n" ..
+                   "active = patrol@" .. idstr .. i .. "\n" ..
+
+                   "[patrol@" .. idstr .. i .. "]\n" ..
+                   "path_walk           = raid_" .. i .. "_walk\n" ..
+                   "formation           = around\n" ..
+                   "def_state_moving1   = patrol\n" ..
+                   "def_state_moving2   = patrol\n"
+
+        if level.patrol_path_exists(idstr .. "_" .. i .. "_look") then
+            ltx = ltx.."path_look = raid_" .. i .. "_look\n"
+        end
+
+        i = i + 1
+    end
+
+    gulags.val_soldiers_raid.ltx = ltx
+end
+
+gulags.val_soldiers_raid.state = function(gulag)
+	if gulag.state == 0 then
+		if xr_logic.pick_section_from_condlist(db.actor, gulag.smrttrn, gulag.state_switch_1) ~= nil then
+			return 1
+		end
+		return 0
+	elseif gulag.state == 1 then
+		if xr_logic.pick_section_from_condlist(db.actor, gulag.smrttrn, gulag.state_switch_0) ~= nil then
+			return 0
+		end
+		return 1
+	end
 end
 
 
