@@ -442,7 +442,7 @@ private:
 	float								m_best_cover_value;
 	bool								m_best_cover_actual;
 	bool								m_best_cover_can_try_advance;
-	bool								m_best_cover_tried_advance;
+	const CCoverPoint					*m_best_cover_advance_cover;
 
 private:
 			float						best_cover_value					(const Fvector &position_to_cover_from);

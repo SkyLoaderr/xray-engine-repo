@@ -79,7 +79,7 @@ void CAI_Stalker::best_cover_can_try_advance		()
 	if (!m_best_cover_actual)
 		return;
 
-	if (m_best_cover_tried_advance)
+	if (m_best_cover_advance_cover == m_best_cover)
 		return;
 
 	m_best_cover_can_try_advance		= true;
@@ -119,10 +119,10 @@ void CAI_Stalker::update_best_cover_actuality		(const Fvector &position_to_cover
 	if (!m_best_cover_can_try_advance)
 		return;
 
-	if (m_best_cover_tried_advance)
+	if (m_best_cover_advance_cover == m_best_cover)
 		return;
 
-	m_best_cover_tried_advance			= true;
+	m_best_cover_advance_cover			= m_best_cover;
 	m_best_cover_can_try_advance		= false;
 
 #ifdef _DEBUG
@@ -148,7 +148,7 @@ const CCoverPoint *CAI_Stalker::best_cover			(const Fvector &position_to_cover_f
 	if (best_cover != m_best_cover) {
 		on_best_cover_changed			(best_cover,m_best_cover);
 		m_best_cover					= best_cover;
-		m_best_cover_tried_advance		= false;
+		m_best_cover_advance_cover		= 0;
 		m_best_cover_can_try_advance	= false;
 	}
 	m_best_cover_value					= m_best_cover ? best_cover_value(position_to_cover_from) : flt_max;
