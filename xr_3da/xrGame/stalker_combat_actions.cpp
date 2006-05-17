@@ -96,8 +96,8 @@ void CStalkerActionCombatBase::select_queue_params	(const float &distance, u32 &
 			}
 			else
 				if (distance > 15.f) {
-					min_queue_size				= 1;
-					max_queue_size				= 1;
+					min_queue_size				= 2;
+					max_queue_size				= 4;
 					min_queue_interval			= 750;
 					max_queue_interval			= 1000;
 				}
