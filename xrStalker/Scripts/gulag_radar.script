@@ -1480,7 +1480,6 @@ function checkStalker(npc_community, gulag_type, npc_rank, se_obj)
 		gulag_type == "rad_valley"					or
 		gulag_type == "rad_after_valley"			or
 		gulag_type == "rad_after_tramplin_ambush"	or
-		gulag_type == "rad_before_tramplin_ambush"	or
 		gulag_type == "rad_far_road_ambush"			or 
 		gulag_type == "rad_far_road_btr_ambush"		or 
 		gulag_type == "rad_prip_road"				or 
@@ -1489,7 +1488,7 @@ function checkStalker(npc_community, gulag_type, npc_rank, se_obj)
 			return npc_community == "monolith"
 	end
 
-	if gulag_type == "rad_zombied1" or gulag_type == "rad_zombied2" then
+	if gulag_type == "rad_zombied1" or gulag_type == "rad_zombied2" or gulag_type == "rad_before_tramplin_ambush" then
 		return npc_community == "zombied"
 	end	
 
