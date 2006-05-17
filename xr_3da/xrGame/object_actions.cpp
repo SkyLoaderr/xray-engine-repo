@@ -465,6 +465,8 @@ void CObjectActionThreaten::execute			()
 CObjectActionAim::CObjectActionAim			(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type condition_id, _value_type value, LPCSTR action_name) :
 	inherited							(item,owner,storage,condition_id,value,action_name)
 {
+	m_weapon					= smart_cast<CWeaponMagazined*>(m_item);
+	VERIFY						(m_weapon);
 }
 
 void CObjectActionAim::initialize			()
@@ -483,6 +485,9 @@ void CObjectActionAim::execute				()
 	VERIFY						(m_item);
 	VERIFY						(object().inventory().ActiveItem());
 	VERIFY						(object().inventory().ActiveItem()->object().ID() == m_item->object().ID());
+
+	if (completed())
+		m_weapon->StopedAfterQueueFired(false);
 }
 
 //////////////////////////////////////////////////////////////////////////

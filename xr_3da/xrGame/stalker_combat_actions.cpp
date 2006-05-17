@@ -91,21 +91,21 @@ void CStalkerActionCombatBase::select_queue_params	(const float &distance, u32 &
 			if (distance > 30.f) {
 				min_queue_size					= 1;
 				max_queue_size					= 1;
-				min_queue_interval				= 3000;
-				max_queue_interval				= 4000;
+				min_queue_interval				= 1000;
+				max_queue_interval				= 1250;
 			}
 			else
 				if (distance > 15.f) {
 					min_queue_size				= 1;
 					max_queue_size				= 1;
-					min_queue_interval			= 1000;
-					max_queue_interval			= 1500;
+					min_queue_interval			= 750;
+					max_queue_interval			= 1000;
 				}
 				else {
 					min_queue_size				= 1;
 					max_queue_size				= 1;
 					min_queue_interval			= 500;
-					max_queue_interval			= 1000;
+					max_queue_interval			= 750;
 				}
 
 			break;
@@ -115,21 +115,21 @@ void CStalkerActionCombatBase::select_queue_params	(const float &distance, u32 &
 			if (distance > 30.f) {
 				min_queue_size					= 1;
 				max_queue_size					= 1;
-				min_queue_interval				= 3000;
-				max_queue_interval				= 4000;
+				min_queue_interval				= 1250;
+				max_queue_interval				= 1500;
 			}
 			else
 				if (distance > 15.f) {
 					min_queue_size				= 1;
 					max_queue_size				= 1;
-					min_queue_interval			= 2000;
-					max_queue_interval			= 3000;
+					min_queue_interval			= 750;
+					max_queue_interval			= 1250;
 				}
 				else {
 					min_queue_size				= 1;
 					max_queue_size				= 1;
-					min_queue_interval			= 1000;
-					max_queue_interval			= 2000;
+					min_queue_interval			= 500;
+					max_queue_interval			= 1000;
 				}
 
 			break;
@@ -434,7 +434,7 @@ void CStalkerActionGetReadyToKill::execute		()
 	if (!object().memory().enemy().selected())
 		return;
 
-	if (object().movement().detail().distance_to_target() < 5.f) {
+	if (object().movement().detail().distance_to_target() < 2.f) {
 		object().movement().set_movement_type	(eMovementTypeWalk);
 		object().sight().setup					(CSightAction(SightManager::eSightTypeCurrentDirection));
 	}

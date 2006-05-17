@@ -270,6 +270,9 @@ class CObjectActionAim : public CObjectActionMember<CInventoryItem> {
 protected:
 	typedef CObjectActionMember<CInventoryItem> inherited;
 
+private:
+	CWeaponMagazined	*m_weapon;
+
 public:
 						CObjectActionAim		(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type condition_id, _value_type value, LPCSTR action_name = "");
 	virtual void		initialize				();
