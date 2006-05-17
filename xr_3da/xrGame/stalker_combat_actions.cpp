@@ -434,14 +434,16 @@ void CStalkerActionGetReadyToKill::execute		()
 	if (!object().memory().enemy().selected())
 		return;
 
-	if (object().movement().detail().distance_to_target() < 10.f) {
-		m_movement_type					= eMovementTypeWalk;
-		object().sight().setup			(CSightAction(SightManager::eSightTypeCurrentDirection));
-	}
-	else {
-		m_movement_type					= eMovementTypeRun;
-		object().sight().setup			(CSightAction(SightManager::eSightTypePathDirection));
-	}
+//	if (object().movement().detail().distance_to_target() < 10.f) {
+//		m_movement_type					= eMovementTypeWalk;
+//		object().sight().setup			(CSightAction(SightManager::eSightTypeCurrentDirection));
+//	}
+//	else {
+//		m_movement_type					= eMovementTypeRun;
+//		object().sight().setup			(CSightAction(SightManager::eSightTypePathDirection));
+//	}
+	m_movement_type					= eMovementTypeWalk;
+	object().sight().setup			(CSightAction(SightManager::eSightTypeCurrentDirection));
 
 	if (object().movement().detail().distance_to_target() > CLOSE_MOVE_DISTANCE)
 		object().movement().set_body_state		(eBodyStateStand);
@@ -466,7 +468,7 @@ void CStalkerActionGetReadyToKill::execute		()
 	if (point) {
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());
 		object().movement().set_desired_position	(&point->position());
-		object().movement().set_movement_type		(eMovementTypeRun);
+//		object().movement().set_movement_type		(eMovementTypeRun);
 		if (object().movement().path_completed() || object().Position().distance_to(point->position()) < 1.f) {
 //			object().movement().set_body_state		(eBodyStateCrouch);
 			object().brain().affect_cover			(true);
