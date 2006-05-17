@@ -68,7 +68,7 @@
 			</right_frame_header>
 			
 			<work_area x="8" y="33" width="445" height="485">
-				<scroll_view  x="0" y="10" width="435" height="475" right_ident="10"/>
+				<scroll_view  x="0" y="10" width="435" height="475" right_ident="10" scroll_profile="pda"/>
 			</work_area>
 		</right_frame>
 	
