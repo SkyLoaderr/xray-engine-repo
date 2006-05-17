@@ -29,6 +29,7 @@ function main (need_items)
     if need_items ~= nil and need_items == false then return end
     
     alife():create ("good_psy_helmet", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+    alife():create ("bad_psy_helmet", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
     
     -- Создадим различные объекты, которые нам необходимы
  	alife():create ("cit_doctors_key", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
