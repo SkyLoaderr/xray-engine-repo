@@ -16,8 +16,13 @@ function mil_dolg_payment (stalker, player)
 end
 
 function mil_dolg_payment2 (stalker, player)
-	dialogs.relocate_money(stalker, 1000, "in")
+	dialogs.relocate_money(stalker, 4000, "in")
 end
+
+function lukash_payment (stalker, player)
+    dialogs.relocate_money (stalker, 2000, "in")
+end
+
 -- Отмечаем провал задачи
 function mil_dolg_sniper_failed (stalker, player)
     level_tasks.set_task_state (task.fail, "mil_kill_sniper", 0)
