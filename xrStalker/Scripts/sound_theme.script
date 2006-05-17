@@ -567,6 +567,20 @@ theme = {
     mil_dolg_silent                = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
     mil_dolg_fight                 = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}}
 }
+   
+--' В темах для игрока интервал задается в миллисекундах!!!
+actor_theme = {
+	level_border_detector = {min_snd = 10, max_snd = 100,
+							 sounds = {sound_object([[detectors\geiger_1]]),
+									   sound_object([[detectors\geiger_1]]),
+									   sound_object([[detectors\geiger_1]]),
+									   sound_object([[detectors\geiger_1]]),
+									   sound_object([[detectors\geiger_2]]),
+									   sound_object([[detectors\geiger_2]]),
+									   sound_object([[detectors\geiger_4]]),
+									   sound_object([[detectors\geiger_5]]),
+									   sound_object([[detectors\geiger_6]]) }}
+}
    										
 function select_sound_from_ltx(obj, section, ltx)
 --	1. проверка по story_id

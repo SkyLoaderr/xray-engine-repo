@@ -61,7 +61,7 @@ end
 --	Установка и распарсивание тем в файлы.
 -----------------------------------------------------------------------------------------------------------------------------------
 function set_sound(npc, sound, now, into_timeout)
-	--printf("*SND* [%s] try to change SND to [%s] for [%s]", npc:name(), tostring(sound), npc:name())
+	--printf("*SND* [%s] try to change SND to [%s]", npc:name(), tostring(sound))
 	local npc_id = npc:id()
 	if (db.sound[npc_id] == nil or
 	   db.sound[npc_id].theme ~= sound) or
@@ -269,5 +269,50 @@ function process_tutor_on_sound(theme)
 	if theme == "threat_weap" and db.actor:dont_has_info("tutorial_part_15_hide_weapon") then		
 		game.start_tutorial("part_15_hide_weapon")
 		db.actor:give_info_portion("tutorial_part_15_hide_weapon")
+	end
+end
+
+
+--' Actor sound player
+local actor_sound = {}
+function set_actor_sound(sound)
+	printf("*ACTOR SND* try to change SND to [%s]", tostring(sound))
+	if actor_sound.theme ~= sound then
+		--' Туточки надобно распарсить имена тем в их id
+		if sound == nil then sound = "" end		
+		actor_sound.theme = sound
+		actor_sound.begin = nil
+		
+		this.set_actor_sound_factor(1)
+	end
+end
+
+function set_actor_sound_factor(factor)
+	local theme = sound_theme.actor_theme[actor_sound.theme]
+	if theme ~= nil then
+		actor_sound.min_snd = theme.min_snd * factor
+		actor_sound.max_snd = theme.max_snd * factor
+	end
+end
+
+function update_actor()
+	local theme = sound_theme.actor_theme[actor_sound.theme]
+	if theme == nil then return end
+	
+	if table.getn(theme.sounds) == 0 then
+		return
+	end
+
+	if actor_sound.begin == nil or
+	   time_global() - actor_sound.begin >= actor_sound.idle
+	then
+		actor_sound.begin = time_global()
+		
+		--' Тут надо отыграть звук
+		local sound = theme.sounds[math.random(table.getn(theme.sounds))]
+		if sound ~= nil then
+			sound:play(db.actor, 0, sound_object.s2d)
+		end
+		actor_sound.idle = math.random(actor_sound.min_snd, actor_sound.max_snd)
 	end
 end
