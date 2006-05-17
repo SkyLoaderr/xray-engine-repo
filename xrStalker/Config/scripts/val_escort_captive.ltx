@@ -228,7 +228,7 @@ anim                = wait
 target              = 406 ;logic@val_escort_nap1
 on_info             = {+val_escort_nap1_phrase2_end} patrol@val_escort_captive_leave %=create_item(wpn_beretta)% ;:ammo_9x19_fmj:medkit:bandage)%
 meet                = meet@ignore_abuse
-danger                  = danger@val_escort_captive_free
+danger              = danger@val_escort_captive_free
 ;wounded             = wounded@val_escort_captive
 ;combat_ignore_cond  = always
 
@@ -241,4 +241,5 @@ path_look           = leave_look
 formation           = line
 on_signal           = arrived | %+val_escort_captive_offline +val_escort_scene_end%
 meet                = meet@val_escort_captive_talk
+danger              = danger@val_escort_captive_free
 ;combat_ignore_cond  = always
