@@ -88,7 +88,7 @@ function motivator_binder:net_spawn(sobject)
 	self.object:set_callback(callback.use_object, motivator_binder.use_callback, self)
 	--memusage.collect_info(self.object, "after__callback")
 
-	self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
+	--self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
 
 	xr_gulag.setup_gulag_and_logic_on_spawn( self.object, self.st, sobject, modules.stype_stalker, self.loaded )
 
@@ -343,9 +343,9 @@ function motivator_binder:load(reader)
 end
 
 function motivator_binder:hear_callback(self, who, sound_type, sound_position, sound_power)
---	if who:id() == self:id() then
---		return
---	end
+	if who:id() == self:id() then
+		return
+	end
 	local type = "NIL"
 	if bit_and(sound_type, snd_type.weapon) == snd_type.weapon then
 		type = "WPN"
@@ -387,9 +387,9 @@ function motivator_binder:hear_callback(self, who, sound_type, sound_position, s
 			type = "MST_eat"
 		end
 	end
-	--if type ~= "NIL" then
+	if type ~= "NIL" then
 		printf("SND *%s* dist: %d [%f], %s -> %s", type, self:position():distance_to(who:position()), sound_power, who:name(), self:name())
-	--end
+	end
 end
 
 function AddToMotivator(npc)
