@@ -60,6 +60,7 @@ on_signal = bin | remark1@mil_dolg_soldier1
 on_info = {+mil_sniper_dead} walker12@mil_dolg_soldier1
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)}
+meet = no_meet
 
 [remark1@mil_dolg_soldier1]
 no_move = true
@@ -70,17 +71,20 @@ anim = binocular
 on_signal = action_end | walker11@mil_dolg_soldier1
 danger = danger_condition@mil_dolg
 target = 704
+meet = no_meet
 
 [walker11@mil_dolg_soldier1]
 path_walk = walk_bin2
 path_look = look_bin2
 on_signal = pora | walker10@mil_dolg_soldier1
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [walker12@mil_dolg_soldier1]
 path_walk = walk_bin2
 path_look = look_bin2
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 
 -------------------------
@@ -106,12 +110,14 @@ no_retreat = true
 show_spot = false
 attack_sound = false
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [remark1@mil_dolg_soldier2]
 anim = hide_s_right
 combat_ignore_cond = always
 on_signal = action_end | camper2@mil_dolg_soldier2 %+mil_patrol_kill_continue%
 on_info = {+mil_patrol_dead} follower1@mil_dolg_soldier2
+meet = no_meet
 
 [camper2@mil_dolg_soldier2]
 path_walk = ambush_walk1_2
@@ -123,6 +129,7 @@ no_retreat = true
 show_spot = false
 attack_sound = false
 danger = danger_condition
+meet = no_meet
 
 [follower1@mil_dolg_soldier2]
 leader = 720
@@ -133,6 +140,7 @@ anim_sprint = run
 anim_walk = walk
 anim_run = run
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [remark2@mil_dolg_soldier2]
 no_move = true
@@ -142,6 +150,7 @@ anim = search
 target = 720
 on_signal = action_end | walker2@mil_dolg_soldier2
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [walker2@mil_dolg_soldier2]
 path_walk = ambush_walk1_3
@@ -182,6 +191,7 @@ synpairs = ward@talk_hello
 center_point = camp_center
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)}
+meet = no_meet
 
 
 
@@ -206,6 +216,7 @@ radius = 1
 show_spot = false
 attack_sound = false
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [camper2@mil_dolg_soldier3]
 path_walk = ambush_walk4_2
@@ -216,6 +227,7 @@ on_info = {+mil_patrol_dead} follower1@mil_dolg_soldier3
 show_spot = false
 danger = danger_condition@mil_dolg
 attack_sound = false
+meet = no_meet
 
 [follower1@mil_dolg_soldier3]
 leader = 722
@@ -224,6 +236,7 @@ distance = 0.5
 on_signal = leader_dead | remark2@mil_dolg_soldier3
 anim_sprint = run
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [remark2@mil_dolg_soldier3]
 no_move = true
@@ -234,12 +247,13 @@ anim = search
 target = mil_dolg_bomb_target, 0
 on_signal = action_end | walker2@mil_dolg_soldier3
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [walker2@mil_dolg_soldier3]
 path_walk = ambush_walk4_3
 on_signal = return | kamp1@mil_dolg_soldier3
 danger = danger_condition@mil_dolg
-meet = meet@mil_dolg_soldier3
+meet = no_meet
 combat_ignore_cond = {=check_fighting(704)}
 def_state_moving1 = run
 
@@ -256,6 +270,7 @@ synpairs = ward@talk_hello
 center_point = camp_center
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)}
+meet = no_meet
 
 
 -------------------------
@@ -279,6 +294,7 @@ radius = 1
 show_spot = false
 attack_sound = false
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [danger_condition@mil_dolg_soldier4]
 ignore_distance = 0
@@ -293,13 +309,14 @@ on_info = {+mil_patrol_dead} walker2@mil_dolg_soldier4
 show_spot = false
 danger = danger_condition@mil_dolg
 attack_sound = false
+meet = no_meet
 
 [walker2@mil_dolg_soldier4]
 path_walk = ambush_walk5_3
 path_look = ambush_look5_3
 on_signal = return | kamp1@mil_dolg_soldier4
 danger = danger_condition@mil_dolg
-meet = meet@mil_dolg_soldier4
+meet = no_meet
 combat_ignore_cond = {=check_fighting(704)}
 def_state_moving1 = run
 
@@ -316,6 +333,7 @@ synpairs = ward@talk_hello
 center_point = camp_center
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)}
+meet = no_meet
 
 
 -------------------------
@@ -339,6 +357,7 @@ radius = 1
 show_spot = false
 attack_sound = false
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [camper2@mil_dolg_soldier5]
 path_walk = ambush_walk2_2
@@ -349,13 +368,14 @@ on_info = {+mil_patrol_dead} walker2@mil_dolg_soldier5
 show_spot = false
 danger = danger_condition@mil_dolg
 attack_sound = false
+meet = no_meet
 
 [walker2@mil_dolg_soldier5]
 path_walk = ambush_walk2_3
 path_look = ambush_look2_3
 on_signal = return | kamp1@mil_dolg_soldier5
 danger = danger_condition@mil_dolg
-meet = meet@mil_dolg_soldier5
+meet = no_meet
 combat_ignore_cond = {=check_fighting(704)}
 def_state_moving1 = run
 
@@ -372,6 +392,7 @@ synpairs = ward@talk_hello
 center_point = camp_center
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)}
+meet = no_meet
 
 
 
@@ -396,6 +417,7 @@ radius = 1
 show_spot = false
 attack_sound = false
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [camper2@mil_dolg_soldier6]
 path_walk = ambush_walk3_2
@@ -406,6 +428,7 @@ on_info = {+mil_patrol_dead} follower1@mil_dolg_soldier6
 show_spot = false
 danger = danger_condition@mil_dolg
 attack_sound = false
+meet = no_meet
 
 [follower1@mil_dolg_soldier6]
 leader = 721
@@ -414,6 +437,7 @@ distance = 0.5
 on_signal = leader_dead | remark2@mil_dolg_soldier6
 anim_sprint = run
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [remark2@mil_dolg_soldier6]
 no_move = true
@@ -423,12 +447,13 @@ anim = search
 target = 721
 on_signal = action_end | walker2@mil_dolg_soldier6
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [walker2@mil_dolg_soldier6]
 path_walk = ambush_walk3_3
 on_signal = return | kamp1@mil_dolg_soldier6
 danger = danger_condition@mil_dolg
-meet = meet@mil_dolg_soldier6
+meet = no_meet
 combat_ignore_cond = {=check_fighting(704)}
 def_state_moving1 = run
 
@@ -445,6 +470,7 @@ synpairs = ward@talk_hello
 center_point = camp_center
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)}
+meet = no_meet
 
 
 -------------------------
@@ -463,6 +489,7 @@ center_point = camp_center
 path_walk = camp_center_task
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)}
+meet = no_meet
 
 
 
@@ -575,7 +602,7 @@ def_state_moving1 = run
 on_signal = action_end | walker1@mil_dolg_soldier1_attack
 anim = salut
 ;snd_anim_sync = true
-snd = mil_dolg_fight
+;snd = mil_dolg_fight
 target = mil_dolg_attack_before_walk1,1
 danger = danger_condition@mil_dolg
 
@@ -669,7 +696,7 @@ def_state_moving1 = run
 [remark10@mil_dolg_soldier3_attack]
 anim = salut
 ;snd_anim_sync = true
-snd = mil_dolg_fight
+;snd = mil_dolg_fight
 on_signal = action_end | walker3@mil_dolg_soldier3_attack
 target = mil_dolg_attack_before_walk1,1
 danger = danger_condition@mil_dolg
@@ -757,7 +784,7 @@ def_state_moving1 = run
 [remark10@mil_dolg_soldier5_attack]
 anim = salut
 ;snd_anim_sync = true
-snd = mil_dolg_fight
+;snd = mil_dolg_fight
 on_signal = action_end | walker1@mil_dolg_soldier5_attack
 target = mil_dolg_attack_before_walk1,1
 danger = danger_condition@mil_dolg
