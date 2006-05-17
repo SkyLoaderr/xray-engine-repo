@@ -194,6 +194,12 @@
         <infoportion_complete>
             val_actor_leave_bandits_base
         </infoportion_complete>
+        <map_location_type hint="bar_darklab_documents_2_hint">
+            green_location
+        </map_location_type>
+        <object_story_id>
+            val_zone_exit_tunnel
+        </object_story_id>
     </objective>
     <objective key="3">
         <text>
