@@ -411,6 +411,9 @@ bool CAI_Stalker::ready_to_detour		()
 	if (!weapon)
 		return			(true);
 
+	if (weapon->GetAmmoMagSize() < 5)
+		return			(true);
+
 	return				(weapon->GetAmmoElapsed() > weapon->GetAmmoMagSize()/2);
 }
 
