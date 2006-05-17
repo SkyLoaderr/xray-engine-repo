@@ -263,10 +263,10 @@ void CUIInventoryWnd::Update()
 		UIProgressBarHealth.SetProgressPos		(s16(v));
 
 		v = pEntityAlive->conditions().GetPsyHealth()*100.0f;
-		UIProgressBarPsyHealth.SetProgressPos	(s16(v1));
+		UIProgressBarPsyHealth.SetProgressPos	(s16(v));
 
 		v = pEntityAlive->conditions().GetRadiation()*100.0f;
-		UIProgressBarRadiation.SetProgressPos	(s16(v2));
+		UIProgressBarRadiation.SetProgressPos	(s16(v));
 
 		// update money
 		CInventoryOwner* pOurInvOwner	= smart_cast<CInventoryOwner*>(pEntityAlive);
