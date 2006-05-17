@@ -1,4 +1,4 @@
-function main()
+function main22222()
 --	level.add_pp_effector ("dead_zone.ppe", 1001, true)
 	level.set_pp_effector_factor(1001, 0.01)
 end
@@ -37,7 +37,7 @@ function main123()
 end
 
 
-function main111111()
+function main__()
 --	level.add_cam_effector2("camera_effects\\agroprom_demo.anm", 123, false)
 	
 --	db.actor:activate_slot(db.actor:active_slot()+1)
@@ -52,25 +52,30 @@ function main111111()
 
 --	db.actor:give_talk_message(news_text, "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
 
- game.start_tutorial("credits_seq")
+-- game.start_tutorial("credits_seq")
 	
 	
 --	info = "tutorial_artefact_start" 
 --	db.actor:give_info_portion(info) 
 	
 	
---	info = "tutorial_wounded_start" 
---	db.actor:give_info_portion(info) 
+	info = "encyclopedy_weapons_wpn_groza" 
+	db.actor:give_info_portion(info) 
+	
+	info = "encyclopedy_weapons_wpn_fn2000"
+	db.actor:give_info_portion(info) 
 
+	info = "encyclopedy_mutant_flesh"
+	db.actor:give_info_portion(info) 
 end
 
-function main_qqq()
-   local h = hit()
-   h.power = 1.0
-   h.direction = vector():set(0, 0, 1)
-   h.impulse = 0
-   h.draftsman = db.actor
-   h.type = hit.fire_wound
+function main()
+   local h 		= hit()
+   h.power 		= 0.1
+   h.direction 	= vector():set(0, 0, 1)
+   h.impulse 	= 0
+   h.draftsman 	= db.actor
+   h.type 		= hit.radiation
    db.actor:hit(h)
 
 --burn  		1

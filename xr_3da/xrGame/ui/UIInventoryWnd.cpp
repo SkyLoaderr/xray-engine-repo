@@ -259,45 +259,15 @@ void CUIInventoryWnd::Update()
 
 	if(pEntityAlive) 
 	{
-		UIProgressBarHealth.SetProgressPos(s16(pEntityAlive->conditions().GetHealth()*1000));
-		/*if (IsGameTypeSingle())
-			UIProgressBarSatiety.SetProgressPos(s16(pEntityAlive->conditions().GetSatiety()*1000));
-		else
-		{
-			if (Level().CurrentViewEntity())
-			{
-				game_PlayerState* ps	= Game().GetPlayerByGameID(Level().CurrentViewEntity()->ID());
-				if (ps)
-					UIProgressBarSatiety.SetProgressPos(s16(ps->experience_D*1000));
-			}			
-		};*/
-		UIProgressBarPsyHealth.SetProgressPos(s16(pEntityAlive->conditions().GetPsyHealth()*1000));
-		UIProgressBarRadiation.SetProgressPos(s16(pEntityAlive->conditions().GetRadiation()*1000));
+		float v = pEntityAlive->conditions().GetHealth()*100.0f;
+		UIProgressBarHealth.SetProgressPos		(s16(v));
 
-/*
-//.
-		//убрать объект drag&drop для уже использованной вещи
-		for(u32 i = 0; i <m_vDragDropItems.size(); i++) 
-		{
-			CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i]->GetData();
-			if(pItem && !pItem->Useful())
-			{
-				if( m_vDragDropItems[i]->GetParent() )
-					m_vDragDropItems[i]->GetParent()->DetachChild(m_vDragDropItems[i]);
-				m_vDragDropItems[i]->SetData(NULL);
-				m_vDragDropItems[i]->SetCustomDraw(NULL);
-				
-				if(m_pCurrentItem == pItem)
-				{	
-					SetCurrentItem(NULL);
-					m_pCurrentDragDropItem = NULL;
-				}
+		v = pEntityAlive->conditions().GetPsyHealth()*100.0f;
+		UIProgressBarPsyHealth.SetProgressPos	(s16(v1));
 
-				xr_delete(m_vDragDropItems[i]);
-				m_vDragDropItems.erase(m_vDragDropItems.begin()+i);
-			}
-		}
-*/
+		v = pEntityAlive->conditions().GetRadiation()*100.0f;
+		UIProgressBarRadiation.SetProgressPos	(s16(v2));
+
 		// update money
 		CInventoryOwner* pOurInvOwner	= smart_cast<CInventoryOwner*>(pEntityAlive);
 		string64						sMoney;

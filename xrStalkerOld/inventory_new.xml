@@ -51,7 +51,6 @@
     </bag_static>
     
     <money_static x="744" y="559" width="108" height="33" stretch="1">
-		<!--texture>ui\ui_debug_red_n_black</texture-->
 		<text font="graffiti22" r="238" g="153" b="26" align="c" vert_align="c"></text>
     </money_static>
 
@@ -61,16 +60,11 @@
 		<text font="graffiti22" r="238" g="153" b="26">Sell All</text>
     </btn_sell_all>
 
-    <!-- DESCRIPTION WINDOW -->
     <descr_static x="370" y="253" width="335" height="475">
-        <!--texture> ui\ui_dg_info</texture-->
         <text x="25" y="0" font="graffiti22" r="238" g="155" b="23">ui_inv_description</text>
     </descr_static>
     
-    <!-- CHARACTER WINDOW -->
     <character_frame_window x="730" y="260" width="268" height="460">
-		<!--texture>ui_frame</texture-->        
-        <!--left_top_texture x="5" y="10">ui\ui_inv_personal_over_t</left_top_texture-->
         <title x="80" y="-8" width="240" height="60">
 			<text font="graffiti22" r="231" g="153" b="22">ui_inv_personal</text>
         </title>
@@ -96,23 +90,18 @@
 		<texture>ui_scale_three</texture>
     </progress_background>   
 
-    <progress_bar_health x="8" y="22" width="110" height="10" length="175" horz="0" min="0" max="100" pos="0">
-		<texture>ui_scale_red</texture>
+    <progress_bar_health x="8" y="22" width="160" height="10" length="160" horz="0" min="0" max="100" pos="0">
+		<texture>ui_scale_red_1</texture>
     </progress_bar_health>    
 
-    <progress_bar_psy x="26" y="22" width="110" height="10" length="175" horz="0" min="0" max="100" pos="0">
-        <texture>ui_scale_blue</texture>
+    <progress_bar_psy x="26" y="22" width="160" height="10" length="160" horz="0" min="0" max="100" pos="0">
+        <texture>ui_scale_blue_1</texture>
 	</progress_bar_psy>
 
-    <progress_bar_radiation x="45" y="22" width="110" height="10" length="175" horz="0" min="0" max="100" pos="0">
-        <texture>ui_scale_yellow</texture>
+    <progress_bar_radiation x="45" y="22" width="160" height="10" length="160" horz="0" min="0" max="100" pos="0">
+        <texture>ui_scale_yellow_1</texture>
     </progress_bar_radiation>
     
-    <!-- Delete me -->
-    <progress_bar_satiety x="79" y="65" length="222" broad="20" horz="1" min="0" max="1000" pos="0">
-        <texture width="17" height="222" length="222" r="255" g="255" b="0">ui\ui_inv_progress_food</texture>
-    </progress_bar_satiety>
-
     <time_static x="15" y="730" width="200" height="30">        
         <text x="20" y="8" font="medium" r="240" g="217" b="182" a="255">ui_inv_time</text>
 	</time_static>
