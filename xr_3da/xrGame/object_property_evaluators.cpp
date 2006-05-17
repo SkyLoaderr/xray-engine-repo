@@ -40,7 +40,9 @@ CObjectPropertyEvaluatorWeaponHidden::CObjectPropertyEvaluatorWeaponHidden(CWeap
 CObjectPropertyEvaluatorWeaponHidden::_value_type CObjectPropertyEvaluatorWeaponHidden::evaluate()
 {
 	VERIFY			(m_item);
-	return			((m_item->IsHidden() || !m_item->m_pInventory->ActiveItem() ));
+
+	return			(m_item !=  m_item->m_pInventory->ActiveItem() );
+//	return			((m_item->IsHidden() || !m_item->m_pInventory->ActiveItem() ));
 }
 //////////////////////////////////////////////////////////////////////////
 // CObjectPropertyEvaluatorAmmo
