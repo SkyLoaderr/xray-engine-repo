@@ -9,11 +9,13 @@
     <texture id="ui_scale_three" x="210" y="3" width="59" height="215" />
     <texture id="ui_scale_one" x="269" y="6" width="38" height="212" />
     <texture id="ui_scale_red" x="307" y="41" width="9" height="177" />
-    <texture id="ui_scale_red_1" x="307" y="41" width="9" height="160" />
     <texture id="ui_scale_yellow" x="316" y="41" width="9" height="177" />
-    <texture id="ui_scale_yellow_1" x="316" y="41" width="9" height="160" />
     <texture id="ui_scale_green" x="325" y="41" width="9" height="177" />
-    <texture id="ui_scale_green_1" x="325" y="41" width="9" height="160" />
     <texture id="ui_scale_blue" x="334" y="41" width="9" height="177" />
+    <texture id="ui_icon_RADIOACTIVITY" x="307" y="0" width="19" height="19" />
+    <texture id="ui_icon_ENDURANCE" x="326" y="0" width="19" height="19" />
+    <texture id="ui_icon_BLOOD" x="307" y="19" width="19" height="19" />
+    <texture id="ui_scale_red_1" x="307" y="41" width="9" height="160" />
+    <texture id="ui_scale_yellow_1" x="316" y="41" width="9" height="160" />
     <texture id="ui_scale_blue_1" x="334" y="41" width="9" height="160" />
 </ui_texture>
