@@ -1121,7 +1121,7 @@ function set_sleep_relocate(point, look, timeout)
 	db.storage[db.actor:id()].sleep_relocate_look = look
 
 	--set_inactivate_input_time(timeout*60)
-	db.actor:actor_sleep(0, timeout)
+	--db.actor:actor_sleep(0, timeout)
 end
 
 -- проверяет целую часть числа на нечётность
