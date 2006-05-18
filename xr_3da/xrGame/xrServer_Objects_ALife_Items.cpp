@@ -17,7 +17,6 @@
 #	include "bone.h"
 #else
 #	include "..\bone.h"
-#	include "..\bone.h"
 #	ifdef DEBUG
 #		define PHPH_DEBUG
 #	endif
