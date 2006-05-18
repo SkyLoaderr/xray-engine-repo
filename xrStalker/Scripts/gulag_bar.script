@@ -343,14 +343,14 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic1@bar_dolg_veterans_guard_bunker1", 
 			idle = 0,
-			prior = 7, state = {0,1,2}, squad = squad, group = groups[0],
+			prior = 9, state = {0,1,2}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 					online = "{=actor_in_zone(bar_dolg_online_restrictor)}"
 		}
 		table.insert(sj, t)
 		t = { section = "logic2@bar_dolg_veterans_guard_bunker2", 
 			idle = 0,
-			prior = 7, state = {0,1,2}, squad = squad, group = groups[0],
+			prior = 9, state = {0,1,2}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = "",
 					online = "{=actor_in_zone(bar_dolg_online_restrictor)}"
 		}
