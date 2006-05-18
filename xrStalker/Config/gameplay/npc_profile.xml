@@ -1091,4 +1091,96 @@
 	</character>
 
 
+;---------ARENA----------------
+
+	<character id="bar_arena_stalker_1">
+		<class>bar_arena_stalker_1</class>
+	</character>
+	
+	<character id="bar_arena_stalker_2">
+		<class>bar_arena_stalker_2</class>
+	</character>
+	
+	<character id="bar_arena_stalker_3_1">
+		<class>bar_arena_stalker_3_1</class>
+	</character>
+
+	<character id="bar_arena_stalker_3_2">
+		<class>bar_arena_stalker_3_2</class>
+	</character>
+	
+	<character id="bar_arena_stalker_4_1">
+		<class>bar_arena_stalker_4_1</class>
+	</character>
+
+	<character id="bar_arena_stalker_4_2">
+		<class>bar_arena_stalker_4_2</class>
+	</character>
+
+	<character id="bar_arena_stalker_4_3">
+		<class>bar_arena_stalker_4_3</class>
+	</character>
+	
+	<character id="bar_arena_stalker_4_4">
+		<class>bar_arena_stalker_4_4</class>
+	</character>
+	
+	<character id="bar_arena_stalker_4_5">
+		<class>bar_arena_stalker_4_5</class>
+	</character>
+	
+	<character id="bar_arena_stalker_5_1">
+		<class>bar_arena_stalker_5_1</class>
+	</character>
+	
+	<character id="bar_arena_stalker_5_2">
+		<class>bar_arena_stalker_5_2</class>
+	</character>
+	
+	<character id="bar_arena_stalker_6_1">
+		<class>bar_arena_stalker_6_1</class>
+	</character>	
+		
+	<character id="bar_arena_stalker_6_2">
+		<class>bar_arena_stalker_6_2</class>
+	</character>	
+	
+	<character id="bar_arena_stalker_6_3">
+		<class>bar_arena_stalker_6_3</class>
+	</character>		
+	
+	<character id="bar_arena_stalker_6_4">
+		<class>bar_arena_stalker_6_4</class>
+	</character>		
+	
+	<character id="bar_arena_stalker_6_5">
+		<class>bar_arena_stalker_6_5</class>
+	</character>		
+	
+	<character id="bar_arena_stalker_6_6">
+		<class>bar_arena_stalker_6_6</class>
+	</character>		
+			
+	<character id="bar_arena_stalker_7">
+		<class>bar_arena_stalker_7</class>
+	</character>	
+	
+	<character id="bar_arena_stalker_8_1">
+		<class>bar_arena_stalker_8_1</class>
+	</character>	
+	
+	<character id="bar_arena_stalker_8_2">
+		<class>bar_arena_stalker_8_2</class>
+	</character>
+
+	<character id="bar_arena_stalker_8_3">
+		<class>bar_arena_stalker_8_3</class>
+	</character>
+
+	<character id="bar_arena_stalker_8_4">
+		<class>bar_arena_stalker_8_4</class>
+	</character>
+
+
+		
 </xml>
