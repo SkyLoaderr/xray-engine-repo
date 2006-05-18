@@ -160,7 +160,7 @@
 #include "gameplay\character_food.xml"	
 		</supplies>
 					
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 <!---------------------------SVOBODA ZONEGUARD---------------------->
 	<specific_character id="mil_Svoboda_zoneguard" team_default = "1">
@@ -521,10 +521,11 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_val \n
 			ammo_9x39_sp5 = 1 \n
-		</supplies>		
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
-#include "gameplay\character_food.xml"				
+#include "gameplay\character_food.xml"
+		</supplies>		
+#include "gameplay\character_dialogs.xml"				
 	</specific_character>	
 <!---------------------------DOLG SPECNAZ CHEREP---------------------->
 	<specific_character id="mil_Dolg_specnaz_cherep" team_default = "1">
@@ -557,7 +558,7 @@
 #include "gameplay\character_food.xml"	
 		</supplies>		
 			
-		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>	
 	
 	
@@ -778,7 +779,7 @@
                         ammo_5.45x39_ap = 1 \n
                 </supplies>
 
-                <start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
         </specific_character> 
 <!---------------------------MONOLIT REGULAR----------------------->
   <specific_character id="mil_Monolit_regular" team_default = "1">
