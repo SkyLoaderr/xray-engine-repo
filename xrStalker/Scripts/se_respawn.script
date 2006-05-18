@@ -226,12 +226,14 @@ function se_respawn:on_register()
 	end
 	self.conditions = xr_logic.parse_condlist(self, section_name, "conditions", r_str(ini, section_name, "conditions", 100))
 	self.respawn_radius = r_num(ini, section_name, "respawn_radius", -1)
+	self.parent	= r_num(ini, section_name, "parent", nil)
+	self.item_spawn	= r_bool(ini, section_name, "item_spawn", false)
 	
 	-- производим первичную инициализацию
 	self.respawn_time = game.CTime()
 	
 	-- Для сбора статистики сохраняем указатель на респавнер
-	respawners[self.id] = self
+	respawners[self:name()] = self
 end
 -- Создаем объект
 function se_respawn:create(prob)
@@ -254,6 +256,7 @@ function se_respawn:create(prob)
 				s_count = 0
 			end
 			if tt.check == false or
+			   self.item_spawn == true or
 			   sim_statistic.simNpcCount(tt.community, tt.rank) < s_count
 			then	
 				sum = sum + v.prob
@@ -268,6 +271,7 @@ function se_respawn:create(prob)
 				s_count = 0
 			end			
 			if tt.check == false or
+			   self.item_spawn == true or
 			   sim_statistic.simNpcCount(tt.community, tt.rank) < s_count 
 			then	
 				sum = sum - v.prob			
@@ -283,28 +287,36 @@ function se_respawn:create(prob)
 			return false
 		end
 		
+		local parent_id = nil
+		if self.parent ~= nil then
+			parent_id = alife():story_object(self.parent).id
+		end
+		
 		local obj = alife():create(spawn_section,	
 						self.position,
 						self.m_level_vertex_id,	
-						self.m_game_vertex_id)
+						self.m_game_vertex_id,
+						parent_id)
 
 		local tt = self.sectSpawnProps[spawn_section]
 
---		printf("SPAWN [%s] -> [%s], check [%s]", tostring(self:name()), obj:name(), tostring(tt.check))
-				
-		if tt.check == true then
-			obj:brain():update()
-			local smart_terrain_id = obj:smart_terrain_id()
---			printf("SPAWN [%s] move_offline [%s], interactive [%s], smart_terrain_id [%s]", tostring(self:name()), tostring(self:move_offline()), tostring(self:interactive()), smart_terrain_id)
-			if smart_terrain_id ~= 65535 then		
-				table.insert(self.spawned_obj ,obj.id)
-				local pos = obj.position
---				printf("SPAWNING [%s] -> [%s], position [%s][%s][%s]", tostring(self:name()), spawn_section, pos.x, pos.y, pos.z)
-				return true
-			else
-				alife():release(obj, true)
-				printf("SPAWNING [%s] -> [%s], CANT SPAWN. NO SMART_TERRAIN AVAILABLE!!!", tostring(self:name()), spawn_section)
-				return false
+		printf("SPAWN [%s] -> [%s]", tostring(self:name()), obj:name())
+
+		if self.item_spawn == false then				
+			if tt.check == true then
+				obj:brain():update()
+				local smart_terrain_id = obj:smart_terrain_id()
+	--			printf("SPAWN [%s] move_offline [%s], interactive [%s], smart_terrain_id [%s]", tostring(self:name()), tostring(self:move_offline()), tostring(self:interactive()), smart_terrain_id)
+				if smart_terrain_id ~= 65535 then		
+					table.insert(self.spawned_obj ,obj.id)
+					local pos = obj.position
+	--				printf("SPAWNING [%s] -> [%s], position [%s][%s][%s]", tostring(self:name()), spawn_section, pos.x, pos.y, pos.z)
+					return true
+				else
+					alife():release(obj, true)
+					printf("SPAWNING [%s] -> [%s], CANT SPAWN. NO SMART_TERRAIN AVAILABLE!!!", tostring(self:name()), spawn_section)
+					return false
+				end
 			end
 		end
 		table.insert(self.spawned_obj ,obj.id)
@@ -349,7 +361,7 @@ function se_respawn:spawn()
 	
 	-- делаем несколько попыток заспаунить объект.
 	for i=1,self.max_spawn do		
-		if table.getn(self.spawned_obj) >= self.max_count then
+		if self.max_count ~= -1 and table.getn(self.spawned_obj) >= self.max_count then
 			printf("SPAWNING [%s], CANT SPAWN. MAX COUNT REACHED!!!", tostring(self:name()))
 			return
 		end		
@@ -361,6 +373,11 @@ end
 -- Обновление респавнера. В зависимости от настроек обновляется либо только в офлайне, либо и там и там.
 function se_respawn:execute()
 	--printf("RESPAWN: [%s] se_respawn execute", tostring(self:name()))
+	
+	--' Выходим, если у нас установлен событийный спавн.
+	if self.idle_spawn_min == -1 then
+		return
+	end
 	
 	if self.respawn_time < game.get_game_time() then
 		if not self.proxy_initialized then
@@ -395,6 +412,22 @@ function se_respawn:update_online()
 	end
 end
 
+function spawn(name)
+	local spawner = respawners[name]
+	if spawner == nil then
+		return
+	end
+	
+	for i=1,spawner.max_spawn do
+		if spawner.max_count ~= -1 and table.getn(spawner.spawned_obj) >= spawner.max_count then
+			printf("SPAWNING [%s], CANT SPAWN. MAX COUNT REACHED!!!", tostring(spawner:name()))
+			return
+		end		
+		if spawner:create(xr_logic.pick_section_from_condlist(db.actor_proxy, spawner, spawner.conditions)) == false then
+			return
+		end
+	end		
+end
 
 -- Сбор статистики
 function stats()
