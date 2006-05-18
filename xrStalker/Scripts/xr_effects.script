@@ -175,6 +175,12 @@ function create_items(actor, npc, p)
     end
 end
 
+function respawner_spawn(actor, npc, p)
+    if p[1] then
+		se_respawn.spawn(p[1])
+    end
+end
+
 -----------------------------------------------------------------------------
 function monster_berserk(actor, npc)
     npc:berserk()
