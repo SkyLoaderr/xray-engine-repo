@@ -1189,9 +1189,9 @@ function setup_gulag_and_logic_on_spawn( obj, st, sobject, stype, loaded )
 
 			strn:initialize_if_needed()
 
-			strn.gulag:object_setup_online( obj:id(), obj, need_setup_logic, need_setup_restrictors )
-
-			if loaded then
+			if need_setup_logic then
+				strn.gulag:object_setup_online( obj:id(), obj, need_setup_logic, need_setup_restrictors )
+			else
 				--memusage.collect_info(obj, "before_logic")
 				xr_logic.initialize_obj(obj, st, loaded, db.actor, stype)
 				--memusage.collect_info(obj, "after_logic_before_callback")
