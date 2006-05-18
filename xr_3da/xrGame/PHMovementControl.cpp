@@ -14,6 +14,7 @@
 #include "Level.h"
 #include "ElevatorState.h"
 #include "CalculateTriangle.h"
+#include "../SkeletonCustom.h"
 #define GROUND_FRICTION	10.0f
 #define AIR_FRICTION	0.01f
 #define WALL_FRICTION	3.0f
@@ -184,7 +185,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 	{
 		if(m_capture->Failed()) xr_delete(m_capture);
 	}
-
+	
 
 	Fvector new_position;
 	m_character->IPosition(new_position);
@@ -1101,4 +1102,25 @@ void	CPHMovementControl::TraceBorder(const Fvector &prev_position)
 	STraceBorderQParams p		(this,dir);
 	collide::rq_results		storage	;
 	g_pGameLevel->ObjectSpace.RayQuery(storage,RD,BorderTraceCallback,&p,NULL,static_cast<CObject*>(m_character->PhysicsRefObject()));
+}
+void	CPHMovementControl::				UpdateObjectBox(CPHCharacter *ach)
+{
+	if(!m_character||!m_character->b_exist) return;
+	if(!ach||!ach->b_exist) return;
+	Fvector cbox;
+	PKinematics(pObject->Visual())->CalculateBones();
+	pObject->BoundingBox().getradius(cbox);
+	const Fvector &pa	=cast_fv(dBodyGetPosition(ach->get_body()));
+	const Fvector &p	=cast_fv(dBodyGetPosition(m_character->get_body()));
+	Fvector2 poses_dir;poses_dir.set(p.x-pa.x,p.z-pa.z);float plane_dist=poses_dir.magnitude(); 
+	if(plane_dist>2.f) return;
+	if(plane_dist>EPS_S)poses_dir.mul(1.f/plane_dist);
+	Fvector plane_cam;plane_cam.set(Device.vCameraDirection);plane_cam.y=0.f;plane_cam.normalize_safe();
+	float R=_abs(plane_cam.dotproduct(pObject->XFORM().i)*cbox.x)+
+		_abs(plane_cam.dotproduct(pObject->XFORM().k)*cbox.z);
+	R*=(poses_dir.x*plane_cam.x+poses_dir.y*plane_cam.z);
+	Calculate(Fvector().set(0,0,0),Fvector().set(1,0,0),0,0,0,0);
+	m_character->SetObjectRadius(R);
+	ach->ChooseRestrictionType(CPHCharacter::rtStalker,1.f,m_character);
+	m_character->UpdateRestrictionType(ach);
 }

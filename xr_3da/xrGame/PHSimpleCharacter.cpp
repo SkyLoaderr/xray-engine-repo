@@ -214,6 +214,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	////////////////////////////////////////////////////////
 
 	m_radius=_min(sizes[0],sizes[2])/2.f;
+	m_current_object_radius=m_radius;
 	m_cyl_hight=sizes[1]-2.f*m_radius;
 	if (m_cyl_hight<0.f) m_cyl_hight=0.01f;
 
@@ -416,7 +417,7 @@ void CPHSimpleCharacter::Destroy(){
 
 void		CPHSimpleCharacter::ApplyImpulse(const Fvector& dir,const dReal P)
 {
-	if(!b_exist) return;
+	if(!b_exist||b_external_impulse) return;
 	//if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	Enable();
 	b_lose_control=true;
@@ -1712,42 +1713,64 @@ void	CPHSimpleCharacter::	TestRestrictorContactCallbackFun	(bool& do_colide,bool
 	if(!actor_character) return;
 	CPHSimpleCharacter	*ch_this			=static_cast<CPHSimpleCharacter*>(retrieveGeomUserData(g_this)->ph_object);
 	VERIFY(ch_this);
-	restrictor_depth=c.geom.depth;
-	if(resolve_depth<resolve_depth)return;
-
+	save_max(restrictor_depth,c.geom.depth);
+	do_colide=true;
+	c.surface.mu=0.f;
 }
 
-bool CPHSimpleCharacter::ChangeRestrictionType(ERestrictionType rt)
+bool	CPHSimpleCharacter::	UpdateRestrictionType(CPHCharacter* ach)
 {
 	VERIFY(ph_world);
 	VERIFY(ph_world->Exist());
+	if(m_restriction_type==m_new_restriction_type)	return true;
+	ach->Enable();
+	Enable();
 	restrictor_depth=0.f;
+	//bool state=IsEnabled();
+
 	ph_world->Freeze();
+	ERestrictionType old=m_restriction_type;
+	m_restriction_type=m_new_restriction_type;
 	AddObjectContactCallback(TestRestrictorContactCallbackFun);
 	UnFreeze();
 	ph_world->StepTouch();
-
+	ach->SwitchOFFInitContact();
 	if(restrictor_depth<resolve_depth)
 	{
 		RemoveObjectContactCallback(TestRestrictorContactCallbackFun);
 		ph_world->UnFreeze();
-		CPHCharacter::SetRestrictionType(rt);
+		ach->SwitchInInitContact();
+		//if(!state)Disable();
 		return true;
 	}
 	u16 num_steps=2*(u16)iCeil(restrictor_depth/resolve_depth);
 	for(u16 i=0;num_steps>i;++i)
 	{
+		//Calculate(Fvector().set(0,0,0),Fvector().set(1,0,0),0,0,0,0);
+		restrictor_depth=0.f;
+		ach->Enable();
+		Enable();
+		//ach->ApplyForce(0,ph_world->Gravity()*ach->Mass(),0);
 		ph_world->Step();
+	
 		if(restrictor_depth<resolve_depth)
 		{
 			RemoveObjectContactCallback(TestRestrictorContactCallbackFun);
 			ph_world->UnFreeze();
-			CPHCharacter::SetRestrictionType(rt);
+			ach->SwitchInInitContact();
+			//if(!state)Disable();
 			return true;
 		}
 	}
 	RemoveObjectContactCallback(TestRestrictorContactCallbackFun);
+	ach->SwitchInInitContact();
 	ph_world->UnFreeze();
+	//if(!state)Disable();
+	m_new_restriction_type=old;
+#ifdef DEBUG
+	if(ph_dbg_draw_mask1.test(ph_m1_DbgActorRestriction))
+		Msg("restriction can not change change small -> large");
+#endif
 	return false;
 }
 bool	CPHSimpleCharacter::	TouchRestrictor	(ERestrictionType rttype)

@@ -11,7 +11,8 @@
 #include "map_manager.h"
 #include "level.h"
 #include "CharacterPhysicsSupport.h"
-
+#include "EffectorShot.h"
+#include "WeaponMagazined.h"
 static const float VEL_MAX		= 10.f;
 static const float VEL_A_MAX	= 10.f;
 
@@ -229,3 +230,139 @@ void	CActor::HitSector(CObject* who, CObject* weapon)
 	if (!bShowHitSector) return;	
 		Level().MapManager().AddMapLocation(ENEMY_HIT_SPOT, who->ID());
 }
+
+void CActor::on_weapon_shot_start		(CWeapon *weapon)
+{	
+	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (weapon);
+	//*
+	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>	(Cameras().GetCamEffector(eCEShot)); 
+	if (!effector) {
+		effector					= 
+			(CCameraShotEffector*)Cameras().AddCamEffector(
+			xr_new<CCameraShotEffector>(weapon->camMaxAngle,
+			weapon->camRelaxSpeed,
+			weapon->camMaxAngleHorz,
+			weapon->camStepAngleHorz,
+			weapon->camDispertionFrac)	);
+	}
+	R_ASSERT						(effector);
+
+	if (pWM)
+	{
+		if (effector->IsSingleShot())
+			update_camera(effector);
+
+		if (pWM->GetCurrentFireMode() == 1)
+		{
+			effector->SetSingleShoot(TRUE);
+		}
+		else
+		{
+			effector->SetSingleShoot(FALSE);
+		}
+	};
+
+	effector->SetRndSeed			(GetShotRndSeed());
+	effector->SetActor				(this);
+	effector->Shot					(weapon->camDispersion + weapon->camDispersionInc*float(weapon->ShotsFired()));
+
+	if (pWM)
+	{
+		if (pWM->GetCurrentFireMode() != 1)
+		{
+			effector->SetActive(FALSE);
+			update_camera(effector);
+		}		
+	}
+}
+
+void CActor::on_weapon_shot_stop		(CWeapon *weapon)
+{
+	//---------------------------------------------
+	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>(Cameras().GetCamEffector(eCEShot)); 
+	if (effector && effector->IsActive())
+	{
+		if (effector->IsSingleShot())
+			update_camera(effector);
+	}
+	//---------------------------------------------
+	Cameras().RemoveCamEffector(eCEShot);
+}
+
+void CActor::on_weapon_hide				(CWeapon *weapon)
+{
+	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>(Cameras().GetCamEffector(eCEShot)); 
+	if (effector && !effector->IsActive())
+		effector->Clear				();
+}
+
+Fvector CActor::weapon_recoil_delta_angle	()
+{
+	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>(Cameras().GetCamEffector(eCEShot));
+	Fvector							result = {0.f,0.f,0.f};
+
+	if (effector)
+		effector->GetDeltaAngle		(result);
+
+	return							(result);
+}
+
+Fvector CActor::weapon_recoil_last_delta()
+{
+	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>(Cameras().GetCamEffector(eCEShot));
+	Fvector							result = {0.f,0.f,0.f};
+
+	if (effector)
+		effector->GetLastDelta		(result);
+
+	return							(result);
+}
+//////////////////////////////////////////////////////////////////////////
+
+void	CActor::SpawnAmmoForWeapon	(CInventoryItem *pIItem)
+{
+	if (OnClient()) return;
+	if (!pIItem) return;
+
+	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
+	if (!pWM || !pWM->AutoSpawnAmmo()) return;
+
+	///	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().GetAny( *(pWM->m_ammoTypes[0]) ));
+	//	if (!pAmmo) 
+	pWM->SpawnAmmo(0xffffffff, NULL, ID());
+};
+
+void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
+{
+	if (OnClient()) return;
+	if (!pIItem) return;
+
+	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
+	if (!pWM || !pWM->AutoSpawnAmmo()) return;
+
+	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().GetAny(*(pWM->m_ammoTypes[0]) ));
+	if (!pAmmo) return;
+	//--- мы нашли патроны к текущему оружию	
+	/*
+	//--- проверяем не подходят ли они к чему-то еще
+	bool CanRemove = true;
+	TIItemContainer::const_iterator I = inventory().m_all.begin();//, B = I;
+	TIItemContainer::const_iterator E = inventory().m_all.end();
+	for ( ; I != E; ++I)
+	{
+	CInventoryItem* pItem = (*I);//->m_pIItem;
+	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pItem);
+	if (!pWM || !pWM->AutoSpawnAmmo()) continue;
+	if (pWM == pIItem) continue;
+	if (pWM->m_ammoTypes[0] != pAmmo->CInventoryItem::object().cNameSect()) continue;
+	CanRemove = false;
+	break;
+	};
+
+	if (!CanRemove) return;
+	*/
+	pAmmo->DestroyObject();
+	//	NET_Packet			P;
+	//	u_EventGen			(P,GE_DESTROY,pAmmo->ID());
+	//	u_EventSend			(P);
+};

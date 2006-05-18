@@ -11,6 +11,7 @@
 #include "CustomRocket.h"
 #include "Grenade.h"
 #include "phworld.h"
+
 CPhysicsShellHolder::CPhysicsShellHolder()
 {
 	init();
@@ -40,10 +41,21 @@ BOOL CPhysicsShellHolder::net_Spawn				(CSE_Abstract*	DC)
 {
 	CParticlesPlayer::net_SpawnParticles		();
 	st_enable_state=(u8)stNotDefitnite;
-	BOOL ret=inherited::net_Spawn				(DC);
+	BOOL ret=inherited::net_Spawn				(DC);//load
 	b_sheduled									=	true;
 		//create_physic_shell			();
+	if(PPhysicsShell()&&PPhysicsShell()->isFullActive())
+	{
+		PPhysicsShell()->GetGlobalTransformDynamic(&XFORM());
+		switch (EEnableState(st_enable_state))
+		{
+		case stEnable		:	PPhysicsShell()->Enable()	;break;
+		case stDisable		:	PPhysicsShell()->Disable()	;break;
+		case stNotDefitnite	:								;break;
+		}
 
+		st_enable_state=(u8)stNotDefitnite;
+	}
 	return ret;
 }
 
@@ -106,16 +118,6 @@ void CPhysicsShellHolder::setup_physic_shell	()
 	VERIFY						(!m_pPhysicsShell);
 	create_physic_shell			();
 	m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
-	
-	
-	switch (EEnableState(st_enable_state))
-	{
-	case stEnable		:	PPhysicsShell()->Enable()	;
-	case stDisable		:	PPhysicsShell()->Disable()	;
-	case stNotDefitnite	:								;
-	}
-	
-	st_enable_state=(u8)stNotDefitnite;
 }
 
 void CPhysicsShellHolder::deactivate_physics_shell()
@@ -222,4 +224,83 @@ void		CPhysicsShellHolder::	load				(IReader &input_packet)
 	inherited::load(input_packet);
 	st_enable_state=input_packet.r_u8();
 
+}
+
+void CPhysicsShellHolder::PHSaveState(NET_Packet &P)
+{
+
+	//CPhysicsShell* pPhysicsShell=PPhysicsShell();
+	CKinematics* K	=smart_cast<CKinematics*>(Visual());
+	//Flags8 lflags;
+	//if(pPhysicsShell&&pPhysicsShell->isActive())			lflags.set(CSE_PHSkeleton::flActive,pPhysicsShell->isEnabled());
+
+//	P.w_u8 (lflags.get());
+	if(K)
+	{
+		P.w_u64(K->LL_GetBonesVisible());
+		P.w_u16(K->LL_GetBoneRoot());
+	}
+	else
+	{
+		P.w_u64(u64(-1));
+		P.w_u16(0);
+	}
+	/////////////////////////////
+	Fvector min,max;
+
+	min.set(flt_max,flt_max,flt_max);
+	max.set(-flt_max,-flt_max,-flt_max);
+	/////////////////////////////////////
+
+	u16 bones_number=PHGetSyncItemsNumber();
+	for(u16 i=0;i<bones_number;i++)
+	{
+		SPHNetState state;
+		PHGetSyncItem(i)->get_State(state);
+		Fvector& p=state.position;
+		if(p.x<min.x)min.x=p.x;
+		if(p.y<min.y)min.y=p.y;
+		if(p.z<min.z)min.z=p.z;
+
+		if(p.x>max.x)max.x=p.x;
+		if(p.y>max.y)max.y=p.y;
+		if(p.z>max.z)max.z=p.z;
+	}
+
+	///min.sub(2.f*EPS_S);
+	//max.add(2.f*EPS_S);
+	P.w_vec3(min);
+	P.w_vec3(max);
+
+	P.w_u16(bones_number);
+
+	for(u16 i=0;i<bones_number;i++)
+	{
+		SPHNetState state;
+		PHGetSyncItem(i)->get_State(state);
+		state.net_Save(P,min,max);
+	}
+}
+void
+CPhysicsShellHolder::PHLoadState(IReader &P)
+{
+	
+//	Flags8 lflags;
+	CKinematics* K=smart_cast<CKinematics*>(Visual());
+//	P.r_u8 (lflags.flags);
+	if(K)
+	{
+		K->LL_SetBonesVisible(P.r_u64());
+		K->LL_SetBoneRoot(P.r_u16());
+	}
+
+	Fvector min=P.r_vec3();
+	Fvector max=P.r_vec3();
+	u16 bones_number=P.r_u16();
+	for(u16 i=0;i<bones_number;i++)
+	{
+		SPHNetState state;
+		state.net_Load(P,min,max);
+		PHGetSyncItem(i)->set_State(state);
+	}
 }

@@ -19,12 +19,13 @@ m_safe_velocity[0]				=0.f					;
 m_safe_velocity[1]				=0.f					;	
 m_safe_velocity[2]				=0.f					;
 m_mean_y		  				=0.f					;	
-m_restriction_type				=rtNone					;
+m_new_restriction_type=m_restriction_type				=rtNone					;
 b_actor_movable					=true					;
 p_lastMaterialIDX				=&lastMaterialIDX		;
 lastMaterialIDX					=u16(-1)				;
 m_creation_step					=u64(-1)				;
 b_in_touch_resrtrictor			=false					;
+m_current_object_radius			=-1.f					;
 }
 
 CPHCharacter::~CPHCharacter(void)
@@ -146,3 +147,4 @@ void CPHCharacter::CutVelocity(float l_limit,float /*a_limit*/)
 		dBodySetLinearVel(m_body,limitedl[0],limitedl[1],limitedl[2]);
 	}
 }
+

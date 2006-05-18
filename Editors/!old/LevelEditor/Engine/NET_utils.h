@@ -194,16 +194,20 @@ public:
 	IC void		r_u8			(u8&  A)		{ r(&A,1);						} // byte (1b)
 	IC void		r_s8			(s8&  A)		{ r(&A,1);						} // byte (1b)
 	// IReader compatibility
-	IC float	r_float			()		{ float A; r(&A,4);		return(A);		} // float
-	IC u64 		r_u64			()		{ u64 	A; r(&A,8);		return(A);		} // qword (8b)
-	IC s64 		r_s64			()		{ s64 	A; r(&A,8);		return(A);		} // qword (8b)
-	IC u32 		r_u32			()		{ u32 	A; r(&A,4);		return(A);		} // dword (4b)
-	IC s32		r_s32			()		{ s32	A; r(&A,4);		return(A);		} // dword (4b)
-	IC u32		r_u24			()		{ u32	A=0; r(&A,3);	return(A);		} // dword (3b)
-	IC u16		r_u16			()		{ u16	A; r(&A,2);		return(A);		} // word (2b)
-	IC s16		r_s16			()		{ s16	A; r(&A,2);		return(A);		} // word (2b)
-	IC u8		r_u8			()		{ u8	A; r(&A,1);		return(A);		} // byte (1b)
-	IC s8		r_s8			()		{ s8	A; r(&A,1);		return(A);		} // byte (1b)
+	IC Fvector	r_vec3			()		{Fvector A;r(&A,3*sizeof(float));	return(A);		} // vec3
+	IC Fvector4	r_vec4			()		{Fvector4 A;r(&A,4*sizeof(float));	return(A);		} // vec4
+	IC float	r_float_q8		(float min,float max){float A;r_float_q8(A,min,max);return A;}
+	IC float	r_float_q16		(float min, float max){float A;r_float_q16(A,min,max);return A;}
+	IC float	r_float			()		{ float A; r(&A,4);					return(A);		} // float
+	IC u64 		r_u64			()		{ u64 	A; r(&A,8);					return(A);		} // qword (8b)
+	IC s64 		r_s64			()		{ s64 	A; r(&A,8);					return(A);		} // qword (8b)
+	IC u32 		r_u32			()		{ u32 	A; r(&A,4);					return(A);		} // dword (4b)
+	IC s32		r_s32			()		{ s32	A; r(&A,4);					return(A);		} // dword (4b)
+	IC u32		r_u24			()		{ u32	A=0; r(&A,3);				return(A);		} // dword (3b)
+	IC u16		r_u16			()		{ u16	A; r(&A,2);					return(A);		} // word (2b)
+	IC s16		r_s16			()		{ s16	A; r(&A,2);					return(A);		} // word (2b)
+	IC u8		r_u8			()		{ u8	A; r(&A,1);					return(A);		} // byte (1b)
+	IC s8		r_s8			()		{ s8	A; r(&A,1);					return(A);		} // byte (1b)
 
 	IC void		r_float_q16		(float& A, float min, float max)
 	{

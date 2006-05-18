@@ -316,6 +316,7 @@ void CPHWorld::StepTouch()
 		CPHObject* obj=(*i_object);
 		++i_object;
 		obj->IslandReinit();
+		obj->spatial_move();
 	}
 	dJointGroupEmpty(ContactGroup);
 	ContactFeedBacks.empty();

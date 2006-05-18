@@ -152,7 +152,7 @@ public:
 	virtual		void 		EnableObject						(CPHObject* obj)	;
 	virtual		void		Enable								()					;
 	virtual		void		SetBox								(const dVector3 &sizes);
-	virtual		bool		ChangeRestrictionType				(ERestrictionType rt);
+	virtual		bool		UpdateRestrictionType				(CPHCharacter* ach);
 	//get-set
 	virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
 	virtual		void		SetWheelContactCallback				(ObjectContactCallbackFun* callback);

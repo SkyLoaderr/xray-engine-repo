@@ -2330,6 +2330,7 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Float,		"dbg_ph_vel_collid_damage_to_display",&dbg_vel_collid_damage_to_display,	0.f, 1000.f);
 	CMD4(CCC_DbgBullets,"dbg_draw_bullet_hit",			&g_bDrawBulletHit,	0, 1)	;
 	CMD1(CCC_DbgPhTrackObj,"dbg_track_obj");
+	CMD3(CCC_Mask,		"dbg_ph_actor_restriction"		,&ph_dbg_draw_mask1,ph_m1_DbgActorRestriction);
 #endif
 
 

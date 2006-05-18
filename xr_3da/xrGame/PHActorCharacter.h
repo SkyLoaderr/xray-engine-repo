@@ -58,12 +58,12 @@ static	void RestrictorCallBack	(bool& do_colide,bool bo1,dContact& c,SGameMtl* m
 
 			if(bo1)
 			{
-				
+				ch1			->	ChooseRestrictionType(Ttype,c.geom.depth,ch2);
 				do_colide	=	ch2->TouchRestrictor(Ttype);
 			}
 			else
 			{
-				
+				ch2			->	ChooseRestrictionType(Ttype,c.geom.depth,ch1);
 				do_colide	=	ch1->TouchRestrictor(Ttype);
 			}
 		}
@@ -106,7 +106,7 @@ public:
 	virtual	void		Jump								(const Fvector& jump_velocity);
 	virtual void		InitContact							(dContact* c,bool &do_collide,SGameMtl *material_1 ,SGameMtl * material_2);
 			void		SetRestrictorRadius					(CPHCharacter::ERestrictionType rtype,float r);
-
+virtual		void		ChooseRestrictionType				(ERestrictionType my_type,float my_depth,CPHCharacter *ch);
 						CPHActorCharacter					();
 	virtual				~CPHActorCharacter					(void);
 private:

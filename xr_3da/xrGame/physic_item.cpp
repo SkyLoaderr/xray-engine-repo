@@ -83,7 +83,10 @@ BOOL CPhysicItem::net_Spawn			(CSE_Abstract* DC)
 	smart_cast<CKinematics*>(Visual())->CalculateBones				();
 	CSE_Abstract			*abstract = (CSE_Abstract*)DC;
 	if (0xffff == abstract->ID_Parent)
-		setup_physic_shell	();
+	{
+		if(!PPhysicsShell())setup_physic_shell	();
+		else processing_deactivate();//.
+	}
 
 	setVisible				(TRUE);
 	setEnabled				(TRUE);

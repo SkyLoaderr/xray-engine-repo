@@ -18,7 +18,9 @@
 #else
 #	include "..\bone.h"
 #endif
-
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeInventoryItem
 ////////////////////////////////////////////////////////////////////////////
@@ -90,6 +92,12 @@ void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 
 	if (m_u16NumItems != FLAG_NO_POSITION) {
 		tNetPacket.w_vec3			( State.position );
+#ifdef DEBUG
+		if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&stricmp(PH_DBG_ObjectTrack(),base()->name_replace())==0)
+		{
+			Msg("CSE_ALifeInventoryItem::UPDATE_Write obj %s State.position %f,%f,%f",PH_DBG_ObjectTrack(),State.position.x,State.position.y,State.position.z);
+		}
+#endif
 		base()->o_Position			= State.position;
 	}
 
@@ -118,6 +126,12 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r_u16				(m_u16NumItems);
 	if (m_u16NumItems != FLAG_NO_POSITION) {
 		tNetPacket.r_vec3			( State.position );
+#ifdef DEBUG
+		if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&stricmp(PH_DBG_ObjectTrack(),base()->name_replace())==0)
+		{
+			Msg("CSE_ALifeInventoryItem::UPDATE_Write obj %s State.position(read) %f,%f,%f",PH_DBG_ObjectTrack(),State.position.x,State.position.y,State.position.z);
+		}
+#endif
 		base()->o_Position			= State.position;
 	}
 

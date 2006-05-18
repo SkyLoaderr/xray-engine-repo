@@ -46,7 +46,7 @@
 #include "actor_anim_defs.h"
 
 #include "HudItem.h"
-#include "WeaponMagazined.h"
+
 
 #include "ai_sounds.h"
 #include "ai_space.h"
@@ -80,7 +80,7 @@
 
 #include "map_manager.h"
 #include "GameTaskManager.h"
-#include "EffectorShotX.h"
+
 
 #include "actor_memory.h"
 #include "Script_Game_Object.h"
@@ -193,6 +193,7 @@ CActor::CActor() : CEntityAlive()
 	m_memory				= xr_new<CActorMemory>(this);
 	m_bOutBorder			= false;
 	hit_probability			= 1.f;
+	m_feel_touch_characters = 0;
 }
 
 
@@ -836,6 +837,17 @@ float CActor::currentFOV()
 BOOL	g_bEnableMPL	= FALSE;	//.
 void CActor::UpdateCL	()
 {
+	if(m_feel_touch_characters>0)
+	{
+		for(xr_vector<CObject*>::iterator it = feel_touch.begin(); it != feel_touch.end(); it++)
+		{
+			CPhysicsShellHolder	*sh = smart_cast<CPhysicsShellHolder*>(*it);
+			if(sh&&sh->character_physics_support())
+			{
+				sh->character_physics_support()->movement()->UpdateObjectBox(character_physics_support()->movement()->PHCharacter());
+			}
+		}
+	}
 	if(m_holder)
 		m_holder->UpdateEx( currentFOV() );
 
@@ -1519,55 +1531,6 @@ float	CActor::HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type)
 }
 
 
-//////////////////////////////////////////////////////////////////////////
-
-void	CActor::SpawnAmmoForWeapon	(CInventoryItem *pIItem)
-{
-	if (OnClient()) return;
-	if (!pIItem) return;
-
-	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
-	if (!pWM || !pWM->AutoSpawnAmmo()) return;
-
-///	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().GetAny( *(pWM->m_ammoTypes[0]) ));
-//	if (!pAmmo) 
-		pWM->SpawnAmmo(0xffffffff, NULL, ID());
-};
-
-void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
-{
-	if (OnClient()) return;
-	if (!pIItem) return;
-
-	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
-	if (!pWM || !pWM->AutoSpawnAmmo()) return;
-
-	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().GetAny(*(pWM->m_ammoTypes[0]) ));
-	if (!pAmmo) return;
-	//--- мы нашли патроны к текущему оружию	
-	/*
-	//--- проверяем не подходят ли они к чему-то еще
-	bool CanRemove = true;
-	TIItemContainer::const_iterator I = inventory().m_all.begin();//, B = I;
-	TIItemContainer::const_iterator E = inventory().m_all.end();
-	for ( ; I != E; ++I)
-	{
-		CInventoryItem* pItem = (*I);//->m_pIItem;
-		CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pItem);
-		if (!pWM || !pWM->AutoSpawnAmmo()) continue;
-		if (pWM == pIItem) continue;
-		if (pWM->m_ammoTypes[0] != pAmmo->CInventoryItem::object().cNameSect()) continue;
-		CanRemove = false;
-		break;
-	};
-
-	if (!CanRemove) return;
-	*/
-	pAmmo->DestroyObject();
-//	NET_Packet			P;
-//	u_EventGen			(P,GE_DESTROY,pAmmo->ID());
-//	u_EventSend			(P);
-};
 
 void	CActor::SetZoomRndSeed		(s32 Seed)
 {
@@ -1671,114 +1634,7 @@ bool CActor::use_center_to_aim			() const
 	return							(!(mstate_real&mcCrouch));
 }
 
-// shot effector stuff
-void CActor::update_camera (CCameraShotEffector* effector)
-{
-	if (!effector) return;
-//	if (Level().CurrentViewEntity() != this) return;
 
-	CCameraBase* pACam = cam_FirstEye();
-	if (!pACam) return;
-
-	if (pACam->bClampPitch)
-	{
-		while (pACam->pitch < pACam->lim_pitch[0])
-			pACam->pitch += PI_MUL_2;
-		while (pACam->pitch > pACam->lim_pitch[1])
-			pACam->pitch -= PI_MUL_2;
-	};
-
-	effector->ApplyLastAngles(&(pACam->pitch), &(pACam->yaw));
-
-	if (pACam->bClampYaw)	clamp(pACam->yaw,pACam->lim_yaw[0],pACam->lim_yaw[1]);
-	if (pACam->bClampPitch)	clamp(pACam->pitch,pACam->lim_pitch[0],pACam->lim_pitch[1]);
-}
-void CActor::on_weapon_shot_start		(CWeapon *weapon)
-{	
-	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (weapon);
-	//*
-	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>	(Cameras().GetCamEffector(eCEShot)); 
-	if (!effector) {
-		effector					= 
-			(CCameraShotEffector*)Cameras().AddCamEffector(
-				xr_new<CCameraShotEffector>(weapon->camMaxAngle,
-											weapon->camRelaxSpeed,
-											weapon->camMaxAngleHorz,
-											weapon->camStepAngleHorz,
-											weapon->camDispertionFrac)	);
-	}
-	R_ASSERT						(effector);
-
-	if (pWM)
-	{
-		if (effector->IsSingleShot())
-			update_camera(effector);
-
-		if (pWM->GetCurrentFireMode() == 1)
-		{
-			effector->SetSingleShoot(TRUE);
-		}
-		else
-		{
-			effector->SetSingleShoot(FALSE);
-		}
-	};
-
-	effector->SetRndSeed			(GetShotRndSeed());
-	effector->SetActor				(this);
-	effector->Shot					(weapon->camDispersion + weapon->camDispersionInc*float(weapon->ShotsFired()));
-	
-	if (pWM)
-	{
-		if (pWM->GetCurrentFireMode() != 1)
-		{
-			effector->SetActive(FALSE);
-			update_camera(effector);
-		}		
-	}
-}
-
-void CActor::on_weapon_shot_stop		(CWeapon *weapon)
-{
-	//---------------------------------------------
-	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>(Cameras().GetCamEffector(eCEShot)); 
-	if (effector && effector->IsActive())
-	{
-		if (effector->IsSingleShot())
-			update_camera(effector);
-	}
-	//---------------------------------------------
-	Cameras().RemoveCamEffector(eCEShot);
-}
-
-void CActor::on_weapon_hide				(CWeapon *weapon)
-{
-	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>(Cameras().GetCamEffector(eCEShot)); 
-	if (effector && !effector->IsActive())
-		effector->Clear				();
-}
-
-Fvector CActor::weapon_recoil_delta_angle	()
-{
-	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>(Cameras().GetCamEffector(eCEShot));
-	Fvector							result = {0.f,0.f,0.f};
-
-	if (effector)
-		effector->GetDeltaAngle		(result);
-
-	return							(result);
-}
-
-Fvector CActor::weapon_recoil_last_delta()
-{
-	CCameraShotEffector				*effector = smart_cast<CCameraShotEffector*>(Cameras().GetCamEffector(eCEShot));
-	Fvector							result = {0.f,0.f,0.f};
-
-	if (effector)
-		effector->GetLastDelta		(result);
-
-	return							(result);
-}
 
 bool CActor::can_attach			(const CInventoryItem *inventory_item) const
 {

@@ -241,8 +241,8 @@ void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * mate
 			MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,def_spring_rate,def_dumping_rate);
 			c->surface.mu		=0.00f;
 		}
-		
-		inherited::InitContact(c,do_collide,material_1,material_2);
+		else
+			inherited::InitContact(c,do_collide,material_1,material_2);
 		if(b_restrictor&&
 			do_collide&&
 			!(b1 ? static_cast<CPHCharacter*>(retrieveGeomUserData(c->geom.g2)->ph_object)->ActorMovable():static_cast<CPHCharacter*>(retrieveGeomUserData(c->geom.g1)->ph_object)->ActorMovable())
@@ -277,5 +277,38 @@ void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * mate
 		}
 		if(do_collide)inherited::InitContact(c,do_collide,material_1,material_2);
 	}
+
+}
+
+void CPHActorCharacter::ChooseRestrictionType	(CPHCharacter::ERestrictionType my_type,float my_depth,CPHCharacter *ch)
+{
+if (my_type!=rtStalker||(ch->RestrictionType()!=rtStalker&&ch->RestrictionType()!=rtStalkerSmall))return;
+float checkR=m_restrictors[rtStalkerSmall]->m_restrictor_radius*1.5f;//+m_restrictors[rtStalker]->m_restrictor_radius)/2.f;
+
+switch(ch->RestrictionType())
+{
+case rtStalkerSmall:
+	if(ch->ObjectRadius()>checkR)
+	{
+		if(my_depth>0.05f)ch->SetNewRestrictionType(rtStalker);
+		else ch->SetRestrictionType(rtStalker);
+#ifdef DEBUG
+		if(ph_dbg_draw_mask1.test(ph_m1_DbgActorRestriction))
+				Msg("restriction ready to change small -> large");
+#endif
+	}
+	break;
+case rtStalker:
+	if(ch->ObjectRadius()<checkR)
+	{
+#ifdef DEBUG
+		if(ph_dbg_draw_mask1.test(ph_m1_DbgActorRestriction))
+						Msg("restriction  change large ->  small");
+#endif
+		ch->SetRestrictionType(rtStalkerSmall);
+	}
+	break;
+default:NODEFAULT;
+}
 
 }

@@ -27,8 +27,9 @@ public:
 CElevatorState			*ElevatorState  ();
 void					PHCaptureObject(CPhysicsShellHolder* object);
 void					PHCaptureObject(CPhysicsShellHolder* object,u16 element);
-CPHCapture*				PHCapture      (){return m_capture;}
-void					PHReleaseObject();
+CPHCapture*				PHCapture		(){return m_capture;}
+CPHCharacter*			PHCharacter		(){return m_character;}
+void					PHReleaseObject	();
 Fvector					PHCaptureGetNearestElemPos(const CPhysicsShellHolder* object);
 Fmatrix					PHCaptureGetNearestElemTransform(CPhysicsShellHolder* object);
 void					SetMaterial(u16 material);
@@ -38,6 +39,7 @@ void					SetRestrictionType(CPHCharacter::ERestrictionType rt){if(m_character)m_
 void					SetActorMovable(bool v){if(m_character)m_character->SetActorMovable(v);}
 void					SetForcedPhysicsControl(bool v){if(m_character)m_character->SetForcedPhysicsControl(v);}
 bool					ForcedPhysicsControl(){return m_character&&m_character->ForcedPhysicsControl();}
+void					UpdateObjectBox(CPHCharacter *ach);
 enum					JumpType 
 {
 						jtStrait, //end point before uppermost point

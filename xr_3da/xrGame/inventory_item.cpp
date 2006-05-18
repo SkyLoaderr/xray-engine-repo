@@ -23,11 +23,11 @@
 #include "object_broker.h"
 
 #define ITEM_REMOVE_TIME		30000
-
+struct net_update_IItem {	u32					dwTimeStamp;
+SPHNetState			State;};
 struct net_updateData{
 
-	struct net_update_IItem {	u32					dwTimeStamp;
-								SPHNetState			State;};
+
 
 	xr_deque<net_update_IItem>	NET_IItem;
 	/// spline coeff /////////////////////
@@ -388,41 +388,67 @@ void CInventoryItem::net_Destroy		()
 	//инвентарь которому мы принадлежали
 //.	m_pInventory = NULL;
 }
-
-void CInventoryItem::net_Import			(NET_Packet& P) 
-{	
-	net_updateData* p		= NetSync();
-	P.r_float				(m_fCondition);
-
-	net_updateData::net_update_IItem			N;
-	P.r_u32										( N.dwTimeStamp );
-
-
-	u16	NumItems = 0;
-	P.r_u16					( NumItems);
-	if (CSE_ALifeInventoryItem::FLAG_NO_POSITION != NumItems)
-		P.r_vec3			( N.State.position);
-
-	if (!NumItems || (CSE_ALifeInventoryItem::FLAG_NO_POSITION == NumItems)) return;
-
-	P.r_u8					( *((u8*)&(N.State.enabled)) );
-
-	P.r_vec3				( N.State.angular_vel);
-	P.r_vec3				( N.State.linear_vel);
-
-	P.r_vec3				( N.State.force);
-	P.r_vec3				( N.State.torque);
+void CInventoryItem::position_Export(NET_Packet& P,SPHNetState	&State)
+{
+	P.w_u8					( State.enabled );
+	P.w_vec3				( State.angular_vel);
+	P.w_vec3				( State.linear_vel);
+	P.w_vec3				( State.force	);
+	P.w_vec3				( State.torque	);
+	P.w_float				( State.quaternion.x );
+	P.w_float				( State.quaternion.y );
+	P.w_float				( State.quaternion.z );
+	P.w_float				( State.quaternion.w );
+}
+template	<typename strm>
+void CInventoryItem::position_Import(strm& P,net_update_IItem	&N)
+{
 
 
-	P.r_float				( N.State.quaternion.x );
-	P.r_float				( N.State.quaternion.y );
-	P.r_float				( N.State.quaternion.z );
-	P.r_float				( N.State.quaternion.w );
+	*((u8*)&(N.State.enabled))	=P.r_u8					( );
 
-		
+	N.State.angular_vel			=P.r_vec3				( );
+	N.State.linear_vel			=P.r_vec3				( );
+
+	N.State.force				=P.r_vec3				( );
+	N.State.torque				=P.r_vec3				( );
+
+
+	N.State.quaternion.x		=P.r_float				( );
+	N.State.quaternion.y		=P.r_float				(  );
+	N.State.quaternion.z		=P.r_float				(  );
+	N.State.quaternion.w		=P.r_float				(  );
+
+
 
 	N.State.previous_position				= N.State.position;
 	N.State.previous_quaternion				= N.State.quaternion;
+}
+void CInventoryItem::save(NET_Packet &packet)
+{
+	packet.w_u8 ((u8)m_eItemPlace);
+
+	if(object().H_Parent())
+	{
+		packet.w_u16	(CSE_ALifeInventoryItem::FLAG_NO_POSITION);
+		return;
+	}
+	packet.w_u16	(object().PHGetSyncItemsNumber());
+	object().PHSaveState(packet);
+}
+void CInventoryItem::net_Import			(NET_Packet& P) 
+{	
+	P.r_float							(m_fCondition)	;
+	net_update_IItem	N								;
+	N.dwTimeStamp=P.r_u32										(  );
+	u16	NumItems = 0;
+	NumItems=P.r_u16					( );
+	if (CSE_ALifeInventoryItem::FLAG_NO_POSITION != NumItems)
+		N.State.position=P.r_vec3			();
+
+	if (!NumItems || (CSE_ALifeInventoryItem::FLAG_NO_POSITION == NumItems)) return;
+	position_Import						(P,N)			;
+	net_updateData		*p				= NetSync()		;
 
 	if (	!p->NET_IItem.empty() && 
 			(p->NET_IItem.back().dwTimeStamp>=N.dwTimeStamp)) 
@@ -448,7 +474,6 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 {	
 	P.w_float			(m_fCondition);
 	P.w_u32				(Level().timeServer());	
-
 	///////////////////////////////////////
 	CPHSynchronize* pSyncObj				= NULL;
 	SPHNetState	State;
@@ -463,7 +488,7 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 		NumItems = CSE_ALifeInventoryItem::FLAG_NO_POSITION;
 	else
 		if (IsGameTypeSingle())
-			NumItems = 0;
+						NumItems = 0;
 
 	P.w_u16					( NumItems		);
 	if (NumItems != CSE_ALifeInventoryItem::FLAG_NO_POSITION)
@@ -471,30 +496,28 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 
 	if (!NumItems || (NumItems == CSE_ALifeInventoryItem::FLAG_NO_POSITION))
 		return;
-
-	P.w_u8					( State.enabled );
-
-	P.w_vec3				( State.angular_vel);
-	P.w_vec3				( State.linear_vel);
-
-	P.w_vec3				( State.force	);
-	P.w_vec3				( State.torque	);
-
-	P.w_float				( State.quaternion.x );
-	P.w_float				( State.quaternion.y );
-	P.w_float				( State.quaternion.z );
-	P.w_float				( State.quaternion.w );
+	position_Export(P,State);
 };
 
 
-void CInventoryItem::save(NET_Packet &packet)
-{
-	packet.w_u8 ((u8)m_eItemPlace);
-}
 
 void CInventoryItem::load(IReader &packet)
 {
-	m_eItemPlace = (EItemPlace)packet.r_u8 ();
+	m_eItemPlace = (EItemPlace)packet.r_u8 ()	;
+	if(CSE_ALifeInventoryItem::FLAG_NO_POSITION==packet.r_u16	())
+	{
+		return;
+	}
+	
+	if(!object().PPhysicsShell())
+	{
+		object().processing_activate();
+		object().setup_physic_shell	();
+		object().PPhysicsShell()->Disable();
+	}
+	
+	object().PHLoadState(packet);
+	object().PPhysicsShell()->Disable();
 }
 
 ///////////////////////////////////////////////
@@ -513,7 +536,7 @@ void CInventoryItem::PH_B_CrPr		()
 	///////////////////////////////////////////////
 	pSyncObj->get_State						(p->LastState);
 	///////////////////////////////////////////////
-	net_updateData::net_update_IItem N_I	= p->NET_IItem.back();
+	net_update_IItem N_I	= p->NET_IItem.back();
 
 	pSyncObj->set_State						(N_I.State);
 

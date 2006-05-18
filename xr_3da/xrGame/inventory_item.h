@@ -28,8 +28,10 @@ class CWeapon;
 class CPhysicsShellHolder;
 class NET_Packet;
 class CEatableItem;
-
+struct SPHNetState;
+struct net_update_IItem;
 struct net_updateData;
+
 struct SHit;
 
 class CInventoryItem : 
@@ -155,7 +157,7 @@ public:
 			bool				CanTrade			() const;
 	virtual bool 				IsNecessaryItem	    (CInventoryItem* item)		{return false;};
 protected:
-
+	
 	// Слот в который можно установить объект (NO_ACTIVE_SLOT если нельзя)
 	u32							m_slot;
 	// цена по умолчанию
@@ -187,7 +189,11 @@ public:
 
 	virtual void				net_Import			(NET_Packet& P);					// import from server
 	virtual void				net_Export			(NET_Packet& P);					// export to server
-
+private:
+template	<typename strm>			
+			void				position_Import		(strm& P,net_update_IItem &N);					// import from server
+			void				position_Export		(NET_Packet& P,SPHNetState	&State);					// export to server
+public:
 	virtual void				activate_physic_shell		();
 
 	virtual bool				NeedToDestroyObject			() const;
@@ -199,7 +205,7 @@ public:
 
 protected:
 	virtual void				UpdateXForm	();
-
+			
 protected:
 	net_updateData*				m_net_updateData;
 	net_updateData*				NetSync						();

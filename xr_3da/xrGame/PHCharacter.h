@@ -63,22 +63,28 @@ enum ERestrictionType
 };
 
 private:
+protected:
+ERestrictionType		m_new_restriction_type;
 ERestrictionType		m_restriction_type;
 bool					b_actor_movable;
-protected:
+
 bool					b_in_touch_resrtrictor		;
+float					m_current_object_radius		;
 public:
 	virtual ECastType	CastType							(){return CPHObject::tpCharacter;}
 	virtual CPHActorCharacter	*CastActorCharacter			(){return NULL;}
 	virtual CPHAICharacter		*CastAICharacter			(){return NULL;}
 	ERestrictionType	RestrictionType						(){return m_restriction_type;}
-	void				SetRestrictionType					(ERestrictionType rt){m_restriction_type=rt;}
-	virtual bool		ChangeRestrictionType				(ERestrictionType rt)										=0;
+	void				SetNewRestrictionType				(ERestrictionType rt){m_new_restriction_type=rt;}
+	void				SetRestrictionType					(ERestrictionType rt){m_new_restriction_type=m_restriction_type=rt;}
+	void				SetObjectRadius						(float R){m_current_object_radius=R;}
+	float				ObjectRadius						(){return m_current_object_radius;}
+	virtual	void		ChooseRestrictionType				(ERestrictionType my_type,float my_depth,CPHCharacter *ch)					{}
+	virtual bool		UpdateRestrictionType				(CPHCharacter* ach)															=0;
 	virtual void		FreezeContent						()															;
 	virtual void		UnFreezeContent						()															;
 	virtual	dBodyID		get_body							()															{return m_body;}
 	virtual	dSpaceID	dSpace								()															=0;		
-
 	virtual	void		Disable								()															;																		
 	virtual	void		ReEnable							()															{;}																				
 	virtual	void		Enable								()															;											//!!

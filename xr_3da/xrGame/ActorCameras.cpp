@@ -18,6 +18,7 @@
 #include "gamemtllib.h"
 #include "elevatorstate.h"
 #include "CharacterPhysicsSupport.h"
+#include "EffectorShot.h"
 void CActor::cam_Set	(EActorCameras style)
 {
 	CCameraBase* old_cam = cam_Active();
@@ -267,6 +268,30 @@ void CActor::cam_Update(float dt, float fFOV)
 		}
 	}
 }
+
+// shot effector stuff
+void CActor::update_camera (CCameraShotEffector* effector)
+{
+	if (!effector) return;
+	//	if (Level().CurrentViewEntity() != this) return;
+
+	CCameraBase* pACam = cam_FirstEye();
+	if (!pACam) return;
+
+	if (pACam->bClampPitch)
+	{
+		while (pACam->pitch < pACam->lim_pitch[0])
+			pACam->pitch += PI_MUL_2;
+		while (pACam->pitch > pACam->lim_pitch[1])
+			pACam->pitch -= PI_MUL_2;
+	};
+
+	effector->ApplyLastAngles(&(pACam->pitch), &(pACam->yaw));
+
+	if (pACam->bClampYaw)	clamp(pACam->yaw,pACam->lim_yaw[0],pACam->lim_yaw[1]);
+	if (pACam->bClampPitch)	clamp(pACam->pitch,pACam->lim_pitch[0],pACam->lim_pitch[1]);
+}
+
 
 #ifdef DEBUG
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);

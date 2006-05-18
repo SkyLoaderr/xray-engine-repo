@@ -1,6 +1,7 @@
 #ifndef PH_DEBUG_H
 #define PH_DEBUG_H
 #ifdef DEBUG
+struct dContact;
 //#include "FastDelegate.h"
 #include "../StatGraph.h"
 #define DRAW_CONTACTS
@@ -73,7 +74,8 @@ enum
 ///ph_dbg_draw_mask1 ne pereputat by blin!
 enum
 {
-	ph_m1_DbgTrackObject		=		1<<0
+	ph_m1_DbgTrackObject		=		1<<0,
+	ph_m1_DbgActorRestriction	=		1<<1
 };
 struct SPHObjDBGDraw
 {
