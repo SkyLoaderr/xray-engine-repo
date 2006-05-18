@@ -25,7 +25,7 @@ public:
 	};
 	typedef xr_map<LPCSTR,IConsole_Command*,str_pred>	vecCMD;
 	typedef vecCMD::iterator						vecCMD_IT;
-	enum			{ MAX_LEN = 256 };
+	enum			{ MAX_LEN = 1024 };
 private:
 	u32				last_mm_timer;
 	float			cur_time;
