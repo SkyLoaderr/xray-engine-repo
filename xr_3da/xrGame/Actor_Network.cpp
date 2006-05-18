@@ -545,6 +545,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	{ 
 		character_physics_support()->movement()->DestroyCharacter();
 	}
+	if(m_bOutBorder)character_physics_support()->movement()->setOutBorder();
 	r_torso_tgt_roll		= 0;
 
 	r_model_yaw				= E->o_torso.yaw;
@@ -1332,13 +1333,14 @@ void CActor::save(NET_Packet &output_packet)
 {
 	inherited::save(output_packet);
 	CInventoryOwner::save(output_packet);
-
+	output_packet.w_u8(u8(m_bOutBorder));
 }
 
 void CActor::load(IReader &input_packet)
 {
 	inherited::load(input_packet);
 	CInventoryOwner::load(input_packet);
+	m_bOutBorder=!!(input_packet.r_u8());
 }
 
 #ifdef DEBUG

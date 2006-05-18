@@ -74,6 +74,7 @@ public:
 		ai
 	};
 	bool				isOutBorder			(){return in_dead_area_count>0;}
+	void				setOutBorder		(){in_dead_area_count=1;}
 private:
 	void				TraceBorder			(const Fvector &previous_position);
 	void				CheckEnvironment	(const Fvector& V);
