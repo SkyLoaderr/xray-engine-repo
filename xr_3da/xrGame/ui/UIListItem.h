@@ -21,9 +21,6 @@ public:
 	virtual void Init(const char* str, float x, float y, float width, float height);
 	virtual void InitTexture(LPCSTR tex_name);
 	
-	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
-	virtual void Draw();
-
 			void* GetData() {return m_pData;}
 			void SetData(void* pData) { m_pData = pData;}
 

@@ -332,21 +332,23 @@ bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 
 	for(; it!=m_ChildWndList.rend(); ++it)
 	{
-		Frect wndRect = (*it)->GetWndRect();
+		CUIWindow* w	= (*it);
+		Frect wndRect	= w->GetWndRect();
 		if (wndRect.in(cursor_pos) )
 		{
-			if((*it)->IsEnabled())
+			if(w->IsEnabled())
 			{
-				if( (*it)->OnMouse(cursor_pos.x -(*it)->GetWndRect().left, 
-							   cursor_pos.y -(*it)->GetWndRect().top, mouse_action))return true;
+				if( w->OnMouse(cursor_pos.x -w->GetWndRect().left, 
+							   cursor_pos.y -w->GetWndRect().top, mouse_action))return true;
 			}
 		}
-		else if ((*it)->IsEnabled() && (*it)->CursorOverWindow())
+		else if (w->IsEnabled() && w->CursorOverWindow())
 		{
-			if( (*it)->OnMouse(cursor_pos.x -(*it)->GetWndRect().left, 
-						   cursor_pos.y -(*it)->GetWndRect().top, mouse_action))return true;
+			if( w->OnMouse(cursor_pos.x -w->GetWndRect().left, 
+						   cursor_pos.y -w->GetWndRect().top, mouse_action))return true;
 		}
 	}
+
 //.	m_dbg_flag.set(4,FALSE);
 
 	return false;

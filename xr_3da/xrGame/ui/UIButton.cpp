@@ -147,8 +147,10 @@ bool  CUIButton::OnMouse(float x, float y, EUIMessages mouse_action)
 			}
 		}
 		else if(mouse_action == WINDOW_LBUTTON_DOWN || mouse_action == WINDOW_LBUTTON_DB_CLICK)
-			if(m_bCursorOverWindow)
+			if(m_bCursorOverWindow){
 				OnClick();
+				return true;
+			}
 
 		break;
 	}

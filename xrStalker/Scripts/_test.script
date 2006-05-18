@@ -37,7 +37,7 @@ function main123()
 end
 
 
-function main__()
+function main()
 --	level.add_cam_effector2("camera_effects\\agroprom_demo.anm", 123, false)
 	
 --	db.actor:activate_slot(db.actor:active_slot()+1)
@@ -67,9 +67,12 @@ function main__()
 
 	info = "encyclopedy_mutant_flesh"
 	db.actor:give_info_portion(info) 
+
+	info = "encyclopedy_zone_artifact_af-cristall-flower"
+	db.actor:give_info_portion(info) 
 end
 
-function main()
+function main1111111 ()
    local h 		= hit()
    h.power 		= 0.1
    h.direction 	= vector():set(0, 0, 1)

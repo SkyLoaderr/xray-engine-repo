@@ -47,16 +47,6 @@ void CUIListItem::Init(const char* str, float x, float y, float width, float hei
 	SetTextST(str);	
 }
 
-bool CUIListItem::OnMouse(float x, float y, EUIMessages mouse_action)
-{
-	return CUIButton::OnMouse(x, y, mouse_action);
-}	
-
-
-void CUIListItem::Draw()
-{
-	CUIButton::Draw();
-}
 
 int CUIListItem::GetSignWidht()
 {
