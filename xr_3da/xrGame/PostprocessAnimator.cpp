@@ -190,6 +190,7 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 	m_EffectorParams.color_add		+= pp_identity.color_add;
 	m_EffectorParams.noise.fps		*= 100.0f;
 
+	VERIFY					( _valid(m_factor) );
 	PPInfo.lerp				(pp_identity, m_EffectorParams, m_factor);
 	if(PPInfo.noise.grain<=0.0f){
 		R_ASSERT3(0,"noise.grain cant be zero! see postprocess",*m_Name);
