@@ -131,6 +131,9 @@
 
     <info_portion id="val_actor_on_bandits_base"></info_portion>
 
+    <info_portion id="val_lager_bandits_show_leader_company"></info_portion>
+    <info_portion id="val_lager_bandits_show_nedostroyka_company"></info_portion>
+
     <!-- Игрок нашел флешку Борова -->
     <info_portion id="val_borov_dead"></info_portion>
     <info_portion id="val_player_knows_password"></info_portion>
