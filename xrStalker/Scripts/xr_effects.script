@@ -1141,6 +1141,11 @@ function mil_bomb_explode (actor, npc)
     h.type = hit.chemical_burn;
     source:hit (h);
     
+    
+end
+
+function mil_set_alarm (actor, npc)
+
     actor:give_info_portion ("mil_freedom_under_attack")
     
     local skull = level_object_by_sid (708)
@@ -1153,7 +1158,6 @@ function mil_bomb_explode (actor, npc)
     this.set_stalker_enemy (730, skull)     -- hit to Sniper1
     this.set_stalker_enemy (731, skull)     -- hit to Sniper2
     this.set_stalker_enemy (732, skull)     -- hit to Sniper3
-
 end
 
 function sar2_monolith_explode (actor, npc)
