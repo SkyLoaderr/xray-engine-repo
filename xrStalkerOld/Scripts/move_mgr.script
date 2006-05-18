@@ -127,7 +127,7 @@ end
 -- Из move_cb вернуть true, чтобы приостановить работу схемы. Чтобы продолжить движение,
 -- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
 -- скоростью.
-function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, suggested_state, move_cb_info, no_validation, continue)
+function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, suggested_state, move_cb_info, no_validation, continue, use_default_sound)
 	--printf("move_mgr:reset()")
 	--xr_reactions.add_rule(self.object, "ignore") -- DELME
 
@@ -243,6 +243,8 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.last_look_index = nil
 	-- self:simulate_callback_if_neccessary() WORKAROUND
 
+	self.use_default_sound = use_default_sound
+
 	self.object:patrol_path_make_inactual()
 	self:setup_movement_by_patrol_path()
 end
@@ -280,7 +282,8 @@ function move_mgr:setup_movement_by_patrol_path()
 
 	local sect = self.object:section()
 
-	if sect == "stalker_zombied" or sect == "stalker_fresh_zombied" then
+--	if sect == "stalker_zombied" or sect == "stalker_fresh_zombied" then
+	if self.use_default_sound then
 		self.default_sound = "state"
 
 		xr_sound.set_sound(self.object, self.default_sound)
