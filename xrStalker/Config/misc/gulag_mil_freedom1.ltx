@@ -21,6 +21,7 @@ on_info = %+mil_lukash_dead +mil_kill_svoboda_leader_killed =mil_bomb_explode +s
 path_walk = leader_walk
 path_look = leader_look
 on_info = {+mil_bodyguard_talk} remark1@mil_freedom_lukash
+on_info2 = {+mil_lukash_dolg_task_complete} walker2@mil_freedom_lukash
 meet = meet@mil_freedom_lukash
 danger = danger@mil_freedom
 
@@ -37,7 +38,7 @@ target = actor
 id = mil_lukash_dialog_rg6, mil_lukash_dialog_after
 
 [meet@mil_freedom_lukash]
-meet_state = 5|ward@talk_hello
+meet_state = 4|ward|6|ward@talk_hello
 meet_state_wpn = 5|ward
 victim = 10|actor
 victim_wpn = 10|actor
