@@ -3259,7 +3259,7 @@
 		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
+			wpn_pm_arena \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
