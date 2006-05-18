@@ -29,7 +29,7 @@ function PsyAntenna:__init				()
 	self.phantom_spawn_height			= 2.5 //3	// average height from actor pos +-1.5m
 	self.phantom_fov					= 45   // ширина сектора перед глазами актёра, в котором могут рождаться фантомы
 	// antenna
-	self.hit_amplitude					= 10.0	// размер хита = self.hit_amplitude*self.hit_intensity
+	self.hit_amplitude					= 1.0	// размер хита = self.hit_amplitude*self.hit_intensity
 // ----------------------------------------------------------------------------------------
 // postprocess
 // ----------------------------------------------------------------------------------------
@@ -123,12 +123,12 @@ function PsyAntenna:update_psy_hit		(dt)
 			psy_hit.direction 			= vector():set( 0, 0, 0 )
 			psy_hit.impulse 			= 0
 			psy_hit.draftsman 			= db.actor
-			psy_hit.type 				= hit.telepatic
+			psy_hit.type 				= hit.strike
 			db.actor:hit				(psy_hit)
 
 --			printf( "hit power=%f", psy_hit.power )
 
-			if db.actor.psy_health < 0.01 and db.actor:alive() then
+			if db.actor.health < 0.01 and db.actor:alive() then
 				db.actor:kill( db.actor )
 			end
 		end
@@ -141,7 +141,7 @@ function PsyAntenna:generate_phantoms()
 	end
 	if time_global() - self.phantom_time > self.phantom_idle then
 		self.phantom_time				= time_global()
-		self.phantom_idle = math.random(2000,5000)
+		self.phantom_idle = math.random(5000,10000)
 		if math.random() < self.phantom_spawn_probability then
 			if phantom_manager:phantom_count() < self.phantom_max then
 --[[				local yaw	 			= math.pi*2.0*math.random()
