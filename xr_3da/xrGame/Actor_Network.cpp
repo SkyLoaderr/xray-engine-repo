@@ -649,7 +649,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	m_iLastHittingWeaponID = u16(-1);
 	m_s16LastHittedElement = -1;
 	m_bWasHitted = false;
-
+	m_dwILastUpdateTime		= 0;
 
 	if (IsGameTypeSingle()){
 		Level().MapManager().AddMapLocation("actor_location",ID());
@@ -664,7 +664,6 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 
 	spatial.type |=STYPE_REACTTOSOUND;
 	psHUD_Flags.set(HUD_WEAPON_RT,TRUE);
-
 	
 	if (Level().IsDemoPlay())
 	{
@@ -1092,7 +1091,7 @@ void	CActor::CalculateInterpolationParams()
 	u32		ConstTime = u32((fixed_step - ph_world->m_frame_time)*1000)+ Level().GetInterpolationSteps()*u32(fixed_step*1000);
 
 	m_dwIStartTime = m_dwILastUpdateTime;
-
+	
 //	if (( lV0 + lV1) > 0.000001 && g_cl_lvInterp == 0)
 	{
 //		u32		CulcTime = iCeil(TotalLen*2000/( lV0 + lV1));
@@ -1159,7 +1158,7 @@ int		actInterpType = 0;
 void CActor::make_Interpolation	()
 {
 	m_dwILastUpdateTime = Level().timeServer();
-		
+			
 	if(g_Alive() && m_bInInterpolation) 
 	{
 		u32 CurTime = m_dwILastUpdateTime;
@@ -1182,9 +1181,10 @@ void CActor::make_Interpolation	()
 
 			if (m_dwIEndTime != m_dwIStartTime)
 				factor = float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
-						
+			
 			Fvector NewPos;
 			NewPos.lerp(IStart.Pos, IEnd.Pos, factor);
+			
 			VERIFY2								(_valid(renderable.xform),*cName());
 
 //			r_model_yaw		= angle_lerp	(IStart.o_model,IEnd.o_model,		factor);			

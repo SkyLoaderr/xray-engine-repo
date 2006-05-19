@@ -194,6 +194,8 @@ CActor::CActor() : CEntityAlive()
 	m_bOutBorder			= false;
 	hit_probability			= 1.f;
 	m_feel_touch_characters = 0;
+	//-----------------------------------------------------------------------------------
+	m_dwILastUpdateTime		= 0;
 }
 
 
@@ -1170,7 +1172,6 @@ void CActor::shedule_Update	(u32 DT)
 	UpdateArtefactsOnBelt						();
 	m_pPhysics_support->in_shedule_Update		(DT);
 	Check_for_AutoPickUp						();
-
 };
 
 void CActor::renderable_Render	()
