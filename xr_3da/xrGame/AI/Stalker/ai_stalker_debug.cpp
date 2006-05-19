@@ -248,6 +248,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("%sname          : %s",indent,*cName());
 	HUD().Font().pFontSmall->OutNext	("%sid            : %d",indent,ID());
 	HUD().Font().pFontSmall->OutNext	("%shealth        : %f",indent,conditions().health());
+	HUD().Font().pFontSmall->OutNext	("%swounded       : %c",indent,wounded() ? '+' : '-');
 	// visual
 	HUD().Font().pFontSmall->OutNext	("%svisual",indent);
 	
