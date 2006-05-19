@@ -292,11 +292,19 @@ function se_respawn:create(prob)
 			parent_id = alife():story_object(self.parent).id
 		end
 		
-		local obj = alife():create(spawn_section,	
+		local obj
+		if parent_id == nil then
+			obj = alife():create(spawn_section,	
 						self.position,
 						self.m_level_vertex_id,	
 						self.m_game_vertex_id,
 						parent_id)
+		else
+			obj = alife():create(spawn_section,	
+						self.position,
+						self.m_level_vertex_id,	
+						self.m_game_vertex_id)
+		end
 
 		local tt = self.sectSpawnProps[spawn_section]
 
