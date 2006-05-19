@@ -755,11 +755,11 @@ void CStalkerActionLookOut::execute		()
 	}
 
 	Fvector								position = mem_object.m_object_params.m_position;
-	object().m_ce_close->setup			(position,10.f,170.f,10.f);
-	const CCoverPoint					*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true,false));
+	object().m_ce_close->setup			(position,0.f,170.f,10.f);
+	const CCoverPoint					*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_close);//,CStalkerMovementRestrictor(m_object,true,false));
 	if (!point || (point->position().similar(object().Position()) && object().movement().path_completed())) {
-		object().m_ce_close->setup		(position,10.f,170.f,10.f);
-		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true,false));
+		object().m_ce_close->setup		(position,0.f,170.f,10.f);
+		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_close);//,CStalkerMovementRestrictor(m_object,true,false));
 	}
 
 	if (point) {

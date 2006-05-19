@@ -80,7 +80,7 @@ void CALifeSimulatorBase::reload			(LPCSTR section)
 	m_initialized				= true;
 }
 
-CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &position, u32 level_vertex_id, GameGraph::_GRAPH_ID game_vertex_id, u16 parent_id)
+CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &position, u32 level_vertex_id, GameGraph::_GRAPH_ID game_vertex_id, u16 parent_id, bool registration)
 {
 	CSE_Abstract				*abstract = F_entity_Create(section);
 	R_ASSERT3					(abstract,"Cannot find item with section",section);
@@ -112,13 +112,14 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 	//оружие спавним с полным магазинои
 	CSE_ALifeItemWeapon* weapon = smart_cast<CSE_ALifeItemWeapon*>(dynamic_object);
 	if(weapon)
-		weapon->a_elapsed = weapon->get_ammo_magsize();
+		weapon->a_elapsed		= weapon->get_ammo_magsize();
 
 	dynamic_object->m_tNodeID	= level_vertex_id;
 	dynamic_object->m_tGraphID	= game_vertex_id;
 	dynamic_object->m_tSpawnID	= u16(-1);
 
-	register_object					(dynamic_object,true);
+	if (registration)
+		register_object				(dynamic_object,true);
 
 	dynamic_object->spawn_supplies	();
 	dynamic_object->on_spawn		();
