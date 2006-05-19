@@ -51,6 +51,7 @@ function action_wounded:initialize ()
 	if self.a.help_start_dialog then
 		self.object:set_start_dialog(self.a.help_start_dialog)
 	end
+	self.object:wounded(true)
 end
 function action_wounded:execute ()
     action_base.execute (self)
@@ -177,6 +178,7 @@ function action_wounded:finalize ()
     action_base.finalize (self)
     self.object:disable_talk()
     xr_sound.set_sound(self.object, nil)
+    self.object:wounded(false)
 end    
 
 ----------------------------------------------------------------------------------------------------------------------
