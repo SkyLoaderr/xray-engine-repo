@@ -210,6 +210,8 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 	}
 
 	inherited::Hit(&HDS);
+
+//	wounded							((GetfHealth() < .1f));
 }
 
 void CAI_Stalker::HitSignal				(float amount, Fvector& vLocalDir, CObject* who, s16 element)
