@@ -1318,3 +1318,72 @@ void CStalkerActionSuddenAttack::execute					()
 
 	m_storage->set_property	(eWorldPropertyUseSuddenness,	false);
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionKillWounded
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionKillWounded::CStalkerActionKillWounded		(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object, action_name)
+{
+}
+
+void CStalkerActionKillWounded::initialize					()
+{
+	inherited::initialize	();
+
+	object().movement().set_desired_direction	(0);
+	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_mental_state		(eMentalStateDanger);
+	object().movement().set_body_state			(eBodyStateStand);
+
+	if (!object().memory().enemy().selected())
+		return;
+}
+
+void CStalkerActionKillWounded::finalize					()
+{
+	inherited::finalize		();
+}
+
+void CStalkerActionKillWounded::execute					()
+{
+	inherited::execute		();
+
+	if (!object().memory().enemy().selected())
+		return;
+
+	const CEntityAlive					*enemy = object().memory().enemy().selected();
+	CMemoryInfo							mem_object = object().memory().memory(enemy);
+
+	if (!mem_object.m_object)
+		return;
+
+	bool								visible_now = object().memory().visual().visible_now(enemy);
+	if (visible_now)
+		object().sight().setup			(CSightAction(enemy,true));
+	else
+		object().sight().setup			(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
+
+	if (object().movement().accessible(mem_object.m_object_params.m_level_vertex_id))
+		object().movement().set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
+	else
+		object().movement().set_nearest_accessible_position	(ai().level_graph().vertex_position(mem_object.m_object_params.m_level_vertex_id),mem_object.m_object_params.m_level_vertex_id);
+
+
+	u32										min_queue_size, max_queue_size, min_queue_interval, max_queue_interval;
+	select_queue_params						(distance,min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
+
+	if (visible_now) {
+		float							distance = object().Position().distance_to(enemy->Position());
+		if (distance < 2.f) {
+			object().movement().set_movement_type	(eMovementTypeStand);
+			object().CObjectHandler::set_goal		(eObjectActionFire1,object().best_weapon(),min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
+			return;
+		}
+	}
+
+	object().movement().set_movement_type	(eMovementTypeWalk);
+	object().CObjectHandler::set_goal		(eObjectActionAimReady1,object().best_weapon(),min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
+}

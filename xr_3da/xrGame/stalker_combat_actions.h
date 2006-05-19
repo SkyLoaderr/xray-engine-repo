@@ -266,4 +266,19 @@ public:
 	virtual void		finalize					();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionKillWounded
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionKillWounded : public CStalkerActionCombatBase {
+protected:
+	typedef CStalkerActionCombatBase inherited;
+
+public:
+						CStalkerActionKillWounded	(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+};
+
 #include "stalker_combat_actions_inline.h"

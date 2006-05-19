@@ -25,6 +25,8 @@
 #include "actor.h"
 #include "actor_memory.h"
 
+#include "ai/stalker/ai_stalker.h"
+
 static const u32 ENEMY_INERTIA_TIME	= 2000;
 
 #define USE_EVALUATOR
@@ -90,17 +92,30 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 	
 	m_visible_now			= visible;
 
+	const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(object);
+	bool					wounded = stalker ? stalker->wounded() : false;
+
 #ifdef USE_EVALUATOR
 	ai().ef_storage().non_alife().member_item()	= 0;
 	ai().ef_storage().non_alife().enemy_item()	= 0;
 	ai().ef_storage().non_alife().member()		= m_object;
 	ai().ef_storage().non_alife().enemy()		= object;
+
 	float					distance = m_object->Position().distance_to_sqr(object->Position());
-	return					(1000.f*(visible ? 0.f : 1.f) + distance/100.f + ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f);
+	return					(
+		10000.f*(wounded ? 1.f : 0.f) +
+		1000.f* (visible ? 0.f : 1.f) +
+		distance/100.f +
+		ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f
+	);
 #else
 	float					distance = m_object->Position().distance_to_sqr(object->Position());
 	distance				= !fis_zero(distance) ? distance : EPS_L;
-	return					(1000.f*(visible ? 0.f : 1.f) + 1.f/distance);
+	return					(
+		10000.f*(wounded ? 1.f : 0.f) +
+		1000.f*(visible ? 0.f : 1.f) +
+		1.f/distance
+	);
 #endif
 }
 
