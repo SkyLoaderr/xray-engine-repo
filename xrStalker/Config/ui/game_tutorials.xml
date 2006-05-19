@@ -25,12 +25,6 @@
 	</intro_logo>
 	<intro_game>
 		<play_each_item>1</play_each_item>
-		<_global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<window_name>back</window_name>
-				<texture>intro\intro_back</texture>
-			</auto_static>
-		</_global_wnd>
 		<global_wnd x="0" y="0" width="1" height="1">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
 				<window_name>back</window_name>
