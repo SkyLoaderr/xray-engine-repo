@@ -40,11 +40,11 @@ void CUIZoneMap::Init()
 
 	// load map background
 	CUIXmlInit xml_init;
-	xml_init.InitStatic(uiXml, "minimap:background", 0, &m_background);
+	xml_init.InitStatic			(uiXml, "minimap:background", 0, &m_background);
+	xml_init.InitStatic			(uiXml, "minimap:background:dist_text", 0, &m_pointerDistanceText);
+	m_background.AttachChild	(&m_pointerDistanceText);
 
 	xml_init.InitStatic(uiXml, "minimap:level_frame", 0, &m_clipFrame);
-
-//	m_background.AttachChild(&m_clipFrame);
 
 	xml_init.InitStatic(uiXml, "minimap:center", 0, &m_center);
 	
@@ -89,6 +89,13 @@ void CUIZoneMap::UpdateRadar		(Fvector pos)
 	m_clipFrame.Update();
 	m_background.Update();
 	m_activeMap->SetActivePoint( pos );
+	if(m_activeMap->GetPointerDistance()>0.5f){
+		string64	str;
+		sprintf		(str,"%.1f m.",m_activeMap->GetPointerDistance());
+		m_pointerDistanceText.SetText(str);
+	}else{
+		m_pointerDistanceText.SetText("");
+	}
 }
 
 bool CUIZoneMap::ZoomIn()

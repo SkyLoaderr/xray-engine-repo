@@ -18,6 +18,7 @@ CUICustomMap::CUICustomMap ()
 	m_BoundRect.set			(0,0,0,0);
 	SetWindowName			("map");
 	m_flags.zero			();
+	SetPointerDistance		(0.0f);
 }
 
 CUICustomMap::~CUICustomMap ()
@@ -26,9 +27,10 @@ CUICustomMap::~CUICustomMap ()
 
 void CUICustomMap::Update()
 {
-	CUIStatic::Update();
+	CUIStatic::Update		();
+	SetPointerDistance		(0.0f);
 	if(!Locked())
-		UpdateSpots();
+		UpdateSpots			();
 }
 
 
@@ -200,11 +202,6 @@ bool CUICustomMap::NeedShowPointer(Frect r)
 	r.add(pos.x,pos.y);
 
 	return !map_visible_rect.intersected(r);
-}
-
-void CUICustomMap::SetPointerDistance(float d)
-{
-
 }
 
 void	CUICustomMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)

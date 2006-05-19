@@ -12,7 +12,7 @@ protected:
 	Frect			m_BoundRect;// real map size (meters)
 	Flags16			m_flags;
 	enum EFlags{	eLocked	=(1<<0),};
-
+	float			m_pointer_dist;
 public:
 	Frect			m_prevRect;
 					CUICustomMap					();
@@ -41,7 +41,8 @@ public:
 			bool	NeedShowPointer					(Frect r);
 			bool	Locked							()				{return !!m_flags.test(eLocked);}
 			void	SetLocked						(bool b)		{m_flags.set(eLocked,b);}
-			void	SetPointerDistance				(float d);
+			void	SetPointerDistance				(float d)		{m_pointer_dist=d;};
+			float	GetPointerDistance				()				{return m_pointer_dist;};
 protected:
 	virtual void	UpdateSpots						() {};
 };
