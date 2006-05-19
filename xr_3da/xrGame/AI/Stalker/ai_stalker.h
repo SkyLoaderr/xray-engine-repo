@@ -143,6 +143,9 @@ public:
 	CCharacterPhysicsSupport		*m_pPhysics_support;
 
 public:
+	bool							m_wounded;
+
+public:
 										CAI_Stalker					();
 	virtual								~CAI_Stalker				();
 
@@ -464,6 +467,10 @@ public:
 			void						on_cover_blocked					(const CCoverPoint *cover);
 			void						on_danger_location_add				(const CDangerLocation &location);
 			void						on_danger_location_remove			(const CDangerLocation &location);
+
+public:
+			void						wounded								(bool value);
+	IC		bool						wounded								() const;
 
 public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION

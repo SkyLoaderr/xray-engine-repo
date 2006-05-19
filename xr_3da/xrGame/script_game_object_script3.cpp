@@ -254,5 +254,8 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 
 		.def("location_on_path",			&CScriptGameObject::location_on_path)
 
+		.def("wounded",						(bool (CScriptGameObject::*)() const)(&CScriptGameObject::wounded))
+		.def("wounded",						(void (CScriptGameObject::*)(bool))(&CScriptGameObject::wounded))
+
 	;return	(instance);
 }

@@ -666,3 +666,19 @@ void CAI_Stalker::on_weapon_shot_stop		(CWeapon *weapon)
 void CAI_Stalker::on_weapon_hide			(CWeapon *weapon)
 {
 }
+
+void CAI_Stalker::wounded					(bool value)
+{
+	if (m_wounded == value)
+		return;
+
+	m_wounded				= value;
+
+	if (!m_wounded)
+		return;
+	
+	if (!agent_manager().member().registered_in_combat(this))
+		return;
+
+	agent_manager().member().unregister_in_combat	(this);
+}

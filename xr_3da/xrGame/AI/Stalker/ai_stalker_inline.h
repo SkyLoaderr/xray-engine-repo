@@ -133,3 +133,8 @@ IC	u32 CAI_Stalker::max_queue_interval_close					() const
 {
 	return					(m_max_queue_interval_close);
 }
+
+IC	bool CAI_Stalker::wounded									() const
+{
+	return					(m_wounded);
+}

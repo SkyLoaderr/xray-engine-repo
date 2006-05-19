@@ -194,7 +194,8 @@ void CStalkerCombatPlanner::finalize			()
 	if (!object().g_Alive())
 		return;
 
-	object().memory().danger().time_line(Device.dwTimeGlobal + 3000);
+	object().memory().danger().time_line					(Device.dwTimeGlobal + 3000);
+	object().agent_manager().member().unregister_in_combat	(m_object);
 
 //	object().sound().remove_active_sounds					(eStalkerSoundMaskNoDanger);
 }

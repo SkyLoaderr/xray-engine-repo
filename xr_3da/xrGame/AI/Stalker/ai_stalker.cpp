@@ -80,6 +80,7 @@ CAI_Stalker::CAI_Stalker			()
 	m_group_behaviour				= true;
 	m_boneHitProtection				= NULL;
 	m_power_fx_factor				= flt_max;
+	m_wounded						= false;
 #ifdef DEBUG
 	m_debug_planner					= 0;
 #endif
@@ -303,8 +304,6 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 
 	if (!CObjectHandler::net_Spawn(DC) || !inherited::net_Spawn(DC))
 		return						(FALSE);
-
-
 	
 	set_money						(tpHuman->m_dwMoney, false);
 

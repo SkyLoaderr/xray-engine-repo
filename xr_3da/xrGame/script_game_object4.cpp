@@ -144,11 +144,29 @@ int  CScriptGameObject::active_sound_count		(bool only_playing)
 		return								(monster->sound().active_sound_count(only_playing));
 }
 
-int  CScriptGameObject::active_sound_count		()
+int CScriptGameObject::active_sound_count		()
 {
 	return									(active_sound_count(false));
 }
 
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
+bool CScriptGameObject::wounded					() const
+{
+	const CAI_Stalker			*stalker = smart_cast<const CAI_Stalker *>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member wounded!");
+		return					(false);
+	}
+
+	return						(stalker->wounded());
+}
+
+void CScriptGameObject::wounded					(bool value)
+{
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker *>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member wounded!");
+		return;
+	}
+
+	stalker->wounded			(value);
+}

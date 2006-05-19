@@ -547,6 +547,10 @@ public:
 			void				sound_prefix						(LPCSTR sound_prefix);
 
 			u32					location_on_path					(float distance, Fvector *location);
+
+			bool				wounded								() const;
+			void				wounded								(bool value);
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptGameObject)
