@@ -191,7 +191,7 @@ void CUIChangeMap::FillUpList(){
 
 void CUIChangeMap::OnBtnCancel(){
     game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
-	game->StartStopMenu(this, false);
+	game->StartStopMenu(this, true);
 }
 
 IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);

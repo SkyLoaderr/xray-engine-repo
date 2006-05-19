@@ -105,7 +105,7 @@ void CUIKickPlayer::OnBtnOk(){
 
 void CUIKickPlayer::OnBtnCancel(){
     game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
-	game->StartStopMenu(this, false);
+	game->StartStopMenu(this, true);
 }
 
 IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);
@@ -134,7 +134,7 @@ void CUIKickPlayer::Update(){
 	for (u32 i = 0; i<items.size(); i++){
 		game_PlayerState* p = reinterpret_cast<game_PlayerState*>(items[i]);
 		CUIListBoxItem* item = lst->AddItem(p->name);
-		item->SetID(u32(i/*+1*/));
+		item->SetID(u32(i+1));
 	}
 
 	if (selected_item != u32(-1))
