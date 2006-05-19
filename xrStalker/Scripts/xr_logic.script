@@ -380,6 +380,9 @@ function activate_by_section(npc, ini, section, loading)
 		end
 
 		if db.storage[npc_id].stype == modules.stype_stalker then
+			-- чтобы избежать дальнейшего движения по пути при установке рестрикторов
+			self.object:set_path_type(game_object.level_path)
+
 			issue_event(npc, db.storage[npc_id][scheme], "activate_scheme", loading)
 		else
 			issue_event(npc, db.storage[npc_id][scheme], "reset_scheme", loading)
