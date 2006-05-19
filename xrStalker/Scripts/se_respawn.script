@@ -297,13 +297,13 @@ function se_respawn:create(prob)
 			obj = alife():create(spawn_section,	
 						self.position,
 						self.m_level_vertex_id,	
-						self.m_game_vertex_id,
-						parent_id)
+						self.m_game_vertex_id)
 		else
 			obj = alife():create(spawn_section,	
 						self.position,
 						self.m_level_vertex_id,	
-						self.m_game_vertex_id)
+						self.m_game_vertex_id,
+						parent_id)
 		end
 
 		local tt = self.sectSpawnProps[spawn_section]
