@@ -70,6 +70,8 @@ CCameraManager::CCameraManager(bool bApplyOnUpdate)
 	pp_zero.color_base.set			(0,0,0);
 	pp_zero.color_gray.set			(0,0,0);
 	pp_zero.color_add.set			(0,0,0);
+
+	pp_affected						= pp_identity;
 }
 
 CCameraManager::~CCameraManager()
@@ -183,6 +185,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 		vNormal.crossproduct	(vDirection,vRight);
 	}
 
+	pp_affected.validate		();
 	// EffectorPP
 	int		_count	= 0;
 	if(m_EffectorsPP.size()) {
@@ -205,6 +208,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 
 	if( !positive(pp_affected.noise.grain) ) pp_affected.noise.grain = pp_identity.noise.grain;
 	
+	pp_affected.validate		();
 	if (FALSE==bOverlapped && m_bAutoApply)
 			ApplyDevice		();
 }
@@ -212,7 +216,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 void CCameraManager::ApplyDevice ()
 {
 	// Device params
-	Device.mView.build_camera_dir(vPosition,vDirection,vNormal);
+	Device.mView.build_camera_dir(vPosition, vDirection, vNormal);
 
 	Device.vCameraPosition.set	( vPosition		);
 	Device.vCameraDirection.set	( vDirection	);
@@ -228,22 +232,7 @@ void CCameraManager::ApplyDevice ()
 		ResetPP					();
 	else
 	{
-		VERIFY(_valid(pp_affected.duality.h));
-		VERIFY(_valid(pp_affected.duality.v));
-		VERIFY(_valid(pp_affected.blur));
-		VERIFY(_valid(pp_affected.gray));
-		VERIFY(_valid(pp_affected.noise.intensity));
-		VERIFY(_valid(pp_affected.noise.grain));
-		VERIFY(_valid(pp_affected.noise.fps));
-		VERIFY(_valid(pp_affected.color_base.r));
-		VERIFY(_valid(pp_affected.color_base.g));
-		VERIFY(_valid(pp_affected.color_base.b));
-		VERIFY(_valid(pp_affected.color_gray.r));
-		VERIFY(_valid(pp_affected.color_gray.g));
-		VERIFY(_valid(pp_affected.color_gray.b));
-		VERIFY(_valid(pp_affected.color_add.r));
-		VERIFY(_valid(pp_affected.color_add.g));
-		VERIFY(_valid(pp_affected.color_add.b));
+		pp_affected.validate		();
 		// postprocess
 		IRender_Target*		T		= ::Render->getTarget();
 		T->set_duality_h			(pp_affected.duality.h);

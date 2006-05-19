@@ -1,7 +1,7 @@
 #pragma once
 
 #include "uiwindow.h"
-#include "uipointergage.h"
+//#include "uipointergage.h"
 
 
 class CUICarPanel : public CUIWindow
@@ -11,8 +11,8 @@ private:
 
 	CUIStatic			UIStaticCarHealth;
 	CUIProgressBar		UICarHealthBar;
-	CUIPointerGage		UISpeedometer;
-	CUIPointerGage		UITachometer;
+//	CUIPointerGage		UISpeedometer;
+//	CUIPointerGage		UITachometer;
 public: 
 
 	// Установить 

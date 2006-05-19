@@ -31,18 +31,17 @@ public:
 	float			GetCurrentZoom					(){return GetWndRect().width()/m_BoundRect.width();}
 	const Frect&    BoundRect						()const					{return m_BoundRect;};
 	virtual void	OptimalFit						(const Frect& r);
-	virtual	void	MoveWndDelta					(const Fvector2& d);
 
 	shared_str		MapName							() {return m_name;}
 	virtual CUIGlobalMapSpot*	GlobalMapSpot		() {return NULL;}
 
-	virtual void	Draw							();
 	virtual void	Update							();
 	virtual void	SendMessage						(CUIWindow* pWnd, s16 msg, void* pData);
 			bool	IsRectVisible					(Frect r);
 			bool	NeedShowPointer					(Frect r);
 			bool	Locked							()				{return !!m_flags.test(eLocked);}
 			void	SetLocked						(bool b)		{m_flags.set(eLocked,b);}
+			void	SetPointerDistance				(float d);
 protected:
 	virtual void	UpdateSpots						() {};
 };
@@ -69,8 +68,6 @@ public:
 	IC void			SetMaxZoom				(float zoom){m_max_zoom = zoom;}
 
 	virtual void	Init					(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
-	virtual void	Draw					();
-	virtual void	Update					();
 	virtual bool	OnMouse							(float x, float y, EUIMessages mouse_action);
 
 	CUIMapWnd*		MapWnd					() {return m_mapWnd;}
@@ -85,7 +82,7 @@ class CUILevelMap: public CUICustomMap{
 	typedef  CUICustomMap inherited;
 	CUIMapWnd*					m_mapWnd;
 	Frect						m_GlobalRect;			// virtual map size (meters)
-	CUIStatic*					m_anomalies_map;
+//	CUIStatic*					m_anomalies_map;
 private:
 								CUILevelMap			(const CUILevelMap &obj) {}
 			CUILevelMap			&operator=			(const CUILevelMap &obj) {}
@@ -118,7 +115,6 @@ public:
 								CUIMiniMap			();
 	virtual						~CUIMiniMap			();
 	virtual void				Init				(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
-	virtual	void				MoveWndDelta		(const Fvector2& d);
 protected:
 	virtual void				UpdateSpots			();
 

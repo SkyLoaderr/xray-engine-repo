@@ -775,6 +775,23 @@ public:
 		  }
 	  }
 };
+
+bool valid_file_name(LPCSTR file_name)
+{
+
+	LPCSTR		I = file_name;
+	LPCSTR		E = file_name + xr_strlen(file_name);
+	for ( ; I != E; ++I) {
+		if (!strchr("/\\:*?\"<>|",*I))
+			continue;
+
+		return	(false);
+	};
+
+	return		(true);
+}
+
+
 #include "UIGameCustom.h"
 #include "HUDManager.h"
 class CCC_ALifeSave : public IConsole_Command {
@@ -805,15 +822,19 @@ public:
 		CTimer					timer;
 		timer.Start				();
 #endif
-		if (!xr_strlen(S)) {
+		if (!xr_strlen(S)){
 			strconcat			(S,Core.UserName,"_","quicksave");
 			NET_Packet			net_packet;
 			net_packet.w_begin	(M_SAVE_GAME);
 			net_packet.w_stringZ(S);
 			net_packet.w_u8		(0);
 			Level().Send		(net_packet,net_flags(TRUE));
-		}
-		else {
+		}else{
+			if(!valid_file_name(S)){
+				Msg("invalid file name");
+				return;
+			}
+
 			NET_Packet			net_packet;
 			net_packet.w_begin	(M_SAVE_GAME);
 			net_packet.w_stringZ(S);

@@ -50,23 +50,6 @@ void CUICustomMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 	
 	SetStretchTexture	(true);
 	ClipperOn			();
-//	SetWindowName(*m_name);
-}
-
-
-void CUICustomMap::MoveWndDelta(const Fvector2& d)
-{
-	CUIWindow::MoveWndDelta	(d);
-/*
-	Frect clip			= GetClipperRect();
-	Frect r				= GetWndRect();
-	if (r.x2<clip.width())	r.x1 += clip.width()-r.x2;
-	if (r.y2<clip.height())	r.y1 += clip.height()-r.y2;
-	if (r.x1>0.0f)			r.x1 = 0.0f;
-	if (r.y1>0.0f)			r.y1 = 0.0f;
-	SetWndPos				(r.x1, r.y1);
-*/
-
 }
 
 void rotation_(float x, float y, const float angle, float& x_, float& y_)
@@ -200,12 +183,6 @@ void CUICustomMap::SetActivePoint(const Fvector &vNewPoint)
 	SetHeadingPivot				(pos_on_map);
 }
 
-
-void CUICustomMap::Draw()
-{
-	CUIStatic::Draw		();
-}
-
 bool CUICustomMap::IsRectVisible(Frect r)
 {
 	Frect map_visible_rect = GetClipperRect();
@@ -223,6 +200,11 @@ bool CUICustomMap::NeedShowPointer(Frect r)
 	r.add(pos.x,pos.y);
 
 	return !map_visible_rect.intersected(r);
+}
+
+void CUICustomMap::SetPointerDistance(float d)
+{
+
 }
 
 void	CUICustomMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
@@ -277,16 +259,6 @@ void CUIGlobalMap::ClipByVisRect()
 	SetWndPos				(r.x1,r.y1);
 }
 
-void CUIGlobalMap::Update()
-{
-	inherited::Update		();
-}
-
-void CUIGlobalMap::Draw					()
-{
-	inherited::Draw();
-}
-
 Fvector2 CUIGlobalMap::ConvertRealToLocal(const Fvector2& src)// pixels->pixels (relatively own left-top pos)
 {
 	Fvector2 res;
@@ -329,18 +301,7 @@ float CUIGlobalMap::CalcOpenRect(const Fvector2& center_point, Frect& map_desire
 	map_desired_rect.add		(np.x,np.y);
 	// calculate max way dist
 	float dist					= 0.f;
-/*
-	Frect s_rect,t_rect;
-//	s_rect.div					(GetWndRect(),GetCurrentZoom(),GetCurrentZoom());
-//	t_rect.div					(map_desired_rect,tgt_zoom,tgt_zoom);
-	s_rect.set					(GetWndRect());
-	t_rect.set					(map_desired_rect);
 
-	Fvector2 sp[4]={{s_rect.x1,s_rect.y1},{s_rect.x2,s_rect.y1},{s_rect.x2,s_rect.y2},{s_rect.x1,s_rect.y2}};
-	Fvector2 tp[4]={{t_rect.x1,t_rect.y1},{t_rect.x2,t_rect.y1},{t_rect.x2,t_rect.y2},{t_rect.x1,t_rect.y2}};
-
-	for (u32 k=0; k<4; ++k)		dist = _max(dist,sp[k].distance_to(tp[k]));
-*/
 	Frect s_rect,t_rect;
 	s_rect.div					(GetWndRect(),GetCurrentZoom(),GetCurrentZoom());
 	t_rect.div					(map_desired_rect,tgt_zoom,tgt_zoom);
@@ -358,13 +319,13 @@ float CUIGlobalMap::CalcOpenRect(const Fvector2& center_point, Frect& map_desire
 CUILevelMap::CUILevelMap(CUIMapWnd* p)
 {
 	m_mapWnd			= p;
-	m_anomalies_map		= NULL;
+//	m_anomalies_map		= NULL;
 	Show				(false);
 }
 
 CUILevelMap::~CUILevelMap()
 {
-	xr_delete			(m_anomalies_map);
+//	xr_delete			(m_anomalies_map);
 }
 
 void CUILevelMap::Draw()
@@ -400,7 +361,7 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 	}
 #endif
 //	Msg("Succesfully loaded map %s. Zoom=%f",*name, kw);
-	
+/*	
 	if(gameLtx.line_exist(MapName(),"anomalies_texture")){
 		LPCSTR texture						= gameLtx.r_string	(MapName(),"anomalies_texture");
 		Fvector4 tmp						= gameLtx.r_fvector4(MapName(),"anomalies_texture_rect"); //lt,wh
@@ -411,6 +372,7 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 		m_anomalies_map->SetStretchTexture	(true);
 		m_anomalies_map->SetAutoDelete		(false);
 	}
+*/
 }
 
 
@@ -420,15 +382,16 @@ void CUILevelMap::UpdateSpots		()
 	DetachAll		();
 	if( fsimilar(MapWnd()->GlobalMap()->GetCurrentZoom(),MapWnd()->GlobalMap()->GetMinZoom(),EPS_L ) ) return;
 	if( FALSE==MapWnd()->ActiveMapRect().intersected(GetAbsoluteRect())) return;
-
+/*
 	if(m_anomalies_map){
 		m_anomalies_map->SetWndPos	(0.0f,0.0f);
 		m_anomalies_map->SetWndSize	(GetWndSize());
 		AttachChild					(m_anomalies_map);
 	}
 
-//	CLevelFogOfWar* F	= Level().FogOfWarMngr().GetFogOfWar(MapName());
-//	AttachChild		(F);
+	CLevelFogOfWar* F	= Level().FogOfWarMngr().GetFogOfWar(MapName());
+	AttachChild		(F);
+*/
 	Locations& ls =Level().MapManager().Locations();
 	for(Locations_it it=ls.begin(); it!=ls.end(); ++it){
 		if ((*it).location->Update())
@@ -534,16 +497,10 @@ CUIMiniMap::CUIMiniMap()
 CUIMiniMap::~CUIMiniMap()
 {}
 
-
-
 void CUIMiniMap::Init(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 {
 	inherited::Init(name, gameLtx, sh_name);
 	CUIStatic::SetColor(0x7fffffff);
-}
-void CUIMiniMap::MoveWndDelta(const Fvector2& d)
-{
-	CUIWindow::MoveWndDelta	(d);
 }
 
 void CUIMiniMap::UpdateSpots()

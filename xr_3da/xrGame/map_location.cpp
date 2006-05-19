@@ -387,6 +387,9 @@ void CMapLocation::UpdateSpotPointer(CUICustomMap* map, CMapSpotPointer* sp )
 		Frect clip_rect = map->GetClipperRect();
 		sp->SetClipRect( clip_rect );
 		map->AttachChild(sp);
+
+		float dist_to_target = Level().CurrentEntity()->Position().distance_to(m_position_global);
+		map->SetPointerDistance	(dist_to_target);
 	}
 }
 
