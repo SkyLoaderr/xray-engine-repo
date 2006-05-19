@@ -611,17 +611,22 @@ end
 -- Jobs ------------------------------------------------------------------
 gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
     local i, v, j = 0, 0, 0
-    local restr, gr, prior, rst = 0, 0, 0, 0
+    local restr = 0
     local ltx = ""
-    local combat_ignore = "combat_ignore_cond = {=val_bandits_ci}\n"
+    --local combat_ignore = "combat_ignore_cond = {=val_bandits_ci}\n"
+    --local combat_ignore = "combat_ignore_cond = {=check_fighting(400) -val_escort_captive_enemy}, {=check_fighting(401) -val_sacrifice_finish}, {=check_fighting(402) -val_prisoner_free}\n"
+    local combat_ignore = "{=check_fighting(400) -val_escort_captive_enemy}, {=check_fighting(401) -val_sacrifice_finish}, {=check_fighting(402) -val_prisoner_free}\n"
 
     -- ¡Œ–Œ¬
     t = { section = "logic@" .. gname .. "_leader_normal",
         idle = 0,
         prior = 9, state = {state_normal},
         squad = squad, group = groups[1],
-        in_rest = "", out_rest = gname .. "_borov_restrictor",
-        predicate = lb_predicate1
+        online = "{+val_lager_bandits_show_leader_company}",
+        in_rest    = "",
+        out_rest   = gname .. "_borov_restrictor",
+        --info_restr = gname .. "_leader_info_restr",
+        predicate  = lb_predicate1
     }
     table.insert(sj, t)
 
@@ -629,8 +634,11 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
         idle = 0,
         prior = 9, state = {state_alarm},
         squad = squad, group = groups[1],
-        in_rest = "", out_rest = gname .. "_borov_restrictor",
-        predicate = lb_predicate1
+        online = "{+val_lager_bandits_show_leader_company}",
+        in_rest    = "",
+        out_rest   = gname .. "_borov_restrictor",
+        --info_restr = gname .. "_leader_info_restr",
+        predicate  = lb_predicate1
     }
     table.insert(sj, t)
 
@@ -638,8 +646,11 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
         idle = 0,
         prior = 9, state = {state_alarm_actor_inside},
         squad = squad, group = groups[1],
-        in_rest = "", out_rest = gname .. "_borov_restrictor",
-        predicate = lb_predicate1
+        online = "{+val_lager_bandits_show_leader_company}",
+        in_rest    = "",
+        out_rest   = gname .. "_borov_restrictor",
+        --info_restr = gname .. "_leader_info_restr",
+        predicate  = lb_predicate1
     }
     table.insert(sj, t)
 
@@ -655,7 +666,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                "path_walk = leader_walk\n" ..
                "path_look = leader_look\n" ..
                --"show_spot = false\n" ..
-               combat_ignore ..
+               "combat_ignore_cond = " .. combat_ignore ..
 
                "[logic@" .. gname .. "_leader_alarm]\n" ..
                "active = camper@" .. gname .. "_leader_alarm\n" ..
@@ -666,7 +677,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                "path_look = leader_alarm_look\n" ..
                "radius    = 20\n" ..
                --"show_spot = false\n" ..
-               combat_ignore
+               "combat_ignore_cond = " .. combat_ignore
 
     -- Œ’–¿ÕÕ» » ¡Œ–Œ¬¿
     for i = 1, 3 do
@@ -674,8 +685,11 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             idle = 0,
             prior = 8, state = {state_normal},
             squad = squad, group = groups[1],
-            in_rest = "", out_rest = gname .. "_main_building_restrictor", --_bodyguards_restrictor
-            predicate = lb_predicate_bg
+            online = "{+val_lager_bandits_show_leader_company}",
+            in_rest    = "",
+            out_rest   = gname .. "_main_building_restrictor",
+            --info_restr = gname .. "_leader_info_restr",
+            predicate  = lb_predicate_bg
         }
         table.insert(sj, t)
 
@@ -683,8 +697,11 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             idle = 0,
             prior = 8, state = {state_alarm},
             squad = squad, group = groups[1],
-            in_rest = "", out_rest = gname .. "_main_building_restrictor",
-            predicate = lb_predicate_bg
+            online = "{+val_lager_bandits_show_leader_company}",
+            in_rest    = "",
+            out_rest   = gname .. "_main_building_restrictor",
+            --info_restr = gname .. "_leader_info_restr",
+            predicate  = lb_predicate_bg
         }
         table.insert(sj, t)
 
@@ -692,8 +709,11 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             idle = 0,
             prior = 8, state = {state_alarm_actor_inside},
             squad = squad, group = groups[1],
-            in_rest = "", out_rest = gname .. "_main_building_restrictor",
-            predicate = lb_predicate_bg
+            online = "{+val_lager_bandits_show_leader_company}",
+            in_rest    = "",
+            out_rest   = gname .. "_main_building_restrictor",
+            --info_restr = gname .. "_leader_info_restr",
+            predicate  = lb_predicate_bg
         }
         table.insert(sj, t)
 
@@ -704,20 +724,22 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "[walker@" .. gname .. "_bodyguard_normal" .. i .. "]\n" ..
                    "path_walk = bodyguard_walk" .. i .. "\n" ..
                    "path_look = bodyguard_look" .. i .. "\n" ..
-                   combat_ignore ..
+                   "combat_ignore_cond = " .. combat_ignore ..
 
                    "[logic@" .. gname .. "_bodyguard_alarm" .. i .. "]\n" ..
-                   "active = walker@" .. gname .. "_bodyguard_alarm" .. i .. "\n" ..
+                   "active = camper@" .. gname .. "_bodyguard_alarm" .. i .. "\n" ..
                    "combat_ignore = combat_ignore\n" ..
 
-                   "[walker@" .. gname .. "_bodyguard_alarm" .. i .. "]\n" ..
+                   "[camper@" .. gname .. "_bodyguard_alarm" .. i .. "]\n" ..
                    "path_walk = bodyguard_alarm_walk" .. i .. "\n" ..
                    "path_look = bodyguard_alarm_look" .. i .. "\n" ..
-                   combat_ignore
+                   "combat_ignore_cond = " .. combat_ignore
     end
 
     -- —»ƒﬂŸ»≈ ¬  ≈Ãœ≈ 1 ¬Œ«À≈ ¡Œ–Œ¬¿ » ¬  ≈Ãœ≈ 2 Õ¿ ¬“Œ–ŒÃ ›“¿∆≈
     restr = {gname .. "_main_building_restrictor", gname .. "_nedostroyka_restrictor", gname .. "_nedostroyka_restrictor"}
+    irestr = {gname .. "_leader_info_restr", gname .. "_nedostroyka_info_restr", gname .. "_nedostroyka_info_restr"}
+    onlineid = {"leader", "nedostroyka", "nedostroyka"}
     local pr = {7, 7, 2}
     for i, v in pairs({3, 4, 2}) do
         ltx = ltx.."[logic@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
@@ -726,14 +748,16 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
 
                    "[kamp@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
                    "center_point = kamp" .. i .. "\n" ..
-                   combat_ignore
+                   "combat_ignore_cond = " .. combat_ignore
 
         for j = 1, v do
             t = { section = "logic@" .. gname .. "_kamp" .. i .. "_normal",
                 idle = 0,
                 prior = pr[i], state = {state_normal},
                 squad = squad, group = groups[1],
+                online = "{+val_lager_bandits_show_" .. onlineid[i] .. "_company}",
                 in_rest = "", out_rest = restr[i],
+                --info_restr = irestr[i],
                 predicate = lb_predicate3
             }
             table.insert(sj, t)
@@ -742,7 +766,9 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                 idle = 0,
                 prior = pr[i], state = {state_alarm},
                 squad = squad, group = groups[1],
+                online = "{+val_lager_bandits_show_" .. onlineid[i] .. "_company}",
                 in_rest = "", out_rest = restr[i],
+                --info_restr = irestr[i],
                 predicate = lb_predicate3
             }
             table.insert(sj, t)
@@ -751,63 +777,58 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                 idle = 0,
                 prior = pr[i], state = {state_alarm_actor_inside},
                 squad = squad, group = groups[1],
+                online = "{+val_lager_bandits_show_" .. onlineid[i] .. "_company}",
                 in_rest = "", out_rest = restr[i],
+                --info_restr = irestr[i],
                 predicate = lb_predicate3
             }
             table.insert(sj, t)
 
             ltx = ltx.."[logic@" .. gname .. "_kamp" .. i .. "_alarm" .. j .. "]\n" ..
-                       "active = walker@" .. gname .. "_kamp" .. i .. "_alarm" .. j .. "\n" ..
+                       "active = camper@" .. gname .. "_kamp" .. i .. "_alarm" .. j .. "\n" ..
                        "combat_ignore = combat_ignore\n" ..
 
-                       "[walker@" .. gname .. "_kamp" .. i .. "_alarm" .. j .. "]\n" ..
+                       "[camper@" .. gname .. "_kamp" .. i .. "_alarm" .. j .. "]\n" ..
                        "path_walk = kamp" .. i .. "_alarm_walk" .. j .. "\n" ..
                        "path_look = kamp" .. i .. "_alarm_look" .. j .. "\n" ..
-                       "combat_ignore_cond = {=val_bandits_ci_actor(35)}\n"
+                       --"combat_ignore_cond = {=val_bandits_ci_actor(35)}\n"
+                       "combat_ignore_cond = {=fighting_actor =dist_to_actor_ge(35)}, " .. combat_ignore
         end
     end
 
     -- ¡¿Õƒ»“€
-    restr =  {{gname .. "_main_side_restrictor", gname .. "_restrictor"},
-              {gname .. "_main_side_restrictor", gname .. "_restrictor", gname .. "_restrictor", gname .. "_restrictor"},
-              {gname .. "_restrictor"},
-              {gname .. "_nedostroyka_restrictor", gname .. "_nedostroyka_restrictor", gname .. "_nedostroyka_restrictor", gname .. "_nedostroyka_restrictor"}}
-    gr = {"guard", "patrol", "sniper", "sleeper"}
-    prior =  {6, 5, 4, 3}
     local quantity = {2, 4, 1, 4}
-    for i, v in pairs(quantity) do
-        rst = restr[i]
-        for j = 1, v do
-            t = { section = "logic@" .. gname .. "_" .. gr[i] .. "_normal" .. j,
-                idle = 0,
-                prior = prior[i], state = {state_normal},
-                squad = squad, group = groups[1],
-                in_rest = "", out_rest = rst[j],
-                predicate = lb_predicate3
-            }
-            table.insert(sj, t)
 
-            t = { section = "logic@" .. gname .. "_" .. gr[i] .. "_alarm" .. j,
-                idle = 0,
-                prior = prior[i], state = {state_alarm},
-                squad = squad, group = groups[1],
-                in_rest = "", out_rest = rst[j],
-                predicate = lb_predicate3
-            }
-            table.insert(sj, t)
-
-            t = { section = "logic@" .. gname .. "_" .. gr[i] .. "_alarm" .. j,
-                idle = 0,
-                prior = prior[i], state = {state_alarm_actor_inside},
-                squad = squad, group = groups[1],
-                in_rest = "", out_rest = rst[j],
-                predicate = lb_predicate3
-            }
-            table.insert(sj, t)
-        end
-    end
-
+    -- guards
+    restr = {gname .. "_main_side_restrictor", gname .. "_restrictor"}
     for i = 1, quantity[1] do
+        t = { section = "logic@" .. gname .. "_guard_normal" .. i,
+            idle = 0,
+            prior = 6, state = {state_normal},
+            squad = squad, group = groups[1],
+            in_rest = "", out_rest = restr[i],
+            predicate = lb_predicate3
+        }
+        table.insert(sj, t)
+
+        t = { section = "logic@" .. gname .. "_guard_alarm" .. i,
+            idle = 0,
+            prior = 6, state = {state_alarm},
+            squad = squad, group = groups[1],
+            in_rest = "", out_rest = restr[i],
+            predicate = lb_predicate3
+        }
+        table.insert(sj, t)
+
+        t = { section = "logic@" .. gname .. "_guard_alarm" .. i,
+            idle = 0,
+            prior = 6, state = {state_alarm_actor_inside},
+            squad = squad, group = groups[1],
+            in_rest = "", out_rest = restr[i],
+            predicate = lb_predicate3
+        }
+        table.insert(sj, t)
+
         ltx = ltx.."[logic@" .. gname .. "_guard_normal" .. i .. "]\n" ..
                    "active = walker@" .. gname .. "_guard_normal" .. i .. "\n" ..
                    "combat_ignore = combat_ignore\n" ..
@@ -815,7 +836,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "[walker@" .. gname .. "_guard_normal" .. i .. "]\n" ..
                    "path_walk = guard_walk" .. i .. "\n" ..
                    "path_look = guard_look" .. i .. "\n" ..
-                   combat_ignore ..
+                   "combat_ignore_cond = " .. combat_ignore ..
 
                    "[logic@" .. gname .. "_guard_alarm" .. i .. "]\n" ..
                    "active = walker@" .. gname .. "_guard_alarm" .. i .. "\n" ..
@@ -824,10 +845,39 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "[walker@" .. gname .. "_guard_alarm" .. i .. "]\n" ..
                    "path_walk = guard_alarm_walk" .. i .. "\n" ..
                    "path_look = guard_alarm_look" .. i .. "\n" ..
-                   combat_ignore
+                   "combat_ignore_cond = " .. combat_ignore
     end
 
+    -- patrols
+    restr = {gname .. "_main_side_restrictor", gname .. "_restrictor", gname .. "_restrictor", gname .. "_restrictor"}
     for i = 1, quantity[2] do
+        t = { section = "logic@" .. gname .. "_patrol_normal" .. i,
+            idle = 0,
+            prior = 5, state = {state_normal},
+            squad = squad, group = groups[1],
+            in_rest = "", out_rest = restr[i],
+            predicate = lb_predicate3
+        }
+        table.insert(sj, t)
+
+        t = { section = "logic@" .. gname .. "_patrol_alarm" .. i,
+            idle = 0,
+            prior = 5, state = {state_alarm},
+            squad = squad, group = groups[1],
+            in_rest = "", out_rest = restr[i],
+            predicate = lb_predicate3
+        }
+        table.insert(sj, t)
+
+        t = { section = "logic@" .. gname .. "_patrol_alarm" .. i,
+            idle = 0,
+            prior = 5, state = {state_alarm_actor_inside},
+            squad = squad, group = groups[1],
+            in_rest = "", out_rest = restr[i],
+            predicate = lb_predicate3
+        }
+        table.insert(sj, t)
+
         ltx = ltx.."[logic@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
                    "active = walker@" .. gname .. "_patrol_normal" .. i .. "\n" ..
                    "combat_ignore = combat_ignore\n" ..
@@ -835,7 +885,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "[walker@" .. gname .. "_patrol_normal" .. i .. "]\n" ..
                    "path_walk = patrol_walk" .. i .. "\n" ..
                    "path_look = patrol_look" .. i .. "\n" ..
-                   combat_ignore ..
+                   "combat_ignore_cond = " .. combat_ignore ..
                     
                    "[logic@" .. gname .. "_patrol_alarm" .. i .. "]\n" ..
                    "active = walker@" .. gname .. "_patrol_alarm" .. i .. "\n" ..
@@ -844,10 +894,39 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "[walker@" .. gname .. "_patrol_alarm" .. i .. "]\n" ..
                    "path_walk = patrol_alarm_walk" .. i .. "\n" ..
                    "path_look = patrol_alarm_look" .. i .. "\n" ..
-                   combat_ignore
+                   "combat_ignore_cond = " .. combat_ignore
     end
 
+    -- snipers
+    restr = {gname .. "_restrictor"}
     for i = 1, quantity[3] do
+        t = { section = "logic@" .. gname .. "_sniper_normal" .. i,
+            idle = 0,
+            prior = 4, state = {state_normal},
+            squad = squad, group = groups[1],
+            in_rest = "", out_rest = restr[i],
+            predicate = lb_predicate3
+        }
+        table.insert(sj, t)
+
+        t = { section = "logic@" .. gname .. "_sniper_alarm" .. i,
+            idle = 0,
+            prior = 4, state = {state_alarm},
+            squad = squad, group = groups[1],
+            in_rest = "", out_rest = restr[i],
+            predicate = lb_predicate3
+        }
+        table.insert(sj, t)
+
+        t = { section = "logic@" .. gname .. "_sniper_alarm" .. i,
+            idle = 0,
+            prior = 4, state = {state_alarm_actor_inside},
+            squad = squad, group = groups[1],
+            in_rest = "", out_rest = restr[i],
+            predicate = lb_predicate3
+        }
+        table.insert(sj, t)
+
         ltx = ltx.."[logic@" .. gname .. "_sniper_normal" .. i .. "]\n" ..
                    "active = camper@" .. gname .. "_sniper_normal" .. i .. "\n" ..
                    "combat_ignore = combat_ignore\n" ..
@@ -859,7 +938,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "def_state_moving_fire = patrol_fire\n" ..
                    "def_state_campering = guard\n" ..
                    "def_state_campering_fire = guard_fire\n" ..
-                   combat_ignore ..
+                   "combat_ignore_cond = " .. combat_ignore ..
 
                    "[logic@" .. gname .. "_sniper_alarm" .. i .. "]\n" ..
                    "active = camper@" .. gname .. "_sniper_alarm" .. i .. "\n" ..
@@ -871,27 +950,61 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "def_state_moving = sneak\n" ..
                    "def_state_moving_fire = sneak_fire\n" ..
                    "def_state_campering = hide\n" ..
-                   "def_state_campering_fire = hide_fire\n" ..
-                   "combat_ignore_cond = {=val_bandits_ci_actor(35)}\n"
+                   "def_state_campering_fire = hide_sniper_fire\n" ..
+                   "sniper = true\n" ..
+                   --"combat_ignore_cond = {=val_bandits_ci_actor(35)}\n"
+                   "combat_ignore_cond = {=fighting_actor =dist_to_actor_ge(35)}, " .. combat_ignore
     end
 
+    -- sleepers
     for i = 1, quantity[4] do
+        t = { section = "logic@" .. gname .. "_sleeper_normal" .. i,
+            idle = 0,
+            prior = 3, state = {state_normal},
+            squad = squad, group = groups[1],
+            online = "{+val_lager_bandits_show_nedostroyka_company}",
+            in_rest = "", out_rest = gname .. "_nedostroyka_restrictor", --info_restr = gname .. "_nedostroyka_info_restr",
+            predicate = lb_predicate3
+        }
+        table.insert(sj, t)
+
+        t = { section = "logic@" .. gname .. "_sleeper_alarm" .. i,
+            idle = 0,
+            prior = 3, state = {state_alarm},
+            squad = squad, group = groups[1],
+            online = "{+val_lager_bandits_show_nedostroyka_company}",
+            in_rest = "", out_rest = gname .. "_nedostroyka_restrictor", --info_restr = gname .. "_nedostroyka_info_restr",
+            predicate = lb_predicate3
+        }
+        table.insert(sj, t)
+
+        t = { section = "logic@" .. gname .. "_sleeper_alarm" .. i,
+            idle = 0,
+            prior = 3, state = {state_alarm_actor_inside},
+            squad = squad, group = groups[1],
+            online = "{+val_lager_bandits_show_nedostroyka_company}",
+            in_rest = "", out_rest = gname .. "_nedostroyka_restrictor", --info_restr = gname .. "_nedostroyka_info_restr",
+            predicate = lb_predicate3
+        }
+        table.insert(sj, t)
+
         ltx = ltx.."[logic@" .. gname .. "_sleeper_normal" .. i .. "]\n" ..
                    "active = sleeper@" .. gname .. "_sleeper_normal" .. i .. "\n" ..
                    "combat_ignore = combat_ignore\n" ..
                     
                    "[sleeper@" .. gname .. "_sleeper_normal" .. i .. "]\n" ..
                    "path_main = sleeper" .. i .. "\n" ..
-                   combat_ignore ..
+                   "combat_ignore_cond = " .. combat_ignore ..
                     
                    "[logic@" .. gname .. "_sleeper_alarm" .. i .. "]\n" ..
-                   "active = walker@" .. gname .. "_sleeper_alarm" .. i .. "\n" ..
+                   "active = camper@" .. gname .. "_sleeper_alarm" .. i .. "\n" ..
                    "combat_ignore = combat_ignore\n" ..
                     
-                   "[walker@" .. gname .. "_sleeper_alarm" .. i .. "]\n" ..
+                   "[camper@" .. gname .. "_sleeper_alarm" .. i .. "]\n" ..
                    "path_walk = sleeper_alarm_walk" .. i .. "\n" ..
                    "path_look = sleeper_alarm_look" .. i .. "\n" ..
-                   "combat_ignore_cond = {=val_bandits_ci_actor(30)}\n"
+                   --"combat_ignore_cond = {=val_bandits_ci_actor(30)}\n"
+                   "combat_ignore_cond = {=fighting_actor =dist_to_actor_ge(30)}, " .. combat_ignore
     end
 
     --ltx = ltx.."#include \"misc\\gulag_dark_valley.ltx\"\n"
@@ -901,8 +1014,10 @@ end
 
 -- States ----------------------------------------------------------------
 gulags.val_lager_bandits.state = function(gulag)
-    if gulag.state == state_alarm and game.get_game_time():diffSec(gulag.stateBegin) < 180 then -- 3 minutes
-        return state_alarm
+    if (gulag.state == state_alarm or gulag.state == state_alarm_actor_inside) and
+        game.get_game_time():diffSec(gulag.stateBegin) < 1800 -- 3 minutes
+    then
+        return gulag.state
     else
         for k,v in pairs(gulag.Object) do
             if v ~= true then
@@ -911,9 +1026,11 @@ gulags.val_lager_bandits.state = function(gulag)
                     local enemy_type = get_clsid(enemy)
                     if enemy_type == clsid.actor and
                         utils.npc_in_zone(db.actor, db.zone_by_name["val_lager_bandits_restrictor"]) then
+                        printf("gulag <val_lager_bandits>: STATE ALARM ACTOR")
                         return state_alarm_actor_inside
                     end
                     if enemy_type == clsid.actor or enemy_type == clsid.script_stalker then --or enemy_type == clsid.trader
+                        printf("gulag <val_lager_bandits>: STATE ALARM")
                         return state_alarm
                     end
                 end
@@ -921,6 +1038,7 @@ gulags.val_lager_bandits.state = function(gulag)
         end
     end
     
+    printf("gulag <val_lager_bandits>: STATE NORMAL")
     return state_normal
 end
 
