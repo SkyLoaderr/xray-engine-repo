@@ -1372,11 +1372,11 @@ void CStalkerActionKillWounded::execute					()
 		object().movement().set_nearest_accessible_position	(ai().level_graph().vertex_position(mem_object.m_object_params.m_level_vertex_id),mem_object.m_object_params.m_level_vertex_id);
 
 
-	u32										min_queue_size, max_queue_size, min_queue_interval, max_queue_interval;
-	select_queue_params						(distance,min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
+	float								distance = object().Position().distance_to(enemy->Position());
+	u32									min_queue_size, max_queue_size, min_queue_interval, max_queue_interval;
+	select_queue_params					(distance,min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
 
 	if (visible_now) {
-		float							distance = object().Position().distance_to(enemy->Position());
 		if (distance < 2.f) {
 			object().movement().set_movement_type	(eMovementTypeStand);
 			object().CObjectHandler::set_goal		(eObjectActionFire1,object().best_weapon(),min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
