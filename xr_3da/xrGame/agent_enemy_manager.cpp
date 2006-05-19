@@ -46,7 +46,6 @@ struct CEnemyFiller {
 	}
 };
 
-/**
 struct remove_wounded_predicate {
 	IC	bool	operator()	(const CMemberEnemy &enemy) const
 	{
@@ -60,7 +59,6 @@ struct remove_wounded_predicate {
 		return						(true);
 	}
 };
-/**/
 
 template <typename T>
 IC	void CAgentEnemyManager::setup_mask			(xr_vector<T> &objects, CMemberEnemy &enemy, const squad_mask_type &non_combat_members)
@@ -117,24 +115,29 @@ void CAgentEnemyManager::fill_enemies			()
 		}
 	}
 
-//	u32									wounded_count = 0;
+	bool								only_wounded_left = true;
+	bool								is_any_wounded = false;
 	{
 		CAgentMemoryManager				&memory = object().memory();
 		ENEMIES::iterator				I = enemies().begin();
 		ENEMIES::iterator				E = enemies().end();
 		for ( ; I != E; ++I) {
-//			const CAI_Stalker			*stalker = smart_cast<const CAI_Stalker*>((*I).m_object);
-//			if (stalker && stalker->wounded())
-//				++wounded_count;
-//
+			if (only_wounded_left) {
+				const CAI_Stalker			*stalker = smart_cast<const CAI_Stalker*>((*I).m_object);
+				if (!stalker || !stalker->wounded())
+					only_wounded_left	= false;
+				else
+					is_any_wounded		= true;
+			}
+
 			memory.object_information	((*I).m_object,(*I).m_level_time,(*I).m_enemy_position);
 		}
 	}
 
-//	if (wounded_count < enemies().size()) {
-//		ENEMIES::iterator				I = std::remove_if(enemies().begin(),enemies().end(),remove_wounded_predicate());
-//		enemies().erase					(I,enemies().end());
-//	}
+	if (!only_wounded_left && is_any_wounded) {
+		ENEMIES::iterator				I = std::remove_if(enemies().begin(),enemies().end(),remove_wounded_predicate());
+		enemies().erase					(I,enemies().end());
+	}
 }
 
 void CAgentEnemyManager::compute_enemy_danger	()
