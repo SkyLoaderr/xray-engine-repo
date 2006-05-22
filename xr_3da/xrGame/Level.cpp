@@ -661,7 +661,11 @@ void CLevel::make_NetCorrectionPrediction	()
 	m_bIn_CrPr		= true;
 	u64 NumPhSteps = ph_world->m_steps_num;
 	ph_world->m_steps_num -= m_dwNumSteps;
-	if(g_bDebugDumpPhysicsStep&&m_dwNumSteps>20)Msg("!!!TOO MANY PHYSICS STEPS FOR CORRECTION PREDICTION = %d !!!",m_dwNumSteps);
+	if(g_bDebugDumpPhysicsStep&&m_dwNumSteps>10)
+	{
+		Msg("!!!TOO MANY PHYSICS STEPS FOR CORRECTION PREDICTION = %d !!!",m_dwNumSteps);
+		m_dwNumSteps = 10;
+	};
 //////////////////////////////////////////////////////////////////////////////////
 	ph_world->Freeze();
 
