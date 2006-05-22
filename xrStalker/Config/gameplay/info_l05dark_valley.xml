@@ -67,6 +67,7 @@
 
     <info_portion id="val_show_zones"></info_portion>
     <info_portion id="val_show_pipe_zone"></info_portion>
+    <info_portion id="val_show_farm_zone"></info_portion>
 
     <!-- Монолог возле трубы -->
     <info_portion id="val_tunnel_talk_start"></info_portion>
