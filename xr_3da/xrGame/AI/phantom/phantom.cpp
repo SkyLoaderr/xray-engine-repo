@@ -184,16 +184,21 @@ void CPhantom::SwitchToState_internal(EState new_state)
 			K->PlayCycle		(sdata.motion, TRUE, animation_end_callback, this);
 		}break;
 		case stIdle:{
-			// stop fly effects
+			UpdateEvent.bind	(this,&CPhantom::OnIdleState);	
 			SStateData& sdata	= m_state_data[m_CurState];
 			sdata.sound.stop	();
 			CParticlesObject::Destroy(m_fly_particles);
-			DestroyObject		();
 		}break;
 		}
 		m_CurState				= new_state;
 	}
 }
+
+void CPhantom::OnIdleState()
+{
+		DestroyObject		();
+}
+
 void CPhantom::OnFlyState()
 {
 	UpdateFlyMedia			();
@@ -305,9 +310,9 @@ void CPhantom::PsyHit(const CObject *object, float value)
 	HS.p_in_bone_space	= (Fvector().set(0.f,0.f,0.f));						//	P.w_vec3		(Fvector().set(0.f,0.f,0.f));			
 	HS.impulse			= (0.f);											//	P.w_float		(0.f);									
 	HS.hit_type			= (ALife::eHitTypeTelepatic);						//	P.w_u16			(u16(ALife::eHitTypeTelepatic));
-	HS.Write_Packet(P);
+	HS.Write_Packet		(P);
 	
-	u_EventSend		(P);
+	u_EventSend			(P);
 }
 
 //---------------------------------------------------------------------
