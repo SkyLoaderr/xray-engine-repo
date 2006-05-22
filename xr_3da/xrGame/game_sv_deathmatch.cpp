@@ -1994,6 +1994,11 @@ bool	game_sv_Deathmatch::check_for_Anomalies()
 BOOL	game_sv_Deathmatch::Is_Anomaly_InLists		(CSE_Abstract* E)
 {
 	if (!E) return FALSE;
+	CSE_ALifeCustomZone* pCustomZone	=	smart_cast<CSE_ALifeCustomZone*> (E);
+	if (pCustomZone)
+	{
+		if (pCustomZone->m_owner_id != 0xffffffff) return TRUE;
+	}
 	
 	ANOMALIES_it It = std::find(m_AnomaliesPermanent.begin(), m_AnomaliesPermanent.end(),E->name_replace());
 	if (It != m_AnomaliesPermanent.end())
