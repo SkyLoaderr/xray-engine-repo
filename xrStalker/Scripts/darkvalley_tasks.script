@@ -93,6 +93,8 @@ function process_info_portion(info_id)
 		level_tasks.add_location(430, "crlc_small", "val_zone_south_gate_hint")
 	elseif info_id == "val_show_pipe_zone" then
 		level_tasks.add_location(431, "crlc_mdl", "val_zone_pipe_hint")
+	elseif info_id == "val_show_farm_zone" then
+		level_tasks.add_location(435, "crlc_big", "val_zone_farm_hint")
 	else
         return false
 	end
