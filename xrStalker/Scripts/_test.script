@@ -1,20 +1,16 @@
+function main111111111()
+	local radius = 30
+	local ang    = 45
+	local dir    = vector_rotate_y( db.actor:direction(), ang )
+	level.spawn_phantom(db.actor:position():add( dir:mul(radius) ))
+end
+
 function main22222()
 --	level.add_pp_effector ("dead_zone.ppe", 1001, true)
 	level.set_pp_effector_factor(1001, 0.01)
 end
 
 -- run_string alife():create("medkit", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
-function cb1 ()
- local c = 1
-end
-
-function cb2 ()
- local c = 1
-end
-
-function cb3 ()
- local c = 1
-end
 
 function get_task_info(task_id, fmt)
 	local _info = GetTextureInfo(task_id..fmt, "default_task_icon"..fmt)
@@ -37,8 +33,11 @@ function main123()
 end
 
 
+snd_radar_stop	= sound_object([[ambient\cooling_stop]])
+
 function main()
---	level.add_cam_effector2("camera_effects\\agroprom_demo.anm", 123, false)
+	snd_radar_stop:play(db.actor, 0, sound_object.s2d)
+	level.add_complex_effector("effector_radar_stop", 12345)
 	
 --	db.actor:activate_slot(db.actor:active_slot()+1)
 
@@ -59,18 +58,19 @@ function main()
 --	db.actor:give_info_portion(info) 
 	
 	
-	info = "encyclopedy_weapons_wpn_groza" 
-	db.actor:give_info_portion(info) 
+--	info = "encyclopedy_weapons_wpn_groza" 
+--	db.actor:give_info_portion(info) 
 	
-	info = "encyclopedy_weapons_wpn_fn2000"
-	db.actor:give_info_portion(info) 
+--	info = "encyclopedy_weapons_wpn_fn2000"
+--	db.actor:give_info_portion(info) 
 
-	info = "encyclopedy_mutant_flesh"
-	db.actor:give_info_portion(info) 
+--	info = "encyclopedy_mutant_flesh"
+--	db.actor:give_info_portion(info) 
 
-	info = "encyclopedy_zone_artifact_af-cristall-flower"
-	db.actor:give_info_portion(info) 
+--	info = "encyclopedy_zone_artifact_af-cristall-flower"
+--	db.actor:give_info_portion(info) 
 end
+
 
 function main1111111 ()
    local h 		= hit()
