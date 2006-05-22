@@ -227,7 +227,7 @@
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_fblockpost_quest_complete</infoportion_complete>
 			<function_fail>mil_tasks.fblockpost_job_failed</function_fail>
-			<article>mil_blockpost_job_descr</article>
+			<article>mil_blockpost_job2_descr</article>
 		</objective>
 		<objective>
 			<text>mil_fblockpost_phase2</text>

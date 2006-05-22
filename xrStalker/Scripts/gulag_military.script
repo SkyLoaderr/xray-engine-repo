@@ -987,17 +987,17 @@ function load_job_fneutral (sj, gname, type, squad, groups)
 		}
 	table.insert(sj, t)		
     --командир
-    t = {section = "logic@mil_fneutral_commander",
-		idle = 0,
-		prior = 2, state = {0, 1},
-		squad = squad, group = groups[0],
-		position_threshold = 100,
-		in_rest = "", out_rest = "",
-		predicate = function (info)
-		                     return info.profile_name == "mil_Stalker_master"
-		            end
-		}
-	table.insert(sj, t)		
+    --t = {section = "logic@mil_fneutral_commander",
+		--idle = 0,
+		--prior = 2, state = {0, 1},
+		--squad = squad, group = groups[0],
+		--position_threshold = 100,
+		--in_rest = "", out_rest = "",
+		--predicate = function (info)
+		                     --return info.profile_name == "mil_Stalker_master"
+		            --end
+		--}
+	--table.insert(sj, t)		
     --кэмпер 1
     t = {section = "logic@mil_fneutral_camper3",
 		idle = 0,
@@ -1093,7 +1093,7 @@ end
 --------------------------------------------------------------------------
 function checkStalker(npc_community, gulag_type)
 	if gulag_type == "mil_fneutral" then
-	   return npc_community == "stalker"
+	   return npc_community == "freedom"
 	end       
 	
 	if gulag_type == "mil_freedom" then
