@@ -487,7 +487,8 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
     }break;
     case MT_PARTICLE_GROUP:{
         PS::CParticleGroup* pG			= dynamic_cast<PS::CParticleGroup*>(m_pVisual); VERIFY(pG);
-        if (_IsBoxVisible(m_pVisual,mTransform)){
+//		if (_IsBoxVisible(m_pVisual,mTransform))
+        {
             RCache.set_xform_world	  		(mTransform);
             for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
                 xr_vector<IRender_Visual*>	visuals;
@@ -498,7 +499,8 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
         }
     }break;
     case MT_PARTICLE_EFFECT:{
-        if (_IsBoxVisible(m_pVisual,mTransform)){
+//		if (_IsBoxVisible(m_pVisual,mTransform))
+        {
             if (_IsValidShader(m_pVisual,priority,strictB2F)){
                 RCache.set_Shader			(m_pVisual->shader?m_pVisual->shader:Device.m_WireShader);
                 RCache.set_xform_world		(mTransform);
