@@ -701,8 +701,8 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
                     if (fis_zero(ws))	w = 0;
                     else				w = w1/ws;
 #ifdef DEBUG
-					if (!_valid(w)){
-						Debug.fatal		("TO ALEXMX VERY IMPORTANT: w: %f, w0: %f, w1: %f, ws:%f, BIS: %d",w,w0,w1,ws,BLEND_INST.Blend.size());
+					if (fis_zero(w0+w1) || (!_valid(w))){
+						Debug.fatal		("TO ALEXMX VERY IMPORTANT: (TOTAL: %f) w: %f, w0: %f, w1: %f, ws:%f, BIS: %d",w0+w1,w,w0,w1,ws,BLEND_INST.Blend.size());
 					}
 #endif
                     KEY_Interp	(Result,R[0],R[1], clampr(w,0.f,1.f));
@@ -712,26 +712,25 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
                 {
                     int 	count 	= BLEND_INST.Blend.size();
                     float   total 	= 0;
-					for (int i=0; i<count; i++){
-						S[i].set(R+i,BI[i]->blendAmount);
-					}
-                    std::sort	(S,S+count);
+					for (int i=0; i<count; i++)
+						S[i].set	(R+i,BI[i]->blendAmount);
+
+					std::sort	(S,S+count);
                     CKey		tmp;
                     total		= S[0].w;
                     tmp			= *S[0].K;
                     for 		(int cnt=1; cnt<count; cnt++)
                     {
-                    	total		+= S[cnt].w;
-						float d;
+                    	total	+= S[cnt].w;
+						float	d;
 						if (fis_zero(total))	d = 0.0f;
-						else
-							d = S[cnt].w/total;
+						else d	= S[cnt].w/total;
 
 						clampr(d,0.f,1.f);
 
 #ifdef DEBUG
-						if (!_valid(d)){
-							Debug.fatal		("TO ALEXMX VERY IMPORTANT: w: %f, total: %f, count: %d, real count: %d",S[cnt].w,total,count,BLEND_INST.Blend.size());
+						if ((total==0) || (!_valid(S[cnt].w/total))){
+							Debug.fatal		("TO ALEXMX VERY IMPORTANT: (TOTAL: %f) w: %f, total: %f, count: %d, real count: %d",total,S[cnt].w,total,count,BLEND_INST.Blend.size());
 						}
 #endif
 
