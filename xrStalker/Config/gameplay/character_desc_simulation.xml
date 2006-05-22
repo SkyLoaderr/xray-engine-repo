@@ -3689,8 +3689,8 @@
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
-			wpn_g36_arena = 1 \n
-			ammo_5.56x45_ap = 1 \n
+			wpn_ak74 = 1, 0, 1, 0 \n
+			ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 	</specific_character>
@@ -3712,8 +3712,8 @@
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
-			wpn_g36 = 1 \n
-			ammo_5.56x45_ap = 1 \n
+			wpn_ak74 = 1, 0, 1, 0 \n
+			ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 	</specific_character>
@@ -3735,8 +3735,8 @@
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
-			wpn_g36 = 1 \n
-			ammo_5.56x45_ap = 1 \n
+			wpn_ak74 = 1, 0, 1, 0 \n
+			ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 	</specific_character>
@@ -3758,8 +3758,8 @@
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
-			wpn_g36 = 1 \n
-			ammo_5.56x45_ap = 1 \n
+			wpn_ak74 = 1, 0, 1, 0 \n
+			ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 	</specific_character>
