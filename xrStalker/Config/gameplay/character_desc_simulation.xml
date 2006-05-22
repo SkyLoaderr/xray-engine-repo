@@ -3725,7 +3725,7 @@
 		<bio>sim_stalker_master_bio</bio>
 
 		<class>bar_arena_stalker_8_3</class>
-		<community>bandit</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<community>zombied</community> <terrain_sect>stalker_terrain</terrain_sect>
 				
 		<rank>906</rank>
 		<reputation>-364</reputation>
