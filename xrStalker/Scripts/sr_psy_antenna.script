@@ -145,7 +145,7 @@ function PsyAntenna:generate_phantoms()
 		if math.random() < self.phantom_spawn_probability then
 			if phantom_manager:phantom_count() < self.phantom_max then
 --[[				local yaw	 			= math.pi*2.0*math.random()
-				local radius 			= self.phantom_spawn_radius*(math.random()/2.0+0.5)
+				local radius 			= self.phantom_spawn_radius*(math.random(0,0.2)+1)
 				local height 			= self.phantom_spawn_height*math.random()
 				local a_pos 			= db.actor:position()
 				local pos 				= vector():set(math.sin(yaw)*radius+a_pos.x,a_pos.y+height,math.cos(yaw)*radius+a_pos.z)
