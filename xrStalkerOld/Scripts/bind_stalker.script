@@ -247,9 +247,9 @@ function actor_binder:update(delta)
 			printf("*AVI* RUN START AVI")			
 		end
 
---		if self.object:dont_has_info("encyclopedy") then
---			self.object:give_info_portion("encyclopedy")
---		end
+		if self.object:dont_has_info("encyclopedy") then
+			self.object:give_info_portion("encyclopedy")
+		end
 
 		if self.object:dont_has_info("global_dialogs") then
 			self.object:give_info_portion("global_dialogs")

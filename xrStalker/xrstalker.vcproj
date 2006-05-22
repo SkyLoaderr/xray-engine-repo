@@ -861,9 +861,6 @@
 							RelativePath=".\Config\text\rus\string_table_enc_social.xml">
 						</File>
 						<File
-							RelativePath=".\Config\text\rus\string_table_enc_vehicles.xml">
-						</File>
-						<File
 							RelativePath=".\Config\text\rus\string_table_enc_weapons.xml">
 						</File>
 						<File

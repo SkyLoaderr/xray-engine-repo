@@ -1,18 +1,19 @@
 ;escape   -----------------------------------------------------------
 [wpn_abakan_m1]:wpn_abakan		;Утяжеленный абакан
 $spawn              			= "weapons\uniq\wpn_abakan_m1"	
-inv_name	        			= ABAKAN-m								; name in inventory	
-inv_name_short					= AN-94-h
-inv_weight						= 5
 description						= enc_weapons1_wpn-abakan_m1
+inv_name	        			= wpn-abakan_m1
+inv_name_short					= wpn-abakan_m1
+
+inv_weight						= 5
 condition_shot_dec 				= 0.00001
 cam_dispersion          		= 0.1
 cam_dispersion_inc				= 0.2	
 
 [wpn_fort_m1]:wpn_fort			;Экспериментальный Fort
 $spawn              			= "weapons\uniq\wpn_fort_m1"
-inv_name						= FORT-12m
-inv_name_short					= FORTm
+inv_name						= wpn-fort_m
+inv_name_short					= wpn-fort_m
 description						= enc_weapons1_wpn-fort_m1
 ammo_mag_size		 			= 15
 
@@ -28,45 +29,38 @@ radiation_protection 			= 0.1
 telepatic_protection 			= 0.05
 chemical_burn_protection 		= 0.1
 
+
 ;garbage   -----------------------------------------------------------
 [wpn_aksu_anom]:wpn_ak74u		;радиоактивный АКСУ
 $spawn             				= "weapons\uniq\wpn_aksu_anom"
 description						= enc_weapons1_wpn-ak74u_anom
-inv_name	        			= AK-74Um								; name in inventory	
-inv_name_short					= AK-74Um
-condition_shot_dec 				= 0.00001
-hit_power                		= 60;75		;size of damage by bullet
+inv_name	        			= wpn-ak74u_m								; name in inventory	
+inv_name_short					= wpn-ak74u_m
+hit_power                		= 45;75		;size of damage by bullet
 
 [wpn_spas12_m1]:wpn_spas12		;Спас-12 Хантера
 $spawn             				= "weapons\uniq\wpn_spas12_m1"	
 description						= enc_weapons1_wpn-spas12_m1
-fire_dispersion_base			= 0.5
-inv_name						= Benelli SPAS12m
-inv_name_short					= SPAS12m
+fire_dispersion_base			= 0.25
+inv_name						= wpn-spas12_m
+inv_name_short					= wpn-spas12_m
 
 [outfit_bandit_m2]:bandit_outfit	;Модифицированный костюм Бандита
 $spawn							= "outfit\uniq\outfit_bandit_m2"
 description						= bandit_outfit_description_m2
+inv_name						= bandit_outfit_name_m2
+inv_name_short					= bandit_outfit_name_m2
 wound_protection				= 0.24
 inv_weight						= 7.0
 
 ;agroprom   -----------------------------------------------------------
-[scope_m1]:wpn_addon_scope		;Оптика Стрелка
-$spawn             				= "weapons\uniq\scope_m1"	
-description						= weapon_addon_scope_m
-scope_zoom_factor				= 60
 
 [wpn_ak74_m1]:wpn_ak74			;Скорострельный АК-74
 $spawn             				= "weapons\uniq\wpn_ak74_m1"	
 description						= enc_weapons1_wpn-ak74_m1
-rpm                      		= 670
-
-[torch_m1]:device_torch			;Галогеновый фонарик
-$spawn             				= "weapons\uniq\torch_m1"	
-description						= enc_equipment_devic_device-torch1_m1
-night_vision_recharge_time			= 4		;(c) время зарядки аккамулятора
-night_vision_recharge_time_min		= 1		;(c) мин. время зарядки аккамулятора, после которого уст-во уже может работать
-night_vision_discharge_time			= 7		;(c) время разрядки (работы) устройства после полной зарядки
+inv_name	        			= wpn-ak74_m1							; name in inventory	
+inv_name_short					= wpn-ak74_m1
+rpm                      		= 850
 
 
 ;Darkvalley   -----------------------------------------------------------
@@ -83,37 +77,43 @@ radiation_protection 			= 0.6
 telepatic_protection 			= 0.3
 chemical_burn_protection 		= 0.4
 
-
 [wpn_walther_coll]:wpn_walther		;коллекционный walther
 $spawn             				= "weapons\uniq\wpn_walther_coll"	
 description						= enc_weapons1_wpn-walther_coll
-cost							= 600
+inv_name	        			= wpn-walter_m				; name in inventory	
+inv_name_short					= wpn-walter_m
+cost							= 1600
 
 [outfit_bandit_anom]:bandit_outfit				;Аномальная куртка бандита.
 $spawn					= "outfit\uniq\outfit_bandit_anom"
 description						= bandit_outfit_description_anom
+inv_name	        			= bandit_outfit_name_anom			; name in inventory	
+inv_name_short					= bandit_outfit_name_anom
 health_restore_speed			= 0.0001			
 satiety_restore_speed			= 0.000001
 power_restore_speed				= 0.001
 bleeding_restore_speed			= 0.001
 
+
+
 ;Bar   -----------------------------------------------------------
 [wpn_groza_coll]:wpn_groza			;Гроза генерала Воронина
 $spawn             				= "weapons\uniq\wpn_groza_coll"	
 description						= enc_weapons1_wpn-groza_m1
+inv_name	        			= wpn-groza_m				; name in inventory	
+inv_name_short					= wpn-groza_m
 fire_dispersion_base			= 0.09	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 cam_dispersion          		= 0.15	;увеличения угла (в градусах) с каждым выстрелом
 cam_dispersion_inc				= 0.09	;увеличениe cam_dispersion с каждым выстрелом
 cam_dispertion_frac				= 0.5	;ствол будет подыматься на cam_dispersion*cam_dispertion_frac +- cam_dispersion*(1-cam_dispertion_frac)
 
-
 [wpn_svd_m1]:wpn_svd			;СВД "Дальнобойщик"
 $spawn             		= "weapons\uniq\wpn_svd_m1"	
 description				= enc_weapons1_wpn-svd_m1
-scope_zoom_factor	    = 60	;ПСО-1 4X
-cam_relax_speed         	= 1.8	;скорость возврата в исходное положение
-cam_dispersion          	= 1.3	;увеличения угла (в градусах) с каждым выстрелом
-
+inv_name	        	= wpn-svd_m							; name in inventory	
+inv_name_short			= wpn-svd_m
+cam_dispersion          = 0.9								;єтхышўхэш  єуыр (т уЁрфєёрї) ё ърцфvь тvёЄЁхыюь
+cam_step_angle_horz		= 0.1								;(degree) size of step camera moved in horizontal position while shooting
 
 [outfit_dolg_m1]:dolg_outfit	;Охотничий комбинезон Долга
 $spawn					= "outfit\uniq\outfit_dolg_m1"
@@ -124,15 +124,14 @@ wound_protection				= 0.7
 
 
 ;Rostok   -----------------------------------------------------------
-[wpn_deserteagle_coll]:wpn_desert_eagle ;Desert Eagle Гордона
-$spawn             		= "weapons\uniq\wpn_deserteagle_coll"	
-description					= enc_weapons1_wpn-desert-eagle_m1
-cost					 	= 600
 
 [wpn_l85_m1]:wpn_l85		;Сбалансированная L85
 $spawn             		= "weapons\uniq\wpn_l85_m1"	
 description				= enc_weapons1_wpn-l85_m1
-fire_dispersion_base		= 0.16;
+inv_name	        	= wpn-l85_m					; name in inventory	
+inv_name_short			= wpn-l85_m
+cam_dispersion          = 0.12		
+cam_dispersion_inc		= 0.25		
 
 [outfit_killer_m1]:killer_outfit ;Укрепленный комбинезон Наемника
 $spawn					= "outfit\uniq\outfit_killer_m1"
@@ -143,49 +142,48 @@ wound_protection		= 0.6
 
 
 ;Military   -----------------------------------------------------------
-[wpn_knife_m1]:wpn_knife	;Нож Ара
-$spawn             			= "weapons\uniq\wpn_knife_m1"	
-description					= enc_weapons1_wpn-knife_m1
-
 [wpn_svu_m1]:wpn_svu		;Скорострельная СВУ.
 $spawn             			= "weapons\uniq\wpn_svu_m1"	
 description					= enc_weapons1_wpn-svu_m1
-rpm                     	= 330
-fire_dispersion_base		= 0.1
+inv_name	        		= wpn-svu_m							; name in inventory	
+inv_name_short				= wpn-svu_m
+inv_weight		 			= 3.6
+control_inertion_factor		= 1.3f
+PDM_disp_base 				= 3.0
 
 [outfit_stalker_anom]:stalker_outfit	; Комбинезон сталкера "заколдованный"
 $spawn						= "outfit\uniq\outfit_stalker_anom"
-inv_name			= stalker_outfit_name_m1
-inv_name_short		= stalker_outfit_name_m1
-description			= stalker_outfit_description_m1
-wound_protection				= 0.7
-wound_immunity					= 0.1
+inv_name					= stalker_outfit_name_m1
+inv_name_short				= stalker_outfit_name_m1
+description					= stalker_outfit_description_m1
+wound_protection			= 0.7
+wound_immunity				= 0.1
 
 
 ;Yantar   -----------------------------------------------------------
 [outfit_stalker_anom2]:stalker_outfit	;Комбинезон призрачного сталкера
-$spawn							= "outfit\uniq\outfit_stalker_anom2"
-inv_name						= stalker_outfit_name_m2
-inv_name_short					= stalker_outfit_name_m2
-description						= stalker_outfit_description_m2
-health_restore_speed			= 0.001			
+$spawn						= "outfit\uniq\outfit_stalker_anom2"
+inv_name					= stalker_outfit_name_m2
+inv_name_short				= stalker_outfit_name_m2
+description					= stalker_outfit_description_m2
+health_restore_speed		= 0.001			
 
 [wpn_beretta_m1]:wpn_beretta		;Beretta модифицированная
 $spawn             			= "weapons\uniq\wpn_beretta_m1"	
 description					= enc_weapons1_wpn-beretta_m1
-fire_dispersion_base		= 0.1
-hit_power                	= 100
-
-
- 	
-
+inv_name	        		= wpn-beretta_m						; name in inventory	
+inv_name_short				= wpn-beretta_m
+fire_dispersion_base		= 0.2
+hit_power                	= 0.93
 
 [wpn_winchester_m1]:wpn_wincheaster1300		;Боевой винчестер
 $spawn             			= "weapons\uniq\wpn_winchester_m1"	
 description					= enc_weapons1_wpn-wincheaster1300_m1
-ammo_mag_size		 		= 7
-hit_power        			= 90
+inv_name	        		= wpn-wincheaster1300_m		; name in inventory	
+inv_name_short				= wpn-wincheaster1300_m
+hit_power        			= 1.6
 hit_impulse      			= 250
+ammo_mag_size		 		= 7
 
 
 ;Deadcity   -----------------------------------------------------------
@@ -201,18 +199,11 @@ radiation_protection 			= 0.5
 [wpn_lr300_m1]:wpn_lr300		;LR300 М1
 $spawn             		= "weapons\uniq\wpn_lr300_m1"	
 description					= enc_weapons1_wpn-lr300_m1
-inv_name					= LR-300M1
-inv_name_short				= LR-300M1
-rpm                      	= 500
-fire_dispersion_base		= 0.07 	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
-cam_dispersion         		= 0.1	;увеличения угла (в градусах) с каждым выстрелом
-cam_dispersion_inc		= 0.1	;увеличениe cam_dispersion с каждым выстрелом
+inv_name					= wpn-lr300_m
+inv_name_short				= wpn-lr300_m
+rpm                      	= 300
+fire_dispersion_base		= 0.09 	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
-[susat_anom]:wpn_addon_scope_susat		;Оптика Стрелка
-$spawn             		= "weapons\uniq\susat_anom"	
-description						= weapon_addon_scope_susat_m
-scope_zoom_factor				= 60
-cost							= 1000
 
 ;Radar   -----------------------------------------------------------
 [outfit_stalker_m1]:stalker_outfit			;Модифицированный бронежилет сталкера
@@ -235,8 +226,10 @@ bleeding_restore_speed			= 0.001
 
 [wpn_vintorez_coll]:wpn_vintorez  ;Дарственный винторез
 $spawn             				= "weapons\uniq\wpn_vintorez_coll"	
+inv_name	        			= wpn-vintorez_m						; name in inventory	
+inv_name_short					= wpn-vintorez_m
 description						= enc_weapons1_wpn-vintorez_m1
-scope_zoom_factor	    		= 10		;ПСО-1 4X
+bullet_speed					= 450									;эрўры№эр  ёъюЁюёЄ№ яєыш
 
 
 ;Stanciya   -----------------------------------------------------------
@@ -251,15 +244,18 @@ inv_weight						= 7.5
 ;Sarcofag/monolith   -----------------------------------------------------------
 [wpn_g36_m1]:wpn_g36	;G36 - спецподразделения Монолита "Кристалл"
 $spawn             		= "weapons\uniq\wpn_g36_m1"	
-description			= enc_weapons1_wpn-g36_m
+inv_name	        		= wpn-g36_m						; name in inventory	
+inv_name_short				= wpn-g36_m
+description					= enc_weapons1_wpn-g36_m
 fire_dispersion_base		= 0.02 	;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 hit_power                	= 151
 
 [wpn_gauss_m1]:wpn_gauss	;Гаусс
 $spawn             		= "weapons\uniq\wpn_gauss_m1"	
+inv_name	        	= wpn-gauss_m						; name in inventory	
+inv_name_short			= wpn-gauss_m
 description				= enc_weapons1_wpn-gauss_m
 ammo_mag_size			= 15
-
 
 
 ;-----------Arena-----------
@@ -295,6 +291,3 @@ $spawn             		= "weapons\arena\wpn_fn2000_arena"
 
 [wpn_g36_arena]:wpn_g36;
 $spawn             		= "weapons\arena\wpn_g36_arena"
-
-
-
