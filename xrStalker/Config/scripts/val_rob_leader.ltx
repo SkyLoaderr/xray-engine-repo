@@ -29,7 +29,7 @@ use_wpn         = false
 [walker@val_rob_leader_start]
 path_walk           = leader_walk
 path_look           = leader_look
-on_info             = {+val_rob_buying} walker@val_rob_leader_to_kamp
+on_info             = {+val_rob_buying} remark@val_rob_leader_wait_to_go ;walker@val_rob_leader_to_kamp
 on_actor_dist_le    = 30 | remark@val_rob_leader_call
 meet                = meet@val_rob_start
 
@@ -42,8 +42,13 @@ meet                = meet@val_rob_ignore
 
 [remark@val_rob_leader_talk]
 anim                = wait
-on_info             = {+val_rob_buying} walker@val_rob_leader_to_kamp
+on_info             = {+val_rob_buying} remark@val_rob_leader_wait_to_go ;walker@val_rob_leader_to_kamp
 on_actor_dist_ge    = 30 | walker@val_rob_leader_start
+meet                = meet@val_rob_start
+
+[remark@val_rob_leader_wait_to_go]
+anim                = wait
+on_timer            = 4500 | walker@val_rob_leader_to_kamp
 meet                = meet@val_rob_start
 
 [walker@val_rob_leader_to_kamp]
