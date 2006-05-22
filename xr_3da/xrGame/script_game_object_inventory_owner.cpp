@@ -276,7 +276,7 @@ void CScriptGameObject::TransferMoney(int money, CScriptGameObject* pForWho)
 	}
 
 	pOurOwner->set_money		(pOurOwner->get_money() - money, true );
-	pOtherOwner->set_money		(pOurOwner->get_money() + money, true );
+	pOtherOwner->set_money		(pOtherOwner->get_money() + money, true );
 }
 
 void CScriptGameObject::GiveMoney(int money)
