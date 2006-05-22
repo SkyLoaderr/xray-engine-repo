@@ -205,7 +205,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                "path_look           = captive_wait_look\n" ..
                "animation           = guard\n" ..
                "on_info             = {+val_escort_start}           follower@val_escort_guard_walk\n" .. --patrol
-               "on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
+               "on_info2            = {+val_escort_captive_dead}    patrol@val_escort_guard_free\n" ..
                --"on_info3            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
                "danger              = danger@" .. gname .. "_guard\n" ..
                "combat_ignore_cond  = {=check_fighting(400) -val_escort_captive_enemy}\n" ..
@@ -228,7 +228,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                "anim_walk           = patrol\n" ..
                "anim_run            = assault\n" ..
                "on_info             = {+val_escort_combat}          remark@val_escort_guard_fight\n" ..
-               "on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
+               "on_info2            = {+val_escort_captive_dead}    patrol@val_escort_guard_free\n" ..
                --"on_info3            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
                "danger              = danger@" .. gname .. "_guard\n" ..
                "combat_ignore_cond  = {=check_fighting(400) -val_escort_captive_enemy}\n" ..
@@ -236,22 +236,21 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                -- fight with actor and nap1
                "[remark@" .. gname .. "_guard_fight]\n" ..
                "anim                = wait_na\n" ..
-               "on_info             = {+val_escort_nap1_dead}       remark@val_escort_guard_free\n" ..
-               "on_info2            = {+val_escort_captive_dead}    remark@val_escort_guard_free\n" ..
+               "on_info             = {+val_escort_nap1_dead}       patrol@val_escort_guard_free\n" ..
+               "on_info2            = {+val_escort_captive_dead}    patrol@val_escort_guard_free\n" ..
                --"on_info3            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
                "combat_ignore_cond  = {=check_fighting(400) -val_escort_captive_enemy}\n" ..
 
-               --[[ 
-               "[patrol@" .. gname .. "_guard_wait]\n" ..
+               -- 
+               "[patrol@" .. gname .. "_guard_free]\n" ..
                "path_walk           = guards_leave_walk\n" ..
                "def_state_moving1   = patrol\n" ..
                "def_state_moving2   = patrol\n" ..
                "formation           = line\n" ..
                "on_signal           = arrived | %=" .. gname .. "_guard_free%\n"
-               --]]
-               "[remark@" .. gname .. "_guard_free]\n" ..
-               "anim                = wait\n" ..
-               "on_info             = %=" .. gname .. "_guard_free%\n"
+               --"[remark@" .. gname .. "_guard_free]\n" ..
+               --"anim                = wait\n" ..
+               --"on_info             = %=" .. gname .. "_guard_free%\n"
 
     t = { section = "logic@" .. gname .. "_halfdead",
         idle = 0,
@@ -524,8 +523,22 @@ gulags.val_sos.job = function(sj, gname, type, squad, groups)
         predicate = sos_predicate_bs
     }
     table.insert(sj, t)
+    ltx = ltx.."[logic@val_sos_bs]\n" ..
+               "active = mob_home1\n" ..
+               "on_combat = mob_combat\n" ..
 
-    gulags.val_sos.ltx = ltx.."#include \"scripts\\val_sos_bs.ltx\"\n"
+               "[mob_combat]\n" ..
+               "on_info = nil %=disable_combat_handler%\n" ..
+
+               "[mob_home1]\n" ..
+               "path_home = bs_walk\n" ..
+               "on_info = {+val_sos_actor_near_wounded} mob_camp2 %=monster_berserk%\n" ..
+
+               "[mob_camp2]\n" ..
+               "path_home = bs_attack_walk\n" ..
+               "path_look = bs_attack_look\n"
+
+    gulags.val_sos.ltx = ltx --.."#include \"scripts\\val_sos_bs.ltx\"\n"
 end
 
 
