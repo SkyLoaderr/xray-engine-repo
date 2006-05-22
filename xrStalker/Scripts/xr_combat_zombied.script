@@ -259,15 +259,18 @@ function action_zombie_go_to_danger:hit_callback( obj, amount, local_direction, 
 
 	if self.st.cur_act == act_danger then
 		local bd  = self.object:best_danger()
-		local bdo = bd:object()
 
-		if bdo and bd:type() == danger_object.attacked or
-		   amount > 0
-		then
-			self.enemy_last_seen_pos   = bdo:position()
-			self.enemy_last_seen_vid   = bdo:level_vertex_id()
+		if bd then
+			local bdo = bd:object()
 
-			self.was_hit               = true
+			if bdo and bd:type() == danger_object.attacked or
+			   amount > 0
+			then
+				self.enemy_last_seen_pos   = bdo:position()
+				self.enemy_last_seen_vid   = bdo:level_vertex_id()
+
+				self.was_hit               = true
+			end
 		end
 	end
 end
