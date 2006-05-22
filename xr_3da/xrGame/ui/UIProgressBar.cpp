@@ -82,6 +82,9 @@ void CUIProgressBar::UpdateProgressBar()
 {
 	//относительный размер единичного прокручемого элемента
 	float progressbar_unit;
+	if(m_iMaxPos==m_iMinPos)
+		m_iMaxPos++;
+
 	progressbar_unit = (float)1/(m_iMaxPos-m_iMinPos);
 
 	float fCurrentLength = m_iProgressPos*progressbar_unit;
