@@ -114,8 +114,8 @@ public:
     virtual FloatValue* 		__stdcall	CreateTime		    (PropItemVec& items, shared_str key, float* val, float mn=0.f, float mx=86400.f)=0;
     virtual ShortcutValue*		__stdcall	CreateShortcut		(PropItemVec& items, shared_str key, xr_shortcut* val)=0;
 
-    virtual FloatValue* 		__stdcall	CreateAngle		    (PropItemVec& items, shared_str key, float* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)=0;
-    virtual VectorValue* 		__stdcall	CreateAngle3	    (PropItemVec& items, shared_str key, Fvector* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)=0;
+    virtual FloatValue* 		__stdcall	CreateAngle		    (PropItemVec& items, shared_str key, float* val, float mn=flt_min, float mx=flt_max, float inc=0.01f, int decim=2)=0;
+    virtual VectorValue* 		__stdcall	CreateAngle3	    (PropItemVec& items, shared_str key, Fvector* val, float mn=flt_min, float mx=flt_max, float inc=0.01f, int decim=2)=0;
     virtual RTextValue* 		__stdcall	CreateName		    (PropItemVec& items, shared_str key, shared_str* val, ListItem* owner)=0;  
 	virtual RTextValue* 		__stdcall	CreateNameCB		(PropItemVec& items, shared_str key, shared_str* val, TOnDrawTextEvent=0, RTextValue::TOnBeforeEditEvent=0, RTextValue::TOnAfterEditEvent=0)=0;
 
