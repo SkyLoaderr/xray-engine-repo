@@ -125,6 +125,13 @@ void CKinematics::DebugRender(Fmatrix& XFORM)
 }
 #endif
 
+CKinematics::CKinematics()
+{
+#ifdef DEBUG
+	dbg_single_use_marker		= FALSE;
+#endif
+}
+
 CKinematics::~CKinematics	()
 {
 	IBoneInstances_Destroy	();

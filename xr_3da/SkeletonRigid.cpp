@@ -17,6 +17,7 @@ void CKinematics::CalculateBones			(BOOL bForceExact)
 	if		(!bForceExact && (Device.dwTimeGlobal < (UCalc_Time + UCalc_Interval)))	return;	// early out for "slow" update
 	if		(Update_Visibility)									Visibility_Update	();
 
+	_DBG_SINGLE_USE_MARKER;
 	// here we have either:
 	//	1:	timeout elapsed
 	//	2:	exact computation required

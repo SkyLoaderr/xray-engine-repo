@@ -108,7 +108,6 @@ public:
 };
 #pragma pack(pop)
 
-
 //*** The visual itself ***************************************************************************
 class ENGINE_API	CKinematicsAnimated	: public CKinematics
 {

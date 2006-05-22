@@ -181,11 +181,15 @@ CBlend*	CKinematicsAnimated::LL_PlayCycle(u16 part, MotionID motion_ID, BOOL  bM
 //	CMotionDef* m_def		= s_mots->motion_def(motion.idx);
     
 	// Process old cycles and create _new_
-	if (bMixing)	LL_FadeCycle	(part,blendFalloff);
-	else			LL_CloseCycle	(part);
+	{
+		_DBG_SINGLE_USE_MARKER;
+		if (bMixing)	LL_FadeCycle	(part,blendFalloff);
+		else			LL_CloseCycle	(part);
+	}
 	CPartDef& P	=	(*m_Partition)[part];
 	CBlend*	B	=	IBlend_Create	();
 
+	_DBG_SINGLE_USE_MARKER;
 	for (u32 i=0; i<P.bones.size(); i++)
 		Bone_Motion_Start_IM	((*bones)[P.bones[i]],B);
 	blend_cycles[part].push_back(B);
@@ -274,6 +278,7 @@ CBlend*	CKinematicsAnimated::LL_PlayFX		(u16 bone, MotionID motion_ID, float ble
 	if (BI_NONE==bone)		bone = iRoot;
 	
 	CBlend*	B		= IBlend_Create();
+	_DBG_SINGLE_USE_MARKER;
 	Bone_Motion_Start	((*bones)[bone],B);
 	
 	B->blend		= CBlend::eAccrue;
@@ -296,6 +301,7 @@ CBlend*	CKinematicsAnimated::LL_PlayFX		(u16 bone, MotionID motion_ID, float ble
 
 void CKinematicsAnimated::UpdateTracks	()
 {
+	_DBG_SINGLE_USE_MARKER;
 	if (Update_LastTime==Device.dwTimeGlobal) return;
 	u32 DT	= Device.dwTimeGlobal-Update_LastTime;
 	if (DT>66) DT=66;
@@ -474,6 +480,7 @@ void CKinematicsAnimated::Spawn	()
 
 void CKinematicsAnimated::IBlend_Startup	()
 {
+	_DBG_SINGLE_USE_MARKER;
 	CBlend B; ZeroMemory(&B,sizeof(B));
 	B.blend				= CBlend::eFREE_SLOT;
 	blend_pool.clear	();
@@ -489,6 +496,7 @@ void CKinematicsAnimated::IBlend_Startup	()
 CBlend*	CKinematicsAnimated::IBlend_Create	()
 {
 	UpdateTracks	();
+	_DBG_SINGLE_USE_MARKER;
 	CBlend *I=blend_pool.begin(), *E=blend_pool.end();
 	for (; I!=E; I++)
 		if (I->blend == CBlend::eFREE_SLOT) return I;

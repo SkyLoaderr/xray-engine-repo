@@ -140,14 +140,29 @@ public:
 };
 DEFINE_VECTOR(CSkeletonWallmark*,SkeletonWMVec,SkeletonWMVecIt);
 
+// sanity check
+#ifdef DEBUG
+	struct dbg_marker{
+		BOOL*			lock;
+		dbg_marker		(BOOL* b)	{lock=b; VERIFY(*lock==FALSE); *lock=TRUE;}
+		~dbg_marker		()			{*lock=FALSE;}
+	};
+#	define _DBG_SINGLE_USE_MARKER	dbg_marker	_dbg_marker(&dbg_single_use_marker)
+#else
+#	define _DBG_SINGLE_USE_MARKER
+#endif
+
 class ENGINE_API	CKinematics: public FHierrarhyVisual
 {
 	typedef FHierrarhyVisual	inherited;
 	friend class				CBoneData;
 	friend class				CSkeletonX;
 public: 
-	virtual void				Bone_Calculate	(CBoneData* bd, Fmatrix* parent);
-	virtual void				OnCalculateBones(){}
+#ifdef DEBUG
+	BOOL						dbg_single_use_marker;
+#endif
+	virtual void				Bone_Calculate		(CBoneData* bd, Fmatrix* parent);
+	virtual void				OnCalculateBones	(){}
 public:
 	typedef xr_vector<std::pair<shared_str,u16> >	accel;
 public:
@@ -194,6 +209,7 @@ public:
 	void						RenderWallmark		(CSkeletonWallmark* wm, FVF::LIT* &verts);
 	void						ClearWallmarks		();
 public:
+								CKinematics			();
 	virtual						~CKinematics		();
 
 	// Low level interface
