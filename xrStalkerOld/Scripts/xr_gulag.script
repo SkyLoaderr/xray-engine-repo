@@ -1170,7 +1170,7 @@ end
 -- установить логику и сообщить смарту, что объект перешёл в онлайн.
 -- вызывается из net_spawn() объектов
 function setup_gulag_and_logic_on_spawn( obj, st, sobject, stype, loaded )
-	printf( "setup_gulag_and_logic_on_spawn obj=%s", obj:name() )
+--	printf( "setup_gulag_and_logic_on_spawn obj=%s", obj:name() )
 
 	local sim = alife()
 	if sim then
@@ -1185,31 +1185,25 @@ function setup_gulag_and_logic_on_spawn( obj, st, sobject, stype, loaded )
 --		printf( "strn_id=%s", tostring( strn_id ) )
 
 		if strn_id ~= 65535 then
-			printf( "1" )
-
 			local strn                   = sim:object( strn_id )
 			local need_setup_logic       = strn.gulag.Object_begin_job[obj:id()] and not loaded
 			local need_setup_restrictors = strn.gulag.Object_begin_job[obj:id()]
 
 			strn:initialize_if_needed()
 
-			if need_setup_logic then
-				printf( "2" )
-				strn.gulag:object_setup_online( obj:id(), obj, need_setup_logic, need_setup_restrictors )
-			else
-				printf( "3" )
+			strn.gulag:object_setup_online( obj:id(), obj, need_setup_logic, need_setup_restrictors )
+
+			if not need_setup_logic then
 				--memusage.collect_info(obj, "before_logic")
 				xr_logic.initialize_obj(obj, st, loaded, db.actor, stype)
 				--memusage.collect_info(obj, "after_logic_before_callback")
 			end
 		else
-			printf( "4" )
 			--memusage.collect_info(obj, "before_logic")
 			xr_logic.initialize_obj(obj, st, loaded, db.actor, stype)
 			--memusage.collect_info(obj, "after_logic_before_callback")
 		end
 	else
-		printf( "5" )
 		--memusage.collect_info(obj, "before_logic")
 		xr_logic.initialize_obj(obj, st, loaded, db.actor, stype)
 		--memusage.collect_info(obj, "after_logic_before_callback")
