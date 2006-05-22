@@ -330,5 +330,7 @@
 		<article>mil_courier_doc</article>
 	</info_portion>
 	
+	<info_portion id="mil_cap_death"></info_portion>
+	
 	
 </game_information_portions>
