@@ -857,7 +857,7 @@
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_deserteagle_coll \n
+			wpn_desert_eagle \n
 			ammo_11.43x23_fmj \n
 		</supplies>
 			
