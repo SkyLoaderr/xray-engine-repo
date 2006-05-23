@@ -1,4 +1,4 @@
-function main()
+function main11111111111()
  game.start_tutorial("credits_seq")
 end
 
@@ -32,7 +32,7 @@ end
 
 snd_radar_stop	= sound_object([[ambient\cooling_stop]])
 
-function main1111111()
+function main()
 	snd_radar_stop:play(db.actor, 0, sound_object.s2d)
 	level.add_complex_effector("effector_radar_stop", 12345)
 	
