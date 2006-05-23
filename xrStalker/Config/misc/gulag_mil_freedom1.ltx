@@ -485,67 +485,6 @@ danger = danger@mil_freedom
 path_walk = camp_center1_task
 radius = 3
 
-;----------------------------------- Павлик Морозов, мля-----------------------
-[logic@mil_freedom_stalker3]
-active = kamp1@mil_freedom_stalker3
-combat_ignore = combat_ignore@mil_freedom_stalker3
-on_death = death@mil_freedom_stalker3
-on_combat = combat@mil_freedom_max
-
-[death@mil_freedom_stalker3]
-on_info = %+mil_courier_dead =mil_paul_frost_dead +sar2_death_33%
-
-[kamp1@mil_freedom_stalker3]
-center_point = camp_center1
-on_info = {+mil_leader_quest2_start =is_courier_time} remark1@mil_freedom_stalker3
-meet_enable = true
-meet_dialog = mil_dolg_relax_dialog
-danger = danger@mil_freedom
-path_walk = camp_center1_task
-radius = 3
-
-[remark1@mil_freedom_stalker3]
-snd = mil_paul_frost
-no_rotate = true
-no_move = true
-on_signal = sound_end | walker2@mil_freedom_stalker3
-target = mil_freedom_camp_center1, 0
-danger = danger@mil_freedom
-
-[walker2@mil_freedom_stalker3]
-path_walk = stukach_walk3
-on_signal = final | walker3@mil_freedom_stalker3
-danger = danger@mil_freedom
-
-[walker3@mil_freedom_stalker3]
-path_walk = stukach_walk4
-path_look = stukach_look4
-on_signal = arrive | remark2@mil_freedom_stalker3
-on_actor_dist_le = 50 | walker4@mil_freedom_stalker3 %+mil_courier_see_actor%
-combat_ignore_cond = {=check_fighting(712,713,714,719)} true
-
-[remark2@mil_freedom_stalker3]
-no_rotate = true
-no_move = true
-anim = wait_rac
-snd = mil_pavlik_to_ara
-on_signal = sound_end | %+mil_courier_call% remark3@mil_freedom_stalker3
-;snd_anim_sync = true
-on_actor_dist_le = 7 | %=killactor%
-target = mil_courier_look_point, 0
-combat_ignore_cond = {=check_fighting(712,713,714,719)} false
-
-[remark3@mil_freedom_stalker3]
-anim = guard
-on_info = {+mil_ara_end} walker4@mil_freedom_stalker3
-on_actor_dist_le = 7 | %=killactor%
-target = mil_courier_look_point, 0
-combat_ignore_cond = {=check_fighting(712,713,714,719)} false
-
-[walker4@mil_freedom_stalker3]
-path_walk = stukach_walk5
-danger = danger@mil_freedom
-;on_signal = return | %-mil_freedom_attack% nil
 
 ;----------------------------------- Патрульный мужик (одиночка)-----------------------
 [logic@mil_freedom_stalker4]

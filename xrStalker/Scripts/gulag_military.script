@@ -202,19 +202,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 		}
 	table.insert(sj, t)		
-    -- Павлик Морозов
-    t = {section = "logic@mil_freedom_stalker3",
-		idle = 0,
-		prior = 11, state = {0, 4},
-		squad = squad, group = groups[0],
-		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
-		online = true,
-		position_threshold = 100,
-		predicate = function (info)
-		                     return info.profile_name == "mil_Svoboda_stukach"
-		            end         
-		}
-	table.insert(sj, t)		
+	
     -- одиночный патрульный на базе
     t = {section = "logic@mil_freedom_stalker4",
 		idle = 0,
@@ -497,18 +485,6 @@ function load_job_base (sj, gname, type, squad, groups)
 		            --end
 		}
 	table.insert(sj, t)		
-	-- Мужик у костра 3
-    t = {section = "logic@mil_freedom_stalker3_attack",
-		idle = 0,
-		prior = 20, state = {3},
-		squad = squad, group = groups[0],
-		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
-		position_threshold = 100,
-		predicate = function (info)
-		                     return info.profile_name == "mil_Svoboda_stukach"
-		            end         
-		}
-	table.insert(sj, t)
 	-- 
     t = {section = "logic@mil_freedom_stalker4_attack",
 		idle = 0,
