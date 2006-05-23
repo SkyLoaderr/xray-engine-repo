@@ -238,7 +238,7 @@ void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * mate
 		if(b_restrictor)
 		{
 			b_side_contact=true;
-			MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,def_spring_rate,def_dumping_rate);
+			//MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,def_spring_rate,def_dumping_rate);
 			c->surface.mu		=0.00f;
 		}
 		else
