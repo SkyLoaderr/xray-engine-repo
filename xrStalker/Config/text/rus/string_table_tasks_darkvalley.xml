@@ -45,7 +45,7 @@
 </string>
 <string id="val_captive_help_1">
     <text>
-        Уничтожить бандитов и спасти долговца
+        Следовать за Пулей к месту засады
     </text>
 </string>
 <string id="bar_darklab_documents">
@@ -126,5 +126,10 @@
 <string id="bar_darklab_documents_4">
     <text>
         Пробраться на базу
+    </text>
+</string>
+<string id="val_captive_help_2">
+    <text>
+        Уничтожить бандитов и спасти долговца.
     </text>
 </string>
