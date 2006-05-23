@@ -136,6 +136,24 @@
         <object_story_id>
             val_escort_nap1
         </object_story_id>
+        <infoportion_complete>
+            val_escort_actor_at_ambush
+        </infoportion_complete>
+    </objective>
+    <objective key="2">
+        <text>
+            val_captive_help_2
+        </text>
+        <icon height="50" width="50" x="150" y="0">
+            ui\ui_icons_task
+        </icon>
+        <map_location_type hint="val_captive_help_2_hint">
+            green_location
+        </map_location_type>
+        <map_location_hidden>1</map_location_hidden>
+        <object_story_id>
+            val_escort_captive
+        </object_story_id>
     </objective>
 </game_task>
 <game_task id="bar_darklab_documents">
