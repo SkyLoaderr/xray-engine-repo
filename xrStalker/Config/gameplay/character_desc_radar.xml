@@ -685,7 +685,7 @@
     <map_icon x="3" y="0"></map_icon>
     <bio>mil_Monolit_master_bio</bio>
 
-    <class>rad_monolit_master</class>
+    <class>rad_monolit_bunkermaster</class>
     <community>monolith</community>
 
 
