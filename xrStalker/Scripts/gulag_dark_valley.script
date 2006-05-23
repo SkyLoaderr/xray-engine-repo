@@ -890,7 +890,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
 
         t = { section = "logic@" .. gname .. "_patrol_alarm" .. i,
             idle = 0,
-            prior = 5, state = {state_alarm},
+            prior = 3, state = {state_alarm},
             squad = squad, group = groups[1],
             --online = false,
             in_rest = "", out_rest = restr[i],
