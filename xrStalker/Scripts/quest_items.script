@@ -77,6 +77,8 @@ function main()
 		alife():create(v,	
 						db.actor:position(),
 						db.actor:level_vertex_id(),	
-						db.actor:game_vertex_id())
+						db.actor:game_vertex_id(), 
+						db.actor:id())
 	end	
+	 db.actor:activate_slot(3)
 end
