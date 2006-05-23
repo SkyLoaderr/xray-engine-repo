@@ -677,6 +677,39 @@
 		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
   </specific_character>
+  
+  
+  <specific_character id="rad_monolit_bunker_master" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon x="28" y="8"></icon>
+    <map_icon x="3" y="0"></map_icon>
+    <bio>mil_Monolit_master_bio</bio>
+
+    <class>rad_monolit_master</class>
+    <community>monolith</community>
+
+
+    <rank>934</rank>
+    <reputation>-564</reputation>
+    <money min="5000" max="10000" infinitive="0"/>
+
+    <panic_threshold>0.0</panic_threshold>
+
+    <snd_config>characters_voice\human_03\monolith\</snd_config>
+
+    <visual>actors\monolit\stalker_mo_exo</visual>
+    <supplies>
+      [spawn] \n
+			wpn_usp \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_wincheaster1300 \n
+			ammo_12x76_zhekan = 1 \n
+#include "gameplay\character_drugs.xml"
+    </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
+  </specific_character>
 	
 
 <!---------------------------MONOLIT REGULAR with RPG----------------------->
