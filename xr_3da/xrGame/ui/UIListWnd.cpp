@@ -70,8 +70,13 @@ void CUIListWnd::Init(float x, float y, float width, float height, float item_he
 	//добавить полосу прокрутки
 	m_ScrollBar = xr_new<CUIScrollBar>(); m_ScrollBar->SetAutoDelete(true);
 	AttachChild(m_ScrollBar);
-	m_ScrollBar->Init(width,
-						0,height, false);
+
+	if (!!m_scrollbar_profile)
+		m_ScrollBar->Init(width,0,height, false, *m_scrollbar_profile);
+	else
+		m_ScrollBar->Init(width,0,height, false);
+
+
 	m_ScrollBar->SetWndPos(m_ScrollBar->GetWndPos().x - m_ScrollBar->GetWidth(), m_ScrollBar->GetWndPos().y);
 
 	SetItemWidth(width - m_ScrollBar->GetWidth());

@@ -1,8 +1,5 @@
-function main111111111()
-	local radius = 30
-	local ang    = 45
-	local dir    = vector_rotate_y( db.actor:direction(), ang )
-	level.spawn_phantom(db.actor:position():add( dir:mul(radius) ))
+function main()
+ game.start_tutorial("credits_seq")
 end
 
 function main22222()
@@ -35,7 +32,7 @@ end
 
 snd_radar_stop	= sound_object([[ambient\cooling_stop]])
 
-function main()
+function main1111111()
 	snd_radar_stop:play(db.actor, 0, sound_object.s2d)
 	level.add_complex_effector("effector_radar_stop", 12345)
 	

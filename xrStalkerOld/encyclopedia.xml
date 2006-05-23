@@ -37,7 +37,7 @@
 
 
     <!-- ENCYCLOPEDIA INDEX LIST -->
-    <idx_list x="35" y="60" width="258" height="400" item_height="20">
+    <idx_list x="35" y="55" width="258" height="415" item_height="20" scroll_profile="pda">
         <font font="letterica16" r="255" g="255" b="255"/>
     </idx_list>
 

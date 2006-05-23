@@ -25,6 +25,7 @@ class CUIListWnd :public CUIWindow
 private:
 	typedef CUIWindow inherited;
 	friend class CUIGameLog;
+	shared_str		m_scrollbar_profile;
 public:
 	CUIListWnd();
 	virtual ~CUIListWnd();
@@ -41,6 +42,7 @@ public:
 	virtual void Draw();
 	virtual void Update();
 	virtual void DetachChild			(CUIWindow* pChild);
+			void	SetScrollBarProfile	(LPCSTR profile)		{m_scrollbar_profile=profile;};
 
 	// Добавление элементов в листбокс
 	template <class Element>

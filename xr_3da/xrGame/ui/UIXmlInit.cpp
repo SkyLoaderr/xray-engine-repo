@@ -455,45 +455,46 @@ bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, LPCSTR path,
 bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, LPCSTR path, 
 										   int index, CUIListWnd* pWnd)
 {
-	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
+	R_ASSERT3							(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 	
-	float x = xml_doc.ReadAttribFlt(path, index, "x");
-	float y = xml_doc.ReadAttribFlt(path, index, "y");
+	float x								= xml_doc.ReadAttribFlt(path, index, "x");
+	float y								= xml_doc.ReadAttribFlt(path, index, "y");
 
-	InitAlignment(xml_doc, path, index, x, y, pWnd);
+	InitAlignment						(xml_doc, path, index, x, y, pWnd);
 
-	float width = xml_doc.ReadAttribFlt(path, index, "width");
-	float height = xml_doc.ReadAttribFlt(path, index, "height");
-	float item_height = xml_doc.ReadAttribFlt(path, index, "item_height");
-	int active_background = xml_doc.ReadAttribInt(path, index, "active_bg");
+	float width							= xml_doc.ReadAttribFlt(path, index, "width");
+	float height						= xml_doc.ReadAttribFlt(path, index, "height");
+	float item_height					= xml_doc.ReadAttribFlt(path, index, "item_height");
+	int active_background				= xml_doc.ReadAttribInt(path, index, "active_bg");
 
 	// Init font from xml config file
-	string256 buf;
-	CGameFont *LocalFont = NULL;
+	string256							buf;
+	CGameFont *LocalFont				= NULL;
 	u32 cl;
 
-	shared_str text_path = strconcat(buf,path,":font");
-	InitFont(xml_doc, *text_path, index, cl, LocalFont);
+	shared_str text_path				= strconcat(buf,path,":font");
+	InitFont							(xml_doc, *text_path, index, cl, LocalFont);
 	if (LocalFont)
 	{
 		pWnd->SetFont(LocalFont);
 		pWnd->SetTextColor(cl);
 	}
 
-	pWnd->Init(x,y, width,height,item_height);
-	pWnd->EnableActiveBackground(!!active_background);
+	pWnd->SetScrollBarProfile			(xml_doc.ReadAttrib(path, index, "scroll_profile", "default"));
+	pWnd->Init							(x,y, width,height,item_height);
+	pWnd->EnableActiveBackground		(!!active_background);
 
 	if (xml_doc.ReadAttribInt(path, index, "always_show_scroll"))
 	{
-		pWnd->SetAlwaysShowScroll(true);
-		pWnd->EnableAlwaysShowScroll(true);
-		pWnd->EnableScrollBar(true);
+		pWnd->SetAlwaysShowScroll		(true);
+		pWnd->EnableAlwaysShowScroll	(true);
+		pWnd->EnableScrollBar			(true);
 	}
 
 	if (xml_doc.ReadAttribInt(path, index, "always_hide_scroll"))
 	{
-		pWnd->SetAlwaysShowScroll(false);
-		pWnd->EnableAlwaysShowScroll(true);		
+		pWnd->SetAlwaysShowScroll		(false);
+		pWnd->EnableAlwaysShowScroll	(true);		
 	}
 
 
