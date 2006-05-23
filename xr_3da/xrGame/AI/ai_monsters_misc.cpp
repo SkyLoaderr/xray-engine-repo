@@ -70,7 +70,7 @@ bool bfGetActionSuccessProbability(GroupHierarchyHolder::MEMBER_REGISTRY &Member
 					continue;
 				}
 				fProbability = 1.0f - fSuccessProbabilityFunction.ffGetValue()/100.f;
-				if (fCurrentProbability*fProbability < fMinProbability) {
+				if (fCurrentProbability*fProbability < (1.f - fMinProbability)) {
 					++II;
 					++j;
 					break;
