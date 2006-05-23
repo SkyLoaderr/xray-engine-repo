@@ -72,3 +72,11 @@ void	CPHCollideValidator::SetCharacterClassNotCollide	(CPHObject& obj)
 {
 	obj.collide_class_bits().set(cbNCClassCharacter,TRUE);
 }
+void	CPHCollideValidator::		SetClassSmall				(CPHObject& obj)
+{
+	obj.collide_class_bits().set(cbClassSmall,TRUE);
+}
+void	CPHCollideValidator::		SetClassSmallNotCollide		(CPHObject& obj)
+{
+	obj.collide_class_bits().set(cbNCClassSmall,TRUE);
+}

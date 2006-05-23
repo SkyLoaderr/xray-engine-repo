@@ -245,7 +245,9 @@ IC					CKinematics					*PKinematics								()																{return m_pKinemati
 	virtual			void						RegisterToCLGroup							(CGID g)																					= 0;
 	virtual			bool						IsGroupObject								()																							= 0;
 	virtual			void						SetIgnoreStatic								()																							= 0;
-	virtual			void						SetIgnoreDynamic								()																						= 0;
+	virtual			void						SetIgnoreDynamic							()																							= 0;
+	virtual			void						SetSmall									()																							= 0;
+	virtual			void						SetIgnoreSmall								()																							= 0;
 	virtual			bool						isFractured									()																							= 0;
 	virtual			CPHShellSplitterHolder		*SplitterHolder								()																							= 0;
 	virtual			void						SplitProcess								(PHSHELL_PAIR_VECTOR &out_shels)															= 0;
@@ -323,5 +325,5 @@ CPhysicsShell*				P_build_Shell				(CGameObject* obj,bool not_active_state,U16Ve
 CPhysicsShell*				P_build_Shell				(CGameObject* obj,bool not_active_state,BONE_P_MAP* bone_map,LPCSTR	fixed_bones)	;
 CPhysicsShell*				P_build_Shell				(CGameObject* obj,bool not_active_state,BONE_P_MAP* bone_map=NULL)					;
 CPhysicsShell*				P_build_SimpleShell			(CGameObject* obj,float mass,bool not_active_state)									;
-			void			ApplySpawnIniToPhysicShell	(CInifile* ini,CPhysicsShell* physics_shell)										;
+			void			ApplySpawnIniToPhysicShell	(CInifile* ini,CPhysicsShell* physics_shell,bool fixed)										;
 #endif // PhysicsShellH

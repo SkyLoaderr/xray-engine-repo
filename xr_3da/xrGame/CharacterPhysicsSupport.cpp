@@ -471,6 +471,7 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	{
 		m_pPhysicsShell->SetIgnoreDynamic();
 	}
+	m_pPhysicsShell->SetIgnoreSmall();
 }
 void CCharacterPhysicsSupport::in_ChangeVisual()
 {

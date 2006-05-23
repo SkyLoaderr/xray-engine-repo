@@ -53,7 +53,7 @@ BOOL CPhysicsShellHolder::net_Spawn				(CSE_Abstract*	DC)
 		case stDisable		:	PPhysicsShell()->Disable()	;break;
 		case stNotDefitnite	:								;break;
 		}
-
+		ApplySpawnIniToPhysicShell(pSettings,PPhysicsShell(),false);
 		st_enable_state=(u8)stNotDefitnite;
 	}
 	return ret;

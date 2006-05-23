@@ -1492,7 +1492,15 @@ void CPHShell::SetIgnoreDynamic()
 {
 	CPHCollideValidator::SetDynamicNotCollide(*this);
 }
+void	CPHShell::				SetSmall()
+{
+	CPHCollideValidator::SetClassSmall(*this);
+}
 
+void	CPHShell::				SetIgnoreSmall()
+{
+	CPHCollideValidator::SetCharacterClassNotCollide(*this);
+}
 void CPHShell::CutVelocity(float l_limit,float a_limit)
 {
 	ELEMENT_I i,e;

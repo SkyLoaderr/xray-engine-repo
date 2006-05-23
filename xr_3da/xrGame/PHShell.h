@@ -77,6 +77,8 @@ public:
 	virtual			bool	IsGroupObject			()											;
 	virtual			void	SetIgnoreStatic			()											;
 	virtual			void	SetIgnoreDynamic		()											;
+	virtual			void	SetSmall				()											;
+	virtual			void	SetIgnoreSmall			()											;
 	virtual void			setMass					(float M)									;
 
 	virtual void			setMass1				(float M)									;

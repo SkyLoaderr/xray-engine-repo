@@ -155,16 +155,24 @@ CPhysicsShell*	P_build_SimpleShell(CGameObject* obj,float mass,bool not_active_s
 	return pPhysicsShell;
 }
 
-void ApplySpawnIniToPhysicShell(CInifile* ini,CPhysicsShell* physics_shell)
+void ApplySpawnIniToPhysicShell(CInifile* ini,CPhysicsShell* physics_shell,bool fixed)
 {
 
 	{
 
 		if(ini&&ini->section_exist("collide"))
 		{
-			if(ini->line_exist("collide","ignore_static"))
+			if(ini->line_exist("collide","ignore_static")&&fixed)
 			{
 				physics_shell->SetIgnoreStatic();
+			}
+			if(ini->line_exist("collide","small_object"))
+			{
+				physics_shell->SetSmall();
+			}
+			if(ini->line_exist("collide","ignore_small_objects"))
+			{
+				physics_shell->SetIgnoreSmall();
 			}
 		}
 	}

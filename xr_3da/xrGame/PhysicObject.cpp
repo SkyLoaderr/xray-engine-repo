@@ -93,8 +93,8 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 	if(!Visual()) return;
 	LPCSTR	fixed_bones=*po->fixed_bones;
 	m_pPhysicsShell=P_build_Shell(this,!po->_flags.test(CSE_PHSkeleton::flActive),fixed_bones);
-	if(fixed_bones[0]!='\0')ApplySpawnIniToPhysicShell(&po->spawn_ini(),m_pPhysicsShell);
-	 
+	ApplySpawnIniToPhysicShell(&po->spawn_ini(),m_pPhysicsShell,fixed_bones[0]!='\0');
+	ApplySpawnIniToPhysicShell(smart_cast<CKinematics*>(Visual())->LL_UserData(),m_pPhysicsShell,fixed_bones[0]!='\0');
 }
 
 void CPhysicObject::Load(LPCSTR section)

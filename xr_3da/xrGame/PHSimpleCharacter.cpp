@@ -414,7 +414,7 @@ void CPHSimpleCharacter::Destroy(){
 
 
 }
-
+const static u64 impulse_time_constant=30;
 void		CPHSimpleCharacter::ApplyImpulse(const Fvector& dir,const dReal P)
 {
 	if(!b_exist||b_external_impulse) return;
@@ -422,9 +422,10 @@ void		CPHSimpleCharacter::ApplyImpulse(const Fvector& dir,const dReal P)
 	Enable();
 	b_lose_control=true;
 	b_external_impulse=true;
-	m_ext_impuls_stop_step=ph_world->m_steps_num+30;
+	m_ext_impuls_stop_step=ph_world->m_steps_num+impulse_time_constant;
+	//m_ext_imulse.set(Fvector().mul(dir,P/fixed_step/impulse_time_constant));
 	m_ext_imulse.set(dir);
-	dBodyAddForce(m_body,dir.x*P/fixed_step,dir.y*P/fixed_step,dir.z*P/fixed_step);
+	dBodySetForce(m_body,dir.x*P/fixed_step,dir.y*P/fixed_step,dir.z*P/fixed_step);
 }
 
 void		CPHSimpleCharacter::ApplyForce(const Fvector& force)
@@ -1123,27 +1124,35 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 {
 
 	const float		*linear_velocity		=dBodyGetLinearVel(m_body);
-	//limit velocity
-	dReal l_limit;
-	 if(is_control&&!b_lose_control) 
-		l_limit = m_max_velocity/phTimefactor;
-	else			
-		l_limit=10.f/fixed_step;
-
-	 if(b_external_impulse)
-	 {
-		 float ll_limit=m_ext_imulse.dotproduct(cast_fv(linear_velocity))*10.f/fixed_step;
-		 if(ll_limit>l_limit)l_limit=ll_limit;
-	 }
-	 
-
-	dReal mag;
-
 	if(dV_valid(linear_velocity))
 	{	
-		m_mean_y=m_mean_y*0.9999f+linear_velocity[1]*0.0001f;
-		mag=_sqrt(linear_velocity[0]*linear_velocity[0]+linear_velocity[1]*linear_velocity[1]+linear_velocity[2]*linear_velocity[2]);//
+		dReal mag=_sqrt(linear_velocity[0]*linear_velocity[0]+linear_velocity[1]*linear_velocity[1]+linear_velocity[2]*linear_velocity[2]);//;
+		//limit velocity
+		dReal l_limit;
+		if(is_control&&!b_lose_control) 
+			l_limit = m_max_velocity/phTimefactor;
+		else			
+			l_limit=10.f/fixed_step;
+
+		if(b_external_impulse)
+		{
+			float sq_mag=m_acceleration.square_magnitude();
+			float ll_limit=m_ext_imulse.dotproduct(cast_fv(linear_velocity))*10.f/fixed_step;
+			if(sq_mag>EPS_L)
+			{
+				Fvector acc;acc.set(Fvector().mul(m_acceleration,1.f/_sqrt(sq_mag)));
+				Fvector vll;vll.mul(cast_fv(linear_velocity),1.f/mag);
+				float mxa=vll.dotproduct(acc);
+				if(mxa*ll_limit>l_limit){
+					ll_limit=l_limit/mxa;
+				}
 		
+			}
+			if(ll_limit>l_limit)
+				l_limit=ll_limit;
+		}
+////////////////////////////////////////////////////////////////////////////////////////////
+		m_mean_y=m_mean_y*0.9999f+linear_velocity[1]*0.0001f;
 		if(mag>l_limit)
 		{
 			dReal f=mag/l_limit;
