@@ -48,41 +48,41 @@ function main ()
 
 
     -- Создадим различные объекты, которые нам необходимы
-	alife():create ("good_psy_helmet", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	alife():create ("good_psy_helmet", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
 
     -- Создадим различные объекты, которые нам необходимы
-	alife():create ("wpn_val", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	alife():create ("wpn_val", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
 	    for a = 1, 12, 1 do
-	        alife():create ("ammo_9x39_ap", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	        alife():create ("ammo_9x39_ap", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
         end	        
-	    alife():create ("wpn_addon_scope", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	    alife():create ("wpn_addon_scope", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
         for a = 1, 10, 1 do	    
-	        alife():create ("grenade_f1", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	        alife():create ("grenade_f1", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
 	    end
         for a = 1, 12, 1 do	    
-	        alife():create ("medkit", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	        alife():create ("medkit", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
 	    end
         for a = 1, 25, 1 do	    
-	        alife():create ("bandage", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	        alife():create ("bandage", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
 	    end
         for a = 1, 8, 1 do	    
-	        alife():create ("antirad", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
+	        alife():create ("antirad", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
 	    end
-	    alife():create ("bread", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	    alife():create ("bread", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	    alife():create ("kolbasa", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	    alife():create ("kolbasa", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	    alife():create ("conserva", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	    alife():create ("conserva", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	    alife():create ("conserva", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	    alife():create ("device_torch", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	    alife():create ("detector_simple", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	    alife():create ("wpn_colt1911", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	    alife():create ("ammo_11.43x23_fmj", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	    alife():create ("ammo_11.43x23_fmj", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	    alife():create ("ammo_11.43x23_fmj", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())
-	    alife():create ("military_outfit", actor:position (), actor:level_vertex_id (),	actor:game_vertex_id ())    
+	    alife():create ("bread", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
+	    alife():create ("bread", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
+	    alife():create ("kolbasa", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
+	    alife():create ("kolbasa", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
+	    alife():create ("conserva", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
+	    alife():create ("conserva", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
+	    alife():create ("conserva", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
+	    alife():create ("device_torch", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
+	    alife():create ("detector_simple", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
+	    alife():create ("wpn_colt1911", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
+	    alife():create ("ammo_11.43x23_fmj", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
+	    alife():create ("ammo_11.43x23_fmj", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
+	    alife():create ("ammo_11.43x23_fmj", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
+	    alife():create ("military_outfit", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())    
 	
-    alife():create ("wpn_knife", db.actor:position (), db.actor:level_vertex_id (),	db.actor:game_vertex_id ())
-	alife():create ("wpn_binoc", db.actor:position (), db.actor:level_vertex_id (),	db.actor:game_vertex_id ())
+    alife():create ("wpn_knife", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
+	alife():create ("wpn_binoc", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
 end
