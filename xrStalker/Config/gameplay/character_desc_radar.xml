@@ -679,7 +679,7 @@
   </specific_character>
   
   
-  <specific_character id="rad_monolit_bunker_master" team_default = "1">
+  <specific_character id="rad_monolit_bunkermaster" team_default = "1">
     <name>GENERATE_NAME_stalker</name>
     <icon x="28" y="8"></icon>
     <map_icon x="3" y="0"></map_icon>
