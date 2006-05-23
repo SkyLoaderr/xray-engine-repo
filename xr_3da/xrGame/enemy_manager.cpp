@@ -87,8 +87,8 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 		}
 	}
 
-	if (!visible && m_visible_now)
-		return				(1000.f);
+//	if (!visible && m_visible_now)
+//		return				(1000.f);
 	
 	m_visible_now			= visible;
 
@@ -159,8 +159,17 @@ void CEnemyManager::update					()
 
 	const CEntityAlive			*previous_selected = selected();
 
-	if (!selected() || !m_object->memory().visual().visible_now(selected()) || !selected()->g_Alive())
+	if	(
+			!selected() ||
+			!m_object->memory().visual().visible_now(selected()) ||
+			!selected()->g_Alive()
+		)
 		inherited::update		();
+	else {
+		const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(selected());
+		if (stalker && stalker->wounded())
+			inherited::update	();
+	}
 
 	if (selected() && previous_selected && (selected()->ID() != previous_selected->ID()))
 		on_enemy_change			(previous_selected);
@@ -250,12 +259,20 @@ void CEnemyManager::on_enemy_change						(const CEntityAlive *previous_enemy)
 		return;
 	}
 
-	if (Device.dwTimeGlobal <= (m_last_enemy_change + ENEMY_INERTIA_TIME)) {
-		m_selected				= previous_enemy;
+	if (m_object->memory().visual().visible_now(previous_enemy) && !m_object->memory().visual().visible_now(selected())) {
+		const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(previous_enemy);
+		const CAI_Stalker		*stalker2 = smart_cast<const CAI_Stalker*>(selected());
+		bool					wounded0 = stalker && stalker->wounded();
+		bool					wounded1 = stalker2 && stalker2->wounded();
+		if ((!wounded0 && !wounded1) || (wounded0 && wounded1))
+			m_selected			= previous_enemy;
+		else
+			m_last_enemy_change	= Device.dwTimeGlobal;
+
 		return;
 	}
 
-	if (m_object->memory().visual().visible_now(previous_enemy) && !m_object->memory().visual().visible_now(selected())) {
+	if (Device.dwTimeGlobal <= (m_last_enemy_change + ENEMY_INERTIA_TIME)) {
 		m_selected				= previous_enemy;
 		return;
 	}
