@@ -2,18 +2,6 @@
 
 <game_information_portions>
 
- <info_portion id="encyclopedy_weapons_wpn_groza">
-	<article>weapons1_wpn-groza</article>
- </info_portion>
- <info_portion id="encyclopedy_weapons_wpn_fn2000">
-	<article>weapons1_wpn-fn2000</article>
- </info_portion>
- <info_portion id="encyclopedy_mutant_flesh">
-	<article>mutant_flesh_general</article>
- </info_portion>
- <info_portion id="encyclopedy_levels_escape_safeplace">
- </info_portion>
- 
   <info_portion id="encyclopedy">
   <article>zone_artifact_af-medusa</article>
   <article>zone_artifact_af-cristall-flower</article>
@@ -63,7 +51,6 @@
   <article>zone_locations_yantar</article>
   <article>zone_locations_military-loc</article>
   <article>zone_locations_radar</article>
-  <article>zone_locations_deadcity</article>
   <article>zone_locations_pripiat</article>
   <article>zone_locations_stancia</article>
   <article>mutant_crow_general</article>
@@ -279,10 +266,6 @@
  
    <info_portion id="encyclopedy_zone_locations_radar">
 	<article>zone_locations_radar</article>
- </info_portion>
- 
-   <info_portion id="encyclopedy_zone_locations_deadcity">
-	<article>zone_locations_deadcity</article>
  </info_portion>
  
    <info_portion id="encyclopedy_zone_locations_pripiat">
