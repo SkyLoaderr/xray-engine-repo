@@ -34,6 +34,7 @@
 #include "weapon.h"
 #include "danger_manager.h"
 #include "detail_path_manager.h"
+#include "weaponmagazined.h"
 
 #define DISABLE_COVER_BEFORE_DETOUR
 
@@ -1379,7 +1380,13 @@ void CStalkerActionKillWounded::execute					()
 	if (visible_now) {
 		if (distance < 2.f) {
 			object().movement().set_movement_type	(eMovementTypeStand);
-			object().CObjectHandler::set_goal		(eObjectActionFire1,object().best_weapon(),min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
+			CInventoryItem							*weapon = object().best_weapon();
+			if (object().inventory().m_slots[1].m_pIItem) {
+				CWeaponMagazined					*temp = smart_cast<CWeaponMagazined*>(object().inventory().m_slots[1].m_pIItem);
+				if (temp && temp->can_kill())
+					weapon							= temp;
+			}
+			object().CObjectHandler::set_goal		(eObjectActionFire1,weapon,0,1,1000,1200);
 			return;
 		}
 	}
