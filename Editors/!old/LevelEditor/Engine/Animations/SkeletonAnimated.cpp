@@ -610,6 +610,16 @@ IC void MakeKeysSelected(ConsistantKey *keys, int count)
 	std::sort(keys,keys+count);
 }
 
+/*
+ICF float smooth(float x)
+{
+    float x0	= x*2.f-1.f;
+    float s 	= (x0<0.f)?-1.f:1.f;
+
+    return ((s*pow(_abs(x0),1.f/1.5f))+1.f)/2.f;
+}
+*/
+
 void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
 {
 	u16 SelfID					= bd->GetSelfID();
@@ -719,8 +729,7 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
                     CKey		tmp;
                     total		= S[0].w;
                     tmp			= *S[0].K;
-                    for 		(int cnt=1; cnt<count; cnt++)
-                    {
+                    for 		(int cnt=1; cnt<count; cnt++){
                     	total	+= S[cnt].w;
 						float	d;
 						if (fis_zero(total))	d = 0.0f;
