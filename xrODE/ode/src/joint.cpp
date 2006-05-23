@@ -1449,6 +1449,12 @@ static void contactGetInfo2 (dxJointContact *j, dxJoint::Info2 *info)
       info->cfm[2] = j->contact.surface.slip2;
   }
 }
+const float finit_big_force = 1.e5;
+static void contactSpecialGetInfo2 (dxJointContact *j, dxJoint::Info2 *info)
+{
+	contactGetInfo2(j,info);
+	info->hi[0] = finit_big_force;
+}
 
 
 dxJoint::Vtable __dcontact_vtable = {
@@ -1459,6 +1465,17 @@ dxJoint::Vtable __dcontact_vtable = {
   dJointTypeContact
 #ifdef DE_PADF_INTEGRATION
   ,(dxJoint::addBodiesForces_fn*) contactAddForces
+#endif
+};
+
+dxJoint::Vtable __dcontact_special_vtable = {
+	sizeof(dxJointContact),
+		(dxJoint::init_fn*) contactInit,
+		(dxJoint::getInfo1_fn*) contactGetInfo1,
+		(dxJoint::getInfo2_fn*) contactSpecialGetInfo2,
+		dJointTypeContact
+#ifdef DE_PADF_INTEGRATION
+		,(dxJoint::addBodiesForces_fn*) contactAddForces
 #endif
 };
 

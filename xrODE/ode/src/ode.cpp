@@ -967,8 +967,15 @@ dxJoint * dJointCreateContact (dWorldID w, dJointGroupID group,
   j->contact = *c;
   return j;
 }
-
-
+dxJoint * dJointCreateContactSpecial (dWorldID w, dJointGroupID group,
+							   const dContact *c)
+{
+	dAASSERT (c);
+	dxJointContact *j = (dxJointContact *)
+		createJoint (w,group,&__dcontact_special_vtable);
+	j->contact = *c;
+	return j;
+}
 dxJoint * dJointCreateHinge2 (dWorldID w, dJointGroupID group)
 {
   //dAASSERT (w);

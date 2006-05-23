@@ -145,6 +145,7 @@ dJointAttach
 dJointCreateAMotor
 dJointCreateBall
 dJointCreateContact
+dJointCreateContactSpecial
 dJointCreateFixed
 dJointCreateHinge
 dJointCreateHinge2

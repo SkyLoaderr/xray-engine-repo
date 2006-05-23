@@ -219,7 +219,7 @@ struct dxJointContact : public dxJoint {
   dContact contact;
 };
 extern struct dxJoint::Vtable __dcontact_vtable;
-
+extern struct dxJoint::Vtable __dcontact_special_vtable;
 
 // hinge 2
 

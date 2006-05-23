@@ -118,6 +118,17 @@ bool CPHSkeleton::Spawn(CSE_Abstract *D)
 					obj->PPhysicsShell()->RegisterToCLGroup(gr);
 				}
 			}
+			if(ini&&ini->section_exist("collide_parts"))
+			{
+				if(ini->line_exist("collide_parts","small_object"))
+				{
+					obj->PPhysicsShell()->SetSmall();
+				}
+				if(ini->line_exist("collide_parts","ignore_small_objects"))
+				{
+					obj->PPhysicsShell()->SetIgnoreSmall();
+				}
+			}
 		}
 	}
 	return false;

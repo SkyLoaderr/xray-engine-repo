@@ -461,6 +461,7 @@ const float				DET_CHECK_EPS =0.15f					;
 		Log("determinant- ",d);	\
 		VERIFY2(0,"Is not valid rotational matrix");\
 	}};
+
 #else
 #define	VERIFY_RMATRIX(M)	
 #endif

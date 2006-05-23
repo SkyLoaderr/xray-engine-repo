@@ -242,6 +242,18 @@ void CPHDestroyable::NotificatePart(CPHDestroyableNotificate *dn)
 		imp_transition_factor	=own_ini->r_float("impulse_transition_to_parts","imp_transition_factor");
 		lv_transition_factor	=own_ini->r_float("impulse_transition_to_parts","lv_transition_factor");
 		av_transition_factor	=own_ini->r_float("impulse_transition_to_parts","av_transition_factor");
+
+		if(own_ini->section_exist("collide_parts"))
+		{
+			if(own_ini->line_exist("collide_parts","small_object"))
+			{
+				new_shell->SetSmall();
+			}
+			if(own_ini->line_exist("collide_parts","ignore_small_objects"))
+			{
+				new_shell->SetIgnoreSmall();
+			}
+		}
 	}
 
 	if(new_ini&&new_ini->section_exist("impulse_transition_from_source_bone"))
@@ -313,6 +325,7 @@ void CPHDestroyable::NotificatePart(CPHDestroyableNotificate *dn)
 			ps->SetAutoRemove(1000*(READ_IF_EXISTS(new_ini,r_u32,"autoremove","time",ps->DefaultExitenceTime())));
 		}
 	}
+
 }
 
 void CPHDestroyable::NotificateDestroy(CPHDestroyableNotificate *dn)
