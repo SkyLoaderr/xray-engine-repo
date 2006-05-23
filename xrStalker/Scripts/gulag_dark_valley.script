@@ -753,7 +753,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "[camper@" .. gname .. "_bodyguard_alarm" .. i .. "]\n" ..
                    "path_walk = bodyguard_alarm_walk" .. i .. "\n" ..
                    "path_look = bodyguard_alarm_look" .. i .. "\n" ..
-                   "radius = 9\n" ..
+                   "radius = 10\n" ..
                    "combat_ignore_cond = " .. combat_ignore
     end
 
@@ -779,7 +779,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                 squad = squad, group = groups[i],
                 online = onlineid[i],
                 in_rest = "", out_rest = restr[i],
-                info_restr = irestr[i],
+                --info_restr = irestr[i],
                 predicate = lb_predicate3
             }
             table.insert(sj, t)
@@ -790,7 +790,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                 squad = squad, group = groups[i],
                 online = onlineid[i],
                 in_rest = "", out_rest = restr[i],
-                info_restr = irestr[i],
+                --info_restr = irestr[i],
                 predicate = lb_predicate3
             }
             table.insert(sj, t)
@@ -801,7 +801,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                 squad = squad, group = groups[i],
                 online = onlineid[i],
                 in_rest = "", out_rest = restr[i],
-                info_restr = irestr[i],
+                --info_restr = irestr[i],
                 predicate = lb_predicate3
             }
             table.insert(sj, t)
@@ -814,7 +814,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                        "path_walk = kamp" .. i .. "_alarm_walk" .. j .. "\n" ..
                        "path_look = kamp" .. i .. "_alarm_look" .. j .. "\n" ..
                        "def_state_moving = assault\n" ..
-                       "radius = 7\n" ..
+                       "radius = 8\n" ..
                        --"combat_ignore_cond = {=val_bandits_ci_actor(35)}\n"
                        "combat_ignore_cond = {=fighting_actor =dist_to_actor_ge(35)}, " .. combat_ignore
         end
@@ -1037,7 +1037,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "path_walk = sleeper_alarm_walk" .. i .. "\n" ..
                    "path_look = sleeper_alarm_look" .. i .. "\n" ..
                    "def_state_moving = assault\n" ..
-                   "radius = 6\n" ..
+                   "radius = 8\n" ..
                    --"combat_ignore_cond = {=val_bandits_ci_actor(30)}\n"
                    "combat_ignore_cond = {=fighting_actor =dist_to_actor_ge(30)}, " .. combat_ignore
     end
