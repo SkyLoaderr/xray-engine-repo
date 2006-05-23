@@ -30,6 +30,8 @@
     </info_portion>
     <info_portion id="val_escort_start"></info_portion>
 
+    <info_portion id="val_escort_actor_at_ambush"></info_portion>
+
     <info_portion id="val_escort_combat"></info_portion>
     <info_portion id="val_escort_nap1_start_combat"></info_portion>
     <info_portion id="val_escort_actor_helped"></info_portion>
