@@ -157,21 +157,16 @@ function drop_npc_items(actor, npc, p)
     end
 end
 
-function create_item(actor, npc, p)
+function give_item(actor, npc, p)
     if p[1] then
-        alife():create(p[1],
-                       utils.vector_copy_by_val(npc:position()):add(vector():set(0.5, 0, 0)),
-                       npc:level_vertex_id(),
-                       npc:game_vertex_id())
+        alife():create(p[1], npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
     end
 end
 
-function create_items(actor, npc, p)
-    local pos = utils.vector_copy_by_val(npc:position()):add(vector():set(0.5, 0, 0))
-    local lv_id = npc:level_vertex_id()
-    local gv_id = npc:game_vertex_id()
+function give_items(actor, npc, p)
+    local pos, lv_id, gv_id, npc_id = npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id()
 	for i, v in pairs(p) do
-        alife():create(v, pos, lv_id, gv_id)
+        alife():create(v, pos, lv_id, gv_id, npc_id)
     end
 end
 
