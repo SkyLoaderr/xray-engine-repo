@@ -451,6 +451,10 @@ IC float DET(const Fmatrix &a){
 		a._13 * ( a._21 * a._32 - a._22 * a._31 ) ));
 }
 
+IC bool valid_pos(const Fvector &P,const Fbox &B){
+	return !!B.contains(Fvector().mul(P,1.f/1000.f)) ;
+}
+
 #ifdef DEBUG
 const float				DET_CHECK_EPS =0.15f					;
 #define	VERIFY_RMATRIX(M)	{\
@@ -461,7 +465,6 @@ const float				DET_CHECK_EPS =0.15f					;
 		Log("determinant- ",d);	\
 		VERIFY2(0,"Is not valid rotational matrix");\
 	}};
-
 #else
 #define	VERIFY_RMATRIX(M)	
 #endif
