@@ -11,7 +11,7 @@
 -------------------------------------------------------------------------
 
 -- Оплата долговцем наших услуг по устранению снайпера
-function mil_dolg_payment (stalker, player)
+function mil_dolg_payment (player,stalker)
 	dialogs.relocate_money(stalker, 1500, "in")
 end
 
