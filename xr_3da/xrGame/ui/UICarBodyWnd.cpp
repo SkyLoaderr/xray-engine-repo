@@ -138,6 +138,7 @@ void CUICarBodyWnd::InitCarBody(CInventoryOwner* pOur, CInventoryBox* pInvBox)
 
 	u16 our_id										= smart_cast<CGameObject*>(m_pOurObject)->ID();
 	m_pUICharacterInfoLeft->InitCharacter			(our_id);
+	m_pUIOthersIcon->Show							(false);
 	m_pUICharacterInfoRight->ClearInfo				();
 	m_pUIPropertiesBox->Hide						();
 	EnableAll										();
@@ -156,6 +157,7 @@ void CUICarBodyWnd::InitCarBody(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 	u16 other_id									= smart_cast<CGameObject*>(m_pOthersObject)->ID();
 
 	m_pUICharacterInfoLeft->InitCharacter			(our_id);
+	m_pUIOthersIcon->Show							(true);
 	
 	CBaseMonster *monster = NULL;
 	if(m_pOthersObject) {
