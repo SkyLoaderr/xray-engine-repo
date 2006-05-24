@@ -1153,20 +1153,21 @@ gulags.val_soldiers_raid.job = function(sj, gname, type, squad, groups)
         t = { section = "logic@" .. idstr .. i,
             idle = 0,
             prior = 1, state = {0}, squad = squad, group = groups[1],
-            position_threshold = 10,
+            --position_threshold = 10,
             in_rest = "", out_rest = gname .. "_restr" --, info_rest = ""
         }
         table.insert(sj, t)
 
         -- добавляем описание должности в лтх.
         ltx = ltx.."[logic@" .. idstr .. i .. "]\n" ..
-                   "active = walker@" .. idstr .. i .. "\n" ..
+                   "active = camper@" .. idstr .. i .. "\n" ..
 
-                   "[walker@" .. idstr .. i .. "]\n" ..
+                   "[camper@" .. idstr .. i .. "]\n" ..
                    --"meet                = meet@generic_lager_guard\n" ..
                    "path_walk           = guard_" .. i .. "_walk\n" ..
-                   "def_state_moving1   = patrol\n" ..
-                   "def_state_moving2   = patrol\n"
+                   "def_state_moving    = assault\n" ..
+                   "radius              = 10\n"
+                   --"def_state_moving2   = patrol\n"
 
         if level.patrol_path_exists(idstr .. "_" .. i .. "_look") then
             ltx = ltx.."path_look = guard_" .. i .. "_look\n"
@@ -1192,7 +1193,7 @@ gulags.val_soldiers_raid.job = function(sj, gname, type, squad, groups)
             t = { section = "logic@" .. idstr .. i,
                 idle = 0,
                 prior = 1, state = {1}, squad = squad, group = groups[1],
-                position_threshold = 10,
+                --position_threshold = 10,
                 in_rest = "", out_rest = gname .. "_restr"
             }
             table.insert(sj, t)
