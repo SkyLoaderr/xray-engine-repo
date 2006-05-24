@@ -32,14 +32,13 @@ ref_shader  dbg_draw_sh;
 ref_geom	dbg_draw_gm;
 
 BOOL g_show_wnd_rect = FALSE;
+BOOL g_show_wnd_rect2 = FALSE;
 void add_rect_to_draw(Frect r)
 {
-	if(!g_show_wnd_rect)	return;
-		g_wnds_rects.push_back(r);
+	g_wnds_rects.push_back(r);
 }
 void draw_rect(Frect& r, u32 color)
 {
-	if(!g_show_wnd_rect)	return;
 	if(!dbg_draw_sh){
 		dbg_draw_sh.create("hud\\default","ui\\ui_pop_up_active_back");
 		dbg_draw_gm.create(FVF::F_TL, RCache.Vertex.Buffer(), 0);
@@ -169,6 +168,7 @@ void CUIWindow::Draw()
 		if((*it)->IsShown())
 			(*it)->Draw();
 //.	m_dbg_flag.set(1,FALSE);
+	if(g_show_wnd_rect2)	add_rect_to_draw(GetAbsoluteRect());
 }
 
 void CUIWindow::Draw(float x, float y){
@@ -184,7 +184,7 @@ void CUIWindow::Update()
 
 		Fvector2			temp = GetUICursor()->GetPos();
 		cursor_on_window	= !!GetAbsoluteRect().in(temp);
-		if(cursor_on_window) add_rect_to_draw(GetAbsoluteRect());
+		if(cursor_on_window&&g_show_wnd_rect) add_rect_to_draw(GetAbsoluteRect());
 		// RECEIVE and LOST focus
 		if(m_bCursorOverWindow != cursor_on_window)
 			if(cursor_on_window)

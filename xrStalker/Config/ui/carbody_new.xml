@@ -3,11 +3,11 @@
 <window>
 
 
-	<static_icon x="27" y="22" width="256" height="256">
+	<static_icon x="27" y="22" width="200" height="200">
 		<texture>ui_charinfo_left</texture>
 		<texture_offset x="-11" y="0"/>
 	</static_icon>
-	<static_icon x="800" y="22" width="143" height="199">
+	<static_icon x="800" y="22" width="200" height="200">
 		<texture>ui_charinfo_right</texture>
 	</static_icon>
 
@@ -46,7 +46,7 @@
 		<texture>ui\ui_inv_info_over_b</texture>
 	</descr_static>
 
-	<auto_static x="395" y="461" width="240" height="60">
+	<auto_static x="395" y="461" width="220" height="30">
 		<text font="graffiti22" r="255" g="255" b="255" a="128">Description</text>
 	</auto_static>
 

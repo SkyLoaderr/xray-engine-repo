@@ -27,12 +27,12 @@
 	</progress_bar_armor>
 	
 	<static_weapon x="860" y="692" width="157" height="65">
-		<text complex_mode="0" align="l" x="70" y="0" font="letterica16" r="255" g="255" b="255" a="130"/>
+		<text complex_mode="0" align="c" x="10" y="0" font="letterica16" r="255" g="255" b="255" a="130"/>
 		<texture>ui_hud_frame_patron</texture>
 	</static_weapon>
 	
-	<static_ammo x="82" y="22" width="85" height="30">
-		<text x="0" y="0" font="graffiti32" r="238" g="155" b="23" a="255">Ammo</text>
+	<static_ammo x="75" y="22" width="70" height="30">
+		<text align="c" complex_mode="0" font="graffiti32" r="238" g="155" b="23" a="255">Ammo</text>
 	</static_ammo>
 	
 	<static_wpn_icon x="40" y="37" width="55" height="42" alignment="c">
