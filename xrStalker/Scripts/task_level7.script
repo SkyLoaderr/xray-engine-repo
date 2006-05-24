@@ -95,6 +95,6 @@ function main ()
 	    alife():create ("ammo_11.43x23_hydro", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
 	    alife():create ("exo_outfit", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())    
     
-    alife():create ("wpn_knife", db.actor:position (), db.actor:level_vertex_id (),	db.actor:game_vertex_id ())
-	alife():create ("wpn_binoc", db.actor:position (), db.actor:level_vertex_id (),	db.actor:game_vertex_id ())
+    alife():create ("wpn_knife", db.actor:position (), db.actor:level_vertex_id (),	db.actor:game_vertex_id (), db.actor:id())
+	alife():create ("wpn_binoc", db.actor:position (), db.actor:level_vertex_id (),	db.actor:game_vertex_id (), db.actor:id())
 end
