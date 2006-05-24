@@ -49,10 +49,10 @@ __published:	// IDE-managed Components
 	TLabel *mxLabel1;
 	TMxPanel *paImage;
 	TExtBtn *ebExt;
-	TPanel *paInfo;
-	TBevel *Bevel1;
 	TEdit *edFind;
 	TSplitter *Splitter1;
+	TSplitter *Splitter2;
+	TPanel *paInfo;
     void __fastcall sbSelectClick(TObject *Sender);
     void __fastcall sbCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
