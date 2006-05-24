@@ -28,7 +28,7 @@ class TProperties;
 class XR_EPROPS_API TfrmChoseItem : public TForm
 {
 __published:	// IDE-managed Components
-    TPanel *Panel1;
+	TPanel *paRight;
 	TFormStorage *fsStorage;
 	TPanel *paMulti;
 	TElTree *tvMulti;
@@ -52,6 +52,7 @@ __published:	// IDE-managed Components
 	TPanel *paInfo;
 	TBevel *Bevel1;
 	TEdit *edFind;
+	TSplitter *Splitter1;
     void __fastcall sbSelectClick(TObject *Sender);
     void __fastcall sbCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
