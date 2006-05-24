@@ -2506,16 +2506,6 @@
             <phrase id="13003">
                 <text>mil_leader_start_dialog_13003</text>
             </phrase>
-            <phrase id="6001">
-                <text>mil_leader_start_dialog_6001</text>
-            </phrase>
-            <phrase id="6000">
-                <text></text>
-                <dont_has_info>mil_lukash_delay</dont_has_info>
-                <give_info>mil_lukash_question_already</give_info>
-                <has_info>mil_leader_attach_community</has_info>
-                <next>6001</next>
-            </phrase>
             <phrase id="10011">
                 <text>mil_leader_start_dialog_10011</text>
                 <next>10012</next>
@@ -2575,33 +2565,6 @@
                 <text>mil_leader_start_dialog_7002</text>
                 <next>7003</next>
             </phrase>
-            <phrase id="7004">
-                <text>mil_leader_start_dialog_7004</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>mil_lukash_blockpost</give_info>
-                <give_info>mil_freedom_quests_end</give_info>
-            </phrase>
-            <phrase id="7006">
-                <text>mil_leader_start_dialog_7006</text>
-                <give_info>mil_freedom_quests_end</give_info>
-                <next>7007</next>
-            </phrase>
-            <phrase id="7007">
-                <text>mil_leader_start_dialog_7007</text>
-            </phrase>
-            <phrase id="8000">
-                <text></text>
-                <dont_has_info>mil_lukash_blockpost</dont_has_info>
-                <dont_has_info>mil_lukash_delay</dont_has_info>
-                <has_info>mil_fblockpost_quest_complete</has_info>
-                <has_info>mil_leader_quest2_failed</has_info>
-                <next>8004</next>
-            </phrase>
-            <phrase id="8004">
-                <text>mil_leader_start_dialog_8004</text>
-                <action>dialogs_military.actor_set_freedom</action>
-                <next>8005</next>
-            </phrase>
             <phrase id="8005">
                 <text>mil_leader_start_dialog_8005</text>
                 <give_info>mil_freedom_quests_end</give_info>
@@ -2609,42 +2572,6 @@
             </phrase>
             <phrase id="8006">
                 <text>mil_leader_start_dialog_8006</text>
-            </phrase>
-            <phrase id="9000">
-                <text></text>
-                <dont_has_info>mil_fblockpost_quest_complete</dont_has_info>
-                <dont_has_info>mil_lukash_delay</dont_has_info>
-                <has_info>mil_lukash_blockpost</has_info>
-                <next>9001</next>
-            </phrase>
-            <phrase id="9001">
-                <text>mil_leader_start_dialog_9001</text>
-            </phrase>
-            <phrase id="10000">
-                <text></text>
-                <dont_has_info>mil_lukash_delay</dont_has_info>
-                <give_info>mil_freedom_quests_end</give_info>
-                <has_info>mil_lukash_blockpost</has_info>
-                <has_info>mil_fblockpost_quest_complete</has_info>
-                <has_info>mil_leader_quest2_failed</has_info>
-                <next>10001</next>
-            </phrase>
-            <phrase id="10001">
-                <text>mil_leader_start_dialog_10001</text>
-                <action>dialogs_military.mil_dolg_payment</action>
-                <action>dialogs_military.actor_set_freedom</action>
-            </phrase>
-            <phrase id="11000">
-                <text></text>
-                <dont_has_info>mil_lukash_delay</dont_has_info>
-                <give_info>mil_freedom_quests_end</give_info>
-                <has_info>mil_fblockpost_quest_fail</has_info>
-                <has_info>mil_lukash_blockpost</has_info>
-                <has_info>mil_leader_quest2_failed</has_info>
-                <next>11001</next>
-            </phrase>
-            <phrase id="11001">
-                <text>mil_leader_start_dialog_11001</text>
             </phrase>
             <phrase id="12000">
                 <text></text>
@@ -2655,9 +2582,6 @@
                 <has_info>mil_leader_quest2_failed</has_info>
                 <next>12001</next>
             </phrase>
-            <phrase id="12001">
-                <text>mil_leader_start_dialog_12001</text>
-            </phrase>
             <phrase id="7000">
                 <text></text>
                 <dont_has_info>mil_fblockpost_quest_complete</dont_has_info>
@@ -2666,29 +2590,6 @@
                 <has_info>mil_leader_quest2_failed</has_info>
                 <has_info>mil_leader_quest2_start</has_info>
                 <next>7001</next>
-            </phrase>
-            <phrase id="7001">
-                <text>mil_leader_start_dialog_7001</text>
-                <next>7002</next>
-            </phrase>
-            <phrase id="13000">
-                <text></text>
-                <dont_has_info>mil_mutants_offline</dont_has_info>
-                <dont_has_info>mil_leader_quest2_start</dont_has_info>
-                <has_info>mil_lukash_delay</has_info>
-                <next>13001</next>
-            </phrase>
-            <phrase id="13001">
-                <text>mil_leader_start_dialog_13001</text>
-                <next>13002</next>
-            </phrase>
-            <phrase id="13002">
-                <text>mil_leader_start_dialog_13002</text>
-                <next>30021</next>
-            </phrase>
-            <phrase id="1391">
-                <text>mil_leader_start_dialog_1391</text>
-                <action>dialogs.break_dialog</action>
             </phrase>
             <phrase id="3000">
                 <text></text>
@@ -2708,66 +2609,40 @@
                 <text>mil_leader_start_dialog_3002</text>
                 <next>30021</next>
             </phrase>
+            <phrase id="1500">
+                <text>mil_leader_start_dialog_1500</text>
+                <next>1501</next>
+            </phrase>
+            <phrase id="1501">
+                <text>mil_leader_start_dialog_1501</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>mil_leader_quest2_start</give_info>
+                <give_info>mil_lukash_dolg_task_complete</give_info>
+                <give_info>mil_mutants_offline</give_info>
+            </phrase>
+            <phrase id="13000">
+                <text></text>
+                <dont_has_info>mil_mutants_offline</dont_has_info>
+                <dont_has_info>mil_leader_quest2_start</dont_has_info>
+                <has_info>mil_lukash_delay</has_info>
+                <next>13001</next>
+            </phrase>
+            <phrase id="13002">
+                <text>mil_leader_start_dialog_13002</text>
+                <next>30021</next>
+            </phrase>
             <phrase id="30021">
                 <text>mil_leader_start_dialog_30021</text>
                 <next>1223</next>
             </phrase>
-            <phrase id="4000">
-                <text></text>
-                <dont_has_info>mil_leader_quest2_failed</dont_has_info>
-                <dont_has_info>mil_courier_dead</dont_has_info>
-                <dont_has_info>mil_ara_dead</dont_has_info>
-                <dont_has_info>mil_lukash_delay</dont_has_info>
-                <has_info>mil_leader_quest2_start</has_info>
-                <next>4001</next>
-            </phrase>
-            <phrase id="4001">
-                <text>mil_leader_start_dialog_4001</text>
-            </phrase>
-            <phrase id="5000">
-                <text></text>
-                <dont_has_info>mil_leader_quest2_failed</dont_has_info>
-                <dont_has_info>mil_lukash_delay</dont_has_info>
-                <give_info>mil_leader_quest2_complete</give_info>
-                <has_info>mil_courier_dead</has_info>
-                <has_info>mil_ara_dead</has_info>
-                <has_info>mil_courier_call</has_info>
-                <next>5001</next>
-            </phrase>
-            <phrase id="7003">
-                <text>mil_leader_start_dialog_7003</text>
-                <next>7004</next>
-                <next>7006</next>
-            </phrase>
-            <phrase id="5002">
-                <text>mil_leader_start_dialog_5002</text>
-                <give_info>mil_leader_quest2_complete</give_info>
-                <next>7003</next>
-            </phrase>
-            <phrase id="5001">
-                <text>mil_leader_start_dialog_5001</text>
-                <action>dialogs_military.lukash_payment</action>
-                <next>5002</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1000</next>
-                <next>2000</next>
-                <next>3000</next>
-                <next>4000</next>
-                <next>5000</next>
-                <next>6000</next>
-                <next>7000</next>
-                <next>8000</next>
-                <next>9000</next>
-                <next>10000</next>
-                <next>11000</next>
-                <next>12000</next>
-                <next>13000</next>
-            </phrase>
             <phrase id="1210">
                 <text>mil_leader_start_dialog_1210</text>
                 <next>1221</next>
+            </phrase>
+            <phrase id="1301">
+                <text>mil_leader_start_dialog_1301</text>
+                <disable_info>mil_lukash_delay</disable_info>
+                <next>1500</next>
             </phrase>
             <phrase id="1221">
                 <text>mil_leader_start_dialog_1221</text>
@@ -2788,21 +2663,158 @@
                 <next>1301</next>
                 <next>1391</next>
             </phrase>
-            <phrase id="1301">
-                <text>mil_leader_start_dialog_1301</text>
-                <disable_info>mil_lukash_delay</disable_info>
-                <next>1500</next>
-            </phrase>
-            <phrase id="1500">
-                <text>mil_leader_start_dialog_1500</text>
-                <next>1501</next>
-            </phrase>
-            <phrase id="1501">
-                <text>mil_leader_start_dialog_1501</text>
+            <phrase id="1391">
+                <text>mil_leader_start_dialog_1391</text>
                 <action>dialogs.break_dialog</action>
-                <give_info>mil_leader_quest2_start</give_info>
-                <give_info>mil_lukash_dolg_task_complete</give_info>
-                <give_info>mil_mutants_offline</give_info>
+            </phrase>
+            <phrase id="8000">
+                <text></text>
+                <dont_has_info>mil_lukash_blockpost</dont_has_info>
+                <dont_has_info>mil_lukash_delay</dont_has_info>
+                <has_info>mil_fblockpost_quest_complete</has_info>
+                <has_info>mil_leader_quest2_failed</has_info>
+                <next>8004</next>
+            </phrase>
+            <phrase id="11000">
+                <text></text>
+                <dont_has_info>mil_lukash_delay</dont_has_info>
+                <give_info>mil_freedom_quests_end</give_info>
+                <has_info>mil_fblockpost_quest_fail</has_info>
+                <has_info>mil_lukash_blockpost</has_info>
+                <has_info>mil_leader_quest2_failed</has_info>
+                <next>11001</next>
+            </phrase>
+            <phrase id="11001">
+                <text>mil_leader_start_dialog_11001</text>
+            </phrase>
+            <phrase id="12001">
+                <text>mil_leader_start_dialog_12001</text>
+            </phrase>
+            <phrase id="13001">
+                <text>mil_leader_start_dialog_13001</text>
+                <next>13002</next>
+            </phrase>
+            <phrase id="4000">
+                <text></text>
+                <dont_has_info>mil_leader_quest2_failed</dont_has_info>
+                <dont_has_info>mil_courier_dead</dont_has_info>
+                <dont_has_info>mil_ara_dead</dont_has_info>
+                <dont_has_info>mil_lukash_delay</dont_has_info>
+                <has_info>mil_leader_quest2_start</has_info>
+                <next>4001</next>
+            </phrase>
+            <phrase id="8004">
+                <text>mil_leader_start_dialog_8004</text>
+                <action>dialogs_military.actor_set_freedom</action>
+                <next>8005</next>
+            </phrase>
+            <phrase id="6000">
+                <text></text>
+                <dont_has_info>mil_lukash_delay</dont_has_info>
+                <give_info>mil_lukash_question_already</give_info>
+                <has_info>mil_leader_attach_community</has_info>
+                <next>6001</next>
+            </phrase>
+            <phrase id="6001">
+                <text>mil_leader_start_dialog_6001</text>
+            </phrase>
+            <phrase id="4001">
+                <text>mil_leader_start_dialog_4001</text>
+            </phrase>
+            <phrase id="9001">
+                <text>mil_leader_start_dialog_9001</text>
+            </phrase>
+            <phrase id="9000">
+                <text></text>
+                <dont_has_info>mil_fblockpost_quest_complete</dont_has_info>
+                <dont_has_info>mil_lukash_delay</dont_has_info>
+                <has_info>mil_lukash_blockpost</has_info>
+                <next>9001</next>
+            </phrase>
+            <phrase id="10001">
+                <text>mil_leader_start_dialog_10001</text>
+                <action>dialogs_military.mil_dolg_payment</action>
+                <action>dialogs_military.actor_set_freedom</action>
+            </phrase>
+            <phrase id="10000">
+                <text></text>
+                <dont_has_info>mil_lukash_delay</dont_has_info>
+                <give_info>mil_freedom_quests_end</give_info>
+                <has_info>mil_lukash_blockpost</has_info>
+                <has_info>mil_fblockpost_quest_complete</has_info>
+                <has_info>mil_leader_quest2_failed</has_info>
+                <next>10001</next>
+            </phrase>
+            <phrase id="7001">
+                <text>mil_leader_start_dialog_7001</text>
+                <next>7002</next>
+            </phrase>
+            <phrase id="5001">
+                <text>mil_leader_start_dialog_5001</text>
+                <action>dialogs_military.lukash_payment</action>
+                <next>5002</next>
+            </phrase>
+            <phrase id="14000">
+                <text></text>
+                <dont_has_info>mil_lukash_blockpost</dont_has_info>
+                <has_info>mil_leader_quest2_complete</has_info>
+                <next>14001</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1000</next>
+                <next>2000</next>
+                <next>3000</next>
+                <next>4000</next>
+                <next>5000</next>
+                <next>6000</next>
+                <next>7000</next>
+                <next>8000</next>
+                <next>9000</next>
+                <next>10000</next>
+                <next>11000</next>
+                <next>12000</next>
+                <next>13000</next>
+                <next>14000</next>
+            </phrase>
+            <phrase id="14001">
+                <text>mil_leader_start_dialog_14001</text>
+                <next>5002</next>
+            </phrase>
+            <phrase id="5002">
+                <text>mil_leader_start_dialog_5002</text>
+                <give_info>mil_leader_quest2_complete</give_info>
+                <next>7003</next>
+            </phrase>
+            <phrase id="7003">
+                <text>mil_leader_start_dialog_7003</text>
+                <next>7004</next>
+                <next>7006</next>
+            </phrase>
+            <phrase id="7004">
+                <text>mil_leader_start_dialog_7004</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>mil_lukash_blockpost</give_info>
+                <give_info>mil_freedom_quests_end</give_info>
+            </phrase>
+            <phrase id="7006">
+                <text>mil_leader_start_dialog_7006</text>
+                <give_info>mil_freedom_quests_end</give_info>
+                <next>7007</next>
+            </phrase>
+            <phrase id="7007">
+                <text>mil_leader_start_dialog_7007</text>
+            </phrase>
+            <phrase id="5000">
+                <text></text>
+                <dont_has_info>mil_leader_quest2_failed</dont_has_info>
+                <dont_has_info>mil_lukash_delay</dont_has_info>
+                <dont_has_info>mil_leader_quest2_complete</dont_has_info>
+                <give_info>mil_leader_quest2_complete</give_info>
+                <has_info>mil_courier_dead</has_info>
+                <has_info>mil_ara_dead</has_info>
+                <has_info>mil_courier_call</has_info>
+                <next>5001</next>
             </phrase>
         </phrase_list>
     </dialog>
