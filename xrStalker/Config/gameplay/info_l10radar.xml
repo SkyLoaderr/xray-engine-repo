@@ -143,6 +143,7 @@
 	</info_portion>	
 	
 	<info_portion id="bun_ptr1">
+	        <article>bun_code</article>
 	</info_portion>
 	
 	<info_portion id="bun_ptr2">
