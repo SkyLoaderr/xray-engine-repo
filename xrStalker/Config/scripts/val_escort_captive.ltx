@@ -175,7 +175,7 @@ danger              = danger@val_escort_captive
 [remark@val_escort_captive_wait1]
 anim                = wait_na
 target              = 406 ;logic@val_escort_nap1
-on_info             = {+val_escort_nap1_phrase1_end} remark@val_escort_captive_phrase3 %=create_item(wpn_beretta)% ;:ammo_9x19_fmj:medkit:bandage)%
+on_info             = {+val_escort_nap1_phrase1_end} remark@val_escort_captive_phrase3 %=give_item(wpn_beretta)% ;:ammo_9x19_fmj:medkit:bandage)%
 meet                = meet@ignore_abuse
 danger              = danger@val_escort_captive
 ;wounded             = wounded@val_escort_captive
@@ -226,7 +226,7 @@ danger                  = danger@val_escort_captive_free
 [remark@val_escort_captive_wait2]
 anim                = wait
 target              = 406 ;logic@val_escort_nap1
-on_info             = {+val_escort_nap1_phrase2_end} patrol@val_escort_captive_leave %=create_item(wpn_beretta)% ;:ammo_9x19_fmj:medkit:bandage)%
+on_info             = {+val_escort_nap1_phrase2_end} patrol@val_escort_captive_leave %=give_item(wpn_beretta)% ;:ammo_9x19_fmj:medkit:bandage)%
 meet                = meet@ignore_abuse
 danger              = danger@val_escort_captive_free
 ;wounded             = wounded@val_escort_captive
