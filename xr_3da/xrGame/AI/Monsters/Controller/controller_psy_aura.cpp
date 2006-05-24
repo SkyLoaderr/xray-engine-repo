@@ -1,144 +1,81 @@
 #include "stdafx.h"
 #include "controller_psy_aura.h"
+#include "controller.h"
 #include "../../../actor.h"
-#include "../../../ai_sounds.h"
-#include "../../../xrmessages.h"
-#include "../../../net_utils.h"
-#include "../BaseMonster/base_monster.h"
+#include "../../../level.h"
 
-CPsyAuraController::CPsyAuraController()
+CPPEffectorControllerAura::CPPEffectorControllerAura(const SPPInfo &ppi, u32 time_to_fade)
+: inherited(ppi)
 {
-	set_radius(30.f);
-	set_auto_activate();
-	set_auto_deactivate();
-	m_effector.set_radius(get_radius());
+	m_time_to_fade			= time_to_fade;
+	m_effector_state		= eStateFadeIn;
+	m_time_state_started	= Device.dwTimeGlobal;
+
 }
 
-CPsyAuraController::~CPsyAuraController()
+void CPPEffectorControllerAura::switch_off()
 {
+	m_effector_state		= eStateFadeOut;		
+	m_time_state_started	= Device.dwTimeGlobal;
 }
 
-void CPsyAuraController::reload(LPCSTR section)
+
+BOOL CPPEffectorControllerAura::update()
 {
-	inherited::reload(section, "PsyAura_");
-	
-	m_effector.load(pSettings->r_string(section,"PsyAura_Postprocess_Section"));
-	::Sound->create(m_sound,TRUE, pSettings->r_string(section,"PsyAura_HeadSound"), SOUND_TYPE_WORLD);
+	// update factor
+	if (m_effector_state == eStatePermanent) {
+		m_factor = 1.f;
+	} else {
+		m_factor = float(Device.dwTimeGlobal - m_time_state_started) / float(m_time_to_fade);
+		if (m_effector_state == eStateFadeOut) m_factor = 1 - m_factor;
 
-	power_down_vel = pSettings->r_float(section,"PsyAura_Power_Down_Velocity");
-}
-
-void CPsyAuraController::reinit()
-{
-	inherited::reinit();
-	m_actor				= 0;
-	m_current_radius	= get_radius() + 1.f;
-}
-
-void CPsyAuraController::on_activate()
-{
-	if (m_actor) {
-		if (m_current_radius > get_radius()) m_current_radius = get_radius()-0.05f;
-	}
-}
-
-void CPsyAuraController::on_deactivate()
-{
-}
-
-void CPsyAuraController::schedule_update()
-{
-	inherited::schedule_update();
-	
-	// Падение энергии у врагов
-	if (is_active()) {
-		if (m_actor && !m_sound._feedback()) m_sound.play_at_pos(m_actor,Fvector().set(0,0,0), sm_2D);
-
-		for (ENEMY_VECTOR_IT it = m_enemies.begin(); it != m_enemies.end(); it++) {
-			
-			float				power_percent = (*it)->Position().distance_to(get_object()->Position()) / get_radius();
-
-			Fvector				hit_dir;
-			hit_dir.sub			(get_object()->Position(), (*it)->Position());
-			hit_dir.normalize	();
-
-			get_object()->Hit_Psy	((*it), power_down_vel * power_percent);
-			//get_object()->Hit_Wound	((*it), power_down_vel * power_percent, hit_dir, 0.f);
+		if (m_factor > 1) {
+			m_effector_state	= eStatePermanent;
+			m_factor			= 1.f;
+		} else if (m_factor < 0) {
+			return FALSE;
 		}
 	}
+	return TRUE;
 }
 
-void CPsyAuraController::frame_update() 
-{
-	bool b_updated = false;
-	
-	if (is_active()) {
-		if (m_actor) {
-			
-			m_effector.set_current_dist(m_current_radius);
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
 
-			if (m_current_radius < m_actor->Position().distance_to(get_object()->Position())) 
-				m_current_radius += Device.fTimeDelta * 1.2f;
-			else 
-				m_current_radius -= Device.fTimeDelta * 1.2f;
-			
-			b_updated = true;
+void CControllerAura::update_schedule()
+{
+	if (!m_object->g_Alive()) return;
+
+	
+	bool need_be_active = (Actor()->Position().distance_to(m_object->Position()) < m_object->aura_radius);
+	
+
+	if (active()) {
+		if (!need_be_active) {
+			m_effector->switch_off	();
+			m_effector				= 0;
+		} else {
+			float time_delta = float(time() - m_time_last_update) / 1000.f;
+			m_object->Hit_Psy(Actor(), time_delta * m_object->aura_damage);
+			m_time_last_update = time();
 		}
 	} else {
-		// реализация плавного увядания, если энергия поля закончилась, а актер находится в радиусе
-		if (m_actor) {
-			m_effector.set_current_dist(m_current_radius);
-			m_current_radius += Device.fTimeDelta * 1.2f;
-			b_updated = true;
+		if (need_be_active) {
+			// create effector
+			m_effector = xr_new<CPPEffectorControllerAura>	(m_state, 5000);
+			Actor()->Cameras().AddPPEffector				(m_effector);
+			m_time_last_update								= time();
 		}
 	}
 
-	if (!b_updated) { 
-		m_effector.set_current_dist(get_radius() + 1.f);
+}
+
+void CControllerAura::on_death()
+{
+	if (active()) {
+		m_effector->switch_off	();
+		m_effector				= 0;
 	}
-
-	m_effector.frame_update();
 }
 
-
-//////////////////////////////////////////////////////////////////////////
-// Feel::Touch Routines
-BOOL CPsyAuraController::feel_touch_contact(CObject* O)
-{
-	// реагировать только на актера и на монстров
-	CCustomMonster *monster = smart_cast<CCustomMonster*>(O);
-	if ((O != get_object()) && 
-		(smart_cast<CActor*>(O) || (monster && monster->g_Alive() && get_object()->EnemyMan.is_enemy(monster)))) return TRUE;
-	
-	return FALSE;
-}
-
-void CPsyAuraController::feel_touch_new(CObject* O)
-{
-	m_actor = smart_cast<CActor*>(O);
-
-	ENEMY_VECTOR_IT element = std::find( m_enemies.begin(), m_enemies.end(), O );
-	//VERIFY(element == m_enemies.end());
-	if (element == m_enemies.end())
-		m_enemies.push_back(O);
-}
-
-void CPsyAuraController::feel_touch_delete(CObject* O)
-{
-	if (smart_cast<CActor*>(O)) m_actor = 0;
-
-	ENEMY_VECTOR_IT element = std::find( m_enemies.begin(), m_enemies.end(), O );
-	//VERIFY	(element != m_enemies.end());
-	if (element != m_enemies.end())
-		m_enemies.erase(element);
-}
-//////////////////////////////////////////////////////////////////////////
-
-void CPsyAuraController::on_relcase(CObject *O)
-{
-	if (m_actor == O) m_actor = 0;
-	
-	ENEMY_VECTOR_IT element = std::find( m_enemies.begin(), m_enemies.end(), O );
-	if (element != m_enemies.end())
-		m_enemies.erase(element);
-}

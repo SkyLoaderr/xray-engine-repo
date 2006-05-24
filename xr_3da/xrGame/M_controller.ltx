@@ -202,6 +202,8 @@ velocity_factor		     	= 0.5
 luminocity_factor			= 0.5 				; фактор освещения (только для Актёра)
 transparency_threshold		= 0.25
 
+;-------------------------------------------------------------------------
+
 
 DamagedThreshold		= 0.3
 
@@ -213,15 +215,7 @@ attack_effector			= m_controller_attack_effector
 attack_params			= m_controller_attack_params
 step_params				= m_controller_step_params
 
-jump_factor				= 0.5			
-jump_delay				= 2000	
-jump_min_dist			= 2.0 
-jump_max_dist			= 50.0	
-jump_max_angle			= 0.3
-jump_trace_dist			= 1.0
-
 LegsCount				= 2
-
 damage					= m_controller_damage
 
 psy_hit_damage			= 0.2;
@@ -242,22 +236,16 @@ Friend_Community_Overrides	= monolith
 ;------------------------------------------------------------------------- 
 ; Psy Aura
 ;-------------------------------------------------------------------------
-
-PsyAura_Energy_Restore_Velocity				= 0.10 
-PsyAura_Energy_Aggressive_Restore_Velocity	= 0.10
-PsyAura_Energy_Decline_Velocity				= 0.01 
-PsyAura_Energy_Critical_Value				= 0.1
-PsyAura_Energy_Activate_Value				= 0.9
-
-PsyAura_Postprocess_Section					= controller_aura_pp_effector_section
-
-PsyAura_Power_Down_Velocity = 0.05;0.9
-
 PsyAura_HeadSound			= monsters\controller\controller_control1
-
 PsyAura_SoundLeftPath		= monsters\controller\controller_presence_l
 PsyAura_SoundRightPath		= monsters\controller\controller_presence_r
-PsyAura_Radius				= 30			
+PsyAura_Radius				= 30
+PsyAura_Damage				= 0.02
+
+aura_effector				= controller_aura_pp_effector_section
+
+;------------------------------------------------------------------------- 
+
 
 Control_Hit					= weapons\generic_weapon_controler
 
@@ -348,18 +336,17 @@ ce_power			= 1.5 ;0.7 ; power
 ; Aura PP Effector
 ;=========================================================================================
 [controller_aura_pp_effector_section]
-duality_h		= 0.02
-duality_v		= 0.02
-blur			= 0.4
-gray			= 0.5
-noise_intensity = 0.6
-noise_grain		= 2
+duality_h		= 0.00
+duality_v		= 0.00
+blur			= 0.0
+gray			= 0.6
+noise_intensity = 0.0
+noise_grain		= 1
 noise_fps		= 25
-color_base		= 0.8,0.8,0.8
-color_gray		= 0.6,0.6,0.6
-color_add		= 0.00,0.02,0.07
-radius_min		= 0.01
-radius_max		= 0.8
+color_base		= 0.2,0.2,0.2
+color_gray		= 0.33,0.33,0.33
+color_add		= 0.00,0.00,0.00
+
 
 ;===========================================================================
 ; Attack Animation Parameters

@@ -72,17 +72,22 @@ void CControllerAnimation::on_event(ControlCom::EEventType type, ControlCom::IEv
 
 void CControllerAnimation::update_frame()
 {
-	if (m_controller->m_mental_state == CController::eStateIdle) {
-		inherited::update_frame();
-		return;
-	}
 	
-	if (is_moving()) set_path_direction();
+	inherited::update_frame();
+	return;
+
 	
-	select_legs_animation	();	
-	select_torso_animation	();	
-	
-	select_velocity			();
+	//if (m_controller->m_mental_state == CController::eStateIdle) {
+	//	inherited::update_frame();
+	//	return;
+	//}
+	//
+	//if (is_moving()) set_path_direction();
+	//
+	//select_legs_animation	();	
+	//select_torso_animation	();	
+	//
+	//select_velocity			();
 }
 
 void CControllerAnimation::load()
@@ -277,8 +282,10 @@ CControllerAnimation::SPathRotations CControllerAnimation::get_path_rotation(flo
 
 void CControllerAnimation::set_body_state(ETorsoActionType torso, ELegsActionType legs)
 {
-	m_current_legs_action		= legs;
-	m_current_torso_action		= torso;
+	m_current_legs_action		= CControllerAnimation::eLegsTypeStealMotion;
+	m_current_torso_action		= CControllerAnimation::eTorsoSteal;
+	//m_current_legs_action		= legs;
+	//m_current_torso_action		= torso;
 }
 
 bool CControllerAnimation::is_moving()

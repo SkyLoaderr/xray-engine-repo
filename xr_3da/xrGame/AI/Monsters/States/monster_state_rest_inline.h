@@ -20,6 +20,7 @@
 #define CStateMonsterRestAbstract CStateMonsterRest<_Object>
 
 #define TIME_DELAY_FUN	20000
+#define TIME_IDLE		10000
 
 TEMPLATE_SPECIALIZATION
 CStateMonsterRestAbstract::CStateMonsterRest(_Object *obj) : inherited(obj)
@@ -46,6 +47,7 @@ void CStateMonsterRestAbstract::initialize()
 	inherited::initialize	();
 
 	time_last_fun			= 0;
+	time_idle_selected		= Random.randI(2) ? 0 : time();
 	object->anomaly_detector().activate();
 }
 
@@ -113,31 +115,12 @@ void CStateMonsterRestAbstract::execute()
 				} 
 
 				if (!use_squad) {
-					bool bNormalSatiety =	(object->GetSatiety() > object->db().satiety_threshold); 
-					
-
-
-					bool state_fun = false;
-
-					//if (prev_substate == eStateRest_Fun) {
-					//	if (!get_state(eStateRest_Fun)->check_completion()) 
-					//		state_fun = true;
-					//} else {
-					//	if (get_state(eStateRest_Fun)->check_start_conditions() && (time_last_fun + TIME_DELAY_FUN < Device.dwTimeGlobal)) 
-					//		state_fun = true;
-					//}
-
-					if (state_fun) {
-						select_state	(eStateRest_Fun);
-					} else {
-						if (bNormalSatiety) {
-							select_state	(eStateRest_Idle);
-						} else {
-							select_state	(eStateRest_WalkGraphPoint);
-						}
+					if (time_idle_selected + TIME_IDLE > time()) 			select_state	(eStateRest_Idle);
+					else if (time_idle_selected + TIME_IDLE * 2 > time()) 	select_state	(eStateRest_WalkGraphPoint);
+					else {
+						time_idle_selected	= time();
+						select_state		(eStateRest_Idle);
 					}
-
-					if ((prev_substate == eStateRest_Fun) && (current_substate != prev_substate)) time_last_fun = Device.dwTimeGlobal;
 				}
 			}
 		}

@@ -7,6 +7,7 @@ class CControllerAnimation;
 class CControllerDirection;
 class SndShockEffector;
 class CControllerPsyHit;
+class CControllerAura;
 
 class CController : public CBaseMonster {
 	typedef		CBaseMonster	inherited;
@@ -35,13 +36,19 @@ class CController : public CBaseMonster {
 
 	
 	//////////////////////////////////////////////////////////////////////////
+	// PsyAura
+	CControllerAura		*m_aura;
+	
 	struct SAuraSound {
 		ref_sound	left;
 		ref_sound	right;
 	} aura_sound;
 	SAuraSound		*current_aura_sound;
 	
+
+public:	
 	float			aura_radius;
+	float			aura_damage;
 
 	//////////////////////////////////////////////////////////////////////////
 

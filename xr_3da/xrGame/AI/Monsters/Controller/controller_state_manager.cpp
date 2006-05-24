@@ -19,6 +19,7 @@
 #include "../states/monster_state_hear_int_sound.h"
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
+#include "../states/monster_state_attack.h"
 
 #include "../../../entitycondition.h"
 
@@ -27,18 +28,20 @@
 CStateManagerController::CStateManagerController(CController *obj) : inherited(obj)
 {
 	add_state(eStateRest,					xr_new<CStateMonsterRest<CController> >					(obj));
-	add_state(eStatePanic,					xr_new<CStateMonsterPanic<CController> >					(obj));
+	add_state(eStatePanic,					xr_new<CStateMonsterPanic<CController> >				(obj));
 	add_state(eStateHearInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CController> >	(obj));
 	add_state(eStateHearDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CController> >	(obj));
 	add_state(eStateHitted,					xr_new<CStateMonsterHitted<CController> >				(obj));
+	
+	add_state(eStateAttack,					xr_new<CStateMonsterAttack<CController> >				(obj));
 
-	add_state(
-		eStateAttack, 
-		xr_new<CStateControllerAttack<CController> > (obj,
-			xr_new<CStateMonsterAttackRun<CController> >(obj), 
-			xr_new<CStateMonsterAttackMelee<CController> >(obj)
-		)
-	);
+	//add_state(
+	//	eStateAttack, 
+	//	xr_new<CStateControllerAttack<CController> > (obj,
+	//		xr_new<CStateMonsterAttackRun<CController> >(obj), 
+	//		xr_new<CStateMonsterAttackMelee<CController> >(obj)
+	//	)
+	//);
 
 	add_state(eStateEat,		xr_new<CStateMonsterEat<CController> >(obj));
 	add_state(eStateCustom,		xr_new<CStateControlHide<CController> >(obj));

@@ -10,6 +10,7 @@ protected:
 	typedef CState<_Object>*	state_ptr;
 
 	u32					time_last_fun;	
+	u32					time_idle_selected;
 
 public:
 						CStateMonsterRest		(_Object *obj);
