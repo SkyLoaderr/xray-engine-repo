@@ -976,7 +976,7 @@ function gulag:beginJob( obj_id )
 		self:setup_logic( obj, job.section )
 	end
 
-	self.smrttrn:call_spawner()
+	self.smrttrn:call_respawn()
 end
 
 -- установить серверному объекту персонажа упраление переключения онлайн/офлайн

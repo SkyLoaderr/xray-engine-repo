@@ -333,7 +333,7 @@ function se_smart_terrain:read_params()
 	gp.duration_min, gp.duration_max  = r_2nums( ini, sect, "duration",   10000, 10001 )
 	gp.stay_min,     gp.stay_max      = smart_terrain_params.get_stay_time_interval( r_str( ini, sect, "stay", "default" ) )
 
-	gp.spawner     = r_str ( ini, sect, "spawner" )
+	gp.respawn     = r_str ( ini, sect, "respawn" )
 
 --	printf( "gp.stay_min=%d, gp.stay_max=%d", gp.stay_min * h2ms, gp.stay_max * h2ms )
 
@@ -822,9 +822,9 @@ function se_smart_terrain:on_unregister()
 end
 
 -- вызвать спавнер, если настроен.
-function se_smart_terrain:call_spawner()
-	if self.gparams.spawner then
-		se_respawn.spawn( self.gparams.spawner )
+function se_smart_terrain:call_respawn()
+	if self.gparams.respawn then
+		se_respawn.spawn( self.gparams.respawn )
 	end
 end
 
