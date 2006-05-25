@@ -10,7 +10,7 @@
 
     <!-------------------------------- Army ----------------------------->
 
-    <article id="social_military_army" name="Army" group="Social/Military">
+    <article id="social_military_army" name="Army" group="Social">
         <texture x="768" y="128" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_military_army</text>
     </article>
@@ -18,7 +18,7 @@
 
     <!---------------------------- Milstalkers -------------------------->
 
-    <article id="social_military_milstalkers" name="Milstalkers" group="Social/Military">
+    <article id="social_military_milstalkers" name="Milstalkers" group="Social">
         <texture x="256" y="256" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_military_milstalkers</text>
     </article>
@@ -30,14 +30,14 @@
 
     <!--------------------------- Mobile-labs --------------------------->
 
-    <article id="social_scientists_mobile-labs" name="Mobile-labs" group="Social/Scientists">
+    <article id="social_scientists_mobile-labs" name="Mobile-labs" group="Social">
         <texture x="256" y="0" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_scientists_mobile-labs</text>
     </article>
     
     <!--------------------------- Mobile-groups --------------------------->
 
-    <article id="social_scientists_mobile-groups" name="Mobile-groups" group="Social/Scientists">
+    <article id="social_scientists_mobile-groups" name="Mobile-groups" group="Social">
         <texture x="640" y="256" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_scientists_mobile-groups</text>
     </article>
@@ -50,7 +50,7 @@
 
     <!--------------------------- Duty --------------------------->
 
-    <article id="social_stalker-clans_duty" name="Duty" group="Social/Stalker-clans">
+    <article id="social_stalker-clans_duty" name="Duty" group="Social">
         <texture x="512" y="128" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_stalker-clans_duty</text>
     </article>
@@ -58,14 +58,14 @@
 
     <!--------------------------- Freedom --------------------------->
 
-    <article id="social_stalker-clans_freedom" name="Freedom" group="Social/Stalker-clans">
+    <article id="social_stalker-clans_freedom" name="Freedom" group="Social">
         <texture x="640" y="128" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_stalker-clans_freedom</text>
     </article>
 
     <!--------------------------- Monolith --------------------------->
 
-    <article id="social_stalker-clans_monolith" name="Monolith" group="Social/Stalker-clans">
+    <article id="social_stalker-clans_monolith" name="Monolith" group="Social">
         <texture x="384" y="128" width="128" height="128">ui\ui_icons_npc</texture>
         <text>enc_social_stalker-clans_monolith</text>
     </article>
