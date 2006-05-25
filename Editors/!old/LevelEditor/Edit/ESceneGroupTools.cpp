@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "GroupObject.h"
 #include "ChoseForm.h"
+#include "EThumbnail.h"
 
 void ESceneGroupTools::CreateControls()
 {
@@ -199,7 +200,7 @@ void ESceneGroupTools::SaveSelectedObject()
         }else{
             xr_string fn;
             if (EFS.GetSaveName(_groups_,fn)){
-                IWriter* W 	= FS.w_open(fn.c_str());
+                IWriter* W 		= FS.w_open(fn.c_str());
                 if (W){
 	                obj->Save	(*W);
     	            FS.w_close	(W);
@@ -216,17 +217,60 @@ void ESceneGroupTools::SaveSelectedObject()
 
 void ESceneGroupTools::SetCurrentObject(LPCSTR nm)
 {
-	m_CurrentObject			= nm;
-	TfraGroup* frame		=(TfraGroup*)pFrame;
-    frame->lbCurrent->Caption = m_CurrentObject.c_str();
+	m_CurrentObject				= nm;
+	TfraGroup* frame			=(TfraGroup*)pFrame;
+    frame->lbCurrent->Caption 	= m_CurrentObject.c_str();
 }
 //----------------------------------------------------
 
 void ESceneGroupTools::OnActivate()
 {
-	inherited::OnActivate	();
-	TfraGroup* frame		=(TfraGroup*)pFrame;
-    frame->lbCurrent->Caption = m_CurrentObject.c_str();
+	inherited::OnActivate		();
+	TfraGroup* frame			= (TfraGroup*)pFrame;
+    frame->lbCurrent->Caption 	= m_CurrentObject.c_str();
+}
+//----------------------------------------------------
+
+void ESceneGroupTools::MakeThumbnail()
+{
+	if (SelectionCount(true)==1){
+	    CGroupObject* object		= 0;
+        for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+        	if ((*it)->Selected()){
+	            object				= dynamic_cast<CGroupObject*>(*it); 
+                break;
+            }
+        }
+        VERIFY						(object);
+        object->Select				(false);
+        // save render params
+        Flags32 old_flag			= 	psDeviceFlags;
+        // set render params
+        psDeviceFlags.set			(rsStatistic|rsDrawGrid,FALSE);
+
+        U32Vec pixels;
+        u32 w=512,h=512;
+        if (Device.MakeScreenshot	(pixels,w,h)){
+            AnsiString tex_name		= ChangeFileExt(object->Name,".thm");
+            SStringVec lst;
+            for (ObjectIt it=object->GetObjects().begin(); it!=object->GetObjects().end(); it++)
+                lst.push_back		((*it)->Name);
+            EGroupThumbnail 		tex	(tex_name.c_str(),false);
+            tex.CreateFromData		(pixels.begin(),w,h,lst);
+            xr_string fn;
+            FS.update_path			(fn,_groups_,object->RefName());
+            fn						+= ".group";
+            tex.Save				(FS.get_file_age(fn.c_str()));
+        }else{
+            ELog.DlgMsg				(mtError,"Can't make screenshot.");
+        }
+        object->Select				(true);
+
+        // restore render params
+        psDeviceFlags 				= old_flag;
+    }else{
+    	ELog.DlgMsg		(mtError,"Select 1 GroupObject.");
+    }
 }
 //----------------------------------------------------
 

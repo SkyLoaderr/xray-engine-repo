@@ -39,6 +39,12 @@ void __fastcall TfraGroup::ebMakeGroupClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraGroup::ebMakeThumbnailClick(TObject *Sender)
+{
+    ParentTools->MakeThumbnail	();
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraGroup::ebUngroupClick(TObject *Sender)
 {
     ParentTools->UngroupObjects	();
@@ -71,8 +77,9 @@ void __fastcall TfraGroup::ebAlignToObjectClick(TObject *Sender)
 
 void __fastcall TfraGroup::ebSelectClick(TObject *Sender)
 {
-	LPCSTR nm;
-    if (TfrmChoseItem::SelectItem(smGroup,nm,1))
+	LPCSTR 		nm;
+    xr_string N	= lbCurrent->Caption.c_str();
+    if (TfrmChoseItem::SelectItem(smGroup,nm,1,N.c_str()))
         ParentTools->SetCurrentObject(nm);	
 }
 //---------------------------------------------------------------------------
@@ -170,6 +177,7 @@ void TfraGroup::SelByRefObject( bool flag )
     }
 }
 //---------------------------------------------------------------------------
+
 
 
 

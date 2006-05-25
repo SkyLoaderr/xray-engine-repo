@@ -52,6 +52,7 @@ class CLevelTools: public CToolsCustom{
 public:
     float 				fFogness;
     u32					dwFogColor;
+    xr_string			m_LastSelectionName;
 public:
                     	CLevelTools			();
     virtual         	~CLevelTools		();

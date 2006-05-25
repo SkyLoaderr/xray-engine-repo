@@ -49,6 +49,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebOpen;
 	TExtBtn *ebClose;
 	TExtBtn *ebReloadRefs;
+	TExtBtn *ebMakeThumbnail;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ebMakeGroupClick(TObject *Sender);
@@ -65,6 +66,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebOpenClick(TObject *Sender);
 	void __fastcall ebCloseClick(TObject *Sender);
 	void __fastcall ebReloadRefsClick(TObject *Sender);
+	void __fastcall ebMakeThumbnailClick(TObject *Sender);
 private:	// User declarations
 	ESceneGroupTools* ParentTools;
 	void 			SelByRefObject		( bool flag );

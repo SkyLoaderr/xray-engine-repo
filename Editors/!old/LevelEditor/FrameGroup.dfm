@@ -4,7 +4,7 @@ object fraGroup: TfraGroup
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
-  ClientHeight = 321
+  ClientHeight = 347
   ClientWidth = 217
   Color = 10528425
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object fraGroup: TfraGroup
     Left = 0
     Top = 0
     Width = 217
-    Height = 66
+    Height = 81
     Align = alTop
     ParentColor = True
     TabOrder = 0
@@ -172,10 +172,29 @@ object fraGroup: TfraGroup
       ParentFont = False
       OnClick = ebReloadRefsClick
     end
+    object ebMakeThumbnail: TExtBtn
+      Left = 2
+      Top = 64
+      Width = 107
+      Height = 15
+      Align = alNone
+      AllowAllUp = True
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      Caption = 'Make Thumbnail'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      OnClick = ebMakeThumbnailClick
+    end
   end
   object paCurrentObject: TPanel
     Left = 0
-    Top = 66
+    Top = 81
     Width = 217
     Height = 51
     Align = alTop
@@ -234,7 +253,7 @@ object fraGroup: TfraGroup
   end
   object Panel2: TPanel
     Left = 0
-    Top = 163
+    Top = 178
     Width = 217
     Height = 51
     Align = alTop
@@ -293,7 +312,7 @@ object fraGroup: TfraGroup
   end
   object paSelectObject: TPanel
     Left = 0
-    Top = 117
+    Top = 132
     Width = 217
     Height = 46
     Align = alTop

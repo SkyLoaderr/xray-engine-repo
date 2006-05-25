@@ -40,6 +40,8 @@ public:
 	void 				CenterToGroup			();
     void 				AlignToObject			();
 
+    void 				MakeThumbnail			();
+
     void 				SaveSelectedObject		();
     void 				ReloadRefsSelectedObject();
     void 				SetCurrentObject		(LPCSTR nm);

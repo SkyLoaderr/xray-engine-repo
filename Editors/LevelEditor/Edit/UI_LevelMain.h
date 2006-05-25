@@ -81,7 +81,7 @@ class CLevelMain: public TUI{
     virtual void 	RealQuit				();
 
 public:
-    C3DCursor*   m_Cursor;
+    C3DCursor*   	m_Cursor;
 public:
     				CLevelMain 				();
     virtual 		~CLevelMain				();

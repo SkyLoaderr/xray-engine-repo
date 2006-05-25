@@ -256,7 +256,8 @@ CCommandVar CommandClear(CCommandVar p1, CCommandVar p2)
         Device.m_Camera.Reset	();
         Scene->Reset			();
         Scene->m_LevelOp.Reset	();
-        Tools->m_LastFileName 	= "";
+        Tools->m_LastFileName 		= "";
+        LTools->m_LastSelectionName = "";
         Scene->UndoClear		();
         ExecCommand				(COMMAND_UPDATE_CAPTION);
         ExecCommand				(COMMAND_CHANGE_TARGET,OBJCLASS_SCENEOBJECT);
@@ -368,8 +369,11 @@ CCommandVar CommandPaste(CCommandVar p1, CCommandVar p2)
 CCommandVar CommandLoadSelection(CCommandVar p1, CCommandVar p2)
 {
     if( !Scene->locked() ){
-        xr_string fn;
+        xr_string fn			= LTools->m_LastSelectionName;
         if( EFS.GetOpenName( _maps_, fn ) ){
+        	LPCSTR maps_path	= FS.get_path(_maps_)->m_Path;
+        	if (fn.c_str()==strstr(fn.c_str(),maps_path))
+		        LTools->m_LastSelectionName = fn.c_str()+xr_strlen(maps_path);
             UI->SetStatus		("Fragment loading...");
             Scene->LoadSelection(0,fn.c_str());
             UI->ResetStatus		();
@@ -387,8 +391,11 @@ CCommandVar CommandLoadSelection(CCommandVar p1, CCommandVar p2)
 CCommandVar CommandSaveSelection(CCommandVar p1, CCommandVar p2)
 {
     if( !Scene->locked() ){
-        xr_string fn;
+        xr_string fn			= LTools->m_LastSelectionName;
         if( EFS.GetSaveName		( _maps_, fn ) ){
+        	LPCSTR maps_path	= FS.get_path(_maps_)->m_Path;
+        	if (fn.c_str()==strstr(fn.c_str(),maps_path))
+		        LTools->m_LastSelectionName = fn.c_str()+xr_strlen(maps_path);
             UI->SetStatus		("Fragment saving...");
             Scene->SaveSelection(LTools->CurrentClassID(),0,fn.c_str());
             UI->ResetStatus		();

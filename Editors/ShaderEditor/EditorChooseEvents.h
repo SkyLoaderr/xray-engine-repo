@@ -88,19 +88,15 @@ void __stdcall  FillGroup(ChooseItemVec& items, void* param)
 }
 void __stdcall  SelectGroup(SChooseItem* item, PropItemVec& info_items)
 {
-/*
-	EObjectThumbnail* thm			= xr_new<EObjectThumbnail>(*item->name);
+	EGroupThumbnail* thm			= xr_new<EGroupThumbnail>(*item->name);
     if (thm->Valid()) thm->FillInfo	(info_items);
     xr_delete						(thm);
-*/
 }
 void __stdcall  DrawGroupTHM(LPCSTR name, HDC hdc, const Irect& r)
 {
-/*
-	EObjectThumbnail* thm			= xr_new<EObjectThumbnail>(name);
+	EGroupThumbnail* thm			= xr_new<EGroupThumbnail>(name);
     if (thm->Valid()) thm->Draw		(hdc,r);
     xr_delete						(thm);
-*/
 }
 //---------------------------------------------------------------------------
 void __stdcall  FillVisual(ChooseItemVec& items, void* param)
