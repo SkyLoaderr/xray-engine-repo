@@ -2100,6 +2100,9 @@
 						RelativePath=".\Config\scripts\bar_arena_door3.ltx">
 					</File>
 					<File
+						RelativePath=".\Config\scripts\bar_arena_manager.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\bar_arena_spam.ltx">
 					</File>
 					<File
