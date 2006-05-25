@@ -645,7 +645,7 @@ function check_state (gulag)
           -- поскольку вопрос об отношении к актеру решаться не собирается, то выход будет именно таким.
           if gulag:npc_is_enemy_to_anybody (db.actor) == true then
              relation_registry.set_community_goodwill ("freedom", db.actor:id (), -5000)
-             --xr_gulag.setGulagGoodwill ("mil_freedom", -5000, db.actor)
+             xr_gulag.setGulagRelation ("mil_freedom", game_object.enemy, db.actor)
           end   
           return 2
        else
@@ -661,6 +661,7 @@ function check_state (gulag)
           -- поскольку вопрос об отношении к актеру решаться не собирается, то выход будет именно таким.
           if gulag:npc_is_enemy_to_anybody (db.actor) == true then
              relation_registry.set_community_goodwill ("freedom", db.actor:id (), -5000)
+             xr_gulag.setGulagRelation ("mil_freedom", game_object.enemy, db.actor)
              --xr_gulag.setGulagGoodwill ("mil_freedom", -5000, db.actor)
           end   
           return 2
