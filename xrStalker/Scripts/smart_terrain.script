@@ -300,7 +300,6 @@ end
 
 -- инициализация.
 -- чтение custom data.
--- TODO вызывать из on_register
 function se_smart_terrain:read_params()
 	local ini  = self:spawn_ini()
 	local sect = "smart_terrain"
@@ -333,6 +332,8 @@ function se_smart_terrain:read_params()
 	gp.idle_min,     gp.idle_max      = r_2nums( ini, sect, "idle",       0,     0 )
 	gp.duration_min, gp.duration_max  = r_2nums( ini, sect, "duration",   10000, 10001 )
 	gp.stay_min,     gp.stay_max      = smart_terrain_params.get_stay_time_interval( r_str( ini, sect, "stay", "default" ) )
+
+	gp.spawner     = r_str ( ini, sect, "spawner" )
 
 --	printf( "gp.stay_min=%d, gp.stay_max=%d", gp.stay_min * h2ms, gp.stay_max * h2ms )
 
@@ -818,6 +819,13 @@ function se_smart_terrain:on_unregister()
 	cse_alife_smart_zone.on_unregister( self )
 
 	smart_terrains[self:get_level_name()][self.id] = nil
+end
+
+-- вызвать спавнер, если настроен.
+function se_smart_terrain:call_spawner()
+	if self.gparams.spawner then
+		se_respawn.spawn( self.gparams.spawner )
+	end
 end
 
 -- возвращает строку с принимаемыми группировками и рангами

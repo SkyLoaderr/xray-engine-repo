@@ -948,6 +948,7 @@ end
 -- вызывается когда персонаж достиг места работы.
 -- установка времени начала работы.
 -- если в онлайне, то настройка логики и рестрикторов.
+-- вызвать спавнер.
 function gulag:beginJob( obj_id )
 	local job = self.Job[self.ObjectJob[obj_id]]
 	printf( "[smart_terrain %s] gulag: beginJob: obj=%s job=%d %s", self.name, self.npc_info[obj_id].name, job.num, job.section )
@@ -974,6 +975,8 @@ function gulag:beginJob( obj_id )
 		self:set_restrictions( obj, job.out_rest, job.in_rest, job.info_rest )
 		self:setup_logic( obj, job.section )
 	end
+
+	self.smrttrn:call_spawner()
 end
 
 -- установить серверному объекту персонажа упраление переключения онлайн/офлайн
