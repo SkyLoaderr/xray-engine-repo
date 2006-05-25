@@ -121,14 +121,17 @@ void CLevel::ClientSave	()
 	}
 }
 
-extern		 float		phTimefactor;
+extern		float		phTimefactor;
+extern		BOOL		g_SV_Disable_Auth_Check;
+
 void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
 	// optimize the case when server located in our memory
 	if (Server && game_configured && OnServer()){
 		Server->OnMessage	(P,Game().local_svdpnid	);
 	}else											IPureClient::Send	(P,dwFlags,dwTimeout	);
-	if (g_pGameLevel && Level().game && GameID() != GAME_SINGLE)		{
+
+	if (g_pGameLevel && Level().game && GameID() != GAME_SINGLE && !g_SV_Disable_Auth_Check)		{
 		// anti-cheat
 		phTimefactor		= 1.f					;
 		psDeviceFlags.set	(rsConstantFPS,FALSE)	;	
