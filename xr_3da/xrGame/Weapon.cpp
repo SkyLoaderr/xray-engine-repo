@@ -382,6 +382,11 @@ void CWeapon::Load		(LPCSTR section)
 	m_bHideCrosshairInZoom = true;
 	if(pSettings->line_exist(hud_sect, "zoom_hide_crosshair"))
 		m_bHideCrosshairInZoom = !!pSettings->r_bool(hud_sect, "zoom_hide_crosshair");	
+
+	//////////////////////////////////////////////////////////
+
+	m_bHasTracers = READ_IF_EXISTS(pSettings, r_bool, section, "tracers", true);
+	m_u8TracerColorID = READ_IF_EXISTS(pSettings, r_u8, section, "tracers_color_ID", u8(-1));
 }
 
 void CWeapon::LoadFireParams		(LPCSTR section, LPCSTR prefix)
@@ -441,11 +446,6 @@ BOOL CWeapon::net_Spawn		(CSE_Abstract* DC)
 	m_DefaultCartridge.Load(*m_ammoTypes[m_ammoType]);
 	if(iAmmoElapsed) 
 	{
-//		CCartridge l_cartridge; 
-//		l_cartridge.Load(*m_ammoTypes[m_ammoType]);
-//		m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
-//		for(int i = 0; i < iAmmoElapsed; ++i) 
-//			m_magazine.push(l_cartridge);
 		m_fCurrentCartirdgeDisp = m_DefaultCartridge.m_kDisp;
 		for(int i = 0; i < iAmmoElapsed; ++i) 
 			m_magazine.push(m_DefaultCartridge);

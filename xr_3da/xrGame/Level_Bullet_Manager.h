@@ -45,6 +45,8 @@ struct SBullet
 	float			max_dist			;			// maxdist*cartridge
 	float			pierce				;
 	float			wallmark_size		;
+	//-------------------------------------------------------------------
+	u8				m_u8ColorID			;
 	
 	//тип наносимого хита
 	ALife::EHitType hit_type			;

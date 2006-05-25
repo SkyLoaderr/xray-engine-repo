@@ -35,6 +35,7 @@ void CCartridge::Load(LPCSTR section)
 	m_kImpulse				= pSettings->r_float(section, "k_impulse");
 	m_kPierce				= pSettings->r_float(section, "k_pierce");
 	m_kAP					= READ_IF_EXISTS(pSettings, r_float, section, "k_ap", 0.0f);
+	m_u8ColorID				= READ_IF_EXISTS(pSettings, r_u8, section, "tracer_color_ID", 0);
 	
 	if (pSettings->line_exist(section, "k_air_resistance"))
 		m_kAirRes				=  pSettings->r_float(section, "k_air_resistance");
@@ -80,6 +81,8 @@ void CWeaponAmmo::Load(LPCSTR section)
 	m_kImpulse				= pSettings->r_float(section, "k_impulse");
 	m_kPierce				= pSettings->r_float(section, "k_pierce");
 	m_kAP					= READ_IF_EXISTS(pSettings, r_float, section, "k_ap", 0.0f);
+	m_u8ColorID				= READ_IF_EXISTS(pSettings, r_u8, section, "tracer_color_ID", 0);
+
 	if (pSettings->line_exist(section, "k_air_resistance"))
 		m_kAirRes				=  pSettings->r_float(section, "k_air_resistance");
 	else
@@ -171,6 +174,7 @@ bool CWeaponAmmo::Get(CCartridge &cartridge)
 	cartridge.m_kPierce = m_kPierce;
 	cartridge.m_kAP = m_kAP;
 	cartridge.m_kAirRes = m_kAirRes;
+	cartridge.m_u8ColorID = m_u8ColorID;
 	cartridge.m_flags.set(CCartridge::cfTracer ,m_tracer);
 	cartridge.m_buckShot = m_buckShot;
 	cartridge.m_impair = m_impair;

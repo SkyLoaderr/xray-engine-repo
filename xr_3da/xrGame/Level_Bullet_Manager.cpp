@@ -60,6 +60,7 @@ void SBullet::Init(const Fvector& position,
 	ap					= cartridge.m_kAP;
 	air_resistance		= cartridge.m_kAirRes;
 	wallmark_size		= cartridge.fWallmarkSize;
+	m_u8ColorID			= cartridge.m_u8ColorID;
 
 	bullet_material_idx = cartridge.bullet_material_idx;
 	VERIFY			(u16(-1)!=bullet_material_idx);
@@ -69,7 +70,7 @@ void SBullet::Init(const Fvector& position,
 	flags.explosive						= !!cartridge.m_flags.test(CCartridge::cfExplosive);
 	flags.skipped_frame					= 0;
 
-	targetID			= 0;
+	targetID			= 0;	
 }
 
 //////////////////////////////////////////////////////////
@@ -334,10 +335,10 @@ void CBulletManager::Render	()
 	u32	vOffset			=	0	;
 	u32 bullet_num		=	m_BulletsRendered.size();
 
-	FVF::V	*verts		=	(FVF::V	*) RCache.Vertex.Lock((u32)bullet_num*8,
+	FVF::LIT	*verts		=	(FVF::LIT	*) RCache.Vertex.Lock((u32)bullet_num*8,
 										tracers.sh_Geom->vb_stride,
 										vOffset);
-	FVF::V	*start		=	verts;
+	FVF::LIT	*start		=	verts;
 
 	for(BulletVecIt it = m_BulletsRendered.begin(); it!=m_BulletsRendered.end(); it++){
 		SBullet* bullet					= &(*it);
@@ -385,7 +386,7 @@ void CBulletManager::Render	()
 
 		Fvector center;
 		center.mad				(bullet->pos, bullet->dir,  -length*.5f);
-		tracers.Render			(verts, bullet->pos, center, bullet->dir, length, width);
+		tracers.Render			(verts, bullet->pos, center, bullet->dir, length, width, bullet->m_u8ColorID);
 	}
 
 	u32 vCount					= (u32)(verts-start);

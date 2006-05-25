@@ -454,6 +454,8 @@ public:
 	CWeaponAmmo*			m_pAmmo;
 	u32						m_ammoType;
 	shared_str				m_ammoName;
+	BOOL					m_bHasTracers;
+	u8						m_u8TracerColorID;
 
 	// Multitype ammo support
 	xr_stack<CCartridge>	m_magazine;

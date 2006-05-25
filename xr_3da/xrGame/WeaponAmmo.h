@@ -19,6 +19,9 @@ public:
 	float	m_impair;
 	float	fWallmarkSize;
 	
+	u8		m_u8ColorID;
+
+	
 	u16		bullet_material_idx;
 	Flags8	m_flags;
 
@@ -52,6 +55,7 @@ public:
 	int			m_buckShot;
 	float		m_impair;
 	float		fWallmarkSize;
+	u8			m_u8ColorID;
 
 	u16			m_boxSize;			// Размер коробки (Сколько патронов игрок берет за раз)
 	u16			m_boxCurr;			// Сколько патронов осталось в коробке (включая текущий магазин)
