@@ -136,10 +136,12 @@ function action_wounded:execute ()
 				synsound = wound_manager.sound
 			end
 		end	
-		--жрание аптечек и прочей срани.
-		if self.a.use_medkit == true and self.object:object("medkit") ~= nil then
-			self.object:eat(self.object:object("medkit"))
+		--' жрание аптечек и прочей срани.
+		--' Использовать можно только если нам можно сейчас есть аптечку.
+		if self.a.use_medkit == true then
+			wound_manager:eat_medkit()
 		end
+		
 		local emerg = nil
 		if wound_manager.state == "psy_shoot" then
 			emerg = {animation_nout = true}
@@ -188,6 +190,7 @@ class "Cwound_manager"
 function Cwound_manager:__init(npc, storage)
 	self.npc = npc
 	self.a = storage
+	self.can_use_medkit = false
 end
 function Cwound_manager:update()
 	hp	= 100*self.npc.health
@@ -213,6 +216,15 @@ function Cwound_manager:update()
 	end	
 --	printf("f[%s]c[%s]v[%s]", utils.to_str(self.fight), utils.to_str(self.cover), utils.to_str(self.victim))
 --	printf("st[%s]so[%s]", utils.to_str(self.state), utils.to_str(self.sound))
+end
+function Cwound_manager:unlock_medkit()
+	self.can_use_medkit = true
+end
+function Cwound_manager:eat_medkit()
+	if self.can_use_medkit == true and self.npc:object("medkit") ~= nil then
+			self.npc:eat(self.npc:object("medkit"))
+	end
+	self.can_use_medkit = false
 end
 function Cwound_manager:process_fight(hp)
 	local key
@@ -449,6 +461,14 @@ function init_wounded(npc, ini, section, st, scheme)
 	-- флажок, что функция хотя бы раз вызывалась
 	st.wounded_set = true
 end
+
+function unlock_medkit(npc)
+	if db.storage[npc:id()].wounded ~= nil then
+		db.storage[npc:id()].wounded.wound_manager:unlock_medkit()
+	end
+end
+
+
 
 function is_wounded(npc)
 	if db.storage[npc:id()].wounded ~= nil then

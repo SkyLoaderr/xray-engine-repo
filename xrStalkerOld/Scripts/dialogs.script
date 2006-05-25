@@ -53,6 +53,9 @@ function transfer_medkit(first_speaker, second_speaker)
 	local obj = first_speaker:object("medkit")
 	if obj ~= nil then
 		dialogs.relocate_item(second_speaker, obj, "out")
+		--' Тут надо анлочить аптечку для использования.
+		xr_wounded.unlock_medkit(second_speaker)
+		
 		if second_speaker:relation(first_speaker) ~= game_object.enemy then
 			second_speaker:set_relation(game_object.friend, first_speaker)
 		end
