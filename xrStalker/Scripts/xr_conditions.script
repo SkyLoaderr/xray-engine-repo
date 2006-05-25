@@ -937,6 +937,17 @@ function is_controller_dead (actor, npc)
     return not c:alive ()
 end
 
+function bar_actor_rank_stalker (actor,npc)
+	local actor = db.actor
+	if actor:character_rank() > 300 then
+		return true
+end
+
+function bar_actor_rank_veteran (actor,npc)
+	local actor = db.actor
+	if actor:character_rank() > 600 then
+		return true
+end
 
 ------------------------------------------------------------------------------------
 -- Special functions for Military
