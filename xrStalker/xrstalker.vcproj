@@ -2088,6 +2088,9 @@
 					Name="Rostok"
 					Filter="">
 					<File
+						RelativePath=".\Config\scripts\bar_arena_combat_triger.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\bar_arena_door1.ltx">
 					</File>
 					<File
