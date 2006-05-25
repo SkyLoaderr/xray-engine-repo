@@ -1037,6 +1037,87 @@ function bar_arena_weapon_spawn ()
 	end	
 end
 
+local function transfer_object_item(item)
+    out_object:transfer_item(item, in_object)
+end
+function bar_arena_teleport ( actor, npc)
+
+	level.add_pp_effector ("blink.ppe", 234, false)				
+	
+		db.actor:set_actor_position(patrol("t_way"):point(0))
+		local dir = patrol("t_look"):point(0):sub(patrol("t_way"):point(0))
+		db.actor:set_actor_direction(-dir:getH())
+	
+	inv_box_1 = level_object_by_sid (573)
+
+	out_object = actor
+    in_object  = inv_box_1
+		actor:inventory_for_each(transfer_object_item) 
+
+	local spawn_items = {}	
+
+	if	db.actor:has_info("bar_arena_fight_1") then 
+		table.insert(spawn_items, "wpn_pm")
+		table.insert(spawn_items, "ammo_9x18_pmm")
+		table.insert(spawn_items, "ammo_9x18_pmm")
+		table.insert(spawn_items, "wpn_knife")
+	elseif	db.actor:has_info("bar_arena_fight_2") then
+		table.insert(spawn_items, "wpn_mp5")
+		table.insert(spawn_items, "ammo_9x19_pbp")
+		table.insert(spawn_items, "wpn_knife")		
+	elseif	db.actor:has_info("bar_arena_fight_3") then
+		table.insert(spawn_items, "wpn_toz34")
+		table.insert(spawn_items, "ammo_12x70_buck")
+		table.insert(spawn_items, "ammo_12x70_buck")
+		table.insert(spawn_items, "wpn_knife")
+	elseif	db.actor:has_info("bar_arena_fight_4") then			
+		table.insert(spawn_items, "wpn_ak74")
+		table.insert(spawn_items, "ammo_5.45x39_ap")
+		table.insert(spawn_items, "ammo_5.45x39_ap")
+		table.insert(spawn_items, "wpn_knife")
+		table.insert(spawn_items, "bandage")
+		table.insert(spawn_items, "bandage")
+	elseif	db.actor:has_info("bar_arena_fight_5") then	
+		table.insert(spawn_items, "wpn_abakan")
+		table.insert(spawn_items, "ammo_5.45x39_ap")
+		table.insert(spawn_items, "ammo_5.45x39_ap")
+		table.insert(spawn_items, "ammo_5.45x39_ap")
+		table.insert(spawn_items, "wpn_knife")
+		table.insert(spawn_items, "bandage")
+		table.insert(spawn_items, "medkit")
+		table.insert(spawn_items, "svoboda_light_outfit")
+	elseif	db.actor:has_info("bar_arena_fight_6") then
+		table.insert(spawn_items, "wpn_groza")
+		table.insert(spawn_items, "ammo_9x39_ap")
+		table.insert(spawn_items, "ammo_9x39_ap")
+		table.insert(spawn_items, "ammo_9x39_ap")
+		table.insert(spawn_items, "wpn_knife")
+		table.insert(spawn_items, "grenade_f1")
+		table.insert(spawn_items, "specops_outfit")
+	elseif	db.actor:has_info("bar_arena_fight_7") then
+		table.insert(spawn_items, "wpn_knife")
+		table.insert(spawn_items, "bandage")
+	elseif	db.actor:has_info("bar_arena_fight_8") then
+		table.insert(spawn_items, "wpn_g36")
+		table.insert(spawn_items, "ammo_5.56x45_ap")
+		table.insert(spawn_items, "ammo_5.56x45_ap")
+		table.insert(spawn_items, "ammo_5.56x45_ap")
+		table.insert(spawn_items, "ammo_5.56x45_ap")
+		table.insert(spawn_items, "wpn_knife")
+	end
+	
+	local k,v = 0,0
+	
+	for k,v in pairs(spawn_items) do
+		alife():create(v,	
+						db.actor:position(),
+						db.actor:level_vertex_id(),	
+						db.actor:game_vertex_id(), 
+						db.actor:id())
+	end	
+	 db.actor:activate_slot(3)
+end
+
 function military_max_dead (actor, npc)
     --if actor:has_info ("mil_max_job") then
        --level_tasks.set_task_state (task.fail, "mil_mad_job", 0)
