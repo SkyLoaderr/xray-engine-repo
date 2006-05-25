@@ -1409,6 +1409,11 @@ function pri_drop_rpg_ammo(actor, npc)
     end
 end
 
+function pri_give_ammo_og7b(actor, npc)
+    alife():create("ammo_og-7b", npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
+    alife():create("ammo_og-7b", npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
+end
+
 ---------------------------------------------------------
 -- DeadCity
 ---------------------------------------------------------
