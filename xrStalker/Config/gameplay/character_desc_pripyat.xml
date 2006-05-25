@@ -447,6 +447,7 @@
             ammo_5.45x39_ap = 2 \n
 			device_torch \n
             grenade_f1 = 2 \n
+            wpn_rpg7 \n
 #include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
