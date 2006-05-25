@@ -213,15 +213,7 @@ void CController::Load(LPCSTR section)
 	m_tube_damage		= pSettings->r_float(section,"tube_damage");
 	m_tube_at_once		= !!pSettings->r_bool(section,"tube_at_once");
 
-	
-	aura_sound.left.create	(TRUE, pSettings->r_string(section,"PsyAura_SoundLeftPath"));
-	aura_sound.right.create	(TRUE, pSettings->r_string(section,"PsyAura_SoundRightPath"));
-
-	current_aura_sound			= &aura_sound;
-	aura_radius					= READ_IF_EXISTS(pSettings,r_float,section,"PsyAura_Radius", 40.f);
-	aura_damage					= READ_IF_EXISTS(pSettings,r_float,section,"PsyAura_Damage", 0.02f);
-
-	m_aura->load				(pSettings->r_string(section,"aura_effector"));
+	m_aura->load		(section);
 }
 
 void CController::load_friend_community_overrides(LPCSTR section)
@@ -428,10 +420,7 @@ void CController::shedule_Update(u32 dt)
 	// DEBUG
 	test_covers();
 
-	update_aura_sounds();
-	
 	m_aura->update_schedule();
-
 }
 
 void CController::Die(CObject* who)
@@ -445,7 +434,9 @@ void CController::Die(CObject* who)
 void CController::net_Destroy()
 {
 	inherited::net_Destroy();
-	FreeFromControl();
+
+	m_aura->on_death	();
+	FreeFromControl		();
 }
 
 void CController::net_Relcase(CObject *O)
@@ -539,45 +530,6 @@ void CController::set_psy_fire_delay_zero()
 void CController::set_psy_fire_delay_default()
 {
 	m_psy_fire_delay = _pmt_psy_attack_delay;
-}
-
-
-void CController::update_aura_sounds()
-{
-	if (!g_Alive() && current_aura_sound) {
-		if (current_aura_sound->left._feedback()) current_aura_sound->left.stop();
-		if (current_aura_sound->right._feedback()) current_aura_sound->right.stop();
-		current_aura_sound = 0;	
-		return;
-	}
-
-	float dist			= Actor()->Position().distance_to(Position());
-	bool actor_in_aura	= dist < aura_radius;
-	
-	if (!actor_in_aura && !current_aura_sound) return;
-		
-	if (actor_in_aura) {
-		// start new or play again?
-		if (!current_aura_sound || 
-			(!current_aura_sound->left._feedback() && !current_aura_sound->right._feedback())) {
-			
-			current_aura_sound = &aura_sound;
-			current_aura_sound->left.play_at_pos	(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_Looped | sm_2D);
-			current_aura_sound->right.play_at_pos	(Actor(), Fvector().set(1.f, 0.f, 1.f), sm_Looped | sm_2D);
-		} 
-		
-		current_aura_sound->left.set_volume	(1 - dist/aura_radius);
-		current_aura_sound->right.set_volume(1 - dist/aura_radius);
-
-	} else {
-		// stop ?
-		if (current_aura_sound){
-			if (current_aura_sound->left._feedback()) current_aura_sound->left.stop();
-			if (current_aura_sound->right._feedback()) current_aura_sound->right.stop();
-
-			current_aura_sound = 0;
-		}
-	}
 }
 
 

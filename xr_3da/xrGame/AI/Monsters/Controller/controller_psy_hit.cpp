@@ -138,6 +138,12 @@ void CControllerPsyHit::death_glide_end()
 	Actor()->Cameras().RemoveCamEffector(eCEControllerPsyHit);
 	CController *monster = smart_cast<CController *>(m_object);
 	monster->draw_fire_particles();
+
+
+	monster->m_sound_tube_hit_left.play_at_pos(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
+	monster->m_sound_tube_hit_right.play_at_pos(Actor(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
+
+	m_object->Hit_Psy		(Actor(), monster->m_tube_damage);
 }
 
 void CControllerPsyHit::update_frame()
@@ -165,8 +171,8 @@ void CControllerPsyHit::set_sound_state(ESoundState state)
 		if (monster->m_sound_tube_start._feedback())	monster->m_sound_tube_start.stop();
 		if (monster->m_sound_tube_pull._feedback())		monster->m_sound_tube_pull.stop();
 		
-		monster->m_sound_tube_hit_left.play_at_pos(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
-		monster->m_sound_tube_hit_right.play_at_pos(Actor(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
+		//monster->m_sound_tube_hit_left.play_at_pos(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
+		//monster->m_sound_tube_hit_right.play_at_pos(Actor(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
 		m_sound_state = eHit;
 
 		return;
@@ -175,8 +181,8 @@ void CControllerPsyHit::set_sound_state(ESoundState state)
 
 void CControllerPsyHit::hit()
 {
-	CController *monster	= smart_cast<CController *>(m_object);
+	//CController *monster	= smart_cast<CController *>(m_object);
 	
 	set_sound_state			(eHit);
-	m_object->Hit_Psy		(Actor(), monster->m_tube_damage);
+	//m_object->Hit_Psy		(Actor(), monster->m_tube_damage);
 }

@@ -138,8 +138,6 @@ public:
 			void	set_psy_fire_delay_zero		();
 			void	set_psy_fire_delay_default	();
 
-
-			void	update_aura_sounds			();
 	//-------------------------------------------------------------------
 
 	

@@ -4,12 +4,18 @@
 #include "../../../actor.h"
 #include "../../../level.h"
 
-CPPEffectorControllerAura::CPPEffectorControllerAura(const SPPInfo &ppi, u32 time_to_fade)
+CPPEffectorControllerAura::CPPEffectorControllerAura(const SPPInfo &ppi, u32 time_to_fade, const ref_sound &snd_left, const ref_sound &snd_right)
 : inherited(ppi)
 {
 	m_time_to_fade			= time_to_fade;
 	m_effector_state		= eStateFadeIn;
 	m_time_state_started	= Device.dwTimeGlobal;
+
+	m_snd_left.clone		(snd_left);	
+	m_snd_right.clone		(snd_right);	
+
+	m_snd_left.play_at_pos	(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_Looped | sm_2D);
+	m_snd_right.play_at_pos	(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_Looped | sm_2D);
 
 }
 
@@ -33,9 +39,22 @@ BOOL CPPEffectorControllerAura::update()
 			m_effector_state	= eStatePermanent;
 			m_factor			= 1.f;
 		} else if (m_factor < 0) {
+			if (m_snd_left._feedback())		m_snd_left.stop();
+			if (m_snd_right._feedback())	m_snd_right.stop();
+		
 			return FALSE;
 		}
 	}
+
+	// start new or play again?
+	if (!m_snd_left._feedback() && !m_snd_right._feedback()) {
+		m_snd_left.play_at_pos	(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_Looped | sm_2D);
+		m_snd_right.play_at_pos	(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_Looped | sm_2D);
+	} 
+
+	if (m_snd_left._feedback())		m_snd_left.set_volume	(m_factor);
+	if (m_snd_right._feedback())	m_snd_right.set_volume	(m_factor);
+
 	return TRUE;
 }
 
@@ -43,30 +62,70 @@ BOOL CPPEffectorControllerAura::update()
 //
 //////////////////////////////////////////////////////////////////////////
 
+#define	FAKE_AURA_DURATION	3000
+#define	FAKE_AURA_DELAY		8000
+#define FAKE_MAX_ADD_DIST	90.f
+#define FAKE_MIN_ADD_DIST	20.f
+
+
 void CControllerAura::update_schedule()
 {
 	if (!m_object->g_Alive()) return;
 
-	
-	bool need_be_active = (Actor()->Position().distance_to(m_object->Position()) < m_object->aura_radius);
-	
+	float dist_to_actor		= Actor()->Position().distance_to(m_object->Position());
 
-	if (active()) {
-		if (!need_be_active) {
-			m_effector->switch_off	();
-			m_effector				= 0;
+	if ((dist_to_actor > aura_radius + FAKE_MIN_ADD_DIST) && (dist_to_actor < aura_radius + FAKE_MAX_ADD_DIST)) {
+		
+		// first time? 
+		if (m_time_fake_aura == 0) {
+			m_time_fake_aura = time() + 5000 + Random.randI(FAKE_AURA_DELAY);
+			
+			if (active()) {
+				m_effector->switch_off	();
+				m_effector				= 0;
+			}
 		} else {
-			float time_delta = float(time() - m_time_last_update) / 1000.f;
-			m_object->Hit_Psy(Actor(), time_delta * m_object->aura_damage);
-			m_time_last_update = time();
+			if (active()) {
+				// check to stop
+				if (m_time_fake_aura < time())  {
+					m_effector->switch_off	();
+					m_effector				= 0;
+					m_time_fake_aura		= time() + 5000 + Random.randI(FAKE_AURA_DELAY);
+				}
+			} else {
+				// check to start
+				if (m_time_fake_aura < time())  {
+					m_effector = xr_new<CPPEffectorControllerAura>	(m_state, 5000, aura_sound.left, aura_sound.right);
+					Actor()->Cameras().AddPPEffector				(m_effector);
+
+					m_time_fake_aura		= time() + 5000 + Random.randI(FAKE_AURA_DURATION);
+				}
+			}
 		}
 	} else {
-		if (need_be_active) {
-			// create effector
-			m_effector = xr_new<CPPEffectorControllerAura>	(m_state, 5000);
-			Actor()->Cameras().AddPPEffector				(m_effector);
-			m_time_last_update								= time();
+		m_time_fake_aura = 0;
+
+		bool need_be_active		= (dist_to_actor < aura_radius);
+
+		if (active()) {
+			if (!need_be_active) {
+				m_effector->switch_off	();
+				m_effector				= 0;
+			} else {
+				float time_delta = float(time() - m_time_last_update) / 1000.f;
+				m_object->Hit_Psy(Actor(), time_delta * aura_damage);
+				m_time_last_update = time();
+			}
+		} else {
+			if (need_be_active) {
+				// create effector
+				m_effector = xr_new<CPPEffectorControllerAura>	(m_state, 5000, aura_sound.left, aura_sound.right);
+				Actor()->Cameras().AddPPEffector				(m_effector);
+				m_time_last_update								= time();
+			} else {
+			}
 		}
+		
 	}
 
 }
@@ -78,4 +137,23 @@ void CControllerAura::on_death()
 		m_effector				= 0;
 	}
 }
+
+void CControllerAura::load(LPCSTR section)
+{
+	inherited::load				(pSettings->r_string(section,"aura_effector"));
+	
+	aura_sound.left.create		(TRUE, pSettings->r_string(section,"PsyAura_SoundLeftPath"));
+	aura_sound.right.create		(TRUE, pSettings->r_string(section,"PsyAura_SoundRightPath"));
+
+	aura_radius					= READ_IF_EXISTS(pSettings,r_float,section,"PsyAura_Radius", 40.f);
+	aura_damage					= READ_IF_EXISTS(pSettings,r_float,section,"PsyAura_Damage", 0.02f);
+
+	m_time_fake_aura			= 0;
+
+	m_time_fake_aura_duration	= READ_IF_EXISTS(pSettings,r_u32,section,"PsyAura_Fake_Duration", 3000);
+	m_time_fake_aura_delay		= READ_IF_EXISTS(pSettings,r_u32,section,"PsyAura_Fake_Delay", 8000);
+	m_fake_max_add_dist			= READ_IF_EXISTS(pSettings,r_float,section,"PsyAura_Fake_MaxAddDist", 90.f);
+	m_fake_min_add_dist			= READ_IF_EXISTS(pSettings,r_float,section,"PsyAura_Fake_MinAddDist", 20.f);
+}
+
 
