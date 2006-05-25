@@ -20,7 +20,7 @@
 #define CStateMonsterRestAbstract CStateMonsterRest<_Object>
 
 #define TIME_DELAY_FUN	20000
-#define TIME_IDLE		10000
+#define TIME_IDLE		60000
 
 TEMPLATE_SPECIALIZATION
 CStateMonsterRestAbstract::CStateMonsterRest(_Object *obj) : inherited(obj)
@@ -116,7 +116,7 @@ void CStateMonsterRestAbstract::execute()
 
 				if (!use_squad) {
 					if (time_idle_selected + TIME_IDLE > time()) 			select_state	(eStateRest_Idle);
-					else if (time_idle_selected + TIME_IDLE * 2 > time()) 	select_state	(eStateRest_WalkGraphPoint);
+					else if (time_idle_selected + TIME_IDLE  + TIME_IDLE/2 > time()) 	select_state	(eStateRest_WalkGraphPoint);
 					else {
 						time_idle_selected	= time();
 						select_state		(eStateRest_Idle);
