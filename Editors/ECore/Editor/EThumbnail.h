@@ -14,6 +14,7 @@ public:
     	ETObject	= 0,
         ETTexture	= 1,
         ETSound		= 2,
+        ETGroup		= 3,
         force_dword = (-1)
     };
 protected:
@@ -49,10 +50,10 @@ protected:
 public:
 					EImageThumbnail	(LPCSTR src_name, THMType type):ECustomThumbnail(src_name, type){};
 	virtual			~EImageThumbnail();
-	virtual void 	Draw			(HDC hdc, const Irect& r)=0;
-	virtual void 	Draw			(TMxPanel* panel)=0;
+	virtual void 	Draw			(HDC hdc, const Irect& r);
+	virtual void 	Draw			(TMxPanel* panel){Irect r; r.set(1,1,1+panel->Width,1+panel->Height); Draw(panel->Canvas->Handle,r);}
     u32*			Pixels			(){return &*m_Pixels.begin();}
-    virtual	int		MemoryUsage		()=0;
+    virtual	int		MemoryUsage		(){return 0;};
 };
 
 class ECORE_API ETextureThumbnail: public EImageThumbnail{
@@ -78,7 +79,7 @@ public:
 	virtual void	FillInfo		(PropItemVec& values);
 
 	virtual void 	Draw			(HDC hdc, const Irect& r);
-	virtual void 	Draw			(TMxPanel* panel){Irect r; r.set(1,1,1+panel->Width,1+panel->Height); Draw(panel->Canvas->Handle,r);}
+	virtual void 	Draw			(TMxPanel* panel){inherited::Draw(panel);}
 
     virtual int		MemoryUsage		();
     LPCSTR			FormatString	();
@@ -106,11 +107,27 @@ public:
     virtual bool	Valid			(){return !m_Pixels.empty();}
 	virtual void	FillProp		(PropItemVec& values);
 	virtual void	FillInfo		(PropItemVec& values);
+};
+//------------------------------------------------------------------------------
 
-	virtual void 	Draw			(HDC hdc, const Irect& r){inherited::Draw(hdc,r);}
-	virtual void 	Draw			(TMxPanel* panel){Irect r; r.set(1,1,1+panel->Width,1+panel->Height); Draw(panel->Canvas->Handle,r);}
+class ECORE_API EGroupThumbnail: public EImageThumbnail{   
+	friend class CImageManager;
+	typedef EImageThumbnail inherited;
+private:
+	SStringVec		objects;
+public:
+					EGroupThumbnail	(LPCSTR src_name, bool bLoad=true);
+	virtual			~EGroupThumbnail();
 
-    virtual int		MemoryUsage		(){return 0;}
+    // Object routines
+	void 			CreateFromData	(u32* p, u32 w, u32 h, const SStringVec& lst);
+
+    // thumbnail public routines
+	virtual bool 	Load			(LPCSTR src_name=0, LPCSTR path=0);
+	virtual void 	Save			(int age=0,LPCSTR path=0);
+    virtual bool	Valid			(){return !m_Pixels.empty();}
+	virtual void	FillProp		(PropItemVec& values);
+	virtual void	FillInfo		(PropItemVec& values);
 };
 //------------------------------------------------------------------------------
 

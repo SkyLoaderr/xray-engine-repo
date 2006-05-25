@@ -88,7 +88,7 @@
       Intermediate\perlin.obj Intermediate\guid_generator.obj 
       Intermediate\xrTheora_Surface.obj Intermediate\xrTheora_Stream.obj 
       Intermediate\Environment_render.obj Intermediate\Environment_misc.obj 
-      Intermediate\pDomain.obj"/>
+      Intermediate\pDomain.obj Intermediate\EThumbnailGroup.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -319,6 +319,7 @@
       <FILE FILENAME="Engine\Environment_render.cpp" FORMNAME="" UNITNAME="Environment_render.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Environment_misc.cpp" FORMNAME="" UNITNAME="Environment_misc.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\pDomain.cpp" FORMNAME="" UNITNAME="pDomain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EThumbnailGroup.cpp" FORMNAME="" UNITNAME="EThumbnailGroup" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

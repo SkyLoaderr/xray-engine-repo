@@ -6,31 +6,30 @@
 #pragma package(smart_init)
 
 //------------------------------------------------------------------------------
-#define THM_OBJECT_VERSION				0x0012
+#define THM_GROUP_VERSION				0x0001
 //------------------------------------------------------------------------------
-#define THM_CHUNK_OBJECTPARAM			0x0816
+#define THM_CHUNK_GROUPPARAM			0x0001
 //------------------------------------------------------------------------------
-EObjectThumbnail::EObjectThumbnail(LPCSTR src_name, bool bLoad):EImageThumbnail(src_name,ETObject)
+EGroupThumbnail::EGroupThumbnail(LPCSTR src_name, bool bLoad):EImageThumbnail(src_name,ETObject)
 {
     if (bLoad) 	Load();
 }
 //------------------------------------------------------------------------------
 
-EObjectThumbnail::~EObjectThumbnail()
+EGroupThumbnail::~EGroupThumbnail()
 {
 	m_Pixels.clear();
 }
 //------------------------------------------------------------------------------
 
-void EObjectThumbnail::CreateFromData(u32* p, u32 w, u32 h, int fc, int vc)
+void EGroupThumbnail::CreateFromData(u32* p, u32 w, u32 h, const SStringVec& lst)
 {
 	EImageThumbnail::CreatePixels(p, w, h);
-    face_count	 	= fc;
-    vertex_count  	= vc;
+    objects			= lst;
 }
 //------------------------------------------------------------------------------
 
-bool EObjectThumbnail::Load(LPCSTR src_name, LPCSTR path)
+bool EGroupThumbnail::Load(LPCSTR src_name, LPCSTR path)
 {
 	xr_string fn 	= EFS.ChangeFileExt(src_name?src_name:m_Name.c_str(),".thm");
     if (path) 		FS.update_path(fn,path,fn.c_str());
@@ -41,7 +40,7 @@ bool EObjectThumbnail::Load(LPCSTR src_name, LPCSTR path)
     u16 version 	= 0;
 
     R_ASSERT(F->r_chunk(THM_CHUNK_VERSION,&version));
-    if( version!=THM_OBJECT_VERSION ){
+    if( version!=THM_GROUP_VERSION ){
 		Msg			("!Thumbnail: Unsupported version.");
         return 		false;
     }
@@ -55,9 +54,10 @@ bool EObjectThumbnail::Load(LPCSTR src_name, LPCSTR path)
     m_Type			= THMType(F->r_u32());
     R_ASSERT		(m_Type==ETObject);
 
-    R_ASSERT		(F->find_chunk(THM_CHUNK_OBJECTPARAM));
-    face_count 		= F->r_u32();
-    vertex_count 	= F->r_u32();
+    R_ASSERT		(F->find_chunk(THM_CHUNK_GROUPPARAM));
+    objects.resize	(F->r_u32());
+    for (SStringVecIt it=objects.begin(); it!=objects.end(); it++)
+    	F->r_stringZ(*it);
 	
     m_Age 			= FS.get_file_age(fn.c_str());
 
@@ -67,13 +67,13 @@ bool EObjectThumbnail::Load(LPCSTR src_name, LPCSTR path)
 }
 //------------------------------------------------------------------------------
 
-void EObjectThumbnail::Save(int age, LPCSTR path)
+void EGroupThumbnail::Save(int age, LPCSTR path)
 {
 	if (!Valid()) 	return;
 
     CMemoryWriter F;
 	F.open_chunk	(THM_CHUNK_VERSION);
-	F.w_u16			(THM_OBJECT_VERSION);
+	F.w_u16			(THM_GROUP_VERSION);
 	F.close_chunk	();
 
 	F.w_chunk		(THM_CHUNK_DATA | CFS_CompressMark,m_Pixels.begin(),m_Pixels.size()*sizeof(u32));
@@ -82,9 +82,10 @@ void EObjectThumbnail::Save(int age, LPCSTR path)
     F.w_u32			(m_Type);
 	F.close_chunk	();
 
-    F.open_chunk	(THM_CHUNK_OBJECTPARAM);
-    F.w_u32			(face_count);
-    F.w_u32			(vertex_count);
+    F.open_chunk	(THM_CHUNK_GROUPPARAM);
+    F.w_u32			(objects.size());
+    for (SStringVecIt it=objects.begin(); it!=objects.end(); it++)
+    	F.w_stringZ	(*it);
     F.close_chunk	();
 
 	xr_string fn;
@@ -98,17 +99,17 @@ void EObjectThumbnail::Save(int age, LPCSTR path)
 }
 //------------------------------------------------------------------------------
 
-void EObjectThumbnail::FillProp(PropItemVec& items)
+void EGroupThumbnail::FillProp(PropItemVec& items)
 {
-    PHelper().CreateCaption	(items, "Face Count",				AnsiString(face_count).c_str());
-    PHelper().CreateCaption	(items, "Vertex Count",				AnsiString(vertex_count).c_str());
+    PHelper().CreateCaption	(items, "Objects\\Count",						AnsiString(objects.size()).c_str());
+    for (SStringVecIt it=objects.begin(); it!=objects.end(); it++)
+	    PHelper().CreateCaption	(items, AnsiString().sprintf("Objects\\#%d",it-objects.begin()).c_str(),it->c_str());
 }
 //------------------------------------------------------------------------------
 
-void EObjectThumbnail::FillInfo(PropItemVec& items)
+void EGroupThumbnail::FillInfo(PropItemVec& items)
 {
-    PHelper().CreateCaption	(items, "Face Count",				AnsiString(face_count).c_str());
-    PHelper().CreateCaption	(items, "Vertex Count",				AnsiString(vertex_count).c_str());
+	FillProp		(items);
 }
 //------------------------------------------------------------------------------
 
