@@ -380,22 +380,6 @@ path_look           = wave1_bomber_look1
 def_state_moving1   = assault
 def_state_moving2   = assault
 meet                = no_meet
-;on_info             = {+pri_followers_heli_look} remark@pri_followers_bomber_wave1
-combat_ignore_cond  = {!check_fighting(808) !fighting_actor} ;always
-
-[remark@pri_followers_bomber_wave1]
-anim                = threat
-on_timer            = 5000 | walker@pri_followers_bomber_wave1_cont
-meet                = no_meet
-combat_ignore_cond  = {!check_fighting(808) !fighting_actor} ;always
-
-[walker@pri_followers_bomber_wave1_cont]
-path_walk           = wave1_bomber_walk1
-path_look           = wave1_bomber_look1
-def_state_moving1   = assault
-def_state_moving2   = assault
-meet                = no_meet
-on_signal           = arrived | {-pri_wave1_start} %+pri_wave1_start%
 combat_ignore_cond  = {!check_fighting(808) !fighting_actor} ;always
 
 ;--- BOMBER: WAVE2 ------------------------------------------------------------------------------
@@ -414,7 +398,7 @@ team                = followers
 meet                = no_meet
 on_signal           = syn | walker@pri_followers_bomber_wave2
 on_info             = {+pri_wave2_start} walker@pri_followers_bomber_wave2 %-pri_bomber_dead%, %-pri_bomber_dead%
-combat_ignore_cond  = {!check_fighting(804:805) !fighting_actor} ;always
+combat_ignore_cond  = {!fighting_actor} ;!check_fighting(804:805) always
 
 [walker@pri_followers_bomber_wave2]
 path_walk           = wave2_bomber_walk2
@@ -423,7 +407,7 @@ def_state_moving1   = assault
 def_state_moving2   = assault
 meet                = no_meet
 on_signal           = arrived | {-pri_wave2_start} %+pri_wave2_start%
-combat_ignore_cond  = {!check_fighting(804:805) !fighting_actor} ;always
+combat_ignore_cond  = {!fighting_actor} ;!check_fighting(804:805) always
 
 ;--- BOMBER: WAVE3 ------------------------------------------------------------------------------
 [logic@pri_followers_bomber_wave3]
@@ -439,8 +423,7 @@ def_state_moving1   = assault
 def_state_moving2   = assault
 team                = followers
 meet                = no_meet
-;on_signal           = syn | walker@pri_followers_bomber_wave3_hide %+pri_wave3_start%
-on_info             = {+pri_wave3_btr_arrived} walker@pri_followers_bomber_wave3_fire_place %-pri_bomber_dead%, %-pri_bomber_dead%
+on_info             = {+pri_wave3_btr_arrived} walker@pri_followers_bomber_wave3_fire_place %-pri_bomber_dead =pri_give_ammo_og7b%, %-pri_bomber_dead%
 danger              = danger@ignore
 combat_ignore_cond  = {!fighting_actor}
 
