@@ -941,12 +941,14 @@ function bar_actor_rank_stalker (actor,npc)
 	local actor = db.actor
 	if actor:character_rank() > 300 then
 		return true
+	end
 end
 
 function bar_actor_rank_veteran (actor,npc)
 	local actor = db.actor
 	if actor:character_rank() > 600 then
 		return true
+	end
 end
 
 ------------------------------------------------------------------------------------
