@@ -371,8 +371,8 @@ gulags.val_sacrifice.job = function(sj, gname, type, squad, groups)
     local ltx = "[combat@" .. gname .. "]\n" ..
                 "on_info = {=see_actor} %+val_sacrifice_plr_detected +val_sacrifice_finish%\n" ..
 
-                ";[hit@" .. gname .. "_guard]\n" ..
-                ";on_info = {=hit_by_actor} %+val_sacrifice_plr_detected +val_sacrifice_finish%\n" ..
+                --"[hit@" .. gname .. "_guard]\n" ..
+                --"on_info = {=hit_by_actor} %+val_sacrifice_plr_detected +val_sacrifice_finish%\n" ..
 
                 "[danger@" .. gname .. "_guard]\n" ..
                 "ignore_types               = corpse\n" ..
