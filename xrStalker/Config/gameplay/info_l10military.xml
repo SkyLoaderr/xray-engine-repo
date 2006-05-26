@@ -73,6 +73,25 @@
 	<info_portion id="mil_sniper2_dead"></info_portion>
 	<info_portion id="mil_sniper3_dead"></info_portion>
 	
+	<info_portion id="mil_dolg_sound_1"></info_portion>
+	<info_portion id="mil_dolg_sound_2"></info_portion>
+	<info_portion id="mil_dolg_sound_3"></info_portion>
+	<info_portion id="mil_dolg_sound_4"></info_portion>
+	<info_portion id="mil_dolg_sound_5"></info_portion>
+	<info_portion id="mil_dolg_sound_6"></info_portion>
+	<info_portion id="mil_dolg_sound_7"></info_portion>
+	<info_portion id="mil_dolg_sound_8"></info_portion>
+	<info_portion id="mil_dolg_sound_9"></info_portion>
+	<info_portion id="mil_dolg_sound_10"></info_portion>
+	<info_portion id="mil_dolg_sound_11"></info_portion>
+	<info_portion id="mil_dolg_soldier_1_dead"></info_portion>
+	<info_portion id="mil_dolg_soldier_2_dead"></info_portion>
+	<info_portion id="mil_dolg_soldier_3_dead"></info_portion>
+	<info_portion id="mil_dolg_soldier_4_dead"></info_portion>
+	
+	
+	
+	
 	
 	<!-- База Свободы под атакой-->
 	<info_portion id="mil_freedom_under_attack"></info_portion>
