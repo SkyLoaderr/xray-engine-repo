@@ -1020,6 +1020,13 @@ void CPHSimpleCharacter::GetVelocity(Fvector& vvel){
 
 void CPHSimpleCharacter::SetVelocity(Fvector vel){
 	if(!b_exist) return;
+	float sq_mag=vel.square_magnitude();
+	if(sq_mag>default_l_limit*default_l_limit)
+	{
+		float mag=_sqrt(sq_mag);
+		vel.mul(default_l_limit/mag);
+		Msg("set velocity magnitude is too large %f",mag);
+	}
 	dBodySetLinearVel(m_body,vel.x,vel.y,vel.z);
 }
 
@@ -1132,7 +1139,7 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 		if(is_control&&!b_lose_control) 
 			l_limit = m_max_velocity/phTimefactor;
 		else			
-			l_limit=10.f/fixed_step;
+			l_limit=default_l_limit;
 
 		if(b_external_impulse)
 		{

@@ -958,14 +958,30 @@ void CPHElement::set_LinearVel			  (const Fvector& velocity)
 {
 	if(!isActive()||m_flags.test(flFixed)) return;
 	VERIFY2(_valid(velocity),"not valid arqument velocity");
-	dBodySetLinearVel(m_body,velocity.x,velocity.y,velocity.z);
+	float sq_mag=velocity.square_magnitude();
+	if(sq_mag>m_l_limit*m_l_limit)
+	{
+		float mag=_sqrt(sq_mag);
+		Fvector vel;vel.mul(velocity,m_l_limit/mag);
+		dBodySetLinearVel(m_body,vel.x,vel.y,vel.z);
+		Msg("set velocity magnitude is too large %f",mag);
+	}else
+		dBodySetLinearVel(m_body,velocity.x,velocity.y,velocity.z);
 	//dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 }
 void CPHElement::set_AngularVel			  (const Fvector& velocity)
 {
 	VERIFY(_valid(velocity));
 	if(!isActive()||m_flags.test(flFixed)) return;
-	dBodySetAngularVel(m_body,velocity.x,velocity.y,velocity.z);
+	float sq_mag=velocity.square_magnitude();
+	if(sq_mag>m_w_limit*m_w_limit)
+	{
+		float mag=_sqrt(sq_mag);
+		Fvector vel;vel.mul(velocity,m_w_limit/mag);
+		dBodySetAngularVel(m_body,vel.x,vel.y,vel.z);
+		Msg("set velocity magnitude is too large %f",mag);
+	}else
+		dBodySetAngularVel(m_body,velocity.x,velocity.y,velocity.z);
 }
 
 void	CPHElement::getForce(Fvector& force)
