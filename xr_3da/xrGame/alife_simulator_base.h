@@ -81,10 +81,7 @@ public:
 	IC		xrServer							&server						() const;
 	IC		const CALifeTimeManager				&time_manager				() const;
 	template <typename T>
-	IC		T &registry(T*t) const
-	{
-		return	(registry()(t));
-	}
+	IC		T									&registry					(T *t) const;
 
 protected:
 			void								unload						();

@@ -176,8 +176,14 @@ IC	const CALifeTimeManager				&CALifeSimulatorBase::time_manager			() const
 	return						(*m_time_manager);
 }
 
-IC	shared_str								*CALifeSimulatorBase::server_command_line	() const
+IC	shared_str							*CALifeSimulatorBase::server_command_line	() const
 {
 	VERIFY						(m_server_command_line);
 	return						(m_server_command_line);
+}
+
+template <typename T>
+IC	T									&CALifeSimulatorBase::registry				(T *t) const
+{
+	return						(registry()(t));
 }
