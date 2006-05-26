@@ -29,7 +29,11 @@ public:
 	CSE_Abstract*			owner;
 	BOOL					net_Ready;
 	BOOL					net_Accepted;
+	
 	u32						game_replicate_id;
+
+	BOOL					net_PassUpdates;
+	u32						net_LastMoveUpdateTime;
 
 	game_PlayerState*		ps;
 

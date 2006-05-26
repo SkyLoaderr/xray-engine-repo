@@ -142,6 +142,7 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	if (xrCData) SetPlayersDefItems		(xrCData->ps);
 	signal_Syncronize();
 	//-------------------------------------------------------	
+	
 };
 
 
@@ -297,6 +298,9 @@ void	game_sv_mp::RespawnPlayer			(ClientID id_who, bool NoSpectator)
 void	game_sv_mp::SpawnPlayer				(ClientID id, LPCSTR N)
 {
 	xrClientData* CL	= m_server->ID_to_client(id);
+	//-------------------------------------------------
+	CL->net_PassUpdates = TRUE;
+	//-------------------------------------------------
 	game_PlayerState*	ps_who	=	CL->ps;
 	ps_who->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 	
@@ -336,7 +340,7 @@ void	game_sv_mp::SpawnPlayer				(ClientID id, LPCSTR N)
 			else
 			{
 				E->o_Angle.set(Angle);
-				E->o_Position.set(Pos);
+				E->o_Position.set(Pos);				
 			}
 		};
 	

@@ -30,6 +30,7 @@ void	xrClientData::Clear()
 	owner		= NULL;
 	net_Ready	= FALSE;
 	net_Accepted = FALSE;
+	net_PassUpdates = TRUE;
 };
 
 xrClientData::~xrClientData()
@@ -317,13 +318,22 @@ u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means bro
 	case M_CL_UPDATE:
 		{
 			xrClientData* CL		= ID_to_client	(sender);
-			if (CL)	CL->net_Ready	= TRUE;
+			if (!CL) break;
+			CL->net_Ready	= TRUE;
+			if (!CL->net_PassUpdates) break;
 			//-------------------------------------------------------------------
 			u32 ClientPing = CL->stats.getPing();
 			P.w_seek(P.r_tell()+2, &ClientPing, 4);
 			//-------------------------------------------------------------------
 			if (SV_Client) SendTo	(SV_Client->ID, P, net_flags(TRUE, TRUE));
 			VERIFY					(verify_entities());
+		}break;
+	case M_MOVE_PLAYERS_RESPOND:
+		{
+			xrClientData* CL		= ID_to_client	(sender);
+			if (!CL) break;
+			CL->net_Ready	= TRUE;
+			CL->net_PassUpdates = TRUE;
 		}break;
 	//-------------------------------------------------------------------
 	case M_CL_PING_CHALLENGE:

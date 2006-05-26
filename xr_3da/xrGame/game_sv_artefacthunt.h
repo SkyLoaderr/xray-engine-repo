@@ -52,8 +52,10 @@ protected:
 	bool							Artefact_MissCheck		();
 
 	void							CheckForAnyAlivePlayer	();
+	void							UpdatePlayersNotSendedMoveRespond();
+	void							ReplicatePlayersStateToPlayer(ClientID CID);
 
-	virtual		void				check_Player_for_Invincibility	(game_PlayerState* ps);    	
+	virtual		void				check_Player_for_Invincibility	(game_PlayerState* ps);
 	virtual		void				Check_ForClearRun		(game_PlayerState* ps);
 
 	virtual		void				ReadOptions				(shared_str &options);

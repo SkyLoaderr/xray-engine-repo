@@ -791,6 +791,8 @@ void	game_sv_ArtefactHunt::Update			()
 		} break;			
 	case GAME_PHASE_INPROGRESS:
 		{
+			UpdatePlayersNotSendedMoveRespond();
+			//---------------------------------------------------
 			CheckRPUnblock();
 			//---------------------------------------------------
 			if (m_dwWarmUp_CurTime != 0) break;
@@ -1048,6 +1050,9 @@ bool	game_sv_ArtefactHunt::CheckAlivePlayersInTeam	(s16 Team)
 void	game_sv_ArtefactHunt::MoveAllAlivePlayers			()
 {
 	u32		cnt		= get_players_count	();
+	u8 AliveCount = 0;
+	NET_Packet tmpP; tmpP.B.count = 0;	
+	
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
@@ -1058,34 +1063,86 @@ void	game_sv_ArtefactHunt::MoveAllAlivePlayers			()
 		CActor* pActor = smart_cast<CActor*> (Level().Objects.net_Find(ps->GameID));
 		if (!pA || !pActor) continue;
 
-		Fvector Pos = pA->o_Position;
-		Fvector Angle = pA->o_Angle;
 
 		assign_RP(l_pC->owner, ps);
 		//-----------------------------------------------
-		NET_Packet	P2;
-		P2.w_begin	(M_EVENT_PACK);
-		//-----------------------------------------------
-		NET_Packet	P;
-		u_EventGen(P, GE_MOVE_ACTOR, ps->GameID);
-		P.w_vec3(pA->o_Position);
-		P.w_vec3(pA->o_Angle);
-
-		pA->o_Position	= Pos;
-		pA->o_Angle		= Angle;
+		Fvector Pos = pA->o_Position;
+		Fvector Angle = pA->o_Angle;
+//		pA->o_Position	= Pos;
+//		pA->o_Angle		= Angle;
 		//------------------------------------------------
 		pActor->SetfHealth(pActor->GetMaxHealth());
-		//------------------------------------------------
-		P2.w_u8(u8(P.B.count));
-		P2.w(&P.B.data, P.B.count);
-		//------------------------------------------------
+		pActor->MoveActor(Pos, Angle);
+		pActor->StopAnyMove();
+		//------------------------------------------------		
+		NET_Packet	P;
 		u_EventGen(P, GE_ACTOR_MAX_POWER, ps->GameID);
+		m_server->SendTo(l_pC->ID,P,net_flags(TRUE,TRUE));		
 		//------------------------------------------------
-		P2.w_u8(u8(P.B.count));
-		P2.w(&P.B.data, P.B.count);
+		P.B.count = 0;
+		tmpP.w_u16(pA->ID);
+		tmpP.w_vec3(pA->o_Position);
+		tmpP.w_vec3(pA->o_Angle);
 		//------------------------------------------------
-		m_server->SendTo(l_pC->ID,P2,net_flags(TRUE,TRUE));		
+		AliveCount++;
+		l_pC->net_PassUpdates = FALSE;
+		l_pC->net_LastMoveUpdateTime = Level().timeServer();
 	};
+	if (AliveCount == 0) return;
+
+	NET_Packet MovePacket;
+	MovePacket.w_begin(M_MOVE_PLAYERS);
+	MovePacket.w_u8(AliveCount);
+	MovePacket.w(&tmpP.B.data, tmpP.B.count);
+
+	ClientID clientID;clientID.setBroadcast();
+	m_server->SendBroadcast		(clientID,MovePacket, net_flags(TRUE, TRUE));	
+};
+
+void	game_sv_ArtefactHunt::UpdatePlayersNotSendedMoveRespond()
+{
+	u32		cnt		= get_players_count	();
+	for (u32 it=0; it<cnt; it++)
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		if (!l_pC) continue;
+		game_PlayerState* ps	= l_pC->ps;
+		if (!l_pC->net_Ready || ps->Skip)	continue;
+		if (l_pC->net_PassUpdates) continue;
+		if (l_pC->net_LastMoveUpdateTime > Level().timeServer()-1000) continue;
+		ReplicatePlayersStateToPlayer(l_pC->ID);
+		l_pC->net_PassUpdates = FALSE;
+		l_pC->net_LastMoveUpdateTime = Level().timeServer();
+	}
+};
+
+void	game_sv_ArtefactHunt::ReplicatePlayersStateToPlayer(ClientID CID)
+{
+	u32		cnt		= get_players_count	();
+	u8 AliveCount = 0;
+	NET_Packet tmpP; tmpP.B.count = 0;	
+
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!l_pC->net_Ready || ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || ps->Skip)	continue;		
+		CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(l_pC->owner);
+		//-----------------------------------------------
+		NET_Packet P;
+		P.B.count = 0;
+		tmpP.w_u16(pA->ID);
+		tmpP.w_vec3(pA->o_Position);
+		tmpP.w_vec3(pA->o_Angle);
+		//------------------------------------------------
+		AliveCount++;		
+	};
+	NET_Packet MovePacket;
+	MovePacket.w_begin(M_MOVE_PLAYERS);
+	MovePacket.w_u8(AliveCount);
+	MovePacket.w(&tmpP.B.data, tmpP.B.count);
+	
+	m_server->SendTo	(CID,MovePacket, net_flags(TRUE, TRUE));	
 };
 
 void	game_sv_ArtefactHunt::CheckForTeamElimination()

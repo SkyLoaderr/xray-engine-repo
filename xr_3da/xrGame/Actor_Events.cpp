@@ -221,18 +221,8 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			Fvector NewPos, NewRot;
 			P.r_vec3(NewPos);
 			P.r_vec3(NewRot);
-			Fmatrix	M = Level().CurrentControlEntity()->XFORM();
-			M.translate(NewPos);
-			r_model_yaw				= NewRot.y;
-			r_torso.yaw				= NewRot.y;
-			r_torso.pitch			= -NewRot.x;
-			unaffected_r_torso.yaw	= r_torso.yaw;
-			unaffected_r_torso.pitch= r_torso.pitch;
-			unaffected_r_torso.roll	= 0;//r_torso.roll;
-
-			r_torso_tgt_roll		= 0;
-			cam_Active()->Set		(-unaffected_r_torso.yaw,unaffected_r_torso.pitch,unaffected_r_torso.roll);
-			Level().CurrentControlEntity()->ForceTransform(M);
+			
+			MoveActor(NewPos, NewRot);
 		}break;
 	case GE_ACTOR_MAX_POWER:
 		{
@@ -279,4 +269,22 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			*/
 		}break;
 	}
+}
+
+void			CActor::MoveActor		(Fvector NewPos, Fvector NewDir)
+{
+	Fmatrix	M = XFORM();
+	M.translate(NewPos);
+	r_model_yaw				= NewDir.y;
+	r_torso.yaw				= NewDir.y;
+	r_torso.pitch			= -NewDir.x;
+	unaffected_r_torso.yaw	= r_torso.yaw;
+	unaffected_r_torso.pitch= r_torso.pitch;
+	unaffected_r_torso.roll	= 0;//r_torso.roll;
+
+	r_torso_tgt_roll		= 0;
+	cam_Active()->Set		(-unaffected_r_torso.yaw,unaffected_r_torso.pitch,unaffected_r_torso.roll);
+	ForceTransform(M);
+
+	m_bInInterpolation = false;	
 }

@@ -7,6 +7,7 @@
 #include "net_queue.h"
 #include "Physics.h"
 #include "xrServer.h"
+#include "Actor.h"
 
 void CLevel::ClientReceive()
 {
@@ -111,6 +112,25 @@ void CLevel::ClientReceive()
 				O->CrPr_SetActivationStep(u32(ph_world->m_steps_num) - NumSteps);
 				AddActor_To_Actors4CrPr(O);
 
+			}break;
+		case M_MOVE_PLAYERS:
+			{
+				u8 Count = P->r_u8();
+				for (u8 i=0; i<Count; i++)
+				{
+					u16 ID = P->r_u16();					
+					Fvector NewPos, NewDir;
+					P->r_vec3(NewPos);
+					P->r_vec3(NewDir);
+
+					CActor*	OActor	= smart_cast<CActor*>(Objects.net_Find		(ID));
+					if (0 == OActor)		break;
+					OActor->MoveActor(NewPos, NewDir);
+				};
+
+				NET_Packet PRespond;
+				PRespond.w_begin(M_MOVE_PLAYERS_RESPOND);
+				Send(PRespond, net_flags(TRUE, TRUE));
 			}break;
 		//------------------------------------------------
 		case M_CL_INPUT:
