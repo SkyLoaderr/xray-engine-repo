@@ -255,8 +255,10 @@ void CUIDragDropListEx::ReinitScroll()
 {
 		float h1 = m_container->GetWndSize().y;
 		float h2 = GetWndSize().y;
-		m_vScrollBar->Show				( h1 > h2 );
-		m_vScrollBar->Enable			( h1 > h2 );
+		VERIFY						(_valid(h1));
+		VERIFY						(_valid(h2));
+		m_vScrollBar->Show			( h1 > h2 );
+		m_vScrollBar->Enable		( h1 > h2 );
 
 		m_vScrollBar->SetRange		(0, _max(0,iFloor(h1-h2)) );
 		m_vScrollBar->SetScrollPos	(0);
