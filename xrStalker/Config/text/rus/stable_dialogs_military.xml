@@ -366,6 +366,12 @@
     <string id="mil_dolg_skull_dialog_413">
         <text>До встречи.</text>
     </string>
+    <string id="mil_dolg_skull_dialog_420">
+        <text>Итак, продолжим?</text>
+    </string>
+    <string id="mil_dolg_skull_dialog_421">
+        <text>Что именно?</text>
+    </string>
     <string id="mil_dolg_skull_dialog_450">
         <text>Спасибо.</text>
     </string>

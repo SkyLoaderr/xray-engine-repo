@@ -92,7 +92,6 @@
 	
 	
 	
-	
 	<!-- База Свободы под атакой-->
 	<info_portion id="mil_freedom_under_attack"></info_portion>
 	
@@ -352,6 +351,7 @@
 	<info_portion id="mil_cap_death"></info_portion>
 	<info_portion id="mil_scull_message1"></info_portion>
 	<info_portion id="mil_scull_message2"></info_portion>
+	<info_portion id="mil_sniper_payment"></info_portion>
 	
 	
 </game_information_portions>
