@@ -625,7 +625,7 @@ void CUIMainIngameWnd::Update()
 					SetAmmoIcon(*sect_name);
 
 					string256 sItemName;
-					strcpy(sItemName, pSettings->r_string(sect_name, "inv_name_short"));
+					strcpy(sItemName, *CStringTable().translate(pSettings->r_string(sect_name, "inv_name_short")));
 
 					if (pWeaponMagazined && pWeaponMagazined->HasFireModes())
 					{
