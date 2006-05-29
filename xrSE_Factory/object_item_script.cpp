@@ -33,16 +33,31 @@ ObjectFactory::CLIENT_BASE_CLASS *CObjectItemScript::client_object	() const
 ObjectFactory::SERVER_BASE_CLASS *CObjectItemScript::server_object	(LPCSTR section) const
 {
 	ObjectFactory::SERVER_SCRIPT_BASE_CLASS	*object;
+	luabind::object		instance;
 	try {
-		object	= luabind::object_cast<ObjectFactory::SERVER_SCRIPT_BASE_CLASS*>(m_server_creator(section),luabind::adopt(luabind::result));
+		instance		= m_server_creator(section);
 	}
 	catch(std::exception e) {
-		Msg("Exception [%s] raised while creating script server object from section [%s]", e.what(),section);
+		Msg("Exception [%s] raised while creating server object from section [%s]", e.what(),section);
+		return				(0);
+	}
+	catch(...) {
+		Msg("Exception raised while creating server object from section [%s]",section);
+		return				(0);
+	}
+
+	try {
+		object	= luabind::object_cast<ObjectFactory::SERVER_SCRIPT_BASE_CLASS*>(instance,luabind::adopt(luabind::result));
+	}
+	catch(std::exception e) {
+		Msg("Exception [%s] raised while casting and adopting script server object from section [%s]", e.what(),section);
+		return				(0);
 	}
 	catch(...) {
 		Msg("Exception raised while creating script server object from section [%s]", section);
 		return				(0);
 	}
+
 	R_ASSERT	(object);
 	ObjectFactory::SERVER_BASE_CLASS * o = object->init();
 	R_ASSERT	(o);
