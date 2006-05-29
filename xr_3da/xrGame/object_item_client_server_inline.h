@@ -31,7 +31,9 @@ ObjectFactory::CLIENT_BASE_CLASS *CSObjectItemClientServer::client_object	() con
 TEMPLATE_SPECIALIZATION
 ObjectFactory::SERVER_BASE_CLASS *CSObjectItemClientServer::server_object	(LPCSTR section) const
 {
-	return				(xr_new<SERVER_TYPE>(section)->init());
+	ObjectFactory::SERVER_BASE_CLASS * o = xr_new<SERVER_TYPE>(section)->init();
+	R_ASSERT			(o);
+	return				(o);
 }
 
 #undef TEMPLATE_SPECIALIZATION

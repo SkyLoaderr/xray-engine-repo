@@ -37,10 +37,13 @@ ObjectFactory::SERVER_BASE_CLASS *CObjectItemScript::server_object	(LPCSTR secti
 		object	= luabind::object_cast<ObjectFactory::SERVER_SCRIPT_BASE_CLASS*>(m_server_creator(section),luabind::adopt(luabind::result));
 	}
 	catch(...) {
-		return	(0);
+		Msg("Exception raised while creating script server object from section [%s]", section);
+		return				(0);
 	}
 	R_ASSERT	(object);
-	return		(object->init());
+	ObjectFactory::SERVER_BASE_CLASS * o = object->init();
+	R_ASSERT	(o);
+	return		(o);
 }
 
 CObjectItemScript::CObjectItemScript	(
