@@ -125,10 +125,6 @@ protected:
 	void StartArtefactMerger();
 	void StopArtefactMerger();
 
-	//запуск и остановка меню работы с артефактами
-	void StartSleepWnd();
-	void StopSleepWnd();
-
 	shared_str		m_StrSectionName;
 
 	bool SlotToSection(const u32 SlotNum);
