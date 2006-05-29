@@ -1118,6 +1118,20 @@ function bar_arena_teleport ( actor, npc)
 	 db.actor:activate_slot(3)
 end
 
+function bar_arena_teleport_2 ( actor, npc)
+
+	level.add_pp_effector ("blink.ppe", 234, false)				
+	
+		db.actor:set_actor_position(patrol("t_walk_2"):point(0))
+		local dir = patrol("t_look_2"):point(0):sub(patrol("t_walk_2"):point(0))
+		db.actor:set_actor_direction(-dir:getH())
+	
+	inv_box_2 = level_object_by_sid (574)
+
+	out_object = actor
+    in_object  = inv_box_2
+		actor:inventory_for_each(transfer_object_item) 
+end
 function military_max_dead (actor, npc)
     --if actor:has_info ("mil_max_job") then
        --level_tasks.set_task_state (task.fail, "mil_mad_job", 0)
