@@ -4976,10 +4976,6 @@
                 <text>bar_bar_barmen_start_17211</text>
                 <next>17212</next>
             </phrase>
-            <phrase id="1721">
-                <text>bar_bar_barmen_start_1721</text>
-                <next>17211</next>
-            </phrase>
             <phrase id="16">
                 <text></text>
                 <dont_has_info>bar_barman_stay_room</dont_has_info>
@@ -5037,32 +5033,6 @@
                 <text>bar_bar_barmen_start_1313</text>
                 <next>1314</next>
             </phrase>
-            <phrase id="13121">
-                <text>bar_bar_barmen_start_13121</text>
-                <next>1313</next>
-            </phrase>
-            <phrase id="1312">
-                <text>bar_bar_barmen_start_1312</text>
-                <give_info>bar_deactivate_radar_start</give_info>
-                <next>13121</next>
-            </phrase>
-            <phrase id="131">
-                <text>bar_bar_barmen_start_131</text>
-                <next>1312</next>
-                <next>132</next>
-            </phrase>
-            <phrase id="1211">
-                <text>bar_bar_barmen_start_1211</text>
-                <precondition>bar_dialogs.have_x16_documents</precondition>
-                <action>bar_dialogs.give_x16_documents</action>
-                <give_info>bar_x16_documents_done</give_info>
-                <next>131</next>
-            </phrase>
-            <phrase id="121">
-                <text>bar_bar_barmen_start_121</text>
-                <next>1211</next>
-                <next>1212</next>
-            </phrase>
             <phrase id="12">
                 <text></text>
                 <dont_has_info>bar_barman_stay_room</dont_has_info>
@@ -5098,12 +5068,6 @@
                 <next>3</next>
                 <next>4</next>
             </phrase>
-            <phrase id="19">
-                <text></text>
-                <dont_has_info>bar_x16_documents_start</dont_has_info>
-                <has_info>bar_darklab_document_done</has_info>
-                <next>1721</next>
-            </phrase>
             <phrase id="18">
                 <text></text>
                 <dont_has_info>bar_darklab_document_gain</dont_has_info>
@@ -5113,11 +5077,47 @@
                 <next>181</next>
                 <next>182</next>
             </phrase>
+            <phrase id="182">
+                <text>bar_bar_barmen_start_182</text>
+            </phrase>
             <phrase id="181">
                 <text>bar_bar_barmen_start_181</text>
             </phrase>
-            <phrase id="182">
-                <text>bar_bar_barmen_start_182</text>
+            <phrase id="1721">
+                <text>bar_bar_barmen_start_1721</text>
+                <next>17211</next>
+            </phrase>
+            <phrase id="19">
+                <text></text>
+                <dont_has_info>bar_x16_documents_start</dont_has_info>
+                <has_info>bar_darklab_document_done</has_info>
+                <next>1721</next>
+            </phrase>
+            <phrase id="121">
+                <text>bar_bar_barmen_start_121</text>
+                <next>1211</next>
+                <next>1212</next>
+            </phrase>
+            <phrase id="1211">
+                <text>bar_bar_barmen_start_1211</text>
+                <precondition>bar_dialogs.have_x16_documents</precondition>
+                <action>bar_dialogs.give_x16_documents</action>
+                <give_info>bar_x16_documents_done</give_info>
+                <next>131</next>
+            </phrase>
+            <phrase id="131">
+                <text>bar_bar_barmen_start_131</text>
+                <next>1312</next>
+                <next>132</next>
+            </phrase>
+            <phrase id="1312">
+                <text>bar_bar_barmen_start_1312</text>
+                <give_info>bar_deactivate_radar_start</give_info>
+                <next>13121</next>
+            </phrase>
+            <phrase id="13121">
+                <text>bar_bar_barmen_start_13121</text>
+                <next>1313</next>
             </phrase>
         </phrase_list>
     </dialog>
