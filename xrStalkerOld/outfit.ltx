@@ -223,61 +223,6 @@ fire_wound_immunity			= 0.00
 
 
 ;---------------------------------------------------------------------------------------------
-;		КОСТЮМ ОБЫЧНОГО СОЛДАТА
-;---------------------------------------------------------------------------------------------
-[soldier_outfit]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 			= "outfit\soldier_outfit"
-;$prefetch 		= 32
-class			= E_STLK
-cform           = skeleton
-visual          = equipments\soldier_suit
-actor_visual	= actors\hero\stalker_soldier.ogf
-
-ef_equipment_type	= 3
-
-inv_name			= outfit_soldier_name
-inv_name_short		= outfit_soldier_name
-description			= outfit_soldier_description
-inv_weight			= 4.0
-inv_grid_width		= 2
-inv_grid_height		= 2
-inv_grid_x			= 0
-inv_grid_y			= 18
-cost				= 5000
-slot				= 6
-full_scale_icon_x	= 6		;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
-
-immunities_sect			= sect_soldier_outfit_immunities
-
-; NO RESISTANCE
-burn_protection 				= 0.0
-strike_protection 				= 0.0
-shock_protection 				= 0.0
-wound_protection				= 0.3
-radiation_protection 			= 0.0
-telepatic_protection 			= 0.0
-chemical_burn_protection 		= 0.0
-explosion_protection 			= 0.0
-fire_wound_protection  			= 0.0
-
-bones_koeff_protection = gilet_mask_damage
-
-[sect_soldier_outfit_immunities]
-burn_immunity				= 0.00				;коэффициенты иммунитета самого костюма
-strike_immunity				= 0.00
-shock_immunity				= 0.00
-wound_immunity				= 0.00
-radiation_immunity			= 0.00
-telepatic_immunity			= 0.00
-chemical_burn_immunity		= 0.00
-explosion_immunity			= 0.00
-fire_wound_immunity			= 0.00
-
-
-;---------------------------------------------------------------------------------------------
 ;		КОСТЮМ ВОЕННОГО СПЕЦНАЗА
 ;---------------------------------------------------------------------------------------------
 [specops_outfit]
