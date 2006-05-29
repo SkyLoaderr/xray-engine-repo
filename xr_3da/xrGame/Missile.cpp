@@ -106,13 +106,7 @@ BOOL CMissile::net_Spawn(CSE_Abstract* DC)
 {
 	BOOL l_res = inherited::net_Spawn(DC);
 
-	CSE_Abstract						*abstract = (CSE_Abstract*)DC;
-	if (abstract->ID_Parent==0xffff) {
-		VERIFY(!m_pPhysicsShell);
-		create_physic_shell();
-		m_pPhysicsShell->Activate	(XFORM(),0,XFORM(),true);
-
-	}
+	//CSE_Abstract						*abstract = (CSE_Abstract*)DC;
 
 	dwXF_Frame					= 0xffffffff;
 
@@ -741,7 +735,9 @@ void CMissile::create_physic_shell	()
 
 void CMissile::setup_physic_shell	()
 {
-	// do not delete!!!
+	VERIFY(!m_pPhysicsShell);
+	create_physic_shell();
+	m_pPhysicsShell->Activate	(XFORM(),0,XFORM(),true);
 }
 
 u32	CMissile::ef_weapon_type		() const
