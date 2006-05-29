@@ -24,7 +24,6 @@ ZONE_INFO::~ZONE_INFO	()
 CCustomDetector::CCustomDetector(void) 
 {
 	m_bWorking					= false;
-	m_flags.set					(Fbelt, TRUE);
 }
 
 CCustomDetector::~CCustomDetector(void) 
@@ -47,12 +46,7 @@ BOOL CCustomDetector::net_Spawn(CSE_Abstract* DC)
 
 void CCustomDetector::Load(LPCSTR section) 
 {
-	// verify class
-	LPCSTR Class = pSettings->r_string(section,"class");
-	CLASS_ID load_cls = TEXT2CLSID(Class);
-	R_ASSERT(load_cls==CLS_ID);
-
-	inherited::Load(section);
+	inherited::Load			(section);
 
 	m_fRadius				= pSettings->r_float(section,"radius");
 	
@@ -95,10 +89,6 @@ void CCustomDetector::Load(LPCSTR section)
 	m_ef_detector_type	= pSettings->r_u32(section,"ef_detector_type");
 }
 
-void CCustomDetector::net_Destroy() 
-{
-	inherited::net_Destroy();
-}
 
 void CCustomDetector::shedule_Update(u32 dt) 
 {
@@ -134,13 +124,7 @@ void CCustomDetector::UpdateCL()
 	if( !IsWorking() ) return;
 	if( !H_Parent()  ) return;
 
-	//если у актера, то только на поясе
 	if(!m_pCurrentActor) return;
-	if( !m_pCurrentActor->m_inventory->Get(ID(),false))	return;
-
-	///////////////////////////////////
-	//звуки обнаружения аномальных зон
-	///////////////////////////////////
 
 	ZONE_INFO_MAP_IT it;
 	for(it = m_ZoneInfoMap.begin(); m_ZoneInfoMap.end() != it; ++it) 
@@ -171,7 +155,6 @@ void CCustomDetector::UpdateCL()
 		if((float)zone_info.snd_time > current_snd_time)
 		{
 			zone_info.snd_time	= 0;
-//			zone_type.detect_snd.play_at_pos(this,Fvector().set(0,0,0),sm_2D);
 			HUD_SOUND::PlaySound	(zone_type.detect_snds, Fvector().set(0,0,0), this, true, false);
 
 		} 
@@ -210,8 +193,8 @@ BOOL CCustomDetector::feel_touch_contact(CObject* O)
 
 void CCustomDetector::OnH_A_Chield() 
 {
-	m_pCurrentActor = smart_cast<CActor*>(H_Parent());
-	m_pCurrentInvOwner = smart_cast<CInventoryOwner*>(H_Parent());
+	m_pCurrentActor				= smart_cast<CActor*>(H_Parent());
+	m_pCurrentInvOwner			= smart_cast<CInventoryOwner*>(H_Parent());
 	inherited::OnH_A_Chield		();
 }
 
@@ -219,46 +202,19 @@ void CCustomDetector::OnH_B_Independent()
 {
 	inherited::OnH_B_Independent();
 	
-	m_pCurrentActor = NULL;
-	m_pCurrentInvOwner = NULL;
+	m_pCurrentActor				= NULL;
+	m_pCurrentInvOwner			= NULL;
 
-	StopAllSounds();
+	StopAllSounds				();
 
-	m_ZoneInfoMap.clear();
+	m_ZoneInfoMap.clear			();
 	Feel::Touch::feel_touch.clear();
 }
 
-#ifdef DEBUG
-extern	Flags32	dbg_net_Draw_Flags;
-void CCustomDetector::OnRender() 
-{
-	if(!bDebug) return;
-	RCache.OnFrameEnd();
-	if (!(dbg_net_Draw_Flags.is_any((1<<6)))) return;
-	Fmatrix l_ball;
-	l_ball.scale(1.5f, 1.5f, 1.5f);
-	Fvector l_p;
-	l_p.set(0, 1.f, 0);
-	XFORM().transform(l_p, l_p);
-	l_ball.translate_add(l_p);
-	RCache.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(255,0,255));
-}
-#endif
-
-void CCustomDetector::renderable_Render()
-{
-	inherited::renderable_Render();
-}
 
 u32	CCustomDetector::ef_detector_type	() const
 {
 	return	(m_ef_detector_type);
-}
-
-void CCustomDetector::OnMoveToBelt()
-{
-	inherited::OnMoveToBelt();
-	TurnOn();
 }
 
 void CCustomDetector::OnMoveToRuck()
@@ -266,18 +222,24 @@ void CCustomDetector::OnMoveToRuck()
 	inherited::OnMoveToRuck();
 	TurnOff();
 }
+
+void CCustomDetector::OnMoveToSlot()
+{
+	inherited::OnMoveToSlot	();
+	TurnOn					();
+}
 void CCustomDetector::TurnOn()
 {
-	m_bWorking = true;
-	UpdateMapLocations();
-	UpdateNightVisionMode();
+	m_bWorking				= true;
+	UpdateMapLocations		();
+	UpdateNightVisionMode	();
 }
 
 void CCustomDetector::TurnOff() 
 {
-	m_bWorking = false;
-	UpdateMapLocations();
-	UpdateNightVisionMode();
+	m_bWorking				= false;
+	UpdateMapLocations		();
+	UpdateNightVisionMode	();
 }
 
 void CCustomDetector::AddRemoveMapSpot(CCustomZone* pZone, bool bAdd)

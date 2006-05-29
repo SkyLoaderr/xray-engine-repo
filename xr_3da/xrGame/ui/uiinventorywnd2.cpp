@@ -195,7 +195,7 @@ bool CUIInventoryWnd::ToSlot(CUICellItem* itm, bool force_place)
 		return								true;
 	}else
 	{ // in case slot is busy
-		if(!force_place || _slot==NO_ACTIVE_SLOT || _slot==PDA_SLOT || _slot==BOLT_SLOT) return false;
+		if(!force_place ||  _slot==NO_ACTIVE_SLOT || GetInventory()->m_slots[_slot].m_bPersistent) return false;
 
 		PIItem	_iitem						= GetInventory()->m_slots[_slot].m_pIItem;
 		CUIDragDropListEx* slot_list		= GetSlotList(_slot);
@@ -350,7 +350,7 @@ bool CUIInventoryWnd::OnItemRButtonClick(CUICellItem* itm)
 
 CUIDragDropListEx* CUIInventoryWnd::GetSlotList(u32 slot_idx)
 {
-	if(slot_idx == NO_ACTIVE_SLOT)	return NULL;
+	if(slot_idx == NO_ACTIVE_SLOT || GetInventory()->m_slots[slot_idx].m_bPersistent)	return NULL;
 	if(slot_idx<SLOTS_NUM)
 		return m_pUITopList	[slot_idx];
 

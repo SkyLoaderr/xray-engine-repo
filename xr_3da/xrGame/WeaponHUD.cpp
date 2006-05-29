@@ -133,7 +133,7 @@ void CWeaponHUD::animDisplay		(MotionID M,	BOOL bMixIn)
 		PKinematicsAnimated->CalculateBones_Invalidate	();
 	}
 }
-void CWeaponHUD::animPlay			(MotionID M,	BOOL bMixIn, CInventoryItem* W)
+void CWeaponHUD::animPlay			(MotionID M,	BOOL bMixIn, CHudItem* W)
 {
 	Show							();
 	animDisplay						(M, bMixIn);

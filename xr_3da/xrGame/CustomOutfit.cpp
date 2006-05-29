@@ -34,11 +34,6 @@ CCustomOutfit::~CCustomOutfit()
 }
 
 
-BOOL CCustomOutfit::net_Spawn(CSE_Abstract* DC) 
-{
-	return		(inherited::net_Spawn(DC));
-}
-
 void CCustomOutfit::Load(LPCSTR section) 
 {
 	inherited::Load(section);
@@ -66,48 +61,6 @@ void CCustomOutfit::Load(LPCSTR section)
 		m_fPowerLoss = pSettings->r_float(section, "power_loss");
 	else
 		m_fPowerLoss = 1.0f;	
-}
-
-void CCustomOutfit::net_Destroy() 
-{
-	inherited::net_Destroy();
-}
-
-void CCustomOutfit::shedule_Update(u32 dt) 
-{
-	inherited::shedule_Update(dt);
-}
-
-void CCustomOutfit::UpdateCL() 
-{
-	inherited::UpdateCL();
-}
-
-
-void CCustomOutfit::OnH_A_Chield() 
-{
-	inherited::OnH_A_Chield		();
-}
-
-void CCustomOutfit::OnH_B_Independent() 
-{
-	inherited::OnH_B_Independent();
-}
-
-void CCustomOutfit::renderable_Render() 
-{
-	inherited::renderable_Render();
-}
-
-//void CCustomOutfit::Hit(float P, Fvector &dir,	
-//		    CObject* who, s16 element,
-//		    Fvector position_in_object_space, 
-//		    float impulse, 
-//		    ALife::EHitType hit_type)
-void	CCustomOutfit::Hit					(SHit* pHDS)
-{
-//	inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);
-	inherited::Hit(pHDS);
 }
 
 void CCustomOutfit::Hit(float hit_power, ALife::EHitType hit_type)

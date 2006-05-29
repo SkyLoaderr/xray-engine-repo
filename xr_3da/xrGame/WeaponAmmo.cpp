@@ -138,7 +138,7 @@ bool CWeaponAmmo::Useful() const
 	// Если IItem еще не полностью использованый, вернуть true
 	return !!m_boxCurr;
 }
-
+/*
 s32 CWeaponAmmo::Sort(PIItem pIItem) 
 {
 	// Если нужно разместить IItem после this - вернуть 1, если
@@ -149,20 +149,7 @@ s32 CWeaponAmmo::Sort(PIItem pIItem)
 	if(m_boxCurr <= l_pA->m_boxCurr) return 1;
 	else return -1;
 }
-
-bool CWeaponAmmo::Merge(PIItem pIItem) 
-{
-	// Если удалось слить вместе вернуть true
-	if(m_boxCurr == m_boxSize) return false;
-	CWeaponAmmo *l_pA = smart_cast<CWeaponAmmo*>(pIItem);
-	if(!l_pA) return false;
-	if(xr_strcmp(cNameSect(), l_pA->cNameSect())) return false;
-	u16 l_free = m_boxSize - m_boxCurr;
-	m_boxCurr = m_boxCurr + (l_free < l_pA->m_boxCurr ? l_free : l_pA->m_boxCurr);
-	l_pA->m_boxCurr = l_pA->m_boxCurr - (l_free < l_pA->m_boxCurr ? l_free : l_pA->m_boxCurr);
-	return true;
-}
-
+*/
 bool CWeaponAmmo::Get(CCartridge &cartridge) 
 {
 	if(!m_boxCurr) return false;

@@ -77,12 +77,6 @@ void CTorch::Load(LPCSTR section)
 	m_bNightVisionEnabled = !!pSettings->r_bool(section,"night_vision");
 	if(m_bNightVisionEnabled)
 	{
-		// Load attack postprocess --------------------------------------------------------
-//		LPCSTR ppi_section = pSettings->r_string(section,"night_vision_effector");
-//		m_NightVisionEffector.Load(ppi_section);
-
-
-		//// Sounds
 		if(pSettings->line_exist(section, "snd_night_vision_on"))
 			HUD_SOUND::LoadSound(section,"snd_night_vision_on"	, m_NightVisionOnSnd	, TRUE, SOUND_TYPE_ITEM_USING);
 		if(pSettings->line_exist(section, "snd_night_vision_off"))
@@ -114,8 +108,7 @@ void CTorch::SwitchNightVision(bool vision_on)
 	else
 		m_bNightVisionOn = false;
 
-	if(m_bNightVisionOn)
-	{
+	if(m_bNightVisionOn){
 		CActor *pA = smart_cast<CActor *>(H_Parent());
 		if (pA) 
 		{
@@ -125,17 +118,8 @@ void CTorch::SwitchNightVision(bool vision_on)
 				HUD_SOUND::PlaySound(m_NightVisionOnSnd, pA->Position(), pA, true);
 				HUD_SOUND::PlaySound(m_NightVisionIdleSnd, pA->Position(), pA, true, true);
 			}
-/*
-			bool result = m_NightVisionEffector.Start();
-			if(result)
-			{
-				HUD_SOUND::PlaySound(m_NightVisionOnSnd, pA->Position(), pA, true);
-				HUD_SOUND::PlaySound(m_NightVisionIdleSnd, pA->Position(), pA, true, true);
-			}*/
 		}
-	}
-	else
-	{
+	}else{
 		CActor *pA = smart_cast<CActor *>(H_Parent());
 		if(pA)
 		{
@@ -145,13 +129,6 @@ void CTorch::SwitchNightVision(bool vision_on)
 				HUD_SOUND::PlaySound(m_NightVisionOffSnd, pA->Position(), pA, true);
 				HUD_SOUND::StopSound(m_NightVisionIdleSnd);
 			}
-/*
-			bool result = m_NightVisionEffector.Stop();
-			if(result)
-			{
-				HUD_SOUND::PlaySound(m_NightVisionOffSnd, pA->Position(), pA, true);
-				HUD_SOUND::StopSound(m_NightVisionIdleSnd);
-			}*/
 		}
 	}
 }
@@ -179,9 +156,8 @@ void CTorch::UpdateSwitchNightVision   ()
 
 void CTorch::Switch()
 {
-//	bool bActive			= !light_render->get_active();
 	bool bActive			= !m_switched_on;
-	Switch(bActive);
+	Switch					(bActive);
 }
 
 void CTorch::Switch	(bool light_on)
@@ -252,12 +228,7 @@ void CTorch::net_Destroy()
 void CTorch::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield			();
-//	H_Root()->Center				(Position());
-//	XFORM().c.set					(Position());
 	m_focus.set						(Position());
-	// commented by Dima
-//	Switch							(false);
-	// end of comments
 }
 
 void CTorch::OnH_B_Independent	() 
@@ -275,14 +246,13 @@ void CTorch::OnH_B_Independent	()
 	m_NightVisionChargeTime		= m_NightVisionRechargeTime;
 }
 
-void CTorch::UpdateCL			() 
+void CTorch::UpdateCL() 
 {
 	inherited::UpdateCL			();
 	
 	UpdateSwitchNightVision		();
 
-	if (!m_switched_on)
-		return;
+	if (!m_switched_on)			return;
 
 	CBoneInstance			&BI = smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(guid_bone);
 	Fmatrix					M;
@@ -357,12 +327,10 @@ void CTorch::UpdateCL			()
 		} 
 	}
 
-	if (!m_switched_on)
-		return;
+	if (!m_switched_on)					return;
 
 	// calc color animator
-	if (!lanim)
-		return;
+	if (!lanim)							return;
 
 	int						frame;
 	// возвращает в формате BGR
@@ -376,20 +344,6 @@ void CTorch::UpdateCL			()
 	glow_render->set_color		(fclr);
 }
 
-void CTorch::renderable_Render	() 
-{
-	inherited::renderable_Render();
-}
-
-void CTorch::reinit				()
-{
-	inherited::reinit			();
-}
-
-void CTorch::reload				(LPCSTR section)
-{
-	inherited::reload			(section);
-}
 
 void CTorch::create_physic_shell()
 {
@@ -420,12 +374,13 @@ void CTorch::net_Import			(NET_Packet& P)
 
 bool  CTorch::can_be_attached		() const
 {
-	if( !inherited::can_be_attached() ) return false;
+//	if( !inherited::can_be_attached() ) return false;
 
 	const CActor *pA = smart_cast<const CActor *>(H_Parent());
 	if (pA) 
 	{
-		if(pA->inventory().Get(ID(), false))
+//		if(pA->inventory().Get(ID(), false))
+		if((const CTorch*)smart_cast<CTorch*>(pA->inventory().m_slots[GetSlot()].m_pIItem) == this )
 			return true;
 		else
 			return false;
@@ -437,7 +392,10 @@ void CTorch::afterDetach			()
 	inherited::afterDetach	();
 	Switch					(false);
 }
-
+void CTorch::renderable_Render()
+{
+	inherited::renderable_Render();
+}
 #include "script_space.h"
 
 using namespace luabind;

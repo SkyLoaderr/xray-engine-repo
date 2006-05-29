@@ -53,6 +53,8 @@ CInventory::CInventory()
 
 	m_slots[PDA_SLOT].m_bCanBeActivated			= false;
 	m_slots[OUTFIT_SLOT].m_bCanBeActivated		= false;
+	m_slots[DETECTOR_SLOT].m_bCanBeActivated	= false;
+	m_slots[TORCH_SLOT].m_bCanBeActivated		= false;
 
 	m_bSlotsUseful								= true;
 	m_bBeltUseful								= false;
@@ -581,16 +583,17 @@ PIItem CInventory::Same(const PIItem pIItem, bool bSearchRuck) const
 }
 
 //ищем на поясе вещь для слота 
-PIItem CInventory::SameSlot(u32 slot, bool bSearchRuck) const
+PIItem CInventory::SameSlot(const PIItem pIItem, bool bSearchRuck) const
 {
+	u32 slot = pIItem->GetSlot();
 	if(slot == NO_ACTIVE_SLOT) 	return NULL;
 
 	const TIItemContainer &list = bSearchRuck ? m_ruck : m_belt;
 	
 	for(TIItemContainer::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
-		PIItem pIItem = *it;
-		if(pIItem->GetSlot() == slot) return pIItem;
+		PIItem _pIItem = *it;
+		if(_pIItem != pIItem && _pIItem->GetSlot() == slot) return _pIItem;
 	}
 
 	return NULL;
@@ -791,13 +794,13 @@ bool CInventory::CanPutInSlot(PIItem pIItem) const
 //при этом реально ничего не меняется
 bool CInventory::CanPutInBelt(PIItem pIItem)
 {
-	if(InBelt(pIItem)) return false;
-	if(!m_bBeltUseful) return false;
-	if(!pIItem || !pIItem->Belt()) return false;
-	if(m_belt.size() == BeltWidth()) return false;
+	if(InBelt(pIItem))					return false;
+	if(!m_bBeltUseful)					return false;
+	if(!pIItem || !pIItem->Belt())		return false;
+	if(m_belt.size() == BeltWidth())	return false;
 
-	if(pIItem->object().CLS_ID==CLSID_DETECTOR_SIMPLE && Get(CLSID_DETECTOR_SIMPLE,false)) return false;
-	if(pIItem->object().CLS_ID==CLSID_DEVICE_TORCH && Get(CLSID_DEVICE_TORCH,false))		return false;
+//.	if(pIItem->object().CLS_ID==CLSID_DETECTOR_SIMPLE && Get(CLSID_DETECTOR_SIMPLE,false)) return false;
+//.	if(pIItem->object().CLS_ID==CLSID_DEVICE_TORCH && Get(CLSID_DEVICE_TORCH,false))		return false;
 
 	return FreeRoom_inBelt(m_belt, pIItem, BeltWidth(), 1);
 }
@@ -894,6 +897,15 @@ void  CInventory::AddAvailableItems(TIItemContainer& items_container, bool for_t
 	
 	if(m_bSlotsUseful)
 	{
+		TISlotArr::const_iterator slot_it			= m_slots.begin();
+		TISlotArr::const_iterator slot_it_e			= m_slots.end();
+		for(;slot_it!=slot_it_e;++slot_it)
+		{
+			const CInventorySlot& S = *slot_it;
+			if(S.m_pIItem && (!for_trade || S.m_pIItem->CanTrade()) && !S.m_bPersistent)
+				items_container.push_back(S.m_pIItem);
+		}
+/*
 		if(m_slots[KNIFE_SLOT].m_pIItem)
 			if(!for_trade || m_slots[KNIFE_SLOT].m_pIItem->CanTrade())
 				items_container.push_back(m_slots[KNIFE_SLOT].m_pIItem);
@@ -917,6 +929,7 @@ void  CInventory::AddAvailableItems(TIItemContainer& items_container, bool for_t
 		if(m_slots[OUTFIT_SLOT].m_pIItem)
 			if(!for_trade || m_slots[OUTFIT_SLOT].m_pIItem->CanTrade())
 				items_container.push_back(m_slots[OUTFIT_SLOT].m_pIItem);
+*/
 	}		
 }
 

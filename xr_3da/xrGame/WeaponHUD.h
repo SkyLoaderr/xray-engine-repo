@@ -61,7 +61,8 @@ class CWeaponHUD
 	u32					m_dwAnimTime;
 	u32					m_dwAnimEndTime;
 	bool				m_bStopAtEndAnimIsRunning;
-	CInventoryItem*		m_pCallbackItem;
+//	CInventoryItem*		m_pCallbackItem;
+	CHudItem*			m_pCallbackItem;
 
 	//остановление таймера текущей анимации, и вызов callback
 	void				StopCurrentAnim	();
@@ -96,7 +97,7 @@ public:
 	
 
 	// Animations
-	void				animPlay		(MotionID M, BOOL bMixIn=TRUE, CInventoryItem*  W=0);
+	void				animPlay		(MotionID M, BOOL bMixIn=TRUE, CHudItem*  W=0);
 	void				animDisplay		(MotionID M, BOOL bMixIn);
 	MotionID			animGet			(LPCSTR name);
 	

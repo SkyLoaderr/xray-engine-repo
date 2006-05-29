@@ -93,10 +93,9 @@ public:
 	//вещь убирается в инвентарь
 	virtual bool				IsHiding			()	const	{return false;}
 
-	virtual void				OnAnimationEnd		()		{}
+//	virtual void				OnAnimationEnd		()		{}
 	
-	virtual s32					Sort				(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
-	virtual bool				Merge				(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
+//	virtual s32					Sort				(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
 
 	virtual void				OnH_B_Chield		();
 	virtual void				OnH_A_Chield		();
@@ -132,10 +131,10 @@ public:
 	virtual void				OnMoveToBelt		() {};
 	virtual void				OnMoveToRuck		() {};
 					
-			int					GetGridWidth		() const ;//{return m_iGridWidth;}
-			int					GetGridHeight		() const ;//{return m_iGridHeight;}
-			int					GetXPos				() const ;//{return m_iXPos;}
-			int					GetYPos				() const ;//{return m_iYPos;}
+			int					GetGridWidth		() const ;
+			int					GetGridHeight		() const ;
+			int					GetXPos				() const ;
+			int					GetYPos				() const ;
 	//---------------------------------------------------------------------
 			float				GetKillMsgXPos		() const ;
 			float				GetKillMsgYPos		() const ;
@@ -158,18 +157,10 @@ public:
 	virtual bool 				IsNecessaryItem	    (CInventoryItem* item)		{return false;};
 protected:
 	
-	// Слот в который можно установить объект (NO_ACTIVE_SLOT если нельзя)
 	u32							m_slot;
-	// цена по умолчанию
 	u32							m_cost;
-	// вес объекта (без подсоединненых вещей)
 	float						m_weight;
-	
-	//состояние вещи, 1.0 - полностью работоспособная
-	// 0 - испорченная
 	float						m_fCondition;
-
-	// Тектс описания вещи
 	shared_str					m_Description;
 
 	ALife::_TIME_ID				m_dwItemRemoveTime;

@@ -36,8 +36,6 @@ public:
 	virtual			~CTorch				(void);
 
 	virtual void	Load				(LPCSTR section);
-	virtual void	reinit				();
-	virtual void	reload				(LPCSTR section);
 	virtual BOOL	net_Spawn			(CSE_Abstract* DC);
 	virtual void	net_Destroy			();
 	virtual void	net_Export			(NET_Packet& P);				// export to server
@@ -47,7 +45,6 @@ public:
 	virtual void	OnH_B_Independent	();
 
 	virtual void	UpdateCL			();
-	virtual void	renderable_Render	();
 
 			void	Switch				();
 			void	Switch				(bool light_on);
@@ -83,6 +80,7 @@ public:
 	virtual void	setup_physic_shell		();
 
 	virtual void	afterDetach				();
+	virtual void	renderable_Render		();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -17,18 +17,8 @@ public:
 									CCustomOutfit		(void);
 	virtual							~CCustomOutfit		(void);
 
-	virtual BOOL					net_Spawn			(CSE_Abstract* DC);
-	virtual void					net_Destroy			();
 	virtual void					Load				(LPCSTR section);
-	virtual void					shedule_Update		(u32 dt);
-	virtual void					UpdateCL			();
-	virtual void					renderable_Render	();
-
-	virtual void					OnH_A_Chield		();
-	virtual void					OnH_B_Independent	();
-
-	virtual	void					Hit					(SHit* pHDS);
-
+	
 	//уменьшенная версия хита, для вызова, когда костюм надет на персонажа
 	virtual void					Hit					(float P, ALife::EHitType hit_type);
 

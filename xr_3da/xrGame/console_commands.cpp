@@ -936,6 +936,20 @@ public:
 	}
 };
 
+#include "game_sv_artefacthunt.h"
+class CCC_ReturnToBase: public IConsole_Command {
+public:
+	CCC_ReturnToBase(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (!OnServer())						return;
+		if (GameID() != GAME_ARTEFACTHUNT)		return;
+
+		game_sv_ArtefactHunt* g = smart_cast<game_sv_ArtefactHunt*>(Level().Server->game);
+		R_ASSERT(g);
+		g->MoveAllAlivePlayers();
+	}
+};
 class CCC_KickPlayer : public IConsole_Command {
 public:
 	CCC_KickPlayer(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
@@ -2426,6 +2440,8 @@ void CCC_RegisterCommands()
 
 	CMD4(CCC_Integer,	"sv_artefact_spawn_force",		&g_SV_Force_Artefact_Spawn, 0, 1);
 #endif
+
+	CMD1(CCC_ReturnToBase,	"sv_return_to_base");
 	CMD4(CCC_Integer,	"cl_leave_tdemo",		&g_bLeaveTDemo, 0, 1);
 	CMD1(CCC_GetServerAddress,	"get_server_address");		
 

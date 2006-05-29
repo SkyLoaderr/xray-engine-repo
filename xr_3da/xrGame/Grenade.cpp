@@ -218,9 +218,9 @@ void CGrenade::PutNextToSlot	()
 	if(smart_cast<CActor*>(H_Parent()) && m_pInventory)
 	{
 		//найти такую же гранату и положить в рюкзак
-		CGrenade *pNext = smart_cast<CGrenade*>(m_pInventory->Same(this,false));
+		CGrenade *pNext = smart_cast<CGrenade*>(m_pInventory->Same(this,true));
 		//или найти любую другую гранату на поясе
-		if(!pNext) pNext = smart_cast<CGrenade*>(m_pInventory->SameSlot(m_slot,false));
+		if(!pNext) pNext = smart_cast<CGrenade*>(m_pInventory->SameSlot(this,true));
 
 		VERIFY(pNext != this);
 

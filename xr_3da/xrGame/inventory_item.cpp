@@ -202,30 +202,18 @@ void CInventoryItem::Drop()
 {
 	if(m_pInventory) m_flags.set(Fdrop, TRUE);
 }
-
-s32 CInventoryItem::Sort(PIItem /**pIItem/**/) 
+/*
+s32 CInventoryItem::Sort(PIItem ) 
 {
 	// Если нужно разместить IItem после this - вернуть 1, если
 	// перед - -1. Если пофиг то 0.
 	return 0;
 }
-
-bool CInventoryItem::Merge(PIItem /**pIItem/**/) 
-{
-	// Если удалось слить вместе вернуть true
-	return false;
-}
-
+*/
 void CInventoryItem::OnH_B_Independent	()
 {
 	UpdateXForm();
 	m_eItemPlace = eItemPlaceUndefined ;
-/*	
-	if (HUD().GetUI() && object().H_Parent() == Level().CurrentViewEntity())
-	{
-		HUD().GetUI()->UIGame()->ReInitInventoryWnd();
-	};
-	*/
 }
 
 void CInventoryItem::OnH_A_Independent	()
@@ -504,7 +492,8 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 void CInventoryItem::load(IReader &packet)
 {
 	m_eItemPlace = (EItemPlace)packet.r_u8 ()	;
-	if(CSE_ALifeInventoryItem::FLAG_NO_POSITION==packet.r_u16	())
+	u16 tmp = packet.r_u16	();
+	if(CSE_ALifeInventoryItem::FLAG_NO_POSITION==tmp)
 	{
 		return;
 	}

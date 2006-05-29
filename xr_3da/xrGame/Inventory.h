@@ -60,7 +60,7 @@ public:
 	// »щет на по€се аналогичный IItem
 	PIItem					Same				(const PIItem pIItem, bool bSearchRuck) const;
 	// »щет на по€се IItem дл€ указанного слота
-	PIItem					SameSlot			(u32 slot,	 bool bSearchRuck) const;
+	PIItem					SameSlot			(const PIItem pIItem,	 bool bSearchRuck) const;
 	// »щет на по€се или в рюкзаке IItem с указанным именем (cName())
 	PIItem					Get					(const char *name, bool bSearchRuck) const;
 	// »щет на по€се или в рюкзаке IItem с указанным именем (id)

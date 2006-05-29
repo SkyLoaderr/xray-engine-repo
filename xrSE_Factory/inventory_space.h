@@ -12,6 +12,8 @@
 #define BOLT_SLOT			5
 #define OUTFIT_SLOT			6
 #define PDA_SLOT			7
+#define DETECTOR_SLOT		8
+#define TORCH_SLOT			9
 
 #define RUCK_HEIGHT			280
 #define RUCK_WIDTH			7

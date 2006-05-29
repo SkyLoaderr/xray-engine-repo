@@ -424,7 +424,7 @@ void CInventoryOwner::OnItemDropUpdate ()
 
 void CInventoryOwner::OnItemBelt	(CInventoryItem *inventory_item, EItemPlace previous_place)
 {
-	attach		(inventory_item);
+//.	attach		(inventory_item);
 }
 void CInventoryOwner::OnItemRuck	(CInventoryItem *inventory_item, EItemPlace previous_place)
 {
@@ -432,6 +432,7 @@ void CInventoryOwner::OnItemRuck	(CInventoryItem *inventory_item, EItemPlace pre
 }
 void CInventoryOwner::OnItemSlot	(CInventoryItem *inventory_item, EItemPlace previous_place)
 {
+	attach		(inventory_item);
 }
 
 CInventoryItem* CInventoryOwner::GetCurrentOutfit() const

@@ -43,14 +43,12 @@ public:
 
 	virtual BOOL net_Spawn			(CSE_Abstract* DC);
 	virtual void Load				(LPCSTR section);
-	virtual void net_Destroy		();
 
 	virtual void OnH_A_Chield		();
 	virtual void OnH_B_Independent	();
 
 	virtual void shedule_Update		(u32 dt);
 	virtual void UpdateCL			();
-	virtual void renderable_Render	();
 
 	virtual void feel_touch_new		(CObject* O);
 	virtual void feel_touch_delete	(CObject* O);
@@ -60,7 +58,7 @@ public:
 			void TurnOff			();
 			bool IsWorking			() {return m_bWorking;}
 
-	virtual void OnMoveToBelt		();
+	virtual void OnMoveToSlot		();
 	virtual void OnMoveToRuck		();
 
 protected:
@@ -87,9 +85,6 @@ protected:
 	
 	shared_str						m_nightvision_particle;
 
-#ifdef DEBUG
-	virtual void		OnRender	();
-#endif
 protected:
 	u32					m_ef_detector_type;
 
