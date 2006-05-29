@@ -1308,6 +1308,9 @@
     <string id="mil_trader_dialog_7005">
         <text>Интересно... Лезет всякая гадость из центра Зоны. Откуда только берется... Ладно, вот плата за твою работу.</text>
     </string>
+    <string id="mil_trader_dialog_8001">
+        <text>Ну, чего принес ?</text>
+    </string>
     <string id="mil_zoneguard_common1_0">
         <text>У вас тут повар есть ?</text>
     </string>
