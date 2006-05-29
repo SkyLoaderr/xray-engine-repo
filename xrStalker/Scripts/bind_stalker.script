@@ -274,7 +274,7 @@ function actor_binder:save(packet)
 
 	sr_psy_antenna.save( packet )
 	task_manager.save(packet)
-	self.actor_detector:save(packet)
+	self.actor_detector:save(packet)	
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:load(reader)
@@ -286,7 +286,7 @@ function actor_binder:load(reader)
 
 	sr_psy_antenna.load(reader)
 	task_manager.load(reader)
-	self.actor_detector:load(reader)
+	self.actor_detector:load(reader)	
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_init    (npc)
