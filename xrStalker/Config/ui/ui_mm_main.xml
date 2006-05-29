@@ -37,7 +37,7 @@
 	<menu_main btn_height="30" font="graffiti22" a="255" r="0" g="0" b="0">
 		<btn name="btn_new_game"	caption="ui_mm_newgame" />
 		<btn name="btn_load"		caption="ui_mm_load_game" />
-		<btn name="btn_save"		caption="ui_mm_save_game" />
+		<!--btn name="btn_save"		caption="ui_mm_save_game" /-->
 		<btn name="btn_multiplayer"	caption="ui_mm_multiplayer_n" />
 		<btn name="btn_options"		caption="ui_mm_options_n" />
 		<!--btn name="btn_bonus"		caption="Bonus" /-->
