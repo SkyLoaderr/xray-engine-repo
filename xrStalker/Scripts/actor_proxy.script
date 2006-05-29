@@ -6,18 +6,31 @@ class "actor_proxy"
 
 -- конструктор
 function actor_proxy:__init()
+	self.alife = nil
 end
 
--- инициализация в момент регистрации серверных объектов.
--- вызывается из se_smart_terrain:on_register()
+-- инициализация.
+-- происходит только в момент первого обращения.
 function actor_proxy:init()
-	self.online   = false
-	self.alife    = alife()
-	self.actor_id = self.alife:actor().id
-	self.actor    = nil
+	if not self.alife then
+		self.online   = false
+		self.alife    = alife()
+		self.actor_id = self.alife:actor().id
+		self.actor    = nil
+	end
+end
+
+-- деинициализация.
+-- происходит в момент дерегистрации серверных объектов.
+-- вызывается из se_smart_terrain:on_unregister() TODO remove this hack
+function actor_proxy:deinit()
+	self.alife = nil
+	self.actor = nil
 end
 
 function actor_proxy:has_info( name )
+	self:init()
+
 	if self.online then
 --		printf( "actor_proxy: has_info online: info=%s", name )
 		return self.actor:has_info( name )
@@ -28,6 +41,8 @@ function actor_proxy:has_info( name )
 end
 
 function actor_proxy:dont_has_info( name )
+	self:init()
+
 	if self.online then
 --		printf( "actor_proxy: dont_has_info online: info=%s", name )
 		return self.actor:dont_has_info( name )
@@ -39,12 +54,16 @@ end
 
 -- рождение актёра в онлайн
 function actor_proxy:net_spawn( obj )
+	self:init()
+
 	self.online = true
 	self.actor  = obj
 end
 
--- уход из онлайна
+-- уход актёра из онлайна
 function actor_proxy:net_destroy()
+	self:init()
+
 	self.online = false
 	self.actor  = nil
 end

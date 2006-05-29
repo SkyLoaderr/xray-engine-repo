@@ -204,8 +204,6 @@ end
 --   xr_gulag.get_gulag_by_sid()
 function se_smart_terrain:initialize_if_needed()
 	if not self.initialized then
-		db.actor_proxy:init()
-
 		sim_statistic.update()
 
 		self:get_se_objs()
@@ -819,6 +817,8 @@ function se_smart_terrain:on_unregister()
 	cse_alife_smart_zone.on_unregister( self )
 
 	smart_terrains[self:get_level_name()][self.id] = nil
+
+	db.actor_proxy:deinit()
 end
 
 -- вызвать спавнер, если настроен.
