@@ -118,7 +118,11 @@ function init_intro_dialog(dlg)
 		if phr then
 			local phrase_script = phr:GetPhraseScript()
 			phrase_script:AddPrecondition("dialog_manager.precondition_intro")
-			phrase_script:AddAction("dialog_manager.phrase_action_intro")		
+			--' Этот экшн запоминает последнюю фразу, чтобы персонаж говорил одно и то же.
+			--' Для фразы просьбы о помощи его добавлять не надо.
+			if v.wounded == "false" then
+				phrase_script:AddAction("dialog_manager.phrase_action_intro")		
+			end
 		end
 	end
 --	phrase_script:AddPrecondition("zzz")
@@ -357,6 +361,7 @@ function precondition(npc, actor, tbl, sel_tbl)
 		for k,v in pairs(tbl) do
 			value, number = calculate_predicate(npc, v)			
 			max_count = max_count + 1
+--'			printf("*** count = %s value = %s number = %s phr_id = %s", max_count, tostring(value), number, v.name)
 			if value == true then
 				if number > max_number then
 					max_number = number
@@ -371,6 +376,7 @@ function precondition(npc, actor, tbl, sel_tbl)
 	
 	call_count = call_count + 1
 	return_value = tmp_tbl[call_count] ~= nil and tmp_tbl[call_count].avail == true
+--'	printf("! callcount = %s value = %s", call_count, tostring(return_value))
 	--' Проверка на повторяемость фраз.
 	if sel_tbl ~= nil then
 		if return_value == true then
@@ -386,7 +392,7 @@ function precondition(npc, actor, tbl, sel_tbl)
 		end
 	end	
 	
-	
+--'	printf("  callcount = %s value = %s", call_count, tostring(return_value))
 	if call_count < max_count then
 		--' При повторном вызове прекондишна (счетчик вызовов не равен количеству сработанных предикатов) 
 		--' всегда возвращаем FALSE, кроме случая, что счетчик равен ранее запомненному порядковому номеру вызова.
@@ -424,10 +430,10 @@ function calculate_predicate(npc, tbl, settings)
 		if tbl.npc_rank > npc:character_rank() then return false,0 end
 		property_num = property_num + 1		
 	end
---	if tbl.level ~= nil then
---		if tbl.level ~= level.name() then return false,0 end
---		property_num = property_num + 1		
---	end
+	if tbl.level ~= nil then
+		if tbl.level ~= level.name() then return false,0 end
+		property_num = property_num + 1		
+	end
 	if tbl.condlist ~= nil then
 		if xr_logic.pick_section_from_condlist(db.actor, db.actor, tbl.condlist) ~= "true" then return false,0 end
 		property_num = property_num + table.getn(tbl.condlist.infop_check)
@@ -484,6 +490,39 @@ function precondition_info_global(actor, npc)
 end
 
 
+	
+--' Сохранение информации о выбранных фразах
+function save(npc, p)
+	if selected_phrase_by_id.intro[npc:id()] == nil then
+		p:w_u8(-1)
+	else
+		p:w_u8(selected_phrase_by_id.intro[npc:id()].phr_id)
+	end
+	if selected_phrase_by_id.cool_info[npc:id()] == nil then
+		p:w_u8(-1)
+	else
+		p:w_u8(selected_phrase_by_id.cool_info[npc:id()].phr_id)
+	end
+	if selected_phrase_by_id.action_info[npc:id()] == nil then
+		p:w_u8(-1)
+	else
+		p:w_u8(selected_phrase_by_id.action_info[npc:id()].phr_id)
+	end	
+end
+function load(npc, reader)
+	local flag = p:r_u8()
+	if flag ~= -1 then
+		selected_phrase_by_id.intro[npc:id()].phr_id = flag
+	end
+	flag = p:r_u8()
+	if flag ~= -1 then
+		selected_phrase_by_id.cool_info[npc:id()].phr_id = flag
+	end
+	flag = p:r_u8()
+	if flag ~= -1 then
+		selected_phrase_by_id.action_info[npc:id()].phr_id = flag
+	end
+end
 
 
 
