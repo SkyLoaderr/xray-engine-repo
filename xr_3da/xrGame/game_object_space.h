@@ -48,6 +48,7 @@ namespace GameObject {
 		eTraderHeadAnimationRequest,
 		eTraderSoundEnd,
 
+		eInvBoxItemTake,
 		eDummy = u32(-1),
 	};
 };

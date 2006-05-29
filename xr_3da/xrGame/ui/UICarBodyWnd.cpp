@@ -21,6 +21,9 @@
 #include "UIButton.h"
 #include "UIListBoxItem.h"
 #include "../InventoryBox.h"
+#include "../game_object_space.h"
+#include "../script_callback_ex.h"
+#include "../script_game_object.h"
 
 #define				CAR_BODY_XML		"carbody_new.xml"
 #define				CARBODY_ITEM_XML	"carbody_item.xml"
@@ -342,15 +345,19 @@ void CUICarBodyWnd::TakeAll()
 			PIItem _itm		= (PIItem)(ci->Child(j)->m_pData);
 			if(m_pOthersObject)
 				TransferItem	(_itm, m_pOthersObject, m_pOurObject, false);
-			else
+			else{
 				move_item		(m_pInventoryBox->ID(), tmp_id, _itm->object().ID());
+				Actor()->callback(GameObject::eInvBoxItemTake)( m_pInventoryBox->lua_game_object(), _itm->object().lua_game_object() );
+			}
 		
 		}
 		PIItem itm		= (PIItem)(ci->m_pData);
 		if(m_pOthersObject)
 			TransferItem	(itm, m_pOthersObject, m_pOurObject, false);
-		else
+		else{
 			move_item		(m_pInventoryBox->ID(), tmp_id, itm->object().ID());
+			Actor()->callback(GameObject::eInvBoxItemTake)(m_pInventoryBox->lua_game_object(), itm->object().lua_game_object() );
+		}
 
 	}
 }
@@ -456,6 +463,8 @@ bool CUICarBodyWnd::OnItemDrop(CUICellItem* itm)
 	{
 		u16 tmp_id	= (smart_cast<CGameObject*>(m_pOurObject))->ID();
 		move_item				(m_pInventoryBox->ID(),tmp_id,CurrentIItem()->object().ID());
+		Actor()->callback		(GameObject::eInvBoxItemTake)(m_pInventoryBox->lua_game_object(), CurrentIItem()->object().lua_game_object() );
+
 		CUICellItem* ci			= old_owner->RemoveItem(CurrentItem(), false);
 		new_owner->SetItem		(ci);
 	}
@@ -491,6 +500,8 @@ bool CUICarBodyWnd::OnItemDbClick(CUICellItem* itm)
 		if(old_owner==m_pUIOurBagList) return true;
 		u16 tmp_id				= (smart_cast<CGameObject*>(m_pOurObject))->ID();
 		move_item				(m_pInventoryBox->ID(),tmp_id,CurrentIItem()->object().ID());
+		Actor()->callback		(GameObject::eInvBoxItemTake)(m_pInventoryBox->lua_game_object(), CurrentIItem()->object().lua_game_object() );
+
 	}
 	SetCurrentItem				(NULL);
 
