@@ -47,7 +47,7 @@ void  GetMaxDepthCallback (bool& do_colide,bool bo1,dContact& c,SGameMtl* materi
 		float test_depth=depth;
 		save_max(max_depth,test_depth);
 	}
-	do_colide=false;
+	//do_colide=false;
 }
 
 void RestoreVelocityState(V_PH_WORLD_STATE& state)
@@ -126,8 +126,8 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 	max_depth=0.f;
 
 	dGeomUserDataSetObjectContactCallback(m_geom,GetMaxDepthCallback)			;
-	ph_world->Step();
-	
+	//ph_world->Step();
+	ph_world->StepTouch();	
 	u16		num_it =15;
 	float	fnum_it=float(num_it);
 	float	fnum_steps=float(steps);
@@ -137,7 +137,7 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 	
 
 	float	max_a_vel=max_rotation/fnum_it*fnum_steps_r/fixed_step;
-	ph_world->CutVelocity(0.f,0.f);
+	//ph_world->CutVelocity(0.f,0.f);
 	
 	dGeomUserDataSetObjectContactCallback(m_geom,ActivateTestDepthCallback)			;
 	max_depth=0.f;
@@ -150,6 +150,7 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 	size.set(from_size);
 	bool ret=false;
 	V_PH_WORLD_STATE temp_state;
+	ph_world->GetState(temp_state);
 	for(int m=0;steps>m;++m)
 	{
 		//float param =fnum_steps_r*(1+m);
@@ -160,7 +161,7 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 		for(int i=0;num_it>i;++i){
 			max_depth=0.f;
 			ph_world->Step();
-			if(m==0&&i==0)ph_world->GetState(temp_state);
+			//if(m==0&&i==0)ph_world->GetState(temp_state);
 			if(max_depth	<	resolve_depth) 
 			{
 				ret=true;

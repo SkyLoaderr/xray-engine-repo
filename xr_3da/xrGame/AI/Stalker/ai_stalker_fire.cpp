@@ -675,10 +675,13 @@ void CAI_Stalker::wounded					(bool value)
 		return;
 
 	m_wounded				= value;
-
+	if(!m_wounded&&g_Alive())
+	{
+		character_physics_support()->CreateCharacter();
+	}
 	if (!m_wounded)
 		return;
-	
+	character_physics_support()->movement()->DestroyCharacter();
 	if (!agent_manager().member().registered_in_combat(this))
 		return;
 

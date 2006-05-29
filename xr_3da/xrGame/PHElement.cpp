@@ -808,7 +808,17 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 	VERIFY(_valid(m_shell->mXFORM));
 	//VERIFY2(fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS),"Bones callback receive 0 matrix");
 	VERIFY_RMATRIX(B->mTransform);
-	VERIFY(valid_pos(B->mTransform.c,phBoundaries));
+#ifdef DEBUG
+	if(!valid_pos(B->mTransform.c,phBoundaries))
+	{
+		Msg("Bone pos: %f,%f,%f, seems to be invalid", B->mTransform.c.x,B->mTransform.c.y,B->mTransform.c.z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		Msg("Object: %s",PhysicsRefObject()->Name());
+		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
+		VERIFY(0);
+	}
+#endif
+	
 	if(m_flags.test(flActivating))
 	{
 		//if(!dBodyIsEnabled(m_body))
@@ -964,7 +974,7 @@ void CPHElement::set_LinearVel			  (const Fvector& velocity)
 		float mag=_sqrt(sq_mag);
 		Fvector vel;vel.mul(velocity,m_l_limit/mag);
 		dBodySetLinearVel(m_body,vel.x,vel.y,vel.z);
-		Msg("set velocity magnitude is too large %f",mag);
+		Msg(" CPHElement::set_LinearVel set velocity magnitude is too large %f",mag);
 	}else
 		dBodySetLinearVel(m_body,velocity.x,velocity.y,velocity.z);
 	//dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
@@ -979,7 +989,7 @@ void CPHElement::set_AngularVel			  (const Fvector& velocity)
 		float mag=_sqrt(sq_mag);
 		Fvector vel;vel.mul(velocity,m_w_limit/mag);
 		dBodySetAngularVel(m_body,vel.x,vel.y,vel.z);
-		Msg("set velocity magnitude is too large %f",mag);
+		Msg("CPHElement::set_AngularVel set velocity magnitude is too large %f",mag);
 	}else
 		dBodySetAngularVel(m_body,velocity.x,velocity.y,velocity.z);
 }

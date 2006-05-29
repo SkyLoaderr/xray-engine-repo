@@ -228,19 +228,20 @@ CActor::~CActor()
 
 void CActor::reinit	()
 {
+
 	character_physics_support()->movement()->CreateCharacter		();
 	character_physics_support()->movement()->SetPhysicsRefObject	(this);
+	CEntityAlive::reinit						();
+	CInventoryOwner::reinit						();
+
+	character_physics_support()->in_Init		();
+	material().reinit							();
+
+	m_pUsableObject								= NULL;
+	memory().reinit								();
 	
-	CEntityAlive::reinit			();
-	CInventoryOwner::reinit			();
-	
-	material().reinit				();
-	m_pPhysics_support->in_Init		();
-	m_pUsableObject					= NULL;
-	memory().reinit					();
-	
-	set_input_external_handler		(0);
-	m_time_lock_accel				= 0;
+	set_input_external_handler					(0);
+	m_time_lock_accel							= 0;
 }
 
 void CActor::reload	(LPCSTR section)
@@ -421,7 +422,12 @@ void CActor::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_o
 void	CActor::Hit							(SHit* pHDS)
 {
 	SHit HDS = *pHDS;	
-
+#ifdef DEBUG
+	DBG_OpenCashedDraw();
+	Fvector to;to.add(Position(),Fvector().mul(HDS.dir,HDS.phys_impulse()));
+	DBG_DrawLine(Position(),to,D3DCOLOR_XRGB(124,124,0));
+	DBG_ClosedCashedDraw(500);
+#endif
 	bool bPlaySound = true;
 	if (!g_Alive()) bPlaySound = false;
 

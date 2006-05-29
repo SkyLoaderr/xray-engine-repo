@@ -94,6 +94,7 @@ IC		CPHMovementControl				*movement						()	{return m_PhysicMovementControl;}
 		bool							IsSpecificDamager				()																{return !!m_flags.test(fl_specific_bonce_demager)	;}
 		float							BonceDamageFactor				(){return m_BonceDamageFactor;}
 //////////////////base hierarchi methods///////////////////////////////////////////////////
+		void							CreateCharacter					();
 		void 							in_UpdateCL()																																		;
 		void 							in_shedule_Update				( u32 DT )																											;
 		void 							in_NetSpawn						(CSE_Abstract* e)																									;

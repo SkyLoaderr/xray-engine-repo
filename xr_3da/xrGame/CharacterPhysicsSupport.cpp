@@ -146,7 +146,14 @@ void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 		m_BonceDamageFactor=1.f;
 	}
 }
-
+void CCharacterPhysicsSupport::CreateCharacter()
+{
+	if(m_PhysicMovementControl->CharacterExist())return;
+	CollisionCorrectObjPos(m_EntityAlife.Position());
+	m_PhysicMovementControl->CreateCharacter();
+	m_PhysicMovementControl->SetPhysicsRefObject(&m_EntityAlife);
+	m_PhysicMovementControl->SetPosition	(m_EntityAlife.Position());
+}
 void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
 {
 	//if(!m_physics_skeleton)CreateSkeleton(m_physics_skeleton);
@@ -160,10 +167,7 @@ void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
 		}
 #endif
 		CreateIKController();
-		CollisionCorrectObjPos(m_EntityAlife.Position());
-		m_PhysicMovementControl->CreateCharacter();
-		m_PhysicMovementControl->SetPhysicsRefObject(&m_EntityAlife);
-		m_PhysicMovementControl->SetPosition	(m_EntityAlife.Position());
+		CreateCharacter();
 #ifdef DEBUG
 		if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&stricmp(PH_DBG_ObjectTrack(),*m_EntityAlife.cName())==0)
 		{
@@ -221,6 +225,7 @@ void	CCharacterPhysicsSupport::in_NetSave(NET_Packet& P)
 
 void CCharacterPhysicsSupport::in_Init()
 {
+	
 	//b_death_anim_on					= false;
 	//m_pPhysicsShell					= NULL;
 	//m_saved_impulse					= 0.f;

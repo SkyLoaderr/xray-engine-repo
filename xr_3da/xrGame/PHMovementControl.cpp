@@ -1115,10 +1115,11 @@ void	CPHMovementControl::				UpdateObjectBox(CPHCharacter *ach)
 	Fvector2 poses_dir;poses_dir.set(p.x-pa.x,p.z-pa.z);float plane_dist=poses_dir.magnitude(); 
 	if(plane_dist>2.f) return;
 	if(plane_dist>EPS_S)poses_dir.mul(1.f/plane_dist);
-	Fvector plane_cam;plane_cam.set(Device.vCameraDirection);plane_cam.y=0.f;plane_cam.normalize_safe();
-	float R=_abs(plane_cam.dotproduct(pObject->XFORM().i)*cbox.x)+
-		_abs(plane_cam.dotproduct(pObject->XFORM().k)*cbox.z);
-	R*=(poses_dir.x*plane_cam.x+poses_dir.y*plane_cam.z);
+	Fvector2 plane_cam;plane_cam.set(Device.vCameraDirection.x,Device.vCameraDirection.z);plane_cam.normalize_safe();
+	Fvector2 plane_i;plane_i.set(pObject->XFORM().i.x,pObject->XFORM().i.z);
+	Fvector2 plane_k;plane_k.set(pObject->XFORM().k.x,pObject->XFORM().k.z);
+	float R=_abs(poses_dir.dotproduct(plane_i)*cbox.x)+_abs(poses_dir.dotproduct(plane_k)*cbox.z);
+	R*=poses_dir.dotproduct(plane_cam); //(poses_dir.x*plane_cam.x+poses_dir.y*plane_cam.z);
 	Calculate(Fvector().set(0,0,0),Fvector().set(1,0,0),0,0,0,0);
 	m_character->SetObjectRadius(R);
 	ach->ChooseRestrictionType(CPHCharacter::rtStalker,1.f,m_character);
