@@ -510,15 +510,15 @@ function save(npc, p)
 	end	
 end
 function load(npc, reader)
-	local flag = p:r_u8()
+	local flag = reader:r_u8()
 	if flag ~= -1 then
 		selected_phrase_by_id.intro[npc:id()].phr_id = flag
 	end
-	flag = p:r_u8()
+	flag = reader:r_u8()
 	if flag ~= -1 then
 		selected_phrase_by_id.cool_info[npc:id()].phr_id = flag
 	end
-	flag = p:r_u8()
+	flag = reader:r_u8()
 	if flag ~= -1 then
 		selected_phrase_by_id.action_info[npc:id()].phr_id = flag
 	end
