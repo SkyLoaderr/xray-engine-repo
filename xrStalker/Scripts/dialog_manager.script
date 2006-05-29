@@ -316,12 +316,13 @@ function action_transfer_money(actor, npc, p1, p2)
 	dialogs.relocate_money(npc, trade_info_price[p2], "out")
 end
 
-
-local selected_phrase_by_id = {
-	intro = {},
-	cool_info = {},
-	action_info = {}
-}
+if selected_phrase_by_id == nil then
+	selected_phrase_by_id = {
+		intro = {},
+		cool_info = {},
+		action_info = {}
+	}
+end
 
 function phrase_action_intro(npc, actor, p1, p2)
 	phrase_action(npc, actor, selected_phrase_by_id.intro, p2)
@@ -510,17 +511,30 @@ function save(npc, p)
 	end	
 end
 function load(npc, reader)
+	if selected_phrase_by_id == nil then
+		selected_phrase_by_id = {
+			intro = {},
+			cool_info = {},
+			action_info = {}
+		}
+	end
 	local flag = reader:r_u8()
 	if flag ~= -1 then
 		selected_phrase_by_id.intro[npc:id()].phr_id = flag
+	else
+		selected_phrase_by_id.intro[npc:id()].phr_id = nil
 	end
 	flag = reader:r_u8()
 	if flag ~= -1 then
 		selected_phrase_by_id.cool_info[npc:id()].phr_id = flag
+	else
+		selected_phrase_by_id.cool_info[npc:id()].phr_id = nil
 	end
 	flag = reader:r_u8()
 	if flag ~= -1 then
 		selected_phrase_by_id.action_info[npc:id()].phr_id = flag
+	else
+		selected_phrase_by_id.action_info[npc:id()].phr_id = nil
 	end
 end
 
