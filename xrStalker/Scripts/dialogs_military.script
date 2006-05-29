@@ -52,7 +52,8 @@ function transfer_rg6 (stalker, player)
 end
 
 function set_freedom_enemy (player, stalker)
-    db.actor:set_character_community ("dolg")
+    --db.actor:set_character_community ("dolg")
+    xr_gulag.setGulagRelation ("mil_freedom", game_object.enemy, db.actor)
 end
 
 function set_task1_complete (player, stalker)
