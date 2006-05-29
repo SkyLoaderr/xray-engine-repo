@@ -417,9 +417,6 @@
     <string id="bar_bar_barmen_start_1111">
         <text>Ну что, приступим? Готов?</text>
     </string>
-    <string id="bar_bar_barmen_start_1121">
-        <text>Ну, чего ждешь?</text>
-    </string>
     <string id="bar_bar_barmen_start_1131">
         <text>Хмм... А ты еще откуда взялся?</text>
     </string>
@@ -523,10 +520,10 @@
         <text>Так чего же ты прохлаждаешься? Дуй за документами! Без них наше дело не сдвинется с места!</text>
     </string>
     <string id="bar_bar_barmen_start_181">
-        <text>Чего тебе, Меченый?</text>
+        <text>Чего тебе, Меченый?1</text>
     </string>
     <string id="bar_bar_barmen_start_182">
-        <text>Привет, Меченый. Время идет, а ты не меняешься, все такой же нелюдимый. Садись выпей, может подобреешь чуток.</text>
+        <text>Привет, Меченый. Время идет, а ты не меняешься, все такой же нелюдимый. Садись выпей, может подобреешь чуток.1</text>
     </string>
     <string id="bar_bar_barmen_start_2">
         <text>Здорово, Меченый. Принес документы с Агропрома?</text>

@@ -4887,121 +4887,9 @@
                 <give_info>bar_dolg_base_rules_start</give_info>
                 <give_info>agroprom_military_case_done</give_info>
             </phrase>
-            <phrase id="11">
-                <text></text>
-                <dont_has_info>bar_barman_stay_room</dont_has_info>
-                <dont_has_info>yan_x16_documents_gain</dont_has_info>
-                <dont_has_info>bar_dolg_base_rules_start</dont_has_info>
-                <dont_has_info>bar_darklab_document_gain</dont_has_info>
-                <has_info>agroprom_military_case_done</has_info>
-                <has_info>agroprom_military_case</has_info>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="3">
-                <text>bar_bar_barmen_start_3</text>
-            </phrase>
-            <phrase id="4">
-                <text>bar_bar_barmen_start_4</text>
-            </phrase>
-            <phrase id="111">
-                <text></text>
-                <precondition>bar_dialogs.dont_give_extra_task</precondition>
-                <has_info>bar_barman_stay_room</has_info>
-                <next>1111</next>
-            </phrase>
-            <phrase id="1111">
-                <text>bar_bar_barmen_start_1111</text>
-            </phrase>
-            <phrase id="112">
-                <text></text>
-                <precondition>bar_dialogs.give_extra_task</precondition>
-                <has_info>bar_barman_stay_room</has_info>
-                <next>1121</next>
-            </phrase>
-            <phrase id="1121">
-                <text>bar_bar_barmen_start_1121</text>
-            </phrase>
-            <phrase id="113">
-                <text></text>
-                <dont_has_info>agroprom_military_case</dont_has_info>
-                <dont_has_info>bar_barman_stay_room</dont_has_info>
-                <next>1131</next>
-            </phrase>
-            <phrase id="1131">
-                <text>bar_bar_barmen_start_1131</text>
-            </phrase>
-            <phrase id="12">
-                <text></text>
-                <dont_has_info>bar_barman_stay_room</dont_has_info>
-                <dont_has_info>bar_x16_documents_done</dont_has_info>
-                <has_info>agroprom_military_case_done</has_info>
-                <has_info>agroprom_military_case</has_info>
-                <has_info>yan_x16_documents_gain</has_info>
-                <next>121</next>
-            </phrase>
-            <phrase id="121">
-                <text>bar_bar_barmen_start_121</text>
-                <next>1211</next>
-                <next>1212</next>
-            </phrase>
-            <phrase id="1211">
-                <text>bar_bar_barmen_start_1211</text>
-                <precondition>bar_dialogs.have_x16_documents</precondition>
-                <action>bar_dialogs.give_x16_documents</action>
-                <give_info>bar_x16_documents_done</give_info>
-                <next>131</next>
-            </phrase>
-            <phrase id="1212">
-                <text>bar_bar_barmen_start_1212</text>
-                <next>12121</next>
-            </phrase>
-            <phrase id="12121">
-                <text>bar_bar_barmen_start_12121</text>
-                <next>121211</next>
-            </phrase>
             <phrase id="121211">
                 <text>bar_bar_barmen_start_121211</text>
                 <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="13">
-                <text></text>
-                <dont_has_info>bar_barman_stay_room</dont_has_info>
-                <dont_has_info>bar_deactivate_radar_start</dont_has_info>
-                <has_info>bar_x16_documents_done</has_info>
-                <next>131</next>
-            </phrase>
-            <phrase id="131">
-                <text>bar_bar_barmen_start_131</text>
-                <next>1312</next>
-                <next>132</next>
-            </phrase>
-            <phrase id="1312">
-                <text>bar_bar_barmen_start_1312</text>
-                <give_info>bar_deactivate_radar_start</give_info>
-                <next>13121</next>
-            </phrase>
-            <phrase id="13121">
-                <text>bar_bar_barmen_start_13121</text>
-                <next>1313</next>
-            </phrase>
-            <phrase id="1313">
-                <text>bar_bar_barmen_start_1313</text>
-                <next>1314</next>
-            </phrase>
-            <phrase id="1314">
-                <text>bar_bar_barmen_start_1314</text>
-                <next>1315</next>
-            </phrase>
-            <phrase id="1315">
-                <text>bar_bar_barmen_start_1315</text>
-            </phrase>
-            <phrase id="132">
-                <text>bar_bar_barmen_start_132</text>
-                <next>1321</next>
-            </phrase>
-            <phrase id="1321">
-                <text>bar_bar_barmen_start_1321</text>
             </phrase>
             <phrase id="1511">
                 <text>bar_bar_barmen_start_1511</text>
@@ -5029,14 +4917,6 @@
             <phrase id="15115">
                 <text>bar_bar_barmen_start_15115</text>
             </phrase>
-            <phrase id="16">
-                <text></text>
-                <dont_has_info>bar_barman_stay_room</dont_has_info>
-                <dont_has_info>bar_darklab_document_gain</dont_has_info>
-                <has_info>bar_deactivate_radar_start</has_info>
-                <next>161</next>
-                <next>162</next>
-            </phrase>
             <phrase id="161">
                 <text>bar_bar_barmen_start_161</text>
             </phrase>
@@ -5052,14 +4932,6 @@
             <phrase id="151">
                 <text>bar_bar_barmen_start_151</text>
                 <next>1511</next>
-            </phrase>
-            <phrase id="18">
-                <text></text>
-                <dont_has_info>bar_darklab_document_gain</dont_has_info>
-                <dont_has_info>bar_barman_stay_room</dont_has_info>
-                <has_info>bar_darklab_document_start</has_info>
-                <next>181</next>
-                <next>182</next>
             </phrase>
             <phrase id="17">
                 <text></text>
@@ -5078,21 +4950,6 @@
                 <text>bar_bar_barmen_start_171</text>
                 <next>172</next>
                 <next>173</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>11</next>
-                <next>111</next>
-                <next>112</next>
-                <next>113</next>
-                <next>12</next>
-                <next>13</next>
-                <next>15</next>
-                <next>16</next>
-                <next>17</next>
-                <next>18</next>
-                <next>19</next>
             </phrase>
             <phrase id="172141">
                 <text>bar_bar_barmen_start_172141</text>
@@ -5123,17 +4980,144 @@
                 <text>bar_bar_barmen_start_1721</text>
                 <next>17211</next>
             </phrase>
-            <phrase id="181">
-                <text>bar_bar_barmen_start_181</text>
+            <phrase id="16">
+                <text></text>
+                <dont_has_info>bar_barman_stay_room</dont_has_info>
+                <dont_has_info>bar_darklab_document_gain</dont_has_info>
+                <has_info>bar_deactivate_radar_start</has_info>
+                <next>161</next>
+                <next>162</next>
             </phrase>
-            <phrase id="182">
-                <text>bar_bar_barmen_start_182</text>
+            <phrase id="13">
+                <text></text>
+                <dont_has_info>bar_barman_stay_room</dont_has_info>
+                <dont_has_info>bar_deactivate_radar_start</dont_has_info>
+                <has_info>bar_x16_documents_done</has_info>
+                <next>131</next>
+            </phrase>
+            <phrase id="1111">
+                <text>bar_bar_barmen_start_1111</text>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>11</next>
+                <next>113</next>
+                <next>12</next>
+                <next>13</next>
+                <next>15</next>
+                <next>16</next>
+                <next>17</next>
+                <next>18</next>
+                <next>19</next>
+            </phrase>
+            <phrase id="12121">
+                <text>bar_bar_barmen_start_12121</text>
+                <next>121211</next>
+            </phrase>
+            <phrase id="1212">
+                <text>bar_bar_barmen_start_1212</text>
+                <next>12121</next>
+            </phrase>
+            <phrase id="1321">
+                <text>bar_bar_barmen_start_1321</text>
+            </phrase>
+            <phrase id="132">
+                <text>bar_bar_barmen_start_132</text>
+                <next>1321</next>
+            </phrase>
+            <phrase id="1315">
+                <text>bar_bar_barmen_start_1315</text>
+            </phrase>
+            <phrase id="1314">
+                <text>bar_bar_barmen_start_1314</text>
+                <next>1315</next>
+            </phrase>
+            <phrase id="1313">
+                <text>bar_bar_barmen_start_1313</text>
+                <next>1314</next>
+            </phrase>
+            <phrase id="13121">
+                <text>bar_bar_barmen_start_13121</text>
+                <next>1313</next>
+            </phrase>
+            <phrase id="1312">
+                <text>bar_bar_barmen_start_1312</text>
+                <give_info>bar_deactivate_radar_start</give_info>
+                <next>13121</next>
+            </phrase>
+            <phrase id="131">
+                <text>bar_bar_barmen_start_131</text>
+                <next>1312</next>
+                <next>132</next>
+            </phrase>
+            <phrase id="1211">
+                <text>bar_bar_barmen_start_1211</text>
+                <precondition>bar_dialogs.have_x16_documents</precondition>
+                <action>bar_dialogs.give_x16_documents</action>
+                <give_info>bar_x16_documents_done</give_info>
+                <next>131</next>
+            </phrase>
+            <phrase id="121">
+                <text>bar_bar_barmen_start_121</text>
+                <next>1211</next>
+                <next>1212</next>
+            </phrase>
+            <phrase id="12">
+                <text></text>
+                <dont_has_info>bar_barman_stay_room</dont_has_info>
+                <dont_has_info>bar_x16_documents_done</dont_has_info>
+                <has_info>agroprom_military_case_done</has_info>
+                <has_info>agroprom_military_case</has_info>
+                <has_info>yan_x16_documents_gain</has_info>
+                <next>121</next>
+            </phrase>
+            <phrase id="1131">
+                <text>bar_bar_barmen_start_1131</text>
+            </phrase>
+            <phrase id="113">
+                <text></text>
+                <dont_has_info>agroprom_military_case</dont_has_info>
+                <dont_has_info>bar_barman_stay_room</dont_has_info>
+                <next>1131</next>
+            </phrase>
+            <phrase id="4">
+                <text>bar_bar_barmen_start_4</text>
+            </phrase>
+            <phrase id="3">
+                <text>bar_bar_barmen_start_3</text>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <dont_has_info>bar_barman_stay_room</dont_has_info>
+                <dont_has_info>yan_x16_documents_gain</dont_has_info>
+                <dont_has_info>bar_dolg_base_rules_start</dont_has_info>
+                <dont_has_info>bar_darklab_document_gain</dont_has_info>
+                <has_info>agroprom_military_case_done</has_info>
+                <has_info>agroprom_military_case</has_info>
+                <next>3</next>
+                <next>4</next>
             </phrase>
             <phrase id="19">
                 <text></text>
                 <dont_has_info>bar_x16_documents_start</dont_has_info>
                 <has_info>bar_darklab_document_done</has_info>
                 <next>1721</next>
+            </phrase>
+            <phrase id="18">
+                <text></text>
+                <dont_has_info>bar_darklab_document_gain</dont_has_info>
+                <dont_has_info>bar_barman_stay_room</dont_has_info>
+                <dont_has_info>yan_x16_documents_gain</dont_has_info>
+                <has_info>bar_darklab_document_start</has_info>
+                <next>181</next>
+                <next>182</next>
+            </phrase>
+            <phrase id="181">
+                <text>bar_bar_barmen_start_181</text>
+            </phrase>
+            <phrase id="182">
+                <text>bar_bar_barmen_start_182</text>
             </phrase>
         </phrase_list>
     </dialog>
