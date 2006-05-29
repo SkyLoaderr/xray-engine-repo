@@ -36,6 +36,9 @@ ObjectFactory::SERVER_BASE_CLASS *CObjectItemScript::server_object	(LPCSTR secti
 	try {
 		object	= luabind::object_cast<ObjectFactory::SERVER_SCRIPT_BASE_CLASS*>(m_server_creator(section),luabind::adopt(luabind::result));
 	}
+	catch(std::exception e) {
+		Msg("Exception [%s] raised while creating script server object from section [%s]", e.what(),section);
+	}
 	catch(...) {
 		Msg("Exception raised while creating script server object from section [%s]", section);
 		return				(0);
