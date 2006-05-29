@@ -506,17 +506,17 @@ function save(npc, p)
 	if selected_phrase_by_id.intro[npc:id()] == nil then
 		p:w_u8(-1)
 	else
-		p:w_u8(selected_phrase_by_id.intro[npc:id()].phr_id)
+		p:w_u8(selected_phrase_by_id.intro[npc:id()])
 	end
 	if selected_phrase_by_id.cool_info[npc:id()] == nil then
 		p:w_u8(-1)
 	else
-		p:w_u8(selected_phrase_by_id.cool_info[npc:id()].phr_id)
+		p:w_u8(selected_phrase_by_id.cool_info[npc:id()])
 	end
 	if selected_phrase_by_id.action_info[npc:id()] == nil then
 		p:w_u8(-1)
 	else
-		p:w_u8(selected_phrase_by_id.action_info[npc:id()].phr_id)
+		p:w_u8(selected_phrase_by_id.action_info[npc:id()])
 	end	
 end
 function load(npc, reader)
@@ -529,21 +529,21 @@ function load(npc, reader)
 	end
 	local flag = reader:r_u8()
 	if flag ~= -1 then
-		selected_phrase_by_id.intro[npc:id()].phr_id = flag
+		selected_phrase_by_id.intro[npc:id()] = flag
 	else
-		selected_phrase_by_id.intro[npc:id()].phr_id = nil
+		selected_phrase_by_id.intro[npc:id()] = nil
 	end
 	flag = reader:r_u8()
 	if flag ~= -1 then
-		selected_phrase_by_id.cool_info[npc:id()].phr_id = flag
+		selected_phrase_by_id.cool_info[npc:id()] = flag
 	else
-		selected_phrase_by_id.cool_info[npc:id()].phr_id = nil
+		selected_phrase_by_id.cool_info[npc:id()] = nil
 	end
 	flag = reader:r_u8()
 	if flag ~= -1 then
-		selected_phrase_by_id.action_info[npc:id()].phr_id = flag
+		selected_phrase_by_id.action_info[npc:id()] = flag
 	else
-		selected_phrase_by_id.action_info[npc:id()].phr_id = nil
+		selected_phrase_by_id.action_info[npc:id()] = nil
 	end
 end
 
