@@ -359,39 +359,48 @@ function precondition(npc, actor, tbl, sel_tbl)
 	--' проверяемых функций в условии. Ее порядковый номер запоминается.
 	if call_count == 0 then
 		local value, number, max_number = 0,0,0
+		
+		--' Надо проверить доступна ли запомненная фраза
+		if sel_tbl ~= nil and sel_tbl[npc:id()] ~= nil then
+			for k,v in pairs(tbl) do
+				if sel_tbl[npc:id()] == v.phr_id then
+					value, number = calculate_predicate(npc, v)	
+					--' Если запомненная фраза недоступна - необходимо забыть ее
+					if value == false then
+						sel_tbl[npc:id()] = nil
+						break
+					end
+				end
+			end		
+		end	
+	
 		for k,v in pairs(tbl) do
 			value, number = calculate_predicate(npc, v)			
 			max_count = max_count + 1
 --'			printf("*** count = %s value = %s number = %s phr_id = %s", max_count, tostring(value), number, v.name)
+
+			--' Проверка на повторяемость фраз.
+			if sel_tbl ~= nil and sel_tbl[npc:id()] ~= nil then
+				--' Если проверяется запомненная фраза
+				if sel_tbl[npc:id()] ~= v.phr_id then
+					value = false
+				end		
+			end	
+
 			if value == true then
 				if number > max_number then
 					max_number = number
 					tmp_tbl = {}
 				end
 				if number == max_number then
-					tmp_tbl[max_count] = {avail = true, phr_id = v.phr_id}
+					tmp_tbl[max_count] = true
 				end								
 			end
 		end
 	end
 	
 	call_count = call_count + 1
-	return_value = tmp_tbl[call_count] ~= nil and tmp_tbl[call_count].avail == true
---'	printf("! callcount = %s value = %s", call_count, tostring(return_value))
-	--' Проверка на повторяемость фраз.
-	if sel_tbl ~= nil then
-		if return_value == true then
-				if sel_tbl[npc:id()] ~= nil and sel_tbl[npc:id()] ~= tmp_tbl[call_count].phr_id then
-					return_value = false
-				end
-		else
-			--' Если обрабатывается фраза, которая была запомнена.
-			if sel_tbl[npc:id()] ~= nil and tmp_tbl[call_count] ~= nil and 
-			sel_tbl[npc:id()] == tmp_tbl[call_count].phr_id then
-				sel_tbl[npc:id()] = nil
-			end
-		end
-	end	
+	return_value = tmp_tbl[call_count] == true
 	
 --'	printf("  callcount = %s value = %s", call_count, tostring(return_value))
 	if call_count < max_count then
