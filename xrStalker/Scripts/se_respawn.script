@@ -388,10 +388,10 @@ function se_respawn:execute()
 	end
 	
 	if self.respawn_time < game.get_game_time() then
-		if not self.proxy_initialized then
-			db.actor_proxy:init()
-			self.proxy_initialized = true
-		end
+--		if not self.proxy_initialized then
+--			db.actor_proxy:init()
+--			self.proxy_initialized = true
+--		end
 
 		local idle_time = game.CTime()
 		idle_time:setHMSms( 0, 0, 0, math.random(self.idle_spawn_min, self.idle_spawn_max)*1000)
