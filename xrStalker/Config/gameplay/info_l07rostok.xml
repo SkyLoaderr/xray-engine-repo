@@ -371,5 +371,8 @@
     <info_portion id="bar_arena_fight_8_done"></info_portion>	
     <info_portion id="bar_arena_fight_3_stalker_1_die"></info_portion>	
     <info_portion id="bar_arena_fight_3_stalker_2_die"></info_portion>	
+    <info_portion id="bar_arena_fight_4_stalker_1_die"></info_portion>	
+    <info_portion id="bar_arena_fight_4_stalker_2_die"></info_portion>
+    <info_portion id="bar_arena_fight_4_stalker_3_die"></info_portion>	
     
 </game_information_portions>
