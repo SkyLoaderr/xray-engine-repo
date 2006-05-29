@@ -1853,14 +1853,16 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 			if (pDDItemMP->m_iRank>=0 && pDDItemMP->m_iRank<=4)
 			{
 				string64 tex_name;
-				string64 foo;
-//				string64 team;
-//				if ()
-//                    strcpy(team, "blue");
-//				else 
-//					strcpy(team, "green");
+//				string64 foo;
+				string64 team;
+				if (UIBagWnd.IsBlueTeamItem(pDDItemMP->GetSectionName()))
+                    strcpy(team, "blue");
+				else 
+					strcpy(team, "green");
+
+				sprintf(tex_name, "ui_hud_status_%s_0%d", team, pDDItemMP->m_iRank+1);
 				
-				strconcat(tex_name,"rank_",itoa(pDDItemMP->m_iRank,foo,10));
+				//strconcat(tex_name,"ui_hud_status_",itoa(pDDItemMP->m_iRank,foo,10));
 				UIDescRankIcon.InitTexture(tex_name);
 			}
 

@@ -15,6 +15,8 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "Restrictions.h"
+#include "../level.h"
+#include "../game_base_space.h"
 //#ifdef DEBUG
 //#include "../../xr_ioconsole.h"
 //#include "../../xr_ioc_cmd.h"
@@ -639,6 +641,38 @@ void CUIBag::ShowSectionEx(int iSection){
 		SetMenuLevel(mlWpnSubType);
 }
 
+bool CUIBag::IsBlueTeamItem(LPCSTR item){
+	if (GameID() == GAME_DEATHMATCH)
+		return true;					//in deathmath always blue
+
+	bool blue = !strstr(m_StrSectionName.c_str(),"team1");	//is our team blue
+
+	//
+	string64			wpnSection;
+	string1024			wpnNames, wpnSingleName;
+//	sprintf(wpnSection, "slot%i", i);
+	for (int i = 1; i < 20; ++i)
+	{
+		// Имя поля
+		sprintf(wpnSection, "slot%i", i);
+		if (!pSettings->line_exist(m_StrSectionName, wpnSection)) 
+			continue;
+
+		
+		std::strcpy(wpnNames, pSettings->r_string(m_StrSectionName, wpnSection));
+		u32 count	= _GetItemCount(wpnNames);
+		
+		for (u32 j = 0; j < count; ++j)
+		{
+			_GetItem(wpnNames, j, wpnSingleName);
+			if (0 == xr_strcmp(item,wpnSingleName))
+				return blue;
+		}
+	}	
+    
+	return !blue;
+}
+
 // fill out
 //				m_wpnSectStorage
 //				m_ConformityTable
@@ -646,7 +680,7 @@ void CUIBag::ShowSectionEx(int iSection){
 void CUIBag::InitWpnSectStorage()
 {
 	WPN_SECT_NAMES		wpnOneType;
-	string16			wpnSection;
+	string64			wpnSection;
 	shared_str			iconName;
 	string1024			wpnNames, wpnSingleName;
 	// Номер секции с арморами

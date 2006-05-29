@@ -96,6 +96,7 @@ CUIDragDropItemMP*	GetItemByKey(int dik, int section);
 			int		GetMoneyAmount() const;
 			bool	HasEnoughMoney(CUIDragDropItemMP* pItem);
 			int		GetMoneyLeft	(int ItemCost);
+			bool	IsBlueTeamItem(LPCSTR item);
 protected:
 			void	HighLightAmmo(const char* slot);
 			bool	SetMenuLevel(MENU_LEVELS level);
