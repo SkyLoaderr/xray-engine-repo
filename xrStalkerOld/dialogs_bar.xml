@@ -4762,7 +4762,7 @@
                 <next>300</next>
             </phrase>
             <phrase id="301">
-                <text></text>
+                <text />
                 <give_info>bar_arena_start</give_info>
             </phrase>
             <phrase id="300">
@@ -4849,7 +4849,7 @@
                 <text>bar_bar_barmen_start_1731</text>
             </phrase>
             <phrase id="1">
-                <text></text>
+                <text />
                 <dont_has_info>bar_barman_stay_room</dont_has_info>
                 <dont_has_info>agroprom_military_case_done</dont_has_info>
                 <has_info>agroprom_military_case</has_info>
@@ -4924,7 +4924,7 @@
                 <text>bar_bar_barmen_start_162</text>
             </phrase>
             <phrase id="15">
-                <text></text>
+                <text />
                 <dont_has_info>bar_darklab_document_start</dont_has_info>
                 <has_info>bar_dolg_base_rules_start</has_info>
                 <next>151</next>
@@ -4934,7 +4934,7 @@
                 <next>1511</next>
             </phrase>
             <phrase id="17">
-                <text></text>
+                <text />
                 <dont_has_info>bar_darklab_document_done</dont_has_info>
                 <has_info>bar_darklab_document_gain</has_info>
                 <next>171</next>
@@ -4977,7 +4977,7 @@
                 <next>17212</next>
             </phrase>
             <phrase id="16">
-                <text></text>
+                <text />
                 <dont_has_info>bar_barman_stay_room</dont_has_info>
                 <dont_has_info>bar_darklab_document_gain</dont_has_info>
                 <has_info>bar_deactivate_radar_start</has_info>
@@ -4985,7 +4985,7 @@
                 <next>162</next>
             </phrase>
             <phrase id="13">
-                <text></text>
+                <text />
                 <dont_has_info>bar_barman_stay_room</dont_has_info>
                 <dont_has_info>bar_deactivate_radar_start</dont_has_info>
                 <has_info>bar_x16_documents_done</has_info>
@@ -4995,7 +4995,7 @@
                 <text>bar_bar_barmen_start_1111</text>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
                 <next>11</next>
                 <next>113</next>
@@ -5034,7 +5034,7 @@
                 <next>1314</next>
             </phrase>
             <phrase id="12">
-                <text></text>
+                <text />
                 <dont_has_info>bar_barman_stay_room</dont_has_info>
                 <dont_has_info>bar_x16_documents_done</dont_has_info>
                 <has_info>agroprom_military_case_done</has_info>
@@ -5046,7 +5046,7 @@
                 <text>bar_bar_barmen_start_1131</text>
             </phrase>
             <phrase id="113">
-                <text></text>
+                <text />
                 <dont_has_info>agroprom_military_case</dont_has_info>
                 <dont_has_info>bar_barman_stay_room</dont_has_info>
                 <next>1131</next>
@@ -5058,7 +5058,7 @@
                 <text>bar_bar_barmen_start_3</text>
             </phrase>
             <phrase id="11">
-                <text></text>
+                <text />
                 <dont_has_info>bar_barman_stay_room</dont_has_info>
                 <dont_has_info>yan_x16_documents_gain</dont_has_info>
                 <dont_has_info>bar_dolg_base_rules_start</dont_has_info>
@@ -5069,7 +5069,7 @@
                 <next>4</next>
             </phrase>
             <phrase id="18">
-                <text></text>
+                <text />
                 <dont_has_info>bar_darklab_document_gain</dont_has_info>
                 <dont_has_info>bar_barman_stay_room</dont_has_info>
                 <dont_has_info>yan_x16_documents_gain</dont_has_info>
@@ -5088,7 +5088,7 @@
                 <next>17211</next>
             </phrase>
             <phrase id="19">
-                <text></text>
+                <text />
                 <dont_has_info>bar_x16_documents_start</dont_has_info>
                 <has_info>bar_darklab_document_done</has_info>
                 <next>1721</next>
@@ -5118,6 +5118,242 @@
             <phrase id="13121">
                 <text>bar_bar_barmen_start_13121</text>
                 <next>1313</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_arena_man_reward">
+        <phrase_list>
+            <phrase id="1">
+                <text />
+                <next>11</next>
+            </phrase>
+            <phrase id="2">
+                <text />
+                <next>21</next>
+            </phrase>
+            <phrase id="3">
+                <text />
+                <next>31</next>
+            </phrase>
+            <phrase id="4">
+                <text />
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <text />
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <text />
+                <next>61</next>
+            </phrase>
+            <phrase id="7">
+                <text />
+                <next>71</next>
+            </phrase>
+            <phrase id="8">
+                <text />
+                <next>81</next>
+            </phrase>
+            <phrase id="81">
+                <text>bar_arena_man_reward_81</text>
+                <action>bar_dialogs.give_reward_8</action>
+            </phrase>
+            <phrase id="71">
+                <text>bar_arena_man_reward_71</text>
+                <action>bar_dialogs.give_reward_7</action>
+            </phrase>
+            <phrase id="61">
+                <text>bar_arena_man_reward_61</text>
+                <action>bar_dialogs.give_reward_6</action>
+            </phrase>
+            <phrase id="51">
+                <text>bar_arena_man_reward_51</text>
+                <action>bar_dialogs.give_reward_5</action>
+            </phrase>
+            <phrase id="31">
+                <text>bar_arena_man_reward_31</text>
+                <action>bar_dialogs.give_reward_3</action>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+                <next>8</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_arena_man_reward_21</text>
+                <action>bar_dialogs.give_reward_2</action>
+            </phrase>
+            <phrase id="11">
+                <text>bar_arena_man_reward_11</text>
+                <action>bar_dialogs.give_reward_1</action>
+            </phrase>
+            <phrase id="41">
+                <text>bar_arena_man_reward_41</text>
+                <action>bar_dialogs.give_reward_4</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_arena_man_job">
+        <phrase_list>
+            <phrase id="162">
+                <text>bar_arena_man_job_162</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="172">
+                <text>bar_arena_man_job_172</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="182">
+                <text>bar_arena_man_job_182</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="142">
+                <text>bar_arena_man_job_142</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="11">
+                <text>bar_arena_man_job_11</text>
+                <dont_has_info>bar_arena_fight_1_done</dont_has_info>
+                <next>111</next>
+                <next>112</next>
+            </phrase>
+            <phrase id="112">
+                <text>bar_arena_man_job_112</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="12">
+                <text>bar_arena_man_job_12</text>
+                <dont_has_info>bar_arena_fight_2_done</dont_has_info>
+                <has_info>bar_arena_fight_1_done</has_info>
+                <next>121</next>
+                <next>122</next>
+            </phrase>
+            <phrase id="1">
+                <text>bar_arena_man_job_1</text>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+                <next>15</next>
+                <next>16</next>
+                <next>17</next>
+                <next>18</next>
+            </phrase>
+            <phrase id="152">
+                <text>bar_arena_man_job_152</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="15">
+                <text>bar_arena_man_job_15</text>
+                <precondition>xr_conditions.bar_actor_rank_stalker</precondition>
+                <dont_has_info>bar_arena_fight_5_done</dont_has_info>
+                <has_info>bar_arena_fight_4_done</has_info>
+                <next>151</next>
+                <next>152</next>
+            </phrase>
+            <phrase id="16">
+                <text>bar_arena_man_job_16</text>
+                <precondition>xr_conditions.bar_actor_rank_stalker</precondition>
+                <dont_has_info>bar_arena_fight_6_done</dont_has_info>
+                <has_info>bar_arena_fight_5_done</has_info>
+                <next>161</next>
+                <next>162</next>
+            </phrase>
+            <phrase id="17">
+                <text>bar_arena_man_job_17</text>
+                <dont_has_info>bar_arena_fight_7_done</dont_has_info>
+                <has_info>bar_arena_fight_6_done</has_info>
+                <next>171</next>
+                <next>172</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_arena_man_job_111</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>bar_arena_fight_1</give_info>
+                <give_info>bar_arena_fight</give_info>
+            </phrase>
+            <phrase id="151">
+                <text>bar_arena_man_job_151</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>bar_arena_fight_5</give_info>
+                <give_info>bar_arena_fight</give_info>
+            </phrase>
+            <phrase id="161">
+                <text>bar_arena_man_job_161</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>bar_arena_fight_6</give_info>
+                <give_info>bar_arena_fight</give_info>
+            </phrase>
+            <phrase id="171">
+                <text>bar_arena_man_job_171</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>bar_arena_fight_7</give_info>
+                <give_info>bar_arena_fight</give_info>
+            </phrase>
+            <phrase id="181">
+                <text>bar_arena_man_job_181</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>bar_arena_fight_8</give_info>
+                <give_info>bar_arena_fight</give_info>
+            </phrase>
+            <phrase id="18">
+                <text>bar_arena_man_job_18</text>
+                <dont_has_info>bar_arena_fight_8_done</dont_has_info>
+                <has_info>bar_arena_fight_7_done</has_info>
+                <next>181</next>
+                <next>182</next>
+            </phrase>
+            <phrase id="0">
+                <text>bar_arena_man_job_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="121">
+                <text>bar_arena_man_job_121</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>bar_arena_fight_2</give_info>
+                <give_info>bar_arena_fight</give_info>
+            </phrase>
+            <phrase id="122">
+                <text>bar_arena_man_job_122</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="131">
+                <text>bar_arena_man_job_131</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>bar_arena_fight_3</give_info>
+                <give_info>bar_arena_fight</give_info>
+            </phrase>
+            <phrase id="132">
+                <text>bar_arena_man_job_132</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="141">
+                <text>bar_arena_man_job_141</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>bar_arena_fight_4</give_info>
+                <give_info>bar_arena_fight</give_info>
+            </phrase>
+            <phrase id="13">
+                <text>bar_arena_man_job_13</text>
+                <dont_has_info>bar_arena_fight_3_done</dont_has_info>
+                <has_info>bar_arena_fight_2_done</has_info>
+                <next>131</next>
+                <next>132</next>
+            </phrase>
+            <phrase id="14">
+                <text>bar_arena_man_job_14</text>
+                <precondition>xr_conditions.bar_actor_rank_stalker</precondition>
+                <dont_has_info>bar_arena_fight_4_done</dont_has_info>
+                <has_info>bar_arena_fight_3_done</has_info>
+                <next>141</next>
+                <next>142</next>
             </phrase>
         </phrase_list>
     </dialog>
