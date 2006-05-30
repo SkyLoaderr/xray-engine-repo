@@ -40,8 +40,12 @@ void CUIStatsIcon::InitTexInfo(){
 	m_tex_info[ARTEFACT][0].rect.set(
 		fXPos * INV_GRID_WIDTH, 
 		fYPos * INV_GRID_HEIGHT, 
-		fGridWidth * INV_GRID_WIDTH, 
-		fGridHeight * INV_GRID_HEIGHT);
+		fXPos * INV_GRID_WIDTH + fGridWidth * INV_GRID_WIDTH, 
+		fYPos * INV_GRID_HEIGHT + fGridHeight * INV_GRID_HEIGHT);
+
+//	m_tex_info[ARTEFACT][0].rect.set( 200, 400, 50, 50);
+
+
 
 	// death
 	m_tex_info[DEATH][0].sh.create("hud\\default",	"ui\\ui_mp_icon_kill");
