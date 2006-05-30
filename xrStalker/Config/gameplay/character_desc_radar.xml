@@ -50,8 +50,8 @@
 			[spawn] \n
 			wpn_beretta \n
 			ammo_9x19_fmj = 1 \n
-			wpn_lr300 \n
-	    	ammo_5.56x45_ss190 = 1 \n
+			wpn_ak74 \n
+            ammo_5.45x39_ap = 1 \n
 	    	grenade_f1 = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
@@ -79,8 +79,8 @@
 			[spawn] \n
 			wpn_walther \n
 			ammo_9x19_pbp = 1 \n	
-			wpn_sig550 \n
-	    	ammo_5.56x45_ss190 = 1 \n
+			wpn_abakan \n
+            ammo_5.45x39_ap = 1 \n
 	    	grenade_f1 = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
@@ -108,8 +108,8 @@
 			[spawn] \n
 			wpn_walther \n
 			ammo_9x19_pbp = 1 \n	
-			wpn_lr300 \n
-			ammo_5.56x45_ap = 1 \n
+			wpn_abakan \n
+            ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
@@ -166,8 +166,8 @@
 			[spawn] \n
 			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_lr300 \n
-			ammo_5.56x45_ap = 1 \n
+			wpn_ak74 \n
+            ammo_5.45x39_ap = 1 \n
 			grenade_f1 = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
@@ -466,6 +466,240 @@
 			wpn_l85  \n
 			ammo_5.56x45_ap = 2 \n
 			device_torch \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+	
+	
+	
+	
+	<specific_character id="rad_monolit_regular2_default1" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="24" y="10"></icon>
+		<map_icon x="3" y="0"></map_icon>
+		<bio>rad_monolith_general_bio</bio>
+
+		<class>rad_Monolit_regular</class>
+		<community>monolith</community>
+
+		<rank>418</rank>
+		<reputation>-385</reputation>
+		<money min="600" max="2000" infinitive="0"/>
+
+		<visual>actors\monolit\stalker_mo_head_1</visual>
+		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 = 1 \n
+			grenade_f1 = 1 \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+
+	<specific_character id="rad_monolit_regular2_default2" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="24" y="10"></icon>
+		<map_icon x="3" y="0"></map_icon>
+		<bio>rad_monolith_general_bio</bio>
+
+		<class>rad_Monolit_regular</class>
+		<community>monolith</community>
+
+		<rank>396</rank>
+		<reputation>-729</reputation>
+		<money min="600" max="2000" infinitive="0"/>
+
+		<visual>actors\monolit\stalker_mo_head_1</visual>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_fmj = 1 \n
+			wpn_sig550 \n
+	    	ammo_5.56x45_ss190 = 1 \n
+	    	grenade_f1 = 1 \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+
+	<specific_character id="rad_monolit_regular2_default3" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="22" y="10"></icon>
+		<map_icon x="3" y="0"></map_icon>
+		<bio>rad_monolith_general_bio</bio>
+
+		<class>rad_Monolit_regular</class>
+		<community>monolith</community>
+
+		<rank>404</rank>
+		<reputation>-200</reputation>
+		<money min="600" max="2000" infinitive="0"/>
+
+		<visual>actors\monolit\stalker_mo_mask</visual>
+		<snd_config>characters_voice\human_03\monolith\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n	
+			wpn_lr300 \n
+			ammo_5.56x45_ss190 = 1 \n
+	    	grenade_f1 = 1 \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+
+	<specific_character id="rad_monolit_regular2_default4" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="22" y="10"></icon>
+		<map_icon x="3" y="0"></map_icon>
+		<bio>rad_monolith_general_bio</bio>
+
+		<class>rad_Monolit_regular</class>
+		<community>monolith</community>
+
+		<rank>407</rank>
+		<reputation>-151</reputation>
+		<money min="600" max="2000" infinitive="0"/>
+
+		<visual>actors\monolit\stalker_mo_mask</visual>
+		<snd_config>characters_voice\human_03\monolith\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n	
+			wpn_abakan \n
+            ammo_5.45x39_ap = 1 \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+	
+	
+	<specific_character id="rad_monolit_regular2_default5" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="24" y="10"></icon>
+		<map_icon x="3" y="0"></map_icon>
+		<bio>rad_monolith_general_bio</bio>
+
+		<class>rad_Monolit_regular</class>
+		<community>monolith</community>
+
+		<rank>418</rank>
+		<reputation>-385</reputation>
+		<money min="600" max="2000" infinitive="0"/>
+
+		<visual>actors\monolit\stalker_mo_head_1</visual>
+		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_usp  \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_ak74 \n
+            ammo_5.45x39_ap = 1 \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+	
+	
+	<specific_character id="rad_monolit_regular2_default6" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="24" y="10"></icon>
+		<map_icon x="3" y="0"></map_icon>
+		<bio>rad_monolith_general_bio</bio>
+
+		<class>rad_Monolit_regular</class>
+		<community>monolith</community>
+
+		<rank>418</rank>
+		<reputation>-385</reputation>
+		<money min="600" max="2000" infinitive="0"/>
+
+		<visual>actors\monolit\stalker_mo_head_1</visual>
+		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_groza \n
+			ammo_9x39_pab9 = 1 \n
+			grenade_f1 = 1 \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+	
+	<specific_character id="rad_monolit_regular2_default7" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="24" y="10"></icon>
+		<map_icon x="3" y="0"></map_icon>
+		<bio>rad_monolith_general_bio</bio>
+
+		<class>rad_Monolit_regular</class>
+		<community>monolith</community>
+
+		<rank>418</rank>
+		<reputation>-385</reputation>
+		<money min="600" max="2000" infinitive="0"/>
+
+		<visual>actors\monolit\stalker_mo_head_1</visual>
+		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_abakan \n
+            ammo_5.45x39_ap = 1 \n
+            grenade_f1 = 1 \n
+#include "gameplay\character_drugs.xml"
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+	
+	<specific_character id="rad_monolit_regular2_default8" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="24" y="10"></icon>
+		<map_icon x="3" y="0"></map_icon>
+		<bio>rad_monolith_general_bio</bio>
+
+		<class>rad_Monolit_regular</class>
+		<community>monolith</community>
+
+		<rank>418</rank>
+		<reputation>-385</reputation>
+		<money min="600" max="2000" infinitive="0"/>
+
+		<visual>actors\monolit\stalker_mo_head_1</visual>
+		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_usp  \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_l85  \n
+			ammo_5.56x45_ap = 2 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
