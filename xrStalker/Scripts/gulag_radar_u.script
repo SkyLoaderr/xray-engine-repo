@@ -9,6 +9,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -16,6 +18,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -26,6 +30,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -33,6 +39,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -43,6 +51,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -50,6 +60,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -60,6 +72,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -67,6 +81,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -77,6 +93,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -84,6 +102,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -94,6 +114,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -101,6 +123,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -111,6 +135,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -118,6 +144,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -129,6 +157,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -136,6 +166,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -146,6 +178,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -153,6 +187,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -163,6 +199,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -170,6 +208,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -180,6 +220,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -187,6 +229,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -197,6 +241,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -204,6 +250,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -214,6 +262,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -221,6 +271,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -231,6 +283,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -238,6 +292,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -248,6 +304,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -255,6 +313,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -266,6 +326,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -273,6 +335,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -283,6 +347,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -290,6 +356,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -300,6 +368,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -307,6 +377,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -317,6 +389,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -324,6 +398,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -335,6 +411,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -342,6 +420,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -352,6 +432,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -359,6 +441,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -369,6 +453,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
         table.insert(sj, t)
 		
@@ -376,6 +462,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
+							end
 		}
 		table.insert(sj, t)
        end
@@ -387,6 +475,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 
@@ -395,6 +485,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 		
@@ -402,6 +494,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 
@@ -409,6 +503,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 		
@@ -420,6 +516,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 
@@ -428,6 +526,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 		
@@ -435,6 +535,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 
@@ -442,6 +544,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 		
@@ -454,6 +558,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 
@@ -462,6 +568,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 		
@@ -469,6 +577,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 
@@ -476,6 +586,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 		
@@ -487,6 +599,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 
@@ -495,6 +609,8 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 1, state = {0},
 			online = false, 
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 		
@@ -502,6 +618,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 
@@ -509,6 +627,8 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {1},
 			in_rest = "", out_rest = ""
+			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
+							end
 		}
 		table.insert(sj, t)	
 		
