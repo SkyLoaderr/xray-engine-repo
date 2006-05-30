@@ -8,7 +8,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -17,7 +17,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper1_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -29,7 +29,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -38,7 +38,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper2_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -50,7 +50,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -59,7 +59,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper3_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -71,7 +71,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -80,7 +80,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper4_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -92,7 +92,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -101,7 +101,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper5_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -113,7 +113,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -122,7 +122,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper6_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -134,7 +134,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -143,7 +143,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper7_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -156,7 +156,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -165,7 +165,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper8_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -177,7 +177,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -186,7 +186,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper9_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -198,7 +198,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -207,7 +207,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper10_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -219,7 +219,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -228,7 +228,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper11_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -240,7 +240,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -249,7 +249,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper12_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -261,7 +261,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -270,7 +270,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper13_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -282,7 +282,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -291,7 +291,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper14_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -303,7 +303,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -312,7 +312,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper15_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -325,7 +325,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -334,7 +334,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper16_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -346,7 +346,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -355,7 +355,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper17_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -367,7 +367,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -376,7 +376,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper18_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -388,7 +388,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -397,7 +397,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper19_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -410,7 +410,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -419,7 +419,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper20_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -431,7 +431,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -440,7 +440,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper21_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -452,7 +452,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -461,7 +461,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_camper22_camper11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_bunker"
 							end
 		}
@@ -474,7 +474,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -484,7 +484,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -493,7 +493,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_patrol1_patrol11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -502,7 +502,7 @@ function load_job(sj, gname, type, squad, groups)
        t = { section = "logic@bun_patrol1_patrol21",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -515,7 +515,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -525,7 +525,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -534,7 +534,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_patrol2_patrol11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -543,7 +543,7 @@ function load_job(sj, gname, type, squad, groups)
        t = { section = "logic@bun_patrol2_patrol21",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -557,7 +557,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -567,7 +567,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -576,7 +576,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_patrol3_patrol11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -585,7 +585,7 @@ function load_job(sj, gname, type, squad, groups)
        t = { section = "logic@bun_patrol3_patrol21",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -598,7 +598,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -608,7 +608,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 1, state = {0},
 			online = false, 
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -617,7 +617,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bun_patrol4_patrol11",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
@@ -626,7 +626,7 @@ function load_job(sj, gname, type, squad, groups)
        t = { section = "logic@bun_patrol4_patrol21",
 			idle = 0,
 			prior = 1, state = {1},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj_info) return obj_info.profile_name == "rad_monolit_master"
 							end
 		}
