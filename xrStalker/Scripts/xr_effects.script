@@ -1042,11 +1042,11 @@ local function transfer_object_item(item)
 end
 function bar_arena_teleport ( actor, npc)
 
-	level.add_pp_effector ("blink.ppe", 234, false)				
-	
-		db.actor:set_actor_position(patrol("t_way"):point(0))
-		local dir = patrol("t_look"):point(0):sub(patrol("t_way"):point(0))
-		db.actor:set_actor_direction(-dir:getH())
+--	level.add_pp_effector ("blink.ppe", 234, false)				
+--	
+--		db.actor:set_actor_position(patrol("t_way"):point(0))
+--		local dir = patrol("t_look"):point(0):sub(patrol("t_way"):point(0))
+--		db.actor:set_actor_direction(-dir:getH())
 	
 	inv_box_1 = level_object_by_sid (573)
 
@@ -1120,7 +1120,7 @@ end
 
 function bar_arena_teleport_2 ( actor, npc)
 
-	level.add_pp_effector ("blink.ppe", 234, false)				
+	  level.add_pp_effector ("blink.ppe", 234, false)				
 	
 		db.actor:set_actor_position(patrol("t_walk_2"):point(0))
 		local dir = patrol("t_look_2"):point(0):sub(patrol("t_walk_2"):point(0))
