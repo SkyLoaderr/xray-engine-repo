@@ -132,7 +132,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	local st	= xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic	= xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
-	st.anim_global    = utils.cfg_get_string(ini, section, "anim_global", npc, false, "")
+	st.anim_global    = utils.cfg_get_string(ini, section, "anim_global", npc, true, "")
 	
 	if (ini:line_exist( section, "sound_phrase")) then
 		st.anim_head	= utils.cfg_get_string(ini, section, "anim_head", npc, false, "")
