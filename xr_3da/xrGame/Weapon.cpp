@@ -1450,6 +1450,13 @@ float CWeapon::Weight()
 		res += pSettings->r_float(GetSilencerName(),"inv_weight");
 	}
 	
+	if(iAmmoElapsed)
+	{
+		float w		= pSettings->r_float(*m_ammoTypes[m_ammoType],"inv_weight");
+		float bs	= pSettings->r_float(*m_ammoTypes[m_ammoType],"box_size");
+
+		res			+= w*(iAmmoElapsed/bs);
+	}
 	return res;
 }
 void CWeapon::Hide		()

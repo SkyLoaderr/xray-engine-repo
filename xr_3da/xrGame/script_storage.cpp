@@ -87,7 +87,8 @@ CScriptStorage::CScriptStorage		()
 	m_stack_is_ready		= false;
 #endif
 	m_virtual_machine		= 0;
-	m_virtual_machine		= lua_newstate(lua_alloc_dl, NULL);		// switch to lua_alloc_XR - to track memory consumption
+//	m_virtual_machine		= lua_newstate(lua_alloc_dl, NULL);		// switch to lua_alloc_XR - to track memory consumption
+	m_virtual_machine		= lua_newstate(lua_alloc_xr, NULL);		// switch to lua_alloc_XR - to track memory consumption
 	if (!m_virtual_machine) {
 		Msg					("! ERROR : Cannot initialize script virtual machine!");
 		return				;

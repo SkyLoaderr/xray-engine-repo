@@ -38,15 +38,15 @@ public:
 	virtual void					Load				(LPCSTR section);
 	virtual BOOL					net_Spawn			(CSE_Abstract* DC);
 	virtual void					net_Destroy			();
-	virtual void					net_Export			(NET_Packet& P);	// export to server
-	virtual void					net_Import			(NET_Packet& P);	// import from server
+	virtual void					net_Export			(NET_Packet& P);
+	virtual void					net_Import			(NET_Packet& P);
 	virtual void					OnH_B_Chield		();
 	virtual void					OnH_B_Independent	();
 	virtual void					UpdateCL			();
 	virtual void					renderable_Render	();
 
 	virtual bool					Useful				() const;
-//	virtual s32						Sort				(PIItem pIItem);
+	virtual float					Weight				();
 
 	bool							Get					(CCartridge &cartridge);
 
@@ -56,8 +56,8 @@ public:
 	float		fWallmarkSize;
 	u8			m_u8ColorID;
 
-	u16			m_boxSize;			// Размер коробки (Сколько патронов игрок берет за раз)
-	u16			m_boxCurr;			// Сколько патронов осталось в коробке (включая текущий магазин)
+	u16			m_boxSize;
+	u16			m_boxCurr;
 	bool		m_tracer;
 
 public:

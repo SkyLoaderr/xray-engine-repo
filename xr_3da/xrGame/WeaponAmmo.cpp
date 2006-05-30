@@ -222,3 +222,12 @@ CInventoryItem *CWeaponAmmo::can_make_killing	(const CInventory *inventory) cons
 
 	return					(0);
 }
+
+float CWeaponAmmo::Weight()
+{
+	float res = inherited::Weight();
+
+	res *= (float)m_boxCurr/(float)m_boxSize;
+
+	return res;
+}

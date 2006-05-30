@@ -260,6 +260,7 @@ void CWeaponMagazined::UnloadMagazine()
 		--iAmmoElapsed;
 	}
 
+	VERIFY(l_ammo.size()==1); //andy check
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 	
 	xr_map<LPCSTR, u16>::iterator l_it;
