@@ -194,8 +194,9 @@ function heli_combat:save( packet )
 			packet:w_u32 ( self.change_pos_time - t )
 			packet:w_bool( self.flight_direction )
 			packet:w_vec3( self.center_pos )
-		else
-			-- ÄÎÄÅËÀÒÜ
+
+		elseif self.combat_type == combat_type_flyby then
+			packet:w_s16( self.flyby_states_for_one_pass )
 		end
 	end
 end
@@ -223,8 +224,9 @@ function heli_combat:load( packet )
 			self.change_pos_time      = packet:r_u32() + t
 			self.flight_direction     = packet:r_bool()
 			packet:r_vec3( self.center_pos )
-		else
-			-- ÄÎÄÅËÀÒÜ
+
+		elseif self.combat_type == combat_type_flyby then
+			self.flyby_states_for_one_pass = packet:r_s16()
 		end
 	end
 end
