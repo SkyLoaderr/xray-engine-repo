@@ -403,4 +403,5 @@
     <info_portion id="bar_arena_fight_8_stalker_2_die"></info_portion>	
     <info_portion id="bar_arena_fight_8_stalker_3_die"></info_portion>
     <info_portion id="bar_arena_fight_8_stalker_4_die"></info_portion>	
+    <info_portion id="bar_arena_fight_begin"></info_portion>
 </game_information_portions>
