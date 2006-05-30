@@ -316,13 +316,11 @@ function action_transfer_money(actor, npc, p1, p2)
 	dialogs.relocate_money(npc, trade_info_price[p2], "out")
 end
 
-if selected_phrase_by_id == nil then
-	selected_phrase_by_id = {
-		intro = {},
-		cool_info = {},
-		action_info = {}
-	}
-end
+selected_phrase_by_id = {
+	intro = {},
+	cool_info = {},
+	action_info = {}
+}
 
 function phrase_action_intro(npc, actor, p1, p2)
 	phrase_action(npc, actor, selected_phrase_by_id.intro, p2)
