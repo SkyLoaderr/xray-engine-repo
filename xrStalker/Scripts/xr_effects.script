@@ -1115,7 +1115,11 @@ function bar_arena_teleport ( actor, npc)
 						db.actor:game_vertex_id(), 
 						db.actor:id())
 	end	
-	if	db.actor:has_info("bar_arena_fight_1") then  
+	
+end
+
+function bar_arena_weapon_slot ()
+if	db.actor:has_info("bar_arena_fight_1") then  
 		db.actor:activate_slot(2)
 	else 
 		db.actor:activate_slot(3)
