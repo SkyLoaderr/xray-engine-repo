@@ -527,6 +527,7 @@ void CPHElement::PhDataUpdate(dReal step){
 	VERIFY(dBodyStateValide(m_body));
 	VERIFY2(dV_valid(dBodyGetPosition(m_body)),"invalid body position");
 	VERIFY2(dV_valid(dBodyGetQuaternion(m_body)),"invalid body rotation");
+	VERIFY(valid_pos(cast_fv(dBodyGetPosition(m_body)),phBoundaries));
 	UpdateInterpolation				();
 
 }

@@ -659,6 +659,12 @@ void CPHSimpleCharacter::PhTune(dReal step){
 				-m.mass*(50.f)*(!b_lose_control&&!(is_contact||(b_any_contacts))),//&&!b_climb
 				-sidedir[2]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor
 				);
+#ifdef DEBUG
+		if(ph_dbg_draw_mask.test(phDbgCharacterControl))
+		{
+			DBG_DrawLine(cast_fv(dBodyGetPosition(m_body)),Fvector().add(cast_fv(dBodyGetPosition(m_body)),Fvector().mul(cast_fv(dBodyGetForce(m_body)),1.f/19.6f)),D3DCOLOR_XRGB(255,0,0));
+		}
+#endif
 		//if(b_clamb_jump){
 		//accurate_normalize(m_control_force);
 		//dReal proj=dDOT(m_control_force,chVel);
@@ -697,6 +703,12 @@ void CPHSimpleCharacter::PhTune(dReal step){
 		//}
 
 	BodyCutForce(m_body,5.f,0.f);
+#ifdef DEBUG
+	if(ph_dbg_draw_mask.test(phDbgCharacterControl))
+	{
+		DBG_DrawLine(cast_fv(dBodyGetPosition(m_body)),Fvector().add(cast_fv(dBodyGetPosition(m_body)),Fvector().mul(cast_fv(dBodyGetForce(m_body)),1.f/19.6f)),D3DCOLOR_XRGB(255,0,128));
+	}
+#endif
 }
 
 
