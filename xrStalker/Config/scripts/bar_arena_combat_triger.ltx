@@ -5,28 +5,28 @@ active = sr_idle@idle
 on_info = {+bar_arena_fight_1 -bar_arena_fight_1_done} sr_idle@wait_1 %=disable_ui%, {+bar_arena_fight_2 -bar_arena_fight_2_done} sr_idle@wait_2 %=disable_ui%, {+bar_arena_fight_3 -bar_arena_fight_3_done} sr_idle@wait_3 %=disable_ui%, {+bar_arena_fight_4 -bar_arena_fight_4_done} sr_idle@wait_4 %=disable_ui%, {+bar_arena_fight_5 -bar_arena_fight_5_done} sr_idle@wait_5 %=disable_ui%, {+bar_arena_fight_6 -bar_arena_fight_6_done} sr_idle@wait_6 %=disable_ui%, {+bar_arena_fight_7 -bar_arena_fight_7_done} sr_idle@wait_7 %=disable_ui%, {+bar_arena_fight_8 -bar_arena_fight_8_done} sr_idle@wait_8 %=disable_ui% 
 
 [sr_idle@wait_1]
-on_timer = 1000 | sr_cutscene@fight_1
+on_timer = 1000 | sr_cutscene@fight_1 %=bar_arena_teleport% 
 
 [sr_idle@wait_2]
-on_timer = 1000 | sr_cutscene@fight_2
+on_timer = 1000 | sr_cutscene@fight_2 %=bar_arena_teleport% 
 
 [sr_idle@wait_3]
-on_timer = 1000 | sr_cutscene@fight_3
+on_timer = 1000 | sr_cutscene@fight_3 %=bar_arena_teleport% 
 
 [sr_idle@wait_4]
-on_timer = 1000 | sr_cutscene@fight_4
+on_timer = 1000 | sr_cutscene@fight_4 %=bar_arena_teleport% 
 
 [sr_idle@wait_5]
-on_timer = 1000 | sr_cutscene@fight_5
+on_timer = 1000 | sr_cutscene@fight_5 %=bar_arena_teleport% 
 
 [sr_idle@wait_6]
-on_timer = 1000 | sr_cutscene@fight_6
+on_timer = 1000 | sr_cutscene@fight_6 %=bar_arena_teleport% 
 
 [sr_idle@wait_7]
-on_timer = 1000 | sr_cutscene@fight_7
+on_timer = 1000 | sr_cutscene@fight_7 %=bar_arena_teleport% 
 
 [sr_idle@wait_8]
-on_timer = 1000 | sr_cutscene@fight_8
+on_timer = 1000 | sr_cutscene@fight_8 %=bar_arena_teleport% 
 
 [sr_cutscene@fight_1]
 point = t_way
@@ -77,7 +77,7 @@ cam_effector = arena
 on_signal = cameff_end | sr_idle@fight %=enable_ui +bar_arena_fight_begin%
 
 [sr_idle@fight]
-on_info = sr_idle@wait_finish %=bar_arena_teleport% 
+on_info = sr_idle@wait_finish
 
 [sr_idle@wait_finish]
 on_info = {+bar_arena_fight_1 +bar_arena_fight_1_done} sr_idle@idle,{+bar_arena_fight_2 +bar_arena_fight_2_done} sr_idle@idle ,{+bar_arena_fight_3 =bar_arena_fight_3_end} sr_idle@idle %+bar_arena_fight_3_done%,{+bar_arena_fight_4 =bar_arena_fight_4_end} sr_idle@idle %+bar_arena_fight_4_done%
