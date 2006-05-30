@@ -504,19 +504,19 @@ end
 --' Сохранение информации о выбранных фразах
 function save(npc, p)
 	if selected_phrase_by_id.intro[npc:id()] == nil then
-		p:w_s32(-1)
+		p:w_s16(-1)
 	else
-		p:w_s32(selected_phrase_by_id.intro[npc:id()])
+		p:w_s16(selected_phrase_by_id.intro[npc:id()])
 	end
 	if selected_phrase_by_id.cool_info[npc:id()] == nil then
-		p:w_s32(-1)
+		p:w_s16(-1)
 	else
-		p:w_s32(selected_phrase_by_id.cool_info[npc:id()])
+		p:w_s16(selected_phrase_by_id.cool_info[npc:id()])
 	end
 	if selected_phrase_by_id.action_info[npc:id()] == nil then
-		p:w_s32(-1)
+		p:w_s16(-1)
 	else
-		p:w_s32(selected_phrase_by_id.action_info[npc:id()])
+		p:w_s16(selected_phrase_by_id.action_info[npc:id()])
 	end	
 end
 function load(npc, reader)
@@ -527,19 +527,19 @@ function load(npc, reader)
 			action_info = {}
 		}
 	end
-	local flag = reader:r_s32()
+	local flag = reader:r_s16()
 	if flag ~= -1 then
 		selected_phrase_by_id.intro[npc:id()] = flag
 	else
 		selected_phrase_by_id.intro[npc:id()] = nil
 	end
-	flag = reader:r_s32()
+	flag = reader:r_s16()
 	if flag ~= -1 then
 		selected_phrase_by_id.cool_info[npc:id()] = flag
 	else
 		selected_phrase_by_id.cool_info[npc:id()] = nil
 	end
-	flag = reader:r_s32()
+	flag = reader:r_s16()
 	if flag ~= -1 then
 		selected_phrase_by_id.action_info[npc:id()] = flag
 	else
