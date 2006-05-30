@@ -365,6 +365,7 @@ function precondition(npc, actor, tbl, sel_tbl)
 					value, number = calculate_predicate(npc, v)	
 					--' Если запомненная фраза недоступна - необходимо забыть ее
 					if value == false then
+						printf("*** restore memory phrase")
 						sel_tbl[npc:id()] = nil
 						break
 					end
@@ -375,7 +376,7 @@ function precondition(npc, actor, tbl, sel_tbl)
 		for k,v in pairs(tbl) do
 			value, number = calculate_predicate(npc, v)			
 			max_count = max_count + 1
---'			printf("*** count = %s value = %s number = %s phr_id = %s", max_count, tostring(value), number, v.name)
+			printf("*** count = %s value = %s number = %s phr_id = %s", max_count, tostring(value), number, v.name)
 
 			--' Проверка на повторяемость фраз.
 			if sel_tbl ~= nil and sel_tbl[npc:id()] ~= nil then
@@ -400,7 +401,7 @@ function precondition(npc, actor, tbl, sel_tbl)
 	call_count = call_count + 1
 	return_value = tmp_tbl[call_count] == true
 	
---'	printf("  callcount = %s value = %s", call_count, tostring(return_value))
+	printf("  callcount = %s value = %s", call_count, tostring(return_value))
 	if call_count < max_count then
 		--' При повторном вызове прекондишна (счетчик вызовов не равен количеству сработанных предикатов) 
 		--' всегда возвращаем FALSE, кроме случая, что счетчик равен ранее запомненному порядковому номеру вызова.
