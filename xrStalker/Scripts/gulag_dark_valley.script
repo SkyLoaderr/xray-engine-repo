@@ -1144,6 +1144,9 @@ end
 gulags.val_soldiers_raid.job = function(sj, gname, type, squad, groups)
     local i, ltx = 1, ""
 
+    ltx = "[danger@ignore_corpse]\n" ..
+          "ignore_types = corpse\n"
+          
     local idstr = gname .. "_guard"
     while level.patrol_path_exists(idstr .. "_" .. i .. "_walk") do
         -- Необходимо вычитать количество работ из названия точки пути.
@@ -1166,8 +1169,9 @@ gulags.val_soldiers_raid.job = function(sj, gname, type, squad, groups)
                    --"meet                = meet@generic_lager_guard\n" ..
                    "path_walk           = guard_" .. i .. "_walk\n" ..
                    "def_state_moving    = assault\n" ..
-                   "radius              = 10\n"
-                   --"def_state_moving2   = patrol\n"
+                   "radius              = 10\n" ..
+                   --"def_state_moving2   = patrol\n" ..
+                   "danger              = danger@ignore_corpse\n"
 
         if level.patrol_path_exists(idstr .. "_" .. i .. "_look") then
             ltx = ltx.."path_look = guard_" .. i .. "_look\n"
@@ -1207,7 +1211,8 @@ gulags.val_soldiers_raid.job = function(sj, gname, type, squad, groups)
                    "path_walk           = raid_" .. i .. "_walk\n" ..
                    "formation           = around\n" ..
                    "def_state_moving1   = assault\n" ..
-                   "def_state_moving2   = assault\n"
+                   "def_state_moving2   = assault\n" ..
+                   "danger              = danger@ignore_corpse\n"
 
         if level.patrol_path_exists(idstr .. "_" .. i .. "_look") then
             ltx = ltx.."path_look = raid_" .. i .. "_look\n"

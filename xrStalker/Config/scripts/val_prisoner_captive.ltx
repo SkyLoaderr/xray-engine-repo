@@ -31,6 +31,15 @@ victim_wpn      = 2|actor
 use             = true
 use_wpn         = true
 
+[meet@near_door]
+meet_dialog     = val_prisoner_hello
+meet_state      = 20|hello@val_prisoner_captive_come_here
+meet_state_wpn  = 20|hello@val_prisoner_captive_come_here
+victim          = 20|actor
+victim_wpn      = 20|actor
+use             = true
+use_wpn         = true
+
 ;--------------------------------------------------------------------------
 ; игнорирование
 ;--------------------------------------------------------------------------
@@ -113,9 +122,9 @@ def_state_moving1                   = run
 def_state_moving2                   = run
 def_state_moving3                   = run
 ;on_info                             = {+val_prisoner_door_unlocked} walker@outside %-val_prisoner_near_door%
-on_actor_dist_le_nvis               = 8 | remark@near_door
+on_actor_dist_le_nvis               = 7 | remark@near_door
 on_actor_not_in_zone                = val_prisoner_near_door_zone | {+val_prisoner_sit} walker@sit %-val_prisoner_near_door%, walker@wander %-val_prisoner_near_door%
-meet                                = meet@main
+meet                                = meet@near_door
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
@@ -123,11 +132,12 @@ combat_ignore_keep_when_attacked    = true
 ; игрок возле двери
 ;--------------------------------------------------------------------------
 [remark@near_door]
-anim                                = wait
+anim                                = wait_na
 snd                                 = val_prisoner_captive_open
 target                              = actor
+on_actor_dist_le_nvis               = 14 | walker@near_door
 on_actor_not_in_zone                = val_prisoner_near_door_zone | {+val_prisoner_sit} walker@sit %-val_prisoner_near_door%, walker@wander %-val_prisoner_near_door%
-meet                                = meet@main
+;meet                                = meet@main
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
@@ -147,8 +157,10 @@ combat_ignore   = combat_ignore
 [walker@outside]
 path_walk                           = captive_outside_door_walk
 path_look                           = captive_outside_door_look
-on_signal                           = arrived | remark@outside %+val_prisoner_free%
-on_info                             = {-val_prisoner_door_unlocked} walker@sit
+def_state_moving1                   = run
+def_state_moving2                   = run
+on_signal                           = arrived | remark@outside %+val_prisoner_free =play_snd_now(val_prisoner_captive_thanx)%
+on_info                             = {-val_prisoner_door_unlocked} walker@sit ; ????
 meet                                = meet@main1
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
@@ -158,6 +170,9 @@ combat_ignore_keep_when_attacked    = true
 ;--------------------------------------------------------------------------
 [remark@outside]
 anim                    = wait
+;snd                     = val_prisoner_captive_thanx
+;snd_anim_synс           = true
+target                  = actor
 on_timer                = 60000 | walker@escape ;%+val_prisoner_scene_end%
 on_actor_dist_ge_nvis   = 20 | walker@escape ;%+val_prisoner_scene_end%
 ;on_info                 = {-val_prisoner_door_unlocked} walker@sit
