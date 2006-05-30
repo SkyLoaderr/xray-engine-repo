@@ -29,6 +29,11 @@ class CPoltergeist :	public CBaseMonster ,
 
 	SMotionVel			invisible_vel;
 
+	//telekinesis
+	float				m_tele_radius;
+	u32					m_tele_hold_time;
+	float				m_tele_fly_time;
+
 public:
 	struct SDelay {
 		u32 min, normal, aggressive;

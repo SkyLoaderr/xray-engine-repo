@@ -34,6 +34,7 @@ CPoltergeist::CPoltergeist()
 CPoltergeist::~CPoltergeist()
 {
 	xr_delete		(StateMan);
+	if (m_particles_object) CParticlesObject::Destroy(m_particles_object);
 }
 
 void CPoltergeist::Load(LPCSTR section)
@@ -109,6 +110,16 @@ void CPoltergeist::Load(LPCSTR section)
 	m_scare_delay.min			= pSettings->r_u32(section,"Delay_Scare_Min");
 	m_scare_delay.normal		= pSettings->r_u32(section,"Delay_Scare_Normal");
 	m_scare_delay.aggressive	= pSettings->r_u32(section,"Delay_Scare_Aggressive");
+
+
+	READ_IF_EXISTS(pSettings,r_u32,section,"PsyAura_Fake_Delay", 8000);
+	READ_IF_EXISTS(pSettings,r_float,section,"PsyAura_Fake_MaxAddDist", 90.f);
+
+	
+	m_tele_radius				= READ_IF_EXISTS(pSettings,r_float,section,"Tele_Radius", 20.f);
+	m_tele_hold_time			= READ_IF_EXISTS(pSettings,r_u32,section,"Tele_Hold_Time", 1000);
+	m_tele_fly_time				= READ_IF_EXISTS(pSettings,r_float,section,"Tele_Fly_Time", 0.35f);
+
 }
 
 void CPoltergeist::reload(LPCSTR section)
@@ -158,8 +169,12 @@ void CPoltergeist::Hide()
 	m_current_position = Position		();
 	character_physics_support()->movement()->DestroyCharacter();
 
-	CParticlesPlayer::StartParticles(m_particles_hidden,Fvector().set(0.0f,0.1f,0.0f),ID());
-	CParticlesPlayer::StartParticles(m_particles_hide,Fvector().set(0.0f,0.1f,0.0f),ID());
+//	CParticlesPlayer::StartParticles(m_particles_hidden,Fvector().set(0.0f,0.1f,0.0f),ID());
+//	CParticlesPlayer::StartParticles(m_particles_hide,Fvector().set(0.0f,0.1f,0.0f),ID());
+
+	
+	VERIFY(m_particles_object == 0);
+	m_particles_object = PlayParticles	(m_particles_hidden, Position(),Fvector().set(0.0f,0.1f,0.0f), false);
 }
 
 void CPoltergeist::Show()
@@ -176,8 +191,10 @@ void CPoltergeist::Show()
 	character_physics_support()->movement()->SetPosition(Position());
 	character_physics_support()->movement()->CreateCharacter();
 	
-	CParticlesPlayer::StartParticles(m_particles_hide,Fvector().set(0.0f,0.1f,0.0f),ID());
-	CParticlesPlayer::StopParticles(m_particles_hidden);
+//	CParticlesPlayer::StartParticles(m_particles_hide,Fvector().set(0.0f,0.1f,0.0f),ID());
+//	CParticlesPlayer::StopParticles(m_particles_hidden);
+
+	if (m_particles_object) CParticlesObject::Destroy(m_particles_object);
 }
 
 void CPoltergeist::UpdateCL()
@@ -185,6 +202,20 @@ void CPoltergeist::UpdateCL()
 	inherited::UpdateCL();
 	
 	def_lerp(m_height, target_height, HEIGHT_CHANGE_VELOCITY, client_update_fdelta());
+
+	if (m_particles_object) {
+		
+		//Fmatrix	matrix; 
+		//
+		//matrix.identity			();
+		//matrix.k.set			(Direction());
+		//Fvector::generate_orthonormal_basis_normalized(matrix.k,matrix.j,matrix.i);
+		//matrix.translate_over	(Position());
+
+		//m_particles_object->UpdateParent(XFORM(),zero_vel);
+		//m_particles_object->SetXFORM(matrix);
+		m_particles_object->SetXFORM(XFORM());
+	}
 }
 
 void CPoltergeist::ForceFinalAnimation()
@@ -212,9 +243,11 @@ BOOL CPoltergeist::net_Spawn (CSE_Abstract* DC)
 	// спаунится нивидимым
 	setVisible		(false);
 
-	CParticlesPlayer::StartParticles(m_particles_hidden,Fvector().set(0.0f,0.1f,0.0f),ID());
-	CParticlesPlayer::StartParticles(m_particles_hide,Fvector().set(0.0f,0.1f,0.0f),ID());
-	
+	//CParticlesPlayer::StartParticles(m_particles_hidden,Fvector().set(0.0f,0.1f,0.0f),ID());
+	//CParticlesPlayer::StartParticles(m_particles_hide,Fvector().set(0.0f,0.1f,0.0f),ID());
+
+	m_particles_object = PlayParticles	(m_particles_hidden, Position(),Fvector().set(0.0f,0.1f,0.0f), false);
+
 	return			(TRUE);
 }
 
