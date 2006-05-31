@@ -664,6 +664,11 @@ void CKinematics::CalculateWallmarks()
 
 void CKinematics::RenderWallmark(CSkeletonWallmark* wm, FVF::LIT* &V)
 {
+	VERIFY(wm);
+	VERIFY(V);
+	VERIFY2(bones,"Invalid visual. Bones already released.");
+	VERIFY2(bone_instances,"Invalid visual. bone_instances already deleted.");
+	
 	// skin vertices
 	for (u32 f_idx=0; f_idx<wm->m_Faces.size(); f_idx++){
 		CSkeletonWallmark::WMFace& F=wm->m_Faces[f_idx];
