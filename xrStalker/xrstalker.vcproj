@@ -2370,6 +2370,9 @@
 					Name="Radar"
 					Filter="">
 					<File
+						RelativePath=".\Config\scripts\bun_psy_timer.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\bun_psy_zone.ltx">
 					</File>
 				</Filter>
