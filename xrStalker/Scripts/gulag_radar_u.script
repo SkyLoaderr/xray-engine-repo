@@ -642,20 +642,20 @@ function load_job(sj, gname, type, squad, groups)
        if type == "bun_krovosos_nest" then
 		t = { section = "logic@bun_krovosos_nest_home1",
 			idle = 0,
-			prior = 1, state = {0},
-			in_rest = "", out_rest = ""
+			prior = 5, state = {0},
+			in_rest = "", out_rest = "bun_krovosos_border3"
 		}
 		table.insert(sj, t)	
 		t = { section = "logic@bun_krovosos_nest_home2",
 			idle = 0,
-			prior = 5, state = {0},
-			in_rest = "", out_rest = ""
+			prior = 3, state = {0},
+			in_rest = "", out_rest = "bun_krovosos_border2"
 		}
 		table.insert(sj, t)	
 		t = { section = "logic@bun_krovosos_nest_home3",
 			idle = 0,
-			prior = 5, state = {0},
-			in_rest = "", out_rest = ""
+			prior = 1, state = {0},
+			in_rest = "", out_rest = "bun_krovosos_border1"
 		}
 		table.insert(sj, t)
       end
