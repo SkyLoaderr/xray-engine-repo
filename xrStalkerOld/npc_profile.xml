@@ -36,6 +36,10 @@
 		<class>esc_tutorial_wounded</class>
 	</character>
 	
+	<character id="esc_shustryi">
+		<class>esc_shustryi</class>
+	</character>
+	
 	<character id="esc_killer_specnaz">
 		<class>esc_killer_specnaz</class>
 	</character>
