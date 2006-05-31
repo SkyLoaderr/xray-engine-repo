@@ -2370,7 +2370,7 @@
 					Name="Radar"
 					Filter="">
 					<File
-						RelativePath=".\Config\scripts\rad\rad_suicide_stalker.ltx">
+						RelativePath=".\Config\scripts\bun_psy_zone.ltx">
 					</File>
 				</Filter>
 				<Filter
