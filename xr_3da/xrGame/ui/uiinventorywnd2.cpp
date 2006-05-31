@@ -351,11 +351,29 @@ bool CUIInventoryWnd::OnItemRButtonClick(CUICellItem* itm)
 CUIDragDropListEx* CUIInventoryWnd::GetSlotList(u32 slot_idx)
 {
 	if(slot_idx == NO_ACTIVE_SLOT || GetInventory()->m_slots[slot_idx].m_bPersistent)	return NULL;
+	switch (slot_idx)
+	{
+		case KNIFE_SLOT:
+		case PISTOL_SLOT:
+		case RIFLE_SLOT:
+		case GRENADE_SLOT:
+		case APPARATUS_SLOT:
+			return m_pUITopList[slot_idx];
+			break;
+
+		case OUTFIT_SLOT:
+			return m_pUIOutfitList;
+			break;
+
+	};
+	return NULL;
+/*
 	if(slot_idx<SLOTS_NUM)
 		return m_pUITopList	[slot_idx];
 
 		VERIFY(slot_idx==OUTFIT_SLOT);
 		return m_pUIOutfitList;
+*/
 }
 
 
