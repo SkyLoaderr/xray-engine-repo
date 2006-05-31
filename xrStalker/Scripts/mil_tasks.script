@@ -106,8 +106,8 @@ end
 
 function fail_rg6_task (task_id, subtask)
     if db.actor:has_info ("mil_dolg_after_explode") or
-       db.actor:has_info ("mil_cook_dead") or 
-       this.is_actor_enemy_freedom () then 
+       db.actor:has_info ("mil_cook_dead") then --or 
+       --this.is_actor_enemy_freedom () then 
        return true
     end
     return false   
