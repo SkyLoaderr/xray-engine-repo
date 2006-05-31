@@ -118,9 +118,11 @@ protected:
 
 
     CUIStatic			UIProgressBack;
+	CUIStatic			UIProgressBack_rank;
 	CUIProgressBar		UIProgressBarHealth;	
 	CUIProgressBar		UIProgressBarPsyHealth;
 	CUIProgressBar		UIProgressBarRadiation;
+	CUIProgressBar		UIProgressBarRank;
 
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox	UIPropertiesBox;

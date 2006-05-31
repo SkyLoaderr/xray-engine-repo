@@ -110,6 +110,16 @@ void CUIInventoryWnd::Init()
 	//progress bars
 	AttachChild(&UIProgressBack);
 	xml_init.InitStatic(uiXml, "progress_background", 0, &UIProgressBack);
+	if (GameID() != GAME_SINGLE){
+		AttachChild(&UIProgressBack_rank);
+		xml_init.InitStatic(uiXml, "progress_back_rank", 0, &UIProgressBack_rank);
+
+		UIProgressBack_rank.AttachChild(&UIProgressBarRank);
+		xml_init.InitProgressBar2(uiXml, "progress_bar_rank", 0, &UIProgressBarRank);
+		UIProgressBarRank.SetProgressPos(100);
+
+	}
+	
 
 	UIProgressBack.AttachChild (&UIProgressBarHealth);
 	xml_init.InitProgressBar2 (uiXml, "progress_bar_health", 0, &UIProgressBarHealth);
@@ -267,6 +277,12 @@ void CUIInventoryWnd::Update()
 
 		v = pEntityAlive->conditions().GetRadiation()*100.0f;
 		UIProgressBarRadiation.SetProgressPos	(s16(v));
+
+		if (GameID() != GAME_SINGLE){
+			game_PlayerState* ps = Game().GetPlayerByGameID(pEntityAlive->ID());
+			if (ps)
+				UIProgressBarRank.SetProgressPos(s16(ps->experience_D*100));			
+		}
 
 		// update money
 		CInventoryOwner* pOurInvOwner	= smart_cast<CInventoryOwner*>(pEntityAlive);

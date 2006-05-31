@@ -88,7 +88,11 @@
     
     <progress_background x="739" y="340" width="59" height="215">
 		<texture>ui_scale_three</texture>
-    </progress_background>   
+    </progress_background>
+    
+    <progress_back_rank x="786" y="343" width="38" height="212">
+		<texture>ui_scale_one</texture>
+    </progress_back_rank>   
 
     <progress_bar_health x="8" y="22" width="160" height="10" length="160" horz="0" min="0" max="100" pos="0">
 		<texture>ui_scale_red_1</texture>
@@ -101,6 +105,10 @@
     <progress_bar_radiation x="45" y="22" width="160" height="10" length="160" horz="0" min="0" max="100" pos="0">
         <texture>ui_scale_yellow_1</texture>
     </progress_bar_radiation>
+    
+    <progress_bar_rank x="20" y="22" width="160" height="10" length="160" horz="0" min="0" max="100" pos="0">
+		<texture>ui_scale_green</texture>
+    </progress_bar_rank>
     
     <time_static x="15" y="730" width="200" height="30">        
         <text x="20" y="8" font="medium" r="240" g="217" b="182" a="255">ui_inv_time</text>
