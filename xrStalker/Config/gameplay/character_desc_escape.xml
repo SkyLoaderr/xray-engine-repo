@@ -53,7 +53,7 @@
 		</supplies>
 		
 
-		<start_dialog>escape_lager_volk_hello</start_dialog>
+		<start_dialog>escape_lager_volk_talk</start_dialog>
 		<start_dialog>dm_hello_dialog</start_dialog>
 		<actor_dialog>dm_cool_info_dialog</actor_dialog>
 		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
@@ -122,10 +122,37 @@
 	
 	<specific_character id="esc_tutorial_wounded" team_default = "1">
 		<name>esc_tolik_name</name>
-		<icon x="30" y="2"></icon>
+		<icon x="0" y="2"></icon>
 		<bio>esc_tolik_bio</bio>
 
 		<class>esc_tutorial_wounded</class>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		
+		<rank>196</rank>
+		<reputation>6</reputation>
+		<money min="200" max="600" infinitive="0"/>
+		
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
+
+		<visual>actors\novice\green_stalker_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_fmj = 1 \n
+		</supplies>
+
+		<start_dialog>tutorial_wounded_give_medkit</start_dialog>
+		<start_dialog>dm_hello_dialog</start_dialog>
+		<actor_dialog>dm_cool_info_dialog</actor_dialog>
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>				
+	</specific_character>
+	
+	<specific_character id="esc_shustryi" team_default = "1">
+		<name>esc_shustryi_name</name>
+		<icon x="30" y="2"></icon>
+		<bio>esc_shustryi_bio</bio>
+
+		<class>esc_shustryi</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>196</rank>
@@ -142,7 +169,7 @@
 			esc_wounded_flash \n
 		</supplies>
 
-		<start_dialog>tutorial_wounded_give_medkit</start_dialog>
+		<start_dialog>escape_shustryi_start</start_dialog>
 		<start_dialog>dm_hello_dialog</start_dialog>
 		<actor_dialog>dm_cool_info_dialog</actor_dialog>
 		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>				
