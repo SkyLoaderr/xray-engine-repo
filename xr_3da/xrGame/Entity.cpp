@@ -210,6 +210,7 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 	// Initialize variables
 	if (E) {
 		SetfHealth			(E->fHealth);
+		VERIFY				((E->m_killer_id == ALife::_OBJECT_ID(-1)) || !g_Alive());
 		m_killer_id			= E->m_killer_id;
 		if (m_killer_id == ID())
 			m_killer_id		= ALife::_OBJECT_ID(-1);

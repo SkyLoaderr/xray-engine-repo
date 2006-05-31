@@ -972,6 +972,7 @@ void CSE_ALifeCreatureAbstract::on_death		(CSE_Abstract *killer)
 {
 	VERIFY						(!m_game_death_time);
 	m_game_death_time			= Level().GetGameTime();
+	fHealth						= -1.f;
 }
 #endif // XRGAME_EXPORTS
 

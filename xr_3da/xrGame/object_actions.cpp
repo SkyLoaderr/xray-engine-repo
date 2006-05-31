@@ -466,7 +466,7 @@ CObjectActionAim::CObjectActionAim			(CInventoryItem *item, CAI_Stalker *owner, 
 	inherited							(item,owner,storage,condition_id,value,action_name)
 {
 	m_weapon					= smart_cast<CWeaponMagazined*>(m_item);
-	VERIFY						(m_weapon);
+//	VERIFY						(m_weapon);
 }
 
 void CObjectActionAim::initialize			()
@@ -486,7 +486,7 @@ void CObjectActionAim::execute				()
 	VERIFY						(object().inventory().ActiveItem());
 	VERIFY						(object().inventory().ActiveItem()->object().ID() == m_item->object().ID());
 
-	if (completed())
+	if (m_weapon && completed())
 		m_weapon->StopedAfterQueueFired(false);
 }
 
