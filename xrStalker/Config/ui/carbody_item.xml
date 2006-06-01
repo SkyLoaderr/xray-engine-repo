@@ -37,11 +37,15 @@
 
 	<image_static x="110" y="95" width="240" height="190" alignment="c"/>
 
-    <condition_progress x="10" y="165" length="130" broad="15" horz="1" min="0" max="100" pos="100">
+    <condition_progress x="10" y="165" width="130" height="8" horz="1" min="0" max="100" pos="100">
 		<min_color r="255" g="0" b="0"></min_color>
 		<max_color r="0" g="255" b="0"></max_color>
-        <texture tile="0" width="120" height="30" length="130" r="255" g="0" b="0">ui\ui_mg_progress_efficiency_full</texture>
-        <background x="0" y="0"  width="120" height="30">ui\ui_mg_progress_efficiency_empty</background>
+		<progress>
+			<texture r="255" g="0" b="0">ui\ui_mg_progress_efficiency_full</texture>
+		</progress>
+        <background>
+			<texture>ui\ui_mg_progress_efficiency_empty</texture>
+		</background>
     </condition_progress>
     
     <wpn_params x="0" y="0" width="157" height="70">
@@ -58,21 +62,37 @@
 			<text font="letterica16" r="124" g="119" b="115">ui_inv_rate_of_fire</text>
 		</cap_rpm>
 		
-		<progress_accuracy x="0" y="24" width="90" height="8" length="90">
-			<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
-			<background a="100" r="255" g="255" b="255">ui_buymenu_progBar</background>
+		<progress_accuracy x="0" y="24" width="90" height="8">
+			<progress>
+				<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
+			</progress>
+			<background>
+				<texture a="100" r="255" g="255" b="255">ui_buymenu_progBar</texture>
+			</background>
 		</progress_accuracy>		
-		<progress_handling x="120" y="24" width="90" height="8" length="90">
-			<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
-			<background a="100" r="255" g="255" b="255">ui_buymenu_progBar</background>
+		<progress_handling x="120" y="24" width="90" height="8">
+			<progress>
+				<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
+			</progress>
+			<background>
+				<texture a="100" r="255" g="255" b="255">ui_buymenu_progBar</texture>
+			</background>
 		</progress_handling>
-		<progress_damage x="0" y="55" width="90" height="8" length="90">
-			<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
-			<background a="100" r="255" g="255" b="255">ui_buymenu_progBar</background>
+		<progress_damage x="0" y="55" width="90" height="8">
+			<progress>
+				<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
+			</progress>
+			<background>
+				<texture a="100" r="255" g="255" b="255">ui_buymenu_progBar</texture>
+			</background>
 		</progress_damage>		
-		<progress_rpm x="120" y="55" width="90" height="8" length="90">
-			<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
-			<background a="100" r="255" g="255" b="255">ui_buymenu_progBar</background>
+		<progress_rpm x="120" y="55" width="90" height="8">
+			<progress>
+				<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
+			</progress>
+			<background>
+				<texture a="100" r="255" g="255" b="255">ui_buymenu_progBar</texture>
+			</background>
 		</progress_rpm>
 		
 	</wpn_params>
