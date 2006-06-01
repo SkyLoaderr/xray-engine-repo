@@ -6,6 +6,7 @@
 #include "alife_graph_registry.h"
 #include "alife_time_manager.h"
 #include "net_utils.h"
+#include "object_broker.h"
 
 game_sv_Single::game_sv_Single			()
 {
@@ -15,7 +16,7 @@ game_sv_Single::game_sv_Single			()
 
 game_sv_Single::~game_sv_Single			()
 {
-	xr_delete							(m_alife_simulator);
+	delete_data					(m_alife_simulator);
 }
 
 void	game_sv_Single::Create			(shared_str& options)

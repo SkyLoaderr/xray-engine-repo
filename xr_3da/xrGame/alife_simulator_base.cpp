@@ -47,6 +47,11 @@ CALifeSimulatorBase::CALifeSimulatorBase	(xrServer *server, LPCSTR section)
 
 CALifeSimulatorBase::~CALifeSimulatorBase	()
 {
+	VERIFY						(!m_initialized);
+}
+
+void CALifeSimulatorBase::destroy			()
+{
 	unload						();
 }
 

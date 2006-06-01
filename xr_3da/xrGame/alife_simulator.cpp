@@ -46,6 +46,12 @@ CALifeSimulator::CALifeSimulator		(xrServer *server, shared_str *command_line) :
 
 CALifeSimulator::~CALifeSimulator		()
 {
+	VERIFY						(!ai().get_alife());
+}
+
+void CALifeSimulator::destroy			()
+{
+	CALifeUpdateManager::destroy();
 	VERIFY						(ai().get_alife());
 	ai().set_alife				(0);
 }

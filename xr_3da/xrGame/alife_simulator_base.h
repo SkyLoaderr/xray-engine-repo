@@ -11,6 +11,7 @@
 #include "random32.h"
 #include "alife_space.h"
 #include "game_graph_space.h"
+#include "object_interfaces.h"
 
 class xrServer;
 class CALifeSimulatorHeader;
@@ -30,7 +31,7 @@ class CSE_ALifeDynamicObject;
 class CSE_ALifeGroupAbstract;
 class CSE_ALifeCreatureAbstract;
 
-class CALifeSimulatorBase {
+class CALifeSimulatorBase : public IPureDestroyableObject {
 protected:
 	xrServer									*m_server;
 	CALifeSimulatorHeader						*m_header;
@@ -67,6 +68,7 @@ public:
 public:
 												CALifeSimulatorBase			(xrServer *server, LPCSTR section);
 	virtual										~CALifeSimulatorBase		();
+	virtual	void								destroy						();
 	IC		bool								initialized					() const;
 	IC		const CALifeSimulatorHeader			&header						() const;
 	IC		const CALifeTimeManager				&time						() const;

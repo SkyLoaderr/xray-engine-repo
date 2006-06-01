@@ -26,6 +26,7 @@ protected:
 public:
 					CALifeSimulator		(xrServer *server, shared_str* command_line);
 	virtual			~CALifeSimulator	();
+	virtual	void	destroy				();
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CALifeSimulator)
