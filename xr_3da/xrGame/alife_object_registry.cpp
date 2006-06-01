@@ -17,10 +17,13 @@ CALifeObjectRegistry::CALifeObjectRegistry	(LPCSTR section)
 
 CALifeObjectRegistry::~CALifeObjectRegistry	()
 {
-	OBJECT_REGISTRY::iterator	I = m_objects.begin();
-	OBJECT_REGISTRY::iterator	E = m_objects.end();
-	for ( ; I != E; ++I)	
-		xr_delete				((*I).second);
+	OBJECT_REGISTRY::iterator		I = m_objects.begin();
+	OBJECT_REGISTRY::iterator		E = m_objects.end();
+	for ( ; I != E; ++I) {
+		// hack, should be revisited in case of not intended behaviour
+		(*I).second->on_unregister	();
+		xr_delete					((*I).second);
+	}
 }
 
 void CALifeObjectRegistry::save				(IWriter &memory_stream, CSE_ALifeDynamicObject *object, u32 &object_count)
