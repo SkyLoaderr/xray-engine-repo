@@ -16,13 +16,13 @@ void		CBlendInstance::construct()
 }
 void		CBlendInstance::blend_add	(CBlend* H)
 {	
-	if (Blend.size()>=MAX_BLENDED)	{
-//. for E3 by Dima
-#ifdef _DEBUG
-		Msg	("! WARNING: more than 16 blend-sequences per bone played");
-#endif
-		return;
+	if (Blend.size()==MAX_BLENDED)	{
+		BlendSVecIt _d	= Blend.begin();
+		for (BlendSVecIt it=Blend.begin()+1; it!=Blend.end(); it++)
+			if ((*it)->blendAmount<(*_d)->blendAmount) _d=it;
+		Blend.erase		(_d);
 	}
+	VERIFY (Blend.size()<MAX_BLENDED);
 	Blend.push_back(H);	
 }
 void		CBlendInstance::blend_remove	(CBlend* H)
@@ -136,7 +136,7 @@ MotionID CKinematicsAnimated::ID_Cycle	(LPCSTR  N)
 }
 void	CKinematicsAnimated::LL_FadeCycle(u16 part, float falloff)
 {
-	BlendList&	Blend	= blend_cycles[part];
+	BlendSVec&	Blend		= blend_cycles[part];
 	
 	for (u32 I=0; I<Blend.size(); I++)
 	{
@@ -152,7 +152,7 @@ void	CKinematicsAnimated::LL_CloseCycle(u16 part)
 	if (part>=MAX_PARTS)	return;
 
 	// destroy cycle(s)
-	BlendListIt	I = blend_cycles[part].begin(), E = blend_cycles[part].end();
+	BlendSVecIt	I = blend_cycles[part].begin(), E = blend_cycles[part].end();
 	for (; I!=E; I++){
 		CBlend& B = *(*I);
 
@@ -308,7 +308,7 @@ void CKinematicsAnimated::UpdateTracks	()
 	float dt = float(DT)/1000.f;
 	Update_LastTime 	= Device.dwTimeGlobal;
 
-	BlendListIt	I,E;
+	BlendSVecIt I,E;
 
 	// Cycles
 	for (u16 part=0; part<MAX_PARTS; part++){
@@ -635,7 +635,7 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
 
             // Calculate all keys
             CKey*	D					= R;
-            BlendListIt					BI;
+            BlendSVecIt					BI;
             for (BI=BLEND_INST.Blend.begin(); BI!=BLEND_INST.Blend.end(); BI++,D++)
             {
                 CBlend*			B		=	*BI;

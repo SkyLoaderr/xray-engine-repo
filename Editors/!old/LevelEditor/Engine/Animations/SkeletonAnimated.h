@@ -84,15 +84,15 @@ public:
 
 	u32				mem_usage			(){ return sizeof(*this); }
 };
-typedef svector<CBlend*,MAX_BLENDED>	BlendList;
-typedef BlendList::iterator				BlendListIt;
+typedef svector<CBlend*,MAX_BLENDED>	BlendSVec;
+typedef BlendSVec::iterator				BlendSVecIt;
 
 //*** Bone Instance *******************************************************************************
 #pragma pack(push,8)
 class ENGINE_API		CBlendInstance	// Bone Instance Blend List (per-bone data)
 {
 public:
-	BlendList			Blend;
+	BlendSVec			Blend;
 	// methods
 	void				construct		();
 	void				blend_add		(CBlend* H);
@@ -101,7 +101,7 @@ public:
 	u32					mem_usage		()
 	{
 		u32 sz			= sizeof(*this);
-		for (BlendListIt it=Blend.begin(); it!=Blend.end(); it++)
+		for (BlendSVecIt it=Blend.begin(); it!=Blend.end(); it++)
 			sz			+= (*it)->mem_usage();
 		return			sz;
 	}
@@ -149,8 +149,8 @@ private:
 
 	// Blending
 	svector<CBlend, MAX_BLENDED_POOL>			blend_pool;
-	BlendList									blend_cycles	[MAX_PARTS];
-	BlendList									blend_fx;
+	BlendSVec									blend_cycles	[MAX_PARTS];
+	BlendSVec									blend_fx;
 protected:
 	// internal functions
 	virtual void				IBoneInstances_Create	();
