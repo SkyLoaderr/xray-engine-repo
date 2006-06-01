@@ -167,7 +167,8 @@ int dSortTriPrimitiveCollide (
 		//if(ignored_tries[I-B])continue;
 		CDB::TRI* T = T_array + *I;
 		const Point vertices[3]={Point((dReal*)&V_array[T->verts[0]]),Point((dReal*)&V_array[T->verts[1]]),Point((dReal*)&V_array[T->verts[2]])};
-		if(!aabb_tri_aabb(Point(p),Point((float*)&AABB),vertices))continue;
+		if(!aabb_tri_aabb(Point(p),Point((float*)&AABB),vertices))
+																continue;
 #ifdef DEBUG
 		if(ph_dbg_draw_mask.test(phDBgDrawIntersectedTries))
 										DBG_DrawTri(T,V_array,D3DCOLOR_XRGB(0,255,0));
@@ -234,7 +235,7 @@ int dSortTriPrimitiveCollide (
 								neg_depth=tri.depth;
 								neg_tri=tri;
 								data->neg_tri=tri.T;
-								ret=0;
+								//ret=0;
 								//if(intersect)*pushing_neg=true;
 							}
 
@@ -248,7 +249,7 @@ int dSortTriPrimitiveCollide (
 							b_neg_depth=tri.depth;
 							b_neg_tri=tri;
 							data->b_neg_tri=tri.T;
-							ret=0;
+							//ret=0;
 							//if(intersect)*pushing_b_neg=true;
 						}
 					}
@@ -278,8 +279,10 @@ int dSortTriPrimitiveCollide (
 	//if(intersect) ret=0;
 	xr_vector<Triangle>::iterator i;
 
-
-	if(neg_depth<dInfinity&&intersect)
+	if(intersect)
+	{
+	
+	if(neg_depth<dInfinity)
 	{
 		bool include = true;
 		if(no_last_pos)
@@ -304,14 +307,15 @@ int dSortTriPrimitiveCollide (
 
 		if(include){
 			VERIFY(neg_tri.T&&neg_tri.dist!=-dInfinity);
-			ret+=T::CollidePlain(
+			int bret=T::CollidePlain(
 				neg_tri.side0,neg_tri.side1,neg_tri.norm,
 				neg_tri.T,
 				neg_tri.dist,
 				o1,o2,flags,
-				CONTACT(contact, ret * skip),
+				CONTACT(contact, 0),
 				skip);	
-				*pushing_neg=!!ret;
+				*pushing_neg=!!bret;
+				if(*pushing_neg)ret=bret;
 		}
 
 	}
@@ -333,7 +337,7 @@ int dSortTriPrimitiveCollide (
 
 
 
-	if(b_neg_depth<dInfinity&&intersect){
+	if(b_neg_depth<dInfinity){
 
 		bool include = true;
 		if(no_last_pos)
@@ -353,18 +357,21 @@ int dSortTriPrimitiveCollide (
 		if(include)	
 		{	
 			VERIFY(b_neg_tri.T);
-			ret+=T::CollidePlain(
+			int bret=T::CollidePlain(
 				b_neg_tri.side0,
 				b_neg_tri.side1,
 				b_neg_tri.norm,
 				b_neg_tri.T,
 				b_neg_tri.dist,
 				o1,o2,flags,
-				CONTACT(contact, ret * skip),
+				CONTACT(contact,*pushing_neg ? ret * skip : 0),
 				skip);	
-			*pushing_b_neg=!!ret;
+			*pushing_b_neg=!!bret;
+			if(*pushing_neg)ret+=bret;
+			else if(*pushing_b_neg)ret=bret;
 		}
 
+	}
 	}
 	dVectorSet(last_pos,p);
 	return ret;

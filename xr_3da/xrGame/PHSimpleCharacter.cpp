@@ -517,6 +517,13 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	//if(!b_exist)return;
 	m_elevator_state.PhTune(step);
 	b_air_contact_state=!is_contact;
+#ifdef DEBUG
+	if(ph_dbg_draw_mask.test(phDbgCharacterControl))
+	{
+		if(b_air_contact_state)DBG_DrawPoint(cast_fv(dBodyGetPosition(m_body)),m_radius,D3DCOLOR_XRGB(255,0,0));
+		
+	}
+#endif
 	bool b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2;
 
 	dxGeomUserData	*ud=dGeomGetUserData(m_wheel);
@@ -662,6 +669,8 @@ void CPHSimpleCharacter::PhTune(dReal step){
 #ifdef DEBUG
 		if(ph_dbg_draw_mask.test(phDbgCharacterControl))
 		{
+			DBG_DrawLine(cast_fv(dBodyGetPosition(m_body)),Fvector().add(cast_fv(dBodyGetPosition(m_body)),Fvector().mul(cast_fv(sidedir),1.f)),D3DCOLOR_XRGB(0,0,255));
+			DBG_DrawLine(cast_fv(dBodyGetPosition(m_body)),Fvector().add(cast_fv(dBodyGetPosition(m_body)),Fvector().mul(cast_fv(m_control_force),1.f/19.6f)),D3DCOLOR_XRGB(0,0,255));
 			DBG_DrawLine(cast_fv(dBodyGetPosition(m_body)),Fvector().add(cast_fv(dBodyGetPosition(m_body)),Fvector().mul(cast_fv(dBodyGetForce(m_body)),1.f/19.6f)),D3DCOLOR_XRGB(255,0,0));
 		}
 #endif
