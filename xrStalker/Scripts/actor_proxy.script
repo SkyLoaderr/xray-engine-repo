@@ -6,17 +6,21 @@ class "actor_proxy"
 
 -- конструктор
 function actor_proxy:__init()
-	self.alife = nil
+	self.initialized = false
 end
 
 -- инициализация.
 -- происходит только в момент первого обращения.
 function actor_proxy:init()
-	if not self.alife then
-		self.online   = false
-		self.alife    = alife()
-		self.actor_id = self.alife:actor().id
-		self.actor    = nil
+	if not self.initialized then
+		printf( "actor_proxy: init" )
+
+		self.online      = false
+		self.alife       = alife()
+		self.actor_id    = self.alife:actor().id
+		self.actor       = nil
+
+		self.initialized = true
 	end
 end
 
@@ -24,8 +28,15 @@ end
 -- происходит в момент дерегистрации серверных объектов.
 -- вызывается из se_smart_terrain:on_unregister() TODO remove this hack
 function actor_proxy:deinit()
-	self.alife = nil
-	self.actor = nil
+	printf( "actor_proxy: deinit" )
+	if self.initialized then
+		printf( "actor_proxy: deinit2" )
+
+		self.alife = nil
+		self.actor = nil
+
+		self.initialized = false
+	end
 end
 
 function actor_proxy:has_info( name )
