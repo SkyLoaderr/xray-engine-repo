@@ -215,12 +215,7 @@ void CALifeSimulator__release					(CALifeSimulator *self, CSE_Abstract *object, 
 	VERIFY								(self);
 //	self->release						(object,true);
 
-	CSE_ALifeDynamicObject				*object = ai().alife().objects().object(object->ID,true);
-	if (!object) {
-		Msg								("! invalid object [%s] specified for releasing",object->name_replace());
-		return							(0);
-	}
-
+	THROW								(object);
 	if (!object->m_bOnline) {
 		self->release					(object,true);
 		return;
