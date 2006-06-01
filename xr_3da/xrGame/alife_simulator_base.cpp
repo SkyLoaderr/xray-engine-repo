@@ -52,10 +52,10 @@ CALifeSimulatorBase::~CALifeSimulatorBase	()
 
 void CALifeSimulatorBase::unload			()
 {
+	xr_delete					(m_objects);
 	xr_delete					(m_header);
 	xr_delete					(m_time_manager);
 	xr_delete					(m_spawns);
-	xr_delete					(m_objects);
 	xr_delete					(m_graph_objects);
 	xr_delete					(m_scheduled);
 	xr_delete					(m_story_objects);
