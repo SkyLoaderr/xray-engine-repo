@@ -871,7 +871,7 @@ function esc_blokpost_night(actor,npc)
 end
 
 function esc_bandits_die(sctor,npc)
-	if actor:has_info("esc_kill_bandits_quest_kill") or actor:has_info("esc_kill_bandits_noquest_kill") then
+	if db.actor:has_info("esc_kill_bandits_quest_kill") or db.actor:has_info("esc_kill_bandits_noquest_kill") then
 		return true
 	end
 	return false
