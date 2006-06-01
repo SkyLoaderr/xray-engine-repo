@@ -1166,6 +1166,28 @@ function gulag:npc_is_enemy_to_anybody( target_obj )
 	return false
 end
 
+-- получить персонажа, который в онлайне, и который ближе всего к указанной позиции
+function gulag:get_nearest_online_obj( pos )
+	local min_dist    = 100000000
+	local nearest_obj = nil
+	local d
+
+	for obj_id, obj in pairs( self.Object ) do
+		obj = level.object_by_id( obj_id )
+
+		if obj then
+			d = obj:position():distance_to_sqr( pos )
+
+			if d < min_dist then
+				min_dist     = d
+				nearest_obj  = obj
+			end
+		end
+	end
+
+	return nearest_obj
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 -- Функции, которые могут вызываться извне
 ----------------------------------------------------------------------------------------------------------------------
