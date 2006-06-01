@@ -9,11 +9,17 @@
 	<string id="ammo-9x18-fmj">
 		<text>Патроны 9х18мм</text>
 	</string>
-	<string id="enc_weapons1_ammo_ammo-9x18-fmj">
+	<string id="ammo-9x18-fmj_s">
+		<text>9х18</text>
+	</string>
+		<string id="enc_weapons1_ammo_ammo-9x18-fmj">
 		<text>Базовый патрон для пистолетов ПМ, ПБ, Форт-12.Простой сердечник, оболочечная пуля. Слабое бронебойное действие.</text>
 	</string>
 	<string id="ammo-9x18-pmm">
 		<text>Патроны 9х18мм +P+</text>
+	</string>
+	<string id="ammo-9x18-pmm_s">
+		<text>9х18 +P+</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-pmm">
 		<text>Патрон с улучшенными характеристиками для пистолетов ПМ, ПБ, Форт-12.За счет более высокой начальной скорости и легкой пули, намного эффективнее обычного 9х18. Слегка улучшенный бронебойный эффект</text>
@@ -21,11 +27,17 @@
 	<string id="ammo-9x19-fmj">
 		<text>Патроны 9х19mm Parabellum</text>
 	</string>
+	<string id="ammo-9x19-fmj_s">
+		<text>9х19 FMJ</text>
+	</string>
 	<string id="enc_weapons1_ammo_ammo-9x19-fmj">
 		<text>Базовый патрон для пистолетов  Walther P99,  Beretta92FS и пистолет-пулемета H&K MP5. Обычная оболочечная пуля. Слабое бронебойное действие.</text>
 	</string>
 	<string id="ammo-9x19-pbp">
 		<text>Патроны 9x19mm PBP</text>
+	</string>
+	<string id="ammo-9x19-pbp_s">
+		<text>9x19 PBP</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x19-pbp">
 		<text>Патрон с улучшенными характеристиками для пистолетов Walther P99, Beretta92FS и пистолет-пулемета H&K MP5. Это солидный по действию патрон. Пуля является экспансивной, но с бронебойным сердечником. Дорогой боеприпас.</text>
@@ -33,11 +45,17 @@
 	<string id="ammo-11.43x23-fmj">
 		<text>Патроны .45ACP</text>
 	</string>
+	<string id="ammo-11.43x23-fmj_s">
+		<text> .45ACP</text>
+	</string>
 	<string id="enc_weapons1_ammo_ammo-11.43x23-fmj">
 		<text>Базовый патрон для пистолетов Colt1911 и Sig220. Простой сердечник, оболочечная пуля.</text>
 	</string>
 	<string id="ammo-11.43x23-hydro">
 		<text>Патроны .45ACP Hydro-Shock</text>
+	</string>
+	<string id="ammo-11.43x23-hydro_s">
+		<text> .45Hydro-Shock</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-11.43x23-hydro">
 		<text>Так называемый «ГидроШок». Патрон с улучшенными характеристиками для пистолетов Colt1911 и Sig220. Экспансивная c cильный останавливающий эффект.</text>
@@ -45,11 +63,17 @@
 	<string id="ammo-5.45x39-fmj">
 		<text>Патроны 5.45x39мм</text>
 	</string>
+	<string id="ammo-5.45x39-fmj_s">
+		<text>5.45x39</text>
+	</string>
 	<string id="enc_weapons1_ammo_ammo-5.45x39-fmj">
 		<text>Базовый патрон для автоматов АКС-74, АКС-74У, AH-94. Простой сердечник, оболочечная пуля.</text>
 	</string>
 	<string id="ammo-5.45x39-ap">
 		<text>Патроны 5.45x39мм БП</text>
+	</string>
+	<string id="ammo-5.45x39-ap_s">
+		<text>5.45x39 БП</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-5.45x39-ap">
 		<text>Бронебойный патрон для автоматов AКС-74, АКС-74У, AH-94. Улучшенная бронебойность, ослабленное останавливающее действие пули.</text>
@@ -57,11 +81,17 @@
 	<string id="ammo-9x39-pab9">
 		<text>Патроны 9х39мм ПАБ-9</text>
 	</string>
+	<string id="ammo-9x39-pab9_s">
+		<text>9х39м ПАБ-9</text>
+	</string>
 	<string id="enc_weapons1_ammo_ammo-9x39-pab9">
 		<text>Патрон для автоматов "Гроза", "Вал" и специальной снайперской винтовки "Винторез". Более поздняя и дешевая в изготовлении модификация бронебойного патрона. Имеет дозвуковую скорость полета, но за счет пули специальной конструкции, пробивает большинство бронежилетов на дальностях до 300 метров.</text>
 	</string>
 	<string id="ammo-9x39-ap">
 		<text>Патроны 9x39мм СП-6</text>
+	</string>
+	<string id="ammo-9x39-ap_s">
+		<text>9x39 СП-6</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x39-ap">
 		<text>Бронебойный патрон для автоматов "Гроза", "Вал" и специальной снайперской винтовки "Винторез". Имеет дозвуковую скорость полета, но за счет пули специальной конструкции, пробивает большинство бронежилетов на дальностях до 300 метров.</text>
@@ -69,11 +99,17 @@
 	<string id="ammo-9x39-sp5">
 		<text>Патроны 9х39мм СП-5</text>
 	</string>
+	<string id="ammo-9x39-sp5_s">
+		<text>9х39 СП-5</text>
+	</string>
 	<string id="enc_weapons1_ammo_ammo-9x39-sp5">
 		<text>Снайперский патрон для автоматов "Гроза", "Вал" и специальной снайперской винтовки "Винторез". Имеет дозвуковую скорость полета, но за счет тяжелой пули специальной конструкции, пробивает большинство бронежилетов на дальностях до 400 метров.</text>
 	</string>
 	<string id="ammo-5.56x45-ss190">
 		<text>Патроны 5.56х45mm SS109</text>
+	</string>
+	<string id="ammo-5.56x45-ss190_s">
+		<text>5.56х45 SS109</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-5.56x45-ss190">
 		<text>Стандартный НАТО’вский патрон, широко известный под бельгийским индексом SS109. Для штурмовых винтовок L85, LR300, Sig550, G36, FN2000.</text>
@@ -81,11 +117,17 @@
 	<string id="ammo-5.56x45-ap">
 		<text>Патроны 5.56x45mm AP</text>
 	</string>
+	<string id="ammo-5.56x45-ap_s">
+		<text>5.56x45 AP</text>
+	</string>
 	<string id="enc_weapons1_ammo_ammo-5.56x45-ap">
 		<text>Бронебойная пуля. Для штурмовых винтовок L85, LR300, Sig550, G36, FN2000.</text>
 	</string>
 	<string id="ammo-7.62x54-7h1">
 		<text>Патроны 7.62x54mmR 7H1</text>
+	</string>
+	<string id="ammo-7.62x54-7h1_s">
+		<text>7.62x54R 7H1</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-7.62x54-7h1">
 		<text>Дешевая в изготовлении модификация снайперского патрона. Для снайперских винтовок СВД, СВУ-АС и пулемета ПКМ.</text>
@@ -93,11 +135,17 @@
 	<string id="ammo-7.62x54-ap">
 		<text>Патроны 7.62x54mmR БП</text>
 	</string>
+	<string id="ammo-7.62x54-ap_s">
+		<text>7.62x54R БП</text>
+	</string>
 	<string id="enc_weapons1_ammo_ammo-7.62x54-ap">
 		<text>Бронебойная пуля. Для снайперских винтовок СВД, СВУ-АС и пулемета ПКМ.</text>
 	</string>
 	<string id="ammo-7.62x54-7h14">
 		<text>Патроны 7.62х54mmR 7Н14</text>
+	</string>
+	<string id="ammo-7.62x54-7h14_s">
+		<text>7.62х54R 7Н14</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-7.62x54-7h14">
 		<text>Снайперский патрон. Для снайперских винтовок СВД, СВУ-АС и пулемета ПКМ. Улучшенная точность и дальность. Очень дорогой патрон.</text>
@@ -105,23 +153,35 @@
 	<string id="ammo-12x70-buck">
 		<text>Патроны 12х70 Картечь</text>
 	</string>
+	<string id="ammo-12x70-buck_s">
+		<text>12х70 Картечь</text>
+	</string>
 	<string id="enc_weapons1_ammo_ammo-12x70-buck">
 		<text>Класический патрон 12-го калибра снаряжонный 6 милиметровой картечью. На близких дистанциях имеет огромное убойное действие. Для дробовиков ТОЗ-34, БМ-12, Winchester-1300,SPAS-12. Эффективен на дальностях до 30 метров. Самый дешёвый из патронов в Зоне.</text>
 	</string>
 	<string id="ammo-12x76-zhekan">
 		<text>Патроны 12x76 Жекан</text>
 	</string>
+	<string id="ammo-12x76-zhekan_s">
+		<text>12x76 Жекан</text>
+	</string>
 	<string id="enc_weapons1_ammo_ammo-12x76-zhekan">
 		<text>Патрон с тяжелой безоболочечной пулей. Обычно используется для охоты на крупных животных, но подходит и для других целей. Например: его пуля не пробивает, а продавливает бронежилеты осталвяя жертву умирать от множественных переломов и ушибов. Для дробовиков ТОЗ-34, БМ-12, Winchester-1300,SPAS-12. Эффективен на дальностях до 100 метров.</text>
 	</string>
 	<string id="ammo-12x76-dart">
 		<text>Патроны 12x76 Дротик</text>
-	</string> 
+	</string>
+	<string id="ammo-12x76-dart_s">
+		<text>12x76 Дротик</text>
+	</string>  
 	<string id="enc_weapons1_ammo_ammo-12x76-dart">
 		<text>Оперенная пуля. Стабилизируется в полёте благодаря оперению, что значительно улучшает точность. Для дробовиков ТОЗ-34, БМ-12, Winchester-1300,SPAS-12. Эффективен на дальностях до 150 метров. Увеличенная дальность и бронебойность. Дорогой патрон.</text>
 	</string>
 	<string id="ammo-m209">
 		<text>Заряд M209</text>
+	</string>
+	<string id="ammo-m209_s">
+		<text>M209</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-m209">
 		<text>Граната для подствольного гранатомета М203 (LR-300, G36, Sig550, L85) и для интегрированного гранатомета у FN2000.</text>
@@ -129,11 +189,17 @@
 	<string id="ammo-vog-25">
 		<text>Заряд VOG-25</text>
 	</string>
+		<string id="ammo-vog-25_s">
+		<text>VOG-25</text>
+	</string>
 	<string id="enc_weapons1_ammo_ammo-vog-25">
 		<text>Граната для подствольного гранатомета GP30 (Ak74) , для интегрированного подствольника у "Грозы" и для револьверного гранатомета RG-6.</text>
 	</string>
 	<string id="ammo-vog-25p">
 		<text>Заряд VOG-25P</text>
+	</string>
+	<string id="ammo-vog-25p_s">
+		<text>VOG-25P</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-vog-25p">
 		<text>Граната для подствольного гранатомета GP30 (Ak74) , для интегрированного подствольника у "Грозы" и для револьверного гранатомета RG-6.Перед взрывом граната VOG-25P подпрыгивает на выстоту метра, чем увеличивает свое поражающее действие.</text>
@@ -141,11 +207,17 @@
 	<string id="ammo-og-7b">
 		<text>Заряд OG-7B</text>
 	</string>
+	<string id="ammo-og-7b_s">
+		<text>OG-7B</text>
+	</string>
 	<string id="enc_weapons1_ammo_ammo-og-7b">
 		<text>Осколочно-фугасная граната для РПГ-7В. Одинаково эффективна как против живой силы, так и против лёгкобронированой техники.</text>
 	</string>
 	<string id="ammo-gauss">
 		<text>Патроны Гаусс</text>
+	</string>
+	<string id="ammo-gauss_s">
+		<text>Гаусс</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-gauss">
 		<text>Энергетические емкости с готовыми убойными элементами в магазине для винтовки Гаусса. Источником энергии является капсулированный осколок артефакта Вспышка.</text>
