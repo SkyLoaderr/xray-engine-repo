@@ -103,6 +103,7 @@
     <info_portion id="val_sos_got_medkit"></info_portion>
     <info_portion id="val_sos_dead"></info_portion>
     <info_portion id="val_sos_task_finish"></info_portion>
+    <info_portion id="val_sos_give_info"></info_portion>
     <info_portion id="val_sos_scene_end"></info_portion>
 
     <!-- Рейд солдат -->
