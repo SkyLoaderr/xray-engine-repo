@@ -34,10 +34,10 @@ void CUIWpnParams::InitFromXml(CUIXml& xml_doc){
 	CUIXmlInit::InitStatic(xml_doc, "wpn_params:cap_handling",	0, &m_textHandling);
 	CUIXmlInit::InitStatic(xml_doc, "wpn_params:cap_rpm",		0, &m_textRPM);
 
-	CUIXmlInit::InitProgressBar2(xml_doc, "wpn_params:progress_accuracy",	0, &m_progressAccuracy);
-	CUIXmlInit::InitProgressBar2(xml_doc, "wpn_params:progress_damage",		0, &m_progressDamage);
-	CUIXmlInit::InitProgressBar2(xml_doc, "wpn_params:progress_handling",	0, &m_progressHandling);
-	CUIXmlInit::InitProgressBar2(xml_doc, "wpn_params:progress_rpm",		0, &m_progressRPM);
+	CUIXmlInit::InitProgressBar(xml_doc, "wpn_params:progress_accuracy",	0, &m_progressAccuracy);
+	CUIXmlInit::InitProgressBar(xml_doc, "wpn_params:progress_damage",		0, &m_progressDamage);
+	CUIXmlInit::InitProgressBar(xml_doc, "wpn_params:progress_handling",	0, &m_progressHandling);
+	CUIXmlInit::InitProgressBar(xml_doc, "wpn_params:progress_rpm",		0, &m_progressRPM);
 
 	m_progressAccuracy.SetRange(0, 100);
 	m_progressDamage.SetRange(0, 100);

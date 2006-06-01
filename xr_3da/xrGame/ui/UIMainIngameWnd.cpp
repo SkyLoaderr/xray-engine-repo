@@ -188,12 +188,12 @@ void CUIMainIngameWnd::Init()
 	//Полоса прогресса здоровья
 	UIStaticHealth.AttachChild(&UIHealthBar);
 	xml_init.InitAutoStaticGroup(uiXml,"static_health", &UIStaticHealth);
-	xml_init.InitProgressBar2(uiXml, "progress_bar_health", 0, &UIHealthBar);
+	xml_init.InitProgressBar(uiXml, "progress_bar_health", 0, &UIHealthBar);
 
 	//Полоса прогресса армора
 	UIStaticArmor.AttachChild(&UIArmorBar);
 	xml_init.InitAutoStaticGroup(uiXml,"static_armor", &UIStaticArmor);
-	xml_init.InitProgressBar2(uiXml, "progress_bar_armor", 0, &UIArmorBar);
+	xml_init.InitProgressBar(uiXml, "progress_bar_armor", 0, &UIArmorBar);
 
 	
 

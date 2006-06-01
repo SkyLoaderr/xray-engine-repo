@@ -19,7 +19,7 @@ void CUICarPanel::Init			(float x, float y, float width, float height)
 
 	UIStaticCarHealth.AttachChild(&UICarHealthBar);
 	xml_init.InitAutoStaticGroup(uiXml,"car_health_static", &UIStaticCarHealth);
-	xml_init.InitProgressBar2(uiXml, "car_health_progress_bar", 0, &UICarHealthBar);
+	xml_init.InitProgressBar(uiXml, "car_health_progress_bar", 0, &UICarHealthBar);
 
 /*
 	AttachChild(&UISpeedometer);

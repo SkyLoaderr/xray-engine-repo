@@ -115,21 +115,21 @@ void CUIInventoryWnd::Init()
 		xml_init.InitStatic(uiXml, "progress_back_rank", 0, &UIProgressBack_rank);
 
 		UIProgressBack_rank.AttachChild(&UIProgressBarRank);
-		xml_init.InitProgressBar2(uiXml, "progress_bar_rank", 0, &UIProgressBarRank);
+		xml_init.InitProgressBar(uiXml, "progress_bar_rank", 0, &UIProgressBarRank);
 		UIProgressBarRank.SetProgressPos(100);
 
 	}
 	
 
 	UIProgressBack.AttachChild (&UIProgressBarHealth);
-	xml_init.InitProgressBar2 (uiXml, "progress_bar_health", 0, &UIProgressBarHealth);
+	xml_init.InitProgressBar (uiXml, "progress_bar_health", 0, &UIProgressBarHealth);
 	//UIProgressBarHealth.SetWndPos(0,0);
 	
 	UIProgressBack.AttachChild	(&UIProgressBarPsyHealth);
-	xml_init.InitProgressBar2 (uiXml, "progress_bar_psy", 0, &UIProgressBarPsyHealth);
+	xml_init.InitProgressBar (uiXml, "progress_bar_psy", 0, &UIProgressBarPsyHealth);
 
 	UIProgressBack.AttachChild	(&UIProgressBarRadiation);
-	xml_init.InitProgressBar2 (uiXml, "progress_bar_radiation", 0, &UIProgressBarRadiation);
+	xml_init.InitProgressBar (uiXml, "progress_bar_radiation", 0, &UIProgressBarRadiation);
 //
 	UIPersonalWnd.AttachChild			(&UIStaticPersonal);
 	UIStaticPersonal.Init				(1, UIPersonalWnd.GetHeight() - 175, 260, 260);

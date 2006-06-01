@@ -67,7 +67,7 @@ public:
 	static bool InitDragDropListEx		(CUIXml& xml_doc, const char* path, int index, CUIDragDropListEx* pWnd);
 	static bool InitListWnd				(CUIXml& xml_doc, const char* path, int index, CUIListWnd* pWnd);
 	static bool InitProgressBar			(CUIXml& xml_doc, const char* path, int index, CUIProgressBar* pWnd);
-	static bool InitProgressBar2		(CUIXml& xml_doc, const char* path, int index, CUIProgressBar* pWnd);
+//	static bool InitProgressBar2		(CUIXml& xml_doc, const char* path, int index, CUIProgressBar* pWnd);
 	static bool InitProgressShape		(CUIXml& xml_doc, const char* path, int index, CUIProgressShape* pWnd);
 	static bool InitFont				(CUIXml& xml_doc, const char* path, int index, u32 &color, CGameFont *&pFnt);
 //	static bool InitColor				(CUIXml& xml_doc, XML_NODE* node, u32 &color);

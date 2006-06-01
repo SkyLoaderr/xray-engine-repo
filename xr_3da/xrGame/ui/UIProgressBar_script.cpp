@@ -19,8 +19,8 @@ void CUIProgressBar::script_register(lua_State *L)
 		.def("ProgressInc",				&CUIProgressBar::ProgressInc)
 		.def("ProgressDec",				&CUIProgressBar::ProgressDec)
 
-		.def("SetProgressTexture",		&CUIProgressBar::SetProgressTexture)
-		.def("SetBackgroundTexture",	&CUIProgressBar::SetBackgroundTexture)
+//		.def("SetProgressTexture",		&CUIProgressBar::SetProgressTexture)
+//		.def("SetBackgroundTexture",	&CUIProgressBar::SetBackgroundTexture)
 
 //		.def("",				&CUIProgressBar::)
 	];

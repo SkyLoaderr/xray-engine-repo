@@ -32,11 +32,9 @@ protected:
 	//Графический интрефейс для рисования
 	///////////////////////////////////////
 	//вывод при помощи тайлов, иначе вся текстура - показывает 100% прогресса
-	float				m_iProgressLength;
+	//float				m_iProgressLength;
 
-	//items
-	CUIStaticItem	m_UIProgressItem;
-	CUIStaticItem	m_UIBackgroundItem;
+
 	bool			m_bBackgroundPresent;
 	Fvector2		m_BackgroundOffset;
 
@@ -50,15 +48,16 @@ public:
 	Fcolor			m_maxColor;
 
 public:
+	//items
+	CUIStatic		m_UIProgressItem;
+	CUIStatic		m_UIBackgroundItem;
+
+
 					CUIProgressBar(void);
 	virtual			~CUIProgressBar(void);
 
 
-	virtual void	Init(float x, float y, float length, float broad, bool bIsHorizontal);
-
-	void			SetProgressTexture(LPCSTR tex_name, float progress_length, 
-						float x, float y, float width, float height, u32 color = 0xFFFFFFFF);
-	void			SetBackgroundTexture(LPCSTR tex_name, float x, float y, float width, float height, float offs_x, float offs_y);
+	virtual void	Init(float x, float y, float width, float height, bool bIsHorizontal);
 
 	void			SetRange(s16 iMin, s16 iMax) {m_iMinPos = iMin;  m_iMaxPos = iMax;
 						UpdateProgressBar();}

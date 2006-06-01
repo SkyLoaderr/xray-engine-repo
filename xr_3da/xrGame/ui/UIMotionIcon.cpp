@@ -24,13 +24,13 @@ void CUIMotionIcon::Init()
 	xml_init.InitStatic			(uiXml, "background", 0, this);	
 
 	AttachChild					(&m_power_progress);
-	xml_init.InitProgressBar2	(uiXml, "power_progress", 0, &m_power_progress);	
+	xml_init.InitProgressBar	(uiXml, "power_progress", 0, &m_power_progress);	
 
 	AttachChild					(&m_luminosity_progress);
-	xml_init.InitProgressBar2	(uiXml, "luminosity_progress", 0, &m_luminosity_progress);	
+	xml_init.InitProgressBar	(uiXml, "luminosity_progress", 0, &m_luminosity_progress);	
 
 	AttachChild					(&m_noise_progress);
-	xml_init.InitProgressBar2	(uiXml, "noise_progress", 0, &m_noise_progress);	
+	xml_init.InitProgressBar	(uiXml, "noise_progress", 0, &m_noise_progress);	
 	
 	AttachChild					(&m_states[stNormal]);
 	xml_init.InitStatic			(uiXml, "state_normal", 0, &m_states[stNormal]);
