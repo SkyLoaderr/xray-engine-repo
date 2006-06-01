@@ -37,6 +37,7 @@ local simMaxCount = {
 
 -- Список респавнеров, для сбора статистики
 local respawners = {}
+local respawners_by_parent = {}
 ----------------------------------------------------------------------------------------------------------------------
 -- Разные полезные функции
 ----------------------------------------------------------------------------------------------------------------------
@@ -234,6 +235,9 @@ function se_respawn:on_register()
 	
 	-- Для сбора статистики сохраняем указатель на респавнер
 	respawners[self:name()] = self
+	if self.parent ~= nil then
+		respawners_by_parent[self.parent] = self
+	end
 end
 -- Создаем объект
 function se_respawn:create(prob)
@@ -435,6 +439,10 @@ function spawn(name)
 			return
 		end
 	end		
+end
+
+function get_respawner_by_parent(parent_id)
+	return respawners_by_parent[parent_id]
 end
 
 -- Сбор статистики

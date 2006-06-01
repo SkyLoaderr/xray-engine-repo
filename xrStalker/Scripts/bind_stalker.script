@@ -55,6 +55,7 @@ function actor_binder:net_destroy()
 	self.object:set_callback(callback.task_state, nil)
 	self.object:set_callback(callback.level_border_enter, nil)
 	self.object:set_callback(callback.level_border_exit, nil)
+	self.object:set_callback(callback.take_item_from_box, nil)
 
 	if sr_psy_antenna.psy_antenna then
 		sr_psy_antenna.psy_antenna:destroy()
@@ -87,6 +88,26 @@ function actor_binder:reinit()
 	--self.object:set_callback(callback.map_location_added, self.map_location_added_callback, self)
 	self.object:set_callback(callback.level_border_enter, self.level_border_enter, self)
 	self.object:set_callback(callback.level_border_exit, self.level_border_exit, self)
+	self.object:set_callback(callback.take_item_from_box, self.take_item_from_box, self)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:take_item_from_box(box, item)
+	local story_id = box:story_id()
+	if story_id == nil then
+		return
+	end
+	
+	local respawner = se_respawn.get_respawner_by_parent(story_id)
+	if respawner == nil then
+		return
+	end
+	
+	local smart_terrain = db.strn_by_respawn[respawner:name()]
+	if smart_terrain == nil then
+		return
+	end
+
+	xr_gulag.setGulagEnemy(smart_terrain:name() , db.actor)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:level_border_enter(npc, info_id)

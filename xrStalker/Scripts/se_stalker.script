@@ -52,6 +52,8 @@ function se_stalker:get_job_online()
 	if self.job_online_condlist == nil then
 		return self.job_online
 	else
+		printf("stalker name %s", self:name())
+		print_table(self.job_online)
 		return xr_logic.pick_section_from_condlist(db.actor_proxy, self, self.job_online) ~= nil
 	end
 end
