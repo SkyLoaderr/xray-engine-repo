@@ -279,41 +279,15 @@
 	<info_portion id="bar_arena_pause"></info_portion>
 	
 	<info_portion id="bar_arena_reset">
-		<disable>bar_arena_start</disable>
-		
-		<disable>bar_arena_1000_r</disable>
-		<disable>bar_arena_2000_r</disable>
-		<disable>bar_arena_3000_r</disable>
-		<disable>bar_arena_5000_r</disable>
-		
-		<disable>bar_arena_20_p</disable>
-		<disable>bar_arena_50_p</disable>
-		<disable>bar_arena_100_p</disable>
-		
-		<disable>bar_arena_fight_10</disable>
-		<disable>bar_arena_fight_20</disable>
-		<disable>bar_arena_fight_30</disable>
-		<disable>bar_arena_fight_40</disable>
-		<disable>bar_arena_fight_50</disable>
-		<disable>bar_arena_fight_60</disable>		
-		<disable>bar_arena_fight_70</disable>		
-		<disable>bar_arena_fight_80</disable>		
-		<disable>bar_arena_fight_90</disable>	
-		
-		<disable>bar_arena_start_introduce</disable>
-		<disable>bar_arena_spawn_monstr</disable>
-		<disable>bar_arena_monstr_ready</disable>
-		<disable>bar_arena_monstr_dead</disable>
-		<disable>bar_arena_actor_victory</disable>
-		<disable>bar_arena_actor_lose</disable>
-		<disable>bar_arena_actor_afraid</disable>
-		<disable>bar_arena_actor_dead</disable>
-		
-		<disable>bar_arena_pseudodog_choosen</disable>
-		<disable>bar_arena_snork_choosen</disable>				
-		<disable>bar_arena_bloodsucker_choosen</disable>
-		<disable>bar_arena_burer_choosen</disable>
-		<disable>bar_arena_savage_choosen</disable>
+		<disable>bar_arena_fight_1_reward</disable>
+		<disable>bar_arena_fight_1_reward</disable>
+		<disable>bar_arena_fight_2_reward</disable>
+		<disable>bar_arena_fight_3_reward</disable>
+		<disable>bar_arena_fight_4_reward</disable>
+		<disable>bar_arena_fight_5_reward</disable>
+		<disable>bar_arena_fight_6_reward</disable>
+		<disable>bar_arena_fight_7_reward</disable>
+		<disable>bar_arena_fight_8_reward</disable>
 	</info_portion>	
 	
 	<info_portion id="bar_arena_1000_r"></info_portion>
@@ -353,7 +327,9 @@
 	
 	<info_portion id="bar_arena_state_1"></info_portion>	
     
-    <info_portion id="bar_arena_fight"></info_portion>
+    <info_portion id="bar_arena_fight">
+		<disable>bar_arena_reset</disable>
+    </info_portion>
     <info_portion id="bar_arena_fight_1"></info_portion>	
     <info_portion id="bar_arena_fight_2"></info_portion>	
     <info_portion id="bar_arena_fight_3"></info_portion>	
@@ -362,6 +338,14 @@
     <info_portion id="bar_arena_fight_6"></info_portion>	
     <info_portion id="bar_arena_fight_7"></info_portion>	
     <info_portion id="bar_arena_fight_8"></info_portion>	
+    <info_portion id="bar_arena_fight_1_reward"></info_portion>	
+    <info_portion id="bar_arena_fight_2_reward"></info_portion>	
+    <info_portion id="bar_arena_fight_3_reward"></info_portion>	
+    <info_portion id="bar_arena_fight_4_reward"></info_portion>	
+    <info_portion id="bar_arena_fight_5_reward"></info_portion>	
+    <info_portion id="bar_arena_fight_6_reward"></info_portion>	
+    <info_portion id="bar_arena_fight_7_reward"></info_portion>	
+    <info_portion id="bar_arena_fight_8_reward"></info_portion>	
     <info_portion id="bar_arena_fight_1_done">
 		<disable>bar_arena_fight</disable>
 		<disable>bar_arena_fight_begin</disable>

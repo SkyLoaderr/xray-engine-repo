@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
     <string id="bar_arena_man_job_0">
-        <text>превед</text>
+        <text>ну....</text>
     </string>
     <string id="bar_arena_man_job_1">
-        <text>превед</text>
+        <text>что нУ???</text>
     </string>
     <string id="bar_arena_man_job_11">
         <text>Ну что ж, первый бой. Твой противник, такой же кусок мяса, как и ты. Попал сюда из-за долгов. Ему поставили выбор, либо выходишь и дерешься, либо отправляешься в ближайшую аномалию. Так что драться он будет как пес, загнанный в угол. Из снаряжения сегодня, дайка подумать, ага - будете драться на ПМах. Ну, и по две обоймы я думаю, вам хватит. Иди и надери ему задницу, или отправься собакам на корм, выбор не большой. Вперед.</text>
@@ -78,29 +78,17 @@
     <string id="bar_arena_man_job_182">
         <text>Я не готов.</text>
     </string>
-    <string id="bar_arena_man_reward_11">
-        <text>200</text>
+    <string id="bar_arena_man_start_11">
+        <text>Здарова! Есть новый бой для тебя.</text>
     </string>
-    <string id="bar_arena_man_reward_21">
-        <text>400</text>
+    <string id="bar_arena_man_start_21">
+        <text>Погуляй часок-другой, арена еще не готова!</text>
     </string>
-    <string id="bar_arena_man_reward_31">
-        <text>800</text>
+    <string id="bar_arena_man_start_31">
+        <text>Ты уже стал Мастером!!!\n</text>
     </string>
-    <string id="bar_arena_man_reward_41">
-        <text>1200</text>
-    </string>
-    <string id="bar_arena_man_reward_51">
-        <text>1500</text>
-    </string>
-    <string id="bar_arena_man_reward_61">
-        <text>2000</text>
-    </string>
-    <string id="bar_arena_man_reward_71">
-        <text>2500</text>
-    </string>
-    <string id="bar_arena_man_reward_81">
-        <text>5000</text>
+    <string id="bar_arena_man_start_41">
+        <text>Ты победил! Вот твоя награда!</text>
     </string>
     <string id="bar_arena_manager_game_0">
         <text>Я хочу сразиться. Кто у тебя на этот раз?</text>

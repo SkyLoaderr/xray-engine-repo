@@ -391,25 +391,24 @@ end
 
 function arena_give_reward(actor, npc)
 	local m = 0
-	if db.actor:has_info("bar_arena_1000_r") then
-		m = 1000
-	elseif db.actor:has_info("bar_arena_2000_r") then
+	if db.actor:has_info("bar_arena_fight_1_reward") then
+		m = 200
+	elseif db.actor:has_info("bar_arena_fight_2_reward") then
+		m = 400
+	elseif db.actor:has_info("bar_arena_fight_3_reward") then
+		m = 800
+	elseif db.actor:has_info("bar_arena_fight_4_reward") then
+		m = 1200
+	elseif db.actor:has_info("bar_arena_fight_5_reward") then
+		m = 1500
+	elseif db.actor:has_info("bar_arena_fight_6_reward") then
 		m = 2000
-	elseif db.actor:has_info("bar_arena_3000_r") then
-		m = 3000
-	elseif db.actor:has_info("bar_arena_5000_r") then
+	elseif db.actor:has_info("bar_arena_fight_7_reward") then
+		m = 2500
+	elseif db.actor:has_info("bar_arena_fight_8_reward") then
 		m = 5000
 	end
-	local p = 0
-	if db.actor:has_info("bar_arena_20_p") then
-		p = 1.5
-	elseif db.actor:has_info("bar_arena_50_p") then
-		p = 2
-	elseif db.actor:has_info("bar_arena_100_p") then
-		p = 3
-	end
-
-	dialogs.relocate_money(npc, m*p, "in")
+	dialogs.relocate_money(npc, m, "in")
 	db.actor:give_info_portion("bar_arena_reset")	
 end
 
@@ -441,32 +440,13 @@ end
 
 -- new arena
 
-function give_reward_1(actor, npc)	
-	dialogs.relocate_money(npc, 200, "in")
-end
-function give_reward_2(actor, npc)	
-	dialogs.relocate_money(npc, 400, "in")
-end
-function give_reward_3(actor, npc)	
-	dialogs.relocate_money(npc, 800, "in")
-end
-function give_reward_4(actor, npc)	
-	dialogs.relocate_money(npc, 1200, "in")
-end
-function give_reward_5(actor, npc)	
-	dialogs.relocate_money(npc, 1500, "in")
-end
-function give_reward_6(actor, npc)	
-	dialogs.relocate_money(npc, 2000, "in")
-end
-function give_reward_7(actor, npc)	
-	dialogs.relocate_money(npc, 2500, "in")
-end
-function give_reward_8(actor, npc)	
-	dialogs.relocate_money(npc, 5000, "in")
+function arena_has_reward ()
+	return db.actor:has_info("bar_arena_fight_1_reward") or db.actor:has_info("bar_arena_fight_2_reward") or db.actor:has_info("bar_arena_fight_3_reward") or db.actor:has_info("bar_arena_fight_4_reward") or db.actor:has_info("bar_arena_fight_5_reward") or db.actor:has_info("bar_arena_fight_6_reward") or db.actor:has_info("bar_arena_fight_7_reward") or db.actor:has_info("bar_arena_fight_8_reward")
 end
 
-
+function arena_hasnt_reward ()
+	return not( db.actor:has_info("bar_arena_fight_1_reward") or db.actor:has_info("bar_arena_fight_2_reward") or db.actor:has_info("bar_arena_fight_3_reward") or db.actor:has_info("bar_arena_fight_4_reward") or db.actor:has_info("bar_arena_fight_5_reward") or db.actor:has_info("bar_arena_fight_6_reward") or db.actor:has_info("bar_arena_fight_7_reward") or db.actor:has_info("bar_arena_fight_8_reward"))
+end
 
 -- Отметка интересных мест на карте
 function locate_bar_bar(actor,npc)
