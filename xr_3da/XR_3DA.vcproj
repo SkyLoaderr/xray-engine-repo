@@ -1022,6 +1022,12 @@
 						<File
 							RelativePath=".\xrTheora_Surface.h">
 						</File>
+						<File
+							RelativePath=".\xrTheora_Surface_mmx.cpp">
+						</File>
+						<File
+							RelativePath=".\xrTheora_Surface_mmx.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="ShaderManager"

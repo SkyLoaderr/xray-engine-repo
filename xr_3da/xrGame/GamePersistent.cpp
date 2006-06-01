@@ -202,7 +202,7 @@ void CGamePersistent::WeathersUpdate()
 				ambient_sound_next_time	= Device.dwTimeGlobal + env_amb->get_rnd_sound_time();
 				if (snd){
 					Fvector	pos;
-					pos.random_dir		(Fvector().set(0,1,0),PI).normalize().mul(::Random.randF(25,75)).add(Device.vCameraPosition);
+					pos.random_dir		(Fvector().set(0,1,0),PI).normalize().mul(env_amb->get_rnd_sound_dist()).add(Device.vCameraPosition);
 					snd->play_at_pos	(0,pos);
 				}
 			}

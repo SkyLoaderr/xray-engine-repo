@@ -50,6 +50,7 @@ void CEnvAmbient::load(const shared_str& sect)
 	if (pSettings->line_exist(sect,"sounds")){
 		Fvector2 t		= pSettings->r_fvector2	(sect,"sound_period");
 		sound_period.set(iFloor(t.x*1000.f),iFloor(t.y*1000.f));
+		sound_dist		= pSettings->r_fvector2	(sect,"sound_dist"); if (sound_dist[0]>sound_dist[1]) std::swap(sound_dist[0],sound_dist[1]);
 		LPCSTR snds		= pSettings->r_string	(sect,"sounds");
 		u32 cnt			= _GetItemCount(snds);
 		if (cnt){

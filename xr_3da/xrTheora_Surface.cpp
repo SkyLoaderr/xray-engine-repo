@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "xrtheora_surface.h"
 #include "xrtheora_stream.h"
+#include "xrTheora_Surface_mmx.h"
 
 CTheoraSurface::CTheoraSurface()
 {
@@ -209,9 +210,7 @@ void CTheoraSurface::DecompressFrame(u32* data)
 	u32 width		= m_rgb->t_info.frame_width;
 	u32 height		= m_rgb->t_info.frame_height;
 	u32 pixelformat	= m_rgb->t_info.pixelformat;
-/*
-	Memory.mem_fill32(data,0x00FF0000,width*height);
-/*/
+
 	int uv_w=1, uv_h=1;
 	switch (pixelformat){
 	case OC_PF_444:	uv_w=1; uv_h=1; break;
@@ -221,29 +220,14 @@ void CTheoraSurface::DecompressFrame(u32* data)
 	}
 	static const float K = 0.256788f + 0.504129f + 0.097906f;
 
+
 	// rgb
 	if (yuv_rgb){
 		yuv_buffer&	yuv	= *yuv_rgb;
-		u32 pos = 0;
-		for (u32 h=0; h<height; ++h){
-			u8* Y		= yuv.y+yuv.y_stride*h;
-			u8* U		= yuv.u+yuv.uv_stride*(h/uv_h);
-			u8* V		= yuv.v+yuv.uv_stride*(h/uv_h);
-			for (u32 w=0; w<width; ++w){
-				u8 y	= Y[w];
-				u8 u	= U[w/uv_w];
-				u8 v	= V[w/uv_w];
-
-				int C	= y - 16;
-				int D	= u - 128;
-				int E	= v - 128;
-
-				int R	= clampr(( 298 * C           + 409 * E + 128) >> 8,0,255);
-				int G	= clampr(( 298 * C - 100 * D - 208 * E + 128) >> 8,0,255);
-				int B	= clampr(( 298 * C + 516 * D           + 128) >> 8,0,255);
-				data[pos++] = color_rgba(R,G,B,255);
-			}
-		}
+		tv_yuv2argb		( ( lp_tv_uchar ) data, width, height,
+						yuv.y,yuv.y_width,yuv.y_height,yuv.y_stride,
+						yuv.u,yuv.v,
+						yuv.uv_width,yuv.uv_height,yuv.uv_stride);
 	}
 
 	// alpha
@@ -252,8 +236,6 @@ void CTheoraSurface::DecompressFrame(u32* data)
 		u32 pos = 0;
 		for (u32 h=0; h<height; ++h){
 			u8* Y		= yuv.y+yuv.y_stride*h;
-//			u8* U		= yuv.u+yuv.uv_stride*(h/uv_h);
-//			u8* V		= yuv.v+yuv.uv_stride*(h/uv_h);
 			for (u32 w=0; w<width; ++w){
 				u8 y	= Y[w];
 				u32& clr= data[pos++];
@@ -261,7 +243,6 @@ void CTheoraSurface::DecompressFrame(u32* data)
 			}
 		}
 	}
-//*/
 }
 
 #ifdef SDL_OUTPUT

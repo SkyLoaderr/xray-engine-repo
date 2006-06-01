@@ -49,6 +49,7 @@ protected:
 	shared_str			section;
 	EffectVec			effects;
 	xr_vector<ref_sound>sounds;
+	Fvector2			sound_dist;
 	Ivector2			sound_period;
 	Ivector2			effect_period;
 public:
@@ -57,6 +58,7 @@ public:
 	IC ref_sound*		get_rnd_sound		(){return sounds.empty()?0:&sounds[Random.randI(sounds.size())];}
 	IC const shared_str&name				(){return section;}
 	IC u32				get_rnd_sound_time	(){return Random.randI(sound_period.x,sound_period.y);}
+	IC float			get_rnd_sound_dist	(){return Random.randF(sound_dist.x,sound_dist.y);}
 	IC u32				get_rnd_effect_time (){return Random.randI(effect_period.x,effect_period.y);}
 };
 
