@@ -20,6 +20,8 @@
 #include "alife_registry_container.h"
 #include "xrServer.h"
 
+#include "level.h"
+
 using namespace luabind;
 
 typedef xr_vector<std::pair<shared_str,int> >	STORY_PAIRS;
@@ -211,7 +213,14 @@ ALife::_SPAWN_ID CALifeSimulator__spawn_id		(CALifeSimulator *self, ALife::_SPAW
 void CALifeSimulator__release					(CALifeSimulator *self, CSE_Abstract *object, bool)
 {
 	VERIFY								(self);
-	self->release						(object,true);
+//	self->release						(object,true);
+	// awful hack, for stohe only
+	NET_Packet							packet;
+	packet.w_begin						(M_EVENT);
+	packet.w_u32						(Level().timeServer());
+	packet.w_u16						(GE_DESTROY);
+	packet.w_u16						(object->ID);
+	Level().Send						(packet,net_flags(TRUE,TRUE));
 }
 
 LPCSTR get_level_name							(const CALifeSimulator *self, int level_id)
