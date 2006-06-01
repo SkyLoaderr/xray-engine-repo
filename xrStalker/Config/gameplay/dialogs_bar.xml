@@ -4880,6 +4880,68 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="bar_arena_man_start">
+        <phrase_list>
+            <phrase id="31">
+                <text>bar_arena_man_start_31</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_arena_man_start_21</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_arena_man_start_51</text>
+            </phrase>
+            <phrase id="41">
+                <text>bar_arena_man_start_41</text>
+            </phrase>
+            <phrase id="11">
+                <text>bar_arena_man_start_11</text>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
+                <dont_has_info>bar_arena_pause</dont_has_info>
+                <dont_has_info>bar_arena_fight_8_done</dont_has_info>
+                <dont_has_info>bar_arena_rank_false</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="5">
+                <text></text>
+                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
+                <has_info>bar_arena_rank_false</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="4">
+                <text></text>
+                <precondition>bar_dialogs.arena_has_reward</precondition>
+                <action>bar_dialogs.arena_give_reward</action>
+                <next>41</next>
+            </phrase>
+            <phrase id="3">
+                <text></text>
+                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
+                <precondition>bar_dialogs.arena_rank_check_false</precondition>
+                <dont_has_info>bar_arena_rank_false</dont_has_info>
+                <has_info>bar_arena_fight_8_done</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
+                <dont_has_info>bar_arena_rank_false</dont_has_info>
+                <has_info>bar_arena_pause</has_info>
+                <next>21</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="bar_arena_manager_game">
         <dont_has_info>bar_arena_start</dont_has_info>
         <phrase_list>
@@ -5003,12 +5065,6 @@
                 <text>bar_arena_manager_game_125</text>
                 <next>1251</next>
             </phrase>
-            <phrase id="2">
-                <text>bar_arena_manager_game_2</text>
-                <precondition>bar_dialogs.arena_has_pseudodog</precondition>
-                <next>21</next>
-                <next>22</next>
-            </phrase>
             <phrase id="1051">
                 <text>bar_arena_manager_game_1051</text>
             </phrase>
@@ -5119,59 +5175,18 @@
                 <next>5</next>
                 <next>6</next>
             </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_arena_man_start">
-        <phrase_list>
-            <phrase id="21">
-                <text>bar_arena_man_start_21</text>
-            </phrase>
-            <phrase id="4">
-                <text></text>
-                <precondition>bar_dialogs.arena_has_reward</precondition>
-                <action>bar_dialogs.arena_give_reward</action>
-                <next>41</next>
-            </phrase>
-            <phrase id="41">
-                <text>bar_arena_man_start_41</text>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_arena_man_start_31</text>
-            </phrase>
-            <phrase id="11">
-                <text>bar_arena_man_start_11</text>
-            </phrase>
             <phrase id="2">
-                <text></text>
-                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
-                <has_info>bar_arena_pause</has_info>
+                <text>bar_arena_manager_game_2</text>
+                <precondition>bar_dialogs.arena_has_pseudodog</precondition>
                 <next>21</next>
-            </phrase>
-            <phrase id="3">
-                <text></text>
-                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
-                <has_info>bar_arena_fight_8_done</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
-                <dont_has_info>bar_arena_pause</dont_has_info>
-                <dont_has_info>bar_arena_fight_8_done</dont_has_info>
-                <next>11</next>
+                <next>22</next>
             </phrase>
         </phrase_list>
     </dialog>
     <dialog id="bar_arena_man_job">
         <dont_has_info>bar_arena_pause</dont_has_info>
         <dont_has_info>bar_arena_fight_8_done</dont_has_info>
+        <dont_has_info>bar_arena_rank_false</dont_has_info>
         <phrase_list>
             <phrase id="162">
                 <text>bar_arena_man_job_162</text>
@@ -5188,13 +5203,6 @@
             <phrase id="142">
                 <text>bar_arena_man_job_142</text>
                 <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="12">
-                <text>bar_arena_man_job_12</text>
-                <dont_has_info>bar_arena_fight_2_done</dont_has_info>
-                <has_info>bar_arena_fight_1_done</has_info>
-                <next>121</next>
-                <next>122</next>
             </phrase>
             <phrase id="152">
                 <text>bar_arena_man_job_152</text>
@@ -5310,6 +5318,13 @@
                 <dont_has_info>bar_arena_fight_1_done</dont_has_info>
                 <next>111</next>
                 <next>112</next>
+            </phrase>
+            <phrase id="12">
+                <text>bar_arena_man_job_12</text>
+                <dont_has_info>bar_arena_fight_2_done</dont_has_info>
+                <has_info>bar_arena_fight_1_done</has_info>
+                <next>121</next>
+                <next>122</next>
             </phrase>
             <phrase id="0">
                 <text>bar_arena_man_job_0</text>
