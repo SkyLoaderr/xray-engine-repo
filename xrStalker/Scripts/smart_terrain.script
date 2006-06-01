@@ -774,7 +774,7 @@ function se_smart_terrain:get_level_name()
 	return alife():level_name( game_graph():vertex( self.m_game_vertex_id ):level_id() )
 end
 
--- регистрация объекта симуляторе.
+-- регистрация объекта в симуляторе.
 -- вызывается симулятором.
 function se_smart_terrain:on_register()
 --	printf( "[smart_terrain %s] on_register called", self:name() )
@@ -799,6 +799,10 @@ function se_smart_terrain:on_register()
 
 	smart_terrains[level_name][self.id] = self
 
+	if self.gparams.respawn then
+		db.strn_by_respawn[self.gparams.respawn] = self
+	end
+
 	self.gulag:load_jobs()
 
 	if self.gulag_working then
@@ -811,12 +815,18 @@ function se_smart_terrain:on_register()
 	task_manager.register_target(self)
 end
 
--- дерегистрация объекта симуляторе.
+-- дерегистрация объекта в симуляторе.
 -- вызывается симулятором.
 function se_smart_terrain:on_unregister()
 	cse_alife_smart_zone.on_unregister( self )
 
+	printf( "[smart_terrain %s] on_unregister called", self:name() )
+
 	smart_terrains[self:get_level_name()][self.id] = nil
+
+	if self.gparams.respawn then
+		db.strn_by_respawn[self.gparams.respawn] = nil
+	end
 
 	db.actor_proxy:deinit()
 end
