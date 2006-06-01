@@ -53,6 +53,7 @@
 	<info_portion id="esc_wolf_say"></info_portion>
 	<info_portion id="esc_serious_talk"></info_portion>
 	<info_portion id="esc_wounded_arrive"></info_portion>
+	<info_portion id="esc_tutorial_secret"></info_portion>
 
 	<!-- Fox -->
 	<info_portion id="escape_stalker_help"></info_portion>
@@ -193,10 +194,11 @@
 	
 	<!-- trader bandits on factory -->
 	<info_portion id="esc_kill_bandits_quest_have">
-		<task>esc_bandits_factory</task>
+		<task>esc_dinamit_to_volk</task>
 		<article>kill_factory_bandits</article>
 	</info_portion>
 	<info_portion id="esc_kill_bandits_quest_kill"></info_portion>
+	<info_portion id="esc_kill_bandits_noquest_kill"></info_portion>
 	<info_portion id="esc_kill_bandits_quest_done"></info_portion>
 	<info_portion id="esc_assault_start"></info_portion>
 	<info_portion id="esc_assault_charge"></info_portion>
