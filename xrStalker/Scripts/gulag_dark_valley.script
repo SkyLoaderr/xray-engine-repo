@@ -568,7 +568,7 @@ gulags.val_rob.job = function(sj, gname, type, squad, groups)
     local i, ltx = 0, ""
 
     ltx = ltx.."[meet@" .. gname .. "_warn]\n" ..
-               "meet_state        = 20| {+val_rob_buying} threat, wait@ {+val_rob_buying} val_rob_guard_jeer, weather\n" ..
+               "meet_state        = 20| {+val_rob_buying} threat, guard@ {+val_rob_buying} val_rob_guard_jeer, weather\n" ..
                "meet_state_wpn = 25| threat@threat_back\n" ..
                "victim         = 20| actor\n" ..
                "victim_wpn     = 25| actor\n" ..
