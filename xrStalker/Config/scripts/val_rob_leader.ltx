@@ -6,10 +6,10 @@ active = walker@val_rob_leader_start
 ;--------------------------------------------------------------------------
 [meet@val_rob_start]
 meet_dialog     = val_rob_dialog
-meet_state      = 20|hello@talk_hello|10|wait
-meet_state_wpn  = 10|threat@threat_weap
-victim          = 20|actor
-victim_wpn      = 20|actor
+meet_state      = 30|hello@val_rob_leader_call|15|wait
+meet_state_wpn  = 30|hello@val_rob_leader_call|15|threat@threat_weap
+victim          = 30|actor
+victim_wpn      = 30|actor
 use             = true
 use_wpn         = false
 
@@ -35,15 +35,17 @@ meet                = meet@val_rob_start
 
 [remark@val_rob_leader_call]
 anim                = wait
-snd                 = val_rob_leader_call
-on_actor_dist_ge    = 30 | walker@val_rob_leader_start
+;snd                 = val_rob_leader_call
+target              = actor
+on_actor_dist_ge    = 35 | walker@val_rob_leader_start
 on_actor_dist_le    = 10 | remark@val_rob_leader_talk
-meet                = meet@val_rob_ignore
+meet                = meet@val_rob_start ;meet@val_rob_ignore
 
 [remark@val_rob_leader_talk]
 anim                = wait
+target              = actor
 on_info             = {+val_rob_buying} remark@val_rob_leader_wait_to_go ;walker@val_rob_leader_to_kamp
-on_actor_dist_ge    = 30 | walker@val_rob_leader_start
+on_actor_dist_ge    = 35 | walker@val_rob_leader_start
 meet                = meet@val_rob_start
 
 [remark@val_rob_leader_wait_to_go]
