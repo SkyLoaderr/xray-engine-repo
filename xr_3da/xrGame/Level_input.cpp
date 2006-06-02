@@ -362,10 +362,10 @@ void CLevel::IR_OnKeyboardPress	(int key)
 
 void CLevel::IR_OnKeyboardRelease(int key)
 {
-	if(	g_bDisableAllInput	) return;
-	if (pHUD->GetUI()->IR_OnKeyboardRelease(key)) return;
-	if( Device.Pause()		) return;
-	if ( Game().OnKeyboardRelease(key_binding[key]) ) return;
+	if (g_bDisableAllInput	) return;
+	if (pHUD && pHUD->GetUI() && pHUD->GetUI()->IR_OnKeyboardRelease(key)) return;
+	if (Device.Pause()		) return;
+	if (Game().OnKeyboardRelease(key_binding[key]) ) return;
 
 	if( HUD().GetUI()->MainInputReceiver() )return;
 	if (CURRENT_ENTITY())		{
