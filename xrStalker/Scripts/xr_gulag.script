@@ -41,11 +41,12 @@ function gulag:__init(smrttrn, type, squad, groups, npc_info, capacity)
 	self.capacity = capacity     -- общая ёмкость гулага
 --	self.capacity_non_exclusive  -  ёмкость гулага для неэксклюзивных персонажей
 
-	self.Object               = {} -- объекты по id. Значения: nil-нету такого, true-есть в офлайне, game_object-есть в онлайн
-	self.Object_begin_job     = {} -- по id. true/nil достиг ли объект места своей работы
-	self.ObjectJob            = {} -- по id. номер работы для каждого персонажа
-	self.JobLoaded            = {} -- для каждой работы загруженные из save данные
-	self.Job_avail_in_state   = nil
+	self.Object                 = {} -- объекты по id. Значения: nil-нету такого, true-есть в офлайне, game_object-есть в онлайн
+	self.Object_begin_job       = {} -- по id. true/nil достиг ли объект места своей работы
+	self.Object_didnt_begin_job = {} -- по id. начинал ли объект хотя бы раз любую работу с момента добавления под смарт
+	self.ObjectJob              = {} -- по id. номер работы для каждого персонажа
+	self.JobLoaded              = {} -- для каждой работы загруженные из save данные
+	self.Job_avail_in_state     = nil
 
 	self.state      = 0
 	self.stateBegin = nil
@@ -289,13 +290,16 @@ end
 -- сохранение информации об объекте
 function gulag:save_obj( packet, obj_id )
 	packet:w_bool ( self.Object_begin_job[obj_id] )
+	packet:w_bool ( self.Object_didnt_begin_job[obj_id] )
 	packet:w_u8   ( self.ObjectJob[obj_id] or 0 )
 end
 
 -- восстановление информации об объекте
 function gulag:load_obj( packet, obj_id )
 	self.Object[obj_id]           = true
+
 	self.Object_begin_job[obj_id] = packet:r_bool()
+	self.Object_didnt_begin_job[obj_id] = packet:r_bool()
 
 	local jobN = packet:r_u8()
 	if jobN ~= 0 then
@@ -307,7 +311,8 @@ end
 -- при добавления объекта он помечается как офлайновый.
 -- вызывается только из se_smart_terrain:register_npc()
 function gulag:addObject( obj_id )
-	self.Object_begin_job[obj_id] = false
+	self.Object_begin_job[obj_id]       = false
+	self.Object_didnt_begin_job[obj_id] = true
 
 	self:object_setup_offline( obj_id )
 end
@@ -976,7 +981,11 @@ function gulag:beginJob( obj_id )
 		self:setup_logic( obj, job.section )
 	end
 
-	self.smrttrn:call_respawn()
+	if self.Object_didnt_begin_job[obj_id] then
+		self.smrttrn:call_respawn()
+
+		self.Object_didnt_begin_job[obj_id] = false
+	end
 end
 
 -- установить серверному объекту персонажа упраление переключения онлайн/офлайн
