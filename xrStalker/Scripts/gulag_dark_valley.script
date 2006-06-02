@@ -574,7 +574,7 @@ gulags.val_rob.job = function(sj, gname, type, squad, groups)
                "victim_wpn     = 25| actor\n" ..
                "use            = true\n" ..
                "use_wpn        = false\n" ..
-               "zone           = val_rob_warn_zone| threat@ {+val_rob_buying} val_rob_guard_jeer | val_rob_kill_zone| true@talk_abuse\n" .. --, threat_back
+               "zone           = val_rob_warn_zone| threat@ {+val_rob_buying} val_rob_guard_jeer, threat_back | val_rob_kill_zone| true@talk_abuse\n" ..
 
                "[kamp@" .. gname .. "_kamp]\n" ..
                "center_point    = kamp\n" ..
