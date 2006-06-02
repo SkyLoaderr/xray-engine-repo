@@ -512,7 +512,23 @@ gulags.val_sos.job = function(sj, gname, type, squad, groups)
                "anim                  = wait\n" ..
                "meet                  = meet1\n" ..
                "danger                = danger2\n" ..
-               "on_actor_dist_ge_nvis = 17 | %+val_sos_scene_end%\n"
+               "on_info               = {+val_sos_give_info} remark3\n" ..
+               "on_actor_dist_ge_nvis = 20 | walker@leave\n" ..
+
+               "[remark3]\n" ..
+               "anim                  = wait\n" ..
+               "meet                  = meet1\n" ..
+               "danger                = danger2\n" ..
+               "on_timer              = 5400 | walker@leave\n" ..
+               "on_actor_dist_ge_nvis = 20 | walker@leave\n" ..
+
+               "[walker@leave]\n" ..
+               "path_walk             = wounded_leave_walk\n" ..
+               "def_state_moving1     = sprint\n" ..
+               "def_state_moving2     = sprint\n" ..
+               "def_state_moving3     = sprint\n" ..
+               "on_signal             = arrived | %+val_sos_scene_end%\n" ..
+               "combat_ignore_cond    = always\n"
 
     t = { section = "logic@" .. gname .. "_bs",
         idle = 0,
@@ -758,12 +774,12 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
     end
 
     -- —»ƒﬂŸ»≈ ¬  ≈Ãœ≈ 1 ¬Œ«À≈ ¡Œ–Œ¬¿ » ¬  ≈Ãœ≈ 2 Õ¿ ¬“Œ–ŒÃ ›“¿∆≈
-    restr = {gname .. "_main_building_restrictor", gname .. "_nedostroyka_restrictor", gname .. "_nedostroyka_restrictor"}
-    irestr = {gname .. "_leader_info_restr", gname .. "_nedostroyka_info_restr", gname .. "_nedostroyka_info_restr"}
+    restr = {gname .. "_main_building_restrictor", gname .. "_nedostroyka_restrictor", gname .. "_nedostroyka_restrictor", gname .. "_restrictor"}
+    --irestr = {gname .. "_leader_info_restr", gname .. "_nedostroyka_info_restr", gname .. "_nedostroyka_info_restr"}
     onlineid = {"{+val_lager_bandits_show_leader_company}", "{+val_lager_bandits_show_nedostroyka_company}", "{+val_lager_bandits_show_nedostroyka_company}"}
     --onlineid = {"{+val_lager_bandits_show_leader_company}", false, false}
-    local pr = {7, 5, 5}
-    for i, v in pairs({3, 4, 2}) do
+    local pr = {7, 5, 5, 2}
+    for i, v in pairs({3, 4, 2, 3}) do
         ltx = ltx.."[logic@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
                    "active = kamp@" .. gname .. "_kamp" .. i .. "_normal\n" ..
                    "combat_ignore = combat_ignore\n" ..
@@ -779,6 +795,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                 squad = squad, group = groups[i],
                 online = onlineid[i],
                 in_rest = "", out_rest = restr[i],
+                position_threshold = 100,
                 --info_restr = irestr[i],
                 predicate = lb_predicate3
             }
@@ -790,6 +807,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                 squad = squad, group = groups[i],
                 online = onlineid[i],
                 in_rest = "", out_rest = restr[i],
+                position_threshold = 100,
                 --info_restr = irestr[i],
                 predicate = lb_predicate3
             }
@@ -801,6 +819,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                 squad = squad, group = groups[i],
                 online = onlineid[i],
                 in_rest = "", out_rest = restr[i],
+                position_threshold = 100,
                 --info_restr = irestr[i],
                 predicate = lb_predicate3
             }

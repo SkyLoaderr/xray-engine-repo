@@ -44,7 +44,7 @@ use_wpn         = true
 ; игнорирование
 ;--------------------------------------------------------------------------
 [meet@ignore_abuse]
-meet_dialog     =
+;meet_dialog     =
 meet_state      =
 meet_state_wpn  =
 victim          =
@@ -147,7 +147,6 @@ combat_ignore_keep_when_attacked    = true
 ;--------------------------------------------------------------------------
 [logic@val_prisoner_free]
 active          = walker@outside
-;meet            = meet@ignore_abuse
 on_death        = death
 combat_ignore   = combat_ignore
 
@@ -159,9 +158,8 @@ path_walk                           = captive_outside_door_walk
 path_look                           = captive_outside_door_look
 def_state_moving1                   = run
 def_state_moving2                   = run
-on_signal                           = arrived | remark@outside %+val_prisoner_free =play_snd_now(val_prisoner_captive_thanx)%
-on_info                             = {-val_prisoner_door_unlocked} walker@sit ; ????
-meet                                = meet@main1
+on_info                             = {+val_prisoner_free} remark@outside %=play_snd_now(val_prisoner_captive_thanx)%
+meet                                = meet@ignore_abuse ;meet@main1
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
@@ -170,16 +168,11 @@ combat_ignore_keep_when_attacked    = true
 ;--------------------------------------------------------------------------
 [remark@outside]
 anim                    = wait
-;snd                     = val_prisoner_captive_thanx
-;snd_anim_synс           = true
 target                  = actor
 on_timer                = 60000 | walker@escape ;%+val_prisoner_scene_end%
 on_actor_dist_ge_nvis   = 20 | walker@escape ;%+val_prisoner_scene_end%
-;on_info                 = {-val_prisoner_door_unlocked} walker@sit
-;on_info                 = {+val_prisoner_raid} walker@escape
 meet                    = meet@main
 danger                  = danger@small
-;combat_ignore_cond      = always ;{=check_fighting(403)}
 
 ;--------------------------------------------------------------------------
 ; идем мочить братву
