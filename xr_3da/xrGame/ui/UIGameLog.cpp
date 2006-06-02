@@ -61,7 +61,7 @@ CUIPdaKillMessage* CUIGameLog::AddLogMessage(KillMessageStruct& msg){
 	pItem->SetWidth(GetDesiredChildWidth());
 	pItem->SetHeight(kill_msg_height);
 	pItem->Init(msg);
-	pItem->SetTextColor(GetTextColor());
+//	pItem->SetTextColor(GetTextColor());
 	pItem->SetAnimDelay(5000.0f);
 	pItem->SetLightAnim(CHAT_LOG_ITEMS_ANIMATION, false, true, true, true);
 	AddWindow(pItem, true);
