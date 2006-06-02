@@ -24,6 +24,8 @@ local disagreed, agreed, agreed_exclusive = 0, 1, 2
 
 local smart_section = "smart_terrains"
 
+local smart_terrains = {}
+
 exclusives = {}
 
 --[[ список всех серверных объектов смартов, которые зарегистрированы в симуляторе
@@ -34,7 +36,6 @@ exclusives = {}
 		...
 	}
 ]]
-local smart_terrains = {}
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Разные полезные функции
@@ -771,9 +772,9 @@ function se_smart_terrain:get_level_name()
 
 --	printf( "[smart_terrain %s] is on level %s", self:name(), alife():level_name( game_graph():vertex( self.m_game_vertex_id ):level_id() ) )
 
---	return alife():level_name( game_graph():vertex( self.m_game_vertex_id ):level_id() )
+	return alife():level_name( game_graph():vertex( self.m_game_vertex_id ):level_id() )
 
-	local gvid = self.m_game_vertex_id
+--[[	local gvid = self.m_game_vertex_id
 	printf( "self.m_game_vertex_id=%s", tostring( gvid ) )
 
 	local gg = game_graph()
@@ -796,7 +797,7 @@ function se_smart_terrain:get_level_name()
 	local ln = alife():level_name( lid )
 	printf( "alife():level_name( ln )=%s", tostring( ln ) )
 
-	return ln
+	return ln]]
 end
 
 -- регистрация объекта в симуляторе.
@@ -827,6 +828,7 @@ function se_smart_terrain:on_register()
 	if self.gparams.respawn then
 		db.strn_by_respawn[self.gparams.respawn] = self
 	end
+	print_table(smart_terrains)
 
 	self.gulag:load_jobs()
 
@@ -845,11 +847,15 @@ end
 function se_smart_terrain:on_unregister()
 	cse_alife_smart_zone.on_unregister( self )
 
-	printf( "[smart_terrain %s] on_unregister called", self:name() )
+--	printf( "[smart_terrain %s] on_unregister called", self:name() )
 
-	smart_terrains[self:get_level_name()][self.id] = nil
+	local lvl_smarts = smart_terrains[self:get_level_name()]
 
-	if self.gparams.respawn then
+	if lvl_smarts then
+		lvl_smarts[self.id] = nil
+	end
+
+	if self.gparams and self.gparams.respawn then
 		db.strn_by_respawn[self.gparams.respawn] = nil
 	end
 

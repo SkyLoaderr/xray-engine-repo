@@ -10,10 +10,10 @@ function actor_proxy:__init()
 end
 
 -- инициализация.
--- происходит только в момент первого обращения.
+-- происходит только в момент первого после старта симулятора обращения.
 function actor_proxy:init()
 	if not self.initialized then
-		printf( "actor_proxy: init" )
+--		printf( "actor_proxy: init" )
 
 		self.online      = false
 		self.alife       = alife()
@@ -28,9 +28,8 @@ end
 -- происходит в момент дерегистрации серверных объектов.
 -- вызывается из se_smart_terrain:on_unregister() TODO remove this hack
 function actor_proxy:deinit()
-	printf( "actor_proxy: deinit" )
 	if self.initialized then
-		printf( "actor_proxy: deinit2" )
+--		printf( "actor_proxy: deinit" )
 
 		self.alife = nil
 		self.actor = nil
