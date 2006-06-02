@@ -15,6 +15,8 @@ function actor_detector:actor_enter()
 	self.init_time = -1
 	level.remove_pp_effector(1001)
 	xr_sound.set_actor_sound("")
+	
+	printf("LEVEL BORDER EXIT")
 end
 function actor_detector:actor_exit()
 	--' Игрок входит на опасную территорию (покидает разрешенную границу уровня)
@@ -27,6 +29,8 @@ function actor_detector:actor_exit()
 	xr_sound.set_actor_sound_factor(10)
 	
 	self.last_update_time = game.get_game_time()	
+	
+	printf("LEVEL BORDER ENTER")
 end
 function actor_detector:update()
 	--' Апдейтим игрока и устанавливаем действия.
@@ -45,6 +49,8 @@ function actor_detector:update()
 		
 	level.set_pp_effector_factor(1001, intence, 0.3)
 	xr_sound.set_actor_sound_factor(10 - intence*9)
+	
+	printf("INTENCE %s", intence)
 	
 	if intence > threshold then
 		local h = hit()
