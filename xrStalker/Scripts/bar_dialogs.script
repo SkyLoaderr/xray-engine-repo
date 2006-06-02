@@ -410,6 +410,7 @@ function arena_give_reward(actor, npc)
 	end
 	dialogs.relocate_money(npc, m, "in")
 	db.actor:give_info_portion("bar_arena_reset")	
+	xr_zones.purge_arena_items("bar_arena")
 end
 
 
