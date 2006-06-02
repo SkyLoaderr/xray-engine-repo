@@ -26,8 +26,10 @@
 		</auto_static>
 	</static_armor>
 
-	<progress_bar_armor x="33" y="24" width="110" height="10" length="110" horz="1" min="0" max="100" pos="0">
-		<texture tile="0" width="110" height="10" length="110">ui_hud_shk_armour</texture>
+	<progress_bar_armor x="33" y="24" width="110" height="10" horz="1" min="0" max="100" pos="0">
+		<progress>
+			<texture>ui_hud_shk_armour</texture>
+		</progress>
 	</progress_bar_armor>
 	
 	<static_weapon x="860" y="692" width="157" height="65">
