@@ -1001,8 +1001,8 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                    "path_look = sniper_alarm_look" .. i .. "\n" ..
                    "def_state_moving = sneak\n" ..
                    "def_state_moving_fire = sneak_fire\n" ..
-                   "def_state_campering = hide\n" ..
-                   "def_state_campering_fire = hide_sniper_fire\n" ..
+                   "def_state_campering = threat\n" ..
+                   "def_state_campering_fire = threat_sniper_fire\n" ..
                    "sniper = true\n" ..
                    --"combat_ignore_cond = {=val_bandits_ci_actor(35)}\n"
                    "combat_ignore_cond = {=fighting_actor =dist_to_actor_ge(35)}, " .. combat_ignore
@@ -1068,10 +1068,8 @@ end
 
 -- States ----------------------------------------------------------------
 gulags.val_lager_bandits.state = function(gulag)
-    return 2
---[[
     if (gulag.state == state_alarm or gulag.state == state_alarm_actor_inside) and
-        game.get_game_time():diffSec(gulag.stateBegin) < 4200 -- 7 minutes
+        game.get_game_time():diffSec(gulag.stateBegin) < 12000 -- 20 minutes
     then
         return gulag.state
     else
@@ -1096,7 +1094,6 @@ gulags.val_lager_bandits.state = function(gulag)
     
     printf("gulag <val_lager_bandits>: STATE NORMAL")
     return state_normal
-]]--
 end
 
 
