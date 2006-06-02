@@ -423,10 +423,13 @@ void	CActor::Hit							(SHit* pHDS)
 {
 	SHit HDS = *pHDS;	
 #ifdef DEBUG
+if(ph_dbg_draw_mask.test(phDbgCharacterControl))
+{
 	DBG_OpenCashedDraw();
 	Fvector to;to.add(Position(),Fvector().mul(HDS.dir,HDS.phys_impulse()));
 	DBG_DrawLine(Position(),to,D3DCOLOR_XRGB(124,124,0));
 	DBG_ClosedCashedDraw(500);
+}
 #endif
 	bool bPlaySound = true;
 	if (!g_Alive()) bPlaySound = false;
