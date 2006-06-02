@@ -1068,6 +1068,8 @@ end
 
 -- States ----------------------------------------------------------------
 gulags.val_lager_bandits.state = function(gulag)
+    return 2
+--[[
     if (gulag.state == state_alarm or gulag.state == state_alarm_actor_inside) and
         game.get_game_time():diffSec(gulag.stateBegin) < 4200 -- 7 minutes
     then
@@ -1094,6 +1096,7 @@ gulags.val_lager_bandits.state = function(gulag)
     
     printf("gulag <val_lager_bandits>: STATE NORMAL")
     return state_normal
+]]--
 end
 
 
