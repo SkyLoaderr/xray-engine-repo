@@ -42,7 +42,7 @@
 			<main_wnd/>
 		</item>
 		
-		<_item type="video">
+		<item type="video">
 			<sound>intro\intro_stalker</sound>
 			<pause_state>on</pause_state>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
