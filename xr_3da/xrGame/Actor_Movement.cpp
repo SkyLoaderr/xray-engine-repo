@@ -17,6 +17,9 @@
 #include "game_cl_base.h"
 #include "WeaponMagazined.h"
 #include "CharacterPhysicsSupport.h"
+#ifdef DEBUG
+#include "phdebug.h"
+#endif
 static const float	s_fLandingTime1		= 0.1f;// через сколько снять флаг Landing1 (т.е. включить следующую анимацию)
 static const float	s_fLandingTime2		= 0.3f;// через сколько снять флаг Landing2 (т.е. включить следующую анимацию)
 static const float	s_fJumpTime			= 0.3f;
@@ -127,6 +130,13 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 	{
 		if ((mstate_real&mcClimb) != (mstate_old&mcClimb))
 		{
+#ifdef DEBUG
+			if(ph_dbg_draw_mask.test(phDbgLadder))
+			{
+				if((mstate_real&mcClimb))Msg("SetWeaponHideState ON LADDER");
+				else Msg("SetWeaponHideState OFF LADDER");
+			}
+#endif
 			SetWeaponHideState(whs_ON_LEDDER, (mstate_real&mcClimb) != 0);
 //			if (mstate_real&mcClimb)
 //			{

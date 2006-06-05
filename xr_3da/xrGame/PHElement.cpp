@@ -975,7 +975,10 @@ void CPHElement::set_LinearVel			  (const Fvector& velocity)
 		float mag=_sqrt(sq_mag);
 		Fvector vel;vel.mul(velocity,m_l_limit/mag);
 		dBodySetLinearVel(m_body,vel.x,vel.y,vel.z);
+#ifdef DEBUG
 		Msg(" CPHElement::set_LinearVel set velocity magnitude is too large %f",mag);
+#endif
+		
 	}else
 		dBodySetLinearVel(m_body,velocity.x,velocity.y,velocity.z);
 	//dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
@@ -990,7 +993,10 @@ void CPHElement::set_AngularVel			  (const Fvector& velocity)
 		float mag=_sqrt(sq_mag);
 		Fvector vel;vel.mul(velocity,m_w_limit/mag);
 		dBodySetAngularVel(m_body,vel.x,vel.y,vel.z);
+#ifdef DEBUG
 		Msg("CPHElement::set_AngularVel set velocity magnitude is too large %f",mag);
+#endif
+		
 	}else
 		dBodySetAngularVel(m_body,velocity.x,velocity.y,velocity.z);
 }

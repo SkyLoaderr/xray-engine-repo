@@ -1046,7 +1046,9 @@ void CPHSimpleCharacter::SetVelocity(Fvector vel){
 	{
 		float mag=_sqrt(sq_mag);
 		vel.mul(default_l_limit/mag);
+#ifdef DEBUG
 		Msg("set velocity magnitude is too large %f",mag);
+#endif
 	}
 	dBodySetLinearVel(m_body,vel.x,vel.y,vel.z);
 }

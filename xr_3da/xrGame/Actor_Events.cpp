@@ -19,7 +19,9 @@
 #include "CameraFirstEye.h"
 #include "holder_custom.h"
 #include "ui/uiinventoryWnd.h"
-
+#ifdef DEBUG
+#include "PHDebug.h"
+#endif
 IC BOOL BE	(BOOL A, BOOL B)
 {
 	bool a = !!A;
@@ -213,6 +215,13 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		{
 			u32 State = P.r_u32();
 			BOOL	Set = !!P.r_u8();
+#ifdef DEBUG
+			if(ph_dbg_draw_mask.test(phDbgLadder)&&(whs_ON_LEDDER&State))
+			{
+				if(Set)Msg("OnEvent   GEG_PLAYER_WEAPON_HIDE_STATE ON LADDER");
+				else Msg("OnEvent  GEG_PLAYER_WEAPON_HIDE_STATE OFF LADDER");
+			}
+#endif
 			if (Set) m_iCurWeaponHideState |= State;
 			else m_iCurWeaponHideState &= ~(State);
 		}break;
