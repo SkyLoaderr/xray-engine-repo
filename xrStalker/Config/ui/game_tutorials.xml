@@ -48,7 +48,7 @@
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture>intro\intro_stalker</texture>
 			</video_wnd>
-		</_item>
+		</item>
 		<_item type="video">
 			<sound>intro\intro_mission</sound>
 			<pause_state>on</pause_state>
