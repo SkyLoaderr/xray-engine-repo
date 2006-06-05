@@ -9,7 +9,8 @@
 CUIInventoryCellItem::CUIInventoryCellItem(CInventoryItem* itm)
 {
 	m_pData											= (void*)itm;
-	inherited::InitTexture							("ui\\ui_icon_equipment");
+	inherited::SetShader							(InventoryUtilities::GetEquipmentIconsShader());
+//	inherited::InitTexture							("ui\\ui_icon_equipment");
 
 	m_grid_size.set									(itm->GetGridWidth(),itm->GetGridHeight());
 	Frect rect; 

@@ -243,21 +243,10 @@ void CGrenade::OnAnimationEnd()
 
 void CGrenade::UpdateCL() 
 {
-	if (OnServer())
-	{		
-		if (m_constpower && CMissile::State() == MS_READY)
-		{
-//			m_throw = true; 
-//			SwitchState(MS_THROW);
-		}
-	};
-	////////////////////////////////////
 	inherited::UpdateCL();
-	
-	CExplosive::UpdateCL();	
-	////////////////////////////////////
-	if(!IsGameTypeSingle())
-		make_Interpolation();
+	CExplosive::UpdateCL();
+
+	if(!IsGameTypeSingle())	make_Interpolation();
 }
 
 

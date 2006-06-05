@@ -321,7 +321,9 @@ int CUIDragDropListEx::ScrollPos()
 
 void CUIDragDropListEx::SetItem(CUICellItem* itm) //auto
 {
-	if(m_container->AddSimilar(itm))	return;
+	if(m_container->AddSimilar(itm)){
+		return;
+	}
 
 	Ivector2 dest_cell_pos =	m_container->FindFreeCell(itm->GetGridSize());
 

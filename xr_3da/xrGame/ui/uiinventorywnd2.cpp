@@ -104,25 +104,14 @@ void CUIInventoryWnd::InitInventory()
 	SetCurrentItem				(NULL);
 
 	//Slots
-/*
-	int i;
-	for(i=0; i<SLOTS_NUM; ++i) 
-	{
-		PIItem iitem = m_pInv->m_slots[i].m_pIItem;
-        if(iitem) 
-		{
-			CUICellItem* itm			= create_cell_item(iitem);
-			m_pUITopList[i]->SetItem	(itm);
-		}
-	}
-*/
 	PIItem _itm							= m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
 	if(_itm)
 	{
 		CUICellItem* itm				= create_cell_item(_itm);
 		m_pUIPistolList->SetItem		(itm);
 	}
-	
+
+
 	_itm								= m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
 	if(_itm)
 	{
@@ -144,11 +133,14 @@ void CUIInventoryWnd::InitInventory()
 	ruck_list		= m_pInv->m_ruck;
 	std::sort		(ruck_list.begin(),ruck_list.end(),InventoryUtilities::GreaterRoomInRuck);
 
+	CTimer T;
+	T.Start();
 	for(it=ruck_list.begin(),it_e=ruck_list.end(); it!=it_e; ++it) 
 	{
 		CUICellItem* itm			= create_cell_item(*it);
 		m_pUIBagList->SetItem		(itm);
 	}
+	Msg("5- %d",T.GetElapsed_ms());
 
 	InventoryUtilities::UpdateWeight					(UIBagWnd, true);
 
