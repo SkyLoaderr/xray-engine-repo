@@ -1,4 +1,4 @@
-function main ()
+function main (need_items)
     task_level5.main (false)
     local actor = db.actor
     
@@ -55,6 +55,8 @@ function main ()
     
     actor:give_info_portion ("sar_monolith_call")    
 
+	if need_items == false then return end
+	
 	alife():create ("cit_doctors_key", actor:position (), actor:level_vertex_id (),actor:game_vertex_id (), db.actor:id())
 
     -- Создадим различные объекты, которые нам необходимы
