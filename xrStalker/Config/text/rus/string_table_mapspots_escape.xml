@@ -44,6 +44,14 @@
 	
 	<string id="tutorial_secret_place1">
 		<text>Тайник, оставленный погибшим сталкером.</text>
+	</string>
+	
+	<string id="tutorial_secret">
+		<text>Тайник, оставленный погибшим сталкером.</text>
+	</string>	
+	
+	<string id="tutorial_secret_shustryi">
+		<text>Тайник, оставленный Шустрым.</text>
 	</string>	
 	
 	<string id="soldiers_bridge">
