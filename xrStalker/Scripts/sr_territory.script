@@ -57,7 +57,7 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	if tmp then
 		st.territory_death = xr_logic.parse_condlist(obj, section, "territory_death", tmp)
 	else
-		st.territory_death = xr_logic.parse_condlist(obj, section, "territory_deaath", "")
+		st.territory_death = xr_logic.parse_condlist(obj, section, "territory_death", "")
 	end
 end
 
