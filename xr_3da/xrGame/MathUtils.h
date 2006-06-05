@@ -452,7 +452,8 @@ IC float DET(const Fmatrix &a){
 }
 
 IC bool valid_pos(const Fvector &P,const Fbox &B){
-	return !!B.contains(Fvector().mul(P,1.f/1000.f)) ;
+	Fbox BB=B;BB.grow(1000);
+	return !!BB.contains(P) ;
 }
 
 #ifdef DEBUG
