@@ -158,9 +158,9 @@ ph_snd_themes["bar_arena_public"]	= {"characters_voice\\scenario\\bar\\arena_pub
 	                        "characters_voice\\scenario\\bar\\arena_public\\new_arena_public_8",
 	                        "characters_voice\\scenario\\bar\\arena_public\\new_arena_public_9"
 	                        }
-ph_snd_themes["bar_arena_public_death"]	= {"\\ambient\\arena\\crowd_wave_1",
-	                        "\\ambient\\arena\\crowd_wave_2",
-	                        "\\ambient\\arena\\crowd_wave_3"
+ph_snd_themes["bar_arena_public_death"]	= {"ambient\\arena\\crowd_wave_1",
+	                        "ambient\\arena\\crowd_wave_2",
+	                        "ambient\\arena\\crowd_wave_3"
 	                        }
 ph_snd_themes["bar_arena_fight_1"]	= {"characters_voice\\scenario\\bar\\arena_sound\\bar_fight_1_ready"}
 ph_snd_themes["bar_arena_fight_1_end"]	= {"characters_voice\\scenario\\bar\\arena_sound\\bar_fight_1_finish"}
