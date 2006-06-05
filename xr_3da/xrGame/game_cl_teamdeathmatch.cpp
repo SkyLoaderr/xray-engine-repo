@@ -214,7 +214,8 @@ void game_cl_TeamDeathmatch::OnMapInfoAccept			()
 
 void game_cl_TeamDeathmatch::OnTeamMenuBack			()
 {
-	StartStopMenu(pMapDesc, true);
+	if (local_player->testFlag(GAME_PLAYER_FLAG_SPECTATOR))
+        StartStopMenu(pMapDesc, true);
 };
 
 void game_cl_TeamDeathmatch::OnTeamMenu_Cancel		()
