@@ -378,6 +378,7 @@ bool CUICarBodyWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 
 void CUICarBodyWnd::ActivatePropertiesBox()
 {
+	if(m_pInventoryBox)	return;
 	float x,y;
 
 	Frect rect = GetAbsoluteRect();
@@ -407,7 +408,7 @@ void CUICarBodyWnd::ActivatePropertiesBox()
 
 		if(b)
 		{		
-			m_pUIPropertiesBox->AddItem("Unload magazine",  NULL, INVENTORY_UNLOAD_MAGAZINE);
+			m_pUIPropertiesBox->AddItem("st_unload_magazine",  NULL, INVENTORY_UNLOAD_MAGAZINE);
 			b_show			= true;
 		}
 	}
@@ -415,7 +416,7 @@ void CUICarBodyWnd::ActivatePropertiesBox()
 	
 	if(pEatableItem)
 	{
-		m_pUIPropertiesBox->AddItem("Eat",  NULL, INVENTORY_EAT_ACTION);
+		m_pUIPropertiesBox->AddItem("st_eat",  NULL, INVENTORY_EAT_ACTION);
 		b_show			= true;
 	}
 

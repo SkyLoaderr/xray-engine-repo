@@ -30,11 +30,25 @@ function main123()
 end
 
 
-snd_radar_stop	= sound_object([[ambient\cooling_stop]])
-
+--snd_radar_stop	= sound_object([[ambient\cooling_stop]])
 function main()
-	snd_radar_stop:play(db.actor, 0, sound_object.s2d)
-	level.add_complex_effector("effector_radar_stop", 12345)
+	local radius = 30
+	local ang    = 45
+	local dir    = vector_rotate_y( db.actor:direction(), ang )
+	level.spawn_phantom(db.actor:position():add( dir:mul(radius) ))
+end
+
+function _main()
+    alife():create ("wpn_abakan", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
+    alife():create ("ammo_vog-25", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
+    alife():create ("wpn_addon_grenade_launcher", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
+
+    alife():create ("wpn_rpg7", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
+    alife():create ("ammo_og-7b", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
+
+
+--	snd_radar_stop:play(db.actor, 0, sound_object.s2d)
+--	level.add_complex_effector("effector_radar_stop", 12345)
 	
 --	db.actor:activate_slot(db.actor:active_slot()+1)
 

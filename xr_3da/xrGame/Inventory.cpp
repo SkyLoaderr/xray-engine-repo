@@ -136,7 +136,7 @@ void CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 		{
 			result						= Slot(pIItem, bNotActivate); VERIFY(result);
 		} 
-		else if ( (!pIItem->RuckDefault() || isBeautifulForActiveSlot(pIItem)) && CanPutInBelt(pIItem))
+		else if ( !pIItem->RuckDefault() && CanPutInBelt(pIItem))
 		{
 			result						= Belt(pIItem); VERIFY(result);
 		}

@@ -29,7 +29,6 @@ public:
 	
 	virtual void OnAnimationEnd();
 	virtual void UpdateCL();
-	virtual void shedule_Update(u32 dt);
 	virtual bool Activate();
 	virtual void Deactivate();
 	
@@ -41,8 +40,6 @@ public:
 	virtual bool Useful() const;
 	virtual u32  State(u32 state);
 
-	virtual void						net_Import			(NET_Packet& P);					// import from server
-	virtual void						net_Export			(NET_Packet& P);					// export to server
 	virtual void OnH_B_Chield() {inherited::OnH_B_Chield();}
 
 	virtual bool IsPending() const {return inherited::IsPending();}
@@ -67,15 +64,6 @@ private:
 protected:
 	virtual	void			UpdateXForm			()		{ CMissile::UpdateXForm(); };
 public:
-	virtual void			make_Interpolation	();
-	virtual void			PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
-	virtual void			PH_I_CrPr			(); // actions & operations after correction before prediction steps
-	virtual void			PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
-	virtual void			reinit				();
-	virtual void			reload				(LPCSTR section);
-	virtual void			activate_physic_shell	();
-	virtual void			setup_physic_shell		();
-	virtual void			create_physic_shell		();
 
 	virtual BOOL			UsedAI_Locations		();
 	virtual CExplosive		*cast_explosive			()	{return this;}

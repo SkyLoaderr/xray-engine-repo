@@ -180,6 +180,14 @@ void CUIInventoryWnd::Init()
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_outfit", 0, m_pUIOutfitList);
 	BindDragDropListEnents				(m_pUIOutfitList);
 
+	m_pUIPistolList						= xr_new<CUIDragDropListEx>(); AttachChild(m_pUIPistolList); m_pUIPistolList->SetAutoDelete(true);
+	xml_init.InitDragDropListEx			(uiXml, "dragdrop_pistol", 0, m_pUIPistolList);
+	BindDragDropListEnents				(m_pUIPistolList);
+
+	m_pUIAutomaticList						= xr_new<CUIDragDropListEx>(); AttachChild(m_pUIAutomaticList); m_pUIAutomaticList->SetAutoDelete(true);
+	xml_init.InitDragDropListEx			(uiXml, "dragdrop_automatic", 0, m_pUIAutomaticList);
+	BindDragDropListEnents				(m_pUIAutomaticList);
+/*
 	string128	str;
 	for(int i=0; i<SLOTS_NUM; ++i){
 		m_pUITopList[i]					= xr_new<CUIDragDropListEx>(); AttachChild(m_pUITopList[i]); m_pUITopList[i]->SetAutoDelete(true);
@@ -187,6 +195,7 @@ void CUIInventoryWnd::Init()
 		xml_init.InitDragDropListEx		(uiXml, str, 0, m_pUITopList[i]);
 		BindDragDropListEnents			(m_pUITopList[i]);
 	}
+*/
 
 	//pop-up menu
 	AttachChild							(&UIPropertiesBox);
@@ -218,10 +227,15 @@ void CUIInventoryWnd::Init()
 
 CUIInventoryWnd::EListType CUIInventoryWnd::GetType(CUIDragDropListEx* l)
 {
-	if(l==m_pUIBagList)		return iwBag;
-	if(l==m_pUIBeltList)	return iwBelt;
-	VERIFY					(l==m_pUITopList[0] || l==m_pUITopList[1] || l==m_pUITopList[2] || l==m_pUITopList[3] || l==m_pUITopList[4] || l==m_pUIOutfitList);
-	return					iwSlot;
+	if(l==m_pUIBagList)			return iwBag;
+	if(l==m_pUIBeltList)		return iwBelt;
+
+	if(l==m_pUIAutomaticList)	return iwSlot;
+	if(l==m_pUIPistolList)		return iwSlot;
+	if(l==m_pUIOutfitList)		return iwSlot;
+
+	NODEFAULT;
+	return iwSlot;
 }
 
 void CUIInventoryWnd::PlaySnd(eInventorySndAction a)

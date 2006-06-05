@@ -104,6 +104,7 @@ void CUIInventoryWnd::InitInventory()
 	SetCurrentItem				(NULL);
 
 	//Slots
+/*
 	int i;
 	for(i=0; i<SLOTS_NUM; ++i) 
 	{
@@ -114,6 +115,21 @@ void CUIInventoryWnd::InitInventory()
 			m_pUITopList[i]->SetItem	(itm);
 		}
 	}
+*/
+	PIItem _itm							= m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
+	if(_itm)
+	{
+		CUICellItem* itm				= create_cell_item(_itm);
+		m_pUIPistolList->SetItem		(itm);
+	}
+	
+	_itm								= m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
+	if(_itm)
+	{
+		CUICellItem* itm				= create_cell_item(_itm);
+		m_pUIAutomaticList->SetItem		(itm);
+	}
+
 	PIItem _outfit						= m_pInv->m_slots[OUTFIT_SLOT].m_pIItem;
 	CUICellItem* outfit					= (_outfit)?create_cell_item(_outfit):NULL;
 	m_pUIOutfitList->SetItem			(outfit);
@@ -353,12 +369,12 @@ CUIDragDropListEx* CUIInventoryWnd::GetSlotList(u32 slot_idx)
 	if(slot_idx == NO_ACTIVE_SLOT || GetInventory()->m_slots[slot_idx].m_bPersistent)	return NULL;
 	switch (slot_idx)
 	{
-		case KNIFE_SLOT:
 		case PISTOL_SLOT:
+			return m_pUIPistolList;
+			break;
+
 		case RIFLE_SLOT:
-		case GRENADE_SLOT:
-		case APPARATUS_SLOT:
-			return m_pUITopList[slot_idx];
+			return m_pUIAutomaticList;
 			break;
 
 		case OUTFIT_SLOT:
@@ -367,13 +383,6 @@ CUIDragDropListEx* CUIInventoryWnd::GetSlotList(u32 slot_idx)
 
 	};
 	return NULL;
-/*
-	if(slot_idx<SLOTS_NUM)
-		return m_pUITopList	[slot_idx];
-
-		VERIFY(slot_idx==OUTFIT_SLOT);
-		return m_pUIOutfitList;
-*/
 }
 
 
@@ -383,8 +392,6 @@ void CUIInventoryWnd::ClearAllLists()
 	m_pUIBagList->ClearAll					(true);
 	m_pUIBeltList->ClearAll					(true);
 	m_pUIOutfitList->ClearAll				(true);
-
-	int i;
-	for(i=0; i<SLOTS_NUM; ++i)
-		m_pUITopList[i]->ClearAll			(true);
+	m_pUIPistolList->ClearAll				(true);
+	m_pUIAutomaticList->ClearAll			(true);
 }

@@ -64,7 +64,8 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	CGrenadeLauncher* pGrenadeLauncher	= smart_cast<CGrenadeLauncher*>	(CurrentIItem());
     
 
-	if(CurrentIItem()->GetSlot()<SLOTS_NUM && m_pInv->CanPutInSlot(CurrentIItem()))
+
+	if(CurrentIItem()->GetSlot()!=NO_ACTIVE_SLOT && !GetInventory()->m_slots[CurrentIItem()->GetSlot()].m_bPersistent && m_pInv->CanPutInSlot(CurrentIItem()))
 	{
 		UIPropertiesBox.AddItem("st_move_to_slot",  NULL, INVENTORY_TO_SLOT_ACTION);
 	}

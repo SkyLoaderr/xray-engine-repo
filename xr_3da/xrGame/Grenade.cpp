@@ -15,6 +15,7 @@
 const float default_grenade_detonation_threshold_hit=100;
 CGrenade::CGrenade(void) 
 {
+
 	m_eSoundCheckout = ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING);
 }
 
@@ -259,11 +260,6 @@ void CGrenade::UpdateCL()
 		make_Interpolation();
 }
 
-void CGrenade::shedule_Update(u32 dt)
-{
-	inherited::shedule_Update(dt);
-}
-
 
 bool CGrenade::Action(s32 cmd, u32 flags) 
 {
@@ -278,91 +274,30 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 			{
 				if(m_pInventory)
 				{
-					//перебираем все предметы на поясе 
-					//пока не встретим гарнату другого типа
-					TIItemContainer::iterator it = m_pInventory->m_belt.begin();
-					while(m_pInventory->m_belt.end() != it) 
+					TIItemContainer::iterator it = m_pInventory->m_ruck.begin();
+					TIItemContainer::iterator it_e = m_pInventory->m_ruck.end();
+					for(;it!=it_e;++it) 
 					{
 						CGrenade *pGrenade = smart_cast<CGrenade*>(*it);
 						if(pGrenade && xr_strcmp(pGrenade->cNameSect(), cNameSect())) 
 						{
 							m_pInventory->Ruck(this);
-							m_pInventory->Belt(this);
+//							m_pInventory->Belt(this);
 							m_pInventory->SetActiveSlot(NO_ACTIVE_SLOT);
 							m_pInventory->Slot(pGrenade);
 							//m_pInventory->Activate(pGrenade->m_slot);
 							return true;
 						}
-						++it;
 					}
 					return true;
 				}
 			}
 			return true;
 		};
-//	case kDROP:
-//		setup_throw_params();
-//		return true;
 	}
 	return false;
 }
 
-void CGrenade::net_Import			(NET_Packet& P) 
-{
-	inherited::net_Import (P);	
-};
-
-void CGrenade::net_Export			(NET_Packet& P) 
-{
-	inherited::net_Export (P);
-};
-
-void CGrenade::make_Interpolation ()
-{
-	inherited::make_Interpolation();
-}
-
-void CGrenade::PH_B_CrPr			()
-{
-	inherited::PH_B_CrPr		();
-}
-
-void CGrenade::PH_I_CrPr			()
-{
-	inherited::PH_I_CrPr		();
-}
-
-void CGrenade::PH_A_CrPr			()
-{
-	inherited::PH_A_CrPr		();
-}
-
-void CGrenade::reinit				()
-{
-	inherited::reinit			();
-	//CInventoryItemObject::reinit			();
-}
-
-void CGrenade::reload					(LPCSTR section)
-{
-	inherited::reload			(section);
-	//CInventoryItemObject::reload			(section);
-}
-
-void CGrenade::activate_physic_shell	()
-{
-	inherited::activate_physic_shell();
-}
-
-void CGrenade::setup_physic_shell		()
-{
-	inherited::setup_physic_shell();
-}
-
-void CGrenade::create_physic_shell		()
-{
-	inherited::create_physic_shell();
-}
 
 bool CGrenade::NeedToDestroyObject()	const
 {

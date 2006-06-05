@@ -18,7 +18,6 @@
 #endif
 
 
-#define MSG1(msg)			
 #define PLAYING_ANIM_TIME 10000
 
 #include "ui/UIProgressShape.h"
@@ -75,12 +74,6 @@ void CMissile::Load(LPCSTR section)
 
 	m_dwDestroyTimeMax	= pSettings->r_u32(section,"destroy_time");
 	
-//	Fvector	position_offset, angle_offset;
-//	position_offset		= pSettings->r_fvector3(section,"position_offset");
-//	angle_offset		= pSettings->r_fvector3(section,"angle_offset");
-//	m_offset.setHPB			(VPUSH(angle_offset));
-//	m_offset.translate_over	(position_offset);
-
 	m_vThrowPoint		= pSettings->r_fvector3(section,"throw_point");
 	m_vThrowDir			= pSettings->r_fvector3(section,"throw_dir");
 	m_vHudThrowPoint	= pSettings->r_fvector3(*hud_sect,"throw_point");
@@ -106,25 +99,16 @@ BOOL CMissile::net_Spawn(CSE_Abstract* DC)
 {
 	BOOL l_res = inherited::net_Spawn(DC);
 
-	//CSE_Abstract						*abstract = (CSE_Abstract*)DC;
-
 	dwXF_Frame					= 0xffffffff;
 
-	///////////////////////////////////
 	m_throw_direction.set(0.0f, 1.0f, 0.0f);
 	m_throw_matrix.identity();
-	///////////////////////////////////
 
-	//Msg		("Object [%d][%s][%s] is spawned",ID(),*cName(),*cNameSect());
-	MSG1("is spawened");
 	return l_res;
 }
 
 void CMissile::net_Destroy() 
 {
-	//Msg		("Object [%d][%s][%s] is destroyed",ID(),*cName(),*cNameSect());
-	MSG1("is destroyed");
-	//Msg("time [%f]", Device.fTimeGlobal);
 	inherited::net_Destroy();
 	m_fake_missile = 0;
 }
@@ -143,38 +127,10 @@ void CMissile::OnHiddenItem		()
 }
 
 
-void CMissile::OnH_B_Chield() 
-{
-	inherited::OnH_B_Chield		();
-}
-
 void CMissile::spawn_fake_missile()
 {
 	if (OnClient()) return;
-//#ifdef _DEBUG
-//	//Msg					("%6d : Spawning fake missile for object %s",Level().timeServer(),*cName());
-//#endif
-//	CSE_Abstract		*D	= F_entity_Create(*cNameSect());
-//	R_ASSERT			(D);
-//	CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = smart_cast<CSE_ALifeDynamicObject*>(D);
-//	R_ASSERT							(l_tpALifeDynamicObject);
-//	l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
-//	// Fill
-//	strcpy				(D->s_name,*cNameSect());
-//	D->set_name_replace	("");
-//	D->s_gameid			=	u8(GameID());
-//	D->s_RP				=	0xff;
-//	D->ID				=	0xffff;
-//	D->ID_Parent		=	(u16)ID();
-//	D->ID_Phantom		=	0xffff;
-//	D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
-//	D->RespawnTime		=	0;
-//	// Send
-//	NET_Packet			P;
-//	D->Spawn_Write		(P,TRUE);
-//	Level().Send		(P,net_flags(TRUE));
-//	// Destroy
-//	F_entity_Destroy	(D);
+
 	if (!getDestroy())
 	{
 		CSE_Abstract		*object = Level().spawn_item(
@@ -200,13 +156,8 @@ void CMissile::OnH_A_Chield()
 {
 	inherited::OnH_A_Chield();
 
-	if(!m_fake_missile && !smart_cast<CMissile*>(H_Parent())) 
-		spawn_fake_missile	();
-}
-
-void CMissile::OnH_A_Independent() 
-{
-	inherited::OnH_A_Independent();
+//	if(!m_fake_missile && !smart_cast<CMissile*>(H_Parent())) 
+//		spawn_fake_missile	();
 }
 
 
@@ -219,11 +170,6 @@ void CMissile::OnH_B_Independent()
 	if(!m_dwDestroyTime && Local()) 
 	{
 		DestroyObject		();
-//		NET_Packet			P;
-//		u_EventGen			(P,GE_DESTROY,ID());
-//		MSG1("ge destroy i OnH_B_Independent");
-////		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
-//		u_EventSend			(P);
 		return;
 	}
 }
@@ -266,7 +212,6 @@ void CMissile::shedule_Update(u32 dt)
 			Destroy	();
 			return;
 		}
-//		if (m_dwDestroyTime < 0xffffffff) m_dwDestroyTime -= Device.dwTimeDelta;
 	} 
 }
 
@@ -285,23 +230,16 @@ u32 CMissile::State(u32 state)
         {
 			m_bPending = true;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), FALSE, this);
-			
-			//Msg("------------------");
-			MSG1("Missile show begin");
 		} break;
 	case MS_IDLE:
 		{
 			m_bPending = false;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimIdle));
-			
-			MSG1("Missile idle begin");
 		} break;
 	case MS_HIDING:
 		{
 			m_bPending = true;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimHide), true, this);
-
-			MSG1("Missile hide begin");
 		} break;
 	case MS_HIDDEN:
 		{
@@ -310,8 +248,6 @@ u32 CMissile::State(u32 state)
 				m_bPending = false;
 				setVisible(FALSE);
 				setEnabled(FALSE);
-
-				MSG1("Missile hidden");
 			};
 		} break;
 	case MS_THREATEN:
@@ -319,36 +255,26 @@ u32 CMissile::State(u32 state)
 			m_bPending = true;
 			m_fThrowForce = m_fMinForce;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowBegin), true, this);
-
-			MSG1("Missile throw begin");
 		} break;
 	case MS_READY:
 		{
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowIdle), true, this);
-
-			MSG1("Missile throw idle");
 		} break;
 	case MS_THROW:
 		{
 			m_bPending = true;
 			m_throw = false;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowAct), true, this);
-
-			MSG1("Missile throw act");
 		} break;
 	case MS_END:
 		{
 			m_bPending = true;
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowEnd), true, this);
-
-			MSG1("Missile throw finish");
 		} break;
 	case MS_PLAYING:
 		{
 			PlaySound(sndPlaying,Position());
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPlaying), true, this);
-
-			MSG1("Missile playing");
 		} break;
 	}
 	return State();
@@ -367,20 +293,19 @@ void CMissile::OnAnimationEnd()
 	{
 	case MS_HIDING:
 		{
-			MSG1("MS_HIDING");
 			setVisible(FALSE);
 			OnStateSwitch(MS_HIDDEN);
 		} break;
 	case MS_SHOWING:
 		{
-			//Msg("Missile show end");
-			MSG1("MS_SHOWING");
 			setVisible(TRUE);
 			OnStateSwitch(MS_IDLE);
 		} break;
 	case MS_THREATEN:
 		{
-			MSG1("MS_THREATEN");
+			if(!m_fake_missile && !smart_cast<CMissile*>(H_Parent())) 
+				spawn_fake_missile	();
+
 			if(m_throw) 
 				SwitchState(MS_THROW); 
 			else 
@@ -388,18 +313,15 @@ void CMissile::OnAnimationEnd()
 		} break;
 	case MS_THROW:
 		{
-			MSG1("MS_THROW");
 			Throw();
 			OnStateSwitch(MS_END);
 		} break;
 	case MS_END:
 		{
-			MSG1("MS_END");
 			OnStateSwitch(MS_SHOWING);
 		} break;
 	case MS_PLAYING:
 		{
-			MSG1("MS_PLAYING");
 			OnStateSwitch(MS_IDLE);
 		} break;
 	}
@@ -478,7 +400,6 @@ void CMissile::Hide()
 void CMissile::setup_throw_params()
 {
 	CActor* pActor = smart_cast<CActor*>(H_Parent());
-	MSG1("setup throw pars");
 	if(pActor)// && pActor->HUDview())
 	{
 		Fmatrix trans;
@@ -507,9 +428,6 @@ void CMissile::setup_throw_params()
 void CMissile::Throw() 
 {
 	VERIFY								(smart_cast<CEntity*>(H_Parent()));
-	MSG1								("throw");
-	//Fvector								throw_point, throw_direction;
-	//entity->g_fireParams				(throw_point,throw_direction);
 	setup_throw_params					();
 	
 	m_fake_missile->m_throw_direction	= m_throw_direction;
@@ -538,28 +456,20 @@ void CMissile::OnEvent(NET_Packet& P, u16 type)
 			m_fake_missile	= missile;
 			missile->H_SetParent(this);
 			missile->Position().set(Position());
-			MSG1("take");
-			//Msg("id [%d]",id);
 			break;
 		} 
 		case GE_OWNERSHIP_REJECT : {
 			P.r_u16			(id);
-			MSG1("regect");
-			//Msg("id [%d]",id);
 			bool IsFakeMissile = false;
 			if (m_fake_missile && (id == m_fake_missile->ID()))
 			{
 				m_fake_missile	= NULL;
 				IsFakeMissile = true;
 			}
-			else
-			{
-				MSG1("!no fake missile!");
-			}
+
 			CMissile		*missile = smart_cast<CMissile*>(Level().Objects.net_Find(id));
 			if (!missile)
 			{
-				MSG1("!no found fake missile!");
 				break;
 			}
 			missile->H_SetParent(0);
@@ -567,22 +477,12 @@ void CMissile::OnEvent(NET_Packet& P, u16 type)
 				missile->set_destroy_time(m_dwDestroyTimeMax);
 			break;
 		}
-		//case GE_DESTROY:
-		//	MSG1("event destroy");
 	}
 }
 
 void CMissile::Destroy() 
 {
 	if (Local())		DestroyObject();
-/*
-	NET_Packet			P;
-	u_EventGen			(P,GE_DESTROY,ID());
-//	Msg					("ge_destroy: [%d] - %s",ID(),*cName());
-	MSG1("ge_destroy Destroy");
-	//Msg("time [%f]", Device.fTimeGlobal);
-	if (Local()) u_EventSend			(P);
-*/
 }
 
 bool CMissile::Action(s32 cmd, u32 flags) 
@@ -603,29 +503,6 @@ bool CMissile::Action(s32 cmd, u32 flags)
 			return true;
 		}break;
 
-/*	case kWPN_FIRE:
-		{
-			m_constpower = true;			
-			if(flags&CMD_START) 
-			{
-				m_throw = false;
-				if(State() == MS_IDLE) 
-					SwitchState(MS_THREATEN);
-				else if(State() == MS_READY)
-				{
-					m_throw = true; 
-				}
-
-			} 
-			else if(State() == MS_READY || State() == MS_THREATEN
-				|| State() == MS_IDLE) 
-			{
-				m_throw = true; 
-				if(State() == MS_READY) SwitchState(MS_THROW);
-			}
-			return true;
-		}break;
-*/
 	case kWPN_ZOOM:
 		{
 			m_constpower = false;
@@ -682,11 +559,8 @@ void  CMissile::UpdateFireDependencies_internal	()
 
 void CMissile::activate_physic_shell()
 {
-	MSG1	("start active shell");
-
 	if (!smart_cast<CMissile*>(H_Parent())) {
 		inherited::activate_physic_shell();
-		MSG1("go active inherited");
 		return;
 	}
 
@@ -722,9 +596,6 @@ void CMissile::activate_physic_shell()
 	m_pPhysicsShell->SetAirResistance(0.f,0.f);
 	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
 	smart_cast<CKinematics*>(Visual())->CalculateBones();
-	MSG1("end self activ shell");
-	//Msg("time [%f]", Device.fTimeGlobal);
-	//Msg("pos [%f],[%f],[%f]",m_throw_matrix.c.x,m_throw_matrix.c.y,m_throw_matrix.c.z);
 }
 
 void CMissile::create_physic_shell	()

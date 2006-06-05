@@ -35,10 +35,8 @@ public:
 	virtual void shedule_Update(u32 dt);
 	virtual void renderable_Render();
 
-	virtual void OnH_B_Chield();
 	virtual void OnH_A_Chield();
 	virtual void OnH_B_Independent();
-	virtual void OnH_A_Independent();
 
 	virtual void OnEvent(NET_Packet& P, u16 type);
 

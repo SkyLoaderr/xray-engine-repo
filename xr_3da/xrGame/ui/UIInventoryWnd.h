@@ -94,11 +94,11 @@ protected:
 
 	CUIStatic			UIStaticPersonal;
 		
-	#define SLOTS_NUM 5
-
 	CUIDragDropListEx*			m_pUIBagList;
 	CUIDragDropListEx*			m_pUIBeltList;
-	CUIDragDropListEx*			m_pUITopList				[SLOTS_NUM]; 
+//	CUIDragDropListEx*			m_pUITopList				[SLOTS_NUM]; 
+	CUIDragDropListEx*			m_pUIPistolList;
+	CUIDragDropListEx*			m_pUIAutomaticList;
 	CUIOutfitDragDropList*		m_pUIOutfitList;
 	void						ClearAllLists				();
 	void						BindDragDropListEnents		(CUIDragDropListEx* lst);

@@ -532,9 +532,8 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 
 	//убрать все артефакты с пояса
 	m_ArtefactsOnBelt.clear();
-	//if (Level().CurrentViewEntity() == this)
-	if(	TRUE == E->s_flags.test(M_SPAWN_OBJECT_LOCAL) && TRUE == E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
-		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel->InitIcons(m_ArtefactsOnBelt);
+//.	if(	TRUE == E->s_flags.test(M_SPAWN_OBJECT_LOCAL) && TRUE == E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
+//.		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel->InitIcons(m_ArtefactsOnBelt);
 		
 
 	ROS()->force_mode	(IRender_ObjectSpecific::TRACE_ALL);

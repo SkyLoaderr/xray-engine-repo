@@ -51,7 +51,6 @@ _keybind  keybind[]		= {
 	{ "wpn_fire",		kWPN_FIRE		},
 	{ "wpn_zoom",		kWPN_ZOOM		},
 	{ "wpn_reload",		kWPN_RELOAD		},
-	{ "wpn_ammo",		kWPN_AMMO		},
 	{ "wpn_func",		kWPN_FUNC		},
 	{ "wpn_firemode_prev",	kWPN_FIREMODE_PREV },
 	{ "wpn_firemode_next",	kWPN_FIREMODE_NEXT },

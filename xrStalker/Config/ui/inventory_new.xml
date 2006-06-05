@@ -7,15 +7,26 @@
 				<font r="131" g="131" b="131" font="letterica16"/>
 		</list>
 	</properties_box>
-	<belt_slots x="2" y="0" width="1019" height="242">
+	<belt_slots x="0" y="80" width="1024" height="172">
 		<texture>ui_slots_belt</texture>		
 	</belt_slots>
 	<back x="10" y="243" width="1005" height="483">
 		<texture>ui_inventory_main</texture>
 	</back>
 
-    <dragdrop_belt x="25" y="168" width="972" height="54"
-            cell_width = "54" cell_height="54" rows_num="1" cols_num="18"/>
+    <dragdrop_belt x="590" y="120" width="416" height="104"
+            cell_width = "52" cell_height="52" rows_num="2" cols_num="8"/>
+
+
+    <dragdrop_pistol x="38" y="118" width="156" height="104"
+            cell_width = "52" cell_height="52" rows_num="2" cols_num="3"
+            custom_placement="0"/>
+
+    <dragdrop_automatic x="237" y="118" width="312" height="104"
+            cell_width = "52" cell_height="52" rows_num="2" cols_num="6"
+            custom_placement="0"/>
+
+
 
     <dragdrop_bag x="22" y="46" width="313" height="415"
             cell_width = "41" cell_height="41" rows_num="10" cols_num="7" 
