@@ -26,7 +26,6 @@
 
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
-#include <eax.h>             
 
 #include "xrCDB.h"
 #include "sound.h"

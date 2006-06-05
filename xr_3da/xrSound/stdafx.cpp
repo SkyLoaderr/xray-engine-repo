@@ -15,11 +15,9 @@
 #	pragma comment(lib,	"OpenAL32B.lib"		)
 #	pragma comment(lib,	"dsoundb.lib" 		)
 #else
-#	pragma comment(lib,	"x:\\eax.lib"		)
-#	pragma comment(lib,	"x:\\xrCore"		)
-#	pragma comment(lib,	"x:\\xrCDB"			)
+#	pragma comment(lib,	"eax.lib"			)
+#	pragma comment(lib,	"xrCore.lib"		)
+#	pragma comment(lib,	"xrCDB.lib"			)
 #	pragma comment(lib,	"dsound.lib" 		)
 #endif
-
-#pragma comment(lib,	"msacm32.lib"		)
 

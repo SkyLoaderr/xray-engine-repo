@@ -3,6 +3,7 @@
 
 #include "soundrender_coreD.h"
 #include "soundrender_targetD.h"
+#include <eax.h>
 
 CSoundRender_CoreD*	SoundRenderD= 0;
 

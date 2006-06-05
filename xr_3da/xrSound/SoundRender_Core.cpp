@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-
 #include "xrLevel.h"
 #include "soundrender_core.h"
 #include "soundrender_source.h"
 #include "soundrender_emitter.h"
+#include <eax.h>
 
 int		psSoundTargets			= 16;
 Flags32	psSoundFlags			= {ssHardware | ssEAX};
