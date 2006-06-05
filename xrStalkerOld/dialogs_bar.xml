@@ -1624,87 +1624,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_bar_barman_ecolog_flash_done">
-        <precondition>bar_dialogs.actor_have_research</precondition>
-        <phrase_list>
-            <phrase id="0">
-                <text>bar_bar_barman_ecolog_flash_done_0</text>
-                <action>bar_dialogs.actor_transfer_research</action>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="2">
-                <text />
-                <has_info>bar_rescue_research_reward</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_bar_barman_ecolog_flash_done_21</text>
-            </phrase>
-            <phrase id="3">
-                <text />
-                <dont_has_info>bar_rescue_research_reward</dont_has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_bar_barman_ecolog_flash_done_31</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_bar_barman_killer_ambush">
-        <precondition>bar_dialogs.have_bar_tiran_pda</precondition>
-        <has_info>bar_kill_svoboda_ambush_start</has_info>
-        <has_info>bar_kill_svoboda_ambush_killed</has_info>
-        <dont_has_info>bar_kill_svoboda_ambush_done</dont_has_info>
-        <phrase_list>
-            <phrase id="0">
-                <text>bar_bar_barman_killer_ambush_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_bar_barman_killer_ambush_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>bar_bar_barman_killer_ambush_2</text>
-                <action>bar_dialogs.give_bar_tiran_pda</action>
-                <give_info>bar_kill_svoboda_ambush_done</give_info>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>bar_bar_barman_killer_ambush_3</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_bar_barman_veterans_finish">
-        <precondition>bar_dialogs.have_lucky_pda</precondition>
-        <has_info>bar_kill_veteran_start</has_info>
-        <dont_has_info>bar_kill_veteran_done</dont_has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>bar_bar_barman_veterans_finish_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_bar_barman_veterans_finish_11</text>
-                <action>bar_dialogs.give_lucky_pda</action>
-                <disable_info>bar_kill_veteran_start</disable_info>
-                <give_info>bar_kill_veteran_done</give_info>
-                <next>111</next>
-            </phrase>
-            <phrase id="111">
-                <text>bar_bar_barman_veterans_finish_111</text>
-            </phrase>
-            <phrase id="0">
-                <text>bar_bar_barman_veterans_finish_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_bar_barmen_jobs">
         <has_info>bar_barman_stay_hole</has_info>
         <has_info>agroprom_military_case_done</has_info>
@@ -2434,46 +2353,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_bar_drunk_dolg_start">
-        <phrase_list>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <dont_has_info>bar_bar_drunk_dolg_quest_start</dont_has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_bar_drunk_dolg_start_11</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="111">
-                <text>bar_bar_drunk_dolg_start_111</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="2">
-                <text />
-                <dont_has_info>bar_bar_drunk_dolg_quest_finish</dont_has_info>
-                <has_info>bar_bar_drunk_dolg_quest_start</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_bar_drunk_dolg_start_21</text>
-            </phrase>
-            <phrase id="3">
-                <text />
-                <has_info>bar_bar_drunk_dolg_quest_finish</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_bar_drunk_dolg_start_31</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_bar_hunter_quest_finish">
         <precondition>bar_dialogs.have_hunters_toz</precondition>
         <has_info>bar_bar_hunter_quest_start</has_info>
@@ -2944,248 +2823,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_dolg_leader_prisyaga">
-        <has_info>bar_svoboda_rg6_done</has_info>
-        <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
-        <phrase_list>
-            <phrase id="2">
-                <text>bar_dolg_leader_prisyaga_2</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>bar_dolg_leader_prisyaga_3</text>
-                <next>4</next>
-            </phrase>
-            <phrase id="4">
-                <text>bar_dolg_leader_prisyaga_4</text>
-                <next>5</next>
-            </phrase>
-            <phrase id="5">
-                <text>bar_dolg_leader_prisyaga_5</text>
-                <next>6</next>
-            </phrase>
-            <phrase id="6">
-                <text>bar_dolg_leader_prisyaga_6</text>
-                <next>7</next>
-            </phrase>
-            <phrase id="9">
-                <text>bar_dolg_leader_prisyaga_9</text>
-            </phrase>
-            <phrase id="7">
-                <text>bar_dolg_leader_prisyaga_7</text>
-                <next>8</next>
-            </phrase>
-            <phrase id="8">
-                <text>bar_dolg_leader_prisyaga_8</text>
-                <action>bar_dialogs.enter_to_dolg</action>
-                <action>dialogs.actor_set_dolg</action>
-                <give_info>bar_dolg_community_leader_done</give_info>
-                <next>9</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_dolg_leader_prisyaga_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="0">
-                <text>bar_dolg_leader_prisyaga_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_leader_quest_rg6_finish">
-        <precondition>bar_dialogs.have_rg6</precondition>
-        <has_info>bar_svoboda_rg6_start</has_info>
-        <dont_has_info>bar_svoboda_rg6_done</dont_has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>bar_dolg_leader_quest_rg6_finish_1</text>
-            </phrase>
-            <phrase id="0">
-                <text>bar_dolg_leader_quest_rg6_finish_0</text>
-                <action>bar_dialogs.give_rg6</action>
-                <give_info>bar_svoboda_rg6_done</give_info>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_leader_start">
-        <phrase_list>
-            <phrase id="1">
-                <text />
-                <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
-                <dont_has_info>mil_svoboda_rg6_gain</dont_has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="311">
-                <text>bar_dolg_leader_start_311</text>
-                <action>bar_dialogs.give_rg6</action>
-                <give_info>bar_svoboda_rg6_done</give_info>
-                <next>3111</next>
-            </phrase>
-            <phrase id="3111">
-                <text>bar_dolg_leader_start_3111</text>
-            </phrase>
-            <phrase id="4">
-                <text />
-                <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
-                <has_info>bar_svoboda_rg6_done</has_info>
-                <next>41</next>
-            </phrase>
-            <phrase id="41">
-                <text>bar_dolg_leader_start_41</text>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>2</next>
-                <next>5</next>
-                <next>8</next>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_dolg_leader_start_11</text>
-            </phrase>
-            <phrase id="2">
-                <text />
-                <has_info>bar_dolg_community_leader_done</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_dolg_leader_start_21</text>
-            </phrase>
-            <phrase id="5">
-                <text />
-                <dont_has_info>bar_kill_svoboda_leader_done</dont_has_info>
-                <has_info>bar_kill_svoboda_leader_start</has_info>
-                <next>51</next>
-            </phrase>
-            <phrase id="51">
-                <text>bar_dolg_leader_start_51</text>
-            </phrase>
-            <phrase id="8">
-                <text />
-                <has_info>bar_kill_svoboda_leader_done</has_info>
-                <next>81</next>
-            </phrase>
-            <phrase id="81">
-                <text>bar_dolg_leader_start_81</text>
-            </phrase>
-            <phrase id="3">
-                <text />
-                <dont_has_info>bar_svoboda_rg6_done</dont_has_info>
-                <has_info>mil_svoboda_rg6_gain</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_dolg_leader_start_31</text>
-                <next>311</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_newbie_start">
-        <phrase_list>
-            <phrase id="2">
-                <text />
-                <has_info>bar_dolg_community_leader_done</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_dolg_newbie_start_21</text>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>2</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_dolg_newbie_start_11</text>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
-                <next>11</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_novice_start">
-        <phrase_list>
-            <phrase id="41">
-                <text>bar_dolg_novice_start_41</text>
-            </phrase>
-            <phrase id="51">
-                <text>bar_dolg_novice_start_51</text>
-            </phrase>
-            <phrase id="4">
-                <text>bar_dolg_novice_start_4</text>
-                <next>41</next>
-            </phrase>
-            <phrase id="5">
-                <text>bar_dolg_novice_start_5</text>
-                <next>51</next>
-            </phrase>
-            <phrase id="6">
-                <text>bar_dolg_novice_start_6</text>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>bar_dolg_novice_start_2</text>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="3">
-                <text>bar_dolg_novice_start_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_dolg_novice_start_31</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_petrenko_start">
-        <phrase_list>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <dont_has_info>bar_dolg_community_start</dont_has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_dolg_petrenko_start_11</text>
-            </phrase>
-            <phrase id="2">
-                <text />
-                <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
-                <has_info>bar_dolg_community_start</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_dolg_petrenko_start_21</text>
-            </phrase>
-            <phrase id="3">
-                <text />
-                <has_info>bar_dolg_community_leader_done</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_dolg_petrenko_start_31</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_dolg_base_guard_talk">
         <phrase_list>
             <phrase id="3">
@@ -3202,182 +2839,6 @@
             <phrase id="1">
                 <text>bar_dolg_base_guard_talk_1</text>
                 <next>2</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_veteran_start">
-        <phrase_list>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>bar_dolg_veteran_start_2</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_zastava">
-        <phrase_list>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>2</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <precondition>dialogs.actor_not_in_dolg</precondition>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_dolg_zastava_11</text>
-            </phrase>
-            <phrase id="2">
-                <text />
-                <precondition>dialogs.actor_in_dolg</precondition>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_dolg_zastava_21</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_zastava_about_zastava">
-        <phrase_list>
-            <phrase id="0">
-                <text>bar_dolg_zastava_about_zastava_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_dolg_zastava_about_zastava_1</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_zastava_talk">
-        <phrase_list>
-            <phrase id="214">
-                <text>bar_dolg_zastava_talk_214</text>
-            </phrase>
-            <phrase id="2111">
-                <text>bar_dolg_zastava_talk_2111</text>
-                <next>21111</next>
-            </phrase>
-            <phrase id="21111">
-                <text>bar_dolg_zastava_talk_21111</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="212">
-                <text>bar_dolg_zastava_talk_212</text>
-                <action>bar_dialogs.locate_bar_dolg</action>
-                <next>2121</next>
-            </phrase>
-            <phrase id="2121">
-                <text>bar_dolg_zastava_talk_2121</text>
-                <next>21211</next>
-            </phrase>
-            <phrase id="21211">
-                <text>bar_dolg_zastava_talk_21211</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="213">
-                <text>bar_dolg_zastava_talk_213</text>
-                <action>bar_dialogs.locate_bar_arena</action>
-                <next>2131</next>
-            </phrase>
-            <phrase id="2131">
-                <text>bar_dolg_zastava_talk_2131</text>
-                <next>21311</next>
-            </phrase>
-            <phrase id="21311">
-                <text>bar_dolg_zastava_talk_21311</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="0">
-                <text>bar_dolg_zastava_talk_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_dolg_zastava_talk_1</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>bar_dolg_zastava_talk_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_dolg_zastava_talk_21</text>
-                <next>211</next>
-                <next>212</next>
-                <next>213</next>
-                <next>214</next>
-            </phrase>
-            <phrase id="211">
-                <text>bar_dolg_zastava_talk_211</text>
-                <action>bar_dialogs.locate_bar_bar</action>
-                <next>2111</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_zavskald_reward">
-        <precondition>bar_dialogs.actor_need_reward</precondition>
-        <phrase_list>
-            <phrase id="0">
-                <text>bar_dolg_zavskald_reward_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>bar_dolg_zavskald_reward_1</text>
-                <next>11</next>
-                <next>12</next>
-                <next>13</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_dolg_zavskald_reward_11</text>
-                <dont_has_info>bar_kill_borov_reward</dont_has_info>
-                <has_info>bar_kill_borov_done</has_info>
-                <next>111</next>
-            </phrase>
-            <phrase id="111">
-                <text>bar_dolg_zavskald_reward_111</text>
-                <next>1111</next>
-            </phrase>
-            <phrase id="1111">
-                <text>bar_dolg_zavskald_reward_1111</text>
-                <action>bar_dialogs.have_borov_reward</action>
-                <give_info>bar_kill_borov_reward</give_info>
-            </phrase>
-            <phrase id="12">
-                <text>bar_dolg_zavskald_reward_12</text>
-                <dont_has_info>bar_kill_svoboda_reward</dont_has_info>
-                <has_info>bar_kill_svoboda_ambush_done</has_info>
-                <next>121</next>
-            </phrase>
-            <phrase id="121">
-                <text>bar_dolg_zavskald_reward_121</text>
-                <next>1211</next>
-            </phrase>
-            <phrase id="1211">
-                <text>bar_dolg_zavskald_reward_1211</text>
-                <action>bar_dialogs.have_tiran_reward</action>
-                <give_info>bar_kill_svoboda_reward</give_info>
-            </phrase>
-            <phrase id="13">
-                <text>bar_dolg_zavskald_reward_13</text>
-                <dont_has_info>bar_kill_svoboda_leader_reward</dont_has_info>
-                <has_info>bar_kill_svoboda_leader_done</has_info>
-                <next>131</next>
-            </phrase>
-            <phrase id="131">
-                <text>bar_dolg_zavskald_reward_131</text>
-                <next>1311</next>
-            </phrase>
-            <phrase id="1311">
-                <text>bar_dolg_zavskald_reward_1311</text>
-                <action>bar_dialogs.have_svoboda_leader_reward</action>
-                <give_info>bar_kill_svoboda_leader_reward</give_info>
             </phrase>
         </phrase_list>
     </dialog>
@@ -3682,44 +3143,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_bar_osvedomitel_start">
-        <phrase_list>
-            <phrase id="21">
-                <text>bar_bar_osvedomitel_start_21</text>
-                <next>211</next>
-            </phrase>
-            <phrase id="211">
-                <text>bar_bar_osvedomitel_start_211</text>
-                <next>2111</next>
-            </phrase>
-            <phrase id="2111">
-                <text>bar_bar_osvedomitel_start_2111</text>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_bar_osvedomitel_start_11</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_bar_osvedomitel_talk">
-        <has_info>bar_volkodav_have_reward</has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>bar_bar_osvedomitel_talk_1</text>
-            </phrase>
-            <phrase id="0">
-                <text>bar_bar_osvedomitel_talk_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_bar_osvedomitel_reward">
         <has_info>bar_get_research_done</has_info>
         <dont_has_info>bar_volkodav_have_reward</dont_has_info>
@@ -3743,109 +3166,652 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_bar_osvedomitel_trade_info">
+    <dialog id="bar_bar_drunk_dolg_start">
         <phrase_list>
-            <phrase id="311">
-                <text>bar_bar_osvedomitel_trade_info_311</text>
-                <precondition>bar_dialogs.has_money_for_informer_2</precondition>
-                <action>bar_dialogs.give_money_for_informer_2</action>
-                <give_info>bar_bar_osvedomitel_info_02</give_info>
-                <next>3111</next>
+            <phrase id="1">
+                <text />
+                <dont_has_info>bar_bar_drunk_dolg_quest_start</dont_has_info>
+                <next>11</next>
             </phrase>
-            <phrase id="3111">
-                <text>bar_bar_osvedomitel_trade_info_3111</text>
+            <phrase id="11">
+                <text>bar_bar_drunk_dolg_start_11</text>
+                <next>111</next>
             </phrase>
-            <phrase id="312">
-                <text>bar_bar_osvedomitel_trade_info_312</text>
-                <next>3121</next>
+            <phrase id="111">
+                <text>bar_bar_drunk_dolg_start_111</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
-            <phrase id="3121">
-                <text>bar_bar_osvedomitel_trade_info_3121</text>
+            <phrase id="2">
+                <text />
+                <dont_has_info>bar_bar_drunk_dolg_quest_finish</dont_has_info>
+                <has_info>bar_bar_drunk_dolg_quest_start</has_info>
+                <next>21</next>
             </phrase>
-            <phrase id="411">
-                <text>bar_bar_osvedomitel_trade_info_411</text>
-                <precondition>bar_dialogs.has_money_for_informer_3</precondition>
-                <action>bar_dialogs.give_money_for_informer_3</action>
-                <give_info>bar_bar_osvedomitel_info_03</give_info>
-                <next>4111</next>
+            <phrase id="21">
+                <text>bar_bar_drunk_dolg_start_21</text>
             </phrase>
-            <phrase id="4111">
-                <text>bar_bar_osvedomitel_trade_info_4111</text>
+            <phrase id="3">
+                <text />
+                <has_info>bar_bar_drunk_dolg_quest_finish</has_info>
+                <next>31</next>
             </phrase>
-            <phrase id="412">
-                <text>bar_bar_osvedomitel_trade_info_412</text>
-                <next>4121</next>
-            </phrase>
-            <phrase id="4121">
-                <text>bar_bar_osvedomitel_trade_info_4121</text>
+            <phrase id="31">
+                <text>bar_bar_drunk_dolg_start_31</text>
             </phrase>
             <phrase id="0">
-                <text>bar_bar_osvedomitel_trade_info_0</text>
+                <text />
                 <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
                 <next>2</next>
                 <next>3</next>
-                <next>4</next>
-                <next>99</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_zavskald_reward">
+        <precondition>bar_dialogs.actor_need_reward</precondition>
+        <phrase_list>
+            <phrase id="1">
+                <text>bar_dolg_zavskald_reward_1</text>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_dolg_zavskald_reward_11</text>
+                <dont_has_info>bar_kill_borov_reward</dont_has_info>
+                <has_info>bar_kill_borov_done</has_info>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_dolg_zavskald_reward_111</text>
+                <next>1111</next>
+            </phrase>
+            <phrase id="1111">
+                <text>bar_dolg_zavskald_reward_1111</text>
+                <action>bar_dialogs.have_borov_reward</action>
+                <give_info>bar_kill_borov_reward</give_info>
+            </phrase>
+            <phrase id="12">
+                <text>bar_dolg_zavskald_reward_12</text>
+                <dont_has_info>bar_kill_svoboda_reward</dont_has_info>
+                <has_info>bar_kill_svoboda_ambush_done</has_info>
+                <next>121</next>
+            </phrase>
+            <phrase id="121">
+                <text>bar_dolg_zavskald_reward_121</text>
+                <next>1211</next>
+            </phrase>
+            <phrase id="1211">
+                <text>bar_dolg_zavskald_reward_1211</text>
+                <action>bar_dialogs.have_tiran_reward</action>
+                <give_info>bar_kill_svoboda_reward</give_info>
+            </phrase>
+            <phrase id="13">
+                <text>bar_dolg_zavskald_reward_13</text>
+                <dont_has_info>bar_kill_svoboda_leader_reward</dont_has_info>
+                <has_info>bar_kill_svoboda_leader_done</has_info>
+                <next>131</next>
+            </phrase>
+            <phrase id="131">
+                <text>bar_dolg_zavskald_reward_131</text>
+                <next>1311</next>
+            </phrase>
+            <phrase id="1311">
+                <text>bar_dolg_zavskald_reward_1311</text>
+                <action>bar_dialogs.have_svoboda_leader_reward</action>
+                <give_info>bar_kill_svoboda_leader_reward</give_info>
+            </phrase>
+            <phrase id="0">
+                <text>bar_dolg_zavskald_reward_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_zastava_talk">
+        <phrase_list>
+            <phrase id="214">
+                <text>bar_dolg_zastava_talk_214</text>
+            </phrase>
+            <phrase id="2111">
+                <text>bar_dolg_zastava_talk_2111</text>
+                <next>21111</next>
+            </phrase>
+            <phrase id="21111">
+                <text>bar_dolg_zastava_talk_21111</text>
+                <next>21</next>
             </phrase>
             <phrase id="212">
-                <text>bar_bar_osvedomitel_trade_info_212</text>
+                <text>bar_dolg_zastava_talk_212</text>
+                <action>bar_dialogs.locate_bar_dolg</action>
                 <next>2121</next>
             </phrase>
             <phrase id="2121">
-                <text>bar_bar_osvedomitel_trade_info_2121</text>
+                <text>bar_dolg_zastava_talk_2121</text>
+                <next>21211</next>
+            </phrase>
+            <phrase id="21211">
+                <text>bar_dolg_zastava_talk_21211</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="213">
+                <text>bar_dolg_zastava_talk_213</text>
+                <action>bar_dialogs.locate_bar_arena</action>
+                <next>2131</next>
+            </phrase>
+            <phrase id="2131">
+                <text>bar_dolg_zastava_talk_2131</text>
+                <next>21311</next>
+            </phrase>
+            <phrase id="21311">
+                <text>bar_dolg_zastava_talk_21311</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="1">
+                <text>bar_dolg_zastava_talk_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_dolg_zastava_talk_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_dolg_zastava_talk_21</text>
+                <next>211</next>
+                <next>212</next>
+                <next>213</next>
+                <next>214</next>
             </phrase>
             <phrase id="211">
-                <text>bar_bar_osvedomitel_trade_info_211</text>
-                <precondition>bar_dialogs.has_money_for_informer_1</precondition>
-                <action>bar_dialogs.give_money_for_informer_1</action>
-                <give_info>bar_bar_osvedomitel_info_01</give_info>
+                <text>bar_dolg_zastava_talk_211</text>
+                <action>bar_dialogs.locate_bar_bar</action>
+                <next>2111</next>
+            </phrase>
+            <phrase id="0">
+                <text>bar_dolg_zastava_talk_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_zastava_about_zastava">
+        <phrase_list>
+            <phrase id="1">
+                <text>bar_dolg_zastava_about_zastava_1</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_dolg_zastava_about_zastava_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_zastava">
+        <phrase_list>
+            <phrase id="1">
+                <text />
+                <precondition>dialogs.actor_not_in_dolg</precondition>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_dolg_zastava_11</text>
+            </phrase>
+            <phrase id="2">
+                <text />
+                <precondition>dialogs.actor_in_dolg</precondition>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_dolg_zastava_21</text>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+                <next>2</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_veteran_start">
+        <phrase_list>
+            <phrase id="1">
+                <text />
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_dolg_veteran_start_2</text>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_petrenko_start">
+        <phrase_list>
+            <phrase id="1">
+                <text />
+                <dont_has_info>bar_dolg_community_start</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_dolg_petrenko_start_11</text>
+            </phrase>
+            <phrase id="2">
+                <text />
+                <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
+                <has_info>bar_dolg_community_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_dolg_petrenko_start_21</text>
+            </phrase>
+            <phrase id="3">
+                <text />
+                <has_info>bar_dolg_community_leader_done</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>bar_dolg_petrenko_start_31</text>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_novice_start">
+        <phrase_list>
+            <phrase id="41">
+                <text>bar_dolg_novice_start_41</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_dolg_novice_start_51</text>
+            </phrase>
+            <phrase id="4">
+                <text>bar_dolg_novice_start_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <text>bar_dolg_novice_start_5</text>
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <text>bar_dolg_novice_start_6</text>
+            </phrase>
+            <phrase id="1">
+                <text />
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_dolg_novice_start_2</text>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="3">
+                <text>bar_dolg_novice_start_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>bar_dolg_novice_start_31</text>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_newbie_start">
+        <phrase_list>
+            <phrase id="2">
+                <text />
+                <has_info>bar_dolg_community_leader_done</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_dolg_newbie_start_21</text>
+            </phrase>
+            <phrase id="11">
+                <text>bar_dolg_newbie_start_11</text>
+            </phrase>
+            <phrase id="1">
+                <text />
+                <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+                <next>2</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_leader_start">
+        <phrase_list>
+            <phrase id="1">
+                <text />
+                <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
+                <dont_has_info>mil_svoboda_rg6_gain</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="311">
+                <text>bar_dolg_leader_start_311</text>
+                <action>bar_dialogs.give_rg6</action>
+                <give_info>bar_svoboda_rg6_done</give_info>
+                <next>3111</next>
+            </phrase>
+            <phrase id="3111">
+                <text>bar_dolg_leader_start_3111</text>
+            </phrase>
+            <phrase id="4">
+                <text />
+                <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
+                <has_info>bar_svoboda_rg6_done</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_dolg_leader_start_41</text>
+            </phrase>
+            <phrase id="11">
+                <text>bar_dolg_leader_start_11</text>
+            </phrase>
+            <phrase id="2">
+                <text />
+                <has_info>bar_dolg_community_leader_done</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_dolg_leader_start_21</text>
+            </phrase>
+            <phrase id="5">
+                <text />
+                <dont_has_info>bar_kill_svoboda_leader_done</dont_has_info>
+                <has_info>bar_kill_svoboda_leader_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="51">
+                <text>bar_dolg_leader_start_51</text>
+            </phrase>
+            <phrase id="8">
+                <text />
+                <has_info>bar_kill_svoboda_leader_done</has_info>
+                <next>81</next>
+            </phrase>
+            <phrase id="81">
+                <text>bar_dolg_leader_start_81</text>
+            </phrase>
+            <phrase id="3">
+                <text />
+                <dont_has_info>bar_svoboda_rg6_done</dont_has_info>
+                <has_info>mil_svoboda_rg6_gain</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>bar_dolg_leader_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+                <next>2</next>
+                <next>5</next>
+                <next>8</next>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_leader_quest_rg6_finish">
+        <precondition>bar_dialogs.have_rg6</precondition>
+        <has_info>bar_svoboda_rg6_start</has_info>
+        <dont_has_info>bar_svoboda_rg6_done</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>bar_dolg_leader_quest_rg6_finish_1</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_dolg_leader_quest_rg6_finish_0</text>
+                <action>bar_dialogs.give_rg6</action>
+                <give_info>bar_svoboda_rg6_done</give_info>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_leader_prisyaga">
+        <has_info>bar_svoboda_rg6_done</has_info>
+        <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
+        <phrase_list>
+            <phrase id="2">
+                <text>bar_dolg_leader_prisyaga_2</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>bar_dolg_leader_prisyaga_3</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="4">
+                <text>bar_dolg_leader_prisyaga_4</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <text>bar_dolg_leader_prisyaga_5</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="6">
+                <text>bar_dolg_leader_prisyaga_6</text>
+                <next>7</next>
+            </phrase>
+            <phrase id="9">
+                <text>bar_dolg_leader_prisyaga_9</text>
+            </phrase>
+            <phrase id="7">
+                <text>bar_dolg_leader_prisyaga_7</text>
+                <next>8</next>
+            </phrase>
+            <phrase id="8">
+                <text>bar_dolg_leader_prisyaga_8</text>
+                <action>bar_dialogs.enter_to_dolg</action>
+                <action>dialogs.actor_set_dolg</action>
+                <give_info>bar_dolg_community_leader_done</give_info>
+                <next>9</next>
+            </phrase>
+            <phrase id="1">
+                <text>bar_dolg_leader_prisyaga_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="0">
+                <text>bar_dolg_leader_prisyaga_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_barman_veterans_finish">
+        <precondition>bar_dialogs.have_lucky_pda</precondition>
+        <has_info>bar_kill_veteran_start</has_info>
+        <dont_has_info>bar_kill_veteran_done</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>bar_bar_barman_veterans_finish_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_barman_veterans_finish_11</text>
+                <action>bar_dialogs.give_lucky_pda</action>
+                <disable_info>bar_kill_veteran_start</disable_info>
+                <give_info>bar_kill_veteran_done</give_info>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_barman_veterans_finish_111</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_bar_barman_veterans_finish_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_barman_killer_ambush">
+        <precondition>bar_dialogs.have_bar_tiran_pda</precondition>
+        <has_info>bar_kill_svoboda_ambush_start</has_info>
+        <has_info>bar_kill_svoboda_ambush_killed</has_info>
+        <dont_has_info>bar_kill_svoboda_ambush_done</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>bar_bar_barman_killer_ambush_1</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_bar_barman_killer_ambush_2</text>
+                <action>bar_dialogs.give_bar_tiran_pda</action>
+                <give_info>bar_kill_svoboda_ambush_done</give_info>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>bar_bar_barman_killer_ambush_3</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_bar_barman_killer_ambush_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_barman_ecolog_flash_done">
+        <precondition>bar_dialogs.actor_have_research</precondition>
+        <phrase_list>
+            <phrase id="1">
+                <text />
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="2">
+                <text />
+                <has_info>bar_rescue_research_reward</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_barman_ecolog_flash_done_21</text>
+            </phrase>
+            <phrase id="3">
+                <text />
+                <dont_has_info>bar_rescue_research_reward</dont_has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_barman_ecolog_flash_done_31</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_bar_barman_ecolog_flash_done_0</text>
+                <action>bar_dialogs.actor_transfer_research</action>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_arena_man_start">
+        <phrase_list>
+            <phrase id="31">
+                <text>bar_arena_man_start_31</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_arena_man_start_51</text>
+            </phrase>
+            <phrase id="41">
+                <text>bar_arena_man_start_41</text>
+            </phrase>
+            <phrase id="4">
+                <text />
+                <precondition>bar_dialogs.arena_has_reward</precondition>
+                <action>bar_dialogs.arena_give_reward</action>
+                <next>41</next>
+            </phrase>
+            <phrase id="3">
+                <text />
+                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
+                <precondition>bar_dialogs.arena_rank_check_false</precondition>
+                <dont_has_info>bar_arena_rank_false</dont_has_info>
+                <has_info>bar_arena_fight_8_done</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_arena_man_start_21</text>
+            </phrase>
+            <phrase id="11">
+                <text>bar_arena_man_start_11</text>
+            </phrase>
+            <phrase id="2">
+                <text />
+                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
+                <dont_has_info>bar_arena_rank_false</dont_has_info>
+                <has_info>bar_arena_pause</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="5">
+                <text />
+                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
+                <has_info>bar_arena_rank_false</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="1">
+                <text />
+                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
+                <dont_has_info>bar_arena_pause</dont_has_info>
+                <dont_has_info>bar_arena_fight_8_done</dont_has_info>
+                <dont_has_info>bar_arena_rank_false</dont_has_info>
+                <has_info>bar_arena_fight_1_done</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="6">
+                <text />
+                <dont_has_info>bar_arena_fight_1_done</dont_has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="61">
+                <text>bar_arena_man_start_61</text>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_osvedomitel_talk">
+        <has_info>bar_volkodav_have_reward</has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>bar_bar_osvedomitel_talk_1</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_bar_osvedomitel_talk_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_osvedomitel_start">
+        <phrase_list>
+            <phrase id="21">
+                <text>bar_bar_osvedomitel_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="211">
+                <text>bar_bar_osvedomitel_start_211</text>
                 <next>2111</next>
             </phrase>
             <phrase id="2111">
-                <text>bar_bar_osvedomitel_trade_info_2111</text>
+                <text>bar_bar_osvedomitel_start_2111</text>
             </phrase>
-            <phrase id="2">
-                <text></text>
-                <dont_has_info>bar_bar_osvedomitel_info_01</dont_has_info>
-                <next>21</next>
+            <phrase id="0">
+                <text />
+                <next>1</next>
             </phrase>
-            <phrase id="3">
-                <text></text>
-                <dont_has_info>bar_bar_osvedomitel_info_02</dont_has_info>
-                <has_info>bar_bar_osvedomitel_info_01</has_info>
-                <next>31</next>
+            <phrase id="1">
+                <text />
+                <next>11</next>
             </phrase>
-            <phrase id="4">
-                <text></text>
-                <dont_has_info>bar_bar_osvedomitel_info_03</dont_has_info>
-                <has_info>bar_bar_osvedomitel_info_02</has_info>
-                <next>41</next>
-            </phrase>
-            <phrase id="99">
-                <text></text>
-                <has_info>bar_bar_osvedomitel_info_03</has_info>
-                <next>999</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_bar_osvedomitel_trade_info_21</text>
-                <next>211</next>
-                <next>212</next>
-            </phrase>
-            <phrase id="31">
-                <text>bar_bar_osvedomitel_trade_info_31</text>
-                <next>311</next>
-                <next>312</next>
-            </phrase>
-            <phrase id="41">
-                <text>bar_bar_osvedomitel_trade_info_41</text>
-                <next>411</next>
-                <next>412</next>
-            </phrase>
-            <phrase id="999">
-                <text>bar_bar_osvedomitel_trade_info_999</text>
+            <phrase id="11">
+                <text>bar_bar_osvedomitel_start_11</text>
             </phrase>
         </phrase_list>
     </dialog>
@@ -4002,75 +3968,167 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_arena_man_start">
+    <dialog id="bar_bar_osvedomitel_trade_info">
         <phrase_list>
-            <phrase id="31">
-                <text>bar_arena_man_start_31</text>
+            <phrase id="312">
+                <text>bar_bar_osvedomitel_trade_info_312</text>
+                <next>3121</next>
             </phrase>
-            <phrase id="51">
-                <text>bar_arena_man_start_51</text>
+            <phrase id="3121">
+                <text>bar_bar_osvedomitel_trade_info_3121</text>
             </phrase>
-            <phrase id="41">
-                <text>bar_arena_man_start_41</text>
+            <phrase id="999">
+                <text>bar_bar_osvedomitel_trade_info_999</text>
             </phrase>
-            <phrase id="4">
-                <text></text>
-                <precondition>bar_dialogs.arena_has_reward</precondition>
-                <action>bar_dialogs.arena_give_reward</action>
-                <next>41</next>
+            <phrase id="2121">
+                <text>bar_bar_osvedomitel_trade_info_2121</text>
+            </phrase>
+            <phrase id="212">
+                <text>bar_bar_osvedomitel_trade_info_212</text>
+                <next>2121</next>
+            </phrase>
+            <phrase id="2111">
+                <text>bar_bar_osvedomitel_trade_info_2111</text>
+            </phrase>
+            <phrase id="3111">
+                <text>bar_bar_osvedomitel_trade_info_3111</text>
+            </phrase>
+            <phrase id="4121">
+                <text>bar_bar_osvedomitel_trade_info_4121</text>
+            </phrase>
+            <phrase id="512">
+                <text>bar_bar_osvedomitel_trade_info_512</text>
+                <next>5121</next>
+            </phrase>
+            <phrase id="5121">
+                <text>bar_bar_osvedomitel_trade_info_5121</text>
+            </phrase>
+            <phrase id="5111">
+                <text>bar_bar_osvedomitel_trade_info_5111</text>
+            </phrase>
+            <phrase id="4111">
+                <text>bar_bar_osvedomitel_trade_info_4111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_osvedomitel_trade_info_311</text>
+                <precondition>bar_dialogs.has_money_for_informer_2</precondition>
+                <action>bar_dialogs.give_money_for_informer_2</action>
+                <give_info>bar_bar_osvedomitel_info_02</give_info>
+                <next>3111</next>
             </phrase>
             <phrase id="3">
                 <text></text>
-                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
-                <precondition>bar_dialogs.arena_rank_check_false</precondition>
-                <dont_has_info>bar_arena_rank_false</dont_has_info>
-                <has_info>bar_arena_fight_8_done</has_info>
+                <dont_has_info>bar_bar_osvedomitel_info_02</dont_has_info>
+                <has_info>bar_bar_osvedomitel_info_01</has_info>
                 <next>31</next>
             </phrase>
-            <phrase id="21">
-                <text>bar_arena_man_start_21</text>
-            </phrase>
-            <phrase id="11">
-                <text>bar_arena_man_start_11</text>
-            </phrase>
-            <phrase id="2">
+            <phrase id="4">
                 <text></text>
-                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
-                <dont_has_info>bar_arena_rank_false</dont_has_info>
-                <has_info>bar_arena_pause</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="5">
-                <text></text>
-                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
-                <has_info>bar_arena_rank_false</has_info>
-                <next>51</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <precondition>bar_dialogs.arena_hasnt_reward</precondition>
-                <dont_has_info>bar_arena_pause</dont_has_info>
-                <dont_has_info>bar_arena_fight_8_done</dont_has_info>
-                <dont_has_info>bar_arena_rank_false</dont_has_info>
-                <has_info>bar_arena_fight_1_done</has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-                <next>6</next>
+                <dont_has_info>bar_bar_osvedomitel_info_03</dont_has_info>
+                <has_info>bar_bar_osvedomitel_info_02</has_info>
+                <next>41</next>
             </phrase>
             <phrase id="6">
                 <text></text>
-                <dont_has_info>bar_arena_fight_1_done</dont_has_info>
+                <dont_has_info>bar_bar_osvedomitel_info_05</dont_has_info>
+                <has_info>bar_bar_osvedomitel_info_04</has_info>
                 <next>61</next>
             </phrase>
+            <phrase id="99">
+                <text></text>
+                <has_info>bar_bar_osvedomitel_info_05</has_info>
+                <next>999</next>
+            </phrase>
+            <phrase id="412">
+                <text>bar_bar_osvedomitel_trade_info_412</text>
+                <next>4121</next>
+            </phrase>
+            <phrase id="612">
+                <text>bar_bar_osvedomitel_trade_info_612</text>
+                <next>6121</next>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_osvedomitel_trade_info_51</text>
+                <next>511</next>
+                <next>512</next>
+            </phrase>
+            <phrase id="5">
+                <text></text>
+                <dont_has_info>bar_bar_osvedomitel_info_04</dont_has_info>
+                <has_info>bar_bar_osvedomitel_info_03</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="211">
+                <text>bar_bar_osvedomitel_trade_info_211</text>
+                <precondition>bar_dialogs.has_money_for_informer_1</precondition>
+                <action>bar_dialogs.give_money_for_informer_1</action>
+                <give_info>bar_bar_osvedomitel_info_01</give_info>
+                <next>2111</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_osvedomitel_trade_info_511</text>
+                <precondition>bar_dialogs.has_money_for_informer_4</precondition>
+                <action>bar_dialogs.give_money_for_informer_4</action>
+                <give_info>bar_bar_osvedomitel_info_04</give_info>
+                <next>5111</next>
+            </phrase>
+            <phrase id="6121">
+                <text>bar_bar_osvedomitel_trade_info_6121</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_osvedomitel_trade_info_31</text>
+                <next>311</next>
+                <next>312</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_osvedomitel_trade_info_41</text>
+                <next>411</next>
+                <next>412</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_osvedomitel_trade_info_411</text>
+                <precondition>bar_dialogs.has_money_for_informer_3</precondition>
+                <action>bar_dialogs.give_money_for_informer_3</action>
+                <give_info>bar_bar_osvedomitel_info_03</give_info>
+                <next>4111</next>
+            </phrase>
             <phrase id="61">
-                <text>bar_arena_man_start_61</text>
+                <text>bar_bar_osvedomitel_trade_info_61</text>
+                <next>611</next>
+                <next>612</next>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_osvedomitel_trade_info_611</text>
+                <precondition>bar_dialogs.has_money_for_informer_5</precondition>
+                <action>bar_dialogs.give_money_for_informer_5</action>
+                <give_info>bar_bar_osvedomitel_info_05</give_info>
+                <next>6111</next>
+            </phrase>
+            <phrase id="6111">
+                <text>bar_bar_osvedomitel_trade_info_6111</text>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <dont_has_info>bar_bar_osvedomitel_info_01</dont_has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_osvedomitel_trade_info_21</text>
+                <next>211</next>
+                <next>212</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>99</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="0">
+                <text>bar_bar_osvedomitel_trade_info_0</text>
+                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
