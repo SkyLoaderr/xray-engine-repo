@@ -29,9 +29,9 @@ function action_territory:death_callback(victim, who)
 	if who:id() ~= db.actor:id() then
 		return
 	end
-	if victim:relation(db.actor) == game_object.enemy then
-		return
-	end	
+--	if victim:relation(db.actor) == game_object.enemy then
+--		return
+--	end	
 	xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.territory_death)		return
 end
 
@@ -59,6 +59,7 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
 	else
 		st.territory_death = xr_logic.parse_condlist(obj, section, "territory_death", "")
 	end
+	printf("territory section is : %s", tostring(tmp))
 end
 
 function issue_event(npc, type, ...)
