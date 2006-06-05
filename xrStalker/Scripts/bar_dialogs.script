@@ -282,27 +282,43 @@ end
 
 -- Оплата информации осведомителю.
 function has_money_for_informer_1(actor, npc)
-	return actor:money() >= 1500
+	return actor:money() >= 4000
 end
 
 function give_money_for_informer_1(actor, npc)
-	dialogs.relocate_money(npc, 1500, "out")
+	dialogs.relocate_money(npc, 4000, "out")
 end
 
 function has_money_for_informer_2(actor, npc)
-	return actor:money() >= 3000
+	return actor:money() >= 2000
 end
 
 function give_money_for_informer_2(actor, npc)	
-	dialogs.relocate_money(npc, 3000, "out")
+	dialogs.relocate_money(npc, 2000, "out")
 end
 
 function has_money_for_informer_3(actor, npc)
-	return actor:money() >= 4500
+	return actor:money() >= 3500
 end
 
 function give_money_for_informer_3(actor, npc)	
-	dialogs.relocate_money(npc, 4500, "out")
+	dialogs.relocate_money(npc, 3500, "out")
+end
+
+function has_money_for_informer_4(actor, npc)
+	return actor:money() >= 3000
+end
+
+function give_money_for_informer_4(actor, npc)	
+	dialogs.relocate_money(npc, 3000, "out")
+end
+
+function has_money_for_informer_5(actor, npc)
+	return actor:money() >= 5000
+end
+
+function give_money_for_informer_5(actor, npc)	
+	dialogs.relocate_money(npc, 5000, "out")
 end
 
 
