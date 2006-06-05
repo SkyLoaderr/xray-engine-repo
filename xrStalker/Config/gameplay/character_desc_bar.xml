@@ -322,7 +322,7 @@
 		
 	
 		<start_dialog>bar_bar_osvedomitel_start</start_dialog>
-		<actor_dialog>dm_trade_info_dialog</actor_dialog>
+		<actor_dialog>bar_bar_osvedomitel_trade_info</actor_dialog>
 	</specific_character>	
 
 	<!---------------------------BAR HUNTER---------------------->
