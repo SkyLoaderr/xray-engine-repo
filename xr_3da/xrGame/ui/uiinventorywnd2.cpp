@@ -133,14 +133,11 @@ void CUIInventoryWnd::InitInventory()
 	ruck_list		= m_pInv->m_ruck;
 	std::sort		(ruck_list.begin(),ruck_list.end(),InventoryUtilities::GreaterRoomInRuck);
 
-	CTimer T;
-	T.Start();
 	for(it=ruck_list.begin(),it_e=ruck_list.end(); it!=it_e; ++it) 
 	{
 		CUICellItem* itm			= create_cell_item(*it);
 		m_pUIBagList->SetItem		(itm);
 	}
-	Msg("5- %d",T.GetElapsed_ms());
 
 	InventoryUtilities::UpdateWeight					(UIBagWnd, true);
 
