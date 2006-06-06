@@ -59,14 +59,19 @@ enum {
 	sq_forcedword = u32(-1)
 };
 enum {
-	st_Undefined		= 0,
-	st_SourceType		= u32(-1),
-	st_forcedword		= u32(-1),
+	sg_Undefined		= 0,
+	sg_SourceType		= u32(-1),
+	sg_forcedword		= u32(-1),
 };
 enum {
 	sm_Looped			= (1ul<<0ul),	//!< Looped
 	sm_2D				= (1ul<<1ul),	//!< 2D mode
 	sm_forcedword		= u32(-1),
+};
+enum {
+	st_Effect			= 0,
+	st_Music			= 1,
+	st_forcedword		= u32(-1),
 };
 
 class CSound_UserDataVisitor;
@@ -89,7 +94,7 @@ public:
 	CSound_UserDataPtr				g_userdata;
 public:
 									ref_sound_data	();
-									ref_sound_data	(BOOL _3D, LPCSTR fName, int type);
+									ref_sound_data	(LPCSTR fName, int type);
 	virtual							~ref_sound_data	();
 };
 typedef resptr_core<ref_sound_data,resptr_base<ref_sound_data> >	ref_sound_data_ptr;
@@ -121,11 +126,10 @@ public:
 	/*!
 		\sa clone()
 		\sa destroy()
-		\param _3D Controls whenewer the source is \a 3D or \a 2D.
 		\param name Name of wave-file
 		\param type Sound type, usually for \a AI
 	*/
-	IC void					create					( BOOL _3D,	LPCSTR name,	int		type=st_SourceType);
+	IC void					create					( LPCSTR name,	int		type=sg_SourceType);
 
 	//! Clones ref_sound from another
 	/*!
@@ -134,7 +138,7 @@ public:
 		\param from Source to clone.
 		\param leave_type Controls whenewer to leave game/AI type as is
 	*/
-	IC void					clone					( const ref_sound& from,	int		type=st_SourceType);
+	IC void					clone					( const ref_sound& from,	int		type=sg_SourceType);
 
 	//! Destroys and unload wave
 	/*!
@@ -241,7 +245,7 @@ class XRSOUND_API	CSound_manager_interface
 
 protected:
 	friend class 					ref_sound_data;
-	virtual void					_create_data			( ref_sound_data& S, BOOL _3D,	LPCSTR fName, int	type=st_SourceType)					= 0;
+	virtual void					_create_data			( ref_sound_data& S, LPCSTR fName, int	type=sg_SourceType)					= 0;
 	virtual void					_destroy_data			( ref_sound_data& S)																	= 0;
 public:
 	virtual							~CSound_manager_interface(){}
@@ -256,12 +260,12 @@ public:
 
 	//@{
 	/// Sound interface
-	virtual void					create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=st_SourceType)					= 0;
-	virtual void					clone					( ref_sound& S, const ref_sound& from,		int		type=st_SourceType)					= 0;
+	virtual void					create					( ref_sound& S, LPCSTR fName,	int		type=sg_SourceType)					= 0;
+	virtual void					clone					( ref_sound& S, const ref_sound& from,		int		type=sg_SourceType)					= 0;
 	virtual void					destroy					( ref_sound& S)																			= 0;
 	virtual void					stop_emitters			( )																						= 0;	
 
-	virtual void					play					( ref_sound& S, CObject* O,								u32 flags=0, float delay=0.f)	= 0;
+	virtual void					play					( ref_sound& S, CObject* O,						u32 flags=0, float delay=0.f)			= 0;
 	virtual void					play_at_pos				( ref_sound& S, CObject* O,	const Fvector &pos,	u32 flags=0, float delay=0.f)			= 0;
 	virtual void					play_no_feedback		( ref_sound& S, CObject* O,						u32 flags=0, float delay=0.f, Fvector* pos=0, float* vol=0, float* freq=0, Fvector2* range=0)= 0;
 
@@ -292,10 +296,10 @@ extern XRSOUND_API CSound_manager_interface*		Sound;
 
 /// ********* Sound ********* (utils, accessors, helpers)
 IC ref_sound_data::ref_sound_data				()														{	handle=0;feedback=0;g_type=0;g_object=0;															}
-IC ref_sound_data::ref_sound_data				( BOOL _3D, LPCSTR fName, 	int 	type)				{	::Sound->_create_data			(*this,_3D,fName, type);											}
+IC ref_sound_data::ref_sound_data				( LPCSTR fName, 	int 	type)				{	::Sound->_create_data			(*this,fName, type);											}
 IC ref_sound_data::~ref_sound_data				()														{	::Sound->_destroy_data			(*this);															}
 
-IC void	ref_sound::create						( BOOL _3D,	LPCSTR name,	int		type)				{	VERIFY(!::Sound->i_locked()); 	::Sound->create		(*this,_3D,name,type);							}
+IC void	ref_sound::create						( LPCSTR name,	int		type)				{	VERIFY(!::Sound->i_locked()); 	::Sound->create		(*this,name,type);							}
 IC void	ref_sound::clone						( const ref_sound& from,	int		type)				{	VERIFY(!::Sound->i_locked()); 	::Sound->clone		(*this,from,type);								}
 IC void	ref_sound::destroy						( )														{	VERIFY(!::Sound->i_locked()); 	::Sound->destroy	(*this);										}
 IC void	ref_sound::play							( CObject* O,						u32 flags, float d)	{	VERIFY(!::Sound->i_locked()); 	::Sound->play		(*this,O,flags,d);								}
