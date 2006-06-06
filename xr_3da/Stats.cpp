@@ -44,11 +44,12 @@ static	optimizer	vtune;
 BOOL			g_bDisableRedText	= FALSE;
 CStats::CStats	()
 {
-	fFPS		= 30.f;
-	fRFPS		= 30.f;
-	fTPS		= 0;
-	pFont		= 0;
-	fMem_calls	= 0;
+	fFPS				= 30.f;
+	fRFPS				= 30.f;
+	fTPS				= 0;
+	pFont				= 0;
+	fMem_calls			= 0;
+	RenderDUMP_DT_Count = 0;
 }
 
 CStats::~CStats()
@@ -316,7 +317,7 @@ void CStats::Show()
 		{
 			if (RCache.stat.calls>1000)		F.OutNext	("DIP/DP    > 1k:   %d",	RCache.stat.calls);
 			//if (RCache.stat.textures>1000)F.OutNext	("T_change  > 500:  %d",	RCache.stat.textures);
-			if (RenderDUMP_DT_Count>1000)	F.OutNext	("DT_count  > 1000: %d",	RenderDUMP_DT_Count);
+			if (RenderDUMP_DT_Count>1000)	F.OutNext	("DT_count  > 1000: %u",	RenderDUMP_DT_Count);
 			F.OutSkip						();
 			//if (fMem_calls>1500)			F.OutNext	("MMGR calls > 1500:%3.1f",	fMem_calls);
 			if (Sheduler.result>3.f)		F.OutNext	("Update     > 3ms:	%3.1f",	Sheduler.result);
