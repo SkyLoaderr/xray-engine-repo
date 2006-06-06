@@ -149,15 +149,18 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kUSE_BANDAGE:
 	case kUSE_MEDKIT:
 		{
-			PIItem itm = inventory().item((cmd==kUSE_BANDAGE)?  CLSID_IITEM_BANDAGE:CLSID_IITEM_MEDKIT );	
-			if(itm)
+			if(IsGameTypeSingle())
 			{
-				inventory().Eat				(itm);
-				SDrawStaticStruct* _s		= HUD().GetUI()->UIGame()->AddCustomStatic("item_used", true);
-				_s->m_endTime				= Device.fTimeGlobal+3.0f;// 3sec
-				string1024					str;
-				strconcat					(str,*CStringTable().translate("st_item_used"),": ", itm->Name());
-				_s->wnd()->SetText			(str);
+				PIItem itm = inventory().item((cmd==kUSE_BANDAGE)?  CLSID_IITEM_BANDAGE:CLSID_IITEM_MEDKIT );	
+				if(itm)
+				{
+					inventory().Eat				(itm);
+					SDrawStaticStruct* _s		= HUD().GetUI()->UIGame()->AddCustomStatic("item_used", true);
+					_s->m_endTime				= Device.fTimeGlobal+3.0f;// 3sec
+					string1024					str;
+					strconcat					(str,*CStringTable().translate("st_item_used"),": ", itm->Name());
+					_s->wnd()->SetText			(str);
+				}
 			}
 		}break;
 	}
