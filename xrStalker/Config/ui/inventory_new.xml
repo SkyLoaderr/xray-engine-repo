@@ -14,7 +14,7 @@
 		<texture>ui_inventory_main</texture>
 	</back>
 
-    <dragdrop_belt x="590" y="120" width="416" height="104"
+    <dragdrop_belt x="586" y="118" width="416" height="104"
             cell_width = "52" cell_height="52" rows_num="2" cols_num="8"/>
 
 

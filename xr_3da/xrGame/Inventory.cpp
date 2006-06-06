@@ -799,9 +799,6 @@ bool CInventory::CanPutInBelt(PIItem pIItem)
 	if(!pIItem || !pIItem->Belt())		return false;
 	if(m_belt.size() == BeltWidth())	return false;
 
-//.	if(pIItem->object().CLS_ID==CLSID_DETECTOR_SIMPLE && Get(CLSID_DETECTOR_SIMPLE,false)) return false;
-//.	if(pIItem->object().CLS_ID==CLSID_DEVICE_TORCH && Get(CLSID_DEVICE_TORCH,false))		return false;
-
 	return FreeRoom_inBelt(m_belt, pIItem, BeltWidth(), 1);
 }
 //проверяет можем ли поместить вещь в рюкзак,
