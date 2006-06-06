@@ -11,10 +11,13 @@ class CUIDragItem;
 
 struct CUICell{
 							CUICell					()						{Clear();}
+
 		CUICellItem*		m_item;
-		void				SetItem					(CUICellItem* itm)		{m_item = itm;}
+		bool				m_bMainItem;
+		void				SetItem					(CUICellItem* itm, bool bMain)		{m_item = itm; VERIFY(m_item);m_bMainItem = bMain;}
 		bool				Empty					()						{return m_item == NULL;}
-		void				Clear					()						{SetItem(NULL);}
+		bool				MainItem				()						{return m_bMainItem;}
+		void				Clear					()						{m_item = NULL; m_bMainItem = false;}
 		bool				operator ==				(const CUICell& C)		{return (m_item == C.m_item);}
 };
 

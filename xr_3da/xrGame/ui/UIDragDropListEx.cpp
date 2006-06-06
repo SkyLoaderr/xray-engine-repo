@@ -419,7 +419,7 @@ void CUICellContainer::PlaceItemAtPos(CUICellItem* itm, Ivector2& cell_pos)
 	for(int x=0; x<cs.x; ++x)
 		for(int y=0; y<cs.y; ++y){
 			CUICell& C		= GetCellAt(Ivector2().set(x,y).add(cell_pos));
-			C.SetItem		(itm);
+			C.SetItem		(itm,(x==0&&y==0));
 		}
 
 	itm->SetWndPos			( Fvector2().set( (m_cellSize.x*cell_pos.x), (m_cellSize.y*cell_pos.y))	);
@@ -671,7 +671,7 @@ void CUICellContainer::Draw()
 	if( GetCellsInRange(tgt_cells,cells_to_draw) ){
 		UI_CELLS_VEC_IT it = cells_to_draw.begin();
 		for(;it!=cells_to_draw.end();++it)
-			if( !(*it).Empty() )
+			if( !(*it).Empty() && (*it).MainItem() )
 				(*it).m_item->Draw();
 	}
 
