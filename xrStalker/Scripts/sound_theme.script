@@ -381,7 +381,7 @@ theme = {
 	esc_fanat_ready				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	esc_direction_fire			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	esc_bridge_soldiers			= {min_snd = 10, max_snd = 25, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
-	esc_bandit_shustryi			= {min_snd = 10, max_snd = 25, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	esc_bandit_shustryi			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	
 			
 	-- Garbage DramMoment
