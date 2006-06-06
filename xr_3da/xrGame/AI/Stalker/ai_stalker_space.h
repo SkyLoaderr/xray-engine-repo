@@ -30,6 +30,7 @@ namespace StalkerSpace {
 		eStalkerSoundNeedBackup,
 		eStalkerSoundRunningInDanger,
 //		eStalkerSoundWalkingInDanger,
+		eStalkerSoundKillWounded,
 
 		eStalkerSoundScript,
 		eStalkerSoundDummy = u32(-1),
@@ -54,6 +55,7 @@ namespace StalkerSpace {
 		eStalkerSoundMaskSearch					= (1 << 4) | eStalkerSoundMaskDanger,
 		eStalkerSoundMaskNeedBackup				= (1 << 5) | eStalkerSoundMaskDanger,
 		eStalkerSoundMaskMovingInDanger			= (1 << 6) | eStalkerSoundMaskDanger,
+		eStalkerSoundMaskKillWounded			= (1 << 7) | eStalkerSoundMaskDanger,
 		eStalkerSoundMaskPanicHuman				= eStalkerSoundMaskDanger,
 		eStalkerSoundMaskPanicMonster			= eStalkerSoundMaskDanger,
 		eStalkerSoundMaskTolls					= eStalkerSoundMaskDanger,

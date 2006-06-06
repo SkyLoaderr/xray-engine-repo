@@ -39,6 +39,8 @@
 #include "../../effectorshot.h"
 #include "../../BoneProtections.h"
 #include "../../RadioactiveZone.h"
+#include "../../restricted_object.h"
+#include "../../ai_object_location.h"
 
 using namespace StalkerSpace;
 
@@ -686,4 +688,19 @@ void CAI_Stalker::wounded					(bool value)
 		return;
 
 	agent_manager().member().unregister_in_combat	(this);
+}
+
+bool CAI_Stalker::wounded					(const CRestrictedObject *object) const
+{
+	if (!wounded())
+		return				(false);
+
+	VERIFY					(object);
+	if (!object->accessible(Position()))
+		return				(false);
+	
+	if (!object->accessible(ai_location().level_vertex_id()))
+		return				(false);
+
+	return					(true);
 }
