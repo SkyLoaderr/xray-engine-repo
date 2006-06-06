@@ -12,18 +12,18 @@
 const	float		S_distance		= 48;
 const	float		S_distance2		= S_distance*S_distance;
 const	float		S_ideal_size	= 4.f;		// ideal size for the object
-const	float		S_fade			= 5.5;
+const	float		S_fade			= 4.5;
 const	float		S_fade2			= S_fade*S_fade;
 
 const	float		S_level			= .05f;		// clip by energy level
-const	int			S_size			= 73;
+const	int			S_size			= 85;
 const	int			S_rt_size		= 512;
 const	int			batch_size		= 256;
 const	float		S_tess			= .5f;
-const	int 		S_ambient		= 64;
-const	int 		S_clip			= 256-16;
+const	int 		S_ambient		= 32;
+const	int 		S_clip			= 256-8;
 const	D3DFORMAT	S_rtf			= D3DFMT_A8R8G8B8;
-const	float		S_blur_kernel	= .75f;
+const	float		S_blur_kernel	= 0.75f;
 
 const	u32			cache_old		= 30*1000;	// 30 secs
 
@@ -201,6 +201,8 @@ void CLightShadows::calculate	()
 			CROS_impl::Light&	L			=	lights[l_it];
 			if (L.energy<S_level)			continue;
 			
+			//Msg	("~ light: %d",l_it);
+
 			// setup rt+state(s) for first use
 			if (!bRTS)	{
 				bRTS						= TRUE;
@@ -212,6 +214,8 @@ void CLightShadows::calculate	()
 			// calculate light center
 			Fvector		Lpos	= L.source->position;
 			float		Lrange	= L.source->range;
+			//Log	("* l-pos:",Lpos);
+			//Msg	("* l-range: %f",Lrange);
 			if (L.source->flags.type==IRender_Light::DIRECT)
 			{
 				// Msg		(" -direct- : %f",L.energy);
@@ -224,15 +228,18 @@ void CLightShadows::calculate	()
 				float		_dist	;
 				while		(true)	{
 					_dist	=	C.C.distance_to	(Lpos);
-					if (_dist>EPS_L)	break;
-					Lpos.y				+=	.01f;	//. hack to avoid light-in-the-center-of-object
+					//Msg		("* o-dist: %f",	_dist);
+					if (_dist>EPS_L)		break;
+					Lpos.y					+=	.01f;	//. hack to avoid light-in-the-center-of-object
 				}
 				float		_R		=	C.O->renderable.visual->vis.sphere.R+0.1f;
+				//Msg	("* o-r: %f",_R);
 				if (_dist<_R)		{
 					Fvector			Ldir;
 					Ldir.sub		(C.C,Lpos);
 					Ldir.normalize	();
 					Lpos.mad		(Lpos,Ldir,_dist-_R);
+					//Msg	("* moving lpos");
 				}
 			}
 			
@@ -243,12 +250,14 @@ void CLightShadows::calculate	()
 			float		p_hat	=	p_R/p_dist;
 			float		p_asp	=	1.f;
 			float		p_near	=	p_dist-p_R-eps;									
-			float		p_nearR	=	p_dist+eps;									
+			float		p_nearR	=	C.C.distance_to(L.source->position) + p_R*0.85f + eps;
 			float		p_far	=	_min(Lrange,_max(p_dist+S_fade,p_dist+p_R));	
 			if (p_near<eps)			continue;
 			if (p_far<(p_near+eps))	continue;
 			if (p_hat>0.9f)			continue;
 			if (p_hat<0.01f)		continue;
+
+			//Msg			("* near(%f), near-x(%f)",p_near,p_nearR);
 			
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,	p_far);
 			mProjectR.build_projection_HAT	(p_hat,p_asp,p_nearR,	p_far);
@@ -437,11 +446,12 @@ void CLightShadows::render	()
 				if (mag<EPS_S)						continue;
 				n.mul				(1.f/_sqrt(mag));
 				P.build_unit_normal	(A[0],n);
-				if (P.classify(S.L->position)<0)	continue;
+				float	DOT_Fade	= P.classify(S.L->position);
+				if (DOT_Fade<0)		continue;
 
 				// Clip polygon
 				sPoly*		clip	= F.ClipPoly	(A,B);
-				if (0==clip)						continue;
+				if (0==clip)		continue;
 
 				// Triangulate poly 
 				for (u32 v=2; v<clip->size(); v++)	{
