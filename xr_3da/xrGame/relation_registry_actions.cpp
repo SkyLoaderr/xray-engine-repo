@@ -117,11 +117,14 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 				if(actor && stalker_enemy)
 				{
 					const CInventoryOwner* const_inv_owner_from				= inv_owner_from;
-					const CInventoryOwner* const_inv_owner_stalker_enemy	= smart_cast<const CInventoryOwner*>(stalker_enemy);
-					ALife::ERelationType relation_to_actor = GetRelationType(const_inv_owner_stalker_enemy, const_inv_owner_from);
+					if(stalker_enemy->human_being())
+					{
+						const CInventoryOwner* const_inv_owner_stalker_enemy	= smart_cast<const CInventoryOwner*>(stalker_enemy);
+						ALife::ERelationType relation_to_actor = GetRelationType(const_inv_owner_stalker_enemy, const_inv_owner_from);
 
-					if(relation_to_actor == ALife::eRelationTypeEnemy)
-						bDangerScheme = true;
+						if(relation_to_actor == ALife::eRelationTypeEnemy)
+							bDangerScheme = true;
+					}
 				}
 				SAttackGoodwillStorage*		st		= bDangerScheme?&gw_danger:&gw_free;
 
