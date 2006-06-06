@@ -287,7 +287,7 @@ void CBaseGraviZone ::StopTeleParticles(CGameObject* pObject)
 	}
 
 	//остановить партиклы
-	PP->StopParticles	(particle_str);
+	PP->StopParticles	(particle_str, BI_NONE, true);
 }
 
 float CBaseGraviZone ::RelativePower(float dist)

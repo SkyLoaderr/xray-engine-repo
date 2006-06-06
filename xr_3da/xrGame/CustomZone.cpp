@@ -873,7 +873,7 @@ void CCustomZone::PlayObjectIdleParticles(CGameObject* pObject)
 	//запустить партиклы на объекте
 	PP->StartParticles (particle_str, Fvector().set(0,1,0), ID());
 	if (!IsEnabled())
-		PP->StopParticles	(particle_str);
+		PP->StopParticles	(particle_str, BI_NONE, true);
 }
 
 void CCustomZone::StopObjectIdleParticles(CGameObject* pObject)
@@ -900,7 +900,7 @@ void CCustomZone::StopObjectIdleParticles(CGameObject* pObject)
 	}
 
 	//остановить партиклы
-	PP->StopParticles	(particle_str);
+	PP->StopParticles	(particle_str, BI_NONE, true);
 }
 
 

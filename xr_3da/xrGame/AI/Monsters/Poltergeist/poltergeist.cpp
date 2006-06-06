@@ -271,7 +271,7 @@ void CPoltergeist::Die(CObject* who)
 		} else 
 			Position() = m_current_position;
 
-		CParticlesPlayer::StopParticles(m_particles_hidden);
+		CParticlesPlayer::StopParticles(m_particles_hidden, BI_NONE, true);
 	}
 
 	inherited::Die(who);

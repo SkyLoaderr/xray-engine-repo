@@ -302,7 +302,7 @@ void CBurer::StopGraviPrepare()
 	CActor *pA = smart_cast<CActor*>(Level().CurrentEntity());
 	if (!pA) return;
 
-	pA->CParticlesPlayer::StopParticles(particle_gravi_prepare);
+	pA->CParticlesPlayer::StopParticles(particle_gravi_prepare, BI_NONE, true);
 }
 
 void CBurer::StartTeleObjectParticle(CGameObject *pO) 
@@ -315,7 +315,7 @@ void CBurer::StopTeleObjectParticle(CGameObject *pO)
 {
 	CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(pO);
 	if(!PP) return;
-	PP->StopParticles(particle_tele_object);
+	PP->StopParticles(particle_tele_object, BI_NONE, true);
 }
 
 //void CBurer::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)

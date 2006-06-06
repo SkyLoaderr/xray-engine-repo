@@ -142,16 +142,16 @@ BOOL CArtefact::net_Spawn(CSE_Abstract* DC)
 
 void CArtefact::net_Destroy() 
 {
+/*
 	if (*m_sParticlesName) 
-	{	
-		CParticlesPlayer::StopParticles(m_sParticlesName);
-	}
-	inherited::net_Destroy();
+		CParticlesPlayer::StopParticles(m_sParticlesName, BI_NONE, true);
+*/
+	inherited::net_Destroy		();
 
-	StopLights();
-	m_pTrailLight.destroy();
-	CPHUpdateObject::Deactivate();
-	xr_delete(m_activationObj);
+	StopLights					();
+	m_pTrailLight.destroy		();
+	CPHUpdateObject::Deactivate	();
+	xr_delete					(m_activationObj);
 }
 
 void CArtefact::OnH_A_Chield() 
@@ -163,7 +163,7 @@ void CArtefact::OnH_A_Chield()
 	{
 		if (*m_sParticlesName) 
 		{	
-			CParticlesPlayer::StopParticles(m_sParticlesName);
+			CParticlesPlayer::StopParticles(m_sParticlesName, BI_NONE, true);
 		}
 	}
 	else

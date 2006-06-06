@@ -42,8 +42,8 @@ public:
 	public:
 							SBoneInfo				(u16 idx, const Fvector& offs):index(idx),offset(offs){;}
 		SParticlesInfo*		AppendParticles			(CObject* object, const shared_str& ps_name);
-		void				StopParticles			(const shared_str& ps_name);
-		void				StopParticles			(u16 sender_id);
+		void				StopParticles			(const shared_str& ps_name, bool bDestroy);
+		void				StopParticles			(u16 sender_id, bool bDestroy);
 	};
 	DEFINE_VECTOR			(SBoneInfo,BoneInfoVec,BoneInfoVecIt);
 
@@ -82,8 +82,8 @@ public:
 	void					StartParticles			(const shared_str& ps_name, const Fmatrix& dir, u16 sender_id, int life_time = -1, bool auto_stop = true);
 
 
-	void					StopParticles			(u16 sender_ID, u16 bone_id=BI_NONE);
-	void					StopParticles			(const shared_str& particles_name, u16 bone_id=BI_NONE);
+	void					StopParticles			(u16 sender_ID, u16 bone_id, bool bDestroy);
+	void					StopParticles			(const shared_str& particles_name, u16 bone_id, bool bDestroy);
 	void					AutoStopParticles		(const shared_str& ps_name, u16 bone_id,u32 life_time);
 
 	static void				MakeXFORM				(CObject* pObject, u16 bone_id, const Fvector& dir, const Fvector& offset, Fmatrix& result);
