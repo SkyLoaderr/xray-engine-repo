@@ -68,7 +68,7 @@ enum {
 	sm_2D				= (1ul<<1ul),	//!< 2D mode
 	sm_forcedword		= u32(-1),
 };
-enum {
+enum esound_type{
 	st_Effect			= 0,
 	st_Music			= 1,
 	st_forcedword		= u32(-1),
@@ -89,12 +89,13 @@ public:
 	shared_str						nm;
 	CSound_source*					handle;			//!< Pointer to wave-source interface
 	CSound_interface*				feedback;		//!< Pointer to emitter, automaticaly clears on emitter-stop
+	esound_type						s_type;
 	int								g_type;			//!< Sound type, usually for AI
 	CObject*						g_object;		//!< Game object that emitts ref_sound
 	CSound_UserDataPtr				g_userdata;
 public:
 									ref_sound_data	();
-									ref_sound_data	(LPCSTR fName, int type);
+									ref_sound_data	(LPCSTR fName, esound_type sound_type, int game_type);
 	virtual							~ref_sound_data	();
 };
 typedef resptr_core<ref_sound_data,resptr_base<ref_sound_data> >	ref_sound_data_ptr;
@@ -120,6 +121,7 @@ public:
 	IC CSound_interface*	_feedback				(){return _p?_p->feedback:0;}
 	IC CObject*				_g_object				(){VERIFY(_p); return _p->g_object;}
 	IC int					_g_type					(){VERIFY(_p); return _p->g_type;}
+	IC esound_type			_sound_type				(){VERIFY(_p); return _p->s_type;}
 	IC CSound_UserDataPtr	_g_userdata				(){VERIFY(_p); return _p->g_userdata;}
 
 	//! Loader/initializer
@@ -129,7 +131,7 @@ public:
 		\param name Name of wave-file
 		\param type Sound type, usually for \a AI
 	*/
-	IC void					create					( LPCSTR name,	int		type);
+	IC void					create					( LPCSTR name, esound_type sound_type,	int	game_type);
 
 	//! Clones ref_sound from another
 	/*!
@@ -138,7 +140,7 @@ public:
 		\param from Source to clone.
 		\param leave_type Controls whenewer to leave game/AI type as is
 	*/
-	IC void					clone					( const ref_sound& from,	int		type);
+	IC void					clone					( const ref_sound& from, esound_type sound_type, int game_type);
 
 	//! Destroys and unload wave
 	/*!
@@ -245,7 +247,7 @@ class XRSOUND_API	CSound_manager_interface
 
 protected:
 	friend class 					ref_sound_data;
-	virtual void					_create_data			( ref_sound_data& S, LPCSTR fName, int	type=sg_SourceType)					= 0;
+	virtual void					_create_data			( ref_sound_data& S, LPCSTR fName, esound_type sound_type, int	game_type)				= 0;
 	virtual void					_destroy_data			( ref_sound_data& S)																	= 0;
 public:
 	virtual							~CSound_manager_interface(){}
@@ -260,8 +262,8 @@ public:
 
 	//@{
 	/// Sound interface
-	virtual void					create					( ref_sound& S, LPCSTR fName,				int		type=sg_SourceType)					= 0;
-	virtual void					clone					( ref_sound& S, const ref_sound& from,		int		type=sg_SourceType)					= 0;
+	virtual void					create					( ref_sound& S, LPCSTR fName,				esound_type sound_type, int		game_type)	= 0;
+	virtual void					clone					( ref_sound& S, const ref_sound& from,		esound_type sound_type, int		game_type)	= 0;
 	virtual void					destroy					( ref_sound& S)																			= 0;
 	virtual void					stop_emitters			( )																						= 0;	
 
@@ -295,15 +297,15 @@ public:
 extern XRSOUND_API CSound_manager_interface*		Sound;
 
 /// ********* Sound ********* (utils, accessors, helpers)
-IC ref_sound_data::ref_sound_data				()														{	handle=0;feedback=0;g_type=0;g_object=0;															}
-IC ref_sound_data::ref_sound_data				( LPCSTR fName, 	int 	type)				{	::Sound->_create_data			(*this,fName, type);											}
-IC ref_sound_data::~ref_sound_data				()														{	::Sound->_destroy_data			(*this);															}
+IC ref_sound_data::ref_sound_data				()																{	handle=0;feedback=0;g_type=0;g_object=0;s_type=st_Effect;												}
+IC ref_sound_data::ref_sound_data				( LPCSTR fName, 		esound_type sound_type, int	game_type )	{	::Sound->_create_data			(*this,fName, sound_type, game_type);									}
+IC ref_sound_data::~ref_sound_data				()																{	::Sound->_destroy_data			(*this);																}
 
-IC void	ref_sound::create						( LPCSTR name,	int		type)				{	VERIFY(!::Sound->i_locked()); 	::Sound->create		(*this,name,type);							}
-IC void	ref_sound::clone						( const ref_sound& from,	int		type)				{	VERIFY(!::Sound->i_locked()); 	::Sound->clone		(*this,from,type);								}
-IC void	ref_sound::destroy						( )														{	VERIFY(!::Sound->i_locked()); 	::Sound->destroy	(*this);										}
-IC void	ref_sound::play							( CObject* O,						u32 flags, float d)	{	VERIFY(!::Sound->i_locked()); 	::Sound->play		(*this,O,flags,d);								}
-IC void	ref_sound::play_at_pos					( CObject* O, const Fvector &pos,	u32 flags, float d)	{	VERIFY(!::Sound->i_locked()); 	::Sound->play_at_pos(*this,O,pos,flags,d);							}
+IC void	ref_sound::create						( LPCSTR name,			esound_type sound_type, int	game_type)	{	VERIFY(!::Sound->i_locked()); 	::Sound->create		(*this,name,sound_type,game_type);					}
+IC void	ref_sound::clone						( const ref_sound& from,esound_type sound_type, int	game_type)	{	VERIFY(!::Sound->i_locked()); 	::Sound->clone		(*this,from,sound_type,game_type);					}
+IC void	ref_sound::destroy						( )														{	VERIFY(!::Sound->i_locked()); 	::Sound->destroy	(*this);													}
+IC void	ref_sound::play							( CObject* O,						u32 flags, float d)	{	VERIFY(!::Sound->i_locked()); 	::Sound->play		(*this,O,flags,d);											}
+IC void	ref_sound::play_at_pos					( CObject* O, const Fvector &pos,	u32 flags, float d)	{	VERIFY(!::Sound->i_locked()); 	::Sound->play_at_pos(*this,O,pos,flags,d);										}
 IC void	ref_sound::play_no_feedback				( CObject* O, u32 flags, float d, Fvector* pos, float* vol, float* freq, Fvector2* range){	VERIFY(!::Sound->i_locked()); ::Sound->play_no_feedback(*this,O,flags,d,pos,vol,freq,range);	}
 IC void	ref_sound::set_position					( const Fvector &pos)									{	VERIFY(!::Sound->i_locked()); 	VERIFY(_feedback());_feedback()->set_position(pos);								}
 IC void	ref_sound::set_frequency				( float freq)											{	VERIFY(!::Sound->i_locked()); 	if (_feedback())	_feedback()->set_frequency(freq);							}
