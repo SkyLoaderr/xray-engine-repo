@@ -15,7 +15,6 @@ _keybind  keybind[]		= {
 	{ "down",			kDOWN			},
 	{ "jump",			kJUMP			},	
 	{ "crouch",			kCROUCH			},
-	{ "crouch_toggle",	kCROUCH_TOGGLE	},
 	{ "accel",			kACCEL			},
 	{ "sprint_toggle",  kSPRINT_TOGGLE  },
 
@@ -27,7 +26,6 @@ _keybind  keybind[]		= {
 	{ "llookout",		kL_LOOKOUT		},	
 	{ "rlookout",		kR_LOOKOUT		},
 
-	{ "repair",			kREPAIR			},
 	{ "turn_engine",	kENGINE			},
 
 	{ "cam_1",			kCAM_1			},	
@@ -39,7 +37,6 @@ _keybind  keybind[]		= {
 
 	{ "torch",			kTORCH			},
 	{ "night_vision",	kNIGHT_VISION	},
-	{ "binoculars",		kBINOCULARS		},
 	{ "wpn_1",			kWPN_1			},
 	{ "wpn_2",			kWPN_2			},
 	{ "wpn_3",			kWPN_3			},
@@ -64,7 +61,6 @@ _keybind  keybind[]		= {
 	{ "screenshot",		kSCREENSHOT		},	
 	{ "quit",			kQUIT			},
 	{ "console",		kCONSOLE		},
-	{ "hyperkick",		kHyperKick		},
 	{ "inventory",		kINVENTORY		},
 	{ "buy_menu",		kBUY			},
 	{ "skin_menu",		kSKIN			},

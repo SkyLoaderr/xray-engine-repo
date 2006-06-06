@@ -12,10 +12,8 @@ enum	EKeyBinding
 	kDOWN			,
 	kJUMP			,
 	kCROUCH			,
-	kCROUCH_TOGGLE	,
 	kSPRINT_TOGGLE	,
 	kACCEL			,
-	kREPAIR			,
 	kL_LOOKOUT		,
 	kR_LOOKOUT		,
 	kENGINE			,
@@ -26,7 +24,6 @@ enum	EKeyBinding
 	kCAM_ZOOM_IN	,
 	kCAM_ZOOM_OUT	,
 
-	kBINOCULARS		,
 	kTORCH			,
 	kNIGHT_VISION	,
 
@@ -56,7 +53,6 @@ enum	EKeyBinding
 	kSCREENSHOT		,
 	kQUIT			,
 	kCONSOLE		,
-	kHyperKick		,
 	kINVENTORY		,
 	kBUY			,
 	kSKIN			,

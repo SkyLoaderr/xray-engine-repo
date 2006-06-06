@@ -86,13 +86,6 @@ void CActor::IR_OnKeyboardPress(int cmd)
 //				u_EventSend(P);
 			}
 		}break;
-	case kCROUCH_TOGGLE:	
-		{
-			if (mstate_wishful & mcCrouch)
-				mstate_wishful &=~mcCrouch;
-			else
-				mstate_wishful |= mcCrouch;					
-		}break;
 	case kSPRINT_TOGGLE:	
 		{
 			if (mstate_wishful & mcSprint)
@@ -122,13 +115,8 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kWPN_4:	
 	case kWPN_5:	
 	case kWPN_6:	
-		//Weapons->ActivateWeaponID	(cmd-kWPN_1);			
-		break;
-	case kBINOCULARS:
-		//Weapons->ActivateWeaponID	(Weapons->WeaponCount()-1);
-		break;
 	case kWPN_RELOAD:
-		//Weapons->Reload			();
+		//Weapons->ActivateWeaponID	(cmd-kWPN_1);			
 		break;
 	case kUSE:
 		ActorUse();

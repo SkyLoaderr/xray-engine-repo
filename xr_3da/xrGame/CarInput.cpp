@@ -152,7 +152,6 @@ void	CCar::OnKeyboardRelease(int cmd)
 	case kL_STRAFE:	ReleaseLeft();				if (OwnerActor()) OwnerActor()->steer_Vehicle(0);	break;
 	case kR_STRAFE:	ReleaseRight();				if (OwnerActor()) OwnerActor()->steer_Vehicle(0);	break;
 	case kJUMP:		ReleaseBreaks();			break;
-	case kREPAIR:	m_repairing=false;			break;
 	};
 }
 
@@ -168,7 +167,6 @@ void	CCar::OnKeyboardHold(int cmd)
 	case kDOWN:
 	case kLEFT:
 	case kRIGHT:	active_camera->Move(cmd);	break;
-	case kREPAIR:	m_repairing=true;			break;
 /*
 	case kFWD:		
 		if (ectFree==active_camera->tag)	active_camera->Move(kUP);

@@ -13,7 +13,6 @@
 		<command id="kb_right_strafe"				exe="rstrafe"/>
 		<command id="kb_jump"						exe="jump"/>
 		<command id="kb_crouch"						exe="crouch"/>
-		<command id="kb_crouch_toggle"				exe="crouch_toggle"/>
 		<command id="kb_always_run"					exe="accel"/>
 		<command id="kb_sprint"						exe="sprint_toggle"/>		
 		<command id="kb_left_lookout"				exe="llookout"/>
@@ -56,7 +55,6 @@
 		<command id="kb_quit"						exe="quit"/>
 		<command id="kb_console"					exe="console"/>
 		<command id="kb_turn_engine"				exe="turn_engine"/>
-		<!--command id="kb_repair"						exe="repair"/-->
 	</group>
 	<group name="kb_grp_multiplayer">
 		<command id="kb_scores"						exe="scores"/>
