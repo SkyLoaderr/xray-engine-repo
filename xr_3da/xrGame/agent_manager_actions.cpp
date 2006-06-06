@@ -62,7 +62,7 @@ void CAgentManagerActionKillEnemy::finalize			()
 {
 	inherited::finalize							();
 	
-	m_object->enemy().distribute_enemies		();
+//	m_object->enemy().distribute_enemies		();
 }
 
 void CAgentManagerActionKillEnemy::execute			()

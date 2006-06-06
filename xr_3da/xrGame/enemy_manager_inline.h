@@ -8,18 +8,6 @@
 
 #pragma once
 
-IC	CEnemyManager::CEnemyManager									(CCustomMonster *object)
-{
-	VERIFY						(object);
-	m_object					= object;
-	m_ignore_monster_threshold	= 1.f;
-	m_max_ignore_distance		= 0.f;
-	m_ready_to_save				= true;
-	m_visible_now				= false;
-	m_last_enemy_time			= 0;
-	m_last_enemy_change			= 0;
-}
-
 IC	u32	CEnemyManager::last_enemy_time								() const
 {
 	return						(m_last_enemy_time);

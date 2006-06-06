@@ -242,4 +242,17 @@ public:
 	virtual _value_type	evaluate								();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorEnemyReached
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorEnemyReached : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+						CStalkerPropertyEvaluatorEnemyReached	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
+	virtual _value_type	evaluate								();
+};
+
 #include "stalker_property_evaluators_inline.h"

@@ -1804,39 +1804,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="time_manager"
-						Filter="">
-						<File
-							RelativePath=".\alife_time_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\alife_time_manager.h">
-						</File>
-						<File
-							RelativePath=".\alife_time_manager_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="objects"
-						Filter="">
-						<Filter
-							Name="smart_terrain_task"
-							Filter="">
-							<File
-								RelativePath=".\alife_smart_terrain_task.cpp">
-							</File>
-							<File
-								RelativePath=".\alife_smart_terrain_task.h">
-							</File>
-							<File
-								RelativePath=".\alife_smart_terrain_task_inline.h">
-							</File>
-							<File
-								RelativePath=".\alife_smart_terrain_task_script.cpp">
-							</File>
-						</Filter>
-					</Filter>
-					<Filter
 						Name="registries"
 						Filter="">
 						<Filter
@@ -2013,6 +1980,35 @@
 						</File>
 						<File
 							RelativePath=".\alife_registry_wrappers.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="smart_terrain_task"
+						Filter="">
+						<File
+							RelativePath=".\alife_smart_terrain_task.cpp">
+						</File>
+						<File
+							RelativePath=".\alife_smart_terrain_task.h">
+						</File>
+						<File
+							RelativePath=".\alife_smart_terrain_task_inline.h">
+						</File>
+						<File
+							RelativePath=".\alife_smart_terrain_task_script.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="time_manager"
+						Filter="">
+						<File
+							RelativePath=".\alife_time_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\alife_time_manager.h">
+						</File>
+						<File
+							RelativePath=".\alife_time_manager_inline.h">
 						</File>
 					</Filter>
 				</Filter>
@@ -4136,6 +4132,26 @@
 										<File
 											RelativePath=".\stalker_combat_actions_inline.h">
 										</File>
+									</Filter>
+									<Filter
+										Name="kill_wounded"
+										Filter="">
+										<File
+											RelativePath=".\stalker_kill_wounded_planner.cpp">
+										</File>
+										<File
+											RelativePath=".\stalker_kill_wounded_planner.h">
+										</File>
+										<Filter
+											Name="actions"
+											Filter="">
+											<File
+												RelativePath=".\stalker_kill_wounded_actions.cpp">
+											</File>
+											<File
+												RelativePath=".\stalker_kill_wounded_actions.h">
+											</File>
+										</Filter>
 									</Filter>
 								</Filter>
 								<Filter

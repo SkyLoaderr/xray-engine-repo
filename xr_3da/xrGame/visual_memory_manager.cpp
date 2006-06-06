@@ -386,7 +386,7 @@ void CVisualMemoryManager::add_visible_object	(const CObject *object, float time
 			m_objects->push_back	(visible_object);
 	}
 	else
-		(*J).fill				(game_object,self,mask());
+		(*J).fill				(game_object,self,(*J).m_squad_mask.get() | mask());
 //	STOP_PROFILE
 }
 

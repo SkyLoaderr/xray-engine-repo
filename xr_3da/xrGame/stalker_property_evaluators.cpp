@@ -26,6 +26,7 @@
 #include "alife_human_brain.h"
 #include "actor.h"
 #include "actor_memory.h"
+#include "stalker_movement_manager.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -318,5 +319,26 @@ _value_type CStalkerPropertyEvaluatorEnemyWounded::evaluate	()
 	if (!stalker)
 		return					(false);
 
-	return						(stalker->wounded());
+	return						(stalker->wounded(&object().movement().restrictions()));
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorEnemyReached
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerPropertyEvaluatorEnemyReached::CStalkerPropertyEvaluatorEnemyReached	(CAI_Stalker *object, LPCSTR evaluator_name) :
+	inherited		(object ? object->lua_game_object() : 0,evaluator_name)
+{
+}
+
+_value_type CStalkerPropertyEvaluatorEnemyReached::evaluate	()
+{
+	const CEntityAlive			*enemy = object().memory().enemy().selected();
+	if (!enemy)
+		return					(false);
+
+	return						(
+		(object().Position().distance_to_sqr(enemy->Position()) <= _sqr(2.f)) &&
+		object().memory().visual().visible_now(enemy)
+	);
 }

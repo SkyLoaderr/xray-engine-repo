@@ -28,8 +28,8 @@ template <typename _predicate>
 IC	void CMemoryManager::fill_enemies	(const _predicate &predicate) const
 {
 	fill_enemies			(visual().objects(),predicate);
-	fill_enemies			(sound().objects(),predicate);
-	fill_enemies			(hit().objects(),predicate);
+//	fill_enemies			(sound().objects(),predicate);
+//	fill_enemies			(hit().objects(),predicate);
 }
 
 IC	CVisualMemoryManager	&CMemoryManager::visual		() const

@@ -71,6 +71,7 @@ class CStalkerSoundDataVisitor;
 class CWeaponShotEffector;
 struct SBoneProtections;
 class CDangerLocation;
+class CRestrictedObject;
 
 class CAI_Stalker : 
 	public CCustomMonster, 
@@ -470,6 +471,7 @@ public:
 
 public:
 			void						wounded								(bool value);
+			bool						wounded								(const CRestrictedObject *object) const;
 	IC		bool						wounded								() const;
 
 public:

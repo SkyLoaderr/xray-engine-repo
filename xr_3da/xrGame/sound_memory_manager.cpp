@@ -261,7 +261,7 @@ void CSoundMemoryManager::add			(const CObject *object, int sound_type, const Fv
 			m_sounds->push_back	(sound_object);
 	}
 	else {
-		(*J).fill				(game_object,self,ESoundTypes(sound_type),sound_power,!m_stalker ? (*J).m_squad_mask.get() : (*J).m_squad_mask.get() | m_stalker->agent_manager().member().mask(m_stalker));
+		(*J).fill				(game_object,self,ESoundTypes(sound_type),sound_power,(!m_stalker ? (*J).m_squad_mask.get() : ((*J).m_squad_mask.get() | m_stalker->agent_manager().member().mask(m_stalker))));
 		if (!game_object)
 			(*J).m_object_params.m_position = position;
 	}

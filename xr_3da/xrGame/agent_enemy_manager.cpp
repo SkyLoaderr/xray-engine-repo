@@ -16,12 +16,29 @@
 #include "ef_pattern.h"
 #include "member_order.h"
 #include "ai/stalker/ai_stalker.h"
+
 #include "memory_manager.h"
 #include "visual_memory_manager.h"
 #include "sound_memory_manager.h"
 #include "hit_memory_manager.h"
 #include "enemy_manager.h"
 #include "memory_space_impl.h"
+
+const unsigned __int32 __c0					= 0x55555555;
+const unsigned __int32 __c1					= 0x33333333;
+const unsigned __int32 __c2					= 0x0f0f0f0f;
+const unsigned __int32 __c3					= 0x00ff00ff;
+const unsigned __int32 __c4					= 0x0000003f;
+
+IC	u32 population(const u32 &b) {
+	u32		a = b;
+	a		= (a & __c0) + ((a >> 1) & __c0);
+	a		= (a & __c1) + ((a >> 2) & __c1);
+	a		= (a + (a >> 4)) & __c2;
+	a		= (a + (a >> 8)) & __c3;
+	a		= (a + (a >> 16)) & __c4;
+	return	(a);
+}
 
 struct CEnemyFiller {
 	typedef CAgentEnemyManager::ENEMIES ENEMIES;
@@ -60,23 +77,62 @@ struct remove_wounded_predicate {
 	}
 };
 
-template <typename T>
-IC	void CAgentEnemyManager::setup_mask			(xr_vector<T> &objects, CMemberEnemy &enemy, const squad_mask_type &non_combat_members)
+void CAgentEnemyManager::fill_enemies			()
 {
-	xr_vector<T>::iterator			I = std::find(objects.begin(),objects.end(),enemy.m_object->ID());
-	if (I != objects.end()) {
-		(*I).m_squad_mask.assign	(
-			((*I).m_squad_mask.get() & non_combat_members) |
-			enemy.m_distribute_mask.get()
-		);
-	}
-}
+	m_enemies.clear					();
 
-IC	void CAgentEnemyManager::setup_mask			(CMemberEnemy &enemy, const squad_mask_type &non_combat_members)
-{
-	setup_mask						(object().memory().visibles(),enemy,non_combat_members);
-	setup_mask						(object().memory().sounds(),enemy,non_combat_members);
-	setup_mask						(object().memory().hits(),enemy,non_combat_members);
+	{
+		CAgentMemberManager::iterator	I = object().member().combat_members().begin();
+		CAgentMemberManager::iterator	E = object().member().combat_members().end();
+		for ( ; I != E; ++I) {
+			(*I)->probability			(1.f);
+			(*I)->object().memory().fill_enemies	(CEnemyFiller(&m_enemies,object().member().mask(&(*I)->object())));
+		}
+	}
+
+	if (m_enemies.empty())
+		return;
+
+	VERIFY								(!m_enemies.empty());
+
+	{
+		for (int i=0, n=(int)m_wounded.size(); i<n; ++i) {
+			const CEntityAlive			*enemy = m_wounded[i].first;
+			ENEMIES::const_iterator		I = std::find(m_enemies.begin(),m_enemies.end(),enemy);
+			if (I != m_enemies.end())
+				continue;
+
+			m_wounded.erase				(m_wounded.begin() + i);
+			--i;
+			--n;
+		}
+	}
+
+	m_only_wounded_left					= true;
+	m_is_any_wounded					= false;
+	{
+		CAgentMemoryManager				&memory = object().memory();
+		ENEMIES::iterator				I = enemies().begin();
+		ENEMIES::iterator				E = enemies().end();
+		for ( ; I != E; ++I) {
+			if (m_only_wounded_left) {
+				const CAI_Stalker			*stalker = smart_cast<const CAI_Stalker*>((*I).m_object);
+				if (!stalker || !stalker->wounded())
+					m_only_wounded_left	= false;
+				else
+					m_is_any_wounded	= true;
+			}
+
+			memory.object_information	((*I).m_object,(*I).m_level_time,(*I).m_enemy_position);
+		}
+	}
+
+	if (!m_only_wounded_left && m_is_any_wounded) {
+		ENEMIES::iterator				I = std::remove_if(enemies().begin(),enemies().end(),remove_wounded_predicate());
+		enemies().erase					(I,enemies().end());
+	}
+
+	VERIFY								(!m_enemies.empty());
 }
 
 float CAgentEnemyManager::evaluate				(const CEntityAlive *object0, const CEntityAlive *object1) const
@@ -102,48 +158,10 @@ void CAgentEnemyManager::exchange_enemies		(CMemberOrder &member0, CMemberOrder 
 	member1.selected_enemy			(enemy0);
 }
 
-void CAgentEnemyManager::fill_enemies			()
-{
-	m_enemies.clear					();
-
-	{
-		CAgentMemberManager::iterator	I = object().member().combat_members().begin();
-		CAgentMemberManager::iterator	E = object().member().combat_members().end();
-		for ( ; I != E; ++I) {
-			(*I)->probability			(1.f);
-			(*I)->object().memory().fill_enemies	(CEnemyFiller(&m_enemies,object().member().mask(&(*I)->object())));
-		}
-	}
-
-	bool								only_wounded_left = true;
-	bool								is_any_wounded = false;
-	{
-		CAgentMemoryManager				&memory = object().memory();
-		ENEMIES::iterator				I = enemies().begin();
-		ENEMIES::iterator				E = enemies().end();
-		for ( ; I != E; ++I) {
-			if (only_wounded_left) {
-				const CAI_Stalker			*stalker = smart_cast<const CAI_Stalker*>((*I).m_object);
-				if (!stalker || !stalker->wounded())
-					only_wounded_left	= false;
-				else
-					is_any_wounded		= true;
-			}
-
-			memory.object_information	((*I).m_object,(*I).m_level_time,(*I).m_enemy_position);
-		}
-	}
-
-	if (!only_wounded_left && is_any_wounded) {
-		ENEMIES::iterator				I = std::remove_if(enemies().begin(),enemies().end(),remove_wounded_predicate());
-		enemies().erase					(I,enemies().end());
-	}
-}
-
 void CAgentEnemyManager::compute_enemy_danger	()
 {
-	ENEMIES::iterator		I = m_enemies.begin();
-	ENEMIES::iterator		E = m_enemies.end();
+	ENEMIES::iterator				I = m_enemies.begin();
+	ENEMIES::iterator				E = m_enemies.end();
 	for ( ; I != E; ++I) {
 		float						best = -1.f;
 		CAgentMemberManager::const_iterator	i = object().member().combat_members().begin();
@@ -155,13 +173,14 @@ void CAgentEnemyManager::compute_enemy_danger	()
 		}
 		(*I).m_probability			= best;
 	}
+
 	std::sort						(m_enemies.begin(),m_enemies.end());
 }
 
 void CAgentEnemyManager::assign_enemies			()
 {
 	for (;;) {
-		squad_mask_type	J, K, N = 0;
+		squad_mask_type					J, K, N = 0;
 		float							best = flt_max;
 		
 		ENEMIES::iterator				I = m_enemies.begin();
@@ -299,7 +318,8 @@ void CAgentEnemyManager::permutate_enemies		()
 	}
 	while						(changed);
 
-	{
+	VERIFY						(!m_enemies.empty());
+	if (!m_only_wounded_left) {
 		CAgentMemberManager::iterator					I = object().member().combat_members().begin();
 		CAgentMemberManager::iterator					E = object().member().combat_members().end();
 		for ( ; I != E; ++I) {
@@ -312,14 +332,113 @@ void CAgentEnemyManager::permutate_enemies		()
 	}
 }
 
+template <typename T>
+IC	void CAgentEnemyManager::setup_mask			(xr_vector<T> &objects, CMemberEnemy &enemy, const squad_mask_type &non_combat_members)
+{
+	xr_vector<T>::iterator			I = std::find(objects.begin(),objects.end(),enemy.m_object->ID());
+	if (I != objects.end()) {
+		(*I).m_squad_mask.assign	(
+			((*I).m_squad_mask.get() & non_combat_members) |
+			enemy.m_distribute_mask.get()
+		);
+	}
+}
+
+IC	void CAgentEnemyManager::setup_mask			(CMemberEnemy &enemy, const squad_mask_type &non_combat_members)
+{
+	setup_mask						(object().memory().visibles(),enemy,non_combat_members);
+	setup_mask						(object().memory().sounds(),enemy,non_combat_members);
+	setup_mask						(object().memory().hits(),enemy,non_combat_members);
+}
+
 void CAgentEnemyManager::assign_enemy_masks		()
 {
 	squad_mask_type			non_combat_members = object().member().non_combat_members_mask();
 
 	ENEMIES::iterator		I = m_enemies.begin();
 	ENEMIES::iterator		E = m_enemies.end();
-	for ( ; I != E; ++I)
+	for ( ; I != E; ++I) {
 		setup_mask			(*I,non_combat_members);
+#if 0
+		// ensure enemy will be visible by the member
+		// and therefore will become an enemy, since 
+		// enemy should be visible first
+		// hack, but true, revisit this during refactoring
+		squad_mask_type		J = (*I).m_distribute_mask.get(), K;
+		for ( ; J; J &= J - 1) {
+			K				= (J & (J - 1)) ^ J;
+			(*object().member().member(K))->object().memory().make_object_visible_somewhen((*I).m_object);
+		}
+#endif
+	}
+}
+
+void CAgentEnemyManager::assign_wounded		()
+{
+	VERIFY					(m_only_wounded_left);
+
+	m_wounded.clear			();
+
+	u32						combat_member_count = population(object().member().combat_mask());
+	
+	squad_mask_type			assigned = 0;
+	u32						population_level = 0;
+	for (;;) {
+		CMemberEnemy		*enemy = 0;
+		const CAI_Stalker	*processor = 0;
+		float				best_distance_sqr = flt_max;
+
+		for (;;) {
+			ENEMIES::iterator	I = m_enemies.begin();
+			ENEMIES::iterator	E = m_enemies.end();
+			for ( ; I != E; ++I) {
+				if (population((*I).m_distribute_mask.get()) > population_level)
+					continue;
+
+				squad_mask_type						J = (*I).m_mask.get();
+				J									&= (assigned ^ squad_mask_type(-1));
+				for ( ; J; J &= J - 1) {
+					squad_mask_type					K = (J & (J - 1)) ^ J;
+					CAgentMemberManager::iterator	i = object().member().member(K);
+					float							distance_sqr = (*i)->object().Position().distance_to_sqr((*I).m_object->Position());
+					if (distance_sqr < best_distance_sqr) {
+						best_distance_sqr			= distance_sqr;
+						enemy						= &*I;
+						processor					= &(*i)->object();
+					}
+				}
+			}
+
+			if (enemy)
+				break;
+
+			if (combat_member_count <= m_enemies.size())
+				break;
+
+			++population_level;
+		}
+
+		VERIFY						(enemy);
+		VERIFY						(processor);
+
+//		Msg							("wounded enemy [%s] is assigned to member [%s]",*enemy->m_object->cName(),*processor->cName());
+
+		if (wounded_processor(enemy->m_object) == ALife::_OBJECT_ID(-1))
+			wounded_processor		(enemy->m_object,processor->ID());
+		squad_mask_type				mask = object().member().mask(processor);
+		enemy->m_distribute_mask.set(mask,TRUE);
+		VERIFY						((assigned | mask) != assigned);
+		assigned					|= mask;
+
+		if (population(assigned) == combat_member_count)
+			break;
+	}
+
+//	Msg					("[%6d] assigned = %x",Device.dwTimeGlobal,assigned);
+//	ENEMIES::iterator	I = m_enemies.begin();
+//	ENEMIES::iterator	E = m_enemies.end();
+//	for ( ; I != E; ++I)
+//		Msg				("[%6d] [%s] = %x",Device.dwTimeGlobal,*(*I).m_object->cName(),(*I).m_distribute_mask.get());
 }
 
 void CAgentEnemyManager::distribute_enemies	()
@@ -328,9 +447,18 @@ void CAgentEnemyManager::distribute_enemies	()
 		return;
 
 	fill_enemies			();
-	compute_enemy_danger	();
-	assign_enemies			();
-	permutate_enemies		();
+	
+	if (m_enemies.empty())
+		return;
+
+	if (m_only_wounded_left)
+		assign_wounded		();
+	else {
+		compute_enemy_danger();
+		assign_enemies		();
+		permutate_enemies	();
+	}
+
 	assign_enemy_masks		();
 }
 
@@ -340,4 +468,76 @@ void CAgentEnemyManager::remove_links			(CObject *object)
 
 void CAgentEnemyManager::update					()
 {
+}
+
+ALife::_OBJECT_ID CAgentEnemyManager::wounded_processor	(const CEntityAlive *object)
+{
+	WOUNDED_ENEMIES::const_iterator	I = m_wounded.begin();
+	WOUNDED_ENEMIES::const_iterator	E = m_wounded.end();
+	for ( ; I != E; ++I) {
+		if ((*I).first == object)
+			return			((*I).second.first);
+	}
+
+	return					(ALife::_OBJECT_ID(-1));
+}
+
+class find_wounded_predicate {
+private:
+	const CEntityAlive		*m_object;
+
+public:
+	IC			find_wounded_predicate	(const CEntityAlive *object)
+	{
+		m_object			= object;
+		VERIFY				(m_object);
+	}
+
+	IC	bool	operator()	(const CAgentEnemyManager::WOUNDED_ENEMY &enemy) const
+	{
+		return				(enemy.first == m_object);
+	}
+};
+
+void CAgentEnemyManager::wounded_processor	(const CEntityAlive *object, const ALife::_OBJECT_ID &wounded_processor_id)
+{
+	WOUNDED_ENEMIES::const_iterator	I = std::find_if(m_wounded.begin(),m_wounded.end(),find_wounded_predicate(object));
+	VERIFY							(I == m_wounded.end());
+	m_wounded.push_back				(std::make_pair(object,std::make_pair(wounded_processor_id,false)));
+}
+
+void CAgentEnemyManager::wounded_processed	(const CEntityAlive *object, bool value)
+{
+	VERIFY							(value);
+	WOUNDED_ENEMIES::iterator		I = std::find_if(m_wounded.begin(),m_wounded.end(),find_wounded_predicate(object));
+	VERIFY							(I != m_wounded.end());
+	VERIFY							((*I).second.first != ALife::_OBJECT_ID(-1));
+	VERIFY							(!(*I).second.second);
+	(*I).second.second				= true;
+}
+
+bool CAgentEnemyManager::wounded_processed	(const CEntityAlive *object) const
+{
+	WOUNDED_ENEMIES::const_iterator	I = std::find_if(m_wounded.begin(),m_wounded.end(),find_wounded_predicate(object));
+	if (I == m_wounded.end())
+		return						(false);
+	return							((*I).second.second);
+}
+
+bool CAgentEnemyManager::assigned_wounded	(const CEntityAlive *wounded, const CAI_Stalker *member)
+{
+	ENEMIES::const_iterator			I = m_enemies.begin();
+	ENEMIES::const_iterator			E = m_enemies.end();
+	for ( ; I != E; ++I) {
+		if ((*I).m_object != wounded)
+			continue;
+
+		return						(
+			!!(*I).m_distribute_mask.test(
+				object().member().mask(member)
+			)
+		);
+	}
+
+	return							(false);
 }

@@ -39,6 +39,8 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyPureEnemy,
 		eWorldPropertyUseCrouchToLookOut,
 		eWorldPropertyEnemyWounded,
+		eWorldPropertyWoundedEnemyReached,
+		eWorldPropertyWoundedEnemyPrepared,
 
 		eWorldPropertyDangerUnknown,
 		eWorldPropertyDangerInDirection,
@@ -98,6 +100,8 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorHideFromGrenade,
 		eWorldOperatorSuddenAttack,
 		eWorldOperatorKillEnemyIfNotVisible,
+		eWorldOperatorReachWoundedEnemy,
+		eWorldOperatorPrepareWoundedEnemy,
 		eWorldOperatorKillWoundedEnemy,
 		eWorldOperatorPostCombatWait,
 

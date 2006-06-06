@@ -31,6 +31,7 @@
 #include "member_order.h"
 #include "ai/stalker/ai_stalker_space.h"
 #include "stalker_planner.h"
+#include "stalker_kill_wounded_planner.h"
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
@@ -366,10 +367,10 @@ void CStalkerCombatPlanner::add_actions			()
 	add_effect				(action,eWorldPropertyEnemy,		false);
 	add_operator			(eWorldOperatorSuddenAttack,		action);
 
-	action					= xr_new<CStalkerActionKillWounded>		(m_object,"kill wounded enemy");
-	add_condition			(action,eWorldPropertyDangerGrenade,false);
-	add_condition			(action,eWorldPropertyEnemyWounded,	true);
-	add_condition			(action,eWorldPropertyEnemy,		true);
-	add_effect				(action,eWorldPropertyEnemy,		false);
-	add_operator			(eWorldOperatorKillWoundedEnemy,	action);
+	CStalkerKillWoundedPlanner	*planner = xr_new<CStalkerKillWoundedPlanner>	(m_object,"kill wounded enemy");
+	add_condition			(planner,eWorldPropertyDangerGrenade,false);
+	add_condition			(planner,eWorldPropertyEnemyWounded,	true);
+	add_condition			(planner,eWorldPropertyEnemy,		true);
+	add_effect				(planner,eWorldPropertyEnemy,		false);
+	add_operator			(eWorldOperatorKillWoundedEnemy,	planner);
 }

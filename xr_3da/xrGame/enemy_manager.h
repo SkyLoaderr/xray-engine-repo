@@ -13,6 +13,8 @@
 #include "custommonster.h"
 #include "script_callback_ex.h"
 
+class CAI_Stalker;
+
 class CEnemyManager : public CObjectManager<const CEntityAlive> {
 public:
 	typedef CObjectManager<const CEntityAlive>	inherited;
@@ -21,6 +23,7 @@ public:
 
 private:
 	CCustomMonster				*m_object;
+	CAI_Stalker					*m_stalker;
 	float						m_ignore_monster_threshold;
 	float						m_max_ignore_distance;
 	mutable bool				m_ready_to_save;
@@ -37,7 +40,7 @@ protected:
 			bool				expedient			(const CEntityAlive *object) const;
 
 public:
-	IC							CEnemyManager		(CCustomMonster *object);
+								CEnemyManager		(CCustomMonster *object);
 	virtual void				reload				(LPCSTR section);
 	virtual bool				useful				(const CEntityAlive *object) const;
 	virtual bool				is_useful			(const CEntityAlive *object) const;
@@ -58,6 +61,9 @@ public:
 			void				restore_max_ignore_monster_distance	();
 			float				max_ignore_monster_distance			() const;
 
+public:
+			void				wounded				(const CEntityAlive *wounded_enemy);
+	IC		const CEntityAlive	*wounded			() const;
 };
 
 #include "enemy_manager_inline.h"

@@ -126,7 +126,7 @@ void CHitMemoryManager::add					(float amount, const Fvector &vLocalDir, const C
 			m_hits->push_back	(hit_object);
 	}
 	else {
-		(*J).fill				(entity_alive,m_object,!m_stalker ? (*J).m_squad_mask.get() : (*J).m_squad_mask.get() | m_stalker->agent_manager().member().mask(m_stalker));
+		(*J).fill				(entity_alive,m_object,(!m_stalker ? (*J).m_squad_mask.get() : ((*J).m_squad_mask.get() | m_stalker->agent_manager().member().mask(m_stalker))));
 		(*J).m_amount			= _max(amount,(*J).m_amount);
 	}
 }
@@ -151,8 +151,10 @@ void CHitMemoryManager::add					(const CHitObject &_hit_object)
 		else
 			m_hits->push_back	(hit_object);
 	}
-	else
+	else {
+		hit_object.m_squad_mask.assign	(hit_object.m_squad_mask.get() | (*J).m_squad_mask.get());
 		*J						= hit_object;
+	}
 }
 
 struct CRemoveOfflinePredicate {
