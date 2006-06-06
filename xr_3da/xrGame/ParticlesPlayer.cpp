@@ -242,7 +242,7 @@ struct SRP
 };
 void CParticlesPlayer::UpdateParticles()
 {
-	VERIFY	(m_bActiveBones);
+	if	(!m_bActiveBones)	return;
 	m_bActiveBones			= false;
 
     CObject* object			= m_self_object;

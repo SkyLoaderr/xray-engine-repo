@@ -201,7 +201,7 @@ void CPhysicsShellHolder::UpdateCL	()
 {
 	inherited::UpdateCL	();
 	//обновить присоединенные партиклы
-	if (m_bActiveBones)	UpdateParticles	();
+	UpdateParticles		();
 }
 float CPhysicsShellHolder::EffectiveGravity()
 {
