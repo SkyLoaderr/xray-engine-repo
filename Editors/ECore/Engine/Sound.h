@@ -129,7 +129,7 @@ public:
 		\param name Name of wave-file
 		\param type Sound type, usually for \a AI
 	*/
-	IC void					create					( LPCSTR name,	int		type=sg_SourceType);
+	IC void					create					( LPCSTR name,	int		type);
 
 	//! Clones ref_sound from another
 	/*!
@@ -138,7 +138,7 @@ public:
 		\param from Source to clone.
 		\param leave_type Controls whenewer to leave game/AI type as is
 	*/
-	IC void					clone					( const ref_sound& from,	int		type=sg_SourceType);
+	IC void					clone					( const ref_sound& from,	int		type);
 
 	//! Destroys and unload wave
 	/*!
@@ -260,7 +260,7 @@ public:
 
 	//@{
 	/// Sound interface
-	virtual void					create					( ref_sound& S, LPCSTR fName,	int		type=sg_SourceType)					= 0;
+	virtual void					create					( ref_sound& S, LPCSTR fName,				int		type=sg_SourceType)					= 0;
 	virtual void					clone					( ref_sound& S, const ref_sound& from,		int		type=sg_SourceType)					= 0;
 	virtual void					destroy					( ref_sound& S)																			= 0;
 	virtual void					stop_emitters			( )																						= 0;	
