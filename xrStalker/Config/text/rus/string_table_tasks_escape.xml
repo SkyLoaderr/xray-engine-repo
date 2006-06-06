@@ -35,15 +35,20 @@
 </string>
 <string id="tutorial_help_wounded_0">
     <text>
-        Забрать информацию у разведчика торговца.
+        Принести информацию от разведчика торговцу
     </text>
 </string>
 <string id="tutorial_help_wounded_1">
     <text>
-        Получить флешку у разведчика
+        Узнать где находится Шустрый у Волка
     </text>
 </string>
 <string id="tutorial_help_wounded_2">
+    <text>
+        Взять у Шустрого флешку с информацией
+    </text>
+</string>
+<string id="tutorial_help_wounded_3">
     <text>
         Принести флешку торговцу
     </text>
@@ -90,12 +95,12 @@
 </string>
 <string id="esc_dinamit_to_volk">
     <text>
-        Достать динамит для Волка
+        Уничтожить бандитов на АТП
     </text>
 </string>
 <string id="esc_dinamit_to_volk_0">
     <text>
-        Необходимо забрать динамит у бандитов на фабрике и доставить его Волку.
+        Уничтожить бандитов на АТП и отчитаться перед Волком.
     </text>
 </string>
 <string id="esc_dinamit_to_volk_1">
@@ -105,12 +110,12 @@
 </string>
 <string id="esc_dinamit_to_volk_2">
     <text>
-        Найти динамит на фабрике
+        Уничтожить всех бандитов
     </text>
 </string>
 <string id="esc_dinamit_to_volk_3">
     <text>
-        Принести динамит Волку
+        Поговорить с Волком
     </text>
 </string>
 <string id="garbage_meet_stalker">
@@ -193,8 +198,4 @@
         Встретиться с Доктором в тайнике Стрелка
     </text>
 </string>
-<string id="tutorial_help_wounded_3">
-    <text>
-        Убить бандитов зажавших разведчика.
-    </text>
-</string>
+

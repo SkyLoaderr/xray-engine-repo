@@ -45,7 +45,8 @@
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj \n
-			af_medusa \n
+			grenade_f1 \n
+			bandage \n
 			wpn_ak74u \n
 			ammo_5.45x39_fmj \n
 			device_torch \n

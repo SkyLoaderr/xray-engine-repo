@@ -47,6 +47,7 @@
 	<info_portion id="tutorial_wounded_death"></info_portion>
 	<info_portion id="tutorial_wounded_fail"></info_portion>
 	<info_portion id="tutorial_wounded_end"></info_portion>
+	<info_portion id="tutorial_wounded_heal"></info_portion>
 	<info_portion id="esc_lager_friendship"></info_portion>
 	<info_portion id="tutorial_end"></info_portion>
 	<info_portion id="tutorial_wounded_volk_greet"></info_portion>
@@ -54,6 +55,9 @@
 	<info_portion id="esc_serious_talk"></info_portion>
 	<info_portion id="esc_wounded_arrive"></info_portion>
 	<info_portion id="esc_tutorial_secret"></info_portion>
+	<info_portion id="esc_tutorial_secret_find"></info_portion>
+	<info_portion id="esc_shustryi_secret"></info_portion>
+	<info_portion id="esc_shustryi_secret_find"></info_portion>
 
 	<!-- Fox -->
 	<info_portion id="escape_stalker_help"></info_portion>
@@ -158,6 +162,7 @@
 		<article>esc_kolyan_lost</article>
 	</info_portion>
 	<info_portion id="esc_kolyan_found"></info_portion>
+	<info_portion id="esc_prison"></info_portion>
 	
 	<!-- infoportions for raid -->
 	<info_portion id="esc_raid1_start"></info_portion>

@@ -43,19 +43,20 @@
 			<infoportion_complete>esc_serious_talk</infoportion_complete>
 		</objective>
 		<objective>
-			<text>tutorial_help_wounded_3</text>
-			<map_location_type hint="tutorial_bandits">green_location</map_location_type>
-			<object_story_id>esc_pm_broken</object_story_id>
-			<function_complete>escape_tasks.kill_tutorial_bandits</function_complete>
+			<text>tutorial_help_wounded_1</text>
+			<map_location_type hint="volk">green_location</map_location_type>
+			<object_story_id>Escape_novice_lager_volk</object_story_id>
+			<infoportion_complete>esc_kill_bandits_quest_have</infoportion_complete>
+			<function_fail>escape_tasks.task_volk_fail</function_fail>
 		</objective>
 		<objective>
-			<text>tutorial_help_wounded_1</text>
+			<text>tutorial_help_wounded_2</text>
 			<map_location_type hint="tutorial_wounded">green_location</map_location_type>
 			<object_story_id>Escape_tutorial_wounded</object_story_id>
 			<infoportion_complete>tutorial_wounded_give_info</infoportion_complete>
 		</objective>
 		<objective>
-			<text>tutorial_help_wounded_2</text>
+			<text>tutorial_help_wounded_3</text>
 			<map_location_type hint="escape_trader">blue_location</map_location_type>
 			<object_story_id>Escape_Trader</object_story_id>
 		</objective>
@@ -110,7 +111,7 @@
 		<objective>
 			<text>esc_dinamit_to_volk_0</text>
 			<icon x="300" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>escape_dynamite_done</infoportion_complete>
+			<infoportion_complete>esc_kill_bandits_quest_done</infoportion_complete>
 			<infoportion_fail>esc_wolf_dead</infoportion_fail>
 			<function_fail>escape_tasks.is_actor_enemy_lager</function_fail>
 		</objective>
@@ -124,14 +125,14 @@
 		<objective>
 			<text>esc_dinamit_to_volk_2</text>
 			<map_location_type hint="escape_dinamit">green_location</map_location_type>
-			<object_story_id>Escape_dinamite</object_story_id>
-			<infoportion_complete>escape_dynamite_have</infoportion_complete>
+			<object_story_id>esc_bandits_factory</object_story_id>
+			<infoportion_complete>esc_kill_bandits_quest_kill</infoportion_complete>
 		</objective>
 		<objective>
 			<text>esc_dinamit_to_volk_3</text>
 			<map_location_type hint="volk">green_location</map_location_type>
 			<object_story_id>Escape_novice_lager_volk</object_story_id>
-			<infoportion_complete>escape_dynamite_done</infoportion_complete>
+			<infoportion_complete>esc_kill_bandits_quest_done</infoportion_complete>
 		</objective>
 	</game_task>
 

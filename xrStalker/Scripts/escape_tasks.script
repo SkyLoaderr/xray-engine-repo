@@ -59,15 +59,6 @@ function proceed()
 		actor:give_info_portion("escape_blockpost_case_have")
 	end
 	
---' Флеш проводника 
-
-	if actor:has_info("escape_dynamite_start") and
-	   actor:dont_has_info("escape_dynamite_have") and 
-	   actor:object("dynamite") ~= nil
-	then
-		actor:give_info_portion("escape_dynamite_have")
-	end
-
 	--' Выдача сообщения "на ее месте можешь быть ты"
 --	if actor:has_info("tutorial_flesh_start") and
 --	   actor:has_info("tutorial_flesh_die") and
@@ -115,8 +106,7 @@ end
 
 function task_volk_fail()
 	local actor = db.actor
-	if actor:has_info("tutorial_wounded_die") or
-	   actor:has_info("esc_wolf_dead")
+	if actor:has_info("esc_wolf_dead")
 	then
 		return true
 	else
@@ -242,7 +232,19 @@ function process_info_portion(info_id)
 		
 	elseif info_id == "esc_bridge_soldiers" then
 		level_tasks.add_location(031, "crlc_big", "soldiers_bridge")
+		
+	elseif info_id == "esc_tutorial_secret" then
+		level_tasks.add_location(026, "crlc_small", "tutorial_secret")
 
+	elseif info_id == "esc_tutorial_secret_find" then
+		level_tasks.remove_location(026, "crlc_small")
+		
+	elseif info_id == "esc_shustryi_secret" then
+		level_tasks.add_location(027, "crlc_small", "tutorial_secret_shustryi")
+
+	elseif info_id == "esc_shustryi_secret_find" then
+		level_tasks.remove_location(027, "crlc_small")
+		
 	return false
 	end
 end
