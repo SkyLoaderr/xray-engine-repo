@@ -443,8 +443,8 @@
 			[spawn] \n
 			wpn_colt1911 \n
 			ammo_11.43x23_fmj = 1 \n
-            wpn_abakan \n
-            ammo_5.45x39_ap = 2 \n
+            wpn_lr300 \n
+            ammo_5.56x45_ap = 2 \n
 			device_torch \n
             grenade_f1 = 2 \n
             wpn_rpg7 \n
@@ -476,8 +476,8 @@
 			[spawn] \n
 			wpn_colt1911 \n
 			ammo_11.43x23_fmj = 1 \n
-            wpn_abakan \n
-            ammo_5.45x39_ap = 2 \n
+            wpn_sig550 \n
+            ammo_5.56x45_ap = 2 \n
 			device_torch \n
             grenade_f1 = 1 \n
 #include "gameplay\character_items.xml"
@@ -509,7 +509,7 @@
             wpn_usp \n
             ammo_11.43x23_fmj = 1 \n
             wpn_lr300 \n
-            ammo_5.56x45_ap = 2 \n
+            ammo_5.56x45_ap = 3 \n
 			device_torch \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -536,12 +536,73 @@
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
 		<supplies>
 			[spawn] \n
-            wpn_sig220 \n
-            ammo_11.43x23_fmj = 1 \n
-            wpn_abakan \n
-            ammo_5.45x39_ap = 2 \n
+            wpn_walther \n
+            ammo_9x19_pbp = 1 \n
+            wpn_val \n
+            ammo_9x39_ap = 2 \n
 			device_torch \n
-            grenade_f1 = 1 \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+		
+		<money min="5000" max="10000" infinitive="0"/>
+			
+#include "gameplay\character_dialogs.xml"		
+	</specific_character>
+
+	<specific_character id="pri_followers_stalker4" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>pri_followers_common_bio</bio>
+
+		<class>pri_followers</class>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+			
+		<rank>905</rank>
+		<reputation>15</reputation>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<snd_config>characters_voice\human_03\stalker\</snd_config>
+		<supplies>
+			[spawn] \n
+            wpn_usp \n
+            ammo_11.43x23_fmj = 1 \n
+            wpn_vintorez \n
+            ammo_9x39_ap = 3 \n
+			device_torch \n
+            grenade_f1 = 2 \n
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+		
+		<money min="5000" max="10000" infinitive="0"/>
+			
+#include "gameplay\character_dialogs.xml"		
+	</specific_character>
+
+	<specific_character id="pri_followers_stalker5" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>pri_followers_common_bio</bio>
+
+		<class>pri_followers</class>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+			
+		<rank>957</rank>
+		<reputation>13</reputation>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<snd_config>characters_voice\human_03\stalker\</snd_config>
+		<supplies>
+			[spawn] \n
+            wpn_walther \n
+            ammo_9x19_pbp = 1 \n
+            wpn_groza \n
+            ammo_9x39_ap = 2 \n
+			device_torch \n
+            grenade_f1 = 2 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
