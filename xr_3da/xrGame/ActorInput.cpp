@@ -308,7 +308,7 @@ bool CActor::use_Holder				(CHolderCustom* holder)
 
 void CActor::ActorUse()
 {
-	mstate_real = 0;
+	//mstate_real = 0;
 	PickupModeOn();
 
 		
