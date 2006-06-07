@@ -45,11 +45,11 @@ public:
 	}
 };
 
-class XRCORE_API CTimer_paused  : public CTimer		{
+class XRCORE_API CTimer_paused_ex : public CTimer		{
 	u64							save_clock;
 public:
-	CTimer_paused				()		{ g_pauseMngr.Register(this);	}
-	~CTimer_paused				()		{ g_pauseMngr.UnRegister(this);	}
+	CTimer_paused				()		{ }
+	virtual ~CTimer_paused		()		{ }
 	IC BOOL		Paused			()const	{ return bPause;				}
 	IC void		Pause			(BOOL b){
 		if(bPause==b)			return	;
@@ -63,6 +63,12 @@ public:
 		}
 		bPause = b;
 	}
+};
+
+class XRCORE_API CTimer_paused  : public CTimer_paused_ex		{
+public:
+	CTimer_paused				()		{ g_pauseMngr.Register(this);	}
+	virtual ~CTimer_paused		()		{ g_pauseMngr.UnRegister(this);	}
 };
 
 extern XRCORE_API BOOL			g_bEnableStatGather;
