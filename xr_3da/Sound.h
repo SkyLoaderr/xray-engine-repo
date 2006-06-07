@@ -279,7 +279,7 @@ public:
 	virtual void					set_handler				( sound_event* E )																		= 0;
 	//@}
 
-	virtual void					update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt )						= 0;
+	virtual void					update					( const Fvector& P, const Fvector& D, const Fvector& N)									= 0;
 	virtual void					statistic				( CSound_stats&  dest )																	= 0;
 
 	virtual float					get_occlusion_to		( const Fvector& hear_pt, const Fvector& snd_pt, float dispersion=0.2f)					= 0;
