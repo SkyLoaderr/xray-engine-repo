@@ -320,9 +320,6 @@
 		</supplies>
 			
 		<start_dialog>mil_max_dialog</start_dialog>
-		<actor_dialog>mil_max_dialog_common2</actor_dialog>
-        <actor_dialog>mil_max_dialog_common1</actor_dialog>
-		<actor_dialog>mil_max_dialog_common3</actor_dialog>
 	</specific_character>
 <!---------------------------SVOBODA MASTER----------------------->
 	<specific_character id="mil_Svoboda_master" team_default = "1">
