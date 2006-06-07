@@ -1990,6 +1990,9 @@
 					RelativePath=".\config\scripts\postprocess.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\scripts\sar_door.ltx">
+				</File>
+				<File
 					RelativePath=".\config\scripts\sincos.ltx">
 				</File>
 				<File
@@ -3887,6 +3890,12 @@
 				</Filter>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\resource.h">
+		</File>
+		<File
+			RelativePath=".\xrStalker.rc">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
