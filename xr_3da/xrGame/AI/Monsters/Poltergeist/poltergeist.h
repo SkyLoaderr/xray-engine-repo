@@ -32,7 +32,7 @@ class CPoltergeist :	public CBaseMonster ,
 	//telekinesis
 	float				m_tele_radius;
 	u32					m_tele_hold_time;
-	float				m_tele_fly_time;
+	float				m_tele_fly_velocity;
 
 public:
 	struct SDelay {
@@ -103,13 +103,37 @@ public:
 			ref_sound m_strange_sound;
 
 	// Telekinesis
-	
-			void	ProcessTelekinesis	(const CObject *target);
-			void	UpdateTelekinesis	();
+			enum ETeleState {
+				eStartRaiseObjects,
+				eRaisingObjects,
+				eFireObjects,
+				eWait
+			} m_tele_state;
+			
+			void	initailize_telekinesis	();
+			void	update_telekinesis		();
 
 			u32					time_tele_start;
 			const CObject		*tele_enemy;
 			CPhysicsShellHolder *tele_object;
+
+			void tele_find_objects	(xr_vector<CObject*> &objects, const Fvector &pos);
+			void tele_raise_objects	();
+			void tele_fire_objects	();
+			
+			u32					m_tele_time;
+
+			float				m_pmt_tele_radius;
+			float				m_pmt_tele_object_min_mass;
+			float				m_pmt_tele_object_max_mass;
+			u32					m_pmt_tele_object_count;
+			u32					m_pmt_tele_time_to_hold;
+			u32					m_pmt_tele_time_to_wait;
+			u32					m_pmt_tele_time_to_wait_in_objects;
+			float				m_pmt_tele_distance;
+			float				m_pmt_tele_object_height;
+			u32					m_pmt_tele_time_object_keep;
+
 
 	// Movement
 			Fvector m_current_position;		// Позиция на ноде

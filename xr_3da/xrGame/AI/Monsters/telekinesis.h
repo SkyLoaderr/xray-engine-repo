@@ -51,9 +51,13 @@ virtual		void	clear_notrelevant   ();
 			// вернуть активность объекта		
 			bool	is_active_object	(CPhysicsShellHolder *obj);
 			
-			// вернуть количество кониролируемых объектов
+			// вернуть количество контролируемых объектов (в состоянии TS_Raise & TS_Keep)
 			u32		get_objects_count	();
-			
+
+			// вернуть количество контролируемых объектов (всех)
+			u32		get_objects_total_count() {return objects.size();}
+
+
 			// вернуть объект по индексу в массиве
 			// a	copy of the object!
 CTelekineticObject	get_object_by_index (u32 index) {VERIFY(objects.size() > index); return *objects[index];}

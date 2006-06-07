@@ -3528,6 +3528,9 @@
 						<File
 							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_state_manager.h">
 						</File>
+						<File
+							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_state_rest.h">
+						</File>
 						<Filter
 							Name="Script"
 							Filter="">

@@ -115,10 +115,18 @@ void CPoltergeist::Load(LPCSTR section)
 	READ_IF_EXISTS(pSettings,r_u32,section,"PsyAura_Fake_Delay", 8000);
 	READ_IF_EXISTS(pSettings,r_float,section,"PsyAura_Fake_MaxAddDist", 90.f);
 
-	
-	m_tele_radius				= READ_IF_EXISTS(pSettings,r_float,section,"Tele_Radius", 20.f);
-	m_tele_hold_time			= READ_IF_EXISTS(pSettings,r_u32,section,"Tele_Hold_Time", 1000);
-	m_tele_fly_time				= READ_IF_EXISTS(pSettings,r_float,section,"Tele_Fly_Time", 0.35f);
+	m_tele_fly_velocity			= READ_IF_EXISTS(pSettings,r_float,section,"Tele_Fly_Velocity", 30.f);
+
+	m_pmt_tele_radius					= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Find_Radius", 10.f);
+	m_pmt_tele_object_min_mass			= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Object_Min_Mass", 40.f);
+	m_pmt_tele_object_max_mass			= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Object_Max_Mass", 500.f);
+	m_pmt_tele_object_count				= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Object_Count", 10);
+	m_pmt_tele_time_to_hold				= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Hold_Time", 3000);
+	m_pmt_tele_time_to_wait				= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Wait_Time", 3000);
+	m_pmt_tele_time_to_wait_in_objects	= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Delay_Between_Objects_Time", 500);
+	m_pmt_tele_distance					= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Distance", 50.f);
+	m_pmt_tele_object_height			= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Object_Height", 10.f);
+	m_pmt_tele_time_object_keep			= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Time_Object_Keep", 10000);
 
 }
 
@@ -156,6 +164,9 @@ void CPoltergeist::reinit()
 	time_height_updated					= 0;
 	
 	EnableHide							();
+
+
+	initailize_telekinesis				();
 }
 
 void CPoltergeist::Hide()
@@ -232,8 +243,9 @@ void CPoltergeist::shedule_Update(u32 dt)
 	Energy::schedule_update();
 
 	UpdateFlame();
-	UpdateTelekinesis();
 	UpdateHeight();
+
+	update_telekinesis();
 }
 
 BOOL CPoltergeist::net_Spawn (CSE_Abstract* DC) 
