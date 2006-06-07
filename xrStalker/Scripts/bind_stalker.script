@@ -107,6 +107,8 @@ function actor_binder:take_item_from_box(box, item)
 		return
 	end
 
+	local npc = smart_terrain.gulag:get_nearest_online_obj(db.actor:position())
+	xr_sound.set_sound_play(npc, "reac_box")
 	xr_gulag.setGulagEnemy(smart_terrain:name() , db.actor)
 end
 ----------------------------------------------------------------------------------------------------------------------
