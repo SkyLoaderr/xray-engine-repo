@@ -219,6 +219,43 @@ u32 CMemoryManager::memory_time(const CObject *object) const
 	return				(result);
 }
 
+Fvector CMemoryManager::memory_position	(const CObject *object) const
+{
+	u32					time = 0;
+	Fvector				result = Fvector().set(0.f,0.f,0.f);
+	if (!this->object().g_Alive())
+		return			(result);
+
+	const CGameObject	*game_object = smart_cast<const CGameObject*>(object);
+	VERIFY				(game_object);
+
+	{
+		xr_vector<CVisibleObject>::const_iterator	I = std::find(visual().objects().begin(),visual().objects().end(),object_id(object));
+		if (visual().objects().end() != I) {
+			time		= (*I).m_level_time;
+			result		= (*I).m_object_params.m_position;
+		}
+	}
+
+	{
+		xr_vector<CSoundObject>::const_iterator	I = std::find(sound().objects().begin(),sound().objects().end(),object_id(object));
+		if ((sound().objects().end() != I) && (time < (*I).m_level_time)) {
+			time		= (*I).m_level_time;
+			result		= (*I).m_object_params.m_position;
+		}
+	}
+	
+	{
+		xr_vector<CHitObject>::const_iterator	I = std::find(hit().objects().begin(),hit().objects().end(),object_id(object));
+		if ((hit().objects().end() != I) && (time < (*I).m_level_time)) {
+			time		= (*I).m_level_time;
+			result		= (*I).m_object_params.m_position;
+		}
+	}
+
+	return				(result);
+}
+
 void CMemoryManager::remove_links	(CObject *object)
 {
 	if (m_object->g_Alive()) {

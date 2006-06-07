@@ -155,6 +155,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		//.def("clear_hear_callback",			&CScriptGameObject::ClearSoundCallback)
 		
 		.def("memory_time",					&CScriptGameObject::memory_time)
+		.def("memory_position",				&CScriptGameObject::memory_position)
 		.def("best_weapon",					&CScriptGameObject::best_weapon)
 		.def("explode",						&CScriptGameObject::explode)
 		.def("get_enemy",					&CScriptGameObject::GetEnemy)

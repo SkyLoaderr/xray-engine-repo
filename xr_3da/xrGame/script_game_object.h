@@ -371,6 +371,7 @@ public:
 
 			//////////////////////////////////////////////////////////////////////////
 			u32						memory_time		(const CScriptGameObject &lua_game_object);
+			Fvector					memory_position	(const CScriptGameObject &lua_game_object);
 			CScriptGameObject		*best_weapon	();
 			void					explode			(u32 level_time);
 			CScriptGameObject		*GetEnemy		() const;
