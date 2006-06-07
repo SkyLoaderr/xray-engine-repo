@@ -179,6 +179,20 @@ void CEnemyManager::reload					(LPCSTR section)
 	VERIFY						(m_ready_to_save);
 }
 
+struct no_wounded_predicate {
+	IC	bool	operator()	(const CEntityAlive *enemy) const
+	{
+		const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(enemy);
+		if (!stalker)
+			return				(false);
+
+		if (!stalker->wounded())
+			return				(false);
+
+		return					(true);
+	}
+};
+
 void CEnemyManager::update					()
 {
 	START_PROFILE("Memory Manager/enemies::update")
@@ -193,6 +207,32 @@ void CEnemyManager::update					()
 
 	const CEntityAlive			*previous_selected = selected();
 
+	bool						only_wounded = true;
+	ENEMIES::const_iterator		I = m_objects.begin();
+	ENEMIES::const_iterator		E = m_objects.end();
+	for ( ; I != E; ++I) {
+		const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(*I);
+		if (!stalker)
+			continue;
+
+		if (stalker->wounded())
+			continue;
+
+		only_wounded			= false;
+		break;
+	}
+
+	if (!only_wounded) {
+		m_objects.erase			(
+			remove_if(
+				m_objects.begin(),
+				m_objects.end(),
+				no_wounded_predicate()
+			),
+			m_objects.end()
+		);
+	}
+
 	if	(
 			!selected() ||
 			!m_object->memory().visual().visible_now(selected()) ||
@@ -201,7 +241,7 @@ void CEnemyManager::update					()
 		inherited::update		();
 	else {
 		const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(selected());
-		if (stalker && stalker->wounded(&m_object->movement().restrictions()))
+		if (stalker && stalker->wounded())
 			inherited::update	();
 	}
 
