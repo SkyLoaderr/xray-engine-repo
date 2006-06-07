@@ -276,7 +276,7 @@ void CObjectFactory::register_classes	()
 	ADD(CWeaponBM16				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_BM16			,"wpn_bm16");
 	ADD(CWeaponRG6				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_RG6				,"wpn_rg6");
 	//-----------------------------------------------------------------------------------------------------
-	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_PM				,"wpn_ammo");
+	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_AMMO				,"wpn_ammo");
 	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_VOG25			,"wpn_ammo_vog25");
 	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_OG7B			,"wpn_ammo_og7b");
 	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_M209			,"wpn_ammo_m209");

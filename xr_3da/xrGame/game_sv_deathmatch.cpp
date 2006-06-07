@@ -1725,12 +1725,13 @@ BOOL	game_sv_Deathmatch::OnDetach		(u16 eid_who, u16 eid_what)
 
 			switch (e_item->m_tClassID)
 			{
-			case CLSID_OBJECT_A_FN2000			:
-			case CLSID_OBJECT_A_AK74			:
-			case CLSID_OBJECT_A_LR300			:
-			case CLSID_OBJECT_A_HPSA			:
-			case CLSID_OBJECT_A_PM				:
-			case CLSID_OBJECT_A_FORT			:
+//.			case CLSID_OBJECT_A_FN2000			:
+//.			case CLSID_OBJECT_A_AK74			:
+//.			case CLSID_OBJECT_A_LR300			:
+//.			case CLSID_OBJECT_A_HPSA			:
+//.			case CLSID_OBJECT_A_PM				:
+//.			case CLSID_OBJECT_A_FORT			:
+			case CLSID_OBJECT_AMMO				:
 				//---------------------------------------
 			case CLSID_OBJECT_A_VOG25			:
 			case CLSID_OBJECT_A_OG7B			:

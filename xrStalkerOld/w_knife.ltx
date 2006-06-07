@@ -1,10 +1,10 @@
 [wpn_knife]:identity_immunities
 GroupControlSection			= spawn_group
 discovery_dependency 		= 
-$spawn              		= "weapons\knife"					; option for Level Editor
+$spawn              		= "weapons\knife"
 $npc                		= off
 $prefetch 		    		= 8
-scheduled           		= off								; option for ALife Simulator
+scheduled           		= off
 cform						= skeleton
 description					= enc_weapons1_wpn-knife
 
@@ -22,23 +22,18 @@ inv_grid_height				= 1
 inv_grid_x					= 18
 inv_grid_y					= 8
 
-kill_msg_x			= 197
-kill_msg_y			= 177
-kill_msg_width		= 53
-kill_msg_height		= 16
+kill_msg_x					= 197
+kill_msg_y					= 177
+kill_msg_width				= 53
+kill_msg_height				= 16
 
-;не показывать кол-во патронов для ножа
 show_ammo					= false
 
 slot						= 0
-animation_slot				= 5		; type of the animation that will be used
+animation_slot				= 5
 single_handed				= 1
 
 hud							= wpn_knife_hud
-force_min					= 25
-force_const					= 63
-force_max					= 100
-force_grow_speed			= 25
 	
 cost						= 70
 
@@ -47,8 +42,8 @@ hand_dependence		     	= 1
 cam_relax_speed          	= 5.0
 cam_dispersion           	= 0.9
 cam_max_angle		     	= 7
-cam_max_angle_horz			= 5.0	;(degree) maximum shot horizontal degree 
-cam_step_angle_horz			= 0.5	;(degree) size of step camera moved in horizontal position while shooting
+cam_max_angle_horz			= 5.0
+cam_step_angle_horz			= 0.5
 
 
 fire_dispersion          	= 0.5
@@ -131,4 +126,4 @@ anim_shoot1_start			= shoot1_start
 anim_shoot2_start			= shoot2_start
 anim_shoot1_end				= shoot1_end
 anim_shoot2_end				= shoot2_end
-anim_idle	_sprint				= idle_sprint
+anim_idle_sprint			= idle_sprint

@@ -13,20 +13,13 @@
 
 #define KNIFE_MATERIAL_NAME "objects\\knife"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 CWeaponKnife::CWeaponKnife() : CWeapon("KNIFE") 
 {
-	m_attackStart = false;
-	m_bShotLight = false;
-	STATE = NEXT_STATE = eHidden;
-
-	knife_material_idx = (u16)-1;
-}
-
-CWeaponKnife::~CWeaponKnife()
-{
+	m_attackStart			= false;
+	m_bShotLight			= false;
+	STATE					= eHidden;
+	NEXT_STATE				= eHidden;
+	knife_material_idx		= (u16)-1;
 }
 
 void CWeaponKnife::Load	(LPCSTR section)
@@ -49,13 +42,6 @@ void CWeaponKnife::Load	(LPCSTR section)
 	
 	knife_material_idx =  GMLib.GetMaterialIdx(KNIFE_MATERIAL_NAME);
 }
-
-BOOL	CWeaponKnife::net_Spawn			(CSE_Abstract* DC)
-{
-	BOOL bResult					= inherited::net_Spawn(DC);
-	m_bShotLight = false;
-	return bResult;
-};
 
 void CWeaponKnife::OnStateSwitch	(u32 S)
 {
@@ -102,39 +88,41 @@ void CWeaponKnife::UpdateCL	()
 
 void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 {
-	CCartridge cartridge; 
-	cartridge.m_buckShot = 1;				
-	cartridge.m_impair = 1;
-	cartridge.m_kDisp = 1;
-	cartridge.m_kHit = 1;
-	cartridge.m_kImpulse = 1;
-	cartridge.m_kPierce = 1;
-	cartridge.m_flags.set(CCartridge::cfTracer, FALSE);
-//	cartridge.m_tracer = false;
-	cartridge.m_flags.set(CCartridge::cfRicochet, FALSE);
-//	cartridge.m_ricochet = false;
-	cartridge.fWallmarkSize = fWallmarkSize;
-	cartridge.bullet_material_idx = knife_material_idx;
+	CCartridge						cartridge; 
+	cartridge.m_buckShot			= 1;				
+	cartridge.m_impair				= 1;
+	cartridge.m_kDisp				= 1;
+	cartridge.m_kHit				= 1;
+	cartridge.m_kImpulse			= 1;
+	cartridge.m_kPierce				= 1;
+	cartridge.m_flags.set			(CCartridge::cfTracer, FALSE);
+	cartridge.m_flags.set			(CCartridge::cfRicochet, FALSE);
+	cartridge.fWallmarkSize			= fWallmarkSize;
+	cartridge.bullet_material_idx	= knife_material_idx;
 
-	while(m_magazine.size() < 2) m_magazine.push(cartridge);
-	iAmmoElapsed = m_magazine.size();
-///	FireTrace(pos,dir);
-	//------------------------------------------------------------
-	bool SendHit = SendHitAllowed(H_Parent());
+	while(m_magazine.size() < 2)	m_magazine.push(cartridge);
+	iAmmoElapsed					= m_magazine.size();
+	bool SendHit					= SendHitAllowed(H_Parent());
 
-	Level().BulletManager().AddBullet(	pos, dir, m_fStartBulletSpeed, fHitPower, 
-										fHitImpulse, H_Parent()->ID(), ID(), 
-										m_eHitType, fireDistance, cartridge, SendHit);
+	Level().BulletManager().AddBullet(	pos, 
+										dir, 
+										m_fStartBulletSpeed, 
+										fHitPower, 
+										fHitImpulse, 
+										H_Parent()->ID(), 
+										ID(), 
+										m_eHitType, 
+										fireDistance, 
+										cartridge, 
+										SendHit);
 }
-void CWeaponKnife::StartIdleAnim		()
-{
-	m_pHUD->animDisplay(mhud_idle[Random.randI(mhud_idle.size())], TRUE);
-}
+
+
 void CWeaponKnife::OnAnimationEnd()
 {
 	switch (STATE)
 	{
-	case eHiding:	SwitchState(eHidden);	break;	// End of Hide
+	case eHiding:	SwitchState(eHidden);	break;
 	case eFire: 
 		{
             if(m_attackStart) 
@@ -179,26 +167,26 @@ void CWeaponKnife::OnAnimationEnd()
 	}
 }
 
-void CWeaponKnife::state_Attacking	(float /**dt/**/)
+void CWeaponKnife::state_Attacking	(float)
 {
 }
 
 void CWeaponKnife::switch2_Attacking	()
 {
-	if(m_bPending) return;
+	if(m_bPending)	return;
 
 	m_pHUD->animPlay(mhud_attack[Random.randI(mhud_attack.size())],		FALSE, this);
-	m_attackStart = true;
-	m_bPending = true;
+	m_attackStart	= true;
+	m_bPending		= true;
 }
 
 void CWeaponKnife::switch2_Attacking2	()
 {
-	if(m_bPending) return;
+	if(m_bPending)	return;
 
 	m_pHUD->animPlay(mhud_attack2[Random.randI(mhud_attack2.size())],	FALSE, this);
-	m_attackStart = true;
-	m_bPending = true;
+	m_attackStart	= true;
+	m_bPending		= true;
 }
 
 
@@ -211,9 +199,7 @@ void CWeaponKnife::switch2_Idle	()
 void CWeaponKnife::switch2_Hiding	()
 {
 	FireEnd					();
-	
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
-
 	m_bPending				= true;
 }
 
@@ -224,9 +210,7 @@ void CWeaponKnife::switch2_Hidden()
 
 void CWeaponKnife::switch2_Showing	()
 {
-//	setVisible				(TRUE);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
-
 	m_bPending				= true;
 }
 
@@ -234,40 +218,27 @@ void CWeaponKnife::switch2_Showing	()
 void CWeaponKnife::FireStart()
 {
 	//-------------------------------------------
-	m_eHitType = m_eHitType_1;
-	fHitPower = fHitPower_1;
-	fHitImpulse = fHitImpulse_1;
+	m_eHitType		= m_eHitType_1;
+	fHitPower		= fHitPower_1;
+	fHitImpulse		= fHitImpulse_1;
 	//-------------------------------------------
 	inherited::FireStart();
 	SwitchState(eFire);
 }
 
-void CWeaponKnife::FireEnd()
-{
-	inherited::FireEnd();
-}
 
 
 void CWeaponKnife::Fire2Start () 
 {
 	//-------------------------------------------
-	m_eHitType = m_eHitType_2;
-	fHitPower = fHitPower_2;
-	fHitImpulse = fHitImpulse_2;
+	m_eHitType		= m_eHitType_2;
+	fHitPower		= fHitPower_2;
+	fHitImpulse		= fHitImpulse_2;
 	//-------------------------------------------
 	inherited::Fire2Start();
 	SwitchState(eFire2);
 }
 
-void CWeaponKnife::Fire2End () 
-{
-	inherited::Fire2End();
-}
-
-const char* CWeaponKnife::Name() 
-{
-	return CInventoryItemObject::Name();
-}
 
 bool CWeaponKnife::Action(s32 cmd, u32 flags) 
 {
@@ -282,12 +253,11 @@ bool CWeaponKnife::Action(s32 cmd, u32 flags)
 	return false;
 }
 
-void CWeaponKnife::LoadFireParams		(LPCSTR section, LPCSTR prefix)
+void CWeaponKnife::LoadFireParams(LPCSTR section, LPCSTR prefix)
 {
 	inherited::LoadFireParams(section, prefix);
 
-	string256 full_name;
-	//сила выстрела и его мощьность
+	string256			full_name;
 	fHitPower_1			= fHitPower;
 	fHitImpulse_1		= fHitImpulse;
 	m_eHitType_1		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type"));
@@ -295,6 +265,11 @@ void CWeaponKnife::LoadFireParams		(LPCSTR section, LPCSTR prefix)
 	fHitPower_2			= pSettings->r_float	(section,strconcat(full_name, prefix, "hit_power_2"));
 	fHitImpulse_2		= pSettings->r_float	(section,strconcat(full_name, prefix, "hit_impulse_2"));
 	m_eHitType_2		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_2"));
+}
+
+void CWeaponKnife::StartIdleAnim()
+{
+	m_pHUD->animDisplay(mhud_idle[Random.randI(mhud_idle.size())], TRUE);
 }
 
 #include "script_space.h"

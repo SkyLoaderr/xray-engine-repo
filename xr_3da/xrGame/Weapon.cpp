@@ -796,65 +796,57 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 
 void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect, u32 ParentID) 
 {
-	if(!m_ammoTypes.size()) return;
-	if (OnClient()) return;
-///	if (GameID() == GAME_ARTEFACTHUNT && m_bAmmoWasSpawned) return;
-	m_bAmmoWasSpawned = true;
+	if(!m_ammoTypes.size())			return;
+	if (OnClient())					return;
+	m_bAmmoWasSpawned				= true;
 	
-	int l_type = 0; 
-	l_type %= m_ammoTypes.size();
+	int l_type						= 0;
+	l_type							%= m_ammoTypes.size();
 
-	if(!ammoSect) 
-		ammoSect = *m_ammoTypes[l_type/*m_ammoType*/]; 
-	//++m_ammoType; m_ammoType %= m_ammoTypes.size();
+	if(!ammoSect) ammoSect			= *m_ammoTypes[l_type]; 
 	
 	++l_type; 
-	l_type %= m_ammoTypes.size();
+	l_type							%= m_ammoTypes.size();
 
-	// Create
-	CSE_Abstract		*D		= F_entity_Create(ammoSect);
-	if (D->m_tClassID == CLSID_OBJECT_A_PM)
+	CSE_Abstract *D					= F_entity_Create(ammoSect);
+
+	if (D->m_tClassID==CLSID_OBJECT_AMMO ||D->m_tClassID==CLSID_OBJECT_A_M209||D->m_tClassID==CLSID_OBJECT_A_VOG25)
 	{	
-		CSE_ALifeItemAmmo	*l_pA	= smart_cast<CSE_ALifeItemAmmo*>(D);
-		R_ASSERT(l_pA);
-		// Fill
-		l_pA->m_boxSize = (u16)pSettings->r_s32(ammoSect, "box_size");
-		D->s_name		= ammoSect;
-		D->set_name_replace	("");
-		D->s_gameid = u8(GameID());
-		D->s_RP = 0xff;
-		D->ID = 0xffff;
-		if (ParentID == 0xffffffff)
-			D->ID_Parent = (u16)H_Parent()->ID();
+		CSE_ALifeItemAmmo *l_pA		= smart_cast<CSE_ALifeItemAmmo*>(D);
+		R_ASSERT					(l_pA);
+		l_pA->m_boxSize				= (u16)pSettings->r_s32(ammoSect, "box_size");
+		D->s_name					= ammoSect;
+		D->set_name_replace			("");
+		D->s_gameid					= u8(GameID());
+		D->s_RP						= 0xff;
+		D->ID						= 0xffff;
+		if (ParentID == 0xffffffff)	
+			D->ID_Parent			= (u16)H_Parent()->ID();
 		else
-			D->ID_Parent = (u16)ParentID;
-		D->ID_Phantom = 0xffff;
-		D->s_flags.assign(M_SPAWN_OBJECT_LOCAL);
-		D->RespawnTime = 0;
-		l_pA->m_tNodeID	= ai_location().level_vertex_id();
+			D->ID_Parent			= (u16)ParentID;
 
-		// Send
-		if(boxCurr == 0xffffffff) 
-		{
-			boxCurr = l_pA->m_boxSize;
-//			if (GameID() == GAME_ARTEFACTHUNT)
-//			{
-//				boxCurr = l_pA->m_boxSize*3;
-//			}
-		};
+		D->ID_Phantom				= 0xffff;
+		D->s_flags.assign			(M_SPAWN_OBJECT_LOCAL);
+		D->RespawnTime				= 0;
+		l_pA->m_tNodeID				= ai_location().level_vertex_id();
+
+		if(boxCurr == 0xffffffff) 	
+			boxCurr					= l_pA->m_boxSize;
 
 		while(boxCurr) 
 		{
-			l_pA->a_elapsed = (u16)(boxCurr > l_pA->m_boxSize ? l_pA->m_boxSize : boxCurr);
-			NET_Packet P;
-			D->Spawn_Write(P, TRUE);
-			Level().Send(P,net_flags(TRUE));
-			if(boxCurr > l_pA->m_boxSize) boxCurr -= l_pA->m_boxSize;
-			else boxCurr = 0;
+			l_pA->a_elapsed			= (u16)(boxCurr > l_pA->m_boxSize ? l_pA->m_boxSize : boxCurr);
+			NET_Packet				P;
+			D->Spawn_Write			(P, TRUE);
+			Level().Send			(P,net_flags(TRUE));
+
+			if(boxCurr > l_pA->m_boxSize) 
+				boxCurr				-= l_pA->m_boxSize;
+			else 
+				boxCurr				= 0;
 		}
 	};
-	// Destroy
-	F_entity_Destroy(D);
+	F_entity_Destroy				(D);
 }
 
 int CWeapon::GetAmmoCurrent(bool use_item_to_spawn) const
@@ -914,8 +906,6 @@ float CWeapon::GetConditionMisfireProbability() const
 
 BOOL CWeapon::CheckForMisfire	()
 {
-//	#pragma fixme("following line invalid and should be removed (misfire in MP)")
-//	if (GameID()!=GAME_SINGLE)	return	FALSE;		//.
 	float rnd = ::Random.randF(0.f,1.f);
 	if(rnd<GetConditionMisfireProbability())
 	{
