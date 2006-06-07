@@ -242,6 +242,7 @@ theme = {
 --	reac_crps_friend		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	reac_nothing			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	
+	reac_box				= {min_snd = 1, max_snd = 2, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	reac_music				= {min_snd = 1, max_snd = 2, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	reac_joke				= {min_snd = 1, max_snd = 2, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 
