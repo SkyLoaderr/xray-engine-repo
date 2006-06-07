@@ -516,6 +516,13 @@ states = {
 				animstate = "stand",
 				animation = "mode_shlem"
 			},
+	hands_up	= {weapon = "none",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "hands_up"
+			},
 			
 			
 
