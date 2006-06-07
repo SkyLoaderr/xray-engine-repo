@@ -24,7 +24,7 @@
 class	CObject;
 class	XRSOUND_API					CSound_params;
 class	XRSOUND_API					CSound_source;
-class	XRSOUND_API					CSound_interface;
+class	XRSOUND_API					CSound_emitter;
 class	XRSOUND_API					CSound_stream_interface;
 class	XRSOUND_API					CSound_environment;
 
@@ -88,7 +88,7 @@ class ref_sound_data	: public xr_resource		{
 public:
 	shared_str						nm;
 	CSound_source*					handle;			//!< Pointer to wave-source interface
-	CSound_interface*				feedback;		//!< Pointer to emitter, automaticaly clears on emitter-stop
+	CSound_emitter*					feedback;		//!< Pointer to emitter, automaticaly clears on emitter-stop
 	esound_type						s_type;
 	int								g_type;			//!< Sound type, usually for AI
 	CObject*						g_object;		//!< Game object that emitts ref_sound
@@ -118,7 +118,7 @@ public:
 							~ref_sound				(){ }
 
 	IC CSound_source*		_handle					(){return _p?_p->handle:0;}
-	IC CSound_interface*	_feedback				(){return _p?_p->feedback:0;}
+	IC CSound_emitter*		_feedback				(){return _p?_p->feedback:0;}
 	IC CObject*				_g_object				(){VERIFY(_p); return _p->g_object;}
 	IC int					_g_type					(){VERIFY(_p); return _p->g_type;}
 	IC esound_type			_sound_type				(){VERIFY(_p); return _p->s_type;}
@@ -204,7 +204,7 @@ public:
 };
 
 /// definition (Sound Interface)
-class XRSOUND_API	CSound_interface
+class XRSOUND_API	CSound_emitter
 {
 public:
 	virtual BOOL					is_2D					()															= 0;
@@ -217,6 +217,7 @@ public:
 	virtual void					set_priority			(float vol)													= 0;
 	virtual void					stop					(BOOL bDeffered)											= 0;
 	virtual	const CSound_params*	get_params				( )															= 0;
+	virtual u32						play_time				( )															= 0;
 };
 
 /// definition (Sound Stream Interface)
