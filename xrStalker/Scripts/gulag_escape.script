@@ -1875,6 +1875,102 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+	
+	if type == "esc_small_home1" then
+		t = { section = "logic@esc_small_home1",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_small_home1",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+	
+	if type == "esc_small_home2" then
+		t = { section = "logic@esc_small_home2",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_small_home2",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+	
+	if type == "esc_small_home3" then
+		t = { section = "logic@esc_small_home3",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_small_home3",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_small_home3",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+	
+	if type == "esc_small_home4" then
+		t = { section = "logic@esc_small_home4",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_small_home4",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+	
+	if type == "esc_small_home5" then
+		t = { section = "logic@esc_small_home5",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_small_home5",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+	
+	if type == "esc_small_home6" then
+		t = { section = "logic@esc_small_home6",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_small_home6",
+			idle = 0,
+			prior = 5, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
 
 	if type == "esc_stalker_camp" then
 		t = { section = "logic@esc_stalker_camp_provodnik",
@@ -2155,7 +2251,42 @@ function load_states(gname, type)
 			return 0
 		end
 	end
-
+	
+	if type == "esc_small_home1" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "esc_small_home2" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "esc_small_home3" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "esc_small_home4" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "esc_small_home5" then
+		return function(gulag)
+			return 0
+		end
+	end
+	
+	if type == "esc_small_home6" then
+		return function(gulag)
+			return 0
+		end
+	end
 
 	if type == "esc_stalker_camp" then
 		return function(gulag)
@@ -2173,7 +2304,7 @@ function load_states(gname, type)
 				return 1 -- сидят у костра
 			elseif db.actor:has_info("esc_assault_start") and db.actor:dont_has_info("esc_kill_bandits_quest_kill") then
 				return 2 -- атакуют фабрику
-			elseif db.actor:has_info("esc_kill_bandits_quest_kill") then
+			elseif db.actor:has_info("esc_kill_bandits_quest_done") or db.actor:has_info("esc_petruha_great") then
 				return 3 -- идут домой
 			else
 				return 0 -- сидят в оффлайне
@@ -2268,6 +2399,30 @@ function checkMonster(npc_community, gulag_type)
 	
 	if gulag_type == "esc_bridge_boars" then
 		return npc_community == "boar"
+	end
+	
+	if gulag_type == "esc_small_home1" then
+		return npc_community == "boar"
+	end
+	
+	if gulag_type == "esc_small_home2" then
+		return npc_community == "boar"
+	end
+	
+	if gulag_type == "esc_small_home3" then
+		return npc_community == "dog"
+	end
+	
+	if gulag_type == "esc_small_home4" then
+		return npc_community == "dog"
+	end
+	
+	if gulag_type == "esc_small_home5" then
+		return npc_community == "dog"
+	end
+	
+	if gulag_type == "esc_small_home6" then
+		return npc_community == "flesh"
 	end
 	
 	return false
