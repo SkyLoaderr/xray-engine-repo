@@ -471,7 +471,7 @@ end
 
 
 function is_wounded(npc)
-	return self.object:wounded()
+	return npc:wounded()
 end
 
 function is_heavy_wounded_by_id(npc_id)
