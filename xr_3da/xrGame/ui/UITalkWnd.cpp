@@ -372,7 +372,7 @@ void CUITalkWnd::SwitchToTrade()
 
 bool CUITalkWnd::IR_OnKeyboardPress(int dik)
 {
-	StopSnd						();
+//.	StopSnd						();
 	int cmd = key_binding[dik];
 	if(cmd==kUSE)
 	{
