@@ -144,6 +144,7 @@ void CGamePersistent::OnAppEnd	()
 void CGamePersistent::Start		(LPCSTR op)
 {
 	__super::Start				(op);
+	m_intro_event.bind			(this,&CGamePersistent::start_game_intro);
 }
 
 void CGamePersistent::Disconnect()
@@ -171,7 +172,6 @@ void CGamePersistent::OnGameStart()
 				if (!xr_strcmp(m_game_params.m_game_type, "artfacthunt")) m_eGameType = GAME_ARTEFACTHUNT;
 				else m_eGameType = GAME_ANY;
 	//  [7/11/2005]
-	m_intro_event.bind			(this,&CGamePersistent::start_game_intro);
 }
 
 void CGamePersistent::OnGameEnd	()
