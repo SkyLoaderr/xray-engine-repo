@@ -26,9 +26,9 @@ void CMMSound::Init(CUIXml& xml_doc, LPCSTR path){
 	xml_doc.SetLocalRoot(xml_doc.GetRoot());
 
     if (check_file(xml_doc.Read(strconcat(_path, path,":whell_sound"), 0, "")))
-        m_whell.create(TRUE, xml_doc.Read(_path, 0, "") );
+        m_whell.create(xml_doc.Read(_path, 0, "") ,st_Effect,sg_SourceType);
 	if (check_file(xml_doc.Read(strconcat(_path, path,":whell_click"), 0, "")))
-        m_whell_click.create(TRUE, xml_doc.Read(_path, 0, "") );
+        m_whell_click.create(xml_doc.Read(_path, 0, ""),st_Effect,sg_SourceType );
 }
 
 bool CMMSound::check_file(LPCSTR fname){
@@ -76,8 +76,8 @@ void CMMSound::music_Play(){
 	f &= FS.exist("$game_sounds$", _path2 ) ? true : false;
 
 	if (f){
-		m_music.create(TRUE, _path);
-		m_music_2.create(TRUE, _path2);
+		m_music.create(_path,st_Effect,sg_SourceType);
+		m_music_2.create(_path2,st_Effect,sg_SourceType);
 
 		if (m_music._handle())
             m_music.play_at_pos(NULL, Fvector().set(-1.f, 0.f, 1.f), sm_2D);
@@ -87,7 +87,7 @@ void CMMSound::music_Play(){
 	}
 	else
 	{
-        m_music.create	(TRUE, m_play_list[i].c_str());
+        m_music.create	(m_play_list[i].c_str(),st_Effect,sg_SourceType);
         if (m_music._handle())
             m_music.play(NULL, sm_2D);
 	}

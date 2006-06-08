@@ -4,7 +4,7 @@
 #include "SoundRender_Core.h"
 #include "SoundRender_Source.h"
 
-CSoundRender_Source*	CSoundRender_Core::i_create_source		(LPCSTR name, BOOL _3D	)
+CSoundRender_Source*	CSoundRender_Core::i_create_source		(LPCSTR name)
 {
 	// Search
 	string256			id;
@@ -16,7 +16,7 @@ CSoundRender_Source*	CSoundRender_Core::i_create_source		(LPCSTR name, BOOL _3D	
 
 	// Load a _new one
 	CSoundRender_Source* S	= xr_new<CSoundRender_Source>	();
-	S->load					(id,_3D);
+	S->load					(id);
 	s_sources.push_back		(S);
 	return S;
 }

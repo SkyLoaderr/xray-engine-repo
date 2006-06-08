@@ -45,7 +45,7 @@ void CUISequenceSimpleItem::Load(CUIXml* xml, int idx)
 	
 	LPCSTR m_snd_name		= xml->Read				("sound",0,""			);
 	if (m_snd_name&&m_snd_name[0]){
-		m_sound.create		(TRUE,m_snd_name,0);	
+		m_sound.create		(m_snd_name,st_Effect,sg_Undefined);	
 		VERIFY				(m_sound._handle());
 	}
 	m_time_length			= xml->ReadFlt			("length_sec",0,0		);

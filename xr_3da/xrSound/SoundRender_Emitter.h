@@ -5,7 +5,7 @@
 #include "soundrender.h"
 #include "soundrender_environment.h"
 
-class CSoundRender_Emitter		:	public CSound_interface
+class CSoundRender_Emitter		:	public CSound_emitter
 {
 	float						starting_delay;
 public:
@@ -48,6 +48,7 @@ public:
 	CSoundRender_Environment	e_current;
 	CSoundRender_Environment	e_target;
 
+	BOOL						bPaused;
 	BOOL						bMoved;
 	BOOL						b2D;
 	BOOL						bStopping;
@@ -84,6 +85,9 @@ public:
 	void						update_environment		(float dt);
 	void						rewind					();
 	virtual void				stop					(BOOL bDeffered);
+	void						pause					(BOOL bVal);
+
+	virtual u32					play_time				( );
 
 	CSoundRender_Emitter		();
 	~CSoundRender_Emitter		();

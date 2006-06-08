@@ -60,7 +60,7 @@ void CUIVideoPlayerWnd::SetFile		(LPCSTR fn)
 		m_surface->InitTexture			(fn);
 
 		if(FS.exist("$game_sounds$",fn))
-			::Sound->create(m_sound, true, fn);
+			::Sound->create(m_sound, fn,st_Effect,sg_SourceType);
 	}
 }
 

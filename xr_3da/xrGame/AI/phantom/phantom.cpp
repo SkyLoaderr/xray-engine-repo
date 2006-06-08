@@ -37,19 +37,19 @@ void CPhantom::Load( LPCSTR section )
 	LPCSTR snd_name			= 0;
 	m_state_data[stBirth].particles	= pSettings->r_string(section,"particles_birth");
 	snd_name						= pSettings->r_string(section,"sound_birth");
-	if (snd_name&&snd_name[0])		m_state_data[stBirth].sound.create(TRUE,snd_name);
+	if (snd_name&&snd_name[0])		m_state_data[stBirth].sound.create(snd_name,st_Effect,sg_SourceType);
 
 	m_state_data[stFly].particles	= pSettings->r_string(section,"particles_fly");
 	snd_name						= pSettings->r_string(section,"sound_fly");
-	if (snd_name&&snd_name[0])		m_state_data[stFly].sound.create(TRUE,snd_name);
+	if (snd_name&&snd_name[0])		m_state_data[stFly].sound.create(snd_name,st_Effect,sg_SourceType);
 
 	m_state_data[stContact].particles= pSettings->r_string(section,"particles_contact");
 	snd_name						= pSettings->r_string(section,"sound_contact");
-	if (snd_name&&snd_name[0])		m_state_data[stContact].sound.create(TRUE,snd_name);
+	if (snd_name&&snd_name[0])		m_state_data[stContact].sound.create(snd_name,st_Effect,sg_SourceType);
 
 	m_state_data[stShoot].particles	= pSettings->r_string(section,"particles_shoot");
 	snd_name						= pSettings->r_string(section,"sound_shoot");
-	if (snd_name&&snd_name[0])		m_state_data[stShoot].sound.create(TRUE,snd_name);
+	if (snd_name&&snd_name[0])		m_state_data[stShoot].sound.create(snd_name,st_Effect,sg_SourceType);
 }
 BOOL CPhantom::net_Spawn(CSE_Abstract* DC)
 {

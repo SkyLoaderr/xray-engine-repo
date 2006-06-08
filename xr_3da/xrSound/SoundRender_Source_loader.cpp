@@ -54,7 +54,7 @@ void CSoundRender_Source::decompress		(u32 line, OggVorbis_File* ovf)
 	else					i_decompress_fr(ovf,dest,left);
 }
 
-void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
+void CSoundRender_Source::LoadWave	(LPCSTR pName)
 {
 	pname					= pName;
 
@@ -68,7 +68,7 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 	vorbis_info* ovi		= ov_info(&ovf,-1);
 	// verify
 	R_ASSERT3				(ovi,"Invalid source info:",pName);
-	R_ASSERT3				(b3D?ovi->channels==1:ovi->channels==2,"Invalid source num channels:",pName);
+	R_ASSERT3				(ovi->channels==1,"Invalid source num channels:",pName);
 	R_ASSERT3				(ovi->rate==44100,"Invalid source rate:",pName);
 
 	WAVEFORMATEX wfxdest 	= SoundRender->wfm;
@@ -117,7 +117,7 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 	FS.r_close				(wave);
 }
 
-void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
+void CSoundRender_Source::load(LPCSTR name)
 {
 	string256			fn,N;
 	strcpy				(N,name);
@@ -125,7 +125,6 @@ void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
 	if (strext(N))		*strext(N) = 0;
 
 	fname				= N;
-	_3D					= b3D;
 
 	strconcat			(fn,N,".ogg");
 	if (!FS.exist("$level$",fn))	FS.update_path	(fn,"$game_sounds$",fn);
@@ -135,7 +134,7 @@ void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
 		FS.update_path	(fn,"$game_sounds$","$no_sound.ogg");
     }
 #endif
-	LoadWave			(fn,_3D);//.R_ASSERT(wave);
+	LoadWave			(fn);		//.R_ASSERT(wave);
 	SoundRender->cache.cat_create	(CAT, dwBytesTotal);
 
 	if (dwTimeTotal<100)					{

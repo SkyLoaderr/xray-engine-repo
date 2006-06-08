@@ -132,8 +132,8 @@ void CPseudoGigant::Load(LPCSTR section)
 	// --------------------------------------------------------------------------------
 	
 
-	::Sound->create(m_sound_threaten_hit,TRUE, pSettings->r_string(section,"sound_threaten_hit"), SOUND_TYPE_WORLD);
-	::Sound->create(m_sound_start_threaten,TRUE, pSettings->r_string(section,"sound_threaten_start"), SOUND_TYPE_MONSTER_ATTACKING);
+	::Sound->create(m_sound_threaten_hit,pSettings->r_string(section,"sound_threaten_hit"),		st_Effect,SOUND_TYPE_WORLD);
+	::Sound->create(m_sound_start_threaten,pSettings->r_string(section,"sound_threaten_start"), st_Effect,SOUND_TYPE_MONSTER_ATTACKING);
 
 	m_kick_damage			= pSettings->r_float(section,"HugeKick_Damage");
 	m_kick_particles		= pSettings->r_string(section,"HugeKick_Particles");

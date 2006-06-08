@@ -17,13 +17,16 @@ CSoundRender_Emitter*	CSoundRender_Core::i_play(ref_sound* S, BOOL _loop, float 
 	return E;
 }
 
-void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvector& N, float dt )
+void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvector& N )
 {
 	u32 it;
 
 	if (0==bReady)				return;
     bLocked						= TRUE;
-	Timer_Value					= Timer.GetElapsed_ms();
+	u32 new_tm					= Timer.GetElapsed_ms();
+	Timer_Delta					= new_tm-Timer_Value;
+	float dt					= float(Timer_Delta)/1000.f;
+	Timer_Value					= new_tm;
 
 	s_emitters_u	++	;
 

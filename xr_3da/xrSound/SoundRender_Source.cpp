@@ -13,7 +13,7 @@ CSoundRender_Source::CSoundRender_Source	()
 	m_uGameType		= 0;
 	fname			= 0;
     CAT.table		= 0;
-    CAT.size		= 0;
+	CAT.size		= 0;
 }
 
 CSoundRender_Source::~CSoundRender_Source	()

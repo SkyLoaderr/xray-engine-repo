@@ -130,6 +130,7 @@ class CUISequenceVideoItem: public CUISequenceItem
 	float					m_delay;
 	CUIStatic*				m_wnd;
 	u32						m_time_start;
+	u32						m_sync_time;
 public:
 							CUISequenceVideoItem(CUISequencer* owner);
 	virtual					~CUISequenceVideoItem();

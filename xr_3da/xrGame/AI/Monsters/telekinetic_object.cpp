@@ -56,8 +56,8 @@ bool CTelekineticObject::init(CTelekinesis* tele,CPhysicsShellHolder *obj, float
 
 void CTelekineticObject::set_sound(const ref_sound &snd_hold, const ref_sound &snd_throw)
 {
-	sound_hold.clone	(snd_hold);
-	sound_throw.clone	(snd_throw);
+	sound_hold.clone	(snd_hold,st_Effect,sg_SourceType);
+	sound_throw.clone	(snd_throw,st_Effect,sg_SourceType);
 }
 
 

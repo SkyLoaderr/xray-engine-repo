@@ -11,8 +11,8 @@ CPPEffectorControllerAura::CPPEffectorControllerAura(const SPPInfo &ppi, u32 tim
 	m_effector_state		= eStateFadeIn;
 	m_time_state_started	= Device.dwTimeGlobal;
 
-	m_snd_left.clone		(snd_left);	
-	m_snd_right.clone		(snd_right);	
+	m_snd_left.clone		(snd_left,st_Effect,sg_SourceType);	
+	m_snd_right.clone		(snd_right,st_Effect,sg_SourceType);	
 
 	m_snd_left.play_at_pos	(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_Looped | sm_2D);
 	m_snd_right.play_at_pos	(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_Looped | sm_2D);
@@ -142,8 +142,8 @@ void CControllerAura::load(LPCSTR section)
 {
 	inherited::load				(pSettings->r_string(section,"aura_effector"));
 	
-	aura_sound.left.create		(TRUE, pSettings->r_string(section,"PsyAura_SoundLeftPath"));
-	aura_sound.right.create		(TRUE, pSettings->r_string(section,"PsyAura_SoundRightPath"));
+	aura_sound.left.create		(pSettings->r_string(section,"PsyAura_SoundLeftPath"),st_Effect,sg_SourceType);
+	aura_sound.right.create		(pSettings->r_string(section,"PsyAura_SoundRightPath"),st_Effect,sg_SourceType);
 
 	aura_radius					= READ_IF_EXISTS(pSettings,r_float,section,"PsyAura_Radius", 40.f);
 	aura_damage					= READ_IF_EXISTS(pSettings,r_float,section,"PsyAura_Damage", 0.02f);

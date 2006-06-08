@@ -392,7 +392,7 @@ void CUITalkWnd::PlaySnd(LPCSTR text)
 	if(FS.exist("$game_sounds$",fn)){
 		VERIFY(m_pActor);
 		if (!m_pActor->OnDialogSoundHandlerStart(m_pOthersInvOwner,fn)) {
-			m_sound.create(TRUE,fn);
+			m_sound.create(fn,st_Effect,sg_SourceType);
 			m_sound.play(0,sm_2D);
 		}
 	}

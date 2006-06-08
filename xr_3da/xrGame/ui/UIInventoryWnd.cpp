@@ -212,15 +212,15 @@ void CUIInventoryWnd::Init()
 
 	XML_NODE* stored_root				= uiXml.GetLocalRoot		();
 	uiXml.SetLocalRoot					(uiXml.NavigateToNode		("action_sounds",0));
-	::Sound->create						(sounds[eInvSndOpen],		true, uiXml.Read("snd_open",			0,	NULL));
-	::Sound->create						(sounds[eInvSndClose],		true, uiXml.Read("snd_close",			0,	NULL));
-	::Sound->create						(sounds[eInvItemToSlot],	true, uiXml.Read("snd_item_to_slot",	0,	NULL));
-	::Sound->create						(sounds[eInvItemToBelt],	true, uiXml.Read("snd_item_to_belt",	0,	NULL));
-	::Sound->create						(sounds[eInvItemToRuck],	true, uiXml.Read("snd_item_to_ruck",	0,	NULL));
-	::Sound->create						(sounds[eInvProperties],	true, uiXml.Read("snd_properties",		0,	NULL));
-	::Sound->create						(sounds[eInvDropItem],		true, uiXml.Read("snd_drop_item",		0,	NULL));
-	::Sound->create						(sounds[eInvAttachAddon],	true, uiXml.Read("snd_attach_addon",	0,	NULL));
-	::Sound->create						(sounds[eInvDetachAddon],	true, uiXml.Read("snd_detach_addon",	0,	NULL));
+	::Sound->create						(sounds[eInvSndOpen],		uiXml.Read("snd_open",			0,	NULL),st_Effect,sg_SourceType);
+	::Sound->create						(sounds[eInvSndClose],		uiXml.Read("snd_close",			0,	NULL),st_Effect,sg_SourceType);
+	::Sound->create						(sounds[eInvItemToSlot],	uiXml.Read("snd_item_to_slot",	0,	NULL),st_Effect,sg_SourceType);
+	::Sound->create						(sounds[eInvItemToBelt],	uiXml.Read("snd_item_to_belt",	0,	NULL),st_Effect,sg_SourceType);
+	::Sound->create						(sounds[eInvItemToRuck],	uiXml.Read("snd_item_to_ruck",	0,	NULL),st_Effect,sg_SourceType);
+	::Sound->create						(sounds[eInvProperties],	uiXml.Read("snd_properties",	0,	NULL),st_Effect,sg_SourceType);
+	::Sound->create						(sounds[eInvDropItem],		uiXml.Read("snd_drop_item",		0,	NULL),st_Effect,sg_SourceType);
+	::Sound->create						(sounds[eInvAttachAddon],	uiXml.Read("snd_attach_addon",	0,	NULL),st_Effect,sg_SourceType);
+	::Sound->create						(sounds[eInvDetachAddon],	uiXml.Read("snd_detach_addon",	0,	NULL),st_Effect,sg_SourceType);
 
 	uiXml.SetLocalRoot					(stored_root);
 }

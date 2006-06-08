@@ -31,6 +31,7 @@ CSoundRender_Emitter::CSoundRender_Emitter(void)
 	b2D					= FALSE;
 	bStopping			= FALSE;
 	bRewind				= FALSE;
+	bPaused				= FALSE;
 	dwTimeStarted		= 0;
 	dwTimeToStop		= 0;
 	dwTimeToPropagade	= 0;
@@ -87,3 +88,10 @@ void CSoundRender_Emitter::switch_to_3D()
 	b2D 						= FALSE;											
 }
 
+u32	CSoundRender_Emitter::play_time	( )
+{ 
+	return (state==stPlaying		|| 
+			state==stPlayingLooped	|| 
+			state==stSimulating		|| 
+			state==stSimulatingLooped)?SoundRender->Timer_Value-dwTimeStarted:0; 
+}

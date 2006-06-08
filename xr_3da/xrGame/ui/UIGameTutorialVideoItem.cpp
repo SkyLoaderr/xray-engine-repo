@@ -20,6 +20,7 @@ CUISequenceVideoItem::CUISequenceVideoItem(CUISequencer* owner):CUISequenceItem(
 	m_wnd					= NULL;
 	m_delay					= 0.f;
 	m_time_start			= 0;
+	m_sync_time				= 0;
 }
 
 CUISequenceVideoItem::~CUISequenceVideoItem()
@@ -66,8 +67,8 @@ void CUISequenceVideoItem::Load(CUIXml* xml, int idx)
 		string_path			_l, _r;
 		strconcat			(_l, m_snd_name, "_l");
 		strconcat			(_r, m_snd_name, "_r");
-		m_sound[0].create	(TRUE,_l,0);	VERIFY(m_sound[0]._handle());
-		m_sound[1].create	(TRUE,_r,0);	VERIFY(m_sound[1]._handle());
+		m_sound[0].create	(_l,st_Music,sg_Undefined);	VERIFY(m_sound[0]._handle());
+		m_sound[1].create	(_r,st_Music,sg_Undefined);	VERIFY(m_sound[1]._handle());
 	}
 	xml->SetLocalRoot		(_stored_root);
 }
@@ -75,7 +76,7 @@ void CUISequenceVideoItem::Load(CUIXml* xml, int idx)
 void CUISequenceVideoItem::Update()
 {
 	// deferred start
-	if (Device.dwTimeContinual>m_time_start){
+	if (Device.dwTimeContinual>=m_time_start){
 		if (m_flags.test(etiDelayed)){
 			m_owner->MainWnd()->AttachChild	(m_wnd);
 			m_wnd->Show		(true);
@@ -83,17 +84,20 @@ void CUISequenceVideoItem::Update()
 		}
 	}else return;
 
+	u32 sync_tm				= (0==m_sound[0]._handle())?Device.dwTimeContinual:(m_sound[0]._feedback()?m_sound[0]._feedback()->play_time():m_sync_time);
+	m_sync_time				= sync_tm;
 	// processing A&V
 	if (m_texture){
-		if (m_texture->video_IsPlaying()){
-			m_texture->video_Sync		(Device.dwTimeContinual);
+		BOOL is_playing		= m_sound[0]._handle()?!!m_sound[0]._feedback():m_texture->video_IsPlaying();
+		if (is_playing){
+			m_texture->video_Sync		(m_sync_time);
 		}else{
 			// sync start
 			if (m_flags.test(etiNeedStart)){
 				m_sound[0].play_at_pos	(NULL, Fvector().set(-0.5f,0.f,0.3f), sm_2D);
 				m_sound[1].play_at_pos	(NULL, Fvector().set(+0.5f,0.f,0.3f), sm_2D);
-				m_texture->video_Play	(FALSE,Device.dwTimeContinual);
-				m_flags.set	(etiNeedStart,FALSE);
+				m_texture->video_Play	(FALSE,m_sync_time);
+				m_flags.set				(etiNeedStart,FALSE);
 				CUIWindow* w			= m_owner->MainWnd()->FindChild("back");
 				if (w)					w->Show(!!m_flags.test(etiBackVisible));
 			}else{
@@ -128,6 +132,7 @@ void CUISequenceVideoItem::Start()
 	m_flags.set					(etiPlaying,TRUE);
 	m_flags.set					(etiNeedStart,TRUE);
 
+	m_sync_time					= 0;
 	m_time_start				= Device.dwTimeContinual+iFloor(m_delay*1000.f);
 	m_flags.set					(etiDelayed,TRUE);
 

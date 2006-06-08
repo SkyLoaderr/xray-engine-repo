@@ -13,7 +13,6 @@ public:
 	shared_str				pname;
 	shared_str				fname;
 	cache_cat				CAT;
-	BOOL					_3D;
 	u32						dwTimeTotal;			// всего
 	u32						dwBytesTotal;
 //	u32						dwBytesPerSec;
@@ -27,12 +26,12 @@ public:
 private:
 	void 					i_decompress_fr			(OggVorbis_File* ovf, char* dest, u32 size);    
 	void 					i_decompress_hr			(OggVorbis_File* ovf, char* dest, u32 size);
-	void					LoadWave 				(LPCSTR name, BOOL b3D);
+	void					LoadWave 				(LPCSTR name);
 public:
-	CSoundRender_Source		();
-	~CSoundRender_Source	();
+							CSoundRender_Source		();
+							~CSoundRender_Source	();
 
-	void					load					(LPCSTR name,	BOOL b3D);
+	void					load					(LPCSTR name);
     void					unload					();
 	void					decompress				(u32 line, OggVorbis_File* ovf);
 	

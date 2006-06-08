@@ -91,8 +91,8 @@ void CController::Load(LPCSTR section)
 	//anim().accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 	//anim().accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
 
-	::Sound->create(control_start_sound,TRUE, pSettings->r_string(section,"sound_control_start"),	SOUND_TYPE_WORLD);
-	::Sound->create(control_hit_sound,	TRUE, pSettings->r_string(section,"sound_control_hit"),		SOUND_TYPE_WORLD);
+	::Sound->create(control_start_sound,pSettings->r_string(section,"sound_control_start"),	st_Effect,SOUND_TYPE_WORLD);
+	::Sound->create(control_hit_sound,	pSettings->r_string(section,"sound_control_hit"),	st_Effect,SOUND_TYPE_WORLD);
 
 	anim().AddReplacedAnim(&m_bDamaged, eAnimStandIdle,	eAnimStandDamaged);
 	anim().AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
@@ -195,19 +195,19 @@ void CController::Load(LPCSTR section)
 	load_friend_community_overrides(section);
 
 	// load
-	m_sound_hit_fx.create(TRUE, "affects\\tinnitus3a");
+	m_sound_hit_fx.create		("affects\\tinnitus3a",st_Effect,sg_SourceType);
 
-	m_sound_aura_left_channel.create(TRUE, "monsters\\controller\\controller_psy_aura_l");
-	m_sound_aura_right_channel.create(TRUE, "monsters\\controller\\controller_psy_aura_r");
-	m_sound_aura_hit_left_channel.create(TRUE, "monsters\\controller\\controller_psy_hit_l");
-	m_sound_aura_hit_right_channel.create(TRUE, "monsters\\controller\\controller_psy_hit_l");
+	m_sound_aura_left_channel.create		("monsters\\controller\\controller_psy_aura_l",st_Effect,sg_SourceType);
+	m_sound_aura_right_channel.create		("monsters\\controller\\controller_psy_aura_r",st_Effect,sg_SourceType);
+	m_sound_aura_hit_left_channel.create	("monsters\\controller\\controller_psy_hit_l",st_Effect,sg_SourceType);
+	m_sound_aura_hit_right_channel.create	("monsters\\controller\\controller_psy_hit_l",st_Effect,sg_SourceType);
 
-	m_sound_tube_start.create(TRUE, "monsters\\controller\\controller_first_hit");
-	m_sound_tube_pull.create(TRUE, "monsters\\controller\\controller_whoosh");
-	m_sound_tube_hit_left.create(TRUE, "monsters\\controller\\controller_final_hit_l");
-	m_sound_tube_hit_right.create(TRUE, "monsters\\controller\\controller_final_hit_r");
+	m_sound_tube_start.create				("monsters\\controller\\controller_first_hit",st_Effect,sg_SourceType);
+	m_sound_tube_pull.create				("monsters\\controller\\controller_whoosh",st_Effect,sg_SourceType);
+	m_sound_tube_hit_left.create			("monsters\\controller\\controller_final_hit_l",st_Effect,sg_SourceType);
+	m_sound_tube_hit_right.create			("monsters\\controller\\controller_final_hit_r",st_Effect,sg_SourceType);
 
-	particles_fire = pSettings->r_string(section,"Control_Hit");
+	particles_fire		= pSettings->r_string(section,"Control_Hit");
 	
 	m_psy_hit_damage	= pSettings->r_float(section,"psy_hit_damage");
 	m_tube_damage		= pSettings->r_float(section,"tube_damage");
