@@ -471,10 +471,7 @@ end
 
 
 function is_wounded(npc)
-	if db.storage[npc:id()].wounded ~= nil then
-		return tostring(db.storage[npc:id()].wounded.wound_manager.state) ~= "nil"
-	end
-	return false
+	return self.object:wounded()
 end
 
 function is_heavy_wounded_by_id(npc_id)
