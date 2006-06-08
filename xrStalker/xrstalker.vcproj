@@ -1993,6 +1993,9 @@
 					RelativePath=".\config\scripts\postprocess.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\scripts\sar_decoding.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\scripts\sar_door.ltx">
 				</File>
 				<File
