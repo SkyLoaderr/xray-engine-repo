@@ -341,7 +341,7 @@ void CEnemyManager::on_enemy_change						(const CEntityAlive *previous_enemy)
 		if ((!wounded0 && !wounded1) || (wounded0 && wounded1))
 			m_selected			= previous_enemy;
 		else {
-			Msg					("wounded enemy [%s] is selected by [%s]",*stalker2->cName(),*stalker->cName());
+//			Msg					("wounded enemy [%s] is selected by [%s]",*stalker2->cName(),*stalker->cName());
 			m_last_enemy_change	= Device.dwTimeGlobal;
 		}
 
