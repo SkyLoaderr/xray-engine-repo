@@ -22,7 +22,7 @@ struct SND_Message{
 	{
 		SoundID = ID;
 		priority = prior;
-		pSound.create(TRUE, name);
+		pSound.create(name,st_Effect,sg_SourceType);
 		LastStarted = 0;
 	}
 	~SND_Message()

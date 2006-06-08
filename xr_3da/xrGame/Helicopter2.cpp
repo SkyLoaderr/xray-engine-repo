@@ -269,7 +269,7 @@ void CHelicopter::DieHelicopter()
 
 	m_engineSound.stop				();
 
-	m_brokenSound.create			(TRUE,pSettings->r_string(*cNameSect(), "broken_snd"));
+	m_brokenSound.create			(pSettings->r_string(*cNameSect(), "broken_snd"),st_Effect,sg_SourceType);
 	m_brokenSound.play_at_pos		(0,XFORM().c,sm_Looped);
 
 

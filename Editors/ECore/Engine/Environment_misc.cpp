@@ -56,7 +56,7 @@ void CEnvAmbient::load(const shared_str& sect)
 		if (cnt){
 			sounds.resize(cnt);
 			for (u32 k=0; k<cnt; ++k)
-				sounds[k].create(TRUE,_GetItem(snds,k,tmp));
+				sounds[k].create(_GetItem(snds,k,tmp),st_Effect,sg_SourceType);
 		}
 	}
 	// effects
@@ -74,7 +74,7 @@ void CEnvAmbient::load(const shared_str& sect)
 				effects[k].offset			= pSettings->r_fvector3	(tmp,"offset");
 				effects[k].wind_gust_factor	= pSettings->r_float	(tmp,"wind_gust_factor");
 				if (pSettings->line_exist(tmp,"sound"))
-					effects[k].sound.create	(TRUE,pSettings->r_string(tmp,"sound"));
+					effects[k].sound.create	(pSettings->r_string(tmp,"sound"),st_Effect,sg_SourceType);
 			}
 		}
 	}

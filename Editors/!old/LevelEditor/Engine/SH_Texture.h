@@ -60,7 +60,7 @@ public:
 	IC u32								get_Height		()		{ desc_enshure(); return desc.Height;	}
 
 	void								video_Sync		(u32 _time){m_play_time=_time;}
-	void								video_Play		(BOOL looped, u32 _time=0);
+	void								video_Play		(BOOL looped, u32 _time=0xFFFFFFFF);
 	void								video_Pause		(BOOL state);
 	void								video_Stop		();
 	BOOL								video_IsPlaying	();

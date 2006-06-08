@@ -89,8 +89,8 @@ void CHelicopter::Load(LPCSTR section)
 
 	//weapons
 	CShootingObject::Load				(section);
-	HUD_SOUND::LoadSound				(section,"snd_shoot", m_sndShot, TRUE, SOUND_TYPE_WEAPON_SHOOTING);
-	HUD_SOUND::LoadSound				(section,"snd_shoot_rocket", m_sndShotRocket, TRUE, SOUND_TYPE_WEAPON_SHOOTING);
+	HUD_SOUND::LoadSound				(section,"snd_shoot", m_sndShot, SOUND_TYPE_WEAPON_SHOOTING);
+	HUD_SOUND::LoadSound				(section,"snd_shoot_rocket", m_sndShotRocket, SOUND_TYPE_WEAPON_SHOOTING);
 	CRocketLauncher::Load				(section);
 
 	UseFireTrail						(m_enemy.bUseFireTrail);//temp force reloar disp params
@@ -215,7 +215,7 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 		A->CalculateBones	();
 	}
 
-	m_engineSound.create			(TRUE,*heli->engine_sound);
+	m_engineSound.create			(*heli->engine_sound,st_Effect,sg_SourceType);
 	m_engineSound.play_at_pos		(0,XFORM().c,sm_Looped);
 	
 	CShootingObject::Light_Create	();

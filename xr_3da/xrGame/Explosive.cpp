@@ -113,7 +113,7 @@ void CExplosive::Load(CInifile *ini,LPCSTR section)
 	m_fFragmentSpeed			= ini->r_float	(section,"fragment_speed"				);
 
 	LPCSTR	snd_name		= ini->r_string(section,"snd_explode");
-	sndExplode.create		(TRUE,snd_name, m_eSoundExplode);
+	sndExplode.create		(snd_name, st_Effect,m_eSoundExplode);
 
 	m_fExplodeDurationMax	= ini->r_float(section, "explode_duration");
 

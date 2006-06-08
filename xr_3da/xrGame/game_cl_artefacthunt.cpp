@@ -35,14 +35,14 @@ game_cl_ArtefactHunt::game_cl_ArtefactHunt()
 {
 	m_game_ui = NULL;
 	/*
-	pMessageSounds[0].create(TRUE, "messages\\multiplayer\\mp_artifact_lost");
-	pMessageSounds[1].create(TRUE, "messages\\multiplayer\\mp_artifact_on_base");
-	pMessageSounds[2].create(TRUE, "messages\\multiplayer\\mp_artifact_on_base_radio");
-	pMessageSounds[3].create(TRUE, "messages\\multiplayer\\mp_got_artifact");
-	pMessageSounds[4].create(TRUE, "messages\\multiplayer\\mp_got_artifact_radio");
-	pMessageSounds[5].create(TRUE, "messages\\multiplayer\\mp_new_artifact");
-	pMessageSounds[6].create(TRUE, "messages\\multiplayer\\mp_artifact_delivered_by_enemy");
-	pMessageSounds[7].create(TRUE, "messages\\multiplayer\\mp_artifact_stolen");
+	pMessageSounds[0].create("messages\\multiplayer\\mp_artifact_lost");
+	pMessageSounds[1].create("messages\\multiplayer\\mp_artifact_on_base");
+	pMessageSounds[2].create("messages\\multiplayer\\mp_artifact_on_base_radio");
+	pMessageSounds[3].create("messages\\multiplayer\\mp_got_artifact");
+	pMessageSounds[4].create("messages\\multiplayer\\mp_got_artifact_radio");
+	pMessageSounds[5].create("messages\\multiplayer\\mp_new_artifact");
+	pMessageSounds[6].create("messages\\multiplayer\\mp_artifact_delivered_by_enemy");
+	pMessageSounds[7].create("messages\\multiplayer\\mp_artifact_stolen");
 	*/
 	
 	m_bBuyEnabled	= FALSE;

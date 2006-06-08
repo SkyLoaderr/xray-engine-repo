@@ -187,7 +187,7 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 			)
 			:
 			id
-		]
+		],st_Effect,sg_SourceType
 	);
 	sound_single.m_sound->_p->g_object		= m_object;
 	sound_single.m_sound->_p->g_userdata	= (*I).second.first.m_data;

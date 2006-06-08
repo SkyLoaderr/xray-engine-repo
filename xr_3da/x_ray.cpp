@@ -36,7 +36,7 @@ struct _SoundProcessor	: public pureFrame
 	{
 		//Msg							("------------- sound: %d [%3.2f,%3.2f,%3.2f]",u32(Device.dwFrame),VPUSH(Device.vCameraPosition));
 		Device.Statistic->Sound.Begin();
-		::Sound->update				(Device.vCameraPosition,Device.vCameraDirection,Device.vCameraTop,Device.fTimeDelta);
+		::Sound->update				(Device.vCameraPosition,Device.vCameraDirection,Device.vCameraTop);
 		Device.Statistic->Sound.End	();
 	}
 }	SoundProcessor;
@@ -536,7 +536,7 @@ void CApplication::LoadBegin	()
 
 		g_appLoaded			= FALSE;
 		phase_timer.Start	();
-		::Sound->set_volume (0.f);
+//.		::Sound->mute		(true);
 		ll_hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 		sh_progress.create	("hud\\default","ui\\ui_load");
 		ll_hGeom2.create		(FVF::F_TL, RCache.Vertex.Buffer(),NULL);
@@ -561,9 +561,9 @@ void CApplication::LoadEnd		()
 
 void CApplication::destroy_loading_shaders()
 {
-		hLevelLogo.destroy		();
-		sh_progress.destroy		();
-		::Sound->set_volume		(1.f);
+	hLevelLogo.destroy		();
+	sh_progress.destroy		();
+//.	::Sound->mute			(false);
 }
 
 u32 calc_progress_color(u32, u32, int, int);

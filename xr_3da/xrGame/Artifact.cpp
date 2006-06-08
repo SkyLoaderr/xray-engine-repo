@@ -404,7 +404,7 @@ void SArtefactActivation::ChangeEffects()
 		m_snd.stop();
 	
 	if(state_def.m_snd.size()){
-		m_snd.create(TRUE,*state_def.m_snd);
+		m_snd.create			(*state_def.m_snd,st_Effect,sg_SourceType);
 		m_snd.play_at_pos		(m_af,	m_af->Position());
 	};
 

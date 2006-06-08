@@ -63,6 +63,7 @@ void CMainMenu::Activate	(bool bActivate)
 	if(!!m_Flags.test(flActive) == bActivate)	return;
 		
 	if(bActivate){
+		::Sound->pause_emitters		(true);
 		m_Flags.set					(flActive|flNeedChangeCapture,TRUE);
 		DLL_Pure* dlg = NEW_INSTANCE (TEXT2CLSID("MAIN_MNU"));
 		if(!dlg) {
@@ -81,7 +82,6 @@ void CMainMenu::Activate	(bool bActivate)
 
 		if(!m_Flags.test(flRestorePause))
 			Device.Pause			(TRUE);
-		::Sound->set_volume			(1.0f);// pause set to 0
 		
 		m_startDialog->m_bWorkInPause =	true;
 		StartStopMenu				(m_startDialog,true);
@@ -120,6 +120,7 @@ void CMainMenu::Activate	(bool bActivate)
 	
 		if(m_Flags.test(flRestoreCursor))
 			GetUICursor()->Show();
+		::Sound->pause_emitters		(false);
 	}
 }
 bool CMainMenu::IsActive	()

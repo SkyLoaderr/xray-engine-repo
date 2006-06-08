@@ -19,7 +19,7 @@ CScriptSound::CScriptSound				(LPCSTR caSoundName, ESoundTypes sound_type)
 	string256				l_caFileName;
 	VERIFY(::Sound)	;
 	if (FS.exist(l_caFileName,"$game_sounds$",caSoundName,".ogg"))
-		m_sound.create		(TRUE,caSoundName,sound_type);
+		m_sound.create		(caSoundName,st_Effect,sound_type);
 	else
 		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"File not found \"%s\"!",l_caFileName);
 }

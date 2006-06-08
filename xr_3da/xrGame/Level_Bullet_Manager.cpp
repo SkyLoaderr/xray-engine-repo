@@ -111,7 +111,7 @@ void CBulletManager::Load		()
 	xr_string tmp;
 	for (int k=0; k<cnt; ++k){
 		m_WhineSounds.push_back	(ref_sound());
-		m_WhineSounds.back().create(TRUE,_GetItem(whine_sounds,k,tmp));
+		m_WhineSounds.back().create(_GetItem(whine_sounds,k,tmp),st_Effect,sg_SourceType);
 	}
 
 	LPCSTR explode_particles= pSettings->r_string(BULLET_MANAGER_SECTION, "explode_particles");

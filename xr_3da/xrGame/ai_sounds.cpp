@@ -4,7 +4,7 @@
 #include "ai_sounds.h"
 
 xr_token anomaly_type_token[]={
-	{ "undefined",				st_Undefined						},
+	{ "undefined",				sg_Undefined						},
 	{ "Item picking up",		SOUND_TYPE_ITEM_PICKING_UP			},
 	{ "Item dropping",			SOUND_TYPE_ITEM_DROPPING			},
 	{ "Item taking",			SOUND_TYPE_ITEM_TAKING				},

@@ -228,5 +228,5 @@ void CBinocularsVision::Load(const shared_str& section)
 {
 	m_rotating_speed	= pSettings->r_float(section,"vis_frame_speed");
 	m_frame_color		= pSettings->r_fcolor(section,"vis_frame_color");
-	m_snd_found.create	(TRUE,pSettings->r_string(section,"found_snd"));
+	m_snd_found.create	(pSettings->r_string(section,"found_snd"),st_Effect,sg_SourceType);
 }

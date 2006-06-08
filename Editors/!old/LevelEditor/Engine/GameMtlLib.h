@@ -328,7 +328,7 @@ public:
 
 #define CLONE_MTL_SOUND(_res_, _mtl_pair_, _a_vector_)\
 	{ VERIFY2(!_mtl_pair_##->_a_vector_.empty(),_mtl_pair_->dbg_Name());\
-	_res_.clone(GET_RANDOM(_mtl_pair_##->_a_vector_));\
+	_res_.clone(GET_RANDOM(_mtl_pair_##->_a_vector_),st_Effect,sg_SourceType);\
 	}
 
 extern ECORE_API CGameMtlLibrary GMLib;

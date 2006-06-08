@@ -12,7 +12,7 @@ void SStaticSound::Load(IReader& F)
 	R_ASSERT				(F.find_chunk(0));
 	xr_string				wav_name;
 	F.r_stringZ				(wav_name);
-	m_Source.create			(TRUE,wav_name.c_str());
+	m_Source.create			(wav_name.c_str(),st_Effect,sg_SourceType);
 	F.r_fvector3			(m_Position);
 	m_Volume				= F.r_float();
 	m_Freq					= F.r_float();
@@ -71,8 +71,8 @@ void SMusicTrack::Load(LPCSTR fn, LPCSTR params)
 	string256			_l, _r;
 	strconcat			(_l, fn, "_l");
 	strconcat			(_r, fn, "_r");
-	m_SourceLeft.create	(TRUE,_l,0);
-	m_SourceRight.create(TRUE,_r,0);
+	m_SourceLeft.create	(_l,st_Music,sg_Undefined);
+	m_SourceRight.create(_r,st_Music,sg_Undefined);
 	// parse params
 	int cnt				= _GetItemCount(params); VERIFY(cnt==5);
 	m_ActiveTime.set	(0,0);
@@ -88,7 +88,6 @@ void	SMusicTrack::Play()
 {
 	m_SourceLeft.play_at_pos	(0,Fvector().set(-0.5f,0.f,0.3f),sm_2D);
 	m_SourceRight.play_at_pos	(0,Fvector().set(+0.5f,0.f,0.3f),sm_2D);
-	SetVolume					(psSoundVMusic);
 }
 
 void SMusicTrack::SetVolume(float volume)
@@ -109,6 +108,14 @@ void SMusicTrack::Stop()
 CLevelSoundManager::CLevelSoundManager()
 {
 	m_NextTrackTime		= 0;
+	m_MusicPaused		= false;
+}
+
+void CLevelSoundManager::PauseMusic(bool val)
+{
+	m_MusicPaused		= val;
+	if (false==val)
+		for (u32 k=0; k<m_MusicTracks.size(); ++k) m_MusicTracks[k].Stop();
 }
 
 void CLevelSoundManager::Load()
@@ -168,7 +175,7 @@ void CLevelSoundManager::Update()
 	}
 
 	// music track
-	if (!m_MusicTracks.empty()){
+	if (!m_MusicTracks.empty() && !m_MusicPaused){
 		if (m_CurrentTrack<0 && engine_time>m_NextTrackTime){
 			U32Vec				indices;
 			for (u32 k=0; k<m_MusicTracks.size(); ++k){
@@ -192,8 +199,7 @@ void CLevelSoundManager::Update()
 		}
 		if (m_CurrentTrack>=0){
 			SMusicTrack& T		= m_MusicTracks[m_CurrentTrack];
-			if (T.IsPlaying())	T.SetVolume(psSoundVMusic);
-			else{ 
+			if (!T.IsPlaying()){ 
 				m_CurrentTrack	= -1;
 				m_NextTrackTime	= engine_time;
 				if (!((0==T.m_PauseTime.x)&&(0==T.m_PauseTime.y)))

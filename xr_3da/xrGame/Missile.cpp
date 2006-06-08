@@ -90,7 +90,7 @@ void CMissile::Load(LPCSTR section)
 	m_sAnimThrowEnd		= pSettings->r_string(*hud_sect, "anim_throw_end");
 
 	if(pSettings->line_exist(section,"snd_playing"))
-		HUD_SOUND::LoadSound(section,"snd_playing",sndPlaying,TRUE);
+		HUD_SOUND::LoadSound(section,"snd_playing",sndPlaying);
 
 	m_ef_weapon_type	= READ_IF_EXISTS(pSettings,r_u32,section,"ef_weapon_type",u32(-1));
 }

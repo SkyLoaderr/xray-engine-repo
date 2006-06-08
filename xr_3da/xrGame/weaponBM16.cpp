@@ -19,7 +19,7 @@ void CWeaponBM16::Load	(LPCSTR section)
 	animGet	(mhud_zoomed_idle2,		pSettings->r_string(*hud_sect,"anim_zoomedidle_2"));
 
 
-	HUD_SOUND::LoadSound(section, "snd_reload_1", m_sndReload1, TRUE, m_eSoundShot);
+	HUD_SOUND::LoadSound(section, "snd_reload_1", m_sndReload1, m_eSoundShot);
 
 }
 

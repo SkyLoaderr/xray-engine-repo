@@ -353,7 +353,7 @@ void CActor::Load	(LPCSTR section )
 		string128 tmp;
 		for(int i=0; i<cnt;++i){
 			sndHit[hit_type].push_back		(ref_sound());
-			sndHit[hit_type].back().create	(TRUE,_GetItem(hit_snds,i,tmp));
+			sndHit[hit_type].back().create	(_GetItem(hit_snds,i,tmp),st_Effect,sg_SourceType);
 		}
 	}
 
@@ -368,13 +368,13 @@ void CActor::Load	(LPCSTR section )
 	::Sound->create		(sndHit[2],			TRUE,	strconcat(buf,*cName(),"\\hurt3"),SOUND_TYPE_MONSTER_INJURING);
 	::Sound->create		(sndHit[3],			TRUE,	strconcat(buf,*cName(),"\\hurt4"),SOUND_TYPE_MONSTER_INJURING);
 */	
-	::Sound->create		(sndDie[0],			TRUE,	strconcat(buf,*cName(),"\\die0"), SOUND_TYPE_MONSTER_DYING);
-	::Sound->create		(sndDie[1],			TRUE,	strconcat(buf,*cName(),"\\die1"), SOUND_TYPE_MONSTER_DYING);
-	::Sound->create		(sndDie[2],			TRUE,	strconcat(buf,*cName(),"\\die2"), SOUND_TYPE_MONSTER_DYING);
-	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,*cName(),"\\die3"), SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[0],			strconcat(buf,*cName(),"\\die0"), st_Effect,SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[1],			strconcat(buf,*cName(),"\\die1"), st_Effect,SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[2],			strconcat(buf,*cName(),"\\die2"), st_Effect,SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[3],			strconcat(buf,*cName(),"\\die3"), st_Effect,SOUND_TYPE_MONSTER_DYING);
 
-	m_HeavyBreathSnd.create(TRUE, pSettings->r_string(section,"heavy_breath_snd"), SOUND_TYPE_MONSTER_INJURING);
-	m_BloodSnd.create(TRUE, pSettings->r_string(section,"heavy_blood_snd"), SOUND_TYPE_MONSTER_INJURING);
+	m_HeavyBreathSnd.create	(pSettings->r_string(section,"heavy_breath_snd"), st_Effect,SOUND_TYPE_MONSTER_INJURING);
+	m_BloodSnd.create		(pSettings->r_string(section,"heavy_blood_snd"), st_Effect,SOUND_TYPE_MONSTER_INJURING);
 
 	cam_Set					(eacFirstEye);
 

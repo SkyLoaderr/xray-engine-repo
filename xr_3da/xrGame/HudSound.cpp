@@ -8,8 +8,7 @@
 #include "HudSound.h"
 
 void HUD_SOUND::LoadSound(	LPCSTR section, LPCSTR line, 
-							HUD_SOUND& hud_snd, BOOL _3D, 
-							int type)
+							HUD_SOUND& hud_snd, int type)
 {
 	hud_snd.m_activeSnd		= NULL;
 	hud_snd.sounds.clear	();
@@ -21,7 +20,7 @@ void HUD_SOUND::LoadSound(	LPCSTR section, LPCSTR line,
 		hud_snd.sounds.push_back( SSnd() );
 		SSnd& s = hud_snd.sounds.back();
 
-		LoadSound	(section, sound_line, s.snd, _3D, type, &s.volume, &s.delay);
+		LoadSound	(section, sound_line, s.snd, type, &s.volume, &s.delay);
 		sprintf		(sound_line,"%s%d",line,++k);
 	}//while
 
@@ -29,7 +28,7 @@ void HUD_SOUND::LoadSound(	LPCSTR section, LPCSTR line,
 }
 
 void  HUD_SOUND::LoadSound(LPCSTR section, LPCSTR line, 
-						   ref_sound& snd, BOOL _3D, 
+						   ref_sound& snd, 
 						   int type,
 						   float* volume, 
 						   float* delay)
@@ -42,7 +41,7 @@ void  HUD_SOUND::LoadSound(LPCSTR section, LPCSTR line,
 	R_ASSERT(count);
 
 	_GetItem(str, 0, buf_str);
-	snd.create(_3D, buf_str, type);
+	snd.create(buf_str, st_Effect,type);
 
 
 	if(volume != NULL)

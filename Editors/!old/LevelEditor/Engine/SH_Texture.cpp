@@ -71,7 +71,7 @@ void CTexture::apply_load	(u32 dwStage)	{
 };
 
 void CTexture::apply_theora	(u32 dwStage)	{
-	if (pTheora->Update(m_play_time?m_play_time:Device.dwTimeContinual)){
+	if (pTheora->Update(m_play_time!=0xFFFFFFFF?m_play_time:Device.dwTimeContinual)){
 		R_ASSERT(D3DRTYPE_TEXTURE == pSurface->GetType());
 		IDirect3DTexture9*	T2D		= (IDirect3DTexture9*)pSurface;
 		D3DLOCKED_RECT		R;
@@ -172,7 +172,7 @@ void CTexture::Load		()
 	if (FS.exist(fn,"$game_textures$",*cName,".ogm")){
 		// AVI
 		pTheora		= xr_new<CTheoraSurface>();
-		m_play_time	= 0;
+		m_play_time	= 0xFFFFFFFF;
 
 		if (!pTheora->Load(fn)) {
 			xr_delete(pTheora);
@@ -300,7 +300,7 @@ void CTexture::desc_update	()
 
 void CTexture::video_Play		(BOOL looped, u32 _time)	
 { 
-	if (pTheora) pTheora->Play	(looped,_time?(m_play_time=_time):Device.dwTimeContinual); 
+	if (pTheora) pTheora->Play	(looped,(_time!=0xFFFFFFFF)?(m_play_time=_time):Device.dwTimeContinual); 
 }
 
 void CTexture::video_Pause		(BOOL state)

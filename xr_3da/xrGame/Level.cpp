@@ -273,7 +273,7 @@ void CLevel::PrefetchSound		(LPCSTR name)
 	SoundRegistryMapIt it		= sound_registry.find(snd_name);
 	// if find failed - preload sound
 	if (it==sound_registry.end())
-		sound_registry[snd_name].create(TRUE,snd_name.c_str());
+		sound_registry[snd_name].create(snd_name.c_str(),st_Effect,sg_SourceType);
 }
 
 // Game interface ////////////////////////////////////////////////////
@@ -895,4 +895,9 @@ bool	IsGameTypeSingle()
 {
 	return g_pGamePersistent->GameType()==GAME_SINGLE;
 //	return		(GameID()==GAME_SINGLE);
+}
+
+void CLevel::PauseMusic(bool val)
+{
+	m_level_sound_manager->PauseMusic(true);
 }

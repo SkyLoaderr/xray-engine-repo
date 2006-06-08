@@ -46,11 +46,13 @@ class CLevelSoundManager
 	MusicTrackVec	m_MusicTracks;
 	u32				m_NextTrackTime;
 	int				m_CurrentTrack;
+	bool			m_MusicPaused;
 public:
 					CLevelSoundManager();
 	void			Load			();
 	void			Unload			();
 	void __stdcall	Update			();
+	void			PauseMusic		(bool val);
 };
 
 #endif

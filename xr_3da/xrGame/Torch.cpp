@@ -78,11 +78,11 @@ void CTorch::Load(LPCSTR section)
 	if(m_bNightVisionEnabled)
 	{
 		if(pSettings->line_exist(section, "snd_night_vision_on"))
-			HUD_SOUND::LoadSound(section,"snd_night_vision_on"	, m_NightVisionOnSnd	, TRUE, SOUND_TYPE_ITEM_USING);
+			HUD_SOUND::LoadSound(section,"snd_night_vision_on"	, m_NightVisionOnSnd	, SOUND_TYPE_ITEM_USING);
 		if(pSettings->line_exist(section, "snd_night_vision_off"))
-			HUD_SOUND::LoadSound(section,"snd_night_vision_off"	, m_NightVisionOffSnd	, TRUE, SOUND_TYPE_ITEM_USING);
+			HUD_SOUND::LoadSound(section,"snd_night_vision_off"	, m_NightVisionOffSnd	, SOUND_TYPE_ITEM_USING);
 		if(pSettings->line_exist(section, "snd_night_vision_idle"))
-			HUD_SOUND::LoadSound(section,"snd_night_vision_idle", m_NightVisionIdleSnd	, TRUE, SOUND_TYPE_ITEM_USING);
+			HUD_SOUND::LoadSound(section,"snd_night_vision_idle", m_NightVisionIdleSnd	, SOUND_TYPE_ITEM_USING);
 
 		m_NightVisionRechargeTime		= pSettings->r_float(section,"night_vision_recharge_time");
 		m_NightVisionRechargeTimeMin	= pSettings->r_float(section,"night_vision_recharge_time_min");

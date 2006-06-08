@@ -70,11 +70,11 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	inherited::Load		(section);
 		
 	// Sounds
-	HUD_SOUND::LoadSound(section,"snd_draw"		, sndShow		, TRUE, m_eSoundShow		);
-	HUD_SOUND::LoadSound(section,"snd_holster"	, sndHide		, TRUE, m_eSoundHide		);
-	HUD_SOUND::LoadSound(section,"snd_shoot"	, sndShot		, TRUE, m_eSoundShot		);
-	HUD_SOUND::LoadSound(section,"snd_empty"	, sndEmptyClick	, TRUE, m_eSoundEmptyClick	);
-	HUD_SOUND::LoadSound(section,"snd_reload"	, sndReload		, TRUE, m_eSoundReload		);
+	HUD_SOUND::LoadSound(section,"snd_draw"		, sndShow		, m_eSoundShow		);
+	HUD_SOUND::LoadSound(section,"snd_holster"	, sndHide		, m_eSoundHide		);
+	HUD_SOUND::LoadSound(section,"snd_shoot"	, sndShot		, m_eSoundShot		);
+	HUD_SOUND::LoadSound(section,"snd_empty"	, sndEmptyClick	, m_eSoundEmptyClick	);
+	HUD_SOUND::LoadSound(section,"snd_reload"	, sndReload		, m_eSoundReload		);
 	
 	m_pSndShotCurrent = &sndShot;
 		
@@ -101,7 +101,7 @@ void CWeaponMagazined::Load	(LPCSTR section)
 			m_sSilencerFlameParticles = pSettings->r_string(section, "silencer_flame_particles");
 		if(pSettings->line_exist(section, "silencer_smoke_particles"))
 			m_sSilencerSmokeParticles = pSettings->r_string(section, "silencer_smoke_particles");
-		HUD_SOUND::LoadSound(section,"snd_silncer_shot", sndSilencerShot, TRUE, m_eSoundShot);
+		HUD_SOUND::LoadSound(section,"snd_silncer_shot", sndSilencerShot, m_eSoundShot);
 	}
 	//  [7/20/2005]
 	if (pSettings->line_exist(section, "dispersion_start"))

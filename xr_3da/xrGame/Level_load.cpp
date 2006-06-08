@@ -99,7 +99,7 @@ BOOL CLevel::Load_GameSpecific_After()
 		Sounds_Random.reserve	(S.size());
 		for (CInifile::SectIt I=S.begin(); S.end()!=I; ++I) {
 			Sounds_Random.push_back	(ref_sound());
-			Sound->create			(Sounds_Random.back(),TRUE,*I->first);
+			Sound->create			(Sounds_Random.back(),*I->first,st_Effect,sg_SourceType);
 		}
 		Sounds_Random_dwNextTime= Device.TimerAsync	()	+ 50000;
 		Sounds_Random_Enabled	= FALSE;

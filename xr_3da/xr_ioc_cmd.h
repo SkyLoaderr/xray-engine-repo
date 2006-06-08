@@ -297,7 +297,7 @@ public:
 		if( EQ(args,"off")||EQ(args,"0") )
 			bWhatToDo = FALSE;
 
-		Device.Pause(bWhatToDo);
+		Device.Pause	(bWhatToDo);
 		TStatus S;
 		strconcat(S,cName," is ", Device.Pause()?"on":"off");
 		Log(S);
