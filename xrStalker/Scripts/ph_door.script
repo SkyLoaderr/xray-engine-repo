@@ -50,6 +50,10 @@ function action_door:initialize(loading)
 	end
 	
 	if self.st.closed then
+		--' ≈сли дверь уже закрыта - то нужно закрыть без звука
+		if self:is_closed() then
+			disable_snd = true
+		end
 		self:close_door(disable_snd)
 	else
 		self:open_door(disable_snd)
