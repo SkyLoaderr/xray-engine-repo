@@ -237,13 +237,13 @@ function Cwound_manager:process_fight(hp)
 	return "true"
 end
 function Cwound_manager:process_cover(hp)
-	local key
-	key = self:get_key_from_distance(self.a.hp_cover, hp)
-	if key ~= nil then
-		if self.a.hp_cover[key].state then
-			return tostring(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.hp_cover[key].state))
-		end
-	end		
+--	local key
+--	key = self:get_key_from_distance(self.a.hp_cover, hp)
+--	if key ~= nil then
+--		if self.a.hp_cover[key].state then
+--			return tostring(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.hp_cover[key].state))
+--		end
+--	end		
 	return "true"
 end
 function Cwound_manager:process_victim(hp)
