@@ -56,6 +56,7 @@ function snd_source:save ()
 end
 
 function snd_source:hit_callback(obj, amount, local_direction, who, bone_index)
+    if self.st.no_hit == true then return end
     printf ("SOUND SOURCE HAVE A HIT")
 	local who_name
 	if who then
@@ -167,6 +168,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.random   = utils.cfg_get_bool (ini, section, "random", npc, false)
 	st.pause_min = utils.cfg_get_number (ini, section, "min_idle", npc, false, 0)
 	st.pause_max = utils.cfg_get_number (ini, section, "max_idle", npc, false, 0)
+	st.no_hit   = utils.cfg_get_bool (ini, section, "no_hit", npc, false, true)
 	if st.pause_max < st.pause_min then
 	   abort ("PH_SOUND - invalid time range !!!")
     end	    
