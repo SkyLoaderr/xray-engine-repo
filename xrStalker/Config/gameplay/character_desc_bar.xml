@@ -535,8 +535,6 @@
 		<actor_dialog>bar_dolg_leader_job</actor_dialog>
 		<actor_dialog>bar_dolg_leader_prisyaga</actor_dialog>
 		<actor_dialog>bar_dolg_leader_quest_rg6_finish</actor_dialog>
-		<actor_dialog>bar_dolg_leader_quest_svoboda_leader_start</actor_dialog>
-		<actor_dialog>bar_dolg_leader_quest_svoboda_leader_finish</actor_dialog>
 		<actor_dialog>tm_dolg_dialog</actor_dialog>
 		<actor_dialog>tm_dolg_reward</actor_dialog>
 	</specific_character>
