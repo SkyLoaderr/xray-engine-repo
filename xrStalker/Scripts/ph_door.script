@@ -271,9 +271,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	
 	
 --	st.snd_init        = utils.cfg_get_string(ini, section, "snd_init", npc, false, "")
-	st.snd_open_start  = utils.cfg_get_string(ini, section, "snd_open_start", npc, false, "")
-	st.snd_close_start = utils.cfg_get_string(ini, section, "snd_close_start", npc, false, "")
-	st.snd_close_stop  = utils.cfg_get_string(ini, section, "snd_close_stop", npc, false, "")
+	st.snd_open_start  = utils.cfg_get_string(ini, section, "snd_open_start", npc, false, "", "trader_door_open_start")
+	st.snd_close_start = utils.cfg_get_string(ini, section, "snd_close_start", npc, false, "", "trader_door_close_start")
+	st.snd_close_stop  = utils.cfg_get_string(ini, section, "snd_close_stop", npc, false, "", "trader_door_close_stop")
 	
 	st.on_use    = xr_logic.cfg_get_condlist(ini, section, "on_use", npc)
 	
