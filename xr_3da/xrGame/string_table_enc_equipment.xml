@@ -132,4 +132,46 @@
     <string id="cit_deadcity_maps_desc">
         <text>Детальная карта мертвого города и расположения укреплений в городе</text>
     </string>
+    
+    <string id="mutant_flesh_eye">
+        <text>Глаз плоти</text>
+    </string>
+    <string id="mutant_flesh_eye_description">
+        <text>Этот уродливый глаз очень напоминает человеческий, от чего кажется ещё отваратней.</text>
+    </string>
+    
+    <string id="mutant_boar_leg">
+        <text>Кабанья нога</text>
+    </string>
+    <string id="mutant_boar_leg_description">
+        <text>Окорок кабана вместе с копытом. Очень напоминает обычный свинной окорок, но кожа сплошь покрыта уродливыми бородавками и густой щетиной.</text>
+    </string>
+    
+    <string id="mutant_dog_tail">
+        <text>Собачий хвост</text>
+    </string>
+    <string id="mutant_dog_tail_description">
+        <text>Свиду обычный собачий хвост. Он довольно короткий и неказистый. Если эта собака имела хозяина, он был бы купирован ранее.</text>
+    </string>
+    
+    <string id="mutant_psevdodog_tail">
+        <text>Хвост псевдо-собаки</text>
+    </string>
+    <string id="mutant_psevdodog_tail_description">
+        <text>Кожа на хвосте настолько грубая, что кажется корой странного дерева. Она покрыта множеством уродливых шрамов и ещё не заживших ран.</text>
+    </string>
+    
+    <string id="mutant_krovosos_jaw">
+        <text>Челюсть кровососа</text>
+    </string>
+    <string id="mutant_krovosos_jaw_description">
+        <text>Отвратительные чушальца, до сих пор сочатся слизью смешанной с кровью последней жертвы кровососа.</text>
+    </string>
+     
+     <string id="mutant_snork_leg">
+        <text>Нога снорка</text>
+    </string>
+    <string id="mutant_snork_leg_description">
+        <text>Срезанная с трупа снорка конечность. Остаток военного ботинка, кажется врос в неё. Он не снимамается, даже если приложить усилие.</text>
+    </string>
 </string_table>
