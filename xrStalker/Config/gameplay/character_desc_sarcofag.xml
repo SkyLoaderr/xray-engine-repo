@@ -135,7 +135,7 @@
     
 
 <!---------------------------- EXO ------------------------->
-    <specific_character id="sar_monolith_exo" team_default = "1">
+    <specific_character id="sar_monolith_exo_default1" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
         <icon x="28" y="8"></icon>
         <map_icon x="3" y="0"></map_icon>
@@ -156,6 +156,195 @@
             ammo_11.43x23_fmj = 1 \n
             wpn_g36 \n
             ammo_5.56x45_ap = 1 \n
+#include "gameplay\character_drugs.xml"
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+    
+    <specific_character id="sar_monolith_exo_default2" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="28" y="8"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>sar_monolith_bio</bio>
+
+        <class>sar_monolith_exo</class>
+        <community>monolith</community>
+
+
+        <rank>922</rank>
+        <reputation>-890</reputation>
+
+        <visual>actors\monolit\stalker_mo_exo</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+            [spawn] \n
+            wpn_desert_eagle \n
+            ammo_11.43x23_fmj = 1 \n
+            wpn_groza \n
+			ammo_9x39_ap \n
+#include "gameplay\character_drugs.xml"
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+    
+    <specific_character id="sar_monolith_exo_default3" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="28" y="8"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>sar_monolith_bio</bio>
+
+        <class>sar_monolith_exo</class>
+        <community>monolith</community>
+
+
+        <rank>922</rank>
+        <reputation>-890</reputation>
+
+        <visual>actors\monolit\stalker_mo_exo</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+            [spawn] \n
+            wpn_desert_eagle \n
+            ammo_11.43x23_fmj = 1 \n
+            wpn_groza \n
+			ammo_9x39_ap \n
+#include "gameplay\character_drugs.xml"
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+    
+    <specific_character id="sar_monolith_exo_default4" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="28" y="8"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>sar_monolith_bio</bio>
+
+        <class>sar_monolith_exo</class>
+        <community>monolith</community>
+
+
+        <rank>922</rank>
+        <reputation>-890</reputation>
+
+        <visual>actors\monolit\stalker_mo_exo</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+            [spawn] \n
+            wpn_desert_eagle \n
+            ammo_11.43x23_fmj = 1 \n
+            wpn_groza \n
+			ammo_9x39_ap \n
+#include "gameplay\character_drugs.xml"
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+    
+    <specific_character id="sar_monolith_exo_default5" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="28" y="8"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>sar_monolith_bio</bio>
+
+        <class>sar_monolith_exo</class>
+        <community>monolith</community>
+
+
+        <rank>922</rank>
+        <reputation>-890</reputation>
+
+        <visual>actors\monolit\stalker_mo_exo</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+            [spawn] \n
+            wpn_desert_eagle \n
+            ammo_11.43x23_fmj = 1 \n
+             wpn_fn2000 \n
+            ammo_5.56x45_ap = 1 \n
+#include "gameplay\character_drugs.xml"
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+    
+    <specific_character id="sar_monolith_exo_default6" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="28" y="8"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>sar_monolith_bio</bio>
+
+        <class>sar_monolith_exo</class>
+        <community>monolith</community>
+
+
+        <rank>922</rank>
+        <reputation>-890</reputation>
+
+        <visual>actors\monolit\stalker_mo_exo</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+            [spawn] \n
+            wpn_desert_eagle \n
+            ammo_11.43x23_fmj = 1 \n
+            wpn_wincheaster1300 \n
+			ammo_12x76_zhekan = 1 \n
+#include "gameplay\character_drugs.xml"
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+    
+    <specific_character id="sar_monolith_exo_default7" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="28" y="8"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>sar_monolith_bio</bio>
+
+        <class>sar_monolith_exo</class>
+        <community>monolith</community>
+
+
+        <rank>922</rank>
+        <reputation>-890</reputation>
+
+        <visual>actors\monolit\stalker_mo_exo</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+            [spawn] \n
+            wpn_desert_eagle \n
+            ammo_11.43x23_fmj = 1 \n
+            wpn_spas12 \n
+			ammo_12x76_zhekan = 1 \n
+#include "gameplay\character_drugs.xml"
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+    
+    <specific_character id="sar_monolith_exo_default8" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="28" y="8"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>sar_monolith_bio</bio>
+
+        <class>sar_monolith_exo</class>
+        <community>monolith</community>
+
+
+        <rank>922</rank>
+        <reputation>-890</reputation>
+
+        <visual>actors\monolit\stalker_mo_exo</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+            [spawn] \n
+            wpn_desert_eagle \n
+            ammo_11.43x23_fmj = 1 \n
+            wpn_val \n
+			ammo_9x39_ap = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
