@@ -25,6 +25,7 @@ private:
 private:
 	u32					m_last_level_time;
 	u16					m_last_enemy_id;
+	bool				m_last_wounded;
 
 protected:
 			void		add_evaluators				();

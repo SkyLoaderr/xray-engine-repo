@@ -126,7 +126,7 @@ void CAI_Stalker::update_best_cover_actuality		(const Fvector &position_to_cover
 	m_best_cover_can_try_advance		= false;
 
 #ifdef _DEBUG
-	Msg									("* [%6d][%s] advance search performed",Device.dwTimeGlobal,*cName());
+//	Msg									("* [%6d][%s] advance search performed",Device.dwTimeGlobal,*cName());
 #endif
 #ifdef _DEBUG
 	++g_advance_search_count;

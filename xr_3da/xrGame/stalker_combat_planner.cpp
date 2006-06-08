@@ -157,6 +157,11 @@ void CStalkerCombatPlanner::update				()
 	inherited::update				();
 	object().react_on_grenades		();
 	object().react_on_member_death	();
+
+	const CEntityAlive				*enemy = object().memory().enemy().selected();
+	VERIFY							(enemy);
+	const CAI_Stalker				*stalker = smart_cast<const CAI_Stalker*>(enemy);
+	m_last_wounded					= stalker && stalker->wounded();
 }
 
 void CStalkerCombatPlanner::initialize			()
@@ -172,6 +177,7 @@ void CStalkerCombatPlanner::initialize			()
 	object().agent_manager().member().member(m_object).cover(0);
 	m_last_enemy_id			= u16(-1);
 	m_last_level_time		= 0;
+	m_last_wounded			= false;
 
 	if (object().memory().enemy().selected()) {
 		CVisualMemoryManager	*visual_memory_manager = object().memory().enemy().selected()->visual_memory();
@@ -204,7 +210,7 @@ void CStalkerCombatPlanner::finalize			()
 void CStalkerCombatPlanner::add_evaluators		()
 {
 	add_evaluator			(eWorldPropertyPureEnemy		,xr_new<CStalkerPropertyEvaluatorEnemies>			(m_object,"is_there_enemies",0));
-	add_evaluator			(eWorldPropertyEnemy			,xr_new<CStalkerPropertyEvaluatorEnemies>			(m_object,"is_there_enemies_delayed",POST_COMBAT_WAIT_INTERVAL));
+	add_evaluator			(eWorldPropertyEnemy			,xr_new<CStalkerPropertyEvaluatorEnemies>			(m_object,"is_there_enemies_delayed",POST_COMBAT_WAIT_INTERVAL,&m_last_wounded));
 	add_evaluator			(eWorldPropertySeeEnemy			,xr_new<CStalkerPropertyEvaluatorSeeEnemy>			(m_object,"see enemy"));
 	add_evaluator			(eWorldPropertyEnemySeeMe		,xr_new<CStalkerPropertyEvaluatorEnemySeeMe>		(m_object,"enemy see me"));
 	add_evaluator			(eWorldPropertyItemToKill		,xr_new<CStalkerPropertyEvaluatorItemToKill>		(m_object,"item to kill"));

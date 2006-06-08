@@ -1000,8 +1000,6 @@ void CStalkerActionSearchEnemy::execute			()
 	if (!mem_object.m_object)
 		return;
 
-	object().sight().setup				(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
-
 	if (object().movement().path_completed()) {
 #if 0
 		object().m_ce_ambush->setup		(mem_object.m_object_params.m_position,mem_object.m_self_params.m_position,10.f);
@@ -1028,10 +1026,29 @@ void CStalkerActionSearchEnemy::execute			()
 				mem_object.m_object_params.m_level_vertex_id
 			);
 		}
+
+		if (object().movement().path_completed() && completed())
+			object().memory().enable(object().memory().enemy().selected(),false);
+
+		object().sight().setup		(
+			CSightAction(
+				SightManager::eSightTypeCurrentDirection,
+				true
+			)
+		);
 #endif
 
 		if (object().movement().path_completed() && completed())
 			object().memory().enable(object().memory().enemy().selected(),false);
+	}
+	else {
+		object().sight().setup		(
+			CSightAction(
+				SightManager::eSightTypePosition,
+				mem_object.m_object_params.m_position,
+				true
+			)
+		);
 	}
 }
 

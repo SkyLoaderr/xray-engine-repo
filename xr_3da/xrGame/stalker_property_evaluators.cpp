@@ -81,17 +81,25 @@ _value_type CStalkerPropertyEvaluatorItems::evaluate	()
 CStalkerPropertyEvaluatorEnemies::CStalkerPropertyEvaluatorEnemies	(
 	CAI_Stalker *object, 
 	LPCSTR evaluator_name, 
-	u32 time_to_wait
+	u32 time_to_wait,
+	const bool *dont_wait
 ) : 
 	inherited	(object ? object->lua_game_object() : 0,evaluator_name)
 {
 	m_time_to_wait	= time_to_wait;
+	m_dont_wait		= dont_wait;
 }
 
 _value_type CStalkerPropertyEvaluatorEnemies::evaluate	()
 {
 	if (m_object->memory().enemy().selected())
 		return			(true);
+
+	if (!m_dont_wait)
+		return			(false);
+
+	if (*m_dont_wait)
+		return			(false);
 
 	if (Device.dwTimeGlobal < m_object->memory().enemy().last_enemy_time() + m_time_to_wait)
 		return			(true);
