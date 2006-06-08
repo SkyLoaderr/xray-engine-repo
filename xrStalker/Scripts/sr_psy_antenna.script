@@ -200,7 +200,11 @@ function PsyAntenna:update			(dt)
 
 --	self.power_factor:set 			(self.working_anim:calculate(self.eff_time*0.001))
 	self:generate_phantoms 			()
-	self:update_postprocess 		()
+	
+	if self.play_visual then
+		self:update_postprocess		()
+	end
+	
 	self:update_sound				()
 	self:update_psy_hit				(dt)
 end
@@ -292,6 +296,7 @@ function action_psy_antenna:zone_enter()
 	self.state = state_inside
 
 	psy_antenna.intensity_base = psy_antenna.intensity_base + self.st.intensity
+	psy_antenna.play_visual	   = self.st.play_visual
 	psy_antenna.hit_intensity  = psy_antenna.hit_intensity  + self.st.hit_intensity
 
 	psy_antenna.phantom_spawn_probability = psy_antenna.phantom_spawn_probability + self.st.phantom_prob
@@ -357,4 +362,6 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.intensity     = utils.cfg_get_number( ini, section, "eff_intensity", npc, true ) * 0.01
 	st.hit_intensity = utils.cfg_get_number( ini, section, "hit_intensity", npc, true ) * 0.01
 	st.phantom_prob  = utils.cfg_get_number( ini, section, "phantom_prob",  npc, false, 0 ) * 0.01
+	
+	st.play_visual   = utils.cfg_get_bool( ini, section, "play_visual",  npc, false, true )
 end
