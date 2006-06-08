@@ -373,6 +373,20 @@ function set_gulag_enemy_actor( actor, npc, p )
 	end
 end
 
+-- принудительное обновление смарта. Использовать только в КРАЙНИХ случаях!!!
+-- каждое использование согласовывать со мной. Чугай.
+function smart_terrain_force_update(actor, npc, p)
+	printf( "xr_effects.smart_terrain_force_update called" )
+
+	if p[1] then
+		local gulag = xr_gulag.get_gulag(p[1])
+
+		if gulag then
+			gulag.smrttrn:update()
+		end
+	end
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 
 -- постпроцесс и влияние удара в морду
@@ -434,7 +448,6 @@ end
 function turn_on_object(actor, npc)
 	npc:get_hanging_lamp():turn_on()
 end
-
 
 ------------------------------------------------------------------------------------------------
 

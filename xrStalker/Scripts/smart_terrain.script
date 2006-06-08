@@ -934,7 +934,9 @@ function se_smart_terrain:stat()
 	return avail, pop, cap
 end
 
--- Обновление. В онлайне вызывается через binder.
+-- Обновление.
+-- В онлайне вызывается через binder.
+-- Также может вызваться принудительно из xr_effects
 -- Если мужиков в гулаге больше не осталось или условия существования гулага не выполняются, то убрать гулаг.
 function se_smart_terrain:update()
 --	log( "se_smart_terrain::update called!" )
