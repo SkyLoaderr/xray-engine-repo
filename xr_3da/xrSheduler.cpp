@@ -178,7 +178,7 @@ void CSheduler::ProcessStep			()
 		// Update
 		Item	T					= Top	();
 		u32		Elapsed				= dwTime-T.dwTimeOfLastExecute;
-		if	(NULL==T.Object)		{
+		if	(NULL==T.Object || !T.Object->shedule_Needed())		{
 			// Erase element
 			Pop						();
 			continue;
@@ -204,9 +204,7 @@ void CSheduler::ProcessStep			()
 
 
 		try {
-			//T.Object->shedule.b_locked	= TRUE;
 			T.Object->shedule_Update	(clampr(Elapsed,u32(1),u32(_max(u32(T.Object->shedule.t_max),u32(1000)))) );
-			//T.Object->shedule.b_locked	= FALSE;
 		} catch (...) {
 #ifdef DEBUG
 			Msg		("! xrSheduler: object '%s' raised an exception", _obj_name);
@@ -277,12 +275,14 @@ void CSheduler::Update				()
 	for (u32 it=0; it<ItemsRT.size(); it++)
 	{
 		Item&	T						= ItemsRT[it];
+		if(!T.Object->shedule_Needed())	continue;
+
 		u32	Elapsed						= dwTime-T.dwTimeOfLastExecute;
 #ifdef DEBUG
 		VERIFY							(T.Object->dbg_startframe != Device.dwFrame);
 		T.Object->dbg_startframe		= Device.dwFrame;
 #endif
-		T.Object->shedule_Update		(Elapsed);
+		T.Object->shedule_Update	(Elapsed);
 		T.dwTimeOfLastExecute			= dwTime;
 	}
 

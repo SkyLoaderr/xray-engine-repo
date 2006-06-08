@@ -39,7 +39,7 @@ function _main()
 end
 
 function main()
-    alife():create ("device_pda", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
+    alife():create ("wpn_knife", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
 
 
 --	snd_radar_stop:play(db.actor, 0, sound_object.s2d)

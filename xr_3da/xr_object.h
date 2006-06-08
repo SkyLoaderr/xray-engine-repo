@@ -90,6 +90,7 @@ public:
 	ICF void							setID				(u16 _ID)			{ Props.net_ID = _ID;		}
 	virtual BOOL						Ready				()					{ return Props.net_Ready;	}
 	virtual float						shedule_Scale		()					{ return Device.vCameraPosition.distance_to(Position())/200.f; }
+	virtual bool						shedule_Needed		()					{return processing_enabled();};
 
 	// Parentness
 	IC CObject*							H_Parent			()					{ return Parent;						}

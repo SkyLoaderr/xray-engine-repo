@@ -38,6 +38,7 @@ public:
 	virtual	shared_str	shedule_Name			() const		{ return shared_str("alife_simulator"); };
 	virtual float		shedule_Scale			();
 	virtual void		shedule_Update			(u32 dt);	
+	virtual bool		shedule_Needed			()				{return true;};
 			void		update					(bool switch_objects, bool spawn_update = true, bool scheduled_update = true);
 			void		load					(LPCSTR game_name = 0, bool no_assert = false, bool new_only = false);
 			bool		load_game				(LPCSTR game_name, bool no_assert = false);

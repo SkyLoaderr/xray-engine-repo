@@ -23,8 +23,7 @@ protected:
 	virtual void		switch2_Hiding				();
 	virtual void		switch2_Hidden				();
 	virtual void		switch2_Showing				();
-	virtual void		switch2_Attacking			();
-	virtual void		switch2_Attacking2			();
+			void		switch2_Attacking			(u32 state);
 
 	virtual void		OnAnimationEnd				();
 	virtual void		OnStateSwitch				(u32 S);

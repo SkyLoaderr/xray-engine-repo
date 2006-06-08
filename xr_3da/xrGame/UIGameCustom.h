@@ -86,6 +86,7 @@ public:
 			void				RemoveCustomStatic	(LPCSTR id);
 
 	virtual	shared_str	shedule_Name				() const		{ return shared_str("CUIGameCustom"); };
+	virtual bool		shedule_Needed			()					{return true;};
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -234,7 +234,7 @@ public:
 			float			afT[2];
 			Fsphere::ERP_Result	result	= sS.intersect(ray.pos,ray.fwd_dir,range,quantity,afT);
 
-			if (Fsphere::rpOriginInside || ((result==Fsphere::rpOriginOutside)&&(afT[0]<range))){
+			if (result==Fsphere::rpOriginInside || ((result==Fsphere::rpOriginOutside)&&(afT[0]<range))){
 				if (b_nearest)				{ 
 					switch(result){
 					case Fsphere::rpOriginInside:	range	= afT[0]<range?afT[0]:range;	break;

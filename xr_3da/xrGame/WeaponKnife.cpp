@@ -60,10 +60,8 @@ void CWeaponKnife::OnStateSwitch	(u32 S)
 		switch2_Hidden	();
 		break;
 	case eFire:
-		switch2_Attacking	();
-		break;
 	case eFire2:
-		switch2_Attacking2 ();
+		switch2_Attacking	(S);
 		break;
 	}
 	STATE = S;
@@ -124,11 +122,16 @@ void CWeaponKnife::OnAnimationEnd()
 	{
 	case eHiding:	SwitchState(eHidden);	break;
 	case eFire: 
+	case eFire2: 
 		{
             if(m_attackStart) 
 			{
 				m_attackStart = false;
-				m_pHUD->animPlay(mhud_attack_e[Random.randI(mhud_attack_e.size())], TRUE, this);
+				if(STATE==eFire)
+					m_pHUD->animPlay(mhud_attack_e[Random.randI(mhud_attack_e.size())], TRUE, this);
+				else
+					m_pHUD->animPlay(mhud_attack2_e[Random.randI(mhud_attack2_e.size())], TRUE, this);
+
 				Fvector	p1, d; 
 				p1.set(get_LastFP()); 
 				d.set(get_LastFD());
@@ -142,26 +145,7 @@ void CWeaponKnife::OnAnimationEnd()
 			else 
 				SwitchState(eIdle);
 		}break;
-	case eFire2: 
-		{
-            if(m_attackStart) 
-			{
-				m_attackStart = false;
-				m_pHUD->animPlay(mhud_attack2_e[Random.randI(mhud_attack2_e.size())], TRUE, this);
-				
-				Fvector	p1, d; 
-				p1.set(get_LastFP()); 
-				d.set(get_LastFD());
-				
-				if(H_Parent()) 
-					smart_cast<CEntity*>(H_Parent())->g_fireParams(this, p1,d);
-				else break;
-			
-				KnifeStrike(p1,d);
-			} else 
-				SwitchState(eIdle);
-		} break;
-	case eShowing:									// End of Show
+	case eShowing:
 	case eIdle:	
 		SwitchState(eIdle);		break;	
 	}
@@ -171,24 +155,18 @@ void CWeaponKnife::state_Attacking	(float)
 {
 }
 
-void CWeaponKnife::switch2_Attacking	()
+void CWeaponKnife::switch2_Attacking	(u32 state)
 {
 	if(m_bPending)	return;
 
-	m_pHUD->animPlay(mhud_attack[Random.randI(mhud_attack.size())],		FALSE, this);
+	if(state==eFire)
+		m_pHUD->animPlay(mhud_attack[Random.randI(mhud_attack.size())],		FALSE, this);
+	else //eFire2
+		m_pHUD->animPlay(mhud_attack2[Random.randI(mhud_attack2.size())],		FALSE, this);
+
 	m_attackStart	= true;
 	m_bPending		= true;
 }
-
-void CWeaponKnife::switch2_Attacking2	()
-{
-	if(m_bPending)	return;
-
-	m_pHUD->animPlay(mhud_attack2[Random.randI(mhud_attack2.size())],	FALSE, this);
-	m_attackStart	= true;
-	m_bPending		= true;
-}
-
 
 void CWeaponKnife::switch2_Idle	()
 {

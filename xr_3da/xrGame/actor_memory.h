@@ -39,6 +39,7 @@ public:
 	virtual float					shedule_Scale			();
 	virtual void					shedule_Update			(u32 dt);
 	virtual	shared_str				shedule_Name			() const;
+	virtual bool					shedule_Needed			()				{return true;};
 
 public:
 	virtual	BOOL					feel_vision_isRelevant	(CObject* O);

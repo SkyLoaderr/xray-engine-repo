@@ -22,6 +22,7 @@ protected:
 public:
 						CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove);
 
+	virtual bool		shedule_Needed		()			{return true;};
 	virtual float		shedule_Scale		()	{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 	virtual void		shedule_Update		(u32 dt);
 	virtual void		renderable_Render	();
