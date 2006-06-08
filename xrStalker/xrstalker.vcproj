@@ -2005,9 +2005,6 @@
 					RelativePath=".\Config\scripts\sar_monolith_noise.ltx">
 				</File>
 				<File
-					RelativePath=".\Config\scripts\sar_teleport.ltx">
-				</File>
-				<File
 					RelativePath=".\config\scripts\sincos.ltx">
 				</File>
 				<File
