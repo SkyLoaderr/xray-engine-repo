@@ -17,7 +17,11 @@ function actor_proxy:init()
 
 		self.online      = false
 		self.alife       = alife()
-		self.actor_id    = self.alife:actor().id
+
+		if self.alife then
+			self.actor_id    = self.alife:actor().id
+		end
+
 		self.actor       = nil
 
 		self.initialized = true
