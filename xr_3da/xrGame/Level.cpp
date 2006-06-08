@@ -899,5 +899,5 @@ bool	IsGameTypeSingle()
 
 void CLevel::PauseMusic(bool val)
 {
-	m_level_sound_manager->PauseMusic(true);
+	if (m_level_sound_manager) m_level_sound_manager->PauseMusic(val);
 }
