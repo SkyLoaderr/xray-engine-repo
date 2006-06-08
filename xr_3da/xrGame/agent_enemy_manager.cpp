@@ -510,7 +510,8 @@ void CAgentEnemyManager::wounded_processed	(const CEntityAlive *object, bool val
 {
 	VERIFY							(value);
 	WOUNDED_ENEMIES::iterator		I = std::find_if(m_wounded.begin(),m_wounded.end(),find_wounded_predicate(object));
-	VERIFY							(I != m_wounded.end());
+	if (I == m_wounded.end())
+		return;
 	VERIFY							((*I).second.first != ALife::_OBJECT_ID(-1));
 	VERIFY							(!(*I).second.second);
 	(*I).second.second				= true;
