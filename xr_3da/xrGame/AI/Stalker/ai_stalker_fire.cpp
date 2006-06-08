@@ -186,8 +186,10 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 		const CEntityAlive	*entity_alive = smart_cast<const CEntityAlive*>(pHDS->initiator());
 		if (!entity_alive || (tfGetRelationType(entity_alive) != ALife::eRelationTypeFriend))
 			sound().play	(eStalkerSoundInjuring);
-		else
-			sound().play	(eStalkerSoundInjuringByFriend);
+		else {
+			if (!wounded())
+				sound().play	(eStalkerSoundInjuringByFriend);
+		}
 		
 		if (animation().script_animations().empty() && (pHDS->bone() != BI_NONE)) {
 			Fvector					D;
