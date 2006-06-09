@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" standalone="no" ?>
 <string_table>
-    <string id="cant_sleep_near_enemies">
-        <text>can't sleep near the enemies</text>
-    </string>
-    <string id="cant_sleep_not_on_solid_ground">
-        <text>can't sleep not on the solid ground</text>
-    </string>
     <string id="ui_inv_bag">
         <text>Bag</text>
     </string>
