@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
 
-	<left_character_icon x="25" y="32" width="211" height="218">
+	<left_character_icon x="15" y="32" width="200" height="218">
 		<texture>ui_charinfo_left</texture>
 		<texture_offset x="-11" y="0"/>
 	</left_character_icon>
 	
-	<right_character_icon x="820" y="32" width="143" height="218">
+	<right_character_icon x="820" y="32" width="200" height="218">
 		<texture>ui_charinfo_right</texture>
 	</right_character_icon>
 	
@@ -17,7 +17,7 @@
 	</button>
 
 	<!-- DIALOG FRAME -->
-	<frame_window x="215" y="42" width="588" height="470">
+	<frame_window x="218" y="42" width="588" height="470">
 		<texture>ui_frame_03</texture>		
 		<title y="-13" width="190" height="22">
 			<text font="graffiti22" r="238" g="153" b="26" complex_mode="0"/>
@@ -27,7 +27,7 @@
 	</frame_window>
 
 	<!-- OUR PHRASES FRAME -->
-	<frame_window x="215" y="540" width="588" height="177">
+	<frame_window x="218" y="540" width="588" height="177">
 		<texture>ui_frame_03</texture>		
 		<title y="-13" width="190" height="22">
 			<text font="graffiti22" r="238" g="153" b="26" complex_mode="0"/>

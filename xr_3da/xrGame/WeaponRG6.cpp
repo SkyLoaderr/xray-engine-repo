@@ -129,7 +129,7 @@ u8 CWeaponRG6::AddCartridge		(u8 cnt)
 {
 	u8 t = inheritedSG::AddCartridge(cnt);
 	u8 k = cnt-t;
-	shared_str fake_grenade_name = pSettings->r_string(*m_pAmmo->cNameSect(), "fake_grenade_name");
+	shared_str fake_grenade_name = pSettings->r_string(*m_ammoTypes[m_ammoType], "fake_grenade_name");
 	while(k){
 		--k;
 		inheritedRL::SpawnRocket(*fake_grenade_name, this);
