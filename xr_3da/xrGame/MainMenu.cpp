@@ -58,6 +58,8 @@ void CMainMenu::ReadTextureInfo(){
 	}
 }
 
+extern ENGINE_API BOOL bShowPauseString;
+
 void CMainMenu::Activate	(bool bActivate)
 {
 	if(!!m_Flags.test(flActive) == bActivate)	return;
@@ -80,6 +82,9 @@ void CMainMenu::Activate	(bool bActivate)
 
 		m_Flags.set					(flRestoreCursor,GetUICursor()->IsVisible());
 
+
+		m_Flags.set					(flRestorePauseStr, bShowPauseString);
+		bShowPauseString			= FALSE;
 		if(!m_Flags.test(flRestorePause))
 			Device.Pause			(TRUE);
 		
@@ -117,6 +122,10 @@ void CMainMenu::Activate	(bool bActivate)
 
 		if(!m_Flags.test(flRestorePause))
 			Device.Pause(FALSE);
+
+		bShowPauseString		= m_Flags.test(flRestorePauseStr);
+			
+
 	
 		if(m_Flags.test(flRestoreCursor))
 			GetUICursor()->Show();

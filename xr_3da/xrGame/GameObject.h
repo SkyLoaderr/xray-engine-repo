@@ -113,6 +113,8 @@ public:
 //	virtual float			renderable_Ambient	();
 
 	virtual void			shedule_Update		(u32 dt);	
+	virtual bool			shedule_Needed		()					{return processing_enabled() || CScriptBinder::object();};
+
 	virtual void			renderable_Render	();
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
 	virtual	void			Hit					(SHit* pHDS) {};

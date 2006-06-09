@@ -2191,10 +2191,13 @@ void CCC_RegisterCommands()
 #endif
 
 	// hud
-	psHUD_Flags.set(HUD_CROSSHAIR, true);
-	psHUD_Flags.set(HUD_WEAPON, true);
-	psHUD_Flags.set(HUD_DRAW, true);
-	psHUD_Flags.set(HUD_INFO, true);
+	psHUD_Flags.set(HUD_CROSSHAIR,		true);
+	psHUD_Flags.set(HUD_CROSSHAIR_RT,	true);
+	psHUD_Flags.set(HUD_WEAPON,			true);
+	psHUD_Flags.set(HUD_DRAW,			true);
+	psHUD_Flags.set(HUD_INFO,			true);
+
+	CMD3(CCC_Mask,				"hud_crosshair_rt",		&psHUD_Flags,	HUD_CROSSHAIR_RT);
 	CMD3(CCC_Mask,				"hud_crosshair",		&psHUD_Flags,	HUD_CROSSHAIR);
 	CMD3(CCC_Mask,				"hud_crosshair_dist",	&psHUD_Flags,	HUD_CROSSHAIR_DIST);
 	CMD3(CCC_Mask,				"hud_weapon",			&psHUD_Flags,	HUD_WEAPON);
