@@ -21,7 +21,6 @@
 		<supplies>
 			[spawn] \n
 			wpn_walther_coll \n
-			outfit_bandit_anom \n
 			ammo_9x19_pbp = 2 \n
 			wpn_l85 = 1, 0, 1, 0 \n
 			ammo_5.56x45_ss190 = 2 \n
