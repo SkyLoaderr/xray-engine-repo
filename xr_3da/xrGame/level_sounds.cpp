@@ -108,14 +108,6 @@ void SMusicTrack::Stop()
 CLevelSoundManager::CLevelSoundManager()
 {
 	m_NextTrackTime		= 0;
-	m_MusicPaused		= false;
-}
-
-void CLevelSoundManager::PauseMusic(bool val)
-{
-	m_MusicPaused		= val;
-	if (false==val)
-		for (u32 k=0; k<m_MusicTracks.size(); ++k) m_MusicTracks[k].Stop();
 }
 
 void CLevelSoundManager::Load()
@@ -165,6 +157,8 @@ void CLevelSoundManager::Unload()
 
 void CLevelSoundManager::Update()
 {
+	if (Device.Pause())				return;
+	if (Device.dwPrecacheFrame!=0)	return;
 	// static sounds
 	u32 game_time				= Level().GetGameDayTimeMS();
 	u32 engine_time				= Device.dwTimeGlobal;
@@ -175,7 +169,7 @@ void CLevelSoundManager::Update()
 	}
 
 	// music track
-	if (!m_MusicTracks.empty() && !m_MusicPaused){
+	if (!m_MusicTracks.empty()){
 		if (m_CurrentTrack<0 && engine_time>m_NextTrackTime){
 			U32Vec				indices;
 			for (u32 k=0; k<m_MusicTracks.size(); ++k){
