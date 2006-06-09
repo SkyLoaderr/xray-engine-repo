@@ -58,7 +58,7 @@ function evaluator_close_combat:evaluate()
 	end
 
 	if self.close_combat == false then
-		self.close_combat = distance_between(self.object, self.object:best_enemy()) < self.a.radius
+		self.close_combat = self.object:position():distance_to(self.object:memory_position(self.object:best_enemy())) < self.a.radius
 	end
 
 	if self.close_combat == true then		
@@ -225,36 +225,38 @@ function action_patrol:execute()
 				end
 			end
 			xr_sound.set_sound(self.object, self.a.attack_sound)
-			self.enemy_position = self.enemy:position()
-			-- Занести место поиска врага в scan_table
-			if self.a.sniper == true then
-				self.position = self.object:position()
-
-				self.direction = vector():set(self.enemy_position.x - self.position.x,
-											  0,
-											  self.enemy_position.z - self.position.z)
-				self.direction:normalize()
-				local wide_sight = self.position:distance_to(self.enemy_position)*math.tan(self.a.enemy_disp)
-				
-				
-				self.point_0 = vector():set(self.enemy_position.x + wide_sight*self.direction.z,
-											self.enemy_position.y,
-											self.enemy_position.z - wide_sight*self.direction.x)
-				--self.point_0:normalize()
-				self.point_2 = vector():set(self.enemy_position.x - wide_sight*self.direction.z,
-											self.enemy_position.y,
-											self.enemy_position.z + wide_sight*self.direction.x)
-				--self.point_1:normalize()
-				--printf("POINT 0 [%s] [%s] [%s]", self.point_0.x, self.point_0.y, self.point_0.z)
-				--printf("POINT 1 [%s] [%s] [%s]", self.enemy_position.x, self.enemy_position.y, self.enemy_position.z)
-				--printf("POINT 2 [%s] [%s] [%s]", self.point_2.x, self.point_2.y, self.point_2.z)
-				self.a.scan_table[-1] = {}
-				table.insert(self.a.scan_table[-1], {key = 0, pos =self.point_0})
-				table.insert(self.a.scan_table[-1], {key = 1, pos =self.enemy_position})
-				table.insert(self.a.scan_table[-1], {key = 2, pos =self.point_2})					
-			end
 
 		else
+			--' Анализируем последнюю известную позицию врага.
+			local memory_position = self.object:memory_position(self.enemy)
+			if self.enemy_position ~= memory_position then
+				self.enemy_position = memory_position
+				--' Занести место поиска врага в scan_table
+				if self.a.sniper == true then
+					self.position = self.object:position()
+
+					self.direction = vector():set(self.enemy_position.x - self.position.x,
+												0,
+												self.enemy_position.z - self.position.z)
+					self.direction:normalize()
+					local wide_sight = self.position:distance_to(self.enemy_position)*math.tan(self.a.enemy_disp)
+					
+					
+					self.point_0 = vector():set(self.enemy_position.x + wide_sight*self.direction.z,
+												self.enemy_position.y,
+												self.enemy_position.z - wide_sight*self.direction.x)
+
+					self.point_2 = vector():set(self.enemy_position.x - wide_sight*self.direction.z,
+												self.enemy_position.y,
+												self.enemy_position.z + wide_sight*self.direction.x)
+
+					self.a.scan_table[-1] = {}
+					table.insert(self.a.scan_table[-1], {key = 0, pos =self.point_0})
+					table.insert(self.a.scan_table[-1], {key = 1, pos =self.enemy_position})
+					table.insert(self.a.scan_table[-1], {key = 2, pos =self.point_2})					
+				end
+			end
+
 			xr_sound.set_sound(self.object, nil)
 			if self.a.sniper == true then
 				-- поиск врага (сканирование врага)
