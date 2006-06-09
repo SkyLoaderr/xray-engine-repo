@@ -5,6 +5,8 @@
 
 #define CStateMonsterEatingAbstract CStateMonsterEating<_Object>
 
+#define TIME_TO_EAT 20000
+
 TEMPLATE_SPECIALIZATION
 CStateMonsterEatingAbstract::CStateMonsterEating(_Object *obj) : inherited(obj)
 {
@@ -60,8 +62,8 @@ bool CStateMonsterEatingAbstract::check_start_conditions()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterEatingAbstract::check_completion()
 {
-	if (object->GetSatiety() > 0.95f)				return true;
-	if (object->CorpseMan.get_corpse() != corpse)  return true;
+	if (time_state_started + TIME_TO_EAT < time())	return true;
+	if (object->CorpseMan.get_corpse() != corpse)	return true;
 	
 	Fvector nearest_bone_pos;
 	if ((corpse->m_pPhysicsShell == NULL) || (!corpse->m_pPhysicsShell->isActive())) {

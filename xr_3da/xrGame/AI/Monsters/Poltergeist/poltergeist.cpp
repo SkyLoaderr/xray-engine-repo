@@ -139,7 +139,6 @@ void CPoltergeist::Load(LPCSTR section)
 	m_particles_idle					= pSettings->r_string(section,"Particles_Idle");
 
 
-//.	::Sound->create						(m_sound_base,	TRUE, pSettings->r_string(section,"Sound_Idle"), SOUND_TYPE_MONSTER_TALKING);
 	m_sound_base.create					(pSettings->r_string(section,"Sound_Idle"), st_Effect, SOUND_TYPE_MONSTER_TALKING);
 }
 
@@ -318,8 +317,10 @@ void CPoltergeist::Die(CObject* who)
 		CParticlesPlayer::StopParticles(m_particles_hidden, BI_NONE, true);
 	}
 
-	inherited::Die(who);
-	Energy::disable();
+	inherited::Die				(who);
+	Energy::disable				();
+
+	CParticlesObject::Destroy	(m_particles_object_electro);
 }
 
 void CPoltergeist::Hit(SHit* pHDS)

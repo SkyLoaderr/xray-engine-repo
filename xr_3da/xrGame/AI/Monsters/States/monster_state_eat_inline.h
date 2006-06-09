@@ -38,6 +38,14 @@ CStateMonsterEatAbstract::~CStateMonsterEat()
 }
 
 TEMPLATE_SPECIALIZATION
+void CStateMonsterEatAbstract::reinit()
+{
+	inherited::reinit();
+	
+	m_time_last_eat = 0;
+}
+
+TEMPLATE_SPECIALIZATION
 void CStateMonsterEatAbstract::initialize()
 {
 	inherited::initialize();
@@ -71,7 +79,9 @@ void CStateMonsterEatAbstract::reselect_state()
 	}	
 
 	if (prev_substate == eStateEat_Eat){
-		if (object->GetSatiety() > 0.95f) 
+		m_time_last_eat = time();
+
+		if (!hungry()) 
 			select_state(eStateEat_WalkAway); 
 		else 
 			select_state(eStateEat_CorpseApproachWalk);
@@ -201,7 +211,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateMonsterEatAbstract::check_completion()
 {
 	if (corpse != object->CorpseMan.get_corpse()) return true;
-	if (object->GetSatiety() > 0.95f) return true;
+	if (!hungry()) return true;
 
 	return false;
 }
@@ -212,9 +222,17 @@ bool CStateMonsterEatAbstract::check_start_conditions()
 	return (
 		object->CorpseMan.get_corpse() && 
 		object->Home->at_home(object->CorpseMan.get_corpse()->Position()) &&
-		(object->GetSatiety() < object->db().satiety_threshold)
+		hungry()
 	);
 		
+}
+
+#define TIME_NOT_HUNGRY 20000
+
+TEMPLATE_SPECIALIZATION
+bool CStateMonsterEatAbstract::hungry()
+{
+	return ((m_time_last_eat == 0) || (m_time_last_eat + TIME_NOT_HUNGRY < time()));
 }
 
 #undef TEMPLATE_SPECIALIZATION
