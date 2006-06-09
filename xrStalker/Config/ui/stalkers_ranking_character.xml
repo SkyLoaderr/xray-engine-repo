@@ -32,7 +32,7 @@
 
 	<!-- RELATION CAPTION -->
 	<relation_caption x="121" y="91" width="240" height="15">
-		<text x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">ui_st_reputation</text>
+		<text x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">ui_st_relation</text>
 	</relation_caption>
 
 	<!-- BIO -->
