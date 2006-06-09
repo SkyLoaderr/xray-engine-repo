@@ -56,15 +56,15 @@ bool CTelekineticObject::init(CTelekinesis* tele,CPhysicsShellHolder *obj, float
 
 void CTelekineticObject::set_sound(const ref_sound &snd_hold, const ref_sound &snd_throw)
 {
-	sound_hold.clone	(snd_hold,st_Effect,sg_SourceType);
-	sound_throw.clone	(snd_throw,st_Effect,sg_SourceType);
+	//sound_hold.clone	(snd_hold,st_Effect,sg_SourceType);
+	//sound_throw.clone	(snd_throw,st_Effect,sg_SourceType);
 }
 
 
 void CTelekineticObject::raise_update()
 {
-	if (check_height()) prepare_keep();// начать удержание предмета
-	else if (check_raise_time_out()) release();
+	if (check_height() || check_raise_time_out()) prepare_keep();// начать удержание предмета
+	//else if (check_raise_time_out()) release();
 	else {
 		if (m_rotate) rotate();
 	}
@@ -109,7 +109,7 @@ void CTelekineticObject::raise(float step)
 	dir.set(0.f,1.0f,0.f);
 
 	float elem_size = float(object->m_pPhysicsShell->Elements().size());
-	dir.mul(elem_size*elem_size);
+	dir.mul(elem_size*elem_size*strength);
 
 	if (OnServer()) (object->m_pPhysicsShell->Elements()[0])->applyGravityAccel(dir);
 

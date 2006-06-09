@@ -19,6 +19,7 @@ class CPoltergeist :	public CBaseMonster ,
 
 
 	CParticlesObject	*m_particles_object;
+	CParticlesObject	*m_particles_object_electro;
 
 	float				m_height;
 
@@ -118,10 +119,11 @@ public:
 			CPhysicsShellHolder *tele_object;
 
 			void tele_find_objects	(xr_vector<CObject*> &objects, const Fvector &pos);
-			void tele_raise_objects	();
+			bool tele_raise_objects	();
 			void tele_fire_objects	();
 			
 			u32					m_tele_time;
+			u32					m_tele_time_next;
 
 			float				m_pmt_tele_radius;
 			float				m_pmt_tele_object_min_mass;
@@ -130,10 +132,22 @@ public:
 			u32					m_pmt_tele_time_to_hold;
 			u32					m_pmt_tele_time_to_wait;
 			u32					m_pmt_tele_time_to_wait_in_objects;
+			u32					m_pmt_tele_raise_time_to_wait_in_objects;
 			float				m_pmt_tele_distance;
 			float				m_pmt_tele_object_height;
 			u32					m_pmt_tele_time_object_keep;
+			float				m_pmt_tele_raise_speed;
 
+
+			LPCSTR				m_particles_damage;
+			LPCSTR				m_particles_death;
+			LPCSTR				m_particles_idle;
+
+			u32					last_hit_frame;
+
+			ref_sound			m_sound_base;
+
+	virtual	void	Hit			(SHit* pHDS);
 
 	// Movement
 			Fvector m_current_position;		// Позиция на ноде

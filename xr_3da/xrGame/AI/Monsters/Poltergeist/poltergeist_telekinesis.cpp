@@ -8,6 +8,7 @@ void CPoltergeist::initailize_telekinesis()
 {
 	m_tele_state			= eWait;
 	m_tele_time				= 0;
+	m_tele_time_next		= 0;
 }
 
 void CPoltergeist::update_telekinesis()
@@ -17,28 +18,46 @@ void CPoltergeist::update_telekinesis()
 
 	switch (m_tele_state) {
 	case eStartRaiseObjects:	
-		tele_raise_objects		();	
-		m_tele_state			= eRaisingObjects;
-		m_tele_time				= time();
+		if (m_tele_time + m_tele_time_next < time()) {
+			if (!tele_raise_objects())
+				m_tele_state	= eRaisingObjects;
+			
+			m_tele_time			= time();
+			m_tele_time_next	= m_pmt_tele_raise_time_to_wait_in_objects / 2 + Random.randI(m_pmt_tele_raise_time_to_wait_in_objects / 2);
+		}
+
+		if (m_tele_state == eStartRaiseObjects) {
+			if (CTelekinesis::get_objects_count() >= m_pmt_tele_object_count) {
+				m_tele_state	= eRaisingObjects;
+				m_tele_time		= time();
+			}
+		}
+
 		break;
 	case eRaisingObjects:
 		if (m_tele_time + m_pmt_tele_time_to_hold > time()) break;
 		
 		m_tele_time				= time();
+		m_tele_time_next		= 0;
 		m_tele_state			= eFireObjects;
 	case eFireObjects:			
-		if (m_tele_time + m_pmt_tele_time_to_wait_in_objects < time()) {
+		if (m_tele_time + m_tele_time_next < time()) {
 			tele_fire_objects	();
+			
 			m_tele_time			= time();
+			m_tele_time_next	= m_pmt_tele_time_to_wait_in_objects / 2 + Random.randI(m_pmt_tele_time_to_wait_in_objects / 2);
 		}
+		
 		if (CTelekinesis::get_objects_count() == 0) {
 			m_tele_state		= eWait;
 			m_tele_time			= time();
 		}
 		break;
 	case eWait:				
-		if (m_tele_time + m_pmt_tele_time_to_wait < time()) 
+		if (m_tele_time + m_pmt_tele_time_to_wait < time()) {
+			m_tele_time_next	= 0;
 			m_tele_state		= eStartRaiseObjects;
+		}
 		break;
 	}
 }
@@ -112,7 +131,7 @@ void CPoltergeist::tele_find_objects(xr_vector<CObject*> &objects, const Fvector
 }
 
 
-void CPoltergeist::tele_raise_objects()
+bool CPoltergeist::tele_raise_objects()
 {
 	// find objects near actor
 	xr_vector<CObject*>		tele_objects;
@@ -142,17 +161,29 @@ void CPoltergeist::tele_raise_objects()
 	tele_objects.erase(I,tele_objects.end());
 
 	// оставить необходимое количество объектов
-	if (tele_objects.size() > m_pmt_tele_object_count) tele_objects.resize	(m_pmt_tele_object_count);
+	//if (tele_objects.size() > m_pmt_tele_object_count) tele_objects.resize	(m_pmt_tele_object_count);
 
-	// активировать
-	for (u32 i=0; i<tele_objects.size(); i++) {
-		CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tele_objects[i]);
+	//// активировать
+	//for (u32 i=0; i<tele_objects.size(); i++) {
+	//	CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tele_objects[i]);
+
+	//	// применить телекинез на объект
+	//	bool	rotate = false;
+
+	//	CTelekinesis::activate		(obj, m_pmt_tele_raise_speed, m_pmt_tele_object_height, m_pmt_tele_time_object_keep, rotate);
+	//}
+
+	if (!tele_objects.empty()) {
+		CPhysicsShellHolder *obj = smart_cast<CPhysicsShellHolder *>(tele_objects[0]);
 
 		// применить телекинез на объект
 		bool	rotate = false;
 
-		CTelekinesis::activate		(obj, 3.f, m_pmt_tele_object_height, m_pmt_tele_time_object_keep, rotate);
+		CTelekinesis::activate		(obj, m_pmt_tele_raise_speed, m_pmt_tele_object_height, m_pmt_tele_time_object_keep, rotate);
+		return true;
 	}
+
+	return false;
 }
 
 void CPoltergeist::tele_fire_objects()

@@ -140,25 +140,25 @@ satiety_threshold	= 0.5							; below this value monster fill hunger
 ;---------------------------------------------------------
 ; Sounds and sound parameters
 ;---------------------------------------------------------
-sound_idle				= monsters\poltergeist\idle_
-sound_eat				= monsters\poltergeist\idle_
-sound_aggressive			= monsters\poltergeist\attack_
-sound_attack_hit		= monsters\poltergeist\attack_hit_
-sound_take_damage		= monsters\poltergeist\hit_
-sound_die				= monsters\poltergeist\die_
-sound_threaten			= monsters\poltergeist\idle_
-sound_landing			= monsters\poltergeist\idle_
-sound_steal				= monsters\poltergeist\idle_
-sound_panic				= monsters\poltergeist\attack_
-sound_growling			= monsters\poltergeist\idle_
-sound_die_in_anomaly	= monsters\poltergeist\die_
+sound_idle				= monsters\biting\def_
+sound_eat				= monsters\biting\def_
+sound_aggressive		= monsters\biting\def_
+sound_attack_hit		= monsters\biting\def_
+sound_take_damage		= monsters\biting\def_
+sound_die				= monsters\biting\def_
+sound_threaten			= monsters\biting\def_
+sound_landing			= monsters\biting\def_
+sound_steal				= monsters\biting\def_
+sound_panic				= monsters\biting\def_
+sound_growling			= monsters\biting\def_
+sound_die_in_anomaly	= monsters\biting\def_
 
 killer_clsids			= Z_MINCER,Z_GALANT
 
 
-idle_sound_delay		= 20000
-eat_sound_delay			= 3000
-attack_sound_delay		= 8500
+idle_sound_delay		= 0
+eat_sound_delay			= 0
+attack_sound_delay		= 0
 
 SoundThreshold		 = 0.06						; range [0..1]
 max_hear_dist		 = 60
@@ -250,20 +250,26 @@ Delay_Scare_Aggressive	= 30001
 ;---------------------------
 
 Tele_Fly_Time					= 0.30
-Tele_Fly_Velocity				= 35
+Tele_Fly_Velocity				= 20
 
 Tele_Find_Radius				= 10
 Tele_Object_Min_Mass			= 40
 Tele_Object_Max_Mass			= 500
-Tele_Object_Count				= 10
-Tele_Hold_Time					= 2000
+Tele_Object_Count				= 7
+Tele_Hold_Time					= 4000
 Tele_Wait_Time					= 3000
-Tele_Delay_Between_Objects_Time	= 100
-Tele_Distance					= 50
+Tele_Delay_Between_Objects_Time	= 1000
+Tele_Distance					= 30
 Tele_Object_Height				= 10
-Tele_Time_Object_Keep			= 10000
+Tele_Time_Object_Keep			= 15000
+Tele_Raise_Speed				= 6
+Tele_Delay_Between_Objects_Raise_Time	= 200
 
+Particles_Damage				= monsters\polter_damage
+Particles_Death					= monsters\polter_death
+Particles_Idle					= monsters\polter_idle 
 
+Sound_Idle						= anomaly\electra_idle1
 
 ;---------------------------
 

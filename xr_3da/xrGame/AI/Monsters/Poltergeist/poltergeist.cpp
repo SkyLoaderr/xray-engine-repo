@@ -24,7 +24,8 @@
 
 CPoltergeist::CPoltergeist()
 {
-	m_particles_object	= 0;
+	m_particles_object			= 0;
+	m_particles_object_electro	= 0;
 
 	StateMan = xr_new<CStateManagerPoltergeist>(this);
 
@@ -34,7 +35,9 @@ CPoltergeist::CPoltergeist()
 CPoltergeist::~CPoltergeist()
 {
 	xr_delete		(StateMan);
-	if (m_particles_object) CParticlesObject::Destroy(m_particles_object);
+	
+	if (m_particles_object)			CParticlesObject::Destroy(m_particles_object);
+	if (m_particles_object_electro) CParticlesObject::Destroy(m_particles_object_electro);
 }
 
 void CPoltergeist::Load(LPCSTR section)
@@ -127,7 +130,16 @@ void CPoltergeist::Load(LPCSTR section)
 	m_pmt_tele_distance					= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Distance", 50.f);
 	m_pmt_tele_object_height			= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Object_Height", 10.f);
 	m_pmt_tele_time_object_keep			= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Time_Object_Keep", 10000);
+	m_pmt_tele_raise_speed				= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Raise_Speed", 3.f);
+	m_pmt_tele_raise_time_to_wait_in_objects	= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Delay_Between_Objects_Raise_Time", 500);
 
+
+	m_particles_damage					= pSettings->r_string(section,"Particles_Damage");
+	m_particles_death					= pSettings->r_string(section,"Particles_Death");
+	m_particles_idle					= pSettings->r_string(section,"Particles_Idle");
+
+
+	::Sound->create						(m_sound_base,	TRUE, pSettings->r_string(section,"Sound_Idle"), SOUND_TYPE_MONSTER_TALKING);
 }
 
 void CPoltergeist::reload(LPCSTR section)
@@ -167,6 +179,8 @@ void CPoltergeist::reinit()
 
 
 	initailize_telekinesis				();
+
+	last_hit_frame						= 0;
 }
 
 void CPoltergeist::Hide()
@@ -227,6 +241,15 @@ void CPoltergeist::UpdateCL()
 		//m_particles_object->SetXFORM(matrix);
 		m_particles_object->SetXFORM(XFORM());
 	}
+
+
+	if (m_particles_object_electro) {
+		m_particles_object_electro->SetXFORM(XFORM());
+	} else {
+		m_particles_object_electro = PlayParticles	(m_particles_idle, Position(),Fvector().set(0.0f,0.1f,0.0f), false);
+	}
+
+
 }
 
 void CPoltergeist::ForceFinalAnimation()
@@ -246,6 +269,12 @@ void CPoltergeist::shedule_Update(u32 dt)
 	UpdateHeight();
 
 	update_telekinesis();
+
+	if (g_Alive()) {
+		if (!m_sound_base._feedback()) m_sound_base.play_at_pos(this, Position());
+		else m_sound_base.set_position(Position());
+	}
+
 }
 
 BOOL CPoltergeist::net_Spawn (CSE_Abstract* DC) 
@@ -272,6 +301,8 @@ void CPoltergeist::net_Destroy()
 
 void CPoltergeist::Die(CObject* who)
 {
+	PlayParticles(m_particles_death, Position(),Fvector().set(0.0f,1.0f,0.0f));
+
 	if (state_invisible) {
 		setVisible(true);
 		
@@ -289,6 +320,31 @@ void CPoltergeist::Die(CObject* who)
 	inherited::Die(who);
 	Energy::disable();
 }
+
+void CPoltergeist::Hit(SHit* pHDS)
+{
+	if (g_Alive() && (pHDS->hit_type == ALife::eHitTypeFireWound) && (Device.dwFrame != last_hit_frame)) {
+		
+		if(BI_NONE != pHDS->bone()) {
+
+			//вычислить координаты попадания
+			CKinematics* V = smart_cast<CKinematics*>(Visual());
+
+			Fvector start_pos = pHDS->bone_space_position();
+			Fmatrix& m_bone = V->LL_GetBoneInstance(pHDS->bone()).mTransform;
+			m_bone.transform_tiny	(start_pos);
+			XFORM().transform_tiny	(start_pos);
+
+			PlayParticles(m_particles_damage, start_pos, Fvector().set(0.f,1.f,0.f));
+		}
+	} 
+
+
+	inherited::Hit(pHDS);
+	last_hit_frame = Device.dwFrame;
+}
+
+
 
 void CPoltergeist::UpdateHeight()
 {
