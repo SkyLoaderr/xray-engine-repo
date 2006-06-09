@@ -3,41 +3,32 @@
 	<string id="ui_inv_bag">
         <text>Рюкзак</text>
     </string>
-    <string id="ui_inv_items_list">
-        <text>Список Вещей</text>
-    </string>
     <string id="ui_inv_belt">
         <text>Пояс</text>
-    </string>
-    <string id="ui_inv_weight">
-        <text>Вес</text>
     </string>
     <string id="ui_inv_description">
         <text>Описание</text>
     </string>
-    <string id="ui_inv_rest">
-        <text>Отдохнуть</text>
-    </string>
     <string id="ui_inv_drop">
         <text>Выложить</text>
     </string>
-    <string id="ui_inv_personal">
-        <text>Костюм</text>
+    <string id="ui_inv_equipment">
+        <text>Оборудование</text>
     </string>
-    <string id="ui_inv_time">
-        <text>Время</text>
+    <string id="ui_inv_exit">
+        <text>Выход</text>
     </string>
-    <string id="ui_inv_outfit_params">
-        <text>Параметры</text>
+    <string id="ui_inv_granades">
+        <text>Гранаты</text>
+    </string>
+    <string id="ui_inv_heavy_weapons">
+        <text>Тяжелое</text>
+    </string>
+    <string id="ui_inv_items_list">
+        <text>Список Вещей</text>
     </string>
     <string id="ui_inv_outfit_burn_protection">
         <text>Ожог</text>
-    </string>
-    <string id="ui_inv_outfit_strike_protection">
-        <text>Удар</text>
-    </string>
-    <string id="ui_inv_outfit_shock_protection">
-        <text>Электрошок</text>
     </string>
     <string id="ui_inv_outfit_chemical_burn_protection">
         <text>Хим. ожог</text>
@@ -48,14 +39,20 @@
     <string id="ui_inv_outfit_fire_wound_protection">
         <text>Пулестойкость</text>
     </string>
-    <string id="ui_inv_exit">
-        <text>Выход</text>
+    <string id="ui_inv_outfit_strike_protection">
+        <text>Удар</text>
     </string>
-    <string id="ui_inv_shop">
-        <text>Магазин</text>
+    <string id="ui_inv_outfit_shock_protection">
+        <text>Электрошок</text>
     </string>
-    <string id="ui_inv_total_money">
-        <text>Всего Денег</text>
+    <string id="ui_inv_outfit_params">
+        <text>Параметры</text>
+    </string>
+    <string id="ui_inv_outfits">
+        <text>Костюмы</text>
+    </string>
+    <string id="ui_inv_personal">
+        <text>Костюм</text>
     </string>
     <string id="ui_inv_pistols">
         <text>Пистолеты</text>
@@ -63,33 +60,98 @@
     <string id="ui_inv_primary_weapons">
         <text>Основное</text>
     </string>
-    <string id="ui_inv_granades">
-        <text>Гранаты</text>
-    </string>
-    <string id="ui_inv_outfits">
-        <text>Костюмы</text>
-    </string>
-    <string id="ui_inv_equipment">
-        <text>Оборудование</text>
-    </string>
-    <string id="ui_inv_shotguns">
-        <text>Ружья</text>
+    <string id="ui_inv_rest">
+        <text>Отдохнуть</text>
     </string>
     <string id="ui_inv_rifles">
         <text>Автоматы</text>
     </string>
+    <string id="ui_inv_shop">
+        <text>Магазин</text>
+    </string>
+    <string id="ui_inv_shotguns">
+        <text>Ружья</text>
+    </string>
     <string id="ui_inv_sniper_rifles">
         <text>Снайперское</text>
     </string>
-    <string id="ui_inv_heavy_weapons">
-        <text>Тяжелое</text>
+    <string id="ui_inv_time">
+        <text>Время</text>
     </string>
-    <string id="cant_sleep_near_enemies">
-		<text>Нельзя спать возле врагов</text>
+    <string id="ui_inv_total_money">
+        <text>Всего Денег</text>
     </string>
-    <string id="cant_sleep_not_on_solid_ground">
-		<text>Нельзя спать на твердой земле</text>
+    <string id="ui_inv_weight">
+        <text>Вес</text>
     </string>
+
+    <string id="st_condition">
+        <text>состояние</text>
+    </string>
+    <string id="st_move_to_bag">
+        <text>убрать в рюкзак</text>
+    </string>
+    <string id="st_move_on_belt">
+        <text>повесить на пояс</text>
+    </string>
+    <string id="st_undress_outfit">
+        <text>снять костюм</text>
+    </string>
+    <string id="st_detach_gl">
+        <text>отсоединить гранатомет</text>
+    </string>
+    <string id="st_detach_scope">
+        <text>отсоединить прицел</text>
+    </string>
+    <string id="st_detach_silencer">
+        <text>отсоединить глушитель</text>
+    </string>
+    <string id="st_attach_scope_to_pistol">
+        <text>прицепить прицел к пистолету</text>
+    </string>
+    <string id="st_attach_scope_to_rifle">
+        <text>прицепить прицел к винтовке</text>
+    </string>
+    <string id="st_attach_silencer_to_pistol">
+        <text>прицепить глушитель к пистолету</text>
+    </string>
+    <string id="st_attach_silencer_to_rifle">
+        <text>прицепить глушитель к винтовке</text>
+    </string>
+    <string id="st_attach_gl_to_rifle">
+        <text>прицепить гранатомет к винтовке</text>
+    </string>
+    <string id="st_activate_artefact">
+        <text>активировать артефакт</text>
+    </string>
+    <string id="st_sell_item">
+        <text>продать предмет</text>
+    </string>
+
+    <string id="st_move_to_slot">
+        <text>переместить в слот</text>
+    </string>
+    
+    <string id="st_drop">
+        <text>выбросить</text>
+    </string>
+    <string id="st_eat">
+        <text>съесть</text>
+    </string>
+    <string id="st_drop_all">
+        <text>выбросить все</text>
+    </string>
+    <string id="st_unload_magazine">
+        <text>разрядить</text>
+    </string>
+    <string id="st_weight">
+        <text>вес</text>
+    </string>
+    <string id="st_base_cost">
+        <text>цена</text>
+    </string>    
+    
+   
     <string id="ui_inv_silencer_pistol">
         <text>Купит глушитель для пистолета (A)</text>
     </string>
@@ -126,4 +188,5 @@
     <string id="ui_inv_money">
 		<text>Деньги</text>
     </string>
+        
 </string_table>
