@@ -34,10 +34,6 @@ function is_wounded(first_speaker, second_speaker)
 	return xr_wounded.is_wounded(first_speaker, 0.2)
 end
 function is_opp_wounded(first_speaker, second_speaker, dialog_id)
-	if second_speaker:object("medkit") ~= nil then
-		return false
-	end
-
 	return	xr_wounded.is_wounded(second_speaker)
 end
 function is_not_wounded(first_speaker, second_speaker)
