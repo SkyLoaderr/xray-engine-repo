@@ -471,7 +471,13 @@ end
 
 
 function is_wounded(npc)
-	if db.storage[npc:id()].wounded ~= nil then
+	if db.storage[npc:id()].wounded ~= nil then	
+		if npc:object("medkit") ~= nil and
+		   db.storage[npc:id()].wounded.wound_manager.can_use_medkit == true
+		then
+			return false
+		end
+
 		return tostring(db.storage[npc:id()].wounded.wound_manager.state) ~= "nil"
 	end
 	return false
