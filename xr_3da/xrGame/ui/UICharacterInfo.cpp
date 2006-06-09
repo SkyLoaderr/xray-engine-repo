@@ -272,6 +272,9 @@ void CUICharacterInfo::UpdateRelation()
 		}
 		else
 		{
+			if(m_icons[eUIRelationCaption])	m_icons[eUIRelationCaption]->Show	(true);
+			if(m_icons[eUIRelation])		m_icons[eUIRelation]->Show			(true);
+
 			CSE_ALifeTraderAbstract* T = ch_info_get_from_id	(m_ownerID);
 			CSE_ALifeTraderAbstract* TA = ch_info_get_from_id	(Actor()->ID());
 
