@@ -76,6 +76,7 @@ void CRenderDevice::End		(void)
 		pApp->load_draw_internal	();
 		if (0==dwPrecacheFrame){
 			::Sound->set_master_volume	(1.f);
+//.			Log("Precache End",Device.dwFrame);
 			pApp->destroy_loading_shaders();
 			Memory.mem_compact		();
 			Msg						("* MEMORY USAGE: %d K",Memory.mem_usage()/1024);

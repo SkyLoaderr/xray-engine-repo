@@ -275,13 +275,15 @@ void CGamePersistent::start_game_intro		()
 		return;
 	}
 #endif
-	if (g_pGameLevel && g_pGameLevel->bReady && Device.dwPrecacheFrame==0){
+//.	Log("start_game_intro",Device.dwFrame);
+	if (g_pGameLevel && g_pGameLevel->bReady && Device.dwPrecacheFrame<=2){
 		m_intro_event.bind		(this,&CGamePersistent::update_game_intro);
 		if (0==stricmp(m_game_params.m_new_or_load,"new")){
 			Device.PauseSound	(TRUE);
 			VERIFY				(NULL==m_intro);
 			m_intro				= xr_new<CUISequencer>();
 			m_intro->Start		("intro_game");
+			Log("Intro start",Device.dwFrame);
 //			save_music_vol		= psSoundVMusic;
 //			psSoundVMusic		= 0.f;
 		}
