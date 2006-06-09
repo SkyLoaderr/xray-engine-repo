@@ -16,13 +16,13 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 
 			if (Device.bActive)	{
 				Device.seqAppActivate.Process	(rp_AppActivate);
-				::Sound->pause_emitters	(false);
+				Device.PauseSound		(FALSE);
 				if (!strstr(Core.Params, "-dedicated")) 
 					ShowCursor			(FALSE);
 			} else	{
 				Device.seqAppDeactivate.Process(rp_AppDeactivate);
 				ShowCursor				(TRUE);
-				::Sound->pause_emitters	(true);
+				Device.PauseSound		(TRUE);
 			}
 		}
 

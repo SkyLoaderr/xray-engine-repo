@@ -48,7 +48,7 @@ public:
 	CSoundRender_Environment	e_current;
 	CSoundRender_Environment	e_target;
 
-	BOOL						bPaused;
+	int							iPaused;
 	BOOL						bMoved;
 	BOOL						b2D;
 	BOOL						bStopping;
@@ -85,7 +85,7 @@ public:
 	void						update_environment		(float dt);
 	void						rewind					();
 	virtual void				stop					(BOOL bDeffered);
-	void						pause					(BOOL bVal);
+	void						pause					(BOOL bVal, int id);
 
 	virtual u32					play_time				( );
 

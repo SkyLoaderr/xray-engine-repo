@@ -249,7 +249,7 @@ void CGamePersistent::start_logo_intro		()
 		m_intro_event.bind		(this,&CGamePersistent::update_logo_intro);
 		if (0==xr_strlen(m_game_params.m_game_or_spawn) && NULL==g_pGameLevel){
 			VERIFY				(NULL==m_intro);
-			::Sound->pause_emitters(true);
+			Device.PauseSound	(TRUE);
 			m_intro				= xr_new<CUISequencer>();
 			m_intro->Start		("intro_logo");
 			Console->Hide		();
@@ -262,7 +262,7 @@ void CGamePersistent::update_logo_intro			()
 		m_intro_event			= 0;
 		xr_delete				(m_intro);
 		//.Console->Show		();
-		::Sound->pause_emitters	(false);
+		Device.PauseSound		(FALSE);
 		Console->Execute		("main_menu on");
 	}
 }
@@ -278,7 +278,7 @@ void CGamePersistent::start_game_intro		()
 	if (g_pGameLevel && g_pGameLevel->bReady && Device.dwPrecacheFrame==0){
 		m_intro_event.bind		(this,&CGamePersistent::update_game_intro);
 		if (0==stricmp(m_game_params.m_new_or_load,"new")){
-			::Sound->pause_emitters(true);
+			Device.PauseSound	(TRUE);
 			VERIFY				(NULL==m_intro);
 			m_intro				= xr_new<CUISequencer>();
 			m_intro->Start		("intro_game");
@@ -290,7 +290,7 @@ void CGamePersistent::start_game_intro		()
 void CGamePersistent::update_game_intro			()
 {
 	if(m_intro && (false==m_intro->IsActive())){
-		::Sound->pause_emitters	(false);
+		Device.PauseSound		(FALSE);
 		xr_delete				(m_intro);
 		m_intro_event			= 0;
 //		psSoundVMusic			= save_music_vol;

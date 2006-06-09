@@ -4,13 +4,10 @@
 #include "xrXmlParser.h"
 
 CMMSound::CMMSound(){
-
 }
 
 CMMSound::~CMMSound(){
-	m_music.destroy();
-	m_whell.destroy();
-	m_music_2.destroy();
+	all_Stop();
 }
 
 void CMMSound::Init(CUIXml& xml_doc, LPCSTR path){
@@ -59,52 +56,35 @@ void CMMSound::music_Play(){
 	if (m_play_list.empty())
 		return;
 
-	if (m_music._handle())
-		m_music.destroy();
-	if (m_music_2._handle())
-		m_music_2.destroy();
+	int i = Random.randI(m_play_list.size());
 
-	srand( (unsigned)time( NULL ) );
-	int i = rand() % m_play_list.size();
+	string_path		_path;
+	string_path		_path2;
+	strconcat		(_path, m_play_list[i].c_str(), "_l.ogg");
+	strconcat		(_path2, m_play_list[i].c_str(), "_r.ogg");
+	VERIFY			(FS.exist("$game_sounds$", _path ));	
+	VERIFY			(FS.exist("$game_sounds$", _path2 ));
 
-	bool f = true;
-	string256 _path;
-	string256 _path2;
-	strconcat(_path, m_play_list[i].c_str(), "_l.ogg");
-	strconcat(_path2, m_play_list[i].c_str(), "_r.ogg");
-	f &= FS.exist("$game_sounds$", _path ) ? true : false;	
-	f &= FS.exist("$game_sounds$", _path2 ) ? true : false;
+	m_music_l.create(_path,st_Effect,sg_SourceType);
+	m_music_r.create(_path2,st_Effect,sg_SourceType);
 
-	if (f){
-		m_music.create(_path,st_Effect,sg_SourceType);
-		m_music_2.create(_path2,st_Effect,sg_SourceType);
-
-		if (m_music._handle())
-            m_music.play_at_pos(NULL, Fvector().set(-1.f, 0.f, 1.f), sm_2D);
-
-		if (m_music_2._handle())
-            m_music_2.play_at_pos(NULL, Fvector().set(1.f, 0.f, 1.f), sm_2D);
-	}
-	else
-	{
-        m_music.create	(m_play_list[i].c_str(),st_Effect,sg_SourceType);
-        if (m_music._handle())
-            m_music.play(NULL, sm_2D);
-	}
+    m_music_l.play_at_pos(NULL, Fvector().set(-1.f, 0.f, 1.f), sm_2D);
+    m_music_r.play_at_pos(NULL, Fvector().set(1.f, 0.f, 1.f), sm_2D);
 }
 
 void CMMSound::music_Update(){
-	if (!m_music._feedback())
+	if (Device.Pause()) return;
+	if (0==m_music_l._feedback() || 0==m_music_r._feedback())
 		music_Play();
 }
 
 void CMMSound::music_Stop(){
-    m_music.stop();
+    m_music_l.stop();
+	m_music_r.stop();
 }
 
 void CMMSound::all_Stop(){
-	m_music.stop();
-	m_music_2.stop();
+	music_Stop();
 	m_whell.stop();
 	m_whell_click.stop();
 }

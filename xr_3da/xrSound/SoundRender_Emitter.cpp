@@ -31,7 +31,7 @@ CSoundRender_Emitter::CSoundRender_Emitter(void)
 	b2D					= FALSE;
 	bStopping			= FALSE;
 	bRewind				= FALSE;
-	bPaused				= FALSE;
+	iPaused				= 0;
 	dwTimeStarted		= 0;
 	dwTimeToStop		= 0;
 	dwTimeToPropagade	= 0;

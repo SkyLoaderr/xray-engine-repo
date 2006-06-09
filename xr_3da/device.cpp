@@ -71,14 +71,11 @@ void CRenderDevice::End		(void)
 	if (dwPrecacheFrame)
 	{
 		::Sound->set_master_volume	(0.f);
-//.		::Sound->mute				(true);
 		dwPrecacheFrame	--;
 //.		CHK_DX			(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_ARGB(0,0,0,0),1,0));
 		pApp->load_draw_internal	();
-		if (0==dwPrecacheFrame)
-		{
+		if (0==dwPrecacheFrame){
 			::Sound->set_master_volume	(1.f);
-//.			::Sound->mute			(false);
 			pApp->destroy_loading_shaders();
 			Memory.mem_compact		();
 			Msg						("* MEMORY USAGE: %d K",Memory.mem_usage()/1024);
@@ -308,11 +305,16 @@ void ProcessLoading				(RP_FUNC *f)
 	processed_idx			= 0;
 }
 
-ENGINE_API BOOL bShowPauseString = TRUE;
-void	CRenderDevice::Pause							(BOOL bOn)
+ENGINE_API BOOL bShowPauseString			= TRUE;
+void	CRenderDevice::Pause				(BOOL bOn)
 {
 	if (!g_bBenchmark){
 		if(!Pause())						bShowPauseString = TRUE;
 		g_pauseMngr.Pause					(bOn);
 	}
+}
+
+void	CRenderDevice::PauseSound			(BOOL val)
+{
+	::Sound->pause_emitters					(val);
 }

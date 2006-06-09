@@ -33,7 +33,7 @@ private:
 	CTimer_paused							Timer;
 	CTimer_paused							TimerGlobal;
 	CTimer									TimerMM;
-	
+
 	void									_Create		(LPCSTR shName);
 	void									_Destroy	(BOOL	bKeepTextures);
 	void									_SetupStates();
@@ -111,6 +111,8 @@ public:
 	};
 	void	Pause							(BOOL bOn);
 	IC BOOL	Pause							()	{return g_pauseMngr.Paused();};
+
+	void PauseSound							(BOOL val);
 	// Scene control
 	void PreCache							(u32 frames);
 	BOOL Begin								();

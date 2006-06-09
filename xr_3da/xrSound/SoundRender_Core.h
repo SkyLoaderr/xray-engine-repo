@@ -51,6 +51,8 @@ protected:
 	u32									s_targets_pu;			// parameters update
 	SoundEnvironment_LIB*				s_environment;
 	CSoundRender_Environment			s_user_environment;
+
+	int									m_iPauseCounter;
 public:
 	// Cache
 	CSoundRender_Cache					cache;
