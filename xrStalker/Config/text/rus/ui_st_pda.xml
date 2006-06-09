@@ -215,15 +215,6 @@
 		<text>Перейти на следующий уровень ?</text>
 	</string>
 	
-	<string id="st_weight">
-		<text>вес</text>
-	</string>
-	<string id="st_base_cost">
-		<text>цена</text>
-	</string>
-	<string id="st_condition">
-		<text>состояние</text>
-	</string>
 	<string id="st_tip">
 		<text>Сообщение</text>
 	</string>
