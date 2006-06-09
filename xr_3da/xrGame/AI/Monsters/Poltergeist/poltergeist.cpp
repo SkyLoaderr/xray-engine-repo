@@ -139,7 +139,8 @@ void CPoltergeist::Load(LPCSTR section)
 	m_particles_idle					= pSettings->r_string(section,"Particles_Idle");
 
 
-	::Sound->create						(m_sound_base,	TRUE, pSettings->r_string(section,"Sound_Idle"), SOUND_TYPE_MONSTER_TALKING);
+//.	::Sound->create						(m_sound_base,	TRUE, pSettings->r_string(section,"Sound_Idle"), SOUND_TYPE_MONSTER_TALKING);
+	m_sound_base.create					(pSettings->r_string(section,"Sound_Idle"), st_Effect, SOUND_TYPE_MONSTER_TALKING);
 }
 
 void CPoltergeist::reload(LPCSTR section)
