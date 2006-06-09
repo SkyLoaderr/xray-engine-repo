@@ -332,7 +332,8 @@ function load_job(sj, gname, type, squad, groups, st)
 							"active = mob_home@"..way_name.."\n"..
 
 							"[mob_home@"..way_name.."]\n"..
-							"path_home = raid_"..it.."\n"
+							"path_home = raid_"..it.."\n"..
+							"aggressive_home\n"
 
 			ltx = ltx..job_ltx
 			it = it + 1
