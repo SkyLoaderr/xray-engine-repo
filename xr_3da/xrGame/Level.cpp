@@ -896,8 +896,3 @@ bool	IsGameTypeSingle()
 	return g_pGamePersistent->GameType()==GAME_SINGLE;
 //	return		(GameID()==GAME_SINGLE);
 }
-
-void CLevel::PauseMusic(bool val)
-{
-	if (m_level_sound_manager) m_level_sound_manager->PauseMusic(val);
-}

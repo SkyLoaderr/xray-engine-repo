@@ -104,8 +104,6 @@ public:
 	virtual void				OnInvalidPassword		();
 	virtual void				OnSessionFull			();
 	virtual void				OnConnectRejected		();
-
-	void						PauseMusic				(bool val);
 private:
 	BOOL						m_bNeed_CrPr;
 	u32							m_dwNumSteps;
