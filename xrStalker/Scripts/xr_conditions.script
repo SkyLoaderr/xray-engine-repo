@@ -324,6 +324,20 @@ function check_fighting(actor, npc, p)
 	return false
 end
 
+function val_nap1_check_fighting(actor, npc, p)
+	local enemy, npc1
+	for i, v in pairs(p) do
+	    npc1 = level_object_by_sid(v)
+	    if npc1 then
+	        enemy = npc1:best_enemy()
+		    if enemy and (enemy:id() == npc:id() or enemy:id() == actor:id()) then
+			    return true
+		    end
+		end
+	end
+	return false
+end
+
 -- true, если гулага с таким именем (или story id) не существует или в нём нет никого
 function gulag_empty(actor, npc, p)
 	return ( not p[1] ) or ( xr_gulag.getGulagPopulation( p[1] ) == 0 )
