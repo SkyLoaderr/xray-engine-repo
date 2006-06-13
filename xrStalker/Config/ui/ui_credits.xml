@@ -20,8 +20,9 @@
 		<play_each_item>1</play_each_item>
 
 		<item>
-			<length_sec>45</length_sec>
+			<length_sec>20</length_sec>
 			<pause_state>on</pause_state>
+			<function_on_stop>xr_effects.game_over</function_on_stop>
 			<guard_key/>
 			<sound/>
 			<cursor_pos/>
