@@ -217,15 +217,51 @@ void CEnvironment::OnDeviceCreate()
 	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
 	clouds_sh.create		("clouds","null");
 	clouds_geom.create		(v_clouds_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
-	load					();
+	// on create 
+	// weathers
+	{
+		EnvsMapIt _I,_E;
+		_I		= WeatherCycles.begin();
+		_E		= WeatherCycles.end();
+		for (; _I!=_E; _I++)
+			for (EnvIt it=_I->second.begin(); it!=_I->second.end(); it++)
+				(*it)->on_device_create();
+	}
+	// effects
+	{
+		EnvsMapIt _I,_E;
+		_I		= WeatherFXs.begin();
+		_E		= WeatherFXs.end();
+		for (; _I!=_E; _I++)
+			for (EnvIt it=_I->second.begin(); it!=_I->second.end(); it++)
+				(*it)->on_device_create();
+	}
 }
+
 void CEnvironment::OnDeviceDestroy()
 {
-	unload					();
 	sh_2sky.destroy			();
 	sh_2geom.destroy		();
 	clouds_sh.destroy		();
 	clouds_geom.destroy		();
+	// weathers
+	{
+		EnvsMapIt _I,_E;
+		_I		= WeatherCycles.begin();
+		_E		= WeatherCycles.end();
+		for (; _I!=_E; _I++)
+			for (EnvIt it=_I->second.begin(); it!=_I->second.end(); it++)
+				(*it)->on_device_destroy();
+	}
+	// effects
+	{
+		EnvsMapIt _I,_E;
+		_I		= WeatherFXs.begin();
+		_E		= WeatherFXs.end();
+		for (; _I!=_E; _I++)
+			for (EnvIt it=_I->second.begin(); it!=_I->second.end(); it++)
+				(*it)->on_device_destroy();
+	}
 }
 
 #ifdef _EDITOR

@@ -105,8 +105,8 @@ void CSoundRender_Core::pause_emitters(bool val)
 {
 	m_iPauseCounter				+= val?+1:-1;
 	VERIFY(m_iPauseCounter>=0);
-//.	Log("m_iPauseCounter",m_iPauseCounter);
-//.	Log("id",val?m_iPauseCounter:m_iPauseCounter+1);
+//	Log("m_iPauseCounter",m_iPauseCounter);
+//	Log("id",val?m_iPauseCounter:m_iPauseCounter+1);
 	for (u32 it=0; it<s_emitters.size(); it++)
 		((CSoundRender_Emitter*)s_emitters[it])->pause	(val,val?m_iPauseCounter:m_iPauseCounter+1);
 }

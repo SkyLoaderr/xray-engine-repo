@@ -99,9 +99,9 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	string_path	st,st_env;
 	strcpy					(st,pSettings->r_string	(S,"sky_texture"));
 	strconcat				(st_env,st,"#small"		);
-	sky_texture.create		(st);
-	sky_texture_env.create	(st_env);
-	clouds_texture.create	(pSettings->r_string	(S,"clouds_texture"));
+	sky_texture_name		= st;
+	sky_texture_env_name	= st_env;
+	clouds_texture_name		= pSettings->r_string	(S,"clouds_texture");
 	LPCSTR	cldclr			= pSettings->r_string	(S,"clouds_color");
 	float	multiplier		= 0, save=0;
 	sscanf					(cldclr,"%f,%f,%f,%f,%f",&clouds_color.x,&clouds_color.y,&clouds_color.z,&clouds_color.w,&multiplier);
@@ -135,6 +135,21 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 //	C_CHECK					(lmap_color	);
 	C_CHECK					(hemi_color	);
 	C_CHECK					(sun_color	);
+	on_device_create		();
+}
+
+void CEnvDescriptor::on_device_create	()
+{
+	if (sky_texture_name.size())	sky_texture.create		(sky_texture_name.c_str());
+	if (sky_texture_env_name.size())sky_texture_env.create	(sky_texture_env_name.c_str());
+	if (clouds_texture_name.size())	clouds_texture.create	(clouds_texture_name.c_str());
+}
+
+void CEnvDescriptor::on_device_destroy	()
+{
+	sky_texture.destroy		();
+	sky_texture_env.destroy	();
+	clouds_texture.destroy	();
 }
 
 //-----------------------------------------------------------------------------

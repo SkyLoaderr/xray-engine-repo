@@ -68,6 +68,10 @@ public:
 	float				exec_time;
 	float				exec_time_loaded;
 	
+	shared_str			sky_texture_name	;
+	shared_str			sky_texture_env_name;
+	shared_str			clouds_texture_name	;
+
 	ref_texture			sky_texture		;
 	ref_texture			sky_texture_env	;
 	ref_texture			clouds_texture	;
@@ -115,6 +119,9 @@ public:
 		exec_time		= tm0;
 		exec_time_loaded= tm1;
 	}
+
+	void				on_device_create	();
+	void				on_device_destroy	();
 };
 
 class ENGINE_API		CEnvDescriptorMixer: public CEnvDescriptor{
