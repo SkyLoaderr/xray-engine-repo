@@ -59,4 +59,8 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.hit_on_bone = utils.parse_data_1v(npc, utils.cfg_get_string(ini, section, "hit_on_bone", npc, false, ""))
 	st.nonscript_usable = utils.cfg_get_bool(ini, section, "nonscript_usable", npc, false)
+	
+	st.tips  = utils.cfg_get_string(ini, section, "tips", npc, false, "", "")
+	
+	npc:set_tip_text(st.tips)
 end
