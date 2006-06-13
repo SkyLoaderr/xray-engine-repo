@@ -37,6 +37,26 @@ void SPPInfo::normalize()
 	*/
 }
 
+void SPPInfo::validate(LPCSTR str)
+{
+	VERIFY2(_valid(duality.h),str);
+	VERIFY2(_valid(duality.v),str);
+	VERIFY2(_valid(blur),str);
+	VERIFY2(_valid(gray),str);
+	VERIFY2(_valid(noise.intensity),str);
+	VERIFY2(_valid(noise.grain),str);
+	VERIFY2(_valid(noise.fps),str);
+	VERIFY2(_valid(color_base.r),str);
+	VERIFY2(_valid(color_base.g),str);
+	VERIFY2(_valid(color_base.b),str);
+	VERIFY2(_valid(color_gray.r),str);
+	VERIFY2(_valid(color_gray.g),str);
+	VERIFY2(_valid(color_gray.b),str);
+	VERIFY2(_valid(color_add.r),str);
+	VERIFY2(_valid(color_add.g),str);
+	VERIFY2(_valid(color_add.b),str);
+}
+
 CCameraManager::CCameraManager(bool bApplyOnUpdate)
 {
 #ifdef DEBUG
@@ -185,7 +205,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 		vNormal.crossproduct	(vDirection,vRight);
 	}
 
-	pp_affected.validate		();
+	pp_affected.validate		("before applying pp");
 	// EffectorPP
 	int		_count	= 0;
 	if(m_EffectorsPP.size()) {
@@ -208,7 +228,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 
 	if( !positive(pp_affected.noise.grain) ) pp_affected.noise.grain = pp_identity.noise.grain;
 	
-	pp_affected.validate		();
+	pp_affected.validate		("after applying pp");
 	if (FALSE==bOverlapped && m_bAutoApply)
 			ApplyDevice		();
 }
@@ -232,7 +252,7 @@ void CCameraManager::ApplyDevice ()
 		ResetPP					();
 	else
 	{
-		pp_affected.validate		();
+		pp_affected.validate		("apply device");
 		// postprocess
 		IRender_Target*		T		= ::Render->getTarget();
 		T->set_duality_h			(pp_affected.duality.h);

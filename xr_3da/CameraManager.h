@@ -114,25 +114,7 @@ struct SPPInfo {
 			);
 		return *this;
 	}
-	void	validate()
-	{
-		VERIFY(_valid(duality.h));
-		VERIFY(_valid(duality.v));
-		VERIFY(_valid(blur));
-		VERIFY(_valid(gray));
-		VERIFY(_valid(noise.intensity));
-		VERIFY(_valid(noise.grain));
-		VERIFY(_valid(noise.fps));
-		VERIFY(_valid(color_base.r));
-		VERIFY(_valid(color_base.g));
-		VERIFY(_valid(color_base.b));
-		VERIFY(_valid(color_gray.r));
-		VERIFY(_valid(color_gray.g));
-		VERIFY(_valid(color_gray.b));
-		VERIFY(_valid(color_add.r));
-		VERIFY(_valid(color_add.g));
-		VERIFY(_valid(color_add.b));
-	}
+	void	validate(LPCSTR str);
 };
 
 DEFINE_VECTOR				(CEffectorCam*,EffectorCamVec,EffectorCamIt);
