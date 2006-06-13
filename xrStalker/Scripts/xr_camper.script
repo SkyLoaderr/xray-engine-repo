@@ -224,7 +224,7 @@ function action_patrol:execute()
 					state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy}, {animation = true}, nil, {yaw_delta = 0.2})
 				end
 			end
-			printf("attack sound [%s]", self.a.attack_sound)
+			printf("attack sound [%s]", tostring(self.a.attack_sound))
 			xr_sound.set_sound(self.object, self.a.attack_sound)
 
 		else
@@ -580,7 +580,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 		st.attack_sound = nil
 	end
 	
-	printf("camper attack sound [%s]", st.attack_sound)
+	printf("camper attack sound [%s]", tostring(st.attack_sound))
 	
 	-- Время забывания врага
 	st.idle = utils.cfg_get_number(ini, section, "enemy_idle", npc, false, 60000)
