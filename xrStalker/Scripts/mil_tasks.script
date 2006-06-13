@@ -1,28 +1,14 @@
 function proceed()
     local actor = db.actor
 
-    if actor:has_info ("mil_lukash_dead") and actor:has_info ("mil_dolg_final_task") and
-       actor:dont_has_info ("mil_dolg_dead") and actor:dont_has_info ("mil_dolg_task_complete") then
-       news_manager.send_tip (actor, "mil_mission_complete", nil, "dolg")
-       db.actor:give_info_portion ("mil_dolg_task_complete")
-    end        
+    --if actor:has_info ("mil_lukash_dead") and actor:has_info ("mil_dolg_final_task") and
+       --actor:dont_has_info ("mil_dolg_dead") and actor:dont_has_info ("mil_dolg_task_complete") then
+       --news_manager.send_tip (actor, "mil_mission_complete", nil, "dolg")
+       --db.actor:give_info_portion ("mil_dolg_task_complete")
+       --printf ("LUKASH IS DEAD")
+    --end        
     
-    
-    --if db.actor:has_info ("mil_fblockpost_spot") then
-       --if db.actor:dont_has_info ("mil_fblockpost_spot_set") then
-          --db.actor:give_info_portion ("mil_fblockpost_spot_set")
-          --level_tasks.add_location (724, "mil_fblockpost_location")
-       --end
-    --end
-    
-    --if db.actor:has_info ("mil_fblockpost_spot") then
-       --if db.actor:has_info ("mil_fblockpost_spot_remove") then
-          --level_tasks.remove_location_safe (724, "mil_fblockpost_location")
-          --db.actor:disable_info_portion ("mil_fblockpost_spot_remove")
-       --end
-    --end      
-            
-    	
+       	
 	if actor:object ("bandit_flash") then 
 	   db.actor:give_info_portion("mil_bandit_flash_get")  
 	end
