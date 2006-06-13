@@ -43,6 +43,7 @@ void CStateMonsterDragAbstract::initialize()
 	m_corpse_start_position = object->CorpseMan.get_corpse()->Position();
 	
 	object->path().prepare_builder();	
+
 }
 
 TEMPLATE_SPECIALIZATION
@@ -83,6 +84,7 @@ void CStateMonsterDragAbstract::critical_finalize()
 	// бросить труп
 	if (object->character_physics_support()->movement()->PHCapture())
 		object->character_physics_support()->movement()->PHReleaseObject();
+
 }
 
 TEMPLATE_SPECIALIZATION

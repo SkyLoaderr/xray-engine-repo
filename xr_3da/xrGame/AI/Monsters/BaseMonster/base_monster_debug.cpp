@@ -255,8 +255,13 @@ void CBaseMonster::debug_fsm()
 	
 	DBG().object_info(this,this).remove_item (u32(0));
 	DBG().object_info(this,this).remove_item (u32(1));
+	DBG().object_info(this,this).remove_item (u32(2));
+
 	DBG().object_info(this,this).add_item	 (*cName(), D3DCOLOR_XRGB(255,0,0), 0);
 	DBG().object_info(this,this).add_item	 (st, D3DCOLOR_XRGB(255,0,0), 1);
+	
+	sprintf(st, "Team[%u]Squad[%u]Group[%u]", g_Team(), g_Squad(), g_Group());
+	DBG().object_info(this,this).add_item	 (st, D3DCOLOR_XRGB(255,0,0), 2);
 
 	CEntityAlive *entity = smart_cast<CEntityAlive *>(Level().CurrentEntity());
 	if (entity && entity->character_physics_support()->movement()) {

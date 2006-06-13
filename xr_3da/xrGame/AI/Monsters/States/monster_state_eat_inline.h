@@ -50,6 +50,24 @@ void CStateMonsterEatAbstract::initialize()
 {
 	inherited::initialize();
 	corpse = object->CorpseMan.get_corpse();
+
+	monster_squad().get_squad(object)->lock_corpse(object->CorpseMan.get_corpse());
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateMonsterEatAbstract::finalize()
+{
+	inherited::finalize();
+
+	monster_squad().get_squad(object)->unlock_corpse(object->CorpseMan.get_corpse());
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateMonsterEatAbstract::critical_finalize()
+{
+	inherited::critical_finalize();
+
+	monster_squad().get_squad(object)->unlock_corpse(object->CorpseMan.get_corpse());
 }
 
 
@@ -222,7 +240,8 @@ bool CStateMonsterEatAbstract::check_start_conditions()
 	return (
 		object->CorpseMan.get_corpse() && 
 		object->Home->at_home(object->CorpseMan.get_corpse()->Position()) &&
-		hungry()
+		hungry() && 
+		!monster_squad().get_squad(object)->is_locked_corpse(object->CorpseMan.get_corpse())
 	);
 		
 }

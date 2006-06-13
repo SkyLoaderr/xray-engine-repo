@@ -4,7 +4,8 @@
 
 CMonsterSquad::CMonsterSquad() : leader(0) 
 {
-	m_locked_covers.reserve(20);
+	m_locked_covers.reserve	(20);
+	m_locked_corpses.reserve(10);
 }
 
 CMonsterSquad::~CMonsterSquad() 
@@ -45,7 +46,10 @@ void CMonsterSquad::RemoveMember(CEntity *pE)
 	}
 
 	// усли последний элемент, очистить залоченные каверы
-	if (m_goals.empty()) m_locked_covers.clear();
+	if (m_goals.empty()) {
+		m_locked_covers.clear	();
+		m_locked_corpses.clear	();
+	}
 }
 
 bool CMonsterSquad::SquadActive()
@@ -178,3 +182,25 @@ u8 CMonsterSquad::get_count(const CEntity *object, float radius)
 
 	return count;
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Corpses
+//////////////////////////////////////////////////////////////////////////
+bool CMonsterSquad::is_locked_corpse(const CEntityAlive *corpse)
+{
+	CORPSES_VECTOR_IT it = find(m_locked_corpses.begin(), m_locked_corpses.end(), corpse);	
+	if (it == m_locked_corpses.end()) return false;
+
+	return true;
+}
+void CMonsterSquad::lock_corpse(const CEntityAlive *corpse)
+{
+	m_locked_corpses.push_back(corpse);
+}
+void CMonsterSquad::unlock_corpse(const CEntityAlive *corpse)
+{
+	CORPSES_VECTOR_IT it = find(m_locked_corpses.begin(), m_locked_corpses.end(), corpse);
+	if (it != m_locked_corpses.end())
+		m_locked_corpses.erase(it);
+}
+//////////////////////////////////////////////////////////////////////////

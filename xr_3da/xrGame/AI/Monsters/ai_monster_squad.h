@@ -69,6 +69,9 @@ class CMonsterSquad {
 	DEFINE_VECTOR	(u32, NODES_VECTOR, NODES_VECTOR_IT);
 	NODES_VECTOR	m_locked_covers;
 
+	DEFINE_VECTOR	(const CEntityAlive*, CORPSES_VECTOR, CORPSES_VECTOR_IT);
+	CORPSES_VECTOR	m_locked_corpses;
+
 public:
 	
 				CMonsterSquad		();
@@ -158,5 +161,15 @@ public:
 	void			lock_cover				(u32 node);
 	void			unlock_cover			(u32 node);
 	////////////////////////////////////////////////////////////////////////////////////////
+
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	//  Corpses
+	//////////////////////////////////////////////////////////////////////////////////////
+	bool			is_locked_corpse		(const CEntityAlive*);
+	void			lock_corpse				(const CEntityAlive*);
+	void			unlock_corpse			(const CEntityAlive*);
+	////////////////////////////////////////////////////////////////////////////////////////
+
 
 };

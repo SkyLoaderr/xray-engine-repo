@@ -18,6 +18,9 @@ public:
 
 	virtual	void		reinit					();
 	virtual void		initialize				();
+	virtual void		finalize				();
+	virtual void		critical_finalize		();
+
 	virtual	void		reselect_state			();
 	virtual	void		setup_substates			();
 	virtual bool		check_completion		();
