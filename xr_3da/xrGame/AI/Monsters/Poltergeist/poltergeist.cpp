@@ -133,11 +133,9 @@ void CPoltergeist::Load(LPCSTR section)
 	m_pmt_tele_raise_speed				= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Raise_Speed", 3.f);
 	m_pmt_tele_raise_time_to_wait_in_objects	= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Delay_Between_Objects_Raise_Time", 500);
 
-
 	m_particles_damage					= pSettings->r_string(section,"Particles_Damage");
 	m_particles_death					= pSettings->r_string(section,"Particles_Death");
 	m_particles_idle					= pSettings->r_string(section,"Particles_Idle");
-
 
 	m_sound_base.create					(pSettings->r_string(section,"Sound_Idle"), st_Effect, SOUND_TYPE_MONSTER_TALKING);
 }
@@ -199,7 +197,8 @@ void CPoltergeist::Hide()
 
 	
 	VERIFY(m_particles_object == 0);
-	m_particles_object = PlayParticles	(m_particles_hidden, Position(),Fvector().set(0.0f,0.1f,0.0f), false);
+	m_particles_object			= PlayParticles	(m_particles_hidden, Position(),Fvector().set(0.0f,0.1f,0.0f), false);
+	m_particles_object_electro	= PlayParticles	(m_particles_idle, Position(),Fvector().set(0.0f,0.1f,0.0f), false);
 }
 
 void CPoltergeist::Show()
@@ -219,7 +218,8 @@ void CPoltergeist::Show()
 //	CParticlesPlayer::StartParticles(m_particles_hide,Fvector().set(0.0f,0.1f,0.0f),ID());
 //	CParticlesPlayer::StopParticles(m_particles_hidden);
 
-	if (m_particles_object) CParticlesObject::Destroy(m_particles_object);
+	if (m_particles_object)			CParticlesObject::Destroy(m_particles_object);
+	if (m_particles_object_electro) CParticlesObject::Destroy(m_particles_object_electro);
 }
 
 void CPoltergeist::UpdateCL()
@@ -228,27 +228,11 @@ void CPoltergeist::UpdateCL()
 	
 	def_lerp(m_height, target_height, HEIGHT_CHANGE_VELOCITY, client_update_fdelta());
 
-	if (m_particles_object) {
-		
-		//Fmatrix	matrix; 
-		//
-		//matrix.identity			();
-		//matrix.k.set			(Direction());
-		//Fvector::generate_orthonormal_basis_normalized(matrix.k,matrix.j,matrix.i);
-		//matrix.translate_over	(Position());
-
-		//m_particles_object->UpdateParent(XFORM(),zero_vel);
-		//m_particles_object->SetXFORM(matrix);
+	if (m_particles_object) 
 		m_particles_object->SetXFORM(XFORM());
-	}
 
-
-	if (m_particles_object_electro) {
+	if (m_particles_object_electro) 
 		m_particles_object_electro->SetXFORM(XFORM());
-	} else {
-		m_particles_object_electro = PlayParticles	(m_particles_idle, Position(),Fvector().set(0.0f,0.1f,0.0f), false);
-	}
-
 
 }
 
@@ -287,7 +271,8 @@ BOOL CPoltergeist::net_Spawn (CSE_Abstract* DC)
 	//CParticlesPlayer::StartParticles(m_particles_hidden,Fvector().set(0.0f,0.1f,0.0f),ID());
 	//CParticlesPlayer::StartParticles(m_particles_hide,Fvector().set(0.0f,0.1f,0.0f),ID());
 
-	m_particles_object = PlayParticles	(m_particles_hidden, Position(),Fvector().set(0.0f,0.1f,0.0f), false);
+	m_particles_object			= PlayParticles	(m_particles_hidden, Position(),Fvector().set(0.0f,0.1f,0.0f), false);
+	m_particles_object_electro	= PlayParticles	(m_particles_idle, Position(),Fvector().set(0.0f,0.1f,0.0f), false);
 
 	return			(TRUE);
 }
@@ -301,7 +286,10 @@ void CPoltergeist::net_Destroy()
 
 void CPoltergeist::Die(CObject* who)
 {
-	PlayParticles(m_particles_death, Position(),Fvector().set(0.0f,1.0f,0.0f));
+	Fvector pos = m_current_position;
+	pos.y = 2.f;
+	
+	PlayParticles(m_particles_death, pos,Fvector().set(0.0f,1.0f,0.0f));
 
 	if (state_invisible) {
 		setVisible(true);
@@ -313,14 +301,13 @@ void CPoltergeist::Die(CObject* who)
 			PPhysicsShell()->SetTransform	(M);
 		} else 
 			Position() = m_current_position;
-
-		CParticlesPlayer::StopParticles(m_particles_hidden, BI_NONE, true);
 	}
 
 	inherited::Die				(who);
 	Energy::disable				();
 
-	CParticlesObject::Destroy	(m_particles_object_electro);
+	CParticlesObject::Destroy		(m_particles_object_electro);
+	CParticlesObject::Destroy		(m_particles_object);
 }
 
 void CPoltergeist::Hit(SHit* pHDS)
