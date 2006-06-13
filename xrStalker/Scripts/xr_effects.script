@@ -1978,3 +1978,19 @@ end
 function rad_psi_hit (actor, npc)
 	level.add_pp_effector ("radar_psi.ppe", 2006, false)
 end
+
+------------------------------------------------------------------------------------
+-- Функции для саркофага
+------------------------------------------------------------------------------------
+function sar_monolith_miracle(actor, npc)
+	xr_effects.game_credits(actor, npc)
+end
+
+function game_credits(actor, npc)
+	game.start_tutorial("credits_seq")
+end
+
+function game_over(actor, npc)
+	local c = get_console()
+	c:execute("disconnect")
+end
