@@ -200,21 +200,22 @@ void CActor::PickupInfoDraw(CObject* object)
 	LPCSTR draw_str = NULL;
 	
 	CInventoryItem* item = smart_cast<CInventoryItem*>(object);
-	CInventoryOwner* inventory_owner = smart_cast<CInventoryOwner*>(object);
-	
-	VERIFY(item || inventory_owner);
+//.	CInventoryOwner* inventory_owner = smart_cast<CInventoryOwner*>(object);
+//.	VERIFY(item || inventory_owner);
+	if(!item)		return;
 
-	Fmatrix res;
-	res.mul(Device.mFullTransform,object->XFORM());
-	Fvector4 v_res;
-	Fvector shift;
-	if(item){
+	Fmatrix			res;
+	res.mul			(Device.mFullTransform,object->XFORM());
+	Fvector4		v_res;
+	Fvector			shift;
+
+//.	if(item){
 		draw_str = item->NameComplex();
 		shift.set(0,0,0);
-	}else if(inventory_owner){
-		draw_str = inventory_owner->Name();
-		shift.set(0,1.2f,0);
-	}
+//.	}else if(inventory_owner){
+//.		draw_str = inventory_owner->Name();
+//.		shift.set(0,1.2f,0);
+//.	}
 
 	res.transform(v_res,shift);
 
