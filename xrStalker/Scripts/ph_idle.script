@@ -42,7 +42,17 @@ function action_idle:hit_callback(obj, amount, local_direction, who, bone_index)
 		return
 	end
 end
-
+function action_idle:use_callback(obj, actor)
+	if self.st.on_use then		
+		if xr_logic.switch_to_section(self.object, self.st,
+		   xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.on_use.condlist)) then
+			return true
+		end
+	end
+end
+function action_idle:deactivate()
+	self.object:set_tip_text("")
+end
 ---------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, ini, scheme, section, storage)
 	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
@@ -59,6 +69,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.hit_on_bone = utils.parse_data_1v(npc, utils.cfg_get_string(ini, section, "hit_on_bone", npc, false, ""))
 	st.nonscript_usable = utils.cfg_get_bool(ini, section, "nonscript_usable", npc, false)
+	st.on_use    = xr_logic.cfg_get_condlist(ini, section, "on_use", npc)
 	
 	st.tips  = utils.cfg_get_string(ini, section, "tips", npc, false, "", "")
 	
