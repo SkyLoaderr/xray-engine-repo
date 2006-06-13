@@ -535,8 +535,10 @@ void CWeapon::net_Import	(NET_Packet& P)
 	case eFire2:
 	case eSwitch:
 		{
+#ifdef DEBUG
 			if (ammoType >= m_ammoTypes.size())
 				Msg("!! Weapon [%d], State - [%d]", ID(), wstate);
+#endif
 		}break;	
 	default:
 		{
