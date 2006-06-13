@@ -229,7 +229,11 @@ function action_patrol:execute()
 		else
 			--' Анализируем последнюю известную позицию врага.
 			local memory_position = self.object:memory_position(self.enemy)
-			if self.enemy_position ~= memory_position then
+			if self.enemy_position == nil or
+			   self.enemy_position.x ~= memory_position.x or
+			   self.enemy_position.y ~= memory_position.y or
+			   self.enemy_position.z ~= memory_position.z
+			then
 				self.enemy_position = memory_position
 				--' Занести место поиска врага в scan_table
 				if self.a.sniper == true then
