@@ -89,61 +89,64 @@
         <text>condition</text>
     </string>
     <string id="st_move_to_bag">
-        <text>Move to bag</text>
+        <text>move to bag</text>
     </string>
     <string id="st_move_on_belt">
-        <text>Move on belt</text>
+        <text>move on belt</text>
     </string>
     <string id="st_undress_outfit">
-        <text>Undress outfit</text>
+        <text>undress outfit</text>
+    </string>
+    <string id="st_dress_outfit">
+        <text>dress in outfit</text>
     </string>
     <string id="st_detach_gl">
-        <text>Detach grenade launcher</text>
+        <text>detach grenade launcher</text>
     </string>
     <string id="st_detach_scope">
-        <text>Detach scope</text>
+        <text>detach scope</text>
     </string>
     <string id="st_detach_silencer">
-        <text>Detach silencer</text>
+        <text>detach silencer</text>
     </string>
     <string id="st_attach_scope_to_pistol">
-        <text>Attach scope to pistol</text>
+        <text>attach scope to pistol</text>
     </string>
     <string id="st_attach_scope_to_rifle">
-        <text>Attach scope to rifle</text>
+        <text>attach scope to rifle</text>
     </string>
     <string id="st_attach_silencer_to_pistol">
-        <text>Attach silencer to pistol</text>
+        <text>attach silencer to pistol</text>
     </string>
     <string id="st_attach_silencer_to_rifle">
-        <text>Attach silencer to rifle</text>
+        <text>attach silencer to rifle</text>
     </string>
     <string id="st_attach_gl_to_rifle">
-        <text>Attach grenade launcher to rifle</text>
+        <text>attach grenade launcher to rifle</text>
     </string>
     <string id="st_activate_artefact">
-        <text>Activate artefact</text>
+        <text>activate artefact</text>
     </string>
     <string id="st_sell_item">
-        <text>Sell item</text>
+        <text>sell item</text>
     </string>
     
     
     <string id="st_move_to_slot">
-        <text>Move to slot</text>
+        <text>move to slot</text>
     </string>
     
     <string id="st_drop">
-        <text>Drop item</text>
+        <text>drop item</text>
     </string>
     <string id="st_eat">
-        <text>Eat item</text>
+        <text>eat item</text>
     </string>
     <string id="st_drop_all">
-        <text>Drop all items in set</text>
+        <text>drop all items in set</text>
     </string>
     <string id="st_unload_magazine">
-        <text>Unload magazine</text>
+        <text>unload magazine</text>
     </string>
     <string id="ui_inv_accuracy">
         <text>Accuracy</text>
