@@ -210,7 +210,7 @@ def_state_moving2   = rush
 def_state_moving3   = rush
 on_signal           = escort_start | %+val_escort_start%
 on_signal2          = ambush_start | remark@val_escort_nap1_wait_for_actor
-on_info             = {+val_escort_combat} remark@val_escort_nap1_fight
+on_info             = {+val_escort_combat} camper@val_escort_nap1_fight
 meet                = meet@ignore_abuse
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
@@ -223,7 +223,7 @@ combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}, {=check_fig
 anim                    = hide
 target                  = val_escort_nap1_rescue_look, 0 ;actor
 on_actor_dist_le_nvis   = 10 | remark@val_escort_nap1_phrase7
-on_info                 = {+val_escort_combat} remark@val_escort_nap1_fight
+on_info                 = {+val_escort_combat} camper@val_escort_nap1_fight
 on_info2                = {=distance_to_obj_le(400:30)} remark@val_escort_nap1_phrase8
 on_info3                = {+val_escort_captive_dead} remark@val_escort_nap1_fail
 meet                    = meet@ignore_abuse
@@ -238,7 +238,7 @@ combat_ignore_cond      = {=check_fighting(407:408) -val_escort_combat}
 anim                = hide
 snd                 = val_escort_nap1_phrase4
 target              = val_escort_nap1_rescue_look, 0 ;actor
-on_info             = {+val_escort_combat} remark@val_escort_nap1_fight
+on_info             = {+val_escort_combat} camper@val_escort_nap1_fight
 on_info2            = {=distance_to_obj_le(400:30)} remark@val_escort_nap1_phrase8
 on_info3            = {+val_escort_captive_dead} remark@val_escort_nap1_fail
 meet                = meet@ignore_abuse
@@ -253,6 +253,7 @@ combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
 anim                = hide
 snd                 = val_escort_nap1_phrase6
 target              = val_escort_nap1_rescue_look, 0 ;actor
+on_signal           = sound_end| camper@val_escort_nap1_fight
 on_info             = {+val_escort_combat} remark@val_escort_nap1_fight
 on_info2            = {+val_escort_captive_dead} remark@val_escort_nap1_fail
 meet                = meet@ignore_abuse
@@ -278,9 +279,19 @@ combat_ignore_cond  = {=check_fighting(407:408) -val_escort_combat}
 ;--------------------------------------------------------------------------
 [remark@val_escort_nap1_fight]
 anim                = guard_na
-meet                = meet@ignore_abuse
 on_info             = {+val_escort_guard1_dead +val_escort_guard2_dead} remark@val_escort_nap1_task_done
 on_info2            = {+val_escort_captive_dead} follower1@val_escort_nap1_captive_dead
+meet                = meet@ignore_abuse
+wounded             = wounded@val_escort_nap1
+
+[camper@val_escort_nap1_fight]
+path_walk           = nap1_rescue_walk
+path_look           = nap1_rescue_look
+attack_sound        = false
+on_info             = {=val_nap1_check_fighting(407:408)} remark@val_escort_nap1_fight
+on_info2            = {+val_escort_guard1_dead +val_escort_guard2_dead} remark@val_escort_nap1_task_done
+on_info3            = {+val_escort_captive_dead} follower1@val_escort_nap1_captive_dead
+meet                = meet@ignore_abuse
 wounded             = wounded@val_escort_nap1
 
 ;--------------------------------------------------------------------------
