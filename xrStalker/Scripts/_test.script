@@ -39,7 +39,24 @@ function _main()
 end
 
 function main()
-    alife():create ("wpn_knife", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
+	local info = "esc_trader_monolog_1_played" 
+	db.actor:disable_info_portion(info) 
+	
+	info = "esc_trader_tutorial_choice_played" 
+	db.actor:disable_info_portion(info) 
+
+	info = "esc_trader_newbie" 
+	db.actor:disable_info_portion(info) 
+	
+	info = "esc_trader_tutorial_chosen" 
+	db.actor:disable_info_portion(info) 
+	info = "esc_trader_newbie_course_done" 
+	db.actor:disable_info_portion(info) 
+	info = "esc_trader_can_leave" 
+	db.actor:disable_info_portion(info) 
+	
+	
+--    alife():create ("wpn_knife", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
 
 
 --	snd_radar_stop:play(db.actor, 0, sound_object.s2d)

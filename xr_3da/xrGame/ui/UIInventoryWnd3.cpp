@@ -83,7 +83,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	}
 	if(pOutfit  && !bAlreadyDressed )
 	{
-		UIPropertiesBox.AddItem("Dress in outfit",  NULL, INVENTORY_TO_SLOT_ACTION);
+		UIPropertiesBox.AddItem("st_dress_outfit",  NULL, INVENTORY_TO_SLOT_ACTION);
 	}
 	
 	//отсоединение аддонов от вещи
