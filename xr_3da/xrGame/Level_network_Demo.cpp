@@ -141,8 +141,7 @@ void						CLevel::Demo_Clear				()
 };
 
 void						CLevel::Demo_Load				(LPCSTR DemoName)
-{
-	
+{	
 	string1024	DemoFileName;
 	FS.update_path      (DemoFileName,"$logs$",DemoName);
 	//-----------------------------------------------------
@@ -204,12 +203,120 @@ void						CLevel::Demo_Load				(LPCSTR DemoName)
 	xr_free(pDemoData);
 }
 
+static long lFileSize = 0;
+void						CLevel::Demo_Load_toFrame	(LPCSTR FileName, DWORD toFrame, long &ofs)
+{
+	m_sDemoFileName = FileName;
+	string1024	DemoFileName;
+	FS.update_path      (DemoFileName,"$logs$",FileName);
+	//-----------------------------------------------------
+	FILE* fTDemo = fopen(DemoFileName, "rb");
+	if (!fTDemo) return;
+	if (ofs == 0)
+	{
+		fseek(fTDemo, 0, SEEK_END);
+		lFileSize = ftell(fTDemo);
+		fseek(fTDemo, 0, SEEK_SET);
+	}
+	if (fseek(fTDemo, ofs, SEEK_SET))
+	{
+		R_ASSERT(0);
+	};
+	DemoDataStruct NewData;
+	while (!feof(fTDemo))
+	{
+		fread(&(NewData.m_dwDataType), sizeof(NewData.m_dwDataType), 1, fTDemo);
+		fread(&(NewData.m_dwFrame), sizeof(NewData.m_dwFrame), 1, fTDemo);
+		fread(&(NewData.m_dwTimeReceive), sizeof(NewData.m_dwTimeReceive), 1, fTDemo);
+		switch (NewData.m_dwDataType)
+		{
+		case DATA_FRAME:
+			{				
+				fread(&(NewData.FrameTime), sizeof(NewData.FrameTime), 1, fTDemo);
+				m_dwLastDemoFrame = NewData.m_dwFrame;
+			}break;
+		case DATA_PACKET:
+			{
+				fread(&(NewData.Packet.B.count), sizeof(NewData.Packet.B.count), 1, fTDemo);
+				fread((NewData.Packet.B.data), 1, NewData.Packet.B.count, fTDemo);
+			}break;
+		};			
+
+		m_aDemoData.push_back(NewData);
+		if (NewData.m_dwFrame > toFrame) break;
+	};
+	ofs = ftell(fTDemo);
+	fclose(fTDemo);
+
+	if (!m_aDemoData.empty()) 
+	{
+		m_bDemoPlayMode = TRUE;
+		m_bDemoSaveMode = FALSE;
+	};
+};
+
+static DWORD dFrame = 1;
 void						CLevel::Demo_Update				()
 {
 	if (!IsDemoPlay() || m_aDemoData.empty() || !m_bDemoStarted) return;
 	static u32 Pos = 0;
+
+	if (m_bDemoPlayByFrame)
+		Demo_Load_toFrame(m_sDemoFileName.c_str(), m_dwCurDemoFrame+dFrame, m_lDemoOfs);
+
 	if (Pos >= m_aDemoData.size()) return;	
 
+	if (!m_bDemoPlayByFrame)
+	{
+		for (Pos; Pos < m_aDemoData.size(); Pos++)
+		{
+			u32 CurTime = timeServer_Async();
+			DemoDataStruct* P = &(m_aDemoData[Pos]);
+			{
+				if (P->m_dwDataType != DATA_PACKET) continue;
+				if (P->m_dwTimeReceive <= CurTime) 
+				{
+					Msg("tReceive [%d] - CurTime [%d]",P->m_dwTimeReceive, CurTime);
+					IPureClient::OnMessage(P->Packet.B.data, P->Packet.B.count);
+				}
+				else 
+				{			
+					break;
+				};
+			}		
+		};
+	}
+	else
+	{
+		while (!m_aDemoData.empty())
+		{
+			DemoDataStruct* P;
+			P = &(m_aDemoData.front());
+			if (P->m_dwFrame > m_dwCurDemoFrame) 
+			{
+				break;
+			};
+			switch (P->m_dwDataType)
+			{
+			case DATA_FRAME:
+				{
+					Device.dwTimeDelta		= P->FrameTime.dwTimeDelta;
+					Device.dwTimeGlobal		= P->FrameTime.dwTimeGlobal;
+					//					CurFrameTime.dwTimeServer		= Level().timeServer();
+					//					CurFrameTime.dwTimeServer_Delta = Level().timeServer_Delta();
+					Device.fTimeDelta		= P->FrameTime.fTimeDelta;
+					Device.fTimeGlobal		= P->FrameTime.fTimeGlobal;
+
+				}break;
+			case DATA_PACKET:
+				{
+					IPureClient::OnMessage(P->Packet.B.data, P->Packet.B.count);
+				}break;
+			}
+			m_aDemoData.pop_front();
+		};
+	};
+	/*
 	for (Pos; Pos < m_aDemoData.size(); Pos++)
 	{
 		u32 CurTime = timeServer_Async();
@@ -252,6 +359,7 @@ void						CLevel::Demo_Update				()
 			}
 		}
 	}
+	*/
 	//-------------------------------
 	if (HUD().GetUI())
 	{
@@ -263,7 +371,13 @@ void						CLevel::Demo_Update				()
 				string1024 tmp;
 				if (m_bDemoPlayByFrame)
 				{
-					sprintf(tmp, "Demo Playing. %d perc.", u32(float(m_dwCurDemoFrame)/m_dwLastDemoFrame*100.0f));
+//					sprintf(tmp, "Demo Playing. %d perc.", u32(float(m_dwCurDemoFrame)/m_dwLastDemoFrame*100.0f));
+					if (float(m_lDemoOfs)/lFileSize > 0.9)
+					{
+						int x=0;
+						x=x;
+					}
+					sprintf(tmp, "Demo Playing. %d perc.", u32(float(m_lDemoOfs)/lFileSize*100.0f));
 				}
 				else
 				{
@@ -307,6 +421,9 @@ void						CLevel::Demo_StartFrame			()
 
 void						CLevel::Demo_EndFrame			()
 {
-	m_dwCurDemoFrame++;	
+	if (IsDemoPlay() && m_bDemoPlayByFrame)
+		m_dwCurDemoFrame+=dFrame;		
+	else
+		m_dwCurDemoFrame++;	
 };
 

@@ -499,6 +499,9 @@ void CWeapon::net_Export	(NET_Packet& P)
 
 void CWeapon::net_Import	(NET_Packet& P)
 {
+//	if (Level().IsDemoPlay())
+//		Msg("CWeapon::net_Import [%d]", ID());
+
 	inherited::net_Import (P);
 
 	u8 flags = 0;
@@ -526,11 +529,30 @@ void CWeapon::net_Import	(NET_Packet& P)
 		if (Zoom) OnZoomIn();
 		else OnZoomOut();
 	};
-
-	m_ammoType = ammoType;
+	switch (wstate)
+	{	
+	case eFire:
+	case eFire2:
+	case eSwitch:
+		{
+			if (ammoType >= m_ammoTypes.size())
+				Msg("!! Weapon [%d], State - [%d]", ID(), wstate);
+		}break;	
+	default:
+		{
+			m_ammoType = ammoType;
+			SetAmmoElapsed(int(ammo_elapsed));
+		}break;
+	}
+	/*
+	if (m_ammoType >= m_ammoTypes.size())
+	{
+		m_ammoType = m_ammoTypes.size() - 1;
+		Msg("!! Wrong ammo type [%d], State - [%d]", ID(), wstate);
+	};
 	if (STATE != eFire && STATE != eFire2)
 		SetAmmoElapsed(int(ammo_elapsed));
-
+*/
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 
 }

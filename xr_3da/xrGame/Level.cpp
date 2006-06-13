@@ -145,14 +145,17 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 		{
 			sscanf					(strstr(Core.Params,"-tdemo ")+7,"%[^ ] ",f_name);
 			m_bDemoPlayByFrame = FALSE;
+
+			Demo_Load	(f_name);	
 		}
 		else
 		{
 			sscanf					(strstr(Core.Params,"-tdemof ")+8,"%[^ ] ",f_name);
 			m_bDemoPlayByFrame = TRUE;
-		};
-		
-		Demo_Load	(f_name);		
+
+			m_lDemoOfs = 0;
+			Demo_Load_toFrame(f_name, 100, m_lDemoOfs);
+		};		
 	}	
 	//---------------------------------------------------------	
 }

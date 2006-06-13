@@ -989,7 +989,7 @@ void CActor::shedule_Update	(u32 DT)
 	
 	//----------- for E3 -----------------------------
 //	if (Local() && (OnClient() || Level().CurrentEntity()==this))
-	if (Level().CurrentControlEntity() == this)
+	if (Level().CurrentControlEntity() == this/* && !Level().IsDemoPlay()*/)
 	//------------------------------------------------
 	{
 		g_cl_CheckControls		(mstate_wishful,NET_SavedAccel,NET_Jump,dt);
@@ -1027,6 +1027,8 @@ void CActor::shedule_Update	(u32 DT)
 		} else {
 			f_DropPower			= 0.f;
 		}
+		if (!Level().IsDemoPlay())
+		{		
 		//-----------------------------------------------------
 		mstate_wishful &=~mcAccel;
 		mstate_wishful &=~mcLStrafe;
@@ -1037,6 +1039,7 @@ void CActor::shedule_Update	(u32 DT)
 		mstate_wishful &=~mcBack;
 		mstate_wishful &=~mcCrouch;
 		//-----------------------------------------------------
+		}
 	}
 	else 
 	{		

@@ -5,6 +5,9 @@ private:
 	BOOL						m_bDemoPlayMode;
 	BOOL						m_bDemoPlayByFrame;
 
+	xr_string					m_sDemoFileName;
+	long						m_lDemoOfs;
+
 	enum	DEMO_CHUNK
 	{
 		DATA_FRAME		= u32(0),
@@ -35,6 +38,7 @@ private:
 	DEF_DEQUE(DemoDeque, DemoDataStruct);
 	DemoDeque					m_aDemoData;
 	void						Demo_Load				(LPCSTR DemoName);
+	void						Demo_Load_toFrame		(LPCSTR FileName, DWORD toFrame, long &ofs);
 	BOOL						m_bDemoStarted;	
 	u32							m_dwLastDemoFrame;
 	void						Demo_Update				();
@@ -45,8 +49,8 @@ private:
 
 	xrCriticalSection			DemoCS;
 	u32							m_dwStoredDemoDataSize;
-	u8*							m_pStoredDemoData;	
-	
+	u8*							m_pStoredDemoData;
+		
 	void						Demo_PrepareToStore		();
 	void						Demo_StoreData			(void* data, u32 size, DEMO_CHUNK DataType);
 	void						Demo_DumpData			();
