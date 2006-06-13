@@ -73,6 +73,14 @@ void CExplosiveItem::shedule_Update(u32 dt)
 		CParticlesPlayer::StopParticles(ID(), BI_NONE, true);
 	}
 }
+
+bool CExplosiveItem::shedule_Needed()
+{
+//.	return true;
+
+	return ( inherited::shedule_Needed() || CDelayedActionFuse::isActive() );
+}
+
 void CExplosiveItem::renderable_Render()
 {
 	inherited::renderable_Render();

@@ -275,7 +275,10 @@ void CSheduler::Update				()
 	for (u32 it=0; it<ItemsRT.size(); it++)
 	{
 		Item&	T						= ItemsRT[it];
-		if(!T.Object->shedule_Needed())	continue;
+		if(!T.Object->shedule_Needed()){
+			T.dwTimeOfLastExecute		= dwTime;
+			continue;
+		}
 
 		u32	Elapsed						= dwTime-T.dwTimeOfLastExecute;
 #ifdef DEBUG
