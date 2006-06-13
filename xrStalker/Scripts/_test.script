@@ -1,3 +1,8 @@
+function main_exit()
+	local c = get_console()
+	c:execute("disconnect")
+end
+
 function main11111111111()
  game.start_tutorial("credits_seq")
 end
