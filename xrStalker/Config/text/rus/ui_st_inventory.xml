@@ -97,6 +97,9 @@
     <string id="st_undress_outfit">
         <text>снять костюм</text>
     </string>
+    <string id="st_dress_outfit">
+        <text>одеть костюм</text>
+    </string>
     <string id="st_detach_gl">
         <text>отсоединить гранатомет</text>
     </string>
