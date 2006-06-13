@@ -205,7 +205,8 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                "path_look           = captive_wait_look\n" ..
                "animation           = guard\n" ..
                "on_info             = {+val_escort_start}           follower@val_escort_guard_walk\n" .. --patrol
-               "on_info2            = {+val_escort_captive_dead}    patrol@val_escort_guard_free\n" ..
+               "on_info2            = {+val_escort_combat}          remark@val_escort_guard_fight\n" ..
+               "on_info3            = {+val_escort_captive_dead}    patrol@val_escort_guard_free\n" ..
                --"on_info3            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
                "danger              = danger@" .. gname .. "_guard\n" ..
                "combat_ignore_cond  = {=check_fighting(400) -val_escort_captive_enemy}\n" ..
@@ -231,7 +232,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                "on_info2            = {+val_escort_captive_dead}    patrol@val_escort_guard_free\n" ..
                --"on_info3            = {+val_escort_captive_enemy}   remark@val_escort_guard_free\n" ..
                "danger              = danger@" .. gname .. "_guard\n" ..
-               "combat_ignore_cond  = {=check_fighting(400) -val_escort_captive_enemy}\n" ..
+               "combat_ignore_cond  = {=check_fighting(400) -val_escort_captive_enemy}, {=check_fighting(406)}\n" ..
 
                -- fight with actor and nap1
                "[remark@" .. gname .. "_guard_fight]\n" ..
