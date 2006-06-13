@@ -1993,18 +1993,6 @@
 					RelativePath=".\config\scripts\postprocess.ltx">
 				</File>
 				<File
-					RelativePath=".\Config\scripts\sar_decoding.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\scripts\sar_door.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\scripts\sar_monolith_call.ltx">
-				</File>
-				<File
-					RelativePath=".\Config\scripts\sar_monolith_noise.ltx">
-				</File>
-				<File
 					RelativePath=".\config\scripts\sincos.ltx">
 				</File>
 				<File
@@ -2440,6 +2428,25 @@
 					</File>
 					<File
 						RelativePath=".\config\scripts\yan\yan_sleep_restrictor.ltx">
+					</File>
+				</Filter>
+				<Filter
+					Name="sarcofag"
+					Filter="">
+					<File
+						RelativePath=".\Config\scripts\sar_decoding.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\sar_door.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\sar_monolith.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\sar_monolith_call.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\sar_monolith_noise.ltx">
 					</File>
 				</Filter>
 			</Filter>
