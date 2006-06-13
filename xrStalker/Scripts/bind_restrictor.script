@@ -1,6 +1,6 @@
 --[[------------------------------------------------------------------------------------------------
 Space restrictor binder
-Чугай Саша
+Чугай Александр
 
 Примечания:
 	- обновлений у рестрикторов нету, поэтому для тех, кому надо, актёр вызывает искусственно на своём обновлении
@@ -15,9 +15,12 @@ function actor_update(delta)
 end
 
 function bind( obj )
-	db.storage[obj:id()] = { }
+   	local ini = obj:spawn_ini()
+   	if ini and ini:section_exist("logic") then
+--		db.storage[obj:id()] = { }
 
-	obj:bind_object( restrictor_binder( obj ) )
+		obj:bind_object( restrictor_binder( obj ) )
+	end
 end
 
 ----------------------------------------------------------------------------------------------------

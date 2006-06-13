@@ -1,6 +1,6 @@
 --[[------------------------------------------------------------------------------------------------
 Helicoter binding
-Чугай Саша
+Чугай Александр
 
 Сделать:
 	- настройки в ltx
@@ -12,10 +12,10 @@ Helicoter binding
 ---------------------------------------------------------------------------------------------
 
 function bind( obj )
-    printf( "BIND HELICOPTER id=%d", obj:id() )
+--    printf( "BIND HELICOPTER id=%d", obj:id() )
 
    	local ini = obj:spawn_ini()
-   	if ini then
+   	if ini and ini:section_exist("logic") then
 		obj:bind_object( heli_binder( obj, ini ) )
 	end
 end

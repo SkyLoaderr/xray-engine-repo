@@ -8,8 +8,12 @@ function bind(obj)
 	-- Для спауна
 	--xr_spawner.spawn_client(obj)
 
-	local new_binder = generic_object_binder(obj)
-	obj:bind_object(new_binder)
+   	local ini = obj:spawn_ini()
+
+   	if ini and ini:section_exist("logic") then
+		local new_binder = generic_object_binder(obj)
+		obj:bind_object(new_binder)
+	end
 end
 
 ------------------------------------------------------------------------------------
