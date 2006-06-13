@@ -42,14 +42,14 @@ function disable_ui(actor, npc)
     db.actor:hide_weapon()
     level.disable_input()
     level.hide_indicators()
---printf("yan_ui_disabled")
+--	printf("ui_disabled")
 end
 
 function enable_ui(actor, npc)
     level.show_indicators()
     level.enable_input()
     db.actor:restore_weapon()
---printf("yan_ui_enabled")
+--	printf("ui_enabled2")
 end
 
 function run_cam_effector(actor, npc, p)
