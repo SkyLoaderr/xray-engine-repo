@@ -15,12 +15,9 @@ function actor_update(delta)
 end
 
 function bind( obj )
-   	local ini = obj:spawn_ini()
-   	if ini and ini:section_exist("logic") then
---		db.storage[obj:id()] = { }
+--	db.storage[obj:id()] = { }
 
-		obj:bind_object( restrictor_binder( obj ) )
-	end
+	obj:bind_object( restrictor_binder( obj ) )
 end
 
 ----------------------------------------------------------------------------------------------------
