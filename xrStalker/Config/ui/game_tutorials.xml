@@ -1,73 +1,6 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
-<!-- ------------------------------------------------------------------------- -->
-	<intro_logo>
-		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<texture>intro\intro_back</texture>
-			</auto_static>
-		</global_wnd>
-		<play_each_item>1</play_each_item>
 
-		<item type="video">
-			<delay>1</delay>
-			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
-				<texture>intro\intro_thq</texture>
-			</video_wnd>
-		</item>
-		<item type="video">
-			<sound>intro\intro_gsc</sound>
-			<delay>1</delay>
-			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
-				<texture>intro\intro_gsc</texture>
-			</video_wnd>
-		</item>
-	</intro_logo>
-	<intro_game>
-		<play_each_item>1</play_each_item>
-		<global_wnd x="0" y="0" width="1" height="1">
-			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<window_name>back</window_name>
-			</auto_static>
-		</global_wnd>
-		
-		<_item>
-			<length_sec>1</length_sec>
-			<pause_state>off</pause_state>
-			<guard_key/>
-			<sound/>
-			<cursor_pos/>
-			<grab_input>1</grab_input>
-			<pda_section>pda_closed</pda_section>
-			<main_wnd/>
-		</_item>
-		
-		<item type="video">
-			<sound>intro\intro_stalker</sound>
-			<pause_state>on</pause_state>
-			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
-				<texture>intro\intro_stalker</texture>
-			</video_wnd>
-		</item>
-		<_item type="video">
-			<sound>intro\intro_mission</sound>
-			<pause_state>on</pause_state>
-			<delay>1</delay>
-			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
-				<texture>intro\intro_mission</texture>
-			</video_wnd>
-		</_item>
-<!--		<item type="video">
-			<grab_input>1</grab_input>
-			<sound>intro\intro_kill</sound>
-			<back_show>off</back_show>
-			<disabled_key>quit</disabled_key>
-			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
-				<texture>intro\intro_kill</texture>
-			</video_wnd>
-		</item>
--->
-	</intro_game>
 <!-- ------------------------------------------------------------------------- -->
 	<part_1_pda>
 	<global_wnd/>
@@ -728,4 +661,5 @@
 	</part_15_hide_weapon>
 
 #include "ui\ui_credits.xml"
+#include "ui\ui_movies.xml"
 </window>

@@ -1983,7 +1983,32 @@ end
 -- Функции для саркофага
 ------------------------------------------------------------------------------------
 function sar_monolith_miracle(actor, npc)
-	xr_effects.game_credits(actor, npc)
+	--' Убил лидеров группировок
+	if db.actor:has_info("mil_lukash_dead")
+	then
+		game.start_tutorial("mov_desire_3")
+		return
+	end
+
+	--' Много денег
+	if db.actor:money() >= 50000 then
+		game.start_tutorial("mov_desire_2")	
+		return
+	end
+
+	--' Хорошая репутация
+	if db.actor:character_reputation() >= 1000 then
+		game.start_tutorial("mov_desire_1")	
+		return
+	end
+
+	--' плохая репутация
+	if db.actor:character_reputation() <= -1000 then
+		game.start_tutorial("mov_desire_4")	
+		return
+	end
+
+	game.start_tutorial("mov_desire_5")	
 end
 
 function game_credits(actor, npc)

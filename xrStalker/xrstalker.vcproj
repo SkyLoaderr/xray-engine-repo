@@ -1501,6 +1501,9 @@
 					RelativePath=".\Config\ui\ui_game_over.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\ui_movies.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\ui_videoplayer.xml">
 				</File>
 				<File
