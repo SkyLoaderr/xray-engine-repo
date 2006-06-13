@@ -198,8 +198,7 @@ end
 
 function action_door:try_switch()
 	printf("_bp: action_door: object '%s': try_switch", self.object:name())
-	local st = db.storage[self.object:id()]
-	if st.active_scheme and st.active_scheme == "ph_door" and self.st.on_use then		
+	if self.st.on_use then		
 		if xr_logic.switch_to_section(self.object, self.st,
 		   xr_logic.pick_section_from_condlist(db.actor, self.object, self.st.on_use.condlist)) then
 			return true
