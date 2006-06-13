@@ -242,8 +242,9 @@ void CUITradeWnd::Update()
 	if(m_uidata->UIDealMsg){
 		m_uidata->UIDealMsg->Update();
 		if( !m_uidata->UIDealMsg->IsActual()){
-			HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money");
-			m_uidata->UIDealMsg = NULL;
+			HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money_mine");
+			HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money_other");
+			m_uidata->UIDealMsg			= NULL;
 		}
 	}
 }
@@ -267,8 +268,10 @@ void CUITradeWnd::Hide()
 	
 	m_uidata->UIDealMsg				= NULL;
 
-	if(HUD().GetUI()->UIGame())
-		HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money");
+	if(HUD().GetUI()->UIGame()){
+		HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money_mine");
+		HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money_other");
+	}
 }
 
 void CUITradeWnd::StartTrade()
@@ -302,10 +305,9 @@ bool CUITradeWnd::CanMoveToOther(PIItem pItem)
 		))
 		return				(false);
 
-	if(otherInvWeight-r2+r1+itmWeight > otherMaxWeight){
-		Msg					("partner inventory is full");
+	if(otherInvWeight-r2+r1+itmWeight > otherMaxWeight)
 		return				false;
-	}
+
 	return true;
 }
 
@@ -407,7 +409,12 @@ void CUITradeWnd::PerformTrade()
 		SellItems			(&m_uidata->UIOthersTradeList,	&m_uidata->UIOurBagList,	m_pOthersTrade);
 	}else
 	{
-		m_uidata->UIDealMsg				= HUD().GetUI()->UIGame()->AddCustomStatic("not_enough_money", true);
+		if(others_money<0)
+			m_uidata->UIDealMsg		= HUD().GetUI()->UIGame()->AddCustomStatic("not_enough_money_mine", true);
+		else
+			m_uidata->UIDealMsg		= HUD().GetUI()->UIGame()->AddCustomStatic("not_enough_money_other", true);
+
+
 		m_uidata->UIDealMsg->m_endTime	= Device.fTimeGlobal+2.0f;// sec
 	}
 	SetCurrentItem			(NULL);
