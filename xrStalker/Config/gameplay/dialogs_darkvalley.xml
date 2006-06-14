@@ -380,14 +380,6 @@
                 <give_info>val_escort_captive_give_main_info</give_info>
                 <next>7</next>
             </phrase>
-            <phrase id="71">
-                <text></text>
-                <has_info>val_escort_captive_give_main_info</has_info>
-                <next>2</next>
-                <next>3</next>
-                <next>5</next>
-                <next>511</next>
-            </phrase>
             <phrase id="2">
                 <text>val_escort_captive_dialog_2</text>
                 <dont_has_info>val_escort_captive_give_info</dont_has_info>
@@ -408,21 +400,6 @@
                 <give_info>val_escort_help_prisoner_task</give_info>
                 <next>71</next>
             </phrase>
-            <phrase id="5">
-                <text></text>
-                <has_info>val_escort_captive_give_info</has_info>
-                <has_info>val_escort_help_prisoner_task</has_info>
-                <next>51</next>
-            </phrase>
-            <phrase id="51">
-                <text>val_escort_captive_dialog_51</text>
-                <next>511</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>7</next>
-                <next>6</next>
-            </phrase>
             <phrase id="7">
                 <text></text>
                 <has_info>val_escort_actor_helped</has_info>
@@ -438,9 +415,31 @@
                 <dont_has_info>val_escort_actor_helped</dont_has_info>
                 <next>61</next>
             </phrase>
+            <phrase id="5">
+                <text></text>
+                <has_info>val_escort_captive_give_info</has_info>
+                <has_info>val_escort_help_prisoner_task</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="51">
+                <text>val_escort_captive_dialog_51</text>
+                <next>511</next>
+            </phrase>
             <phrase id="511">
                 <text>val_escort_captive_dialog_511</text>
                 <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>7</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="71">
+                <text></text>
+                <has_info>val_escort_captive_give_main_info</has_info>
+                <next>2</next>
+                <next>3</next>
+                <next>5</next>
             </phrase>
         </phrase_list>
     </dialog>
