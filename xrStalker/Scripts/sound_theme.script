@@ -404,8 +404,8 @@ theme = {
 	gar_hellcar_victory			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	
 	-- DarkValley
-	val_prisoner_captive_help_me    = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
-	val_prisoner_captive_come_here  = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_prisoner_captive_help_me    = {min_snd = 6, max_snd = 10, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	val_prisoner_captive_come_here  = {min_snd = 4, max_snd = 7, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	val_prisoner_captive_open       = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	val_prisoner_captive_thanx      = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	val_rob_leader_call             = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
@@ -430,6 +430,9 @@ theme = {
 	val_escort_phrase_invite        = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 
 	-- Pripyat
+	pri_followers_leader_phrase1_1  = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	pri_followers_leader_phrase1_2  = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	pri_followers_leader_phrase1_3  = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	pri_followers_final_phrase1     = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	pri_followers_final_phrase2     = {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	
