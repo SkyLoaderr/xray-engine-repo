@@ -454,6 +454,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		online = true,
+		idle_after_death = 36000000,
 		predicate = function (info)
 		                     return info.profile_name == "mil_Svoboda_master_Max"
 		            end
@@ -466,6 +467,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
+		idle_after_death = 36000000,
 		online = true--,
 		--predicate = function (info)
 		                     --return info.profile_name == "mil_Svoboda_specnaz"
@@ -479,6 +481,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
+		idle_after_death = 36000000,
 		online = true--,
 		--predicate = function (info)
 		                     --return info.profile_name == "mil_Svoboda_specnaz"
@@ -492,6 +495,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
+		idle_after_death = 36000000,
 		online = true--,
 		--predicate = function (info)
 		                     --return info.profile_name == "mil_Svoboda_specnaz"
@@ -505,6 +509,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
+		idle_after_death = 36000000,
 		online = true--,
 		--predicate = function (info)
 		                     --return info.profile_name == "mil_Svoboda_specnaz"
@@ -518,6 +523,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		online = true,
+		idle_after_death = 36000000,
 		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 		}
 	table.insert(sj, t)		
@@ -528,6 +534,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		online = true,
+		idle_after_death = 36000000,
 		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 		}
 	table.insert(sj, t)		
@@ -538,6 +545,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		online = true,
+		idle_after_death = 36000000,
 		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 		}
 	table.insert(sj, t)		
@@ -548,6 +556,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		online = true,
+		idle_after_death = 36000000,
 		in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 		}
 	table.insert(sj, t)		
