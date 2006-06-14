@@ -59,5 +59,12 @@ path_look           = leader_kamp_look
 def_state_moving1   = run
 def_state_moving2   = run
 def_state_moving3   = run
-on_signal           = arrived | kamp@val_rob_kamp
+on_signal           = arrived | remark@val_rob_leader_jeer ;kamp@val_rob_kamp
+meet                = meet@val_rob_ignore
+
+[remark@val_rob_leader_jeer]
+anim                = wait_na
+snd                 = val_rob_leader_jeer
+tips                = val_rob_leader_jeer_1
+on_signal           = sound_end | kamp@val_rob_kamp
 meet                = meet@val_rob_ignore
