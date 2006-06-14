@@ -88,7 +88,7 @@ public:
 
 	virtual void						update					( const Fvector& P, const Fvector& D, const Fvector& N );
 	virtual void						update_events			( );
-	virtual void						statistic				( CSound_stats&  dest );
+	virtual void						statistic				( CSound_stats*  dest, CSound_stats_ext*  ext );
 
 	// listener
 //	virtual const Fvector&				listener_position		( )=0;

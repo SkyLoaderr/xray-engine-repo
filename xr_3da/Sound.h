@@ -186,26 +186,26 @@ public:
 };
 
 /// definition (Sound Source)
-class XRSOUND_API	CSound_environment
+class XRSOUND_API			CSound_environment
 {
 public:
 };
 
 /// definition (Sound Params)
-class XRSOUND_API	CSound_params
+class XRSOUND_API			CSound_params
 {
 public:
-	Fvector			position;
-	float			base_volume;
-	float			volume;
-	float			freq;
-	float			min_distance;
-	float			max_distance;
-	float			max_ai_distance;
+	Fvector					position;
+	float					base_volume;
+	float					volume;
+	float					freq;
+	float					min_distance;
+	float					max_distance;
+	float					max_ai_distance;
 };
 
 /// definition (Sound Interface)
-class XRSOUND_API	CSound_emitter
+class XRSOUND_API			CSound_emitter
 {
 public:
 	virtual BOOL					is_2D					()															= 0;
@@ -222,20 +222,42 @@ public:
 };
 
 /// definition (Sound Stream Interface)
-class XRSOUND_API	CSound_stream_interface
+class XRSOUND_API			CSound_stream_interface
 {
 public:
 };
 
 /// definition (Sound Stream Interface)
-class XRSOUND_API	CSound_stats
+class XRSOUND_API			CSound_stats
 {
 public:
-	u32				_rendered;
-	u32				_simulated;
-	u32				_cache_hits;
-	u32				_cache_misses;
-	u32				_events;
+	u32						_rendered;
+	u32						_simulated;
+	u32						_cache_hits;
+	u32						_cache_misses;
+	u32						_events;
+};
+
+class XRSOUND_API			CSound_stats_ext
+{
+public:
+	struct SItem{
+		shared_str			name;
+		CSound_params		params;
+		float				volume;
+		esound_type			type;
+		int					game_type;
+		CObject*			game_object;
+		struct  {
+			u32				_3D			:1;
+			u32				_rendered	:1;
+		};
+	};
+	DEFINE_VECTOR			(SItem,item_vec,item_vec_it);
+	item_vec				items;
+public:
+void						clear							()					{items.clear();}
+void						append							(const SItem& itm)	{items.push_back(itm);}
 };
 
 /// definition (Sound Callback)
@@ -282,7 +304,7 @@ public:
 	//@}
 
 	virtual void					update					( const Fvector& P, const Fvector& D, const Fvector& N)									= 0;
-	virtual void					statistic				( CSound_stats&  dest )																	= 0;
+	virtual void					statistic				( CSound_stats*  s0, CSound_stats_ext* s1 )												= 0;
 
 	virtual float					get_occlusion_to		( const Fvector& hear_pt, const Fvector& snd_pt, float dispersion=0.2f)					= 0;
 
