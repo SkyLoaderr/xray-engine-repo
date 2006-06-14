@@ -418,7 +418,7 @@ function gulag:update_objs()
 			end
 
 			if self.ObjectJob[obj_id] then
-				self.Job[self.ObjectJob[obj_id]].idle_after_death = game.time() + job_idle_after_death
+				self.Job[self.ObjectJob[obj_id]].idle_after_death = game.time() + ( job.idle_after_death or job_idle_after_death )
 			end
 
 			self.smrttrn:unregister_npc( npc_info.se_obj )
