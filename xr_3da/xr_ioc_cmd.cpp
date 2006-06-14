@@ -518,10 +518,11 @@ void CCC_Register()
 	CMD3(CCC_Token,		"snd_freq",				&psSoundFreq,		snd_freq_token		);
 	CMD3(CCC_Token,		"snd_model",			&psSoundModel,		snd_model_token		);
 	CMD1(CCC_SND_Restart,"snd_restart"			);
-	CMD3(CCC_Mask,		"snd_acceleration",		&psSoundFlags,		ssHardware	);
-	CMD3(CCC_Mask,		"snd_efx",				&psSoundFlags,		ssEAX		);
+	CMD3(CCC_Mask,		"snd_acceleration",		&psSoundFlags,		ss_Hardware	);
+	CMD3(CCC_Mask,		"snd_efx",				&psSoundFlags,		ss_EAX		);
 	CMD4(CCC_Integer,	"snd_targets",			&psSoundTargets,	4,32		);
 	CMD4(CCC_Integer,	"snd_cache_size",		&psSoundCacheSizeMB,4,32		);
+	CMD3(CCC_Mask,		"snd_stats",			&psSoundFlags,		ss_Stats	);
 
 #ifdef DEBUG
 	CMD4(CCC_Integer,	"error_line_count",		&g_ErrorLineCount,	6,	1024	);

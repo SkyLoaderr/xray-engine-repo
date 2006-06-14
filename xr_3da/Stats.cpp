@@ -181,8 +181,8 @@ void CStats::Show()
 		r_ps						= .99f*r_ps + .01f*(clRAY.count/clRAY.result);
 		b_ps						= .99f*b_ps + .01f*(clBOX.count/clBOX.result);
 
-		CSound_stats				snd;
-		::Sound->statistic			(snd);
+		CSound_stats				snd_stat;
+		::Sound->statistic			(&snd_stat,0);
 		F.SetColor	(0xFFFFFFFF	);
 
 		F.OutSet	(640,0);
@@ -253,8 +253,8 @@ void CStats::Show()
 		F.OutNext	("  S_render:  %2.2fms, %d",RenderDUMP_Srender.result,RenderDUMP_Srender.count);
 		F.OutSkip	();
 		F.OutNext	("*** SOUND:   %2.2fms",Sound.result);
-		F.OutNext	("  TGT/SIM/E: %d/%d/%d",  snd._rendered, snd._simulated, snd._events);
-		F.OutNext	("  HIT/MISS:  %d/%d",  snd._cache_hits, snd._cache_misses);
+		F.OutNext	("  TGT/SIM/E: %d/%d/%d",  snd_stat._rendered, snd_stat._simulated, snd_stat._events);
+		F.OutNext	("  HIT/MISS:  %d/%d",  snd_stat._cache_hits, snd_stat._cache_misses);
 		F.OutSkip	();
 		F.OutNext	("Input:       %2.2fms",Input.result);
 		F.OutNext	("clRAY:       %2.2fms, %d, %2.0fK",clRAY.result,		clRAY.count,r_ps);
@@ -299,6 +299,12 @@ void CStats::Show()
 		F.SetSize						(f_base_size);
 		seqStats.Process				(rp_Stats);
 		pFont->OnRender					();
+	}
+
+	if (psSoundFlags.is(ss_Stats)){
+		CSound_stats_ext				snd_stat_ext;
+//.		::Sound->statistic				(0,&snd_stat_ext);
+
 	}
 
 #ifdef DEBUG
