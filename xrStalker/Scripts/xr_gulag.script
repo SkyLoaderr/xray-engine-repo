@@ -166,7 +166,7 @@ function gulag:prepare_jobs()
 
 		job.begin            = job_loaded.begin
 		job.fill_idle        = job_loaded.fill_idle
-		job.idle_after_death = job_loaded.idle_after_death
+		job.idle_after_death_end = job_loaded.idle_after_death_end
 	end
 
 	local job
@@ -250,7 +250,7 @@ function gulag:save_common( packet )
 	for i, job in ipairs( self.Job ) do
 		packet:w_u32( job.begin            or 0 )
 		packet:w_u32( job.fill_idle        or 0 )
-		packet:w_u32( job.idle_after_death or 0 )
+		packet:w_u32( job.idle_after_death_end or 0 )
 --		printf( "job i=%d", i )
 	end
 end
@@ -271,14 +271,14 @@ function gulag:load_common( packet )
 
 		job.begin            = packet:r_u32()
 		job.fill_idle        = packet:r_u32()
-		job.idle_after_death = packet:r_u32()
+		job.idle_after_death_end = packet:r_u32()
 
 		if job.fill_idle == 0 then
 			job.fill_idle = nil
 		end
 
-		if job.idle_after_death == 0 then
-			job.idle_after_death = nil
+		if job.idle_after_death_end == 0 then
+			job.idle_after_death_end = nil
 		end
 
 --		printf( "job i=%d", i )
@@ -416,7 +416,9 @@ function gulag:update_objs()
 			end
 
 			if self.ObjectJob[obj_id] then
-				self.Job[self.ObjectJob[obj_id]].idle_after_death = game.time() + ( job.idle_after_death or job_idle_after_death ) * 1000
+				local job = self.Job[self.ObjectJob[obj_id]]
+
+				job.idle_after_death_end = game.time() + ( job.idle_after_death or job_idle_after_death ) * 1000
 			end
 
 			self.smrttrn:unregister_npc( npc_info.se_obj )
@@ -545,7 +547,7 @@ end
 -- и занята работа, от которой зависит данная работа.
 function gulag:availJob(job)
 	if job.begin == nil or game.time() - job.begin > job.idle then
-		if job.idle_after_death == nil or job.idle_after_death < game.time() then
+		if job.idle_after_death_end == nil or job.idle_after_death_end < game.time() then
 			if job.fill_idle ~= nil then
 				if job.fill_idle == idle_none then
 					printf( "availJob=false (fill_idle idle_none)" )
@@ -569,7 +571,7 @@ function gulag:availJob(job)
 --			printf( "availJob=true" )
 			return true
 		else
-			printf( "availJob=false (idle_after_death)" )
+			printf( "availJob=false (idle_after_death_end)" )
 		end
 	else
 		printf( "availJob=false (idle)" )
@@ -938,7 +940,7 @@ function gulag:setJob(obj_id, job)
 
 	job.object = obj_id
 
-	job.idle_after_death = nil
+	job.idle_after_death_end = nil
 
 	self.Object_begin_job [obj_id] = false
 	self.ObjectJob        [obj_id] = job.num
