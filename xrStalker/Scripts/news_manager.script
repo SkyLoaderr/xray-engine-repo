@@ -78,6 +78,10 @@ news = {
 
 -- pda sounds
     val_rob_leader_jeer_1		    = sound_object([[characters_voice\scenario\val\rob_leader_jeer_1_p]])
+
+    pri_followers_leader_phrase1_1  = sound_object([[characters_voice\scenario\pri\followers_leader_phrase1_1_p]])
+    pri_followers_leader_phrase1_2  = sound_object([[characters_voice\scenario\pri\followers_leader_phrase1_2_p]])
+    pri_followers_leader_phrase1_3  = sound_object([[characters_voice\scenario\pri\followers_leader_phrase1_3_p]])
 }
 
 pda_news = sound_object([[device\pda\pda_news]])
