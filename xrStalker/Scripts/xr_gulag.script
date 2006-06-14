@@ -18,8 +18,8 @@ level_gulags = {gulag_general, gulag_escape, gulag_garbage, gulag_agroprom, gula
 local gulag_tasks_file_name  = "misc\\gulag_tasks.ltx"
 local gulag_tasks_ltx        = ini_file( gulag_tasks_file_name )
 
-local job_position_threshold = 50 -- расстояние до места работы при котором персонаж в онлайне считается достигшим места работы
-local job_idle_after_death   = 600000 -- в течении такого периода времени после смерти персонажа его работа будет недоступна
+local job_position_threshold = 50  -- расстояние до места работы при котором персонаж в онлайне считается достигшим места работы
+local job_idle_after_death   = 600 -- в течении такого периода времени после смерти персонажа его работа будет недоступна
 
 idle_nil  = nil
 idle_once = -1
@@ -418,7 +418,7 @@ function gulag:update_objs()
 			end
 
 			if self.ObjectJob[obj_id] then
-				self.Job[self.ObjectJob[obj_id]].idle_after_death = game.time() + ( job.idle_after_death or job_idle_after_death )
+				self.Job[self.ObjectJob[obj_id]].idle_after_death = game.time() + ( job.idle_after_death or job_idle_after_death ) * 1000
 			end
 
 			self.smrttrn:unregister_npc( npc_info.se_obj )
