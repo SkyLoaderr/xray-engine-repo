@@ -38,7 +38,7 @@ BOOL CSoundRender_TargetD::_initialize	()
 		DSBCAPS_CTRLFREQUENCY | 
 		DSBCAPS_CTRLVOLUME |
 		DSBCAPS_GETCURRENTPOSITION2 |
-		(psSoundFlags.test(ssHardware) 	? 0 				: (DSBCAPS_LOCSOFTWARE));
+		(psSoundFlags.test(ss_Hardware) 	? 0 				: (DSBCAPS_LOCSOFTWARE));
 	dsBD.dwBufferBytes		= buf_size;
 	dsBD.dwReserved			= 0;
 	dsBD.lpwfxFormat		= &wfx;
@@ -51,7 +51,7 @@ BOOL CSoundRender_TargetD::_initialize	()
 	case sq_HIGH:		dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;			break;
 	default:			Debug.fatal("Unknown 3D-ref_sound algorithm");		break;
 	}
-    if (psSoundFlags.test(ssHardware)) 
+    if (psSoundFlags.test(ss_Hardware)) 
     	dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;
 
 	// Create
