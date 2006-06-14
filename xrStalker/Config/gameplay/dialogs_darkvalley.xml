@@ -351,26 +351,6 @@
     </dialog>
     <dialog id="val_escort_captive_dialog">
         <phrase_list>
-            <phrase id="6">
-                <text></text>
-                <dont_has_info>val_escort_actor_helped</dont_has_info>
-                <next>61</next>
-            </phrase>
-            <phrase id="61">
-                <text>val_escort_captive_dialog_61</text>
-                <next>511</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>7</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="7">
-                <text></text>
-                <has_info>val_escort_actor_helped</has_info>
-                <next>8</next>
-                <next>71</next>
-            </phrase>
             <phrase id="8">
                 <text></text>
                 <dont_has_info>val_escort_captive_give_main_info</dont_has_info>
@@ -438,10 +418,29 @@
                 <text>val_escort_captive_dialog_51</text>
                 <next>511</next>
             </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>7</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="7">
+                <text></text>
+                <has_info>val_escort_actor_helped</has_info>
+                <next>8</next>
+                <next>71</next>
+            </phrase>
+            <phrase id="61">
+                <text>val_escort_captive_dialog_61</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="6">
+                <text></text>
+                <dont_has_info>val_escort_actor_helped</dont_has_info>
+                <next>61</next>
+            </phrase>
             <phrase id="511">
                 <text>val_escort_captive_dialog_511</text>
                 <action>dialogs.break_dialog</action>
-                <has_info>val_escort_captive_give_main_info</has_info>
             </phrase>
         </phrase_list>
     </dialog>
