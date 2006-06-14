@@ -1,7 +1,7 @@
 
 news = {
 	tips_esc_trader_about_pda		= sound_object([[characters_voice\scenario\trader\trader_tutorial_contacts_1]]),
-	tips_esc_trader_about_anomalies		= sound_object([[characters_voice\scenario\trader\trader_tutorial_anomalies_1]]),
+	tips_esc_trader_about_anomalies	= sound_object([[characters_voice\scenario\trader\trader_tutorial_anomalies_1]]),
 	escape_stalker_killed			= sound_object([[characters_voice\scenario\trader\trader_tutorial_end_2]]),
 	escape_stalker_helped			= sound_object([[characters_voice\scenario\trader\trader_tutorial_end_1]]),
 	tutorial_trader_look_vagon		= sound_object([[characters_voice\scenario\trader\trader_tutorial_go_help_tolik_1]]),
@@ -73,8 +73,11 @@ news = {
 
 
 	val_monolith_trader_pda1		= sound_object([[characters_voice\scenario\val\trader_dialog1]]),
-	o_soznanie_text					= sound_object([[characters_voice\scenario\sarcofag\o_soznanie_call]])
-	
+	o_soznanie_text					= sound_object([[characters_voice\scenario\sarcofag\o_soznanie_call]]),
+
+
+-- pda sounds
+    val_rob_leader_jeer_1		    = sound_object([[characters_voice\scenario\val\rob_leader_jeer_1_p]])
 }
 
 pda_news = sound_object([[device\pda\pda_news]])
