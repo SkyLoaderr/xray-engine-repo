@@ -463,7 +463,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- Мужик у костра 1
     t = {section = "logic@mil_freedom_stalker1_attack",
 		idle = 0,
-		prior = 16, state = {3},
+		prior = 15, state = {3},
 		squad = squad, group = groups[0],
 		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
@@ -477,7 +477,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- Мужик у костра 2
     t = {section = "logic@mil_freedom_stalker2_attack",
 		idle = 0,
-		prior = 16, state = {3},
+		prior = 15, state = {3},
 		squad = squad, group = groups[0],
 		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
@@ -505,7 +505,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- 
     t = {section = "logic@mil_freedom_stalker5_attack",
 		idle = 0,
-		prior = 16, state = {3},
+		prior = 15, state = {3},
 		squad = squad, group = groups[0],
 		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
@@ -519,7 +519,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- 
     t = {section = "logic@mil_freedom_stalker6_attack",
 		idle = 0,
-		prior = 16, state = {3},
+		prior = 15, state = {3},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		online = true,
@@ -530,7 +530,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- 
     t = {section = "logic@mil_freedom_stalker7_attack",
 		idle = 0,
-		prior = 16, state = {3},
+		prior = 15, state = {3},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		online = true,
@@ -541,7 +541,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- 
     t = {section = "logic@mil_freedom_stalker8_attack",
 		idle = 0,
-		prior = 16, state = {3},
+		prior = 15, state = {3},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		online = true,
@@ -552,7 +552,7 @@ function load_job_base (sj, gname, type, squad, groups)
 	-- 
     t = {section = "logic@mil_freedom_stalker9_attack",
 		idle = 0,
-		prior = 16, state = {3},
+		prior = 15, state = {3},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		online = true,
