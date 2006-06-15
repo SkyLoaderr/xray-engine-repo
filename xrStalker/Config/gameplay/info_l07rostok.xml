@@ -102,7 +102,7 @@
 	<info_portion id="bar_kill_svoboda_ambush_killed"></info_portion>
 	<info_portion id="bar_kill_svoboda_ambush_done"></info_portion>
 	<info_portion id="bar_kill_svoboda_reward"></info_portion>
-
+	<info_portion id="bar_voronin_dead"></info_portion>
 	<info_portion id="bar_kill_svoboda_leader_start">
 		<task>bar_dolg_svoboda_leader_kill_quest</task>
 	</info_portion>
