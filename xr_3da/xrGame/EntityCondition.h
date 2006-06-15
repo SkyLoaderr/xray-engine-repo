@@ -35,24 +35,21 @@ public:
 
 	virtual void			LoadCondition			(LPCSTR section);
 
-	//serialization
 	virtual void			save					(NET_Packet &output_packet);
 	virtual void			load					(IReader &input_packet);
 
-	IC float					GetPower				() const			{return m_fPower;}	
-//	IC float					GetSatiety				() const			{return m_fSatiety;}
-	IC float					GetRadiation			() const			{return m_fRadiation;}
-	IC float					GetPsyHealth			() const			{return m_fPsyHealth;}
+	IC float				GetPower				() const			{return m_fPower;}	
+	IC float				GetRadiation			() const			{return m_fRadiation;}
+	IC float				GetPsyHealth			() const			{return m_fPsyHealth;}
 
-	IC float 					GetEntityMorale			() const			{return m_fEntityMorale;}
+	IC float 				GetEntityMorale			() const			{return m_fEntityMorale;}
 
-	IC float 					GetHealthLost			() const			{return m_fHealthLost;}
+	IC float 				GetHealthLost			() const			{return m_fHealthLost;}
 
 	virtual bool 			IsLimping				() const;
 
 	void 					ChangeHealth			(float value);
 	void 					ChangePower				(float value);
-//	void 					ChangeSatiety			(float value);
 	void 					ChangeRadiation			(float value);
 	void 					ChangePsyHealth			(float value);
 	virtual void 			ChangeAlcohol			(float value){};
@@ -66,7 +63,6 @@ public:
 	void 					ChangeCircumspection	(float value);
 	void 					ChangeEntityMorale		(float value);
 
-	//hit_power задается от 0 до 100 (сложилось исторически)
 	virtual CWound*			ConditionHit			(SHit* pHDS);
 	//обновления состояния с течением времени
 	virtual void			UpdateCondition			();
@@ -113,7 +109,6 @@ protected:
 
 	//все величины от 0 до 1			
 	float m_fPower;					//сила
-//	float m_fSatiety;				//сытость (энергия)
 	float m_fRadiation;				//доза радиактивного облучения
 	float m_fPsyHealth;				//здоровье
 
@@ -121,7 +116,6 @@ protected:
 
 	//максимальные величины
 	float m_fPowerMax;
-//	float m_fSatietyMax;
 	float m_fRadiationMax;
 	float m_fPsyHealthMax;
 
@@ -130,7 +124,6 @@ protected:
 	//величины изменения параметров на каждом обновлении
 	float m_fDeltaHealth;
 	float m_fDeltaPower;
-//	float m_fDeltaSatiety;
 	float m_fDeltaRadiation;
 	float m_fDeltaPsyHealth;
 
@@ -139,56 +132,47 @@ protected:
 
 	struct SConditionChangeV
 	{
-//		float m_fV_Satiety;
-		float m_fV_Radiation;
-		float m_fV_PsyHealth;
-		float m_fV_Circumspection;
-		float m_fV_EntityMorale;
-//		float m_fV_SatietyPower;
-//		float m_fV_SatietyHealth;
-		float m_fV_RadiationHealth;
-		float m_fV_Bleeding;
-		float m_fV_WoundIncarnation;
-		void  load(LPCSTR sect, LPCSTR prefix);
+		float			m_fV_Radiation;
+		float			m_fV_PsyHealth;
+		float			m_fV_Circumspection;
+		float			m_fV_EntityMorale;
+		float			m_fV_RadiationHealth;
+		float			m_fV_Bleeding;
+		float			m_fV_WoundIncarnation;
+		float			m_fV_HealthRestore;
+		void			load(LPCSTR sect, LPCSTR prefix);
 	};
 	
 	SConditionChangeV m_change_v;
 
-	//критическое значение сытости (в процентах 0..1), после которого 
-	//начинает уменьшаться здоровье
-	float m_fSatietyCritical;
-
-
-	float m_fMinWoundSize;
-	//флаг, указывающий на то что есть кровотечение
-	bool m_bIsBleeding;
-
+	float				m_fMinWoundSize;
+	bool				m_bIsBleeding;
 
 	//части хита, затрачиваемые на уменьшение здоровья и силы
-	float m_fHealthHitPart;
-	float m_fPowerHitPart;
+	float				m_fHealthHitPart;
+	float				m_fPowerHitPart;
 
 
 
 	//потеря здоровья от последнего хита
-	float m_fHealthLost;
+	float				m_fHealthLost;
 	//кто нанес последний хит
-	CObject* m_pWho;
-	u16		m_iWhoID;
+	CObject*			m_pWho;
+	u16					m_iWhoID;
 
 
 	//для отслеживания времени 
-	u64		m_iLastTimeCalled;
-	float	m_fDeltaTime;
-	bool	m_bTimeValid;
+	u64					m_iLastTimeCalled;
+	float				m_fDeltaTime;
+	bool				m_bTimeValid;
 
 	//для передачи параметров из DamageManager
-	float m_fHitBoneScale;
-	float m_fWoundBoneScale;
+	float				m_fHitBoneScale;
+	float				m_fWoundBoneScale;
 
-	float m_limping_threshold;
+	float				m_limping_threshold;
 
-	bool m_bCanBeHarmed;
+	bool				m_bCanBeHarmed;
 
 public:
 	virtual void					reinit				();
