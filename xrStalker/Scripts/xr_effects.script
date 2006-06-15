@@ -1984,7 +1984,8 @@ end
 ------------------------------------------------------------------------------------
 function sar_monolith_miracle(actor, npc)
 	--' Убил лидеров группировок
-	if db.actor:has_info("mil_lukash_dead")
+	if db.actor:has_info("mil_lukash_dead") and
+	   db.actor:has_info("bar_voronin_dead")
 	then
 		game.start_tutorial("mov_desire_3")
 		return
