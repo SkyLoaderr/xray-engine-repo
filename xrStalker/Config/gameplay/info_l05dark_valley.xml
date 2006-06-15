@@ -149,6 +149,7 @@
     <info_portion id="val_x18_door_open"></info_portion>
 
     <!-- Развод лоха -->
+    <info_portion id="val_rob_actor_enter"></info_portion>
     <info_portion id="val_rob_buying"></info_portion>
     <info_portion id="val_rob_no_thanx"></info_portion>
     <info_portion id="val_rob_no_money"></info_portion>
