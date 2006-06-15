@@ -1979,6 +1979,13 @@ function rad_psi_hit (actor, npc)
 	level.add_pp_effector ("radar_psi.ppe", 2006, false)
 end
 
+function start_radar_dream(actor, npc)
+	game.start_tutorial("radar_dream")
+end
+
+function end_radar_dream(actor, npc)
+	db.actor:give_info("bun_patrol_start")
+end
 ------------------------------------------------------------------------------------
 -- Функции для саркофага
 ------------------------------------------------------------------------------------
