@@ -1485,6 +1485,7 @@
             <phrase id="31">
                 <text>escape_trader_start_dialog_31</text>
                 <action>dialogs.break_dialog</action>
+                <action>escape_dialog.run_tutorial_pda</action>
                 <give_info>esc_trader_newbie</give_info>
                 <give_info>esc_trader_tutorial_chosen</give_info>
                 <next>311</next>
