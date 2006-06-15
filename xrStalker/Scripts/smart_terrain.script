@@ -506,8 +506,8 @@ function se_smart_terrain:enabled( obj )
 			local b1 = self:obj_accepts_smart_terrain( obj )
 			local b2 = self:smart_terrain_accepts_obj( obj, b1 )
 
-			if self:name() == "rad_entrance" or
-			   obj:name()  == "yantar_semenov"
+			if self:name() == "bun_krovosos_nest" or
+			   obj:name()  == "bun_bloodsucker_strong"
 			then
 				printf( "obj_accepts_smart_terrain=%d smart_terrain_accepts_obj=%s", b1, tostring( b2 ) )
 			end
