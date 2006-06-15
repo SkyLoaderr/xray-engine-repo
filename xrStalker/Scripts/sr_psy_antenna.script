@@ -268,7 +268,9 @@ function action_psy_antenna:zone_leave()
 		return
 	end
 
-	psy_antenna.postprocess[self.st.postprocess].intensity_base = psy_antenna.postprocess[self.st.postprocess].intensity_base - self.st.intensity
+	if psy_antenna.postprocess[self.st.postprocess] ~= nil then
+		psy_antenna.postprocess[self.st.postprocess].intensity_base = psy_antenna.postprocess[self.st.postprocess].intensity_base - self.st.intensity
+	end
 end
 function action_psy_antenna:save()
 	xr_logic.pstor_store( self.object, "inside", self.state )
