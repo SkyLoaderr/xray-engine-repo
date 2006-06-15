@@ -1,29 +1,18 @@
 [logic]
-active = sr_psy_antenna@no_helmet
+active    = sr_idle@wait
+ 
+[sr_idle@wait]
+on_info = {+bar_deactivate_radar_done} sr_sound_act@psy_sound %=run_postprocess(radar_psi:2506:false)%
 
-[sr_psy_antenna@no_helmet]
-eff_intensity = +100
-hit_intensity = +100
-phantom_prob = 40
-min_phantom_idle = 3000
-max_phantom_idle = 5000
-on_info = {=actor_has_item(good_psy_helmet)} sr_psy_antenna@good_helmet, {=actor_has_item(bad_psy_helmet)} sr_psy_antenna@bad_helmet
-on_info2 = {+bar_deactivate_radar_done} nil
+[sr_sound_act@psy_sound]
+snd = affects\psy_blackout
+stereo = true
+on_signal = sound_end | sr_idle@stand_up
 
-[sr_psy_antenna@bad_helmet]
-eff_intensity = +100
-hit_intensity = +0.2
-phantom_prob = 30
-min_phantom_idle = 3000
-max_phantom_idle = 5000
-on_info = {=actor_has_item(good_psy_helmet)} sr_psy_antenna@good_helmet, {=actor_has_item(bad_psy_helmet)}, sr_psy_antenna@no_helmet
-on_info2 = {+bar_deactivate_radar_done} nil
+[sr_idle@stand_up]
+on_timer  = 15000| sr_sound_act@monolith_call %+bun_patrol_start%
 
-[sr_psy_antenna@good_helmet]
-eff_intensity = +100
-hit_intensity = +0.2
-phantom_prob = 20
-min_phantom_idle = 3000
-max_phantom_idle = 5000
-on_info = {=actor_has_item(good_psy_helmet)}, {=actor_has_item(bad_psy_helmet)} sr_psy_antenna@bad_helmet, sr_psy_antenna@no_helmet
-on_info2 = {+bar_deactivate_radar_done} nil
+[sr_sound_act@monolith_call]
+snd = characters_voice\scenario\sarcofag\monolith_call_1
+stereo = true 
+on_signal = end|nil %+sar_monolith_call%
