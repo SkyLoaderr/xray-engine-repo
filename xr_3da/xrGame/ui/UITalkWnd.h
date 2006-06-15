@@ -44,6 +44,8 @@ public:
 		
 	virtual void		Show();
 	virtual void		Hide();
+	
+	void				Stop();					//deffered
 
 	void				UpdateQuestions();
 	void				NeedUpdateQuestions();

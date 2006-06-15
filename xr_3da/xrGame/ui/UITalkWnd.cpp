@@ -41,7 +41,6 @@ CUITalkWnd::CUITalkWnd()
 	SetFont					(HUD().Font().pFontHeaderRussian);
 
 	m_bNeedToUpdateQuestions = false;
-
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -221,7 +220,7 @@ void UpdateCameraDirection(CGameObject* pTo)
 void CUITalkWnd::Update()
 {
 	//остановить разговор, если нужно
-	if (m_pActor && !m_pActor->IsTalking())
+	if (m_pActor && !m_pActor->IsTalking() )
 	{
 		Game().StartStopMenu(this,true);
 	}else{
@@ -409,4 +408,8 @@ void CUITalkWnd::StopSnd()
 void CUITalkWnd::AddIconedMessage(LPCSTR text, LPCSTR texture_name, Frect texture_rect, LPCSTR templ_name)
 {
 	UITalkDialogWnd->AddIconedAnswer(text, texture_name, texture_rect, templ_name);
+}
+
+void CUITalkWnd::Stop()
+{
 }

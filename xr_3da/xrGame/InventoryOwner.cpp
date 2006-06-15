@@ -266,15 +266,22 @@ void CInventoryOwner::StartTalk(CInventoryOwner* talk_partner, bool start_trade)
 	if(start_trade)
 		GetTrade()->StartTrade(talk_partner);
 }
+#include "UIGameSP.h"
+#include "HUDmanager.h"
+#include "ui\UITalkWnd.h"
 
 void CInventoryOwner::StopTalk()
 {
-	m_pTalkPartner = NULL;
-	m_bTalking = false;
+	m_pTalkPartner			= NULL;
+	m_bTalking				= false;
 
-	//выключаем торговлю
-	GetTrade()->StopTrade();
+	GetTrade()->StopTrade	();
+
+	CUIGameSP* ui_sp = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(ui_sp && ui_sp->TalkMenu->IsShown())
+		ui_sp->TalkMenu->Stop();
 }
+
 bool CInventoryOwner::IsTalking()
 {
 	return m_bTalking;

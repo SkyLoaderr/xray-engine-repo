@@ -14,13 +14,13 @@ public:
 class CDialogHolder :public ISheduled,public pureFrame
 {
 	//dialogs
-	xr_stack<CUIDialogWnd*>									m_input_receivers;
+	xr_vector<CUIDialogWnd*>								m_input_receivers;
 	xr_vector<dlgItem>										m_dialogsToRender;
 
 
 	void					StartMenu						(CUIDialogWnd* pDialog);
 	void					StopMenu						(CUIDialogWnd* pDialog);
-	void					SetMainInputReceiver			(CUIDialogWnd* ir);
+	void					SetMainInputReceiver			(CUIDialogWnd* ir, bool _find_remove);
 protected:
 	void					DoRenderDialogs					();
 	void					CleanInternals					();

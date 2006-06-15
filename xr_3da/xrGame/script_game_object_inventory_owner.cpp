@@ -142,6 +142,7 @@ void CScriptGameObject::StopTalk()
 	if(!pInventoryOwner) return;
 	pInventoryOwner->StopTalk();
 }
+
 void CScriptGameObject::EnableTalk()
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(&object());

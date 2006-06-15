@@ -40,7 +40,7 @@ void CDialogHolder::StartMenu (CUIDialogWnd* pDialog)
 	R_ASSERT( !pDialog->IsShown() );
 
 	AddDialogToRender(pDialog);
-	SetMainInputReceiver(pDialog);
+	SetMainInputReceiver(pDialog, false);
 	pDialog->SetHolder(this);
 	pDialog->Show();
 
@@ -60,12 +60,19 @@ void CDialogHolder::StartMenu (CUIDialogWnd* pDialog)
 void CDialogHolder::StopMenu (CUIDialogWnd* pDialog)
 {
 	R_ASSERT( pDialog->IsShown() );
-	R_ASSERT( MainInputReceiver()==pDialog );
 
-	RemoveDialogToRender(pDialog);
-	SetMainInputReceiver(NULL);
-	pDialog->SetHolder(NULL);
-	pDialog->Hide();
+	if( MainInputReceiver()==pDialog )
+	{
+		RemoveDialogToRender(pDialog);
+		SetMainInputReceiver(NULL,false);
+		pDialog->SetHolder(NULL);
+		pDialog->Hide();
+	}else{
+		RemoveDialogToRender(pDialog);
+		SetMainInputReceiver(pDialog, true);
+		pDialog->SetHolder(NULL);
+		pDialog->Hide();
+	}
 
 	if(!MainInputReceiver() || !MainInputReceiver()->NeedCursor() )
 		GetUICursor()->Hide();
@@ -108,18 +115,35 @@ void CDialogHolder::DoRenderDialogs()
 CUIDialogWnd* CDialogHolder::MainInputReceiver()
 { 
 	if ( !m_input_receivers.empty() ) 
-		return m_input_receivers.top(); 
+		return m_input_receivers.back(); 
 	return NULL; 
 };
 
-void CDialogHolder::SetMainInputReceiver	(CUIDialogWnd* ir)	
+void CDialogHolder::SetMainInputReceiver	(CUIDialogWnd* ir, bool _find_remove)	
 { 
 	if( MainInputReceiver() == ir ) return;
-	if(!ir){//remove
-		if(!m_input_receivers.empty())
-			m_input_receivers.pop();
+
+	if(!ir || _find_remove){
+		if(m_input_receivers.empty())	return;
+
+		if(!ir)
+			m_input_receivers.pop_back();
+		else{
+			VERIFY(ir && _find_remove);
+
+			u32 cnt = m_input_receivers.size();
+			for(;cnt>0;--cnt)
+				if( m_input_receivers[cnt-1] == ir ){
+					xr_vector<CUIDialogWnd*>::iterator it = m_input_receivers.begin();
+					std::advance			(it,cnt-1);
+					m_input_receivers.erase	(it);
+					break;
+				}
+			
+		}
+
 	}else{
-		m_input_receivers.push(ir);
+		m_input_receivers.push_back(ir);
 	}
 };
 
@@ -129,11 +153,6 @@ void CDialogHolder::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 		StopMenu(pDialog);
 	else
 		StartMenu(pDialog);
-
-/*	xr_vector<CUIWindow*>::iterator it = std::find(m_dialogsToErase.begin(), m_dialogsToErase.end(), pDialog);
-	if (m_dialogsToErase.end() != it)
-		m_dialogsToErase.erase(it);
-*/
 }
 
 void CDialogHolder::OnFrame	()
@@ -173,7 +192,7 @@ float CDialogHolder::shedule_Scale()
 void CDialogHolder::CleanInternals()
 {
 	while( !m_input_receivers.empty() )
-		m_input_receivers.pop();
+		m_input_receivers.pop_back();
 
 	m_dialogsToRender.clear();
 //	m_dialogsToErase.clear();
