@@ -164,6 +164,10 @@ void	CSoundRender_Core::statistic			(CSound_stats*  dest, CSound_stats_ext*  ext
 				_I.game_object		= _E->owner_data->g_object;
 				_I.game_type		= _E->owner_data->g_type;
 				_I.type				= _E->owner_data->s_type;
+			}else{
+				_I.game_object		= 0;
+				_I.game_type		= 0;
+				_I.type				= st_Effect;
 			}
 			ext->append				(_I);
 		}
