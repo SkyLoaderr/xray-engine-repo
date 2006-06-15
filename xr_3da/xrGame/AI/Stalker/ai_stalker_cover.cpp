@@ -14,7 +14,6 @@
 #include "../../cover_manager.h"
 #include "../../stalker_movement_restriction.h"
 #include "../../level_graph.h"
-#include "../../stalker_combat_config.h"
 
 extern const float MIN_SUITABLE_ENEMY_DISTANCE = 3.f;
 

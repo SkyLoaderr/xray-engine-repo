@@ -9,7 +9,6 @@
 #pragma once
 
 #include "action_planner_action_script.h"
-#include "stalker_combat_config.h"
 
 class CAI_Stalker;
 
@@ -31,16 +30,8 @@ protected:
 			void		add_evaluators				();
 			void		add_actions					();
 
-protected:
-#ifndef USE_NEW_COMBAT
-	IC		void		update_cover				();
-#endif // USE_NEW_COMBAT
-
 public:
-#ifdef USE_NEW_COMBAT
 			void xr_stdcall	on_best_cover_changed	(const CCoverPoint *new_cover, const CCoverPoint *old_cover);
-#endif // USE_NEW_COMBAT
-
 
 public:
 						CStalkerCombatPlanner		(CAI_Stalker *object = 0, LPCSTR action_name = "");

@@ -205,6 +205,9 @@ public:
 	virtual	void				on_before_sell			(CInventoryItem *item) {}
 	virtual	void				on_before_buy			(CInventoryItem *item) {}
 	virtual bool				can_use_dynamic_lights	() {return true;}
+	virtual	bool				use_default_throw_force	();
+	virtual	float				missile_throw_force		(); 
+	virtual	bool				use_throw_randomness	();
 };
 
 #include "inventory_owner_inline.h"

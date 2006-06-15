@@ -9,7 +9,6 @@
 #pragma once
 
 #include "action_planner_action_script.h"
-#include "stalker_combat_config.h"
 
 class CAI_Stalker;
 

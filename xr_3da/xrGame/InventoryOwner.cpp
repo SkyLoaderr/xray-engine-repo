@@ -525,3 +525,21 @@ void CInventoryOwner::set_money		(u32 amount, bool bSendEvent)
 		object->u_EventSend		(packet);
 	}
 }
+
+bool CInventoryOwner::use_default_throw_force	()
+{
+	return						(true);
+}
+
+float CInventoryOwner::missile_throw_force		() 
+{
+	NODEFAULT;
+#ifdef DEBUG
+	return						(0.f);
+#endif
+}
+
+bool CInventoryOwner::use_throw_randomness		()
+{
+	return						(true);
+}

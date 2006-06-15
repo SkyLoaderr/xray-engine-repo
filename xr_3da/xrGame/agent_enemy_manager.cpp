@@ -232,15 +232,16 @@ void CAgentEnemyManager::permutate_enemies		()
 		// setup procesed flag
 		(*I)->processed			(false);
 		// get member squad mask
-		squad_mask_type		member_mask = object().member().mask(&(*I)->object());
+		squad_mask_type			member_mask = object().member().mask(&(*I)->object());
 		// setup if player has enemy
-		bool								enemy_selected = false;
+		bool					enemy_selected = false;
 		// iterate on enemies
 		ENEMIES::const_iterator	i = m_enemies.begin(), b = i;
 		ENEMIES::const_iterator	e = m_enemies.end();
 		for ( ; i != e; ++i) {
 			if ((*i).m_mask.is(member_mask))
 				(*I)->enemies().push_back	(u32(i - b));
+
 			if ((*i).m_distribute_mask.is(member_mask)) {
 				(*I)->selected_enemy		(u32(i - b));
 				enemy_selected				= true;

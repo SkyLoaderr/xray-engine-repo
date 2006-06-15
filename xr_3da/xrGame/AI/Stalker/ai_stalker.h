@@ -474,6 +474,26 @@ public:
 			bool						wounded								(const CRestrictedObject *object) const;
 	IC		bool						wounded								() const;
 
+// throwing grenades
+private:
+	// actuality parameters
+	bool								m_throw_actual;
+	Fvector								m_computed_object_position;
+	Fvector								m_computed_object_direction;
+	// target parameters
+	Fvector								m_throw_target;
+	// computed
+	float								m_throw_force;
+	Fvector								m_throw_position;
+	Fvector								m_throw_direction;
+
+public:
+	virtual	bool						use_default_throw_force				();
+	virtual	float						missile_throw_force					(); 
+	virtual	bool						use_throw_randomness				();
+			void						throw_target						(const Fvector &position); 
+			void						update_throw_params					(); 
+
 public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

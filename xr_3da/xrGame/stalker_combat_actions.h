@@ -10,7 +10,6 @@
 
 #include "stalker_base_action.h"
 #include "random32.h"
-#include "stalker_combat_config.h"
 
 class CCoverPoint;
 

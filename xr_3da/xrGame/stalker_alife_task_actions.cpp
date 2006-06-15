@@ -35,6 +35,12 @@
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
 
+//#define GRENADE_TEST
+
+#ifdef GRENADE_TEST
+#	include "actor.h"
+#endif
+
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionSolveZonePuzzle
 //////////////////////////////////////////////////////////////////////////
@@ -48,6 +54,7 @@ void CStalkerActionSolveZonePuzzle::initialize	()
 {
 	inherited::initialize						();
 
+#ifndef GRENADE_TEST
 	m_stop_weapon_handling_time					= Device.dwTimeGlobal;
 	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
 		m_stop_weapon_handling_time				+= ::Random32.random(30000) + 30000;
@@ -60,6 +67,16 @@ void CStalkerActionSolveZonePuzzle::initialize	()
 	object().movement().set_movement_type		(eMovementTypeWalk);
 	object().movement().set_mental_state		(eMentalStateFree);
 	object().sight().setup						(CSightAction(SightManager::eSightTypeCover,false,true));
+#else
+	object().movement().set_desired_position	(0);
+	object().movement().set_desired_direction	(0);
+	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_movement_type		(eMovementTypeStand);
+	object().movement().set_mental_state		(eMentalStateDanger);
+	object().sight().setup						(CSightAction(g_actor,true));
+#endif
 }
 
 void CStalkerActionSolveZonePuzzle::finalize	()
@@ -76,6 +93,7 @@ void CStalkerActionSolveZonePuzzle::execute		()
 {
 	inherited::execute				();
 
+#ifndef GRENADE_TEST
 	if (Device.dwTimeGlobal >= m_stop_weapon_handling_time)
 		if (!object().best_weapon())
 			object().CObjectHandler::set_goal	(eObjectActionIdle);
@@ -83,6 +101,10 @@ void CStalkerActionSolveZonePuzzle::execute		()
 			object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
 	else
 		object().CObjectHandler::set_goal		(eObjectActionIdle,object().best_weapon());
+#else
+	object().throw_target						(g_actor->Position());
+	object().CObjectHandler::set_goal			(eObjectActionFire1,object().inventory().m_slots[3].m_pIItem);
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////

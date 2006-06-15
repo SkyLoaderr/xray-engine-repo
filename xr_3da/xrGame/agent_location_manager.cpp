@@ -13,7 +13,6 @@
 #include "agent_enemy_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "cover_point.h"
-#include "stalker_combat_config.h"
 
 const float MIN_SUITABLE_ENEMY_DISTANCE = 3.f;//10.f;
 
@@ -30,7 +29,6 @@ struct CRemoveOldDangerCover {
 
 	IC	bool	operator()				(const CAgentLocationManager::CDangerLocationPtr &location) const
 	{
-#ifdef USE_NEW_COMBAT
 		if (!location->useful()) {
 			MEMBER_STORAGE::iterator		I = m_members->members().begin();
 			MEMBER_STORAGE::iterator		E = m_members->members().end();
@@ -41,7 +39,6 @@ struct CRemoveOldDangerCover {
 				(*I)->object().on_danger_location_remove	(*location);
 			}
 		}
-#endif // USE_NEW_COMBAT
 
 		return			(!location->useful());
 	}
@@ -122,9 +119,7 @@ void CAgentLocationManager::make_suitable	(CAI_Stalker *object, const CCoverPoin
 		// check if member cover is too close
 		if ((*I)->cover()->m_position.distance_to_sqr(location->position()) <= _sqr(5.f)) {
 //			Msg						("%6d : object [%s] disabled cover for object [%s]",Device.dwFrame,*object->cName(),*(*I)->object().cName());
-#ifdef USE_NEW_COMBAT
 			(*I)->object().on_cover_blocked	((*I)->cover());
-#endif // USE_NEW_COMBAT
 			(*I)->cover						(0);
 		}
 	}
@@ -132,7 +127,6 @@ void CAgentLocationManager::make_suitable	(CAI_Stalker *object, const CCoverPoin
 
 void CAgentLocationManager::add	(CDangerLocationPtr location)
 {
-#ifdef USE_NEW_COMBAT
 	typedef CAgentMemberManager::MEMBER_STORAGE MEMBER_STORAGE;
 	MEMBER_STORAGE::iterator		I = object().member().members().begin();
 	MEMBER_STORAGE::iterator		E = object().member().members().end();
@@ -142,7 +136,6 @@ void CAgentLocationManager::add	(CDangerLocationPtr location)
 
 		(*I)->object().on_danger_location_add	(*location);
 	}
-#endif // USE_NEW_COMBAT
 
 	CDangerLocationPtr				danger = this->location(location->position());
 	if (!danger) {

@@ -13,8 +13,9 @@
 #include "ExtendedGeom.h"
 #include "MathUtils.h"
 #include "characterphysicssupport.h"
+#include "inventory.h"
 #ifdef DEBUG
-#include "phdebug.h"
+#	include "phdebug.h"
 #endif
 
 
@@ -396,45 +397,44 @@ void CMissile::Hide()
 	else
 		SwitchState(MS_HIDDEN);
 }
-#include "inventory.h"
+
 void CMissile::setup_throw_params()
 {
-	CActor* pActor = smart_cast<CActor*>(H_Parent());
-	if(pActor)// && pActor->HUDview())
-	{
-		Fmatrix trans;
-		trans.identity();
-		Fvector FirePos, FireDir;
-		if(pActor->inventory().ActiveItem()==this)
-			pActor->g_fireParams(this, FirePos, FireDir);
-		else{
-			FirePos				= XFORM().c;
-			FireDir				= XFORM().k;
-		}
-		trans.k.set(FireDir);
-		Fvector::generate_orthonormal_basis(trans.k, trans.j,trans.i);
-		trans.c.set(FirePos);
-		//trans.c.mad(FireDir, 1.f);
-		m_throw_matrix.set(trans);
-		m_throw_direction.set(trans.k);
+	CEntity					*entity = smart_cast<CEntity*>(H_Parent());
+	VERIFY					(entity);
+	CInventoryOwner			*inventory_owner = smart_cast<CInventoryOwner*>(H_Parent());
+	VERIFY					(inventory_owner);
+	Fmatrix					trans;
+	trans.identity			();
+	Fvector					FirePos, FireDir;
+	if (this == inventory_owner->inventory().ActiveItem())
+		entity->g_fireParams(this, FirePos, FireDir);
+	else{
+		FirePos				= XFORM().c;
+		FireDir				= XFORM().k;
 	}
-	else
-	{
-		m_throw_direction.set	(H_Parent()->XFORM().k);
-		m_throw_matrix			= XFORM();
-	};
+	trans.k.set				(FireDir);
+	Fvector::generate_orthonormal_basis(trans.k, trans.j,trans.i);
+	trans.c.set				(FirePos);
+	m_throw_matrix.set		(trans);
+	m_throw_direction.set	(trans.k);
 }
 
 void CMissile::Throw() 
 {
 	VERIFY								(smart_cast<CEntity*>(H_Parent()));
 	setup_throw_params					();
+	m_fThrowForce						= m_fMinForce;
 	
 	m_fake_missile->m_throw_direction	= m_throw_direction;
 	m_fake_missile->m_throw_matrix		= m_throw_matrix;
 		
-	m_fake_missile->m_fThrowForce		= m_constpower ? m_fConstForce : m_fThrowForce; 
-	m_fThrowForce						= m_fMinForce;
+	CInventoryOwner						*inventory_owner = smart_cast<CInventoryOwner*>(H_Parent());
+	VERIFY								(inventory_owner);
+	if (inventory_owner->use_default_throw_force())
+		m_fake_missile->m_fThrowForce	= m_constpower ? m_fConstForce : m_fThrowForce; 
+	else
+		m_fake_missile->m_fThrowForce	= inventory_owner->missile_throw_force(); 
 	
 	if (Local() && H_Parent()) {
 		NET_Packet						P;
@@ -442,7 +442,6 @@ void CMissile::Throw()
 		P.w_u16							(u16(m_fake_missile->ID()));
 		u_EventSend						(P);
 	}
-
 }
 
 void CMissile::OnEvent(NET_Packet& P, u16 type) 
@@ -564,38 +563,47 @@ void CMissile::activate_physic_shell()
 		return;
 	}
 
-	Fvector l_vel;
-	l_vel.set(m_throw_direction);
+	Fvector				l_vel;
+	l_vel.set			(m_throw_direction);
 	l_vel.normalize_safe();
-	l_vel.mul(m_fThrowForce);
+	l_vel.mul			(m_fThrowForce);
 
-	Fvector a_vel;
-	float fi,teta,r;
-	fi=	 ::Random.randF(0.f,2.f*M_PI);
-	teta=::Random.randF(0.f,M_PI);
-	r=	 ::Random.randF(2.f*M_PI,3.f*M_PI);
-	float rxy=r*_sin(teta);
-	a_vel.set(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
-
-	XFORM().set(m_throw_matrix);
-
-	CEntityAlive* EA=smart_cast<CEntityAlive*>(H_Root());
-	Fvector parent_vel;
-	if(EA&&EA->character_physics_support()){
-		EA->character_physics_support()->movement()->GetCharacterVelocity(parent_vel);
-		l_vel.add(parent_vel);
+	Fvector				a_vel;
+	CInventoryOwner		*inventory_owner = smart_cast<CInventoryOwner*>(H_Root());
+	if (inventory_owner && inventory_owner->use_throw_randomness()) {
+		float			fi,teta,r;
+		fi				= ::Random.randF(0.f,2.f*M_PI);
+		teta			= ::Random.randF(0.f,M_PI);
+		r				= ::Random.randF(2.f*M_PI,3.f*M_PI);
+		float			rxy = r*_sin(teta);
+		a_vel.set		(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
 	}
-	VERIFY(!m_pPhysicsShell);
-	create_physic_shell();
-	m_pPhysicsShell->Activate	(m_throw_matrix, l_vel, a_vel);
-	//m_pPhysicsShell->AddTracedGeom();
-	m_pPhysicsShell->SetAllGeomTraced();
-	m_pPhysicsShell->add_ObjectContactCallback(ExitContactCallback);
-	m_pPhysicsShell->set_CallbackData(smart_cast<CPhysicsShellHolder*>(EA));
-	//m_pPhysicsShell->remove_ObjectContactCallback(ExitContactCallback);
-	m_pPhysicsShell->SetAirResistance(0.f,0.f);
-	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
-	smart_cast<CKinematics*>(Visual())->CalculateBones();
+	else
+		a_vel.set		(0.f,0.f,0.f);
+
+	XFORM().set			(m_throw_matrix);
+
+	CEntityAlive		*entity_alive = smart_cast<CEntityAlive*>(H_Root());
+	if (entity_alive && entity_alive->character_physics_support()){
+		Fvector			parent_vel;
+		entity_alive->character_physics_support()->movement()->GetCharacterVelocity(parent_vel);
+		l_vel.add		(parent_vel);
+	}
+
+	VERIFY								(!m_pPhysicsShell);
+	create_physic_shell					();
+	m_pPhysicsShell->Activate			(m_throw_matrix, l_vel, a_vel);
+//	m_pPhysicsShell->AddTracedGeom		();
+	m_pPhysicsShell->SetAllGeomTraced	();
+	m_pPhysicsShell->add_ObjectContactCallback		(ExitContactCallback);
+	m_pPhysicsShell->set_CallbackData	((CPhysicsShellHolder*)entity_alive);
+//	m_pPhysicsShell->remove_ObjectContactCallback	(ExitContactCallback);
+	m_pPhysicsShell->SetAirResistance	(0.f,0.f);
+	m_pPhysicsShell->set_DynamicScales	(1.f,1.f);
+
+	CKinematics							*kinematics = smart_cast<CKinematics*>(Visual());
+	VERIFY								(kinematics);
+	kinematics->CalculateBones			();
 }
 
 void CMissile::create_physic_shell	()

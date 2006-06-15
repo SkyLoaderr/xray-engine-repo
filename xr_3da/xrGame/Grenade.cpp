@@ -216,7 +216,7 @@ void CGrenade::PutNextToSlot	()
 	else
 		Msg ("! PutNextToSlot : m_pInventory = 0");	
 
-	if(smart_cast<CActor*>(H_Parent()) && m_pInventory)
+//	if (smart_cast<CInventoryOwner*>(H_Parent()) && m_pInventory)
 	{
 		//найти такую же гранату и положить в рюкзак
 		CGrenade *pNext = smart_cast<CGrenade*>(m_pInventory->Same(this,true));
@@ -228,8 +228,8 @@ void CGrenade::PutNextToSlot	()
 		if(pNext)
 			m_pInventory->Slot(pNext);
 	}
-	else
-		Msg ("! PutNextToSlot : Parent = 0");
+//	else
+//		Msg ("! PutNextToSlot : Parent = 0");
 }
 
 void CGrenade::OnAnimationEnd() 

@@ -4388,9 +4388,6 @@
 							<File
 								RelativePath=".\ai\stalker\ai_stalker_script_entity.cpp">
 							</File>
-							<File
-								RelativePath=".\stalker_combat_config.h">
-							</File>
 						</Filter>
 						<Filter
 							Name="SoundDataVisitor"

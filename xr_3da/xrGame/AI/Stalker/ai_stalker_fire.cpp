@@ -42,6 +42,9 @@
 #include "../../restricted_object.h"
 #include "../../ai_object_location.h"
 
+#include "../../grenade.h"
+#include "../../phworld.h"
+
 using namespace StalkerSpace;
 
 const float DANGER_DISTANCE				= 3.f;
@@ -96,6 +99,13 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 
 	CWeapon				*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
 	if (!weapon) {
+		CMissile		*grenade = smart_cast<CMissile*>(inventory().ActiveItem());
+		if (grenade) {
+			update_throw_params	();
+			P			= m_throw_position;
+			D			= m_throw_direction;
+			return;
+		}
 		P				= eye_matrix.c;
 		D				= eye_matrix.k;
 		if (weapon_shot_effector().IsActive())
@@ -705,4 +715,51 @@ bool CAI_Stalker::wounded					(const CRestrictedObject *object) const
 		return				(false);
 
 	return					(true);
+}
+
+bool CAI_Stalker::use_default_throw_force	()
+{
+	return					(false);
+}
+
+bool CAI_Stalker::use_throw_randomness		()
+{
+	return					(false);
+}
+
+float CAI_Stalker::missile_throw_force		() 
+{
+	update_throw_params		();
+	return					(m_throw_force);
+}
+
+void CAI_Stalker::throw_target				(const Fvector &position)
+{
+	float					distance_to_sqr = position.distance_to_sqr(m_throw_target);
+	m_throw_actual			= m_throw_actual && (distance_to_sqr < _sqr(.1f));
+	m_throw_target			= position;
+}
+
+void CAI_Stalker::update_throw_params		()
+{
+	if (m_throw_actual) {
+		if (m_computed_object_position.similar(Position())) {
+			if (m_computed_object_direction.similar(Direction()))
+				return;
+		}
+	}
+
+	m_throw_actual			= true;
+	m_computed_object_position	= Position();
+	m_computed_object_direction	= Direction();
+
+	m_throw_position		= eye_matrix.c;
+
+	// computing velocity with minimum magnitude
+	Fvector					velocity;
+	velocity.sub			(m_throw_target,m_throw_position);
+	float					time = ThrowMinVelTime(velocity,ph_world->Gravity());
+	TransferenceToThrowVel	(velocity,time,ph_world->Gravity());
+	m_throw_force			= velocity.magnitude();
+	m_throw_direction		= velocity.normalize();
 }

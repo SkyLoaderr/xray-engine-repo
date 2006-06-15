@@ -155,6 +155,16 @@ void CAI_Stalker::reinit			()
 	m_best_cover					= 0;
 	m_best_cover_actual				= false;
 	m_best_cover_value				= flt_max;
+
+	m_throw_actual					= false;
+	m_computed_object_position		= Fvector().set(flt_max,flt_max,flt_max);
+	m_computed_object_direction		= Fvector().set(flt_max,flt_max,flt_max);
+
+	m_throw_target					= Fvector().set(flt_max,flt_max,flt_max);
+
+	m_throw_force					= flt_max;
+	m_throw_position				= Fvector().set(flt_max,flt_max,flt_max);
+	m_throw_direction				= Fvector().set(flt_max,flt_max,flt_max);
 }
 
 void CAI_Stalker::LoadSounds		(LPCSTR section)

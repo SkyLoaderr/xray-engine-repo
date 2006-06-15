@@ -43,14 +43,11 @@ CStalkerCombatPlanner::CStalkerCombatPlanner	(CAI_Stalker *object, LPCSTR action
 
 CStalkerCombatPlanner::~CStalkerCombatPlanner	()
 {
-#ifdef USE_NEW_COMBAT
 	CAI_Stalker::on_best_cover_changed_delegate	temp;
 	temp.bind									(this,&CStalkerCombatPlanner::on_best_cover_changed);
 	object().unsubscribe_on_best_cover_changed	(temp);
-#endif // USE_NEW_COMBAT
 }
 
-#ifdef USE_NEW_COMBAT
 void CStalkerCombatPlanner::on_best_cover_changed(const CCoverPoint *new_cover, const CCoverPoint *old_cover)
 {
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,			false);
@@ -58,7 +55,6 @@ void CStalkerCombatPlanner::on_best_cover_changed(const CCoverPoint *new_cover, 
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyPositionHolded,	false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyEnemyDetoured,	false);
 }
-#endif // USE_NEW_COMBAT
 
 void CStalkerCombatPlanner::setup				(CAI_Stalker *object, CPropertyStorage *storage)
 {
@@ -75,71 +71,10 @@ void CStalkerCombatPlanner::setup				(CAI_Stalker *object, CPropertyStorage *sto
 	add_evaluators			();
 	add_actions				();
 
-#ifdef USE_NEW_COMBAT
 	CAI_Stalker::on_best_cover_changed_delegate		temp;
 	temp.bind										(this,&CStalkerCombatPlanner::on_best_cover_changed);
 	this->object().subscribe_on_best_cover_changed	(temp);
-#endif // USE_NEW_COMBAT
 }
-
-#ifndef USE_NEW_COMBAT
-IC	void CStalkerCombatPlanner::update_cover	()
-{
-	if (!m_object->memory().enemy().selected())
-		return;
-
-	if (!m_object->brain().affect_cover())
-		return;
-
-	CMemoryInfo						memory_object = m_object->memory().memory(m_object->memory().enemy().selected());
-	if ((memory_object.m_last_level_time == m_last_level_time) && (m_object->memory().enemy().selected()->ID() == m_last_enemy_id))
-		return;
-
-	const CCoverPoint				*last_cover = object().agent_manager().member().member(m_object).cover();
-	if (!last_cover)
-		return;
-
-	m_last_enemy_id					= m_object->memory().enemy().selected()->ID();
-	m_last_level_time				= memory_object.m_last_level_time;
-
-	Fvector							position = memory_object.m_object_params.m_position;
-	m_object->m_ce_best->setup		(position,10.f,170.f,10.f);
-	const CCoverPoint				*point = ai().cover_manager().best_cover(m_object->Position(),10.f,*m_object->m_ce_best,CStalkerMovementRestrictor(m_object,true,false));
-	if (!point) {
-		m_object->m_ce_best->setup	(position,10.f,170.f,10.f);
-		point						= ai().cover_manager().best_cover(m_object->Position(),30.f,*m_object->m_ce_best,CStalkerMovementRestrictor(m_object,true,false));
-	}
-
-	if (point == last_cover)
-		return;
-
-#if 0
-	if (point && last_cover && m_object->memory().visual().visible_now(m_object->memory().enemy().selected())) {
-		if	(
-				CScriptActionPlanner::m_storage.property(eWorldPropertyInCover)
-				&&
-				m_object->agent_manager().location().suitable(m_object,last_cover,true)
-				&&
-				(m_object->agent_manager().location().danger(last_cover,m_object) <=
-				1.1f*m_object->agent_manager().location().danger(point,m_object))
-//				&&
-//				CScriptActionPlanner::m_storage.property(eWorldPropertyLookedOut)
-			) {
-//			Msg		("%6d : Cover saved for object %s!",Device.dwTimeGlobal,*m_object->cName());
-			return;
-		}
-	}
-#endif
-
-	m_object->agent_manager().location().make_suitable(m_object,point);
-
-//	Msg								("%6d Changing cover for stalker %s",Device.dwTimeGlobal,*m_object->cName());
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,			false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedOut,		false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyPositionHolded,	false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyEnemyDetoured,	false);
-}
-#endif // USE_NEW_COMBAT
 
 void CStalkerCombatPlanner::execute				()
 {
@@ -151,10 +86,8 @@ void CStalkerCombatPlanner::execute				()
 
 void CStalkerCombatPlanner::update				()
 {
-#ifndef USE_NEW_COMBAT
-	update_cover					();
-#endif // USE_NEW_COMBAT
 	inherited::update				();
+
 	object().react_on_grenades		();
 	object().react_on_member_death	();
 
