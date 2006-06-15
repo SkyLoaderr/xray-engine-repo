@@ -504,25 +504,25 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_fabrika_bandit_walker1",
 			idle = 0,
 			prior = 2, state = {0},
-			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+			in_rest = "esc_prison_zone", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_fabrika_bandit_walker2",
 			idle = 0,
 			prior = 2, state = {0},
-			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+			in_rest = "esc_prison_zone", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_fabrika_bandit_walker3",
 			idle = 0,
 			prior = 2, state = {0},
-			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+			in_rest = "esc_prison_zone", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_fabrika_bandit_walker4",
 			idle = 5,
 			prior = 10, state = {0,2},
-			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor",
+			in_rest = "esc_prison_zone", out_rest = "esc_fabrika_bandit_space_restrictor",
 				redicate = function(obj_info)
         					return obj_info.name == "esc_factory_prisoner_guard"
 						end
@@ -532,56 +532,56 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_fabrika_bandit_kamp",
 			idle = 0,
 			prior = 1, state = {0},
-			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+			in_rest = "esc_prison_zone", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_fabrika_bandit_kamp",
 			idle = 0,
 			prior = 1, state = {0},
-			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+			in_rest = "esc_prison_zone", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
 		-- аларм
 		t = { section = "camper@esc_fabrika_bandit_walker1",
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+			in_rest = "esc_prison_zone", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "camper@esc_fabrika_bandit_walker2",
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+			in_rest = "esc_prison_zone", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "camper@esc_fabrika_bandit_walker3",
 			idle = 0,
 			prior = 5, state = {2},
-			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+			in_rest = "esc_prison_zone", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
 --		t = { section = "camper@esc_fabrika_bandit_walker4",
 --			idle = 0,
 --			prior = 5, state = {2},
---			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+--			in_rest = "esc_prison_zone", out_rest = "esc_fabrika_bandit_space_restrictor"
 --		}
 --		table.insert(sj, t)
 		t = { section = "camper@esc_fabrika_bandit_walker5",
 			idle = 0,
 			prior = 2, state = {2},
-			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+			in_rest = "esc_prison_zone", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "camper@esc_fabrika_bandit_walker6",
 			idle = 0,
 			prior = 2, state = {2},
-			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+			in_rest = "esc_prison_zone", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "camper@esc_fabrika_bandit_walker7",
 			idle = 0,
 			prior = 5, state = {0,2},
-			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+			in_rest = "esc_prison_zone", out_rest = "esc_fabrika_bandit_space_restrictor"
 		}
 		table.insert(sj, t)
 	end

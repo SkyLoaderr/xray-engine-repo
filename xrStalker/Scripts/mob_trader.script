@@ -2,10 +2,11 @@
 -- mob_trader
 ----------------------------------------------------------------------------------------------------
 global_animations = {
-	desk_idle				= {"idle","idle_0","idle_1","palci","zatylok"},
-	desk_talk				= {"idle","idle_0","idle_1"},
+	desk_idle				= {"idle","idle_1","palci","zatylok"},
+	desk_talk				= {"idle","idle_1"},
 	desk_to_chair_hack		= {"idle_spinka"},
-	desk_to_diagonal		= {"idle_2_to_idle_0"},
+	desk_to_listen			= {"idle_chitaet"},
+	desk_to_diagonal		= {"perehod_0"},
 	
 	chair_hack_idle			= {"idle_2","idle_2_def_0"},
 	chair_hack_talk			= {"idle_2_talk_0","idle_2_talk_1","idle_2_talk_2","idle_2_talk_3"},
@@ -13,18 +14,28 @@ global_animations = {
 	chair_hack_to_desk		= {"spinka_idle"},
 	
 	compute_idle				= {"idle_1_spec_think_0","idle_1_spec_think_1"},
-	compute_talk				= {"idle_1_spec_think_0","idle_1_spec_think_1"},
 	compute_idle_to_diagonal	= {"idle_1_to_idle_0"},
 	
 	diagonal_idle			= {"idle_0_def_0","idle_0_spec_click_0","idle_0_spec_scratch_0"},
+	diagonal_idle_short		= {"idle_0_def_0"},
 	diagonal_talk			= {"idle_0_talk_0","idle_0_talk_1","idle_0_talk_2","idle_0_talk_3"},
 	diagonal_to_chair_hack	= {"idle_0_to_idle_2"},
-	diagonal_to_compute		= {"idle_0_to_idle_1"}
+	diagonal_to_compute		= {"idle_0_to_idle_1"},
+	diagonal_to_desk		= {"perehod_1"},
+		
+	first_phrase			= {"vstuplenie"},
+	
+	listen_idle				= {"chitaet"},
+	listen_to_desk			= {"chitaet_idle"},
+	
+	hello				= {"hello"}	
 }
 
 head_animations = {
-	normal	= {"talk_0","talk_1","talk_4"},
-	angry	= {"talk_3","talk_2","talk_1"}
+	normal			= {"talk_0","talk_1","talk_4"},
+	angry			= {"talk_3","talk_2","talk_1"},
+	good			= {"talk_glad_0"},
+	first_phrase	= {"vstuplenie_head"}
 }
 
 ----------------------------------------------------------------------------------------------------

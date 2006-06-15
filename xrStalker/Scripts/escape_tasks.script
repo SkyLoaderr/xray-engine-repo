@@ -155,7 +155,7 @@ function process_info_portion(info_id)
 		level_tasks.remove_location(004, "green_location")
 		if db.actor:dont_has_info("tutorial_wounded_end") then
 			db.actor:give_info_portion("tutorial_wounded_end")
-			news_manager.send_news(db.actor, "escape_stalker_killed", 5)
+--			news_manager.send_news(db.actor, "escape_stalker_killed", 5)
 		end
 
 	elseif info_id == "tutorial_wounded_death" then
