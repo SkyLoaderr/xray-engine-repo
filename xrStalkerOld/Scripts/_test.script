@@ -1,10 +1,10 @@
-function main_exit()
+function main111()
 	local c = get_console()
 	c:execute("disconnect")
 end
 
-function main11111111111()
- game.start_tutorial("credits_seq")
+function main()
+ game.start_tutorial("mov_desire_5")
 end
 
 function main22222()
@@ -43,7 +43,7 @@ function _main()
 	level.spawn_phantom(db.actor:position():add( dir:mul(radius) ))
 end
 
-function main()
+function main22222()
 	local info = "esc_trader_monolog_1_played" 
 	db.actor:disable_info_portion(info) 
 	

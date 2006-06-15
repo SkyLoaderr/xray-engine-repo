@@ -18,17 +18,26 @@
 #include "net_utils.h"
 #include "UI/UIGameTutorial.h"
 #include "string_table.h"
+#include "object_broker.h"
 
 using namespace luabind;
 
 
 CUISequencer* g_tutorial = NULL;
+CUISequencer* g_tutorial2 = NULL;
+
 void start_tutorial(LPCSTR name)
 {
-	if(g_tutorial) return;
+	if(g_tutorial){
+		VERIFY				(!g_tutorial2);
+		g_tutorial2			= g_tutorial;
+	};
 		
-	g_tutorial			= xr_new<CUISequencer>();
-	g_tutorial->Start	(name);
+	g_tutorial							= xr_new<CUISequencer>();
+	g_tutorial->Start					(name);
+	if(g_tutorial2)
+		g_tutorial->m_pStoredInputReceiver = g_tutorial2->m_pStoredInputReceiver;
+
 }
 
 LPCSTR translate_string(LPCSTR str)

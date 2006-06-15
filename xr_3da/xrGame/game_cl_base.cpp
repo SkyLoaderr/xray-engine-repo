@@ -261,13 +261,21 @@ float game_cl_GameState::shedule_Scale		()
 }
 
 extern CUISequencer * g_tutorial;
+extern CUISequencer * g_tutorial2;
 
 void game_cl_GameState::shedule_Update		(u32 dt)
 {
 	ISheduled::shedule_Update	(dt);
 
-	if(g_tutorial && !g_tutorial->IsActive())
+	if(g_tutorial2){ 
+		g_tutorial2->Destroy	();
+		xr_delete				(g_tutorial2);
+	}
+
+	if(g_tutorial && !g_tutorial->IsActive()){
+		//g_tutorial->Destroy	();
 		xr_delete(g_tutorial);
+	}
 
 	if(!m_game_ui_custom){
 		if( HUD().GetUI() )

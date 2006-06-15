@@ -119,6 +119,17 @@ void CUISequencer::Start(LPCSTR tutor_name)
 	m_bActive					= true;
 }
 
+void CUISequencer::Destroy()
+{
+	Device.seqFrame.Remove		(this);
+	Device.seqRender.Remove		(this);
+	delete_data					(m_items);
+	delete_data					(m_UIWindow);
+	IR_Release					();
+	m_bActive					= false;
+	m_pStoredInputReceiver		= NULL;
+}
+
 void CUISequencer::Stop()
 {
 	if(m_items.size()){ 
@@ -130,18 +141,13 @@ void CUISequencer::Stop()
 			pCurrItem->Stop		(true);
 		}
 	}
-
-	Device.seqFrame.Remove		(this);
-	Device.seqRender.Remove		(this);
-	delete_data					(m_items);
-	delete_data					(m_UIWindow);
-	IR_Release					();
-	m_bActive					= false;
-	m_pStoredInputReceiver		= NULL;
+	Destroy			();
 }
 
 void CUISequencer::OnFrame()
 {  
+	if(!m_bActive)				return;
+
 	if(!m_items.size()){
 		Stop					();
 		return;

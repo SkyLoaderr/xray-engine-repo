@@ -10,17 +10,19 @@ class CUIXml;
 class CUISequencer :public pureFrame, public pureRender,	public IInputReceiver
 {
 protected:
-	IInputReceiver*			m_pStoredInputReceiver;
 	CUIWindow*				m_UIWindow;
 	xr_deque<CUISequenceItem*>m_items;
 	bool					m_bActive;
 	bool					m_bPlayEachItem;
 	bool					GrabInput			();
 public:
+	IInputReceiver*			m_pStoredInputReceiver;
 							CUISequencer		();
 	void					Start				(LPCSTR tutor_name);
 	void					Stop				();
 	void					Next				();
+
+	void					Destroy				();				//be careful
 
 	virtual void			OnFrame				();
 	virtual void			OnRender			();
