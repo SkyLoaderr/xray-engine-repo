@@ -40,7 +40,11 @@ void  CTraderAnimation::head_callback(CBlend* B)
 /////////////////////////////////////////////////////////////////////////////////////////
 void CTraderAnimation::set_animation(LPCSTR anim)
 {
-	m_anim_global = anim;
+	m_anim_global								= anim;
+
+	CKinematicsAnimated	*kinematics_animated	= smart_cast<CKinematicsAnimated*>(m_trader->Visual());
+	m_motion_global								= kinematics_animated->ID_Cycle(m_anim_global);
+	kinematics_animated->PlayCycle				(m_motion_global,TRUE,global_callback,this);
 }
 
 void CTraderAnimation::set_head_animation(LPCSTR anim)
@@ -91,13 +95,7 @@ void CTraderAnimation::update_frame()
 	
 	if (!m_motion_global) {
 		m_trader->callback(GameObject::eTraderGlobalAnimationRequest)();
-
-		if (m_anim_global) {
-			CKinematicsAnimated	*kinematics_animated	= smart_cast<CKinematicsAnimated*>(m_trader->Visual());
-			m_motion_global								= kinematics_animated->ID_Cycle(m_anim_global);
-			kinematics_animated->PlayCycle				(m_motion_global,TRUE,global_callback,this);
-			m_motion_head.invalidate					();
-		}
+		if (m_anim_global) m_motion_head.invalidate();
 	}
 
 	// назначить анимацию головы
