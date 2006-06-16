@@ -44,11 +44,6 @@ use_wpn         = true
 ; игнорирование
 ;--------------------------------------------------------------------------
 [meet@ignore_abuse]
-;meet_dialog     =
-meet_state      =
-meet_state_wpn  =
-victim          =
-victim_wpn      =
 use             = false
 use_wpn         = false
 abuse           = false
@@ -71,7 +66,7 @@ on_info                             = {+val_prisoner_sit} walker@sit
 on_actor_in_zone                    = val_prisoner_window_zone | walker@near_window
 on_actor_in_zone2                   = val_prisoner_near_door_zone | walker@near_door %+val_prisoner_near_door%
 on_actor_dist_ge                    = 30 | walker@actor_far
-meet                                = meet@main
+meet                                = meet@ignore_abuse ;meet@main
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
@@ -108,7 +103,7 @@ path_walk                           = captive_sit_walk
 path_look                           = captive_sit_look
 ;on_info                             = {+val_prisoner_door_unlocked} walker@outside
 on_actor_in_zone                    = val_prisoner_near_door_zone | walker@near_door %+val_prisoner_near_door%
-meet                                = meet@main
+meet                                = meet@ignore_abuse ;meet@main
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
@@ -121,22 +116,35 @@ path_look                           = captive_near_door_look
 def_state_moving1                   = run
 def_state_moving2                   = run
 def_state_moving3                   = run
-;on_info                             = {+val_prisoner_door_unlocked} walker@outside %-val_prisoner_near_door%
-on_actor_dist_le_nvis               = 10 | remark@near_door
-on_actor_not_in_zone                = val_prisoner_near_door_zone | {+val_prisoner_sit} walker@sit %-val_prisoner_near_door%, walker@wander %-val_prisoner_near_door%
-meet                                = meet@near_door
+;on_actor_dist_le_nvis               = 10| remark@near_door1
+on_signal                           = arrived| remark@near_door1
+on_actor_not_in_zone                = val_prisoner_near_door_zone| {+val_prisoner_sit} walker@sit %-val_prisoner_near_door%, walker@wander %-val_prisoner_near_door%
+meet                                = meet@ignore_abuse ;meet@near_door
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
 
 ;--------------------------------------------------------------------------
 ; игрок возле двери
 ;--------------------------------------------------------------------------
-[remark@near_door]
+[remark@near_door1]
+anim                                = wait_na
+snd                                 = val_prisoner_captive_come_here
+target                              = actor
+on_actor_dist_le_nvis               = 7| remark@near_door2
+on_actor_not_in_zone                = val_prisoner_near_door_zone| {+val_prisoner_sit} walker@sit %-val_prisoner_near_door%, walker@wander %-val_prisoner_near_door%
+meet                                = meet@ignore_abuse ;meet@main
+combat_ignore_cond                  = always
+combat_ignore_keep_when_attacked    = true
+
+;--------------------------------------------------------------------------
+; игрок возле двери
+;--------------------------------------------------------------------------
+[remark@near_door2]
 anim                                = wait_na
 snd                                 = val_prisoner_captive_open
 target                              = actor
-;on_actor_dist_ge_nvis               = 14 | walker@near_door
-on_actor_not_in_zone                = val_prisoner_near_door_zone | {+val_prisoner_sit} walker@sit %-val_prisoner_near_door%, walker@wander %-val_prisoner_near_door%
+;on_actor_dist_ge_nvis               = 14| walker@near_door
+on_actor_not_in_zone                = val_prisoner_near_door_zone| {+val_prisoner_sit} walker@sit %-val_prisoner_near_door%, walker@wander %-val_prisoner_near_door%
 meet                                = meet@ignore_abuse ;meet@main
 combat_ignore_cond                  = always
 combat_ignore_keep_when_attacked    = true
