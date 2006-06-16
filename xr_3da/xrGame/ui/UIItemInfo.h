@@ -19,7 +19,8 @@ public:
 					CUIItemInfo			();
 	virtual			~CUIItemInfo		();
 
-	void			Init				(float x, float y, float width, float height, const char* xml_name);
+	void			Init				(float x, float y, float width, float height, LPCSTR xml_name);
+	void			Init				(LPCSTR xml_name);
 	void			InitItem			(CInventoryItem* pInvItem);
 	void			TryAddWpnInfo		(LPCSTR wpn_section);
 

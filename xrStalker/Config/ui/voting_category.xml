@@ -8,7 +8,7 @@
 		</background>
 		
 		<header x="50" y="45" width="500" height="33">
-			<text font="normal" r="227" g="199" b="178" vert_align="c">Select Category to Vote</text>
+			<text font="normal" r="227" g="199" b="178" vert_align="c">mp_select_category</text>
 		</header>
 		
 		<btn_ok x="257" y="328" width="157" height="48">
@@ -69,31 +69,31 @@
 		</btn_7>
 		
 		<txt_1 x="86" y="101" width="300" height="25">
-			<text font="normal" r="227" g="199" b="178" vert_align="c">Restart</text>
+			<text font="normal" r="227" g="199" b="178" vert_align="c">mp_restart</text>
 		</txt_1>
 		
 		<txt_2 x="86" y="128" width="300" height="25">
-			<text font="normal" r="227" g="199" b="178" vert_align="c">Restart fast</text>
+			<text font="normal" r="227" g="199" b="178" vert_align="c">mp_restart_fast</text>
 		</txt_2>
 		
 		<txt_3 x="86" y="155" width="300" height="25">
-			<text font="normal" r="227" g="199" b="178" vert_align="c">Kick</text>
+			<text font="normal" r="227" g="199" b="178" vert_align="c">mp_kick</text>
 		</txt_3>
 		
 		<txt_4 x="86" y="182" width="300" height="25">
-			<text font="normal" r="227" g="199" b="178" vert_align="c">Ban</text>
+			<text font="normal" r="227" g="199" b="178" vert_align="c">mp_ban</text>
 		</txt_4>
 		
 		<txt_5 x="86" y="209" width="300" height="25">
-			<text font="normal" r="227" g="199" b="178" vert_align="c">Change map</text>
+			<text font="normal" r="227" g="199" b="178" vert_align="c">mp_change_map</text>
 		</txt_5>
 		
 		<txt_6 x="86" y="236" width="300" height="25">
-			<text font="normal" r="227" g="199" b="178" vert_align="c">Change weather</text>
+			<text font="normal" r="227" g="199" b="178" vert_align="c">mp_change_weather</text>
 		</txt_6>
 		
 		<txt_7 x="86" y="263" width="300" height="25">
-			<text font="normal" r="227" g="199" b="178" vert_align="c">Text</text>
+			<text font="normal" r="227" g="199" b="178" vert_align="c">mp_text</text>
 		</txt_7>
 	</category>
 	
@@ -103,11 +103,11 @@
 		</background>
 		
 		<header_kick x="50" y="45" width="500" height="33">
-			<text font="normal" r="227" g="199" b="178" vert_align="c">Select Player to Vote for Kick</text>
+			<text font="normal" r="227" g="199" b="178" vert_align="c">mp_select_kick</text>
 		</header_kick>
 		
 		<header_ban x="50" y="45" width="500" height="33">
-			<text font="normal" r="227" g="199" b="178" vert_align="c">Select Player to Vote for Ban</text>
+			<text font="normal" r="227" g="199" b="178" vert_align="c">mp_select_ban</text>
 		</header_ban>
 		
 		<list_back x="36" y="100" width="501" height="217">
@@ -147,7 +147,7 @@
 			<texture>ui_hud_frame_voting</texture>
 		</background>		
 		<header x="50" y="45" width="500" height="33">
-			<text font="normal" r="227" g="199" b="178" vert_align="c">Select Map to Vote for Change</text>
+			<text font="normal" r="227" g="199" b="178" vert_align="c">mp_select_map</text>
 		</header>
 		
 		<frame x="25" y="87" width="280" height="261">
@@ -195,7 +195,7 @@
 		</background>
 		
 		<header x="50" y="45" width="500" height="33">
-			<text font="normal" r="227" g="199" b="178" vert_align="c">Change Weather</text>
+			<text font="normal" r="227" g="199" b="178" vert_align="c">mp_change_weather</text>
 		</header>
 		
 		<btn_cancel x="414" y="328" width="157" height="48">

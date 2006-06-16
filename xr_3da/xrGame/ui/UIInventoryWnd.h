@@ -102,11 +102,7 @@ protected:
 	CUIOutfitDragDropList*		m_pUIOutfitList;
 	void						ClearAllLists				();
 	void						BindDragDropListEnents		(CUIDragDropListEx* lst);
-	enum EListType{
-		iwSlot,
-		iwBag,
-		iwBelt
-	};
+	
 	EListType					GetType				(CUIDragDropListEx* l);
 	CUIDragDropListEx*			GetSlotList			(u32 slot_idx);
 

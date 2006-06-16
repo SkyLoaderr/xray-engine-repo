@@ -13,6 +13,7 @@ typedef struct {
 class CRestrictions {
 	friend class CUIDragDropItemMP;
 	friend class CUIBag;
+	friend class CUIBagWnd;
 public:
 	CRestrictions();
 	~CRestrictions();	

@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "TeamInfo.h"
+#include "../string_table.h"
 
 u32			CTeamInfo::team1_color;
 u32			CTeamInfo::team2_color;
@@ -40,7 +41,9 @@ shared_str	CTeamInfo::GetTeam1_name(){
 	if (flags.test(flTeam1_name))
 		return team1_name;
 
-	team1_name = pSettings->r_string_wb("team1","name");
+	CStringTable st;
+
+	team1_name = st.translate(pSettings->r_string_wb("team1","name"));
 	flags.set(flTeam1_name,true);
 
     return team1_name;
@@ -50,7 +53,9 @@ shared_str	CTeamInfo::GetTeam2_name(){
 	if (flags.test(flTeam2_name))
 		return team2_name;
 
-	team2_name = pSettings->r_string_wb("team2","name");
+	CStringTable st;
+
+	team2_name = st.translate(pSettings->r_string_wb("team2","name"));
 	flags.set(flTeam2_name,true);
 
     return team2_name;

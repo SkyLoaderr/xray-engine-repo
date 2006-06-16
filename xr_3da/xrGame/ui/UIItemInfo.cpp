@@ -29,19 +29,16 @@ CUIItemInfo::~CUIItemInfo()
 	xr_delete(UIWpnParams); //UIWpnParams must be without "autodelete"
 }
 
-void CUIItemInfo::Init(float x, float y, float width, float height, const char* xml_name)
-{
+void CUIItemInfo::Init(LPCSTR xml_name){
 	UIName			= xr_new<CUIStatic>();	 AttachChild(UIName);		UIName->SetAutoDelete(true);
-	UIWeight		= xr_new<CUIStatic>();	 AttachChild(UIWeight);	UIWeight->SetAutoDelete(true);
+	UIWeight		= xr_new<CUIStatic>();	 AttachChild(UIWeight);		UIWeight->SetAutoDelete(true);
 	UICost			= xr_new<CUIStatic>();	 AttachChild(UICost);		UICost->SetAutoDelete(true);
-	UIItemImage		= xr_new<CUIStatic>();	 AttachChild(UIItemImage);UIItemImage->SetAutoDelete(true);
-	UIWpnParams		= xr_new<CUIWpnParams>();//must be without "autodelete"
+	UIItemImage		= xr_new<CUIStatic>();	 AttachChild(UIItemImage);	UIItemImage->SetAutoDelete(true);
 
+	UIWpnParams		= xr_new<CUIWpnParams>();//must be without "autodelete"
 	UIDesc			= xr_new<CUIScrollView>(); AttachChild(UIDesc);		UIDesc->SetAutoDelete(true);
 
-	inherited::Init(x, y, width, height);
-
-	CUIXml uiXml;
+		CUIXml uiXml;
 	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH, xml_name);
 	R_ASSERT2				(xml_result, "xml file not found");
 
@@ -77,6 +74,12 @@ void CUIItemInfo::Init(float x, float y, float width, float height, const char* 
 	UIItemImageSize.set				(UIItemImage->GetWidth(),UIItemImage->GetHeight());
 
 	xml_init.InitAutoStaticGroup	(uiXml, "auto", this);
+}
+
+void CUIItemInfo::Init(float x, float y, float width, float height, LPCSTR xml_name)
+{
+	inherited::Init(x, y, width, height);
+    Init(xml_name);
 }
 
 void CUIItemInfo::InitItem(CInventoryItem* pInvItem)

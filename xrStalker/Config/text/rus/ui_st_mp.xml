@@ -184,5 +184,17 @@
 	<string id="mp_text">
 		<text>Текст</text>
 	</string>
+	<string id="mp_select_category">
+		<text>Select Category to Vote</text>
+	</string>
+	<string id="mp_select_kick">
+		<text>Select Player to Vote for Kick</text>		
+	</string>
+	<string id="mp_select_ban">
+		<text>Select Player to Vote for Ban</text>
+	</string>
+	<string id="mp_select_map">
+		<text>Select Map to Vote for Change</text>
+	</string>	
 	
 </string_table>

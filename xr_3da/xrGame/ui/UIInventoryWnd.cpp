@@ -225,7 +225,7 @@ void CUIInventoryWnd::Init()
 	uiXml.SetLocalRoot					(stored_root);
 }
 
-CUIInventoryWnd::EListType CUIInventoryWnd::GetType(CUIDragDropListEx* l)
+EListType CUIInventoryWnd::GetType(CUIDragDropListEx* l)
 {
 	if(l==m_pUIBagList)			return iwBag;
 	if(l==m_pUIBeltList)		return iwBelt;
