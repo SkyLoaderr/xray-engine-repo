@@ -47,6 +47,7 @@ path_look           = captive_wait_look
 commander           = true
 formation           = back
 on_info             = {+val_escort_start} walker@val_escort_captive_go, {+val_escort_nap1_dead} walker@val_escort_captive_go %+val_escort_start% ;patrol
+on_info2            = {+val_escort_guard1_dead +val_escort_guard2_dead} follower@val_escort_captive_go_to_nap1 %+val_escort_captive_enemy%
 danger              = danger@val_escort_captive
 combat_ignore_cond  = always
 
