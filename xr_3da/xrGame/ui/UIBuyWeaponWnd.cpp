@@ -51,76 +51,6 @@ CUIBuyWeaponWnd::~CUIBuyWeaponWnd()
 {
 }
 
-int CUIBuyWeaponWnd::FindBestBuy(){
-	int iMoney = GetMoneyAmount();
-	iMoney += GetPriceOfOwnItems();
-
-	for (int i = 2; i >= 0; i--)
-		if (iMoney >= m_presets[i].m_price)
-			return i;
-
-	return -1;
-}
-
-void CUIBuyWeaponWnd::PerformAutoBuy()
-{
-	int index = FindBestBuy();
-	if (-1 == index)
-		return;
-
-	OnBtnClearClicked();
-
-	xr_vector<shared_str>& buy_list = m_presets[index].m_list;
-
-	for (int i = 0; i < (int)buy_list.size(); i++)
-	{
-		CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(*buy_list[i]);
-		if(pDDItem){
-			if (pDDItem->IsDragDropEnabled())
-                SendMessage(pDDItem, DRAG_DROP_ITEM_DB_CLICK, NULL);
-			}
-		else{
-			Msg("ERROR CUIBuyWeaponWnd::PerformAutoBuy cannot find item with section name=%s",*buy_list[i]);
-		}
-	}
-}
-
-void CUIBuyWeaponWnd::UpdatePresetPrice(Preset& preset){
-	preset.m_price = 0;
-	for (int i = 0; i < (int)preset.m_list.size(); i++)
-	{
-		CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(*preset.m_list[i]);
-		preset.m_price += GetItemPrice(pDDItem);
-	}
-}
-
-void CUIBuyWeaponWnd::FillUpPresets(){
-	string256 preset[3];
-
-
-	std::strcpy(preset[0], pSettings->r_string(m_StrSectionName, "autobuy_preset1"));
-	std::strcpy(preset[1], pSettings->r_string(m_StrSectionName, "autobuy_preset2"));
-	std::strcpy(preset[2], pSettings->r_string(m_StrSectionName, "autobuy_preset3"));
-
-
-	for (int i = 0; i < 3; i++)
-	{
-        ParseStrToVector(preset[i], m_presets[i].m_list);
-//		UpdatePresetPrice(m_presets[i]);
-	}
-}
-
-void CUIBuyWeaponWnd::ParseStrToVector(const char* str, xr_vector<shared_str>& vector){
-	int itemsCount = _GetItemCount(str);
-	char item[64];
-
-	for (int i = 0; i< itemsCount; i++)
-	{
-		_GetItem(str, i, item);
-		vector.push_back(item);
-	}
-}
-
 void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 {
 	CUIXml uiXml;
@@ -139,10 +69,6 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 	AttachChild(&UIBackground);
 	UIBackground.Init(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 	UIBackground.SetShader(GetBuyMenuShader());	
-
-	AttachChild(&UIAutobuyIndication);
-	xml_init.InitWindow(uiXml, "autobuy_indication", 0, &UIAutobuyIndication);
-	FillUpPresets();
 
 	AttachChild(&UIStaticBelt);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticBelt);
@@ -176,10 +102,6 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 	xml_init.Init3tButton(uiXml, "cancel_button", 0, &UIBtnCancel);
 	UIBtnCancel.EnableTextHighlighting(false);
 	g_iCancelAccelerator = uiXml.ReadAttribInt("cancel_button", 0, "accel");
-
-	AttachChild(&UIBtnAutobuy);
-	xml_init.Init3tButton(uiXml, "autobuy_button", 0, &UIBtnAutobuy);
-	UIBtnAutobuy.EnableTextHighlighting(false);
 
 	AttachChild(&UIBtnClear);
 	xml_init.Init3tButton(uiXml, "clear_button", 0, &UIBtnClear);
@@ -262,9 +184,6 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 	UIItemInfo.Init(0, 0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), BUY_MP_ITEM_XML);
 	UIDescWnd.AttachChild(&UIDescRankIcon);
 	xml_init.InitStatic(uiXml, "desc_static:rank_icon",0,&UIDescRankIcon);
-
-	UpdatePresetPrices();
-	UIAutobuyIndication.SetPrices(m_presets[0].m_price, m_presets[1].m_price, m_presets[2].m_price);
 
 	AttachChild(&UIBtn_PistolSilencer);
 	CUIXmlInit::Init3tButton(uiXml, "btn_pistol_silencer", 0, &UIBtn_PistolSilencer);
@@ -611,8 +530,6 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			OnBtnCancelClicked();
 		else if (&UIBtnClear == pWnd)
 			OnBtnClearClicked();
-		else if (&UIBtnAutobuy == pWnd)
-			OnBtnAutobuyClicked();
 		else if (&UIBtn_PistolBullet == pWnd)
 			OnBtnBulletBuy(PISTOL_SLOT);
 		else if (&UIBtn_RifleBullet == pWnd)
@@ -642,13 +559,6 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 //			if (UIBagWnd.IsChild(list))
 //                list->SortList(MP_item_cmp);
 		break;
-	case STATIC_FOCUS_RECEIVED:
-		if (&UIBtnAutobuy == pWnd)
-            OnBtnAutobuyFocusReceive(); break;
-
-	case STATIC_FOCUS_LOST:
-		if (&UIBtnAutobuy == pWnd)
-            OnBtnAutobuyFocusLost(); break;
 	}
 
 	//по нажатию правой кнопки
@@ -748,18 +658,6 @@ void CUIBuyWeaponWnd::OnBtnOkClicked(){
 
 void CUIBuyWeaponWnd::OnBtnCancelClicked(){
 	Game().StartStopMenu(this,true);
-}
-
-void CUIBuyWeaponWnd::OnBtnAutobuyClicked(){
-	PerformAutoBuy();
-}
-
-void CUIBuyWeaponWnd::OnBtnAutobuyFocusReceive(){
-	UIAutobuyIndication.HighlightItem(FindBestBuy());
-}
-
-void CUIBuyWeaponWnd::OnBtnAutobuyFocusLost(){
-	UIAutobuyIndication.UnHighlight();
 }
 
 void CUIBuyWeaponWnd::OnBtnClearClicked(){
@@ -1119,13 +1017,6 @@ void CUIBuyWeaponWnd::Show()
 		pActor->SetWeaponHideState(whs_BUY_MENU, TRUE);
 	}
 	UITabControl.SetActiveState();
-	UpdatePresetPrices();
-	UIAutobuyIndication.SetPrices(m_presets[0].m_price, m_presets[1].m_price, m_presets[2].m_price);
-}
-
-void CUIBuyWeaponWnd::UpdatePresetPrices(){
-	for (int i = 0; i < 3; i++)
-		UpdatePresetPrice(m_presets[i]);
 }
 
 void CUIBuyWeaponWnd::Hide()
@@ -1487,8 +1378,6 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 		UITabControl.SetActiveState();
 	else if (DIK_C == dik)
 		UIBtnClear.OnClick();	
-	else if (DIK_X == dik)
-		UIBtnAutobuy.OnClick();
 	else if (DIK_Q == dik && UIBtn_PistolBullet.IsEnabled())
 		OnBtnBulletBuy(PISTOL_SLOT);
 	else if (DIK_W == dik && UIBtn_RifleBullet.IsEnabled())

@@ -25,7 +25,7 @@
 
 #include "UIBuyWeaponTab.h"
 #include "UIBag.h"
-#include "UIAutobuyIndication.h"
+//#include "UIAutobuyIndication.h"
 //#include "UIWpnParams.h"
 
 extern const u32	cDetached;
@@ -81,7 +81,7 @@ protected:
 	CUIStatic			UIOutfitIcon;		
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox	UIPropertiesBox;
-	CUIAutobuyIndication UIAutobuyIndication;
+//	CUIAutobuyIndication UIAutobuyIndication;
 
 	//элемент с которым работают в текущий момент
 	PIItem m_pCurrentItem;
@@ -134,25 +134,25 @@ protected:
 	bool CanAttachAddOn(CUIDragDropItemMP* pAddonOwner, CUIDragDropItemMP* pAddOn);
 	// for buy presets
 
-	typedef struct {
-		int m_price;
-		xr_vector<shared_str> m_list;
-	} Preset;
+//	typedef struct {
+//		int m_price;
+//		xr_vector<shared_str> m_list;
+//	} Preset;
 
-	Preset   m_presets[3];
-		void FillUpPresets();
-		void ParseStrToVector(const char* str, xr_vector<shared_str>& vector);
-		void UpdatePresetPrices();
-		void UpdatePresetPrice(Preset& preset);
-		int  FindBestBuy();
-		void PerformAutoBuy();
+//	Preset   m_presets[3];
+//		void FillUpPresets();
+//		void ParseStrToVector(const char* str, xr_vector<shared_str>& vector);
+//		void UpdatePresetPrices();
+//		void UpdatePresetPrice(Preset& preset);
+//		int  FindBestBuy();
+//		void PerformAutoBuy();
 		int  GetPriceOfOwnItems();
 		int  GetPriceOfItemInSlot(int slot);
 static	int  GetItemPrice(CUIDragDropItemMP *pDDItemMP);
 //		void 
 	CUI3tButton UIBtnOK;
 	CUI3tButton UIBtnCancel;
-	CUI3tButton UIBtnAutobuy;
+//	CUI3tButton UIBtnAutobuy;
 	CUI3tButton UIBtnClear;
 
 	CUI3tButton UIBtn_PistolBullet;
