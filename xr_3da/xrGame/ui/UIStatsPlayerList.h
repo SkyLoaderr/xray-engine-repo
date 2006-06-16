@@ -29,6 +29,7 @@ protected:
 			void		InitTeamHeader(CUIXml& xml_doc, LPCSTR path);
 	virtual void		RecalcSize			();
 			void		ShowHeader(bool bShow);
+			LPCSTR		GetST_entry(LPCSTR itm);
 
 	player_cmp_func		m_cmp_func;
 	int					m_CurTeam;

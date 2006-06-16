@@ -31,8 +31,14 @@
 	<string id="mp_ping">
 		<text>ping</text>
 	</string>
+	<string id="mp_status">
+		<text>status</text>
+	</string>
 	<string id="mp_players">
 		<text>Players</text>
+	</string>
+	<string id="mp_spectators">
+		<text>SPECTATORS</text>
 	</string>
 	<string id="mp_press_fire2spectator">
 		<text>Press Fire to become a Spectator</text>

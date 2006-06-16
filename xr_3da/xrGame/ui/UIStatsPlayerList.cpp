@@ -82,6 +82,31 @@ void CUIStatsPlayerList::Init(CUIXml& xml_doc, LPCSTR path){
 	}
 }
 
+LPCSTR CUIStatsPlayerList::GetST_entry(LPCSTR itm){
+	static LPCSTR mp_name = "mp_name";
+	static LPCSTR mp_frags = "mp_frags";
+	static LPCSTR mp_deaths = "mp_deaths";
+	static LPCSTR mp_ping = "mp_ping";
+	static LPCSTR mp_artefacts = "mp_artefacts";
+	static LPCSTR mp_status = "mp_status";
+	if (0 == xr_strcmp(itm, "name"))
+		return mp_name;
+	else if (0 == xr_strcmp(itm, "frags"))
+		return mp_frags;
+	else if (0 == xr_strcmp(itm, "deaths"))
+		return mp_deaths;
+	else if (0 == xr_strcmp(itm, "ping"))
+		return mp_ping;
+	else if (0 == xr_strcmp(itm, "artefacts"))
+		return mp_artefacts;
+	else if (0 == xr_strcmp(itm, "status"))
+		return mp_status;
+	else
+		NODEFAULT;
+
+	return NULL;
+}
+
 void CUIStatsPlayerList::InitHeader(CUIXml& xml_doc, LPCSTR path){
 	string256 _path;
 	CUIXmlInit::InitStatic(xml_doc, strconcat(_path, path, ":list_header"), 0, m_header);
@@ -105,7 +130,10 @@ void CUIStatsPlayerList::InitHeader(CUIXml& xml_doc, LPCSTR path){
 			else if (0 == xr_strcmp(m_field_info[i].name, "death_atf"))
 				st->SetText("");
 			else
-				st->SetTextST(*m_field_info[i].name);
+			{
+				
+				st->SetTextST(GetST_entry(*m_field_info[i].name));
+			}
 			
 			if (m_h.f)
 				st->SetFont(m_h.f);
@@ -126,7 +154,7 @@ void CUIStatsPlayerList::InitHeader(CUIXml& xml_doc, LPCSTR path){
 		st->SetTextColor(m_h.c);
 		st->SetVTextAlignment(valCenter);
 		st->SetTextComplexMode(false);
-		st->SetText("SPECTATORS");
+		st->SetTextST("mp_spectators");
 		m_header->AttachChild(st);
 	}
 }
@@ -193,18 +221,19 @@ void CUIStatsPlayerList::Update(){
 	};
 	pl_count = items.size();
 
+    CStringTable st;
     if (GameID() == GAME_ARTEFACTHUNT && !m_bSpectator)
 	{
 		game_cl_ArtefactHunt* game = static_cast<game_cl_ArtefactHunt*>(&Game());
 		pl_artefacts = game->teams[m_CurTeam - 1].score;
-        sprintf(teaminfo, "Artefacts: %u, Players: %u,  Frags: %d",pl_artefacts, pl_count, pl_frags );
+        sprintf(teaminfo, "%s: %u, %s: %u, %s: %d",*st.translate("mp_artefacts_upcase"),pl_artefacts, *st.translate("mp_players"), pl_count, *st.translate("mp_frags_upcase"),pl_frags );
 		m_header_text->SetText(teaminfo);
 	}
 	else if (GameID() == GAME_TEAMDEATHMATCH && !m_bSpectator)
 	{
 		game_cl_TeamDeathmatch* game = static_cast<game_cl_TeamDeathmatch*>(&Game());
 		pl_frags = game->teams[m_CurTeam - 1].score;
-		sprintf(teaminfo, "Frags: %d, Players: %u", pl_frags, pl_count);
+		sprintf(teaminfo, "%s: %d, %s: %u", *st.translate("mp_frags_upcase"), pl_frags, *st.translate("mp_players"), pl_count);
 		m_header_text->SetText(teaminfo);
 	}	
 

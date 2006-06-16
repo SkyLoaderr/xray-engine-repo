@@ -29,15 +29,20 @@
 		<text>смерти</text>
 	</string>
 	<string id="mp_ping">
-		<text>смертей</text>
+		<text>пинг</text>
+	</string>
+	<string id="mp_status">
+		<text>статус</text>
 	</string>
 	<string id="mp_players">
 		<text>Игроков</text>
 	</string>
+	<string id="mp_spectators">
+		<text>НАБЛЮДАТЕЛИ</text>
+	</string>
 	<string id="mp_press_fire2spectator">
 		<text>Нажмите Огонь чтобы перейти в режим Наблюдения</text>
-	</string>
-	
+	</string>	
 	<string id="mp_press_jump2pay_spaw">
 		<text>Нажмите прыжок чтобы купит моментальное рождение</text>
 	</string>
