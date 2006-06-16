@@ -49,23 +49,10 @@
 			<text>andy_task_1_1</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
-		<objective key="sdfag">
+		<objective>
 			<text>andy_task_1_2</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="my_hint">crlc_mdl</map_location_type>			
-			<object_story_id>Escape_robbed_novice</object_story_id>					
-		</objective>
-		<objective>
-			<text>andy_task_1_3</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>crlc_small</map_location_type>						
-			<object_story_id>Escape_Tutorial_Artefact</object_story_id>				
-		</objective>
-		<objective>
-			<text>andy_task_1_4</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type>crlc_big</map_location_type>							
-			<object_story_id>Escape_blockpost_case</object_story_id>				
+			<map_location_type hint="my_hint">level_changer</map_location_type>			
+			<object_story_id>Escape_Trader</object_story_id>					
 		</objective>
 	</game_task>
 

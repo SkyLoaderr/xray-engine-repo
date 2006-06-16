@@ -259,6 +259,7 @@ void CLevel::ClientReceive()
 			{
 				u8 Pause = P->r_u8();
 				Device.Pause(!(Pause == 0));
+				Sound->pause_emitters(!!Device.Pause());
 			}break;
 		case M_BULLET_CHECK_RESPOND:
 			{
