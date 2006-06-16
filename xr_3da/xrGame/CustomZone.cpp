@@ -677,7 +677,7 @@ float CCustomZone::Power(float dist)
 
 void CCustomZone::PlayIdleParticles()
 {
-	m_idle_sound.play_at_pos(this, Position(), true);
+	m_idle_sound.play_at_pos(0, Position(), true);
 
 	if(*m_sIdleParticles)
 	{
@@ -755,7 +755,7 @@ void CCustomZone::PlayBlowoutParticles()
 
 void CCustomZone::PlayHitParticles(CGameObject* pObject)
 {
-	m_hit_sound.play_at_pos(this, pObject->Position());
+	m_hit_sound.play_at_pos(0, pObject->Position());
 
 	shared_str particle_str = NULL;
 
@@ -784,7 +784,7 @@ void CCustomZone::PlayHitParticles(CGameObject* pObject)
 
 void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
 {
-	m_entrance_sound.play_at_pos(this, pObject->Position());
+	m_entrance_sound.play_at_pos(0, pObject->Position());
 
 	shared_str particle_str = NULL;
 
@@ -835,7 +835,7 @@ void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
 
 void CCustomZone::PlayBulletParticles(Fvector& pos)
 {
-	m_entrance_sound.play_at_pos(this, pos);
+	m_entrance_sound.play_at_pos(0, pos);
 
 	if(!m_sEntranceParticlesSmall) return;
 	
@@ -991,7 +991,7 @@ void CCustomZone::UpdateBlowout()
 
 	if(m_dwBlowoutSoundTime>=(u32)m_iPreviousStateTime && 
 		m_dwBlowoutSoundTime<(u32)m_iStateTime)
-		m_blowout_sound.play_at_pos	(this, Position());
+		m_blowout_sound.play_at_pos	(0, Position());
 
 	if(m_zone_flags.test(eBlowoutWind) && m_dwBlowoutWindTimeStart>=(u32)m_iPreviousStateTime && 
 		m_dwBlowoutWindTimeStart<(u32)m_iStateTime)
@@ -1248,7 +1248,7 @@ void CCustomZone::ThrowOutArtefact(CArtefact* pArtefact)
 		pParticles->Play();
 	}
 
-	m_ArtefactBornSound.play_at_pos(pArtefact, pArtefact->Position());
+	m_ArtefactBornSound.play_at_pos(0, pArtefact->Position());
 
 	Fvector dir;
 	dir.random_dir();
@@ -1375,7 +1375,7 @@ void CCustomZone::PlayAccumParticles()
 	}
 
 	if(m_accum_sound._handle())
-		m_accum_sound.play_at_pos	(this, Position());
+		m_accum_sound.play_at_pos	(0, Position());
 }
 
 void CCustomZone::PlayAwakingParticles()
@@ -1388,7 +1388,7 @@ void CCustomZone::PlayAwakingParticles()
 	}
 
 	if(m_awaking_sound._handle())
-		m_awaking_sound.play_at_pos	(this, Position());
+		m_awaking_sound.play_at_pos	(0, Position());
 }
 
 void CCustomZone::UpdateOnOffState	()
