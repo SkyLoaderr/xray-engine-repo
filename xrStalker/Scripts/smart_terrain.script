@@ -399,9 +399,11 @@ end
    подходит ли он гулагу, подходит ли он хоть на одну работу
 ]]
 function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
-	if self:name() == "rad_entrance" then
-		printf( "[smart_terrain %s] smart_terrain_accepts_obj called obj=%s", self:name(), obj:name() )
-	end
+--	if self:name() == "bun_krovosos_nest" and
+--	   obj:name():find( "bun_bloodsucker" ) == 1
+--	then
+--		printf( "[smart_terrain %s] smart_terrain_accepts_obj called obj=%s", self:name(), obj:name() )
+--	end
 
 	if obj_agreement == disagreed then
 		return false
@@ -412,23 +414,30 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 	then
 		local community, is_stalker = self:get_obj_community( obj )
 
-		if self:name() == "rad_entrance" then
-			printf( "comm=%s is_stalker=%s", community, tostring( is_stalker ) )
-		end
+--		if self:name() == "bun_krovosos_nest" and
+--		   obj:name():find( "bun_bloodsucker" ) == 1
+--		then
+--			printf( "comm=%s is_stalker=%s", community, tostring( is_stalker ) )
+--		end
 
 		if self.accepted_communities and not self.accepted_communities[community] then
 			return false
 		end
 
---		if obj:name() == "yantar_semenov" then
+--		if self:name() == "bun_krovosos_nest" and
+--		   obj:name():find( "bun_bloodsucker" ) == 1
+--		then
 --			printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
+--			printf( "rank=%d", obj:rank() )
 --		end
 
 		if not self:check_preset( community, obj:rank(), self.gparams.preset_name ) then
 			return false
 		end
 
---		if obj:name() == "yantar_semenov" then
+--		if self:name() == "bun_krovosos_nest" and
+--		   obj:name():find( "bun_bloodsucker" ) == 1
+--		then
 --			printf( "check_preset ok" )
 --		end
 
@@ -436,7 +445,9 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 			return false
 		end
 
---		if obj:name() == "yantar_semenov" then
+--		if self:name() == "bun_krovosos_nest" and
+--		   obj:name():find( "bun_bloodsucker" ) == 1
+--		then
 --			printf( "checkNpc ok" )
 --		end
 
@@ -502,17 +513,17 @@ function se_smart_terrain:enabled( obj )
 --		if obj:clsid() == clsid.GROUP then -- TODO
 			-- TODO проитерировать группу
 --		else
---			return self:smart_terrain_accepts_obj( obj, self:obj_accepts_smart_terrain( obj ) )
-			local b1 = self:obj_accepts_smart_terrain( obj )
+			return self:smart_terrain_accepts_obj( obj, self:obj_accepts_smart_terrain( obj ) )
+--[[			local b1 = self:obj_accepts_smart_terrain( obj )
 			local b2 = self:smart_terrain_accepts_obj( obj, b1 )
 
-			if self:name() == "bun_krovosos_nest" or
-			   obj:name()  == "bun_bloodsucker_strong"
+			if self:name() == "bun_krovosos_nest" and
+			   obj:name():find( "bun_bloodsucker" ) == 1
 			then
 				printf( "obj_accepts_smart_terrain=%d smart_terrain_accepts_obj=%s", b1, tostring( b2 ) )
 			end
 
-			return b2
+			return b2]]
 --		end
 	else
 		return false
