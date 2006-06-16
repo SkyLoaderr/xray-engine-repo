@@ -84,6 +84,8 @@ end
 -- проверка того что npc находится в заданной зоне
 -- !!! ВЫЗЫВАТЬ ТОЛЬКО ИЗ SPACE RESTRICTOR !!!
 -- параметры: [sid1:sid2:...]
+-- !!! НЕКОРРЕКТНО РАБОТАЕТ ДЛЯ ОБЬЕКТОВ В offline'e !!!
+-- !!! ДЛЯ ГАРАНТИИ ИСПОЛЬЗОВАТЬ one_obj_in_zone !!!
 function obj_in_zone(actor, zone, p)
     local npc1, i, v = 0, 0, 0
 	for i, v in pairs(p) do
@@ -93,6 +95,19 @@ function obj_in_zone(actor, zone, p)
         end
     end
     return false
+end
+
+-- параметры: [sid:def*] def=true|false
+-- * параметр не обязателен
+function one_obj_in_zone(actor, zone, p)
+    local def_offline = (p[2] ~= "false") -- default (true) result if npc in offline
+	local obj1 = level_object_by_sid(p[1])
+
+    if obj1 then -- npc is online
+        return zone:inside(obj1:position())
+    else -- npc is offline
+        return def_offline
+    end
 end
 
 function actor_in_zone(actor, npc, p)
