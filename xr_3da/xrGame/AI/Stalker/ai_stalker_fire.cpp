@@ -99,23 +99,26 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 
 	CWeapon				*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
 	if (!weapon) {
-		CMissile		*grenade = smart_cast<CMissile*>(inventory().ActiveItem());
+		CGrenade		*grenade = smart_cast<CGrenade*>(inventory().ActiveItem());
 		if (grenade) {
 			update_throw_params	();
 			P			= m_throw_position;
 			D			= m_throw_direction;
+			VERIFY		(!fis_zero(D.square_magnitude()));
 			return;
 		}
 		P				= eye_matrix.c;
 		D				= eye_matrix.k;
 		if (weapon_shot_effector().IsActive())
 			D			= weapon_shot_effector_direction(D);
+		VERIFY			(!fis_zero(D.square_magnitude()));
 		return;
 	}
 
 	if (!g_Alive()) {
 		P				= weapon->get_LastFP();
 		D				= weapon->get_LastFD();
+		VERIFY			(!fis_zero(D.square_magnitude()));
 		return;
 	}
 
@@ -126,6 +129,7 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 				D		= eye_matrix.k;
 				if (weapon_shot_effector().IsActive())
 					D	= weapon_shot_effector_direction(D);
+				VERIFY	(!fis_zero(D.square_magnitude()));
 			}
 			else {
 				D.setHP	(-movement().m_head.current.yaw,-movement().m_head.current.pitch);
@@ -136,6 +140,7 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 				P.y		+= .50f;
 //				P		= weapon->get_LastFP();
 //				D		= weapon->get_LastFD();
+				VERIFY	(!fis_zero(D.square_magnitude()));
 			}
 			return;
 		}
@@ -144,6 +149,7 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 			D			= eye_matrix.k;
 			if (weapon_shot_effector().IsActive())
 				D		= weapon_shot_effector_direction(D);
+			VERIFY		(!fis_zero(D.square_magnitude()));
 			return;
 		}
 		default			: NODEFAULT;
@@ -152,6 +158,7 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 #ifdef DEBUG
 	P					= weapon->get_LastFP();
 	D					= weapon->get_LastFD();
+	VERIFY				(!fis_zero(D.square_magnitude()));
 #endif
 }
 
