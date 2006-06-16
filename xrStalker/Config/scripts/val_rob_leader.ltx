@@ -6,8 +6,8 @@ active = walker@val_rob_leader_start
 ;--------------------------------------------------------------------------
 [meet@val_rob_start]
 meet_dialog     = val_rob_dialog
-meet_state      = 30|hello@val_rob_leader_call|15|wait
-meet_state_wpn  = 30|hello@val_rob_leader_call|15|threat@threat_weap
+meet_state      = 30|wait
+meet_state_wpn  = 30|threat@threat_weap
 victim          = 30|actor
 victim_wpn      = 30|actor
 use             = true
@@ -29,22 +29,23 @@ use_wpn         = false
 [walker@val_rob_leader_start]
 path_walk           = leader_walk
 path_look           = leader_look
-on_info             = {+val_rob_buying} remark@val_rob_leader_wait_to_go ;walker@val_rob_leader_to_kamp
-on_actor_dist_le    = 30 | remark@val_rob_leader_call
-meet                = meet@val_rob_start
+on_info             = {+val_rob_actor_enter} remark@val_rob_leader_call
+;on_info             = {+val_rob_buying} remark@val_rob_leader_wait_to_go ;walker@val_rob_leader_to_kamp
+;on_actor_dist_le    = 30 | remark@val_rob_leader_call
+meet                = meet@ignore_abuse ;meet@val_rob_start
 
 [remark@val_rob_leader_call]
 anim                = wait
-;snd                 = val_rob_leader_call
+snd                 = val_rob_leader_call
 target              = actor
-on_actor_dist_ge    = 35 | walker@val_rob_leader_start
-on_actor_dist_le    = 10 | remark@val_rob_leader_talk
-meet                = meet@val_rob_start ;meet@val_rob_ignore
+on_actor_dist_ge_nvis = 35 | walker@val_rob_leader_start
+on_actor_dist_le_nvis = 10 | remark@val_rob_leader_talk
+meet                = meet@ignore_abuse ;meet@val_rob_start
 
 [remark@val_rob_leader_talk]
 anim                = wait
 target              = actor
-on_info             = {+val_rob_buying} remark@val_rob_leader_wait_to_go ;walker@val_rob_leader_to_kamp
+on_info             = {+val_rob_buying} remark@val_rob_leader_wait_to_go
 on_actor_dist_ge    = 35 | walker@val_rob_leader_start
 meet                = meet@val_rob_start
 
@@ -59,12 +60,12 @@ path_look           = leader_kamp_look
 def_state_moving1   = run
 def_state_moving2   = run
 def_state_moving3   = run
-on_signal           = arrived | remark@val_rob_leader_jeer ;kamp@val_rob_kamp
-meet                = meet@val_rob_ignore
+on_signal           = arrived | remark@val_rob_leader_jeer
+meet                = meet@ignore_abuse ;meet@val_rob_ignore
 
 [remark@val_rob_leader_jeer]
 anim                = wait_na
 snd                 = val_rob_leader_jeer
 tips                = val_rob_leader_jeer_1
 on_signal           = sound_end | kamp@val_rob_kamp
-meet                = meet@val_rob_ignore
+meet                = meet@ignore_abuse ;meet@val_rob_ignore
