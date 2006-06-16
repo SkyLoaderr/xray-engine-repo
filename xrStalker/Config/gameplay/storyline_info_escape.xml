@@ -37,15 +37,11 @@
         <text>blokpost_case_text</text>
     </article>
     
-    <article id="esc_volk_dynamite" name="esc_dinamit_to_volk" article_type="task" group="esc_dinamit_to_volk">
-        <text>factory_dynamit_text</text>
-    </article>    
-    
     <article id="defend_novice" name="esc_defend_lager" article_type="task" group="esc_defend_lager">
         <text>defend_lager_text</text>
     </article> 
     
-    <article id="kill_factory_bandits" name="esc_bandits_factory" article_type="task" group="esc_bandits_factory">
+    <article id="kill_factory_bandits" name="esc_dinamit_to_volk" article_type="task" group="esc_dinamit_to_volk">
         <text>factory_trader_text</text>
     </article> 
     
