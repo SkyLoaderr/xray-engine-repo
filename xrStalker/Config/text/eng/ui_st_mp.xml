@@ -139,4 +139,19 @@
 	<string id="mp_entered_game">
 		<text>entered the game</text>
 	</string>
+	<string id="mp_spectator">
+		<text>Specatator</text>
+	</string>
+	<string id="mp_free_fly">
+		<text>(Free-fly)</text>
+	</string>
+	<string id="mp_first_eye">
+		<text>(First-Eye)</text>
+	</string>
+	<string id="mp_free_look">
+		<text>(Free-Look)</text>		
+	</string>
+	<string id="mp_look_at">
+		<text>(Look-At)</text>
+	</string>
 </string_table>

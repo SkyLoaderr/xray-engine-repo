@@ -22,6 +22,7 @@
 #include "huditem.h"
 #include "clsid_game.h"
 #include "game_cl_mp.h"
+#include "string_table.h"
 
 //--------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////
@@ -442,26 +443,41 @@ void			CSpectator::GetSpectatorString		(LPTSTR pStr)
 	if (GameID() == GAME_SINGLE) return;
 	
 	xr_string	SpectatorMsg;
+	CStringTable st;
 	switch (cam_active)
 	{
 	case eacFreeFly:
 		{
-			SpectatorMsg = "SPECTATOR (Free-fly)";
+			SpectatorMsg = *st.translate("mp_spectator");
+			SpectatorMsg += " ";
+			SpectatorMsg += *st.translate("mp_free_fly");
 		}break;
 	case eacFirstEye:
 		{
-			SpectatorMsg = "SPECTATOR (First-Eye): ";
+			SpectatorMsg = *st.translate("mp_spectator");
+			SpectatorMsg += " ";
+			SpectatorMsg += *st.translate("mp_first_eye");
+			SpectatorMsg += " ";
+//			SpectatorMsg = "SPECTATOR (First-Eye): ";
 			SpectatorMsg += m_pActorToLookAt->Name();			
 
 		}break;
 	case eacFreeLook:
 		{
-			SpectatorMsg = "SPECTATOR (Free-Look):";
+			SpectatorMsg = *st.translate("mp_spectator");
+			SpectatorMsg += " ";
+			SpectatorMsg += *st.translate("mp_free_look");
+			SpectatorMsg += " ";
+//			SpectatorMsg = "SPECTATOR (Free-Look):";
 			SpectatorMsg += m_pActorToLookAt->Name();
 		}break;
 	case eacLookAt:
 		{
-			SpectatorMsg = "SPECTATOR (Look-At):";
+			SpectatorMsg = *st.translate("mp_spectator");
+			SpectatorMsg += " ";
+			SpectatorMsg += *st.translate("mp_look_at");
+			SpectatorMsg += " ";
+//			SpectatorMsg = "SPECTATOR (Look-At):";
 			SpectatorMsg += m_pActorToLookAt->Name();
 		}break;
 	};

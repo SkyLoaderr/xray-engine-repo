@@ -141,4 +141,20 @@
 	<string id="mp_entered_game">
 		<text>вошел в игру</text>
 	</string>
+	
+	<string id="mp_spectator">
+		<text>Наблюдатель</text>
+	</string>
+	<string id="mp_free_fly">
+		<text>(Свободный полет)</text>
+	</string>
+	<string id="mp_first_eye">
+		<text>(От первого лица)</text>
+	</string>
+	<string id="mp_free_look">
+		<text>(От третьего лица)</text>		
+	</string>
+	<string id="mp_look_at">
+		<text>(Свободно привязаный)</text>
+	</string>
 </string_table>
