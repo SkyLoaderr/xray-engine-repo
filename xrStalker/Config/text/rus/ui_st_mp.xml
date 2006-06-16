@@ -162,4 +162,27 @@
 	<string id="mp_look_at">
 		<text>(Свободно привязаный)</text>
 	</string>
+	
+	<string id="mp_restart">
+		<text>Рестарт</text>
+	</string>
+	<string id="mp_restart_fast">
+		<text>Быстрый рестарт</text>
+	</string>
+	<string id="mp_kick">
+		<text>Выбросить</text>
+	</string>
+	<string id="mp_ban">
+		<text>Заблокировать</text>
+	</string>
+	<string id="mp_change_map">
+		<text>Изменить карту</text>		
+	</string>
+	<string id="mp_change_weather">
+		<text>Изменить погоду</text>
+	</string>
+	<string id="mp_text">
+		<text>Текст</text>
+	</string>
+	
 </string_table>

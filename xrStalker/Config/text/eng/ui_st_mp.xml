@@ -160,4 +160,25 @@
 	<string id="mp_look_at">
 		<text>(Look-At)</text>
 	</string>
+	<string id="mp_restart">
+		<text>Restart</text>
+	</string>
+	<string id="mp_restart_fast">
+		<text>Restart fast</text>
+	</string>
+	<string id="mp_kick">
+		<text>Kick</text>
+	</string>
+	<string id="mp_ban">
+		<text>Ban</text>
+	</string>
+	<string id="mp_change_map">
+		<text>Change map</text>		
+	</string>
+	<string id="mp_change_weather">
+		<text>Change weather</text>
+	</string>
+	<string id="mp_text">
+		<text>Text</text>
+	</string>
 </string_table>
