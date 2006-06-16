@@ -209,16 +209,14 @@ void CGamePersistent::WeathersUpdate()
 			// start effect
 			if ((FALSE==bIndoor) && (0==ambient_particles) && Device.dwTimeGlobal>ambient_effect_next_time){
 				CEnvAmbient::SEffect* eff			= env_amb->get_rnd_effect(); 
-				Environment.wind_gust_factor		= eff->wind_gust_factor;
-				ambient_effect_next_time			= Device.dwTimeGlobal + env_amb->get_rnd_effect_time();
-				ambient_effect_stop_time			= Device.dwTimeGlobal + eff->life_time;
 				if (eff){
+					Environment.wind_gust_factor	= eff->wind_gust_factor;
+					ambient_effect_next_time		= Device.dwTimeGlobal + env_amb->get_rnd_effect_time();
+					ambient_effect_stop_time		= Device.dwTimeGlobal + eff->life_time;
 					ambient_particles				= CParticlesObject::Create(eff->particles.c_str(),FALSE);
 					Fvector pos; pos.add			(Device.vCameraPosition,eff->offset); 
 					ambient_particles->play_at_pos	(pos);
-					if (eff->sound._handle()){
-						eff->sound.play_at_pos(0,pos);
-					}
+					if (eff->sound._handle())		eff->sound.play_at_pos(0,pos);
 				}
 			}
 		}
