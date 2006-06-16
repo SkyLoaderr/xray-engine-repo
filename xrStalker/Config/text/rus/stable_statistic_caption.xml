@@ -48,10 +48,10 @@
 </string>
 
 <string id="ecolog_novice">
-	<text>ученный, новичок</text>
+	<text>ученый, новичок</text>
 </string>
 <string id="ecolog_experienced">
-	<text>ученный, опытный</text>
+	<text>ученый, опытный</text>
 </string>
 
 <string id="dolg_experienced">
@@ -101,17 +101,17 @@
 </string>
 
 <string id="tushkano_weak">
-	<text>тушканчик</text>
+	<text>тушкан</text>
 </string>
 
 <string id="flesh_weak">
-	<text>молодая плоть</text>
+	<text>степная плоть</text>
 </string>
 <string id="flesh_normal">
-	<text>взрослая плоть</text>
+	<text>лесная плоть</text>
 </string>
 <string id="flesh_strong">
-	<text>матерая плоть</text>
+	<text>болотная плоть</text>
 </string>
 
 <string id="boar_weak">
@@ -125,53 +125,47 @@
 </string>
 
 <string id="dog_weak">
-	<text>молодая собака</text>
+	<text>дикий пес</text>
 </string>
 <string id="dog_normal">
-	<text>взрослая собака</text>
+	<text>пес крысодав</text>
 </string>
 <string id="dog_strong">
-	<text>матерая собака</text>
+	<text>собака альбинос</text>
 </string>
 
 <string id="pseudodog_weak">
-	<text>молодая псевдособака</text>
+	<text>псевдособака</text>
 </string>
 <string id="pseudodog_normal">
-	<text>взрослая псевдособака</text>
-</string>
-<string id="pseudodog_strong">
 	<text>матерая псевдособака</text>
 </string>
+<string id="pseudodog_strong">
+	<text>серая псевдособака</text>
+</string>
 
-<string id="psy_dog_weak">
-	<text>молодая пси-собака</text>
-</string>
-<string id="psy_dog_normal">
-	<text>взрослая пси-собака</text>
-</string>
-<string id="psy_dog_strong">
-	<text>матерая пси-собака</text>
+<string id="psy_dog">
+	<text>сумеречная псевдособака</text>
 </string>
 
 <string id="zombie_weak">
-	<text>молодой зомби</text>
+	<text>зарезать</text>
 </string>
 <string id="zombie_normal">
-	<text>взрослый зомби</text>
+	<text>зарезать</text>
 </string>
 <string id="zombie_strong">
-	<text>матерый зомби</text>
+	<text>зарезать</text>
 </string>
 
 <string id="snork_weak">
-	<text>молодой снорк</text>
+	<text>снорк</text>
 </string>
 <string id="snork_normal">
-	<text>взрослый снорк</text>
+	<text>снорк падальщик</text>
 </string>
 <string id="snork_strong">
-	<text>матерый снорк</text>
+	<text>снорк людоед</text>
 </string>
 
 
@@ -193,11 +187,11 @@
 
 
 <string id="bloodsucker_weak">
-	<text>молодой кровосос</text>
+	<text>кровосос</text>
 </string>
 <string id="bloodsucker_normal">
-	<text>взрослый кровосос</text>
+	<text>подземный кровосос</text>
 </string>
 <string id="bloodsucker_strong">
-	<text>матерый кровосос</text>
+	<text>черный кровосос</text>
 </string>
