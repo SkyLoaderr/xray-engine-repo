@@ -185,16 +185,70 @@
 		<text>Текст</text>
 	</string>
 	<string id="mp_select_category">
-		<text>Select Category to Vote</text>
+		<text>Выберите категорию голосования</text>
 	</string>
 	<string id="mp_select_kick">
-		<text>Select Player to Vote for Kick</text>		
+		<text>Выберите игрока для которого назначить голосование чтобы его выкинуть</text>		
 	</string>
 	<string id="mp_select_ban">
-		<text>Select Player to Vote for Ban</text>
+		<text>Выберите игрока для которого назначить голосование чтобы его заблокировать</text>
 	</string>
 	<string id="mp_select_map">
-		<text>Select Map to Vote for Change</text>
-	</string>	
+		<text>Виберите карту для голосования</text>
+	</string>
+	<string id="mp_weather_clear">
+		<text>Чистая</text>
+	</string>
+	<string id="mp_weather_rain">
+		<text>Дожль</text>
+	</string>
+	<string id="mp_weather_night">
+		<text>Ночь</text>
+	</string>
+	<string id="mp_weather_cloudy">
+		<text>Облачная</text>
+	</string>
+	<string id="mp_enter_text">
+		<text>Введите текст для голосования</text>
+	</string>
+	<string id="mp_select_kick_player">
+		<text>Выберите игрока для которого назначить голосование чтобы его выкинуть</text>
+	</string>
+	<string id="mp_voted_yes">
+		<text>За</text>
+	</string>
+	<string id="mp_voted_no">
+		<text>Против</text>
+	</string>
+	<string id="mp_no_voted">
+		<text>Не прголосовали</text>
+	</string>
+	<string id="mp_vote_yes">
+		<text>За</text>
+	</string>
+	<string id="mp_vote_no">
+		<text>Против</text>
+	</string>
+	<sting id="mp_cancel">
+		<text>Отмена</text>
+	</sting>
+	<string id="mp_skin_selection">
+		<text>Выбор формы</text>
+	</string>
+	<string id="mp_team_selection">
+		<text>Выбор команды</text>
+	</string>
+	<string id="mp_auto_select">
+		<text>Автовыбор</text>
+	</string>
+	<string id="mp_back">
+		<text>Назад</text>
+	</string>
+	<string id="mp_map_desc">
+		<text>Описанние карты</text>
+	</string>
+	<string id="mp_next">
+		<text>Дальше</text>
+	</string>
 	
 </string_table>

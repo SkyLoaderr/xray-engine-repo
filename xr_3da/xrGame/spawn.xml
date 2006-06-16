@@ -5,7 +5,7 @@
 			<texture>ui_frame_mainDes</texture>
 		</background>
 		<caption x="42" y="4" width="330" height="32">
-			<text font="graffiti22" r="192" g="168" b="144" vert_align="c">Team Selection</text>
+			<text font="graffiti22" r="192" g="168" b="144" vert_align="c">mp_team_selection</text>
 		</caption>
 		<image_frames_tl x="53" y="56" width="332" height="57">
 			<texture>ui_TV_team_tl</texture>
@@ -33,7 +33,7 @@
 		
 		<btn_back x="51" y="504" width="157" height="48">
 			<texture>ui_button_main01</texture>
-			<text font="normal" align="c">Back</text>
+			<text font="normal" align="c">mp_back</text>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
 				<t r="180" g="153" b="155"/>				
@@ -43,7 +43,7 @@
 		</btn_back>		
 		<btn_autoselect x="394" y="504" width="157" height="48">
 			<texture>ui_button_main02</texture>
-			<text font="normal" align="c">Auto Select</text>
+			<text font="normal" align="c">mp_auto_select</text>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
 				<t r="180" g="153" b="155"/>				
@@ -53,7 +53,7 @@
 		</btn_autoselect>
 		<btn_spectator x="551" y="504" width="157" height="48">
 			<texture>ui_button_main03</texture>
-			<text font="normal" align="c">Spectator</text>
+			<text font="normal" align="c">mp_spectator</text>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
 				<t r="180" g="153" b="155"/>				

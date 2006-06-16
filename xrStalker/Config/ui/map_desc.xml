@@ -5,7 +5,7 @@
 			<texture>ui_frame_mainDes</texture>
 		</background>
 		<caption x="42" y="4" width="220" height="27">
-			<text font="graffiti22" r="192" g="168" b="144" vert_align="c">Map Description</text>
+			<text font="graffiti22" r="192" g="168" b="144" vert_align="c">mp_map_desc</text>
 		</caption>
 		<image_frames_1 x="53" y="44" width="220" height="277">
 			<texture>ui_TV_descr_b</texture>
@@ -26,7 +26,7 @@
 		
 		<btn_next x="394" y="504" width="157" height="48">
 			<texture>ui_button_main02</texture>
-			<text font="normal" align="c">Next</text>
+			<text font="normal" align="c">mp_next</text>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
 				<t r="180" g="153" b="155"/>				
@@ -36,7 +36,7 @@
 		</btn_next>
 		<btn_spectator x="551" y="504" width="157" height="48">
 			<texture>ui_button_main03</texture>
-			<text font="normal" align="c">Spectator</text>
+			<text font="normal" align="c">mp_spectator</text>
 			<text_color>
 				<e r="227" g="199" b="178"/>				
 				<t r="180" g="153" b="155"/>				

@@ -181,4 +181,70 @@
 	<string id="mp_text">
 		<text>Text</text>
 	</string>
+	<string id="mp_select_category">
+		<text>Select Category to Vote</text>
+	</string>
+	<string id="mp_select_kick">
+		<text>Select Player to Vote for Kick</text>		
+	</string>
+	<string id="mp_select_ban">
+		<text>Select Player to Vote for Ban</text>
+	</string>
+	<string id="mp_select_map">
+		<text>Select Map to Vote for Change</text>
+	</string>
+	<string id="mp_weather_clear">
+		<text>Clear</text>
+	</string>
+	<string id="mp_weather_rain">
+		<text>Rain</text>
+	</string>
+	<string id="mp_weather_night">
+		<text>Night</text>
+	</string>
+	<string id="mp_weather_cloudy">
+		<text>Cloudy</text>
+	</string>
+	<string id="mp_enter_text">
+		<text>Enter Text for Voting</text>
+	</string>
+	<string id="mp_select_kick_player">
+		<text>Select Player to Vote for Kick</text>
+	</string>
+	<string id="mp_voted_yes">
+		<text>Yes</text>
+	</string>
+	<string id="mp_voted_no">
+		<text>No</text>
+	</string>
+	<string id="mp_no_voted">
+		<text>Not voted</text>
+	</string>
+	<string id="mp_vote_yes">
+		<text>Vote Yes</text>
+	</string>
+	<string id="mp_vote_no">
+		<text>Vote No</text>
+	</string>
+	<sting id="mp_cancel">
+		<text>Cancel</text>
+	</sting>
+		<string id="mp_skin_selection">
+		<text>Skin selection</text>
+	</string>
+	<string id="mp_team_selection">
+		<text>Team Selection</text>
+	</string>
+	<string id="mp_auto_select">
+		<text>Auto select</text>
+	</string>
+	<string id="mp_back">
+		<text>Back</text>
+	</string>
+	<string id="mp_map_desc">
+		<text>Map description</text>
+	</string>
+	<string id="mp_next">
+		<text>Next</text>
+	</string>
 </string_table>
