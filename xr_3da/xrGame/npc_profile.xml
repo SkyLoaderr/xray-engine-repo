@@ -425,6 +425,9 @@
 	<character id="bar_Killer_sniper">
 		<class>bar_Killer_sniper</class>
 	</character>
+	<character id="bar_killer_rpg">
+		<class>bar_killer_rpg</class>
+	</character>
 	<character id="bar_Killer_sniper_on_enter">
 		<class>bar_Killer_sniper_on_enter</class>
 	</character>	
