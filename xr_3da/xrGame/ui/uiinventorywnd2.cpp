@@ -134,7 +134,7 @@ void CUIInventoryWnd::InitInventory()
 	std::sort		(ruck_list.begin(),ruck_list.end(),InventoryUtilities::GreaterRoomInRuck);
 
 	int i=1;
-	string16	tmp_str;
+//.	string16	tmp_str;
 	for(it=ruck_list.begin(),it_e=ruck_list.end(); it!=it_e; ++it,++i) 
 	{
 		CUICellItem* itm			= create_cell_item(*it);
