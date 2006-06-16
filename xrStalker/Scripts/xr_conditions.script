@@ -100,13 +100,13 @@ end
 -- параметры: [sid:def*] def=true|false
 -- * параметр не обязателен
 function one_obj_in_zone(actor, zone, p)
-    local def_offline = (p[2] ~= "false") -- default (true) result if npc in offline
+    --local def_offline = (p[2] ~= "false") -- default (true) result if npc in offline
 	local obj1 = level_object_by_sid(p[1])
 
     if obj1 then -- npc is online
         return zone:inside(obj1:position())
     else -- npc is offline
-        return def_offline
+        return (p[2] ~= "false") -- default (true) result if npc in offline
     end
 end
 
