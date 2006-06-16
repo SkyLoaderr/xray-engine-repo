@@ -401,5 +401,6 @@
     <info_portion id="bar_arena_fight_begin"></info_portion>
     <info_portion id="bar_arena_territory_death"></info_portion>
      <info_portion id="bar_barman_start_room"></info_portion>
+     <info_portion id="heli_hunt_start"></info_portion>
     
 </game_information_portions>
