@@ -728,6 +728,16 @@ path_walk = guard_1_walk
 path_look = guard_1_look
 def_state_moving = assault
 soundgroup = bar_freedom_attack1
+combat_ignore_cond = always
+on_info = {+bar_ecolog_crush_heli_down} camper@bar_freedom_attack_guard_rpg
+
+[camper@bar_freedom_attack_guard_rpg]
+path_walk = guard_1_walk
+path_look = guard_1_look
+heli_hunter = true
+def_state_moving = assault
+def_state_standing = threat_na
+soundgroup = bar_freedom_attack1
 
 [logic@bar_freedom_attack_guard_c1]
 active = camper1@bar_freedom_attack_guard_1
