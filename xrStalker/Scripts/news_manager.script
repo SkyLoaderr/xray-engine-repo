@@ -76,8 +76,9 @@ news = {
 	o_soznanie_text					= sound_object([[characters_voice\scenario\sarcofag\o_soznanie_call]]),
 
 
--- pda sounds
-    val_rob_leader_jeer_1		    = sound_object([[characters_voice\scenario\val\rob_leader_jeer_1_p]]),
+-- dublicate pda sounds for remark scheme
+    val_rob_leader_jeer_1           = sound_object([[characters_voice\scenario\val\rob_leader_jeer_1_p]]),
+    val_rob_leader_call             = sound_object([[characters_voice\scenario\val\rob_call_1_p]]),
 
     pri_followers_leader_phrase1_1  = sound_object([[characters_voice\scenario\pri\followers_leader_phrase1_1_p]]),
     pri_followers_leader_phrase1_2  = sound_object([[characters_voice\scenario\pri\followers_leader_phrase1_2_p]]),
