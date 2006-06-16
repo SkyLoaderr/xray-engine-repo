@@ -175,6 +175,7 @@ void CLightProjector::calculate	()
 		Fvector			C;		O->renderable.xform.transform_tiny		(C,O->renderable.visual->vis.sphere.P);
 		R.O						= O;
 		R.C						= C;
+		R.C.y					+= O->renderable.visual->vis.sphere.R*0.1f;		//. YURA: 0.1 can be more
 		R.BB.xform				(O->renderable.visual->vis.box,O->renderable.xform).scale(0.1f);
 		R.dwTimeValid			= Device.dwTimeGlobal + ::Random.randI(time_min,time_max);
 		LT->shadow_recv_slot	= c_it; 
