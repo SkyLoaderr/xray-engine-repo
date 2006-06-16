@@ -90,7 +90,7 @@ void CUIInventoryWnd::InitInventory_delayed()
 {
 	m_b_need_reinit = true;
 }
-
+//. #include "UICellCustomItems.h"
 void CUIInventoryWnd::InitInventory() 
 {
 	CInventoryOwner *pInvOwner	= smart_cast<CInventoryOwner*>(Level().CurrentEntity());
@@ -133,9 +133,15 @@ void CUIInventoryWnd::InitInventory()
 	ruck_list		= m_pInv->m_ruck;
 	std::sort		(ruck_list.begin(),ruck_list.end(),InventoryUtilities::GreaterRoomInRuck);
 
-	for(it=ruck_list.begin(),it_e=ruck_list.end(); it!=it_e; ++it) 
+	int i=1;
+	string16	tmp_str;
+	for(it=ruck_list.begin(),it_e=ruck_list.end(); it!=it_e; ++it,++i) 
 	{
 		CUICellItem* itm			= create_cell_item(*it);
+//.		itoa						(i,tmp_str,10);
+//.		CBuyItemCustomDrawCell* p	= xr_new<CBuyItemCustomDrawCell>(tmp_str,HUD().Font().pFontLetterica16Russian);
+//.		itm->SetCustomDraw			(p);
+
 		m_pUIBagList->SetItem		(itm);
 	}
 

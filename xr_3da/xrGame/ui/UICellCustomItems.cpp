@@ -230,3 +230,17 @@ bool CUIWeaponCellItem::EqualTo(CUICellItem* itm)
 	
 	return							b_addons && b_place;
 }
+
+CBuyItemCustomDrawCell::CBuyItemCustomDrawCell	(LPCSTR str, CGameFont* pFont)
+{
+	m_pFont		= pFont;
+	VERIFY		(xr_strlen(str)<16);
+	strcpy		(m_string,str);
+}
+
+void CBuyItemCustomDrawCell::OnDraw(CUICellItem* cell)
+{
+	Fvector2 pos = cell->GetAbsolutePos	();
+	m_pFont->Out						(pos.x, pos.y, m_string);
+	m_pFont->OnRender					();
+}

@@ -10,11 +10,13 @@ CUICellItem::CUICellItem()
 {
 	m_pParentList	= NULL;
 	m_pData			= NULL;
+	m_custom_draw	= NULL;
 }
 
 CUICellItem::~CUICellItem()
 {
 	delete_data(m_childs);
+	delete_data(m_custom_draw);
 }
 
 int kk = 0;
@@ -47,6 +49,8 @@ void CUICellItem::InitInternals()
 void CUICellItem::Draw()
 {
 	inherited::Draw();
+	if(m_custom_draw) 
+		m_custom_draw->OnDraw(this);
 };
 
 bool CUICellItem::OnMouse(float x, float y, EUIMessages mouse_action)

@@ -5,6 +5,14 @@
 
 class CUIDragItem;
 class CUIDragDropListEx;
+class CUICellItem;
+
+class ICustomDrawCell
+{
+public:
+	virtual				~ICustomDrawCell	()	{};
+	virtual void		OnDraw				(CUICellItem* cell)	= 0;
+};
 
 class CUICellItem :public CUIStatic
 {
@@ -15,6 +23,7 @@ protected:
 
 	CUIDragDropListEx*		m_pParentList;
 	Ivector2				m_grid_size;
+	ICustomDrawCell*		m_custom_draw;
 	virtual void			UpdateItemText			();
 public:
 							CUICellItem				();
@@ -38,7 +47,7 @@ public:
 	virtual		void		InitInternals			(); //tmp
 	CUIDragDropListEx*		OwnerList				()						{return m_pParentList;}
 				void		SetOwnerList			(CUIDragDropListEx* p);
-
+				void		SetCustomDraw			(ICustomDrawCell* c)	{m_custom_draw = c;}
 				void*		m_pData;
 };
 

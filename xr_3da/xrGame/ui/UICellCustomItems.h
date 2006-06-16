@@ -47,3 +47,12 @@ public:
 	virtual		bool			EqualTo						(CUICellItem* itm);
 };
 
+class CBuyItemCustomDrawCell :public ICustomDrawCell
+{
+	CGameFont*			m_pFont;
+	string16			m_string;
+public:
+						CBuyItemCustomDrawCell	(LPCSTR str, CGameFont* pFont);
+	virtual void		OnDraw					(CUICellItem* cell);
+
+};
