@@ -2299,6 +2299,9 @@
 					<File
 						RelativePath=".\Config\scripts\val_underground_door.ltx">
 					</File>
+					<File
+						RelativePath=".\Config\scripts\val_x18_exit_zone.ltx">
+					</File>
 				</Filter>
 				<Filter
 					Name="Tests"
@@ -2375,9 +2378,6 @@
 				<Filter
 					Name="Radar"
 					Filter="">
-					<File
-						RelativePath=".\Config\scripts\bun_deactivate_radar.ltx">
-					</File>
 					<File
 						RelativePath=".\Config\scripts\bun_psy_timer.ltx">
 					</File>
