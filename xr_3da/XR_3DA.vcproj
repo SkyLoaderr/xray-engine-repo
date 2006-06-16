@@ -1139,6 +1139,49 @@
 						RelativePath=".\Text_Console_WndProc.cpp">
 					</File>
 				</Filter>
+				<Filter
+					Name="DebugDraw"
+					Filter="">
+					<File
+						RelativePath=".\D3DUtils.cpp">
+					</File>
+					<File
+						RelativePath=".\D3DUtils.h">
+					</File>
+					<File
+						RelativePath=".\DrawUtils.h">
+					</File>
+					<File
+						RelativePath=".\du_box.cpp">
+					</File>
+					<File
+						RelativePath=".\du_box.h">
+					</File>
+					<File
+						RelativePath=".\du_cone.cpp">
+					</File>
+					<File
+						RelativePath=".\du_cone.h">
+					</File>
+					<File
+						RelativePath=".\du_cylinder.cpp">
+					</File>
+					<File
+						RelativePath=".\du_cylinder.h">
+					</File>
+					<File
+						RelativePath=".\du_sphere.cpp">
+					</File>
+					<File
+						RelativePath=".\du_sphere.h">
+					</File>
+					<File
+						RelativePath=".\du_sphere_part.cpp">
+					</File>
+					<File
+						RelativePath=".\du_sphere_part.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Backend"

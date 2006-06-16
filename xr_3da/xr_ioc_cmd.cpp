@@ -522,9 +522,14 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"snd_efx",				&psSoundFlags,		ss_EAX		);
 	CMD4(CCC_Integer,	"snd_targets",			&psSoundTargets,	4,32		);
 	CMD4(CCC_Integer,	"snd_cache_size",		&psSoundCacheSizeMB,4,32		);
-	CMD3(CCC_Mask,		"snd_stats",			&psSoundFlags,		ss_Stats	);
+	CMD3(CCC_Mask,		"snd_stats",			&g_stats_flags,		st_sound	);
+	CMD3(CCC_Mask,		"snd_stats_min_dist",	&g_stats_flags,		st_sound_min_dist );
+	CMD3(CCC_Mask,		"snd_stats_max_dist",	&g_stats_flags,		st_sound_max_dist );
+	CMD3(CCC_Mask,		"snd_stats_ai_dist",	&g_stats_flags,		st_sound_ai_dist );
+	CMD3(CCC_Mask,		"snd_stats_info_name",	&g_stats_flags,		st_sound_info_name );
+	CMD3(CCC_Mask,		"snd_stats_info_object",&g_stats_flags,		st_sound_info_object );
 
-#ifdef DEBUG
+	#ifdef DEBUG
 	CMD4(CCC_Integer,	"error_line_count",		&g_ErrorLineCount,	6,	1024	);
 #endif
 

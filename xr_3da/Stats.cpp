@@ -5,8 +5,10 @@
 #include "ISpatial.h"
 #include "IGame_Persistent.h"
 #include "render.h"
+#include "xr_object.h"
 
-int	g_ErrorLineCount = 15;
+int		g_ErrorLineCount	= 15;
+Flags32 g_stats_flags		= {0};
 
 // stats
 DECLARE_RP(Stats);
@@ -50,10 +52,12 @@ CStats::CStats	()
 	pFont				= 0;
 	fMem_calls			= 0;
 	RenderDUMP_DT_Count = 0;
+	Device.seqRender.Add		(this,REG_PRIORITY_LOW-1000);
 }
 
 CStats::~CStats()
 {
+	Device.seqRender.Remove		(this);
 	xr_delete		(pFont);
 }
 
@@ -301,12 +305,6 @@ void CStats::Show()
 		pFont->OnRender					();
 	}
 
-	if (psSoundFlags.is(ss_Stats)){
-		CSound_stats_ext				snd_stat_ext;
-//.		::Sound->statistic				(0,&snd_stat_ext);
-
-	}
-
 #ifdef DEBUG
 	//////////////////////////////////////////////////////////////////////////
 	// PERF ALERT
@@ -441,4 +439,41 @@ void CStats::OnDeviceCreate			()
 void CStats::OnDeviceDestroy		()
 {
 	xr_delete	(pFont);
+}
+
+void CStats::OnRender				()
+{
+#ifdef DEBUG
+	if (g_stats_flags.is(st_sound)){
+		CSound_stats_ext				snd_stat_ext;
+		::Sound->statistic				(0,&snd_stat_ext);
+		CSound_stats_ext::item_vec_it	_I = snd_stat_ext.items.begin();
+		CSound_stats_ext::item_vec_it	_E = snd_stat_ext.items.end();
+		for (;_I!=_E;_I++){
+			const CSound_stats_ext::SItem& item = *_I;
+			if (item._3D){
+				RCache.set_xform_world(Fidentity);
+				RCache.set_Shader		(Device.m_SelectionShader);
+				RCache.set_c			("tfactor",1,1,1,1);
+				DU.DrawCross			(item.params.position, 0.5f, 0xFF0000FF, true );
+				if (g_stats_flags.is(st_sound_min_dist))
+					DU.DrawSphere		(Fidentity, item.params.position, item.params.min_distance, 0x400000FF,	0xFF0000FF, true, true);
+				if (g_stats_flags.is(st_sound_max_dist))
+					DU.DrawSphere		(Fidentity, item.params.position, item.params.max_distance, 0x4000FF00,	0xFF008000, true, true);
+				xr_string out_txt		= (g_stats_flags.is(st_sound_info_name))?item.name.c_str():"";
+				if (item.game_object){
+					if (g_stats_flags.is(st_sound_ai_dist))
+						DU.DrawSphere	(Fidentity, item.params.position, item.params.max_ai_distance, 0x80FF0000,0xFF800000,true,true);
+					if (g_stats_flags.is(st_sound_info_object)){
+						out_txt			+= "  (";
+						out_txt			+= item.game_object->cNameSect().c_str();
+						out_txt			+= ")";
+					}
+				}
+				if (g_stats_flags.is_any(st_sound_info_name|st_sound_info_object))
+					DU.OutText			(item.params.position, out_txt.c_str(),0xFFFFFFFF,0xFF000000);
+			}
+		}
+	}
+#endif
 }

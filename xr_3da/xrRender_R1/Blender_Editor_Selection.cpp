@@ -52,7 +52,7 @@ void	CBlender_Editor_Selection::Compile	(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		C.r_Pass	("simple_color","simple_color",FALSE,TRUE,FALSE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA);
+		C.r_Pass	("editor","simple_color",FALSE,TRUE,FALSE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA);
 		C.r_End		();
 	}
 }

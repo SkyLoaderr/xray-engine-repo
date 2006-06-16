@@ -52,7 +52,7 @@ void CBlender_Editor_Wire::Compile	(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		C.r_Pass	("simple_color","simple_color",FALSE,TRUE,TRUE);
+		C.r_Pass	("editor","simple_color",FALSE,TRUE,TRUE);
 		C.r_End		();
 	}
 }
