@@ -52,6 +52,7 @@
 		<objective>
 			<text>tutorial_help_wounded_2</text>
 			<map_location_type hint="tutorial_wounded">green_location</map_location_type>
+			<map_location_hidden>1</map_location_hidden>
 			<object_story_id>Escape_tutorial_wounded</object_story_id>
 			<infoportion_complete>tutorial_wounded_give_info</infoportion_complete>
 		</objective>
@@ -135,35 +136,6 @@
 			<infoportion_complete>esc_kill_bandits_quest_done</infoportion_complete>
 		</objective>
 	</game_task>
-
-	<game_task id="esc_bandits_factory">
-		<title>esc_bandits_on_factory</title>
-		<objective>
-			<text>esc_bandits_on_factory_0</text>
-			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>esc_kill_bandits_quest_done</infoportion_complete>
-		</objective>
-		<objective>
-			<text>esc_bandits_on_factory_3</text>
-			<map_location_type hint="volk">green_location</map_location_type>
-			<object_story_id>Escape_novice_lager_volk</object_story_id>
-			<infoportion_complete>escape_dynamite_start</infoportion_complete>
-			<function_fail>escape_tasks.task_volk_fail</function_fail>
-		</objective>
-		<objective>
-			<text>esc_bandits_on_factory_1</text>
-			<map_location_type hint="factory_bandits">green_location</map_location_type>
-			<object_story_id>esc_bandits_factory</object_story_id>
-			<infoportion_complete>esc_kill_bandits_quest_kill</infoportion_complete>
-		</objective>		
-		<objective>
-			<text>esc_bandits_on_factory_2</text>
-			<map_location_type hint="escape_trader">blue_location</map_location_type>
-			<object_story_id>Escape_Trader</object_story_id>
-			<infoportion_complete>esc_kill_bandits_quest_done</infoportion_complete>
-		</objective>
-	</game_task>
-	
 
 	<game_task id="esc_defend_lager">
 		<title>esc_defend_lager_from_killers</title>

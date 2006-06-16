@@ -51,6 +51,7 @@
 			ammo_5.45x39_fmj \n
 			device_torch \n
 			medkit \n
+			hand_radio \n
 		</supplies>
 		
 
@@ -540,6 +541,7 @@
 			[spawn] \n
 			wpn_toz34 \n
 			ammo_12x70_buck \n
+			hand_radio \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
 		</supplies>
