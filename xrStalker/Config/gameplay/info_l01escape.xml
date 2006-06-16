@@ -48,6 +48,7 @@
 	<info_portion id="tutorial_wounded_fail"></info_portion>
 	<info_portion id="tutorial_wounded_end"></info_portion>
 	<info_portion id="tutorial_wounded_heal"></info_portion>
+	<info_portion id="esc_petruha_report"></info_portion>
 	<info_portion id="esc_lager_friendship"></info_portion>
 	<info_portion id="tutorial_end"></info_portion>
 	<info_portion id="tutorial_wounded_volk_greet"></info_portion>
