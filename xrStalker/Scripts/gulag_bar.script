@@ -601,8 +601,11 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_guard_1", 
 			idle = 0,
-			prior = 6, state = {0}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = ""
+			prior = 9, state = {0}, squad = squad, group = groups[0],
+			in_rest = "",position_threshold = 100, out_rest = "",
+            predicate = function(obj_info)
+				         	return obj_info.profile_name == "bar_killer_rpg"
+			            end
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_guard_2", 
