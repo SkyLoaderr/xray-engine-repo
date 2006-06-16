@@ -191,5 +191,15 @@
     <string id="ui_inv_money">
 		<text>Деньги</text>
     </string>
+    
+    <string id="ui_inv_ok">
+		<text>Ok</text>
+    </string>
+    <string id="ui_inv_cancel">
+		<text>Отмена</text>
+    </string>
+    <string id="ui_inv_clear">
+		<text>Очистить</text>
+    </string>
         
 </string_table>

@@ -815,6 +815,9 @@
 							RelativePath=".\Config\text\rus\ui_st_mm_mp.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\rus\ui_st_mp.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\rus\ui_st_pda.xml">
 						</File>
 					</Filter>
@@ -1131,6 +1134,9 @@
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\ui_st_mm_mp.xml">
+						</File>
+						<File
+							RelativePath=".\Config\text\eng\ui_st_mp.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\ui_st_pda.xml">
@@ -1633,6 +1639,9 @@
 					Name="item_infos"
 					Filter="">
 					<File
+						RelativePath=".\Config\ui\buy_mp_item.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\carbody_item.xml">
 					</File>
 					<File
@@ -1664,9 +1673,6 @@
 				<Filter
 					Name="mp"
 					Filter="">
-					<File
-						RelativePath=".\Config\ui\buy_mp_item.xml">
-					</File>
 					<File
 						RelativePath=".\Config\ui\inventoryMP.xml">
 					</File>

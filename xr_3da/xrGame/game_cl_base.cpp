@@ -10,6 +10,7 @@
 #include "ui/UIMainIngameWnd.h"
 #include "UI/UIGameTutorial.h"
 #include "UI/UIMessagesWindow.h"
+#include "string_table.h"
 
 game_cl_GameState::game_cl_GameState()
 {
@@ -167,6 +168,7 @@ void	game_cl_GameState::net_signal		(NET_Packet& P)
 
 void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
+	CStringTable st;
 
 	string512 Text;
 	char	Color_Main[]	= "%c<255,192,192,192>";
@@ -179,7 +181,7 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			string64 PlayerName;
 			P.r_stringZ(PlayerName);
 			
-			sprintf(Text, "%s%s %sconnected",Color_Teams[0],PlayerName,Color_Main);
+			sprintf(Text, "%s%s %s%s",Color_Teams[0],PlayerName,Color_Main,*st.translate("mp_connected"));
 			CommonMessageOut(Text);
 			//---------------------------------------
 			Msg("%s connected", PlayerName);
@@ -189,7 +191,7 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			string64 PlayerName;
 			P.r_stringZ(PlayerName);
 
-			sprintf(Text, "%s%s %sdisconnected",Color_Teams[0],PlayerName,Color_Main);
+			sprintf(Text, "%s%s %s%s",Color_Teams[0],PlayerName,Color_Main,*st.translate("mp_disconnected"));
 			CommonMessageOut(Text);
 			//---------------------------------------
 			Msg("%s disconnected", PlayerName);
@@ -199,7 +201,7 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			string64 PlayerName;
 			P.r_stringZ(PlayerName);
 
-			sprintf(Text, "%s%s %sentered the game",Color_Teams[0],PlayerName,Color_Main);
+			sprintf(Text, "%s%s %s%s",Color_Teams[0],PlayerName,Color_Main,*st.translate("mp_entered_game"));
 			CommonMessageOut(Text);
 		}break;
 	default:

@@ -18,6 +18,7 @@
 #include "ui/UIVote.h"
 #include "dinput.h"
 #include "gamepersistent.h"
+#include "string_table.h"
 
 #include "game_cl_deathmatch_snd_messages.h"
 #include "game_base_menu_events.h"
@@ -416,6 +417,8 @@ string16 places[] = {
 
 void game_cl_Deathmatch::shedule_Update			(u32 dt)
 {
+	CStringTable st;
+
 	inherited::shedule_Update(dt);
 	//fake	
 	if(!m_game_ui && HUD().GetUI() ) m_game_ui = smart_cast<CUIGameDM*>( HUD().GetUI()->UIGame() );
@@ -482,15 +485,15 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 					ConvertTime2String(&S, TimeRemains);
 					string1024 tmpStr = "";
 					if (TimeRemains > 10000)
-						strconcat(tmpStr, "Time To Start: ", S);
+						strconcat(tmpStr, *st.translate("mp_time2start"), S);
 					else
 					{
 						if (TimeRemains < 1000)
-							strconcat(tmpStr, "GO!", "");
+							strconcat(tmpStr, *st.translate("mp_go"), "");
 						else
 						{
 							_itoa(TimeRemains/1000, S, 10);
-							strconcat(tmpStr, "Ready ... ", S);
+							strconcat(tmpStr, *st.translate("mp_ready"), S);
 						}
 					};
 					
@@ -506,8 +509,8 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 						)
 					{
 //						m_game_ui->SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
-						m_game_ui->SetPressJumpMsgCaption("Press Jump to start");
-						m_game_ui->SetPressBuyMsgCaption("Press 'B' to access buy menu");
+						m_game_ui->SetPressJumpMsgCaption(*st.translate("mp_press_jump2start"));
+						m_game_ui->SetPressBuyMsgCaption(*st.translate("mp_press_to_buy"));
 					};
 				};
 
@@ -543,7 +546,8 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 						if (ps->m_bCurrentVoteAgreed == 1) NumAgreed++;
 					}
 
-					sprintf(VoteTimeResStr, "Time Left : %d:%d; Agreed %.2f%", MinitsLeft, SecsLeft, float(NumAgreed)/players.size());
+
+					sprintf(VoteTimeResStr, /*"Time Left : %d:%d; Agreed %.2f%"*/ *st.translate("mp_timeleft"), MinitsLeft, SecsLeft, float(NumAgreed)/players.size());
 					if (m_game_ui)
 						m_game_ui->SetVoteTimeResultMsg(VoteTimeResStr);
 				};
@@ -558,7 +562,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 						string64 S;
 						ConvertTime2String(&S, Rest);
 						string128 FullS;
-						sprintf(FullS, "Time to Respawn : %s", S);
+						sprintf(FullS, "%s : %s", *st.translate("mp_time2respawn"), S);
 
 						m_game_ui->SetForceRespawnTimeCaption(FullS);
 					};
@@ -583,7 +587,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 //			HUD().GetUI()->HideIndicators();
 //			GetUICursor()->Hide();
 			string128 resstring;
-			sprintf(resstring, "Player %s wins the match!", WinnerName);
+			sprintf(resstring, *st.translate("mp_player_wins"), WinnerName);
 			m_game_ui->SetRoundResultCaption(resstring);
 		}break;
 	};
@@ -698,6 +702,7 @@ bool	game_cl_Deathmatch::OnKeyboardRelease		(int key)
 
 void game_cl_Deathmatch::OnVoteStart				(NET_Packet& P)
 {
+	CStringTable st;
 	inherited::OnVoteStart(P);
 
 	string1024	Command = "";
@@ -709,7 +714,7 @@ void game_cl_Deathmatch::OnVoteStart				(NET_Packet& P)
 	if(m_game_ui)
 	{
 		string1024 VoteStr;
-		sprintf(VoteStr, "Voting \"%s\" has been started by %s.", Command, Player);		
+		sprintf(VoteStr, *st.translate("mp_voting_started"), Command, Player);		
 
 		m_game_ui->SetVoteMessage(VoteStr);
 		m_game_ui->SetVoteTimeResultMsg("");

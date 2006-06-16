@@ -22,6 +22,7 @@
 #include "Inventory.h"
 #include "ActorCondition.h"
 #include "ui/TeamInfo.h"
+#include "string_table.h"
 
 #define TEAM0_MENU		"artefacthunt_team0"
 #define	TEAM1_MENU		"artefacthunt_team1"
@@ -158,10 +159,13 @@ void game_cl_ArtefactHunt::net_import_state	(NET_Packet& P)
 		dReinforcementTime = 0;
 }
 
+#include "string_table.h"
 
 void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
+	CStringTable st;
 	string512 Text;
+	string512 tmp;
 //	LPSTR	Color_Teams[3]		= {"%c<255,255,255,255>", "%c<255,64,255,64>", "%c<255,64,64,255>"};
 	char	Color_Main[]		= "%c<255,192,192,192>";
 	char	Color_Artefact[]	= "%c<255,255,255,0>";
@@ -178,7 +182,9 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			game_PlayerState* pPlayer = GetPlayerByGameID(PlayerID);
 			if (!pPlayer) break;
 
-			sprintf(Text, "%s%s %shas taken the %sArtefact", 
+			sprintf(tmp, "%s%s", "%s%s %s", *st.translate("mp_has_tak_art"));
+
+			sprintf(Text, tmp, 
 				CTeamInfo::GetTeam_color_tag(int(Team)), 
 				pPlayer->name, 
 				Color_Main,
@@ -206,7 +212,9 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			game_PlayerState* pPlayer = GetPlayerByGameID(PlayerID);
 			if (!pPlayer) break;
 
-			sprintf(Text, "%s%s %shas dropped the %sArtefact", 
+            sprintf(tmp, "%s%s", "%s%s %s", *st.translate("mp_has_drop_art"));
+
+			sprintf(Text, tmp, 
 				CTeamInfo::GetTeam_color_tag(int(Team)), 
 				pPlayer->name, 
 				Color_Main,
@@ -225,7 +233,9 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			game_PlayerState* pPlayer = GetPlayerByGameID(PlayerID);
 			if (!pPlayer) break;
 
-			sprintf(Text, "%s%s %sscores", 
+			sprintf(tmp, "%s%s", "%s%s %s", *st.translate("mp_scores"));
+
+			sprintf(Text, tmp, 
 				CTeamInfo::GetTeam_color_tag(int(Team)), 
 				CTeamInfo::GetTeam_name(int(Team)),
 				Color_Main);
@@ -245,8 +255,8 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		}break;
 	case GAME_EVENT_ARTEFACT_SPAWNED: //ahunt
 		{
-			sprintf(Text, "%sArtefact has been spawned. Bring it to your base to score.", 
-				Color_Main);
+			sprintf(Text, "%s%s", 
+				Color_Main, *st.translate("mp_art_spowned"));
 			CommonMessageOut(Text);
 
 			PlaySndMessage(ID_NEW_AF);
@@ -254,8 +264,8 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		}break;
 	case GAME_EVENT_ARTEFACT_DESTROYED:  //ahunt
 		{
-			sprintf(Text, "%sArtefact has been destroyed.", 
-				Color_Main);
+			sprintf(Text, "%s%s", 
+				Color_Main, *st.translate("mp_art_destroyed"));
 			u16 ArtefactID = P.r_u16();
 			//-------------------------------------------
 			CObject* pObj = Level().Objects.net_Find(ArtefactID);
@@ -345,6 +355,8 @@ void game_cl_ArtefactHunt::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 
 void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 {
+	CStringTable st;
+	string1024 msg;
 	inherited::shedule_Update		(dt);
 	
 	//out game information
@@ -379,14 +391,15 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 						if (!(pCurBuyMenu && pCurBuyMenu->IsShown()) && 
 							!(pCurSkinMenu && pCurSkinMenu->IsShown()))
 						{					
-							if(m_game_ui) m_game_ui->SetBuyMsgCaption("Press B to access Buy Menu");
+							sprintf(msg, *st.translate("mp_press_to_buy"), "B");
+							if(m_game_ui) m_game_ui->SetBuyMsgCaption(msg);
 						};
 					}					
 					
 					if (m_game_ui)
 					{
 						if (local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
-							m_game_ui->SetPressJumpMsgCaption("Press Fire to become a Spectator");
+							m_game_ui->SetPressJumpMsgCaption(*st.translate("mp_press_fire2spectator"));
 						else
 							m_game_ui->SetPressJumpMsgCaption("");
 					};
@@ -401,7 +414,7 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 							if (!pBuySpawnMsgBox->IsShown() && 							
 								(local_player->money_for_round+m_iSpawn_Cost)>=0)
 							{
-								if (m_game_ui) m_game_ui->SetPressJumpMsgCaption("Press Jump to pay for immediate spawn");
+								if (m_game_ui) m_game_ui->SetPressJumpMsgCaption(*st.translate("mp_press_jump2pay_spaw"));
 							}
 							else
 							{
@@ -410,16 +423,16 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 						}
 						else
 						{
-							if (m_game_ui) m_game_ui->SetPressJumpMsgCaption("Press Jump to spawn immediately");
+							if (m_game_ui) m_game_ui->SetPressJumpMsgCaption(*st.translate("mp_press_jump2spawn"));
 						};
 					}
 					else
 					{
 						if (!m_bTeamSelected)
-							if (m_game_ui) m_game_ui->SetPressJumpMsgCaption("Press Jump to select team");
+							if (m_game_ui) m_game_ui->SetPressJumpMsgCaption(*st.translate("mp_press_jump2select_team"));
 							else
 								if (!m_bSkinSelected)
-									if (m_game_ui) m_game_ui->SetPressJumpMsgCaption("Press Jump to select skin");
+									if (m_game_ui) m_game_ui->SetPressJumpMsgCaption(*st.translate("mp_press_jump2select_skin"));
 					}
 				};				
 			}
@@ -655,6 +668,7 @@ void	game_cl_ArtefactHunt::UpdateMapLocations		()
 
 bool	game_cl_ArtefactHunt::NeedToSendReady_Spectator			(int key, game_PlayerState* ps)
 {
+	CStringTable st;
 	bool res = ( GAME_PHASE_PENDING	== Phase() && kWPN_FIRE == key) || 
 		( (/*kWPN_FIRE == key || */kJUMP == key) && GAME_PHASE_INPROGRESS	== Phase() && 
 		CanBeReady());
@@ -665,7 +679,7 @@ bool	game_cl_ArtefactHunt::NeedToSendReady_Spectator			(int key, game_PlayerStat
 		local_player && (local_player->money_for_round+m_iSpawn_Cost)>=0) 
 	{
 		string1024	BuySpawnText;
-		sprintf(BuySpawnText, "You have %d$. You can buy a spawn for %d$. Press Yes to pay.", 
+		sprintf(BuySpawnText, *st.translate("mp_press_yes2pay"), 
 			abs(local_player->money_for_round), abs(m_iSpawn_Cost));
 		pBuySpawnMsgBox->SetText(BuySpawnText);
 

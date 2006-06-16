@@ -100,6 +100,7 @@ void				game_cl_TeamDeathmatch::net_import_state		(NET_Packet& P)
 }
 void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
+	CStringTable st;
 	string512 Text;
 //	LPSTR	Color_Teams[3]	= {"%c<255,255,255,255>", "%c<255,64,255,64>", "%c<255,64,64,255>"};
 	char	Color_Main[]	= "%c<255,192,192,192>";
@@ -113,16 +114,17 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			u16 Team;
 			P.r_u16		(Team);
 
-			sprintf(Text, "%s%s %sjoined %s%s",
+			sprintf(Text, "%s%s %s%s %s%s",
 							"",//no color
 							PlayerName,
 							Color_Main,
-							CTeamInfo::GetTeam_color_tag(int(Team)),
+							*st.translate("mp_joined"),
+							CTeamInfo::GetTeam_color_tag(int(Team)),							
 							CTeamInfo::GetTeam_name(int(Team)));
 			CommonMessageOut(Text);
 			//---------------------------------------
-			Msg("%s joined %s", PlayerName, 
-				CTeamInfo::GetTeam_name(int(Team)));	 // caution!!! : using of shared_str - don't forget about (*)
+			Msg("%s %s %s", PlayerName, *st.translate("mp_joined"),
+				CTeamInfo::GetTeam_name(int(Team)));
 		}break;
 
 	case PLAYER_CHANGE_TEAM://tdm
@@ -135,15 +137,16 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			game_PlayerState* pPlayer = GetPlayerByGameID(PlayerID);
 			if (!pPlayer) break;
 
-			sprintf(Text, "%s%s %shas switched to %s%s", 
+			sprintf(Text, "%s%s %s%s %s%s", 
 							CTeamInfo::GetTeam_color_tag(int(OldTeam)), 
 							pPlayer->name, 
 							Color_Main, 
+							*st.translate("mp_switched_to"),
 							CTeamInfo::GetTeam_color_tag(int(NewTeam)), 
 							CTeamInfo::GetTeam_name(int(NewTeam)));
 			CommonMessageOut(Text);
 			//---------------------------------------
-			Msg("%s has switched to %s", pPlayer->name, CTeamInfo::GetTeam_name(int(NewTeam)));
+			Msg("%s *s %s", pPlayer->name, *st.translate("mp_switched_to"), CTeamInfo::GetTeam_name(int(NewTeam)));
 		}break;
 
 	default:
@@ -360,8 +363,14 @@ char*	game_cl_TeamDeathmatch::getTeamSection(int Team)
 	};
 };
 
+#include "string_table.h"
+#include "ui/teaminfo.h"
+
 void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 {
+	CStringTable st;
+	string512	msg;
+
 	inherited::shedule_Update(dt);
 
 	if(!m_game_ui && HUD().GetUI() ) m_game_ui = smart_cast<CUIGameTDM*>( HUD().GetUI()->UIGame() );
@@ -374,11 +383,13 @@ void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 	{
 	case GAME_PHASE_TEAM1_SCORES:
 		{
-			m_game_ui->SetRoundResultCaption("Team Green WINS!");
+			sprintf(msg, /*team %s wins*/ *st.translate("mp_team_wins"), CTeamInfo::GetTeam_name(1));
+			m_game_ui->SetRoundResultCaption(msg);
 		}break;
 	case GAME_PHASE_TEAM2_SCORES:
 		{
-			m_game_ui->SetRoundResultCaption("Team Blue WINS!");
+			sprintf(msg, /*team %s wins*/ *st.translate("mp_team_wins"), CTeamInfo::GetTeam_name(2));
+			m_game_ui->SetRoundResultCaption(msg);
 		}break;
 	case GAME_PHASE_INPROGRESS:
 		{

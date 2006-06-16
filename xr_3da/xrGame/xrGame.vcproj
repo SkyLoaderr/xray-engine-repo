@@ -10959,12 +10959,6 @@
 					Name="BuyWeaponWnd"
 					Filter="">
 					<File
-						RelativePath=".\ui\UIAutobuyIndication.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIAutobuyIndication.h">
-					</File>
-					<File
 						RelativePath=".\ui\UIDragDropItemMP.cpp">
 					</File>
 					<File
@@ -11023,6 +11017,22 @@
 						</File>
 						<File
 							RelativePath=".\ui\UIWpnParams.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="buy_wnd"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIBagWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIBagWnd.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIBuyWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIBuyWnd.h">
 						</File>
 					</Filter>
 				</Filter>

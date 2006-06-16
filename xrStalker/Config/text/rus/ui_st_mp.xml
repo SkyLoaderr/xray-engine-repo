@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<string_table>
+	<string id="mp_team_free_stalkers">
+		<text>Свобода</text>
+	</string>
+	<string id="mp_headhuntrs">
+		<text>Наемники</text>
+	</string>
+	<string id="mp_press_to_buy">
+		<text>Нажмите %s для доступа к меню покупки</text>
+	</string>
+	<string id="mp_name">
+		<text>имя</text>
+	</string>
+	<string id="mp_artefacts">
+		<text>артефакты</text>
+	</string>
+	<string id="mp_artefacts_upcase">
+		<text>Артефактов</text>
+	</string>
+	<string id="mp_frags">
+		<text>фраги</text>
+	</string>
+	<string id="mp_frags_upcase">
+		<text>Фрагов</text>
+	</string>
+	<string id="mp_deaths">
+		<text>смерти</text>
+	</string>
+	<string id="mp_ping">
+		<text>смертей</text>
+	</string>
+	<string id="mp_players">
+		<text>Игроков</text>
+	</string>
+	<string id="mp_press_fire2spectator">
+		<text>Нажмите Огонь чтобы перейти в режим Наблюдения</text>
+	</string>
+	
+	<string id="mp_press_jump2pay_spaw">
+		<text>Нажмите прыжок чтобы купит моментальное рождение</text>
+	</string>
+	<string id="mp_press_jump2spawn">
+		<text>Нажмите прыжок чтобы родится</text>
+	</string>
+	<string id="mp_press_jump2select_team">
+		<text>Нажмите прыжок чтобы выбрать команды</text>
+	</string>
+	<string	id="mp_press_jump2select_skin">
+		<text>Нажмите прыжок чтобы выбрать форму</text>
+	</string>
+	<string id="mp_press_jump2start">
+		<text>Нажмите прыжок чтобы стартовать</text>
+	</string>
+	<string id="mp_press_yes2pay">
+		<text>Вы имеете %d$. Вы можете купить рождение за %d$. Нажмите Да чтобы заплатить.</text>
+	</string>
+	<string id="mp_time2start">
+		<text>Время до старта: </text>
+	</string>
+	<string id="mp_go">
+		<text>ВПЕРЕД!</text>
+	</string>
+	<string id="mp_ready">
+		<text>Готово ... </text>
+	</string>
+	<string	id="mp_timeleft">
+		<text>Осталось времени : %d:%d; Agreed %.2f%</text>
+	</string>
+	<string id="mp_time2respawn">
+		<text>Время до рождения</text>
+	</string>
+	<string id="mp_player_wins">
+		<text>Игрок %s выигрывает сражение!</text>
+	</string>
+	<string id="mp_voting_started">
+		<text>Голосование '%s' было начато %s.</text>
+	</string>
+	<string id="mp_team_wins">
+		<text>Команда %s ВЫИГРЫВАЕТ!</text>
+	</string>
+	<string id="mp_has_tak_art">
+		<text>взял%s Артефакт</text>
+	</string>
+	<string id="mp_has_drop_art">
+		<text>выложил%s Артефакт</text>
+	</string>
+	<string id="mp_scores">
+		<text>получают очко</text>
+	</string>
+	<string id="mp_art_spowned">
+		<text>Артефакт рожден. Принесите его на базу чтобы получить очко.</text>
+	</string>
+	<string id="mp_art_destroyed">
+		<text>Артефакт был уничтожен.</text>
+	</string>
+	
+	<string id="mp_joined">
+		<text>присоеденился к</text>
+	</string>
+	<string id="mp_switched_to">
+		<text>перешел к</text>
+	</string>
+	<string id="mp_voting_started_msg">
+		<text>Голосование начато!</text>
+	</string>
+	<string id="mp_voting_broken">
+		<text>Голосование анулировано сервером!</text>
+	</string>
+	<string id="mp_match_started">
+		<text>Началось сражение!!!</text>
+	</string>
+	<string id="mp_chat">
+		<text>Чат</text>
+	</string>
+	<string id="mp_from">
+		<text>от</text>
+	</string>
+	<string id="mp_by_anomaly">
+		<text>аномалией</text>
+	</string>
+	<string id="mp_with_headshot">
+		<text> в голову!!!</text>
+	</string>
+	<string id="mp_with_backstab">
+		<text> зарезан!!!</text>
+	</string>
+	<string id="mp_is_now">
+		<text>теперь</text>
+	</string>
+	<string id="mp_your_rank">
+		<text>Ваш ранг теперь</text>
+	</string>
+	<string id="mp_connected">
+		<text>подсоеденился</text>
+	</string>
+	<string id="mp_disconnected">
+		<text>осоеденился</text>
+	</string>
+	<string id="mp_entered_game">
+		<text>вошел в игру</text>
+	</string>
+</string_table>

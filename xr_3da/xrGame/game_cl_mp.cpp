@@ -23,6 +23,7 @@
 #include "ui/UIVotingCategory.h"
 #include "ui/UIVote.h"
 #include "ui/UIMessageBoxEx.h"
+#include "string_table.h"
 
 
 #include <boost/function.hpp>
@@ -314,6 +315,7 @@ u32		Color_Neutral_u32	= color_rgba(255,0,255,255);
 void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
 	string512 Text;
+	CStringTable st;
 
 	switch(msg)	{
 	
@@ -323,15 +325,13 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		}break;
 	case GAME_EVENT_VOTE_START:
 		{
-			sprintf(Text, "%sVoting started!", 
-				Color_Main);
+			sprintf(Text, "%s%s", Color_Main, *st.translate("mp_voting_started_msg"));
 			CommonMessageOut(Text);
 			OnVoteStart(P);
 		}break;
 	case GAME_EVENT_VOTE_STOP:
 		{
-			sprintf(Text, "%sVoting breaked by server!", 
-				Color_Main);
+			sprintf(Text, "%s%s", Color_Main, *st.translate("mp_voting_broken"));
 			CommonMessageOut(Text);
 
 			OnVoteStop(P);
@@ -366,7 +366,7 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 	case GAME_EVENT_ROUND_STARTED:
 		{
 //			sprintf(Text, "%sRound started !!!",Color_Main);
-			sprintf(Text, "%Match Started !!!",Color_Main);
+			sprintf(Text, "%s%s",Color_Main, *st.translate("mp_match_started"));
 			CommonMessageOut(Text);
 			OnSwitchPhase_InProgress();
 		}break;
@@ -423,11 +423,12 @@ void game_cl_mp::OnChatMessage			(NET_Packet* P)
 	s16 team;
 	P->r_s16(team);
 ///#ifdef DEBUG
+	CStringTable st;
 	switch (team)
 	{
-	case 0: Msg("Chat: %s : %s", PlayerName, ChatMsg); break;
-	case 1: Msg("- Chat: %s : %s", PlayerName, ChatMsg); break;
-	case 2: Msg("~ Chat: %s : %s", PlayerName, ChatMsg); break;
+	case 0: Msg("%s: %s : %s",		*st.translate("mp_chat"), PlayerName, ChatMsg); break;
+	case 1: Msg("- %s: %s : %s",	*st.translate("mp_chat"), PlayerName, ChatMsg); break;
+	case 2: Msg("~ %s: %s : %s",	*st.translate("mp_chat"), PlayerName, ChatMsg); break;
 	}
 	
 //#endif	
@@ -637,6 +638,7 @@ ref_shader		game_cl_mp::GetRankIconsShader()
 
 void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 {
+	CStringTable st;
 	//-----------------------------------------------------------
 	KILL_TYPE KillType = KILL_TYPE(P.r_u8());
 	u16 KilledID = P.r_u16();
@@ -676,7 +678,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					KMS.m_initiator.m_rect.y1 = pIItem->GetKillMsgYPos();
 					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + pIItem->GetKillMsgWidth();
 					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + pIItem->GetKillMsgHeight();
-					sprintf(sWeapon, "from %s", pIItem->NameShort());
+					sprintf(sWeapon, "%s %s", st.translate("mp_from"), pIItem->NameShort());
 				}
 				else
 				{
@@ -688,7 +690,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						KMS.m_initiator.m_rect.y1 = 202;
 						KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 31;
 						KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;
-						sprintf(sWeapon, "by anomaly");
+						sprintf(sWeapon, *st.translate("mp_by_anomaly"));
 					}
 				}
 			}
@@ -740,7 +742,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						KMS.m_ext_info.m_rect.y2 = pBS->IconRects[0].y1 + pBS->IconRects[0].y2;
 					};
 
-					sprintf(sSpecial, " with headshot!!!");
+					sprintf(sSpecial, *st.translate("mp_with_headshot"));
 
 					if (pOKiller && pOKiller==Level().CurrentViewEntity())
 						PlaySndMessage(ID_HEADSHOT);
@@ -758,7 +760,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						KMS.m_ext_info.m_rect.y2 = pBS->IconRects[0].y1 + pBS->IconRects[0].y2;
 					};
 
-					sprintf(sSpecial, " with backstab!!!");
+					sprintf(sSpecial, *st.translate("mp_with_backstab"));
 
 					if (pOKiller && pOKiller==Level().CurrentViewEntity())
 						PlaySndMessage(ID_ASSASSIN);					
@@ -841,6 +843,8 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 
 void	game_cl_mp::OnPlayerChangeName		(NET_Packet& P)
 {
+	CStringTable st;
+
 	u16 ObjID = P.r_u16();
 	s16 Team = P.r_s16();
 	string1024 OldName, NewName;
@@ -848,7 +852,7 @@ void	game_cl_mp::OnPlayerChangeName		(NET_Packet& P)
 	P.r_stringZ(NewName);
 
 	string1024 resStr;
-	sprintf(resStr, "%s\"%s\" %sis now %s\"%s\"", Color_Teams[Team], OldName, Color_Main, Color_Teams[Team], NewName);
+	sprintf(resStr, "%s\"%s\" %s%s %s\"%s\"", Color_Teams[Team], OldName, Color_Main, *st.translate("mp_is_now"),Color_Teams[Team], NewName);
 	CommonMessageOut(resStr);
 	//-------------------------------------------
 	CObject* pObj = Level().Objects.net_Find(ObjID);
@@ -867,11 +871,12 @@ void	game_cl_mp::LoadSndMessages				()
 
 void	game_cl_mp::OnRankChanged	()
 {
+	CStringTable st;
 #ifdef DEBUG
 	string256 tmp;
 	string1024 RankStr;
 	sprintf(tmp, "rank_%d",local_player->rank);
-	sprintf(RankStr, "Your rank now is : %s", READ_IF_EXISTS(pSettings, r_string, tmp, "rank_name", ""));
+	sprintf(RankStr, "%s : %s", *st.translate("mp_your_rank"), READ_IF_EXISTS(pSettings, r_string, tmp, "rank_name", ""));
 	CommonMessageOut(RankStr);	
 	Msg("- %s", RankStr);
 #endif
