@@ -181,6 +181,10 @@ function monster_berserk(actor, npc)
     npc:berserk()
 end
 
+function activate_bolt(actor, npc)
+	db.actor:activate_slot(5)
+end
+
 --[[
 send_tip(news_id:sender:sender_id)
     1. news_id
