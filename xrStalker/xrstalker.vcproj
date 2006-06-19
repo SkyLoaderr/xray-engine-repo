@@ -2385,6 +2385,9 @@
 					Name="Radar"
 					Filter="">
 					<File
+						RelativePath=".\Config\scripts\bun_deactivate_radar.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\bun_psy_timer.ltx">
 					</File>
 					<File
