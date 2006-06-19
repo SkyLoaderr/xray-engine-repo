@@ -54,7 +54,7 @@ void CBaseMonster::Load(LPCSTR section)
 	m_anomaly_detector->load		(section);
 	CoverMan->load					();
 
-	m_rank							= (pSettings->line_exist(section,"rank")) ? int(pSettings->r_u8(section,"rank")) : 0;
+	m_rank							= (pSettings->line_exist(section,"rank")) ? int(pSettings->r_u32(section,"rank")) : 0;
 
 	if (pSettings->line_exist(section,"Spawn_Inventory_Item_Section")) {
 		m_item_section					= pSettings->r_string(section,"Spawn_Inventory_Item_Section");
