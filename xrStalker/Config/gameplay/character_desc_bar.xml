@@ -1974,8 +1974,6 @@
 		<snd_config>characters_voice\human_01\killer\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
-			ammo_9x18_fmj = 1 \n
 			wpn_rpg7 \n
 			ammo_og-7b = 1 \n
 #include "gameplay\character_food.xml" \n
