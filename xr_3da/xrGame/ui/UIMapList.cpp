@@ -376,14 +376,16 @@ void CUIMapList::Update(){
 }
 
 void CUIMapList::OnBtnRightClick(){
-	m_pList2->AddItem(m_pList1->GetSelectedText());
-	LPCSTR next = m_pList1->GetNextSelectedText();
-	while(next)
+	if(m_pList2->AddItem(m_pList1->GetSelectedText()))
 	{
-		m_pList2->AddItem(next);
-		next = m_pList1->GetNextSelectedText();
+		LPCSTR next = m_pList1->GetNextSelectedText();
+		while(next)
+		{
+			m_pList2->AddItem(next);
+			next = m_pList1->GetNextSelectedText();
+		}
+		m_pList1->DeselectAll();
 	}
-	m_pList1->DeselectAll();
 }
 
 void CUIMapList::OnBtnUpClick(){

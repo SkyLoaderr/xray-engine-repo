@@ -82,9 +82,9 @@ void CUIMapInfo::InitMap(const char* map_name){
 		string64 txt_color_tag;
 		sprintf(txt_color_tag, "%s<%u,%u,%u,%u>", "%c", (txt_color & 0xff000000)>>24, (txt_color & 0x00ff0000)>>16, (txt_color & 0x0000ff00) >> 8, txt_color & 0x000000ff);
 
-		ADD_TEXT("Players",		"players",		"Unknown");		
-		ADD_TEXT("Modes",		"modes",		"Unknown");		
-		ADD_TEXT("Description",	"short_desc",	"There is no description available");
+		ADD_TEXT(*str_tbl.translate("mp_players"),		"players",		"Unknown");		
+		ADD_TEXT(*str_tbl.translate("mp_modes"),		"modes",		"Unknown");		
+		ADD_TEXT(*str_tbl.translate("mp_description"),	"short_desc",	"There is no description available");
 
 		if (ltx.line_exist("map_info","large_desc"))
 			m_large_desc = str_tbl.translate(ltx.r_string_wb("map_info", "large_desc"));		

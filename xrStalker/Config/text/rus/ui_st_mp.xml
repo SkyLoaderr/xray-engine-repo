@@ -249,6 +249,12 @@
 	</string>
 	<string id="mp_next">
 		<text>Дальше</text>
+	</string>	
+	<string id="mp_modes">
+		<text>Режимы</text>
+	</string>
+	<string id="mp_description">
+		<text>Описание</text>
 	</string>
 	
 </string_table>

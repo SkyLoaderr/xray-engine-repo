@@ -247,4 +247,10 @@
 	<string id="mp_next">
 		<text>Next</text>
 	</string>
+	<string id="mp_modes">
+		<text>Modes</text>
+	</string>
+	<string id="mp_description">
+		<text>Description</text>
+	</string>
 </string_table>
