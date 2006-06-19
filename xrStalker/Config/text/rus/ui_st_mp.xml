@@ -8,7 +8,7 @@
 		<text>Наемники</text>
 	</string>
 	<string id="mp_press_to_buy">
-		<text>Нажмите %s для доступа к меню покупки</text>
+		<text>Нажмите ($$ACTION_BUY_MENU$$) для доступа к меню покупки</text>
 	</string>
 	<string id="mp_name">
 		<text>имя</text>

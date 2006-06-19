@@ -509,8 +509,8 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 						)
 					{
 //						m_game_ui->SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
-						m_game_ui->SetPressJumpMsgCaption(*st.translate("mp_press_jump2start"));
-						m_game_ui->SetPressBuyMsgCaption(*st.translate("mp_press_to_buy"));
+						m_game_ui->SetPressJumpMsgCaption("mp_press_jump2start");
+						m_game_ui->SetPressBuyMsgCaption("mp_press_to_buy");
 					};
 				};
 

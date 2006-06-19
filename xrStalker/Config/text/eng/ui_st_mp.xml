@@ -8,7 +8,7 @@
 		<text>Headhunters</text>
 	</string>
 	<string id="mp_press_to_buy">
-		<text>Press %s to access buy menu</text>
+		<text>Press ($$ACTION_BUY_MENU$$) to access buy menu</text>
 	</string>
 	<string id="mp_name">
 		<text>name</text>
