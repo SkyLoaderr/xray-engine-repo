@@ -46,11 +46,10 @@ void	__stdcall log_cb_fn (LPCSTR string)
 */
 }
 
-
+void test ();
 CxrUpdateApp::CxrUpdateApp()
 {
-//	m_log_dlg = xr_new<CLogDlg>( MAKEINTRESOURCE(IDD_LOG_DIALOG));
-
+	test	();
 }
 
 CxrUpdateApp::~CxrUpdateApp()
@@ -156,6 +155,52 @@ void CxrUpdateApp::OnAppAbout()
 	aboutDlg.DoModal();
 }
 
+class A
+{
+public:
+	void AAA()
+	{
+	}
+	void foo()
+	{
+		AAA();
+	}
+	void BBB()
+	{
+		foo();
+	}
+};
 
-// CxrUpdateApp message handlers
+class B:public A
+{
+public:
+	void AAA()
+	{
+	}
 
+	void foo()
+	{
+		AAA();
+	}
+	void BBB()
+	{
+		foo();
+	}
+};
+
+void test ()
+{
+//	A a;
+	B b;
+//	a.AAA();
+//	a.foo();
+//	a.BBB();
+//	b.AAA();
+//	b.foo();
+//	b.BBB();
+
+	A* pa = &b;
+	pa->AAA();
+	pa->foo();
+	pa->BBB();
+}
