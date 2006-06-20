@@ -7,6 +7,8 @@
 #include "xrServer_Objects_ALife_Items.h"
 #include "weapon.h"
 #include "xr_level_controller.h"
+#include "eatable_item_object.h"
+#include "Missile.h"
 
 static	u16 SlotsToCheck [] = {
 		APPARATUS_SLOT	,		// 4
@@ -121,6 +123,27 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 		for ( ; IBelt != EBelt; ++IBelt) 
 		{
 			CheckItem((*IBelt), &TmpPresetItems);
+		};
+
+		//проверяем ruck
+		TIItemContainer::const_iterator	IRuck = pCurActor->inventory().m_ruck.begin();
+		TIItemContainer::const_iterator	ERuck = pCurActor->inventory().m_ruck.end();
+
+		for ( ; IRuck != ERuck; ++IRuck) 
+		{
+			PIItem pItem = *IRuck;
+			if (!pItem) continue;
+			CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*> (pItem);
+			if (!pAmmo) 
+			{
+				CMissile* pMissile = smart_cast<CMissile*> (pItem);
+				if (!pMissile) 
+				{				
+					CEatableItemObject* pEatableItem  = smart_cast<CEatableItemObject*> (pItem);
+					if (!pEatableItem) continue;
+				}
+			}
+			CheckItem((*IRuck), &TmpPresetItems);
 		};
 
 		//проверяем слоты
@@ -321,6 +344,7 @@ void				game_cl_Deathmatch::LoadDefItemsForRank(CUIBuyWeaponWnd* pBuyMenu)
 		if (SlotID == 0xff || ItemID == 0xff) continue;
 
 		s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);
+		PlayerDefItems.push_back(ID);
 		PlayerDefItems.push_back(ID);
 	};
 };

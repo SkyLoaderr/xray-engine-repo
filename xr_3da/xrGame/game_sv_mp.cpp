@@ -815,6 +815,7 @@ void	game_sv_mp::SetPlayersDefItems		(game_PlayerState* ps)
 		if (!GetTeamItem_ByName(&pWpnAmmo, &(TeamList[ps->team].aWeapons), *(pWpnS->WeaponBaseAmmo))) continue;
 		
 		ps->pItemList.push_back(pWpnAmmo->SlotItem_ID);
+		ps->pItemList.push_back(pWpnAmmo->SlotItem_ID);
 	};
 };
 

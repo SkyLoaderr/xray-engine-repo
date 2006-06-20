@@ -14,6 +14,8 @@
 #include "xr_level_controller.h"
 #include "hudItem.h"
 #include "weapon.h"
+#include "eatable_item_object.h" 
+#include "Missile.h"
 
 //#define DELAYED_ROUND_TIME	7000
 
@@ -905,6 +907,27 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 		for ( ; IBelt != EBelt; ++IBelt) 
 		{
 			pItem = (*IBelt);
+			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete);
+		};
+
+		//проверяем ruck
+		TIItemContainer::const_iterator	IRuck = pActor->inventory().m_ruck.begin();
+		TIItemContainer::const_iterator	ERuck = pActor->inventory().m_ruck.end();
+
+		for ( ; IRuck != ERuck; ++IRuck) 
+		{
+			pItem = (*IRuck);			
+			if (!pItem) continue;
+			CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*> (pItem);
+			if (!pAmmo) 
+			{
+				CMissile* pMissile = smart_cast<CMissile*> (pItem);
+				if (!pMissile) 
+				{				
+					CEatableItemObject* pEatableItem  = smart_cast<CEatableItemObject*> (pItem);
+					if (!pEatableItem) continue;
+				}
+			}
 			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete);
 		};
 
