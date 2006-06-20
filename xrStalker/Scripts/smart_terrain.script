@@ -839,7 +839,7 @@ function se_smart_terrain:on_register()
 	if self.gparams.respawn then
 		db.strn_by_respawn[self.gparams.respawn] = self
 	end
-	print_table(smart_terrains)
+--	print_table(smart_terrains)
 
 	self.gulag:load_jobs()
 
