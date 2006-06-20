@@ -214,7 +214,7 @@ function load_job(sj, gname, type, squad, groups)
                             if db.actor:has_info("bar_heli_scene_professor_die") then
                                 return obj_info.story_id == 900
                             else
-                                return obj_info.story_id == 905
+                                return obj_info.story_id == 900
                             end
 						end
         }
