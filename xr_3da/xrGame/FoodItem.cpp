@@ -189,26 +189,26 @@ void CFoodItem::OnStateSwitch	(u32 S)
 			break;
 		case FOOD_SHOWING:
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), TRUE, this);
 			break;
 		case FOOD_IDLE:
 			m_bPending = false;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimIdle), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimIdle), TRUE, this);
 			break;
 		case FOOD_PREPARE:
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPrepare), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPrepare), TRUE, this);
 			break;
 		case FOOD_EATING:
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimEat), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimEat), TRUE, this);
 			break;
 		case FOOD_HIDING:
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimHide), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimHide), TRUE, this);
 			break;
 		case FOOD_PLAYING:
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPlay), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPlay), TRUE, this);
 			break;
 		default: NODEFAULT;
 	}

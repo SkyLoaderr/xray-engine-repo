@@ -104,7 +104,6 @@ public:
 	typedef					svector<MotionID,MAX_ANIM_COUNT>		MotionSVec;
 
 	void					animGet				(MotionSVec& lst, LPCSTR prefix);
-	virtual void			OnAnimationEnd		()			{};
 	void					signal_HideComplete	();
 
 //////////////////////////////////////////////////////////////////////////

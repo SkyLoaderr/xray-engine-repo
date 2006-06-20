@@ -101,11 +101,6 @@ void CHudItemObject::Deactivate			()
 	CHudItem::Deactivate		();
 }
 
-void CHudItemObject::OnAnimationEnd		()
-{
-	CHudItem::OnAnimationEnd	();
-}
-
 void CHudItemObject::UpdateCL			()
 {
 	CInventoryItemObject::UpdateCL	();

@@ -550,6 +550,7 @@ void CWeaponMagazined::OnEmptyClick	()
 {
 	PlaySound	(sndEmptyClick,get_LastFP());
 }
+
 void CWeaponMagazined::OnAnimationEnd() 
 {
 	switch(STATE) 

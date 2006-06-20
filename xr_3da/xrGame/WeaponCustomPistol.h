@@ -1,5 +1,3 @@
-#ifndef __XR_WEAPON_PISTOL_H__
-#define __XR_WEAPON_PISTOL_H__
 #pragma once
 
 #include "WeaponMagazined.h"
@@ -17,9 +15,4 @@ public:
 protected:
 	virtual void	FireEnd				();
 	virtual void	switch2_Fire		();
-	virtual void	OnAnimationEnd		();
-
-
 };
-
-#endif //__XR_WEAPON_PISTOL_H__

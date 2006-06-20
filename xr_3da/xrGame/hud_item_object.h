@@ -39,7 +39,6 @@ public:
 	virtual void		net_Destroy			();
 	virtual bool		Activate			();
 	virtual void		Deactivate			();
-	virtual void		OnAnimationEnd		();
 	virtual void		UpdateCL			();
 	virtual void		renderable_Render	();
 	virtual void		on_renderable_Render();

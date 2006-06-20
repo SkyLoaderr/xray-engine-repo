@@ -240,7 +240,7 @@ u32 CMissile::State(u32 state)
 	case MS_HIDING:
 		{
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimHide), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimHide), TRUE, this);
 		} break;
 	case MS_HIDDEN:
 		{
@@ -255,27 +255,27 @@ u32 CMissile::State(u32 state)
 		{
 			m_bPending = true;
 			m_fThrowForce = m_fMinForce;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowBegin), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowBegin), TRUE, this);
 		} break;
 	case MS_READY:
 		{
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowIdle), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowIdle), TRUE, this);
 		} break;
 	case MS_THROW:
 		{
 			m_bPending = true;
 			m_throw = false;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowAct), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowAct), TRUE, this);
 		} break;
 	case MS_END:
 		{
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowEnd), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowEnd), TRUE, this);
 		} break;
 	case MS_PLAYING:
 		{
 			PlaySound(sndPlaying,Position());
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPlaying), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPlaying), TRUE, this);
 		} break;
 	}
 	return State();

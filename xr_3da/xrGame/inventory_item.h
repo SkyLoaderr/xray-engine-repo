@@ -93,10 +93,6 @@ public:
 	//вещь убирается в инвентарь
 	virtual bool				IsHiding			()	const	{return false;}
 
-//	virtual void				OnAnimationEnd		()		{}
-	
-//	virtual s32					Sort				(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
-
 	virtual void				OnH_B_Chield		();
 	virtual void				OnH_A_Chield		();
     virtual void				OnH_B_Independent	();
