@@ -174,16 +174,16 @@ trade = misc\trade_trader.ltx
 ; Ждем немного
 [mob_trader@new_start_wait]
 anim_global = chair_hack_idle
-on_info = mob_trader@new_start_intro0 %=disable_ui%
-
-[mob_trader@new_start_intro0]
-anim_global = chair_hack_idle
 on_timer = 5000| mob_trader@new_start_intro1
+;can_talk = false
+;tip_text = 
 
 ;Подвигаемся к игроку
 [mob_trader@new_start_intro1]
 anim_global = chair_hack_to_desk
 on_signal = animation_end| mob_trader@new_start_intro2
+;can_talk = false
+;tip_text =
 
 ;Первая фраза "я тебя спас..."
 [mob_trader@new_start_intro2]
@@ -191,6 +191,8 @@ anim_global = first_phrase
 anim_head	= first_phrase
 sound_phrase = trader_monolog1
 on_signal = animation_end| mob_trader@new_start_intro3
+;can_talk = false
+;tip_text =
 
 ; Ждем немного, включаем управление
 [mob_trader@new_start_intro3]
