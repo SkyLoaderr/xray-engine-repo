@@ -164,47 +164,26 @@ function action_patrol:execute()
 		self:reset_scheme()
     end
 
-	self.enemy = nil
-	if self.a.enemy_id == nil or
-	  self.a.enemy_id ~= id(self.object:best_enemy()) 
-	then
-		self.a.enemy_id = id(self.object:best_enemy())
-	end
-	
-	if self.a.enemy_id ~= nil then		
-		self.enemy = level.object_by_id(self.a.enemy_id)
-	end
+	self.enemy = self.object:best_enemy()
 	
 	if self.enemy ~= nil then		
-		if self.object:memory_time(self.enemy) == nil then
-			self.a.enemy_id = nil
+		self.a.mem_enemy = self.object:memory_time(self.enemy)
+
+		--'Забывание врага по времени.		
+		if self.a.mem_enemy == nil or
+		   time_global()- self.a.mem_enemy > self.a.idle
+		then
 			self.enemy = nil
-		else
-			self.a.mem_enemy = self.object:memory_time(self.enemy)
+			self.a.mem_enemy = nil
+			self.move_mgr:continue()
 		end
 	else
-		self.a.enemy_id = nil
-		self.enemy = nil
 		if self.a.mem_enemy ~= nil then
 			self.a.mem_enemy = nil
 			self.move_mgr:continue()
 		end		
 	end
 	
-	--забывание врага по времени.	
-	if self.a.mem_enemy ~= nil then
-		--printf("ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
-		if time_global()- self.a.mem_enemy > self.a.idle then
-			if self.enemy ~= nil then
-				self.object:enable_memory_object(self.enemy, false)
-			end
-			self.a.enemy_id = nil
-			self.enemy = nil
-			self.a.mem_enemy = nil
-			self.move_mgr:continue()
-		end
-	end
-
 	-- Три типа действия:
 	-- Есть враг
 	if self.enemy ~= nil then
