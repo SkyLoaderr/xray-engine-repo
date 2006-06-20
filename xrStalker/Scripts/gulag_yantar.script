@@ -211,30 +211,36 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 9, state = {0,1,2}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = "yantar_bunker_space_restrictor",
             predicate = function(obj_info) 
-                            if db.actor:has_info("bar_heli_scene_professor_die") then
-                                return obj_info.story_id == 900
-                            else
-                                return obj_info.story_id == 900
-                            end
-						end
+                       			return obj_info.story_id == 900
+						 end
+        }
+		table.insert(sj, t)	
+		t = { section = "logic@scientist_offline",
+			idle = 0,
+            online = false,
+			prior = 9, state = {3,4,5}, squad = squad, group = groups[2],
+			in_rest = "", out_rest = "yantar_bunker_space_restrictor",
+            predicate = function(obj_info) 
+                       			return obj_info.story_id == 905
+						 end
         }
 		table.insert(sj, t)	
         t = { section = "logic@scientist_out_rest",
 			idle = 0,
-			prior = 5, state = {0}, squad = squad, group = groups[2],
+			prior = 5, state = {0,3}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = "yantar_bunker_space_restrictor"
 		}
 		table.insert(sj, t)	
 		t = { section = "logic@scientist_not_in_rest",
 			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[2],
+			prior = 5, state = {1,4}, squad = squad, group = groups[2],
 		    online = true,
 			in_rest = "yantar_bunker_space_restrictor", out_rest = ""
 		}
 		table.insert(sj, t)		    
 		t = { section = "logic@scientist_return_out_rest",
 			idle = 0,
-			prior = 5, state = {2}, squad = squad, group = groups[2],
+			prior = 5, state = {2,5}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = "yantar_bunker_space_restrictor"
 		}
 		table.insert(sj, t)
@@ -343,13 +349,22 @@ function load_states(gname, type)
     end
     if type == "yan_scientist" then
 		return function(gulag)
+			local t
+
+			if 	db.actor:has_info("bar_heli_scene_professor_die") then
+				t = 0
+			else
+				t = 3
+			end
+
 			if db.actor:has_info("yan_scientist_gulag_state_2") then 
-				return 1
+				return t+1
 			end
 			if db.actor:has_info("yan_scientist_gulag_state_3") then 
-				return 2
+				return t+2
 			end
-			return 0
+			
+			return t
 		end
     end
 	
