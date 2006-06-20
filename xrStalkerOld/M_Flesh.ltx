@@ -16,7 +16,7 @@ going_speed          = 1.0                      ; option for ALife Simulator
 search_speed         = .5                       ; option for ALife Simulator
 visual				 = monsters\flesh\flesh
 corpse_visual		 = monsters\flesh\flesh
-MaxHealthValue		     = 200			; range [0..200]
+MaxHealthValue		     = 1.0			; range [0..200]
 DynamicObjectsCount	 = 32
 smart_terrain_choose_interval	= 00:15:00
 
@@ -231,10 +231,10 @@ terrain				= flesh_terrain
 
 default				= 0.25,	-1,	0.10
 
-bip01_pelvis 		= 0.5, -1, 0.1
-bip01_spine 		= 0.5, -1, 0.1
-bip01_neck 			= 0.5, -1, 0.3
-bip01_head 			= 1.5, -1, 0.10
+bip01_pelvis 		= 1.0, -1, 0.1
+bip01_spine 		= 1.0, -1, 0.1
+bip01_neck 			= 1.0, -1, 0.3
+bip01_head 			= 2.0, -1, 0.10
 
 
 ;=================================================================================
@@ -336,12 +336,12 @@ community			= flesh
 burn_immunity			= 1.0
 strike_immunity			= 1
 shock_immunity			= 1.0
-wound_immunity			= 0.70
+wound_immunity			= 0.20
 radiation_immunity		= 0.0
 telepatic_immunity		= 1.0
 chemical_burn_immunity	= 1.0
-explosion_immunity		= 0.55
-fire_wound_immunity		= 0.35
+explosion_immunity		= 0.2
+fire_wound_immunity		= 0.1
 
 [flesh_attack_params_weak]
 ;---------------------------------------------------------------------------------------------------------------------------------------------
