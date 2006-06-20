@@ -402,27 +402,27 @@
                 <next>300</next>
             </phrase>
             <phrase id="150">
-                <text></text>
+                <text />
                 <next>1500</next>
             </phrase>
             <phrase id="1500">
-                <text></text>
+                <text />
                 <next>300</next>
             </phrase>
             <phrase id="300">
-                <text></text>
+                <text />
                 <next>3000</next>
             </phrase>
             <phrase id="3000">
-                <text></text>
+                <text />
                 <next>350</next>
             </phrase>
             <phrase id="350">
-                <text></text>
+                <text />
                 <next>4000</next>
             </phrase>
             <phrase id="4000">
-                <text></text>
+                <text />
             </phrase>
             <phrase id="0">
                 <text>agr_krot_actor_hasnot_met_seriy_0</text>
@@ -433,17 +433,15 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="agr_krot_help">
-        <dont_has_info>agr_help_krot_done</dont_has_info>
+    <dialog id="agr_factory_stalker_about">
+        <precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
-            <phrase id="10">
-                <text>agr_krot_help_10</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>agr_krot_skirmish_start</give_info>
+            <phrase id="1">
+                <text>agr_factory_stalker_about_1</text>
             </phrase>
             <phrase id="0">
-                <text>agr_krot_help_0</text>
-                <next>10</next>
+                <text>agr_factory_stalker_about_0</text>
+                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -455,10 +453,6 @@
             <phrase id="0">
                 <text></text>
                 <next>100</next>
-            </phrase>
-            <phrase id="100">
-                <text>agr_krot_actor_met_seriy_100</text>
-                <next>1000</next>
             </phrase>
             <phrase id="1000">
                 <text></text>
@@ -480,26 +474,32 @@
                 <text>agr_krot_actor_met_seriy_2000</text>
                 <next>250</next>
             </phrase>
-            <phrase id="2500">
-                <text></text>
-                <give_info>agr_krot_secret_info</give_info>
-            </phrase>
             <phrase id="250">
                 <text>agr_krot_actor_met_seriy_250</text>
                 <action>agroprom_dialog.krot_give_flash</action>
                 <next>2500</next>
             </phrase>
+            <phrase id="2500">
+                <text></text>
+                <give_info>agr_krot_secret_info</give_info>
+            </phrase>
+            <phrase id="100">
+                <text>agr_krot_actor_met_seriy_100</text>
+                <next>1000</next>
+            </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="agr_factory_stalker_about">
-        <precondition>dialogs.dialog_allowed</precondition>
+    <dialog id="agr_krot_help">
+        <dont_has_info>agr_help_krot_done</dont_has_info>
         <phrase_list>
-            <phrase id="1">
-                <text>agr_factory_stalker_about_1</text>
-            </phrase>
             <phrase id="0">
-                <text>agr_factory_stalker_about_0</text>
-                <next>1</next>
+                <text>agr_krot_help_0</text>
+                <next>10</next>
+            </phrase>
+            <phrase id="10">
+                <text>agr_krot_help_10</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>agr_krot_skirmish_start</give_info>
             </phrase>
         </phrase_list>
     </dialog>
@@ -537,6 +537,12 @@
                 <text>agr_krot_actor_met_seriy_2000</text>
                 <next>2502</next>
             </phrase>
+            <phrase id="1">
+                <text>agr_krot_actor_hasnot_met_seriy_0</text>
+                <dont_has_info>agr_krot_band_start</dont_has_info>
+                <dont_has_info>agr_find_gunslinger_cache_start</dont_has_info>
+                <next>1001</next>
+            </phrase>
             <phrase id="1001">
                 <text>agr_krot_actor_hasnot_met_seriy_100</text>
                 <next>10001</next>
@@ -545,15 +551,26 @@
                 <text>agr_factory_krot_start_10001</text>
                 <next>1501</next>
             </phrase>
-            <phrase id="1">
-                <text>agr_krot_actor_hasnot_met_seriy_0</text>
-                <dont_has_info>agr_krot_band_start</dont_has_info>
-                <dont_has_info>agr_find_gunslinger_cache_start</dont_has_info>
-                <next>1001</next>
+            <phrase id="1501">
+                <text>agr_factory_krot_start_1501</text>
+                <next>15001</next>
             </phrase>
-            <phrase id="1502">
-                <text>agr_factory_krot_start_1502</text>
-                <next>15002</next>
+            <phrase id="15001">
+                <text>agr_factory_krot_start_15001</text>
+                <give_info>agr_krot_secret_info</give_info>
+                <next>3001</next>
+            </phrase>
+            <phrase id="3001">
+                <text>agr_factory_krot_start_3001</text>
+                <next>30001</next>
+            </phrase>
+            <phrase id="30001">
+                <text>agr_factory_krot_start_30001</text>
+            </phrase>
+            <phrase id="0">
+                <text>agr_factory_krot_start_0</text>
+                <next>1</next>
+                <next>2</next>
             </phrase>
             <phrase id="2">
                 <text>agr_factory_krot_start_2</text>
@@ -565,34 +582,17 @@
                 <text>agr_krot_actor_met_seriy_100</text>
                 <next>10002</next>
             </phrase>
-            <phrase id="3001">
-                <text>agr_factory_krot_start_3001</text>
-                <next>30001</next>
-            </phrase>
-            <phrase id="1501">
-                <text>agr_factory_krot_start_1501</text>
-                <next>15001</next>
-            </phrase>
-            <phrase id="0">
-                <text>agr_factory_krot_start_0</text>
-                <next>1</next>
-                <next>2</next>
-            </phrase>
-            <phrase id="10002">
-                <text>agr_factory_krot_start_10002</text>
-                <give_info>agr_krot_secret_info</give_info>
-                <next>1502</next>
-            </phrase>
-            <phrase id="15001">
-                <text>agr_factory_krot_start_15001</text>
-                <give_info>agr_krot_secret_info</give_info>
-                <next>3001</next>
-            </phrase>
             <phrase id="15002">
                 <text>agr_factory_krot_start_15002</text>
             </phrase>
-            <phrase id="30001">
-                <text>agr_factory_krot_start_30001</text>
+            <phrase id="10002">
+                <text>agr_factory_krot_start_10002</text>
+                <next>1502</next>
+            </phrase>
+            <phrase id="1502">
+                <text>agr_factory_krot_start_1502</text>
+                <give_info>agr_krot_secret_info</give_info>
+                <next>15002</next>
             </phrase>
         </phrase_list>
     </dialog>
