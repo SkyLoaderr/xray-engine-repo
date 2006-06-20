@@ -44,9 +44,19 @@ function _main()
 end
 
 function main()
-	local info = "test_andy_info" 
-	db.actor:give_info_portion(info) 
+--	local info = "test_andy_info" 
+--	db.actor:give_info_portion(info) 
+--	alife():create("wpn_binoc", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())		
 	
+	if _G._b_flag==0 then 
+		printf("restore")
+		db.actor:restore_weapon()
+		_G._b_flag = 1
+	else
+		printf("hide")
+		db.actor:hide_weapon()
+		_G._b_flag = 0
+	end
 
 --    alife():create ("wpn_knife", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
 
