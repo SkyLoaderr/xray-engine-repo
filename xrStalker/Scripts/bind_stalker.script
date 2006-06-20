@@ -296,6 +296,8 @@ function actor_binder:save(packet)
 	printf("actor_binder:save(): self.object:name()='%s'", self.object:name())
 	object_binder.save(self, packet)
 
+	packet:w_float( 12.34 )
+
 	xr_logic.pstor_save_all(self.object, packet)
 	self.weather_manager:save(packet)
 
@@ -307,6 +309,12 @@ end
 function actor_binder:load(reader)
 	printf("actor_binder:load(): self.object:name()='%s'", self.object:name())
 	object_binder.load(self, reader)
+
+	local t = reader:r_float()
+
+	if t ~= 12.34 then
+		abort( "actor_binder:load() mark failed!" )
+	end
 
 	xr_logic.pstor_load_all(self.object, reader)
 	self.weather_manager:load(reader)
