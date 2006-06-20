@@ -7,8 +7,7 @@ local level_scripts = {
     yantar_tasks,
     mil_tasks,
 	radar_tasks,
-	pripyat_tasks,
-	deadcity_tasks
+	pripyat_tasks
 }
 
 function proceed()
