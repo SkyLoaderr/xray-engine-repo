@@ -1821,33 +1821,9 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_flesh_1_camp",
-			idle = 0,
-			prior = 5, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_flesh_1_camp",
-			idle = 0,
-			prior = 5, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
 	end
 
 	if type == "esc_flesh_2" then
-		t = { section = "logic@esc_flesh_2_camp",
-			idle = 0,
-			prior = 5, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_flesh_2_camp",
-			idle = 0,
-			prior = 5, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
 		t = { section = "logic@esc_flesh_2_camp",
 			idle = 0,
 			prior = 5, state = {0},
