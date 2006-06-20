@@ -34,7 +34,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 100, state = {0,2},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone",
 			predicate = function(obj_info)
 			            	return obj_info.name == "esc_blokpost_commander"
@@ -45,7 +45,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 8, state = {0,1,2},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -53,7 +53,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 8, state = {0,1,2},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -61,7 +61,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 6, state = {0,2},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -69,7 +69,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {0,1},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -77,7 +77,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 2, state = {0},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -85,7 +85,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 2, state = {0},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -93,7 +93,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 4, state = {1},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -101,7 +101,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 4, state = {1},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -109,7 +109,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 10, state = {1},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone",
 			predicate = function(obj_info)
 			            	return obj_info.name == "esc_blokpost_commander"
@@ -120,7 +120,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 2, state = {1},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -128,7 +128,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 2, state = {1},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -136,7 +136,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 2, state = {1},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -144,7 +144,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 2, state = {1},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -152,7 +152,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 6, state = {2},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -160,7 +160,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 6, state = {2},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -168,7 +168,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 6, state = {2},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -176,7 +176,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 6, state = {2},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -184,7 +184,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 6, state = {2},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -192,7 +192,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 6, state = {2},
 			position_threshold = 100,
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
@@ -203,42 +203,42 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_specnaz_kamp",
 			idle = 0,
 			prior = 5, state = {0},
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_specnaz_kamp",
 			idle = 0,
 			prior = 5, state = {0},
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_specnaz_kamp",
 			idle = 0,
 			prior = 5, state = {0},
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_specnaz_kamp",
 			idle = 0,
 			prior = 5, state = {0},
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_specnaz_kamp",
 			idle = 0,
 			prior = 5, state = {0},
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_specnaz_kamp",
 			idle = 0,
 			prior = 5, state = {0},
-			online = true,
+--			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -1613,6 +1613,31 @@ function load_job(sj, gname, type, squad, groups)
 						end
 		}
 		table.insert(sj, t)
+		
+		t = { section = "logic@esc_assault_kamp",
+			idle = 0,
+			prior = 8, state = {4},
+			online = true,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_assault_kamp",
+			idle = 0,
+			prior = 8, state = {4},
+			online = true,
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_assault_kamp",
+			idle = 0,
+			prior = 10, state = {4},
+			online = true,
+			in_rest = "", out_rest = "",
+			predicate = function(obj_info)
+        					return obj_info.name == "esc_novice_attacker1"
+						end
+		}
+		table.insert(sj, t)
 	end
 
 	if type == "esc_zombie_1" then
@@ -2161,7 +2186,7 @@ function load_states(gname, type)
 
 	if type == "esc_boars_dogs" then
 	    return function(gulag)
-			if db.actor:has_info("esc_boar_dogs_restrictor") then
+			if db.actor:has_info("tutorial_wounded_give_info") then
 				return 1
 			else
 				return 0
@@ -2306,8 +2331,8 @@ function load_states(gname, type)
 				return 2 -- атакуют фабрику
 			elseif db.actor:has_info("esc_kill_bandits_quest_kill") and (db.actor:dont_has_info("esc_kill_bandits_quest_kill") or db.actor:dont_has_info("esc_petruha_great")) then
 				return 3 -- идут домой	
---			elseif db.actor:has_info("esc_kill_bandits_quest_done") or db.actor:has_info("esc_petruha_great") then
---				return 3 -- идут домой
+			elseif db.actor:has_info("esc_kill_bandits_quest_done") or db.actor:has_info("esc_petruha_great") then
+				return 4 -- идут домой
 			else
 				return 0 -- сидят в оффлайне
 			end
