@@ -146,6 +146,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.logic	= xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
 	st.anim_global    = utils.cfg_get_string(ini, section, "anim_global", npc, true, "")
+	st.can_talk		  = xr_logic.cfg_get_bool(ini, section, "can_talk", npc, false, true)
+	st.tip_text		  = xr_logic.cfg_get_string(ini, section, "tip_text", npc, false, "", "character_use")
+	npc:set_tip_text(st.tip_text)
 	
 	if (ini:line_exist( section, "sound_phrase")) then
 		st.anim_head	= utils.cfg_get_string(ini, section, "anim_head", npc, false, "")
@@ -156,7 +159,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	end
 	
 	
-	-- check if play once animation
+	--' check if play once animation
 	st.play_once = false
 	if (ini:line_exist( section, "on_signal")) then
 		local str = utils.cfg_get_string(ini, section, "on_signal", npc, false, "")
@@ -164,6 +167,12 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 		if par[1] == "animation_end" then
 			st.play_once = true
 		end
+	end
+
+	if st.can_talk == true then
+		npc:enable_talk()
+	else
+		npc:disable_talk()
 	end
 	
 end
