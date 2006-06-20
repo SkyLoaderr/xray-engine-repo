@@ -75,9 +75,9 @@ void CWayPoint::Render(LPCSTR parent_name, bool bParentSelect)
             xx.sub	(p2,p1);
             xx.mul	(0.95f);
             xx.add	(p1);
-            DU.DrawText(xx,AnsiString().sprintf("P: %1.2f",O->probability).c_str(),c,s);
+            DU.OutText(xx,AnsiString().sprintf("P: %1.2f",O->probability).c_str(),c,s);
         }
-	    DU.DrawText(m_vPosition,hint.c_str(),c,s);
+	    DU.OutText(m_vPosition,hint.c_str(),c,s);
     }
     
 	Fvector p2;

@@ -342,7 +342,7 @@ void ESoundSource::ResetSource()
 {
 	m_Source.destroy();
 	if (m_WAVName.size()){ 
-    	m_Source.create		(1,*m_WAVName);
+    	m_Source.create		(*m_WAVName,st_Effect,sg_Undefined);
         CSoundRender_Source* src= (CSoundRender_Source*)m_Source._handle();
         m_Params.min_distance	= src->m_fMinDist;
         m_Params.max_distance	= src->m_fMaxDist;

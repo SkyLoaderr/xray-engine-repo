@@ -493,7 +493,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                 float dist 	= D.normalize_magn();
                 if (!st->m_Flags.is(ESceneSpawnTools::flPickSpawnType)||
                     !Scene->RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0))
-                        DU.DrawText	(PPosition,s_name.c_str(),0xffffffff,0xff000000);
+                        DU.OutText	(PPosition,s_name.c_str(),0xffffffff,0xff000000);
             }
             if(Selected()){
                 RCache.set_xform_world(Fidentity);
