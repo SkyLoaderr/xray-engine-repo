@@ -90,7 +90,7 @@
 	<!-- Dinamyte -->
 	<info_portion id="escape_dynamite_start">
 		<task>esc_dinamit_to_volk</task>
-		<article>esc_volk_dynamite</article>
+<!--		<article>esc_volk_dynamite</article> -->
 	</info_portion>
 	<info_portion id="escape_dynamite_meet"></info_portion>
 	<info_portion id="esc_petruha_great"></info_portion>
