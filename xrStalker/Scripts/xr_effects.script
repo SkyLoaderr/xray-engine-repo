@@ -18,6 +18,7 @@ function disable_ui_elements(actor, npc, p)
             level.hide_indicators()
         end
     end
+    --printf("xr_effects <disable_ui_elements>")
 end
 
 function enable_ui_elements(actor, npc, p)
@@ -42,14 +43,14 @@ function disable_ui(actor, npc)
     db.actor:hide_weapon()
     level.disable_input()
     level.hide_indicators()
---	printf("ui_disabled")
+    --printf("xr_effects <disable_ui>")
 end
 
 function enable_ui(actor, npc)
     level.show_indicators()
     level.enable_input()
     db.actor:restore_weapon()
---	printf("ui_enabled2")
+    --printf("xr_effects <enable_ui>")
 end
 
 function run_cam_effector(actor, npc, p)
