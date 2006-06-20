@@ -16,7 +16,7 @@ effects				= ae0_effect_1,ae0_effect_2, ae0_effect_3,ae0_effect_5,ae0_effect_6,a
 sound_period		= 2, 10					; <from,to>				(sec)
 sound_dist			= 10, 15
 sounds				= ambient\rnd_outdoor\rnd_darkwind1,ambient\rnd_outdoor\rnd_darkwind2,ambient\rnd_outdoor\rnd_darkwind3,ambient\rnd_outdoor\rnd_darkwind4,ambient\rnd_outdoor\rnd_darkwind5,ambient\rnd_outdoor\rnd_dark,ambient\rnd_outdoor\rnd_dark1,ambient\rnd_outdoor\rnd_dark3,ambient\rnd_outdoor\rnd_dark4,ambient\rnd_outdoor\rnd_dark5,ambient\rnd_outdoor\rnd_krik7,ambient\rnd_outdoor\rnd_krik8,ambient\rnd_outdoor\rnd_krik9,ambient\rnd_outdoor\rnd_moan4,ambient\rnd_outdoor\rnd_moan5,ambient\rnd_outdoor\rnd_shooting_4,ambient\rnd_outdoor\rnd_shooting_5,ambient\rnd_outdoor\rnd_shooting_6,ambient\rnd_outdoor\rnd_swamp,ambient\rnd_outdoor\rnd_wind_tree,ambient\rnd_outdoor\rnd_rock1,ambient\rnd_outdoor\rnd_rock2,ambient\rnd_outdoor\rnd_rock3,ambient\rnd_outdoor\rnd_rock4,ambient\rnd_outdoor\rnd_wolfhowl01,ambient\rnd_outdoor\rnd_drone2,ambient\rnd_outdoor\rnd_drone1,ambient\rnd_outdoor\rnd_drone2,ambient\rnd_outdoor\rnd_drone1,ambient\rnd_outdoor\rnd_drone2,ambient\rnd_outdoor\rnd_drone1
-effect_period		= 10, 20					; <from,to>				(sec)
+effect_period		= 20, 40					; <from,to>				(sec)
 effects				= ae0_effect_1,ae0_effect_2, ae0_effect_3,ae0_effect_4,ae0_effect_5,ae0_effect_6,ae0_effect_7,ae0_effect_8	; <eff0,eff1..effN>		effects sect name
 
 [ambient_env_evening]
@@ -37,7 +37,7 @@ effects				= ae0_effect_1,ae0_effect_2, ae0_effect_3,ae0_effect_8	; <eff0,eff1..
 sound_period		= 2, 10					; <from,to>				(sec)
 sound_dist			= 10, 15
 sounds				= ambient\rnd_outdoor\rnd_bird1,ambient\rnd_outdoor\rnd_bird2,ambient\rnd_outdoor\rnd_bird4,ambient\rnd_outdoor\rnd_bird1,ambient\rnd_outdoor\rnd_bird2,ambient\rnd_outdoor\rnd_boar,ambient\rnd_outdoor\rnd_boar2,ambient\rnd_outdoor\rnd_boar3,ambient\rnd_outdoor\rnd_darkwind5,ambient\rnd_outdoor\rnd_dog,ambient\rnd_outdoor\rnd_dog1,ambient\rnd_outdoor\rnd_dog2,ambient\rnd_outdoor\rnd_dog3,ambient\rnd_outdoor\rnd_fly,ambient\rnd_outdoor\rnd_fly1,ambient\rnd_outdoor\rnd_fly2,ambient\rnd_outdoor\rnd_fly3,ambient\rnd_outdoor\rnd_krik6,ambient\rnd_outdoor\rnd_krik8,ambient\rnd_outdoor\rnd_krik9,ambient\rnd_outdoor\rnd_moan,ambient\rnd_outdoor\rnd_moan3,ambient\rnd_outdoor\rnd_shooting_4,ambient\rnd_outdoor\rnd_shooting_4,ambient\rnd_outdoor\rnd_krik3,ambient\rnd_outdoor\rnd_shooting_6,ambient\rnd_outdoor\rnd_shooting_9,ambient\rnd_outdoor\rnd_shooting_3,ambient\rnd_outdoor\rnd_swamp,ambient\rnd_outdoor\rnd_wind_tree,		; <snd0,snd1..sndN>		sounds name
-effect_period		= 20, 90					; <from,to>				(sec)
+effect_period		= 30, 60					; <from,to>				(sec)
 effects				= ae0_effect_4 ; <eff0,eff1..effN>		effects sect name
 
 [ambient_env_indoor]
@@ -66,21 +66,21 @@ life_time			= 10						; life time (sec)
 particles			= nature\fog_stormy			; particle name
 sound				= ambient\rnd_outdoor\rnd_wind_3				; sound name
 offset				= 0,0,0						; offset from actor camera
-wind_gust_factor	= 0.2
+wind_gust_factor	= 0.05
 
 [ae0_effect_1]
 life_time			= 7						
 particles			= nature\fog_stormy_02
 sound				= ambient\rnd_outdoor\rnd_wind_2
 offset				= 0,0,0
-wind_gust_factor	= 0.15
+wind_gust_factor	= 0.1
 
 [ae0_effect_2]
 life_time			= 10						
 particles			= nature\fog_tornado_01
 sound				= ambient\rnd_outdoor\rnd_wind_3
 offset				= 0,0,0
-wind_gust_factor	= 0.35
+wind_gust_factor	= 0.15
 
 [ae0_effect_3]
 life_time			= 10						
@@ -94,42 +94,42 @@ life_time			= 15
 particles			= nature\fog_foggy_00
 sound				= ambient\rnd_outdoor\rnd_wind_2
 offset				= 0,0,0
-wind_gust_factor	= 0.2
+wind_gust_factor	= 0.15
 
 [ae0_effect_5]
 life_time			= 7						
 particles			= nature\vortex_01
 sound				= ambient\rnd_outdoor\rnd_wind_2
 offset				= 0,0,0
-wind_gust_factor	= 0.25
+wind_gust_factor	= 0.15
 
 [ae0_effect_6]
 life_time			= 7						
 particles			= nature\fog_stormy_01
 sound				= ambient\rnd_outdoor\rnd_wind_1
 offset				= 0,0,0
-wind_gust_factor	= 0.35
+wind_gust_factor	= 0.15
 
 [ae0_effect_7]
 life_time			= 8						
 particles			= nature\fog_stormy_02
 sound				= ambient\rnd_outdoor\rnd_wind_1
 offset				= 0,0,0
-wind_gust_factor	= 0.35
+wind_gust_factor	= 0.1
 
 [ae0_effect_8]
 life_time			= 7						
 particles			= nature\fog_stormy_00
 sound				= ambient\rnd_outdoor\rnd_wind_2
 offset				= 0,0,0
-wind_gust_factor	= 0.75
+wind_gust_factor	= 0.2
 
 [ae0_effect_9]
 life_time			= 10						
 particles			= nature\fog_stormy_01
 sound				= ambient\rnd_outdoor\rnd_wind_3
 offset				= 0,0,0
-wind_gust_factor	= 0.35
+wind_gust_factor	= 0.1
 
 
 
