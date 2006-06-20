@@ -409,7 +409,7 @@ void TfrmSoundLib::PlaySound(LPCSTR name, u32& size, u32& time)
     FS.update_path			(fname,_game_sounds_,ChangeFileExt(name,".ogg").c_str());
     FS_File F;
     if (FS.file_find(fname.c_str(),F)){
-        m_Snd.create		(TRUE,name);
+        m_Snd.create		(name,st_Effect,sg_Undefined);
         m_Snd.play			(0,sm_2D);
         CSoundRender_Source* src= (CSoundRender_Source*)m_Snd._handle(); VERIFY(src);
         size				= F.size;

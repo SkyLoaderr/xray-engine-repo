@@ -151,7 +151,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
             	parent.transform_tiny(p1);
             	u32 c = (*b_it)->flags.is(CBone::flSelected)?0xFFFFFFFF:0xFF000000;
             	u32 s = (*b_it)->flags.is(CBone::flSelected)?0xFF000000:0xFF909090;
-            	DU.DrawText(p1,(*b_it)->Name().c_str(),c,s);
+            	DU.OutText(p1,(*b_it)->Name().c_str(),c,s);
             }
 			if (EPrefs->object_flags.is(epoDrawBoneShapes)){ 
 		        Device.SetShader(Device.m_SelectionShader);

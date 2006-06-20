@@ -109,7 +109,7 @@
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrECoreB.bpf"/>
     <INCLUDEPATH value="&quot;R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include&quot;;Engine\Visuals;WildMagic;Editor;Engine;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;R:\SDK\xiph\include"/>
-    <LIBPATH value="WildMagic;Editor;Engine\Visuals;Engine\Blenders;Engine;c:\rad\borland\CBuilder5\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code;R:\Borland\CBuilder6\Lib\Psdk;&quot;x:\&quot;"/>
+    <LIBPATH value="Editor;WildMagic;Editor;Engine\Visuals;Engine\Blenders;Engine;c:\rad\borland\CBuilder5\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code;R:\Borland\CBuilder6\Lib\Psdk;&quot;x:\&quot;"/>
     <WARNINGS value="-w8092 -w8090 -w8089 -w8087 -wprc -wucp -wstv -wstu -wsig -wpin -w-par 
       -wnod -wnak -wdef -wcln -wbbf -wasm -wamp -wamb"/>
     <OTHERFILES value=""/>

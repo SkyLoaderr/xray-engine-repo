@@ -37,7 +37,7 @@ static Fvector boxvert[boxvertcount];
 #ifdef _EDITOR
 #	define FILL_MODE Device.dwFillMode
 #	define SHADE_MODE Device.dwShadeMode
-#	define SCREEN_QUALITY SCREEN_QUALITY
+#	define SCREEN_QUALITY Device.m_ScreenQuality
 #else
 #	define FILL_MODE D3DFILL_SOLID
 #	define SHADE_MODE D3DSHADE_GOURAUD
