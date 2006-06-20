@@ -239,6 +239,8 @@ public:
 
 extern ENGINE_API CBackend			RCache;
 
-#include "D3DUtils.h"
+#ifndef _EDITOR
+#	include "D3DUtils.h"
+#endif
 
 #endif
