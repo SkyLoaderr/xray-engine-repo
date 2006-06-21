@@ -8,6 +8,10 @@
 #include "Actor.h"
 #include "game_cl_base.h"
 
+#ifdef DEBUG
+#	include "debug_renderer.h"
+#endif
+
 void	game_sv_ArtefactHunt::Create					(shared_str& options)
 {
 	inherited::Create					(options);
@@ -1297,13 +1301,13 @@ void game_sv_ArtefactHunt::OnRender				()
 			V1.y +=1.0f;
 
 			T.identity();
-			RCache.dbg_DrawLINE(Fidentity, V0, V1, D3DCOLOR_XRGB(0, 255, 255));
+			Level().debug_renderer().draw_line(Fidentity, V0, V1, D3DCOLOR_XRGB(0, 255, 255));
 
 			float r = .4f;
 			T.identity();
 			T.scale(r, r/2, r);
 			T.translate_add(rp.P);
-			RCache.dbg_DrawEllipse(T, D3DCOLOR_XRGB(0, 255, 255));
+			Level().debug_renderer().draw_ellipse(T, D3DCOLOR_XRGB(0, 255, 255));
 		}
 	};
 	inherited::OnRender();

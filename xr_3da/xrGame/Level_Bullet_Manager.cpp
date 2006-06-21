@@ -10,6 +10,10 @@
 #include "gamepersistent.h"
 #include "mt_config.h"
 
+#ifdef DEBUG
+#	include "debug_renderer.h"
+#endif
+
 #define HIT_POWER_EPSILON 0.05f
 #define WALLMARK_SIZE 0.04f
 
@@ -325,7 +329,7 @@ void CBulletManager::Render	()
 		RCache.set_xform_world(Fidentity);
 		for(int i=0; i<3; ++i)
 			for(it=g_hit[i].begin();it!=g_hit[i].end();++it){
-				RCache.dbg_DrawAABB(*it,0.01f,0.01f,0.01f,C[i]);
+				Level().debug_renderer().draw_aabb(*it,0.01f,0.01f,0.01f,C[i]);
 			}
 	}
 #endif

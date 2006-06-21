@@ -19,6 +19,11 @@
 #include "DamageSource.h"
 #include "PHCollideValidator.h"
 #include "CalculateTriangle.h"
+
+#ifdef DEBUG
+#	include "debug_renderer.h"
+#endif
+
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
 const float CLIMB_GETUP_HEIGHT=0.3f;
@@ -1073,8 +1078,8 @@ void CPHSimpleCharacter::OnRender(){
 	Fvector pos;
 	GetPosition(pos);
 	pos.y+=m_radius;
-	RCache.dbg_DrawLINE(m,pos,*(Fvector*)m_control_force, color_rgba(256,0,0,1));
-	RCache.dbg_DrawLINE(m,pos,n, 0xefffffff);
+	Level().debug_renderer().draw_line(m,pos,*(Fvector*)m_control_force, color_rgba(256,0,0,1));
+	Level().debug_renderer().draw_line(m,pos,n, 0xefffffff);
 
 
 	Fvector scale;
@@ -1085,14 +1090,14 @@ void CPHSimpleCharacter::OnRender(){
 	M.c.set(pos);
 
 
-	RCache.dbg_DrawEllipse(M, 0xffffffff);
+	Level().debug_renderer().draw_ellipse(M, 0xffffffff);
 
 #ifdef DRAW_BOXES
-	RCache.dbg_DrawAABB			(m_bcenter,m_AABB.x,m_AABB.y,m_AABB.z,D3DCOLOR_XRGB(0,0,255));
-	RCache.dbg_DrawAABB			(m_bcenter_forbid,m_AABB_forbid.x,m_AABB_forbid.y,m_AABB_forbid.z,D3DCOLOR_XRGB(255,0,0));
+	Level().debug_renderer().draw_aabb			(m_bcenter,m_AABB.x,m_AABB.y,m_AABB.z,D3DCOLOR_XRGB(0,0,255));
+	Level().debug_renderer().draw_aabb			(m_bcenter_forbid,m_AABB_forbid.x,m_AABB_forbid.y,m_AABB_forbid.z,D3DCOLOR_XRGB(255,0,0));
 #endif
 	///M.c.set(0.f,1.f,0.f);
-	//RCache.dbg_DrawEllipse(M, 0xffffffff);
+	//Level().debug_renderer().draw_ellipse(M, 0xffffffff);
 }
 #endif
 

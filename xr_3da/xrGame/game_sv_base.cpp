@@ -11,6 +11,8 @@
 #include "game_sv_event_queue.h"
 #include "../XR_IOConsole.h"
 
+#include "debug_renderer.h"
+
 //#define		MAPROT_LIST				"maprot_list.ltx"	
 string_path		MAPROT_LIST		= "";
 BOOL	net_sv_control_hit	= FALSE		;
@@ -776,7 +778,7 @@ void		game_sv_GameState::OnRender				()
 				V1.y +=1.0f;
 
 				T.identity();
-				RCache.dbg_DrawLINE(Fidentity, V0, V1, TeamColors[t]);
+				Level().debug_renderer().draw_line(Fidentity, V0, V1, TeamColors[t]);
 
 				bool Blocked = false;
 				for (u32 p_it=0; p_it<get_players_count(); ++p_it)
@@ -799,19 +801,19 @@ void		game_sv_GameState::OnRender				()
 				T.identity();
 				T.scale(r, r, r);
 				T.translate_add(rp.P);
-				RCache.dbg_DrawEllipse(T, TeamColors[t]);
+				Level().debug_renderer().draw_ellipse(T, TeamColors[t]);
 /*
 				r = rpoints_MinDist[t];
 				T.identity();
 				T.scale(r, r, r);
 				T.translate_add(rp.P);
-				RCache.dbg_DrawEllipse(T, TeamColorsDist[t]);
+				Level().debug_renderer().draw_ellipse(T, TeamColorsDist[t]);
 
 				r = rpoints_Dist[t];
 				T.identity();
 				T.scale(r, r, r);
 				T.translate_add(rp.P);
-				RCache.dbg_DrawEllipse(T, TeamColorsDist[t]);
+				Level().debug_renderer().draw_ellipse(T, TeamColorsDist[t]);
 */
 			}
 		}
@@ -831,7 +833,7 @@ void		game_sv_GameState::OnRender				()
 			T.identity();
 			T.scale(r, r, r);
 			T.translate_add(pPlayer->Position());
-			RCache.dbg_DrawEllipse(T, TeamColors[PS->team]);
+			Level().debug_renderer().draw_ellipse(T, TeamColors[PS->team]);
 		};
 
 	}

@@ -15,6 +15,10 @@
 #include "ai_space.h"
 #include "CustomZone.h"
 
+#ifdef DEBUG
+#	include "debug_renderer.h"
+#endif
+
 CSpaceRestrictor::~CSpaceRestrictor	()
 {
 }
@@ -229,13 +233,13 @@ void CSpaceRestrictor::OnRender	()
 				l_ball.translate_add(l_p);
 				//l_ball.mul(XFORM(), l_ball);
 				//l_ball.mul(l_ball, XFORM());
-				RCache.dbg_DrawEllipse(l_ball, Color);
+				Level().debug_renderer().draw_ellipse(l_ball, Color);
 			}
 			break;
 		case 1:
 			{
 				l_box.mul(XFORM(), l_pShape->data.box);
-				RCache.dbg_DrawOBB(l_box, l_half, Color);
+				Level().debug_renderer().draw_obb(l_box, l_half, Color);
 			}
 			break;
 		}

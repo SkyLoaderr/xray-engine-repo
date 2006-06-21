@@ -15,6 +15,11 @@
 #include "script_callback_ex.h"
 #include "game_object_space.h"
 
+#ifdef DEBUG
+#	include "level.h"
+#	include "debug_renderer.h"
+#endif
+
 CScriptZone::CScriptZone		()
 {
 }
@@ -109,13 +114,13 @@ void CScriptZone::OnRender()
 				l_ball.scale(l_sphere.R, l_sphere.R, l_sphere.R);
 				Fvector l_p; XFORM().transform(l_p, l_sphere.P);
 				l_ball.translate_add(l_p);
-				RCache.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(0,255,255));
+				Level().debug_renderer().draw_ellipse(l_ball, D3DCOLOR_XRGB(0,255,255));
 			}
 			break;
 		case 1:
 			{
 				l_box.mul(XFORM(), l_pShape->data.box);
-				RCache.dbg_DrawOBB(l_box, l_half, D3DCOLOR_XRGB(0,255,255));
+				Level().debug_renderer().draw_obb(l_box, l_half, D3DCOLOR_XRGB(0,255,255));
 			}
 			break;
 		}

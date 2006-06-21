@@ -5,6 +5,10 @@
 #include "HUDManager.h"
 
 #ifdef DEBUG
+#	include "debug_renderer.h"
+#endif
+
+#ifdef DEBUG
 
 CLevelDebug::CLevelDebug()
 {
@@ -237,18 +241,18 @@ struct DrawLevelPredicate {
 	void operator() (CLevelDebug::SLevelItem s) {
 
 		if (s.ptype == CLevelDebug::SLevelItem::ePoint) {
-			RCache.dbg_DrawAABB(s.position1,0.35f,0.35f,0.35f,s.color);
+			Level().debug_renderer().draw_aabb(s.position1,0.35f,0.35f,0.35f,s.color);
 
 			Fvector upV;
 			upV		= s.position1;
 			upV.y	+= 5.0f;
 
-			RCache.dbg_DrawLINE(Fidentity,s.position1,upV,s.color);
+			Level().debug_renderer().draw_line(Fidentity,s.position1,upV,s.color);
 
 		} else if (s.ptype == CLevelDebug::SLevelItem::eLine) {
-			RCache.dbg_DrawLINE(Fidentity,s.position1,s.position2,s.color);			
+			Level().debug_renderer().draw_line(Fidentity,s.position1,s.position2,s.color);			
 		} else if (s.ptype == CLevelDebug::SLevelItem::eBox) {
-			RCache.dbg_DrawAABB(s.position1,s.radius,s.radius,s.radius,s.color);
+			Level().debug_renderer().draw_aabb(s.position1,s.radius,s.radius,s.radius,s.color);
 		}
 	}
 };

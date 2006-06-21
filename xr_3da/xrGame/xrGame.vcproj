@@ -6132,6 +6132,19 @@
 							RelativePath=".\level_sounds.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="Debug Renderer"
+						Filter="">
+						<File
+							RelativePath=".\debug_renderer.cpp">
+						</File>
+						<File
+							RelativePath=".\debug_renderer.h">
+						</File>
+						<File
+							RelativePath=".\debug_renderer_inline.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Level Controller"

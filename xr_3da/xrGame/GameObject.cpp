@@ -29,9 +29,12 @@
 #include "net_utils.h"
 #include "script_callback_ex.h"
 #include "MathUtils.h"
+
 #ifdef DEBUG
-#include "PHDebug.h"
+#	include "debug_renderer.h"
+#	include "PHDebug.h"
 #endif
+
 #define OBJECT_REMOVE_TIME 180000
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -116,11 +119,7 @@ void CGameObject::net_Destroy	()
 		Level().SetControlEntity				(0);
 	}
 
-//	if (UsedAI_Locations() && !H_Parent() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(ai_location().level_vertex_id()))
-//		ai().level_graph().ref_dec				(ai_location().level_vertex_id());
-
-	Parent = 0;
-
+	Parent									= 0;
 
 	CScriptBinder::net_Destroy				();
 
@@ -295,7 +294,10 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 	if (0xffff != E->ID_Parent) {
 		
 		if (!Parent) {
-			// we need this to prevent illegal ref_dec/ref_add
+			// // we need this to prevent illegal ref_dec/ref_add
+			// this is obsolete, since ref_dec/ref_add are removed
+			// but I propose do not touch this, or touch and then
+			// test the whole spawn sequence
 			Parent				= this;
 			inherited::net_Spawn(DC);
 			Parent				= 0;
@@ -559,12 +561,7 @@ void CGameObject::validate_ai_locations			(bool decrement_reference)
 	if (decrement_reference && (ai_location().level_vertex_id() == l_dwNewLevelVertexID))
 		return;
 
-//	if (decrement_reference && ai().level_graph().valid_vertex_id(ai_location().level_vertex_id()))
-//		ai().level_graph().ref_dec	(ai_location().level_vertex_id());
-
 	ai_location().level_vertex		(l_dwNewLevelVertexID);
-
-//	ai().level_graph().ref_add		(ai_location().level_vertex_id());
 
 	if (ai().get_game_graph() && ai().get_cross_table()) {
 		ai_location().game_vertex	(ai().cross_table().vertex(ai_location().level_vertex_id()).game_vertex_id());
@@ -598,7 +595,7 @@ void			CGameObject::dbg_DrawSkeleton	()
 				Fmatrix M;
 				M.invert			(I->b_IM);
 				Fvector h_size		= I->b_hsize;
-				RCache.dbg_DrawOBB	(M, h_size, color_rgba(0, 255, 0, 255));
+				Level().debug_renderer().draw_obb	(M, h_size, color_rgba(0, 255, 0, 255));
 								   }break;
 			case SBoneShape::stCylinder:{
 				Fmatrix M;
@@ -607,13 +604,13 @@ void			CGameObject::dbg_DrawSkeleton	()
 				Fvector				h_size;
 				h_size.set			(I->c_cylinder.m_radius,I->c_cylinder.m_radius,I->c_cylinder.m_height*0.5f);
 				Fvector::generate_orthonormal_basis(M.k,M.j,M.i);
-				RCache.dbg_DrawOBB	(M, h_size, color_rgba(0, 127, 255, 255));
+				Level().debug_renderer().draw_obb	(M, h_size, color_rgba(0, 127, 255, 255));
 										}break;
 			case SBoneShape::stSphere:{
 				Fmatrix				l_ball;
 				l_ball.scale		(I->s_sphere.R, I->s_sphere.R, I->s_sphere.R);
 				l_ball.translate_add(I->s_sphere.P);
-				RCache.dbg_DrawEllipse(l_ball, color_rgba(0, 255, 0, 255));
+				Level().debug_renderer().draw_ellipse(l_ball, color_rgba(0, 255, 0, 255));
 									  }break;
 		};
 	};	
@@ -663,8 +660,6 @@ void CGameObject::OnH_B_Chield()
 {
 	inherited::OnH_B_Chield();
 	///PHSetPushOut();????
-//	if (UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(ai_location().level_vertex_id()))
-//		ai().level_graph().ref_dec(ai_location().level_vertex_id());
 }
 
 void CGameObject::OnH_B_Independent()
@@ -689,7 +684,7 @@ void CGameObject::OnRender()
 		Fvector bc,bd; 
 		Visual()->vis.box.get_CD	(bc,bd);
 		Fmatrix	M = XFORM();		M.c.add (bc);
-		RCache.dbg_DrawOBB			(M,bd,color_rgba(0,0,255,255));
+		Level().debug_renderer().draw_obb			(M,bd,color_rgba(0,0,255,255));
 	}	
 }
 #endif

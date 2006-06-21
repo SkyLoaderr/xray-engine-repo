@@ -47,6 +47,7 @@
 #ifdef DEBUG
 #	include "level_debug.h"
 #	include "ai/stalker/ai_stalker.h"
+#	include "debug_renderer.h"
 #endif
 
 extern BOOL	g_bDebugDumpPhysicsStep;
@@ -99,6 +100,10 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 	m_client_spawn_manager		= xr_new<CClientSpawnManager>();
 
 	m_autosave_manager			= xr_new<CAutosaveManager>();
+
+#ifdef DEBUG
+	m_debug_renderer			= xr_new<CDebugRenderer>();
+#endif
 	
 	m_ph_commander				= xr_new<CPHCommander>();
 	m_ph_commander_scripts		= xr_new<CPHCommander>();
@@ -206,6 +211,10 @@ CLevel::~CLevel()
 
 	xr_delete					(m_autosave_manager);
 	
+#ifdef DEBUG
+	xr_delete					(m_debug_renderer);
+#endif
+
 	ai().script_engine().remove_script_process(ScriptEngine::eScriptProcessorLevel);
 
 	xr_delete					(game);
@@ -545,7 +554,7 @@ void CLevel::OnRender()
 #endif
 
 #ifdef DEBUG
-	if (ai().get_level_graph() && (bDebug || psAI_Flags.test(aiMotion)))
+	if (ai().get_level_graph())
 		ai().level_graph().render();
 
 #ifdef DEBUG_PRECISE_PATH
@@ -555,7 +564,6 @@ void CLevel::OnRender()
 	CAI_Stalker				*stalker = smart_cast<CAI_Stalker*>(Level().CurrentEntity());
 	if (stalker)
 		stalker->OnRender	();
-
 
 	if (bDebug)	{
 		for (u32 I=0; I < Level().Objects.o_count(); I++) {
@@ -612,6 +620,8 @@ void CLevel::OnRender()
 		DBG().draw_text						();
 		DBG().draw_level_info				();
 	}
+
+	debug_renderer().render					();
 #endif
 }
 

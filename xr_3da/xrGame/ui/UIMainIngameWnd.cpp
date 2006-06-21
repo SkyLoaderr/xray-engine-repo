@@ -38,9 +38,10 @@
 #include "../string_table.h"
 #include "../clsid_game.h"
 #include "UIArtefactPanel.h"
+
 #ifdef DEBUG
-#include "../attachable_item.h"
-#include "../../xr_input.h"
+#	include "../attachable_item.h"
+#	include "../../xr_input.h"
 #endif
 
 #include "UIScrollView.h"
@@ -48,7 +49,9 @@
 #include "UIColorAnimatorWrapper.h"
 #include "../game_news.h"
 
-
+#ifdef DEBUG
+#	include "../debug_renderer.h"
+#endif
 
 void test_draw	();
 void test_key	(int dik);
@@ -425,17 +428,17 @@ void CUIMainIngameWnd::Draw()
 			parent.transform_tiny	(SP);
 
 
-			RCache.dbg_DrawAABB(FP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(255,0,0));
-			RCache.dbg_DrawAABB(FP2,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,0,255));
-			RCache.dbg_DrawAABB(SP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(0,255,0));
+			Level().debug_renderer().draw_aabb(FP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(255,0,0));
+			Level().debug_renderer().draw_aabb(FP2,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,0,255));
+			Level().debug_renderer().draw_aabb(SP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(0,255,0));
 		
 		}else{
 			Fvector FP = m_pWeapon->get_CurrentFirePoint();
 			Fvector FP2 = m_pWeapon->get_CurrentFirePoint2();
 			Fvector SP = m_pWeapon->get_LastSP();
-			RCache.dbg_DrawAABB(FP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(255,0,0));
-			RCache.dbg_DrawAABB(FP2,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,0,255));
-			RCache.dbg_DrawAABB(SP,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,255,0));
+			Level().debug_renderer().draw_aabb(FP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(255,0,0));
+			Level().debug_renderer().draw_aabb(FP2,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,0,255));
+			Level().debug_renderer().draw_aabb(SP,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,255,0));
 		}
 	}
 #endif

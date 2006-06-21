@@ -8,6 +8,9 @@
 #include "ExtendedGeom.h"
 #include "Level.h"
 #include "Hudmanager.h"
+
+#include "debug_renderer.h"
+
 Flags32		ph_dbg_draw_mask						;
 Flags32		ph_dbg_draw_mask1						;
 bool		draw_frame=0;
@@ -68,9 +71,9 @@ struct SPHDBGDrawTri :public SPHDBGDrawAbsract
 	}
 	virtual void render()
 	{
-		RCache.dbg_DrawLINE(Fidentity,v[0],v[1],c);
-		RCache.dbg_DrawLINE(Fidentity,v[1],v[2],c);
-		RCache.dbg_DrawLINE(Fidentity,v[2],v[0],c);
+		Level().debug_renderer().draw_line(Fidentity,v[0],v[1],c);
+		Level().debug_renderer().draw_line(Fidentity,v[1],v[2],c);
+		Level().debug_renderer().draw_line(Fidentity,v[2],v[0],c);
 	}
 };
 
@@ -103,7 +106,7 @@ struct SPHDBGDrawLine : public SPHDBGDrawAbsract
 	}
 	virtual void render()
 	{
-		RCache.dbg_DrawLINE(Fidentity,p[0],p[1],c);
+		Level().debug_renderer().draw_line(Fidentity,p[0],p[1],c);
 	}
 };
 
@@ -130,7 +133,7 @@ struct SPHDBGDrawAABB :public SPHDBGDrawAbsract
 	}
 	virtual void render()
 	{
-		RCache.dbg_DrawAABB			(p[0],p[1].x,p[1].y,p[1].z,c);
+		Level().debug_renderer().draw_aabb			(p[0],p[1].x,p[1].y,p[1].z,c);
 	}
 };
 
@@ -148,7 +151,7 @@ struct SPHDBGDrawOBB: public SPHDBGDrawAbsract
 	}
 	virtual void render()
 	{
-		RCache.dbg_DrawOBB(m,h,c);
+		Level().debug_renderer().draw_obb(m,h,c);
 	}
 };
 void DBG_DrawOBB(const Fmatrix& m,const Fvector h,u32 c)
@@ -164,9 +167,9 @@ struct SPHDBGDrawPoint :public SPHDBGDrawAbsract
 	}
 	virtual void render()
 	{
-		//RCache.dbg_DrawAABB(p,size,size,size,c);
+		//Level().debug_renderer().draw_aabb(p,size,size,size,c);
 		Fmatrix m;m.identity();m.scale(size,size,size);m.c.set(p);
-		RCache.dbg_DrawEllipse(m,c);
+		Level().debug_renderer().draw_ellipse(m,c);
 	}
 };
 void DBG_DrawPoint(const Fvector& p,float size,u32 c)
@@ -404,7 +407,7 @@ void PH_DBG_Render()
 		for(;e!=i;++i)
 		{
 			SPHObjDBGDraw& ds=*i;
-			RCache.dbg_DrawAABB(ds.AABB_center,ds.AABB.x,ds.AABB.y,ds.AABB.z,D3DCOLOR_XRGB(255,0,0));
+			Level().debug_renderer().draw_aabb(ds.AABB_center,ds.AABB.x,ds.AABB.y,ds.AABB.z,D3DCOLOR_XRGB(255,0,0));
 		}
 	}
 
@@ -431,12 +434,12 @@ void PH_DBG_Render()
 		{
 			SPHContactDBGDraw &c=*i;
 			bool is_cyl=c.geomClass==dCylinderClassUser;
-			RCache.dbg_DrawAABB			(c.pos,.01f,.01f,.01f,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
+			Level().debug_renderer().draw_aabb			(c.pos,.01f,.01f,.01f,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
 			Fvector dir;
 			dir.set(c.norm);
 			dir.mul(c.depth*100.f);
 			dir.add(c.pos);
-			RCache.dbg_DrawLINE(Fidentity,c.pos,dir,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
+			Level().debug_renderer().draw_line(Fidentity,c.pos,dir,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
 		}
 	}
 //	HUD().Font().pFontSmall->OutNext("---------------------");

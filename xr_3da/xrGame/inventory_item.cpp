@@ -22,6 +22,10 @@
 #include "ai_object_location.h"
 #include "object_broker.h"
 
+#ifdef DEBUG
+#	include "debug_renderer.h"
+#endif
+
 #define ITEM_REMOVE_TIME		30000
 struct net_update_IItem {	u32					dwTimeStamp;
 SPHNetState			State;};
@@ -936,7 +940,7 @@ void CInventoryItem::OnRender()
 		object().Visual()->vis.box.get_CD	(bc,bd);
 		Fmatrix	M = object().XFORM();
 		M.c.add (bc);
-		RCache.dbg_DrawOBB			(M,bd,color_rgba(0,0,255,255));
+		Level().debug_renderer().draw_obb			(M,bd,color_rgba(0,0,255,255));
 /*
 		u32 Color;
 		if (processing_enabled())
@@ -954,11 +958,11 @@ void CInventoryItem::OnRender()
 				Color = color_rgba(255, 0, 0, 255);
 		};
 
-//		RCache.dbg_DrawOBB			(M,bd,Color);
+//		Level().debug_renderer().draw_obb			(M,bd,Color);
 		float size = 0.01f;
 		if (!H_Parent())
 		{
-			RCache.dbg_DrawAABB			(Position(), size, size, size, color_rgba(0, 255, 0, 255));
+			Level().debug_renderer().draw_aabb			(Position(), size, size, size, color_rgba(0, 255, 0, 255));
 
 			Fvector Pos1, Pos2;
 			VIS_POSITION_it It = LastVisPos.begin();
@@ -966,7 +970,7 @@ void CInventoryItem::OnRender()
 			for (; It != LastVisPos.end(); It++)
 			{
 				Pos2 = *It;
-				RCache.dbg_DrawLINE(Fidentity, Pos1, Pos2, color_rgba(255, 255, 0, 255));
+				Level().debug_renderer().draw_line(Fidentity, Pos1, Pos2, color_rgba(255, 255, 0, 255));
 				Pos1 = Pos2;
 			};
 
@@ -979,11 +983,11 @@ void CInventoryItem::OnRender()
 
 			xformI.rotation(IRecRot);
 			xformI.c.set(IRecPos);
-			RCache.dbg_DrawAABB			(IRecPos, size, size, size, color_rgba(255, 0, 255, 255));
+			Level().debug_renderer().draw_aabb			(IRecPos, size, size, size, color_rgba(255, 0, 255, 255));
 
 			xformI.rotation(IEndRot);
 			xformI.c.set(IEndPos);
-			RCache.dbg_DrawOBB			(xformI,bd,color_rgba(0, 255, 0, 255));
+			Level().debug_renderer().draw_obb			(xformI,bd,color_rgba(0, 255, 0, 255));
 
 			///////////////////////////////////////////////////////////////////////////
 			Fvector point0 = IStartPos, point1;			
@@ -996,7 +1000,7 @@ void CInventoryItem::OnRender()
 				{
 					point1[k] = c*(c*(c*SCoeff[k][0]+SCoeff[k][1])+SCoeff[k][2])+SCoeff[k][3];
 				};
-				RCache.dbg_DrawLINE(Fidentity, point0, point1, color_rgba(0, 0, 255, 255));
+				Level().debug_renderer().draw_line(Fidentity, point0, point1, color_rgba(0, 0, 255, 255));
 				point0.set(point1);
 			};
 		};

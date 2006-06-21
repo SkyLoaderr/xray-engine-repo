@@ -3,6 +3,10 @@
 #include "../frustum.h"
 
 #ifdef DEBUG
+#	include "debug_renderer.h"
+#endif
+
+#ifdef DEBUG
 void MK_Frustum(CFrustum& F, float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U)
 {
 	float YFov	= deg2rad(FOV);
@@ -108,15 +112,15 @@ void dbg_draw_frustum	(float FOV, float _FAR, float A, Fvector &P, Fvector &D, F
 //	RCache.dbg_DrawTRI	(M,COP,_F[1],_F[2],CT);
 //	RCache.dbg_DrawTRI	(M,COP,_F[2],_F[3],CT);
 //	RCache.dbg_DrawTRI	(M,COP,_F[3],_F[0],CT);
-	RCache.dbg_DrawLINE	(M,COP,_F[0],CL);
-	RCache.dbg_DrawLINE	(M,COP,_F[1],CL);
-	RCache.dbg_DrawLINE	(M,COP,_F[2],CL);
-	RCache.dbg_DrawLINE	(M,COP,_F[3],CL);
+	Level().debug_renderer().draw_line	(M,COP,_F[0],CL);
+	Level().debug_renderer().draw_line	(M,COP,_F[1],CL);
+	Level().debug_renderer().draw_line	(M,COP,_F[2],CL);
+	Level().debug_renderer().draw_line	(M,COP,_F[3],CL);
 
-	RCache.dbg_DrawLINE	(M,_F[0],_F[1],CL);
-	RCache.dbg_DrawLINE	(M,_F[1],_F[2],CL);
-	RCache.dbg_DrawLINE	(M,_F[2],_F[3],CL);
-	RCache.dbg_DrawLINE	(M,_F[3],_F[0],CL);
+	Level().debug_renderer().draw_line	(M,_F[0],_F[1],CL);
+	Level().debug_renderer().draw_line	(M,_F[1],_F[2],CL);
+	Level().debug_renderer().draw_line	(M,_F[2],_F[3],CL);
+	Level().debug_renderer().draw_line	(M,_F[3],_F[0],CL);
 
 	RCache.set_CullMode			(CULL_CCW);
 	CHK_DX(HW.pDevice->SetRenderState	(D3DRS_AMBIENT,	0						));

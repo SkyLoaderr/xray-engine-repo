@@ -47,6 +47,7 @@
 #include "../../mt_config.h"
 #include "../../weaponmagazined.h"
 #include "../../object_handler_space.h"
+#include "../../debug_renderer.h"
 
 CActor *g_debug_actor = 0;
 
@@ -796,7 +797,7 @@ void CAI_Stalker::OnRender			()
 		temp					= direction;
 		temp.mul				(1.f);
 		temp.add				(position);
-		RCache.dbg_DrawLINE		(Fidentity,position,temp,D3DCOLOR_XRGB(0*255,255,0*255));
+		Level().debug_renderer().draw_line		(Fidentity,position,temp,D3DCOLOR_XRGB(0*255,255,0*255));
 	}
 
 	if (IsMyCamera()) {
@@ -810,7 +811,7 @@ void CAI_Stalker::OnRender			()
 		feel_vision_get			(objects);
 		if (std::find(objects.begin(),objects.end(),memory().enemy().selected()) != objects.end()) {
 			Fvector				position = feel_vision_get_vispoint(const_cast<CEntityAlive*>(memory().enemy().selected()));
-			RCache.dbg_DrawAABB	(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
+			Level().debug_renderer().draw_aabb	(position,.05f,.05f,.05f,D3DCOLOR_XRGB(0*255,255,0*255));
 			return;
 		}
 
@@ -824,12 +825,12 @@ void CAI_Stalker::OnRender			()
 		c0.y					+= 2.f;
 		c1.setHP				(-movement().m_body.current.yaw,-movement().m_body.current.pitch);
 		c1.add					(c0);
-		RCache.dbg_DrawLINE		(Fidentity,c0,c1,D3DCOLOR_XRGB(0,255,0));
+		Level().debug_renderer().draw_line		(Fidentity,c0,c1,D3DCOLOR_XRGB(0,255,0));
 		
 		t0.y					+= 2.f;
 		t1.setHP				(-movement().m_body.target.yaw,-movement().m_body.target.pitch);
 		t1.add					(t0);
-		RCache.dbg_DrawLINE		(Fidentity,t0,t1,D3DCOLOR_XRGB(255,0,0));
+		Level().debug_renderer().draw_line		(Fidentity,t0,t1,D3DCOLOR_XRGB(255,0,0));
 	}
 
 	if (memory().danger().selected() && ai().level_graph().valid_vertex_position(memory().danger().selected()->position())) {
@@ -837,7 +838,7 @@ void CAI_Stalker::OnRender			()
 		u32							level_vertex_id = ai().level_graph().vertex_id(position);
 		float						half_size = ai().level_graph().header().cell_size()*.5f;
 		position.y					+= 1.f;
-		RCache.dbg_DrawAABB	(position,half_size - .01f,1.f,ai().level_graph().header().cell_size()*.5f-.01f,D3DCOLOR_XRGB(0*255,255,0*255));
+		Level().debug_renderer().draw_aabb	(position,half_size - .01f,1.f,ai().level_graph().header().cell_size()*.5f-.01f,D3DCOLOR_XRGB(0*255,255,0*255));
 
 		if (ai().level_graph().valid_vertex_id(level_vertex_id)) {
 			LevelGraph::CVertex			*v = ai().level_graph().vertex(level_vertex_id);
@@ -851,7 +852,7 @@ void CAI_Stalker::OnRender			()
 				direction.mul		(value*half_size);
 				direction.add		(position);
 				direction.y			= position.y;
-				RCache.dbg_DrawLINE	(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,255));
+				Level().debug_renderer().draw_line	(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,255));
 				value				= ai().level_graph().compute_square(float(10*i)/180.f*PI,PI/2.f,v);
 				if (value > best_value) {
 					best_value		= value;
@@ -860,16 +861,16 @@ void CAI_Stalker::OnRender			()
 			}
 
 			direction.set		(position.x - half_size*float(v->cover(0))/15.f,position.y,position.z);
-			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+			Level().debug_renderer().draw_line(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
 
 			direction.set		(position.x,position.y,position.z + half_size*float(v->cover(1))/15.f);
-			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+			Level().debug_renderer().draw_line(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
 
 			direction.set		(position.x + half_size*float(v->cover(2))/15.f,position.y,position.z);
-			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+			Level().debug_renderer().draw_line(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
 
 			direction.set		(position.x,position.y,position.z - half_size*float(v->cover(3))/15.f);
-			RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
+			Level().debug_renderer().draw_line(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
 
 			float				value = ai().level_graph().cover_in_direction(float(10*j)/180.f*PI,v);
 			direction.setHP		(float(10*j)/180.f*PI,0);
@@ -877,7 +878,7 @@ void CAI_Stalker::OnRender			()
 			direction.mul		(value*half_size);
 			direction.add		(position);
 			direction.y			= position.y;
-			RCache.dbg_DrawLINE	(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,0));
+			Level().debug_renderer().draw_line	(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,0));
 		}
 	}
 

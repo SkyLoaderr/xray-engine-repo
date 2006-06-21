@@ -43,6 +43,10 @@
 #include "ai/monsters/burer/burer.h"
 #include "GamePersistent.h"
 
+#ifdef DEBUG
+#	include "debug_renderer.h"
+#endif
+
 extern int g_AI_inactive_time;
 
 #ifdef DEBUG
@@ -600,11 +604,11 @@ void CCustomMonster::OnRender()
 				const DetailPathManager::STravelPathPoint&	N1 = path[I-1];	Fvector	P1; P1.set(N1.position); P1.y+=0.1f;
 				const DetailPathManager::STravelPathPoint&	N2 = path[I];	Fvector	P2; P2.set(N2.position); P2.y+=0.1f;
 				if (!fis_zero(P1.distance_to_sqr(P2),EPS_L))
-					RCache.dbg_DrawLINE			(Fidentity,P1,P2,color0);
+					Level().debug_renderer().draw_line			(Fidentity,P1,P2,color0);
 				if ((path.size() - 1) == I) // песледний box?
-					RCache.dbg_DrawAABB			(P1,radius0,radius0,radius0,color1);
+					Level().debug_renderer().draw_aabb			(P1,radius0,radius0,radius0,color1);
 				else 
-					RCache.dbg_DrawAABB			(P1,radius0,radius0,radius0,color2);
+					Level().debug_renderer().draw_aabb			(P1,radius0,radius0,radius0,color2);
 			}
 
 			for (u32 I=1; I<keys.size(); ++I) {
@@ -620,8 +624,8 @@ void CCustomMonster::OnRender()
 				P2.y		+= 0.1f;
 
 				if (!fis_zero(P1.distance_to_sqr(P2),EPS_L))
-					RCache.dbg_DrawLINE		(Fidentity,P1,P2,color1);
-				RCache.dbg_DrawAABB			(P1,radius1,radius1,radius1,color3);
+					Level().debug_renderer().draw_line		(Fidentity,P1,P2,color1);
+				Level().debug_renderer().draw_aabb			(P1,radius1,radius1,radius1,color3);
 			}
 		}
 	}
@@ -631,18 +635,18 @@ void CCustomMonster::OnRender()
 
 		Fvector				P1 = ai().level_graph().vertex_position(node);
 		P1.y				+= 1.f;
-		RCache.dbg_DrawAABB	(P1,.5f,1.f,.5f,D3DCOLOR_XRGB(255,0,0));
+		Level().debug_renderer().draw_aabb	(P1,.5f,1.f,.5f,D3DCOLOR_XRGB(255,0,0));
 	}
 	if (g_Alive()) {
 		if (memory().enemy().selected()) {
 			Fvector				P1 = memory().memory(memory().enemy().selected()).m_object_params.m_position;
 			P1.y				+= 1.f;
-			RCache.dbg_DrawAABB	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
+			Level().debug_renderer().draw_aabb	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
 		}
 		if (memory().danger().selected()) {
 			Fvector				P1 = memory().danger().selected()->position();
 			P1.y				+= 1.f;
-			RCache.dbg_DrawAABB	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
+			Level().debug_renderer().draw_aabb	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
 		}
 	}
 	/*
@@ -651,8 +655,8 @@ void CCustomMonster::OnRender()
 	{
 	CTravelNode&	N1 = AI_Path.TravelPath_dbg[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
 	CTravelNode&	N2 = AI_Path.TravelPath_dbg[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
-	RCache.dbg_DrawLINE(precalc_identity,P1,P2,D3DCOLOR_XRGB(255,0,0));
-	RCache.dbg_DrawAABB(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
+	Level().debug_renderer().draw_line(precalc_identity,P1,P2,D3DCOLOR_XRGB(255,0,0));
+	Level().debug_renderer().draw_aabb(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
 	}
 	}
 	*/
@@ -671,7 +675,7 @@ void CCustomMonster::OnRender()
 		//			V.i.x						= .05f;//r;
 		//			V.j.y						= .05f;//r;
 		//			V.k.z						= .05f;//r;
-		//			RCache.dbg_DrawEllipse		(V,D3DCOLOR_XRGB(255,0,0));
+		//			Level().debug_renderer().draw_ellipse		(V,D3DCOLOR_XRGB(255,0,0));
 		//		}
 		//		{
 		//			const STravelParams&		i = velocity(movement().detail().path()[I + 1].velocity);
@@ -682,11 +686,11 @@ void CCustomMonster::OnRender()
 		//			V.i.x						= .05f;//r;
 		//			V.j.y						= .05f;//r;
 		//			V.k.z						= .05f;//r;
-		//			RCache.dbg_DrawEllipse		(V,D3DCOLOR_XRGB(255,0,0));
+		//			Level().debug_renderer().draw_ellipse		(V,D3DCOLOR_XRGB(255,0,0));
 		//		}
-		//		RCache.dbg_DrawAABB(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
-		//		RCache.dbg_DrawAABB(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
-		//		RCache.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
+		//		Level().debug_renderer().draw_aabb(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
+		//		Level().debug_renderer().draw_aabb(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
+		//		Level().debug_renderer().draw_line(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
 		//	}
 	}
 
@@ -696,39 +700,39 @@ void CCustomMonster::OnRender()
 	//			Fvector tP0 = ai().level_graph().vertex_position(Group.m_tpaSuspiciousNodes[i].dwNodeID);
 	//			tP0.y += .35f;
 	//			if (!Group.m_tpaSuspiciousNodes[i].dwSearched)
-	//				RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));
+	//				Level().debug_renderer().draw_aabb(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));
 	//			else
 	//				if (1 == Group.m_tpaSuspiciousNodes[i].dwSearched)
-	//					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,0));
+	//					Level().debug_renderer().draw_aabb(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,0));
 	//				else
-	//					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,255,0));
+	//					Level().debug_renderer().draw_aabb(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,255,0));
 	//			switch (Group.m_tpaSuspiciousNodes[i].dwGroup) {
 	//				case 0 : {
-	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
+	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
 	//					break;
 	//				}
 	//				case 1 : {
-	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,0));
+	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,0));
 	//					break;
 	//				}
 	//				case 2 : {
-	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
+	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
 	//					break;
 	//				}
 	//				case 3 : {
-	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,0));
+	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,0));
 	//					break;
 	//				}
 	//				case 4 : {
-	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,255));
+	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,255));
 	//					break;
 	//				}
 	//				case 5 : {
-	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,255));
+	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,255));
 	//					break;
 	//				}
 	//				default : {
-	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,255));
+	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,255));
 	//					break;
 	//				}
 	//			}

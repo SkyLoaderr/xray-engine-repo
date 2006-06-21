@@ -8,10 +8,14 @@
 #include "tri-colliderKNoOPC\__aabb_tri.h"
 
 #include "phaicharacter.h"
+
 #ifdef DEBUG
-#include "../StatGraph.h"
-#include "PHDebug.h"
+#	include "../StatGraph.h"
+#	include "PHDebug.h"
+#	include "level.h"
+#	include "debug_renderer.h"
 #endif
+
 CPHAICharacter::CPHAICharacter()
 {
 	m_forced_physics_control=false;
@@ -131,6 +135,6 @@ void	CPHAICharacter::OnRender()
 	M.c.set(pos);
 
 
-	RCache.dbg_DrawEllipse(M, 0xffffffff);
+	Level().debug_renderer().draw_ellipse(M, 0xffffffff);
 }
 #endif

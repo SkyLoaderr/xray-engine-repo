@@ -159,7 +159,7 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 					  if (!bDebug && BoxCenter){
 					  Fvector C;
 					  C.set(0,0,0);
-					  RCache.dbg_DrawAABB(*BoxCenter,AABB.x,AABB.y,AABB.z,D3DCOLOR_XRGB(255,255,255));
+					  Level().debug_renderer().draw_aabb(*BoxCenter,AABB.x,AABB.y,AABB.z,D3DCOLOR_XRGB(255,255,255));
 					  }
 					  */
 					 }

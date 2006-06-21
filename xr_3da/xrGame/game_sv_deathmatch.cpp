@@ -931,6 +931,27 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete);
 		};
 
+		//проверяем ruck
+		TIItemContainer::const_iterator	IRuck = pActor->inventory().m_ruck.begin();
+		TIItemContainer::const_iterator	ERuck = pActor->inventory().m_ruck.end();
+
+		for ( ; IRuck != ERuck; ++IRuck) 
+		{
+			pItem = (*IRuck);			
+			if (!pItem) continue;
+			CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*> (pItem);
+			if (!pAmmo) 
+			{
+				CMissile* pMissile = smart_cast<CMissile*> (pItem);
+				if (!pMissile) 
+				{				
+					CEatableItemObject* pEatableItem  = smart_cast<CEatableItemObject*> (pItem);
+					if (!pEatableItem) continue;
+				}
+			}
+			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete);
+		};
+
 		//проверяем слоты
 		TISlotArr::const_iterator	ISlot = pActor->inventory().m_slots.begin();
 		TISlotArr::const_iterator	ESlot = pActor->inventory().m_slots.end();
@@ -2250,7 +2271,7 @@ void game_sv_Deathmatch::OnRender				()
 			xr_vector<u32>::const_iterator I = xPath.begin();
 			xr_vector<u32>::const_iterator E = xPath.end();
 			for ( ; I != E; ++I) {
-				RCache.dbg_DrawAABB(
+				Level().debug_renderer().draw_aabb(
 					Fvector().set(
 					m_level_graph->vertex_position(*I)
 					).add(
@@ -2265,7 +2286,7 @@ void game_sv_Deathmatch::OnRender				()
 				{
 					Fvector p0 = m_level_graph->vertex_position(*I);
 					Fvector p1 = m_level_graph->vertex_position(*(I+1));
-					RCache.dbg_DrawLINE(Fidentity, 
+					Level().debug_renderer().draw_line(Fidentity, 
 						p0,
 						p1,
 						0xff00ff00);
