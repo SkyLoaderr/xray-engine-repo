@@ -424,7 +424,6 @@ void CMissile::Throw()
 {
 	VERIFY								(smart_cast<CEntity*>(H_Parent()));
 	setup_throw_params					();
-	m_fThrowForce						= m_fMinForce;
 	
 	m_fake_missile->m_throw_direction	= m_throw_direction;
 	m_fake_missile->m_throw_matrix		= m_throw_matrix;
@@ -435,7 +434,9 @@ void CMissile::Throw()
 		m_fake_missile->m_fThrowForce	= m_constpower ? m_fConstForce : m_fThrowForce; 
 	else
 		m_fake_missile->m_fThrowForce	= inventory_owner->missile_throw_force(); 
-	
+
+	m_fThrowForce						= m_fMinForce;
+
 	if (Local() && H_Parent()) {
 		NET_Packet						P;
 		u_EventGen						(P,GE_OWNERSHIP_REJECT,ID());
