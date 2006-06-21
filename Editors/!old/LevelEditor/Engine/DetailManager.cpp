@@ -148,17 +148,17 @@ void CDetailManager::Load		()
 
 	// swing desc
 	// normal
-	swing_desc[0].amp1	= .1f;
-	swing_desc[0].amp2	= .05f;
-	swing_desc[0].rot1	= 30.f;
-	swing_desc[0].rot2	= 1.f;
-	swing_desc[0].speed	= 2.f;
+	swing_desc[0].amp1	= pSettings->r_float("details","swing_normal_amp1");
+	swing_desc[0].amp2	= pSettings->r_float("details","swing_normal_amp2");
+	swing_desc[0].rot1	= pSettings->r_float("details","swing_normal_rot1");
+	swing_desc[0].rot2	= pSettings->r_float("details","swing_normal_rot2");
+	swing_desc[0].speed	= pSettings->r_float("details","swing_normal_speed");
 	// fast
-	swing_desc[1].amp1	= 0.75f;
-	swing_desc[1].amp2	= .33f;
-	swing_desc[1].rot1	= .01f;
-	swing_desc[1].rot2	= .9f;
-	swing_desc[1].speed	= 1.f;
+	swing_desc[1].amp1	= pSettings->r_float("details","swing_fast_amp1");
+	swing_desc[1].amp2	= pSettings->r_float("details","swing_fast_amp2");
+	swing_desc[1].rot1	= pSettings->r_float("details","swing_fast_rot1");
+	swing_desc[1].rot2	= pSettings->r_float("details","swing_fast_rot2");
+	swing_desc[1].speed	= pSettings->r_float("details","swing_fast_speed");
 }
 #endif
 void CDetailManager::Unload		()
