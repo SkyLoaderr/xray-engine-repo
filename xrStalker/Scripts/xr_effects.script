@@ -1994,6 +1994,30 @@ end
 ------------------------------------------------------------------------------------
 -- Функции для саркофага
 ------------------------------------------------------------------------------------
+function destroy_monolith_generator(actor, npc)
+    local source = nil
+    local sim = alife()
+    if sim then
+       local se_obj = sim:story_object(1305)  
+       if se_obj then
+          source = level.object_by_id(se_obj.id)
+       end
+    end
+
+    if source == nil then
+       abort ("MONOLITH GENERATOR story id 1305 not found")
+       return
+    end
+
+    local h = hit ();
+    h.power = 1000000;
+    h.direction = vector():set( 1, 0, 0 );
+    h.impulse = 1;
+    h.draftsman = source;
+    h.type = hit.chemical_burn;
+    source:hit (h);        
+end
+
 function sar_monolith_miracle(actor, npc)
 	--' Убил лидеров группировок
 	if db.actor:has_info("mil_lukash_dead") and
