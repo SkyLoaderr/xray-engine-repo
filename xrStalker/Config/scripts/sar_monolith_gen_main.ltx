@@ -1,8 +1,7 @@
 [logic]
-active = sr_psy_antenna
+active = ph_idle@wait
 
 
-[sr_psy_antenna]
-eff_intensity = 100
-hit_intensity = 0
-play_visual = false
+[ph_idle@wait]
+on_info = {+sar_monolith_down_1 +sar_monolith_down_2 +sar_monolith_down_3 +sar_monolith_down_4 +sar_monolith_down_5 +sar_monolith_down_6} nil %+sar_monolith_off%
+

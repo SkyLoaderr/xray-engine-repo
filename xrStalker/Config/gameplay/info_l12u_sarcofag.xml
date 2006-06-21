@@ -33,6 +33,15 @@
 	<info_portion id="sar_monolith_heavy_damaged"></info_portion>
 	<info_portion id="sar_monolith_destroy"></info_portion>
 	<info_portion id="sar_monolith_off"></info_portion>
+	
+	<info_portion id="sar_monolith_down_1"></info_portion>
+	<info_portion id="sar_monolith_down_2"></info_portion>
+	<info_portion id="sar_monolith_down_3"></info_portion>
+	<info_portion id="sar_monolith_down_4"></info_portion>
+	<info_portion id="sar_monolith_down_5"></info_portion>
+	<info_portion id="sar_monolith_down_6"></info_portion>
+	
+	
 	<info_portion id="sar_monolith_recharged">
 		<task>sar_warlab</task>
 		<article>zones_mystery</article>
