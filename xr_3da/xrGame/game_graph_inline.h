@@ -148,6 +148,17 @@ IC	const GameGraph::SLevel &GameGraph::CHeader::level				(LPCSTR level_name) con
 #endif
 }
 
+IC	const GameGraph::SLevel *GameGraph::CHeader::level				(LPCSTR level_name, bool) const
+{
+	LEVEL_MAP::const_iterator	I = levels().begin();
+	LEVEL_MAP::const_iterator	E = levels().end();
+	for ( ; I != E; ++I)
+		if (!xr_strcmp((*I).second.name(),level_name))
+			return	(&(*I).second);
+	
+	return			(0);
+}
+
 IC	const xrGUID &CGameGraph::CHeader::guid							() const
 {
 	return						(m_guid);

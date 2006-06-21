@@ -137,6 +137,7 @@ namespace GameGraph {
 		IC	const LEVEL_MAP			&levels				() const;
 		IC	const SLevel			&level				(const _LEVEL_ID &id) const;
 		IC	const SLevel			&level				(LPCSTR level_name) const;
+		IC	const SLevel			*level				(LPCSTR level_name, bool) const;
 		IC	void					load				(IReader *reader);
 		IC	void					save				(IWriter *reader);
 		friend class CGameGraph;
