@@ -11,7 +11,7 @@
 #ifdef DEBUG
 class CDebugRenderer {
 private:
-	enum {line_vertex_limit	= 20000};
+	enum {line_vertex_limit	= 32767};
 
 private:
 	xr_vector<FVF::L>	m_line_vertices;
