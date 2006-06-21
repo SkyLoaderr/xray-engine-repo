@@ -7,6 +7,9 @@
 class CPhysicsShellHolder;
 class CStateManagerPoltergeist;
 class CPoltergeisMovementManager;
+class CPolterSpecialAbility;
+
+//////////////////////////////////////////////////////////////////////////
 
 class CPoltergeist :	public CBaseMonster ,
 						public CTelekinesis,
@@ -17,28 +20,14 @@ class CPoltergeist :	public CBaseMonster ,
 
 	friend class CPoltergeisMovementManager;
 
+	float					m_height;
+	bool					m_disable_hide;
 
-	CParticlesObject	*m_particles_object;
-	CParticlesObject	*m_particles_object_electro;
+	SMotionVel				invisible_vel;
 
-	float				m_height;
 
-	LPCSTR				m_particles_hidden;
-	LPCSTR				m_particles_hide;
-
-	bool				m_disable_hide;
-
-	SMotionVel			invisible_vel;
-
-	//telekinesis
-	float				m_tele_radius;
-	u32					m_tele_hold_time;
-	float				m_tele_fly_velocity;
-
-public:
-	struct SDelay {
-		u32 min, normal, aggressive;
-	} m_flame_delay, m_tele_delay, m_scare_delay;
+	CPolterSpecialAbility	*m_flame;
+	CPolterSpecialAbility	*m_tele;
 
 public:
 					CPoltergeist		();
@@ -63,92 +52,21 @@ public:
 
 	virtual	void	on_activate			();
 	virtual	void	on_deactivate		();
+	virtual	void	Hit					(SHit* pHDS);
 
 
-			bool	is_hidden			() {return state_invisible;}
-
-	// FireBall
-
-			void	LoadFlame				(LPCSTR section);
-			void	FireFlame				(const CObject *target_object);
-			bool	GetValidFlamePosition	(const CObject *target_object, Fvector &res_pos);
-			void	UpdateFlame				();
-			void	RemoveFlames			();
+	IC		CPolterSpecialAbility		*ability() {return (m_flame ? m_flame : m_tele);}
 	
-			// ltx params
-			ref_sound			m_flame_sound;
-			LPCSTR				m_flame_particles_prepare;
-			LPCSTR				m_flame_particles_fire;
-			u32					m_flame_fire_delay;
-			float				m_flame_length;
-			float				m_flame_hit_value;
+	
+	IC		bool	is_hidden			() {return state_invisible;}
 
-
-			struct SFlameElement {
-				const CObject		*target_object;
-				Fvector				position;
-				Fvector				target_dir;
-				u32					time_started;
-				ref_sound			sound;
-			};
-			
-			DEFINE_VECTOR(SFlameElement*, FLAME_ELEMS_VEC, FLAME_ELEMS_IT);
-			FLAME_ELEMS_VEC	m_flames;
-		
-
+	
 	// Poltergeist ability
 			void	PhysicalImpulse		(const Fvector &position);
-
 			void	StrangeSounds		(const Fvector &position);
 			
 			ref_sound m_strange_sound;
-
-	// Telekinesis
-			enum ETeleState {
-				eStartRaiseObjects,
-				eRaisingObjects,
-				eFireObjects,
-				eWait
-			} m_tele_state;
-			
-			void	initailize_telekinesis	();
-			void	update_telekinesis		();
-
-			u32					time_tele_start;
-			const CObject		*tele_enemy;
-			CPhysicsShellHolder *tele_object;
-
-			void tele_find_objects	(xr_vector<CObject*> &objects, const Fvector &pos);
-			bool tele_raise_objects	();
-			void tele_fire_objects	();
-			
-			u32					m_tele_time;
-			u32					m_tele_time_next;
-
-			float				m_pmt_tele_radius;
-			float				m_pmt_tele_object_min_mass;
-			float				m_pmt_tele_object_max_mass;
-			u32					m_pmt_tele_object_count;
-			u32					m_pmt_tele_time_to_hold;
-			u32					m_pmt_tele_time_to_wait;
-			u32					m_pmt_tele_time_to_wait_in_objects;
-			u32					m_pmt_tele_raise_time_to_wait_in_objects;
-			float				m_pmt_tele_distance;
-			float				m_pmt_tele_object_height;
-			u32					m_pmt_tele_time_object_keep;
-			float				m_pmt_tele_raise_speed;
-
-
-			LPCSTR				m_particles_damage;
-			LPCSTR				m_particles_death;
-			LPCSTR				m_particles_idle;
-
-			u32					last_hit_frame;
-
-			ref_sound			m_sound_base;
-
-	virtual	void	Hit			(SHit* pHDS);
-
+	
 	// Movement
 			Fvector m_current_position;		// Позиция на ноде
 
@@ -183,24 +101,149 @@ add_to_type_list(CPoltergeist)
 #define script_type_list save_type_list(CPoltergeist)
 
 
+//////////////////////////////////////////////////////////////////////////
+// Interface
+//////////////////////////////////////////////////////////////////////////
+
+class CPolterSpecialAbility {
+
+	CParticlesObject	*m_particles_object;
+	CParticlesObject	*m_particles_object_electro;
+
+	LPCSTR				m_particles_hidden;
+	LPCSTR				m_particles_damage;
+	LPCSTR				m_particles_death;
+	LPCSTR				m_particles_idle;
+
+	ref_sound			m_sound_base;
+	u32					m_last_hit_frame;
+
+protected:
+	CPoltergeist		*m_object;	
+
+public:			
+					CPolterSpecialAbility		(CPoltergeist *polter);
+	virtual			~CPolterSpecialAbility		();
+
+	virtual void	load						(LPCSTR section);
+	virtual void	update_schedule				();
+	virtual void	update_frame				();
+	virtual void	on_hide						();
+	virtual void	on_show						();
+	virtual void	on_destroy					(){}
+	virtual void	on_die						();
+	virtual void	on_hit						(SHit* pHDS);
+};
 
 
 
+//////////////////////////////////////////////////////////////////////////
+// Flame
+//////////////////////////////////////////////////////////////////////////
+class CPolterFlame : public CPolterSpecialAbility {
+
+	typedef CPolterSpecialAbility inherited;
+
+	ref_sound				m_sound;
+	LPCSTR					m_particles_prepare;
+	LPCSTR					m_particles_fire;
+	LPCSTR					m_particles_stop;
+	u32						m_time_fire_delay;
+	u32						m_time_fire_play;
+
+	float					m_length;
+	float					m_hit_value;
+	u32						m_count;
+	u32						m_delay;	// between 2 flames
+
+	u32						m_time_flame_started;
+
+	float					m_min_flame_dist;
+	float					m_max_flame_dist;
+	float					m_min_flame_height;
+	float					m_max_flame_height;
+
+	enum EFlameState {
+		ePrepare,
+		eFire,
+		eStop
+	};
 
 
+public:
+	struct SFlameElement {
+		const CObject		*target_object;
+		Fvector				position;
+		Fvector				target_dir;
+		u32					time_started;
+		ref_sound			sound;
+		CParticlesObject	*particles_object;
+		EFlameState			state;
+	};
 
 
+private:
+	DEFINE_VECTOR			(SFlameElement*, FLAME_ELEMS_VEC, FLAME_ELEMS_IT);
+	FLAME_ELEMS_VEC			m_flames;
+
+public:	
+					CPolterFlame				(CPoltergeist *polter);
+	virtual			~CPolterFlame				();
+
+	virtual void	load						(LPCSTR section);
+	virtual void	update_schedule				();
+	virtual void	on_destroy					();
+
+private:
+			void	select_state				(SFlameElement *elem, EFlameState state);
+			bool	get_valid_flame_position	(const CObject *target_object, Fvector &res_pos);
+			void	create_flame				(const CObject *target_object);
+};
 
 
+//////////////////////////////////////////////////////////////////////////
+// TELE
+//////////////////////////////////////////////////////////////////////////
+class CPolterTele : public CPolterSpecialAbility {
+	typedef CPolterSpecialAbility inherited;
+
+	// external params
+	float				m_pmt_radius;
+	float				m_pmt_object_min_mass;
+	float				m_pmt_object_max_mass;
+	u32					m_pmt_object_count;
+	u32					m_pmt_time_to_hold;
+	u32					m_pmt_time_to_wait;
+	u32					m_pmt_time_to_wait_in_objects;
+	u32					m_pmt_raise_time_to_wait_in_objects;
+	float				m_pmt_distance;
+	float				m_pmt_object_height;
+	u32					m_pmt_time_object_keep;
+	float				m_pmt_raise_speed;
+	float				m_pmt_fly_velocity;
 
 
+	enum ETeleState {
+		eStartRaiseObjects,
+		eRaisingObjects,
+		eFireObjects,
+		eWait
+	} m_state;
 
+	u32					m_time;
+	u32					m_time_next;
 
+public:	
+					CPolterTele					(CPoltergeist *polter);
+	virtual			~CPolterTele				();
 
+	virtual void	load						(LPCSTR section);
+	virtual void	update_schedule				();
 
+private:
+			void	tele_find_objects			(xr_vector<CObject*> &objects, const Fvector &pos);
+			bool	tele_raise_objects			();
+			void	tele_fire_objects			();
 
-
-
-
-
+};
 

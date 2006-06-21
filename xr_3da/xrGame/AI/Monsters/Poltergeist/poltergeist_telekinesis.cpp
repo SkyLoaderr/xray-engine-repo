@@ -4,59 +4,87 @@
 #include "../../../level.h"
 #include "../../../actor.h"
 
-void CPoltergeist::initailize_telekinesis() 
+CPolterTele::CPolterTele(CPoltergeist *polter) : inherited (polter)
 {
-	m_tele_state			= eWait;
-	m_tele_time				= 0;
-	m_tele_time_next		= 0;
 }
 
-void CPoltergeist::update_telekinesis()
+CPolterTele::~CPolterTele()
 {
-	if (!g_Alive() || !Actor() || !Actor()->g_Alive()) return;
-	if (Actor()->Position().distance_to(Position()) > m_pmt_tele_distance) return;
+}
 
-	switch (m_tele_state) {
+void CPolterTele::load(LPCSTR section)
+{
+	inherited::load(section);
+
+
+	m_pmt_radius						= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Find_Radius",					10.f);
+	m_pmt_object_min_mass				= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Object_Min_Mass",				40.f);
+	m_pmt_object_max_mass				= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Object_Max_Mass",				500.f);
+	m_pmt_object_count					= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Object_Count",				10);
+	m_pmt_time_to_hold					= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Hold_Time",					3000);
+	m_pmt_time_to_wait					= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Wait_Time",					3000);
+	m_pmt_time_to_wait_in_objects		= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Delay_Between_Objects_Time",	500);
+	m_pmt_distance						= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Distance",					50.f);
+	m_pmt_object_height					= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Object_Height",				10.f);
+	m_pmt_time_object_keep				= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Time_Object_Keep",			10000);
+	m_pmt_raise_speed					= READ_IF_EXISTS(pSettings,r_float,section,	"Tele_Raise_Speed",					3.f);
+	m_pmt_raise_time_to_wait_in_objects	= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Delay_Between_Objects_Raise_Time", 500);
+	m_pmt_fly_velocity					= READ_IF_EXISTS(pSettings,r_float,section, "Tele_Fly_Velocity",				30.f);
+
+	m_state								= eWait;
+	m_time								= 0;
+	m_time_next							= 0;
+
+}
+
+void CPolterTele::update_schedule()
+{
+	inherited::update_schedule();
+
+	if (!m_object->g_Alive() || !Actor() || !Actor()->g_Alive()) return;
+	if (Actor()->Position().distance_to(m_object->Position()) > m_pmt_distance) return;
+
+	switch (m_state) {
 	case eStartRaiseObjects:	
-		if (m_tele_time + m_tele_time_next < time()) {
+		if (m_time + m_time_next < time()) {
 			if (!tele_raise_objects())
-				m_tele_state	= eRaisingObjects;
+				m_state	= eRaisingObjects;
 			
-			m_tele_time			= time();
-			m_tele_time_next	= m_pmt_tele_raise_time_to_wait_in_objects / 2 + Random.randI(m_pmt_tele_raise_time_to_wait_in_objects / 2);
+			m_time			= time();
+			m_time_next		= m_pmt_raise_time_to_wait_in_objects / 2 + Random.randI(m_pmt_raise_time_to_wait_in_objects / 2);
 		}
 
-		if (m_tele_state == eStartRaiseObjects) {
-			if (CTelekinesis::get_objects_count() >= m_pmt_tele_object_count) {
-				m_tele_state	= eRaisingObjects;
-				m_tele_time		= time();
+		if (m_state == eStartRaiseObjects) {
+			if (m_object->CTelekinesis::get_objects_count() >= m_pmt_object_count) {
+				m_state		= eRaisingObjects;
+				m_time		= time();
 			}
 		}
 
 		break;
 	case eRaisingObjects:
-		if (m_tele_time + m_pmt_tele_time_to_hold > time()) break;
+		if (m_time + m_pmt_time_to_hold > time()) break;
 		
-		m_tele_time				= time();
-		m_tele_time_next		= 0;
-		m_tele_state			= eFireObjects;
+		m_time				= time();
+		m_time_next		= 0;
+		m_state			= eFireObjects;
 	case eFireObjects:			
-		if (m_tele_time + m_tele_time_next < time()) {
+		if (m_time + m_time_next < time()) {
 			tele_fire_objects	();
 			
-			m_tele_time			= time();
-			m_tele_time_next	= m_pmt_tele_time_to_wait_in_objects / 2 + Random.randI(m_pmt_tele_time_to_wait_in_objects / 2);
+			m_time			= time();
+			m_time_next	= m_pmt_time_to_wait_in_objects / 2 + Random.randI(m_pmt_time_to_wait_in_objects / 2);
 		}
 		
-		if (CTelekinesis::get_objects_count() == 0) {
-			m_tele_state		= eWait;
-			m_tele_time			= time();
+		if (m_object->CTelekinesis::get_objects_count() == 0) {
+			m_state		= eWait;
+			m_time			= time();
 		}
 		break;
 	case eWait:				
-		if (m_tele_time + m_pmt_tele_time_to_wait < time()) {
-			m_tele_time_next	= 0;
-			m_tele_state		= eStartRaiseObjects;
+		if (m_time + m_pmt_time_to_wait < time()) {
+			m_time_next	= 0;
+			m_state		= eStartRaiseObjects;
 		}
 		break;
 	}
@@ -107,10 +135,10 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 
-void CPoltergeist::tele_find_objects(xr_vector<CObject*> &objects, const Fvector &pos) 
+void CPolterTele::tele_find_objects(xr_vector<CObject*> &objects, const Fvector &pos) 
 {
 	xr_vector<CObject*> tp_objects;
-	Level().ObjectSpace.GetNearest	(tp_objects, pos, m_pmt_tele_radius, NULL);
+	Level().ObjectSpace.GetNearest	(tp_objects, pos, m_pmt_radius, NULL);
 
 	for (u32 i=0;i<tp_objects.size();i++) {
 		CPhysicsShellHolder *obj			= smart_cast<CPhysicsShellHolder *>(tp_objects[i]);
@@ -120,10 +148,10 @@ void CPoltergeist::tele_find_objects(xr_vector<CObject*> &objects, const Fvector
 			!obj->PPhysicsShell()->isActive()|| 
 			custom_monster ||
 			(obj->spawn_ini() && obj->spawn_ini()->section_exist("ph_heavy")) || 
-			(obj->m_pPhysicsShell->getMass() < m_pmt_tele_object_min_mass) || 
-			(obj->m_pPhysicsShell->getMass() > m_pmt_tele_object_max_mass) || 
-			(obj == this) || 
-			CTelekinesis::is_active_object(obj) || 
+			(obj->m_pPhysicsShell->getMass() < m_pmt_object_min_mass) || 
+			(obj->m_pPhysicsShell->getMass() > m_pmt_object_max_mass) || 
+			(obj == m_object) || 
+			m_object->CTelekinesis::is_active_object(obj) || 
 			!obj->m_pPhysicsShell->get_ApplyByGravity()) continue;
 
 		objects.push_back(obj);
@@ -131,7 +159,7 @@ void CPoltergeist::tele_find_objects(xr_vector<CObject*> &objects, const Fvector
 }
 
 
-bool CPoltergeist::tele_raise_objects()
+bool CPolterTele::tele_raise_objects()
 {
 	// find objects near actor
 	xr_vector<CObject*>		tele_objects;
@@ -141,20 +169,20 @@ bool CPoltergeist::tele_raise_objects()
 	tele_find_objects	(tele_objects, Actor()->Position());
 
 	// получить список объектов вокруг монстра
-	tele_find_objects	(tele_objects, Position());
+	tele_find_objects	(tele_objects, m_object->Position());
 
 	// получить список объектов между монстром и врагом
-	float dist			= Actor()->Position().distance_to(Position());
+	float dist			= Actor()->Position().distance_to(m_object->Position());
 	Fvector dir;
-	dir.sub				(Actor()->Position(), Position());
+	dir.sub				(Actor()->Position(), m_object->Position());
 	dir.normalize		();
 
 	Fvector pos;
-	pos.mad				(Position(), dir, dist / 2.f);
+	pos.mad				(m_object->Position(), dir, dist / 2.f);
 	tele_find_objects	(tele_objects, pos);	
 
 	// сортировать и оставить только необходимое количество объектов
-	sort(tele_objects.begin(),tele_objects.end(),best_object_predicate2(Position(), Actor()->Position()));
+	sort(tele_objects.begin(),tele_objects.end(),best_object_predicate2(m_object->Position(), Actor()->Position()));
 	
 	// оставить уникальные объекты
 	xr_vector<CObject*>::iterator I = unique(tele_objects.begin(),tele_objects.end());
@@ -179,26 +207,24 @@ bool CPoltergeist::tele_raise_objects()
 		// применить телекинез на объект
 		bool	rotate = false;
 
-		CTelekinesis::activate		(obj, m_pmt_tele_raise_speed, m_pmt_tele_object_height, m_pmt_tele_time_object_keep, rotate);
+		m_object->CTelekinesis::activate		(obj, m_pmt_raise_speed, m_pmt_object_height, m_pmt_time_object_keep, rotate);
 		return true;
 	}
 
 	return false;
 }
 
-void CPoltergeist::tele_fire_objects()
+void CPolterTele::tele_fire_objects()
 {
-	for (u32 i=0; i < CTelekinesis::get_objects_total_count();i++) {
-		CTelekineticObject tele_object = CTelekinesis::get_object_by_index(i);
+	for (u32 i=0; i < m_object->CTelekinesis::get_objects_total_count();i++) {
+		CTelekineticObject tele_object = m_object->CTelekinesis::get_object_by_index(i);
 		//if (tele_object.get_state() != TS_Fire) {
 		if ((tele_object.get_state() == TS_Raise) || (tele_object.get_state() == TS_Keep))  {
 			Fvector					enemy_pos;
 			enemy_pos				= get_head_position(Actor());
-			CTelekinesis::fire_t	(tele_object.get_object(),enemy_pos, tele_object.get_object()->Position().distance_to(enemy_pos) / m_tele_fly_velocity);
+			m_object->CTelekinesis::fire_t	(tele_object.get_object(),enemy_pos, tele_object.get_object()->Position().distance_to(enemy_pos) / m_pmt_fly_velocity);
 			return;
 		}
 	}
 }
-
-
 
