@@ -437,11 +437,9 @@ IC	void adjust_point(
 	Fvector2			&dest
 )
 {
-	TIMER_START(AdjustPoint)
 	dest.x				= -_sin(yaw);
 	dest.y				= _cos(yaw);
 	dest.mad			(source,dest,magnitude);
-	TIMER_STOP(AdjustPoint)
 }
 
 enum EVelocityDirectionType {
@@ -464,7 +462,6 @@ IC	void assign_angle(
 	const bool				start = true
 )
 {
-	TIMER_START(AssignAngle)
 	if (positive)
 		if (dest_yaw >= start_yaw)
 			angle		= dest_yaw - start_yaw;
@@ -486,7 +483,6 @@ IC	void assign_angle(
 		angle	  = 0;
 
 	VERIFY				(_valid(angle));
-	TIMER_STOP(AssignAngle)
 }
 
 IC	void compute_circles(
@@ -494,7 +490,6 @@ IC	void compute_circles(
 	CLevelGraph::SCirclePoint		*circles
 )
 {
-	TIMER_START(ComputeCircles)
 	VERIFY				(!fis_zero(point.angular_velocity));
 	point.radius		= _abs(point.linear_velocity)/point.angular_velocity;
 	circles[0].radius	= circles[1].radius = point.radius;
@@ -503,7 +498,6 @@ IC	void compute_circles(
 	circles[0].center.y = -point.direction.x*point.radius + point.position.y;
 	circles[1].center.x = -point.direction.y*point.radius + point.position.x;
 	circles[1].center.y =  point.direction.x*point.radius + point.position.y;
-	TIMER_STOP(ComputeCircles)
 }
 
 IC	bool compute_tangent(
@@ -515,7 +509,6 @@ IC	bool compute_tangent(
 	const EVelocityDirectionType				direction_type
 )
 {
-	TIMER_START(ComputeTangent)
 	float				start_cp, dest_cp, distance, alpha, start_yaw, dest_yaw, yaw1, yaw2;
 	Fvector2			direction, temp;
 	
@@ -559,11 +552,9 @@ IC	bool compute_tangent(
 
 				tangents[1].point	= tangents[0].point;
 				tangents[1].angle	= 0.f;
-				TIMER_STOP(ComputeTangent)
 				return				(true);
 			}
 			else {
-				TIMER_STOP(ComputeTangent)
 				return				(false);
 			}
 		}
@@ -573,7 +564,6 @@ IC	bool compute_tangent(
 			// radius difference
 			float			r_diff = start_circle.radius - dest_circle.radius;
 			if ((r_diff > distance) && !fsimilar(r_diff,distance)) {
-				TIMER_STOP(ComputeTangent)
 				return		(false);
 			}
 			// angle between external tangents and circle centers segment
@@ -587,7 +577,6 @@ IC	bool compute_tangent(
 		distance		= start_circle.center.distance_to(dest_circle.center);
 		// so, our tangents are inside (crossing)
 		if ((start_circle.radius + dest_circle.radius > distance) && !fsimilar(start_circle.radius + dest_circle.radius,distance)) {
-			TIMER_STOP(ComputeTangent)
 			return		(false);
 		}
 	
@@ -612,7 +601,6 @@ IC	bool compute_tangent(
 	if (start_cp*tangent_cp >= 0) {
 		assign_angle	(tangents[0].angle,start_yaw,yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2,start_cp >= 0,direction_type);
 		assign_angle	(tangents[1].angle,dest_yaw, yaw2 + alpha < PI_MUL_2 ? yaw2 + alpha : yaw2 + alpha - PI_MUL_2,dest_cp  >= 0,direction_type,false);
-		TIMER_STOP(ComputeTangent)
 		return			(true);
 	}
 
@@ -622,7 +610,6 @@ IC	bool compute_tangent(
 	assign_angle		(tangents[0].angle,start_yaw,yaw1 - alpha >= 0.f ? yaw1 - alpha : yaw1 - alpha + PI_MUL_2,start_cp >= 0,direction_type);
 	assign_angle		(tangents[1].angle,dest_yaw, yaw2 - alpha >= 0.f ? yaw2 - alpha : yaw2 - alpha + PI_MUL_2,dest_cp  >= 0,direction_type,false);
 
-	TIMER_STOP(ComputeTangent)
 	return				(true);
 }
 
@@ -649,13 +636,11 @@ IC	bool build_circle_trajectory(
 	u32									*vertex_id
 )
 {
-	TIMER_START(BuildCircleTrajectory)
 	const float			min_dist = .1f;
 	if (position.radius*_abs(position.angle) <= min_dist) {
 		if (!path) {
 			if (vertex_id)
 				*vertex_id	= position.vertex_id;
-			TIMER_STOP(BuildCircleTrajectory)
 			return			(true);
 		}
 		if (vertex_id) {
@@ -666,7 +651,6 @@ IC	bool build_circle_trajectory(
 				path->push_back	(t);
 			}
 		}
-		TIMER_STOP(BuildCircleTrajectory)
 		return			(true);
 	}
 	Fvector2			direction;
@@ -700,20 +684,15 @@ IC	bool build_circle_trajectory(
 	cosi				= 1.f;
 
 	for (u32 i=0; i<=n + k; ++i) {
-		TIMER_START(BCT_AP)
 		Fvector			t;
 		t.x				= -sin_apb(sina,cosa,sini,cosi)*position.radius + position.center.x;
 		t.z				= cos_apb(sina,cosa,sini,cosi)*position.radius + position.center.y;
 		temp			= sin_apb(sinb,cosb,sini,cosi);
 		cosi			= cos_apb(sinb,cosb,sini,cosi);
 		sini			= temp;
-		TIMER_STOP(BCT_AP)
 
-		TIMER_START(BCT_CPID)
 		curr_vertex_id	= level_graph.check_position_in_direction(curr_vertex_id,curr_pos,t);
-		TIMER_STOP(BCT_CPID)
 		if (!level_graph.valid_vertex_id(curr_vertex_id)) {
-			TIMER_STOP(BuildCircleTrajectory)
 			return		(false);
 		}
 		if (path) {
@@ -729,7 +708,6 @@ IC	bool build_circle_trajectory(
 		if (path)
 			reverse		(path->begin() + size,path->end());
 
-	TIMER_STOP(BuildCircleTrajectory)
 	return				(true);
 }
 
@@ -741,7 +719,6 @@ IC	bool build_line_trajectory(
 	xr_vector<Fvector>					*path
 )
 {
-	TIMER_START(BuildLineTrajectory)
 	xr_vector<u32>			node_path;
 	VERIFY					(level_graph.valid_vertex_id(vertex_id));
 	if (level_graph.inside(vertex_id,dest.point)) {
@@ -750,11 +727,9 @@ IC	bool build_line_trajectory(
 			t.y				= level_graph.vertex_plane_y(vertex_id,dest.point.x,dest.point.y);
 			path->push_back	(t);
 		}
-		TIMER_STOP(BuildLineTrajectory)
 		return			(true);
 	}
 	bool				b = path ? level_graph.create_straight_path(vertex_id,start.point,dest.point,*path,node_path,false,false) : level_graph.valid_vertex_id(level_graph.check_position_in_direction(vertex_id,start.point,dest.point));
-	TIMER_STOP(BuildLineTrajectory)
 	return				(b);
 }
 
@@ -765,25 +740,20 @@ IC	bool build_trajectory(
 	xr_vector<Fvector>					*path
 )
 {
-	TIMER_START(BuildTrajectory2)
 	u32					vertex_id;
 	if (!build_circle_trajectory(level_graph,start,path,&vertex_id)) {
 //		Msg				("FALSE : Circle 0");
-		TIMER_STOP(BuildTrajectory2)
 		return			(false);
 	}
 	if (!build_line_trajectory(level_graph,start,dest,vertex_id,path)) {
 //		Msg				("FALSE : Line");
-		TIMER_STOP(BuildTrajectory2)
 		return			(false);
 	}
 	if (!build_circle_trajectory(level_graph,dest,path,0)) {
 //		Msg				("FALSE : Circle 1");
-		TIMER_STOP(BuildTrajectory2)
 		return			(false);
 	}
 //	Msg					("TRUE");
-	TIMER_STOP(BuildTrajectory2)
 	return				(true);
 }
 
@@ -808,7 +778,6 @@ IC	bool build_trajectory(
 	float								&time
 )
 {
-	TIMER_START(BuildTrajectory1)
 	time			= flt_max;
 	SDist			dist[4];
 	{
@@ -830,7 +799,6 @@ IC	bool build_trajectory(
 			(CLevelGraph::SCirclePoint&)(dest)	= tangents[dist[i].index][1];
 			if (build_trajectory(level_graph,start,dest,path)) {
 				time	= dist[i].time;
-				TIMER_STOP(BuildTrajectory1)
 				return	(true);
 			}
 			else
@@ -839,7 +807,6 @@ IC	bool build_trajectory(
 		}
 	}
 
-	TIMER_STOP(BuildTrajectory1)
 	return		(false);
 }
 
@@ -853,7 +820,6 @@ IC	bool compute_trajectory(
 	const EVelocityDirectionType	direction_type
 )
 {
-	TIMER_START(ComputeTrajectory)
 	CLevelGraph::SCirclePoint	start_circles[2], dest_circles[2];
 	compute_circles				(start,start_circles);
 	compute_circles				(dest,dest_circles);
@@ -874,7 +840,6 @@ IC	bool compute_trajectory(
 				++tangent_count;
 
 	bool			b = build_trajectory(level_graph,start,dest,tangent_points,tangent_count,straight_velocity,path,time);
-	TIMER_STOP(ComputeTrajectory)
 	return			(b);
 }
 
@@ -887,7 +852,6 @@ bool compute_path(
 	xr_vector<Fvector>						*m_tpTravelLine
 )
 {
-	TIMER_START(ComputePath)
 	xr_vector<Fvector>		travel_line;
 	CLevelGraph::STrajectoryPoint			start = _start;
 	CLevelGraph::STrajectoryPoint			dest = _dest;
@@ -921,7 +885,6 @@ bool compute_path(
 						m_tpTravelLine->insert(m_tpTravelLine->end(),travel_line.begin(),travel_line.end());
 					}
 					else {
-						TIMER_STOP(ComputePath)
 						return(true);
 					}
 				}
@@ -930,11 +893,9 @@ bool compute_path(
 	}
 	
 	if (fsimilar(min_time,flt_max)) {
-		TIMER_STOP			(ComputePath)
 		return				(false);
 	}
 	
-	TIMER_STOP				(ComputePath)
 	return					(true);
 }
 
