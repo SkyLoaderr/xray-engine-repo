@@ -18,7 +18,7 @@
 		<visual>actors\soldier\soldier_beret_1</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
+			wpn_pb \n
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
@@ -46,7 +46,7 @@
 		<visual>actors\soldier\soldier_beret_2</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
+			wpn_pb \n
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
@@ -74,7 +74,7 @@
 		<visual>actors\soldier\soldier_beret_3</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
+			wpn_fort \n
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
@@ -105,7 +105,7 @@
 		<visual>actors\soldier\soldier_bandana</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
+			wpn_fort \n
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74u \n
 			ammo_5.45x39_ap = 1 \n
@@ -135,7 +135,7 @@
 		<visual>actors\soldier\soldier_bandana_1</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
+			wpn_fort \n
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
@@ -165,7 +165,7 @@
 		<visual>actors\soldier\soldier_bandana_2</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
+			wpn_fort \n
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
@@ -195,7 +195,7 @@
 		<visual>actors\soldier\soldier_bandana_3</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
+			wpn_fort \n
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_ap = 1 \n
@@ -225,7 +225,7 @@
 		<visual>actors\soldier\soldier_bandana_4</visual>		
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
+			wpn_fort \n
 			ammo_9x18_pbp = 1 \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj = 1 \n
