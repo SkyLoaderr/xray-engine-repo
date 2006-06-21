@@ -77,7 +77,7 @@
 		<visual>actors\bandit\stalker_bandit_8</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_pmm = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"			
@@ -106,7 +106,7 @@
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_pbp = 1 \n
 			wpn_toz34 \n
 			ammo_12x76_dart = 1 \n
