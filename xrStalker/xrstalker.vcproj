@@ -2461,6 +2461,27 @@
 						RelativePath=".\Config\scripts\sar_monolith_call.ltx">
 					</File>
 					<File
+						RelativePath=".\Config\scripts\sar_monolith_gen_1.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\sar_monolith_gen_2.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\sar_monolith_gen_3.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\sar_monolith_gen_4.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\sar_monolith_gen_5.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\sar_monolith_gen_6.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\scripts\sar_monolith_gen_main.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\scripts\sar_monolith_noise.ltx">
 					</File>
 				</Filter>
