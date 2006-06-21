@@ -931,27 +931,6 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete);
 		};
 
-		//проверяем ruck
-		TIItemContainer::const_iterator	IRuck = pActor->inventory().m_ruck.begin();
-		TIItemContainer::const_iterator	ERuck = pActor->inventory().m_ruck.end();
-
-		for ( ; IRuck != ERuck; ++IRuck) 
-		{
-			pItem = (*IRuck);			
-			if (!pItem) continue;
-			CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*> (pItem);
-			if (!pAmmo) 
-			{
-				CMissile* pMissile = smart_cast<CMissile*> (pItem);
-				if (!pMissile) 
-				{				
-					CEatableItemObject* pEatableItem  = smart_cast<CEatableItemObject*> (pItem);
-					if (!pEatableItem) continue;
-				}
-			}
-			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete);
-		};
-
 		//проверяем слоты
 		TISlotArr::const_iterator	ISlot = pActor->inventory().m_slots.begin();
 		TISlotArr::const_iterator	ESlot = pActor->inventory().m_slots.end();
