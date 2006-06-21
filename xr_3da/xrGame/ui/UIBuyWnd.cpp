@@ -271,7 +271,7 @@ void CUIBuyWnd::ActivatePropertiesBox()
 {
 	float x,y;
 	// Флаг-признак для невлючения пункта контекстного меню: Dreess Outfit, если костюм уже надет
-	bool bAlreadyDressed = false; 
+//	bool bAlreadyDressed = false; 
 
 	Frect rect = GetAbsoluteRect();
 	GetUICursor()->GetPos(x,y);

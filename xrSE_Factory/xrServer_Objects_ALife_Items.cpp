@@ -378,9 +378,12 @@ void CSE_ALifeItemWeapon::OnEvent			(NET_Packet	&tNetPacket, u16 type, u32 time,
 		case GE_WPN_STATE_CHANGE:
 			{			
 				tNetPacket.r_u8	(state);			
-				u8 sub_state = tNetPacket.r_u8();		
-				u8 NewAmmoType = tNetPacket.r_u8();
-				u8 AmmoElapsed = tNetPacket.r_u8();	
+//				u8 sub_state = 
+					tNetPacket.r_u8();		
+//				u8 NewAmmoType = 
+					tNetPacket.r_u8();
+//				u8 AmmoElapsed = 
+					tNetPacket.r_u8();	
 			}break;
 	}
 }

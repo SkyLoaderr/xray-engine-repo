@@ -269,7 +269,7 @@ float CVisualMemoryManager::get_visible_value	(float distance, float object_dist
 		(1.f + current_state().m_velocity_factor*object_velocity) *
 		(distance - object_distance) /
 		(distance - always_visible_distance)
-		);
+	);
 }
 
 CNotYetVisibleObject *CVisualMemoryManager::not_yet_visible_object(const CGameObject *game_object)

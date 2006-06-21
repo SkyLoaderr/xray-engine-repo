@@ -593,7 +593,8 @@ void CWeapon::OnEvent				(NET_Packet& P, u16 type)
 			u8				state;
 			P.r_u8			(state);
 			P.r_u8			(m_sub_state);		
-			u8 NewAmmoType = P.r_u8();
+//			u8 NewAmmoType = 
+				P.r_u8();
 			u8 AmmoElapsed = P.r_u8();	
 
 			if (OnClient()) SetAmmoElapsed(int(AmmoElapsed));			
