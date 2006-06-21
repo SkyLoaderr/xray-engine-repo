@@ -10,13 +10,6 @@
 
 #ifdef AI_COMPILER
 	#include "profile.h"
-#else
-	#ifdef TIMER_START
-		#undef TIMER_START
-		#undef TIMER_STOP
-	#endif
-	#define TIMER_START(a)
-	#define TIMER_STOP(a)
 #endif
 
 IC float CLevelGraph::distance(const Fvector &position, const Fvector &point0, const Fvector &point1) const
