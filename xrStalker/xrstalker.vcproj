@@ -2576,6 +2576,9 @@
 					<File
 						RelativePath=".\config\models\objects\military_wall_brick_in.ltx">
 					</File>
+					<File
+						RelativePath=".\Config\models\objects\monolith_generator.ltx">
+					</File>
 				</Filter>
 				<Filter
 					Name="vehicles"
