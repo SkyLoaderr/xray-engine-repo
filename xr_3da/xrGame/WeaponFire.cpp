@@ -55,7 +55,8 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 {
 	VERIFY		(m_magazine.size());
 
-	CCartridge &l_cartridge = m_magazine.top();
+	CCartridge &l_cartridge = m_magazine.back();
+//	Msg("ammo - %s", l_cartridge.m_ammoSect.c_str());
 	VERIFY		(u16(-1) != l_cartridge.bullet_material_idx);
 	//-------------------------------------------------------------	
 	l_cartridge.m_flags.set				(CCartridge::cfTracer,(m_bHasTracers & !!l_cartridge.m_flags.test(CCartridge::cfTracer)));
@@ -82,9 +83,9 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 
 	
 	// Ammo
-	m_magazine.pop	();
-	if (!m_magazine.empty())
-		m_fCurrentCartirdgeDisp = m_magazine.top().m_kDisp;
+	m_magazine.pop_back	();
+//	if (!m_magazine.empty())
+//		m_fCurrentCartirdgeDisp = m_magazine.back().m_kDisp;
 	--iAmmoElapsed;
 /*
 	if(iAmmoElapsed==0) 

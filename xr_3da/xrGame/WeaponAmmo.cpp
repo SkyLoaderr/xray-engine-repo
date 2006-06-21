@@ -26,9 +26,10 @@ CCartridge::CCartridge()
 	bullet_material_idx = u16(-1);
 }
 
-void CCartridge::Load(LPCSTR section) 
+void CCartridge::Load(LPCSTR section, u8 LocalAmmoType) 
 {
 	m_ammoSect				= section;
+	m_LocalAmmoType			= LocalAmmoType;
 	m_kDist					= pSettings->r_float(section, "k_dist");
 	m_kDisp					= pSettings->r_float(section, "k_disp");
 	m_kHit					= pSettings->r_float(section, "k_hit");

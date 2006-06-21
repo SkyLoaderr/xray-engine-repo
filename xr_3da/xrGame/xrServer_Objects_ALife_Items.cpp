@@ -376,8 +376,12 @@ void CSE_ALifeItemWeapon::OnEvent			(NET_Packet	&tNetPacket, u16 type, u32 time,
 	inherited::OnEvent			(tNetPacket,type,time,sender);
 	switch (type) {
 		case GE_WPN_STATE_CHANGE:
-			tNetPacket.r_u8	(state);
-			break;
+			{			
+				tNetPacket.r_u8	(state);			
+				u8 sub_state = tNetPacket.r_u8();		
+				u8 NewAmmoType = tNetPacket.r_u8();
+				u8 AmmoElapsed = tNetPacket.r_u8();	
+			}break;
 	}
 }
 
@@ -425,7 +429,52 @@ void CSE_ALifeItemWeapon::FillProps			(LPCSTR pref, PropItemVec& items)
 	if (m_grenade_launcher_status == eAddonAttachable)
         PHelper().CreateFlag8	(items,PrepareKey(pref,*s_name,"Addons\\Podstvolnik"),&m_addon_flags,eWeaponAddonGrenadeLauncher);
 }
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeItemWeaponShotGun
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemWeaponShotGun::CSE_ALifeItemWeaponShotGun	(LPCSTR caSection) : CSE_ALifeItemWeapon(caSection)
+{
+	m_AmmoIDs.clear();
+}
 
+CSE_ALifeItemWeaponShotGun::~CSE_ALifeItemWeaponShotGun	()
+{
+}
+
+void CSE_ALifeItemWeaponShotGun::UPDATE_Read		(NET_Packet& P)
+{
+	inherited::UPDATE_Read(P);
+
+	m_AmmoIDs.clear();
+	u8 AmmoCount = P.r_u8();
+	for (u8 i=0; i<AmmoCount; i++)
+	{
+		m_AmmoIDs.push_back(P.r_u8());
+	}
+}
+void CSE_ALifeItemWeaponShotGun::UPDATE_Write	(NET_Packet& P)
+{
+	inherited::UPDATE_Write(P);
+
+	P.w_u8(u8(m_AmmoIDs.size()));
+	for (u32 i=0; i<m_AmmoIDs.size(); i++)
+	{
+		P.w_u8(u8(m_AmmoIDs[i]));
+	}
+}
+void CSE_ALifeItemWeaponShotGun::STATE_Read		(NET_Packet& P, u16 size)
+{
+	inherited::STATE_Read(P, size);
+}
+void CSE_ALifeItemWeaponShotGun::STATE_Write		(NET_Packet& P)
+{
+	inherited::STATE_Write(P);
+}
+
+void CSE_ALifeItemWeaponShotGun::FillProps			(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProps			(pref, items);
+};
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemAmmo
 ////////////////////////////////////////////////////////////////////////////

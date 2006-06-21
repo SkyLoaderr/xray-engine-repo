@@ -94,7 +94,7 @@ public:
 	u32						m_ammoType2;
 	shared_str				m_ammoName2;
 	int						iMagazineSize2;
-	xr_stack<CCartridge>	m_magazine2;
+	xr_vector<CCartridge>	m_magazine2;
 	bool					m_bGrenadeMode;
 
 	CCartridge				m_DefaultCartridge2;

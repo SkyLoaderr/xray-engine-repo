@@ -5,7 +5,7 @@ class CCartridge
 {
 public:
 	CCartridge();
-	void Load(LPCSTR section);
+	void Load(LPCSTR section, u8 LocalAmmoType);
 
 	shared_str	m_ammoSect;
 	enum{
@@ -20,6 +20,7 @@ public:
 	float	fWallmarkSize;
 	
 	u8		m_u8ColorID;
+	u8		m_LocalAmmoType;
 
 	
 	u16		bullet_material_idx;

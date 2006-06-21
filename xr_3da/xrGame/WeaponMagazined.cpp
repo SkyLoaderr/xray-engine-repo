@@ -244,7 +244,7 @@ void CWeaponMagazined::UnloadMagazine()
 	
 	while(!m_magazine.empty()) 
 	{
-		CCartridge &l_cartridge = m_magazine.top();
+		CCartridge &l_cartridge = m_magazine.back();
 		xr_map<LPCSTR, u16>::iterator l_it;
 		for(l_it = l_ammo.begin(); l_ammo.end() != l_it; ++l_it) 
 		{
@@ -256,7 +256,7 @@ void CWeaponMagazined::UnloadMagazine()
 		}
 
 		if(l_it == l_ammo.end()) l_ammo[*l_cartridge.m_ammoSect] = 1;
-		m_magazine.pop(); 
+		m_magazine.pop_back(); 
 		--iAmmoElapsed;
 	}
 
@@ -331,11 +331,13 @@ void CWeaponMagazined::ReloadMagazine()
 	//разрядить магазин, если загружаем патронами другого типа
 	if(!m_bLockType && !m_magazine.empty() && 
 		(!m_pAmmo || xr_strcmp(m_pAmmo->cNameSect(), 
-					 *m_magazine.top().m_ammoSect)))
+					 *m_magazine.back().m_ammoSect)))
 		UnloadMagazine();
 
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
-	
+
+	if (m_DefaultCartridge.m_LocalAmmoType != m_ammoType)
+		m_DefaultCartridge.Load(*m_ammoTypes[m_ammoType], u8(m_ammoType));
 	CCartridge l_cartridge = m_DefaultCartridge;
 	while(iAmmoElapsed < iMagazineSize)
 	{
@@ -344,8 +346,9 @@ void CWeaponMagazined::ReloadMagazine()
 			if (!m_pAmmo->Get(l_cartridge)) break;
 		}
 		++iAmmoElapsed;
-		m_magazine.push(l_cartridge);
-		m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
+		l_cartridge.m_LocalAmmoType = u8(m_ammoType);
+		m_magazine.push_back(l_cartridge);
+//		m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
 	}
 	m_ammoName = (m_pAmmo) ? m_pAmmo->m_nameShort : NULL;
 

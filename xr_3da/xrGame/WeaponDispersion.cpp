@@ -20,13 +20,15 @@ float CWeapon::GetConditionDispersionFactor() const
 	return (1.f + fireDispersionConditionFactor*(1.f-GetCondition()));
 }
 
-float CWeapon::GetFireDispersion	(bool with_cartridge) const
+float CWeapon::GetFireDispersion	(bool with_cartridge) 
 {
-	return GetFireDispersion	(with_cartridge?m_fCurrentCartirdgeDisp:1.f);
+	if (!with_cartridge) return GetFireDispersion(1.0f);
+	if (!m_magazine.empty()) m_fCurrentCartirdgeDisp = m_magazine.back().m_kDisp;
+	return GetFireDispersion	(m_fCurrentCartirdgeDisp);
 }
 
 //текущая дисперсия (в радианах) оружия с учетом используемого патрона
-float CWeapon::GetFireDispersion	(float cartridge_k) const
+float CWeapon::GetFireDispersion	(float cartridge_k) 
 {
 	//учет базовой дисперсии, состояние оружия и влияение патрона
 	float fire_disp = fireDispersionBase*cartridge_k*GetConditionDispersionFactor();

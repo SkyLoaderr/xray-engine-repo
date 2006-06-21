@@ -37,6 +37,7 @@ public:
 	virtual void			net_Destroy			();
 	virtual void			net_Export			(NET_Packet& P);
 	virtual void			net_Import			(NET_Packet& P);
+	
 	virtual CWeapon			*cast_weapon			()					{return this;}
 	virtual CWeaponMagazined*cast_weapon_magazined	()					{return 0;}
 
@@ -347,8 +348,8 @@ protected:
 
 public:
 	//текущая дисперсия (в радианах) оружия с учетом используемого патрона
-	float					GetFireDispersion	(bool with_cartridge)			const;
-	float					GetFireDispersion	(float cartridge_k)				const;
+	float					GetFireDispersion	(bool with_cartridge)			;
+	float					GetFireDispersion	(float cartridge_k)				;
 //	const Fvector&			GetRecoilDeltaAngle	();
 	virtual	int				ShotsFired			() { return 0; }
 
@@ -457,7 +458,7 @@ public:
 	u8						m_u8TracerColorID;
 
 	// Multitype ammo support
-	xr_stack<CCartridge>	m_magazine;
+	xr_vector<CCartridge>	m_magazine;
 	CCartridge				m_DefaultCartridge;
 	float					m_fCurrentCartirdgeDisp;
 

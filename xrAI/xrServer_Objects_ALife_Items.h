@@ -151,6 +151,17 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeItemWeapon)
 #define script_type_list save_type_list(CSE_ALifeItemWeapon)
 
+
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeaponShotGun,CSE_ALifeItemWeapon)
+	xr_vector<u8>				m_AmmoIDs;
+								CSE_ALifeItemWeaponShotGun(LPCSTR caSection);
+virtual							~CSE_ALifeItemWeaponShotGun();
+
+virtual CSE_ALifeItemWeapon		*cast_item_weapon	() {return this;}
+SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeItemWeaponShotGun)
+#define script_type_list save_type_list(CSE_ALifeItemWeaponShotGun)
+
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDetector,CSE_ALifeItem)
 	u32								m_ef_detector_type;
 									CSE_ALifeItemDetector(LPCSTR caSection);

@@ -68,6 +68,17 @@ void CSE_ALifeItemWeapon::script_register(lua_State *L)
 	];
 }
 
+void CSE_ALifeItemWeaponShotGun::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_item1(
+			CSE_ALifeItemWeaponShotGun,
+			"cse_alife_item_weapon_shotgun",
+			CSE_ALifeItemWeapon
+			)
+	];
+}
+
 void CSE_ALifeItemDetector::script_register(lua_State *L)
 {
 	module(L)[

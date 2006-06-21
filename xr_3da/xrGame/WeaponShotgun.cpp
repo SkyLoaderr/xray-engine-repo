@@ -343,6 +343,8 @@ u8 CWeaponShotgun::AddCartridge		(u8 cnt)
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 
 
+	if (m_DefaultCartridge.m_LocalAmmoType != m_ammoType)
+		m_DefaultCartridge.Load(*m_ammoTypes[m_ammoType], u8(m_ammoType));
 	CCartridge l_cartridge = m_DefaultCartridge;
 	while(cnt)// && m_pAmmo->Get(l_cartridge)) 
 	{
@@ -352,8 +354,9 @@ u8 CWeaponShotgun::AddCartridge		(u8 cnt)
 		}
 		--cnt;
 		++iAmmoElapsed;
-		m_magazine.push(l_cartridge);
-		m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
+		l_cartridge.m_LocalAmmoType = u8(m_ammoType);
+		m_magazine.push_back(l_cartridge);
+//		m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
 	}
 	m_ammoName = (m_pAmmo) ? m_pAmmo->m_nameShort : NULL;
 
@@ -376,4 +379,31 @@ void CWeaponShotgun::script_register	(lua_State *L)
 		class_<CWeaponShotgun,CGameObject>("CWeaponShotgun")
 			.def(constructor<>())
 	];
+}
+void	CWeaponShotgun::net_Export	(NET_Packet& P)
+{
+	inherited::net_Export(P);	
+	P.w_u8(u8(m_magazine.size()));	
+	for (u32 i=0; i<m_magazine.size(); i++)
+	{
+		CCartridge& l_cartridge = *(m_magazine.begin()+i);
+		P.w_u8(l_cartridge.m_LocalAmmoType);
+	}
+}
+void	CWeaponShotgun::net_Import	(NET_Packet& P)
+{
+	inherited::net_Import(P);	
+	u8 AmmoCount = P.r_u8();
+	for (u32 i=0; i<AmmoCount; i++)
+	{
+		u8 LocalAmmoType = P.r_u8();
+		if (i>=m_magazine.size()) continue;
+		CCartridge& l_cartridge = *(m_magazine.begin()+i);
+		if (LocalAmmoType == l_cartridge.m_LocalAmmoType) continue;
+#ifdef DEBUG
+		Msg("! %s reload to %s", *l_cartridge.m_ammoSect, *(m_ammoTypes[LocalAmmoType]));
+#endif
+		l_cartridge.Load(*(m_ammoTypes[LocalAmmoType]), LocalAmmoType); 
+//		m_fCurrentCartirdgeDisp = m_DefaultCartridge.m_kDisp;		
+	}
 }

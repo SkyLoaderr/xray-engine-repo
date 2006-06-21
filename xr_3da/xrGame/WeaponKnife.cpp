@@ -98,7 +98,7 @@ void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 	cartridge.fWallmarkSize			= fWallmarkSize;
 	cartridge.bullet_material_idx	= knife_material_idx;
 
-	while(m_magazine.size() < 2)	m_magazine.push(cartridge);
+	while(m_magazine.size() < 2)	m_magazine.push_back(cartridge);
 	iAmmoElapsed					= m_magazine.size();
 	bool SendHit					= SendHitAllowed(H_Parent());
 

@@ -121,13 +121,13 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(CSE_Abstract* DC)
 	UpdateGrenadeVisibility(!!iAmmoElapsed);
 	m_bPending = false;
 
-	m_DefaultCartridge2.Load(*m_ammoTypes2[m_ammoType2]);
+	m_DefaultCartridge2.Load(*m_ammoTypes2[m_ammoType2], u8(m_ammoType2));
 
 	if (GameID() != GAME_SINGLE)
 	{
 		if (!m_bGrenadeMode && IsGrenadeLauncherAttached() && !getRocketCount())
 		{
-			m_magazine2.push(m_DefaultCartridge2);
+			m_magazine2.push_back(m_DefaultCartridge2);
 
 			shared_str grenade_name = m_DefaultCartridge2.m_ammoSect;
 			shared_str fake_grenade_name = pSettings->r_string(grenade_name, "fake_grenade_name");
@@ -138,7 +138,7 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(CSE_Abstract* DC)
 
 	if(iAmmoElapsed && m_bGrenadeMode && !getRocketCount()) 
 	{
-		shared_str fake_grenade_name = pSettings->r_string(m_magazine.top().m_ammoSect, "fake_grenade_name");
+		shared_str fake_grenade_name = pSettings->r_string(m_magazine.back().m_ammoSect, "fake_grenade_name");
 		
 		CRocketLauncher::SpawnRocket(*fake_grenade_name, this);
 	}
@@ -214,10 +214,10 @@ void  CWeaponMagazinedWGrenade::PerformSwitchGL()
 	
 	swap				(m_DefaultCartridge, m_DefaultCartridge2);
 
-	xr_stack<CCartridge> l_magazine;
-	while(m_magazine.size()) { l_magazine.push(m_magazine.top()); m_magazine.pop(); }
-	while(m_magazine2.size()) { m_magazine.push(m_magazine2.top()); m_magazine2.pop(); }
-	while(l_magazine.size()) { m_magazine2.push(l_magazine.top()); l_magazine.pop(); }
+	xr_vector<CCartridge> l_magazine;
+	while(m_magazine.size()) { l_magazine.push_back(m_magazine.back()); m_magazine.pop_back(); }
+	while(m_magazine2.size()) { m_magazine.push_back(m_magazine2.back()); m_magazine2.pop_back(); }
+	while(l_magazine.size()) { m_magazine2.push_back(l_magazine.back()); l_magazine.pop_back(); }
 	iAmmoElapsed = (int)m_magazine.size();
 
 	if(m_bZoomEnabled && m_pHUD)
@@ -280,7 +280,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 			if(Local()) 
 			{
 				VERIFY(m_magazine.size());
-				m_magazine.pop	();
+				m_magazine.pop_back	();
 				--iAmmoElapsed;
 			
 				VERIFY((u32)iAmmoElapsed == m_magazine.size());

@@ -443,12 +443,12 @@ BOOL CWeapon::net_Spawn		(CSE_Abstract* DC)
 	m_ammoType						= E->ammo_type;
 	STATE = NEXT_STATE				= E->state;
 	
-	m_DefaultCartridge.Load(*m_ammoTypes[m_ammoType]);
+	m_DefaultCartridge.Load(*m_ammoTypes[m_ammoType], u8(m_ammoType));	
 	if(iAmmoElapsed) 
 	{
 		m_fCurrentCartirdgeDisp = m_DefaultCartridge.m_kDisp;
 		for(int i = 0; i < iAmmoElapsed; ++i) 
-			m_magazine.push(m_DefaultCartridge);
+			m_magazine.push_back(m_DefaultCartridge);
 	}
 
 	
@@ -477,7 +477,7 @@ void CWeapon::net_Destroy	()
 	StopLight			();
 	Light_Destroy		();
 
-	while (m_magazine.size()) m_magazine.pop();
+	while (m_magazine.size()) m_magazine.pop_back();
 }
 
 void CWeapon::net_Export	(NET_Packet& P)
@@ -494,7 +494,7 @@ void CWeapon::net_Export	(NET_Packet& P)
 	P.w_u8					(m_flagsAddOnState);
 	P.w_u8					((u8)m_ammoType);
 	P.w_u8					((u8)STATE);
-	P.w_u8					((u8)m_bZoomMode);
+	P.w_u8					((u8)m_bZoomMode);	
 }
 
 void CWeapon::net_Import	(NET_Packet& P)
@@ -536,29 +536,23 @@ void CWeapon::net_Import	(NET_Packet& P)
 	case eSwitch:
 		{
 #ifdef DEBUG
-			if (ammoType >= m_ammoTypes.size())
-				Msg("!! Weapon [%d], State - [%d]", ID(), wstate);
+			
 #endif
 		}break;	
 	default:
 		{
-			m_ammoType = ammoType;
-			SetAmmoElapsed(int(ammo_elapsed));
+			if (ammoType >= m_ammoTypes.size())
+				Msg("!! Weapon [%d], State - [%d]", ID(), wstate);
+			else
+			{
+				m_ammoType = ammoType;
+				SetAmmoElapsed((ammo_elapsed));
+			}
 		}break;
 	}
-	/*
-	if (m_ammoType >= m_ammoTypes.size())
-	{
-		m_ammoType = m_ammoTypes.size() - 1;
-		Msg("!! Wrong ammo type [%d], State - [%d]", ID(), wstate);
-	};
-	if (STATE != eFire && STATE != eFire2)
-		SetAmmoElapsed(int(ammo_elapsed));
-*/
+	
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
-
 }
-
 
 void CWeapon::save(NET_Packet &output_packet)
 {
@@ -599,7 +593,8 @@ void CWeapon::OnEvent				(NET_Packet& P, u16 type)
 			u8				state;
 			P.r_u8			(state);
 			P.r_u8			(m_sub_state);		
-			u8 AmmoElapsed = P.r_u8();			
+			u8 NewAmmoType = P.r_u8();
+			u8 AmmoElapsed = P.r_u8();	
 
 			if (OnClient()) SetAmmoElapsed(int(AmmoElapsed));			
 			OnStateSwitch	(u32(state));
@@ -787,7 +782,9 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 						m_ammoType = l_newType;
 						m_pAmmo = NULL;
 						if (unlimited_ammo())
-							m_DefaultCartridge.Load(*m_ammoTypes[m_ammoType]);
+						{
+							m_DefaultCartridge.Load(*m_ammoTypes[m_ammoType], u8(m_ammoType));
+						};							
 						Reload();
 					}
 				}
@@ -1152,6 +1149,7 @@ void CWeapon::SwitchState(u32 S)
 		CHudItem::object().u_EventGen		(P,GE_WPN_STATE_CHANGE,CHudItem::object().ID());
 		P.w_u8			(u8(S));
 		P.w_u8			(u8(m_sub_state));
+		P.w_u8			(u8(m_ammoType& 0xff));
 		P.w_u8			(u8(iAmmoElapsed & 0xff));
 		CHudItem::object().u_EventSend		(P);
 	}
@@ -1380,18 +1378,19 @@ void	CWeapon::SetAmmoElapsed	(int ammo_count)
 		if (uAmmo > m_magazine.size())
 		{
 			CCartridge l_cartridge; 
-			l_cartridge.Load(*m_ammoTypes[m_ammoType]);
-			m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
+			l_cartridge.Load(*m_ammoTypes[m_ammoType], u8(m_ammoType));
+//			m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
 			while (uAmmo > m_magazine.size())
 			{
-				m_magazine.push(l_cartridge);
+				m_magazine.push_back(l_cartridge);
+//				Msg("Load %s", *l_cartridge.m_ammoSect);
 			};
 		}
 		else
 		{
 			while (uAmmo < m_magazine.size())
 			{
-				m_magazine.pop();
+				m_magazine.pop_back();
 			}
 		};
 	};
@@ -1447,7 +1446,7 @@ bool CWeapon::unlimited_ammo()
 LPCSTR	CWeapon::GetCurrentAmmo_ShortName	()
 {
 	if (m_magazine.empty()) return ("");
-	CCartridge &l_cartridge = m_magazine.top();
+	CCartridge &l_cartridge = m_magazine.back();
 	return *(l_cartridge.m_InvShortName);
 }
 

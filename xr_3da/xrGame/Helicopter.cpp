@@ -96,7 +96,7 @@ void CHelicopter::Load(LPCSTR section)
 	UseFireTrail						(m_enemy.bUseFireTrail);//temp force reloar disp params
 
 	m_sAmmoType							= pSettings->r_string(section, "ammo_class");
-	m_CurrentAmmo.Load					(*m_sAmmoType);
+	m_CurrentAmmo.Load					(*m_sAmmoType, 0);
 
 	m_sRocketSection					= pSettings->r_string	(section,"rocket_class");
 
