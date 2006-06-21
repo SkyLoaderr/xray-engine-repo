@@ -34,6 +34,7 @@ bone_fire			 = bip01_head				; bone name
 
 weapon_usage		 = 0						; boolean
 
+type				= flamer
 
 ;---------------------------------------------------------------------
 ; Physics
@@ -209,20 +210,8 @@ step_params				= m_poltergeist_step_params
 anger_hunger_threshold	= 0.1
 anger_loud_threshold	= 0.7
 
-Hide_Particles			= monsters\polter_yadro;monsters\polter_hide
-
 LegsCount				= 2
 damage					= m_poltergeist_damage
-
-
-;-- FLAME -----------------
-
-flame_sound				= monsters\poltergeist\attack_hit_flame		
-flame_particles_prepare	= monsters\polter_yadro
-flame_particles_fire	= monsters\polter_flame_fire
-flame_fire_delay		= 24000 ;2400							; don't change - for programmers only
-flame_length			= 8.0
-flame_hit_value			= 0.8
 
 ;---------------------------
 
@@ -245,31 +234,6 @@ Delay_Tele_Aggressive	= 10  ;200
 Delay_Scare_Min			= 30000
 Delay_Scare_Normal		= 30001
 Delay_Scare_Aggressive	= 30001
-
-;---------------------------
-
-Tele_Fly_Time					= 0.30
-Tele_Fly_Velocity				= 30
-
-Tele_Find_Radius				= 10
-Tele_Object_Min_Mass			= 40
-Tele_Object_Max_Mass			= 500
-Tele_Object_Count				= 4;7
-Tele_Hold_Time					= 4000
-Tele_Wait_Time					= 3000
-Tele_Delay_Between_Objects_Time	= 1000
-Tele_Distance					= 30
-Tele_Object_Height				= 10
-Tele_Time_Object_Keep			= 15000
-Tele_Raise_Speed				= 6
-Tele_Delay_Between_Objects_Raise_Time	= 200
-
-Particles_Damage				= monsters\polter_damage
-Particles_Death					= monsters\polter_death
-Particles_Idle					= monsters\polter_idle 
-Hidden_Particles				= monsters\polter_linza	;monsters\polter_hidden
-
-Sound_Idle						= anomaly\electra_idle1
 
 ;---------------------------
 
@@ -359,3 +323,67 @@ spec_rank			= weak
 rank				= 300
 community			= poltergeist
 
+;===========================================================================
+; TELE
+;===========================================================================
+
+[m_poltergeist_normal_tele]:m_poltergeist_normal
+$spawn               = "monsters\poltergeists\poltergeist_normal_tele"
+
+type							= telekinetic
+
+Tele_Fly_Time					= 0.30
+Tele_Fly_Velocity				= 30
+
+Tele_Find_Radius				= 10
+Tele_Object_Min_Mass			= 40
+Tele_Object_Max_Mass			= 500
+Tele_Object_Count				= 4;7
+Tele_Hold_Time					= 4000
+Tele_Wait_Time					= 3000
+Tele_Delay_Between_Objects_Time	= 1000
+Tele_Distance					= 30
+Tele_Object_Height				= 10
+Tele_Time_Object_Keep			= 15000
+Tele_Raise_Speed				= 6
+Tele_Delay_Between_Objects_Raise_Time	= 200
+
+Particles_Damage				= monsters\polter_damage
+Particles_Death					= monsters\polter_death
+Particles_Idle					= monsters\polter_idle 
+Particles_Hidden				= monsters\polter_linza
+
+
+Hidden_Particles				= monsters\polter_linza	;monsters\polter_hidden
+;Hide_Particles					= monsters\polter_yadro;monsters\polter_hide
+
+Sound_Idle						= anomaly\electra_idle1
+
+;===========================================================================
+; FLAMER
+;===========================================================================
+
+[m_poltergeist_normal_flame]:m_poltergeist_normal
+$spawn               = "monsters\poltergeists\poltergeist_normal_flame"
+
+type					= flamer
+
+flame_sound				= monsters\poltergeist\attack_hit_flame		
+flame_particles_prepare	= monsters\polter_yadro
+flame_particles_fire	= static\monsters_fire_idle
+flame_particles_stop	= static\monsters_fire_stop
+flame_fire_time_delay	= 1000 ;2400							; don't change - for programmers only
+flame_fire_time_play	= 6000
+flame_length			= 8.0
+flame_hit_value			= 0.8
+flames_count			= 4
+flames_delay			= 2000
+
+Particles_Damage				= monsters\polter_damage
+Particles_Death					= monsters\polter_death
+Particles_Idle					= monsters\polter_idle 
+Particles_Hidden				= monsters\polter_linza
+
+
+Hidden_Particles				= monsters\polter_linza	;monsters\polter_hidden
+Sound_Idle						= anomaly\electra_idle1
