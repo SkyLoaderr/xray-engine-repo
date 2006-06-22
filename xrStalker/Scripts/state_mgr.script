@@ -278,6 +278,14 @@ function act_state_mgr_locked:finalize()
 end
 
 
+animation_reset_denied = {
+	wounded = true,
+	wounded_heavy = true,
+	wounded_heavy_2 = true,
+	wounded_heavy_3 = true,
+	wounded_zombie = true
+	}
+
 --' —ам менеджер
 class "state_manager"
 function state_manager:__init(npc)
@@ -346,7 +354,8 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 		self.subanim = 0
 	end
 
-	local switched = false	
+	local switched = false
+	local last_state = self.target_state
 	if self.target_state ~= state_name then
 
 		-- ≈сли мы переключаемс€ из стрел€ющего состо€ни€ в нестрел€ющее - необходимо сразу же прекратить стрельбу
@@ -372,10 +381,10 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 	
 
 	if switched and emerg ~= nil then
---		if  self.animation:target_state() ~= state_lib.states[state_name].animation then
+		if animation_reset_denied[last_state] ~= true  then
 			self.emerg.animation = emerg.animation
 			self.emerg.animation_nout = emerg.animation_nout
---		end
+		end
 	end
 
 	self.synsound = synsound
