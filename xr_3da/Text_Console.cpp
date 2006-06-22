@@ -37,7 +37,7 @@ void	CTextConsole::CreateConsoleWnd()
 	// Register the windows class
 	WNDCLASS wndClass = { 0, TextConsole_WndProc, 0, 0, hInstance,
 		NULL,
-		LoadCursor( NULL, IDC_ARROW ),
+		LoadCursor( hInstance, IDC_ARROW ),
 		GetStockBrush(GRAY_BRUSH),
 		NULL, wndclass };
 	RegisterClass( &wndClass );
@@ -258,5 +258,12 @@ void	CTextConsole::DrawLog(HDC hDC)
 
 void	CTextConsole::OnRender			(void)
 {
-	OnPaint();
+	//OnPaint();
 };
+
+void	CTextConsole::OnFrame			(void)
+{
+	inherited::OnFrame();
+	InvalidateRect(m_hConsoleWnd, NULL, FALSE);
+	SetCursor(LoadCursor( NULL, IDC_ARROW ));
+}

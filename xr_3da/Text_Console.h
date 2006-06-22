@@ -4,6 +4,7 @@
 class ENGINE_API CTextConsole :
 	public CConsole
 {
+	typedef CConsole inherited ;
 private:
 	HWND*	m_pMainWnd;
 
@@ -35,6 +36,7 @@ public:
 	void	OnPaint		();
 
 	virtual void	OnRender			(void);
+	virtual void	OnFrame				(void);
 };
 
 //extern ENGINE_API CTextConsole* TextConsole;
