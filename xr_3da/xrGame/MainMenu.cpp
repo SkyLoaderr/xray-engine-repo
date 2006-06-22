@@ -112,6 +112,7 @@ void CMainMenu::Activate	(bool bActivate)
 			Console->Show			();
 		}
 
+		StartStopMenu				(m_startDialog,true);
 		CleanInternals				();
 		if(g_pGameLevel){
 			Device.seqFrame.Add		(g_pGameLevel);
