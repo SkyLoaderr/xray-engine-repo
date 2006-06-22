@@ -584,8 +584,6 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 		}break;
 	case GAME_PHASE_PLAYER_SCORES:
 		{
-//			HUD().GetUI()->HideIndicators();
-//			GetUICursor()->Hide();
 			string128 resstring;
 			sprintf(resstring, *st.translate("mp_player_wins"), WinnerName);
 			m_game_ui->SetRoundResultCaption(resstring);
