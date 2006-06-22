@@ -399,19 +399,19 @@ function init_wounded(npc, ini, section, st, scheme)
 		def.use_medkit			= false
 		
 	elseif npc_community == "zombied" then
---[[		def.hp_state			= "40|wounded_zombie@help_heavy"
+		def.hp_state			= "40|wounded_zombie@help_heavy"
 		def.hp_state_see		= "40|wounded_zombie@help_heavy"
 		def.psy_state			= ""
 		def.hp_victim			= "40|nil"
 		def.hp_cover			= "40|false"
-		def.hp_fight			= "40|false"]]
+		def.hp_fight			= "40|false"
 
-		def.hp_state			= nil
+--[[		def.hp_state			= nil
 		def.hp_state_see		= nil
 		def.psy_state			= nil
 		def.hp_victim			= nil
 		def.hp_cover			= nil
-		def.hp_fight			= nil
+		def.hp_fight			= nil]]
 
 		def.syndata				= ""
 		def.help_dialog			= nil
