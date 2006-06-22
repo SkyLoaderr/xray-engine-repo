@@ -26,7 +26,6 @@
 #	define aiDestroy					(1<<13)
 #	define aiSerialize					(1<<14)
 #	define aiDialogs					(1<<15)
-#	define aiSectors					(1<<16)
 #	define aiInfoPortion				(1<<17)
 #	define aiGOAPScript					(1<<18)
 #	define aiGOAPObject					(1<<19)
