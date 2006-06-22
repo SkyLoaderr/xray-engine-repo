@@ -218,7 +218,6 @@
 			ammo_11.43x23_fmj = 1 \n
 			wpn_fn2000 \n
 			ammo_5.56x45_ss190 = 1 \n
-			device_torch \n
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_items.xml"
@@ -253,7 +252,6 @@
 			ammo_11.43x23_fmj = 1 \n
 			wpn_g36 = 1 \n
 			ammo_5.56x45_ss190 = 1 \n
-			device_torch \n
 #include "gameplay\character_items.xml"\n
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
@@ -322,7 +320,6 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_g36 = 1 \n
 	    	ammo_5.45x39_ap = 1 \n
-			device_torch \n
 #include "gameplay\character_items.xml"\n
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
@@ -356,7 +353,6 @@
 			ammo_9x18_pmm = 1 \n
 			wpn_svu \n
 			ammo_7.62x54_ap = 1 \n
-			device_torch \n
 #include "gameplay\character_items.xml"\n
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
@@ -393,7 +389,6 @@
 			ammo_9x18_pmm = 1 \n
 			wpn_sig550 \n
 			ammo_5.56x45_ap = 1 \n
-			device_torch \n
 #include "gameplay\character_items.xml"\n
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
@@ -429,7 +424,6 @@
 			ammo_9x18_pmm = 1 \n
 			wpn_sig550 \n
 			ammo_5.56x45_ap = 1 \n
-			device_torch \n
 #include "gameplay\character_items.xml"\n
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
