@@ -703,49 +703,49 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_freedom_attack_sniper_c4", 
 			idle = 0,
 			prior = 5, state = {1}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = ""
+			in_rest = "",position_threshold = 150, out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_guard_c1", 
 			idle = 0,
 			prior = 6, state = {1}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = ""
+			in_rest = "",position_threshold = 150, out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_guard_c2", 
 			idle = 0,
 			prior = 2, state = {1}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = ""
+			in_rest = "",position_threshold = 150, out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_camper6_c1", 
 			idle = 0,
 			prior = 2, state = {1}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = ""
+			in_rest = "",position_threshold = 150, out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_camper7", 
 			idle = 0,
 			prior = 1, state = {1}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = ""
+			in_rest = "",position_threshold = 150, out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_camper8", 
 			idle = 0,
 			prior = 1, state = {1}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = ""
+			in_rest = "",position_threshold = 150, out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_camper9", 
 			idle = 0,
 			prior = 1, state = {1}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = ""
+			in_rest = "",position_threshold = 150, out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_camper10", 
 			idle = 0,
 			prior = 1, state = {1}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = ""
+			in_rest = "",position_threshold = 150, out_rest = ""
 		}
 		table.insert(sj, t)
 		
@@ -753,79 +753,79 @@ function load_job(sj, gname, type, squad, groups)
         t = { section = "logic@bar_freedom_attack_chaser_1", 
 			idle = 0,
 			prior = 2, state = {2}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = "rostok_chase_restrictor"
+			in_rest = "",position_threshold = 150, out_rest = "rostok_chase_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_chaser_2", 
 			idle = 0,
 			prior = 2, state = {2}, squad = squad, group = groups[0],
-			in_rest = "", position_threshold = 100,out_rest = "rostok_chase_restrictor"
+			in_rest = "", position_threshold = 150,out_rest = "rostok_chase_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_chaser_3", 
 			idle = 0,
 			prior = 2, state = {2}, squad = squad, group = groups[0],
-			in_rest = "", position_threshold = 100,out_rest = "rostok_chase_restrictor"
+			in_rest = "", position_threshold = 150,out_rest = "rostok_chase_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_chaser_4", 
 			idle = 0,
 			prior = 2, state = {2}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = "rostok_chase_restrictor"
+			in_rest = "rostok_chase_reastictor_1",position_threshold = 150, out_rest = "rostok_chase_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_chaser_5", 
 			idle = 0,
 			prior = 2, state = {2}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = "rostok_chase_restrictor"
+			in_rest = "",position_threshold = 150, out_rest = "rostok_chase_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_chaser_6", 
 			idle = 0,
 			prior = 2, state = {2}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = "rostok_chase_restrictor"
+			in_rest = "",position_threshold = 150, out_rest = "rostok_chase_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_chaser_7", 
 			idle = 0,
 			prior = 2, state = {2}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = "rostok_chase_restrictor"
+			in_rest = "rostok_chase_reastictor_1",position_threshold = 150, out_rest = "rostok_chase_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_chaser_8", 
 			idle = 0,
 			prior = 2, state = {2}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = "rostok_chase_restrictor"
+			in_rest = "",position_threshold = 150, out_rest = "rostok_chase_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_chaser_9", 
 			idle = 0,
 			prior = 2, state = {2}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = "rostok_chase_restrictor"
+			in_rest = "",position_threshold = 150, out_rest = "rostok_chase_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_chaser_10", 
 			idle = 0,
 			prior = 2, state = {2,3}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = "rostok_chase_restrictor"
+			in_rest = "rostok_chase_reastictor_1",position_threshold = 150, out_rest = "rostok_chase_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_chaser_11", 
 			idle = 0,
 			prior = 2, state = {2,3}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = "rostok_chase_restrictor"
+			in_rest = "rostok_chase_reastictor_1",position_threshold = 150, out_rest = "rostok_chase_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_chaser_12", 
 			idle = 0,
 			prior = 2, state = {2,3}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = "rostok_chase_restrictor"
+			in_rest = "rostok_chase_reastictor_1",position_threshold = 150, out_rest = "rostok_chase_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_chaser_13", 
 			idle = 0,
 			prior = 2, state = {2}, squad = squad, group = groups[0],
-			in_rest = "",position_threshold = 100, out_rest = "rostok_chase_restrictor",
+			in_rest = "rostok_chase_reastictor_1",position_threshold = 150, out_rest = "rostok_chase_restrictor",
 			predicate = function(obj_info)
 				         	return obj_info.profile_name == "bar_svoboda_attack_commander"
 			            end
