@@ -165,7 +165,6 @@ bool CUIDialogWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 bool CUIDialogWnd::IR_process()
 {
 	if(!IsEnabled())					return false;
-//. ???	if(UI()->IsActive())			return true;
 
 	if(Device.Pause()&&!WorkInPause())	return false;
 	return true;

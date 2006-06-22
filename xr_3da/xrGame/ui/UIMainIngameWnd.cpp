@@ -333,7 +333,7 @@ void CUIMainIngameWnd::Draw()
 	
 	if(m_pActor->inventory().GetActiveSlot() != NO_ACTIVE_SLOT)
 	{
-		PIItem item		=  m_pActor->inventory().ItemFromSlot(m_pActor->inventory().GetActiveSlot());
+		PIItem item		=  m_pActor->inventory().ActiveItem();
 
 		if(item && m_pActor->HUDview() && smart_cast<CHudItem*>(item))
 			(smart_cast<CHudItem*>(item))->OnDrawUI();
@@ -352,97 +352,25 @@ void CUIMainIngameWnd::Draw()
 
 			zoom_mode = true;			
 		}
-/*
-		if (scope_mode)
-			UI()->SetWnpScopeDraw(true);
-		else
-			UI()->SetWnpScopeDraw(false);
-*/
 	}
-		if(g_bShowHudInfo)
-		{
-			CUIWindow::Draw();
-			UIZoneMap->Render();			
-		}
-
-		if (m_bShowHudCrosshair && !zoom_mode)
-		{
-			m_bShowHudCrosshair = false;
-			psHUD_Flags.set(HUD_CROSSHAIR_RT, TRUE);
-		}
-		RenderQuickInfos();		
-
-#ifdef DEBUG 
-	if (g_bHudAdjustMode&&m_pWeapon) //draw firePoint,ShellPoint etc
+	if(g_bShowHudInfo)
 	{
-		CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
-		if(!pActor)
-			return;
-
-		bool bCamFirstEye = !!m_pWeapon->GetHUDmode();
-		string32 hud_view="HUD view";
-		string32 _3rd_person_view="3-rd person view";
-		CGameFont* F		= UI()->Font()->pFontDI;
-		F->SetAligment		(CGameFont::alCenter);
-		F->SetSizeI			(0.02f);
-		F->OutSetI			(0.f,-0.8f);
-		F->SetColor			(0xffffffff);
-		F->OutNext			("Hud_adjust_mode=%d",g_bHudAdjustMode);
-		if(g_bHudAdjustMode==1)
-			F->OutNext			("adjusting zoom offset");
-		else if(g_bHudAdjustMode==2)
-			F->OutNext			("adjusting fire point for %s",bCamFirstEye?hud_view:_3rd_person_view);
-		else if(g_bHudAdjustMode==3)
-			F->OutNext			("adjusting missile offset");
-		else if(g_bHudAdjustMode==4)
-			F->OutNext			("adjusting shell point for %s",bCamFirstEye?hud_view:_3rd_person_view);
-		else if(g_bHudAdjustMode == 5)
-			F->OutNext			("adjusting fire point 2 for %s",bCamFirstEye?hud_view:_3rd_person_view);
-
-		if(bCamFirstEye)
-		{
-			CWeaponHUD *pWpnHud = NULL;
-			pWpnHud = m_pWeapon->GetHUD();
-
-			Fvector FP,SP,FP2;
-
-			CKinematics* V			= smart_cast<CKinematics*>(pWpnHud->Visual());
-			VERIFY					(V);
-			V->CalculateBones		();
-
-			// fire point&direction
-			Fmatrix& fire_mat		= V->LL_GetTransform(u16(pWpnHud->FireBone()));
-			Fmatrix& parent			= pWpnHud->Transform	();
-
-			const Fvector& fp		= pWpnHud->FirePoint();
-			const Fvector& fp2		= pWpnHud->FirePoint2();
-			const Fvector& sp		= pWpnHud->ShellPoint();
-
-			fire_mat.transform_tiny	(FP,fp);
-			parent.transform_tiny	(FP);
-
-			fire_mat.transform_tiny	(FP2,fp2);
-			parent.transform_tiny	(FP2);
-
-			fire_mat.transform_tiny	(SP,sp);
-			parent.transform_tiny	(SP);
-
-
-			Level().debug_renderer().draw_aabb(FP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(255,0,0));
-			Level().debug_renderer().draw_aabb(FP2,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,0,255));
-			Level().debug_renderer().draw_aabb(SP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(0,255,0));
-		
-		}else{
-			Fvector FP = m_pWeapon->get_CurrentFirePoint();
-			Fvector FP2 = m_pWeapon->get_CurrentFirePoint2();
-			Fvector SP = m_pWeapon->get_LastSP();
-			Level().debug_renderer().draw_aabb(FP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(255,0,0));
-			Level().debug_renderer().draw_aabb(FP2,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,0,255));
-			Level().debug_renderer().draw_aabb(SP,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,255,0));
-		}
+		CUIWindow::Draw();
+		UIZoneMap->Render();			
 	}
+
+	if (m_bShowHudCrosshair && !zoom_mode)
+	{
+		m_bShowHudCrosshair = false;
+		psHUD_Flags.set(HUD_CROSSHAIR_RT, TRUE);
+	}
+	RenderQuickInfos();		
+
+#ifdef DEBUG
+	draw_adjust_mode();
 #endif
 }
+
 
 void CUIMainIngameWnd::SetMPChatLog(CUIWindow* pChat, CUIWindow* pLog){
 	m_pMPChatWnd = pChat;
@@ -493,7 +421,7 @@ void CUIMainIngameWnd::Update()
 	if (!m_pActor) 
 	{
 		m_pItem					= NULL;
-		m_pWeapon				= NULL;	//Msg("* m_pWeapon = NULL");
+		m_pWeapon				= NULL;
 		m_pGrenade				= NULL;
 		CUIWindow::Update		();
 		return;
@@ -518,12 +446,6 @@ void CUIMainIngameWnd::Update()
 		{
 			UIPdaOnline.SetText("");
 		}
-/*
-		if(m_pActor->conditions().AllowSleep())
-			SetWarningIconColor	(ewiSleep,0xffffffff);
-		else
-			SetWarningIconColor	(ewiSleep,0x00ffffff);
-*/
 	};
 
 	// ewiInvincible:
@@ -571,11 +493,11 @@ void CUIMainIngameWnd::Update()
 		static int			prevFireMode	= static_cast<int>(-1);
 
 		if(	((item && m_pItem != item) || 
-						 (pWeapon && (prevState != pWeapon->State() || prevAmmoID != pWeapon->m_ammoType) )))
+						 (pWeapon && (prevState != pWeapon->GetState() || prevAmmoID != pWeapon->m_ammoType) )))
 		{
 			m_pItem							= item;
 			if (pWeapon)
-				prevState						= pWeapon->State();
+				prevState						= pWeapon->GetState();
 			active_item_changed				= true;
 		};		
 
@@ -614,7 +536,7 @@ void CUIMainIngameWnd::Update()
 				(pWeaponMagazined && pWeaponMagazined->HasFireModes() && prevFireMode != pWeaponMagazined->GetCurrentFireMode()))
 			{
 				m_pWeapon					= pWeapon;//		Msg("- New m_pWeapon - %s[%d][0x%8x]", *pWeapon->cNameSect(), pWeapon->ID(), pWeapon);
-				prevState					= pWeapon->State();
+				prevState					= pWeapon->GetState();
 
 				if(m_pWeapon->ShowAmmo())
 				{
@@ -708,9 +630,6 @@ void CUIMainIngameWnd::Update()
 			if (m_pWeapon)
 				value = 1 - m_pWeapon->GetCondition();
 			break;
-//		case ewiStarvation:
-//			value = 1 - m_pActor->conditions().GetSatiety();
-//			break;
 		case ewiPsyHealth:
 			value = 1 - m_pActor->conditions().GetPsyHealth();
 			break;
@@ -1249,9 +1168,6 @@ void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 	case ewiWound:
 		SetWarningIconColor		(&UIWoundIcon, cl);
 		if (bMagicFlag) break;
-//	case ewiStarvation:
-//		SetWarningIconColor		(&UIStarvationIcon, cl);
-//		if (bMagicFlag) break;
 	case ewiPsyHealth:
 		SetWarningIconColor		(&UIPsyHealthIcon, cl);
 		if (bMagicFlag) break;
@@ -1259,9 +1175,6 @@ void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 		SetWarningIconColor		(&UIInvincibleIcon, cl);
 		if (bMagicFlag) break;
 		break;
-//	case ewiSleep:
-//		SetWarningIconColor		(&UISleepIcon, cl);
-//		break;
 	case ewiArtefact:
 		SetWarningIconColor		(&UIArtefactIcon, cl);
 		break;
@@ -1567,3 +1480,76 @@ void test_draw	()
 	}
 */
 }
+#ifdef DEBUG
+void CUIMainIngameWnd::draw_adjust_mode()
+{
+	if (g_bHudAdjustMode&&m_pWeapon) //draw firePoint,ShellPoint etc
+	{
+		CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
+		if(!pActor)
+			return;
+
+		bool bCamFirstEye = !!m_pWeapon->GetHUDmode();
+		string32 hud_view="HUD view";
+		string32 _3rd_person_view="3-rd person view";
+		CGameFont* F		= UI()->Font()->pFontDI;
+		F->SetAligment		(CGameFont::alCenter);
+		F->SetSizeI			(0.02f);
+		F->OutSetI			(0.f,-0.8f);
+		F->SetColor			(0xffffffff);
+		F->OutNext			("Hud_adjust_mode=%d",g_bHudAdjustMode);
+		if(g_bHudAdjustMode==1)
+			F->OutNext			("adjusting zoom offset");
+		else if(g_bHudAdjustMode==2)
+			F->OutNext			("adjusting fire point for %s",bCamFirstEye?hud_view:_3rd_person_view);
+		else if(g_bHudAdjustMode==3)
+			F->OutNext			("adjusting missile offset");
+		else if(g_bHudAdjustMode==4)
+			F->OutNext			("adjusting shell point for %s",bCamFirstEye?hud_view:_3rd_person_view);
+		else if(g_bHudAdjustMode == 5)
+			F->OutNext			("adjusting fire point 2 for %s",bCamFirstEye?hud_view:_3rd_person_view);
+
+		if(bCamFirstEye)
+		{
+			CWeaponHUD *pWpnHud = NULL;
+			pWpnHud = m_pWeapon->GetHUD();
+
+			Fvector FP,SP,FP2;
+
+			CKinematics* V			= smart_cast<CKinematics*>(pWpnHud->Visual());
+			VERIFY					(V);
+			V->CalculateBones		();
+
+			// fire point&direction
+			Fmatrix& fire_mat		= V->LL_GetTransform(u16(pWpnHud->FireBone()));
+			Fmatrix& parent			= pWpnHud->Transform	();
+
+			const Fvector& fp		= pWpnHud->FirePoint();
+			const Fvector& fp2		= pWpnHud->FirePoint2();
+			const Fvector& sp		= pWpnHud->ShellPoint();
+
+			fire_mat.transform_tiny	(FP,fp);
+			parent.transform_tiny	(FP);
+
+			fire_mat.transform_tiny	(FP2,fp2);
+			parent.transform_tiny	(FP2);
+
+			fire_mat.transform_tiny	(SP,sp);
+			parent.transform_tiny	(SP);
+
+
+			RCache.dbg_DrawAABB(FP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(255,0,0));
+			RCache.dbg_DrawAABB(FP2,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,0,255));
+			RCache.dbg_DrawAABB(SP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(0,255,0));
+		
+		}else{
+			Fvector FP = m_pWeapon->get_CurrentFirePoint();
+			Fvector FP2 = m_pWeapon->get_CurrentFirePoint2();
+			Fvector SP = m_pWeapon->get_LastSP();
+			RCache.dbg_DrawAABB(FP,0.01f,0.01f,0.01f,D3DCOLOR_XRGB(255,0,0));
+			RCache.dbg_DrawAABB(FP2,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,0,255));
+			RCache.dbg_DrawAABB(SP,0.02f,0.02f,0.02f,D3DCOLOR_XRGB(0,255,0));
+		}
+	}
+}
+#endif
