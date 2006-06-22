@@ -66,7 +66,10 @@ void CRenderDevice::Reset		()
 	PreCache				(DEVICE_RESET_PRECACHE_FRAME_COUNT);
 	u32 tm_end				= TimerAsync();
 	Msg						("*** RESET [%d ms]",tm_end-tm_start);
-	if (!strstr(Core.Params, "-dedicated")) 
-		ShowCursor	(FALSE);
+//	if (!strstr(Core.Params, "-dedicated"))
+#ifndef DEDICATED_SERVER
+	ShowCursor	(FALSE);
+#endif
+		
 	seqDeviceReset.Process(rp_DeviceReset);
 }

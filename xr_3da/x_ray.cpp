@@ -69,14 +69,17 @@ void InitSettings	()
 }
 void InitConsole	()
 {
-	if (strstr(Core.Params, "-dedicated") && !strstr(Core.Params, "-notextconsole"))
+//	if (strstr(Core.Params, "-dedicated") && !strstr(Core.Params, "-notextconsole"))
+#ifdef DEDICATED_SERVER
 	{
 		Console						= xr_new<CTextConsole>	();		
 	}
-	else
+#else
+	//	else
 	{
 		Console						= xr_new<CConsole>	();
 	}
+#endif
 	Console->Initialize			( );
 }
 
@@ -170,7 +173,9 @@ void Startup					( )
 	}
 
 	// Initialize APP
+//#ifndef DEDICATED_SERVER
 	Device.Create				( );
+//#endif
 	LALib.OnCreate				( );
 	pApp						= xr_new<CApplication>	();
 	g_pGamePersistent			= (IGame_Persistent*)	NEW_INSTANCE (CLSID_GAME_PERSISTANT);

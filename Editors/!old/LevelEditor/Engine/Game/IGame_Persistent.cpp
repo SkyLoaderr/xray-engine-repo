@@ -44,8 +44,13 @@ void IGame_Persistent::OnAppDeactivate		()
 
 void IGame_Persistent::OnAppStart	()
 {
-	if (strstr(Core.Params,"-dedicated"))	bDedicatedServer	= TRUE;
-	else									bDedicatedServer	= FALSE;
+//	if (strstr(Core.Params,"-dedicated"))	bDedicatedServer	= TRUE;
+//	else									bDedicatedServer	= FALSE;
+#ifndef DEDICATED_SERVER
+	bDedicatedServer	= FALSE;
+#else
+	bDedicatedServer	= TRUE;
+#endif
 	Environment.load				();
 }
 

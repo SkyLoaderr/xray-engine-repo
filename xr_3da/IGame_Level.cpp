@@ -94,7 +94,10 @@ BOOL IGame_Level::Load			(u32 dwNum)
 	FS.r_close					( LL_Stream );
 	bReady						= true;
 	if (!g_pGamePersistent->bDedicatedServer)	IR_Capture();
+#ifndef DEDICATED_SERVER
 	Device.seqRender.Add		(this);
+#endif
+
 	Device.seqFrame.Add			(this);
 
 	return TRUE;

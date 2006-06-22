@@ -25,7 +25,13 @@ void CHW::Reset		(HWND hwnd)
 	_RELEASE			(pBaseRT);
 
 #ifndef _EDITOR
-	BOOL	bWindowed		= strstr(Core.Params,"-dedicated") ? TRUE : !psDeviceFlags.is	(rsFullscreen);
+//	BOOL	bWindowed		= strstr(Core.Params,"-dedicated") ? TRUE : !psDeviceFlags.is	(rsFullscreen);
+#ifndef DEDICATED_SERVER
+	BOOL	bWindowed		= !psDeviceFlags.is	(rsFullscreen);
+#else
+	BOOL	bWindowed		= TRUE;
+#endif
+
 	selectResolution		(DevPP.BackBufferWidth,DevPP.BackBufferHeight);
 	// Windoze
 	DevPP.SwapEffect			= bWindowed?D3DSWAPEFFECT_COPY:D3DSWAPEFFECT_DISCARD;
@@ -56,7 +62,13 @@ void CHW::Reset		(HWND hwnd)
 
 void CHW::CreateD3D	()
 {
-	LPCSTR		_name			= (strstr(Core.Params, "-dedicated") && !strstr(Core.Params, "-notextconsole"))?"d3d9-null.dll":"d3d9.dll";
+//	LPCSTR		_name			= (strstr(Core.Params, "-dedicated") && !strstr(Core.Params, "-notextconsole"))?"d3d9-null.dll":"d3d9.dll";
+#ifndef DEDICATED_SERVER
+	LPCSTR		_name			= "d3d9.dll";
+#else
+	LPCSTR		_name			= "d3d9-null.dll";
+#endif
+
 	hD3D9            			= LoadLibrary(_name);
 	R_ASSERT2	           	 	(hD3D9,"Can't find 'd3d9.dll'\nPlease install latest version of DirectX before running this program");
     typedef IDirect3D9 * WINAPI _Direct3DCreate9(UINT SDKVersion);
@@ -166,12 +178,14 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	selectResolution	(dwWidth,dwHeight);
 #endif
 	//-------------------------------------------
-	if (strstr(Core.Params,"-dedicated"))
+#ifdef DEDICATED_SERVER
+//	if (strstr(Core.Params,"-dedicated"))
 	{
 		dwWidth = 640;
 		dwHeight = 480;
 		bWindowed = true;
 	}
+#endif
 	//-------------------------------------------
 
 	// Display the name of video board
@@ -357,7 +371,13 @@ BOOL	CHW::support	(D3DFORMAT fmt, DWORD type, DWORD usage)
 
 void	CHW::updateWindowProps	(HWND m_hWnd)
 {
-	BOOL	bWindowed				= strstr(Core.Params,"-dedicated") ? TRUE : !psDeviceFlags.is	(rsFullscreen);
+//	BOOL	bWindowed				= strstr(Core.Params,"-dedicated") ? TRUE : !psDeviceFlags.is	(rsFullscreen);
+#ifndef DEDICATED_SERVER
+	BOOL	bWindowed				= !psDeviceFlags.is	(rsFullscreen);
+#else
+	BOOL	bWindowed				= TRUE;
+#endif
+	
 	u32		dwWindowStyle			= 0;
 	// Set window properties depending on what mode were in.
 	if (bWindowed)		{
@@ -372,7 +392,8 @@ void	CHW::updateWindowProps	(HWND m_hWnd)
 		// desktop.
 
 		RECT			m_rcWindowBounds;
-		if (strstr(Core.Params, "-dedicated"))	{
+#ifdef DEDICATED_SERVER
+//		if (strstr(Core.Params, "-dedicated"))	{
 			RECT DesktopRect;
 			GetClientRect(GetDesktopWindow(), &DesktopRect);
 			RECT	R	= {(DesktopRect.right-DevPP.BackBufferWidth)/2, 
@@ -380,10 +401,12 @@ void	CHW::updateWindowProps	(HWND m_hWnd)
 				(DesktopRect.right+DevPP.BackBufferWidth)/2, 
 				(DesktopRect.bottom+DevPP.BackBufferHeight)/2};
 			m_rcWindowBounds	= R;
-		} else {
+//		} else {
+#else
 			RECT	R	= {0, 0, DevPP.BackBufferWidth, DevPP.BackBufferHeight };
 			m_rcWindowBounds	= R;
-		}
+//		}
+#endif
 
 		AdjustWindowRect( &m_rcWindowBounds, dwWindowStyle, FALSE );
 		SetWindowPos	( m_hWnd, HWND_TOP,	m_rcWindowBounds.left, m_rcWindowBounds.top,
@@ -396,6 +419,8 @@ void	CHW::updateWindowProps	(HWND m_hWnd)
 	}
 
 	// Hide the cursor if necessary
-	if (!strstr(Core.Params, "-dedicated")) 
+//	if (!strstr(Core.Params, "-dedicated")) 
+#ifndef DEDICATED_SERVER
 		ShowCursor	(FALSE);
+#endif
 }

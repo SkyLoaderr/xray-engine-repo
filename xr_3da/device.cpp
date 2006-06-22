@@ -209,7 +209,7 @@ void CRenderDevice::Run			()
 				// Release start point - allow thread to run
 				EnterCriticalSection		(&mt_csLeave);
 				LeaveCriticalSection		(&mt_csEnter);
-
+#ifndef DEDICATED_SERVER
 				Statistic->RenderTOTAL_Real.FrameStart	();
 				Statistic->RenderTOTAL_Real.Begin		();
 				if (bActive)							{
@@ -223,7 +223,7 @@ void CRenderDevice::Run			()
 				Statistic->RenderTOTAL_Real.End			();
 				Statistic->RenderTOTAL_Real.FrameEnd	();
 				Statistic->RenderTOTAL.accum	= Statistic->RenderTOTAL_Real.accum;
-
+#endif
 				// *** Suspend threads
 				// Capture startup point
 				// Release end point - allow thread to wait for startup point

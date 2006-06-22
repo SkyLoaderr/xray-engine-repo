@@ -29,6 +29,7 @@ CEngineAPI::~CEngineAPI()
 
 void CEngineAPI::Initialize(void)
 {
+//#ifndef DEDICATED_SERVER
 	//////////////////////////////////////////////////////////////////////////
 	// render
 	LPCSTR			r1_name	= "xrRender_R1.dll";
@@ -49,7 +50,7 @@ void CEngineAPI::Initialize(void)
 		if (0==hRender)	R_CHK				(GetLastError());
 		R_ASSERT		(hRender);
 	}
-
+//#endif
 	//////////////////////////////////////////////////////////////////////////
 	// game	
 	{
