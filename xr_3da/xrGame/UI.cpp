@@ -20,7 +20,7 @@ CUI::CUI(CHUDManager* p)
 	m_Parent						= p;
 	pUIGame							= 0;
 
-	m_bShowIndicators				= true;
+	ShowIndicators					();
 }
 //--------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ void CUI::UIOnFrame()
 	if (m_Actor){
 		
 		//update windows
-		if(m_bShowIndicators)
+		if( IndicatorsShown() )
 		{
 			UIMainIngameWnd->SetFont(m_Parent->Font().pFontMedium);
 			UIMainIngameWnd->Update	();
@@ -54,7 +54,7 @@ void CUI::UIOnFrame()
 	}
 
 	// out GAME-style depend information
-	if(m_bShowIndicators)
+	if( IndicatorsShown() )
 	{
 		if (pUIGame) pUIGame->OnFrame	();
 	}
@@ -64,7 +64,7 @@ void CUI::UIOnFrame()
 
 bool CUI::Render()
 {
-	if(m_bShowIndicators)
+	if( IndicatorsShown() )
 	{
 		if (pUIGame) 
 			pUIGame->Render	();
@@ -74,7 +74,7 @@ bool CUI::Render()
 	if (m_Actor)
 	{
 		//Draw main window and its children
-		if(m_bShowIndicators)
+		if( IndicatorsShown() )
 		{
 			UIMainIngameWnd->Draw();
 			m_pMessagesWnd->Draw();
@@ -189,26 +189,17 @@ void CUI::AddInfoMessage			(LPCSTR message)
 
 void CUI::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
-
-	if( pDialog->IsShown() ){
-		
-		if( bDoHideIndicators && pDialog==MainInputReceiver() ){
-			ShowIndicators();
-			if(m_bCrosshair) 
-				psHUD_Flags.set(HUD_CROSSHAIR_RT, TRUE);
-		};
-
-	}else{
-		if (!pDialog->CheckPhase())
-			return;
-
-		if(bDoHideIndicators){
-			HideIndicators();
-			m_bCrosshair = !!psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT);
-			if(m_bCrosshair) 
-				psHUD_Flags.set(HUD_CROSSHAIR_RT, FALSE);
-		}
-	}
-
 	CDialogHolder::StartStopMenu(pDialog,bDoHideIndicators);
+}
+
+void CUI::ShowIndicators()
+{
+	m_bShowIndicators	= true;
+	psHUD_Flags.set		(HUD_CROSSHAIR_RT, TRUE);
+}
+
+void CUI::HideIndicators()					
+{
+	m_bShowIndicators	= false;
+	psHUD_Flags.set		(HUD_CROSSHAIR_RT, FALSE);
 }

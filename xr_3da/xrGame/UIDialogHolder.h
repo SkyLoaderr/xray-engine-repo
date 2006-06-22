@@ -11,14 +11,22 @@ public:
 	bool operator < (const dlgItem& itm);
 };
 
+class recvItem{
+public:
+	enum{eCrosshair = (1<<0),};
+	recvItem		(CUIDialogWnd*);
+	CUIDialogWnd*	m_item;
+	Flags8			m_flags;
+};
+
 class CDialogHolder :public ISheduled,public pureFrame
 {
 	//dialogs
-	xr_vector<CUIDialogWnd*>								m_input_receivers;
+	xr_vector<recvItem>										m_input_receivers;
 	xr_vector<dlgItem>										m_dialogsToRender;
 
 
-	void					StartMenu						(CUIDialogWnd* pDialog);
+	void					StartMenu						(CUIDialogWnd* pDialog, bool bDoHideIndicators);
 	void					StopMenu						(CUIDialogWnd* pDialog);
 	void					SetMainInputReceiver			(CUIDialogWnd* ir, bool _find_remove);
 protected:

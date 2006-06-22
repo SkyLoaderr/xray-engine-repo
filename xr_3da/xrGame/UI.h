@@ -60,7 +60,7 @@ public:
 
 	void					ShowIndicators			()					{m_bShowIndicators = true;}
 	void					HideIndicators			()					{m_bShowIndicators = false;}
-	bool					IndicatorsHidden		()					{return m_bShowIndicators != true;};
+	bool					IndicatorsShown			()					{return m_bShowIndicators;};
 
 	void					AddInfoMessage			(LPCSTR message);
 

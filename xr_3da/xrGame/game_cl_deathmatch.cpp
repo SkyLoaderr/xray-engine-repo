@@ -505,7 +505,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 					if (!(pCurBuyMenu && pCurBuyMenu->IsShown()) && 
 						!(pCurSkinMenu && pCurSkinMenu->IsShown()) &&
 						!(pMapDesc && pMapDesc->IsShown()) &&
-						(HUD().GetUI() && !HUD().GetUI()->IndicatorsHidden())
+						(HUD().GetUI() && HUD().GetUI()->IndicatorsShown())
 						)
 					{
 //						m_game_ui->SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
@@ -516,7 +516,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 
 				if (Level().CurrentControlEntity() && 
 					Level().CurrentControlEntity()->CLS_ID == CLSID_SPECTATOR &&
-					(HUD().GetUI() && !HUD().GetUI()->IndicatorsHidden())
+					(HUD().GetUI() && HUD().GetUI()->IndicatorsShown())
 					)
 				{
 					
