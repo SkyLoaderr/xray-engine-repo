@@ -622,6 +622,16 @@ void CLevel::OnRender()
 	}
 
 	debug_renderer().render					();
+
+	if (psAI_Flags.is(aiVision)) {
+		for (u32 I=0; I < Level().Objects.o_count(); I++) {
+			CObject						*object = Objects.o_get_by_iterator(I);
+			CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(object);
+			if (!stalker)
+				continue;
+			stalker->dbg_draw_vision	();
+		}
+	}
 #endif
 }
 

@@ -494,6 +494,11 @@ public:
 			void						throw_target						(const Fvector &position); 
 			void						update_throw_params					(); 
 
+#ifdef DEBUG
+public:
+			void						dbg_draw_vision						();
+#endif
+
 public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

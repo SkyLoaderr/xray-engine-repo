@@ -881,9 +881,11 @@ void CAI_Stalker::OnRender			()
 			Level().debug_renderer().draw_line	(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,0));
 		}
 	}
+}
 
-	if (!psAI_Flags.is(aiVision))
-		return;
+void CAI_Stalker::dbg_draw_vision	()
+{
+	VERIFY						(!!psAI_Flags.is(aiVision));
 
 	if (!smart_cast<CGameObject*>(Level().CurrentEntity()))
 		return;
@@ -911,8 +913,9 @@ void CAI_Stalker::OnRender			()
 	string64					out_text;
 	sprintf						(out_text,"%.2f",object ? object->m_value : 0.f);
 
-	HUD().Font().pFontMedium->SetColor	(D3DCOLOR_XRGB(255,0,0));
+	HUD().Font().pFontMedium->SetColor	(D3DCOLOR_RGBA(255,0,0,127));
 	HUD().Font().pFontMedium->OutSet	(x,y);
 	HUD().Font().pFontMedium->OutNext	(out_text);
 }
+
 #endif
