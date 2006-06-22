@@ -141,90 +141,10 @@ function is_actor_enemy_lager ()
 end
 
 function process_info_portion(info_id)
-	if info_id == "tutorial_artefact_start" then
-		level_tasks.add_location(002, "green_location", "tutorial_artefact")
-		
-	elseif info_id == "tutorial_artefact_gain" then
-		level_tasks.remove_location(002, "green_location")
-		level_tasks.add_location(003, "blue_location", "trader")
-		
-	elseif info_id == "tutorial_artefact_done" then
-		level_tasks.remove_location(003, "blue_location")
-		
-	elseif info_id == "tutorial_wounded_start" then
-		level_tasks.add_location(004, "green_location", "tutorial_wounded")
-
-	elseif info_id == "tutorial_wounded_help" then
-		level_tasks.remove_location(004, "green_location")
-		db.actor:give_info_portion("tutorial_wounded_end")
-		
-	elseif info_id == "tutorial_wounded_die" then
-		level_tasks.remove_location(004, "green_location")
-		if db.actor:dont_has_info("tutorial_wounded_end") then
-			db.actor:give_info_portion("tutorial_wounded_end")
---			news_manager.send_news(db.actor, "escape_stalker_killed", 5)
-		end
-
-	elseif info_id == "tutorial_wounded_death" then
-		level_tasks.remove_location(004, "green_location")
-		if db.actor:dont_has_info("tutorial_wounded_end") then
-			db.actor:give_info_portion("tutorial_wounded_end")
-		end
-		
-	elseif info_id == "escape_stalker_meet" then
-		level_tasks.add_location(005, "green_location", "esc_fox")
-
-	elseif info_id == "escape_stalker_give" then
-		level_tasks.remove_location(005, "green_location")
-		level_tasks.add_location(003, "blue_location", "trader")
-	
-	elseif info_id == "escape_stalker_done" then
-		level_tasks.remove_location(003, "blue_location")
-
-	elseif info_id == "escape_blockpost_case" then
-		level_tasks.add_location(000, "green_location", "blokpost_case")
-	
-	elseif info_id == "escape_blockpost_case_have" then
-		level_tasks.remove_location(000, "green_location")
-		level_tasks.add_location(003, "blue_location", "trader")
-	
-	elseif info_id == "escape_blockpost_case_done" then
-		level_tasks.remove_location(003, "blue_location")
-
-	elseif info_id == "escape_dynamite_meet" then
-		level_tasks.add_location(009, "green_location", "wolfs_rangers")
-		
-	elseif info_id == "esc_bandits_start" then
-		level_tasks.remove_location(009, "green_location")
-		
-	elseif info_id == "esc_petruha_die" then	
-		level_tasks.remove_location(009, "green_location")
-	
-	elseif info_id == "escape_dynamite_gain" then
-		level_tasks.add_location(007, "green_location", "escape_dinamit")
-	
-	elseif info_id == "escape_dynamite_have" then
-		level_tasks.add_location(006, "green_location", "volk")
-		level_tasks.remove_location(007, "green_location")
-		level_tasks.remove_location(009, "green_location")
-	
-	elseif info_id == "escape_dynamite_done" then
-		level_tasks.remove_location(006, "green_location")
-		
-	elseif info_id == "esc_kill_bandits_quest_have" then
-		level_tasks.add_location(017, "green_location", "factory_bandits")
-	
-	elseif info_id == "esc_kill_bandits_quest_kill" then
-		level_tasks.remove_location(017, "green_location")
-		level_tasks.add_location(003, "blue_location", "trader")
-		
-	elseif info_id == "esc_kill_bandits_quest_done" then
-		level_tasks.remove_location(003, "blue_location")	
-	
 
 	--' пометки на карте
 	
-	elseif info_id == "esc_tutorial_secret_place" then
+	if info_id == "esc_tutorial_secret_place" then
 		level_tasks.add_location(025, "green_location", "tutorial_secret_place1")
 		
 	elseif info_id == "esc_tutorial_secret_place_found" then

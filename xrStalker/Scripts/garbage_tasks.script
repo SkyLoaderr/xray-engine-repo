@@ -51,21 +51,6 @@ function process_info_portion(info_id)
 	if info_id == "gar_hellcar_death" then
 		level_tasks.remove_location(107, "green_location")
 		
---	elseif info_id == "gar_open_fire" then
---		level_tasks.remove_location(106, "gar_bandits_leader_location")
-		
---	elseif info_id == "gar_bandit_leader_dead" then
---		level_tasks.remove_location(106, "gar_bandits_leader_location")
-
---	elseif info_id == "gar_start_graveyard" then
---		level_tasks.add_location(107, "green_location", "gar_hellcar")
-
---	elseif info_id == "gar_alarm" then
---		level_tasks.remove_location(107, "green_location")
-	
---	elseif info_id == "gar_no_mapspot" then
---		level_tasks.remove_location(107, "green_location")
-	
 	elseif info_id == "gar_wounded_help" then
 		level_tasks.add_location(109, "green_location", "gar_wounded_help")
 
