@@ -58,8 +58,8 @@ public:
 	CUIGameCustom*			UIGame					()					{return pUIGame;}
 
 
-	void					ShowIndicators			()					{m_bShowIndicators = true;}
-	void					HideIndicators			()					{m_bShowIndicators = false;}
+	void					ShowIndicators			();
+	void					HideIndicators			();
 	bool					IndicatorsShown			()					{return m_bShowIndicators;};
 
 	void					AddInfoMessage			(LPCSTR message);
