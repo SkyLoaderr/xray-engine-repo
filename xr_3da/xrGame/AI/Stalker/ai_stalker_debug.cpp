@@ -913,7 +913,7 @@ void CAI_Stalker::dbg_draw_vision	()
 	string64					out_text;
 	sprintf						(out_text,"%.2f",object ? object->m_value : 0.f);
 
-	HUD().Font().pFontMedium->SetColor	(D3DCOLOR_RGBA(255,0,0,127));
+	HUD().Font().pFontMedium->SetColor	(D3DCOLOR_RGBA(255,0,0,95));
 	HUD().Font().pFontMedium->OutSet	(x,y);
 	HUD().Font().pFontMedium->OutNext	(out_text);
 }
