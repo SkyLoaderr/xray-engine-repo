@@ -35,9 +35,11 @@ u32	vertex_in_direction(u32 level_vertex_id, Fvector direction, float max_distan
 
 void CLevelGraph::render()
 {
-	if (bDebug && psAI_Flags.test(aiDebug)) {
+	if (!psAI_Flags.test(aiDebug))
+		return;
+
+	if (bDebug)
 		on_render1			();
-	}
 
 	on_render2				();
 
