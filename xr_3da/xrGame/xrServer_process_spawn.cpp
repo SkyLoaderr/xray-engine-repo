@@ -47,7 +47,7 @@ CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, ClientID sender, BOOL bSpaw
 		e_parent			= ID_to_entity(E->ID_Parent);
 		if (!e_parent) {
 			R_ASSERT		(!tpExistedEntity);
-			VERIFY3			(smart_cast<CSE_ALifeItemBolt*>(E) || smart_cast<CSE_ALifeItemGrenade*>(E),*E->s_name,E->name_replace());
+//			VERIFY3			(smart_cast<CSE_ALifeItemBolt*>(E) || smart_cast<CSE_ALifeItemGrenade*>(E),*E->s_name,E->name_replace());
 			F_entity_Destroy(E);
 			return			NULL;
 		}
