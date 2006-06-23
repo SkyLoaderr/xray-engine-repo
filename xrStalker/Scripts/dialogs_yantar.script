@@ -9,7 +9,7 @@ function give_kruglov_flash(first_speaker, second_speaker)
 end
 function give_ecolog_outfit(first_speaker, second_speaker)
 	local outfit   =  second_speaker:object("ecolog_outfit")
-	if outfit then
+	if outfit and db.actor:dont_has_info("yan_ecolog_outfit_given") then
 		dialogs.relocate_item(second_speaker, outfit, "in")
 	end
 end
