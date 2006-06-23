@@ -29,14 +29,14 @@ CFoodItem::~CFoodItem()
 DLL_Pure *CFoodItem::_construct	()
 {
 	CEatableItemObject::_construct();
-	CHudItem::_construct	();
+//.	CHudItem::_construct	();
 	return					(this);
 }
 
 BOOL CFoodItem::net_Spawn(CSE_Abstract* DC) 
 {
 	return		(
-        CHudItem::net_Spawn(DC) &&
+//.     CHudItem::net_Spawn(DC) &&
 		CEatableItemObject::net_Spawn(DC)
 	);
 }
@@ -44,8 +44,8 @@ BOOL CFoodItem::net_Spawn(CSE_Abstract* DC)
 void CFoodItem::Load(LPCSTR section) 
 {
 	CEatableItemObject::Load	(section);
+/*
 	CHudItem::Load				(section);
-
 	if (m_pHUD) {
 		m_sAnimIdle		= pSettings->r_string(*hud_sect, "anim_idle");
 		m_sAnimShow		= pSettings->r_string(*hud_sect, "anim_show");
@@ -54,11 +54,12 @@ void CFoodItem::Load(LPCSTR section)
 		m_sAnimPrepare	= pSettings->r_string(*hud_sect, "anim_prepare");
 		m_sAnimEat		= pSettings->r_string(*hud_sect, "anim_eat");
 	}
+*/
 }
 
 void CFoodItem::net_Destroy() 
 {
-	CHudItem::net_Destroy		();
+//.	CHudItem::net_Destroy		();
 	CEatableItemObject::net_Destroy	();
 }
 
@@ -70,10 +71,11 @@ void CFoodItem::shedule_Update(u32 dt)
 void CFoodItem::UpdateCL() 
 {
 	CEatableItemObject::UpdateCL();
+/*
 	CHudItem::UpdateCL();
-
-	if(STATE == FOOD_IDLE && m_dwStateTime > PLAYING_ANIM_TIME) 
+	if(GetState() == FOOD_IDLE && m_dwStateTime > PLAYING_ANIM_TIME) 
 		OnStateSwitch(FOOD_PLAYING);
+*/
 }
 
 u32 CFoodItem::GetSlot	() const
@@ -88,16 +90,16 @@ u32 CFoodItem::GetSlot	() const
 
 void CFoodItem::OnH_A_Chield() 
 {
-	CHudItem::OnH_A_Chield				();
+//.	CHudItem::OnH_A_Chield				();
 	CEatableItemObject::OnH_A_Chield	();
 
-	m_bReadyToEat = false;
-	STATE = FOOD_HIDDEN;
+	m_bReadyToEat						= false;
+//.	SetState							( FOOD_HIDDEN );
 }
 
 void CFoodItem::OnH_B_Independent() 
 {
-	CHudItem::OnH_B_Independent();
+//.	CHudItem::OnH_B_Independent();
 	CEatableItemObject::OnH_B_Independent();
 }
 
@@ -109,15 +111,15 @@ void CFoodItem::OnH_A_Independent	()
 void CFoodItem::OnH_B_Chield		()
 {
 	CEatableItemObject::OnH_B_Chield();
-	CHudItem::OnH_B_Chield();
+//.	CHudItem::OnH_B_Chield();
 }
 
 void CFoodItem::renderable_Render() 
 {
-	CHudItem::renderable_Render				();
+//.	CHudItem::renderable_Render				();
 	CEatableItemObject::renderable_Render	();
 }
-
+/*
 void CFoodItem::Show()
 {
 	m_bReadyToEat = false;
@@ -128,21 +130,21 @@ void CFoodItem::Hide()
 {
 	SwitchState(FOOD_HIDING);
 }
-
+*/
 
 
 bool CFoodItem::Action(s32 cmd, u32 flags) 
 {
-	if (CEatableItemObject::Action(cmd, flags) || CHudItem::Action(cmd,flags))
+	if (CEatableItemObject::Action(cmd, flags) /*|| CHudItem::Action(cmd,flags)*/)
 		return					(true);
-
+/*
 	switch(cmd) 
 	{
 	case kWPN_FIRE:
 		{
         	if(flags&CMD_START) 
 			{
-				if(STATE == FOOD_IDLE || STATE == FOOD_PLAYING)
+				if(GetState() == FOOD_IDLE || GetState() == FOOD_PLAYING)
 				{
                     if(m_bReadyToEat)
                         SwitchState(FOOD_EATING);
@@ -153,14 +155,16 @@ bool CFoodItem::Action(s32 cmd, u32 flags)
 		}
         return true;
 	}
+*/
 	return false;
 }
 
-void CFoodItem::OnAnimationEnd() 
+/*
+void CFoodItem::OnAnimationEnd(u32 state) 
 {
 	m_bPending = false;
 
-	switch(STATE) 
+	switch(state) 
 	{
 	case FOOD_HIDING:
 		{
@@ -181,7 +185,7 @@ void CFoodItem::OnStateSwitch	(u32 S)
 {
 	CHudItem::OnStateSwitch	(S);
 
-	switch(STATE)
+	switch(GetState())
 	{
 		case FOOD_HIDDEN:
 			m_bPending = false;
@@ -189,37 +193,38 @@ void CFoodItem::OnStateSwitch	(u32 S)
 			break;
 		case FOOD_SHOWING:
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), TRUE, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), TRUE, this, GetState());
 			break;
 		case FOOD_IDLE:
 			m_bPending = false;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimIdle), TRUE, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimIdle), TRUE, this, GetState());
 			break;
 		case FOOD_PREPARE:
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPrepare), TRUE, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPrepare), TRUE, this, GetState());
 			break;
 		case FOOD_EATING:
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimEat), TRUE, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimEat), TRUE, this, GetState());
 			break;
 		case FOOD_HIDING:
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimHide), TRUE, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimHide), TRUE, this, GetState());
 			break;
 		case FOOD_PLAYING:
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPlay), TRUE, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPlay), TRUE, this, GetState());
 			break;
 		default: NODEFAULT;
 	}
 }
+*/
 
 void CFoodItem::OnEvent		(NET_Packet& P, u16 type)
 {
 	CEatableItemObject::OnEvent(P,type);
-	CHudItem::OnEvent			(P,type);
+//.	CHudItem::OnEvent			(P,type);
 }
-
+/*
 bool CFoodItem::Activate	()
 {
 	return CHudItem::Activate();
@@ -230,15 +235,16 @@ void CFoodItem::Deactivate	()
 	CHudItem::Deactivate	();
 }
 
+bool CFoodItem::IsPending	() const
+{
+	return CHudItem::IsPending();
+}
+*/
 bool CFoodItem::Useful		() const
 {
 	return CEatableItemObject::Useful();
 }
 
-bool CFoodItem::IsPending	() const
-{
-	return CHudItem::IsPending();
-}
 
 void CFoodItem::UpdateXForm				()
 {

@@ -27,7 +27,7 @@ public:
 	
 	virtual void OnEvent(NET_Packet& P, u16 type);
 	
-	virtual void OnAnimationEnd();
+	virtual void OnAnimationEnd(u32 state);
 	virtual void UpdateCL();
 	virtual bool Activate();
 	virtual void Deactivate();
@@ -38,7 +38,7 @@ public:
 	
 	virtual bool Action(s32 cmd, u32 flags);
 	virtual bool Useful() const;
-	virtual u32  State(u32 state);
+	virtual void  State(u32 state);
 
 	virtual void OnH_B_Chield() {inherited::OnH_B_Chield();}
 
@@ -57,10 +57,11 @@ protected:
 	ALife::_TIME_ID			m_dwGrenadeRemoveTime;
 	ALife::_TIME_ID			m_dwGrenadeIndependencyTime;
 protected:
-	HUD_SOUND		sndCheckout;
-	ESoundTypes		m_eSoundCheckout;
+	HUD_SOUND				sndCheckout;
+	ESoundTypes				m_eSoundCheckout;
 private:
-	float			m_grenade_detonation_threshold_hit;
+	float					m_grenade_detonation_threshold_hit;
+	bool					m_thrown;
 protected:
 	virtual	void			UpdateXForm			()		{ CMissile::UpdateXForm(); };
 public:

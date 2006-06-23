@@ -29,7 +29,7 @@ CObjectPropertyEvaluatorState::CObjectPropertyEvaluatorState	(CWeapon *item, CAI
 CObjectPropertyEvaluatorState::_value_type CObjectPropertyEvaluatorState::evaluate	()
 {
 	VERIFY			(m_item);
-	return			(_value_type((m_item->STATE == m_state) == m_equality));
+	return			(_value_type((m_item->GetState() == m_state) == m_equality));
 }
 
 CObjectPropertyEvaluatorWeaponHidden::CObjectPropertyEvaluatorWeaponHidden(CWeapon *item, CAI_Stalker *owner):
@@ -112,7 +112,7 @@ CObjectPropertyEvaluatorReady::_value_type CObjectPropertyEvaluatorReady::evalua
 {
 	if (!m_ammo_type)
 //		return		(_value_type(!m_item->IsMisfire() && m_item->GetAmmoElapsed()));
-		return		(_value_type(!m_item->IsMisfire() && (m_item->GetAmmoElapsed() && (m_item->STATE != CWeapon::eReload))));
+		return		(_value_type(!m_item->IsMisfire() && (m_item->GetAmmoElapsed() && (m_item->GetState() != CWeapon::eReload))));
 	else
 		return		(_value_type(false));
 }
@@ -161,38 +161,5 @@ CObjectPropertyEvaluatorMissile::CObjectPropertyEvaluatorMissile	(CMissile *item
 CObjectPropertyEvaluatorMissile::_value_type CObjectPropertyEvaluatorMissile::evaluate	()
 {
 	VERIFY			(m_item);
-	return			(_value_type((m_item->State() == m_state) == m_equality));
+	return			(_value_type((m_item->GetState() == m_state) == m_equality));
 }
-
-//////////////////////////////////////////////////////////////////////////
-// CObjectPropertyEvaluatorFood
-//////////////////////////////////////////////////////////////////////////
-
-CObjectPropertyEvaluatorFood::CObjectPropertyEvaluatorFood	(CFoodItem *item, CAI_Stalker *owner, u32 state, bool equality) :
-	inherited		(item,owner),
-	m_state			(state),
-	m_equality		(equality)
-{
-}
-
-CObjectPropertyEvaluatorFood::_value_type CObjectPropertyEvaluatorFood::evaluate	()
-{
-	VERIFY			(m_item);
-	return			(_value_type((m_item->State() == m_state) == m_equality));
-}
-
-//////////////////////////////////////////////////////////////////////////
-// CObjectPropertyEvaluatorPrepared
-//////////////////////////////////////////////////////////////////////////
-
-CObjectPropertyEvaluatorPrepared::CObjectPropertyEvaluatorPrepared	(CFoodItem *item, CAI_Stalker *owner) :
-	inherited		(item,owner)
-{
-}
-
-CObjectPropertyEvaluatorPrepared::_value_type CObjectPropertyEvaluatorPrepared::evaluate	()
-{
-	VERIFY			(m_item);
-	return			(_value_type(m_item->ready_to_eat()));
-}
-

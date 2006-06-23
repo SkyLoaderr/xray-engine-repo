@@ -19,7 +19,6 @@ public:
 	virtual BOOL	net_Spawn		(CSE_Abstract* DC);
 	virtual void	net_Destroy		();
 	
-	virtual void	OnH_B_Chield	();
 	virtual void	OnH_B_Independent();
 
 	virtual void	save				(NET_Packet &output_packet);
@@ -53,7 +52,7 @@ public:
 	//переключение в режим подствольника
 	virtual bool	SwitchMode		();
 	void			PerformSwitchGL	();
-	void			OnAnimationEnd	();
+	void			OnAnimationEnd	(u32 state);
 
 	//виртуальные функции для проигрывания анимации HUD
 	virtual void	PlayAnimShow();

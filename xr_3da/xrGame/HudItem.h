@@ -7,18 +7,21 @@
 
 class CSE_Abstract;
 class CPhysicItem;
-class CWeaponHUD;
 class NET_Packet;
 struct HUD_SOUND;
 class CInventoryItem;
 
 #include "actor_defs.h"
+#include "weaponHUD.h"
 
 class CHudItem {
 protected: //чтоб нельзя было вызвать на прямую
 	CHudItem(void);
 	virtual ~CHudItem(void);
 	virtual DLL_Pure*_construct			();
+private:
+	u32				m_state;
+	u32				m_nextState;
 public:
 	virtual void	Load				(LPCSTR section);
 	virtual CHudItem*cast_hud_item		()	 { return this; }
@@ -42,12 +45,11 @@ public:
 
 	virtual void	OnDrawUI			()				{};
 	
-	// Events/States
-	u32				STATE, NEXT_STATE;
-	IC		u32		State				() const
-	{
-		return		(STATE);
-	}
+	IC		u32		GetNextState		() const			{return		m_nextState;}
+	IC		u32		GetState			() const			{return		m_state;}
+
+	IC		void	SetState			(u32 v)				{m_state = v;}
+	IC		void	SetNextState		(u32 v)				{m_nextState = v;}
 	//посылка сообщения на сервер о смене состояния оружия 
 	virtual void	SwitchState			(u32 S);
 	//прием сообщения с сервера и его обработка
@@ -75,7 +77,7 @@ public:
 	virtual void	OnHiddenItem		() {};
 
 	//для завершения анимации
-	virtual void	OnAnimationEnd		();
+	virtual void	OnAnimationEnd		(u32 state)				{};
 
 	virtual void	UpdateCL			();
 	virtual void	renderable_Render	();
@@ -127,17 +129,9 @@ private:
 	CInventoryItem			*m_item;
 
 public:
-	IC		CPhysicItem	&object	() const
-	{
-		VERIFY		(m_object);
-		return		(*m_object);
-	}
+	IC CPhysicItem&			object					() const {	VERIFY(m_object); return(*m_object);}
+	IC CInventoryItem&		item					() const {	VERIFY(m_item);	return(*m_item);}
 
-	IC		CInventoryItem	&item	() const
-	{
-		VERIFY		(m_item);
-		return		(*m_item);
-	}
-
-	virtual void	on_renderable_Render	() = 0;
+	virtual void			on_renderable_Render	() = 0;
 };
+

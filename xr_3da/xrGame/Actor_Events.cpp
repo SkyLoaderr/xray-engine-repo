@@ -189,41 +189,23 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			inventory().Activate		(slot_id);
 								  
 		}break;
-//	case GEG_PLAYER_INVENTORYMENU_OPEN:
-//	case GEG_PLAYER_BUYMENU_OPEN:	
-//	case GEG_PLAYER_DEACTIVATE_CURRENT_SLOT:
-//	case GEG_PLAYER_SPRINT_START:
-//	case GEG_PLAYER_ENTER_CAR:
-//		{
-//			if (OnServer())
-//			{
-//				m_iCurWeaponHideState |= 1<<((type - GEG_PLAYER_INVENTORYMENU_OPEN)/2);
-//			};
-//		}break;
-//	case GEG_PLAYER_INVENTORYMENU_CLOSE:
-//	case GEG_PLAYER_BUYMENU_CLOSE:	
-//	case GEG_PLAYER_RESTORE_CURRENT_SLOT:
-//	case GEG_PLAYER_SPRINT_END:
-//	case GEG_PLAYER_EXIT_CAR:
-//		{
-//			if (OnServer())
-//			{
-//				m_iCurWeaponHideState &= ~(1<<((type - GEG_PLAYER_INVENTORYMENU_OPEN)/2));
-//			};
-//		}break;
+
 	case GEG_PLAYER_WEAPON_HIDE_STATE:
 		{
-			u32 State = P.r_u32();
-			BOOL	Set = !!P.r_u8();
+			u32 State		= P.r_u32();
+			BOOL	Set		= !!P.r_u8();
 #ifdef DEBUG
-			if(ph_dbg_draw_mask.test(phDbgLadder)&&(whs_ON_LEDDER&State))
+			if(ph_dbg_draw_mask.test(phDbgLadder)&&(INV_STATE_LADDER==State) )
 			{
 				if(Set)Msg("OnEvent   GEG_PLAYER_WEAPON_HIDE_STATE ON LADDER");
 				else Msg("OnEvent  GEG_PLAYER_WEAPON_HIDE_STATE OFF LADDER");
 			}
 #endif
+/*
 			if (Set) m_iCurWeaponHideState |= State;
 			else m_iCurWeaponHideState &= ~(State);
+*/
+			inventory().SetSlotsBlocked	(State, Set);
 		}break;
 	case GE_MOVE_ACTOR:
 		{

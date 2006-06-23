@@ -32,19 +32,20 @@ void CWeaponBM16::PlayReloadSound()
 void CWeaponBM16::PlayAnimShoot()
 {
 	if(m_magazine.size()==1)
-		m_pHUD->animPlay(mhud_shot1[Random.randI(mhud_shot1.size())],TRUE,this);
+		m_pHUD->animPlay(random_anim(mhud_shot1),TRUE,this,GetState());
 	else
-		m_pHUD->animPlay(mhud.mhud_shots[Random.randI(mhud.mhud_shots.size())],TRUE,this);
+		m_pHUD->animPlay(random_anim(mhud.mhud_shots),TRUE,this,GetState());
 }
 
 void CWeaponBM16::PlayAnimReload()
 {
 	bool b_both = HaveCartridgeInInventory(2);
 
+	VERIFY(GetState()==eReload);
 	if(m_magazine.size()==1 || !b_both)
-		m_pHUD->animPlay(mhud_reload1[Random.randI(mhud_reload1.size())],TRUE,this);
+		m_pHUD->animPlay(random_anim(mhud_reload1),TRUE,this,GetState());
 	else
-		m_pHUD->animPlay(mhud.mhud_reload[Random.randI(mhud.mhud_reload.size())],TRUE,this);
+		m_pHUD->animPlay(random_anim(mhud.mhud_reload),TRUE,this,GetState());
 
 }
 
@@ -57,26 +58,26 @@ void CWeaponBM16::PlayAnimIdle()
 		switch (m_magazine.size())
 		{
 		case 0:{
-			m_pHUD->animPlay(mhud.mhud_idle_aim[Random.randI(mhud.mhud_idle_aim.size())], TRUE);
+			m_pHUD->animPlay(random_anim(mhud.mhud_idle_aim), TRUE, NULL, GetState());
 		}break;
 		case 1:{
-			m_pHUD->animPlay(mhud_zoomed_idle1[Random.randI(mhud_zoomed_idle1.size())], TRUE);
+			m_pHUD->animPlay(random_anim(mhud_zoomed_idle1), TRUE, NULL, GetState());
 		}break;
 		case 2:{
-			m_pHUD->animPlay(mhud_zoomed_idle2[Random.randI(mhud_zoomed_idle2.size())], TRUE);
+			m_pHUD->animPlay(random_anim(mhud_zoomed_idle2), TRUE, NULL, GetState());
 		}break;
 		};
 	}else{
 		switch (m_magazine.size())
 		{
 		case 0:{
-			m_pHUD->animPlay(mhud.mhud_idle[Random.randI(mhud.mhud_idle.size())], TRUE);
+			m_pHUD->animPlay(random_anim(mhud.mhud_idle), TRUE, NULL, GetState());
 		}break;
 		case 1:{
-			m_pHUD->animPlay(mhud_idle1[Random.randI(mhud_idle1.size())], TRUE);
+			m_pHUD->animPlay(random_anim(mhud_idle1), TRUE, NULL, GetState());
 		}break;
 		case 2:{
-			m_pHUD->animPlay(mhud_idle2[Random.randI(mhud_idle2.size())], TRUE);
+			m_pHUD->animPlay(random_anim(mhud_idle2), TRUE, NULL, GetState());
 		}break;
 		};
 	}

@@ -14,6 +14,7 @@
 #define PDA_SLOT			7
 #define DETECTOR_SLOT		8
 #define TORCH_SLOT			9
+#define SLOTS_TOTAL			10
 
 #define RUCK_HEIGHT			280
 #define RUCK_WIDTH			7
@@ -25,10 +26,16 @@ typedef CInventoryItem*				PIItem;
 typedef xr_vector<PIItem>			TIItemContainer;
 
 
-//положение вещи в инвенторе (используется актером 
-//при переходе в offline и обратно)
-typedef	enum {eItemPlaceUndefined,
-			eItemPlaceSlot,
-			eItemPlaceBelt,
-			eItemPlaceRuck} EItemPlace;
+enum EItemPlace
+{			
+	eItemPlaceUndefined,
+	eItemPlaceSlot,
+	eItemPlaceBelt,
+	eItemPlaceRuck
+};
 
+extern u32	INV_STATE_LADDER;
+extern u32	INV_STATE_CAR;
+extern u32	INV_STATE_BLOCK_ALL;
+extern u32	INV_STATE_INV_WND;
+extern u32	INV_STATE_BUY_MENU;

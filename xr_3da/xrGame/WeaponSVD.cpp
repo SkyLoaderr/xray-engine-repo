@@ -19,15 +19,15 @@ void CWeaponSVD::switch2_Fire	()
 
 }
 
-void CWeaponSVD::OnAnimationEnd() 
+void CWeaponSVD::OnAnimationEnd(u32 state) 
 {
-	switch(STATE) 
+	switch(state) 
 	{
 	case eFire:	{
 		m_bPending = false;
 		}break;	// End of reload animation
 	}
-	inherited::OnAnimationEnd();
+	inherited::OnAnimationEnd(state);
 }
 
 #include "script_space.h"

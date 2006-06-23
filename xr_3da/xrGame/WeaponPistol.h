@@ -11,11 +11,10 @@ public:
 
 	virtual void	Load			(LPCSTR section);
 	
-	virtual void	switch2_Fire	();
 	virtual void	switch2_Reload	();
 
 	virtual void	OnShot			();
-	virtual void	OnAnimationEnd	();
+	virtual void	OnAnimationEnd	(u32 state);
 	virtual void	net_Destroy		();
 	virtual void	OnH_B_Chield	();
 

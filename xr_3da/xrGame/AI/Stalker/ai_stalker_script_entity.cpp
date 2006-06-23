@@ -215,7 +215,7 @@ bool CAI_Stalker::bfAssignObject(CScriptEntityAction *tpEntityAction)
 			CObjectHandler::set_goal	(eObjectActionReload1,l_tpInventoryItem);
 			if (inventory().ActiveItem()->object().ID() == l_tObjectAction.m_tpObject->ID()) {
 //				inventory().Action(kWPN_FIRE,	CMD_STOP);
-				if (CWeapon::eReload != l_tpWeapon->STATE) {
+				if (CWeapon::eReload != l_tpWeapon->GetState()) {
 //					inventory().Action(kWPN_RELOAD,	CMD_START);
 				}
 				else

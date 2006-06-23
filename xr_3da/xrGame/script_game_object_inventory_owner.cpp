@@ -720,12 +720,12 @@ bool CScriptGameObject::attachable_item_enabled	() const
 
 void  CScriptGameObject::RestoreWeapon		()
 {
-	Actor()->inventory().setSlotsBlocked(false);
+	Actor()->SetWeaponHideState(INV_STATE_BLOCK_ALL,false);
 }
 
 void  CScriptGameObject::HideWeapon			()
 {
-	Actor()->inventory().setSlotsBlocked(true);
+	Actor()->SetWeaponHideState(INV_STATE_BLOCK_ALL,true);
 }
 
 int	CScriptGameObject::animation_slot			() const

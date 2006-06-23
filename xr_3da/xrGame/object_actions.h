@@ -280,32 +280,6 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
-// CObjectActionPrepare
-//////////////////////////////////////////////////////////////////////////
-
-class CObjectActionPrepare : public CObjectActionBase<CInventoryItem> {
-protected:
-	typedef CObjectActionBase<CInventoryItem> inherited;
-
-public:
-						CObjectActionPrepare	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
-	virtual void		execute					();
-};
-
-//////////////////////////////////////////////////////////////////////////
-// CObjectActionUse
-//////////////////////////////////////////////////////////////////////////
-
-class CObjectActionUse : public CObjectActionBase<CFoodItem> {
-protected:
-	typedef CObjectActionBase<CFoodItem> inherited;
-
-public:
-						CObjectActionUse		(CFoodItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
-	virtual void		execute					();
-};
-
-//////////////////////////////////////////////////////////////////////////
 // CObjectActionIdle
 //////////////////////////////////////////////////////////////////////////
 

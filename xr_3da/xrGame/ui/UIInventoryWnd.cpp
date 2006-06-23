@@ -323,7 +323,7 @@ void CUIInventoryWnd::Show()
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 
-		pActor->SetWeaponHideState(whs_INVENTORY_MENU, TRUE);
+		pActor->SetWeaponHideState(INV_STATE_INV_WND, true);
 
 		//rank icon		
 		int team = Game().local_player->team;
@@ -370,7 +370,7 @@ void CUIInventoryWnd::Hide()
 		CActor *pActor		= smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor)			return;
 
-		pActor->SetWeaponHideState(whs_INVENTORY_MENU, FALSE);
+		pActor->SetWeaponHideState(INV_STATE_INV_WND, false);
 	}
 }
 

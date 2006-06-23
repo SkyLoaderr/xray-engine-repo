@@ -47,8 +47,6 @@ private:
 			void			add_operators			(CWeapon		*weapon);
 			void			add_evaluators			(CMissile		*missile);
 			void			add_operators			(CMissile		*missile);
-			void			add_evaluators			(CFoodItem		*food_item);
-			void			add_operators			(CFoodItem		*food_item);
 			void			remove_evaluators		(CObject		*object);
 			void			remove_operators		(CObject		*object);
 			void			init_storage			();

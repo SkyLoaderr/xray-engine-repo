@@ -19,6 +19,7 @@
 #include "actor_anim_defs.h"
 #include "game_object_space.h"
 #include "characterphysicssupport.h"
+#include "inventory.h"
 
 void CActor::attach_Vehicle(CHolderCustom* vehicle)
 {
@@ -45,14 +46,11 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(bctPhysics, VehicleHeadCallback,this);
 
 	character_physics_support()->movement()->DestroyCharacter();
-	//PIItem iitem=inventory().ActiveItem();
-	//setVisible(true);
-	//clear actor movement states 
 	mstate_wishful=0;
 	m_holderID=car->ID();
 
-//	HideCurrentWeapon(GEG_PLAYER_ENTER_CAR);
-	SetWeaponHideState(whs_CAR, TRUE);
+//.	SetWeaponHideState(whs_CAR, TRUE);
+	SetWeaponHideState(INV_STATE_CAR, true);
 
 	CStepManager::on_animation_start(MotionID(), 0);
 }
@@ -83,11 +81,10 @@ void CActor::detach_Vehicle()
 	CKinematicsAnimated* V= smart_cast<CKinematicsAnimated*>(Visual()); R_ASSERT(V);
 	V->PlayCycle		(m_anims->m_normal.legs_idle);
 	V->PlayCycle		(m_anims->m_normal.m_torso_idle);
-	//mstate_wishful &=~mcAnyMove;
 	m_holderID=u16(-1);
 
-//	RestoreHidedWeapon(GEG_PLAYER_EXIT_CAR);
-	SetWeaponHideState(whs_CAR, FALSE);
+//.	SetWeaponHideState(whs_CAR, FALSE);
+	SetWeaponHideState(INV_STATE_CAR, false);
 }
 
 bool CActor::use_Vehicle(CHolderCustom* object)

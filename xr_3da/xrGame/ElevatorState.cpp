@@ -240,7 +240,7 @@ void CElevatorState::UpdateClimbingCommon(const Fvector	&d_to_ax,float to_ax,con
 #ifdef DEBUG
 		if(ph_dbg_draw_mask.test(phDbgLadder))
 		{
-			Msg("force applied");
+//.			Msg("force applied");
 		}
 #endif
 		m_character->ApplyForce(d_to_ax,m_character->Mass()*ph_world->Gravity());//

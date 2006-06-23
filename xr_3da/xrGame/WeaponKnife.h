@@ -25,7 +25,7 @@ protected:
 	virtual void		switch2_Showing				();
 			void		switch2_Attacking			(u32 state);
 
-	virtual void		OnAnimationEnd				();
+	virtual void		OnAnimationEnd				(u32 state);
 	virtual void		OnStateSwitch				(u32 S);
 
 	void				state_Attacking				(float dt);
@@ -51,8 +51,6 @@ public:
 						CWeaponKnife(); 
 
 	void				Load							(LPCSTR section);
-
-	virtual	void		UpdateCL						();
 
 	virtual void		Fire2Start						();
 	virtual void		FireStart						();

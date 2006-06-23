@@ -134,13 +134,4 @@ struct					InterpData
 	SRotation			o_torso;				// torso in world coords
 };
 
-enum EWeaponHideState
-{
-	whs_INVENTORY_MENU			= (1ul<<0ul),
-	whs_BUY_MENU				= (1ul<<1ul),
-	whs_ON_LEDDER				= (1ul<<2ul),
-	whs_SPRINT					= (1ul<<3ul),
-	whs_CAR						= (1ul<<4ul)
-
-};
 };

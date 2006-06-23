@@ -154,7 +154,7 @@ MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState 
 {
 	const xr_vector<CAniVector>		&animation = m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A;
 
-	switch (m_weapon->STATE) {
+	switch (m_weapon->GetState()) {
 		case CWeapon::eReload : {
 			switch (m_weapon->GetReloadState()){
 				case CWeapon::eSubstateReloadBegin:
@@ -208,7 +208,7 @@ MotionID CStalkerAnimationManager::missile_animation	(u32 slot, const EBodyState
 
 	const xr_vector<CAniVector>		&animation = m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A;
 
-	switch (m_missile->State()) {
+	switch (m_missile->GetState()) {
 		case MS_SHOWING	 :
 			return					(animation[0].A[0]);
 		case MS_HIDING	 :

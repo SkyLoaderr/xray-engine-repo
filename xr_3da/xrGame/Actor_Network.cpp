@@ -620,15 +620,12 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 		}
 	}
 */	
-//	if (m_DefaultVisualOutfit == NULL)
-//		m_DefaultVisualOutfit = cNameVisual();
-//	if (!GetDefaultVisualOutfit())
 	SetDefaultVisualOutfit(cNameVisual());
 
 	smart_cast<CKinematics*>(Visual())->CalculateBones();
 
 	//--------------------------------------------------------------
-	m_iCurWeaponHideState = 0;
+//.	m_iCurWeaponHideState = 0;
 	inventory().SetPrevActiveSlot(NO_ACTIVE_SLOT);
 
 

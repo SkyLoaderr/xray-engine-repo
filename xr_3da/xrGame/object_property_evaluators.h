@@ -163,34 +163,4 @@ public:
 	virtual _value_type		evaluate						();
 };
 
-//////////////////////////////////////////////////////////////////////////
-// CObjectPropertyEvaluatorFood
-//////////////////////////////////////////////////////////////////////////
-
-class CObjectPropertyEvaluatorFood : public CObjectPropertyEvaluatorBase<CFoodItem> {
-protected:
-	typedef CObjectPropertyEvaluatorBase<CFoodItem> inherited;
-	u32						m_state;
-	bool					m_equality;
-
-public:
-							CObjectPropertyEvaluatorFood	(CFoodItem *item, CAI_Stalker *owner, u32 state, bool equality = true);
-	virtual _value_type		evaluate						();
-};
-
-//////////////////////////////////////////////////////////////////////////
-// CObjectPropertyEvaluatorPrepared
-//////////////////////////////////////////////////////////////////////////
-
-class CObjectPropertyEvaluatorPrepared : public CObjectPropertyEvaluatorBase<CFoodItem> {
-protected:
-	typedef CObjectPropertyEvaluatorBase<CFoodItem> inherited;
-	u32						m_state;
-	bool					m_equality;
-
-public:
-							CObjectPropertyEvaluatorPrepared(CFoodItem *item, CAI_Stalker *owner);
-	virtual _value_type		evaluate						();
-};
-
 #include "object_property_evaluators_inline.h"

@@ -153,6 +153,27 @@ void CWeaponBinoculars::load(IReader &input_packet)
 	load_data		(m_fRTZoomFactor,input_packet);
 }
 
+void CWeaponBinoculars::OnAnimationEnd(u32 state) 
+{
+	switch(state) 
+	{
+		case eIdle:		Msg("anim_end-eIdle");		break;
+		case eFire:		Msg("anim_end-eFire");		break;
+		case eFire2:	Msg("anim_end-eFire2");		break;
+		case eReload:	Msg("anim_end-eReload");	break;
+		case eShowing:	Msg("anim_end-eShowing");	break;
+		case eHiding:	Msg("anim_end-eHiding");	break;
+		case eHidden:	Msg("anim_end-eHidden");	break;
+		case eMisfire:	Msg("anim_end-eMisfire");	break;
+		case eMagEmpty:	Msg("anim_end-eMagEmpty");	break;
+		case eSwitch:	Msg("anim_end-eSwitch");	break;
+		default:
+						Msg("anim_end-UNKNOWN");	break;
+	}
+
+	inherited::OnAnimationEnd(state);
+}
+
 #include "script_space.h"
 
 using namespace luabind;

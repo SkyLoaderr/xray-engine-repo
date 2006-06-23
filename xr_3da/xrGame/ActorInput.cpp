@@ -274,7 +274,7 @@ bool CActor::use_Holder				(CHolderCustom* holder)
 
 		if(inventory().ActiveItem()){
 			CHudItem* hi = smart_cast<CHudItem*>(inventory().ActiveItem());
-			if(hi) hi->OnAnimationEnd();
+			if(hi) hi->OnAnimationEnd(hi->GetState());
 		}
 
 		return b;
@@ -299,7 +299,7 @@ bool CActor::use_Holder				(CHolderCustom* holder)
 
 		if(inventory().ActiveItem()){
 			CHudItem* hi = smart_cast<CHudItem*>(inventory().ActiveItem());
-			if(hi) hi->OnAnimationEnd();
+			if(hi) hi->OnAnimationEnd(hi->GetState());
 		}
 
 		return b;

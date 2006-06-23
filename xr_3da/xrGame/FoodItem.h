@@ -16,13 +16,13 @@
 #define FOOD_HIDING		6
 #define FOOD_PLAYING	7
 
-class CFoodItem: 
-		public CEatableItemObject,
-		public CHudItem
+class CFoodItem: public CEatableItemObject
+//.				,public CHudItem
 {
 protected:
 	bool m_bReadyToEat;
-
+/*
+//.
 protected:
 	shared_str	m_sAnimIdle;	
 	shared_str	m_sAnimShow;
@@ -30,7 +30,7 @@ protected:
 	shared_str	m_sAnimPlay;
 	shared_str	m_sAnimPrepare;
 	shared_str	m_sAnimEat;
-
+*/
 public:
 						CFoodItem			();
 	virtual				~CFoodItem			();
@@ -38,7 +38,7 @@ public:
 
 public:
 	virtual CFoodItem			*cast_food_item				()			{return this;}
-	virtual CHudItem			*cast_hud_item				()			{return this;}
+//.	virtual CHudItem			*cast_hud_item				()			{return this;}
 	virtual CPhysicsShellHolder	*cast_physics_shell_holder	()			{return this;}
 
 public:
@@ -52,19 +52,19 @@ public:
 	virtual void		OnH_B_Independent	();
 	virtual void		OnH_A_Independent	();
 	virtual void		OnH_B_Chield		();
-	virtual void 		OnAnimationEnd		();
+//.	virtual void 		OnAnimationEnd		(u32 state);
 	virtual u32 		GetSlot				() const;
-	virtual void 		Show				();
-	virtual void 		Hide				();
+//.	virtual void 		Show				();
+//.	virtual void 		Hide				();
 	virtual bool 		Action				(s32 cmd, u32 flags);
-	virtual void 		OnStateSwitch		(u32 S);
+//.	virtual void 		OnStateSwitch		(u32 S);
 	virtual void 		OnEvent				(NET_Packet& P, u16 type);
-	virtual bool 		Activate			();
-	virtual void 		Deactivate			();
+//.	virtual bool 		Activate			();
+//.	virtual void 		Deactivate			();
 	virtual bool 		Useful				() const;
-	virtual bool 		IsPending			() const;
-	virtual bool 		IsHidden			() const					{return FOOD_HIDDEN == STATE;}
-	virtual bool 		IsHiding			() const					{return FOOD_HIDING == STATE;}
+//.	virtual bool 		IsPending			() const;
+//.	virtual bool 		IsHidden			() const					{return FOOD_HIDDEN == GetState();}
+//.	virtual bool 		IsHiding			() const					{return FOOD_HIDING == GetState();}
 	IC		bool 		ready_to_eat		() const					{return	(m_bReadyToEat);}
 	virtual	void		UpdateXForm			();
 	virtual void		on_renderable_Render();

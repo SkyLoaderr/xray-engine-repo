@@ -524,7 +524,7 @@ void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 		CHudItem* pHudItem = smart_cast<CHudItem*>(pActor->inventory().ActiveItem());
 		if (pHudItem) 
 		{
-			pHudItem->OnStateSwitch(pHudItem->State());
+			pHudItem->OnStateSwitch(pHudItem->GetState());
 		};
 	}
 	m_pSM_CurViewEntity = pNewObject;

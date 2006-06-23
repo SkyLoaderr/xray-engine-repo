@@ -38,14 +38,6 @@ IC static void generate_orthonormal_basis1(const Fvector& dir,Fvector& updir, Fv
 void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 {
 	// Lookout
-	/*
-	if (mstate_real&mcAnyAction){
-		mstate_real			&= ~mcLookout;
-	}else{
-		if (mstate_wf&mcLookout)	mstate_real		|= mstate_wf&mcLookout;
-		else						mstate_real		&= ~mcLookout;
-	}
-	*/
 	if (mstate_wf&mcLookout)	mstate_real		|= mstate_wf&mcLookout;
 	else						mstate_real		&= ~mcLookout;
 	
@@ -112,7 +104,6 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		mstate_real				&=~mcClimb;		
 	};
 
-	// изменилось состояние
 	if (mstate_wf != mstate_real){
 		if ((mstate_real&mcCrouch)&&((0==(mstate_wf&mcCrouch)) || mstate_real&mcClimb)){
 			if (character_physics_support()->movement()->ActivateBoxDynamic(0)){
@@ -123,68 +114,47 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 
 	if(!CanAccelerate()&&isActorAccelerated(mstate_real, IsZoomAimingMode()))
 	{
-		mstate_real				^=mcAccel; // toggle accel
+		mstate_real				^=mcAccel;
 	};	
+	static bool _b = false;
 
 	if (this == Level().CurrentControlEntity())
 	{
-		if ((mstate_real&mcClimb) != (mstate_old&mcClimb))
+		bool bOnClimbNow			= !!(mstate_real&mcClimb);
+		bool bOnClimbOld			= !!(mstate_old&mcClimb);
+
+		bool bMovingNow				= !!(mstate_real&mcAnyMove);
+		bool bMovingOld				= !!(mstate_old&mcAnyMove);
+
+		if (bOnClimbNow != bOnClimbOld )
 		{
-#ifdef DEBUG
-			if(ph_dbg_draw_mask.test(phDbgLadder))
-			{
-				if((mstate_real&mcClimb))Msg("SetWeaponHideState ON LADDER");
-				else Msg("SetWeaponHideState OFF LADDER");
-			}
-#endif
-			SetWeaponHideState(whs_ON_LEDDER, (mstate_real&mcClimb) != 0);
-//			if (mstate_real&mcClimb)
-//			{
-//				HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT);//, true);
-//			}
-//			else
-//			{
-//				RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
-//			};			
-		}
-		else
+			bool bDoHide			= bOnClimbNow;
+			VERIFY					(_b!=bDoHide);
+			_b						= bDoHide;
+			SetWeaponHideState		(INV_STATE_LADDER, bDoHide );
+
+//.			if(bDoHide)				Msg("11 ON  LADDER");
+//.			else					Msg("11 OFF LADDER frame");
+		};
+		 //else
+		if (false && bOnClimbNow)
 		{
-			if (mstate_real & mcClimb)
+			if (bMovingNow != bMovingOld)
 			{
-				 if ((mstate_real&mcAnyMove) != (mstate_old&mcAnyMove))
-				 {
-					 SetWeaponHideState(whs_ON_LEDDER, (mstate_real&mcAnyMove) != 0);
-//					 if (mstate_real&mcAnyMove)
-//					 {
-//						 HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT);//, true);
-//					 }
-//					 else
-//					 {
-//						 RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
-//					 };
-				 }
+				bool bDoHide		= bMovingNow;
+				VERIFY				(_b!=bDoHide);
+				_b					= bDoHide;
+				SetWeaponHideState	(INV_STATE_LADDER, bDoHide );
+
+//.				if(bDoHide)			Msg("22 ON  LADDER");
+//.				else				Msg("22 OFF LADDER");
 			}
 		}
 
-		//-----------------------------------------------------------
-		if ((mstate_real&mcSprint) != (mstate_old & mcSprint))
+		if ((mstate_real&mcSprint) != (mstate_old&mcSprint))
 		{
 				CHudItem* pHudItem = smart_cast<CHudItem*>(inventory().ActiveItem());	
-				if (pHudItem)
-					pHudItem->onMovementChanged(mcSprint);
-/*			if (mstate_real&mcSprint)
-			{
-				//HideCurrentWeapon(GEG_PLAYER_SPRINT_START);//, false);
-				psHUD_Flags.set(HUD_WEAPON_RT,FALSE);
-				psHUD_Flags.set(HUD_CROSSHAIR_RT,FALSE);
-
-			}
-			else
-			{
-				//RestoreHidedWeapon(GEG_PLAYER_SPRINT_END);
-				psHUD_Flags.set(HUD_WEAPON_RT,TRUE);
-				psHUD_Flags.set(HUD_CROSSHAIR_RT,TRUE);
-			}*/
+				if (pHudItem) pHudItem->onMovementChanged(mcSprint);
 		};
 
 	};
@@ -193,7 +163,6 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Jump, float dt)
 {
 	mstate_old = mstate_real;
-	// ****************************** Check keyboard input and control acceleration
 	vControlAccel.set	(0,0,0);
 
 	if (!(mstate_real&mcFall) && (character_physics_support()->movement()->Environment()==CPHMovementControl::peInAir)) 
@@ -223,8 +192,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		// jump
 		m_fJumpTime				-=	dt;
 
-		if (CanJump() && (mstate_wf&mcJump)/*((mstate_real&mcJump)==0) && (mstate_wf&mcJump) && (m_fJumpTime<=0.f) && !m_bJumpKeyPressed
-			&&*/ )
+		if ( CanJump() && (mstate_wf&mcJump) )
 		{
 			mstate_real			|=	mcJump;
 			m_bJumpKeyPressed	=	TRUE;
@@ -233,7 +201,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 
 			//уменьшить силу игрока из-за выполненого прыжка
-			if (!GodMode())//(!psActorFlags.test(AF_GODMODE))	
+			if (!GodMode())
 				conditions().ConditionJump(inventory().TotalWeight()/
 				inventory().GetMaxWeight());
 		}

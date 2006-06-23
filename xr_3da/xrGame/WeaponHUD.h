@@ -61,6 +61,7 @@ class CWeaponHUD
 	u32					m_dwAnimTime;
 	u32					m_dwAnimEndTime;
 	bool				m_bStopAtEndAnimIsRunning;
+	u32					m_startedAnimState;
 //	CInventoryItem*		m_pCallbackItem;
 	CHudItem*			m_pCallbackItem;
 
@@ -97,7 +98,7 @@ public:
 	
 
 	// Animations
-	void				animPlay		(MotionID M, BOOL bMixIn=TRUE, CHudItem*  W=0);
+	void				animPlay		(MotionID M, BOOL bMixIn/*=TRUE*/, CHudItem*  W /*=0*/, u32 state);
 	void				animDisplay		(MotionID M, BOOL bMixIn);
 	MotionID			animGet			(LPCSTR name);
 	
@@ -125,5 +126,9 @@ public:
 	void				dbg_SetShellPoint	(const Fvector &sp)			{((weapon_hud_value*)m_shared_data.get_value())->m_sp_offset.set(sp);}
 #endif
 };
- 
+
+#define		MAX_ANIM_COUNT							8
+typedef		svector<MotionID,MAX_ANIM_COUNT>		MotionSVec;
+MotionID	random_anim								(MotionSVec& v); 
+
 #endif // __XR_WEAPON_HUD_H__

@@ -9,7 +9,7 @@ class CWeaponSVD :
 	typedef CWeaponCustomPistol inherited;
 protected:
 	virtual void switch2_Fire	();
-	virtual void OnAnimationEnd ();
+	virtual void OnAnimationEnd (u32 state);
 public:
 	CWeaponSVD(void);
 	virtual ~CWeaponSVD(void);

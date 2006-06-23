@@ -17,8 +17,8 @@ CWeaponKnife::CWeaponKnife() : CWeapon("KNIFE")
 {
 	m_attackStart			= false;
 	m_bShotLight			= false;
-	STATE					= eHidden;
-	NEXT_STATE				= eHidden;
+	SetState				( eHidden );
+	SetNextState			( eHidden );
 	knife_material_idx		= (u16)-1;
 }
 
@@ -45,6 +45,7 @@ void CWeaponKnife::Load	(LPCSTR section)
 
 void CWeaponKnife::OnStateSwitch	(u32 S)
 {
+	inherited::OnStateSwitch(S);
 	switch (S)
 	{
 	case eIdle:
@@ -64,25 +65,8 @@ void CWeaponKnife::OnStateSwitch	(u32 S)
 		switch2_Attacking	(S);
 		break;
 	}
-	STATE = S;
-	NEXT_STATE = S;
 }
 	
-void CWeaponKnife::UpdateCL	()
-{
-	inherited::UpdateCL	();
-
-	// cycle update
-	switch (STATE){
-	case eShowing:
-	case eHiding:{
-//.		smart_cast<CKinematicsAnimated*>(m_pHUD->Visual())->UpdateTracks();
-		}break;
-	case eFire:
-		//state_Attacking	(dt);
-		break;
-	}
-}
 
 void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 {
@@ -116,9 +100,9 @@ void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 }
 
 
-void CWeaponKnife::OnAnimationEnd()
+void CWeaponKnife::OnAnimationEnd(u32 state)
 {
-	switch (STATE)
+	switch (state)
 	{
 	case eHiding:	SwitchState(eHidden);	break;
 	case eFire: 
@@ -127,10 +111,10 @@ void CWeaponKnife::OnAnimationEnd()
             if(m_attackStart) 
 			{
 				m_attackStart = false;
-				if(STATE==eFire)
-					m_pHUD->animPlay(mhud_attack_e[Random.randI(mhud_attack_e.size())], TRUE, this);
+				if(GetState()==eFire)
+					m_pHUD->animPlay(random_anim(mhud_attack_e), TRUE, this, GetState());
 				else
-					m_pHUD->animPlay(mhud_attack2_e[Random.randI(mhud_attack2_e.size())], TRUE, this);
+					m_pHUD->animPlay(random_anim(mhud_attack2_e), TRUE, this, GetState());
 
 				Fvector	p1, d; 
 				p1.set(get_LastFP()); 
@@ -160,9 +144,9 @@ void CWeaponKnife::switch2_Attacking	(u32 state)
 	if(m_bPending)	return;
 
 	if(state==eFire)
-		m_pHUD->animPlay(mhud_attack[Random.randI(mhud_attack.size())],		FALSE, this);
+		m_pHUD->animPlay(random_anim(mhud_attack),		FALSE, this, state);
 	else //eFire2
-		m_pHUD->animPlay(mhud_attack2[Random.randI(mhud_attack2.size())],		FALSE, this);
+		m_pHUD->animPlay(random_anim(mhud_attack2),		FALSE, this, state);
 
 	m_attackStart	= true;
 	m_bPending		= true;
@@ -170,14 +154,17 @@ void CWeaponKnife::switch2_Attacking	(u32 state)
 
 void CWeaponKnife::switch2_Idle	()
 {
-	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
+	VERIFY(GetState()==eIdle);
+
+	m_pHUD->animPlay(random_anim(mhud_idle), TRUE, NULL, GetState());
 	m_bPending = false;
 }
 
 void CWeaponKnife::switch2_Hiding	()
 {
 	FireEnd					();
-	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
+	VERIFY(GetState()==eHiding);
+	m_pHUD->animPlay		(random_anim(mhud_hide), TRUE, this, GetState());
 	m_bPending				= true;
 }
 
@@ -188,7 +175,8 @@ void CWeaponKnife::switch2_Hidden()
 
 void CWeaponKnife::switch2_Showing	()
 {
-	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
+	VERIFY(GetState()==eShowing);
+	m_pHUD->animPlay		(random_anim(mhud_show), FALSE, this, GetState());
 	m_bPending				= true;
 }
 
@@ -201,7 +189,7 @@ void CWeaponKnife::FireStart()
 	fHitImpulse		= fHitImpulse_1;
 	//-------------------------------------------
 	inherited::FireStart();
-	SwitchState(eFire);
+	SwitchState			(eFire);
 }
 
 

@@ -37,7 +37,7 @@ void CWeaponRPG7::Load	(LPCSTR section)
 void CWeaponRPG7::UpdateGrenadeVisibility(bool visibility)
 {
 	bool vis_hud,vis_weap;
-	vis_hud		= (!!iAmmoElapsed || STATE == eReload);
+	vis_hud		= (!!iAmmoElapsed || GetState() == eReload);
 	vis_weap	= !!iAmmoElapsed;
 
 	CKinematics* pHudVisual = smart_cast<CKinematics*>(m_pHUD->Visual());
@@ -97,7 +97,7 @@ void CWeaponRPG7::switch2_Fire	()
 	m_bFireSingleShot = true;
 	bWorking = false;
 
-	if(STATE == eIdle	&& getRocketCount()/*m_pRocket*/) 
+	if(GetState() == eIdle	&& getRocketCount()/*m_pRocket*/) 
 	{
 		Fvector p1, d; 
 		p1.set(get_LastFP()); 
@@ -155,7 +155,7 @@ void CWeaponRPG7::OnEvent(NET_Packet& P, u16 type)
 void CWeaponRPG7::net_Import			( NET_Packet& P)
 {
 	inherited::net_Import(P);
-	UpdateGrenadeVisibility(!!iAmmoElapsed || STATE == eReload);
+	UpdateGrenadeVisibility(!!iAmmoElapsed || GetState() == eReload);
 }
 
 #include "script_space.h"

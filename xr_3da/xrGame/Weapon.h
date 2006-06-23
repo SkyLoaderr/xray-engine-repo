@@ -101,8 +101,6 @@ protected:
 //  Animation 
 //////////////////////////////////////////////////////////////////////////
 public:
-	enum					{ MAX_ANIM_COUNT = 8 };
-	typedef					svector<MotionID,MAX_ANIM_COUNT>		MotionSVec;
 
 	void					animGet				(MotionSVec& lst, LPCSTR prefix);
 	void					signal_HideComplete	();
@@ -135,8 +133,8 @@ public:
 		eSubstateReloadEnd,
 	};
 
-	virtual bool			IsHidden			()	const		{	return STATE == eHidden;}						// Does weapon is in hidden state
-	virtual bool			IsHiding			()	const		{	return STATE == eHiding;}
+	virtual bool			IsHidden			()	const		{	return GetState() == eHidden;}						// Does weapon is in hidden state
+	virtual bool			IsHiding			()	const		{	return GetState() == eHiding;}
 
 	IC BOOL					IsValid				()	const		{	return iAmmoElapsed;						}
 	// Does weapon need's update?

@@ -237,19 +237,8 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 			*/
 			SendBroadcast		(sender,P,MODE);
 		}break;
-//	case GEG_PLAYER_BUYMENU_OPEN:
-//	case GEG_PLAYER_BUYMENU_CLOSE:
-//	case GEG_PLAYER_INVENTORYMENU_OPEN:
-//	case GEG_PLAYER_INVENTORYMENU_CLOSE:
-//	case GEG_PLAYER_DEACTIVATE_CURRENT_SLOT:
-//	case GEG_PLAYER_RESTORE_CURRENT_SLOT:
-//	case GEG_PLAYER_SPRINT_START:
-//	case GEG_PLAYER_SPRINT_END:
-//	case GEG_PLAYER_ENTER_CAR:
-//	case GEG_PLAYER_EXIT_CAR:
 	case GEG_PLAYER_WEAPON_HIDE_STATE:
 		{
-//			SendBroadcast		(sender,P,MODE);
 			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
 
 #	ifdef SLOW_VERIFY_ENTITIES

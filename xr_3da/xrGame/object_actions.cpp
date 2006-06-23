@@ -491,48 +491,6 @@ void CObjectActionAim::execute				()
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CObjectActionPrepare
-//////////////////////////////////////////////////////////////////////////
-
-CObjectActionPrepare::CObjectActionPrepare(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
-	inherited			(item,owner,storage,action_name)
-{
-}
-
-void CObjectActionPrepare::execute	()
-{
-	inherited::execute();
-
-	VERIFY						(m_item);
-	VERIFY						(object().inventory().ActiveItem());
-	VERIFY						(object().inventory().ActiveItem()->object().ID() == m_item->object().ID());
-
-	object().inventory().Action(kWPN_FIRE,CMD_START);
-}
-
-//////////////////////////////////////////////////////////////////////////
-// CObjectActionUse
-//////////////////////////////////////////////////////////////////////////
-
-CObjectActionUse::CObjectActionUse(CFoodItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
-	inherited			(item,owner,storage,action_name)
-{
-}
-
-void CObjectActionUse::execute	()
-{
-	inherited::execute();
-
-	VERIFY						(m_item);
-	VERIFY						(object().inventory().ActiveItem());
-	VERIFY						(object().inventory().ActiveItem()->object().ID() == m_item->ID());
-
-	object().inventory().Action(kWPN_FIRE,CMD_START);
-	if (m_item->State() != FOOD_EATING)
-		m_storage->set_property(ObjectHandlerSpace::eWorldPropertyUseEnough,true);
-}
-
-//////////////////////////////////////////////////////////////////////////
 // CObjectActionIdle
 //////////////////////////////////////////////////////////////////////////
 

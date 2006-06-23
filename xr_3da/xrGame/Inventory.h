@@ -12,12 +12,16 @@ public:
 							CInventorySlot		();
 	virtual					~CInventorySlot		();
 
+	bool					CanBeActivated		() const;
+	bool					IsBlocked			() const;
+
 	PIItem					m_pIItem;
-	bool					m_bCanBeActivated;
 	bool					m_bPersistent;
+	bool					m_bVisible;
+	int						m_blockCounter;
 };
 
-typedef xr_vector<CInventorySlot> TISlotArr;
+typedef svector<CInventorySlot,SLOTS_TOTAL> TISlotArr;
 
 
 class CInventory
@@ -95,6 +99,7 @@ public:
 	bool 					IsBeltUseful		() const			{return m_bBeltUseful;}
 	void 					SetBeltUseful		(bool belt_useful)	{m_bBeltUseful = belt_useful;}
 
+	void					SetSlotsBlocked		(u16 mask, bool bBlock);
 	TIItemContainer			m_all;
 	TIItemContainer			m_ruck, m_belt;
 	TISlotArr				m_slots;
@@ -121,8 +126,6 @@ public:
 	u32					ModifyFrame					() const					{return m_dwModifyFrame;}
 	void				Items_SetCurrentEntityHud	(bool current_entity);
 	bool				isBeautifulForActiveSlot	(CInventoryItem *pIItem);
-	bool				isSlotsBlocked				()							{return m_bDoBlockAllSlots>0;}
-	void				setSlotsBlocked				(bool b);
 protected:
 	// Активный слот и слот который станет активным после смены
     //значения совпадают в обычном состоянии (нет смены слотов)
@@ -131,9 +134,6 @@ protected:
 	u32 				m_iPrevActiveSlot;
 
 	CInventoryOwner*	m_pOwner;
-
-	//буферный список для сортировки
-	TIItemContainer		ruck_list;
 
 	//флаг, показывающий наличие пояса в инвенторе
 	bool				m_bBeltUseful;
@@ -153,13 +153,11 @@ protected:
 
 	//кадр на котором произошло последнее изменение в инвенторе
 	u32					m_dwModifyFrame;
-	int					m_bDoBlockAllSlots;
 
-	//буфферный список
-	TIItemContainer		l_subs; 
-	xr_vector<PIItem>	drop_tasks;
+//.	int					m_bDoBlockAllSlots;
+	
+	xr_vector<PIItem>	m_drop_tasks;
 	bool				m_drop_last_frame;
 
 	void				SendActionEvent		(s32 cmd, u32 flags);
-
 };

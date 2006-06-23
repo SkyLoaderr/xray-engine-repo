@@ -17,7 +17,6 @@
 #include "object_handler_planner_impl.h"
 #include "weaponmagazined.h"
 #include "missile.h"
-#include "fooditem.h"
 #include "ai_monster_space.h"
 
 using namespace ObjectHandlerSpace;
@@ -288,13 +287,6 @@ void CObjectHandlerPlanner::add_item			(CInventoryItem *inventory_item)
 	if (missile) {
 		add_evaluators			(missile);
 		add_operators			(missile);
-		return;
-	}
-
-	CFoodItem					*eatable	= smart_cast<CFoodItem*>	(inventory_item);
-	if (eatable) {
-		add_evaluators			(eatable);
-		add_operators			(eatable);
 		return;
 	}
 }

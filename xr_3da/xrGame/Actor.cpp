@@ -974,10 +974,12 @@ void CActor::shedule_Update	(u32 DT)
 	{
 		m_sDefaultObjAction				= NULL;
 		inherited::shedule_Update		(DT);
-		if (OnServer())
+
+/*		if (OnServer())
 		{
 			Check_Weapon_ShowHideState();
 		};	
+*/
 		return;
 	}
 
@@ -1076,10 +1078,12 @@ void CActor::shedule_Update	(u32 DT)
 	// generic stuff
 	inherited::shedule_Update	(DT);
 	//------------------------------------------------
+/*
 	if (OnServer())
 	{
 		Check_Weapon_ShowHideState();
 	};	
+*/
 	//------------------------------------------------
 	//эффектор включаемый при ходьбе
 	if (!pCamBobbing)

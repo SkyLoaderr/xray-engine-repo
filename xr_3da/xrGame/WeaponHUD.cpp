@@ -25,7 +25,6 @@ BOOL weapon_hud_value::load(const shared_str& section, CHudItem* owner)
 	// Visual
 	LPCSTR visual_name			= pSettings->r_string(section, "visual");
 	m_animations				= smart_cast<CKinematicsAnimated*>(::Render->model_Create(visual_name));
-	//	R_ASSERT					(pVisual->Type==MT_SKELETON_ANIM);
 
 	// fire bone	
 	if(smart_cast<CWeapon*>(owner)){
@@ -74,11 +73,7 @@ MotionID shared_weapon_hud::motion_id(LPCSTR name)
 {
 	return p_->m_animations->ID_Cycle_Safe(name);
 }
-//-----------------------------------------------------------------------
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 CWeaponHUD::CWeaponHUD			(CHudItem* pHudItem)
 {
 	m_bVisible					= false;
@@ -93,12 +88,12 @@ CWeaponHUD::~CWeaponHUD()
 {
 }
 
-void CWeaponHUD::Load			(LPCSTR section)
+void CWeaponHUD::Load(LPCSTR section)
 {
 	m_shared_data.create		(section,m_pParentWeapon);
 }
 
-void  CWeaponHUD::Init			()
+void  CWeaponHUD::Init()
 {
 	m_bStopAtEndAnimIsRunning	= false;
 	m_pCallbackItem				= NULL;
@@ -118,23 +113,27 @@ void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
 	VERIFY						(!fis_zero(DET(m_Transform)));
 }
 
-MotionID CWeaponHUD::animGet		(LPCSTR name)
+MotionID CWeaponHUD::animGet(LPCSTR name)
 {
 	return m_shared_data.motion_id	(name);
 }
 
-void CWeaponHUD::animDisplay		(MotionID M,	BOOL bMixIn)
+void CWeaponHUD::animDisplay(MotionID M, BOOL bMixIn)
 {
 	if(m_bVisible){
-		CKinematicsAnimated* PKinematicsAnimated			= smart_cast<CKinematicsAnimated*>(Visual());
-		VERIFY(PKinematicsAnimated);
-		//PKinematicsAnimated->Update						();
+		CKinematicsAnimated* PKinematicsAnimated		= smart_cast<CKinematicsAnimated*>(Visual());
+		VERIFY											(PKinematicsAnimated);
 		PKinematicsAnimated->PlayCycle					(M,bMixIn);
 		PKinematicsAnimated->CalculateBones_Invalidate	();
 	}
 }
-void CWeaponHUD::animPlay			(MotionID M,	BOOL bMixIn, CHudItem* W)
+void CWeaponHUD::animPlay			(MotionID M,	BOOL bMixIn, CHudItem* W, u32 state)
 {
+//.	if(m_bStopAtEndAnimIsRunning)	
+//.		StopCurrentAnim				();
+
+
+	m_startedAnimState				= state;
 	Show							();
 	animDisplay						(M, bMixIn);
 	u32 anim_time					= m_shared_data.motion_length(M);
@@ -155,12 +154,12 @@ void CWeaponHUD::Update				()
 		smart_cast<CKinematicsAnimated*>(Visual())->UpdateTracks		();
 }
 
-void CWeaponHUD::StopCurrentAnim	()
+void CWeaponHUD::StopCurrentAnim()
 {
-	m_dwAnimEndTime = 0;
-	m_bStopAtEndAnimIsRunning = false;
+	m_dwAnimEndTime						= 0;
+	m_bStopAtEndAnimIsRunning			= false;
 	if(m_pCallbackItem)
-		m_pCallbackItem->OnAnimationEnd();
+		m_pCallbackItem->OnAnimationEnd	(m_startedAnimState);
 }
 
 void CWeaponHUD::StopCurrentAnimWithoutCallback		()
@@ -184,4 +183,9 @@ void CWeaponHUD::CleanSharedContainer	()
 {
 	VERIFY(g_pWeaponHUDContainer);
 	g_pWeaponHUDContainer->clean(false);
+}
+
+MotionID random_anim(MotionSVec& v)
+{
+	return v[Random.randI(v.size())];
 }

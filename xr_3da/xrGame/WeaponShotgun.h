@@ -35,7 +35,7 @@ public:
 	virtual bool	Action(s32 cmd, u32 flags);
 
 protected:
-	virtual void	OnAnimationEnd		();
+	virtual void	OnAnimationEnd		(u32 state);
 	void			TriStateReload		();
 	virtual void	OnStateSwitch		(u32 S);
 

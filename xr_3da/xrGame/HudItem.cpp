@@ -112,13 +112,9 @@ bool CHudItem::Action(s32 cmd, u32 flags)
 	return false;
 }
 
-void CHudItem::OnAnimationEnd()
-{
-}
-
 void CHudItem::SwitchState(u32 S)
 {
-	NEXT_STATE		= S;	// Very-very important line of code!!! :)
+	SetNextState( S );	// Very-very important line of code!!! :)
 
 	if (object().Local() && !object().getDestroy())	
 	{
@@ -147,8 +143,8 @@ void CHudItem::OnEvent		(NET_Packet& P, u16 type)
 void CHudItem::OnStateSwitch	(u32 S)
 {
 	m_dwStateTime = 0;
-	STATE = S;
-	if(object().Remote()) NEXT_STATE = S;
+	SetState( S );
+	if(object().Remote()) SetNextState( S );
 }
 
 

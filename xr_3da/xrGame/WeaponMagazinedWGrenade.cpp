@@ -145,17 +145,20 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(CSE_Abstract* DC)
 
 	return l_res;
 }
+
 void CWeaponMagazinedWGrenade::switch2_Idle() 
 {
 	inherited::switch2_Idle();
 }
+
 void CWeaponMagazinedWGrenade::switch2_Reload()
 {
+	VERIFY(GetState()==eReload);
 	if(m_bGrenadeMode) 
 	{
 		PlaySound(sndReloadG,get_LastFP2());
 
-		m_pHUD->animPlay(mhud_reload_g[Random.randI(mhud_reload_g.size())],FALSE,this);
+		m_pHUD->animPlay(random_anim(mhud_reload_g),FALSE,this,GetState());
 		m_bPending = true;
 	}
 	else 
@@ -180,7 +183,7 @@ void CWeaponMagazinedWGrenade::OnShot		()
 //на одиночные, а уже потом на подствольник
 bool CWeaponMagazinedWGrenade::SwitchMode() 
 {
-	bool bUsefulStateToSwitch = ((eIdle==STATE)||(eHidden==STATE)||(eMisfire==STATE)||(eMagEmpty==STATE)) && (!IsPending());
+	bool bUsefulStateToSwitch = ((eIdle==GetState())||(eHidden==GetState())||(eMisfire==GetState())||(eMagEmpty==GetState())) && (!IsPending());
 
 	if(!bUsefulStateToSwitch)
 		return false;
@@ -301,7 +304,7 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 	inherited::SwitchState(S);
 	
 	//стрельнуть из подствольника
-	if(m_bGrenadeMode && STATE == eIdle && S == eFire && getRocketCount() ) 
+	if(m_bGrenadeMode && GetState() == eIdle && S == eFire && getRocketCount() ) 
 	{
 		Fvector						p1, d; 
 		p1.set						(get_LastFP2());
@@ -429,22 +432,18 @@ void CWeaponMagazinedWGrenade::OnStateSwitch(u32 S)
 }
 
 
-void CWeaponMagazinedWGrenade::OnAnimationEnd()
+void CWeaponMagazinedWGrenade::OnAnimationEnd(u32 state)
 {
-	switch (STATE)
+	switch (state)
 	{
 	case eSwitch:
 		{
 			SwitchState(eIdle);
 		}break;
 	}
-	inherited::OnAnimationEnd();
+	inherited::OnAnimationEnd(state);
 }
 
-void CWeaponMagazinedWGrenade::OnH_B_Chield	()
-{
-	inherited::OnH_B_Chield();
-}
 
 void CWeaponMagazinedWGrenade::OnH_B_Independent()
 {
@@ -452,7 +451,7 @@ void CWeaponMagazinedWGrenade::OnH_B_Independent()
 
 	m_bPending		= false;
 	if (m_bGrenadeMode) {
-		STATE		= eIdle;
+		SetState		( eIdle );
 //.		SwitchMode	();
 		m_bPending	= false;
 	}
@@ -587,29 +586,34 @@ float	CWeaponMagazinedWGrenade::CurrentZoomFactor	()
 //виртуальные функции для проигрывания анимации HUD
 void CWeaponMagazinedWGrenade::PlayAnimShow()
 {
+	VERIFY(GetState()==eShowing);
 	if(IsGrenadeLauncherAttached())
 	{
 		if(!m_bGrenadeMode)
-			m_pHUD->animPlay(mhud_show_w_gl[Random.randI(mhud_show_w_gl.size())],FALSE,this);
+			m_pHUD->animPlay(random_anim(mhud_show_w_gl),FALSE,this, GetState());
 		else
-			m_pHUD->animPlay(mhud_show_g[Random.randI(mhud_show_g.size())],FALSE,this);
+			m_pHUD->animPlay(random_anim(mhud_show_g),FALSE,this, GetState());
 	}	
 	else
-		m_pHUD->animPlay(mhud.mhud_show[Random.randI(mhud.mhud_show.size())],FALSE,this);
+		m_pHUD->animPlay(random_anim(mhud.mhud_show),FALSE,this, GetState());
 }
 
 void CWeaponMagazinedWGrenade::PlayAnimHide()
 {
+	VERIFY(GetState()==eHiding);
+	
 	if(IsGrenadeLauncherAttached())
-		m_pHUD->animPlay(mhud_hide_w_gl[Random.randI(mhud_hide_w_gl.size())],TRUE,this);
+		m_pHUD->animPlay(random_anim(mhud_hide_w_gl),TRUE,this, GetState());
 	else
-		m_pHUD->animPlay (mhud.mhud_hide[Random.randI(mhud.mhud_hide.size())],TRUE,this);
+		m_pHUD->animPlay (random_anim(mhud.mhud_hide),TRUE,this, GetState());
 }
 
 void CWeaponMagazinedWGrenade::PlayAnimReload()
 {
+	VERIFY(GetState()==eReload);
+
 	if(IsGrenadeLauncherAttached())
-		m_pHUD->animPlay(mhud_reload_w_gl[Random.randI(mhud_reload_w_gl.size())],TRUE,this);
+		m_pHUD->animPlay(random_anim(mhud_reload_w_gl),TRUE,this, GetState());
 	else
 		inherited::PlayAnimReload();
 }
@@ -617,21 +621,22 @@ void CWeaponMagazinedWGrenade::PlayAnimReload()
 void CWeaponMagazinedWGrenade::PlayAnimIdle()
 {
 	if(TryPlayAnimIdle())	return;
+	VERIFY(GetState()==eIdle);
 	if(IsGrenadeLauncherAttached())
 	{
 		if(m_bGrenadeMode)
 		{
 			if(IsZoomed())
-				m_pHUD->animPlay(mhud_idle_g_aim[Random.randI(mhud_idle_g_aim.size())], TRUE);
+				m_pHUD->animPlay(random_anim(mhud_idle_g_aim), TRUE, NULL, GetState());
 			else
-				m_pHUD->animPlay(mhud_idle_g[Random.randI(mhud_idle_g.size())], TRUE);
+				m_pHUD->animPlay(random_anim(mhud_idle_g), TRUE, NULL, GetState());
 		}
 		else
 		{
 			if(IsZoomed())
-				m_pHUD->animPlay(mhud_idle_w_gl_aim[Random.randI(mhud_idle_w_gl_aim.size())], TRUE);
+				m_pHUD->animPlay(random_anim(mhud_idle_w_gl_aim), TRUE, NULL, GetState());
 			else
-				m_pHUD->animPlay(mhud_idle_w_gl[Random.randI(mhud_idle_w_gl.size())], TRUE);
+				m_pHUD->animPlay(random_anim(mhud_idle_w_gl), TRUE, NULL, GetState());
 				
 		}
 	}
@@ -640,15 +645,16 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 }
 void CWeaponMagazinedWGrenade::PlayAnimShoot()
 {
+	VERIFY(GetState()==eFire || GetState()==eFire2);
 	if(this->m_bGrenadeMode)
 	{
 		//анимация стрельбы из подствольника
-		m_pHUD->animPlay(mhud_shots_g[Random.randI(mhud_shots_g.size())],TRUE,this);
+		m_pHUD->animPlay(random_anim(mhud_shots_g),TRUE,this, GetState());
 	}
 	else
 	{
 		if(IsGrenadeLauncherAttached())
-			m_pHUD->animPlay(mhud_shots_w_gl[Random.randI(mhud_shots_w_gl.size())],TRUE,this);
+			m_pHUD->animPlay(random_anim(mhud_shots_w_gl),TRUE,this, GetState());
 		else
 			inherited::PlayAnimShoot();
 	}
@@ -656,10 +662,11 @@ void CWeaponMagazinedWGrenade::PlayAnimShoot()
 
 void  CWeaponMagazinedWGrenade::PlayAnimModeSwitch()
 {
+	VERIFY(GetState()==eSwitch);
 	if(m_bGrenadeMode)
-		m_pHUD->animPlay(mhud_switch_g[Random.randI(mhud_switch_g.size())],TRUE,this);
+		m_pHUD->animPlay(random_anim(mhud_switch_g),TRUE,this, GetState());
 	else 
-		m_pHUD->animPlay(mhud_switch[Random.randI(mhud_switch.size())],TRUE,this);
+		m_pHUD->animPlay(random_anim(mhud_switch),TRUE,this, GetState());
 }
 
 

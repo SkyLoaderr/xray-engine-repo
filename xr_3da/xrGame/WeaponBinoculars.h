@@ -1,6 +1,3 @@
-#ifndef __XR_WEAPON_BINOCULAR_H__
-#define __XR_WEAPON_BINOCULAR_H__
-
 #pragma once
 
 #include "WeaponCustomPistol.h"
@@ -15,12 +12,10 @@ class CWeaponBinoculars: public CWeaponCustomPistol
 private:
 	typedef CWeaponCustomPistol inherited;
 protected:
-	// Media :: sounds
 	HUD_SOUND		sndZoomIn;
 	HUD_SOUND		sndZoomOut;
 	float			m_fRTZoomFactor; //run-time zoom factor
 	bool			m_bVision;
-//	CUIFrameWindow*	UIEntityBorder;
 public:
 					CWeaponBinoculars	(); 
 	virtual			~CWeaponBinoculars	();
@@ -43,6 +38,7 @@ public:
 	virtual bool	Action				(s32 cmd, u32 flags);
 	virtual void	UpdateCL			();
 	virtual void	OnDrawUI			();
+	virtual void	OnAnimationEnd		(u32 state);
 protected:
 	CBinocularsVision*					m_binoc_vision;
 
@@ -51,5 +47,3 @@ protected:
 add_to_type_list(CWeaponBinoculars)
 #undef script_type_list
 #define script_type_list save_type_list(CWeaponBinoculars)
-
-#endif //__XR_WEAPON_BINOCULAR_H__

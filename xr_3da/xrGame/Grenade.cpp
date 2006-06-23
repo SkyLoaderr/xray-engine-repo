@@ -55,14 +55,15 @@ void CGrenade::Hit					(SHit* pHDS)
 
 BOOL CGrenade::net_Spawn(CSE_Abstract* DC) 
 {
-	m_dwGrenadeIndependencyTime = 0;
-	BOOL ret= inherited::net_Spawn(DC);/* && CInventoryItemObject::net_Spawn(DC)*/
+	m_dwGrenadeIndependencyTime			= 0;
+	BOOL ret= inherited::net_Spawn		(DC);/* && CInventoryItemObject::net_Spawn(DC)*/
 	Fvector box;BoundingBox().getsize(box);
-	float max_size=max(max(box.x,box.y),box.z);
-	box.set(max_size,max_size,max_size);
-	box.mul(3.f);
-	CExplosive::SetExplosionSize(box);
-	return ret;
+	float max_size						=max(max(box.x,box.y),box.z);
+	box.set								(max_size,max_size,max_size);
+	box.mul								(3.f);
+	CExplosive::SetExplosionSize		(box);
+	m_thrown							= false;
+	return								ret;
 }
 
 void CGrenade::net_Destroy() 
@@ -75,7 +76,7 @@ void CGrenade::net_Destroy()
 void CGrenade::OnH_B_Independent() 
 {
 	m_pHUD->StopCurrentAnimWithoutCallback();
-	if (Local() && (m_state == MS_THREATEN || m_state == MS_READY || m_state == MS_THROW))
+	if (Local() && (GetState() == MS_THREATEN || GetState() == MS_READY || GetState() == MS_THROW))
 	{
 		if (m_fake_missile)
 		{
@@ -90,9 +91,6 @@ void CGrenade::OnH_B_Independent()
 
 				m_dwDestroyTime = 0xffffffff;
 				DestroyObject		();
-//				NET_Packet			P;
-//				u_EventGen			(P,GE_DESTROY,ID());
-//				u_EventSend			(P);
 			};
 		};
 	};
@@ -112,22 +110,21 @@ void CGrenade::OnH_A_Chield()
 	inherited::OnH_A_Chield();
 }
 
-u32 CGrenade::State(u32 state) 
+void CGrenade::State(u32 state) 
 {
 	switch (state)
 	{
 	case MS_THREATEN:
 		{
-			//#pragma todo("Oles to Yura: position can be under level, use 'Center' instead")
 			Fvector		C;
 			Center		(C);
 			PlaySound	(sndCheckout,C);	// 
 		}break;
 	case MS_HIDDEN:
 		{
-			if (m_state == MS_END)
+//.			if (GetState() == MS_END) // means prev state :(
+			if(m_thrown)
 			{
-//				Msg("MS_HIDDEN grenade");
 				if (m_pPhysicsShell)
 					m_pPhysicsShell->Deactivate();
 				xr_delete(m_pPhysicsShell);
@@ -136,17 +133,12 @@ u32 CGrenade::State(u32 state)
 
 				PutNextToSlot();
 
-				if (Local())
-				{
-					DestroyObject		();
-//					NET_Packet			P;
-//					u_EventGen			(P,GE_DESTROY,ID());
-//					u_EventSend			(P);
-				};
+				if (Local())	DestroyObject		();
+				
 			};
 		}break;
 	};
-	return inherited::State(state);
+	inherited::State(state);
 }
 
 bool CGrenade::Activate() 
@@ -169,14 +161,13 @@ void CGrenade::Throw()
 	VERIFY						(pGrenade);
 	
 	if (pGrenade) {
-//		pGrenade->m_dwDestroyTime = m_dwDestroyTimeMax + Level().timeServer();
 		pGrenade->set_destroy_time(m_dwDestroyTimeMax);
 		//установить ID того кто кинул гранату
 		pGrenade->SetInitiator( H_Parent()->ID() );
 	}
-//	Msg("Twrow grenade id=[%d] time=%f",ID(),Device.fTimeGlobal);
 	inherited::Throw			();
-	m_fake_missile->processing_activate();//@sliph 
+	m_fake_missile->processing_activate();//@sliph
+	m_thrown = true;
 }
 
 
@@ -204,8 +195,6 @@ void CGrenade::OnEvent(NET_Packet& P, u16 type)
 
 void CGrenade::PutNextToSlot	()
 {
-//	R_ASSERT(m_pInventory);
-//	R_ASSERT(H_Parent());
 	VERIFY	(!getDestroy());
 	//выкинуть гранату из инвентаря
 	if (m_pInventory)
@@ -216,7 +205,6 @@ void CGrenade::PutNextToSlot	()
 	else
 		Msg ("! PutNextToSlot : m_pInventory = 0");	
 
-//	if (smart_cast<CInventoryOwner*>(H_Parent()) && m_pInventory)
 	{
 		//найти такую же гранату и положить в рюкзак
 		CGrenade *pNext = smart_cast<CGrenade*>(m_pInventory->Same(this,true));
@@ -226,17 +214,18 @@ void CGrenade::PutNextToSlot	()
 		VERIFY(pNext != this);
 
 		if(pNext)
-			m_pInventory->Slot(pNext);
+			m_pInventory->Slot	(pNext);
+
+		m_thrown				= false;
 	}
-//	else
-//		Msg ("! PutNextToSlot : Parent = 0");
 }
 
-void CGrenade::OnAnimationEnd() 
+void CGrenade::OnAnimationEnd(u32 state) 
 {
-	switch(inherited::State()){
+	switch(state){
 	case MS_END: SwitchState(MS_HIDDEN);	break;
-		default : inherited::OnAnimationEnd();
+//.	case MS_END: SwitchState(MS_RESTORE);	break;
+		default : inherited::OnAnimationEnd(state);
 	}
 }
 
@@ -271,10 +260,8 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 						if(pGrenade && xr_strcmp(pGrenade->cNameSect(), cNameSect())) 
 						{
 							m_pInventory->Ruck(this);
-//							m_pInventory->Belt(this);
 							m_pInventory->SetActiveSlot(NO_ACTIVE_SLOT);
 							m_pInventory->Slot(pGrenade);
-							//m_pInventory->Activate(pGrenade->m_slot);
 							return true;
 						}
 					}

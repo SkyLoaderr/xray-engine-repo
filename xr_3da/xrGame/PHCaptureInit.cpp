@@ -255,7 +255,7 @@ void CPHCapture::Init(CInifile* ini)
 	CActor* A=smart_cast<CActor*>(m_character->PhysicsRefObject());
 	if(A)
 	{
-		A->inventory().setSlotsBlocked(true);
+		A->SetWeaponHideState(INV_STATE_BLOCK_ALL,true);
 	}
 }
 
@@ -294,7 +294,8 @@ void CPHCapture::Release()
 	CActor* A=smart_cast<CActor*>(m_character->PhysicsRefObject());
 	if(A)
 	{
-		A->inventory().setSlotsBlocked(false);
+		A->SetWeaponHideState(INV_STATE_BLOCK_ALL,false);
+//.		A->inventory().setSlotsBlocked(false);
 	}
 }
 

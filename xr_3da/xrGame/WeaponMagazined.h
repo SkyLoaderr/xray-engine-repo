@@ -69,7 +69,7 @@ protected:
 	
 	virtual void	OnEmptyClick	();
 
-	virtual void	OnAnimationEnd	();
+	virtual void	OnAnimationEnd	(u32 state);
 	virtual void	OnStateSwitch	(u32 S);
 
 	virtual void	UpdateSounds	();

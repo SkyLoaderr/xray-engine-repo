@@ -22,13 +22,6 @@ CBottleItem::~CBottleItem(void)
 }
 
 
-BOOL CBottleItem::net_Spawn(CSE_Abstract* DC) 
-{
-	BOOL res = inherited::net_Spawn(DC);
-
-	return res;
-}
-
 void CBottleItem::Load(LPCSTR section) 
 {
 	inherited::Load(section);
@@ -40,27 +33,6 @@ void CBottleItem::Load(LPCSTR section)
 		sndBreaking.create(pSettings->r_string(section, "break_sound"),st_Effect,sg_SourceType);
 
 	m_alcohol = READ_IF_EXISTS(pSettings, r_float, section, "eat_alcohol", 0.0f);
-}
-
-void CBottleItem::net_Destroy() 
-{
-	inherited::net_Destroy();
-}
-
-void CBottleItem::UpdateCL() 
-{
-	inherited::UpdateCL();
-}
-
-
-void CBottleItem::OnH_A_Chield() 
-{
-	inherited::OnH_A_Chield		();
-}
-
-void CBottleItem::OnH_B_Independent() 
-{
-	inherited::OnH_B_Independent();
 }
 
 void CBottleItem::OnEvent(NET_Packet& P, u16 type) 
@@ -93,21 +65,11 @@ void CBottleItem::BreakToPieces()
 	if (Local())
 	{
 		DestroyObject	();
-//		NET_Packet			P;
-//		u_EventGen			(P,GE_DESTROY,ID());
-////		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
-//		u_EventSend			(P);
 	}
 }
 
-//void CBottleItem::Hit (float P, Fvector &dir,	
-//					   CObject* who, s16 element,
-//					   Fvector position_in_object_space, 
-//					   float impulse, 
-//					   ALife::EHitType hit_type)
 void	CBottleItem::Hit					(SHit* pHDS)
 {
-//	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
 	inherited::Hit(pHDS);
 	
 	if(pHDS->damage()>BREAK_POWER)
@@ -126,5 +88,5 @@ void CBottleItem::UseBy				(CEntityAlive* entity_alive)
 {
 	inherited::UseBy					(entity_alive);
 
-	entity_alive->conditions().ChangeAlcohol			(m_alcohol);
+	entity_alive->conditions().ChangeAlcohol(m_alcohol);
 }

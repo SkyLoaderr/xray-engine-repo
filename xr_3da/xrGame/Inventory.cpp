@@ -19,15 +19,33 @@
 
 using namespace InventoryUtilities;
 
+// what to block
+u32	INV_STATE_LADDER		= (1<<RIFLE_SLOT);
+u32	INV_STATE_CAR			= INV_STATE_LADDER;
+u32	INV_STATE_BLOCK_ALL		= 0xffffffff;
+u32	INV_STATE_INV_WND		= INV_STATE_BLOCK_ALL;
+u32	INV_STATE_BUY_MENU		= INV_STATE_BLOCK_ALL;
+
 CInventorySlot::CInventorySlot() 
 {
 	m_pIItem				= NULL;
-	m_bCanBeActivated		= true;
+	m_bVisible				= true;
 	m_bPersistent			= false;
+	m_blockCounter			= 0;
 }
 
 CInventorySlot::~CInventorySlot() 
 {
+}
+
+bool CInventorySlot::CanBeActivated() const 
+{
+	return (m_bVisible && !IsBlocked());
+};
+
+bool CInventorySlot::IsBlocked() const 
+{
+	return (m_blockCounter>0);
 }
 
 CInventory::CInventory() 
@@ -51,10 +69,10 @@ CInventory::CInventory()
 			m_slots[i].m_bPersistent = !!pSettings->r_bool("inventory",temp);
 	};
 
-	m_slots[PDA_SLOT].m_bCanBeActivated			= false;
-	m_slots[OUTFIT_SLOT].m_bCanBeActivated		= false;
-	m_slots[DETECTOR_SLOT].m_bCanBeActivated	= false;
-	m_slots[TORCH_SLOT].m_bCanBeActivated		= false;
+	m_slots[PDA_SLOT].m_bVisible				= false;
+	m_slots[OUTFIT_SLOT].m_bVisible				= false;
+	m_slots[DETECTOR_SLOT].m_bVisible			= false;
+	m_slots[TORCH_SLOT].m_bVisible				= false;
 
 	m_bSlotsUseful								= true;
 	m_bBeltUseful								= false;
@@ -63,7 +81,6 @@ CInventory::CInventory()
 	m_dwModifyFrame								= 0;
 	m_iPrevActiveSlot							= NO_ACTIVE_SLOT;
 	m_drop_last_frame							= false;
-	m_bDoBlockAllSlots							= 0;
 }
 
 
@@ -330,12 +347,12 @@ bool CInventory::Ruck(PIItem pIItem)
 
 bool CInventory::Activate(u32 slot, bool force) 
 {	
-	if(isSlotsBlocked()&&!force)
+	if( (slot!=NO_ACTIVE_SLOT && m_slots[slot].IsBlocked()) && !force)
 		return false;
 
 	R_ASSERT2(slot == NO_ACTIVE_SLOT || slot<m_slots.size(), "wrong slot number");
 
-	if(slot != NO_ACTIVE_SLOT && !m_slots[slot].m_bCanBeActivated) 
+	if(slot != NO_ACTIVE_SLOT && !m_slots[slot].m_bVisible) 
 		return false;
 	
 	if(m_iActiveSlot == slot && m_slots[m_iActiveSlot].m_pIItem){
@@ -529,7 +546,7 @@ void CInventory::Update()
 					if (OnServer()) pIItem->object().u_EventSend(P);
 				}
 				else 
-					drop_tasks.push_back(pIItem);
+					m_drop_tasks.push_back(pIItem);
 			}
 			++it;
 		}
@@ -551,12 +568,12 @@ void CInventory::Update()
 				if (OnServer()) pIItem->object().u_EventSend(P);
 			}
 			else
-				drop_tasks.push_back	(pIItem);
+				m_drop_tasks.push_back	(pIItem);
 		}
 	}
-	while	(drop_tasks.size())	{
-		drop_count			= Drop(&drop_tasks.back()->object()) ? drop_count + 1 : drop_count;
-		drop_tasks.pop_back	();
+	while	(m_drop_tasks.size())	{
+		drop_count			= Drop(&m_drop_tasks.back()->object()) ? drop_count + 1 : drop_count;
+		m_drop_tasks.pop_back	();
 	}
 
 	if (m_drop_last_frame)
@@ -962,6 +979,7 @@ void CInventory::Items_SetCurrentEntityHud(bool current_entity)
 	}
 };
 
+/*
 void CInventory::setSlotsBlocked(bool b)
 {
 	
@@ -977,14 +995,58 @@ void CInventory::setSlotsBlocked(bool b)
 
 	u32 InventorySlot		= GetActiveSlot();
 	u32 InventoryPrevSlot	= GetPrevActiveSlot();
-	if(isSlotsBlocked()){
+
+	if(m_bDoBlockAllSlots==1){
 		if(InventorySlot != NO_ACTIVE_SLOT)
 			if (Activate(NO_ACTIVE_SLOT,true))
 				SetPrevActiveSlot(InventorySlot);
-	}else{
+	}else
+	if(m_bDoBlockAllSlots==0){
 		if(InventoryPrevSlot != NO_ACTIVE_SLOT)
 			if (Activate(InventoryPrevSlot,true))
 				SetPrevActiveSlot(NO_ACTIVE_SLOT);
 	}
 	 
+}
+*/
+//call this only via Actor()->SetWeaponHideState()
+void CInventory::SetSlotsBlocked(u16 mask, bool bBlock)
+{
+	bool bChanged = false;
+	for(int i =0; i<SLOTS_TOTAL; ++i)
+	{
+		if(mask & (1<<i))
+		{
+			bool bCanBeActivated = m_slots[i].CanBeActivated();
+			if(bBlock){
+				++m_slots[i].m_blockCounter;
+				Msg("slot[%d]   Blocked. counter=%d",i,m_slots[i].m_blockCounter);
+				VERIFY2(m_slots[i].m_blockCounter< 5,"block slots overflow");
+			}else{
+				--m_slots[i].m_blockCounter;
+				Msg("slot[%d] UnBlocked. counter=%d",i,m_slots[i].m_blockCounter);
+				VERIFY2(m_slots[i].m_blockCounter>-5,"block slots underflow");
+			}
+			if(bCanBeActivated != m_slots[i].CanBeActivated())
+				bChanged = true;
+		}
+	}
+	if(bChanged)
+	{
+		u32 ActiveSlot		= GetActiveSlot();
+		u32 PrevActiveSlot	= GetPrevActiveSlot();
+		if(ActiveSlot==NO_ACTIVE_SLOT)
+		{//try to restore hidden weapon
+			if(PrevActiveSlot!=NO_ACTIVE_SLOT && m_slots[PrevActiveSlot].CanBeActivated()) 
+				if(Activate(PrevActiveSlot))
+					SetPrevActiveSlot(NO_ACTIVE_SLOT);
+		}else
+		{//try to hide active weapon
+			if(!m_slots[ActiveSlot].CanBeActivated() )
+				if(Activate(NO_ACTIVE_SLOT))
+					SetPrevActiveSlot(ActiveSlot);
+		}
+
+//.		bool bCanBeActivated = m_slots[InventorySlot].CanBeActivated();
+	}
 }

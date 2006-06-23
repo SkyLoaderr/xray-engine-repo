@@ -35,7 +35,8 @@
 
 CWeapon::CWeapon(LPCSTR name)
 {
-	STATE					= NEXT_STATE = eHidden;
+	SetState				(eHidden);
+	SetNextState			(eHidden);
 	m_sub_state				= eSubstateReloadBegin;
 	m_bTriStateReload		= false;
 	SetDefaults				();
@@ -124,7 +125,7 @@ void CWeapon::UpdateXForm	()
 		// Get matrices
 		int				boneL,boneR,boneR2;
 		E->g_WeaponBones(boneL,boneR,boneR2);
-		if ((HandDependence() == hd1Hand) || (STATE == eReload) || (!E->g_Alive()))
+		if ((HandDependence() == hd1Hand) || (GetState() == eReload) || (!E->g_Alive()))
 			boneL = boneR2;
 #pragma todo("TO ALL: serious performance problem")
 		V->CalculateBones	();
@@ -441,7 +442,8 @@ BOOL CWeapon::net_Spawn		(CSE_Abstract* DC)
 	iAmmoElapsed					= E->a_elapsed;
 	m_flagsAddOnState				= E->m_addon_flags.get();
 	m_ammoType						= E->ammo_type;
-	STATE = NEXT_STATE				= E->state;
+	SetState						(E->state);
+	SetNextState					(E->state);
 	
 	m_DefaultCartridge.Load(*m_ammoTypes[m_ammoType], u8(m_ammoType));	
 	if(iAmmoElapsed) 
@@ -493,8 +495,8 @@ void CWeapon::net_Export	(NET_Packet& P)
 
 	P.w_u8					(m_flagsAddOnState);
 	P.w_u8					((u8)m_ammoType);
-	P.w_u8					((u8)STATE);
-	P.w_u8					((u8)m_bZoomMode);	
+	P.w_u8					((u8)GetState());
+	P.w_u8					((u8)m_bZoomMode);
 }
 
 void CWeapon::net_Import	(NET_Packet& P)
@@ -655,17 +657,19 @@ void CWeapon::OnH_A_Chield		()
 
 void CWeapon::OnActiveItem ()
 {
-	inherited::OnActiveItem();
+	inherited::OnActiveItem		();
 	//если мы занружаемся и оружие было в руках
-	STATE = NEXT_STATE = eIdle;
-	if (m_pHUD) m_pHUD->Show();
+	SetState					(eIdle);
+	SetNextState				(eIdle);
+	if (m_pHUD) m_pHUD->Show	();
 }
 
 void CWeapon::OnHiddenItem ()
 {
 	inherited::OnHiddenItem();
 	if (m_pHUD)	m_pHUD->Hide ();
-	STATE						= NEXT_STATE = eHidden;
+	SetState					(eHidden);
+	SetNextState				(eHidden);
 }
 
 
@@ -1141,7 +1145,7 @@ void CWeapon::SwitchState(u32 S)
 {
 	if (OnClient()) return;
 
-	NEXT_STATE		= S;	// Very-very important line of code!!! :)
+	SetNextState		( S );	// Very-very important line of code!!! :)
 	if (CHudItem::object().Local() && !CHudItem::object().getDestroy()/* && (S!=NEXT_STATE)*/ 
 		&& m_pInventory && OnServer())	
 	{
@@ -1332,7 +1336,7 @@ bool CWeapon::ready_to_kill	() const
 {
 	return					(
 		!IsMisfire() && 
-		((STATE == eIdle) || (STATE == eFire) || (STATE == eFire2)) && 
+		((GetState() == eIdle) || (GetState() == eFire) || (GetState() == eFire2)) && 
 		GetAmmoElapsed()
 	);
 }

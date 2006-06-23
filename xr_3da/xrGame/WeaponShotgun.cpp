@@ -74,24 +74,24 @@ void CWeaponShotgun::Fire2Start ()
 	{
 		if (!IsWorking())
 		{
-			if (STATE==eReload)			return;
-			if (STATE==eShowing)		return;
-			if (STATE==eHiding)			return;
+			if (GetState()==eReload)		return;
+			if (GetState()==eShowing)		return;
+			if (GetState()==eHiding)		return;
 
 			if (!iAmmoElapsed)	
 			{
-				CWeapon::FireStart	();
-				SwitchState			(eMagEmpty);
+				CWeapon::FireStart			();
+				SwitchState					(eMagEmpty);
 			}
 			else					
 			{
-				CWeapon::FireStart	();
-				SwitchState			((iAmmoElapsed < iMagazineSize)?eFire:eFire2);
+				CWeapon::FireStart			();
+				SwitchState					((iAmmoElapsed < iMagazineSize)?eFire:eFire2);
 			}
 		}
 	}else{
 		if (!iAmmoElapsed)	
-			SwitchState			(eMagEmpty);
+			SwitchState						(eMagEmpty);
 	}
 }
 
@@ -118,7 +118,7 @@ void CWeaponShotgun::OnShotBoth()
 	AddShotEffector		();
 	
 	// анимация дуплета
-	m_pHUD->animPlay			(mhud_shot_boths[Random.randI(mhud_shot_boths.size())],FALSE,this);
+	m_pHUD->animPlay			(random_anim(mhud_shot_boths),FALSE,this,GetState());
 	
 	// Shell Drop
 	Fvector vel; 
@@ -180,7 +180,7 @@ bool CWeaponShotgun::Action			(s32 cmd, u32 flags)
 {
 	if(inherited::Action(cmd, flags)) return true;
 
-	if(	m_bTriStateReload && STATE==eReload &&
+	if(	m_bTriStateReload && GetState()==eReload &&
 		cmd==kWPN_FIRE && flags&CMD_START &&
 		m_sub_state==eSubstateReloadInProcess		)//остановить перезагрузку
 	{
@@ -203,10 +203,10 @@ bool CWeaponShotgun::Action			(s32 cmd, u32 flags)
 	return false;
 }
 
-void CWeaponShotgun::OnAnimationEnd() 
+void CWeaponShotgun::OnAnimationEnd(u32 state) 
 {
-	if(!m_bTriStateReload || STATE != eReload)
-		return inherited::OnAnimationEnd();
+	if(!m_bTriStateReload || state != eReload)
+		return inherited::OnAnimationEnd(state);
 
 	switch(m_sub_state){
 		case eSubstateReloadBegin:{
@@ -251,6 +251,8 @@ void CWeaponShotgun::OnStateSwitch	(u32 S)
 		return;
 	}
 
+	CWeapon::OnStateSwitch(S);
+
 	if( m_magazine.size() == (u32)iMagazineSize || !HaveCartridgeInInventory(1) ){
 			switch2_EndReload		();
 			m_sub_state = eSubstateReloadEnd;
@@ -270,7 +272,6 @@ void CWeaponShotgun::OnStateSwitch	(u32 S)
 			switch2_EndReload		();
 		break;
 	};
-	CWeapon::OnStateSwitch(S);
 }
 
 void CWeaponShotgun::switch2_StartReload()
@@ -296,15 +297,18 @@ void CWeaponShotgun::switch2_EndReload	()
 
 void CWeaponShotgun::PlayAnimOpenWeapon()
 {
-	m_pHUD->animPlay(mhud_open[Random.randI(mhud_open.size())],TRUE,this);
+	VERIFY(GetState()==eReload);
+	m_pHUD->animPlay(random_anim(mhud_open),TRUE,this,GetState());
 }
 void CWeaponShotgun::PlayAnimAddOneCartridgeWeapon()
 {
-	m_pHUD->animPlay(mhud_add_cartridge[Random.randI(mhud_add_cartridge.size())],TRUE,this);
+	VERIFY(GetState()==eReload);
+	m_pHUD->animPlay(random_anim(mhud_add_cartridge),TRUE,this,GetState());
 }
 void CWeaponShotgun::PlayAnimCloseWeapon()
 {
-	m_pHUD->animPlay(mhud_close[Random.randI(mhud_close.size())],TRUE,this);
+	VERIFY(GetState()==eReload);
+	m_pHUD->animPlay(random_anim(mhud_close),TRUE,this,GetState());
 }
 
 bool CWeaponShotgun::HaveCartridgeInInventory		(u8 cnt)
