@@ -166,7 +166,7 @@ void CTexture::Load		()
 	}
 
 	Preload							();
-
+#ifndef		DEDICATED_SERVER
 	// Check for OGM
 	string256 fn;
 	if (FS.exist(fn,"$game_textures$",*cName,".ogm")){
@@ -268,6 +268,7 @@ void CTexture::Load		()
 			flags.MemoryUsage		=	mem;
 		}
 	}
+#endif
 	PostLoad	()		;
 }
 

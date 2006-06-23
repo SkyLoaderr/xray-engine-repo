@@ -22,6 +22,7 @@ BOOL g_bLoaded = FALSE;
 
 BOOL CRenderDevice::Begin	()
 {
+#ifndef DEDICATED_SERVER
 	HW.Validate		();
 	HRESULT	_hr		= HW.pDevice->TestCooperativeLevel();
     if (FAILED(_hr))
@@ -46,6 +47,7 @@ BOOL CRenderDevice::Begin	()
 	if (HW.Caps.SceneMode)	overdrawBegin	();
 	FPU::m24r	();
 	g_bRendering = 	TRUE;
+#endif
 	return		TRUE;
 }
 
@@ -63,6 +65,8 @@ extern void CheckPrivilegySlowdown		( );
 
 void CRenderDevice::End		(void)
 {
+#ifndef DEDICATED_SERVER
+
 	VERIFY	(HW.pDevice);
 
 	if (HW.Caps.SceneMode)	overdrawEnd		();
@@ -92,6 +96,7 @@ void CRenderDevice::End		(void)
 	HRESULT _hr		= HW.pDevice->Present( NULL, NULL, NULL, NULL );
 	if				(D3DERR_DEVICELOST==_hr)	return;			// we will handle this later
 	R_ASSERT2		(SUCCEEDED(_hr),	"Presentation failed. Driver upgrade needed?");
+#endif
 }
 
 

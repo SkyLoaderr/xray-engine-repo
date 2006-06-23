@@ -6,6 +6,7 @@
 
 void CBackend::OnFrameEnd	()
 {
+#ifndef DEDICATED_SERVER
 	for (u32 stage=0; stage<HW.Caps.raster.dwStages; stage++)
 		CHK_DX(HW.pDevice->SetTexture(0,0));
 	CHK_DX				(HW.pDevice->SetStreamSource	(0,0,0,0));
@@ -13,15 +14,18 @@ void CBackend::OnFrameEnd	()
 	CHK_DX				(HW.pDevice->SetVertexShader	(0));
 	CHK_DX				(HW.pDevice->SetPixelShader		(0));
 	Invalidate			();
+#endif
 }
 
 void CBackend::OnFrameBegin	()
 {
+#ifndef DEDICATED_SERVER
 	PGO					(Msg("PGO:*****frame[%d]*****",Device.dwFrame));
 	Memory.mem_fill		(&stat,0,sizeof(stat));
 	Vertex.Flush		();
 	Index.Flush			();
 	set_Stencil			(FALSE);
+#endif
 }
 
 void CBackend::Invalidate	()
@@ -83,6 +87,7 @@ void	CBackend::set_ClipPlanes	(u32 _enable, Fplane*	_planes /*=NULL */, u32 coun
 	CHK_DX	(HW.pDevice->SetRenderState(D3DRS_CLIPPLANEENABLE,e_mask));
 }
 
+#ifndef DEDICATED_SREVER
 void	CBackend::set_ClipPlanes	(u32 _enable, Fmatrix*	_xform  /*=NULL */, u32 fmask/* =0xff */)
 {
 	if (0==HW.Caps.geometry.dwClipPlanes)	return;
@@ -152,3 +157,9 @@ void CBackend::set_Textures			(STextureList* _T)
 		CHK_DX							(HW.pDevice->SetTexture(_last_vs+256,NULL));
 	}
 }
+#else
+
+void	CBackend::set_ClipPlanes	(u32 _enable, Fmatrix*	_xform  /*=NULL */, u32 fmask/* =0xff */) {}
+void CBackend::set_Textures			(STextureList* _T) {}
+
+#endif
