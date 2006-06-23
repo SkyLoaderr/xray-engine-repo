@@ -32,6 +32,7 @@ void CPolterFlame::load(LPCSTR section)
 
 	m_length			= pSettings->r_float(section,"flame_length");
 	m_hit_value			= pSettings->r_float(section,"flame_hit_value");
+	m_hit_delay			= pSettings->r_u32(section,"flame_hit_delay");
 
 	m_count				= pSettings->r_u32(section,"flames_count");
 	m_delay				= pSettings->r_u32(section,"flames_delay");
@@ -56,7 +57,8 @@ void CPolterFlame::create_flame(const CObject *target_object)
 	element->time_started			= time();
 	element->sound.clone			(m_sound, st_Effect,SOUND_TYPE_WORLD);
 	element->sound.play_at_pos		(m_object,element->position);
-	element->particles_object		 = 0;
+	element->particles_object		= 0;
+	element->time_last_hit			= 0;
 
 	Fvector target_point			= get_head_position(const_cast<CObject*>(target_object));
 	element->target_dir.sub			(target_point, element->position);
@@ -116,6 +118,37 @@ void CPolterFlame::update_schedule()
 			break;
 		case eFire:		
 			if (elem->time_started + m_time_fire_play < time()) select_state(elem,eStop);
+			else {
+				
+				// check if we need test hit to enemy
+				if (elem->time_last_hit + m_hit_delay < time()) {
+					// test hit
+					collide::rq_result rq;
+					if (Level().ObjectSpace.RayPick(elem->position, elem->target_dir, m_length, collide::rqtBoth, rq, NULL)) {
+						if ((rq.O == elem->target_object) && (rq.range < m_length)) {
+							float		hit_value;
+							hit_value	= m_hit_value - m_hit_value * rq.range / m_length;
+
+							NET_Packet			P;
+							SHit				HS;
+							HS.GenHeader		(GE_HIT, elem->target_object->ID());	//					u_EventGen		(P,GE_HIT, element->target_object->ID());
+							HS.whoID			= (m_object->ID());						//					P.w_u16			(ID());
+							HS.weaponID			= (m_object->ID());						//					P.w_u16			(ID());
+							HS.dir				= (elem->target_dir);					//					P.w_dir			(element->target_dir);
+							HS.power			= (hit_value);							//					P.w_float		(m_flame_hit_value);
+							HS.boneID			= (BI_NONE);							//					P.w_s16			(BI_NONE);
+							HS.p_in_bone_space	= (Fvector().set(0.f,0.f,0.f));			//					P.w_vec3		(Fvector().set(0.f,0.f,0.f));
+							HS.impulse			= (0.f);								//					P.w_float		(0.f);
+							HS.hit_type			= (ALife::eHitTypeBurn);				//					P.w_u16			(u16(ALife::eHitTypeBurn));
+
+							HS.Write_Packet			(P);
+							m_object->u_EventSend	(P);
+
+							elem->time_last_hit	= time();
+						}
+					}
+				}
+			}
 			break;
 		case eStop:
 			xr_delete(*it);

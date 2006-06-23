@@ -153,6 +153,8 @@ class CPolterFlame : public CPolterSpecialAbility {
 
 	float					m_length;
 	float					m_hit_value;
+	u32						m_hit_delay;
+
 	u32						m_count;
 	u32						m_delay;	// between 2 flames
 
@@ -179,6 +181,7 @@ public:
 		ref_sound			sound;
 		CParticlesObject	*particles_object;
 		EFlameState			state;
+		u32					time_last_hit;
 	};
 
 
