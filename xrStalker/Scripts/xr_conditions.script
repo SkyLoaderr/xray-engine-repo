@@ -654,7 +654,7 @@ end
 
 function gar_bandits_seryi_die()
 	if db.actor then
-		if xr_gulag.getGulagPopulation("gar_seryi_bandits") == 0 and db.actor:has_info("gar_seryi_open_fire") then
+		if xr_gulag.getGulagPopulation("gar_seryi_bandits") == 0 then
 			return true			
 		else
 			return false
@@ -665,15 +665,7 @@ function gar_bandits_seryi_die()
 end
 
 function gar_bandits_seryi_not_die()
-	if db.actor then
-		if xr_gulag.getGulagPopulation("gar_seryi_bandits") > 0 then
-			return true			
-		else
-			return false
-		end
-	else
-		return false
-	end
+	return not xr_conditions.gar_bandits_seryi_die()
 end
 
 
