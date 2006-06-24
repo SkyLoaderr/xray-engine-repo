@@ -74,21 +74,6 @@ public:
 extern	BOOL	g_bEnableMPL;	//.
 void CLevel::IR_OnKeyboardPress	(int key)
 {
-	//. dbgmp
-	if (DIK_NUMPADENTER==key)
-	{
-		if (g_bEnableMPL)	{
-			// turn off
-//			Console->Execute("r1_dlights_clip 30");
-//			g_bEnableMPL	= FALSE	;
-		} else {
-			// turn on
-//			Console->Execute("r1_dlights_clip 150");
-//			g_bEnableMPL	= TRUE	;
-		}
-	}
-	//. dbgmp end
-
 	if (DIK_F10 == key)		vtune.enable();
 	if (DIK_F11 == key)		vtune.disable();
 
@@ -399,6 +384,7 @@ void CLevel::IR_OnMouseHold(int btn)
 void CLevel::IR_OnMouseMove( int dx, int dy )
 {
 	if(g_bDisableAllInput)						return;
+	if (Device.Pause())							return;
 	if (pHUD->GetUI()->IR_OnMouseMove(dx,dy))	return;
 	if (CURRENT_ENTITY())		{
 		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CURRENT_ENTITY()));
