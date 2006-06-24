@@ -9,7 +9,8 @@
 //#include "../object_factory.h"
 #include "UICellItemFactory.h"
 #include <dinput.h>
-
+#include "../HUDManager.h"
+//#include "../ui_base.h"
 
 extern CRestrictions g_mp_restrictions;
 //using namespace InventoryUtilities;
@@ -52,6 +53,7 @@ CUIBagWnd::CUIBagWnd(){
 
 	m_bIgnoreRank					= false;
 	m_bIgnoreMoney					= false;
+	subSection_group3[0] = subSection_group3[1] = subSection_group3[2] = subSection_group3[3] = 0;
 }
 
 CUIBagWnd::~CUIBagWnd(){
@@ -176,6 +178,8 @@ DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID clsid);
 
 void CUIBagWnd::FillUpGroup(const u32 group)
 {
+	string64 tmp_str;
+
 	for (WPN_SECT_NAMES::size_type j = 0; j < m_wpnSectStorage[group].size(); ++j)
 	{
 		LPCSTR sect					= m_wpnSectStorage[group][j].c_str();
@@ -186,12 +190,12 @@ void CUIBagWnd::FillUpGroup(const u32 group)
 		pIItem->object().Load		(sect);
 		VERIFY						(pIItem);
 		CUICellItem*				itm = create_cell_item(pIItem);
-		itm->m_pData				= pIItem;
+//		itm->m_pData				= pIItem;
 
-		//CUICellItem* pNewDDItem = xr_new<CUICellItem>();
-		//FillUpItem(pNewDDItem, m_wpnSectStorage[group][j].c_str());
-		//pNewDDItem->SetSectionGroupID(group);
-		//pNewDDItem->SetPosInSectionsGroup(static_cast<u32>(j));
+		itoa						(int(j+1), tmp_str ,10);
+		CBuyItemCustomDrawCell* p	= xr_new<CBuyItemCustomDrawCell>(tmp_str,UI()->Font()->pFontLetterica16Russian);
+		itm->SetCustomDraw			(p);		
+
 		PutItemToGroup(itm, group);
 		m_allItems.push_back(itm);		
 	}
@@ -201,7 +205,7 @@ void CUIBagWnd::PutItemToGroup(CUICellItem* pItem, int iGroup){
 	int iActiveSection = -1;
 	shared_str weapon_class;
 	CInventoryItem* pIItem;
-
+	string64 tmp_str;
 
 	switch (iGroup)
 	{
@@ -237,13 +241,17 @@ void CUIBagWnd::PutItemToGroup(CUICellItem* pItem, int iGroup){
 
 	m_groups[iActiveSection].SetItem(pItem);	
 
-	//if ( 2 == iGroup)
-	//{
-	//	++subSection_group3[iActiveSection - GROUP_31];
-	//	pDDItem->SetPosInSubSection(subSection_group3[iActiveSection - GROUP_31]);
-	//}
-	//else
-	//	pDDItem->SetPosInSubSection(pDDItem->GetPosInSectionsGroup());
+	if ( 2 == iGroup)
+	{
+		++subSection_group3[iActiveSection - GROUP_31];
+		
+		itoa						(subSection_group3[iActiveSection - GROUP_31], tmp_str ,10);
+		CBuyItemCustomDrawCell* p	= xr_new<CBuyItemCustomDrawCell>(tmp_str,UI()->Font()->pFontLetterica16Russian);
+		pItem->SetCustomDraw			(p);
+	}
+	else if (3 == iGroup){
+        pItem->SetCustomDraw			(NULL);
+	}
 }
 
 CUIDragDropListEx*	CUIBagWnd::GetItemList(CUICellItem* pItem){

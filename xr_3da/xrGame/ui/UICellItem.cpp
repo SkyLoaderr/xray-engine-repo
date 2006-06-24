@@ -124,6 +124,12 @@ void CUICellItem::UpdateItemText()
 	SetText				(str);
 }
 
+void CUICellItem::SetCustomDraw			(ICustomDrawCell* c){
+	if (m_custom_draw)
+		xr_delete(m_custom_draw);
+	m_custom_draw = c;
+}
+
 CUIDragItem::CUIDragItem(CUICellItem* parent)
 {
 	m_back_list						= NULL;
@@ -198,3 +204,4 @@ Fvector2 CUIDragItem::GetPosition()
 {
 	return Fvector2().add(m_pos_offset, GetUICursor()->GetPos());
 }
+

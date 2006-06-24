@@ -101,5 +101,5 @@ protected:
 	CONFORMITY_TABLE										m_ConformityTable;
 
 	CUIDragDropListEx m_groups[NUMBER_OF_GROUPS];
-//	int subSection_group3[4];
+	int subSection_group3[4];
 };

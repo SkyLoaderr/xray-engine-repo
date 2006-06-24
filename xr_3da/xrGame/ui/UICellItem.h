@@ -47,7 +47,7 @@ public:
 	virtual		void		InitInternals			(); //tmp
 	CUIDragDropListEx*		OwnerList				()						{return m_pParentList;}
 				void		SetOwnerList			(CUIDragDropListEx* p);
-				void		SetCustomDraw			(ICustomDrawCell* c)	{m_custom_draw = c;}
+				void		SetCustomDraw			(ICustomDrawCell* c);
 				void*		m_pData;
 };
 
