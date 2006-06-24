@@ -1999,6 +1999,9 @@
 					RelativePath=".\Config\scripts\gar_dm_novice.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\scripts\non_alife_unit.ltx">
+				</File>
+				<File
 					RelativePath=".\config\scripts\postprocess.ltx">
 				</File>
 				<File
