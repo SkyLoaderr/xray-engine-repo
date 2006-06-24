@@ -709,6 +709,9 @@
 	<character id="sar_monolith_specnaz">
 		<class>sar_monolith_specnaz</class>
 	</character>
+	<character id="sar_monolith_guard">
+		<class>sar_monolith_exo</class>
+	</character>
 	<character id="sar_monolith_exo">
 		<class>sar_monolith_exo</class>
 	</character>
