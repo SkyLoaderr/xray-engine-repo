@@ -60,7 +60,7 @@
 		<rank>900</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\ucheniy\ucheniy_1</visual>
+		<visual>actors\ucheniy\ucheniy_1_strong</visual>
 		<snd_config>characters_voice\human_01\</snd_config>
 		
 		<supplies>
