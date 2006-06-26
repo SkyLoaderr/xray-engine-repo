@@ -1,26 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-    <string id="pri_followers_dlg_0">
-        <text>Поговори с нашим главным. Он лучше знает что к чему.</text>
-    </string>
-    <string id="pri_followers_dlg_1">
-        <text>Хорошо.</text>
-    </string>
-    <string id="pri_followers_start_dlg_11">
-        <text>Здорово, Меченый. Мы тут с ребятами собираемся пробраться к станции. Говорят там есть много крутых вещичек. Можно неплохо заработать. У нас есть карта и я знаю безопасный путь. Ты с нами?</text>
-    </string>
-    <string id="pri_followers_start_dlg_111">
-        <text>Да. Что надо делать?</text>
-    </string>
-    <string id="pri_followers_start_dlg_1111">
-        <text>Значит так. Я веду группу. Вперед не лезь, а то не сможем тебя прикрыть. Смотри по сторонам и в особенности прикрывай нашего гранатометчика Сашу. Он наша последняя надежда в случае больших неприятностей. Переговариваться будем только по рации. Плюс мы еще хакнули волну военных - можно будет прослушивать. И еще одно. Если уйдешь от нашей группы далеко - будешь идти сам. Все понятно?</text>
-    </string>
-    <string id="pri_followers_start_dlg_11111">
-        <text>Да, я готов.</text>
-    </string>
-    <string id="pri_followers_start_dlg_112">
-        <text>Нет, сам как-нибудь управлюсь.</text>
-    </string>
     <string id="pri_followers_start_dlg_21">
         <text>Выдвигаемся вдоль по улице. В случае чего - прикроешь.</text>
     </string>
@@ -33,10 +12,10 @@
     <string id="pri_followers_start_dlg_311">
         <text>Спасибо.</text>
     </string>
-    <string id="pri_followers_start_dlg_4">
-        <text>Возьми возле ящика ракеты для гранатомета. Могут пригодиться в дороге.</text>
-    </string>
     <string id="pri_followers_start_dlg_41">
-        <text>Хорошо. Идем.</text>
+        <text>Спасибо за помощь. Удачи.</text>
+    </string>
+    <string id="pri_followers_start_dlg_411">
+        <text>Пока.</text>
     </string>
 </string_table>
