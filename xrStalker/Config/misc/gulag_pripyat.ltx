@@ -371,7 +371,7 @@ on_info = {=killed_by_actor} %+pri_followers_actor_enemy +pri_bomber_dead%, %+pr
 
 [logic@pri_followers_bomber_wait]
 active              = remark@pri_followers_bomber_wait
-on_death            = followers_death ;death@bomber
+;on_death            = followers_death ;death@bomber
 on_hit              = followers_hit
 ;combat_ignore       = combat_ignore
 
@@ -393,7 +393,7 @@ danger              = danger@ignore
 ;--- BOMBER: WAVE1 ------------------------------------------------------------------------------
 [logic@pri_followers_bomber_wave1]
 active              = walker@pri_followers_bomber_wave1_wait
-on_death            = death@bomber
+;on_death            = death@bomber
 on_hit              = followers_hit
 ;combat_ignore       = combat_ignore
 
@@ -420,7 +420,7 @@ combat_ignore_cond  = {!check_fighting(808) !fighting_actor} ;always
 ;--- BOMBER: WAVE2 ------------------------------------------------------------------------------
 [logic@pri_followers_bomber_wave2]
 active              = walker@pri_followers_bomber_wave2_wait
-on_death            = death@bomber
+;on_death            = death@bomber
 on_hit              = followers_hit
 ;combat_ignore       = combat_ignore
 
@@ -447,7 +447,7 @@ combat_ignore_cond  = {!fighting_actor} ;!check_fighting(804:805) always
 ;--- BOMBER: WAVE3 ------------------------------------------------------------------------------
 [logic@pri_followers_bomber_wave3]
 active              = walker@pri_followers_bomber_wave3_wait
-on_death            = death@bomber
+;on_death            = death@bomber
 on_hit              = followers_hit
 ;combat_ignore       = combat_ignore
 
@@ -495,7 +495,7 @@ combat_ignore_cond  = {!fighting_actor}
 ;--- BOMBER: WAVE4 ------------------------------------------------------------------------------
 [logic@pri_followers_bomber_wave4]
 active              = walker@pri_followers_bomber_wave4_wait
-on_death            = death@bomber
+;on_death            = death@bomber
 on_hit              = followers_hit
 ;combat_ignore       = combat_ignore
 
@@ -522,7 +522,7 @@ on_signal           = arrived | {-pri_wave4_start} %+pri_wave4_start%
 ;--- BOMBER: WAVE5 ------------------------------------------------------------------------------
 [logic@pri_followers_bomber_wave5]
 active              = walker@pri_followers_bomber_wave5_wait
-on_death            = death@bomber
+;on_death            = death@bomber
 on_hit              = followers_hit
 ;combat_ignore       = combat_ignore
 
@@ -549,7 +549,7 @@ on_signal           = arrived | {-pri_wave5_start} %+pri_wave5_start%
 ;--- BOMBER: WAVE6 ------------------------------------------------------------------------------
 [logic@pri_followers_bomber_wave6]
 active              = walker@pri_followers_bomber_wave6_wait
-on_death            = death@bomber
+;on_death            = death@bomber
 on_hit              = followers_hit
 ;combat_ignore       = combat_ignore
 
@@ -574,7 +574,7 @@ on_signal           = arrived | {-pri_wave6_start} %+pri_wave6_start%
 ;--- BOMBER: WAVE7 ------------------------------------------------------------------------------
 [logic@pri_followers_bomber_wave7]
 active              = walker@pri_followers_bomber_wave7_wait
-on_death            = death@bomber
+;on_death            = death@bomber
 on_hit              = followers_hit
 ;combat_ignore       = combat_ignore
 
@@ -602,7 +602,7 @@ combat_ignore_cond  = {-pri_wave7_start}
 [logic@pri_followers_bomber_wave8]
 active              = walker@pri_followers_bomber_wave8_wait
 on_hit              = followers_hit
-on_death            = followers_death
+;on_death            = followers_death
 
 [walker@pri_followers_bomber_wave8_wait]
 path_walk           = wave8_bomber_walk1
