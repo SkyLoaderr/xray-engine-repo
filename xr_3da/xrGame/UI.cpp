@@ -20,7 +20,8 @@ CUI::CUI(CHUDManager* p)
 	m_Parent						= p;
 	pUIGame							= 0;
 
-	ShowIndicators					();
+	ShowGameIndicators				();
+	ShowCrosshair					();
 }
 //--------------------------------------------------------------------
 
@@ -46,7 +47,7 @@ void CUI::UIOnFrame()
 	if (m_Actor){
 		
 		//update windows
-		if( IndicatorsShown() )
+		if( GameIndicatorsShown() )
 		{
 			UIMainIngameWnd->SetFont(m_Parent->Font().pFontMedium);
 			UIMainIngameWnd->Update	();
@@ -54,7 +55,7 @@ void CUI::UIOnFrame()
 	}
 
 	// out GAME-style depend information
-	if( IndicatorsShown() )
+	if( GameIndicatorsShown() )
 	{
 		if (pUIGame) pUIGame->OnFrame	();
 	}
@@ -64,7 +65,7 @@ void CUI::UIOnFrame()
 
 bool CUI::Render()
 {
-	if( IndicatorsShown() )
+	if( GameIndicatorsShown() )
 	{
 		if (pUIGame) 
 			pUIGame->Render	();
@@ -74,7 +75,7 @@ bool CUI::Render()
 	if (m_Actor)
 	{
 		//Draw main window and its children
-		if( IndicatorsShown() )
+		if( GameIndicatorsShown() )
 		{
 			UIMainIngameWnd->Draw();
 			m_pMessagesWnd->Draw();
@@ -187,19 +188,27 @@ void CUI::AddInfoMessage			(LPCSTR message)
 	UIMainIngameWnd->AddInfoMessage	(message);
 }
 
-void CUI::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
+void CUI::ShowGameIndicators()
 {
-	CDialogHolder::StartStopMenu(pDialog,bDoHideIndicators);
+	m_bShowGameIndicators	= true;
 }
 
-void CUI::ShowIndicators()
+void CUI::HideGameIndicators()					
 {
-	m_bShowIndicators	= true;
+	m_bShowGameIndicators	= false;
+}
+
+void CUI::ShowCrosshair()
+{
 	psHUD_Flags.set		(HUD_CROSSHAIR_RT, TRUE);
 }
 
-void CUI::HideIndicators()					
+void CUI::HideCrosshair()
 {
-	m_bShowIndicators	= false;
 	psHUD_Flags.set		(HUD_CROSSHAIR_RT, FALSE);
+}
+
+bool CUI::CrosshairShown()
+{
+	return !!psHUD_Flags.test	(HUD_CROSSHAIR_RT);
 }

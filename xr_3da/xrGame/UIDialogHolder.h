@@ -13,7 +13,8 @@ public:
 
 class recvItem{
 public:
-	enum{eCrosshair = (1<<0),};
+	enum{	eCrosshair		= (1<<0),
+			eIndicators		= (1<<1),};
 	recvItem		(CUIDialogWnd*);
 	CUIDialogWnd*	m_item;
 	Flags8			m_flags;

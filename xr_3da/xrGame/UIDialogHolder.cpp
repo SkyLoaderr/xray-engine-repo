@@ -48,14 +48,20 @@ CDialogHolder::~CDialogHolder()
 
 void CDialogHolder::StartMenu (CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
-	R_ASSERT( !pDialog->IsShown() );
+	R_ASSERT						( !pDialog->IsShown() );
 
 	AddDialogToRender				(pDialog);
 	SetMainInputReceiver			(pDialog, false);
-	bool bCrosshairVisibleNow		= !!psHUD_Flags.test(HUD_CROSSHAIR_RT);
-	m_input_receivers.back().m_flags.set(recvItem::eCrosshair, bCrosshairVisibleNow);
+	bool b							= !!psHUD_Flags.test(HUD_CROSSHAIR_RT);
+	m_input_receivers.back().m_flags.set(recvItem::eCrosshair, b);
+
+	b								= HUD().GetUI()->GameIndicatorsShown();
+	m_input_receivers.back().m_flags.set(recvItem::eIndicators, b);
 	
-	if(bDoHideIndicators)			psHUD_Flags.set(HUD_CROSSHAIR_RT, FALSE);
+	if(bDoHideIndicators){
+		psHUD_Flags.set				(HUD_CROSSHAIR_RT, FALSE);
+		HUD().GetUI					()->HideGameIndicators();
+	}
 
 	pDialog->SetHolder				(this);
 	pDialog->Show					();
@@ -79,16 +85,21 @@ void CDialogHolder::StopMenu (CUIDialogWnd* pDialog)
 
 	if( MainInputReceiver()==pDialog )
 	{
-		psHUD_Flags.set(HUD_CROSSHAIR_RT, m_input_receivers.back().m_flags.test(recvItem::eCrosshair));
-		RemoveDialogToRender(pDialog);
-		SetMainInputReceiver(NULL,false);
-		pDialog->SetHolder(NULL);
-		pDialog->Hide();
+		bool b					= !!m_input_receivers.back().m_flags.test(recvItem::eCrosshair);
+		psHUD_Flags.set			(HUD_CROSSHAIR_RT, b);
+		b						= !!m_input_receivers.back().m_flags.test(recvItem::eIndicators);
+		if(b)					HUD().GetUI()->ShowGameIndicators();
+		else					HUD().GetUI()->HideGameIndicators();
+
+		RemoveDialogToRender	(pDialog);
+		SetMainInputReceiver	(NULL,false);
+		pDialog->SetHolder		(NULL);
+		pDialog->Hide			();
 	}else{
-		RemoveDialogToRender(pDialog);
-		SetMainInputReceiver(pDialog, true);
-		pDialog->SetHolder(NULL);
-		pDialog->Hide();
+		RemoveDialogToRender	(pDialog);
+		SetMainInputReceiver	(pDialog, true);
+		pDialog->SetHolder		(NULL);
+		pDialog->Hide			();
 	}
 
 	if(!MainInputReceiver() || !MainInputReceiver()->NeedCursor() )

@@ -31,10 +31,8 @@ public:
 
 class CUI			: public CDialogHolder
 {
-	bool					m_bShowIndicators;
 	CUIGameCustom*			pUIGame;
-
-	bool					m_bCrosshair;
+	bool					m_bShowGameIndicators;
 
 public:
 	CHUDManager*			m_Parent;
@@ -58,13 +56,14 @@ public:
 	CUIGameCustom*			UIGame					()					{return pUIGame;}
 
 
-	void					ShowIndicators			();
-	void					HideIndicators			();
-	bool					IndicatorsShown			()					{return m_bShowIndicators;};
+	void					ShowGameIndicators		();
+	void					HideGameIndicators		();
+	bool					GameIndicatorsShown		()					{return m_bShowGameIndicators;};
+
+	void					ShowCrosshair			();
+	void					HideCrosshair			();
+	bool					CrosshairShown			();
 
 	void					AddInfoMessage			(LPCSTR message);
-
-	virtual void			StartStopMenu			(CUIDialogWnd* pDialog, bool bDoHideIndicators);
-
 };
 

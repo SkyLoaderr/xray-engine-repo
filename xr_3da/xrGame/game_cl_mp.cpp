@@ -568,9 +568,8 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 
 			if (Level().pHUD && HUD().GetUI())
 			{
-				HUD().GetUI()->ShowIndicators();
+				HUD().GetUI()->ShowGameIndicators();
 			};
-//			OnSwitchPhase_InProgress();			
 		}break;
 	case GAME_PHASE_PENDING:
 		{
@@ -581,7 +580,7 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 		{
 			if (Level().pHUD && HUD().GetUI())
 			{
-				HUD().GetUI()->HideIndicators();
+				HUD().GetUI()->HideGameIndicators();
 			};
 			HideMessageMenus();
 		}break;

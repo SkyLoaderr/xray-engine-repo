@@ -240,13 +240,15 @@ CUIDialogWnd* main_input_receiver()
 }
 void hide_indicators()
 {
-	HUD().GetUI()->HideIndicators();
+	HUD().GetUI()->HideGameIndicators();
+	HUD().GetUI()->HideCrosshair();
 //.	psHUD_Flags.set(HUD_CROSSHAIR_RT, FALSE);
 }
 
 void show_indicators()
 {
-	HUD().GetUI()->ShowIndicators();
+	HUD().GetUI()->ShowGameIndicators();
+	HUD().GetUI()->ShowCrosshair();
 //.	psHUD_Flags.set(HUD_CROSSHAIR_RT, TRUE);
 }
 
