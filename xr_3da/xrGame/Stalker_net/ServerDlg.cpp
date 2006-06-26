@@ -567,7 +567,7 @@ void CServerDlg::OnBnClickedStartServer()
 //	-noprefetch
 	char cmdline[4096];
 	sprintf(cmdline, "%sxr_3da.exe %s%s%s%s%s%s -external -nocache -start Server(%s/%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s) client(localhost%s)", 
-			(iDedicated == 1) ? "dedicated\" : "",
+			(iDedicated == 1) ? "dedicated\\" : "",
 			//---------------------------------
 			(iCatchInput == 1) ? "-i " : "", 
 			(iBuild == 1) ? "-build " : "",
