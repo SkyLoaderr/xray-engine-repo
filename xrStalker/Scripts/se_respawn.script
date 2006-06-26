@@ -138,7 +138,7 @@ function r_spawns( spawn_ini, section, line, sectSpawnProps)
 							end	
 						end
                         if custom_data_ltx:line_exist("smart_terrains", "respawn_check") then
-                            if r_str(custom_data_ltx, "smart_terrains", "none") == "false" then
+                            if r_str(custom_data_ltx, "smart_terrains", "respawn_check") == "false" then
                                 check = false
                             end
                         end                        
