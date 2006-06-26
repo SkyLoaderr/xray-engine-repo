@@ -48,6 +48,7 @@ public:
 
 	virtual bool 			IsLimping				() const;
 
+	virtual void			ChangeSatiety			(float value)		{};
 	void 					ChangeHealth			(float value);
 	void 					ChangePower				(float value);
 	void 					ChangeRadiation			(float value);
@@ -115,6 +116,7 @@ protected:
 	float m_fEntityMorale;			//мораль
 
 	//максимальные величины
+	//	float m_fSatietyMax;
 	float m_fPowerMax;
 	float m_fRadiationMax;
 	float m_fPsyHealthMax;

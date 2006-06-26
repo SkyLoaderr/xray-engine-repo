@@ -18,20 +18,17 @@ class CActorCondition: public CEntityCondition {
 private:
 	typedef CEntityCondition inherited;
 	enum {	eCriticalPowerReached			=(1<<0),
-//			eCriticalMaxPowerReached		=(1<<1),
+			eCriticalMaxPowerReached		=(1<<1),
 			eCriticalBleedingSpeed			=(1<<2),
-//			eCriticalSatietyReached			=(1<<3),
+			eCriticalSatietyReached			=(1<<3),
 			eCriticalRadiationReached		=(1<<4),
 			eWeaponJammedReached			=(1<<5),
 			};
 	Flags16											m_condition_flags;
 private:
 	CActor*											m_object;
-/*
-	CScriptCallbackEx<LPCSTR>*						m_can_sleep_callback;
-	CScriptCallbackEx<LPCSTR>*						m_get_sleep_video_name_callback;
-*/
 	void				UpdateTutorialThresholds	();
+	void 				UpdateSatiety				();
 public:
 						CActorCondition				(CActor *object);
 	virtual				~CActorCondition			(void);
@@ -42,15 +39,9 @@ public:
 	virtual CWound*		ConditionHit				(SHit* pHDS);
 	virtual void		UpdateCondition				();
 
-	virtual void 		ChangeAlcohol			(float value);
+	virtual void 		ChangeAlcohol				(float value);
+	virtual void 		ChangeSatiety				(float value);
 
-/*
-	bool				IsSleeping					() {return m_bIsSleeping;}
-	bool						AllowSleep			();
-	ACTOR_DEFS::EActorSleep		CanSleepHere		();
-	ACTOR_DEFS::EActorSleep		GoSleep				(ALife::_TIME_ID sleep_time, bool without_check = false);
-			void				Awoke				();
-*/
 	// хромание при потере сил и здоровья
 	virtual	bool		IsLimping					() const;
 	virtual bool		IsCantWalk					() const;
@@ -62,6 +53,8 @@ public:
 			
 			float	xr_stdcall	GetAlcohol			()	{return m_fAlcohol;}
 			float	xr_stdcall	GetPsy				()	{return 1.0f-GetPsyHealth();}
+			float				GetSatiety			()  {return m_fSatiety;}
+
 public:
 	IC		CActor		&object						() const
 	{
@@ -71,14 +64,16 @@ public:
 	virtual void			save					(NET_Packet &output_packet);
 	virtual void			load					(IReader &input_packet);
 
-//	CUIActorSleepVideoPlayer*	m_actor_sleep_wnd;
-
 protected:
 	float m_fAlcohol;
-
 	float m_fV_Alcohol;
-
-//	float m_fPowerLeakSpeed;
+//--
+	float m_fSatiety;
+	float m_fV_Satiety;
+	float m_fV_SatietyPower;
+	float m_fV_SatietyHealth;
+//--
+	float m_fPowerLeakSpeed;
 
 	float m_fJumpPower;
 	float m_fStandPower;
@@ -90,10 +85,6 @@ protected:
 	float m_fAccelK;
 	float m_fSprintK;
 
-
-//	bool m_bIsSleeping;
-//	SConditionChangeV m_change_v_sleep;
-//	float m_fK_SleepMaxPower;
 
 	mutable bool m_bLimping;
 	mutable bool m_bCantWalk;

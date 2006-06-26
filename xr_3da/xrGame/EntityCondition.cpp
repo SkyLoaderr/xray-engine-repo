@@ -13,6 +13,7 @@
 #define MAX_HEALTH 1.0f
 #define MIN_HEALTH -0.01f
 
+
 #define MAX_POWER 1.0f
 #define MAX_RADIATION 1.0f
 #define MAX_PSY_HEALTH 1.0f
@@ -145,6 +146,8 @@ void CEntityCondition::ChangePower(float value)
 	m_fDeltaPower += value;
 }
 
+
+
 void CEntityCondition::ChangeRadiation(float value)
 {
 	m_fDeltaRadiation += value;
@@ -216,7 +219,6 @@ void CEntityCondition::UpdateConditionTime()
 		m_fDeltaRadiation		= 0;
 		m_fDeltaCircumspection	= 0;
 		m_fDeltaEntityMorale	= 0;
-
 	}
 
 	m_iLastTimeCalled			= _cur_time;
@@ -262,7 +264,6 @@ void CEntityCondition::UpdateCondition()
 
 	health()					+= m_fDeltaHealth;
 	m_fPower					+= m_fDeltaPower;
-	m_fRadiation				+= m_fDeltaRadiation;
 	m_fPsyHealth				+= m_fDeltaPsyHealth;
 	m_fEntityMorale				+= m_fDeltaEntityMorale;
 
@@ -456,7 +457,6 @@ void CEntityCondition::UpdatePsyHealth(float k)
 	}
 }
 
-
 void CEntityCondition::UpdateRadiation(float k)
 {
 	if(m_fRadiation>0)
@@ -538,6 +538,5 @@ void CEntityCondition::SConditionChangeV::load(LPCSTR sect, LPCSTR prefix)
 	m_fV_PsyHealth			= pSettings->r_float(sect,strconcat(str,"psy_health_v",prefix));	
 	m_fV_Bleeding			= pSettings->r_float(sect,strconcat(str,"bleeding_v",prefix));
 	m_fV_WoundIncarnation	= pSettings->r_float(sect,strconcat(str,"wound_incarnation_v",prefix));
-
 	m_fV_HealthRestore		= READ_IF_EXISTS(pSettings,r_float,sect, strconcat(str,"health_restore_v",prefix),0.0f);
 }

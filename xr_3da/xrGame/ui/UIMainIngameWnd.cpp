@@ -91,9 +91,6 @@ const u32	g_clWhite					= 0xffffffff;
 
 #define				MAININGAME_XML				"maingame.xml"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction//////////////////////////////////////////////////////////////////////
-
 CUIMainIngameWnd::CUIMainIngameWnd()
 {
 	m_pActor					= NULL;
@@ -111,7 +108,6 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	m_pMPLogWnd					= NULL;	
 }
 
-//////////////////////////////////////////////////////////////////////////
 #include "UIProgressShape.h"
 extern CUIProgressShape* g_MissileForceShape;
 
@@ -213,8 +209,8 @@ void CUIMainIngameWnd::Init()
 	// «агружаем иконки 
 	if(IsGameTypeSingle())
 	{
-//		xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
-//		UIStarvationIcon.Show(false);
+		xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
+		UIStarvationIcon.Show(false);
 
 		xml_init.InitStatic(uiXml, "psy_health_static", 0, &UIPsyHealthIcon);
 		UIPsyHealthIcon.Show(false);
@@ -246,7 +242,7 @@ void CUIMainIngameWnd::Init()
 		"jammed",
 		"radiation",
 		"wounds",
-//		"starvation",
+		"starvation",
 		"fatigue",
 		"invincible"
 	};
@@ -630,6 +626,9 @@ void CUIMainIngameWnd::Update()
 			if (m_pWeapon)
 				value = 1 - m_pWeapon->GetCondition();
 			break;
+		case ewiStarvation:
+			value = 1 - m_pActor->conditions().GetSatiety();
+			break;		
 		case ewiPsyHealth:
 			value = 1 - m_pActor->conditions().GetPsyHealth();
 			break;
@@ -640,17 +639,11 @@ void CUIMainIngameWnd::Update()
 		xr_vector<float>::reverse_iterator	rit;
 
 		// —начала провер€ем на точное соответсвие
-		rit  = std::find(m_Thresholds[i].rbegin(),
-						 m_Thresholds[i].rend(),
-						 value);
+		rit  = std::find(m_Thresholds[i].rbegin(), m_Thresholds[i].rend(), value);
 
 		// ≈сли его нет, то берем последнее меньшее значение ()
 		if (rit == m_Thresholds[i].rend())
-		{
-			rit = std::find_if(m_Thresholds[i].rbegin(),
-						m_Thresholds[i].rend(),
-						std::bind2nd(std::less<float>(), value));
-		}
+			rit = std::find_if(m_Thresholds[i].rbegin(), m_Thresholds[i].rend(), std::bind2nd(std::less<float>(), value));
 
 		// ћинимальное и максимальное значени€ границы
 		float min = m_Thresholds[i].front();
@@ -1168,6 +1161,9 @@ void CUIMainIngameWnd::SetWarningIconColor(EWarningIcons icon, const u32 cl)
 	case ewiWound:
 		SetWarningIconColor		(&UIWoundIcon, cl);
 		if (bMagicFlag) break;
+	case ewiStarvation:
+		SetWarningIconColor		(&UIStarvationIcon, cl);
+		if (bMagicFlag) break;	
 	case ewiPsyHealth:
 		SetWarningIconColor		(&UIPsyHealthIcon, cl);
 		if (bMagicFlag) break;
@@ -1189,7 +1185,6 @@ void CUIMainIngameWnd::TurnOffWarningIcon(EWarningIcons icon)
 	SetWarningIconColor(icon, 0x00ffffff);
 }
 
-//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::SetFlashIconState_(EFlashingIcons type, bool enable)
 {
@@ -1198,8 +1193,6 @@ void CUIMainIngameWnd::SetFlashIconState_(EFlashingIcons type, bool enable)
 	R_ASSERT2(icon != m_FlashingIcons.end(), "Flashing icon with this type not existed");
 	icon->second->Show(enable);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::InitFlashingIcons(CUIXml* node)
 {
@@ -1232,8 +1225,6 @@ void CUIMainIngameWnd::InitFlashingIcons(CUIXml* node)
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIMainIngameWnd::DestroyFlashingIcons()
 {
 	for (FlashingIcons_it it = m_FlashingIcons.begin(); it != m_FlashingIcons.end(); ++it)
@@ -1245,8 +1236,6 @@ void CUIMainIngameWnd::DestroyFlashingIcons()
 	m_FlashingIcons.clear();
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIMainIngameWnd::UpdateFlashingIcons()
 {
 	for (FlashingIcons_it it = m_FlashingIcons.begin(); it != m_FlashingIcons.end(); ++it)
@@ -1254,8 +1243,6 @@ void CUIMainIngameWnd::UpdateFlashingIcons()
 		it->second->Update();
 	}
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::AnimateContacts(bool b_snd)
 {
