@@ -10,38 +10,27 @@
                 <text>pri_followers_start_dlg_211</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
-            <phrase id="3">
+            <phrase id="0">
                 <text></text>
-                <precondition>is_not_wounded</precondition>
-                <dont_has_info>pri_followers_leader_give_info</dont_has_info>
-                <has_info>pri_wave7_end</has_info>
-                <has_info>pri_followers_start</has_info>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>pri_followers_start_dlg_31</text>
-                <give_info>pri_show_zones</give_info>
-                <give_info>pri_followers_leader_give_info</give_info>
-                <next>311</next>
-            </phrase>
-            <phrase id="311">
-                <text>pri_followers_start_dlg_311</text>
-                <action>dialogs.break_dialog</action>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
             </phrase>
             <phrase id="1">
                 <text></text>
-                <precondition>is_wounded</precondition>
+                <precondition>dialogs.is_wounded</precondition>
             </phrase>
             <phrase id="2">
                 <text></text>
-                <precondition>is_not_wounded</precondition>
+                <precondition>dialogs.is_not_wounded</precondition>
                 <dont_has_info>pri_wave7_end</dont_has_info>
                 <has_info>pri_followers_start</has_info>
                 <next>21</next>
             </phrase>
             <phrase id="4">
                 <text></text>
-                <precondition>is_not_wounded</precondition>
+                <precondition>dialogs.is_not_wounded</precondition>
                 <has_info>pri_followers_leader_give_info</has_info>
                 <next>41</next>
             </phrase>
@@ -53,12 +42,23 @@
                 <text>pri_followers_start_dlg_411</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
-            <phrase id="0">
+            <phrase id="311">
+                <text>pri_followers_start_dlg_311</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="31">
+                <text>pri_followers_start_dlg_31</text>
+                <give_info>pri_show_zones</give_info>
+                <give_info>pri_followers_leader_give_info</give_info>
+                <next>311</next>
+            </phrase>
+            <phrase id="3">
                 <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
+                <precondition>dialogs.is_not_wounded</precondition>
+                <dont_has_info>pri_followers_leader_give_info</dont_has_info>
+                <has_info>pri_wave7_end</has_info>
+                <has_info>pri_followers_start</has_info>
+                <next>31</next>
             </phrase>
         </phrase_list>
     </dialog>
