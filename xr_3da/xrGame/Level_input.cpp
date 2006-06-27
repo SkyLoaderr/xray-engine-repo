@@ -54,6 +54,26 @@ void CLevel::IR_OnMouseWheel( int direction )
 
 }
 
+static int mouse_button_2_key []	=	{MOUSE_1,MOUSE_2,MOUSE_3};
+
+void CLevel::IR_OnMousePress(int btn)
+{	IR_OnKeyboardPress(mouse_button_2_key[btn]);}
+void CLevel::IR_OnMouseRelease(int btn)
+{	IR_OnKeyboardRelease(mouse_button_2_key[btn]);}
+void CLevel::IR_OnMouseHold(int btn)
+{	IR_OnKeyboardHold(mouse_button_2_key[btn]);}
+
+void CLevel::IR_OnMouseMove( int dx, int dy )
+{
+	if(g_bDisableAllInput)						return;
+	if (pHUD->GetUI()->IR_OnMouseMove(dx,dy))	return;
+	if (Device.Pause())							return;
+	if (CURRENT_ENTITY())		{
+		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CURRENT_ENTITY()));
+		if (IR)				IR->IR_OnMouseMove					(dx,dy);
+	}
+}
+
 class		vtune_		{
 	BOOL	enabled_	;
 public:
@@ -370,25 +390,6 @@ void CLevel::IR_OnKeyboardHold(int key)
 	if (CURRENT_ENTITY())		{
 		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CURRENT_ENTITY()));
 		if (IR)				IR->IR_OnKeyboardHold				(key_binding[key]);
-	}
-}
-
-static int mouse_button_2_key []	=	{MOUSE_1,MOUSE_2,MOUSE_3};
-
-void CLevel::IR_OnMousePress(int btn)
-{	IR_OnKeyboardPress(mouse_button_2_key[btn]);}
-void CLevel::IR_OnMouseRelease(int btn)
-{	IR_OnKeyboardRelease(mouse_button_2_key[btn]);}
-void CLevel::IR_OnMouseHold(int btn)
-{	IR_OnKeyboardHold(mouse_button_2_key[btn]);}
-void CLevel::IR_OnMouseMove( int dx, int dy )
-{
-	if(g_bDisableAllInput)						return;
-	if (Device.Pause())							return;
-	if (pHUD->GetUI()->IR_OnMouseMove(dx,dy))	return;
-	if (CURRENT_ENTITY())		{
-		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CURRENT_ENTITY()));
-		if (IR)				IR->IR_OnMouseMove					(dx,dy);
 	}
 }
 
