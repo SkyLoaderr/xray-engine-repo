@@ -11,6 +11,8 @@ public:
 	CSubDlg(UINT nIDTemplate, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CSubDlg();
 
+	virtual void PostNcDestroy( );
+
 // Dialog Data
 	enum { IDD = IDD_SUBDLG };
 

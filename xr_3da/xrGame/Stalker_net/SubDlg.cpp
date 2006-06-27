@@ -43,3 +43,9 @@ void CSubDlg::OnOK()
 	CDialog::OnOK();
 }
 // CSubDlg message handlers
+
+void CSubDlg::PostNcDestroy( )
+{
+	CDialog::PostNcDestroy();
+	delete this;
+}
