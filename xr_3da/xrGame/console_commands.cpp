@@ -1740,48 +1740,6 @@ public:
 	}
 };
 
-class CCC_PostprocessTest : public IConsole_Command {
-public:
-	CCC_PostprocessTest(LPCSTR N) : IConsole_Command(N)  { };
-
-	virtual void Execute(LPCSTR args) {
-
-		string128 param1, param2, param3;
-		_GetItem(args,0,param1,' ');
-		_GetItem(args,1,param2,' ');
-		_GetItem(args,2,param3,' ');
-
-		CObject			*obj = Level().Objects.FindObjectByName(param1);
-		CCustomZone		*p_zone = smart_cast<CCustomZone *>(obj);
-		if (!p_zone) return;
-
-		u32 type = 0;
-		if (xr_strcmp(param2, "d_v") == 0)		type = 0;
-		else if (xr_strcmp(param2,"d_h") == 0)	type = 1;
-		else if (xr_strcmp(param2,"n_i") == 0)	type = 2;
-		else if (xr_strcmp(param2,"n_g") == 0)	type = 3;
-		else if (xr_strcmp(param2,"n_f") == 0)	type = 4;
-		else if (xr_strcmp(param2,"blur") == 0) type = 5;
-		else if (xr_strcmp(param2,"gray") == 0) type = 6;
-		else if (xr_strcmp(param2,"cb_r") == 0) type = 7;
-		else if (xr_strcmp(param2,"cb_g") == 0) type = 8;
-		else if (xr_strcmp(param2,"cb_b") == 0) type = 9;
-		else if (xr_strcmp(param2,"cg_r") == 0) type = 10;
-		else if (xr_strcmp(param2,"cg_g") == 0) type = 11;
-		else if (xr_strcmp(param2,"cg_b") == 0) type = 12;
-		else if (xr_strcmp(param2,"ca_r") == 0) type = 13;
-		else if (xr_strcmp(param2,"ca_g") == 0) type = 14;
-		else if (xr_strcmp(param2,"ca_b") == 0) type = 15;
-		else if (xr_strcmp(param2,"d_min") == 0) type = 16;
-		else if (xr_strcmp(param2,"d_max") == 0) type = 17;
-		else return;
-
-		float value;
-		sscanf(param3 ,"%f",&value);
-		p_zone->m_effector->SetParam	(type,value);
-	}
-};
-
 class CCC_DebugNode : public IConsole_Command {
 public:
 	CCC_DebugNode(LPCSTR N) : IConsole_Command(N)  { };
@@ -2253,7 +2211,6 @@ void CCC_RegisterCommands()
 	
 	CMD1(CCC_ShowMonsterInfo,	"ai_monster_info");
 	CMD1(CCC_DebugFonts,		"debug_fonts");
-	CMD1(CCC_PostprocessTest,	"pp_test");
 	CMD1(CCC_TuneAttachableItem,"dbg_adjust_attachable_item");
 
 	// adjust mode support

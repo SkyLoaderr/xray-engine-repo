@@ -477,13 +477,12 @@ void CCustomZone::UpdateWorkload	(u32 dt)
 
 	if(m_dwDeltaTime > m_dwPeriod)		{
 		m_dwDeltaTime	= m_dwPeriod;
-//		m_bZoneReady	= true;
 	}
 
 	if (Level().CurrentEntity()) {
 		m_fDistanceToCurEntity = Level().CurrentEntity()->Position().distance_to(Position());
 
-		if (EnableEffector())// && Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID != CLSID_SPECTATOR)
+		if (EnableEffector())
 			m_effector->Update(m_fDistanceToCurEntity);
 	}
 
@@ -1353,7 +1352,6 @@ void CCustomZone::net_Relcase(CObject* O)
 	if (GameID() == GAME_SINGLE)
 		if(GO->ID()==m_owner_id)	m_owner_id = u32(-1);
 
-	// m_effector->m_pActor != NULL means effector in active state
 	if(m_effector->m_pActor && m_effector->m_pActor->ID() == GO->ID())
 		m_effector->Stop();
 

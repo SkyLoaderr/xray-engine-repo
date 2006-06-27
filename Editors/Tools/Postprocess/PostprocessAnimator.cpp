@@ -123,7 +123,10 @@ void        CPostprocessAnimator::Load                            (LPCSTR name)
 
 	f_length					= GetLength	();
 #ifndef _PP_EDITOR_
-	if(!m_bCyclic) fLifeTime	= f_length;
+	if(!m_bCyclic) 
+		fLifeTime				= f_length;
+	else
+		fLifeTime				= 100000;
 #endif
 
 }

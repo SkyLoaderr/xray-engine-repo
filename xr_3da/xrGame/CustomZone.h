@@ -2,8 +2,6 @@
 
 #include "space_restrictor.h"
 #include "../feel_touch.h"
-//#include "zone_effector.h"
-//#include "PhysicsShellHolder.h"
 
 class CActor;
 class CLAItem;
@@ -12,12 +10,6 @@ class CParticlesObject;
 class CZoneEffector;
 
 #define SMALL_OBJECT_RADIUS 0.6f
-
-struct SZonePPInfo 
-{
-	float duality_h, duality_v, blur, gray, noise, noise_scale;
-	u32 r, g, b, a;
-};
 
 //информация о объекте, находящемся в зоне
 struct SZoneObjectInfo

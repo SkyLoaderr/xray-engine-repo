@@ -60,6 +60,7 @@ public:
 	virtual void	OnRender						();
 	virtual void	OnFrame							(void);
 	virtual void	StartStopMenu					(CUIDialogWnd* pDialog, bool bDoHideIndicators);
+	virtual bool	UseIndicators					()						{return false;}
 
 
 	void			OnDeviceCreate					();

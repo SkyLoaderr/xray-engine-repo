@@ -47,4 +47,5 @@ public:
 	void					AddDialogToRender				(CUIWindow* pDialog);
 	void					RemoveDialogToRender			(CUIWindow* pDialog);
 	virtual void			OnFrame							();
+	virtual bool			UseIndicators					()						{return true;}
 };

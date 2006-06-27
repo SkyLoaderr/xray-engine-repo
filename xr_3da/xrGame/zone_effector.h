@@ -1,69 +1,29 @@
 #pragma once
 
-#include "../effectorPP.h"
-#include "../cameramanager.h"
-
-class CZoneEffectPP : public CEffectorPP {
-	typedef CEffectorPP inherited;
-
-	SPPInfo		state;
-	float		factor;
-
-public:
-					CZoneEffectPP	(const SPPInfo &ppi, EEffectorPPType type);
-	virtual			~CZoneEffectPP	();
-	
-			void	Update			(float new_factor) {factor = new_factor;}
-			void	Destroy			();
-private:
-	virtual	BOOL	Process			(SPPInfo& pp);
-};
-
 class CActor;
+class CPostprocessAnimatorLerp;
+
 class CZoneEffector {
-	SPPInfo			state;
-	float			r_min_perc;		// min_radius (percents [0..1])
-	float			r_max_perc;		// max_radius (percents [0..1])
-	float			radius;
-	CZoneEffectPP	*p_effector;
-
+	float						r_min_perc;
+	float						r_max_perc;
+	float						radius;
+	float						m_factor;
+	CPostprocessAnimatorLerp*	m_pp_effector;
+	shared_str					m_pp_fname;
 public:
-			CZoneEffector	();
-			~CZoneEffector	();
+			CZoneEffector		();
+			~CZoneEffector		();
 
-	CActor*			m_pActor;
+	CActor*						m_pActor;
 
-	void	Load			(LPCSTR section);
-	void	SetRadius		(float r);
-	void	Update			(float dist);
-	void	Stop			();
-
-	// Test
-	enum PP_Type {
-		DUALITY_V = 0, 
-		DUALITY_H, 
-		NOISE_INTENSITY,
-		NOISE_GRAIN,
-		NOISE_FPS,
-		BLUR,
-		GRAY,
-		COLOR_BASE_R,
-		COLOR_BASE_G,
-		COLOR_BASE_B,
-		COLOR_GRAY_R,
-		COLOR_GRAY_G,
-		COLOR_GRAY_B,
-		COLOR_ADD_R,
-		COLOR_ADD_G,
-		COLOR_ADD_B,
-		DIST_MIN,
-		DIST_MAX
-	};
-	
-	void	SetParam		(u32 type, float val);
+	void	Load				(LPCSTR section);
+	void	SetRadius			(float r);
+	void	Update				(float dist);
+	void	Stop				();
+	float xr_stdcall GetFactor	();
 
 private:
-	void	Activate		();
+	void	Activate			();
 
 
 };
