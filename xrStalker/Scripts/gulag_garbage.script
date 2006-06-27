@@ -135,36 +135,42 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@gar_bandit_agr_wait1",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_wait2",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_wait3",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_wait4",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_wait5",
 			idle = 0,
 			prior = 5, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@gar_bandit_agr_wait6",
 			idle = 0,
 			prior = 10, state = {0},
+			online = true,
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info) 
         		return obj_info.profile_name == "gar_bandit_leader"			           
@@ -174,12 +180,14 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@gar_bandit_agr_wait7",
 			idle = 0,
 			prior = 3, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_wait8",
 			idle = 0,
 			prior = 3, state = {0},
+			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -362,25 +370,25 @@ function load_job(sj, gname, type, squad, groups)
 	if type == "gar_dolg_blokpost" then
 		t = { section = "logic@gar_dolg_blokpost_camper1",
 			idle = 0,
-			prior = 5, state = {0},
+			prior = 5, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_dolg_blokpost_camper2",
 			idle = 0,
-			prior = 5, state = {0},
+			prior = 5, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_dolg_blokpost_camper3",
 			idle = 0,
-			prior = 5, state = {0},
+			prior = 5, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_dolg_blokpost_zoneguard1",
 			idle = 0,
-			prior = 10, state = {0},
+			prior = 10, state = {0,1},
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info) 
         					return obj_info.profile_name == "gar_dolg_blokpost_commander"			           
@@ -389,13 +397,13 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@gar_dolg_blokpost_zoneguard2",
 			idle = 0,
-			prior = 7, state = {0},
+			prior = 7, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_dolg_blokpost_zoneguard3",
 			idle = 0,
-			prior = 7, state = {0},
+			prior = 7, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -431,10 +439,51 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@gar_dolg_blokpost_patrol",
 			idle = 0,
-			prior = 5, state = {0},
+			prior = 5, state = {0,1},
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
+		
+
+		t = { section = "logic@gar_dolg_blokpost_alarm1",
+			idle = 0,
+			prior = 9, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dolg_blokpost_alarm2",
+			idle = 0,
+			prior = 9, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dolg_blokpost_alarm3",
+			idle = 0,
+			prior = 9, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dolg_blokpost_alarm4",
+			idle = 0,
+			prior = 9, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@gar_dolg_blokpost_alarm5",
+			idle = 0,
+			prior = 9, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+--		t = { section = "logic@gar_dolg_blokpost_zoneguard1",
+--			idle = 0,
+--			prior = 10, state = {1},
+--			in_rest = "", out_rest = "",
+--			predicate = function(obj_info) 
+--        					return obj_info.profile_name == "gar_dolg_blokpost_commander"			           
+--						end
+--		}
+--		table.insert(sj, t)
 	end
 
 	--' Boars nest 2
@@ -1494,7 +1543,11 @@ function load_states(gname, type)
 	
 	if type == "gar_dolg_blokpost" then
 		return function(gulag)
-			return 0
+			if db.actor:has_info("gar_test_info2") then
+				return 1 -- кабаны атакуют
+			else
+				return 0 -- спокойное состояние
+			end
 		end
 	end
 end
