@@ -1327,25 +1327,6 @@
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 	
-	<specific_character id="dar_corpse_default2" team_default = "1">
-		<name>GENERATE_NAME_stalker</name>
-		<icon x="8" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>dar_corpse_bio</bio>
-
-		<class>dar_corpse</class>
-		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
-		
-		<rank>900</rank>
-		<reputation>0</reputation>
- 
-		<visual>actors\ucheniy\ucheniy_4</visual>
-		<supplies>
-			[spawn] \n
-		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
-	</specific_character>
 	
 	<specific_character id="dar_corpse_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
@@ -1386,4 +1367,25 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>	
+
+	<specific_character id="dar_corpse_kalugin1" team_default = "1">
+		<name>dar_kalugin_name</name>
+		<icon x="8" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>dar_corpse_bio</bio>
+
+		<class>dar_corpse_kalugin</class>
+		<community>ecolog</community> <terrain_sect>stalker_terrain</terrain_sect>
+		
+		<rank>300</rank>
+		<reputation>0</reputation>
+ 
+		<visual>actors\ucheniy\ucheniy_3</visual>
+		<supplies>
+			[spawn] \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>	
+
 </xml>

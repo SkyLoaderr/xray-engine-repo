@@ -253,6 +253,9 @@
 	<character id="dar_corpse">
 		<class>dar_corpse</class>
 	</character>
+	<character id="dar_corpse_kalugin">
+		<class>dar_corpse_kalugin</class>
+	</character>
 
 <!-- DeadCity -->
 	<!-- Doctor -->	
