@@ -24,27 +24,6 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
-	
-	if type == "dar_burer_ring" then
-		t = { section = "logic@dar_burer_ring",
-			idle = 0,
-			prior = 10, state = {0},
-			in_rest = "", out_rest = "",
-		}
-		table.insert(sj, t)
-		t = { section = "logic@dar_burer_ring",
-			idle = 0,
-			prior = 5, state = {0},
-			in_rest = "", out_rest = "",
-		}
-		table.insert(sj, t)
-		t = { section = "logic@dar_burer_ring",
-			idle = 0,
-			prior = 5, state = {0},
-			in_rest = "", out_rest = "",
-		}
-		table.insert(sj, t)
-		end
 end
 
 
@@ -57,11 +36,6 @@ function load_states(gname, type)
 		end
 	end
 	
-	if type == "dar_burer_ring" then        
-		return function(gulag)
-				return 0
-		end
-	end
 	
 end
 
@@ -81,8 +55,5 @@ function checkMonster(npc_community, gulag_type)
 			return npc_community == "poltergeist"
 		end
 		
-		if gulag_type == "dar_burer_ring" then
-			return npc_community == "burer"
-		end
 	return false
 end
