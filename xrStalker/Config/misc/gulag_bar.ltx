@@ -647,8 +647,8 @@ on_death = death@bar_freedom_attack_killer
 path_walk = acamper_1_walk
 path_look = acamper_1_look
 def_state_moving = assault
-radius = 5
-no_retreat = true
+radius = 15
+;no_retreat = true
 soundgroup = bar_freedom_attack1
 
 [logic@bar_freedom_attack_sniper_2]
@@ -669,8 +669,8 @@ on_death = death@bar_freedom_attack_killer
 path_walk = acamper_2_walk
 path_look = acamper_2_look
 def_state_moving = assault
-radius = 5
-no_retreat = true
+radius = 15
+;no_retreat = true
 soundgroup = bar_freedom_attack1
 
 [logic@bar_freedom_attack_sniper_3]
@@ -693,8 +693,8 @@ on_death = death@bar_freedom_attack_killer
 path_walk = acamper_3_walk
 path_look = acamper_3_look
 def_state_moving = assault
-radius = 5
-no_retreat = true
+radius = 15
+;no_retreat = true
 soundgroup = bar_freedom_attack1
 
 [logic@bar_freedom_attack_sniper_4]
@@ -715,8 +715,8 @@ on_death = death@bar_freedom_attack_killer
 path_walk = acamper_4_walk
 path_look = acamper_4_look
 def_state_moving = assault
-radius = 5
-no_retreat = true
+radius = 15
+;no_retreat = true
 soundgroup = bar_freedom_attack1
 
 [logic@bar_freedom_attack_guard_1]
@@ -751,8 +751,8 @@ on_death = death@bar_freedom_attack_killer
 path_walk = aguard_1_walk
 path_look = aguard_1_look
 def_state_moving = assault
-radius = 5
-no_retreat = true
+radius = 15
+;no_retreat = true
 soundgroup = bar_freedom_attack1
 
 [logic@bar_freedom_attack_guard_2]
@@ -775,7 +775,7 @@ on_death = death@bar_freedom_attack_killer
 path_walk = aguard_2_walk
 path_look = aguard_2_look
 def_state_moving = assault
-radius = 5
+radius = 15
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
 
@@ -804,7 +804,6 @@ on_info = {+bar_freedom_talk_v2} remark@volkodav_talk_2
 [remark@volkodav_talk_2]
 snd = rostok_volkodav_talk_2
 on_signal = sound_end | %+bar_freedom_talk_c2%
-sound_end = nil
 no_move = true
 no_rotate = true
 combat_ignore_cond = {!see_actor}
@@ -819,7 +818,7 @@ combat_ignore = combat_ignore@rostok_killers
 path_walk = camper_6_walk
 path_look = camper_6_look
 def_state_moving = assault
-radius = 0
+radius = 20
 combat_ignore_cond = always
 on_info = {-bar_freedom_talk_end +bar_actor_heared_freedom_talk} remark@camper_talk
 soundgroup = bar_freedom_attack1
@@ -827,24 +826,18 @@ soundgroup = bar_freedom_attack1
 [remark@camper_talk]
 snd = rostok_volkodav_assistant_talk_1
 on_signal = sound_end | %+bar_freedom_talk_v1%
-no_move = true
-no_rotate = true
 combat_ignore_cond = {!see_actor}
 on_info = {+bar_freedom_talk_c1} remark@camper_talk_1
  
 [remark@camper_talk_1]
 snd = rostok_volkodav_assistant_talk_2
 on_signal = sound_end | %+bar_freedom_talk_v2%
-no_move = true
-no_rotate = true
 combat_ignore_cond = always
 on_info = {+bar_freedom_talk_c2} remark@camper_talk_2
 
 [remark@camper_talk_2]
 snd = rostok_volkodav_assistant_talk_3
 on_signal = sound_end | %+bar_freedom_talk_end%
-no_move = true
-no_rotate = true
 combat_ignore_cond = always
 on_info = {+bar_freedom_talk_end} camper@bar_freedom_attack_camper_6
 
@@ -858,8 +851,8 @@ path_walk = camper_5_walk
 path_look = camper_5_look
 def_state_moving = assault
 soundgroup = bar_freedom_attack1
-radius = 5
-no_retreat = true
+radius = 15
+;no_retreat = true
 
 [logic@bar_freedom_attack_camper6_c1]
 active = camper@bar_freedom_attack_acamper_6
@@ -869,8 +862,8 @@ on_death = death@bar_freedom_attack_killer
 path_walk = acamper_6_walk
 path_look = acamper_6_look
 def_state_moving = assault
-radius = 5
-no_retreat = true
+radius = 25
+;no_retreat = true
 soundgroup = bar_freedom_attack1
 
 [logic@bar_freedom_attack_camper7]
@@ -882,8 +875,8 @@ path_walk = camper7_walk
 path_look = camper78910_look
 def_state_moving = assault
 soundgroup = bar_freedom_attack1
-radius = 5
-no_retreat = true
+radius = 15
+;no_retreat = true
 
 [logic@bar_freedom_attack_camper8]
 active = camper@bar_freedom_attack_camper_8
@@ -894,8 +887,8 @@ path_walk = camper8_walk
 path_look = camper78910_look
 def_state_moving = assault
 soundgroup = bar_freedom_attack1
-radius = 5
-no_retreat = true
+radius = 25
+;no_retreat = true
 
 [logic@bar_freedom_attack_camper9]
 active = camper@bar_freedom_attack_camper_9
@@ -906,8 +899,8 @@ path_walk = camper9_walk
 path_look = camper78910_look
 def_state_moving = assault
 soundgroup = bar_freedom_attack1
-radius = 5
-no_retreat = true
+radius = 15
+;no_retreat = true
 
 [logic@bar_freedom_attack_camper10]
 active = camper@bar_freedom_attack_camper_10
@@ -918,8 +911,8 @@ path_walk = camper10_walk
 path_look = camper78910_look
 def_state_moving = assault
 soundgroup = bar_freedom_attack1
-radius = 5
-no_retreat = true
+radius = 15
+;no_retreat = true
 
 [logic@bar_freedom_attack_sniper_7]
 active = camper@bar_freedom_attack_sniper_7
@@ -930,8 +923,8 @@ path_walk = camper_7_walk
 path_look = camper_7_look
 def_state_moving = assault
 soundgroup = bar_freedom_attack1
-radius = 5
-no_retreat = true
+radius = 15
+;no_retreat = true
 
 
 
