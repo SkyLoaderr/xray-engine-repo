@@ -36,7 +36,6 @@ CCustomRocket::CCustomRocket()
 	m_vPrevVel.set(0,0,0);
 
 	m_pTrailLight = NULL;
-	m_bFlyingSoundPresent = false;
 	m_LaunchXForm.identity();
 	m_vLaunchVelocity.set(0,0,0);
 	m_vLaunchAngularVelocity.set(0,0,0);
@@ -261,7 +260,6 @@ void CCustomRocket::Load(LPCSTR section)
 void  CCustomRocket::reload		(LPCSTR section)
 {
 	inherited::reload	(section);
-	m_bFlyingSoundPresent = false;
 	m_eState = eInactive;
 
 	m_bEnginePresent = !!pSettings->r_bool(section, "engine_present");
@@ -288,7 +286,6 @@ void  CCustomRocket::reload		(LPCSTR section)
 
 	if(pSettings->line_exist(section,"snd_fly_sound")){
 		m_flyingSound.create(pSettings->r_string(section,"snd_fly_sound"),st_Effect,sg_SourceType);
-		m_bFlyingSoundPresent = true;
 	}
 
 	
@@ -516,7 +513,7 @@ void CCustomRocket::PhTune					(float step)
 
 void CCustomRocket::UpdateParticles()
 {
-	if(m_bFlyingSoundPresent)
+	if(m_flyingSound._handle() && m_flyingSound._feedback())
 		m_flyingSound.set_position( XFORM().c );
 
 	if(!m_pEngineParticles && !m_pFlyParticles) return;
@@ -562,8 +559,7 @@ void CCustomRocket::StopEngineParticles()
 }
 void CCustomRocket::StartFlyParticles()
 {
-#pragma todo("remove 'm_bFlyingSoundPresent' - use handle")
-	if(m_bFlyingSoundPresent)
+	if(m_flyingSound._handle())
 		m_flyingSound.play_at_pos(0, XFORM().c, sm_Looped );
 
 	VERIFY(m_pFlyParticles == NULL);
@@ -579,7 +575,7 @@ void CCustomRocket::StartFlyParticles()
 }
 void CCustomRocket::StopFlyParticles()
 {
-	if(m_bFlyingSoundPresent)
+	if(m_flyingSound._handle())
 		m_flyingSound.stop();
 
 	if(m_pFlyParticles == NULL) return;
