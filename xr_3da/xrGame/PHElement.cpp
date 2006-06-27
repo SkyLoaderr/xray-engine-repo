@@ -111,8 +111,18 @@ void CPHElement::			build	(){
 		VERIFY2(m_mass.mass>0.f,"Element has bad mass");
 		dBodySetMass(m_body,&m_mass);
 	}
-	
+#ifdef DEBUG
+	if(!valid_pos(m_mass_center,phBoundaries))
+	{
+		Msg("m_mass_center: %f,%f,%f, seems to be invalid", m_mass_center.x,m_mass_center.y,m_mass_center.z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		Msg("Object: %s",PhysicsRefObject()->Name());
+		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
+		VERIFY(0);
+	}
+#endif
 	dBodySetPosition(m_body,m_mass_center.x,m_mass_center.y,m_mass_center.z);
+
 	CPHDisablingTranslational::Reinit();
 	///////////////////////////////////////////////////////////////////////////////////////
 	CPHGeometryOwner::build();
@@ -234,6 +244,16 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 	VERIFY2(_valid(m0),"invalid_form_in_set_transform");
 	Fvector mc;
 	CPHGeometryOwner::get_mc_vs_transform(mc,m0);
+#ifdef DEBUG
+	if(!valid_pos(mc,phBoundaries))
+	{
+		Msg("mc: %f,%f,%f, seems to be invalid", mc.x,mc.y,mc.z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		Msg("Object: %s",PhysicsRefObject()->Name());
+		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
+		VERIFY(0);
+	}
+#endif
 	dBodySetPosition(m_body,mc.x,mc.y,mc.z);
 	Fmatrix33 m33;
 	m33.set(m0);
@@ -274,6 +294,16 @@ void CPHElement::SetGlobalPositionDynamic(const Fvector& position)
 {
 	if(!isActive()) return;
 	VERIFY(_valid(position));
+#ifdef DEBUG
+	if(!valid_pos(position,phBoundaries))
+	{
+		Msg("position: %f,%f,%f, seems to be invalid", position.x,position.y,position.z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		Msg("Object: %s",PhysicsRefObject()->Name());
+		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
+		VERIFY(0);
+	}
+#endif
 	dBodySetPosition(m_body,position.x,position.y,position.z);
 	CPHDisablingTranslational::Reinit();
 	m_flags.set(flUpdate,TRUE);
@@ -291,6 +321,16 @@ void CPHElement::TransformPosition(const Fmatrix &form)
 	dMatrix3 dBM;
 	PHDynamicData::FMXtoDMX(new_bm,dBM);
 	dBodySetRotation(m_body,dBM);
+#ifdef DEBUG
+	if(!valid_pos(new_bm.c,phBoundaries))
+	{
+		Msg("new_bm.c: %f,%f,%f, seems to be invalid", new_bm.c.x,new_bm.c.y,new_bm.c.z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		Msg("Object: %s",PhysicsRefObject()->Name());
+		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
+		VERIFY(0);
+	}
+#endif
 	dBodySetPosition(m_body,new_bm.c.x,new_bm.c.y,new_bm.c.z);
 	CPHDisablingFull::Reinit();
 	m_body_interpolation.ResetPositions();
@@ -375,12 +415,30 @@ void CPHElement::PhTune(dReal step)
 	CPHContactBodyEffector* contact_effector=
 		(CPHContactBodyEffector*) dBodyGetData(m_body);
 	if(contact_effector)contact_effector->Apply();
-
+#ifdef DEBUG
+	if(!valid_pos(cast_fv(dBodyGetPosition(m_body)),phBoundaries))
+	{
+		Msg("m0.c: %f,%f,%f, seems to be invalid", cast_fv(dBodyGetPosition(m_body)).x,cast_fv(dBodyGetPosition(m_body)).y,cast_fv(dBodyGetPosition(m_body)).z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		Msg("Object: %s",PhysicsRefObject()->Name());
+		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
+		VERIFY(0);
+	}
+#endif
 }
 void CPHElement::PhDataUpdate(dReal step){
 
 	if(! isActive())return;
-	
+#ifdef DEBUG
+	if(!valid_pos(cast_fv(dBodyGetPosition(m_body)),phBoundaries))
+	{
+		Msg("body position: %f,%f,%f, seems to be invalid", cast_fv(dBodyGetPosition(m_body)).x,cast_fv(dBodyGetPosition(m_body)).y,cast_fv(dBodyGetPosition(m_body)).z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		Msg("Object: %s",PhysicsRefObject()->Name());
+		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
+		VERIFY(0);
+	}
+#endif
 	///////////////skip for disabled elements////////////////////////////////////////////////////////////
 	//b_enabled_onstep=!!dBodyIsEnabled(m_body);
 #ifdef DEBUG
@@ -527,7 +585,16 @@ void CPHElement::PhDataUpdate(dReal step){
 	VERIFY(dBodyStateValide(m_body));
 	VERIFY2(dV_valid(dBodyGetPosition(m_body)),"invalid body position");
 	VERIFY2(dV_valid(dBodyGetQuaternion(m_body)),"invalid body rotation");
-	VERIFY(valid_pos(cast_fv(dBodyGetPosition(m_body)),phBoundaries));
+#ifdef DEBUG
+	if(!valid_pos(cast_fv(dBodyGetPosition(m_body)),phBoundaries))
+	{
+		Msg("body position: %f,%f,%f, seems to be invalid", cast_fv(dBodyGetPosition(m_body)).x,cast_fv(dBodyGetPosition(m_body)).y,cast_fv(dBodyGetPosition(m_body)).z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		Msg("Object: %s",PhysicsRefObject()->Name());
+		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
+		VERIFY(0);
+	}
+#endif
 	UpdateInterpolation				();
 
 }
