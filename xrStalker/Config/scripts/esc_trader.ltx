@@ -1,176 +1,11 @@
 [logic]
-active = mob_trader@new_start_wait
+active = mob_trade@new_start_wait
 on_trade = mob_trade@new
 trade = misc\trade_trader.ltx
 
 ; ------------------------------------------------------------------------------------------------------
 ; СТАРТ
 ; ------------------------------------------------------------------------------------------------------
- 
-; Ждем вначале немного
-;[mob_trader@start_wait]
-;anim_global = chair_hack_idle
-;on_info = {=talking} mob_trader@before_first_phrase
-;on_signal = action_end | mob_trader@start_wait2
-;on_signal = animation_end | mob_trader@start_wait2
-;on_timer = 10000 | mob_trader@before_first_phrase
-;on_use = mob_trader@idle_0_def_0
-
-
-; Пододвигаемся к игроку
-;[mob_trader@before_first_phrase]
-;dialog_cond = always
-;anim = idle_2_to_idle_0
-;anim_global = desk_to_diagonal
-;on_signal = animation_end | {=talking} mob_trader@idle_0_def_0, mob_trader@first_phrase
-
-; Говорим первую фразу (подойди-ка - надо бы ситуацию прояснить)
-;[mob_trader@first_phrase]
-;anim_global = diagonal_talk
-;anim_head = normal
-;sound_phrase = trader_come_here
-;on_signal = action_end | {=talking} mob_trader@idle_0_def_0, mob_trader@before_second_phrase
-;on_signal = sound_phrase_end | {=talking} mob_trader@idle_0_def_0, mob_trader@before_second_phrase
-;on_info = {=talking} mob_trader@idle_0_def_0 ; обрывать фразу
-
-; Ждем немного
-;[mob_trader@before_second_phrase]
-;dialog_cond = always
-;anim = idle_0_def_0
-;anim_global = diagonal_idle
-;tip = tips_esc_trader_how_to_talk
-;on_info = {=talking} mob_trader@idle_0_def_0
-;on_signal = animation_end | mob_trader@second_phrase
-
-; Говорим вторую фразу (что стоишь? подходи)
-;[mob_trader@second_phrase]
-;dialog_cond = always
-;anim = idle_0_talk_2
-;anim_head = head_anim_normal
-;anim_global = diagonal_talk
-;anim_head = normal
-;sound_phrase = trader_come_here2
-;on_signal = sound_phrase_end | mob_trader@idle_0_def_0
-;on_info = {=talking} mob_trader@idle_0_def_0 ; обрывать фразу
-
-
-; ------------------------------------------------------------------------------------------------------
-; ЗАНИМАЕМСЯ СВОИМИ ДЕЛАМИ
-; ------------------------------------------------------------------------------------------------------
-;[mob_trader@idle_0_spec_scratch_0]
-;anim_global = diagonal_idle
-;on_signal = animation_end | mob_trader@idle_0_def_0
-
-;on_info = {-esc_trader_monolog_1_played +esc_trader_monolog_1} mob_trader@monolog_1 %+esc_trader_monolog_1_played%,   {-esc_trader_tutorial_choice_played +esc_trader_tutorial_choice} mob_trader@tut_choice %+esc_trader_tutorial_choice_played%
-;on_info2 = {+esc_trader_tutorial_chosen +esc_trader_newbie -esc_trader_newbie_course_done} %=run_tutorial(part_1_pda) +esc_trader_newbie_course_done%
-;on_actor_dist_le_nvis = 3 | {+tutorial_end -esc_trader_hello_played} mob_trader@hello_what_have_you_got %+esc_trader_hello_played%
-;on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played +esc_trader_hello_played} mob_trader@bye %+esc_trader_bye_played%
-
-
-; ------------------------------------------------------------------------------------------------------
-; РАЗГОВОР
-; ------------------------------------------------------------------------------------------------------
-
-;[mob_trader@idle_0_def_0]
-;anim_global = diagonal_idle
-
-;on_signal = animation_end | {=talking} mob_trader@idle_0_def_0, {~50} mob_trader@idle_0_spec_scratch_0, mob_trader@idle_0_def_0
-;on_actor_dist_ge_nvis2 = 10 | %-esc_trader_hello_played -esc_trader_bye_played%
-
-
-;on_info = {-esc_trader_monolog_1_played +esc_trader_monolog_1} mob_trader@monolog_1 %+esc_trader_monolog_1_played%,   {-esc_trader_tutorial_choice_played +esc_trader_tutorial_choice} mob_trader@tut_choice %+esc_trader_tutorial_choice_played%
-;on_info2 = {+esc_trader_tutorial_chosen +esc_trader_newbie -esc_trader_newbie_course_done} %=run_tutorial(part_1_pda) +esc_trader_newbie_course_done%
-;on_actor_dist_le_nvis = 3 | {+tutorial_end -esc_trader_hello_played} mob_trader@hello_what_have_you_got %+esc_trader_hello_played%
-;on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played +esc_trader_hello_played} mob_trader@bye %+esc_trader_bye_played%
-
-
-; ------------------------------------------------------------------------------------------------------
-; ТОРГОВЛЯ (общие для всех секций настройки)
-; ------------------------------------------------------------------------------------------------------
-
-;[mob_trade]
-;on_info = {+tutorial_end =trading =trade_exchanged} mob_trader@trade_exchanged
-;on_info2 = {+tutorial_end !trading =trade_exchanged} mob_trader@trade_good
-;on_info3 = {+tutorial_end !trading !trade_exchanged} mob_trader@trade_bad
-
-; ------------------------------------------------------------------------------------------------------
-; ОЗВУЧКА: ПРИВЕТСТВИЯ И ТОРГОВЛЯ
-; ------------------------------------------------------------------------------------------------------
-
-;[mob_trader@hello_what_have_you_got]
-;dialog_cond = always
-;anim = idle_0_talk_2
-;anim_head = head_anim_normal
-;anim_global = diagonal_talk
-;anim_head = normal
-;sound_phrase = trader_hello_what_have_you_got
-;on_signal = sound_phrase_end | mob_trader@idle_0_def_0
-
-;[mob_trader@bye]
-;dialog_cond = always
-;anim = idle_0_talk_2
-;anim_head = head_anim_normal
-;anim_global = diagonal_talk
-;anim_head = normal
-;sound_phrase = trader_bye
-;on_signal = sound_phrase_end | mob_trader@idle_0_def_0
-
-;[mob_trader@trade_bad]
-;dialog_cond = always
-;anim = idle_0_talk_2
-;anim_head = head_anim_normal
-;anim_global = diagonal_talk
-;anim_head = normal
-;sound_phrase = trader_bad_trade
-;on_signal = sound_phrase_end | mob_trader@idle_0_def_0
-
-;[mob_trader@trade_exchanged]
-;dialog_cond = always
-;anim = idle_0_talk_2
-;anim_head = head_anim_normal
-;anim_global = diagonal_talk
-;anim_head = normal
-;sound_phrase = trader_exchanged
-;on_signal = sound_phrase_end | mob_trader@idle_0_def_0
-
-;[mob_trader@trade_good]
-;dialog_cond = always
-;anim = idle_0_talk_2
-;anim_head = head_anim_normal
-;anim_global = diagonal_talk
-;anim_head = normal
-;sound_phrase = trader_good_trade
-;on_signal = sound_phrase_end | mob_trader@idle_0_def_0
-
-; ------------------------------------------------------------------------------------------------------
-; ОЗВУЧКА ФРАЗ
-; ------------------------------------------------------------------------------------------------------
-
-;[mob_trader@monolog_1]
-;dialog_cond = always
-;anim = idle_0_talk_2
-;anim_head = head_anim_normal
-;anim_global = diagonal_talk
-;anim_head = normal
-;sound_phrase = trader_monolog1
-;on_signal = sound_phrase_end | mob_trader@idle_0_def_0
-;on_info = {+esc_trader_tutorial_choice} mob_trader@idle_0_def_0 ; обрывать фразу FIXME
-
-;[mob_trader@tut_choice]
-;dialog_cond = always
-;anim = idle_0_talk_2
-;anim_head = head_anim_normal
-;anim_global = diagonal_talk
-;anim_head = normal
-;sound_phrase = trader_tut_choice
-;on_signal = sound_phrase_end | mob_trader@idle_0_def_0
-;on_info = {+esc_trader_experienced} mob_trader@idle_0_def_0, {+esc_trader_newbie} mob_trader@idle_0_def_0 ; обрывать фразу FIXME
-
-
-
-;----------------------------------
-;---------  Новая логика ----------
-;----------------------------------
 ; Ждем немного
 [mob_trader@new_start_wait]
 anim_global = chair_hack_idle
@@ -347,27 +182,28 @@ on_info = {!talking} mob_trader@new_idle3
 ;--------------------------------------
 
 [mob_trade@new]
+anim_global = diagonal_talk
 on_info = {+tutorial_end =trading =trade_exchanged} mob_trader@new_trade_exchanged
 on_info2 = {+tutorial_end !trading =trade_exchanged} mob_trader@new_trade_good
 on_info3 = {+tutorial_end !trading !trade_exchanged} mob_trader@new_trade_bad
 
 [mob_trader@new_trade_bad]
-;anim_global = diagonal_talk
-anim_global = chair_hack_idle
+anim_global = diagonal_talk
+;anim_global = chair_hack_idle
 anim_head = angry
 sound_phrase = trader_bad_trade
 on_signal = sound_phrase_end | mob_trader@new_idle2
 
 [mob_trader@new_trade_exchanged]
-;anim_global = diagonal_talk
-anim_global = chair_hack_idle
+anim_global = diagonal_talk
+;anim_global = chair_hack_idle
 anim_head = normal
 sound_phrase = trader_exchanged
 on_signal = sound_phrase_end | mob_trader@new_idle2
 
 [mob_trader@new_trade_good]
-;anim_global = diagonal_talk
-anim_global = chair_hack_idle
+anim_global = diagonal_talk
+;anim_global = chair_hack_idle
 anim_head = good
 sound_phrase = trader_good_trade
 on_signal = sound_phrase_end | mob_trader@new_idle2
