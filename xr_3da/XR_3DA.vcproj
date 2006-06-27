@@ -352,8 +352,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug_Dedicated|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="x:\"
+			IntermediateDirectory=".\Debug"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -437,8 +437,8 @@
 		</Configuration>
 		<Configuration
 			Name="Mixed_Dedicated|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="x:\"
+			IntermediateDirectory=".\Mixed"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -520,8 +520,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release_Dedicated|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="x:\"
+			IntermediateDirectory=".\Release"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
