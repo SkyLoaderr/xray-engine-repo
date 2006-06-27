@@ -42,7 +42,7 @@
 #include "../../restricted_object.h"
 #include "../../ai_object_location.h"
 
-#include "../../grenade.h"
+#include "../../missile.h"
 #include "../../phworld.h"
 
 using namespace StalkerSpace;
@@ -99,8 +99,8 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 
 	CWeapon				*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
 	if (!weapon) {
-		CGrenade		*grenade = smart_cast<CGrenade*>(inventory().ActiveItem());
-		if (grenade) {
+		CMissile		*missile = smart_cast<CMissile*>(inventory().ActiveItem());
+		if (missile) {
 			update_throw_params	();
 			P			= m_throw_position;
 			D			= m_throw_direction;
@@ -737,6 +737,7 @@ bool CAI_Stalker::use_throw_randomness		()
 float CAI_Stalker::missile_throw_force		() 
 {
 	update_throw_params		();
+	VERIFY					(_valid(m_throw_force));
 	return					(m_throw_force);
 }
 
@@ -751,8 +752,10 @@ void CAI_Stalker::update_throw_params		()
 {
 	if (m_throw_actual) {
 		if (m_computed_object_position.similar(Position())) {
-			if (m_computed_object_direction.similar(Direction()))
+			if (m_computed_object_direction.similar(Direction())) {
+				VERIFY		(_valid(m_throw_force));
 				return;
+			}
 		}
 	}
 
@@ -769,4 +772,5 @@ void CAI_Stalker::update_throw_params		()
 	TransferenceToThrowVel	(velocity,time,ph_world->Gravity());
 	m_throw_force			= velocity.magnitude();
 	m_throw_direction		= velocity.normalize();
+	VERIFY					(_valid(m_throw_force));
 }
