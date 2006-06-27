@@ -19,10 +19,6 @@
 #include <malloc.h>
 #pragma warning(pop)
 
-void CSE_ALifeAnomalousZone::update()
-{
-}
-
 CSE_ALifeItemWeapon	*CSE_ALifeAnomalousZone::tpfGetBestWeapon(ALife::EHitType &tHitType, float &fHitPower)
 {
 	m_tpCurrentBestWeapon		= 0;
@@ -124,6 +120,6 @@ void CSE_ALifeAnomalousZone::spawn_artefacts				()
 
 void CSE_ALifeAnomalousZone::on_spawn						()
 {
-	inherited1::on_spawn	();
+	inherited::on_spawn		();
 	spawn_artefacts			();
 }

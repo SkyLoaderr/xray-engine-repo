@@ -43,6 +43,7 @@
 #ifdef DEBUG
 #	include "PHDebug.h"
 #	include "ui/UIDebugFonts.h" 
+#	include "level_graph.h"
 #endif
 #	include "hudmanager.h"
 
@@ -709,6 +710,23 @@ public:
 				Msg("Invalid process time! (%d)",id1);
 			else
 				tpGame->alife().set_process_time(id1);
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+
+class CCC_ALifeObjectsPerUpdate : public IConsole_Command {
+public:
+	CCC_ALifeObjectsPerUpdate(LPCSTR N) : IConsole_Command(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if ((GameID() == GAME_SINGLE)  &&ai().get_alife()) {
+			game_sv_Single	*tpGame = smart_cast<game_sv_Single *>(Level().Server->game);
+			VERIFY			(tpGame);
+			int id1 = 0;
+			sscanf(args ,"%d",&id1);
+			tpGame->alife().objects_per_update(id1);
 		}
 		else
 			Log("!Not a single player game!");
@@ -1637,9 +1655,74 @@ public:
 		}
 	}
 };
-#endif
+	#endif
 
 #ifdef DEBUG
+
+class CCC_DrawGameGraphAll : public IConsole_Command {
+public:
+				 CCC_DrawGameGraphAll	(LPCSTR N) : IConsole_Command(N)
+	{
+		bEmptyArgsHandled = true;
+	}
+
+	virtual void Execute				(LPCSTR args)
+	{
+		if (!ai().get_level_graph())
+			return;
+
+		ai().level_graph().setup_current_level	(-1);
+	}
+};
+
+class CCC_DrawGameGraphCurrent : public IConsole_Command {
+public:
+				 CCC_DrawGameGraphCurrent	(LPCSTR N) : IConsole_Command(N)
+	{
+		bEmptyArgsHandled = true;
+	}
+
+	virtual void Execute					(LPCSTR args)
+	{
+		if (!ai().get_level_graph())
+			return;
+
+		ai().level_graph().setup_current_level	(
+			ai().level_graph().level_id()
+		);
+	}
+};
+
+class CCC_DrawGameGraphLevel : public IConsole_Command {
+public:
+				 CCC_DrawGameGraphLevel	(LPCSTR N) : IConsole_Command(N)
+	{
+	}
+
+	virtual void Execute					(LPCSTR args)
+	{
+		if (!ai().get_level_graph())
+			return;
+
+		string256			S;
+		S[0]				= 0;
+		sscanf				(args,"%s",S);
+
+		if (!*S) {
+			ai().level_graph().setup_current_level	(-1);
+			return;
+		}
+
+		const GameGraph::SLevel	*level = ai().game_graph().header().level(S,true);
+		if (!level) {
+			Msg				("! There is no level %s in the game graph",S);
+			return;
+		}
+
+		ai().level_graph().setup_current_level	(level->id());
+	}
+};
+
 class CCC_ScriptDbg : public IConsole_Command {
 public:
 	CCC_ScriptDbg(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -2130,6 +2213,7 @@ void CCC_RegisterCommands()
 	CMD1(CCC_ALifeTimeFactor,	"al_time_factor"		);		// set time factor
 	CMD1(CCC_ALifeSwitchDistance,"al_switch_distance"	);		// set switch distance
 	CMD1(CCC_ALifeProcessTime,	"al_process_time"		);		// set process time
+	CMD1(CCC_ALifeObjectsPerUpdate,	"al_objects_per_update"	);		// set process time
 	CMD1(CCC_ALifeSwitchFactor,	"al_switch_factor"		);		// set switch factor
 	CMD1(CCC_JumpToLevel,		"jump_to_level"			);
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
@@ -2199,8 +2283,15 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"ai_dbg_destroy",		&psAI_Flags,	aiDestroy);
 	CMD3(CCC_Mask,				"ai_dbg_serialize",		&psAI_Flags,	aiSerialize);
 	CMD3(CCC_Mask,				"ai_dbg_dialogs",		&psAI_Flags,	aiDialogs);
-	CMD3(CCC_Mask,				"ai_dbg_sectors",		&psAI_Flags,	aiSectors);
 	CMD3(CCC_Mask,				"ai_dbg_infoportion",	&psAI_Flags,	aiInfoPortion);
+
+	CMD3(CCC_Mask,				"ai_draw_game_graph",				&psAI_Flags,	aiDrawGameGraph				);
+	CMD3(CCC_Mask,				"ai_draw_game_graph_stalkers",		&psAI_Flags,	aiDrawGameGraphStalkers		);
+	CMD3(CCC_Mask,				"ai_draw_game_graph_objects",		&psAI_Flags,	aiDrawGameGraphObjects		);
+
+	CMD1(CCC_DrawGameGraphAll,		"ai_draw_game_graph_all");
+	CMD1(CCC_DrawGameGraphCurrent,	"ai_draw_game_graph_current_level");
+	CMD1(CCC_DrawGameGraphLevel,	"ai_draw_game_graph_level");
 
 	CMD4(CCC_Integer,			"ai_dbg_inactive_time",	&g_AI_inactive_time, 0, 1000000);
 	
@@ -2431,6 +2522,4 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"use_scripts_in_goap",			&g_use_scripts_in_goap, 0, 1);
 	CMD4(CCC_Integer,	"show_wnd_rect",				&g_show_wnd_rect, 0, 1);
 	CMD4(CCC_Integer,	"show_wnd_rect_all",			&g_show_wnd_rect2, 0, 1);
-
-	
 }

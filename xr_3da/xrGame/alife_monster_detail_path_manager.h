@@ -72,6 +72,7 @@ public:
 			bool		actual							() const;
 			bool		failed							() const;
 	IC		const PATH	&path							() const;
+	IC		const float	&walked_distance				() const;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -46,20 +46,16 @@ private:
 		eLineIntersectionEqual		= u32(2)
 	};
 
+private:
 	IReader					*m_reader;		// level graph virtual storage
 	CHeader					*m_header;		// level graph header
 	CVertex					*m_nodes;		// nodes array
-	xr_vector<u8>			m_ref_counts;	// reference counters for handling dynamic objects
 	xr_vector<bool>			m_access_mask;
 	GameGraph::_LEVEL_ID	m_level_id;		// unique level identifier
 	u32						m_row_length;
 	u32						m_column_length;
 	u32						m_max_x;
 	u32						m_max_z;
-public:
-#ifdef AI_COMPILER
-	xr_vector<bool>			q_mark_bit;
-#endif
 
 protected:
 			u32		vertex						(const Fvector &position) const;
@@ -83,8 +79,6 @@ public:
 	IC		void	clear_mask					(const xr_vector<u32> &mask);
 	IC		void	clear_mask					(u32 vertex_id);
 	IC		bool	is_accessible				(const u32 vertex_id) const;
-//	IC		u8		ref_add						(u32 vertex_id);
-//	IC		u8		ref_dec						(u32 vertex_id);
 	IC		void	level_id					(const GameGraph::_LEVEL_ID &level_id);
 	IC		u32		max_x						() const;
 	IC		u32		max_z						() const;
@@ -195,76 +189,40 @@ public:
 	IC		Fvector2 v2d						(const Fvector &vector3d) const;
 	IC		bool	valid_vertex_position		(const Fvector &position) const;
 			bool	neighbour_in_direction		(const Fvector &direction, u32 start_vertex_id) const;
-#ifndef AI_COMPILER
-			void	find_game_point_in_direction(u32 start_vertex_id, const Fvector &start_point, const Fvector &tDirection, u32 &finish_vertex_id, GameGraph::_GRAPH_ID tGraphID) const;
-#endif
-
-public:
-	typedef		std::greater<float>				PredicateWorstCover;
-	typedef		std::less<float>				PredicateBetterCover;
-
-public:
-	struct STravelParams {
-		float			linear_velocity;
-		float			angular_velocity; 
-	};
-
-	struct STravelPoint {
-		Fvector2		position;
-		u32				vertex_id;
-	};
-
-	struct SPathPoint : public STravelParams, public STravelPoint {
-		Fvector2		direction;
-	};
-
-	struct SCirclePoint {
-		Fvector2		center;
-		float			radius;
-		Fvector2		point;
-		float			angle;
-	};
-
-	struct STrajectoryPoint :
-		public SPathPoint,
-		public SCirclePoint
-	{
-	};
 
 #ifdef DEBUG
-#ifndef AI_COMPILER
+#	ifndef AI_COMPILER
 private:
 	ref_shader			sh_debug;
-	xr_vector<Fvector>	m_tpTravelLine;
-	xr_vector<Fvector>	m_tpaPoints;
-	xr_vector<Fvector>	m_tpaTravelPath;
-	xr_vector<u32>		m_tpaPointNodes;
-	xr_vector<Fvector>	m_tpaLine;
-	xr_vector<u32>		m_tpaNodes;
 
 private:
-	STrajectoryPoint	start, dest;
-	const CCoverPoint	*m_best_point;
+	int					m_current_level_id;
+	bool				m_current_actual;
+	Fvector				m_current_center;
+	Fvector				m_current_radius;
 
 public:
-			void	render						();
-			void	on_render1					();
-			void	on_render2					();
-			void	on_render3					();
-			void	on_render4					();
-			void	on_render5					();
-			void	on_render6					();
-			void	on_render7					();
+			void		setup_current_level		(const int &level_id);
 
-			void	set_start_point				();
-			void	set_dest_point				();
-			void	draw_oriented_bounding_box	(Fmatrix &T, Fvector &half_dim, u32 C,	u32 C1) const;
-			void	draw_travel_line			() const;
-			void	compute_travel_line			(xr_vector<u32> &path, u32 start_vertex_id, u32 finish_vertex_id) const;
-			void	build_detail_path			();
-			void	draw_dynamic_obstacles		() const;
-			void	select_cover_point			();
-#endif
+private:
+			Fvector		convert_position		(const Fvector &position);
+			void		draw_edge				(const int &vertex_id0, const int &vertex_id1);
+			void		draw_vertex				(const int &vertex_id);
+			void		draw_stalkers			(const int &vertex_id);
+			void		draw_objects			(const int &vertex_id);
+			void		update_current_info		();
+
+private:
+			void		draw_nodes				();
+			void		draw_restrictions		();
+			void		draw_covers				();
+			void		draw_game_graph			();
+			void		draw_objects			();
+			void		draw_debug_node			();
+
+public:
+			void		render					();
+#	endif
 #endif
 };
 

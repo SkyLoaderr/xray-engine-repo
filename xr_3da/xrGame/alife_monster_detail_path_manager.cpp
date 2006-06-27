@@ -42,6 +42,8 @@ void CALifeMonsterDetailPathManager::target					(const GameGraph::_GRAPH_ID &gam
 	m_destination.m_game_vertex_id	= game_vertex_id;
 	m_destination.m_level_vertex_id	= level_vertex_id;
 	m_destination.m_position		= position;
+
+//	Msg								("[%6d][%s][%f][%f][%f]",Device.dwTimeGlobal,object().name_replace(),VPUSH(m_destination.m_position));
 }
 
 void CALifeMonsterDetailPathManager::target					(const GameGraph::_GRAPH_ID &game_vertex_id)
@@ -57,6 +59,7 @@ void CALifeMonsterDetailPathManager::target					(const CALifeSmartTerrainTask &t
 
 void CALifeMonsterDetailPathManager::target					(const CALifeSmartTerrainTask *task)
 {
+//	Msg								("[%6d][%s][%s]",Device.dwTimeGlobal,object().name_replace(),*task->patrol_path_name());
 	target							(*task);
 }
 
@@ -92,6 +95,9 @@ void CALifeMonsterDetailPathManager::update					()
 	ALife::_TIME_ID					current_time = ai().alife().time_manager().game_time();
 	if (current_time <= m_last_update_time)
 		return;
+
+//	if (ai().game_graph().vertex(object().m_tGraphID)->level_id() == ai().level_graph().level_id())
+//		Msg							("[detail::update][%6d][%s]",Device.dwTimeGlobal,object().name_replace());
 
 	ALife::_TIME_ID					time_delta = current_time - m_last_update_time;
 	update							(time_delta);

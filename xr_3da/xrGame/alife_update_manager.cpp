@@ -61,6 +61,7 @@ CALifeUpdateManager::CALifeUpdateManager	(xrServer *server, LPCSTR section) :
 
 	m_max_process_time		= pSettings->r_s32	(section,"process_time");
 	m_update_monster_factor	= pSettings->r_float(section,"update_monster_factor");
+	m_objects_per_update	= pSettings->r_u32	(section,"objects_per_update");
 	m_changing_level		= false;
 }
 
@@ -91,7 +92,11 @@ void CALifeUpdateManager::shedule_Update	(u32 dt)
 void CALifeUpdateManager::set_process_time	(int microseconds)
 {
 	graph().set_process_time		(float(microseconds) - float(microseconds)*update_monster_factor()/1000000.f);
-	scheduled().set_process_time	(float(microseconds)*update_monster_factor()/1000000.f);
+}
+
+void CALifeUpdateManager::objects_per_update(const u32 &objects_per_update)
+{
+	scheduled().objects_per_update	(objects_per_update);
 }
 
 void CALifeUpdateManager::init_ef_storage() const
@@ -232,6 +237,7 @@ void CALifeUpdateManager::reload		(LPCSTR section)
 {
 	CALifeSimulatorBase::reload			(section);
 	set_process_time					((int)m_max_process_time);
+	objects_per_update					(m_objects_per_update);
 }
 
 bool CALifeUpdateManager::load_game		(LPCSTR game_name, bool no_assert)

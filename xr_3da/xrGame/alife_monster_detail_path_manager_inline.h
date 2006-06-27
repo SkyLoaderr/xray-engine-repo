@@ -30,3 +30,9 @@ IC	const CALifeMonsterDetailPathManager::PATH &CALifeMonsterDetailPathManager::p
 {
 	return		(m_path);
 }
+
+IC	const float	&CALifeMonsterDetailPathManager::walked_distance					() const
+{
+	VERIFY		(path().size() > 1);
+	return		(m_walked_distance);
+}

@@ -8,10 +8,25 @@
 
 #pragma once
 
-IC	void CALifeScheduleRegistry::update		()
+IC	CALifeScheduleRegistry::CALifeScheduleRegistry			()
+{
+	m_objects_per_update		= 1;
+}
+
+IC	const u32 &CALifeScheduleRegistry::objects_per_update	() const
+{
+	return						(m_objects_per_update);
+}
+
+IC	void CALifeScheduleRegistry::objects_per_update			(const u32 &objects_per_update)
+{
+	m_objects_per_update		= objects_per_update;
+}
+
+IC	void CALifeScheduleRegistry::update						()
 {
 //	u32							count = 
-		objects().empty() ? 0 : inherited::update(CUpdatePredicate());
+		objects().empty() ? 0 : inherited::update(CUpdatePredicate(m_objects_per_update));
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
 //		Msg						("[LSS][SU][%d : %d]",count, objects().size());

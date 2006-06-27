@@ -21,7 +21,6 @@ CLevelGraph::CLevelGraph		()
 #ifndef AI_COMPILER
 #ifdef DEBUG
 	sh_debug.create				("debug\\ai_nodes","$null");
-	m_best_point				= 0;
 #endif
 	string256					file_name;
 	FS.update_path				(file_name,"$level$",LEVEL_GRAPH_NAME);
@@ -38,9 +37,15 @@ CLevelGraph::CLevelGraph		()
 	m_nodes						= (CVertex*)m_reader->pointer();
 	m_row_length				= iFloor((header().box().max.z - header().box().min.z)/header().cell_size() + EPS_L + 1.5f);
 	m_column_length				= iFloor((header().box().max.x - header().box().min.x)/header().cell_size() + EPS_L + 1.5f);
-	m_ref_counts.assign			(header().vertex_count(),0);
 	m_access_mask.assign		(header().vertex_count(),true);
 	unpack_xz					(vertex_position(header().box().max),m_max_x,m_max_z);
+
+#ifdef DEBUG
+	m_current_level_id			= -1;
+	m_current_actual			= false;
+	m_current_center			= Fvector().set(flt_max,flt_max,flt_max);
+	m_current_radius			= Fvector().set(flt_max,flt_max,flt_max);
+#endif
 }
 
 CLevelGraph::~CLevelGraph		()
