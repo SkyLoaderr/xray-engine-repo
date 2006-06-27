@@ -416,6 +416,7 @@ void CWeaponMagazinedWGrenade::ReloadMagazine()
 
 void CWeaponMagazinedWGrenade::OnStateSwitch(u32 S) 
 {
+
 	switch (S)
 	{
 	case eSwitch:
@@ -426,8 +427,8 @@ void CWeaponMagazinedWGrenade::OnStateSwitch(u32 S)
 			}
 		}break;
 	}
-	inherited::OnStateSwitch(S);
 	
+	inherited::OnStateSwitch(S);
 	UpdateGrenadeVisibility(!!iAmmoElapsed || S == eReload);
 }
 
@@ -662,11 +663,11 @@ void CWeaponMagazinedWGrenade::PlayAnimShoot()
 
 void  CWeaponMagazinedWGrenade::PlayAnimModeSwitch()
 {
-	VERIFY(GetState()==eSwitch);
+//.	VERIFY(GetState()==eSwitch);
 	if(m_bGrenadeMode)
-		m_pHUD->animPlay(random_anim(mhud_switch_g),TRUE,this, GetState());
+		m_pHUD->animPlay(random_anim(mhud_switch_g), TRUE, this, eSwitch); //fake
 	else 
-		m_pHUD->animPlay(random_anim(mhud_switch),TRUE,this, GetState());
+		m_pHUD->animPlay(random_anim(mhud_switch), TRUE, this, eSwitch); //fake
 }
 
 
