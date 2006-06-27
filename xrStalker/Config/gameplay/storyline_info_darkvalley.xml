@@ -1,34 +1,34 @@
-<article article_type="journal" group="LabX18 first key" id="dar_password_info1" name="LabX18 first key">
+<article article_type="journal" group="LabX18_information" id="dar_password_info1" name="LabX18 first key">
     <text>
         pass_to_1st_door
     </text>
 </article>
-<article article_type="journal" group="LabX18 second key" id="dar_password_info2" name="LabX18 second key">
+<article article_type="journal" group="LabX18_information" id="dar_password_info2" name="LabX18 second key">
     <text>
         pass_to_2nd_door
     </text>
 </article>
-<article article_type="journal" group="LabX-18 documents" id="dar_document1" name="dar_document1">
+<article article_type="journal" group="LabX18_information" id="dar_document1" name="dar_document1">
     <text>
         documents_1
     </text>
 </article>
-<article article_type="journal" group="LabX-18 documents" id="dar_document2" name="dar_document2">
+<article article_type="journal" group="LabX18_information" id="dar_document2" name="dar_document2">
     <text>
         documents_2
     </text>
 </article>
-<article article_type="journal" group="LabX-18 documents" id="dar_document3" name="dar_document3">
+<article article_type="journal" group="LabX18_information" id="dar_document3" name="dar_document3">
     <text>
         documents_3
     </text>
 </article>
-<article article_type="journal" group="LabX-18 documents" id="dar_document4" name="dar_document4">
+<article article_type="journal" group="LabX18_information" id="dar_document4" name="dar_document4">
     <text>
         documents_4
     </text>
 </article>
-<article article_type="journal" group="LabX-18 documents" id="dar_document5" name="dar_document5">
+<article article_type="journal" group="LabX18_information" id="dar_document5" name="dar_document5">
     <text>
         documents_5
     </text>
@@ -38,6 +38,9 @@
         val_x18_conclusion_txt
     </text>
 </article>
+
+
+
 <article article_type="task" group="val_captive_help" id="val_captive_help_art" name="val_captive_help">
     <text>
         val_captive_help_txt
