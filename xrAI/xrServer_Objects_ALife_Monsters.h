@@ -131,7 +131,8 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCustomZone)
 #define script_type_list save_type_list(CSE_ALifeCustomZone)
 
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALifeSchedulable)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone)
+	CSE_ALifeItemWeapon				*m_tpCurrentBestWeapon;
 	float							m_offline_interactive_radius;
 	u32								m_artefact_position_offset;
 	u16								m_artefact_spawn_count;
@@ -142,23 +143,18 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALif
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
 	virtual CSE_Abstract			*cast_abstract			() {return this;};
-	virtual CSE_ALifeSchedulable	*cast_schedulable		() {return this;};
 	virtual CSE_ALifeAnomalousZone	*cast_anomalous_zone	() {return this;};
 	virtual u32						ef_anomaly_type			() const;
 	virtual u32						ef_weapon_type			() const;
 	virtual u32						ef_creature_type		() const;
-#ifndef XRGAME_EXPORTS
-	virtual	void					update					()	{};
-#else
+#ifdef XRGAME_EXPORTS
 			void					spawn_artefacts			();
 	virtual void					on_spawn				();
-	virtual	void					update					();
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType		&tHitType,				float &fHitPower);
 	virtual	ALife::EMeetActionType	tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,	int iGroupIndex, bool bMutualDetection);
 	virtual bool					bfActive				();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 #endif
-	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeAnomalousZone)
 #define script_type_list save_type_list(CSE_ALifeAnomalousZone)

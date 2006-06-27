@@ -695,7 +695,7 @@ void CSE_ALifeCustomZone::FillProps		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeAnomalousZone
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSchedulable(caSection), CSE_ALifeCustomZone(caSection)
+CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeCustomZone(caSection)
 {
 	m_offline_interactive_radius	= 30.f;
 	m_artefact_spawn_count			= 32;
@@ -704,19 +704,18 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSche
 
 CSE_Abstract *CSE_ALifeAnomalousZone::init			()
 {
-	inherited1::init			();
-	inherited2::init			();
+	inherited::init				();
 	return						(base());
 }
 
 CSE_Abstract *CSE_ALifeAnomalousZone::base			()
 {
-	return						(inherited1::base());
+	return						(inherited::base());
 }
 
 const CSE_Abstract *CSE_ALifeAnomalousZone::base	() const
 {
-	return						(inherited1::base());
+	return						(inherited::base());
 }
 
 CSE_ALifeAnomalousZone::~CSE_ALifeAnomalousZone		()
@@ -735,12 +734,12 @@ u32	CSE_ALifeAnomalousZone::ef_weapon_type			() const
 
 u32	CSE_ALifeAnomalousZone::ef_creature_type		() const
 {
-	return						(inherited1::ef_weapon_type());
+	return						(inherited::ef_weapon_type());
 }
 
 void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	inherited1::STATE_Read		(tNetPacket,size);
+	inherited::STATE_Read		(tNetPacket,size);
 
 	if (m_wVersion > 21) {
 		tNetPacket.r_float		(m_offline_interactive_radius);
@@ -786,7 +785,7 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 
 void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 {
-	inherited1::STATE_Write		(tNetPacket);
+	inherited::STATE_Write		(tNetPacket);
 	tNetPacket.w_float			(m_offline_interactive_radius);
 	tNetPacket.w_u16			(m_artefact_spawn_count);
 	tNetPacket.w_u32			(m_artefact_position_offset);
@@ -794,25 +793,20 @@ void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 
 void CSE_ALifeAnomalousZone::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
-	inherited1::UPDATE_Read		(tNetPacket);
+	inherited::UPDATE_Read		(tNetPacket);
 }
 
 void CSE_ALifeAnomalousZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
-	inherited1::UPDATE_Write	(tNetPacket);
+	inherited::UPDATE_Write	(tNetPacket);
 }
 
 void CSE_ALifeAnomalousZone::FillProps		(LPCSTR pref, PropItemVec& items)
 {
-	inherited1::FillProps			(pref,items);
+	inherited::FillProps			(pref,items);
 	PHelper().CreateFloat			(items,PrepareKey(pref,*s_name,"offline interactive radius"),			&m_offline_interactive_radius,	0.f,	100.f);
 	PHelper().CreateU16				(items,PrepareKey(pref,*s_name,"ALife\\Artefact spawn places count"),	&m_artefact_spawn_count,		32,		256);
 	PHelper().CreateFlag32			(items,PrepareKey(pref,*s_name,"ALife\\Visible for AI"),				&m_flags,						flVisibleForAI);
-}
-
-bool CSE_ALifeAnomalousZone::need_update	(CSE_ALifeDynamicObject *object)
-{
-	return						(CSE_ALifeSchedulable::need_update(object) && (m_maxPower > EPS_L));
 }
 
 //////////////////////////////////////////////////////////////////////////
