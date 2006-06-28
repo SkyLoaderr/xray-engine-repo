@@ -148,4 +148,7 @@
 		<task>andy_task_1</task>
 	</info_portion>
 
+	<info_portion id="say_hello">
+	</info_portion>
+
 </game_information_portions>
