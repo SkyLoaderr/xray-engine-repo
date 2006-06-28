@@ -64,17 +64,6 @@
 <info_portion id="info_knock"></info_portion>
 <info_portion id="dar_podval"></info_portion>
 
-<!-- Спаун снорков -->
-<info_portion id="dar_snork_spawn1"></info_portion>
-<info_portion id="dar_snork_spawn2"></info_portion>
-<info_portion id="dar_snork_spawn3"></info_portion>
-<info_portion id="dar_snork_restrictor_spawn1"></info_portion>
-<info_portion id="dar_snork_restrictor_spawn2"></info_portion>
-<info_portion id="dar_snork_restrictor_spawn3"></info_portion>
-<info_portion id="dar_snork_spawn11"></info_portion>
-<info_portion id="dar_snork_spawn22"></info_portion>
-<info_portion id="dar_snork_spawn33"></info_portion>
-
 <!-- Кодовые двери -->
 <info_portion id="dar_door1_closed">
 	<task>dar_codedoor_1</task>

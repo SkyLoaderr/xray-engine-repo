@@ -238,122 +238,59 @@
     </objective>
 </game_task>
 <game_task id="bar_darklab_documents2">
-    <title>
-        bar_darklab_documents2
-    </title>
+    <title>bar_darklab_documents2</title>
     <objective key="0">
-        <icon height="50" width="50" x="200" y="100">
-            ui\ui_icons_task
-        </icon>
-        <infoportion_complete>
-            bar_darklab_document_done
-        </infoportion_complete>
+        <icon height="50" width="50" x="200" y="100">ui\ui_icons_task</icon>
+        <infoportion_complete>bar_darklab_document_done</infoportion_complete>
     </objective>
     <objective key="1">
-        <text>
-            bar_darklab_documents2_1
-        </text>
-        <icon height="50" width="50" x="200" y="100">
-            ui\ui_icons_task
-        </icon>
-        <map_location_type hint="bar_darklab_documents2_1_hint">
-            green_location
-        </map_location_type>
-        <object_story_id>
-            bar_darklab_documents
-        </object_story_id>
-        <function_complete>
-            darkvalley_tasks.has_darklab_documents
-        </function_complete>
-        <infoportion_set_complete>
-            bar_darklab_document_gain
-        </infoportion_set_complete>
+        <text>bar_darklab_documents2_1</text>
+        <icon height="50" width="50" x="200" y="100">ui\ui_icons_task</icon>
+        <map_location_type hint="bar_darklab_documents2_1_hint">green_location</map_location_type>
+        <object_story_id>bar_darklab_documents</object_story_id>
+        <function_complete>darkvalley_tasks.has_darklab_documents</function_complete>
+        <infoportion_set_complete>bar_darklab_document_gain</infoportion_set_complete>
+        <infoportion_set_complete>dar_document5</infoportion_set_complete>
     </objective>
     <objective key="2">
-        <text>
-            bar_darklab_documents2_2
-        </text>
-        <icon height="50" width="50" x="400" y="50">
-            ui\ui_icons_task
-        </icon>
-        <map_location_type hint="bar_darklab_documents2_2_hint">
-            blue_location
-        </map_location_type>
-        <object_story_id>
-            bar_Barman
-        </object_story_id>
-        <infoportion_complete>
-            bar_darklab_document_done
-        </infoportion_complete>
+        <text>bar_darklab_documents2_2</text>
+        <icon height="50" width="50" x="400" y="50">ui\ui_icons_task</icon>
+        <map_location_type hint="bar_darklab_documents2_2_hint">blue_location</map_location_type>
+        <object_story_id>bar_Barman</object_story_id>
+        <infoportion_complete>bar_darklab_document_done</infoportion_complete>
     </objective>
 </game_task>
 <game_task id="dar_codedoor_1">
-    <title>
-        dar_codedoor_1
-    </title>
+    <title>dar_codedoor_1</title>
     <objective key="0">
-        <icon height="50" width="50" x="100" y="50">
-            ui\ui_icons_task
-        </icon>
-        <infoportion_complete>
-            dar_open_door1
-        </infoportion_complete>
+        <icon height="50" width="50" x="100" y="50">ui\ui_icons_task</icon>
+        <infoportion_complete>dar_open_door1</infoportion_complete>
     </objective>
     <objective key="1">
-        <text>
-            dar_codedoor_1_1
-        </text>
-        <icon height="50" width="50" x="350" y="150">
-            ui\ui_icons_task
-        </icon>
-        <infoportion_complete>
-            dar_password_info1
-        </infoportion_complete>
+        <text>dar_codedoor_1_1</text>
+        <icon height="50" width="50" x="350" y="150">ui\ui_icons_task</icon>
+        <infoportion_complete>dar_password_info1</infoportion_complete>
     </objective>
     <objective key="2">
-        <text>
-            dar_codedoor_1_2
-        </text>
-        <icon height="50" width="50" x="100" y="50">
-            ui\ui_icons_task
-        </icon>
-        <map_location_type>
-            green_location
-        </map_location_type>
-        <object_story_id>
-            dar_codedoor_1
-        </object_story_id>
+        <text>dar_codedoor_1_2</text>
+        <icon height="50" width="50" x="100" y="50">ui\ui_icons_task</icon>
+        <map_location_type>green_location</map_location_type>
+        <object_story_id>dar_codedoor_1</object_story_id>
     </objective>
 </game_task>
 <game_task id="dar_codedoor_2">
-    <title>
-        dar_codedoor_2
-    </title>
+    <title>dar_codedoor_2</title>
     <objective key="0">
-        <icon height="50" width="50" x="100" y="50">
-            ui\ui_icons_task
-        </icon>
-        <infoportion_complete>
-            dar_open_door2
-        </infoportion_complete>
+        <icon height="50" width="50" x="100" y="50">ui\ui_icons_task</icon>
+        <infoportion_complete>dar_open_door2</infoportion_complete>
     </objective>
     <objective key="1">
-        <text>
-            dar_codedoor_2_1
-        </text>
-        <icon height="50" width="50" x="350" y="150">
-            ui\ui_icons_task
-        </icon>
-        <infoportion_complete>
-            dar_password_info2
-        </infoportion_complete>
+        <text>dar_codedoor_2_1</text>
+        <icon height="50" width="50" x="350" y="150">ui\ui_icons_task</icon>
+        <infoportion_complete>dar_password_info2</infoportion_complete>
     </objective>
     <objective key="2">
-        <text>
-            dar_codedoor_2_2
-        </text>
-        <icon height="50" width="50" x="100" y="50">
-            ui\ui_icons_task
-        </icon>
+        <text>dar_codedoor_2_2</text>
+        <icon height="50" width="50" x="100" y="50">ui\ui_icons_task</icon>
     </objective>
 </game_task>

@@ -1,48 +1,25 @@
 [logic]
-active = ph_door@locked
-
-[ph_door@locked]
-locked = true
-closed = true
-snd_open_start = trader_door_locked
-on_info = {+dar_codelock2_unlock +dar_password_info2} ph_door@closed %+dar_open_door2%
-on_info2 = {+x18_door2} ph_door@horror_knock %-x18_door2%
-on_use = %+dar_door2_closed%
+active = ph_door@horror_knock
 
 [ph_door@horror_knock]
 locked = true
 closed = true
-snd_open_start = trader_door_locked
-on_info = {~60} ph_door@horror_wait %+info_knock =hit_npc(x18_point_knock:door:0:1500)%, ph_door@horror_silence %+info_knock =hit_npc(x18_point_knock:door:0:1500)%
-on_info2 = {+x18_door2_knock_stop} ph_door@locked
+on_info = {~60} ph_door@horror_wait %=hit_npc(x18_point_knock:door:0:1500) =play_particle_on_path(hit_fx\hit_stucco_statik:dar_knock_points:70) =play_snd(device\door_stop)%, ph_door@horror_silence
+on_info2 = {+dar_codelock2_unlock} ph_door@open %+dar_open_door2 =play_snd(device\door_servomotor)%
 
 [ph_door@horror_wait]
 locked = true
 closed = true
-snd_open_start = trader_door_locked
-on_timer = 3000| ph_door@horror_knock %-info_knock%
+on_timer = 5000| ph_door@horror_knock
+on_info2 = {+dar_codelock2_unlock} ph_door@open %+dar_open_door2 =play_snd(device\door_servomotor)%
 
 [ph_door@horror_silence]
 locked = true
 closed = true
-snd_open_start = trader_door_locked
-on_timer = 5000| ph_door@horror_knock %-info_knock%
-on_info = {+x18_door2_knock_stop} ph_door@locked  %-info_knock%
+on_timer = 3000| ph_door@horror_knock
+on_info = {+dar_codelock2_unlock} ph_door@open %+dar_open_door2 =play_snd(device\door_servomotor)%
 
-[ph_door@closed]
-locked = false
-closed = true
-snd_init = trader_door_unlock
-snd_open_start = trader_door_open_start
-snd_close_start = trader_door_close_start
-snd_close_stop = trader_door_close_stop
-on_use = ph_door@open
 
 [ph_door@open]
 locked = false
 closed = false
-snd_init = trader_door_unlock
-snd_open_start = trader_door_open_start
-snd_close_start = trader_door_close_start
-snd_close_stop = trader_door_close_stop
-on_use = ph_door@closed
