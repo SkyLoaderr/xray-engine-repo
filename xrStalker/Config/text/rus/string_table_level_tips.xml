@@ -15,6 +15,9 @@
     <string id="physic_shell_use">
         <text>Двигать объект ()</text>
     </string>
+    <string id="st_codelock">
+        <text>Кодовый замок ($$ACTION_USE$$)</text>
+    </string>
 
     <string id="general_help">
         <text>Срочно нужна аптечка, помираю!!!</text>
