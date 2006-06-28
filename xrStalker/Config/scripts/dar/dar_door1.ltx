@@ -4,7 +4,7 @@ active = ph_door@locked
 [ph_door@locked]
 locked = true
 closed = true
-on_info = {+dar_codelock1_unlock} ph_door@closed %+dar_open_door1%
+on_info = {+dar_codelock1_unlock} ph_door@closed %+dar_open_door1 =play_snd(device\door_servomotor)%
 
 [ph_door@closed]
 locked = false
