@@ -43,7 +43,7 @@ function codepad:OnNumberReceive(text)
         end
     end
 end
-function action_idle:deactivate()
+function codepad:deactivate()
 	self.object:set_tip_text("")
 end
 
