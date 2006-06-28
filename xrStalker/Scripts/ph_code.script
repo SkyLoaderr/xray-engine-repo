@@ -43,6 +43,9 @@ function codepad:OnNumberReceive(text)
         end
     end
 end
+function action_idle:deactivate()
+	self.object:set_tip_text("")
+end
 
 ---------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, ini, scheme, section, storage)
@@ -57,8 +60,11 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
     local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
     st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+
+	st.tips  = utils.cfg_get_string(ini, section, "tips", npc, false, "", "st_codelock")
+    npc:set_tip_text(st.tips)
     
-    st.code = utils.cfg_get_number(ini, section, "code", npc, false)
+    st.code = utils.cfg_get_number(ini, section, "code", npc, false)    
     if st.code then
         st.on_code = xr_logic.cfg_get_condlist(ini, section, "on_code", npc)
         printf("ph_code <set_scheme>: on_code [%d]", st.code)
