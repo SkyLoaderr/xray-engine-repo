@@ -427,6 +427,9 @@ void CController::UpdateCL()
 			HUD().GetUI()->UIGame()->RemoveCustomStatic("controller_fx2");
 		}
 	}
+
+	m_aura->update_frame();
+
 }
 
 void CController::shedule_Update(u32 dt)

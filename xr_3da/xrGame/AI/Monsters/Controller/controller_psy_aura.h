@@ -49,12 +49,25 @@ class CControllerAura : public CPPEffectorCustomController<CPPEffectorController
 	float				m_fake_min_add_dist;
 
 
+	// hits
+	enum {
+		eNone,
+		eEffectoring,
+		eHit
+	} m_hit_state;
+
+	u32					m_time_started;
+	u32					m_pmt_hit_delay;
+	u32					m_pmt_pp_hit_delay;
+
+
 public:
 					CControllerAura			(CController *monster) : m_object(monster){}
 	virtual void	load					(LPCSTR section);
 
 			void	on_death				();
 			void	update_schedule			();
+			void	update_frame			();
 };
 
 

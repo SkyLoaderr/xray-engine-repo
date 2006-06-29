@@ -12,6 +12,7 @@
 #define effExplodeHit			(eStartEffectorID+4)
 #define effNightvision			(eStartEffectorID+5)
 #define effPsyHealth			(eStartEffectorID+6)
+#define effControllerAura		(eStartEffectorID+7)
 
 #define	eCEFall					((ECamEffectorType)(cefNext+1))
 #define	eCENoise				((ECamEffectorType)(cefNext+2))

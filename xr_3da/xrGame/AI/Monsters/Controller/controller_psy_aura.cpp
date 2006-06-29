@@ -3,6 +3,8 @@
 #include "controller.h"
 #include "../../../actor.h"
 #include "../../../level.h"
+#include "../../../CameraEffector.h"
+#include "../../../ActorEffector.h"
 
 CPPEffectorControllerAura::CPPEffectorControllerAura(const SPPInfo &ppi, u32 time_to_fade, const ref_sound &snd_left, const ref_sound &snd_right)
 : inherited(ppi)
@@ -111,17 +113,19 @@ void CControllerAura::update_schedule()
 			if (!need_be_active) {
 				m_effector->switch_off	();
 				m_effector				= 0;
+				
+				m_hit_state				= eNone;
+
 			} else {
-				float time_delta = float(time() - m_time_last_update) / 1000.f;
-				m_object->Hit_Psy(Actor(), time_delta * aura_damage);
-				m_time_last_update = time();
 			}
 		} else {
 			if (need_be_active) {
 				// create effector
 				m_effector = xr_new<CPPEffectorControllerAura>	(m_state, 5000, aura_sound.left, aura_sound.right);
 				Actor()->Cameras().AddPPEffector				(m_effector);
-				m_time_last_update								= time();
+				
+				m_hit_state			= eEffectoring;
+				m_time_started		= time();
 			} else {
 			}
 		}
@@ -130,11 +134,34 @@ void CControllerAura::update_schedule()
 
 }
 
+void CControllerAura::update_frame()
+{
+	if (m_hit_state == eNone) return;
+
+	switch (m_hit_state){
+		case eEffectoring: 
+			if (m_time_started + m_pmt_hit_delay < time()) {
+				// launch effector
+				AddEffector		(Actor(), effControllerAura, "effector_controller_aura");
+				m_hit_state		= eHit;
+				m_time_started	= time();
+			}
+			break;
+		case eHit: 
+			if (m_time_started + m_pmt_pp_hit_delay < time()) {
+				m_object->Hit_Psy	(Actor(), aura_damage);
+				m_hit_state			= eEffectoring;
+			}
+			break;
+	}
+}
+
 void CControllerAura::on_death()
 {
 	if (active()) {
 		m_effector->switch_off	();
 		m_effector				= 0;
+		m_hit_state				= eNone;
 	}
 }
 
@@ -154,6 +181,12 @@ void CControllerAura::load(LPCSTR section)
 	m_time_fake_aura_delay		= READ_IF_EXISTS(pSettings,r_u32,section,"PsyAura_Fake_Delay", 8000);
 	m_fake_max_add_dist			= READ_IF_EXISTS(pSettings,r_float,section,"PsyAura_Fake_MaxAddDist", 90.f);
 	m_fake_min_add_dist			= READ_IF_EXISTS(pSettings,r_float,section,"PsyAura_Fake_MinAddDist", 20.f);
+
+	m_time_started				= 0;
+	m_hit_state					= eNone;
+
+	m_pmt_hit_delay				= READ_IF_EXISTS(pSettings,r_u32,section,"PsyAura_HitDelay", 1000);
+	m_pmt_pp_hit_delay			= READ_IF_EXISTS(pSettings,r_u32,section,"PsyAura_PPHitDelay", 300);
 }
 
 
