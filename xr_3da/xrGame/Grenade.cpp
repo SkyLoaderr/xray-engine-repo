@@ -205,6 +205,7 @@ void CGrenade::PutNextToSlot	()
 	else
 		Msg ("! PutNextToSlot : m_pInventory = 0");	
 
+	if (smart_cast<CInventoryOwner*>(H_Parent()) && m_pInventory)
 	{
 		//найти такую же гранату и положить в рюкзак
 		CGrenade *pNext = smart_cast<CGrenade*>(m_pInventory->Same(this,true));
