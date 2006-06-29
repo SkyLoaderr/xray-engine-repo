@@ -18,7 +18,7 @@ function load_job(sj, gname, type, squad, groups)
 		    t = { section = "logic@com_center_tushkano",
 			    idle = 0,
 			    prior = 5, state = {0},
-			    in_rest = "", out_rest = "",
+			    in_rest = "", out_rest = "dar_com_center_tushkano",
 		    }
 		    table.insert(sj, t)
         end
@@ -29,7 +29,7 @@ function load_job(sj, gname, type, squad, groups)
 		    t = { section = "logic@com_center_tushkano",
 			    idle = 0,
 			    prior = 5, state = {0},
-			    in_rest = "", out_rest = "",
+			    in_rest = "", out_rest = "dar_upper_tushkano",
 		    }
 		    table.insert(sj, t)
         end
@@ -40,7 +40,7 @@ function load_job(sj, gname, type, squad, groups)
 		    t = { section = "logic@com_center_tushkano",
 			    idle = 0,
 			    prior = 5, state = {0},
-			    in_rest = "", out_rest = "",
+			    in_rest = "", out_rest = "dar_upper_tushkano",
 		    }
 		    table.insert(sj, t)
         end
