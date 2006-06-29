@@ -77,9 +77,11 @@ function reset_show_spot(npc, scheme, st, section)
 		spot_section = "true"
 	end
 	
-
-	local spot_condlist = xr_logic.parse_condlist(npc, section, "show_spot", spot_section)
-	local spot = xr_logic.pick_section_from_condlist(db.actor, npc, spot_condlist)
+    local spot = "false"
+    if npc:character_community() ~= "zombied" then
+	    local spot_condlist = xr_logic.parse_condlist(npc, section, "show_spot", spot_section)
+	    spot = xr_logic.pick_section_from_condlist(db.actor, npc, spot_condlist)
+    end
 
 	local sim  = alife()
 	if not sim then
