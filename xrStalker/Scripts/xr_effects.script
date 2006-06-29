@@ -547,7 +547,7 @@ function gar_direction_fire(actor, npc)
 end
 
 function gar_hellcar_victory(actor, npc)
-	if actor:has_info("gar_hellcar_help") then
+	if actor:has_info("gar_hellcar_help") and actor:dont_has_info("gar_hellcar_thanks") then
 		news_manager.send_tip(actor, "gar_hellcar_victory", 0, "stalker", 0)
 	end
 end
