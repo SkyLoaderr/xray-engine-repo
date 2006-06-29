@@ -1935,11 +1935,15 @@ end
 -- Функции для Янтаря
 ----------------------------------------------------------------------------------
 function yan_actor_sleep (actor, npc)
-		set_sleep_relocate(patrol ("yan_actor_sleep"):point(0), patrol ("yan_actor_sleep"):point(1), 120)
+	db.actor:set_actor_position(patrol("yan_actor_sleep"):point(0))
+	local dir = patrol("yan_actor_sleep"):point(1):sub(patrol("yan_actor_sleep"):point(0))
+	db.actor:set_actor_direction(-dir:getH())
 end
 
 function yan_actor_sleep_1 (actor, npc)
-		set_sleep_relocate(patrol ("yan_actor_sleep_1"):point(0), patrol ("yan_actor_sleep_1"):point(1), 60)
+	db.actor:set_actor_position(patrol("yan_actor_sleep_1"):point(0))
+	local dir = patrol("yan_actor_sleep_1"):point(1):sub(patrol("yan_actor_sleep_1"):point(0))
+	db.actor:set_actor_direction(-dir:getH())
 end
 
 function yan_dream_voices (actor, npc)

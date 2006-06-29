@@ -127,7 +127,7 @@ path_walk = help_walk_1
 path_look = help_look_1
 combat_ignore_cond = {=fighting_actor =fighting_dist_ge(20)}
 meet = meet@scientist_1
-on_signal = arrived_1 | {!see_enemy =rostok_dist_to_actor_le(4)} remark@scientist_4 
+on_signal = arrived_1 | camper@scientist_wait_3 ;{!see_enemy =rostok_dist_to_actor_le(4)} remark@scientist_4 
 def_state_moving = assault
 radius = 0
 no_retreat = true
@@ -163,7 +163,7 @@ path_walk = help_walk_2
 path_look = help_look_2
 combat_ignore_cond = {=fighting_actor =fighting_dist_ge(20)}
 meet = meet@scientist_1
-on_signal = arrived_2 | {!see_enemy =rostok_dist_to_actor_le(4)} remark@scientist_51  %-yantar_kruglov_talk%
+on_signal = arrived_2 | camper@scientist_wait_4 ;{!see_enemy =rostok_dist_to_actor_le(4)} remark@scientist_51  %-yantar_kruglov_talk%
 def_state_moving = assault
 radius = 0
 no_retreat = true
@@ -288,6 +288,9 @@ path_walk = door_1_walk
 combat_ignore_cond = always
 on_signal = door_2_open | %-yan_scientist_door_1_open +yan_scientist_door_2_open -yan_scientist_gulag_state_2 +yan_scientist_gulag_state_3%
 danger = danger_condition@1
+def_state_moving1 = walk
+def_state_moving2 = walk
+def_state_moving3 = walk
 
 [logic@scientist_return_out_rest]
 active = walker@scientist_return_out_rest
@@ -297,6 +300,9 @@ path_walk = door_2_walk
 on_signal = doors_close | walker@go_to_scientist %-yan_scientist_door_2_open%
 combat_ignore_cond = always
 danger = danger_condition@1
+def_state_moving1 = walk
+def_state_moving2 = walk
+def_state_moving3 = walk
 
 [walker@go_to_scientist]
 path_walk = ucheniy_talk_walk
@@ -305,6 +311,9 @@ combat_ignore_cond = always
 on_signal = arrived | remark@talk_about_research %+yan_find_scientist_done%
 danger = danger_condition@1
 def_state_moving = walk
+def_state_moving1 = walk
+def_state_moving2 = walk
+def_state_moving3 = walk
 
 [remark@talk_about_research]
 snd = yantar_kruglov_radiation_quest_10
@@ -317,6 +326,9 @@ path_walk = bunker_walk
 path_look = bunker_look
 combat_ignore_cond = always
 def_state_moving = walk
+def_state_moving1 = walk
+def_state_moving2 = walk
+def_state_moving3 = walk
 
 [wounded@yan_scientist]
 hp_state = 102|help_me@yantar_kruglov_radiation_quest_7|101|wounded_heavy@yantar_kruglov_radiation_quest_7
