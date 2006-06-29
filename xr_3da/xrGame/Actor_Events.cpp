@@ -205,7 +205,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			if (Set) m_iCurWeaponHideState |= State;
 			else m_iCurWeaponHideState &= ~(State);
 */
-			inventory().SetSlotsBlocked	(State, Set);
+			inventory().SetSlotsBlocked	(State, !!Set);
 		}break;
 	case GE_MOVE_ACTOR:
 		{
