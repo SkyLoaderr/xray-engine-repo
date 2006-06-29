@@ -5,7 +5,7 @@ active = sr_idle@1
 on_info = {+yan_spawn_ghost} sr_idle@2_1 %=agr_knockdown =run_cam_effector(dis_consciousness) =disable_ui%
 
 [sr_idle@2_1]
-on_timer = 8000 | sr_idle@2 %=run_postprocess(deadcity_wake) =yan_actor_sleep_1 =run_cam_effector(dream:1002:true)  =yan_dream_voices =disable_ui%
+on_timer = 5000 | sr_idle@2 %=run_postprocess(deadcity_wake) =yan_actor_sleep_1 =run_cam_effector(dream:1002:true)  =yan_dream_voices =disable_ui%
 
 [sr_idle@2]
 on_timer = 12000 | sr_idle@2_3 %=yan_actor_sleep%
