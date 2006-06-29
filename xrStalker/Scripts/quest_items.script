@@ -22,8 +22,7 @@ function main()
 	elseif level == "l02_garbage" then
 		table.insert(spawn_items, "bandit_outfit")
 	elseif level == "l03_agroprom" then
-		table.insert(spawn_items, "stalker_outfit")
-		table.insert(spawn_items, "garbage_seriy_flash")				
+		table.insert(spawn_items, "stalker_outfit")						
 	elseif level == "l03u_agr_underground" then
 		table.insert(spawn_items, "stalker_outfit")
 	elseif level == "l04_darkvalley" then
