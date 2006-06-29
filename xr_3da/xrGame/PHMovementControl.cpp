@@ -181,6 +181,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 		Msg("CPHMovementControl::Calculate in %s (CPHMovementControl::vPosition) %f,%f,%f",PH_DBG_ObjectTrack(),vPosition.x,vPosition.y,vPosition.z);
 	}
 #endif
+	if(!m_character->b_exist)	return;
 	if(m_capture) 
 	{
 		if(m_capture->Failed()) xr_delete(m_capture);
@@ -796,7 +797,10 @@ bool		CPHMovementControl::		TryPosition				(Fvector& pos)
 			Msg("CPHMovementControl::TryPosition %s (CPHMovementControl::vPosition) %f,%f,%f",PH_DBG_ObjectTrack(),vPosition.x,vPosition.y,vPosition.z);
 		}
 #endif
-		return m_character->TryPosition(pos)&&!bExernalImpulse;
+		if(m_character->b_exist)
+			return m_character->TryPosition(pos)&&!bExernalImpulse;
+		else
+			vPosition.set(pos);
 }
 
 
