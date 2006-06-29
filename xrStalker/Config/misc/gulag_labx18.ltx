@@ -1,16 +1,5 @@
 ;*****************************************************************
 ;Command center poltergeist
 ;*****************************************************************
-[logic@dar_com_center_poltergeist]
-active = mob_remark@dar_poltergeist_mob_remark
-
-[mob_remark@dar_poltergeist_mob_remark]
-anim = idle_state_0
-on_info = {+dar_open_door2} mob_home@dar_poltergeist_mob_remark
-path_home = home
-
-[mob_home@dar_poltergeist_mob_remark]
-path_home = home
-home_min_radius = 10
-home_max_radius = 15
-
+[logic@dar_monstr]
+active = nil
