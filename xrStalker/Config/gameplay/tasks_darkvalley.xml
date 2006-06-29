@@ -270,6 +270,7 @@
         <text>dar_codedoor_1_1</text>
         <icon height="50" width="50" x="350" y="150">ui\ui_icons_task</icon>
         <infoportion_complete>dar_password_info1</infoportion_complete>
+        <object_story_id>dar_corpse_1</object_story_id>
     </objective>
     <objective key="2">
         <text>dar_codedoor_1_2</text>
@@ -288,9 +289,13 @@
         <text>dar_codedoor_2_1</text>
         <icon height="50" width="50" x="350" y="150">ui\ui_icons_task</icon>
         <infoportion_complete>dar_password_info2</infoportion_complete>
+        <object_story_id>dar_corpse_2</object_story_id>
     </objective>
     <objective key="2">
         <text>dar_codedoor_2_2</text>
         <icon height="50" width="50" x="100" y="50">ui\ui_icons_task</icon>
+        <map_location_type>green_location</map_location_type>
+        <object_story_id>dar_codedoor_2</object_story_id>
+
     </objective>
 </game_task>
