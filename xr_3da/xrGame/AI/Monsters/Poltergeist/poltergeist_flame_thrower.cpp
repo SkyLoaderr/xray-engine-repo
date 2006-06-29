@@ -42,6 +42,8 @@ void CPolterFlame::load(LPCSTR section)
 	m_min_flame_height	= pSettings->r_float(section,"flame_min_height");
 	m_max_flame_height	= pSettings->r_float(section,"flame_max_height");
 
+	m_pmt_aura_radius	= pSettings->r_float(section,"flame_aura_radius");
+
 	m_time_flame_started	= 0;
 }
 
@@ -166,9 +168,14 @@ void CPolterFlame::update_schedule()
 	
 	// check if we can create another flame
 	if (m_object->g_Alive() && m_object->EnemyMan.get_enemy() && (m_flames.size() < m_count)) {
-		// check timing
-		if (m_time_flame_started + m_delay < time()) {
-			create_flame(m_object->EnemyMan.get_enemy());
+
+		// check aura radius
+		float dist = m_object->EnemyMan.get_enemy()->Position().distance_to(m_object->Position());
+		if (dist < m_pmt_aura_radius) {
+			// check timing
+			if (m_time_flame_started + m_delay < time()) {
+				create_flame(m_object->EnemyMan.get_enemy());
+			}
 		}
 	}
 

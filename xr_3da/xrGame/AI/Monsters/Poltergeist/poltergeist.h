@@ -165,6 +165,8 @@ class CPolterFlame : public CPolterSpecialAbility {
 	float					m_min_flame_height;
 	float					m_max_flame_height;
 
+	float					m_pmt_aura_radius;
+
 	enum EFlameState {
 		ePrepare,
 		eFire,
@@ -224,7 +226,6 @@ class CPolterTele : public CPolterSpecialAbility {
 	u32					m_pmt_time_object_keep;
 	float				m_pmt_raise_speed;
 	float				m_pmt_fly_velocity;
-
 
 	enum ETeleState {
 		eStartRaiseObjects,
