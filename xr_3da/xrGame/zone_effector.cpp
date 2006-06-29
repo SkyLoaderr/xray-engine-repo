@@ -23,6 +23,7 @@ CZoneEffector::~CZoneEffector()
 
 void CZoneEffector::Load(LPCSTR section)
 {
+	VERIFY2(pSettings->line_exist(section,"ppe_file"), section);
 	m_pp_fname				= pSettings->r_string(section,"ppe_file");
 	r_min_perc				= pSettings->r_float(section,"radius_min");
 	r_max_perc				= pSettings->r_float(section,"radius_max");
