@@ -131,6 +131,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                 "use_wpn         = false\n" ..
                 "abuse           = false\n"
 
+    -- напарник с которым спасаем пленного
     t = { section = "logic@" .. gname .. "_nap1",
         idle = 0,
         prior = 1, state = {0},
@@ -142,6 +143,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
     table.insert(sj, t)
     ltx = ltx.."#include \"scripts\\val_escort_nap1.ltx\"\n"
 
+    -- пленный
     t = { section = "logic@" .. gname .. "_captive",
         idle = 0,
         prior = 1, state = {0},
@@ -154,6 +156,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
     table.insert(sj, t)
     ltx = ltx.."#include \"scripts\\val_escort_captive.ltx\"\n"
 
+    -- охранники ведущие пленного
     t = { section = "logic@" .. gname .. "_guard",
         idle = 0,
         prior = 1, state = {0},
@@ -253,6 +256,7 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                --"anim                = wait\n" ..
                --"on_info             = %=" .. gname .. "_guard_free%\n"
 
+    -- раненый бандит в начале сцены
     t = { section = "logic@" .. gname .. "_halfdead",
         idle = 0,
         prior = 1, state = {0},
@@ -309,7 +313,7 @@ end
 
 
 --------------------------------------------------------------------------
--- Sacrifice (сцена озле ямы на главной базе бандитов)
+-- Sacrifice (сцена возле ямы на главной базе бандитов)
 --------------------------------------------------------------------------
 -- Predicates ------------------------------------------------------------
 function scf_predicate_v(npc_info) -- victim
@@ -330,6 +334,7 @@ end
 
 -- Jobs ------------------------------------------------------------------
 gulags.val_sacrifice.job = function(sj, gname, type, squad, groups)
+    -- пленный, которого убивают
     t = { section = "logic@" .. gname .. "_victim",
         idle = 0,
         prior = 1, state = {0},
@@ -340,6 +345,7 @@ gulags.val_sacrifice.job = function(sj, gname, type, squad, groups)
     }
     table.insert(sj, t)
 
+    -- охранники
     t = { section = "logic@" .. gname .. "_guard1",
         idle = 0,
         prior = 1, state = {0},
@@ -360,6 +366,7 @@ gulags.val_sacrifice.job = function(sj, gname, type, squad, groups)
     }
     table.insert(sj, t)
 
+    -- бандит над трубой
     t = { section = "logic@" .. gname .. "_tunnel_bandit",
         idle = 0,
         prior = 1, state = {0},
@@ -408,6 +415,7 @@ end
 
 -- Jobs ------------------------------------------------------------------
 gulags.val_prisoner.job = function(sj, gname, type, squad, groups)
+    -- за решеткой
     t = { section = "logic@" .. gname,
         idle = 0,
         prior = 1, state = {0},
@@ -418,6 +426,7 @@ gulags.val_prisoner.job = function(sj, gname, type, squad, groups)
     }
     table.insert(sj, t)
 
+    -- свободен
     t = { section = "logic@" .. gname .. "_free",
         idle = 0,
         prior = 1, state = {1},
@@ -455,6 +464,8 @@ end
 -- Jobs ------------------------------------------------------------------
 gulags.val_sos.job = function(sj, gname, type, squad, groups)
     local ltx = ""
+
+    -- раненый сталкер
     t = { section = "logic@" .. gname .. "_wounded",
         idle = 0,
         prior = 1, state = {0},
@@ -531,6 +542,7 @@ gulags.val_sos.job = function(sj, gname, type, squad, groups)
                "on_signal             = arrived | %+val_sos_scene_end%\n" ..
                "combat_ignore_cond    = always\n"
 
+    -- кровосос
     t = { section = "logic@" .. gname .. "_bs",
         idle = 0,
         prior = 1, state = {0},
@@ -587,6 +599,7 @@ gulags.val_rob.job = function(sj, gname, type, squad, groups)
                 "center_point    = kamp\n" ..
                 "meet            = meet@" .. gname .. "_warn\n"
 
+    -- главный грабителей, с которым разговариваем
     t = { section = "logic@" .. gname .. "_leader",
         idle = 0,
         prior = 3, state = {0},
@@ -596,6 +609,7 @@ gulags.val_rob.job = function(sj, gname, type, squad, groups)
     table.insert(sj, t)
     ltx = ltx.."#include \"scripts\\val_rob_leader.ltx\"\n"
 
+    -- охранники на входах в здание фермы
     for i = 1, 2 do
         t = { section = "logic@" .. gname .. "_guard" .. i,
             idle = 0,
@@ -614,6 +628,7 @@ gulags.val_rob.job = function(sj, gname, type, squad, groups)
                    "meet      = meet@" .. gname .. "_warn\n"
     end
 
+    -- простые сталкеры внутри фермы вокруг костра
     for i = 1, 5 do
         t = { section = "logic@" .. gname .. "_kamp",
             idle = 0,
@@ -782,9 +797,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
 
     -- СИДЯЩИЕ В КЕМПЕ 1 ВОЗЛЕ БОРОВА И В КЕМПЕ 2 НА ВТОРОМ ЭТАЖЕ
     restr = {gname .. "_main_building_restrictor", gname .. "_nedostroyka_restrictor", gname .. "_nedostroyka_restrictor", gname .. "_restrictor"}
-    --irestr = {gname .. "_leader_info_restr", gname .. "_nedostroyka_info_restr", gname .. "_nedostroyka_info_restr"}
     onlineid = {"{+val_lager_bandits_show_leader_company}", "{+val_lager_bandits_show_nedostroyka_company}", "{+val_lager_bandits_show_nedostroyka_company}"}
-    --onlineid = {"{+val_lager_bandits_show_leader_company}", false, false}
     local pr = {7, 5, 5, 2}
     for i, v in pairs({3, 4, 2, 3}) do
         ltx = ltx.."[logic@" .. gname .. "_kamp" .. i .. "_normal]\n" ..
