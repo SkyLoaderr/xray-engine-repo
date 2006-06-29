@@ -7,13 +7,8 @@
 #include "level.h"
 #include "../skeletoncustom.h"
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////
 CWeaponRPG7::CWeaponRPG7(void) : CWeaponCustomPistol("RPG7") 
 {
-	m_weight = 5.f;
-	m_slot = 2;
 }
 
 CWeaponRPG7::~CWeaponRPG7(void) 
@@ -76,7 +71,7 @@ void CWeaponRPG7::ReloadMagazine()
 {
 	inherited::ReloadMagazine();
 
-	if(iAmmoElapsed && !getRocketCount()/*m_pRocket*/) 
+	if(iAmmoElapsed && !getRocketCount()) 
 	{
 		CRocketLauncher::SpawnRocket(*m_sRocketSection, this);
 	}
@@ -97,41 +92,37 @@ void CWeaponRPG7::switch2_Fire	()
 	m_bFireSingleShot = true;
 	bWorking = false;
 
-	if(GetState() == eIdle	&& getRocketCount()/*m_pRocket*/) 
+	if(GetState() == eFire	&& getRocketCount()) 
 	{
 		Fvector p1, d; 
-		p1.set(get_LastFP()); 
-		d.set(get_LastFD());
+		p1.set								(get_LastFP()); 
+		d.set								(get_LastFD());
 
-		CEntity* E = smart_cast<CEntity*>(H_Parent());
-		if (E) E->g_fireParams (this, p1,d);
+		CEntity* E = smart_cast<CEntity*>	(H_Parent());
+		if (E) E->g_fireParams				(this, p1,d);
 
-		Fmatrix launch_matrix;
-		launch_matrix.identity();
-		launch_matrix.k.set(d);
+		Fmatrix								launch_matrix;
+		launch_matrix.identity				();
+		launch_matrix.k.set					(d);
 		Fvector::generate_orthonormal_basis(launch_matrix.k,
 											launch_matrix.j, launch_matrix.i);
-		launch_matrix.c.set(p1);
+		launch_matrix.c.set					(p1);
 
-		d.normalize();
-		d.mul(m_fLaunchSpeed);
+		d.normalize							();
+		d.mul								(m_fLaunchSpeed);
 
-		//		Fvector angular_vel;
-		//		angular_vel.set(d);
-		//		angular_vel.mul(1400.f);
-		VERIFY2(_valid(launch_matrix),"CWeaponRPG7::switch2_Fire. Invalid launch_matrix!");
-		CRocketLauncher::LaunchRocket(launch_matrix, d, zero_vel);
+		CRocketLauncher::LaunchRocket		(launch_matrix, d, zero_vel);
 
-		CExplosiveRocket* pGrenade = smart_cast<CExplosiveRocket*>(getCurrentRocket());
-		VERIFY(pGrenade);
-		pGrenade->SetInitiator(H_Parent()->ID());
+		CExplosiveRocket* pGrenade			= smart_cast<CExplosiveRocket*>(getCurrentRocket());
+		VERIFY								(pGrenade);
+		pGrenade->SetInitiator				(H_Parent()->ID());
 
 		if (OnServer())
 		{
-			NET_Packet P;
-			u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
-			P.w_u16(u16(/*m_pRocket->ID()*/getCurrentRocket()->ID()));
-			u_EventSend(P);
+			NET_Packet						P;
+			u_EventGen						(P,GE_OWNERSHIP_REJECT,ID());
+			P.w_u16							(u16(getCurrentRocket()->ID()));
+			u_EventSend						(P);
 		}
 	}
 }
