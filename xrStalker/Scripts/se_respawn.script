@@ -218,9 +218,9 @@ function se_respawn:on_register()
 		abort("RESPAWN: [%s] min_count > max_count", self:name())
 	end
 	--' FOR DEBUG ONLY, please don't forget to delete
-	if self.max_count > 0 then
-		self.min_count = self.max_count
-	end
+	--'if self.max_count > 0 then
+	--'	self.min_count = self.max_count
+	--'end
 	
 	self.max_spawn = r_num(ini, section_name, "max_spawn", 1)
 	self.idle_spawn_min, self.idle_spawn_max = r_2nums(ini, section_name, "idle_spawn")
