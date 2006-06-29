@@ -389,7 +389,7 @@ void CAgentEnemyManager::assign_wounded		()
 		const CAI_Stalker	*processor = 0;
 		float				best_distance_sqr = flt_max;
 
-		for (;;) {
+		for (int i=0; i<2; ++i) {
 			ENEMIES::iterator	I = m_enemies.begin();
 			ENEMIES::iterator	E = m_enemies.end();
 			for ( ; I != E; ++I) {
