@@ -6,6 +6,7 @@
 #include "../../../level.h"
 #include "../../../net_utils.h"
 #include "../../../ai_space.h"
+#include "../../../restricted_object.h"
 
 CPolterFlame::CPolterFlame(CPoltergeist *polter) : inherited (polter)
 {
@@ -163,15 +164,12 @@ void CPolterFlame::update_schedule()
 	// удалить все элементы, выполнение которых закончено
 	FLAME_ELEMS_IT I = remove_if(m_flames.begin(), m_flames.end(), remove_predicate());
 	m_flames.erase(I,m_flames.end());
-
-
 	
 	// check if we can create another flame
 	if (m_object->g_Alive() && m_object->EnemyMan.get_enemy() && (m_flames.size() < m_count)) {
-
-		// check aura radius
+		// check aura radius and accessibility
 		float dist = m_object->EnemyMan.get_enemy()->Position().distance_to(m_object->Position());
-		if (dist < m_pmt_aura_radius) {
+		if ((dist < m_pmt_aura_radius) && m_object->control().path_builder().accessible(m_object->EnemyMan.get_enemy()->Position())) {
 			// check timing
 			if (m_time_flame_started + m_delay < time()) {
 				create_flame(m_object->EnemyMan.get_enemy());
