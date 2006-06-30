@@ -175,7 +175,6 @@ CChangeLevelWnd::CChangeLevelWnd		()
 	m_messageBox->SetWndPos	(0.0f,0.0f);
 	SetWndSize				(m_messageBox->GetWndSize());
 }
-
 void CChangeLevelWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd==m_messageBox){
@@ -198,14 +197,19 @@ void CChangeLevelWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		inherited::SendMessage(pWnd, msg, pData);
 }
 
+bool g_block_pause	= false;
 void CChangeLevelWnd::Show()
 {
+	g_block_pause							= true;
 	Device.Pause							(TRUE);
+	Sound->pause_emitters					(!!Device.Pause());
 	bShowPauseString						= FALSE;
 }
 
 void CChangeLevelWnd::Hide()
 {
+	g_block_pause							= false;
 	Device.Pause							(FALSE);
+	Sound->pause_emitters					(!!Device.Pause());
 }
 
