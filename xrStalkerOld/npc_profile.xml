@@ -647,6 +647,9 @@
 	<character id="pri_followers_bomber">
 		<class>pri_followers_bomber</class>
 	</character>
+	<character id="pri_followers_leader">
+		<class>pri_followers_leader</class>
+	</character>
 	<character id="pri_followers">
 		<class>pri_followers</class>
 	</character>

@@ -458,6 +458,38 @@
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
+	<specific_character id="pri_followers_leader" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="20" y="8"></icon>
+		<map_icon x="1" y="0"></map_icon>
+		<bio>pri_followers_common_bio</bio>
+
+		<class>pri_followers_leader</class>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+			
+		<rank>937</rank>
+		<reputation>18</reputation>
+
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<snd_config>characters_voice\human_03\stalker\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_colt1911 \n
+			ammo_11.43x23_fmj = 1 \n
+            wpn_sig550 \n
+            ammo_5.56x45_ap = 2 \n
+			device_torch \n
+            grenade_f1 = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+		</supplies>
+		
+		<money min="5000" max="10000" infinitive="0"/>
+			
+#include "gameplay\character_dialogs.xml"		
+	</specific_character>
+
 	<specific_character id="pri_followers_stalker1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
