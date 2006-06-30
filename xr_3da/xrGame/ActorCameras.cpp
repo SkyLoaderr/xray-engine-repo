@@ -47,6 +47,7 @@ void CActor::cam_SetLadder()
 }
 void CActor::camUpdateLadder(float dt)
 {
+	VERIFY(character_physics_support()->movement()->ElevatorState());
 	if(cameras[eacFirstEye]->bClampYaw) return;
 	float yaw	= (-XFORM().k.getH());
 
@@ -141,7 +142,7 @@ void CActor::cam_Update(float dt, float fFOV)
 //		EffectorManager().ApplyDevice();
 //		return;
 //	}
-	if(mstate_real & mcClimb)
+	if(mstate_real & mcClimb&&cam_active!=eacFreeLook)
 	{
 		camUpdateLadder(dt);
 	}
