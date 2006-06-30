@@ -76,7 +76,7 @@
 	<info_portion id="aes_actor_ambush5"></info_portion>
 	<info_portion id="aes_timer_20000"></info_portion>
 	<info_portion id="aes_timer_5000"></info_portion>
-
+	<info_portion id="aes_sniper_talk_1"></info_portion>
 	
 	<info_portion id="aes_arrive_to"></info_portion>
 	<info_portion id="aes_found_sarcofag"></info_portion>
