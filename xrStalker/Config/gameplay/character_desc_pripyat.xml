@@ -21,8 +21,8 @@
             [spawn] \n
             wpn_beretta \n
             ammo_9x19_fmj = 1 \n
-            wpn_lr300 \n
-            ammo_5.56x45_ap = 1 \n
+            wpn_val \n
+            ammo_9x39_ap = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
@@ -47,8 +47,8 @@
             [spawn] \n
             wpn_walther \n
             ammo_9x19_pbp = 1 \n
-            wpn_abakan \n
-            ammo_5.45x39_fmj = 1 \n
+            wpn_val \n
+            ammo_9x39_sp5 = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
@@ -74,8 +74,8 @@
             [spawn] \n
             wpn_beretta \n
             ammo_9x19_fmj = 1 \n
-            wpn_l85 \n
-            ammo_5.56x45_ss190 = 1 \n
+            wpn_groza \n
+            ammo_9x39_ap = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
@@ -100,8 +100,8 @@
             [spawn] \n
             wpn_walther \n
             ammo_9x19_pbp = 1 \n
-            wpn_l85 \n
-            ammo_5.56x45_ap = 1 \n
+            wpn_groza \n
+            ammo_9x39_sp5 = 1 \n
             grenade_f1 = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
@@ -128,8 +128,8 @@
             [spawn] \n
             wpn_beretta \n
             ammo_9x19_fmj = 1 \n
-            wpn_lr300 \n
-            ammo_5.56x45_ss190 = 1 \n
+            wpn_vintorez \n
+            ammo_9x39_ap = 1 \n
             grenade_f1 = 2 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
@@ -155,8 +155,8 @@
             [spawn] \n
             wpn_walther \n
             ammo_9x19_pbp = 1 \n
-            wpn_lr300 \n
-            ammo_5.56x45_ap = 1 \n
+            wpn_vintorez \n
+            ammo_9x39_ap = 2 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
@@ -467,7 +467,7 @@
 		<class>pri_followers_leader</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 			
-		<rank>937</rank>
+		<rank>960</rank>
 		<reputation>18</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
@@ -475,9 +475,9 @@
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
-			ammo_11.43x23_fmj = 1 \n
-            wpn_sig550 \n
-            ammo_5.56x45_ap = 2 \n
+			ammo_11.43x23_fmj = 2 \n
+            wpn_val \n
+            ammo_9x39_ap = 3 \n
 			device_torch \n
             grenade_f1 = 1 \n
 #include "gameplay\character_items.xml"
