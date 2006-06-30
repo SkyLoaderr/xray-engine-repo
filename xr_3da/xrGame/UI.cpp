@@ -47,7 +47,7 @@ void CUI::UIOnFrame()
 	if (m_Actor){
 		
 		//update windows
-		if( GameIndicatorsShown() )
+		if( GameIndicatorsShown() && psHUD_Flags.is(HUD_DRAW|HUD_DRAW_RT) )
 		{
 			UIMainIngameWnd->SetFont(m_Parent->Font().pFontMedium);
 			UIMainIngameWnd->Update	();
@@ -62,7 +62,8 @@ void CUI::UIOnFrame()
 	m_pMessagesWnd->Update();
 }
 //--------------------------------------------------------------------
-
+#include "inventory.h"
+#include "huditem.h"
 bool CUI::Render()
 {
 	if( GameIndicatorsShown() )
@@ -71,16 +72,16 @@ bool CUI::Render()
 			pUIGame->Render	();
 	}
 
-	CEntity* m_Actor = smart_cast<CEntity*>(Level().CurrentEntity());
-	if (m_Actor)
+	CEntity* pEntity = smart_cast<CEntity*>(Level().CurrentEntity());
+	if (pEntity)
 	{
-		//Draw main window and its children
-		if( GameIndicatorsShown() )
+		if( GameIndicatorsShown() && psHUD_Flags.is(HUD_DRAW | HUD_DRAW_RT) )
 		{
 			UIMainIngameWnd->Draw();
 			m_pMessagesWnd->Draw();
 		}
-		else{
+		else
+		{  //hack - draw messagess wnd in scope mode
 			CUIGameSP* gSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 			if (gSP){
 				if (!gSP->PdaMenu->GetVisible())
@@ -88,15 +89,25 @@ bool CUI::Render()
 			}
 			else
 				m_pMessagesWnd->Draw();
+		}
 
+		CActor* pActor			=	smart_cast<CActor*>(pEntity);
+		if(pActor)
+		{
+			PIItem item		=  pActor->inventory().ActiveItem();
+			if(item && pActor->HUDview() && smart_cast<CHudItem*>(item))
+				(smart_cast<CHudItem*>(item))->OnDrawUI();
 		}
 	}
 	else
 		m_pMessagesWnd->Draw();
+
 	DoRenderDialogs();
 
 	return false;
 }
+//.		if(HUD().GetUI())HUD().GetUI()->HideGameIndicators();
+//.		if(HUD().GetUI())HUD().GetUI()->ShowGameIndicators();
 
 bool	CUI::IR_OnMouseWheel			(int direction)
 {

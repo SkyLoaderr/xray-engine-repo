@@ -91,7 +91,6 @@ public:
 }	vtune	;
 
 // Обработка нажатия клавиш
-extern	BOOL	g_bEnableMPL;	//.
 void CLevel::IR_OnKeyboardPress	(int key)
 {
 	if (DIK_F10 == key)		vtune.enable();

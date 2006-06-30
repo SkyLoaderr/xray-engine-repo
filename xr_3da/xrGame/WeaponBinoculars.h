@@ -22,9 +22,6 @@ public:
 
 	void			Load				(LPCSTR section);
 
-	virtual void	Hide				();
-	virtual void	Show				();
-
 	virtual void	OnZoomIn			();
 	virtual void	OnZoomOut			();
 	virtual	void	ZoomInc				();
@@ -38,7 +35,7 @@ public:
 	virtual bool	Action				(s32 cmd, u32 flags);
 	virtual void	UpdateCL			();
 	virtual void	OnDrawUI			();
-	virtual void	OnAnimationEnd		(u32 state);
+	virtual bool	use_crosshair		()	const {return false;}
 protected:
 	CBinocularsVision*					m_binoc_vision;
 

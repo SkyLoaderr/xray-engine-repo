@@ -845,7 +845,6 @@ float CActor::currentFOV()
 		return DEFAULT_FOV;
 }
 
-BOOL	g_bEnableMPL	= FALSE;	//.
 void CActor::UpdateCL	()
 {
 	if(m_feel_touch_characters>0)
@@ -863,7 +862,6 @@ void CActor::UpdateCL	()
 		m_holder->UpdateEx( currentFOV() );
 
 	m_snd_noise -= 0.3f*Device.fTimeDelta;
-	//clamp(m_snd_noise,0.0f,4.f);
 
 	VERIFY2								(_valid(renderable.xform),*cName());
 	inherited::UpdateCL();
@@ -875,55 +873,42 @@ void CActor::UpdateCL	()
 		PickupModeUpdate	();	
 
 	PickupModeUpdate_COD();
-	//-------------------------------------------------------------------
-//*
+
 	m_bZoomAimingMode = false;
 	CWeapon* pWeapon = smart_cast<CWeapon*>(inventory().ActiveItem());	
-/*
-	//обновить положение камеры и FOV 
-	float dt = float(Device.dwTimeDelta)/1000.0f;
 
-	if (eacFirstEye == cam_active && pWeapon &&
-		pWeapon->IsZoomed() && (!pWeapon->ZoomTexture() ||
-		(!pWeapon->IsRotatingToZoom() && pWeapon->ZoomTexture())))
-		cam_Update(dt, pWeapon->GetZoomFactor());
-	
-	else 
-		cam_Update(dt, DEFAULT_FOV);
-*/
 	Device.Statistic->TEST1.Begin		();
 	cam_Update(float(Device.dwTimeDelta)/1000.0f, currentFOV());
 	Device.Statistic->TEST1.End		();
 
-	if(pWeapon)
+	psHUD_Flags.set( HUD_CROSSHAIR_RT2, true );
+	psHUD_Flags.set( HUD_DRAW_RT, true );
+
+	if(pWeapon )
 	{
-		if(pWeapon->IsZoomed()/* && !pWeapon->IsRotatingToZoom()*/)
+		if(pWeapon->IsZoomed())
 		{
 			float full_fire_disp = pWeapon->GetFireDispersion(true);
-//			Msg("full_fire_disp  - %f", full_fire_disp );
 
 			CEffectorZoomInertion* S = smart_cast<CEffectorZoomInertion*>	(Cameras().GetCamEffector(eCEZoom));
 			if(S) S->SetParams(full_fire_disp);
 
-			//помнить, что если m_bZoomAimingMode = true
-			//pWeapon->GetFireDispersion() вернет значение дисперсии без
-			//учета положения стрелка, так как он спрашивает у нас GetWeaponAccuracy
 			m_bZoomAimingMode = true;
 		}
 
-		//if(eacFirstEye == cam_active)
-//		if(this == smart_cast<CActor*>(Level().CurrentEntity()))
 		if(Level().CurrentEntity() && this->ID()==Level().CurrentEntity()->ID() )
 		{
 			float fire_disp = pWeapon->GetFireDispersion(true);
-//			Msg("fire_disp - %f", fire_disp );
 			HUD().SetCrosshairDisp(fire_disp);
-			HUD().ShowCrosshair(true);
+			HUD().ShowCrosshair(pWeapon->use_crosshair());
 		}
+
+		psHUD_Flags.set( HUD_CROSSHAIR_RT2, pWeapon->show_crosshair() );
+		psHUD_Flags.set( HUD_DRAW_RT,		pWeapon->show_indicators() );
+
 	}
 	else
 	{
-//		if(this == smart_cast<CActor*>(Level().CurrentEntity()))
 		if(Level().CurrentEntity() && this->ID()==Level().CurrentEntity()->ID() )
 		{
 			HUD().SetCrosshairDisp(0.f);
@@ -932,8 +917,6 @@ void CActor::UpdateCL	()
 	}
 
 	UpdateDefferedMessages();
-//*/
-	//-------------------------------------------------------------------
 
 	if (g_Alive()) 
 		CStepManager::update();
@@ -952,7 +935,6 @@ void CActor::UpdateCL	()
 		else
 			xr_delete(m_sndShockEffector);
 	}
-	//-------------------------------------------
 }
 
 float	NET_Jump = 0;

@@ -480,4 +480,7 @@ protected:
 	float					m_addon_holder_fov_modifier;
 public:
 	virtual	void			modify_holder_params		(float &range, float &fov) const;
+	virtual bool			use_crosshair				()	const {return true;}
+			bool			show_crosshair				();
+			bool			show_indicators				();
 };

@@ -2234,7 +2234,6 @@ void CCC_RegisterCommands()
 
 	// hud
 	psHUD_Flags.set(HUD_CROSSHAIR,		true);
-	psHUD_Flags.set(HUD_CROSSHAIR_RT,	true);
 	psHUD_Flags.set(HUD_WEAPON,			true);
 	psHUD_Flags.set(HUD_DRAW,			true);
 	psHUD_Flags.set(HUD_INFO,			true);

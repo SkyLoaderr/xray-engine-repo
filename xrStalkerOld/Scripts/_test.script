@@ -42,7 +42,7 @@ function _main()
 	local dir    = vector_rotate_y( db.actor:direction(), ang )
 	level.spawn_phantom(db.actor:position():add( dir:mul(radius) ))
 end
-function main()
+function main222222222222222()
 	db.actor:disable_info_portion("esc_trader_newbie") 
 	db.actor:disable_info_portion("esc_trader_tutorial_chosen") 
 end
@@ -100,13 +100,15 @@ function main___()
 end
 
 
-function main1111111 ()
+function main()
+	printf("restore")
+
    local h 		= hit()
-   h.power 		= 0.1
+   h.power 		= 1
    h.direction 	= vector():set(0, 0, 1)
    h.impulse 	= 0
    h.draftsman 	= db.actor
-   h.type 		= hit.radiation
+   h.type 		= hit.fire_wound
    db.actor:hit(h)
 
 --burn  		1

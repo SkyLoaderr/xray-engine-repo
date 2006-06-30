@@ -62,20 +62,10 @@ using namespace InventoryUtilities;
 int			g_bHudAdjustMode			= 0;
 float		g_fHudAdjustValue			= 0.0f;
 int			g_bNewsDisable				= 0;
-bool		g_bShowHudInfo				= true;;
 
 const u32	g_clWhite					= 0xffffffff;
 
-#define		RADIATION_ABSENT			0.25f
-#define		RADIATION_SMALL				0.5f
-#define		RADIATION_MEDIUM			0.75f
-#define		RADIATION_HIGH				1.0f
-
 #define		DEFAULT_MAP_SCALE			1.f
-
-//-----------------------------------------------------------------------------/
-//  Fade and color parameters
-//-----------------------------------------------------------------------------/
 
 #define		C_SIZE						0.025f
 #define		NEAR_LIM					0.5f
@@ -85,10 +75,6 @@ const u32	g_clWhite					= 0xffffffff;
 #define		C_ON_ENEMY					D3DCOLOR_XRGB(0xff,0,0)
 #define		C_DEFAULT					D3DCOLOR_XRGB(0xff,0xff,0xff)
 
-//-----------------------------------------------------------------------------/
-//  Textual constants
-//-----------------------------------------------------------------------------/
-
 #define				MAININGAME_XML				"maingame.xml"
 
 CUIMainIngameWnd::CUIMainIngameWnd()
@@ -97,10 +83,6 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	m_pWeapon					= NULL;
 	m_pGrenade					= NULL;
 	m_pItem						= NULL;
-
-	g_bShowHudInfo				= true;
-	m_bShowHudCrosshair			= false;
-
 	UIZoneMap					= xr_new<CUIZoneMap>();
 	m_pPickUpItem				= NULL;
 	m_artefactPanel				= xr_new<CUIArtefactPanel>();
@@ -128,7 +110,6 @@ void CUIMainIngameWnd::Init()
 	CUIXmlInit xml_init;
 	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
-	//в это окно пользовательского ввода осуществляться не будет
 	Enable(false);
 
 
@@ -301,8 +282,6 @@ float UIStaticDiskIO_start_time = 0.0f;
 void CUIMainIngameWnd::Draw()
 {
 	test_draw				();
-	bool zoom_mode = false;
-	bool scope_mode = false;
 	// show IO icon
 	bool IOActive	= (FS.dwOpenCounter>0);
 	if	(IOActive)	UIStaticDiskIO_start_time = Device.fTimeGlobal;
@@ -326,7 +305,10 @@ void CUIMainIngameWnd::Draw()
 	if(!m_pActor) return;
 
 	UIMotionIcon.SetNoise((s16)(0xffff&iFloor(m_pActor->m_snd_noise*100.0f)));
-	
+
+/*
+	bool zoom_mode = false;
+	bool scope_mode = false;
 	if(m_pActor->inventory().GetActiveSlot() != NO_ACTIVE_SLOT)
 	{
 		PIItem item		=  m_pActor->inventory().ActiveItem();
@@ -341,7 +323,8 @@ void CUIMainIngameWnd::Draw()
 			if(m_pWeapon->ZoomTexture() && !m_pWeapon->IsRotatingToZoom())
 				scope_mode = true;
 
-			if(psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT)){
+			if(psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT))
+			{
 				psHUD_Flags.set(HUD_CROSSHAIR_RT, FALSE);
 				m_bShowHudCrosshair = true;
 			}
@@ -360,6 +343,10 @@ void CUIMainIngameWnd::Draw()
 		m_bShowHudCrosshair = false;
 		psHUD_Flags.set(HUD_CROSSHAIR_RT, TRUE);
 	}
+*/
+	CUIWindow::Draw();
+	UIZoneMap->Render();			
+
 	RenderQuickInfos();		
 
 #ifdef DEBUG
@@ -422,10 +409,6 @@ void CUIMainIngameWnd::Update()
 		CUIWindow::Update		();
 		return;
 	}
-
-	if(!g_bShowHudInfo) 
-		return;
-
 
 	if (GameID() == GAME_SINGLE && !(Device.dwFrame%30) )
 	{
@@ -1059,11 +1042,13 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 		switch(dik)
 		{
 		case DIK_NUMPADMINUS:
-			HideAll();
+			//.HideAll();
+			HUD().GetUI()->HideGameIndicators();
 			return true;
 			break;
 		case DIK_NUMPADPLUS:
-			ShowAll();
+			//.ShowAll();
+			HUD().GetUI()->ShowGameIndicators();
 			return true;
 			break;
 		}
@@ -1071,17 +1056,6 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 
 	return false;
 }
-
-void CUIMainIngameWnd::HideAll()
-{
-	g_bShowHudInfo = false;
-}
-
-void CUIMainIngameWnd::ShowAll()
-{
-	g_bShowHudInfo = true;
-}
-
 
 void CUIMainIngameWnd::AddInfoMessage(LPCSTR message)
 {

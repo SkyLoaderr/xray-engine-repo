@@ -1491,3 +1491,14 @@ void CWeapon::Show		()
 {
 	SwitchState(eShowing);
 }
+
+bool CWeapon::show_crosshair()
+{
+	return !IsZoomed();
+}
+
+bool CWeapon::show_indicators()
+{
+	return ! ( IsZoomed() && ZoomTexture() );
+}
+

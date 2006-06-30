@@ -189,7 +189,7 @@ void CUICaption::setCaption(const shared_str& msg_name, LPCSTR message_to_out, u
 
 void CUICaption::Draw()
 {
-	if (psHUD_Flags.test(HUD_DRAW))
+	if (psHUD_Flags.is(HUD_DRAW|HUD_DRAW_RT))
 	{
 		inherited::Draw();
 		inherited::Update();

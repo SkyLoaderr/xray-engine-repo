@@ -7,7 +7,7 @@
 #include "ui\UIFrameWindow.h"
 #include "WeaponBinocularsVision.h"
 #include "object_broker.h"
-
+#include "hudmanager.h"
 CWeaponBinoculars::CWeaponBinoculars() : CWeaponCustomPistol("BINOCULARS")
 {
 	m_binoc_vision	= NULL;
@@ -30,15 +30,6 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	m_bVision = !!pSettings->r_bool(section,"vision_present");
 }
 
-void CWeaponBinoculars::Hide		()
-{
-	inherited::Hide();
-}
-
-void CWeaponBinoculars::Show		()
-{
-	inherited::Show();
-}
 
 bool CWeaponBinoculars::Action(s32 cmd, u32 flags) 
 {
@@ -60,10 +51,12 @@ void CWeaponBinoculars::OnZoomIn		()
 		HUD_SOUND::PlaySound(sndZoomIn, H_Parent()->Position(), H_Parent(), b_hud_mode);
 		if(m_bVision)
 			m_binoc_vision = xr_new<CBinocularsVision>(this);
+
 	}
 
 	inherited::OnZoomIn();
 	m_fZoomFactor = m_fRTZoomFactor;
+
 }
 
 void CWeaponBinoculars::OnZoomOut		()
@@ -77,6 +70,8 @@ void CWeaponBinoculars::OnZoomOut		()
 	
 		m_fRTZoomFactor = m_fZoomFactor;//store current
 	}
+
+
 	inherited::OnZoomOut();
 }
 
@@ -153,26 +148,6 @@ void CWeaponBinoculars::load(IReader &input_packet)
 	load_data		(m_fRTZoomFactor,input_packet);
 }
 
-void CWeaponBinoculars::OnAnimationEnd(u32 state) 
-{
-	switch(state) 
-	{
-		case eIdle:		Msg("anim_end-eIdle");		break;
-		case eFire:		Msg("anim_end-eFire");		break;
-		case eFire2:	Msg("anim_end-eFire2");		break;
-		case eReload:	Msg("anim_end-eReload");	break;
-		case eShowing:	Msg("anim_end-eShowing");	break;
-		case eHiding:	Msg("anim_end-eHiding");	break;
-		case eHidden:	Msg("anim_end-eHidden");	break;
-		case eMisfire:	Msg("anim_end-eMisfire");	break;
-		case eMagEmpty:	Msg("anim_end-eMagEmpty");	break;
-		case eSwitch:	Msg("anim_end-eSwitch");	break;
-		default:
-						Msg("anim_end-UNKNOWN");	break;
-	}
-
-	inherited::OnAnimationEnd(state);
-}
 
 #include "script_space.h"
 

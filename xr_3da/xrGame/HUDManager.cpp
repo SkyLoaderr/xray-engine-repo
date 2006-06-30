@@ -198,36 +198,28 @@ extern ENGINE_API BOOL bShowPauseString;
 void  CHUDManager::RenderUI()
 {
 	BOOL bAlready					= FALSE;
-	if (psHUD_Flags.test(HUD_DRAW))
+	if (true || psHUD_Flags.is(HUD_DRAW | HUD_DRAW_RT))
 	{
-		// draw hit marker
 		HitMarker.Render			();
-
-		// UI
 		bAlready					= ! (pUI && !pUI->Render());
-		//Font
 		Font().Render();
-
-		//render UI cursor
-//		if(pUI && GetUICursor() && GetUICursor()->IsVisible())
-//			GetUICursor()->Render();
 	}
-	if (psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT) && !bAlready)	
+
+	if (psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT|HUD_CROSSHAIR_RT2) && !bAlready)	
 		m_pHUDTarget->Render();
-	draw_wnds_rects();
-	// Recalc new scale factor if resolution was changed
-//	OnDeviceCreate();
-	CGameFont* pFont	= Font().pFontGraffiti50Russian;
-	if( Device.Pause() /* && !GamePersistent().m_pMainMenu->IsActive()*/ && bShowPauseString){
-		pFont->SetColor	(0x80FF0000	);
-		pFont->OutSet	(Device.dwWidth/2.0f-(pFont->SizeOf("Game paused")/2.0f),Device.dwHeight/2.0f);
-		pFont->OutNext	("Game paused");
-		pFont->OnRender	();
+
+	draw_wnds_rects		();
+
+	if( Device.Pause() && bShowPauseString){
+		CGameFont* pFont	= Font().pFontGraffiti50Russian;
+		pFont->SetColor		(0x80FF0000	);
+		pFont->OutSet		(Device.dwWidth/2.0f-(pFont->SizeOf("Game paused")/2.0f),Device.dwHeight/2.0f);
+		pFont->OutNext		("Game paused");
+		pFont->OnRender		();
 	}
 
 }
 
-//--------------------------------------------------------------------
 void CHUDManager::OnEvent(EVENT E, u64 P1, u64 P2)
 {
 }

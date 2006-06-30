@@ -42,9 +42,9 @@ public:
 	void AddInfoMessage					(LPCSTR message);
 
 protected:
-	void				HideAll						();
-	void				ShowAll						();
-	bool				m_bShowHudCrosshair;
+//.	void				HideAll						();
+//.	void				ShowAll						();
+//.	bool				m_bShowHudCrosshair;
 	
 	CUIStatic			UIStaticDiskIO;
 	CUIStatic			UIStaticHealth;
