@@ -75,6 +75,23 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 	end
 
+	if type == "dar_military_scout" then
+        for i = 1, 6 do
+		    t = { section = "logic@dar_military_scout_hide",
+			    idle = 0,
+			    prior = 5, state = {0},
+                online = false,
+			    in_rest = "", out_rest = "",
+		    }
+		    table.insert(sj, t)
+		    t = { section = "logic@dar_military_scout_assault",
+			    idle = 0,
+			    prior = 5, state = {1},
+			    in_rest = "", out_rest = "",
+		    }
+		    table.insert(sj, t)
+        end
+	end
 
 
 end
@@ -124,6 +141,15 @@ function load_states(gname, type)
 			return 0
 		end
 	end
+
+	if type == "dar_military_scout" then        
+		return function(gulag)
+            if db.actor_proxy:has_info("bar_darklab_document_done") == true then
+                return 1
+            end
+			return 0
+		end
+	end
 	
 end
 
@@ -134,11 +160,15 @@ function load_ltx(gname, type)
 	return nil
 end
 
-function checkStalker(npc_community, gulag_type)
+function checkStalker(npc_community, gulag_type, npc_rank, se_obj)
+	if gulag_type == "dar_military_scout" then
+        return se_obj:profile_name() == "dar_military_scout"
+    end
+
 	return false
 end
 
-function checkMonster(npc_community, gulag_type)
+function checkMonster(npc_community, gulag_type, npc_rank, se_obj)
 	if gulag_type == "dar_com_center_poltergeist" then
 		return npc_community == "poltergeist"
 	end

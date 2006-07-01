@@ -44,3 +44,21 @@ active = mob_home@com_center_tushkano
 path_home = home
 home_min_radius = 10
 home_max_radius = 15
+
+
+;*****************************************************************
+;Military assault
+;*****************************************************************
+[logic@dar_military_scout_hide]
+active = walker@dar_military_scout_hide
+
+[walker@dar_military_scout_hide]
+path_walk = walk_hide
+path_look = look_hide
+
+
+[logic@dar_military_scout_assault]
+active = camper@dar_military_scout_assault
+
+[camper@dar_military_scout_assault]
+path_walk = assault_walk
