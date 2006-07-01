@@ -1388,4 +1388,32 @@
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>	
 
+
+	<specific_character id="dar_military_scout1" team_default = "1">
+		<name>GENERATE_NAME_lieutenant</name>
+		<icon x="14" y="2"></icon>
+		<map_icon x="2" y="2"></map_icon>
+		<bio>sim_soldier_specnaz_bio</bio>
+
+		<class>dar_military_scout</class>
+		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
+		
+		<rank>765</rank>
+		<reputation>23</reputation>
+
+		<visual>actors\soldier\soldier_spetsnaz</visual>		
+		<snd_config>characters_voice\human_02\military\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_walther \n
+			ammo_9x19_pbp = 1 \n	
+			wpn_abakan \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+#include "gameplay\character_drugs.xml"
+#include "gameplay\character_food.xml"
+		</supplies>							
+		<start_dialog>hello_dialog</start_dialog>		
+	</specific_character>	
+
 </xml>
