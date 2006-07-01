@@ -77,8 +77,8 @@ function have_krots_flash(task, objective)
 	return false
 end
 
-function agr_trader_documents(task, objective)
-	news_manager.send_tip( db.actor, "tips_agr_trader_documents", 0, "trader", 10000 )
+function agr_trader_documents()
+	news_manager.send_tip( db.actor, "tips_agr_trader_documents", nil, "trader", nil )
 end
 
 function have_gunslingers_flash(task, objective)
