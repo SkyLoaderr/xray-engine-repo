@@ -14,7 +14,7 @@ function load_job(sj, gname, type, squad, groups)
 	end
 
 	if type == "dar_poltergeist_tele" then
-	    t = { section = "logic@com_center_poltergeist",
+	    t = { section = "logic@dar_poltergeist",
 		    idle = 0,
 		    prior = 5, state = {0},
 		    in_rest = "", out_rest = "dar_poltergeist_tele_restr",
