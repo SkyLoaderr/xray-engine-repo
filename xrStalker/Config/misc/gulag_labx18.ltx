@@ -1,6 +1,15 @@
 ;*****************************************************************
 ;Command center poltergeist
 ;*****************************************************************
+[logic@dar_poltergeist]
+active = mob_home@dar_poltergeist
+
+[mob_home@dar_poltergeist]
+path_home = home
+home_min_radius = 20
+home_max_radius = 25
+
+
 [logic@com_center_poltergeist]
 active = mob_home@com_center_poltergeist
 
@@ -8,8 +17,15 @@ active = mob_home@com_center_poltergeist
 path_home = home
 home_min_radius = 20
 home_max_radius = 25
+on_info = {=actor_in_zone(dar_poltergeist_territory)} mob_home@com_center_actor_inside %=play_snd_from_obj(452:monsters\poltergeist\die_0)%
 
-
+[mob_home@com_center_actor_inside]
+path_home = home
+home_min_radius = 20
+home_max_radius = 25
+on_info = {~actor_in_zone(dar_poltergeist_territory)} mob_home@com_center_poltergeist
+ 
+ 
 
 [logic@angar_gigant]
 active = mob_home@angar_gigant
