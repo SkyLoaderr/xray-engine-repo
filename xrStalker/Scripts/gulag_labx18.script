@@ -144,7 +144,7 @@ function load_states(gname, type)
 
 	if type == "dar_military_scout" then        
 		return function(gulag)
-            if db.actor_proxy:has_info("bar_darklab_document_done") == true then
+            if db.actor_proxy:has_info("bar_darklab_document_gain") == true then
                 return 1
             end
 			return 0
