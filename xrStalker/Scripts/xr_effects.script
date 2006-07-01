@@ -370,6 +370,9 @@ function play_snd_from_obj(actor, npc, p)
 	if p[1] and p[2] then
 		local snd_obj = sound_object(p[2])
 		local obj     = level_object_by_sid(p[1])
+        if obj == nil then
+            abort("can't find object with story id %s", tostring(p[1]))
+        end
 --		snd_obj:play_at_pos(obj, obj:position(), sound_object.s3d)
 		snd_obj:play_no_feedback(obj, sound_object.s3d, 0, obj:position(), 1.0)
 	end
