@@ -12,8 +12,7 @@
             <map_location_type hint="agr_take_case_hint">green_location</map_location_type>
             <object_story_id>agr_military_documents</object_story_id>
             <function_complete>agroprom_tasks.have_quest_case_02</function_complete>
-<!--            <function_call_complete>agroprom_tasks.agr_trader_documents</function_call_complete> 
--->
+            <function_call_complete>agroprom_tasks.agr_trader_documents</function_call_complete> 
 			<infoportion_set_complete>agroprom_military_case_have</infoportion_set_complete>            
 		</objective>
 		<objective>
