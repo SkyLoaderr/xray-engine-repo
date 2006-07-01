@@ -15,7 +15,7 @@ news = {
     tips_agr_stalker_help_2			= sound_object([[characters_voice\scenario_eng\agroprom\stalker_help_2]]),
     tips_agr_stalker_help_1			= sound_object([[characters_voice\scenario_eng\agroprom\stalker_help_1]]),
 
-	;tips_agr_trader_documents		= sound_object([[characters_voice\scenario\agroprom\trader_pda_1]]),
+	-- tips_agr_trader_documents		= sound_object([[characters_voice\scenario\agroprom\trader_pda_1]]),
 
 	bar_ecolog_crush_heli_down		= sound_object([[characters_voice\scenario\Rostok\Heli_crush\wolfhound_pda_1]]),
 	bar_freedom_attack_attract_actor= sound_object([[characters_voice\scenario\Rostok\Heli_crush\wolfhound_pda_2]]),
