@@ -74,4 +74,10 @@
 	<article>dar_codedoor_2_art</article>
 </info_portion>
 
+
+<!-- Дверь полтергейста -->
+<info_portion id="dar_door3_closed"></info_portion>
+<info_portion id="dar_door3_free"></info_portion>
+
+
 </game_information_portions>
