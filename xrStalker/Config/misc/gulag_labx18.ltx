@@ -12,6 +12,10 @@ home_max_radius = 25
 
 [logic@com_center_poltergeist]
 active = mob_home@com_center_poltergeist
+on_death = mob_death@com_center_poltergeist
+
+[mob_death@com_center_poltergeist]
+on_info = %+dar_door3_free%
 
 [mob_home@com_center_poltergeist]
 path_home = home
@@ -63,3 +67,31 @@ active = camper@dar_military_scout_assault
 [camper@dar_military_scout_assault]
 path_walk = assault_walk
 path_look = assault_look
+def_state_moving = sneak
+
+[logic@dar_military_scout_camper1]
+active = camper@dar_military_scout_camper1
+
+[camper@dar_military_scout_camper1]
+path_walk = camper1_walk
+path_look = camper1_look
+def_state_moving = sneak
+radius = 3
+
+[logic@dar_military_scout_camper2]
+active = camper@dar_military_scout_camper2
+
+[camper@dar_military_scout_camper2]
+path_walk = camper2_walk
+path_look = camper2_look
+def_state_moving = sneak
+radius = 3
+
+[logic@dar_military_scout_camper3]
+active = camper@dar_military_scout_camper3
+
+[camper@dar_military_scout_camper3]
+path_walk = camper3_walk
+path_look = camper3_look
+def_state_moving = sneak
+radius = 3
