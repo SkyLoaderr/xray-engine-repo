@@ -2066,15 +2066,6 @@
 					Name="LabX18"
 					Filter="">
 					<File
-						RelativePath=".\config\scripts\dar\dar_burer_checker.ltx">
-					</File>
-					<File
-						RelativePath=".\config\scripts\dar\dar_burer_checker2.ltx">
-					</File>
-					<File
-						RelativePath=".\config\scripts\dar\dar_burer_master.ltx">
-					</File>
-					<File
 						RelativePath=".\config\scripts\dar\dar_codelock1.ltx">
 					</File>
 					<File
@@ -2087,10 +2078,7 @@
 						RelativePath=".\config\scripts\dar\dar_door2.ltx">
 					</File>
 					<File
-						RelativePath=".\config\scripts\dar\dar_monster_holder.ltx">
-					</File>
-					<File
-						RelativePath=".\config\scripts\dar\dar_polter_grand_holder.ltx">
+						RelativePath=".\Config\scripts\dar\dar_door3.ltx">
 					</File>
 					<File
 						RelativePath=".\config\scripts\dar\dar_sound_zone.ltx">
