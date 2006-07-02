@@ -12,13 +12,14 @@ locked = true
 closed = true
 on_timer = 5000| ph_door@horror_knock
 on_info = {+dar_codelock2_unlock} ph_door@open %+dar_open_door2 =play_snd(device\door_servomotor)%
+on_use = {+dar_codelock2_unlock} ph_door@open
 
 [ph_door@horror_silence]
 locked = true
 closed = true
 on_timer = 3000| ph_door@horror_knock
 on_info = {+dar_codelock2_unlock} ph_door@open %+dar_open_door2 =play_snd(device\door_servomotor)%
-
+on_use = {+dar_codelock2_unlock} ph_door@open
 
 [ph_door@open]
 locked = false
