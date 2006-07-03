@@ -64,7 +64,14 @@ function generic_physics_binder:update(delta)
 
 	if not self.initialized and db.actor then
 		self.initialized = true
-		xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_item)
+		xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_item)        
+
+        --' Запускаем ассоциированный с объектом партикл.
+        local particle = utils.cfg_get_string(self.st.ini, self.st.section_logic, "particle", self.object, false, "", nil)
+        if particle ~= nil then
+            self.particle = particles_object(particle)
+            self.particle:play_at_pos(self.object:position())
+        end
 	end
 
 	if self.st.active_section ~= nil then
@@ -92,6 +99,10 @@ function generic_physics_binder:net_destroy()
 	if st.active_scheme then
 		xr_logic.issue_event(self.object, st[st.active_scheme], "net_destroy")
 	end
+
+    if self.particle ~= nil then
+        self.particle:stop()
+    end
 
 	db.del_sl(self.object)
 
@@ -143,4 +154,8 @@ function generic_physics_binder:death_callback(victim, who)
 	if self.st.active_section then
 		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "death_callback", victim, who)
 	end
+
+    if self.particle ~= nil then
+        self.particle:stop()
+    end
 end
