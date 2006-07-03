@@ -189,7 +189,7 @@ void					CRender::model_Delete			(IRender_DetailModel* & F)
 }
 IRender_Visual*			CRender::model_CreatePE			(LPCSTR name)	
 { 
-	PS::CPEDef*	SE			= PSLibrary.FindPED	(name);		VERIFY(SE);
+	PS::CPEDef*	SE			= PSLibrary.FindPED	(name);		VERIFY2(SE,name);
 	return					Models->CreatePE	(SE);
 }
 IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)	
@@ -197,7 +197,7 @@ IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)
 	PS::CPEDef*	SE			= PSLibrary.FindPED	(name);
 	if (SE) return			Models->CreatePE	(SE);
 	else{
-		PS::CPGDef*	SG		= PSLibrary.FindPGD	(name);		VERIFY	(SG);
+		PS::CPGDef*	SG		= PSLibrary.FindPGD	(name);		VERIFY2	(SG,name);
 		return				Models->CreatePG	(SG);
 	}
 }
