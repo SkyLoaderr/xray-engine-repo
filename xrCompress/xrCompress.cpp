@@ -348,6 +348,37 @@ void ProcessNormal(LPCSTR tgt_name, BOOL bFast)
 	FS.file_list_close	(list);
 }
 
+#define OUT_LOG(s,p0){printf(s,p0); printf("\n"); Msg(s,p0);}
+
+void ProcessFolder(xr_vector<char*>& list, LPCSTR path)
+{
+	xr_vector<char*>*	i_list	= FS.file_list_open	("$target_folder$",path,FS_ListFiles|FS_RootOnly);
+	R_ASSERT3			(i_list,	"Unable to open file list:", path);
+	xr_vector<char*>::iterator it	= i_list->begin();
+	xr_vector<char*>::iterator itE	= i_list->end();
+	for (;it!=itE;++it){ 
+		xr_string		tmp_path	= xr_string(path)+xr_string(*it);
+		list.push_back	(xr_strdup(tmp_path.c_str()));
+		Msg				("+f: %s",tmp_path.c_str());
+	}
+	FS.file_list_close	(i_list);
+}
+
+bool IsFolderAccepted(CInifile& ltx, LPCSTR path, bool& recurse)
+{
+	// exclude folders
+	CInifile::Sect& ef_sect	= ltx.r_section("exclude_folders");
+	for (CInifile::SectIt ef_it=ef_sect.begin(); ef_it!=ef_sect.end(); ef_it++){
+		recurse	= CInifile::IsBOOL(ef_it->second.c_str());
+		if (recurse)	{
+			if (path==strstr(path,ef_it->first.c_str()))	return false;
+		}else{
+			if (0==xr_strcmp(path,ef_it->first.c_str()))	return false;
+		}
+	}
+	return true;
+}
+
 void ProcessLTX(LPCSTR tgt_name, LPCSTR params, BOOL bFast)
 {
 	xr_string		ltx_name;
@@ -374,41 +405,46 @@ void ProcessLTX(LPCSTR tgt_name, LPCSTR params, BOOL bFast)
 
 	xr_vector<char*> list;
 	xr_vector<char*> fl_list;
-	CInifile::Sect& sect	= ltx.r_section("config");
-	for (CInifile::SectIt s_it=sect.begin(); s_it!=sect.end(); s_it++){
-		BOOL bRecurse	= CInifile::IsBOOL(s_it->second.c_str());
-		u32 mask		= bRecurse?FS_ListFiles:FS_ListFiles|FS_RootOnly;
+	CInifile::Sect& if_sect	= ltx.r_section("include_folders");
+	for (CInifile::SectIt if_it=if_sect.begin(); if_it!=if_sect.end(); if_it++){
+		BOOL ifRecurse	= CInifile::IsBOOL(if_it->second.c_str());
+		u32 folder_mask	= FS_ListFolders | (ifRecurse?0:FS_RootOnly);
 
 		string_path path;
-		LPCSTR _path		= 0==xr_strcmp(s_it->first.c_str(),".\\")?"":s_it->first.c_str();
+		LPCSTR _path		= 0==xr_strcmp(if_it->first.c_str(),".\\")?"":if_it->first.c_str();
 		strcpy				(path,_path);
 		u32 path_len		= xr_strlen(path);
 		if ((0!=path_len)&&(path[path_len-1]!='\\')) strcat(path,"\\");
 
-		printf				("- Append path: '%s'\n",path);
-		xr_vector<char*>*	i_list	= FS.file_list_open	("$target_folder$",path,mask);
-		R_ASSERT3			(i_list,	"Unable to open file list:", path);
-		// collect folders
-		xr_vector<char*>*	i_fl_list	= FS.file_list_open	("$target_folder$",path,FS_ListFolders);
-		R_ASSERT3			(i_fl_list,	"Unable to open folder list:", path);
-		
-		xr_vector<char*>::iterator it	= i_list->begin();
-		xr_vector<char*>::iterator itE	= i_list->end();
-		xr_string tmp_path;
-		for (;it!=itE;++it){ 
-			tmp_path		= xr_string(path)+xr_string(*it);
-			list.push_back	(xr_strdup(tmp_path.c_str()));
-		}
-		it					= i_fl_list->begin();
-		itE					= i_fl_list->end();
-		for (;it!=itE;++it){ 
-			tmp_path		= xr_string(path)+xr_string(*it);
-			fl_list.push_back(xr_strdup(tmp_path.c_str()));
-		}
+		Log					("");
+		OUT_LOG				("Processing folder: '%s'",path);
+		bool efRecurse;
+		bool val			= IsFolderAccepted(ltx,path,efRecurse);
+		if (val || (!val&&!efRecurse)){ 
+			if (val)		ProcessFolder	(list,path);
 
-		// free lists
-		FS.file_list_close	(i_fl_list);
-		FS.file_list_close	(i_list);
+			xr_vector<char*>*	i_fl_list	= FS.file_list_open	("$target_folder$",path,folder_mask);
+			R_ASSERT3			(i_fl_list,	"Unable to open folder list:", path);
+
+			xr_vector<char*>::iterator it	= i_fl_list->begin();
+			xr_vector<char*>::iterator itE	= i_fl_list->end();
+			for (;it!=itE;++it){ 
+				xr_string tmp_path	= xr_string(path)+xr_string(*it);
+				bool val		= IsFolderAccepted(ltx,tmp_path.c_str(),efRecurse);
+				if (val){
+					fl_list.push_back(xr_strdup(tmp_path.c_str()));
+					Msg			("+F: %s",tmp_path.c_str());
+					// collect files
+					if (ifRecurse) 
+						ProcessFolder (list,tmp_path.c_str());
+				}else{
+					Msg			("-F: %s",tmp_path.c_str());
+				}
+			}
+			FS.file_list_close	(i_fl_list);
+		}else{
+			Msg					("-F: %s",path);
+		}
 	}
 	// compress
 	CompressList	(tgt_name,&list,&fl_list,bFast);
