@@ -251,6 +251,7 @@
         <function_complete>darkvalley_tasks.has_darklab_documents</function_complete>
         <infoportion_set_complete>bar_darklab_document_gain</infoportion_set_complete>
         <infoportion_set_complete>dar_document5</infoportion_set_complete>
+        <infoportion_set_complete>val_raid_start</infoportion_set_complete>
     </objective>
     <objective key="2">
         <text>bar_darklab_documents2_2</text>
