@@ -766,7 +766,6 @@
             </phrase>
             <phrase id="4">
                 <text />
-                <dont_has_info>tutorial_end</dont_has_info>
                 <dont_has_info>tutorial_wounded_help</dont_has_info>
                 <next>6</next>
             </phrase>
@@ -1531,7 +1530,7 @@
                 <text></text>
                 <precondition>escape_dialog.bandits_die</precondition>
                 <dont_has_info>esc_kill_bandits_quest_done</dont_has_info>
-                <dont_has_info>esc_kill_bandits_quest_have</dont_has_info>
+                <dont_has_info>esc_bandits_start</dont_has_info>
                 <next>51</next>
             </phrase>
         </phrase_list>
