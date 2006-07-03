@@ -359,7 +359,7 @@ use_wpn = true
 on_info = %+gar_hellcar_death +gar_open_fire +sar2_death_14%
 
 [danger_condition@hellcar_group]
-ignore_distance = 20
+ignore_distance = 15
 
 
 [logic@gar_hellcar_group_walker1]
@@ -595,7 +595,6 @@ meet = meet@neutral
 
 [logic@gar_dolg_blokpost_zoneguard1]
 active = walker@gar_dolg_blokpost_zoneguard1
-on_combat = combat
 meet = meet@zoneguard1
 on_death = death@prapor
 
@@ -630,7 +629,6 @@ on_info = %+sar2_death_18%
 
 [logic@gar_dolg_blokpost_zoneguard2]
 active = walker@gar_dolg_blokpost_zoneguard2
-on_combat = combat
 
 [walker@gar_dolg_blokpost_zoneguard2]
 path_walk = zoneguard_walk2
@@ -641,7 +639,6 @@ soundgroup = gar_dolg_zoneguard
 
 [logic@gar_dolg_blokpost_zoneguard3]
 active = walker@gar_dolg_blokpost_zoneguard3
-on_combat = combat
 
 [walker@gar_dolg_blokpost_zoneguard3]
 path_walk = zoneguard_walk3
@@ -659,8 +656,6 @@ use_wpn = true
 zone = gar_dolg_blokpost_zone_warn|{-gar_free_pass}threat@{-gar_free_pass}gar_dolg_blokpost|gar_dolg_blokpost_zone_guard|{-gar_free_pass}true@{-gar_free_pass}gar_dolg_blokpost
 meet_dialog = gar_dolg_blokpost
 
-[combat]
-combat_type = camper
 
 
 [logic@gar_dolg_blokpost_kamp1]
@@ -1677,9 +1672,7 @@ path_walk = gar_way_spy2
 path_look = gar_look_spy2
 combat_ignore_cond = {-gar_wounded_fight}
 radius = 2
-;sniper = true
-;danger = danger_condition@gar_psevdowounded_2
-;on_actor_dist_le = 15| %+gar_wounded_fight%
+on_info = {+gar_wounded_fight} walker@gar_psevdowounded_2
 show_spot = {-gar_wounded_fight} false
 on_actor_in_zone = gar_sniper_in_restrictor| walker@gar_psevdowounded_2
 

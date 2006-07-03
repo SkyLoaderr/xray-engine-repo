@@ -1235,31 +1235,31 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@gar_bandit_stroyka_1",
 			idle = 0,
 			prior = 3, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_stroyka_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_stroyka_2",
 			idle = 0,
 			prior = 3, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_stroyka_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_stroyka_3",
 			idle = 0,
 			prior = 3, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_stroyka_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_stroyka_4",
 			idle = 0,
 			prior = 3, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_stroyka_restrictor"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_stroyka_5",
 			idle = 0,
 			prior = 3, state = {0},
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_stroyka_restrictor"
 		}
 		table.insert(sj, t)
 	end
