@@ -462,7 +462,6 @@
                 <text>escape_trader_start_dialog_521111</text>
                 <precondition>escape_dialog.have_wounded_flash</precondition>
                 <action>escape_dialog.give_wounded_flash</action>
-                <action>escape_dialog.path_to_lager</action>
                 <give_info>esc_serious_talk</give_info>
                 <give_info>tutorial_end</give_info>
                 <give_info>esc_trader_hello_played</give_info>
