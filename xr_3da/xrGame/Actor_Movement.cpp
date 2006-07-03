@@ -116,40 +116,23 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 	{
 		mstate_real				^=mcAccel;
 	};	
-	static bool _b = false;
 
 	if (this == Level().CurrentControlEntity())
 	{
+//.		static bool					_b = false;
 		bool bOnClimbNow			= !!(mstate_real&mcClimb);
 		bool bOnClimbOld			= !!(mstate_old&mcClimb);
 
-		bool bMovingNow				= !!(mstate_real&mcAnyMove);
-		bool bMovingOld				= !!(mstate_old&mcAnyMove);
+//.		bool bMovingNow				= !!(mstate_real&mcAnyMove);
+//.		bool bMovingOld				= !!(mstate_old&mcAnyMove);
 
 		if (bOnClimbNow != bOnClimbOld )
 		{
-			bool bDoHide			= bOnClimbNow;
-			VERIFY					(_b!=bDoHide);
-			_b						= bDoHide;
-			SetWeaponHideState		(INV_STATE_LADDER, bDoHide );
-
-//.			if(bDoHide)				Msg("11 ON  LADDER");
-//.			else					Msg("11 OFF LADDER frame");
+//.			bool bDoHide			= bOnClimbNow;
+//.			VERIFY					(_b!=bDoHide);
+//.			_b						= bDoHide;
+			SetWeaponHideState		(INV_STATE_LADDER, bOnClimbNow );
 		};
-		 //else
-		if (false && bOnClimbNow)
-		{
-			if (bMovingNow != bMovingOld)
-			{
-				bool bDoHide		= bMovingNow;
-				VERIFY				(_b!=bDoHide);
-				_b					= bDoHide;
-				SetWeaponHideState	(INV_STATE_LADDER, bDoHide );
-
-//.				if(bDoHide)			Msg("22 ON  LADDER");
-//.				else				Msg("22 OFF LADDER");
-			}
-		}
 
 		if ((mstate_real&mcSprint) != (mstate_old&mcSprint))
 		{
