@@ -54,6 +54,7 @@
 			<text>agroprom_find_gunslinger_cache_0</text>
 			<icon>ui_iconsTotal_grouping</icon>
 			<infoportion_complete>agr_find_gunslinger_cache_final</infoportion_complete>
+			<infoportion_set_complete>agr_find_ghost_start</infoportion_set_complete>
 		</objective>
 		<objective>
 			<text>agroprom_find_gunslinger_cache_1</text>
@@ -124,5 +125,14 @@
             <map_location_type hint="agr_help_krot_hint">green_location</map_location_type>
             <object_story_id>agr_krot</object_story_id>
             <infoportion_fail>agr_krot_dead</infoportion_fail>
+		</objective>
+	</game_task>
+	
+	<game_task id="agr_find_ghost">
+		<title>agr_find_ghost</title>
+		<objective>
+			<text>agr_find_ghost</text>
+			<icon>ui_icons_task_eliminate_lager</icon>
+			<infoportion_complete>yan_find_vasilyev_end</infoportion_complete>
 		</objective>
 	</game_task>

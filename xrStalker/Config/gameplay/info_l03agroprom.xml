@@ -35,6 +35,9 @@
 		<task>agroprom_find_gunslinger_cache</task>
 		<!--article>storyline_gunslinger_cache_info</article-->
 	</info_portion>
+	<info_portion id="agr_find_ghost_start">
+		<task>agr_find_ghost</task>
+	</info_portion>
 	<info_portion id="agr_find_gunslinger_cache_found">
 	</info_portion>
 	<info_portion id="agr_find_gunslinger_cache_done">
