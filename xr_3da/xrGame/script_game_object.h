@@ -268,6 +268,11 @@ public:
 			void				DisableTrade		();
 			bool				IsTradeEnabled		();
 
+			void				IterateInventory	(luabind::functor<void> functor, luabind::object object);
+			void				MarkItemDropped		(CScriptGameObject *item);
+			bool				MarkedDropped		(CScriptGameObject *item);
+			void				UnloadMagazine		();
+
 			void				DropItem			(CScriptGameObject* pItem);
 			void				DropItemAndTeleport	(CScriptGameObject* pItem, Fvector position);
 			void				ForEachInventoryItems(const luabind::functor<void> &functor);

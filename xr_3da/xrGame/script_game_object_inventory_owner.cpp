@@ -33,6 +33,7 @@
 #include "inventory.h"
 #include "infoportion.h"
 #include "AI/Monsters/BaseMonster/base_monster.h"
+#include "weaponmagazined.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
@@ -203,6 +204,67 @@ void CScriptGameObject::ForEachInventoryItems(const luabind::functor<void> &func
 		}
 	}
 }
+
+//1
+void CScriptGameObject::IterateInventory	(luabind::functor<void> functor, luabind::object object)
+{
+	CInventoryOwner			*inventory_owner = smart_cast<CInventoryOwner*>(&this->object());
+	if (!inventory_owner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject::IterateInventory non-CInventoryOwner object !!!");
+		return;
+	}
+
+	TIItemContainer::iterator	I = inventory_owner->inventory().m_all.begin();
+	TIItemContainer::iterator	E = inventory_owner->inventory().m_all.end();
+	for ( ; I != E; ++I)
+		functor				(object,*I);
+}
+
+void CScriptGameObject::MarkItemDropped		(CScriptGameObject *item)
+{
+	CInventoryOwner			*inventory_owner = smart_cast<CInventoryOwner*>(&object());
+	if (!inventory_owner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject::MarkItemDropped non-CInventoryOwner object !!!");
+		return;
+	}
+
+	CInventoryItem			*inventory_item = smart_cast<CInventoryItem*>(&item->object());
+	if (!inventory_item) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject::MarkItemDropped non-CInventoryItem object !!!");
+		return;
+	}
+
+	inventory_item->Drop	();
+}
+
+bool CScriptGameObject::MarkedDropped		(CScriptGameObject *item)
+{
+	CInventoryOwner			*inventory_owner = smart_cast<CInventoryOwner*>(&object());
+	if (!inventory_owner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject::MarkedDropped non-CInventoryOwner object !!!");
+		return				(false);
+	}
+
+	CInventoryItem			*inventory_item = smart_cast<CInventoryItem*>(&item->object());
+	if (!inventory_item) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject::MarkedDropped non-CInventoryItem object !!!");
+		return				(false);
+	}
+
+	return					(!!inventory_item->GetDrop());
+}
+
+void CScriptGameObject::UnloadMagazine		()
+{
+	CWeaponMagazined		*weapon_magazined = smart_cast<CWeaponMagazined*>(&object());
+	if (!weapon_magazined) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject::UnloadMagazine non-CWeaponMagazined object !!!");
+		return;
+	}
+
+	weapon_magazined->UnloadMagazine	(false);
+}
+//
 
 void CScriptGameObject::DropItem			(CScriptGameObject* pItem)
 {
