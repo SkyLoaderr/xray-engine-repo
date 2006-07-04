@@ -198,6 +198,13 @@ IC bool pred_str_ff(const _finddata_t& x, const _finddata_t& y)
 	return xr_strcmp(x.name,y.name)<0;	
 }
 
+
+bool ignore_name(const char* _name)
+{
+	// ignore processing ".svn" folders
+	return ( _name[0]=='.' && _name[1]=='s' && _name[2]=='v' && _name[3]=='n' && _name[4]==0) ;
+}
+
 bool CLocatorAPI::Recurse		(const char* path)
 {
     _finddata_t		sFile;
@@ -216,9 +223,11 @@ bool CLocatorAPI::Recurse		(const char* path)
     	return		false;
     }
     // загоняем в вектор для того *.db* приходили в сортированном порядке
-	rec_files.push_back(sFile);
+	if(!ignore_name(sFile.name))	rec_files.push_back(sFile);
+
 	while			( _findnext( hFile, &sFile ) == 0 )
-		rec_files.push_back(sFile);
+		if(!ignore_name(sFile.name)) rec_files.push_back(sFile);
+
 	_findclose		( hFile );
 
 	std::sort		(rec_files.begin(), rec_files.end(), pred_str_ff);
