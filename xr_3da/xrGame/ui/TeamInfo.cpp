@@ -71,10 +71,8 @@ LPCSTR	CTeamInfo::GetTeam_name(int team){
 
 LPCSTR	CTeamInfo::GetTeam_color_tag(int team){
 	R_ASSERT(1 == team || 2 == team);
-	if (flags.test(flTeam1_col_t))
-		return *team1_color_tag;
-	if (flags.test(flTeam2_col_t))
-		return *team2_color_tag;
+//	if (flags.test(flTeam1_col_t)) return *team1_color_tag;
+//	if (flags.test(flTeam2_col_t)) return *team2_color_tag;
 
 	string256 _buff;
 
