@@ -56,6 +56,15 @@
 		<text>ЗАГАДАТЬ ЖЕЛАНИЕ ($$ACTION_USE$$)</text>
 	</string>
 
+	<string id="st_game_saved">
+		<text>игра сохранена</text>
+	</string>
+
+	<string id="inventory_box_use">
+		<text>Обыскать ящик ($$ACTION_USE$$)</text>
+	</string>
+
+
 
 	<!-- Надпись на физических воротах -->
 	<string id="tip_gate_locked">
