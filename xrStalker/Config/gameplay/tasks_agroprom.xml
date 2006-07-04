@@ -132,7 +132,7 @@
 		<title>agr_find_ghost</title>
 		<objective>
 			<text>agr_find_ghost</text>
-			<icon>ui_icons_task_eliminate_lager</icon>
+			<icon>ui_iconsTotal_grouping</icon>
 			<infoportion_complete>yan_find_vasilyev_end</infoportion_complete>
 		</objective>
 	</game_task>
