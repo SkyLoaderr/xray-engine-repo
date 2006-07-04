@@ -353,7 +353,7 @@ function se_respawn:spawn()
 		end
 		
 		if obj ~= nil then
-			if obj.alive ~= nil and obj:alive() ~= true then
+			if (IsStalker(obj) or IsMonster(obj)) and obj:alive() ~= true then
 				table.remove(self.spawned_obj, k)
 			end
 		else
