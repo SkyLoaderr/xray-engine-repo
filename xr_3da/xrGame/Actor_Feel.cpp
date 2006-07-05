@@ -181,6 +181,14 @@ void	CActor::PickupModeUpdate_COD	()
 			pNearestItem = pIItem;
 		};
 	}
+
+	if(pNearestItem)
+	{
+		CFrustum					frustum;
+		frustum.CreateFromMatrix	(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
+		if (!CanPickItem(frustum,Device.vCameraPosition,&pNearestItem->object()))
+			pNearestItem = NULL;
+	}
 	HUD().GetUI()->UIMainIngameWnd->SetPickUpItem(pNearestItem);
 
 	if (pNearestItem && m_bPickupMode)

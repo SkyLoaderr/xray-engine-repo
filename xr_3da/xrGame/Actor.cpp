@@ -1056,19 +1056,10 @@ void CActor::shedule_Update	(u32 DT)
 		}	
 	}
 	NET_Jump = 0;
-	//------------------------------------------------	
 
 
-	// generic stuff
 	inherited::shedule_Update	(DT);
-	//------------------------------------------------
-/*
-	if (OnServer())
-	{
-		Check_Weapon_ShowHideState();
-	};	
-*/
-	//------------------------------------------------
+
 	//эффектор включаемый при ходьбе
 	if (!pCamBobbing)
 	{
