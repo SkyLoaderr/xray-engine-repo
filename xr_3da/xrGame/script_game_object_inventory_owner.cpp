@@ -813,7 +813,8 @@ CScriptGameObject *CScriptGameObject::item_in_slot	(u32 slot_id) const
 		return		(0);
 	}
 
-	return			(inventory_owner->inventory().m_slots[slot_id].m_pIItem->object().lua_game_object());
+	CInventoryItem	*result = inventory_owner->inventory().m_slots[slot_id].m_pIItem;
+	return			(result ? result->object().lua_game_object() : 0);
 }
 
 void CScriptGameObject::GiveTaskToActor(CGameTask* t, bool bCheckExisting)
