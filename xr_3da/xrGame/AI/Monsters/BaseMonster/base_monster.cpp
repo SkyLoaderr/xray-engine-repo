@@ -406,7 +406,7 @@ void CBaseMonster::set_action(EAction action)
 	anim().m_tAction		= action;
 }
 
-CParticlesObject* CBaseMonster::PlayParticles(const shared_str& name, const Fvector &position, const Fvector &dir, BOOL auto_remove)
+CParticlesObject* CBaseMonster::PlayParticles(const shared_str& name, const Fvector &position, const Fvector &dir, BOOL auto_remove, BOOL xformed)
 {
 	CParticlesObject* ps = CParticlesObject::Create(name.c_str(),auto_remove);
 	
@@ -418,7 +418,7 @@ CParticlesObject* CBaseMonster::PlayParticles(const shared_str& name, const Fvec
 	Fvector::generate_orthonormal_basis_normalized(matrix.k,matrix.j,matrix.i);
 	matrix.translate_over	(position);
 	
-	ps->SetXFORM			(matrix); 
+	(xformed) ?				ps->SetXFORM (matrix) : ps->UpdateParent(matrix,zero_vel); 
 	ps->Play				();
 
 	return ps;

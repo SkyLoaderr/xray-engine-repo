@@ -3,6 +3,8 @@
 #include "../../../PhysicsShell.h"
 #include "../../../level.h"
 #include "../../../material_manager.h"
+#include "../../../level_debug.h"
+
 
 CPolterSpecialAbility::CPolterSpecialAbility(CPoltergeist *polter)
 {
@@ -60,7 +62,10 @@ void CPolterSpecialAbility::update_frame()
 
 void CPolterSpecialAbility::on_die()
 {
-	m_object->PlayParticles			(m_particles_death, m_object->Position(),Fvector().set(0.0f,1.0f,0.0f));
+	Fvector particles_position	= m_object->m_current_position;
+	particles_position.y		+= m_object->target_height;
+
+	m_object->PlayParticles			(m_particles_death, particles_position, Fvector().set(0.0f,1.0f,0.0f), TRUE, FALSE);
 
 	CParticlesObject::Destroy		(m_particles_object_electro);
 	CParticlesObject::Destroy		(m_particles_object);
