@@ -58,18 +58,18 @@
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>descr_bar_radar_deactivate</text>
     </article>
-	<article id="journal_bar_x16_documents" name="Выжигатель мозгов рукотворен?" group="memuars" article_type="journal">
+	<article id="journal_bar_x16_documents" name="journal_bar_x16_documents_name" group="memuars" article_type="journal">
            <text>journal_bar_x16_documents</text>
     </article>
-    <article id="journal_bar_darklab_documents" name="Лаборатория Х18" group="memuars" article_type="journal">
+    <article id="journal_bar_darklab_documents" name="journal_bar_darklab_documents_name" group="memuars" article_type="journal">
            <text>journal_bar_darklab_documents</text>
     </article>
-    <article id="journal_before_darklab_documents" name="Бармен" group="memuars" article_type="journal">
+    <article id="journal_before_darklab_documents" name="journal_before_darklab_documents_name" group="memuars" article_type="journal">
            <text>journal_before_darklab_documents</text>
     </article>
-    <article id="journal_before_radar_task" name="После общения с Психом" group="memuars" article_type="journal">
+    <article id="journal_before_radar_task" name="journal_before_radar_task_name" group="memuars" article_type="journal">
            <text>journal_before_radar_task</text>
     </article>
-    <article id="journal_after_agroprom_documents" name="Документы военной экспедиции" group="memuars" article_type="journal">
+    <article id="journal_after_agroprom_documents" name="journal_after_agroprom_documents_name" group="memuars" article_type="journal">
            <text>journal_after_agroprom_documents</text>
     </article>

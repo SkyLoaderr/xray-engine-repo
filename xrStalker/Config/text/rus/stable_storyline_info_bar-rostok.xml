@@ -36,6 +36,26 @@
         непогоду.</text>
     </string>
 
+    <string id="journal_bar_x16_documents_name">
+        <text>Выжигатель мозгов рукотворен?</text>
+    </string>
+    
+    <string id="journal_bar_darklab_documents_name">
+        <text>Лаборатория Х18</text>
+    </string>
+
+	<string id="journal_before_darklab_documents_name">
+        <text>Бармен</text>
+    </string>
+    
+    <string id="journal_before_radar_task_name">
+        <text>После общения с Психом</text>
+    </string>
+    
+    <string id="journal_after_agroprom_documents_name">
+        <text>Документы военной экспедиции</text>
+    </string>
+    
     <string id="bar_radar_shedule">
         <text>Радар отключается в 8:30, включается в 9:00</text>
     </string>
