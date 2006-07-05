@@ -565,6 +565,9 @@
 					RelativePath=".\Config\misc\artefacts.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\death_generic.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\devices.ltx">
 				</File>
 				<File
