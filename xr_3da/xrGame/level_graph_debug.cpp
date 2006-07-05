@@ -296,6 +296,145 @@ void CLevelGraph::draw_objects		(const int &vertex_id)
 {
 	if (!ai().get_alife())
 		return;
+
+	const float					radius = .0105f;
+	const u32					color = D3DCOLOR_XRGB(255,0,0);
+	const CGameGraph			&graph = ai().game_graph();
+	CGameFont					&font = *HUD().Font().pFontDI;
+	Fvector						position = convert_position(graph.vertex(vertex_id)->game_point());
+
+	font.SetColor				(D3DCOLOR_XRGB(255,255,0));
+
+	bool						show_text = true;
+	for (;;) {
+		Fvector4				temp;
+		Device.mFullTransform.transform (temp,position);
+		font.OutSetI			(temp.x,-temp.y);
+		font.SetSizeI			(.05f/_sqrt(temp.w));
+		
+		if (temp.z < 0.f) {
+			show_text			= false;
+			break;
+		}
+
+		if (temp.w < 0.f) {
+			show_text			= false;
+			break;
+		}
+
+		if (temp.x < -1.f) {
+			show_text			= false;
+			break;
+		}
+		
+		if (temp.x > 1.f) {
+			show_text			= false;
+			break;
+		}
+
+		if (temp.y < -1.f) {
+			show_text			= false;
+			break;
+		}
+		
+		if (temp.x > 1.f) {
+			show_text			= false;
+			break;
+		}
+
+		break;
+	}
+
+	typedef CALifeGraphRegistry::OBJECT_REGISTRY	OBJECT_REGISTRY;
+	typedef OBJECT_REGISTRY::_const_iterator		const_iterator;
+	typedef CALifeMonsterDetailPathManager::PATH	PATH;
+	const OBJECT_REGISTRY		&objects = ai().alife().graph().objects()[vertex_id].objects();
+
+	CDebugRenderer				&render = Level().debug_renderer();
+	if (show_text) {
+		bool					first_time = true;
+		const_iterator			I = objects.objects().begin();
+		const_iterator			E = objects.objects().end();
+		for (; I != E; ++I) {
+			CSE_ALifeDynamicObject	*object = (*I).second;
+			CSE_ALifeHumanStalker	*stalker = smart_cast<CSE_ALifeHumanStalker*>(object);
+			if (!stalker)
+				continue;
+
+			const PATH			&path = stalker->brain().movement().detail().path();
+			const float			&walked_distance = (path.size() < 2) ? 0.f : stalker->brain().movement().detail().walked_distance();
+//			font.OutNext		("%s",stalker->name_replace());
+
+			if ((path.size() >= 2) && !fis_zero(walked_distance))
+				continue;
+
+			if (!first_time)
+				continue;
+
+			Fvector				position = convert_position(graph.vertex(stalker->m_tGraphID)->game_point());
+			render.draw_aabb	(position,radius,radius,radius,color);
+			first_time			= false;
+			continue;
+		}
+	}
+
+	const_iterator				I = objects.objects().begin();
+	const_iterator				E = objects.objects().end();
+	for (; I != E; ++I) {
+		CSE_ALifeDynamicObject	*object = (*I).second;
+		CSE_ALifeMonsterAbstract*stalker = smart_cast<CSE_ALifeMonsterAbstract*>(object);
+		if (!stalker)
+			continue;
+
+		const PATH				&path = stalker->brain().movement().detail().path();
+		if (path.size() < 2)
+			continue;
+
+		u32						game_vertex_id0 = stalker->m_tGraphID;
+		u32						game_vertex_id1 = path[path.size() - 2];
+		const float				&walked_distance = stalker->brain().movement().detail().walked_distance();
+
+		if (fis_zero(walked_distance))
+			continue;
+
+		Fvector					position0 = graph.vertex(game_vertex_id0)->game_point();
+		Fvector					position1 = graph.vertex(game_vertex_id1)->game_point();
+		const float				distance = position0.distance_to(position1);
+
+		position0				= convert_position(position0);
+		position1				= convert_position(position1);
+
+		Fvector					direction = Fvector().sub(position1,position0);
+		float					magnitude = direction.magnitude();
+		direction.normalize		();
+		direction.mul			(magnitude*walked_distance/distance);
+		direction.add			(position0);
+		render.draw_aabb		(direction,radius,radius,radius,color);
+
+		Fvector4				temp;
+		Device.mFullTransform.transform (temp,direction);
+		
+		if (temp.z < 0.f)
+			continue;
+
+		if (temp.w < 0.f)
+			continue;
+
+		if (temp.x < -1.f)
+			continue;
+		
+		if (temp.x > 1.f)
+			continue;
+
+		if (temp.y < -1.f)
+			continue;
+		
+		if (temp.x > 1.f)
+			continue;
+
+		font.SetSizeI			(.05f/_sqrt(temp.w));
+//		font.OutI				(temp.x,-temp.y,"%s",stalker->name_replace());
+	}
 }
 
 void CLevelGraph::draw_game_graph	()

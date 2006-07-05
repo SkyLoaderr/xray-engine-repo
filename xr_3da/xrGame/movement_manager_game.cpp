@@ -44,7 +44,7 @@ void CMovementManager::process_game_path()
 			if (game_selector().failed())
 				break;
 
-			m_path_state	= ePathStateBuildGamePath;
+			m_path_state		= ePathStateBuildGamePath;
 
 //				if (time_over())
 //					break;
