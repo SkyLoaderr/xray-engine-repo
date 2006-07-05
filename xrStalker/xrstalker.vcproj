@@ -3582,6 +3582,9 @@
 						RelativePath=".\scripts\avi_start.script">
 					</File>
 					<File
+						RelativePath=".\Scripts\death_manager.script">
+					</File>
+					<File
 						RelativePath=".\scripts\dialog_manager.script">
 					</File>
 					<File
