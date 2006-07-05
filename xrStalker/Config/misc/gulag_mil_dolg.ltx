@@ -13,6 +13,7 @@ combat_ignore = c_ignore@mil_dolg
 
 [death@mil_dolg_skull]
 on_info = %=military_dolg_dead +mil_scull_dead +sar2_death_38%
+on_info2 = {+mil_dolg_attack} %+mil_dolg_soldier_cherep_dead%
 
 [c_ignore@mil_dolg_skull]
 
@@ -51,7 +52,8 @@ on_death = death@mil_dolg_soldier1
 combat_ignore = c_ignore@mil_dolg
 
 [death@mil_dolg_soldier1]
-on_info = %=military_dolg_dead +mil_dolg_soldier_1_dead%
+on_info = %=military_dolg_dead%
+on_info2 = {+mil_dolg_attack} %+mil_dolg_soldier_1_dead%
 
 [walker10@mil_dolg_soldier1]
 path_walk = walk_bin
@@ -204,7 +206,8 @@ combat_ignore = c_ignore@mil_dolg
 on_death = death@mil_dolg_soldier3
 
 [death@mil_dolg_soldier3]
-on_info = %=military_dolg_dead +mil_dolg_soldier_2_dead%
+on_info = %=military_dolg_dead%
+on_info2 = {+mil_dolg_attack} %+mil_dolg_soldier_2_dead%
 
 [camper1@mil_dolg_soldier3]
 path_walk = ambush_walk4
@@ -282,7 +285,8 @@ combat_ignore = c_ignore@mil_dolg
 on_death = death@mil_dolg_soldier4
 
 [death@mil_dolg_soldier4]
-on_info = %=military_dolg_dead +mil_dolg_soldier_3_dead%
+on_info = %=military_dolg_dead%
+on_info2 = {+mil_dolg_attack} %+mil_dolg_soldier_3_dead%
 
 [camper1@mil_dolg_soldier4]
 path_walk = ambush_walk5
@@ -345,7 +349,8 @@ combat_ignore = c_ignore@mil_dolg
 on_death = death@mil_dolg_soldier5
 
 [death@mil_dolg_soldier5]
-on_info = %=military_dolg_dead +mil_dolg_soldier_4_dead%
+on_info = %=military_dolg_dead%
+on_info2 = {+mil_dolg_attack} %+mil_dolg_soldier_4_dead% 
 
 [camper1@mil_dolg_soldier5]
 path_walk = ambush_walk2
@@ -579,8 +584,8 @@ no_retreat = true
 radius = 20
 on_signal2 = dolg | %+mil_headquarter_attack%
 danger = danger_condition@mil_dolg
-on_signal3 = sound_1 | %+mil_dolg_sound_1%
-on_signal4 = sound_8 | %+mil_dolg_sound_8%
+on_signal3 = sound_1 | {+mil_dolg_attack} %+mil_dolg_sound_1%
+on_signal4 = sound_8 | {+mil_dolg_attack} %+mil_dolg_sound_8%
 
 
 -------------------------------
@@ -633,7 +638,7 @@ no_retreat = true
 radius = 20
 on_signal = dolg | %+mil_headquarter_attack%
 danger = danger_condition@mil_dolg
-on_signal2 = sound_2 | %+mil_dolg_sound_2%
+on_signal2 = sound_2 | {+mil_dolg_attack} %+mil_dolg_sound_2%
 
 -------------------------------
 ;Солдат 2
@@ -676,7 +681,7 @@ no_retreat = true
 radius = 0
 on_signal = dolg | %+mil_headquarter_attack%
 danger = danger_condition@mil_dolg
-on_signal2 = sound_4 | %+mil_dolg_sound_4%
+on_signal2 = sound_4 | {+mil_dolg_attack} %+mil_dolg_sound_4%
 
 
 -------------------------------
@@ -720,8 +725,8 @@ no_retreat = true
 radius = 20
 on_signal = dolg | %+mil_headquarter_attack%
 danger = danger_condition@mil_dolg
-on_signal2 = sound_6 | %+mil_dolg_sound_6%
-on_signal3 = sound_11 | %+mil_dolg_sound_11%
+on_signal2 = sound_6 | {+mil_dolg_attack} %+mil_dolg_sound_6%
+on_signal3 = sound_11 | {+mil_dolg_attack} %+mil_dolg_sound_11%
 
 
 
@@ -767,7 +772,7 @@ no_retreat = true
 radius = 20
 on_signal = dolg | %+mil_headquarter_attack%
 danger = danger_condition@mil_dolg
-on_signal2 = sound_5 | %+mil_dolg_sound_5%
+on_signal2 = sound_5 | {+mil_dolg_attack} %+mil_dolg_sound_5%
 
 
 -------------------------------
@@ -855,7 +860,7 @@ no_retreat = true
 radius = 0
 on_signal = dolg | %+mil_headquarter_attack%
 danger = danger_condition@mil_dolg
-on_signal2 = sound_10 | %+mil_dolg_sound_10%
+on_signal2 = sound_10 | {+mil_dolg_attack} %+mil_dolg_sound_10%
 
 
 -------------------------------
@@ -898,8 +903,8 @@ def_state_moving = assault
 no_retreat = true
 radius = 20
 on_signal = dolg | %+mil_headquarter_attack%
-on_signal2 = sound_3 | %+mil_dolg_sound_3%
-on_signal3 = sound_9 | %+mil_dolg_sound_9%
+on_signal2 = sound_3 | {+mil_dolg_attack} %+mil_dolg_sound_3%
+on_signal3 = sound_9 | {+mil_dolg_attack} %+mil_dolg_sound_9%
 
 
 
