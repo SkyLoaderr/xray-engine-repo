@@ -1,0 +1,92 @@
+
+--'Ключем является группировка персонажа. Значением является таблица, содержашая имена секций предметов.
+local item_by_community = {}
+
+--' Зависимости в спауне предметов. Предмет спауниться только если есть хотя бы один из зависимых.
+local item_dependence = {}
+
+local count_by_level = {}
+
+local death_ini = ini_file("misc\\death_generic.ltx")
+
+function create_release_item(npc)
+    --' Запускаем итератор на удаление предметов
+    --npc:iterate_inventory(release_item, npc)
+
+    --' Доспавниваем необходимое количество итемов:
+    --' Необходимо составить список объектов которые могут быть заспавнены для персонажа
+    local spawn_items = get_spawn_items_by_npc(npc)
+    
+    print_table(spawn_items)
+
+    for k,v in pairs(spawn_items) do
+        --' По каждому объекту необходимо получить зависимости
+        if check_item_dependence(npc, k) == true then
+            printf("dependence passed %s", k)
+            --' По каждому объекту необходимо получить количество
+            
+
+            --' Необходимо заспавнить нужное количество.
+
+
+            
+        end
+    end
+end
+
+
+--' Функция вызывается для каждого предмета, если вернет true то предмет удалится.
+function release_item(npc, item)
+    printf("!!!")
+
+    return true
+end
+
+--' Функция проверяет есть ли хоть один из зависимых объектов у персонажа
+function check_item_dependence(npc, section)
+    if item_dependence[section] == nil then
+        --' Заполняем таблицу зависимостей
+        item_dependence[section] = {}
+		local n = death_ini:line_count("item_dependence")
+		local id, value = "", ""
+		for i=0,n-1 do
+			result, id, value	= death_ini:r_line("item_dependence",i,"","")
+            if section == id then
+                item_dependence[section][value] = true
+            end
+		end        
+    end
+
+    local d_flag = true
+    for k,v in pairs(item_dependence[section]) do
+        local obj = npc:object(k)
+        if obj ~= nil and obj:marked_dropped() ~= true then
+            return true
+        end
+        d_flag = false
+    end
+
+    return d_flag
+end
+
+
+--' Функция возвращает таблицу с именами секций предметов, которые теоретически могут быть заспавнены текущим персонажем.
+function get_spawn_items_by_npc(npc)
+    local community = npc:character_community()
+
+    if item_by_community[community] == nil then
+        --' Необходимо заполнить таблицу
+        item_by_community[community] = {}
+        if death_ini:section_exist(community) then
+		    local n = death_ini:line_count(community)
+		    local id, value = "", ""
+		    for i=0,n-1 do
+			    result, id, value	= death_ini:r_line(community,i,"","")
+                item_by_community[community][id] = tonumber(value)
+		    end
+
+        end
+    end
+
+    return item_by_community[community]
+end

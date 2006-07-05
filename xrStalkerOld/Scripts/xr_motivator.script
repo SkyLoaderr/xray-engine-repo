@@ -164,6 +164,8 @@ function motivator_binder:death_callback(victim, who)
 
 	smart_terrain.on_death( self.object:id() )
 	
+    death_manager.create_release_item(self.object)
+
 	if(actor_stats.remove_from_ranking~=nil)then
 		local community = self.object:character_community()
 		if community == "zombied" or
