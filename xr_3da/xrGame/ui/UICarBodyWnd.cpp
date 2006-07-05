@@ -445,7 +445,7 @@ bool CUICarBodyWnd::OnItemDrop(CUICellItem* itm)
 	CUIDragDropListEx*	old_owner		= itm->OwnerList();
 	CUIDragDropListEx*	new_owner		= CUIDragDropListEx::m_drag_item->BackList();
 	
-	if(old_owner==new_owner || !old_owner || !new_owner || (new_owner==m_pUIOthersBagList&&m_pInventoryBox))
+	if(old_owner==new_owner || !old_owner || !new_owner || (false&&new_owner==m_pUIOthersBagList&&m_pInventoryBox))
 					return true;
 
 	if(m_pOthersObject)
@@ -463,7 +463,15 @@ bool CUICarBodyWnd::OnItemDrop(CUICellItem* itm)
 	}else
 	{
 		u16 tmp_id	= (smart_cast<CGameObject*>(m_pOurObject))->ID();
-		move_item				(m_pInventoryBox->ID(),tmp_id,CurrentIItem()->object().ID());
+
+		bool bMoveDirection		= (old_owner==m_pUIOthersBagList);
+
+		move_item				(
+								bMoveDirection?m_pInventoryBox->ID():tmp_id,
+								bMoveDirection?tmp_id:m_pInventoryBox->ID(),
+								CurrentIItem()->object().ID());
+
+
 		Actor()->callback		(GameObject::eInvBoxItemTake)(m_pInventoryBox->lua_game_object(), CurrentIItem()->object().lua_game_object() );
 
 		CUICellItem* ci			= old_owner->RemoveItem(CurrentItem(), false);
@@ -498,9 +506,14 @@ bool CUICarBodyWnd::OnItemDbClick(CUICellItem* itm)
 		}
 	}else
 	{
-		if(old_owner==m_pUIOurBagList) return true;
+		if(false && old_owner==m_pUIOurBagList) return true;
+		bool bMoveDirection		= (old_owner==m_pUIOthersBagList);
+
 		u16 tmp_id				= (smart_cast<CGameObject*>(m_pOurObject))->ID();
-		move_item				(m_pInventoryBox->ID(),tmp_id,CurrentIItem()->object().ID());
+		move_item				(
+								bMoveDirection?m_pInventoryBox->ID():tmp_id,
+								bMoveDirection?tmp_id:m_pInventoryBox->ID(),
+								CurrentIItem()->object().ID());
 		Actor()->callback		(GameObject::eInvBoxItemTake)(m_pInventoryBox->lua_game_object(), CurrentIItem()->object().lua_game_object() );
 
 	}
