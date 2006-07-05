@@ -1920,6 +1920,9 @@
 					RelativePath=".\Config\weathers\weather_default.ltx">
 				</File>
 				<File
+					RelativePath=".\config\weathers\weather_indoor.ltx">
+				</File>
+				<File
 					RelativePath=".\config\weathers\weather_map.ltx">
 				</File>
 				<File
