@@ -135,4 +135,8 @@
 			<icon>ui_iconsTotal_grouping</icon>
 			<infoportion_complete>yan_find_vasilyev_end</infoportion_complete>
 		</objective>
+		<objective>
+			<text>agr_find_ghost</text>
+			<infoportion_complete>yan_find_vasilyev_end</infoportion_complete>
+		</objective>
 	</game_task>
