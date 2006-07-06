@@ -255,11 +255,19 @@ void	OpenPack			(LPCSTR tgt_folder, int num)
 
 	string_path		fname;
 	string128		s_num;
-	strconcat		(fname,tgt_folder,".db_#",itoa(num,s_num,10));
+	strconcat		(fname,tgt_folder,".pack_#",itoa(num,s_num,10));
 	unlink			(fname);
 	fs				= FS.w_open	(fname);
 	fs_desc.clear	();
 	aliases.clear	();
+
+	bytesSRC		= 0;
+	bytesDST		= 0;
+	filesTOTAL		= 0;
+	filesSKIP		= 0;
+	filesVFS		= 0;
+	filesALIAS		= 0;
+
 	dwTimeStart		= timeGetTime();
 	fs->open_chunk	(0);
 }
