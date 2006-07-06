@@ -192,11 +192,7 @@ void CMissile::UpdateCL()
 			}
 		}
 	}
-	if(m_dwDestroyTime!=0xffffffff&&Device.dwTimeGlobal-m_dwDestroyTime+m_dwDestroyTimeMax>100&&PPhysicsShell()&&PPhysicsShell()->isActive())
-	{
-		PPhysicsShell()->remove_ObjectContactCallback(ExitContactCallback);
-		PPhysicsShell()->set_CallbackData(NULL);
-	}
+
 }
 void CMissile::shedule_Update(u32 dt)
 {
@@ -590,7 +586,7 @@ void CMissile::activate_physic_shell()
 //	m_pPhysicsShell->AddTracedGeom		();
 	m_pPhysicsShell->SetAllGeomTraced	();
 	m_pPhysicsShell->add_ObjectContactCallback		(ExitContactCallback);
-	m_pPhysicsShell->set_CallbackData	((CPhysicsShellHolder*)entity_alive);
+	m_pPhysicsShell->set_CallbackData	(smart_cast<CPhysicsShellHolder*>(entity_alive));
 //	m_pPhysicsShell->remove_ObjectContactCallback	(ExitContactCallback);
 	m_pPhysicsShell->SetAirResistance	(0.f,0.f);
 	m_pPhysicsShell->set_DynamicScales	(1.f,1.f);
@@ -599,7 +595,19 @@ void CMissile::activate_physic_shell()
 	VERIFY								(kinematics);
 	kinematics->CalculateBones			();
 }
+void	CMissile::net_Relcase(CObject* O)
+{
+	inherited::net_Relcase(O);
+	if(PPhysicsShell()&&PPhysicsShell()->isActive())
+	{
+		if(O==smart_cast<CObject*>((CPhysicsShellHolder*)PPhysicsShell()->get_CallbackData()))
+		{
+			PPhysicsShell()->remove_ObjectContactCallback(ExitContactCallback);
+			PPhysicsShell()->set_CallbackData(NULL);
+		}
+	}
 
+}
 void CMissile::create_physic_shell	()
 {
 	//create_box2sphere_physic_shell();

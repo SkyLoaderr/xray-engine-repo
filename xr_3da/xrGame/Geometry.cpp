@@ -279,6 +279,20 @@ void CODEGeom::set_callback_data(void *cd)
 		dGeomUserDataSetCallbackData(m_geom_transform,cd);
 	}
 }
+void* CODEGeom::get_callback_data()
+{
+	if(!m_geom_transform) return	NULL;
+	if(geom())
+	{
+		VERIFY(dGeomGetUserData(geom()));
+		return dGeomGetUserData(geom())->callback_data;
+	}
+	else
+	{
+		VERIFY(dGeomGetUserData(m_geom_transform));
+		return dGeomGetUserData(m_geom_transform)->callback_data;
+	}
+}
 void CODEGeom::set_ref_object(CPhysicsShellHolder* ro)
 {
 	if(!m_geom_transform) return;

@@ -1538,3 +1538,8 @@ const	CGID&	CPHShell::GetCLGroup				()const
 {
 	return CPHCollideValidator::GetGroup(*this);
 }
+void*		CPHShell::				get_CallbackData						()
+{
+	VERIFY(isActive());
+	return	(*elements.begin())->get_CallbackData();
+}

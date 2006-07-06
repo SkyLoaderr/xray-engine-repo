@@ -983,6 +983,10 @@ void CPHElement::set_CallbackData(void * cd)
 {
 	CPHGeometryOwner::set_CallbackData(cd);
 }
+void*	CPHElement::					get_CallbackData						()
+{
+	return	CPHGeometryOwner::get_CallbackData();
+}
 void CPHElement::set_ContactCallback(ContactCallbackFun* callback)
 {
 	//push_untill=0;

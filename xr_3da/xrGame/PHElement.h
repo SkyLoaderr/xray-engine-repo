@@ -89,6 +89,7 @@ public:
 	virtual void						add_ObjectContactCallback				(ObjectContactCallbackFun* callback);											//called anywhere ph state influent
 	virtual void						remove_ObjectContactCallback			(ObjectContactCallbackFun* callback);
 	virtual void						set_CallbackData						(void * cd);
+	virtual	void						*get_CallbackData						();
 	virtual	ObjectContactCallbackFun	*get_ObjectContactCallback				();
 	virtual void						set_PhysicsRefObject					(CPhysicsShellHolder* ref_object);												//aux
 	virtual CPhysicsShellHolder*		PhysicsRefObject						(){return m_phys_ref_object;}													//aux

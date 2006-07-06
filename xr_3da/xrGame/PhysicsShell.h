@@ -81,6 +81,7 @@ public:
 	virtual		void			add_ObjectContactCallback				(ObjectContactCallbackFun* callback)																					= 0;
 	virtual		void			remove_ObjectContactCallback			(ObjectContactCallbackFun* callback)																					= 0;
 	virtual		void			set_CallbackData						(void * cd)																												= 0;
+	virtual		void			*get_CallbackData						()																														= 0;
 	virtual		void			set_PhysicsRefObject					(CPhysicsShellHolder* ref_object)																						= 0;
 	virtual		void			get_LinearVel							(Fvector& velocity)																										= 0;
 	virtual		void			get_AngularVel							(Fvector& velocity)																										= 0;

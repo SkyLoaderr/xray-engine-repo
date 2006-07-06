@@ -112,6 +112,7 @@ public:
 	virtual		void				add_ObjectContactCallback		(ObjectContactCallbackFun* callback);
 	virtual		void				remove_ObjectContactCallback		(ObjectContactCallbackFun* callback);
 	virtual		void				set_CallbackData				(void * cd);
+	virtual		void				*get_CallbackData				();
 	virtual		void				set_PhysicsRefObject			(CPhysicsShellHolder* ref_object);
 	
 	//breakbable interface

@@ -35,6 +35,7 @@ public:
 		void						add_ObjectContactCallback				(ObjectContactCallbackFun* callback);											//called anywhere ph state influent
 		void						remove_ObjectContactCallback			(ObjectContactCallbackFun* callback);											//called anywhere ph state influent
 		void						set_CallbackData						(void * cd);
+		void						*get_CallbackData						();
 		ObjectContactCallbackFun	*get_ObjectContactCallback				();
 		void						set_PhysicsRefObject					(CPhysicsShellHolder* ref_object);												//aux
 		CPhysicsShellHolder*		PhysicsRefObject						(){return m_phys_ref_object;}													//aux
