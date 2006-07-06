@@ -787,10 +787,23 @@ void	CPHMovementControl::SetPosition(const Fvector &P){
 	}
 #endif
 	vPosition.set	(P);  m_character->SetPosition(vPosition);
+
 }
 bool		CPHMovementControl::		TryPosition				(Fvector& pos)															
 {
 #ifdef DEBUG
+	if(!valid_pos(pos,phBoundaries))
+	{
+		Msg("vPosition: %f,%f,%f, seems to be invalid", pos.x,pos.y,pos.z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		if(m_character)
+		{
+			Msg("Object: %s",m_character->PhysicsRefObject()->Name());
+			Msg("Visual: %s",*(m_character->PhysicsRefObject()->cNameVisual()));
+		}
+		VERIFY(0);
+	}
+
 		if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&(!!pObject->cName())&&stricmp(PH_DBG_ObjectTrack(),*pObject->cName())==0)
 		{
 			Msg("CPHMovementControl::TryPosition %s (Object Position) %f,%f,%f",PH_DBG_ObjectTrack(),pObject->Position().x,pObject->Position().y,pObject->Position().z);
@@ -801,11 +814,25 @@ bool		CPHMovementControl::		TryPosition				(Fvector& pos)
 			return m_character->TryPosition(pos)&&!bExernalImpulse;
 		else
 			vPosition.set(pos);
+		return	true;
 }
 
 
 void		CPHMovementControl::GetPosition		(Fvector &P)
 {	
+#ifdef DEBUG
+	if(!valid_pos(P,phBoundaries))
+	{
+		Msg("vPosition: %f,%f,%f, seems to be invalid", P.x,P.y,P.z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		if(m_character)
+		{
+			Msg("Object: %s",m_character->PhysicsRefObject()->Name());
+			Msg("Visual: %s",*(m_character->PhysicsRefObject()->cNameVisual()));
+		}
+		VERIFY(0);
+	}
+#endif
 #ifdef DEBUG
 	if(ph_dbg_draw_mask1.test(ph_m1_DbgTrackObject)&&(!!pObject->cName())&&stricmp(PH_DBG_ObjectTrack(),*pObject->cName())==0)
 	{
@@ -814,6 +841,19 @@ void		CPHMovementControl::GetPosition		(Fvector &P)
 	}
 #endif
 	P.set			(vPosition); 
+#ifdef DEBUG
+	if(!valid_pos(vPosition,phBoundaries))
+	{
+		Msg("vPosition: %f,%f,%f, seems to be invalid", vPosition.x,vPosition.y,vPosition.z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		if(m_character)
+		{
+			Msg("Object: %s",m_character->PhysicsRefObject()->Name());
+			Msg("Visual: %s",*(m_character->PhysicsRefObject()->cNameVisual()));
+		}
+		VERIFY(0);
+	}
+#endif
 }
 
 void	CPHMovementControl::AllocateCharacterObject(CharacterType type)

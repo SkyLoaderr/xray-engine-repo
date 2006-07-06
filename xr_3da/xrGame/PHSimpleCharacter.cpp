@@ -19,7 +19,10 @@
 #include "DamageSource.h"
 #include "PHCollideValidator.h"
 #include "CalculateTriangle.h"
-
+IC		bool	PhOutOfBoundaries			(const Fvector& v)
+{
+	return v.y < phBoundaries.y1;
+}
 #ifdef DEBUG
 #	include "debug_renderer.h"
 #endif
@@ -508,6 +511,17 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 		-linear_velocity[2]*l_air
 		);
 	VERIFY2(dBodyStateValide(m_body),"WRONG BODYSTATE IN PhDataUpdate");
+	if(PhOutOfBoundaries(cast_fv(dBodyGetPosition(m_body))))Disable();
+#ifdef DEBUG
+	if(!valid_pos(cast_fv(dBodyGetPosition(m_body)),phBoundaries))
+	{
+		Msg("body pos: %f,%f,%f, seems to be invalid", cast_fv(dBodyGetPosition(m_body)).x,cast_fv(dBodyGetPosition(m_body)).y,cast_fv(dBodyGetPosition(m_body)).z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		Msg("Object: %s",PhysicsRefObject()->Name());
+		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
+		VERIFY(0);
+	}
+#endif
 	m_body_interpolation.UpdatePositions();
 }
 
@@ -982,14 +996,37 @@ void	CPHSimpleCharacter::IPosition(Fvector& pos) {
 
 	if(!b_exist){
 		pos.set(cast_fv(m_safe_position));
-		return;
 	}
-	m_body_interpolation.InterpolatePosition(pos);
-	pos.y-=m_radius;
+	else{
+		m_body_interpolation.InterpolatePosition(pos);
+		pos.y-=m_radius;
+	}
+
+#ifdef DEBUG
+	if(!valid_pos(pos,phBoundaries))
+	{
+		Msg("pos: %f,%f,%f, seems to be invalid", pos.x,pos.y,pos.z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		Msg("Object: %s",PhysicsRefObject()->Name());
+		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
+		VERIFY(0);
+	}
+#endif
+
 	return;
 }
 
 void CPHSimpleCharacter::SetPosition(Fvector pos){
+#ifdef DEBUG
+	if(!valid_pos(pos,phBoundaries))
+	{
+		Msg("pos: %f,%f,%f, seems to be invalid", pos.x,pos.y,pos.z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		Msg("Object: %s",PhysicsRefObject()->Name());
+		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
+		VERIFY(0);
+	}
+#endif
 	if(!b_exist) return;
 	m_death_position[0]=pos.x;
 	m_death_position[1]=pos.y+m_radius;
@@ -1020,11 +1057,21 @@ void CPHSimpleCharacter::GetPosition(Fvector& vpos){
 	if(!b_exist){
 		vpos.set(m_safe_position[0],m_safe_position[1]-m_radius,m_safe_position[2]);
 	}
-	const dReal* pos=dBodyGetPosition(m_body);
-
-
-	dVectorSet((dReal*)&vpos,pos);
-	vpos.y-=m_radius;
+	else{
+		const dReal* pos=dBodyGetPosition(m_body);
+		dVectorSet((dReal*)&vpos,pos);
+		vpos.y-=m_radius;
+	}
+#ifdef DEBUG
+	if(!valid_pos(vpos,phBoundaries))
+	{
+		Msg("vpos: %f,%f,%f, seems to be invalid", vpos.x,vpos.y,vpos.z);
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
+		Msg("Object: %s",PhysicsRefObject()->Name());
+		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
+		VERIFY(0);
+	}
+#endif
 }
 void	 CPHSimpleCharacter::	GetPreviousPosition					(Fvector& pos)
 {
