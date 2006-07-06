@@ -60,6 +60,13 @@ template <
 >
 struct SGameLevel;
 
+template <
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>
+struct SGameVertex;
+
 namespace GraphEngineSpace {
 	typedef float		_dist_type;
 	typedef u32			_index_type;
@@ -134,5 +141,10 @@ namespace GraphEngineSpace {
 				_index_type,
 				_iteration_type
 			>		CGameLevelParams;
+	typedef SGameVertex<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CGameVertexParams;
 };
 

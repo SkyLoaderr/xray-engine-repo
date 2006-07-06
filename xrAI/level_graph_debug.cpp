@@ -357,13 +357,13 @@ void CLevelGraph::draw_objects		(const int &vertex_id)
 		const_iterator			E = objects.objects().end();
 		for (; I != E; ++I) {
 			CSE_ALifeDynamicObject	*object = (*I).second;
-			CSE_ALifeHumanStalker	*stalker = smart_cast<CSE_ALifeHumanStalker*>(object);
-			if (!stalker)
+			CSE_ALifeMonsterAbstract*monster = smart_cast<CSE_ALifeMonsterAbstract*>(object);
+			if (!monster)
 				continue;
 
-			const PATH			&path = stalker->brain().movement().detail().path();
-			const float			&walked_distance = (path.size() < 2) ? 0.f : stalker->brain().movement().detail().walked_distance();
-//			font.OutNext		("%s",stalker->name_replace());
+			const PATH			&path = monster->brain().movement().detail().path();
+			const float			&walked_distance = (path.size() < 2) ? 0.f : monster->brain().movement().detail().walked_distance();
+//			font.OutNext		("%s",monster->name_replace());
 
 			if ((path.size() >= 2) && !fis_zero(walked_distance))
 				continue;
@@ -371,7 +371,7 @@ void CLevelGraph::draw_objects		(const int &vertex_id)
 			if (!first_time)
 				continue;
 
-			Fvector				position = convert_position(graph.vertex(stalker->m_tGraphID)->game_point());
+			Fvector				position = convert_position(graph.vertex(monster->m_tGraphID)->game_point());
 			render.draw_aabb	(position,radius,radius,radius,color);
 			first_time			= false;
 			continue;
@@ -382,17 +382,17 @@ void CLevelGraph::draw_objects		(const int &vertex_id)
 	const_iterator				E = objects.objects().end();
 	for (; I != E; ++I) {
 		CSE_ALifeDynamicObject	*object = (*I).second;
-		CSE_ALifeMonsterAbstract*stalker = smart_cast<CSE_ALifeMonsterAbstract*>(object);
-		if (!stalker)
+		CSE_ALifeMonsterAbstract*monster = smart_cast<CSE_ALifeMonsterAbstract*>(object);
+		if (!monster)
 			continue;
 
-		const PATH				&path = stalker->brain().movement().detail().path();
+		const PATH				&path = monster->brain().movement().detail().path();
 		if (path.size() < 2)
 			continue;
 
-		u32						game_vertex_id0 = stalker->m_tGraphID;
+		u32						game_vertex_id0 = monster->m_tGraphID;
 		u32						game_vertex_id1 = path[path.size() - 2];
-		const float				&walked_distance = stalker->brain().movement().detail().walked_distance();
+		const float				&walked_distance = monster->brain().movement().detail().walked_distance();
 
 		if (fis_zero(walked_distance))
 			continue;
@@ -433,7 +433,7 @@ void CLevelGraph::draw_objects		(const int &vertex_id)
 			continue;
 
 		font.SetSizeI			(.05f/_sqrt(temp.w));
-//		font.OutI				(temp.x,-temp.y,"%s",stalker->name_replace());
+//		font.OutI				(temp.x,-temp.y,"%s",monster->name_replace());
 	}
 }
 
