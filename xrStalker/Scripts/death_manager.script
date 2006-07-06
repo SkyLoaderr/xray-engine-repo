@@ -29,14 +29,13 @@ function create_release_item(npc)
     for k,v in pairs(spawn_items) do
         --' По каждому объекту необходимо получить зависимости
         if check_item_dependence(npc, k) == true then
-            --' По каждому объекту необходимо получить количество
-            local number = 0
             if math.random(100) <= v then
-                number = get_spawn_quantity(k)
-            end
+                --' По каждому объекту необходимо получить количество
+                local number = get_spawn_quantity(k)
+                --' Необходимо заспавнить нужное количество.
+                create_items(npc, k, number)            
 
-            --' Необходимо заспавнить нужное количество.
-            create_items(npc, k, number)            
+            end
         end
     end
 end
@@ -59,12 +58,14 @@ function create_items(npc, section, number)
     printf("create %s of %s", tostring(number), tostring(section))
 
     if ammo_sections[section] == true then
-        alife():create_ammo(section,	
-				npc:position(),
-				npc:level_vertex_id(),	
-				npc:game_vertex_id(),
-				npc:id(),
-                number)
+        if number > 0 then
+            alife():create_ammo(section,	
+				    npc:position(),
+				    npc:level_vertex_id(),	
+				    npc:game_vertex_id(),
+				    npc:id(),
+                    number)
+        end
     else
         for i=1,number do
             alife():create(section,	
@@ -146,7 +147,7 @@ function get_spawn_quantity(section)
             --' Нужно распарсить value в два значения
         	local t = parse_nums(value)
 		    if t[1] == nil then
-                abort("Error on [death_ini] declaration. Section [item_count], line [%s]", tostring(id))
+                abort("Error on [death_ini] declaration. Section [%s], line [%s]", item_count_section, tostring(id))
             end
             local min = t[1]
             local max = t[2]
@@ -158,14 +159,18 @@ function get_spawn_quantity(section)
                 mul_by_level[level_name][section] = 0
             end
 
-            min = min * mul_by_level[level_name][section]
-            max = max * mul_by_level[level_name][section]
+            min = tonumber(min) * mul_by_level[level_name][id]
+            max = tonumber(max) * mul_by_level[level_name][id]
 
             count_by_level[level_name][id] = {min = min, max = max}
 		end        
 
     end
-
+    printf("!!!")
+    print_table(mul_by_level)
+    printf("!!!")
+    print_table(count_by_level)
+    printf("!!!")
     return math.ceil(math.random(count_by_level[level_name][section].min, count_by_level[level_name][section].max))
 end
 
