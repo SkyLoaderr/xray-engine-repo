@@ -17,12 +17,6 @@ local ammo_sections = nil
 
 local death_ini = ini_file("misc\\death_generic.ltx")
 
---' Функция вызывается для каждого предмета, если вернет true то предмет удалится.
-local function release_item(npc, item)
-    printf("!!!")
-
-    return true
-end
 
 function create_release_item(npc)
     --' Запускаем итератор на удаление предметов
