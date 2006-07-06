@@ -568,6 +568,15 @@
 					RelativePath=".\Config\misc\death_generic.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\death_items_by_communities.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\death_items_by_levels.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\death_items_count.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\devices.ltx">
 				</File>
 				<File
