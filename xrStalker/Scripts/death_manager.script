@@ -1,11 +1,19 @@
 
---'Ключем является группировка персонажа. Значением является таблица, содержашая имена секций предметов.
+--' Ключем является группировка персонажа. Значением является таблица, содержашая имена секций предметов.
 local item_by_community = {}
 
 --' Зависимости в спауне предметов. Предмет спауниться только если есть хотя бы один из зависимых.
 local item_dependence = {}
 
+--' Множители и минимаксы для выпадения вещей в зависимости от уровня
+local mul_by_level = {}
 local count_by_level = {}
+
+--' Предметы, которые нельзя удалять (квестовые например)
+local always_keep_item = {}
+
+--' Предметы, относящиеся к патронам. Их надо спаунить другим методом.
+local ammo_sections = nil
 
 local death_ini = ini_file("misc\\death_generic.ltx")
 
@@ -18,27 +26,153 @@ end
 
 function create_release_item(npc)
     --' Запускаем итератор на удаление предметов
-    --npc:iterate_inventory(release_item, npc)
+    npc:iterate_inventory(keep_item, npc)
 
     --' Доспавниваем необходимое количество итемов:
     --' Необходимо составить список объектов которые могут быть заспавнены для персонажа
     local spawn_items = get_spawn_items_by_npc(npc)
     
-    print_table(spawn_items)
-
     for k,v in pairs(spawn_items) do
         --' По каждому объекту необходимо получить зависимости
         if check_item_dependence(npc, k) == true then
-            printf("dependence passed %s", k)
             --' По каждому объекту необходимо получить количество
-            
+            local number = 0
+            if math.random(100) <= v then
+                number = get_spawn_quantity(k)
+            end
 
             --' Необходимо заспавнить нужное количество.
-
-
-            
+            create_items(npc, k, number)            
         end
     end
+end
+
+
+
+--' Функция спавнит необходимое число предметов
+function create_items(npc, section, number)
+    if ammo_sections == nil then
+        ammo_sections = {}
+        local n = death_ini:line_count("ammo_sections")
+		local id, value = "", ""
+		for i=0,n-1 do
+			result, id, value	= death_ini:r_line("ammo_sections",i,"","")
+            ammo_sections[id] = true
+		end        
+
+    end
+
+    printf("create %s of %s", tostring(number), tostring(section))
+
+    if ammo_sections[section] == true then
+        alife():create_ammo(section,	
+				npc:position(),
+				npc:level_vertex_id(),	
+				npc:game_vertex_id(),
+				npc:id(),
+                number)
+    else
+        for i=1,number do
+            alife():create(section,	
+				    npc:position(),
+				    npc:level_vertex_id(),	
+				    npc:game_vertex_id(),
+				    npc:id())
+        end
+    end    
+end
+
+--' Функция вызывается для каждого предмета, если вернет false то предмет удалится.
+function keep_item(npc, item)
+    local section = item:section()
+
+    if section == "bolt" then
+        return
+    end
+
+    printf("kill entity %s section %s", item:name(), item:section())
+    if always_keep_item[section] == nil then
+        if death_ini:line_exist("keep_items",section) == true then
+            always_keep_item[section] = death_ini:r_bool("keep_items",section)
+        end
+    end
+
+    if always_keep_item[section] == true then
+        return
+    end
+
+    local best_weapon = npc:best_weapon()
+    local item_id = item:id()
+    if best_weapon ~= nil and
+       best_weapon:id() == item_id
+    then
+        printf("keep main weapon")
+        item:unload_magazine()
+        return
+    end
+
+    local item_in_slot = npc:item_in_slot(1)
+    if item_in_slot ~= nil and
+       item_in_slot:id() == item_id
+    then
+        printf("keep main pistol")
+        item:unload_magazine()
+        return
+    end
+    item_in_slot = npc:item_in_slot(2)
+    if item_in_slot ~= nil and
+       item_in_slot:id() == item_id
+    then
+        printf("keep main rifle")
+        item:unload_magazine()
+        return
+    end
+
+    npc:mark_item_dropped(item)
+    alife():release(alife():object(item:id()), true)
+end
+
+
+function get_spawn_quantity(section)
+    local level_name = level.name()
+    if count_by_level[level_name] == nil then
+        mul_by_level[level_name] = {}
+        local n = death_ini:line_count(level_name)
+		local id, value = "", ""
+		for i=0,n-1 do
+			result, id, value	= death_ini:r_line(level_name,i,"","")
+            mul_by_level[level_name][id] = tonumber(value)
+		end        
+
+        count_by_level[level_name] = {}
+        local item_count_section = "item_count_" .. level.get_game_difficulty()
+    	local n = death_ini:line_count(item_count_section)
+		for i=0,n-1 do
+			result, id, value	= death_ini:r_line(item_count_section,i,"","")
+            --' Нужно распарсить value в два значения
+        	local t = parse_nums(value)
+		    if t[1] == nil then
+                abort("Error on [death_ini] declaration. Section [item_count], line [%s]", tostring(id))
+            end
+            local min = t[1]
+            local max = t[2]
+            if max == nil then
+                max = min
+            end
+            
+            if mul_by_level[level_name][section] == nil then
+                mul_by_level[level_name][section] = 0
+            end
+
+            min = min * mul_by_level[level_name][section]
+            max = max * mul_by_level[level_name][section]
+
+            count_by_level[level_name][id] = {min = min, max = max}
+		end        
+
+    end
+
+    return math.ceil(math.random(count_by_level[level_name][section].min, count_by_level[level_name][section].max))
 end
 
 
@@ -52,7 +186,10 @@ function check_item_dependence(npc, section)
 		for i=0,n-1 do
 			result, id, value	= death_ini:r_line("item_dependence",i,"","")
             if section == id then
-                item_dependence[section][value] = true
+                local vvv = parse_names(value)
+                for k,v in pairs(vvv) do
+                    item_dependence[section][v] = true
+                end
             end
 		end        
     end
@@ -60,7 +197,7 @@ function check_item_dependence(npc, section)
     local d_flag = true
     for k,v in pairs(item_dependence[section]) do
         local obj = npc:object(k)
-        if obj ~= nil and obj:marked_dropped() ~= true then
+        if obj ~= nil and npc:marked_dropped(obj) ~= true then
             return true
         end
         d_flag = false
@@ -82,11 +219,25 @@ function get_spawn_items_by_npc(npc)
 		    local id, value = "", ""
 		    for i=0,n-1 do
 			    result, id, value	= death_ini:r_line(community,i,"","")
-                item_by_community[community][id] = tonumber(value)
+                item_by_community[community][id] = 100*tonumber(value)
 		    end
 
         end
     end
 
     return item_by_community[community]
+end
+
+
+
+
+--' Обнуление таблиц при спауне акетар
+function clear_data_on_load()
+    item_by_community = {}
+    item_dependence = {}
+    mul_by_level = {}
+    count_by_level = {}
+    always_keep_item = {}
+    ammo_sections = nil
+
 end
