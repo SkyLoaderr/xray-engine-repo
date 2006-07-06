@@ -62,9 +62,9 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
-		</supplies>
-			
+		</supplies>					
 		<start_dialog>mil_screw_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"		
 	</specific_character>
 
 <!---------------------------SVOBODA REGULAR----------------------->
@@ -95,8 +95,7 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
-		</supplies>
-					
+		</supplies>					
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 <!---------------------------SVOBODA SNIPER---------------------->
@@ -126,8 +125,7 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"				
-		</supplies>
-			
+		</supplies>			
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 <!---------------------------SVOBODA SPECNAZ STUKACH---------------------->
@@ -158,8 +156,7 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
-		</supplies>
-					
+		</supplies>				
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 <!---------------------------SVOBODA ZONEGUARD---------------------->
@@ -194,6 +191,7 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>mil_zoneguard_common1</actor_dialog>
 		<actor_dialog>mil_zoneguard_common2</actor_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 <!---------------------------SVOBODA BODYGUARD---------------------->
 	<specific_character id="mil_Svoboda_bodyguard" team_default = "1">
@@ -258,6 +256,7 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>tm_freedom_dialog</actor_dialog>
 		<actor_dialog>tm_freedom_reward</actor_dialog>
+#include "gameplay\character_dialogs.xml"
 	</specific_character>	
 
 <!---------------------------SVOBODA TRADER----------------------->
@@ -287,7 +286,7 @@
 		</supplies>
 			
 		<start_dialog>mil_trader_dialog</start_dialog>
-
+#include "gameplay\character_dialogs.xml"
 	</specific_character>
 <!---------------------------SVOBODA MASTER MAX----------------------->
 	<specific_character id="mil_Svoboda_master_Max" team_default = "1">
@@ -320,6 +319,7 @@
 		</supplies>
 			
 		<start_dialog>mil_max_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"		
 	</specific_character>
 <!---------------------------SVOBODA MASTER----------------------->
 	<specific_character id="mil_Svoboda_master" team_default = "1">
@@ -392,6 +392,7 @@
         <actor_dialog>mil_cook_drunk_question_about_rg6_1</actor_dialog>
         <actor_dialog>mil_cook_drunk_question_about_rg6_2</actor_dialog>
         <actor_dialog>mil_cook_drunk_question_about_rg6_3</actor_dialog>
+#include "gameplay\character_dialogs.xml"        
 
 	</specific_character>
 <!---------------------------SVOBODA BLOCKPOST LEADER---------------------->
