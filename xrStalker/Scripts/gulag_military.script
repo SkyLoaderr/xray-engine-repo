@@ -347,7 +347,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		--prior = 1, state = {0, 3, 4},
 		--squad = squad, group = groups[0],
 		--position_threshold = 100,
-		--in_rest = "", out_rest = ""
+		--in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 	--}
 	--table.insert(sj, t)
 	------
@@ -356,7 +356,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		--prior = 1, state = {0, 3, 4},
 		--squad = squad, group = groups[0],
 		--position_threshold = 100,
-		--in_rest = "", out_rest = ""
+		--in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 	--}
 	--table.insert(sj, t)
 	------
@@ -365,7 +365,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		--prior = 1, state = {0, 3, 4},
 		--squad = squad, group = groups[0],
 		--position_threshold = 100,
-		--in_rest = "", out_rest = ""
+		--in_rest = "mil_freedom_wall_restrictor", out_rest = ""
 	--}
 	--table.insert(sj, t)
 	
