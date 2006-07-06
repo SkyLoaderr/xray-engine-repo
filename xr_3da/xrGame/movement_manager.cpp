@@ -34,7 +34,7 @@ CMovementManager::CMovementManager	(CCustomMonster *object)
 	VERIFY						(object);
 	m_object					= object;
 
-	m_base_game_selector		= xr_new<CBaseParameters>		 ();
+	m_base_game_selector		= xr_new<CGameVertexParams>		 (locations().vertex_types());
 	m_base_level_selector		= xr_new<CBaseParameters>		 ();
 	
 	m_restricted_object			= xr_new<CRestrictedObject>		 (m_object);

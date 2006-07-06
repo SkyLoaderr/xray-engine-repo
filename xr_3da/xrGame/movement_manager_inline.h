@@ -82,7 +82,7 @@ IC	void CMovementManager::set_build_path_at_once()
 	m_build_at_once			= true;
 }
 
-IC	CMovementManager::CBaseParameters	*CMovementManager::base_game_params() const
+IC	CMovementManager::CGameVertexParams	*CMovementManager::base_game_params() const
 {
 	return					(m_base_game_selector);
 }

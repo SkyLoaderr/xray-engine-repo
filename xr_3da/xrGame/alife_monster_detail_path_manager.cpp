@@ -109,14 +109,43 @@ void CALifeMonsterDetailPathManager::actualize				()
 {
 	m_path.clear					();
 
+	typedef GraphEngineSpace::CGameVertexParams	CGameVertexParams;
+	CGameVertexParams				temp = CGameVertexParams(object().m_tpaTerrain);
 	bool							failed = !ai().graph_engine().search	(
 		ai().game_graph(),
 		object().m_tGraphID,
 		m_destination.m_game_vertex_id,
 		&m_path,
-		GraphEngineSpace::CBaseParameters()
+		temp
 	);
 
+#ifdef DEBUG
+	if (failed) {
+		Msg							("! %s couldn't build game path from",object().name_replace());
+		{
+			const CGameGraph::CVertex	*vertex = ai().game_graph().vertex(object().m_tGraphID);
+			Msg						(
+				"! [%d][%s][%f][%f][%f]",
+				object().m_tGraphID,
+				*ai().game_graph().header().level(
+					vertex->level_id()
+				).name(),
+				VPUSH(vertex->level_point())
+			);
+		}
+		{
+			const CGameGraph::CVertex	*vertex = ai().game_graph().vertex(m_destination.m_game_vertex_id);
+			Msg						(
+				"! [%d][%s][%f][%f][%f]",
+				m_destination.m_game_vertex_id,
+				*ai().game_graph().header().level(
+					vertex->level_id()
+				).name(),
+				VPUSH(vertex->level_point())
+			);
+		}
+	}
+#endif
 	if (failed)
 		return;
 
@@ -184,6 +213,7 @@ void CALifeMonsterDetailPathManager::follow_path				(const ALife::_TIME_ID &time
 		update_distance				-= distance_between;
 		m_walked_distance			= 0.f;
 		m_path.pop_back				();
+//		Msg									("%6d %s changes graph point from %d to %d",Device.dwTimeGlobal,object().name_replace(),object().m_tGraphID,(GameGraph::_GRAPH_ID)m_path.back());
 		object().alife().graph().change		(&object(),object().m_tGraphID,(GameGraph::_GRAPH_ID)m_path.back());
 		VERIFY								(m_path.back() == object().m_tGraphID);
 		object().brain().on_location_change	();

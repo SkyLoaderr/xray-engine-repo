@@ -49,6 +49,13 @@ template <
 >
 struct SBaseParameters;
 
+template <
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>
+struct SGameVertex;
+
 class CEnemyLocationPredictor;
 class CPatrolPathManager;
 class CDetailPathManager;
@@ -76,7 +83,7 @@ protected:
 	typedef MovementManager::EPathType			EPathType;
 	typedef DetailPathManager::STravelPathPoint	CTravelPathPoint;
 	typedef GraphEngineSpace::CBaseParameters 	CBaseParameters;
-	typedef GraphEngineSpace::CBaseParameters	CBaseParameters;
+	typedef GraphEngineSpace::CGameVertexParams	CGameVertexParams;
 
 	typedef CBaseLocationSelector<
 				CGameGraph,
@@ -87,9 +94,10 @@ protected:
 				>,
 				u32
 			>		CGameLocationSelector;
+
 	typedef CBasePathManager<
 				CGameGraph,
-				SBaseParameters<
+				SGameVertex<
 					float,
 					u32,
 					u32
@@ -147,7 +155,7 @@ private:
 	bool					m_wait_for_distributed_computation;
 
 public:
-	CBaseParameters			*m_base_game_selector;
+	CGameVertexParams		*m_base_game_selector;
 	CBaseParameters			*m_base_level_selector;
 	CGameLocationSelector	*m_game_location_selector;
 	CGamePathManager		*m_game_path_manager;
@@ -220,7 +228,7 @@ public:
 			void	clear_path				();
 
 public:
-	IC		CBaseParameters			*base_game_params			() const;
+	IC		CGameVertexParams		*base_game_params			() const;
 	IC		CBaseParameters			*base_level_params			() const;
 	IC		CGameLocationSelector	&game_selector				() const;
 	IC		CGamePathManager		&game_path					() const;
