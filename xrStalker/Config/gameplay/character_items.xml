@@ -1,4 +1,3 @@
 harmonica_a = 0, prob=0.3 \n
 guitar_a = 0, prob=0.3 \n
-grenade_rgd5 = 1, prob=0.3 \n
 device_torch = 1, prob=0.5 \n
