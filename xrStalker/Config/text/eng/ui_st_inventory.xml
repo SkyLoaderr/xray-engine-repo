@@ -142,6 +142,9 @@
     <string id="st_eat">
         <text>eat item</text>
     </string>
+    <string id="st_use">
+        <text>use item</text>
+    </string>
     <string id="st_drop_all">
         <text>drop all items in set</text>
     </string>

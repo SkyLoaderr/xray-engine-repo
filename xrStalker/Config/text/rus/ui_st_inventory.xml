@@ -141,6 +141,9 @@
     <string id="st_eat">
         <text>съесть</text>
     </string>
+    <string id="st_use">
+        <text>использовать</text>
+    </string>
     <string id="st_drop_all">
         <text>выбросить все</text>
     </string>
