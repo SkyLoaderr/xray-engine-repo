@@ -6,7 +6,8 @@ const LPCSTR MOTION_ICON_XML = "motion_icon.xml";
 
 CUIMotionIcon::CUIMotionIcon()
 {
-	m_curren_state=stLast;
+	m_curren_state	= stLast;
+	m_bchanged		= false;
 }
 
 CUIMotionIcon::~CUIMotionIcon()
@@ -89,4 +90,44 @@ void CUIMotionIcon::SetLuminosity(s16 Pos)
 {
 	Pos	= clampr(Pos, m_luminosity_progress.GetRange_min(), m_luminosity_progress.GetRange_max());
 	m_luminosity_progress.SetProgressPos(Pos);
+}
+
+void CUIMotionIcon::Update()
+{
+	if(m_bchanged){
+		m_bchanged = false;
+		if( m_npc_visibility.size() )
+		{
+			std::sort					(m_npc_visibility.begin(), m_npc_visibility.end());
+			SetLuminosity				(m_npc_visibility.back().value);
+		}else
+			SetLuminosity				(m_luminosity_progress.GetRange_min());
+	}
+	inherited::Update();
+}
+
+void CUIMotionIcon::SetActorVisibility		(u16 who_id, s16 value)
+{
+	value	= clampr(value, m_luminosity_progress.GetRange_min(), m_luminosity_progress.GetRange_max());
+
+	xr_vector<_npc_visibility>::iterator it = std::find(m_npc_visibility.begin(), 
+														m_npc_visibility.end(),
+														who_id);
+
+	if(it==m_npc_visibility.end() && value!=0)
+	{
+		m_npc_visibility.resize	(m_npc_visibility.size()+1);
+		_npc_visibility& v		= m_npc_visibility.back();
+		v.id					= who_id;
+		v.value					= value;
+	}
+	else if(value==0)
+	{
+		m_npc_visibility.erase	(it);
+	}else
+	{
+		(*it).value				= value;
+	}
+
+	m_bchanged = true;
 }

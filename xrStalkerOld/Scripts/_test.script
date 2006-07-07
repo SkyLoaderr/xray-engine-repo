@@ -46,7 +46,13 @@ function main222222222222222()
 	db.actor:disable_info_portion("esc_trader_newbie") 
 	db.actor:disable_info_portion("esc_trader_tutorial_chosen") 
 end
-function main___()
+
+function main()
+	local info = "test_andy_info" 
+	db.actor:give_info_portion(info) 
+end
+
+function main_e()
 --	local info = "test_andy_info" 
 --	db.actor:give_info_portion(info) 
 --	alife():create("wpn_binoc", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())		
@@ -100,7 +106,7 @@ function main___()
 end
 
 
-function main()
+function main_s()
 	printf("restore")
 
    local h 		= hit()

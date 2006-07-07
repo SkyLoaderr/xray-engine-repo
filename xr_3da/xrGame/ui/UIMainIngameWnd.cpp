@@ -294,14 +294,16 @@ void CUIMainIngameWnd::Draw()
 	}
 	FS.dwOpenCounter = 0;
 
-	float		luminocity = smart_cast<CGameObject*>(Level().CurrentEntity())->ROS()->get_luminocity();
-	float		power = log(luminocity > .001f ? luminocity : .001f)*(1.f/*luminocity_factor*/);
-	luminocity	= exp(power);
+	if(!IsGameTypeSingle())
+	{
+		float		luminocity = smart_cast<CGameObject*>(Level().CurrentEntity())->ROS()->get_luminocity();
+		float		power = log(luminocity > .001f ? luminocity : .001f)*(1.f/*luminocity_factor*/);
+		luminocity	= exp(power);
 
-	static float cur_lum = luminocity;
-	cur_lum = luminocity*0.01f + cur_lum*0.99f;
-	UIMotionIcon.SetLuminosity((s16)iFloor(cur_lum*100.0f));
-
+		static float cur_lum = luminocity;
+		cur_lum = luminocity*0.01f + cur_lum*0.99f;
+		UIMotionIcon.SetLuminosity((s16)iFloor(cur_lum*100.0f));
+	}
 	if(!m_pActor) return;
 
 	UIMotionIcon.SetNoise((s16)(0xffff&iFloor(m_pActor->m_snd_noise*100.0f)));

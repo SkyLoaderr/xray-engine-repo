@@ -1559,6 +1559,12 @@ void CActor::AnimTorsoPlayCallBack(CBlend* B)
 	actor->m_bAnimTorsoPlayed = FALSE;
 }
 
+void CActor::SetActorVisibility(u16 who, s16 value)
+{
+	CUIMotionIcon		&motion_icon	= HUD().GetUI()->UIMainIngameWnd->MotionIcon();
+	motion_icon.SetActorVisibility		(who, value);
+}
+
 void CActor::UpdateMotionIcon(u32 mstate_rl)
 {
 	CUIMotionIcon		&motion_icon=HUD().GetUI()->UIMainIngameWnd->MotionIcon();
