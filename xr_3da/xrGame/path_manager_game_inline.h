@@ -70,7 +70,7 @@ TEMPLATE_SPECIALIZATION
 IC	bool CGamePathManager::is_accessible	(const _index_type &vertex_id) const
 {
 	VERIFY					(graph);
-	return					(true);
+	return					(graph->is_accessible(vertex_id));
 }
 
 #undef TEMPLATE_SPECIALIZATION
