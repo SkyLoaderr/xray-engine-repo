@@ -3958,6 +3958,70 @@
 						RelativePath=".\Scripts\petruxa4.script">
 					</File>
 				</Filter>
+				<Filter
+					Name="tasks"
+					Filter="">
+					<File
+						RelativePath=".\Scripts\task_1.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_10.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_11.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_12.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_13.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_14.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_15.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_16.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_17.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_18.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_19.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_2.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_20.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_3.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_4.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_5.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_6.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_7.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_8.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\task_9.script">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<File
