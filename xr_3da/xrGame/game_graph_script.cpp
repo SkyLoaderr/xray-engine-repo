@@ -23,6 +23,16 @@ const CGameGraph::CHeader *get_header(const CGameGraph *self)
 	return	(&self->header());
 }
 
+bool get_accessible1(const CGameGraph *self, const u32 &vertex_id)
+{
+	return	(self->accessible(vertex_id));
+}
+
+void get_accessible2(const CGameGraph *self, const u32 &vertex_id, bool value)
+{
+	self->accessible(vertex_id,value);
+}
+
 void CGameGraph::script_register	(lua_State *L)
 {
 	module(L)
@@ -30,7 +40,8 @@ void CGameGraph::script_register	(lua_State *L)
 		def("game_graph",	&get_game_graph),
 
 		class_<CGameGraph>("CGameGraph")
-			.def("accessible",		&CGameGraph::accessible)
+			.def("accessible",		&get_accessible1)
+			.def("accessible",		&get_accessible2)
 			.def("valid_vertex_id",	&CGameGraph::valid_vertex_id)
 			.def("vertex",			&CGameGraph::vertex)
 			.def("vertex_id",		&CGameGraph::vertex_id),

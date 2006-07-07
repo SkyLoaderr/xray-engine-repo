@@ -31,11 +31,13 @@ public:
 	typedef const CEdge				*const_iterator;
 	typedef const CLevelPoint		*const_spawn_iterator;
 	typedef xr_vector<CLevelPoint>	LEVEL_POINT_VECTOR;
+	typedef xr_vector<bool>			ENABLED;
 
 protected:
 	CHeader							m_header;
 	IReader							*m_reader;
 	CVertex							*m_nodes;
+	mutable ENABLED					m_enabled;
 	_GRAPH_ID						m_current_level_some_vertex_id;
 
 public:
@@ -50,6 +52,7 @@ public:
 	IC		bool					mask					(const _LOCATION_ID M[GameGraph::LOCATION_TYPE_COUNT], const _LOCATION_ID E[GameGraph::LOCATION_TYPE_COUNT]) const;
 	IC		float					distance				(const _GRAPH_ID tGraphID0, const _GRAPH_ID tGraphID1) const;
 	IC		bool					accessible				(const u32 &vertex_id) const;
+	IC		void					accessible				(const u32 &vertex_id, bool value) const;
 	IC		bool					valid_vertex_id			(const u32 &vertex_id) const;
 	IC		void					begin					(const u32 &vertex_id, const_iterator &start, const_iterator &end) const;
 	IC		void					begin_spawn				(const u32 &vertex_id, const_spawn_iterator &start, const_spawn_iterator &end) const;

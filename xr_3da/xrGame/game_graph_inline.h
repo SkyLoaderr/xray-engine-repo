@@ -17,13 +17,14 @@ IC CGameGraph::CGameGraph											(LPCSTR file_name, u32 current_version)
 #ifndef AI_COMPILER
 	string256					file_name;
 	FS.update_path				(file_name,"$game_data$",GRAPH_NAME);
-#endif	
+#endif
 	m_reader					= FS.r_open(file_name);
 	VERIFY						(m_reader);
 	m_header.load				(m_reader);
 	R_ASSERT2					(header().version() == XRAI_CURRENT_VERSION,"Graph version mismatch!");
 	m_nodes						= (CVertex*)m_reader->pointer();
 	m_current_level_some_vertex_id = _GRAPH_ID(-1);
+	m_enabled.assign			(header().vertex_count(),true);
 }
 
 IC CGameGraph::~CGameGraph											()
@@ -54,8 +55,8 @@ IC	bool CGameGraph::mask											(const _LOCATION_ID M[GameGraph::LOCATION_TYP
 
 IC	float CGameGraph::distance										(const _GRAPH_ID tGraphID0, const _GRAPH_ID tGraphID1) const
 {
-	const_iterator			i, e;
-	begin					(tGraphID0,i,e);
+	const_iterator				i, e;
+	begin						(tGraphID0,i,e);
 	for ( ; i != e; ++i)
 		if (value(tGraphID0,i) == tGraphID1)
 			return				(edge_weight(i));
@@ -65,7 +66,14 @@ IC	float CGameGraph::distance										(const _GRAPH_ID tGraphID0, const _GRAPH_
 
 IC	bool CGameGraph::accessible										(const u32 &vertex_id) const
 {
-	return						(true);
+	VERIFY						(valid_vertex_id(vertex_id));
+	return						(m_enabled[vertex_id]);
+}
+
+IC	void CGameGraph::accessible										(const u32 &vertex_id, bool value) const
+{
+	VERIFY						(valid_vertex_id(vertex_id));
+	m_enabled[vertex_id]		= value;
 }
 
 IC	bool CGameGraph::valid_vertex_id								(const u32 &vertex_id) const
@@ -127,8 +135,8 @@ IC	const GameGraph::LEVEL_MAP &GameGraph::CHeader::levels			() const
 IC	const GameGraph::SLevel &GameGraph::CHeader::level				(const _LEVEL_ID &id) const
 {
 	LEVEL_MAP::const_iterator	I = levels().find(id);
-	R_ASSERT2	(I != levels().end(),"There is no specified level in the game graph!");
-	return		((*I).second);
+	R_ASSERT2					(I != levels().end(),"There is no specified level in the game graph!");
+	return						((*I).second);
 }
 
 IC	const GameGraph::SLevel &GameGraph::CHeader::level				(LPCSTR level_name) const
@@ -137,13 +145,13 @@ IC	const GameGraph::SLevel &GameGraph::CHeader::level				(LPCSTR level_name) con
 	LEVEL_MAP::const_iterator	E = levels().end();
 	for ( ; I != E; ++I)
 		if (!xr_strcmp((*I).second.name(),level_name))
-			return	((*I).second);
+			return				((*I).second);
 	
 #ifdef DEBUG
-	Msg			("! There is no specified level %s in the game graph!",level_name);
-	return		(levels().begin()->second);
+	Msg							("! There is no specified level %s in the game graph!",level_name);
+	return						(levels().begin()->second);
 #else
-	R_ASSERT3	(false,"There is no specified level in the game graph!",level_name);
+	R_ASSERT3					(false,"There is no specified level in the game graph!",level_name);
 	NODEFAULT;
 #endif
 }
@@ -154,9 +162,9 @@ IC	const GameGraph::SLevel *GameGraph::CHeader::level				(LPCSTR level_name, boo
 	LEVEL_MAP::const_iterator	E = levels().end();
 	for ( ; I != E; ++I)
 		if (!xr_strcmp((*I).second.name(),level_name))
-			return	(&(*I).second);
+			return				(&(*I).second);
 	
-	return			(0);
+	return						(0);
 }
 
 IC	const xrGUID &CGameGraph::CHeader::guid							() const
@@ -248,64 +256,64 @@ IC	void CGameGraph::set_current_level								(const u32 &level_id)
 		m_current_level_some_vertex_id	= i;
 		break;
 	}
-	VERIFY				(valid_vertex_id(m_current_level_some_vertex_id));
+	VERIFY						(valid_vertex_id(m_current_level_some_vertex_id));
 }
 
 IC	const GameGraph::_GRAPH_ID &CGameGraph::current_level_vertex	() const
 {
-	VERIFY				(valid_vertex_id(m_current_level_some_vertex_id));
-	return				(m_current_level_some_vertex_id);
+	VERIFY						(valid_vertex_id(m_current_level_some_vertex_id));
+	return						(m_current_level_some_vertex_id);
 }
 
 IC	void GameGraph::SLevel::load									(IReader *reader)
 {
-	reader->r_stringZ	(m_name);
-	reader->r_fvector3	(m_offset);
-	reader->r			(&m_id,sizeof(m_id));
-	reader->r_stringZ	(m_section);
-	reader->r			(&m_guid,sizeof(m_guid));
+	reader->r_stringZ			(m_name);
+	reader->r_fvector3			(m_offset);
+	reader->r					(&m_id,sizeof(m_id));
+	reader->r_stringZ			(m_section);
+	reader->r					(&m_guid,sizeof(m_guid));
 }
 
 IC	void GameGraph::SLevel::save									(IWriter *writer)
 {
-	writer->w_stringZ	(m_name);
-	writer->w_fvector3	(m_offset);
-	writer->w			(&m_id,sizeof(m_id));
-	writer->w_stringZ	(m_section);
-	writer->w			(&m_guid,sizeof(m_guid));
+	writer->w_stringZ			(m_name);
+	writer->w_fvector3			(m_offset);
+	writer->w					(&m_id,sizeof(m_id));
+	writer->w_stringZ			(m_section);
+	writer->w					(&m_guid,sizeof(m_guid));
 }
 
 IC	void GameGraph::CHeader::load									(IReader *reader)
 {
-	reader->r			(&m_version,			sizeof(m_version));
-	reader->r			(&m_vertex_count,		sizeof(m_vertex_count));
-	reader->r			(&m_edge_count,			sizeof(m_edge_count));
-	reader->r			(&m_death_point_count,	sizeof(m_death_point_count));
-	reader->r			(&m_guid,				sizeof(m_guid));
+	reader->r					(&m_version,			sizeof(m_version));
+	reader->r					(&m_vertex_count,		sizeof(m_vertex_count));
+	reader->r					(&m_edge_count,			sizeof(m_edge_count));
+	reader->r					(&m_death_point_count,	sizeof(m_death_point_count));
+	reader->r					(&m_guid,				sizeof(m_guid));
 	
-	u32					level_count = reader->r_u8();
+	u32							level_count = reader->r_u8();
 
-	m_levels.clear		();
+	m_levels.clear				();
 	for (u32 i=0; i<level_count; ++i) {
-		SLevel			l_tLevel;
-		l_tLevel.load	(reader);
-		m_levels.insert	(mk_pair(l_tLevel.id(),l_tLevel));
+		SLevel					l_tLevel;
+		l_tLevel.load			(reader);
+		m_levels.insert			(mk_pair(l_tLevel.id(),l_tLevel));
 	}
 }
 
 IC	void GameGraph::CHeader::save									(IWriter *writer)
 {
-	writer->w			(&m_version,			sizeof(m_version));
-	writer->w			(&m_vertex_count,		sizeof(m_vertex_count));
-	writer->w			(&m_edge_count,			sizeof(m_edge_count));
-	writer->w			(&m_death_point_count,	sizeof(m_death_point_count));
-	writer->w			(&m_guid,				sizeof(m_guid));
+	writer->w					(&m_version,			sizeof(m_version));
+	writer->w					(&m_vertex_count,		sizeof(m_vertex_count));
+	writer->w					(&m_edge_count,			sizeof(m_edge_count));
+	writer->w					(&m_death_point_count,	sizeof(m_death_point_count));
+	writer->w					(&m_guid,				sizeof(m_guid));
 	
-	VERIFY				(m_levels.size() < u32((1) << (8*sizeof(u8))));
-	writer->w_u8		((u8)m_levels.size());
+	VERIFY						(m_levels.size() < u32((1) << (8*sizeof(u8))));
+	writer->w_u8				((u8)m_levels.size());
 
-	LEVEL_MAP::iterator	I = m_levels.begin();
-	LEVEL_MAP::iterator	E = m_levels.end();
+	LEVEL_MAP::iterator			I = m_levels.begin();
+	LEVEL_MAP::iterator			E = m_levels.end();
 	for ( ; I != E; ++I)
-		(*I).second.save(writer);
+		(*I).second.save		(writer);
 }
