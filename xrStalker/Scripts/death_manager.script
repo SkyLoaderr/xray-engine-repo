@@ -166,11 +166,6 @@ function get_spawn_quantity(section)
 		end        
 
     end
-    printf("!!!")
-    print_table(mul_by_level)
-    printf("!!!")
-    print_table(count_by_level)
-    printf("!!!")
     return math.ceil(math.random(count_by_level[level_name][section].min, count_by_level[level_name][section].max))
 end
 
