@@ -78,6 +78,7 @@ function generic_physics_binder:update(delta)
         if graph_point_marker ~= nil then
             self.disable_graph_point = patrol(graph_point_marker):game_vertex_id(0)
             self.disable_graph_point:accessible(false)
+            printf("GRAPH POINT DISABLED")
         end
         
 	end
@@ -169,5 +170,6 @@ function generic_physics_binder:death_callback(victim, who)
 
     if self.disable_graph_point ~= nil then
         self.disable_graph_point:accessible(true)
+        printf("GRAPH POINT ENABLED")
     end
 end
