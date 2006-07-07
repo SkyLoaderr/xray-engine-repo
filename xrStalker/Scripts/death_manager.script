@@ -22,6 +22,12 @@ function create_release_item(npc)
     --' Запускаем итератор на удаление предметов
     npc:iterate_inventory(keep_item, npc)
 
+
+    --' Проверка на отсутствие спауна лута
+    if npc:spawn_ini():section_exist("dont_spawn_loot") then
+        return
+    end
+
     --' Доспавниваем необходимое количество итемов:
     --' Необходимо составить список объектов которые могут быть заспавнены для персонажа
     local spawn_items = get_spawn_items_by_npc(npc)
