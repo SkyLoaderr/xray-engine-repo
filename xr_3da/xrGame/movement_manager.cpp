@@ -34,12 +34,12 @@ CMovementManager::CMovementManager	(CCustomMonster *object)
 	VERIFY						(object);
 	m_object					= object;
 
-	m_base_game_selector		= xr_new<CGameVertexParams>		 (locations().vertex_types());
-	m_base_level_selector		= xr_new<CBaseParameters>		 ();
-	
 	m_restricted_object			= xr_new<CRestrictedObject>		 (m_object);
 	m_location_manager			= xr_new<CLocationManager>		 (m_object);
 
+	m_base_game_selector		= xr_new<CGameVertexParams>		 (locations().vertex_types());
+	m_base_level_selector		= xr_new<CBaseParameters>		 ();
+	
 	m_game_location_selector	= xr_new<CGameLocationSelector	>(m_restricted_object,m_location_manager);
 	m_game_path_manager			= xr_new<CGamePathManager		>(m_restricted_object);
 	m_level_path_manager		= xr_new<CLevelPathManager		>(m_restricted_object);
