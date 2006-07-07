@@ -96,15 +96,8 @@ function keep_item(npc, item)
         return
     end
 
-    local best_weapon = npc:best_weapon()
+
     local item_id = item:id()
-    if best_weapon ~= nil and
-       best_weapon:id() == item_id
-    then
-        printf("keep main weapon")
-        item:unload_magazine()
-        return
-    end
 
     local item_in_slot = npc:item_in_slot(1)
     if item_in_slot ~= nil and
