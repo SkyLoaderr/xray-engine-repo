@@ -376,6 +376,9 @@ bool CUICarBodyWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	return false;
 }
 
+#include "../Medkit.h"
+#include "../Antirad.h"
+
 void CUICarBodyWnd::ActivatePropertiesBox()
 {
 	if(m_pInventoryBox)	return;
@@ -388,6 +391,8 @@ void CUICarBodyWnd::ActivatePropertiesBox()
 	
 	CWeaponMagazined*		pWeapon			= smart_cast<CWeaponMagazined*>(CurrentIItem());
 	CEatableItem*			pEatableItem	= smart_cast<CEatableItem*>(CurrentIItem());
+	CMedkit*				pMedkit			= smart_cast<CMedkit*>			(CurrentIItem());
+	CAntirad*				pAntirad		= smart_cast<CAntirad*>			(CurrentIItem());
     bool					b_show			= false;
 	if(pWeapon)
 	{
@@ -413,13 +418,17 @@ void CUICarBodyWnd::ActivatePropertiesBox()
 		}
 	}
 	
-	
-	if(pEatableItem)
+	if(pMedkit || pAntirad)
+	{
+		m_pUIPropertiesBox->AddItem("st_use",  NULL, INVENTORY_EAT_ACTION);
+		b_show			= true;
+	}
+	else if(pEatableItem)
 	{
 		m_pUIPropertiesBox->AddItem("st_eat",  NULL, INVENTORY_EAT_ACTION);
 		b_show			= true;
 	}
-
+	
 	if(b_show){
 		m_pUIPropertiesBox->AutoUpdateSize	();
 		m_pUIPropertiesBox->BringAllToTop	();

@@ -43,7 +43,8 @@ void CUIInventoryWnd::EatCurrentItem()
 	}
 }
 
-
+#include "../Medkit.h"
+#include "../Antirad.h"
 void CUIInventoryWnd::ActivatePropertiesBox()
 {
 	float x,y;
@@ -54,14 +55,16 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	GetUICursor()->GetPos(x,y);
 		
 	UIPropertiesBox.RemoveAll();
-	
-	CEatableItem* pEatableItem			= smart_cast<CEatableItem*>		(CurrentIItem());
-	CCustomOutfit* pOutfit				= smart_cast<CCustomOutfit*>	(CurrentIItem());
-	CArtefact* pArtefact				= smart_cast<CArtefact*>		(CurrentIItem());
-	CWeapon* pWeapon					= smart_cast<CWeapon*>			(CurrentIItem());
-	CScope* pScope						= smart_cast<CScope*>			(CurrentIItem());
-	CSilencer* pSilencer				= smart_cast<CSilencer*>		(CurrentIItem());
-	CGrenadeLauncher* pGrenadeLauncher	= smart_cast<CGrenadeLauncher*>	(CurrentIItem());
+
+	CMedkit*			pMedkit				= smart_cast<CMedkit*>			(CurrentIItem());
+	CAntirad*			pAntirad			= smart_cast<CAntirad*>			(CurrentIItem());
+	CEatableItem*		pEatableItem		= smart_cast<CEatableItem*>		(CurrentIItem());
+	CCustomOutfit*		pOutfit				= smart_cast<CCustomOutfit*>	(CurrentIItem());
+	CArtefact*			pArtefact			= smart_cast<CArtefact*>		(CurrentIItem());
+	CWeapon*			pWeapon				= smart_cast<CWeapon*>			(CurrentIItem());
+	CScope*				pScope				= smart_cast<CScope*>			(CurrentIItem());
+	CSilencer*			pSilencer			= smart_cast<CSilencer*>		(CurrentIItem());
+	CGrenadeLauncher*	pGrenadeLauncher	= smart_cast<CGrenadeLauncher*>	(CurrentIItem());
     
 
 
@@ -170,8 +173,11 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 
 	}
 	
-	
-	if(pEatableItem)
+	if(pMedkit || pAntirad)
+	{
+		UIPropertiesBox.AddItem("st_use",  NULL, INVENTORY_EAT_ACTION);
+	}
+	else if(pEatableItem)
 	{
 		UIPropertiesBox.AddItem("st_eat",  NULL, INVENTORY_EAT_ACTION);
 	}

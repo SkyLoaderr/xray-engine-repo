@@ -38,7 +38,9 @@
 		his arms jaws very powerful.
 	</text>
     </article>
-    <article id="six" name="Pseudo dog" group="Diary/Creatures" article_type="1">
+    
+    
+    <article id="six" name="Pseudo dog" group="Diary/Creatures" article_type="journal">
         <texture x="0" y="300" width="250" height="100">ui\ui_icon_equipment</texture>
         <text>
 		Pseudo dogs it is very evil\nsemidead dogs with huge\nmouth :)
