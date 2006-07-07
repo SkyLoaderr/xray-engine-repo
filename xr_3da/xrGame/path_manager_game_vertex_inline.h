@@ -54,6 +54,9 @@ IC	void CGameVertexPathManager::setup			(
 TEMPLATE_SPECIALIZATION
 IC	bool CGameVertexPathManager::is_accessible	(const _index_type &vertex_id) const
 {
+	if (!inherited::accessible(vertex_id))
+		return				(false);
+
 	typedef _Parameters::VERTEX_TYPES::const_iterator	const_iterator;
 	const_iterator			I = m_evaluator->m_vertex_types.begin();
 	const_iterator			E = m_evaluator->m_vertex_types.end();
