@@ -72,6 +72,14 @@ function generic_physics_binder:update(delta)
             self.particle = particles_object(particle)
             self.particle:play_at_pos(self.object:position())
         end
+
+        --' Дизаблим ассоциированный с объектом граф
+        local graph_point_marker = utils.cfg_get_string(self.st.ini, self.st.section_logic, "graph_point_marker", self.object, false, "", nil)
+        if graph_point_marker ~= nil then
+            self.disable_graph_point = patrol(graph_point_marker):game_vertex_id(0)
+            --self.disable_graph_point:accessible(false)
+        end
+        
 	end
 
 	if self.st.active_section ~= nil then
@@ -157,5 +165,9 @@ function generic_physics_binder:death_callback(victim, who)
 
     if self.particle ~= nil then
         self.particle:stop()
+    end
+
+    if self.disable_graph_point ~= nil then
+        --self.disable_graph_point:accessible(true)
     end
 end
