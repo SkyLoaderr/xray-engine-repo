@@ -128,7 +128,7 @@ void CUIDiaryWnd::OnFilterChanged			(CUIWindow* w, void*)
 
 void CUIDiaryWnd::Reload	(EDiaryFilter new_filter)
 {
-	if(m_currFilter==new_filter) return;
+//.	if(m_currFilter==new_filter) return;
 
 	switch (m_currFilter){
 		case eJournal:
