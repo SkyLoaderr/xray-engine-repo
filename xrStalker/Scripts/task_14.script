@@ -1,0 +1,9 @@
+function main ()
+
+local infos_table = {}
+local actor = db.actor
+
+	for k,v in pairs(infos_table) do
+		actor:give_info_portion(v)
+	end	
+end 
