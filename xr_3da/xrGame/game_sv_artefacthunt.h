@@ -44,6 +44,8 @@ protected:
 	bool							bNoLostMessage;
 	bool							m_bArtefactWasBringedToBase;
 
+	bool							m_bSwapBases;
+
 	void							Artefact_PrepareForSpawn	();
 	void							Artefact_PrepareForRemove	();
 
@@ -135,6 +137,8 @@ public:
 	virtual		BOOL				Get_ShieldedBases			();
 	virtual		BOOL				Get_ReturnPlayers			();
 	virtual		BOOL				Get_BearerCantSprint		();
+
+				void				SwapTeams					();
 
 	//  [7/5/2005]
 #ifdef DEBUG

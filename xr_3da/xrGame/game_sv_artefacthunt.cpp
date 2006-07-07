@@ -7,6 +7,7 @@
 #include "LevelGameDef.h"
 #include "Actor.h"
 #include "game_cl_base.h"
+#include "clsid_game.h"
 
 #ifdef DEBUG
 #	include "debug_renderer.h"
@@ -72,6 +73,8 @@ void	game_sv_ArtefactHunt::Create					(shared_str& options)
 
 	bNoLostMessage = false;
 	m_bArtefactWasBringedToBase = true;
+
+	m_bSwapBases	= false;
 	//---------------------------------------------------------------
 	m_iMoney_for_BuySpawn = READ_IF_EXISTS(pSettings, r_s32, "artefacthunt_gamedata", "spawn_cost", -10000);
 	//---------------------------------------------------------------
@@ -861,6 +864,11 @@ void	game_sv_ArtefactHunt::OnCreate				(u16 id_who)
 	CSE_ALifeItemArtefact* pIArtefact	=	smart_cast<CSE_ALifeItemArtefact*> (pEntity);
 	if (pIArtefact)
 		m_dwArtefactID = pIArtefact->ID;
+	CSE_ALifeTeamBaseZone* pTeamBase	=	smart_cast<CSE_ALifeTeamBaseZone*> (pEntity);
+	if (pTeamBase && m_bSwapBases)
+	{
+		pTeamBase->m_team = 3 - pTeamBase->m_team;
+	}
 };
 
 void	game_sv_ArtefactHunt::Assign_Artefact_RPoint	(CSE_Abstract* E)
@@ -1347,4 +1355,15 @@ void	game_sv_ArtefactHunt::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET
 
 	if (ps_hitted->GameID == artefactBearerID)
 		m_iAfBearerMenaceID = ps_hitter->GameID;
+};
+
+void	game_sv_ArtefactHunt::SwapTeams					()
+{
+	//swap rpoints
+	xr_vector<RPoint> tmpRPoints;
+	tmpRPoints = rpoints[1];
+	rpoints[1] = rpoints[2];
+	rpoints[2] = tmpRPoints;
+	//swap bases
+	m_bSwapBases = !m_bSwapBases;
 };

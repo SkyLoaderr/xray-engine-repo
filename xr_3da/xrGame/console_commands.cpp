@@ -31,6 +31,7 @@
 #include "ai_space.h"
 #include "ai/monsters/BaseMonster/base_monster.h"
 #include "game_sv_deathmatch.h"
+#include "game_sv_artefacthunt.h"
 #include "date_time.h"
 #include "mt_config.h"
 #include "ui/UIOptConCom.h"
@@ -196,6 +197,27 @@ public:
 		strcpy(I,"restart game fast"); 
 	}
 };
+
+class CCC_SwapTeams : public IConsole_Command {
+public:
+	CCC_SwapTeams(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR /**args/**/) {
+		if(Level().Server && Level().Server->game) 
+		{
+			game_sv_ArtefactHunt* pGame = smart_cast<game_sv_ArtefactHunt *>(Level().Server->game);
+			if (pGame)
+			{
+				pGame->SwapTeams();
+				Level().Server->game->OnRoundEnd("GAME_restarted_fast");
+			}			
+		}
+	}
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"swap teams for artefacthunt game"); 
+	}
+};
+
 
 class CCC_SaveStatistic : public IConsole_Command {
 public:
@@ -2196,6 +2218,7 @@ void CCC_RegisterCommands()
 	CMD1(CCC_Spawn,				"g_spawn"				);
 	CMD1(CCC_GameDifficulty,	"g_game_difficulty"		);
 	CMD1(CCC_Restart,			"g_restart"				);
+
 	CMD1(CCC_RestartFast,		"g_restart_fast"		);
 	CMD1(CCC_Money,				"g_money"				);
 //	CMD1(CCC_Team,				"g_change_team"			);
@@ -2521,4 +2544,6 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"use_scripts_in_goap",			&g_use_scripts_in_goap, 0, 1);
 	CMD4(CCC_Integer,	"show_wnd_rect",				&g_show_wnd_rect, 0, 1);
 	CMD4(CCC_Integer,	"show_wnd_rect_all",			&g_show_wnd_rect2, 0, 1);
+
+	CMD1(CCC_SwapTeams,	"g_swapteams"				);
 }
