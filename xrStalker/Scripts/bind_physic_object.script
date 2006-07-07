@@ -74,12 +74,12 @@ function generic_physics_binder:update(delta)
         end
 
         --' Дизаблим ассоциированный с объектом граф
-        local graph_point_marker = utils.cfg_get_string(self.st.ini, self.st.section_logic, "graph_point_marker", self.object, false, "", nil)
-        if graph_point_marker ~= nil then
-            self.disable_graph_point = patrol(graph_point_marker):game_vertex_id(0)
-            game_graph():accessible(self.disable_graph_point, false)
-            printf("GRAPH POINT DISABLED")
-        end
+        --local graph_point_marker = utils.cfg_get_string(self.st.ini, self.st.section_logic, "graph_point_marker", self.object, false, "", nil)
+        --if graph_point_marker ~= nil then
+        --    self.disable_graph_point = patrol(graph_point_marker):game_vertex_id(0)
+        --    game_graph():accessible(self.disable_graph_point, false)
+        --    printf("GRAPH POINT DISABLED")
+        --end
         
 	end
 
@@ -168,8 +168,8 @@ function generic_physics_binder:death_callback(victim, who)
         self.particle:stop()
     end
 
-    if self.disable_graph_point ~= nil then
-        game_graph():accessible(self.disable_graph_point, true)
-        printf("GRAPH POINT ENABLED")
-    end
+    --if self.disable_graph_point ~= nil then
+    --    game_graph():accessible(self.disable_graph_point, true)
+    --    printf("GRAPH POINT ENABLED")
+    --end
 end
