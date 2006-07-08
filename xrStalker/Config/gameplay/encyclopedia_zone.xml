@@ -214,14 +214,14 @@
     <!-------------------------------- Gravi ----------------------------->
 
     <article id="zone_anomalies_gravi" name="Gravi" group="Anomalies">
-        <texture x="0" y="550" width="200" height="150">ui\ui_icon_photo</texture>
+        <texture x="0" y="850" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_gravi</text>
     </article>
 
     <!-------------------------------- Meat ----------------------------->
 
     <article id="zone_anomalies_meat" name="Meat" group="Anomalies">
-        <texture x="0" y="850" width="200" height="150">ui\ui_icon_photo</texture>
+        <texture x="1020" y="300" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_meat</text>
     </article>
 
@@ -235,7 +235,7 @@
     <!-------------------------------- Electra ----------------------------->
 
     <article id="zone_anomalies_electra" name="Electra" group="Anomalies">
-        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
+        <texture x="0" y="700" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_electra</text>
     </article>
 
@@ -249,7 +249,7 @@
     <!-------------------------------- Fuzz ----------------------------->
 
     <article id="zone_anomalies_fuzz" name="Fuzz" group="Anomalies">
-        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
+        <texture x="1550" y="150" width="200" height="200">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_fuzz</text>
     </article>
 
@@ -263,7 +263,7 @@
     <!-------------------------------- Ameba ----------------------------->
 
     <article id="zone_anomalies_ameba" name="Ameba" group="Anomalies">
-        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
+        <texture x="400" y="400" width="200" height="200">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_ameba</text>
     </article>
 
