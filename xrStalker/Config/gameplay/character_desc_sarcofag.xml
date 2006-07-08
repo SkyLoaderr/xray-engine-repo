@@ -351,4 +351,144 @@
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
         
+    <specific_character id="sar2_monolith_regular" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="6" y="2"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>sar2_bio</bio>
+
+        <class>sar2_monolith_regular</class>
+        <community>monolith</community>
+
+        <rank>523</rank>
+        <reputation>0</reputation>
+
+        <visual>actors\monolit\stalker_mo_hood_9</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+			[spawn] \n
+			wpn_ak74 \n
+            ammo_5.45x39_ap = 1 \n
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+    
+    <specific_character id="sar2_monolith_regular2" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="6" y="2"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>sar2_bio</bio>
+
+        <class>sar2_monolith_regular2</class>
+        <community>monolith</community>
+
+        <rank>484</rank>
+        <reputation>0</reputation>
+
+        <visual>actors\monolit\stalker_mo_hood_9</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+			[spawn] \n
+			wpn_ak74 \n
+            ammo_5.45x39_ap = 1 \n
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+    
+    <specific_character id="sar2_monolith_specnaz" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="6" y="2"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>sar2_bio</bio>
+
+        <class>sar2_monolith_specnaz</class>
+        <community>monolith</community>
+
+        <rank>775</rank>
+        <reputation>0</reputation>
+
+        <visual>actors\monolit\stalker_mo_hood_9</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+			[spawn] \n
+			wpn_fn2000 \n
+            ammo_5.56x45_ap = 1 \n
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+    
+    <specific_character id="sar2_monolith_specnaz2" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="6" y="2"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>sar2_bio</bio>
+
+        <class>sar2_monolith_specnaz2</class>
+        <community>monolith</community>
+
+        <rank>836</rank>
+        <reputation>0</reputation>
+
+        <visual>actors\monolit\stalker_mo_hood_9</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+			[spawn] \n
+			wpn_fn2000 \n
+            ammo_5.56x45_ap = 1 \n
+        </supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+    
+    
+	
+	<specific_character id="sar2_monolith_exo" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="28" y="8"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>sar2_bio</bio>
+
+        <class>sar2_monolith_exo</class>
+        <community>monolith</community>
+
+        <rank>997</rank>
+        <reputation>0</reputation>
+
+        <visual>actors\monolit\stalker_mo_exo</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+			[spawn] \n
+			wpn_g36 \n
+            ammo_5.56x45_ap = 1 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+    
+    <specific_character id="sar2_monolith_exo2" team_default = "1">
+        <name>GENERATE_NAME_stalker</name>
+        <icon x="28" y="8"></icon>
+        <map_icon x="3" y="0"></map_icon>
+        <bio>sar2_bio</bio>
+
+        <class>sar2_monolith_exo2</class>
+        <community>monolith</community>
+
+        <rank>948</rank>
+        <reputation>0</reputation>
+
+        <visual>actors\monolit\stalker_mo_exo</visual>
+        <snd_config>characters_voice\human_03\monolith\</snd_config>
+        <supplies>
+			[spawn] \n
+			wpn_gauss \n
+			ammo_gauss = 1\n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+    </specific_character>
+    
 </xml>
