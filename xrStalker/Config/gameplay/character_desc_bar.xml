@@ -598,9 +598,7 @@
 		</supplies>
 		
 		<start_dialog>bar_dolg_ivancov_start</start_dialog>
-		<actor_dialog>bar_dolg_ivancov_join</actor_dialog>
-		<actor_dialog>bar_dolg_ivancov_test_start</actor_dialog>
-		<actor_dialog>bar_dolg_ivancov_test_finish</actor_dialog>
+		#include "gameplay\character_dialogs.xml"
 	</specific_character>	
 
 	<!---------------------------DOLG Начальник Охраны---------------------->
