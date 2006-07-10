@@ -31,9 +31,21 @@ function get_money_then_leave(first_speaker, second_speaker)
 end
 
 function is_wounded(first_speaker, second_speaker)
-	return xr_wounded.is_wounded(first_speaker, 0.2)
+    if db.storage[first_speaker:id()].wounded ~= nil and
+       db.storage[first_speaker:id()].wounded.wound_manager.can_use_medkit == true
+    then
+        return false
+    end
+
+	return xr_wounded.is_wounded(first_speaker)
 end
 function is_opp_wounded(first_speaker, second_speaker, dialog_id)
+    if db.storage[second_speaker:id()].wounded ~= nil and
+       db.storage[second_speaker:id()].wounded.wound_manager.can_use_medkit == true
+    then
+        return false
+    end
+
 	return	xr_wounded.is_wounded(second_speaker)
 end
 function is_not_wounded(first_speaker, second_speaker)
