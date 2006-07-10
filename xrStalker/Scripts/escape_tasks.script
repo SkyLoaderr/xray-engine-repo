@@ -7,8 +7,14 @@ function proceed()
 	then		
 		actor:give_info_portion("tutorial_artefact_gain")
 	end 
-
-
+	
+	if	(actor:has_info("tutorial_end") or
+		actor:has_info("esc_kill_bandits_quest_done")) and
+		actor:dont_has_info("esc_path_to_lager") 
+	then		
+		actor:give_info_portion("esc_path_to_lager")
+	end 
+	
 	if actor:dont_has_info("tutorial_end") then
 		if actor:has_info("tutorial_wounded_help") or
 		   actor:has_info("tutorial_wounded_die") or
