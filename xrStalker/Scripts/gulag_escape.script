@@ -622,6 +622,12 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "escape_bridge_zone"
 		}
 		table.insert(sj, t)
+		t = { section = "logic@esc_bridge_post6",
+			idle = 0,
+			prior = 8, state = {0},
+			in_rest = "", out_rest = "escape_bridge_zone"
+		}
+		table.insert(sj, t)
 		t = { section = "logic@esc_bridge_kamp1",
 			idle = 0,
 			prior = 2, state = {1},
@@ -644,6 +650,12 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_bridge_kamp4",
+			idle = 0,
+			prior = 2, state = {1},
+			in_rest = "", out_rest = "escape_bridge_zone"
+		}
+		table.insert(sj, t)
+		t = { section = "logic@esc_bridge_kamp5",
 			idle = 0,
 			prior = 2, state = {1},
 			in_rest = "", out_rest = "escape_bridge_zone"
