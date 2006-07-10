@@ -681,4 +681,27 @@
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
+	<specific_character id="gar_bandit_dm" team_default = "1">
+		<name>GENERATE_NAME_bandit</name>
+		<icon x="22" y="14"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>esc_bandit_novice_bio</bio>
+		
+		<class>gar_bandit_dm</class>
+		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
+		
+		<rank>250</rank>
+		<reputation>-145</reputation>
+		
+		<snd_config>characters_voice\human_02\bandit\</snd_config>
+
+		<visual>actors\bandit\stalker_bandit_master</visual>
+		<supplies>
+			[spawn] \n
+		</supplies>
+
+		<start_dialog>hello_dialog</start_dialog>
+#include "gameplay\character_dialogs.xml"	
+	</specific_character>
+	
 </xml>

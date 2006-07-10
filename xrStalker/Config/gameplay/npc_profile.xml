@@ -136,6 +136,10 @@
 	<character id="gar_sniper">
 		<class>gar_sniper</class>
 	</character>
+	
+	<character id="gar_bandit_dm">
+		<class>gar_bandit_dm</class>
+	</character>
 		
 <!-- Agroprom + undeground-->
 	<character id="agr_krot">
