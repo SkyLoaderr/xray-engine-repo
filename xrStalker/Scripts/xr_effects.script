@@ -1509,6 +1509,7 @@ function agr_knockdown (npc)
 	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false)
     set_postprocess ("scripts\\earthshake.ltx")
 end
+
 function agr_weapon(actor, npc)
 	local actor = db.actor	
 	if 	actor ~= nil then actor:activate_slot(2)
@@ -1947,6 +1948,13 @@ function yan_dream_voices (actor, npc)
         
 		sound_obj_l:play_no_feedback(actor, sound_object.s2d, 0, vector():set(-1, 0, 1), 1.0)
 		sound_obj_r:play_no_feedback(actor, sound_object.s2d, 0, vector():set( 1, 0, 1), 1.0)
+end
+
+function yan_gluk (npc)
+	local snd_obj = sound_object([[affects\tinnitus3a]])
+	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
+	-- level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false)
+    set_postprocess ("scripts\\earthshake.ltx")
 end
 
 function yan_sleep_not_relocate (actor, npc)
