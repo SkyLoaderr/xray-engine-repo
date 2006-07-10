@@ -688,7 +688,7 @@
 		<bio>esc_bandit_novice_bio</bio>
 		
 		<class>gar_bandit_dm</class>
-		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>250</rank>
 		<reputation>-145</reputation>
