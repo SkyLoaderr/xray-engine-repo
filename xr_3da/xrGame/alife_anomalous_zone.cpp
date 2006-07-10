@@ -116,6 +116,9 @@ void CSE_ALifeAnomalousZone::spawn_artefacts				()
 			l_tpALifeItemArtefact->m_fAnomalyValue = m_maxPower*(1.f - i->o_Position.distance_to(o_Position)/m_offline_interactive_radius);
 		}
 	}
+
+	for (I = m_weights; I != E; ++I)
+		I->~ARTEFACT_PAIR		();
 }
 
 void CSE_ALifeAnomalousZone::on_spawn						()
