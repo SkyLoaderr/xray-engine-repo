@@ -70,16 +70,6 @@ function proceed()
 	then
 		actor:give_info_portion("esc_petruha_great")
 	end
-	
-	
-	--' Выдача сообщения "на ее месте можешь быть ты"
---	if actor:has_info("tutorial_flesh_start") and
---	   actor:has_info("tutorial_flesh_die") and
---	   actor:dont_has_info("tutorial_flesh_die_processed")
---	then
---		news_manager.send_tip(actor, "tutorial_flash_anomaly_alarm", 3)
---		actor:give_info_portion("tutorial_flesh_die_processed")
---	end
 end
 
 function task_lager_complete()
