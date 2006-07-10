@@ -203,21 +203,6 @@ function load_job_base (sj, gname, type, squad, groups)
 		}
 	table.insert(sj, t)	
 	
-	
-	
-	
-	---- дополнительные работы - хз.
-	--t = {section = "logic@mil_freedom_stalker_camp_000",
-	--    idle = 0,
-	--	prior = 2, state = {0, 3, 4},
-	--	squad = squad, group = groups[0],
-	--	position_threshold = 100,
-	--	in_rest = "mil_freedom_wall_restrictor", out_rest = ""
-	--	}
-	--table.insert(sj, t)	
-	
-	
-	
     -- одиночный патрульный на базе
     t = {section = "logic@mil_freedom_stalker4",
 		idle = 0,
