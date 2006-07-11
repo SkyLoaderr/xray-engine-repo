@@ -33,13 +33,13 @@ void get_accessible2					(const CGameGraph *self, const u32 &vertex_id, bool val
 	self->accessible	(vertex_id,value);
 }
 
-Fvector CVertex__level_point			(const CVertex *vertex)
+Fvector CVertex__level_point			(const CGameGraph::CVertex *vertex)
 {
 	THROW				(vertex);
 	return				(vertex->level_point());
 }
 
-Fvector CVertex__game_point				(const CVertex *vertex)
+Fvector CVertex__game_point				(const CGameGraph::CVertex *vertex)
 {
 	THROW				(vertex);
 	return				(vertex->game_point());
