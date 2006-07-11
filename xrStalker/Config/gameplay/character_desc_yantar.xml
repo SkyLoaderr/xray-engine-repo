@@ -502,6 +502,64 @@
 	</specific_character>
 
 
+
+<!---------------------------ZOMBIED AMBUSH----------------------->
+	<specific_character id="yan_zombied_ambush_default1" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="20" y="10"></icon>
+		<map_icon x="7" y="0"></map_icon>
+		<bio>sim_zombied_veteran_bio</bio>
+
+		<class>yan_Zombied_ambush</class>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
+		
+		<rank>200</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\stalker_zombi\stalker_zombie2</visual>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
+
+		<supplies>
+			[spawn] \n
+			bandage \n
+			wpn_mp5 \n
+			ammo_9x19_fmj = 1 \n
+			grenade_f1 = 1 \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			device_torch \n
+		</supplies>
+			
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+
+	<specific_character id="yan_zombied_ambush_default2" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon x="20" y="10"></icon>
+		<map_icon x="7" y="0"></map_icon>
+		<bio>sim_zombied_veteran_bio</bio>
+
+		<class>yan_Zombied_ambush</class>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
+		
+		<rank>200</rank>
+		<reputation>-50</reputation>
+
+		<visual>actors\stalker_zombi\stalker_zombie3</visual>
+		<snd_config>characters_voice\human_01\zombied\</snd_config>
+		<supplies>
+			[spawn] \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj = 1 \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			device_torch \n
+		</supplies>
+			
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+
+
 <!---------------------------ZOMBIED MASTER----------------------->
 	<specific_character id="yan_zombied_master_1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
