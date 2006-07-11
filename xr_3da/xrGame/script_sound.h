@@ -39,7 +39,7 @@ public:
 	IC		void				SetParams			(CSound_params *sound_params);
 			void				SetMinDistance		(const float fMinDistance);
 	IC		void				SetMaxDistance		(const float fMaxDistance);
-			const Fvector		&GetPosition		() const;
+			Fvector				GetPosition			() const;
 	IC		const float			GetFrequency		() const;
 	IC		const float			GetMinDistance		() const;
 	IC		const float			GetMaxDistance		() const;

@@ -30,7 +30,7 @@ CScriptSound::~CScriptSound		()
 	m_sound.destroy			();
 }
 
-const Fvector &CScriptSound::GetPosition() const
+Fvector CScriptSound::GetPosition() const
 {
 	VERIFY				(m_sound._handle());
 	const CSound_params	*l_tpSoundParams = m_sound.get_params();

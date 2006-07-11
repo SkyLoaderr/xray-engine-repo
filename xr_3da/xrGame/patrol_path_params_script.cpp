@@ -12,6 +12,12 @@
 
 using namespace luabind;
 
+Fvector CPatrolPathParams__point(const CPatrolPathParams *self, u32 index)
+{
+	THROW	(self);
+	return	(self->point(index));
+}
+
 void CPatrolPathParams::script_register(lua_State *L)
 {
 	module(L)
@@ -40,7 +46,7 @@ void CPatrolPathParams::script_register(lua_State *L)
 			.def("count",						&CPatrolPathParams::count)
 			.def("level_vertex_id",				&CPatrolPathParams::level_vertex_id)
 			.def("game_vertex_id",				&CPatrolPathParams::game_vertex_id)
-			.def("point",						(const Fvector &(CPatrolPathParams::*)(u32)				const)	(CPatrolPathParams::point))
+			.def("point",						&CPatrolPathParams__point)
 			.def("name",						&CPatrolPathParams::name)
 			.def("index",						(u32			(CPatrolPathParams::*)(LPCSTR)			const)	(CPatrolPathParams::point))
 			.def("get_nearest",					(u32			(CPatrolPathParams::*)(const Fvector &) const)	(CPatrolPathParams::point))

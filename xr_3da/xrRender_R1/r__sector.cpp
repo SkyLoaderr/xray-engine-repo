@@ -90,7 +90,7 @@ void	CPortal::Setup	(Fvector* V, int vcnt, CSector* face, CSector* back)
 			_cnt		++			;
 		}
 	}
-	R_ASSERT	(_cnt, "Invalid portal detected");
+	R_ASSERT2	(_cnt, "Invalid portal detected");
 	N.div		(float(_cnt));
 	P.build		(poly[0],N);
 	FPU::m24r	();
