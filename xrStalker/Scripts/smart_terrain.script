@@ -500,6 +500,7 @@ function se_smart_terrain:enabled( obj )
 --	if obj:name() == "yantar_semenov" then
 --		printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
 --	end
+	printf		("se_smart_terrain::enabled 0")
 
 	-- DEBUG
 	if self.disabled then
@@ -508,8 +509,10 @@ function se_smart_terrain:enabled( obj )
 	--------
 
 	self:initialize_if_needed()
+	printf		("se_smart_terrain::enabled 1")
 
 	if self:is_gulag_available() and not self.population_locked then
+		printf	("se_smart_terrain::enabled 1.0")
 --		if obj:clsid() == clsid.GROUP then -- TODO
 			-- TODO проитерировать группу
 --		else
@@ -528,6 +531,8 @@ function se_smart_terrain:enabled( obj )
 	else
 		return false
 	end
+
+	printf		("se_smart_terrain::enabled 2")
 end
 
 -- возвращает меру подходящести персонажа смарттерейну.
@@ -538,7 +543,9 @@ end
 --   2) иначе ближе - лучше
 -- TODO Оптимизировать
 function se_smart_terrain:suitable( obj )
+	printf		("se_smart_terrain::suitable 0")
 	if obj.was_in_smart_terrain then
+		printf	("se_smart_terrain::suitable 0.0")
 		local v = 0
 
 		for id, strn in pairs( smart_terrains[self:get_level_name()] ) do
@@ -557,6 +564,7 @@ function se_smart_terrain:suitable( obj )
 
 		return 1000000 - v
 	else
+		printf	("se_smart_terrain::suitable 0.1")
 		local self_gv = game_graph():vertex( self.m_game_vertex_id )
 		local obj_gv  = game_graph():vertex( obj.m_game_vertex_id )
 
@@ -566,6 +574,7 @@ function se_smart_terrain:suitable( obj )
 		        1000000 - obj_gv:game_point():distance_to( self_gv:game_point() ),
 		        tostring(obj.was_in_smart_terrain) )]]
 
+		printf	("se_smart_terrain::suitable 0.2")
 		return 1000000 - obj_gv:game_point():distance_to( self_gv:game_point() )
 	end
 end
