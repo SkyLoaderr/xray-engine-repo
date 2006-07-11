@@ -420,12 +420,12 @@ function init_wounded(npc, ini, section, st, scheme)
 		
 	else
 		local state = wounded_by_state[math.mod(npc:id(), 3)]
-		def.hp_state			= "10|"..state.."@help_heavy"
-		def.hp_state_see		= "10|"..state.."@help_heavy"
+		def.hp_state			= "90|"..state.."@help_heavy"
+		def.hp_state_see		= "90|"..state.."@help_heavy"
 		def.psy_state			= "50|{=best_pistol}psy_armed,psy_pain@wounded_psy|20|{=best_pistol}psy_shoot,psy_pain@{=best_pistol}wounded_psy_shoot,wounded_psy"
-		def.hp_victim			= "10|nil"
-		def.hp_cover			= "10|false"
-		def.hp_fight			= "10|false"
+		def.hp_victim			= "90|nil"
+		def.hp_cover			= "90|false"
+		def.hp_fight			= "90|false"
 		def.syndata				= ""
 		def.help_dialog			= "dm_help_wounded_medkit_dialog"
 		def.help_start_dialog	= nil

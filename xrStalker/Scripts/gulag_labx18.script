@@ -22,6 +22,15 @@ function load_job(sj, gname, type, squad, groups)
 	    table.insert(sj, t)
 	end
 
+	if type == "dar_poltergeist_tele_round" then
+	    t = { section = "logic@dar_poltergeist",
+		    idle = 0,
+		    prior = 5, state = {0},
+		    in_rest = "", out_rest = "dar_poltergeist_tele_round_restr",
+	    }
+	    table.insert(sj, t)
+	end
+
 	if type == "dar_com_center_tushkano" then
         for i = 1, 5 do
 		    t = { section = "logic@com_center_tushkano",

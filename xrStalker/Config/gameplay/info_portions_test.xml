@@ -31,6 +31,14 @@
 		</location>
 	</info_portion>
 
+
+	<info_portion id="article_test">
+		<article>dar_password_info1</article>
+		<article>dar_password_info2</article>
+	</info_portion>
+
+
+
 	<info_portion id="trader_start2">
 		<dialog>job_box</dialog>
 	

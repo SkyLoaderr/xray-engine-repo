@@ -26,28 +26,12 @@
 	<article>dar_password_info2</article>
 </info_portion>
 
-<!-- Игрок нашел документы 1 -->
-<info_portion id="dar_document1">
-	<article>dar_document1</article>
-</info_portion>
-
-<!-- Игрок нашел документы 2 -->
-<info_portion id="dar_document2">
-	<article>dar_document2</article>
-</info_portion>
-
-<!-- Игрок нашел документы 3 -->
-<info_portion id="dar_document3">
-	<article>dar_document3</article>
-</info_portion>
-
-<!-- Игрок нашел документы 4 -->
-<info_portion id="dar_document4">
-	<article>dar_document4</article>
-</info_portion>
-
 <!-- Игрок нашел документы 5 -->
 <info_portion id="dar_document5">
+	<article>dar_document1</article>
+	<article>dar_document2</article>
+	<article>dar_document3</article>
+	<article>dar_document4</article>
 	<article>dar_document5</article>
 </info_portion>
 

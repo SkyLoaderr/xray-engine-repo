@@ -1,9 +1,9 @@
-<article article_type="journal" group="LabX18_information" id="dar_password_info1" name="LabX18 first key">
+<article article_type="journal" group="Found_PDA" id="dar_password_info1" name="LabX18 first key">
     <text>
         pass_to_1st_door
     </text>
 </article>
-<article article_type="journal" group="LabX18_information" id="dar_password_info2" name="LabX18 second key">
+<article article_type="journal" group="Found_PDA" id="dar_password_info2" name="LabX18 second key">
     <text>
         pass_to_2nd_door
     </text>
