@@ -13,27 +13,39 @@
 
 using namespace luabind;
 
-const CGameGraph *get_game_graph()
+const CGameGraph *get_game_graph		()
 {
-	return	(&ai().game_graph());
+	return				(&ai().game_graph());
 }
 
-const CGameGraph::CHeader *get_header(const CGameGraph *self)
+const CGameGraph::CHeader *get_header	(const CGameGraph *self)
 {
-	return	(&self->header());
+	return				(&self->header());
 }
 
-bool get_accessible1(const CGameGraph *self, const u32 &vertex_id)
+bool get_accessible1					(const CGameGraph *self, const u32 &vertex_id)
 {
-	return	(self->accessible(vertex_id));
+	return				(self->accessible(vertex_id));
 }
 
-void get_accessible2(const CGameGraph *self, const u32 &vertex_id, bool value)
+void get_accessible2					(const CGameGraph *self, const u32 &vertex_id, bool value)
 {
-	self->accessible(vertex_id,value);
+	self->accessible	(vertex_id,value);
 }
 
-void CGameGraph::script_register	(lua_State *L)
+Fvector CVertex__level_point			(const CVertex *vertex)
+{
+	THROW				(vertex);
+	return				(vertex->level_point());
+}
+
+Fvector CVertex__game_point				(const CVertex *vertex)
+{
+	THROW				(vertex);
+	return				(vertex->game_point());
+}
+
+void CGameGraph::script_register		(lua_State *L)
 {
 	module(L)
 	[
@@ -47,8 +59,8 @@ void CGameGraph::script_register	(lua_State *L)
 			.def("vertex_id",		&CGameGraph::vertex_id),
 
 		class_<CVertex>("GameGraph__CVertex")
-			.def("level_point",		&CVertex::level_point)
-			.def("game_point",		&CVertex::game_point)
+			.def("level_point",		&CVertex__level_point)
+			.def("game_point",		&CVertex__game_point)
 			.def("level_id",		&CVertex::level_id)
 			.def("level_vertex_id",	&CVertex::level_vertex_id)
 	];
