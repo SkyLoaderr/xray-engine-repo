@@ -14,12 +14,7 @@
         <text>agr_rats_n_soldiers_text</text>
     </article>
     
-    <article id="agr_nii_security_shedule" name="agr_nii_security_shedule_name" article_type="journal" group="agroprom_get_military_documents">
-        <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
-        <text>agr_nii_security_shedule</text>
-    </article>
-    
-    <article id="agr_nii_security_plan" name="agr_nii_security_plan_name" article_type="journal" group="agroprom_get_military_documents">
+    <article id="agr_nii_security_plan" name="agr_nii_security_plan_name" article_type="journal" group="st_operation_agroprom">
         <texture x="400" y="600" width="300" height="300">ui\ui_icon_photo</texture>
         <text>agr_nii_security_plan</text>
     </article>
@@ -29,14 +24,11 @@
         <text>agr_krot_secret_info</text>
     </article>
 
-    <article id="agr_military_case" name="agr_military_case_name" article_type="journal" group="agroprom_get_military_documents">
+    <article id="agr_military_case" name="agr_military_case_name" article_type="journal" group="st_operation_agroprom">
 <!--	    <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture> -->
         <text>agr_military_case</text>
     </article>
 
-    <article id="agr_nii_fab_mil_task" name="agr_nii_fab_mil_task_name" article_type="journal" group="agroprom_get_military_documents">
-        <text>agr_nii_fab_mil_task</text>
-    </article>
     <article id="agr_journal_krot" name="article_agr_krot_sos_name" article_type="journal" group="memuars">
         <text>agr_journal_krot</text>
     </article>

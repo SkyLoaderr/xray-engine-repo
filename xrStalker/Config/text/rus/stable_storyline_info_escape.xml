@@ -47,19 +47,19 @@
 		<text>Хорошо, я встречусь с человеком Призрака. Буду ждать его в тайнике Стрелка. Если это кто-то из своих, значит знает, где меня искать. Доктор.</text>
 	</string>
 	<string id="Tolik flash">
-		<text>Дневник Толика</text>
+		<text>ПДА Толика</text>
 	</string>
 	<string id="Seryi flash">
-		<text>Инфо с ПДА Лиса</text>
+		<text>ПДА Лиса</text>
 	</string>
 	<string id="Flash dead stalker">
-		<text>Инфо с ПДА мертвого сталкера</text>
+		<text>ПДА мертвого сталкера</text>
 	</string>
 	<string id="Bandit's flash">
-		<text>Инфо с ПДА бандита с фабрики</text>
+		<text>ПДА бандита с фабрики</text>
 	</string>
 	<string id="Dead novice's flash">
-		<text>Инфо с ПДА мертвого новичка</text>
+		<text>ПДА мертвого новичка</text>
 	</string>
 	<string id="about_pda">
 		<text>Об энциклопедии</text>
@@ -71,7 +71,7 @@
 		<text>Встреча с доктором</text>
 	</string>
 	<string id="doctor_meet">
-		<text>Информация от Проводника</text>
+		<text>ПДА Проводника</text>
 	</string>
 	<string id="doctor_meet_quest_text">
 		<text>Доктор: я буду ждать человека от Стрелка в тайнике группировки Стрелка. Если это свой - он знает место.</text>

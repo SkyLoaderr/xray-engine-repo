@@ -3,25 +3,24 @@
         <text>gunslinger_clan_cache</text>
     </article>
 
-    <article id="storyline_fox_flash_info" name="Tolik flash" article_type="journal"  group="Tolik flash">
+    <article id="storyline_fox_flash_info" name="Tolik flash" article_type="journal"  group="Found_PDA">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>
         <text>storyline_fox_flash_info</text>
     </article>
     
-    <article id="storyline_seryi_info" name="Seryi flash" article_type="journal" group="Seryi flash">
+    <article id="storyline_seryi_info" name="Seryi flash" article_type="journal" group="Found_PDA">
         <text>storyline_seryi_info</text>
     </article>
 
-	<article id="tutorial_secret_place" name="Flash dead stalker" article_type="journal" group="Flash dead stalker">
+	<article id="tutorial_secret_place" name="Flash dead stalker" article_type="journal" group="Found_PDA">
         <text>tutorial_secret_place</text>
     </article>
     
-    <article id="esc_kolyan_lost" name="Bandit's flash" article_type="journal" group="Bandit's flash">
+    <article id="esc_kolyan_lost" name="Bandit's flash" article_type="journal" group="Found_PDA">
         <text>esc_kolyan_lost</text>
     </article>
     
-    <article id="tutorial_moving_anomaly" name="Dead novice's flash" article_type="journal" group="Dead novice's flash">
-        <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
+    <article id="tutorial_moving_anomaly" name="Dead novice's flash" article_type="journal" group="Found_PDA">
         <text>tutorial_moving_anomaly_text</text>
     </article>
     
@@ -53,7 +52,7 @@
         <text>help_to_fox</text>
     </article> 
     
-    <article id="esc_provodnik_pda" name="doctor_meet" article_type="journal" group="doctor_meet">
+    <article id="esc_provodnik_pda" name="doctor_meet" article_type="journal" group="Found_PDA">
         <text>doctor_meet_text</text>
     </article> 
     
