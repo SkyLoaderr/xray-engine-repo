@@ -1953,7 +1953,7 @@ end
 function yan_gluk (npc)
 	local snd_obj = sound_object([[affects\tinnitus3a]])
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
-	-- level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false)
+    level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false)
     set_postprocess ("scripts\\earthshake.ltx")
 end
 
