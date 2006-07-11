@@ -1,16 +1,16 @@
-    <article id="bar_ecolog_research_normal" name="Kruglov_research" group="memuars" article_type="info">
+    <article id="bar_ecolog_research_normal" name="Kruglov_research" group="memuars" article_type="journal">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>bar_ecolog_research_normal</text>
     </article>
-    <article id="bar_ecolog_research_corrupted" name="Kruglov_research" group="memuars" article_type="info">
+    <article id="bar_ecolog_research_corrupted" name="Kruglov_research" group="memuars" article_type="journal">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>bar_ecolog_research_corrupted</text>
     </article>
-    <article id="rostok_tunel_gordon_diary" name="Gordon's diary" group="Gordon's diary" article_type="info">
+    <article id="rostok_tunel_gordon_diary" name="Gordon's diary" group="Gordon's diary" article_type="journal">
         <texture x="550" y="0" width="200" height="150">ui\ui_icon_photo</texture>
         <text>rostok_tunel_gordon_diary</text>
     </article>
-    <article id="bar_radar_shedule" name="descr_deactivate_radar" group="descr_deactivate_radar" article_type="info">
+    <article id="bar_radar_shedule" name="descr_deactivate_radar" group="descr_deactivate_radar" article_type="journal">
         <texture x="550" y="0" width="200" height="150">ui\ui_icon_photo</texture>
         <text>bar_radar_shedule</text>
     </article>
@@ -46,7 +46,7 @@
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>descr_bar_dolg_svoboda_leader_kill_quest</text>
     </article>
-    <article id="descr_bar_darklab_documents" name="darklab documents" group="diary" article_type="info">
+    <article id="descr_bar_darklab_documents" name="darklab documents" group="diary" article_type="journal">
         <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>descr_bar_darklab_documents</text>
     </article>
