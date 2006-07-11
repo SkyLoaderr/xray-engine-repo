@@ -50,10 +50,10 @@
     <article id="agr_task_case" name="agr_military_case_name" article_type="task" group="agroprom_get_military_documents">
         <text>agr_task_case</text>
     </article>
-     <article id="article_agr_krot_sos" name="Встреча с Кротом" article_type="task" group="agr_help_stalkers">
+     <article id="article_agr_krot_sos" name="article_agr_krot_sos_name" article_type="task" group="agr_help_stalkers">
         <text>article_agr_krot_sos</text>
     </article>
-     <article id="article_agr_krot_sos1" name="Встреча с Кротом" article_type="task" group="agr_help_krot">
+     <article id="article_agr_krot_sos1" name="article_agr_krot_sos_name" article_type="task" group="agr_help_krot">
         <text>article_agr_krot_sos1</text>
     </article>
 

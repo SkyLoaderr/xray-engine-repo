@@ -141,7 +141,9 @@
      <string id="article_agr_krot_sos">
         <text>SOS, военные режут нашего брата сталкера, мужики, все кто меня слышат - помогите!</text>
     </string>
-
+    <string id="article_agr_krot_sos_name">
+        <text>Встреча с Кротом</text>
+    </string>
     <string id="article_agr_krot_sos1">
         <text>Крот : "Помогите. Сейчас убьют!"</text>
     </string>
