@@ -26,6 +26,12 @@
 	<article>dar_password_info2</article>
 </info_portion>
 
+
+<info_portion id="dar_document1"></info_portion>
+<info_portion id="dar_document2"></info_portion>
+<info_portion id="dar_document3"></info_portion>
+<info_portion id="dar_document4"></info_portion>
+
 <!-- Игрок нашел документы 5 -->
 <info_portion id="dar_document5">
 	<article>dar_document1</article>
