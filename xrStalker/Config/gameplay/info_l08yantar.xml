@@ -116,5 +116,8 @@
 	</info_portion>
 	<info_portion id="yan_has_ghost_pda"></info_portion>
 	<info_portion id="yan_test_info"></info_portion>
+
+
+	<info_portion id="yan_controller_respawn_01"></info_portion>
     
 </game_information_portions>
