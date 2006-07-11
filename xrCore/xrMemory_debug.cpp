@@ -27,6 +27,18 @@ void	dbg_header			(xrMemory::mdbg& dbg, bool _debug)
 
 void	xrMemory::dbg_register		(void* _p, size_t _size, const char* _name)
 {
+#if 0
+	if ((_size == 12) && !xr_strcmp("C++ NEW",_name)) {
+		static int			i = 0;
+		string2048			temp;
+		if (i > 3065) {
+			printf("");
+		}
+		sprintf				(temp,"____[%s][%d] : 0x%8x [REGISTER][%d]\n",_name,_size,(u32)((size_t)_p),i++);
+		OutputDebugString	(temp);
+	}
+#endif
+
 	VERIFY					(debug_mode);
 	debug_cs.Enter			();
 	debug_mode				= FALSE;
@@ -62,6 +74,14 @@ void	xrMemory::dbg_unregister	(void* _p)
 	if (u32(-1)==_found)	{ 
 		Debug.fatal			("Memory allocation error: double free() ?"); 
 	} else	{
+#if 0
+		if ((debug_info[_found]._size == 12) && !xr_strcmp("C++ NEW",debug_info[_found]._name)) {
+			string2048			temp;
+			sprintf				(temp,"____[%s][%d] : 0x%8x [UNREGISTER]\n",debug_info[_found]._name,debug_info[_found]._size,(u32)((size_t)_p));
+			OutputDebugString	(temp);
+		}
+#endif
+
 		u8*			_ptr	= (u8*)	debug_info[_found]._p;
 		u32*		_shred	= (u32*)(_ptr + debug_info[_found]._size);
 		R_ASSERT2			(u32(-1)==*_shred, "Memory overrun error");
