@@ -141,7 +141,8 @@ class TiXmlString
         if (size)
         {
             allocated = size;
-            cstring = new char [size];
+//.			cstring = new char [size];
+			cstring = xr_alloc<char>(size);
             cstring [0] = 0;
             current_length = 0;
         }
@@ -180,7 +181,8 @@ class TiXmlString
     void empty_it ()
     {
         if (cstring)
-            delete [] cstring;
+//.			delete [] cstring;
+			xr_free	(cstring);
         cstring = NULL;
         allocated = 0;
         current_length = 0;

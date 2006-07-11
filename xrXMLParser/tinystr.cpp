@@ -48,10 +48,11 @@ TiXmlString::TiXmlString (const char* instring)
     }
 
 	newlen = static_cast<unsigned int>(xr_strlen (instring) + 1);
-    newstring = new char [newlen];
-    CopyMemory(newstring, instring, newlen);
-    // strcpy (newstring, instring);
-    allocated = newlen;
+//.	newstring = new char [newlen];
+//.	CopyMemory(newstring, instring, newlen);
+//	strcpy (newstring, instring);
+	newstring = xr_strdup(instring);
+	allocated = newlen;
     cstring = newstring;
     current_length = newlen - 1;
 }
@@ -74,10 +75,13 @@ TiXmlString::TiXmlString (const TiXmlString& copy)
         return;
     }
     newlen = copy . length () + 1;
-    newstring = new char [newlen];
-    // strcpy (newstring, copy . cstring);
-    CopyMemory(newstring, copy . cstring, newlen);
-    allocated = newlen;
+//.	newstring = new char [newlen];
+//	strcpy (newstring, copy . cstring);
+//	CopyMemory(newstring, copy . cstring, newlen);
+//	allocated = newlen;
+	newstring = xr_strdup(copy.cstring);
+	allocated = newlen;
+
     cstring = newstring;
     current_length = newlen - 1;
 }
@@ -93,10 +97,10 @@ void TiXmlString ::operator = (const char * content)
         empty_it ();
         return;
     }
-//    newlen = static_cast<unsigned int>(xr_strlen (content) + 1);
- //   newstring = new char [newlen];
-	//!!! strcpy (newstring, content);
-  //  CopyMemory(newstring, content, newlen);
+//	newlen = static_cast<unsigned int>(xr_strlen (content) + 1);
+//	newstring = new char [newlen];
+//	!!! strcpy (newstring, content);
+//	CopyMemory(newstring, content, newlen);
 	newstring = xr_strdup(content);
 	newlen = static_cast<unsigned int>(xr_strlen (newstring) + 1);
     empty_it ();
@@ -117,9 +121,10 @@ void TiXmlString ::operator = (const TiXmlString & copy)
         return;
     }
     newlen = copy . length () + 1;
-    newstring = new char [newlen];
-    // strcpy (newstring, copy . c_str ());
-    CopyMemory(newstring, copy . c_str (), newlen);
+//.	newstring = new char [newlen];
+//	strcpy (newstring, copy . c_str ());
+//.	CopyMemory(newstring, copy . c_str (), newlen);
+	newstring = xr_strdup(copy.c_str());
     empty_it ();
     allocated = newlen;
     cstring = newstring;
@@ -153,8 +158,9 @@ void TiXmlString::append( const char* str, int len )
         new_alloc = assign_new_size (new_size);
 
         // allocate new buffer
-        new_string = new char [new_alloc];        
-        new_string [0] = 0;
+//.		new_string = new char [new_alloc];
+		new_string = xr_alloc<char>(new_alloc);
+        new_string[0] = 0;
 
         // copy the previous allocated buffer into this one
         if (allocated && cstring)
@@ -169,7 +175,8 @@ void TiXmlString::append( const char* str, int len )
 
         // return previsously allocated buffer if any
         if (allocated && cstring)
-            delete [] cstring;
+//.			delete [] cstring;
+			xr_free(cstring);
 
         // update member variables
         cstring = new_string;
@@ -202,7 +209,8 @@ void TiXmlString::append( const char * suffix )
         new_alloc = assign_new_size (new_size);
 
         // allocate new buffer
-        new_string = new char [new_alloc];        
+//.		new_string = new char [new_alloc];        
+		new_string = xr_alloc<char>(new_alloc);
         new_string [0] = 0;
 
         // copy the previous allocated buffer into this one
@@ -218,7 +226,8 @@ void TiXmlString::append( const char * suffix )
 
         // return previsously allocated buffer if any
         if (allocated && cstring)
-            delete [] cstring;
+//.			delete [] cstring;
+			xr_free(cstring);
 
         // update member variables
         cstring = new_string;

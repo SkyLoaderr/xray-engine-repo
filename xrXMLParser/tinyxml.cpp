@@ -117,8 +117,9 @@ void TiXmlBase::PutString( const TIXML_STRING& str, TIXML_STRING* outString )
 // <-- Strange class for a bug fix. Search for STL_STRING_BUG
 TiXmlBase::StringToBuffer::StringToBuffer( const TIXML_STRING& str )
 {
-	buffer = new char[ str.length()+1 ];
-	if ( buffer )
+//.	buffer = new char[ str.length()+1 ];
+	buffer = xr_alloc<char>(str.length() + 1);
+	if (buffer)
 	{
 		strcpy( buffer, str.c_str() );
 	}
@@ -127,7 +128,8 @@ TiXmlBase::StringToBuffer::StringToBuffer( const TIXML_STRING& str )
 
 TiXmlBase::StringToBuffer::~StringToBuffer()
 {
-	delete [] buffer;
+//.	delete [] buffer;
+	xr_free(buffer);
 }
 // End strange bug fix. -->
 

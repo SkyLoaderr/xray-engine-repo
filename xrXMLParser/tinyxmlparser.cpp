@@ -603,7 +603,7 @@ void TiXmlDocument::StreamIn( TIXML_ISTREAM * in, TIXML_STRING * tag )
 			{
 				node->StreamIn( in, tag );
 				bool isElement = node->ToElement() != 0;
-				delete node;
+				xr_delete(node);
 				node = 0;
 
 				// If this is the root element, we're done. Parsing will be
@@ -878,7 +878,7 @@ void TiXmlElement::StreamIn (TIXML_ISTREAM * in, TIXML_STRING * tag)
 				if ( !node )
 					return;
 				node->StreamIn( in, tag );
-				delete node;
+				xr_delete(node);
 				node = 0;
 
 				// No return: go around from the beginning: text, closing tag, or node.
@@ -989,7 +989,7 @@ const char* TiXmlElement::Parse( const char* p, TiXmlParsingData* data )
 			if ( !p || !*p )
 			{
 				if ( document ) document->SetError( TIXML_ERROR_PARSING_ELEMENT, pErr, data );
-				delete attrib;
+				xr_delete(attrib);
 				return 0;
 			}
 
@@ -998,7 +998,7 @@ const char* TiXmlElement::Parse( const char* p, TiXmlParsingData* data )
 			if ( node )
 			{
 				node->SetValue( attrib->Value() );
-				delete attrib;
+				xr_delete(node);
 				return 0;
 			}
 
@@ -1043,7 +1043,7 @@ const char* TiXmlElement::ReadValue( const char* p, TiXmlParsingData* data )
 			if ( !textNode->Blank() )
 				LinkEndChild( textNode );
 			else
-				delete textNode;
+				xr_delete(textNode);
 		} 
 		else 
 		{
