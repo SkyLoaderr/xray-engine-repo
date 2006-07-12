@@ -712,6 +712,11 @@ int luabind::detail::class_rep::function_dispatcher(lua_State* L)
         }
 		else
 		{
+#if 0
+			xr_string			str;
+			o.get_signature		(L, str);
+			OutputDebugString	((((xr_string("__function__") + rep->crep->name()) + "::") + rep->name + str + "\n").c_str());
+#endif
 	        return o.call(L, force_static_call != 0);
 		}
 

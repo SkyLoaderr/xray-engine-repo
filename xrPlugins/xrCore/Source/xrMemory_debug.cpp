@@ -9,8 +9,8 @@ void	xrMemory::dbg_check			()											{ }
 #else
 #	if 0
 #		define DEBUG_MEMORY_LEAK		
-//#		define MEMORY_LEAK_DESCRIPTION	"C++ NEW"
-#		define MEMORY_LEAK_DESCRIPTION	"class luabind::functor<bool>"
+#		define MEMORY_LEAK_DESCRIPTION	"C++ NEW"
+//#		define MEMORY_LEAK_DESCRIPTION	"class luabind::functor<bool>"
 #		define MEMORY_LEAK_SIZE			12
 #	endif
 
@@ -37,9 +37,9 @@ void	xrMemory::dbg_register		(void* _p, size_t _size, const char* _name)
 	if ((_size == MEMORY_LEAK_SIZE) && _name &&!xr_strcmp(MEMORY_LEAK_DESCRIPTION,_name)) {
 		static int			i = 0;
 		string2048			temp;
-//		if (i > 3065) {
-//			printf("");
-//		}
+		if (i > 4078) {
+			printf("");
+		}
 		sprintf				(temp,"____[%s][%d] : 0x%8x [REGISTER][%d]\n",_name,_size,(u32)((size_t)_p),i++);
 		OutputDebugString	(temp);
 	}
