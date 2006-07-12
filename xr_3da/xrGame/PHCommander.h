@@ -5,7 +5,8 @@ class CPHReqComparerV;
 
 class CPHReqBase
 {
-public:	
+public:
+	virtual						~CPHReqBase						()									{}
 	virtual bool 				obsolete						()							const	=0					;
 	virtual bool				compare							(const CPHReqComparerV* v)	const	{return false;}		;
 };

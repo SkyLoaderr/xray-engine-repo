@@ -13,7 +13,7 @@ class CPHScriptCondition:
 {
 	luabind::functor<bool>			*m_lua_function;
 
-							CPHScriptCondition				(const CPHScriptCondition &func) {m_lua_function=func.m_lua_function;}	;
+							CPHScriptCondition				(const CPHScriptCondition &func);
 
 public:
 							CPHScriptCondition				(const luabind::functor<bool> &func)	;
@@ -35,6 +35,7 @@ class CPHScriptAction :
 	luabind::functor<void>			*m_lua_function;
 public:
 							CPHScriptAction					(const luabind::functor<void> &func)	;
+							CPHScriptAction					(const CPHScriptAction &action)			;
 	virtual					~CPHScriptAction				()										;
 	virtual void 			run								()										;
 	virtual bool 			obsolete						()								const	;
@@ -51,6 +52,7 @@ class CPHScriptObjectCondition:
 	shared_str						m_method_name;
 public:
 							CPHScriptObjectCondition		(const luabind::object &lua_object, LPCSTR method)	;
+							CPHScriptObjectCondition		(const CPHScriptObjectCondition &object)			;
 	virtual					~CPHScriptObjectCondition		()													;
 	virtual bool 			is_true							()													;
 	virtual bool 			obsolete						()										const		;
@@ -68,6 +70,7 @@ class CPHScriptObjectAction :
 	shared_str						m_method_name;
 public:
 							CPHScriptObjectAction			(const luabind::object &lua_object, LPCSTR method)	;
+							CPHScriptObjectAction			(const CPHScriptObjectAction &object)				;
 	virtual					~CPHScriptObjectAction			()													;
 	virtual void 			run								()													;
 	virtual bool 			obsolete						()										const		;
@@ -147,6 +150,8 @@ class CPHSriptReqObjComparer :
 
 public:
 								CPHSriptReqObjComparer	(const luabind::object & lua_object)			{m_lua_object= xr_new<luabind::object>(lua_object);}
+								CPHSriptReqObjComparer	(const CPHSriptReqObjComparer &object)			{m_lua_object= xr_new<luabind::object>(*object.m_lua_object);}
+		virtual					~CPHSriptReqObjComparer	()												{xr_delete(m_lua_object);}
 		virtual		bool		compare					(const	CPHScriptObjectCondition* v)	const	{return v->compare(m_lua_object);}
 		virtual		bool		compare					(const	CPHScriptObjectAction* v)		const	{return v->compare(m_lua_object);}
 		virtual		bool		compare					(const	CPHScriptObjectConditionN* v)	const	{return v->compare(m_lua_object);}

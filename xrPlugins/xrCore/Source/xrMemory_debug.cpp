@@ -7,6 +7,12 @@ void	xrMemory::dbg_unregister	(void* _p)									{ }
 void	xrMemory::dbg_check			()											{ }
 
 #else
+#	if 0
+#		define DEBUG_MEMORY_LEAK		
+//#		define MEMORY_LEAK_DESCRIPTION	"C++ NEW"
+#		define MEMORY_LEAK_DESCRIPTION	"class luabind::functor<bool>"
+#		define MEMORY_LEAK_SIZE			12
+#	endif
 
 #include <malloc.h>
 
@@ -27,13 +33,13 @@ void	dbg_header			(xrMemory::mdbg& dbg, bool _debug)
 
 void	xrMemory::dbg_register		(void* _p, size_t _size, const char* _name)
 {
-#if 0
-	if ((_size == 12) && !xr_strcmp("C++ NEW",_name)) {
+#ifdef DEBUG_MEMORY_LEAK
+	if ((_size == MEMORY_LEAK_SIZE) && _name &&!xr_strcmp(MEMORY_LEAK_DESCRIPTION,_name)) {
 		static int			i = 0;
 		string2048			temp;
-		if (i > 3065) {
-			printf("");
-		}
+//		if (i > 3065) {
+//			printf("");
+//		}
 		sprintf				(temp,"____[%s][%d] : 0x%8x [REGISTER][%d]\n",_name,_size,(u32)((size_t)_p),i++);
 		OutputDebugString	(temp);
 	}
@@ -74,8 +80,8 @@ void	xrMemory::dbg_unregister	(void* _p)
 	if (u32(-1)==_found)	{ 
 		Debug.fatal			("Memory allocation error: double free() ?"); 
 	} else	{
-#if 0
-		if ((debug_info[_found]._size == 12) && !xr_strcmp("C++ NEW",debug_info[_found]._name)) {
+#ifdef DEBUG_MEMORY_LEAK
+		if ((debug_info[_found]._size == MEMORY_LEAK_SIZE) && debug_info[_found]._name && !xr_strcmp(MEMORY_LEAK_DESCRIPTION,debug_info[_found]._name)) {
 			string2048			temp;
 			sprintf				(temp,"____[%s][%d] : 0x%8x [UNREGISTER]\n",debug_info[_found]._name,debug_info[_found]._size,(u32)((size_t)_p));
 			OutputDebugString	(temp);
