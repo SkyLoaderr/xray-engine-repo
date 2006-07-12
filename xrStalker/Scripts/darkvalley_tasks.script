@@ -29,6 +29,16 @@ function process_info_portion(info_id)
 	return true
 end
 
+function send_codedoor1_tip()
+    news_manager.send_tip(db.actor, "pass_to_1st_door")
+end
+
+
+function send_codedoor2_tip()
+    news_manager.send_tip(db.actor, "pass_to_2nd_door")
+end
+
+
 ----------------------------------------------------------------------------------------------------
 -- Common functions
 ----------------------------------------------------------------------------------------------------
