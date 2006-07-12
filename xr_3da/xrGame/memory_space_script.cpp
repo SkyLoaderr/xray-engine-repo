@@ -50,6 +50,12 @@ CScriptGameObject *CDangerObject_dependent_object(const CDangerObject *self)
 	return				(game_object ? game_object->lua_game_object() : 0);
 }
 
+Fvector CDangerObject__position	(const CDangerObject *self)
+{
+	THROW				(self);
+	return				(self->position());
+}
+
 void CMemoryInfo::script_register(lua_State *L)
 {
 	module(L)
@@ -142,7 +148,7 @@ void CMemoryInfo::script_register(lua_State *L)
 				value("hit",				CDangerObject::eDangerPerceiveTypeHit)
 			]
 			.def(							const_self == other<CDangerObject>())
-			.def("position",				&CDangerObject::position)
+			.def("position",				&CDangerObject__position)
 			.def("time",					&CDangerObject::time)
 			.def("type",					&CDangerObject::type)
 			.def("perceive_type",			&CDangerObject::perceive_type)
