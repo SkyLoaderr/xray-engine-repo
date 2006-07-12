@@ -2014,6 +2014,9 @@ function monolith_generator_hit (actor, npc)
 end
 
 
+function start_x18_dream(actor, npc)
+	game.start_tutorial("x18_dream")
+end
 function end_x18_dream(actor, npc)
 	db.actor:give_info_portion("dar_x18_dream")
 end
