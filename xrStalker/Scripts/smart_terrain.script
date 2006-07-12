@@ -529,7 +529,7 @@ function se_smart_terrain:enabled( obj )
 --	if obj:name() == "yantar_semenov" then
 --		printf( "[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
 --	end
-	printf		("se_smart_terrain::enabled 0")
+--	printf		("se_smart_terrain::enabled 0")
 
 	-- DEBUG
 	if self.disabled then
@@ -538,10 +538,10 @@ function se_smart_terrain:enabled( obj )
 	--------
 
 	self:initialize_if_needed()
-	printf		("se_smart_terrain::enabled 1")
+--	printf		("se_smart_terrain::enabled 1")
 
 	if self:is_gulag_available() and not self.population_locked then
-		printf	("se_smart_terrain::enabled 1.0")
+--		printf	("se_smart_terrain::enabled 1.0")
 --		if obj:clsid() == clsid.GROUP then -- TODO
 			-- TODO проитерировать группу
 --		else
@@ -561,7 +561,7 @@ function se_smart_terrain:enabled( obj )
 		return false
 	end
 
-	printf		("se_smart_terrain::enabled 2")
+--	printf		("se_smart_terrain::enabled 2")
 end
 
 -- возвращает меру подходящести персонажа смарттерейну.
