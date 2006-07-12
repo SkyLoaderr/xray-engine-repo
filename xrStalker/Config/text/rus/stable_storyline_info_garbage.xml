@@ -3,7 +3,7 @@
     </string>
 	
 	<string id="memuars">
-        <text>Личные заметки.</text>
+        <text>Личные заметки</text>
     </string>
     
 	<string id="sl_beginning">
@@ -15,7 +15,7 @@
     </string>
     
     <string id="sl_first_opinions">
-        <text>Первые впечатления.</text>
+        <text>Первые впечатления</text>
     </string>
     
     <string id="sl_first_opinions_text">
@@ -71,7 +71,7 @@
     </string>
     
     <string id="sl_monolith_off">
-        <text>Отключение монолита.</text>
+        <text>Отключение монолита</text>
     </string>
     
     <string id="sl_monolith_off_text">
