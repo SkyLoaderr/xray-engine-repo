@@ -960,6 +960,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_dogs_to_fox_home",
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
@@ -967,6 +968,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_dogs_to_fox_home",
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
@@ -974,6 +976,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_dogs_to_fox_home",
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
@@ -981,6 +984,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_dogs_to_fox_home",
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
@@ -988,76 +992,47 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_dogs_to_fox_home",
 			idle = 0,
 			prior = 5, state = {0},
+			online = false,
 			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home",
 			idle = 0,
-			prior = 5, state = {0},
+			prior = 5, state = {2},
+			online = true,
 			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home",
 			idle = 0,
-			prior = 5, state = {0},
+			prior = 5, state = {2},
+			online = true,
 			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home",
 			idle = 0,
-			prior = 5, state = {0},
+			prior = 5, state = {2},
+			online = true,
 			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home",
 			idle = 0,
-			prior = 5, state = {0},
+			prior = 5, state = {2},
+			online = true,
 			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox_home",
 			idle = 0,
-			prior = 5, state = {0},
-			position_threshold = 100,
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox",
-			idle = 0,
-			prior = 5, state = {1},
-			position_threshold = 100,
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox",
-			idle = 0,
-			prior = 5, state = {1},
-			position_threshold = 100,
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox",
-			idle = 0,
-			prior = 5, state = {1},
-			position_threshold = 100,
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox",
-			idle = 0,
-			prior = 5, state = {1},
-			position_threshold = 100,
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_dogs_to_fox",
-			idle = 0,
-			prior = 5, state = {1},
+			prior = 5, state = {2},
+			online = true,
 			position_threshold = 100,
 			in_rest = "", out_rest = ""
 		}
@@ -2143,10 +2118,16 @@ function load_states(gname, type)
 			if not actor then
 				return gulag.state
 			end
-			if actor:has_info("escape_stalker_done") and actor:dont_has_info("esc_dogs_return") then
-				return 1
+			if actor:dont_has_info("escape_stalker_dog_spawn") then
+				return 0 -- оффлайн
+			elseif (actor:has_info("escape_stalker_dog_spawn") and actor:dont_has_info("escape_stalker_done")) or actor:has_info("esc_dogs_return") then 
+				return 2 -- онлайн
 			else
-				return 0
+				return 1 -- атака
+--			if actor:has_info("escape_stalker_done") and actor:dont_has_info("esc_dogs_return") then
+--				return 1
+--			else
+--				return 0
 			end
 		end
 	end
