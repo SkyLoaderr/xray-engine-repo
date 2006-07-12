@@ -1994,6 +1994,13 @@ function yan_ghost_pda (actor, npc)
     news_manager.send_tip(db.actor, "storyline_ghost_tip", nil, "wolf")
 end
 
+function start_yantar_dream(actor, npc)
+	game.start_tutorial("yantar_dream")
+end
+
+function end_yantar_dream(actor, npc)
+	db.actor:give_info_portion("yantar_find_ghost_task_start")
+end
 -----------------------------radar
 function rad_sos_spam(actor, npc)
 	news_manager.send_tip(actor, "tips_rad_sos_suicide", nil, "stalker", nil, 1004)

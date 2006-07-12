@@ -159,7 +159,6 @@
 			<text>yan_find_ghost_task</text>
 			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>yantar_find_ghost_task_end</infoportion_complete>
-			<infoportion_set_complete>yan_kill_brain_task_start</infoportion_set_complete>
 			<article>descr_yan_find_ghost_task</article>
 		</objective>
 		<objective>

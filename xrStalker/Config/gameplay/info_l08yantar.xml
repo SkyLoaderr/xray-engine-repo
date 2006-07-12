@@ -2,7 +2,7 @@
 
 <game_information_portions>
 	<info_portion id="yan_kill_brain_task_start">
-		<task>yan_kill_brain_task</task>
+		
 	</info_portion>
 	<info_portion id="yan_find_scientist_start">
 		<task>yan_find_scientist</task>
@@ -18,10 +18,14 @@
 	<info_portion id="yan_find_vasilyev_end"></info_portion>
 	<info_portion id="yantar_vasilyev_info">
 		<article>yan_vasilyev_info</article>
-		<task>yan_find_ghost_task</task>
+		<task>yan_kill_brain_task</task>
 	</info_portion>
 	<info_portion id="yantar_find_ghost_task_end">
 		<article>journal_after_find_ghost</article>
+		<task>yan_kill_brain_task_2</task>
+	</info_portion>
+	<info_portion id="yantar_find_ghost_task_start">
+		<task>yan_find_ghost_task</task>
 	</info_portion>
 	<info_portion id="yan_scientist_return_task">
 		<task>yan_scientist_return_task</task>
@@ -103,9 +107,8 @@
 	<info_portion id="yan_labx16_switcher_1_off"></info_portion>
 	<info_portion id="yan_labx16_switcher_2_off"></info_portion>
 	<info_portion id="yan_labx16_switcher_3_off"></info_portion>
-	<info_portion id="yan_labx16_switcher_primary_off">
-		<task>yan_kill_brain_task_2</task>
-	</info_portion>
+	<info_portion id="yan_labx16_switcher_primary_off"></info_portion>
+	
 	<info_portion id="yan_labx16_switcher_1_end"></info_portion>
 	<info_portion id="yan_labx16_switcher_2_end"></info_portion>
 	<info_portion id="yan_labx16_switcher_3_end"></info_portion>
