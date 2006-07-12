@@ -36,6 +36,8 @@
 		<article>sl_beginning</article>
 		<article>sl_first_opinions</article>
 		<article>sl_usefull_info</article>
+		<article>sl_wishmaster_legend</article>		
+		<article>sl_first_deep_raid</article>		
 		<article>sl_fox_meet</article>
 		<article>sl_seryi_meet</article>
 		<article>agr_journal_krot</article>
@@ -47,9 +49,11 @@
 		<article>journal_before_vasilyev_pda</article>
 		<article>journal_after_find_ghost</article>
 		<article>journal_after_kill_brain</article>
+		<article>cit_doctor_meet_conclusion_info</article>
 		<article>journal_before_radar_task</article>
 		<article>sl_provodnik</article>
 		<article>rad_sleep_info</article>
+		<article>pri_decoder_docs_conclusion_art</article>		
 		<article>sl_monolith_off</article>
 		
 		<article>storyline_fox_flash_info</article>

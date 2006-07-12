@@ -79,7 +79,10 @@
     <string id="descr_bar_x16_documents">
         <text>Бармен: "Надо пробраться к ученым и узнать где находится лаборатория Х16, чтобы достать недостающую часть документов."</text>
     </string>
-    
+
+    <string id="journal_bar_x16_documents_name">
+        <text>"Выжигатель мозгов" рукотворен?</text>
+    </string>   
     <string id="journal_bar_x16_documents">
         <text>
 Хм-м..Торговцы действительно многое накопали по этим лабораториям. Для бармена не стало
@@ -94,6 +97,9 @@
     <string id="descr_bar_radar_deactivate">
         <text>Бармен: "Все что нам надо это пробраться к антеннам, когда излучение снизится, и отключить их"</text>
     </string>
+    <string id="journal_bar_darklab_documents_name">
+        <text>Лаборатория X18</text>
+    </string>    
     <string id="journal_bar_darklab_documents">
         <text>
 М-да…невеселое это
@@ -104,6 +110,9 @@
 засекреченной.
 		</text>
     </string>
+    <string id="journal_after_agroprom_documents_name">
+        <text>Военные документы</text>
+    </string>    
   <string id="journal_after_agroprom_documents">
         <text>
 Просмотрел документы,
@@ -115,6 +124,9 @@
 нужна торговцам. Ну что-ж, теперь предстоит путь дальше на север, к торговцу по
 кличке Бармен.
 		</text>
+    </string>
+    <string id="journal_before_darklab_documents_name">
+        <text>Бармен</text>
     </string>
     <string id="journal_before_darklab_documents">
         <text>
@@ -128,6 +140,9 @@
 недоговаривает про это подземелье. Ну да ладно, за работу: сначала пообщаться с
 Боровом, а если «разговор» удастся, то потом лезть под землю.
 		</text>
+    </string>
+    <string id="journal_before_radar_task_name">
+        <text>Информация о "Выжигателе"</text>
     </string>
     <string id="journal_before_radar_task">
         <text>
