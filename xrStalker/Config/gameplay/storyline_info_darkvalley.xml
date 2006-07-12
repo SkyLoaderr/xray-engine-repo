@@ -8,6 +8,18 @@
         pass_to_2nd_door
     </text>
 </article>
+
+<article article_type="task" group="dar_codedoor_1/0" id="dar_password_info11" name="LabX18 first key">
+    <text>
+        pass_to_1st_door
+    </text>
+</article>
+<article article_type="task" group="dar_codedoor_2/0" id="dar_password_info22" name="LabX18 second key">
+    <text>
+        pass_to_2nd_door
+    </text>
+</article>
+
 <article article_type="journal" group="LabX18_information" id="dar_document1" name="dar_document1">
     <text>
         documents_1

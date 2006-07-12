@@ -271,8 +271,9 @@
         <text>dar_codedoor_1_1</text>
         <icon height="50" width="50" x="350" y="150">ui\ui_icons_task</icon>
         <infoportion_complete>dar_password_info1</infoportion_complete>
+        <function_call_complete>darkvalley_tasks.send_codedoor1_tip</function_call_complete>
         <map_location_type>green_location</map_location_type>
-        <object_story_id>dar_corpse_1</object_story_id>
+        <object_story_id>dar_corpse_1</object_story_id>        
     </objective>
     <objective key="2">
         <text>dar_codedoor_1_2</text>
@@ -291,6 +292,7 @@
         <text>dar_codedoor_2_1</text>
         <icon height="50" width="50" x="350" y="150">ui\ui_icons_task</icon>
         <infoportion_complete>dar_password_info2</infoportion_complete>
+        <function_call_complete>darkvalley_tasks.send_codedoor2_tip</function_call_complete>
         <map_location_type>green_location</map_location_type>
         <object_story_id>dar_corpse_2</object_story_id>
     </objective>

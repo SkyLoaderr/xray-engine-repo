@@ -19,11 +19,13 @@
 <!-- Игрок нашел флешку с паролем -->
 <info_portion id="dar_password_info1">
 	<article>dar_password_info1</article>
+	<article>dar_password_info11</article>
 </info_portion>
 
 <!-- Игрок нашел документы с паролем -->
 <info_portion id="dar_password_info2">
 	<article>dar_password_info2</article>
+	<article>dar_password_info22</article>
 </info_portion>
 
 
