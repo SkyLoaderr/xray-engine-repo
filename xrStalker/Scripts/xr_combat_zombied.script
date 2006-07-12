@@ -1,6 +1,6 @@
 --[[----------------------------------------------------------------------------------------------------------
 Боевая схема зомбированных сталкеров
-Чугай Саша
+Чугай Александр
 
 Сделать:
 	- анимация поворота
@@ -113,7 +113,7 @@ function action_zombie_shoot:execute()
 		self.turn_time = 0
     else
 		if see then
-			self:set_state( "guard_fire",  be )
+			self:set_state( "threat_fire",  be )
 
 			self.turn_time = 0
 		else
