@@ -307,6 +307,17 @@
 		 улучшенный .45 ACP Hydro-Shock.</text>
 	</string>
 
+	<string id="wpn_hpsa">
+		<text>Browning HPSA</text>
+	</string>
+	<string id="enc_weapons1_wpn-hpsa">
+		<text>Браунинг заслуженно считается одним из лучших пистолетов XX века. Надежный, мощный, с хорошей кучностью стрельбы. Емкость магазина 13 патронов.\n
+		 Боеприпасы:\n
+		основной 9х19 мм Parabellum,\n
+		улучшенный 9х19 мм PBP.</text>
+	</string>
+
+
 	<string id="wpn_usp">
 		<text>H&K USP Compact</text>
 	</string>
