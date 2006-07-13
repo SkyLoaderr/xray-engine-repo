@@ -306,6 +306,27 @@
 		 обычный .45 ACP,\n
 		 улучшенный .45 ACP Hydro-Shock.</text>
 	</string>
+
+	<string id="wpn_usp">
+		<text>H&K USP Compact</text>
+	</string>
+	<string id="enc_weapons1_wpn-usp">
+		<text>Солидный ствол. Немецкое качество и надежность. Компактное оружие ближнего боя. Пользуется особой популярностью среди ветеранов Зоны.\n
+		 Боеприпасы:\n
+		 обычный .45 ACP,\n
+		 улучшенный .45 ACP Hydro-Shock.</text>
+	</string>
+
+	<string id="wp_desert_eagle">
+		<text>Пустынный орел</text>
+	</string>
+	<string id="enc_weapons1_wpn-desert-eagle">
+		<text>Настоящая пушка для настоящих героев. Большая, тяжелая и чрезвычайно убойная. Из-за цены и габаритов особой популярностью в Зоне не пользуется, все таки не каждый день охотишься на слона.\n
+		 Боеприпасы:\n
+		 обычный .45 ACP,\n
+		 улучшенный .45 ACP Hydro-Shock.</text>
+	</string>
+
 	<string id="wpn-toz34">
 		<text>ТОЗ-34</text>
 	</string>
