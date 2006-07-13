@@ -123,5 +123,9 @@
 
 	<info_portion id="yan_controller_respawn_01"></info_portion>
 	<info_portion id="brain_snork_respawn_01"></info_portion>
+
+	<info_portion id="yan_giant_spawner_01"></info_portion>
+
     
+
 </game_information_portions>
