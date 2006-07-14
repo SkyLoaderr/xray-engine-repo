@@ -18,6 +18,8 @@ function motivator_binder:__init (obj) super(obj)
 	self.loaded = false
 	self.last_update = 0
 	----memusage.collect_info(self.object, "__init")
+
+    self.first_update = false
 end
 
 function motivator_binder:extrapolate_callback(cur_pt)
@@ -224,6 +226,14 @@ end
 
 function motivator_binder:update(delta)
 	object_binder.update(self, delta)
+
+    if self.first_update == false then
+        if self.object:alive() == false then
+            death_manager.create_release_item(self.object)
+        end        
+        self.first_update = true
+    end
+
 
     if time_global() - self.last_update > 1000 then
        sr_light.check_light(self.object)
