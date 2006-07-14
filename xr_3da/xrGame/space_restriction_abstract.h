@@ -24,6 +24,7 @@ private:
 
 public:
 	IC								CSpaceRestrictionAbstract			();
+	virtual							~CSpaceRestrictionAbstract			() {}
 	virtual	void					initialize							() = 0;
 	IC		const xr_vector<u32>	&border								();
 	IC		bool					initialized							() const;
