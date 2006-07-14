@@ -207,7 +207,11 @@ u32	CTrade::GetItemPrice	(PIItem pItem)
 	);
 	
 	// computing deficit_factor
+#if 0
 	float					deficit_factor = partner.inv_owner->deficit_factor(pItem->object().cNameSect());
+#else
+	float					deficit_factor = 1.f;
+#endif
 
 	// total price calculation
 	u32						result = 
