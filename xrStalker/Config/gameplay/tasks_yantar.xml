@@ -32,9 +32,9 @@
 		</objective>
 </game_task>
 <game_task id="yan_kill_brain_task_2">
-		<title>yan_kill_brain_2</title>		
+		<title>yan_kill_brain_task_2</title>		
 		<objective>
-			<text>yan_kill_brain_2</text>
+			<text>yan_kill_brain_task_2</text>
 			<icon x="450" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
 		</objective>	
