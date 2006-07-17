@@ -61,6 +61,8 @@ protected:
 		AA_VECTOR				m_attack_anims;
 
 
+		bool					m_state_attack;
+
 protected:
 
 	ANIM_TO_MOTION_MAP			m_anim_motion_map;
@@ -208,7 +210,7 @@ public:
 	SCurrentAnimationInfo	m_cur_anim;
 	SCurrentAnimationInfo	&cur_anim_info() {return m_cur_anim;}
 
-	void					select_animation	();
+	void					select_animation	(bool anim_end = false);
 	void					set_animation_speed	();
 
 	void					check_hit			(MotionID motion, float time_perc);

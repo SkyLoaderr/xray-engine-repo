@@ -453,6 +453,7 @@ void CController::Die(CObject* who)
 	FreeFromControl();
 	
 	m_aura->on_death	();
+	m_psy_hit->on_death	();
 }
 
 void CController::net_Destroy()

@@ -30,6 +30,8 @@ public:
 	virtual void	deactivate				();
 	
 	virtual void	on_event				(ControlCom::EEventType, ControlCom::IEventData*);
+
+			void	on_death				();
 private:
 
 			void	play_anim				();

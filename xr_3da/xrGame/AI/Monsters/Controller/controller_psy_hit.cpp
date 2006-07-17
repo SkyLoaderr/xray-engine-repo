@@ -52,17 +52,28 @@ void CControllerPsyHit::activate()
 	SControlDirectionData			*ctrl_dir = (SControlDirectionData*)m_man->data(this, ControlCom::eControlDir); 
 	VERIFY							(ctrl_dir);
 	ctrl_dir->heading.target_speed	= 3.f;
-	ctrl_dir->heading.target_angle	= m_man->direction().angle_to_target(Level().CurrentEntity()->Position());
+	ctrl_dir->heading.target_angle	= m_man->direction().angle_to_target(Actor()->Position());
 
 	//////////////////////////////////////////////////////////////////////////
 	m_current_index					= 0;
 	play_anim						();
+
 }
 
 void CControllerPsyHit::deactivate()
 {
 	m_man->release_pure				(this);
 	m_man->unsubscribe				(this, ControlCom::eventAnimationEnd);
+
+	NET_Packet			P;
+
+	Actor()->u_EventGen	(P, GEG_PLAYER_WEAPON_HIDE_STATE, Actor()->ID());
+	P.w_u32				(INV_STATE_BLOCK_ALL);
+	P.w_u8				(u8(false));
+	Actor()->u_EventSend(P);
+
+	
+	Actor()->SetWeaponHideState		(INV_STATE_BLOCK_ALL, false);
 }
 
 void CControllerPsyHit::on_event(ControlCom::EEventType type, ControlCom::IEventData *data)
@@ -127,6 +138,7 @@ void CControllerPsyHit::death_glide_start()
 	Actor()->character_physics_support()->movement()->ApplyImpulse(dir,Actor()->GetMass() * 530.f);
 
 	set_sound_state					(eStart);
+	Actor()->SetWeaponHideState		(INV_STATE_BLOCK_ALL, true);
 }
 
 void CControllerPsyHit::death_glide_end()
@@ -144,6 +156,9 @@ void CControllerPsyHit::death_glide_end()
 	monster->m_sound_tube_hit_right.play_at_pos(Actor(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
 
 	m_object->Hit_Psy		(Actor(), monster->m_tube_damage);
+
+	//Actor()->SetWeaponHideState		(INV_STATE_BLOCK_ALL, false);
+
 }
 
 void CControllerPsyHit::update_frame()
@@ -185,4 +200,17 @@ void CControllerPsyHit::hit()
 	
 	set_sound_state			(eHit);
 	//m_object->Hit_Psy		(Actor(), monster->m_tube_damage);
+}
+
+void CControllerPsyHit::on_death()
+{
+	if (!is_active()) return;
+	
+	// Stop camera effector
+	CEffectorCam* ce = Actor()->Cameras().GetCamEffector(eCEControllerPsyHit);
+	if (ce) {
+		Actor()->Cameras().RemoveCamEffector(eCEControllerPsyHit);
+	}
+
+	m_man->deactivate		(this);
 }

@@ -80,6 +80,7 @@ void CControlAnimationBase::reinit()
 
 	braking_mode				= false;
 
+	m_state_attack				= false;
 }
 
 void CControlAnimationBase::on_start_control(ControlCom::EControlType type)
@@ -87,6 +88,7 @@ void CControlAnimationBase::on_start_control(ControlCom::EControlType type)
 	switch (type) {
 	case ControlCom::eControlAnimation: 
 		m_man->subscribe	(this, ControlCom::eventAnimationEnd);	
+		m_state_attack		= false;
 		select_animation	();
 		break;
 	}
@@ -95,14 +97,17 @@ void CControlAnimationBase::on_start_control(ControlCom::EControlType type)
 void CControlAnimationBase::on_stop_control	(ControlCom::EControlType type)
 {
 	switch (type) {
-	case ControlCom::eControlAnimation: m_man->unsubscribe	(this, ControlCom::eventAnimationEnd); break;
+	case ControlCom::eControlAnimation: 
+		m_man->unsubscribe	(this, ControlCom::eventAnimationEnd); 
+		m_state_attack		= false;
+		break;
 	}
 }
 
 void CControlAnimationBase::on_event(ControlCom::EEventType type, ControlCom::IEventData *data)
 {
 	switch (type) {
-	case ControlCom::eventAnimationEnd:		select_animation();	break;
+	case ControlCom::eventAnimationEnd:		select_animation(true);	m_state_attack = false; break;
 	case ControlCom::eventAnimationSignal:	
 		{
 			SAnimationSignalEventData *event_data = (SAnimationSignalEventData *)data;
@@ -111,12 +116,18 @@ void CControlAnimationBase::on_event(ControlCom::EEventType type, ControlCom::IE
 	}
 }
 
-void CControlAnimationBase::select_animation()
+void CControlAnimationBase::select_animation(bool anim_end)
 {
 	// start new animation
 	SControlAnimationData		*ctrl_data = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
 	if (!ctrl_data) return;
 
+	if (m_state_attack && !anim_end) return;
+	
+	if (cur_anim_info().motion == eAnimAttack) m_state_attack = true;
+	else m_state_attack = false;
+
+	
 	// перекрыть все определения и установть анимацию
 	m_object->ForceFinalAnimation();
 

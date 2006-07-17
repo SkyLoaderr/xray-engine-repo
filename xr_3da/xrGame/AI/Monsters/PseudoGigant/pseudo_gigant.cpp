@@ -71,7 +71,7 @@ void CPseudoGigant::Load(LPCSTR section)
 	anim().AddAnim(eAnimRun,			"stand_walk_fwd_",		-1,	&velocity_walk,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	anim().AddAnim(eAnimRunDamaged,		"stand_walk_fwd_dmg_",	-1,	&velocity_walk_dmg,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	anim().AddAnim(eAnimEat,			"stand_eat_",			-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
-	anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	anim().AddAnim(eAnimLookAround,		"stand_idle_",			-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	anim().AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	anim().AddAnim(eAnimDie,			"stand_idle_",			-1, &velocity_none,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
@@ -272,6 +272,7 @@ void CPseudoGigant::on_threaten_execute()
 		pA->cam_Active()->Move(Random.randI(2) ? kUP	: kDOWN, Random.randF(0.3f * hit_value)); 
 	}
 
+	Actor()->lock_accel_for	(2000);
 	
 	// Нанести хит
 	NET_Packet	l_P;
