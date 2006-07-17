@@ -45,7 +45,7 @@
 	</game_task>
 	
 	<game_task id="gar_help_dymon">
-		<title>gar_help_hellcar</title>
+		<title>gar_help_dymon</title>
 		<objective>
 			<text>gar_defend_garbage</text>
 			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
