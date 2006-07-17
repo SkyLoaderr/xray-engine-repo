@@ -549,8 +549,8 @@
 #include "gameplay\character_food.xml"
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
+		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
 	<specific_character id="gar_dolg_blokpost_default2" team_default = "1">
@@ -581,8 +581,8 @@
 #include "gameplay\character_food.xml"			
 		</supplies>
 
-		<start_dialog>hello_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
+		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
 	<specific_character id="gar_dolg_blokpost_default3" team_default = "1">
@@ -612,9 +612,9 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
 		</supplies>
-
-		<start_dialog>hello_dialog</start_dialog>
+		
 #include "gameplay\character_dialogs.xml"
+		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 
 	<specific_character id="gar_dolg_blokpost_commander" team_default = "1">
