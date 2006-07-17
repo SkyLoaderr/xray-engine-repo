@@ -15,6 +15,10 @@
 #include "ai/stalker/ai_stalker.h"
 #include "stalker_movement_manager.h"
 
+#include "sight_manager_space.h"
+#include "sight_control_action.h"
+#include "sight_manager.h"
+
 class CWeapon;
 
 //////////////////////////////////////////////////////////////////////////
@@ -169,4 +173,25 @@ void CScriptGameObject::wounded					(bool value)
 	}
 
 	stalker->wounded			(value);
+}
+
+CSightParams CScriptGameObject::sight_params	()
+{
+	CAI_Stalker						*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member activate_slot!");
+
+		CSightParams				result;
+		result.m_object				= 0;
+		result.m_vector				= Fvector().set(flt_max,flt_max,flt_max);
+		result.m_sight_type			= SightManager::eSightTypeDummy;
+		return						(result);
+	}
+
+	const CSightControlAction		&action = stalker->sight().current_action();
+	CSightParams					result;
+	result.m_sight_type				= action.sight_type();
+	result.m_object					= action.object_to_look() ? action.object_to_look()->lua_game_object() : 0;
+	result.m_vector					= action.vector3d();
+	return							(result);
 }

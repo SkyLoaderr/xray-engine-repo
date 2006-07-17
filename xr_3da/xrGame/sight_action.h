@@ -79,6 +79,9 @@ public:
 			float		body_speed					() const;
 			bool		change_head_speed			() const;
 			float		head_speed					() const;
+	IC		ESightType	sight_type					() const;
+	IC		const CGameObject	*object_to_look		() const;
+	IC		const Fvector		&vector3d			() const;
 };
 
 #include "sight_action_inline.h"

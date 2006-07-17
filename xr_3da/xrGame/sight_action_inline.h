@@ -116,3 +116,18 @@ IC	void CSightAction::set_memory_object	(const CMemoryInfo *memory_object)
 {
 	m_memory_object		= memory_object;
 }
+
+IC	CSightAction::ESightType CSightAction::sight_type	() const
+{
+	return				(m_sight_type);
+}
+
+IC	const CGameObject *CSightAction::object_to_look		() const
+{
+	return				(m_object_to_look);
+}
+
+IC	const Fvector &CSightAction::vector3d				() const
+{
+	return				(m_vector3d);
+}

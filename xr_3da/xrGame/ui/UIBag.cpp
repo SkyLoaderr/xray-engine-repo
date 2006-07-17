@@ -328,7 +328,7 @@ void CUIBag::HighLightAmmo(const char* weapon){
 
 	CUIDragDropItemMP* pDDItem = NULL;
 
-	xr_vector<shared_str> items;
+//	xr_vector<shared_str> items;
 	for (int i = 0; i < itemsCount; i++)
 	{
 		_GetItem(itemsList.c_str(), i, single_item);

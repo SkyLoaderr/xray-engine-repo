@@ -108,6 +108,18 @@ class CScriptGameObject;
 	>								script_planner;
 #endif
 
+class CScriptGameObject;
+
+namespace SightManager {
+	enum ESightType;
+}
+
+struct CSightParams {
+	SightManager::ESightType	m_sight_type;
+	CScriptGameObject			*m_object;
+	Fvector						m_vector;
+};
+
 class CScriptGameObject {
 	mutable CGameObject		*m_game_object;
 public:
@@ -556,6 +568,8 @@ public:
 
 			bool				wounded								() const;
 			void				wounded								(bool value);
+
+			CSightParams		sight_params						();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
