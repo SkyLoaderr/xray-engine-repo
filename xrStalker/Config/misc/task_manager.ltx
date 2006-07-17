@@ -97,29 +97,34 @@ freedom_find_item_2
 freedom_find_item_3
 ;-------Monster Part-------
 freedom_monster_part_1
+
+
+
 ;-------STORYLINE TASKS-------
 tutorial_find_artefact
 tutorial_help_wounded
 esc_help_wounded_from_raid
 esc_blockpost_case_to_trader
 esc_dinamit_to_volk
-esc_bandits_factory
 esc_defend_lager
 doctor_meet
 garbage_meet_stalker
 gar_kill_boars
 gar_help_dymon
-gar_help_tunnel_newbie
+gar_car_graveyard_quest
 agroprom_get_military_documents
 agr_meet_krot_band
 agroprom_find_gunslinger_cache
 agroprom_find_stalker_phantom
 agr_help_stalkers
 agr_help_krot
+agr_find_ghost
 val_come_to_trader
 val_sos_help
 val_prisoner_help
 val_captive_help
+dar_codedoor_1
+dar_codedoor_2
 bar_darklab_documents
 bar_resque_information
 bar_hunter_rifle
@@ -127,12 +132,19 @@ bar_crazy_veterans_quest
 bar_dolg_svoboda_ambush_quest
 bar_x16_documents
 bar_radar_deactivate
+bar_resque_information_2
+bar_dolg_community_quest
+bar_dolg_base_rules
+bar_darklab_documents
+bar_darklab_documents2
 yan_kill_brain_task
 yan_find_scientist
 yan_find_scientist_semenov
 yan_find_vasilyev_task
 yan_find_ghost_task
 yan_provodnik_task
+yan_scientist_return_task
+yan_kill_brain_task_2
 mil_kill_sniper
 mil_kill_lukash
 mil_blockpost_job
@@ -143,13 +155,15 @@ mil_freedom_rg6_task
 mil_courier_job
 mil_hunters_task
 mil_kill_controller
-cit_documents
-cit_killers_base
-cit_doctor_task
-cit_doctor_escape_task
 sar_secret_lab
 sar_monolith_destroy
 sar_warlab
+sar_monolith
+
+
+
+
+
 
 
 [tm_eliminate_camp_1]
@@ -1051,11 +1065,6 @@ type = storyline
 reward_reputation = +10
 reward_rank = 2
 
-[esc_bandits_factory]
-type = storyline
-reward_reputation = +15
-reward_rank = 3
-
 [esc_defend_lager]
 type = storyline
 reward_reputation = +15
@@ -1080,10 +1089,10 @@ type = storyline
 reward_rank = 6
 reward_reputation = +10
 
-[gar_help_tunnel_newbie]
+[gar_car_graveyard_quest]
 type = storyline
-reward_rank = 3
-reward_reputation = +20
+reward_rank = 4
+
 
 [agroprom_get_military_documents]
 type = storyline
@@ -1116,6 +1125,10 @@ reward_reputation = +10
 type = storyline
 reward_rank = 4
 
+[agr_find_ghost]
+type = storyline
+reward_rank = 6
+
 [val_sos_help]
 type = storyline
 reward_rank = 3
@@ -1130,6 +1143,15 @@ reward_reputation = +10
 type = storyline
 reward_rank = 4
 reward_reputation = +10
+
+[dar_codedoor_1]
+type = storyline
+reward_rank = 3
+
+[dar_codedoor_2]
+type = storyline
+reward_rank = 3
+
 
 [bar_darklab_documents]
 type = storyline
@@ -1166,6 +1188,27 @@ type = storyline
 reward_rank = 40
 reward_reputation = +30
 
+[bar_resque_information_2]
+type = storyline
+reward_rank = 3
+
+[bar_dolg_community_quest]
+type = storyline
+reward_rank = 10
+
+[bar_dolg_base_rules]
+type = storyline
+reward_rank = 1
+
+[bar_darklab_documents]
+type = storyline
+reward_rank = 6
+
+[bar_darklab_documents2]
+type = storyline
+reward_rank = 10
+
+
 [yan_kill_brain_task]
 type = storyline
 reward_rank = 10
@@ -1190,6 +1233,17 @@ reward_rank = 5
 [yan_provodnik_task]
 type = storyline
 reward_rank = 4
+
+
+[yan_scientist_return_task]
+type = storyline
+reward_rank = 3
+
+[yan_kill_brain_task_2]
+type = storyline
+reward_rank = 6
+
+
 
 [mil_kill_sniper]
 type = storyline
@@ -1238,25 +1292,11 @@ reward_rank = 6
 type = storyline
 reward_rank = 7
 
-[cit_documents]
-type = storyline
-reward_rank = 8
-reward_reputation = +10
-
-[cit_killers_base]
-type = storyline
-reward_rank = 8
-reward_reputation = +10
-
-[cit_doctor_task]
-type = storyline
-reward_rank = 4
-
-[cit_doctor_escape_task]
-type = storyline
-reward_rank = 5
-
 [sar_secret_lab]
+type = storyline
+reward_rank = 10
+
+[sar_monolith]
 type = storyline
 reward_rank = 10
 
