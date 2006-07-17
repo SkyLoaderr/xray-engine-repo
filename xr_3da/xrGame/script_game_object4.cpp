@@ -179,7 +179,7 @@ CSightParams CScriptGameObject::sight_params	()
 {
 	CAI_Stalker						*stalker = smart_cast<CAI_Stalker*>(&object());
 	if (!stalker) {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member activate_slot!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member sight_params!");
 
 		CSightParams				result;
 		result.m_object				= 0;
