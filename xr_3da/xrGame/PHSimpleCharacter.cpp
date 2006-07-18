@@ -423,17 +423,24 @@ void CPHSimpleCharacter::Destroy(){
 
 }
 const static u64 impulse_time_constant=30;
-void		CPHSimpleCharacter::ApplyImpulse(const Fvector& dir,const dReal P)
+void		CPHSimpleCharacter::ApplyImpulse(const Fvector& dir,dReal P)
 {
 	if(!b_exist||b_external_impulse) return;
 	//if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	m_ext_imulse.set(dir);
+	if(b_lose_control||b_jumping||b_jump)
+	{
+		//m_ext_imulse.y-=3.f			;
+		//m_ext_imulse.normalize_safe()	;
+		m_ext_imulse.set(0,-1,0);
+		//P*=0.3f				;
+	}
 	Enable();
 	b_lose_control=true;
 	b_external_impulse=true;
 	m_ext_impuls_stop_step=ph_world->m_steps_num+impulse_time_constant;
 	//m_ext_imulse.set(Fvector().mul(dir,P/fixed_step/impulse_time_constant));
-	m_ext_imulse.set(dir);
-	dBodySetForce(m_body,dir.x*P/fixed_step,dir.y*P/fixed_step,dir.z*P/fixed_step);
+	dBodySetForce(m_body,m_ext_imulse.x*P/fixed_step,m_ext_imulse.y*P/fixed_step,m_ext_imulse.z*P/fixed_step);
 }
 
 void		CPHSimpleCharacter::ApplyForce(const Fvector& force)
@@ -474,6 +481,10 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 		b_external_impulse			=	false			;
 		m_ext_impuls_stop_step		=	u64(-1)			;
 		m_ext_imulse					.set(0,0,0)		;
+		Fvector							vel				;
+		GetVelocity						(vel)			;
+		dVectorLimit					(cast_fp(vel),m_max_velocity,cast_fp(vel));
+		SetVelocity(Fvector().set(0,0,0))				;
 	}
 	was_contact					=	is_contact		;
 	was_control					=	is_control		;
