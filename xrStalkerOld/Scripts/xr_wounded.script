@@ -78,45 +78,6 @@ function action_wounded:execute ()
     
     
     
-	-- отправл€ем чудака в кавер. ѕока что отключено за ненадобностью
---[[
-	if wound_manager.cover == "true" then
-		if self.pos == nil or self.vid == nil then
-			local pt = self.object:safe_cover(self.object:position(), 20, 0)
-			if pt then
-				self.pos = pt:position()
-				self.vid = pt:level_vertex_id()    	
-				if self.object:accessible(self.vid) == false then
-					local vtemp = vector():set(0, 0, 0); 
-					self.vid, vtemp = self.object:accessible_nearest(self.pos, vtemp)
-					self.pos = vtemp
-				end
-				self.object:set_desired_position      (self.pos)
-				self.object:set_desired_direction     ()
-				self.object:set_detail_path_type      (move.line)
-				self.object:set_path_type             (game_object.level_path)
-				self.object:set_dest_level_vertex_id  (self.vid)    
-				state_mgr.set_state(self.object, "walk")
-			end
-			return
-		else
-			-- кавер выбран, просто туда идем
-			if self.object:accessible(self.vid) == false then
-				self.vid = nil
-				return
-			end
-			printf("dist to cover [%s]", self.object:position():distance_to(self.pos))
-			if self.object:position():distance_to_sqr(self.pos) > 1 then
-				return
-			end			
-		end
-	else
-		self.pos = nil
-		self.vid = nil
-	end    
-]]
-    
-
 	local synsound = nil
 	if wound_manager.state == "true" then
 		local h = hit()
@@ -205,7 +166,6 @@ function Cwound_manager:update()
 	then
 		-- провер€ем на обычную раненость
 		self.fight	= self:process_fight(hp)
-		self.cover	= self:process_cover(hp)
 		self.victim = self:process_victim(hp)
 		self.state, self.sound = self:process_hp_wound(hp)
 	else
@@ -234,16 +194,6 @@ function Cwound_manager:process_fight(hp)
 			return tostring(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.hp_fight[key].state))
 		end
 	end		
-	return "true"
-end
-function Cwound_manager:process_cover(hp)
---	local key
---	key = self:get_key_from_distance(self.a.hp_cover, hp)
---	if key ~= nil then
---		if self.a.hp_cover[key].state then
---			return tostring(xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.hp_cover[key].state))
---		end
---	end		
 	return "true"
 end
 function Cwound_manager:process_victim(hp)
