@@ -39,19 +39,8 @@
 
 using namespace luabind;
 
-CScriptGameObject *CSightParams__object	(CSightParams *self)
-{
-	return	(self->m_object ? self->m_object->lua_game_object() : 0);
-}
-
 class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject> &instance)
 {
-	class_<CSightParams>("CSightParams")
-		.def(							constructor<>())
-		.def("object",					&CSightParams__object)
-		.def_readonly("m_vector",		&CSightParams::m_vector)
-		.def_readonly("m_sight_type",	&CSightParams::m_sight_type);
-
 	instance
 		.def("add_sound",					(u32 (CScriptGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32))(CScriptGameObject::add_sound))
 		.def("add_sound",					(u32 (CScriptGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32,LPCSTR))(CScriptGameObject::add_sound))
@@ -274,23 +263,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("marked_dropped",				&CScriptGameObject::MarkedDropped)
 		.def("unload_magazine",				&CScriptGameObject::UnloadMagazine)
 
-		.enum_("bla-bla")
-		[
-			value("eSightTypeCurrentDirection",	int(SightManager::eSightTypeCurrentDirection)),
-			value("eSightTypePathDirection",	int(SightManager::eSightTypePathDirection	)),
-			value("eSightTypeDirection",		int(SightManager::eSightTypeDirection		)),
-			value("eSightTypePosition",			int(SightManager::eSightTypePosition		)),
-			value("eSightTypeObject",			int(SightManager::eSightTypeObject			)),
-			value("eSightTypeCover",			int(SightManager::eSightTypeCover			)),
-			value("eSightTypeSearch",			int(SightManager::eSightTypeSearch			)),
-			value("eSightTypeLookOver",			int(SightManager::eSightTypeLookOver		)),
-			value("eSightTypeCoverLookOver",	int(SightManager::eSightTypeCoverLookOver	)),
-			value("eSightTypeFireObject",		int(SightManager::eSightTypeFireObject		)),
-			value("eSightTypeFirePosition",		int(SightManager::eSightTypeFirePosition	)),
-			value("eSightTypeDummy",			int(SightManager::eSightTypeDummy			))
-		]
-
-		.def("sight_params",					&CScriptGameObject::sight_params)
+		.def("sight_params",				&CScriptGameObject::sight_params)
 
 	;return	(instance);
 }
