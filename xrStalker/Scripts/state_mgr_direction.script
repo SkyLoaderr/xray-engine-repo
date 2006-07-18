@@ -9,6 +9,12 @@ function eva_state_mgr_direction:evaluate()
 		return true
 	end
 
+
+
+    --local sight_type = self.object:sight_params()
+    
+
+
 	-- Если задан объект на который смотреть
 	if self.st.look_object ~= nil then
 		if self.st.current_object ~= self.st.look_object or
