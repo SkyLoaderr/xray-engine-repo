@@ -30,6 +30,8 @@ class CPseudoGigant : public CBaseMonster,
 
 	float			m_kick_damage;
 	
+	u32				m_time_kick_actor_slow_down;
+
 	SVelocityParam	m_fsVelocityJumpPrepare;
 	SVelocityParam	m_fsVelocityJumpGround;
 
@@ -52,6 +54,8 @@ public:
 	virtual	void	on_threaten_execute	();
 
 	virtual void	HitEntityInJump		(const CEntity *pEntity);
+	virtual void	TranslateActionToPathParams	();
+
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

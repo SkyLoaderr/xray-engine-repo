@@ -14,6 +14,9 @@
 #include "../../../detail_path_manager_space.h"
 #include "../../../detail_path_manager.h"
 #include "../../../CharacterPhysicsSupport.h"
+#include "../control_path_builder_base.h"
+
+
 CPseudoGigant::CPseudoGigant()
 {
 	CControlled::init_external(this);
@@ -159,6 +162,8 @@ void CPseudoGigant::Load(LPCSTR section)
 	m_kick_particles		= pSettings->r_string(section,"HugeKick_Particles");
 	read_distance			(section,"HugeKick_MinMaxDist",		m_threaten_dist_min,	m_threaten_dist_max);
 	read_delay				(section,"HugeKick_MinMaxDelay",	m_threaten_delay_min,	m_threaten_delay_max);
+
+	m_time_kick_actor_slow_down	= pSettings->r_u32(section,"HugeKick_Time_SlowDown");
 }
 
 void CPseudoGigant::reinit()
@@ -272,7 +277,7 @@ void CPseudoGigant::on_threaten_execute()
 		pA->cam_Active()->Move(Random.randI(2) ? kUP	: kDOWN, Random.randF(0.3f * hit_value)); 
 	}
 
-	Actor()->lock_accel_for	(2000);
+	Actor()->lock_accel_for	(m_time_kick_actor_slow_down);
 	
 	// Нанести хит
 	NET_Packet	l_P;
@@ -296,3 +301,21 @@ void CPseudoGigant::HitEntityInJump		(const CEntity *pEntity)
 	SAAParam &params	= anim().AA_GetParams("jump_attack_1");
 	HitEntity			(pEntity, params.hit_power, params.impulse, params.impulse_dir);
 }
+
+void CPseudoGigant::TranslateActionToPathParams()
+{
+	if ((anim().m_tAction != ACT_RUN) && (anim().m_tAction != ACT_WALK_FWD)) {
+		inherited::TranslateActionToPathParams();
+		return;
+	}
+
+	u32 vel_mask = (m_bDamaged ? MonsterMovement::eVelocityParamsWalkDamaged : MonsterMovement::eVelocityParamsWalk);
+	u32 des_mask = (m_bDamaged ? MonsterMovement::eVelocityParameterWalkDamaged : MonsterMovement::eVelocityParameterWalkNormal);
+
+	if (m_force_real_speed) vel_mask = des_mask;
+
+	path().set_velocity_mask	(vel_mask);
+	path().set_desirable_mask	(des_mask);
+	path().enable_path			();
+}
+
