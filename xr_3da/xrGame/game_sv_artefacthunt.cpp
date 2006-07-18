@@ -1070,13 +1070,11 @@ void	game_sv_ArtefactHunt::MoveAllAlivePlayers			()
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 		game_PlayerState* ps	= l_pC->ps;
 		if (!l_pC->net_Ready || ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || ps->Skip)	continue;
-		if (ps->testFlag(GAME_PLAYER_FLAG_ONBASE)) continue;
 		CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(l_pC->owner);
 		CActor* pActor = smart_cast<CActor*> (Level().Objects.net_Find(ps->GameID));
 		if (!pA || !pActor) continue;
 
-
-		assign_RP(l_pC->owner, ps);
+		if (!ps->testFlag(GAME_PLAYER_FLAG_ONBASE)) assign_RP(l_pC->owner, ps);
 		//-----------------------------------------------
 		Fvector Pos = pA->o_Position;
 		Fvector Angle = pA->o_Angle;
