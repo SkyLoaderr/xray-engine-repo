@@ -622,6 +622,7 @@
 			wpn_spas12 \n
 			ammo_12x70_buck \n
 			scientific_outfit \n
+			device_torch \n			
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
@@ -652,6 +653,7 @@
 			wpn_spas12 \n
 			ammo_12x70_buck = 1 \n
 			detector_advances \n
+			device_torch \n			
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
