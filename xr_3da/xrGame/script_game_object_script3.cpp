@@ -39,10 +39,16 @@
 
 using namespace luabind;
 
+CScriptGameObject *CSightParams__object	(CSightParams *self)
+{
+	return	(self->m_object ? self->m_object->lua_game_object() : 0);
+}
+
 class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject> &instance)
 {
 	class_<CSightParams>("CSightParams")
-		.def_readonly("m_object",		&CSightParams::m_object)
+		.def(							constructor<>())
+		.def("object",					&CSightParams__object)
 		.def_readonly("m_vector",		&CSightParams::m_vector)
 		.def_readonly("m_sight_type",	&CSightParams::m_sight_type);
 
