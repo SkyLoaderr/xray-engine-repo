@@ -681,6 +681,7 @@ void CUIBuyWeaponWnd::OnBtnClearClicked(){
 	game_cl_Deathmatch * dm = smart_cast<game_cl_Deathmatch *>(&(Game()));
 	if (dm) dm->OnBuyMenu_DefaultItems();
 }
+#include "../../xr_input.h"
 
 void CUIBuyWeaponWnd::OnBtnBulletBuy(int slot){
 	if (UITopList[slot].GetDragDropItemsList().empty())
@@ -694,7 +695,12 @@ void CUIBuyWeaponWnd::OnBtnBulletBuy(int slot){
 	string256 single_item;
 
 	itemsList = pSettings->r_string(item->GetSectionName(), "ammo_class");
-	_GetItem(itemsList.c_str(), 0, single_item);
+	int n = 0;
+	if (pInput->iGetAsyncKeyState(DIK_LSHIFT))
+		n = 1;
+	if (_GetItemCount(itemsList.c_str())<2)
+		n = 0;
+	_GetItem(itemsList.c_str(), n, single_item);
 //	Msg("Ammo - %s", single_item);
 
 	item = UIBagWnd.GetItemBySectoin(single_item);
