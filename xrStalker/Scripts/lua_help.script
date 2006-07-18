@@ -320,6 +320,7 @@ C++ class story_ids {
     const bar_simulation_box_5 = 2024;
     const bar_svoboda_ambush_tiran = 514;
     const bar_water_tower = 508;
+    const brain_snork_growl = 923;
     const bun_bloodsucker_prim = 1550;
     const cit_actor_escape_car_zone = 1205;
     const cit_actor_escape_zone = 1203;
@@ -1642,7 +1643,7 @@ C++ class CALifeMonsterMovementManager {
 C++ class CALifeMonsterPatrolPathManager {
     function path(string);
     function target_game_vertex_id() const;
-    function target_position() const;
+    function target_position(CALifeMonsterPatrolPathManager*);
     function target_level_vertex_id() const;
     function completed() const;
     function route_type(const enum PatrolPathManager::EPatrolRouteType&);
@@ -1873,7 +1874,7 @@ C++ class danger_object {
     function type() const;
     function time() const;
     operator ==(const danger_object&, danger_object);
-    function position() const;
+    function position(const danger_object*);
     function object(const danger_object*);
     function perceive_type() const;
     function dependent_object(const danger_object*);
@@ -1988,7 +1989,8 @@ C++ class CGameFont {
 
 C++ class CGameGraph {
     function vertex_id(const GameGraph__CVertex*) const;
-    function accessible(const number&) const;
+    function accessible(const CGameGraph*, const number&);
+    function accessible(const CGameGraph*, const number&, boolean);
     function vertex(const number&) const;
     function valid_vertex_id(const number&) const;
 };
@@ -2229,7 +2231,7 @@ C++ class patrol {
     patrol (string, enum PatrolPathManager::EPatrolStartType, enum PatrolPathManager::EPatrolRouteType, boolean, number);
 
     function level_vertex_id(number) const;
-    function point(number) const;
+    function point(const patrol*, number);
     function flag(number, number) const;
     function game_vertex_id(number) const;
     function flags(number) const;
@@ -4603,6 +4605,18 @@ C++ class game_object {
     const animation = 2;
     const dialog_pda_msg = 0;
     const dummy = -1;
+    const eSightTypeCover = 5;
+    const eSightTypeCoverLookOver = 8;
+    const eSightTypeCurrentDirection = 0;
+    const eSightTypeDirection = 2;
+    const eSightTypeDummy = -1;
+    const eSightTypeFireObject = 9;
+    const eSightTypeFirePosition = 10;
+    const eSightTypeLookOver = 7;
+    const eSightTypeObject = 4;
+    const eSightTypePathDirection = 1;
+    const eSightTypePosition = 3;
+    const eSightTypeSearch = 6;
     const enemy = 2;
     const friend = 0;
     const game_path = 0;
@@ -4656,6 +4670,7 @@ C++ class game_object {
     function play_cycle(string, boolean);
     function clear_animations();
     function enable_trade();
+    function sight_params();
     function patrol();
     function unload_magazine();
     function mark_item_dropped(game_object*);
@@ -7001,9 +7016,9 @@ C++ class CUIWindow {
 
 C++ class GameGraph__CVertex {
     function level_vertex_id() const;
-    function game_point() const;
+    function game_point(const GameGraph__CVertex*);
     function level_id() const;
-    function level_point() const;
+    function level_point(const GameGraph__CVertex*);
 };
 
 C++ class CWeaponAK74 : CGameObject {
