@@ -21,10 +21,6 @@ function action_door:reset_scheme(loading)
 	printf("_bp: action_door:reset_scheme: self.object:name()='%s'", self.object:name())
 	self.initialized = false
 	
-	self:initialize(loading)
-end
-
-function action_door:initialize(loading)
 	local ph_shell = self.object:get_physics_shell()
 	if not ph_shell then
 		return
@@ -34,7 +30,6 @@ function action_door:initialize(loading)
 	self.low_limits, self.hi_limits = 0, 0
 	self.low_limits, self.hi_limits	= self.joint:get_limits(self.low_limits, self.hi_limits, 0)
 
-	self.run = 0
 	self.block = false
 	self.soundless_block = false
 
@@ -59,14 +54,8 @@ function action_door:initialize(loading)
 		self:open_door(disable_snd)
 	end
 
-
-
 	self.object:set_nonscript_usable(false)
 
---	if self.st.snd_init then
---		self:door_play_snd_from_set(self.st.snd_init)
---	end
-	
 	self.initialized = true
 end
 
@@ -87,7 +76,7 @@ function action_door:door_play_snd_from_set(sndset)
 		abort("object '%s': unable to create a sound object for sound '%s' (soundset '%s')",
 			self.object:name(), snd, sndset)
 	end
-	self.snd_obj:play_at_pos(self.object, self.object:position())--, 0, sound_object.s2d) -- FIXME: don't use position()
+	self.snd_obj:play_at_pos(self.object, self.object:position())
 end
 
 function action_door:update(delta)
@@ -141,7 +130,7 @@ function action_door:open_door(disable_snd)
 	if self.st.no_force == true then
 		self.joint:set_max_force_and_velocity(0, 0, 0)
 	else
-		self.joint:set_max_force_and_velocity(200, -3, 0)
+		self.joint:set_max_force_and_velocity(400, -3, 0)
 	end
 	self.block = false
 
@@ -208,24 +197,23 @@ function action_door:try_switch()
 end
 
 function action_door:use_callback(door, actor)
-	if self:try_switch() then
-		return
-	end
-
 	if self.st.locked then
 		if self.st.snd_open_start then
 			self:door_play_snd_from_set(self.st.snd_open_start)
 		end
+	end
+
+	if self:try_switch() then
 		return
 	end
 
-	local angle = self.joint:get_axis_angle(90)
+--	local angle = self.joint:get_axis_angle(90)
 
-	if angle - self.low_limits > self.hi_limits - angle then
-		self:open_door(false)
-	else
-		self:close_door(false)
-	end
+--	if angle - self.low_limits > self.hi_limits - angle then
+--		self:open_door(false)
+--	else
+--		self:close_door(false)
+--	end
 end
 function action_door:hit_callback(obj, amount, local_direction, who, bone_index)
 	local who_name
