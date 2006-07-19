@@ -166,6 +166,9 @@ public:
 
 	IC u32					client_Count		()			{ return net_Players.size(); }
 	IC IClient*				client_Get			(u32 num)	{ return net_Players[num]; }
+
+	IC u32					disconnected_client_Count		()			{ return net_Players_disconnected.size(); }
+	IC IClient*				disconnected_client_Get			(u32 num)	{ return net_Players_disconnected[num]; }
 	
 	BOOL					HasBandwidth		(IClient* C);
 

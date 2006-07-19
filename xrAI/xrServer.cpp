@@ -52,7 +52,7 @@ xrServer::~xrServer()
 //--------------------------------------------------------------------
 xrClientData*	xrServer::ID_to_client		(ClientID ID)
 {
-	if (0==ID.value())			return 0;
+	if (0==ID.value())			return NULL;
 	csPlayers.Enter		();
 	for (u32 client=0; client<net_Players.size(); ++client)
 	{
@@ -61,8 +61,15 @@ xrClientData*	xrServer::ID_to_client		(ClientID ID)
 			return (xrClientData*)net_Players[client];
 		}
 	}
+	for (u32 client=0; client<net_Players_disconnected.size(); ++client)
+	{
+		if (net_Players_disconnected[client]->ID==ID)	{
+			csPlayers.Leave		();
+			return (xrClientData*)net_Players_disconnected[client];
+		}
+	}
 	csPlayers.Leave		();
-	return 0;
+	return NULL;
 }
 
 CSE_Abstract*	xrServer::ID_to_entity		(u16 ID)

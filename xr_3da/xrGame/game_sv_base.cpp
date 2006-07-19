@@ -29,7 +29,7 @@ game_PlayerState*	game_sv_GameState::get_it					(u32 it)
 game_PlayerState*	game_sv_GameState::get_id					(ClientID id)							
 {
 	xrClientData*	C	= (xrClientData*)m_server->ID_to_client	(id);
-	if (0==C)			return 0;
+	if (0==C)			return NULL;
 	else				return C->ps;
 }
 

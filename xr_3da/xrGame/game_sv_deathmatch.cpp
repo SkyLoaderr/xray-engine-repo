@@ -147,7 +147,22 @@ void	game_sv_Deathmatch::OnRoundStart			()
 
 		if (ps->Skip) continue;
 	}
-	
+	//Clear disconnected players
+	cnt = m_server->disconnected_client_Count();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		// init
+		xrClientData *l_pC = (xrClientData*)	m_server->disconnected_client_Get(it);
+		if (!l_pC || !l_pC->ps) continue;
+		game_PlayerState* ps	= l_pC->ps;
+
+		ps->clear();		
+		//---------------------------------------
+		SetPlayersDefItems		(ps);
+		//---------------------------------------
+		Money_SetStart			(l_pC->ID);
+		//---------------------------------------
+	}
 }
 
 void	game_sv_Deathmatch::OnRoundEnd				(LPCSTR reason)
@@ -1331,7 +1346,9 @@ void game_sv_Deathmatch::OnDestroyObject			(u16 eid_who)
 
 void game_sv_Deathmatch::Money_SetStart			(ClientID	id_who)
 {
-	game_PlayerState*	ps_who	=	get_id	(id_who);
+	xrClientData*	C	= (xrClientData*)m_server->ID_to_client	(id_who);
+	if (!C || (C->ID != id_who)) return;
+	game_PlayerState*	ps_who	=	(game_PlayerState*)	C->ps;
 	if (!ps_who) return;
 	ps_who->money_for_round = 0;
 	if (ps_who->team < 0) return;
@@ -1872,11 +1889,8 @@ void game_sv_Deathmatch::OnPlayerConnect	(ClientID id_who)
 		return;
 	}
 
-	if (!xrCData->flags.bReconnect)
-	{
-		Money_SetStart(id_who);
-		SetPlayersDefItems(ps_who);
-	};
+	if (!xrCData->flags.bReconnect) Money_SetStart(id_who);
+	SetPlayersDefItems(ps_who);
 }
 
 void	game_sv_Deathmatch::OnPlayerConnectFinished	(ClientID id_who)

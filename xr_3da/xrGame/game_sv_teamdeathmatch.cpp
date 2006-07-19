@@ -109,6 +109,7 @@ void game_sv_TeamDeathmatch::OnPlayerConnect	(ClientID id_who)
 {
 	inherited::OnPlayerConnect	(id_who);
 
+	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 	LPCSTR	options				=	get_name_id	(id_who);
 	ps_who->team				=	u8(get_option_i(options,"team",AutoTeam()));
@@ -116,7 +117,7 @@ void game_sv_TeamDeathmatch::OnPlayerConnect	(ClientID id_who)
 
 	if (ps_who->Skip) return;
 
-	Money_SetStart(id_who);
+	if (!xrCData->flags.bReconnect) Money_SetStart(id_who);
 	SetPlayersDefItems(ps_who);
 }
 
