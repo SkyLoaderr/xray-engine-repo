@@ -58,7 +58,7 @@ end
 function act_state_mgr_movement_walk:initialize()
 	action_base.initialize(self)
 	self.object:set_movement_type(move.walk)
-	state_mgr_direction.update_movement_direction(self.object, self.st)
+--	state_mgr_direction.update_movement_direction(self.object, self.st)
 end
 function act_state_mgr_movement_walk:execute()
 	action_base.execute(self)
@@ -74,7 +74,7 @@ end
 function act_state_mgr_movement_run:initialize()
 	action_base.initialize(self)
 	self.object:set_movement_type(move.run)
-	state_mgr_direction.update_movement_direction(self.object, self.st)
+--	state_mgr_direction.update_movement_direction(self.object, self.st)
 end
 function act_state_mgr_movement_run:execute()
 	action_base.execute(self)

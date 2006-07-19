@@ -612,7 +612,11 @@ end
 -- если места нету или нету свободных подходящих работ, то
 -- вытолкнуть из этого smart terrain с подходящей работы объект, который попал в него не эксклюзивно.
 function se_smart_terrain:register_npc( obj )
-	printf( "[smart_terrain %s] register called obj=%s gulag_type=%s", self:name(), obj:name(), self.gparams.type )
+    if self:name() == "mil_lager" then
+        printf( "[smart_terrain %s] register called obj=%s gulag_type=%s", self:name(), obj:name(), self.gparams.type )
+    end
+
+--	printf( "[smart_terrain %s] register called obj=%s gulag_type=%s", self:name(), obj:name(), self.gparams.type )
 
 	local npc_info = {
 		-- старые squad и group
@@ -660,7 +664,7 @@ function se_smart_terrain:register_npc( obj )
 
 	sim_statistic.add( obj )
 
-	printf( "[smart_terrain %s] added %s to gulag type=%s", self:name(), obj:name(), self.gparams.type )
+--	printf( "[smart_terrain %s] added %s to gulag type=%s", self:name(), obj:name(), self.gparams.type )
 end
 
 -- отпустить npc

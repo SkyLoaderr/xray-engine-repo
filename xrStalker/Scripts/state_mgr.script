@@ -195,9 +195,9 @@ end
 function act_state_mgr_end:execute()
 	action_base.execute(self)
 
-	if not self.st.planner:evaluator(self.st.properties["movement_stand_now"]):evaluate() then		
-		state_mgr_direction.update_movement_direction(self.object, self.st)
-	end
+--	if not self.st.planner:evaluator(self.st.properties["movement_stand_now"]):evaluate() then		
+--		state_mgr_direction.update_movement_direction(self.object, self.st)
+--	end
 	local t = state_lib.states[self.st.target_state].weapon
 	local w = isWeapon(self.object:best_weapon())
 

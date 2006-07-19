@@ -44,6 +44,12 @@ function to_str(what)
 	end
 end
 
+
+function vector_cmp(a, b)
+    return a.x == b.x and a.y == b.y and a.z == b.z
+end
+
+
 -- Создает и возвращает копию вектора
 function vector_copy_by_val(vec)
 --[[

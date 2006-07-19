@@ -249,10 +249,11 @@ function goap_graph(st, npc)
 	action:add_effect    (world_property(st.properties["movement"],                 true))
 	st.planner:add_action(st.operators["movement_stand"], action)
 
-	action = state_mgr_movement.act_state_mgr_movement_stand("state_mgr_movement_stand_now")
-	action:add_precondition    (world_property(st.properties["movement_stand_now"],     false))
-	action:add_effect    (world_property(st.properties["movement_stand_now"],       true))
-	st.planner:add_action(st.operators["movement_stay_now"], action)
+--	action = state_mgr_movement.act_state_mgr_movement_stand("state_mgr_movement_stand_now")
+--  action:add_precondition    (world_property(st.properties["movement"],               false))
+--	action:add_precondition    (world_property(st.properties["movement_stand_now"],     false))
+--	action:add_effect    (world_property(st.properties["movement_stand_now"],       true))
+--	st.planner:add_action(st.operators["movement_stay_now"], action)
 
 
 
@@ -319,7 +320,7 @@ function goap_graph(st, npc)
 	action:add_precondition    (world_property(st.properties["weapon"],                 true))
 	action:add_precondition    (world_property(st.properties["animation_none_now"],     true))
 	action:add_precondition    (world_property(st.properties["animstate_idle_now"],     true))
-	action:add_precondition    (world_property(st.properties["movement_stand_now"],     true))	
+--	action:add_precondition    (world_property(st.properties["movement_stand_now"],     true))	
 	action:add_effect    (world_property(st.properties["direction"],                true))
 	st.planner:add_action(st.operators["direction_turn"], action)
 
@@ -330,7 +331,7 @@ function goap_graph(st, npc)
 	action:add_precondition    (world_property(st.properties["weapon"],                 true))
 	action:add_precondition    (world_property(st.properties["animation_none_now"],     true))
 	action:add_precondition    (world_property(st.properties["animstate_idle_now"],     true))
-	action:add_precondition    (world_property(st.properties["movement_stand_now"],     true))	
+--	action:add_precondition    (world_property(st.properties["movement_stand_now"],     true))	
 	action:add_effect    (world_property(st.properties["direction"],                true))
 	st.planner:add_action(st.operators["direction_search"], action)
 
