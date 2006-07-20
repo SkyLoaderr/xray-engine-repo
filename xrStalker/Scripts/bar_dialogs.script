@@ -202,6 +202,7 @@ function give_bar_tiran_pda(first_speaker, second_speaker)
 	local bar_tiran_pda = first_speaker:object("bar_tiran_pda")
 	if bar_tiran_pda then
 		dialogs.relocate_item(second_speaker, bar_tiran_pda, "out")
+		dialogs.relocate_money(second_speaker, 2000, "in")
 	end
 end
 function have_tiran_reward(first_speaker, second_speaker)
