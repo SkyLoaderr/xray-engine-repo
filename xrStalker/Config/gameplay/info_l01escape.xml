@@ -87,6 +87,7 @@
 	</info_portion>
 	<info_portion id="escape_blockpost_case_have"></info_portion>
 	<info_portion id="escape_blockpost_case_done"></info_portion>
+	<info_portion id="esc_matugalnik_off"></info_portion>
 	
 	<!-- Dinamyte -->
 	<info_portion id="escape_dynamite_start">
