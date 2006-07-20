@@ -171,7 +171,9 @@ function actor_transfer_research(first_speaker, second_speaker)
 	local flash = first_speaker:object("bar_ecolog_flash")
 	if flash then
 		dialogs.relocate_item(second_speaker, flash, "out")
-		dialogs.relocate_money(second_speaker, 1621, "in")
+		if db.actor:has_info("bar_rescue_research_reward") then
+             dialogs.relocate_money(second_speaker, 1621, "in")
+        end
 	end
 end
 
