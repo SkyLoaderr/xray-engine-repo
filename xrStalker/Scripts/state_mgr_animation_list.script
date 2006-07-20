@@ -443,7 +443,7 @@ animations = {
 									rnd = 100 },
 						into	= nil,
 						out		= { [0]	= {"prison_1"}},
-						idle	= { [0]	= "prison_0" },
+						idle	= { [0]	= "doc_agr_0" },
 						rnd		= nil},
 						
 		warding		= {	prop	= { maxidle = 10,
