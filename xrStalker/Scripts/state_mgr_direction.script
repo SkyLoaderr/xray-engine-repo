@@ -32,6 +32,9 @@ function eva_state_mgr_direction:evaluate()
 			dir.y = 0
 		end		
         if utils.vector_cmp(sight_type.m_vector, dir) ~= true then
+            printf("%s false vector", self.object:name())
+            printf("%s %s %s", sight_type.m_vector.x, sight_type.m_vector.y, sight_type.m_vector.z)
+            printf("%s %s %s", dir.x, dir.y, dir.z)
             return false
         end
 
@@ -41,7 +44,7 @@ function eva_state_mgr_direction:evaluate()
 
 	-- Если не задано куда смотреть.
 	-- И если мы до этого куда то смотрели
-	if sight_type.m_object ~= nil then
+	if sight_type.m_object ~= nil then        
 		return false	
 	end
 	-- Или если мы смотрели в какую то позицию
@@ -125,9 +128,8 @@ function act_state_mgr_direction_search:__init(name, st) super (nil, name)
 end
 function act_state_mgr_direction_search:initialize()
 	action_base.initialize(self)
-	if self.st.no_rotate ~= true then		
-		self.object:set_sight(look_position_type(self.object, self.st), nil, 0)
-	end
+    printf("set sight %s nil", self.object:name())
+    self.object:set_sight(look_position_type(self.object, self.st), nil, 0)
 end
 function act_state_mgr_direction_search:execute()
 	action_base.execute(self)
