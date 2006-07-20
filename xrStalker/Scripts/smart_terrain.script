@@ -436,11 +436,11 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 		local community, is_stalker = self:get_obj_community( obj )
 
         --' Проверка что смарттеррейн и НПС находятся в одном кластере уровней (чтобы не ходили через БАР)
-        local smart_level_group = self:get_level_name()
-        local npc_level_group = alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id())
-        if level_groups[smart_level_group] ~= level_groups[npc_level_group] then
-            return false
-        end
+--        local smart_level_group = self:get_level_name()
+--        local npc_level_group = alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id())
+--        if level_groups[smart_level_group] ~= level_groups[npc_level_group] then
+--            return false
+--        end
     
 
 --		if self:name() == "bun_krovosos_nest" and
