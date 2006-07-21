@@ -520,7 +520,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release_Dedicated|Win32"
-			OutputDirectory="x:\"
+			OutputDirectory="x:\dedicated\"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="1"
 			UseOfMFC="0"
