@@ -222,14 +222,22 @@ function animation:set_state(id, reset)
 			if self.mgr.subanim > 0 then
 				for key = self.mgr.subanim, 0 do
 					local a = state_mgr_animation_list.animations[self.states.target_state].subanim[key]
-					if a and a.out then
-						anima = self:anim_for_slot(wpn_slot,a.out)
-						if anima then
-							add_anim(self.npc, anima, true)							
+					if a then 
+						if a.out then
+							anima = self:anim_for_slot(wpn_slot,a.out)
+							if anima then
+								add_anim(self.npc, anima, true)							
+							end
+						end
+						if a.into_music then
+							stop_play_sound(self.npc)
 						end
 					end
 				end
 			end			
+
+
+
 			if state_mgr_animation_list.animations[self.states.target_state].out ~= nil then
 				anima = self:anim_for_slot(wpn_slot,state_mgr_animation_list.animations[self.states.target_state].out)
 				if anima then
