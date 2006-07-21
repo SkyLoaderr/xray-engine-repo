@@ -437,7 +437,7 @@
 		</Configuration>
 		<Configuration
 			Name="Mixed_Dedicated|Win32"
-			OutputDirectory="x:\"
+			OutputDirectory="x:\dedicated\"
 			IntermediateDirectory=".\Mixed"
 			ConfigurationType="1"
 			UseOfMFC="0"
@@ -479,7 +479,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 "
 				AdditionalDependencies="msacm32.lib vfw32.lib ogg_static.lib theora_static.lib"
-				OutputFile="x:\XR_3DA.exe"
+				OutputFile="x:\dedicated\XR_3DA.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				IgnoreDefaultLibraryNames="libcmt.lib"
@@ -563,7 +563,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 "
 				AdditionalDependencies="msacm32.lib vfw32.lib ogg_static.lib theora_static.lib"
-				OutputFile="x:\XR_3DA.exe"
+				OutputFile="x:\dedicated\XR_3DA.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
