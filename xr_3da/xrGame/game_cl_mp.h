@@ -241,7 +241,8 @@ public:
 	virtual		void				net_import_state		(NET_Packet& P);
 	virtual		void				OnRankChanged			();
 	virtual		void				OnTeamChanged			() {};
-	virtual		void				OnMoneyChanged			(NET_Packet& P);
+	virtual		void				OnMoneyChanged			() {};
+	virtual		void				OnEventMoneyChanged		(NET_Packet& P);
 
 	virtual		void				OnSwitchPhase_InProgress();
 

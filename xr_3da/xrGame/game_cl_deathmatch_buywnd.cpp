@@ -353,3 +353,12 @@ void				game_cl_Deathmatch::ChangeItemsCosts			(CUIBuyWeaponWnd* pBuyMenu)
 {
 	if (!pBuyMenu) return;
 };
+
+void				game_cl_Deathmatch::OnMoneyChanged				()
+{	
+	if (pCurBuyMenu && pCurBuyMenu->IsShown())
+	{
+		pCurBuyMenu->SetMoneyAmount(local_player->money_for_round);
+		pCurBuyMenu->CheckBuyAvailabilityInSlots();
+	}
+}

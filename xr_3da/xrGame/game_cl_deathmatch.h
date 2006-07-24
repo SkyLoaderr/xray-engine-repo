@@ -133,6 +133,7 @@ public:
 	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	
 	virtual		void				OnRankChanged			();
 	virtual		void				OnTeamChanged			();
+	virtual		void				OnMoneyChanged			();
 
 	virtual		void				OnSwitchPhase_InProgress();
 

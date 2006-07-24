@@ -357,7 +357,7 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		}break;
 	case GAME_EVENT_PLAYERS_MONEY_CHANGED:
 		{
-			OnMoneyChanged(P);
+			OnEventMoneyChanged(P);
 		}break;
 	case GAME_EVENT_PLAYER_GAME_MENU_RESPOND:
 		{
@@ -942,11 +942,12 @@ bool	game_cl_mp::Is_Spectator_Camera_Allowed			(CSpectator::EActorCameras Camera
 	return (!!(m_u8SpectatorModes & (1<<Camera)));
 };
 
-void	game_cl_mp::OnMoneyChanged			(NET_Packet& P)
+void	game_cl_mp::OnEventMoneyChanged			(NET_Packet& P)
 {
 	if (!local_player) return;
 	CUIGameDM* pUIDM = smart_cast<CUIGameDM*>(m_game_ui_custom);
 	local_player->money_for_round = P.r_s32();
+	OnMoneyChanged();
 	{
 		if(pUIDM)
 		{
