@@ -39,6 +39,9 @@ function actor_binder:net_spawn(data)
 		actor_stats.add_to_ranking(self.object:id())
 	end
 
+	--' Загружаем настройки дропа
+	death_manager.init_drop_settings()
+
 	return true
 end
 ----------------------------------------------------------------------------------------------------------------------
