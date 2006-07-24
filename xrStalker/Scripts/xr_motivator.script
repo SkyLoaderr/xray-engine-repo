@@ -237,7 +237,6 @@ function motivator_binder:update(delta)
         self.first_update = true
     end
 
-
     if time_global() - self.last_update > 1000 then
        sr_light.check_light(self.object)
        self.last_update = time_global()
@@ -262,6 +261,17 @@ function motivator_binder:update(delta)
 	if self.object:alive() then
 		xr_sound.update(self.object)
 	end
+
+	if self.object:alive() then
+		if self.object:is_talk_enabled() then
+			self.object:set_tip_text("character_use")
+		else
+			self.object:set_tip_text("")
+		end
+	else
+		self.object:set_tip_text_default()
+	end
+
 
 	self.object:info_clear()
 	local best_enemy = self.object:best_enemy()
