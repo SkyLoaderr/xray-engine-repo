@@ -54,7 +54,7 @@
 		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c"/>
 	</game_saved>
 
-	<autosave  x="100" y="660" width="800" height="60">
+	<autosave  x="100" y="720" width="800" height="60">
 		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">st_autosave</text>
 	</autosave>
 	
