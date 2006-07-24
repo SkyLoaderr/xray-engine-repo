@@ -380,12 +380,6 @@
                 <text>gar_dolg_blokpost_111</text>
                 <next>1111</next>
             </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
             <phrase id="11">
                 <text>gar_dolg_blokpost_11</text>
                 <next>111</next>
@@ -481,12 +475,6 @@
             <phrase id="33">
                 <text>gar_dolg_blokpost_33</text>
             </phrase>
-            <phrase id="3">
-                <text></text>
-                <precondition>garbage_dialogs.blokpost_pass</precondition>
-                <has_info>gar_free_pass</has_info>
-                <next>33</next>
-            </phrase>
             <phrase id="1">
                 <text></text>
                 <precondition>dialogs.actor_not_in_dolg</precondition>
@@ -500,6 +488,17 @@
                 <dont_has_info>gar_free_pass</dont_has_info>
                 <has_info>gar_kill_boars_quest</has_info>
                 <next>22</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text></text>
+                <precondition>garbage_dialogs.blokpost_pass</precondition>
+                <next>33</next>
             </phrase>
         </phrase_list>
     </dialog>
