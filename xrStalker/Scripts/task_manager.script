@@ -684,6 +684,7 @@ function task_complete(p1, p2)
 	return false
 end
 function task_fail(p1, p2)
+	local aa = alife()
 	if active_task[p1].full_completed == false then
 		if p1 == "eliminate_lager" then
 			aa:object(active_task[p1].selected_target):lock_population(false)
