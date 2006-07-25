@@ -340,6 +340,9 @@ void CBaseMonster::on_kill_enemy(const CEntity *obj)
 	
 	// удалить всю информацию о хитах
 	HitMemory.remove_hit_info	(entity);
+
+	// удалить всю информацию о звуках
+	SoundMemory.clear			();
 }
 
 CMovementManager *CBaseMonster::create_movement_manager	()
@@ -474,13 +477,13 @@ void CBaseMonster::OnEvent(NET_Packet& P, u16 type)
 	inherited::OnEvent			(P,type);
 	CInventoryOwner::OnEvent	(P,type);
 
-	u16 id;
+	u16			id;
 	switch (type){
 	case GE_OWNERSHIP_TAKE:
 		{
-			P.r_u16				(id);
-			CObject				*O	= Level().Objects.net_Find	(id);
-			VERIFY				(O);
+			P.r_u16		(id);
+			CObject		*O	= Level().Objects.net_Find	(id);
+			VERIFY		(O);
 
 			CGameObject			*GO = smart_cast<CGameObject*>(O);
 			CInventoryItem		*pIItem = smart_cast<CInventoryItem*>(GO);
@@ -511,6 +514,17 @@ void CBaseMonster::OnEvent(NET_Packet& P, u16 type)
 				}
 			}
 		}
+		break;
+
+	case GE_KILL_SOMEONE:
+		P.r_u16		(id);
+		CObject* O	= Level().Objects.net_Find	(id);
+
+		if (O)  {
+			CEntity *pEntity = smart_cast<CEntity*>(O);
+			if (pEntity) on_kill_enemy(pEntity);
+		}
+			
 		break;
 	}
 }

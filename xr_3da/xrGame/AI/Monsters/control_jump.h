@@ -59,6 +59,7 @@ class CControlJump : public CControl_ComCustom<SControlJumpData> {
 	float			m_min_distance;
 	float			m_max_distance;
 	float			m_max_angle;
+	float			m_max_height;
 
 	// run-time params
 	u32				m_time_next_allowed;

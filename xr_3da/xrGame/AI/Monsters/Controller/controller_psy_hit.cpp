@@ -12,6 +12,7 @@
 #include "../../../CharacterPhysicsSupport.h"
 void CControllerPsyHit::load(LPCSTR section)
 {
+	m_min_tube_dist = pSettings->r_float(section,"tube_min_dist");
 }
 
 void CControllerPsyHit::reinit()
@@ -36,6 +37,9 @@ bool CControllerPsyHit::check_start_conditions()
 	if (Actor()->Cameras().GetCamEffector(eCEControllerPsyHit))	
 									return false;
 
+	if (m_object->Position().distance_to(Actor()->Position()) < m_min_tube_dist) 
+									return false;
+
 	return true;
 }
 
@@ -58,6 +62,8 @@ void CControllerPsyHit::activate()
 	m_current_index					= 0;
 	play_anim						();
 
+	m_blocked						= false;
+
 }
 
 void CControllerPsyHit::deactivate()
@@ -65,15 +71,14 @@ void CControllerPsyHit::deactivate()
 	m_man->release_pure				(this);
 	m_man->unsubscribe				(this, ControlCom::eventAnimationEnd);
 
-	NET_Packet			P;
+	if (m_blocked) {
+		NET_Packet			P;
 
-	Actor()->u_EventGen	(P, GEG_PLAYER_WEAPON_HIDE_STATE, Actor()->ID());
-	P.w_u32				(INV_STATE_BLOCK_ALL);
-	P.w_u8				(u8(false));
-	Actor()->u_EventSend(P);
-
-	
-	Actor()->SetWeaponHideState		(INV_STATE_BLOCK_ALL, false);
+		Actor()->u_EventGen	(P, GEG_PLAYER_WEAPON_HIDE_STATE, Actor()->ID());
+		P.w_u32				(INV_STATE_BLOCK_ALL);
+		P.w_u8				(u8(false));
+		Actor()->u_EventSend(P);
+	}
 }
 
 void CControllerPsyHit::on_event(ControlCom::EEventType type, ControlCom::IEventData *data)
@@ -104,9 +109,37 @@ void CControllerPsyHit::play_anim()
 	ctrl_anim->global.actual	= false;
 }
 
+bool CControllerPsyHit::check_conditions_final()
+{
+	if (!m_object->g_Alive())						return false;
+	if (!Actor())									return false;
+	if (m_object->EnemyMan.get_enemy() != Actor())	return false;
+	if (!Actor()->g_Alive())						return false;
+	
+	if (!m_object->EnemyMan.see_enemy_now())		return false;
+	if (m_object->Position().distance_to(Actor()->Position()) < m_min_tube_dist) 
+												return false;
+
+	// trace enemy (extended check visibility)
+	Fvector trace_from, trace_to;
+	trace_from	= get_head_position(m_object);
+	trace_to	= get_head_position(Actor());
+	
+	float dist = trace_from.distance_to(trace_to);
+	Fvector trace_dir;
+	trace_dir.sub(trace_to,trace_from);
+
+	collide::rq_result	l_rq;
+	if (Level().ObjectSpace.RayPick(trace_from, trace_dir, dist, collide::rqtBoth, l_rq, m_object)) {
+		if (l_rq.O != Actor()) return false;
+	}
+
+	return true;
+}
+
 void CControllerPsyHit::death_glide_start()
 {
-	if (!m_object->EnemyMan.see_enemy_now()) {
+	if (!check_conditions_final()) {
 		m_man->deactivate	(this);
 		return;
 	}
@@ -138,7 +171,23 @@ void CControllerPsyHit::death_glide_start()
 	Actor()->character_physics_support()->movement()->ApplyImpulse(dir,Actor()->GetMass() * 530.f);
 
 	set_sound_state					(eStart);
-	Actor()->SetWeaponHideState		(INV_STATE_BLOCK_ALL, true);
+
+	NET_Packet			P;
+	Actor()->u_EventGen	(P, GEG_PLAYER_WEAPON_HIDE_STATE, Actor()->ID());
+	P.w_u32				(INV_STATE_BLOCK_ALL);
+	P.w_u8				(u8(true));
+	Actor()->u_EventSend(P);
+	
+	m_blocked			= true;
+
+	//////////////////////////////////////////////////////////////////////////
+	// set direction
+	SControlDirectionData			*ctrl_dir = (SControlDirectionData*)m_man->data(this, ControlCom::eControlDir); 
+	VERIFY							(ctrl_dir);
+	ctrl_dir->heading.target_speed	= 3.f;
+	ctrl_dir->heading.target_angle	= m_man->direction().angle_to_target(Actor()->Position());
+
+	//////////////////////////////////////////////////////////////////////////
 }
 
 void CControllerPsyHit::death_glide_end()
@@ -156,8 +205,6 @@ void CControllerPsyHit::death_glide_end()
 	monster->m_sound_tube_hit_right.play_at_pos(Actor(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
 
 	m_object->Hit_Psy		(Actor(), monster->m_tube_damage);
-
-	//Actor()->SetWeaponHideState		(INV_STATE_BLOCK_ALL, false);
 
 }
 

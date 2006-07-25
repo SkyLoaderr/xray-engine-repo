@@ -38,6 +38,7 @@ void CControlJump::load(LPCSTR section)
 	m_min_distance					= pSettings->r_float(section,"jump_min_distance");
 	m_max_distance					= pSettings->r_float(section,"jump_max_distance");
 	m_max_angle						= pSettings->r_float(section,"jump_max_angle");
+	m_max_height					= pSettings->r_float(section,"jump_max_height");
 }
 
 bool CControlJump::check_start_conditions()
@@ -433,6 +434,9 @@ bool CControlJump::can_jump(CObject *target)
 	float yaw_current, yaw_target;
 	m_object->control().direction().get_heading(yaw_current, yaw_target);
 	if (angle_difference(yaw_current, dir_yaw) > m_max_angle) return false;
+	
+	// check if target on the same floor etc
+	if (_abs(target_position.y-source_position.y) > m_max_height) return false;
 
 	// проверка prepare
 	if (!is_flag(SControlJumpData::ePrepareSkip) && !is_flag(SControlJumpData::eGlideOnPrepareFailed)) {

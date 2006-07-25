@@ -49,6 +49,10 @@ void CBaseMonster::feel_sound_new(CObject* who, int eType, CSound_UserDataPtr us
 
 	// ignore sounds if not from enemies and not help sounds
 	CEntityAlive* entity = smart_cast<CEntityAlive*> (who);
+
+	// ignore sound if enemy drop a weapon on death
+	if (!entity && ((eType & SOUND_TYPE_ITEM_HIDING) == SOUND_TYPE_ITEM_HIDING)) return;
+
 	if (entity && (!EnemyMan.is_enemy(entity))) {
 		SoundMemory.check_help_sound(eType, entity->ai_location().level_vertex_id());
 		return;
@@ -181,8 +185,6 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 		Morale.on_attack_success();
 		
 		m_time_last_attack_success	= Device.dwTimeGlobal;
-
-		if (!pEntity->g_Alive()) on_kill_enemy(pEntity);
 	}
 }
 

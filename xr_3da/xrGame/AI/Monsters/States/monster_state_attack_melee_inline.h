@@ -32,7 +32,10 @@ void CStateMonsterAttackMeleeAbstract::execute()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackMeleeAbstract::check_start_conditions()
 {
-	return (object->MeleeChecker.can_start_melee(object->EnemyMan.get_enemy()));
+	return (
+		object->MeleeChecker.can_start_melee(object->EnemyMan.get_enemy()) &&
+		object->EnemyMan.see_enemy_now()
+	);
 }
 
 TEMPLATE_SPECIALIZATION

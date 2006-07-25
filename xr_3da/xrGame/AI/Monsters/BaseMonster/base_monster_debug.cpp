@@ -8,6 +8,8 @@
 #include "../state_manager.h"
 #include "../../../phmovementcontrol.h"
 #include "../../../characterphysicssupport.h"
+#include "../../../actor.h"
+
 #ifdef DEBUG
 CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 {
@@ -94,7 +96,12 @@ CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 			case NONE_DANGEROUS_SOUND:		strcpy(s_type,"NONE_DANGEROUS_SOUND"); break;
 		}
 
-		sprintf(text,"Sound: type=[%s] time=[%u] power=[%.3f] val=[%i]", s_type, sound_elem.time, sound_elem.power, sound_elem.value);
+		if (sound_elem.who)
+			sprintf(text,"Sound: type[%s] time[%u] power[%.3f] val[%i] src[+]", s_type, sound_elem.time, sound_elem.power, sound_elem.value);
+		else 
+			sprintf(text,"Sound: type[%s] time[%u] power[%.3f] val[%i] src[?]", s_type, sound_elem.time, sound_elem.power, sound_elem.value);
+
+
 	} else 
 		sprintf(text, "Sound: NONE");
 
