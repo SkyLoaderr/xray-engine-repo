@@ -295,4 +295,5 @@ local actor = db.actor
 alife():create("bar_ecolog_flash",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
 alife():create("good_psy_helmet",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
 alife():create("lab_x16_documents",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+quest_items.main()
 end 

@@ -207,5 +207,6 @@ local actor = db.actor
 	for k,v in pairs(infos_table) do
 		actor:give_info_portion(v)
 	end
-alife():create("dar_document4",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())	
+alife():create("dar_document4",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+quest_items.main()	
 end 

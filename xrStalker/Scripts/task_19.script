@@ -425,5 +425,5 @@ local actor = db.actor
 	end	
 alife():create("good_psy_helmet",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
 alife():create("decoder",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
-
+quest_items.main()
 end 
