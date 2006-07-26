@@ -25,7 +25,7 @@ bool CControlPathBuilderBase::target_point_need_update()
 			if (m_target_actual && !global_failed()) return false;  // если global_failed - игнорировать актуальность
 			
 			// если время движения по пути не вышло, не перестраивать
-			return (m_last_time_target_set + m_time < time());
+			return ((m_last_time_target_set == 0) || (m_last_time_target_set + m_time < time()));
 		}
 	
 		//return (!m_target_actual); // логический конец пути

@@ -93,10 +93,19 @@ void CBaseMonster::squad_notify()
 		goal.entity	= const_cast<CEntityAlive*>(EnemyMan.get_enemy());
 
 	} else if (is_state(state, eStateRest)) {
-		if (is_state(state, eStateRest_Idle))					goal.type	= MG_Rest;
-		else if (is_state(state, eStateRest_WalkGraphPoint)) 	goal.type	= MG_WalkGraph;
+		goal.entity	= squad->GetLeader();
+
+		if (state == eStateRest_Idle)							goal.type	= MG_Rest;
+		else if (state == eStateRest_WalkGraphPoint) 			goal.type	= MG_WalkGraph;
+		else if (state == eStateRest_MoveToHomePoint) 			goal.type	= MG_WalkGraph;
+		else if (state == eStateCustomMoveToRestrictor)			goal.type	= MG_WalkGraph;
+		else if (state == eStateRest_WalkToCover)				goal.type	= MG_WalkGraph;
+		else if (state == eStateRest_LookOpenPlace)				goal.type	= MG_Rest;
+		else													goal.entity	= 0;
+
 	} else if (is_state(state, eStateSquad)) {
 		goal.type	= MG_Rest;
+		goal.entity	= squad->GetLeader();
 	}
 	
 	squad->UpdateGoal(this, goal);
