@@ -228,6 +228,13 @@ void CCustomDetector::OnMoveToSlot()
 	inherited::OnMoveToSlot	();
 	TurnOn					();
 }
+
+void CCustomDetector::OnMoveToBelt		()
+{
+	inherited::OnMoveToBelt	();
+	TurnOn					();
+}
+
 void CCustomDetector::TurnOn()
 {
 	m_bWorking				= true;

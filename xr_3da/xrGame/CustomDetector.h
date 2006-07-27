@@ -60,6 +60,7 @@ public:
 
 	virtual void OnMoveToSlot		();
 	virtual void OnMoveToRuck		();
+	virtual void OnMoveToBelt		();
 
 protected:
 	void StopAllSounds				();
