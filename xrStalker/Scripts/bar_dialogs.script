@@ -107,6 +107,11 @@ end
 function have_darklab_documents(first_speaker, second_speaker)
   	return first_speaker:object("dar_document4") ~= nil
 end
+
+function hasnt_darklab_documents(first_speaker, second_speaker)
+    return not(have_darklab_documents(first_speaker, second_speaker))
+end
+
 function give_darklab_documents(first_speaker, second_speaker)
 	local darklab_documents = first_speaker:object("dar_document4")
 	if darklab_documents then
