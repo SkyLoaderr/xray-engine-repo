@@ -48,6 +48,10 @@ function init_drop_settings()
 
 	--' Множители и минимаксы для выпадения вещей в зависимости от уровня
     local level_name = level.name()
+	
+	if not death_ini:section_exist(level_name) then
+		level_name = "default"
+	end
 
     local n = death_ini:line_count(level_name)
 	local id, value = "", ""
