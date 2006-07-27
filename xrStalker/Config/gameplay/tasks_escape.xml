@@ -114,7 +114,7 @@
 			<icon x="300" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>esc_kill_bandits_quest_done</infoportion_complete>
 			<infoportion_fail>esc_wolf_dead</infoportion_fail>
-			<function_fail>escape_tasks.is_actor_enemy_lager</function_fail>
+<!--			<function_fail>escape_tasks.is_actor_enemy_lager</function_fail> -->
 		</objective>
 		<objective>
 			<text>esc_dinamit_to_volk_1</text>
