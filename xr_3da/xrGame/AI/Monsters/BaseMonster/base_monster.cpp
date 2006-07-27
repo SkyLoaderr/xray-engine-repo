@@ -146,7 +146,7 @@ void CBaseMonster::Die(CObject* who)
 	else
 		sound().play			(MonsterSound::eMonsterSoundDie);
 
-	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
+	monster_squad().remove_member	((u8)g_Team(),(u8)g_Squad(),(u8)g_Group(),this);
 	
 	if (m_controlled)			m_controlled->on_die();
 }
@@ -193,9 +193,9 @@ void CBaseMonster::ChangeTeam(int team, int squad, int group)
 	VERIFY2(g_Alive(), "Try to change team of a dead object");
 
 	// remove from current team
-	monster_squad().remove_member	((u8)g_Team(),(u8)g_Squad(), this);
+	monster_squad().remove_member	((u8)g_Team(),(u8)g_Squad(),(u8)g_Group(),this);
 	inherited::ChangeTeam			(team,squad,group);
-	monster_squad().register_member	((u8)g_Team(),(u8)g_Squad(), this);
+	monster_squad().register_member	((u8)g_Team(),(u8)g_Squad(),(u8)g_Group(), this);
 }
 
 
