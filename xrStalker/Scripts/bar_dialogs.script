@@ -109,7 +109,7 @@ function have_darklab_documents(first_speaker, second_speaker)
 end
 
 function hasnt_darklab_documents(first_speaker, second_speaker)
-    return not(have_darklab_documents(first_speaker, second_speaker))
+    return first_speaker:object("dar_document4") == nil
 end
 
 function give_darklab_documents(first_speaker, second_speaker)
