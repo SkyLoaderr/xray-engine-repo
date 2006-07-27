@@ -165,10 +165,10 @@ void CControlAnimationBase::SetTurnAnimation()
 		return;
 	}
 
-	//if (m_object->control().path_builder().is_moving_on_path() && m_object->path().enabled() && (delta_yaw > MOVE_TURN_ANGLE)) {
-	//	m_object->SetTurnAnimation(turn_left);
-	//	return;
-	//}
+	if (m_object->control().path_builder().is_moving_on_path() && m_object->path().enabled() && (delta_yaw > MOVE_TURN_ANGLE)) {
+		m_object->SetTurnAnimation(turn_left);
+		return;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
