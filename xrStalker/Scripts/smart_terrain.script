@@ -690,7 +690,7 @@ function se_smart_terrain:unregister_npc( obj )
 
 	sim_statistic.remove( obj )
 
-	printf( "[smart_terrain %s] removing %s from gulag type=%s", self:name(), obj:name() or "<<<nil>>>", self.gparams.type )
+	printf( "[smart_terrain %s] removed %s from gulag type=%s", self:name(), obj:name() or "<<<nil>>>", self.gparams.type )
 end
 
 -- изменть ранг сталкера при регистрации в смарт
