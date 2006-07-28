@@ -23,9 +23,12 @@ bool CControlPathBuilderBase::target_point_need_update()
 		if (!m_man->path_builder().is_path_end(m_distance_to_path_end)) {
 
 			if (m_target_actual && !global_failed()) return false;  // если global_failed - игнорировать актуальность
-			
+
+			// если первый раз строим
+			if (m_last_time_target_set == 0) return true;
+
 			// если время движения по пути не вышло, не перестраивать
-			return ((m_last_time_target_set == 0) || (m_last_time_target_set + m_time < time()));
+			return (m_last_time_target_set + m_time < time());
 		}
 	
 		//return (!m_target_actual); // логический конец пути
