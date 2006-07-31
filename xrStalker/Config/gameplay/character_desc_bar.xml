@@ -532,7 +532,6 @@
 		
 		<start_dialog>bar_dolg_leader_start</start_dialog>
 		<actor_dialog>bar_dolg_leader_join</actor_dialog>
-		<actor_dialog>bar_dolg_leader_job</actor_dialog>
 		<actor_dialog>bar_dolg_leader_prisyaga</actor_dialog>
 		<actor_dialog>bar_dolg_leader_quest_rg6_finish</actor_dialog>
 		<actor_dialog>tm_dolg_dialog</actor_dialog>
