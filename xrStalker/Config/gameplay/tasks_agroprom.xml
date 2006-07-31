@@ -54,7 +54,6 @@
 			<text>agroprom_find_gunslinger_cache_0</text>
 			<icon>ui_iconsTotal_grouping</icon>
 			<infoportion_complete>agr_find_gunslinger_cache_final</infoportion_complete>
-			<infoportion_set_complete>agr_find_ghost_start</infoportion_set_complete>
 		</objective>
 		<objective>
 			<text>agroprom_find_gunslinger_cache_1</text>

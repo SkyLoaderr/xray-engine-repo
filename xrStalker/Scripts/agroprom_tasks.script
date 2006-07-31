@@ -56,7 +56,10 @@ function process_info_portion(info_id)
 	elseif info_id == "agr_nii_location" then
 		level_tasks.add_location(321, "crlc_big", "agr_nii_hint")
 		return true
-
+-- gunslinger's flash
+    elseif actor:object("gunslinger_flash") then 
+        actor:give_info_portion("agr_find_ghost_start")
+        return true
 
 	end
 
