@@ -11,6 +11,7 @@
 		<team>Actor</team>
 		<supplies>
 			[spawn] \n
+			device_torch \n
 		</supplies>
 		
 		<class>actor</class>
