@@ -167,6 +167,8 @@ void CCustomZone::Load(LPCSTR section)
 
 	if(pSettings->line_exist(section,"postprocess")) 
 		m_effector->Load(pSettings->r_string(section,"postprocess"));
+	else
+		xr_delete(m_effector);
 
 
 
@@ -352,7 +354,7 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 	m_eZoneState				= eZoneStateIdle;
 	m_iPreviousStateTime		= m_iStateTime = 0;
 
-	m_effector->SetRadius		(CFORM()->getSphere().R);
+	if(m_effector)				m_effector->SetRadius		(CFORM()->getSphere().R);
 
 	m_dwLastTimeMoved			= Device.dwTimeGlobal;
 	m_vPrevPos.set				(Position());
@@ -380,7 +382,7 @@ void CCustomZone::net_Destroy()
 
 	CParticlesObject::Destroy(m_pIdleParticles);
 
-	m_effector->Stop		();
+	if(m_effector)			m_effector->Stop		();
 	//---------------------------------------------
 	OBJECT_INFO_VEC_IT i=m_ObjectInfoMap.begin(),e=m_ObjectInfoMap.end();
 	for(;e!=i;i++)exit_Zone(*i);
@@ -445,7 +447,7 @@ void CCustomZone::UpdateWorkload	(u32 dt)
 	m_iStateTime			+= (int)dt;
 
 	if (!IsEnabled())		{
-		if (EnableEffector())
+		if (m_effector && EnableEffector())
 			m_effector->Stop();
 		return;
 	};
@@ -482,7 +484,7 @@ void CCustomZone::UpdateWorkload	(u32 dt)
 	if (Level().CurrentEntity()) {
 		m_fDistanceToCurEntity = Level().CurrentEntity()->Position().distance_to(Position());
 
-		if (EnableEffector())
+		if (m_effector && EnableEffector())
 			m_effector->Update(m_fDistanceToCurEntity);
 	}
 
@@ -1352,7 +1354,7 @@ void CCustomZone::net_Relcase(CObject* O)
 	if (GameID() == GAME_SINGLE)
 		if(GO->ID()==m_owner_id)	m_owner_id = u32(-1);
 
-	if(m_effector->m_pActor && m_effector->m_pActor->ID() == GO->ID())
+	if(m_effector && m_effector->m_pActor && m_effector->m_pActor->ID() == GO->ID())
 		m_effector->Stop();
 
 	inherited::net_Relcase(O);
