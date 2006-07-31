@@ -80,6 +80,7 @@ public:
 	BOOL					net_HasBandwidth		();
 	void					ClearStatistic			();
 	IClientStatistic		GetStatistic			() const {return  net_Statistic; }
+	void					UpdateStatistic			();
 
 			bool			GetServerAddress		(char* pAddress, DWORD* pPort);
 	

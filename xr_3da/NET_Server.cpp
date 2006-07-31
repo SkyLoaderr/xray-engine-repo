@@ -523,19 +523,23 @@ BOOL IPureServer::HasBandwidth			(IClient* C)
 			return FALSE;
 		};
 
-		// Query network statistic for this client
-		DPN_CONNECTION_INFO	CI;
-		ZeroMemory			(&CI,sizeof(CI));
-		CI.dwSize			= sizeof(CI);
-		hr					= NET->GetConnectionInfo(C->ID.value(),&CI,0);
-		if (FAILED(hr))		return FALSE;
-		C->stats.Update		(CI);
-
+		UpdateClientStatistic(C);
 		// ok
 		C->dwTime_LastUpdate	= dwTime;
 		return TRUE;
 	}
 	return FALSE;
+}
+
+void	IPureServer::UpdateClientStatistic		(IClient* C)
+{
+	// Query network statistic for this client
+	DPN_CONNECTION_INFO	CI;
+	ZeroMemory			(&CI,sizeof(CI));
+	CI.dwSize			= sizeof(CI);
+	HRESULT hr					= NET->GetConnectionInfo(C->ID.value(),&CI,0);
+	if (FAILED(hr))		return;
+	C->stats.Update		(CI);
 }
 
 void	IPureServer::ClearStatistic	()

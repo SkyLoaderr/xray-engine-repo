@@ -711,6 +711,8 @@ void	IPureClient::Send(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 		string1024 tmp="";
 		DXTRACE_ERR(tmp, hr_);
 	}
+
+//	UpdateStatistic();
 }
 
 BOOL	IPureClient::net_HasBandwidth	()
@@ -721,7 +723,7 @@ BOOL	IPureClient::net_HasBandwidth	()
 	
 	if		(psNET_Flags.test(NETFLAG_MINIMIZEUPDATES))	dwInterval	= 333;	// approx 3 times per second
 	if (psNET_ClientUpdate != 0)
-		1000/psNET_ClientUpdate;
+		dwInterval = 1000/psNET_ClientUpdate;
 
 	HRESULT hr;
 	if (0 != psNET_ClientUpdate && (dwTime-net_Time_LastUpdate)>dwInterval)	
@@ -739,20 +741,25 @@ BOOL	IPureClient::net_HasBandwidth	()
 			return FALSE;
 		};
 
-		// Query network statistic for this client
-		DPN_CONNECTION_INFO	CI;
-		ZeroMemory			(&CI,sizeof(CI));
-		CI.dwSize			= sizeof(CI);
-		hr					= NET->GetConnectionInfo(&CI,0);
-		if (FAILED(hr)) return FALSE;
-
-		net_Statistic.Update(CI);
+		UpdateStatistic();
 
 		// ok
 		net_Time_LastUpdate	= dwTime;
 		return TRUE;
 	}
 	return FALSE;
+}
+
+void	IPureClient::UpdateStatistic()
+{
+	// Query network statistic for this client
+	DPN_CONNECTION_INFO	CI;
+	ZeroMemory			(&CI,sizeof(CI));
+	CI.dwSize			= sizeof(CI);
+	HRESULT hr					= NET->GetConnectionInfo(&CI,0);
+	if (FAILED(hr)) return;
+
+	net_Statistic.Update(CI);
 }
 
 void	IPureClient::Sync_Thread	()
