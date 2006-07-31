@@ -410,9 +410,9 @@ void CUITradeWnd::PerformTrade()
 	}else
 	{
 		if(others_money<0)
-			m_uidata->UIDealMsg		= HUD().GetUI()->UIGame()->AddCustomStatic("not_enough_money_mine", true);
-		else
 			m_uidata->UIDealMsg		= HUD().GetUI()->UIGame()->AddCustomStatic("not_enough_money_other", true);
+		else
+			m_uidata->UIDealMsg		= HUD().GetUI()->UIGame()->AddCustomStatic("not_enough_money_mine", true);
 
 
 		m_uidata->UIDealMsg->m_endTime	= Device.fTimeGlobal+2.0f;// sec
@@ -590,6 +590,14 @@ void CUITradeWnd::SetCurrentItem(CUICellItem* itm)
 	if(m_pCurrentCellItem == itm) return;
 	m_pCurrentCellItem				= itm;
 	m_uidata->UIItemInfo.InitItem	(CurrentIItem());
+	
+	if(itm && m_uidata->UIItemInfo.UICost){
+
+		string256			str;
+
+		sprintf				(str, "%d RU", m_pOthersTrade->GetItemPrice(CurrentIItem()) );
+		m_uidata->UIItemInfo.UICost->SetText (str);
+	}
 }
 
 void CUITradeWnd::SwitchToTalk()

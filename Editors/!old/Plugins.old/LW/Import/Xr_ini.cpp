@@ -138,7 +138,13 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 	{
 		F->r_string		(str,sizeof(str));
 		_Trim			(str);
-		LPSTR semi		= strchr(str,';');
+		LPSTR semi	= strchr(str,';');
+		LPSTR semi_1	= strchr(str,'/');
+		
+		if(semi_1 && (*(semi_1+1)=='/') && ((!semi) || (semi && (semi_1<semi) )) ){
+			semi = semi_1;
+		}
+
 #ifdef DEBUG
 		LPSTR comment	= 0;
 #endif
