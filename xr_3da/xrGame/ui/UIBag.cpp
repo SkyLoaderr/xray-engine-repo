@@ -780,6 +780,9 @@ void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, const char* name){
 			slot = pSettings->r_u32(name, "slot");
 		else
 			slot = NO_ACTIVE_SLOT;
+
+		if (slot != NO_ACTIVE_SLOT && slot >= MP_SLOTS_NUM )
+			slot = NO_ACTIVE_SLOT;
 		
 		pDDItem->SetSlot(slot);
 		

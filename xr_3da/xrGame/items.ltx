@@ -654,8 +654,9 @@ inv_grid_height		= 1
 inv_grid_x			= 15
 inv_grid_y			= 7
 cost				= 1000	;30
-belt				= true;
+;belt				= true;
 default_to_ruck		= false
+slot				= 8
 
 
 [detector_elite]:identity_immunities
@@ -672,27 +673,33 @@ noise				= zone_mosquito_bald       ;detectors\geiger_noise_loop
 buzzer				= zone_mosquito_bald       ;detectors\DA-2_alarm_loop
 
 ef_detector_type	= 1
+night_vision_particle		= damage_fx\heli_burn
+
 
 ;описание распознаваемых детектором зон
 zone_class_1		= zone_mosquito_bald
 zone_sound_1_		= detectors\DA-2_beep1
 zone_min_freq_1		= 0.1	;0.5
 zone_max_freq_1		= 40
+zone_map_location_1 = anomaly_zone_location
 	
 zone_class_2		= zone_mincer
 zone_sound_2_		= detectors\DA-2_beep1 
 zone_min_freq_2		= 0.1
 zone_max_freq_2		= 20
+zone_map_location_2 = anomaly_zone_location
 
 zone_class_3		= zone_radioactive
 zone_sound_3_		= detectors\geiger_click3 
 zone_min_freq_3		= 1
 zone_max_freq_3		= 20
+zone_map_location_3 = anomaly_zone_location
 
 zone_class_4		= zone_gravi_zone
 zone_sound_4_		= detectors\DA-2_beep1
 zone_min_freq_4		= 0.5
 zone_max_freq_4		= 30
+zone_map_location_4 = anomaly_zone_location
 
 inv_name			= Detector
 inv_name_short		= Detector
@@ -700,16 +707,17 @@ inv_weight			= 0
 
 inv_grid_width		= 1
 inv_grid_height		= 1
-inv_grid_x			= 10
+inv_grid_x			= 5
 inv_grid_y			= 14
 cost				= 1500	;30
 ;belt				= true;
-default_to_ruck		= false
+slot				= 8
 
 attach_angle_offset		= -0.160570,-1.425061,-0.361283
 attach_position_offset	= 0.160570,-0.060214,0.020071
 attach_bone_name		= bip01_l_hand
 auto_attach				= false
+
 
 
 
