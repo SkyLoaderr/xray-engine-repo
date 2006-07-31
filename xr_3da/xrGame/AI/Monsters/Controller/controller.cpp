@@ -228,6 +228,8 @@ void CController::Load(LPCSTR section)
 	m_sound_tube_hit_left.create			("monsters\\controller\\controller_final_hit_l",st_Effect,sg_SourceType);
 	m_sound_tube_hit_right.create			("monsters\\controller\\controller_final_hit_r",st_Effect,sg_SourceType);
 
+	m_sound_tube_prepare.create				("monsters\\controller\\controller_tube_prepare",st_Effect,sg_SourceType);
+
 	particles_fire		= pSettings->r_string(section,"Control_Hit");
 	
 	m_psy_hit_damage	= pSettings->r_float(section,"psy_hit_damage");
@@ -631,6 +633,21 @@ void CController::TranslateActionToPathParams()
 	}
 	
 	custom_anim().set_path_params();
+
+	if ((anim().m_tAction != ACT_RUN) && (anim().m_tAction != ACT_WALK_FWD)) {
+		inherited::TranslateActionToPathParams();
+		return;
+	}
+
+	u32 vel_mask = (m_bDamaged ? MonsterMovement::eVelocityParamsWalkDamaged : MonsterMovement::eVelocityParamsWalk);
+	u32 des_mask = (m_bDamaged ? MonsterMovement::eVelocityParameterWalkDamaged : MonsterMovement::eVelocityParameterWalkNormal);
+
+	if (m_force_real_speed) vel_mask = des_mask;
+
+	path().set_velocity_mask	(vel_mask);
+	path().set_desirable_mask	(des_mask);
+	path().enable_path			();
+
 }
 
 bool CController::is_relation_enemy(const CEntityAlive *tpEntityAlive) const
@@ -650,6 +667,8 @@ void CController::set_mental_state(EMentalState state)
 	
 	m_custom_anim_base->on_switch_controller	();
 }
+
+
 
 
 #ifdef DEBUG

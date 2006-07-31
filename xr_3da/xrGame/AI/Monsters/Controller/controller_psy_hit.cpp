@@ -64,6 +64,7 @@ void CControllerPsyHit::activate()
 
 	m_blocked						= false;
 
+	set_sound_state					(ePrepare);
 }
 
 void CControllerPsyHit::deactivate()
@@ -79,6 +80,8 @@ void CControllerPsyHit::deactivate()
 		P.w_u8				(u8(false));
 		Actor()->u_EventSend(P);
 	}
+
+	set_sound_state					(eNone);
 }
 
 void CControllerPsyHit::on_event(ControlCom::EEventType type, ControlCom::IEventData *data)
@@ -222,23 +225,29 @@ void CControllerPsyHit::update_frame()
 void CControllerPsyHit::set_sound_state(ESoundState state)
 {
 	CController *monster = smart_cast<CController *>(m_object);
+	if (state == ePrepare) {
+		monster->m_sound_tube_prepare.play_at_pos(Actor(), Fvector().set(0.f, 0.f, 0.f), sm_2D);
+	} else 
 	if (state == eStart) {
+		if (monster->m_sound_tube_prepare._feedback())	monster->m_sound_tube_prepare.stop();
+
 		monster->m_sound_tube_start.play_at_pos(Actor(), Fvector().set(0.f, 0.f, 0.f), sm_2D);
 		monster->m_sound_tube_pull.play_at_pos(Actor(), Fvector().set(0.f, 0.f, 0.f), sm_2D);
-		m_sound_state = eStart;
-		return;
-	}
-	
+	} else 
 	if (state == eHit) {
 		if (monster->m_sound_tube_start._feedback())	monster->m_sound_tube_start.stop();
 		if (monster->m_sound_tube_pull._feedback())		monster->m_sound_tube_pull.stop();
 		
 		//monster->m_sound_tube_hit_left.play_at_pos(Actor(), Fvector().set(-1.f, 0.f, 1.f), sm_2D);
 		//monster->m_sound_tube_hit_right.play_at_pos(Actor(), Fvector().set(1.f, 0.f, 1.f), sm_2D);
-		m_sound_state = eHit;
-
-		return;
+	} else 
+	if (state == eNone) {
+		if (monster->m_sound_tube_start._feedback())	monster->m_sound_tube_start.stop();
+		if (monster->m_sound_tube_pull._feedback())		monster->m_sound_tube_pull.stop();
+		if (monster->m_sound_tube_prepare._feedback())	monster->m_sound_tube_prepare.stop();
 	}
+
+	m_sound_state = state;
 }
 
 void CControllerPsyHit::hit()

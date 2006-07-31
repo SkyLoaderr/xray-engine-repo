@@ -15,6 +15,7 @@ class CControllerPsyHit : public CControl_ComCustom<> {
 	CPsyHitEffectorPP	*m_effector_pp;
 
 	enum ESoundState{
+		ePrepare,
 		eStart,
 		ePull,
 		eHit,

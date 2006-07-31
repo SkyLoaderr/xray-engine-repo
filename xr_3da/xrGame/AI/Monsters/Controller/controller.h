@@ -65,6 +65,8 @@ public:
 	ref_sound			m_sound_tube_hit_left;
 	ref_sound			m_sound_tube_hit_right;
 
+	ref_sound			m_sound_tube_prepare;
+
 public:	
 	SVelocityParam		m_velocity_move_fwd;
 	SVelocityParam		m_velocity_move_bkwd;
