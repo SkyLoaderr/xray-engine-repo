@@ -32,7 +32,7 @@ function give_agroprom_documents(first_speaker, second_speaker)
 end
 
 function give_agroprom_reward(first_speaker, second_speaker)
-		dialogs.relocate_money(second_speaker, 3000, "in")
+		dialogs.relocate_money(second_speaker, 5000, "in")
 end
 
 function give_extra_task(actor, npc)
@@ -119,7 +119,7 @@ function give_darklab_documents(first_speaker, second_speaker)
 	end
 end
 function give_darklab_reward(first_speaker, second_speaker)
-		dialogs.relocate_money(second_speaker, 4500, "in")
+		dialogs.relocate_money(second_speaker, 10000, "in")
 end
 
 -- Документы с Янтаря
@@ -143,7 +143,7 @@ function give_x16_documents(first_speaker, second_speaker)
 	end
 end
 function give_x16_reward(first_speaker, second_speaker)
-		dialogs.relocate_money(second_speaker, 5000, "in")
+		dialogs.relocate_money(second_speaker, 15000, "in")
 end
 
 -- Выдача задания на отключение радара
@@ -177,7 +177,7 @@ function actor_transfer_research(first_speaker, second_speaker)
 	if flash then
 		dialogs.relocate_item(second_speaker, flash, "out")
 		if db.actor:has_info("bar_rescue_research_reward") then
-             dialogs.relocate_money(second_speaker, 1621, "in")
+             dialogs.relocate_money(second_speaker, 5000, "in")
         end
 	end
 end
@@ -194,7 +194,7 @@ function give_lucky_pda(first_speaker, second_speaker)
 	local lucky_pda = first_speaker:object("bar_lucky_pda")
 	if lucky_pda then
 		dialogs.relocate_item(second_speaker, lucky_pda, "out")
-		dialogs.relocate_money(second_speaker, 2500, "in")
+		dialogs.relocate_money(second_speaker, 6000, "in")
 	end
 end
 
@@ -207,11 +207,11 @@ function give_bar_tiran_pda(first_speaker, second_speaker)
 	local bar_tiran_pda = first_speaker:object("bar_tiran_pda")
 	if bar_tiran_pda then
 		dialogs.relocate_item(second_speaker, bar_tiran_pda, "out")
-		dialogs.relocate_money(second_speaker, 2000, "in")
+		dialogs.relocate_money(second_speaker, 7000, "in")
 	end
 end
 function have_tiran_reward(first_speaker, second_speaker)
-	dialogs.relocate_money(second_speaker, 2000, "in")
+	dialogs.relocate_money(second_speaker, 7000, "in")
 end
 
 
@@ -284,7 +284,7 @@ function give_hunters_toz(first_speaker, second_speaker)
 	end
 end
 function have_hunter_reward(first_speaker, second_speaker)
-	dialogs.relocate_money(second_speaker, 500, "in")
+	dialogs.relocate_money(second_speaker, 4000, "in")
 end
 
 
@@ -416,21 +416,21 @@ end
 function arena_give_reward(actor, npc)
 	local m = 0
 	if db.actor:has_info("bar_arena_fight_1_reward") then
-		m = 200
+		m = 1000
 	elseif db.actor:has_info("bar_arena_fight_2_reward") then
-		m = 400
-	elseif db.actor:has_info("bar_arena_fight_3_reward") then
-		m = 800
-	elseif db.actor:has_info("bar_arena_fight_4_reward") then
-		m = 1200
-	elseif db.actor:has_info("bar_arena_fight_5_reward") then
-		m = 1500
-	elseif db.actor:has_info("bar_arena_fight_6_reward") then
 		m = 2000
+	elseif db.actor:has_info("bar_arena_fight_3_reward") then
+		m = 3000
+	elseif db.actor:has_info("bar_arena_fight_4_reward") then
+		m = 4000
+	elseif db.actor:has_info("bar_arena_fight_5_reward") then
+		m = 6000
+	elseif db.actor:has_info("bar_arena_fight_6_reward") then
+		m = 8000
 	elseif db.actor:has_info("bar_arena_fight_7_reward") then
-		m = 2500
+		m = 10000   
 	elseif db.actor:has_info("bar_arena_fight_8_reward") then
-		m = 5000
+		m = 10000
 	end
 	dialogs.relocate_money(npc, m, "in")
 	db.actor:give_info_portion("bar_arena_reset")	
