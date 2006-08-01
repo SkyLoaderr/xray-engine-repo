@@ -17,7 +17,7 @@
 			<text>sar_monolith_2</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="sar_monolith_hint">green_location</map_location_type>
-			<map_location_hidden>1</map_location_hidden>
+			
 			<object_story_id>sar_monolith</object_story_id>
 			<infoportion_complete>sar_monolith_go</infoportion_complete>
 		</objective>
