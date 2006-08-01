@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="agr_factory_stalker_start">
-        <phrase_list>
-            <phrase id="0">
-                <text>agr_factory_stalker_start_0</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="agr_krot_about_agroprom">
         <has_info>agr_help_krot_done</has_info>
         <phrase_list>
@@ -30,13 +23,6 @@
             </phrase>
             <phrase id="120">
                 <text>agr_krot_about_agroprom_120</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="agr_ratcatcher_start">
-        <phrase_list>
-            <phrase id="0">
-                <text>agr_ratcatcher_start_0</text>
             </phrase>
         </phrase_list>
     </dialog>
@@ -248,62 +234,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="agr_swamp_ratcatcher_talks">
-        <dont_has_info>agr_collector_entrance_info</dont_has_info>
-        <phrase_list>
-            <phrase id="100">
-                <text>agr_swamp_ratcatcher_talks_100</text>
-                <give_info>agr_ratcatcher_friend</give_info>
-                <next>20</next>
-            </phrase>
-            <phrase id="20">
-                <text>agr_swamp_ratcatcher_talks_20</text>
-                <next>120</next>
-            </phrase>
-            <phrase id="130">
-                <text>agr_swamp_ratcatcher_talks_130</text>
-                <give_info>agr_collector_entrance_info</give_info>
-                <give_info>agr_nii_security_plan_flash_have</give_info>
-                <has_info>agroprom_military_case</has_info>
-                <next>40</next>
-            </phrase>
-            <phrase id="30">
-                <text>agr_swamp_ratcatcher_talks_30</text>
-                <next>130</next>
-                <next>141</next>
-            </phrase>
-            <phrase id="40">
-                <text>agr_swamp_ratcatcher_talks_40</text>
-                <next>140</next>
-            </phrase>
-            <phrase id="50">
-                <text>agr_swamp_ratcatcher_talks_50</text>
-            </phrase>
-            <phrase id="140">
-                <text>agr_swamp_ratcatcher_talks_140</text>
-                <give_info>agr_zaz_location</give_info>
-                <next>50</next>
-            </phrase>
-            <phrase id="141">
-                <text>agr_swamp_ratcatcher_talks_141</text>
-                <dont_has_info>agroprom_military_case</dont_has_info>
-                <give_info>agr_zaz_location</give_info>
-                <next>50</next>
-            </phrase>
-            <phrase id="0">
-                <text>agr_swamp_ratcatcher_talks_0</text>
-                <next>10</next>
-            </phrase>
-            <phrase id="10">
-                <text>agr_swamp_ratcatcher_talks_10</text>
-                <next>100</next>
-            </phrase>
-            <phrase id="120">
-                <text>agr_swamp_ratcatcher_talks_120</text>
-                <next>30</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="agr_swamp_ratcatcher_talks1">
         <phrase_list>
             <phrase id="123">
@@ -445,15 +375,95 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="agr_krot_help">
+        <dont_has_info>agr_help_krot_done</dont_has_info>
+        <phrase_list>
+            <phrase id="0">
+                <text>agr_krot_help_0</text>
+                <next>10</next>
+            </phrase>
+            <phrase id="10">
+                <text>agr_krot_help_10</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>agr_krot_skirmish_start</give_info>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_factory_stalker_start">
+        <phrase_list>
+            <phrase id="0">
+                <text>agr_factory_stalker_start_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_swamp_ratcatcher_talks">
+        <dont_has_info>agr_collector_entrance_info</dont_has_info>
+        <phrase_list>
+            <phrase id="100">
+                <text>agr_swamp_ratcatcher_talks_100</text>
+                <give_info>agr_ratcatcher_friend</give_info>
+                <next>20</next>
+            </phrase>
+            <phrase id="20">
+                <text>agr_swamp_ratcatcher_talks_20</text>
+                <next>120</next>
+            </phrase>
+            <phrase id="130">
+                <text>agr_swamp_ratcatcher_talks_130</text>
+                <give_info>agr_collector_entrance_info</give_info>
+                <give_info>agr_nii_security_plan_flash_have</give_info>
+                <has_info>agroprom_military_case</has_info>
+                <next>40</next>
+            </phrase>
+            <phrase id="30">
+                <text>agr_swamp_ratcatcher_talks_30</text>
+                <next>130</next>
+                <next>141</next>
+            </phrase>
+            <phrase id="40">
+                <text>agr_swamp_ratcatcher_talks_40</text>
+                <next>140</next>
+            </phrase>
+            <phrase id="50">
+                <text>agr_swamp_ratcatcher_talks_50</text>
+            </phrase>
+            <phrase id="140">
+                <text>agr_swamp_ratcatcher_talks_140</text>
+                <give_info>agr_zaz_location</give_info>
+                <next>50</next>
+            </phrase>
+            <phrase id="141">
+                <text>agr_swamp_ratcatcher_talks_141</text>
+                <dont_has_info>agroprom_military_case</dont_has_info>
+                <give_info>agr_zaz_location</give_info>
+                <next>50</next>
+            </phrase>
+            <phrase id="10">
+                <text>agr_swamp_ratcatcher_talks_10</text>
+                <next>100</next>
+            </phrase>
+            <phrase id="120">
+                <text>agr_swamp_ratcatcher_talks_120</text>
+                <next>30</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_swamp_ratcatcher_talks_0</text>
+                <next>10</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="agr_ratcatcher_start">
+        <phrase_list>
+            <phrase id="0">
+                <text>agr_ratcatcher_start_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="agr_krot_actor_met_seriy" priority="1">
         <has_info>agr_help_krot_done</has_info>
         <has_info>agr_krot_band_start</has_info>
         <dont_has_info>agr_find_gunslinger_cache_start</dont_has_info>
         <phrase_list>
-            <phrase id="0">
-                <text></text>
-                <next>100</next>
-            </phrase>
             <phrase id="1000">
                 <text></text>
                 <next>150</next>
@@ -483,23 +493,13 @@
                 <text></text>
                 <give_info>agr_krot_secret_info</give_info>
             </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>100</next>
+            </phrase>
             <phrase id="100">
                 <text>agr_krot_actor_met_seriy_100</text>
                 <next>1000</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="agr_krot_help">
-        <dont_has_info>agr_help_krot_done</dont_has_info>
-        <phrase_list>
-            <phrase id="0">
-                <text>agr_krot_help_0</text>
-                <next>10</next>
-            </phrase>
-            <phrase id="10">
-                <text>agr_krot_help_10</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>agr_krot_skirmish_start</give_info>
             </phrase>
         </phrase_list>
     </dialog>
@@ -537,41 +537,6 @@
                 <text>agr_krot_actor_met_seriy_2000</text>
                 <next>2502</next>
             </phrase>
-            <phrase id="1">
-                <text>agr_krot_actor_hasnot_met_seriy_0</text>
-                <dont_has_info>agr_krot_band_start</dont_has_info>
-                <dont_has_info>agr_find_gunslinger_cache_start</dont_has_info>
-                <next>1001</next>
-            </phrase>
-            <phrase id="1001">
-                <text>agr_krot_actor_hasnot_met_seriy_100</text>
-                <next>10001</next>
-            </phrase>
-            <phrase id="10001">
-                <text>agr_factory_krot_start_10001</text>
-                <next>1501</next>
-            </phrase>
-            <phrase id="1501">
-                <text>agr_factory_krot_start_1501</text>
-                <next>15001</next>
-            </phrase>
-            <phrase id="15001">
-                <text>agr_factory_krot_start_15001</text>
-                <give_info>agr_krot_secret_info</give_info>
-                <next>3001</next>
-            </phrase>
-            <phrase id="3001">
-                <text>agr_factory_krot_start_3001</text>
-                <next>30001</next>
-            </phrase>
-            <phrase id="30001">
-                <text>agr_factory_krot_start_30001</text>
-            </phrase>
-            <phrase id="0">
-                <text>agr_factory_krot_start_0</text>
-                <next>1</next>
-                <next>2</next>
-            </phrase>
             <phrase id="2">
                 <text>agr_factory_krot_start_2</text>
                 <dont_has_info>agr_find_gunslinger_cache_start</dont_has_info>
@@ -593,6 +558,42 @@
                 <text>agr_factory_krot_start_1502</text>
                 <give_info>agr_krot_secret_info</give_info>
                 <next>15002</next>
+            </phrase>
+            <phrase id="1001">
+                <text>agr_krot_actor_hasnot_met_seriy_100</text>
+                <next>10001</next>
+            </phrase>
+            <phrase id="10001">
+                <text>agr_factory_krot_start_10001</text>
+                <next>1501</next>
+            </phrase>
+            <phrase id="1501">
+                <text>agr_factory_krot_start_1501</text>
+                <next>15001</next>
+            </phrase>
+            <phrase id="1">
+                <text>agr_krot_actor_hasnot_met_seriy_0</text>
+                <dont_has_info>agr_krot_band_start</dont_has_info>
+                <dont_has_info>agr_find_gunslinger_cache_start</dont_has_info>
+                <next>1001</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_factory_krot_start_0</text>
+                <next>1</next>
+                <next>2</next>
+            </phrase>
+            <phrase id="30001">
+                <text>agr_factory_krot_start_30001</text>
+            </phrase>
+            <phrase id="3001">
+                <text>agr_factory_krot_start_3001</text>
+                <next>30001</next>
+            </phrase>
+            <phrase id="15001">
+                <text>agr_factory_krot_start_15001</text>
+                <action>agroprom_dialog.give_krot_reward</action>
+                <give_info>agr_krot_secret_info</give_info>
+                <next>3001</next>
             </phrase>
         </phrase_list>
     </dialog>
