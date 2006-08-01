@@ -103,7 +103,7 @@ void CInventory::Clear()
 	m_pOwner							= NULL;
 
 	CalcTotalWeight						();
-	m_dwModifyFrame						= Device.dwFrame;
+	InvalidateState						();
 }
 
 void CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placement)
@@ -166,7 +166,7 @@ void CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 	m_pOwner->OnItemTake				(pIItem);
 
 	CalcTotalWeight						();
-	m_dwModifyFrame						= Device.dwFrame;
+	InvalidateState						();
 
 	pIItem->object().processing_deactivate();
 	VERIFY								(pIItem->m_eItemPlace != eItemPlaceUndefined);
@@ -211,7 +211,7 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 		m_pOwner->OnItemDrop	(smart_cast<CInventoryItem*>(pObj));
 
 	CalcTotalWeight					();
-	m_dwModifyFrame					= Device.dwFrame;
+	InvalidateState						();
 	m_drop_last_frame				= true;
 	return							true;
 }
@@ -228,7 +228,7 @@ bool CInventory::DropAll()
 	}
 	
 	CalcTotalWeight					();
-	m_dwModifyFrame					= Device.dwFrame;
+	InvalidateState						();
 
 	return							true;
 }
@@ -297,7 +297,7 @@ bool CInventory::Belt(PIItem pIItem)
 	}
 
 	CalcTotalWeight();
-	m_dwModifyFrame = Device.dwFrame;
+	InvalidateState						();
 
 	EItemPlace p = pIItem->m_eItemPlace;
 	pIItem->m_eItemPlace = eItemPlaceBelt;
@@ -330,14 +330,14 @@ bool CInventory::Ruck(PIItem pIItem)
 		if(m_belt.end() != it) m_belt.erase(it);
 	}
 	
-	m_ruck.insert(m_ruck.end(), pIItem); 
+	m_ruck.insert									(m_ruck.end(), pIItem); 
 	
-	CalcTotalWeight();
-	m_dwModifyFrame = Device.dwFrame;
+	CalcTotalWeight									();
+	InvalidateState									();
 
-	m_pOwner->OnItemRuck(pIItem, pIItem->m_eItemPlace);
-	pIItem->m_eItemPlace = eItemPlaceRuck;
-	pIItem->OnMoveToRuck();
+	m_pOwner->OnItemRuck							(pIItem, pIItem->m_eItemPlace);
+	pIItem->m_eItemPlace							= eItemPlaceRuck;
+	pIItem->OnMoveToRuck							();
 
 	if(in_slot)
 		pIItem->object().processing_deactivate();
