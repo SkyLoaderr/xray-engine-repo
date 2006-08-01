@@ -15,6 +15,10 @@ function krot_give_flash(first_speaker, second_speaker)
 	first_speaker:transfer_item(first_speaker:object("krot_flash"), second_speaker)
 end
 
+function give_krot_reward (first_speaker, second_speaker)
+		dialogs.relocate_money(second_speaker, 3000, "in")
+end
+
 ------------------------------------------------------------------------------------
 -- Talks about Ratcatcher
 ------------------------------------------------------------------------------------
