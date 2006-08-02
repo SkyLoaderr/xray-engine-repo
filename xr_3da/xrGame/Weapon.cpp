@@ -1138,7 +1138,10 @@ void CWeapon::OnZoomOut()
 
 CUIStaticItem* CWeapon::ZoomTexture()
 {
-	return m_UIScope;
+	if (UseScopeTexture())
+		return m_UIScope;
+	else
+		return NULL;
 }
 
 void CWeapon::SwitchState(u32 S)
