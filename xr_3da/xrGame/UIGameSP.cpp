@@ -196,7 +196,7 @@ void CChangeLevelWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if(msg==MESSAGE_BOX_NO_CLICKED){
 			Game().StartStopMenu					(this, true);
 			if(m_b_position_cancel){
-				Actor()->MoveAxctor(m_position_cancel, m_angles_cancel);
+				Actor()->MoveActor(m_position_cancel, m_angles_cancel);
 			}
 		}
 	}else
