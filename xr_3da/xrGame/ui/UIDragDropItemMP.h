@@ -44,9 +44,9 @@ class CUIDragDropItemMP: public CUIDragDropItem
 
 //	bool			m_bIsInfinite;
 public:
-	bool	HasAmountControl();
-	bool	GetPermissionToBuy(bool& last);
-	void	OnReturn();
+	//bool	HasAmountControl();
+	//bool	GetPermissionToBuy(bool& last);
+	//void	OnReturn();
 		CUIDragDropItemMP						();
 	// Для слота
 	void SetSlot								(int slot);

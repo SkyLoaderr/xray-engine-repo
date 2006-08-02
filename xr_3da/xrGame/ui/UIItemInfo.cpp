@@ -93,7 +93,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 	sprintf				(str, "%3.2f kg", pInvItem->Weight());
 	UIWeight->SetText	(str);
 
-	sprintf				(str, "%d RU", pInvItem->Cost());
+	sprintf				(str, "%d RU", pInvItem->Cost());		// will be owerwritten in multiplayer
 	UICost->SetText		(str);
 	
 	float cond = pInvItem->GetCondition();

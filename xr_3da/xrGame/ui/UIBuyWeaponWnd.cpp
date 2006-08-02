@@ -247,14 +247,14 @@ bool CUIBuyWeaponWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if(!this_inventory->CanPutInSlot(pDDItemMP, KNIFE_SLOT)) 
 		return false;
 
-	bool last;
-	if (pDDItemMP->HasAmountControl())
-		if (pDDItemMP->GetPermissionToBuy(last)){
-			if (!last)
-				this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
-		}
-		else
-			return false;
+	//bool last;
+	//if (pDDItemMP->HasAmountControl())
+	//	if (pDDItemMP->GetPermissionToBuy(last)){
+	//		if (!last)
+	//			this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
+	//	}
+	//	else
+	//		return false;
 	this_inventory->SlotToSection(KNIFE_SLOT);
 
 	// И отнимаем от денег стоимость вещи.
@@ -301,13 +301,13 @@ bool CUIBuyWeaponWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if(!this_inventory->CanPutInSlot(pDDItemMP, PISTOL_SLOT)) return false;
 
 	bool last;
-	if (pDDItemMP->HasAmountControl())
-		if (pDDItemMP->GetPermissionToBuy(last)){
-			if (!last)
-				this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
-		}
-		else
-			return false;
+	//if (pDDItemMP->HasAmountControl())
+	//	if (pDDItemMP->GetPermissionToBuy(last)){
+	//		if (!last)
+	//			this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
+	//	}
+	//	else
+	//		return false;
 	this_inventory->SlotToSection(PISTOL_SLOT);
 	this_inventory->HighlightCurAmmo();
 
@@ -344,13 +344,13 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		return false;
 
 	bool last;
-	if (pDDItemMP->HasAmountControl())
-		if (pDDItemMP->GetPermissionToBuy(last)){
-			if (!last)
-				this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
-		}
-		else
-			return false;
+	//if (pDDItemMP->HasAmountControl())
+	//	if (pDDItemMP->GetPermissionToBuy(last)){
+	//		if (!last)
+	//			this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
+	//	}
+	//	else
+	//		return false;
 	this_inventory->SlotToSection(RIFLE_SLOT);
 	this_inventory->HighlightCurAmmo();
 
@@ -382,13 +382,13 @@ bool CUIBuyWeaponWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		return false;
 
 	bool last;
-	if (pDDItemMP->HasAmountControl())
-		if (pDDItemMP->GetPermissionToBuy(last)){
-			if (!last)
-				this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
-		}
-		else
-			return false;
+	//if (pDDItemMP->HasAmountControl())
+	//	if (pDDItemMP->GetPermissionToBuy(last)){
+	//		if (!last)
+	//			this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
+	//	}
+	//	else
+	//		return false;
 
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
@@ -414,13 +414,13 @@ bool CUIBuyWeaponWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		return false;
 
 	bool last;
-	if (pDDItemMP->HasAmountControl())
-		if (pDDItemMP->GetPermissionToBuy(last)){
-			if (!last)
-				this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
-		}
-		else
-			return false;
+	//if (pDDItemMP->HasAmountControl())
+	//	if (pDDItemMP->GetPermissionToBuy(last)){
+	//		if (!last)
+	//			this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
+	//	}
+	//	else
+	//		return false;
 
 	this_inventory->SlotToSection(APPARATUS_SLOT);
 
@@ -486,14 +486,14 @@ bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		return false;
 
 	bool last;
-	if (pDDItemMP->HasAmountControl())
-		if (pDDItemMP->GetPermissionToBuy(last))
-		{
-			if (!last)
-				this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
-		}
-		else
-			return false;
+	//if (pDDItemMP->HasAmountControl())
+	//	if (pDDItemMP->GetPermissionToBuy(last))
+	//	{
+	//		if (!last)
+	//			this_inventory->UIBagWnd.CreateCopy(pDDItemMP);
+	//	}
+	//	else
+	//		return false;
 	
 	// И отнимаем от денег стоимость вещи.
 	if (!pDDItemMP->m_bAlreadyPaid)
@@ -1785,8 +1785,8 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	pDDItemMP->AttachDetachAllAddons(false);
 
 	// Need to delete copy before adding
-	if (pDDItemMP->HasAmountControl())
-        pDDItemMP->OnReturn();
+	//if (pDDItemMP->HasAmountControl())
+ //       pDDItemMP->OnReturn();
 	this_inventory->UIBagWnd.DeleteCopy(pDDItemMP);
 
 	pDDItemMP->GetParent()->DetachChild(pDDItemMP);

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "game_cl_deathmatch.h"
 #include "level.h"
-#include "ui/UIBuyWeaponWnd.h"
+#include "ui/UIBuyWnd.h"
 #include "actor.h"
 #include "inventory.h"
 #include "xrServer_Objects_ALife_Items.h"
@@ -11,10 +11,10 @@
 #include "Missile.h"
 
 static	u16 SlotsToCheck [] = {
-		APPARATUS_SLOT	,		// 4
+//		APPARATUS_SLOT	,		// 4
 		OUTFIT_SLOT		,		// 5
-		KNIFE_SLOT		,		// 0
-		GRENADE_SLOT	,		// 3
+//		KNIFE_SLOT		,		// 0
+//		GRENADE_SLOT	,		// 3
 		PISTOL_SLOT		,		// 1
 		RIFLE_SLOT		,		// 2
 };
@@ -46,7 +46,7 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 	//-------------------------------------------------------------------------------
 	pCurPresetItems->clear();
 
-	for (u8 s =0; s<6; s++)
+	for (u8 s =0; s<3; s++)
 	{
 //		u8 ItemID = pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]);
 		u8 SectionID = 0xff;
@@ -252,7 +252,7 @@ void game_cl_Deathmatch::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems)
 	};
 };
 
-void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWeaponWnd* pBuyMenu, PRESET_ITEMS* pPresetItems)
+void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWnd* pBuyMenu, PRESET_ITEMS* pPresetItems)
 {
 	if (!pSettings->line_exist(caSection, "default_items")) return;
 	if (!pBuyMenu) return;
@@ -293,7 +293,7 @@ void	game_cl_Deathmatch::OnBuyMenu_DefaultItems	()
 //	pCurBuyMenu->IgnoreMoney(false);
 };
 
-void				game_cl_Deathmatch::LoadDefItemsForRank(CUIBuyWeaponWnd* pBuyMenu)
+void				game_cl_Deathmatch::LoadDefItemsForRank(CUIBuyWnd* pBuyMenu)
 {
 	if (!pBuyMenu) return;
 	//---------------------------------------------------
@@ -349,7 +349,7 @@ void				game_cl_Deathmatch::LoadDefItemsForRank(CUIBuyWeaponWnd* pBuyMenu)
 	};
 };
 
-void				game_cl_Deathmatch::ChangeItemsCosts			(CUIBuyWeaponWnd* pBuyMenu)
+void				game_cl_Deathmatch::ChangeItemsCosts			(CUIBuyWnd* pBuyMenu)
 {
 	if (!pBuyMenu) return;
 };

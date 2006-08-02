@@ -50,7 +50,7 @@
 			<text font="letterica16" r="124" g="119" b="115">ui_inv_rate_of_fire</text>
 		</cap_rpm>
 		
-		<progress_accuracy x="0" y="24" width="121" height="8" length="121">
+		<progress_accuracy x="0" y="24" width="121" height="8" length="121" horz="1">
 			<progress>
 				<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</progress>
@@ -58,7 +58,7 @@
 				<texture a="100" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</background>
 		</progress_accuracy>		
-		<progress_handling x="142" y="24" width="121" height="8" length="121">
+		<progress_handling x="142" y="24" width="121" height="8" length="121" horz="1">
 			<progress>
 				<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</progress>
@@ -66,7 +66,7 @@
 				<texture a="100" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</background>
 		</progress_handling>
-		<progress_damage x="0" y="55" width="121" height="8" length="121">
+		<progress_damage x="0" y="55" width="121" height="8" length="121" horz="1">
 			<progress>
 				<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</progress>
@@ -74,7 +74,7 @@
 				<texture a="100" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</background>
 		</progress_damage>		
-		<progress_rpm x="142" y="55" width="121" height="8" length="121">
+		<progress_rpm x="142" y="55" width="121" height="8" length="121" horz="1">
 			<progress>
 				<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</progress>

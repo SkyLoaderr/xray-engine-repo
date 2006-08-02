@@ -235,7 +235,7 @@ public:
 	const u8	GetWeaponAddonInfoByIndex(u8 idx);
 	const u8	GetBeltSize();
 	void		SetRank(int rank) {UIBagWnd.SetRank(rank);}
-	void		ReInitItems	(LPCSTR strSectionName);
+//	void		ReInitItems	(LPCSTR strSectionName);
 
 	// Процедуры принудительного перемещения оружия (эмуляция даблклика).
 	// Params:	grpNum					- номер группы секций

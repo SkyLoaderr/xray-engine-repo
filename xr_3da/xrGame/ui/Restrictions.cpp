@@ -29,47 +29,6 @@ CRestrictions::~CRestrictions(){
 
 }
 
-bool CRestrictions::IsGroupExist(LPCSTR group){
-	return (m_goups.end() != m_goups.find(group));
-}
-
-void CRestrictions::CopyGroup(LPCSTR from, LPCSTR to){
-	if (0 == xr_strcmp(from,to))
-		return;
-
-	Groups_it it_from = m_goups.find(from);
-	Groups_it it_to = m_goups.find(to);
-
-	if (m_goups.end() == it_from || m_goups.end() == it_to)
-		return;
-
-	for (group_items_it it = (*it_from).second.begin(); it != (*it_from).second.end(); it++)
-		(*it_to).second.push_back(*it);
-}
-
-void CRestrictions::AddGroup(LPCSTR group, LPCSTR lst){
-	Groups_it it = m_goups.find(group);
-	if (m_goups.end() == it)
-	{
-		group_items itms;
-		m_goups.insert(mk_pair(group,itms));
-		AddGroup(group, lst);
-	}
-	else
-	{
-		string256	singleItem;
-		u32 count	= _GetItemCount(lst);
-		for (u32 j = 0; j < count; ++j)
-		{
-			_GetItem(lst, j, singleItem);
-			if (IsGroupExist(singleItem))
-				CopyGroup(singleItem, group);
-			else
-				(*it).second.push_back(singleItem);
-		}
-	}
-}
-
 void CRestrictions::InitGroups(){
 	if (m_bInited)
 		return;
@@ -78,6 +37,7 @@ void CRestrictions::InitGroups(){
 	if (!pSettings->section_exist("mp_item_groups"))
 		return;
 
+	// create groups
 	u32 c =  pSettings->line_count("mp_item_groups");
 	LPCSTR line, name;
 	for (u32 i = 0; i<c; i++){
@@ -85,15 +45,19 @@ void CRestrictions::InitGroups(){
 		AddGroup(name,line);
 	}
 
+	// try to find restrictions in every rank
     string256 rank;
 	for (int i = 0; true; i++)
 	{
 		sprintf(rank,"rank_%i",i);
+		// check rank for existance
 		if (!pSettings->section_exist(rank))
 			break;
+		// check restriction for existance
 		if (!pSettings->line_exist(rank,"amount_restriction"))
 			continue;
         AddRestriction4rank(i, pSettings->r_string(rank,"amount_restriction"));
+		FillUpRank(rank, i);	// get info about available items for every rank
 	}
 
 	if (pSettings->section_exist("rank_base"))
@@ -112,12 +76,86 @@ void CRestrictions::InitGroups(){
 
 #ifdef DEBUG
 	CMD4(CCC_Integer,"rank_for_buymenu",&m_rank,0,4);
-#endif
-			
-	
+#endif	
 }
 
-void CRestrictions::AddRestriction4rank(int rank, LPCSTR lst){
+void CRestrictions::FillUpRank(LPCSTR rank, int i_rank){
+	if ((int)m_items.size()<i_rank + 1)
+		m_items.resize(i_rank + 1);
+
+	R_ASSERT(pSettings->section_exist(rank));
+
+	xr_string itemsList;
+	string256 single_item;
+
+	itemsList = pSettings->r_string(rank, "available_items");
+	int itemsCount	= _GetItemCount(itemsList.c_str());
+
+	if (i_rank > 0)
+		m_items[i_rank] = m_items[i_rank - 1];
+
+	for (int i = 0; i < itemsCount; i++)
+	{
+		_GetItem(itemsList.c_str(), i, single_item);
+		m_items[i_rank].insert(mk_pair(single_item, 0/*dummy*/));		
+	}
+}
+
+bool CRestrictions::IsAvailable(LPCSTR itm){
+	return m_items[m_rank].find(itm) != m_items[m_rank].end();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////
+////// PRIVATE METHODS
+/////////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////////
+void CRestrictions::AddGroup(LPCSTR group, LPCSTR lst){		// private
+	Groups_it it = m_goups.find(group);
+	if (m_goups.end() == it)	// if not found
+	{
+		group_items itms;
+		m_goups.insert(mk_pair(group,itms));	// add group with empty list
+		
+		AddGroup(group, lst);	// recursive call (group items will be added to group item list)
+	}
+	else
+	{
+		string256	singleItem;
+		u32 count	= _GetItemCount(lst);
+		for (u32 j = 0; j < count; ++j)				// add all items to group
+		{
+			_GetItem(lst, j, singleItem);
+			if (IsGroupExist(singleItem))			// if item is group...
+				CopyGroup(singleItem, group);		// ... insert all items of this group
+			else
+				(*it).second.push_back(singleItem);	//
+		}
+	}
+}
+
+bool CRestrictions::IsGroupExist(LPCSTR group){
+	return (m_goups.end() != m_goups.find(group));
+}
+
+void CRestrictions::CopyGroup(LPCSTR from, LPCSTR to){
+	if (0 == xr_strcmp(from,to))
+		return;
+
+	Groups_it it_from = m_goups.find(from);
+	Groups_it it_to = m_goups.find(to);
+
+	if (m_goups.end() == it_from || m_goups.end() == it_to)
+		return;
+
+	for (group_items_it it = (*it_from).second.begin(); it != (*it_from).second.end(); it++)
+		(*it_to).second.push_back(*it);
+}
+
+void CRestrictions::AddRestriction4rank(int rank, LPCSTR lst){		// private
 	if ((int)m_restrictions.size()<rank + 1)
 		m_restrictions.resize(rank + 1);
 
@@ -133,22 +171,22 @@ void CRestrictions::AddRestriction4rank(int rank, LPCSTR lst){
 	}
 }
 
-RESTR CRestrictions::GetRestr(LPCSTR item){
+
+RESTR CRestrictions::GetRestr(LPCSTR item){ // private function
 	RESTR ret;
 	char* pos = strstr(item,":");
 	R_ASSERT(pos);
 	pos[0]=0;
 
 	ret.name = item;
-	ret.n.cur_val = 0;
-	if (0 == xr_strcmp(++pos,"no_limit"))
-		ret.n.max_val = 65536;
-	else
-    	ret.n.max_val = atoi(pos);
+	//if (0 == xr_strcmp(++pos,"no_limit"))
+	//	ret.n.max_val = 65536;
+	//else
+    	ret.n = atoi(++pos);
 	return ret;
 }
 
-LPCSTR CRestrictions::GetItemGroup(LPCSTR item){
+LPCSTR CRestrictions::GetItemGroup(LPCSTR item){	// private function
 	Groups_it it;
 	group_items_it IT;
 	
@@ -160,83 +198,34 @@ LPCSTR CRestrictions::GetItemGroup(LPCSTR item){
 	return NULL;
 }
 
-bool CRestrictions::GetPermission(LPCSTR item, bool& last){
-	last = true;
-
-	if (!item || 0 == item[0])
-		return true;
-	if ((int)m_restrictions.size()<m_rank + 1)
-		return true;
-
-	bool ret = true;
-	if (!IsGroupExist(item))
-		ret = GetPermission(GetItemGroup(item), last);		
-
-	rank_rest& rest = m_restrictions[m_rank];
-	rank_rest_it it = rest.find(item);
-	if (rest.end() != it)
-		ret &= Try((*it).second, last);
-	else
+int CRestrictions::GetItemCount(LPCSTR item){
+	VERIFY(m_bInited);
+	if (HasAmountControl(item))
 	{
-		it = m_base_rank_rest.find(item);
-		if (m_base_rank_rest.end() != it)
-			ret &= Try((*it).second, last);
+		if (!item || 0 == item[0])
+			return 1;
+		if ((int)m_restrictions.size()<m_rank + 1)
+			return 1;
+
+//		bool ret = true;
+		if (!IsGroupExist(item))	// if it is not group
+			return GetItemCount(GetItemGroup(item));		
+
+		rank_rest& rest = m_restrictions[m_rank];
+		rank_rest_it it = rest.find(item);
+		if (rest.end() != it)
+			return (*it).second;
 		else
-            ret &= true;
-	}
-
-//	Msg("mp_buymenu: GetPermission(%s,%d) == %d",item,last,ret);
-
-	return ret;
-}
-
-bool CRestrictions::Try(RESTR_N& r, bool& last){
-	if (r.cur_val < r.max_val)
-	{
-		r.cur_val++;
-//		Msg("mp_buymenu: ++, cur_val=%d, max_val=%d", r.cur_val,r.max_val);
-		last &= r.cur_val == r.max_val;
-		return true;
-	}
-	else
-		return false;
-}
-
-void CRestrictions::Return(LPCSTR item){
-	if (!item || 0 == item[0])
-		return;
-	if ((int)m_restrictions.size()<m_rank + 1)
-		return;
-
-	if (!IsGroupExist(item))
-		Return(GetItemGroup(item));
-
-	rank_rest& rest = m_restrictions[m_rank];
-	rank_rest_it it = rest.find(item);
-	if (rest.end() != it)
-	{
-		RESTR_N& r = (*it).second;
-		if (r.cur_val >= 0)
-			r.cur_val--;
-
-//		Msg("mp_buymenu: %s --, cur_val=%d, max_val=%d",item, r.cur_val,r.max_val);
-	}
-	else
-	{
-//		rank_rest& rest = m_base_rank_rest;
-		it = m_base_rank_rest.find(item);
-		if (m_base_rank_rest.end() != it)
 		{
-			RESTR_N& r = (*it).second;
-			if (r.cur_val >= 0)
-				r.cur_val--;
-
-//			Msg("mp_buymenu: %s --, cur_val=%d, max_val=%d",item, r.cur_val,r.max_val);
+			it = m_base_rank_rest.find(item);
+			if (m_base_rank_rest.end() != it)
+				return (*it).second;
+			else
+				return 1;
 		}
-
 	}
-//	Msg("Return(%s)",item);
-	return;
+	else
+        return 1;
 }
 
 bool CRestrictions::HasAmountControl(LPCSTR item){
@@ -263,3 +252,34 @@ bool CRestrictions::HasAmountControl(LPCSTR item){
 	}
 }
 
+
+
+//bool CRestrictions::GetPermission(LPCSTR item){
+//	if (!item || 0 == item[0])
+//		return true;
+//	if ((int)m_restrictions.size()<m_rank + 1)
+//		return true;
+//
+//	bool ret = true;
+//	if (!IsGroupExist(item))
+//		ret = GetPermission(GetItemGroup(item));		
+//
+//	rank_rest& rest = m_restrictions[m_rank];
+//	rank_rest_it it = rest.find(item);
+//	if (rest.end() != it)
+//		ret &= Try((*it).second);
+//	else
+//	{
+//		it = m_base_rank_rest.find(item);
+//		if (m_base_rank_rest.end() != it)
+//			ret &= Try((*it).second);
+//		else
+//            ret &= true;
+//	}
+//
+//	return ret;
+//}
+
+//bool CRestrictions::Try(RESTR_N& r){
+//	return r.cur_val < r.max_val;
+//}

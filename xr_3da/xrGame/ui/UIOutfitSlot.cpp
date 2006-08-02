@@ -10,6 +10,7 @@ CUIOutfitDragDropList::CUIOutfitDragDropList()
 	m_background				= xr_new<CUIStatic>();
 	m_background->SetAutoDelete	(true);
 	AttachChild					(m_background);
+	m_default_outfit			= "without_outfit";
 }
 
 CUIOutfitDragDropList::~CUIOutfitDragDropList()
@@ -18,8 +19,8 @@ CUIOutfitDragDropList::~CUIOutfitDragDropList()
 
 void CUIOutfitDragDropList::SetOutfit(CUICellItem* itm)
 {
-	static float fNoOutfitX				= pSettings->r_float("without_outfit", "full_scale_icon_x");
-	static float fNoOutfitY				= pSettings->r_float("without_outfit", "full_scale_icon_y");
+	static float fNoOutfitX				= pSettings->r_float(m_default_outfit, "full_scale_icon_x");
+	static float fNoOutfitY				= pSettings->r_float(m_default_outfit, "full_scale_icon_y");
 	
 	Frect			r;
 	r.x1			= fNoOutfitX*ICON_GRID_WIDTH;
@@ -43,6 +44,10 @@ void CUIOutfitDragDropList::SetOutfit(CUICellItem* itm)
 	m_background->TextureAvailable		(true);
 	m_background->TextureOn				();
 	m_background->RescaleRelative2Rect	(r);
+}
+
+void CUIOutfitDragDropList::SetDefaultOutfit(LPCSTR default_outfit){
+	m_default_outfit = default_outfit;
 }
 
 void CUIOutfitDragDropList::SetItem(CUICellItem* itm)

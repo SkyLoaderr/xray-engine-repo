@@ -49,6 +49,7 @@ public:
 				void		SetOwnerList			(CUIDragDropListEx* p);
 				void		SetCustomDraw			(ICustomDrawCell* c);
 				void*		m_pData;
+				int			m_index;
 };
 
 class CUIDragItem: public CUIWindow, public pureRender, public pureFrame

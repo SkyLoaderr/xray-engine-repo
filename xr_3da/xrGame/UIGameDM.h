@@ -7,7 +7,7 @@
 class CUIDMFragList;
 class CUIDMPlayerList;
 class CUIDMStatisticWnd;
-class CUIBuyWeaponWnd;
+class CUIBuyWnd;
 class CUISkinSelectorWnd;
 class game_cl_Deathmatch;
 class CUIMoneyIndicator;

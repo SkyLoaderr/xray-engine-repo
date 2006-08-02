@@ -366,6 +366,10 @@ u32 CUIDragDropListEx::ItemsCount()
 	return m_container->GetChildWndList().size();
 }
 
+bool CUIDragDropListEx::IsOwner(CUICellItem* itm){
+	return m_container->IsChild(itm);
+}
+
 CUICellItem* CUIDragDropListEx::GetItemIdx(u32 idx)
 {
 	VERIFY(idx<ItemsCount());
@@ -373,8 +377,6 @@ CUICellItem* CUIDragDropListEx::GetItemIdx(u32 idx)
 	std::advance	(it, idx);
 	return smart_cast<CUICellItem*>(*it);
 }
-
-
 
 CUICellContainer::CUICellContainer(CUIDragDropListEx* parent)
 {

@@ -97,6 +97,7 @@ public:
 			void			DestroyDragItem		();
 			void			ClearAll			(bool bDestroy);	
 			void			Compact				();
+			bool			IsOwner				(CUICellItem* itm);
 public:
 	//UIWindow overriding
 	virtual		void		Draw				();

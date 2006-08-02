@@ -9,7 +9,7 @@
 #include "clsid_game.h"
 #include "actor.h"
 #include "ui/UIMainIngameWnd.h"
-#include "ui/UIBuyWeaponWnd.h"
+#include "ui/UIBuyWnd.h"
 #include "ui/UISkinSelector.h"
 #include "ui/UIPdaWnd.h"
 #include "ui/UIInventoryWnd.h"
@@ -157,7 +157,7 @@ void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
 	}
 }
 
-CUIBuyWeaponWnd* game_cl_Deathmatch::InitBuyMenu			(LPCSTR BasePriceSection, s16 Team)
+CUIBuyWnd* game_cl_Deathmatch::InitBuyMenu			(LPCSTR BasePriceSection, s16 Team)
 {
 	if (Team == -1)
 	{
@@ -166,7 +166,8 @@ CUIBuyWeaponWnd* game_cl_Deathmatch::InitBuyMenu			(LPCSTR BasePriceSection, s16
 
 	cl_TeamStruct *pTeamSect = &TeamList[ModifyTeam(Team)];
 	
-	CUIBuyWeaponWnd* pMenu	= xr_new<CUIBuyWeaponWnd>	((LPCSTR)pTeamSect->caSection.c_str(), BasePriceSection);
+	CUIBuyWnd* pMenu	= xr_new<CUIBuyWnd>();
+	pMenu->Init((LPCSTR)pTeamSect->caSection.c_str(), BasePriceSection);
 	pMenu->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	pMenu->SetSkin(0);
 	return pMenu;
@@ -895,7 +896,7 @@ void				game_cl_Deathmatch::OnTeamChanged			()
 	ChangeItemsCosts(pCurBuyMenu);
 };
 
-void				game_cl_Deathmatch::LoadPlayerDefItems			(char* TeamName, CUIBuyWeaponWnd* pBuyMenu)
+void				game_cl_Deathmatch::LoadPlayerDefItems			(char* TeamName, CUIBuyWnd* pBuyMenu)
 {
 	if (!local_player) return;
 	LoadTeamDefaultPresetItems(TeamName, pBuyMenu, &PlayerDefItems);

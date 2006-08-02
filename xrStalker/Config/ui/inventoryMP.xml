@@ -1,18 +1,25 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
-	<btn_bullets_pistol x="204" y="118" width="44" height="29">
+
+	<slots_background x="0" y="80" height="172" width="1024">
+		<texture>ui_slots_belt</texture>
+	</slots_background>
+	<background x="0" y="200" width="1024" height="477">
+		<texture>ui_inventory_mp_buy</texture>
+	</background>
+	<!--btn_bullets_pistol x="15" y="198" width="44" height="29">
 		<texture>ui_button_arrow_up</texture>		
 	</btn_bullets_pistol>
 	
 	<btn_bullets_riffle x="444" y="118" width="44" height="29">
 		<texture>ui_button_arrow_up</texture>		
-	</btn_bullets_riffle>
+	</btn_bullets_riffle-->
 
 	<btn_pistol_silencer x="262" y="77" width="22" height="22" hint="ui_inv_silencer_pistol">
 		<texture>ui_beltbut_silencer</texture>
 	</btn_pistol_silencer>
 	
-	<btn_pistol_bullets x="262" y="99" width="22" height="22" hint="ui_inv_ammo_pistol">
+	<btn_pistol_bullets x="159" y="199" width="22" height="22" hint="ui_inv_ammo_pistol">
 		<texture>ui_beltbut_patrons</texture>
 	</btn_pistol_bullets>
 	
@@ -28,11 +35,11 @@
 		<texture>ui_beltbut_granadeBig</texture>
 	</btn_riffle_granadelauncher>
 	
-	<btn_rifle_bullets x="619" y="77" width="22" height="22" hint="ui_inv_ammo_rifle">
+	<btn_rifle_bullets x="517" y="176" width="22" height="22" hint="ui_inv_ammo_rifle">
 		<texture>ui_beltbut_patrons</texture>
 	</btn_rifle_bullets>	
 	
-	<btn_riffle_granades x="619" y="99" width="22" height="22" hint="ui_inv_granades_rifle">
+	<btn_riffle_granades x="517" y="199" width="22" height="22" hint="ui_inv_granades_rifle">
 		<texture>ui_beltbut_granadeBig</texture>
 	</btn_riffle_granades>	
 
@@ -44,7 +51,7 @@
 	</bag_background_static>
 	
 	<!-- BACK BUTTON FOR BAG -->
-	<bag_back_btn x="199" y="3" width="67" height="32">
+	<bag_back_btn x="199" y="3" width="100" height="32">
 			<texture_offset x="-26" y="0"/>
 			<texture>ui\ui_btn_mp_back</texture>			
 			<sound_t>weapons\generic_close</sound_t>
@@ -56,7 +63,10 @@
 		<rank_icon x="10" y="36" width="32" height="32"></rank_icon>
 	</desc_static>
 	
-	
+	<!-- money -->
+	<money_info x="802" y="546" width="112" height="34">
+		<text font="graffiti22" r="231" g="153" b="22" align="c" vert_align="c"></text>
+	</money_info>	
 
 	<!-- CHARACTER WINDOW -->
 	<personal_static x="790" y="234" width="200" height="400">
@@ -79,22 +89,41 @@
 	<!-- BELT LIST -->
 	<dragdrop_list x="32" y="166" width="1024" height="60"
 			cell_width = "53" cell_height="50"
-			rows_num="1" cols_num="18"></dragdrop_list>
+			rows_num="1" cols_num="18">
+	</dragdrop_list>
+	
 	<dragdrop_list/>
+	
 	<!-- BAG LIST -->
-	<dragdrop_list_bag x="30" y="40" width="400" height="350"
+	<dragdrop_list_bag x="30" y="40" width="260" height="350"
 			cell_width = "40" cell_height="40"
-			rows_num="24" cols_num="6" rows_num_view="9"/>
+			rows_num="2" cols_num="6" rows_num_view="9" group_similar="1" unlimited="1"/>
 
-	<!-- SLOTS LISTS -->
-	<dragdrop_list x="37" y="40" width="120" height="120"
+	<belt_list x="581" y="116" width="1024" height="100"
+			cell_width = "53" cell_height="50"
+			rows_num="2" cols_num="8" />
+	
+	<pistol_list x="37" y="140" width="120" height="50"
+			cell_width = "53" cell_height="50"
+			rows_num="1" cols_num="2" show_grid="0" />
+			
+	<rifle_list x="230" y="123" width="320" height="100"
+			cell_width = "53" cell_height="50"
+			rows_num="2" cols_num="6" show_grid="0" />
+			
+	<outfit_list x="828" y="300" width="150" height="220"
+			cell_width = "53" cell_height="53"
+			rows_num="4" cols_num="4" show_grid="0" />
+			
+	<!--knife-->
+	<dragdrop_list x="37" y="140" width="120" height="120"
 			cell_width = "53" cell_height="53"
 			rows_num="1" cols_num="2" show_grid="0" />
-
+	<!--pistol-->
 	<dragdrop_list x="188" y="40" width="120" height="120"
 			cell_width = "53" cell_height="53"
 			rows_num="1" cols_num="2" show_grid="0" />
-
+	<!--rifle-->
 	<dragdrop_list x="333" y="14" width="320" height="120"
 			cell_width = "53" cell_height="53"
 			rows_num="2" cols_num="6" show_grid="0" />
@@ -358,7 +387,7 @@
 		<texture_e>ui\ui_mp_buy_ok_e</texture_e>
 		<texture_t>ui\ui_mp_buy_ok_h</texture_t>
 		<texture_h>ui\ui_mp_buy_ok_h</texture_h>
-		<text font="graffiti22" align="c">Ok</text>
+		<text font="graffiti22" align="c">ui_inv_ok</text>
 		<text_color>
 			<e r="156" g="122" b="46"/>
 			<h r="255" g="255" b="180"/>
@@ -372,7 +401,7 @@
 		<texture_e>ui\ui_mp_buy_ok_e</texture_e>
 		<texture_t>ui\ui_mp_buy_ok_h</texture_t>
 		<texture_h>ui\ui_mp_buy_ok_h</texture_h>
-		<text font="graffiti22" align="c">Cancel</text>		
+		<text font="graffiti22" align="c">ui_inv_cancel</text>		
 		<text_color>
 			<e r="156" g="122" b="46"/>
 			<h r="255" g="255" b="180"/>
@@ -380,33 +409,12 @@
 		</text_color>
 	</cancel_button>
 	
-	<autobuy_button x="840" y="557" width="145" height="48">
-		<texture_offset x="-42" y="0"/>
-		<texture>ui\ui_btn_mp_avto</texture>
-		<text font="graffiti22" align="c">Autobuy</text>
-		<text_color>
-			<e r="156" g="122" b="46"/>
-			<h r="255" g="255" b="180"/>
-			<t r="255" g="255" b="180"/>
-		</text_color>
-		<sound_t>weapons\generic_close</sound_t>
-		<hint x="-42" y="12" width="29" height="29">
-			<text font="letterica25" x="0" y="-1" align="c">X</text>
-			<text_color>
-				<e a="255" r="255" g="255" b="0"/>
-				<d a="255" r="87" g="87" b="72"/>					
-				<h a="255" r="255" g="226" b="79"/>
-				<t a="255" r="255" g="226" b="79"/>
-			</text_color>
-		</hint>
-	</autobuy_button>
-	
 	<clear_button x="840" y="611" width="145" height="48">
 		<texture_offset x="-42" y="0"/>
 		<texture_e>ui\ui_btn_mp_avto_e</texture_e>
 		<texture_t>ui\ui_btn_mp_avto_t</texture_t>
 		<texture_h>ui\ui_btn_mp_avto_h</texture_h>
-		<text font="graffiti22" align="c">Clear</text>
+		<text font="graffiti22" align="c">ui_inv_clear</text>
 		<text_color>
 			<e r="156" g="122" b="46"/>
 			<h r="255" g="255" b="180"/>

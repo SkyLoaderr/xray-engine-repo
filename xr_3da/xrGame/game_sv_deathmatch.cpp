@@ -2,7 +2,7 @@
 #include "game_sv_deathmatch.h"
 #include "HUDmanager.h"
 #include "xrserver_objects_alife_monsters.h"
-#include "ui\UIBuyWeaponWnd.h"
+#include "ui\UIBuyWnd.h"
 #include "level.h"
 #include "xrserver.h"
 #include "Inventory.h"

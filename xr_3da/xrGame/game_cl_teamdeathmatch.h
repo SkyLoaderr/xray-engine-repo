@@ -51,8 +51,8 @@ public :
 protected:
 	CUISpawnWnd*		pUITeamSelectWnd;
 
-	CUIBuyWeaponWnd*	pBuyMenuTeam1;
-	CUIBuyWeaponWnd*	pBuyMenuTeam2;
+	CUIBuyWnd*	pBuyMenuTeam1;
+	CUIBuyWnd*	pBuyMenuTeam2;
 
 	CUISkinSelectorWnd*	pSkinMenuTeam1;
 	CUISkinSelectorWnd*	pSkinMenuTeam2;

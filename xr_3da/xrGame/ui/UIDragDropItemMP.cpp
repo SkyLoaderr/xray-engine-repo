@@ -48,17 +48,17 @@ CUIDragDropItemMP::CUIDragDropItemMP()
 		m_pAddon[i] = NULL;
 }
 
-bool CUIDragDropItemMP::HasAmountControl(){
-	return g_mp_restrictions.HasAmountControl(GetSectionName());
-}
-
-bool CUIDragDropItemMP::GetPermissionToBuy(bool& last){
-	return g_mp_restrictions.GetPermission(GetSectionName(), last);
-}
-
-void CUIDragDropItemMP::OnReturn(){
-	g_mp_restrictions.Return(GetSectionName());
-}
+//bool CUIDragDropItemMP::HasAmountControl(){
+//	return g_mp_restrictions.HasAmountControl(GetSectionName());
+//}
+//
+//bool CUIDragDropItemMP::GetPermissionToBuy(bool& last){
+//	return g_mp_restrictions.GetPermission(GetSectionName(), last);
+//}
+//
+//void CUIDragDropItemMP::OnReturn(){
+//	g_mp_restrictions.Return(GetSectionName());
+//}
 
 void CUIDragDropItemMP::AttachDetachAddon(AddonIDs iAddonIndex, bool bAttach, bool bRealRepresentationSet)
 {

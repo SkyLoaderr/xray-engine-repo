@@ -7,14 +7,14 @@
 #include "ui/UIInventoryWnd.h"
 #include "ui/UISpawnWnd.h"
 
-#include "ui/UIBuyWeaponWnd.h"
+#include "ui/UIBuyWnd.h"
 #include <dinput.h>
 
 // refs 
 
 class CUITDMFragList;
 class CUITDMPlayerList;
-class CUIBuyWeaponWnd;
+class CUIBuyWnd;
 class CUISkinSelectorWnd;
 class game_cl_TeamDeathmatch;
 class CUIStatic;

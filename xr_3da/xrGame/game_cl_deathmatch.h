@@ -1,7 +1,7 @@
 #pragma once
 #include "game_cl_mp.h"
 
-class CUIBuyWeaponWnd;
+class CUIBuyWnd;
 class CUISkinSelectorWnd;
 class CUIDialogWnd;
 class CUIGameDM;
@@ -50,8 +50,8 @@ protected:
 	PRESET_ITEMS*					pCurPresetItems;
 	PRESET_ITEMS					PlayerDefItems;
 
-	CUIBuyWeaponWnd*				pBuyMenuTeam0;
-	CUIBuyWeaponWnd*				pCurBuyMenu;
+	CUIBuyWnd*				pBuyMenuTeam0;
+	CUIBuyWnd*				pCurBuyMenu;
 
 	CUISkinSelectorWnd*				pSkinMenuTeam0;
 	CUISkinSelectorWnd*				pCurSkinMenu;
@@ -73,7 +73,7 @@ protected:
 			void					CheckItem				(PIItem pItem, PRESET_ITEMS* pPresetItems);
 
 			void					ClearBuyMenu			();
-			CUIBuyWeaponWnd*		InitBuyMenu				(LPCSTR BasePriceSection, s16 Team);
+			CUIBuyWnd*		InitBuyMenu				(LPCSTR BasePriceSection, s16 Team);
 			CUISkinSelectorWnd*		InitSkinMenu			(s16 Team = -1);
 			void					SetBuyMenuItems			();
 	virtual bool					CanBeReady				();
@@ -87,10 +87,10 @@ protected:
 	virtual		bool				OnKeyboardPress			(int key);
 	virtual		bool				OnKeyboardRelease		(int key);
 
-	virtual		void				LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWeaponWnd* pBuyMenu, PRESET_ITEMS* pPresetItems);
-	virtual		void				LoadPlayerDefItems			(char* TeamName, CUIBuyWeaponWnd* pBuyMenu);
-	virtual		void				LoadDefItemsForRank			(CUIBuyWeaponWnd* pBuyMenu);
-	virtual		void				ChangeItemsCosts			(CUIBuyWeaponWnd* pBuyMenu);
+	virtual		void				LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWnd* pBuyMenu, PRESET_ITEMS* pPresetItems);
+	virtual		void				LoadPlayerDefItems			(char* TeamName, CUIBuyWnd* pBuyMenu);
+	virtual		void				LoadDefItemsForRank			(CUIBuyWnd* pBuyMenu);
+	virtual		void				ChangeItemsCosts			(CUIBuyWnd* pBuyMenu);
 	virtual		s16					GetBuyMenuItemIndex			(u8 SlotID, u8 ItemID);
 
 	virtual		void				ConvertTime2String		(string64* str, u32 Time);

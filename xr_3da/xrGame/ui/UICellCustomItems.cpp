@@ -126,23 +126,53 @@ CUIStatic* CUIWeaponCellItem::GetIcon(eAddonType t)
 void CUIWeaponCellItem::Update()
 {
 	inherited::Update			();
-	
-	if(is_silencer() && !GetIcon(eSilencer))
-	{
-		CreateIcon	(eSilencer);
-		InitAddon	(GetIcon(eSilencer), *object()->GetSilencerName(), m_addon_offset[eSilencer]);
+
+	if (object()->SilencerAttachable()){
+		if (object()->IsSilencerAttached())
+		{
+			if (!GetIcon(eSilencer))
+			{
+				CreateIcon	(eSilencer);
+				InitAddon	(GetIcon(eSilencer), *object()->GetSilencerName(), m_addon_offset[eSilencer]);
+			}
+		}
+		else
+		{
+			if (m_addons[eSilencer])
+				DestroyIcon(eSilencer);
+		}
 	}
 
-	if(is_scope() && !GetIcon(eScope))
-	{
-		CreateIcon	(eScope);
-		InitAddon	(GetIcon(eScope), *object()->GetScopeName(), m_addon_offset[eScope]);
+	if (object()->ScopeAttachable()){
+		if (object()->IsScopeAttached())
+		{
+			if (!GetIcon(eScope))
+			{
+				CreateIcon	(eScope);
+				InitAddon	(GetIcon(eScope), *object()->GetScopeName(), m_addon_offset[eScope]);
+			}
+		}
+		else
+		{
+			if (m_addons[eScope])
+				DestroyIcon(eScope);
+		}
 	}
 
-	if(is_launcher() && !GetIcon(eLauncher))
-	{
-		CreateIcon	(eLauncher);
-		InitAddon	(GetIcon(eLauncher), *object()->GetGrenadeLauncherName(), m_addon_offset[eLauncher]);
+	if (object()->GrenadeLauncherAttachable()){
+		if (object()->IsGrenadeLauncherAttached())
+		{
+			if (!GetIcon(eLauncher))
+			{
+				CreateIcon	(eLauncher);
+				InitAddon	(GetIcon(eLauncher), *object()->GetGrenadeLauncherName(), m_addon_offset[eLauncher]);
+			}
+		}
+		else
+		{
+			if (m_addons[eLauncher])
+				DestroyIcon(eLauncher);
+		}
 	}
 }
 
