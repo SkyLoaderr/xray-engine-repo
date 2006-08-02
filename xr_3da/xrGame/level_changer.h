@@ -24,6 +24,7 @@ private:
 	float					m_entrance_time;
 	void					update_actor_invitation	();
 	bool					m_bSilentMode;
+	bool					get_reject_pos(Fvector& p, Fvector& r);
 public:
 	virtual				~CLevelChanger		();
 	virtual BOOL		net_Spawn			(CSE_Abstract* DC);

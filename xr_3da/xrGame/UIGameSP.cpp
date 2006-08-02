@@ -153,7 +153,7 @@ void CUIGameSP::ReInitShownUI()
 
 
 extern ENGINE_API BOOL bShowPauseString;
-void CUIGameSP::ChangeLevel				(GameGraph::_GRAPH_ID game_vert_id, u32 level_vert_id, Fvector pos, Fvector ang)
+void CUIGameSP::ChangeLevel				(GameGraph::_GRAPH_ID game_vert_id, u32 level_vert_id, Fvector pos, Fvector ang, Fvector pos2, Fvector ang2, bool b)
 {
 	if( !MainInputReceiver() || MainInputReceiver()!=UIChangeLevelWnd)
 	{
@@ -161,6 +161,9 @@ void CUIGameSP::ChangeLevel				(GameGraph::_GRAPH_ID game_vert_id, u32 level_ver
 		UIChangeLevelWnd->m_level_vertex_id		= level_vert_id;
 		UIChangeLevelWnd->m_position			= pos;
 		UIChangeLevelWnd->m_angles				= ang;
+		UIChangeLevelWnd->m_position_cancel		= pos2;
+		UIChangeLevelWnd->m_angles_cancel		= ang2;
+		UIChangeLevelWnd->m_b_position_cancel	= b;
 		m_game->StartStopMenu					(UIChangeLevelWnd,true);
 	}
 }
@@ -192,6 +195,9 @@ void CChangeLevelWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		}else
 		if(msg==MESSAGE_BOX_NO_CLICKED){
 			Game().StartStopMenu					(this, true);
+			if(m_b_position_cancel){
+				Actor()->MoveAxctor(m_position_cancel, m_angles_cancel);
+			}
 		}
 	}else
 		inherited::SendMessage(pWnd, msg, pData);

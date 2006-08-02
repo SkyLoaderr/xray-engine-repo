@@ -104,7 +104,8 @@ void CLevelChanger::shedule_Update(u32 dt)
 
 	update_actor_invitation		();
 }
-
+#include "patrol_path.h"
+#include "patrol_path_storage.h"
 void CLevelChanger::feel_touch_new	(CObject *tpObject)
 {
 	CActor*			l_tpActor = smart_cast<CActor*>(tpObject);
@@ -121,10 +122,40 @@ void CLevelChanger::feel_touch_new	(CObject *tpObject)
 		p.w_vec3								(m_angles);
 		Level().Send							(p,net_flags(TRUE));
 	}else{
+		Fvector p,r;
+		bool b = get_reject_pos(p,r);
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-		if(pGameSP)pGameSP->ChangeLevel(m_game_vertex_id,m_level_vertex_id,m_position,m_angles);
+
+		if(pGameSP)pGameSP->ChangeLevel(m_game_vertex_id,m_level_vertex_id,m_position,m_angles,p,r,b);
 		m_entrance_time		= Device.fTimeGlobal;
 	}
+}
+
+bool CLevelChanger::get_reject_pos(Fvector& p, Fvector& r)
+{
+		p.set(0,0,0);
+		r.set(0,0,0);
+//--		db.actor:set_actor_position(patrol("t_way"):point(0))
+//--		local dir = patrol("t_look"):point(0):sub(patrol("t_way"):point(0))
+//--		db.actor:set_actor_direction(-dir:getH())
+
+		if(m_ini_file && m_ini_file->section_exist("pt_move_if_reject"))
+		{
+			LPCSTR p_name = m_ini_file->r_string("pt_move_if_reject", "path");
+			const CPatrolPath*		patrol_path = ai().patrol_paths().path(p_name);
+			VERIFY					(patrol_path);
+			
+			const CPatrolPoint*		pt;
+			pt						= &patrol_path->vertex(0)->data();
+			p						= pt->position();
+
+			Fvector tmp;
+			pt						= &patrol_path->vertex(1)->data();
+			tmp.sub					(pt->position(),p);
+			tmp.getHP				(r.y,r.x);
+			return true;
+		}
+		return false;
 }
 
 BOOL CLevelChanger::feel_touch_contact	(CObject *object)
@@ -144,7 +175,9 @@ void CLevelChanger::update_actor_invitation()
 
 		if(m_entrance_time+5.0f < Device.fTimeGlobal){
 			CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-			if(pGameSP)pGameSP->ChangeLevel(m_game_vertex_id,m_level_vertex_id,m_position,m_angles);
+			Fvector p,r;
+			bool b = get_reject_pos(p,r);
+			if(pGameSP)pGameSP->ChangeLevel(m_game_vertex_id,m_level_vertex_id,m_position,m_angles,p,r,b);
 			m_entrance_time		= Device.fTimeGlobal;
 		}
 	}
