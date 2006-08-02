@@ -175,11 +175,15 @@ u32	CTrade::GetItemPrice	(PIItem pItem)
 
 	// computing action factor
 	const CTradeFactors		*p_trade_factors;
-	if (buying)
+
+
+	if (buying){
+		if( ! partner.inv_owner->trade_parameters().enabled(CTradeParameters::action_sell(0),pItem->object().cNameSect()) ) return 0;
 		p_trade_factors		= &partner.inv_owner->trade_parameters().factors(CTradeParameters::action_sell(0),pItem->object().cNameSect());
-	else
+	}else{
+		if( ! partner.inv_owner->trade_parameters().enabled(CTradeParameters::action_buy(0),pItem->object().cNameSect()) ) return 0;
 		p_trade_factors		= &partner.inv_owner->trade_parameters().factors(CTradeParameters::action_buy(0),pItem->object().cNameSect());
-	
+	}
 	const CTradeFactors		&trade_factors = *p_trade_factors;
 
 	float					action_factor;
