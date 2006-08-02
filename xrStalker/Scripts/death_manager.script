@@ -128,7 +128,9 @@ function drop_manager:create_release_item()
 
 
     --' Проверка на отсутствие спауна лута
-    if self.npc:spawn_ini():section_exist("dont_spawn_loot") then
+    local ini = self.npc:spawn_ini()
+
+    if ini and ini:section_exist("dont_spawn_loot") then
         return
     end
 
