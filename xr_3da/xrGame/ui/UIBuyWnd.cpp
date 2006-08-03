@@ -244,6 +244,17 @@ void CUIBuyWnd::OnMoneyChange(){
 	m_moneyInfo.SetText(buff);
 }
 
+void CUIBuyWnd::AfterBuy(){
+	int iActiveIndex = m_tab.GetActiveIndex();
+
+	if (2 == iActiveIndex || 4 == iActiveIndex)
+	{
+		; // do nothing
+	}
+	else
+		m_tab.SetActiveState();
+}
+
 void CUIBuyWnd::ProcessPropertiesBoxClicked	()
 {
 	if(m_propertiesBox.GetClickedItem())
@@ -825,6 +836,8 @@ bool CUIBuyWnd::ToSlot(CUICellItem* itm, bool force_place)
 
 		slot->SetItem(i);
 		m_bag.BuyItem(i);
+
+		AfterBuy();
 
 		return								true;
 	}else

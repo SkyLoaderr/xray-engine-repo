@@ -40,6 +40,7 @@ public:
 	void OnMoneyChange();
 	void OnBtnBulletBuy(int slot);
 	void OnBtnRifleGrenade();
+	void AfterBuy();
 
 	// CUIWindow
 	bool OnKeyboard(int dik, EUIMessages keyboard_action);
