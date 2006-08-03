@@ -900,8 +900,9 @@ void CActor::UpdateCL	()
 
 		if(Level().CurrentEntity() && this->ID()==Level().CurrentEntity()->ID() )
 		{
-			float fire_disp = pWeapon->GetFireDispersion(true);
-			HUD().SetCrosshairDisp(fire_disp);
+			float fire_disp_full = pWeapon->GetFireDispersion(true);
+
+			HUD().SetCrosshairDisp(fire_disp_full, 0.02f);
 			HUD().ShowCrosshair(pWeapon->use_crosshair());
 
 			psHUD_Flags.set( HUD_CROSSHAIR_RT2, pWeapon->show_crosshair() );
