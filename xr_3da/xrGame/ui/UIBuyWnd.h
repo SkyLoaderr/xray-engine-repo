@@ -105,6 +105,7 @@ protected:
 	void				DetachAddon					(const char* addon_name);
 	void				ProcessPropertiesBoxClicked	();
 	void				UpdateOutfit				();
+	void				Highlight					(int slot);
 
 
 	// data

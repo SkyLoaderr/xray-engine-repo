@@ -520,6 +520,20 @@ void CUIBagWnd::BuyItem(CUICellItem* itm){
 	}
 }
 
+void CUIBagWnd::ClearAmmoHighlight(){
+	u32 sz = m_groups[GROUP_4].ItemsCount();
+
+	for (u32 i = 0; i<sz; i++){
+		CUICellItem* itm = m_groups[GROUP_4].GetItemIdx(i);
+		UNHIGHTLIGHT_ITEM(itm);
+	}
+}
+
+void CUIBagWnd::HightlightAmmo(LPCSTR ammo){
+	CUICellItem* itm = GetItemBySectoin(ammo);
+	HIGHTLIGHT_ITEM(itm);
+}
+
 void CUIBagWnd::SellItem(CUICellItem* itm){
 	VERIFY(itm);
 

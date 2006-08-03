@@ -217,23 +217,39 @@ void CUIBuyWnd::OnBtnBulletBuy(int slot){
 }
 
 void CUIBuyWnd::HightlightCurrAmmo(){
-	CUICellItem*	pistol_item		= NULL;
-	CUICellItem*	rifle_item		= NULL;
-	CInventoryItem*	pistol_iitem	= NULL;
-	CInventoryItem*	rifle_iitem		= NULL;
+	m_bag.ClearAmmoHighlight();
+	Highlight(MP_SLOT_PISTOL);
+	Highlight(MP_SLOT_RIFLE);
+}
 
-	if (m_list[MP_SLOT_PISTOL]->ItemsCount())
+void CUIBuyWnd::Highlight(int slot){
+	R_ASSERT(MP_SLOT_PISTOL == slot || MP_SLOT_RIFLE == slot);
+
+	
+	CUICellItem*	item	= NULL;
+	CInventoryItem*	iitem	= NULL;
+
+	if (m_list[slot]->ItemsCount())
 	{
-		pistol_item = m_list[MP_SLOT_PISTOL]->GetItemIdx(0);
-		pistol_iitem = (CInventoryItem*)pistol_item->m_pData;
+		item = m_list[slot]->GetItemIdx(0);
+		iitem = (CInventoryItem*)item->m_pData;
 	}
+	else
+		return;
 
-	if (m_list[MP_SLOT_RIFLE]->ItemsCount())
-	{
-		rifle_item = m_list[MP_SLOT_RIFLE]->GetItemIdx(0);
-		rifle_iitem = (CInventoryItem*)rifle_item->m_pData;
+
+	R_ASSERT(pSettings->section_exist(*iitem->object().cNameSect()));
+
+	shared_str itemsList; 
+	string256 single_item;
+
+	itemsList = pSettings->r_string(*iitem->object().cNameSect(), "ammo_class");
+		
+	int c = _GetItemCount(itemsList.c_str());
+	for (int i = 0; i<c; i++){
+        _GetItem(itemsList.c_str(), i, single_item);
+		m_bag.HightlightAmmo(single_item);
 	}
-
 }
 
 void CUIBuyWnd::OnBtnRifleGrenade(){
@@ -857,6 +873,7 @@ bool CUIBuyWnd::ToSlot(CUICellItem* itm, bool force_place)
 		m_bag.BuyItem(i);
 
 		AfterBuy();
+		HightlightCurrAmmo();
 
 		return								true;
 	}else
@@ -928,6 +945,7 @@ bool CUIBuyWnd::ToBag(CUICellItem* itm, bool b_use_cursor_pos)
 			new_owner->SetItem				(i);
 
 		m_bag.SellItem(itm);
+		HightlightCurrAmmo();
 		return true;
 	}
 	return false;
@@ -954,6 +972,7 @@ bool CUIBuyWnd::ToBelt(CUICellItem* itm, bool b_use_cursor_pos)
 			new_owner->SetItem				(i,old_owner->GetDragItemPosition());
 		else
 			new_owner->SetItem				(i);
+		UNHIGHTLIGHT_ITEM(i);
 		m_bag.BuyItem(itm);
 		return								true;
 	}
