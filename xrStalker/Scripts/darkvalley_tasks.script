@@ -28,6 +28,14 @@ function proceed()
  		actor:object("dar_document5") then
  		actor:give_info_portion("dar_document5") 
 	end	
+	
+	if actor:has_info("dar_ring_spawn2_1") and
+		actor:has_info("dar_ring_spawn2_2") and
+		actor:dont_has_info("dar_ring_spawn2")
+	then
+		actor:give_info_portion("dar_ring_spawn2")
+	end
+	
 end
 
 ----------------------------------------------------------------------------------------------------

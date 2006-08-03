@@ -29,10 +29,21 @@
 </info_portion>
 
 
-<info_portion id="dar_document1"></info_portion>
-<info_portion id="dar_document2"></info_portion>
-<info_portion id="dar_document3"></info_portion>
-<info_portion id="dar_document4"></info_portion>
+<info_portion id="dar_document1">
+	<article>dar_document1</article>
+</info_portion>
+
+<info_portion id="dar_document2">
+	<article>dar_document2</article>
+</info_portion>
+
+<info_portion id="dar_document3">
+	<article>dar_document3</article>
+</info_portion>
+
+<info_portion id="dar_document4">
+	<article>dar_document4</article>
+</info_portion>
 
 <info_portion id="x18_actor_fall">
 </info_portion>
@@ -43,12 +54,13 @@
 
 <!-- Игрок нашел документы 5 -->
 <info_portion id="dar_document5">
-	<article>dar_document1</article>
+<!--	<article>dar_document1</article>
 	<article>dar_document2</article>
 	<article>dar_document3</article>
-	<article>dar_document4</article>
-	<article>dar_document5</article>
+	<article>dar_document4</article> -->
+	<article>dar_document5</article> 
 </info_portion>
+
 
 <!-- Начался квест на документы -->
 <info_portion id="dar_run_quest">
@@ -82,5 +94,5 @@
 <info_portion id="dar_ring_spawn1"></info_portion>
 <info_portion id="dar_ring_spawn2_1"></info_portion>
 <info_portion id="dar_ring_spawn2_2"></info_portion>
-
+<info_portion id="dar_ring_spawn2"></info_portion>
 </game_information_portions>

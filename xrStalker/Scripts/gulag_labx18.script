@@ -16,7 +16,7 @@ function load_job(sj, gname, type, squad, groups)
 	if type == "dar_poltergeist_ring" then
 	    t = { section = "logic@dar_poltergeist_ring_base",
 		    idle = 0,
-		    prior = 5, state = {0},
+		    prior = 10, state = {0},
 		    online = true,
 		    in_rest = "", out_rest = "",
 	    }
@@ -58,14 +58,14 @@ function load_job(sj, gname, type, squad, groups)
 	    table.insert(sj, t)
 	    t = { section = "logic@dar_poltergeist_ring_1_1",
 		    idle = 0,
-		    prior = 5, state = {1},
+		    prior = 10, state = {1},
 		    online = true,
 		    in_rest = "", out_rest = "",
 	    }
 	    table.insert(sj, t)
 	    t = { section = "logic@dar_poltergeist_ring_1_2",
 		    idle = 0,
-		    prior = 5, state = {1},
+		    prior = 10, state = {1},
 		    online = true,
 		    in_rest = "", out_rest = "",
 	    }
@@ -79,21 +79,21 @@ function load_job(sj, gname, type, squad, groups)
 	    table.insert(sj, t)
 	     t = { section = "logic@dar_poltergeist_ring_end",
 		    idle = 0,
-		    prior = 5, state = {2},
+		    prior = 10, state = {2},
 		    online = true,
 		    in_rest = "", out_rest = "",
 	    }
 	    table.insert(sj, t)
 	    t = { section = "logic@dar_poltergeist_ring_end",
 		    idle = 0,
-		    prior = 5, state = {2},
+		    prior = 10, state = {2},
 		    online = true,
 		    in_rest = "", out_rest = "",
 	    }
 	    table.insert(sj, t)
 	    t = { section = "logic@dar_poltergeist_ring_end",
 		    idle = 0,
-		    prior = 5, state = {2},
+		    prior = 10, state = {2},
 		    online = true,
 		    in_rest = "", out_rest = "",
 	    }
@@ -120,14 +120,14 @@ function load_job(sj, gname, type, squad, groups)
 	end
 
 	if type == "dar_com_center_tushkano" then
-        for i = 1, 5 do
-		    t = { section = "logic@com_center_tushkano",
+		 for i = 1, 8 do
+		 t = { section = "logic@com_center_tushkano",
 			    idle = 0,
 			    prior = 5, state = {0},
-			    in_rest = "", out_rest = "dar_com_center_tushkano",
-		    }
-		    table.insert(sj, t)
-        end
+			    in_rest = "", out_rest = "dar_com_center_tushkano_rest",
+		 }
+		 table.insert(sj, t)
+		end
 	end
 
 	if type == "dar_upper_big_tushkano" then
@@ -267,9 +267,9 @@ function load_states(gname, type)
 		return function(gulag)
 			if db.actor:dont_has_info("dar_codelock1_unlock") then
 				return 3 -- оффлайн все
-			elseif db.actor:has_info("dar_ring_spawn1") and (db.actor:dont_has_info("dar_ring_spawn2_1") and db.actor:dont_has_info("dar_ring_spawn2_2")) then
+			elseif db.actor:has_info("dar_ring_spawn1") and db.actor:dont_has_info("dar_ring_spawn2") then
 				return 1 -- онлайн 2
-			elseif 	db.actor:has_info("dar_ring_spawn2_1") and db.actor:has_info("dar_ring_spawn2_2") then
+			elseif 	db.actor:has_info("dar_ring_spawn2") then
 				return 2 -- онлайн 3
 			else			
 				return 0 -- онлайн 1
