@@ -6,10 +6,10 @@
 
 class CUITabButtonMP;
 
-#define SET_RANK_RESTR_COLOR(x) x->SetColor(0xffffff00)
-#define SET_PRICE_RESTR_COLOR(x) x->SetColor(0xffff0000)
+#define SET_RANK_RESTR_COLOR(x) x->SetColor(0x88ff9999)
+#define SET_PRICE_RESTR_COLOR(x) x->SetColor(0xffff8080)
 #define SET_NO_RESTR_COLOR(x) x->SetColor(0xffffffff)
-#define SET_EXTERNAL_COLOR(x) x->SetColor(0xff0000ff)
+#define SET_EXTERNAL_COLOR(x) x->SetColor(0xff9696ff)
 
 
 enum Groups {

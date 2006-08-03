@@ -41,6 +41,7 @@ public:
 	void OnBtnBulletBuy(int slot);
 	void OnBtnRifleGrenade();
 	void AfterBuy();
+	void HightlightCurrAmmo();
 
 	// CUIWindow
 	bool OnKeyboard(int dik, EUIMessages keyboard_action);

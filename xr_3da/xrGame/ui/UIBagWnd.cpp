@@ -61,6 +61,10 @@ CUIBagWnd::CUIBagWnd(){
 }
 
 CUIBagWnd::~CUIBagWnd(){
+	u32 sz = m_allItems.size();
+	for (u32 i = 0; i < sz; i++){
+		DestroyItem(m_allItems[i]);
+	}
 }
 
 void CUIBagWnd::Init(CUIXml& xml, LPCSTR path, LPCSTR sectionName, LPCSTR sectionPrice){
@@ -287,8 +291,12 @@ CUICellItem* CUIBagWnd::CreateItem(LPCSTR name){
 }
 
 void CUIBagWnd::DestroyItem(CUICellItem* itm){
-	CInventoryItem* iitem = (CInventoryItem*)itm->m_pData;
-	xr_delete(iitem);
+	R_ASSERT(itm);
+	if (itm->m_pData)
+	{
+		CInventoryItem* iitem = (CInventoryItem*)itm->m_pData;
+		xr_delete(iitem);
+	}
 	xr_delete(itm);
 }
 

@@ -214,6 +214,25 @@ void CUIBuyWnd::OnBtnBulletBuy(int slot){
 				ammo->GetMessageTarget()->SendMessage(ammo, DRAG_DROP_ITEM_DB_CLICK, NULL);	
 		}
 	}
+}
+
+void CUIBuyWnd::HightlightCurrAmmo(){
+	CUICellItem*	pistol_item		= NULL;
+	CUICellItem*	rifle_item		= NULL;
+	CInventoryItem*	pistol_iitem	= NULL;
+	CInventoryItem*	rifle_iitem		= NULL;
+
+	if (m_list[MP_SLOT_PISTOL]->ItemsCount())
+	{
+		pistol_item = m_list[MP_SLOT_PISTOL]->GetItemIdx(0);
+		pistol_iitem = (CInventoryItem*)pistol_item->m_pData;
+	}
+
+	if (m_list[MP_SLOT_RIFLE]->ItemsCount())
+	{
+		rifle_item = m_list[MP_SLOT_RIFLE]->GetItemIdx(0);
+		rifle_iitem = (CInventoryItem*)rifle_item->m_pData;
+	}
 
 }
 
