@@ -92,7 +92,7 @@ void CWound::Incarnation	(float percent, float min_wound_size)
 	//заживить все раны пропорционально их размеру
 	for(int i=0; i<ALife::eHitTypeMax; i++)
 	{
-		m_Wounds[i] -= percent*m_Wounds[i];
+		m_Wounds[i] -= percent/* *m_Wounds[i]*/;
 		if(m_Wounds[i]<min_wound_size)
 			m_Wounds[i] = 0;
 	}
