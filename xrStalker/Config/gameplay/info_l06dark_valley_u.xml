@@ -22,11 +22,16 @@
 	<article>dar_password_info11</article>
 </info_portion>
 
+<info_portion id="dar_password_info1_know"></info_portion>
+
 <!-- Игрок нашел документы с паролем -->
 <info_portion id="dar_password_info2">
 	<article>dar_password_info2</article>
 	<article>dar_password_info22</article>
 </info_portion>
+
+<info_portion id="dar_password_info2_know"></info_portion>
+
 
 
 <info_portion id="dar_document1">

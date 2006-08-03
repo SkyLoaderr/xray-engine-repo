@@ -36,6 +36,20 @@ function proceed()
 		actor:give_info_portion("dar_ring_spawn2")
 	end
 	
+	if actor:has_info("dar_password_info1") and
+		actor:dont_has_info("dar_password_info1_know") 
+	then
+		actor:give_info_portion("dar_password_info1_know")
+		news_manager.send_tip(db.actor, "pass_to_1st_door")
+	end
+	
+	if actor:has_info("dar_password_info2") and
+		actor:dont_has_info("dar_password_info2_know") 
+	then
+		actor:give_info_portion("dar_password_info2_know")
+		news_manager.send_tip(db.actor, "pass_to_2nd_door")
+	end
+	
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -62,14 +76,14 @@ function process_info_portion(info_id)
 	return true
 end
 
-function send_codedoor1_tip()
-    news_manager.send_tip(db.actor, "pass_to_1st_door")
-end
+--function send_codedoor1_tip()
+--    news_manager.send_tip(db.actor, "pass_to_1st_door")
+--end
 
 
-function send_codedoor2_tip()
-    news_manager.send_tip(db.actor, "pass_to_2nd_door")
-end
+--function send_codedoor2_tip()
+--    news_manager.send_tip(db.actor, "pass_to_2nd_door")
+--end
 
 
 ----------------------------------------------------------------------------------------------------
