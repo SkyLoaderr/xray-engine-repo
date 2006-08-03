@@ -118,6 +118,9 @@ function act_state_mgr_direction_turn:turn()
 		end
 --        printf("set_sight %s [%s] [%s] [%s]", self.object:name(), dir.x, dir.y, dir.z)
 		self.object:set_sight(look.direction, dir, true)
+		
+--		local sight_type = self.object:sight_params()
+--		printf("%s %s %s", sight_type.m_vector.x, sight_type.m_vector.y, sight_type.m_vector.z)
 	end
 end
 
