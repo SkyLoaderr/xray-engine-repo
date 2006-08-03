@@ -12,7 +12,7 @@ function yantar_give_good_psy_helmet(first_speaker, second_speaker)
 end
 
 function yantar_give_quest_artefact(first_speaker, second_speaker)
-	local quest_artefact = second_speaker:object("af_cristall_flower_absorbation")
+	local quest_artefact = second_speaker:object("af_cristall_flower")
 	if quest_artefact then
 		dialogs.relocate_item(second_speaker, quest_artefact, "in")
 	end
