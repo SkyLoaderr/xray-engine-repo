@@ -61,10 +61,10 @@ CUIBagWnd::CUIBagWnd(){
 }
 
 CUIBagWnd::~CUIBagWnd(){
-	u32 sz = m_allItems.size();
-	for (u32 i = 0; i < sz; i++){
-		DestroyItem(m_allItems[i]);
-	}
+	//u32 sz = m_allItems.size();
+	//for (u32 i = 0; i < sz; i++){
+	//	DestroyItem(m_allItems[i]);
+	//}
 }
 
 void CUIBagWnd::Init(CUIXml& xml, LPCSTR path, LPCSTR sectionName, LPCSTR sectionPrice){
