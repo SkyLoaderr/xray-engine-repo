@@ -132,7 +132,7 @@ function act_state_mgr_direction_search:__init(name, st) super (nil, name)
 end
 function act_state_mgr_direction_search:initialize()
 	action_base.initialize(self)
-    printf("set sight %s nil", self.object:name())
+--'    printf("set sight %s nil", self.object:name())
     self.object:set_sight(look_position_type(self.object, self.st), nil, 0)
 end
 function act_state_mgr_direction_search:execute()
