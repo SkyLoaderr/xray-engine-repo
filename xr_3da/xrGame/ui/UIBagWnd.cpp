@@ -740,16 +740,21 @@ u8 CUIBagWnd::GetItemIndex(CUICellItem* pItem, u8 &sectionNum){
 	ret = static_cast<u8>(m_info[pItem->m_index].pos_in_section);
 	sectionNum = static_cast<u8>(m_info[pItem->m_index].section);
 
-	CWeapon* pWeapon = (CWeapon*)pItem->m_pData;	
+	CInventoryItem* iitem = (CInventoryItem*)pItem->m_pData;
 
-	u8 addon = pWeapon->GetAddonsState();
+	if (iitem->GetSlot() == PISTOL_SLOT || iitem->GetSlot() == RIFLE_SLOT)
+	{
+		CWeapon* pWeapon = (CWeapon*)pItem->m_pData;
 
-	if (addon & CSE_ALifeItemWeapon::eWeaponAddonScope)
-		ret |= 1<<5;
-	if (addon & CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)
-		ret |= 1<<6;
-	if (addon & CSE_ALifeItemWeapon::eWeaponAddonSilencer)
-		ret |= 1<<7;
+		u8 addon = pWeapon->GetAddonsState();
+
+		if (addon & CSE_ALifeItemWeapon::eWeaponAddonScope)
+			ret |= 1<<5;
+		if (addon & CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)
+			ret |= 1<<6;
+		if (addon & CSE_ALifeItemWeapon::eWeaponAddonSilencer)
+			ret |= 1<<7;
+	}
 	
 	
 	//returnID = static_cast<u8>(pDDItem->GetPosInSectionsGroup());

@@ -791,8 +791,13 @@ void CUIBuyWnd::ActivatePropertiesBox()
 }
 
 bool CUIBuyWnd::CanPutInSlot(CInventoryItem* iitm){
-	u32 _slot = GetLocalSlot(iitm->GetSlot());
-	return m_list[_slot]->ItemsCount() == 0;
+	if (PISTOL_SLOT == iitm->GetSlot() || RIFLE_SLOT == iitm->GetSlot() || OUTFIT_SLOT == iitm->GetSlot())
+	{
+		u32 _slot = GetLocalSlot(iitm->GetSlot());
+		return m_list[_slot]->ItemsCount() == 0;
+	}
+	else 
+		return false;
 }
 
 bool CUIBuyWnd::CanPutInBag	(CInventoryItem* iitm){
@@ -894,6 +899,7 @@ bool CUIBuyWnd::ToSlot(CUICellItem* itm, bool force_place)
 
 		AfterBuy();
 		HightlightCurrAmmo();
+		SetCurrentItem(itm);
 
 		return								true;
 	}else
@@ -1052,7 +1058,8 @@ void CUIBuyWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepres
 //		if (UITopList[pDDItem->GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == pDDItem->GetSlot() || NO_ACTIVE_SLOT == pDDItem->GetSlot())
 		{
 			m_bag.SetExternal(itm,bRealRepresentationSet);
-			itm->GetMessageTarget()->SendMessage(itm, DRAG_DROP_ITEM_DB_CLICK, NULL);
+			ToSlot(itm, false);
+			//itm->GetMessageTarget()->SendMessage(itm, DRAG_DROP_ITEM_DB_CLICK, NULL);
 			// Проверяем индекс на наличие флагов аддонов, и если они есть, то 
 			// аттачим аддоны к мувнутому оружию
 			if (addon_info)
