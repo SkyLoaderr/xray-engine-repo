@@ -1377,29 +1377,23 @@ void CWeapon::UpdateHudAdditonal		(Fmatrix& trans)
 
 void	CWeapon::SetAmmoElapsed	(int ammo_count)
 {
-	iAmmoElapsed = ammo_count;
+	iAmmoElapsed				= ammo_count;
 
-	u32 uAmmo = u32(iAmmoElapsed);
+	u32 uAmmo					= u32(iAmmoElapsed);
 
 	if (uAmmo != m_magazine.size())
 	{
 		if (uAmmo > m_magazine.size())
 		{
-			CCartridge l_cartridge; 
-			l_cartridge.Load(*m_ammoTypes[m_ammoType], u8(m_ammoType));
-//			m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
+			CCartridge			l_cartridge; 
+			l_cartridge.Load	(*m_ammoTypes[m_ammoType], u8(m_ammoType));
 			while (uAmmo > m_magazine.size())
-			{
 				m_magazine.push_back(l_cartridge);
-//				Msg("Load %s", *l_cartridge.m_ammoSect);
-			};
 		}
 		else
 		{
 			while (uAmmo < m_magazine.size())
-			{
 				m_magazine.pop_back();
-			}
 		};
 	};
 }
