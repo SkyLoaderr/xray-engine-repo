@@ -135,10 +135,11 @@ protected:
 
 	// text
 	CUIStatic	m_moneyInfo;
-
+	
 	// controls
 	CUIPropertiesBox	m_propertiesBox;
 	CUIItemInfo			m_itemInfo;
+	CUIStatic			m_rankInfo;
 	CUIBagWnd			m_bag;
 	CUIBuyWeaponTab		m_tab;
 	CUIDragDropListEx*	m_list[MP_SLOT_NUM];

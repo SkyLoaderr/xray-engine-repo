@@ -105,6 +105,18 @@ bool CRestrictions::IsAvailable(LPCSTR itm){
 	return m_items[m_rank].find(itm) != m_items[m_rank].end();
 }
 
+bool CRestrictions::IsInRank(LPCSTR itm, int rank){
+    return m_items[rank].find(itm) != m_items[rank].end();
+}
+
+int	 CRestrictions::GetItemRank(LPCSTR itm){
+	for (int i = 0; i<4; i++){
+		if (IsInRank(itm, i))
+			return i;
+	}
+
+	return 0;
+}
 
 /////////////////////////////////////////////////////////////////////////////////
 //

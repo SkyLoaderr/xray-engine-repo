@@ -36,13 +36,15 @@ CUIBuyWnd::CUIBuyWnd(){
 	AttachChild(&m_btnRifleGrenadelauncer);
 	AttachChild(&m_btnRifleGrenade);
 
-	// text
+	//	text
 	AttachChild(&m_moneyInfo);
+	
 
 	// controls
 	AttachChild(&m_tab);
 	AttachChild(&m_bag);
-	AttachChild(&m_itemInfo);		
+	AttachChild(&m_itemInfo);
+	m_itemInfo.AttachChild(&m_rankInfo);
 
 	for (int i = 0; i < MP_SLOT_NUM; i++)
 	{
@@ -56,6 +58,8 @@ CUIBuyWnd::CUIBuyWnd(){
 	AttachChild				(&m_propertiesBox);
 	m_propertiesBox.Init	(0,0,300,300);
 	m_propertiesBox.Hide	();
+
+	m_pCurrentCellItem = NULL;
 }
 
 CUIBuyWnd::~CUIBuyWnd(){
@@ -100,6 +104,7 @@ void CUIBuyWnd::Init(LPCSTR sectionName, LPCSTR sectionPrice){
 
 	// text
 	CUIXmlInit::InitStatic(xml_doc, "money_info", 0, &m_moneyInfo);
+	
 
 	// controls
 	m_tab.Init(&xml_doc, "tab");
@@ -117,7 +122,10 @@ void CUIBuyWnd::Init(LPCSTR sectionName, LPCSTR sectionPrice){
 	m_list[MP_SLOT_OUTFIT]->SetItem	(NULL);
 
 	CUIXmlInit::InitWindow(xml_doc, "desc_static", 0, &m_itemInfo);
+	CUIXmlInit::InitStatic(xml_doc, "desc_static:rank_icon", 0, &m_rankInfo);
+
 	m_itemInfo.Init("buy_mp_item.xml");
+
 	
 }
 
@@ -478,6 +486,18 @@ void CUIBuyWnd::SetCurrentItem(CUICellItem* itm)
 		m_itemInfo.InitItem			(CurrentIItem());
 		sprintf				(str, "%d RU", m_bag.GetItemPrice(itm));
 		m_itemInfo.UICost->SetText(str);
+
+		string64 tex_name;
+		string64 team;
+		if (m_bag.IsBlueTeamItem(itm))
+			strcpy(team, "blue");
+		else 
+			strcpy(team, "green");
+
+		sprintf(tex_name, "ui_hud_status_%s_0%d", team, m_bag.GetItemRank(m_pCurrentCellItem)+1);
+				
+		//strconcat(tex_name,"ui_hud_status_",itoa(pDDItemMP->m_iRank,foo,10));
+		m_rankInfo.InitTexture(tex_name);
 	}
 }
 

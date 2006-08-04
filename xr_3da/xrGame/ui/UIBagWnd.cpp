@@ -13,6 +13,7 @@
 //#include "../ui_base.h"
 #include "../weapon.h"
 #include "../xrServer_Objects_ALife_Items.h"
+#include "../game_cl_Deathmatch.h"
 
 extern CRestrictions g_mp_restrictions;
 //using namespace InventoryUtilities;
@@ -124,6 +125,49 @@ bool CUIBagWnd::UpdateRank(CUICellItem* pItem){
 	}
 
     return av;
+}
+
+
+
+bool CUIBagWnd::IsBlueTeamItem(CUICellItem* itm){
+	if (GameID() == GAME_DEATHMATCH)
+		return true;					//in deathmath always blue
+
+	CInventoryItem*	iitm = (CInventoryItem*)itm->m_pData;
+	LPCSTR			item = *iitm->object().cNameSect();
+
+	bool blue = !strstr(m_sectionName.c_str(),"team1");	//is our team blue
+
+	//
+	string64			wpnSection;
+	string1024			wpnNames, wpnSingleName;
+//	sprintf(wpnSection, "slot%i", i);
+	for (int i = 1; i < 20; ++i)
+	{
+		// Имя поля
+		sprintf(wpnSection, "slot%i", i);
+		if (!pSettings->line_exist(m_sectionName, wpnSection)) 
+			continue;
+
+		
+		std::strcpy(wpnNames, pSettings->r_string(m_sectionName, wpnSection));
+		u32 count	= _GetItemCount(wpnNames);
+		
+		for (u32 j = 0; j < count; ++j)
+		{
+			_GetItem(wpnNames, j, wpnSingleName);
+			if (0 == xr_strcmp(item,wpnSingleName))
+				return blue;
+		}
+	}	
+    
+	return !blue;
+
+}
+
+int CUIBagWnd::GetItemRank(CUICellItem* itm){
+	CInventoryItem* iitm = (CInventoryItem*)itm->m_pData;
+    return g_mp_restrictions.GetItemRank(*iitm->object().cNameSect());
 }
 
 bool CUIBagWnd::UpdatePrice(CUICellItem* pItem, int index){

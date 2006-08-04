@@ -25,6 +25,8 @@ protected:
 
     int  GetItemCount		(LPCSTR itm);
 	bool IsAvailable		(LPCSTR itm);
+	bool IsInRank			(LPCSTR itm, int rank);
+	int	 GetItemRank		(LPCSTR itm);
 
 
 private:	
