@@ -123,6 +123,7 @@ class CPHUpdateObject
 
 public:
 					CPHUpdateObject	()																;
+	virtual			~CPHUpdateObject()																{Deactivate();}
 	void			Activate		()																;
 	void			Deactivate		()																;
 IC	bool			IsActive		()																{return b_activated;}
