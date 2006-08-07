@@ -727,8 +727,6 @@ function se_smart_terrain:task( obj )
 		abort( "[smart_terrain %s] task: obj=%s job_path=nil", self:name(), obj:name() )
 	end
 
---	printf( "[smart_terrain %s] task: obj=%s job_path=%s", self:name(), obj:name(), path_name )
-
 	return CALifeSmartTerrainTask( path_name )
 end
 
