@@ -148,6 +148,9 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.anim_global    = utils.cfg_get_string(ini, section, "anim_global", npc, true,  "")
 	st.can_talk		  = utils.cfg_get_bool(ini,   section, "can_talk",    npc, false, true)
 	st.tip_text		  = utils.cfg_get_string(ini, section, "tip_text",    npc, false, "", "character_use")
+	if st.tip_text == nil then
+		st.tip_text = ""
+	end
 	npc:set_tip_text(st.tip_text)
 	
 	if (ini:line_exist( section, "sound_phrase")) then
