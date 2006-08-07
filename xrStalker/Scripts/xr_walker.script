@@ -4,6 +4,9 @@
 -- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
 ----------------------------------------------------------------------------------------------------
 
+function printf()
+end
+
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_walker" (property_evaluator)
 
@@ -21,36 +24,23 @@ class "action_walker_activity" (action_base)
 function action_walker_activity:__init (npc_name, action_name, storage) super(nil, action_name)
 	self.st = storage
 	self.move_mgr = move_mgr.move_mgr(storage.npc)
-	self.was_reset = false
 end
 
 function action_walker_activity:initialize()
-	--printf("_bp: action_walker_activity: initialize")
 	action_base.initialize(self)
---	self.object:set_node_evaluator()
---	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 
 	self.move_mgr:initialize()
-
-	--printf("initiz")
-
-	self:reset_scheme()
 end
 
 function action_walker_activity:activate_scheme()
-	self.was_reset = false
-
 	self.st.signals = {}
+	self:reset_scheme()
 end
 
 function action_walker_activity:reset_scheme()
-
 	if not self.was_reset then
-		--printf("reset_scheme, initialized=%s", utils.to_str(self.initialized))
-
-		--self.object:clear_animations()
 		printf( "walker: reset_scheme: npc=%s  start moving", self.object:name() )
 
 		if self.st.path_walk_info == nil then
@@ -67,28 +57,19 @@ function action_walker_activity:reset_scheme()
 
 		self.move_mgr:continue()
 	end
-
-	self.was_reset = true
 end
 
 function action_walker_activity:execute()
 	action_base.execute(self)
 
-	if not self.was_reset then
-		self:reset_scheme()
-	end
-
 	self.move_mgr:update()
---	if self.move_mgr:arrived_to_first_waypoint() then
-		if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
-			return
-		end
---	end
+	if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
+		return
+	end
 end
 
 function action_walker_activity:finalize()
 	self.move_mgr:finalize()
-	--self.object:clear_animations()
 	action_base.finalize(self)
 end
 
@@ -101,7 +82,6 @@ function add_to_binder(npc, ini, scheme, section, storage)
 	  	local properties  = {}
 
 	   	local manager = npc:motivation_action_manager()
-		--manager:show("")
 
 		properties["event"] = xr_evaluators_id.reaction
 	 	properties["need_walker"] = xr_evaluators_id.zmey_walker_base + 1

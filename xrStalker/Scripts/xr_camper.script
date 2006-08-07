@@ -84,7 +84,6 @@ class "action_patrol" (action_base)
 function action_patrol:__init (npc_name,action_name,storage) super (nil,action_name)
 	self.a = storage
 	self.move_mgr = move_mgr.move_mgr(self.a.npc)
-	self.was_reset  = false
 	self.a.scan_table = {}
 end
 function action_patrol:initialize()
@@ -96,6 +95,7 @@ function action_patrol:initialize()
 	self.enemy_position = nil
 end
 function action_patrol:reset_scheme()
+	printf("CAMPER %s RESET SCHEME", self.object:name())
 	state_mgr.set_state(self.object, "patrol")	
 	self.a.signals = {}
 	self.a.scan_table = {}
@@ -128,13 +128,12 @@ function action_patrol:reset_scheme()
 			utils.path_parse_waypoints(self.a.path_look),
 			nil,self.a.suggested_state,{obj=self,func=self.process_point})
 	end
-	self.was_reset = true
 	self.a.last_look_point = nil
 	self.a.cur_look_point = nil
 	self.a.scan_begin = nil
 end
 function action_patrol:activate_scheme()
-    self.was_reset = false
+    self:reset_scheme()
 end
 function action_patrol:can_shoot()
     if self.a.shoot == "always" then
@@ -159,10 +158,6 @@ function action_patrol:execute()
 	if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then
 		return
 	end
-
-	if not self.was_reset then
-		self:reset_scheme()
-    end
 
 	self.enemy = self.object:best_enemy()
 	

@@ -1009,11 +1009,10 @@ end
 -- установить объекту рестрикторы в онлайне.
 -- obj - game_object
 function gulag:set_restrictions(obj, r_out, r_in, r_info)
-	printf( "RESTR NPC        : %s", obj:name() )
-	printf( "RESTR HAVE (IN)  : %s", obj:in_restrictions() )
-	printf( "RESTR HAVE (OUT) : %s", obj:out_restrictions() )
-	printf( "RESTR NEED (IN)  : %s", r_in )
-	printf( "RESTR NEED (OUT) : %s", r_out )
+	printf( "RESTR [%s] HAVE (IN)  : %s", obj:name(), obj:in_restrictions() )
+	printf( "RESTR [%s] HAVE (OUT) : %s", obj:name(), obj:out_restrictions() )
+	printf( "RESTR [%s] NEED (IN)  : %s", obj:name(), r_in )
+	printf( "RESTR [%s] NEED (OUT) : %s", obj:name(), r_out )
 
 	-- узнать, какие рестрикторы уже были назначены этим гулагом
 	local restr = self.restrictors[obj:id()]
@@ -1040,9 +1039,6 @@ function gulag:set_restrictions(obj, r_out, r_in, r_info)
 	end
 
 	if change_r_in ~= "" or change_r_out ~= "" then
-		printf( "RESTR REMOVE(IN) : %s", change_r_in )
-		printf( "RESTR REMOVE(OUT): %s", change_r_out )
-
 		obj:remove_restrictions( change_r_out, change_r_in )
 	end
 
@@ -1060,19 +1056,16 @@ function gulag:set_restrictions(obj, r_out, r_in, r_info)
 	end
 
 	if change_r_in ~= "" or change_r_out ~= "" then
-		printf( "RESTR ADD(IN)    : %s", change_r_in )
-		printf( "RESTR ADD(OUT)   : %s", change_r_out )
-
 		obj:add_restrictions( change_r_out, change_r_in )
 	end
 
-	printf( "RESTR AFTER (IN) : %s", obj:in_restrictions()  )
-	printf( "RESTR AFTER (OUT): %s", obj:out_restrictions() )
+	printf( "RESTR [%s] AFTER (IN) : %s", obj:name(), obj:in_restrictions()  )
+	printf( "RESTR [%s] AFTER (OUT): %s", obj:name(), obj:out_restrictions() )
 
 	-- информационный рестриктор
 	db.info_restr[obj:id()] = r_info
 
-	printf( "INFO  RESTR      : %s", utils.to_str( r_info ) )
+	printf( "INFO [%s] RESTR      : %s", obj:name(), utils.to_str( r_info ) )
 end
 
 -- убрать записи о том, что смарт устанавливал объекту рестрикторы.

@@ -271,9 +271,7 @@ function enable_generic_schemes(ini, npc, stype, section)
 		xr_death.set_death (npc, ini, "death", death_section)
 
 		local heli_hunter_section = utils.cfg_get_string(ini, section, "heli_hunter", npc, false, "")
-		--if heli_hunter_section then
-			xr_heli_hunter.set_scheme(npc, ini, "heli_hunter", heli_hunter_section)
-		--end
+		xr_heli_hunter.set_scheme(npc, ini, "heli_hunter", heli_hunter_section)
 
 		local combat_ignore_section = utils.cfg_get_string(ini, section, "combat_ignore", npc, false, "")
 		if combat_ignore_section then
@@ -334,7 +332,6 @@ function activate_by_section(npc, ini, section, loading)
 
 	if not loading then
 		db.storage[npc_id].activation_time = time_global()
-		printf("activation time [%d]", db.storage[npc_id].activation_time)
 		-- GAMETIME added by Stohe.
 		db.storage[npc_id].activation_game_time = game.get_game_time()
 	end

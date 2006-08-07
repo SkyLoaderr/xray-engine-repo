@@ -5,9 +5,7 @@ function printf()
 end
 
 local dist_walk = 10 -- < dist_run
---local dist_run = 25
 local dist_run = 2500
--- otherwise - sprint
 
 local walk_min_time = 3000
 local run_min_time = 2000
@@ -19,8 +17,6 @@ local default_state_standing = "guard"
 local default_state_moving1 = "patrol"
 local default_state_moving2 = "rush"
 local default_state_moving3 = "sprint"
---local sl_speed_h = 0.52 -- горизонтальна€ скорость вращени€ прожекторов
---local sl_speed_v = 0.22 -- вертикальна€ скорость вращени€ прожекторов
 
 arrival_before_rotation = 0
 arrival_after_rotation = 1
@@ -28,8 +24,6 @@ arrival_after_rotation = 1
 local state_none = 0
 local state_moving = 1
 local state_standing = 2
-
---rotation_start_time = 700 -- FIXME xr_remark used it
 
 local sl_speed_h = 0.52 -- горизонтальна€ скорость вращени€ прожекторов
 local sl_speed_v = 0.22 -- вертикальна€ скорость вращени€ прожекторов
@@ -74,7 +68,6 @@ function move_mgr:__init(npc)
 		abort("move_mgr:__init() - npc is nil, please update the script")
 	end
 	self.object = npc
-	--self.dialog_mgr = xr_dialogs.dialog_mgr() UNCOMMENT ME
 end
 
 function move_mgr:initialize(npc)
@@ -101,7 +94,6 @@ function move_mgr:validate_paths()
 end
 
 function move_mgr:extrapolate_callback(npc)
-	--printf("___EXTRAPOLATE_CALLBACK___")
 	self.can_use_get_current_point_index = true
 	self.current_point_init_time = time_global()
 	self.current_point_index = self.object:get_current_point_index()
@@ -128,11 +120,7 @@ end
 -- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
 -- скоростью.
 function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, suggested_state, move_cb_info, no_validation, continue, use_default_sound)
-	--printf("move_mgr:reset()")
-	--xr_reactions.add_rule(self.object, "ignore") -- DELME
-
-	--printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
-	--	utils.to_str(path_walk), utils.to_str(path_look), utils.to_str(team))
+	printf("move_mgr:reset() [%s]", self.object:name())
 
 	self.no_validation = no_validation
 	
@@ -211,9 +199,6 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	 
 	self.sl = nil -- прожектор, запоминаетс€, чтобы отпустить его потом из под скрипта
 	
-	--xr_state.anim_update(nil, self.object)
-	--self.object:clear_animations()
-
 	-- ѕодписатьс€ на уведомлени€ о extrapolate_callback
 	local npc_id = self.object:id()
 	local scheme = db.storage[npc_id]["active_scheme"]
@@ -237,11 +222,8 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 		s[self.object:id()] = false -- not synchronized
 	end
 
-	-- self.dialog_mgr:reset(self.object, team) UNCOMMENT ME
-
 	self.last_index = nil
 	self.last_look_index = nil
-	-- self:simulate_callback_if_neccessary() WORKAROUND
 
 	self.use_default_sound = use_default_sound
 
@@ -252,7 +234,7 @@ end
 -- продолжить движение со следующей точки, а не с ближайшей.
 -- состо€ние move manager-a не сбрасываетс€.
 function move_mgr:continue()
---	printf("_bp: object '%s': continue moving", self.object:name())
+	printf("_bp: object '%s': continue moving", self.object:name())
 	self:setup_movement_by_patrol_path()
 end
 
@@ -282,7 +264,6 @@ function move_mgr:setup_movement_by_patrol_path()
 
 	local sect = self.object:section()
 
---	if sect == "stalker_zombied" or sect == "stalker_fresh_zombied" then
 	if self.use_default_sound then
 		self.default_sound = "state"
 
@@ -319,17 +300,10 @@ function move_mgr:update()
 	--printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
 	--printf("move_mgr:update(self.object:anims == %d)", self.object:animation_count())
 	
-	if not utils.is_day() and self.sl and self.sl:action() == nil then
-		-- ѕрожектор в своей финальной точке - подн€ть тревогу, если туда попал кто-то из персонажей
-		--printf("ALARM?!")
-		self:reset_sl() -- отпустить прожектор
-	end
-	
 	if self.syn_signal and time_global() >= self.syn_signal_set_tm then
 		if self:sync_ok() then
 			self:scheme_set_signal(self.syn_signal)
 			self.syn_signal = nil
-			--self.syn_signal_set_tm = nil
 		end
 	end
 	
@@ -338,7 +312,6 @@ function move_mgr:update()
 		if t >= self.keep_state_until then
 			self.keep_state_until = t + keep_state_min_time
 
-			--local cur_pt = self.object:get_current_point_index()
 			local cur_pt = self.current_point_index
 			-- self.patrol_walk здесь по идее то же самое, что вернет patrol(self.object:patrol()),
 			-- поэтому использую его дл€ оптимизации.
@@ -360,8 +333,6 @@ end
 function move_mgr:finalize(npc)
 	self.object:set_callback(game_object.movement, nil)
 
-	self:reset_sl() -- отпустить прожектор
-	
 	self.at_terminal_waypoint_flag = false
 	
 	xr_sound.set_sound(self.object, nil)
