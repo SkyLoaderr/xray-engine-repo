@@ -62,10 +62,10 @@ CUIBagWnd::CUIBagWnd(){
 }
 
 CUIBagWnd::~CUIBagWnd(){
-	//u32 sz = m_allItems.size();
-	//for (u32 i = 0; i < sz; i++){
-	//	DestroyItem(m_allItems[i]);
-	//}
+//	u32 sz = m_allItems.size();
+//	for (u32 i = 0; i < sz; i++){
+//		DestroyItem(m_allItems[i]);
+//	}
 }
 
 void CUIBagWnd::Init(CUIXml& xml, LPCSTR path, LPCSTR sectionName, LPCSTR sectionPrice){
@@ -113,15 +113,16 @@ bool CUIBagWnd::UpdateRank(CUICellItem* pItem){
 	CInventoryItem* pIItem;
 	pIItem = (CInventoryItem*)pItem->m_pData;
 	bool av = g_mp_restrictions.IsAvailable(*pIItem->object().cNameSect());
-	
-	if (!av){
-		SET_RANK_RESTR_COLOR(pItem);
-		m_info[pItem->m_index].active = false;
-	}
-	else
+
+	if (av || m_bIgnoreRank)
 	{
 		SET_NO_RESTR_COLOR(pItem);
 		m_info[pItem->m_index].active = true;
+	}
+	else
+	{
+		SET_RANK_RESTR_COLOR(pItem);
+		m_info[pItem->m_index].active = false;
 	}
 
     return av;
@@ -171,7 +172,7 @@ int CUIBagWnd::GetItemRank(CUICellItem* itm){
 }
 
 bool CUIBagWnd::UpdatePrice(CUICellItem* pItem, int index){
-	if (m_info[index].price > m_money)
+	if (m_info[index].price > m_money && !m_bIgnoreMoney)
 	{
 		SET_PRICE_RESTR_COLOR(pItem);
 		m_info[pItem->m_index].active = false;
@@ -323,7 +324,10 @@ void CUIBagWnd::FillUpGroup(const u32 group)
 	}
 }
 
+static int counter = 0;
+
 CUICellItem* CUIBagWnd::CreateItem(LPCSTR name){
+	counter++;
 	CLASS_ID	class_id		= pSettings->r_clsid(name,"class");
 
 	DLL_Pure					*dll_pure = xrFactory_Create(class_id);
