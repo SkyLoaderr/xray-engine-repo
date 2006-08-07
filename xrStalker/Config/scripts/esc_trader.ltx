@@ -10,15 +10,15 @@ trade = misc\trade_trader.ltx
 [mob_trader@new_start_wait]
 anim_global = chair_hack_idle
 on_timer = 5000| mob_trader@new_start_intro1
-;can_talk = false
-;tip_text = 
+can_talk = false
+tip_text = 
 
 ;Подвигаемся к игроку
 [mob_trader@new_start_intro1]
 anim_global = chair_hack_to_desk
 on_signal = animation_end| mob_trader@new_start_intro2
-;can_talk = false
-;tip_text =
+can_talk = false
+tip_text =
 
 ;Первая фраза "я тебя спас..."
 [mob_trader@new_start_intro2]
@@ -26,8 +26,8 @@ anim_global = first_phrase
 anim_head	= first_phrase
 sound_phrase = trader_monolog1
 on_signal = animation_end| mob_trader@new_start_intro3
-;can_talk = false
-;tip_text =
+can_talk = false
+tip_text =
 
 ; Ждем немного, включаем управление
 [mob_trader@new_start_intro3]
@@ -67,7 +67,7 @@ on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played +esc_trader_hello_played} mo
 ; Idle (3) - откинувшись на спинку
 [mob_trader@new_idle3]
 anim_global = chair_hack_idle
-on_signal = animation_end| {~20} mob_trader@new_idle3_to_idle2, {~40} mob_trader@new_idle3_to_idle1, mob_trader@new_idle3_to_idle3
+on_signal = animation_end| {~30} mob_trader@new_idle3_to_idle2, {~40} mob_trader@new_idle3_to_idle1, mob_trader@new_idle3_to_idle3
 on_info = {=talking} mob_trader@new_talking
 on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played +esc_trader_hello_played} mob_trader@new_bye %+esc_trader_bye_played%
 
@@ -182,28 +182,28 @@ on_info = {!talking} mob_trader@new_idle3
 ;--------------------------------------
 
 [mob_trade@new]
-anim_global = diagonal_talk
+anim_global = chair_hack_idle
 on_info = {+tutorial_end =trading =trade_exchanged} mob_trader@new_trade_exchanged
 on_info2 = {+tutorial_end !trading =trade_exchanged} mob_trader@new_trade_good
 on_info3 = {+tutorial_end !trading !trade_exchanged} mob_trader@new_trade_bad
 
 [mob_trader@new_trade_bad]
-anim_global = diagonal_talk
-;anim_global = chair_hack_idle
+;anim_global = diagonal_talk
+anim_global = chair_hack_idle
 anim_head = angry
 sound_phrase = trader_bad_trade
 on_signal = sound_phrase_end | mob_trader@new_idle2
 
 [mob_trader@new_trade_exchanged]
-anim_global = diagonal_talk
-;anim_global = chair_hack_idle
+;anim_global = diagonal_talk
+anim_global = chair_hack_idle
 anim_head = normal
 sound_phrase = trader_exchanged
 on_signal = sound_phrase_end | mob_trader@new_idle2
 
 [mob_trader@new_trade_good]
-anim_global = diagonal_talk
-;anim_global = chair_hack_idle
+;anim_global = diagonal_talk
+anim_global = chair_hack_idle
 anim_head = good
 sound_phrase = trader_good_trade
 on_signal = sound_phrase_end | mob_trader@new_idle2
