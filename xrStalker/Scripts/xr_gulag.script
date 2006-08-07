@@ -863,13 +863,14 @@ function gulag:get_population()
 		obj = level.object_by_id( obj_id ) or npc_info.se_obj
 
 		if not obj then
-			printf( "smart_terrain.name=%s", self.name )
-			printf( "smart_terrain.initialized=%s", tostring( self.smrttrn.initialized ) )
+			--' Гулаг неинициализирован, считаем что все нпс в нем живые.
+			i = i + 1
+		else
+			if obj:alive() then
+				i = i + 1
+			end			
 		end
 
-		if obj:alive() then
-			i = i + 1
-		end
 	end
 
 	return i
