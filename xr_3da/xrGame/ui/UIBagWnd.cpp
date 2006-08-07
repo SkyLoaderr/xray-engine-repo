@@ -354,12 +354,13 @@ void CUIBagWnd::PutItemToGroup(CUICellItem* pItem, int iGroup){
 	CInventoryItem* pIItem;
 	string64 tmp_str;
 
+	pIItem = (CInventoryItem*)pItem->m_pData;		
+
 	switch (iGroup)
 	{
 	case 1:
 		iActiveSection = GROUP_2;	break;
-	case 2:
-		pIItem = (CInventoryItem*)pItem->m_pData;		
+	case 2:		
 		weapon_class = pSettings->r_string(pIItem->object().cNameSect(), "weapon_class");		
 
 		if		(  0 == xr_strcmp(m_boxesDefs[0].filterString, weapon_class) )
@@ -399,12 +400,13 @@ void CUIBagWnd::PutItemToGroup(CUICellItem* pItem, int iGroup){
 
 		m_info[pItem->m_index].short_cut = subSection_group3[iActiveSection - GROUP_31] % 10;
 	}
-	else if (3 == iGroup){
-        pItem->SetCustomDraw			(NULL);
-	}
 
 	if (3 == iGroup){
-		m_info[pItem->m_index].short_cut = NULL; // no shortcut
+		if (m_info[pItem->m_index].short_cut >= 6)
+		{
+            m_info[pItem->m_index].short_cut = NULL; // no shortcut
+			pItem->SetCustomDraw			(NULL);
+		}
 	}
 }
 
