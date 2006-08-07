@@ -218,8 +218,7 @@ void CUIBuyWnd::OnBtnBulletBuy(int slot){
 
 		CUICellItem* ammo = m_bag.GetItemBySectoin(single_item);
 		if (ammo && m_bag.CanBuy(ammo)){
-			if (ammo)
-				ammo->GetMessageTarget()->SendMessage(ammo, DRAG_DROP_ITEM_DB_CLICK, NULL);	
+			ToBelt(ammo, false);
 		}
 	}
 }
@@ -273,9 +272,8 @@ void CUIBuyWnd::OnBtnRifleGrenade(){
 			_GetItem(*itemsList, 0, single_item);
 
 			CUICellItem* grenade = m_bag.GetItemBySectoin(single_item);
-			if (m_bag.CanBuy(grenade)){
-				if (grenade)
-					grenade->GetMessageTarget()->SendMessage(grenade, DRAG_DROP_ITEM_DB_CLICK, NULL);	
+			if (grenade && m_bag.CanBuy(grenade)){
+				ToBelt(grenade, false);
 			}
 		}
 	}
