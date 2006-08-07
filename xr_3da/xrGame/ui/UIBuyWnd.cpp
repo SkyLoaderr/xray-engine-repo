@@ -217,7 +217,7 @@ void CUIBuyWnd::OnBtnBulletBuy(int slot){
 
 
 		CUICellItem* ammo = m_bag.GetItemBySectoin(single_item);
-		if (m_bag.CanBuy(ammo)){
+		if (ammo && m_bag.CanBuy(ammo)){
 			if (ammo)
 				ammo->GetMessageTarget()->SendMessage(ammo, DRAG_DROP_ITEM_DB_CLICK, NULL);	
 		}
