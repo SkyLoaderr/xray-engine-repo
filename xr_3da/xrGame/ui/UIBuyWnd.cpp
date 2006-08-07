@@ -908,7 +908,10 @@ bool CUIBuyWnd::ToSlot(CUICellItem* itm, bool force_place)
 		VERIFY					(slot->ItemsCount()==1);
 
 		CUICellItem* i			= slot->GetItemIdx(0);
-		slot->RemoveItem		(i, true);
+		if (iitem->GetSlot()==OUTFIT_SLOT)
+			slot->RemoveItem		(i, false);
+		else
+			slot->RemoveItem		(i, true);
 
 		m_bag.SellItem(i);
 		m_bag.DestroyItem(i);
