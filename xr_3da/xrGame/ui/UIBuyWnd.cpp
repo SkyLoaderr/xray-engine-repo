@@ -149,7 +149,7 @@ bool CUIBuyWnd::OnKeyboard(int dik, EUIMessages keyboard_action){
 
 	if (DIK_ESCAPE == dik)
 		m_btnCancel.OnClick();
-	else if (DIK_SPACE == dik)
+	else if (DIK_SPACE == dik || DIK_RETURN == dik)
 		m_btnOk.OnClick();
 	else if (DIK_B == dik)
 		m_tab.SetActiveState();
@@ -1059,7 +1059,8 @@ void CUIBuyWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepres
 //		if (UITopList[pDDItem->GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == pDDItem->GetSlot() || NO_ACTIVE_SLOT == pDDItem->GetSlot())
 		{
 			m_bag.SetExternal(itm,bRealRepresentationSet);
-			ToSlot(itm, false);
+			if (!ToSlot(itm, false))
+				ToBelt(itm, false);
 			//itm->GetMessageTarget()->SendMessage(itm, DRAG_DROP_ITEM_DB_CLICK, NULL);
 			// Проверяем индекс на наличие флагов аддонов, и если они есть, то 
 			// аттачим аддоны к мувнутому оружию
