@@ -979,36 +979,6 @@ void CInventory::Items_SetCurrentEntityHud(bool current_entity)
 	}
 };
 
-/*
-void CInventory::setSlotsBlocked(bool b)
-{
-	
-	if(b)
-	{
-		m_bDoBlockAllSlots++;
-		VERIFY2(m_bDoBlockAllSlots< 5,"block slots overflow");
-	}else
-	{
-		m_bDoBlockAllSlots--;
-		VERIFY2(m_bDoBlockAllSlots>-5,"block slots underflow");
-	}
-
-	u32 InventorySlot		= GetActiveSlot();
-	u32 InventoryPrevSlot	= GetPrevActiveSlot();
-
-	if(m_bDoBlockAllSlots==1){
-		if(InventorySlot != NO_ACTIVE_SLOT)
-			if (Activate(NO_ACTIVE_SLOT,true))
-				SetPrevActiveSlot(InventorySlot);
-	}else
-	if(m_bDoBlockAllSlots==0){
-		if(InventoryPrevSlot != NO_ACTIVE_SLOT)
-			if (Activate(InventoryPrevSlot,true))
-				SetPrevActiveSlot(NO_ACTIVE_SLOT);
-	}
-	 
-}
-*/
 //call this only via Actor()->SetWeaponHideState()
 void CInventory::SetSlotsBlocked(u16 mask, bool bBlock)
 {
@@ -1020,11 +990,11 @@ void CInventory::SetSlotsBlocked(u16 mask, bool bBlock)
 			bool bCanBeActivated = m_slots[i].CanBeActivated();
 			if(bBlock){
 				++m_slots[i].m_blockCounter;
-				Msg("slot[%d]   Blocked. counter=%d",i,m_slots[i].m_blockCounter);
+//.				Msg("slot[%d]   Blocked. counter=%d",i,m_slots[i].m_blockCounter);
 				VERIFY2(m_slots[i].m_blockCounter< 5,"block slots overflow");
 			}else{
 				--m_slots[i].m_blockCounter;
-				Msg("slot[%d] UnBlocked. counter=%d",i,m_slots[i].m_blockCounter);
+//.				Msg("slot[%d] UnBlocked. counter=%d",i,m_slots[i].m_blockCounter);
 				VERIFY2(m_slots[i].m_blockCounter>-5,"block slots underflow");
 			}
 			if(bCanBeActivated != m_slots[i].CanBeActivated())
@@ -1046,7 +1016,5 @@ void CInventory::SetSlotsBlocked(u16 mask, bool bBlock)
 				if(Activate(NO_ACTIVE_SLOT))
 					SetPrevActiveSlot(ActiveSlot);
 		}
-
-//.		bool bCanBeActivated = m_slots[InventorySlot].CanBeActivated();
 	}
 }
