@@ -30,8 +30,7 @@ function action_walker_activity:initialize()
 	action_base.initialize(self)
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
-
-	self.move_mgr:initialize()
+	self:reset_scheme()
 end
 
 function action_walker_activity:activate_scheme()
@@ -40,6 +39,7 @@ function action_walker_activity:activate_scheme()
 end
 
 function action_walker_activity:reset_scheme()
+	self.move_mgr:initialize()
 	if self.st.path_walk_info == nil then			
 		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
 	end
