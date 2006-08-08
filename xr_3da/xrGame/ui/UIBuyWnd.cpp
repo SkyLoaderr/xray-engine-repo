@@ -435,7 +435,7 @@ bool CUIBuyWnd::ClearTooExpensiveItems(){
 
 	for (u32 i = 0; i < c; i++)
 	{
-		CUICellItem* itm = m_list[MP_SLOT_BELT]->GetItemIdx(i);
+		CUICellItem* itm = m_list[MP_SLOT_BELT]->GetItemIdx(0);
 		if (!m_bag.IsActive(itm))
 		{
 			itm->GetMessageTarget()->SendMessage(itm, DRAG_DROP_ITEM_DB_CLICK, NULL);
@@ -1029,14 +1029,21 @@ bool CUIBuyWnd::ToBelt(CUICellItem* itm, bool b_use_cursor_pos)
 				new_owner					= m_list[MP_SLOT_BELT];
 
 		CUICellItem* i						= old_owner->RemoveItem(itm, (old_owner==new_owner) );
+
+		if (i != itm){
+			m_bag.SetExternal(i, m_bag.GetExternal(itm));
+			m_bag.SetExternal(itm, false);
+		}
 		
 	//.	UIBeltList.RearrangeItems();
 		if(b_use_cursor_pos)
 			new_owner->SetItem				(i,old_owner->GetDragItemPosition());
 		else
 			new_owner->SetItem				(i);
+
 		UNHIGHTLIGHT_ITEM(i);
-		m_bag.BuyItem(itm);
+
+		m_bag.BuyItem(i);
 		return								true;
 	}
 	return									false;
@@ -1089,7 +1096,8 @@ void CUIBuyWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepres
 	uIndexInSlot &= 0x1f; // 0x1f = 00011111;
 
 	CUICellItem* itm = m_bag.GetItemBySectoin(grpNum, uIndexInSlot);
-	VERIFY(itm);
+	if (!itm)
+		return;
 
 	if (m_bag.IsInBag(itm))
 //		if (UITopList[pDDItem->GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == pDDItem->GetSlot() || NO_ACTIVE_SLOT == pDDItem->GetSlot())
