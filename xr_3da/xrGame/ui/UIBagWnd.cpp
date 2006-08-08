@@ -348,12 +348,12 @@ void CUIBagWnd::DestroyItem(CUICellItem* itm){
 	if (itm->m_pData)
 	{
 		CInventoryItem* iitem = (CInventoryItem*)itm->m_pData;
-		CGameObject* go = smart_cast<CGameObject*>( &iitem->object() );
-		Msg("deleting item [%s]",*go->cNameSect() );
+//.		CGameObject* go = smart_cast<CGameObject*>( &iitem->object() );
+//.		Msg("deleting item [%s]",*go->cNameSect() );
 		xr_delete(iitem);
 	}else
 	{
-		Msg("empty cell item");
+		Msg("!!!!!!! empty cell item");
 	}
 //	xr_delete(itm);
 }
