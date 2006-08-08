@@ -207,6 +207,29 @@ void CUIBuyWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	}
 }
 
+void CUIBuyWnd::Update(){
+	CUIWindow::Update();
+
+	if (m_list[MP_SLOT_PISTOL]->ItemsCount())
+		m_btnPistolBullet.Enable(true);
+	else
+		m_btnPistolBullet.Enable(false);
+
+	if (m_list[MP_SLOT_RIFLE]->ItemsCount()){
+		m_btnRifleBullet.Enable(true);
+
+		CWeapon* wpn = (CWeapon*)m_list[MP_SLOT_RIFLE]->GetItemIdx(0)->m_pData;
+		if (wpn->IsGrenadeLauncherAttached())
+			m_btnRifleGrenade.Enable(true);
+		else
+			m_btnRifleGrenade.Enable(false);		
+	}
+	else{
+		m_btnRifleBullet.Enable(false);
+		m_btnRifleGrenade.Enable(false);
+	}
+}
+
 #include "../../xr_input.h"
 void CUIBuyWnd::OnBtnBulletBuy(int slot){
 	if (m_list[slot]->ItemsCount()){
@@ -926,6 +949,7 @@ bool CUIBuyWnd::ToSlot(CUICellItem* itm, bool force_place)
 
 		m_bag.SellItem(i);
 		m_bag.DestroyItem(i);
+		xr_delete(i);
 
 //		bool result							= ToBag(slot_cell, false);
 //		VERIFY								(result);
@@ -963,6 +987,7 @@ bool CUIBuyWnd::ToBag(CUICellItem* itm, bool b_use_cursor_pos)
 
 			m_bag.SellItem(i);
 			m_bag.DestroyItem(i);
+			xr_delete(i);
 
 			return true;
 		}

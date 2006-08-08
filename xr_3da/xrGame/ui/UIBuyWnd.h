@@ -46,6 +46,7 @@ public:
 	// CUIWindow
 	bool OnKeyboard(int dik, EUIMessages keyboard_action);
 	void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
+	void Update();
 
 	// drag drop handlers
 	void		BindDragDropListEvents(CUIDragDropListEx* lst);
