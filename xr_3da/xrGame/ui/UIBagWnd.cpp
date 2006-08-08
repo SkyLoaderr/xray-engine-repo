@@ -581,7 +581,8 @@ void CUIBagWnd::ClearAmmoHighlight(){
 
 void CUIBagWnd::HightlightAmmo(LPCSTR ammo){
 	CUICellItem* itm = GetItemBySectoin(ammo);
-	HIGHTLIGHT_ITEM(itm);
+	if (itm)
+        HIGHTLIGHT_ITEM(itm);
 }
 
 void CUIBagWnd::SellItem(CUICellItem* itm){
@@ -894,7 +895,7 @@ CUICellItem* CUIBagWnd::GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot){
 
 		if (m_info[item->m_index].pos_in_section == uIndexInSlot &&	m_info[item->m_index].section == grpNum	)
 		{
-//			if (!m_info[item->m_index].bought)
+			if (IsInBag(item))
                 return item;
 		}
 	}
