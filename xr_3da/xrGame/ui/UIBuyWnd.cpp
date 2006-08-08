@@ -65,12 +65,18 @@ CUIBuyWnd::CUIBuyWnd(){
 }
 
 CUIBuyWnd::~CUIBuyWnd(){
+	if (m_list[MP_SLOT_PISTOL]->ItemsCount()){		
+		m_bag.DestroyItem(m_list[MP_SLOT_PISTOL]->GetItemIdx(0));		// destroy attached inventory item
+	}
+	if (m_list[MP_SLOT_RIFLE]->ItemsCount()){		
+		m_bag.DestroyItem(m_list[MP_SLOT_RIFLE]->GetItemIdx(0));		// destroy attached inventory item
+	}
+
 	for (int i = 0; i < MP_SLOT_NUM; i++)
 	{
 		m_list[i]->ClearAll(true);
 	}
 }
-
 void CUIBuyWnd::Init(LPCSTR sectionName, LPCSTR sectionPrice){
 	m_sectionName = sectionName;
 	m_sectionPrice = sectionPrice;
@@ -852,32 +858,32 @@ bool CUIBuyWnd::ToSlot(CUICellItem* itm, bool force_place)
 	
 	if (pSilencer){		// try to buy silencer
 		if (pRifle && pRifle->SilencerAttachable() && !pRifle->IsSilencerAttached()){
-			VERIFY(pRifle->Attach(pSilencer));	// ATTACH
+			R_ASSERT(pRifle->Attach(pSilencer));	// ATTACH
 			m_bag.BuyItem(itm);					// BUY
 			return true;
 		}
 		
 		if (pPistol && pPistol->SilencerAttachable() && !pPistol->IsSilencerAttached()){
-			VERIFY(pPistol->Attach(pSilencer));	// ATTACH
+			R_ASSERT(pPistol->Attach(pSilencer));	// ATTACH
 			m_bag.BuyItem(itm);					// BUY
 			return true;
 		}
 	}
 	if (pScope){
 		if (pRifle && pRifle->ScopeAttachable() && !pRifle->IsScopeAttached()){
-			VERIFY(pRifle->Attach(pScope));		// ATTACH
+			R_ASSERT(pRifle->Attach(pScope));		// ATTACH
 			m_bag.BuyItem(itm);					// BUY
 			return true;
 		}
 
 		if (pPistol && pPistol->ScopeAttachable() && !pPistol->IsScopeAttached()){
-			VERIFY(pPistol->Attach(pScope));	// ATTACH
+			R_ASSERT(pPistol->Attach(pScope));	// ATTACH
 			m_bag.BuyItem(itm);					// BUY
 			return true;
 		}
 	}
 	if (pGrenadeLauncher && pRifle && pRifle->GrenadeLauncherAttachable() && !pRifle->IsGrenadeLauncherAttached()){
-		VERIFY(pRifle->Attach(pGrenadeLauncher));
+		R_ASSERT(pRifle->Attach(pGrenadeLauncher));
 		m_bag.BuyItem(itm);
 		return true;
 	}

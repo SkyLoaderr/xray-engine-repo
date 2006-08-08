@@ -398,6 +398,7 @@ void CUIBagWnd::PutItemToGroup(CUICellItem* pItem, int iGroup){
 	R_ASSERT2( (-1 != iActiveSection), "CUIBag::PutItemToGroup - invalid section");
 
 	m_groups[iActiveSection].SetItem(pItem);	
+	pItem->SetAutoDelete(false);
 	m_info[pItem->m_index].group_index = iActiveSection;
 
 	if ( 2 == iGroup)
