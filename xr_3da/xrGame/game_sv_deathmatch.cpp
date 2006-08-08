@@ -1031,6 +1031,25 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 		Player_AddMoney(ps, ps->LastBuyAcount);
 };
 
+void	game_sv_Deathmatch::FillWeaponData			(WeaponDataStruct* NewWpnData, LPCSTR wpnSingleName, char* caSection)
+{
+	NewWpnData->WeaponName = wpnSingleName;
+	NewWpnData->Cost = pSettings->r_s16(m_sBaseWeaponCostSection, wpnSingleName);
+	if (pSettings->line_exist(wpnSingleName, "ammo_class"))
+	{
+		string1024 wpnAmmos, BaseAmmoName;
+		std::strcpy(wpnAmmos, pSettings->r_string(wpnSingleName, "ammo_class"));
+		_GetItem(wpnAmmos, 0, BaseAmmoName);
+		NewWpnData->WeaponBaseAmmo = BaseAmmoName;
+	};
+
+	string1024 tmpName;
+	strcpy(tmpName, wpnSingleName);
+	std::strcat(tmpName, "_cost");
+	if (pSettings->line_exist(caSection, tmpName))
+		NewWpnData->Cost = pSettings->r_s16(caSection, tmpName);
+};
+
 void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList)
 {
 	
@@ -1053,7 +1072,7 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pT
 		// Читаем данные этого поля
 		std::strcpy(wpnNames, pSettings->r_string(caSection, wpnSection));
 		u32 count	= _GetItemCount(wpnNames);
-		// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
+		// теперь каждое имя оружия, разделенные запятыми, заносим в массив
 		for (u32 j = 0; j < count; ++j)
 		{
 			_GetItem(wpnNames, j, wpnSingleName);
@@ -1062,22 +1081,26 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pT
 			WeaponDataStruct	NewWpnData;
 
 			NewWpnData.SlotItem_ID = (s16(i-1) << 8) | s16(j);
-			NewWpnData.WeaponName = wpnSingleName;
-			NewWpnData.Cost = pSettings->r_s16(m_sBaseWeaponCostSection, wpnSingleName);
-			if (pSettings->line_exist(wpnSingleName, "ammo_class"))
-			{
-				string1024 wpnAmmos, BaseAmmoName;
-				std::strcpy(wpnAmmos, pSettings->r_string(wpnSingleName, "ammo_class"));
-				_GetItem(wpnAmmos, 0, BaseAmmoName);
-				NewWpnData.WeaponBaseAmmo = BaseAmmoName;
-			};
-
-			std::strcat(wpnSingleName, "_cost");
-			if (pSettings->line_exist(caSection, wpnSingleName))
-				NewWpnData.Cost = pSettings->r_s16(caSection, wpnSingleName);
+			FillWeaponData(&NewWpnData, wpnSingleName, caSection);
+			
 			
 			pTeamWpnList->push_back(NewWpnData);
 		}
+	}
+	//-----------------------------------------------------------
+	u32 TotalItemsCount = pSettings->line_count(m_sBaseWeaponCostSection);
+	int CountAdded = 0;
+	for (u32 l=0; l<TotalItemsCount; l++)
+	{
+		LPCSTR					N,V;
+		pSettings->r_line(m_sBaseWeaponCostSection, l, &N, &V);
+		WeaponDataStruct* pWpnS = NULL;
+		if (GetTeamItem_ByName(&pWpnS, pTeamWpnList, N)) continue;
+
+		WeaponDataStruct	NewWpnData;
+		NewWpnData.SlotItem_ID = (s16(i-1) << 8) | s16(CountAdded++);
+		FillWeaponData(&NewWpnData, N, (char*)caSection);	
+		pTeamWpnList->push_back(NewWpnData);
 	}
 	//-----------------------------------------------------------
 	u32 j=0;

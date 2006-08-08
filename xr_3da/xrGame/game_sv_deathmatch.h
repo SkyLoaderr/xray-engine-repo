@@ -174,6 +174,7 @@ public:
 	
 	virtual		void				LoadTeams				();
 	virtual		void				LoadTeamData			(char* caSection);
+	virtual		void				FillWeaponData			(WeaponDataStruct* NewWpnData, LPCSTR wpnSingleName, char* caSection);
 	virtual		void				LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList);
 	virtual		void				LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* pTeamSkins);
 	virtual		void				LoadDefItemsForTeam		(char* caSection, TEAM_WPN_LIST *pWpnList, DEF_ITEMS_LIST* pDefItems);
