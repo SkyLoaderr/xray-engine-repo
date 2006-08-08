@@ -62,10 +62,15 @@ CUIBagWnd::CUIBagWnd(){
 }
 
 CUIBagWnd::~CUIBagWnd(){
-//	u32 sz = m_allItems.size();
-//	for (u32 i = 0; i < sz; i++){
-//		DestroyItem(m_allItems[i]);
-//	}
+	u32 sz = m_allItems.size();
+	for (u32 i = 0; i < sz; i++){
+		DestroyItem(m_allItems[i]);
+	}
+	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
+	{
+		m_groups[i].ClearAll(true);
+	}
+
 }
 
 void CUIBagWnd::Init(CUIXml& xml, LPCSTR path, LPCSTR sectionName, LPCSTR sectionPrice){
@@ -343,9 +348,14 @@ void CUIBagWnd::DestroyItem(CUICellItem* itm){
 	if (itm->m_pData)
 	{
 		CInventoryItem* iitem = (CInventoryItem*)itm->m_pData;
+		CGameObject* go = smart_cast<CGameObject*>( &iitem->object() );
+		Msg("deleting item [%s]",*go->cNameSect() );
 		xr_delete(iitem);
+	}else
+	{
+		Msg("empty cell item");
 	}
-	xr_delete(itm);
+//	xr_delete(itm);
 }
 
 void CUIBagWnd::PutItemToGroup(CUICellItem* pItem, int iGroup){

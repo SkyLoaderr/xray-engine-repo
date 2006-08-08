@@ -8,7 +8,7 @@
 
 poolSS< _12b, 128>	ui_allocator;
 
-//#define LOG_ALL_WNDS
+#define LOG_ALL_WNDS
 #ifdef LOG_ALL_WNDS
 	int ListWndCount = 0;
 	struct DBGList{

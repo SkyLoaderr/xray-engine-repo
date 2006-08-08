@@ -52,7 +52,9 @@ CUIBuyWnd::CUIBuyWnd(){
 			m_list[i] = xr_new<CUIOutfitDragDropList>();
 		else
 			m_list[i] = xr_new<CUIDragDropListEx>();
-        AttachChild(m_list[i]);
+		
+		m_list[i]->SetAutoDelete(true);
+		AttachChild(m_list[i]);
 	}
 
 	AttachChild				(&m_propertiesBox);
@@ -63,7 +65,10 @@ CUIBuyWnd::CUIBuyWnd(){
 }
 
 CUIBuyWnd::~CUIBuyWnd(){
-
+	for (int i = 0; i < MP_SLOT_NUM; i++)
+	{
+		m_list[i]->ClearAll(true);
+	}
 }
 
 void CUIBuyWnd::Init(LPCSTR sectionName, LPCSTR sectionPrice){
