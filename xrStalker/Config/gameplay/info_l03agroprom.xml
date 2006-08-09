@@ -169,6 +169,8 @@
 	</info_portion>	 
 	<info_portion id="agr_attack_begin">
 	</info_portion>	 
+	<info_portion id="agr_doc_wakeup">
+	</info_portion>	 
 
 
 	<info_portion id="agr_u_zombie_start"></info_portion>	 
