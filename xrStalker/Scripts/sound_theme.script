@@ -179,8 +179,21 @@ ph_snd_themes["bar_arena_fight_7_end"]	= {"characters_voice\\scenario\\bar\\aren
 ph_snd_themes["bar_arena_fight_8"]	= {"characters_voice\\scenario\\bar\\arena_sound\\bar_fight_8_ready"}
 ph_snd_themes["bar_arena_fight_8_end"]	= {"characters_voice\\scenario\\bar\\arena_sound\\bar_fight_8_finish"}
 
-ph_snd_themes["x18_sound_1"] = {"ambient\\x18\\h_tal5"}
+ph_snd_themes["x18_sound_1"] = {"ambient\\x18\\h_tal5",
+								"ambient\\x18\\h_am_hit1",
+								"ambient\\x18\\h_am_hit4",
+								"ambient\\x18\\H_or_metal_large",
+								"ambient\\x18\\H_or_metal_rusty",
+								"ambient\\x18\\H_otsteps_wood1",
+								"ambient\\x18\\H_otsteps_glass1",
+								"ambient\\x18\\H_otsteps_glass2",
+								"ambient\\x18\\h_tal5"}
 
+ph_snd_themes["x18_sound_2"] = {"ambient\\x18\\H_tal_grate_impact_hard1",
+								"ambient\\x18\\H_tal_grate_impact_hard2",
+								"ambient\\x18\\H_tal_grate_impact_hard3",
+								"ambient\\x18\\H_tal_grate_impact_soft1",
+								"ambient\\x18\\H_tal_grate_impact_soft2"}
 
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Theme  functions
