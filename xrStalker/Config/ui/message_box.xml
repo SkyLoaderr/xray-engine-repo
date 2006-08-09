@@ -173,7 +173,7 @@
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
-			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">Do you really want to quit to Windows?</text>
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_mm_quit_windows_message</text>
 		</message_text>
 		
 		<button_yes x="250" y="154" width="117" height="29" check_mode="0">

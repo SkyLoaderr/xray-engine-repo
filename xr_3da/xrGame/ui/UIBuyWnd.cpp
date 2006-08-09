@@ -15,6 +15,7 @@
 #include "UIOutfitSlot.h"
 #include "UIListBoxItem.h"
 #include <dinput.h>
+#include "../actor.h"
 
 #define 	BELT_SLOT			5
 
@@ -65,6 +66,39 @@ CUIBuyWnd::CUIBuyWnd(){
 }
 
 CUIBuyWnd::~CUIBuyWnd(){
+    DestroyAllItems();	
+}
+
+void CUIBuyWnd::ResetItems(){
+	// delete all
+	DestroyAllItems();	
+
+	m_bag.DestroyAllItems();
+	m_bag.InitItems();    
+}
+
+void CUIBuyWnd::Show(){
+	m_pMouseCapturer = NULL;
+	CUIDialogWnd::Show();
+
+	
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(!pActor) 
+		return;
+	pActor->SetWeaponHideState(INV_STATE_BUY_MENU, true);
+
+	m_tab.SetActiveState();
+}
+void CUIBuyWnd::Hide(){
+	CUIDialogWnd::Hide();
+
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(!pActor)
+		return;
+	pActor->SetWeaponHideState(INV_STATE_BUY_MENU, false);
+}
+
+void CUIBuyWnd::DestroyAllItems(){
 	if (m_list[MP_SLOT_PISTOL]->ItemsCount()){		
 		m_bag.DestroyItem(m_list[MP_SLOT_PISTOL]->GetItemIdx(0));		// destroy attached inventory item
 	}
@@ -77,6 +111,7 @@ CUIBuyWnd::~CUIBuyWnd(){
 		m_list[i]->ClearAll(true);
 	}
 }
+
 void CUIBuyWnd::Init(LPCSTR sectionName, LPCSTR sectionPrice){
 	m_sectionName = sectionName;
 	m_sectionPrice = sectionPrice;
@@ -1096,8 +1131,11 @@ void CUIBuyWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepres
 	uIndexInSlot &= 0x1f; // 0x1f = 00011111;
 
 	CUICellItem* itm = m_bag.GetItemBySectoin(grpNum, uIndexInSlot);
-	if (!itm)
+	if (!itm)				/// FIX ME, ITS STUB
+	{
+
 		return;
+	}
 
 	if (m_bag.IsInBag(itm))
 //		if (UITopList[pDDItem->GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == pDDItem->GetSlot() || NO_ACTIVE_SLOT == pDDItem->GetSlot())

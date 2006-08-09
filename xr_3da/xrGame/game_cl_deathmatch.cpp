@@ -641,9 +641,10 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 		{		
 			if(CanCallBuyMenu()){
 				SetCurrentBuyMenu	();
+				pCurBuyMenu->ResetItems();
 
 				if (pCurBuyMenu && !pCurBuyMenu->IsShown())
-					SetBuyMenuItems		();
+					SetBuyMenuItems		();				
 
 				LoadDefItemsForRank(pCurBuyMenu);
 				StartStopMenu(pCurBuyMenu,true);

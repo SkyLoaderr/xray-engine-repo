@@ -139,7 +139,7 @@
         <text>Действительно ли вы желаете отсоединится?</text>
     </string>
     <string id="ui_mm_quit_windows_message">
-        <text>Действительно ли выйти в Windows?</text>
+        <text>Действительно ли вы хотите выйти в Windows?</text>
     </string>
     <string id="ui_mm_switch_torch">
 		<text>использование фонариков AI</text>

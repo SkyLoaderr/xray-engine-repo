@@ -26,6 +26,7 @@ public:
 
 	// own
 	void Init(LPCSTR sectionName, LPCSTR sectionPrice);
+	void ResetItems();
 	void OnTabChange();
 	void OnMenuLevelChange();
 	void SetSkin(u8 SkinID);
@@ -44,9 +45,11 @@ public:
 	void HightlightCurrAmmo();
 
 	// CUIWindow
-	bool OnKeyboard(int dik, EUIMessages keyboard_action);
-	void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
-	void Update();
+	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
+	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
+	virtual void Update();
+	virtual void Show();
+	virtual void Hide();
 
 	// drag drop handlers
 	void		BindDragDropListEvents(CUIDragDropListEx* lst);
@@ -84,6 +87,7 @@ public:
 	int			GetMoneyAmount() const;
 
 protected:
+	void				DestroyAllItems				();
 	void				SetCurrentItem				(CUICellItem* itm);
 	CUICellItem*		CurrentItem					();
 	CInventoryItem*		CurrentIItem				();

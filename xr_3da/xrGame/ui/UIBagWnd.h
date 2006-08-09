@@ -77,6 +77,8 @@ CUICellItem*	CreateItem(LPCSTR name);
 	void		HightlightAmmo(LPCSTR ammo);
 	bool		IsBlueTeamItem(CUICellItem* itm);
 	int			GetItemRank(CUICellItem* itm);
+	void		InitItems();
+	void		DestroyAllItems();
 
 
 	u8		GetItemIndex(CUICellItem* pItem, u8 &sectionNum);

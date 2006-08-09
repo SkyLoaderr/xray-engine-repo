@@ -75,6 +75,14 @@ bool CUI::Render()
 	CEntity* pEntity = smart_cast<CEntity*>(Level().CurrentEntity());
 	if (pEntity)
 	{
+		CActor* pActor			=	smart_cast<CActor*>(pEntity);
+		if(pActor)
+		{
+			PIItem item		=  pActor->inventory().ActiveItem();
+			if(item && pActor->HUDview() && smart_cast<CHudItem*>(item))
+				(smart_cast<CHudItem*>(item))->OnDrawUI();
+		}
+
 		if( GameIndicatorsShown() && psHUD_Flags.is(HUD_DRAW | HUD_DRAW_RT) )
 		{
 			UIMainIngameWnd->Draw();
@@ -89,15 +97,7 @@ bool CUI::Render()
 			}
 			else
 				m_pMessagesWnd->Draw();
-		}
-
-		CActor* pActor			=	smart_cast<CActor*>(pEntity);
-		if(pActor)
-		{
-			PIItem item		=  pActor->inventory().ActiveItem();
-			if(item && pActor->HUDview() && smart_cast<CHudItem*>(item))
-				(smart_cast<CHudItem*>(item))->OnDrawUI();
-		}
+		}	
 	}
 	else
 		m_pMessagesWnd->Draw();

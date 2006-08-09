@@ -62,7 +62,11 @@ CUIBagWnd::CUIBagWnd(){
 }
 
 CUIBagWnd::~CUIBagWnd(){
-	u32 sz = m_allItems.size();
+	DestroyAllItems();
+}
+
+void CUIBagWnd::DestroyAllItems(){
+    u32 sz = m_allItems.size();
 	for (u32 i = 0; i < sz; i++){
 		DestroyItem(m_allItems[i]);
 	}
@@ -70,7 +74,10 @@ CUIBagWnd::~CUIBagWnd(){
 	{
 		m_groups[i].ClearAll(true);
 	}
+	m_allItems.clear();
 
+	for (int i = 0; i<4; i++)
+        subSection_group3[i] = 0;
 }
 
 void CUIBagWnd::Init(CUIXml& xml, LPCSTR path, LPCSTR sectionName, LPCSTR sectionPrice){
@@ -93,7 +100,11 @@ void CUIBagWnd::Init(CUIXml& xml, LPCSTR path, LPCSTR sectionName, LPCSTR sectio
 
 	InitBoxes(xml);
 	InitWpnSectStorage();
-	FillUpGroups();
+	InitItems();	
+}
+
+void CUIBagWnd::InitItems(){
+    FillUpGroups();
 	HideAll();
 	SetMenuLevel(mlRoot);
 }
@@ -104,12 +115,18 @@ void CUIBagWnd::UpdateBuyPossibility(){
 	for (u32 i = 0; i<sz; i++){
 		if (IsInBag(m_allItems[i]))
 		{
-            if(UpdateRank(m_allItems[i]))		// update price if there no restriction for rank
+			if (m_info[m_allItems[i]->m_index].bought)
+			{
+				m_allItems[i]->SetColor(0x00ffffff);
+			}
+			else if (UpdateRank(m_allItems[i]))		// update price if there no restriction for rank
+			{
 				if (UpdatePrice(m_allItems[i], i))
 				{
 					if (m_info[i].external)
                         SET_EXTERNAL_COLOR(m_allItems[i]);
 				}
+			}
 		}
 	}
 }
