@@ -41,7 +41,7 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/xrLUA_JIT.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/xrLUA_JIT.lib"
+				ImportLibrary="$(OutDir)/xrLUA.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
