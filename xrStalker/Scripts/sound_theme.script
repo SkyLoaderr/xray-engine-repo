@@ -178,6 +178,10 @@ ph_snd_themes["bar_arena_fight_7"]	= {"characters_voice\\scenario\\bar\\arena_so
 ph_snd_themes["bar_arena_fight_7_end"]	= {"characters_voice\\scenario\\bar\\arena_sound\\bar_fight_7_finish"}
 ph_snd_themes["bar_arena_fight_8"]	= {"characters_voice\\scenario\\bar\\arena_sound\\bar_fight_8_ready"}
 ph_snd_themes["bar_arena_fight_8_end"]	= {"characters_voice\\scenario\\bar\\arena_sound\\bar_fight_8_finish"}
+
+ph_snd_themes["x18_sound_1"] = {"ambient\\x18\\h_tal5"}
+
+
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Theme  functions
 -----------------------------------------------------------------------------------------------------------------------------------
