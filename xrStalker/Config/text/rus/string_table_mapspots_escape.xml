@@ -25,11 +25,7 @@
 	<string id="factory_bandits">
 		<text>Бандиты на фабрике.</text>
 	</string>
-	
-	<string id="escape_dinamit">
-		<text>Динамит на фабрике.</text>
-	</string>
-	
+
 	<string id="volk">
 		<text>Волк, лидер лагеря новчиков.</text>
 	</string>
