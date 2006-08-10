@@ -33,6 +33,9 @@
     <string id="esc_lager_no_talk_21">
         <text>Здоров! Чего надо?</text>
     </string>
+    <string id="esc_lager_no_talk_31">
+        <text>Тут тебя старший наш хотел видеть. Но это не значит, что тебе здесь рады. Проходи, не задерживайся.</text>
+    </string>
     <string id="esc_provodnik_start_11">
         <text>Здравствуй, брат.</text>
     </string>
