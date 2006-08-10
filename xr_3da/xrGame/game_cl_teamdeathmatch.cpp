@@ -304,7 +304,7 @@ void game_cl_TeamDeathmatch::OnTeamSelect(int Team)
 //	}
 };
 //-----------------------------------------------------------------
-void game_cl_TeamDeathmatch::SetCurrwentBuyMenu	()
+void game_cl_TeamDeathmatch::SetCurrentBuyMenu	()
 {
 	if (!local_player) return;
 	if (!local_player->team || local_player->skin == -1) return;
