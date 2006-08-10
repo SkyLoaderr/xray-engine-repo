@@ -87,6 +87,8 @@ CUICellItem*	CreateItem(LPCSTR name);
 
 	CUICellItem* GetItemBySectoin(const char *sectionName, bool bCreateOnFail = false);
 	CUICellItem* GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot);
+	CUICellItem* CreateNewItem(const u8 grpNum, u8 uIndexInSlot);
+
 	void	SetExternal(CUICellItem* itm, bool status);
 	bool	GetExternal(CUICellItem* itm);
 	void	ClearExternalStatus();

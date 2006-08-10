@@ -931,6 +931,43 @@ CUICellItem* CUIBagWnd::GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot){
 	return NULL;
 }
 
+CUICellItem* CUIBagWnd::CreateNewItem(const u8 grpNum, u8 uIndexInSlot){
+	u32 sz = m_allItems.size();
+	CUICellItem* item;
+	PIItem		 iitem;
+	CUICellItem* new_item;
+
+	for (u32 i = 0; i < sz; i++){
+		item = m_allItems[i];
+
+		if (m_info[item->m_index].pos_in_section == uIndexInSlot &&	m_info[item->m_index].section == grpNum	)
+		{
+			iitem = (PIItem)item->m_pData;
+            break;             
+		}
+	}
+
+	new_item = CreateItem(*iitem->object().cNameSect());
+
+	new_item->m_index = m_allItems.size();
+	m_allItems.push_back(new_item);
+	ItmInfo ii;
+	ii.price	= pSettings->r_s32(*m_sectionPrice, m_wpnSectStorage[grpNum][uIndexInSlot].c_str());
+	m_info.push_back(ii);
+
+	m_info[new_item->m_index].short_cut = NULL;
+	m_info[new_item->m_index].active = true;
+	m_info[new_item->m_index].bought = false;
+	m_info[new_item->m_index].section = grpNum;
+	m_info[new_item->m_index].pos_in_section = uIndexInSlot;
+	m_info[new_item->m_index].external = false;
+
+    PutItemToGroup(new_item, grpNum);
+
+    
+	return new_item;
+}
+
 void CUIBagWnd::ReloadItemsPrices()
 {
 	string256 ItemCostStr = "";

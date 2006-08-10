@@ -1131,9 +1131,9 @@ void CUIBuyWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepres
 	uIndexInSlot &= 0x1f; // 0x1f = 00011111;
 
 	CUICellItem* itm = m_bag.GetItemBySectoin(grpNum, uIndexInSlot);
-	if (!itm)				/// FIX ME, ITS STUB
+	if (!itm)
 	{
-
+		itm = m_bag.CreateNewItem(grpNum, uIndexInSlot);
 		return;
 	}
 
