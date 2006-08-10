@@ -150,6 +150,9 @@
     <string id="escape_fox_hello_dialog_611">
         <text>Спасибо.</text>
     </string>
+    <string id="escape_lager_guard_start_dialog_121">
+        <text>Тут тебя старший наш хотел видеть. Но это не значит, что тебе здесь рады. Проходи, не задерживайся.</text>
+    </string>
     <string id="escape_lager_guard_start_dialog_2">
         <text>Стой, Меченый! Сейчас в лагере никто с тобой говорить не станет.</text>
     </string>
