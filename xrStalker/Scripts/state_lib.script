@@ -679,7 +679,7 @@ states = {
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "stand",
-				animation = nil
+				animation = "barman_free_anims"
 			},
 	
 	barman_walk_free = {	weapon = "none",
