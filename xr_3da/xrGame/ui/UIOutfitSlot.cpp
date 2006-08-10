@@ -17,6 +17,9 @@ CUIOutfitDragDropList::~CUIOutfitDragDropList()
 {
 }
 
+#include "../level.h"
+#include "../game_base_space.h"
+
 void CUIOutfitDragDropList::SetOutfit(CUICellItem* itm)
 {
 	static float fNoOutfitX				= pSettings->r_float(m_default_outfit, "full_scale_icon_x");
@@ -25,6 +28,11 @@ void CUIOutfitDragDropList::SetOutfit(CUICellItem* itm)
 	Frect			r;
 	r.x1			= fNoOutfitX*ICON_GRID_WIDTH;
 	r.y1			= fNoOutfitY*ICON_GRID_HEIGHT;
+	r.x2			= r.x1+CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH;
+	r.y2			= r.y1+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT;
+
+	m_background->Init(0,0, GetWidth(), GetHeight());
+
 	if(itm)
 	{
 		PIItem _iitem	= (PIItem)itm->m_pData;
@@ -33,13 +41,15 @@ void CUIOutfitDragDropList::SetOutfit(CUICellItem* itm)
 		r.x1			= float(pOutfit->GetIconX())*ICON_GRID_WIDTH;
 		r.y1			= float(pOutfit->GetIconY())*ICON_GRID_HEIGHT;
 	}
-	r.x2				= r.x1+CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH;
-	r.y2				= r.y1+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT;
 	
-	m_background->Init(0,0, GetWidth(), GetHeight());
-	m_background->SetShader				(InventoryUtilities::GetCharIconsShader());
-
-	m_background->SetOriginalRect		(r);
+	if ((GameID() == GAME_SINGLE || itm || 0==xr_strcmp("without_outfit",m_default_outfit))){
+        m_background->SetShader				(InventoryUtilities::GetCharIconsShader());
+        m_background->SetOriginalRect		(r);
+	}
+	else
+	{
+		m_background->InitTexture(*m_default_outfit);
+	}
 
 	m_background->TextureAvailable		(true);
 	m_background->TextureOn				();

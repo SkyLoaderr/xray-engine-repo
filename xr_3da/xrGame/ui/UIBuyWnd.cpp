@@ -88,6 +88,9 @@ void CUIBuyWnd::Show(){
 	pActor->SetWeaponHideState(INV_STATE_BUY_MENU, true);
 
 	m_tab.SetActiveState();
+
+	CUIOutfitDragDropList* lst = (CUIOutfitDragDropList*)m_list[MP_SLOT_OUTFIT];
+	lst->SetItem(NULL);
 }
 void CUIBuyWnd::Hide(){
 	CUIDialogWnd::Hide();
