@@ -50,10 +50,10 @@ protected:
 	PRESET_ITEMS*					pCurPresetItems;
 	PRESET_ITEMS					PlayerDefItems;
 
-	CUIBuyWnd*				pBuyMenuTeam0;
-	CUIBuyWnd*				pCurBuyMenu;
+//.	CUIBuyWnd*						pBuyMenuTeam0;
+	CUIBuyWnd*						pCurBuyMenu;
 
-	CUISkinSelectorWnd*				pSkinMenuTeam0;
+//.	CUISkinSelectorWnd*				pSkinMenuTeam0;
 	CUISkinSelectorWnd*				pCurSkinMenu;
 	CUIInventoryWnd*				pInventoryMenu;
 
@@ -103,7 +103,7 @@ public:
 
 	virtual		char*				getTeamSection			(int Team);
 	virtual	void					SetCurrentBuyMenu		();
-	virtual	void					SetCurrentSkinMenu		()	{pCurSkinMenu = pSkinMenuTeam0; };
+	virtual	void					SetCurrentSkinMenu		();//	{pCurSkinMenu = pSkinMenuTeam0; };
 
 	virtual	void					OnSpectatorSelect		();
 

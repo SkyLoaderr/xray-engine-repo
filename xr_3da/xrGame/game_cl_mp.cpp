@@ -527,7 +527,7 @@ void game_cl_mp::OnVoteEnd				(NET_Packet& P)
 	SetVotingActive(false);
 };
 
-void game_cl_mp::LoadTeamData			(char* TeamName)
+void game_cl_mp::LoadTeamData			(LPCSTR TeamName)
 {
 	cl_TeamStruct Team;
 	ZeroMemory(&Team, sizeof(Team));

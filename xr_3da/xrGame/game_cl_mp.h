@@ -149,7 +149,7 @@ protected:
 	BOOL							m_bSpectatorSelected;
 	int								m_iSpawn_Cost;
 
-	virtual void			LoadTeamData			(char* TeamName);
+	virtual void			LoadTeamData			(LPCSTR TeamName);
 	virtual	void			ChatSayTeam				(const shared_str &phrase);
 	virtual	void			ChatSayAll				(const shared_str &phrase);
 	virtual	void			OnChatMessage			(NET_Packet* P);

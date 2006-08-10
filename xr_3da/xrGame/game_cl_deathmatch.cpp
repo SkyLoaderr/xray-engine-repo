@@ -33,14 +33,14 @@
 game_cl_Deathmatch::game_cl_Deathmatch()
 {
 	pInventoryMenu	= NULL;
-	pBuyMenuTeam0	= NULL;
+//.	pBuyMenuTeam0	= NULL;
 	pCurBuyMenu		= NULL;
 	
 	PresetItemsTeam0.clear();
 	PlayerDefItems.clear();
 	pCurPresetItems	= NULL;;
 
-	pSkinMenuTeam0	= NULL;
+//.	pSkinMenuTeam0	= NULL;
 	pCurSkinMenu	= NULL;
 
 	pMapDesc		= NULL;
@@ -80,8 +80,10 @@ void game_cl_Deathmatch::Init ()
 game_cl_Deathmatch::~game_cl_Deathmatch()
 {
 //	m_aTeamSections.clear();
-	xr_delete(pBuyMenuTeam0);
-	xr_delete(pSkinMenuTeam0);
+//.	xr_delete(pBuyMenuTeam0);
+	xr_delete(pCurSkinMenu);
+	xr_delete(pCurBuyMenu);
+//.	xr_delete(pSkinMenuTeam0);
 	xr_delete(pInventoryMenu);
 	//---------------------------------------	
 	xr_delete(pPdaMenu);
@@ -102,12 +104,12 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 	m_game_ui->SetClGame(this);
 	m_game_ui->Init();
 	//-----------------------------------------------------------
-	pBuyMenuTeam0	= InitBuyMenu("deathmatch_base_cost", 0);
-	pCurBuyMenu		= pBuyMenuTeam0;
-	LoadTeamDefaultPresetItems(TEAM0_MENU, pBuyMenuTeam0, &PresetItemsTeam0);
+	pCurBuyMenu	= InitBuyMenu("deathmatch_base_cost", 0);
+//.	pCurBuyMenu		= pBuyMenuTeam0;
+	LoadTeamDefaultPresetItems(TEAM0_MENU, pCurBuyMenu, &PresetItemsTeam0);
 	//-----------------------------------------------------------
-	pSkinMenuTeam0	= InitSkinMenu(0);
-	pCurSkinMenu	= pSkinMenuTeam0;
+	pCurSkinMenu	= InitSkinMenu(0);
+//.	pCurSkinMenu	= pSkinMenuTeam0;
 	
 	pInventoryMenu	= xr_new<CUIInventoryWnd>();
 	//-----------------------------------------------------------	
@@ -119,6 +121,11 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 
 		
 	return m_game_ui;
+}
+
+void game_cl_Deathmatch::SetCurrentSkinMenu		()	
+{
+//.	pCurSkinMenu = pSkinMenuTeam0; 
 }
 
 void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
@@ -181,12 +188,12 @@ CUISkinSelectorWnd* game_cl_Deathmatch::InitSkinMenu			(s16 Team)
 		Team = local_player->team;
 	};
 
-	cl_TeamStruct *pTeamSect = &TeamList[ModifyTeam(Team)];	
+	cl_TeamStruct *pTeamSect		= &TeamList[ModifyTeam(Team)];	
 
-	CUISkinSelectorWnd* pMenu	= xr_new<CUISkinSelectorWnd>	((char*)pTeamSect->caSection.c_str());
-	pMenu->SetWorkPhase(GAME_PHASE_INPROGRESS);
+	CUISkinSelectorWnd* pMenu		= xr_new<CUISkinSelectorWnd>	((char*)pTeamSect->caSection.c_str(), Team);
+	pMenu->SetWorkPhase				(GAME_PHASE_INPROGRESS);
 	
-	return pMenu;
+	return							pMenu;
 };
 
 void game_cl_Deathmatch::OnMapInfoAccept			()
@@ -304,7 +311,7 @@ BOOL game_cl_Deathmatch::CanCallInventoryMenu			()
 
 void game_cl_Deathmatch::SetCurrentBuyMenu	()	
 {
-	pCurBuyMenu = pBuyMenuTeam0; 
+//.	pCurBuyMenu = pBuyMenuTeam0; 
 	pCurPresetItems	= &PresetItemsTeam0;
 	//-----------------------------------
 	if (m_cl_dwWarmUp_Time != 0) pCurBuyMenu->IgnoreMoneyAndRank(true);
@@ -853,7 +860,7 @@ void				game_cl_Deathmatch::LoadSndMessages				()
 
 void				game_cl_Deathmatch::OnSwitchPhase_InProgress()
 {
-	LoadTeamDefaultPresetItems(TEAM0_MENU, pBuyMenuTeam0, &PresetItemsTeam0);
+	LoadTeamDefaultPresetItems(TEAM0_MENU, pCurBuyMenu, &PresetItemsTeam0);
 };
 
 void				game_cl_Deathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)

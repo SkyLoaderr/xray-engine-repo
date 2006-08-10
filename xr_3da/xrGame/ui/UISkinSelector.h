@@ -29,7 +29,7 @@ class CUISkinSelectorWnd: public CUIDialogWnd
 {
 	typedef CUIDialogWnd inherited;
 public:	
-	CUISkinSelectorWnd(const char* strSectionName);
+	CUISkinSelectorWnd(const char* strSectionName, s16 team);
 	~CUISkinSelectorWnd();
 	
 	virtual void	Init(const char* strSectionName);
@@ -40,6 +40,7 @@ public:
 			void	SetCurSkin(int skin);
 
 	int				GetActiveIndex();
+	s16				GetTeam()				{return m_team;};
 protected:
 			void	OnBtnOK();
 			void	OnBtnCancel();
@@ -60,9 +61,10 @@ protected:
 	
 	shared_str		m_strSection;
 	shared_str		m_shader;
-	int				m_iActiveIndex;  
+	int				m_iActiveIndex; 
 	xr_vector<xr_string> m_skins;
 	int				m_firstSkin;
+	s16				m_team;
 };
 
 #endif

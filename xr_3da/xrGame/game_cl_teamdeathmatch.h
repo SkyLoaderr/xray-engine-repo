@@ -49,36 +49,38 @@ public :
 
 //from UIGameTDM
 protected:
-	CUISpawnWnd*		pUITeamSelectWnd;
+	virtual LPCSTR						GetBaseCostSect			() {return "teamdeathmatch_base_cost";}
+	virtual LPCSTR						GetTeamMenu				(s16 team);
+	CUISpawnWnd*						pUITeamSelectWnd;
 
-	CUIBuyWnd*	pBuyMenuTeam1;
-	CUIBuyWnd*	pBuyMenuTeam2;
+//.	CUIBuyWnd*							pBuyMenuTeam1;
+//.	CUIBuyWnd*							pBuyMenuTeam2;
 
-	CUISkinSelectorWnd*	pSkinMenuTeam1;
-	CUISkinSelectorWnd*	pSkinMenuTeam2;
+//.	CUISkinSelectorWnd*					pSkinMenuTeam1;
+//.	CUISkinSelectorWnd*					pSkinMenuTeam2;
 
-	PRESET_ITEMS		PresetItemsTeam1;
-	PRESET_ITEMS		PresetItemsTeam2;
+	PRESET_ITEMS						PresetItemsTeam1;
+	PRESET_ITEMS						PresetItemsTeam2;
 
-	BOOL				m_bTeamSelected;
-	bool				m_bShowPlayersNames;
+	BOOL								m_bTeamSelected;
+	bool								m_bShowPlayersNames;
 
-	virtual bool		CanBeReady			();
-	virtual	void		SetCurrentBuyMenu	();
-	virtual	void		SetCurrentSkinMenu	();
+	virtual bool						CanBeReady				();
+	virtual	void						SetCurrentBuyMenu		();
+	virtual	void						SetCurrentSkinMenu		();
 
-	virtual	bool		OnKeyboardPress		(int key);
+	virtual	bool						OnKeyboardPress			(int key);
 
-	virtual		void	OnRender				();
-	virtual		bool	IsEnemy					(game_PlayerState* ps);
-	virtual		bool	IsEnemy					(CEntityAlive* ea1, CEntityAlive* ea2);
+	virtual		void					OnRender				();
+	virtual		bool					IsEnemy					(game_PlayerState* ps);
+	virtual		bool					IsEnemy					(CEntityAlive* ea1, CEntityAlive* ea2);
 
-	virtual void		UpdateMapLocations		();
-	virtual	void		OnSwitchPhase			(u32 old_phase, u32 new_phase);	
+	virtual void						UpdateMapLocations		();
+	virtual	void						OnSwitchPhase			(u32 old_phase, u32 new_phase);	
 
-	virtual	void		OnSwitchPhase_InProgress();
+	virtual	void						OnSwitchPhase_InProgress();
 
-	virtual		u8		GetTeamCount			() { return 2; };
+	virtual		u8						GetTeamCount			() { return 2; };
 };
 
 IC bool	TDM_Compare_Players		(LPVOID v1, LPVOID v2)

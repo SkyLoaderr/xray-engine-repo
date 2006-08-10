@@ -12,9 +12,10 @@
 #include "../xr_level_controller.h"
 #include "../HUDManager.h"
 
-CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName)
+CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName, s16 team)
 {	
-	m_iActiveIndex = -1;
+	m_team			= team;
+	m_iActiveIndex	= -1;
 	m_pBackground	= xr_new<CUIStatic>();	AttachChild(m_pBackground);
 	m_pCaption		= xr_new<CUIStatic>();	AttachChild(m_pCaption);
 

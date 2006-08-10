@@ -16,25 +16,44 @@
 #include "game_base_menu_events.h"
 #include "ui/TeamInfo.h"
 
-#define	TEAM0_MENU		"teamdeathmatch_team0"
-#define	TEAM1_MENU		"teamdeathmatch_team1"
-#define	TEAM2_MENU		"teamdeathmatch_team2"
+//.#define	TEAM0_MENU		"teamdeathmatch_team0"
+//.#define	TEAM1_MENU		"teamdeathmatch_team1"
+//.#define	TEAM2_MENU		"teamdeathmatch_team2"
 
 #define MESSAGE_MENUS	"tdm_messages_menu"
 
 #include "game_cl_teamdeathmatch_snd_messages.h"
 
+LPCSTR game_cl_TeamDeathmatch::GetTeamMenu(s16 team) 
+{
+	switch (team)
+	{
+	case 0:
+		return "teamdeathmatch_team0";
+		break;
+	case 1:
+		return "teamdeathmatch_team1";
+		break;
+	case 2:
+		return "teamdeathmatch_team2";
+		break;
+	default:
+		NODEFAULT;
+	};
+	return NULL;
+}
+
 game_cl_TeamDeathmatch::game_cl_TeamDeathmatch()
 {
 	pUITeamSelectWnd	= xr_new<CUISpawnWnd>	();
-	pBuyMenuTeam1		= NULL;
-	pBuyMenuTeam2		= NULL;
+//.	pBuyMenuTeam1		= NULL;
+//.	pBuyMenuTeam2		= NULL;
 
 	PresetItemsTeam1.clear();
 	PresetItemsTeam2.clear();
 
-	pSkinMenuTeam1		= NULL;
-	pSkinMenuTeam2		= NULL;
+//.	pSkinMenuTeam1		= NULL;
+//.	pSkinMenuTeam2		= NULL;
 
 	m_bTeamSelected		= FALSE;
 	m_game_ui			= NULL;
@@ -54,19 +73,18 @@ void game_cl_TeamDeathmatch::Init ()
 //	m_aTeamSections.push_back(Team1);
 //	m_aTeamSections.push_back(Team2);
 //	LoadTeamData(TEAM0_MENU);
-	LoadTeamData(TEAM1_MENU);
-	LoadTeamData(TEAM2_MENU);
+	LoadTeamData(GetTeamMenu(1));
+	LoadTeamData(GetTeamMenu(2));
 }
 
 game_cl_TeamDeathmatch::~game_cl_TeamDeathmatch()
 {
 	xr_delete(pUITeamSelectWnd);
 
-	xr_delete(pBuyMenuTeam1);
-	xr_delete(pBuyMenuTeam2);
-
-	xr_delete(pSkinMenuTeam1);
-	xr_delete(pSkinMenuTeam2);
+//.	xr_delete(pBuyMenuTeam1);
+//.	xr_delete(pBuyMenuTeam2);
+//.	xr_delete(pSkinMenuTeam1);
+//.	xr_delete(pSkinMenuTeam2);
 }
 
 void				game_cl_TeamDeathmatch::net_import_state		(NET_Packet& P)
@@ -165,13 +183,12 @@ CUIGameCustom* game_cl_TeamDeathmatch::createGameUI()
 
 
 	//-----------------------------------------------------------
-	pBuyMenuTeam1 = InitBuyMenu("teamdeathmatch_base_cost", 1);
-	LoadTeamDefaultPresetItems(TEAM1_MENU, pBuyMenuTeam1, &PresetItemsTeam1);
-	pBuyMenuTeam2 = InitBuyMenu("teamdeathmatch_base_cost", 2);
-	LoadTeamDefaultPresetItems(TEAM2_MENU, pBuyMenuTeam2, &PresetItemsTeam2);
-	//-----------------------------------------------------------
-	pSkinMenuTeam1 = InitSkinMenu(1);
-	pSkinMenuTeam2 = InitSkinMenu(2);
+//.	pBuyMenuTeam1 = InitBuyMenu("teamdeathmatch_base_cost", 1);
+//.	LoadTeamDefaultPresetItems(TEAM1_MENU, pBuyMenuTeam1, &PresetItemsTeam1);
+//.	pBuyMenuTeam2 = InitBuyMenu("teamdeathmatch_base_cost", 2);
+//.	LoadTeamDefaultPresetItems(TEAM2_MENU, pBuyMenuTeam2, &PresetItemsTeam2);
+//.	pSkinMenuTeam1 = InitSkinMenu(1);
+//.	pSkinMenuTeam2 = InitSkinMenu(2);
 
 	pInventoryMenu = xr_new<CUIInventoryWnd>();
 	//-----------------------------------------------------------	
@@ -269,7 +286,6 @@ void game_cl_TeamDeathmatch::OnTeamSelect(int Team)
 
 		NET_Packet		P;
 		l_pPlayer->u_EventGen		(P,GE_GAME_EVENT,l_pPlayer->ID()	);
-//		P.w_u16(GAME_EVENT_PLAYER_CHANGE_TEAM);
 		P.w_u16(GAME_EVENT_PLAYER_GAME_MENU);
 		P.w_u8(PLAYER_CHANGE_TEAM);
 		
@@ -288,20 +304,26 @@ void game_cl_TeamDeathmatch::OnTeamSelect(int Team)
 //	}
 };
 //-----------------------------------------------------------------
-void game_cl_TeamDeathmatch::SetCurrentBuyMenu	()
+void game_cl_TeamDeathmatch::SetCurrwentBuyMenu	()
 {
 	if (!local_player) return;
 	if (!local_player->team || local_player->skin == -1) return;
 	if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
 	{
+		xr_delete		(pCurBuyMenu);
 		if (local_player->team == 1) 
 		{
-			pCurBuyMenu = pBuyMenuTeam1;
+			pCurBuyMenu = InitBuyMenu(GetBaseCostSect(), 1);
+			LoadTeamDefaultPresetItems(GetTeamMenu(1), pCurBuyMenu, &PresetItemsTeam1);
+
+//.			pCurBuyMenu = pBuyMenuTeam1;
 			pCurPresetItems = &PresetItemsTeam1;
 		}
 		else 
 		{
-			pCurBuyMenu = pBuyMenuTeam2;
+			pCurBuyMenu = InitBuyMenu(GetBaseCostSect(), 2);
+			LoadTeamDefaultPresetItems(GetTeamMenu(2), pCurBuyMenu, &PresetItemsTeam2);
+//.			pCurBuyMenu = pBuyMenuTeam2;
 			pCurPresetItems = &PresetItemsTeam2;
 		};
 	};
@@ -318,16 +340,23 @@ void game_cl_TeamDeathmatch::SetCurrentBuyMenu	()
 
 void game_cl_TeamDeathmatch::SetCurrentSkinMenu	()
 {
-	CUISkinSelectorWnd* pNewSkinMenu;
+//.	CUISkinSelectorWnd* pNewSkinMenu;
+	s16 new_team;
 	if (!local_player) return;
-	if (local_player->team == 1) pNewSkinMenu = pSkinMenuTeam1;
-	else pNewSkinMenu = pSkinMenuTeam2;
+	if (local_player->team == 1){
+		new_team		= 1;
+//.		pNewSkinMenu = pSkinMenuTeam1;
+	}else 
+	{
+		new_team		= 2;
+//.		pNewSkinMenu = pSkinMenuTeam2;
+	}
 
-	if (pNewSkinMenu != pCurSkinMenu)
-		if (pCurSkinMenu && pCurSkinMenu->IsShown()) StartStopMenu(pCurSkinMenu,true);
+	if (pCurSkinMenu && new_team != pCurSkinMenu->GetTeam())
+		if (pCurSkinMenu->IsShown()) StartStopMenu(pCurSkinMenu,true);
 
-	pCurSkinMenu = pNewSkinMenu;
-	//pCurSkinMenu->SwitchSkin(local_player->skin);
+	xr_delete		(pCurSkinMenu);
+	pCurSkinMenu	= InitSkinMenu(new_team);
 };
 
 bool game_cl_TeamDeathmatch::CanBeReady				()
@@ -607,8 +636,8 @@ void				game_cl_TeamDeathmatch::LoadSndMessages				()
 
 void				game_cl_TeamDeathmatch::OnSwitchPhase_InProgress()
 {
-	LoadTeamDefaultPresetItems(TEAM1_MENU, pBuyMenuTeam1, &PresetItemsTeam1);
-	LoadTeamDefaultPresetItems(TEAM2_MENU, pBuyMenuTeam2, &PresetItemsTeam2);
+//.	LoadTeamDefaultPresetItems(TEAM1_MENU, pBuyMenuTeam1, &PresetItemsTeam1);
+//.	LoadTeamDefaultPresetItems(TEAM2_MENU, pBuyMenuTeam2, &PresetItemsTeam2);
 	if (!m_bSkinSelected) m_bTeamSelected = FALSE;
 };
 
