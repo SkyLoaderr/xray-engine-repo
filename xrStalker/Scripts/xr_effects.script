@@ -1511,6 +1511,11 @@ function agr_knockdown (npc)
     set_postprocess ("scripts\\earthshake.ltx")
 end
 
+function agr_cam_effect ()
+	level.add_cam_effector2("camera_effects\\agroprom_doctor_cam.anm", 123, false)
+
+end
+
 function agr_weapon(actor, npc)
 	local actor = db.actor	
 	if 	actor ~= nil then actor:activate_slot(2)
