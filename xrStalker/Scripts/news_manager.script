@@ -8,6 +8,9 @@ news = {
 	gar_dolg_warning				= sound_object([[characters_voice\scenario\duty\duty_warning1]]),
 	esc_return_dv					= sound_object([[characters_voice\scenario\trader\return_from_dv]]),
 	escape_fox_quest				= sound_object([[characters_voice\scenario\trader\trader_pda_fox]]),
+	esc_fox_info					= sound_object([[characters_voice\scenario\trader\trader_pda_fox]]),
+	gar_seryi_info					= sound_object([[characters_voice\scenario\trader\trader_pda_fox]]),
+
 
 	tips_agr_krot_sos				= sound_object([[characters_voice\scenario\agroprom\krot_help_pda_1]]),
 	tips_agr_krot_sos1				= sound_object([[characters_voice\scenario\agroprom\krot_help_pda_2]]),

@@ -1,13 +1,13 @@
 function proceed()
     local actor = db.actor
-
-	--' GARBAGE
---	if actor:dont_has_info("agr_krot_band_start") and
---		actor:object("garbage_seriy_flash") ~= nil 
---	then
---		actor:give_info_portion("agr_krot_band_start")
---	end       	
-
+    
+	if actor:has_info("garbage_meetstalker_die") and
+		actor:has_info("agr_can_ask_krot_about_gunslinger") and
+		actor:dont_has_info("agr_krot_band_start")
+	then
+		actor:give_info_portion("agr_krot_band_start")
+		news_manager.send_tip(db.actor, "gar_seryi_info")
+	end
 end
 
 function task_hellcar_complete()
