@@ -250,13 +250,13 @@
         <text>Fox, tell me, where you have been in the Zone? What have you seen?</text>
     </string>
     <string id="escape_fox_flame_dialog_21">
-        <text>Such a story may take few days to tell and my time costs a lot.. or a loot. Can only give you a \ncouple of advices. "Garbage" is located 3 kilometers to the North from where I stand, where all the \nradioactive trash had been taken to, from power plants in 86th. Heavy radiation, hosts of anomalies \nand, ultimately, – abundance of artifacts, admittedly not valuable. Beware of the bandits and try not \nto row with “Duty” patrolmen. Scientific research institute “Agroprom” is to the west from the \n“Garbage”. Region is quite poor as to the artifacts, so I don’t go there often. “Dark Valley” is to the \neast. Sort of a weird place. Like it’s rather quiet in there, but bandits and stuff can now and then be \nmet. Yet I sense that not everything is as simple there as it seems to be. Farther beyond the \nGarbage is the “Rostok” factory's territory – stalkership heart. Besides, you can come across some \nexperienced stalker-guys.</text>
+        <text>Such a story may take few days to tell and my time costs a lot.. or a loot. Can only give you a \ncouple of advices. "Garbage" is located 3 kilometers to the North from where I stand, where all the \nradioactive trash had been taken to, from power plants in 86th. Heavy radiation, hosts of anomalies \nand, ultimately, - abundance of artifacts, admittedly not valuable. Beware of the bandits and try not \nto row with “Duty” patrolmen. Scientific research institute “Agroprom” is to the west from the \n“Garbage”. Region is quite poor as to the artifacts, so I don’t go there often. “Dark Valley” is to the \neast. Sort of a weird place. Like it’s rather quiet in there, but bandits and stuff can now and then be \nmet. Yet I sense that not everything is as simple there as it seems to be. Farther beyond the \nGarbage is the “Rostok” factory's territory - stalkership heart. Besides, you can come across some \nexperienced stalker-guys.</text>
     </string>
     <string id="escape_fox_flame_dialog_3">
         <text>Trader said you might know something about Gunslinger.</text>
     </string>
     <string id="escape_fox_flame_dialog_31">
-        <text>For some unknown reason, many have been interested in him recently. Truthfully I don’t know him \npersonally. But I do have err.. a “contact” experience. His grouping has once fired upon my boys. No \none was hurt – apparently they’ve been waiting for someone else, thus I consider it to be a tiny \nmisunderstanding. Fouled each other across the ravine and left. O, by the way, Grey is waiting for \nme at the garage at the Garbage, I’ll send you the coordinates, talk to him. He knows a lot more \nthan me.</text>
+        <text>For some unknown reason, many have been interested in him recently. Truthfully I don’t know him \npersonally. But I do have err.. a “contact” experience. His grouping has once fired upon my boys. No \none was hurt - apparently they’ve been waiting for someone else, thus I consider it to be a tiny \nmisunderstanding. Fouled each other across the ravine and left. O, by the way, Grey is waiting for \nme at the garage at the Garbage, I’ll send you the coordinates, talk to him. He knows a lot more \nthan me.</text>
     </string>
     <string id="escape_fox_flash_dialog_0">
         <text>I’m from Trader, he said that you had an information, which can prove to be handy.</text>
@@ -361,7 +361,7 @@
         <text>You are familiar with most of men here. What kind of people gathered here?</text>
     </string>
     <string id="escape_lager_hlam_talk_people_1">
-        <text>Yeah, it’s hard to say explicitly... from doctors of science to laid-back bandits. Everyone receives the task to his wit. Militaries usually guard the perimeter, seldom entering the Zone. Bandits browse on the stalkers’ paths. They can bereave you of either a bribe or even life. Scientists are set somewhere deep inside it, searching for the bloody truth, idiots! There are several stalkers’ clans, but that’s another matter. People here in the camp are rather quiet and peaceful this is understood – freshly, anxious aspirers. Unless “Wolf” is familiar in here. This one has seen a lot, but to my mind he’s a bit freaky with stalkership and all, he wants to cut off this craft.</text>
+        <text>Yeah, it’s hard to say explicitly... from doctors of science to laid-back bandits. Everyone receives the task to his wit. Militaries usually guard the perimeter, seldom entering the Zone. Bandits browse on the stalkers’ paths. They can bereave you of either a bribe or even life. Scientists are set somewhere deep inside it, searching for the bloody truth, idiots! There are several stalkers’ clans, but that’s another matter. People here in the camp are rather quiet and peaceful this is understood - freshly, anxious aspirers. Unless “Wolf” is familiar in here. This one has seen a lot, but to my mind he’s a bit freaky with stalkership and all, he wants to cut off this craft.</text>
     </string>
     <string id="escape_lager_hlam_talk_people_10">
         <text>Thanks.</text>
@@ -598,7 +598,7 @@
         <text>What’s the most dangerous thing in the Zone?</text>
     </string>
     <string id="escape_lager_volk_info_2141">
-        <text>Well, it’s hard to say. There are so many things still dangerous and unknown that I’ve hardly seen the whole enchilada. My body is the vivid example of the Zone’s dangers: bit off toe, thinned hair over the radiation, right hip burnt in “Zharka”, bloody thing by the way. Anomaly which isn’t standing on the same place, but traversing the place. Once I had a face to face contact with the bloodsucker. I dread even recollecting how it was. Basically we can talk it through and through, but if you haven’t felt it on your skin – you won’t understand. Just one advice – be careful.</text>
+        <text>Well, it’s hard to say. There are so many things still dangerous and unknown that I’ve hardly seen the whole enchilada. My body is the vivid example of the Zone’s dangers: bit off toe, thinned hair over the radiation, right hip burnt in “Zharka”, bloody thing by the way. Anomaly which isn’t standing on the same place, but traversing the place. Once I had a face to face contact with the bloodsucker. I dread even recollecting how it was. Basically we can talk it through and through, but if you haven’t felt it on your skin - you won’t understand. Just one advice - be careful.</text>
     </string>
     <string id="escape_lager_volk_info_3">
         <text>Have you heard anything about Gunslinger?</text>
@@ -922,7 +922,7 @@
         <text>Hi, Branded One, have you got something new?\n</text>
     </string>
     <string id="escape_trader_start_dialog_181">
-        <text>Branded One, what are YOU doing here? Didn't I tell clearly – rush to the cabin!</text>
+        <text>Branded One, what are YOU doing here? Didn't I tell clearly - rush to the cabin!</text>
     </string>
     <string id="escape_trader_start_dialog_191">
         <text>Branded One, so what, have you been in X-18?</text>
@@ -949,7 +949,7 @@
         <text>Get it nitty-gritty.</text>
     </string>
     <string id="escape_trader_start_dialog_3">
-        <text>Oh, I like the business approach. Now choose how shall I treat you. Either I should wash your newcomers’ brains or I’ll treat with you like with a skilled stalker – received the task and go carrying it out.</text>
+        <text>Oh, I like the business approach. Now choose how shall I treat you. Either I should wash your newcomers’ brains or I’ll treat with you like with a skilled stalker - received the task and go carrying it out.</text>
     </string>
     <string id="escape_trader_start_dialog_300">
         <text>Hi, Branded One. Here is a job for you.</text>
@@ -1066,7 +1066,7 @@
         <text>Any ideas of what has happened with me?</text>
     </string>
     <string id="escape_trader_talk_info_41">
-        <text>Son, you ask hell of questions. Everything is shady about it. You where found in a death truck - vehicle filled with corpses sometimes appear from the center of the Zone. Where they head to, no one knows. You truck crashed – bad luck, but you stayed alive. This is the most intriguing fact to me. Stalkers often find broken death trucks, but never find any survivals. Sorry, have nothing more to tell. You`ll have to figure it out yourself.</text>
+        <text>Son, you ask hell of questions. Everything is shady about it. You where found in a death truck - vehicle filled with corpses sometimes appear from the center of the Zone. Where they head to, no one knows. You truck crashed - bad luck, but you stayed alive. This is the most intriguing fact to me. Stalkers often find broken death trucks, but never find any survivals. Sorry, have nothing more to tell. You`ll have to figure it out yourself.</text>
     </string>
     <string id="escape_trader_talk_info_5">
         <text>Who is Gunslinger? You know this guy?</text>
