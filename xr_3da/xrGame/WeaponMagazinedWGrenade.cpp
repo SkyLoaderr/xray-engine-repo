@@ -628,9 +628,9 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 		if(m_bGrenadeMode)
 		{
 			if(IsZoomed())
-				m_pHUD->animPlay(random_anim(mhud_idle_g_aim), TRUE, NULL, GetState());
+				m_pHUD->animPlay(random_anim(mhud_idle_g_aim), FALSE, NULL, GetState());
 			else
-				m_pHUD->animPlay(random_anim(mhud_idle_g), TRUE, NULL, GetState());
+				m_pHUD->animPlay(random_anim(mhud_idle_g), FALSE, NULL, GetState());
 		}
 		else
 		{
@@ -665,9 +665,9 @@ void  CWeaponMagazinedWGrenade::PlayAnimModeSwitch()
 {
 //.	VERIFY(GetState()==eSwitch);
 	if(m_bGrenadeMode)
-		m_pHUD->animPlay(random_anim(mhud_switch_g), TRUE, this, eSwitch); //fake
+		m_pHUD->animPlay(random_anim(mhud_switch_g), FALSE, this, eSwitch); //fake
 	else 
-		m_pHUD->animPlay(random_anim(mhud_switch), TRUE, this, eSwitch); //fake
+		m_pHUD->animPlay(random_anim(mhud_switch), FALSE, this, eSwitch); //fake
 }
 
 
