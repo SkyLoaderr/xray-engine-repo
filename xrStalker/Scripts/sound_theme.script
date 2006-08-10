@@ -185,15 +185,11 @@ ph_snd_themes["x18_sound_1"] = {"ambient\\x18\\h_tal5",
 								"ambient\\x18\\H_or_metal_large",
 								"ambient\\x18\\H_or_metal_rusty",
 								"ambient\\x18\\H_otsteps_wood1",
-								"ambient\\x18\\H_otsteps_glass1",
-								"ambient\\x18\\H_otsteps_glass2",
 								"ambient\\x18\\h_tal5"}
 
 ph_snd_themes["x18_sound_2"] = {"ambient\\x18\\H_tal_grate_impact_hard1",
 								"ambient\\x18\\H_tal_grate_impact_hard2",
-								"ambient\\x18\\H_tal_grate_impact_hard3",
-								"ambient\\x18\\H_tal_grate_impact_soft1",
-								"ambient\\x18\\H_tal_grate_impact_soft2"}
+								"ambient\\x18\\H_tal_grate_impact_hard3"}
 
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Theme  functions
