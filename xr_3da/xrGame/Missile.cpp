@@ -298,7 +298,8 @@ void CMissile::OnAnimationEnd(u32 state)
 				spawn_fake_missile	();
 
 			if(m_throw) 
-				SwitchState(MS_THROW); 
+//				SwitchState(MS_THROW); 
+				OnStateSwitch(MS_THROW); 
 			else 
 				OnStateSwitch(MS_READY);
 		} break;

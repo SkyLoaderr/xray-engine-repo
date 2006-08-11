@@ -401,7 +401,7 @@ void CUITradeWnd::PerformTrade()
 	our_money				+= delta_price;
 	others_money			-= delta_price;
 
-	if(our_money>0 && others_money>0 && (m_iOurTradePrice>0 || m_iOthersTradePrice>0))
+	if(our_money>=0 && others_money>=0 && (m_iOurTradePrice>=0 || m_iOthersTradePrice>0))
 	{
 		m_pOthersTrade->OnPerformTrade(m_iOthersTradePrice, m_iOurTradePrice);
 		
