@@ -214,8 +214,13 @@ void CGrenade::PutNextToSlot	()
 
 		VERIFY(pNext != this);
 
-		if(pNext)
-			m_pInventory->Slot	(pNext);
+		if(pNext && m_pInventory->Slot(pNext) ){
+
+			NET_Packet						P;
+			pNext->u_EventGen				(P, GEG_PLAYER_ITEM2SLOT, pNext->H_Parent()->ID());
+			P.w_u16							(pNext->ID());
+			pNext->u_EventSend				(P);
+		}
 
 		m_thrown				= false;
 	}

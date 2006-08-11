@@ -347,6 +347,7 @@ bool CInventory::Ruck(PIItem pIItem)
 
 bool CInventory::Activate(u32 slot, bool force) 
 {	
+	Msg("Activate slot [%d]", slot);
 	if( (slot!=NO_ACTIVE_SLOT && m_slots[slot].IsBlocked()) && !force)
 		return false;
 

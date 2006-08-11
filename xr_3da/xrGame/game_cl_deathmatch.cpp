@@ -289,7 +289,7 @@ BOOL game_cl_Deathmatch::CanCallSkinMenu			()
 	{
 		return FALSE;
 	};
-
+	if(!pCurSkinMenu)	return FALSE;
 	pCurSkinMenu->SetCurSkin(local_player->skin);
 	return TRUE;
 };
