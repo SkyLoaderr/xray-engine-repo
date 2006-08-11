@@ -1455,30 +1455,6 @@ function load_job(sj, gname, type, squad, groups)
 	end
 
 	if type == "esc_assault" then
---		t = { section = "logic@esc_assault_wait",
---			idle = 0,
---			prior = 10, state = {0},
---			online = false,
---			in_rest = "", out_rest = "",
---			predicate = function(obj_info)
---        					return obj_info.name == "esc_novice_attacker1"
---						end
---		}
---		table.insert(sj, t)
---		t = { section = "logic@esc_assault_wait",
---			idle = 0,
---			prior = 8, state = {0},
---			online = false,
---			in_rest = "", out_rest = ""
---		}
---		table.insert(sj, t)
---		t = { section = "logic@esc_assault_wait",
---			idle = 0,
---			prior = 8, state = {0},
---			online = false,
---			in_rest = "", out_rest = ""
---		}
---		table.insert(sj, t)
 		t = { section = "logic@esc_assault1",
 			idle = 0,
 			prior = 8, state = {1},
@@ -1488,9 +1464,12 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_assault2",
 			idle = 0,
-			prior = 8, state = {1},
+			prior = 9, state = {1},
 			online = true,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
+			predicate = function(obj_info)
+        					return obj_info.name == "esc_novice_attacker2"
+						end			
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_assault3",
@@ -1512,9 +1491,12 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_assault2",
 			idle = 0,
-			prior = 8, state = {0},
+			prior = 9, state = {0},
 			online = false,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
+			predicate = function(obj_info)
+        					return obj_info.name == "esc_novice_attacker2"
+						end			
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_assault3",
@@ -1538,10 +1520,13 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_assault_fight2",
 			idle = 0,
-			prior = 8, state = {2},
+			prior = 9, state = {2},
 			online = true,
 			position_threshold = 100,
-			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor"
+			in_rest = "", out_rest = "esc_fabrika_bandit_space_restrictor",
+			predicate = function(obj_info)
+        					return obj_info.name == "esc_novice_attacker2"
+						end			
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_assault_fight3",
@@ -1556,18 +1541,21 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 		
-		t = { section = "logic@esc_assault_home",
+		t = { section = "logic@esc_assault_home1",
 			idle = 0,
 			prior = 8, state = {3},
 			online = true,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_assault_home",
+		t = { section = "logic@esc_assault_home2",
 			idle = 0,
-			prior = 8, state = {3},
+			prior = 9, state = {3},
 			online = true,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
+			predicate = function(obj_info)
+        					return obj_info.name == "esc_novice_attacker2"
+						end			
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_assault_home_leader",
@@ -1590,9 +1578,12 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 		t = { section = "logic@esc_assault_kamp",
 			idle = 0,
-			prior = 8, state = {4},
+			prior = 9, state = {4},
 			online = true,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
+			predicate = function(obj_info)
+        					return obj_info.name == "esc_novice_attacker2"
+						end			
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_assault_kamp",
