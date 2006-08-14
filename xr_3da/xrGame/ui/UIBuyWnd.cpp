@@ -1128,7 +1128,7 @@ const u8 CUIBuyWnd::GetBeltSize(){
 	return static_cast<u8>(m_list[MP_SLOT_BELT]->ItemsCount());	
 }
 
-void CUIBuyWnd::AddonToSlot(eWpnAddon add_on, int slot, bool bRealRepresentationSet){
+void CUIBuyWnd::AddonToSlot(CSE_ALifeItemWeapon::EWeaponAddonState, int slot, bool bRealRepresentationSet){
 
 }
 
