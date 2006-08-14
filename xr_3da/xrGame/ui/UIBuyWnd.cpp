@@ -844,7 +844,7 @@ void CUIBuyWnd::ActivatePropertiesBox()
 			pIItem = (CInventoryItem*)((m_list[MP_SLOT_RIFLE]->GetItemIdx(0))->m_pData);
 
 			if (pIItem->CanAttach(pGrenadeLauncher))
-				m_propertiesBox.AddItem("st_attach_silencer_to_rifle",  (void*)pIItem, INVENTORY_ATTACH_ADDON);
+				m_propertiesBox.AddItem("st_attach_gl_to_rifle",  (void*)pIItem, INVENTORY_ATTACH_ADDON);
 		}
 	}
 	else if (pOutfit)
@@ -878,6 +878,8 @@ bool CUIBuyWnd::CanPutInBelt(CInventoryItem* iitem){
 	else if (RIFLE_SLOT == iitem->GetSlot())
 		return false;
 	else if (OUTFIT_SLOT == iitem->GetSlot())
+		return false;
+	else if (smart_cast<CSilencer*>(iitem))
 		return false;
 	return true;
 }
