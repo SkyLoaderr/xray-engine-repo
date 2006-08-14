@@ -494,7 +494,7 @@ u32	IPureServer::OnMessage	(NET_Packet& P, ClientID sender)	// Non-Zero means br
 	}
 	*/
 	
-	return DPNSEND_GUARANTEED;
+	return 0;
 }
 
 void IPureServer::OnCL_Connected		(IClient* CL)
