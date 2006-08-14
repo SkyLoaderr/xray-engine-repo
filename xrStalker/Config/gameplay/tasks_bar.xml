@@ -3,7 +3,7 @@
 		<title>bar_resque_information</title>
 		<objective>
 			<text>bar_resque_scientific_information</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_iconsTotal_bar_resque_information</icon>
 			<map_location_type hint="bar_resque_scientific_information_bring">green_location</map_location_type>
 			<object_story_id>bar_ecolog_professor</object_story_id>
 			<infoportion_complete>bar_kruglov_follow_actor</infoportion_complete>
@@ -12,18 +12,16 @@
 		</objective>
 		<objective>
 			<text>bar_resque_scientific_information_get</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="bar_resque_scientific_information_get">green_location</map_location_type>
 			<object_story_id>rostok_tainyi_hod</object_story_id>
 			<infoportion_complete>rostok_objective_1</infoportion_complete>
-			</objective>
-			<objective>
+		</objective>
+		<objective>
 			<text>bar_resque_scientific_information_get_2</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="bar_resque_scientific_information_bring">green_location</map_location_type>
 			<object_story_id>bar_ecolog_professor</object_story_id>
 			<infoportion_complete>bar_kruglov_follow_actor</infoportion_complete>
-			</objective>
+		</objective>
 	</game_task>
 		
 		
@@ -31,7 +29,7 @@
 		<title>bar_resque_information_2</title>
 		<objective>
 			<text>bar_resque_scientific_information_2</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_iconsTotal_bar_resque_information</icon>
 			<map_location_type hint="bar_resque_scientific_information_2">green_location</map_location_type>
 			<object_story_id>bar_ecolog_professor</object_story_id>
 			<infoportion_complete>bar_rescue_research_done</infoportion_complete>
@@ -40,7 +38,6 @@
 		</objective>
 		<objective>
 			<text>bar_resque_scientific_follow</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="bar_resque_scientific_information_2">green_location</map_location_type>
 			<object_story_id>bar_ecolog_professor</object_story_id>
 			<infoportion_complete>bar_rescue_research_follow</infoportion_complete>
@@ -48,7 +45,6 @@
 		</objective>
 		<objective>
 			<text>bar_resque_scientific_information_bring</text>
-			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="bar_resque_scientific_information_bring">green_location</map_location_type>
 			<object_story_id>bar_ecolog_professor</object_story_id>
 			<infoportion_complete>bar_rescue_research_done</infoportion_complete>
