@@ -184,7 +184,7 @@ public:
 	virtual		void		DeathPosition						(Fvector& deathPos)	;
 	virtual		void		IPosition							(Fvector& pos)		;
 	virtual		u16			ContactBone							();
-	virtual		void		ApplyImpulse						(const Fvector& dir,dReal P);
+	virtual		void		ApplyImpulse						(const Fvector& dir, const dReal P);
 	virtual		void		ApplyForce							(const Fvector& force);
 	virtual		void		ApplyForce							(const Fvector& dir,float force);
 	virtual		void		ApplyForce							(float x,float y, float z);

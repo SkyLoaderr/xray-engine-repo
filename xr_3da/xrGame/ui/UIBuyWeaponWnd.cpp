@@ -300,7 +300,7 @@ bool CUIBuyWeaponWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	if(!this_inventory->CanPutInSlot(pDDItemMP, PISTOL_SLOT)) return false;
 
-	bool last;
+//	bool last;
 	//if (pDDItemMP->HasAmountControl())
 	//	if (pDDItemMP->GetPermissionToBuy(last)){
 	//		if (!last)
@@ -343,7 +343,7 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if(!this_inventory->CanPutInSlot(pDDItemMP, RIFLE_SLOT)) 
 		return false;
 
-	bool last;
+//	bool last;
 	//if (pDDItemMP->HasAmountControl())
 	//	if (pDDItemMP->GetPermissionToBuy(last)){
 	//		if (!last)
@@ -381,7 +381,7 @@ bool CUIBuyWeaponWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		!pList->GetDragDropItemsList().empty()) 
 		return false;
 
-	bool last;
+//	bool last;
 	//if (pDDItemMP->HasAmountControl())
 	//	if (pDDItemMP->GetPermissionToBuy(last)){
 	//		if (!last)
@@ -413,7 +413,7 @@ bool CUIBuyWeaponWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if(!this_inventory->CanPutInSlot(pDDItemMP, APPARATUS_SLOT)) 
 		return false;
 
-	bool last;
+//	bool last;
 	//if (pDDItemMP->HasAmountControl())
 	//	if (pDDItemMP->GetPermissionToBuy(last)){
 	//		if (!last)
@@ -485,7 +485,7 @@ bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		this_inventory->IsItemAnAddon(pDDItemMP, tmp)) 
 		return false;
 
-	bool last;
+//	bool last;
 	//if (pDDItemMP->HasAmountControl())
 	//	if (pDDItemMP->GetPermissionToBuy(last))
 	//	{
