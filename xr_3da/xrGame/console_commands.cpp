@@ -2375,6 +2375,8 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"net_sv_pending_lim",	&psNET_ServerPending,0,		10				);
 //	CMD3(CCC_String,	"net_name",				psNET_Name,			32						);
 	CMD3(CCC_Mask,		"net_dump_size",		&psNET_Flags,		NETFLAG_DBG_DUMPSIZE	);
+	CMD3(CCC_Mask,		"net_sv_log_data",		&psNET_Flags,		NETFLAG_LOG_SV_PACKETS	);
+	CMD3(CCC_Mask,		"net_cl_log_data",		&psNET_Flags,		NETFLAG_LOG_CL_PACKETS	);
 	CMD1(CCC_Dbg_NumObjects,	"net_dbg_objects"				);
 
 	//Recon params

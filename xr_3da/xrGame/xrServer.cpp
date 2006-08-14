@@ -469,7 +469,7 @@ u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means bro
 
 	csPlayers.Leave					();
 
-	return							(0);
+	return							IPureServer::OnMessage(P, sender);
 }
 
 void xrServer::SendTo_LL			(ClientID ID, void* data, u32 size, u32 dwFlags, u32 dwTimeout)

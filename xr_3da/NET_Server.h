@@ -180,4 +180,6 @@ public:
 	virtual void			BanClient			(IClient* C, u32 BanTime);
 	virtual void			BanAddress			(char* Address, u32 BanTime);
 	IClient*				GetServerClient		()			{ return SV_Client; };
+
+
 };

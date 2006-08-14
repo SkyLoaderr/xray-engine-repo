@@ -2,6 +2,9 @@
 #include "dxerr9.h"
 #include "net_server.h"
 
+#include "NET_Log.h"
+static	INetLog* pSvNetLog = NULL; 
+
 #define		BASE_PORT		5445
 
 void	dump_URL	(LPCSTR p, IDirectPlay8Address* A);
@@ -52,6 +55,8 @@ IPureServer::IPureServer	(CTimer* timer)
 	stats.clear				();
 	stats.dwSendTime		= TimeGlobal(device_timer);
 	SV_Client = NULL;
+
+	pSvNetLog = xr_new<INetLog>("logs\\net_sv_log.log", TimeGlobal(device_timer));
 }
 
 IPureServer::~IPureServer	()
@@ -59,6 +64,8 @@ IPureServer::~IPureServer	()
 	for	(u32 it=0; it<BannedAddresses.size(); it++)	xr_delete(BannedAddresses[it]);
 	BannedAddresses.clear();
 	SV_Client = NULL;
+
+	xr_delete(pSvNetLog); pSvNetLog = NULL;
 }
 
 void IPureServer::pCompress	(NET_Packet& D, NET_Packet& S)
@@ -373,6 +380,10 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 				pDecompress		(P,m_data,m_size);
 				csMessage.Enter	();
 				ClientID ID; ID.set(m_sender);
+				//---------------------------------------
+				if (psNET_Flags.test(NETFLAG_LOG_SV_PACKETS)) 
+					pSvNetLog->LogPacket(TimeGlobal(device_timer), &P, TRUE);
+				//---------------------------------------
 				u32	result		= OnMessage(P,ID);
 				csMessage.Leave	();
 				if (result)		SendBroadcast(ID,P,result);
@@ -400,6 +411,8 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 
 void	IPureServer::SendTo_LL(ClientID ID/*DPNID ID*/, void* data, u32 size, u32 dwFlags, u32 dwTimeout)
 {
+	if (psNET_Flags.test(NETFLAG_LOG_SV_PACKETS))
+		pSvNetLog->LogData(TimeGlobal(device_timer), data, size);
 	// send it
 	DPN_BUFFER_DESC		desc;
 	desc.dwBufferSize	= size;
@@ -480,6 +493,7 @@ u32	IPureServer::OnMessage	(NET_Packet& P, ClientID sender)	// Non-Zero means br
 		break;
 	}
 	*/
+	
 	return DPNSEND_GUARANTEED;
 }
 

@@ -341,6 +341,12 @@
 			RelativePath=".\NET_Compressor.h">
 		</File>
 		<File
+			RelativePath=".\NET_Log.cpp">
+		</File>
+		<File
+			RelativePath=".\NET_Log.h">
+		</File>
+		<File
 			RelativePath=".\NET_Messages.h">
 		</File>
 		<File

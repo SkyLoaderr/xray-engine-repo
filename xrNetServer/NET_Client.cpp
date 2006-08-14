@@ -3,6 +3,9 @@
 #include "net_messages.h"
 #include "dxerr9.h"
 
+#include "NET_Log.h"
+static	INetLog* pClNetLog = NULL; 
+
 #define BASE_PORT		5445
 
 void	dump_URL	(LPCSTR p, IDirectPlay8Address* A)
@@ -20,6 +23,7 @@ INetQueue::INetQueue()
 	for (int i=0; i<16; i++)
 		unused.push_back	(xr_new<NET_Packet>());
 }
+
 INetQueue::~INetQueue()
 {
 	cs.Enter		();
@@ -170,10 +174,13 @@ IPureClient::IPureClient	(CTimer* timer): net_Statistic(timer)
 	net_Time_LastUpdate		= 0;
 	net_TimeDelta			= 0;
 	net_TimeDelta_Calculated = 0;
+
+	pClNetLog = xr_new<INetLog>("logs\\net_cl_log.log", timeServer());
 }
 
 IPureClient::~IPureClient	()
 {
+	xr_delete(pClNetLog); pClNetLog = NULL;
 }
 
 BOOL IPureClient::Connect	(LPCSTR options)
@@ -585,6 +592,9 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 				}
 			} else if (net_Connected)	{
 				// One of the messages - decompress it
+				//-------------------------------------------------------------------------------------------
+				if (psNET_Flags.test(NETFLAG_LOG_CL_PACKETS)) pClNetLog->LogData(timeServer(), m_data, m_size, TRUE);
+				//-------------------------------------------------------------------------------------------
 				OnMessage				(m_data,m_size);
 			}
 		}
@@ -668,7 +678,7 @@ void	IPureClient::OnMessage(void* data, u32 size)
 	// One of the messages - decompress it
 	NET_Packet* P	= net_Queue.Create			();
 	P->B.count		= net_Compressor.Decompress	(P->B.data,LPBYTE(data),size);
-	P->timeReceive	= timeServer_Async();//TimerAsync				(device_timer);
+	P->timeReceive	= timeServer_Async();//TimerAsync				(device_timer);		
 }
 
 void	IPureClient::timeServer_Correct(u32 sv_time, u32 cl_time)
@@ -683,6 +693,7 @@ void	IPureClient::Send(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
 	if (net_Disconnected)	return;
 
+	if (psNET_Flags.test(NETFLAG_LOG_CL_PACKETS)) pClNetLog->LogPacket(timeServer(), &P);
 	// first - compress message and setup buffer
 	NET_Buffer	Compressed;
 	Compressed.count	= net_Compressor.Compress	(Compressed.data,P.B.data,P.B.count);

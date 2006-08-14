@@ -92,4 +92,6 @@ public:
 	IC void					timeServer_Correct		(u32 sv_time, u32 cl_time);
 
 	virtual	BOOL			net_IsSyncronised		();
+
+	virtual	LPCSTR			GetMsgId2Name			(u16 ID) {return "";};
 };
