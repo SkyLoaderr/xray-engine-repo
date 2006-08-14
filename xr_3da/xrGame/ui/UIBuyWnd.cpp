@@ -1128,6 +1128,10 @@ const u8 CUIBuyWnd::GetBeltSize(){
 	return static_cast<u8>(m_list[MP_SLOT_BELT]->ItemsCount());	
 }
 
+void CUIBuyWnd::AddonToSlot(eWpnAddon add_on, int slot, bool bRealRepresentationSet){
+
+}
+
 void CUIBuyWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet){
 	// "Выкусываем" флаги аддонов
 	u8 addon_info = GetWeaponAddonInfoByIndex(uIndexInSlot);
