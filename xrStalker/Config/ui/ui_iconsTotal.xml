@@ -35,4 +35,13 @@
     <texture id="ui_iconsTotalSmall_technique" x="83" y="377" width="49" height="29" />
     <texture id="ui_iconsTotalSmall_grouping" x="83" y="406" width="49" height="29" />
     <texture id="ui_iconsTotalSmall_locations" x="83" y="435" width="49" height="29" />
+
+    <texture id="ui_iconsTotal_bar_resque_information" x="0" y="752" width="83" height="47" />
+	<texture id="ui_iconsTotal_bar_resque_information_2" x="0" y="752" width="83" height="47" />
+
+    <texture id="ui_iconsTotal_toHelpFree_lancer" x="0" y="799" width="83" height="47" />
+
+    <texture id="ui_iconsTotal_toHelpScientist_small" x="83" y="464" width="49" height="29" />
+    <texture id="ui_iconsTotal_toHelpFree_lancer_small" x="83" y="493" width="49" height="29" />
+
 </ui_texture>
