@@ -4,6 +4,7 @@
 	Version="7.10"
 	Name="Maya_Material_80"
 	ProjectGUID="{B0ED3CE2-1417-46EF-AE39-59BCFF672070}"
+	RootNamespace="Maya_Material_80"
 	SccProjectName="SAK"
 	SccAuxPath="SAK"
 	SccLocalPath="SAK"
@@ -81,7 +82,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="bin\debug\ver-8.0"
+			OutputDirectory="R:\plugins\MAYA-8.0\"
 			IntermediateDirectory="Intermediate\Debug\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -89,7 +90,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\xrCore\source; R:\sdk\maya\ver-7.0\include"
+				AdditionalIncludeDirectories="..\xrCore\source; R:\sdk\maya\ver-8.0\include"
 				PreprocessorDefinitions="DEBUG;_DEBUG;WIN32;_WINDOWS;NT_PLUGIN;_MAYA_MATERIAL;_MAYA_PLUGIN;XRCORE_STATIC"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -113,7 +114,7 @@
 				OutputFile="$(OutDir)/xrayMaya_material.mll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="..\xrCore\lib;R:\sdk\maya\ver-7.0\lib"
+				AdditionalLibraryDirectories="..\xrCore\lib;R:\sdk\maya\ver-8.0\lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/xrayMaya_material.pdb"
 				SubSystem="2"

@@ -89,7 +89,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\xrCore\source; R:\sdk\maya\ver-7.0\include"
+				AdditionalIncludeDirectories="..\xrCore\source; R:\sdk\maya\ver-8.0\include"
 				PreprocessorDefinitions="DEBUG;_DEBUG;WIN32;_WINDOWS;NT_PLUGIN;_MAYA_EXPORT;_MAYA_PLUGIN;XRCORE_STATIC"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -113,7 +113,7 @@
 				OutputFile="$(OutDir)/xrayMaya_export.mll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="..\xrCore\lib;R:\sdk\maya\ver-7.0\lib"
+				AdditionalLibraryDirectories="..\xrCore\lib;R:\sdk\maya\ver-8.0\lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/xrayMaya_export.pdb"
 				SubSystem="2"

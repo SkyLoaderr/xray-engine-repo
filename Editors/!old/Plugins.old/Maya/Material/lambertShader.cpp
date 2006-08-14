@@ -327,14 +327,14 @@ MStatus CXRayMtl::initialize()
 	MFnTypedAttribute tAttr;
 
 	MStatus status; // Status will be used to hold the MStatus value
-					// returned by each api function call. It is important
-					// to check the status returned by a call to aid in
-					// debugging. Failed API calls can result in subtle 
-					// errors that can be difficult to track down, you may
-					// wish to use the CHECK_MSTATUS macro for any API
-					// call where you do not need to provide your own
-					// error handling.
-					//
+	// returned by each api function call. It is important
+	// to check the status returned by a call to aid in
+	// debugging. Failed API calls can result in subtle 
+	// errors that can be difficult to track down, you may
+	// wish to use the CHECK_MSTATUS macro for any API
+	// call where you do not need to provide your own
+	// error handling.
+	//
 
 	// Attribute Initialization:
 	//
@@ -384,45 +384,46 @@ MStatus CXRayMtl::initialize()
 	//				 Attributes are single elements by default.
 	//
 
+
 	// Input Attributes
 	//
 	aTranslucenceCoeff = nAttr.create( "translucenceCoeff", "tc",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );	
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
 	CHECK_MSTATUS( nAttr.setDefault( 0.0f ) );
 
 	aDiffuseReflectivity = nAttr.create( "diffuseReflectivity", "drfl",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
 	CHECK_MSTATUS( nAttr.setDefault( 0.8f ) );
 
 	aColorR = nAttr.create( "colorR", "cr",MFnNumericData::kFloat, 0,
-			&status );
+		&status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
 	CHECK_MSTATUS( nAttr.setDefault( 0.0f ) );
 
 	aColorG = nAttr.create( "colorG", "cg", MFnNumericData::kFloat, 0,
-			&status );
+		&status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
 	CHECK_MSTATUS( nAttr.setDefault( 0.58824f ) );
 
 	aColorB = nAttr.create( "colorB", "cb",MFnNumericData::kFloat, 0,
-			&status );
+		&status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
 	CHECK_MSTATUS( nAttr.setDefault( 0.644f ) );
 
 	aColor = nAttr.create( "color", "c", aColorR, aColorG, aColorB,
-			&status );
+		&status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
@@ -430,28 +431,28 @@ MStatus CXRayMtl::initialize()
 	CHECK_MSTATUS( nAttr.setUsedAsColor( true ) );
 
 	aIncandescenceR = nAttr.create( "incandescenceR", "ir",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
 	CHECK_MSTATUS( nAttr.setDefault( 0.0f ) );
 
 	aIncandescenceG = nAttr.create( "incandescenceG", "ig",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
 	CHECK_MSTATUS( nAttr.setDefault( 0.0f ) );
 
 	aIncandescenceB = nAttr.create( "incandescenceB", "ib",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status);
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
 	CHECK_MSTATUS( nAttr.setDefault( 0.0f ) );
 
 	aIncandescence = nAttr.create( "incandescence", "ic", aIncandescenceR,
-			aIncandescenceG, aIncandescenceB, &status );
+		aIncandescenceG, aIncandescenceB, &status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
@@ -459,74 +460,74 @@ MStatus CXRayMtl::initialize()
 	CHECK_MSTATUS( nAttr.setUsedAsColor( true ) );
 
 	aInTransR = nAttr.create( "transparencyR", "itr",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
 
 	aInTransG = nAttr.create( "transparencyG", "itg",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
 
 	aInTransB = nAttr.create( "transparencyB", "itb",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status);
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
 
 	aInTransparency = nAttr.create( "transparency", "it", aInTransR,
-			aInTransG, aInTransB, &status );
+		aInTransG, aInTransB, &status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setKeyable( true ) );
 	CHECK_MSTATUS( nAttr.setStorable( true ) );
 	CHECK_MSTATUS( nAttr.setDefault( 0.0f, 0.0f, 0.0f ) );
 	CHECK_MSTATUS( nAttr.setUsedAsColor( true ) );
 
-	
+
 	// Output Attributes
 	//
 
 	// Color Output
 	//
 	aOutColorR = nAttr.create( "outColorR", "ocr", MFnNumericData::kFloat,
-			0, &status );
+		0, &status );
 	CHECK_MSTATUS( status );
-	
+
 	aOutColorG = nAttr.create( "outColorG", "ocg", MFnNumericData::kFloat,
-			0, &status );
+		0, &status );
 	CHECK_MSTATUS( status );
-	
+
 	aOutColorB = nAttr.create( "outColorB", "ocb", MFnNumericData::kFloat,
-			0, &status );
+		0, &status );
 	CHECK_MSTATUS( status );
-	
+
 	aOutColor = nAttr.create( "outColor", "oc", aOutColorR, aOutColorG,
-			aOutColorB, &status );
+		aOutColorB, &status );
 	CHECK_MSTATUS( status );
-	
+
 	CHECK_MSTATUS( nAttr.setHidden( false ) );
 	CHECK_MSTATUS( nAttr.setReadable( true ) );
 	CHECK_MSTATUS( nAttr.setWritable( false ) );
 
-	
+
 	// Transparency Output
 	//
 	aOutTransR = nAttr.create( "outTransparencyR", "otr",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
 
 	aOutTransG = nAttr.create( "outTransparencyG", "otg",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
 
 	aOutTransB = nAttr.create( "outTransparencyB", "otb",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
 
 	aOutTransparency = nAttr.create( "outTransparency", "ot",
-			aOutTransR,aOutTransG,aOutTransB, &status );
+		aOutTransR,aOutTransG,aOutTransB, &status );
 	CHECK_MSTATUS( status );
 
 	CHECK_MSTATUS( nAttr.setHidden( false ) );
@@ -537,25 +538,25 @@ MStatus CXRayMtl::initialize()
 	// Camera Normals
 	//
 	aNormalCameraX = nAttr.create( "normalCameraX", "nx",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setStorable( false ) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f ) );
 
 	aNormalCameraY = nAttr.create( "normalCameraY", "ny",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setStorable( false ) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f ) );
 
 	aNormalCameraZ = nAttr.create( "normalCameraZ", "nz",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setStorable( false ) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f ) );
 
 	aNormalCamera = nAttr.create( "normalCamera","n", aNormalCameraX,
-			aNormalCameraY, aNormalCameraZ, &status );
+		aNormalCameraY, aNormalCameraZ, &status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( nAttr.setStorable( false ) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f, 1.0f, 1.0f ) );
@@ -565,135 +566,148 @@ MStatus CXRayMtl::initialize()
 	// Light Direction
 	//
 	aLightDirectionX = nAttr.create( "lightDirectionX", "ldx",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setHidden( true ) );
-	CHECK_MSTATUS( nAttr.setReadable( false ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f ) );
 
 	aLightDirectionY = nAttr.create( "lightDirectionY", "ldy",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setHidden( true ) );
-	CHECK_MSTATUS( nAttr.setReadable( false ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f ) );
 
 	aLightDirectionZ = nAttr.create( "lightDirectionZ", "ldz",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setHidden( true ) );
-	CHECK_MSTATUS( nAttr.setReadable( false ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f ) );
 
 	aLightDirection = nAttr.create( "lightDirection", "ld",
-			aLightDirectionX, aLightDirectionY, aLightDirectionZ,
-			&status );
+		aLightDirectionX, aLightDirectionY, aLightDirectionZ,
+		&status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setHidden( true ) );
-	CHECK_MSTATUS( nAttr.setReadable( false ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f, 1.0f, 1.0f ) );
 
 
 	// Light Intensity
 	//
 	aLightIntensityR = nAttr.create( "lightIntensityR", "lir",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setHidden( true ) );
-	CHECK_MSTATUS( nAttr.setReadable( false ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f ) );
 
 	aLightIntensityG = nAttr.create( "lightIntensityG", "lig",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setHidden( true ) );
-	CHECK_MSTATUS( nAttr.setReadable( false ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f ) );
 
 	aLightIntensityB = nAttr.create( "lightIntensityB", "lib",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setHidden( true ) );
-	CHECK_MSTATUS( nAttr.setReadable( false ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f ) );
 
 	aLightIntensity = nAttr.create( "lightIntensity", "li", 
-			aLightIntensityR, aLightIntensityG, aLightIntensityB,
-			&status );
+		aLightIntensityR, aLightIntensityG, aLightIntensityB,
+		&status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setHidden( true ) );
-	CHECK_MSTATUS( nAttr.setReadable( false ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f, 1.0f, 1.0f ) );
 
-   
+
 	// Light
 	//
 	aLightAmbient = nAttr.create( "lightAmbient", "la",
-			MFnNumericData::kBoolean, 0, &status );
+		MFnNumericData::kBoolean, 0, &status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setHidden( true ) );
-	CHECK_MSTATUS( nAttr.setReadable( false ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( true ) );
 
 	aLightDiffuse = nAttr.create( "lightDiffuse", "ldf",
-			MFnNumericData::kBoolean, 0, &status );
+		MFnNumericData::kBoolean, 0, &status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setHidden( true ) );
-	CHECK_MSTATUS( nAttr.setReadable( false ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( true ) );
 
 	aLightSpecular = nAttr.create( "lightSpecular", "ls",
-			MFnNumericData::kBoolean, 0, &status );
+		MFnNumericData::kBoolean, 0, &status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setHidden( true ) );
-	CHECK_MSTATUS( nAttr.setReadable( false ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( false ) );
 
 	aLightShadowFraction = nAttr.create( "lightShadowFraction", "lsf",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setReadable( true ) );
-	CHECK_MSTATUS( nAttr.setWritable( true ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f ) );
 
 	aPreShadowIntensity = nAttr.create( "preShadowIntensity", "psi",
-			MFnNumericData::kFloat, 0, &status );
+		MFnNumericData::kFloat, 0, &status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setHidden( true ) );
-	CHECK_MSTATUS( nAttr.setReadable( false ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f ) );
 
-	aLightBlindData = nAttr.create( "lightBlindData", "lbld",
-			MFnNumericData::kLong, 0, &status );
+	aLightBlindData = nAttr.createAddr( "lightBlindData", "lbld",
+		&status );
 	CHECK_MSTATUS( status );
-	CHECK_MSTATUS( nAttr.setStorable( false ) );
-	CHECK_MSTATUS( nAttr.setHidden( true ) );
-	CHECK_MSTATUS( nAttr.setReadable( false ) );
-	CHECK_MSTATUS( nAttr.setDefault( 0 ) );
+	CHECK_MSTATUS ( nAttr.setStorable(false) );
+	CHECK_MSTATUS ( nAttr.setHidden(true) );
+	CHECK_MSTATUS ( nAttr.setReadable(true) );
+	CHECK_MSTATUS ( nAttr.setWritable(false) );
 
 	aLightData = lAttr.create( "lightDataArray", "ltd", aLightDirection,
-			aLightIntensity, aLightAmbient, aLightDiffuse, aLightSpecular, 
-			aLightShadowFraction, aPreShadowIntensity, aLightBlindData,
-			&status );
+		aLightIntensity, aLightAmbient, aLightDiffuse, aLightSpecular, 
+		aLightShadowFraction, aPreShadowIntensity, aLightBlindData,
+		&status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS( lAttr.setArray( true ) );
 	CHECK_MSTATUS( lAttr.setStorable( false ) );
 	CHECK_MSTATUS( lAttr.setHidden( true ) );
 	CHECK_MSTATUS( lAttr.setDefault( 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-			true, true, false, 1.0f, 1.0f, 0 ) );
+		true, true, false, 1.0f, 1.0f, NULL ) );
 
 
 	// Next we will add the attributes we have defined to the node
