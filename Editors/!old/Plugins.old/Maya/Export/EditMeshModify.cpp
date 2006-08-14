@@ -254,7 +254,7 @@ void CEditableMesh::Optimize(BOOL NoOpt)
 		for (u32 k=0; k<m_FaceCount; k++){
     		if (!OptimizeFace(m_Faces[k])){
 				faces_mark[k]		= true;
-                i_del_face			= 0;
+                i_del_face			++;
             }
 		}
 
@@ -285,10 +285,10 @@ void CEditableMesh::Optimize(BOOL NoOpt)
                         }
                     }
                 	continue;
-                }
-                new_dk++;
+                } 
             	m_Faces[new_dk]	= old_faces[dk];
             	m_SGs[new_dk]	= old_sg[dk];
+				new_dk++;
             }
             m_FaceCount	= m_FaceCount-i_del_face;
             xr_free		(old_faces);
