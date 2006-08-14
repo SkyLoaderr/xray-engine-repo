@@ -81,7 +81,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="bin\debug\ver-7.0"
+			OutputDirectory="bin\debug\ver-8.0"
 			IntermediateDirectory="Intermediate\Debug\$(ProjectName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
