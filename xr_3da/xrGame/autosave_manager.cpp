@@ -47,6 +47,8 @@ float CAutosaveManager::shedule_Scale		()
 
 #include "UIGameCustom.h"
 #include "Actor.h"
+#include "MainMenu.h"
+
 void CAutosaveManager::shedule_Update		(u32 dt)
 {
 	inherited::shedule_Update	(dt);
@@ -64,13 +66,19 @@ void CAutosaveManager::shedule_Update		(u32 dt)
 		
 	update_autosave_time		();
 
-	string256					temp;
+	string_path					temp;
 	strconcat					(temp,Core.UserName,"_","autosave");
 	NET_Packet					net_packet;
 	net_packet.w_begin			(M_SAVE_GAME);
 	net_packet.w_stringZ		(temp);
 	net_packet.w_u8				(0);
 	Level().Send				(net_packet,net_flags(TRUE));
+
+	string_path					S1;
+	strcat						(temp,".dds");
+	FS.update_path				(S1,"$game_saves$",temp);
+
+	MainMenu()->Screenshot		(IRender_interface::SM_FOR_GAMESAVE,S1);
 	
 	SDrawStaticStruct* s		= HUD().GetUI()->UIGame()->AddCustomStatic("autosave", true);
 	s->m_endTime				= Device.fTimeGlobal+3.0f;// 3sec

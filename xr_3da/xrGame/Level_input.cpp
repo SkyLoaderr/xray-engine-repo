@@ -97,13 +97,13 @@ void CLevel::IR_OnKeyboardPress	(int key)
 	if (DIK_F10 == key)		vtune.enable();
 	if (DIK_F11 == key)		vtune.disable();
 
-	if (DIK_F12 == key)
-	{
+	switch (key_binding[key]) {
+
+	case kSCREENSHOT:
 		Render->Screenshot();
 		return;
-	}
+		break;
 
-	switch (key_binding[key]) {
 	case kCONSOLE:
 		Console->Show				();
 		return;
