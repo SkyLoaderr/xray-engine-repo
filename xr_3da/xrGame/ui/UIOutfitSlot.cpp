@@ -3,6 +3,7 @@
 #include "UIStatic.h"
 #include "UICellItem.h"
 #include "../CustomOutfit.h"
+#include "../actor.h"
 #include "UIInventoryUtilities.h"
 
 CUIOutfitDragDropList::CUIOutfitDragDropList()
@@ -33,23 +34,52 @@ void CUIOutfitDragDropList::SetOutfit(CUICellItem* itm)
 
 	m_background->Init(0,0, GetWidth(), GetHeight());
 
-	if(itm)
-	{
-		PIItem _iitem	= (PIItem)itm->m_pData;
-		CCustomOutfit* pOutfit = smart_cast<CCustomOutfit*>(_iitem); VERIFY(pOutfit);
+	if (GameID() != GAME_SINGLE){
+		CObject *pActor = NULL;
 
-		r.x1			= float(pOutfit->GetIconX())*ICON_GRID_WIDTH;
-		r.y1			= float(pOutfit->GetIconY())*ICON_GRID_HEIGHT;
+		if (itm)
+			pActor = (CObject*)itm->m_pData;
+		else
+            pActor = smart_cast<CActor*>(Level().CurrentEntity());
+
+		xr_string a;
+		if (pActor)
+			a = *pActor->cNameVisual();
+		else
+			a = *m_default_outfit;
+
+		xr_string::iterator it = std::find(a.rbegin(), a.rend(), '\\').base(); 
+
+		// Cut leading full path
+		if (it != a.begin())
+			a.erase(a.begin(), it);
+		// Cut trailing ".ogf"
+		R_ASSERT(xr_strlen(a.c_str()) > 4);
+		if ('.' == a[a.size() - 4])
+			a.erase(a.size() - 4);
+
+		if (a != "without_outfit")
+            m_background->InitTexture(a.c_str());
+		else{
+			m_background->SetShader				(InventoryUtilities::GetCharIconsShader());
+			m_background->SetOriginalRect		(r);
+		}
 	}
-	
-	if ((GameID() == GAME_SINGLE || itm || 0==xr_strcmp("without_outfit",m_default_outfit))){
-        m_background->SetShader				(InventoryUtilities::GetCharIconsShader());
+	else {
+		if(itm)
+		{
+			PIItem _iitem	= (PIItem)itm->m_pData;
+			CCustomOutfit* pOutfit = smart_cast<CCustomOutfit*>(_iitem); VERIFY(pOutfit);
+
+			r.x1			= float(pOutfit->GetIconX())*ICON_GRID_WIDTH;
+			r.y1			= float(pOutfit->GetIconY())*ICON_GRID_HEIGHT;
+		}
+
+		m_background->SetShader				(InventoryUtilities::GetCharIconsShader());
         m_background->SetOriginalRect		(r);
 	}
-	else
-	{
-		m_background->InitTexture(*m_default_outfit);
-	}
+
+
 
 	m_background->TextureAvailable		(true);
 	m_background->TextureOn				();

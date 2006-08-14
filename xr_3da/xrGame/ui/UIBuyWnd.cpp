@@ -83,9 +83,8 @@ void CUIBuyWnd::Show(){
 
 	
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(!pActor) 
-		return;
-	pActor->SetWeaponHideState(INV_STATE_BUY_MENU, true);
+	if(pActor) 
+        pActor->SetWeaponHideState(INV_STATE_BUY_MENU, true);
 
 	m_tab.SetActiveState();
 
@@ -96,9 +95,8 @@ void CUIBuyWnd::Hide(){
 	CUIDialogWnd::Hide();
 
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if(!pActor)
-		return;
-	pActor->SetWeaponHideState(INV_STATE_BUY_MENU, false);
+	if(pActor)
+        pActor->SetWeaponHideState(INV_STATE_BUY_MENU, false);
 }
 
 void CUIBuyWnd::DestroyAllItems(){
