@@ -9,51 +9,50 @@ class CGrenade :
 	public CMissile,
 	public CExplosive
 {
-	typedef CMissile inherited;
+	typedef CMissile		inherited;
 public:
-	CGrenade(void);
-	virtual ~CGrenade(void);
+							CGrenade							();
+	virtual					~CGrenade							();
 
 
-	virtual void Load(LPCSTR section);
+	virtual void			Load								(LPCSTR section);
 	
-	virtual BOOL net_Spawn(CSE_Abstract* DC);
-	virtual void net_Destroy();
-	virtual void net_Relcase(CObject* O );
+	virtual BOOL 			net_Spawn							(CSE_Abstract* DC);
+	virtual void 			net_Destroy							();
+	virtual void 			net_Relcase							(CObject* O );
 
-	virtual void OnH_B_Independent();
-	virtual void OnH_A_Independent();
-	virtual void OnH_A_Chield();
+	virtual void 			OnH_B_Independent					();
+	virtual void 			OnH_A_Independent					();
+	virtual void 			OnH_A_Chield						();
 	
-	virtual void OnEvent(NET_Packet& P, u16 type);
+	virtual void 			OnEvent								(NET_Packet& P, u16 type);
 	
-	virtual void OnAnimationEnd(u32 state);
-	virtual void UpdateCL();
-	virtual bool Activate();
-	virtual void Deactivate();
+	virtual void 			OnAnimationEnd						(u32 state);
+	virtual void 			UpdateCL							();
+	virtual bool 			Activate							();
+	virtual void 			Deactivate							();
 	
-	virtual void Throw();
-	virtual void Destroy();
+	virtual void 			Throw();
+	virtual void 			Destroy();
 
 	
-	virtual bool Action(s32 cmd, u32 flags);
-	virtual bool Useful() const;
-	virtual void  State(u32 state);
+	virtual bool			Action								(s32 cmd, u32 flags);
+	virtual bool			Useful								() const;
+	virtual void			State								(u32 state);
 
-	virtual void OnH_B_Chield() {inherited::OnH_B_Chield();}
+	virtual void			OnH_B_Chield						()				{inherited::OnH_B_Chield();}
 
-	virtual bool IsPending() const {return inherited::IsPending();}
-	virtual bool IsHidden()	 const {return inherited::IsHidden();}
-	virtual bool IsHiding()	 const {return inherited::IsHiding();}
+	virtual bool 			IsPending							() const 		{return inherited::IsPending();}
+	virtual bool 			IsHidden							() const 		{return inherited::IsHidden();}
+	virtual bool 			IsHiding							() const 		{return inherited::IsHiding();}
 
-	virtual	void Hit	(SHit* pHDS);
+	virtual	void			Hit									(SHit* pHDS);
 
-	virtual bool			NeedToDestroyObject	() const; 
-	virtual ALife::_TIME_ID	TimePassedAfterIndependant() const;
+	virtual bool			NeedToDestroyObject					() const; 
+	virtual ALife::_TIME_ID	TimePassedAfterIndependant			() const;
 
-	virtual void PutNextToSlot	();
+			void			PutNextToSlot						();
 protected:
-	//время удаления оружия
 	ALife::_TIME_ID			m_dwGrenadeRemoveTime;
 	ALife::_TIME_ID			m_dwGrenadeIndependencyTime;
 protected:
@@ -63,13 +62,13 @@ private:
 	float					m_grenade_detonation_threshold_hit;
 	bool					m_thrown;
 protected:
-	virtual	void			UpdateXForm			()		{ CMissile::UpdateXForm(); };
+	virtual	void			UpdateXForm							()		{ CMissile::UpdateXForm(); };
 public:
 
-	virtual BOOL			UsedAI_Locations		();
-	virtual CExplosive		*cast_explosive			()	{return this;}
-	virtual CMissile		*cast_missile			()	{return this;}
-	virtual CHudItem		*cast_hud_item			()	{return this;}
-	virtual CGameObject		*cast_game_object		()	{return this;}
-	virtual IDamageSource	*cast_IDamageSource		()	{return CExplosive::cast_IDamageSource();}
+	virtual BOOL			UsedAI_Locations					();
+	virtual CExplosive		*cast_explosive						()	{return this;}
+	virtual CMissile		*cast_missile						()	{return this;}
+	virtual CHudItem		*cast_hud_item						()	{return this;}
+	virtual CGameObject		*cast_game_object					()	{return this;}
+	virtual IDamageSource	*cast_IDamageSource					()	{return CExplosive::cast_IDamageSource();}
 };

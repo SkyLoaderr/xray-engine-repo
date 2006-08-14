@@ -38,10 +38,8 @@ void CGrenade::Load(LPCSTR section)
 	else
 		m_dwGrenadeRemoveTime = GRENADE_REMOVE_TIME;
 	m_grenade_detonation_threshold_hit=READ_IF_EXISTS(pSettings,r_float,section,"detonation_threshold_hit",default_grenade_detonation_threshold_hit);
-	//////////////////////////////////////
 }
 
-//void CGrenade::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector position_in_object_space, float impulse,ALife::EHitType hit_type)
 void CGrenade::Hit					(SHit* pHDS)
 {
 	if( ALife::eHitTypeExplosion==pHDS->hit_type && m_grenade_detonation_threshold_hit<pHDS->damage()&&CExplosive::Initiator()==u16(-1)) 
@@ -49,15 +47,14 @@ void CGrenade::Hit					(SHit* pHDS)
 		CExplosive::SetCurrentParentID(pHDS->who->ID());
 		Destroy();
 	}
-//	inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);
 	inherited::Hit(pHDS);
 }
 
 BOOL CGrenade::net_Spawn(CSE_Abstract* DC) 
 {
 	m_dwGrenadeIndependencyTime			= 0;
-	BOOL ret= inherited::net_Spawn		(DC);/* && CInventoryItemObject::net_Spawn(DC)*/
-	Fvector box;BoundingBox().getsize(box);
+	BOOL ret= inherited::net_Spawn		(DC);
+	Fvector box;BoundingBox().getsize	(box);
 	float max_size						=max(max(box.x,box.y),box.z);
 	box.set								(max_size,max_size,max_size);
 	box.mul								(3.f);
@@ -68,9 +65,8 @@ BOOL CGrenade::net_Spawn(CSE_Abstract* DC)
 
 void CGrenade::net_Destroy() 
 {
-	inherited::net_Destroy	();
-	//CInventoryItemObject::net_Destroy();
-	CExplosive::net_Destroy();
+	inherited::net_Destroy				();
+	CExplosive::net_Destroy				();
 }
 
 void CGrenade::OnH_B_Independent() 
@@ -80,17 +76,14 @@ void CGrenade::OnH_B_Independent()
 	{
 		if (m_fake_missile)
 		{
-			CGrenade					*pGrenade = smart_cast<CGrenade*>(m_fake_missile);
+			CGrenade*		pGrenade	= smart_cast<CGrenade*>(m_fake_missile);
 			if (pGrenade)
 			{
-				m_constpower = false;
-				m_fThrowForce = 0;
-				Throw();
-
-				///////////////////////////////
-
-				m_dwDestroyTime = 0xffffffff;
-				DestroyObject		();
+				m_constpower			= false;
+				m_fThrowForce			= 0;
+				Throw					();
+				m_dwDestroyTime			= 0xffffffff;
+				DestroyObject			();
 			};
 		};
 	};
@@ -99,15 +92,15 @@ void CGrenade::OnH_B_Independent()
 
 void CGrenade::OnH_A_Independent() 
 {
-	m_dwGrenadeIndependencyTime = Level().timeServer();
-	inherited::OnH_A_Independent();	
+	m_dwGrenadeIndependencyTime			= Level().timeServer();
+	inherited::OnH_A_Independent		();	
 }
 
 void CGrenade::OnH_A_Chield()
 {
-	m_dwGrenadeIndependencyTime = 0;
-	m_dwDestroyTime = 0xffffffff;
-	inherited::OnH_A_Chield();
+	m_dwGrenadeIndependencyTime			= 0;
+	m_dwDestroyTime						= 0xffffffff;
+	inherited::OnH_A_Chield				();
 }
 
 void CGrenade::State(u32 state) 
@@ -116,24 +109,19 @@ void CGrenade::State(u32 state)
 	{
 	case MS_THREATEN:
 		{
-			Fvector		C;
-			Center		(C);
-			PlaySound	(sndCheckout,C);	// 
+			Fvector						C;
+			Center						(C);
+			PlaySound					(sndCheckout,C);
 		}break;
 	case MS_HIDDEN:
 		{
-//.			if (GetState() == MS_END) // means prev state :(
 			if(m_thrown)
 			{
-				if (m_pPhysicsShell)
-					m_pPhysicsShell->Deactivate();
-				xr_delete(m_pPhysicsShell);
-
-				m_dwDestroyTime = 0xffffffff;
-
-				PutNextToSlot();
-
-				if (Local())	DestroyObject		();
+				if (m_pPhysicsShell)	m_pPhysicsShell->Deactivate();
+				xr_delete				(m_pPhysicsShell);
+				m_dwDestroyTime			= 0xffffffff;
+				PutNextToSlot			();
+				if (Local())			DestroyObject		();
 				
 			};
 		}break;
@@ -143,13 +131,13 @@ void CGrenade::State(u32 state)
 
 bool CGrenade::Activate() 
 {
-	Show();
-	return true;
+	Show								();
+	return								true;
 }
 
 void CGrenade::Deactivate() 
 {
-	Hide();
+	Hide								();
 }
 
 void CGrenade::Throw() 
@@ -175,9 +163,9 @@ void CGrenade::Throw()
 void CGrenade::Destroy() 
 {
 	//Generate Expode event
-	Fvector  normal;
-	FindNormal(normal);
-	CExplosive::GenExplodeEvent(Position(), normal);
+	Fvector						normal;
+	FindNormal					(normal);
+	CExplosive::GenExplodeEvent	(Position(), normal);
 }
 
 
@@ -189,34 +177,38 @@ bool CGrenade::Useful() const
 
 void CGrenade::OnEvent(NET_Packet& P, u16 type) 
 {
-	inherited::OnEvent(P,type);
-	CExplosive::OnEvent(P,type);
+	inherited::OnEvent			(P,type);
+	CExplosive::OnEvent			(P,type);
 }
 
-void CGrenade::PutNextToSlot	()
+void CGrenade::PutNextToSlot()
 {
-	VERIFY	(!getDestroy());
+	VERIFY									(!getDestroy());
 	//выкинуть гранату из инвентаря
 	if (m_pInventory)
 	{
-		m_pInventory->Ruck(this);
-		m_pInventory->SetActiveSlot(NO_ACTIVE_SLOT);
+		m_pInventory->Ruck					(this);
+//.		m_pInventory->SetActiveSlot			(NO_ACTIVE_SLOT);
 	}
 	else
 		Msg ("! PutNextToSlot : m_pInventory = 0");	
 
 	if (smart_cast<CInventoryOwner*>(H_Parent()) && m_pInventory)
 	{
-		//найти такую же гранату и положить в рюкзак
-		CGrenade *pNext = smart_cast<CGrenade*>(m_pInventory->Same(this,true));
-		//или найти любую другую гранату на поясе
-		if(!pNext) pNext = smart_cast<CGrenade*>(m_pInventory->SameSlot(this,true));
+		CGrenade *pNext						= smart_cast<CGrenade*>(	m_pInventory->Same(this,true)		);
+		if(!pNext) pNext					= smart_cast<CGrenade*>(	m_pInventory->SameSlot(this,true)	);
 
-		VERIFY(pNext != this);
+		VERIFY								(pNext != this);
 
 		if(pNext && m_pInventory->Slot(pNext) ){
 
 			NET_Packet						P;
+
+			this->u_EventGen				(P, GEG_PLAYER_ITEM2RUCK, this->H_Parent()->ID());
+			P.w_u16							(this->ID());
+			this->u_EventSend				(P);
+
+
 			pNext->u_EventGen				(P, GEG_PLAYER_ITEM2SLOT, pNext->H_Parent()->ID());
 			P.w_u16							(pNext->ID());
 			pNext->u_EventSend				(P);
@@ -238,8 +230,8 @@ void CGrenade::OnAnimationEnd(u32 state)
 
 void CGrenade::UpdateCL() 
 {
-	inherited::UpdateCL();
-	CExplosive::UpdateCL();
+	inherited::UpdateCL			();
+	CExplosive::UpdateCL		();
 
 	if(!IsGameTypeSingle())	make_Interpolation();
 }
@@ -283,9 +275,9 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 
 bool CGrenade::NeedToDestroyObject()	const
 {
-	if (GameID() == GAME_SINGLE) return false;
-	if (Remote()) return false;
-	if (TimePassedAfterIndependant() > m_dwGrenadeRemoveTime)
+	if ( IsGameTypeSingle()			) return false;
+	if ( Remote()					) return false;
+	if ( TimePassedAfterIndependant() > m_dwGrenadeRemoveTime)
 		return true;
 
 	return false;

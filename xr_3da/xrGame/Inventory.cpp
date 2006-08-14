@@ -174,6 +174,7 @@ void CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 
 bool CInventory::Drop(CGameObject *pObj, bool call_drop) 
 {
+	Msg("Drop [%s]", *pObj->cNameSect());
 	CInventoryItem *pIItem				= smart_cast<CInventoryItem*>(pObj);
 	VERIFY								(pIItem);
 	if(pIItem->m_pInventory!=this)		return false;
@@ -239,14 +240,14 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	VERIFY(pIItem);
 	
 #ifdef _DEBUG
-	if (IsGameTypeSingle() && bDebug)
+	if (/*IsGameTypeSingle() &&*/ bDebug)
 		Msg("%s put item %s in inventory slot %d",m_pOwner->Name(), *pIItem->object().cName(), pIItem->GetSlot());
 #endif
 		
 	if(!CanPutInSlot(pIItem)) 
 	{
 #ifdef _DEBUG
-//.		Msg("there is item %s in slot %d", *m_slots[pIItem->GetSlot()].m_pIItem->object().cName(), pIItem->GetSlot());
+		Msg("there is item %s in slot %d", *m_slots[pIItem->GetSlot()].m_pIItem->object().cName(), pIItem->GetSlot());
 #endif
 		if(m_slots[pIItem->GetSlot()].m_pIItem == pIItem && !bNotActivate )
 			Activate(pIItem->GetSlot());

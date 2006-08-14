@@ -371,10 +371,6 @@ void CMissile::UpdateXForm	()
 	}
 }
 
-void CMissile::renderable_Render() 
-{
-	inherited::renderable_Render();
-}
 
 void CMissile::Show() 
 {
