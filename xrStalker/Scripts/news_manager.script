@@ -184,7 +184,7 @@ function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 	local y = tips_icons[sender][2]
 	
 	local news_text = "%c<255,160,160,160>"..game.translate_string("st_tip").."\\n".."%c<default>"..game.translate_string(news_id)
-	actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
+	actor:give_game_news(news_text, "ui\\ui_iconsTotal", Frect():set(x,y,50,50), timeout*1000, showtime)
 	return true
 end
 function send_tip_nosound(actor, news_id, timeout, sender)
