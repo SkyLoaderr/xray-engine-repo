@@ -96,20 +96,21 @@ pda_tips = sound_object([[device\pda\pda_tip]])
 pda_task = sound_object([[device\pda\pda_objective]])
 
 tips_icons = {
-	trader	 = {   0, 100 },
-	dolg     = { 150,   0 },
-	freedom  = {   0, 150 },
-	ecolog   = { 450, 100 },
-	arena    = { 350, 150 },
-	stalker  = { 100, 150 },
-	krot     = { 200,  50 },
-	barman   = { 400,  50 },
-	wolf	 = { 0, 50 },
-	o_soznanie = { 100, 50 },
-	monolith = { 100, 150 },
-    saharov  = { 450, 150 },
-    prizrak  = {   0,  50 },
-    killer   = {   0, 200 }
+	default  = { 0, 658},
+	trader	 = { 0, 658},
+	dolg     = { 0, 658},
+	freedom  = { 0, 658},
+	ecolog   = { 0, 752},
+	arena    = { 0, 658},
+	stalker  = { 0, 658},
+	krot     = { 0, 658},
+	barman   = { 0, 658},
+	wolf	 = { 0, 799 },
+	o_soznanie = { 0, 658},
+	monolith = { 0, 658},
+    saharov  = { 0, 658},
+    prizrak  = { 0, 658},
+    killer   = { 0, 799}
 }
 
 
@@ -175,12 +176,13 @@ function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 			showtime = length
 		end
 	end
-	local x = 50
-	local y = 100
-	if sender ~= nil and tips_icons[sender] ~= nil then
-		x = tips_icons[sender][1]
-		y = tips_icons[sender][2]
+	
+	if sender == nil then
+		sender = "default"
 	end
+	local x = tips_icons[sender][1]
+	local y = tips_icons[sender][2]
+	
 	local news_text = "%c<255,160,160,160>"..game.translate_string("st_tip").."\\n".."%c<default>"..game.translate_string(news_id)
 	actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
 	return true
@@ -201,16 +203,15 @@ function send_tip_nosound(actor, news_id, timeout, sender)
 			showtime = length
 		end
 	end
-	local x = 50
-	local y = 100
-	if sender ~= nil and tips_icons[sender] ~= nil then
-		x = tips_icons[sender][1]
-		y = tips_icons[sender][2]
+
+	if sender == nil then
+		sender = "default"
 	end
+	local x = tips_icons[sender][1]
+	local y = tips_icons[sender][2]
+
 	local news_text = "%c<255,160,160,160>"..game.translate_string("st_tip").."\\n".."%c<default>"..game.translate_string(news_id)
---temporary for e3 by andy !!!		actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(x,y,50,50), timeout*1000, showtime)
     local task_texture, task_rect = get_texture_info("ui_icons_task_kill_stalker", "ui_iconsTotalSmall_locations")
---actor:give_game_news(news_text, task_texture, task_rect, timeout*1000, showtime)
 	return news_sound
 end
 
