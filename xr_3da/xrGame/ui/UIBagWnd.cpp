@@ -932,9 +932,10 @@ CUICellItem* CUIBagWnd::GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot){
 }
 
 CUICellItem* CUIBagWnd::CreateNewItem(const u8 grpNum, u8 uIndexInSlot){
-	u32 sz = m_allItems.size();
+	u32			 sz = m_allItems.size();
+	VERIFY		 (sz);
 	CUICellItem* item;
-	PIItem		 iitem;
+	PIItem		 iitem = 0;
 	CUICellItem* new_item;
 
 	for (u32 i = 0; i < sz; i++){
