@@ -211,11 +211,12 @@ void game_cl_Deathmatch::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems)
 			if (SlotID != 0xff && ItemID != 0xff)
 			{
 				if (pWeapon->IsScopeAttached())
-					pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
+					pCurBuyMenu->AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonScope, SlotID, true);
 				else
 				{
 					if (DesiredAddons & CSE_ALifeItemWeapon::eWeaponAddonScope)
-						pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
+//						pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
+						pCurBuyMenu->AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonScope, SlotID, false);
 				}
 			}
 		};
@@ -226,11 +227,13 @@ void game_cl_Deathmatch::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems)
 			if (SlotID != 0xff && ItemID != 0xff)
 			{
 				if (pWeapon->IsGrenadeLauncherAttached())
-					pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
+//					pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
+					pCurBuyMenu->AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, SlotID, true);
 				else
 				{
 					if (DesiredAddons & CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)
-						pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
+						//pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
+						pCurBuyMenu->AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, SlotID, false);
 				}
 			}
 		};
@@ -241,11 +244,13 @@ void game_cl_Deathmatch::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems)
 			if (SlotID != 0xff && ItemID != 0xff)
 			{
 				if (pWeapon->IsSilencerAttached())
-					pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
+					//pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
+					pCurBuyMenu->AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonSilencer, SlotID, true);
 				else
 				{
 					if (DesiredAddons & CSE_ALifeItemWeapon::eWeaponAddonSilencer)
-						pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
+						//pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
+						pCurBuyMenu->AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonSilencer, SlotID, false);
 				}
 			}
 		};
