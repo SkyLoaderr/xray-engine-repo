@@ -1782,8 +1782,8 @@
 		<snd_config>characters_voice\human_03\ecolog\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_pbp = 1 \n
+			wpn_fort \n
+			ammo_9x18_pmm = 1 \n
 		</supplies>
 			
 #include "gameplay\character_dialogs.xml"
@@ -1807,8 +1807,8 @@
 		<snd_config>characters_voice\human_03\ecolog\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_pbp = 1 \n
+			wpn_fort \n
+			ammo_9x18_pmm = 1 \n
 		</supplies>
 				
 #include "gameplay\character_dialogs.xml"
