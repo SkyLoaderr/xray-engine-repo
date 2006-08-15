@@ -3,6 +3,9 @@
 #include "MPPlayersBag.h"
 #include "Level.h"
 //#include "xrMessages.h"
+#include "game_base_space.h"
+
+#define BAG_REMOVE_TIME		60000
 
 CMPPlayersBag::CMPPlayersBag()
 {
@@ -32,4 +35,18 @@ void CMPPlayersBag::OnEvent(NET_Packet& P, u16 type)
 			}break;
 
 	}
+}
+
+extern INT g_iWeaponRemove;
+bool CMPPlayersBag::NeedToDestroyObject()	const
+{
+	if (GameID() == GAME_SINGLE) return false;
+	if (Remote()) return false;
+	if (H_Parent()) return false;
+	if (g_iWeaponRemove == -1) return false;
+	if (g_iWeaponRemove == 0) return true;
+	if (TimePassedAfterIndependant() > BAG_REMOVE_TIME)
+		return true;
+
+	return false;
 }

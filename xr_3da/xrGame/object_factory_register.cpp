@@ -256,22 +256,25 @@ void CObjectFactory::register_classes	()
 	ADD(CGraviArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_GRAVI					,"art_gravi");
 	ADD(CGraviArtefact			,CSE_ALifeItemArtefact			,CLSID_ARTEFACT					,"artefact");
 
-	ADD(CWeaponFN2000			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_FN2000			,"wpn_fn2000");
-	ADD(CWeaponAK74				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_AK74			,"wpn_ak74");
-	ADD(CWeaponLR300			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_LR300			,"wpn_lr300");
-	ADD(CWeaponHPSA				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_HPSA			,"wpn_hpsa");
-	ADD(CWeaponPM				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_PM				,"wpn_pm");
-	ADD(CWeaponFORT				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_FORT			,"wpn_fort");
-	ADD(CWeaponBinoculars		,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_BINOCULAR		,"wpn_binocular");
+	//  [8/15/2006]
+	ADD(CWeaponMagazined		,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_MAGAZINED		,"wpn_wmagaz");
+	//  [8/15/2006]
+	ADD(CWeaponFN2000			,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_FN2000			,"wpn_fn2000");
+	ADD(CWeaponAK74				,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_AK74			,"wpn_ak74");
+	ADD(CWeaponLR300			,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_LR300			,"wpn_lr300");
+	ADD(CWeaponHPSA				,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_HPSA			,"wpn_hpsa");
+	ADD(CWeaponPM				,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_PM				,"wpn_pm");
+	ADD(CWeaponFORT				,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_FORT			,"wpn_fort");
+	ADD(CWeaponBinoculars		,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_BINOCULAR		,"wpn_binocular");
 	ADD(CWeaponShotgun			,CSE_ALifeItemWeaponShotGun		,CLSID_OBJECT_W_SHOTGUN			,"wpn_shotgun");
-	ADD(CWeaponSVD				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_SVD				,"wpn_svd");
-	ADD(CWeaponSVU				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_SVU				,"wpn_svu");
-	ADD(CWeaponRPG7				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_RPG7			,"wpn_rpg7");
-	ADD(CWeaponVal				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_VAL				,"wpn_val");
-	ADD(CWeaponVintorez			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_VINTOREZ		,"wpn_vintorez");
-	ADD(CWeaponWalther			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_WALTHER			,"wpn_walther");
-	ADD(CWeaponUSP45			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_USP45			,"wpn_usp45");
-	ADD(CWeaponGroza			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_GROZA			,"wpn_groza");
+	ADD(CWeaponSVD				,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_SVD				,"wpn_svd");
+	ADD(CWeaponSVU				,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_SVU				,"wpn_svu");
+	ADD(CWeaponRPG7				,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_RPG7			,"wpn_rpg7");
+	ADD(CWeaponVal				,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_VAL				,"wpn_val");
+	ADD(CWeaponVintorez			,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_VINTOREZ		,"wpn_vintorez");
+	ADD(CWeaponWalther			,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_WALTHER			,"wpn_walther");
+	ADD(CWeaponUSP45			,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_USP45			,"wpn_usp45");
+	ADD(CWeaponGroza			,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_GROZA			,"wpn_groza");
 	ADD(CWeaponKnife			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_KNIFE			,"wpn_knife");
 	ADD(CWeaponBM16				,CSE_ALifeItemWeaponShotGun		,CLSID_OBJECT_W_BM16			,"wpn_bm16");
 	ADD(CWeaponRG6				,CSE_ALifeItemWeaponShotGun		,CLSID_OBJECT_W_RG6				,"wpn_rg6");

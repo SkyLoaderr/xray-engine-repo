@@ -1105,3 +1105,21 @@ void CWeaponMagazined::load(IReader &input_packet)
 	load_data		(m_iShotNum, input_packet);
 	load_data		(m_iCurFireMode, input_packet);
 }
+
+void CWeaponMagazined::net_Export	(NET_Packet& P)
+{
+	inherited::net_Export (P);
+
+	P.w_u8(u8(m_iCurFireMode&0x00ff));
+}
+
+void CWeaponMagazined::net_Import	(NET_Packet& P)
+{
+	//	if (Level().IsDemoPlay())
+	//		Msg("CWeapon::net_Import [%d]", ID());
+
+	inherited::net_Import (P);
+
+	m_iCurFireMode = P.r_u8();
+	SetQueueSize(GetCurrentFireMode());
+}

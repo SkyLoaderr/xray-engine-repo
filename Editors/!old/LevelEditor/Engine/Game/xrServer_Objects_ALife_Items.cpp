@@ -435,7 +435,7 @@ void CSE_ALifeItemWeapon::FillProps			(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemWeaponShotGun
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemWeaponShotGun::CSE_ALifeItemWeaponShotGun	(LPCSTR caSection) : CSE_ALifeItemWeapon(caSection)
+CSE_ALifeItemWeaponShotGun::CSE_ALifeItemWeaponShotGun	(LPCSTR caSection) : CSE_ALifeItemWeaponMagazined(caSection)
 {
 	m_AmmoIDs.clear();
 }
@@ -478,6 +478,45 @@ void CSE_ALifeItemWeaponShotGun::FillProps			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps			(pref, items);
 };
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeItemWeaponMagazined
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemWeaponMagazined::CSE_ALifeItemWeaponMagazined	(LPCSTR caSection) : CSE_ALifeItemWeapon(caSection)
+{
+	m_u8CurFireMode = 0;
+}
+
+CSE_ALifeItemWeaponMagazined::~CSE_ALifeItemWeaponMagazined	()
+{
+}
+
+void CSE_ALifeItemWeaponMagazined::UPDATE_Read		(NET_Packet& P)
+{
+	inherited::UPDATE_Read(P);
+
+	m_u8CurFireMode = P.r_u8();
+}
+void CSE_ALifeItemWeaponMagazined::UPDATE_Write	(NET_Packet& P)
+{
+	inherited::UPDATE_Write(P);
+
+	P.w_u8(m_u8CurFireMode);	
+}
+void CSE_ALifeItemWeaponMagazined::STATE_Read		(NET_Packet& P, u16 size)
+{
+	inherited::STATE_Read(P, size);
+}
+void CSE_ALifeItemWeaponMagazined::STATE_Write		(NET_Packet& P)
+{
+	inherited::STATE_Write(P);
+}
+
+void CSE_ALifeItemWeaponMagazined::FillProps			(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProps			(pref, items);
+};
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemAmmo
 ////////////////////////////////////////////////////////////////////////////
