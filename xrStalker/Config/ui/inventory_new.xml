@@ -108,25 +108,25 @@
 		<texture>ui_scale_one</texture>		
     </progress_back_rank>   
 
-    <progress_bar_health x="8" y="22" width="10" height="160" length="160" horz="0" min="0" max="100" pos="0">
+    <progress_bar_health x="8" y="22" width="10" height="124" horz="0" min="0" max="100" pos="0">
 		<progress>
 			<texture>ui_scale_red_1</texture>
 		</progress>
     </progress_bar_health>    
 
-    <progress_bar_psy x="26" y="22" width="10" height="160" length="160" horz="0" min="0" max="100" pos="0">
+    <progress_bar_psy x="26" y="22" width="10" height="124" horz="0" min="0" max="100" pos="0">
 		<progress>
 			<texture>ui_scale_blue_1</texture>
 		</progress>
 	</progress_bar_psy>
 
-    <progress_bar_radiation x="45" y="22" width="10" height="160" length="160" horz="0" min="0" max="100" pos="0">
+    <progress_bar_radiation x="45" y="22" width="10" height="124" horz="0" min="0" max="100" pos="0">
 		<progress>
 			<texture>ui_scale_yellow_1</texture>
 		</progress>
     </progress_bar_radiation>
     
-    <progress_bar_rank x="20" y="22" width="10" height="160" length="160" horz="0" min="0" max="100" pos="0">
+    <progress_bar_rank x="20" y="22" width="10" height="124" horz="0" min="0" max="100" pos="0">
 		<progress>
 			<texture>ui_scale_green</texture>
 		</progress>

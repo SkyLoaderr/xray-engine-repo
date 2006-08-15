@@ -239,11 +239,6 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 {
 	VERIFY(pIItem);
 	
-#ifdef _DEBUG
-	if (/*IsGameTypeSingle() &&*/ bDebug)
-		Msg("%s put item %s in inventory slot %d",m_pOwner->Name(), *pIItem->object().cName(), pIItem->GetSlot());
-#endif
-		
 	if(!CanPutInSlot(pIItem)) 
 	{
 #ifdef _DEBUG
@@ -264,17 +259,19 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	it = std::find(m_belt.begin(), m_belt.end(), pIItem);
 	if(m_belt.end() != it) m_belt.erase(it);
 
-	if ((m_iActiveSlot==NO_ACTIVE_SLOT&&m_iNextActiveSlot==NO_ACTIVE_SLOT) && (!bNotActivate))
-		Activate(pIItem->GetSlot());
+
+
+	if (( (m_iActiveSlot==pIItem->GetSlot())||(m_iActiveSlot==NO_ACTIVE_SLOT) && m_iNextActiveSlot==NO_ACTIVE_SLOT) && (!bNotActivate))
+		Activate				(pIItem->GetSlot());
 
 	
-	m_pOwner->OnItemSlot(pIItem, pIItem->m_eItemPlace);
-	pIItem->m_eItemPlace = eItemPlaceSlot;
-	pIItem->OnMoveToSlot();
+	m_pOwner->OnItemSlot		(pIItem, pIItem->m_eItemPlace);
+	pIItem->m_eItemPlace		= eItemPlaceSlot;
+	pIItem->OnMoveToSlot		();
 	
 	pIItem->object().processing_activate();
 
-	return true;
+	return						true;
 }
 
 bool CInventory::Belt(PIItem pIItem) 
