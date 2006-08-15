@@ -879,8 +879,6 @@ bool CUIBuyWnd::CanPutInBelt(CInventoryItem* iitem){
 		return false;
 	else if (OUTFIT_SLOT == iitem->GetSlot())
 		return false;
-	else if (smart_cast<CSilencer*>(iitem))
-		return false;
 	return true;
 }
 
