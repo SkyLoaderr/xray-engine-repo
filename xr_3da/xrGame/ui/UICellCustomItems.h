@@ -27,6 +27,7 @@ public:
 
 class CUIWeaponCellItem :public CUIInventoryCellItem
 {
+	friend class CUIBagWnd;
 	typedef  CUIInventoryCellItem	inherited;
 	enum eAddonType{	eSilencer=0, eScope, eLauncher, eMaxAddon};
 	CUIStatic*					m_addons					[eMaxAddon];

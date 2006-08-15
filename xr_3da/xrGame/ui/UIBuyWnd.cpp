@@ -401,7 +401,7 @@ void CUIBuyWnd::ProcessPropertiesBoxClicked	()
 
 		case INVENTORY_ATTACH_SCOPE_ADDON:
 			itm = (CUICellItem*)(m_propertiesBox.GetClickedItem()->GetData());
-			m_bag.AttachAddon(itm, SCOPE, false);
+			m_bag.AttachAddon(itm, CSE_ALifeItemWeapon::eWeaponAddonScope, false);
 			break;
 		case INVENTORY_DETACH_SCOPE_ADDON:
 			DetachAddon(*(smart_cast<CWeapon*>(CurrentIItem()))->GetScopeName());
@@ -409,7 +409,7 @@ void CUIBuyWnd::ProcessPropertiesBoxClicked	()
 
 		case INVENTORY_ATTACH_SILENCER_ADDON:
 			itm = (CUICellItem*)(m_propertiesBox.GetClickedItem()->GetData());
-			m_bag.AttachAddon(itm, SILENCER, false);
+			m_bag.AttachAddon(itm, CSE_ALifeItemWeapon::eWeaponAddonSilencer, false);
 			break;
 		case INVENTORY_DETACH_SILENCER_ADDON:
 			DetachAddon(*(smart_cast<CWeapon*>(CurrentIItem()))->GetSilencerName());
@@ -417,7 +417,7 @@ void CUIBuyWnd::ProcessPropertiesBoxClicked	()
 
 		case INVENTORY_ATTACH_GRENADE_LAUNCHER_ADDON:
 			itm = (CUICellItem*)(m_propertiesBox.GetClickedItem()->GetData());
-			m_bag.AttachAddon(itm, GRENADELAUNCHER, false);
+			m_bag.AttachAddon(itm, CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, false);
 			break;
 		case INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON:
 			DetachAddon(*(smart_cast<CWeapon*>(CurrentIItem()))->GetGrenadeLauncherName());
@@ -1128,8 +1128,13 @@ const u8 CUIBuyWnd::GetBeltSize(){
 	return static_cast<u8>(m_list[MP_SLOT_BELT]->ItemsCount());	
 }
 
-void CUIBuyWnd::AddonToSlot(CSE_ALifeItemWeapon::EWeaponAddonState, int slot, bool bRealRepresentationSet){
+void CUIBuyWnd::AddonToSlot(CSE_ALifeItemWeapon::EWeaponAddonState add_on, int slot, bool bRealRepresentationSet){
+	VERIFY(PISTOL_SLOT == slot || RIFLE_SLOT == slot);
+	VERIFY(m_list[GetLocalSlot(slot)]->ItemsCount());
 
+	CUICellItem* wpn = m_list[GetLocalSlot(slot)]->GetItemIdx(0);
+
+	m_bag.AttachAddon(wpn, add_on, bRealRepresentationSet);
 }
 
 void CUIBuyWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet){
@@ -1153,71 +1158,72 @@ void CUIBuyWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepres
 			//itm->GetMessageTarget()->SendMessage(itm, DRAG_DROP_ITEM_DB_CLICK, NULL);
 			// Проверяем индекс на наличие флагов аддонов, и если они есть, то 
 			// аттачим аддоны к мувнутому оружию
-			if (addon_info)
-			{
-				if (addon_info & 1)
-					m_bag.AttachAddon(itm, SCOPE, bRealRepresentationSet); // attach scope
-				if (addon_info & 2)
-					m_bag.AttachAddon(itm, GRENADELAUNCHER, bRealRepresentationSet); // attach grenade_launcher
-				if (addon_info & 4)
-					m_bag.AttachAddon(itm, SILENCER, bRealRepresentationSet); // attach silencer
-			}
+			VERIFY(!addon_info);
+			//if (addon_info)
+			//{
+			//	if (addon_info & 1)
+			//		m_bag.AttachAddon(itm, SCOPE, bRealRepresentationSet); // attach scope
+			//	if (addon_info & 2)
+			//		m_bag.AttachAddon(itm, GRENADELAUNCHER, bRealRepresentationSet); // attach grenade_launcher
+			//	if (addon_info & 4)
+			//		m_bag.AttachAddon(itm, SILENCER, bRealRepresentationSet); // attach silencer
+			//}
 		}
 
 }
 
-void CUIBuyWnd::SectionToSlot(LPCSTR name, const u8 addon_info, bool bRealRepresentationSet){
-	CUICellItem* itm = m_bag.GetItemBySectoin(name, /* bCreateOnFail = */true );
-
-	if (m_bag.IsInBag(itm))
-	{
-		m_bag.SetExternal(itm,bRealRepresentationSet);
-		itm->GetMessageTarget()->SendMessage(itm, DRAG_DROP_ITEM_DB_CLICK, NULL);
-
-		if (addon_info)
-		{
-			if (addon_info & 1)
-				m_bag.AttachAddon(itm, SCOPE, bRealRepresentationSet); // attach scope
-			if (addon_info & 2)
-				m_bag.AttachAddon(itm, GRENADELAUNCHER, bRealRepresentationSet); // attach grenade_launcher
-			if (addon_info & 4)
-				m_bag.AttachAddon(itm, SILENCER, bRealRepresentationSet); // attach silencer
-		}
-	}
-	
-	
-	//CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(sectionName, /* bCreateOnFail = */true);
-	//int iSlot = pDDItem->GetSlot();
-	//if (UIBagWnd.IsItemInBag(pDDItem))
-	//	if (UITopList[iSlot].GetDragDropItemsList().empty() || GRENADE_SLOT == iSlot)
-	//	{
-	//		pDDItem->m_bHasRealRepresentation = bRealRepresentationSet;
-	//		SendMessage(pDDItem, DRAG_DROP_ITEM_DB_CLICK, NULL);
-	//		if (addon_info != 0)
-	//		{
-	//			if ((addon_info & 1) != 0)
-	//				pDDItem->AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, true, bRealRepresentationSet);
-	//			if ((addon_info & 2) != 0)
-	//				pDDItem->AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, true, bRealRepresentationSet);
-	//			if ((addon_info & 4) != 0)
-	//				pDDItem->AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, true, bRealRepresentationSet);
-	//		}
-	//	}
-}
-void CUIBuyWnd::SectionToSlot(const char *sectionName, bool bRealRepresentationSet){
-	CUICellItem* itm = m_bag.GetItemBySectoin(sectionName);	
-//	int iSlot = m_info[itm->m_index].spDDItem->GetSlot();
-	if (m_bag.IsInBag(itm))
-	{
-		m_bag.SetExternal(itm,bRealRepresentationSet);
-		itm->GetMessageTarget()->SendMessage(itm, DRAG_DROP_ITEM_DB_CLICK, NULL);
-	}
-//		if (UITopList[iSlot].GetDragDropItemsList().empty() || GRENADE_SLOT == iSlot)
+//void CUIBuyWnd::SectionToSlot(LPCSTR name, const u8 addon_info, bool bRealRepresentationSet){
+//	CUICellItem* itm = m_bag.GetItemBySectoin(name, /* bCreateOnFail = */true );
+//
+//	if (m_bag.IsInBag(itm))
+//	{
+//		m_bag.SetExternal(itm,bRealRepresentationSet);
+//		itm->GetMessageTarget()->SendMessage(itm, DRAG_DROP_ITEM_DB_CLICK, NULL);
+//
+//		if (addon_info)
 //		{
-//			pDDItem->m_bHasRealRepresentation = bRealRepresentationSet;
-//			SendMessage(pDDItem, DRAG_DROP_ITEM_DB_CLICK, NULL);
+//			if (addon_info & 1)
+//				m_bag.AttachAddon(itm, SCOPE, bRealRepresentationSet); // attach scope
+//			if (addon_info & 2)
+//				m_bag.AttachAddon(itm, GRENADELAUNCHER, bRealRepresentationSet); // attach grenade_launcher
+//			if (addon_info & 4)
+//				m_bag.AttachAddon(itm, SILENCER, bRealRepresentationSet); // attach silencer
 //		}
-}
+//	}
+//	
+//	
+//	//CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(sectionName, /* bCreateOnFail = */true);
+//	//int iSlot = pDDItem->GetSlot();
+//	//if (UIBagWnd.IsItemInBag(pDDItem))
+//	//	if (UITopList[iSlot].GetDragDropItemsList().empty() || GRENADE_SLOT == iSlot)
+//	//	{
+//	//		pDDItem->m_bHasRealRepresentation = bRealRepresentationSet;
+//	//		SendMessage(pDDItem, DRAG_DROP_ITEM_DB_CLICK, NULL);
+//	//		if (addon_info != 0)
+//	//		{
+//	//			if ((addon_info & 1) != 0)
+//	//				pDDItem->AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, true, bRealRepresentationSet);
+//	//			if ((addon_info & 2) != 0)
+//	//				pDDItem->AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, true, bRealRepresentationSet);
+//	//			if ((addon_info & 4) != 0)
+//	//				pDDItem->AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, true, bRealRepresentationSet);
+//	//		}
+//	//	}
+//}
+//void CUIBuyWnd::SectionToSlot(const char *sectionName, bool bRealRepresentationSet){
+//	CUICellItem* itm = m_bag.GetItemBySectoin(sectionName);	
+////	int iSlot = m_info[itm->m_index].spDDItem->GetSlot();
+//	if (m_bag.IsInBag(itm))
+//	{
+//		m_bag.SetExternal(itm,bRealRepresentationSet);
+//		itm->GetMessageTarget()->SendMessage(itm, DRAG_DROP_ITEM_DB_CLICK, NULL);
+//	}
+////		if (UITopList[iSlot].GetDragDropItemsList().empty() || GRENADE_SLOT == iSlot)
+////		{
+////			pDDItem->m_bHasRealRepresentation = bRealRepresentationSet;
+////			SendMessage(pDDItem, DRAG_DROP_ITEM_DB_CLICK, NULL);
+////		}
+//}
 
 void CUIBuyWnd::ClearSlots(){
 	IgnoreMoney(true);

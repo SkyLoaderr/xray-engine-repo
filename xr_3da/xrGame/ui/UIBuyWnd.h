@@ -8,7 +8,7 @@
 #include "UI3tButton.h"
 #include "UIPropertiesBox.h"
 #include "UIItemInfo.h"
-#include "../xrServer_Objects_ALife_Items.h"
+
 typedef enum {
 	MP_SLOT_PISTOL,
 	MP_SLOT_RIFLE,
@@ -76,8 +76,8 @@ public:
 //	void		ReInitItems	(LPCSTR strSectionName);
 
 	void		SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet);
-	void		SectionToSlot(LPCSTR name, const u8 addon_info, bool bRealRepresentationSet);
-	void		SectionToSlot(const char *sectionName, bool bRealRepresentationSet);
+//	void		SectionToSlot(LPCSTR name, const u8 addon_info, bool bRealRepresentationSet);
+//	void		SectionToSlot(const char *sectionName, bool bRealRepresentationSet);
 	void		AddonToSlot(CSE_ALifeItemWeapon::EWeaponAddonState add_on, int slot, bool bRealRepresentationSet);
 	void		ClearSlots();
 	void		ClearRealRepresentationFlags();

@@ -3,6 +3,7 @@
 #include "UIStatic.h"
 #include "UIDragDropListEx.h"
 #include "UI3tButton.h"
+#include "../xrServer_Objects_ALife_Items.h"
 
 class CUITabButtonMP;
 
@@ -92,7 +93,7 @@ CUICellItem*	CreateItem(LPCSTR name);
 	void	SetExternal(CUICellItem* itm, bool status);
 	bool	GetExternal(CUICellItem* itm);
 	void	ClearExternalStatus();
-	void	AttachAddon(CUICellItem* itm, eWpnAddon add_on, bool external);
+	void	AttachAddon(CUICellItem* itm, CSE_ALifeItemWeapon::EWeaponAddonState add_on, bool external);
 	void	ReloadItemsPrices();
 	bool	HasEnoughtMoney(CUICellItem* itm);
 //	void	PayForItem(CUICellItem* itm);

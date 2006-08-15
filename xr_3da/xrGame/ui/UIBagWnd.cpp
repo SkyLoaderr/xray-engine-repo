@@ -649,7 +649,7 @@ bool CUIBagWnd::CanBuy(CUICellItem* itm){
 			return true;
 	}
 
-	return m_info[itm->m_index].active;
+	return m_info[itm->m_index].active && (!m_info[itm->m_index].bought);
 }
 
 bool CUIBagWnd::CanBuy(LPCSTR item){
@@ -852,20 +852,50 @@ void CUIBagWnd::ClearExternalStatus(){
 	}
 }
 
-void CUIBagWnd::AttachAddon(CUICellItem* itm, eWpnAddon add_on, bool external){
+void CUIBagWnd::AttachAddon(CUICellItem* itm, CSE_ALifeItemWeapon::EWeaponAddonState add_on, bool external){
+	R_ASSERT(itm);
 	CWeapon* wpn = (CWeapon*)itm->m_pData;	
 	CUICellItem* add_itm = NULL;
+	CUIWeaponCellItem* wpn_itm = smart_cast<CUIWeaponCellItem*>(itm);
+	R_ASSERT(wpn_itm);
+
 	switch (add_on){
-		case SCOPE:				add_itm = GetItemBySectoin(*wpn->GetScopeName());				break;
-		case SILENCER:			add_itm = GetItemBySectoin(*wpn->GetSilencerName());			break;
-		case GRENADELAUNCHER:	add_itm = GetItemBySectoin(*wpn->GetGrenadeLauncherName());		break;
+		case CSE_ALifeItemWeapon::eWeaponAddonScope:
+			add_itm = GetItemBySectoin(*wpn->GetScopeName());
+			break;
+		case CSE_ALifeItemWeapon::eWeaponAddonSilencer:			
+			add_itm = GetItemBySectoin(*wpn->GetSilencerName());
+			break;
+		case CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher:	
+			add_itm = GetItemBySectoin(*wpn->GetGrenadeLauncherName());		
+			break;
 		default:	NODEFAULT;
 	}
+
 	if (external)
         m_info[add_itm->m_index].external = external;
 	BuyItem(add_itm);
 	wpn->Attach((CInventoryItem*)add_itm->m_pData);
+
+	wpn_itm->Update();
+
+	if (external){
+		switch (add_on){
+			case CSE_ALifeItemWeapon::eWeaponAddonScope:
+				SET_EXTERNAL_COLOR(wpn_itm->m_addons[CUIWeaponCellItem::eScope]);
+				break;
+			case CSE_ALifeItemWeapon::eWeaponAddonSilencer:			
+				SET_EXTERNAL_COLOR(wpn_itm->m_addons[CUIWeaponCellItem::eSilencer]);
+				break;
+			case CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher:	
+				SET_EXTERNAL_COLOR(wpn_itm->m_addons[CUIWeaponCellItem::eLauncher]);
+				break;
+			default:	
+				NODEFAULT;
+		}
+	}
 }
+
 
 CUICellItem* CUIBagWnd::GetItemBySectoin(const char* sectionName, bool bCreateOnFail){
 
@@ -935,7 +965,7 @@ CUICellItem* CUIBagWnd::CreateNewItem(const u8 grpNum, u8 uIndexInSlot){
 	u32			 sz = m_allItems.size();
 	VERIFY		 (sz);
 	CUICellItem* item;
-	PIItem		 iitem = 0;
+	PIItem		 iitem = NULL;
 	CUICellItem* new_item;
 
 	for (u32 i = 0; i < sz; i++){
@@ -947,6 +977,8 @@ CUICellItem* CUIBagWnd::CreateNewItem(const u8 grpNum, u8 uIndexInSlot){
             break;             
 		}
 	}
+
+	R_ASSERT(iitem);
 
 	new_item = CreateItem(*iitem->object().cNameSect());
 
