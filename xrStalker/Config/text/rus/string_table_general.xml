@@ -167,6 +167,9 @@
 	<string id="l06_rostok">
 		<text>Дикая территория</text>
 	</string>
+	<string id="l06_rostok_demo">
+		<text>Дикая территория</text>
+	</string>
 	<string id="l07_military">
 		<text>Армейские склады</text>
 	</string>
