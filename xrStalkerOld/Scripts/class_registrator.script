@@ -58,7 +58,7 @@ function register(object_factory)
 	cs_register	(object_factory, "CWeaponRPG7",		"se_item.se_weapon",		"WP_RPG7",	"wpn_rpg7_s")
 	cs_register	(object_factory, "CWeaponShotgun",	"se_item.se_weapon_shotgun",	"WP_SHOTG",	"wpn_shotgun_s")
 	
-	cs_register	(object_factory, "CWeaponMagazined","se_item.se_weapon_magazined",	"WP_WMAGAZ",	"wpn_magazined_s")
+	cs_register	(object_factory, "CWeaponMagazined","se_item.se_weapon_magazined",	"WP_MAGAZ",	"wpn_magazined_s")
 	
 	cs_register	(object_factory, "CWeaponSVU",		"se_item.se_weapon",		"WP_SVU",	"wpn_svu_s")
 	cs_register	(object_factory, "CWeaponUSP45",	"se_item.se_weapon",		"WP_USP45",	"wpn_usp45_s")
