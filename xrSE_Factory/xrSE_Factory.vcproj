@@ -1045,6 +1045,9 @@
 					<File
 						RelativePath=".\xrServer_Objects_ALife_Items_script2.cpp">
 					</File>
+					<File
+						RelativePath=".\xrServer_Objects_ALife_Items_script3.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="objects_alife_monsters"
