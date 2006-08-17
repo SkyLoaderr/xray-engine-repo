@@ -576,6 +576,15 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 			m_bJustRestarted = true;
 			HideMessageMenus();
 		};
+
+	case GAME_PHASE_TEAM1_SCORES:
+	case GAME_PHASE_TEAM2_SCORES:
+	case GAME_PHASE_TEAM1_ELIMINATED:
+	case GAME_PHASE_TEAM2_ELIMINATED:
+	case GAME_PHASE_TEAMS_IN_A_DRAW:
+			HideMessageMenus();
+	break;
+
 	default:
 		{
 			if (Level().pHUD && HUD().GetUI())
