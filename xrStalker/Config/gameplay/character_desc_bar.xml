@@ -677,7 +677,7 @@
 		<reputation>90</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>
-		<snd_config>characters_voice\human_03\ecolog\</snd_config>
+		<snd_config>characters_voice\human_03\eco\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
