@@ -10984,12 +10984,6 @@
 				<Filter
 					Name="BuyWeaponWnd"
 					Filter="">
-					<File
-						RelativePath=".\ui\UIDragDropItemMP.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIDragDropItemMP.h">
-					</File>
 					<Filter
 						Name="BAG"
 						Filter="">
@@ -10999,25 +10993,10 @@
 						<File
 							RelativePath=".\ui\Restrictions.h">
 						</File>
-						<File
-							RelativePath=".\ui\UIBag.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIBag.h">
-						</File>
 					</Filter>
 					<Filter
 						Name="BUY WND"
 						Filter="">
-						<File
-							RelativePath=".\ui\UIBuyWeaponStd.h">
-						</File>
-						<File
-							RelativePath=".\ui\UIBuyWeaponWnd.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIBuyWeaponWnd.h">
-						</File>
 					</Filter>
 					<Filter
 						Name="TAB"

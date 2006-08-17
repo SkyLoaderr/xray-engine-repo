@@ -15,7 +15,7 @@
 #include "../xrServer_Objects_ALife_Items.h"
 #include "../game_cl_Deathmatch.h"
 
-extern CRestrictions g_mp_restrictions;
+CRestrictions g_mp_restrictions;
 //using namespace InventoryUtilities;
 
 
