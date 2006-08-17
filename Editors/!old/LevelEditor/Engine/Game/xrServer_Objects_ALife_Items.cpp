@@ -533,13 +533,13 @@ void CSE_ALifeItemWeaponMagazinedWGL::UPDATE_Read		(NET_Packet& P)
 {
 	inherited::UPDATE_Read(P);
 
-	m_bGrenadeMode = !!P.r_u8();
+///	m_bGrenadeMode = !!P.r_u8();
 }
 void CSE_ALifeItemWeaponMagazinedWGL::UPDATE_Write	(NET_Packet& P)
 {
 	inherited::UPDATE_Write(P);
 
-	P.w_u8(m_u8CurFireMode ? 1 : 0);	
+//	P.w_u8(m_u8CurFireMode ? 1 : 0);	
 }
 void CSE_ALifeItemWeaponMagazinedWGL::STATE_Read		(NET_Packet& P, u16 size)
 {

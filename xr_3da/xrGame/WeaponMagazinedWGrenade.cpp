@@ -720,7 +720,7 @@ void CWeaponMagazinedWGrenade::net_Export	(NET_Packet& P)
 {
 	inherited::net_Export (P);
 	
-	P.w_u8(m_bGrenadeMode ? 1 : 0);
+//	P.w_u8(m_bGrenadeMode ? 1 : 0);
 }
 
 void CWeaponMagazinedWGrenade::net_Import	(NET_Packet& P)
@@ -731,5 +731,5 @@ void CWeaponMagazinedWGrenade::net_Import	(NET_Packet& P)
 	inherited::net_Import (P);
 
 	bool NewMode = FALSE;
-	NewMode = !!P.r_u8();	
+//	NewMode = !!P.r_u8();	
 }
