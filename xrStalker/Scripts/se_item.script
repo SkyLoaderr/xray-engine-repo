@@ -48,6 +48,38 @@ function se_weapon_shotgun:on_register()
 	end
 end
 
+class "se_weapon_magazined" (cse_alife_item_weapon_magazined)
+function se_weapon_magazined:__init (section) super (section)
+end
+function se_weapon_magazined:on_register()
+	cse_alife_item_weapon_magazined.on_register( self )
+	-- Регистрация в таскменеджере
+	task_manager.register_target(self)
+
+	-- Собираем статистику по предметам.
+	if registred_items[self:section_name()] == nil then
+		registred_items[self:section_name()] = 1
+	else
+		registred_items[self:section_name()] = registred_items[self:section_name()] + 1
+	end
+end
+
+class "se_weapon_magazined_w_gl" (cse_alife_item_weapon_magazined_w_gl)
+function se_weapon_magazined_w_gl:__init (section) super (section)
+end
+function se_weapon_magazined_w_gl:on_register()
+	cse_alife_item_weapon_magazined_w_gl.on_register( self )
+	-- Регистрация в таскменеджере
+	task_manager.register_target(self)
+
+	-- Собираем статистику по предметам.
+	if registred_items[self:section_name()] == nil then
+		registred_items[self:section_name()] = 1
+	else
+		registred_items[self:section_name()] = registred_items[self:section_name()] + 1
+	end
+end
+
 class "se_item"	(cse_alife_item)
 function se_item:__init (section) super (section)
 end
