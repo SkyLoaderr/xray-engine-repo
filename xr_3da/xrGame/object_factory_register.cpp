@@ -259,8 +259,11 @@ void CObjectFactory::register_classes	()
 	//  [8/15/2006]
 	ADD(CWeaponMagazined		,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_MAGAZINED		,"wpn_wmagaz");
 	//  [8/15/2006]
-	ADD(CWeaponFN2000			,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_FN2000			,"wpn_fn2000");
-	ADD(CWeaponAK74				,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_AK74			,"wpn_ak74");
+	//  [8/17/2006]
+	ADD(CWeaponMagazinedWGrenade,CSE_ALifeItemWeaponMagazinedWGL,CLSID_OBJECT_W_MAGAZWGL		,"wpn_wmaggl");
+	//  [8/17/2006]
+	ADD(CWeaponFN2000			,CSE_ALifeItemWeaponMagazinedWGL	,CLSID_OBJECT_W_FN2000			,"wpn_fn2000");
+	ADD(CWeaponAK74				,CSE_ALifeItemWeaponMagazinedWGL	,CLSID_OBJECT_W_AK74			,"wpn_ak74");
 	ADD(CWeaponLR300			,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_LR300			,"wpn_lr300");
 	ADD(CWeaponHPSA				,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_HPSA			,"wpn_hpsa");
 	ADD(CWeaponPM				,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_PM				,"wpn_pm");
@@ -274,10 +277,10 @@ void CObjectFactory::register_classes	()
 	ADD(CWeaponVintorez			,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_VINTOREZ		,"wpn_vintorez");
 	ADD(CWeaponWalther			,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_WALTHER			,"wpn_walther");
 	ADD(CWeaponUSP45			,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_USP45			,"wpn_usp45");
-	ADD(CWeaponGroza			,CSE_ALifeItemWeaponMagazined	,CLSID_OBJECT_W_GROZA			,"wpn_groza");
+	ADD(CWeaponGroza			,CSE_ALifeItemWeaponMagazinedWGL,CLSID_OBJECT_W_GROZA			,"wpn_groza");
 	ADD(CWeaponKnife			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_KNIFE			,"wpn_knife");
 	ADD(CWeaponBM16				,CSE_ALifeItemWeaponShotGun		,CLSID_OBJECT_W_BM16			,"wpn_bm16");
-	ADD(CWeaponRG6				,CSE_ALifeItemWeaponShotGun		,CLSID_OBJECT_W_RG6				,"wpn_rg6");
+	ADD(CWeaponRG6				,CSE_ALifeItemWeaponMagazinedWGL,CLSID_OBJECT_W_RG6				,"wpn_rg6");
 	//-----------------------------------------------------------------------------------------------------
 	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_AMMO				,"wpn_ammo");
 	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_VOG25			,"wpn_ammo_vog25");

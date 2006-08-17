@@ -11,13 +11,15 @@ class CWeaponMagazinedWGrenade : public CWeaponMagazined,
 {
 	typedef CWeaponMagazined inherited;
 public:
-	CWeaponMagazinedWGrenade(LPCSTR name,ESoundTypes eSoundType);
+	CWeaponMagazinedWGrenade(LPCSTR name="AK74",ESoundTypes eSoundType=SOUND_TYPE_WEAPON_SUBMACHINEGUN);
 	virtual ~CWeaponMagazinedWGrenade(void);
 
 	virtual void	Load			(LPCSTR section);
 	
 	virtual BOOL	net_Spawn		(CSE_Abstract* DC);
 	virtual void	net_Destroy		();
+	virtual void			net_Export			(NET_Packet& P);
+	virtual void			net_Import			(NET_Packet& P);
 	
 	virtual void	OnH_B_Independent();
 

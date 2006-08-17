@@ -518,6 +518,44 @@ void CSE_ALifeItemWeaponMagazined::FillProps			(LPCSTR pref, PropItemVec& items)
 };
 
 ////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeItemWeaponMagazinedWGL
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemWeaponMagazinedWGL::CSE_ALifeItemWeaponMagazinedWGL	(LPCSTR caSection) : CSE_ALifeItemWeaponMagazined(caSection)
+{
+	m_bGrenadeMode = 0;
+}
+
+CSE_ALifeItemWeaponMagazinedWGL::~CSE_ALifeItemWeaponMagazinedWGL	()
+{
+}
+
+void CSE_ALifeItemWeaponMagazinedWGL::UPDATE_Read		(NET_Packet& P)
+{
+	inherited::UPDATE_Read(P);
+
+	m_bGrenadeMode = !!P.r_u8();
+}
+void CSE_ALifeItemWeaponMagazinedWGL::UPDATE_Write	(NET_Packet& P)
+{
+	inherited::UPDATE_Write(P);
+
+	P.w_u8(m_u8CurFireMode ? 1 : 0);	
+}
+void CSE_ALifeItemWeaponMagazinedWGL::STATE_Read		(NET_Packet& P, u16 size)
+{
+	inherited::STATE_Read(P, size);
+}
+void CSE_ALifeItemWeaponMagazinedWGL::STATE_Write		(NET_Packet& P)
+{
+	inherited::STATE_Write(P);
+}
+
+void CSE_ALifeItemWeaponMagazinedWGL::FillProps			(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProps			(pref, items);
+};
+
+////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemAmmo
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemAmmo::CSE_ALifeItemAmmo		(LPCSTR caSection) : CSE_ALifeItem(caSection)
