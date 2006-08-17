@@ -1,9 +1,9 @@
-local spawn_items = {}
+
 
 
 function main()
 	local level = level.name()
-
+    local spawn_items = {}
 	table.insert(spawn_items, "wpn_fn2000")
 	table.insert(spawn_items, "device_torch")
 	for i = 1,3 do
