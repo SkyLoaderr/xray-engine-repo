@@ -174,7 +174,6 @@ void CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 
 bool CInventory::Drop(CGameObject *pObj, bool call_drop) 
 {
-	Msg("Drop [%s]", *pObj->cNameSect());
 	CInventoryItem *pIItem				= smart_cast<CInventoryItem*>(pObj);
 	VERIFY								(pIItem);
 	if(pIItem->m_pInventory!=this)		return false;
@@ -345,7 +344,6 @@ bool CInventory::Ruck(PIItem pIItem)
 
 bool CInventory::Activate(u32 slot, bool force) 
 {	
-	Msg("Activate slot [%d]", slot);
 	if( (slot!=NO_ACTIVE_SLOT && m_slots[slot].IsBlocked()) && !force)
 		return false;
 
@@ -989,11 +987,9 @@ void CInventory::SetSlotsBlocked(u16 mask, bool bBlock)
 			bool bCanBeActivated = m_slots[i].CanBeActivated();
 			if(bBlock){
 				++m_slots[i].m_blockCounter;
-//.				Msg("slot[%d]   Blocked. counter=%d",i,m_slots[i].m_blockCounter);
 				VERIFY2(m_slots[i].m_blockCounter< 5,"block slots overflow");
 			}else{
 				--m_slots[i].m_blockCounter;
-//.				Msg("slot[%d] UnBlocked. counter=%d",i,m_slots[i].m_blockCounter);
 				VERIFY2(m_slots[i].m_blockCounter>-5,"block slots underflow");
 			}
 			if(bCanBeActivated != m_slots[i].CanBeActivated())
