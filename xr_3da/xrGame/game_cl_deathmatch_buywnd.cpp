@@ -160,9 +160,19 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 	Et = TmpPresetItems.end();
 	for ( ; It != Et; ++It) 
 	{
-		s16	ItemID = (*It);
-		
-		pCurBuyMenu->SectionToSlot(u8((ItemID&0xff00)>>0x08), u8(ItemID&0x00ff), false);
+		u8 SlotID = u8(((*It)&0xff00)>>0x08);
+		u8 ItemID = u8((*It)&0x00ff);
+        
+		pCurBuyMenu->SectionToSlot(SlotID, (ItemID&0x001f), false);
+
+		u8 DesiredAddons = ItemID>>5;
+
+		if (DesiredAddons & CSE_ALifeItemWeapon::eWeaponAddonScope)
+			pCurBuyMenu->AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonScope, SlotID, false);
+		if (DesiredAddons & CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)
+			pCurBuyMenu->AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, SlotID, false);
+		if (DesiredAddons & CSE_ALifeItemWeapon::eWeaponAddonSilencer)
+			pCurBuyMenu->AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonSilencer, SlotID, false);
 	};
 	//---------------------------------------------------------
 	pCurBuyMenu->IgnoreMoney(false);
