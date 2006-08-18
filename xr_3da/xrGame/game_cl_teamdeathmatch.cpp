@@ -308,9 +308,9 @@ void game_cl_TeamDeathmatch::SetCurrentBuyMenu	()
 {
 	if (!local_player) return;
 	if (!local_player->team || local_player->skin == -1) return;
-	if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
+	if (!pCurBuyMenu)// || !pCurBuyMenu->IsShown())
 	{
-		xr_delete		(pCurBuyMenu);
+//		xr_delete		(pCurBuyMenu);
 		if (local_player->team == 1) 
 		{
 			pCurBuyMenu = InitBuyMenu(GetBaseCostSect(), 1);
@@ -664,14 +664,17 @@ void				game_cl_TeamDeathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 
 void				game_cl_TeamDeathmatch::OnTeamChanged			()
 {
+	xr_delete(pCurBuyMenu);
 	SetCurrentBuyMenu();
 	inherited::OnTeamChanged();
 };
 
 void				game_cl_TeamDeathmatch::OnGameMenuRespond_ChangeTeam	(NET_Packet& P)
 {
-	s16 NewTeam = P.r_s16();
-	local_player->team = NewTeam;
+	s16 OldTeam = local_player->team;
+	local_player->team = P.r_s16();
+	if (OldTeam != local_player->team)
+		OnTeamChanged();
 
 	SetCurrentSkinMenu();
 	if (pCurSkinMenu)
