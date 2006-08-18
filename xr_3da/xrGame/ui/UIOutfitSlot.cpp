@@ -31,7 +31,7 @@ void CUIOutfitDragDropList::SetOutfit(CUICellItem* itm)
 	r.y1			= fNoOutfitY*ICON_GRID_HEIGHT;
 	r.x2			= r.x1+CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH;
 	r.y2			= r.y1+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT;
-
+	
 	m_background->Init(0,0, GetWidth(), GetHeight());
 
 	if (GameID() != GAME_SINGLE){
@@ -74,6 +74,8 @@ void CUIOutfitDragDropList::SetOutfit(CUICellItem* itm)
 			r.x1			= float(pOutfit->GetIconX())*ICON_GRID_WIDTH;
 			r.y1			= float(pOutfit->GetIconY())*ICON_GRID_HEIGHT;
 		}
+		r.x2			= r.x1+CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH;
+		r.y2			= r.y1+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT;
 
 		m_background->SetShader				(InventoryUtilities::GetCharIconsShader());
         m_background->SetOriginalRect		(r);
