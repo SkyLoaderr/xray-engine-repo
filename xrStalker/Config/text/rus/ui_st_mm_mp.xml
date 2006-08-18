@@ -166,7 +166,7 @@
         <text>Без Punk Buster</text>
     </string>
     <string id="mm_mp_listenservers">
-        <text>Пустые</text>
+        <text>Не выделенный</text>
     </string>
     <string id="mm_mp_create">
         <text>Создать</text>
