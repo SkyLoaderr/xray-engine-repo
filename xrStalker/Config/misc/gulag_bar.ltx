@@ -628,6 +628,8 @@ active = walker@bar_freedom_offline_walker
 path_walk = offline_walk
 path_look = camper_1_look
 
+;*******************************************************
+
 [logic@bar_freedom_attack_sniper_1]
 active = camper@bar_freedom_attack_sniper_1
 heli_hunter = helihunter@bar_freedom_attack
@@ -639,6 +641,12 @@ path_look = camper_1_look
 def_state_moving = assault
 heli_hunter = {-bar_ecolog_crush_heli_down} true, false
 soundgroup = bar_freedom_attack1
+on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_1
+
+[walker@bar_freedom_attack_actor_near_1]
+path_walk = camper_1_walk
+path_look = camper_1_look
+on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_sniper_1
 
 [logic@bar_freedom_attack_sniper_c1]
 active = camper1@bar_freedom_attack_sniper_1
@@ -652,6 +660,8 @@ radius = 15
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
 
+;********************************************************
+
 [logic@bar_freedom_attack_sniper_2]
 active = camper@bar_freedom_attack_sniper_2
 on_death = death@bar_freedom_attack_killer
@@ -661,6 +671,12 @@ path_walk = camper_2_walk
 path_look = camper_2_look
 def_state_moving = assault
 soundgroup = bar_freedom_attack1
+on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_2
+
+[walker@bar_freedom_attack_actor_near_2]
+path_walk = camper_2_walk
+path_look = camper_2_look
+on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_sniper_2
 
 [logic@bar_freedom_attack_sniper_c2]
 active = camper1@bar_freedom_attack_sniper_2
@@ -674,6 +690,8 @@ radius = 15
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
 
+;*******************************************************
+
 [logic@bar_freedom_attack_sniper_3]
 active = camper1@bar_freedom_attack_sniper_3 
 heli_hunter = helihunter@bar_freedom_attack
@@ -685,6 +703,12 @@ path_look = camper_3_look
 def_state_moving = assault
 heli_hunter = {-bar_ecolog_crush_heli_down} true, false
 soundgroup = bar_freedom_attack1
+on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_3
+
+[walker@bar_freedom_attack_actor_near_3]
+path_walk = camper_3_walk
+path_look = camper_3_look
+on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_sniper_3
 
 [logic@bar_freedom_attack_sniper_c3]
 active = camper1@bar_freedom_attack_sniper_3
@@ -698,6 +722,8 @@ radius = 15
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
 
+;*******************************************************
+
 [logic@bar_freedom_attack_sniper_4]
 active = camper@bar_freedom_attack_sniper_4
 on_death = death@bar_freedom_attack_killer
@@ -707,6 +733,12 @@ path_walk = camper_4_walk
 path_look = camper_4_look
 def_state_moving = assault
 soundgroup = bar_freedom_attack1
+on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_4
+
+[walker@bar_freedom_attack_actor_near_4]
+path_walk = camper_4_walk
+path_look = camper_4_look
+on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_sniper_4
 
 [logic@bar_freedom_attack_sniper_c4]
 active = camper1@bar_freedom_attack_sniper_4
@@ -719,6 +751,8 @@ def_state_moving = assault
 radius = 15
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
+
+;*******************************************************
 
 [logic@bar_freedom_attack_guard_1]
 active = camper@bar_freedom_attack_guard_1
@@ -755,6 +789,8 @@ radius = 15
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
 
+;*****************************************************************
+
 [logic@bar_freedom_attack_guard_2]
 active = camper@bar_freedom_attack_guard_2
 heli_hunter = helihunter@bar_freedom_attack
@@ -766,6 +802,12 @@ path_look = guard_2_look
 def_state_moving = assault
 heli_hunter = {-bar_ecolog_crush_heli_down} true, false
 soundgroup = bar_freedom_attack1
+on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_guard_2
+
+[walker@bar_freedom_attack_actor_near_guard_2]
+path_walk = guard_2_walk
+path_look = guard_2_look
+on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_guard_2
 
 [logic@bar_freedom_attack_guard_c2]
 active = camper1@bar_freedom_attack_guard_2
@@ -778,6 +820,8 @@ def_state_moving = assault
 radius = 15
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
+
+;***********************************************************************
 
 [logic@bar_freedom_attack_commander]
 active = camper@bar_freedom_attack_commander
@@ -808,6 +852,9 @@ no_move = true
 no_rotate = true
 combat_ignore_cond = {!see_actor}
 on_info = {+bar_freedom_talk_end} camper@bar_freedom_attack_commander
+
+;*********************************************************************************
+
 
 [logic@bar_freedom_attack_camper_6]
 active = camper@bar_freedom_attack_camper_6
@@ -841,6 +888,19 @@ on_signal = sound_end | %+bar_freedom_talk_end%
 combat_ignore_cond = always
 on_info = {+bar_freedom_talk_end} camper@bar_freedom_attack_camper_6
 
+[logic@bar_freedom_attack_camper6_c1]
+active = camper@bar_freedom_attack_acamper_6
+on_death = death@bar_freedom_attack_killer
+
+[camper@bar_freedom_attack_acamper_6]
+path_walk = acamper_6_walk
+path_look = acamper_6_look
+def_state_moving = assault
+radius = 25
+;no_retreat = true
+soundgroup = bar_freedom_attack1
+
+;*********************************************************************************
 
 [logic@bar_freedom_attack_camper_5]
 active = camper@bar_freedom_attack_camper_5
@@ -853,18 +913,35 @@ def_state_moving = assault
 soundgroup = bar_freedom_attack1
 radius = 15
 ;no_retreat = true
+on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_5
 
-[logic@bar_freedom_attack_camper6_c1]
-active = camper@bar_freedom_attack_acamper_6
+[walker@bar_freedom_attack_actor_near_5]
+path_walk = camper_5_walk
+path_look = camper_5_look
+on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_sniper_5
+
+;*******************************************************************************
+
+[logic@bar_freedom_attack_sniper_7]
+active = camper@bar_freedom_attack_sniper_7
 on_death = death@bar_freedom_attack_killer
 
-[camper@bar_freedom_attack_acamper_6]
-path_walk = acamper_6_walk
-path_look = acamper_6_look
+[camper@bar_freedom_attack_sniper_7]
+path_walk = camper_7_walk
+path_look = camper_7_look
 def_state_moving = assault
-radius = 25
-;no_retreat = true
 soundgroup = bar_freedom_attack1
+radius = 15
+;no_retreat = true
+on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_7
+
+[walker@bar_freedom_attack_actor_near_7]
+path_walk = camper_7_walk
+path_look = camper_7_look
+on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_sniper_7
+
+
+;*************************************************************************************
 
 [logic@bar_freedom_attack_camper7]
 active = camper@bar_freedom_attack_camper_7
@@ -914,17 +991,6 @@ soundgroup = bar_freedom_attack1
 radius = 15
 ;no_retreat = true
 
-[logic@bar_freedom_attack_sniper_7]
-active = camper@bar_freedom_attack_sniper_7
-on_death = death@bar_freedom_attack_killer
-
-[camper@bar_freedom_attack_sniper_7]
-path_walk = camper_7_walk
-path_look = camper_7_look
-def_state_moving = assault
-soundgroup = bar_freedom_attack1
-radius = 15
-;no_retreat = true
 
 
 
@@ -1430,6 +1496,7 @@ def_state_moving = assault
 on_info = {+bar_rescue_research_chasing_start} walker@bar_ecolog_crush_sniper_chase_1
 meet = meet@ecolog_crush
 soundgroup = bar_ecolog_crush1
+wounded = wounded@ignore_kruglov
 
 [logic@bar_ecolog_crush_sniper_2]
 active = camper@bar_ecolog_crush_sniper_2
@@ -1442,6 +1509,7 @@ path_look = sniper_2_look
 def_state_moving = assault
 on_info = {+bar_rescue_research_chasing_start} walker@bar_ecolog_crush_sniper_chase_2
 meet = meet@ecolog_crush
+wounded = wounded@ignore_kruglov
 soundgroup = bar_ecolog_crush1
 
 [logic@bar_ecolog_crush_sniper_3]
@@ -1456,6 +1524,7 @@ def_state_moving = assault
 on_info = {+bar_rescue_research_chasing_start} walker@bar_ecolog_crush_sniper_chase_3
 meet = meet@ecolog_crush
 soundgroup = bar_ecolog_crush1
+wounded = wounded@ignore_kruglov
 
 [logic@bar_ecolog_crush_sniper_4]
 active = camper@bar_ecolog_crush_sniper_4
@@ -1469,6 +1538,7 @@ def_state_moving = assault
 on_info = {+bar_rescue_research_chasing_start} walker@bar_ecolog_crush_sniper_chase_4
 meet = meet@ecolog_crush
 soundgroup = bar_ecolog_crush1
+wounded = wounded@ignore_kruglov
 
 
 ; chasing
@@ -1480,7 +1550,9 @@ def_state_moving = rush
 ;on_info = {+bar_rescue_research_chasing_end} camper@bar_ecolog_crush_sniper_1
 meet = meet@ecolog_crush
 soundgroup = bar_ecolog_crush1
-combat_ignore_cond = always
+;combat_ignore_cond = always
+wounded = wounded@ignore_kruglov
+on_info = {!rostok_dist_to_actor_le(40)}  %=kill%
 
 [walker@bar_ecolog_crush_sniper_chase_2]
 path_walk = chase_2_walk
@@ -1489,7 +1561,9 @@ def_state_moving = rush
 ;on_info = {+bar_rescue_research_chasing_end} camper@bar_ecolog_crush_sniper_2
 meet = meet@ecolog_crush
 soundgroup = bar_ecolog_crush1
-combat_ignore_cond = always
+;combat_ignore_cond = always
+wounded = wounded@ignore_kruglov
+on_info = {!rostok_dist_to_actor_le(40)}  %=kill%
 
 [walker@bar_ecolog_crush_sniper_chase_3]
 path_walk = chase_3_walk
@@ -1498,7 +1572,9 @@ def_state_moving = rush
 ;on_info = {+bar_rescue_research_chasing_end} camper@bar_ecolog_crush_sniper_3
 meet = meet@ecolog_crush
 soundgroup = bar_ecolog_crush1
-combat_ignore_cond = always
+;combat_ignore_cond = always
+wounded = wounded@ignore_kruglov
+on_info = {!rostok_dist_to_actor_le(40)}  %=kill%
 
 [walker@bar_ecolog_crush_sniper_chase_4]
 path_walk = chase_4_walk
@@ -1507,7 +1583,10 @@ def_state_moving = rush
 ;on_info = {+bar_rescue_research_chasing_end} camper@bar_ecolog_crush_sniper_4
 meet = meet@ecolog_crush
 soundgroup = bar_ecolog_crush1
-combat_ignore_cond = always
+;combat_ignore_cond = always
+wounded = wounded@ignore_kruglov
+on_info = {!rostok_dist_to_actor_le(40)}  %=kill%
+
 
 ;KRUGLOV
 [hit@ecolog_professor]
