@@ -718,18 +718,21 @@ void CWeaponMagazinedWGrenade::load(IReader &input_packet)
 
 void CWeaponMagazinedWGrenade::net_Export	(NET_Packet& P)
 {
+	P.w_u8(m_bGrenadeMode ? 1 : 0);
+
 	inherited::net_Export (P);
 	
-	P.w_u8(m_bGrenadeMode ? 1 : 0);
 }
 
 void CWeaponMagazinedWGrenade::net_Import	(NET_Packet& P)
 {
 	//	if (Level().IsDemoPlay())
 	//		Msg("CWeapon::net_Import [%d]", ID());
+	bool NewMode = FALSE;
+	NewMode = !!P.r_u8();	
+	if (NewMode != m_bGrenadeMode)
+		SwitchMode	();
 
 	inherited::net_Import (P);
 
-	bool NewMode = FALSE;
-	NewMode = !!P.r_u8();	
 }
