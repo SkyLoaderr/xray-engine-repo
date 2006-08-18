@@ -1156,16 +1156,23 @@ void CUIBuyWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepres
 			//itm->GetMessageTarget()->SendMessage(itm, DRAG_DROP_ITEM_DB_CLICK, NULL);
 			// Проверяем индекс на наличие флагов аддонов, и если они есть, то 
 			// аттачим аддоны к мувнутому оружию
-			VERIFY(!addon_info);
-			//if (addon_info)
-			//{
-			//	if (addon_info & 1)
-			//		m_bag.AttachAddon(itm, SCOPE, bRealRepresentationSet); // attach scope
-			//	if (addon_info & 2)
-			//		m_bag.AttachAddon(itm, GRENADELAUNCHER, bRealRepresentationSet); // attach grenade_launcher
-			//	if (addon_info & 4)
-			//		m_bag.AttachAddon(itm, SILENCER, bRealRepresentationSet); // attach silencer
-			//}
+//			VERIFY(!addon_info);
+			if (addon_info)
+			{
+				CInventoryItem* iitm = (CInventoryItem*)itm->m_pData;
+				if (addon_info & CSE_ALifeItemWeapon::eWeaponAddonScope)
+				{
+					AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonScope, iitm->GetSlot(), false);
+				}
+				if (addon_info & CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)
+				{
+					AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, iitm->GetSlot(), false);
+				}
+				if (addon_info & CSE_ALifeItemWeapon::eWeaponAddonSilencer)
+				{
+					AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonSilencer, iitm->GetSlot(), false);
+				}
+			}
 		}
 
 }
