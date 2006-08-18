@@ -124,7 +124,7 @@
         <text>Список карт</text>
     </string>
     <string id="mm_mp_spectator">
-        <text>Спектатор</text>
+        <text>Наблюдатель</text>
     </string>
     <string id="mm_mp_allowvoting">
         <text>Разрешить голосование</text>
@@ -166,7 +166,7 @@
         <text>Без Punk Buster</text>
     </string>
     <string id="mm_mp_listenservers">
-        <text>Не выделенный</text>
+        <text>Не выделенные</text>
     </string>
     <string id="mm_mp_create">
         <text>Создать</text>
@@ -209,7 +209,7 @@
     </string>
     
     <string id="mm_mp_spectator_options">
-        <text>Настройки спектатора</text>
+        <text>Настройки наблюдателя</text>
     </string>
     <string id="mm_mp_spectator_teamonly">
         <text>Только для комманды</text>
