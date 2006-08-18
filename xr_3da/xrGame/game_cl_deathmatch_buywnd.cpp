@@ -162,9 +162,9 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 	{
 		u8 SlotID = u8(((*It)&0xff00)>>0x08);
 		u8 ItemID = u8((*It)&0x00ff);
-/*        
-		pCurBuyMenu->SectionToSlot(SlotID, (ItemID&0x001f), false);
 
+		pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
+/*
 		u8 DesiredAddons = ItemID>>5;
 
 		if (DesiredAddons & CSE_ALifeItemWeapon::eWeaponAddonScope)
