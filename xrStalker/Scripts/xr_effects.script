@@ -220,6 +220,16 @@ function send_tip(actor, npc, p)
     news_manager.send_tip(actor, p[1], nil, p[2], nil, p[3])
 end
 
+function send_tip_sound(actor, npc, p)
+	local tips_sound = news_manager.send_tip_nosound(db.actor, p[1], p[2])
+	if tips_sound ~= nil then
+		--' Играем звук забитый
+		tips_sound:play(db.actor, 0, sound_object.s2d)
+	end
+end
+
+
+
 --[[
 Дать сталкеру небольшой пинок. Например чтоб скинуть его с возвышения.
 параметры: actor, npc, p[direction,bone,power,impulse,reverse=false]
