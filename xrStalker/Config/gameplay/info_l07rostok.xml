@@ -402,6 +402,7 @@
     <info_portion id="bar_barman_start_room"></info_portion>
     <info_portion id="heli_hunt_start"></info_portion>
     <info_portion id="ros_zombied_spawn_01"></info_portion>
+    <info_portion id="rostok_camera_start"></info_portion>
 
     
 </game_information_portions>
