@@ -146,7 +146,7 @@
 		<text>entered the game</text>
 	</string>
 	<string id="mp_spectator">
-		<text>Specatator</text>
+		<text>Spectator</text>
 	</string>
 	<string id="mp_free_fly">
 		<text>(Free-fly)</text>
