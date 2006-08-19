@@ -59,13 +59,13 @@
         <text>And so! The candidate was in time to knock down the opponent and won the match!</text>
     </string>
     <string id="bar_ecolog_attack">
-        <text>As you wish.</text>
+        <text>As you wish!</text>
     </string>
     <string id="bar_ecolog_crush_attract_actor">
-        <text>Stalker, brol! I beg you, donТt go, help us out! Anarchists shook down our helicopter and are about to take us out. WeТve got casualties, assistance needed!</text>
+        <text>Stalker, pal, I pray you don't leave! Help us! The mercenaries taken down our copter, and now finish us off they will... There are wounded among us and we need you help!</text>
     </string>
     <string id="bar_ecolog_crush_heli_down">
-        <text>Hehe, that's it. You copter is done with! Now you'll get yours, governmental rats!</text>
+        <text>HaЕ That's it, no more of puny chopter! Now your turn, governmental rats!</text>
     </string>
     <string id="bar_ecolog_crush_start_heli">
         <text>Well okay Wolfhound that's it. The military copter is comming here. Now they'll crush you like dummies!</text>
@@ -74,43 +74,43 @@
         <text>Guys, ecologist has run away! All after him, c'mon!</text>
     </string>
     <string id="bar_ecolog_hit">
-        <text>Branded One, help me! They're trying to kill me!</text>
+        <text>Branded One, stop them, will ya?!?!? They'll do us in!!!!</text>
     </string>
     <string id="bar_ecolog_spam_1">
-        <text>You'll live well without it, jackal. Finish your school first and then pose demands.</text>
+        <text>Shove it, jackass! Finish the school first, then set ultimatums!</text>
     </string>
     <string id="bar_ecolog_spam_2">
-        <text>If you attack, IТll destroy the data. You'll get no business with my documents.</text>
+        <text>If you attack, I'll destroy the information! Keep yourselves off my works!</text>
     </string>
     <string id="bar_ecolog_spam_3">
-        <text>If you don't want me to destroy the research results, just stay away.</text>
+        <text>If you don't want me to destory the research records, keep away!</text>
     </string>
     <string id="bar_ecolog_spam_4">
-        <text>Wolfhound, withdraw your dogs, until they've got their tails in place!</text>
+        <text>Wolfhound, shepherd your dogs away, before lose their tails!</text>
     </string>
     <string id="bar_freedom_attack">
-        <text>That's it, the talks are over. Now guns start speaking.</text>
+        <text>Enough, this talkie is over! Seize him!</text>
     </string>
     <string id="bar_freedom_attack_attract_actor">
-        <text>Buddy, get over here! Got a matter for ye. Lets smash those governmental rats together.</text>
+        <text>Buddy, get over here, I've got a job for you. Together we'll polish off governmental rats!</text>
     </string>
     <string id="bar_freedom_attack_spy">
         <text>Branded one. You, son of a bitch, will pay for that setup-trap.</text>
     </string>
     <string id="bar_freedom_chase">
-        <text>They're chasing us! Stop them, Branded One!</text>
+        <text>They're going for us! Branded One, stop them!</text>
     </string>
     <string id="bar_freedom_spam_1">
-        <text>Listen, bookworm. Either you give me the results or leave here inside the plastic bag.</text>
+        <text>Damn it you egghead jerk! Either you gimme the records or you'll leave here in a coffin!</text>
     </string>
     <string id="bar_freedom_spam_2">
-        <text>Gruglov, I don't know Latin, but I pretty much know the language of guns. Isn't it fancy enough? Or will you give to me the information amicably?</text>
+        <text>Kruglov, I'm not familiar with Latin but I AM with weapons! Should I ask them to beg you, or you will give up info yourself?</text>
     </string>
     <string id="bar_freedom_spam_3">
-        <text>Professor, make use of your wits. Dish out the data and be free to go.</text>
+        <text>Hey, dean, you're a clever person! Give us the information and get lost!</text>
     </string>
     <string id="bar_freedom_spam_4">
-        <text>Kruglov, haven't you dug it yet?! We've knocked down your bloody copter and we demand the information that you're transporting. Once you hand it over to \nus, you can turn loose around with your guys. This is your last chance to get out of here, gimme the damn flash-drive and get lost.</text>
+        <text>Kruglov, didn't you understand? We've knocked down your flying blighter, and we need the info you're carrying! After you hand it over to us, you and your lads can cheese it! This is your last chance to get out of here! Gimme the flash-drive and get lost!</text>
     </string>
     <string id="bar_psih_come">
         <text>Urgently rush here! Near the Radar my guys have caught a crazy stalker, now trying to interrogate him.</text>
@@ -137,8 +137,8 @@
         <text>Attention! A murderer has been found! Everyone within the Duty perimeter is ordered to eliminate the murderer!</text>
     </string>
     <string id="rostok_kruglov_spam_1">
-        <text>Stalker, help! We were attacked by the mercenaries, good few of us died. Help us, we won't stay in debt.</text>
+        <text>—талкер, помоги! Ќа нас напали наемники, половина наших погибла. ѕомоги нам, мы в долгу не останемс€.</text>
     </string>
     <string id="rostok_kruglov_spam_2">
-        <text>Help us to break through the ambush near the factory, I've copied coordinates to you. Be careful, Wolfhound with the thugs is near the copter.</text>
+        <text>Help us break through the ambush near the factory, I've sent you the data. Stay alert, Wolfhound with his cutthroats are near the chopter</text>
     </string>
