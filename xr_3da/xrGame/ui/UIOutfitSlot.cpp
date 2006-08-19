@@ -34,12 +34,12 @@ void CUIOutfitDragDropList::SetOutfit(CUICellItem* itm)
 	
 	m_background->Init(0,0, GetWidth(), GetHeight());
 
-	if (GameID() != GAME_SINGLE){
+	if ((GameID() != GAME_SINGLE) && !itm){
 		CObject *pActor = NULL;
 
-		if (itm)
-			pActor = (CObject*)itm->m_pData;
-		else
+//		if (itm)
+//			pActor = (CObject*)itm->m_pData;
+//		else
             pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
 		xr_string a;
