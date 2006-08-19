@@ -170,4 +170,14 @@
         <text>cost</text>
     </string>
     
+    <string id="ui_inv_ok">
+		<text>Ok</text>
+    </string>
+    <string id="ui_inv_cancel">
+		<text>Cancel</text>
+    </string>
+    <string id="ui_inv_clear">
+		<text>Clear</text>
+    </string>
+    
 </string_table>
