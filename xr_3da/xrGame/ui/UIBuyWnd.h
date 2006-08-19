@@ -18,6 +18,7 @@ typedef enum {
 	MP_SLOT_NUM
 } MP_BUY_SLOT;
 
+class CUIWeaponCellItem;
 
 class CUIBuyWnd : public CUIDialogWnd{
 public:
@@ -34,6 +35,8 @@ public:
 	void SetMoneyAmount(int money);
 	bool CheckBuyAvailabilityInSlots();
 	void CheckAddons(CUICellItem* itm);
+	void UpdItem(CUICellItem* itm);
+	void UpdAddon(CUIWeaponCellItem* itm, CSE_ALifeItemWeapon::EWeaponAddonState add_on);
 
 	// handlers
 	void OnBtnOk();

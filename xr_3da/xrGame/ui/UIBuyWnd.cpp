@@ -1361,8 +1361,26 @@ bool CUIBuyWnd::CanBuyAllItems(){
 	{
 		u32 sz = m_list[slot]->ItemsCount();
 		for (u32 i = 0; i < sz; i++){
-			if (m_list[slot]->GetItemIdx(i)->GetColor() == 0xffff8080)
+			CUICellItem* itm = m_list[slot]->GetItemIdx(i);
+			if (itm->GetColor() == 0xffff8080)
 				return false;
+			CUIWeaponCellItem*	witm = smart_cast<CUIWeaponCellItem*>(itm);
+
+			if (witm->m_addons[CUIWeaponCellItem::eScope])
+			{
+				if (witm->m_addons[CUIWeaponCellItem::eScope]->GetColor() == 0xffff8080)
+					return false;
+			}
+			if (witm->m_addons[CUIWeaponCellItem::eSilencer])
+			{
+				if (witm->m_addons[CUIWeaponCellItem::eSilencer]->GetColor() == 0xffff8080)
+					return false;
+			}
+			if (witm->m_addons[CUIWeaponCellItem::eLauncher])
+			{
+				if (witm->m_addons[CUIWeaponCellItem::eLauncher]->GetColor() == 0xffff8080)
+					return false;
+			}
 		}
 	}
 
@@ -1410,26 +1428,16 @@ bool CUIBuyWnd::CheckBuyAvailabilityInSlots()
 		if (m_list[priorityArr[j]]->ItemsCount())
 		{
 			CUICellItem* itm = m_list[priorityArr[j]]->GetItemIdx(0);
-			if (!m_bag.GetExternal(itm))
-			{
-				if (m_bag.HasEnoughtMoney(itm))
-				{
-					m_bag.BuyItem(itm);
-					SET_NO_RESTR_COLOR(itm);
-				}
-				else
-				{
-					SET_PRICE_RESTR_COLOR(itm);
-					status  = false;
-				}
-
-			}
-			else
-			{
-					SET_EXTERNAL_COLOR(itm);
-			}
+			UpdItem(itm);	
 		}
 	}
+
+	u32 sz = m_list[MP_SLOT_BELT]->ItemsCount();
+	for (u32 i = 0; i < sz; i++){
+		CUICellItem* itm = m_list[MP_SLOT_BELT]->GetItemIdx(i);
+		UpdItem(itm);
+	}
+
 //
 //	// У пояса наименьший приоритет
 //	for (DRAG_DROP_LIST_it it = UITopList[BELT_SLOT].GetDragDropItemsList().begin();
@@ -1463,14 +1471,81 @@ bool CUIBuyWnd::CheckBuyAvailabilityInSlots()
 
 void CUIBuyWnd::CheckAddons(CUICellItem* itm){
 	CUIWeaponCellItem*	witm = smart_cast<CUIWeaponCellItem*>(itm);
-	R_ASSERT(witm);
-	CWeapon*		wpn = (CWeapon*)itm->m_pData;
+	CWeapon* wpn = (CWeapon*)itm->m_pData;	
+	if (witm)
+	{
+		if (wpn->ScopeAttachable() && wpn->IsScopeAttached())
+            UpdAddon(witm, CSE_ALifeItemWeapon::eWeaponAddonScope);
+		if (wpn->SilencerAttachable() && wpn->IsSilencerAttached())
+            UpdAddon(witm, CSE_ALifeItemWeapon::eWeaponAddonSilencer);
+		if (wpn->GrenadeLauncherAttachable() && wpn->IsGrenadeLauncherAttached())
+            UpdAddon(witm, CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher);
+	}
+	
+}
 
-	if (wpn->SilencerAttachable() && wpn->IsSilencerAttached()){
-		CUICellItem* _itm = m_bag.GetItemBySectoin(*wpn->GetSilencerName());
+void CUIBuyWnd::UpdAddon(CUIWeaponCellItem* itm, CSE_ALifeItemWeapon::EWeaponAddonState add_on){
+	CWeapon* wpn = (CWeapon*)itm->m_pData;	
+	CUICellItem* add_itm = NULL;
+
+	switch (add_on){
+		case CSE_ALifeItemWeapon::eWeaponAddonScope:
+			add_itm = m_bag.GetItemBySectoin(*wpn->GetScopeName());
+			break;
+		case CSE_ALifeItemWeapon::eWeaponAddonSilencer:			
+			add_itm = m_bag.GetItemBySectoin(*wpn->GetSilencerName());
+			break;
+		case CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher:	
+			add_itm = m_bag.GetItemBySectoin(*wpn->GetGrenadeLauncherName());		
+			break;
+		default:	NODEFAULT;
 	}
 
+	if (m_bag.GetExternal(add_itm))
+		return;
 
+	if (m_bag.HasEnoughtMoney(add_itm))
+	{
+		m_bag.BuyItem(add_itm);
+		return;
+	}
+
+	switch (add_on){
+		case CSE_ALifeItemWeapon::eWeaponAddonScope:
+			SET_PRICE_RESTR_COLOR(itm->m_addons[CUIWeaponCellItem::eScope]);
+			break;
+		case CSE_ALifeItemWeapon::eWeaponAddonSilencer:			
+			SET_PRICE_RESTR_COLOR(itm->m_addons[CUIWeaponCellItem::eSilencer]);
+			break;
+		case CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher:	
+			SET_PRICE_RESTR_COLOR(itm->m_addons[CUIWeaponCellItem::eLauncher]);
+			break;
+		default:	
+			NODEFAULT;
+	}
+
+}
+
+void CUIBuyWnd::UpdItem(CUICellItem* itm){
+	if (!m_bag.GetExternal(itm))
+	{
+		if (m_bag.HasEnoughtMoney(itm))
+		{
+			m_bag.BuyItem(itm);
+			SET_NO_RESTR_COLOR(itm);
+		}
+		else
+		{
+			SET_PRICE_RESTR_COLOR(itm);
+		}
+
+	}
+	else
+	{
+			SET_EXTERNAL_COLOR(itm);
+	}
+
+	CheckAddons(itm);
 }
 
 void CUIBuyWnd::IgnoreMoneyAndRank(bool ignore)
