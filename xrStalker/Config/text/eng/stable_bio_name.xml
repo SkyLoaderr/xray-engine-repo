@@ -601,3 +601,10 @@
     <string id="zombie_name">
         <text>Zombie</text>
     </string>
+
+	<string id="ros_kruglov_name">
+		<text>professor Kruglov</text>
+	</string>
+	<string id="ros_volkodav_name">
+		<text>Volkodav</text>
+	</string>
