@@ -683,6 +683,7 @@
 			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
 			bar_ecolog_flash \n
+			hand_radio \n
 		</supplies>
 				
 		<start_dialog>bar_ecolog_crush_professor_start</start_dialog>
