@@ -195,7 +195,6 @@ end
 function send_tip_nosound(actor, news_id, timeout, sender)
 	if news_id == nil then return end
 
-	showtime = 5000
 	timeout = 0
 
 	--' Играем дефолтный звук
@@ -209,14 +208,6 @@ function send_tip_nosound(actor, news_id, timeout, sender)
 		end
 	end
 
-	if sender == nil then
-		sender = "default"
-	end
-	local x = tips_icons[sender][1]
-	local y = tips_icons[sender][2]
-
-	local news_text = "%c<255,160,160,160>"..game.translate_string("st_tip").."\\n".."%c<default>"..game.translate_string(news_id)
-    local task_texture, task_rect = get_texture_info("ui_icons_task_kill_stalker", "ui_iconsTotalSmall_locations")
 	return news_sound
 end
 
