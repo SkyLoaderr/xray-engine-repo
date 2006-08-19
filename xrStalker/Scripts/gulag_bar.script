@@ -678,37 +678,37 @@ function load_job(sj, gname, type, squad, groups)
 	-- attack actor	{1}	
 		t = { section = "logic@bar_freedom_attack_sniper_7", 
 			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
+			prior = 5, state = {1,2}, squad = squad, group = groups[0],
 			in_rest = "",position_threshold = 100, out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_sniper_c1", 
 			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
+			prior = 5, state = {1,2}, squad = squad, group = groups[0],
 			in_rest = "",position_threshold = 100, out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_sniper_c2", 
 			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
+			prior = 5, state = {1,2}, squad = squad, group = groups[0],
 			in_rest = "",position_threshold = 100, out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_sniper_c3", 
 			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
+			prior = 5, state = {1,2}, squad = squad, group = groups[0],
 			in_rest = "",position_threshold = 100, out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_sniper_c4", 
 			idle = 0,
-			prior = 5, state = {1}, squad = squad, group = groups[0],
+			prior = 5, state = {1,2}, squad = squad, group = groups[0],
 			in_rest = "",position_threshold = 150, out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@bar_freedom_attack_guard_c1", 
 			idle = 0,
-			prior = 6, state = {1}, squad = squad, group = groups[0],
+			prior = 6, state = {1,2}, squad = squad, group = groups[0],
 			in_rest = "",position_threshold = 150, out_rest = ""
 		}
 		table.insert(sj, t)
