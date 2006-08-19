@@ -382,7 +382,7 @@ void CUIInventoryWnd::AttachAddon(PIItem item_to_upgrade)
 	{
 		NET_Packet								P;
 		item_to_upgrade->object().u_EventGen	(P, GE_ADDON_ATTACH, item_to_upgrade->object().ID());
-		P.w_u32									(item_to_upgrade->object().ID());
+		P.w_u32									(CurrentIItem()->object().ID());
 		item_to_upgrade->object().u_EventSend	(P);
 	};
 
