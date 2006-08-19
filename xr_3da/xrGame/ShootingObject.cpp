@@ -38,6 +38,8 @@ CShootingObject::CShootingObject(void)
 	
 	bWorking						= false;
 
+	light_render					= 0;
+
 	reinit();
 
 }
