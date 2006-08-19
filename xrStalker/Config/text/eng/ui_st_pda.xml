@@ -173,5 +173,11 @@
 		<text>task detail information</text>
 	</string>
     
-    
+   	<string id="st_tip">
+		<text>Message</text>
+	</string>
+	<string id="st_news">
+		<text>News</text>
+	</string>	
+
 </string_table>
