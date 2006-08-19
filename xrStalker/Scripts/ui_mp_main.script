@@ -283,11 +283,11 @@ function mp_main:GatherServerData()
 	if self.check_damage_block:GetCheck() then
 		cmdstr = cmdstr .. "/dmbi=1"
 	end
-	-- freeze time --------------------------------------------------------------------
+	--[[ freeze time --------------------------------------------------------------------
 	tmp = self.edit_freeze_time:GetText()
 	if string.len(tmp) > 0 then
 		cmdstr = cmdstr .. "/rpfrz=" .. tmp
-	end
+	end]]
 	-- frag limit ---------------------------------------------------------------------
 	tmp = self.edit_frag_limit:GetText()
 	if string.len(tmp) > 0 then
