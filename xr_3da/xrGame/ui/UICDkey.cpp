@@ -24,16 +24,25 @@ void CUICDkey::Draw(){
 	outY = (m_wndSize.y - m_lines.m_pFont->CurrentHeightRel())/2;
 	outX = 0;
 	m_lines.m_pFont->SetColor(m_lines.GetTextColor());
-	UI()->OutText(m_lines.m_pFont, scr_rect, rect.left+outX, 
-		rect.top+outY,  AddHyphens(m_lines.m_text.c_str()));
 
 	if(m_bInputFocus)
-	{	
+	{		
+		UI()->OutText(m_lines.m_pFont, scr_rect, rect.left+outX, 
+			rect.top+outY,  AddHyphens(m_lines.m_text.c_str()));
+	
 		outY = (m_wndSize.y - m_lines.m_pFont->CurrentHeightRel())/2;
 		outX = m_lines.GetDrawCursorPos();
 		outX += m_lines.m_pFont->SizeOfRel("-")*(_min(iFloor(m_lines.m_iCursorPos/4.0f),3));
 
 		CUILine::DrawCursor(m_lines.m_pFont, rect.left+outX, rect.top+outY, m_lines.GetTextColor());
+	}
+	else
+	{
+		string64 tmp = "xxxxxxxxxxxxxxxx";
+		tmp[m_lines.m_text.size()] = 0;
+
+		UI()->OutText(m_lines.m_pFont, scr_rect, rect.left+outX, 
+			rect.top+outY,  AddHyphens(tmp));
 	}
 }
 

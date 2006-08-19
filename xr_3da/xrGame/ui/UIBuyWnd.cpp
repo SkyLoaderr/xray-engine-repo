@@ -1133,7 +1133,7 @@ void CUIBuyWnd::AddonToSlot(CSE_ALifeItemWeapon::EWeaponAddonState add_on, int s
 	CUICellItem* wpn = m_list[GetLocalSlot(slot)]->GetItemIdx(0);
 
 	m_bag.AttachAddon(wpn, add_on, bRealRepresentationSet);
-}
+};
 
 void CUIBuyWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet){
 	// "Выкусываем" флаги аддонов
@@ -1143,9 +1143,14 @@ void CUIBuyWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepres
 	CUICellItem* itm = m_bag.GetItemBySectoin(grpNum, uIndexInSlot);
 	if (!itm)
 	{
-		itm = m_bag.CreateNewItem(grpNum, uIndexInSlot);
-		return;
+		itm = m_bag.CreateNewItem(grpNum, uIndexInSlot);		
 	}
+
+	R_ASSERT(itm);
+
+	CInventoryItem* iitm = (CInventoryItem*)itm->m_pData;
+	if (0 == xr_strcmp(iitm->object().cNameSect(), "mp_wpn_knife"))
+		return;
 
 	if (m_bag.IsInBag(itm))
 //		if (UITopList[pDDItem->GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == pDDItem->GetSlot() || NO_ACTIVE_SLOT == pDDItem->GetSlot())
@@ -1159,7 +1164,7 @@ void CUIBuyWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepres
 //			VERIFY(!addon_info);
 			if (addon_info)
 			{
-				CInventoryItem* iitm = (CInventoryItem*)itm->m_pData;
+				//CInventoryItem* iitm = (CInventoryItem*)itm->m_pData;
 				if (addon_info & CSE_ALifeItemWeapon::eWeaponAddonScope)
 				{
 					AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonScope, iitm->GetSlot(), false);
