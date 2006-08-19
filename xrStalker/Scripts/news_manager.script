@@ -48,7 +48,7 @@ news = {
     yan_saharov_message_3 			= sound_object([[characters_voice\scenario\yantar\professor_to_actor_pda_5]]),
 	test_mega_remark 				= sound_object([[characters_voice\scenario\yantar\pda_professor_brain_quest_good_2]]),
 	rostok_kruglov_follow			= sound_object([[characters_voice\scenario\Rostok\pda_kruglov_help_6]]),
-	rostok_kruglov_follow_1			= sound_object([[characters_voice\scenario\Rostok\pda_kruglov_stop_enemy_1]]),
+	bar_freedom_chase			= sound_object([[characters_voice\scenario\Rostok\pda_kruglov_stop_enemy_1]]),
 	rostok_kruglov_follow_2			= sound_object([[characters_voice\scenario\Rostok\pda_kruglov_stop_enemy_2]]),
 	rostok_kruglov_follow_3			= sound_object([[characters_voice\scenario\Rostok\pda_kruglov_help_5]]),
 		
