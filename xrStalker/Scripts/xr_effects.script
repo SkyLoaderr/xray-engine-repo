@@ -882,15 +882,15 @@ function rostok_kruglov_tip_2(actor,npc)
 end
 function rostok_kruglov_attract_1(actor,npc)
 	xr_sound.set_sound_play(npc, "kruglov_stop_enemy_1")
-	send_tip_sound("bar_freedom_chase", "ecolog")
+	send_tip_sound(actor,npc,"bar_freedom_chase", "ecolog")
 end
 function rostok_kruglov_attract_2(actor,npc)
 	xr_sound.set_sound_play(npc, "kruglov_stop_enemy_2")
-	send_tip_sound("rostok_kruglov_follow_2", "ecolog")
+	send_tip_sound(actor,npc,"rostok_kruglov_follow_2", "ecolog")
 end
 function rostok_kruglov_ambush(actor,npc)
 	xr_sound.set_sound_play(npc, "rostok_kruglov_help_5")
-	send_tip_sound("rostok_kruglov_follow_3", "ecolog")
+	send_tip_sound(actor,npc,"rostok_kruglov_follow_3", "ecolog")
 end
 function bar_crush_heli_down(actor,npc)
 	news_manager.send_tip(actor, "bar_ecolog_crush_heli_down", 1, "killer", nil, 509)
