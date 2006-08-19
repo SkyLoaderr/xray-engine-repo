@@ -1366,20 +1366,22 @@ bool CUIBuyWnd::CanBuyAllItems(){
 				return false;
 			CUIWeaponCellItem*	witm = smart_cast<CUIWeaponCellItem*>(itm);
 
-			if (witm->m_addons[CUIWeaponCellItem::eScope])
-			{
-				if (witm->m_addons[CUIWeaponCellItem::eScope]->GetColor() == 0xffff8080)
-					return false;
-			}
-			if (witm->m_addons[CUIWeaponCellItem::eSilencer])
-			{
-				if (witm->m_addons[CUIWeaponCellItem::eSilencer]->GetColor() == 0xffff8080)
-					return false;
-			}
-			if (witm->m_addons[CUIWeaponCellItem::eLauncher])
-			{
-				if (witm->m_addons[CUIWeaponCellItem::eLauncher]->GetColor() == 0xffff8080)
-					return false;
+			if (witm){
+				if (witm->m_addons[CUIWeaponCellItem::eScope])
+				{
+					if (witm->m_addons[CUIWeaponCellItem::eScope]->GetColor() == 0xffff8080)
+						return false;
+				}
+				if (witm->m_addons[CUIWeaponCellItem::eSilencer])
+				{
+					if (witm->m_addons[CUIWeaponCellItem::eSilencer]->GetColor() == 0xffff8080)
+						return false;
+				}
+				if (witm->m_addons[CUIWeaponCellItem::eLauncher])
+				{
+					if (witm->m_addons[CUIWeaponCellItem::eLauncher]->GetColor() == 0xffff8080)
+						return false;
+				}
 			}
 		}
 	}
