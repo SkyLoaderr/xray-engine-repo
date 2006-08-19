@@ -339,7 +339,7 @@ public:
 	SRotation				&Orientation		()			 { return r_torso; };
 
 	void					g_SetAnimation		(u32 mstate_rl);
-	void					g_SetSprintAnimation(u32 mstate_rl,MotionID &head,MotionID &toroso,MotionID &legs);
+	void					g_SetSprintAnimation(u32 mstate_rl,MotionID &head,MotionID &torso,MotionID &legs);
 	//////////////////////////////////////////////////////////////////////////
 	// HUD
 	//////////////////////////////////////////////////////////////////////////

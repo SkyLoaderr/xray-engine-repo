@@ -202,11 +202,11 @@ void SActorMotions::SActorState::Create(CKinematicsAnimated* K, LPCSTR base)
 void SActorMotions::SActorSprintState::Create(CKinematicsAnimated* K)
 {
 	
-	//toroso anims
+	//torso anims
 	string128 buf,buf1;
-	//strcpy(buf,"norm_toroso_");
+	//strcpy(buf,"norm_torso_");
 	for (int k=0; k<9; ++k)
-		m_toroso[k]	= K->ID_Cycle(strconcat(buf,"norm_torso_",itoa(k,buf1,10),"_escape_0"));
+		m_torso[k]	= K->ID_Cycle(strconcat(buf,"norm_torso_",itoa(k,buf1,10),"_escape_0"));
 	//leg anims
 	legs_fwd=K->ID_Cycle("norm_escape_00");
 	legs_ls=K->ID_Cycle("norm_escape_ls_00");
@@ -276,17 +276,18 @@ void legs_play_callback		(CBlend *blend)
 	object->m_current_legs.invalidate();
 }
 
-void CActor::g_SetSprintAnimation( u32 mstate_rl,MotionID &head,MotionID &toroso,MotionID &legs)
+void CActor::g_SetSprintAnimation( u32 mstate_rl,MotionID &head,MotionID &torso,MotionID &legs)
 {
-	SActorMotions::SActorSprintState& sprint=m_anims->m_sprint;
-	CHudItem	*H = smart_cast<CHudItem*>(inventory().ActiveItem());
-	if(H)
-		head=toroso=sprint.m_toroso[H->animation_slot()];
+	SActorMotions::SActorSprintState	&sprint=m_anims->m_sprint;
+	CHudItem							*H = smart_cast<CHudItem*>(inventory().ActiveItem());
+	if (H)
+		torso							= sprint.m_torso[H->animation_slot()];
 	else
-		head=toroso=sprint.m_toroso[0];
-			if(mstate_rl&mcFwd)		legs	=sprint.legs_fwd;
-	else if (mstate_rl&mcLStrafe)	legs	=sprint.legs_ls;
-	else if (mstate_rl&mcRStrafe)	legs	=sprint.legs_rs;
+		torso							= sprint.m_torso[0];
+
+		 if (mstate_rl & mcFwd)		legs = sprint.legs_fwd;
+	else if (mstate_rl & mcLStrafe) legs = sprint.legs_ls;
+	else if (mstate_rl & mcRStrafe)	legs = sprint.legs_rs;
 }
 
 CMotion*        FindMotionKeys(MotionID motion_ID,IRender_Visual* V)
@@ -546,7 +547,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	if (!m_current_torso_blend)
 		return;
 
-	CKinematicsAnimated		*skeleton_animated=PKinematicsAnimated(Visual());
+	CKinematicsAnimated		*skeleton_animated = PKinematicsAnimated(Visual());
 
 	CMotionDef				*motion0 = skeleton_animated->LL_GetMotionDef(m_current_torso);
 	VERIFY					(motion0);
@@ -561,7 +562,5 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	if (!(motion1->flags & esmSyncPart))
 		return;
 
-	m_current_torso_blend->timeCurrent	= m_current_legs_blend->timeCurrent;
-	//m_current_torso_blend->dwFrame		= m_current_legs_blend->dwFrame;
+	m_current_torso_blend->timeCurrent	= m_current_legs_blend->timeCurrent/m_current_legs_blend->timeTotal*m_current_torso_blend->timeTotal;
 }
-

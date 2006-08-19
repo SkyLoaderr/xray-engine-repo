@@ -53,8 +53,8 @@ struct					SActorMotions
 
 	struct SActorSprintState 
 	{
-		//toroso anims
-		MotionID		m_toroso[8];
+		//torso anims
+		MotionID		m_torso[8];
 		//leg anims
 		MotionID		legs_fwd;
 		MotionID		legs_ls;
