@@ -881,8 +881,8 @@ function rostok_kruglov_attract_1(actor,npc)
 	end
 end
 function rostok_kruglov_attract_2(actor,npc)
-	xr_sound.set_sound_play(npc, "kruglov_stop_enemy_2")
-	local tips_sound = news_manager.send_tip_nosound(db.actor, "rostok_kruglov_follow_2", 0, "ecolog")
+	xr_sound.set_sound_play(npc, "kruglov_stop_enemy_2",3)
+	local tips_sound = news_manager.send_tip_nosound(db.actor, "rostok_kruglov_follow_2",3000, "ecolog")
 	if tips_sound ~= nil then
 		--' Играем звук забитый
 		tips_sound:play(db.actor, 0, sound_object.s2d)
