@@ -33,6 +33,7 @@ public:
 	bool CanBuyAllItems();
 	void SetMoneyAmount(int money);
 	bool CheckBuyAvailabilityInSlots();
+	void CheckAddons(CUICellItem* itm);
 
 	// handlers
 	void OnBtnOk();

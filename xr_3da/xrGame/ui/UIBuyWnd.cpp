@@ -1353,7 +1353,22 @@ void CUIBuyWnd::SetMoneyAmount(int money){
 }
 
 bool CUIBuyWnd::CanBuyAllItems(){
-	return m_bag.m_money > 0;
+//	return m_bag.m_money > 0;
+//	int slot = 0;
+
+
+	for (u32 slot = MP_SLOT_PISTOL; slot < MP_SLOT_NUM; slot++)
+	{
+		u32 sz = m_list[slot]->ItemsCount();
+		for (u32 i = 0; i < sz; i++){
+			if (m_list[slot]->GetItemIdx(i)->GetColor() == 0xffff8080)
+				return false;
+		}
+	}
+
+	return true;
+
+//	m_bag.CanBuy(
 }
 
 
@@ -1380,6 +1395,15 @@ bool CUIBuyWnd::CheckBuyAvailabilityInSlots()
 
 	bool status = true;
 
+	/*for (u32 slot = MP_SLOT_PISTOL; slot < MP_SLOT_NUM; slot++)
+	{
+		u32 sz = m_list[slot]->ItemsCount();
+		for (u32 i = 0; i < sz; i++){
+			if (!m_bag.IsActive(m_list[slot]->GetItemIdx(i)))
+				return false;
+		}
+	}*/
+
 	for (int j = 0; j < 3; ++j)
 	{
 		// Если вещь есть
@@ -1394,7 +1418,10 @@ bool CUIBuyWnd::CheckBuyAvailabilityInSlots()
 					SET_NO_RESTR_COLOR(itm);
 				}
 				else
+				{
 					SET_PRICE_RESTR_COLOR(itm);
+					status  = false;
+				}
 
 			}
 			else
@@ -1432,6 +1459,18 @@ bool CUIBuyWnd::CheckBuyAvailabilityInSlots()
 //	}
 
 	return status;
+}
+
+void CUIBuyWnd::CheckAddons(CUICellItem* itm){
+	CUIWeaponCellItem*	witm = smart_cast<CUIWeaponCellItem*>(itm);
+	R_ASSERT(witm);
+	CWeapon*		wpn = (CWeapon*)itm->m_pData;
+
+	if (wpn->SilencerAttachable() && wpn->IsSilencerAttached()){
+		CUICellItem* _itm = m_bag.GetItemBySectoin(*wpn->GetSilencerName());
+	}
+
+
 }
 
 void CUIBuyWnd::IgnoreMoneyAndRank(bool ignore)
