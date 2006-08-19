@@ -200,13 +200,6 @@ function send_tip_nosound(actor, news_id, timeout, sender)
 	--' Играем дефолтный звук
 	pda_tips:play(db.actor, timeout, sound_object.s2d)
 	local news_sound = news[news_id]
-	if news_sound ~= nil then
-		--' Необходимо поставить время показа по длине сцены
-		local length = news_sound:length()
-		if length > showtime then
-			showtime = length
-		end
-	end
 
 	return news_sound
 end
