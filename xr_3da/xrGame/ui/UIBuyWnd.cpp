@@ -917,34 +917,54 @@ bool CUIBuyWnd::ToSlot(CUICellItem* itm, bool force_place)
 	
 	if (pSilencer){		// try to buy silencer
 		if (pRifle && pRifle->SilencerAttachable() && !pRifle->IsSilencerAttached()){
-			R_ASSERT(pRifle->Attach(pSilencer));	// ATTACH
-			m_bag.BuyItem(itm);					// BUY
-			return true;
+			if (pRifle->Attach(pSilencer))
+			{
+				m_bag.BuyItem(itm);					// BUY
+				return true;
+			}
+			else
+				return false;
 		}
 		
 		if (pPistol && pPistol->SilencerAttachable() && !pPistol->IsSilencerAttached()){
-			R_ASSERT(pPistol->Attach(pSilencer));	// ATTACH
-			m_bag.BuyItem(itm);					// BUY
-			return true;
+			if (pPistol->Attach(pSilencer))
+			{
+				m_bag.BuyItem(itm);					// BUY
+				return true;
+			}
+			else
+				return false;
 		}
 	}
 	if (pScope){
 		if (pRifle && pRifle->ScopeAttachable() && !pRifle->IsScopeAttached()){
-			R_ASSERT(pRifle->Attach(pScope));		// ATTACH
-			m_bag.BuyItem(itm);					// BUY
-			return true;
+			if (pRifle->Attach(pScope))
+			{
+				m_bag.BuyItem(itm);					// BUY
+				return true;
+			}
+			else
+				return false;
 		}
 
 		if (pPistol && pPistol->ScopeAttachable() && !pPistol->IsScopeAttached()){
-			R_ASSERT(pPistol->Attach(pScope));	// ATTACH
-			m_bag.BuyItem(itm);					// BUY
-			return true;
+			if(pPistol->Attach(pScope))
+			{
+				m_bag.BuyItem(itm);					// BUY
+				return true;
+			}
+			else
+				return false;
 		}
 	}
 	if (pGrenadeLauncher && pRifle && pRifle->GrenadeLauncherAttachable() && !pRifle->IsGrenadeLauncherAttached()){
-		R_ASSERT(pRifle->Attach(pGrenadeLauncher));
-		m_bag.BuyItem(itm);
-		return true;
+		if (pRifle->Attach(pGrenadeLauncher))
+		{
+			m_bag.BuyItem(itm);
+			return true;
+		}
+		else
+			return false;
 	}
 
 	if(CanPutInSlot(iitem)){
