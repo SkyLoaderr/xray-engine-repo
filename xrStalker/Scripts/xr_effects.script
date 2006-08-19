@@ -220,14 +220,6 @@ function send_tip(actor, npc, p)
     news_manager.send_tip(actor, p[1], nil, p[2], nil, p[3])
 end
 
-function send_tip_sound(actor, npc, p)
-	local tips_sound = news_manager.send_tip_nosound(db.actor, p[1], p[2])
-	if tips_sound ~= nil then
-		--' Играем звук забитый
-		tips_sound:play(db.actor, 0, sound_object.s2d)
-	end
-end
-
 
 
 --[[
@@ -882,15 +874,27 @@ function rostok_kruglov_tip_2(actor,npc)
 end
 function rostok_kruglov_attract_1(actor,npc)
 	xr_sound.set_sound_play(npc, "kruglov_stop_enemy_1")
-	send_tip_sound(actor,npc,"bar_freedom_chase", "ecolog")
+	local tips_sound = news_manager.send_tip_nosound(db.actor, "bar_freedom_chase", 0, "ecolog")
+	if tips_sound ~= nil then
+		--' Играем звук забитый
+		tips_sound:play(db.actor, 0, sound_object.s2d)
+	end
 end
 function rostok_kruglov_attract_2(actor,npc)
 	xr_sound.set_sound_play(npc, "kruglov_stop_enemy_2")
-	send_tip_sound(actor,npc,"rostok_kruglov_follow_2", "ecolog")
+	local tips_sound = news_manager.send_tip_nosound(db.actor, "rostok_kruglov_follow_2", 0, "ecolog")
+	if tips_sound ~= nil then
+		--' Играем звук забитый
+		tips_sound:play(db.actor, 0, sound_object.s2d)
+	end
 end
 function rostok_kruglov_ambush(actor,npc)
 	xr_sound.set_sound_play(npc, "rostok_kruglov_help_5")
-	send_tip_sound(actor,npc,"rostok_kruglov_follow_3", "ecolog")
+	local tips_sound = news_manager.send_tip_nosound(db.actor, "rostok_kruglov_follow_3", 0, "ecolog")
+	if tips_sound ~= nil then
+		--' Играем звук забитый
+		tips_sound:play(db.actor, 0, sound_object.s2d)
+	end
 end
 function bar_crush_heli_down(actor,npc)
 	news_manager.send_tip(actor, "bar_ecolog_crush_heli_down", 1, "killer", nil, 509)
