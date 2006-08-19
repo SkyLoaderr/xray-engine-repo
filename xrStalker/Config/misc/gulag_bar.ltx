@@ -1850,6 +1850,13 @@ path_walk = escape_5_walk
 meet = meet@ecolog_kruglov_1
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
+on_timer = 5000 | walker@bar_ecolog_professor_exit_w %=% 
+
+[walker@bar_ecolog_professor_exit_w]
+path_walk = escape_5_walk
+meet = meet@ecolog_kruglov_1
+danger = danger_condition@2
+wounded = wounded@ignore_kruglov
 
 [death@ecolog_crush]
 ;on_info = {=killed_by_actor +bar_kill_professor_start} %+bar_rescue_research_dead +bar_kill_professor_done +bar_rescue_research_corruped +bar_heli_scene_professor_die%, {+bar_kill_professor_start} %+bar_rescue_research_dead +bar_kill_professor_fail +bar_rescue_research_corruped +bar_heli_scene_professor_die%, %+bar_rescue_research_dead +bar_rescue_research_corruped +bar_heli_scene_professor_die%
