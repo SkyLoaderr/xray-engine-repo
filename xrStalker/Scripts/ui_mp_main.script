@@ -373,7 +373,7 @@ function mp_main:GatherServerData()
 	end
 	
 	if self.check_map_rotation:GetCheck() then
-		tmp = handler.edit_maprotlist:GetText()
+		tmp = self.edit_maprotlist:GetText()
 		if string.len(tmp) > 0 then
 			cmdstr = cmdstr .. "/maprot=" .. tmp ..".ltx"
 		end	
