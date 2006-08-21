@@ -98,7 +98,9 @@ float		ps_r2_sun_lumscale_hemi		= 1.0f;				// 1.0f
 float		ps_r2_sun_lumscale_amb		= 1.0f;
 float		ps_r2_gmaterial				= 0.f;				// 
 float		ps_r2_zfill					= 0.1f;				// .1f
-
+//- Mad Max
+float		ps_r2_gloss_factor			= 1.0f;
+//- Mad Max
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
 #include	"..\xr_ioc_cmd.h"
@@ -297,6 +299,9 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_zfill",				&ps_r2_ls_flags,			R2FLAG_ZFILL	);
 	CMD4(CCC_Float,		"r2_zfill_depth",		&ps_r2_zfill,				.001f,	.5f		);
 	CMD3(CCC_Mask,		"r2_allow_r1_lights",	&ps_r2_ls_flags,			R2FLAG_R1LIGHTS	);
+	//- Mad Max
+	CMD4(CCC_Float,		"r2_gloss_factor",		&ps_r2_gloss_factor,		.0f,	10.f	);
+	//- Mad Max
 
 	CMD3(CCC_Mask,		"r2_sun",				&ps_r2_ls_flags,			R2FLAG_SUN		);
 	CMD3(CCC_Mask,		"r2_sun_details",		&ps_r2_ls_flags,			R2FLAG_SUN_DETAILS);
