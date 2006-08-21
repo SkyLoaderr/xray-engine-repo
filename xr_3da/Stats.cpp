@@ -268,7 +268,12 @@ void CStats::Show()
 		F.OutNext	("netClient:   %2.2fms, %d",netClient.result,netClient.count);
 		F.OutNext	("netServer:   %2.2fms, %d",netServer.result,netServer.count);
 		F.OutSkip	();
+
+		float sz		= pFont->GetSize();
+		pFont->SetSize	(14);
 		F.OutNext	("CAMERA POS:  [%3.2f,%3.2f,%3.2f]",VPUSH(Device.vCameraPosition));
+		pFont->SetSize	(sz);
+
 		F.OutSkip	();
 		F.OutNext	("TEST 0:      %2.2fms, %d",TEST0.result,TEST0.count);
 		F.OutNext	("TEST 1:      %2.2fms, %d",TEST1.result,TEST1.count);
