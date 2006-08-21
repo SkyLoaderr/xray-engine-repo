@@ -284,8 +284,10 @@ void CSightManager::setup			(const CSightAction &sight_action)
 {
 	if (m_actions.size() > 1)
 		clear			();
+
 	if (!m_actions.empty() && (*(*m_actions.begin()).second == sight_action))
 		return;
+
 	clear				();
 	add_action			(0,xr_new<CSightControlAction>(1.f,u32(-1),sight_action));
 }
