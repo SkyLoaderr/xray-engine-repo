@@ -387,6 +387,15 @@ function se_respawn:spawn()
 		end
 	end		
 end
+--' Удаляем уже заспавненный объект из списка заспавненных
+--' Используется только  для ящиком со шмотками в смарттеррейнах
+function se_respawn:remove_spawned(id)
+	for k,v in pairs(self.spawned_obj) do
+		if id == v then
+			table.remove(self.spawned_obj, k)
+		end				
+	end	
+end
 -- Обновление респавнера. В зависимости от настроек обновляется либо только в офлайне, либо и там и там.
 function se_respawn:execute()
 	--printf("RESPAWN: [%s] se_respawn execute", tostring(self:name()))

@@ -109,6 +109,10 @@ function actor_binder:take_item_from_box(box, item)
 		return
 	end
 	
+	--' Необходимо уменьшить счетчик в респавнере
+	respawner:remove_spawned(item:id())
+
+
 	local smart_terrain = db.strn_by_respawn[respawner:name()]
 	if smart_terrain == nil then
 		return
