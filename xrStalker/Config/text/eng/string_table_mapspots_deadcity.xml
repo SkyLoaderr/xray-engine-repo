@@ -1,1 +1,42 @@
-<string_table />
+	<string id="cit_bandits_base_zone_hint">
+		<text>Bandit camp</text>
+	</string>
+	<string id="cit_compromat_documents_2_hint">
+		<text>Trader</text>
+	</string>
+	<string id="cit_doctor_escape_task_1_hint">
+		<text>Sewer entrance</text>
+	</string>
+	<string id="cit_doctor_escape_task_2_hint">
+		<text>Descent into the sewer</text>
+	</string>
+	<string id="cit_doctor_escape_task_3_hint">
+		<text>Pipe</text>
+	</string>
+	<string id="cit_doctor_escape_task_4_hint">
+		<text>City exit</text>
+	</string>
+	<string id="cit_doctor_task_1_hint">
+		<text>Hotel</text>
+	</string>
+	<string id="cit_doctor_weapon_task_1_hint">
+		<text>Weapons, equipment and other items that were taken from me.</text>
+	</string>
+	<string id="cit_gorsovet_zone_hint">
+		<text>Former city council building</text>
+	</string>
+	<string id="cit_killers_base_location_2_hint">
+		<text>Voronin</text>
+	</string>
+	<string id="cit_killers_base_zone_hint">
+		<text>Mercenary camp</text>
+	</string>
+	<string id="cit_sewer_hint">
+		<text>Descent into the sewer</text>
+	</string>
+	<string id="cit_vp_position_hint">
+		<text>The area where the doctor last saw Petrovich</text>
+	</string>
+	<string id="esc_vp_finder_hint">
+		<text>Map spot info.</text>
+	</string>

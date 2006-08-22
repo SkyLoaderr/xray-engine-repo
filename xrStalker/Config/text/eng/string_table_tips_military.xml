@@ -1,30 +1,36 @@
-    <string id="mil_actor_blockpost">
-        <text>"Stalkers, don't forget about the barrier. Any help is valued."</text>
-    </string>
-    <string id="mil_after_sniper_dead">
-        <text>"Branded one, come up to us. Soon everyone gathers and we'll start the gaiety!"</text>
-    </string>
-    <string id="mil_fblockpost_warning">
-        <text>Branded One, return and assume the position</text>
-    </string>
-    <string id="mil_info_freedom_radio">
-        <text>If you sit the whole night in the village on the Tower - the something is DEFINITELY going to happen... :)</text>
-    </string>
-    <string id="mil_info_max_mines">
-        <text>Remember about the mines - sapper can be mistaken twice...</text>
-    </string>
-    <string id="mil_info_max_village">
-        <text>Branded one be careful - it's said that the village has got another anomaly - it's moving very fast, moreover it's hard to notice it, damn.</text>
-    </string>
-    <string id="mil_info_to_all">
-        <text>Attention to everyone interested - the passage to Radar is guarded by the Monolithian troop, I think that you know that they're shooting off everyone who passes \nby. Good luck.</text>
-    </string>
-    <string id="mil_mission_complete">
-        <text>Our task is fulfilled. Thanks for your help.</text>
-    </string>
-    <string id="mil_scull_info">
-        <text>Branded one, cope with the snipers!!!</text>
-    </string>
-    <string id="mil_sniper_to_player_warning">
-        <text>Branded one, be careful, of you may catch a bullet with your noodle...</text>
-    </string>
+	<string id="mil_actor_blockpost">
+		<text>Stalker, you're approaching the Barrier - don't even think about messing around. We're happy to accept any help tho'. </text>
+	</string>
+	<string id="mil_after_sniper_dead">
+		<text>"Marked One, come over here to get your share and further instructions"</text>
+	</string>
+	<string id="mil_fblockpost_warning">
+		<text>Marked One, go back to your position</text>
+	</string>
+	<string id="mil_info_freedom_radio">
+		<text>If you spend the whole night in the Tower in the village something is GUARANTEED to happen...:)</text>
+	</string>
+	<string id="mil_info_max_mines">
+		<text>Remember about the mines: one mistake and you're toast…</text>
+	</string>
+	<string id="mil_info_max_village">
+		<text>Marked One, be careful, apparently there's a new anomaly in the village. It moves fast and the bastard's invisible.</text>
+	</string>
+	<string id="mil_info_to_all">
+		<text>Attention all those wishing to liquefy brains: the road to the Radar is protected by a Monolith unit and as you probably know they open fire on everyone. Good luck.</text>
+	</string>
+	<string id="mil_max_attack_signal">
+		<text>Attack! Let's waste these pigs.</text>
+	</string>
+	<string id="mil_mission_complete">
+		<text>Our task is complete. Retreat to the manor. We can sort out the payment there.</text>
+	</string>
+	<string id="mil_scull_attack_signal">
+		<text>Forward boys! The way is clear!</text>
+	</string>
+	<string id="mil_scull_info">
+		<text>Marked One, take care of the snipers!!!</text>
+	</string>
+	<string id="mil_sniper_to_player_warning">
+		<text>Marked One, be careful or you'll catch a bullet…</text>
+	</string>

@@ -1,60 +1,60 @@
-    <string id="esc_direction_fire">
-        <text>Don't move, attack strictly on my command.</text>
-    </string>
-    <string id="esc_fanat_victory">
-        <text>Victory!!! Everyone alive - come to me. Branded One, come here, let's talk.</text>
-    </string>
-    <string id="esc_return_dv">
-        <text>Great, Branded One, I'm glad that you're alive, and moreover you've visited us at our campfire. Drop in, we'll have a chat. A new business is at hand.</text>
-    </string>
-    <string id="esc_tutorial_end">
-        <text>Great, you've coped with the task. Lets assume, that the "take-off-landing" course is passed.</text>
-    </string>
-    <string id="esc_wolf_thanks">
-        <text>Branded One, now the passage to the camp is opened. Come to me, we'll have a chat.</text>
-    </string>
-    <string id="escape_fox_quest">
-        <text>Listen, Branded One, Fox is blocked nearby you by the mutants. Help him, he knows something about Gunslinger, the information could be useful for you.</text>
-    </string>
-    <string id="escape_stalker_death">
-        <text>You've lost you chance Branded One. Though there is no your guilt in it, but the guys are dead. It often happens in the Zone. Somehow or other you've \npassed the check-up. Return to me, we'll talk to the point.</text>
-    </string>
-    <string id="escape_stalker_helped">
-        <text>Well done, Branded One. If you can continue to act so, you may acquire many friends. Drop in and we'll talk in a business manner.</text>
-    </string>
-    <string id="escape_stalker_killed">
-        <text>Well, Branded One, why so. Somehow or other, you've passed the check-up, but deal with Wolf and his brigants on your own. Well, I'm waiting for you, got \nsome business.</text>
-    </string>
-    <string id="info_esc_give_agroprom_task">
-        <text>Branded One. MIlitaries have unveiled something at Agroprom RI. And I'm interested in it, and perhaps you are as well. The information must be delivered to \nBarman to the stalkers' bar. Go.</text>
-    </string>
-    <string id="tips_esc_trader_about_anomalies">
-        <text>Be wary! You're near the anomalies. Use bolts in order to define their borders.</text>
-    </string>
-    <string id="tips_esc_trader_about_pda">
-        <text>Press Contact ($$ACTION_CONTACTS$$). In Contact and on the minimap on the facial visor you see people in the radius of 250 meters with PDA turned on. \nThere you can see their attitude to you. Be careful if enemies appear there. However bandits and hehe mutants don't turn PDAs on, so stay cautious in the \nZone.</text>
-    </string>
-    <string id="tips_esc_trader_activate_map">
-        <text>In order to activate the map, press '$$ACTION_MAP$$'.</text>
-    </string>
-    <string id="tips_esc_trader_activate_pda">
-        <text>In order to activate PDA, press '$$ACTION_ACTIVE_JOBS$$'.</text>
-    </string>
-    <string id="tips_esc_trader_how_to_talk">
-        <text>In order to speak to someone, aim him and press '$$ACTION_USE$$'.</text>
-    </string>
-    <string id="tips_esc_trader_quest_1">
-        <text>Find the artifact on the place marked on the map and bring it to the Trader.</text>
-    </string>
-    <string id="tutorial_flash_anomaly_alarm">
-        <text>Branded One, be careful. Or next time it can be you!</text>
-    </string>
-    <string id="tutorial_trader_give_medikit">
-        <text>Give the medikit to that jerk.</text>
-    </string>
-    <string id="tutorial_trader_look_vagon">
-        <text>Branded One!!! Damn that artifact, you can bring it later. Run to the cabin, people there need your help! Idiots have managed to start shooting at the copter. I've \nsent you the coordinates.</text>
-    </string>
-    <string id="tutorial_trader_search_corpses">
-        <text>Search the corpses, there can be something useful.</text>
-    </string>
+	<string id="esc_direction_fire">
+		<text>Do not attack before I give the order - no itchy trigger fingers.</text>
+	</string>
+	<string id="esc_fanat_victory">
+		<text>Victory!!! If you're alive, on me! Marked One, get over here - we need to talk.</text>
+	</string>
+	<string id="esc_return_dv">
+		<text>Great, Marked One. I'm glad you're alive and decided to pay us a visit. Come over and we'll have a chat. There's a little something coming up.</text>
+	</string>
+	<string id="esc_tutorial_end">
+		<text>Excellent, your task is complete. Safe to say you've learned the basic skills OK.</text>
+	</string>
+	<string id="esc_wolf_thanks">
+		<text>Marked One, the way to the camp is now open to you. Come over and we'll talk.</text>
+	</string>
+	<string id="escape_fox_quest">
+		<text>About Sharpshooter, Marked One. Some stalker just came back from a long raid. Fox he's called. Looks like he had a pretty rough time - he's asking for help. Some weird creatures followed him all the way back, he says he won't hold out much longer. I reckon the fella will know a bit about Sharpshooter. You might wanna hurry up though, here are the co-ordinates.</text>
+	</string>
+	<string id="escape_stalker_death">
+		<text>You screwed up, Marked One. The boys died although that ain't your fault. These things happen in the Zone. Anyway, you passed the test so get back here and we'll talk business.</text>
+	</string>
+	<string id="escape_stalker_helped">
+		<text>Good man, Marked One. You carry this on and you'll make yourself a few friends. Pay me a visit and we'll talk business.</text>
+	</string>
+	<string id="escape_stalker_killed">
+		<text>Well, that wasn't a smart move, Marked One. You passed the test but you're gonna have to deal with Wolf and his goons on your own. Anyways, I'm waiting for you, we got some work to discuss.</text>
+	</string>
+	<string id="info_esc_give_agroprom_task">
+		<text>Marked One, the military dug up some cool stuff in Agroprom research institute. I'm interested in it and you probably are too. Get the info and take it to the barman in the stalker's bar. Get to work!</text>
+	</string>
+	<string id="tips_esc_trader_about_anomalies">
+		<text>Careful! You're right next to the anomalies. Use your bolts to work out their exact location and shape.</text>
+	</string>
+	<string id="tips_esc_trader_about_pda">
+		<text>Press Contact ($$ACTION_CONTACTS$$). You can see people within 250 metres of you who have turned their PDAs on in contacts and on your visor minimap. You can also see their attitude towards you. Pay attention if enemies appear although bandits and mutants (ha-ha) don't normally turn their PDAs on, so watch it!</text>
+	</string>
+	<string id="tips_esc_trader_activate_map">
+		<text>To activate the map press '$$ACTION_MAP$$'.</text>
+	</string>
+	<string id="tips_esc_trader_activate_pda">
+		<text>To activate the PDA press '$$ACTION_ACTIVE_JOBS$$'.</text>
+	</string>
+	<string id="tips_esc_trader_how_to_talk">
+		<text>To talk to someone aim at them and press '$$ACTION_USE$$'.</text>
+	</string>
+	<string id="tips_esc_trader_quest_1">
+		<text>Find the artifact in the area marked on the map and take it to the trader.</text>
+	</string>
+	<string id="tutorial_flash_anomaly_alarm">
+		<text>Marked One, pay attention - it could be you next time.</text>
+	</string>
+	<string id="tutorial_trader_give_medikit">
+		<text>Give this moron a medkit.</text>
+	</string>
+	<string id="tutorial_trader_look_vagon">
+		<text>Marked One! Forget the artifact, drop it off later. Run to the trailer by the road, my boys need help there. The idiots had the great idea of shooting at a passing chopper. I've sent you the co-ordinates.</text>
+	</string>
+	<string id="tutorial_trader_search_corpses">
+		<text>Search the bodies - you might find something useful.</text>
+	</string>

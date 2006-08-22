@@ -1,27 +1,126 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="agr_nii_security_plan_flash">
-        <text>Flash memory drive of soldier from Agroprom RI</text>
-    </string>
-    <string id="item test1">
-        <text>This is a ITEM test string</text>
-    </string>
-    <string id="item test2">
-        <text>This is a another ITEM test string</text>
-    </string>
-    <string id="item_gunslinger_flash">
-        <text>A flash memory card from Gunslinger's stash</text>
-    </string>
-    <string id="item_krot_flash">
-        <text>The Mole's flash memory card with the information on Gunslinger's stash</text>
-    </string>
-    <string id="item_pri_lom_ak74">
-        <text>Personal submachine gun of stalker nicknamed Crowbar</text>
-    </string>
-    <string id="item_quest_case_02">
-        <text>Documents from the military camp at Agroprom RI.</text>
-    </string>
-    <string id="item_scientist_flash">
-        <text>A flash memory card from the dead scientist found in forest</text>
-    </string>
+	<string id="item test1">
+		<text>This is a ITEM test string</text>
+	</string>
+	<string id="item test2">
+		<text>This is a another ITEM test string</text>
+	</string>
+	<string id="item_case_esc_desc">
+		<text>A briefcase containing documents. Made from fireproof materials.</text>
+	</string>
+	<string id="item_decoder_desc">
+		<text>Something like a powerful electronic lock pick. It looks like it was created with a specific electronic lock in mind. Strangely enough the design isn't meant to be general - it was made for one lock and can't break any other codes.</text>
+	</string>
+	<string id="item_decoder_name">
+		<text>Decoder</text>
+	</string>
+	<string id="item_detector_yantar_desc">
+		<text>Psy-emission detector</text>
+	</string>
+	<string id="item_detector_yantar_name">
+		<text>PP-4a sensor</text>
+	</string>
+	<string id="item_doc_x16_desc">
+		<text>Plastic document file. It's hard to work anything out without a degree in biology.</text>
+	</string>
+	<string id="item_doc_x16_name">
+		<text>Documents from lab X16</text>
+	</string>
+	<string id="item_doc_x18_desc">
+		<text>A thick pile of scientific documents. It's hard to work anything out without a degree in biology.</text>
+	</string>
+	<string id="item_doc_x18p1_name">
+		<text>Documents from lab X18 part 1</text>
+	</string>
+	<string id="item_doc_x18p2_name">
+		<text>Documents from lab X18 part 2</text>
+	</string>
+	<string id="item_doc_x18p3_name">
+		<text>Documents from lab X18 part 3</text>
+	</string>
+	<string id="item_doc_x18p4_name">
+		<text>Documents from lab X18 part 4</text>
+	</string>
+	<string id="item_doc_x18p5_name">
+		<text>Documents from lab X18 part 5</text>
+	</string>
+	<string id="item_docs_hiden_pri_desc">
+		<text>A worn manuscript in leather binding. Written by Sharpshooter himself. According to the headings it contains explanations of some of the Zone's secrets.</text>
+	</string>
+	<string id="item_docs_hiden_pri_name">
+		<text>Documents from the secret stash in Pripyat</text>
+	</string>
+	<string id="item_dynamite_esc_desc">
+		<text>A heavy wooden crate with the word "Explosive" written on it in several languages</text>
+	</string>
+	<string id="item_dynamite_esc_name">
+		<text>Dynamite crate</text>
+	</string>
+	<string id="item_flash_crazy_mil_desc">
+		<text>Flash drive - the most convenient device for transferring information.</text>
+	</string>
+	<string id="item_flash_crazy_mil_name">
+		<text>The crazy stalker's flash drive</text>
+	</string>
+	<string id="item_flash_eco_rost_desc">
+		<text>Flash drive - the most convenient device for transferring information.</text>
+	</string>
+	<string id="item_flash_eco_rost_name">
+		<text>Professor Kruglov's flash drive</text>
+	</string>
+	<string id="item_flash_esc_desc">
+		<text>Flash drive - the most convenient device for transferring information.</text>
+	</string>
+	<string id="item_flash_esc_name">
+		<text>Wounded stalker's flash drive</text>
+	</string>
+	<string id="item_flash_gslinger_agro_desc">
+		<text>Flash drive - the most convenient device for transferring information.</text>
+	</string>
+	<string id="item_flash_gslinger_agro_name">
+		<text>Flash drive from Sharpshooter's secret stash</text>
+	</string>
+	<string id="item_key_x18_desc">
+		<text>Electronic key to underground laboratory X-18.</text>
+	</string>
+	<string id="item_key_x18_name">
+		<text>Hog's key</text>
+	</string>
+	<string id="item_krot_flash">
+		<text>Mole's flash drive with information about Sharpshooter's secret stash</text>
+	</string>
+	<string id="item_pda_lucky_desc">
+		<text>Personal digital assistant. Indispensable in the Zone.</text>
+	</string>
+	<string id="item_pda_lucky_name">
+		<text>Lucky's PDA</text>
+	</string>
+	<string id="item_pda_tiran_desc">
+		<text>Personal digital assistant. Indispensable in the Zone.</text>
+	</string>
+	<string id="item_pda_tiran_name">
+		<text>Tyrant's PDA</text>
+	</string>
+	<string id="item_quest_case_02_desc">
+		<text>A briefcase containing documents. Made from fireproof materials.</text>
+	</string>
+	<string id="item_quest_case_02_name">
+		<text>Military documents from Agroprom research institute</text>
+	</string>
+	<string id="item_сase_esc_name">
+		<text>Documents from the checkpoint</text>
+	</string>
+	<string id="yan_bad_psy_helmet_desc">
+		<text>A prototype developed by scientists to protect people from psy-emissions. Not functional.</text>
+	</string>
+	<string id="yan_bad_psy_helmet_name">
+		<text>Psy-protection helmet. Not functional</text>
+	</string>
+	<string id="yan_good_psy_helmet_desc">
+		<text>Functional prototype developed by scientists to protect people from psy-emissions</text>
+	</string>
+	<string id="yan_good_psy_helmet_name">
+		<text>Functional psy-protection helmet</text>
+	</string>
 </string_table>

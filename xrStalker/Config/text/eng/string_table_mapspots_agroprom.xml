@@ -1,39 +1,39 @@
-    <string id="agr_captains_chamber_hint">
-        <text>Captain's storage area</text>
-    </string>
-    <string id="agr_collector_entrance_hint">
-        <text>Collector entrance</text>
-    </string>
-    <string id="agr_factory_hint">
-        <text>Plant</text>
-    </string>
-    <string id="agr_find_gunslinger_cache_hint">
-        <text>Find Gunslinger's stash in catacombs</text>
-    </string>
-    <string id="agr_give_case_to_barman_hint">
-        <text>Return the documents to bartender</text>
-    </string>
-    <string id="agr_help_krot_hint">
-        <text>Save the Mole</text>
-    </string>
-    <string id="agr_help_stalkers_hint">
-        <text>Rescue stalkers</text>
-    </string>
-    <string id="agr_meet_krot_hint">
-        <text>Meet the Mole</text>
-    </string>
-    <string id="agr_nii_hint">
-        <text>Agroprom RI. Base of the military</text>
-    </string>
-    <string id="agr_swamp_hint">
-        <text>Safe area</text>
-    </string>
-    <string id="agr_take_case_hint">
-        <text>Steal the documents</text>
-    </string>
-    <string id="agr_take_krots_info_hint">
-        <text>Pick up stash details from the Mole</text>
-    </string>
-    <string id="agr_zaz_hint">
-        <text>Zaporozhets</text>
-    </string>
+	<string id="agr_captains_chamber_hint">
+		<text>Captain's armoury</text>
+	</string>
+	<string id="agr_collector_entrance_hint">
+		<text>Catacomb entrance</text>
+	</string>
+	<string id="agr_factory_hint">
+		<text>Factory</text>
+	</string>
+	<string id="agr_find_gunslinger_cache_hint">
+		<text>Find Sharpshooter's secret stash in the catacombs</text>
+	</string>
+	<string id="agr_give_case_to_barman_hint">
+		<text>Give documents to barman</text>
+	</string>
+	<string id="agr_help_krot_hint">
+		<text>Save Mole</text>
+	</string>
+	<string id="agr_help_stalkers_hint">
+		<text>Save stalkers</text>
+	</string>
+	<string id="agr_meet_krot_hint">
+		<text>Meet Mole</text>
+	</string>
+	<string id="agr_nii_hint">
+		<text>Agroprom research institute. Military base</text>
+	</string>
+	<string id="agr_swamp_hint">
+		<text>Safe place</text>
+	</string>
+	<string id="agr_take_case_hint">
+		<text>Steal documents</text>
+	</string>
+	<string id="agr_take_krots_info_hint">
+		<text>Take information about the stash from Mole</text>
+	</string>
+	<string id="agr_zaz_hint">
+		<text>Zaporozhets</text>
+	</string>

@@ -1,390 +1,339 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="yantar_general_ucheniy_talk_end_0">
-        <text>kjhfg</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_end_1">
-        <text>???????</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_end_11">
-        <text>OOOOOOOK!</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_0">
-        <text>What do you want?</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_1">
-        <text>Brain!</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_101">
-        <text>Thank you Branded one,that you helped to rescue Kruglov. Take this suit as a reward for your help. \nAnd I suspect that you came not only for reward, I am right?</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_1011">
-        <text>I'm looking for the laboratory X 16. Barmen told me you may know its location.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_1012">
-        <text>We've been studiyng for a long time a radiation in the laboratory X16, you will not force your way \nthrough there without the special defence. We developed the device of psy-defence, which will help to \nward off a radiation, but for its correct tuning it is necessary to make some measurings. If you will \nhelp us to do these measurings, I will give you the adjusted prototype with its help you will be able to \nforce your way through into a laboratory.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_1013">
-        <text>Hemm.. Makeing measurings?</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_1014">
-        <text>If you and our college do these measurings, I will give you the adjusted prototype with its help you \nwill be able to get into a laboratory.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_10141">
-        <text>OK, I agree to make measurings</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_101411">
-        <text>Excellent, talk to Kruglov and go. He's got all nesseccary stuff.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_101412">
-        <text>Good</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_10142">
-        <text>OK, I agree to make measurings\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_101421">
-        <text>Excellent, talk to Semenov and go. He's got all nesseccary stuff.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_101422">
-        <text>Good</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_10143">
-        <text>No, I won't do it</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_101431">
-        <text>It's a pity. We cannot manage to send an expedition to make measurings.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_11">
-        <text>Yes, yes?! What are you interested in?</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_111">
-        <text>I'm looking for the laboratory X 16. Barmen told me you may know its location.\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_12">
-        <text>Thank you Branded one,that you helped to rescue Kruglov. Take this suit as a reward for your help. \nAnd I suspect that you came not only for reward, I am right?\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_121">
-        <text>I'm looking for the laboratory X 16. Barmen told me you may know its location.\n\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_1211">
-        <text>We've been studiyng for a long time a radiation in the laboratory X16, you will not force your way \nthrough there without the special defence. We developed the device of psy-defence, which will help to \nward off a radiation, but for its correct tuning it is necessary to make some measurings. If you will \nhelp us to do these measurings, I will give you the adjusted prototype with its help you will be able to \nforce your way through into a laboratory. Agree?\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_12111">
-        <text>I'm agree.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_121111">
-        <text>Excellent, talk to Kruglov and go. He's got all nesseccary stuff.\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_12112">
-        <text>No, I'm not agree for this moment</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_121122">
-        <text>It's a pity. We cannot manage to send an expedition to make measurings.\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_2">
-        <text>Scientist!</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_21">
-        <text>Yes, yes?! What are you interested in?\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_211">
-        <text>We've been studiyng for a long time a radiation in the laboratory X16, you will not force your way \nthrough there without the special defence. We developed the device of psy-defence, which will help to \nward off a radiation, but for its correct tuning it is necessary to make some measurings. If you will \nhelp us to do these measurings, I will give you the adjusted prototype with its help you will be able to \nforce your way through into a laboratory.\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_2111">
-        <text>Go on</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_21111">
-        <text>If you and our college do these measurings, I will give you the adjusted prototype with its help you \nwill be able to get into a laboratory.\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_21112">
-        <text>Alright, I agree to do measurings</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_211121">
-        <text>Excellent, talk to Kruglov and go. He's got all nesseccary stuff.\n\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_2111211">
-        <text>OK</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_21113">
-        <text>\nAlright, I agree to do measurings\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_211131">
-        <text>Excellent, talk to Semenov and go. He's got all nesseccary stuff.\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_211132">
-        <text>\nok</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_211141">
-        <text>You do not understand, there's radiation. Nobody could sneak up nearer than half kilometre, it turns \naveryone to zombie. Is a real suicide to go there without defence, do you understand?\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_2111411">
-        <text>Hemm, It changes everything</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_211142">
-        <text>I don't care, tell me everything you know.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_211143">
-        <text>Well look, I warned you. Vasiliev was engaged in the problem of laboratory. About a week ago he, \ntogether with stalker on the name Ghost, made an effort to get to the laboratory. In some hours we \nwere pretty shaken and a radiation disappeared. In a hour we got a signal from Vasiliev, a signal \nwent from bogs, but disappeared then. Morally together with death of Vasiliev. Try to find the dead \nbody of Vasiliev, he had exact information on a laboratory, where is and how to get in a laboratory. \nPossibly there is information how to cut off a emanation. The entrance to the laboratory is probably \nhidden in basement of one of buildings on factory territory.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_211144">
-        <text>Well, great</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_21115">
-        <text>No, I won't do it.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_211151">
-        <text>It's a pity. We cannot manage to send an expedition to make measurings.\n\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_221">
-        <text>Thank you Branded one,that you helped to rescue Kruglov. Take this suit as a reward for your help. \nAnd I suspect that you came not only for reward, I am right?\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_231">
-        <text>Good work, Branded One. You've cut off the emanation so we can go there and thoroughly study it. \nAs a gratitude we lower our prices for you as much as possible.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_2311">
-        <text>Thanks</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_241">
-        <text>Yes, Branded One. What do you want?</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_3">
-        <text>more quests???</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_31">
-        <text>Well done fellows. If measurins are right, the prototype ensures you maximum protection against \nemanation.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_311">
-        <text>Keep on</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_3111">
-        <text>Now you will be able to force your way through into a laboratory, but if you will not cut off a radiation, \nyou won't be able to stay alive even with psy-defence. Our calculations helped to find the \napproximate location of emitter. It is in an underground apartment. I marked it for you on a map.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_31111">
-        <text>How can I get into laboratory X16? Where's the entrance?</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_311111">
-        <text>Vasiliev was engaged in the problem of laboratory. About a week ago he, together with stalker on the \nname Ghost, made an effort to get to the laboratory. In some hours we were pretty shaken and a \nradiation disappeared. In a hour we got a signal from Vasiliev, a signal went from bogs, but \ndisappeared then. Morally together with death of Vasiliev. Try to find the dead body of Vasiliev, he \nhad exact information on a laboratory, where is and how to get in a laboratory. \nPossibly there is information how to cut off a emanation. I gave you all known coordinates.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_311112">
-        <text>Go on</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_311113">
-        <text>All you need is to find Vasiliev's corpse and obtain more detailed information concerning location of \nthe laboratory. After getting into laboratory you should find Ghost. Ghost knew how to cut off the \nemanation and how to get out of there after it.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_311114">
-        <text>Well, I'll try.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_4">
-        <text>text in default</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_41">
-        <text>Why did he die? You had to secure him?!</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_411">
-        <text>Kruglov was shut by zombies, I couldn't help him. There were too many of them.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_4111">
-        <text>How could it happen? Damn, everything's going wrong...we have to call new employees again...we've \ngot our own problems without it...Damn!</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_41111">
-        <text>Kruglov's dead, but I'm still alive. Give me the prototype I'll get into the laboratory.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_411111">
-        <text>Here's the prototype, be careful. It isn't adjusted properly, it's you fault you failed to keep our collegue \nalive. So the psy-defence won't be able to provide maximum protection against emanation, though it \ncan lower a level of it. So, Stalker. you'd better move quickly to the emanation source.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_4111111">
-        <text>How can I get into laboratory X16? Where's the entrance? \n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_41111111">
-        <text>Vasiliev was engaged in the problem of laboratory. About a week ago he, together with stalker on the \nname Ghost, made an effort to get to the laboratory. In some hours we were pretty shaken and a \nradiation disappeared. In a hour we got a signal from Vasiliev, a signal went from bogs, but \ndisappeared then. Morally together with death of Vasiliev. Try to find the dead body of Vasiliev, he \nhad exact information on a laboratory, where is and how to get in a laboratory. \nPossibly there is information how to cut off a emanation. I gave you all known coordinates.\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_41112">
-        <text>Go on</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_41113">
-        <text>All you need is to find Vasiliev's corpse and obtain more detailed information concerning location of \nthe laboratory. After getting into laboratory you should find Ghost. Ghost knew how to cut off the \nemanation and how to get out of there after it.\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_41114">
-        <text>OK, I'll try.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_51">
-        <text>Why did he die? You had to secure him?!\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_511">
-        <text>Semenov was shut by zombies, I couldn't help him. There were too many of them.\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_5111">
-        <text>How could it happen? Damn, everything's going wrong...we have to call new employees again...we've \ngot our own problems without it...Damn!\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_51111">
-        <text>Semenov's dead, but I'm still alive. Give me the prototype I'll get into the laboratory.\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_511111">
-        <text>Here's the prototype, be careful. It isn't adjusted properly, it's you fault you failed to keep our collegue \nalive. So the psy-defence won't be able to provide maximum protection against emanation, though it \ncan lower a level of it. So, Stalker. you'd better move quickly to the emanation source.\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_5111111">
-        <text>How can I get into laboratory X16? Where's the entrance? \n\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_511111111">
-        <text>Vasiliev was engaged in the problem of laboratory. About a week ago he, together with stalker on the \nname Ghost, made an effort to get to the laboratory. In some hours we were pretty shaken and a \nradiation disappeared. In a hour we got a signal from Vasiliev, a signal went from bogs, but \ndisappeared then. Morally together with death of Vasiliev. Try to find the dead body of Vasiliev, he \nhad exact information on a laboratory, where is and how to get in a laboratory. \nPossibly there is information how to cut off a emanation. I gave you all known coordinates.\n\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_51112">
-        <text>Go on</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_51113">
-        <text>All you need is to find Vasiliev's corpse and obtain more detailed information concerning location of \nthe laboratory. After getting into laboratory you should find Ghost. Ghost knew how to cut off the \nemanation and how to get out of there after it.\n\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_51114">
-        <text>OK, I'll try</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_61">
-        <text>Yes, Branded One?!</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_71">
-        <text>Yes, Branded One?!\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_81">
-        <text>It's so bad that Kruglov's dead, but we cannot turn him back. We need measurings, did you get it?</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_811">
-        <text>Yes, here they are.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_8111">
-        <text>Good, I'm going to adjust the prototype. Wait here.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_81111">
-        <text>OK</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_812">
-        <text>No</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_8121">
-        <text>Got there and bring it to me. Without measurings I won't be able to ajust the prototype.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_91">
-        <text>Here's the prototype. If the measurings are correct, it can provide you maximum protection against \nemanation.</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_911">
-        <text>Go on</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_9111">
-        <text>Now you will be able to force your way through into a laboratory, but if you will not cut off a radiation, \nyou won't be able to stay alive even with psy-defence. Our calculations helped to find the \napproximate location of emitter. It is in an underground apartment. I marked it for you on a map.\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_9112">
-        <text>How can I get into laboratory X16? Where's the entrance? \n\n\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_9113">
-        <text>Vasiliev was engaged in the problem of laboratory. About a week ago he, together with stalker on the \nname Ghost, made an effort to get to the laboratory. In some hours we were pretty shaken and a \nradiation disappeared. In a hour we got a signal from Vasiliev, a signal went from bogs, but \ndisappeared then. Morally together with death of Vasiliev. Try to find the dead body of Vasiliev, he \nhad exact information on a laboratory, where is and how to get in a laboratory. \nPossibly there is information how to cut off a emanation. I gave you all known coordinates.\n\n\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_9114">
-        <text>Go on</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_9115">
-        <text>All you need is to find Vasiliev's corpse and obtain more detailed information concerning location of \nthe laboratory. After getting into laboratory you should find Ghost. Ghost knew how to cut off the \nemanation and how to get out of there after it.\n\n\n</text>
-    </string>
-    <string id="yantar_general_ucheniy_talk_start_9116">
-        <text>OK, I'll try</text>
-    </string>
-    <string id="yantar_help_scientist_0">
-        <text>Help me!!!!</text>
-    </string>
-    <string id="yantar_help_scientist_1">
-        <text>go_1</text>
-    </string>
-    <string id="yantar_help_scientist_101">
-        <text>There's no time to chatter...</text>
-    </string>
-    <string id="yantar_help_scientist_11">
-        <text>Yes, Branded One</text>
-    </string>
-    <string id="yantar_help_scientist_111">
-        <text>Professor asked me to escort you to the place for making measurings.</text>
-    </string>
-    <string id="yantar_help_scientist_1111">
-        <text>Alright, we are moving out now. There's nothing to do alone, and I think we'll cope together. The main \npoint is not to get close to cadavers. Are you ready?</text>
-    </string>
-    <string id="yantar_help_scientist_11111">
-        <text>I'm ready.</text>
-    </string>
-    <string id="yantar_help_scientist_111111">
-        <text>It's to dangerous outside, you go first. Explore outside territory, cadavers are moving again.</text>
-    </string>
-    <string id="yantar_help_scientist_1111111">
-        <text>Alright</text>
-    </string>
-    <string id="yantar_help_scientist_2">
-        <text>Talk to chief first!</text>
-    </string>
-    <string id="yantar_help_scientist_21">
-        <text>Woh, Branded One! Finally you've reached us. Talk to professor, he'll reward you for saving me.</text>
-    </string>
-    <string id="yantar_help_scientist_3">
-        <text>go_2</text>
-    </string>
-    <string id="yantar_help_scientist_31">
-        <text>There's no time to chatter...</text>
-    </string>
-    <string id="yantar_help_scientist_4">
-        <text>go_3</text>
-    </string>
-    <string id="yantar_help_scientist_41">
-        <text>Hey, Branded One, how's life?</text>
-    </string>
-    <string id="yantar_help_scientist_5">
-        <text>go_4</text>
-    </string>
-    <string id="yantar_help_scientist_51">
-        <text>Yes, Branded One?</text>
-    </string>
-    <string id="yantar_help_scientist_511">
-        <text>Professor asked me to escort you to the place for making measurings.\n</text>
-    </string>
-    <string id="yantar_help_scientist_512">
-        <text>Alright, we are moving out now. There's nothing to do alone, and I think we'll cope together. The main \npoint is not to get close to cadavers. Are you ready?\n</text>
-    </string>
-    <string id="yantar_help_scientist_513">
-        <text>I'm ready.</text>
-    </string>
-    <string id="yantar_help_scientist_514">
-        <text>It's to dangerous outside, you go first. Explore outside territory, cadavers are moving again. \n</text>
-    </string>
-    <string id="yantar_help_scientist_515">
-        <text>OK</text>
-    </string>
-    <string id="yantar_help_scientist_6">
-        <text>opa!</text>
-    </string>
-    <string id="yantar_help_scientist_61">
-        <text>i'm sorry, I've got no time to natter.</text>
-    </string>
-    <string id="yantar_help_scientist_71">
-        <text>Hey, Branded One! How are you?</text>
-    </string>
-    <string id="yantar_help_scientist_81">
-        <text>Wait...till we've finished our talk.</text>
-    </string>
-    <string id="yantar_help_scientist_91">
-        <text>Wait till measuring are ready.</text>
-    </string>
-    <string id="yantar_wounded_scientist_0">
-        <text>AAAAAAAAA!!!!!</text>
-    </string>
-    <string id="yantar_wounded_scientist_1">
-        <text>Go!!!!!!!</text>
-    </string>
-    <string id="yantar_wounded_scientist_11">
-        <text>....emmm.....emmm</text>
-    </string>
-    <string id="yantar_wounded_scientist_111">
-        <text>Get up, it's all over.</text>
-    </string>
-    <string id="yantar_wounded_scientist_21">
-        <text>Hey, Branded One! How are you?\n</text>
-    </string>
-    <string id="yantar_wounded_scientist_211">
-        <text>I've done measurings, it's time to go back.</text>
-    </string>
-    <string id="yantar_wounded_scientist_31">
-        <text>Hey, Branded One! How are you?\n</text>
-    </string>
+	<string id="yantar_general_ucheniy_talk_start_101">
+		<text>Thank you... err... Marked One, right? You helped save our associate Kruglov and in order to show my sincere appreciation I would like to present you with one of our working suits. It comes in very handy, you should know that... Could I be of additional help to you?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_1011">
+		<text>I'm looking for laboratory X16. The Barman told me you might be informed about its location.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_1012">
+		<text>We've long had an interest in laboratory X16...or, rather, in the mechanism inside it that emits radiation which directly affects people's consiousness. I'm afraid I have to disappoint you: the place is impossible to penetrate without special PSI-armour. The outcome is known in advance - even if you could evade the swarms of zombies that infest the laboratory entrance, you run the risk of becoming one of them. This is all very serious. However, we've designed a screening device to help shield the radiation, but to fine-tune it we have to obtain additional measurements. If you help us with this task, we could probably provide you with a fully calibrated prototype for field testing.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_1013">
+		<text>Measurements?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_1014">
+		<text>If you, together with our associate, take all the necessary measurements, I will prepare a fully workable prototype of the armour and will give it to you. It will most likely let you get inside the laboratory.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_10141">
+		<text>OK, I agree.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_101411">
+		<text>Excellent! Talk to Kruglov and start on your way. He is already equipped with everything necessary.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_101412">
+		<text>OK.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_10142">
+		<text>OK, I agree.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_101421">
+		<text>Excellent! Talk to Semenov and start on your way. He's got everything you will need.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_101422">
+		<text>OK.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_10143">
+		<text>No.. right now I don't want to sign up for this.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_101431">
+		<text>That's too bad, a real pity... I don't know how or when we could carry out this measurement expedition on our own.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_11">
+		<text>Yes, sir? What might you be looking for?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_111">
+		<text>I'm looking for laboratory X16. The Barman told me you might be informed about its location.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_12">
+		<text>Thank you, Marked One, for rescuing Kruglov. Take this full-pressure suit as a reward for your troubles. Also, I suspect you didn't come here for a simple reward, am I right?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_121">
+		<text>I'm looking for laboratory X16. The Barman told me that you might be informed about its location.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_1211">
+		<text>We have long studied the radiation from laboratory X16, and you won’t break into it without special armour. We've designed a PSI-protection device to help shield the radiation, but we need to take some more measurements to fine-tune it. If you help us take these measurements, I will give you a calibrated prototype that will allow you to get inside the laboratory. Do you agree?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_12111">
+		<text>OK.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_121111">
+		<text>Excellent, talk to Kruglov and start on your way. He's got everything necessary.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_12112">
+		<text>No, I'm not up for this yet.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_121122">
+		<text>That's a real pity. So far we've been unable to send a measurement expedition of our own.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_21">
+		<text>Yes, sir? What might you be looking for?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_211">
+		<text>We've long had an interest in laboratory X16...or, rather, in the mechanism inside it that emits radiation which directly affects people's consiousness. I'm afraid I have to disappoint you: the place is impossible to penetrate without special PSI-armour. The outcome is known in advance - even if you could evade the swarms of zombies that infest the laboratory entrance, you run the risk of becoming one of them. This is all very serious. However, we've designed a screening device to help shield the radiation, but to fine-tune it we have to obtain additional measurements. If you help us with this task, we could probably provide you with a fully calibrated prototype for field testing.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_2111">
+		<text>Go on.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_21111">
+		<text>If you, together with our associate, take all the necessary measurements, I will prepare a fully workable prototype of the armour and will give it to you. It will most likely let you get inside the laboratory.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_21112">
+		<text>OK, I agree.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_211121">
+		<text>Excellent! Talk to Kruglov and start on your way. He is already equipped with everything necessary.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_2111211">
+		<text>OK.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_21113">
+		<text>OK, I agree.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_211131">
+		<text>Excellent! Talk to Semenov and start on your way. He's got everything you will need.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_211132">
+		<text>OK.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_211141">
+		<text>You don't understand, there's radiation. No one has been able to come closer than half a kilometre - it makes a zombie out of anyone. Going there without an armour is just like suicide, get it?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_2111411">
+		<text>Hrm. That changes things.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_211142">
+		<text>To hell with it, just tell me all you know.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_211143">
+		<text>OK, but don't say I didn't warn you. Vasiliev worked on the laboratory problem. About a week ago he and stalker by the name of Ghost attempted to get inside the laboratory. After several hours we felt a shake and radiation stopped; after one more hour we got a signal from Vasiliev, it was coming from the swamp but then vanished. By the looks of things, Vasiliev is gone. Try to find his body: he had accurate information about the laboratory - where it is and how to get in. He might have also known how to turn off the radiation. The laboratory entrance is most likely to be hidden in the basement of one of the buildings based on plant territory.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_211144">
+		<text>Вот и отлично.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_21115">
+		<text>No.. right now I don't want to sign up for this.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_211151">
+		<text>That's too bad, a real pity... I don't know how or when we could carry out this measurement expedition on our own.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_221">
+		<text>Thank you... mmm... Marked One, right? You helped save our associate Kruglov and in order to show my sincere appreciation I would like to present you with one of our working suits. It comes in very handy, you should know that…</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_231">
+		<text>You did a splendid job, Marked One! Now that the radiation is turned off, we will be able to order new expeditions and explore previously inaccessible territories. And also... from now on we will conduct a most favourable pricing policy toward you.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_2311">
+		<text>Thank you.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_241">
+		<text>Yes, Marked One? What are you looking for?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_31">
+		<text>You managed superbly! Listen, if the results you obtained are correct, the prototype can actually provide effective protection for you against the radiation from Х16!</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_311">
+		<text>Glad to hear that.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_3111">
+		<text>Now your path to the laboratory is clear... except that if the source of radiation isn't destroyed and doesn't lose its power, you may not have enough time to get back. So, my dear sir, here is the deal. Our calculations have produces an estimated location of the radiation source as well as the fact that it is under ground. With your permission, I have already marked the spot on your map.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_31111">
+		<text>How exactly does one get inside the laboratory X16? Where is the entrance located?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_311111">
+		<text>The X16 problem was being studied by Vasiliev... About a week ago he, together with a colleague of yours – his name, I think, was Ghost – attempted to get inside the laboratory. After some time an anomalous emission occurred. We felt a bad shake and the singal vanished. In an hour we registered it again – it was coming from the direction of the swamps, but then died out... it seems that Vasiliev's life ended at the same time. If only we could find the body! Vasiliev was carrying dependable recording equipment that had to have registered accurate data on X16. And they surely could have found some important evidence. Perhaps that would help explain how to turn off the radiation. I have already written down for you all the co-ordinates known to me.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_311112">
+		<text>Ahem...It would be very interesting to take a look at these documents. So, you think Vasiliev has them?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_311113">
+		<text>Perhaps. At any rate, you must start by finding Vasiliev's body – that is the only chance of obtaining accurate information about the laboratory's location. The body of your colleague, Ghost, must be somewhere there as well. You know, it seemed to me like he knew a lot more about X16 than he admitted to us. Had he somehow survived... Well, it's no use holding on to that hope, of course.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_311114">
+		<text>OK, I'll try.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_41">
+		<text>Why did he die? Weren't you supposed to protect him?!</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_411">
+		<text>Kruglov got shot by the zombies… I couldn't help it, there were too many of them.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_4111">
+		<text>But how, how could it happen?! Damn it, hell, everything is going haywire! I'll have to write up another report of the circumstances of his death, then request new workers… when will this stop!..</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_41111">
+		<text>Listen... Kruglov is gone, but I'm alive. Give me the prototype. I will fight my way inside X16.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_411111">
+		<text>OK. Let's try to save the situation. Here is the prototype, but be careful, it's not calibrated properly... well, you already know why. So, stalker, even before you come to the radiation source, you must hurry.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_4111111">
+		<text>How does one get inside the laboratory X16? Where exactly is the entrance located?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_41111111">
+		<text>The X16 problem was being studied by Vasiliev... About a week ago he, together with a colleague of yours – his name, I think, was Ghost – attempted to get inside the laboratory. After some time an anomalous emission occurred. We felt a bad shake and the singal vanished. In an hour we registered it again – it was coming from the direction of the swamps, but then died out... it seems that Vasiliev's life ended at the same time. If only we could find the body! Vasiliev had dependable recording equipment that had to have registered accurate data on X16. And they surely could have found some important evidence. Perhaps that would explain how to turn off the radiation. I have already written down for you all the co-ordinates known to me.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_41112">
+		<text>Anything else?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_41113">
+		<text>You must start by finding Vasiliev's body – that is the only chance of obtaining accurate information about the laboratory's location. The body of your colleague, Ghost, must be somewhere there as well. You know, it seemed to me like he knew a lot more about X16 than he admitted to us. If he has survived somehow... Well, it's no use holding on to that hope, of course.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_41114">
+		<text>OK, I'll try.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_51">
+		<text>Why did he die? Weren't you supposed to protect him?!</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_511">
+		<text>Semenov got shot by the zombies… I couldn't help it, there were too many of them.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_5111">
+		<text>But how, how could it happen?! Damn it, hell, everything is going haywire! I'll have to write up another report of the circumstances of his death, then request new workers… when will this stop!..</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_51111">
+		<text>Listen... Semenov is gone, but I'm alive. Give me the prototype. I will fight my way inside X16.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_511111">
+		<text>OK. Let's try to save the situation. Here is the prototype, but be careful, it's not calibrated properly... well, you already know why. So, stalker, even before you come to the radiation source, you must hurry.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_5111111">
+		<text>How does one get inside the laboratory X16? Where exactly is the entrance located?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_511111111">
+		<text>The X16 problem was being studied by Vasiliev... About a week ago he, together with a colleague of yours – his name, I think, was Ghost – attempted to get inside the laboratory. After some time an anomalous emission occurred. We felt a bad shake and the singal vanished. In an hour we registered it again – it was coming from the direction of the swamps, but then died out... it seems that Vasiliev's life ended at the same time. If only we could find the body! Vasiliev was carrying dependable recording equipment that had to have registered accurate data on X16. And they surely could have found some important evidence. Perhaps that would help explain how to turn off the radiation. I have already written down for you all the co-ordinates known to me.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_51112">
+		<text>Ahem...It would be very interesting to take a look at these documents. So, you think Vasiliev has them?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_51113">
+		<text>Perhaps. At any rate, you must start by finding Vasiliev's body – that is the only chance of obtaining accurate information about the laboratory's location. The body of your colleague, Ghost, must be somewhere there as well. You know, it seemed to me like he knew a lot more about X16 than he admitted to us. Had he somehow survived... Well, it's no use holding on to that hope, of course.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_51114">
+		<text>OK, I'll try.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_61">
+		<text>Yes, Marked One?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_71">
+		<text>Yes, Marked One?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_81">
+		<text>It's too bad that Kruglov died... Alas, nothing can bring him back. It's most important that you bring us the measurement data. Did you?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_811">
+		<text>Yes, here it is.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_8111">
+		<text>Ok, let me adjust the prototype. Wait for me here.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_81111">
+		<text>Gotcha.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_812">
+		<text>No.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_8121">
+		<text>Then get them, and quick! I cannot calibrate the prototype properly without them.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_91">
+		<text>Here is the prototype. If the measurement data is correct, it will provide effective protection for you against the radiation.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_911">
+		<text>Can you be a little clearer?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_9111">
+		<text>Now you can safely move around the laboratory. But remember: in case the radiation emitter isn't neutralised after a long while, the power of PSI-protection can fall below critical point. Our calculations produced an estimated location of the emitter, and we also know it's under ground. I've already marked it on your map.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_9112">
+		<text>How do I get inside X16? Where exactly is the entrance?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_9113">
+		<text>The X16 problem was being studied by Vasiliev... About a week ago he, together with a colleague of yours – his name, I think, was Ghost – attempted to get inside the laboratory. After some time an anomalous emission occurred. We felt a bad shake and the singal vanished. In an hour we registered it again – it was coming from the direction of the swamps, but then died out... it seems that Vasiliev's life ended at the same time. If only we could find the body! Vasiliev was carrying dependable recording equipment that had to have registered accurate data on X16. And they surely could have found some important evidence. Perhaps that would help explain how to turn off the radiation. I have already written down for you all the co-ordinates known to me.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_9114">
+		<text>Ahem...It would be very interesting to take a look at these documents. So, you think Vasiliev has them?</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_9115">
+		<text>Perhaps. At any rate, you must start by finding Vasiliev's body – that is the only chance of obtaining accurate information about the laboratory's location. The body of your colleague, Ghost, must be somewhere there as well. You know, it seemed to me like he knew a lot more about X16 than he admitted to us. Had he somehow survived... Well, it's no use holding on to that hope, of course.</text>
+	</string>
+	<string id="yantar_general_ucheniy_talk_start_9116">
+		<text>OK, I'll try.</text>
+	</string>
+	<string id="yantar_help_scientist_101">
+		<text>There's no time...</text>
+	</string>
+	<string id="yantar_help_scientist_11">
+		<text>Yes, Marked One?</text>
+	</string>
+	<string id="yantar_help_scientist_111">
+		<text>Professor asked me to take a trip to the measurement site.</text>
+	</string>
+	<string id="yantar_help_scientist_1111">
+		<text>Now you're talking business! Let's move out immediately. It was no use getting there alone, but with you it's different... I think we'll manage quickly – just make sure not to let those cadavers too close to you. So, you ready?</text>
+	</string>
+	<string id="yantar_help_scientist_11111">
+		<text>Yeah.</text>
+	</string>
+	<string id="yantar_help_scientist_111111">
+		<text>You know what... Why don't you go first. You've got a whole lot of experience, unlike me. And those cadavers are starting to move again…</text>
+	</string>
+	<string id="yantar_help_scientist_1111111">
+		<text>OK.</text>
+	</string>
+	<string id="yantar_help_scientist_21">
+		<text>Wow! Marked One here on a personal visit! Finally you've made it to our parts. Talk to the Professor – he wants to thank you for rescuing me.</text>
+	</string>
+	<string id="yantar_help_scientist_31">
+		<text>Later, later!</text>
+	</string>
+	<string id="yantar_help_scientist_41">
+		<text>Hey, Marked One! How are things going?</text>
+	</string>
+	<string id="yantar_help_scientist_51">
+		<text>Yes, Marked One?</text>
+	</string>
+	<string id="yantar_help_scientist_511">
+		<text>Professor asked me to take a trip to the measurement site.</text>
+	</string>
+	<string id="yantar_help_scientist_512">
+		<text>Now you're talking business! Let's move out immediately. It was no use getting there alone, but with you it's different... I think we'll manage quickly – just make sure not to let those cadavers too close to you. So, you ready?</text>
+	</string>
+	<string id="yantar_help_scientist_513">
+		<text>Yeah.</text>
+	</string>
+	<string id="yantar_help_scientist_514">
+		<text>You know what... Why don't you go first. You've got a whole lot of experience, unlike me. And those cadavers are starting to move again…</text>
+	</string>
+	<string id="yantar_help_scientist_515">
+		<text>OK.</text>
+	</string>
+	<string id="yantar_help_scientist_61">
+		<text>I'm sorry, I have no time for this right now.</text>
+	</string>
+	<string id="yantar_help_scientist_71">
+		<text>Hey, Marked One! How's life?</text>
+	</string>
+	<string id="yantar_help_scientist_81">
+		<text>Wait a little bit... We need to finish talking.</text>
+	</string>
+	<string id="yantar_help_scientist_91">
+		<text>Wait! I'm not donу taking measurements!</text>
+	</string>
+	<string id="yantar_wounded_scientist_11">
+		<text>Yipe!.... Ouch... argh..</text>
+	</string>
+	<string id="yantar_wounded_scientist_111">
+		<text>You alive? C'mon, get up... Get up slowly. It's all over. It's behind us now.</text>
+	</string>
+	<string id="yantar_wounded_scientist_21">
+		<text>Hey, Marked One. How are you?</text>
+	</string>
+	<string id="yantar_wounded_scientist_211">
+		<text>Done! Pack the camera, time to get leaving!</text>
+	</string>
+	<string id="yantar_wounded_scientist_31">
+		<text>Hey, Marked One! How's life?</text>
+	</string>
 </string_table>

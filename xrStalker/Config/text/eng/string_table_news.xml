@@ -1,54 +1,54 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="new_escape_bridge">
-        <text>People, the militaries have resumed the patrol under the broken bridge at the outpost. Their sniper has also settled there… I didn’t manage to find out where \nexactly, because I had to scarper from there…</text>
-    </string>
-    <string id="news_agroprom_box">
-        <text>I’ve heard from the patrol talks, that the militaries gather all they’ve found at the 2nd floor of the Institute’s building. If there are willing to risk for the gain - try to \nget through.</text>
-    </string>
-    <string id="news_agroprom_mili">
-        <text>Show caution everyone. Militaries have established here for a long time. Their base is in institute building. I’ve seen several tens of people and sniper on the \nroof.</text>
-    </string>
-    <string id="news_escape_artefact">
-        <text>Messrs stalkers… Need “Night star” promptly… I pay fair bread… It is said that there is one remaining on the outpost since the last emission…</text>
-    </string>
-    <string id="news_escape_bandits">
-        <text>Copy everyone… Bandits have settled at the factory again. Taking off bribes off the stalkers… Someone near there, intimidate those freaks… I won’t be in \ndebt.</text>
-    </string>
-    <string id="news_escape_blockpost_attack">
-        <text>Attention everyone… Cronies, don’t pry into the block post… Some jerks have attacked the patrol… All in all it’s really hot there… They’ll send dragoons for \nsure.</text>
-    </string>
-    <string id="news_escape_blockpost_case">
-        <text>Recently courier Barman with the goods has been taken on the army post… All in all tasty morsel is the box with the artifacts, lies somewhere at \ncommander’s… So, if the life bothers someone - one can risk.</text>
-    </string>
-    <string id="news_escape_dogs">
-        <text>To the east form the bridge saw the pack of dogs on the outpost - about 20-30 bayonets:)… So, make your conclusions, gentlemen…</text>
-    </string>
-    <string id="news_escape_electra">
-        <text>Attention everyone. To the north from the bridge on the outpost, in about 100 meters over the forsaken APC stumbled on the gathering of “Electras”… Who \nfinds this info useful owes me a beer.</text>
-    </string>
-    <string id="news_garbage_dogs">
-        <text>I’m at the Dump, the place is crowded with blind dogs… It seems that new troops came from the center, be cautious everyone.</text>
-    </string>
-    <string id="news_garbage_dolg">
-        <text>It seems that I’ve just seen several soldiers from Duty. I wonder, whom did they come for?</text>
-    </string>
-    <string id="news_garbage_dolina">
-        <text>Don’t butt into the Dark Valley, zombies are streaming from there, crowds of them… Don’t waste the bullets, damn. It’s been a long time since we had to clear \nthe valley. What a hell is Duty looking at?</text>
-    </string>
-    <string id="news_garbage_fedya">
-        <text>Somebody has shot Fedya Black at the garage… I sense those bandits are here again.</text>
-    </string>
-    <string id="news_garbage_garage">
-        <text>Three men have settled in the garage… Be cautious, it seems that these convicts came again with the old.</text>
-    </string>
-    <string id="news_garbage_gunslinger">
-        <text>Gunslinger returned! I’ve just heard from the ables… Returned from the very center! It seems that we’ll make a damn good breach to the center soon, there \nwe’ll see who is who…</text>
-    </string>
-    <string id="news_garbage_herovo">
-        <text>…I’m feeling badly, mates, it got me. If someone is near the rusty lake now, give a hand, I won’t stay in debt… All in all I’ll try to get out of here myself, then \nwe’ll see.</text>
-    </string>
-    <string id="news_garbage_marked">
-        <text>…Vasya says that there is one more braded one appeared, just left Trader. You know what to do…</text>
-    </string>
+	<string id="new_escape_bridge">
+		<text>Народ, вояки опять возобновили патруль под разрушенным мостом на заставе. И вроде снайпер ихний там засел…рассмотреть где не успел – пришлось оттуда сматывать…</text>
+	</string>
+	<string id="news_agroprom_box">
+		<text>Подслушал из разговора патрульных, что военные все что найдут собирают на третьем этаже в здании института. Есть есть желающие рискнуть ради наживы - попробуйте пробраться.</text>
+	</string>
+	<string id="news_agroprom_mili">
+		<text>Всем аккуратнее. Похоже что тут всерьез и надолго обосновались военные. База у них расположена в здании института. Видел несколько десятков человек и снайпера на крыше.</text>
+	</string>
+	<string id="news_escape_artefact">
+		<text>Господа сталкеры…Срочно нужна «Ночная звезда»...Плачу приличные бабки…Говорят на заставе с прошлого Выброса одна до сих пор есть…</text>
+	</string>
+	<string id="news_escape_bandits">
+		<text>Всем прием…На заводе на заставе опять бандюки обосновались. Хабар у сталкеров отбирают…Кто там поблизости из «опытных» пугните тварей…За мной не заржавеет.</text>
+	</string>
+	<string id="news_escape_blockpost_attack">
+		<text>Всем прием…Братва, на блокпост не суйтесь..Какие-то придурки напали на патруль…Вобщем там сейчас гарячо…Наверняка опять карательный рейд будет.</text>
+	</string>
+	<string id="news_escape_blockpost_case">
+		<text>Недавно на блокпосте взяли курьера Бармена с товаром…Вобщем, лакомый кусочек – ящик с артефактами, где-то у командира поста лежит…Так, что если кому жить надоело – может рискнуть.</text>
+	</string>
+	<string id="news_escape_dogs">
+		<text>К востоку от моста на заставе видел стаю собак – в 20-30 штыков:)…Так что делайте выводы, господа…</text>
+	</string>
+	<string id="news_escape_electra">
+		<text>Всем внимание. На север от моста на заставе, метрах в 100 за брошенным БТР-ом наткнулся на скопление «Электр»…Кому инфа пригодится – с того пиво.</text>
+	</string>
+	<string id="news_garbage_dogs">
+		<text>Я на Свалке, тут дофига слепых псов набежало… Похоже из центра пришли новые стаи, всем быть осторожнее.</text>
+	</string>
+	<string id="news_garbage_dolg">
+		<text>Кажись только, что на свалке видел несколько боевиков из Долга. Интересно, за кем они пришли?</text>
+	</string>
+	<string id="news_garbage_dolina">
+		<text>Не суйтесь в Темную Долину, оттуда щас лезут зомбаки, толпами… Берегите патроны, млин. Давно уже пора было зачистить долину. И куда только Долг смотрит?</text>
+	</string>
+	<string id="news_garbage_fedya">
+		<text>Федьку Черного кто-то пристрелил в гаражах… Чую, блин, опять бандиты появились.</text>
+	</string>
+	<string id="news_garbage_garage">
+		<text>В гаражах три человека засело… Всем осторожнее, похоже это урки опять за старое взялись.</text>
+	</string>
+	<string id="news_garbage_gunslinger">
+		<text>Стрелок вернулся! Только что от знающих людей услыхал… Из самого центра вернулся! Значит можно, значит, блин, скоро будем большой прорыв делать к центру, а там и посмотрим кто кого…</text>
+	</string>
+	<string id="news_garbage_herovo">
+		<text>…худо мне, ребята, зацепило таки меня. Если кто возле ржавого озера, подсобите, за мной не заржавеет… Вобщем, постараюсь сам выкарабкаться, а там посмотрим.</text>
+	</string>
+	<string id="news_garbage_marked">
+		<text>…Васька говорит еще один меченый появился, только от торговца ушел. Ты знаешь, что делать…</text>
+	</string>
 </string_table>

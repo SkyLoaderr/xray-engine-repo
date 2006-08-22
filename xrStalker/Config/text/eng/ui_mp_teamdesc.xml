@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="team_1_name">
-        <text>"Freedom" faction (Free Stalkers)</text>
-    </string>
-    <string id="team_2_name">
-        <text>"Mercenaries" grouping</text>
-    </string>
+	<string id="team_1_name">
+		<text>Freedom (Free Stalkers)</text>
+	</string>
+	<string id="team_2_name">
+		<text>Mercenaries</text>
+	</string>
 </string_table>

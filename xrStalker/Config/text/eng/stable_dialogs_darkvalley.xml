@@ -1,381 +1,186 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="val_ambush_dialog_11">
-        <text>Hi stalker! I've got a bad news for ya. This is our territory and you will follow us now.</text>
-    </string>
-    <string id="val_ambush_dialog_111">
-        <text>So be it. I'll follow you.</text>
-    </string>
-    <string id="val_ambush_dialog_112">
-        <text>You are yet too young, sucker, to threaten me.</text>
-    </string>
-    <string id="val_escort_captive_dialog_11">
-        <text>Thanks for rescuing me. Bandits, rascals they are, wanted to pass me on to the Monolith gang. And those half-zombies are rumoured to feed stalkers to \nmonsters infesting the secret laboratory under the Monolith base.</text>
-    </string>
-    <string id="val_escort_captive_dialog_111">
-        <text>What's the laboratory you are talking about?</text>
-    </string>
-    <string id="val_escort_captive_dialog_1111">
-        <text>Nobody knows, and the Monolith guys won't tell. I hear though bandits talking the Hog, their leader, possesses a counterpart key to the laboratory. But \nreaching the Hog is totally out of the question - his guards are utterly tough boys. Oh! I just remembered! I heard Serega crying out loud!</text>
-    </string>
-    <string id="val_escort_captive_dialog_11111">
-        <text>Well, if the bandits have it this tough, I definitely could do with a teammate.</text>
-    </string>
-    <string id="val_escort_captive_dialog_111111">
-        <text>Count me in. I'll help with what I can.</text>
-    </string>
-    <string id="val_escort_captive_dialog_1111111">
-        <text>Great. Let's go.</text>
-    </string>
-    <string id="val_escort_captive_dialog_11112">
-        <text>Who is Serega?</text>
-    </string>
-    <string id="val_escort_captive_dialog_111121">
-        <text>He's another fighter of ours. I thought he hadn't made it, but when I was escorted down the road, I heard cries for help from the basement. That was him for \nsure. You're great in fighting, set him free.</text>
-    </string>
-    <string id="val_escort_captive_dialog_1111211">
-        <text>Alright, will do my best to pull him out.</text>
-    </string>
-    <string id="val_escort_captive_dialog_11112111">
-        <text>"Duty" will not forget you.</text>
-    </string>
-    <string id="val_escort_captive_dialog_111121111">
-        <text>By the way, why YOU are not helping your friend? Now come, let's go with me.</text>
-    </string>
-    <string id="val_escort_captive_dialog_1111212">
-        <text>I can't, you know. Have loads of stuff to do around. He's your friend, so go and help him out.</text>
-    </string>
-    <string id="val_escort_captive_dialog_11112121">
-        <text>Well, I understand why you got scared. Bandits are not the weakest kind of guys.</text>
-    </string>
-    <string id="val_escort_captive_dialog_11113">
-        <text>Understood. See you.</text>
-    </string>
-    <string id="val_escort_captive_dialog_112">
-        <text>I'll try to help your comrade. Tell me where he is kept?</text>
-    </string>
-    <string id="val_escort_captive_dialog_1121">
-        <text>Sergiy and me were held in the basement of big unfinished building.</text>
-    </string>
-    <string id="val_escort_captive_dialog_11211">
-        <text>Okay, I'll do my best to help.</text>
-    </string>
-    <string id="val_escort_captive_dialog_21">
-        <text>Thanks for the help.</text>
-    </string>
-    <string id="val_escort_captive_dialog_211">
-        <text>Don't even mention. I just helped a good guy.</text>
-    </string>
-    <string id="val_escort_captive_dialog_221">
-        <text>Never mind. Bye.</text>
-    </string>
-    <string id="val_escort_captive_dialog_3">
-        <text>Will you go with me?</text>
-    </string>
-    <string id="val_escort_captive_dialog_3111">
-        <text>I'll come with you. Will do my best.</text>
-    </string>
-    <string id="val_escort_captive_dialog_31111">
-        <text>Great. Let's go.</text>
-    </string>
-    <string id="val_escort_captive_dialog_3112">
-        <text>Sorry, our roads run in different directions.</text>
-    </string>
-    <string id="val_escort_captive_dialog_31121">
-        <text>Clear out then.</text>
-    </string>
-    <string id="val_escort_captive_dialog_3121">
-        <text>You failed to help me, so our paths don't run along any more. Get out.</text>
-    </string>
-    <string id="val_escort_captive_dialog_31211">
-        <text>So do you.</text>
-    </string>
-    <string id="val_escort_captive_dialog_41">
-        <text>I feel pity for the teammate. He was a good buddy. But nevertheless, I'm in debt to you.</text>
-    </string>
-    <string id="val_escort_captive_dialog_44">
-        <text>"Simply"! Provided it's not hard to get a suit in the bandit camp, finding out the password is next to impossible a task. None of the bandits will pour out to you. I \nhear bandits talking that the pass is also stored on PDA of Hog, bandits' leader, but he's completely impossible to reach - his guards are tough boys.</text>
-    </string>
-    <string id="val_escort_captive_dialog_444">
-        <text>OK, thanks for the information.</text>
-    </string>
-    <string id="val_escort_captive_dialog_51">
-        <text>You mentioned something about Serega...</text>
-    </string>
-    <string id="val_escort_captive_dialog_52">
-        <text>Don't mention it. Make sure bandits never get you again.</text>
-    </string>
-    <string id="val_escort_captive_dialog_61">
-        <text>You didn't help me - we have nothing to talk about. Bye.</text>
-    </string>
-    <string id="val_escort_captive_dialog_611">
-        <text>See you.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_11">
-        <text>Stalker, help us freeing a friend. "Duty" sent our scout group of three here, but we faced a bandit ambush on the way back. I found out that one of my teammates \nwill now be escorted to the Monolith base, but, I'm afraid I won't be able to cope with them alone. Help me out, I will repay duly.\n</text>
-    </string>
-    <string id="val_escort_nap1_dialog_111">
-        <text>No probs. Lead the way.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_112">
-        <text>Why the heck should I risk my own ass? You untangle this yourself.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_21">
-        <text>Thanks, brother. We pulled out my teammate. Hold the award, well deserved.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_211">
-        <text>The award is good, no doubt, but I could do with some help really. Will you go with me?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_2111">
-        <text>Deal.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_212">
-        <text>You did some scouting around here, didn't you? What's interesting here in this area?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_2121">
-        <text>To the north there's a camp of bandits. To the east you'll locate the base of Monolith. To the south-west there's a neglected pig farm. There are also some gates \nnearby there.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_21211">
-        <text>Any more details on the bandit camp?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_212111">
-        <text>Bandits are based in the underconstructed building. Their leader is a brutal bastard named Hog. From the general perspective, he managed to get in contact with \nthe Monolith guys and sends stalker captives to the Monolith base now and then. What for - I have no idea.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_21212">
-        <text>What's going on there on the Monolith base?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_212121">
-        <text>We found out that on the Monolith base there is an entrance to underground laboratory and it is the entrance which these crazy geeks are protecting. There are a \nlot of them there, so best would be to get onto the base secretively, carefully planning the moves and without raising the alarm.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_2121211">
-        <text>What laboratory? What's inside there?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_21212111">
-        <text>Now this is beyond me, we never made it inside. The only thing we found out - it's constantly closed. I heard from a bandit talk that the Hog, their leader, has \nsomehow grabbed a counterpart key. Most likely he's about to intrude there himself.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_21213">
-        <text>Pig farm? Are there any pigs there too?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_212131">
-        <text>He-he, desperate for a stake? You are not in a restaurant, bro. Though, if you are up to some tasty pork, all around the Zone there're pigs, shining with radiation. \nOnce you eat one of those, no more need for a torch in the night, you'll be radiating the light yourself! The pig farm is in limbo, some stalkers are queening around \nthere. I didn't like them though, and I tell you, I trust my inner senses.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_21214">
-        <text>What are the gates you're talking about?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_212141">
-        <text>Can't get it really. The gates are closed, guarded by the Monolith gang. Sometimes lorries come from there to the Monolith base. That's all I know.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_21215">
-        <text>Understood, thanks.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_212151">
-        <text>No problem, feel free to ask anytime.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_213">
-        <text>Were there only two of you in the scout group?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_2131">
-        <text>There was another one, Serega. No idea where he disappeared to. Didn't hear anything about him. Bandits must have killed him, rascals.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_214">
-        <text>Take care.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_31">
-        <text>My friend died. But you tried to help nevertheless. I stick to my words, so here's your award.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_41">
-        <text>I'm all ears.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_411">
-        <text>Will you go with me?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_4111">
-        <text>I owe you, and I alway repay my debts. Let's go.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_41111">
-        <text>Excellent. Now we'll smash them all.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_4112">
-        <text>Sorry, I have other plans to accomplish.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_41121">
-        <text>Well, good luck to you then.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_412">
-        <text>See you.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_51">
-        <text>What's up?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_511">
-        <text>You did some scouting around here I guess. What's interesting in the area?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_5111">
-        <text>To the north there's a bandits' camp. Eastwards you will locate the Monolith base. In the south-west there is a neglected pig farm. Close to it there are some gates.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_51111">
-        <text>Any details on the bandit camp?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_511111">
-        <text>Bandits are based in the underconstructed building. Their leader is a brutal bastard named Hog. From the general perspective, he managed to get in contact with \nthe Monolith guys and sends stalker captives to the Monolith base now and then. What for - I have no idea.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_51112">
-        <text>What's going on at the Monolith base?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_511121">
-        <text>We found out that on the Monolith base there is an entrance to underground laboratory and it is the entrance which these crazy geeks are protecting. There are a \nlot of them there, so best would be to get onto the base secretively, carefully planning the moves and without raising the alarm.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_5111211">
-        <text>What laboratory? What's inside there?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_51112111">
-        <text>Now this is beyond me, we never made it inside. The only thing we found out - it's constantly closed. I heard from a bandit talk that the Hog, their leader, has \nsomehow grabbed a counterpart key. Most likely he's about to intrude there himself.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_51113">
-        <text>Pig farm? Are there any pigs there too?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_511131">
-        <text>He-he, desperate for a stake? You are not in a restaurant, bro. Though, if you are up to some tasty pork, all around the Zone there're pigs, shining with radiation. \nOnce you eat one of those, no more need for a torch in the night, you'll be radiating the light yourself! The pig farm is in limbo, some stalkers are queening around \nthere. I didn't like them though, and I tell you, I trust my inner senses.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_51114">
-        <text>And what are the gates?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_511141">
-        <text>Can't get it really. The gates are closed, guarded by the Monolith gang. Sometimes lorries come from there to the Monolith base. That's all I know.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_51115">
-        <text>Understood, thanks.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_511151">
-        <text>Not at all, feel free to ask if need be.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_512">
-        <text>Were you only two in the scout group?</text>
-    </string>
-    <string id="val_escort_nap1_dialog_5121">
-        <text>There was another one, Serega. Don't know where he disappeared. Heard nothing of him. Bandits must have killed him, scoundrels.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_513">
-        <text>Thanks for the information.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_514">
-        <text>Nothing. Just testing the communication.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_61">
-        <text>You didn't help me whatsoever. We have nothing to talk about.</text>
-    </string>
-    <string id="val_escort_nap1_dialog_611">
-        <text>Bye.</text>
-    </string>
-    <string id="val_monolith_guard_password_0">
-        <text>Freeze! Say password.</text>
-    </string>
-    <string id="val_monolith_guard_password_1">
-        <text>Big Monolith</text>
-    </string>
-    <string id="val_monolith_guard_password_2">
-        <text>Nuclear Winter</text>
-    </string>
-    <string id="val_monolith_guard_password_3">
-        <text>Night sun</text>
-    </string>
-    <string id="val_monolith_guard_password_4">
-        <text>Password</text>
-    </string>
-    <string id="val_monolith_guard_password_5">
-        <text>Listen, I got plastered yesterday, forgot the password now. Let me in, I will repay as due.</text>
-    </string>
-    <string id="val_monolith_guard_password_6">
-        <text>Basically, I'm new here and haven't been entrusted the password yet. But I need to enter here - it's our leader's order.</text>
-    </string>
-    <string id="val_monolith_guard_password_7">
-        <text>What the damn is password? Let me in now, or you'll be in big trouble.</text>
-    </string>
-    <string id="val_monolith_guard_password_8">
-        <text>I missed the right building, sorry. Already leaving.</text>
-    </string>
-    <string id="val_prisoner_hello_11">
-        <text>Hey, friend! I'm a "Duty" scout. Out of stupidity I got captured by bandits. Help me get outta here.</text>
-    </string>
-    <string id="val_prisoner_hello_111">
-        <text>I'll try. Will do my best.</text>
-    </string>
-    <string id="val_prisoner_hello_112">
-        <text>Frankly, I have no intention to deal with bandits. You get out of here on your own.</text>
-    </string>
-    <string id="val_prisoner_hello_21">
-        <text>Thanks, brother. I owe you. Maybe this information will be of help to you: Hog, the leader of bandits, stores a key to the secret laboratory X18, which is entered \nsomewhere from the Monolith base. But it's far from easy to get hold of the Hog - he's thoroughly guarded.\n</text>
-    </string>
-    <string id="val_prisoner_hello_211">
-        <text>I think this information will be helpful to me.</text>
-    </string>
-    <string id="val_prisoner_hello_2111">
-        <text>I'll be making it out to my buddies now. The challenge is to arrive there live still.</text>
-    </string>
-    <string id="val_prisoner_hello_21111">
-        <text>Good luck. Maybe I see you around. Take care.</text>
-    </string>
-    <string id="val_prisoner_hello_31">
-        <text>We need to retreat from here, the threat is to see bandits around here shortly. What did you want?Make it quick.</text>
-    </string>
-    <string id="val_prisoner_hello_311">
-        <text>No, nothing.</text>
-    </string>
-    <string id="val_prisoner_hello_41">
-        <text>Hey, friend. There on the wall there's a switch. It opens the grate's door.</text>
-    </string>
-    <string id="val_prisoner_hello_411">
-        <text>Ok, I'll take a look.</text>
-    </string>
-    <string id="val_prisoner_hello_5">
-        <text>Listen, maybe we come together? Will be easier when together, won't it?</text>
-    </string>
-    <string id="val_prisoner_hello_51">
-        <text>Why not going. You helped me and the debts are good to pay back. Let's go.</text>
-    </string>
-    <string id="val_prisoner_hello_511">
-        <text>That's pleasing to hear. Get going.</text>
-    </string>
-    <string id="val_rob_dialog_11">
-        <text>Need a piece? I located someone's stash near the Amber lake, there was a Hauss rifle. An excellent thing - hits deadly from a 100 meter distance. Can sell it, \nshould this be of interest. For 300 roubles it's yours - would deliver in 2 minutes.</text>
-    </string>
-    <string id="val_rob_dialog_111">
-        <text>Here's the money. And be quick.</text>
-    </string>
-    <string id="val_rob_dialog_112">
-        <text>No, thanks, I don't want it.</text>
-    </string>
-    <string id="val_rob_dialog_113">
-        <text>Don't have the money. When I'm rich - I'll make sure to buy it.</text>
-    </string>
-    <string id="val_rob_dialog_21">
-        <text>So, did you decide to buy the gun?</text>
-    </string>
-    <string id="val_sos_dialog_11">
-        <text>Buddy, give me medikit.</text>
-    </string>
-    <string id="val_sos_dialog_111">
-        <text>Here you are</text>
-    </string>
-    <string id="val_sos_dialog_112">
-        <text>Come off it. Bugger off!</text>
-    </string>
-    <string id="val_sos_dialog_21">
-        <text>Thanks, pal. You've been of a great help. I owe you. Should we meet again some day - I'll repay as due.\n</text>
-    </string>
-    <string id="val_sos_dialog_211">
-        <text>No problem. Always happy to help a man in need.</text>
-    </string>
-    <string id="val_suicider_dialog_11">
-        <text>I was there! I saw THIS! IT crawled into my brain and talked to me. IT was talking to me! In my head a horrible voice was sounding, scorching out the brains. \nTerrible... Terrible. Terrible! Don't go there! IT will become you same as it became me. A terrible headache... And the voice... Whispering to me.</text>
-    </string>
-    <string id="val_suicider_dialog_111">
-        <text>Calm down, buddy. Everything's good, you are in safety now.</text>
-    </string>
-    <string id="val_suicider_dialog_1111">
-        <text>...whisper.. Whisper and squeak of children's swing... My daughter... I want to see her so much, but I can't appear before her. IT is in my head and now I became \na beast myself. No, there's no way. Friend, pass the Bartender my artefact. This is all I could find there when IT crawled into my head. Bartender will pass it to my \nwife, my daughter. This will compensate to them..</text>
-    </string>
-    <string id="val_suicider_dialog_11111">
-        <text>What will it compensate?</text>
-    </string>
+	<string id="val_escort_captive_dialog_11">
+		<text>Bandits... the sons of bitches were taking me to the old factory. I don't know what they were planning to do with me there, but before that they took another guy in there and I never saw him after that.\nThey've got another one of ours, Serega. They keep him in the basement... in that big building there... it's a huge unfinished one. Help him, would you? Otherwise they'll... you know...</text>
+	</string>
+	<string id="val_escort_captive_dialog_2">
+		<text>Do you know what they've got there at the factory?</text>
+	</string>
+	<string id="val_escort_captive_dialog_21">
+		<text>I haven't heard much. All I know is that Boar, their boss, has got a part of the key to the dungeon that's there. A laboratory used to be there or something... They were chatting among themselves saying that, like, Boar had been eager to get inside, but no bloody luck without the second half of the key.\nUmm... if you're thinking of trying to get inside, – think twice before you do. It's full of thugs.</text>
+	</string>
+	<string id="val_escort_captive_dialog_211">
+		<text>Gotcha. Thanks, I'll keep it in mind.</text>
+	</string>
+	<string id="val_escort_captive_dialog_3">
+		<text>I'll try to help your man.</text>
+	</string>
+	<string id="val_escort_captive_dialog_41">
+		<text>It's a shame about my partner... He was a great fellow. But still, I owe you.</text>
+	</string>
+	<string id="val_escort_captive_dialog_411">
+		<text>These things happen.</text>
+	</string>
+	<string id="val_escort_captive_dialog_51">
+		<text>Thanks for your help!</text>
+	</string>
+	<string id="val_escort_captive_dialog_511">
+		<text>Bye.</text>
+	</string>
+	<string id="val_escort_captive_dialog_61">
+		<text>You don't give a damn about people. What's there to discuss between you and me?</text>
+	</string>
+	<string id="val_escort_nap1_dialog_21">
+		<text>Thanks, bro! Got my partner out of there! Here, take this - it's from the bottom of my heart.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_2111">
+		<text>Deal.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_212">
+		<text>I guess you must know this area well. What's interesting here?</text>
+	</string>
+	<string id="val_escort_nap1_dialog_2121">
+		<text>To the north there's a bandits' camp. To the east – an old factory. To the south-west – a deserted pig farm, and some kind of gate beyond it... I can't say what's there, never been that far.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_21211">
+		<text>Would you tell me more about the bandits' camp?</text>
+	</string>
+	<string id="val_escort_nap1_dialog_212111">
+		<text>Hmm, what about it... They settled in at an unfinished building straight north of here. Their leader is Boar – a real animal, that bastard. That's why they sent us here, to finish him off.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_21212">
+		<text>What's the deal with the factory?</text>
+	</string>
+	<string id="val_escort_nap1_dialog_212121">
+		<text>We managed to find out that there is some kind of dungeon there. Only it's guarded up to the hilt.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_2121211">
+		<text>What kind of dungeon? What's inside it?</text>
+	</string>
+	<string id="val_escort_nap1_dialog_21212111">
+		<text>What I don't know, I don't know: we haven't dared to step inside. Only thing I do know is that Boar has one half of the key to its entrance.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_21213">
+		<text>A real pig farm? Are there pigs and all that kind of stuff?</text>
+	</string>
+	<string id="val_escort_nap1_dialog_212131">
+		<text>Drooling for some pork chops already, huh? Heck, the Zone is full of boars! Take a bite of one of those and you won't be needing a torch anymore - that's how bad you'll be glowing in the dark! OK, OK, just kidding... The farm has long been abandoned and is now home to some stalkers. They didn't make a good impression on me, though, and I usually trust my gut.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_21214">
+		<text>What's that gate you were talking about?</text>
+	</string>
+	<string id="val_escort_nap1_dialog_212141">
+		<text>I can't figure it out. Just an old gate, except it's locked and well guarded. We haven't set foot in there.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_21215">
+		<text>I see, thanks.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_212151">
+		<text>You're welcome! Come back any time.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_213">
+		<text>Just the two of you went on a scouting raid?</text>
+	</string>
+	<string id="val_escort_nap1_dialog_2131">
+		<text>There was another guy, Serega. I don't know, he's gone and I haven't heard from him... The gang must have pushed him off after all.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_214">
+		<text>Take care.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_31">
+		<text>Oh, mate... What's going to happen with me now, buddy?.. Thanks, bro – at least you tried to help. And I do keep my word.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_41">
+		<text>Thanks for your help! What else did you want to know about?</text>
+	</string>
+	<string id="val_escort_nap1_dialog_4111">
+		<text>I owe you, and I'm one to pay my debts. Let's go.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_41111">
+		<text>Great. Now we'll kick anyone's ass.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_4112">
+		<text>Sorry, I've got other plans.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_41121">
+		<text>Well, well, good luck to you then.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_412">
+		<text>Bye.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_61">
+		<text>You refused to help when I asked you. We have nothing to discuss, so get lost.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_611">
+		<text>Bye.</text>
+	</string>
+	<string id="val_prisoner_hello_11">
+		<text>Hey, buddy! Help me! I'm a Duty scout. Help me get out!..</text>
+	</string>
+	<string id="val_prisoner_hello_111">
+		<text>I'll try.</text>
+	</string>
+	<string id="val_prisoner_hello_112">
+		<text>There's nothing I can do for you.</text>
+	</string>
+	<string id="val_prisoner_hello_21">
+		<text>Thanks, brother! I owe you one. Look what I was able to find out – it might prove useful to you, who knows... Boar – the one that calls the shots – has collected quite a lot of goodies. He's got a piece of the key to the dungeon at the old factory. I heard the guards yacking, they said there used to be some kind of lab there. Thing is, getting close to Boar isn't so simple.</text>
+	</string>
+	<string id="val_prisoner_hello_211">
+		<text>Thanks for the information.</text>
+	</string>
+	<string id="val_prisoner_hello_2111">
+		<text>It's time to get back to our guys. Something tells me we'll be lucky to get out of here alive...</text>
+	</string>
+	<string id="val_prisoner_hello_21111">
+		<text>Good luck.</text>
+	</string>
+	<string id="val_prisoner_hello_31">
+		<text>We gotta get outta here until these bastards decide to check this place out! Need something? Get it quick!..</text>
+	</string>
+	<string id="val_prisoner_hello_311">
+		<text>Nope, nothing.</text>
+	</string>
+	<string id="val_prisoner_hello_41">
+		<text>Hey, mate! There's a switch over there on the wall - it opens the cell door.</text>
+	</string>
+	<string id="val_prisoner_hello_411">
+		<text>OK, I'll look.</text>
+	</string>
+	<string id="val_rob_dialog_11">
+		<text>Yo, want an awesome gun? I found a little something near Yantar... a kind of stash, basically. There was this gauss rifle among other things. I tell you, this thing rocks – anyone within a hundred metres of it is as good as dead. I can trade you... For just 800 it'll be here in a jiffy!</text>
+	</string>
+	<string id="val_rob_dialog_111">
+		<text>Here's the money.</text>
+	</string>
+	<string id="val_rob_dialog_112">
+		<text>Thanks, but no thanks.</text>
+	</string>
+	<string id="val_rob_dialog_113">
+		<text>Nah, keep it. Money is hard to come by.</text>
+	</string>
+	<string id="val_rob_dialog_21">
+		<text>Got the money? Hurry up though, I've had a lot of askers... They'll be coming back soon.</text>
+	</string>
+	<string id="val_rob_dialog_3">
+		<text>Excellent. Wait here, I'll go get it.</text>
+	</string>
+	<string id="val_rob_dialog_31">
+		<text>Waiting.</text>
+	</string>
+	<string id="val_sos_dialog_11">
+		<text>Yo, gimme a medkit!</text>
+	</string>
+	<string id="val_sos_dialog_111">
+		<text>Here you are.</text>
+	</string>
+	<string id="val_sos_dialog_112">
+		<text>Sorry, I don't have a medkit.</text>
+	</string>
+	<string id="val_sos_dialog_21">
+		<text>Thanks, mate, you bailed me out for real. If I live long enough to see you again, I'll try to pay you back. Right now all I can spare is a juicy tip for you. OK, to the south of here there's a farm where some easygoing stalkers set up camp. One of them is selling a gauss rifle real cheap, just 800. I was going to buy it, and then this – got knee-deep in shit... So, if you've got the dough, go right ahead.</text>
+	</string>
+	<string id="val_sos_dialog_211">
+		<text>Спасибо за информацию.</text>
+	</string>
 </string_table>

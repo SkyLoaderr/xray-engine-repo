@@ -1,186 +1,129 @@
-    <string id="bar_bring_hunter_rifle">
-        <text>Give hunter the family rifle back</text>
-    </string>
-    <string id="bar_bring_pda_lucky">
-        <text>Bring that PDA to Barman as a proof</text>
-    </string>
-    <string id="bar_crazy_veterans_quest">
-        <text>Neutralize insane veterans</text>
-    </string>
-    <string id="bar_dolg_base_rules">
-        <text>Check in at Duty's commander</text>
-    </string>
-    <string id="bar_dolg_base_rules_fin">
-        <text>Turn back to Bartender.</text>
-    </string>
-    <string id="bar_dolg_base_rules_talk">
-        <text>Find Duty's commander and check-in.</text>
-    </string>
-    <string id="bar_dolg_bring_rg6">
-        <text>Procure RG6 for General Voronin</text>
-    </string>
-    <string id="bar_dolg_community_quest">
-        <text>Entering the Duty grouping</text>
-    </string>
-    <string id="bar_dolg_community_quest_prisyaga">
-        <text>Adjure</text>
-    </string>
-    <string id="bar_dolg_community_quest_recomendation">
-        <text>Receive a reference letter of Captain Ivantsov</text>
-    </string>
-    <string id="bar_dolg_community_quest_vernost">
-        <text>Prove your allegiance to the Duty</text>
-    </string>
-    <string id="bar_dolg_document_to_ivancov">
-        <text>Deliver the documents to Captain Ivantsov</text>
-    </string>
-    <string id="bar_dolg_find_cook">
-        <text>Worm into the confidence of the Freedom's cook to find out where the RG6 is stored.</text>
-    </string>
-    <string id="bar_dolg_find_document">
-        <text>Pick up archive documents in the abandoned hangar.</text>
-    </string>
-    <string id="bar_dolg_find_rg6">
-        <text>Penetrate the territory of the Freedom grouping, locate and steal RG6</text>
-    </string>
-    <string id="bar_dolg_info_gain">
-        <text>Locate the intercepted information about laboratory X18</text>
-    </string>
-    <string id="bar_dolg_kill_tiran">
-        <text>Killi Tyran the head of the squad.</text>
-    </string>
-    <string id="bar_dolg_return_info">
-        <text>Return the information about laboratory X18 to General Voronin</text>
-    </string>
-    <string id="bar_dolg_return_rg6">
-        <text>Deliver RG6 to General Voronin</text>
-    </string>
-    <string id="bar_dolg_return_to_ivancov">
-        <text>Turn back to Ivancov with a victory.</text>
-    </string>
-    <string id="bar_dolg_rg6_quest">
-        <text>Task for entering the Duty</text>
-    </string>
-    <string id="bar_dolg_svoboda_ambush_quest">
-        <text>Kill Hirelings</text>
-    </string>
-    <string id="bar_dolg_svoboda_ambush_return">
-        <text>Return to general Voronin with Tyran's insignia</text>
-    </string>
-    <string id="bar_dolg_svoboda_leader_kill_quest">
-        <text>Elimination of the Freedom grouping leader</text>
-    </string>
-    <string id="bar_dolg_svoboda_leader_kill_return">
-        <text>Return to General Voronin with the Freedom Leader's insignia</text>
-    </string>
-    <string id="bar_dolg_test_quest">
-        <text>Test for entering the Duty</text>
-    </string>
-    <string id="bar_dolg_tiran_pda">
-        <text>Take Tyrant's PDA</text>
-    </string>
-    <string id="bar_dolg_win_on_arena">
-        <text>Win on the Arena</text>
-    </string>
-    <string id="bar_hunter_find_rifle">
-        <text>Find the family rifle</text>
-    </string>
-    <string id="bar_hunter_return_rifle">
-        <text>Return rifle to the hunter in the bar</text>
-    </string>
-    <string id="bar_hunter_rifle">
-        <text>Find family rifle</text>
-    </string>
-    <string id="bar_kill_crazy_veterans">
-        <text>Kill leader of veterans</text>
-    </string>
-    <string id="bar_kill_crazy_veterans_pda">
-        <text>Take leader's PDA</text>
-    </string>
-    <string id="bar_kill_professor">
-        <text>Kill professor Kruglov.</text>
-    </string>
-    <string id="bar_kill_professor_info">
-        <text>Help the Freedom combatants in their hunt for professor Kruglov.</text>
-    </string>
-    <string id="bar_kill_professor_kill">
-        <text>Kill Professor Kruglov</text>
-    </string>
-    <string id="bar_kill_professor_reward">
-        <text>Obtain reward from the informer in the bar</text>
-    </string>
-    <string id="bar_kill_veterans">
-        <text>Destroy the camp of mad veterans</text>
-    </string>
-    <string id="bar_resque_information">
-        <text>Meet Kruglov</text>
-    </string>
-    <string id="bar_resque_information_2">
-        <text>Lead Kruglov to Jantar</text>
-    </string>
-    <string id="bar_resque_scientific_follow">
-        <text>Escort Kruglov to the Jantar exit</text>
-    </string>
-    <string id="bar_resque_scientific_information">
-        <text>...</text>
-    </string>
-    <string id="bar_resque_scientific_information_bring">
-        <text>Talk to Kruglov.\n</text>
-    </string>
-    <string id="bar_resque_scientific_information_get">
-        <text>Beat through wild territory to professor Kruglov.</text>
-    </string>
-    <string id="bar_resque_scientific_information_get_2">
-        <text>Talk to Professor Kruglov</text>
-    </string>
-    <string id="bring_secret_documents">
-        <text>Deliver the documents to bartender</text>
-    </string>
-    <string id="bring_x16_documents">
-        <text>Bring papers to bartender</text>
-    </string>
-    <string id="deactivate_radar_now">
-        <text>Deactivate the equipment</text>
-    </string>
-    <string id="descr_deactivate_radar">
-        <text>Disable brain scorcher.</text>
-    </string>
-    <string id="find_and_deactivate_radar">
-        <text>Locate entrance to control bunker.</text>
-    </string>
-    <string id="find_darklab_entrance">
-        <text>Locate the laboratory entrance</text>
-    </string>
-    <string id="find_secret_documents">
-        <text>Locate the pick up the documents</text>
-    </string>
-    <string id="find_x16_documents">
-        <text>Locate the documents in laboratory X16</text>
-    </string>
-    <string id="find_x16_location">
-        <text>Find out from scientists about the location of laboratory X16</text>
-    </string>
-    <string id="get_darklab_key">
-        <text>Obtain the key to the entrance</text>
-    </string>
-    <string id="get_to_antennas">
-        <text>Reach antennas</text>
-    </string>
-    <string id="look_for_x16_lab">
-        <text>Find papers of laboratory X16</text>
-    </string>
-    <string id="mil_svoboda_leader_kill">
-        <text>On the territory of the Military base locate and neutralise the leader of Freedom grouping. Rip the clan Leader's insignia off as a proof of his death.</text>
-    </string>
-    <string id="secret_documents_from_darklab">
-        <text>Deliver the documents from Laboratory X18</text>
-    </string>
-    <string id="secret_laboratory_documents">
-        <text>Obtain the documents</text>
-    </string>
-    <string id="x16_documents">
-        <text>Find the documents from laboratory X16</text>
-    </string>
-    <string id="x16_yantar">
-        <text>Talk to scientists</text>
-    </string>
+	<string id="Kruglov_research">
+		<text>Kruglov's research</text>
+	</string>
+	<string id="bar_bring_hunter_rifle">
+		<text>Return the hunter's family rifle</text>
+	</string>
+	<string id="bar_bring_pda_lucky">
+		<text>Bring the leader's PDA to the barman</text>
+	</string>
+	<string id="bar_crazy_veterans_quest">
+		<text>Kill the mad veterans</text>
+	</string>
+	<string id="bar_dolg_base_rules">
+		<text>Talk to the Duty guard commander</text>
+	</string>
+	<string id="bar_dolg_base_rules_fin">
+		<text>Return to the barman</text>
+	</string>
+	<string id="bar_dolg_base_rules_talk">
+		<text>Find the Duty guard commander and talk to him</text>
+	</string>
+	<string id="bar_dolg_bring_rg6">
+		<text>Get an RG-6 for General Voronin</text>
+	</string>
+	<string id="bar_dolg_community_quest">
+		<text>Join &quot;Duty&quot;</text>
+	</string>
+	<string id="bar_dolg_community_quest_prisyaga">
+		<text>Swear the oath</text>
+	</string>
+	<string id="bar_dolg_community_quest_recomendation">
+		<text>Get a reference from Captain Invantsov</text>
+	</string>
+	<string id="bar_dolg_community_quest_vernost">
+		<text>Prove your loyalty to &quot;Duty&quot;</text>
+	</string>
+	<string id="bar_dolg_find_cook">
+		<text>Earn the Freedom Chef's trust and find out where the RG-6s are stored</text>
+	</string>
+	<string id="bar_dolg_find_rg6">
+		<text>Infiltrate Freedom's base, find and steal an RG-6</text>
+	</string>
+	<string id="bar_dolg_info_gain">
+		<text>Find the intercepted information about laboratory X18</text>
+	</string>
+	<string id="bar_dolg_kill_tiran">
+		<text>Kill Tyrant, the leader of the group</text>
+	</string>
+	<string id="bar_dolg_return_info">
+		<text>Return information about laboratory X18 to General Voronin</text>
+	</string>
+	<string id="bar_dolg_return_rg6">
+		<text>Bring the RG-6 to General Voronin</text>
+	</string>
+	<string id="bar_dolg_rg6_quest">
+		<text>Mission required to join Duty</text>
+	</string>
+	<string id="bar_dolg_svoboda_ambush_quest">
+		<text>Kill the mercenaries</text>
+	</string>
+	<string id="bar_dolg_svoboda_ambush_return">
+		<text>Give the stripes to General Voronin</text>
+	</string>
+	<string id="bar_dolg_tiran_pda">
+		<text>Take Tyrant's PDA</text>
+	</string>
+	<string id="bar_hunter_find_rifle">
+		<text>Find the family rifle</text>
+	</string>
+	<string id="bar_hunter_return_rifle">
+		<text>Return the rifle to the hunter at the Bar</text>
+	</string>
+	<string id="bar_hunter_rifle">
+		<text>Find the family rifle</text>
+	</string>
+	<string id="bar_kill_crazy_veterans">
+		<text>Kill the leader of the veterans</text>
+	</string>
+	<string id="bar_kill_crazy_veterans_pda">
+		<text>Take their leader's PDA</text>
+	</string>
+	<string id="bar_kill_veterans">
+		<text>Destroy the mad veterans' camp</text>
+	</string>
+	<string id="bar_resque_information">
+		<text>Meet Kruglov</text>
+	</string>
+	<string id="bar_resque_information_2">
+		<text>Lead Kruglov to Amber</text>
+	</string>
+	<string id="bar_resque_scientific_follow">
+		<text>Lead Kruglov to the exit to Amber</text>
+	</string>
+	<string id="bar_resque_scientific_information">
+		<text>...</text>
+	</string>
+	<string id="bar_resque_scientific_information_bring">
+		<text>Talk to Kruglov</text>
+	</string>
+	<string id="bar_resque_scientific_information_get">
+		<text>Get through to Kruglov via the Wild Territory</text>
+	</string>
+	<string id="bar_resque_scientific_information_get_2">
+		<text>Talk to professor Kruglov</text>
+	</string>
+	<string id="bring_x16_documents">
+		<text>Bring the documents to the Barman</text>
+	</string>
+	<string id="deactivate_radar_now">
+		<text>Deactivate machine</text>
+	</string>
+	<string id="descr_deactivate_radar">
+		<text>Deactivate the Brain Burner</text>
+	</string>
+	<string id="find_and_deactivate_radar">
+		<text>Find the entrance to the control bunker</text>
+	</string>
+	<string id="get_to_antennas">
+		<text>Reach the antennae</text>
+	</string>
+	<string id="look_for_x16_lab">
+		<text>Find X16 documents</text>
+	</string>
+	<string id="x16_documents">
+		<text>Find documents in laboratory X16</text>
+	</string>
+	<string id="x16_yantar">
+		<text>Talk to scientists</text>
+	</string>

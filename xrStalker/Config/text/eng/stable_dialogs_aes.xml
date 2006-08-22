@@ -1,174 +1,69 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="aes_sergeant_diallog_0">
-        <text>This is test phrase. Бред сумасшедшего.</text>
-    </string>
-    <string id="aes_sergeant_diallog_1000">
-        <text>d2</text>
-    </string>
-    <string id="aes_sergeant_diallog_1001">
-        <text>Help... Help...</text>
-    </string>
-    <string id="aes_sergeant_diallog_1002">
-        <text>Whoa... Yeah, Mr. Soldier, I see you're spoiled a bit...</text>
-    </string>
-    <string id="aes_sergeant_diallog_1003">
-        <text>Screw you, scoundrel!</text>
-    </string>
-    <string id="aes_sergeant_diallog_1004">
-        <text>Are you a... hem... monolithian? I've he-e-ard... colonel called you so..</text>
-    </string>
-    <string id="aes_sergeant_diallog_1005">
-        <text>If I were one of them, you wouldn't have a chance to talk now... I am Branded one, stalker. And what kind of nut are you?</text>
-    </string>
-    <string id="aes_sergeant_diallog_1006">
-        <text>I'm... a corporal... Vasiliy Luckless...</text>
-    </string>
-    <string id="aes_sergeant_diallog_1007">
-        <text>Yeah, well that's for certain.</text>
-    </string>
-    <string id="aes_sergeant_diallog_1008">
-        <text>Who... who else has survived?</text>
-    </string>
-    <string id="aes_sergeant_diallog_1009">
-        <text>Not likely. Damn, I should have a medical aid from the doctor not from the medikit.</text>
-    </string>
-    <string id="aes_sergeant_diallog_1010">
-        <text>Apparently, it's my time to go... with comrades...</text>
-    </string>
-    <string id="aes_sergeant_diallog_1011">
-        <text>Hush for a while. Sooner or later we'll all be there.</text>
-    </string>
-    <string id="aes_sergeant_diallog_1012">
-        <text>Well, I'm not holding you back.</text>
-    </string>
-    <string id="aes_sergeant_diallog_1013">
-        <text>Thanks, man... Colonel said...that you all had to be some kind of inhuman brutes here... kh... while \nyou seem to be pretty sane...</text>
-    </string>
-    <string id="aes_sergeant_diallog_1014">
-        <text>Yeah, there's a plenty of brutes here, that's for sure. Tell me more, who did it to you?</text>
-    </string>
-    <string id="aes_sergeant_diallog_1015">
-        <text>No, my friend. I'm not that sound - it just looks to be so. I'm going to fry you up and eat... in fact, forget the fry stuff.</text>
-    </string>
-    <string id="aes_sergeant_diallog_1016">
-        <text>Like kids... hem... There was a radiochemical reconnaissance... led by the copters... they had too much trust \nin those ones... and where wiped out in a jiffy... And then you column was blocked up... and as well was screwed... Only I made it.. \nto... knock a couple of foes off...</text>
-    </string>
-    <string id="aes_sergeant_diallog_1017">
-        <text>Fighting-cocks.. It took a few seconds for you to appear here! The radar has just shut down.</text>
-    </string>
-    <string id="aes_sergeant_diallog_1018">
-        <text>A month... two steps from here, on the border of the zone we were... fully prepared.. Battle.. the battle still there?..</text>
-    </string>
-    <string id="aes_sergeant_diallog_1019">
-        <text>This is the case in point. Someone was really noisy there.</text>
-    </string>
-    <string id="aes_sergeant_diallog_1020">
-        <text>Maybe someone of us, alive... could settle there... We had... a task - to secure the path to Sarco... hk... khe... Sarcophagus... if \nsomething happens - we must wait for reinforcements..</text>
-    </string>
-    <string id="aes_sergeant_diallog_1021">
-        <text>Reinforcements?</text>
-    </string>
-    <string id="aes_sergeant_diallog_1022">
-        <text>Our pop... colonel told that there should be merely no rebuff there... just beasts... few monstrosities...</text>
-    </string>
-    <string id="aes_sergeant_diallog_1023">
-        <text>So what's with the reinforcements?</text>
-    </string>
-    <string id="aes_sergeant_diallog_1024">
-        <text>There is the task force... as well, once we have failed, they'll begin... I though we'll make a skirmish there... keh... a bit... and the battle broke out here... Don't walk straight the road...</text>
-    </string>
-    <string id="aes_sergeant_diallog_1025">
-        <text>Goofy! What was it about the task force?... Look at me! Don't close your eyes, will ya!</text>
-    </string>
-    <string id="aes_sergeant_diallog_1026">
-        <text>A-a-a, it hurts!.. Oh, take me home... no chance to break through without the copters...</text>
-    </string>
-    <string id="aes_sergeant_diallog_1027">
-        <text>Sergeant?</text>
-    </string>
-    <string id="aes_sergeant_diallog_1028">
-        <text>Yes... sergeant Lucklezy Gled... The enemy has at least three machine-gun dots and several snipers encamped... Man, you'd better \nnot.. don't go there... keh..</text>
-    </string>
-    <string id="aes_sergeant_diallog_1029">
-        <text>Few more seconds, sergeant! When a hell... When this cursed task force arrives?</text>
-    </string>
-    <string id="aes_sergeant_diallog_1030">
-        <text>Huh?.. Stalker... task force... we were knocked out, it... now....</text>
-    </string>
-    <string id="aes_sergeant_diallog_1031">
-        <text>Now? Oh my gosh...</text>
-    </string>
-    <string id="aes_sergeant_diallog_1032">
-        <text>Kh... And you... what have brought you here... kh...</text>
-    </string>
-    <string id="aes_sergeant_diallog_1033">
-        <text>I wanted to get to the Monolith, but there you are...</text>
-    </string>
-    <string id="aes_sergeant_diallog_1034">
-        <text>I would... also like to glance at it... but, apparently it's not my fate... take my PDA... keh... there is a sarcophagus assault plan...All our groupings... are indicated ... Perhaps, you will be lucky ... to break through... and Monolith will... grant your wish...</text>
-    </string>
-    <string id="aes_sergeant_diallog_1035">
-        <text>Thanks.</text>
-    </string>
-    <string id="oso_chernobyl_crush_0">
-        <text>Was the explosion of 1986 the work of yours as well?</text>
-    </string>
-    <string id="oso_chernobyl_crush_1">
-        <text>No! We have nothing to do with it. Most of us was only starting the scientific activity then. Someone just decided to gain promotion \nvia intensive mindwork and hence transgress the processing of reactor functionining. Human's blunder. As it's said, "Today, for \npeace the atom’s nursed; while Europe says it should be cursed".</text>
-    </string>
-    <string id="oso_death_truck_0">
-        <text>What are those "death trucks"?</text>
-    </string>
-    <string id="oso_death_truck_1">
-        <text>Any production has waste products. Nearly the half of all stalkers die during enlistment. We consider it to be a natural selection. \nThose who can't manage to bear it are removed. Someone thought that you couldn't stand the draft and you were located to one of \nthe trucks. But you proved to be stronger.</text>
-    </string>
-    <string id="oso_no_0">
-        <text>I'm not helping you with deceiving people.</text>
-    </string>
-    <string id="oso_osoznanie_start_11">
-        <text>So what, Gunslinger, it's high time to come back to you with the answers to all your questions.</text>
-    </string>
-    <string id="oso_osoznanie_start_21">
-        <text>Gunslinger, it's your choice to make.</text>
-    </string>
-    <string id="oso_stalker_0">
-        <text>What does your S.T.A.L.K.E.R. tatooo means?</text>
-    </string>
-    <string id="oso_stalker_1">
-        <text>S.T.A.L.K.E.R. - is one of the traps, meant for concealing our project. The device itself is situated inside APP's sarcophagus. You \nare more inclined to call it Monolith. Everyone who desires the wish granting become our marionette. You receive the mark and \nyou're inculcated in that you have a task, which has to be accomplished. Something turned not right with you. Because you've been \ninstructed to kill yourself.</text>
-    </string>
-    <string id="oso_what_about_me_0">
-        <text>What happened to me?</text>
-    </string>
-    <string id="oso_what_about_me_1">
-        <text>You're a small screw that dropped out of the mechanism. And the mechanism turned out to be that big, that we didn't notice you \nfalling out. Since the moment when Zone emerged, many have tried to get to its center and find out what's in there. But we can't \nafford it. The humanity isn't ready for it yet. Thus we've "recruited" braves, like you, tempting you with your own crapulence. And sent \nyou to protect the mystery of the Zone.</text>
-    </string>
-    <string id="oso_what_is_the_zone_0">
-        <text>What is the Zone? How did it emerge?</text>
-    </string>
-    <string id="oso_what_is_the_zone_1">
-        <text>Zone is a result of hasty intervention into the Earth's noosphere. Such an interference was followed by a local noosphere slit. \nSingular surgical cut. Zone is just a demonstration of this cut on the Earth.</text>
-    </string>
-    <string id="oso_what_next_0">
-        <text>What will happen to us?</text>
-    </string>
-    <string id="oso_what_next_1">
-        <text>What will be next depends on you. You see, the Zone is swelling. We are trying to keep it back, but your vigor isn't infinite. Besides, \ntoo many of them were spent to struggle with you. You can't just eliminate us physically. All that you see here is just an illusion. \nOur bodies are in anabiosis deep under the soild. You can join us and we, with your strength and knowlegde, will be able to hold \nback the growing of the Zone. You may not join, but otherwise, you won't leave this room.</text>
-    </string>
-    <string id="oso_who_are_you_0">
-        <text>Who are you?</text>
-    </string>
-    <string id="oso_who_are_you_1">
-        <text>I'm not the only one. We are a group of well-known scientists, who decided to change the world. According to Vernadskiy theory the \nEarth is surrounded with the informational field - noosphere. It is closely connected with all the thinking beings on the Earth. We've \nmade a decision to make minor alterations to the noosphere, in order to utterly remove malice, violence and greed from human \nthoughts. But none of the human minds possesses the power enough to perceive the noosphere. We've combined our \nconsciousnesses into one and become the most intelligent being on the planet Earth.</text>
-    </string>
-    <string id="oso_why_chernobyl_0">
-        <text>Why all that have happened in Chernobyl?</text>
-    </string>
-    <string id="oso_why_chernobyl_1">
-        <text>Heh. It was the best option of all. First of all there are virtually no people left after the accident in 1986. We could function without \nbeing afraid of exposure. In the second place there are powerful antennas left nearby Chernobyl ever since USSR time, which were \nused in experiments on influencing human conscoiusnesses. In general here was the all the fundament which allowed us to \nestablish the connection with noosphere.</text>
-    </string>
-    <string id="oso_yes_0">
-        <text>I agree to join "C-Consciousness" project.</text>
-    </string>
+	<string id="aes_sergeant_diallog_0">
+		<text>d1</text>
+	</string>
+	<string id="aes_sergeant_diallog_1000">
+		<text>d2</text>
+	</string>
+	<string id="oso_chernobyl_crush_0">
+		<text>А катастрофа восемьдесят шестого года – тоже ваша работа?</text>
+	</string>
+	<string id="oso_chernobyl_crush_1">
+		<text>Нет, мы здесь ни при чем: большинство из нас в то время лишь начинали свою научную деятельность. А в тысяча девятьсот восемьдесят шестом было принято решение о проведении на четвёртом энергоблоке серии экспериментов с реактором. Катастрофа произошла в равной степени от недостатков конструкции самих реакторов данного типа, необдуманного решения о проведении экспериментов и пресловутого человеческого фактора, поскольку в критический момент дежурная смена совершила ряд грубейших ошибок.</text>
+	</string>
+	<string id="oso_death_truck_0">
+		<text>Что представляют собой "грузовики смерти"?</text>
+	</string>
+	<string id="oso_death_truck_1">
+		<text>Почти все виды деятельности связаны с продуцированием отходов, особенно если речь идёт о новом, неизведанном пути. К сожалению, не менее половины сталкеров во время вербовки погибают. Очевидно, своего рода естественный отбор. Отбракованные экземпляры вывозятся. Мы посчитали, что ты не выдержал вербовки, почему и был определён в отбраковку. Сейчас мы пытаемся выяснить, в чём тогда крылась наша ошибка.</text>
+	</string>
+	<string id="oso_no_0">
+		<text>Я не стану помогать вам в обмане.</text>
+	</string>
+	<string id="oso_osoznanie_start_11">
+		<text>Здравствуй, Стрелок. Думаю, сейчас ты сможешь получить ответы на многие вопросы.</text>
+	</string>
+	<string id="oso_osoznanie_start_21">
+		<text>Выбор за тобой, Стрелок.</text>
+	</string>
+	<string id="oso_stalker_0">
+		<text>Что означает татуировка?</text>
+	</string>
+	<string id="oso_stalker_1">
+		<text>С.Т.А.Л.К.Е.Р. – аббревиатура, обозначающая один из... скажем, запретов, которые предназначены для сокрытия в тайне нашего проекта. В данном случае речь идёт о системе управления человеческой особью. Само устройство находится внутри саркофага ЧАЭС и широко известно как Монолит. Все, пожелавшие исполнения собственных желаний, становятся послушны нашим приказам, после чего метятся и получают задание для выполнения. Но произошла непонятного рода накладка... тебе почему-то внушили убить самого себя.</text>
+	</string>
+	<string id="oso_what_about_me_0">
+		<text>Что со мной произошло?</text>
+	</string>
+	<string id="oso_what_about_me_1">
+		<text>Ты – выпавший из механизма винтик. К сожалению, это было замечено далеко не сразу. С момента образования Зоны многие пытаются проникнуть в её центр, но мы не можем этого допустить. Человечество ещё далеко не готово к истине. Для того мы и вербовали сталкеров, привлекая их обещаниями выполнить самое сокровенное. Затем они отправлялись защищать тайну Зоны.</text>
+	</string>
+	<string id="oso_what_is_the_zone_0">
+		<text>Что такое Зона? Как она возникла?</text>
+	</string>
+	<string id="oso_what_is_the_zone_1">
+		<text>Ты видишь результат необдуманного вмешательства в ноосферу Земли. Неумелые, хаотичные действия человечества вызвали локальный её надлом. Зона – всего лишь видимое проявление этого надлома. Данное явление гораздо глубже, чем ты можешь себе представить.</text>
+	</string>
+	<string id="oso_what_next_0">
+		<text>Что будет дальше?</text>
+	</string>
+	<string id="oso_what_next_1">
+		<text>Это зависит от тебя. Зона увеличивается в размерах. Мы пытаемся сдерживать её экспансию, но человечество словно задалось целью помешать этому. Наши силы не бесконечны, и много их ушло на борьбу с тобой. Ты можешь присоединиться к нам, и это даст возможность удержать рост Зоны. Если твоё решение будет иным, мы не можем достоверно прогнозировать исход ситуации.</text>
+	</string>
+	<string id="oso_who_are_you_0">
+		<text>Кто ты такой?</text>
+	</string>
+	<string id="oso_who_are_you_1">
+		<text>Мы, не я. Мы – группа учёных, предпринимающая попытку изменить мир. Согласно теории академика Вернадского, Землю окружает особое информационное поле, так называемая ноосфера. В неё включены все мыслящие обитатели Земли. Нашей основной идеей стало внесение небольших корректировок в ноосферу: это позволило бы навсегда убрать из неё злобу, жестокость, алчность и другие негативные факторы. Разум индивудуума, к сожалению, не обладает достаточной чувствительностью и мощью, чтобы сознательно влиться в ноосферу и полноценно оитать в ней. С этой целью мы объединили семь сознаний, семь личностей в одну.</text>
+	</string>
+	<string id="oso_why_chernobyl_0">
+		<text>Почему всё это произошло именно здесь?</text>
+	</string>
+	<string id="oso_why_chernobyl_1">
+		<text>Наиболее оптимальный вариант. Уже после аварии 1986 года здесь осталось очень мало людей, и мы могли работать без опаски. Кроме того, в данном районе находились мощные антенны, чрезвычайно важные для наших экспериментов по оптимизации сознания людей.</text>
+	</string>
+	<string id="oso_yes_0">
+		<text>Я согласен присоединиться к проекту "Осознание"!</text>
+	</string>
 </string_table>

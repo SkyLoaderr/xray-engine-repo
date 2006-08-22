@@ -1,24 +1,69 @@
-    <string id="documents_1">
-        <text>Staff report. A week ago the decision was made to increase the radiation intensity on the tested. After the experiment they behaved calmly, but several days \nafterwards weird metamorphosises were registered. Their skin started to flake, while the behaviour changed for much more agreesive. I continue the observation. \nBurnov A.N., Senior Laboratory Assistant.</text>
-    </string>
-    <string id="documents_2">
-        <text>Staff report. The tested have become virtually fully bold. Their agressiveness augmented incrementally. Yesterday, while feeding, laboratory assistant Gorenko N.B. was bitten in her hand. The suffered was rendered assistance. Burnov A.N., Senior Laboratory Assistant. \n</text>
-    </string>
-    <string id="documents_3">
-        <text>Staff report. The tested have changed drastically. Their skin has virtually completely departed, their teeth considerably grew, they became dangerous. Yesterday guard Glebov G.R. threw them a lump of meat out of fun. This meat was torn apart and eaten by them in split-second. I ordered, due to that, to give air guns to the staff working directly with the tested. Burnov A.N., Senior Laboratory Assistant.</text>
-    </string>
-    <string id="documents_4">
-        <text>Staff report. Yesterday in an experiment on the tested there was psy-emission of new modulation applied. My impression is that thay have been simply burnt their brains out. I can hardly imagine what impact such emission may have on human. Attached are all the materials on the yesterday experiment. Burnov A.N, Senior Laboratory Assistant.</text>
-    </string>
-    <string id="documents_5">
-        <text>Staff report. The tested have simply gone mad. They break the cages and attack the laboratory personnel. Their agressiveness level exceeds all the limits, while their self-preservation instinct is completely absent. I ordered the guards and staff to apply weapons against the tested in case of need. On my part, I'll do my best to collect all the documentation possible, take several of the calmer tested and evacuate the laboratory personnel. Burnov A.N., Senior Laboratory Assistant.</text>
-    </string>
-    <string id="pass_to_1st_door">
-        <text>Excellent, Vasilyev. I'm glad you received the 2nd level access. Finally you will know what our laboratory does. You will enjoy waking up from nightmare dreams, which will haunt you at day as well. By the way, I was asked to pass you a code to the lock. Here it is - 1243. Kalugin Petr I., Deputy Chief, Laboratory X-18.</text>
-    </string>
-    <string id="pass_to_2nd_door">
-        <text>You will come to reservoirs daily in the evening at 19:00 and 23:00 to check their condition. Report everything directly to me. The code to command centre is 9524</text>
-    </string>
-    <string id="storyline_borov_flash_info">
-        <text>These zombies from the Monolith Base need men. Allegedly for some experiments, I didn't get the picture fully. They pay back with artefacts, the expensive ones. Should you be sending them captives, tell your boys that that pass is NUCLEAR WINTER. I described your uniform to the Monolith gang, so make sure you wear the suits when going there. Otherwise they take you for damn intruders and take up arms. \nShould I specify who exactly to deliver the award to for this information? \nZmey.</text>
-    </string>
+	<string id="LabX18 first key">
+		<text>2nd level access code</text>
+	</string>
+	<string id="LabX18 second key">
+		<text>1st level access code</text>
+	</string>
+	<string id="LabX18_information">
+		<text>Information from X-18</text>
+	</string>
+	<string id="bar_darklab_documents_txt">
+		<text>Barman: “According to the documents you brought from Agroprom, things are starting to clear up, but some data is missing. There is evidence to suggest the presence of a “brain roaster” which blocks the road to the north, but no one knows exactly what it is. Also, there is mention of an X18 laboratory whose description matches that of abandoned dungeons in the Dark Valley. Its present activity is unknown and besides, bandits have now set up their base in the dark valley.\n Several Duty scouts went there very recently, but so far there is no news from them.\n To get inside the laboratory, you will need two electronic keys; I will give you one, but the second one you will have to take from Boar, the bandits' leader. \n\n So, you need to take the second key to the laboratory from Boar, then sneak inside the laboratory and secure the documents. Before doing  this you must acquire an anti-radiation suit because you won’t push through inside the dark valley without one – the radiation is too strong."</text>
+	</string>
+	<string id="dar_codedoor_1_txt">
+		<text>A combination lock is blocking the way into the depths of the laboratory. You must find someone who knows the combination.</text>
+	</string>
+	<string id="dar_codedoor_2_txt">
+		<text>There is another door, and there certainly is something behind it. You must discover the code that opens this door.</text>
+	</string>
+	<string id="dar_document1">
+		<text>The beginning of the experiment</text>
+	</string>
+	<string id="dar_document2">
+		<text>The second stage of the experiment</text>
+	</string>
+	<string id="dar_document3">
+		<text>Security report</text>
+	</string>
+	<string id="dar_document4">
+		<text>Attack on the personnel</text>
+	</string>
+	<string id="dar_document5">
+		<text>The last stage of the experiment</text>
+	</string>
+	<string id="documents_1">
+		<text>A week ago it was decided to increase the intensity of radiation being delivered to test subjects. No changes were detected in the first few days. After several days strange metamorphoses started to occur: amount of hair decreased, aggressiveness heightened. Several subjects were literally trampled underfoot by their peers.</text>
+	</string>
+	<string id="documents_2">
+		<text>Subjects' conditions have stabilized. The amount of hair is now 10% of the original. Their claws and teeth have grown considerably. Bursts of activity exhibit seemingly random behaviour and are not directed at equal peers. Senior lab technician A.N. Burnov speculated that this may indicate an increase in the subjects' intellects. It was decided to test the new modulation of PSI-radiation on the subjects.</text>
+	</string>
+	<string id="documents_3">
+		<text>Chief of Security: Yesterday security guard G.P. Glebov tossed a piece of meat to the subjects just for fun. They tore apart and devoured it in mere seconds. Subsequently several individuals tried to break out of the cells. Because of this, lab technicians were unable to obtain the necessary test samples. Although G.P. Glebov's actions were ill-considered, I propose that maintenance personnel be equipped with airguns for adequate protection in the event of emergencies.</text>
+	</string>
+	<string id="documents_4">
+		<text>Chief of Security: Yesterday the experiment almost got out of control. Two dozen test subjects broke out and ripped to shreds two laboratory rooms. Fortunately, the research personnel were able to lock themselves up upstairs. We were ordered to clear the main laboratory room. In the course of the operation three guards suffered bites. Hopefully, they will be OK. I wish they would finish up this experiment soon.</text>
+	</string>
+	<string id="documents_5">
+		<text>Yesterday we delivered new modulation of PSI-radiation to the test subjects. It appeared as though their brains simply got roasted. I can hardly imagine how this radiation would affect humans. We have tested every type of radiation and the results match those obtained in other laboratories. The experiment can now be considered complete. Presumably, in one week we will be ready to conduct the experiment on larger creatures.</text>
+	</string>
+	<string id="pass_to_1st_door">
+		<text>Excellent, Colleague. I'm glad that you've received 2nd level access. At last you will find out what goes on in our laboratory. Your access code is 1243. Chief of Laboratory Õ-18 Piotr Ilyitch Kalugin.</text>
+	</string>
+	<string id="pass_to_2nd_door">
+		<text>Colleague, may I remind you that starting tomorrow you will assume duty to attend to the container in the central laboratory room. You must inspect the containers every two hours. Report everything directly to me. The code to the central laboratory room is 9524. Chief of Laboratory X-18 Piotr Ilyitch Kalugin.</text>
+	</string>
+	<string id="sl_x18_dream_name">
+		<text>A strange dream</text>
+	</string>
+	<string id="sl_x18_dream_text">
+		<text>I had a strange dream. The colossal Chernobyl plant emerges in the twilight. Everything looks peaceful. A lonely man appears. I see him from behind against the background of the station. The wind starts to blow. Suddenly an avalanche of rats begins to disperse from the station in every direction. The man, with his back turned to me, shoots at the rats. There is an abrupt scream: "Sharpshooter!". The man shudders, freezes for a moment, then starts to turn slowly in my direction, but… just an instant before I am to get a glance at his face, I wake up. What does this dream mean? I don't know, but I think it's something I have seen before.</text>
+	</string>
+	<string id="val_captive_help_txt">
+		<text>Duty member Bullet is asking to help rescue his partner who was captured by bandits. He is soon to be escorted to the deserted factory.</text>
+	</string>
+	<string id="val_x18_conclusion">
+		<text>Laboratory X18</text>
+	</string>
+	<string id="val_x18_conclusion_txt">
+		<text>Ahem...It would be very interesting to take a look at these documents. So, you think Vasiliev has them?</text>
+	</string>

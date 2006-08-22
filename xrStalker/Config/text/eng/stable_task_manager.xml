@@ -1,696 +1,777 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="artefact">
-        <text>Get artifact</text>
-    </string>
-    <string id="barmen_eliminate_camp_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_eliminate_camp_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_eliminate_camp_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_eliminate_camp_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_eliminate_camp_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_eliminate_camp_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_eliminate_camp_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_eliminate_camp_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_eliminate_camp_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_artefact_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_artefact_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_artefact_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_artefact_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_artefact_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_artefact_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_artefact_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_artefact_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_artefact_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_item_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_item_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_item_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_item_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_item_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_item_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_item_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_item_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_find_item_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_kill_stalker_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_kill_stalker_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_kill_stalker_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_kill_stalker_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_kill_stalker_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_kill_stalker_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_kill_stalker_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_kill_stalker_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="barmen_kill_stalker_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_4">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_4_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_4_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_5">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_5_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_eliminate_kamp_5_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_find_item_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_find_item_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_find_item_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_find_item_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_find_item_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_find_item_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_find_item_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_find_item_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_find_item_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_find_item_4">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_find_item_4_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_find_item_4_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_kill_stalker_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_kill_stalker_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_kill_stalker_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_kill_stalker_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_kill_stalker_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_kill_stalker_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_kill_stalker_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_kill_stalker_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_kill_stalker_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_kill_stalker_4">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_kill_stalker_4_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="dolg_kill_stalker_4_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_4">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_4_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_4_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_5">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_5_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_5_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_6">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_6_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_find_artefact_6_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_4">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_4_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_4_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_5">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_5_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_5_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_6">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_6_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_6_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_7">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_7_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_7_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_8">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_8_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="ecolog_monster_part_8_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="eliminate_lager">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="find_item">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_4">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_4_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_4_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_5">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_5_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_eliminate_camp_5_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_find_item_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_find_item_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_find_item_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_find_item_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_find_item_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_find_item_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_find_item_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_find_item_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_find_item_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_4">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_4_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_4_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_5">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_5_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_kill_stalker_5_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_monster_part_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_monster_part_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="freedom_monster_part_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="kill_stalker">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="monster_part">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="return_for_reward">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="return_for_reward_bring">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_barman_has_no_job">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_barman_job_ask">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_barman_job_complete">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_barman_job_what">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_barman_list_job">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_dolg_has_no_job">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_dolg_job_ask">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_dolg_job_complete">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_dolg_job_what">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_dolg_list_job">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_ecolog_has_no_job">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_ecolog_job_ask">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_ecolog_job_complete">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_ecolog_job_what">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_ecolog_list_job">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_eliminate_camp_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_eliminate_camp_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_eliminate_camp_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_eliminate_camp_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_eliminate_camp_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_eliminate_camp_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_eliminate_camp_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_eliminate_camp_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_eliminate_camp_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_artefact_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_artefact_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_artefact_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_artefact_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_artefact_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_artefact_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_artefact_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_artefact_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_artefact_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_item_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_item_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_item_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_item_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_item_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_find_item_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_freedom_has_no_job">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_freedom_job_ask">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_freedom_job_complete">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_freedom_job_what">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_freedom_list_job">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_job_nothing">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_job_refuse">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_kill_stalker_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_kill_stalker_1_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_kill_stalker_1_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_kill_stalker_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_kill_stalker_2_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_kill_stalker_2_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_kill_stalker_3">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_kill_stalker_3_descr">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_kill_stalker_3_text">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_reward_job">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_seek_job_abandon">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_seek_job_no">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_seek_job_yes">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_seek_new_job">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_trader_has_no_job">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_trader_job_ask">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_trader_job_complete">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_trader_job_what">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tm_trader_list_job">
-        <text>This string was added automatically</text>
-    </string>
+	<string id="artefact">
+		<text>Get artifact.</text>
+	</string>
+	<string id="barmen_eliminate_camp_1">
+		<text>Eliminate bandits at the Dump.</text>
+	</string>
+	<string id="barmen_eliminate_camp_1_descr">
+		<text>Wipe out the bandits’ gang that settled at the Dump. It has to be a quick and high-grade operation.</text>
+	</string>
+	<string id="barmen_eliminate_camp_1_text">
+		<text>A job, eh? Let’s see what we’ve got… Aha! Here you go: can you knock out that pack of bandits at the Dump? The “Duty”, with all their fuss about law and order, just can’t get down to it. Those are some rare scumbags of bandits, too, so they wouldn’t be around for too long anyway. But the one who gets them first will rake it in… and the booze is on me, of course.</text>
+	</string>
+	<string id="barmen_eliminate_camp_2">
+		<text>Eliminate mercenaries and bandits at Rostok.</text>
+	</string>
+	<string id="barmen_eliminate_camp_2_descr">
+		<text>Eliminate the group of mercenaries and bandits that blocked the passage through Rostok premises.</text>
+	</string>
+	<string id="barmen_eliminate_camp_2_text">
+		<text>There’s a gang of mercenaries not far away, at Rostok. They hit it off with the bandits, so now they’re scheming to block the passage through the plant. I don’t need to tell you what a nuisance it is, it’s got to be resolved straight off. The “Duty” guys and some of the old-timers have already gone to teach them some lessons, but we haven’t heard from them in a while… So why don’t you… eh… go and check on them. For good money.</text>
+	</string>
+	<string id="barmen_eliminate_camp_3">
+		<text>Eliminate bandits at the manor</text>
+	</string>
+	<string id="barmen_eliminate_camp_3_descr">
+		<text>It's all simple: clear the manor of bandits.</text>
+	</string>
+	<string id="barmen_eliminate_camp_3_text">
+		<text>There’s this manor by the old warehouses. Used to be a perfect place for a rendezvous, to trade the goods, you know… that sort of thing. But now the bandits have occupied it and, by the looks of it, are not about to make off. Now, that doesn’t suit me at all. I need this manor asap. I don’t care what happens to the lodgers.</text>
+	</string>
+	<string id="barmen_find_artefact_1">
+		<text>Find artifact "meat flap"</text>
+	</string>
+	<string id="barmen_find_artefact_1_descr">
+		<text>Find artifact "meat flap" that helps to heal ailments.</text>
+	</string>
+	<string id="barmen_find_artefact_1_text">
+		<text>Some padres have stopped by, left an order for a “meat flap”. You know, they have a certain interest in this healing artifact… those rotten miracle-workers! Anyway… You gonna do it? It’s up to you.</text>
+	</string>
+	<string id="barmen_find_artefact_2">
+		<text>Find artifact "crystal prickler"</text>
+	</string>
+	<string id="barmen_find_artefact_2_descr">
+		<text>Find artifact "crystal prickler" that helps its bearer secure himself against psy-attacts.</text>
+	</string>
+	<string id="barmen_find_artefact_2_text">
+		<text>A “stinker”?.. No, that’s not it. “Crystal water”?.. No, wrong again… Bugger! “Crystal prickler”, that’s it! So here’s the deal: I have an order for this artifact, “crystal prickler”. Have you heard of it? They say if you’ve got one no creature will be able to muddle with your brain. So what do you say?</text>
+	</string>
+	<string id="barmen_find_artefact_3">
+		<text>Find artifact "goldfish"</text>
+	</string>
+	<string id="barmen_find_artefact_3_descr">
+		<text>Find artifact "goldfish" to help domestic military science.</text>
+	</string>
+	<string id="barmen_find_artefact_3_text">
+		<text>I need the “goldfish” artifact. I’m sorry to say it doesn’t grant any wishes, been there, done that, but it can grant you some dough. The scientists cough up for it. They say they make some military stuff out of it… So, are you up for it?</text>
+	</string>
+	<string id="barmen_find_item_1">
+		<text>Find psy-outfit</text>
+	</string>
+	<string id="barmen_find_item_1_descr">
+		<text>Find the outfit that provides efficient protection against psy radiation. The place to look is the deserted laboratories in the Dark Valley.</text>
+	</string>
+	<string id="barmen_find_item_1_text">
+		<text>Those labs in the Dark Valley used to be functioning: they were trying to find a way to protect human brains from psy-radiation. They were taking their time, that’s for sure… Anyway, one of their attempts actually was a success, and there’s supposed to be this suit somewhere that you can wear and even kiss the controller. Yep, it’s that good. So if you get me this doodah, I’ll never forget it.</text>
+	</string>
+	<string id="barmen_find_item_2">
+		<text>Find foreigner's gun.</text>
+	</string>
+	<string id="barmen_find_item_2_descr">
+		<text>An interesting assignment. The name rings a bell… but how do I know him? </text>
+	</string>
+	<string id="barmen_find_item_2_text">
+		<text>There once was this foreigner in our neck of the woods… Gordon was his name? His whole manner gave out an experienced stalker, but he said he’d never been to the Zone. But anyway, that’s not the point. He did vanish somewhere in the Zone eventually. But he had this rather curious thing, the “Desert Eagle”. If I could just take a closer look at it…</text>
+	</string>
+	<string id="barmen_find_item_3">
+		<text>Find modified "Vintorez"</text>
+	</string>
+	<string id="barmen_find_item_3_descr">
+		<text>Find modified "Vintorez". Apparently, the place to look is the Radar area. </text>
+	</string>
+	<string id="barmen_find_item_3_text">
+		<text>There was this odd story here. This one fellow pops up, pockets puffing up with dough, and sets off hiring himself a gang, not the old-timers though, but more of the nippy type. Bought tons of gear… I had this one brand new “Vintorez”, a marvelous gun! – so I was fool enough to sell it to him. I won’t lie to you, I made quite a bit of money… except this whole crew got knocked out close to the Radar. What can I say, they died for nothing… well, a good lesson for all to learn: you can’t pave your way through the Zone with money. But anyway… I can't stop thinking about that “Vintorez”, such a bang-up gun rusting somewhere! Won’t you find it for me? I’m paying good money!</text>
+	</string>
+	<string id="barmen_kill_stalker_1">
+		<text>Kill soldier</text>
+	</string>
+	<string id="barmen_kill_stalker_1_descr">
+		<text>One military man has to be finished off. The job is duck soup, except… it’s weird that the target’s a man in uniform, and the customer really has his dander up.</text>
+	</string>
+	<string id="barmen_kill_stalker_1_text">
+		<text>I need you to down this one war dog… don't ask me who he is, what do I care! Just do it. So? Can I trust you with it?</text>
+	</string>
+	<string id="barmen_kill_stalker_2">
+		<text>Kill stalker</text>
+	</string>
+	<string id="barmen_kill_stalker_2_descr">
+		<text>Do in one of the stalkers. Death to the cheater, that's the trader's revenge.</text>
+	</string>
+	<string id="barmen_kill_stalker_2_text">
+		<text>You know, there’s this type of men that you could never say a bad word about… you trust him as you trust yourself, right? You bank on him… But suddenly you find out that he is the vilest and meanest son of a bitch… So here’s the deal: there’s this one case that needs to get even with. Do it, and I’ll take care of the rest.</text>
+	</string>
+	<string id="barmen_kill_stalker_3">
+		<text>Kill the stalker from the Monolith gang</text>
+	</string>
+	<string id="barmen_kill_stalker_3_descr">
+		<text>Find trader's ex-friend and help him die.</text>
+	</string>
+	<string id="barmen_kill_stalker_3_text">
+		<text>I used to have a friend… hard to believe, eh? Ah!.. we came to the Zone together when none of this stuff was here... The things we used to do, the places we used to go to… oh well, we were young, didn’t give a damn about anything… But he could never get enough. He wanted to go to the center of the Zone and was talking me into it, but I refused, and did the right thing… We had a really bad row, and he left on his own… And now I hear someone saw him there… he’s with “Monolith” now. So the deal is, Marked One… Grant my request, find him and… well, don’t make him suffer, it must be bad enough… He was like a brother to me, do you understand? You do…</text>
+	</string>
+	<string id="barmen_kill_stalker_4">
+		<text>Kill the stalker named Vampire</text>
+	</string>
+	<string id="barmen_kill_stalker_4_descr">
+		<text>Find and kill the stalker named Vampire.</text>
+	</string>
+	<string id="barmen_kill_stalker_4_text">
+		<text>That's it, I’ve had enough of this scumbag!.. I mean Vampire; do you know him? That bastard! Sucking luck out of people instead of blood. Whoever goes with him, they all die, all to a man, but he always comes back safe and sound! Done it five times now! That’s evil, don’t you think? I’d love to put some flowers on this Vampire’s grave… So, do you take the job?</text>
+	</string>
+	<string id="barmen_kill_stalker_5">
+		<text>Kill the stalker named Sparrow</text>
+	</string>
+	<string id="barmen_kill_stalker_5_descr">
+		<text>Find Sparrow and revenge for the death of another stalker.</text>
+	</string>
+	<string id="barmen_kill_stalker_5_text">
+		<text>Damn musketeers!.. Playing  D'Artagnan, assholes! As if surfing around anomalies and bowing to bullets is not enough, the oafs have now taken to fighting duels! Get this: there was this row… no one can even remember any more what started it. So these two dumb heads decided to shed some blood. And there you go, one dropped dead… a fine stalker he was, too! And the other one, Sparrow, beetled off, because I’d be the first one not to waste the chance to shoot him in the head. Find him. I’m sure he’s still in the Zone. Will you do it?</text>
+	</string>
+	<string id="dolg_eliminate_kamp_1">
+		<text>Eliminate monsters' lair.</text>
+	</string>
+	<string id="dolg_eliminate_kamp_1_descr">
+		<text>Mop out monster's lair at the Dump.</text>
+	</string>
+	<string id="dolg_eliminate_kamp_1_text">
+		<text>Well, we don’t practice sending some strange stalkers on missions. But on the other hand, the job’s such a breeze that it’s not even worth bothering our guys. So here’s the deal. A lair of creatures needs to be wiped out at the Dump. One of our groups is already working on it, so in case of trouble you’ll have a place to retreat. On the other hand, troubles are highly undesirable, because there really aren’t so many creatures, about ten, no more. They’re probably dogs: a rather large pack migration had been reported in this area. You may proceed to your mission.</text>
+	</string>
+	<string id="dolg_eliminate_kamp_2">
+		<text>Eliminate stalkers' camp</text>
+	</string>
+	<string id="dolg_eliminate_kamp_2_descr">
+		<text>Eliminate stalkers' camp at Agroprom.</text>
+	</string>
+	<string id="dolg_eliminate_kamp_2_text">
+		<text>There’s one rather ticklish job, but there's no way I can engage our guys. Our allies find the presence of neutrals at “Agroprom” highly undesirable. The mission is: clear the industrial area of all stalkers, whatever gangs they belong to. Is that clear?</text>
+	</string>
+	<string id="dolg_eliminate_kamp_3">
+		<text>Eliminate snipers' unit.</text>
+	</string>
+	<string id="dolg_eliminate_kamp_3_descr">
+		<text>Eliminate snipers' unit holding their position at Rostok.</text>
+	</string>
+	<string id="dolg_eliminate_kamp_3_text">
+		<text>So here’s the deal: there’s a group of mercenary snipers that needs to be eliminated. Fill in: the snipers are holding the top floor of the building complex. Assumed number: at least two, no more than five. Apparently, armed with Dragunov sniper rifles. Advice: don’t go there during the day.</text>
+	</string>
+	<string id="dolg_eliminate_kamp_4">
+		<text>Eliminate bandits' main base.</text>
+	</string>
+	<string id="dolg_eliminate_kamp_4_descr">
+		<text>Mop out bandits' main base in the Dark Valley.</text>
+	</string>
+	<string id="dolg_eliminate_kamp_4_text">
+		<text>We need to make a raid to the bandits’ main base and eliminate maximum personnel of the enemy. Enemy strength: around thirty fighters; armed with light self-firers, pistols, shot-guns. Chances of support: there should be a temporary military base in the region. We can ask them for cover in case of retreat, but we must try to make it a neat job ourselves. Any questions?</text>
+	</string>
+	<string id="dolg_eliminate_kamp_5">
+		<text>Eliminate snorks' lair.</text>
+	</string>
+	<string id="dolg_eliminate_kamp_5_descr">
+		<text>Clear the tunnels of snorks in the "Yantar" area.</text>
+	</string>
+	<string id="dolg_eliminate_kamp_5_text">
+		<text>This time it’s mop-up. The tunnels in “Yantar” sector are crammed with snorks: approximately two dozen. Well, you can no longer wait through a thunder storm in there anymore…</text>
+	</string>
+	<string id="dolg_find_item_1">
+		<text>Find outfit</text>
+	</string>
+	<string id="dolg_find_item_1_descr">
+		<text>Find Enchanted outfit by the warehouses in the village.</text>
+	</string>
+	<string id="dolg_find_item_1_text">
+		<text>There’s an off the record mission, stalker. My friend’s birthday is coming up, and I’d like to surprise him with a neat present. We’ve gone through such a mess together… I hear there’s an Enchanted outfit by the storehouse in the deserted village. Silly name, but that’s the name it goes by, so we’ll stick to it. In short, try to get hold of it. But remember: the village is the place to be on your guard.</text>
+	</string>
+	<string id="dolg_find_item_2">
+		<text>Find modified AK-74</text>
+	</string>
+	<string id="dolg_find_item_2_descr">
+		<text>Find and deliver to the Duty base the modified AK-74.</text>
+	</string>
+	<string id="dolg_find_item_2_text">
+		<text>This mission is pretty tough: you’ll have to procure a modified AK-74. The last known owner is the Greyhound stalker. For detailed examination of the gun it’s crucial that the weapon remains intact. Any questions?</text>
+	</string>
+	<string id="dolg_find_item_3">
+		<text>Find "walter"</text>
+	</string>
+	<string id="dolg_find_item_3_descr">
+		<text>Find and return the unique "walter" piece.</text>
+	</string>
+	<string id="dolg_find_item_3_text">
+		<text>Listen, stalker… I used to have a friend. And my friend used to have his favorite “walter”. One of the bandits owns it now, probably, their leader, the gun is a bit too good. Don’t ask me how the “walter” ended up with him, just try to bring it to me. If you do, I’ll never forget it.</text>
+	</string>
+	<string id="dolg_find_item_4">
+		<text>Find Diamond Scope</text>
+	</string>
+	<string id="dolg_find_item_4_descr">
+		<text>Find Diamond Scope, probably in the Dead city.</text>
+	</string>
+	<string id="dolg_find_item_4_text">
+		<text>Have you heard about the Diamond Scope, stalker? Never mind the stupid name, it does exist. An anomaly forced the glasses in its optics into gems, and its power is now ten times as many dioptres. It was last seen in the Dead City. Can you find it for me?</text>
+	</string>
+	<string id="dolg_kill_stalker_1">
+		<text>Neutralize Cap</text>
+	</string>
+	<string id="dolg_kill_stalker_1_descr">
+		<text>Neutralize Cap, head of the "Freedom" gang.</text>
+	</string>
+	<string id="dolg_kill_stalker_1_text">
+		<text>Listen closely. This is a tough mission. A man nicknamed Cap needs to be neutralized, the “Freedom” chief. Currently the troops under his command are holding positions at the border line with Radar. Target neutralization will wear down the cordon between Radar and Freedom’s main base. Consequence: elimination of the whole enemy gang by the penetration of Monolith and hordes of monsters. </text>
+	</string>
+	<string id="dolg_kill_stalker_2">
+		<text>Kill traitor</text>
+	</string>
+	<string id="dolg_kill_stalker_2_descr">
+		<text>Kill the deserter that ran off from Duty and now works as a mechanice at Freedom's base.</text>
+	</string>
+	<string id="dolg_kill_stalker_2_text">
+		<text>I really shouldn’t say anything to you… Anyway, some bastard has wormed his way into our midst, warmed himself into our confidence and took off to those damn anarchists. The scumbag made off gear and weapons to rig ten people, and ruined five times as much. Worked as an armorer here, and now repairs machinery for that scum. Finish him off, that’ll teach’em how we deal with traitors!</text>
+	</string>
+	<string id="dolg_kill_stalker_3">
+		<text>Neutralize Max</text>
+	</string>
+	<string id="dolg_kill_stalker_3_descr">
+		<text>Neutralize Freedom's military leader, Max.</text>
+	</string>
+	<string id="dolg_kill_stalker_3_text">
+		<text>Head of the fighter’s Freedom gang, Max, needs to be neutralized. Fill in: Freedom’s main base is on the premises of the former military camp. The target is in the center of the base. Can I give you some advice? For your own safety don’t even try to approach the target, use your sniper rifle.</text>
+	</string>
+	<string id="dolg_kill_stalker_4">
+		<text>Neutralize Monolith leader</text>
+	</string>
+	<string id="dolg_kill_stalker_4_descr">
+		<text>Find and neutralize Monolith leader.</text>
+	</string>
+	<string id="dolg_kill_stalker_4_text">
+		<text>Here’s the mission: find and neutralize alleged “Monolith” leader. The target is most likely in the Radar area. Try not to approach him too close, it’s highly dangerous. It’s a long-range operation.</text>
+	</string>
+	<string id="dolg_kill_stalker_5">
+		<text>Neutralize the stalker named Goblin</text>
+	</string>
+	<string id="dolg_kill_stalker_5_descr">
+		<text>Neutralize Goblin, one of the Freedom stalkers.</text>
+	</string>
+	<string id="dolg_kill_stalker_5_text">
+		<text>There’s this stalker, Goblin… at the moment supposedly in the vicinity of the warehouses, recently joined Freedom. We suspect he is the one responsible for the failure of several of our expeditions: always lounging about the bar, all ears, plus some shady dealings on his record… The job’s easy: neutralize. Are you snapping into it?</text>
+	</string>
+	<string id="dolg_kill_stalker_6">
+		<text>Neutralize the stalker named Poker.</text>
+	</string>
+	<string id="dolg_kill_stalker_6_descr">
+		<text>Neutralize bandit stalker Poker. Armed and highly dangerous.</text>
+	</string>
+	<string id="dolg_kill_stalker_6_text">
+		<text>The targets nickname is Poker. He is one of the fiercest bandits’ leader, a scumbag and a violator… He’s obviously brainsick, they say he got himself some rare decease in the Zone. Now he suffers from frequent black-outs, and when he comes to his senses he can’t remember where or who he is. Still, he’s always armed to the teeth and highly aggressive. Supposed location: Dark Valley. Ready for the mission?</text>
+	</string>
+	<string id="ecolog_find_artefact_1">
+		<text>Find artifact "Doughboy"</text>
+	</string>
+	<string id="ecolog_find_artefact_1_descr">
+		<text>Sounds like the poor devil made a clean getaway from those psychos. So, getting the “Doughboy” artifact… Now that’s some scavenger hunt. Still, it’s better than working as an assistant for this egghead.</text>
+	</string>
+	<string id="ecolog_find_artefact_1_text">
+		<text>I have a rather ambiguous request, stalker… I think you’ve already encountered this rather curious artifact, “Doughboy”, and you are aware that somehow it helps avoid body damage inflicted by the hardest radiation. Unfortunately, after a number of experiments we lost contact with one of our assistants who was with … ehhh… the “Doughboy” at the source of high radioactivity. This is a great loss to all of us. In view of these circumstances we need another such artifact. By the way, I would be happy if you agreed to work with me as an assistant. </text>
+	</string>
+	<string id="ecolog_find_artefact_2">
+		<text>Find artifact "Mama's beads"</text>
+	</string>
+	<string id="ecolog_find_artefact_2_descr">
+		<text>So they don’t need the smart and the talented. That’s it, eh. “Mama’s beads” slow down the flow of time… alright, we’ll figure it out. As long as one mission doesn’t take three years.</text>
+	</string>
+	<string id="ecolog_find_artefact_2_text">
+		<text>Good news, young man! Together with our colleagues we worked out a daring plan on reducing the time dedicated by our laboratory to research using the effect of the “Mama’s beads” artifact. The artifact, as you know, slows down the flow of time in a limited physical surrounding volume. However, we fear it may retard brain activity, and this particularity cannot possibly be ignored. I would like to ask you to go for this artifact, because I see that I’m dealing with a strong and enduring man.</text>
+	</string>
+	<string id="ecolog_find_artefact_3">
+		<text>Find artifact "Cobweb"</text>
+	</string>
+	<string id="ecolog_find_artefact_3_descr">
+		<text>So now they’re going to make the working class toil away for one shift instead of two: from 4 am till 10 pm. A good stalker with such an artifact could cross half the Zone in a day.</text>
+	</string>
+	<string id="ecolog_find_artefact_3_text">
+		<text>Listen, my dear man... We’re now doing a research on “Increasing man power efficiency and production intensification”. In particular, we’re studying the opportunity of increasing work day duration from eight to eighteen hours. The curious effect of the “Cobweb” artifact, when applied appropriately, endows its owner with tremendous stamina… So, do I have you working on this job?</text>
+	</string>
+	<string id="ecolog_find_artefact_4">
+		<text>Find artifact "Battery"</text>
+	</string>
+	<string id="ecolog_find_artefact_4_descr">
+		<text>The artifact is good, no question about that, but the side effect is pretty sad. I’m really sorry for those guys in uniforms.</text>
+	</string>
+	<string id="ecolog_find_artefact_4_text">
+		<text>Let me ask you, stalker… are you a patriot? Yes. I see, young man, I made the right assumption. Listen, I have a very important request. The thing is, and I’m not afraid to say it, we’ve come very close to creating a super-soldier, the foundation of our future army, a great army! The “Battery” artifact has an amazing effect on human body: raises total immunity, speeds up blood coagulability, provides incredible resistance to radioactivity, to say nothing of stamina!.. Unfortunately, a side effect has also been detected. Wearing the artifact for a day or longer completely suppresses the reproductive function, and we do not know whether this process is reversible. That is why I strongly recommend that you do not abuse this artifact.</text>
+	</string>
+	<string id="ecolog_find_artefact_5">
+		<text>Find artifact "Empty"</text>
+	</string>
+	<string id="ecolog_find_artefact_5_descr">
+		<text>I wonder if they did those experiments at ChNPP?</text>
+	</string>
+	<string id="ecolog_find_artefact_5_text">
+		<text>Alright, dear stalker. As is well known, there is a rather curious artifact in the Zone, the “empty”. I have to say it matches its name perfectly. The only property that our devices have been able to discover was complete absorption of any type of energy. This is the property that we would like to examine more thoroughly. To think of the prospects… imagine if a certain number of these artifacts were installed at the restraint system of NPP, then the disasters caused by the “peaceful atom” will become history!..</text>
+	</string>
+	<string id="ecolog_find_artefact_6">
+		<text>Find artifact "spring"</text>
+	</string>
+	<string id="ecolog_find_artefact_6_descr">
+		<text>If they do invent some new transport based on the “spring”, it’ll jump instead of flying. That’ll be something one of its kind…</text>
+	</string>
+	<string id="ecolog_find_artefact_6_text">
+		<text>Hello, aboriginal! Forgive me for my joke, I meant no offence. Would you be willing to help us obtain the “spring” artifact? We have all the necessary prerequisites to believe that getting down to its properties will speed up the invention of antigravitational transport. However, we cannot be sure yet… anyway, if you are willing to assist human progress, now is the time to act.</text>
+	</string>
+	<string id="ecolog_kill_stalker_1">
+		<text>Kill stalker Goiter.</text>
+	</string>
+	<string id="ecolog_kill_stalker_1_descr">
+		<text>Could've just said it straight out: find and kill the runaway.</text>
+	</string>
+	<string id="ecolog_kill_stalker_1_text">
+		<text>I have a rather unusual request for you, stalker. Do you know the man named Lu… forgive me, I meant a certain colleague of yours nicknamed Goiter? Hmm… I guess I’m not going to divulge any secret by saying that he used to be a rather promising young scientist. For some unknown reasons during the last experiment he destroyed not only all the equipment that had been delivered here with great difficulty, but the fruits of many months of hard labor. After that he vanished, but at about the same time a stalker appeared in the Zone with a similar description, nicknamed Goiter. The dementation may have been caused by experiments with mutants. Since this man and scientist is probably lost to society for good, we have decided to make a thorough examination of his brain so that in future… Well, enough of that. You mission will be to find Goiter and… well, we need to make sure he agrees to undergo the examination.</text>
+	</string>
+	<string id="ecolog_monster_part_1">
+		<text>Bring zombie arm</text>
+	</string>
+	<string id="ecolog_monster_part_1_descr">
+		<text>Holy-moly. These nuts won’t miss a chance to turn us all into zombies… Alright. They need this scum’s arm? We’ve got plenty of this stuff.</text>
+	</string>
+	<string id="ecolog_monster_part_1_text">
+		<text>Oh, young man! You know, we feel a need for a part of the body of a not unkonwn being. Your colleagues call it a zombie, and I must say, this is not a very successful name for a body that had modified itself so that... Anyway, we need its arm. I have to tell you: our team is working on implanting the extremities of... eh... zombies to those who have lost an arm or a leg for some reason. In addition, looking into the future we intend to use vital organs as well; however, for the time being this is a purely theoretical issue. So, the arm!  Would you be interested, young man?</text>
+	</string>
+	<string id="ecolog_monster_part_2">
+		<text>Bring flesh's eye</text>
+	</string>
+	<string id="ecolog_monster_part_2_descr">
+		<text>I'd better keep my body away from these eggheads just in case! Very well, I'll get them flesh's eye, and they can do all they want with their volunteers.</text>
+	</string>
+	<string id="ecolog_monster_part_2_text">
+		<text>Good news, young man: we have a very interesting assignment for you! I think as an intellectual being with quite a bit of experience you will be able to appreciate my colleagues' theories. The thing is, our research revealed: the eyes of the beings called "flesh" in the common language, are provided with... are you following me?... with olfactory receptors! Thus, they can not only see with their eyes, but smell with them as well! We're getting ready for an operation on transplanting this miraculous eye to one of ... one of our voluntary assistants. I believe we're about to create a furore!.. By the way, would you like to become a recepient of this rather amazing organ?</text>
+	</string>
+	<string id="ecolog_monster_part_3">
+		<text>Bring the tail of a blind dog</text>
+	</string>
+	<string id="ecolog_monster_part_3_descr">
+		<text>Well, look at this pick of science! Trying to find a second brain in humans?.. Poor dogs, someone will have to do without a tail now.</text>
+	</string>
+	<string id="ecolog_monster_part_3_text">
+		<text>Good day, dear boy! Listen, would you like to help us once again? I hope you know that dogs belong to the vertebrates subtype... meaning their vertebral column starts with the head and ends with the tail. And here's the catch! One of my young collegues proved theoretically that the spine of the blind dogs - this is how you named this type of animals - starts from the tail, not from the head! Think of it, it totally reverses the whole system of our knowledge in this area. There are already some rather daring theories about human beings having around their sacrum a... well, this is a subject of many discussions. In short, we need the head of the dog, the blind dog, that we through ignorance considered its tail.</text>
+	</string>
+	<string id="ecolog_monster_part_4">
+		<text>Bring a boar's leg</text>
+	</string>
+	<string id="ecolog_monster_part_4_descr">
+		<text>Gourmet lovers of thrills… Alright, I'll get them some ham.</text>
+	</string>
+	<string id="ecolog_monster_part_4_text">
+		<text>Welcome, eh... traveler! I'm so glad you dropped by: we are in need of a man to take part in a highly important experiment. Colleague Brenter wants to try and cook a meal of local fauna for a practical experiment on studying the influence of mutated protein on human body. For a start we decided to try the boars. We need ham. A boar's leg, do you undestand? And if you agree to do it, please select the most nourished specimen.</text>
+	</string>
+	<string id="ecolog_monster_part_5">
+		<text>Bring a snork's foot</text>
+	</string>
+	<string id="ecolog_monster_part_5_descr">
+		<text>Heal the snorks… speaking of queer eggheads! Alright, at least that will stop these monsters from jumping around.</text>
+	</string>
+	<string id="ecolog_monster_part_5_text">
+		<text>Good news, dear stalker! We've been racking our brain over this one question: what makes snorks literally drift above the ground, crawl up the walls, jump amazing distances... And the solution turned out very simple, young man! Snorks panic at the sight of the ground! They suffer from geophobia! The receptors that developed at the tips of their extremities send a signal of the greatest irritation when contacted with ground, or it could be any more or less horizontal surface. We need a sample of the snork's paw: we'll try to inject a vaccine that may relieve these poor creatures of this unusual desease.</text>
+	</string>
+	<string id="ecolog_monster_part_6">
+		<text>Bring pseudodog tail.</text>
+	</string>
+	<string id="ecolog_monster_part_6_descr">
+		<text>It was my luck the "tail" in their terminology actually means a tail. We'll see what happens next…</text>
+	</string>
+	<string id="ecolog_monster_part_6_text">
+		<text>Good day, colleague! We still can't puzzle out the amazing abilities exhibited by the pseudodogs, therefore we've decided to shift the vector of our research. This time we're going to start with another end... What are you smiling at? What is so... oh, yes. I think I understand. You see, young man, we need the tail of this creature situated right at the end... yes, at the end of its body. And I'm not talking about the reproductive organs of this mammal! You may have to stroll for those some other time.</text>
+	</string>
+	<string id="ecolog_monster_part_7">
+		<text>Bring Burer paw</text>
+	</string>
+	<string id="ecolog_monster_part_7_descr">
+		<text>How on earth do they come up with these ideas? Who let these nutcases into the Zone in the first place? They want the hand of a pseudogiant now…</text>
+	</string>
+	<string id="ecolog_monster_part_7_text">
+		<text>Listen, I've got some great news! It looks like together with my colleagues we've come close to solving the mystery of graviational fields emitted by the pseudogiants! We all unanimously agree that these creatures acquired this amazing ability to protect themselves from insatiable mosquitoes that this place is swarming with. The pseudogiant generates this field with his hand.. and, consequently, we need this part of his body for our experiments. Just think of it: summer, windows wide open, the light is on... and not a single bug! I'm sure in a short run compact gravitational fields generators will serve as a barrier not only against insects, but allergenic pollen, excessive noise and... however, I got carried away. So what do you say?</text>
+	</string>
+	<string id="ecolog_monster_part_8">
+		<text>Bring bloodsucker jaw.</text>
+	</string>
+	<string id="ecolog_monster_part_8_descr">
+		<text>Psychos. Definitely psychos.</text>
+	</string>
+	<string id="ecolog_monster_part_8_text">
+		<text>Oh, stalker, glad to see you! Listen.. you've already encountered bloodsuckers, haven't you? If not, we would like for it to happen. As soon as you can, please bring us the lower jaw of one of this species representatives, with all of its, so to say, mess gear. Unfortunately, I cannot let you in on the details of our experiment... it may have a negative effect on your psychological health. We'll be waiting.</text>
+	</string>
+	<string id="eliminate_lager">
+		<text>Camp elimination.</text>
+	</string>
+	<string id="find_item">
+		<text>Find item.</text>
+	</string>
+	<string id="freedom_eliminate_camp_1">
+		<text>Eliminate military camp </text>
+	</string>
+	<string id="freedom_eliminate_camp_1_descr">
+		<text>Eliminate military camp by research institute Agrorpom.</text>
+	</string>
+	<string id="freedom_eliminate_camp_1_text">
+		<text>The military are staging a gradual Zone takeover. We need to slow them down, otherwise the Zone will turn into a research zoo. One of the military camps is right by Agroprom. Even if you don't wipe it out completely, it will at least slow down Zone takeover by the army.</text>
+	</string>
+	<string id="freedom_eliminate_camp_2">
+		<text>Eliminate mercenaries camp</text>
+	</string>
+	<string id="freedom_eliminate_camp_2_descr">
+		<text>Eliminate mercenaries camp by the warehouses.</text>
+	</string>
+	<string id="freedom_eliminate_camp_2_text">
+		<text>Listen, here's the deal. The merchenaries camp needs to be wasted. We could leave them be, they're pretty good at shooting... except they've been really asking for it, sneaking into our territory, trying to bribe my people. It's time to teach them a lesson. Can you do it? </text>
+	</string>
+	<string id="freedom_eliminate_camp_3">
+		<text>Eliminate Duty detachment</text>
+	</string>
+	<string id="freedom_eliminate_camp_3_descr">
+		<text>Eliminate mopping-up Duty detachment at Rostok.</text>
+	</string>
+	<string id="freedom_eliminate_camp_3_text">
+		<text>How 'bout going for a hunt? Duty's mopping-up detachment showed up at Rostok. This is a great chance to surprise them. Duty keep sending guys hunting for the monsters, but in the process they don't hesitate to shoot whoever isn't up to their likening. This detachment needs to be finished off before Duty comes to anchor at Rostok. There shouldn't be too many people: three or four veterans and a couple of newbies.</text>
+	</string>
+	<string id="freedom_eliminate_camp_4">
+		<text>Eliminate Duty blockpost</text>
+	</string>
+	<string id="freedom_eliminate_camp_4_descr">
+		<text>Eliminate Duty blockpost at the Dump as soon as possible.</text>
+	</string>
+	<string id="freedom_eliminate_camp_4_text">
+		<text>There's a very urgent job. The passage from the Dump to the Bar needs to be cleared of the "Duty" unit... they've taken to hiding there and taking soap from passers-by. We're expecting a very important package, but now it must not be ruled out that "Duty" already know about our courier and will try to waylay him. We need to wipe off this roadblock, even if for a little while. Ok?</text>
+	</string>
+	<string id="freedom_eliminate_camp_5">
+		<text>Clear the village.</text>
+	</string>
+	<string id="freedom_eliminate_camp_5_descr">
+		<text>Clear the village of bloodsuckers and, possibly, the controller.</text>
+	</string>
+	<string id="freedom_eliminate_camp_5_text">
+		<text>Man, will you look at all those bloodsucking monsters cramming the village! No one even gets closer than a hundred yards to it, except for complete dumbheads. And some say they've been seeing things there... a controller is all we need right now! Anyway, it's hightime we put an end to it. I'm not forcing you, to tell you the truth I wouldn't go there myself. But if you're not afraid, then my boundaries will be out of gratitude.</text>
+	</string>
+	<string id="freedom_find_item_1">
+		<text>Steal sniper rifle</text>
+	</string>
+	<string id="freedom_find_item_1_descr">
+		<text>Steal the modified SVD from Duty's warehouse.</text>
+	</string>
+	<string id="freedom_find_item_1_text">
+		<text>There is a special assignment. And pretty tough, too... So, you'll need to carry off the improved "dragunov" from Duty's warehouse. This piece even has a name of its own, but never mind. The main thing is that with its awesome scope and recoil canceller you can shoot a squirrel in its eye from 400 yards. So, I trust you'll do it!</text>
+	</string>
+	<string id="freedom_find_item_2">
+		<text>Obtain modified Winchester 1300</text>
+	</string>
+	<string id="freedom_find_item_2_descr">
+		<text>Obtain modified Winchester 1300 from the scientists.</text>
+	</string>
+	<string id="freedom_find_item_2_text">
+		<text>I hear the eggheads managed to improve the shotgun Winchester using some artifact. The knockdown power of this thing is as high as a howitzer's. So why don't you pay them a visit and see if you can make a bargain. I'll make up for all expenses!</text>
+	</string>
+	<string id="freedom_find_item_3">
+		<text>Find armour vest</text>
+	</string>
+	<string id="freedom_find_item_3_descr">
+		<text>Find a sample of the new armour vest.</text>
+	</string>
+	<string id="freedom_find_item_3_text">
+		<text>Some of the war dogs are sporting a new type of armour vests. The inside lining is soaked in some healing ointment or something like that... anyway, it makes minor wounds heal as fast as on a dog. If you get one of those, we'll take it apart and make us a bunch ourselves.</text>
+	</string>
+	<string id="freedom_kill_stalker_1">
+		<text>Kill Duty's security chief</text>
+	</string>
+	<string id="freedom_kill_stalker_1_descr">
+		<text>Kill Duty's security chief and try do it as quiet as possible. </text>
+	</string>
+	<string id="freedom_kill_stalker_1_text">
+		<text>It would be well for Duty's security chief to quietly disappear. And when they're left with all the buggers muddle, I'll be able to plant a few of my guys in their gang. And then, the devil can play any trick... alright, I better button my lip. I suggest you take care of him from a distance, without kicking up a fuss.</text>
+	</string>
+	<string id="freedom_kill_stalker_2">
+		<text>Kill captain Ivantsov</text>
+	</string>
+	<string id="freedom_kill_stalker_2_descr">
+		<text>Kill "Duty" leader's closest helpman, captain Ivantsov.</text>
+	</string>
+	<string id="freedom_kill_stalker_2_text">
+		<text>It's a tough job, I'm warning you right away, but it's worth it. Ivantsov has been asking for it, this one henchman of the "Duty" leader. He does the messiest work: punitive operations, raids... If you only knew how many of our guys he's killed off! It's high time we did away with this slimeball. So if you make up your mind to do it, I suggest you get yourself well armed first thing.</text>
+	</string>
+	<string id="freedom_kill_stalker_3">
+		<text>Kill colonel Petrenko</text>
+	</string>
+	<string id="freedom_kill_stalker_3_descr">
+		<text>Kill colonel Petrenko, one of the founding fathers of the "Duty" gang.</text>
+	</string>
+	<string id="freedom_kill_stalker_3_text">
+		<text>Colonel Petrenko... I don't know if you've heard the name or met him, but it would be good for the two of you to meet. This man is one of the "Duty" founders and one of our worst enemies. Try to make sure your conversation ends as fast as possible... for him. Can you handle that?</text>
+	</string>
+	<string id="freedom_kill_stalker_4">
+		<text>Kill "Duty" leader.</text>
+	</string>
+	<string id="freedom_kill_stalker_4_descr">
+		<text>Kill "Duty" leader so the death of this man throws enemy gang into chaos.</text>
+	</string>
+	<string id="freedom_kill_stalker_4_text">
+		<text>I really don't know, how to tell you... Anyway, it's time. It's time to finish off general Voronin. Certainly, knocking out a "Duty" leader will be quite a job to do, no-brainer. But if you get him, you'll put an end to the bloodshed between "Duty" and us. After such a blow "Duty" probably won't be able to stand strong on their feet. Send him to the place that he deserves. </text>
+	</string>
+	<string id="freedom_kill_stalker_5">
+		<text>Kill a "Duty" bigwig </text>
+	</string>
+	<string id="freedom_kill_stalker_5_descr">
+		<text>Kill one of Duty's supervisors.</text>
+	</string>
+	<string id="freedom_kill_stalker_5_text">
+		<text>I'll pay for the head of any "Duty" leader! Knock one off and come back for reward.</text>
+	</string>
+	<string id="freedom_kill_stalker_6">
+		<text>Kill the stalker called Scarecrow.</text>
+	</string>
+	<string id="freedom_kill_stalker_6_descr">
+		<text>Eliminate stalker Scarecrow, an excessively zealous hunter for mutants.</text>
+	</string>
+	<string id="freedom_kill_stalker_6_text">
+		<text>We eliminate monsters, except for us it's a matter of survival, not profit. Mutants populations are not as numerous; besides, they're living beings too, so we can't permit their annihilation. Some individuals refuse to understand it. An apt illustration is the stalker called Scarecrow. He got his nickname for a reason, by making a business on selling stuffed mutants. We've warned him before, but all for nothing. So can you do a good deed  for "Greenpeace"?</text>
+	</string>
+	<string id="freedom_kill_stalker_7">
+		<text>Kill the stalker named Barin. </text>
+	</string>
+	<string id="freedom_kill_stalker_7_descr">
+		<text>Kill the stalker named Barin, head commissary of the "Duty" gang.</text>
+	</string>
+	<string id="freedom_kill_stalker_7_text">
+		<text>A cad, bootlicker, hypocrite and coward... aka stalker Barin. As you can see, a man with a marvellous character, which helped him get to the top of "Duty". Currently supplies the gang with stores and foodstuff, though taking part in raids from time to time. We need to get rid of him, especially since all the connections in terms of "Duty" provisions lead to Barin.</text>
+	</string>
+	<string id="freedom_monster_part_1">
+		<text>Bring ham</text>
+	</string>
+	<string id="freedom_monster_part_1_descr">
+		<text>Bring ham to the dinner party in honor of Bob Marly.</text>
+	</string>
+	<string id="freedom_monster_part_1_text">
+		<text>We're planning a dinner party to celebrate Bob Marley's birthday. So why don't you get us some delicious ham? The more the better! Jah will never forget you!</text>
+	</string>
+	<string id="kill_stalker">
+		<text>Kill stalker.</text>
+	</string>
+	<string id="monster_part">
+		<text>Obtain part of monster body.</text>
+	</string>
+	<string id="return_for_reward">
+		<text>Come back for the reward.</text>
+	</string>
+	<string id="return_for_reward_bring">
+		<text>Bring the customer what's been promised.</text>
+	</string>
+	<string id="tm_barman_has_no_job">
+		<text>I can't offer anything at the moment.</text>
+	</string>
+	<string id="tm_barman_job_ask">
+		<text>And what do you want to talk about?</text>
+	</string>
+	<string id="tm_barman_job_complete">
+		<text>Great job, award well deserved!</text>
+	</string>
+	<string id="tm_barman_job_what">
+		<text>What's up?</text>
+	</string>
+	<string id="tm_barman_list_job">
+		<text>Look what we've got now:</text>
+	</string>
+	<string id="tm_dolg_has_no_job">
+		<text>There are no jobs available right now.</text>
+	</string>
+	<string id="tm_dolg_job_ask">
+		<text>What do you want to discuss?</text>
+	</string>
+	<string id="tm_dolg_job_complete">
+		<text>Good boy! Job well done.</text>
+	</string>
+	<string id="tm_dolg_job_what">
+		<text>Listening.</text>
+	</string>
+	<string id="tm_dolg_list_job">
+		<text>Here's the job update:</text>
+	</string>
+	<string id="tm_ecolog_has_no_job">
+		<text>Sorry, but we don't have any jobs at the moment.</text>
+	</string>
+	<string id="tm_ecolog_job_ask">
+		<text>What is the job you would like to talk about? </text>
+	</string>
+	<string id="tm_ecolog_job_complete">
+		<text>You did a great job! Allow me to present you with your reward. </text>
+	</string>
+	<string id="tm_ecolog_job_what">
+		<text>I'm listening.</text>
+	</string>
+	<string id="tm_ecolog_list_job">
+		<text>Here's what I can offer: </text>
+	</string>
+	<string id="tm_eliminate_camp_1">
+		<text>Eliminate bandits' camp at the Dump.</text>
+	</string>
+	<string id="tm_eliminate_camp_1_descr">
+		<text>Eliminate bandits at the Dump who rob stalkers on the way from the inner Zone. The trader will be happy.</text>
+	</string>
+	<string id="tm_eliminate_camp_1_text">
+		<text>The bandits have rallied lately, getting in the way of honest people trading... So make a beeline for the Dump, I've been told these scumbags have settled down near the machinery cemetary. You look into this matter, and everyone will be grateful to you, and I'll be generous with my pay. Agreed?</text>
+	</string>
+	<string id="tm_eliminate_camp_2">
+		<text>Eliminate bandits' camp at the bus station.</text>
+	</string>
+	<string id="tm_eliminate_camp_2_descr">
+		<text>Eliminate bandits at the factory. Apparently, they're some inexperienced greenhorns, so the job'll be a breeze.</text>
+	</string>
+	<string id="tm_eliminate_camp_2_text">
+		<text>The bandits have been hanging around the bus station again. So did you guess already what the job is about? Well then… jump to it! Pass our heartiest greetings to them and come back, I'll thank you then. Deal?</text>
+	</string>
+	<string id="tm_eliminate_camp_3">
+		<text>Eliminate bandits by the research institute "Agroprom".</text>
+	</string>
+	<string id="tm_eliminate_camp_3_descr">
+		<text>Eliminate bandits by the research institute "Agroprom". Better stay on friendly terms with the trader.</text>
+	</string>
+	<string id="tm_eliminate_camp_3_text">
+		<text>Some bandits' gang turned up by the institute, right by "Agroprom". They're disturbing my diggers when those go for the rubbish. You solve the problem, and I'll be obliged to pay.</text>
+	</string>
+	<string id="tm_find_artefact_1">
+		<text>Find artifact "jellyfish" </text>
+	</string>
+	<string id="tm_find_artefact_1_descr">
+		<text>Find artifact "jellyfish" formed in the "spring-board" anomaly</text>
+	</string>
+	<string id="tm_find_artefact_1_text">
+		<text>Some guy from the Big Land asked for a "jelllyfish". The job's not messy and it's not a lot of money, but you'll go and return. Take it! </text>
+	</string>
+	<string id="tm_find_artefact_2">
+		<text>Find artifact "stone flower".</text>
+	</string>
+	<string id="tm_find_artefact_2_descr">
+		<text>Find artifact "stone flower" formed in the "spring-board" anomaly. The pay is supposed to be pretty good.</text>
+	</string>
+	<string id="tm_find_artefact_2_text">
+		<text>I have a request for the "stone flower". The order is from the jewellers, by the way, so let's keep the fair ladies happy, eh? If you get it I'll owe you a fee and a bottle to drink to their health…</text>
+	</string>
+	<string id="tm_find_artefact_3">
+		<text>Find artifact "night star"</text>
+	</string>
+	<string id="tm_find_artefact_3_descr">
+		<text>Find the "night star", a rare and expensive artifact. So what if it's coming from the military! Who cares? Money has no smell…</text>
+	</string>
+	<string id="tm_find_artefact_3_text">
+		<text>There is this one little job... rather unpleasant. Apparently, it's coming from the military, they're working on some new protection. Anyway, there's an order for the "night star". It's quite a rare artifact, but it provides pretty good protection from bullets... So will you do it? I'll pay you well!.. </text>
+	</string>
+	<string id="tm_find_item_1">
+		<text>Find unique outfit</text>
+	</string>
+	<string id="tm_find_item_1_descr">
+		<text>Find a unique outfit with some astonishing properties. And as the fee suggests, probably not just by asking the bandits politely for it.</text>
+	</string>
+	<string id="tm_find_item_1_text">
+		<text>I get it through hearsay that the bandits got hold of a rather curious outfit. They say the loser that thought of bringing it to the Zone got caught in an anomaly... the "witches' jelly" was it? Never mind. The thing is, as a result the outfit acquired some rather uncommon properties. So if you bring it to me, I'll pay you through the nose. So what do you say?</text>
+	</string>
+	<string id="tm_find_item_2">
+		<text>Find improved pistol</text>
+	</string>
+	<string id="tm_find_item_2_descr">
+		<text>Getting pistol "Fort" that, from rumors, fits more ammo in the magazine. The last known owner is the commander of the blockpost under the ruined bridge.</text>
+	</string>
+	<string id="tm_find_item_2_text">
+		<text>What's with this latest fad for all these fancy weapons, even the newbies are getting fussy about good ol' guns!.. Anyway, there's an order for an enhanced gat. They say the military commander, one of those that takes bribes for passing under the bridge, has a "Fort" with a full charger. Can you get it?</text>
+	</string>
+	<string id="tm_freedom_has_no_job">
+		<text>There's no job right now, really…</text>
+	</string>
+	<string id="tm_freedom_job_ask">
+		<text>So what is it that you want to discuss?</text>
+	</string>
+	<string id="tm_freedom_job_complete">
+		<text>Here's a fine young man! Excellent job, here's your dough.</text>
+	</string>
+	<string id="tm_freedom_job_what">
+		<text>What's the deal?</text>
+	</string>
+	<string id="tm_freedom_list_job">
+		<text>Here's what I've got:</text>
+	</string>
+	<string id="tm_job_nothing">
+		<text>It's alright. Some other time.</text>
+	</string>
+	<string id="tm_job_refuse">
+		<text>I refuse to do this job.</text>
+	</string>
+	<string id="tm_kill_stalker_1">
+		<text>Kill bandits' leader</text>
+	</string>
+	<string id="tm_kill_stalker_1_descr">
+		<text>Kill the bandits' leader who stole a march on the trader. Most likely he won't be alone, but with security... Tough job, but the fee covers it all. The Dark Valley is the place to look for him.</text>
+	</string>
+	<string id="tm_kill_stalker_1_text">
+		<text>You'll have to finish off this one dandy, one of the bandits' leaders. The other day the bandits, by his order, intercepted my courier and ripped him off, and I don't waste words with those who touch my people... In a word, if you get it done, I'll return the favor. So are you up for it? </text>
+	</string>
+	<string id="tm_kill_stalker_2">
+		<text>Kill trader stalker</text>
+	</string>
+	<string id="tm_kill_stalker_2_descr">
+		<text>Kill a stalker… Well, that's not the best job, lifting a hand against a fellow-worker. But the fee is pretty good, and this may be the most important thing?</text>
+	</string>
+	<string id="tm_kill_stalker_2_text">
+		<text>I'm having a confrontation with this one trader. Well, if he doesn't want to cooperate, the hell with him! But I won't let anyone set filthy rumors afloat. In short, he needs to be wasted so the others don't get out of hand. Let them all know who's the boss here... </text>
+	</string>
+	<string id="tm_kill_stalker_3">
+		<text>Kill the newbie stalker</text>
+	</string>
+	<string id="tm_kill_stalker_3_descr">
+		<text>Finish off a newbie stalker, who may not be a newbie at all… Then who? Ah, who the hell cares! As long as the job's not messy.</text>
+	</string>
+	<string id="tm_kill_stalker_3_text">
+		<text>There's this one guy here loafing about, making believe he's a newbie, but he's rather weird… So anyway, if he suddenly disappears, you'll do me a great favor. You know what I mean? </text>
+	</string>
+	<string id="tm_kill_stalker_4">
+		<text>Kill the stalker named Demon</text>
+	</string>
+	<string id="tm_kill_stalker_4_descr">
+		<text>Eliminate one of the trader Sidorovich's business rivals, the stalker named Demon. </text>
+	</string>
+	<string id="tm_kill_stalker_4_text">
+		<text>Demon, aka Oleg Gusarov... used to serve in the special forces. Until he minded his own business I had nothing against him, a loner is a loner. But I hear he's mustering a gang to crush down the cordon and take control over swag traficking from the Zone. Now this is a major problem, and it has to be solved quick. So will you do it? </text>
+	</string>
+	<string id="tm_kill_stalker_5">
+		<text>Kill father Diodor</text>
+	</string>
+	<string id="tm_kill_stalker_5_descr">
+		<text>To kill a man preaching in the Zone against gathering and trading artifacts? Exactly. </text>
+	</string>
+	<string id="tm_kill_stalker_5_text">
+		<text>I always said business and religion can't go together, they can never cross, and should never ever meddle in the other!.. It's just this padre, Lord forgive me, Diodor... well... he just can't see this simple truth. He keeps raving about artifacts hunting, says that trading them drives people to sin not just in the Zone, but in the whole world, on and on along those lines. Get this, he preaches destroying artifacts altogether!! See what he is up to? The worst thing is that he's actually got some converts! I've tried to approach this Diodor this way and other, but he just keeps at it. Here's the deal: you're going to send him to the top audience... you get the point, right? And I'll give you some cool artifact. So is it a bargain? </text>
+	</string>
+	<string id="tm_reward_job">
+		<text>I'm about the job.</text>
+	</string>
+	<string id="tm_seek_job_abandon">
+		<text>I'm not interested in that kind of jobs.</text>
+	</string>
+	<string id="tm_seek_job_no">
+		<text>Some other time. </text>
+	</string>
+	<string id="tm_seek_job_yes">
+		<text>I'm up for it.</text>
+	</string>
+	<string id="tm_seek_new_job">
+		<text>I need a job. Do you have something in view?</text>
+	</string>
+	<string id="tm_trader_has_no_job">
+		<text>There's no job right now. </text>
+	</string>
+	<string id="tm_trader_job_ask">
+		<text>What job do you want to talk about?</text>
+	</string>
+	<string id="tm_trader_job_complete">
+		<text>Job done… and here's the reward!</text>
+	</string>
+	<string id="tm_trader_job_what">
+		<text>What about the job?</text>
+	</string>
+	<string id="tm_trader_list_job">
+		<text>Here's something to do:</text>
+	</string>
 </string_table>

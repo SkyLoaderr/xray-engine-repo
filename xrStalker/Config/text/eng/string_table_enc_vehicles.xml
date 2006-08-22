@@ -1,78 +1,42 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="Bus">
-        <text>Пассажирский автобус</text>
-    </string>
-    <string id="Gaz">
-        <text>Грузовик ГАЗ</text>
-    </string>
-    <string id="Kamaz">
-        <text>KAMAZ truck</text>
-    </string>
-    <string id="Lada">
-        <text>Лада</text>
-    </string>
-    <string id="Moskvich">
-        <text>Москвич</text>
-    </string>
-    <string id="Niva">
-        <text>NIVA</text>
-    </string>
-    <string id="Rafik">
-        <text>Рафик</text>
-    </string>
-    <string id="Uaz">
-        <text>UAZ</text>
-    </string>
-    <string id="Vehicles">
-        <text>Vehicles</text>
-    </string>
-    <string id="Zaporozh">
-        <text>Zaporozhets</text>
-    </string>
-    <string id="bmp-2">
-        <text>БМП-2</text>
-    </string>
-    <string id="btr-70">
-        <text>BTR-70</text>
-    </string>
-    <string id="enc_vehicles_bmp-2">
-        <text>Боевая машина пехоты. Цена: 4500 рублей Вместительность: двенадцать человек. Грузоподъемность: 800 кг Для работы необходимы: тяжелый аккумулятор, запас бензина.</text>
-    </string>
-    <string id="enc_vehicles_btr-70">
-        <text>Armoured troop-carrier. Roominess 16 persons.</text>
-    </string>
-    <string id="enc_vehicles_bus">
-        <text>Цена: 2000 рублей Вместительность: шестнадцать человек. Грузоподъемность: 400 кг Для работы необходимы: тяжелый аккумулятор, запас бензина.</text>
-    </string>
-    <string id="enc_vehicles_gaz">
-        <text>Gaz</text>
-    </string>
-    <string id="enc_vehicles_kamaz">
-        <text>Widespread soviet truck</text>
-    </string>
-    <string id="enc_vehicles_lada">
-        <text>Легковой автомобиль. Цена: 1200 рублей Вместительность: четыре человека. Грузоподъемность: 200 кг Для работы необходимы: тяжелый аккумулятор, запас бензина.</text>
-    </string>
-    <string id="enc_vehicles_mi-24">
-        <text>Army storm helicopter</text>
-    </string>
-    <string id="enc_vehicles_moskvich">
-        <text>Легковой автомобиль. Цена: 1500 рублей Вместительность: четыре человека. Грузоподъемность: 300 кг Для работы необходимы: тяжелый аккумулятор, запас бензина.</text>
-    </string>
-    <string id="enc_vehicles_niva">
-        <text>Off-road automobile</text>
-    </string>
-    <string id="enc_vehicles_rafik">
-        <text>Маленькая грузовая машина. Цена: 2400 рублей Вместительность: два человека. Грузоподъемность: 600 кг Для работы необходимы: тяжелый аккумулятор, запас бензина.</text>
-    </string>
-    <string id="enc_vehicles_uaz">
-        <text>Soviet analog of army Jeep.</text>
-    </string>
-    <string id="enc_vehicles_zaporozh">
-        <text>Compact soviet automobile</text>
-    </string>
-    <string id="mi-24">
-        <text>Helicopter MI-24\n</text>
-    </string>
+	<string id="Kamaz">
+		<text>KAMAZ truck</text>
+	</string>
+	<string id="Niva">
+		<text>Niva</text>
+	</string>
+	<string id="Uaz">
+		<text>UAZ</text>
+	</string>
+	<string id="Vehicles">
+		<text>Transport</text>
+	</string>
+	<string id="Zaporozh">
+		<text>Zaporozhets</text>
+	</string>
+	<string id="btr-70">
+		<text>BTR-70</text>
+	</string>
+	<string id="enc_vehicles_btr-70">
+		<text>An armoured personnel carrier.</text>
+	</string>
+	<string id="enc_vehicles_kamaz">
+		<text>A commonly used Soviet truck.</text>
+	</string>
+	<string id="enc_vehicles_mi-24">
+		<text>An army assault helicopter.</text>
+	</string>
+	<string id="enc_vehicles_niva">
+		<text>An off-road car.</text>
+	</string>
+	<string id="enc_vehicles_uaz">
+		<text>A Soviet version of an army jeep.</text>
+	</string>
+	<string id="enc_vehicles_zaporozh">
+		<text>A small Soviet car.</text>
+	</string>
+	<string id="mi-24">
+		<text>Mi-24 helicopter</text>
+	</string>
 </string_table>

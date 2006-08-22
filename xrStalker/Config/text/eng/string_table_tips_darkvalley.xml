@@ -1,18 +1,9 @@
-    <string id="info_val_give_suicider_task">
-        <text>Branded One, stalkers whisper about stalker Hawk to hve shown up in the area. Nobody has seen him for six months now. He tried locating a passage to the \nZone center and disappeared without trace, only to reappear now. He was recently spotted in the Dark Valley, somewhere behind the Monolith base. When \ntime permits, clarify what's about him.</text>
-    </string>
-    <string id="val_give_escort_task_pda">
-        <text>Help liberating the friend.</text>
-    </string>
-    <string id="val_monolith_trader_pda1">
-        <text>Branded One! The Monolith base was attacked by the military. There's skirmish going in the main building now. Don't poke in there, try skirting around via the \nyard.</text>
-    </string>
-    <string id="val_monolith_trader_pda2">
-        <text>The military believe to have blocked all the exits from the Dark Valley. But there's an old road to the south, although you won't succeed without a car there. \nFind a vehicle and get outta there.</text>
-    </string>
-    <string id="val_monolith_trader_pda3">
-        <text>Branded One! The military called for another chopper! It's getting hot there. Dash to the gates, smash the damn gates and head toward me.</text>
-    </string>
-    <string id="val_sos_pda">
-        <text>Help! I'm about to kick the bucket.</text>
-    </string>
+	<string id="val_give_escort_task_pda">
+		<text>Help save a friend.</text>
+	</string>
+	<string id="val_monolith_trader_pda1">
+		<text>The bandit's base was attacked by the military. They blocked the entrance to the Dump but there is an old road to the south. Try to use it but be careful. Good luck.</text>
+	</string>
+	<string id="val_sos_pda">
+		<text>Help, I'm dying.</text>
+	</string>

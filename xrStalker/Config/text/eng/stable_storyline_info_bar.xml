@@ -1,60 +1,72 @@
-    <string id="bar_ecolog_research_corrupted">
-        <text>I, professor Kruglov, in the name of science and humanity delete the reports of our researches. Unsafe knowledge mustn't get to the hands of malevolent \nelements, who will use them in their criminal aims. Those who read this note should know, that our group has been hit over the "wild territory" by Freedom \nanarchists, under command of famous cutthroat Wolfhound. And to the moment you are reading this note, we are most likely to be dead.</text>
-    </string>
-    <string id="bar_ecolog_research_normal">
-        <text>... as it turned out to be, the radiation above all influences the higher spheres of thinking. The experienced showed that only human and animals with highly \norganized reasoning, such as dogs, horses, sensible to this emanation. Out of the elements abovementioned, only human is most subjected to deep into the \ntrance, the laboratory animals only suffered the great effect withing the bounds of fear. Basing upon these suppositions, we can make a conclusion about the \nspecialization of influencing exclusively human brain. The continual experiments on the "volunteers" proved that the trance effect can be palliated with \nmedicinally treatment. Also we've developed the experimental devices that protect the human brain from dosed emanation influence. According to our \ncalculations the source of radiation is situated in the center of Yantar lake, most probably the nature of the source is artificial and it's highly possible to \ndeactivate them. Also, there is a danger, that unreliable elements can gain access to the source of emanation and take it under it's control.</text>
-    </string>
-    <string id="bar_radar_shedule">
-        <text>Radar is turned off at 8:30 and turned on again at 9:00</text>
-    </string>
-    <string id="descr_bar_crazy_veterans_quest">
-        <text>Barkeep: Duty steems highly its reputation and wants them to be taken out silently. \n You're enough to eliminate their boss named "Lucky" and bring his PDA as a proof.</text>
-    </string>
-    <string id="descr_bar_darklab_documents">
-        <text>Barkeep: So you have to get second key from Hog. Then you should get into the laboratory and \nobtain papers. Don't forget to buy suit protecting against radiation, you won't be able to force through \nthe Dark Valley without it, there is extremely high level of radiation.</text>
-    </string>
-    <string id="descr_bar_dolg_community_quest">
-        <text>In order to join "Duty" you have to receive the approval of one of the most competent fighters of the faction. And prove the "Duty's" leader that you are worthy \nof being one of them.</text>
-    </string>
-    <string id="descr_bar_dolg_svoboda_ambush_quest">
-        <text>Barman: "You task is to eliminate Tyran, leader of Mercenaries grouping. The Mercenaries detachment has broken through to the wild territory and settled at \nthe building site. Be careful, the part of the combatants camped at the approaches to the site. When you bring me Tyran's PDA, you'll receive the reward."</text>
-    </string>
-    <string id="descr_bar_dolg_svoboda_leader_kill_quest">
-        <text>General Voronin: "The war with Freedom comes to an end, Branded One. You have made a good contribution to the common cause, and now I wish to dot \nthe i's in this war. I want you to eliminate the leader of Freedom."</text>
-    </string>
-    <string id="descr_bar_dolg_test_quest">
-        <text>Captain Ivantsov: "...prior to making any conclusions, you must take a brief check-up. You have to find the archival file from the abandoned building accross \nthe way. The task is of the simple ones, just enter the building, grab the file and fetch it to me. What can ever be easier, right? When I have the file, than we'll \ndecide whether you suit Duty or not."</text>
-    </string>
-    <string id="descr_bar_hunter_rifle">
-        <text>Hunter: Bring me my rifle back. I've lost it near Bloodsucker's dwelling, I give you coorditates. And be \ncarefull, they are very malicious.</text>
-    </string>
-    <string id="descr_bar_kill_professor">
-        <text>Wolfhound: "We've got a little hunt here. We've pressed the scientists, there behind the copter. By fellas are firing at them from time to time, in order not to let \nthem escape. So you join us, we'll be finishing them. If you help us, I'll give you the scientific suit, taken from the brought down helicopter. You target - \nprofessor Kruglov, kill him, otherwise he escapes during the battle, I know his kind. If you kill him - suit is yours, if not - your problems."</text>
-    </string>
-    <string id="descr_bar_radar_deactivate">
-        <text>Barkeep: "All we need is to reach antennas when emanation is lowered, and cut them off.</text>
-    </string>
-    <string id="descr_bar_resque_information">
-        <text>-breack through the ambush to scientists\nKruglov: "Stalker, help! We were attacked by mercenaries, good few of our guys died. Help us, we \nwon't stay in debt"\n\n"... be careful there, there are 15 men or else, we don't know exactly"</text>
-    </string>
-    <string id="descr_bar_x16_documents">
-        <text>Barkeep: "Go to the scientists, find out where X16 is and get the \nmissing part of the documents"</text>
-    </string>
-    <string id="journal_after_agroprom_documents">
-        <text>I've Looked through documents which found soldieries in former SRI. The conclusion is: this institute, \nlast years, before the meltdown was the protection of non governmental laboratory ?-18, which to all \nappearances conducted a certain mysterious experiment. Where a laboratory is - the documents \nhas no answer. It looks like militaries don't know about it either. Yeah. There appear more riddles. \nBut it can be a filament which merchants may require. Well, now a there's a way coming farther on \na north, to the merchant on the name Barman.</text>
-    </string>
-    <string id="journal_bar_darklab_documents">
-        <text>Yeah, it's a gloomy place this laboratory ?18... and its present dwellers...never even could think that \nsuch scums can exist in the world. I have found some documents. I understood a little from them \nthat there are certain technical specifications on some blocks to the emitters of Kaymanov. The fact \nis these blocks targeted at other laboratory which code is ?16 and to all appearances also is secret \none.</text>
-    </string>
-    <string id="journal_bar_x16_documents">
-        <text>Hemm, Merchants have really found out a lot of information as for these laboratories. It was a real \nsurprise for Barmen the information about emitters and about ?16. And he is sure now, that this \n«brain scorcher» is handmade. He thinks that this laboratory ?16 is not far from the camp of \nscientists near a lake Jantar. They are studying at this moment a radiation which has similar effect \nlike «scorcher». So now my way lies to scientific fraternity of the Zone.</text>
-    </string>
-    <string id="journal_before_darklab_documents">
-        <text>I've Met Barman. Having documents from Agroprom looked through, he assumed that this ?-18 \nwas in the so-called Dark Valley and offered to me to drop in there for the purpose of \ninformation and documents retrieval. He says he has sent Duty spies already with a task to get to \nthis cave. But they disappeared. A barman assumed that they became prisoners of the gangsters \nwhich have their base not far. And if it so, all that Duty spies found is the possession of the leader \nof gangsters - Hog. Barman, calls to the carefulness and obviously something holds back about \nthis cave. Well, all right, for a work: at first I have to talk to Hog, and if a «talk» will be \nsuccessful, then I go to the underground.</text>
-    </string>
-    <string id="journal_before_radar_task">
-        <text>Well, I am ready to go to "scorcher" I've found out from Madman about lowering of power of radiation \nand about a safe place, where I will be able to wait till this time. In other time my Psy-defence would \nnot be able to help me. I have to find enntrance into the underground bunker of laboratory ?19 and the \nway to the control room of the "brain scorcher's" antennas.</text>
-    </string>
-    <string id="rostok_tunel_gordon_diary">
-        <text>12.01.2012 \n Damn that management. They can't give rest to the old man. "Black mess" firstly, then the odd city \nin Russia. Now again: go, dear Gordon, to the boudless \nsteppes of Ukraine. Here is your crow-bar and wish you good pastime.\n \n 20.03.2012 \n Made it in the Zone. I can hardly believe that there are no bears here? And whom else will I have to \nfight with here? Well, I'm getting used very hard. In \nAmerica all recognize me by a single glance and treat me with burgers for free. And here I had to sell \nmy crow-bar for the canned meat.\n \n 26.04.2012 \n The blow-out began. Barman told me to hide my american butt as soon as possible and not to show \nup. I've driven out several rats from the abandoned \ntunnel. I hope I could wait this damn foul weather through.</text>
-    </string>
+	<string id="bar_ecolog_research_corrupted">
+		<text>I, professor Kruglov, am deleted the results of our research for the sake of science and humanity as a whole. Dangerous knowledge must not pass into the hands of unreliable people who will seek to use it for the achievement of their criminal objectives. Those who read this note should know that our group was shot down above the Wild Territory by Freedom anarchists led by a notorious cutthroat called Wolfhound. By the time you read this we will probably be dead.</text>
+	</string>
+	<string id="bar_ecolog_research_normal">
+		<text>... как оказалось, излучение прежде всего воздействует на высшие области мышления. Опыты показали, что только человек и животные с высокоорганизованным мышлением, такие как собаки, лошади, чувствительны к этому излучению. Из них лишь человек полностью подвержен эффекту погружения в транс, на подопытных животных эффект оставался в пределах сильного страха. Исходя из этих предпосылок, можно сделать вывод о специализации воздействия исключительно на человеческий мозг. Продолжительные эксперименты на «добровольцах» показали, что эффект транса может быть снят при медикаментозном лечении. Также, нами были разработаны экспериментальные устройства, которые защищают человеческий мозг от дозированного воздействия излучения. По нашим расчетам источник излучения находится в центре озера Янтарь, вероятнее всего природа источника искусственная и вполне возможно отключить его. Также, есть опасность, что неблагонадежные элементы могут получить доступ к источнику излучения и попытаться взять его под свой контроль.</text>
+	</string>
+	<string id="descr_bar_crazy_veterans_quest">
+		<text>Barman: "Duty has a reputation to uphold. That's why they want this thing done quietly. All you need to do it whack the leader called Lucky and bring his PDA as proof."</text>
+	</string>
+	<string id="descr_bar_dolg_community_quest">
+		<text>To join Duty you will need the approval of one of the most respected fighters in the group and also prove to Duty that you are worthy of your place in their ranks.</text>
+	</string>
+	<string id="descr_bar_dolg_svoboda_ambush_quest">
+		<text>Barman: "Your mission is to kill Tyrant, the leader of the Mercenaries. His crew made it into the Wild Territory and set up a base at the construction site. Be careful, some of their fighters have set up ambushes on the way to the site. Bring me Tyrant's PDA and the reward is yours."</text>
+	</string>
+	<string id="descr_bar_dolg_svoboda_leader_kill_quest">
+		<text>General Voronin: "The war with Freedom is coming to an end, Marked One. You played your part in fighting for the cause! Now I want to finish this war. The leader of our enemies must be disposed of."</text>
+	</string>
+	<string id="descr_bar_dolg_test_quest">
+		<text>Captain Invantsov: "...before coming to conclusions, pass an easy test. You have to get a folder from the abandoned building opposite. It's not hard, just go inside, take the folder and bring it to me. Piece of cake, right? When I have the folder we'll decide whether you're fit to join Duty or not."</text>
+	</string>
+	<string id="descr_bar_hunter_rifle">
+		<text>Hunter: "Bring back the rifle. I lost it by the place where bloodsuckers live. I'll upload you the co-ordinates. And be careful, those bastards ain't no joke."</text>
+	</string>
+	<string id="descr_bar_kill_professor">
+		<text>Wolfhound: "We've got a little hunt going on here. We pinned the scientists in over there behind the chopper. My boys are putting some fire down on them from time to time to make sure they don't escape. Join in, we're about to go in and finish 'em off. If you help us I'll give you the scientists' suit... we found it in the chopper we took down. Your target is professor Kruglov. Kill him or he'll run away during the shootout, I know his type. If you kill him the suit is yours, if you don't you don't get jack."</text>
+	</string>
+	<string id="descr_bar_radar_deactivate">
+		<text>Barman: "All we gotta do is get to the antennae when the emission level drops and turn 'em off. Got it?"</text>
+	</string>
+	<string id="descr_bar_resque_information">
+		<text>get through to the scientists and avoid the mercenaries' ambush\n \n Kruglov: "Stalker, help! We were attacked by mercenaries and half of our team is dead. Help us and you won't regret it"\n \n "...be careful, there are about fifteen of them but we don't know exactly</text>
+	</string>
+	<string id="descr_bar_x16_documents">
+		<text>Barman: "You need to get through to the scientists and find out where laboratory X16 is located to find the missing documents."</text>
+	</string>
+	<string id="journal_after_agroprom_documents">
+		<text>I looked through the documents found at the former Institute. The conclusion is that the Institute was used as a front for a non-state laboratory called X18 in the years preceding the accident. This lab appears to have been conducting some mysterious experiment; its location is not clear from the documents and the military don't seem to know anything about it either. Well, well... the puzzles are multiplying... But perhaps this is the starting point which the traders need. Now I have to travel further north to a trader known as the Barman.</text>
+	</string>
+	<string id="journal_after_agroprom_documents_name">
+		<text>Military documents</text>
+	</string>
+	<string id="journal_bar_darklab_documents">
+		<text>Hell... lab X18 wasn't fun...and its current residents...I didn't think things like that existed. I found some documents...I didn't understand much of what they contained except that they are technical specifications for some blocks from Kaimanov emitters. What's interesting is that the blocks were designated for another laboratory with the codename X16 and it's probably a secret one too.</text>
+	</string>
+	<string id="journal_bar_darklab_documents_name">
+		<text>Laboratory X18</text>
+	</string>
+	<string id="journal_bar_x16_documents">
+		<text>Hmm...The traders have dug up a lot of information about these laboratories. The Barman wasn't surprised to find out about the emitters and X16. Now he's convinced that this Brain Burner is man-made. He thinks that laboratory X16 is near the scientists' camp by Amber Lake. It's interesting that they're studying emissions that resemble the effects of the Burner. So now I must pay a visit to the Zone's scientific community.</text>
+	</string>
+	<string id="journal_bar_x16_documents_name">
+		<text>The Brain Burner is man-made?</text>
+	</string>
+	<string id="journal_before_darklab_documents">
+		<text>I met with the Barman. Having looked through the documents from the Institute he thinks that this X18 is in the so called Dark Valley and offered me to go there to look for information and documents. He says he sent Duty scouts to get into the underground vaults there but they disappeared. The Barman thinks they were captured by bandits who have a base nearby. If that's true everything those Duty guys found will be in the hands of Boar, the leader of the bandits. The Barman told me to be careful and... clearly didn't tell me everything about these underground vaults. Oh well, time to get to work: first of all I need to go pay Boar a visit and if the "conversation" goes well I'll explore the underground.</text>
+	</string>
+	<string id="journal_before_darklab_documents_name">
+		<text>Barman</text>
+	</string>
+	<string id="journal_before_radar_task">
+		<text>Well, I am ready to go to the Burner. I found out the time when the emission levels fall from Crazy and he also told me about a safe place where I can wait for this time. My psy-protection won't work at other times anyway. I'll have to find a way into the underground bunker of lab X19. Inside I should find the controls for the Brain Burner Antennae.</text>
+	</string>
+	<string id="journal_before_radar_task_name">
+		<text>Information about the Burner</text>
+	</string>
+	<string id="rostok_tunel_gordon_diary">
+		<text>12.01.2012 \n God damn my bosses...won't leave an old man alone. First Black Mesa, then some strange town in Russia. And now they send poor little Gordon into the endless Ukrainian plains. Take your jemmy and have fun.  \n \n 20.03.2012 \n Made it into the Zone. Are there really no bears here? Who am I going to fight then? I'm not finding my bearings too well in this place. In America everyone recognises me and gives me hamburgers for free but here I had to give my little crowbar away for a can of meat. \n \n 26.04.2012 \n The emission has started. The barman told me to hide my American ass and keep it hidden. I chased some rats out of an abandoned tunnel. I hope to wait out the bad weather in here.</text>
+	</string>
+	<string id="st_gordon_diary">
+		<text>Gordon's PDA</text>
+	</string>

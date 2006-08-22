@@ -1,24 +1,24 @@
-    <string id="general_ecolog_tip_1">
-        <text>What happened? Is he dead? Turn back immediately!!!</text>
-    </string>
-    <string id="general_ecolog_tip_2">
-        <text>What happened? Is he dead? Take neasurements and turn back immediately!!! \n</text>
-    </string>
-    <string id="storyline_ghost_tip">
-        <text>Voice note of Ghost</text>
-    </string>
-    <string id="storyline_vasilyev_tip">
-        <text>Voice note of Vasiliev</text>
-    </string>
-    <string id="tips_labx16switcher_press">
-        <text>To shut down a magic plant, press ($$ACTION_USE$$)</text>
-    </string>
-    <string id="yan_saharov_message">
-        <text>Well done, Branded One, you did reached the laboratory. It's very important for us to study this plant \nin the laboratory. Try to cut it off, in order we would be able research it.</text>
-    </string>
-    <string id="yan_saharov_message_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="yan_saharov_message_3">
-        <text>Excellent work, Branded One. A radiation is off, you're alive. I want to warn you, we've sent the pair of \nmilitary helicopters to clean out territory from zombie, therefore it's better not to go there for a while \nin order not to get under a fire. Yeeh, by the way, if you'll pass by, drop in a bunker to us.</text>
-    </string>
+	<string id="general_ecolog_tip_1">
+		<text>What happened??? He's dead??? Come back immediately!!!</text>
+	</string>
+	<string id="general_ecolog_tip_2">
+		<text>What happened??? He's dead??? Take samples and come back immediately!!!</text>
+	</string>
+	<string id="storyline_ghost_tip">
+		<text>Ghost's audio recording.</text>
+	</string>
+	<string id="storyline_vasilyev_tip">
+		<text>Vasiliev's audio recording.</text>
+	</string>
+	<string id="tips_labx16switcher_press">
+		<text>To turn the wonder-machine off press ($$ACTION_USE$$)</text>
+	</string>
+	<string id="yan_saharov_message">
+		<text>Good man, Marked One, you made it to the lab in the end. It's extremely important that we study the machine in the lab. Try turning it off so that we can examine it.</text>
+	</string>
+	<string id="yan_saharov_message_2">
+		<text>Listen, the prototype cannot protect you from powerful emissions for long. I expected this so if you encounter such emissions a timer will be activated. When time runs out the prototype will no longer be able to protect you. Be careful and keep an eye on the time.</text>
+	</string>
+	<string id="yan_saharov_message_3">
+		<text>Great work, Marked One. The emissions have bee turned off, you're alive. I want to warn you, we called a couple of military helicopters to clear the area of zombies so you best avoid it. Oh, by the way, if you're in the area pop into our bunker some time, won't you?</text>
+	</string>

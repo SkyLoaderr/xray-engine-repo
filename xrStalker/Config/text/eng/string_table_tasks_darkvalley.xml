@@ -1,27 +1,81 @@
-    <string id="val_come_to_trader">
-        <text>Return to the dealer.</text>
-    </string>
-    <string id="val_come_to_trader_0">
-        <text>Return to the dealer as soon as possible.</text>
-    </string>
-    <string id="val_come_to_trader_main">
-        <text>Return to the dealer.</text>
-    </string>
-    <string id="val_prisoner_help">
-        <text>Help out the imprisoned Duty stalker.</text>
-    </string>
-    <string id="val_prisoner_help_0">
-        <text>Set the Duty stalker free from bandit captivity. Find the captive in the basement of the bandit base.</text>
-    </string>
-    <string id="val_prisoner_help_main">
-        <text>Set the Duty stalker free from bandit captivity. Find the captive in the basement of the bandit base.</text>
-    </string>
-    <string id="val_sos_help">
-        <text>Help out stalker.</text>
-    </string>
-    <string id="val_sos_help_0">
-        <text>Unknown stalker is asking for help.</text>
-    </string>
-    <string id="val_sos_help_main">
-        <text>Unknown stalker is asking for help. Find him on the neglected fuel station.</text>
-    </string>
+	<string id="bar_darklab_documents">
+		<text>Find documents in the dungeon lab</text>
+	</string>
+	<string id="bar_darklab_documents2">
+		<text>Find documents in X-18</text>
+	</string>
+	<string id="bar_darklab_documents2_1">
+		<text>Find documents</text>
+	</string>
+	<string id="bar_darklab_documents2_2">
+		<text>Take documents to the barman</text>
+	</string>
+	<string id="bar_darklab_documents_1">
+		<text>Take the key to the laboratory from Boar</text>
+	</string>
+	<string id="bar_darklab_documents_2">
+		<text>Get out of bandits' base</text>
+	</string>
+	<string id="bar_darklab_documents_3">
+		<text>Find the laboratory entrance</text>
+	</string>
+	<string id="bar_darklab_documents_4">
+		<text>Sneak into the base</text>
+	</string>
+	<string id="dar_codedoor_1">
+		<text>Find the codelocked door.</text>
+	</string>
+	<string id="dar_codedoor_1_1">
+		<text>Discover the code that opens the door.</text>
+	</string>
+	<string id="dar_codedoor_1_2">
+		<text>Open the door using the code.</text>
+	</string>
+	<string id="dar_codedoor_2">
+		<text>Open the door to the control centre.</text>
+	</string>
+	<string id="dar_codedoor_2_1">
+		<text>Discover the code that opens the door.</text>
+	</string>
+	<string id="dar_codedoor_2_2">
+		<text>Open the door using the code.</text>
+	</string>
+	<string id="val_captive_help">
+		<text>Free the Duty member</text>
+	</string>
+	<string id="val_captive_help_1">
+		<text>Follow Bullet to the ambush location</text>
+	</string>
+	<string id="val_captive_help_2">
+		<text>Kill the bandits and rescue the Duty member.</text>
+	</string>
+	<string id="val_come_to_trader">
+		<text>Return to the trader</text>
+	</string>
+	<string id="val_come_to_trader_0">
+		<text>Return to the trader.</text>
+	</string>
+	<string id="val_come_to_trader_1">
+		<text>Get out of the Dark Valley</text>
+	</string>
+	<string id="val_come_to_trader_2">
+		<text>Show documents to the trader</text>
+	</string>
+	<string id="val_prisoner_help">
+		<text>Free the Duty member from prison</text>
+	</string>
+	<string id="val_prisoner_help_0">
+		<text>Pull the Duty member out of bandits' prison.</text>
+	</string>
+	<string id="val_prisoner_help_main">
+		<text>Free the Duty member from bandits' prison</text>
+	</string>
+	<string id="val_sos_help">
+		<text>Help stalker</text>
+	</string>
+	<string id="val_sos_help_0">
+		<text>An unknown stalker is calling for help.</text>
+	</string>
+	<string id="val_sos_help_main">
+		<text>Help the stalker at the gas station</text>
+	</string>

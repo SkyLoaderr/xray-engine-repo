@@ -1,12 +1,24 @@
-    <string id="bar_ecolog_research_corrupted">
-        <text>I, professor Kruglov, in the name of science and humanity delete the reports of our researches. Dangerous knowledge mustn't reach the hands of malevolent \nelements, who won't hesitate to use them in criminal pursuits. The one who reads this entry should know that our group has been knocked down above the "wild \nterritory" by Freedom's anarchists, under the command of famous cutthroat Wolfhound. And consider that most likely we're dead now.</text>
-    </string>
-    <string id="bar_ecolog_research_normal">
-        <text>... as it turned out the radiation first of all influences on the highest regions of thinking. The experiments indicated that only the human and the animals with the highly organized thinking, like dogs, horses, are sensible to such radiation. Out of the abovementioned only the man can be fully subjected to the influence of falling into trance condition, laboratory animals suffered only the effect within the limits of deep fear. Regarding these presuppositions it's possible to make a conclusion about the specialization of the influence solely on the human brain. Positive experiments on "volunteers" affirmed that the trance effect can be removed with the pharmacotherapy. Moreover we've gathered experimental devices, which protect the human brains from dosated radiation influence. According to our calculations the source of radiation is situated in the center of Yantar lake, most likely the nature of the source if artificial and it can be possible to disconnect it. Furthermore there is an endangerment that some undesirable elements can receive an access to the source of radiation and attempt to take it under control.</text>
-    </string>
-    <string id="bar_radar_shedule">
-        <text>Radar is turned off at 8:30 and turned on again at 9:00</text>
-    </string>
-    <string id="rostok_tunel_gordon_diary">
-        <text>12.01.2012 \n Damn those big B. I doubt they can give me the rest. "Black Mass" came first, then an obscure city in Russia. Now again: go, old butt Gordon, to the boundless \nsteppes of Ukraine. And don't forget to take the crowbar for successful fling. \n \n 20.03.2012 \n Got into the Zone. How curious that there are no bears here. Whom shall I fight with then? In general it requires a deep breath to get acquainted with everything \nhere. The fact is that everyone recognizes me in America and I'm even treated with burgers for free. While in here I had to give my crowbar for the tinned meat. \n \n 26.04.2012 \n The blowout began. Barkeep said that I should have hidden my American bum deeper without any attempts to blow the cover. Drove several rats out of the \nabandoned tunnel. I hope I can wait the foul weather here through.</text>
-    </string>
+	<string id="bar_ecolog_research_corrupted">
+		<text>I, professor Kruglov, am deleting the results of our research. Dangerous knowledge must not pass into the hands of unreliable people who will seek to use it for the achievement of their criminal objectives. Those who read this note should know that our group was shot down above the Wild Territory by mercenaries led by a notorious cutthroat called Wolfhound. Be advised that by the time you read this we will probably be dead.</text>
+	</string>
+	<string id="bar_ecolog_research_normal">
+		<text>... as it turns out, emissions affect primarily the advanced spheres of cognitive activity. Experiments show that only humans and animals with developed cognitive processes like dogs and horses are susceptible to these emissions. Of the above only humans enter a state of trance - in animals the effect is limited to a strong feeling of fear. Judging by this evidence, it would be reasonable to conclude that the emissions are geared specifically towards the human brain. Extensive studies on "volunteers" have shown that subjects will leave the trance state if given medicamental treatment. We also developed experimental devices that will protect the human brain from doses of these emissions. According to our calculations the source of these emissions is located in the centre of Amber Lake and the source itself is likely to be artificial in nature meaning it can be disabled. There is also the danger of criminals attempting to reach the source of emissions and gaining control over it.</text>
+	</string>
+	<string id="journal_after_agroprom_documents_name">
+		<text>Military expedition's documents</text>
+	</string>
+	<string id="journal_bar_darklab_documents_name">
+		<text>Laboratory X18</text>
+	</string>
+	<string id="journal_bar_x16_documents_name">
+		<text>So the Brain Burner is man-made?</text>
+	</string>
+	<string id="journal_before_darklab_documents_name">
+		<text>Barman</text>
+	</string>
+	<string id="journal_before_radar_task_name">
+		<text>After talking to Crazy</text>
+	</string>
+	<string id="rostok_tunel_gordon_diary">
+		<text>12.01.2012 \n God damn my bosses...won't leave an old man alone. First Black Mesa, then some strange town in Russia. And now the endless Ukrainian plains. Take your jemmy and have fun.  \n \n 20.03.2012 \n Made it into the Zone. Are there really no bears here? Who am I going to fight then? I'm not finding my bearings too well in this place. I had to give my little crowbar away for a can of meat. \n \n 26.04.2012 \n The emission has started. The barman told me to hide my ass and keep it hidden. I chased some rats out of an abandoned tunnel. I hope to wait out the bad weather in here.</text>
+	</string>

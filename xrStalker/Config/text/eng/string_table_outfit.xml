@@ -1,93 +1,165 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="bandit_outfit_description">
-        <text>Traditional bandit's outfit - leathern jacket with stitched in kevlar particles. Slightly increases bullet-proof and splinter-proof protection. Doesn't protect from \nanomalous influence.</text>
-    </string>
-    <string id="bandit_outfit_name">
-        <text>Bandit's outfit.</text>
-    </string>
-    <string id="dolg_outfit_description">
-        <text>Manufactured by one of the defense Kiev Research Institute on the order of "Duty" faction. The simpleness and reliability of basic PS3-9 model in combination \nwith new materials represents good protection from bullet and splinter hits, as well as against week anomalies. Over the lack of respiration protection system \nthe radiation defense level is low</text>
-    </string>
-    <string id="dolg_outfit_name">
-        <text>PS3-9d suit</text>
-    </string>
-    <string id="dolg_scientific_outfit_description">
-        <text>Manufactured by one of the defense Kiev Research Institute on the order of "Duty" faction. It's composed of: suit PS3-9d, \nrespitation system with closed \ncycle, embedded system of suppressing anomaly fields effect. Provides a good defense from bullet and splinter hits. The \nlevel of protection from anomalous \nactivity is average. Level of radiation defense is high.</text>
-    </string>
-    <string id="dolg_scientific_outfit_name">
-        <text>Suit PS3-9Md</text>
-    </string>
-    <string id="ecolog_outfit_description">
-        <text>Manufactured for the work within the conditions of Zone, the suit of chemical protection SSP-99. Used by the expeditions of scientists and collaborating with \nthem stalkers-ecologists. Has implemented filtration and conditioning system. termperature-resistant. Badly conducts electricity. Very good protection from \nradiation and biological anomaloes. Resistant to chemically active environments. Is not suited for warfare, thus lacks defense against bullet or splinter damage.</text>
-    </string>
-    <string id="ecolog_outfit_name">
-        <text>Suit SSP-99</text>
-    </string>
-    <string id="exo_outfit_description">
-        <text>It's an experimental model of military exoskeleton. It wasn't in repetition work due to extreme high price and some \nmistakes in designing. In spite of this it had been produced in limited lots by underground organization outside of Ukraine. \nThis kind of exoskeleton considered to belong to the third generation. All constructional defects, which greately \ndecreased agility, had been eliminated. The armour also had been reinforced. Provides a good protection of bullet and \nsplinter hits. The anomaly activity resistance level estimated as low.</text>
-    </string>
-    <string id="exo_outfit_name">
-        <text>Exoskeleton</text>
-    </string>
-    <string id="killer_outfit_description">
-        <text>Staker's coverall. "Mercenaries" formation. The samples of S.W.A.T. equipment had been taken as the basis. Due to \nspecial cloth processing, heat-proof and anti-rad properties had been reinforced. Surpasses army flak jacket PZS-7 series \na little bit in defence properties.</text>
-    </string>
-    <string id="killer_outfit_name">
-        <text>Mecenary's coverall</text>
-    </string>
-    <string id="military_outfit_description">
-        <text>Army armoured suit SKAT-9M is created for leading storm operations in high anomalous activity zones. It contains: heavy \narmy armoured suit PSZ-12p, integrated compensation suit, Sphere-12M helmet. Provides an exellent protection against \nbullet \nand splinter hits. Do not decreases agility. It has balanced proof system  against anomalous effect.   </text>
-    </string>
-    <string id="military_outfit_name">
-        <text>Army armoured suit SKAT-9M</text>
-    </string>
-    <string id="monolit_outfit_description">
-        <text>Stalker's coverall from "Monolith" formation. Manufacturer is unlknown. It loses to army flak jacket PSZ-9a series in technical \ncharacteristics. Stucturally it looks similar to widespreaded among neutral Stalkers suit where a flak jacket is combined \nwith anti-rad suit. It protects against week shooting weapons. The level of anomalous activity defense is low due to lack \nof air filtration system.    </text>
-    </string>
-    <string id="monolit_outfit_name">
-        <text>Monolith coverall.</text>
-    </string>
-    <string id="protection_outfit_description">
-        <text>Modified coverall SSP-99. Bullet and splinter injuries proof in trunk part is added. It is used as guard equipment for \nscientific ecpedition. Heat-proof. Conduct electricity very bad. It is good protection against radiation and  biological \nanomaly. Persistant to agressive chemical medium.     </text>
-    </string>
-    <string id="protection_outfit_name">
-        <text>Coverall SSP-99M</text>
-    </string>
-    <string id="scientific_outfit_description">
-        <text>This coveral is manufactured by defense SRI in Kiev, and is a good alternative to other stalker's coverall, prodused in \nunderground condition. It is a good combination of armoured coverall, breathing system with closed cycle and integrated \nsystem of  anomalous fields supression. Due to sucsesfully picked materials this suit is the best in his class. It has medium \nproof against bullets and splinter injuries. The level of anomalous activity proof has been estimated as medium. The only \ndisadvantage is the price.\n </text>
-    </string>
-    <string id="scientific_outfit_name">
-        <text>"SEVA" coverall</text>
-    </string>
-    <string id="soldier_outfit_description">
-        <text>The army flak jacket series PZS-7 (Personal Protection System) pvovides a sufficient level of protection for leading war \noperation against easy equipted opponent. There is no aomalous activity proof. </text>
-    </string>
-    <string id="soldier_outfit_name">
-        <text>Army flak jacket PZS-7</text>
-    </string>
-    <string id="specops_outfit_description">
-        <text>Modified equipment of S.W.A.T. Beryll-5M assigned for Zone conditions. It contains army flak jacket series PZS-9a \ncovered with berylium and helmet Sphere-08. Assigned for storm operations in high radioactive areas. The level of \nanomalous effect proof is low. </text>
-    </string>
-    <string id="specops_outfit_name">
-        <text>Army flak jacket Beryll-5M</text>
-    </string>
-    <string id="stalker_outfit_description">
-        <text>The coverall made by "folk skilled craftsmen" is an effective combination of lightweight flak jacket made of gummed cloth. \nIt is reinforsed by integrated kevlar plates. It isn't bad in bullet protection. It can also protect from week anomalous activity \nand radiation.   </text>
-    </string>
-    <string id="stalker_outfit_name">
-        <text>\nStalker's coverall</text>
-    </string>
-    <string id="svoboda_heavy_outfit_description">
-        <text>Made by craftsmen of "Freedom" formation reinforsed Stalker's coverall. It contains medium army flak jacket, reinforcing \nzirconium elements providing good protection against machine-gun bullets and splinters on medium and far distanses. The \nstuff of the suit is of two layers: special processed leather and cloth with asbestos thread. It is a good proof against \nradiation and week anomalies. </text>
-    </string>
-    <string id="svoboda_heavy_outfit_name">
-        <text>"Freedom's guard" coverall</text>
-    </string>
-    <string id="svoboda_light_outfit_description">
-        <text>Made by craftsmen of "Freedom" formation light-weighted stalker's coverall. It contains leightweighted army flak jacket \nand reinforcing kevlar elements. It can protect from leight shooting weapon. The cloth is impregnated with special \nmixture, increasing resistance to anomalous activity.</text>
-    </string>
-    <string id="svoboda_light_outfit_name">
-        <text>"Wind of Freedom" coverall</text>
-    </string>
+	<string id="bandit_outfit_description">
+		<text>Traditional outfit of a bandit – a leather jacket with attached kevlar elements. It slightly increases bullet and splinter protection. It does not protect from any anomaly influence.</text>
+	</string>
+	<string id="bandit_outfit_description_anom">
+		<text>SPECIAL OUTFIT. This jacket was taken from the body of a stalker who died in a Kissel anomaly. Having spent a long time in the anomaly, this jacket has acquired anomalous properties: it greatly accelerates the metabolism of the wearer. Traditional outfit of a bandit – a leather jacket with attached kevlar elements. It slightly increases bullet and splinter protection.</text>
+	</string>
+	<string id="bandit_outfit_description_m">
+		<text>SPECIAL OUTFIT. It is made of a usual stalker jacket, but due to sewn-in thick felt strips its protective properties are increased, especially the protection from gravitational anomalies.</text>
+	</string>
+	<string id="bandit_outfit_description_m2">
+		<text>SPECIAL OUTFIT. The lining of this jacket contains a chain-mail made of hardened wire by some strange craftsman. The chain-mail provides excellent protection against bites and cuts, but is absolutely ineffective against bullets and anomalies. Besides, the metal makes the jacket heavier.</text>
+	</string>
+	<string id="bandit_outfit_name">
+		<text>Bandit jacket</text>
+	</string>
+	<string id="bandit_outfit_name_anom">
+		<text>Animated jacket</text>
+	</string>
+	<string id="bandit_outfit_name_m">
+		<text>Thick bandit jacket</text>
+	</string>
+	<string id="bandit_outfit_name_m2">
+		<text>Jacket with a chain-mail</text>
+	</string>
+	<string id="dolg_outfit_description">
+		<text>It’s produced by one of Kiev defence research institutes to the order of the Duty group. It’s as simple and reliable as the standard PSZ-9 model, but due to the new materials it provides good protection from bullets and splinters, as well as from weak anomalies. It has no breath protection system, so its level of radiation protection is low.</text>
+	</string>
+	<string id="dolg_outfit_description_m1">
+		<text>SPECIAL OUTFIT. Special rubber added to the kevlar fabric made it more resistant to cuts. Unlike usual kevlar, this outfit provides excellent protection against bites and hits of monsters.</text>
+	</string>
+	<string id="dolg_outfit_name">
+		<text>PSZ-9d Armour of Duty</text>
+	</string>
+	<string id="dolg_outfit_name_m1">
+		<text>Rubberized Armour of Duty</text>
+	</string>
+	<string id="dolg_scientific_outfit_description">
+		<text>A wonderful protective outfit for the Zone. It combines excellent anomaly-proof and bullet-proof qualities. It includes PSZ-9d overall, a closed cycle breathing system, and an integrated system of anomalous field suppression. It provides good bullet and splinter protection. It has an average level of anomaly protection and a high level of radiation protection.</text>
+	</string>
+	<string id="dolg_scientific_outfit_name">
+		<text>PSZ-9Md Universal Protection</text>
+	</string>
+	<string id="ecolog_outfit_description">
+		<text>A SSP-99 chemical protection suit specially designed for the Zone conditions. It’s used by scientific expeditions and the stalker ecologists who cooperate with them. It has an integrated system of air filtering and conditioning. It is heat and electricity resistant, provides good protection from the radiation and biological anomalies. It is resistant to chemically aggressive environment. It’s not designed for combat, so it provides neither bullet nor splinter protection.</text>
+	</string>
+	<string id="ecolog_outfit_name">
+		<text>SSP-99 Ecologist</text>
+	</string>
+	<string id="exo_outfit_description">
+		<text>A prototype of a military exoskeleton. Its serial production was never started due to its extreme cost and some design flaws. In spite of that it is produced in small batches at small illegal factories outside of Ukraine. This is a third generation exoskeleton. The design defects which used to decrease its mobility were eliminated, its armour was reinforced. It provides excellent bullet and splinter protection. It has a low level of anomaly protection.</text>
+	</string>
+	<string id="exo_outfit_name">
+		<text>Exoskeleton</text>
+	</string>
+	<string id="killer_outfit_description">
+		<text>Overalls of a stalker of the Freelancers group. Its design is based on the outfit of the special force units of the western armies. Due to some special treatment its fabric has stronger heat and radiation protection properties. Its protective properties are slightly better then those of the PSZ-7 military armour vests.</text>
+	</string>
+	<string id="killer_outfit_description_m1">
+		<text>SPECIAL OUTFIT. Its armour is reinforced with a set of armour-plates which improve its protection from gunfire and monster bites. In all other respects these are the standard overalls of the Freelancers group.</text>
+	</string>
+	<string id="killer_outfit_description_m2">
+		<text>SPECIAL OUTFIT. This suit was specially designed for long trips. Its trousers have integrated elastic ribbons which decrease the joint load during long walks. Some artefacts were also added (but no one knows what exactly). As a result the suit have become practically weightless for the wearer and acquired better protective characteristics.</text>
+	</string>
+	<string id="killer_outfit_name">
+		<text>Freelancer’s Overall</text>
+	</string>
+	<string id="killer_outfit_name_m1">
+		<text>Reinforced Freelancer’s Overalls</text>
+	</string>
+	<string id="killer_outfit_name_m2">
+		<text>Modified Freelancer’s Overalls</text>
+	</string>
+	<string id="military_outfit_description">
+		<text>This Skat-9M military armour suit is designed for assault operations in the areas of increased anomalous activity. It includes a PSZ-12p heavy military armour suit, an integrated compensation suit, and a Sphere-12M helmet. It provides perfect protection from bullets and splinters, and it doesn’t decrease the soldier’s mobility. It has a balanced system of anomaly protection.</text>
+	</string>
+	<string id="military_outfit_description_m1">
+		<text>SPECIAL OUTFIT. A light version of the military armour suit made with use of super-modern titanium alloys. It’s somewhat lighter then a usual armour suit but provides the same reliable protection.</text>
+	</string>
+	<string id="military_outfit_name">
+		<text>Military armour suit </text>
+	</string>
+	<string id="military_outfit_name_m1">
+		<text>Modified armour suit</text>
+	</string>
+	<string id="monolit_outfit_description">
+		<text>Overalls of a stalker of the Monolith group. The producer is unknown. Its protective properties are slightly worse then those of the PSZ-9a military armour vest. Its structure resembles the one of the widely spread neutral stalkers’ overalls which combine an armour vest and a radiation protection suit. It provides good protection from gunfire. Its level of anomaly protection is low due to the absence of the air filtering system.</text>
+	</string>
+	<string id="monolit_outfit_description_m1">
+		<text>SPECIAL OUTFIT. A special model of the Monolith personal protection suit. It’s made of advanced technology materials and has a prototype psy-protection. Its defensive properties are superior to the ones of some military armour suits, besides, it can resist psy-attacks.</text>
+	</string>
+	<string id="monolit_outfit_name">
+		<text>Monolith overalls</text>
+	</string>
+	<string id="monolit_outfit_name_m1">
+		<text>Modified Monolith overalls</text>
+	</string>
+	<string id="outfit_soldier_description">
+		<text>An ordinary thick jacket, one of the many. It slightly increases bullet and splinter protection. It does not protect from any anomaly influence.</text>
+	</string>
+	<string id="outfit_soldier_name">
+		<text>Leather jacket</text>
+	</string>
+	<string id="protection_outfit_description">
+		<text>A modified SSP-99 overall. It has increased body protection from bullets and splinters. It’s designed for the guards of the scientific expeditions. It’s heat and electricity resistant, provides good protection from radiation and biological anomalies. It’s resistant to chemically aggressive environment.</text>
+	</string>
+	<string id="protection_outfit_name">
+		<text>SSP-99M overall</text>
+	</string>
+	<string id="scientific_outfit_description">
+		<text>These overalls produced by one of Kiev defence research institutes are an excellent alternative to the stalkers’ hand-made overalls. They are an excellent combination of an armour outfit, a closed cycle breathing system, and an integrated system of anomalous field suppression. Due to the perfect choice of the materials, they are the best overalls within its class. They provide an average bullet and splinter protection. They have an average level of anomaly protection. Their only disadvantage is their price.</text>
+	</string>
+	<string id="scientific_outfit_name">
+		<text>SEVA overalls</text>
+	</string>
+	<string id="specops_outfit_description">
+		<text>A Berill-5M military special force outfit modified for the Zone environment. It includes a PSZ-9a military armour vest with beryllium coating and a Sphere-08 helmet. It’s designed for assault operations in the areas with high background radiation. Its level of anomaly protection is low.</text>
+	</string>
+	<string id="specops_outfit_description_m1">
+		<text>SPECIAL OUTFIT. Even a small cut can have serious consequences in the Zone, but it’s very risky to take off the chemical and radiation protection to treat the wound. This armour complex is specially designed to solve this problem – it has a lining impregnated with a mixture of disinfection and coagulants (which clot the blood). As a result, any wound as if being bandaged on itself. In all other respects it’s a usual Berill-5M armour suit. A Berill-5M is a military special force outfit modified for the Zone environment. It includes a PSZ-9a military armour vest with beryllium coating and a Sphere-08 helmet.</text>
+	</string>
+	<string id="specops_outfit_name">
+		<text>Berill-5M armour suit.</text>
+	</string>
+	<string id="specops_outfit_name_m1">
+		<text>Healing Berill</text>
+	</string>
+	<string id="stalker_outfit_description">
+		<text>Stalker’s overalls produced by some craftsman. They are an effective combination of a light military armour vest and of rubberized fabric suit. They are reinforced with inserted kevlar plates. They provide good protection from gunfire. They can also protect from a weak anomaly or radiation.</text>
+	</string>
+	<string id="stalker_outfit_description_m1">
+		<text>SPECIAL OUTFIT. Having spent a long time in the anomaly, these overalls have acquired a capability to reflect bullets. They cannot stop a bullet completely, but they can reduce its energy before the physical contact thus protecting their wearer.</text>
+	</string>
+	<string id="stalker_outfit_description_m2">
+		<text>SPECIAL OUTFIT. There are legends that the spectral stalker never takes a medpack. That all his wounds are healed very quickly. That he has unusual overalls he got in the anomaly.</text>
+	</string>
+	<string id="stalker_outfit_description_m3">
+		<text>SPECIAL OUTFIT. Overalls with some additional radiation protection and cylinders from a scientific protective suit. Probably, the stalker had no money to buy a scientific suit, so he modified his own, increased its psy protection.</text>
+	</string>
+	<string id="stalker_outfit_name">
+		<text>Stalker’s overalls</text>
+	</string>
+	<string id="stalker_outfit_name_m1">
+		<text>Enchanted overalls</text>
+	</string>
+	<string id="stalker_outfit_name_m2">
+		<text>Spectral stalker’s overalls</text>
+	</string>
+	<string id="stalker_outfit_name_m3">
+		<text>Hermetic suit</text>
+	</string>
+	<string id="svoboda_heavy_outfit_description">
+		<text>Reinforced stalker’s overalls produced by the craftsmen of the Freedom group. They has a medium military armour vest and are plated with reinforcing zirconium elements which provide good protection from rifle bullets and splinters at a medium and long range. The material of the suit consists of two layers: specially treated leather and fabric with asbestos yarn. The overalls provide good protection from radiation and weak anomalies.</text>
+	</string>
+	<string id="svoboda_heavy_outfit_name">
+		<text>Guardian of Freedom overalls</text>
+	</string>
+	<string id="svoboda_light_outfit_description">
+		<text>Light stalker’s overalls produced by the craftsmen of the Freedom group. It consists of a light military armour vest and are plated with reinforcing kevlar elements. It can protect from a weak weapon. The fabric of the overalls is treated with a special mixture which increases the anomaly resistance.</text>
+	</string>
+	<string id="svoboda_light_outfit_name">
+		<text>Wind of Freedom overalls</text>
+	</string>
 </string_table>

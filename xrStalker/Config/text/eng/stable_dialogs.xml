@@ -1,78 +1,78 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="actor_break_dialog_0">
-        <text>See you!</text>
-    </string>
-    <string id="actor_help_wounded_0">
-        <text>How are you?</text>
-    </string>
-    <string id="actor_help_wounded_1">
-        <text>Can’t you see I’m off color? Need medicine kit or at least a bandage.</text>
-    </string>
-    <string id="actor_help_wounded_11">
-        <text>Take the kit.</text>
-    </string>
-    <string id="actor_help_wounded_111">
-        <text>Thanks, bro, I’ll remember this.</text>
-    </string>
-    <string id="actor_help_wounded_12">
-        <text>Take the bandage.</text>
-    </string>
-    <string id="actor_help_wounded_13">
-        <text>Sorry, I’m all out.</text>
-    </string>
-    <string id="actor_help_wounded_131">
-        <text>Hiking without medicines? You may catch some infection and you won't even be able to heal yourself.</text>
-    </string>
-    <string id="actor_help_wounded_14">
-        <text>Oh, get on with it, will ya? Sorry, but you won't have mine ones, otherwise I'll be all out.</text>
-    </string>
-    <string id="actor_help_wounded_141">
-        <text>You choose, but don’t think it makes an honor to you.</text>
-    </string>
-    <string id="companion_hire_dialog_0">
-        <text>Don't you wish to accompany me?</text>
-    </string>
-    <string id="companion_hire_dialog_1">
-        <text>Why not. I agree.</text>
-    </string>
-    <string id="companion_hire_dialog_2">
-        <text>Sorry, I have another plans to realize.</text>
-    </string>
-    <string id="companion_management_dialog_0">
-        <text>Listen to my command.</text>
-    </string>
-    <string id="companion_management_dialog_1">
-        <text>I hear you.</text>
-    </string>
-    <string id="companion_management_dialog_11">
-        <text>Follow me.</text>
-    </string>
-    <string id="companion_management_dialog_13">
-        <text>Follow me and don't attack enemies first.</text>
-    </string>
-    <string id="companion_management_dialog_14">
-        <text>Wait here.</text>
-    </string>
-    <string id="companion_management_dialog_16">
-        <text>Wait here and don't attack enemies first.</text>
-    </string>
-    <string id="companion_management_dialog_17">
-        <text>I've drunk away all your money...</text>
-    </string>
-    <string id="companion_release_dialog_0">
-        <text>Thanks for cooperation. Dismissed.</text>
-    </string>
-    <string id="companion_release_dialog_1">
-        <text>Thanks to you too. Good luck.</text>
-    </string>
-    <string id="hello_dialog_0">
-        <text>Hi!</text>
-    </string>
-    <string id="hello_dialog_2">
-        <text>Hi!</text>
-    </string>
-    <string id="hello_dialog_3">
-        <text>Listen, dude, help me!</text>
-    </string>
+	<string id="actor_break_dialog_0">
+		<text>See you!</text>
+	</string>
+	<string id="actor_help_wounded_0">
+		<text>Are you alright?</text>
+	</string>
+	<string id="actor_help_wounded_1">
+		<text>I'm hurt goddammit, can't you see that yourself? I need a medkit or at least a bandage.</text>
+	</string>
+	<string id="actor_help_wounded_11">
+		<text>Here, take this medkit.</text>
+	</string>
+	<string id="actor_help_wounded_111">
+		<text>Thanks bro', I won't forget it.</text>
+	</string>
+	<string id="actor_help_wounded_12">
+		<text>Here, take this bandage.</text>
+	</string>
+	<string id="actor_help_wounded_13">
+		<text>Sorry, I don't have any.</text>
+	</string>
+	<string id="actor_help_wounded_131">
+		<text>So how do you go around the Zone then? What if you're wounded? You won't even be able to heal yourself! </text>
+	</string>
+	<string id="actor_help_wounded_14">
+		<text>Heh, bad luck man. Sorry but if I give you mine I won't have any left for myself. </text>
+	</string>
+	<string id="actor_help_wounded_141">
+		<text>It's your business, mate, but it doesn't do you any credit.</text>
+	</string>
+	<string id="companion_hire_dialog_0">
+		<text>Wanna join me?</text>
+	</string>
+	<string id="companion_hire_dialog_1">
+		<text>Why not? Let's do it.</text>
+	</string>
+	<string id="companion_hire_dialog_2">
+		<text>Sorry, I've got other plans.</text>
+	</string>
+	<string id="companion_management_dialog_0">
+		<text>Listen up!</text>
+	</string>
+	<string id="companion_management_dialog_1">
+		<text>I'm listening.</text>
+	</string>
+	<string id="companion_management_dialog_11">
+		<text>Follow me.</text>
+	</string>
+	<string id="companion_management_dialog_13">
+		<text>Follow me but don't attack enemies unless attacked.</text>
+	</string>
+	<string id="companion_management_dialog_14">
+		<text>Wait here.</text>
+	</string>
+	<string id="companion_management_dialog_16">
+		<text>Wait here but don't attack enemies unless attacked.</text>
+	</string>
+	<string id="companion_management_dialog_17">
+		<text>I wasted all your money on booze…</text>
+	</string>
+	<string id="companion_release_dialog_0">
+		<text>Thanks for your help. You're free to go.</text>
+	</string>
+	<string id="companion_release_dialog_1">
+		<text>Thank you too. Good luck.</text>
+	</string>
+	<string id="hello_dialog_0">
+		<text>Hey</text>
+	</string>
+	<string id="hello_dialog_2">
+		<text>Hey!</text>
+	</string>
+	<string id="hello_dialog_3">
+		<text>Help me out mate, would you?</text>
+	</string>
 </string_table>

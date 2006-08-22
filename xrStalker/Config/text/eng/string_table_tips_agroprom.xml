@@ -1,21 +1,21 @@
-    <string id="tips_agr_krot_sos">
-        <text>SOS, militaries are cutting down our brothers-stalkers, men, everyone who can hear me - help!</text>
-    </string>
-    <string id="tips_agr_krot_sos1">
-        <text>Cops caught me in the yard. Help, brothers.</text>
-    </string>
-    <string id="tips_agr_krot_sos2">
-        <text>All my guys have been knocked down!</text>
-    </string>
-    <string id="tips_agr_stalker_help_1">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tips_agr_stalker_help_2">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="tips_agr_trader_documents">
-        <text>Branded one, I've told Barkeep about you - he has to deal with the traders in order to let you in. So get your body straight to him.</text>
-    </string>
-    <string id="tips_captain_name">
-        <text>Captain Maksimenko</text>
-    </string>
+	<string id="tips_agr_krot_sos">
+		<text>Guys, if you can hear me - help! We're pinned in by the military at the factory.</text>
+	</string>
+	<string id="tips_agr_krot_sos1">
+		<text>The pigs have got me pinned in in the yard. Help me out!</text>
+	</string>
+	<string id="tips_agr_krot_sos2">
+		<text>All of my guys are already dead!</text>
+	</string>
+	<string id="tips_agr_stalker_help_1">
+		<text>.....</text>
+	</string>
+	<string id="tips_agr_stalker_help_2">
+		<text>.....</text>
+	</string>
+	<string id="tips_agr_trader_documents">
+		<text>Marked One, get the hell outta here - those army bastards won't let you go without a fight. I told the Barman about you. He'll make a deal with Duty so they let you through.</text>
+	</string>
+	<string id="tips_captain_name">
+		<text>Captain Maksimenko</text>
+	</string>

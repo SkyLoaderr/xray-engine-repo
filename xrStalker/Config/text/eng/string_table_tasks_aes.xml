@@ -1,39 +1,39 @@
-    <string id="aes_military_task_1">
-        <text>Seize the gates</text>
-    </string>
-    <string id="aes_military_task_10">
-        <text>"Falcon" grouping</text>
-    </string>
-    <string id="aes_military_task_11">
-        <text>"Vulture" grouping</text>
-    </string>
-    <string id="aes_military_task_12">
-        <text>"Owl" grouping</text>
-    </string>
-    <string id="aes_military_task_13">
-        <text>"Harrier" grouping</text>
-    </string>
-    <string id="aes_military_task_2">
-        <text>Settle</text>
-    </string>
-    <string id="aes_military_task_3">
-        <text>Break through to sarcophagus</text>
-    </string>
-    <string id="aes_military_task_4">
-        <text>Destroy Monolith 1 fortifications</text>
-    </string>
-    <string id="aes_military_task_5">
-        <text>Destroy Monolith 2 fortifications</text>
-    </string>
-    <string id="aes_military_task_6">
-        <text>"Peregrin" grouping</text>
-    </string>
-    <string id="aes_military_task_7">
-        <text>"Kite" grouping</text>
-    </string>
-    <string id="aes_military_task_8">
-        <text>"Hawk" grouping</text>
-    </string>
-    <string id="aes_military_task_9">
-        <text>"Kestrel" grouping</text>
-    </string>
+	<string id="aes_military_task_1">
+		<text>Захватить ворота</text>
+	</string>
+	<string id="aes_military_task_10">
+		<text>Группа "Сокол"</text>
+	</string>
+	<string id="aes_military_task_11">
+		<text>Группа "Гриф"</text>
+	</string>
+	<string id="aes_military_task_12">
+		<text>Группа "Сова"</text>
+	</string>
+	<string id="aes_military_task_13">
+		<text>Группа "Лунь"</text>
+	</string>
+	<string id="aes_military_task_2">
+		<text>Закрепиться</text>
+	</string>
+	<string id="aes_military_task_3">
+		<text>Прорваться к саркофагу</text>
+	</string>
+	<string id="aes_military_task_4">
+		<text>Уничтожить укрепления Монолита 1</text>
+	</string>
+	<string id="aes_military_task_5">
+		<text>Уничтожить укрепления Монолита 2</text>
+	</string>
+	<string id="aes_military_task_6">
+		<text>Группа "Сапсан"</text>
+	</string>
+	<string id="aes_military_task_7">
+		<text>Группа "Коршун"</text>
+	</string>
+	<string id="aes_military_task_8">
+		<text>Группа "Ястреб"</text>
+	</string>
+	<string id="aes_military_task_9">
+		<text>Группа "Пустельга"</text>
+	</string>

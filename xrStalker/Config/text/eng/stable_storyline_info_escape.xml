@@ -1,63 +1,78 @@
-    <string id="Bandit&apos;s flash">
-        <text>The flash of a bandit from the plant</text>
-    </string>
-    <string id="Dead novice&apos;s flash">
-        <text>The flash of a dead novice</text>
-    </string>
-    <string id="Flash dead stalker">
-        <text>The flash of a dead stalker</text>
-    </string>
-    <string id="Seryi flash">
-        <text>Seryi flash</text>
-    </string>
-    <string id="Tolik flash">
-        <text>Tolik Flash</text>
-    </string>
-    <string id="blokpost_case_text">
-        <text>Trader: A strange case, which contains the report of one of the military expeditions to the center of the Zone, has been delivered to the armypost... It is \nguarded as if it were filled with plutonium. But at nights there are only one or two guardsmen left. Sneak there utterly quietly and snatch that case for me.</text>
-    </string>
-    <string id="defend_lager_text">
-        <text>Wolf: yesterday, several men came here from "Mercenaries" grouping... Came and pressured at full scale, like, you have one day term to leave the camp... \nLike, now it is their territory... Today, them may come again. The plan is as follows... The most obvious stalker wannabes will be sent to houses-basements \nwith an order not to poke out of there... Or they'll perish as they've never existed... And we together with another couple of guys, who are more serious and \nbeefy, will occupy good sectors to provide shooting on the zone around the campfire. We'll let them near the fire and with my command will strike from all \nsides... They'll come from the direction of bridge... So, look for a proper cover with the sight on the campfire and stand by for my command...</text>
-    </string>
-    <string id="doctor_meet_text">
-        <text>OK. I meet Ghoust's man. I wait him in the cache of Gunslinger. If he isn't stranger, he knows where to find me. Doctor</text>
-    </string>
-    <string id="esc_kolyan_lost">
-        <text>One guy went to scout the abandoned windmill and we have heard nothing about him since then. We'd better go and find out, where he disappeared.</text>
-    </string>
-    <string id="factory_dynamit_text">
-        <text>Wolf: I was waiting for the box with dynamites, but obviously it won't reach me over those bandits. Bring it to me - I'll pay you. But you won't be able to cope \nthere alone. Near the factory, under the bridge my scouts are looking for those bastards. Pop in and tell them, that I've sent you as the reinforcement for them \nto assault the factory. If they don't believe you - tell them my "regards from hell". This is the password.</text>
-    </string>
-    <string id="factory_trader_text">
-        <text>Trader: bandits have settled at the factory nearby. They harass stalkers who fetch artifacts to me, so as you can see it prevents my trading. And not only \nmine. Some buds at the camp are not satisfied with the situation. So, we can unite our forces to clear the Cordon from those scumbags.</text>
-    </string>
-    <string id="gunslinger_clan_cache">
-        <text>Kill the Gunslinger.</text>
-    </string>
-    <string id="help_to_fox">
-        <text>Trader: one stalker has returned from a deep raid inside the Zone, his name is Fox. He says, that he's wounded and brought mutants on his tail. Help him, he \nseems to know something about Gunslinger, besides mutual aid is customary here.</text>
-    </string>
-    <string id="meet_seryi_text">
-        <text>Fox: O, by the way, Grey, mo brother, is waiting for me at hangar at the Garbage, I'll copy coordinates to you, you should talk to him. He knows more on you \nquestions. Besides, be very careful - several bandits have put down roots there.</text>
-    </string>
-    <string id="military_case_text">
-        <text>Trader: those lads, removed by the copter, were spying upon the militaries for me. And to all appearances, the combatants have found something in the \nbuilding of the former Agroprom Research Institute. I'm sure, that it's somehow connected with the center of the Zone. So, everything that has been found by \nthe militaries is guarded somewhere on the second floor of the Institute. And we really need it. The matter concerns to all appearances the small white sack-\nbag. If you manage to obtain the sack-bag, take it to Barman. He's in charge for all the stuff in stalker's bar "100 Roentgen", which is situated within the \nterritory of former Rostok plant.</text>
-    </string>
-    <string id="storyline_fox_flash_info">
-        <text>Restricted. To: Leader, “THRUTH” project \nKGB colonel V.Ì. Kruchelnikov \nFrom: Commander, «Search-2» group, \ncaptain D.F. Maksimenko \n \n Report. \n \nOur group consisting of 3 investigators and the SBU SWAT unit from 12.05.2012 till 25.05.2012 has been inspecting the blocks of the former agricultural \nscientific and research institute on the contaminated lands of the scientific and research institute “Agroprom”. Most of the equipment and papers are lost or \nmissing but the few evidences found allow us to make the following conclusion: the institute was not conducting the scientific researches in the field of \nagriculture from 2005 till 2008. The results of its “work” reported to the Ministry of Agriculture were trumped up. Equipment, consumables and financing \nassigned for the state programs were at the same time passed by the institute direction in the person of its head Petr Danilovich Strizh by forged invoices to \nsome X-18 lab to carry out experiments in the secondary household of the institute. A group of persons involved in this case are likely to use some code name \nbecause there's no lab with such number database. According to the documents found we can assume that it lies at one hour driving distance from \n“Agroprom” institute. We suppose it to be a highly secret lab and that's why I require our analytic department to take part in its search. There's no possibility to \nclarify what this lab was actually engaged in relying on the information available. The found documents mention the notorious professor Chubko and some \nGroup. I'm deeply convinced that this time we have got the end of the thread and the analytic department will start working on it. There's an archived file in the \nattachment containing invoices on equipment and consumables for some secondary household of the institute and a passage from Strizh and Chubko \ncorrespondence. Captain D.F. Maksimenko 26.05.2012 Prof. V.M. Chubko. From Dr. of Agriculture P.D. Strizh Head the scientific and research institute \nAgroprom. Dear Vadim Michailovich, as agreed upon send you a regular lot of equipment and consumables for you experimental household so that you can \nproceed with your highly important for agricultural sphere researches. These experiments are financing as the natural experiments in the field of our institute, \nso the will be no problems with the Ministry. So how are the tests going on? I'm still impressed by what you've shown me last time. Yours sincerely, P.D. \nStrizh. Dr. of Agriculture P.D. Strizh. Thanks a lot, Petr Danilovich, we've got the delivery. My guys are frantic about the laser spectrometer and if not but you I \nwould have procured this model through my channels for ages. As to the Ministry of Agriculture it will be glad to get OUR results...you've made me, the old \nman, to laugh heartily. The experiments take it normal course and what you've seen last time is nothing in comparison with our present achievements. Come to \nvisit us more often - we are always glad to see you. Especially that it takes only one hour to get to our “experimental household”, as you name it, by car. \nAlmost forgotten, I have a news for you - next Monday I discuss you candidacy with the Group. I'm sure they will support me. Yours sincerely, Prof. \nV.M.Chubko. Prof. V.M.Chubko. From Dr. of Agriculture Head of scientific and research institute Agroprom P.D. Strizh. Vadim Michailovich, thanks for trusting \nus. I'm deeply touched and will do my best to justify it. I'm sure that each scientist is looking forward to take part in such an experiment and I will be very happy \nto become part of the Group. Yours sincerely, P.D. Strizh. P.S. I have managed to secure two brand new Japanese broadband oscillographs in the Ministry \nand will handle them to you as soon as an opportunity occurs.</text>
-    </string>
-    <string id="storyline_seryi_info">
-        <text>Listen, Fox, there is one business here. Bull asked me to meet Mole. He's said to have dug something interesting about the Gunslinger. Remember that fella? \nSo, if you consider it interesting, get to me. I'll be in the hangar at the Garbage.</text>
-    </string>
-    <string id="tutorial_artefact_find">
-        <text>Trader: here is a field of "Mincer" anomalies. Artifact is in its center. The coordinates of the place are sent to your PDA along wih the information on the Mincer \nand its artifacts.</text>
-    </string>
-    <string id="tutorial_moving_anomaly_text">
-        <text>There is some strange anomaly. It looks like she moves. I'll try to calculate its trajectory and time of displacement, because I got no \nmoney to pay solders for bridge passage.</text>
-    </string>
-    <string id="tutorial_secret_place">
-        <text>I've left a small cache at the abandoned farm. There is a lot of food, bullets. I couldn't carry them, my powers are weakening. I'm not sure, if I can get to the \ncamp.</text>
-    </string>
-    <string id="tutorial_wounded_text">
-        <text>Trader: my messengers are coming back from the raid. I don't want to see them here - they may have brought somebody on the tail. They were chasing the \nmilitaries, so it's not the best idea to shelter them here... So go to the cabin near the road... They will be waiting for you there... Take the flash-drive and return \nto me at once.</text>
-    </string>
+	<string id="Bandit's flash">
+		<text>Factory bandit's PDA</text>
+	</string>
+	<string id="Dead novice's flash">
+		<text>Dead newbie's PDA</text>
+	</string>
+	<string id="Flash dead stalker">
+		<text>Dead stalker's PDA</text>
+	</string>
+	<string id="Seryi flash">
+		<text>Fox's PDA</text>
+	</string>
+	<string id="Tolik flash">
+		<text>Tolik's PDA</text>
+	</string>
+	<string id="about_enciclopedia">
+		<text>This is the encyclopaedia. As you progress in the game, information about the world around you will be added here, sorted by topic.</text>
+	</string>
+	<string id="about_pda">
+		<text>About the encyclopaedia</text>
+	</string>
+	<string id="blokpost_case_text">
+		<text>Trader: get inside the army post and steal the case containing the report of the military expedition to the northern part of the Zone.</text>
+	</string>
+	<string id="defend_lager_text">
+		<text>Zealot: Help defend against the mercenaries who came to the greenies and demanded to clear off the camp. Everyone hides so the camp looks deserted, we let the mercenaries inside the camp, then attack on captain's order.</text>
+	</string>
+	<string id="doctor_meet">
+		<text>Guide's PDA</text>
+	</string>
+	<string id="doctor_meet_2">
+		<text>Âñòðå÷à ñ äîêòîðîì</text>
+	</string>
+	<string id="doctor_meet_quest_text">
+		<text>Doctor: I will be waiting for a man who comes from Sharpshooter in the Sharpshooter's gang's hiding place. If he's our man, he'll know the place.</text>
+	</string>
+	<string id="doctor_meet_text">
+		<text>OK, I'll meet with Ghost's man. I will be waiting for him in Sharpshooter's hiding place. If he's one of our own, he will know where to look for me. Doctor.</text>
+	</string>
+	<string id="esc_kolyan_lost">
+		<text>Yesterday one brother went to scout the deserted mill and we haven't heard from him since. We need to go there and see where he disappeared to.</text>
+	</string>
+	<string id="factory_dynamit_text">
+		<text>Wolf: bring the dynamite stolen by the bandits at the factory. To help you, there are scouts under the bridge, come to them and say "Hello from the underworld" - that's the password. Lead them into battle.</text>
+	</string>
+	<string id="factory_trader_text">
+		<text>Wolf: clear the bandits at the factory with the help of my scouts behind the bridge, then return and report.</text>
+	</string>
+	<string id="gunslinger_clan_cache">
+		<text>Kill Sharpshooter.</text>
+	</string>
+	<string id="help_to_fox">
+		<text>Trader: Fox has come back from his raid and is asking for help. Perhaps he knows something about Sharpshooter.</text>
+	</string>
+	<string id="meet_seryi_text">
+		<text>Fox: Gray is sitting in the hangar at the dump, he knows more about Sharpshooter.</text>
+	</string>
+	<string id="military_case_text">
+		<text>Trader: steal the expedition report from the military at Agroprom research institute and take them to "100 Roentgen" bar, give to the barman.</text>
+	</string>
+	<string id="storyline_fox_flash_info">
+		<text>Tolik's diary. Trader sent us to spy on the military at Agroprom research institute. Got there and shot everybody, bandits and military alike. Dug out some interesting stuff, I'm sending the rest in a cipher *gibberish that looks like a cipher*</text>
+	</string>
+	<string id="storyline_seryi_info">
+		<text>Gray to Fox: one guy I know asked to meet a group of stalkers who sniffed out Sharpshooter's hiding place. I'll be at the dump, come over if you want.</text>
+	</string>
+	<string id="tutorial_artefact_find">
+		<text>Trader: there is a Meatgrinder anomaly field closeby. There is an artifact in its centre. Get it.</text>
+	</string>
+	<string id="tutorial_moving_anomaly_text">
+		<text>There's a very strange anomaly here. It looks like it's moving. I'll try to calculate it's movement time and path, because I don't have the cash to pay the soldiers for passage.</text>
+	</string>
+	<string id="tutorial_secret_place">
+		<text>I left a small cache at the deserted farm. It's got some food and ammo. I can't carry it any more and my strength is too low. I'm not sure if I can make it to the camp.</text>
+	</string>
+	<string id="tutorial_wounded_text">
+		<text>Trader: the scout that went to Agroprom to spy on the military was ambushed by bandits very close to the camp, in a wagon on the side of the road. Kill the bandits, take the scout's flash drive and take it to the trader.</text>
+	</string>

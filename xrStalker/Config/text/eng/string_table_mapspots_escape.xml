@@ -1,51 +1,51 @@
-    <string id="anomaly_field_gravy">
-        <text>Gathering of "Vortex" anomalies. Artifact "Twist" can be found there.</text>
-    </string>
-    <string id="anomaly_field_mincer">
-        <text>Gathering of "Mincer" anomalies. Artifact "Stone Blood" can be found there.</text>
-    </string>
-    <string id="anomaly_field_mosquito">
-        <text>Gathering of "Mosquito" anomalies. Artifact "Jellyfish" can be found there.</text>
-    </string>
-    <string id="blokpost_case">
-        <text>Case with documents.</text>
-    </string>
-    <string id="esc_fox">
-        <text>Wounded Fox.</text>
-    </string>
-    <string id="esc_mill">
-        <text>Abandoned windmill. The missing chap has been seen here last time.</text>
-    </string>
-    <string id="escape_dinamit">
-        <text>Dynamite at the factory.</text>
-    </string>
-    <string id="factory_bandits">
-        <text>Bandits at the factory.</text>
-    </string>
-    <string id="killers_team">
-        <text>Unknown mercenaries group.</text>
-    </string>
-    <string id="novice_leader">
-        <text>Novices camp leader.</text>
-    </string>
-    <string id="soldiers_bridge">
-        <text>Military post near ruinous bridge. Sometimes accept bribes for brige pass. </text>
-    </string>
-    <string id="trader">
-        <text>Trader.</text>
-    </string>
-    <string id="tutorial_artefact">
-        <text>Artifact.</text>
-    </string>
-    <string id="tutorial_secret_place1">
-        <text>Cache, left by dead stalker.</text>
-    </string>
-    <string id="tutorial_wounded">
-        <text>Wounded in the cabin.</text>
-    </string>
-    <string id="volk">
-        <text>Wolf, leaded of novices camp.</text>
-    </string>
-    <string id="wolfs_rangers">
-        <text>Scouts from Wolf group.</text>
-    </string>
+	<string id="blokpost_case">
+		<text>Briefcase with documents.</text>
+	</string>
+	<string id="esc_fox">
+		<text>Wounded Fox.</text>
+	</string>
+	<string id="esc_mill">
+		<text>Abandoned mill. A wounded brother was last seen around here somewhere.</text>
+	</string>
+	<string id="escape_dinamit">
+		<text>Dynamite at the factory.</text>
+	</string>
+	<string id="escape_trader">
+		<text>Trader.</text>
+	</string>
+	<string id="factory_bandits">
+		<text>Bandits at the factory.</text>
+	</string>
+	<string id="killers_team">
+		<text>A group of unknown mercenaries.</text>
+	</string>
+	<string id="novice_leader">
+		<text>Novice camp leader.</text>
+	</string>
+	<string id="soldiers_bridge">
+		<text>Military checkpoint at the destroyed bridge. Sometimes they take a bribe for allowing passage.</text>
+	</string>
+	<string id="tutorial_artefact">
+		<text>Artifact.</text>
+	</string>
+	<string id="tutorial_bandits">
+		<text>Bandits who have pinned in the scout.</text>
+	</string>
+	<string id="tutorial_secret">
+		<text>Dead stalker's stash.</text>
+	</string>
+	<string id="tutorial_secret_place1">
+		<text>Dead stalker's stash.</text>
+	</string>
+	<string id="tutorial_secret_shustryi">
+		<text>Sneaky's stash.</text>
+	</string>
+	<string id="tutorial_wounded">
+		<text>Sneaky, a captive.</text>
+	</string>
+	<string id="volk">
+		<text>Wolf, the leader of the novice camp.</text>
+	</string>
+	<string id="wolfs_rangers">
+		<text>Wolf's scouts.</text>
+	</string>

@@ -1,132 +1,147 @@
-    <string id="mil_blockpost_help">
-        <text>Provide help to Freedom's armypost "Barrier"</text>
-    </string>
-    <string id="mil_courier">
-        <text>Squealer.</text>
-    </string>
-    <string id="mil_courier_job">
-        <text>Deal with the squealer.</text>
-    </string>
-    <string id="mil_courier_phase1">
-        <text>Spy upon the squealer.</text>
-    </string>
-    <string id="mil_courier_phase2">
-        <text>Await until the squealer calls the informer.</text>
-    </string>
-    <string id="mil_courier_phase3">
-        <text>Eliminate the squealer.</text>
-    </string>
-    <string id="mil_courier_phase4">
-        <text>Eliminate the informer.</text>
-    </string>
-    <string id="mil_courier_phase5">
-        <text>Report Lukash on accomplishment.</text>
-    </string>
-    <string id="mil_crazy">
-        <text>Mad stalker.</text>
-    </string>
-    <string id="mil_dolg">
-        <text>Duty's faction.</text>
-    </string>
-    <string id="mil_dolg_assault_freedom">
-        <text>Help Duty's detachment in eliminating Lucash</text>
-    </string>
-    <string id="mil_dolg_assault_headquarter">
-        <text>Kill Lucash</text>
-    </string>
-    <string id="mil_dolg_assault_support">
-        <text>Kill the sniper</text>
-    </string>
-    <string id="mil_dolg_return_to_skull">
-        <text>Return to Skull</text>
-    </string>
-    <string id="mil_fblockpost_commander">
-        <text>Cap the commander of the armypost</text>
-    </string>
-    <string id="mil_fblockpost_phase1">
-        <text>Help repulsing two waves of mutants</text>
-    </string>
-    <string id="mil_fblockpost_phase2">
-        <text>Help eliminating the Monolith squad breaking through</text>
-    </string>
-    <string id="mil_fblockpost_phase3">
-        <text>Talk to the "Barrier" army post commander</text>
-    </string>
-    <string id="mil_find_cook">
-        <text>Find the cook at Freedom's base</text>
-    </string>
-    <string id="mil_freedom_rg6_task">
-        <text>Obtain RG-6 from Freedom</text>
-    </string>
-    <string id="mil_go_max">
-        <text>Report to Max.</text>
-    </string>
-    <string id="mil_hunters_phase1">
-        <text>Find the Morose in the village</text>
-    </string>
-    <string id="mil_hunters_phase2">
-        <text>Neutralise the dangerous mutant</text>
-    </string>
-    <string id="mil_hunters_phase3">
-        <text>Return to Miser to pick up the artefact</text>
-    </string>
-    <string id="mil_hunters_task">
-        <text>Help Freedom hunters to neutralise the dangerous village mutant</text>
-    </string>
-    <string id="mil_kill_dolg">
-        <text>Eliminate Duty's group.</text>
-    </string>
-    <string id="mil_lukash">
-        <text>Lucash.</text>
-    </string>
-    <string id="mil_max">
-        <text>Max.</text>
-    </string>
-    <string id="mil_put_flash_to_max">
-        <text>Deliver the flash-drive to Max.</text>
-    </string>
-    <string id="mil_quest_kill_sniper">
-        <text>Kill sniper on the tower.</text>
-    </string>
-    <string id="mil_quest_report_dolg">
-        <text>Report on the realization to Duty grouping.</text>
-    </string>
-    <string id="mil_return_lukash">
-        <text>Return to Lucash.</text>
-    </string>
-    <string id="mil_return_to_voronin">
-        <text>Deliver RG6 to General Voronin</text>
-    </string>
-    <string id="mil_rg6">
-        <text>RG6.</text>
-    </string>
-    <string id="mil_secret">
-        <text>Bandits' hideout.</text>
-    </string>
-    <string id="mil_sniper">
-        <text>Sniper.</text>
-    </string>
-    <string id="mil_take_flash">
-        <text>Obtain the flash-drive from mad sniper.</text>
-    </string>
-    <string id="mil_talk_cook">
-        <text>Talk to the cook</text>
-    </string>
-    <string id="mil_talk_with_cap">
-        <text>Talk to Cap, Freedom's post commander</text>
-    </string>
-    <string id="mil_test_task_phase1">
-        <text>Enter restrictor 1</text>
-    </string>
-    <string id="mil_test_task_phase2">
-        <text>Enter restrictor 2</text>
-    </string>
-    <string id="mil_test_task_phase3">
-        <text>Pick up RG6 to accomplish task or LR300 to fail</text>
-    </string>
-    <string id="mil_test_task_title">
-        <text>Test task</text>
-    </string>
-    <string id="mil_ugrumy">
-        <text>Morose.</text>
-    </string>
+	<string id="mil_blockpost_help">
+		<text>Оказать помощь блокпосту Свободы "Барьер"</text>
+	</string>
+	<string id="mil_courier">
+		<text>Стукач.</text>
+	</string>
+	<string id="mil_courier_job">
+		<text>Разобраться со стукачом.</text>
+	</string>
+	<string id="mil_courier_phase1">
+		<text>Добраться до хутора.</text>
+	</string>
+	<string id="mil_courier_phase2">
+		<text>Дождаться пока стукач вызовет информатора.</text>
+	</string>
+	<string id="mil_courier_phase3">
+		<text>Уничтожить стукача.</text>
+	</string>
+	<string id="mil_courier_phase4">
+		<text>Уничтожить информатора.</text>
+	</string>
+	<string id="mil_courier_phase5">
+		<text>Доложить Лукашу о выполнении.</text>
+	</string>
+	<string id="mil_crazy">
+		<text>Безумный сталкер.</text>
+	</string>
+	<string id="mil_dolg">
+		<text>Группа "Долга".</text>
+	</string>
+	<string id="mil_dolg_assault_freedom">
+		<text>Помочь отряду Долга в устранении Лукаша</text>
+	</string>
+	<string id="mil_dolg_assault_headquarter">
+		<text>Убить Лукаша</text>
+	</string>
+	<string id="mil_dolg_assault_support">
+		<text>Уничтожить снайпера</text>
+	</string>
+	<string id="mil_dolg_return_to_khutor">
+		<text>Вернуться на хутор Долга и получить гонорар</text>
+	</string>
+	<string id="mil_dolg_return_to_skull">
+		<text>Вернуться к Черепу</text>
+	</string>
+	<string id="mil_fblockpost_commander">
+		<text>Командир блокпоста "Кеп"</text>
+	</string>
+	<string id="mil_fblockpost_phase2">
+		<text>Помочь в уничтожении прорывающегося отряда Монолита</text>
+	</string>
+	<string id="mil_fblockpost_phase3">
+		<text>Поговорить с командиром блокпоста "Барьер"</text>
+	</string>
+	<string id="mil_find_cook">
+		<text>Найти повара на базе Свободы</text>
+	</string>
+	<string id="mil_freedom_rg6_task">
+		<text>Достать РГ6 у Свободы</text>
+	</string>
+	<string id="mil_go_max">
+		<text>Доложить Максу.</text>
+	</string>
+	<string id="mil_go_to_miser_task">
+		<text>Сходить на базу Свободы к Скряге за наградой</text>
+	</string>
+	<string id="mil_go_to_miser_task_main">
+		<text>Получить награду за убитых кровососов</text>
+	</string>
+	<string id="mil_hunters_phase1">
+		<text>Найти Угрюмого в деревне</text>
+	</string>
+	<string id="mil_hunters_phase2">
+		<text>Уничтожить кровососов</text>
+	</string>
+	<string id="mil_hunters_phase3">
+		<text>Вернуться к Скряге за артефактом</text>
+	</string>
+	<string id="mil_hunters_task">
+		<text>Уничтожить кровососов в деревне</text>
+	</string>
+	<string id="mil_kill_controller">
+		<text>Убить кровососов</text>
+	</string>
+	<string id="mil_kill_controller_main">
+		<text>Убить кровососов</text>
+	</string>
+	<string id="mil_kill_dolg">
+		<text>Уничтожить группу Долга.</text>
+	</string>
+	<string id="mil_lukash">
+		<text>Лукаш.</text>
+	</string>
+	<string id="mil_max">
+		<text>Макс.</text>
+	</string>
+	<string id="mil_put_flash_to_max">
+		<text>Отдать флешку Максу.</text>
+	</string>
+	<string id="mil_quest_kill_sniper">
+		<text>Убить снайпера на вышке</text>
+	</string>
+	<string id="mil_quest_report_dolg">
+		<text>Сообщить о выполнении группе Долга.</text>
+	</string>
+	<string id="mil_return_lukash">
+		<text>Вернуться к Лукашу.</text>
+	</string>
+	<string id="mil_return_to_ugrumy">
+		<text>Сообщить Угрюмому о выполнении</text>
+	</string>
+	<string id="mil_return_to_voronin">
+		<text>Отнести РГ6 генералу Воронину</text>
+	</string>
+	<string id="mil_rg6">
+		<text>РГ6</text>
+	</string>
+	<string id="mil_secret">
+		<text>Схрон бандитов.</text>
+	</string>
+	<string id="mil_sniper">
+		<text>Снайпер.</text>
+	</string>
+	<string id="mil_take_flash">
+		<text>Получить флешку у безумного снайпера.</text>
+	</string>
+	<string id="mil_talk_cook">
+		<text>Поговорить с поваром</text>
+	</string>
+	<string id="mil_talk_with_cap">
+		<text>Поговорить с командиром блокпоста Свободы Кэпом</text>
+	</string>
+	<string id="mil_test_task_phase1">
+		<text>Зайти в рестриктор 1</text>
+	</string>
+	<string id="mil_test_task_phase2">
+		<text>Зайти в рестриктор 2</text>
+	</string>
+	<string id="mil_test_task_phase3">
+		<text>Поднять РГ6 для выполнения задачи или LR300 для провала</text>
+	</string>
+	<string id="mil_test_task_title">
+		<text>Тестовая задача</text>
+	</string>
+	<string id="mil_ugrumy">
+		<text>Угрюмый.</text>
+	</string>

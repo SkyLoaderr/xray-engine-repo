@@ -1,36 +1,12 @@
-    <string id="rad_antenna">
-        <text>Antennas</text>
-    </string>
-    <string id="rad_code_door">
-        <text>Some kind of a door</text>
-    </string>
-    <string id="rad_find_stalkers">
-        <text>Find the scouts at Prypyat</text>
-    </string>
-    <string id="rad_find_stalkers_0">
-        <text>Alex "Jawbone" was asking to find his men at Prypyat</text>
-    </string>
-    <string id="rad_find_stalkers_1">
-        <text>Find scouts at Prypyat</text>
-    </string>
-    <string id="rad_find_stalkers_2">
-        <text>Go back to Jawbone</text>
-    </string>
-    <string id="rad_find_treasurer">
-        <text>Find the treasurer</text>
-    </string>
-    <string id="rad_find_treasurer_0">
-        <text>Find the treasurer. He went that way.</text>
-    </string>
-    <string id="rad_find_treasurer_1">
-        <text>Get back to the leader</text>
-    </string>
-    <string id="rad_get_to_aes">
-        <text>Find Monolit</text>
-    </string>
-    <string id="rad_get_to_aes_0">
-        <text>Get to the Chernobyl APP</text>
-    </string>
-    <string id="rad_get_to_aes_1">
-        <text>Find the entrance to sarcophagus</text>
-    </string>
+	<string id="rad_antenna">
+		<text>Антенны</text>
+	</string>
+	<string id="rad_get_to_aes">
+		<text>Добраться до ЧАЭС</text>
+	</string>
+	<string id="rad_get_to_aes_0">
+		<text>Пройти на территорию станции</text>
+	</string>
+	<string id="rad_get_to_aes_1">
+		<text>Найти вход в саркофаг</text>
+	</string>

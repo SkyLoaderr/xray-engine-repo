@@ -1,75 +1,48 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="binoc_tut">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="binoc_tutorial">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="crouch_down_tutorial">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="crouch_tutorial">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="jump_tutorial">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="move_tutorial">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="overload_tut">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="overload_tutorial">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="radiation_tut">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="radiation_tutorial">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="relation_tut">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="relation_tutorial">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="sleep_tut">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="sleep_tutorial">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="sprint_tut">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="sprint_tutorial">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="starvation_tut">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="starvation_tutorial">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="weakness_tut">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="weakness_tutorial">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="weapon_tut">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="weapon_tutorial">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="wound_tut">
-        <text>This string was added automatically</text>
-    </string>
-    <string id="wound_tutorial">
-        <text>This string was added automatically</text>
-    </string>
+	<string id="binoc_tutorial">
+		<text>To use the binoculars select them ($$ACTION_wpn_5$$) and press "fire" to zoom in.</text>
+	</string>
+	<string id="crouch_down_tutorial">
+		<text>To crouch low press ($$ACTION_crouch$$) + (Shift)</text>
+	</string>
+	<string id="crouch_tutorial">
+		<text>To crouch press ($$ACTION_crouch$$)</text>
+	</string>
+	<string id="hide_weapon_tutorial">
+		<text>To hide your weapon simply select the bolt ($$ACTION_wpn_6$$).</text>
+	</string>
+	<string id="jump_tutorial">
+		<text>To jump press ($$ACTION_jump$$)</text>
+	</string>
+	<string id="move_tutorial">
+		<text>Movement types.</text>
+	</string>
+	<string id="overload_tutorial">
+		<text>You aren't a truck so you can't carry several tonnes of equipment. If the weight of your items begins to exceed your limits you will lose energy very quickly. You can monitor the weight of your items and the maximum amount you can carry in your inventory.</text>
+	</string>
+	<string id="radiation_tutorial">
+		<text>When the character is in an area with a high level of background radiation or wears a radioactive artifact on his belt he begins to exhibit signs of radiation poisoning and he begins to lose health. This effect can be counteracted by using anti-radiation meds and vodka.</text>
+	</string>
+	<string id="relation_tutorial">
+		<text>When the player helps someone that person's attitude towards the player improves as does the player's general reputation. A better attitude and reputation will help you in talking to the person - you can get additional information from them or buy things for less. If you shoot at a stalker his attitude towards you will become negative as will that of his friends and they will attack you.</text>
+	</string>
+	<string id="sleep_tutorial">
+		<text>This is a special place for sleeping. You can get a good night's sleep, wait out the night or simply kill time here. To go to sleep open the inventory, set the amount of time you want to sleep for and press the "Rest" button. The character will wake up at the designated time. Sometimes he will have dreams.</text>
+	</string>
+	<string id="sprint_tutorial">
+		<text>Sometimes you will need to run faster. To do this press ($$ACTION_sprint_toggle$$) while running. While sprinting the character runs faster and jumps further but tires more quickly and is unable to shoot.</text>
+	</string>
+	<string id="starvation_tutorial">
+		<text>If the character does not eat for a while he becomes hungry. Should the character become very hungry he will begin to slowly lose health. To prevent this from happening the character must eat. A loaf of bread, some tinned food or a piece of sausage will solve this problem easily enough.</text>
+	</string>
+	<string id="weakness_tutorial">
+		<text>When the character runs for a prolonged period of time he gets tired. When he becomes very tired he will be unable to run and will move at walking pace. The more the character is carrying the faster he gets tired. Standing still for a few seconds allows the character to recover his energy.</text>
+	</string>
+	<string id="weapon_tutorial">
+		<text>All weapons have a durability parameter. The lower a weapon's durability the more often it will jam. To clear the jam reload the weapon by pressing $$ACTION_wpn_reload$$. The durability of weapons decreases with use and a weapon may become completely useless if struck by bullets.</text>
+	</string>
+	<string id="wound_tutorial">
+		<text>When the character is hit the wound may bleed. Bleeding causes the character to constantly lose health. The more serious the bleeding (a green icon means slight bleeding while a red icon indicates a serious haemorrhage) the faster the rate at which the character loses health. Bleeding will stop with time but even serious haemorrhages can be stopped immediately by using bandages.</text>
+	</string>
 </string_table>

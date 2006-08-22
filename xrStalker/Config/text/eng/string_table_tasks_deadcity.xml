@@ -1,1 +1,57 @@
-<string_table />
+	<string id="cit_compromat_documents_0">
+		<text>Найти секретные документы наемников.</text>
+	</string>
+	<string id="cit_compromat_documents_1">
+		<text>Выкрасть документы наемников.</text>
+	</string>
+	<string id="cit_compromat_documents_2">
+		<text>Принести их торговцу.</text>
+	</string>
+	<string id="cit_doctor_escape_task">
+		<text>Выбраться из мертвого города.</text>
+	</string>
+	<string id="cit_doctor_escape_task_1">
+		<text>Выбраться из камеры.</text>
+	</string>
+	<string id="cit_doctor_escape_task_3">
+		<text>Уйти из города</text>
+	</string>
+	<string id="cit_doctor_task">
+		<text>Тайник на Припяти.</text>
+	</string>
+	<string id="cit_doctor_task_0">
+		<text>Найти тайник Стрелка в Припяти.</text>
+	</string>
+	<string id="cit_doctor_task_1">
+		<text>Добраться до гостинницы.</text>
+	</string>
+	<string id="cit_doctor_task_2">
+		<text>Найти комнату с тайником.</text>
+	</string>
+	<string id="cit_doctor_task_3">
+		<text>Обследовать тайник.</text>
+	</string>
+	<string id="cit_doctor_weapon_task">
+		<text>Найти свои вещи и оружие.</text>
+	</string>
+	<string id="cit_doctor_weapon_task_1">
+		<text>Найти свои вещи и оружие.</text>
+	</string>
+	<string id="cit_killers_base_location">
+		<text>Дислокация наемников.</text>
+	</string>
+	<string id="cit_killers_base_location_0">
+		<text>Найти базу наемников.</text>
+	</string>
+	<string id="cit_killers_base_location_1">
+		<text>Найти карту с базой наемников.</text>
+	</string>
+	<string id="cit_killers_base_location_2">
+		<text>Отдать карту Долгу или Свободе.</text>
+	</string>
+	<string id="cit_killers_documents">
+		<text>Идентификация наемников.</text>
+	</string>
+	<string id="cit_leader_hunt_0">
+		<text>Найти и уничтожить лидера наемников.</text>
+	</string>

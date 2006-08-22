@@ -1,9 +1,12 @@
-    <string id="sar_command_center_text">
-        <text>A sort of weird command center, and what is typical, it is in the functioning condition. Apparently, Monolith - is somebody's handwork. He should find those \nhands swiftly and sever them.</text>
-    </string>
-    <string id="sar_monolith_call_text">
-        <text>Monolith is nearby, it's calling for me. It really exists. And my wishes will soon be granted.</text>
-    </string>
-    <string id="zones_mystery_text">
-        <text>Notwithstanding everything you made it, stalker. And you turned out to be much more powerful, than we thought in the beginning. \nRight it's time for us to talk. Follow the signal, we will be waiting for you.</text>
-    </string>
+	<string id="sar_command_center_text">
+		<text>Hmm, a strange command centre and what's more it's fully functional. Looks like someone's behind this Monolith…man, whoever it is, I'd love to find them and rip their dirty little hands off.</text>
+	</string>
+	<string id="sar_monolith_call_text">
+		<text>The Monolith calls to me. It really exists and my wishes will soon be granted.</text>
+	</string>
+	<string id="sar_secret_lab_text">
+		<text>The decoder, the key to the door, is either at the station or in the sarcophagus itself. It may help to find out more about the Monolith. Sharpshooter.</text>
+	</string>
+	<string id="zones_mystery_text">
+		<text>You made it after all, stalker. You turned out to be much stronger than we initially thought. Well, the time for us to talk has come. Head towards the signal. We'll be waiting for you.</text>
+	</string>

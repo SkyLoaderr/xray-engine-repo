@@ -1,144 +1,120 @@
-    <string id="esc_af_blood">
-        <text>Find "Stone Blood" artifact.</text>
-    </string>
-    <string id="esc_af_blood_0">
-        <text>Find "Stone Blood" artifact.</text>
-    </string>
-    <string id="esc_af_blood_1">
-        <text>Find "Stone Blood" artifact and fetch it to the Trader.</text>
-    </string>
-    <string id="esc_af_medusa">
-        <text>Find "Jellyfish" artifact.</text>
-    </string>
-    <string id="esc_af_medusa_0">
-        <text>Find "Jellyfish" artifact.</text>
-    </string>
-    <string id="esc_af_medusa_1">
-        <text>Find "Jellyfish" artifact and fetch it to the Trader.</text>
-    </string>
-    <string id="esc_af_vyvert">
-        <text>Find "Twist" artifact.\n</text>
-    </string>
-    <string id="esc_af_vyvert_0">
-        <text>Find "Twist" artifact.</text>
-    </string>
-    <string id="esc_af_vyvert_1">
-        <text>Find "Twist" artifact and fetch it to the Trader.</text>
-    </string>
-    <string id="esc_bandits_on_factory">
-        <text>Beat out bandits from the factory.</text>
-    </string>
-    <string id="esc_bandits_on_factory_0">
-        <text>Eliminate bandits hidden at the factory.</text>
-    </string>
-    <string id="esc_bandits_on_factory_1">
-        <text>Eliminate all the bandits at the factory.</text>
-    </string>
-    <string id="esc_bandits_on_factory_2">
-        <text>Report to the Trader.</text>
-    </string>
-    <string id="esc_bandits_on_factory_3">
-        <text>Talk to Wolf, so he could take his own people for the attack.</text>
-    </string>
-    <string id="esc_blockpost_case_to_trader">
-        <text>Steal the case from the army post.</text>
-    </string>
-    <string id="esc_blockpost_case_to_trader_0">
-        <text>Steal the case with important documenta from the commander of the army post.</text>
-    </string>
-    <string id="esc_blockpost_case_to_trader_1">
-        <text>Steal the case from the army post. It's better to be done without causing alarm.</text>
-    </string>
-    <string id="esc_blockpost_case_to_trader_2">
-        <text>Bring the case to the Trader.</text>
-    </string>
-    <string id="esc_defend_lager_from_killers">
-        <text>Defend the novices camp from the mercenaries.</text>
-    </string>
-    <string id="esc_defend_lager_from_killers_0">
-        <text>Defend the novices camp from the mercenaries.</text>
-    </string>
-    <string id="esc_defend_lager_from_killers_1">
-        <text>Eliminate the detachment of the mercenaries.</text>
-    </string>
-    <string id="esc_defend_lager_from_killers_2">
-        <text>Talk to the novices commander.</text>
-    </string>
-    <string id="esc_dinamit_to_volk">
-        <text>Bring dynamite to Wolf.</text>
-    </string>
-    <string id="esc_dinamit_to_volk_0">
-        <text>It's necessary to take the dynamite from the bandits at the factory and bring it to Wolf.</text>
-    </string>
-    <string id="esc_dinamit_to_volk_1">
-        <text>Meet Wolf's people.</text>
-    </string>
-    <string id="esc_dinamit_to_volk_2">
-        <text>Find the dynamite at the factory.</text>
-    </string>
-    <string id="esc_dinamit_to_volk_3">
-        <text>Bring dynamite to Wolf.</text>
-    </string>
-    <string id="esc_help_wounded_from_raid">
-        <text>Help the wounded Fox.</text>
-    </string>
-    <string id="esc_help_wounded_from_raid_0">
-        <text>Provide help to the wounded stalker.</text>
-    </string>
-    <string id="esc_help_wounded_from_raid_1">
-        <text>Help Fox ward off mutants.</text>
-    </string>
-    <string id="esc_help_wounded_from_raid_2">
-        <text>Receive an important information from him about the Gunslinger.</text>
-    </string>
-    <string id="esc_wounded_to_trader_gift">
-        <text>Deliver the parcel to the Trader.</text>
-    </string>
-    <string id="esc_wounded_to_trader_gift_0">
-        <text>Deliver the parcel to the Trader. He could help you.</text>
-    </string>
-    <string id="garbage_meet_stalker">
-        <text>Meet the stalker at the garbage.</text>
-    </string>
-    <string id="garbage_meet_stalker_0">
-        <text>Meet Grey on Garbage.</text>
-    </string>
-    <string id="meet_with_doctor">
-        <text>Meet Doctor </text>
-    </string>
-    <string id="meet_with_doctor_1">
-        <text>Meet Doctor</text>
-    </string>
-    <string id="meet_with_doctor_2">
-        <text>Meet Doctor at Gunslinger's cache</text>
-    </string>
-    <string id="storyline_escape_eliminate_gunslinger">
-        <text>Kill the Gunslinger.</text>
-    </string>
-    <string id="storyline_escape_find_gunslinger">
-        <text>Find the Gunslinger.</text>
-    </string>
-    <string id="tutorial_find_artefact">
-        <text>Find the artifact.</text>
-    </string>
-    <string id="tutorial_find_artefact_0">
-        <text>Find your first artifact.</text>
-    </string>
-    <string id="tutorial_find_artefact_1">
-        <text>Find first artifact.</text>
-    </string>
-    <string id="tutorial_find_artefact_2">
-        <text>Bring the artifact to the Trader.</text>
-    </string>
-    <string id="tutorial_help_wounded">
-        <text>Take the information from the scount of the Trader.</text>
-    </string>
-    <string id="tutorial_help_wounded_0">
-        <text>Take the information from the scouts of the trader.</text>
-    </string>
-    <string id="tutorial_help_wounded_1">
-        <text>Meet stalkers and take flash-drive with the information from them.</text>
-    </string>
-    <string id="tutorial_help_wounded_2">
-        <text>Deliver the information to the Trader.</text>
-    </string>
+	<string id="esc_bandits_on_factory">
+		<text>Kill bandits at the factory</text>
+	</string>
+	<string id="esc_bandits_on_factory_0">
+		<text>Kill the bandits that dug in at the factory.</text>
+	</string>
+	<string id="esc_bandits_on_factory_1">
+		<text>Kill all bandits at the factory</text>
+	</string>
+	<string id="esc_bandits_on_factory_2">
+		<text>Talk to the trader</text>
+	</string>
+	<string id="esc_bandits_on_factory_3">
+		<text>Talk to Wolf</text>
+	</string>
+	<string id="esc_blockpost_case_to_trader">
+		<text>Steal box from army post</text>
+	</string>
+	<string id="esc_blockpost_case_to_trader_0">
+		<text>Steal the box that contains important documents from the army post.</text>
+	</string>
+	<string id="esc_blockpost_case_to_trader_1">
+		<text>Steal box from army post</text>
+	</string>
+	<string id="esc_blockpost_case_to_trader_2">
+		<text>Take the box to the trader</text>
+	</string>
+	<string id="esc_defend_lager_from_killers">
+		<text>Protect the greenies' camp from mercenaries</text>
+	</string>
+	<string id="esc_defend_lager_from_killers_0">
+		<text>Protect the greenies' camp from mercenaries.</text>
+	</string>
+	<string id="esc_defend_lager_from_killers_1">
+		<text>Destroy the mercenaries' group.</text>
+	</string>
+	<string id="esc_defend_lager_from_killers_2">
+		<text>Talk to the newbies' commander</text>
+	</string>
+	<string id="esc_dinamit_to_volk">
+		<text>Kill bandits at the bus depot</text>
+	</string>
+	<string id="esc_dinamit_to_volk_0">
+		<text>Kill the bandits at the bus depot and report to Wolf.</text>
+	</string>
+	<string id="esc_dinamit_to_volk_1">
+		<text>Meet with Wolf's people</text>
+	</string>
+	<string id="esc_dinamit_to_volk_2">
+		<text>Kill all bandits</text>
+	</string>
+	<string id="esc_dinamit_to_volk_3">
+		<text>Talk to Wolf</text>
+	</string>
+	<string id="esc_help_wounded_from_raid">
+		<text>Learn about Sharpshooter from Fox</text>
+	</string>
+	<string id="esc_help_wounded_from_raid_0">
+		<text>Help the wounded stalker</text>
+	</string>
+	<string id="esc_help_wounded_from_raid_1">
+		<text>Help Fox</text>
+	</string>
+	<string id="esc_help_wounded_from_raid_2">
+		<text>Get information about Sharpshooter</text>
+	</string>
+	<string id="esc_wounded_to_trader_gift">
+		<text>Deliver package to the trader.</text>
+	</string>
+	<string id="esc_wounded_to_trader_gift_0">
+		<text>Deliver the package to the trader. He will be able to help you.</text>
+	</string>
+	<string id="garbage_meet_stalker">
+		<text>Meet with Gray.</text>
+	</string>
+	<string id="garbage_meet_stalker_0">
+		<text>Meet with Gray at the dump.</text>
+	</string>
+	<string id="meet_with_doctor">
+		<text>Meet with Doctor.</text>
+	</string>
+	<string id="meet_with_doctor_1">
+		<text>Meet with Doctor.</text>
+	</string>
+	<string id="meet_with_doctor_2">
+		<text>Meet with Doctor in the Sharpshooter's hiding place</text>
+	</string>
+	<string id="storyline_escape_eliminate_gunslinger">
+		<text>Kill Sharpshooter</text>
+	</string>
+	<string id="storyline_escape_find_gunslinger">
+		<text>Find Sharpshooter</text>
+	</string>
+	<string id="tutorial_find_artefact">
+		<text>Find artifact</text>
+	</string>
+	<string id="tutorial_find_artefact_0">
+		<text>Find your first artifact.</text>
+	</string>
+	<string id="tutorial_find_artefact_1">
+		<text>Find artifact</text>
+	</string>
+	<string id="tutorial_find_artefact_2">
+		<text>Take artifact to the trader.</text>
+	</string>
+	<string id="tutorial_help_wounded">
+		<text>Receive information from scout</text>
+	</string>
+	<string id="tutorial_help_wounded_0">
+		<text>Take information to the trader</text>
+	</string>
+	<string id="tutorial_help_wounded_1">
+		<text>Talk to Wolf</text>
+	</string>
+	<string id="tutorial_help_wounded_2">
+		<text>Get the flash drive from Sneaky</text>
+	</string>
+	<string id="tutorial_help_wounded_3">
+		<text>Take the flash drive to the trader</text>
+	</string>

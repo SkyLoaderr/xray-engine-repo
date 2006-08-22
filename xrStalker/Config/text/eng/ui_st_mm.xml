@@ -1,169 +1,150 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-	<string id="ui_mm_return_game">
-		<text>Return to Game</text>
+	<string id="ui_mm_action">
+		<text>action</text>
+	</string>
+	<string id="ui_mm_apply">
+		<text>Use</text>
+	</string>
+	<string id="ui_mm_back">
+		<text>Back</text>
+	</string>
+	<string id="ui_mm_blood">
+		<text>Blood</text>
+	</string>
+	<string id="ui_mm_brightness">
+		<text>Brightness</text>
+	</string>
+	<string id="ui_mm_cancel">
+		<text>Cancel</text>
+	</string>
+	<string id="ui_mm_contrast">
+		<text>Contrast</text>
+	</string>
+	<string id="ui_mm_controls">
+		<text>Controls</text>
+	</string>
+	<string id="ui_mm_delete">
+		<text>Delete</text>
+	</string>
+	<string id="ui_mm_difficulty">
+		<text>Difficulty</text>
+	</string>
+	<string id="ui_mm_disconnect">
+		<text>Disconnect</text>
+	</string>
+	<string id="ui_mm_disconnect_message">
+		<text>Are you sure you want to disconnect?</text>
+	</string>
+	<string id="ui_mm_eax">
+		<text>EAX</text>
+	</string>
+	<string id="ui_mm_fullscreen">
+		<text>Full screen</text>
+	</string>
+	<string id="ui_mm_gameplay">
+		<text>Game</text>
+	</string>
+	<string id="ui_mm_gamma">
+		<text>Gamma</text>
+	</string>
+	<string id="ui_mm_invert_mouse">
+		<text>Invert mouse</text>
+	</string>
+	<string id="ui_mm_key">
+		<text>button</text>
+	</string>
+	<string id="ui_mm_keyboard_setup">
+		<text>Keyboard setup</text>
+	</string>
+	<string id="ui_mm_last_save">
+		<text>Last save</text>
+	</string>
+	<string id="ui_mm_load">
+		<text>Load</text>
+	</string>
+	<string id="ui_mm_load_game">
+		<text>Load game</text>
+	</string>
+	<string id="ui_mm_master">
+		<text>Master</text>
+	</string>
+	<string id="ui_mm_master_volume">
+		<text>Volume</text>
+	</string>
+	<string id="ui_mm_mouse_sense">
+		<text>Mouse sensitivity</text>
+	</string>
+	<string id="ui_mm_multiplayer">
+		<text>NETWORK GAME</text>
+	</string>
+	<string id="ui_mm_multiplayer_n">
+		<text>Network game</text>
+	</string>
+	<string id="ui_mm_music_volume">
+		<text>Music volume</text>
 	</string>
 	<string id="ui_mm_newgame">
-        <text>New Game</text>
-    </string>
-	<string id="ui_mm_last_save">
-        <text>Last Saved</text>
-    </string>
-    <string id="ui_mm_quit2windows">
-        <text>Quit to Windows</text>
-    </string>
-    <string id="ui_mm_quit_game">
-        <text>Quit the Game</text>
-    </string>
-    <string id="ui_mm_disconnect">
-        <text>Disconnect</text>
-    </string>    
-    <string id="ui_mm_novice">
-        <text>Novice</text>
-    </string>
-    <string id="ui_mm_stalker">
-        <text>Stalker</text>
-    </string>
-    <string id="ui_mm_veteran">
-        <text>Veteran</text>
-    </string>
-    <string id="ui_mm_master">
-        <text>Master</text>
-    </string>
-    <string id="ui_mm_action">
-        <text>action</text>
-    </string>
-    <string id="ui_mm_advanced">
-        <text>Advanced</text>
-    </string>
-    <string id="ui_mm_alternative">
-        <text>alternative</text>
-    </string>
-    <string id="ui_mm_apply">
-        <text>Apply</text>
-    </string>
-    <string id="ui_mm_back">
-        <text>Back</text>
-    </string>
-    <string id="ui_mm_blood">
-        <text>Blood</text>
-    </string>
-    <string id="ui_mm_brightness">
-        <text>Brightness</text>
-    </string>
-    <string id="ui_mm_cancel">
-        <text>Cancel</text>
-    </string>
-    <string id="ui_mm_contrast">
-        <text>Contrast</text>
-    </string>
-    <string id="ui_mm_controls">
-        <text>Controls</text>
-    </string>
-    <string id="ui_mm_delete">
-        <text>Delete</text>
-    </string>
-    <string id="ui_mm_eax">
-        <text>EAX</text>
-    </string>
-    <string id="ui_mm_fullscreen">
-        <text>Full Screen</text>
-    </string>
-    <string id="ui_mm_gameplay">
-        <text>Gameplay</text>
-    </string>
-    <string id="ui_mm_gamma">
-        <text>Gamma</text>
-    </string>
-    <string id="ui_mm_invert_mouse">
-        <text>Invert Mouse</text>
-    </string>
-    <string id="ui_mm_keyboard_setup">
-        <text>Keyboard setup</text>
-    </string>
-    <string id="ui_mm_load">
-        <text>Load</text>
-    </string>
-    <string id="ui_mm_load_game">
-        <text>Load Game</text>
-    </string>
-    <string id="ui_mm_key">
-        <text>key</text>
-    </string>
-    <string id="ui_mm_mouse_sense">
-        <text>Mouse Sensitivity</text>
-    </string>
-    <string id="ui_mm_multiplayer">
-        <text>MULTIPLAYER</text>
-    </string>
-    <string id="ui_mm_multiplayer_n">
-        <text>Multiplayer</text>
-    </string>    
-    <string id="ui_mm_music_volume">
-        <text>Music Volume</text>
-    </string>
-    <string id="ui_mm_no_vsync">
-        <text>No VSYNC</text>
-    </string>
-    <string id="ui_mm_options">
-        <text>OPTIONS</text>
-    </string>
-    <string id="ui_mm_options_n">
-        <text>Options</text>
-    </string>
-    <string id="ui_mm_quality_presets">
-        <text>Quality presets</text>
-    </string>
-    <string id="ui_mm_resolution">
-        <text>Resolution</text>
-    </string>
-    <string id="ui_mm_reverse_speakers">
-        <text>Reverse Speakers</text>
-    </string>
-    <string id="ui_mm_save">
-        <text>Save</text>
-    </string>
-    <string id="ui_mm_save_game">
-        <text>Save Game</text>
-    </string>
-    <string id="ui_mm_sfx_volume">
-        <text>SFX Volume</text>
-    </string>
-    <string id="ui_mm_master_volume">
-        <text>Master Volume</text>
-    </string>
-    <string id="ui_mm_sound">
-        <text>Sound</text>
-    </string>
-    <string id="ui_mm_sound_quality">
-        <text>Sound Quality</text>
-    </string>
-    <string id="ui_mm_speakers_setup">
-        <text>Speakers Setup</text>
-    </string>
-    <string id="ui_mm_tips">
-        <text>Tips</text>
-    </string>
-    <string id="ui_mm_video">
-        <text>Video</text>
-    </string>
-    <string id="ui_mm_voice_volume">
-        <text>Voice volume</text>
-    </string>
-    <string id="ui_mm_quit_game_message">
-        <text>Do you really want to end the game?</text>
-    </string>
-    <string id="ui_mm_disconnect_message">
-        <text>Do you really want to disconnect?</text>
-    </string>
-    <string id="ui_mm_quit_windows_message">
-        <text>Do you really want to quit to Windows?</text>
-    </string>
-    <string id="ui_mm_switch_torch">
-		<text>Enable torch for AI</text>
-    </string>
-    <string id="ui_mm_difficulty">
-		<text>Difficulty</text>
-    </string>
-
+		<text>New game</text>
+	</string>
+	<string id="ui_mm_no_vsync">
+		<text>No vertical synchronisation</text>
+	</string>
+	<string id="ui_mm_novice">
+		<text>Novice</text>
+	</string>
+	<string id="ui_mm_options">
+		<text>OPTIONS</text>
+	</string>
+	<string id="ui_mm_options_n">
+		<text>Options</text>
+	</string>
+	<string id="ui_mm_quality_presets">
+		<text>Quality settings</text>
+	</string>
+	<string id="ui_mm_quit2windows">
+		<text>Exit to Windows</text>
+	</string>
+	<string id="ui_mm_quit_game">
+		<text>Quit game</text>
+	</string>
+	<string id="ui_mm_quit_game_message">
+		<text>Are you sure you want to quit the game?</text>
+	</string>
+	<string id="ui_mm_quit_windows_message">
+		<text>Are you sure you want to exit to Windows?</text>
+	</string>
+	<string id="ui_mm_resolution">
+		<text>Resolution</text>
+	</string>
+	<string id="ui_mm_return_game">
+		<text>Return to game</text>
+	</string>
+	<string id="ui_mm_save">
+		<text>Save</text>
+	</string>
+	<string id="ui_mm_save_game">
+		<text>Save game</text>
+	</string>
+	<string id="ui_mm_sound">
+		<text>Sound</text>
+	</string>
+	<string id="ui_mm_sound_quality">
+		<text>Sound quality</text>
+	</string>
+	<string id="ui_mm_stalker">
+		<text>Stalker</text>
+	</string>
+	<string id="ui_mm_switch_torch">
+		<text>AI uses torches</text>
+	</string>
+	<string id="ui_mm_tips">
+		<text>Hints</text>
+	</string>
+	<string id="ui_mm_veteran">
+		<text>Veteran</text>
+	</string>
+	<string id="ui_mm_video">
+		<text>Video</text>
+	</string>
 </string_table>

@@ -1,162 +1,111 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="Area">
-        <text>Habitat</text>
-    </string>
-    <string id="Blind">
-        <text>Blind dog</text>
-    </string>
-    <string id="Bloodsucker">
-        <text>Bloodsucker</text>
-    </string>
-    <string id="Boar">
-        <text>Boar</text>
-    </string>
-    <string id="Burer">
-        <text>Burer</text>
-    </string>
-    <string id="Chimera">
-        <text>Chimera</text>
-    </string>
-    <string id="Controller">
-        <text>Controller</text>
-    </string>
-    <string id="Crow">
-        <text>Crow</text>
-    </string>
-    <string id="Eat">
-        <text>Digestive system</text>
-    </string>
-    <string id="Eco">
-        <text>Ecology</text>
-    </string>
-    <string id="Evolution">
-        <text>Evolution</text>
-    </string>
-    <string id="Flesh">
-        <text>Flesh</text>
-    </string>
-    <string id="Fracture">
-        <text>Fracture</text>
-    </string>
-    <string id="General">
-        <text>General information</text>
-    </string>
-    <string id="List1">
-        <text>Dissection: Letter 1</text>
-    </string>
-    <string id="Meet">
-        <text>Encountering bloodsucker</text>
-    </string>
-    <string id="Move">
-        <text>Musculoskeletal system</text>
-    </string>
-    <string id="Mutants">
-        <text>Animals and mutants</text>
-    </string>
-    <string id="Nerve">
-        <text>Nervous system and organs of senses</text>
-    </string>
-    <string id="Poltergeist">
-        <text>Poltergeist</text>
-    </string>
-    <string id="Pseudodog">
-        <text>Pseudo-dog</text>
-    </string>
-    <string id="Pseudogiant">
-        <text>Pseudo-giant</text>
-    </string>
-    <string id="Rat">
-        <text>Rat</text>
-    </string>
-    <string id="Skin">
-        <text>Investment</text>
-    </string>
-    <string id="Snork">
-        <text>Snork</text>
-    </string>
-    <string id="Tentacles">
-        <text>Tentacles</text>
-    </string>
-    <string id="Zombie">
-        <text>Zombie</text>
-    </string>
-    <string id="enc_mutant_blind_general">
-        <text>From the times of the first disaster dog gender changed more than seven generation. For every new the Zone dictated its \nrequirements. Mutations and evolutionary adaptation have led to dog senses reinforcement to the prejudice of common \nones. The main alternations concerned the vision, which appeared to be almost useless after evolutionary dog olfaction \nreinforcement. It is happened blind puppies in the Zone survived not a bit worse as its sighted congeners, and very often \nbetter. As result in more than ten years common dogs have totaly degenerated, giving a place to the new speices-blind \ndogs. These animals can perfect detect any invisible dangers, walking around anomalies, radiation and other things the \nZone teems with. As its ancastors blind dogs use pack-hunting, and when they attack with a big pack, they can easily \ntear apart even well-aimed person.</text>
-    </string>
-    <string id="enc_mutant_bloodsucker_area">
-        <text>Подземелья: 1. Пещеры 2. Подземные коридоры 3. Подвальные помещения Поверхность: 1. Пустырь 2. Свалка Помещения: 1. Помещения заводов 2. Помещения домов 3. Хранилища отходов 4. Загоны Аномальные зоны: 1. Радиационные очаги 2. Туман</text>
-    </string>
-    <string id="enc_mutant_bloodsucker_general">
-        <text>Bloodsucker-is a legendary monster. Expierenced stalkers describes it like round-shouldered tall humanoid with planty of \ntentacles instead of his mouth. According to their words by means of these tentacles he feed on blood- he sticks into \nneck of still alive victim paralize it sucking out the blood. Only dry human cover remains after that. The most astonishing \nthing his ability to be invisible. The man becomes helpless against this trick-it's almost impossible kill something you cannot \nsee! The stalkers blood is one of the favourite dainty of bloodsuckers-these ugly creatures (if they do exist) are \nresponsable for death of great number of people in the Zone. Maybe because of cunning and jeopardy they are not so \nmuch known about. Not many witnesses remained alive. According to what they say about bloodsuckers, they might \nhave reside in moist places like swamps and cellars.</text>
-    </string>
-    <string id="enc_mutant_bloodsucker_meet">
-        <text>сталкер выходит из высокого туннеля на поверхность, свет слепит уставшие от тьмы глаза. Перед ним тихие холмы, место, где погибло больше всего сталкеров. Очень осторожно, стараясь не издать ни звука, сталкер огибает крошащуюся стену, некогда высокого здания. Открывается вид на низину между двумя холмами. В низине он замечает лежащие тела. Он аккуратно подбирается ближе, перед ним жуткая картина - трупы принадлежат двум сталкерам, впечатление от трупов такое, как будто из них выкачали не только кровь, но и все внутренности, оставив лишь кожу, внешнюю оболочку. Ошеломленный сталкер пятится к укрытию, тем временем сзади с пятиметровой стены бесшумно спрыгивает высокий мутант со странными отростками на морде, огромные серповидные руки раскрываются, чтобы обнять пятящегося сталкера. Сталкер спиной чувствует чье-то присутствие, он резко отпрыгивает и одновременно разворачивается, но поздно серповидные руки с длинными пальцами и странными присосками на ладонях хватают его, резко обмякшее, тело. Теряя сознание, сталкер замечает, как жуткая морда, с щупальцевидными отростками, приближается к его шее…</text>
-    </string>
-    <string id="enc_mutant_bloodsucker_tentacles">
-        <text>Интересным объектом для зоологов являються щупальца на морде у кровососа. Скорее всего ето видоизмененные ротовые органы -- язык, щеки и бидоизмененая нижняя челюсть. У кровососа ищезла предротовая полость но защет разделения на "щупальца" увеличилась их активная поверхность. Они выполняют несколко функций. В основном ето орган чуств и часть ротового апарата. Как орган чуств щупалца аналогичны раздвоенному языку у пресмыкающихся. Поверхностъ их неоднородна и на внутренней (ротовой) части исеяна множеством рецепторов -- ето одна из самых чуствощуителных зон у кровососа. Также на внутреней поверхности распоожены и слизистые железы. Внутреняя структура щупалец отвечает их функционалному назначению, т.е. пронизана кровеносными сосудами и нервами. Также имеет три слоя мускулатуры что позволяет кровососу исползовать их в процесе питания. Находясь в расслабленом состоянии щупалца колышутся и улавливают в воздухе запахи -- хеморецепроры.</text>
-    </string>
-    <string id="enc_mutant_boar_general">
-        <text>Zone boar is a big animal 1.3-1.4m high. This animal isn't backward mutants in vitality, deformity and animus. In the result \nof effect of anomalies and radiation most of the boars died, and rest of them have extremely mutated. They became \nbold here and there or long-haired. Their hooves varied its form and became more sharp like claws. The pupils became \ncolorless, the eyes became whitish and wrinckles and spots appeared on its head. Zone boars have good radiation \ntolerance it allows them to be in strongly contaminated areas. Usually these animals attacks at run, trying to rip victim's \nlegs and stomach. They can easily knock down dawdling stalker tear him apart not allowing him to stand up.</text>
-    </string>
-    <string id="enc_mutant_burer_general">
-        <text>Burer are fat little freaks possessing telekinetic abilities. They are able to move heavy things by the power of will, and \ncreate invisible power screens. Burers used to be common people most likely convicts or stupid volunteers which had a \nbad luck to get into Human abilities reinforcement programm. As a side effect result they became real monsters-lost \nhuman appearance and went crazy. Burers have neither human moral nor compassion. They are killing people for fun and \nlivelihood using different tricks out their supernatural arsenal. They were cases when Burers lured people into ambush \npretending to be somebody else. Burers value their wide clothes more than enyone else in the Zone, it helps them to look \nlike humans, at least at a distance. The most of these creatures living not far from laboratories, they have been born.</text>
-    </string>
-    <string id="enc_mutant_chimera_general">
-        <text>1.4 м. Результат генетических экспериментов по программе «универсальное животное-защитник» УЖАЗ?. o Очень умная, сильная и быстрая тварь. o Прячется, обходит со спины. o Дублированная система внутренних органов и дополнительный мозг делает процесс ее умерщвления весьма проблематичным. o Регенерация. o Биологических врагов мало. o В движении напоминает пантеру. o Единственные достойные противники в мире зоны - чернобыльский пес и псевдогигант. o Атаки: ? Сильные удары когтистыми лапами o Особые умения и особенности: ? Ест трупы ? Регенерация</text>
-    </string>
-    <string id="enc_mutant_controller_general">
-        <text>Expierenced stalkers tell that Controllers are a result of genetic experiments, having been conducted on convicts by \nspecial services. According to the legend there was secret laboratory in the Zone, where have been conducted Human \nTelepatic Abilities Development experiments. It is possible they wanted to create universal soldier or perfect human. In \nany event as a result it was a monster(not the weekest one). Controller looks like a man but if you peer at him it's \nbecome clear that it is something else. Huge head, wide neck, wickered with plenty of veins and arteries, good-seen \npulsing ulcers and blisters in the temple area and hypertrophied forhead are striking. All this is necessary for blood supply \nController's main weapon-brain. Controllers are awfully sly and circumspect, it's hard to imagine more dangerous \nmonster!</text>
-    </string>
-    <string id="enc_mutant_crow_general">
-        <text>There is only one species of birds survived in the Zone-crows. The rest of feathered didn't survived radiation, blowouts \nand anomalies which filled once quiet lonely territory. From that time on there are only crows and military helicopter fly \nover the Zone. Militants use super-practically feasible detectors in order not to examine the labirynth of intricate gravity \nanomalies. Crows, however, get by with their acute perception and instictive heed. They never hit upon snare of gravity \nanomaly driving scientists mad. There are plenty of theories explaining this premonition, but most likely it's in features of \ncrow's brain. It can produce very complicated sensor-mental reflex. Furthermore these birds live mre than 100 years.     </text>
-    </string>
-    <string id="enc_mutant_flesh_eat">
-        <text>Вариант 1 Видимых изменений в анатомии и физиологии пищеварительной системы не обнаружено. Как и у СД, ЖКТ (желудочно-кишечный тракт) “плоти” сохранил все основные отделы: предротовая полость, потовая полость, глотка, пищевод, желудок, тонкий кишечник, толстый кишечник, жопа! Ротовой аппарат типичный для жвачного - отсутствуют “хищные” зубы, клыки недоразвиты (вернее развиты как у жвачных). Количество, строение и функции пищеварительных желез остались те же: это д. и тому подобное.... Вариант 2 Видимых изменений в анатомии пищеварительной системы не обнаружено. Хотя нет, желудок стал более пластичным так как нерегулярное питание и редкие случаи поживы приспособили желудок “плоти” к нерегулярным и часто сильным растяжением - как относительно слабое существо в зоне, при поедании добычи “плоть” старается быстрее насытится пока на запах не прибыли хищники пострашнее (чего там ещё кроме кровососов есть понятия не имею : о)) Как и у СД, желудочно-кишечный тракт (ЖКТ) “плоти” сохранил все основные отделы: предротовая полость, потовая полость, глотка, пищевод, желудок, тонкий кишечник, толстый кишечник, жопа!: о) Ротовой аппарат типичный для жвачного - отсутствуют “хищные” зубы, клыки недоразвиты (вернее развиты как у жвачных). Относительно физиологии следует отметить что с изменением характера питания появились И некоторые особенности в пищеварении. В связи с переходом на пищу животного происхождения, ферментные системы П. стали более универсальными. Внутренняя среда ЖКТ стала агрессивной, уровень кислотности в желудке повысился. Также развился мощный детоксикационный аппарат в печени - как адаптационный механизм к частому употреблению в качестве пищи падали. Скрытые генетические ресурсы П, позволяют ей вырабатывать новые ферменты для расщепления цадаверина и путресцина - трупных ядов, (продукты белкового разложения). Именно заложенные изначально в организме СД свойства (всеядность), при изменении “правил игры” проявились…. быть продолженный : о)</text>
-    </string>
-    <string id="enc_mutant_flesh_eco">
-        <text>Одновременное существование в зоне такого количества жизнеспособных мутантов, можно объяснит какой-то внутренней связью между зоной и мутантами. Но вернемся к нашим “баранам” : о) похоже что эволюционный процесс в зоне несколько отличается от общепринятой “Синтетической эволюционной теории”. Пока сложно определить какие именно гены были затронуты, и что спровоцировало возникновение такого фенотипа у СД.</text>
-    </string>
-    <string id="enc_mutant_flesh_evolution">
-        <text>Свиньи тоже подверглись мутациям равно как и все др. организмы в Зоне. Новая экологическая обстановка, характеризуется повышенной активностью новых факторов окружающей среды, в том числе и многочисленных мутагенных факторов. Действуя комплексно, физические, химические, биологические, и аномальные мутагенные факторы приводят к новым типам мутаций, которые затрагивают все уровни организации наследственного материала организмов - ДНК. В разных частях зоны активность Некоторых факторов варьирует, как следствие мы можем наблюдать большое разнообразие проявлений мутационного процесса. Одним из ярчайших примеров может послужить “плоть”-мутировавшя домашняя свинья (Sus Domestica, дальше просто СД). Можно с уверенностью сказать что генетическая информация данного организма была подвержена существенному влиянию мутагенов. Были затронуты гены контролирующие основные жизненные процессы и пути метаболиза, от чего, сильно поменялся фенотип животного. Само существование этого мутанта является большим чудом, так как большинство мутаций ведут к летальному исходу. Здесь же мы можем наблюдать целый ансамбль мутаций которые не только не вредные, а наоборот, похоже, позитивные или нейтральные. Но, несмотря на значительные фенотипические изменения все же можно судить о сродстве между мутантом и прародителем.</text>
-    </string>
-    <string id="enc_mutant_flesh_general">
-        <text>Like many other organisms in the Zone, pigs were exposed to extreme mutation. As a result, genes which are \nresponsable for major vitaly processes and ways of metabolism control were affected. Pig's phenotype was vastly \nchanged. Mutated domestic pig - "Flesh" - it's one of the brightest example Zone's outrage upon the nature. The very \nexistance of this mutant is a miracle. Most of mutations lead to lethal outcome. In this case we can see mutation chain \nwhich is not harmfull but conversely positive or neutral. Amoung it is formation of the scales-bones protective cover, \nincreasing of the regeneration abilities, physiological complication of the nervous system etc. Like it's ancestor pig-flesh is \nomnivorous. Being hungry it can atack stalker.    </text>
-    </string>
-    <string id="enc_mutant_flesh_list1">
-        <text>Лист № 2 к акту № **** Обстоятельства дела. Из протокола осмотра трупа , составленного 23.04.96г. старшим научным сотрудниоком... фамилия неразборчива известно следующее:” Р***В.В. 14.08.1960 труп существа находился в зоне доволно долго до момента его обнаружения... Труп лежит на левом боку, правая передняя конечность вытянута в перед, левая - на земле, правая задняя - согнута в коленном суставе. Видимых признаков наильственной смерти на трупе не обнаружено”. Из анатомичаской карты, выданной НИИ (№ не указан) на имя Родина В.В., известно... ...другие сведения к моменту исследования трупа не поступили. Наружное исследование.... (другой одежды на трупе нет:о) Труп (особь) мужского пола, правильного (как для свинюки) телосложения, умеренного питания, длина тела 187см. Кожные покровы вне трупных пятен серовато-коричневого цвета, холодные на ощупь. Трупные пятна на морде, шее, животе, внутренней поверхности бедер, на голенях островчатые сине-фиолетового цвета, на спине трупные пятна более разлитые. В подвздошной области определяются пятна грязно-зеленого цвета. При надавливании пальцем трупные пятна не бледнеют. Мышечное окоченение почти полностью отсутствует во всех группах мышц. Голова ..... формы, волосяной покров темно-коричневого цвета, длина щетины в области холки до 10см. Глазные яблоки упругие, наблюдается незначительный экзофтальм, зрачки 0,5см. Хрящи и кости рыла на ощупь целы. Отверстия носа и ушей свободны, чистые. Рот закрыт. Слизистая оболочка преддверия рта синюшного цвета, блестящая. Язык выступает за линию зубов. Видимые зубы верхней челюсти естественные, целы. На нижней челюсти первые два зуба слева отсутствуют, лунки - заращены. Изо рта выделяется жидкость желто-бурого цвета слизистого характера. На коже шеи повреждений нет. Грудная клетка цилиндрической формы, живот выше уровня реберных дуг. Наружные половые органы сформированы правильно, по мужскому типу, выделений из мочеиспускательного канала нет, бурые пергаментные пятна на передней поверхности мошенки. Отверстие заднего прохода испачкано каловыми массами. Кости конечностей на ощупь целы. Повреждения: над рукояткой грудины отмечается ссадина овальной формы размером 0,3х0,4см., корочка над ней сухая, выступает над уровнем кожи. Других повреждений не обнаружено.</text>
-    </string>
-    <string id="enc_mutant_flesh_move">
-        <text>Новые экологические условия заметно повлияли на развитие костной ткани у СД. В связи с изменением характера передвижения и способа \nдобивать пищу, можно наблюдать соответствие строения и функций как в скелете так и во всем организме. Кости стали толстыми и тяжелимы, \nсодержание костного мозга повысилось из-за постоянной регенерации поврежденных радиацией клеток, - красный костный активный мозг - \nсамый мощный источник стволовых клеток крови. Строение скелета также стало соответствовать новым условиям передвижения и охоты. \nОднако масса тела достаточно велика для быстрого и долгого передвижения, поэтому “плоть” вынуждена часто отдыхать. Мышечная ткань как \nодна из самых устойчивых к мутагенному воздействию радиации изменилась мало. Пожалуй, единственное что можно отметить это \nповышенное количество кальциевых каналов на мембранах миоцитов, видимо это связано с более активным способом жизни который требует \nчастых и высоких мощных нагрузок на мускулатуру. Как известно что ионы Ца2+ отвечают за мышечные сокращения. Самым интересным \nобразом изменился череп животного. Сразу бросается в глаза резко измененное соотношение мозгового и лицевого отделов. Мозговой отдел \nувеличился в размерах относительно лицевой части, что характерно для более высокоразвитых форм жизни. Также форма, количество и \nрасположение зубов теперь имеет сходство больше с представителями отряда приматов чем парнокопытных. Эволюционное значение данных \nизменений пока остается загадкой, поскольку строение ротового аппарата и характер питания не соответствуют явно хищному образу жизни \n“плоти”.</text>
-    </string>
-    <string id="enc_mutant_flesh_nerve">
-        <text>Анатомически нервная система изменилась несильно, но физиология её приобрела несколько отличный вид от прежней. В анатомическом плане можно отметить небольшое увеличение подкорковых ядер серого вещества больших полушарий мозга. Теперь относительный объём мозга стал больше, и анатомическое строение более совершенным, то есть филогенетически приблизилось к относительно более эволюционно продвинутым видам. Но главные изменения можно отметить на клеточном уровне: форма нейронов мало поменялась но количество нервных отростков дендритов увеличилось (и главное (!) стало два аксона - аксон всегда один!!! От не знаю надо ли это писать - выдумка чистой воды!: о)) Логично предположить что такие изменения способствуют повышению “проводимости” нервной системы. На энцифалограммах подопытных экземпляров “плоти”, видны признаки повышенной активности в лобных долях головного мозга, в центрах отвечающих за мышление и коммуникацию (Центры речи находятся в лобной доле головного мозга, а поскольку мышление происходит также словесно, то за него тоже отвечает лобная доля). Можно предположить что изменился также “интеллектуальный” уровень животных, насколько вообще можно говорить об интеллекте у домашних свиней :о) Возникло несколько новых рефлексов, что сказалось на поведении этих животных. Скорость выработки условных рефлексов тоже выросла, что означает высокую “приспособляемость” нервной системы к новым условиям окружающей среды, и способность к обучению. Поведенческие реакции стали намного многообразнее, что поменяло этологическую структуру популяции “плоти” в зоне. Также наблюдается повышенная активность мозга в центрах зрения и слуха. Как и у всех диких животных у “плоти” они тоже активно работают. Интересно что ……………(позже уточню) - структура отвечающая за синхронизацию движений глазных яблок, у “плоти” отсутствует. “Плоть” теперь может вращать глазами независимо, как хамелеон. Вернее одним глазом. Второй глаз постепенно уменьшается в размерах, и на первый взгляд редуцируется, но на самом деле это явление называется “морфо-функциональный регресс” - организм достигает биологического прогресса путем упрощения (редукции или полной атрофии например) структуры. Типичный пример - печеночный сосальщик (плоский червь), почти вес объём тела занимают половые органы, а пищеварительная система ему не нужна, она редуцирована. Биологический прогресс обеспечивается быстрыми темпами размножения. Так вернемся к “плоти”. У неё один глаз недоразвит. На самом же деле он в процессе трансформации. Идет упрощение структуры, постепенно, по краям сетчатки возникают, структурно-функциональные единицы фасетчастого глаза, какие мы можем наблюдать у насекомых. Значение этого “приобретения” велико: такие (фасетчастые) глаза улавливают поляризованный свет. Это значит что животному совсем не обязательно видеть солнце для того чтоб сориентироваться в пространстве. Этот навигационный механизм ещё можно наблюдать у пчел - они всегда могут найти дорогу домой даже в условиях облачности или в тумане. Так как одним из мест обитания “плоти” есть туман такой новый тип глаза позволяет ей использовать своё преимущество для ориентировки. Другой же глаз не менее интересен там что теперь вращается независимо, что позволяет обозревать окрестности и одновременно двигаться в заданном направлении.</text>
-    </string>
-    <string id="enc_mutant_flesh_skin">
-        <text>Уплотненные и характеризуются наличием нескольких дополнительных слоев видоизмененного эпидермиса. На поперечных микросрезах хорошо выделяется дополнительный слой клеток. Сильно утолщений блестящий слой и ороговевающий, указывает на повышенный репродуктивный потенциал эпителиоцитов. Также на микрофотографиях, хорошо видны недиференцированные эпителиоциты. Этим возможно объясняются регенерационные возможности кожных покровов этих мутантов. Особенно хочется отметить что структура кератина - основного строительного белка - заметно изменилась - его механические параметры повысились. В поверхностных слоях, хорошо различимы вкрапления костной ткани - своеобразные пластинки. Функция их скорее защитная. Ткани на конечностях тоже изменились: постепенно относительно мягкая ткань копыт замещается костной тканью. Раздвоение копыта теперь представлены одним длинным костяным наростом, который мутант может использовать для нападения.</text>
-    </string>
-    <string id="enc_mutant_fracture_general">
-        <text>1.9 м Неизвестные мутации. То ли результат экспериментов, то ли результат воздействия Зоны на оставшихся людей. Гипертрофия конечности. o Телепатия. o Лицо близко к человеческому. o Хитер. o Сутулится и прячет свою псевдоконечность под плащом. Издали напоминает горбатого бродягу. o Пытается приманить сталкеров разговором или просьбой. o В момент, когда сталкер поворачивается спиной, распрямляется и атакует гипертрофированной конечностью. o Если поделиться едой, то можно узнать интересную информацию о Зоне. o Ест крыс, собак, плоть. o С какой-то вероятностью может преследовать игрока. Подбираясь во время сна. o Атаки: ? Сильный удар гипертрофированной рукой ? Телекинетический удар o Особые умения и особенности: ? Ест трупы</text>
-    </string>
-    <string id="enc_mutant_poltergeist_general">
-        <text>These supernatural creatures can be seen only in the deep of the Zone. Generaly they reside in the tumbledown \nbuildings. Its origin is unknown they say these are spirits of stalkers have been exposed to blowout. As a matter of fact \nnobody ever seen poltergeist (the name is from it). But display of these invisible creatures correspond to legends and are  \nvarious. It can be heard howling or laughing inside a building. It can be also fireballs appearing in the air. All information \nconcerning this phenomenon is drawing from indistinct and contradictory stories, truth of which is doubtful. </text>
-    </string>
-    <string id="enc_mutant_pseudodog_area">
-        <text>Поверхность: 1.. Лес 2.. Чистое поле 3.. Пустырь 4.. Свалка 5.. Болото Аномальные зоны: 1.. Гравитационные аномалии 2.. Радиационные очаги 3.. Туман 4.. Черная щелочь 5.. Трясина</text>
-    </string>
-    <string id="enc_mutant_pseudodog_general">
-        <text>Pseudo-dogs originated from wolves, not dogs inspite of the name. Exactly these animals habitated in the moment of \nmeltdown in the Zone's forests became ancestors of the most dangerous mutant species. Pseudodogs are as much unlike \nmutated dogs as wild wolves are unlike mongrels. These creatures are terribly territorial and agressive. They violently \natack anyone who disturb them independently of size and abilities. Pseudodog is dreadful opponent in the battle; blazing \nreaction, furious agility and blade-sharp teeth form basilisk combination against wich cannot stand neither stalker nor \nmutant. Pseudodog is an animal you should afraid of, its howling make nervous even the most expierenced stalkers. </text>
-    </string>
-    <string id="enc_mutant_pseudogiant_general">
-        <text>Pseudogiant is a huge carcass drop-alike body and pair of hypertrophied extremities. By means of this kind of  arms-legs \nit moves and grips a victim. Grown-up individual reaches 2 meters groth and weights ca. 2 tons. Superficial clumsiness \ndeceptive. This creature is very fast and can compete in speed even with a car. The muscular tissue have amazing power \nand thickeness. Its bones do not yield in durability to metal. The brain is protected with skull of 100 mm thick besides \nmany functions of it are executed by spinal cord. As a result head shot doesn't give wishful results. Furthermore \npseudogiants can cause blast wave on the ground surfface striking all alive with fatal vibration. The open fight with this \nopponent hardly ends in human favour.      </text>
-    </string>
-    <string id="enc_mutant_rat_general">
-        <text>Many animals mutated to win back the right to live from the Zone. But grey rats they are brilliant surviving masters. They \nare not Zone's children-they are its masters. Radiation and anomalies had almost no effect on rat's physiology it \nconversely made rats to detect new dangers. All scientists who have studied the Zone biology admit rats have perfectly \nadapted to the new  conditions. It is complicated to imagine more adapted organism after all the great number of \ndescendant and fast going natural selection allow rats to adapt in the most severe conditions.       </text>
-    </string>
-    <string id="enc_mutant_snork_general">
-        <text>These creatures ones was for sure peoples. It is complicated to imagine what could lead a man to this state. Snorks are \ncrazy. They lead real animal mode of living. On its essense they are weekly deffer from predatory monsters of the Zone. \nThey move on four extremities pressing oneself to the ground, smell victims scent. They hunt carefully and prudently, \ntrapping stalkers like predatory animals. Blaze reflexes and hypertrrophied muscules allow Snorks to make long accurate \nlaps and tear victim apart in some seconds. There are army clothes and equipent rests on some Snorks. It is possible \nmany of them used to be military stalkers in former life.  </text>
-    </string>
-    <string id="enc_mutant_zombie_general">
-        <text>Brain burner influence destructs human personality, living only body cover and some reflexes. Have wandering along the \nZone these bodies turn to real zombie. Reflexes slow down and become more primitive, weapon and food go bad, but \nbodies are still running. As a result they turned in slow semi-corpses having two thoughts; food and sleep.Zombie are not \nmuch legible in food or water choice. so their bodies are saturated with radiation and toxins. Usually these creatures \naimless roaming along the Zone or lying like corpses inside deserted buildings. When zombie smells human scent it atacks \nimmideately. Smart stalker tries to walk round these clumsy sluggish human covers.  </text>
-    </string>
+	<string id="Blind">
+		<text>Blind dog</text>
+	</string>
+	<string id="Bloodsucker">
+		<text>Bloodsucker</text>
+	</string>
+	<string id="Boar">
+		<text>Boar</text>
+	</string>
+	<string id="Crow">
+		<text>Crow</text>
+	</string>
+	<string id="Flesh">
+		<text>"Flesh"</text>
+	</string>
+	<string id="General">
+		<text>General information</text>
+	</string>
+	<string id="Mutants">
+		<text>Animals and mutants</text>
+	</string>
+	<string id="Poltergeist">
+		<text>Poltergeist</text>
+	</string>
+	<string id="Pseudodog">
+		<text>Pseudodog</text>
+	</string>
+	<string id="Pseudogiant">
+		<text>Pseudogiant</text>
+	</string>
+	<string id="Snork">
+		<text>Snork</text>
+	</string>
+	<string id="Tushkano">
+		<text>Jerboa</text>
+	</string>
+	<string id="Zombie">
+		<text>Zombie</text>
+	</string>
+	<string id="enc_mutant_blind_general">
+		<text>The dog species has seen several generations since the first catastrophe, which have all been increasingly affected by the Zone. Mutations and evolutional development lead to the improvement of previously peripheral abilities, often at the expense of primary ones. The main physiological change was loss of sight, which became almost useless after a rapid improvement in the dogs' sense of smell. Blind cubs, for example, survived in the Zone just as well as normal ones if not better. As a result, normal dogs quickly became extinct in the Zone and gave way to the new breed - blind dogs. These animals identify and avoid anomalies, radiation and other invisible dangers that plague the Zone with great ease. Just as their ancestors blind dogs hunt in packs and an encounter with a large group of these animals presents a serious danger even to a well-armed stalker.</text>
+	</string>
+	<string id="enc_mutant_bloodsucker_general">
+		<text>This semi-legendary monster is described by experienced stalkers as a tall, hunched humanoid with a mess of tentacles instead of a mouth. According to these stalkers, the creature uses the tentacles to feed by clinging to the victim's throat, paralysing him and sucking him dry of blood, leaving only a dry, mummy-like shell in place of what was a living human only seconds earlier. The most astounding feature of the bloodsucker is its ability to become invisible. It seems that these creatures are responsible for the deaths of a large number of stalkers. Few of those who have seen one were lucky enough to survive the encounter and according to them bloodsuckers prefer damp places around marshes and subterranean areas.</text>
+	</string>
+	<string id="enc_mutant_boar_general">
+		<text>A large animal that can reach 1.5 metres at the shoulder. The boar's ability to survive and aggression surpass that of its relatives outside the Zone and resemble that of most mutants. Mutagenic processes engendered by radiation and anomalies have played a significant part in shaping these mammals: they have lost all fur in places and grown long, bristly fur in others. The animals' hooves have changed in shape and become sharper, acquiring a resemblance to claws; their pupils have become colourless and pigmentation disorders and deep wrinkles have appeared on their bald heads. Zone boars resist radiation well which allows them to spend long periods in heavily contaminated areas. They normally attack by charging at their victims and attempting to rip them to shreds with their claws or knock them over.</text>
+	</string>
+	<string id="enc_mutant_crow_general">
+		<text>Only one type of bird survived in the Zone. The others could not endure radiation and were unable to learn to avoid anomalies. Military pilots use complex detectors to avoid gravitational disturbance but the crows' secret will soon drive ornithologists and biologists mad. Many theories attempting to explain this phenomenon exist and all of them conclude that this miracle can only be explained by the development of crows' brains, which has helped them develop highly advanced reflexes.</text>
+	</string>
+	<string id="enc_mutant_flesh_general">
+		<text>Like many other living creatures, domestic pigs in the Zone underwent serious mutation, which affected genes responsible for their metabolism causing the animal's phenotype to change significantly. A mutant pig of this type, know as "flesh" among stalkers, is one of the clearest examples of the Zone's perversion of nature. The pigs have developed a protective layer of scales and bones, their regeneration potential grew significantly and their nervous system became more complex. Just like a normal pig, "flesh" is an omnivore and may attack a stalker if hungry.</text>
+	</string>
+	<string id="enc_mutant_poltergeist_general">
+		<text>Truly supernatural invisible creatures that can be found only deep inside the Zone and live mostly inside ruined buildings. Nothing is known about their origins although rumours in circulation claim they are spirits of stalkers who were hit by a massive wave of radiation. The mechanism of their appearance corresponds to poltergeist legends (hence the name) and is quite diverse: from regular howls and laughter to dangerous fireballs appearing from nowhere. Unfortunately, all information about this phenomenon originates from unclear and contradictory stories of questionable validity.</text>
+	</string>
+	<string id="enc_mutant_pseudodog_general">
+		<text>Despite the name pseudodogs developed from wolves. The wild animals inhabiting the Zone's forest when the catastrophe occurred gave rise to one of the most dangerous mutant species. Pseudodogs are about as different from mutated dogs as wild wolves are different from mongrels. The creatures mark and guard their territory, attacking those who enter without mercy. Their reaction, mobility and sharp teeth make pseudodogs very serious enemies for large mutants and well-armed stalkers alike.</text>
+	</string>
+	<string id="enc_mutant_pseudogiant_general">
+		<text>The pseudodogiant is a massive drop-shaped abdomen with a couple of disproportionately large limbs sticking out. The limbs are both arms and legs and are used by the creature to move around and grab its victims. An adult pseudodogiant can weigh up to two tonnes and stand 2m tall. Their clumsy appearance is deceiving as they move rapidly: their muscles are exceptionally powerful and their bones are as strong as steel. The creature's brain is protected by a very thick (100mm!) skull while many complex functions are controlled by the spinal medulla. Another astonishing feature of this beast is its ability to create localised shock waves, which damage all living things in its vicinity.</text>
+	</string>
+	<string id="enc_mutant_snork_general">
+		<text>It appears that these creatures were at one point humans, however it is difficult to imagine the conditions that could turn a human being into this disgusting animal. Snorks are crazy creatures that lead an animal life and differ little from other carnivorous monsters in the Zone. They move on four legs, jumping along and constantly sniffing the ground in hope of picking up the scent of their prey. They hunt carefully and in a calculated manner, ambushing stalkers like wild animals. Their sharp reflexes and powerful muscles allow snorks to make accurate long jumps and tear their victims to shreds in a matter of seconds. Parts of army uniforms and other clothing are sometimes found on their bodies making it reasonable to suggest that they are what became of missing military stalkers.</text>
+	</string>
+	<string id="enc_mutant_tushkano">
+		<text>In reality these animals are not related to jerboas although there is a distinct resemblance. Determining the species from which the Zone's jerboas developed has so far proved impossible although it can be said with certainty that their ancestors were gregarious rodents. Reaching up to 40cm at the shoulder they are more mobile, aggressive and ravenous than the normal desert animal. Mutant jerboas live mainly in basements and destroyed buildings feeding on everything they can get their teeth in, from plants to careless stalkers. Sometimes jerboas attack and kill big animals and mutants in a large group tearing them apart before they can escape.</text>
+	</string>
+	<string id="enc_mutant_zombie_general">
+		<text>The brain burner completely destroys personalities leaving only the bodily shell. After wandering in the Zone for a while these brainless bodies begin to turn into real zombies that are left with only the very basic instincts, no weapons or clothing. As a result zombies are little more than sluggish walking corpses that care only about food and sleep. Zombies eat and drink just about anything they can get their hands on so they are virtually soaked in radiation and toxins. Normally these creatures wander aimlessly in the Zone or lie in abandoned buildings like corpses. However, as soon as a zombie senses the presence of a human being it attacks immediately. Experienced stalkers have learned to avoid these clumsy emptied shells.</text>
+	</string>
+	<string id="mutant_boar_leg">
+		<text>Boar hoof</text>
+	</string>
+	<string id="mutant_boar_leg_description">
+		<text>Boars' hooves are used by scientists to make a number of drugs including anti-radiation serum.</text>
+	</string>
+	<string id="mutant_dog_tail">
+		<text>Dog tail</text>
+	</string>
+	<string id="mutant_dog_tail_description">
+		<text>The resistance of mutant dogs' skin to chemicals and electricity has long been the subject of growing scientific attention. Due to the lack of fat in dog tails they are the best objects for lab studies.</text>
+	</string>
+	<string id="mutant_flesh_eye">
+		<text>Flesh eye</text>
+	</string>
+	<string id="mutant_flesh_eye_description">
+		<text>After the mutation the enlarged eye acquired a number of characteristics, the most useful of which is the ability to regenerate the lens. The specifics of this process are as yet unclear but their discovery promises to revolutionise medicine. You can play your part in scientific development by selling the flesh eye to scientists for their experiments.</text>
+	</string>
+	<string id="mutant_krovosos_jaw">
+		<text>Bloodsucker tentacles</text>
+	</string>
+	<string id="mutant_krovosos_jaw_description">
+		<text>Bloodsucker tentacles contain a special gland that secrets a ferment capable of dissolving skin and simultaneously preventing blood from clotting. If scientists could determine the ferment's composition, it would help to make great medical advances.</text>
+	</string>
+	<string id="mutant_psevdodog_tail">
+		<text>Pseudodog tail</text>
+	</string>
+	<string id="mutant_psevdodog_tail_description">
+		<text>The resistance of mutant dogs' skin to chemicals and electricity has long been the subject of growing scientific attention. Due to the lack of fat in dog tails they are the best objects for lab studies.</text>
+	</string>
+	<string id="mutant_snork_leg">
+		<text>Snork foot</text>
+	</string>
+	<string id="mutant_snork_leg_description">
+		<text>Snork feet, unlike those of humans, contain a huge number of highly elastic tendons. This explains the snork's ability to make unbelievable jumps.</text>
+	</string>
 </string_table>

@@ -1,48 +1,48 @@
-    <string id="gar_angar">
-        <text>Abandoned hangar.</text>
-    </string>
-    <string id="gar_bandit_agr">
-        <text>Bandits' camp at the exit from Agroprom.</text>
-    </string>
-    <string id="gar_bandit_post">
-        <text>Bandits' fortified district on the way to Agroprom.</text>
-    </string>
-    <string id="gar_bandits_leader">
-        <text>Bandits' raid, led by chief.</text>
-    </string>
-    <string id="gar_boars_nest">
-        <text>Boars gathering.</text>
-    </string>
-    <string id="gar_car_graveyard">
-        <text>Graveyard of deserted machines.</text>
-    </string>
-    <string id="gar_dogs_in_forest">
-        <text>Forest, full of dogs.</text>
-    </string>
-    <string id="gar_dolg_blokpost">
-        <text>Duty's army post on the road to Bar.</text>
-    </string>
-    <string id="gar_hellcar">
-        <text>Damon, stalkers-neutrals group leader.</text>
-    </string>
-    <string id="gar_newbie">
-        <text>Freshman, blue and run-down.</text>
-    </string>
-    <string id="gar_secret1">
-        <text>Cache, left by the freshman.</text>
-    </string>
-    <string id="gar_seriy">
-        <text>Grey's group.</text>
-    </string>
-    <string id="gar_swamp">
-        <text>Grimpen Mire.</text>
-    </string>
-    <string id="gar_trash1">
-        <text>Piles of trash with anomalies and artifacts.</text>
-    </string>
-    <string id="gar_tunnel">
-        <text>Railroad tunnel.</text>
-    </string>
-    <string id="gar_wounded_help">
-        <text>SOS signal. Apparently, wounded stalker.</text>
-    </string>
+	<string id="gar_angar">
+		<text>Abandoned hangar.</text>
+	</string>
+	<string id="gar_bandit_agr">
+		<text>Bandit camp by the exit from Agroprom.</text>
+	</string>
+	<string id="gar_bandit_post">
+		<text>Bandit fortification on the road to Agroprom.</text>
+	</string>
+	<string id="gar_bandits_leader">
+		<text>Bandit raid led by the boss.</text>
+	</string>
+	<string id="gar_boars_nest">
+		<text>Horde of boars.</text>
+	</string>
+	<string id="gar_car_graveyard">
+		<text>Abandoned vehicle graveyard.</text>
+	</string>
+	<string id="gar_dogs_in_forest">
+		<text>Forest inhabited by lots of dogs.</text>
+	</string>
+	<string id="gar_dolg_blokpost">
+		<text>Duty checkpoint on the road to the Bar.</text>
+	</string>
+	<string id="gar_hellcar">
+		<text>A group of neutral stalkers calling for help.</text>
+	</string>
+	<string id="gar_newbie">
+		<text>A scared and tired newbie.</text>
+	</string>
+	<string id="gar_secret1">
+		<text>The newbie's secret stash.</text>
+	</string>
+	<string id="gar_seriy">
+		<text>Gray's group.</text>
+	</string>
+	<string id="gar_swamp">
+		<text>The Grimpen Mire.</text>
+	</string>
+	<string id="gar_trash1">
+		<text>Piles of rubbish with anomalies and artifacts.</text>
+	</string>
+	<string id="gar_tunnel">
+		<text>Rail tunnel.</text>
+	</string>
+	<string id="gar_wounded_help">
+		<text>SOS signal. Probably a wounded stalker.</text>
+	</string>

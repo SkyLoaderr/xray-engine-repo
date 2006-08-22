@@ -1,51 +1,60 @@
-    <string id="mil_cap_hint">
-        <text>Talk to "Barrier" armypost commander</text>
-    </string>
-    <string id="mil_courier_hint1">
-        <text>Spy upon squealer.</text>
-    </string>
-    <string id="mil_courier_hint2">
-        <text>Wait until informer is called by squealer</text>
-    </string>
-    <string id="mil_courier_hint3">
-        <text>Kill the squealer</text>
-    </string>
-    <string id="mil_courier_hint4">
-        <text>Kill the informer</text>
-    </string>
-    <string id="mil_crazy_hint">
-        <text>Take the flash-drive from mad stalker</text>
-    </string>
-    <string id="mil_freedom_sniper">
-        <text>Kill sniper</text>
-    </string>
-    <string id="mil_hunters_hint1">
-        <text>Talk to Morose</text>
-    </string>
-    <string id="mil_hunters_hint2">
-        <text>Get back to Skinflint</text>
-    </string>
-    <string id="mil_kill_dolg_hint">
-        <text>Eliminate Duty's squadron</text>
-    </string>
-    <string id="mil_kill_lukash_hint">
-        <text>Kill Lucash</text>
-    </string>
-    <string id="mil_report_to_max_hint">
-        <text>Report to Max</text>
-    </string>
-    <string id="mil_return_to_lukash_hint">
-        <text>Report to Lucash</text>
-    </string>
-    <string id="mil_return_to_max_hint">
-        <text>Give a flash-drive back to Max</text>
-    </string>
-    <string id="mil_rg6_hint1">
-        <text>Find a cook at "Freedom" base</text>
-    </string>
-    <string id="mil_rg6_hint2">
-        <text>Talk to cook</text>
-    </string>
-    <string id="mil_rg6_hint3">
-        <text>Take away RG6 from storage at the village</text>
-    </string>
+	<string id="mil_cap_hint">
+		<text>Talk to Barrier checkpoint commander</text>
+	</string>
+	<string id="mil_courier_hint1">
+		<text>Follow the snitch</text>
+	</string>
+	<string id="mil_courier_hint2">
+		<text>Wait for the snitch to call the informer</text>
+	</string>
+	<string id="mil_courier_hint3">
+		<text>Kill the snitch</text>
+	</string>
+	<string id="mil_courier_hint4">
+		<text>Kill the informer</text>
+	</string>
+	<string id="mil_crazy_hint">
+		<text>Take the crazy stalker's flash drive from him</text>
+	</string>
+	<string id="mil_dolg_khutor">
+		<text>Duty manor</text>
+	</string>
+	<string id="mil_freedom_sniper">
+		<text>Kill the sniper</text>
+	</string>
+	<string id="mil_hunters_hint1">
+		<text>Talk to Sulky</text>
+	</string>
+	<string id="mil_hunters_hint2">
+		<text>Go back to Cheapskate</text>
+	</string>
+	<string id="mil_kill_dolg_hint">
+		<text>Destroy Duty squad</text>
+	</string>
+	<string id="mil_kill_lukash_hint">
+		<text>Kill Lukash</text>
+	</string>
+	<string id="mil_miser_hint">
+		<text>Skinflint</text>
+	</string>
+	<string id="mil_report_to_max_hint">
+		<text>Report to Max</text>
+	</string>
+	<string id="mil_return_to_lukash_hint">
+		<text>Report to Lukash</text>
+	</string>
+	<string id="mil_return_to_max_hint">
+		<text>Give flash drive to Max</text>
+	</string>
+	<string id="mil_rg6_hint1">
+		<text>Find the cook in Freedom's base</text>
+	</string>
+	<string id="mil_rg6_hint2">
+		<text>Talk to the cook</text>
+	</string>
+	<string id="mil_rg6_hint3">
+		<text>Take the RG6 from the stash in the village</text>
+	</string>
+	<string id="mil_watertower_hint">
+		<text>Water tower</text>
+	</string>

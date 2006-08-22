@@ -1,3 +1,12 @@
-    <string id="tips_rad_sos_suicide">
-        <text>... fellas, help, we're dying...</text>
-    </string>
+	<string id="rad_barman_spam">
+		<text>Marked One!? Alive!? Great! You managed to turn off the burner, eh? All our guys are trying to get to the centre of the Zone through Pripyat.  Nobody knows what's there...maybe a treasure trove of artifacts or maybe something that makes wishes come true. \n There's a party of veterans preparing to go there right now. If you hurry you might make it in time to join them. I'll let them know you're coming so they wait for you.</text>
+	</string>
+	<string id="tips_bun_komand">
+		<text>Groups one and two - check the ground floor, group three - main hall, four and five - check the first floor</text>
+	</string>
+	<string id="tips_rad_sos_suicide">
+		<text>…help me, I'm dying…</text>
+	</string>
+	<string id="tips_rad_switcher_press">
+		<text>To turn the machine off press ($$ACTION_USE$$)</text>
+	</string>

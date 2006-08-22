@@ -1,54 +1,48 @@
-    <string id="agr_journal_cache">
-        <text>Well, a cache gave out me further direction of search. I found flash-drive, which was used by the \ngroup of Gunslinger, as a kind of «log-book». There were not many reports, but it was enough to \nunderstand - Ghost and Fang were in the group of Gunslinger, except himself. It was mentioned \nsome «common acquaintance», but whether he entered this group is unknown. The fact is he gave \nconsiderable help the group of Gunslinger. After that, according to Ghost's report, Fang perished, \nwhen they got in an ambush. So we have the name of a man which knows Shooter exactly - it's \nGhost. At last something concrete. According to correspondence,I should search Gunslinger \nsomewhere in northlands of the Zone.</text>
-    </string>
-    <string id="agr_journal_krot">
-        <text>Well, meeting with Mole was productive - apparently cache of group it's reality and it is lockated in \nthe catacombs of Agroprom... i'm going to make way in caves. What is waiting for me there- it's \nunknown. I hope this cache will open my secret too.\n</text>
-    </string>
-    <string id="agr_krot_secret_info">
-        <text>Get down the spiral stairs to the room with columns. Walk through the room and approach the exit, find yourself in the large room with the pipes on the ceiling, \nproceed to the second exit, enter the pipe and turn left. In the end you'll find the path to the right. From the small room you move straight to the exit and turn \nright. Search for the hole in the wall, near the inscription "Warning! High voltage!". This is the entrance to Gunslinger's cache.</text>
-    </string>
-    <string id="agr_krot_secret_info_name">
-        <text>Gunslinger's cache location description</text>
-    </string>
-    <string id="agr_military_case">
-        <text>For administrative use only. To “VERITY” leader KGB Colonel Kruchelnikov. From “Search-2” leader \ncaptain Maksimenko. Report. Our group of 3 agents incorporating with SBU special task force unit \nfrom 12.05.2012 till 25.05.2012 has been investigating the blocks of the former scientific and \nresearch institute on contaminated lands of “Agroprom” research institute. Most of the equipment and \nfiles are missing, however few evidence found allows us to make following conclusion: institute was \nnot conducting any scientific researches on agriculture activities from 2005 till 2008. The results of its \n“functioning” reported to Ministry of Agriculture and eventually trumped up. Equipment, consumables \nand financing assigned for state programs were concurrently passed by institute in the person of its \nhead P. D. Strizh by forged invoices to some X-18 lab to carry out experiments in the secondary \nhousehold of the institute. A group of agents involved in this case are likely to use some code name \nbecause there's no lab with such number in database. According to the documents found we can \nassume that it lies in one hour driving distance from “Agroprom”. We suppose it to be a highly secret \nlab and that's why I require our analytics department to take part in this search. There's no possibility \nto clarify what this lab was actually engaged in relying on information available. Found documents \nrefer to notorious professor Chubko. I'm deeply convinced that this time we have got end of thread \nand the analytic department will start working on it. There's an archived file in the attachment \ncontaining invoices on equipment and consumables for secondary household of the institute and a \npassage from Strizh and Chubko correspondence. Captain Maksimenko Prof. Chubko. From Dr. \nStrizh, Head of research institute. Dear Vadim Michailovich, as agreed upon I send you regular set of \nequipment and consumables for you experimental household so you could proceed with your highly \nimportant researches of agricultural sphere. These experiments are financed as natural experiments \nin the field of our institute, so there will be no problems with Ministry. So how are the tests going on? \nI'm still impressed by what you've shown me last time. Yours sincerely, Strizh. Dr. of Agriculture \nStrizh. Thanks a lot, Petr Danilovich, we've got the delivery. My guys are frantic about the laser \nspectrometer and if it were not for your help I would have procured this model through my channels \nfor ages. As to Ministry of Agriculture, it will be glad to get OUR results...you've made me, an old \nman, laugh heartily. The experiments take it normal course and what you've seen last time is nothing \ncomparing with our current achievements. Come to visit us more often - we are always glad to see \nyou. Especially that it takes only one hour to get to our “experimental household” by car. Almost \nforgotten, I have news for you: next Monday I'll discuss your candidacy with the Group. I'm sure they \nwill support me. Yours sincerely, Prof. Chubko. Prof. Chubko. From Dr. of Agriculture Strizh, Head of \nresearch institute Agroprom. Vadim Michailovich, thanks for your trust. I'm deeply touched and will \ndo my best to justify it. I'm sure that every scientist is looking forward to take part in such an \nexperiment and I will be very happy to become a part of the Group. Yours sincerely, Strizh. P.S. I \nhave managed to secure two brand-new Japanese broadband oscillographs in Ministry and will \nhandle them to you as soon as opportunity occurs.</text>
-    </string>
-    <string id="agr_military_case_name">
-        <text>Report by investigating group.</text>
-    </string>
-    <string id="agr_nii_fab_mil_task">
-        <text>Operation "Agroprom"\nTasks:\n 1. Clear factory of stalkers\n 2. Join the group dislocated on the territory of the Agroprom RI \n 3. Protect staff and papers till futher instructions.\n The staff is situated on the second floor of the main building of the institute.</text>
-    </string>
-    <string id="agr_nii_fab_mil_task_name">
-        <text>Operation "Agroprom"</text>
-    </string>
-    <string id="agr_nii_security_plan">
-        <text>There are patrols, guards and towers marked on the plan. On the second floor is a staff. Papers are \nthere too. In the day-time territory is guarded. At night there are less patrols. After eleven evenings \nthere is changing of guard, at this time in the main building almost nobody is present. If you want to \nget through on the base, I say: you will not pass through the gates, the most \nreal way is - through these damned catacombs.\n</text>
-    </string>
-    <string id="agr_nii_security_plan_name">
-        <text>"Agroprom" Scientific Research Institute patrol plan</text>
-    </string>
-    <string id="agr_nii_security_shedule">
-        <text>"Agroprom" Scientific Research Institute territory patrol schedule\n Wake up 6:00\n Dismiss 21:00</text>
-    </string>
-    <string id="agr_nii_security_shedule_name">
-        <text>Military schedule at Agroprom RI</text>
-    </string>
-    <string id="agr_rats_n_soldiers_text">
-        <text>Militaries are harassed by rats, which come from the collectors. Delinquent militaries are dispatched to the collectors.</text>
-    </string>
-    <string id="agr_task_case">
-        <text>Trader: When you steal case from former Agroprom SRI territory, bring it to Barmen. He manages a \nstalker bar named "100 Rontgen", it's on the former plant Rostok territory.</text>
-    </string>
-    <string id="article_agr_krot_sos">
-        <text>SOS, militants are trying to kill our stalker brother, men, everyone who can hear me-help!</text>
-    </string>
-    <string id="article_agr_krot_sos1">
-        <text>Mole: "Help! I'll de taken down!"</text>
-    </string>
-    <string id="storyline_gunslinger_cache_info">
-        <text>We've found the entrance to Gunslinger's stash. There was nothing interesting. Go look there yourself if you like.</text>
-    </string>
-    <string id="storyline_gunslinger_flash_info">
-        <text>Received from Ghost: \n \n Gunslinger, I've got a bad news. Fang passed on. We were awaited in the village nr the Warehouses. And it seems like for a really long time. Threesome. Looked like common neutrals. Fang has sensed them somehow. You know, he had the senses all the best. We croaked two of them - newbies, while the third one turned out to be wiser - he camped in 100 meteres armed with Vintorez. Well, Fang has ceased to be. Though, next time we'll go to the Center together. And one more thing: Those two had our descriptions. I don't give a damn to whom could "order" us. Although there are a lot of people who have grudge against us. The third one has fleed. It seems that he was one of the mercenaries. Severe scar on the face. Fair eye. I'll try to find him.\n That's the way the cookie crumbles. Stay alert and Good luck.\n Ghost \n \n To Ghost \n \n "Hi matey. \n I leave you the info. Although I don't contact you. Noticed the shadowing.\n Mate, I've gone to the North... Where we have been...I'll try to slip through alone... Sorry, but I've got no time to wait you... I'll explain later. \n And that idiot who dare to kill Fang will regret poking his ass in it... I'll cut his throat... You should find out who is he, I'll return soon - we'll deal there then. \n Meet at out mutual friend. You know which one and where.:)\n Good luck. \n Gunslinger" \n \n To Gunslinger. \n \n "Hi. I've been there. While I haven't met you. You shouldn't have gone to the center alone. Although you're your own man. I know where and how to find you :) \n Ghost"</text>
-    </string>
+	<string id="agr_journal_cache">
+		<text>Well the stash provided me with a new direction to follow. I found a flash drive, which Sharpshooter's group appears to have used as some sort of log. There weren't that many entries in it but it was enough for me to work out that except for Sharpshooter there were 2 others in his group: Ghost and Fang. The log also mentioned a "mutual friend" but I don't know whether he was part of the group. He definitely helped them though, that's for sure. According to Ghost's entry Fang died when they were ambushed. So, at last, I have something specific: the name of someone who definitely knows Sharpshooter - Ghost. As for Sharpshooter himself, according to the journal he really is somewhere in the north of the Zone.</text>
+	</string>
+	<string id="agr_journal_krot">
+		<text>Well, meeting Krot paid off - it seems that the group's stash really exists and it's located in the catacombs below the Institute...I'm gonna have to go there. What awaits me in those dark tunnels I do not know...but I hope this stash helps me solve my own puzzle...</text>
+	</string>
+	<string id="agr_krot_secret_info">
+		<text>Follow the spiral staircase down into the room with the columns. Move across the room towards the exit and enter a large room with pipes on the ceiling. Go down to the second exit, enter the tunnel and turn left. There will be a right turn at the end. Go directly to the exit from the small room and turn right. Look for a hole in the left wall next to the words "Don't enter - you'll die". That's the entrance to Sharpshooter's stash.</text>
+	</string>
+	<string id="agr_krot_secret_info_name">
+		<text>Sharpshooter's stash</text>
+	</string>
+	<string id="agr_military_case">
+		<text>\nInvestigation report.\n For official use only.\n To USS Colonel V.M. Kruchelnikov, head of project "TRUTH".\n From Captain D.F. Maksimenko, \ncommander of "Search-2" group.\n\n Memo.\n Our group consisting of 3 investigators and a squad of USS Spetsnaz conducted searches at Agroprom, the former R&D Institute for agriculture on radiation-affected soil, from 12.05.2012 to 25.05.2012. Most of the equipment and documentation was missing however the few things we were able to find allow us to come to the following conclusion: over the period from 2005 to 2008 the Institute did not conduct any research in its official fields of study. All the results of its "work" received by the Ministry of Agriculture were faked. Simultaneously the Institute's management, specifically Petr Danilovich Strizh, continued to receive state financing, equipment and consumables and transferred them to a laboratory designated X-18 using forged consignment notes, which provided cover for the operation by indicating that the materials were being transferred to an auxiliary facility for experiments. X-18 appears to be a code name adopted by the group of people implicated in this affair, since our database contains no mention of this laboratory. Judging by an analysis of the documents we found, this laboratory is located within an hour's drive from the Institute. It is likely to be a clandestine facility so I would request the involvement of our analytical department. The lab's field of research is not clear and available documents contain no helpful information in this regard but do make references to the infamous professor Chubko and also mention some "Group". It is my firm belief that we have come to the end of the line and the analytical department will now have plenty of work to do.\n\n Attached is an archived file containing consignment notes for consumable materials and equipment transferred to some auxiliary facility and an extract from correspondence between Strizh and Chubko.\n\n Captain D.F. Maksimenko 26.05.2012\n To professor V.M. Chubko. From P.D. Strizh, Head of Agroprom R&D Institute, Doctor of Agricultural Sciences. Dear Vadim Mikhailovich, As agreed, I am sending the next batch of consumable materials and equipment to our experimental facility to help you with your research, which is so essential for agriculture. I arranged financing for the experiments by describing them as pilot experiments in fields studied by the Institute so there won't be any problems at the Ministry. How are the experiments progressing? I am still deeply impressed by what you showed me last time. Sincerely yours, P.D. Strizh DAS To P.D. Strizh Please accept my gratitute, Petr Danilovich, we've received everything. My team is very impressed with the laser spectrometer - if not for you, it would take me eons to acquire this model through my channels. Of course the Ministry of Agriculture will be happy to receive OUR results...you really made an old man laugh with that one! The experiments are continuing normally and the things you saw last time are dwarfed by our latest achievements. You should visit more often - I am always happy to see you and it's only an hour's drive to our "experimental facility" by car :) I almost forgot, I have news for you: next Monday I will be discussing your candidacy with the Group. I think they will support me. Sincerely yours, professor V.M. Chubko To professor V.M. Chubko From P.D. Strizh, Head of Agroprom R&D Institute, Doctor of Agricultural Sciences Dear Vadim Mikhailovich, thank you for your trust. I am touched and will do my best to prove you right. I think every scientist dreams of participating in an experiment like this and I will be absolutely delighted to be accepted into the Group. Sincerely yours, P.D. Strizh P.S. I managed to get two of the latest Japanese broadband oscilloscopes from the Ministry and will send them over at the earliest opportunity.</text>
+	</string>
+	<string id="agr_military_case_name">
+		<text>Investigation report</text>
+	</string>
+	<string id="agr_nii_security_plan">
+		<text>The chart details the patrols, sentries and guard towers. The HQ is on the second floor of the Institute. That's where the documents are kept. By day the area is infested with patrols. There are less of them at night and the guards are relieved at 11pm. There are few people in the main building at this time. If you want to get into the base you should take the catacombs, the gate is not an option.</text>
+	</string>
+	<string id="agr_nii_security_plan_name">
+		<text>Agroprom R&D Institute guard chart</text>
+	</string>
+	<string id="agr_rats_n_soldiers_text">
+		<text>The army is annoyed by rats which climb out of the collectors. They punish soldiers by sending them into the collectors.</text>
+	</string>
+	<string id="agr_task_case">
+		<text>Trader: "As soon as you steal the briefcase from the Institute take it to the Barman. He runs the business in "100 roentgen" - the stalker bar. It's located in the area of the former Rostok factory.</text>
+	</string>
+	<string id="article_agr_krot_sos">
+		<text>SOS, the army is killing a fellow stalker! Guys, if you can hear me - help! </text>
+	</string>
+	<string id="article_agr_krot_sos1">
+		<text>Mole : "Help me, I'm gonna get killed!"</text>
+	</string>
+	<string id="article_agr_krot_sos_name">
+		<text>Meeting Mole</text>
+	</string>
+	<string id="st_operation_agroprom">
+		<text>The Agroprom operation</text>
+	</string>
+	<string id="storyline_gunslinger_cache_info">
+		<text>We found the entrance to Sharpshooter's stash under the factory but there wasn't anything interesting there. Go take a look yourself if you want.</text>
+	</string>
+	<string id="storyline_gunslinger_flash_info">
+		<text>Received from Ghost: \n \n Sharpshooter, I got some shitty news. Fang is dead. They were waiting for us in the village by the Warehouses, three of them and it seemed like they'd been waiting for a while...they looked like normal neutrals. Fang sensed them somehow, you know how good his gut feeling was. We took two of them down - they were obviously just thugs but the third one was clever, he waited about 100 metres away with a Vintorez and that was the end of Fang. So there will only be two of us next time we go to the Centre. And one more thing: those two had our descriptions. I've got no clue who put a contract out on us. Then again, there are plenty of people with an axe to grind. The third one got away. I think he was one of the mercenaries. He had a big scar on his face and light eyes. I'll try to find him. \n That's about it. Be alert and good luck. \n Ghost \n \n To Ghost \n \n "Yo man. \n I'm leaving you some info. Can't make contact right now - I'm being followed. \n Man, I've gone North... To that place where we were before... I'll try to make it on my own... Sorry but I can't wait for you... I'll explain later. \n The bastard who killed Fang will regret ever being born... I am going to cut him to pieces... You just find out who he is for now. When I get back we'll deal with him. \n Meet me at our mutual friend's place. You know which one :)  \n Good luck. \n Sharpshooter" \n \n To Sharpshooter \n \n "Hey. I went there but didn't find you. You shouldn't have go to the centre alone but it's your business, man. Yeah, I know whose place you mean :) \n Ghost"</text>
+	</string>

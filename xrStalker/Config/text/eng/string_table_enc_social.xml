@@ -1,114 +1,81 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="Army">
-        <text>Army</text>
-    </string>
-    <string id="Bandits">
-        <text>Bandits </text>
-    </string>
-    <string id="Barman">
-        <text>Bartender</text>
-    </string>
-    <string id="Clear-sky">
-        <text>Stalkers grouping "Clear sky"</text>
-    </string>
-    <string id="Duty">
-        <text>"Duty" grouping</text>
-    </string>
-    <string id="Freedom">
-        <text>"Freedom" grouping</text>
-    </string>
-    <string id="Gunslinger">
-        <text>Gunslinger</text>
-    </string>
-    <string id="Gunslinger-clan">
-        <text>Gunslinger's grouping</text>
-    </string>
-    <string id="Killers">
-        <text>Mercenaries</text>
-    </string>
-    <string id="Military">
-        <text>Paramilitary units</text>
-    </string>
-    <string id="Milstalkers">
-        <text>Military stalkers</text>
-    </string>
-    <string id="Mobile-labs">
-        <text>Mobile laboratories</text>
-    </string>
-    <string id="Monolith">
-        <text>"Monolith" grouping</text>
-    </string>
-    <string id="Phantom">
-        <text>Ghostly stalker</text>
-    </string>
-    <string id="Res-groups">
-        <text>Reseach groups</text>
-    </string>
-    <string id="Scientists">
-        <text>Scientists</text>
-    </string>
-    <string id="Sin">
-        <text>Dark stalkers "Sin"</text>
-    </string>
-    <string id="Social">
-        <text>Societies</text>
-    </string>
-    <string id="Stalker-clans">
-        <text>Stalkers clans</text>
-    </string>
-    <string id="Stalkers">
-        <text>Stalkers</text>
-    </string>
-    <string id="Trader">
-        <text>Trader Sydorovich</text>
-    </string>
-    <string id="Traders">
-        <text>Traders</text>
-    </string>
-    <string id="enc_social_military_army">
-        <text>Solders of the regular military units guard passages to the closed Zone areas. They patrol perimeter shooting down \nmutants and catching marodeurs and poachers. S.W.A.T. is an elite army unit, land in Zone to lead special and rescue \noperations.</text>
-    </string>
-    <string id="enc_social_military_milstalkers">
-        <text>Soldiers veterans have special training and a lot of equipment. They are well armed. Can be seen rarely. The army is \ninterested in studying results and reasons of the meltdown drawing maps of the Zone anomaly areas. For these \npurposes they use military stalkers hired from soldier's elite. Military stalkers walk alone or in groups up to five persons. \nThey meet common stalkers with gunfire. Military stalkers usually are sent to interested objects such as the place of \ngreat disaster or lost SRI. For example military stalkers on the territory of the SRI "Agroprom" study residual radiation \nand local anomalies.   </text>
-    </string>
-    <string id="enc_social_scientists_mobile-labs">
-        <text>Mobile-lab looks like small metal bunker with tiny toned windows. In the front part is sluice compartment. The laboratory is \ntotal waterproof and is able to stand any demages as well chemical as phusical. It is transported into the Zone by cargo \nhelicopter. The lab is equipped with all necessary stuff to maintain life within several months. There's  call button with \nintegrated videocam on the outside of the sluice door. Friendly stalkers are let into the sluice compartment where trade \nand negotiations happen.Admission into the laboratry itself is prohibited. </text>
-    </string>
-    <string id="enc_social_scientists_res-groups">
-        <text>Res-groups</text>
-    </string>
-    <string id="enc_social_stalker-clans_bandits">
-        <text>The representatives of the criminal world came into the zone for easy money. They haven't grounded  yet but disturb \nstalkers already. Criminals are grouped in small gangs with no comprehention among them. Mostly bandits are in the Zone \noutskirt area, apprehending to go to the center.</text>
-    </string>
-    <string id="enc_social_stalker-clans_duty">
-        <text>"Duty" is a military grouping notable for its strict discipline and popular principles. They virtualy live according army \nregulations. "Duty" is the only who doesn't deliver artifacts in the common world, exept national defence industry. They \nconsider their mission to protect the word from Zone influence. The members of the "Duty" think they are chernobyl \nsweepers and monster destroyers. That's why they hunt dark stalkers and other scums destroying mutant's nests and \nhives. They've been in enmity with "Freedom" grouping for a long time. </text>
-    </string>
-    <string id="enc_social_stalker-clans_freedom">
-        <text>They are anarchists, madcaps and freedom-lovers consider themselves freedom fighters. They fight against army and \ngovernment, their purpose-make the Zone like freedom reserve. The members of this grouping consider information \nabout Zone events to become public property. They contest military monopoly as for possessing Chernobyl secrets. And \nwhen it is truth Monolith can make wishes come true, they should open the Zone for free researchers. They fight against \n"Duty" attacks army posts, destroy military stalker expeditions. Anarchists adress each other like "free stalke"'.  </text>
-    </string>
-    <string id="enc_social_stalker-clans_killers">
-        <text>Misterious grouping considered to be a legend. They can help to get "read of a problem" if you pay them. According \nrumours their shelter is right in the Zone center.</text>
-    </string>
-    <string id="enc_social_stalker-clans_monolith">
-        <text>The group of stalkers by organisation remins religious sect. Its representatives believe in the Zone center situated \nunearthly evolutionary module crystall Monolith. The most stalkers hate Monolith followers consider them to be insane. \nFrom the times of its formation they have been constantly hinder stalkers from moving into the Zone center, condsider \nMonolith could be destroyed. "We woun't let anybody, any kind of your interference can lead to final Monolith death. We \nshoot down anyone who approaches less then 30 meters."\nHere is the speech of the veteran stalker in the "Stalker" bar:" They are crazy, who believe in Monolith, they cry out \nabout it but noone knows what is in the Zone center. Unvisable crystal fallen from heaven! Ha...Ha.... I think one of the \nsecret laboratory exploded. Someone even told he worked there. Of course you can't bomb the Zone, the radiation can \nbe spreaded all over the world, so the reaction can destroy half of Europe"\nIt is rumoured Monolith members havebig base somewhere near the Zone center, but noione knows its presize location, \nexept grouping members.  </text>
-    </string>
-    <string id="enc_social_stalker-clans_sin">
-        <text>Группа темных сталкеров - «Грех», это зомбированая группа сталкеров. Когда-то члены этой группировки были религиозными фанатиками, которые верили в божественную сущность Зоны, в последнее искупление человечества. Конфликт со всеми группами. Атакуют любых сталкеров. Темные сталкеры одеты в темные плащи с сильно надвинутыми капюшонами, так что не видно лица. Если задрать капюшон, то откроется лысая голова с кровавыми дырами, вырванных глаз.</text>
-    </string>
-    <string id="enc_social_stalker-clans_сlear-sky">
-        <text>Своеобразные сталкеры экологи. Изучают зону, ищут метод излечить мир от этой язвы. Ко всем группировкам относятся нейтрально.</text>
-    </string>
-    <string id="enc_social_stalkers_gunslinger">
-        <text>Gunslinger</text>
-    </string>
-    <string id="enc_social_stalkers_phantom">
-        <text>I went with Gunslinger and Hampback towards the Zone center. It is known Gunslinger was lost and Ghoust turned back. \nHe went to mobile scientist's camp on Jantar. Weird guy, tall big-nosed taciturn person. He was good shooter and could \nsteal through everything. Thay say he killed "Last day"gang leader.\n</text>
-    </string>
-    <string id="enc_social_traders_barman">
-        <text>He isn't saint and isn't scum, that's why respected by stalkers. They say he hides in the Zone away from his dark past. \nAfter getting into the anomaly became lamp, and decided to change his profile. He managed a bar not far from the \n"Duty" which became the famous place for the veterans. Bartender has many contacts as well in the Zon as outside it.</text>
-    </string>
-    <string id="enc_social_traders_trader">
-        <text>He used to trade for many years. He sold colour pencils in the kinder garden. He sold chewing gum in the school. He sold \nlight drugs in the institute. As the Zone appeared he realized he could earn good money. He is remarkable for his ability \nto put right good trade relations with all kind of clients.</text>
-    </string>
+	<string id="Army">
+		<text>Army</text>
+	</string>
+	<string id="Bandits">
+		<text>Bandits</text>
+	</string>
+	<string id="Duty">
+		<text>Duty</text>
+	</string>
+	<string id="Freedom">
+		<text>Freedom</text>
+	</string>
+	<string id="Killers">
+		<text>Mercenaries</text>
+	</string>
+	<string id="Loners">
+		<text>Lone stalkers</text>
+	</string>
+	<string id="Military">
+		<text>Militarised units</text>
+	</string>
+	<string id="Milstalkers">
+		<text>Military stalkers</text>
+	</string>
+	<string id="Mobile-groups">
+		<text>Research groups</text>
+	</string>
+	<string id="Mobile-labs">
+		<text>Mobile science lab</text>
+	</string>
+	<string id="Monolith">
+		<text>Monolith</text>
+	</string>
+	<string id="Scientists">
+		<text>Scientists</text>
+	</string>
+	<string id="Social">
+		<text>Societies</text>
+	</string>
+	<string id="Stalker-clans">
+		<text>Stalker clans</text>
+	</string>
+	<string id="Zomstalkers">
+		<text>Zombie stalkers</text>
+	</string>
+	<string id="enc_social_military_army">
+		<text>Regular army soldiers. They protect approaches to the Zone, patrol its perimeter, kill mutants and catch looters. \nArmy Spetsnaz - elite troops. Normally dispatched to the Zone to conduct rescue operations and other special missions.</text>
+	</string>
+	<string id="enc_social_military_milstalkers">
+		<text>Soldiers who underwent special training following their service in the Zone or stalkers who signed a contract with the Army. They are usually fitted out with a great deal of support equipment and well-armed. These stalkers are used mainly for studying the causes and effects of the catastrophe and also map the Zone. They can work on their own or in groups of up to five people. Military stalkers do not allow normal stalkers to approach and open fire on sight.</text>
+	</string>
+	<string id="enc_social_scientists_mobile-groups">
+		<text>Erased</text>
+	</string>
+	<string id="enc_social_scientists_mobile-labs">
+		<text>A mobile lab looks like a small metal bunker with tiny tinted windows. The laboratory is capable of withstanding most damage known to man and can work autonomously for several months as it is equipped with reliable life support systems. The bunker is delivered into the Zone by a transport helicopter. The lab staff never allow visitors past the external air-lock chamber, so no stalker has ever been inside one.</text>
+	</string>
+	<string id="enc_social_stalker-clans_bandits">
+		<text>Members of the criminal underworld who came to the Zone for different reasons; to make money by selling artifacts, hide from the law, buy or sell weapons. The Zone is full of such people who range from common thugs to serious criminals most of whom are members of gangs. Although there isn't a single united gang in the Zone these criminals pose serious problems for normal stalkers.</text>
+	</string>
+	<string id="enc_social_stalker-clans_duty">
+		<text>A clearly militarised group noted for its strict discipline with members living according to a code. Only Duty representatives refuse to trade unique items from the Zone with the outside world. According to rumours, all artifacts found by members of this group are passed to scientists. Every member considers it his primary objective to protect the world from the Zone. Most of the group's operations concern destroying monsters and so Duty's raids often save normal stalkers from many practical problems. The faction has long been in a fierce war with Freedom.</text>
+	</string>
+	<string id="enc_social_stalker-clans_freedom">
+		<text>Anarchists and daredevils who declare themselves to be fighting for free access to the Zone and consequently find themselves in constant conflict with army units, military stalkers and Duty. These freedom fighters believe that information about the Zone must not be hidden from humanity and challenge the state's monopoly over the Zone's secrets and wonders.</text>
+	</string>
+	<string id="enc_social_stalker-clans_killers">
+		<text>The most clandestine and secretive group in the Zone; some don't even believe in its existence. There are those who regularly use the mercenaries' services as they are true professionals in their business able to quickly deal with any stalker and even annihilate a small group. They appear to demand a King's ransom for their services in money or artifacts. The location of their base remains a secret, suggesting that it is deep inside the Zone.</text>
+	</string>
+	<string id="enc_social_stalker-clans_loners">
+		<text>Stalkers who explore the Zone on their own. Most stalkers work in this way since membership in a group takes precious time thus limiting one's income. Some simply prefer solitude and independence.</text>
+	</string>
+	<string id="enc_social_stalker-clans_monolith">
+		<text>This group has many features of a religious sect. Its members believe in the existence of an evolutionary alien crystal, the Monolith, in the Zone's centre. Most stalkers treat Monolith adepts with contempt and consider them lunatics. From its inception the group has attempted to block progress towards the Zone's centre fearing that stalkers have ill intentions regarding the Monolith. Rumours say that the group has a large base near the centre of the Zone, but its exact location is know only to its members.</text>
+	</string>
+	<string id="enc_social_stalker-clans_zomstalkers">
+		<text>Those who were subjected to prolonged exposure in Amber and a few other sectors. Careless stalkers quickly go mad and turn into walking corpses. Many of these corpses wander the Zone and some even reach the perimeter. In any case, they are beyond help because the destructive process is irreversible. While zombified stalkers are still able to use their weapons they are quite stupid and can be heard mumbling meaningless, fragmented sentences to themselves. Zombified stalkers gradually lose all their previous skills and turn into zombies. They are normally very aggressive and can present a serious threat in large numbers.</text>
+	</string>
 </string_table>

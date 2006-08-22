@@ -1,75 +1,81 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="car_use">
-        <text>Open door ($$ACTION_USE$$)</text>
-    </string>
-    <string id="character_use">
-        <text>Talk ($$ACTION_USE$$)</text>
-    </string>
-    <string id="dead_character_use">
-        <text>Search corpse ($$ACTION_USE$$)</text>
-    </string>
-    <string id="general_complete_task">
-        <text>Task accomplished.</text>
-    </string>
-    <string id="general_fail_task">
-        <text>Task failed.</text>
-    </string>
-    <string id="general_help">
-        <text>I need a first-aid kit, immediately, I'm dying!!!</text>
-    </string>
-    <string id="general_in_item">
-        <text>Item received.</text>
-    </string>
-    <string id="general_in_money">
-        <text>Money obtained.</text>
-    </string>
-    <string id="general_new_diary">
-        <text>New entry in dairy.</text>
-    </string>
-    <string id="general_new_encyclopedy">
-        <text>New article in encyclopaedia.</text>
-    </string>
-    <string id="general_new_task">
-        <text>New task received.</text>
-    </string>
-    <string id="general_out_item">
-        <text>Item lost.</text>
-    </string>
-    <string id="general_out_money">
-        <text>Money lost.</text>
-    </string>
-    <string id="general_update_task">
-        <text>Task updated.</text>
-    </string>
-    <string id="inventory_item_use">
-        <text>Pick up item ($$ACTION_USE$$)</text>
-    </string>
-    <string id="physic_shell_use">
-        <text>Move item ()</text>
-    </string>
-    <string id="to_agroprom">
-        <text>To Agroprom</text>
-    </string>
-    <string id="to_agroprom_underground">
-        <text>Into catacombs</text>
-    </string>
-    <string id="to_bar">
-        <text>To bar</text>
-    </string>
-    <string id="to_darkvalley">
-        <text>To dark valley</text>
-    </string>
-    <string id="to_escape">
-        <text>To cordon</text>
-    </string>
-    <string id="to_garbage">
-        <text>To garbage</text>
-    </string>
-    <string id="to_military">
-        <text>To storages</text>
-    </string>
-    <string id="to_rostok">
-        <text>To Rostok</text>
-    </string>
+	<string id="car_character_use">
+		<text>Open door ($$ACTION_USE$$)</text>
+	</string>
+	<string id="character_use">
+		<text>Talk ($$ACTION_USE$$)</text>
+	</string>
+	<string id="dead_character_use">
+		<text>Search body ($$ACTION_USE$$) \n Drag body (SHIFT+$$ACTION_USE$$)</text>
+	</string>
+	<string id="general_complete_task">
+		<text>Task complete:</text>
+	</string>
+	<string id="general_fail_task">
+		<text>Task failed:</text>
+	</string>
+	<string id="general_help">
+		<text>Quick, I need a medkit, I'm dying!</text>
+	</string>
+	<string id="general_in_item">
+		<text>Item received:</text>
+	</string>
+	<string id="general_in_money">
+		<text>Money received:</text>
+	</string>
+	<string id="general_new_diary">
+		<text>New diary entry.</text>
+	</string>
+	<string id="general_new_encyclopedy">
+		<text>New encyclopaedia article.</text>
+	</string>
+	<string id="general_new_task">
+		<text>New task:</text>
+	</string>
+	<string id="general_out_item">
+		<text>Item lost:</text>
+	</string>
+	<string id="general_out_money">
+		<text>Money lost:</text>
+	</string>
+	<string id="general_update_task">
+		<text>Task updated:</text>
+	</string>
+	<string id="inventory_item_use">
+		<text>Pick up item ($$ACTION_USE$$)</text>
+	</string>
+	<string id="physic_shell_use">
+		<text>Move object ()</text>
+	</string>
+	<string id="st_codelock">
+		<text>Combination lock ($$ACTION_USE$$)</text>
+	</string>
+	<string id="test_mega_remark">
+		<text>So mate, how do you like this new flashy radio communication system?</text>
+	</string>
+	<string id="to_agroprom">
+		<text>To Agroprom</text>
+	</string>
+	<string id="to_agroprom_underground">
+		<text>To catacombs</text>
+	</string>
+	<string id="to_bar">
+		<text>To the bar</text>
+	</string>
+	<string id="to_darkvalley">
+		<text>To the dark valley</text>
+	</string>
+	<string id="to_escape">
+		<text>To the cordon</text>
+	</string>
+	<string id="to_garbage">
+		<text>To the dump</text>
+	</string>
+	<string id="to_military">
+		<text>To the warehouses</text>
+	</string>
+	<string id="to_rostok">
+		<text>To Rostok</text>
+	</string>
 </string_table>

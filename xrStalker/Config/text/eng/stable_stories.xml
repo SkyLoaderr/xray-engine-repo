@@ -1,358 +1,126 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-
 	<string id="Stories">
-		<text>
-		Местный фольклор
-        </text>
-	</string>	
-
-	<string id="stalker_story_1_name">
-		<text>
-		О тваре в ангаре.
-        </text>
-	</string>	
+		<text>Local folklore</text>
+	</string>
 	<string id="stalker_story_1">
-		<text>
-			Забираемся, значит, в тот ангар. Вокруг пылища, паутины - вообще под крышу; детекторы полную чушь порют: мол, не то что никого вокруг, а и нас в природе нету. Пошли позиции по периметру занимать: Санёк впереди, мы прикрываем… И тут - БЗДЫНЬ! Балки здоровенные такие железные, ржавые под потолком, так одна срывается - и вниз! 
-			Как Санёк увернулся, сам не знает, а эта хрень воткнулась прямо в точности, где он стоял. Ну он, как упал и откатился, не встал на ноги вообще, а так лёжа да-вай шмалять! Остальные тоже напугались, идиоты, и себе пошли садить в белый свет. Тут Санёк начал орать что-то про тварь в углу. Я смотрю - никакой твари не вижу... В общем, поехали, не операция, а конкретный такой бардак... бордельеро… 
-			Пошли мы по этим развалинам ходить; ходили минут пять - осторожненько так, чтоб под балками этими больше не очутиться. И бред, ну бред полный: то одному, то другому чего-то привидится, они давай очередями в полрожка полосовать по пустому месту. А двоим вообще не повезло: один шёл по ровному полу, и вдруг в яму упал, второго сорвавшейся дверью поперёк спины перетянуло. 
-			Ну, тут  мы вообще завелись - ясно ж ведь, что тварь какая-то развлекается! Врубили пси-защиту, во все углы по газовой гранате - ну и ждём, кто появится, а пальцы на спуске. 
-			Ждём-ждём… А тварь, как потом оказалось, летучая была, что ли…
-			Пока мы внизу всем скопом дурака валяли, она себе тихонько сидела под потолком и веселилась, сука... Дошло только до нас поздно, да и то случайно почти. Гадина эта расшатала ещё пару балок - полкрыши и навернулось, прямо на нас и навернулось, четверых ребят в лепёшку на месте…
-			Вот тут мы её и достали! Как Санёк услышал шебуршание наверху, так на автомате и дал очередь - полезнейший, блин, рефлекс! Ну тут и визгу! Мы тоже, ясно, подскочили, дали из всех стволов... Тварь сыпанула сверху с такими воплями, что прям уши закладывало. 
-			Ну, тут уж мы душу отвели: кто прикладом бил, кто просто ногами прохаживался, Санёк, так тот нож достал, чтоб ей побольнее потроха вывалить... Командир, понятно, всех с трудом, но пооттаскивал, а то бы вообще падлу эту ложками с пола соскребать пришлось…
-        </text>
+		<text>So we’re creeping into this hangar, right. Dust, spider web everywhere, mad filthy; detectors going bunk: like not only do they sense nothing, but as if we are even non-existent. So we’re getting into positions along the perimeter: Sanyok leading the way, the rest covering behind… then all of a sudden: WHAMMO! There were these huge iron joists rusting under the ceiling, so one of them breaks off and goes plummeting down on the floor! Somehow, Sanyok managed to dodge, and this shit thrusts into the floor right where he had been standing. Well, Sanyok flops down, rolls over, doesn’t even get up to his feet anymore and, still there on the floor, just goes blasting away! We all freak out and start off firing like crazy. Then Sanoyk starts screaming blue murder something about some creature in the corner. I look over there, and don’t see a thing… So you get it, right, not an operation, but total clusterfuck… clustero-fucko… So we go looking around the ruins; for about five minutes, walking wide, making sure we don’t get under any joists. And it was really creepy, man, one after another sees something and lets fly half a jet at sweet Fanny Adams. Two of our guys got screwed altogether: one tripped into a pit all of a sudden, another got bashed by the door that flies off its hinges. Now we really get worked up, it’s flat and plain some bitch is fucking with us! So we spark off our psy-protection, toss a gas grenade in each corner and hold off to see who buzzes in, fingers on triggers. So we’re waiting, and waiting… Turns out the motherfucker was flying or something like that… So while we were all fooling around on the floor it was lying doggo on the ceiling and having itself a ball… It dawned on us too late, and by pure accident. That piece of shit shook loose some more joists, so half the roof crashes down to the floor, dead right on us, four of our guys squashed flat right there… And then we got that son of a bitch! As soon as Sanyok heard it rustling on the ceiling, he blazed away by reflex – a damn good reflex, I must tell you! You should’ve heard that thing yelping! We all jump up fogging away with every gun… That bitch tumbled down squalling so loud we had our ears dinned. Man, we gave that thing hell, clubbing and kicking, and Sanyok, he flicked out his knife to slit that thing’s bowels… Well, the commander, dragged us all off, otherwise we’d have to spoon this motherfucker off the floor…</text>
 	</string>
-
-	<string id="stalker_story_2_name">
-		<text>
-		Ужас в НИИ.
-        </text>
-	</string>		
-	<string id="stalker_story_2">
-		<text>
-			Мы с напарником к этому НИИ давно присматривались. Уж больно место пустынное. Ни зверья в округе, ни мутантов. Только кто бы туда ни пошёл, либо перепуганные вусмерть, с катушек съехавшие возвращались, либо вообще их больше не видали. 
-			Решили сами потихоньку разведать. Выехали затемно, а как добрались до места, уже светать начало. Оставили машину в распадочке, пошли лесом к опушке. Там остановились, напарник остался внизу, а я полез на дерево с оптикой - оглядеться, что в окрестностях творится. 
-			Вижу - корпуса, и не так чтобы совсем уж заброшенные, стёкла целые почти все, во дворах травы немного, не то что в других местах - по пояс... По всему выходило, что живут тут, однако тишина полнейшая и движения никакого. Тут вдруг чуть справа ударили очереди - кто-то из автомата бил короткими. 
-			Я оптикой туда. Вижу, на крыше одного из корпусов незнакомый мужик как крыса затравленная мечется и стреляет без разбору во все стороны. В кого - смотрю и понять не могу: он там один был. И вот тут… началось. (небольшая пауза) Я всё видел как на ладони. Автомат у него из рук сам собой улетел…
-			Будто крылья у железки выросли!.. Мужик рот раскрыл, видно, заорал чего-то, достал нож и выставил его перед собой. И тут - ёлки-моталки! - гляжу, а перед ним сам собой висит ещё один. Вот так в воздухе жалом к нему и висит, и не держит его никто.
-			Что дальше было - это не ночь рассказывать...  Минут пять того мужика резали. 
-			Понемногу так, суки, мать их за ногу - там порез, тут укол… Бедолага скоро уже весь в крови был... Потом, как он уж в ногах заплетаться стал, его нож тоже выбило; тут мужика как поднимет в воздух, как завернёт пару раз… 
-			Я такого в жизни не видел - натурально, как тряпку вертело… Я в три секунды мокрый стал…  Потом...  Нет, всё, не буду... 
-			В общем, как я отдышался, ещё минут пять шарил прицелом по окрестностям. Руки дрожали, оптика от пота мокрая стала… Ну хоть бы одна тварь! И в обычном диапазоне и в инфакрасном - ни-че-го.
-			Как я слез, напарник на меня поглядел, да и спрашивать раздумал. А как вернулись на базу, я неделю до бровей надирался, не просыхал... Потом, как отошёл чуток, порасспрашивал наших - может, кто про такое чего слышал? Только народ на меня посматривать начал косо - часом, не двинулся ли? Вот такие дела… 
-        </text>
-	</string>
-
-	<string id="stalker_story_3_name">
-		<text>
- 		Ужин паталогоанатома.
-       </text>
-	</string>		
-	<string id="stalker_story_3">
-		<text>
-			В общем, дружбан мой вот чего рассказывал. Подняло его, короче, посреди ночи начальство - типа бегом в лабораторию, груз пришёл. Он сонный, не врубается: какой груз? Они ему: ты чё, спирту казённого перепил? Трупак свежий на столике, кушать подано! 
-			Короче, приходит он, и к столу. А там ТАКОЕ... Он, по ходу, жмуриков из Зоны на своём веку повидал: и тебе порванные, и жареные-вАреные, и мутантов попался не один десяток, а тут типа в желудке ужин гулять начал. 
-			Короче, с первого взгляда - без двух минут человек, только бошка на нормальную ни фига не похожа: здоровая такая тыква бугристая. Ну и тело -  концлагерь, блин, кожа да кости. Но это он потом разобрал, а вначале, говорит, гляжу, месиво какое-то: всё навыворот, заляпано оранжево-красной пакостью - кровь типа... Эти гондурасы боеприпасов не пожалели. До-олг… поиск аномальных объектов, блин… ни хрена себе поиск!..
-			Это, говорит, была помесь дуршлага и порванной грелки…
-			…и вообще они явно по нему в говнодавах своих хорошо погуляли; не объект, блин, а кусок мяса в чёрном тряпье. Короче, он весь остаток ночи и половину утра горбатился. По ходу, получается, это та самая тварь, которую местные за иллюзиониста знают: чёрные тряпки, видения у сталкЁров, бошка метр в обхвате... Прикольно то, что у него за лицо, кто видел, считали - это типа темечко. 
-			Не, личность-то у него натурально есть, только мелкая совсем: моргалки не открываются и нос как булавка, хотя пасть - здоровенная, прям косяк у ворот. Ходит, видно, и голову на грудь свешивает - сил нету ровно держать... мозгляк… 
-			А прикиньте, чего эти твари на обед кушают. Грибки! Грибочки! 
-			Короче, все видали - в Зоне грибов полно, так «старики» зуб дают, что эти твари из них сок жмут. Гурманы, блин… А ещё знаете, чего у него в мешочке на боку припрятано было? Ну? 
-			Да куда вам! Короче, мозги там у него были вяленые. 
-			А знаешь, чьи? Контроллерские!.. 
-        </text>
-	</string>
-
-	
-	<string id="stalker_story_4_name">
-		<text>
- 		Легкая добыча контроллера
-       </text>
-	</string>	
-	<string id="stalker_story_4">
-		<text>
-			Прибился было к нам тут дурик один… Чешем, значит, скинемся на пять минут отдохнуть, а он сразу на пятую точку - и расслабляется. А как идти - так он последним задницу от земли отрывает. Ну и дорасслаблялся… отстал, а там его контроллер - за мозги цап! - и готово.
-			Кто новичок, в нашем деле, запоминай. Шорох там или ветерок какой подозрительный… Пусть хоть зайчик пробежит… хотя зайчики тут - не дай Боже… 
-			Одним словом, готовым каждую секунду надо быть. Чтоб магазины и гранаты под рукой и автомат на непрерывном. Если уж увидел что, высаживай сразу полрожка; если за кустами что-то - тоже лупи, а уж потом спрашивай. Тут курс молодого бойца такой: не нарядов навешают, а с потрохами сожрут, пукнуть не успеешь! Да, по поводу контроллеров - отдельная история. Допустим, отстрелял ты по шороху - и падай сразу же, в ту же секунду! Хоть на спину, хоть как. Контроллер цепляет, если видит тебя - сосредоточиться ему нужно, что ли. Пока загораешь в тенёчке, слушай в оба уха - шуршит ли, идёт ли какая дрянь к тебе. Можно тихонько магазин перещёлкнуть, да и гранаты тоже нелишне приготовить… В общем, если тихо всё, считаешь до трёх и… 
-			И валишь! Валишь куда подальше!
-			Ну что, всосали? Эх, салажата… Себя каждую секунду берегите - только так тут и уцелеть можно…
-        </text>
-	</string>
-	
-	<string id="stalker_story_5_name">
-		<text>
- 		Подводные камни
-       </text>
-	</string>	
-	<string id="stalker_story_5">
-		<text>
-			Я что думаю… Даже не то, что думаю - так, прикидываю… А вдруг всё - вот всё, что тут есть, - эксперимент какой над людьми? Это, можбыть, какие-нибудь человечки зелёные... 
-			А что? Не хуже других версия… Интересно мне: если это что-то вроде полигона, то чего именно они тут обкатывают? Проверяют, по каким артефактам мы больше всего слюни пускаем? Или это вообще бомбы какие-нибудь, а? Порастащили их по всему миру, по лабораториям всяким, богачи пораскошелились… Нет, ну вот это классно!.. Вот это бы с моим удовольствием!.. Купили из-под полы какую-нибудь хрень… кучу бабла отвалили… Типа «у нас круче всех», завидуйте, бараны… а оно… оно… ка-ак херанёт!.. Ой, класс!.. Ой, не могу!..
-			Ой… уф-ф-ф… А вообще, конечно, фиг его знает, что на самом деле… Разве тот, кто за радар ходил, может насчёт этого порассказать… 
-			Ну да, они-то, может, и знают, только сказать не могут - мычат и слюни пускают. Может, потому как раз и пускают… Эх… 
-			Вот и лезут мысли всякие… Невесело оно вообще…
-        </text>
-	</string>
-	
-	
-	<string id="stalker_story_6_name">
-		<text>
-  		Хроники яйцеголовых глобалистов.
-      </text>
-	</string>	
-	<string id="stalker_story_6">
-		<text>
-			Так… помнится, кто-то меня вчера о чём-то спрашивал, а я запамятовал…
-			А, вспомнил. Есть, значит, любопытствующие, отчего в Зоне только наши яйцеголовые копошатся, а иностранцы и носа не кажут, хотя тут материала нобелевок тыщи на три...
-			Значит, отвечаю по пунктам. Во-первых, с какой стати самим сюда лезть, когда можно нашим грант дать, да с такими условиями, что он тебе всё, что надо, сам на блюдечке принесёт?
-			Ну а если во-вторых, они на самом деле тут бывали, и помногу. Это последние года два забугорцы в Зону боятся лезть… случился с ними один крупный облом. Теперь только скупают материалы да информацию. Платят в общем неплохо, так что много одиночек на них работают, да и мародёры тоже…
-			Что, не слышали про эту историю? Ну даёте! Вся Зона на ушах стояла, а вы как с неба упали. В общем, заброска была большая. Одних учёных человек тридцать с половины мира… все светила, ясное дело, туда-сюда... Готовились серьёзно: денег зарядили - хоть одним местом ешь, оборудования - горы. Взяли с собой взвод военспецов для охраны, тройку проводников из наших, на БэТээРы экранированные погрузились и отчалили.
-			Что-что… Вернулись через неделю… двенадцать человек на убитом в хлам БэТээРе. К колючке вышли у Гнилого леса, а там их уже поджидали... мародёры…
-			Да… Этим пофиг, откуда люди вырвались... Положили почти всех. За периметр только трое выбрались - двое наших и один яйцеголовый. Человек от впечатлений мощно чердаком двинулся… Ну, его быстренько за шиворот - и лечить. Он теперь книжку про Зону пишет.
-			Наши-то ещё ничего - опыт помог. Хотя… тоже, наверно, по-своему двинулись: один ушёл к радару и пропал, а второй на Большую землю подался.
-			Ну а остальных Зона взяла. Про Городок-тридцать два слышали? Вот там они и попали. Сначала всё вроде тихо было… ну, в пределах… Они там снимали-замеряли, пробы собирали, в аномалии приборами тыкали... А потом у них началось помешательство. Массовое. Народ начал медленно крышей ехать. Мне наш - тот, что на покой ушёл - рассказывал… Кто горло начинал себе ногтями раздирать, кто голову себе о стену разбивал, а кто просто - ствол в рот, и... 
-			А тут ещё зверьё попёрло. Кто в себе был, забаррикадировались в доме. Представили, да? Снаружи ночь и всё окрестные твари, а внутри люди с катушек слетают один за другим. 
-			Одним словом, под утро те, кто ещё соображать мог, кое-как вырвались. Назад гнали напрямик, без дороги; даже пару аномалий зацепили... Добрались до Гнилого леса... А из тех, кто там оставался, никого так и не нашли. Ребята только говорят, что в тех местах резко прибавилось контроллеров. Да… Вот с тех пор в Городок-тридцать два никто не суётся, а иностранца в Зону и калачом не заманишь...
-		</text>
-	</string>
-	
-	<string id="stalker_story_7_name">
-		<text>
-  		Иллюзия долга.
-      </text>
-	</string>	
-	<string id="stalker_story_7">
-		<text>
-			Так вот чего я сказать-то хотел. Когда «долгИ» того иллюза брали, я ж рядом был! 
-			Да я случайно вообще в тех краях оказался! У моей тачки, у «Нивы»-то у моей, правое переднее полетело: болты на кочке срезало. И по запчастям полный ноль. Поматерился я как следует, а потом дай, думаю, на завод схожу, подберу нужные. 
-			Ну там километр идти было, туда-сюда - на полчаса делов! Да и бывал я там раньше…
-			Тут вдруг вижу - «долгИ»! Да не просто патруль, а штук полста!
-			Ну, думаю, блин-компот!.. Как стоял, так в кусты и завалился. «Если заметили и прочёсывать начнут, - думаю, - тут мне и трындец». 
-			Залёг, короче, в ямке, и стараюсь не дышать. А тут стрельба! Чтоб такими очередями шмаляли, я только раз в жизни слышал… когда Первую базу брали - старики, помните?
-			В общем, лежу, слушаю в оба уха… Оно себе бахает, а потом ещё и как грохнет!.. 
-			Через минут пять затихает и ко мне вроде никто не идёт. Ну, я наглости набрался, привстал чутка и в бинокль смотрю. А эти быстренько вытягиваются из цеха… помятые такие, жмуриков своих за собой кучу тащат и иллюза на брезенте… ошмётки уже одни от иллюза остались…
-			Утянулись в лощинку. Потом слышу - движки заревели, и звук ушёл. Я ещё подождал - вроде никого. Я внутрь.
-			Ну ясно, что после «Долга» хрен чего найдёшь! 
-			Но интересно ж!
-			Эт-то, я вам скажу, было что-то! Стены они почти насквозь подырявили. Балки поперёк пола валяются, кусок крыши обвалился. Гильз по колено - натуральное стрельбище. Кровища, ошмётки какие-то... Полезного, правда, ничего не нашёл - так, два рожка полных, да автомат валялся, балкой придавленный, не вытащить… Про болты я, ясное дело, и думать забыл…
-			Вернулся к тачке, подумал пять минут, снял по болту с остальных колёс… ну и доехал потихоньку… А выйди я туда раньше на полчасика… Мда…
-		</text>
-	</string>
-	
-	<string id="stalker_story_8_name">
-		<text>
-  		Серый в Припяти.
-      </text>
-	</string>	
-	<string id="stalker_story_8">
-		<text>
-			Да, так я тогда аж до самой окраины Припяти добрался. Ну и решил первым делом осмотреться. Нашёл и точку повыше - там котельная большая была с трубой. Ну, зашёл аккуратненько… вроде, смотрю, вроде чики-пики всё - пыль лежит, следов нет… Влез в топку и пополз: там внутри трубы ступеньки были. Нормально лезу, даже нагар уже и не пачкается - окаменел… Осторожненько высовываюсь... Красота! Полгорода как на ладони! Вытащил бинокль и осматриваюсь... (небольшая пауза)
-			Ну и дальше… Собрался уже, значит, сползать вниз, а тут мысль проскакивает: что под самым носом творится, и не посмотрел! Перегибаюсь малость через край, смотрю на одну сторону, потом на другую… Оба-на! 
-			Вот это попал бы! По внутреннему двору карлик разгуливает! 
-			Главное, я ж вниз уже почти полез! И то ладно, что он меня пока не видит. Только башню я ему снести не могу: «калаш» на спине висит, а труба узкая совсем, не повернуться. Из «макарова», что под мышкой - говно дело, там метров пятьдесят, да перепад по высоте… короче, если сразу не попаду - а ведь не попаду - тогда точно кердык.
-			Сижу, размышляю. Ну и смотрю заодно, чего он там делает. А делает он чего-то непонятное. Сначала бодренько так, с огоньком, рылся в куче хлама - только куски направо-налево разлетались. А потом вдруг как стоял, так и застыл. Вроде прислушивался. Ну а там совсем бардак начался. Мусор в той куче сам стал шевелиться. Карлик быстренько отпрыгнул, стал этак столбиком, руки к голове приложил, ладони как-то хитро вывернул… а в него ка-ак полетит! Со всех сторон!.. 
-			Железки, кирпичи, рубероид, ветки… Его так с головой и накрыло. Ну, думаю, всё. Пипец котёнку, больше ссать не будет… Ни фига! Две секунды хлам этот полежал, а потом точно так же ка-ак брызнет во все стороны! Там обрезки труб были, так они прям в забор бетонный повтыкались. 
-			Постоял карла ещё с полминуты, покумекал себе чего-то, а потом развернулся, и в здание потопал. Я ещё минутку дух переводил. «Ну, - думаю,  - хорошего понемножку, валить отсюда пора». И тут вдруг дымом потянуло. А потом и припекать стало.
-			Да идите вы в пень! Огонь кто-то снизу развёл! Через минуту - всё, дышать уже нечем было. Кое-как выгреб на край трубы - там площадки никакой, сижу, ножки свесил… Только дым всё равно глаза ест, воздуху не хватает… короче, валить надо срочно! Слава Богу, я с собой репшнура всегда сорок метров таскал на всякий пожарный случай… точно, что пожарный… В общем, сложил я его пополам - он не шибко толстый был - худо-бедно на трубе зафиксировал, платок шейный пополам разорвал, на беспалки намотал сверху, да и полез, всем богам помолясь… В голове одна мысль: только б не сорваться! 
-			Ни страховки, ничего, шнур ладони режет… Ну и, конечно, по закону подлости метров пять до земли его не хватило.
-			Сигать пришлось. А что делать? Ох, я и загремел! Повезло, хоть не сломал ничего… Но ободрался и ногу правую потянул - будь здоров! Потом думал, что вообще связки порвал. А тогда дёрнул оттуда так, что золотую медаль в беге, наверно, выиграл бы...
-		</text>
-	</string>
-	
-	<string id="stalker_story_9_name">
-		<text>
-    		Мужское одиночество.
-		</text>
-	</string>		
-	<string id="stalker_story_9">
-		<text>
-			А я тогда глазам своим не поверил. Вот, казалось бы, есть красивые девушки, да? Но эта была... она…
-			Совершенство. Да. Вот. Совершенство. Такое было ощущение, что мир вокруг неё черно-белый и размытый, она одна только в цвете и резкости. 
-			Как она двигалась! Я такого тоже никогда раньше не видел. У меня аж ком в горле встал. Ну сдалась ей эта наука! Что ей тут, в Зоне, делать?..
-			Ну да, в Зоне. К вечеру дело было... У автовокзала там девятиэтажка отдельная. Сначала что-то в окне на первом этаже промелькнуло. Я «калаш» быстро с предохранителя снял, и тут смотрю - из подъезда выходит…
-			Мне глаза протереть захотелось - мало ли, чего от Зоны ожидать можно? А она подходит. А я стою как дурак, глазею… автомат, правда, наготове держу - привычка уже…
-			Тут она меня заметила… Улыбнулась… Поздоровалась… А я слушаю и не слышу, всё на неё смотрю. Она в синем комбинезоне была, ярком таком… но не балахонистом, а почти облегающем… Фигура у неё - что-то фантастическое! Тут только до меня дошло, что я не слушаю совсем, что она говорит - стою и улыбаюсь до ушей…
-			Она, оказывается, из исследовательской группы была. Спрашивала, есть ли у меня возможность ей помочь. Ей! Да я бы в аномалию ради неё полез!.. 
-			Сказала, что она занимается этими, как их… эндемиками Зоны.
-			Ну растениями, которые только тут встречаются. Сказала, что сбежала от охраны, потому что с ними никакой свободы действий нет, и в одиночку пришла сюда. Не знаю. Я поверил. Согласился помочь - притащить ей кое-что.
-			Через двое суток пришёл, как договаривались. Раз пять чуть не накрылся, пока собирал. Иду, а у самого в голове одна мысль: вот сейчас я её опять увижу!
-			И ничего. Я даже дома того, где её встретил, не увидел. Вот так... 
-			Но какая она была! Она же изнутри прямо светилась…
-		</text>
-	</string>
-
-
-	<string id="stalker_story_10_name">
-		<text>
- 		Сверхпроводник.
-       </text>
-	</string>		
 	<string id="stalker_story_10">
-		<text>
-			А слышали о Проводнике? Самый первый из сталкеров. Первый в Зону ходить начал, и до сих пор живой. 
-			Говорят, проведёт в любую точку. Другое дело, что найти его проблематично - афиш с адресом не расклеивает… Да и провести тоже далеко не каждого соглашается. Баблосов вроде бы берёт немало, но если нашёл его и договорился, будь уверен - он тебя железно доставит куда надо.
-			Вот с кем бы перетереть. Уж он-то, наверное, видал, что там за радаром...
-		</text>
+		<text>Have you heard about the Pathfinder? The very first of all stalkers. He was the one who broke in the Zone, and still alive. People say he can take you anywhere, you name it. Now, finding him’s a bit tricky, he ain’t got posters around with his address… And he don’t go with just anybody, either. From what I hear he charges quite a bit of greenbacks, but if you find him and agree on the price, you can rest assured, he’ll take you where you need to in spades. Now, that’s someone I’d like to shmooze with. He sure has been past the radar…</text>
 	</string>
-
-	
-	<string id="stalker_story_11_name">
-		<text>
-  		Люк в рай.
-      </text>
-	</string>	
+	<string id="stalker_story_10_name">
+		<text>Super pathfinder</text>
+	</string>
 	<string id="stalker_story_11">
-		<text>
-			Понты бить и с баблом быть - это две большие разницы… Чё думали, тут бабло за так даётся? Ни хера! За так только вас только уродина какая-нибудь схавает или сталкер завалит... Думать надо. Там думать надо, а тут ещё лучше. Совсем быки тут долго не протягивают. Не канает оно, без чердака если…
-			Короче, дело такое было. Втроём мы с Синяком и Цепой покойными через хоздвор шли - дорогу, короче, срезали. Смотрим - олень какой-то чешет. Ну, мы сныкались. А он мимо нас проходит - не замечает. Мелкий такой, а мешок тянет - будь здоров. И автомат хитро висит - чуть что, маслинами нас нашпигует. Ну, Синяк мне - типа, давай пощупаем мозгляка, чё у него там? А я ему: «Тихо, дятел! Лучше смотри, куда он свой хабар тянет».
-			Ну чё… Тут олень как провалился куда-то - мы даже не поняли. Ну, ждём. Он минут через двадцать вылез. Пока стоял-отряхивался, к нему Цепа сзади втихую подъехал и полтыквы из шпалера снёс. 
-			Начали они с Синяком тело потрошить: броник на нём был классный, да и лопатник должен быть… Я отлить отошёл - моё пацаны мне всегда отдадут, я по жизни в доле. Тут как херанёт!.. Короче, терпила тот не прост был: он чё-то хитрое наворотил, чтоб рвануло, если с него броник кто-то снимать будет.
-			Я свалил оттудова по-быстрому - мало кто щас на выстрел и взрыв заявится... Пришёл через месяц. От Цепы с Синяком и оленя - хоть бы косточка. Вообще по нулям. Короче, прикинул я, где он в развалины нырял, и сам туда полез... 
-			Ну, прошёл три комнаты - голяк! Тут смотрю, в углу куча кроватей навалена. На кой хер там столько лежаков? Короче, взялся разгребать. Разгрёб. Смотрю - мать моя женщина, люк!
-			Поднимаю, значит, крышку, свечу фонариком. Ёпэрэсэтэ! Я в раю!..
-			Ну, чё там было - моё дело… Внакладе не остался. А уши б развесил - давно бы жмуриком стал или до сих пор босой бегал, бакланил… как некоторые…
-		</text>
+		<text>Now flossing and having chalupa, that’s two big differences… You think moolah is easy to get? No fucking way! For buckshee you only cop it here with some fugly or get pipped by a stalker… You’ve got to use your noddle. You’ve got to use your noddle over there, and even better over here. Roughnecks don’t last long around here. It just won’t click if you have rats in the attic… Anyway, here’s how it was. The three of us, the late Bruise and Loop, were trailing across the farmstead, to take a shortcut. All of a sudden we see some bloke hotfooting our way. So we fuzz out. The bloke is walking right by us totally looking over. He was a really bantam type of fellow, and hauling this huge sack along. The subgun hanging at the ready, we’d be stuffed with olives at the drop of a hat. So Bruise says to me, why don’t we shake this snip down, see what he’s got over there? And I says, quiet you moron, watch where he’s about to stow away his swag! … Well..  Suddenly, the bloke vanishes into thin air, and we didn’t see a damn thing! Alright, so we sit and wait. He pops up in ‘bout 20 minutes. And while he’s standing there, shaking off dust, Loop sneaks up behind and blasts half his head off with his gat. So him and Bruise start frisking this guy, he had a royal armor vest, and a fanny pack, too… I had to piss so I walked off, I knew my guys would always give me my share, I’m always in. All of a sudden I hear KABOOM!.. Turns out that nerd had his vest all wired so it would blow up if someone tried to take it off. I buzzed off right away, who knows who’s gonna show up for the gun shot and the explosion… Went back there a month later. Not a bone left of Loop, Bruise and that bloke. Nada. So I reckoned where he could’ve dived into the ruins, and crawled in there myself… Passed three rooms, zilch! Suddenly I see a bunch of beds piled up in one corner. What the heck are they all doing there? Started taking them apart. And what do I see in there? Holy cats, a hatch! So I lift it up and turn on my flashlight. Good grief, I’m in heaven!.. Well, what I saw there is my business… I didn’t come off the loser. But think of it, had I dragged my feet, I would’ve been dead already or running around barefoot and slobbering, as some do…</text>
 	</string>
-	
-
-	<string id="stalker_story_12_name">
-		<text>
-  		История о боевых друидах.
-      </text>
-	</string>	
+	<string id="stalker_story_11_name">
+		<text>The hatch into heaven.</text>
+	</string>
 	<string id="stalker_story_12">
-		<text>
-			Говорят, есть одна группа товарищей… Их когда шаманами называют, а когда друидами. Они, говорят, вообще с собой электронного оборудования не носят - к природе, дескать, ближе, и всё такое... 
-			Ну, они говорят, что Зона на электронику… на излучения всякие электромагнитные сильней реагирует… да, и монстров на тебя натравливает. 
-			Как по-ихнему получается, так Зона - живой организм. Нельзя, мол, лезть в неё с приборами - правильный человек и без всяких лишних навесок справится. Правда, автоматы они с собой, козлы, таскают... Нет бы зубами и когтями попробовать…
-			С другой стороны, гибнет их в Зоне вроде бы не так чтобы и много. Не чаще нас они ласты склеивают... Так что, может, правильно додумались... Они, правда, вроде больше с белорусской стороны в Зону заходят… А то хорошо было бы на них поглядеть… да проверить заодно, сколько у них артефактов на кармане водится... 
-		</text>
+		<text>They say there’s this one gang here… People call them shamans or Druids. So it appears they don’t use any electronic equipment at all, say they want to keep close to the nature and stuff… Well, they reason the Zone reacts stronger to equipment… to all this electromagnetic radiation or something… and attracts monsters. If you listen to them the Zone is like a living being. Like, it’s no good going into it with all these gadgets, if you’re right in your mind you’ll get by fine without ‘em. They do schlep subguns, though… Not giving it a chance with teeth and nails, eh… But then again, I don’t hear a lot of them popping off in the Zone. Well, at least no more than us… So maybe they are on the right track there… They seem to be coming more from the belarusian side, though… I’d like to have a look at them… and check out their pockets, too, for some artifacts…</text>
 	</string>
-	
-	
-	<string id="stalker_story_13_name">
-		<text>
-  		Тень призрака.
-      </text>
-	</string>	
+	<string id="stalker_story_12_name">
+		<text>The story of the battle druids.</text>
+	</string>
 	<string id="stalker_story_13">
-		<text>
-			Кто-нить, может, знает о лабораториях засекреченных глубоко в Зоне?.. Они ж вроде как до сих пор работают…
-			Ну да, ну да… Непонятно, как там вообще кто-то выжить смог… без припасов, энергии... Вот и возникает вопрос - а может, там никакие не люди работают? 
-			Я тут с типком одним общался… Он сам лаборатории не видел…
-			…Нет, сам не видел, но на сканер словил переговоры какие-то странные на «Янтаре». В них о какой-то лаборатории речь шла. А другой мужик этому, первому, клялся, что наткнулся как-то на фигуру в комбезе типа сталкеровского, но более навороченном… И вроде как фигура эта полупрозрачная ему сказала, чтобы валил отсюда прочь. «Не мешай, мол, уходи, мы тут работаем». 
-			Ну, парень пересрал… понятное дело! Кто из нас такое раньше видел?.. С другой стороны, это вроде бы случилось недалеко от радара... Ну, вы понимаете...
-			Ну да. Так что вряд ли правда... Но с другой стороны… мутации, они ведь разные, наверное, бывают? Может, это уже не люди, а какие-то сущности энергетические? А?..
-			Да ладно, чё вы… Чуть что, сразу ржать…
-		</text>
+		<text>Does anybody know the score on these top secret labs deep in the Zone?.. They’re still functioning, aren’t they… Well, yeah… How the heck does anybody manage to survive there at all… without any food or energy… So the question is: what if it’s not even people working there? I talked to this one kipper… He didn’t see those labs himself… …No, he didn’t see them with his own eyes, but his scanner tapped some weird talks at “Yantar”. They were talking about some laboratory. And the other guy was swearing to the first one that he had run into this figure dressed in an outfit similar to what stalkers wear, but much fancier… And this translucent figure as if told him to piss off. Something like, be gone, we’re working here. Scared the shit out him, I’m telling you! I mean, have you seen anything like that before?.. But on the other hand, it all sort of happened not far from the radar… You know what I mean… Right. So it probably ain’t true… But then again… mutations, they take different forms, right? So, maybe those are not people any more, but some sort of energetic entities? Could be, eh?.. C’mon, what are you laughing at… Cracking up over nothing… </text>
 	</string>
-	
-	
-	<string id="stalker_story_14_name">
-		<text>
-   		Кошмар без ведра.
-		</text>
-	</string>		
+	<string id="stalker_story_13_name">
+		<text>The shadow of a ghost.</text>
+	</string>
 	<string id="stalker_story_14">
-		<text>
-			Знаете, чего скажу? В этой части Зоны спать почти нельзя...
-			Мне-то везёт, я и так заснуть не могу…  а у народа такие кошмары случаются, что, бывает, и не просыпаются с утра... от разрыва сердца, например… Кто коней двигает, а у кого крышу рвёт конкретно... 
-			Недавно, правда, слух пошёл, что есть средство. Если сильно приспичит поспать, желательно найти ведро старое… ну или кастрюлю хотя бы большую… выварку там… Главное, чтоб целое… Голову туда засовываешь - и спи себе как у Бога за пазухой…
-			Ну смейтесь, смейтесь. Посмотрю я на вас через пару дней, когда от усталости с ног падать начнёте. Умники… А вот сами скажите, какого, значит, хрена, вояки тут последнее время начали шастать в шлемах хитрых?
-			Ну да! Раньше, года два уж как, ни слуху ни духу, а последнее время зачастили! ШлемА у них новые какие-то - ребята тело одного нашли, рассказывали. Сетка там внутри из тонкой такой проволоки медной, к подшлемнику прикреплённая. Вот и думайте - что за сбруя, на кой ляд она такая?
-			А вообще это «ж-ж-ж» неспроста, точно вам говорю. Из аномалий выбирать тут особо нечего - не те угодья, на других участках и побезопаснее, и куски пожирнее ещё найдутся… Я так мыслю, подходы они намечают. Плацдарм готовят. К Саркофагу пробиться хотят, помяните моё слово. 
-			Скоро так фиганёт - никому мало не покажется. Помяните моё слово… Главное, нам с вами подальше отсюда на тот момент оказаться…
-		</text>
+		<text>Here’s what I’ll tell you. You almost can’t sleep at all in this part of the Zone… I’m in luck, I can’t sleep anyway… but the nightmares people see, sometimes they don’t wake up in the morning… rupture of the heart, for example… Some fly off the handle, some go loco… But a rumor has gone abroad that there’s actually one cure. If you really have an urge to sleep, you should find an old bucket… a big pot will do… a caldron or something… As long as it has no holes… Stick your head in there and have a good night and sweet repose… There now, you may laugh all you want. I’ll see you in a couple of days when you are ready to drop dread from exhaustion. Smartalecs… So tell me, what the heck are the war dogs roaming about sporting these fancy helmets now, eh? Well yeah! For about two years neither hide nor hair, and now they’re all over the place! And the brain buckets are something new; someone found the body of one such war dog, they’ve seen it. There’s a mesh inside, made of thin copper wire, attached to the liner. What the hell is it doing there? Mark my words, there’s something strange behind all this mumbo-jumbo. This place is useless in terms of anomalies, these are not the grounds for those, other areas are safer and with much better swag in store… So I reckon they’re researching the grounds. Marking the area for their base. They want to get through to the Sarcophagus, I’m telling you… What we should do is try and stay as far away as possible from them when the moment comes…</text>
 	</string>
-
-	<string id="stalker_story_15_name">
-		<text>
-    		Перехват - обитатель глубины.
-		</text>
-	</string>		
+	<string id="stalker_story_14_name">
+		<text>Nightmare without a bucket.</text>
+	</string>
 	<string id="stalker_story_15">
-		<text>
-			Слышьте, мужики, а вы о «Перехвате» чего-нибудь как следует знаете? 
-			Это ж, говорят, спецаки, вояки кадровые! Но как работают, а?! Как работают! Это тебе не мудаки на кордонах! Мало того, что в самое зажопье лазят, так ещё и сидят в Зоне месяцами!
-			Да не гоню я! Базы у них, несколько штук сразу, схронов до фигища, а к периметру им на постой вертушки припасы подкидывают. Командиром у них Громов какой-то… думаю, фамилия фуфло, ненастоящая - они его то «Майором», то «Громом» зовут.
-			Не верите?! Так Пахомыч перехват как-то поймал! 
-			Поймал - и давай бог ноги, а то бы шпокнули за здорово живёшь… Секретность, так её! Пахомыча-то все знают? 
-			Ну, то-то и оно! Не фуфло это, а серьёзная команда. Хрен знает, чего им тут нарисовалось такого интересного, но работают они - мама дорогая! Мне бы в треть - не, на десять процентов бы так! - уже бы домик в Сочах этажей на десять построил бы…
-			У них, говорят, штука такая есть… монстрОв за двести метров засекать. Любую тварь! Ясен хрен, тогда и по Зоне ходить-поплёвывать... А то ещё, говорят, есть какие-то деятели… Не вояки, а вроде как из наших… В общем, пробрались какие-то к центру Зоны. Мало, что пробрались - они, говорят, и тварей приручать умеют! 
-			Они вообще за периметр, на Большую Землю, не ходят - и к ним тоже никто… ну, кроме тех, наверно, кому к Саркофагу пробраться на роду написано… Уж артефактов у них - хоть подтирайся! «Долговцы»-то о них хорошо знают… знают, гады, воюют - и молчат! Спросишь кого из этих полицаев: «Сказки», - говорит. Ну не суки, ну?!
-		</text>
+		<text>Hey, man, is anybody aware of “Interception”? Rumor has it they’re real pros, all cadre! But you should see them work! The things they do! Nothing like those buggers at cordons! Not only do they go into every stinking hellhole, they stay in the Zone for months on end! No bullshit! They’ve got bases, and many of them, and a nice bit of hideouts, and right by the perimeter choppers throw in some food for them. Their commander is some guy named Gromov… now I reckon the name’s fake, they call him “Major” or “Grom”. You don’t believe me?! Pakhomych tapped them once! He tapped and buzzed off, or he’d get pipped right there and then… Secrecy, damn it! Ya’ll know Pakhomych, don’t you? That’s it! So they’re not some load of crap, but a royal squad. What the heck are they doing here? But bloody hell to they get some swag! If I could just get one third, no, at least ten per cent of that! I’d already have a ten-storeyed mansion in Sochi and live in clover… They say they’ve got this one gadget… detects monsters within two hundred yards. Any stinking creature! If I only had this thing I’d been picnicking left and right in the Zone… And you know what else they say, there are some other chaps… Not war dogs, but sort of like stalkers… Anyway, some of them got through to the center of the Zone. And not only did they get there safe and sound, but they say they can tame them beasts! They never even go past the perimeter, to the Big Land, and no one ever goes to them… well, except maybe those who’re destined to reach the Sarcophagus… And some artifacts they’ve got, too!.. “Duty” know about them alright… those slimeballs, they know and fight, but won’t leak a word! You try asking one of those cops, and they just say “Horse-feathers!” Some bitches, eh? </text>
 	</string>
-
-	<string id="stalker_story_16_name">
-		<text>
-  			Про подоравшихся к антеннам
-		</text>
-	</string>	
+	<string id="stalker_story_15_name">
+		<text>Interception, the interior inhabitant.</text>
+	</string>
 	<string id="stalker_story_16">
-		<text>
-			Братья, вы слышали, что недавно несколько неверных подобрались к антеннам? 
-			Монолит направил нас, и братья вовремя их заметили. Одного мы уничтожили сразу. Двое других бросились бежать. Трусы. Все они трусы.
-			Лишь истинная вера не оставляет места для страха! Двое смогли убежать, но Монолит мудр и всеведущ. Значит, они нужны ему живыми.
-		</text>
+		<text>Brothers, did you hear that several disbelievers broke through to the antennas? The Monolith had guided us, and the brothers noticed them just in time. One was eliminated immediately. The other two took to flight. Cowards. They’re all cowards. Only true faith leaves no room for fear! Two managed to escape, but the Monolith is wise and omniscient. He needs them alive, then.</text>
 	</string>
-	
-	<string id="stalker_story_17_name">
-		<text>
-  			Про Монолит во сне
-		</text>
+	<string id="stalker_story_16_name">
+		<text>On those who got to the antennas</text>
 	</string>
 	<string id="stalker_story_17">
-		<text>
-			Братья, Монолит призвал меня ночью. Я говорил с ним. 
-			Он был прекрасен в своём величии. Я едва не ослеп, но его свет наполнил меня великой силой! Я знаю, я чувствую, что его сила пребывает со всеми нами! 
-			Он сказал мне, что победить зло способна лишь твёрдая вера. Он сказал, что его сила наполнит только верных. Ещё он открыл мне, что наша победа уже близка!
-		</text>
+		<text>Brothers, the Monolith called me last night. I spoke with him. He was awesome in his greatness. I nearly went blind, but his light filled me with great power! I know, I feel his power is present within all of us! He told me that only firm faith can overcome evil. He told me his power can fill only those who have faith. He revealed to me that our victory is at hand!</text>
 	</string>
-	
-	<string id="stalker_story_18_name">
-		<text>
-  			Об испытании веры.
-      </text>
-	</string>	
+	<string id="stalker_story_17_name">
+		<text>On the Monolith in dreams</text>
+	</string>
 	<string id="stalker_story_18">
-		<text>
-			Братья, недавно Монолит испытывал мою веру и я чуть было не сошёл с истинного пути. 
-			Но я выстоял! Хвала Монолиту! Его испытания закаляют нас! 
-			Мы возвращались из Тёмной Долины, и я чуть отстал от братьев. Зло воспользовалось этим и внезапно начало играть со мной. И… я усомнился. Истинные образы исказились; Враг нашёптывал мне, что Монолит использует нас как рабов. 
-			Но потом я понял: это испытание. Я вспомнил о могуществе и сиянии Монолита, и тогда воля и уверенность вернулись ко мне. С тех пор я уже не боюсь никаких испытаний и не знаю сомнений. Хвала Монолиту!
-		</text>
+		<text>Brothers, the Monolith tested my faith, and I nearly wandered from the track. But I withstood! Glory to the Monolith! His trials strengthen us! We were on our way back from the Dark Valley, and I fell a little behind my brothers. Evil grabbed the opportunity and started flirting with me. And… I doubted. The true images became distorted; the enemy was whispering in my ear that the Monolith uses us as slaves. But then it hit me: it’s a trial! I remembered the glory and the radiance of the Monolith, and regained my willpower and my confidence. Since then I have no fear of any trials and know no doubts. Glory to the Monolith!</text>
 	</string>
-	
-	<string id="stalker_story_19_name">
-		<text>
-  			Про схватку в Темной Долине
-      </text>
-	</string>	
+	<string id="stalker_story_18_name">
+		<text>On the test of faith.</text>
+	</string>
 	<string id="stalker_story_19">
-		<text>
-			Я был в Тёмной Долине. Там очень много неверных, ведь сила Монолита ещё не достигла этих мест. 
-			Мы охраняли. Ночью на нас напали. Мы яростно сражались с этими животными. Заслуги братьев были велики: скоро Монолит призвал их к себе. 
-			Для меня он приготовил ещё одно испытание. Моё оружие уже не стреляло. Но тут Монолит сказал мне: «Ты со мной, а моя сила - с тобой. Если ты будешь твёрд в своей вере, то сокрушишь моих врагов и приблизишься ко мне!». 
-			Тогда я стал тенью. Я пригнулся и обошёл их справа. Глупые шпионы ничего не заметили. Они подумали, что покончили с нами и смеялись над пустыми телами наших братьев. Но я уже видел их спины. 
-			А потом из моих рук ударила мощь Монолита. Так он убил их всех. Я счастлив служить тебе, Совершенный!..
-		</text>
+		<text>I was in the Dark Valley. That place is rich in disbelievers, but the power of the Monolith hasn’t reached them yet. We were guarding. At night we were attacked. We fought against those beasts fiercely. My brothers’ accomplishments were numerous: the Monolith called them to him. But he had yet another trial for me. My gun couldn’t shoot any more. And then the Monolith spoke to me: “You are with me, and my power abides with you. Stand strong in your faith, and you will defeat my enemies and come close to me!” And then I turned into shadow. I bent down and walked around them on their right. The dumb spies didn’t notice anything. They thought they had killed us all and were laughing at the void bodies of our brothers. But I was already behind their backs. And then the power of the Monolith hit forth from my hands. And that’s how he killed them all. I’m happy to serve you, the Perfect one!...</text>
 	</string>
-	
-	<string id="stalker_story_20_name">
-		<text>
-  			Превращение в Черном Лесу
-		</text>
-	</string>	
+	<string id="stalker_story_19_name">
+		<text>On the combat in the Dark Valley</text>
+	</string>
+	<string id="stalker_story_1_name">
+		<text>On the creature in the hangar.</text>
+	</string>
+	<string id="stalker_story_2">
+		<text>My partner and I had been keeping an eye on this research institute for a long time. Too bleak of a place it was. No animals around, no mutants. Except, whoever went in there, they all returned either scared to death, or gone bats, or never even returned from there at all. So we thought we’d give it a try and check it out ourselves. We left before dawn, and by the time we got there it was already bright daylight. Left the car on the road and walked to the edge of the forest. We stopped there, my partner stayed on the ground and I climbed up the tree with the optics to look around the area. So I climb up there and see the institute facilities, and they don’t look that desolate, the windows aren’t broken, a little grass in the yard, not up to your hips like in other places… By all appearances it looked as though the place was inhabited, but it was dead silent and not a single movement anywhere. Then suddenly a burst of fire broke out on the right; someone blazing away from a machine gun. So I zoom in there and see some stranger on the roof of one of the buildings, running to and fro like a coursed rat and firing away in all directions. I peered and peered but couldn’t make out who he was shooting at: he was all by himself. And then… it all started (short pause) It was all spread before my eyes. The subgun broke loose from his grip as if on its own… It’s like that bit of iron suddenly got wings!.. The stranger opened his mouth, probably yelled something, whipped up his knife and held it up. And then I saw – holy-moly – another knife hanging right in front of him! Just hanging there in the air pointing at him, and no one holding it. What happened next is best not be told before the night… That thing went shredding that stranger for about five minutes… Little by little, son of a bitch, a little stab here, another cut there… The wretch was soon bleeding all over… Then, when he was already staggering, his knife got kicked out of his hand too; then he was lifted up in the air and twisted one time and another… I’d never seen anything like it before, like he was a rag or something… I was soaked in sweat within a second… After that… No, I’m not going to tell… Anyway, after I caught my breath, I scrutinized the whole area for another five minutes. Hands shaking, optics all dripping wet with sweat… Not a single damn thing! Not in the regular range, not infrared, no-thing. When I climbed down, my partner looked at me, and changed his mind about asking questions. When we got back to the base, I was tanking up for about a week… Then, when I snapped out of it, I tried to ask people around, if they had heard anything like that before. But they kept giving me this strange look like I had gone mental or something. So that’s the thing…</text>
+	</string>
 	<string id="stalker_story_20">
-		<text>
-			Братья, мы патрулировали окраины Чёрного Леса и наткнулись там на неверного-одиночку. Он начал обращаться, поэтому мы не убили его, но он ещё наполовину пребывал в своём животном состоянии... 
-			Я знаю, мудрый Монолит сделал это для всех нас: он снова показал нам истинное лицо своих врагов. 
-			Теперь наша вера ещё более укрепилась! Близится, братья!.. Близится победа над неверными, и тогда Монолит выполнит наше сокровенное желание! Истинно преданных он приблизит к себе, к славе своей, величию своему! 
-			Мы вечно пребудем в сиянии его!..
-		</text>
+		<text>Brothers, as we were patrolling the outskirts of the Dark Forest we came across an unfaithful loner. He was already on his way to conversion, that is why we didn’t kill him, but he was still half-way in his animal state… I know, the wise Monolith did it for all of us: once again he revealed to us the true countenance of our enemies. Now our faith is even stronger! It’s at hand, brothers!.. The victory over the disbelievers is at hand, when the Monolith fulfills our greatest desire! Those who are truly faithful to him will be drawn to him, to his glory, his greatness! We shall abide in his radiance forever!..</text>
 	</string>
-	
-	
+	<string id="stalker_story_20_name">
+		<text>Transformation in the Black Forest</text>
+	</string>
+	<string id="stalker_story_2_name">
+		<text>Horror at the research institute.</text>
+	</string>
+	<string id="stalker_story_3">
+		<text>Anyway, here’s what this one friend of mine told me. His chief wakes him in the middle of the night, tells him to make a beeline for the lab, there’s some cargo there. My friend’s half asleep, doesn’t get a thing, what the heck is with this cargo? And the chief is like, did you drink too much GI spirit or something? There’s a fresh corpse on the table, dinner is served! Anyway, he goes to the table and sees SOMETHING… Now, he had seen all sorts of stiffs from the Zone: boiled, grilled and ripped apart, not to mention dozens of mutants… But the sight of that thing – gag a maggot! Anyway, at first glance it looked just like a human being, except the head was way out of proportion: huge and ribbed like a pumpkin. And the body, as if straight from the concentration camp, skin and bones. But that’s what he figured out afterwards, at first, he says, he only saw a medley of flesh all smeared with some orange-red smut, blood or something…. Those pricks sure didn’t spare their ammo. Ya know all they talk about duty… searching for anomalous objects, dang it… search my foot!.. My friend says it was a mishmash of a colander and a torn-up hot water bottle… and they obviously trampled on it with their shitkickers; not an object, but damn piece of meat in some black rags. So he worked his butt off the rest of the night and half of the morning. Turns out it was that very creature the locals had been calling the illusionist: black rags, stalker visions, the head about a yard around… You know what’s funny, what they thought was its face turned out to be the top of its head. No, it does have a face, but it’s tiny-winy: the winkers always shut and the nose the size of a pin, but the cake-hole as wide as a gate. Probably when he walked his head would always hang down, ‘cause there’s no strength to keep it up… a snip... And get what these creatures eat for lunch. Mushrooms! Damn mushrooms! You’ve all seen ‘em, the Zone’s full of mushrooms, so the old-timers swear these creatures squeeze the juice out of them. Stinking gourmets… You know what else he was hiding in this little baggy on his hip? Well? How would you know! Alright, it was dried brains. And you know who’s brain it was? The controllers’!..</text>
+	</string>
+	<string id="stalker_story_3_name">
+		<text>Pathologist's supper.</text>
+	</string>
+	<string id="stalker_story_4">
+		<text>We had this one retard tailing along… So we’re going our away, halting for a while to rest, and as soon as we do he drops on his butt chilling out. When it’s time to go he’d be the last one to lift his ass off the ground. Well, he chilled a bit too much… fell behind, and that’s when the controller got him – zap! – and brain gone. You greenhorns better nick this down. Any rustle, or some shady wind… Even if a bunny darts by… although, Lord forbid you should run into any of the local bunnies… Anyway, you have to stay alert every stinking second. Magazines and the grenades at hand, an itchy trigger finger on your gun. The moment you spot something, fire off half a clip right away; anything behind the bush – shoot at sight and then ask for credentials. That’s the basic training around here: it’s not about doing extra duty, but about kicking the bucket before you even fart! And about the controllers, now this is a separate story. Say, you burst a fire at the rustle, and drop down right away, that very second! On your back or face down, it doesn’t matter. The controller grabs you if he sees you, he needs to concentrate or something. While you’re meditating in the shade, listen with both ears for any rustle, if any scum is heading your way. You may quietly recharge your gun, take out your grenades… Anyway, if all is quiet, count till three and… Get your ass out of there! As far away as possible! Did you suck it in? You yardbirds… Guard yourselves every second, that’s the only way to survive… </text>
+	</string>
+	<string id="stalker_story_4_name">
+		<text>An easy prey for a controller</text>
+	</string>
+	<string id="stalker_story_5">
+		<text>You know I’ve been thinking… well, not really thinking, just had this idea… What if all this, all of this around here, is some sort of an experiment on people? You know, some little green men… Why not? It’s a version as good as the others… I wonder: if this is something like a training ground, exactly what are they breaking in here? Are they trying to see what artifacts we are most slobbering over? And what if the artifacts are some sort of bombs, eh? Now they’ve been dragged all over the world, to all sorts of laboratories, the rich have coughed up for them… Like, wow, cool stuff!.. Now that’s what I want… Bought some piece of shit under cover… paid through the nose… You know, all this “we’re the coolest” stuff, make everybody jealous, dorks… and someday it’ll all blast off!.. Think of it, man!.. Isn’t that something?.. Ooh!.. But actually, no one knows shit what it’s all about… Well maybe those who’ve been behind the radar, they could lay it out… Well, they may know something, but they sure can’t say a word except dribbling and mooing. Well, maybe that’s just the reason they’re all dribbling… Oh well… Can’t fight back these thoughts, you know… It’s all pretty sad…</text>
+	</string>
+	<string id="stalker_story_5_name">
+		<text>Pitfalls</text>
+	</string>
+	<string id="stalker_story_6">
+		<text>Alright… I remember you were asking me something last night, what was it… Ah, here it is. So you were wondering why it’s just our eggheads messing around in the Zone, and the foreigners wouldn’t show their noses in here though there’s probably enough stuff for thousands of Nobel prizes… So let me explain it to you point by point. First of all, what the heck do they need coming down here, when they can give a grant to our guys under the conditions that they’ll hand it to them on a silver plate? Second of all, they’ve actually been here themselves, and quite a bit of them, too. It’s just that in the last two years these gringos have been scared of going into the Zone… after this one major bummer. So now they stick to buying materials and information. They pay pretty well, so many loners work for them, and the looters, too… What, haven’t you heard about this story? C’mon! The whole Zone was on a rampage and here you are as if born yesterday. Anyway, there was a large expedition here. The scientist alone counted about thirty people from all over the world… all stars, you know, big shots and all that… They were all rigged out: so much money you could wipe your ass with it; heaps of equipment. Had a platoon guarding them, and a couple of our guides. So they all got onto screened APCs and took off. Well, what happened next… Came back about a week later… twelve people on a wreck of an APC. They got as far as the prickler by the Rotten forest, and there was an ambush waiting for them… the looters… Yeah… Those bastards couldn’t care less where you come from… Finished off almost everyone. Only three people managed to get across the border line, two stalkers and one egghead. That guy really went demented from all the impressions, so they sent him off to the nut-house. He’s now writing a book about the Zone. The stalkers weren’t that bad, thanks to the experience. Except… I guess they also lost it in their own way: one of them took off to the radar and vanished, the other one went back to the Big Land. And the rest were taken by the Zone. You heard about Station-thirty-two? That’s were they all got hit. At the start it was all quiet… well, pretty much within the norm… They’d be reading their meters, taking samples, poking their devices into the anomalies… And then they all started going nuts. All together. People slowly going off their trolly. Our stalker, the one that retired eventually, told me about it… Some would clapperclaw their necks, others would smash their heads on the wall, and some would just simply… gun in their mouth and… And then the beasts started streaming out on them. Those who were still sane barricaded themselves in the house. You get the picture, right? Night and all the local monsters outside, and people going nuts one after another inside. In short, in the morning those who still had it together somehow broke out of there. Went straight on, without any roads; even got caught on some anomalies…Got to the Rotten forest… But none of those who had been left behind have been found. They say loads of controllers were recorded in that area. That’s how it was… Since then no one goes anywhere near Station-thrity-two, and a gringo wouldn’t go into the Zone for anything…</text>
+	</string>
+	<string id="stalker_story_6_name">
+		<text>The chronicles of egghead globalists.</text>
+	</string>
+	<string id="stalker_story_7">
+		<text>So here’s what I wanted to tell you. When them Duty guys were capturing that illusionist, I was right there! And ended up in that area by pure acident! My car, you know, my “Niva”, had its right front wheel broken off: the bolts chopped off on some hummock. And not a single spare part in stock. Well, I cussed it out, and then I thought, why don’t I go to the plant, pick me up what I need. It was ‘bout half a mile, about thirty minutes walk both ways. Besides, I’d already been there before… All of a sudden, I seem them Duty! And not just a patrol, but about fifty of them! What the heck!.. So I bob down in the bushes right where I was standing. “If they saw me and go combing, that’ll be the end of me”, I though. Anyway, I’m lying low in some pit, holding my breath. All of a sudden I hear salvo and they start blazing away like crazy! Such blasts and firing, I’d only heard once in my life… the First base attack, old guys, remember? Anyway, I’m lying there, listening closely… and it all goes WHAM! BANG!.. Five minutes later all goes quiet and I don’t hear anybody walking my way. Well, I get my balls together and peep out through the binocs. Those guys are trailing out of the workshop… all mussy and dragging their dead and the illusionist on the tarpaulin… or the dregs of the illusionist… And disappear into the glen. Then I hear the sound of engines, and the sound dies away. I waited a little more, to make sure they’re all gone. And then I went inside. Well, the heck you’ll find something left after Duty! But I wanted to check it out anyway. Well, that was something! The walls were all pierced almost all the way through. The joists laying all over the floor, a piece of the roof crumbled down. Shells up to my knees, a real shooting ground. Blood, some scraps… Didn’t find anything useful though, well, two full jets and a machine gun crushed down by a joist so bad you couldn’t get it out… Needless to say I didn’t even think about the bolts… So I went back to my car, chewed the cud for a while, took one bolt off each of the other wheels… and went back on low gear… And what if I had come out there half an hour early? … Makes you think… </text>
+	</string>
+	<string id="stalker_story_7_name">
+		<text>Duty illusion.</text>
+	</string>
+	<string id="stalker_story_8">
+		<text>Yeah, so I got as far as Pripyat outskirts that time. Well, I though I’d look around first thing. Found the highest spot, this huge boiler-house with a chimney. I walk in there on tip-toes… seems alright, dust everywhere, no footprints… So I crawl into the fire-chamber and start clambering up the stairs inside the chimney. So I’m climbing up, and the soot is not even smudging, it’s all turned to stone. So I get to the top and peep out… Beautiful view! Half the city spread right there before my eyes! So I take out the binocs and look around… (small pause) Well, and then… I was about to climb down, when this thought darts through my head that I’d completely forgotten to check out what’s going on right under my nose! So I bend over slightly, look this way, and then the other… Holy shit! That would’ve been some mess! Some midget strolling around the courtyard! And I had almost climbed down! It’s a good thing he didn’t see me then. But I couldn’t knock him down either: AK hanging on my back, and the chimney way too narrow to stir in it. The ‘makarov’ under my arm a dud, it was about fifty yards, plus the height of the chimney… if I didn’t get him the first time, he’d do me in. So I’m sitting there, thinking. And watching what he’s up to. And he was up to something weird, I’m telling you. First he was rummaging in some pile of lumber, in a zingzang sort of way, rubbish flying left and right. And then suddenly he stood stockstill. Sort of listening to something. And then it all started. The garbage in that pile started stirring. The midget sprang back, stood up straight, put his hands to his head and twisted them somehow weird… and that rubbish all of a sudden goes flying at him! From everywhere!.. Bits of iron, bricks, ruberoid, tree branches… Covered him from top to toe. Damn shit, I thought, that wiped the kitty’s eye, won’t pee anywhere anymore… Not a bit! For about two seconds the rubbish lay still, and then all of a sudden goes splattering everywhere! There were some pipes, well those stuck right into the concrete fence. The dwarf stood there for about a minute, thought something to himself, then turned around and trotted inside the building. It took me a while to catch my breath. “Well, I thought, time to save my bacon”. Suddenly, I smell smoke. And then it starts getting hot. Holy shit! Someone made a fire down below! A minute later I couldn’t breathe anymore. Somehow I managed to climbed out to the edge of the chimney, but there was no platform or anything of the kind, so I just perched there dangling my feet… The smoke was really eating my eyes out, I was choking for air… anyway, I needed to get my ass out of there! Thank God I always have about forty yards of rope with me, just in case of dire need… a dire need it was indeed… Anyway, I folded the rope, it wasn’t too thick, barely fixed it to the chimney, tore my necktie in half, wrapped around my hands and started climbing down praying to all gods in heaven… With just one thought in my head: don’t let me fall down! No safety rope, nothing! The rope was really cutting into my hands… and sure enough, as bad luck would have it, it ended about five yards above the ground. Had to jump. I had no choice, did I? I went straight crashing down! I was lucky not to break a bone, though I did get quite a few bruises and sprained my right leg alright! At that moment I thought I had torn my ligament altogether. Well, I took off so fast I could’ve probably won a gold medal in racing… </text>
+	</string>
+	<string id="stalker_story_8_name">
+		<text>Greyhound in Pripyat.</text>
+	</string>
+	<string id="stalker_story_9">
+		<text>I didn’t even believe my eyes then. You know, I always thought, I’d seen some really beautiful girls, right? But this one… she was… Perfect. Yes. That’s it. Perfect. It felt as if the whole world around her was black and white, and all sort of blurry, but she was clear and colorful. And the way she moved! I hadn’t seen anything like that before. I mean, I had a lump in my throat. What does she have to do with all this science? What has she got to do in the Zone?.. That’s right, in the Zone. It was at the break of night… There’s this nine storied block of flats by the bus station. First something flashed by in the window on the first floor. So I unlock my AK right away, and suddenly see her coming out of the building… I nearly rubbed my eyes, I mean, you know you can expect anything from the Zone! Meanwhile, she comes my way. And I’m standing there like a moron, staring at her… but holding my gun ready, you know, out of habit… Then she noticed me… Smiled… Said hello… And I’m listening to her but not hearing what she says, just staring at her. She was wearing blue overalls, bright blue… but it wasn’t loose, almost like a catsuit… And her body was something amazing! And then I realize that I’m not even listening to what she says, just standing there and grinning from ear to ear… Turned out she was from the research group. Asked me if I could help her. Help her! I was ready to jump into an anomaly for her!.. She said she was studying the… whatchamacallit … Zone endemics. You know the plants that don’t grow anywhere but here. Said she had run off from security because she didn’t feel like she had free hand with them and came there all on her own. I don’t know. I believed her. So I agreed to help her, bring her some stuff. Two days later came back just as we had agreed. Nearly got knocked out about five times while gathering all that stuff for her. I’m walking there with this one thought in my head: I’m going to see her again! And nothing. I didn’t even see the house where I’d met here. So that’s my story… But you should’ve seen her! All glowing from the inside. </text>
+	</string>
+	<string id="stalker_story_9_name">
+		<text>On man's loneliness.</text>
+	</string>
 </string_table>

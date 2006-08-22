@@ -1,42 +1,54 @@
-    <string id="gar_defend_garbage">
-        <text>Eliminate bandits' raid.</text>
-    </string>
-    <string id="gar_dialog_hellcar">
-        <text>Propose help to Neutrals Leader </text>
-    </string>
-    <string id="gar_hellcar_alive">
-        <text>Talk to Damon.</text>
-    </string>
-    <string id="gar_help_dymon">
-        <text>Beat off bandits raid.</text>
-    </string>
-    <string id="gar_help_tunnel_newbie">
-        <text>Help out the newbie from the garbage.</text>
-    </string>
-    <string id="gar_kill_bandits">
-        <text>Eliminate the raid of bandits.</text>
-    </string>
-    <string id="gar_kill_bandits_around_tunnel">
-        <text>Kill bandits nearby the tunnel</text>
-    </string>
-    <string id="gar_kill_bandits_post">
-        <text>Escort the freshman to the cordon</text>
-    </string>
-    <string id="gar_kill_boars">
-        <text>Pass to the Bar</text>
-    </string>
-    <string id="gar_kill_boars_1">
-        <text>Slay the boars</text>
-    </string>
-    <string id="gar_kill_boars_2">
-        <text>Receive the pass from the Duty.</text>
-    </string>
-    <string id="gar_kill_boars_main">
-        <text>Quest to access the Bar.</text>
-    </string>
-    <string id="gar_say_free_pass">
-        <text>Inform the freshguy of the path open</text>
-    </string>
-    <string id="garbage_meet_stalker_1">
-        <text>Talk to the Grey about Gunslinger</text>
-    </string>
+	<string id="gar_defend_garbage">
+		<text>Destroy the raiding bandits.</text>
+	</string>
+	<string id="gar_dialog_hellcar">
+		<text>Offer your help to the leader of the neutral squad.</text>
+	</string>
+	<string id="gar_dialog_hellcar_1">
+		<text>Offer your help to Demon.</text>
+	</string>
+	<string id="gar_hellcar_alive">
+		<text>Talk to Demon.</text>
+	</string>
+	<string id="gar_help_dymon">
+		<text>Repel the bandit's raid.</text>
+	</string>
+	<string id="gar_help_hellcar_1">
+		<text>Respond to the call for help.</text>
+	</string>
+	<string id="gar_help_tunnel_newbie">
+		<text>Help the rookie leave the Dump</text>
+	</string>
+	<string id="gar_kill_bandits">
+		<text>Destroy the raiding bandits.</text>
+	</string>
+	<string id="gar_kill_bandits_around_tunnel">
+		<text>Kill the bandits by the tunnel</text>
+	</string>
+	<string id="gar_kill_bandits_post">
+		<text>Escort the rookie to the cordon</text>
+	</string>
+	<string id="gar_kill_boars">
+		<text>Pass to the Bar.</text>
+	</string>
+	<string id="gar_kill_boars_1">
+		<text>Kill the boars.</text>
+	</string>
+	<string id="gar_kill_boars_2">
+		<text>Get a pass from Duty.</text>
+	</string>
+	<string id="gar_kill_boars_main">
+		<text>The quest to get through to the bar.</text>
+	</string>
+	<string id="gar_say_free_pass">
+		<text>Tell the rookie that the way is clear</text>
+	</string>
+	<string id="garbage_meet_stalker_1">
+		<text>Find out about Sharpshooter from Grey.</text>
+	</string>
+	<string id="graveyard_raid_text">
+		<text>A new bandit raid is about to begin at the abandoned vehicle graveyard where Demon and his friends have dug in. Help them fight off the bandits.</text>
+	</string>
+	<string id="help_for_neitrals_text">
+		<text>There's been a shootout at the abandoned vehicle graveyard between neutral forces and bandits. The neutrals managed to fight the bandits off but are calling for help.</text>
+	</string>

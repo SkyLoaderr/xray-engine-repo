@@ -1,18 +1,27 @@
-    <string id="gar_direction_fire">
-        <text>Let's allow them to approach closer, so that no one escapes. I'll fire first, then you do.</text>
-    </string>
-    <string id="gar_dolg_blokpost_warning">
-        <text>Stalker, you have entered the territory controlled by Duty faction. Any sign of agression will be severely punished.</text>
-    </string>
-    <string id="gar_dolg_monster_rush">
-        <text>Attention everyone!! Duty's outpost at the Garbage speaking. The wave of mutants is moving from the Dark Valley to the Bar's direction. Everyone who assists in \nshooting off the vermins will be granted the gratitude from our side.</text>
-    </string>
-    <string id="gar_dolg_warning">
-        <text>Stalker, you have entered the Duty's territory. Would you try to make any rows - you'll get occupational invalidism!</text>
-    </string>
-    <string id="gar_hellcar_victory">
-        <text>Attaboys, guys, we've defeated them. Everyone rest now, and you stalker come closer, let's have a chat.</text>
-    </string>
-    <string id="tips_gar_hellcar_alarm">
-        <text>Attention to all available stalkers! Damon is speaking. Bandits want to obtain control over this territory. Everyone who has objections and who is capable to bear \narms, gathers at the machinery waste.</text>
-    </string>
+	<string id="gar_actor_looser">
+		<text>You're useless, Marked One, totally useless. Don't expect us to thank you - nothing to thank you for!</text>
+	</string>
+	<string id="gar_actor_normal">
+		<text>Not bad, stalker - you shot yourself a few mutants but you ain't all that quick on the draw, are you? If you wanna pass you'll have to cough up some cash.</text>
+	</string>
+	<string id="gar_actor_winner">
+		<text>Excellent Marked One, you really helped us out there. Let's say that was payment for your pass. Go on to the Bar.</text>
+	</string>
+	<string id="gar_direction_fire">
+		<text>Let them come closer so nobody can escape. I'll shoot first, you follow my lead.</text>
+	</string>
+	<string id="gar_dolg_blokpost_warning">
+		<text>Stalker, you're on Duty territory. Any aggression will be punished.</text>
+	</string>
+	<string id="gar_dolg_monster_rush">
+		<text>Attention!! This is the Duty checkpoint. A wave of mutants is moving from the Dark Valley to the Bar. Anyone who helps us shoot the monsters will not regret it.</text>
+	</string>
+	<string id="gar_dolg_warning">
+		<text>Stalker, you're on Duty territory. Mess around and you'll be drinking your food through a straw for the rest of your life.</text>
+	</string>
+	<string id="gar_hellcar_victory">
+		<text>Well done guys, we got 'em. You lads chill out and you come over here. Let's have a chat.</text>
+	</string>
+	<string id="tips_gar_hellcar_alarm">
+		<text>Hello people, this is the commander of a neutral party. We knocked the bandits out from the abandoned vehicle park but they will probably try to retake it. We're low on numbers so if you wanna help we'll save a spot for you.</text>
+	</string>

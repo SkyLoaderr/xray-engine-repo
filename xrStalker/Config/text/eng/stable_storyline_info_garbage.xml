@@ -1,3 +1,60 @@
-    <string id="storyline_seriy_flash_info">
-        <text>Received from Bugay: \n Grey, I've found out that the Mole's group has took off for the Agroprom factory. They're in search for the Gunslinger's cache, wishing to get wind of how he \nedged through to the North. We're supposed to know the approximate cache's spot. They'll camp at the factory during the search. Well, straight to the point. \nYou're nearby - maybe you'd better go there and talk to them. You're a communicative person indeed - maybe you can draw out the information from them. Huh?\n \n Send to Bugay: \n Listen, Bugay, I haven't got a single sign of desire to poke in there. There are too many militaries. I don't really want to find myself ended life with the bullet in the \nhead there. Though as I understand they'll return to the Bar later. And I'm going to camp at the Garages at the Dump. I have a task from the scientists on the \nbloodsuckers' heads. So when the Mole's grouping is coming back, I'll intercept them.</text>
-    </string>
+	<string id="memuars">
+		<text>Personal note</text>
+	</string>
+	<string id="sl_beginning">
+		<text>Who am I?</text>
+	</string>
+	<string id="sl_beginning_text">
+		<text>Damn it, it's all a haze...I remember a car...they drove me somewhere for a long time and my whole body hurt...darkness...what happened before that? I've no idea what happened before...so confused... Now this fat guy calls me the Marked One, probably because of the strange tattoo on my arm, and then there's this weird mission to kill some guy called Sharpshooter on my PDA... is it even my PDA? Looking at Sharpshooter's photo I can't remember whether I know him or not...dammit! This is all like a bad dream from which you can't wake up! What to do? Where to go? Worst of all: who am I? OK, OK, calm down, control yourself. The first thing I'll have to do is do some jobs for this Sidorovich, he claims to have saved my life after all...maybe it's not so bad, I'll take a walk, compose myself and perhaps my head will clear.</text>
+	</string>
+	<string id="sl_first_deep_raid">
+		<text>The first deep raid</text>
+	</string>
+	<string id="sl_first_deep_raid_text">
+		<text>So, I am going on my first deep raid into the Zone. The target is Agroprom R&D Institute where I need to recover documents belonging to a military expedition. As well as giving me the mission the trader shared some information with me about an area to the north, on the way to the Zone's centre, where "brains boil"...probably more legend than fact but considering that there's clearly something wrong with my head I need to examine this in more detail and speak to some people. You can never know for sure - maybe I've been there before... Also, the trader found out that Sharpshooter discovered a way to get through the area and the traders want to know it. Their reasons are clear - they want to get access to untouched artifact fields. Well, I'm ready to co-operate with them.</text>
+	</string>
+	<string id="sl_first_opinions">
+		<text>First impressions</text>
+	</string>
+	<string id="sl_first_opinions_text">
+		<text>Well, well... Got some fresh air, saw the local animals...interestingly I seem to remember them but it's all in a haze...even tried the local "amusement" called anomalies... Judging by the fact that I survived I've probably come across them before but my brain stubbornly refuses to remember...Sidorovich is a clever bastard - he knows that he can use me almost for free and that's exactly what he wants to do although maybe he'll help me find this bloody Sharpshooter...He's the only thing that connects me with my past.</text>
+	</string>
+	<string id="sl_fox_meet">
+		<text>The meeting with Fox</text>
+	</string>
+	<string id="sl_fox_meet_text">
+		<text>I met up with Fox. It's that bad news, good news scenario. The bad news is that he knows little about Sharpshooter. The good news is that his brother called Grey knows more about the man. It appears that Grey is in a hangar about 2km north of here in some dump full of radioactive waste. My task is clear: get there before he leaves.</text>
+	</string>
+	<string id="sl_monolith_off">
+		<text>Turn off the Monolith</text>
+	</string>
+	<string id="sl_monolith_off_text">
+		<text>I am a step away from the people who made this damn network of psy-units all over the Zone. The Monolith is just another psy-unit for zombifying people with the exception that somebody took the care to install a massive hologram in the shape of a huge crystal inside the sarcophagus. When those "lucky" enough to reach it approach the psy-unit it clearly messes up their brains. Maybe it makes them believe that their wishes have come true. Have I been affected by this shit before? I don't know but those who thought of this thing will soon be answering my questions themselves! They even invited me...well here I come you bastards!</text>
+	</string>
+	<string id="sl_provodnik">
+		<text>Pathfinder</text>
+	</string>
+	<string id="sl_provodnik_text">
+		<text>The Guide tells me that the Doctor thinks he's being followed and will stay at Sharpshooter's old hideout. Well, I guess I'll have to pay him a visit there.</text>
+	</string>
+	<string id="sl_seryi_meet">
+		<text>The meeting with Grey</text>
+	</string>
+	<string id="sl_seryi_meet_text">
+		<text>My hopes of finding something out about Sharpshooter quickly were dashed: Grey only sent me to meet a stalker called Mole who, apparently, knows the location of Sharpshooter's secret stash... Well, I guess if the info is confirmed a stash is something physical...maybe I'll be able to get some really useful information there.</text>
+	</string>
+	<string id="sl_usefull_info">
+		<text>The trader's useful information</text>
+	</string>
+	<string id="sl_usefull_info_text">
+		<text>Hmm… the trader didn't let me down and I'm grateful to him - he gave me a starting point in my search for Sharpshooter. Apparently some stalker called Fox has shown up nearby and he's asking for help. Sidorovich thinks that Fox knows Sharpshooter.</text>
+	</string>
+	<string id="sl_wishmaster_legend">
+		<text>The legend of the Wish-granting machine</text>
+	</string>
+	<string id="sl_wishmaster_legend_text">
+		<text>I found out a local legend. They say that there is some Wish-granting machine deep inside the Zone...the exact location is unknown but it's somewhere in the centre. Apparently, you get to it and...and life becomes easier. Hmm...maybe I should go there and say "I want to remember everything!" and end my problems? Then again, I wouldn't want to waste a wish - what if I remember everything and it turns out I am a complete bastard...would be quite a bummer...I wonder how many wishes it grants</text>
+	</string>
+	<string id="storyline_seriy_flash_info">
+		<text>Bruiser writes to Grey: Mole and Co dug up Sharpshooter's stash at the Institute. Go find out what's going on. Grey to Bruiser: They'll go to the Bar afterwards anyway so I'll just wait for them on the way at the Dump.</text>
+	</string>

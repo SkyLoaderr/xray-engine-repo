@@ -1,39 +1,39 @@
-    <string id="aes_btr1">
-        <text>Ironclad 1</text>
-    </string>
-    <string id="aes_btr2">
-        <text>Ironclad 2</text>
-    </string>
-    <string id="aes_btr3">
-        <text>Ironclad 3</text>
-    </string>
-    <string id="aes_grif">
-        <text>Vulture</text>
-    </string>
-    <string id="aes_korshun">
-        <text>Kite</text>
-    </string>
-    <string id="aes_kvartet">
-        <text>Quartet</text>
-    </string>
-    <string id="aes_lun">
-        <text>Harrier</text>
-    </string>
-    <string id="aes_pustelga">
-        <text>Kestrel</text>
-    </string>
-    <string id="aes_sapsan">
-        <text>Peregrin</text>
-    </string>
-    <string id="aes_sarcofag_hint">
-        <text>Entrance to sarcophagus</text>
-    </string>
-    <string id="aes_sokol">
-        <text>Falcon</text>
-    </string>
-    <string id="aes_sova">
-        <text>Owl</text>
-    </string>
-    <string id="aes_yastreb">
-        <text>Hawk</text>
-    </string>
+	<string id="aes_btr1">
+		<text>Armadillo 1</text>
+	</string>
+	<string id="aes_btr2">
+		<text>Armadillo 2</text>
+	</string>
+	<string id="aes_btr3">
+		<text>Armadillo 3</text>
+	</string>
+	<string id="aes_grif">
+		<text>Vulture</text>
+	</string>
+	<string id="aes_korshun">
+		<text>Vulture</text>
+	</string>
+	<string id="aes_kvartet">
+		<text>Quartet</text>
+	</string>
+	<string id="aes_lun">
+		<text>Harrier</text>
+	</string>
+	<string id="aes_pustelga">
+		<text>Kestrel</text>
+	</string>
+	<string id="aes_sapsan">
+		<text>Peregrine</text>
+	</string>
+	<string id="aes_sarcofag_hint">
+		<text>Sarcophagus entrance</text>
+	</string>
+	<string id="aes_sokol">
+		<text>Falcon</text>
+	</string>
+	<string id="aes_sova">
+		<text>Owl</text>
+	</string>
+	<string id="aes_yastreb">
+		<text>Hawk</text>
+	</string>

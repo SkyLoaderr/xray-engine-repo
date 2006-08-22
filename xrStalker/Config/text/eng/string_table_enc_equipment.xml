@@ -1,105 +1,135 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-    <string id="Antirad">
-        <text>Anti-rad medications</text>
-    </string>
-    <string id="Arm-heavy">
-        <text>Heavy stalker equipment</text>
-    </string>
-    <string id="Arm-light">
-        <text>Light stalker equip</text>
-    </string>
-    <string id="Arm-medium">
-        <text>Medium stalker equipment</text>
-    </string>
-    <string id="Binocul">
-        <text>Binoculars</text>
-    </string>
-    <string id="Bread">
-        <text>Bread</text>
-    </string>
-    <string id="Conserva">
-        <text>Canned meat "Tourist's breakfast"</text>
-    </string>
-    <string id="Detect1">
-        <text>Anomaly detector (DA-2)</text>
-    </string>
-    <string id="Devic">
-        <text>Devices and gadgets</text>
-    </string>
-    <string id="Equipment">
-        <text>Equipment and food</text>
-    </string>
-    <string id="Food">
-        <text>Foodstuff</text>
-    </string>
-    <string id="Kolbasa">
-        <text>Sausage "Dietary"</text>
-    </string>
-    <string id="Medi">
-        <text>Medications</text>
-    </string>
-    <string id="Medkit">
-        <text>First-aid kit</text>
-    </string>
-    <string id="Sci2">
-        <text>Scientific EXP-4</text>
-    </string>
-    <string id="Vodka">
-        <text>Vodka "Cossacks"</text>
-    </string>
-    <string id="bandage">
-        <text>Bandage</text>
-    </string>
-    <string id="device-pda">
-        <text>PDA</text>
-    </string>
-    <string id="device-torch">
-        <text>Flashlight</text>
-    </string>
-    <string id="enc_equipment_armors_arm-heavy">
-        <text>Protective suit. Costs 530 rubles. Weights 18 kg. Features: Special covering, which protects from aspic and burning fuzz. The thorax and back is protected by \ninner bio-metallic plates. Protects the body from anomalies and damage. Waterproof metal-plstic helmet. Has two oxygen tanks. Specifics: on continous usage \nbecomes worthless - breaks and tears.</text>
-    </string>
-    <string id="enc_equipment_armors_arm-light">
-        <text>Protective suit. Costs 140 rubles. Weights 8 kg. Features: Protects the body from week anomalies and light damages. Has an oxygen mask.\nSpecifics: becomes past repair in continous usage - is damaged and breaks.</text>
-    </string>
-    <string id="enc_equipment_armors_arm-medium">
-        <text>Protective suit. Costs 310 rubles. Weights 12 kg. Features: covering, which protects from aspic and burning fuzz. Protects the body from anomalies and \ndamages. Waterproof helmet. Has an oxygen tank. Specifics: becomes past repair in continous usage \n- is damaged and breaks.</text>
-    </string>
-    <string id="enc_equipment_armors_sci2">
-        <text>Protective red colored suit with waterproof helmet. Costs 220 rubles. Weights 11 kg. Features: Protects from fire, acid, gases, from various anomalous \ninfluences and Burning fuzz. Increases the defense agains the physical damage. Has two oxygen tanks. Specifics: becomes past repair in continous usage \n- is damaged and breaks.</text>
-    </string>
-    <string id="enc_equipment_devic_binocul1">
-        <text>Army portable binoculars.</text>
-    </string>
-    <string id="enc_equipment_devic_detect1">
-        <text>Device, which detect the anomaly fields and disturbances, upon the positive reaction produces sound signals. Required to be activated by placing it on the \nbelt.</text>
-    </string>
-    <string id="enc_equipment_devic_device-pda1">
-        <text>Personal digital assistant. Crucial device in the Zone.</text>
-    </string>
-    <string id="enc_equipment_devic_device-torch1">
-        <text>Flashlight with rather powerful lamp. In the conditions of illumination deficit in the Zone appears to be a helpful mate.</text>
-    </string>
-    <string id="enc_equipment_food_bread1">
-        <text>It remains unidentified who is in charge of baking long loafs in the Zone, however they aren't infected and edible. In any case, not a single stalker has \ncomplained so far.</text>
-    </string>
-    <string id="enc_equipment_food_conserva1">
-        <text>Canned mead from the plundered by stalkers warehouse of foodstuffs of army troops. Hasn't yet been expired.</text>
-    </string>
-    <string id="enc_equipment_food_kolbasa1">
-        <text>For want of something better this sausage - breakfast, launch and supper of the common stalker.</text>
-    </string>
-    <string id="enc_equipment_food_vodka1">
-        <text>Tasteful and nutrient vodka manufactured by "GSC" corporation. Reduces the influence of radiation, but should not be abused.</text>
-    </string>
-    <string id="enc_equipment_medi_antirad1">
-        <text>Reduces the influence of radiation on the ogranism.</text>
-    </string>
-    <string id="enc_equipment_medi_bandage1">
-        <text>Wound textile. Indespensable with bleedings.</text>
-    </string>
-    <string id="enc_equipment_medi_medkit1">
-        <text>Universal medical set. Allows to cure the wounds of various difficulty degree (injuring, burns, poisoning, etc.)</text>
-    </string>
+	<string id="Antirad">
+		<text>Anti-radiation drugs</text>
+	</string>
+	<string id="Arm-heavy">
+		<text>Heavy stalker equipment</text>
+	</string>
+	<string id="Arm-light">
+		<text>Light stalker equipment</text>
+	</string>
+	<string id="Arm-medium">
+		<text>Medium stalker equipment</text>
+	</string>
+	<string id="Binocul">
+		<text>Binoculars</text>
+	</string>
+	<string id="Bread">
+		<text>Bread</text>
+	</string>
+	<string id="Conserva">
+		<text>A tin of "Tourist's breakfast"</text>
+	</string>
+	<string id="Detect1">
+		<text>Anomaly detector (DA-2)</text>
+	</string>
+	<string id="Devic">
+		<text>Appliances and devices</text>
+	</string>
+	<string id="Equipment">
+		<text>Gear and food</text>
+	</string>
+	<string id="Food">
+		<text>Various food</text>
+	</string>
+	<string id="Kolbasa">
+		<text>Diet sausage</text>
+	</string>
+	<string id="Medi">
+		<text>Medications</text>
+	</string>
+	<string id="Medkit">
+		<text>First-aid kit</text>
+	</string>
+	<string id="Sci2">
+		<text>Scientific EXP-4</text>
+	</string>
+	<string id="Vodka">
+		<text>Cossacks vodka</text>
+	</string>
+	<string id="bandage">
+		<text>Bandage</text>
+	</string>
+	<string id="cit_deadcity_maps_desc">
+		<text>A detailed map of the Dead City including mercenary positions</text>
+	</string>
+	<string id="cit_deadcity_maps_short_desc">
+		<text>A map of the Dead City</text>
+	</string>
+	<string id="cit_doctors_key_desc">
+		<text>The Doctor's key to a secret stash in Pripyat</text>
+	</string>
+	<string id="cit_doctors_key_short_desc">
+		<text>The Doctor's key</text>
+	</string>
+	<string id="cit_killers_documents_desc">
+		<text>Detailed information about the activities of mercenaries in recent months</text>
+	</string>
+	<string id="cit_killers_documents_short_desc">
+		<text>Mercenaries' documents</text>
+	</string>
+	<string id="device-pda">
+		<text>PDA</text>
+	</string>
+	<string id="device-torch">
+		<text>Torch</text>
+	</string>
+	<string id="enc_equipment_armors_arm-heavy">
+		<text>Protective suit. Weight - 18kg. Details: protects the body from "jelly", "burning fluff", most anomalies and mechanical damage. The chest and back are protected by built-in bio-metallic plates. The suit is equipped with an airtight reinforced plastic helmet and two oxygen containers. Important: during extended periods of use the suit deteriorates beyond use by tearing and disintegration.</text>
+	</string>
+	<string id="enc_equipment_armors_arm-light">
+		<text>Protective Suit. Weight - 8 kg. Details: protects the body from weak anomalies and mechanical damage. Equipped with an oxygen mask. Important: during extended periods of use the suit deteriorates beyond use by tearing and disintegration.</text>
+	</string>
+	<string id="enc_equipment_armors_arm-medium">
+		<text>Protective suit. Weight - 12 kg. Details: protects the body from "jelly", "burning fluff", many anomalies and mechanical damage. Equipped with an airtight helmet and an oxygen container. Important: during extended periods of use the suit deteriorates beyond use by tearing and disintegration.</text>
+	</string>
+	<string id="enc_equipment_armors_sci2">
+		<text>Red SCAPE suit with an airtight helmet. Weight - 11 kg. Details: protects the body from fire, acids, gasses, various anomalies, "burning fluff" and mechanical damage. Equipped with two oxygen containers. Equipped with an airtight helmet and an oxygen container. Important: during extended periods of use the suit deteriorates beyond use by tearing and disintegration.</text>
+	</string>
+	<string id="enc_equipment_devic_binocul1">
+		<text>Army field binoculars</text>
+	</string>
+	<string id="enc_equipment_devic_detect1">
+		<text>A device for detecting anomaly fields and disturbances. Notifies of their presence by means of a sound. Needs to be fitted to the belt and activated to work.</text>
+	</string>
+	<string id="enc_equipment_devic_device-pda1">
+		<text>Personal digital assistant - indispensable in the Zone.</text>
+	</string>
+	<string id="enc_equipment_devic_device-torch1">
+		<text>Torch with a relatively powerful lamp. Quite useful in areas with insufficient light.</text>
+	</string>
+	<string id="enc_equipment_devic_device-torch1_m1">
+		<text>Torch with a relatively powerful lamp. Battery charging time has been reduced thanks to a modernised transformer.</text>
+	</string>
+	<string id="enc_equipment_energydrink">
+		<text>"Non-Stop" is an excellent energy drink. Contains caffeine, taurin and a powerful set of vitamins that rejuvenate and provide energy. If you can't take another step it's just the ticket!</text>
+	</string>
+	<string id="enc_equipment_food_bread1">
+		<text>Nobody knows who manages to bake loaves in the Zone but the bread isn't contaminated and is perfectly edible. At least none of the stalkers have complained about it.</text>
+	</string>
+	<string id="enc_equipment_food_conserva1">
+		<text>Canned food from an army warehouse raided by stalkers. The best-before period hasn't expired by the looks of things.</text>
+	</string>
+	<string id="enc_equipment_food_kolbasa1">
+		<text>This sausage, made from a mix of chicken and soya, is, for lack of other options, often a stalker's breakfast, lunch and dinner in one.</text>
+	</string>
+	<string id="enc_equipment_food_vodka1">
+		<text>GSC Vodka. Goes down easily, significantly reduces the effects of radiation but should be enjoyed in moderation.</text>
+	</string>
+	<string id="enc_equipment_medi_antirad1">
+		<text>Reduce the effects of radiation on the body.</text>
+	</string>
+	<string id="enc_equipment_medi_bandage1">
+		<text>Bandaging. Helps to stop bleeding.</text>
+	</string>
+	<string id="enc_equipment_medi_medkit1">
+		<text>All-purpose med kit. Helps to deal with injuries of different kinds and levels - wounds, burns, poisoning etc.</text>
+	</string>
+	<string id="energy_drink_name">
+		<text>Non-Stop energy drink</text>
+	</string>
+	<string id="energy_drink_short_name">
+		<text>Non-Stop energy drink</text>
+	</string>
 </string_table>

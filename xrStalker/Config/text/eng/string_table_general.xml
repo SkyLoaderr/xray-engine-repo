@@ -1,73 +1,174 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no" ?>
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="Btn_Cancel">
+		<text>Cancel</text>
+	</string>
+	<string id="Btn_No">
+		<text>No</text>
+	</string>
+	<string id="Btn_OK">
+		<text>OK</text>
+	</string>
+	<string id="Btn_Yes">
+		<text>Yes</text>
+	</string>
+	<string id="Found_PDA">
+		<text>Found PDAs</text>
+	</string>
+	<string id="actor">
+		<text>Loner</text>
+	</string>
+	<string id="actor_dolg">
+		<text>Duty</text>
+	</string>
+	<string id="actor_freedom">
+		<text>Freedom</text>
+	</string>
+	<string id="arena_enemy">
+		<text>Mercenary</text>
+	</string>
+	<string id="bad">
+		<text>bad</text>
+	</string>
+	<string id="bandit">
+		<text>Bandit</text>
+	</string>
+	<string id="dolg">
+		<text>Duty</text>
+	</string>
+	<string id="ecolog">
+		<text>Ecologist</text>
+	</string>
+	<string id="enemy">
+		<text>enemy</text>
+	</string>
+	<string id="excellent">
+		<text>excellent</text>
+	</string>
+	<string id="experienced">
+		<text>experienced</text>
+	</string>
+	<string id="freedom">
+		<text>Freedom</text>
+	</string>
+	<string id="friendly">
+		<text>friend</text>
+	</string>
+	<string id="global_map">
+		<text>Map of the Zone</text>
+	</string>
+	<string id="good">
+		<text>good</text>
+	</string>
+	<string id="indifferent">
+		<text>neutral</text>
+	</string>
+	<string id="killer">
+		<text>Mercenary</text>
+	</string>
+	<string id="l01_escape">
+		<text>Cordon</text>
+	</string>
+	<string id="l02_garbage">
+		<text>Dump</text>
+	</string>
+	<string id="l03_agroprom">
+		<text>Agroprom research institute</text>
+	</string>
+	<string id="l04_darkvalley">
+		<text>The Dark Valley</text>
+	</string>
+	<string id="l05_bar">
+		<text>Bar</text>
+	</string>
+	<string id="l06_rostok">
+		<text>Wilderness</text>
+	</string>
+	<string id="l07_military">
+		<text>Army warehouses</text>
+	</string>
+	<string id="l08_yantar">
+		<text>Yantar</text>
+	</string>
+	<string id="l10_radar">
+		<text>Radar</text>
+	</string>
+	<string id="l11_pripyat">
+		<text>Pripyat</text>
+	</string>
+	<string id="l12_stancia">
+		<text>Chernobyl NPP</text>
+	</string>
+	<string id="l12_stancia_2">
+		<text>Chernobyl NPP</text>
+	</string>
+	<string id="master">
+		<text>master</text>
+	</string>
+	<string id="military">
+		<text>Military</text>
+	</string>
+	<string id="monolith">
+		<text>Monolith</text>
+	</string>
+	<string id="neutral">
+		<text>neutral</text>
+	</string>
+	<string id="novice">
+		<text>novice</text>
+	</string>
+	<string id="st_autosave">
+		<text>Autosave</text>
+	</string>
+	<string id="st_game_over">
+		<text>Game over.</text>
+	</string>
+	<string id="st_item_used">
+		<text>Used</text>
+	</string>
+	<string id="st_no_active_task">
+		<text>No active task</text>
+	</string>
+	<string id="st_not_enough_money">
+		<text>Not enough money</text>
+	</string>
+	<string id="st_not_enough_money_npc">
+		<text>the NPC does not have enough money</text>
+	</string>
+	<string id="st_time_till_surge">
+		<text>Time until surge</text>
+	</string>
+	<string id="stalker">
+		<text>Loner</text>
+	</string>
+	<string id="terrible">
+		<text>terrible</text>
+	</string>
+	<string id="trader">
+		<text>Trader</text>
+	</string>
+	<string id="ui_st_community">
+		<text>group</text>
+	</string>
 	<string id="ui_st_rank">
 		<text>rank</text>
 	</string>
-	<string id="ui_st_community">
-		<text>community</text>
+	<string id="ui_st_relation">
+		<text>attitude</text>
 	</string>
 	<string id="ui_st_reputation">
 		<text>reputation</text>
 	</string>
-	<string id="ui_st_relation">
-		<text>relation</text>
+	<string id="very_bad">
+		<text>very bad</text>
 	</string>
-	
-    <string id="AK-74">
-        <text>AK-74</text>
-    </string>
-    <string id="AK-74_info">
-        <text>AK-74 info</text>
-    </string>
-    <string id="Btn_Cancel">
-        <text>Cancel</text>
-    </string>
-    <string id="Btn_No">
-        <text>No</text>
-    </string>
-    <string id="Btn_OK">
-        <text>OK</text>
-    </string>
-    <string id="Btn_Yes">
-        <text>Yes</text>
-    </string>
-    <string id="Machineguns">
-        <text>Machine-guns</text>
-    </string>
-    <string id="Weapons">
-        <text>Weapons</text>
-    </string>
-    <string id="ak_74_desc">
-        <text>AK-74 this is main weapon of\npost soviet military troops.\nIt is highly robust and powerful weapon\nproduced since 1976.\n\nTTX:\nRange - 800M\nMagazine capacity: 30 bullet</text>
-    </string>
-    <string id="ak_74_info">
-        <text>AK-74 this is main weapon of\npost soviet military troops.\nIt is highly robust and powerful weapon\nproduced since 1976.\n\nTTX:\nRange - 800M\nMagazine capacity: 30 bullet</text>
-    </string>
-    <string id="alife_news_kill">
-        <text>%s kill %s</text>
-    </string>
-    <string id="alife_news_retreat">
-        <text>%s retreated from battlefield</text>
-    </string>
-    <string id="escape_blockpost_case">
-        <text>Case from armypost</text>
-    </string>
-    <string id="health">
-        <text>Health</text>
-    </string>
-    <string id="test2">
-        <text>This is a another GENERAL test string</text>
-    </string>
-	<string id="st_not_enough_money">
-		<text>Not enough money</text>
+	<string id="very_good">
+		<text>very good</text>
 	</string>
-
-	<string id="st_not_enough_money_npc">
-		<text>NPC has no enough money</text>
+	<string id="veteran">
+		<text>veteran</text>
 	</string>
-
-	<string id="st_no_active_task">
-		<text>No active task</text>
+	<string id="zombied">
+		<text>Zombified</text>
 	</string>
-    
 </string_table>
