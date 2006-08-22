@@ -84,7 +84,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				CGrenade* pGrenade = smart_cast<CGrenade*>(O);
 				if (pWeapon || pGrenade) SelectBestWeapon();
 #ifdef DEBUG
-//				Msg("OnEvent - %s[%d] - TAKE - %s[%d] - PASSED", *cName(), ID(), *(O->cName()), O->ID());
+//				Msg("OnEvent - %s[%d] - TAKE - %s[%d]0x%X", *cName(), ID(), *O->cName(), id, smart_cast<CInventoryItem*>(O));
 #endif
 
 			} 
@@ -95,7 +95,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				P.w_u16(u16(O->ID()));
 				u_EventSend(P);
 #ifdef DEBUG
-//				Msg("OnEvent - %s[%d] - TAKE - %s[%d] - FAILED", *cName(), ID(), *(O->cName()), O->ID());
+//				Msg("! OnEvent - %s[%d] - TAKE - %s[%d]0x%X - FAILED", *cName(), ID(), *O->cName(), id, smart_cast<CInventoryItem*>(O));
 #endif
 			}
 		}
@@ -113,7 +113,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				break;
 			}
 #ifdef DEBUG			
-//			Msg("OnEvent - %s[%d] - REJECT - %s[%d]", *cName(), ID(), *(O->cName()), O->ID());
+//			Msg("OnEvent - %s[%d] - REJECT - %s[%d]0x%X", *cName(), ID(), *O->cName(), id, smart_cast<CInventoryItem*>(O));
 #endif
 			if (inventory().Drop(smart_cast<CGameObject*>(O)) && !O->getDestroy()) 
 			{
@@ -161,12 +161,19 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 			if (!O) break;
+			if (O->getDestroy()) 
+			{
+#ifdef _DEBUG
+				Msg("! something to destroyed object - %s[%d]0x%X", *O->cName(), id, smart_cast<CInventoryItem*>(O));
+#endif
+				break;
+			}
 			switch (type)
 			{
-			case GEG_PLAYER_ITEM2SLOT:	inventory().Slot(smart_cast<CInventoryItem*>(O)); break;
-			case GEG_PLAYER_ITEM2BELT:	inventory().Belt(smart_cast<CInventoryItem*>(O)); break;
-			case GEG_PLAYER_ITEM2RUCK:	inventory().Ruck(smart_cast<CInventoryItem*>(O)); break;
-			case GEG_PLAYER_ITEM_EAT:	inventory().Eat(smart_cast<CInventoryItem*>(O)); break;
+			case GEG_PLAYER_ITEM2SLOT:	/*Msg("GEG_PLAYER_ITEM2SLOT - %s[%d]0x%X", *O->cName(), id, smart_cast<CInventoryItem*>(O));*/ inventory().Slot(smart_cast<CInventoryItem*>(O)); break;
+			case GEG_PLAYER_ITEM2BELT:	/*Msg("GEG_PLAYER_ITEM2BELT - %s[%d]0x%X", *O->cName(), id, smart_cast<CInventoryItem*>(O));*/ inventory().Belt(smart_cast<CInventoryItem*>(O)); break;
+			case GEG_PLAYER_ITEM2RUCK:	/*Msg("GEG_PLAYER_ITEM2RUCK - %s[%d]0x%X", *O->cName(), id, smart_cast<CInventoryItem*>(O));*/ inventory().Ruck(smart_cast<CInventoryItem*>(O)); break;
+			case GEG_PLAYER_ITEM_EAT:	/*Msg("GEG_PLAYER_ITEM_EAT -  %s[%d]0x%X", *O->cName(), id, smart_cast<CInventoryItem*>(O));*/ inventory().Eat(smart_cast<CInventoryItem*>(O)); break;
 			case GEG_PLAYER_ACTIVATEARTEFACT:
 				{
 					CArtefact* pArtefact = smart_cast<CArtefact*>(O);

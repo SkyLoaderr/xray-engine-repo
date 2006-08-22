@@ -164,6 +164,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 			SHit	HDS;
 			HDS.PACKET_TYPE = type;
 			HDS.Read_Packet_Cont(P);
+//			Msg("Hit received: %d[%d,%d]", HDS.whoID, HDS.weaponID, HDS.BulletID);
 			CObject*	Hitter = Level().Objects.net_Find(HDS.whoID);
 			CObject*	Weapon = Level().Objects.net_Find(HDS.weaponID);
 			HDS.who		= Hitter;
@@ -195,7 +196,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 		break;
 	case GE_DESTROY:
 		{
-			//Log			("-CL_destroy",*cName());
+//			Msg			("- CL_destroy %s[%d]",*cName(), ID());
 			setDestroy		(TRUE);
 		}
 		break;
