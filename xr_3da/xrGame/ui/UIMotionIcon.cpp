@@ -123,8 +123,10 @@ void CUIMotionIcon::SetActorVisibility		(u16 who_id, s16 value)
 	}
 	else if(value==0)
 	{
-		m_npc_visibility.erase	(it);
-	}else
+		if (it==m_npc_visibility.end())
+			m_npc_visibility.erase	(it);
+	}
+	else
 	{
 		(*it).value				= value;
 	}
