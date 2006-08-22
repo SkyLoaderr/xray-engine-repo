@@ -95,6 +95,20 @@ public:
 
 public:
 	IC		CAI_Stalker								&object					() const;
+
+private:
+	const CGameObject	*m_last_query_object;
+	Fvector				m_last_query_position;
+	Fvector				m_last_query_object_position;
+	float				m_last_query_distance;
+	bool				m_last_query_result;
+	bool				m_force_update;
+
+public:
+	virtual void									on_build_path			();
+			void									update_object_on_the_way(const CGameObject *object, const float &distance);
+			bool									is_object_on_the_way	(const CGameObject *object, const float &distance);
+			void									force_update			(const bool &force_update);
 };
 
 #include "stalker_movement_manager_inline.h"

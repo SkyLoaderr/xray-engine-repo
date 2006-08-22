@@ -518,7 +518,7 @@ void CStalkerActionKillEnemy::initialize		()
 		if (object().agent_manager().member().can_cry_noninfo_phrase())
 			object().sound().play				(eStalkerSoundAttack,0,0,6000,4000);
 #endif
-	object().brain().affect_cover		(true);
+	object().brain().affect_cover				(true);
 }
 
 void CStalkerActionKillEnemy::finalize			()
@@ -1306,4 +1306,56 @@ void CStalkerActionSuddenAttack::execute					()
 		return;
 
 	m_storage->set_property	(eWorldPropertyUseSuddenness,	false);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionKillEnemyIfPlayerOnThePath
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionKillEnemyIfPlayerOnThePath::CStalkerActionKillEnemyIfPlayerOnThePath(CAI_Stalker *object, LPCSTR action_name) :
+	inherited(object,action_name)
+{
+}
+
+void CStalkerActionKillEnemyIfPlayerOnThePath::initialize		()
+{
+	inherited::initialize				();
+	
+	object().movement().set_movement_type(eMovementTypeStand);
+	object().movement().force_update	(true);
+
+#ifndef SILENT_COMBAT
+	if (object().memory().enemy().selected()->human_being())
+		if (object().agent_manager().member().can_cry_noninfo_phrase())
+			object().sound().play		(eStalkerSoundAttack,0,0,6000,4000);
+#endif
+
+	object().brain().affect_cover		(true);
+}
+
+void CStalkerActionKillEnemyIfPlayerOnThePath::finalize			()
+{
+	inherited::finalize					();
+
+	object().movement().force_update	(false);
+}
+
+void CStalkerActionKillEnemyIfPlayerOnThePath::execute			()
+{
+	inherited::execute					();
+	
+	object().sight().setup				(CSightAction(object().memory().enemy().selected(),true,true));
+
+	u32									min_queue_size, max_queue_size, min_queue_interval, max_queue_interval;
+	float								distance = object().memory().enemy().selected()->Position().distance_to(object().Position());
+	select_queue_params					(distance,min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
+	object().CObjectHandler::set_goal	(eObjectActionFire1,object().best_weapon(),min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
+
+	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
+	Fvector								position = mem_object.m_object_params.m_position;
+	const CCoverPoint					*point = object().best_cover(position);
+	if (point) {
+		object().movement().set_level_dest_vertex	(point->level_vertex_id());
+		object().movement().set_desired_position	(&point->position());
+	}
 }

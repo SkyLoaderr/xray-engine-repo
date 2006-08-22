@@ -350,3 +350,26 @@ _value_type CStalkerPropertyEvaluatorEnemyReached::evaluate	()
 		object().memory().visual().visible_now(enemy)
 	);
 }
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorPlayerOnThePath
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerPropertyEvaluatorPlayerOnThePath::CStalkerPropertyEvaluatorPlayerOnThePath	(CAI_Stalker *object, LPCSTR evaluator_name) :
+	inherited		(object ? object->lua_game_object() : 0,evaluator_name)
+{
+}
+
+_value_type CStalkerPropertyEvaluatorPlayerOnThePath::evaluate	()
+{
+	const CEntityAlive			*enemy = object().memory().enemy().selected();
+	if (!enemy)
+		return					(false);
+
+	if (!object().is_relation_enemy(Actor()))
+		return					(false);
+
+	if (!m_object->memory().visual().visible_now(Actor()))
+		return					(false);
+
+	return						(object().movement().is_object_on_the_way(Actor(),2.f));
+}

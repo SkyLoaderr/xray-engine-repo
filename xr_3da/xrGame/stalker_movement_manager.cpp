@@ -116,6 +116,12 @@ CStalkerMovementManager::CStalkerMovementManager	(CAI_Stalker *object) :
 	VERIFY						(object);
 	m_object					= object;
 	m_velocities				= 0;
+	m_last_query_object			= 0;
+	m_last_query_position		= Fvector().set(flt_max,flt_max,flt_max);
+	m_last_query_object_position= Fvector().set(flt_max,flt_max,flt_max);
+	m_last_query_result			= false;
+	m_last_query_distance		= flt_max;
+	m_force_update				= false;
 }
 
 CStalkerMovementManager::~CStalkerMovementManager	()
@@ -451,16 +457,16 @@ void CStalkerMovementManager::update(u32 time_delta)
 	VERIFY						((m_target.m_mental_state != eMentalStateFree) || (m_target.m_body_state != eBodyStateCrouch));
 	m_current					= m_target;
 
-	if (movement_type() != eMovementTypeStand)
+	if (m_force_update || (movement_type() != eMovementTypeStand))
 		setup_movement_params	();
 
 	if (script_control())
 		return;
 
-	if (movement_type() != eMovementTypeStand)
+	if (m_force_update || (movement_type() != eMovementTypeStand))
 		setup_velocities		();
 
-	if (movement_type() != eMovementTypeStand)
+	if (m_force_update || (movement_type() != eMovementTypeStand))
 		update_path				();
 
 	parse_velocity_mask			();
@@ -495,4 +501,109 @@ float CStalkerMovementManager::speed					(const EMovementDirection &movement_dir
 void CStalkerMovementManager::setup_speed_from_animation(const float &speed)
 {
 	set_desirable_speed					(object().m_fCurSpeed = speed);
+}
+
+void CStalkerMovementManager::on_build_path				()
+{
+	m_last_query_object					= 0;
+	m_last_query_position				= Fvector().set(flt_max,flt_max,flt_max);
+	m_last_query_object_position		= Fvector().set(flt_max,flt_max,flt_max);
+	m_last_query_result					= false;
+	m_last_query_distance				= flt_max;
+}
+
+bool CStalkerMovementManager::is_object_on_the_way		(const CGameObject *object, const float &distance)
+{
+	update_object_on_the_way			(object,distance);
+
+	if (m_last_query_object != object) {
+		update_object_on_the_way		(object,distance);
+		return							(m_last_query_result);
+	}
+
+	if (distance - EPS_L > m_last_query_distance) {
+		update_object_on_the_way		(object,distance);
+		return							(m_last_query_result);
+	}
+
+	if (!m_last_query_position.similar(this->object().Position())) {
+		update_object_on_the_way		(object,distance);
+		return							(m_last_query_result);
+	}
+
+	if (!m_last_query_object_position.similar(object->Position())) {
+		update_object_on_the_way		(object,distance);
+		return							(m_last_query_result);
+	}
+
+	return								(m_last_query_result);
+}
+
+IC float distance_to_line(const Fvector &p0, const Fvector &p1, const Fvector &p2)
+{
+	if (p0.similar(p2))
+		return							(0.f);
+
+	if (p1.similar(p2))
+		return							(0.f);
+
+	Fvector								p0p2 = Fvector().sub(p2,p0);
+	float								p0p2_magnitude = p0p2.magnitude();
+	if (p0.similar(p1))
+		return							(p0p2_magnitude);
+
+	p0p2.normalize						();
+	
+	Fvector								p0p1 = Fvector().sub(p1,p0);
+	p0p1.normalize						();
+
+	float								cos_alpha = p0p2.dotproduct(p0p1);
+	if (cos_alpha < 0.f)
+		return							(p0p2_magnitude);
+
+	Fvector								p1p2 = Fvector().sub(p2,p1);
+	Fvector								p1p0 = Fvector(p0p1).invert();
+	if (p1p2.dotproduct(p1p0) < 0.f)
+		return							(p1p2.magnitude());
+
+	float								sin_alpha = _sqrt(1.f - _sqr(cos_alpha));
+	return								(p0p2_magnitude*sin_alpha);
+}
+
+void CStalkerMovementManager::update_object_on_the_way	(const CGameObject *object, const float &distance)
+{
+	if (!actual())
+		return;
+
+	if (path().empty())
+		return;
+
+	if (detail().curr_travel_point_index() >= detail().path().size() - 1)
+		return;
+
+	m_last_query_object					= object;
+	m_last_query_position				= this->object().Position();
+	m_last_query_object_position		= object->Position();
+	m_last_query_result					= false;
+	m_last_query_distance				= distance;
+
+	Fvector								position = object->Position();
+	float								current_distance = 0.f;
+	xr_vector<STravelPathPoint>::const_iterator	I = detail().path().begin() + detail().curr_travel_point_index() + 1;
+	xr_vector<STravelPathPoint>::const_iterator	E = detail().path().end();
+	for ( ; I != E; ++I) {
+		if (distance_to_line((*(I - 1)).position,(*I).position,position) < 1.f) {
+			m_last_query_result			= true;
+			return;
+		}
+
+		current_distance				+= (*(I - 1)).position.distance_to((*I).position);
+		if (current_distance > distance)
+			return;
+	}
+}
+
+void CStalkerMovementManager::force_update	(const bool &force_update)
+{
+	m_force_update						= force_update;
 }

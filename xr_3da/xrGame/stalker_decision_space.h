@@ -41,6 +41,7 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyEnemyWounded,
 		eWorldPropertyWoundedEnemyReached,
 		eWorldPropertyWoundedEnemyPrepared,
+		eWorldPropertyPlayerOnThePath,
 
 		eWorldPropertyDangerUnknown,
 		eWorldPropertyDangerInDirection,
@@ -104,6 +105,7 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorPrepareWoundedEnemy,
 		eWorldOperatorKillWoundedEnemy,
 		eWorldOperatorPostCombatWait,
+		eWorldOperatorKillEnemyIfPlayerOnThePath,
 
 // danger
 		eWorldOperatorDangerUnknownPlanner,
