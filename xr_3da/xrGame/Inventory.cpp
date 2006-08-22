@@ -237,11 +237,18 @@ bool CInventory::DropAll()
 bool CInventory::Slot(PIItem pIItem, bool bNotActivate) 
 {
 	VERIFY(pIItem);
+//	Msg("To Slot %s[%d]", *pIItem->object().cName(), pIItem->object().ID());
 	
 	if(!CanPutInSlot(pIItem)) 
 	{
 #ifdef _DEBUG
-//		Msg("there is item %s in slot %d", *m_slots[pIItem->GetSlot()].m_pIItem->object().cName(), pIItem->GetSlot());
+		Msg("there is item %s[%d,%x] in slot %d[%d,%x]", 
+				*m_slots[pIItem->GetSlot()].m_pIItem->object().cName(), 
+				m_slots[pIItem->GetSlot()].m_pIItem->object().ID(), 
+				m_slots[pIItem->GetSlot()].m_pIItem, 
+				pIItem->GetSlot(), 
+				pIItem->object().ID(),
+				pIItem);
 #endif
 		if(m_slots[pIItem->GetSlot()].m_pIItem == pIItem && !bNotActivate )
 			Activate(pIItem->GetSlot());
@@ -531,6 +538,7 @@ void CInventory::Update()
 		while(list.end() != it)
 		{
 			PIItem pIItem = *it;
+//			Msg("-- %s [%d]", pIItem->Name(), pIItem->object().ID());
 			R_ASSERT(pIItem);			
 			if( pIItem->GetDrop() )
 			{
