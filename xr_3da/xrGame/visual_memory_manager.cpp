@@ -584,5 +584,17 @@ void CVisualMemoryManager::update				(float time_delta)
 	}
 #endif
 
+	if (m_object) {
+		xr_vector<CNotYetVisibleObject>::iterator	I = std::find_if(
+			m_not_yet_visible_objects.begin(),
+			m_not_yet_visible_objects.end(),
+			CNotYetVisibleObjectPredicate(Actor())
+		);
+		if (I != m_not_yet_visible_objects.end()) {
+			Actor()->SetActorVisibility				(m_object->ID(),(s16)iFloor((*I).m_value));
+			return;
+		}
+	}
+
 	STOP_PROFILE
 }
