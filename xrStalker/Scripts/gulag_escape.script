@@ -2266,7 +2266,7 @@ function load_states(gname, type)
 				return 1 -- сидят у костра
 			elseif db.actor:has_info("esc_assault_start") and db.actor:dont_has_info("esc_kill_bandits_quest_kill") then
 				return 2 -- атакуют фабрику
-			elseif db.actor:has_info("esc_kill_bandits_quest_kill") and (db.actor:dont_has_info("esc_kill_bandits_quest_kill") or db.actor:dont_has_info("esc_petruha_great")) then
+			elseif db.actor:has_info("esc_kill_bandits_quest_kill") and (db.actor:dont_has_info("esc_kill_bandits_quest_done") or db.actor:dont_has_info("esc_petruha_great")) then
 				return 3 -- идут домой	
 			elseif db.actor:has_info("esc_kill_bandits_quest_done") or db.actor:has_info("esc_petruha_great") then
 				return 4 -- идут домой
