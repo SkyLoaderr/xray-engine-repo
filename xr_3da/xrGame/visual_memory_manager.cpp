@@ -590,10 +590,10 @@ void CVisualMemoryManager::update				(float time_delta)
 			m_not_yet_visible_objects.end(),
 			CNotYetVisibleObjectPredicate(Actor())
 		);
-		if (I != m_not_yet_visible_objects.end()) {
+		if (I != m_not_yet_visible_objects.end())
 			Actor()->SetActorVisibility				(m_object->ID(),(s16)iFloor((*I).m_value));
-			return;
-		}
+		else
+			Actor()->SetActorVisibility				(m_object->ID(),(s16)0);
 	}
 
 	STOP_PROFILE
