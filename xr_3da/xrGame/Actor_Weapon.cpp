@@ -143,6 +143,7 @@ static	u16 BestWeaponSlots [] = {
 void CActor::SelectBestWeapon	()
 {
 	if ( IsGameTypeSingle() ) return;
+	if (OnClient()) return;
 	for (int i=0; i<4; i++)
 	{
 		if (inventory().m_slots[BestWeaponSlots[i]].m_pIItem)
