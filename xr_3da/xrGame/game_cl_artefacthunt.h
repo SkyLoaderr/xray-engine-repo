@@ -50,6 +50,7 @@ public :
 	virtual			char*				getTeamSection			(int Team);
 	virtual			bool				PlayerCanSprint			(CActor* pActor);
 
+	virtual	void						SetScore				();
 	virtual			void				OnSellItemsFromRuck		();
 
 	virtual			void				OnSpawn					(CObject* pObj);

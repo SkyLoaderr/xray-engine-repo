@@ -596,6 +596,8 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 			string128 resstring;
 			sprintf(resstring, *st.translate("mp_player_wins"), WinnerName);
 			m_game_ui->SetRoundResultCaption(resstring);
+
+			SetScore();
 		}break;
 	};
 	
@@ -611,6 +613,16 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 		StartStopMenu(pInventoryMenu,true);
 	//-----------------------------------------
 }
+
+void	game_cl_Deathmatch::SetScore				()
+{
+	if (Level().CurrentViewEntity() && m_game_ui)
+	{
+		game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
+		if (ps&&m_game_ui) m_game_ui->SetRank(ps->team, ps->rank);
+		if (ps&&m_game_ui) m_game_ui->SetFraglimit(ps->kills, fraglimit);
+	}
+};
 
 bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 {

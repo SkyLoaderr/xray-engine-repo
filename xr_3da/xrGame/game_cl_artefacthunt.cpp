@@ -457,8 +457,7 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 				s16 lt = local_player->team;
 				if (lt>=0)
 				{
-					if(m_game_ui)
-						m_game_ui->SetScoreCaption	(teams[0].score, teams[1].score);
+//					if(m_game_ui) m_game_ui->SetScoreCaption	(teams[0].score, teams[1].score);
 				};				
 	/*
 			if ( (artefactBearerID==0))// && (artefactID!=0) )
@@ -485,21 +484,25 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 				};
 			*/
 			};
-
+/*
 			if (Level().CurrentViewEntity() && m_game_ui)
 			{
 				game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
 				if (ps&&m_game_ui) m_game_ui->SetRank(ps->team, ps->rank);
 				if (ps&&m_game_ui) m_game_ui->SetFraglimit(ps->kills, artefactsNum);
 			}
+*/
+			SetScore();
 		}break;
 	case GAME_PHASE_TEAM1_ELIMINATED:
 		{
 			m_game_ui->SetRoundResultCaption("Team Green ELIMINATED!");
+			SetScore();
 		}break;
 	case GAME_PHASE_TEAM2_ELIMINATED:
 		{
 			m_game_ui->SetRoundResultCaption("Team Blue ELIMINATED!");
+			SetScore();
 		}break;
 	default:
 		{
@@ -507,8 +510,14 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 		}break;
 	};
 
-}
+	//-------------------------------------------
 
+}
+void game_cl_ArtefactHunt::SetScore				()
+{
+	game_cl_TeamDeathmatch::SetScore();
+	game_cl_Deathmatch::SetScore();
+}
 BOOL game_cl_ArtefactHunt::CanCallBuyMenu			()
 {
 	if (!m_bBuyEnabled) return FALSE;

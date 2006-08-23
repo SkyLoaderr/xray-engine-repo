@@ -78,6 +78,7 @@ protected:
 	virtual void						UpdateMapLocations		();
 	virtual	void						OnSwitchPhase			(u32 old_phase, u32 new_phase);	
 
+	virtual	void						SetScore				();
 	virtual	void						OnSwitchPhase_InProgress();
 
 	virtual		u8						GetTeamCount			() { return 2; };

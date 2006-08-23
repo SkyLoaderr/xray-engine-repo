@@ -135,6 +135,8 @@ public:
 	virtual		void				OnTeamChanged			();
 	virtual		void				OnMoneyChanged			();
 
+	virtual		void				SetScore				();
+
 	virtual		void				OnSwitchPhase_InProgress();
 
 	virtual		u8					GetTeamCount			() { return 1; };

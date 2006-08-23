@@ -414,27 +414,32 @@ void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 		{
 			sprintf(msg, /*team %s wins*/ *st.translate("mp_team_wins"), CTeamInfo::GetTeam_name(1));
 			m_game_ui->SetRoundResultCaption(msg);
+
+			SetScore();
 		}break;
 	case GAME_PHASE_TEAM2_SCORES:
 		{
 			sprintf(msg, /*team %s wins*/ *st.translate("mp_team_wins"), CTeamInfo::GetTeam_name(2));
 			m_game_ui->SetRoundResultCaption(msg);
+			
+			SetScore();
+			
 		}break;
 	case GAME_PHASE_INPROGRESS:
 		{
 			if (local_player)
 			{			
-				s16 lt = local_player->team;
-				if (lt>=0)
-				{
-					if(m_game_ui)
-						m_game_ui->SetScoreCaption	(teams[0].score, teams[1].score);
+//				s16 lt = local_player->team;
+//				if (lt>=0)
+//				{
+//					if(m_game_ui)
+//						m_game_ui->SetScoreCaption	(teams[0].score, teams[1].score);
 
 //					if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
 //					{
 //						HUD().GetUI()->UIMainIngameWnd->UpdateTeamsScore(teams[0].score, teams[1].score);
 //					}
-				};
+//				};
 
 				if (m_game_ui)
 				{
@@ -453,6 +458,7 @@ void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 					}
 				}
 */
+				SetScore();
 			};
 		}break;
 	default:
@@ -460,6 +466,19 @@ void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 		}break;
 	};
 }
+
+void	game_cl_TeamDeathmatch::SetScore				()
+{
+	if (local_player)
+	{			
+		s16 lt = local_player->team;
+		if (lt>=0)
+		{
+			if(m_game_ui)
+				m_game_ui->SetScoreCaption	(teams[0].score, teams[1].score);
+		}
+	}
+};
 
 //BOOL	g_bShowPlayerNames = FALSE;
 
