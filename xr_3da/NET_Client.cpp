@@ -367,9 +367,9 @@ BOOL IPureClient::Connect	(LPCSTR options)
 				net_Address_server,		// pdpaddrHost
 				net_Address_device,		// pdpaddrDeviceInfo
 				EnumData, EnumSize,		// pvUserEnumData, size
-				2,						// dwEnumCount
-				0,						// dwRetryInterval
-				1500,					// dwTimeOut
+				10,						// dwEnumCount
+				1000,					// dwRetryInterval
+				1000,					// dwTimeOut
 				NULL,					// pvUserContext
 				NULL,					// pAsyncHandle
 				DPNENUMHOSTS_SYNC		// dwFlags
