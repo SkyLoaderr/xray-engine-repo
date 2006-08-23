@@ -582,6 +582,7 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 	case GAME_PHASE_TEAM1_ELIMINATED:
 	case GAME_PHASE_TEAM2_ELIMINATED:
 	case GAME_PHASE_TEAMS_IN_A_DRAW:
+	case GAME_PHASE_PLAYER_SCORES:
 			HideMessageMenus();
 	break;
 
