@@ -75,6 +75,7 @@ void CUIBagWnd::DestroyAllItems(){
 		m_groups[i].ClearAll(true);
 	}
 	m_allItems.clear();
+	m_info.clear();
 
 	for (int i = 0; i<4; i++)
         subSection_group3[i] = 0;
