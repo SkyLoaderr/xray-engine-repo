@@ -229,7 +229,7 @@ void CLevel::ClientReceive()
 				if (OnClient())
 				{
 					Engine.Event.Defer	("KERNEL:disconnect");
-					Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup(*m_caServerOptions)),size_t(xr_strdup(*m_caClientOptions)));
+					Engine.Event.Defer	("KERNEL:start",size_t(m_caServerOptions.size() ? xr_strdup(*m_caServerOptions) : ""),size_t(m_caClientOptions.size() ? xr_strdup(*m_caClientOptions) : ""));
 				}
 				else
 				{
