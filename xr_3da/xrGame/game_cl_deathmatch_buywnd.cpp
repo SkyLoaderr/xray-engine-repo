@@ -66,6 +66,11 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 		pCurPresetItems->push_back(ID);
 	};	
 	//-------------------------------------------------------------------------------
+	for (i=0; i<AdditionalPresetItems.size(); i++)
+	{
+		pCurPresetItems->push_back(AdditionalPresetItems[i]);
+	}
+	//-------------------------------------------------------------------------------
 	P.w_s32		(s32(pCurBuyMenu->GetMoneyAmount()) - Pl->money_for_round);
 	P.w_u8		(u8(pCurPresetItems->size()));
 	for (s=0; s<pCurPresetItems->size(); s++)
@@ -86,6 +91,7 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 	game_PlayerState* P = local_player;
 	if (!P) return;
 	//---------------------------------------------------------
+	AdditionalPresetItems.clear();
 	xr_vector <s16>			TmpPresetItems;
 	PRESET_ITEMS_it		It = pCurPresetItems->begin();
 	PRESET_ITEMS_it		Et = pCurPresetItems->end();
@@ -94,6 +100,8 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 		s16 ID = *It;
 		if (((ID & 0xff00) >> 0x08) != (UNBUYABLESLOT-1))
 			TmpPresetItems.push_back(ID);
+		else
+			AdditionalPresetItems.push_back(ID);
 	};
 	//---------------------------------------------------------
 	ClearBuyMenu			();

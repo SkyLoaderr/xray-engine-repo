@@ -47,6 +47,8 @@ protected:
 
 //	TEAMS_LIST						m_aTeamSections;
 	PRESET_ITEMS					PresetItemsTeam0;
+	PRESET_ITEMS					AdditionalPresetItems;
+
 	PRESET_ITEMS*					pCurPresetItems;
 	PRESET_ITEMS					PlayerDefItems;
 
