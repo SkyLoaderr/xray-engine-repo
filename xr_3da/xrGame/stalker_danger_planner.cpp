@@ -22,7 +22,6 @@
 #include "cover_point.h"
 #include "stalker_movement_restriction.h"
 #include "agent_member_manager.h"
-
 #include "stalker_base_action.h"
 #include "stalker_danger_unknown_planner.h"
 #include "stalker_danger_in_direction_planner.h"
