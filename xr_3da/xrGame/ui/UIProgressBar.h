@@ -68,6 +68,7 @@ public:
 
 	void			SetProgressPos(s16 iPos) { m_iProgressPos = iPos; 
 						UpdateProgressBar();}
+	s16				GetProgressPos()				{ return m_iProgressPos; }
 	s16				GetScrollPos() {return m_iProgressPos;}
 
 	//базовые размеры для кнопок

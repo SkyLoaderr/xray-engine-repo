@@ -8,6 +8,7 @@ CUIMotionIcon::CUIMotionIcon()
 {
 	m_curren_state	= stLast;
 	m_bchanged		= false;
+	m_luminosity	= 0;
 }
 
 CUIMotionIcon::~CUIMotionIcon()
@@ -88,8 +89,8 @@ void CUIMotionIcon::SetNoise(s16 Pos)
 
 void CUIMotionIcon::SetLuminosity(s16 Pos)
 {
-	Pos	= clampr(Pos, m_luminosity_progress.GetRange_min(), m_luminosity_progress.GetRange_max());
-	m_luminosity_progress.SetProgressPos(Pos);
+	Pos						= clampr(Pos, m_luminosity_progress.GetRange_min(), m_luminosity_progress.GetRange_max());
+	m_luminosity			= Pos;
 }
 
 void CUIMotionIcon::Update()
@@ -99,16 +100,32 @@ void CUIMotionIcon::Update()
 		if( m_npc_visibility.size() )
 		{
 			std::sort					(m_npc_visibility.begin(), m_npc_visibility.end());
-			SetLuminosity				(m_npc_visibility.back().value);
+			SetLuminosity				(s16(iFloor(m_npc_visibility.back().value)) );
 		}else
-			SetLuminosity				(m_luminosity_progress.GetRange_min());
+			SetLuminosity				(m_luminosity_progress.GetRange_min() );
 	}
 	inherited::Update();
+	
+	//m_luminosity_progress 
+	{
+		s16 len					= m_noise_progress.GetRange_max()-m_noise_progress.GetRange_min();
+		int cur_pos				= m_luminosity_progress.GetProgressPos();
+		if(cur_pos!=m_luminosity){
+			if(m_luminosity>cur_pos){
+				cur_pos				+= iFloor(len*Device.fTimeDelta);
+			}else{
+				cur_pos				+= iFloor(len*Device.fTimeDelta);
+			}
+			m_luminosity_progress.SetProgressPos((s16)cur_pos);
+		}
+	}
 }
 
-void CUIMotionIcon::SetActorVisibility		(u16 who_id, s16 value)
+void CUIMotionIcon::SetActorVisibility		(u16 who_id, float value)
 {
-	value	= clampr(value, m_luminosity_progress.GetRange_min(), m_luminosity_progress.GetRange_max());
+	float v		= float(m_luminosity_progress.GetRange_max() - m_luminosity_progress.GetRange_min());
+	value		*= v;
+	value		+= m_luminosity_progress.GetRange_min();
 
 	xr_vector<_npc_visibility>::iterator it = std::find(m_npc_visibility.begin(), 
 														m_npc_visibility.end(),
@@ -121,7 +138,7 @@ void CUIMotionIcon::SetActorVisibility		(u16 who_id, s16 value)
 		v.id					= who_id;
 		v.value					= value;
 	}
-	else if(value==0)
+	else if( fis_zero(value) )
 	{
 		if (it!=m_npc_visibility.end())
 			m_npc_visibility.erase	(it);
