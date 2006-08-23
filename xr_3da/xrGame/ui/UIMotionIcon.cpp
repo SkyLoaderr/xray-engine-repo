@@ -114,8 +114,9 @@ void CUIMotionIcon::Update()
 			if(m_luminosity>cur_pos){
 				cur_pos				+= iFloor(len*Device.fTimeDelta);
 			}else{
-				cur_pos				+= iFloor(len*Device.fTimeDelta);
+				cur_pos				-= iFloor(len*Device.fTimeDelta);
 			}
+			clamp(cur_pos, m_noise_progress.GetRange_min(), m_noise_progress.GetRange_max());
 			m_luminosity_progress.SetProgressPos((s16)cur_pos);
 		}
 	}
