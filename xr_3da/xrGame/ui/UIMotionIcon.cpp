@@ -116,7 +116,7 @@ void CUIMotionIcon::Update()
 			}else{
 				cur_pos				-= iFloor(len*Device.fTimeDelta);
 			}
-			clamp(cur_pos, m_noise_progress.GetRange_min(), m_noise_progress.GetRange_max());
+//			clamp(cur_pos, m_noise_progress.GetRange_min(), m_noise_progress.GetRange_max());
 			m_luminosity_progress.SetProgressPos((s16)cur_pos);
 		}
 	}
