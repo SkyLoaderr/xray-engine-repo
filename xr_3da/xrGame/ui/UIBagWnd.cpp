@@ -347,6 +347,56 @@ void CUIBagWnd::FillUpGroup(const u32 group)
 	}
 }
 
+void	CUIBagWnd::ReloadItemsPrices	()
+{
+	string256 ItemCostStr = "";
+	string256 RankStr = "";
+
+	u32 sz = m_allItems.size();
+
+//	xr_vector<CUIDragDropItemMP*>::iterator it;
+
+	for (u32 i = 0; i<sz; i++){
+		CUICellItem* itm = m_allItems[i];
+		CInventoryItem* iitm = (CInventoryItem*)itm->m_pData;
+		shared_str itm_name = iitm->object().cNameSect();
+
+		m_info[itm->m_index].price = pSettings->r_u32(m_sectionPrice, *itm_name);
+		//-------------------------------------
+		strconcat(ItemCostStr, *itm_name, "_cost");
+		if (pSettings->line_exist(m_sectionPrice, ItemCostStr))
+			m_info[itm->m_index].price = pSettings->r_u32(m_sectionPrice, ItemCostStr);
+		//-------------------------------------------------------------------------------
+		for (int i=1; i<=g_mp_restrictions.GetRank(); i++)
+		{
+			string16 tmp;
+			strconcat(RankStr, "rank_", itoa(i, tmp, 10));
+			if (!pSettings->line_exist(RankStr, ItemCostStr)) continue;
+			m_info[itm->m_index].price = pSettings->r_u32(RankStr, ItemCostStr);
+		}
+
+	}
+
+
+	//for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
+	//{
+	//	R_ASSERT(pSettings->line_exist(m_StrPricesSection, (*it)->strName));
+	//	(*it)->SetCost(pSettings->r_u32(m_StrPricesSection, (*it)->strName.c_str()));
+	//	//-------------------------------------------------------------------------------
+	//	strconcat(ItemCostStr, (*it)->strName.c_str(), "_cost");
+	//	if (pSettings->line_exist(m_StrSectionName, ItemCostStr))
+	//		(*it)->SetCost(pSettings->r_u32(m_StrSectionName, ItemCostStr));
+	//	//-------------------------------------------------------------------------------
+	//	for (int i=1; i<=g_mp_restrictions.GetRank(); i++)
+	//	{
+	//		string16 tmp;
+	//		strconcat(RankStr, "rank_", itoa(i, tmp, 10));
+	//		if (!pSettings->line_exist(RankStr, ItemCostStr)) continue;
+	//		(*it)->SetCost(pSettings->r_u32(RankStr, ItemCostStr));
+	//	}
+	//};
+}
+
 static int counter = 0;
 
 CUICellItem* CUIBagWnd::CreateItem(LPCSTR name){
@@ -1005,33 +1055,33 @@ CUICellItem* CUIBagWnd::CreateNewItem(const u8 grpNum, u8 uIndexInSlot){
 	return new_item;
 }
 
-void CUIBagWnd::ReloadItemsPrices()
-{
-	string256 ItemCostStr = "";
-	string256 RankStr = "";
-
-	u32 sz = m_allItems.size();
-
-	
-	for (u32 i = 0; i<sz; i++)
-	{
-		CUICellItem* itm = m_allItems[i];
-		CInventoryItem* iitm = (CInventoryItem*)itm->m_pData;
-
-		R_ASSERT(pSettings->line_exist(m_sectionPrice, iitm->object().cNameSect()/*(*it)->strName)*/));
-		m_info[itm->m_index].price = pSettings->r_u32(m_sectionPrice, *iitm->object().cNameSect());
-		//-------------------------------------------------------------------------------
-		strconcat(ItemCostStr, *iitm->object().cNameSect(), "_cost");
-		if (pSettings->line_exist(m_sectionName, ItemCostStr))
-			m_info[itm->m_index].price = pSettings->r_u32(m_sectionName, ItemCostStr);
-		//-------------------------------------------------------------------------------
-		for (int i=1; i<=g_mp_restrictions.GetRank(); i++)
-		{
-			string16 tmp;
-			strconcat(RankStr, "rank_", itoa(i, tmp, 10));
-			if (!pSettings->line_exist(RankStr, ItemCostStr))
-				continue;
-			m_info[itm->m_index].price = pSettings->r_u32(RankStr, ItemCostStr);
-		}
-	};
-};
+//void CUIBagWnd::ReloadItemsPrices()
+//{
+//	string256 ItemCostStr = "";
+//	string256 RankStr = "";
+//
+//	u32 sz = m_allItems.size();
+//
+//	
+//	for (u32 i = 0; i<sz; i++)
+//	{
+//		CUICellItem* itm = m_allItems[i];
+//		CInventoryItem* iitm = (CInventoryItem*)itm->m_pData;
+//
+//		R_ASSERT(pSettings->line_exist(m_sectionPrice, iitm->object().cNameSect()/*(*it)->strName)*/));
+//		m_info[itm->m_index].price = pSettings->r_u32(m_sectionPrice, *iitm->object().cNameSect());
+//		//-------------------------------------------------------------------------------
+//		strconcat(ItemCostStr, *iitm->object().cNameSect(), "_cost");
+//		if (pSettings->line_exist(m_sectionName, ItemCostStr))
+//			m_info[itm->m_index].price = pSettings->r_u32(m_sectionName, ItemCostStr);
+//		//-------------------------------------------------------------------------------
+//		for (int i=1; i<=g_mp_restrictions.GetRank(); i++)
+//		{
+//			string16 tmp;
+//			strconcat(RankStr, "rank_", itoa(i, tmp, 10));
+//			if (!pSettings->line_exist(RankStr, ItemCostStr))
+//				continue;
+//			m_info[itm->m_index].price = pSettings->r_u32(RankStr, ItemCostStr);
+//		}
+//	};
+//};

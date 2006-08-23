@@ -75,6 +75,7 @@ void CUIBuyWnd::ResetItems(){
 
 	m_bag.DestroyAllItems();
 	m_bag.InitItems();    
+	m_bag.ReloadItemsPrices();
 }
 
 void CUIBuyWnd::Show(){
