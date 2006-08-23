@@ -187,10 +187,15 @@ void CGrenade::PutNextToSlot()
 //	Msg ("* PutNextToSlot : %d", ID());	
 	VERIFY									(!getDestroy());
 	//выкинуть гранату из инвентаря
+	NET_Packet						P;
 	if (m_pInventory)
 	{
 		m_pInventory->Ruck					(this);
 //.		m_pInventory->SetActiveSlot			(NO_ACTIVE_SLOT);
+
+		this->u_EventGen				(P, GEG_PLAYER_ITEM2RUCK, this->H_Parent()->ID());
+		P.w_u16							(this->ID());
+		this->u_EventSend				(P);
 	}
 	else
 		Msg ("! PutNextToSlot : m_pInventory = 0");	
@@ -203,13 +208,6 @@ void CGrenade::PutNextToSlot()
 		VERIFY								(pNext != this);
 
 		if(pNext && m_pInventory->Slot(pNext) ){
-
-			NET_Packet						P;
-
-			this->u_EventGen				(P, GEG_PLAYER_ITEM2RUCK, this->H_Parent()->ID());
-			P.w_u16							(this->ID());
-			this->u_EventSend				(P);
-
 
 			pNext->u_EventGen				(P, GEG_PLAYER_ITEM2SLOT, pNext->H_Parent()->ID());
 			P.w_u16							(pNext->ID());
