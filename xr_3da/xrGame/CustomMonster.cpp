@@ -763,7 +763,7 @@ void CCustomMonster::Die	(CObject* who)
 {
 	inherited::Die			(who);
 	//Level().RemoveMapLocationByID(this->ID());
-	Actor()->SetActorVisibility	(ID(),0);
+	Actor()->SetActorVisibility	(ID(),0.);
 }
 
 BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
