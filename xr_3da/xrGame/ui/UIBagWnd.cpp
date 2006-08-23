@@ -619,7 +619,7 @@ void CUIBagWnd::SellItem(CUICellItem* itm){
 
 	m_info[itm->m_index].bought = false;
 
-	if (itm->GetColor() == 0xffff8080)		// Fuck... loose it
+	if (itm->GetColor() == PRICE_RESTR_COLOR)		// Fuck... loose it
 		return;
 
 	if (!this->m_bIgnoreMoney)
