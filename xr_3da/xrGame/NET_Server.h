@@ -10,6 +10,7 @@ class XRNETSERVER_API IClient
 		u32		bLocal		: 1;
 		u32		bConnected	: 1;
 		u32		bReconnect	: 1;
+		u32		bVerified	: 1;
 	};
 public:
 	IClientStatistic	stats;
@@ -27,6 +28,7 @@ public:
 		flags.bLocal = FALSE;
 		flags.bConnected = FALSE;
 		flags.bReconnect = FALSE;
+		flags.bVerified = TRUE;
 	}
 	virtual ~IClient(){}
 };

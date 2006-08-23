@@ -109,6 +109,7 @@ bool xrServer::NeedToCheckClient_BuildVersion		(IClient* CL)
 #else
 
 	if (g_SV_Disable_Auth_Check) return false;
+	CL->flags.bVerified = FALSE;
 	NET_Packet	P;
 	P.w_begin	(M_AUTH_CHALLENGE);
 	SendTo		(CL->ID, P);
@@ -131,5 +132,6 @@ void xrServer::OnBuildVersionRespond				(IClient* CL, NET_Packet& P)
 
 void xrServer::Check_BuildVersion_Success			(IClient* CL)
 {
+	CL->flags.bVerified = TRUE;
 	SendConnectResult(CL, 1, "All Ok");
 };

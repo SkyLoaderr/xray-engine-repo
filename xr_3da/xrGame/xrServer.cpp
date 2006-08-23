@@ -145,7 +145,7 @@ void		xrServer::client_Destroy	(IClient* C)
 	{
 		if (net_Players[I] == C)
 		{
-			if (!g_sv_Client_Reconnect_Time)
+			if (!g_sv_Client_Reconnect_Time || !C->flags.bVerified)
 			{
 				xr_delete(C);				
 			}
