@@ -1074,7 +1074,7 @@ bool CUIBuyWnd::ToBelt(CUICellItem* itm, bool b_use_cursor_pos)
 {
 	PIItem	iitem						= (PIItem)itm->m_pData;
 
-	if(CanPutInBelt(iitem))
+	if(CanPutInBelt(iitem) && m_list[MP_SLOT_BELT]->CanSetItem(itm))
 	{
 		CUIDragDropListEx*	old_owner		= itm->OwnerList();
 		CUIDragDropListEx*	new_owner		= NULL;

@@ -354,6 +354,14 @@ void CUIDragDropListEx::SetItem(CUICellItem* itm, Ivector2 cell_pos) // start at
 	itm->SetOwnerList			(this);
 }
 
+bool CUIDragDropListEx::CanSetItem(CUICellItem* itm){
+	if (m_container->HasFreeSpace(itm->GetGridSize()))
+		return true;
+	Compact();
+
+	return m_container->HasFreeSpace(itm->GetGridSize());
+}
+
 CUICellItem* CUIDragDropListEx::RemoveItem(CUICellItem* itm, bool force_root)
 {
 	CUICellItem* i				= m_container->RemoveItem		(itm, force_root);
@@ -471,6 +479,16 @@ Ivector2 CUICellContainer::FindFreeCell	(const Ivector2& size)
 		R_ASSERT2		(0,"there are no free room to place item");
 	}
 	return			tmp;
+}
+
+bool CUICellContainer::HasFreeSpace		(const Ivector2& size){
+	Ivector2 tmp;
+	for(tmp.y=0; tmp.y<=m_cellsCapacity.y-size.y; ++tmp.y )
+		for(tmp.x=0; tmp.x<=m_cellsCapacity.x-size.x; ++tmp.x )
+			if(IsRoomFree(tmp,size))
+				return true;
+
+	return false;
 }
 
 bool CUICellContainer::IsRoomFree(const Ivector2& pos, const Ivector2& size)

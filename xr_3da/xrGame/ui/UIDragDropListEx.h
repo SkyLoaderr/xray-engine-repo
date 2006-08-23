@@ -89,11 +89,13 @@ public:
 			virtual void	SetItem				(CUICellItem* itm); //auto
 			virtual void	SetItem				(CUICellItem* itm, Fvector2 abs_pos);  // start at cursor pos
 			virtual void	SetItem				(CUICellItem* itm, Ivector2 cell_pos); // start at cell
+					bool	CanSetItem			(CUICellItem* itm);
 
 			u32				ItemsCount			();
 			CUICellItem*	GetItemIdx			(u32 idx);
 	virtual CUICellItem*	RemoveItem			(CUICellItem* itm, bool force_root);
 			void			CreateDragItem		(CUICellItem* itm);
+
 			void			DestroyDragItem		();
 			void			ClearAll			(bool bDestroy);	
 			void			Compact				();
@@ -142,6 +144,7 @@ protected:
 				Ivector2		PickCell			(const Fvector2& abs_pos);
 				Ivector2		GetItemPos			(CUICellItem* itm);
 				Ivector2		FindFreeCell		(const Ivector2& size);
+				bool			HasFreeSpace		(const Ivector2& size);
 				bool			IsRoomFree			(const Ivector2& pos, const Ivector2& size);
 				
 				bool			AddSimilar			(CUICellItem* itm);
