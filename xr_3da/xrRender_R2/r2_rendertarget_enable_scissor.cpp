@@ -37,7 +37,9 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 #endif
 
 	// Scissor
-	if (!HW.Caps.bScissor)	return		near_intersect;
+	//. disable scissor because some bugs prevent it to work through multi-portals
+	//. if (!HW.Caps.bScissor)	return		near_intersect;
+	return		near_intersect;
 
 	CSector*	S	= (CSector*)L->spatial.sector;
 	_scissor	bb	= S->r_scissor_merged;

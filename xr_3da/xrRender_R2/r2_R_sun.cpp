@@ -2,7 +2,7 @@
 #include "..\igame_persistent.h"
 #include "..\irenderable.h"
 
-const	float	tweak_COP_initial_offs			= 100000.f	;
+const	float	tweak_COP_initial_offs			= 1200.f	;
 const	float	tweak_ortho_xform_initial_offs	= 1000.f	;	//. ?
 const	float	tweak_guaranteed_range			= 20.f		;	//. ?
 
@@ -471,7 +471,7 @@ void CRender::render_sun				()
 				largest_sector			= S;
 			}
 		}
-		cull_sector	= largest_sector;
+		cull_sector					= largest_sector;
 
 		// COP - 100 km away
 		cull_COP.mad				(Device.vCameraPosition, fuckingsun->direction, -tweak_COP_initial_offs	);
@@ -521,7 +521,6 @@ void CRender::render_sun				()
 	s_casters.reserve							(s_receivers.size());
 	set_Recorder								(&s_casters);
 	r_dsgraph_render_subspace					(cull_sector, &cull_frustum, cull_xform, cull_COP, TRUE);
-//.	r_dsgraph_render_subspace					(cull_sector, cull_xform, cull_COP, TRUE);
 	set_Recorder								(NULL);
 
 	//	Prepare to interact with D3DX code

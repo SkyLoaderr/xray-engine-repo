@@ -41,7 +41,7 @@ void CRenderTarget::accum_point		(light* L)
 	draw_volume						(L);
 
 	// nv-stencil recompression
-	if (RImplementation.o.nvstencil)	u_stencil_optimize();
+	if (RImplementation.o.nvstencil)		u_stencil_optimize();
 
 	// *****************************	Minimize overdraw	*************************************
 	// Select shader (front or back-faces), *** back, if intersect near plane

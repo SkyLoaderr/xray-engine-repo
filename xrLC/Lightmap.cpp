@@ -160,34 +160,13 @@ void CLightmap::Save()
 		u32 h					= lm.height;
 		u32	pitch				= w*4;
 
-		/*
-		u32 w2					= lm.width/2;
-		u32 h2					= lm.height/2;
-		u32	pitch2				= w2*4;
-		xr_vector<u32>			packed_half(packed.size()/2); 
-		for (u32 y=0; y<lm.height-1; y++){
-			for (u32 x=0; x<lm.width-1; x++){
-				Fcolor p0;		p0.set(packed[y*lm.width+x]);
-				Fcolor p1;		p1.set(packed[y*lm.width+x+1]);
-				Fcolor p2;		p2.set(packed[(y+1)*lm.width+x]);
-				Fcolor p3;		p3.set(packed[(y+1)*lm.width+x+1]);
-				Fcolor dest;
-				dest.r			= (p0.r+p1.r+p2.r+p3.r)/4;
-				dest.g			= (p0.g+p1.g+p2.g+p3.g)/4;
-				dest.b			= (p0.b+p1.b+p2.b+p3.b)/4;
-				dest.a			= (p0.a+p1.a+p2.a+p3.a)/4;
-				packed_half[y/2*w+x/2] = dest.get();
-			}
-		}
-		*/
-
 		string_path				FN;
 		sprintf					(lm_texture.name,"lmap#%d",lmapNameID			); 
 		sprintf					(FN,"%s%s_2.dds",	pBuild->path,lm_texture.name);
 		BYTE*	raw_data		= LPBYTE(&*packed.begin());
 
 		STextureParams fmt;
-		fmt.fmt					= STextureParams::tfDXT1;
+		fmt.fmt					= STextureParams::tfDXT5;
 		fmt.flags.set			(STextureParams::flDitherColor,		FALSE);
 		fmt.flags.set			(STextureParams::flGenerateMipMaps,	FALSE);
 		fmt.flags.set			(STextureParams::flBinaryAlpha,		FALSE);

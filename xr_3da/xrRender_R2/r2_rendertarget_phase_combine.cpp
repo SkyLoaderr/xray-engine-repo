@@ -31,9 +31,9 @@ void	CRenderTarget::phase_combine	()
 		//	u_stencil_optimize				(FALSE);
 		//	RCache.set_ColorWriteEnable		();
 		// }
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_ZENABLE,			FALSE				));
-		g_pGamePersistent->Environment.RenderSky	();
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_ZENABLE,			TRUE				));
+		CHK_DX(HW.pDevice->SetRenderState( D3DRS_ZENABLE,	FALSE				));
+		g_pGamePersistent->Environment.RenderSky			();
+		CHK_DX(HW.pDevice->SetRenderState( D3DRS_ZENABLE,	TRUE				));
 	}
 
 	// 
@@ -65,7 +65,7 @@ void	CRenderTarget::phase_combine	()
 	{
 		// Compute params
 		Fmatrix		m_v2w;			m_v2w.invert				(Device.mView		);
-		CEnvDescriptorMixer& envdesc= g_pGamePersistent->Environment.CurrentEnv;
+		CEnvDescriptorMixer& envdesc= g_pGamePersistent->Environment.CurrentEnv		;
 		const float minamb			= 0.001f;
 		Fvector4	ambclr			= { _max(envdesc.ambient.x*2,minamb),	_max(envdesc.ambient.y*2,minamb),			_max(envdesc.ambient.z*2,minamb),	0	};
 					ambclr.mul		(ps_r2_sun_lumscale_amb);
@@ -73,7 +73,21 @@ void	CRenderTarget::phase_combine	()
 		Fvector4	fogclr			= { envdesc.fog_color.x,	envdesc.fog_color.y,	envdesc.fog_color.z,		0	};
 					envclr.x		*= 2*ps_r2_sun_lumscale_hemi; 
 					envclr.y		*= 2*ps_r2_sun_lumscale_hemi; 
-					envclr.z		*= 2*ps_r2_sun_lumscale_hemi; 
+					envclr.z		*= 2*ps_r2_sun_lumscale_hemi;
+		Fvector4	sunclr,sundir;
+
+		// sun-params
+		{
+			light*		fuckingsun		= (light*)RImplementation.Lights.sun_adapted._get()	;
+			Fvector		L_dir,L_clr;	float L_spec;
+			L_clr.set					(fuckingsun->color.r,fuckingsun->color.g,fuckingsun->color.b);
+			L_spec						= u_diffuse2s	(L_clr);
+			Device.mView.transform_dir	(L_dir,fuckingsun->direction);
+			L_dir.normalize				();
+
+			sunclr.set				(L_clr.x,L_clr.y,L_clr.z,L_spec);
+			sundir.set				(L_dir.x,L_dir.y,L_dir.z,0);
+		}
 
 		// Fill VB
 		float	_w					= float(Device.dwWidth);
@@ -96,12 +110,17 @@ void	CRenderTarget::phase_combine	()
 		t_envmap_1->surface_set		(e1);	_RELEASE(e1);
 	
 		// Draw
-		RCache.set_Element			(s_combine->E[0]		);
-		RCache.set_c				("m_v2w",		m_v2w	);
-		RCache.set_c				("L_ambient",	ambclr	);
-		RCache.set_c				("env_color",	envclr	);
-		RCache.set_c				("fog_color",	fogclr	);
-		RCache.set_Geometry			(g_combine_VP			);
+		RCache.set_Element			(s_combine->E[0]	);
+		RCache.set_Geometry			(g_combine_VP		);
+
+		RCache.set_c				("m_v2w",			m_v2w	);
+		RCache.set_c				("L_ambient",		ambclr	);
+
+		RCache.set_c				("Ldynamic_color",	sunclr	);
+		RCache.set_c				("Ldynamic_dir",	sundir	);
+
+		RCache.set_c				("env_color",		envclr	);
+		RCache.set_c				("fog_color",		fogclr	);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 

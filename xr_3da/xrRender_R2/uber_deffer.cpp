@@ -30,7 +30,7 @@ void	uber_deffer	(CBlender_Compile& C, bool hq, LPCSTR _vspec, LPCSTR _pspec, BO
 		fnameA[0] = fnameB[0] = 0;
 		strcat			(vs,"_flat");
 		strcat			(ps,"_flat");
-		if (hq && C.bDetail_Diffuse)	{
+		if (hq && (C.bDetail_Diffuse || C.bDetail_Bump) )	{
 			strcat		(vs,"_d");
 			strcat		(ps,"_d");
 		}
@@ -39,10 +39,10 @@ void	uber_deffer	(CBlender_Compile& C, bool hq, LPCSTR _vspec, LPCSTR _pspec, BO
 		strconcat		(fnameB,fnameA,"#");
 		strcat			(vs,"_bump");
 		strcat			(ps,"_bump");
-		if (hq && C.bDetail_Bump)		{
+		if (hq && (C.bDetail_Diffuse || C.bDetail_Bump) )	{
 			strcat		(vs,"_d"	);
 			strcat		(ps,"_d"	);
-			strcat		(dt,"_bump"	);
+//			strcat		(dt,"_bump"	);
 		}
 	}
 
@@ -59,6 +59,6 @@ void	uber_deffer	(CBlender_Compile& C, bool hq, LPCSTR _vspec, LPCSTR _pspec, BO
 	C.r_Sampler		("s_bump",		fnameA,				false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
 	C.r_Sampler		("s_bumpD",		dt,					false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
 	C.r_Sampler		("s_detail",	dt,					false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
-	if (lmap) C.r_Sampler("s_hemi",	C.L_textures[2],	false,	D3DTADDRESS_CLAMP,	D3DTEXF_LINEAR,		D3DTEXF_NONE,	D3DTEXF_LINEAR);
+	if (lmap)C.r_Sampler("s_hemi",	C.L_textures[2],	false,	D3DTADDRESS_CLAMP,	D3DTEXF_LINEAR,		D3DTEXF_NONE,	D3DTEXF_LINEAR);
 	C.r_End			();
 }

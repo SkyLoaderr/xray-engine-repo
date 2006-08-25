@@ -102,6 +102,7 @@ void					CRender::create					()
 	// options
 	o.bug				= (strstr(Core.Params,"-bug"))?			TRUE	:FALSE	;
 	o.sunfilter			= (strstr(Core.Params,"-sunfilter"))?	TRUE	:FALSE	;
+	o.sunstatic			= (strstr(Core.Params,"-sunstatic"))?	TRUE	:FALSE	;
 	o.sjitter			= (strstr(Core.Params,"-sjitter"))?		TRUE	:FALSE	;
 	o.depth16			= (strstr(Core.Params,"-depth16"))?		TRUE	:FALSE	;
 	o.noshadows			= (strstr(Core.Params,"-noshadows"))?	TRUE	:FALSE	;
@@ -392,6 +393,11 @@ HRESULT	CRender::shader_compile			(
 	}
 	if (o.sunfilter)		{
 		defines[def_it].Name		=	"USE_SUNFILTER";
+		defines[def_it].Definition	=	"1";
+		def_it						++	;
+	}
+	if (o.sunstatic)		{
+		defines[def_it].Name		=	"USE_R2_STATIC_SUN";
 		defines[def_it].Definition	=	"1";
 		def_it						++	;
 	}

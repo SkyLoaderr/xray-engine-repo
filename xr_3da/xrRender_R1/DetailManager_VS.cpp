@@ -175,9 +175,8 @@ void	CDetailManager::hw_Render_dump		(ref_constant x_array, u32 var_id, u32 lod_
 	vis_list& list	=	visible	[var_id];
 
 	CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
-	Fvector					c_sun,c_ambient,c_lmap,c_hemi;
+	Fvector					c_sun,c_ambient,c_hemi;
 	c_sun.set				(desc.sun_color.x,	desc.sun_color.y, desc.sun_color.z);	c_sun.mul(.5f);
-//	c_lmap.set				(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z);
 	c_ambient.set			(desc.ambient.x, desc.ambient.y, desc.ambient.z);
 	c_hemi.set				(desc.hemi_color.x, desc.hemi_color.y, desc.hemi_color.z);
 
@@ -222,7 +221,8 @@ void	CDetailManager::hw_Render_dump		(ref_constant x_array, u32 var_id, u32 lod_
 #else
 					// R2 only needs hemisphere
 					float		h			= Instance.c_hemi;
-					c_storage[base+3].set	(h,				h,				h,				h		);
+					float		s			= Instance.c_sun;
+					c_storage[base+3].set	(s,				s,				s,				h		);
 #endif
 					dwBatch	++;
 					if (dwBatch == hw_BatchSize)	{

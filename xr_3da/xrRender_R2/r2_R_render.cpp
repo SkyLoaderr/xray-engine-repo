@@ -25,8 +25,8 @@ void CRender::render_main	(Fmatrix&	m_ViewProjection, bool _fportals)
 			ViewBase,
 			Device.vCameraPosition,
 			m_ViewProjection,
-			CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA + 
-			(HW.Caps.bScissor?CPortalTraverser::VQ_SCISSOR:0)	// generate scissoring info
+			CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA + 0
+			//. disabled scissoring (HW.Caps.bScissor?CPortalTraverser::VQ_SCISSOR:0)	// generate scissoring info
 			);
 
 		// Determine visibility for static geometry hierrarhy
@@ -72,6 +72,15 @@ void CRender::render_main	(Fmatrix&	m_ViewProjection, bool _fportals)
 			ISpatial*	spatial		= lstRenderables[o_it];		spatial->spatial_updatesector	();
 			CSector*	sector		= (CSector*)spatial->spatial.sector;
 			if	(0==sector)										continue;	// disassociated from S/P structure
+
+			if (spatial->spatial.type & STYPE_LIGHTSOURCE)		{
+				// lightsource
+				light*			L				= (light*)	(spatial->dcast_Light());
+				VERIFY							(L);
+				Lights.add_light				(L);
+				continue						;
+			}
+
 			if	(PortalTraverser.i_marker != sector->r_marker)	continue;	// inactive (untouched) sector
 			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)	{
 				CFrustum&	view	= sector->r_frustums[v_it];
@@ -105,15 +114,6 @@ void CRender::render_main	(Fmatrix&	m_ViewProjection, bool _fportals)
 					renderable->renderable_Render	();
 					set_Object						(0);
 				}
-				else 
-				{
-					VERIFY							(spatial->spatial.type & STYPE_LIGHTSOURCE);
-					// lightsource
-					light*			L				= (light*)	(spatial->dcast_Light());
-					VERIFY							(L);
-					Lights.add_light				(L);
-				}
-
 				break;	// exit loop on frustums
 			}
 		}
@@ -184,6 +184,8 @@ void CRender::Render		()
 	RImplementation.o.distortion				= FALSE;		// disable distorion
 	Fcolor					sun_color			= ((light*)Lights.sun_adapted._get())->color;
 	BOOL					bSUN				= ps_r2_ls_flags.test(R2FLAG_SUN) && (u_diffuse2s(sun_color.r,sun_color.g,sun_color.b)>EPS);
+	if (o.sunstatic)		bSUN				= FALSE;
+	// Msg						("sstatic: %s, sun: %s",o.sunstatic?"true":"false", bSUN?"true":"false");
 
 	// HOM
 	ViewBase.CreateFromMatrix					(Device.mFullTransform, FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
