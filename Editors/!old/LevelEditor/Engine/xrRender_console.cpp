@@ -26,7 +26,7 @@ float		ps_r__Tree_w_rot			= 10.0f	;
 float		ps_r__Tree_w_speed			= 1.00f	;
 float		ps_r__Tree_w_amp			= 0.005f;
 Fvector		ps_r__Tree_Wave				= {.1f, .01f, .11f};
-float		ps_r__Tree_SBC				= 1.f	;	// scale bias correct
+float		ps_r__Tree_SBC				= 1.5f	;	// scale bias correct
 
 float		ps_r__WallmarkTTL			= 90.f	;
 
@@ -254,7 +254,7 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r__d_tree_w_speed",	&ps_r__Tree_w_speed,		1.0f,	10.f	);
 	CMD4(CCC_Float,		"r__d_tree_w_amp",		&ps_r__Tree_w_amp,			.001f,	1.f		);
 	CMD4(CCC_Vector3,	"r__d_tree_wave",		&ps_r__Tree_Wave,			tw_min, tw_max	);
-	CMD4(CCC_Float,		"r__d_tree_sbc",		&ps_r__Tree_SBC,			0.5f,	2.f		);
+//.	CMD4(CCC_Float,		"r__d_tree_sbc",		&ps_r__Tree_SBC,			0.5f,	2.f		);	// fixed in code. Oles.
 //#endif
 
 	// R1
