@@ -175,8 +175,7 @@ void	CDetailManager::hw_Render_dump		(ref_constant x_array, u32 var_id, u32 lod_
 	vis_list& list	=	visible	[var_id];
 
 	CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
-	Fvector					c_sun,c_ambient,c_hemi,c_lmap;
-	c_lmap.set				(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z);
+	Fvector					c_sun,c_ambient,c_hemi;
 	c_sun.set				(desc.sun_color.x,	desc.sun_color.y,	desc.sun_color.z);	c_sun.mul(.5f);
 	c_ambient.set			(desc.ambient.x,	desc.ambient.y,		desc.ambient.z);
 	c_hemi.set				(desc.hemi_color.x, desc.hemi_color.y,	desc.hemi_color.z);
@@ -215,7 +214,7 @@ void	CDetailManager::hw_Render_dump		(ref_constant x_array, u32 var_id, u32 lod_
 #if RENDER==R_R1
 					Fvector C;
 					C.set					(c_ambient);
-					C.mad					(c_lmap,Instance.c_rgb);
+//					C.mad					(c_lmap,Instance.c_rgb);
 					C.mad					(c_hemi,Instance.c_hemi);
 					C.mad					(c_sun,	Instance.c_sun);
 					c_storage[base+3].set	(C.x,			C.y,			C.z,			1.f		);
