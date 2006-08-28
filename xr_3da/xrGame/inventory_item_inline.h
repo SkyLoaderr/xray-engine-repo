@@ -7,22 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-/*
-IC	int	CInventoryItem::GetVolume						() const
-{
-	return				(m_iGridWidth*m_iGridHeight);
-}
 
-IC	int	CInventoryItem::GetHeight						() const
-{
-	return				(m_iGridHeight);
-}
-
-IC	int	CInventoryItem::GetWidth						() const
-{
-	return				(m_iGridWidth);
-}
-*/
 IC	bool CInventoryItem::useful_for_NPC					() const
 {
 	return				(Useful() && m_flags.test(Fuseful_for_NPC));

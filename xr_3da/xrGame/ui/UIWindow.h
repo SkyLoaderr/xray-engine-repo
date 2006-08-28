@@ -163,8 +163,8 @@ public:
 	Fvector2				GetAbsolutePos		() 												{Frect abs = GetAbsoluteRect(); return Fvector2().set(abs.x1,abs.y1);}
 
 
-	virtual void			SetWndRect_script(float x, float y, float width, float height)		{CUISimpleWindow::SetWndRect(x,y,width,height);}
-	virtual void			SetWndRect_script(Frect rect)										{CUISimpleWindow::SetWndRect(rect);}
+			void			SetWndRect_script(float x, float y, float width, float height)		{CUISimpleWindow::SetWndRect(x,y,width,height);}
+			void			SetWndRect_script(Frect rect)										{CUISimpleWindow::SetWndRect(rect);}
 
 	//прорисовка окна
 	virtual void			Draw				();
@@ -178,7 +178,7 @@ public:
 	IC		bool			GetPPMode			()		{return m_bPP;};
 	//для перевода окна и потомков в исходное состояние
 	virtual void			Reset				();
-	virtual void			ResetAll			();
+			void			ResetAll			();
 
 
 	//временно!!!! (а может уже и нет)

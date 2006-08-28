@@ -98,18 +98,18 @@ public:
 	virtual void		Update()										= 0;
 	virtual void		SetWndPos(const Fvector2& pos)					= 0;
 	virtual void		SetWndPos(float x, float y)						= 0;
-	virtual Fvector2	GetWndPos()								const	= 0;
+//.	virtual Fvector2	GetWndPos()								const	= 0;
 	virtual void		SetWndSize(const Fvector2& size)				= 0;
-	virtual Fvector2	GetWndSize()							const	= 0;
+//.	virtual Fvector2	GetWndSize()							const	= 0;
 	virtual void		SetWndRect(const Frect& rect)					= 0;
-	virtual Frect		GetWndRect()							const	= 0;
+//.	virtual Frect		GetWndRect()							const	= 0;
 	virtual void		SetHeight(float height)							= 0;
-	virtual float		GetHeight()								const	= 0;
+//.	virtual float		GetHeight()								const	= 0;
 	virtual void		SetWidth(float width)							= 0;
-	virtual float		GetWidth()								const	= 0;
-	virtual void		SetVisible(bool vis)							= 0;
-	virtual bool		GetVisible()							const	= 0;
-	virtual void		SetAlignment(EWindowAlignment al)				= 0;
+//.	virtual float		GetWidth()								const	= 0;
+//.	virtual void		SetVisible(bool vis)							= 0;
+//.	virtual bool		GetVisible()							const	= 0;
+//.	virtual void		SetAlignment(EWindowAlignment al)				= 0;
 };
 
 class CUISimpleWindow : public IUISimpleWindow {
@@ -118,21 +118,21 @@ public:
 	virtual void			Init(float x, float y, float width, float height)	{m_wndPos.set(x,y);m_wndSize.set(width, height);}
 	virtual void			SetWndPos(const Fvector2& pos)				{m_wndPos.set(pos.x,pos.y);}
 	virtual void			SetWndPos(float x, float y)					{m_wndPos.set(x,y);}
-	virtual Fvector2		GetWndPos()							const	{return m_wndPos;}
+	IC		Fvector2		GetWndPos()							const	{return m_wndPos;}
 	virtual void			SetWndSize(const Fvector2& size)			{m_wndSize = size;}
-	virtual Fvector2		GetWndSize()						const	{return m_wndSize;}
+	IC		Fvector2		GetWndSize()						const	{return m_wndSize;}
 	virtual void			SetHeight(float height)						{m_wndSize.y = height;}
-	virtual float			GetHeight()							const	{return m_wndSize.y;}
+	IC		float			GetHeight()							const	{return m_wndSize.y;}
 	virtual void			SetWidth(float width)						{m_wndSize.x = width;}
-	virtual float			GetWidth()							const	{return m_wndSize.x;}
-	virtual void			SetVisible(bool vis)						{m_bShowMe = vis;}
-	virtual bool			GetVisible()						const	{return m_bShowMe;}
-	virtual void			SetAlignment(EWindowAlignment al)			{m_alignment = al;};
+	IC		float			GetWidth()							const	{return m_wndSize.x;}
+	IC		void			SetVisible(bool vis)						{m_bShowMe = vis;}
+	IC		bool			GetVisible()						const	{return m_bShowMe;}
+	IC		void			SetAlignment(EWindowAlignment al)			{m_alignment = al;};
 	virtual void			SetWndRect(float x, float y, float width, float height) {
 																						m_wndPos.set(x,y); 
 																						m_wndSize.set(width,height); }
 	virtual void			SetWndRect(const Frect& rect)				{SetWndRect(rect.lt.x, rect.lt.y, rect.width(), rect.height());}
-	virtual Frect			GetWndRect()						const
+	IC		Frect			GetWndRect()						const
 	{
 		switch (m_alignment){
 			case waNone:

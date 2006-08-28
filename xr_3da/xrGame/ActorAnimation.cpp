@@ -518,8 +518,12 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 
 		CStepManager::on_animation_start(M_legs, m_current_legs_blend);
 	}
-	HUD().Font().pFontSmall->OutSetI	(0,0);
-	HUD().Font().pFontSmall->OutNext("[%s]",mov_state[moving_idx]);
+#ifdef _DEBUG
+	if(bDebug){
+		HUD().Font().pFontSmall->OutSetI	(0,0);
+		HUD().Font().pFontSmall->OutNext("[%s]",mov_state[moving_idx]);
+	}
+#endif
 
 #if 0//def _DEBUG
 	if ((Level().CurrentControlEntity() == this) && g_ShowAnimationInfo) {
