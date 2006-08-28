@@ -61,6 +61,16 @@ CStats::~CStats()
 	xr_delete		(pFont);
 }
 
+void _draw_cam_pos(CGameFont* pFont)
+{
+	float sz		= pFont->GetSize();
+	pFont->SetSize	(14);
+	pFont->SetColor	(0xffffffff);
+	pFont->Out		(10, 600, "CAMERA POSITION:  [%3.2f,%3.2f,%3.2f]",VPUSH(Device.vCameraPosition));
+	pFont->SetSize	(sz);
+	pFont->OnRender	();
+}
+
 void CStats::Show() 
 {
 	// Stop timers
@@ -156,17 +166,6 @@ void CStats::Show()
 	float		f_base_size	= 8;	//F.GetSize();
 				F.SetSize	(f_base_size);
 
-/* moved to igame_level::on_render
-	if( Device.Pause() && !g_pGamePersistent->m_pMainUI->IsActive() && bShowPauseString){
-		float sz		= pFont->GetSize();
-		pFont->SetSize	(32);
-		pFont->SetColor	(0x80FF0000	);
-		pFont->OutSet	(Device.dwWidth/2.0f-(pFont->SizeOf("Game paused")/2.0f),Device.dwHeight/2.0f);
-		pFont->OutNext	("Game paused");
-		pFont->OnRender	();
-		pFont->SetSize	(sz);
-	}
-*/
 	if (vtune.enabled())	{
 		float sz		= pFont->GetSize();
 		pFont->SetSize	(16);
@@ -269,11 +268,6 @@ void CStats::Show()
 		F.OutNext	("netServer:   %2.2fms, %d",netServer.result,netServer.count);
 		F.OutSkip	();
 
-		float sz		= pFont->GetSize();
-		pFont->SetSize	(14);
-		F.OutNext	("CAMERA POS:  [%3.2f,%3.2f,%3.2f]",VPUSH(Device.vCameraPosition));
-		pFont->SetSize	(sz);
-
 		F.OutSkip	();
 		F.OutNext	("TEST 0:      %2.2fms, %d",TEST0.result,TEST0.count);
 		F.OutNext	("TEST 1:      %2.2fms, %d",TEST1.result,TEST1.count);
@@ -308,8 +302,12 @@ void CStats::Show()
 		F.SetSize						(f_base_size);
 		seqStats.Process				(rp_Stats);
 		pFont->OnRender					();
-	}
+	};
 
+	if( psDeviceFlags.test(rsStatistic) || psDeviceFlags.test(rsCameraPos) ){
+		_draw_cam_pos					(pFont);
+		pFont->OnRender					();
+	};
 #ifdef DEBUG
 	//////////////////////////////////////////////////////////////////////////
 	// PERF ALERT

@@ -54,6 +54,7 @@ CTorch::~CTorch(void)
 	HUD_SOUND::DestroySound	(m_NightVisionOnSnd);
 	HUD_SOUND::DestroySound	(m_NightVisionOffSnd);
 	HUD_SOUND::DestroySound	(m_NightVisionIdleSnd);
+	HUD_SOUND::DestroySound	(m_NightVisionBrokenSnd);
 }
 
 inline bool CTorch::can_use_dynamic_lights	()
@@ -77,13 +78,12 @@ void CTorch::Load(LPCSTR section)
 	m_bNightVisionEnabled = !!pSettings->r_bool(section,"night_vision");
 	if(m_bNightVisionEnabled)
 	{
-		if(pSettings->line_exist(section, "snd_night_vision_on"))
-			HUD_SOUND::LoadSound(section,"snd_night_vision_on"	, m_NightVisionOnSnd	, SOUND_TYPE_ITEM_USING);
-		if(pSettings->line_exist(section, "snd_night_vision_off"))
-			HUD_SOUND::LoadSound(section,"snd_night_vision_off"	, m_NightVisionOffSnd	, SOUND_TYPE_ITEM_USING);
-		if(pSettings->line_exist(section, "snd_night_vision_idle"))
-			HUD_SOUND::LoadSound(section,"snd_night_vision_idle", m_NightVisionIdleSnd	, SOUND_TYPE_ITEM_USING);
+		HUD_SOUND::LoadSound(section,"snd_night_vision_on"	, m_NightVisionOnSnd	, SOUND_TYPE_ITEM_USING);
+		HUD_SOUND::LoadSound(section,"snd_night_vision_off"	, m_NightVisionOffSnd	, SOUND_TYPE_ITEM_USING);
+		HUD_SOUND::LoadSound(section,"snd_night_vision_idle", m_NightVisionIdleSnd	, SOUND_TYPE_ITEM_USING);
+		HUD_SOUND::LoadSound(section,"snd_night_vision_broken", m_NightVisionBrokenSnd, SOUND_TYPE_ITEM_USING);
 
+	
 		m_NightVisionRechargeTime		= pSettings->r_float(section,"night_vision_recharge_time");
 		m_NightVisionRechargeTimeMin	= pSettings->r_float(section,"night_vision_recharge_time_min");
 		m_NightVisionDischargeTime		= pSettings->r_float(section,"night_vision_discharge_time");
@@ -108,27 +108,40 @@ void CTorch::SwitchNightVision(bool vision_on)
 	else
 		m_bNightVisionOn = false;
 
+	CActor *pA = smart_cast<CActor *>(H_Parent());
+
+	if(!pA)					return;
+
+	LPCSTR disabled_names	= pSettings->r_string(cNameSect(),"disabled_maps");
+	LPCSTR curr_map			= *Level().name();
+	u32 cnt					= _GetItemCount(disabled_names);
+	bool b_allow			= true;
+	string512				tmp;
+	for(u32 i=0; i<cnt;++i){
+		_GetItem(disabled_names, i, tmp);
+		if(0==stricmp(tmp, curr_map)){
+			b_allow = false;
+			break;
+		}
+	}
+	if(!b_allow){
+		HUD_SOUND::PlaySound(m_NightVisionBrokenSnd, pA->Position(), pA, true);
+		return;
+	}
+
 	if(m_bNightVisionOn){
-		CActor *pA = smart_cast<CActor *>(H_Parent());
-		if (pA) 
-		{
-			CEffectorPP* pp = pA->Cameras().GetPPEffector((EEffectorPPType)effNightvision);
-			if(!pp){
-				AddEffector(pA,effNightvision, "effector_nightvision");
-				HUD_SOUND::PlaySound(m_NightVisionOnSnd, pA->Position(), pA, true);
-				HUD_SOUND::PlaySound(m_NightVisionIdleSnd, pA->Position(), pA, true, true);
-			}
+		CEffectorPP* pp = pA->Cameras().GetPPEffector((EEffectorPPType)effNightvision);
+		if(!pp){
+			AddEffector(pA,effNightvision, "effector_nightvision");
+			HUD_SOUND::PlaySound(m_NightVisionOnSnd, pA->Position(), pA, true);
+			HUD_SOUND::PlaySound(m_NightVisionIdleSnd, pA->Position(), pA, true, true);
 		}
 	}else{
-		CActor *pA = smart_cast<CActor *>(H_Parent());
-		if(pA)
-		{
- 			CEffectorPP* pp = pA->Cameras().GetPPEffector((EEffectorPPType)effNightvision);
-			if(pp){
-				pp->Stop			(1.0f);
-				HUD_SOUND::PlaySound(m_NightVisionOffSnd, pA->Position(), pA, true);
-				HUD_SOUND::StopSound(m_NightVisionIdleSnd);
-			}
+ 		CEffectorPP* pp = pA->Cameras().GetPPEffector((EEffectorPPType)effNightvision);
+		if(pp){
+			pp->Stop			(1.0f);
+			HUD_SOUND::PlaySound(m_NightVisionOffSnd, pA->Position(), pA, true);
+			HUD_SOUND::StopSound(m_NightVisionIdleSnd);
 		}
 	}
 }

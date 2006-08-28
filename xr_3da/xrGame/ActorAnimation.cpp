@@ -99,11 +99,14 @@ void  CActor::VehicleHeadCallback(CBoneInstance* B)
 	B->mTransform.c		= c;
 }
 
-void SActorMotions::SActorState::STorsoWpn::Create(CKinematicsAnimated* K, LPCSTR base0, LPCSTR base1)
+void STorsoWpn::Create(CKinematicsAnimated* K, LPCSTR base0, LPCSTR base1)
 {
 	char			buf[128];
-	aim				= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_aim_2"));
-	aim_zoom		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_aim_0"));
+	moving[eIdle]	= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_aim_1"));
+	moving[eWalk]	= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_aim_2"));
+	moving[eRun]	= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_aim_3"));
+	moving[eSprint]	= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_escape_0"));
+	zoom			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_aim_0"));
 	holster			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_holster_0"));
 	draw			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_draw_0"));
 	reload			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_reload_0"));
@@ -118,7 +121,7 @@ void SActorMotions::SActorState::STorsoWpn::Create(CKinematicsAnimated* K, LPCST
 	all_attack_1	= K->ID_Cycle_Safe(strconcat(buf,base0,"_all",base1,"_attack_1"));
 	all_attack_2	= K->ID_Cycle_Safe(strconcat(buf,base0,"_all",base1,"_attack_2"));
 }
-void SActorMotions::SActorState::SAnimState::Create(CKinematicsAnimated* K, LPCSTR base0, LPCSTR base1)
+void SAnimState::Create(CKinematicsAnimated* K, LPCSTR base0, LPCSTR base1)
 {
 	char			buf[128];
 	legs_fwd		= K->ID_Cycle(strconcat(buf,base0,base1,"_fwd_0"));
@@ -128,7 +131,7 @@ void SActorMotions::SActorState::SAnimState::Create(CKinematicsAnimated* K, LPCS
 }
 
 
-void SActorMotions::SActorState::CreateClimb(CKinematicsAnimated* K)
+void SActorState::CreateClimb(CKinematicsAnimated* K)
 {
 	string128		buf,buf1;
 	string16		base;
@@ -167,7 +170,7 @@ void SActorMotions::SActorState::CreateClimb(CKinematicsAnimated* K)
 }
 
 
-void SActorMotions::SActorState::Create(CKinematicsAnimated* K, LPCSTR base)
+void SActorState::Create(CKinematicsAnimated* K, LPCSTR base)
 {
 	string128		buf,buf1;
 	legs_turn		= K->ID_Cycle(strconcat(buf,base,"_turn"));
@@ -199,14 +202,13 @@ void SActorMotions::SActorState::Create(CKinematicsAnimated* K, LPCSTR base)
 		m_damage[k]	= K->ID_FX(strconcat(buf,base,"_damage_",itoa(k,buf1,10)));
 }
 
-void SActorMotions::SActorSprintState::Create(CKinematicsAnimated* K)
+void SActorSprintState::Create(CKinematicsAnimated* K)
 {
 	
 	//torso anims
-	string128 buf,buf1;
-	//strcpy(buf,"norm_torso_");
-	for (int k=0; k<9; ++k)
-		m_torso[k]	= K->ID_Cycle(strconcat(buf,"norm_torso_",itoa(k,buf1,10),"_escape_0"));
+//.	string128 buf,buf1;
+//.	for (int k=0; k<9; ++k)
+//.		m_torso[k]	= K->ID_Cycle(strconcat(buf,"norm_torso_",itoa(k,buf1,10),"_escape_0"));
 	//leg anims
 	legs_fwd=K->ID_Cycle("norm_escape_00");
 	legs_ls=K->ID_Cycle("norm_escape_ls_00");
@@ -214,10 +216,6 @@ void SActorMotions::SActorSprintState::Create(CKinematicsAnimated* K)
 }
 void SActorMotions::Create(CKinematicsAnimated* V)
 {
-	//m_steering_torso_left	= V->ID_Cycle_Safe("steering_torso_ls");
-	//m_steering_torso_right	= V->ID_Cycle_Safe("steering_torso_rs");
-	//m_steering_torso_idle	= V->ID_Cycle_Safe("steering_torso_idle");
-	//m_steering_legs_idle	= V->ID_Cycle_Safe("steering_legs_idle");
 	m_dead_stop				= V->ID_Cycle("norm_dead_stop_0");
 
 	m_normal.Create	(V,"norm");
@@ -236,7 +234,7 @@ void SActorVehicleAnims::Create(CKinematicsAnimated* V)
 	for(u16 i=0;TYPES_NUMBER>i;++i) m_vehicles_type_collections[i].Create(V,i);
 }
 
-SActorVehicleAnims::SOneTypeCollection::SOneTypeCollection()
+SVehicleAnimCollection::SVehicleAnimCollection()
 {
 	for(u16 i=0;MAX_IDLES>i;++i) idles[i].invalidate();
 	idles_num = 0;
@@ -244,7 +242,7 @@ SActorVehicleAnims::SOneTypeCollection::SOneTypeCollection()
 	steer_right.invalidate();
 }
 
-void SActorVehicleAnims::SOneTypeCollection::Create(CKinematicsAnimated* V,u16 num)
+void SVehicleAnimCollection::Create(CKinematicsAnimated* V,u16 num)
 {
 	string128 buff,buff1,buff2;
 	strconcat(buff1,itoa(num,buff,10),"_");
@@ -263,7 +261,7 @@ void CActor::steer_Vehicle(float angle)
 	if(!m_holder)		return;
 	CCar*	car			= smart_cast<CCar*>(m_holder);
 	u16 anim_type       = car->DriverAnimationType();
-	SActorVehicleAnims::SOneTypeCollection& anims=m_vehicle_anims->m_vehicles_type_collections[anim_type];
+	SVehicleAnimCollection& anims=m_vehicle_anims->m_vehicles_type_collections[anim_type];
 	if(angle==0.f) 		smart_cast<CKinematicsAnimated*>	(Visual())->PlayCycle(anims.idles[0]);
 	else if(angle>0.f)	smart_cast<CKinematicsAnimated*>	(Visual())->PlayCycle(anims.steer_right);
 	else				smart_cast<CKinematicsAnimated*>	(Visual())->PlayCycle(anims.steer_left);
@@ -278,13 +276,13 @@ void legs_play_callback		(CBlend *blend)
 
 void CActor::g_SetSprintAnimation( u32 mstate_rl,MotionID &head,MotionID &torso,MotionID &legs)
 {
-	SActorMotions::SActorSprintState	&sprint=m_anims->m_sprint;
-	CHudItem							*H = smart_cast<CHudItem*>(inventory().ActiveItem());
+	SActorSprintState& sprint			= m_anims->m_sprint;
+/*	CHudItem							*H = smart_cast<CHudItem*>(inventory().ActiveItem());
 	if (H)
 		torso							= sprint.m_torso[H->animation_slot()];
 	else
 		torso							= sprint.m_torso[0];
-
+*/
 		 if (mstate_rl & mcFwd)		legs = sprint.legs_fwd;
 	else if (mstate_rl & mcLStrafe) legs = sprint.legs_ls;
 	else if (mstate_rl & mcRStrafe)	legs = sprint.legs_rs;
@@ -297,11 +295,17 @@ CMotion*        FindMotionKeys(MotionID motion_ID,IRender_Visual* V)
 }
 
 BOOL	g_ShowAnimationInfo = TRUE;
+char* mov_state[] ={
+	"idle",
+	"walk",
+	"run",
+	"sprint",
+};
 void CActor::g_SetAnimation( u32 mstate_rl )
 {
 	if (!g_Alive()) {
 		if (m_current_legs||m_current_torso){
-			SActorMotions::SActorState* ST = 0;
+			SActorState*				ST = 0;
 			if (mstate_rl&mcCrouch)		ST = &m_anims->m_crouch;
 			else						ST = &m_anims->m_normal;
 			mstate_real					= 0;
@@ -313,20 +317,30 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 
 		return;
 	}
-
-	SActorMotions::SActorState*				ST = 0;
-	SActorMotions::SActorState::SAnimState*	AS = 0;
+	STorsoWpn::eMovingState	moving_idx 		= STorsoWpn::eIdle;
+	SActorState*					ST 		= 0;
+	SAnimState*						AS 		= 0;
 	
-	if		(mstate_rl&mcCrouch)	ST = &m_anims->m_crouch;
-	else if	(mstate_rl&mcClimb)		ST = &m_anims->m_climb;
-	else							ST = &m_anims->m_normal;
+	if		(mstate_rl&mcCrouch)	ST 		= &m_anims->m_crouch;
+	else if	(mstate_rl&mcClimb)		ST 		= &m_anims->m_climb;
+	else							ST 		= &m_anims->m_normal;
 
-	if (isActorAccelerated(mstate_rl, IsZoomAimingMode()))	AS = &ST->m_run;
-	else							AS = &ST->m_walk;
+	bool bAccelerated = isActorAccelerated(mstate_rl, IsZoomAimingMode());
+	if ( bAccelerated ){
+		AS							= &ST->m_run;
+	}else{
+		AS							= &ST->m_walk;
+	}
+	if(mstate_rl&mcAnyMove){
+		if( bAccelerated )
+			moving_idx				= STorsoWpn::eRun;
+		else
+			moving_idx				= STorsoWpn::eWalk;
+	}
 	// анимации
-	MotionID M_legs;
-	MotionID M_torso;
-	MotionID M_head;
+	MotionID 						M_legs;
+	MotionID 						M_torso;
+	MotionID 						M_head;
 
 	//если мы просто стоим на месте
 	bool is_standing = false;
@@ -344,7 +358,10 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	else if (mstate_rl&mcRStrafe)	M_legs	= AS->legs_rs;
 	else is_standing = true;
 
-	if(mstate_rl&mcSprint)g_SetSprintAnimation(mstate_rl,M_head,M_torso,M_legs);
+	if(mstate_rl&mcSprint){
+		g_SetSprintAnimation			(mstate_rl,M_head,M_torso,M_legs);
+		moving_idx						= STorsoWpn::eSprint;
+	}
 	// Torso
 	if(mstate_rl&mcClimb)
 	{
@@ -361,7 +378,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		CMissile	*M = smart_cast<CMissile*>(inventory().ActiveItem());
 					
 		if (H) {
-			SActorMotions::SActorState::STorsoWpn* TW	= &ST->m_torso[H->animation_slot() - 1];
+			STorsoWpn* TW			= &ST->m_torso[H->animation_slot() - 1];
 			if (!b_DropActivated&&!fis_zero(f_DropPower)){
 				M_torso					= TW->drop;
 				if (!M_torso)	
@@ -373,38 +390,40 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			}else{
 				if (!m_bAnimTorsoPlayed) {
 					if (W) {
-						bool K =inventory().ActiveItem()->object().CLS_ID == CLSID_OBJECT_W_KNIFE;
+						bool K	=inventory().GetActiveSlot() == KNIFE_SLOT;
 						bool R3 = W->IsTriStateReload();
 						
 						if(K)
 						{
 							switch (W->GetState()){
-							case CWeapon::eIdle:	M_torso	= TW->aim;		break;
+							case CWeapon::eIdle:		M_torso	= TW->moving[moving_idx];		break;
 							
 							case CWeapon::eFire:	
 								if(is_standing)
-									M_torso = M_legs = M_head = TW->all_attack_0;
+														M_torso = M_legs = M_head = TW->all_attack_0;
 								else
-									M_torso	= TW->attack_zoom;
+														M_torso	= TW->attack_zoom;
 								break;
+
 							case CWeapon::eFire2:
 								if(is_standing)
-									M_torso = M_legs = M_head = TW->all_attack_1;
+														M_torso = M_legs = M_head = TW->all_attack_1;
 								else
-									M_torso	= TW->fire_idle;
+														M_torso	= TW->fire_idle;
 								break;
-							case CWeapon::eReload:	M_torso	= TW->reload;	break;
-							case CWeapon::eShowing:	M_torso	= TW->draw;		break;
-							case CWeapon::eHiding:	M_torso	= TW->holster;	break;
-							default				 :  M_torso	= TW->aim;		break;
+
+							case CWeapon::eReload:		M_torso	= TW->reload;					break;
+							case CWeapon::eShowing:		M_torso	= TW->draw;						break;
+							case CWeapon::eHiding:		M_torso	= TW->holster;					break;
+							default				 :  	M_torso	= TW->moving[moving_idx];		break;
 							}
 						}
 						else
 						{
 							switch (W->GetState()){
-							case CWeapon::eIdle:	M_torso	= W->IsZoomed()?TW->aim_zoom:TW->aim;		break;
-							case CWeapon::eFire:	M_torso	= W->IsZoomed()?TW->attack_zoom:TW->attack;	break;
-							case CWeapon::eFire2:	M_torso	= W->IsZoomed()?TW->attack_zoom:TW->attack; break;
+							case CWeapon::eIdle:		M_torso	= W->IsZoomed()?TW->zoom:TW->moving[moving_idx];	break;
+							case CWeapon::eFire:		M_torso	= W->IsZoomed()?TW->attack_zoom:TW->attack;				break;
+							case CWeapon::eFire2:		M_torso	= W->IsZoomed()?TW->attack_zoom:TW->attack;				break;
 							case CWeapon::eReload:	
 								if(!R3)
 									M_torso	= TW->reload;
@@ -418,9 +437,9 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 									}
 								}break;
 
-							case CWeapon::eShowing:	M_torso	= TW->draw;		break;
-							case CWeapon::eHiding:	M_torso	= TW->holster;	break;
-							default				 :  M_torso	= TW->aim;		break;
+							case CWeapon::eShowing:	M_torso	= TW->draw;					break;
+							case CWeapon::eHiding:	M_torso	= TW->holster;				break;
+							default				 :  M_torso	= TW->moving[moving_idx];	break;
 							}
 						}
 					}
@@ -430,8 +449,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 							switch (M->GetState()){
 							case MS_SHOWING	 :		M_torso	= TW->draw;			break;
 							case MS_HIDING	 :		M_torso	= TW->holster;		break;
-							case MS_IDLE	 :		M_torso	= TW->aim_zoom;		break;
-							case MS_EMPTY	 :		M_torso	= TW->aim_zoom;		break;
+							case MS_IDLE	 :		M_torso	= TW->moving[moving_idx];		break;
+							case MS_EMPTY	 :		M_torso	= TW->zoom;		break;
 							case MS_THREATEN :		M_torso = M_legs = M_head = TW->all_attack_0;	break;
 							case MS_READY	 :		M_torso = M_legs = M_head = TW->all_attack_1;	break;
 							case MS_THROW	 :		M_torso = M_legs = M_head = TW->all_attack_2;	break;
@@ -442,15 +461,15 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 						else
 						{
 							switch (M->GetState()){
-							case MS_SHOWING	 :		M_torso	= TW->draw;			break;
-							case MS_HIDING	 :		M_torso	= TW->holster;		break;
-							case MS_IDLE	 :		M_torso	= TW->aim_zoom;		break;
-							case MS_EMPTY	 :		M_torso	= TW->aim_zoom;		break;
-							case MS_THREATEN :		M_torso	= TW->attack_zoom;	break;
-							case MS_READY	 :		M_torso	= TW->fire_idle;	break;
-							case MS_THROW	 :		M_torso	= TW->fire_end;		break;
-							case MS_END		 :		M_torso	= TW->fire_end;		break;
-							default			 :		M_torso	= TW->draw;			break; 
+							case MS_SHOWING	 :		M_torso	= TW->draw;						break;
+							case MS_HIDING	 :		M_torso	= TW->holster;					break;
+							case MS_IDLE	 :		M_torso	= TW->moving[moving_idx];		break;
+							case MS_EMPTY	 :		M_torso	= TW->moving[moving_idx];		break;
+							case MS_THREATEN :		M_torso	= TW->attack_zoom;				break;
+							case MS_READY	 :		M_torso	= TW->fire_idle;				break;
+							case MS_THROW	 :		M_torso	= TW->fire_end;					break;
+							case MS_END		 :		M_torso	= TW->fire_end;					break;
+							default			 :		M_torso	= TW->draw;						break; 
 							}
 						}
 					}
@@ -499,6 +518,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 
 		CStepManager::on_animation_start(M_legs, m_current_legs_blend);
 	}
+	HUD().Font().pFontSmall->OutSetI	(0,0);
+	HUD().Font().pFontSmall->OutNext("[%s]",mov_state[moving_idx]);
 
 #if 0//def _DEBUG
 	if ((Level().CurrentControlEntity() == this) && g_ShowAnimationInfo) {

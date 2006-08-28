@@ -63,6 +63,7 @@ protected:
 	HUD_SOUND				m_NightVisionOnSnd;
 	HUD_SOUND				m_NightVisionOffSnd;
 	HUD_SOUND				m_NightVisionIdleSnd;
+	HUD_SOUND				m_NightVisionBrokenSnd;
 
 	float					m_NightVisionRechargeTime;
 	float					m_NightVisionRechargeTimeMin;

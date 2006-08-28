@@ -44,8 +44,8 @@ void CUICarPanel::Init			(float x, float y, float width, float height)
 
 void CUICarPanel::SetCarHealth(float value)
 {
-	s16 pos = s16(value*100);
-	clamp<s16>(pos, 0, 100);
+	float pos = value*100;
+	clamp(pos, 0.0f, 100.0f);
 	UICarHealthBar.SetProgressPos(pos);
 }
 

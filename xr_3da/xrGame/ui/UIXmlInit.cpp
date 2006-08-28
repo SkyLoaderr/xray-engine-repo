@@ -527,12 +527,12 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 
 	pWnd->Init(x, y, width, height, is_horizontal);
 
-	int min = xml_doc.ReadAttribInt(path, index, "min");
-	int max = xml_doc.ReadAttribInt(path, index, "max");
-	int pos = xml_doc.ReadAttribInt(path, index, "pos");
+	float min = xml_doc.ReadAttribFlt(path, index, "min");
+	float max = xml_doc.ReadAttribFlt(path, index, "max");
+	float pos = xml_doc.ReadAttribFlt(path, index, "pos");
 	
-	pWnd->SetRange((s16)min,(s16)max);
-	pWnd->SetProgressPos((s16)pos);
+	pWnd->SetRange			(min, max);
+	pWnd->SetProgressPos	(pos);
 
 	// progress
 	strconcat(buf,path,":progress");

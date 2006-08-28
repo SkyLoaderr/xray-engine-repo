@@ -8,7 +8,7 @@ CUIMotionIcon::CUIMotionIcon()
 {
 	m_curren_state	= stLast;
 	m_bchanged		= false;
-	m_luminosity	= 0;
+	m_luminosity	= 0.0f;
 }
 
 CUIMotionIcon::~CUIMotionIcon()
@@ -76,18 +76,18 @@ void CUIMotionIcon::ShowState(EState state)
 	m_curren_state=state;
 }
 
-void CUIMotionIcon::SetPower(s16 Pos)
+void CUIMotionIcon::SetPower(float Pos)
 {
 	m_power_progress.SetProgressPos(Pos);
 }
 
-void CUIMotionIcon::SetNoise(s16 Pos)
+void CUIMotionIcon::SetNoise(float Pos)
 {
 	Pos	= clampr(Pos, m_noise_progress.GetRange_min(), m_noise_progress.GetRange_max());
 	m_noise_progress.SetProgressPos(Pos);
 }
 
-void CUIMotionIcon::SetLuminosity(s16 Pos)
+void CUIMotionIcon::SetLuminosity(float Pos)
 {
 	Pos						= clampr(Pos, m_luminosity_progress.GetRange_min(), m_luminosity_progress.GetRange_max());
 	m_luminosity			= Pos;
@@ -100,7 +100,7 @@ void CUIMotionIcon::Update()
 		if( m_npc_visibility.size() )
 		{
 			std::sort					(m_npc_visibility.begin(), m_npc_visibility.end());
-			SetLuminosity				(s16(iFloor(m_npc_visibility.back().value)) );
+			SetLuminosity				(m_npc_visibility.back().value);
 		}else
 			SetLuminosity				(m_luminosity_progress.GetRange_min() );
 	}
@@ -108,16 +108,16 @@ void CUIMotionIcon::Update()
 	
 	//m_luminosity_progress 
 	{
-		s16 len					= m_noise_progress.GetRange_max()-m_noise_progress.GetRange_min();
-		int cur_pos				= m_luminosity_progress.GetProgressPos();
+		float len					= m_noise_progress.GetRange_max()-m_noise_progress.GetRange_min();
+		float cur_pos				= m_luminosity_progress.GetProgressPos();
 		if(cur_pos!=m_luminosity){
 			if(m_luminosity>cur_pos){
-				cur_pos				+= iFloor(len*Device.fTimeDelta);
+				cur_pos				+= len*Device.fTimeDelta;
 			}else{
-				cur_pos				-= iFloor(len*Device.fTimeDelta);
+				cur_pos				-= len*Device.fTimeDelta;
 			}
-//			clamp(cur_pos, m_noise_progress.GetRange_min(), m_noise_progress.GetRange_max());
-			m_luminosity_progress.SetProgressPos((s16)cur_pos);
+			clamp(cur_pos, m_noise_progress.GetRange_min(), m_noise_progress.GetRange_max());
+			m_luminosity_progress.SetProgressPos(cur_pos);
 		}
 	}
 }

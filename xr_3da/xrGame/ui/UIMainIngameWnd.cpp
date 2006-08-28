@@ -451,7 +451,7 @@ void CUIMainIngameWnd::Update()
 	{
 		UIArmorBar.Show(true);
 		UIStaticArmor.Show(true);
-		UIArmorBar.SetProgressPos(static_cast<s16>(pItem->GetCondition() * 100));
+		UIArmorBar.SetProgressPos(pItem->GetCondition()*100);
 	}
 	else
 	{
@@ -589,8 +589,8 @@ void CUIMainIngameWnd::Update()
 	UIZoneMap->SetHeading			(-h);
 		
 	// health&armor
-	UIHealthBar.SetProgressPos		(s16(m_pActor->GetfHealth()*100.0f));
-	UIMotionIcon.SetPower			(s16(m_pActor->conditions().GetPower()*100.0f));
+	UIHealthBar.SetProgressPos		(m_pActor->GetfHealth()*100.0f);
+	UIMotionIcon.SetPower			(m_pActor->conditions().GetPower()*100.0f);
 	
 	
 	EWarningIcons i					= ewiWeaponJammed;

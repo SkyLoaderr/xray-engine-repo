@@ -39,10 +39,10 @@ void CUIWpnParams::InitFromXml(CUIXml& xml_doc){
 	CUIXmlInit::InitProgressBar(xml_doc, "wpn_params:progress_handling",	0, &m_progressHandling);
 	CUIXmlInit::InitProgressBar(xml_doc, "wpn_params:progress_rpm",		0, &m_progressRPM);
 
-	m_progressAccuracy.SetRange(0, 100);
-	m_progressDamage.SetRange(0, 100);
-	m_progressHandling.SetRange(0, 100);
-	m_progressRPM.SetRange(0, 100);
+	m_progressAccuracy.SetRange	(0, 100);
+	m_progressDamage.SetRange		(0, 100);
+	m_progressHandling.SetRange	(0, 100);
+	m_progressRPM.SetRange			(0, 100);
 
 	bool	functor_exists;
 	functor_exists	= ai().script_engine().functor("ui_wpn_params.GetRPM" ,m_functorRPM);			VERIFY(functor_exists);
@@ -54,13 +54,13 @@ void CUIWpnParams::InitFromXml(CUIXml& xml_doc){
 
 void CUIWpnParams::SetInfo(const char* wpn_section){
 
-	m_progressRPM.SetProgressPos(static_cast<s16>(m_functorRPM(wpn_section)));
-	m_progressAccuracy.SetProgressPos(static_cast<s16>(m_functorAccuracy(wpn_section)));
+	m_progressRPM.SetProgressPos(m_functorRPM(wpn_section));
+	m_progressAccuracy.SetProgressPos(m_functorAccuracy(wpn_section));
 	if (GameID() == GAME_SINGLE)
-        m_progressDamage.SetProgressPos(static_cast<s16>(m_functorDamage(wpn_section)));
+        m_progressDamage.SetProgressPos(m_functorDamage(wpn_section));
 	else
-		m_progressDamage.SetProgressPos(static_cast<s16>(m_functorDamageMP(wpn_section)));
-	m_progressHandling.SetProgressPos(static_cast<s16>(m_functorHandling(wpn_section)));
+		m_progressDamage.SetProgressPos(m_functorDamageMP(wpn_section));
+	m_progressHandling.SetProgressPos(m_functorHandling(wpn_section));
 }
 
 bool CUIWpnParams::Check(const char* wpn_section){

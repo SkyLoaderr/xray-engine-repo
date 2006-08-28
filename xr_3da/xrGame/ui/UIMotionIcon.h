@@ -33,15 +33,15 @@ private:
 		};
 		xr_vector<_npc_visibility>				m_npc_visibility;
 		bool									m_bchanged;
-		s16					m_luminosity;
+		float				m_luminosity;
 public:
 	virtual					~CUIMotionIcon		();
 							CUIMotionIcon		();
 	virtual	void			Update				();
 			void			Init				();
 			void			ShowState			(EState state);
-			void			SetPower			(s16 Pos);
-			void			SetNoise			(s16 Pos);
-			void			SetLuminosity		(s16 Pos);
+			void			SetPower			(float Pos);
+			void			SetNoise			(float Pos);
+			void			SetLuminosity		(float Pos);
 			void			SetActorVisibility	(u16 who_id, float value);
 };

@@ -2,68 +2,74 @@
 
 #include "../SkeletonAnimated.h"
 
-struct					SActorMotions
+struct SAnimState
 {
-	struct				SActorState
-	{
-		struct			SAnimState
-		{
-			MotionID	legs_fwd;
-			MotionID	legs_back;
-			MotionID	legs_ls;
-			MotionID	legs_rs;
-			void		Create(CKinematicsAnimated* K, LPCSTR base0, LPCSTR base1);
-		};
-		struct			STorsoWpn{
-			MotionID	aim;
-			MotionID	aim_zoom;
-			MotionID	holster;
-			MotionID	draw;
-			MotionID	drop;
-			MotionID	reload;
-			MotionID	reload_1;
-			MotionID	reload_2;
-			MotionID	attack;
-			MotionID	attack_zoom;
-			MotionID	fire_idle;
-			MotionID	fire_end;
+	MotionID	legs_fwd;
+	MotionID	legs_back;
+	MotionID	legs_ls;
+	MotionID	legs_rs;
+	void		Create								(CKinematicsAnimated* K, LPCSTR base0, LPCSTR base1);
+};
 
-			//анимации для атаки для всего тела (когда мы стоим на месте)
-			MotionID	all_attack_0;
-			MotionID	all_attack_1;
-			MotionID	all_attack_2;
-			void		Create(CKinematicsAnimated* K, LPCSTR base0, LPCSTR base1);
-		};
-		MotionID		legs_idle;
-		MotionID		jump_begin;
-		MotionID		jump_idle;
-		MotionID		landing[2];
-		MotionID		legs_turn;
-		MotionID		death;
-		SAnimState		m_walk;
-		SAnimState		m_run;
-		STorsoWpn		m_torso[10];
-		MotionID		m_torso_idle;
-		MotionID		m_head_idle;
+struct STorsoWpn{
+//.	MotionID	idle;
+//.	MotionID	walk;
+//.	MotionID	sprint;
+	enum eMovingState{eIdle, eWalk, eRun, eSprint, eTotal};
+	MotionID	moving[eTotal];
 
-		MotionID		m_damage[DAMAGE_FX_COUNT];
-		void			Create(CKinematicsAnimated* K, LPCSTR base);
-		void			CreateClimb(CKinematicsAnimated* K);
-	};
+	MotionID	zoom;
+	MotionID	holster;
+	MotionID	draw;
+	MotionID	drop;
+	MotionID	reload;
+	MotionID	reload_1;
+	MotionID	reload_2;
+	MotionID	attack;
+	MotionID	attack_zoom;
+	MotionID	fire_idle;
+	MotionID	fire_end;
 
-	struct SActorSprintState 
-	{
-		//torso anims
-		MotionID		m_torso[8];
-		//leg anims
-		MotionID		legs_fwd;
-		MotionID		legs_ls;
-		MotionID		legs_rs;
-		void Create		(CKinematicsAnimated* K);
-	};
+	//анимации для атаки для всего тела (когда мы стоим на месте)
+	MotionID	all_attack_0;
+	MotionID	all_attack_1;
+	MotionID	all_attack_2;
+	void		Create								(CKinematicsAnimated* K, LPCSTR base0, LPCSTR base1);
+};
 
+struct SActorState
+{
+	MotionID		legs_idle;
+	MotionID		jump_begin;
+	MotionID		jump_idle;
+	MotionID		landing[2];
+	MotionID		legs_turn;
+	MotionID		death;
+	SAnimState		m_walk;
+	SAnimState		m_run;
+	STorsoWpn		m_torso[10];
+	MotionID		m_torso_idle;
+	MotionID		m_head_idle;
+
+	MotionID		m_damage[DAMAGE_FX_COUNT];
+	void			Create							(CKinematicsAnimated* K, LPCSTR base);
+	void			CreateClimb						(CKinematicsAnimated* K);
+};
+
+struct SActorSprintState 
+{
+	//torso anims
+//.	MotionID		m_torso[8];
+	//leg anims
+	MotionID		legs_fwd;
+	MotionID		legs_ls;
+	MotionID		legs_rs;
+	void Create		(CKinematicsAnimated* K);
+};
+
+struct SActorMotions
+{
 	MotionID			m_dead_stop;
-
 	SActorState			m_normal;
 	SActorState			m_crouch;
 	SActorState			m_climb;
@@ -71,23 +77,23 @@ struct					SActorMotions
 	void				Create(CKinematicsAnimated* K);
 };
 
-//
+//vehicle anims
+struct	SVehicleAnimCollection
+{
+	static const u16 MAX_IDLES = 3;
+	u16				idles_num;
+	MotionID		idles[MAX_IDLES];
+	MotionID		steer_left;
+	MotionID		steer_right;
+					SVehicleAnimCollection	();
+	void			Create				(CKinematicsAnimated* K,u16 num);
+};
 struct SActorVehicleAnims
 {
 	static const TYPES_NUMBER=2;
-	struct	SOneTypeCollection
-	{
-		static const u16 MAX_IDLES = 3		;
-		u16				idles_num			;
-		MotionID		idles[MAX_IDLES]	;
-		MotionID		steer_left			;
-		MotionID		steer_right			;
-						SOneTypeCollection	();
-		void			Create				(CKinematicsAnimated* K,u16 num);
-	};
-	SOneTypeCollection m_vehicles_type_collections[TYPES_NUMBER];
-						SActorVehicleAnims	();
-	void				Create				(CKinematicsAnimated* K);
+	SVehicleAnimCollection m_vehicles_type_collections	[TYPES_NUMBER];
+						SActorVehicleAnims				();
+	void				Create							(CKinematicsAnimated* K);
 };
 
 

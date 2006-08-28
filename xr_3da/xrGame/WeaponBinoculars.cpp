@@ -100,10 +100,6 @@ void CWeaponBinoculars::OnDrawUI()
 {
 	if(H_Parent() && IsZoomed() && !IsRotatingToZoom() && m_binoc_vision)
 		m_binoc_vision->Draw();
-/*		UIEntityBorder->SetWndPos		(500,500);
-		UIEntityBorder->SetWidth		(100);
-		UIEntityBorder->SetHeight		(100);
-		UIEntityBorder->Draw			();*/
 	inherited::OnDrawUI	();
 }
 

@@ -284,18 +284,18 @@ void CUIInventoryWnd::Update()
 	if(pEntityAlive) 
 	{
 		float v = pEntityAlive->conditions().GetHealth()*100.0f;
-		UIProgressBarHealth.SetProgressPos		(s16(v));
+		UIProgressBarHealth.SetProgressPos		(v);
 
 		v = pEntityAlive->conditions().GetPsyHealth()*100.0f;
-		UIProgressBarPsyHealth.SetProgressPos	(s16(v));
+		UIProgressBarPsyHealth.SetProgressPos	(v);
 
 		v = pEntityAlive->conditions().GetRadiation()*100.0f;
-		UIProgressBarRadiation.SetProgressPos	(s16(v));
+		UIProgressBarRadiation.SetProgressPos	(v);
 
 		if (GameID() != GAME_SINGLE){
 			game_PlayerState* ps = Game().GetPlayerByGameID(pEntityAlive->ID());
 			if (ps)
-				UIProgressBarRank.SetProgressPos(s16(ps->experience_D*100));			
+				UIProgressBarRank.SetProgressPos(ps->experience_D*100);			
 		}
 
 		// update money
