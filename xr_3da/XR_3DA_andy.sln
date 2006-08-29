@@ -133,9 +133,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrGameSpy", "xrGame\xrGameS
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLC", "..\xrLC\xrLC.vcproj", "{880F6E60-9D28-4DBA-82FD-9660FD863CA2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 24
+		SccNumberOfProjects = 25
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -231,6 +235,10 @@ Global
 		SccProjectUniqueName23 = xrGame\\xrGameSpy\\xrGameSpy.vcproj
 		SccProjectName23 = \u0022$/xr_3da/xrGame/xrGameSpy\u0022,\u0020MRDBAAAA
 		SccLocalPath23 = xrGame\\xrGameSpy
+		CanCheckoutShared = true
+		SccProjectUniqueName24 = ..\\xrLC\\xrLC.vcproj
+		SccProjectName24 = \u0022$/xrLC\u0022,\u0020TLAAAAAA
+		SccLocalPath24 = ..\\xrLC
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -462,6 +470,16 @@ Global
 		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Profile.Build.0 = Release|Win32
 		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Release.ActiveCfg = Release|Win32
 		{5535F6B4-7AE6-4B66-8AEA-CC31C14D7AB7}.Release.Build.0 = Release|Win32
+		{880F6E60-9D28-4DBA-82FD-9660FD863CA2}.Debug.ActiveCfg = Debug|Win32
+		{880F6E60-9D28-4DBA-82FD-9660FD863CA2}.Debug.Build.0 = Debug|Win32
+		{880F6E60-9D28-4DBA-82FD-9660FD863CA2}.DebugNoExceptions.ActiveCfg = Debug|Win32
+		{880F6E60-9D28-4DBA-82FD-9660FD863CA2}.DebugNoExceptions.Build.0 = Debug|Win32
+		{880F6E60-9D28-4DBA-82FD-9660FD863CA2}.Mixed.ActiveCfg = Mixed|Win32
+		{880F6E60-9D28-4DBA-82FD-9660FD863CA2}.Mixed.Build.0 = Mixed|Win32
+		{880F6E60-9D28-4DBA-82FD-9660FD863CA2}.Profile.ActiveCfg = Mixed|Win32
+		{880F6E60-9D28-4DBA-82FD-9660FD863CA2}.Profile.Build.0 = Mixed|Win32
+		{880F6E60-9D28-4DBA-82FD-9660FD863CA2}.Release.ActiveCfg = Release|Win32
+		{880F6E60-9D28-4DBA-82FD-9660FD863CA2}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
