@@ -2427,6 +2427,9 @@
 						RelativePath=".\config\scripts\yan\yan_ghost.ltx">
 					</File>
 					<File
+						RelativePath=".\config\scripts\yan\yan_grate.ltx">
+					</File>
+					<File
 						RelativePath=".\config\scripts\yan\yan_klyk.ltx">
 					</File>
 					<File
