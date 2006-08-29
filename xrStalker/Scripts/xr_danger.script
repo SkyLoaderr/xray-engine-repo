@@ -206,6 +206,7 @@ function add_to_binder(object, ini, scheme, section, storage)
 		
 	   	local manager = object:motivation_action_manager()
 
+--		if true then return end
 		manager:remove_evaluator(stalker_ids.property_danger)
 		manager:add_evaluator(stalker_ids.property_danger, this.evaluator_danger("danger", storage, object))
 end
