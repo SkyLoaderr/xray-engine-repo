@@ -130,9 +130,9 @@ void CStalkerActionPrepareWounded::initialize				()
 	const CEntityAlive							*enemy = object().memory().enemy().selected();
 	VERIFY										(enemy);
 
-//	object().agent_manager().enemy().wounded_processed(enemy,true);
-	if (object().agent_manager().enemy().wounded_processor(enemy) == ALife::_OBJECT_ID(-1))
-		object().agent_manager().enemy().wounded_processor	(enemy,object().ID());
+	object().agent_manager().enemy().wounded_processed(enemy,true);
+//	if (object().agent_manager().enemy().wounded_processor(enemy) == ALife::_OBJECT_ID(-1))
+//		object().agent_manager().enemy().wounded_processor	(enemy,object().ID());
 }
 
 void CStalkerActionPrepareWounded::finalize					()
