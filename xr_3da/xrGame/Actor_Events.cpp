@@ -208,10 +208,6 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				else Msg("OnEvent  GEG_PLAYER_WEAPON_HIDE_STATE OFF LADDER");
 			}
 #endif
-/*
-			if (Set) m_iCurWeaponHideState |= State;
-			else m_iCurWeaponHideState &= ~(State);
-*/
 			inventory().SetSlotsBlocked	((u16)State, !!Set);
 		}break;
 	case GE_MOVE_ACTOR:

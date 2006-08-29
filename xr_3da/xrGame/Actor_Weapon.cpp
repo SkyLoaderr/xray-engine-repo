@@ -98,42 +98,6 @@ void		CActor::SetWeaponHideState (u32 State, bool	bSet)
 		u_EventSend	(P);
 	};
 }
-/*
-void		CActor::Check_Weapon_ShowHideState	()
-{
-	if(IsGameTypeSingle())					return;
-	if (!OnServer())						return;
-
-	if (m_iCurWeaponHideState)
-	{
-		u32 InventorySlot = inventory().GetActiveSlot();
-		if( InventorySlot != NO_ACTIVE_SLOT &&
-			inventory().m_slots[InventorySlot].m_pIItem &&
-			(!(m_iCurWeaponHideState&whs_ON_LEDDER) || !inventory().m_slots[InventorySlot].m_pIItem->IsSingleHanded()) &&
-			(!(m_iCurWeaponHideState&whs_CAR) || !(inventory().m_slots[InventorySlot].m_pIItem->IsSingleHanded())||InventorySlot == KNIFE_SLOT) &&
-			(!(m_iCurWeaponHideState&whs_SPRINT && InventorySlot == KNIFE_SLOT))
-			)
-		{
-			if (inventory().Activate(NO_ACTIVE_SLOT))
-			{
-				inventory().SetPrevActiveSlot(InventorySlot);
-			};
-		}
-	}
-	else
-	{
-		u32 InventorySlot = inventory().GetPrevActiveSlot();
-		if( InventorySlot != NO_ACTIVE_SLOT &&
-			inventory().m_slots[InventorySlot].m_pIItem)
-		{
-			if (inventory().Activate(InventorySlot))
-			{
-				inventory().SetPrevActiveSlot(NO_ACTIVE_SLOT);
-			}
-		};
-	}
-};
-*/
 static	u16 BestWeaponSlots [] = {
 	RIFLE_SLOT		,		// 2
 	PISTOL_SLOT		,		// 1

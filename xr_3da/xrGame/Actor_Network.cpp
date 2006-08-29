@@ -625,7 +625,6 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	smart_cast<CKinematics*>(Visual())->CalculateBones();
 
 	//--------------------------------------------------------------
-//.	m_iCurWeaponHideState = 0;
 	inventory().SetPrevActiveSlot(NO_ACTIVE_SLOT);
 
 

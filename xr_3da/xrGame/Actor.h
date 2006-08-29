@@ -681,10 +681,6 @@ protected:
 #ifdef DEBUG
 		friend class CLevelGraph;
 #endif
-/*		
-		u32								m_iCurWeaponHideState;
-		void							Check_Weapon_ShowHideState	();
-*/
 		Fvector							m_AutoPickUp_AABB;
 		Fvector							m_AutoPickUp_AABB_Offset;
 
