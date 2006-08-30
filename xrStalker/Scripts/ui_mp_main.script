@@ -207,6 +207,7 @@ function mp_main:OnBtn_Create()
 	local opt = COptionsManager()
 	local console = get_console()	
 	opt:SaveValues("mm_mp_server")
+	opt:SaveValues("mm_mp_client")
 	self.map_list:SaveMapList()
 	self:GatherServerData()
 	if self.check_dedicated:GetCheck() then
@@ -384,8 +385,9 @@ function mp_main:GatherServerData()
 end
 
 function mp_main:OnBtn_Join()
---	local opt = COptionsManager()
---	opt:SaveValues("mm_mp_client")
+	local opt = COptionsManager()
+	opt:SaveValues("mm_mp_client")
+	opt:SaveValues("mm_mp_server")
 	
 	self.server_list:SetPlayerName(self.player_name:GetText())	
 	self.server_list:ConnectToSelected()
