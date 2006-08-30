@@ -342,7 +342,9 @@ void CompressList(LPCSTR in_name, xr_vector<char*>* list, xr_vector<char*>* fl_l
 				strconcat		(src_fn,in_name,"\\",(*list)[it]);
 				strconcat		(dst_fn,copy_path,tgt_folder,"\\",(*list)[it]);
 				printf			(" + COPY");
+				int age			= FS.get_file_age(src_fn);
 				FS.file_copy	(src_fn,dst_fn);
+				FS.set_file_age	(dst_fn,age);
 			}
 		}
 		if (make_pack)
