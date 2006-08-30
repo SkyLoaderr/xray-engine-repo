@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <window>
-	<back_video x="0" y="0" width="1024" height="512" stretch="1">		
+	<back_video x="0" y="0" width="600" height="600" stretch="1">		
 	</back_video>
 	<background x="0" y="0" width="1024" height="768">
 		<texture>ui\ui_static_mm_back_02</texture>
@@ -15,7 +15,9 @@
 			<text font="letterica25" r="184" g="168" b="131">ui_mm_load_game</text>
 		</caption>
 		
-		<picture x="76" y="52" width="128" height="128" clipper="1"/>
+		<picture x="76" y="52" width="128" height="128" clipper="1">
+			<texture>ui\ui_noise</texture>
+		</picture>
 		
 		<file_info	x="18" y="36" width="512" height="148">
 			<texture>ui\ui_static_loadgameinfo</texture>
