@@ -25,7 +25,7 @@
 	<task_sub_item x="0" y="0" width="320" height="38">
 		<state_image x="8" y="10" width="11" height="11"/>
 
-		<description x="25" y="8" width="250" height="16">
+		<description x="25" y="8" width="220" height="16">
 			<text align="l" x="0" y="0" font="letterica16" r="255" g="255" b="255" a="255"/>
 			<text_colors>
 				<accomplished	r="150" g="150" b="180" a="255"/>
@@ -48,11 +48,11 @@
 	<task_user_item x="0" y="0" width="320" height="32">
 		<image x="8" y="4" width="32" height="32"/>
 
-		<caption x="50" y="5" width="130" height="16">
+		<caption x="50" y="5" width="140" height="16">
 			<text x="0" y="0" font="letterica18"/>
 		</caption>
 
-		<description x="8" y="38" width="300" height="16">
+		<description x="8" y="38" width="290" height="16">
 			<text x="0" y="0" font="letterica16" r="150" g="150" b="180" a="255"/>
 		</description>
 
