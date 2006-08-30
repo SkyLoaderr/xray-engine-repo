@@ -59,6 +59,9 @@ void CUIChangeMap::Init(CUIXml& xml_doc){
 	CUIXmlInit::InitListBox(xml_doc,		"change_map:list", 0, lst);
 	CUIXmlInit::Init3tButton(xml_doc,		"change_map:btn_ok", 0, btn_ok);
 	CUIXmlInit::Init3tButton(xml_doc,		"change_map:btn_cancel", 0, btn_cancel);
+
+	map_pic->InitTexture("ui\\ui_noise");
+
 	FillUpList();
 }
 
@@ -88,14 +91,14 @@ void CUIChangeMap::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 }
 
 void CUIChangeMap::OnItemSelect(){
-	xr_string map_name = "ui\\ui_map_pic_";
+	xr_string map_name = "intro\\intro_map_pic_";
 	map_name +=	lst->GetSelectedText();
 	xr_string full_name = map_name + ".dds";
 
 	if (FS.exist("$game_textures$",full_name.c_str()))
 		map_pic->InitTexture(map_name.c_str());
 	else
-		map_pic->InitTexture("ui\\ui_map_nopic");
+		map_pic->InitTexture("ui\\ui_noise");
 }
 
 void CUIChangeMap::OnBtnOk(){

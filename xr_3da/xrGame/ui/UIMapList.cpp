@@ -115,7 +115,7 @@ void CUIMapList::OnListItemClicked(){
 //		return;
 
 //	CUIListItem* pItem = m_pList1->GetItem(iItem);
-	xr_string map_name = "ui\\ui_map_pic_";
+	xr_string map_name = "intro\\intro_map_pic_";
 	map_name +=	m_pList1->GetSelectedText();
 	xr_string full_name = map_name + ".dds";
 
