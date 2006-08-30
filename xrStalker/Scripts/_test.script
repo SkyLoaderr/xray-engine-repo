@@ -55,20 +55,11 @@ function main1111()
 
 end
 
-function main_e()
---	local info = "test_andy_info" 
---	db.actor:give_info_portion(info) 
+function main()
+	local info = "test_andy_info" 
+	db.actor:give_info_portion(info) 
 --	alife():create("wpn_binoc", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())		
 	
-	if _G._b_flag==0 then 
-		printf("restore")
-		db.actor:restore_weapon()
-		_G._b_flag = 1
-	else
-		printf("hide")
-		db.actor:hide_weapon()
-		_G._b_flag = 0
-	end
 
 --    alife():create ("wpn_knife", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
 
@@ -91,8 +82,8 @@ function main_e()
 -- game.start_tutorial("credits_seq")
 	
 	
---	info = "tutorial_artefact_start" 
---	db.actor:give_info_portion(info) 
+	info = "tutorial_artefact_start" 
+	db.actor:give_info_portion(info) 
 	
 	
 --	info = "encyclopedy_weapons_wpn_groza" 
@@ -109,7 +100,7 @@ function main_e()
 end
 
 
-function main()
+function main1111()
    local h 		= hit()
    h.power 		= 0.02
    h.direction 	= vector():set(0, 0, 1)
