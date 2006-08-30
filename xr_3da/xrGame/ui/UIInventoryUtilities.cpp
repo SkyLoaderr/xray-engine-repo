@@ -8,7 +8,6 @@
 #include "UIInventoryUtilities.h"
 #include "../WeaponAmmo.h"
 #include "../UIStaticItem.h"
-#include "UIDragDropItem.h"
 #include "UIStatic.h"
 #include "../eatable_item.h"
 #include "../Level.h"
@@ -21,7 +20,6 @@
 #include "../InfoPortion.h"
 #include "../game_base_space.h"
 #include "../actor.h"
-#include "uiwpndragdropitem.h"
 
 #define BUY_MENU_TEXTURE "ui\\ui_mp_buy_menu"
 #define EQUIPMENT_ICONS  "ui\\ui_icon_equipment"
@@ -60,10 +58,7 @@ void InventoryUtilities::DestroyShaders()
 	g_MPCharIconsShader.destroy();
 }
 
-//////////////////////////////////////////////////////////////////////////
-//для надписей на иконках с оружием
-//////////////////////////////////////////////////////////////////////////
-
+/*
 void InventoryUtilities::AmmoDrawProc(CUIDragDropItem* pItem)
 {
 	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData());
@@ -82,10 +77,6 @@ void InventoryUtilities::AmmoDrawProc(CUIDragDropItem* pItem)
 		pItem->GetFont()->OnRender();
 	}
 }
-
-//////////////////////////////////////////////////////////////////////////
-//для надписей на иконках с едой
-//////////////////////////////////////////////////////////////////////////
 
 void InventoryUtilities::FoodDrawProc(CUIDragDropItem* pItem)
 {
@@ -107,7 +98,7 @@ void InventoryUtilities::FoodDrawProc(CUIDragDropItem* pItem)
 		pItem->GetFont()->OnRender();
 	}
 }
-
+*/
 
 //////////////////////////////////////////////////////////////////////////
 //сравнивает элементы по пространству занимаемому ими в рюкзаке
@@ -277,13 +268,6 @@ ref_shader&	InventoryUtilities::GetMPCharIconsShader()
 	return g_MPCharIconsShader;
 }
 
-
-void InventoryUtilities::ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector)
-{
-	for(u32 i=0; i<dd_item_vector.size(); i++)
-		xr_delete(dd_item_vector[i]);
-	dd_item_vector.clear();
-}
 
 //////////////////////////////////////////////////////////////////////////
 

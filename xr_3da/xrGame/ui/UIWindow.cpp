@@ -162,13 +162,17 @@ void CUIWindow::Init(Frect* pRect)
 
 void CUIWindow::Draw()
 {
-//.	m_dbg_flag.set(1,TRUE);
-	//перерисовать дочерние окна
-	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
-		if((*it)->IsShown())
-			(*it)->Draw();
-//.	m_dbg_flag.set(1,FALSE);
-	if(g_show_wnd_rect2)	add_rect_to_draw(GetAbsoluteRect());
+	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it){
+		if(!(*it)->IsShown()) continue;
+		(*it)->Draw();
+	}
+#ifndef NDEBUG
+	if(g_show_wnd_rect2){
+		Frect r;
+		GetAbsoluteRect(r);
+		add_rect_to_draw(r);
+	}
+#endif
 }
 
 void CUIWindow::Draw(float x, float y){
@@ -183,8 +187,16 @@ void CUIWindow::Update()
 		bool cursor_on_window;
 
 		Fvector2			temp = GetUICursor()->GetPos();
-		cursor_on_window	= !!GetAbsoluteRect().in(temp);
-		if(cursor_on_window&&g_show_wnd_rect) add_rect_to_draw(GetAbsoluteRect());
+		Frect				r;
+		GetAbsoluteRect		(r);
+		cursor_on_window	= !!r.in(temp);
+#ifndef NDEBUG
+		if(cursor_on_window&&g_show_wnd_rect){
+			Frect r;
+			GetAbsoluteRect(r);
+			add_rect_to_draw(r);
+		}
+#endif
 		// RECEIVE and LOST focus
 		if(m_bCursorOverWindow != cursor_on_window)
 			if(cursor_on_window)
@@ -193,72 +205,61 @@ void CUIWindow::Update()
 				OnFocusLost();			
 	}
 	
-//.	m_dbg_flag.set(2,TRUE);
-	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)
-		if((*it)->IsShown())
+	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it){
+		if(!(*it)->IsShown()) continue;
 			(*it)->Update();
-//.	m_dbg_flag.set(2,FALSE);
+	}
 }
 
 void CUIWindow::AttachChild(CUIWindow* pChild)
 {
-//.	VERIFY(	m_dbg_flag.get()==0);
 	if(!pChild) return;
 	
 	VERIFY( !IsChild(pChild) );
-//.	VERIFY(	m_dbg_flag.get()==0);
 	pChild->SetParent(this);
-//.	VERIFY(	m_dbg_flag.get()==0);
 	m_ChildWndList.push_back(pChild);
 }
 
 void CUIWindow::DetachChild(CUIWindow* pChild)
 {
-//.	VERIFY(	m_dbg_flag.get()==0);
 	if(NULL==pChild)
 		return;
 	
 	if(m_pMouseCapturer == pChild)
 		SetCapture(pChild, false);
 
-//.	VERIFY(	m_dbg_flag.get()==0);
 	SafeRemoveChild(pChild);
-//.	VERIFY(	m_dbg_flag.get()==0);
 	pChild->SetParent(NULL);
 
-//.	VERIFY(	m_dbg_flag.get()==0);
 	if(pChild->IsAutoDelete())
 		xr_delete(pChild);
 }
 
 void CUIWindow::DetachAll()
 {
-//.	VERIFY(	m_dbg_flag.get()==0);
 	while( !m_ChildWndList.empty() ){
-//.		VERIFY(	m_dbg_flag.get()==0);
 		DetachChild( m_ChildWndList.back() );	
 	}
 }
 
-//абсолютные координаты, от начала экрана
-Frect CUIWindow::GetAbsoluteRect() 
+void CUIWindow::GetAbsoluteRect(Frect& r) 
 {
-	Frect rect;
-	//окно самого верхнего уровня
-	if(GetParent() == NULL)
-		return GetWndRect();
+//.	Frect rect;
 
+	if(GetParent() == NULL){
+		GetWndRect		(r);
+		return;
+	}
+//.	rect = GetParent()->GetAbsoluteRect();
+	GetParent()->GetAbsoluteRect(r);
 
-	//рекурсивно вычисляем абсолютные координаты
-	rect = GetParent()->GetAbsoluteRect();
-
-	Frect rr		= GetWndRect	();
-	rect.left		+= rr.left;
-	rect.top		+= rr.top;
-	rect.right		= rect.left + GetWidth();
-	rect.bottom		= rect.top	+ GetHeight();
-
-	return rect;
+	Frect			rr;
+	GetWndRect		(rr);
+	r.left			+= rr.left;
+	r.top			+= rr.top;
+	r.right			= r.left + GetWidth();
+	r.bottom		= r.top	+ GetHeight();
+//.	return			rect;
 }
 
 //реакция на мышь
@@ -327,7 +328,6 @@ bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 	//Проверка на попадание мыши в окно,
 	//происходит в обратном порядке, чем рисование окон
 	//(последние в списке имеют высший приоритет)
-//.	m_dbg_flag.set(4,TRUE);
 	WINDOW_LIST::reverse_iterator it = m_ChildWndList.rbegin();
 
 	for(; it!=m_ChildWndList.rend(); ++it)
@@ -349,13 +349,11 @@ bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 		}
 	}
 
-//.	m_dbg_flag.set(4,FALSE);
 
 	return false;
 }
 
 bool CUIWindow::HasChildMouseHandler(){
-//.	m_dbg_flag.set(8,TRUE);
 	WINDOW_LIST::reverse_iterator it = m_ChildWndList.rbegin();
 
 	for( ; it!=m_ChildWndList.rend(); ++it)
@@ -368,7 +366,6 @@ bool CUIWindow::HasChildMouseHandler(){
 		}
 	}
 
-//.	m_dbg_flag.set(8,FALSE);
 	return false;
 }
 
@@ -426,7 +423,6 @@ void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
 	}
 	else
 	{
-		/*if(m_pMouseCapturer == pChildWindow)*/
 			m_pMouseCapturer = NULL;
 	}
 }
@@ -446,7 +442,6 @@ bool CUIWindow::OnKeyboard(int dik, EUIMessages keyboard_action)
 		if(result) return true;
 	}
 
-//.	m_dbg_flag.set(16,TRUE);
 	WINDOW_LIST::reverse_iterator it = m_ChildWndList.rbegin();
 
 	for(; it!=m_ChildWndList.rend(); ++it)
@@ -458,8 +453,6 @@ bool CUIWindow::OnKeyboard(int dik, EUIMessages keyboard_action)
 			if(result)	return true;
 		}
 	}
-//.	m_dbg_flag.set(16,FALSE);
-
 	return false;
 }
 
@@ -511,13 +504,11 @@ void CUIWindow::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status)
 void CUIWindow::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	//оповестить дочерние окна
-//.	m_dbg_flag.set(32,TRUE);
 	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)
 	{
 		if((*it)->IsEnabled())
 			(*it)->SendMessage(pWnd,msg,pData);
 	}
-//.	m_dbg_flag.set(32,FALSE);
 }
 
 CUIWindow* CUIWindow::GetCurrentMouseHandler(){
@@ -526,7 +517,6 @@ CUIWindow* CUIWindow::GetCurrentMouseHandler(){
 
 CUIWindow* CUIWindow::GetChildMouseHandler(){
 	CUIWindow* pWndResult;
-//.	m_dbg_flag.set(64,TRUE);
 	WINDOW_LIST::reverse_iterator it = m_ChildWndList.rbegin();
 
 	for(; it!=m_ChildWndList.rend(); ++it)
@@ -547,7 +537,6 @@ CUIWindow* CUIWindow::GetChildMouseHandler(){
 		}
 	}
 
-//.	m_dbg_flag.set(64,FALSE);
     return this;
 }
 

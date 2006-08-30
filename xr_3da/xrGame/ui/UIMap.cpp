@@ -100,7 +100,8 @@ Fvector2 CUICustomMap::ConvertRealToLocalNoTransform  (const Fvector2& src)// me
 bool CUICustomMap::GetPointerTo(const Fvector2& src, float item_radius, Fvector2& pos, float& heading)
 {
 	Frect		clip_rect_abs			= GetClipperRect(); //absolute rect coords
-	Frect		map_rect_abs			= GetAbsoluteRect();
+	Frect		map_rect_abs;
+	GetAbsoluteRect(map_rect_abs);
 
 	Frect		rect;
 	BOOL res = rect.intersection(clip_rect_abs, map_rect_abs);
@@ -171,7 +172,8 @@ void CUICustomMap::SetActivePoint(const Fvector &vNewPoint)
 	if( FALSE==bound.in(pos) )return;
 
 	Fvector2	pos_on_map		= ConvertRealToLocalNoTransform(pos);
-	Frect		map_abs_rect	= GetAbsoluteRect();
+	Frect		map_abs_rect;
+	GetAbsoluteRect(map_abs_rect);
 	Fvector2	pos_abs;
 
 	pos_abs.set(map_abs_rect.lt);
@@ -188,7 +190,8 @@ void CUICustomMap::SetActivePoint(const Fvector &vNewPoint)
 bool CUICustomMap::IsRectVisible(Frect r)
 {
 	Frect map_visible_rect = GetClipperRect();
-	Fvector2 pos = GetAbsolutePos();
+	Fvector2 pos;
+	GetAbsolutePos(pos);
 	r.add(pos.x,pos.y);
 
 	return !!map_visible_rect.intersected(r);
@@ -198,7 +201,8 @@ bool CUICustomMap::NeedShowPointer(Frect r)
 {
 	Frect map_visible_rect = GetClipperRect();
 	map_visible_rect.shrink(5,5);
-	Fvector2 pos = GetAbsolutePos();
+	Fvector2 pos;
+	GetAbsolutePos(pos);
 	r.add(pos.x,pos.y);
 
 	return !map_visible_rect.intersected(r);
@@ -378,7 +382,9 @@ void CUILevelMap::UpdateSpots		()
 {
 	DetachAll		();
 	if( fsimilar(MapWnd()->GlobalMap()->GetCurrentZoom(),MapWnd()->GlobalMap()->GetMinZoom(),EPS_L ) ) return;
-	if( FALSE==MapWnd()->ActiveMapRect().intersected(GetAbsoluteRect())) return;
+	Frect _r;
+	GetAbsoluteRect(_r);
+	if( FALSE==MapWnd()->ActiveMapRect().intersected(_r)) return;
 /*
 	if(m_anomalies_map){
 		m_anomalies_map->SetWndPos	(0.0f,0.0f);

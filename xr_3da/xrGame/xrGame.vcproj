@@ -10090,9 +10090,6 @@
 					Name="WpnDragDropItem"
 					Filter="">
 					<File
-						RelativePath=".\ui\UIWpnDragDropItem.cpp">
-					</File>
-					<File
 						RelativePath=".\ui\UIWpnDragDropItem.h">
 					</File>
 				</Filter>
@@ -10275,13 +10272,7 @@
 					Name="DragDrop"
 					Filter="">
 					<File
-						RelativePath=".\ui\UIDragDropItem.cpp">
-					</File>
-					<File
 						RelativePath=".\ui\UIDragDropItem.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIDragDropList.cpp">
 					</File>
 					<File
 						RelativePath=".\ui\UIDragDropList.h">

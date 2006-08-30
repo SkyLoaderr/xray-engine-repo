@@ -132,27 +132,26 @@ public:
 																						m_wndPos.set(x,y); 
 																						m_wndSize.set(width,height); }
 	virtual void			SetWndRect(const Frect& rect)				{SetWndRect(rect.lt.x, rect.lt.y, rect.width(), rect.height());}
-	IC		Frect			GetWndRect()						const
+	IC		Frect			GetWndRect()						const	{Frect r; GetWndRect(r); return r;}
+	IC		void			GetWndRect(Frect& res)				const
 	{
 		switch (m_alignment){
 			case waNone:
-				return Frect().set(m_wndPos.x,m_wndPos.y,m_wndPos.x+m_wndSize.x,m_wndPos.y+m_wndSize.y);
+				res.set(m_wndPos.x,m_wndPos.y,m_wndPos.x+m_wndSize.x,m_wndPos.y+m_wndSize.y);
 				break;
 			case waCenter:{
-					Frect res;
 					float half_w = m_wndSize.x/2.0f;
 					float half_h = m_wndSize.y/2.0f;
 					res.set(m_wndPos.x - half_w,
 							m_wndPos.y - half_h,
 							m_wndPos.x + half_w,
 							m_wndPos.y + half_h);
-					return res;
 				}break;
 			default:
 				NODEFAULT;
 		};
 #ifdef DEBUG
-		return Frect().null();
+//.		return Frect().null();
 #endif
 	}
 				void			MoveWndDelta		(float dx, float dy)				{m_wndPos.x+=dx;m_wndPos.y+=dy;}

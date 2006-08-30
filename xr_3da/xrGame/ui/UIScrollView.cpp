@@ -166,7 +166,8 @@ void CUIScrollView::Draw				()
 	if(m_flags.test	(eNeedRecalc) )
 		RecalcSize			();
 
-	Frect		visible_rect			= GetAbsoluteRect();
+	Frect				visible_rect;
+	GetAbsoluteRect		(visible_rect);
 	visible_rect.top	+= m_upIndent;
 	visible_rect.bottom -= m_downIndent;
 	UI()->PushScissor					(visible_rect);
@@ -176,7 +177,8 @@ void CUIScrollView::Draw				()
 			m_pad->GetChildWndList().end()!=it; 
 			++it)
 	{
-		Frect	item_rect		= (*it)->GetAbsoluteRect();
+		Frect	item_rect;
+		(*it)->GetAbsoluteRect(item_rect);
 		if(visible_rect.intersected		(item_rect)){
 			if ((*it)->GetVisible())
                 (*it)->Draw();

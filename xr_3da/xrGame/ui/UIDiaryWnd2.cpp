@@ -262,7 +262,7 @@ void CUIDiaryWnd::Draw					()
 	m_updatedSectionImage->Update				();
 
 	if(g_pda_info_state&pda_section::news){
-		r = m_FilterTab->GetButtonByIndex		(eNews)->GetAbsoluteRect();
+		m_FilterTab->GetButtonByIndex		(eNews)->GetAbsoluteRect(r);
 		draw_sign								(m_updatedSectionImage, r);
 	}
 /*	if(g_pda_info_state&pda_section::info){
@@ -271,7 +271,7 @@ void CUIDiaryWnd::Draw					()
 	}
 */
 	if(g_pda_info_state&pda_section::journal){
-		r = m_FilterTab->GetButtonByIndex		(eJournal)->GetAbsoluteRect();
+		m_FilterTab->GetButtonByIndex		(eJournal)->GetAbsoluteRect(r);
 		draw_sign								(m_updatedSectionImage, r);
 	}
 

@@ -56,7 +56,8 @@ CUIListItemPair::~CUIListItemPair(){
 
 void CUIListItemPair::Draw(){	
 	//CUIListItemEx::Draw();
-	Frect rect = GetAbsoluteRect();
+	Frect			rect;
+	GetAbsoluteRect	(rect);
 
 	if(m_bAvailableTexture && m_bTextureEnable){		
 		m_UIStaticItem.SetPos(rect.left, rect.top);		

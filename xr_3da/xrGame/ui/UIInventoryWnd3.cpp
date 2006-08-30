@@ -32,14 +32,7 @@ void CUIInventoryWnd::EatCurrentItem()
 	if(!CurrentIItem()->Useful())
 	{
 		R_ASSERT(0);
-//.		(smart_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
-//.			DetachChild						(m_pCurrentDragDropItem);
-
-//.		DD_ITEMS_VECTOR_IT it				= std::find(m_vDragDropItems.begin(), m_vDragDropItems.end(),m_pCurrentDragDropItem);
-//.		VERIFY								(it != m_vDragDropItems.end());
-//.		m_pCurrentDragDropItem->Highlight	(false);
 		SetCurrentItem						(NULL);
-//.		m_pCurrentDragDropItem				= NULL;
 	}
 }
 
@@ -51,7 +44,8 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	// Флаг-признак для невлючения пункта контекстного меню: Dreess Outfit, если костюм уже надет
 	bool bAlreadyDressed = false; 
 
-	Frect rect = GetAbsoluteRect();
+	Frect rect;
+	GetAbsoluteRect(rect);
 	GetUICursor()->GetPos(x,y);
 		
 	UIPropertiesBox.RemoveAll();

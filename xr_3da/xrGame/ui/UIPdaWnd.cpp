@@ -303,31 +303,32 @@ void CUIPdaWnd::DrawUpdatedSections				()
 	Frect r;
 	m_updatedSectionImage->Update				();
 	if(g_pda_info_state&pda_section::quests){
-		r = UITabControl->GetButtonByIndex		(eptQuests)->GetAbsoluteRect();
+
+		UITabControl->GetButtonByIndex		(eptQuests)->GetAbsoluteRect(r);
 		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::map){
-		r = UITabControl->GetButtonByIndex		(eptMap)->GetAbsoluteRect();
+		UITabControl->GetButtonByIndex		(eptMap)->GetAbsoluteRect(r);
 		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::diary){
-		r = UITabControl->GetButtonByIndex		(eptDiary)->GetAbsoluteRect();
+		UITabControl->GetButtonByIndex		(eptDiary)->GetAbsoluteRect(r);
 		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::contacts){
-		r = UITabControl->GetButtonByIndex		(eptContacts)->GetAbsoluteRect();
+		UITabControl->GetButtonByIndex		(eptContacts)->GetAbsoluteRect(r);
 		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::ranking){
-		r = UITabControl->GetButtonByIndex		(eptRanking)->GetAbsoluteRect();
+		UITabControl->GetButtonByIndex		(eptRanking)->GetAbsoluteRect(r);
 		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::statistics){
-		r = UITabControl->GetButtonByIndex		(eptActorStatistic)->GetAbsoluteRect();
+		UITabControl->GetButtonByIndex		(eptActorStatistic)->GetAbsoluteRect(r);
 		draw_sign								(m_updatedSectionImage, r);
 	}
 	if(g_pda_info_state&pda_section::encyclopedia){
-		r = UITabControl->GetButtonByIndex		(eptEncyclopedia)->GetAbsoluteRect();
+		UITabControl->GetButtonByIndex		(eptEncyclopedia)->GetAbsoluteRect(r);
 		draw_sign								(m_updatedSectionImage, r);
 	}
 	

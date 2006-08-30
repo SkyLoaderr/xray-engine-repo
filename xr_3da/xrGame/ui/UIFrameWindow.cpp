@@ -100,7 +100,8 @@ void CUIFrameWindow::Draw()
 {
 	if (m_bTextureVisible)
 	{
-		Frect rect = GetAbsoluteRect();
+		Frect			rect;
+		GetAbsoluteRect	(rect);
 		Fvector2 v;
 
 		v.x = rect.x1;
@@ -169,8 +170,8 @@ void CUIFrameWindow::FrameClip(const Frect parentAbsR)
 	// Если нет границ клиппанья, то скипаем
 	if (!GetParent()) return;
 
-	// Клиппаем по границам окна-парента
-	Frect		ourAbsR		= GetAbsoluteRect();
+	Frect		ourAbsR;
+	GetAbsoluteRect(ourAbsR);
 	CTexture	*T;
 	Fvector2	ts;
 	int			tile_x, tile_y;

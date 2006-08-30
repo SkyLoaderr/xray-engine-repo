@@ -7,6 +7,7 @@
 
 #pragma once
 
+#error "this file removed from project !!!"
 
 #include "uibutton.h"
 #include "UIInventoryUtilities.h"

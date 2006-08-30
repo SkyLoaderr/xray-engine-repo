@@ -116,10 +116,6 @@
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CMissile,			CInventoryItem)
 
-		DECLARE_SPECIALIZATION	(CUIDragDropItem,	CUIWindow,				cast_drag_drop_item);
-#		undef cast_type_list
-#		define cast_type_list save_cast_list	(CUIDragDropItem,	CUIWindow)
-
 		DECLARE_SPECIALIZATION	(CCustomZone,		CGameObject,			cast_custom_zone);
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CCustomZone,		CGameObject)

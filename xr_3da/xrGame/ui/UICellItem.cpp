@@ -79,7 +79,9 @@ CUIDragItem* CUICellItem::CreateDragItem()
 {
 	CUIDragItem* tmp;
 	tmp = xr_new<CUIDragItem>(this);
-	tmp->Init(GetShader(),GetAbsoluteRect(),GetUIStaticItem().GetOriginalRect());
+	Frect r;
+	GetAbsoluteRect(r);
+	tmp->Init(GetShader(),r,GetUIStaticItem().GetOriginalRect());
 	return tmp;
 }
 

@@ -753,7 +753,8 @@ void CUIBuyWnd::ActivatePropertiesBox()
 	// Флаг-признак для невлючения пункта контекстного меню: Dreess Outfit, если костюм уже надет
 	bool bAlreadyDressed = false; 
 
-	Frect rect = GetAbsoluteRect();
+	Frect rect; 
+	GetAbsoluteRect(rect);
 	GetUICursor()->GetPos(x,y);
 		
 	m_propertiesBox.RemoveAll();

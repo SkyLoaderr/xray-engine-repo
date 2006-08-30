@@ -16,6 +16,7 @@ class game_cl_GameState;
 class CUIDialogWnd;
 class CUICaption;
 class CUIStatic;
+class CUIWindow;
 
 struct SDrawStaticStruct :public IPureDestroyableObject{
 	SDrawStaticStruct	();

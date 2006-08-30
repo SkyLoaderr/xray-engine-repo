@@ -42,7 +42,8 @@ void CUIFrameLineWnd::Init(LPCSTR base_name, float x, float y, float width, floa
 
 void CUIFrameLineWnd::InitTexture(LPCSTR tex_name, bool horizontal){
 
-	Frect rect = GetAbsoluteRect();
+	Frect			rect;
+	GetAbsoluteRect	(rect);
 
 	bHorizontal = horizontal;
 
@@ -66,9 +67,10 @@ void CUIFrameLineWnd::Draw()
 {
 	if (m_bTextureAvailable)
 	{
-		Frect rect = GetAbsoluteRect();
-		UIFrameLine.SetPos(rect.left, rect.top);
-		UIFrameLine.Render();
+		Fvector2 p;
+		GetAbsolutePos		(p);
+		UIFrameLine.SetPos	(p.x, p.y);
+		UIFrameLine.Render	();
 
 		inherited::Draw();
 	}	

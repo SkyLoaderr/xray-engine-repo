@@ -22,8 +22,9 @@ void CUILabel::SetFont(CGameFont* pFont){
 
 void CUILabel::Draw(){
 	CUIFrameLineWnd::Draw();
-	Frect r = GetAbsoluteRect();
-	m_lines.Draw(r.x1 + m_textPos.x, r.y1 + m_textPos.y);
+	Fvector2 p;
+	GetAbsolutePos(p);
+	m_lines.Draw(p.x + m_textPos.x, p.y + m_textPos.y);
 }
 
 void CUILabel::SetWidth(float width){

@@ -346,8 +346,9 @@ void CUICustomEdit::Update()
 
 void  CUICustomEdit::Draw()
 {
-	CUIWindow::Draw();
-	Fvector2 pos = GetAbsolutePos();
+	CUIWindow::Draw	();
+	Fvector2		pos;
+	GetAbsolutePos	(pos);
 	m_lines.Draw(pos.x + m_textPos.x, pos.y + m_textPos.y);
 	if(m_bInputFocus)
 		m_lines.DrawCursor(pos.x + m_textPos.x, pos.y + m_textPos.y);

@@ -55,7 +55,8 @@ void CUIArtefactPanel::Draw(){
 		  float iHeight;
 		  float iWidth;
 
-	Frect rect = GetAbsoluteRect();
+	Frect rect;
+	GetAbsoluteRect(rect);
 	x = rect.left;
 	y = rect.top;	
 

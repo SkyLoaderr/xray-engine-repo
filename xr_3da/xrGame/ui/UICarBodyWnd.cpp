@@ -384,7 +384,7 @@ void CUICarBodyWnd::ActivatePropertiesBox()
 	if(m_pInventoryBox)	return;
 	float x,y;
 
-	Frect rect = GetAbsoluteRect();
+	Frect rect;	GetAbsoluteRect(rect);
 	GetUICursor()->GetPos(x,y);
 		
 	m_pUIPropertiesBox->RemoveAll();

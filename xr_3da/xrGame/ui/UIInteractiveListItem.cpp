@@ -92,7 +92,8 @@ bool CUIInteractiveListItem::OnMouse(float x, float y, EUIMessages mouse_action)
 //-----------------------------------------------------------------------------/
 Frect CUIInteractiveListItem::GetAbsoluteSubRect()
 {
-	Frect tmpRect = CUIWindow::GetAbsoluteRect();
+	Frect tmpRect;
+	GetAbsoluteRect(tmpRect);
 	if (itCurrIItem != vPositions.end())
 	{
 		tmpRect.left	+= (*itCurrIItem).pairScreenCrd.first;

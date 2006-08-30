@@ -341,7 +341,8 @@ void CUIMapWnd::SetTargetMap			(CUICustomMap* m, const Fvector2& pos, bool bZoom
 		SetZoom							(gm->GetMinZoom());
 		Frect vis_rect					= ActiveMapRect		();
 		vis_rect.getcenter				(m_tgtCenter);
-		m_tgtCenter.sub					(gm->GetAbsolutePos());
+		Fvector2	_p;gm->GetAbsolutePos(_p);
+		m_tgtCenter.sub					(_p);
 		m_tgtCenter.div					(gm->GetCurrentZoom());
  	}else{
 
@@ -426,7 +427,8 @@ bool CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 				if(m_flags.test(lmZoomIn))		SetZoom(GetZoom()*1.5f);
 				else							SetZoom(GetZoom()/1.5f);
 				m_tgtCenter						= cursor_pos;
-				m_tgtCenter.sub					(gm->GetAbsolutePos());
+				Fvector2 _p;					gm->GetAbsolutePos(_p);
+				m_tgtCenter.sub					(_p);
 				m_tgtCenter.div					(gm->GetCurrentZoom());
 				ResetActionPlanner				();
 				m_hint->SetOwner				(NULL);
@@ -663,9 +665,8 @@ void CUIMapWnd::AddUserSpot			(CUILevelMap* lm)
 	VERIFY(m_flags.test(lmUserSpotAdd) );
 
 	Fvector2 cursor_pos = GetUICursor()->GetPos();
-	VERIFY(lm->GetAbsoluteRect().in(cursor_pos));
-
-	cursor_pos.sub					(lm->GetAbsolutePos());
+	Fvector2 _p;lm->GetAbsolutePos(_p);
+	cursor_pos.sub					(_p);
 	Fvector2 p =					lm->ConvertLocalToReal(cursor_pos);
 	Fvector pos;
 	pos.set							(p.x, 0.0f, p.y);

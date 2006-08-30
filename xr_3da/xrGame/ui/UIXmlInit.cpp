@@ -16,7 +16,6 @@
 #include "UICheckButton.h"
 #include "UICustomSpin.h"
 #include "UIRadioButton.h"
-#include "UIDragDropList.h"
 #include "UIProgressBar.h"
 #include "UIProgressShape.h"
 #include "UIListWnd.h"
@@ -410,45 +409,6 @@ bool CUIXmlInit::InitDragDropListEx(CUIXml& xml_doc, const char* path, int index
 	return true;
 }
 
-bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, LPCSTR path, 
-						int index, CUIDragDropList* pWnd)
-{
-	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
-
-	float x = xml_doc.ReadAttribFlt(path, index, "x");
-	float y = xml_doc.ReadAttribFlt(path, index, "y");
-
-	InitAlignment(xml_doc, path, index, x, y, pWnd);
-
-	float width = xml_doc.ReadAttribFlt(path, index, "width");
-	float height = xml_doc.ReadAttribFlt(path, index, "height");
-
-
-	pWnd->Init(x,y, width,height);
-
-	int cell_width = xml_doc.ReadAttribInt(path, index, "cell_width");
-	int cell_height = xml_doc.ReadAttribInt(path, index, "cell_height");
-	int rows_num = xml_doc.ReadAttribInt(path, index, "rows_num");
-	int cols_num = xml_doc.ReadAttribInt(path, index, "cols_num");
-	int rows_num_view = xml_doc.ReadAttribInt(path, index, "rows_num_view");
-	
-	shared_str show_grid_str = xml_doc.ReadAttrib(path, index, "show_grid", NULL);
-	int show_grid = 1;
-	if(*show_grid_str) show_grid = atoi(*show_grid_str);
-
-	int unlimitedCapacity = xml_doc.ReadAttribInt(path, index, "unlimited", 0);
-	pWnd->SetUnlimitedCapacity(0 != unlimitedCapacity);
-
-	pWnd->SetCellWidth(cell_width);
-	pWnd->SetCellHeight(cell_height);
-	if(show_grid)
-		pWnd->InitGrid(rows_num, cols_num, true, rows_num_view);
-	else
-		pWnd->InitGrid(rows_num, cols_num, 0, rows_num_view);
-
-
-	return true;
-}
 
 //////////////////////////////////////////////////////////////////////////
 

@@ -7,7 +7,7 @@
 
 
 #pragma once
-
+#error "this file removed from project !!!"
 
 #include "uiframewindow.h"
 #include "uidragdropitem.h"

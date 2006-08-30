@@ -117,9 +117,6 @@ void CUIWeaponCellItem::DestroyIcon(eAddonType t)
 
 CUIStatic* CUIWeaponCellItem::GetIcon(eAddonType t)
 {
-	if(m_addons[t])
-		VERIFY(smart_cast<CUIStatic*>(m_addons[t]));
-
 	return m_addons[t];
 }
 
@@ -270,7 +267,8 @@ CBuyItemCustomDrawCell::CBuyItemCustomDrawCell	(LPCSTR str, CGameFont* pFont)
 
 void CBuyItemCustomDrawCell::OnDraw(CUICellItem* cell)
 {
-	Fvector2 pos = cell->GetAbsolutePos	();
+	Fvector2							pos;
+	cell->GetAbsolutePos				(pos);
 	m_pFont->Out						(pos.x*UI()->GetScaleX(), pos.y*UI()->GetScaleY(), m_string);
 	m_pFont->OnRender					();
 }

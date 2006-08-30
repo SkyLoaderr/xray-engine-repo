@@ -16,7 +16,8 @@ CUICDkey::~CUICDkey(){
 }
 
 void CUICDkey::Draw(){
-	Frect rect = GetAbsoluteRect();
+	Frect rect;
+	GetAbsoluteRect(rect);
 	float outX, outY;
 	Frect scr_rect;
 	scr_rect.set(0,0,1024,768);

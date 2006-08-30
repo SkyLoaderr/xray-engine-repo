@@ -48,7 +48,8 @@ void CUIProgressBar::UpdateProgressBar()
 
 void CUIProgressBar::Draw()
 {
-	Frect rect = GetAbsoluteRect();
+	Frect					rect;
+	GetAbsoluteRect			(rect);
 
 	if(m_bBackgroundPresent){
 		UI()->PushScissor	(rect);		

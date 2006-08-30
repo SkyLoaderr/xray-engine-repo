@@ -125,9 +125,12 @@ void  CUIStatic::Draw()
 	if(m_bClipper){
 		Frect clip_rect;
 		if (-1 == m_ClipRect.left && -1 == m_ClipRect.right && -1 == m_ClipRect.top && -1 == m_ClipRect.left){
-			Frect our_rect	= GetAbsoluteRect();
+			Frect			our_rect;
+			GetAbsoluteRect	(our_rect);
 			clip_rect		= our_rect;
-			if(GetParent())	clip_rect.intersection(our_rect,GetParent()->GetAbsoluteRect());			
+			Frect			_r;
+			GetParent()->GetAbsoluteRect(_r);
+			if(GetParent())	clip_rect.intersection(our_rect,_r);			
 		}else				
 			clip_rect		= m_ClipRect;
 
@@ -150,8 +153,9 @@ void CUIStatic::DrawText(){
 		if(IsHighlightText() && xr_strlen(m_pLines->GetText())>0 && m_bEnableTextHighlighting)
 			DrawHighlightedText();		
 		else{
-			Frect r = GetAbsoluteRect();
-			m_pLines->Draw(r.x1 + m_iTextOffsetX, r.y1 + m_iTextOffsetY);
+			Fvector2			p;
+			GetAbsolutePos		(p);
+			m_pLines->Draw		(p.x + m_iTextOffsetX, p.y + m_iTextOffsetY);
 		}
 
 	}
@@ -160,7 +164,8 @@ void CUIStatic::DrawText(){
 void CUIStatic::DrawTexture(){
 
 	if(m_bAvailableTexture && m_bTextureEnable){
-		Frect rect = GetAbsoluteRect();
+		Frect			rect;
+		GetAbsoluteRect	(rect);
 		m_UIStaticItem.SetPos	(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
 
 		if(m_bStretchTexture)
@@ -260,14 +265,15 @@ void CUIStatic::TextureClipper(float offset_x, float offset_y, Frect* pClipRect,
 	
 	if(pClipRect == NULL)
 		if(GetParent())
-			parent_rect = GetParent()->GetAbsoluteRect();
+			GetParent()->GetAbsoluteRect(parent_rect);
 		else
-			parent_rect = GetAbsoluteRect();
+			GetAbsoluteRect(parent_rect);
 	else
 		parent_rect = *pClipRect;
 		
-	Frect rect = GetAbsoluteRect();
-	Frect out_rect;
+	Frect			rect;
+	GetAbsoluteRect	(rect);
+	Frect			out_rect;
 
 
 	//проверить попадает ли изображение в окно
@@ -627,8 +633,9 @@ void CUIStatic::SetTextST				(LPCSTR str_id)
 }
 
 void CUIStatic::DrawHighlightedText(){
-	Frect rect = GetAbsoluteRect();
-	u32 def_col = m_pLines->GetTextColor();
+	Frect				rect;
+	GetAbsoluteRect		(rect);
+	u32 def_col			= m_pLines->GetTextColor();
 	m_pLines->SetTextColor(m_HighlightColor);
 /*
 	m_pLines->Draw(	rect.left + 1 + m_iTextOffsetX, rect.top + 1 + m_iTextOffsetY);

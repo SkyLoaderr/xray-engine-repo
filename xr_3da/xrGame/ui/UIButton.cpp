@@ -164,7 +164,8 @@ void CUIButton::OnClick(){
 
 void CUIButton::DrawTexture()
 {
-	Frect rect = GetAbsoluteRect();
+	Frect rect; 
+	GetAbsoluteRect		(rect);
 
 	if(m_bAvailableTexture && m_bTextureEnable)
 	{
@@ -206,7 +207,8 @@ void CUIButton::DrawHighlightedText(){
 		down_offset = m_iPushOffsetY;
 	}
 
-	Frect rect = GetAbsoluteRect();
+	Frect					rect;
+	GetAbsoluteRect			(rect);
 	u32 def_col = m_pLines->GetTextColor();
 	m_pLines->SetTextColor(m_HighlightColor);
 

@@ -68,7 +68,8 @@ void CUIProgressShape::Draw()
 	u32	offset;
 	FVF::TL*	pv					= (FVF::TL*)RCache.Vertex.Lock	(m_sectorCount*3, gm.stride(), offset);
 
-	Frect pos_rect					= m_pTexture->GetAbsoluteRect();
+	Frect pos_rect;
+	m_pTexture->GetAbsoluteRect		(pos_rect);
 	pos_rect.x1						*= UI()->GetScaleX();
 	pos_rect.y1						*= UI()->GetScaleY();
 	pos_rect.x2						*= UI()->GetScaleX();

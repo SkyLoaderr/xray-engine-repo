@@ -88,9 +88,10 @@ void CUICustomSpin::OnBtnDownClick(){
 }
 
 void CUICustomSpin::Draw(){
-	CUIWindow::Draw();
-	Fvector2 pos = GetAbsolutePos();
-	m_pLines->Draw(pos.x + 3, pos.y);
+	CUIWindow::Draw	();
+	Fvector2		pos;
+	GetAbsolutePos	(pos);
+	m_pLines->Draw	(pos.x + 3, pos.y);
 }
 
 void CUICustomSpin::Update(){

@@ -397,8 +397,6 @@ void CUIInventoryWnd::AttachAddon(PIItem item_to_upgrade)
 			pActor->inventory().Activate		(NO_ACTIVE_SLOT);
 	}
 
-//.	(smart_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->DetachChild(m_pCurrentDragDropItem);
-//.	m_pCurrentDragDropItem			= NULL;
 	SetCurrentItem								(NULL);
 }
 

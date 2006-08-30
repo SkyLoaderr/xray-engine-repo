@@ -191,7 +191,7 @@ void CUIDragDropListEx::OnItemRButtonClick(CUIWindow* w, void* pData)
 
 void CUIDragDropListEx::GetClientArea(Frect& r)
 {
-	r	= GetAbsoluteRect				();
+	GetAbsoluteRect				(r);
 	if(m_vScrollBar->GetVisible())
 		r.x2 -= m_vScrollBar->GetWidth	();
 }
@@ -240,7 +240,8 @@ void CUIDragDropListEx::Update()
 	inherited::Update			();
 
 	if( m_drag_item ){
-		Frect	wndRect		= GetAbsoluteRect();
+		Frect	wndRect;
+		GetAbsoluteRect(wndRect);
 		Fvector2 cp			= GetUICursor()->GetPos();
 		if(wndRect.in(cp)){
 			if(NULL==m_drag_item->BackList())
@@ -611,7 +612,8 @@ void CUICellContainer::ClearAll(bool bDestroy)
 Ivector2 CUICellContainer::PickCell(const Fvector2& abs_pos)
 {
 	Ivector2 res;
-	Fvector2 ap = GetAbsolutePos			();
+	Fvector2 ap;
+	GetAbsolutePos							(ap);
 	ap.sub									(abs_pos);
 	ap.mul									(-1);
 	res.x									= iFloor(ap.x/m_cellSize.x);
@@ -639,7 +641,8 @@ void CUICellContainer::Draw()
 	clamp				(tgt_cells.x2, 0, cell_cnt.x-1);
 	clamp				(tgt_cells.y2, 0, cell_cnt.y-1);
 
-	Fvector2 lt_abs_pos	= GetAbsolutePos();
+	Fvector2			lt_abs_pos;
+	GetAbsolutePos		(lt_abs_pos);
 
 	Fvector2	drawLT;
 	drawLT.set			(lt_abs_pos.x+tgt_cells.lt.x*cell_sz.x, lt_abs_pos.y+tgt_cells.lt.y*cell_sz.y);

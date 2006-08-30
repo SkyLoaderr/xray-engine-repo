@@ -51,17 +51,6 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 {
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
 
-	/*
-#ifndef DEBUG
-	if(key_binding[dik]== kINVENTORY)
-	{
-		if( !MainInputReceiver() || MainInputReceiver()==InventoryMenu){
-			m_game->StartStopMenu(InventoryMenu,true);
-			return true;
-		}break;
-	}
-#endif
-	*/
 	if( Device.Pause()		) return false;
 
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
@@ -133,11 +122,13 @@ void CUIGameSP::StartTalk()
 
 void CUIGameSP::StartCarBody(CInventoryOwner* pOurInv, CInventoryOwner* pOthers)
 {
+	if( MainInputReceiver() )		return;
 	UICarBodyMenu->InitCarBody		(pOurInv,  pOthers);
 	m_game->StartStopMenu			(UICarBodyMenu,true);
 }
 void CUIGameSP::StartCarBody(CInventoryOwner* pOurInv, CInventoryBox* pBox)
 {
+	if( MainInputReceiver() )		return;
 	UICarBodyMenu->InitCarBody		(pOurInv,  pBox);
 	m_game->StartStopMenu			(UICarBodyMenu,true);
 }

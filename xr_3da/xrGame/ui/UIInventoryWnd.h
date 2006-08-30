@@ -6,10 +6,6 @@ class CInventory;
 #include "UIStatic.h"
 #include "UI3tButton.h"
 
-#include "UIDragDropItem.h"
-#include "UIWpnDragDropItem.h"
-
-//.#include "UIDragDropList.h"
 #include "UIProgressBar.h"
 
 #include "UIPropertiesBox.h"

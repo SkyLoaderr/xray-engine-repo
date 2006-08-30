@@ -123,12 +123,14 @@ void CUIGameLog::Update()
 		RecalcSize			();
 
 	toDelList.clear();
-	Frect visible_rect = GetAbsoluteRect();
+	Frect visible_rect;
+	GetAbsoluteRect(visible_rect);
 	for(	WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); 
 			m_pad->GetChildWndList().end()!=it; 
 			++it)
 	{
-		Frect	r		= (*it)->GetAbsoluteRect();
+		Frect	r;
+		(*it)->GetAbsoluteRect(r);
 		if(! (visible_rect.in(r.x1, r.y1) && visible_rect.in(r.x2, r.y1) && visible_rect.in(r.x1, r.y2) && visible_rect.in(r.x2, r.y2)))
 		{
 			toDelList.push_back(*it);			

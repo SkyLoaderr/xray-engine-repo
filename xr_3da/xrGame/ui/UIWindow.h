@@ -71,8 +71,6 @@ class	ui_list 		: public std::list<T,uialloc<T> >{ public: u32 size() const {ret
 #include "../script_export_space.h"
 #include "uiabstract.h"
 
-class CUIDragDropItem;
-
 
 class CUIWindow  : public CUISimpleWindow
 {
@@ -85,8 +83,6 @@ public:
 	////////////////////////////////////
 	//инициализация
 	virtual void			Init				(Frect* pRect);
-
-	virtual CUIDragDropItem*cast_drag_drop_item	()								{return NULL;}
 
 	////////////////////////////////////
 	//работа с дочерними и родительскими окнами
@@ -107,32 +103,32 @@ public:
 
 
 	//поднять на вершину списка выбранное дочернее окно
-	virtual bool			BringToTop			(CUIWindow* pChild);
+	bool					BringToTop			(CUIWindow* pChild);
 
 	//поднять на вершину списка всех родителей окна и его самого
-	virtual void			BringAllToTop		();
+	void					BringAllToTop		();
 	
 
 
-	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
-	virtual void OnMouseMove();
-	virtual void OnMouseScroll(float iDirection);
-	virtual bool OnDbClick();
-	virtual bool OnMouseDown(bool left_button = true);
-	virtual void OnMouseUp(bool left_button = true);
-	virtual void OnFocusReceive();
-	virtual void OnFocusLost();
-			bool HasChildMouseHandler();
+	virtual bool 			OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual void 			OnMouseMove();
+	virtual void 			OnMouseScroll(float iDirection);
+	virtual bool 			OnDbClick();
+	virtual bool 			OnMouseDown(bool left_button = true);
+	virtual void 			OnMouseUp(bool left_button = true);
+	virtual void 			OnFocusReceive();
+	virtual void 			OnFocusLost();
+			bool 			HasChildMouseHandler();
 
 	//захватить/освободить мышь окном
 	//сообщение посылается дочерним окном родительскому
-	virtual void			SetCapture			(CUIWindow* pChildWindow, bool capture_status);
-	virtual CUIWindow*		GetMouseCapturer	()													{return m_pMouseCapturer;}
+	void					SetCapture			(CUIWindow* pChildWindow, bool capture_status);
+	CUIWindow*				GetMouseCapturer	()													{return m_pMouseCapturer;}
 
 	//окошко, которому пересылаются сообщения,
 	//если NULL, то шлем на GetParent()
-	virtual void			SetMessageTarget	(CUIWindow* pWindow)								{m_pMessageTarget = pWindow;}
-	virtual CUIWindow*		GetMessageTarget	();
+	void					SetMessageTarget	(CUIWindow* pWindow)								{m_pMessageTarget = pWindow;}
+	CUIWindow*				GetMessageTarget	();
 
 	//реакция на клавиатуру
 	virtual bool			OnKeyboard			(int dik, EUIMessages keyboard_action);
@@ -159,8 +155,8 @@ public:
 			void			ShowChildren		(bool show);
 	
 	//абсолютные координаты
-	Frect					GetAbsoluteRect		() ;
-	Fvector2				GetAbsolutePos		() 												{Frect abs = GetAbsoluteRect(); return Fvector2().set(abs.x1,abs.y1);}
+	IC void					GetAbsoluteRect		(Frect& r) ;
+	IC void					GetAbsolutePos		(Fvector2& p) 	{Frect abs; GetAbsoluteRect(abs); p.set(abs.x1,abs.y1);}
 
 
 			void			SetWndRect_script(float x, float y, float width, float height)		{CUISimpleWindow::SetWndRect(x,y,width,height);}

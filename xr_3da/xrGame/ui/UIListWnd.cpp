@@ -401,7 +401,8 @@ void CUIListWnd::Draw()
 
 	if(m_iFocusedItem != -1 && m_bActiveBackgroundEnable)
 	{
-		Frect rect = GetAbsoluteRect();
+		Frect rect;
+		GetAbsoluteRect(rect);
 		for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 		{
 			CUIListItem *pListItem2 = smart_cast<CUIListItem*>(*it);
@@ -420,7 +421,8 @@ void CUIListWnd::Draw()
 	
 	if(m_iSelectedItem != -1 && m_bShowSelectedItem)
 	{
-		Frect rect = GetAbsoluteRect();
+		Frect rect;
+		GetAbsoluteRect	(rect);
 		for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 		{
 			CUIListItem *pListItem2 = smart_cast<CUIListItem*>(*it);

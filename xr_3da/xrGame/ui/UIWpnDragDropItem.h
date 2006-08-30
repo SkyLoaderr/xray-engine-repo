@@ -6,6 +6,7 @@
 #define _UI_WPN_DRAG_DROP_ITEM_H_
 
 #pragma once
+#error "this file removed from project !!!"
 
 #include "../weapon.h"
 

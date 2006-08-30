@@ -329,7 +329,8 @@ void CUIScrollBar::Reset()
 void CUIScrollBar::Draw()
 {
 	//нарисовать фоновую подложку
-	Frect rect = GetAbsoluteRect();
+	Frect rect;
+	GetAbsoluteRect(rect);
 	if(m_bIsHorizontal){
 		if (m_StaticBackground->GetOriginalRect().width()){
 			float size	= GetWidth() - m_DecButton->GetWidth() - m_IncButton->GetWidth();

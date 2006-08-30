@@ -39,11 +39,12 @@ void CUIMultiTextStatic::RemovePhraseByIndex(u32 idx)
 
 void CUIMultiTextStatic::Draw()
 {
-	Frect r = GetAbsoluteRect();
+	Fvector2			p;
+	GetAbsolutePos		(p);
 
 	for (Phrases_it it = m_vPhrases.begin(); it != m_vPhrases.end(); ++it)
 	{
-		it->effect.Out(it->outX + r.left, it->outY + r.top, *it->str);
+		it->effect.Out(it->outX + p.x, it->outY + p.y, *it->str);
 	}
 
 	inherited::Draw();

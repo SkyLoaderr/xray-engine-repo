@@ -44,9 +44,9 @@ bool GreaterRoomInRuck	(PIItem item1, PIItem item2);
 bool FreeRoom_inBelt	(TIItemContainer& item_list, PIItem item, int width, int height);
 
 //дл€ надписей на иконках с оружием
-void AmmoDrawProc(CUIDragDropItem* pItem);
+//.void AmmoDrawProc(CUIDragDropItem* pItem);
 //дл€ надписей на иконках с едой
-void FoodDrawProc(CUIDragDropItem* pItem);
+//.void FoodDrawProc(CUIDragDropItem* pItem);
 
 // get shader for BuyWeaponWnd
 ref_shader&	GetBuyMenuShader();
@@ -61,7 +61,6 @@ ref_shader&	GetMPCharIconsShader();
 //удал€ем все шейдеры
 void DestroyShaders();
 
-void ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector);
 
 // ѕолучить значение времени в текстовом виде
 
