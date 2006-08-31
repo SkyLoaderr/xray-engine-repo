@@ -438,7 +438,7 @@ void CUIMainIngameWnd::Update()
 
 	// ewiArtefact
 	if(GameID() == GAME_ARTEFACTHUNT){
-		bool b_Artefact = !m_pActor->ArtefactsOnBelt().empty();
+		bool b_Artefact = (NULL != m_pActor->inventory().ItemFromSlot(ARTEFACT_SLOT));
 		if(b_Artefact)
 			SetWarningIconColor	(ewiArtefact,0xffffffff);
 		else
