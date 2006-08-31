@@ -9,6 +9,7 @@
 
 using namespace luabind;
 
+#pragma optimize("s",on)
 void CScriptStringTable::script_register(lua_State *L)
 {
 	module(L)

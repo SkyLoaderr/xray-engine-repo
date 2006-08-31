@@ -17,6 +17,7 @@
 
 using namespace luabind;
 
+#pragma optimize("s",on)
 void CArtefact::script_register(lua_State *L)
 {
 	module(L)

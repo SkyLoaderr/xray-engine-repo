@@ -25,6 +25,7 @@ LPCSTR CSavedGameWrapper__level_name	(const CSavedGameWrapper *self)
 	return			(*ai().game_graph().header().level(self->level_id()).name());
 }
 
+#pragma optimize("s",on)
 void CSavedGameWrapper::script_register	(lua_State *L)
 {
 	module(L)

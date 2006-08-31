@@ -93,6 +93,7 @@ void CMosquitoBald::Affect(SZoneObjectInfo* O)
 
 using namespace luabind;
 
+#pragma optimize("s",on)
 void CMosquitoBald::script_register	(lua_State *L)
 {
 	module(L)

@@ -153,6 +153,7 @@ void CWeaponRPG7::net_Import			( NET_Packet& P)
 
 using namespace luabind;
 
+#pragma optimize("s",on)
 void CWeaponRPG7::script_register	(lua_State *L)
 {
 	module(L)

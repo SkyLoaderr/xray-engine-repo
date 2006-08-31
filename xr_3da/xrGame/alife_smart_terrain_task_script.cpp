@@ -12,6 +12,7 @@
 
 using namespace luabind;
 
+#pragma optimize("s",on)
 void CALifeSmartTerrainTask::script_register(lua_State *L)
 {
 	module(L)

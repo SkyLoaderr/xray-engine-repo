@@ -5,9 +5,9 @@
 #include "../script_space.h"
 #include <luabind/adopt_policy.hpp>
 
-
 using namespace luabind;
 
+#pragma optimize("s",on)
 void CUITabControl::script_register(lua_State *L)
 {
 	module(L)

@@ -54,6 +54,7 @@ void one(T *self)
 	self->assign(typename T::TYPE(-1));
 }
 
+#pragma optimize("s",on)
 void CScriptFlags::script_register(lua_State *L)
 {
 	module(L)

@@ -37,6 +37,7 @@ public:
 	}
 };
 
+#pragma optimize("s",on)
 void lanim_registrator::script_register(lua_State *L)
 {
 	module(L)

@@ -45,6 +45,7 @@ LPCSTR translate_string(LPCSTR str)
 	return *CStringTable().translate(str);
 }
 
+#pragma optimize("s",on)
 void game_sv_GameState::script_register(lua_State *L)
 {
 

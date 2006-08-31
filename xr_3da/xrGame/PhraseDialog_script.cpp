@@ -31,6 +31,7 @@ void CPhraseScript::AddDisableInfo	(LPCSTR str)
 }
 
 
+#pragma optimize("s",on)
 void CPhraseDialogExporter::script_register(lua_State *L)
 {
 	module(L)

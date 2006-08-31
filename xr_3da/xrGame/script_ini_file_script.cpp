@@ -55,6 +55,7 @@ CScriptIniFile *create_ini_file	(LPCSTR ini_string)
 }
 #pragma warning(pop)
 
+#pragma optimize("s",on)
 void CScriptIniFile::script_register(lua_State *L)
 {
 	module(L)

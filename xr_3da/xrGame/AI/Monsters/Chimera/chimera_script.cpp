@@ -4,6 +4,7 @@
 
 using namespace luabind;
 
+#pragma optimize("s",on)
 void CChimera::script_register(lua_State *L)
 {
 	module(L)

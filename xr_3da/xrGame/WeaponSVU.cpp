@@ -13,6 +13,7 @@ CWeaponSVU::~CWeaponSVU(void)
 
 using namespace luabind;
 
+#pragma optimize("s",on)
 void CWeaponSVU::script_register	(lua_State *L)
 {
 	module(L)

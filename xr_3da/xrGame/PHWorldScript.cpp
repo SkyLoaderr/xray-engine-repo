@@ -3,7 +3,10 @@
 #include "PHWorld.h"
 #include "script_space.h"
 #include "PHCommander.h"
+
 using namespace luabind;
+
+#pragma optimize("s",on)
 void CPHWorld::script_register(lua_State *L)
 {
 	module(L)

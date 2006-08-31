@@ -158,6 +158,7 @@ void CWeaponRG6::OnEvent(NET_Packet& P, u16 type)
 
 using namespace luabind;
 
+#pragma optimize("s",on)
 void CWeaponRG6::script_register	(lua_State *L)
 {
 	module(L)

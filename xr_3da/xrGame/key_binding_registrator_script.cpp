@@ -10,6 +10,7 @@ int dik_to_bind(int dik){
 	return key_binding[dik];
 }
 
+#pragma optimize("s",on)
 void key_binding_registrator::script_register(lua_State *L)
 {
 	module(L)

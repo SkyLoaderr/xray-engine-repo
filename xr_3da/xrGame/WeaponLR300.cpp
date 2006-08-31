@@ -59,6 +59,7 @@ void	CWeaponLR300::spatial_unregister	()
 
 using namespace luabind;
 
+#pragma optimize("s",on)
 void CWeaponLR300::script_register	(lua_State *L)
 {
 	module(L)

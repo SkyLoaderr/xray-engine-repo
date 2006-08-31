@@ -49,21 +49,6 @@ float game_sv_mp_script::GetHitParamsImpulse (NET_Packet* P)
 	return res;
 }
 
-void game_sv_mp::script_register(lua_State *L)
-{
-	module(L)
-	[
-		class_< game_sv_mp, game_sv_GameState >("game_sv_mp")
-			.def(	constructor<>())
-			.def("SpawnWeaponForActor",		&game_sv_mp::SpawnWeaponForActor)
-			.def("KillPlayer",				&game_sv_mp::KillPlayer)
-			.def("SendPlayerKilledMessage", &game_sv_mp::SendPlayerKilledMessage)
-			.def("signal_Syncronize",		&game_sv_GameState::signal_Syncronize)
-	];
-}
-
-
-
 void game_sv_mp_script::Create	(shared_str &options)
 {
 	inherited::Create(options);
@@ -211,6 +196,20 @@ struct CWrapperBase : public T, public luabind::wrap_base {
 };
 
 #pragma warning(pop)
+
+#pragma optimize("s",on)
+void game_sv_mp::script_register(lua_State *L)
+{
+	module(L)
+	[
+		class_< game_sv_mp, game_sv_GameState >("game_sv_mp")
+			.def(	constructor<>())
+			.def("SpawnWeaponForActor",		&game_sv_mp::SpawnWeaponForActor)
+			.def("KillPlayer",				&game_sv_mp::KillPlayer)
+			.def("SendPlayerKilledMessage", &game_sv_mp::SendPlayerKilledMessage)
+			.def("signal_Syncronize",		&game_sv_GameState::signal_Syncronize)
+	];
+}
 
 void game_sv_mp_script::script_register(lua_State *L)
 {

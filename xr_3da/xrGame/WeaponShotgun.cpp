@@ -372,18 +372,6 @@ u8 CWeaponShotgun::AddCartridge		(u8 cnt)
 	return cnt;
 }
 
-#include "script_space.h"
-
-using namespace luabind;
-
-void CWeaponShotgun::script_register	(lua_State *L)
-{
-	module(L)
-	[
-		class_<CWeaponShotgun,CGameObject>("CWeaponShotgun")
-			.def(constructor<>())
-	];
-}
 void	CWeaponShotgun::net_Export	(NET_Packet& P)
 {
 	inherited::net_Export(P);	
@@ -394,6 +382,7 @@ void	CWeaponShotgun::net_Export	(NET_Packet& P)
 		P.w_u8(l_cartridge.m_LocalAmmoType);
 	}
 }
+
 void	CWeaponShotgun::net_Import	(NET_Packet& P)
 {
 	inherited::net_Import(P);	
@@ -410,4 +399,19 @@ void	CWeaponShotgun::net_Import	(NET_Packet& P)
 		l_cartridge.Load(*(m_ammoTypes[LocalAmmoType]), LocalAmmoType); 
 //		m_fCurrentCartirdgeDisp = m_DefaultCartridge.m_kDisp;		
 	}
+}
+
+
+#include "script_space.h"
+
+using namespace luabind;
+
+#pragma optimize("s",on)
+void CWeaponShotgun::script_register	(lua_State *L)
+{
+	module(L)
+	[
+		class_<CWeaponShotgun,CGameObject>("CWeaponShotgun")
+			.def(constructor<>())
+	];
 }

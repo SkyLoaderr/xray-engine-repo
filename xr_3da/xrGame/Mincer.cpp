@@ -163,6 +163,7 @@ float CMincer::BlowoutRadiusPercent	(CPhysicsShellHolder* GO)
 
 using namespace luabind;
 
+#pragma optimize("s",on)
 void CMincer::script_register	(lua_State *L)
 {
 	module(L)

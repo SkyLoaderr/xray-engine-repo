@@ -41,6 +41,7 @@ void game_cl_Single::OnDifficultyChanged()
 	Actor()->OnDifficultyChanged();
 }
 
+#pragma optimize("s",on)
 void CScriptGameDifficulty::script_register(lua_State *L)
 {
 	module(L)

@@ -26,6 +26,7 @@ using namespace luabind;
 //
 //}
 
+#pragma optimize("s",on)
 void CUIListWndEx::script_register(lua_State *L)
 {
 

@@ -32,6 +32,7 @@ bool get_console_bool(CConsole* c, LPCSTR cmd)
 	return !!val;
 }
 
+#pragma optimize("s",on)
 void console_registrator::script_register(lua_State *L)
 {
 	module(L)

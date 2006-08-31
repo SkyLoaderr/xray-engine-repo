@@ -19,6 +19,7 @@ void set_goal_world_state(CScriptActionPlanner *action_planner, CScriptActionPla
 	action_planner->set_target_state	(*world_state);
 }
 
+#pragma optimize("s",on)
 void CActionPlanner<CScriptGameObject>::script_register(lua_State *L)
 {
 	module(L)

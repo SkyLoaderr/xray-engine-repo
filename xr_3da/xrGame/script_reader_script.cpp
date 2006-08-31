@@ -30,6 +30,7 @@ bool r_bool(IReader *self)
 	return			(!!self->r_u8());
 }
 
+#pragma optimize("s",on)
 void CScriptReader::script_register(lua_State *L)
 {
 	module(L)

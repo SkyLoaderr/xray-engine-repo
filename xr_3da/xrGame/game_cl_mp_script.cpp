@@ -14,18 +14,6 @@
 
 using namespace luabind;
 
-void game_cl_mp::script_register(lua_State *L)
-{
-	module(L)
-	[
-		class_<game_cl_GameState,game_GameState>("game_cl_GameState")
-			.def_readwrite("local_svdpnid",		&game_cl_GameState::local_svdpnid)
-			.def_readwrite("local_player",		&game_cl_GameState::local_player),
-
-		class_<game_cl_mp,game_cl_GameState>("game_cl_mp")
-	];
-}
-
 #pragma warning(push)
 #pragma warning(disable:4709)
 
@@ -95,6 +83,19 @@ LPCSTR game_cl_mp_script::GetRoundTime()
 	return bufTime;
 }
 
+
+#pragma optimize("s",on)
+void game_cl_mp::script_register(lua_State *L)
+{
+	module(L)
+	[
+		class_<game_cl_GameState,game_GameState>("game_cl_GameState")
+			.def_readwrite("local_svdpnid",		&game_cl_GameState::local_svdpnid)
+			.def_readwrite("local_player",		&game_cl_GameState::local_player),
+
+		class_<game_cl_mp,game_cl_GameState>("game_cl_mp")
+	];
+}
 
 void game_cl_mp_script::script_register(lua_State *L)
 {

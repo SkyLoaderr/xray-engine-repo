@@ -27,6 +27,7 @@ void CUIOptionsManagerScript::OptionsPostAccept(){
 	CUIOptionsItem::GetOptionsManager()->OptionsPostAccept();
 }
 
+#pragma optimize("s",on)
 void CUIOptionsManagerScript::script_register(lua_State *L)
 {
 	module(L)

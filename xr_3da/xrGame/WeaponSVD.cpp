@@ -34,6 +34,7 @@ void CWeaponSVD::OnAnimationEnd(u32 state)
 
 using namespace luabind;
 
+#pragma optimize("s",on)
 void CWeaponSVD::script_register	(lua_State *L)
 {
 	module(L)

@@ -2,8 +2,10 @@
 #include "PHSimpleCalls.h"
 #include "script_space.h"
 #include "PhysicsShell.h"
+
 using namespace luabind;
 
+#pragma optimize("s",on)
 void CPHCallOnStepCondition::script_register(lua_State *L)
 {
 	module(L)
@@ -27,6 +29,7 @@ void CPHExpireOnStepCondition::script_register(lua_State *L)
 			.def(constructor<>())
 		];
 }
+
 void CPHConstForceAction::script_register(lua_State *L)
 {
 	module(L)

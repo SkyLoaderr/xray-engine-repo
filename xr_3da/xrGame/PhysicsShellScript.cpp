@@ -5,6 +5,14 @@
 
 using namespace luabind;
 
+Fmatrix	global_transform(CPhysicsElement* E)
+{
+	Fmatrix m;
+	E->GetGlobalTransformDynamic(&m);
+	return m;
+}
+
+#pragma optimize("s",on)
 void CPhysicsShell::script_register(lua_State *L)
 {
 	module(L)
@@ -27,12 +35,7 @@ void CPhysicsShell::script_register(lua_State *L)
 			.def("get_angular_vel",				&CPhysicsShell::get_AngularVel)
 		];
 }
-Fmatrix	global_transform(CPhysicsElement* E)
-{
-	Fmatrix m;
-	E->GetGlobalTransformDynamic(&m);
-	return m;
-}
+
 void CPhysicsElement::script_register(lua_State *L)
 {
 	module(L)

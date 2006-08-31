@@ -29,6 +29,7 @@ bool CUIListWnd::AddItem_script(CUIListItem* item){
 	return AddItem(item, -1);
 }
 
+#pragma optimize("s",on)
 void CUIListWnd::script_register(lua_State *L)
 {
 

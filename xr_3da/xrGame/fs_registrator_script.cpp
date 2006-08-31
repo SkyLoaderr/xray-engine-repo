@@ -125,6 +125,7 @@ LPCSTR get_file_age_str(CLocatorAPI* fs, LPCSTR nm)
 	return asctime( newtime );
 }
 
+#pragma optimize("s",on)
 void fs_registrator::script_register(lua_State *L)
 {
 	module(L)
