@@ -507,11 +507,12 @@ bool CRelationMapLocation::Update()
 	{
 		CSE_ALifeTraderAbstract*	pEnt = NULL;
 		CSE_ALifeTraderAbstract*	pAct = NULL;
-		pEnt = smart_cast<CSE_ALifeTraderAbstract*>(ai().alife().objects().object(m_pInvOwnerEntityID,true));
+		CSE_ALifeDynamicObject*		temp = ai().alife().objects().object(m_pInvOwnerEntityID,true);
+		pEnt = smart_cast<CSE_ALifeTraderAbstract*>(temp);
 		pAct = smart_cast<CSE_ALifeTraderAbstract*>(ai().alife().objects().object(m_pInvOwnerActorID,true));
 		if(!pEnt || !pAct)	return false;
 		m_last_relation =  RELATION_REGISTRY().GetRelationType(pEnt, pAct);
-		CSE_ALifeCreatureAbstract*		pCreature = smart_cast<CSE_ALifeCreatureAbstract*>(pEnt);
+		CSE_ALifeCreatureAbstract*		pCreature = smart_cast<CSE_ALifeCreatureAbstract*>(temp);
 		if(pCreature) //maybe trader ?
 			bAlive = pCreature->g_Alive		();
 	}else{

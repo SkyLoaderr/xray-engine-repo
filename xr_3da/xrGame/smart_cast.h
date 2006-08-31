@@ -290,6 +290,22 @@
 #	undef cast_type_list
 #	define cast_type_list save_cast_list	(CSE_ALifeTrader,			CSE_Abstract)
 
+	DECLARE_SPECIALIZATION	(CSE_ALifeCreatureAbstract,	CSE_Abstract,	cast_creature_abstract);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeCreatureAbstract,	CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeSmartZone,		CSE_Abstract,	cast_smart_zone);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeSmartZone,		CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeOnlineOfflineGroup,	CSE_Abstract,	cast_online_offline_group);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeOnlineOfflineGroup,	CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeItemPDA,			CSE_Abstract,	cast_item_pda);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeItemPDA,			CSE_Abstract)
+
 #	ifndef DO_NOT_DECLARE_TYPE_LIST
 #		include "smart_cast_impl1.h"
 #	endif

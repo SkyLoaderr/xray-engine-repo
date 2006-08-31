@@ -21,6 +21,7 @@
 #include "cover_manager.h"
 #include "cover_point.h"
 #include "stalker_movement_restriction.h"
+#include "enemy_manager.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -232,4 +233,26 @@ _value_type CStalkerPropertyEvaluatorGrenadeToExplode::evaluate	()
 		return			(false);
 
 	return				(!!m_object->memory().danger().selected()->dependent_object());
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorEnemyWounded
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerPropertyEvaluatorEnemyWounded::CStalkerPropertyEvaluatorEnemyWounded	(CAI_Stalker *object, LPCSTR evaluator_name) :
+	inherited		(object ? object->lua_game_object() : 0,evaluator_name)
+{
+}
+
+_value_type CStalkerPropertyEvaluatorEnemyWounded::evaluate	()
+{
+	const CEntityAlive			*enemy = object().memory().enemy().selected();
+	if (!enemy)
+		return					(false);
+
+	const CAI_Stalker			*stalker = smart_cast<const CAI_Stalker *>(enemy);
+	if (!stalker)
+		return					(false);
+
+	return						(stalker->wounded(&object().movement().restrictions()));
 }

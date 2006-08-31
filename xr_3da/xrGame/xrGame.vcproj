@@ -2014,6 +2014,27 @@
 					Filter="">
 					<File
 						RelativePath=".\alife_update_manager.cpp">
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								CallingConvention="0"
+								DisableSpecificWarnings="4121"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								CallingConvention="0"
+								DisableSpecificWarnings="4121"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								CallingConvention="0"
+								DisableSpecificWarnings="4121"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\alife_update_manager.h">

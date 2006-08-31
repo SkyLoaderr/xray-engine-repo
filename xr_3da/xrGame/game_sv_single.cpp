@@ -296,7 +296,7 @@ void game_sv_Single::remove_all_restrictions	(NET_Packet &packet, u16 id)
 
 void game_sv_Single::sls_default				()
 {
-	alife().update			(true,false,false);
+	alife().update_switch	();
 }
 
 shared_str game_sv_Single::level_name			(const shared_str &server_options) const

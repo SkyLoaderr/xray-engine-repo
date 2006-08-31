@@ -18,3 +18,4 @@ extern	Flags32				g_mt_config;
 #define mtBullets			(1<<5)
 #define mtLUA_GC			(1<<6)
 #define mtLevelSounds		(1<<7)
+#define mtALife				(1<<8)

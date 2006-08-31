@@ -21,6 +21,7 @@
 #include "../x_ray.h"
 #include "restriction_space.h"
 #include "profiler.h"
+#include "mt_config.h"
 
 using namespace ALife;
 
@@ -75,17 +76,45 @@ float CALifeUpdateManager::shedule_Scale	()
 	return					(.5f); // (schedule_min + schedule_max)*0.5f
 }
 
+void CALifeUpdateManager::update_switch	()
+{
+	init_ef_storage						();
+
+	START_PROFILE("ALife/switch");
+	graph().level().update				(CSwitchPredicate(this));
+	STOP_PROFILE
+}
+
+void CALifeUpdateManager::update_scheduled	(bool init_ef)
+{
+	if (init_ef)
+		init_ef_storage					();
+
+	START_PROFILE("ALife/scheduled");
+	scheduled().update					();
+	STOP_PROFILE
+}
+
+void CALifeUpdateManager::update			()
+{
+	update_switch						();
+	update_scheduled					(false);
+}
+
 void CALifeUpdateManager::shedule_Update	(u32 dt)
 {
-	START_PROFILE("ALife/update")
-	
 	ISheduled::shedule_Update		(dt);
 
 	if (!initialized())
 		return;
 
-	update							(true);
+	if (g_mt_config.test(mtALife)) {
+		Device.seqParallel.push_back(fastdelegate::FastDelegate0<>(this,&CALifeUpdateManager::update));
+		return;
+	}
 
+	START_PROFILE("ALife/update")
+	update							();
 	STOP_PROFILE
 }
 
@@ -180,21 +209,6 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	}
 
 	return							(true);
-}
-
-void CALifeUpdateManager::update(bool switch_objects, bool spawn_update, bool scheduled_update)
-{
-	init_ef_storage						();
-
-	START_PROFILE("ALife/switch");
-	if (switch_objects)
-		graph().level().update			(CSwitchPredicate(this));
-	STOP_PROFILE
-
-	START_PROFILE("ALife/scheduled");
-	if (scheduled_update)
-		scheduled().update				();
-	STOP_PROFILE
 }
 
 void CALifeUpdateManager::new_game			(LPCSTR save_name)

@@ -23,10 +23,13 @@ class CALifeUpdateManager :
 	public ISheduled
 {
 protected:
-	bool				m_changing_level;
 	u64					m_max_process_time;
 	float				m_update_monster_factor;
 	u32					m_objects_per_update;
+	bool				m_changing_level;
+
+public:
+			void __stdcall	update				();
 
 protected:
 			void		new_game				(LPCSTR	save_name);
@@ -40,7 +43,8 @@ public:
 	virtual float		shedule_Scale			();
 	virtual void		shedule_Update			(u32 dt);	
 	virtual bool		shedule_Needed			()				{return true;};
-			void		update					(bool switch_objects, bool spawn_update = true, bool scheduled_update = true);
+			void		update_switch			();
+			void		update_scheduled		(bool init_ef = true);
 			void		load					(LPCSTR game_name = 0, bool no_assert = false, bool new_only = false);
 			bool		load_game				(LPCSTR game_name, bool no_assert = false);
 	IC		float		update_monster_factor	() const;

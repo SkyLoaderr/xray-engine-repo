@@ -308,27 +308,6 @@ _value_type CStalkerPropertyEvaluatorSmartTerrainTask::evaluate	()
 	return						(stalker->m_smart_terrain_id != 0xffff);
 }
 
-//////////////////////////////////////////////////////////////////////////
-// CStalkerPropertyEvaluatorEnemyWounded
-//////////////////////////////////////////////////////////////////////////
-
-CStalkerPropertyEvaluatorEnemyWounded::CStalkerPropertyEvaluatorEnemyWounded	(CAI_Stalker *object, LPCSTR evaluator_name) :
-	inherited		(object ? object->lua_game_object() : 0,evaluator_name)
-{
-}
-
-_value_type CStalkerPropertyEvaluatorEnemyWounded::evaluate	()
-{
-	const CEntityAlive			*enemy = object().memory().enemy().selected();
-	if (!enemy)
-		return					(false);
-
-	const CAI_Stalker			*stalker = smart_cast<const CAI_Stalker *>(enemy);
-	if (!stalker)
-		return					(false);
-
-	return						(stalker->wounded(&object().movement().restrictions()));
-}
 
 //////////////////////////////////////////////////////////////////////////
 // CStalkerPropertyEvaluatorEnemyReached

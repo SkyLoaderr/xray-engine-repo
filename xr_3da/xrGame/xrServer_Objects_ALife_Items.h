@@ -208,6 +208,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemPDA,CSE_ALifeItem)
 
 									CSE_ALifeItemPDA(LPCSTR caSection);
 	virtual							~CSE_ALifeItemPDA();
+	virtual CSE_ALifeItemPDA		*cast_item_pda				() {return this;};
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeItemPDA)
 #define script_type_list save_type_list(CSE_ALifeItemPDA)
