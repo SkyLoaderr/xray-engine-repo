@@ -663,7 +663,7 @@ animations = {
 						out		= {	[0]	= {"metering_0_hide_0", {d="kruglov_flash"}, "metering_0_hide_1"} },
 						idle	= {	[0]	= "metering_0_idle_0" },
 						rnd		= nil },
-		hands_up	= {	prop	= { maxidle = 1,
+		prisoner	= {	prop	= { maxidle = 1,
 									sumidle = 1,
 									rnd = 100 },
 						into	= {	[0]	= {"prisoner_0_sit_down_0"}},
