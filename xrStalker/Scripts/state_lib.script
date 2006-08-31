@@ -269,12 +269,12 @@ states = {
 				animstate = "stand",
 				animation = "salut_free"
 			},
-	hands_up	= {weapon = "strapped",
+	prisoner = {weapon = "strapped",
 				movement = nil,
 				mental = anim.danger,
 				bodystate = move.standing,
 				animstate = "stand",
-				animation = "hands_up"
+				animation = "prisoner"
 			},
 
 	hide_no_wpn = {	weapon = "strapped",

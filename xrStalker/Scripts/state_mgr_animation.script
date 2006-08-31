@@ -37,7 +37,7 @@ function eva_state_mgr_animation_play_now:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_animation_play_now:evaluate()
-	return self.st.animation:state() ~= "wait" and self.st.animation:state() ~= nil
+	return self.st.animation:state() ~= "_wait" and self.st.animation:state() ~= nil
 end
 --' нужно ли нам вообще не отыгрывать анимацию
 class "eva_state_mgr_animation_none" (property_evaluator)
@@ -87,8 +87,8 @@ function eva_state_mgr_animation_locked:__init(name, st) super (nil, name)
 end
 function eva_state_mgr_animation_locked:evaluate()
 --	printf("animstate %s", utils.to_str(self.st.animation:state()))
-	return self.st.animation:state() == "wait" or
-		   self.st.animation:state() == "new"
+	return self.st.animation:state() == "_wait" or
+		   self.st.animation:state() == "_new"
 end
 
 
@@ -169,7 +169,8 @@ function animation:__init(npc, mgr)
 end
 --' установка нового состояния
 function animation:set_state(id, reset)
-	printf("set new animation [%s], current_state [%s]", tostring(id), tostring(self.states.target_state))
+	printf("[%s] set new animation [%s], current_state [%s]", self.npc:name(), tostring(id), tostring(self.states.target_state))
+	
 	local nn = 0
 	local wpn_slot = self:weapon_slot()
 	--' выход из старого состояния
@@ -298,7 +299,7 @@ function animation:set_state(id, reset)
 		self.mgr.animstate:add_idle_animation()
 	end
 
-	self.states.current_state = "new"
+	self.states.current_state = "_new"
 	self.states.target_state = id
 	self.states.begin = nil
 	self.states.anim_level = 0
@@ -309,7 +310,7 @@ function animation:update()
 --	printf("		time %s", time_global())				
 --	printf("		current state %s", utils.to_str(self.states.current_state))
 --	printf("		target state %s", utils.to_str(self.states.target_state))
-	printf("		anims %s", self.npc:animation_count())
+--	printf("		anims %s", self.npc:animation_count())
 	self.is_called = false
 	
 	-- !!! проверка что закончился играться наш звук
@@ -358,7 +359,7 @@ function animation:update()
 	end
 
 	-- проверка закончился ли переход в состояние
-	if self.states.current_state == "new" then
+	if self.states.current_state == "_new" then
 		local nnum = 0
 		if (state_mgr_animation_list.animations[self.states.target_state] ~= nil and
 		   state_mgr_animation_list.animations[self.states.target_state].idle ~= nil) or
@@ -374,7 +375,7 @@ function animation:update()
 	end
 	
 	--' ожидаем окончания перехода.
-	if self.states.current_state == "wait" then		
+	if self.states.current_state == "_wait" then		
 		local nnum = 0
 		if (state_mgr_animation_list.animations[self.states.target_state] ~= nil and
 		   state_mgr_animation_list.animations[self.states.target_state].idle ~= nil) or
@@ -441,7 +442,7 @@ function animation:update()
 			if anima then
 				add_anim(self.npc, anima, true)
 			end		
-			self.states.current_state = "wait"			
+			self.states.current_state = "_wait"			
 			return
 		end
 		-- если текущий уровень рекурсии выше, чем необходимый - отыграть набор выходных анимаций из него.
@@ -467,7 +468,7 @@ function animation:update()
 			if anima then
 				add_anim(self.npc, anima, true)
 			end		
-			self.states.current_state = "wait"
+			self.states.current_state = "_wait"
 			return
 		end
 		--' Определяем нужно ли добавлять анимацию или ждать
@@ -550,7 +551,7 @@ function animation:play_rnd(state, must_play)
 			-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
 			self.mgr.animstate:add_idle_animation()
 		end				
-		self.states.current_state = "wait"				
+		self.states.current_state = "_wait"				
 	end
 end
 -- Инициализация коллбека
