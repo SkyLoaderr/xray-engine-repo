@@ -1201,7 +1201,10 @@ extern	BOOL	g_ShowAnimationInfo		;
 // HUD
 void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 {
-	if(inventory().ActiveItem()  ) {
+	CHudItem* pHudItem = smart_cast<CHudItem*>(inventory().ActiveItem());
+	if (pHudItem && pHudItem->GetHUDmode())
+//	if(inventory().ActiveItem()  ) 
+	{
 		inventory().ActiveItem()->renderable_Render();
 	}
 

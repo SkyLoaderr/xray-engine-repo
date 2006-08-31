@@ -156,7 +156,7 @@ void CWeaponKnife::switch2_Idle	()
 {
 	VERIFY(GetState()==eIdle);
 
-	m_pHUD->animPlay(random_anim(mhud_idle), TRUE, NULL, GetState());
+	m_pHUD->animPlay(random_anim(mhud_idle), TRUE, this, GetState());
 	m_bPending = false;
 }
 
@@ -165,7 +165,7 @@ void CWeaponKnife::switch2_Hiding	()
 	FireEnd					();
 	VERIFY(GetState()==eHiding);
 	m_pHUD->animPlay		(random_anim(mhud_hide), TRUE, this, GetState());
-	m_bPending				= true;
+//	m_bPending				= true;
 }
 
 void CWeaponKnife::switch2_Hidden()
@@ -177,7 +177,7 @@ void CWeaponKnife::switch2_Showing	()
 {
 	VERIFY(GetState()==eShowing);
 	m_pHUD->animPlay		(random_anim(mhud_show), FALSE, this, GetState());
-	m_bPending				= true;
+//	m_bPending				= true;
 }
 
 

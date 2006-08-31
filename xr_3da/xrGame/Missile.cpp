@@ -114,6 +114,7 @@ void CMissile::OnActiveItem		()
 {
 	inherited::OnActiveItem	();
 	SetState				( MS_IDLE );
+	SetNextState			( MS_IDLE );	
 	if (m_pHUD) m_pHUD->Show();
 }
 
@@ -122,6 +123,7 @@ void CMissile::OnHiddenItem()
 	inherited::OnHiddenItem	();
 	if (m_pHUD) m_pHUD->Hide();
 	SetState				( MS_HIDDEN );
+	SetNextState			( MS_HIDDEN );
 }
 
 
@@ -226,7 +228,7 @@ void CMissile::State(u32 state)
 	case MS_IDLE:
 		{
 			m_bPending = false;
-			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimIdle), TRUE, NULL, GetState());
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimIdle), TRUE, this, GetState());
 		} break;
 	case MS_HIDING:
 		{
@@ -235,12 +237,19 @@ void CMissile::State(u32 state)
 		} break;
 	case MS_HIDDEN:
 		{
-			if (H_Parent())
+			
+			if (m_pHUD) 
 			{
-				m_bPending = false;
-				setVisible(FALSE);
-				setEnabled(FALSE);
+				m_pHUD->StopCurrentAnimWithoutCallback();
+				m_pHUD->Hide();
 			};
+			
+			if (H_Parent())
+			{				
+				setVisible(FALSE);
+				setEnabled(FALSE);				
+			};
+			m_bPending = false;			
 		} break;
 	case MS_THREATEN:
 		{

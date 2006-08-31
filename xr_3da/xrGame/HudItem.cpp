@@ -114,6 +114,7 @@ bool CHudItem::Action(s32 cmd, u32 flags)
 
 void CHudItem::SwitchState(u32 S)
 {
+	if (OnClient()) return;
 	SetNextState( S );	// Very-very important line of code!!! :)
 
 	if (object().Local() && !object().getDestroy())	

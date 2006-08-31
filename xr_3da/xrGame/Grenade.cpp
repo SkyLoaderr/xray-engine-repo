@@ -128,7 +128,7 @@ void CGrenade::State(u32 state)
 	};
 	inherited::State(state);
 }
-
+/*
 bool CGrenade::Activate() 
 {
 	Show								();
@@ -139,7 +139,7 @@ void CGrenade::Deactivate()
 {
 	Hide								();
 }
-
+*/
 void CGrenade::Throw() 
 {
 	if (!m_fake_missile)
@@ -212,7 +212,8 @@ void CGrenade::PutNextToSlot()
 			pNext->u_EventGen				(P, GEG_PLAYER_ITEM2SLOT, pNext->H_Parent()->ID());
 			P.w_u16							(pNext->ID());
 			pNext->u_EventSend				(P);
-			if(IsGameTypeSingle())			m_pInventory->SetActiveSlot			(pNext->GetSlot());
+//			if(IsGameTypeSingle())			
+				m_pInventory->SetActiveSlot			(pNext->GetSlot());
 		}
 
 		m_thrown				= false;

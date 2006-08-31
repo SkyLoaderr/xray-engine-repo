@@ -29,8 +29,8 @@ public:
 	
 	virtual void 			OnAnimationEnd						(u32 state);
 	virtual void 			UpdateCL							();
-	virtual bool 			Activate							();
-	virtual void 			Deactivate							();
+//	virtual bool 			Activate							();
+//	virtual void 			Deactivate							();
 	
 	virtual void 			Throw();
 	virtual void 			Destroy();
