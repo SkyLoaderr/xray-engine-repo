@@ -102,7 +102,7 @@ void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCST
 	{		
 		if (0 == xr_strcmp("btn_lastsave",xml_doc.ReadAttrib("btn", i, "name")))
 		{
-			if (Actor()->g_Alive())
+			if (Actor() && Actor()->g_Alive())
 				continue;
 		}
 		st = xr_new<CUIStatic>();
