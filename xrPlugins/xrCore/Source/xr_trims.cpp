@@ -4,7 +4,7 @@
 LPSTR _TrimLeft( LPSTR str )
 {
 	LPSTR p 	= str;
-	while( *p && ((*p)<=' ') ) p++;
+	while( *p && (u8(*p)<=u8(' ')) ) p++;
     if (p!=str){
         for (LPSTR t=str; *p; t++,p++) *t=*p;
         *t = 0;
@@ -15,7 +15,7 @@ LPSTR _TrimLeft( LPSTR str )
 LPSTR _TrimRight( LPSTR str )
 {
 	LPSTR p 	= str+xr_strlen(str);
-	while( (p!=str) && ((*p)<=' ') ) p--;
+	while( (p!=str) && (u8(*p)<=u8(' ')) ) p--;
     *(++p) 		= 0;
 	return str;
 }
@@ -362,7 +362,7 @@ xr_string& _TrimLeft( xr_string& str )
 {
 	LPCSTR b		= str.c_str();
 	LPCSTR p 		= str.c_str();
-	while( *p && ((*p)<=' ') ) p++;
+	while( *p && (u8(*p)<=u8(' ')) ) p++;
     if (p!=b)
     	str.erase	(0,p-b);
 	return str;
@@ -374,7 +374,7 @@ xr_string& _TrimRight( xr_string& str )
     size_t l		= str.length();
     if (l){
         LPCSTR p 		= str.c_str()+l-1;
-        while( (p!=b) && ((*p)<=' ') ) p--;
+        while( (p!=b) && (u8(*p)<=u8(' ')) ) p--;
         if (p!=(str+b))	str.erase	(p-b+1,l-(p-b));
     }
 	return str;
