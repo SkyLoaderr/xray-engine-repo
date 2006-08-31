@@ -43,6 +43,7 @@ _keybind  keybind[]		= {
 	{ "wpn_4",			kWPN_4			},
 	{ "wpn_5",			kWPN_5			},
 	{ "wpn_6",			kWPN_6			},
+	{ "artefact",		kARTEFACT		},
 	{ "wpn_next",		kWPN_NEXT		},
 	{ "wpn_prev",		kWPN_PREV		},
 	{ "wpn_fire",		kWPN_FIRE		},

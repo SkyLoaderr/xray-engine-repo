@@ -64,19 +64,15 @@ public:
 	virtual	BOOL	net_Spawn			(CSE_Abstract* DC);
 	virtual void	net_Destroy			();
 
-	//запуск анимации, дл€ переключени€ между актерами в игре
 	virtual void	StartIdleAnim		() {};
 
 	
-	//активаци€ и деактивации вещи как активной в интерфейсе
 	virtual bool	Activate			();
 	virtual void	Deactivate			();
 	
-	//инициализаци€ если вещь в активном слоте или спр€тана на OnH_B_Chield
 	virtual void	OnActiveItem		() {};
 	virtual void	OnHiddenItem		() {};
 
-	//дл€ завершени€ анимации
 	virtual void	OnAnimationEnd		(u32 state)				{};
 
 	virtual void	UpdateCL			();
@@ -94,6 +90,7 @@ public:
 
 
 	virtual	void	UpdateXForm			() = 0;
+	void					animGet		(MotionSVec& lst, LPCSTR prefix);
 
 	CWeaponHUD*		GetHUD				() {return m_pHUD;}
 

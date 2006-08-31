@@ -1,18 +1,19 @@
 #pragma once
 
-#include "inventory_item_object.h"
+#include "hud_item_object.h"
 #include "hit_immunity.h"
 #include "PHObject.h"
 #include "script_export_space.h"
 
 struct SArtefactActivation;
 
-class CArtefact : public CInventoryItemObject, public CPHUpdateObject {
+class CArtefact :	public CHudItemObject, 
+					public CPHUpdateObject {
 private:
-	typedef	CInventoryItemObject	inherited;
+	typedef			CHudItemObject	inherited;
 public:
-	CArtefact(void);
-	virtual ~CArtefact(void);
+									CArtefact						();
+	virtual							~CArtefact						();
 
 	virtual void					Load							(LPCSTR section);
 	
@@ -64,9 +65,7 @@ public:
 
 	virtual void					PhDataUpdate						(dReal step);
 	virtual void					PhTune								(dReal step)	{};
-	//////////////////////////////////////////////////////////////////////////
-	// свойства артефакта, когда он висит на по€се у актера
-	//////////////////////////////////////////////////////////////////////////
+
 	bool							m_bCanSpawnZone;
 	bool 							m_bActorPropertiesEnabled;
 	float							m_fHealthRestoreSpeed;
@@ -75,6 +74,31 @@ public:
 	float							m_fPowerRestoreSpeed;
 	float							m_fBleedingRestoreSpeed;
 	CHitImmunity 					m_ArtefactHitImmunities;
+
+protected:
+	MotionSVec						m_anim_idle;
+	MotionSVec						m_anim_idle_sprint;
+	MotionSVec						m_anim_hide;
+	MotionSVec						m_anim_show;
+	MotionSVec						m_anim_activate;
+public:
+	enum EAFHudStates {
+		eIdle		= 0,
+		eShowing,
+		eHiding,
+		eHidden,
+		eActivating,
+	};
+	virtual	void					PlayAnimIdle		();
+public:
+	virtual void					Hide				();
+	virtual void					Show				();
+	virtual	void					UpdateXForm			();
+	virtual bool					Action				(s32 cmd, u32 flags);
+	virtual void					onMovementChanged	(ACTOR_DEFS::EMoveCommand cmd);
+	virtual void					OnStateSwitch		(u32 S);
+	virtual void					OnAnimationEnd		(u32 state);
+	virtual bool					IsHidden			()	const	{return GetState()==eHidden;}
 
 	// optimization FAST/SLOW mode
 public:						

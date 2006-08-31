@@ -33,6 +33,7 @@ enum	EKeyBinding
 	kWPN_4			,
 	kWPN_5			,
 	kWPN_6			,
+	kARTEFACT		,
 	kWPN_NEXT		,
 	kWPN_PREV		,
 	kWPN_FIRE		,

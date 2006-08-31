@@ -416,7 +416,7 @@ void CWeapon::LoadZoomOffset (LPCSTR section, LPCSTR prefix)
 	if(pSettings->line_exist(hud_sect, "zoom_rotate_time"))
 		m_fZoomRotateTime = pSettings->r_float(hud_sect,"zoom_rotate_time");
 }
-
+/*
 void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 {
 	const MotionID		&M = m_pHUD->animGet(prefix);
@@ -430,7 +430,7 @@ void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 	}
 	R_ASSERT2			(!lst.empty(),prefix);
 }
-
+*/
 
 BOOL CWeapon::net_Spawn		(CSE_Abstract* DC)
 {

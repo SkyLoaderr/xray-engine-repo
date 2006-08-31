@@ -12,9 +12,6 @@ struct SAnimState
 };
 
 struct STorsoWpn{
-//.	MotionID	idle;
-//.	MotionID	walk;
-//.	MotionID	sprint;
 	enum eMovingState{eIdle, eWalk, eRun, eSprint, eTotal};
 	MotionID	moving[eTotal];
 
@@ -37,8 +34,11 @@ struct STorsoWpn{
 	void		Create								(CKinematicsAnimated* K, LPCSTR base0, LPCSTR base1);
 };
 
+#define _total_anim_slots_ 13
+
 struct SActorState
 {
+
 	MotionID		legs_idle;
 	MotionID		jump_begin;
 	MotionID		jump_idle;
@@ -47,7 +47,7 @@ struct SActorState
 	MotionID		death;
 	SAnimState		m_walk;
 	SAnimState		m_run;
-	STorsoWpn		m_torso[10];
+	STorsoWpn		m_torso[_total_anim_slots_];
 	MotionID		m_torso_idle;
 	MotionID		m_head_idle;
 
@@ -58,8 +58,6 @@ struct SActorState
 
 struct SActorSprintState 
 {
-	//torso anims
-//.	MotionID		m_torso[8];
 	//leg anims
 	MotionID		legs_fwd;
 	MotionID		legs_ls;

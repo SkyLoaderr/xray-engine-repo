@@ -20,6 +20,7 @@
 #include "ai_object_location.h"
 #include "game_cl_base.h"
 #include "../motion.h"
+#include "artifact.h"
 
 static const float y_spin0_factor		= 0.0f;
 static const float y_spin1_factor		= 0.4f;
@@ -157,6 +158,9 @@ void SActorState::CreateClimb(CKinematicsAnimated* K)
 	m_torso[7].Create(K,base,"_8");
 	m_torso[8].Create(K,base,"_9");
 	m_torso[9].Create(K,base,"_10");
+	m_torso[10].Create(K,base,"_11");
+	m_torso[11].Create(K,base,"_12");
+	m_torso[12].Create(K,base,"_13");
 
 
 	m_head_idle.invalidate();///K->ID_Cycle("head_idle_0");
@@ -190,6 +194,9 @@ void SActorState::Create(CKinematicsAnimated* K, LPCSTR base)
 	m_torso[7].Create(K,base,"_8");
 	m_torso[8].Create(K,base,"_9");
 	m_torso[9].Create(K,base,"_10");
+	m_torso[10].Create(K,base,"_11");
+	m_torso[11].Create(K,base,"_12");
+	m_torso[12].Create(K,base,"_13");
 	
 	m_torso_idle	= K->ID_Cycle(strconcat(buf,base,"_torso_0_aim_0"));
 	m_head_idle		= K->ID_Cycle("head_idle_0");
@@ -204,16 +211,12 @@ void SActorState::Create(CKinematicsAnimated* K, LPCSTR base)
 
 void SActorSprintState::Create(CKinematicsAnimated* K)
 {
-	
-	//torso anims
-//.	string128 buf,buf1;
-//.	for (int k=0; k<9; ++k)
-//.		m_torso[k]	= K->ID_Cycle(strconcat(buf,"norm_torso_",itoa(k,buf1,10),"_escape_0"));
 	//leg anims
 	legs_fwd=K->ID_Cycle("norm_escape_00");
 	legs_ls=K->ID_Cycle("norm_escape_ls_00");
 	legs_rs=K->ID_Cycle("norm_escape_rs_00");
 }
+
 void SActorMotions::Create(CKinematicsAnimated* V)
 {
 	m_dead_stop				= V->ID_Cycle("norm_dead_stop_0");
@@ -277,13 +280,8 @@ void legs_play_callback		(CBlend *blend)
 void CActor::g_SetSprintAnimation( u32 mstate_rl,MotionID &head,MotionID &torso,MotionID &legs)
 {
 	SActorSprintState& sprint			= m_anims->m_sprint;
-/*	CHudItem							*H = smart_cast<CHudItem*>(inventory().ActiveItem());
-	if (H)
-		torso							= sprint.m_torso[H->animation_slot()];
-	else
-		torso							= sprint.m_torso[0];
-*/
-		 if (mstate_rl & mcFwd)		legs = sprint.legs_fwd;
+
+	if		(mstate_rl & mcFwd)		legs = sprint.legs_fwd;
 	else if (mstate_rl & mcLStrafe) legs = sprint.legs_ls;
 	else if (mstate_rl & mcRStrafe)	legs = sprint.legs_rs;
 }
@@ -373,11 +371,14 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	
 	if(!M_torso)
 	{
-		CHudItem	*H = smart_cast<CHudItem*>(inventory().ActiveItem());
-		CWeapon		*W = smart_cast<CWeapon*>(inventory().ActiveItem());
-		CMissile	*M = smart_cast<CMissile*>(inventory().ActiveItem());
+		CInventoryItem* _i = inventory().ActiveItem();
+		CHudItem		*H = smart_cast<CHudItem*>(_i);
+		CWeapon			*W = smart_cast<CWeapon*>(_i);
+		CMissile		*M = smart_cast<CMissile*>(_i);
+		CArtefact		*A = smart_cast<CArtefact*>(_i);
 					
 		if (H) {
+			VERIFY(H->animation_slot() <= _total_anim_slots_);
 			STorsoWpn* TW			= &ST->m_torso[H->animation_slot() - 1];
 			if (!b_DropActivated&&!fis_zero(f_DropPower)){
 				M_torso					= TW->drop;
@@ -472,6 +473,16 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 							default			 :		M_torso	= TW->draw;						break; 
 							}
 						}
+					}
+					else if (A){
+							switch(A->GetState()){
+								case CArtefact::eIdle		: M_torso	= TW->moving[moving_idx];	break; 
+								case CArtefact::eShowing	: M_torso	= TW->draw;					break; 
+								case CArtefact::eHiding		: M_torso	= TW->holster;				break; 
+								case CArtefact::eActivating : M_torso	= TW->zoom;					break; 
+							default							: M_torso	= TW->moving[moving_idx];
+							}
+					
 					}
 				}
 			}

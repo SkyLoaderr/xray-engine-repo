@@ -39,10 +39,10 @@ typedef const char*			pcstr;
 #define int_min			type_min(int)
 #define int_zero		type_zero(int)
 
- // #define flt_max			type_max(float)
-// #define flt_min			type_min(float)
-#define FLT_MAX         3.402823466e+38F        /* max value */
-#define FLT_MIN         1.175494351e-38F        /* min positive value */
+#define flt_max			type_max(float)
+#define flt_min			type_min(float)
+//#define FLT_MAX         3.402823466e+38F        /* max value */
+//#define FLT_MIN         1.175494351e-38F        /* min positive value */
 #define flt_max			FLT_MAX
 #define flt_min			FLT_MIN
 

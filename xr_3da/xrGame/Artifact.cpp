@@ -68,21 +68,14 @@ CArtefact::CArtefact(void)
 
 	m_bActorPropertiesEnabled	= false;
 	m_activationObj				= NULL;
-//	m_bRuckDefault = true;
 }
 
 
 CArtefact::~CArtefact(void) 
-{
-}
+{}
 
 void CArtefact::Load(LPCSTR section) 
 {
-	// verify class
-	LPCSTR Class			= pSettings->r_string(section,"class");
-	CLASS_ID load_cls		= TEXT2CLSID(Class);
-	R_ASSERT				(load_cls==CLS_ID);
-
 	inherited::Load			(section);
 
 
@@ -97,7 +90,6 @@ void CArtefact::Load(LPCSTR section)
 	}
 
 
-	//////////////////////////////////////////////////////////////////////////
 	m_bActorPropertiesEnabled	= !!pSettings->r_bool(section, "actor_properties");
 	
 	if(m_bActorPropertiesEnabled)
@@ -112,6 +104,12 @@ void CArtefact::Load(LPCSTR section)
 	}
 	m_bCanSpawnZone = !!pSettings->line_exist("artefact_spawn_zones", section);
 
+
+	animGet				(m_anim_idle,					pSettings->r_string(*hud_sect,"anim_idle"));
+	animGet				(m_anim_idle_sprint,			pSettings->r_string(*hud_sect,"anim_idle_sprint"));
+	animGet				(m_anim_hide,					pSettings->r_string(*hud_sect,"anim_hide"));
+	animGet				(m_anim_show,					pSettings->r_string(*hud_sect,"anim_show"));
+	animGet				(m_anim_activate,				pSettings->r_string(*hud_sect,"anim_activate"));
 }
 
 BOOL CArtefact::net_Spawn(CSE_Abstract* DC) 
@@ -136,6 +134,7 @@ BOOL CArtefact::net_Spawn(CSE_Abstract* DC)
 	
 	o_fastmode					= FALSE	;		// start initially with fast-mode enabled
 	o_render_frame				= 0		;
+	SetState					(eHidden);
 
 	return result;	
 }
@@ -238,14 +237,6 @@ void CArtefact::shedule_Update		(u32 dt)
 	if (!o_fastmode)		UpdateWorkload	(dt);
 }
 
-/*
-void CArtefact::renderable_Render	() 
-{
-	inherited::renderable_Render	();
-	//o_switch_2_fast					();
-	//o_render_frame				= Device.dwFrame+1;
-}
-*/
 
 void CArtefact::create_physic_shell	()
 {
@@ -254,9 +245,6 @@ void CArtefact::create_physic_shell	()
 	m_pPhysicsShell->Deactivate();
 }
 
-//////////////////////////////////////////////////////////////////////////
-//	Lights
-//////////////////////////////////////////////////////////////////////////
 void CArtefact::StartLights()
 {
 	VERIFY(!ph_world->Processing());
@@ -307,6 +295,129 @@ bool CArtefact::CanTake() const
 	return (m_activationObj==NULL);
 }
 
+void CArtefact::Hide()
+{
+	SwitchState(eHiding);
+}
+
+void CArtefact::Show()
+{
+	SwitchState(eShowing);
+}
+#include "inventoryOwner.h"
+#include "Entity_alive.h"
+void CArtefact::UpdateXForm()
+{
+	if (Device.dwFrame!=dwXF_Frame)
+	{
+		dwXF_Frame			= Device.dwFrame;
+
+		if (0==H_Parent())	return;
+
+		// Get access to entity and its visual
+		CEntityAlive*		E		= smart_cast<CEntityAlive*>(H_Parent());
+        
+		if(!E)				return	;
+
+		const CInventoryOwner	*parent = smart_cast<const CInventoryOwner*>(E);
+		if (parent && parent->use_simplified_visual())
+			return;
+
+		VERIFY				(E);
+		CKinematics*		V		= smart_cast<CKinematics*>	(E->Visual());
+		VERIFY				(V);
+
+		// Get matrices
+		int					boneL,boneR,boneR2;
+		E->g_WeaponBones	(boneL,boneR,boneR2);
+
+		boneL = boneR2;
+
+		V->CalculateBones	();
+		Fmatrix& mL			= V->LL_GetTransform(u16(boneL));
+		Fmatrix& mR			= V->LL_GetTransform(u16(boneR));
+
+		// Calculate
+		Fmatrix				mRes;
+		Fvector				R,D,N;
+		D.sub				(mL.c,mR.c);	D.normalize_safe();
+		R.crossproduct		(mR.j,D);		R.normalize_safe();
+		N.crossproduct		(D,R);			N.normalize_safe();
+		mRes.set			(R,N,D,mR.c);
+		mRes.mulA_43		(E->XFORM());
+//		UpdatePosition		(mRes);
+		XFORM().mul			(mRes,offset());
+	}
+}
+#include "xr_level_controller.h"
+bool CArtefact::Action(s32 cmd, u32 flags) 
+{
+	if(cmd==kWPN_FIRE && flags&CMD_START && m_bCanSpawnZone){
+		SwitchState(eActivating);
+		return true;
+	}
+	return inherited::Action(cmd,flags);
+}
+
+void CArtefact::onMovementChanged	(ACTOR_DEFS::EMoveCommand cmd)
+{
+	if( (cmd == ACTOR_DEFS::mcSprint)&&(GetState()==eIdle)  )
+		PlayAnimIdle		();
+}
+
+void CArtefact::OnStateSwitch		(u32 S)
+{
+	inherited::OnStateSwitch	(S);
+	switch(S){
+	case eShowing:
+		{
+			m_pHUD->animPlay(random_anim(m_anim_show),		FALSE, this, S);
+		}break;
+	case eHiding:
+		{
+			m_pHUD->animPlay(random_anim(m_anim_hide),		FALSE, this, S);
+		}break;
+	case eActivating:
+		{
+			m_pHUD->animPlay(random_anim(m_anim_activate),	FALSE, this, S);
+		}break;
+	case eIdle:
+		{
+			PlayAnimIdle();
+		}break;
+	};
+}
+
+void CArtefact::PlayAnimIdle()
+{
+	m_pHUD->animPlay(random_anim(m_anim_idle),		FALSE, NULL, eIdle);
+}
+
+void CArtefact::OnAnimationEnd		(u32 state)
+{
+	switch (state)
+	{
+	case eHiding:
+		{
+			SwitchState(eHidden);
+//.			if(m_pInventory->GetNextActiveSlot()!=NO_ACTIVE_SLOT)
+//.				m_pInventory->Activate(m_pInventory->GetPrevActiveSlot());
+		}break;
+	case eShowing:
+		{
+			SwitchState(eIdle);
+		}break;
+	case eActivating:
+		{
+			SwitchState		(eHiding);
+			NET_Packet		P;
+			u_EventGen		(P, GEG_PLAYER_ACTIVATEARTEFACT, H_Parent()->ID());
+			P.w_u16			(ID());
+			u_EventSend		(P);	
+
+		}break;
+	};
+}
 
 
 //---SArtefactActivation----

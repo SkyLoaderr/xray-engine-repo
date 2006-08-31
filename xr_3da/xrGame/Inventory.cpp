@@ -54,11 +54,11 @@ CInventory::CInventory()
 	m_fMaxWeight								= pSettings->r_float	("inventory","max_weight");
 	m_iMaxBelt									= pSettings->r_s32		("inventory","max_belt");
 	
-	u32 l_slotsNum								= pSettings->r_s32		("inventory","slots");
-	m_slots.resize								(l_slotsNum);
+	m_slots.resize								(SLOTS_TOTAL);
 	
-	m_iActiveSlot = m_iNextActiveSlot			= NO_ACTIVE_SLOT;
-
+	m_iActiveSlot								= NO_ACTIVE_SLOT;
+	m_iNextActiveSlot							= NO_ACTIVE_SLOT;
+	m_iPrevActiveSlot							= NO_ACTIVE_SLOT;
 	m_pTarget									= NULL;
 
 	string256 temp;
@@ -79,7 +79,6 @@ CInventory::CInventory()
 
 	m_fTotalWeight								= -1.f;
 	m_dwModifyFrame								= 0;
-	m_iPrevActiveSlot							= NO_ACTIVE_SLOT;
 	m_drop_last_frame							= false;
 }
 
@@ -498,8 +497,19 @@ bool CInventory::Action(s32 cmd, u32 flags)
 
 				return true;
 			}
-		} 
-		break;
+		}break;
+	case kARTEFACT:
+		{
+			if(flags&CMD_START)
+			{
+                if((int)m_iActiveSlot == ARTEFACT_SLOT &&
+					m_slots[m_iActiveSlot].m_pIItem && GameID() == GAME_SINGLE)
+					Activate(NO_ACTIVE_SLOT);
+				else 
+					Activate(ARTEFACT_SLOT);
+				return true;
+			}
+		}break;
 	}
 	return false;
 }

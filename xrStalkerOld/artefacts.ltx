@@ -56,9 +56,28 @@ flying						=	2.0,		anomaly\electra_idle1,	1.0, 1.0, 1.0,  	5.0,			"anomaly2\art
 idle_before_spawning		=	0.0,		"",	                	1.0, 1.0, 2.5,  	0,		    	"",	"idle"				
 spawning					=	2,		    "anomaly\pux_blast",	1.0, 1.0, 1.5,  	5.0,			"anomaly2\artefact_electra_blast_finished",		"idle"
 
-; Артефакты для аномалии "Комариная плешь"
 
-[af_medusa]:identity_immunities
+[af_base]:identity_immunities
+hud							= artefact_hud
+animation_slot				= 11
+allow_inertion				= true
+slot						= 10
+attach_angle_offset			= 0,0,0
+attach_position_offset		= -0.1,-0.1,0
+attach_bone_name			= bip01_root
+
+[artefact_hud]
+orientation             	= 0, 0, 0		
+position                	= 0, 0, 0
+visual                  	= weapons\artefact\wpn_artefact_hud.ogf
+anim_idle					= idle
+anim_idle_sprint			= idle_sprint
+anim_hide					= holster
+anim_show					= draw
+anim_activate				= activate
+
+; Артефакты для аномалии "Комариная плешь"
+[af_medusa]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\moscito medusa"
 
@@ -120,7 +139,7 @@ explosion_immunity = 1.0
 fire_wound_immunity  = 0.9
 
 
-[af_cristall_flower]:identity_immunities
+[af_cristall_flower]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\moscito flower"
 
@@ -182,7 +201,7 @@ explosion_immunity = 1.0
 fire_wound_immunity  = 0.8
 
 
-[af_night_star]:identity_immunities
+[af_night_star]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\moscito star"
 
@@ -249,7 +268,7 @@ fire_wound_immunity  = 0.7
 
 ; Артефакты для аномалии "Грави"
 
-[af_vyvert]:identity_immunities
+[af_vyvert]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\gravy vyvert"
 
@@ -310,7 +329,7 @@ fire_wound_immunity  = 1.0
 
 
 
-[af_gravi]:identity_immunities
+[af_gravi]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\gravy gravi"
 
@@ -371,7 +390,7 @@ fire_wound_immunity  = 1.0
 
 
 
-[af_gold_fish]:identity_immunities
+[af_gold_fish]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\gravy fish"
 
@@ -437,7 +456,7 @@ fire_wound_immunity  = 1.0
 
 ; Артефакты для аномалии "Жарка"
 
-[af_drops]:identity_immunities
+[af_drops]:af_base
 
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\zharka drops"
@@ -497,7 +516,7 @@ fire_wound_immunity  = 1.0
 
 
 
-[af_fireball]:identity_immunities
+[af_fireball]:af_base
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\zharka fireball"
 $npc			= on				; option for Level Editor
@@ -559,7 +578,7 @@ explosion_immunity = 1.0
 fire_wound_immunity  = 1.0
 
 
-[af_cristall]:identity_immunities
+[af_cristall]:af_base
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\zharka cristall"
 $npc			= on				; option for Level Editor
@@ -622,7 +641,7 @@ fire_wound_immunity  = 1.0
 
 ; Артефакты для аномалии "мясорубка"
 
-[af_blood]:identity_immunities
+[af_blood]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\mincer blood"
 
@@ -681,7 +700,7 @@ fire_wound_immunity  = 1.1
 
 
 
-[af_mincer_meat]:identity_immunities
+[af_mincer_meat]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\mincer meatloaf"
 
@@ -740,7 +759,7 @@ fire_wound_immunity  = 1.1
 
 
 
-[af_soul]:identity_immunities
+[af_soul]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\mincer soul"
 
@@ -803,7 +822,7 @@ fire_wound_immunity  = 1.2
 
 ; Артефакты для аномалии "Электра"
 
-[af_electra_sparkler]:identity_immunities
+[af_electra_sparkler]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\electra sparkler"
 
@@ -863,7 +882,7 @@ explosion_immunity = 1.0
 fire_wound_immunity  = 1.0
 
 
-[af_electra_flash]:identity_immunities
+[af_electra_flash]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\electra flash"
 
@@ -925,7 +944,7 @@ fire_wound_immunity  = 1.0
 
 
 
-[af_electra_moonlight]:identity_immunities
+[af_electra_moonlight]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\electra moonlight"
 
@@ -989,7 +1008,7 @@ fire_wound_immunity  = 1.0
 
 ; Артефакты для аномалии "Амебы"
 
-[af_ameba_slime]:identity_immunities
+[af_ameba_slime]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\ameba slime"
 
@@ -1048,7 +1067,7 @@ fire_wound_immunity  = 1.0
 
 
 
-[af_ameba_slug]:identity_immunities
+[af_ameba_slug]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\ameba slug"
 
@@ -1108,7 +1127,7 @@ explosion_immunity = 1.0
 fire_wound_immunity  = 1.0
 
 
-[af_ameba_mica]:identity_immunities
+[af_ameba_mica]:af_base
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\ameba mica"
 
@@ -1171,7 +1190,7 @@ fire_wound_immunity  = 1.0
 
 ; "  Пустышки"
 
-[af_dummy_spring]:identity_immunities
+[af_dummy_spring]:af_base
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\dummy spring"
 $npc			= on				; option for Level Editor
@@ -1226,7 +1245,7 @@ fire_wound_immunity  = 0.9
 
 
 
-[af_dummy_dummy]:identity_immunities
+[af_dummy_dummy]:af_base
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\dummy dummy"
 $npc			= on				; option for Level Editor
@@ -1282,7 +1301,7 @@ fire_wound_immunity  = 0.9
 
 
 
-[af_dummy_battery]:identity_immunities
+[af_dummy_battery]:af_base
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\dummy battery"
 $npc			= on				; option for Level Editor
@@ -1336,7 +1355,7 @@ explosion_immunity = 1.0
 fire_wound_immunity  = 1.0
 
 
-[af_dummy_pellicle]:identity_immunities
+[af_dummy_pellicle]:af_base
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\dummy pellicle"
 $npc			= on				; option for Level Editor
@@ -1391,7 +1410,7 @@ explosion_immunity = 1.0
 fire_wound_immunity  = 1.0
 
 
-[af_dummy_glassbeads]:identity_immunities
+[af_dummy_glassbeads]:af_base
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\dummy glassbeads"
 $npc			= on				; option for Level Editor
@@ -1449,7 +1468,7 @@ fire_wound_immunity  = 1.0
 
 
 ; " Ржавые волосы аномалия "
-[af_rusty_thorn]:identity_immunities
+[af_rusty_thorn]:af_base
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\rusty thorn"
 $npc			= on				; option for Level Editor
@@ -1504,7 +1523,7 @@ explosion_immunity = 1.0
 fire_wound_immunity  = 1.0
 
 
-[af_rusty_kristall]:identity_immunities
+[af_rusty_kristall]:af_base
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\rusty cristall"
 $npc			= on				; option for Level Editor
@@ -1559,7 +1578,7 @@ explosion_immunity = 1.0
 fire_wound_immunity  = 1.0
 
 
-[af_rusty_sea-urchin]:identity_immunities
+[af_rusty_sea-urchin]:af_base
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\rusty sea-urchin"
 $npc			= on				; option for Level Editor
@@ -1617,7 +1636,7 @@ fire_wound_immunity  = 1.0
 ; " Холодец артефакт"
 ; "Жгучий Пух аномалия"
 
-[af_fuzz_kolobok]:identity_immunities
+[af_fuzz_kolobok]:af_base
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\fuzz kolobok"
 $npc			= on				; option for Level Editor

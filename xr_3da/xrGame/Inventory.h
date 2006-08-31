@@ -91,6 +91,7 @@ public:
 	
 	void					SetPrevActiveSlot	(u32 ActiveSlot)	{m_iPrevActiveSlot = ActiveSlot;}
 	u32						GetPrevActiveSlot	() const			{return m_iPrevActiveSlot;}
+	u32						GetNextActiveSlot	() const			{return m_iNextActiveSlot;}
 
 	void					SetActiveSlot		(u32 ActiveSlot)	{m_iActiveSlot = m_iNextActiveSlot = ActiveSlot; }
 
