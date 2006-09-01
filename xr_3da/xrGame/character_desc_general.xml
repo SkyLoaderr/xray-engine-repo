@@ -24,7 +24,7 @@
 
 	
 	<specific_character id="stalker_general_default" team_default = "1">
-		<name>GENERATE_NAME</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>Опытный сталкер. Детальная информация отсутствует.</bio>
