@@ -439,34 +439,25 @@ bool CInventory::Action(s32 cmd, u32 flags)
 			}break;
 		case kWPN_RELOAD:
 		case kWPN_NEXT:
-			{
-				SendActionEvent(cmd, flags);
-				return true;
-			}break;
 		case kDROP:
-			{
-				SendActionEvent(cmd, flags);
-				return true;
-			}break;
 		case kWPN_FIRE:
 			{
 				SendActionEvent(cmd, flags);
+				return true;
 			}break;
 		case kWPN_FUNC:
 		case kWPN_FIREMODE_NEXT:
 		case kWPN_FIREMODE_PREV:
-		case kWPN_1:
+/*		case kWPN_1:
 		case kWPN_2:
 		case kWPN_3:
 		case kWPN_4:
 		case kWPN_5:
 		case kWPN_6:
-		case kTORCH:
 		case kARTEFACT:
-			{
-				SendActionEvent(cmd, flags);
-			}break;
+*/
 		case kWPN_ZOOM : 
+		case kTORCH:
 			{
 				SendActionEvent(cmd, flags);
 			}break;
@@ -491,10 +482,13 @@ bool CInventory::Action(s32 cmd, u32 flags)
 			if(flags&CMD_START)
 			{
                 if((int)m_iActiveSlot == cmd - kWPN_1 &&
-					m_slots[m_iActiveSlot].m_pIItem && GameID() == GAME_SINGLE)
-					Activate(NO_ACTIVE_SLOT);
-				else 
-					Activate(cmd - kWPN_1);
+					m_slots[m_iActiveSlot].m_pIItem && GameID() == GAME_SINGLE){
+					if( Activate(NO_ACTIVE_SLOT) )
+						SendActionEvent(cmd, flags);
+				}else{ 
+					if ( Activate(cmd - kWPN_1) )
+						SendActionEvent(cmd, flags);
+					}
 
 				return true;
 			}
@@ -504,10 +498,13 @@ bool CInventory::Action(s32 cmd, u32 flags)
 			if(flags&CMD_START)
 			{
                 if((int)m_iActiveSlot == ARTEFACT_SLOT &&
-					m_slots[m_iActiveSlot].m_pIItem && GameID() == GAME_SINGLE)
-					Activate(NO_ACTIVE_SLOT);
-				else 
-					Activate(ARTEFACT_SLOT);
+					m_slots[m_iActiveSlot].m_pIItem && GameID() == GAME_SINGLE){
+					if( Activate(NO_ACTIVE_SLOT) )
+						SendActionEvent(cmd, flags);
+				}else {
+					if( Activate(ARTEFACT_SLOT) )
+						SendActionEvent(cmd, flags);
+					}
 				return true;
 			}
 		}break;
