@@ -405,6 +405,7 @@ static	u32 SlotsToCheck [] = {
 		RIFLE_SLOT		,		// 2
 		GRENADE_SLOT	,		// 3
 		APPARATUS_SLOT	,		// 4
+		ARTEFACT_SLOT	,		// 10
 };
 
 void	CActor::OnNextWeaponSlot()
@@ -423,7 +424,12 @@ void	CActor::OnNextWeaponSlot()
 	{
 		if (inventory().ItemFromSlot(SlotsToCheck[i]))
 		{
-			IR_OnKeyboardPress(kWPN_1+(i-KNIFE_SLOT));
+			if (SlotsToCheck[i] == ARTEFACT_SLOT) 
+			{
+				IR_OnKeyboardPress(kARTEFACT);
+			}
+			else
+				IR_OnKeyboardPress(kWPN_1+(i-KNIFE_SLOT));
 			return;
 		}
 	}
@@ -445,7 +451,12 @@ void	CActor::OnPrevWeaponSlot()
 	{
 		if (inventory().ItemFromSlot(SlotsToCheck[i]))
 		{
-			IR_OnKeyboardPress(kWPN_1+(i-KNIFE_SLOT));
+			if (SlotsToCheck[i] == ARTEFACT_SLOT) 
+			{
+				IR_OnKeyboardPress(kARTEFACT);
+			}
+			else
+				IR_OnKeyboardPress(kWPN_1+(i-KNIFE_SLOT));
 			return;
 		}
 	}
