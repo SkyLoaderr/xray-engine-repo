@@ -16,17 +16,16 @@ public:
 	CUITrackBar();
 	~CUITrackBar();
 	// CUIOptionsItem
-	virtual void	SetCurrentValue();
-	virtual void	SaveValue();
-	virtual bool	IsChanged();
-	virtual void	SeveBackUpValue();
-	virtual void	Undo();
+	virtual void SetCurrentValue();
+	virtual void SaveValue		();
+	virtual bool IsChanged		();
+	virtual void SeveBackUpValue();
+	virtual void Undo			();
+	virtual	void OnMessage(const char* message);
 	// CUIWindow
-	virtual void Init(float x, float y, float width, float height);
-//	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
-	virtual void Enable(bool status);
-	//virtual void OnMouseDown(bool left_button = true);
-    virtual void Update();			
+	virtual void Init		(float x, float y, float width, float height);
+	virtual void Enable		(bool status);
+    virtual void Update		();				
 
 protected:
 			void UpdatePos();

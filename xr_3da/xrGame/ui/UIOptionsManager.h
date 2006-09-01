@@ -20,8 +20,9 @@ public:
 	void DoVidRestart();
 	void DoSndRestart();
 
-protected:
 	void SendMessage2Group(const char* group, const char* message);
+
+protected:	
 	void RegisterItem(CUIOptionsItem* item, const char* group);
 	void UnRegisterGroup(const char* group);
 	void UnRegisterItem(CUIOptionsItem* item);
