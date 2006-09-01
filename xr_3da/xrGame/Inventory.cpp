@@ -469,6 +469,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 			m_slots[m_iActiveSlot].m_pIItem && 
 			m_slots[m_iActiveSlot].m_pIItem->Action(cmd, flags)) 
 											return true;
+	bool b_send_event = false;
 	switch(cmd) 
 	{
 	case kWPN_1:
@@ -482,13 +483,12 @@ bool CInventory::Action(s32 cmd, u32 flags)
 			if(flags&CMD_START)
 			{
                 if((int)m_iActiveSlot == cmd - kWPN_1 &&
-					m_slots[m_iActiveSlot].m_pIItem && GameID() == GAME_SINGLE){
-					if( Activate(NO_ACTIVE_SLOT) )
-						SendActionEvent(cmd, flags);
+					m_slots[m_iActiveSlot].m_pIItem && GameID() == GAME_SINGLE)
+				{
+					b_send_event = Activate(NO_ACTIVE_SLOT);
 				}else{ 
-					if ( Activate(cmd - kWPN_1) )
-						SendActionEvent(cmd, flags);
-					}
+					b_send_event = Activate(cmd - kWPN_1);
+				}
 
 				return true;
 			}
@@ -498,17 +498,20 @@ bool CInventory::Action(s32 cmd, u32 flags)
 			if(flags&CMD_START)
 			{
                 if((int)m_iActiveSlot == ARTEFACT_SLOT &&
-					m_slots[m_iActiveSlot].m_pIItem && GameID() == GAME_SINGLE){
-					if( Activate(NO_ACTIVE_SLOT) )
-						SendActionEvent(cmd, flags);
+					m_slots[m_iActiveSlot].m_pIItem && GameID() == GAME_SINGLE)
+				{
+					b_send_event = Activate(NO_ACTIVE_SLOT);
 				}else {
-					if( Activate(ARTEFACT_SLOT) )
-						SendActionEvent(cmd, flags);
-					}
+					b_send_event = Activate(ARTEFACT_SLOT);
+				}
 				return true;
 			}
 		}break;
 	}
+
+	if(b_send_event && g_pGameLevel && OnClient() && pActor)
+			SendActionEvent(cmd, flags);
+
 	return false;
 }
 
