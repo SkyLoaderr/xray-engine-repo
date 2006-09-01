@@ -33,8 +33,7 @@ function opt_video:InitControls(x, y, xml, handler)
 	xml:InitComboBox("tab_video:list_presets",		self)
 	
 	
---	btn = xml:Init3tButton("tab_video:btn_advanced",	self)
---	btn:Enable(false)
---	handler:Register(btn, "btn_advanced")
+	btn = xml:Init3tButton("tab_video:btn_default_set",	self)	
+	handler:Register(btn, "btn_default_graphic")
 	
 end

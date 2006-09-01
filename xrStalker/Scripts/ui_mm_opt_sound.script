@@ -34,4 +34,7 @@ function opt_sound:InitControls(x, y, xml, handler)
 	xml:InitTrackBar("tab_sound:track_mastervolume",self)
 --	c = xml:InitTrackBar("tab_sound:track_voice",	self)
 --	c:Enable(false)
+
+	btn = xml:Init3tButton("tab_video:btn_default_set",	self)	
+	handler:Register(btn, "btn_default_sound")
 end
