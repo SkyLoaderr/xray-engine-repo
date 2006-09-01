@@ -490,7 +490,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 					b_send_event = Activate(cmd - kWPN_1);
 				}
 
-				return true;
+//.				return true;
 			}
 		}break;
 	case kARTEFACT:
@@ -504,7 +504,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 				}else {
 					b_send_event = Activate(ARTEFACT_SLOT);
 				}
-				return true;
+//.				return true;
 			}
 		}break;
 	}
