@@ -114,6 +114,9 @@ class ENGINE_API CSkeletonWallmark		// 4+4+4+12+4+16+16 = 60
 	ref_shader			m_Shader;		// 4
 	Fvector3			m_ContactPoint;	// 12		model space
 	float				m_fTimeStart;	// 4
+#ifdef DEBUG
+	bool				used_in_render;	
+#endif
 public:
 	Fsphere				m_LocalBounds;	// 16		model space
 	struct WMFace{
@@ -128,8 +131,16 @@ public:
 	Fsphere				m_Bounds;		// 16		world space
 public:									
 						CSkeletonWallmark	(CKinematics* p,const Fmatrix* m, ref_shader s, const Fvector& cp, float ts):
-						m_Parent(p),m_XForm(m),m_Shader(s),m_fTimeStart(ts),
-						m_ContactPoint(cp){}
+						m_Parent(p),m_XForm(m),m_Shader(s),m_fTimeStart(ts),m_ContactPoint(cp)
+#ifdef DEBUG
+						,used_in_render(false)
+#endif
+						{}
+						~CSkeletonWallmark	()
+						{
+							VERIFY			(!used_in_render);
+						}
+
 	IC CKinematics*		Parent				(){return m_Parent;}
 	IC u32				VCount				(){return m_Faces.size()*3;}
 	IC bool				Similar				(ref_shader& sh, const Fvector& cp, float eps){return (m_Shader==sh)&&m_ContactPoint.similar(cp,eps);}

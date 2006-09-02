@@ -294,14 +294,21 @@ void CRender::Render		()
 
 	// Update incremental shadowmap-visibility solver
 	{
-		for (u32 it=0; it<Lights_LastFrame.size(); it++)
-			Lights_LastFrame[it]->svis.flushoccq	();
+		u32 it=0;
+		for (it=0; it<Lights_LastFrame.size(); it++)	{
+			if (0==Lights_LastFrame[it])	continue	;
+			try {
+				Lights_LastFrame[it]->svis.flushoccq()	;
+			} catch (...)
+			{
+				Msg	("! Failed to flush-OCCq on light [%d] %X",it,u32(Lights_LastFrame[it]));
+			}
+		}
 		Lights_LastFrame.clear	();
 	}
 
 	// Directional light - fucking sun
 	if (bSUN)	{
-//		Lights_LastFrame.push_back			(Lights.sun_adapted);
 		RImplementation.stats.l_visible		++;
 		render_sun_near						();
 		render_sun							();

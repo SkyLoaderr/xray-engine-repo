@@ -34,7 +34,13 @@ light::~light	()
 #if RENDER==R_R2 
 	for (int f=0; f<6; f++)	xr_delete(omnipart[f]);
 #endif
-	set_active	(false);
+	set_active		(false);
+
+	// remove from Lights_LastFrame
+#if RENDER==R_R2 
+	for (u32 it=0; it<RImplementation.Lights_LastFrame.size(); it++)
+		if (this==RImplementation.Lights_LastFrame[it])	RImplementation.Lights_LastFrame[it]=0;
+#endif
 }
 
 #if RENDER==R_R2 

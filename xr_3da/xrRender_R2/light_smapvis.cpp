@@ -9,6 +9,7 @@
 		smapvis::~smapvis	()
 {
 	flushoccq				();
+	invalidate				();
 }
 void	smapvis::invalidate	()
 {

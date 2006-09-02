@@ -471,7 +471,7 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 				add_leafs_Dynamic			(pV->m_lod)		;
 			} else {
 				pV->CalculateBones			(TRUE);
-				//pV->CalculateWallmarks	();		//. bug?
+				pV->CalculateWallmarks		();		//. bug?
 				I = pV->children.begin		();
 				E = pV->children.end		();
 				for (; I!=E; I++)	add_leafs_Dynamic	(*I);

@@ -668,10 +668,12 @@ void CKinematics::RenderWallmark(CSkeletonWallmark* wm, FVF::LIT* &V)
 	VERIFY(V);
 	VERIFY2(bones,"Invalid visual. Bones already released.");
 	VERIFY2(bone_instances,"Invalid visual. bone_instances already deleted.");
-	
+
+	if ((0==wm) || (0==bones) || (0==bone_instances))	return;
+
 	// skin vertices
 	for (u32 f_idx=0; f_idx<wm->m_Faces.size(); f_idx++){
-		CSkeletonWallmark::WMFace& F=wm->m_Faces[f_idx];
+		CSkeletonWallmark::WMFace F = wm->m_Faces[f_idx];
 		float w	= (Device.fTimeGlobal-wm->TimeStart())/LIFE_TIME;
 		for (u32 k=0; k<3; k++){
 			Fvector P;

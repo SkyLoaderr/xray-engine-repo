@@ -209,7 +209,7 @@ void CGlowManager::render_sw		()
 	CObject*	o_main		= g_pGameLevel->CurrentViewEntity();
 
 	// 1. Test some number of glows
-	Fvector &start	= Device.vCameraPosition;
+	Fvector start	= Device.vCameraPosition;
 	for (int i=0; i<ps_r1_GlowsPerFrame; i++,dwTestID++)
 	{
 		u32	ID		= dwTestID%Selected.size();
@@ -298,6 +298,8 @@ void CGlowManager::render_selected()
 
 			u32 C			= iFloor(G.fade*scale*(1-(dist_sq/dlim2)));
 			u32 clr			= color_rgba(C,C,C,C);
+			Fvector	gp		;
+					gp.mad	(G.position,dir,G.radius*scale);
 			FillSprite		(pv,G.position,G.radius,clr);
 		}
 		int vCount				= int(pv-pvs);

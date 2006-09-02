@@ -502,14 +502,15 @@ void CSkeletonX_ext::_FillVertices(const Fmatrix& view, CSkeletonWallmark& wm, c
 	//.	R_CHK				(V->pIndices->Lock(iBase,iCount,		(void**)&indices,	D3DLOCK_READONLY));
 	CHK_DX				(V->pIndices->Lock(0,V->dwPrimitives*3,(void**)&indices,D3DLOCK_READONLY));
 	// fill vertices
-	switch	(RenderMode){
-case RM_SKINNING_SOFT:
-	if (*Vertices1W)			_FillVerticesSoft1W		(view,wm,normal,size,indices+iBase,*faces);
-	else						_FillVerticesSoft2W		(view,wm,normal,size,indices+iBase,*faces);
-	break;
-case RM_SINGLE:
-case RM_SKINNING_1B:			_FillVerticesHW1W		(view,wm,normal,size,V,indices+iBase,*faces);		break;
-case RM_SKINNING_2B:			_FillVerticesHW2W		(view,wm,normal,size,V,indices+iBase,*faces);		break;
+	switch	(RenderMode)
+	{
+	case RM_SKINNING_SOFT:
+		if (*Vertices1W)			_FillVerticesSoft1W		(view,wm,normal,size,indices+iBase,*faces);
+		else						_FillVerticesSoft2W		(view,wm,normal,size,indices+iBase,*faces);
+		break;
+	case RM_SINGLE:
+	case RM_SKINNING_1B:			_FillVerticesHW1W		(view,wm,normal,size,V,indices+iBase,*faces);		break;
+	case RM_SKINNING_2B:			_FillVerticesHW2W		(view,wm,normal,size,V,indices+iBase,*faces);		break;
 	}
 	CHK_DX				(V->pIndices->Unlock());
 }

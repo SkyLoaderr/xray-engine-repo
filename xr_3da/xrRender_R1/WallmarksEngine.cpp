@@ -274,6 +274,9 @@ void CWallmarksEngine::AddSkeletonWallmark(CSkeletonWallmark* wm)
 		if (0==slot) slot	= AppendSlot(wm->Shader());
 		// no similar - register _new_
 		slot->skeleton_items.push_back(wm);
+#ifdef	DEBUG
+		wm->used_in_render	= true;
+#endif
 		lock.Leave			();
 	}
 }
@@ -304,8 +307,6 @@ ICF void FlushStream(ref_geom hGeom, ref_shader shader, u32& w_offset, FVF::LIT*
 void CWallmarksEngine::Render()
 {
 //	if (marks.empty())			return;
-	lock.Enter		();			// Physics may add wallmarks in parallel with rendering
-
 	// Projection and xform
 	float _43					= Device.mProject._43;
 	Device.mProject._43			-= 0.001f; 
@@ -318,6 +319,8 @@ void CWallmarksEngine::Render()
 	Device.Statistic->RenderDUMP_WMT_Count	= 0;
 
 	float	ssaCLIP				= r_ssaDISCARD/4;
+
+	lock.Enter		();			// Physics may add wallmarks in parallel with rendering
 
 	for (WMSlotVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
 		u32			w_offset;
@@ -352,9 +355,12 @@ void CWallmarksEngine::Render()
 		// Flush stream
 		FlushStream				(hGeom,slot->shader,w_offset,w_verts,w_start,FALSE);	//. remove line if !(suppress cull needed)
 		BeginStream				(hGeom,w_offset,w_verts,w_start);
+
 		// dynamic wallmarks
 		for (xr_vector<CSkeletonWallmark*>::iterator w_it=slot->skeleton_items.begin(); w_it!=slot->skeleton_items.end(); w_it++){
 			CSkeletonWallmark* W	= *w_it;
+			if (!W)		continue	;
+
 			float dst	= Device.vCameraPosition.distance_to_sqr(W->m_Bounds.P);
 			float ssa	= W->m_Bounds.R * W->m_Bounds.R / dst;
 			if (ssa>=ssaCLIP){
@@ -364,13 +370,26 @@ void CWallmarksEngine::Render()
 					FlushStream	(hGeom,slot->shader,w_offset,w_verts,w_start,TRUE);
 					BeginStream	(hGeom,w_offset,w_verts,w_start);
 				}
-				W->Parent()->RenderWallmark	(W,w_verts);
+
+				FVF::LIT	*w_save = w_verts;
+				try {
+					W->Parent()->RenderWallmark	(W,w_verts);
+				} catch (...)
+				{
+					Msg		("! Failed to render dynamic wallmark");
+					w_verts = w_save;
+				}
 			}
+			#ifdef	DEBUG
+			 W->used_in_render	= false;
+			#endif
 		}
 		slot->skeleton_items.clear();
 		// Flush stream
 		FlushStream				(hGeom,slot->shader,w_offset,w_verts,w_start,TRUE);
 	}
+
+	lock.Leave();				// Physics may add wallmarks in parallel with rendering
 
 	// Level-wmarks
 	RImplementation.r_dsgraph_render_wmarks	();
@@ -379,6 +398,4 @@ void CWallmarksEngine::Render()
 	// Projection
 	Device.mProject._43			= _43;
 	RCache.set_xform_project	(Device.mProject);
-
-	lock.Leave();				// Physics may add wallmarks in parallel with rendering
 }
