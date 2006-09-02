@@ -114,10 +114,10 @@ class ENGINE_API CSkeletonWallmark		// 4+4+4+12+4+16+16 = 60
 	ref_shader			m_Shader;		// 4
 	Fvector3			m_ContactPoint;	// 12		model space
 	float				m_fTimeStart;	// 4
+public:
 #ifdef DEBUG
 	bool				used_in_render;	
 #endif
-public:
 	Fsphere				m_LocalBounds;	// 16		model space
 	struct WMFace{
 		Fvector3		vert	[3];
