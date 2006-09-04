@@ -23,7 +23,7 @@ struct SGameVertex : public SBaseParameters<
 > {
 	typedef GameGraph::TERRAIN_VECTOR	VERTEX_TYPES;
 
-	VERTEX_TYPES	m_vertex_types;
+	const VERTEX_TYPES	*m_vertex_types;
 	_index_type		m_vertex_id;
 	xr_vector<_index_type> *m_path;
 
@@ -44,7 +44,7 @@ struct SGameVertex : public SBaseParameters<
 			max_visited_node_count
 		)
 	{
-		m_vertex_types	= vertex_types;
+		m_vertex_types	= &vertex_types;
 	}
 
 	IC	_index_type	selected_vertex_id() const
