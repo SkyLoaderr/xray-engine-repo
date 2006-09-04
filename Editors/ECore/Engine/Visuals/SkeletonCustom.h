@@ -110,8 +110,8 @@ public:
 #pragma warning(push)
 #pragma warning(disable:4275)
 class ENGINE_API CSkeletonWallmark : public intrusive_base // 4+4+4+12+4+16+16 = 60 + 4 = 64
-#pragma warning(pop)
 {
+#pragma warning(pop)
 	CKinematics*		m_Parent;		// 4
 	const Fmatrix*		m_XForm;		// 4
 	ref_shader			m_Shader;		// 4
