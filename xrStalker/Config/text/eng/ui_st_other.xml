@@ -4,7 +4,10 @@
 	<string id="ui_mm_default">
 		<text>Default</text>
 	</string>
-		<string id="kb_artefact">
+	<string id="kb_artefact">
 		<text>Artefact</text>
 	</string>	
+	<stirng id="ui_mm_need_restart">
+		<text>Сhanges will take effect only after game restart</text>		
+	</stirng>
 </string_table>
