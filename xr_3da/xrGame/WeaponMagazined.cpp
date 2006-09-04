@@ -975,7 +975,7 @@ void CWeaponMagazined::PlayAnimIdle()
 	}
 
 	VERIFY(GetState()==eIdle);
-	m_pHUD->animPlay(random_anim(*m), TRUE, this, GetState());
+	m_pHUD->animPlay(random_anim(*m), TRUE, NULL, GetState());
 }
 
 void CWeaponMagazined::PlayAnimShoot()
