@@ -749,6 +749,16 @@
 				RelativePath=".\xrstring.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="intrusive_ptr"
+			Filter="">
+			<File
+				RelativePath=".\intrusive_ptr.h">
+			</File>
+			<File
+				RelativePath=".\intrusive_ptr_inline.h">
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\xrSyncronize.cpp">
 		</File>

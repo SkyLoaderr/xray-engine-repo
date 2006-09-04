@@ -220,7 +220,7 @@ public:
 
 	// wallmarks
 	virtual void					add_StaticWallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* V);
-	virtual void					add_SkeletonWallmark		(CSkeletonWallmark* wm);
+	virtual void					add_SkeletonWallmark		(intrusive_ptr<CSkeletonWallmark> wm);
 	virtual void					add_SkeletonWallmark		(const Fmatrix* xf, CKinematics* obj, ref_shader& sh, const Fvector& start, const Fvector& dir, float size);
 
 	//

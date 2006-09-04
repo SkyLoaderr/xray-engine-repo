@@ -11,7 +11,6 @@
 #include "HudSound.h"
 
 #include "patrol_path.h"
-#include "intrusive_ptr.h"
 #include "PHDestroyable.h"
 #include "Explosive.h"
 

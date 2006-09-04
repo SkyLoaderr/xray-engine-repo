@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "intrusive_ptr.h"
 #include "danger_location.h"
 
 class CAI_Stalker;

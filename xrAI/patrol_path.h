@@ -10,7 +10,6 @@
 
 #include "graph_abstract.h"
 #include "patrol_point.h"
-#include "intrusive_ptr.h"
 
 class CPatrolPath : public CGraphAbstractSerialize<CPatrolPoint,float,u32> {
 private:

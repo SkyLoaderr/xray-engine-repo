@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "intrusive_ptr.h"
-
 namespace RestrictionSpace {
 	struct CTimeIntrusiveBase : public intrusive_base {
 		u32			m_last_time_dec;

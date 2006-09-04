@@ -188,7 +188,7 @@ void					CRender::add_StaticWallmark		(ref_shader& S, const Fvector& P, float s,
 	VERIFY2							(_valid(P) && _valid(s) && T && verts && (s>EPS_L), "Invalid static wallmark params");
 	Wallmarks->AddStaticWallmark	(T,verts,P,&*S,s);
 }
-void					CRender::add_SkeletonWallmark	(CSkeletonWallmark* wm)
+void					CRender::add_SkeletonWallmark	(intrusive_ptr<CSkeletonWallmark> wm)
 {
 	Wallmarks->AddSkeletonWallmark				(wm);
 }

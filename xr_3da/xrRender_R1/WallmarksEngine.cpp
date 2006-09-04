@@ -265,7 +265,7 @@ void CWallmarksEngine::AddSkeletonWallmark	(const Fmatrix* xf, CKinematics* obj,
 	lock.Leave				();
 }
 
-void CWallmarksEngine::AddSkeletonWallmark(CSkeletonWallmark* wm)
+void CWallmarksEngine::AddSkeletonWallmark(intrusive_ptr<CSkeletonWallmark> wm)
 {
 	if (!::RImplementation.val_bHUD){
 		lock.Enter			();
@@ -357,8 +357,8 @@ void CWallmarksEngine::Render()
 		BeginStream				(hGeom,w_offset,w_verts,w_start);
 
 		// dynamic wallmarks
-		for (xr_vector<CSkeletonWallmark*>::iterator w_it=slot->skeleton_items.begin(); w_it!=slot->skeleton_items.end(); w_it++){
-			CSkeletonWallmark* W	= *w_it;
+		for (xr_vector<intrusive_ptr<CSkeletonWallmark>>::iterator w_it=slot->skeleton_items.begin(); w_it!=slot->skeleton_items.end(); w_it++){
+			intrusive_ptr<CSkeletonWallmark> W	= *w_it;
 			if (!W)		continue	;
 
 			float dst	= Device.vCameraPosition.distance_to_sqr(W->m_Bounds.P);

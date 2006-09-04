@@ -8032,16 +8032,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="IntrusivePtr"
-					Filter="">
-					<File
-						RelativePath=".\intrusive_ptr.h">
-					</File>
-					<File
-						RelativePath=".\intrusive_ptr_inline.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="NET Shared"
 					Filter="">
 					<File

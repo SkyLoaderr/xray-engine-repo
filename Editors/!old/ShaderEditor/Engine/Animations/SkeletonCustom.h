@@ -149,7 +149,7 @@ public:
 	IC const Fvector3&	ContactPoint		(){return m_ContactPoint;}
 	IC ref_shader		Shader				(){return m_Shader;}
 };
-DEFINE_VECTOR(CSkeletonWallmark*,SkeletonWMVec,SkeletonWMVecIt);
+DEFINE_VECTOR(intrusive_ptr<CSkeletonWallmark>,SkeletonWMVec,SkeletonWMVecIt);
 
 // sanity check
 #ifdef DEBUG
@@ -217,7 +217,7 @@ public:
 	// wallmarks
 	void						AddWallmark			(const Fmatrix* parent, const Fvector3& start, const Fvector3& dir, ref_shader shader, float size);
 	void						CalculateWallmarks	();
-	void						RenderWallmark		(CSkeletonWallmark* wm, FVF::LIT* &verts);
+	void						RenderWallmark		(intrusive_ptr<CSkeletonWallmark> wm, FVF::LIT* &verts);
 	void						ClearWallmarks		();
 public:
 								CKinematics			();

@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "intrusive_ptr.h"
 #include "memory_space.h"
 
 class CObject;

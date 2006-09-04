@@ -596,7 +596,7 @@ void CKinematics::AddWallmark(const Fmatrix* parent_xform, const Fvector3& start
 
 	// find similar wm
 	for (u32 wm_idx=0; wm_idx<wallmarks.size(); wm_idx++){
-		CSkeletonWallmark*& wm = wallmarks[wm_idx];
+		intrusive_ptr<CSkeletonWallmark>& wm = wallmarks[wm_idx];		
 		if (wm->Similar(shader,cp,0.02f)){ 
 			xr_delete		(wm);
 			if (wm_idx<wallmarks.size()-1) 
@@ -607,7 +607,7 @@ void CKinematics::AddWallmark(const Fmatrix* parent_xform, const Fvector3& start
 	}
 
 	// ok. allocate wallmark
-	CSkeletonWallmark* wm		= xr_new<CSkeletonWallmark>(this,parent_xform,shader,cp,Device.fTimeGlobal);
+	intrusive_ptr<CSkeletonWallmark>		= xr_new<CSkeletonWallmark>(this,parent_xform,shader,cp,Device.fTimeGlobal);
 	wm->m_LocalBounds.set		(cp,size*2.f);
 	wm->XFORM()->transform_tiny	(wm->m_Bounds.P,cp);
 	wm->m_Bounds.R				= wm->m_Bounds.R; 
@@ -632,9 +632,9 @@ void CKinematics::AddWallmark(const Fmatrix* parent_xform, const Fvector3& start
 }
 
 static const float LIFE_TIME=30.f;
-struct zero_wm_pred : public std::unary_function<CSkeletonWallmark*, bool>
+struct zero_wm_pred : public std::unary_function<intrusive_ptr<CSkeletonWallmark>, bool>
 {
-	bool operator()(const CSkeletonWallmark* x){ return x==0; }
+	bool operator()(const intrusive_ptr<CSkeletonWallmark> x){ return x==0; }
 };
 
 void CKinematics::CalculateWallmarks()
@@ -643,7 +643,7 @@ void CKinematics::CalculateWallmarks()
 		wm_frame			= Device.dwFrame;
 		bool need_remove	= false; 
 		for (SkeletonWMVecIt it=wallmarks.begin(); it!=wallmarks.end(); it++){
-			CSkeletonWallmark*& wm = *it;
+			intrusive_ptr<CSkeletonWallmark>& wm = *it;
 			float w	= (Device.fTimeGlobal-wm->TimeStart())/LIFE_TIME;
 			if (w<1.f){
 				// append wm to WallmarkEngine
@@ -662,7 +662,7 @@ void CKinematics::CalculateWallmarks()
 	}
 }
 
-void CKinematics::RenderWallmark(CSkeletonWallmark* wm, FVF::LIT* &V)
+void CKinematics::RenderWallmark(intrusive_ptr<CSkeletonWallmark> wm, FVF::LIT* &V)
 {
 	VERIFY(wm);
 	VERIFY(V);
