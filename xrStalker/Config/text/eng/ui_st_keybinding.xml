@@ -123,6 +123,9 @@
 	<string id="kb_right_strafe">
 		<text>Strafe right</text>
 	</string>
+	<string id="kb_artefact">
+		<text>Artefact</text>
+	</string>
 	<string id="kb_scores">
 		<text>Points</text>
 	</string>
