@@ -57,6 +57,7 @@
 		<command id="kb_turn_engine"				exe="turn_engine"/>
 	</group>
 	<group name="kb_grp_multiplayer">
+		<command id="kb_artefact"					exe="artefact"/>
 		<command id="kb_scores"						exe="scores"/>
 		<command id="kb_chat"						exe="chat"/>
 		<command id="kb_chat_team"					exe="chat_team"/>

@@ -133,7 +133,7 @@
 			<options_item entry="rs_c_brightness" group="mm_opt_video"/>
 		</track_brightness>
 		<btn_default_set x="342" y="290" width="111" height="29">
-			<text align="c" font="letterica16" r="188" g="153" b="123">Default</text>	
+			<text align="c" font="letterica16" r="188" g="153" b="123">ui_mm_default</text>	
 			<texture>ui_button_ordinary</texture>			
 		</btn_default_set>
 	</tab_video>
@@ -177,7 +177,7 @@
 		</list_soundquality>
 		
 		<btn_default_set x="342" y="290" width="111" height="29">
-			<text align="c" font="letterica16" r="188" g="153" b="123">Default</text>	
+			<text align="c" font="letterica16" r="188" g="153" b="123">ui_mm_default</text>	
 			<texture>ui_button_ordinary</texture>			
 		</btn_default_set>
 	</tab_sound>

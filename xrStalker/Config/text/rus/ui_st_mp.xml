@@ -256,5 +256,7 @@
 	<string id="mp_description">
 		<text>Описание</text>
 	</string>
-	
+	<string id="ui_mm_default">
+		<text>По умолчанию</text>
+	</string>	
 </string_table>
