@@ -352,9 +352,22 @@ void CArtefact::UpdateXForm()
 #include "xr_level_controller.h"
 bool CArtefact::Action(s32 cmd, u32 flags) 
 {
-	if(cmd==kWPN_FIRE && flags&CMD_START && m_bCanSpawnZone){
-		SwitchState(eActivating);
-		return true;
+	switch (cmd)
+	{
+	case kWPN_FIRE:
+		{
+			if (flags&CMD_START && m_bCanSpawnZone){
+				SwitchState(eActivating);
+				return true;
+			}
+			if (flags&CMD_STOP && m_bCanSpawnZone && GetState()==eActivating)
+			{
+				SwitchState(eIdle);
+				return true;
+			}
+		}break;
+	default:
+		break;
 	}
 	return inherited::Action(cmd,flags);
 }

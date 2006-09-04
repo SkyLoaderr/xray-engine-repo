@@ -123,7 +123,8 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 
 			CWeapon* pWeapon = smart_cast<CWeapon*>(O);
 			CGrenade* pGrenade = smart_cast<CGrenade*>(O);
-			if (pWeapon || pGrenade) SelectBestWeapon();
+			CArtefact* pArtefact = smart_cast<CArtefact*>(O);
+			if (pWeapon || pGrenade || pArtefact) SelectBestWeapon();
 
 			if (Level().CurrentViewEntity() == this && HUD().GetUI() && HUD().GetUI()->UIGame())
 				HUD().GetUI()->UIGame()->ReInitShownUI();

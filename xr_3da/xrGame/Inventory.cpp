@@ -506,6 +506,11 @@ bool CInventory::Action(s32 cmd, u32 flags)
 				}
 //.				return true;
 			}
+			else
+			{
+				int x=0;
+				x=x;
+			}
 		}break;
 	}
 
