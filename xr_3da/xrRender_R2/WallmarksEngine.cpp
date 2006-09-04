@@ -10,6 +10,16 @@
 #include "..\GameFont.h"
 #include "..\SkeletonCustom.h"
 
+namespace WallmarksEngine {
+	struct wm_slot
+	{
+		ref_shader		shader;
+		StaticWMVec		static_items;
+		xr_vector< intrusive_ptr<CSkeletonWallmark> > skeleton_items;
+						wm_slot		(ref_shader sh)	{shader=sh;static_items.reserve(256);skeleton_items.reserve(256);}
+	};
+}
+
 // #include "xr_effsun.h"
 
 const float W_DIST_FADE		= 15.f;

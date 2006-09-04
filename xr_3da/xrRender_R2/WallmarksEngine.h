@@ -2,10 +2,17 @@
 //
 //////////////////////////////////////////////////////////////////////
 #pragma once
-#include "SkeletonCustom.h"
+
+namespace WallmarksEngine {
+	struct wm_slot;
+}
+
 
 class CWallmarksEngine
 {
+public:
+	typedef WallmarksEngine::wm_slot	wm_slot;
+
 public:
 	struct static_wallmark 
 	{
@@ -14,13 +21,6 @@ public:
 		float				ttl;
 	};
 	DEFINE_VECTOR		(static_wallmark*,StaticWMVec,StaticWMVecIt);
-	struct wm_slot
-	{
-		ref_shader		shader;
-		StaticWMVec		static_items;
-		xr_vector< intrusive_ptr<CSkeletonWallmark> > skeleton_items;
-						wm_slot		(ref_shader sh)	{shader=sh;static_items.reserve(256);skeleton_items.reserve(256);}
-	};
 	DEFINE_VECTOR		(wm_slot*,WMSlotVec,WMSlotVecIt);
 private:
 	StaticWMVec			static_pool;
