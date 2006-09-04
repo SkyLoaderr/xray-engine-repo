@@ -17,7 +17,7 @@ public:
 	{
 		ref_shader		shader;
 		StaticWMVec		static_items;
-		xr_vector<intrusive_ptr<CSkeletonWallmark>> skeleton_items;
+		xr_vector< intrusive_ptr<CSkeletonWallmark> > skeleton_items;
 						wm_slot		(ref_shader sh)	{shader=sh;static_items.reserve(256);skeleton_items.reserve(256);}
 	};
 	DEFINE_VECTOR		(wm_slot*,WMSlotVec,WMSlotVecIt);
