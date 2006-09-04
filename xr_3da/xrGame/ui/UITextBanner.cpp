@@ -90,12 +90,10 @@ void CUITextBanner::Out(float x, float y, const char *fmt, ...)
 
 	if (x >= 1.0f && y >= 1.0f)
 	{
-		x *= UI()->GetScaleX();
-		y *= UI()->GetScaleY();
+		x	= UI()->ClientToScreenScaledX(x);
+		y	= UI()->ClientToScreenScaledY(y);
 	}
 	m_pFont->Out(x, y, buf.c_str());
-//	if (m_bNewRenderMethod)
-//		m_pFont->OnRender();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

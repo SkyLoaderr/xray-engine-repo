@@ -7,7 +7,7 @@ class CMainMenu;
 class CUICursor;
 class CParticlesObject;
 class CUISequencer;
-struct ui_core;
+class ui_core;
 
 class CGamePersistent: 
 	public IGame_Persistent, 

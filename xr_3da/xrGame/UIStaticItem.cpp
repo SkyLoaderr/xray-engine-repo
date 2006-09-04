@@ -80,8 +80,8 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	// actual rendering
 	u32							vOffset;
 	Fvector2					pos;
-	float fw					= iVisRect.x2*UI()->GetScaleX();
-	float fh					= iVisRect.y2*UI()->GetScaleY();
+	float fw					= UI()->ClientToScreenScaledX( iVisRect.x2 );
+	float fh					= UI()->ClientToScreenScaledY( iVisRect.y2 );
 
 	int tile_x					= fis_zero(iRemX)?iTileX:iTileX+1;
 	int tile_y					= fis_zero(iRemY)?iTileY:iTileY+1;

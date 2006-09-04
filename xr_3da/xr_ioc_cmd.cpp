@@ -28,6 +28,12 @@ xr_token							snd_model_token							[ ]={
 	{ 0,							0											}
 };
 xr_token							vid_mode_token							[ ]={
+	// 16:9 modes
+	{ "480x272",					480											}, //PSP emulation
+	{ "1366x768",					1366										},
+	{ "1920x1080",					1920										},
+
+	//normal 4:3 modes
 #ifdef DEBUG
 	{ "320x240",					320											},
 	{ "512x384",					512											},
@@ -46,7 +52,7 @@ xr_token							vid_bpp_token							[ ]={
 	{ "32",							32											},
 	{ 0,							0											}
 };
-
+BOOL	g_r2 = FALSE;
 //-----------------------------------------------------------------------
 class CCC_Quit : public IConsole_Command
 {
@@ -251,11 +257,11 @@ public:
 		}
 	}
 };
-class CCC_LoadCFG : public IConsole_Command
+CCC_LoadCFG::CCC_LoadCFG(LPCSTR N) : IConsole_Command(N) 
+{};
+
+void CCC_LoadCFG::Execute(LPCSTR args) 
 {
-public:
-	CCC_LoadCFG(LPCSTR N) : IConsole_Command(N) {};
-	virtual void Execute(LPCSTR args) {
 		Msg("Executing config-script \"%s\"...",args);
 		string1024 str;
 
@@ -268,15 +274,26 @@ public:
 		if (F!=NULL) {
 			while (!F->eof()) {
 				F->r_string			(str,sizeof(str));
-				Console->Execute	(str);
+				if(allow(str))
+					Console->Execute	(str);
 			}
 			FS.r_close(F);
 		} else {
 			Log("! Cannot open script file.");
 		}
 		//RecordCommands	= true;
-	}
+}
+
+CCC_LoadCFG_custom::CCC_LoadCFG_custom(LPCSTR cmd)
+:CCC_LoadCFG(cmd)
+{
+	strcpy(m_cmd, cmd);
 };
+bool CCC_LoadCFG_custom::allow(LPCSTR cmd)
+{
+	return (cmd == strstr(cmd, m_cmd) );
+};
+
 //-----------------------------------------------------------------------
 class CCC_Start : public IConsole_Command
 {
@@ -543,6 +560,7 @@ void CCC_Register()
 	CMD2(CCC_Float,		"cam_inert",			&psCamInert);
 	CMD2(CCC_Float,		"cam_slide_inert",		&psCamSlideInert);
 
+	CMD4(CCC_Integer,		"r2",					&g_r2, 0, 1);
 	//psSoundRolloff			= pSettings->r_float	("sound","rolloff");		clamp(psSoundRolloff,			EPS_S,	2.f);
 	psSoundOcclusionScale	= pSettings->r_float	("sound","occlusion_scale");clamp(psSoundOcclusionScale,	0.1f,	.5f);
 

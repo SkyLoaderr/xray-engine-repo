@@ -21,7 +21,7 @@
 #include "game_news.h"
 #include "map_location_defs.h"
 
-#include "levelFogOfWar.h"
+//.#include "levelFogOfWar.h"
 #include "actor_statistic_defs.h"
 
 #pragma warning(push)
@@ -88,9 +88,9 @@ add_to_registry_type_list(CGameTaskRegistry);
 
 
 //fogOfWar
-add_to_registry_type_list(CFogOfWarRegistry);
-#define map_locations define_constant(CFogOfWarRegistry) 
-#define registry_type_list save_registry_type_list(CFogOfWarRegistry)
+//.add_to_registry_type_list(CFogOfWarRegistry);
+//.#define map_locations define_constant(CFogOfWarRegistry) 
+//.#define registry_type_list save_registry_type_list(CFogOfWarRegistry)
 
 //ActorStatistics
 add_to_registry_type_list(CActorStatisticRegistry);

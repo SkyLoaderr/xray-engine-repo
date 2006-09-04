@@ -136,6 +136,13 @@ void	CHW::selectResolution	(u32 &dwWidth, u32 &dwHeight)
 	// Select width/height
 	dwWidth	= psCurrentMode;
 	switch (dwWidth) {
+
+	// 16:9 modes
+	case 480:	dwHeight = 272;						break;
+	case 1366:	dwHeight = 768;						break;
+	case 1920:	dwHeight = 1080;					break;
+
+	//normal 4:3 modes
 	case 320:	dwHeight = 240;						break;
 	case 512:	dwHeight = 384;						break;
 	case 640:	dwHeight = 480;						break;

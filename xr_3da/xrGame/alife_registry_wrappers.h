@@ -56,5 +56,5 @@ class CRelationRegistryWrapper :		public CALifeRegistryWrapperObject<CALifeRegis
 class CMapLocationWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CMapLocationRegistry> > {};
 class CGameTaskWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CGameTaskRegistry> > {};
 
-class CFogOfWarWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CFogOfWarRegistry> > {};
+//. class CFogOfWarWrapper :				public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CFogOfWarRegistry> > {};
 class CActorStatisticsWrapper :			public CALifeRegistryWrapperObject<CALifeRegistryWrapper<CActorStatisticRegistry> > {};

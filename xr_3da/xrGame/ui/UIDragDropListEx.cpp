@@ -644,10 +644,9 @@ void CUICellContainer::Draw()
 	Fvector2			lt_abs_pos;
 	GetAbsolutePos		(lt_abs_pos);
 
-	Fvector2	drawLT;
-	drawLT.set			(lt_abs_pos.x+tgt_cells.lt.x*cell_sz.x, lt_abs_pos.y+tgt_cells.lt.y*cell_sz.y);
-	drawLT.x			*= UI()->GetScaleX();
-	drawLT.y			*= UI()->GetScaleY();
+	Fvector2					drawLT;
+	drawLT.set					(lt_abs_pos.x+tgt_cells.lt.x*cell_sz.x, lt_abs_pos.y+tgt_cells.lt.y*cell_sz.y);
+	UI()->ClientToScreenScaled	(drawLT, drawLT.x, drawLT.y);
 
 	const Fvector2 pts[6] =		{{0.0f,0.0f},{1.0f,0.0f},{1.0f,1.0f},
 								 {0.0f,0.0f},{1.0f,1.0f},{0.0f,1.0f}};
@@ -657,8 +656,8 @@ void CUICellContainer::Draw()
 								 {0.0f,0.0f},{tx,ty},{0.0f,ty}};
 
 	// calculate cell size in screen pixels
-	float		fw				= cell_sz.x*UI()->GetScaleX();
-	float		fh				= cell_sz.y*UI()->GetScaleY();
+	float		fw				= UI()->ClientToScreenScaledX(float(cell_sz.x));
+	float		fh				= UI()->ClientToScreenScaledY(float(cell_sz.y));
 
 	// fill cell buffer
 	u32 vOffset					= 0;

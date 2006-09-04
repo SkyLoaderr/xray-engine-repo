@@ -12,23 +12,6 @@ class CUIGameCustom;
 class CUIMainIngameWnd;
 class CUIMessagesWindow;
 
-#define MAX_GROUPS		10
-#define MAX_UIMESSAGES	7
-#define LIFE_TIME		7.f		// sec
-#define HIDE_TIME		2.5f	// sec 
-
-
-class CDeviceResetNotifier :public pureDeviceReset
-{
-public:
-						CDeviceResetNotifier					()	{Device.seqDeviceReset.Add(this,REG_PRIORITY_NORMAL);};
-	virtual				~CDeviceResetNotifier					()	{Device.seqDeviceReset.Remove(this);};
-	virtual void		OnDeviceReset							()	{};
-
-};
-
-
-
 class CUI			: public CDialogHolder
 {
 	CUIGameCustom*			pUIGame;

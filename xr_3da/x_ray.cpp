@@ -81,6 +81,16 @@ void InitConsole	()
 	}
 #endif
 	Console->Initialize			( );
+
+	strcpy						(Console->ConfigFile,"user.ltx");
+	if (strstr(Core.Params,"-ltx ")) {
+		string64				c_name;
+		sscanf					(strstr(Core.Params,"-ltx ")+5,"%[^ ] ",c_name);
+		strcpy					(Console->ConfigFile,c_name);
+	}
+	if (!FS.exist(Console->ConfigFile))
+		strcpy					(Console->ConfigFile,"user.ltx");
+
 }
 
 void InitInput		()
@@ -121,6 +131,7 @@ void destroyEngine	()
 void execUserScript				( )
 {
 // Execute script
+/*
 	strcpy						(Console->ConfigFile,"user.ltx");
 	if (strstr(Core.Params,"-ltx ")) {
 		string64				c_name;
@@ -129,6 +140,7 @@ void execUserScript				( )
 	}
 	if (!FS.exist(Console->ConfigFile))
 		strcpy					(Console->ConfigFile,"user.ltx");
+*/
 	Console->ExecuteScript		(Console->ConfigFile);
 }
 void slowdownthread	( void* )
@@ -298,7 +310,7 @@ void	__cdecl		intro_dshow_x	(void*)
 	g_bIntroFinished	= TRUE	;
 }
 */
-
+#include "xr_ioc_cmd.h"
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      char *    lpCmdLine,
@@ -364,6 +376,11 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		if (l_res != 0)
 			return 0;
 	};
+	
+	CCC_LoadCFG_custom*	pTmp = xr_new<CCC_LoadCFG_custom>("r2 ");
+	pTmp->Execute				(Console->ConfigFile);
+	xr_delete					(pTmp);
+
 	Engine.External.Initialize	( );
 //	CheckPrivilegySlowdown		( );
 	Console->Execute			("stat_memory");

@@ -20,7 +20,7 @@
 #include "PHdynamicdata.h"
 #include "Physics.h"
 #include "ShootingObject.h"
-#include "LevelFogOfWar.h"
+//.#include "LevelFogOfWar.h"
 #include "Level_Bullet_Manager.h"
 #include "script_process.h"
 #include "script_engine.h"

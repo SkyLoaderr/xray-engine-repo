@@ -94,8 +94,8 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, u32 color, fl
 	// Rotation
 	if(!(uFlags&flValidHeadingPivot))	pivot.set(iVisRect.x2/2.f, iVisRect.y2/2.f);
 	else								pivot.set(iHeadingPivot.x, iHeadingPivot.y);
-	pivot.x			*= UI()->GetScaleX();
-	pivot.y			*= UI()->GetScaleY();
+	pivot.x			= UI()->ClientToScreenScaledX( pivot.x );
+	pivot.y			= UI()->ClientToScreenScaledY( pivot.y );
 	offset.set		(pos.x,pos.y);
 	Fvector2		LTt,RBt;
 	LTt.set			(iOriginalRect.x1/ts.x+hp.x, iOriginalRect.y1/ts.y+hp.y);

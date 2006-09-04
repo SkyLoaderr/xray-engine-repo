@@ -6,6 +6,18 @@
 struct CFontManager;
 class CUICursor;
 
+
+class CDeviceResetNotifier :public pureDeviceReset
+{
+public:
+						CDeviceResetNotifier					()	{Device.seqDeviceReset.Add(this,REG_PRIORITY_NORMAL);};
+	virtual				~CDeviceResetNotifier					()	{Device.seqDeviceReset.Remove(this);};
+	virtual void		OnDeviceReset							()	{};
+
+};
+
+
+
 //---------------------------------------------------------------------------------------
 // 2D Frustum & 2D Vertex
 //---------------------------------------------------------------------------------------
@@ -30,15 +42,20 @@ public:
 	sPoly2D*	ClipPoly		(sPoly2D& S, sPoly2D& D) const;
 };
 
-struct ui_core
+class ui_core: public CDeviceResetNotifier
 {
-	xr_stack<Frect> m_Scissors;
 	C2DFrustum		m_2DFrustum;
 	C2DFrustum		m_2DFrustumPP;
 	bool			m_bPostprocess;
 
 	CFontManager*	m_pFontManager;
 	CUICursor*		m_pUICursor;
+
+	Fvector2		m_pp_scale_;
+	Fvector2		m_scale_;
+	Fvector2*		m_current_scale;
+public:
+	xr_stack<Frect> m_Scissors;
 	
 	ui_core			();
 	~ui_core		();
@@ -46,8 +63,11 @@ struct ui_core
 	CUICursor*		GetUICursor						()							{return m_pUICursor;}
 	void			OutText							(CGameFont *pFont, Frect r, float x, float y, LPCSTR fmt, ...);
 
-	IC float		GetScaleX						()							{return (m_bPostprocess)?float(::Render->getTarget()->get_width())/float(UI_BASE_WIDTH):float(Device.dwWidth)/float(UI_BASE_WIDTH);   }
-	IC float		GetScaleY						()							{return (m_bPostprocess)?float(::Render->getTarget()->get_height())/float(UI_BASE_HEIGHT):float(Device.dwHeight)/float(UI_BASE_HEIGHT);   }
+//.	IC float		GetScaleX						()							{return (m_bPostprocess)?float(::Render->getTarget()->get_width())/float(UI_BASE_WIDTH):float(Device.dwWidth)/float(UI_BASE_WIDTH);   }
+//.	IC float		GetScaleY						()							{return (m_bPostprocess)?float(::Render->getTarget()->get_height())/float(UI_BASE_HEIGHT):float(Device.dwHeight)/float(UI_BASE_HEIGHT);   }
+
+//.	IC float		GetScaleX						()							{return (m_bPostprocess) ? m_pp_scale.x : m_scale.x;   }
+//.	IC float		GetScaleY						()							{return (m_bPostprocess) ? m_pp_scale.y : m_scale.y;   }
 
 	void			ClientToScreenScaled			(Fvector2& dest, float left, float top);
 	float			ClientToScreenScaledX			(float left);
@@ -61,6 +81,8 @@ struct ui_core
 	void			pp_start						();
 	void			pp_stop							();
 	void			RenderFont						();
+
+	virtual void	OnDeviceReset					();
 };
 
 extern CUICursor*	GetUICursor		();
