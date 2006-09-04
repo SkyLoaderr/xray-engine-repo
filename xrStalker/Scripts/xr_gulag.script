@@ -1,7 +1,7 @@
 -- Диденко Руслан (Stohe), Чугай Александр (Chugai)
 
---function printf()
---end
+function printf()
+end
 
 -- в работах поле object хранит id объекта
 
@@ -556,24 +556,13 @@ function gulag:availJob(job)
 		if job.idle_after_death_end == nil or job.idle_after_death_end < game.time() then
 			if job.fill_idle ~= nil then
 				if job.fill_idle == idle_none then
-					printf( "availJob=false (fill_idle idle_none)" )
+--					printf( "availJob=false (fill_idle idle_none)" )
 					return false
 				elseif job.fill_idle ~= idle_once and job.fill_idle < game.time() - job.begin then
-					printf( "availJob=false (fill_idle time)" )
+--					printf( "availJob=false (fill_idle time)" )
 					return false
 				end
 			end
---[[
-			local jd = job.dependent
-
-			if jd then
-				for i, v in ipairs( self.Job ) do
-					if v.section == jd then
-						return v.object ~= nil
-					end
-				end
-			end
-]]
 --			printf( "availJob=true" )
 			return true
 		else

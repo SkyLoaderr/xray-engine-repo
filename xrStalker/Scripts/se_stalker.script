@@ -157,6 +157,8 @@ function se_stalker:on_register()
 
 	-- Регистрация в таскменеджере
 	task_manager.register_target(self)
+	
+	self:brain():update()
 
 	self:fill_exclusives()
 end
