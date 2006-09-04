@@ -152,9 +152,7 @@
 	<string id="kb_repair">
 		<text>Починить</text>
 	</string>
-	<string id="kb_artefact">
-		<text>Артефакт</text>
-	</string>
+
 	<string id="kb_scores">
 		<text>Очки</text>
 	</string>

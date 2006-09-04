@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<string_table>
+	<string id="ui_mm_default">
+		<text>Default</text>
+	</string>
+		<string id="kb_artefact">
+		<text>Artefact</text>
+	</string>	
+</string_table>

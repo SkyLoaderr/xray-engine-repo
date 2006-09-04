@@ -147,7 +147,5 @@
 	<string id="ui_mm_video">
 		<text>Video</text>
 	</string>
-	<string id="ui_mm_default">
-		<text>Default</text>
-	</string>
+
 </string_table>
