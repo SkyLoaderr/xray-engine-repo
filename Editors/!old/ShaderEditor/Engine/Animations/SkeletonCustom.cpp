@@ -598,7 +598,6 @@ void CKinematics::AddWallmark(const Fmatrix* parent_xform, const Fvector3& start
 	for (u32 wm_idx=0; wm_idx<wallmarks.size(); wm_idx++){
 		intrusive_ptr<CSkeletonWallmark>& wm = wallmarks[wm_idx];		
 		if (wm->Similar(shader,cp,0.02f)){ 
-			xr_delete		(wm);
 			if (wm_idx<wallmarks.size()-1) 
 				wm = wallmarks.back();
 			wallmarks.pop_back();
@@ -607,7 +606,7 @@ void CKinematics::AddWallmark(const Fmatrix* parent_xform, const Fvector3& start
 	}
 
 	// ok. allocate wallmark
-	intrusive_ptr<CSkeletonWallmark>		= xr_new<CSkeletonWallmark>(this,parent_xform,shader,cp,Device.fTimeGlobal);
+	intrusive_ptr<CSkeletonWallmark>		wm = xr_new<CSkeletonWallmark>(this,parent_xform,shader,cp,Device.fTimeGlobal);
 	wm->m_LocalBounds.set		(cp,size*2.f);
 	wm->XFORM()->transform_tiny	(wm->m_Bounds.P,cp);
 	wm->m_Bounds.R				= wm->m_Bounds.R; 
@@ -650,8 +649,7 @@ void CKinematics::CalculateWallmarks()
 				if (::Render->ViewBase.testSphere_dirty(wm->m_Bounds.P,wm->m_Bounds.R))
 					::Render->add_SkeletonWallmark	(wm);
 			}else{
-				// remove wallmark
-				xr_delete							(wm);
+				// remove wallmark				
 				need_remove							= true;
 			}
 		}
@@ -669,7 +667,7 @@ void CKinematics::RenderWallmark(intrusive_ptr<CSkeletonWallmark> wm, FVF::LIT* 
 	VERIFY2(bones,"Invalid visual. Bones already released.");
 	VERIFY2(bone_instances,"Invalid visual. bone_instances already deleted.");
 
-	if ((0==wm) || (0==bones) || (0==bone_instances))	return;
+	if ((wm == 0) || (0==bones) || (0==bone_instances))	return;
 
 	// skin vertices
 	for (u32 f_idx=0; f_idx<wm->m_Faces.size(); f_idx++){
@@ -702,8 +700,8 @@ void CKinematics::RenderWallmark(intrusive_ptr<CSkeletonWallmark> wm, FVF::LIT* 
 
 void CKinematics::ClearWallmarks()
 {
-	for (SkeletonWMVecIt it=wallmarks.begin(); it!=wallmarks.end(); it++)
-		xr_delete	(*it);
+//	for (SkeletonWMVecIt it=wallmarks.begin(); it!=wallmarks.end(); it++)
+//		xr_delete	(*it);
 	wallmarks.clear ();
 }
 
