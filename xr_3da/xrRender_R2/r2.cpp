@@ -5,6 +5,7 @@
 #include "..\CustomHUD.h"
 #include "..\igame_persistent.h"
 #include "..\environment.h"
+#include "..\SkeletonCustom.h"
 #include "LightTrack.h"
  
 CRender										RImplementation;

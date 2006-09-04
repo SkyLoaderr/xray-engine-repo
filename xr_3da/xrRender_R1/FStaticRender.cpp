@@ -9,6 +9,7 @@
 #include "..\CustomHUD.h"
 #include "..\xr_object.h"
 #include "..\fmesh.h"
+#include "..\SkeletonCustom.h"
 #include "lighttrack.h"
  
 using	namespace		R_dsgraph;
