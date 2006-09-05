@@ -22,9 +22,11 @@ function simulation_statistic:add(npc)
 	self.allocation[community][rank] = self.allocation[community][rank] + 1
 end
 function simulation_statistic:remove(npc)
-	local community, rank = self.objects[npc.id].community, self.objects[npc.id].rank
-	self.allocation[community][rank] = self.allocation[community][rank] - 1
-	self.objects[npc.id] = nil
+	if self.objects[npc.id] ~= nil then
+		local community, rank = self.objects[npc.id].community, self.objects[npc.id].rank
+		self.allocation[community][rank] = self.allocation[community][rank] - 1
+		self.objects[npc.id] = nil
+	end
 end
 function simulation_statistic:getNpcType(npc)
 	local cls = npc:clsid()
