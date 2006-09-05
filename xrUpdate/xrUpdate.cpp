@@ -31,7 +31,10 @@ END_MESSAGE_MAP()
 // CxrUpdateApp construction
 //extern CLogDlg*	g_log_dlg = NULL;
 extern HWND g_app_wnd =NULL;
-void	__stdcall log_cb_fn (LPCSTR string)
+
+//typedef void	( * LogCallback)	(LPCSTR string);
+
+void	/* __stdcall*/ log_cb_fn (LPCSTR string)
 {
 	DWORD a;
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);  
@@ -155,52 +158,21 @@ void CxrUpdateApp::OnAppAbout()
 	aboutDlg.DoModal();
 }
 
-class A
-{
-public:
-	void AAA()
-	{
-	}
-	void foo()
-	{
-		AAA();
-	}
-	void BBB()
-	{
-		foo();
-	}
-};
-
-class B:public A
-{
-public:
-	void AAA()
-	{
-	}
-
-	void foo()
-	{
-		AAA();
-	}
-	void BBB()
-	{
-		foo();
-	}
-};
 
 void test ()
 {
-//	A a;
-	B b;
-//	a.AAA();
-//	a.foo();
-//	a.BBB();
-//	b.AAA();
-//	b.foo();
-//	b.BBB();
-
-	A* pa = &b;
-	pa->AAA();
-	pa->foo();
-	pa->BBB();
+	return;
+	HANDLE h = CreateFile(	"c:\\test.txt",
+							0,
+							0,
+							NULL,
+							OPEN_EXISTING,
+							FILE_ATTRIBUTE_READONLY | FILE_FLAG_NO_BUFFERING,
+							NULL);
+	if(h==INVALID_HANDLE_VALUE){
+		// file not found 
+	}else
+	{
+		// file found
+	}
 }

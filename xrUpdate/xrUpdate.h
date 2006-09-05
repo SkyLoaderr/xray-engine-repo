@@ -34,5 +34,5 @@ public:
 
 extern CxrUpdateApp theApp;
 extern HWND g_app_wnd;
-extern void	__stdcall log_cb_fn (LPCSTR string);
+extern void	/*__stdcall*/ log_cb_fn (LPCSTR string);
 //extern CLogDlg*	g_log_dlg;
