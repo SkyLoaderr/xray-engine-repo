@@ -81,6 +81,7 @@ FS_file_list_ex::FS_file_list_ex(LPCSTR path, u32 flags, LPCSTR mask)
 {
 	FS_Path* P = FS.get_path(path);
 	P->m_Flags.set	(FS_Path::flNeedRescan,TRUE);
+	FS.m_Flags.set	(CLocatorAPI::flNeedCheck,TRUE);
 	FS.rescan_pathes();
 
 	FS_FileSet		files;
@@ -94,6 +95,8 @@ FS_file_list_ex::FS_file_list_ex(LPCSTR path, u32 flags, LPCSTR mask)
 		itm.modif				= (u32)it->time_write;
 		itm.size				= it->size;
 	}
+
+	FS.m_Flags.set	(CLocatorAPI::flNeedCheck,FALSE);
 }
 
 void FS_file_list_ex::Sort(u32 flags)

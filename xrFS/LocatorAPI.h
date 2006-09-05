@@ -54,7 +54,8 @@ private:
 	void						Register		(LPCSTR name, u32 vfs, u32 crc, u32 ptr, u32 size_real, u32 size_compressed, u32 modif);
 	void						ProcessArchive	(LPCSTR path);
 	void						ProcessOne		(LPCSTR path, void* F);
-	bool						Recurse			(LPCSTR path);
+	bool						Recurse			(LPCSTR path);	
+//	bool						CheckExistance	(LPCSTR path);
 
 	files_it					file_find_it	(LPCSTR n);
 public:
@@ -67,6 +68,7 @@ public:
 		flTargetFolderOnly		= (1<<5),
 		flCacheFiles			= (1<<6),
 		flScanAppRoot			= (1<<7),
+		flNeedCheck				= (1<<8)
 	};    
 	Flags32						m_Flags			;
 	u32							dwAllocGranularity;

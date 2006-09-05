@@ -202,8 +202,26 @@ IC bool pred_str_ff(const _finddata_t& x, const _finddata_t& y)
 bool ignore_name(const char* _name)
 {
 	// ignore processing ".svn" folders
-	return ( _name[0]=='.' && _name[1]=='s' && _name[2]=='v' && _name[3]=='n' && _name[4]==0) ;
+	return ( _name[0]=='.' && _name[1]=='s' && _name[2]=='v' && _name[3]=='n' && _name[4]==0);
 }
+
+// we need to check for file existance
+// because Unicode file names can 
+// be interpolated by FindNextFile()
+
+bool ignore_path(const char* _path){
+	HANDLE h = CreateFile( _path, 0, 0, NULL, OPEN_EXISTING,
+		FILE_ATTRIBUTE_READONLY | FILE_FLAG_NO_BUFFERING, NULL);
+
+	if (h!=INVALID_HANDLE_VALUE)
+	{
+		CloseHandle(h);
+		return false;
+	}
+	else
+		return true;
+}
+
 
 bool CLocatorAPI::Recurse		(const char* path)
 {
@@ -222,11 +240,40 @@ bool CLocatorAPI::Recurse		(const char* path)
     	// Log		("! Wrong path: ",path);
     	return		false;
     }
-    // загоняем в вектор для того *.db* приходили в сортированном порядке
-	if(!ignore_name(sFile.name))	rec_files.push_back(sFile);
 
-	while			( _findnext( hFile, &sFile ) == 0 )
-		if(!ignore_name(sFile.name)) rec_files.push_back(sFile);
+	string1024 full_path;
+	if (m_Flags.test(flNeedCheck))
+	{
+		strcpy(full_path, path);
+		strcat(full_path, sFile.name);
+
+		// загоняем в вектор для того *.db* приходили в сортированном порядке
+		if(!ignore_name(sFile.name) && !ignore_path(full_path))
+			rec_files.push_back(sFile);
+
+		while ( _findnext( hFile, &sFile ) == 0 )
+		{
+			strcpy(full_path, path);
+			strcat(full_path, sFile.name);
+			if(!ignore_name(sFile.name) && !ignore_path(full_path)) 
+				rec_files.push_back(sFile);
+		}
+	}
+	else
+	{
+		// загоняем в вектор для того *.db* приходили в сортированном порядке
+		if(!ignore_name(sFile.name))
+			rec_files.push_back(sFile);
+
+		while ( _findnext( hFile, &sFile ) == 0 )
+		{
+			if(!ignore_name(sFile.name)) 
+				rec_files.push_back(sFile);
+		}
+
+	}
+
+	
 
 	_findclose		( hFile );
 
@@ -245,7 +292,8 @@ bool CLocatorAPI::Recurse		(const char* path)
 void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder, LPCSTR fs_name)
 {
 	if (m_Flags.is(flReady))return;
-
+	CTimer t;
+	t.Start();
 	Log				("Initializing File System...");
 	u32	M1			= Memory.mem_usage();
 
@@ -318,6 +366,8 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder, LPCSTR fs_name)
 	Msg				("FS: %d files cached, %dKb memory used.",files.size(),(M2-M1)/1024);
 
 	m_Flags.set		(flReady,TRUE);
+
+	Msg("Init FileSystem %f sec",t.GetElapsed_sec());
 
 	CreateLog		(0!=strstr(Core.Params,"-nolog"));
 }
