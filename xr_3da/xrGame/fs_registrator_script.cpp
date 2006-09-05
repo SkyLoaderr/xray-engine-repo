@@ -79,6 +79,10 @@ public:
 
 FS_file_list_ex::FS_file_list_ex(LPCSTR path, u32 flags, LPCSTR mask)
 {
+	FS_Path* P = FS.get_path(path);
+	P->m_Flags.set	(FS_Path::flNeedRescan,TRUE);
+	FS.rescan_pathes();
+
 	FS_FileSet		files;
 	FS.file_list(files,path,flags,mask);
 
