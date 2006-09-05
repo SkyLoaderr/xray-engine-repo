@@ -51,9 +51,9 @@ struct CFindPredicate {
 
 struct CRemoveByTimePredicate {
 	u32						m_time_line;
-	const CDangerManager	*m_manager;
+	CDangerManager			*m_manager;
 
-	IC			CRemoveByTimePredicate	(u32 time_line, const CDangerManager *manager)
+	IC			CRemoveByTimePredicate	(u32 time_line, CDangerManager *manager)
 	{
 		m_time_line			= time_line;
 		VERIFY				(manager);
@@ -62,13 +62,24 @@ struct CRemoveByTimePredicate {
 
 	IC	bool	operator()				(const CDangerObject &object) const
 	{
-		if (object.time() < m_time_line)
+		if (object.time() < m_time_line) {
+			if (object.object() && (object.type() == CDangerObject::eDangerTypeFreshEntityCorpse))
+				m_manager->ignore	(object.object());
+
 			return			(true);
+		}
 
 		if (!object.object())
 			return			(false);
 
-		return				(!m_manager->useful(object));
+		if (!m_manager->useful(object)) {
+			if ((object.type() == CDangerObject::eDangerTypeFreshEntityCorpse))
+				m_manager->ignore	(object.object());
+
+			return			(true);
+		}
+
+		return				(false);
 	}
 };
 
