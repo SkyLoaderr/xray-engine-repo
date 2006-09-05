@@ -51,8 +51,6 @@ CMovementManager::CMovementManager	(CCustomMonster *object)
 
 	extrapolate_path			(false);
 
-	base_game_params()->m_vertex_types	= &m_location_manager->vertex_types();
-
 	m_wait_for_distributed_computation = false;
 }
 
