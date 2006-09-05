@@ -4,8 +4,8 @@ Smart Terrain (механизм, организовывающий всех сталкеров и некоторых монстров в 
 !без симул€ции не работает!
 --------------------------------------------------------------------------------------------------------------------]]
 
-function printf()
-end
+--function printf()
+--end
 
 local check_period
 
@@ -218,7 +218,7 @@ function se_smart_terrain:preserve_exclusives()
 	local e = exclusives[self:name()]
 
 	if e then
-		printf( "[smart_terrain %s] exclusives=%d", self:name(), e )
+--		printf( "[smart_terrain %s] exclusives=%d", self:name(), e )
 
 		self.exclusives = e
 		self.gulag.capacity_non_exclusive = self.gulag.capacity_non_exclusive - e
@@ -419,7 +419,7 @@ local level_groups = {
 
 function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 	if obj_agreement == disagreed then
-		printf("[%s] disagreed", obj:name())
+--		printf("[%s] disagreed", obj:name())
 		return false
 	end
 
@@ -521,9 +521,9 @@ function se_smart_terrain:enabled( obj )
 		local b = self:obj_accepts_smart_terrain( obj )
 		local a = self:smart_terrain_accepts_obj( obj, b )
 		if obj:name() == "sim_stalker_master_diador" and a == true then
-			printf("[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
+--			printf("[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
 		else
-			printf("[smart_terrain %s] disabled obj=%s  accept_obj = %s", self:name(), obj:name(), tostring(b))
+--			printf("[smart_terrain %s] disabled obj=%s  accept_obj = %s", self:name(), obj:name(), tostring(b))
 		end
 		return a
 	else
@@ -539,9 +539,9 @@ end
 --   2) иначе ближе - лучше
 -- TODO ќптимизировать
 function se_smart_terrain:suitable( obj )
-	printf		("se_smart_terrain::suitable 0")
+--	printf		("se_smart_terrain::suitable 0")
 	if obj.was_in_smart_terrain then
-		printf	("se_smart_terrain::suitable 0.0")
+--		printf	("se_smart_terrain::suitable 0.0")
 		local v = 0
 
 		for id, strn in pairs( smart_terrains[self:get_level_name()] ) do
@@ -570,7 +570,7 @@ function se_smart_terrain:suitable( obj )
 		        1000000 - obj_gv:game_point():distance_to( self_gv:game_point() ),
 		        tostring(obj.was_in_smart_terrain) )]]
 
-		printf	("se_smart_terrain::suitable 0.2")
+--		printf	("se_smart_terrain::suitable 0.2")
 		return 1000000 - obj_gv:game_point():distance_to( self_gv:game_point() )
 	end
 end
@@ -579,9 +579,6 @@ end
 -- если места нету или нету свободных подход€щих работ, то
 -- вытолкнуть из этого smart terrain с подход€щей работы объект, который попал в него не эксклюзивно.
 function se_smart_terrain:register_npc( obj )
-    if self:name() == "mil_lager" then
-        printf( "[smart_terrain %s] register called obj=%s gulag_type=%s", self:name(), obj:name(), self.gparams.type )
-    end
 
 --	printf( "[smart_terrain %s] register called obj=%s gulag_type=%s", self:name(), obj:name(), self.gparams.type )
 
@@ -658,7 +655,7 @@ function se_smart_terrain:unregister_npc( obj )
 
 	sim_statistic.remove( obj )
 
-	printf( "[smart_terrain %s] removed %s from gulag type=%s", self:name(), obj:name() or "<<<nil>>>", self.gparams.type )
+--	printf( "[smart_terrain %s] removed %s from gulag type=%s", self:name(), obj:name() or "<<<nil>>>", self.gparams.type )
 end
 
 -- изменть ранг сталкера при регистрации в смарт
@@ -670,7 +667,7 @@ function se_smart_terrain:update_obj_rank( obj )
 
 		obj:set_rank( old_rank + math.random( self.rank_inc_min, self.rank_inc_max ) )
 
-		printf( "[smart_terrain %s] obj=%s rank %d -> %d", self:name(), obj:name(), old_rank, obj:rank() )
+--		printf( "[smart_terrain %s] obj=%s rank %d -> %d", self:name(), obj:name(), old_rank, obj:rank() )
 	end
 end
 
@@ -695,6 +692,8 @@ function se_smart_terrain:task( obj )
 	if not path_name then
 		abort( "[smart_terrain %s] task: obj=%s job_path=nil", self:name(), obj:name() )
 	end
+
+	--printf("SEETING TASK PATH %s = %s", obj:name(), path_name)
 
 	return CALifeSmartTerrainTask( path_name )
 end
@@ -759,7 +758,7 @@ function se_smart_terrain:remove_gulag( disable )
 
 	self.gulag.capacity_non_exclusive = self.gulag.capacity_non_exclusive - self.exclusives
 
-	printf( "[smart_terrain %s] removed gulag type=%s", self:name(), self.gparams.type )
+	--printf( "[smart_terrain %s] removed gulag type=%s", self:name(), self.gparams.type )
 end
 
 -- заполн€ет таблицу monster_classes
