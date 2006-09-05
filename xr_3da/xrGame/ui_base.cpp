@@ -98,7 +98,6 @@ sPoly2D* C2DFrustum::ClipPoly	(sPoly2D& S, sPoly2D& D) const
 
 void ui_core::OnDeviceReset()
 {
-	m_pp_scale_.set	( float(::Render->getTarget()->get_width())/float(UI_BASE_WIDTH),	float(::Render->getTarget()->get_height())/float(UI_BASE_HEIGHT) );
 	m_scale_.set		( float(Device.dwWidth)/float(UI_BASE_WIDTH),						float(Device.dwHeight)/float(UI_BASE_HEIGHT) );
 
 	m_2DFrustum.CreateFromRect	(Frect().set(	0.0f,
@@ -106,13 +105,14 @@ void ui_core::OnDeviceReset()
 												m_scale_.x * UI_BASE_WIDTH,
 												m_scale_.y * UI_BASE_HEIGHT
 												));
-
+/*
+	m_pp_scale_.set	( float(::Render->getTarget()->get_width())/float(UI_BASE_WIDTH),	float(::Render->getTarget()->get_height())/float(UI_BASE_HEIGHT) );
 	m_2DFrustumPP.CreateFromRect(Frect().set(	0.0f,
 												0.0f,
 												m_pp_scale_.x * UI_BASE_WIDTH,
 												m_pp_scale_.y * UI_BASE_HEIGHT
 												));
-
+*/
 }
 
 void ui_core::ClientToScreenScaled(Fvector2& dest, float left, float top)
@@ -228,6 +228,14 @@ ui_core::~ui_core()
 void ui_core::pp_start()
 {
 	m_bPostprocess		= true;
+
+	m_pp_scale_.set	( float(::Render->getTarget()->get_width())/float(UI_BASE_WIDTH),	float(::Render->getTarget()->get_height())/float(UI_BASE_HEIGHT) );
+	m_2DFrustumPP.CreateFromRect(Frect().set(	0.0f,
+												0.0f,
+												m_pp_scale_.x * UI_BASE_WIDTH,
+												m_pp_scale_.y * UI_BASE_HEIGHT
+												));
+
 	m_current_scale		= &m_pp_scale_;
 /*
 	m_2DFrustumPP.CreateFromRect(Frect().set(	0.0f,

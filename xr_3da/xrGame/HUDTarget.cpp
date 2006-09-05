@@ -242,18 +242,22 @@ void CHUDTarget::Render()
 		// actual rendering
 		u32			vOffset;
 		FVF::TL*	pv		= (FVF::TL*)RCache.Vertex.Lock(4,hGeom.stride(),vOffset);
-		float			size= float(::Render->getTarget()->get_width()) * di_size;
-		float			w_2	= float(::Render->getTarget()->get_width())		/ 2;
-		float			h_2	= float(::Render->getTarget()->get_height())	/ 2;
+		
+		float			size_x = float(Device.dwWidth)	* di_size;
+		float			size_y = float(Device.dwHeight) * di_size;
+		size_y = size_x;
+
+		float			w_2		= Device.fWidth_2;
+		float			h_2		= Device.fHeight_2;
 
 		// Convert to screen coords
 		float cx		    = (PT.p.x+1)*w_2;
 		float cy		    = (PT.p.y+1)*h_2;
 
-		pv->set				(cx - size, cy + size, PT.p.z, PT.p.w, C, 0, 1); ++pv;
-		pv->set				(cx - size, cy - size, PT.p.z, PT.p.w, C, 0, 0); ++pv;
-		pv->set				(cx + size, cy + size, PT.p.z, PT.p.w, C, 1, 1); ++pv;
-		pv->set				(cx + size, cy - size, PT.p.z, PT.p.w, C, 1, 0); ++pv;
+		pv->set				(cx - size_x, cy + size_y, C, 0, 1); ++pv;
+		pv->set				(cx - size_x, cy - size_y, C, 0, 0); ++pv;
+		pv->set				(cx + size_x, cy + size_y, C, 1, 1); ++pv;
+		pv->set				(cx + size_x, cy - size_y, C, 1, 0); ++pv;
 
 		// unlock VB and Render it as triangle LIST
 		RCache.Vertex.Unlock(4,hGeom.stride());
