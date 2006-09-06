@@ -37,7 +37,8 @@ private:
 	{
 		fl_death_anim_on			=1<<0,
 		fl_skeleton_in_shell		=1<<1,
-		fl_specific_bonce_demager	=1<<2
+		fl_specific_bonce_demager	=1<<2,
+		fl_block_hit				=1<<3
 	};
 	CEntityAlive						&m_EntityAlife																																		;
 	Fmatrix								&mXFORM																																				;
@@ -53,6 +54,7 @@ private:
 	float								hinge_force_factor1																																	;
 	float								skel_fatal_impulse_factor																															;
 	int									skel_ddelay																																			;
+
 /////////////////////////////////////////////////
 	//bool								b_death_anim_on																																		;
 	//bool								b_skeleton_in_shell																																	;

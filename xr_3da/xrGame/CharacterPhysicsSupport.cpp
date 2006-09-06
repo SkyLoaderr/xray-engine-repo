@@ -239,6 +239,13 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 DT)
 
 void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing)
 {
+	if(m_flags.test(fl_block_hit))
+	{
+		VERIFY(!m_EntityAlife.g_Alive());
+		if(Device.dwTimeGlobal-m_EntityAlife.GetLevelDeathTime()>=2000)
+			m_flags.set(fl_block_hit,FALSE);
+		else return;
+	}
 	is_killing=is_killing||(m_eState==esAlive&&!m_EntityAlife.g_Alive());
 	if(m_EntityAlife.g_Alive()&&is_killing&&hit_type==ALife::eHitTypeExplosion&&P>70.f)
 		CPHDestroyable::Destroy();
@@ -251,6 +258,7 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 	{
 		ActivateShell(who);
 		impulse*=(hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
+		m_flags.set(fl_block_hit,TRUE);
 	}
 	if(!(m_pPhysicsShell&&m_pPhysicsShell->isActive()))
 	{
@@ -266,6 +274,8 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 	}
 	else {
 		{//if (!m_EntityAlife.g_Alive()) 
+			
+
 			if(m_pPhysicsShell&&m_pPhysicsShell->isActive()) 
 				m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
 			//m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse);
@@ -318,8 +328,8 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 				m_pPhysicsShell->set_JointResistance(default_hinge_friction*hinge_force_factor1);//5.f*hinge_force_factor1
 				//m_pPhysicsShell->SetAirResistance()
 
-			}
-			--skel_ddelay;
+			}else
+				--skel_ddelay;
 		}
 
 	}
