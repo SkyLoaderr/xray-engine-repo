@@ -141,7 +141,7 @@ void	CHW::selectResolution	(u32 &dwWidth, u32 &dwHeight)
 	case 480:	dwHeight = 272;						break;
 	case 1366:	dwHeight = 768;						break;
 	case 1920:	dwHeight = 1080;					break;
-	case 1920+1:dwHeight = 1200;					break;
+	case 1920+1:dwWidth	 = 1920; dwHeight = 1200;	break;
 
 	//normal 4:3 modes
 	case 320:	dwHeight = 240;						break;
