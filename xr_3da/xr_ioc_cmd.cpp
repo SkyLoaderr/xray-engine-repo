@@ -32,6 +32,7 @@ xr_token							vid_mode_token							[ ]={
 	{ "480x272",					480											}, //PSP emulation
 	{ "1366x768",					1366										},
 	{ "1920x1080",					1920										},
+	{ "1920x1200",					1920+1										},
 
 	//normal 4:3 modes
 #ifdef DEBUG

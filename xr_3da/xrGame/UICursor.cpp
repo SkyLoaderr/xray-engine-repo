@@ -119,8 +119,8 @@ void CUICursor::MoveBy(float dx, float dy)
 {
 	vPrevPos = vPos;
 	Fvector2 vDelta;
-	vDelta.x = m_fSensitivity * dx / UI()->ClientToScreenScaledX( UI_BASE_WIDTH);
-	vDelta.y = m_fSensitivity * dy / UI()->ClientToScreenScaledY( UI_BASE_HEIGHT);
+	vDelta.x = m_fSensitivity * dx / Device.dwWidth;
+	vDelta.y = m_fSensitivity * dy / Device.dwHeight;
 
 	if(!bHoldMode){
 		vPos.x += vDelta.x;

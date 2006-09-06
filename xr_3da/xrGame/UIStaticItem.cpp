@@ -80,8 +80,8 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	// actual rendering
 	u32							vOffset;
 	Fvector2					pos;
-	float fw					= UI()->ClientToScreenScaledX( iVisRect.x2 );
-	float fh					= UI()->ClientToScreenScaledY( iVisRect.y2 );
+	Fvector2					f_len;
+	UI()->ClientToScreenScaled	(f_len, iVisRect.x2, iVisRect.y2 );
 
 	int tile_x					= fis_zero(iRemX)?iTileX:iTileX+1;
 	int tile_y					= fis_zero(iRemY)?iTileY:iTileY+1;
@@ -92,8 +92,7 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	FVF::TL* pv					= start_pv;
 	for (x=0; x<tile_x; ++x){
 		for (y=0; y<tile_y; ++y){
-//			pos.set				(iCeil(bp.x+x*fw),iCeil(bp.y+y*fh));
-			pos.set				(bp.x+fw*x,bp.y+fh*y);
+			pos.set				(bp.x+f_len.x*x,bp.y+f_len.y*y);
 			inherited::Render	(pv,pos,dwColor);
 		}
 	}

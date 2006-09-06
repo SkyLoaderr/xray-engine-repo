@@ -35,8 +35,11 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, u32 color,
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt;
 	//координаты на экране в пикселях
-	LTp.set			(pos.x+UI()->ClientToScreenScaledX(x1), pos.y+UI()->ClientToScreenScaledY(y1) );
-	RBp.set			(pos.x+UI()->ClientToScreenScaledX(x2), pos.y+UI()->ClientToScreenScaledY(y2) );
+	UI()->ClientToScreenScaled	(LTp, x1,y1);
+	LTp.add						(pos);
+
+	UI()->ClientToScreenScaled	(RBp, x2,y2);
+	RBp.add						(pos);
 
 	//текстурные координаты
 	LTt.set			( iOriginalRect.x1/ts.x, iOriginalRect.y1/ts.y);
@@ -87,19 +90,19 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, u32 color, fl
 	}
 
 	Fvector2		pivot,offset,SZ;
-	SZ.set			(UI()->ClientToScreenScaledX(iVisRect.x2),UI()->ClientToScreenScaledY(iVisRect.y2));
-	float cosA		= _cos(angle);
-	float sinA		= _sin(angle);
+	UI()->ClientToScreenScaled			(SZ, iVisRect.x2, iVisRect.y2);
+	float cosA							= _cos(angle);
+	float sinA							= _sin(angle);
 
 	// Rotation
 	if(!(uFlags&flValidHeadingPivot))	pivot.set(iVisRect.x2/2.f, iVisRect.y2/2.f);
 	else								pivot.set(iHeadingPivot.x, iHeadingPivot.y);
-	pivot.x			= UI()->ClientToScreenScaledX( pivot.x );
-	pivot.y			= UI()->ClientToScreenScaledY( pivot.y );
-	offset.set		(pos.x,pos.y);
-	Fvector2		LTt,RBt;
-	LTt.set			(iOriginalRect.x1/ts.x+hp.x, iOriginalRect.y1/ts.y+hp.y);
-	RBt.set			(iOriginalRect.x2/ts.x+hp.x, iOriginalRect.y2/ts.y+hp.y);
+
+	UI()->ClientToScreenScaled			(pivot, pivot.x, pivot.y);
+	offset.set							(pos.x,pos.y);
+	Fvector2							LTt,RBt;
+	LTt.set								(iOriginalRect.x1/ts.x+hp.x, iOriginalRect.y1/ts.y+hp.y);
+	RBt.set								(iOriginalRect.x2/ts.x+hp.x, iOriginalRect.y2/ts.y+hp.y);
 	// Check mirror mode
 	if (tmMirrorHorisontal == eMirrorMode || tmMirrorBoth == eMirrorMode)	std::swap	(LTt.x,RBt.x);
 	if (tmMirrorVertical == eMirrorMode || tmMirrorBoth == eMirrorMode)		std::swap	(LTt.y,RBt.y);
