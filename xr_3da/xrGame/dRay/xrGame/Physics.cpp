@@ -25,7 +25,7 @@ extern CPHWorld *ph_world;
 #include "ExtendedGeom.h"
 //union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
 PhysicsStepTimeCallback		*physics_step_time_callback				= 0;
-const dReal 		fixed_step										= 0.02f;
+const dReal 		fixed_step										= 0.01f;
 const dReal 		default_w_limit									= M_PI/16.f/fixed_step;
 const dReal 		default_l_limit									= 3.f/fixed_step;
 const dReal 		default_l_scale									= 1.01f;
