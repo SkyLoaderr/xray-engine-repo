@@ -42,9 +42,9 @@ void CUITalkDialogWnd::Init(float x, float y, float width, float height)
 	inherited::Init(x, y, width, height);
 
 	AttachChild(&UIStaticTop);
-	UIStaticTop.Init("ui\\ui_top_background", 0,0,UI_BASE_WIDTH,128);
+	xml_init.InitStatic					(*m_uiXml, "top_background", 0, &UIStaticTop);
 	AttachChild(&UIStaticBottom);
-	UIStaticBottom.Init("ui\\ui_bottom_background", 0,UI_BASE_HEIGHT-32,UI_BASE_HEIGHT,32);
+	xml_init.InitStatic					(*m_uiXml, "bottom_background", 0, &UIStaticBottom);
 
 	//иконки с изображение нас и партнера по торговле
 	AttachChild(&UIOurIcon);

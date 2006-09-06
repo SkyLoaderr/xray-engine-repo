@@ -119,7 +119,7 @@ void CHUDCrosshair::OnRender ()
 
 	if(!fsimilar(target_radius,radius))
 	{
-		float sp				= radius_speed_perc * UI()->ClientToScreenScaledX( float(Device.dwWidth) );
+		float sp				= radius_speed_perc * float(Device.dwWidth) ;
 		float radius_change		= sp*Device.fTimeDelta;
 		clamp					(radius_change, 0.0f, sp*0.033f); // clamp to 30 fps
 		clamp					(radius_change, 0.0f, _abs(target_radius-radius));

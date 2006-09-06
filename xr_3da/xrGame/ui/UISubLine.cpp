@@ -101,10 +101,10 @@ void CUISubLine::FreeBuffer(){
 void CUISubLine::Draw(CGameFont* pFont, float x, float y) const{
 	pFont->SetColor(m_color);
 	pFont->SetAligment(CGameFont::alLeft);
-	Frect r;
-	r.x1=0.0f; r.x2=UI_BASE_WIDTH;
-	r.y1=0.0f; r.y2=UI_BASE_HEIGHT;
-	UI()->OutText(pFont, r, x, y, "%s", m_text.c_str());
+	Fvector2			pos;
+	pos.set				(x, y);
+	UI()->ClientToScreenScaled(pos);
+	pFont->Out			(pos.x, pos.y, m_text.c_str() );
 }
 
 float CUISubLine::GetLength(CGameFont* pFont) const{

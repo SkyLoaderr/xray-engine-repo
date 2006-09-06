@@ -9,6 +9,15 @@
 		<texture>ui_charinfo_right</texture>
 	</static_icon>
 
+	<main x=0 y=0 width=1024 height=768/>
+
+	<top_background x=0 y=0 width=1024 height=128>
+		<texture>ui\ui_top_background</texture>
+	</top_background>
+
+	<bottom_background x=0 y=736 width=1024 height=32>
+		<texture>ui\ui_bottom_background</texture>
+	</bottom_background>
 
 	<!-- BUTTONS -->
 	<button x="350" y="705" width="107" height="36"  hR="255" hB="83" hG="179" highlight_text="1">

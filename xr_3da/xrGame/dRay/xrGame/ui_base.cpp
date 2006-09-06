@@ -98,21 +98,13 @@ sPoly2D* C2DFrustum::ClipPoly	(sPoly2D& S, sPoly2D& D) const
 
 void ui_core::OnDeviceReset()
 {
-	m_scale_.set		( float(Device.dwWidth)/float(UI_BASE_WIDTH),						float(Device.dwHeight)/float(UI_BASE_HEIGHT) );
+	m_scale_.set		( float(Device.dwWidth)/UI_BASE_WIDTH, float(Device.dwHeight)/UI_BASE_HEIGHT );
 
 	m_2DFrustum.CreateFromRect	(Frect().set(	0.0f,
 												0.0f,
-												m_scale_.x * UI_BASE_WIDTH,
-												m_scale_.y * UI_BASE_HEIGHT
+												m_scale_.x * Device.dwWidth,
+												m_scale_.y * Device.dwHeight
 												));
-/*
-	m_pp_scale_.set	( float(::Render->getTarget()->get_width())/float(UI_BASE_WIDTH),	float(::Render->getTarget()->get_height())/float(UI_BASE_HEIGHT) );
-	m_2DFrustumPP.CreateFromRect(Frect().set(	0.0f,
-												0.0f,
-												m_pp_scale_.x * UI_BASE_WIDTH,
-												m_pp_scale_.y * UI_BASE_HEIGHT
-												));
-*/
 }
 
 void ui_core::ClientToScreenScaled(Fvector2& dest, float left, float top)
@@ -120,40 +112,9 @@ void ui_core::ClientToScreenScaled(Fvector2& dest, float left, float top)
 	dest.set(ClientToScreenScaledX(left),	ClientToScreenScaledY(top));
 }
 
-float ui_core::ClientToScreenScaledX(float left)
+void ui_core::ClientToScreenScaled(Fvector2& src_and_dest)
 {
-	return left * m_current_scale->x;
-}
-
-float ui_core::ClientToScreenScaledY(float top)
-{
-	return top * m_current_scale->y;
-}
-
-void ui_core::OutText(CGameFont *pFont, Frect r, float x, float y, LPCSTR fmt, ...)
-{
-	if (r.in(x, y))
-	{
-		R_ASSERT(pFont);
-		va_list	lst;
-		static string512 buf;
-		::ZeroMemory(buf, 512);
-		xr_string str;
-
-		va_start(lst, fmt);
-		vsprintf(buf, fmt, lst);
-		str += buf;
-		va_end(lst);
-
-		// Rescale position in lower resolution
-		if (x >= 1.0f && y >= 1.0f)
-		{
-			x = ClientToScreenScaledX( x );
-			y = ClientToScreenScaledY( y );
-		}
-
-		pFont->Out(x, y, "%s", str.c_str());
-	}
+	src_and_dest.set(ClientToScreenScaledX(src_and_dest.x),	ClientToScreenScaledY(src_and_dest.y));
 }
 
 Frect ui_core::ScreenRect()

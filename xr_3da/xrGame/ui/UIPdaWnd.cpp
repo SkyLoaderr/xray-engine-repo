@@ -76,9 +76,8 @@ void CUIPdaWnd::Init()
 	
 	m_pActiveDialog			= NULL;
 
-	inherited::Init			(CUIXmlInit::ApplyAlignX(0, alCenter),
-							CUIXmlInit::ApplyAlignY(0, alCenter),
-							UI_BASE_WIDTH, UI_BASE_HEIGHT);
+
+	xml_init.InitWindow		(uiXml, "main", 0, this);
 
 	UIMainPdaFrame			= xr_new<CUIStatic>(); UIMainPdaFrame->SetAutoDelete(true);
 	AttachChild				(UIMainPdaFrame);

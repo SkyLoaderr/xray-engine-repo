@@ -96,13 +96,13 @@ void CUITradeWnd::Init()
 	R_ASSERT3							(xml_result, "xml file not found", TRADE_XML);
 	CUIXmlInit							xml_init;
 
-	inherited::Init						(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	xml_init.InitWindow					(uiXml, "main", 0, this);
 
 	//статические элементы интерфейса
 	AttachChild							(&m_uidata->UIStaticTop);
-	m_uidata->UIStaticTop.Init			("ui\\ui_top_background", 0,0,UI_BASE_WIDTH,128);
+	xml_init.InitStatic					(uiXml, "top_background", 0, &m_uidata->UIStaticTop);
 	AttachChild							(&m_uidata->UIStaticBottom);
-	m_uidata->UIStaticBottom.Init		("ui\\ui_bottom_background", 0,UI_BASE_HEIGHT-32,UI_BASE_WIDTH,32);
+	xml_init.InitStatic					(uiXml, "bottom_background", 0, &m_uidata->UIStaticBottom);
 
 	//иконки с изображение нас и партнера по торговле
 	AttachChild							(&m_uidata->UIOurIcon);

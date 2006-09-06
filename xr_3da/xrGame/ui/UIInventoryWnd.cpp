@@ -69,45 +69,32 @@ void CUIInventoryWnd::Init()
 	CUIXmlInit							xml_init;
 	CStringTable						string_table;
 
-	CUIWindow::Init						(CUIXmlInit::ApplyAlignX(0, alCenter),
-										CUIXmlInit::ApplyAlignY(0, alCenter),
-										UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	xml_init.InitWindow					(uiXml, "main", 0, this);
 
-	AttachChild(&UIBeltSlots);
-	xml_init.InitStatic(uiXml, "belt_slots", 0, &UIBeltSlots);
+	AttachChild							(&UIBeltSlots);
+	xml_init.InitStatic					(uiXml, "belt_slots", 0, &UIBeltSlots);
 
-	AttachChild(&UIBack);
-	xml_init.InitStatic(uiXml, "back", 0, &UIBack);
+	AttachChild							(&UIBack);
+	xml_init.InitStatic					(uiXml, "back", 0, &UIBack);
 
-//	AttachChild							(&UIStaticTop);
-//	UIStaticTop.Init					("ui\\ui_inv_quick_slots", 0,0,UI_BASE_WIDTH,128);
 	AttachChild							(&UIStaticBottom);
-	UIStaticBottom.Init					("ui\\ui_bottom_background", 0, UI_BASE_HEIGHT-32, UI_BASE_WIDTH,32);
+	xml_init.InitStatic					(uiXml, "bottom_static", 0, &UIStaticBottom);
 
-//	AttachChild							(&UIStaticBelt);
-//	xml_init.InitStatic					(uiXml, "static", 0, &UIStaticBelt);
-	
 	AttachChild							(&UIBagWnd);
 	xml_init.InitStatic					(uiXml, "bag_static", 0, &UIBagWnd);
 	
 	AttachChild							(&UIMoneyWnd);
 	xml_init.InitStatic					(uiXml, "money_static", 0, &UIMoneyWnd);
 
-//
 	AttachChild							(&UIDescrWnd);
 	xml_init.InitStatic					(uiXml, "descr_static", 0, &UIDescrWnd);
 
 	UIDescrWnd.AttachChild				(&UIItemInfo);
 	UIItemInfo.Init						(0, 0, UIDescrWnd.GetWidth(), UIDescrWnd.GetHeight(), INVENTORY_ITEM_XML);
 
-//	UIDescrWnd.AttachChild				(&UIDropButton);
-//	xml_init.Init3tButton					(uiXml, "drop_button", 0, &UIDropButton);
-//	UIDropButton.SetMessageTarget		(this);
-
 	AttachChild							(&UIPersonalWnd);
 	xml_init.InitFrameWindow			(uiXml, "character_frame_window", 0, &UIPersonalWnd);
 
-	//progress bars
 	AttachChild(&UIProgressBack);
 	xml_init.InitStatic(uiXml, "progress_background", 0, &UIProgressBack);
 	if (GameID() != GAME_SINGLE){
@@ -144,15 +131,8 @@ void CUIInventoryWnd::Init()
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic				(uiXml, "auto_static", this);
 
-/*
-	if (GameID() == GAME_SINGLE){
-		UISleepWnd						= xr_new<CUISleepWnd>();UISleepWnd->SetAutoDelete(true);
-		UISleepWnd->Init				();
-		xml_init.InitStatic				(uiXml, "sleep_window", 0, UISleepWnd);
-		AttachChild						(UISleepWnd);
-	}
-	else*/ 
-		if(GameID() == GAME_ARTEFACTHUNT){
+
+	if(GameID() == GAME_ARTEFACTHUNT){
 		UISellAll = xr_new<CUI3tButton>	(); UISellAll->SetAutoDelete(true);
 		CUIXmlInit::Init3tButton		(uiXml, "btn_sell_all", 0, UISellAll);
 		AttachChild						(UISellAll);

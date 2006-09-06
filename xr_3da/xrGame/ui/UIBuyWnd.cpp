@@ -118,10 +118,10 @@ void CUIBuyWnd::Init(LPCSTR sectionName, LPCSTR sectionPrice){
 	m_sectionName = sectionName;
 	m_sectionPrice = sectionPrice;
 
-	CUIXml xml_doc;
-	R_ASSERT(xml_doc.Init(CONFIG_PATH, UI_PATH, "inventoryMP.xml"));
+	CUIXml					xml_doc;
+	R_ASSERT				(xml_doc.Init(CONFIG_PATH, UI_PATH, "inventoryMP.xml"));
 
-	CUIWindow::Init(0,0,UI_BASE_WIDTH,UI_BASE_WIDTH);
+	CUIXmlInit::InitWindow	(xml_doc, "main", 0, this);
 
 	// background textures
 	CUIXmlInit::InitStatic(xml_doc, "slots_background", 0, &m_slotsBack);

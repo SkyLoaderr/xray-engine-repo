@@ -56,12 +56,12 @@ void CUICarBodyWnd::Init()
 
 	m_pUIStaticTop				= xr_new<CUIStatic>(); m_pUIStaticTop->SetAutoDelete(true);
 	AttachChild					(m_pUIStaticTop);
-	m_pUIStaticTop->Init		("ui\\ui_top_background", 0,0,UI_BASE_WIDTH,128);
+	xml_init.InitStatic			(uiXml, "top_background", 0, m_pUIStaticTop);
 
 
 	m_pUIStaticBottom			= xr_new<CUIStatic>(); m_pUIStaticBottom->SetAutoDelete(true);
 	AttachChild					(m_pUIStaticBottom);
-	m_pUIStaticBottom->Init		("ui\\ui_bottom_background", 0,UI_BASE_HEIGHT-32,UI_BASE_WIDTH,32);
+	xml_init.InitStatic			(uiXml, "bottom_background", 0, m_pUIStaticBottom);
 
 	m_pUIOurIcon				= xr_new<CUIStatic>(); m_pUIOurIcon->SetAutoDelete(true);
 	AttachChild					(m_pUIOurIcon);

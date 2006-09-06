@@ -104,50 +104,50 @@ CUIMainIngameWnd::~CUIMainIngameWnd()
 
 void CUIMainIngameWnd::Init()
 {
-	CUIXml uiXml;
-	uiXml.Init(CONFIG_PATH, UI_PATH, MAININGAME_XML);
+	CUIXml						uiXml;
+	uiXml.Init					(CONFIG_PATH, UI_PATH, MAININGAME_XML);
 	
-	CUIXmlInit xml_init;
-	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	CUIXmlInit					xml_init;
+	CUIWindow::Init				(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	Enable(false);
 
 
-	AttachChild(&UIStaticHealth);
-	xml_init.InitStatic(uiXml, "static_health", 0, &UIStaticHealth);
+	AttachChild					(&UIStaticHealth);
+	xml_init.InitStatic			(uiXml, "static_health", 0, &UIStaticHealth);
 
-	AttachChild(&UIStaticArmor);
-	xml_init.InitStatic(uiXml, "static_armor", 0, &UIStaticArmor);
+	AttachChild					(&UIStaticArmor);
+	xml_init.InitStatic			(uiXml, "static_armor", 0, &UIStaticArmor);
 
-	AttachChild(&UIWeaponBack);
-	xml_init.InitStatic(uiXml, "static_weapon", 0, &UIWeaponBack);
+	AttachChild					(&UIWeaponBack);
+	xml_init.InitStatic			(uiXml, "static_weapon", 0, &UIWeaponBack);
 
-	UIWeaponBack.AttachChild(&UIWeaponSignAmmo);
-	xml_init.InitStatic(uiXml, "static_ammo", 0, &UIWeaponSignAmmo);
-	UIWeaponSignAmmo.SetElipsis(CUIStatic::eepEnd, 2);
+	UIWeaponBack.AttachChild	(&UIWeaponSignAmmo);
+	xml_init.InitStatic			(uiXml, "static_ammo", 0, &UIWeaponSignAmmo);
+	UIWeaponSignAmmo.SetElipsis	(CUIStatic::eepEnd, 2);
 
-	UIWeaponBack.AttachChild(&UIWeaponIcon);
-	xml_init.InitStatic(uiXml, "static_wpn_icon", 0, &UIWeaponIcon);
-	UIWeaponIcon.SetShader(GetEquipmentIconsShader());
-	UIWeaponIcon_rect = UIWeaponIcon.GetWndRect();
+	UIWeaponBack.AttachChild	(&UIWeaponIcon);
+	xml_init.InitStatic			(uiXml, "static_wpn_icon", 0, &UIWeaponIcon);
+	UIWeaponIcon.SetShader		(GetEquipmentIconsShader());
+	UIWeaponIcon_rect			= UIWeaponIcon.GetWndRect();
 	//---------------------------------------------------------
-	AttachChild(&UIPickUpItemIcon);
-	xml_init.InitStatic(uiXml, "pick_up_item", 0, &UIPickUpItemIcon);
-	UIPickUpItemIcon.SetShader(GetEquipmentIconsShader());
-	UIPickUpItemIcon.ClipperOn();
+	AttachChild					(&UIPickUpItemIcon);
+	xml_init.InitStatic			(uiXml, "pick_up_item", 0, &UIPickUpItemIcon);
+	UIPickUpItemIcon.SetShader	(GetEquipmentIconsShader());
+	UIPickUpItemIcon.ClipperOn	();
 
-	m_iPickUpItemIconWidth = UIPickUpItemIcon.GetWidth();
-	m_iPickUpItemIconHeight = UIPickUpItemIcon.GetHeight();
-	m_iPickUpItemIconX = UIPickUpItemIcon.GetWndRect().left;
-	m_iPickUpItemIconY = UIPickUpItemIcon.GetWndRect().top;
+	m_iPickUpItemIconWidth		= UIPickUpItemIcon.GetWidth();
+	m_iPickUpItemIconHeight		= UIPickUpItemIcon.GetHeight();
+	m_iPickUpItemIconX			= UIPickUpItemIcon.GetWndRect().left;
+	m_iPickUpItemIconY			= UIPickUpItemIcon.GetWndRect().top;
 	//---------------------------------------------------------
 
 
-	UIWeaponIcon.Enable(false);
+	UIWeaponIcon.Enable			(false);
 
 	//индикаторы 
-	UIZoneMap->Init();
-	UIZoneMap->SetScale(DEFAULT_MAP_SCALE);
+	UIZoneMap->Init				();
+	UIZoneMap->SetScale			(DEFAULT_MAP_SCALE);
 
 	if(IsGameTypeSingle())
 	{
@@ -156,66 +156,63 @@ void CUIMainIngameWnd::Init()
 	}
 
 	// Для информационных сообщений
-	u32			color;
-	CGameFont*	pFont;
-	AttachChild(&UIInfoMessages);
-	xml_init.InitScrollView(uiXml, "info_list", 0, &UIInfoMessages);
-	CUIXmlInit::InitFont(uiXml, "info_list:font", 0, color, pFont);
-	UIInfoMessages.SetTextAtrib(pFont, color);
+	u32							color;
+	CGameFont*					pFont;
+	AttachChild					(&UIInfoMessages);
+	xml_init.InitScrollView		(uiXml, "info_list", 0, &UIInfoMessages);
+	CUIXmlInit::InitFont		(uiXml, "info_list:font", 0, color, pFont);
+	UIInfoMessages.SetTextAtrib	(pFont, color);
 
 		
 
 	//Полоса прогресса здоровья
-	UIStaticHealth.AttachChild(&UIHealthBar);
+	UIStaticHealth.AttachChild	(&UIHealthBar);
 	xml_init.InitAutoStaticGroup(uiXml,"static_health", &UIStaticHealth);
-	xml_init.InitProgressBar(uiXml, "progress_bar_health", 0, &UIHealthBar);
+	xml_init.InitProgressBar	(uiXml, "progress_bar_health", 0, &UIHealthBar);
 
 	//Полоса прогресса армора
-	UIStaticArmor.AttachChild(&UIArmorBar);
+	UIStaticArmor.AttachChild	(&UIArmorBar);
 	xml_init.InitAutoStaticGroup(uiXml,"static_armor", &UIStaticArmor);
-	xml_init.InitProgressBar(uiXml, "progress_bar_armor", 0, &UIArmorBar);
+	xml_init.InitProgressBar	(uiXml, "progress_bar_armor", 0, &UIArmorBar);
 
 	
 
 	// Подсказки, которые возникают при наведении прицела на объект
-	AttachChild(&UIStaticQuickHelp);
-	xml_init.InitStatic(uiXml, "quick_info", 0, &UIStaticQuickHelp);
+	AttachChild					(&UIStaticQuickHelp);
+	xml_init.InitStatic			(uiXml, "quick_info", 0, &UIStaticQuickHelp);
 
-	uiXml.SetLocalRoot(uiXml.GetRoot());
+	uiXml.SetLocalRoot			(uiXml.GetRoot());
 
-	m_UIIcons = xr_new<CUIScrollView>(); m_UIIcons->SetAutoDelete(true);
-	xml_init.InitScrollView(uiXml, "icons_scroll_view", 0, m_UIIcons);
-	AttachChild(m_UIIcons);
+	m_UIIcons					= xr_new<CUIScrollView>(); m_UIIcons->SetAutoDelete(true);
+	xml_init.InitScrollView		(uiXml, "icons_scroll_view", 0, m_UIIcons);
+	AttachChild					(m_UIIcons);
 
 	// Загружаем иконки 
 	if(IsGameTypeSingle())
 	{
-		xml_init.InitStatic(uiXml, "starvation_static", 0, &UIStarvationIcon);
-		UIStarvationIcon.Show(false);
+		xml_init.InitStatic		(uiXml, "starvation_static", 0, &UIStarvationIcon);
+		UIStarvationIcon.Show	(false);
 
-		xml_init.InitStatic(uiXml, "psy_health_static", 0, &UIPsyHealthIcon);
-		UIPsyHealthIcon.Show(false);
-
-//		xml_init.InitStatic(uiXml, "can_sleep_static", 0, &UISleepIcon);
-//		UISleepIcon.Show(false);
+		xml_init.InitStatic		(uiXml, "psy_health_static", 0, &UIPsyHealthIcon);
+		UIPsyHealthIcon.Show	(false);
 	}
 
-	xml_init.InitStatic(uiXml, "weapon_jammed_static", 0, &UIWeaponJammedIcon);
-	UIWeaponJammedIcon.Show(false);
+	xml_init.InitStatic			(uiXml, "weapon_jammed_static", 0, &UIWeaponJammedIcon);
+	UIWeaponJammedIcon.Show		(false);
 
-	xml_init.InitStatic(uiXml, "radiation_static", 0, &UIRadiaitionIcon);
-	UIRadiaitionIcon.Show(false);
+	xml_init.InitStatic			(uiXml, "radiation_static", 0, &UIRadiaitionIcon);
+	UIRadiaitionIcon.Show		(false);
 
-	xml_init.InitStatic(uiXml, "wound_static", 0, &UIWoundIcon);
-	UIWoundIcon.Show(false);
+	xml_init.InitStatic			(uiXml, "wound_static", 0, &UIWoundIcon);
+	UIWoundIcon.Show			(false);
 
-	xml_init.InitStatic(uiXml, "invincible_static", 0, &UIInvincibleIcon);
-	UIInvincibleIcon.Show(false);
+	xml_init.InitStatic			(uiXml, "invincible_static", 0, &UIInvincibleIcon);
+	UIInvincibleIcon.Show		(false);
 
 
 	if(GameID()==GAME_ARTEFACTHUNT){
-		xml_init.InitStatic(uiXml, "artefact_static", 0, &UIArtefactIcon);
-		UIArtefactIcon.Show(false);
+		xml_init.InitStatic		(uiXml, "artefact_static", 0, &UIArtefactIcon);
+		UIArtefactIcon.Show		(false);
 	}
 	
 	shared_str warningStrings[6] = 
@@ -251,16 +248,16 @@ void CUIMainIngameWnd::Init()
 
 
 	// Flashing icons initialize
-	uiXml.SetLocalRoot				(uiXml.NavigateToNode("flashing_icons"));
-	InitFlashingIcons				(&uiXml);
+	uiXml.SetLocalRoot			(uiXml.NavigateToNode("flashing_icons"));
+	InitFlashingIcons			(&uiXml);
 
-	uiXml.SetLocalRoot				(uiXml.GetRoot());
+	uiXml.SetLocalRoot			(uiXml.GetRoot());
 	
-	AttachChild						(&UICarPanel);
-	xml_init.InitWindow				(uiXml, "car_panel", 0, &UICarPanel);
+	AttachChild					(&UICarPanel);
+	xml_init.InitWindow			(uiXml, "car_panel", 0, &UICarPanel);
 
-	AttachChild						(&UIMotionIcon);
-	UIMotionIcon.Init				();
+	AttachChild					(&UIMotionIcon);
+	UIMotionIcon.Init			();
 
 	if(IsGameTypeSingle()){
 		xml_init.InitArtefactPanel(uiXml, "artefact_panel", 0, m_artefactPanel);

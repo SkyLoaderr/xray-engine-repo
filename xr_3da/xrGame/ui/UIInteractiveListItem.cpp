@@ -130,45 +130,51 @@ void CUIInteractiveListItem::Draw()
 	// Подсвечиваем интерактивный элемент
 	if (itCurrIItem != vPositions.end() && m_bCursorOverWindow && m_bInteractiveBahaviour)
 	{
-//		UpdateTextAlign();
 		GetFont()->SetAligment(GetTextAlignment());
 
 		GetFont()->SetColor(m_HighlightColor);
 		Frect rect = GetSelfClipRect();
 		CGameFont* F = GetFont();
 
-		UI()->OutText(F, rect,
-			rect.left + 1 +m_iTextOffsetX, 
-			rect.top + 1 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		UI()->OutText(F, rect,
-			rect.left + 1 +m_iTextOffsetX, 
-			rect.top - 1 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		UI()->OutText(F, rect,
-			rect.left + 1 +m_iTextOffsetX, 
-			rect.top + 1 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		UI()->OutText(F, rect,
-			rect.left + 1 +m_iTextOffsetX, 
-			rect.top - 1 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		UI()->OutText(F, rect,
-			rect.left + 1 +m_iTextOffsetX, 
-			rect.top + 0 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		UI()->OutText(F, rect,
-			rect.left + 1 +m_iTextOffsetX, 
-			rect.top - 0 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		UI()->OutText(F, rect,
-			rect.left + 0 +m_iTextOffsetX, 
-			rect.top + 1 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
-		UI()->OutText(F, rect,
-			rect.left + 0 +m_iTextOffsetX,  
-			rect.top - 1 +m_iTextOffsetY,
-			(*itCurrIItem).subStr.c_str());
+		Fvector2					pos;
+		pos.set						(rect.left + m_iTextOffsetX, rect.top + m_iTextOffsetY);
+		UI()->ClientToScreenScaled	(pos);
+
+		F->Out(	pos.x + 0, 
+				pos.y + 0,
+				(*itCurrIItem).subStr.c_str());
+
+		F->Out(	pos.x + 0, 
+				pos.y - 1,
+				(*itCurrIItem).subStr.c_str());
+
+		F->Out(pos.x + 1, 
+				pos.y - 1,
+				(*itCurrIItem).subStr.c_str());
+
+		F->Out(	pos.x + 1, 
+				pos.y + 0,
+				(*itCurrIItem).subStr.c_str());
+
+		F->Out(	pos.x + 1, 
+				pos.y - 1,
+				(*itCurrIItem).subStr.c_str());
+
+		F->Out(	pos.x + 0, 
+				pos.y + 1,
+				(*itCurrIItem).subStr.c_str());
+
+		F->Out(	pos.x - 1, 
+				pos.y + 1,
+				(*itCurrIItem).subStr.c_str());
+		
+		F->Out(	pos.x - 1, 
+				pos.y + 0,
+				(*itCurrIItem).subStr.c_str());
+
+		F->Out(	pos.x - 1, 
+				pos.y - 1,
+				(*itCurrIItem).subStr.c_str());
 
 	}
 	// вывод всей строки

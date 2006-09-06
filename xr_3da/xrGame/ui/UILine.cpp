@@ -193,10 +193,10 @@ int CUILine::GetSize(){
 void CUILine::DrawCursor(CGameFont* pFont, float x, float y, u32 color){
 	m_animation.Update();
 	pFont->SetColor(subst_alpha(color, color_get_A(m_animation.GetColor())));
-
-	Frect scr_rect;
-	scr_rect.set(0,0,1024,768);
-	UI()->OutText(pFont, scr_rect, x, y,  "_");
+	Fvector2 pos;
+	pos.set(x, y);
+	UI()->ClientToScreenScaled(pos);
+	pFont->Out(pos.x, pos.y,  "_");
 }
 
 const CUILine* CUILine::GetEmptyLine(){

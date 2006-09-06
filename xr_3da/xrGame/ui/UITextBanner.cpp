@@ -88,12 +88,9 @@ void CUITextBanner::Out(float x, float y, const char *fmt, ...)
 	if(fontSize>0.0f)
 		m_pFont->SetSize(fontSize);
 
-	if (x >= 1.0f && y >= 1.0f)
-	{
-		x	= UI()->ClientToScreenScaledX(x);
-		y	= UI()->ClientToScreenScaledY(y);
-	}
-	m_pFont->Out(x, y, buf.c_str());
+	Fvector2 pos;
+	UI()->ClientToScreenScaled(pos, x, y);
+	m_pFont->Out(pos.x, pos.y, buf.c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////

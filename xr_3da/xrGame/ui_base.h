@@ -54,24 +54,19 @@ class ui_core: public CDeviceResetNotifier
 	Fvector2		m_pp_scale_;
 	Fvector2		m_scale_;
 	Fvector2*		m_current_scale;
+
+	IC float		ClientToScreenScaledX			(float left)				{return left * m_current_scale->x;};
+	IC float		ClientToScreenScaledY			(float top)					{return top * m_current_scale->y;};
 public:
 	xr_stack<Frect> m_Scissors;
 	
-	ui_core			();
-	~ui_core		();
+					ui_core							();
+					~ui_core						();
 	CFontManager*	Font							()							{return m_pFontManager;}
 	CUICursor*		GetUICursor						()							{return m_pUICursor;}
-	void			OutText							(CGameFont *pFont, Frect r, float x, float y, LPCSTR fmt, ...);
-
-//.	IC float		GetScaleX						()							{return (m_bPostprocess)?float(::Render->getTarget()->get_width())/float(UI_BASE_WIDTH):float(Device.dwWidth)/float(UI_BASE_WIDTH);   }
-//.	IC float		GetScaleY						()							{return (m_bPostprocess)?float(::Render->getTarget()->get_height())/float(UI_BASE_HEIGHT):float(Device.dwHeight)/float(UI_BASE_HEIGHT);   }
-
-//.	IC float		GetScaleX						()							{return (m_bPostprocess) ? m_pp_scale.x : m_scale.x;   }
-//.	IC float		GetScaleY						()							{return (m_bPostprocess) ? m_pp_scale.y : m_scale.y;   }
 
 	void			ClientToScreenScaled			(Fvector2& dest, float left, float top);
-	float			ClientToScreenScaledX			(float left);
-	float			ClientToScreenScaledY			(float top);
+	void			ClientToScreenScaled			(Fvector2& src_and_dest);
 
 	Frect			ScreenRect						();
 	const C2DFrustum& ScreenFrustum					(){return (m_bPostprocess)?m_2DFrustumPP:m_2DFrustum;}
@@ -85,5 +80,5 @@ public:
 	virtual void	OnDeviceReset					();
 };
 
-extern CUICursor*	GetUICursor		();
-extern ui_core*		UI				();
+extern CUICursor*	GetUICursor						();
+extern ui_core*		UI								();

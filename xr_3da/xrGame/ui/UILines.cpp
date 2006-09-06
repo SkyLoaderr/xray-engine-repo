@@ -241,10 +241,7 @@ void CUILines::Draw(float x, float y){
 
 		text_pos.x = x + GetIndentByAlign(m_pFont->SizeOfRel(m_text.c_str()));
 		text_pos.y = y + GetVIndentByAlign();
-
-		Frect r;
-		r.x1=0.0f; r.x2=UI_BASE_WIDTH;
-		r.y1=0.0f; r.y2=UI_BASE_HEIGHT;
+		UI()->ClientToScreenScaled(text_pos);
 
 		if (uFlags.test(flPasswordMode))
 		{
@@ -252,10 +249,10 @@ void CUILines::Draw(float x, float y){
 			for (int i = 0; i < sz; i++)
 				passText[i] = '*';
 			passText[sz] = 0;
-			UI()->OutText(m_pFont, r, text_pos.x, text_pos.y, "%s", passText);
+			m_pFont->Out(text_pos.x, text_pos.y, passText);
 		}
 		else
-            UI()->OutText(m_pFont, r, text_pos.x, text_pos.y, "%s", m_text.c_str());
+			m_pFont->Out(text_pos.x, text_pos.y, m_text.c_str());
 	}
 	else
 	{

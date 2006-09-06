@@ -7,6 +7,8 @@
 				<font r="131" g="131" b="131" font="letterica16"/>
 		</list>
 	</properties_box>
+	
+	<main x=0 y=0 width=1024 height=768/>
 	<belt_slots x="0" y="80" width="1024" height="172">
 		<texture>ui_slots_belt</texture>		
 	</belt_slots>
@@ -14,8 +16,6 @@
 		<texture>ui_inventory_main</texture>
 	</back>
 
-    <_dragdrop_belt x="586" y="118" width="416" height="104"
-            cell_width = "52" cell_height="52" rows_num="2" cols_num="8"/>
 
     <dragdrop_belt x="645" y="136" width="410" height="60"
             cell_width = "60" cell_height="60" rows_num="1" cols_num="5"/>
@@ -59,7 +59,10 @@
             cell_width = "57" cell_height="57" rows_num="4" cols_num="4" 
             custom_placement="0"/>
 
-
+	<bottom_static x=0 y=736 width=1024 height=32 >
+		<texture>ui\ui_bottom_background</texture>
+	</bottom_static>
+	
     <bag_static x="15" y="240" width="350" height="480">		
         <text x="30" y="8" font="graffiti22" r="231" g="153" b="22">ui_inv_bag</text>
     </bag_static>

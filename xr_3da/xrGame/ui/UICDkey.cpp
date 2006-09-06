@@ -16,20 +16,20 @@ CUICDkey::~CUICDkey(){
 }
 
 void CUICDkey::Draw(){
-	Frect rect;
-	GetAbsoluteRect(rect);
+	Frect			rect;
+	GetAbsoluteRect	(rect);
 	float outX, outY;
-	Frect scr_rect;
-	scr_rect.set(0,0,1024,768);
 
 	outY = (m_wndSize.y - m_lines.m_pFont->CurrentHeightRel())/2;
 	outX = 0;
 	m_lines.m_pFont->SetColor(m_lines.GetTextColor());
 
+	Fvector2 pos;
+	pos.set						(rect.left+outX, rect.top+outY);
+	UI()->ClientToScreenScaled	(pos);
 	if(m_bInputFocus)
 	{		
-		UI()->OutText(m_lines.m_pFont, scr_rect, rect.left+outX, 
-			rect.top+outY,  AddHyphens(m_lines.m_text.c_str()));
+		m_lines.m_pFont->Out( pos.x, pos.y,  AddHyphens(m_lines.m_text.c_str()) );
 	
 		outY = (m_wndSize.y - m_lines.m_pFont->CurrentHeightRel())/2;
 		outX = m_lines.GetDrawCursorPos();
@@ -42,8 +42,7 @@ void CUICDkey::Draw(){
 		string64 tmp = "xxxxxxxxxxxxxxxx";
 		tmp[m_lines.m_text.size()] = 0;
 
-		UI()->OutText(m_lines.m_pFont, scr_rect, rect.left+outX, 
-			rect.top+outY,  AddHyphens(tmp));
+		m_lines.m_pFont->Out(pos.x, pos.y,  AddHyphens(tmp) );
 	}
 }
 

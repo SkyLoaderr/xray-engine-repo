@@ -7,9 +7,8 @@
 	</off_button>
 
 
-	<!-- MAIN PDA WINDOW FRAME -->
+	<main x=0 y=0 width=1024 height=768/>
 	<background_static x="3" y="20" width="891" height="643">
-		<_texture x="0" y="0" width="900" height="640">ui\ui_pda_back_big</_texture>
 		<texture>ui_PDA</texture>
 	</background_static>
 
