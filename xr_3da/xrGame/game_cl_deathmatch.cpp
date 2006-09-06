@@ -869,6 +869,11 @@ void				game_cl_Deathmatch::OnSpawn					(CObject* pObj)
 void				game_cl_Deathmatch::LoadSndMessages				()
 {
 	LoadSndMessage("dm_snd_messages", "you_won", ID_YOU_WON);
+
+	LoadSndMessage("dm_snd_messages", "dm_rank1", ID_RANK_1);
+	LoadSndMessage("dm_snd_messages", "dm_rank2", ID_RANK_2);
+	LoadSndMessage("dm_snd_messages", "dm_rank3", ID_RANK_3);
+	LoadSndMessage("dm_snd_messages", "dm_rank4", ID_RANK_4);
 };
 
 void				game_cl_Deathmatch::OnSwitchPhase_InProgress()
@@ -907,7 +912,24 @@ void				game_cl_Deathmatch::OnRankChanged			()
 	if (pCurBuyMenu) pCurBuyMenu->SetRank(local_player->rank);
 	LoadDefItemsForRank(pCurBuyMenu);
 	ChangeItemsCosts(pCurBuyMenu);
+	//---------------------------------------------
+	PlayRankChangesSndMessage();
 };
+
+void				game_cl_Deathmatch::PlayRankChangesSndMessage()
+{
+	if (local_player)
+	{
+		switch (local_player->rank)
+		{
+		case 0:
+			break;		
+		default:
+			PlaySndMessage(ID_RANK_0+local_player->rank);
+			break;
+		}
+	}
+}
 
 void				game_cl_Deathmatch::OnTeamChanged			()
 {

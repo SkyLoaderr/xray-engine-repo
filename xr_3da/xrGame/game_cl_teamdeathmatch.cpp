@@ -651,6 +651,16 @@ void				game_cl_TeamDeathmatch::LoadSndMessages				()
 	LoadSndMessage("tdm_snd_messages", "teams_equal", ID_TEAMS_EQUAL);
 	LoadSndMessage("tdm_snd_messages", "team1_lead", ID_TEAM1_LEAD);
 	LoadSndMessage("tdm_snd_messages", "team2_lead", ID_TEAM2_LEAD);
+
+	LoadSndMessage("tdm_snd_messages", "team1_rank1", ID_TEAM1_RANK_1);
+	LoadSndMessage("tdm_snd_messages", "team1_rank2", ID_TEAM1_RANK_2);
+	LoadSndMessage("tdm_snd_messages", "team1_rank3", ID_TEAM1_RANK_3);
+	LoadSndMessage("tdm_snd_messages", "team1_rank4", ID_TEAM1_RANK_4);
+
+	LoadSndMessage("tdm_snd_messages", "team2_rank1", ID_TEAM2_RANK_1);
+	LoadSndMessage("tdm_snd_messages", "team2_rank2", ID_TEAM2_RANK_2);
+	LoadSndMessage("tdm_snd_messages", "team2_rank3", ID_TEAM2_RANK_3);
+	LoadSndMessage("tdm_snd_messages", "team2_rank4", ID_TEAM2_RANK_4);
 };
 
 void				game_cl_TeamDeathmatch::OnSwitchPhase_InProgress()
@@ -686,6 +696,24 @@ void				game_cl_TeamDeathmatch::OnTeamChanged			()
 	xr_delete(pCurBuyMenu);
 	SetCurrentBuyMenu();
 	inherited::OnTeamChanged();
+};
+
+void				game_cl_TeamDeathmatch::PlayRankChangesSndMessage ()
+{
+	if (local_player)
+	{
+		switch (local_player->rank)
+		{
+		case 0:
+			break;		
+		default:
+			if (local_player->team == 1)
+				PlaySndMessage(ID_TEAM1_RANK_0 +local_player->rank);
+			if (local_player->team == 2)
+				PlaySndMessage(ID_TEAM2_RANK_0 +local_player->rank);
+			break;
+		}
+	}
 };
 
 void				game_cl_TeamDeathmatch::OnGameMenuRespond_ChangeTeam	(NET_Packet& P)

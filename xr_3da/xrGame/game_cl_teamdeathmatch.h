@@ -40,6 +40,7 @@ public :
 	virtual			void				OnTeamSelect			(int Result);
 	virtual			char*				getTeamSection			(int Team);
 	virtual			void				OnTeamChanged			();
+	virtual			void				PlayRankChangesSndMessage ();
 	virtual			void				OnTeamMenu_Cancel		();
 
 	virtual			void				Set_ShowPlayerNames		(bool Show) {m_bShowPlayersNames = Show;};
