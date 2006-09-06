@@ -1,0 +1,303 @@
+[postprocess_base]
+ppe_file		= radiation.ppe
+duality_h		= .015
+duality_v		= .015
+blur			= 1
+gray			= .0
+noise			= .01
+noise_scale		= 1
+noise_color		= 255,255,255,70
+;noise_color		= 200,150,40,0
+;noise_color		= 200,180,50,0
+
+[postprocess_anomaly]
+ppe_file		= radiation.ppe
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .7	;.9
+noise			= .2	;.5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 100,100,100,70
+noise_color		= 155,155,155,70
+;noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+;---------------------------------------------------------------------
+; New zone postprocess
+;---------------------------------------------------------------------
+[postprocess_new]
+ppe_file		= radiation.ppe
+duality_h		= 0.025
+duality_v		= 0.025
+blur			= 0.2
+gray			= 0.5
+noise_intensity = 1.5
+noise_grain		= 5
+noise_fps		= 15
+color_base		= 1.0,1.0,1
+color_gray		= 0.444,0.333,0.222
+color_add		= 0.01,0.01,0.01
+radius_min		= 0.5
+radius_max		= 1.1
+
+
+[postprocess_rad]
+ppe_file		= radiation.ppe
+duality_h		= 0.00
+duality_v		= 0.00
+blur			= 0.05
+gray			= 0.3
+noise_intensity = 1
+noise_grain		= 1
+noise_fps		= 15
+color_base		= 0.7,0.8,0.7
+color_gray		= 0.333,0.333,0.333
+color_add		= 0.0,0.0,0.0
+radius_min		= 0.1
+radius_max		= 0.9
+
+[postprocess_psi]
+ppe_file		= radiation.ppe
+duality_h		= 0.02
+duality_v		= 0.01
+blur			= 10
+gray			= 0.5
+noise_intensity = 0.5
+noise_grain		= 1
+noise_fps		= 5
+color_base		= 0.666,0.433,0.0666
+color_gray		= 0.333,0.3330,0.3330
+color_add		= 0.00,0.01,0.00
+radius_min		= 0.5
+radius_max		= 1.1
+
+
+[postprocess_death]
+ppe_file		= radiation.ppe
+duality_h			= 0.08;0.01
+duality_v			= 0.06;0.01
+blur				= 0.01
+gray				= 0.5
+noise_intensity 	= 0.0
+noise_grain			= 0.1 ;1.0
+noise_fps			= 30
+color_base			= 0.255,0.0,0.0;0.65,0.15,0.1
+color_gray			= 0.333,0.333,0.333
+color_add			= 0,0,0
+time				= 0.65 ;0.3
+time_attack			= 0.05		; fade in
+time_release		= 0.85		; fade out
+
+radius_min		= 0.5
+radius_max		= 1.1
+
+[postprocess_flame]
+ppe_file		= radiation.ppe
+duality_h		= 0.025
+duality_v		= 0.025
+blur			= 0.2
+gray			= 0.5
+noise_intensity = 1.5
+noise_grain		= 5
+noise_fps		= 15
+color_base		= 0.7,0.8,0.6
+color_gray		= 0.4,0.4,0.2
+color_add		= 0.4,0.4,0.2
+radius_min		= 0.5
+radius_max		= 0.8
+
+[postprocess_fuzz]
+ppe_file		= radiation.ppe
+duality_h		= 0.02
+duality_v		= 0.02
+blur			= 0.1
+gray			= 0.5
+noise_intensity = 0.5
+noise_grain		= 2
+noise_fps		= 25
+color_base		= 1.8,1.4,0.8
+color_gray		= 0.5,0.4,0.1
+color_add		= 0.00,0.0,0.00
+radius_min		= 0.5
+radius_max		= 0.8
+
+[postprocess_gravi]
+ppe_file		= radiation.ppe
+duality_h		= 0.0025
+duality_v		= 0.0025
+blur			= 0.0
+gray			= 0.8
+noise_intensity = 0.5
+noise_grain		= 5
+noise_fps		= 15
+color_base		= 0.6,0.7,0.3
+color_gray		= 0.333,0.5,0.333
+color_add		= 0.000,0.000,0.000
+radius_min		= 0.3
+radius_max		= 1.0
+
+[postprocess_electra]
+ppe_file		= radiation.ppe
+duality_h		= 0.005
+duality_v		= 0.005
+blur			= 0.0
+gray			= 0.5
+noise_intensity = 0.01
+noise_grain		= 0
+noise_fps		= 25
+color_base		= 0.9,0.9,1.0
+color_gray		= 0.33,0.330,0.33
+color_add		= 0.00,0.00,0.015
+radius_min		= 0.5
+radius_max		= 0.9
+
+
+[mosquito_bald]
+ppe_file		= radiation.ppe
+duality_h		= 0.01
+duality_v		= 0.01
+blur			= 0.00
+gray			= 0.3
+noise_intensity = 0.1
+noise_grain		= 1
+noise_fps		= 30
+color_base		= 0.6,0.6,0.5
+color_gray		= 1,1,1
+color_add		= 0.0,0.0,0.0
+radius_min		= 0.2
+radius_max		= 2.7
+;---------------------------------------------------------------------
+
+[postprocess_anomaly1]
+ppe_file		= radiation.ppe
+duality_h		= .1
+duality_v		= .1
+blur			= 1
+gray			= .4
+noise			= .01
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+;noise_color		= 200,150,40,0
+noise_color		= 10,10,10,0
+
+
+[postprocess_anomaly2]
+ppe_file		= radiation.ppe
+duality_h		= 0.5
+duality_v		= 0.5
+blur			= 1
+gray			= .6
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+[postprocess_anomaly3]
+ppe_file		= radiation.ppe
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .6
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+[postprocess_anomaly4]
+ppe_file		= radiation.ppe
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .6
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+noise_color		= 155,155,155,155
+;noise_color		= 200,150,40,0
+;noise_color		= 10,10,10,0
+
+[postprocess_anomaly5]
+ppe_file		= radiation.ppe
+duality_h		= 0
+duality_v		= 0
+blur			= 1
+gray			= .6
+noise			= .5
+noise_scale		= 1
+;noise_color		= 255,255,255,70
+;noise_color		= 155,155,155,155
+;noise_color		= 200,150,40,0
+noise_color		= 10,10,10,0
+
+[effector_alcohol]
+pp_eff_name		= alcohol.ppe
+pp_eff_cyclic	= 1
+
+cam_eff_name	= camera_effects\drunk.anm
+cam_eff_cyclic	= 1
+
+[effector_explode_hit]
+;pp_eff_name		= fire_hit.ppe
+;pp_eff_cyclic	= 0
+
+cam_eff_cyclic	= 0
+cam_eff_name	= camera_effects\shell_shock.anm
+
+[effector_fire_hit]
+pp_eff_name		= fire_hit.ppe
+pp_eff_cyclic	= 0
+
+cam_eff_cyclic	= 0
+
+[effector_fire_hit_0]:effector_fire_hit
+cam_eff_name	= camera_effects\hit_front.anm
+
+[effector_fire_hit_1]:effector_fire_hit
+cam_eff_name	= camera_effects\hit_right.anm
+
+[effector_fire_hit_2]:effector_fire_hit
+cam_eff_name	= camera_effects\hit_back.anm
+
+[effector_fire_hit_3]:effector_fire_hit
+cam_eff_name	= camera_effects\hit_left.anm
+
+[effector_fire_hit_4]:effector_fire_hit
+cam_eff_name	= camera_effects\hit_front_left.anm
+
+[effector_fire_hit_5]:effector_fire_hit
+cam_eff_name	= camera_effects\hit_back_left.anm
+
+[effector_fire_hit_6]:effector_fire_hit
+cam_eff_name	= camera_effects\hit_front_right.anm
+
+[effector_fire_hit_7]:effector_fire_hit
+cam_eff_name	= camera_effects\hit_back_right.anm
+
+[effector_nightvision]
+pp_eff_name		= nightvision.ppe
+pp_eff_cyclic	= 0
+
+[snd_shock_effector]
+;pp_eff_name		= duality_circle.ppe
+pp_eff_name		= snd_shock.ppe
+pp_eff_cyclic	= 1
+
+[effector_radar_stop]
+;pp_eff_name		= radar_stop.ppe
+;pp_eff_cyclic	= 0
+
+cam_eff_name	= camera_effects\radar_stop.anm
+cam_eff_cyclic	= 0
+
+[effector_controller_aura]
+pp_eff_name		= controller_hit.ppe
+pp_eff_cyclic	= 0
+
+

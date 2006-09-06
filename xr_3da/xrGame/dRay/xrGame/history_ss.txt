@@ -1,0 +1,84 @@
+//-----------------------------------------------------------------------------
+// 17.06.2005
+//-----------------------------------------------------------------------------
+---- Operation started at time 10:17:22 ----
+Replacing p:\xr_3da\xrGame\stalker_animation_manager.cpp
+Replacing p:\xr_3da\xrGame\stalker_animation_manager.h
+Replacing p:\xr_3da\xrGame\stalker_animation_pair.cpp
+Replacing p:\xr_3da\xrGame\stalker_animation_pair.h
+Replacing p:\xr_3da\xrGame\ui\UIMainIngameWnd.cpp
+Replacing p:\xr_3da\xrGame\ui\UIMainIngameWnd.h
+Replacing p:\xrCore\_flags.h
+Replacing X:\gamedata\xrstalker.vcproj
+Replacing x:\gamedata\config\creatures\actor.ltx
+Replacing x:\gamedata\config\creatures\M_Rat.ltx
+Replacing x:\gamedata\config\gameplay\info_l05dark_valley.xml
+Replacing x:\gamedata\config\scripts\val_opendoor_monolith.ltx
+Replacing x:\gamedata\config\scripts\val_opendoor_soldier.ltx
+Replacing x:\gamedata\config\scripts\val_opendoor_victim.ltx
+Replacing x:\gamedata\config\ui\maingame.xml
+Replacing x:\gamedata\config\weapons\w_svd.ltx
+Replacing x:\gamedata\scripts\gulag_garbage.script
+Replacing x:\gamedata\scripts\ph_button.script
+Replacing x:\gamedata\scripts\ph_on_hit.script
+Replacing x:\gamedata\scripts\ph_sound.script
+Replacing x:\gamedata\scripts\smart_terrain.script
+Replacing x:\gamedata\scripts\sr_sound.script
+Replacing x:\gamedata\scripts\sr_tip.script
+Replacing x:\gamedata\scripts\state_lib.script
+Replacing x:\gamedata\scripts\state_mgr.script
+Replacing x:\gamedata\scripts\state_mgr_animation.script
+Replacing x:\gamedata\scripts\xr_attendant.script
+Replacing x:\gamedata\scripts\xr_camper.script
+Replacing x:\gamedata\scripts\xr_combat_ignore.script
+Replacing x:\gamedata\scripts\xr_combat_monolith.script
+Replacing x:\gamedata\scripts\xr_conditions.script
+Replacing x:\gamedata\scripts\xr_gulag.script
+Replacing x:\gamedata\scripts\xr_logic.script
+Replacing x:\gamedata\scripts\xr_meet.script
+Replacing x:\gamedata\scripts\xr_motivator.script
+Replacing x:\gamedata\scripts\xr_wounded.script
+---- Operation started at time 10:17:57 ----
+Getting x:\gamedata\config\text\rus\string_table_tasks_garbage.xml
+---- Operation completed successfully at time 10:18:47 ----
+---- Operation started at time 12:26:52 ----
+Replacing p:\xr_3da\xrGame\ai\monsters\control_animation_base.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\control_animation_base.h
+Replacing p:\xr_3da\xrGame\ai\monsters\control_com_defs.h
+Replacing p:\xr_3da\xrGame\ai\monsters\control_manager.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\control_manager.h
+Replacing p:\xr_3da\xrGame\ai\monsters\basemonster\base_monster.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\basemonster\base_monster.h
+Replacing p:\xr_3da\xrGame\ai\monsters\basemonster\base_monster_startup.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\basemonster\base_monster_think.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\bloodsucker\bloodsucker.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\bloodsucker\bloodsucker_vampire_execute_inline.h
+Replacing p:\xr_3da\xrGame\ai\monsters\burer\burer.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\burer\burer_state_attack_gravi_inline.h
+Replacing p:\xr_3da\xrGame\ai\monsters\burer\burer_state_attack_tele_inline.h
+Replacing p:\xr_3da\xrGame\ai\monsters\cat\cat.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\cat\cat.h
+Replacing p:\xr_3da\xrGame\ai\monsters\cat\cat_state_manager.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\chimera\chimera.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\chimera\chimera.h
+Replacing p:\xr_3da\xrGame\ai\monsters\chimera\chimera_state_manager.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\controller\controller.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\controller\controller.h
+Replacing p:\xr_3da\xrGame\ai\monsters\controller\controller_state_control_hit_inline.h
+Replacing p:\xr_3da\xrGame\ai\monsters\dog\dog.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\dog\dog.h
+Replacing p:\xr_3da\xrGame\ai\monsters\flesh\flesh.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\fracture\fracture.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\poltergeist\poltergeist.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\pseudodog\pseudodog.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\pseudodog\pseudodog.h
+Replacing p:\xr_3da\xrGame\ai\monsters\pseudodog\pseudodog_state_manager.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\snork\snork.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\snork\snork.h
+Replacing p:\xr_3da\xrGame\ai\monsters\snork\snork_jump.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\snork\snork_jump.h
+Replacing p:\xr_3da\xrGame\ai\monsters\snork\snork_state_manager.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\zombie\zombie.cpp
+Replacing p:\xr_3da\xrGame\ai\monsters\zombie\zombie_state_manager.cpp
+Replacing p:\xr_3da\xrGame\ui\UITalkWnd.cpp
+---- Operation completed successfully at time 12:28:06 ----

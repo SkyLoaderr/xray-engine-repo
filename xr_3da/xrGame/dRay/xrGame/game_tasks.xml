@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding="windows-1251"?>
+<game_tasks_data>
+#include "gameplay\tasks_escape.xml"
+#include "gameplay\tasks_garbage.xml"
+#include "gameplay\tasks_agroprom.xml"
+#include "gameplay\tasks_bar.xml"
+#include "gameplay\tasks_military.xml"
+#include "gameplay\tasks_darkvalley.xml"
+#include "gameplay\tasks_deadcity.xml"
+#include "gameplay\tasks_radar.xml"
+#include "gameplay\tasks_aes.xml"
+#include "gameplay\tasks_yantar.xml"
+#include "gameplay\tasks_sarcofag.xml"
+
+	<game_task id="task1">
+		<title>Task 1. What a shame! It's failed!</title>
+		<objective>
+			<text>test task primary2</text>
+			<script_condition>info_test1.test_task3</script_condition>
+		</objective>
+		<objective>
+			<text>test task secondary 01</text>
+			<script_condition>info_test1.test_task2</script_condition>
+		</objective>
+	</game_task>
+	<game_task id="task2">
+		<title>Task 2. Top priority!</title>
+		<objective>
+			<text>test task primary2</text>
+			<script_condition>info_test1.test_task1</script_condition>
+		</objective>
+		<objective>
+			<text>test task secondary 01</text>
+			<script_condition>info_test1.test_task2</script_condition>
+		</objective>
+	</game_task>
+	
+	<game_task id="user_task">
+		<title>My map task</title>
+		<objective>
+			<text>user defined map location</text>
+			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+<!-- temporary for andy, do not delete !!! -->
+	<game_task id="andy_task_1">
+		<title>andy_task_1_title</title>
+		<objective>
+			<text>andy_task_1_1</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>andy_task_1_2</text>
+			<map_location_type hint="my_hint">level_changer</map_location_type>			
+			<object_story_id>Escape_Trader</object_story_id>					
+		</objective>
+	</game_task>
+
+	<game_task id="andy_task_2">
+		<title>qqq</title>
+		<objective>
+			<text>qqq_0</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+
+
+	<!-- Tasks for random quest generator -->
+	<game_task id="eliminate_lager">
+		<title>title</title>
+		<objective>
+			<text>objective</text>
+			<icon>ui_icons_task_eliminate_lager</icon>
+			<function_complete>task_manager.task_complete</function_complete>
+			<function_fail>task_manager.task_fail</function_fail>
+		</objective>
+	</game_task>
+
+	<game_task id="artefact">
+		<title>title</title>
+		<objective>
+			<text>objective</text>
+			<icon>ui_icons_task_artefact</icon>
+			<function_complete>task_manager.task_complete</function_complete>
+			<function_fail>task_manager.task_fail</function_fail>
+		</objective>
+	</game_task>
+
+	<game_task id="kill_stalker">
+		<title>title</title>
+		<objective>
+			<text>objective</text>
+			<icon>ui_icons_task_kill_stalker</icon>
+			<function_complete>task_manager.task_complete</function_complete>
+			<function_fail>task_manager.task_fail</function_fail>
+		</objective>
+	</game_task>
+
+	<game_task id="monster_part">
+		<title>title</title>
+		<objective>
+			<text>objective</text>
+			<icon>ui_icons_task_monster_part</icon>
+			<function_complete>task_manager.task_complete</function_complete>
+			<function_fail>task_manager.task_fail</function_fail>
+		</objective>
+	</game_task>
+
+	<game_task id="find_item">
+		<title>title</title>
+		<objective>
+			<text>objective</text>
+			<icon>ui_icons_task_find_item</icon>
+			<function_complete>task_manager.task_complete</function_complete>
+			<function_fail>task_manager.task_fail</function_fail>
+		</objective>
+	</game_task>
+
+</game_tasks_data>

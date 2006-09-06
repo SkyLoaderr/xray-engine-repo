@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<game_information_portions>
+	<info_portion id="actor_start">
+		<location >
+			<level>ai_test</level>
+			<x>-250</x>
+			<y>100</y>
+			<icon name="Dealer" x="2" y="2" width="1" height="1" r="255" g="0" b="0" marker="1"></icon>
+			<text>Bring artefacts to the Dealer</text>
+		</location>
+		<!-- список диалогов, который может инициировать InfoPortion -->
+		<dialog>trader_job</dialog>
+	</info_portion>
+
+	<info_portion id="actor_start02">
+		<location >
+			<level></level>
+			<object>quest_case_01</object>
+			<icon name="Дипломат" x="2" y="8" width="1" height="1"></icon>
+			<text>Укради научный \nчемоданчик с блокпоста,\nтак чтобы никто не заметил...</text>
+		</location>
+	</info_portion>
+
+	<info_portion id="actor_start04">
+		<location >
+			<level></level>
+			<object>quest_case_02</object>
+			<icon name="Case" x="2" y="8" width="1" height="1"></icon>
+			<text>Steal the case...</text>
+		</location>
+	</info_portion>
+
+
+	<info_portion id="article_test">
+		<article>sl_beginning</article>
+		<article>sl_first_opinions</article>
+		<article>sl_usefull_info</article>
+		<article>sl_wishmaster_legend</article>		
+		<article>sl_first_deep_raid</article>		
+		<article>sl_fox_meet</article>
+		<article>sl_seryi_meet</article>
+		<article>agr_journal_krot</article>
+		<article>agr_journal_cache</article>
+		<article>journal_after_agroprom_documents</article>
+		<article>journal_before_darklab_documents</article>
+		<article>sl_x18_dream</article>
+		<article>journal_bar_darklab_documents</article>
+		<article>journal_bar_x16_documents</article>
+		<article>journal_before_vasilyev_pda</article>
+		<article>journal_after_find_ghost</article>
+		<article>journal_after_kill_brain</article>
+		<article>cit_doctor_meet_conclusion_art</article>
+		<article>journal_before_radar_task</article>
+		<article>sl_provodnik</article>
+		<article>rad_sleep_info</article>
+		<article>pri_decoder_docs_conclusion_art</article>		
+		<article>sl_monolith_off</article>
+		
+		<article>storyline_fox_flash_info</article>
+		<article>rostok_tunel_gordon_diary</article>
+		<article>storyline_seryi_info</article>
+		<article>esc_kolyan_lost</article>
+		<article>yan_vasilyev_info</article>		
+		<article>tutorial_secret_place</article>
+		<article>tutorial_moving_anomaly</article>
+		<article>esc_provodnik_pda</article>
+		<article>dar_password_info1</article>
+		<article>dar_password_info2</article>
+		<article>dar_document1</article>
+		<article>dar_document2</article>
+		<article>dar_document3</article>
+		<article>dar_document4</article>
+		<article>dar_document5</article>
+		<article>bun_code</article>
+		<article>bar_ecolog_research_normal</article>
+		<article>bar_ecolog_research_corrupted</article>					
+		<article>agr_nii_security_plan</article>
+		<article>agr_military_case</article>
+
+	</info_portion>
+
+
+
+	<info_portion id="trader_start2">
+		<dialog>job_box</dialog>
+	
+		<location >
+			<level></level>
+			<object>quest_case_01</object>
+			<icon name="Case" x="2" y="8" width="1" height="1"></icon>
+			<text>Steal the case...</text>
+		</location>
+	</info_portion>
+
+	<info_portion id="trader_start4">
+		<dialog>job_box02</dialog>
+	</info_portion>
+
+	<info_portion id="trader_start5">
+	</info_portion>
+
+	<info_portion id="job_box_finished">
+	<disable>trader_start2</disable>
+	</info_portion>
+
+	<info_portion id="job_box02_finished">
+	<disable>trader_start4</disable>
+	</info_portion>
+	
+	<info_portion id="alert">
+	</info_portion>	
+
+	<info_portion id="rat_swarm">
+	</info_portion>	
+
+	<info_portion id="trup1">
+	</info_portion>	
+
+	<info_portion id="trup2">
+	</info_portion>	
+
+	<info_portion id="trup3">
+	</info_portion>	
+
+	<info_portion id="spawn_flesh">
+	</info_portion>	
+ 
+	<info_portion id="start">
+	</info_portion>	
+
+	<info_portion id="location_test1">
+		<article>one</article>
+		<article>two</article>
+		<article>bbb</article>
+		<location >
+			<level>ai_test</level>
+			<object story_id = "0"></object>
+			<x>100</x>
+			<y>0</y>
+			<icon name="бродяга сталкер" x="0" y="0" width="1" height="1"></icon>
+			<text>object location</text>
+		</location>
+		<location >
+			<level>ai_test</level>
+			<x>-250</x>
+			<y>0</y>
+			<icon name="Quest1" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest1 at agroprom</text>
+		</location>
+		<location >
+			<level>ai_test</level>
+			<icon name="Quest2" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest2 at agroprom</text>
+		</location>
+		<location >
+			<level>escape</level>
+			<icon name="Quest3" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest3 at escape</text>
+		</location>
+		<location >
+			<level>escape</level>
+			<icon name="Quest4" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest4 at escape</text>
+		</location>
+	</info_portion>
+
+	<info_portion id="location_test2">
+		<task>task1</task>
+		<task>task2</task>
+
+		<dialog>escape_trader_talk_flame</dialog>
+		
+		<article>three</article>
+		<article>four</article>
+		<location >
+			<level>test_bloodsucker</level>
+			<icon name="Quest11" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest11 at agroprom</text>
+		</location>
+		<location >
+			<level>test_bloodsucker</level>
+			<icon name="Quest22" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest22 at agroprom</text>
+		</location>
+		<location >
+			<level>escape</level>
+			<icon name="Quest33" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest33 at escape</text>
+		</location>
+		<location >
+			<level>escape</level>
+			<icon name="Quest44" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest44 at escape</text>
+		</location>
+	</info_portion>
+	
+	<info_portion id="test_andy_info">
+		<article>six</article>
+		<task>andy_task_1</task>
+	</info_portion>
+
+	<info_portion id="say_hello">
+	</info_portion>
+
+</game_information_portions>

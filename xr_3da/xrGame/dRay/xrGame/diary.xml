@@ -1,0 +1,64 @@
+﻿<?xml version='1.0' encoding="UTF-8"?>
+<!-- OLD OLD OLD!!! DELETE THIS FILE AFTER UPDATE -->
+<window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
+
+	<!-- NEWS SUBWINDOW !!! OLD !!!-->
+	<news_window x="0" y="0" width="940" height="680">
+<!--		<base_texture>ui\ui_pda_frame</base_texture> -->
+		<!--  RIGHT-TOP CAPTION -->
+		<static x="600" y="40" width="150" height="128">
+			<text font="header" r="239" g="154" b="29" a="255">NEWS</text>
+		</static>
+		<!--  CENTER-TOP CAPTION -->
+		<static x="300" y="40" width="150" height="128">
+			<text font="header" r="239" g="154" b="29" a="255">NEWS</text>
+		</static>
+		<!-- LIST WITH INFO -->
+		<list x="90" y="30" width="500" height="530" item_height = "15">
+			<font font="letterica18" r="255" g="255" b="255"></font>
+		</list>
+	</news_window>
+
+	
+
+	<!-- JOBS SUBWINDOW !!! OLD !!!-->
+	<jobs_window x="0" y="0" width="940" height="680">
+<!--		<base_texture>ui\ui_pda_frame</base_texture> -->
+		<static x="600" y="40" width="150" height="128">
+			<text font="header" r="239" g="154" b="29" a="255">--JOBS--</text>
+		</static>
+		
+		<!-- LIST WITH INFO -->
+		<list x="20" y="92" width="300" height="530" item_height = "15"></list>
+	</jobs_window>
+
+
+	<!-- NOTES SUBWINDOW !!! OLD !!!-->
+	<notes_window x="0" y="0" width="940" height="680">
+<!--		<base_texture>ui\ui_pda_frame</base_texture> -->
+		<static x="600" y="40" width="150" height="128">
+			<text font="header" r="239" g="154" b="29" a="255">NOTES</text>
+		</static>
+	
+		<!-- LIST WITH INFO -->
+		<list x="40" y="92" width="500" height="430" item_height = "15"></list>
+	</notes_window>
+
+	<!-- TAB CONTROL -->
+	<tab x="600" y="300" width="135" height="300">
+		<!-- BUTTONS -->
+		<button x="0" y="10" width="137" height="30">
+			<texture>ui\ui_button_04</texture>
+			<text>News</text>
+		</button>
+		<button x="0" y="50" width="137" height="30">
+			<texture>ui\ui_button_04</texture>
+			<text>Jobs</text>
+		</button>
+		<button x="0" y="90" width="137" height="30">
+			<texture>ui\ui_button_04</texture>
+			<text>Notes</text>
+		</button>
+	</tab>
+
+</window>

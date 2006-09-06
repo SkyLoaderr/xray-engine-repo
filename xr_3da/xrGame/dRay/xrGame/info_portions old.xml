@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding="UTF-8"?>
+
+<game_information_portions>
+
+	<info_portion index="1">
+		<text> </text>
+		<question>
+			<to_info>2</to_info>
+			<text>I need money and weapons. Where can I get that?</text>
+			<negative_answer>
+				Go to the dealer and do some work for him: \n He also buys artefacts paying good penny for them!
+			</negative_answer>
+		</question>
+		<question>
+			<to_info>2</to_info>
+			<text> I'm new in the Zone. What should I beware of?</text>
+			<negative_answer>
+				Do your best to avoid mutants, stay out of \n anomalies and don't come close to unknown stalkers,\n especially those in dark uniform.
+			</negative_answer>
+		</question>
+		<question>
+			<to_info>2</to_info>
+			<text>Tell me about the Freedom clan?</text>
+			<negative_answer>
+				They are anarchists and bandits, try avoiding \n them if possible!
+			</negative_answer>
+		</question>
+		<question>
+			<to_info>2</to_info>
+			<text>What do you know about the Duty clan?</text>
+			<negative_answer>
+				They hunt down mutants and not really \n interested in chasing newbies.
+			</negative_answer>
+		</question>
+		<question>
+			<to_info>2</to_info>
+			<text>Where can I find Mad-Dog?</text>
+			<negative_answer>
+				I heard, he had been seen near the old \n factory!
+			</negative_answer>
+		</question>
+		<question>
+			<to_info>2</to_info>
+			<text>Where's the old factory?</text>
+			<negative_answer>
+				The old factory is near the Agroprom \n institute: I will highlight it on your map!
+			</negative_answer>
+		</question>
+		<location >
+			<level>0</level>
+			<x>-250</x>
+			<y>-127</y>
+			<icon name="Dealer" x="2" y="2" width="1" height="1"></icon>
+			<text>Bring artefacts to the Dealer</text>
+		</location>
+		<!-- список диалогов, который может инициировать InfoPortion -->
+		<dialog>test_dialog</dialog>
+		<dialog>another_test_dialog</dialog>
+	</info_portion>
+
+	<info_portion index="2">
+		<text></text>
+		<location >
+			<level>0</level>
+			<object>trader1</object>
+			<icon name="stalker 'Dog'" x="0" y="5" width="1" height="1"></icon>
+			<text>You must kill the "Dog"... \nTake artefact from his body...</text>
+		</location>
+
+		<question>
+			<text>I want to know about Info4 also</text>
+			<to_info>4</to_info>
+			<negative_answer>
+				It's lie, there's no Info4 at all, AFAIK.
+			</negative_answer>
+		</question>
+		<question>
+						<text>I want to know about Info5 also!!!\nFuck off, son of bitch!!\nAss hole!!!</text>
+			<to_info>5</to_info>
+			<negative_answer>
+				It's lie, there's no Info5 at all, AFAIK.
+			</negative_answer>
+		</question>
+	</info_portion>
+
+	<info_portion index="3">
+		<text>Info3. Enjoy :)))</text>
+	</info_portion>
+	
+	<info_portion index="4">
+		<text>Info4. Enjoy it too.</text>
+	</info_portion>
+
+	<info_portion index="5">
+		<text>Info555555.</text> 
+	</info_portion>
+
+
+	<info_portion index="6">
+		<text>SOS!!! Help me!!!</text>
+		<location >
+			<level>0</level>
+			<x>0.4</x>
+			<y>0.2</y>
+			<icon name="my_icon" x="0" y="5" width="1" height="1"></icon>
+		</location>
+	</info_portion>
+
+	<info_portion index="7">
+		<text>Get out of here!!!</text>
+	</info_portion>
+
+
+	<info_portion index="8">
+		<text>Добей Пса и забери у него артефакт... отнеси его торговцу... он будет ждать тебя. [задание добавленно, нажмите "O"]</text>
+		<location >
+			<level>0</level>
+			<x>0.4</x>
+			<y>0.2</y>
+			<icon name="Добей Пса..." x="1" y="5" width="1" height="1"></icon>
+		</location>
+	</info_portion>
+
+
+<!-- for comments -->
+
+</game_information_portions>
