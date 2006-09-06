@@ -34,7 +34,6 @@ CUIListWnd::CUIListWnd()
 	m_bForceFocusedItem			= false;
 	m_iLastUniqueID				= 0;
 	m_bNewRenderMethod			= false;
-	m_iRightIndention			= 0;
 	m_bAlwaysShowScroll			= false;
 	m_bAlwaysShowScroll_enable	= false;
 	

@@ -58,52 +58,6 @@ void InventoryUtilities::DestroyShaders()
 	g_MPCharIconsShader.destroy();
 }
 
-/*
-void InventoryUtilities::AmmoDrawProc(CUIDragDropItem* pItem)
-{
-	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData());
-	CWeaponAmmo* pAmmoItem = smart_cast<CWeaponAmmo*>(pIItem);
-
-	if (pAmmoItem->m_boxCurr > 1)
-	{
-		float left	= pItem->GetUIStaticItem().GetPosX() + 5;
-		float bottom	= pItem->GetUIStaticItem().GetPosY() + pItem->GetUIStaticItem().GetRect().height();
-
-		pItem->GetFont()->SetColor(0xffffffff);
-		UI()->OutText(	pItem->GetFont(), pItem->GetSelfClipRect(), left, 
-						bottom - pItem->GetFont()->CurrentHeight(),
-						"%d",	pAmmoItem->m_boxCurr);
-
-		pItem->GetFont()->OnRender();
-	}
-}
-
-void InventoryUtilities::FoodDrawProc(CUIDragDropItem* pItem)
-{
-	//CEatableItem* pEatableItem = (CEatableItem*)(pItem->GetData());
-	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData()); R_ASSERT(pIItem);
-	CEatableItem* pEatableItem = smart_cast<CEatableItem*>(pIItem); R_ASSERT(pEatableItem);
-
-	if (pEatableItem->PortionsNum() > 1)
-	{
-		Frect rect = pItem->GetAbsoluteRect();
-
-		pItem->GetFont()->SetColor(0xffffffff);
-		UI()->OutText(	pItem->GetFont(), 
-						pItem->GetSelfClipRect(), 
-						rect.left, 
-						float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
-						"%d",	pEatableItem->PortionsNum());
-
-		pItem->GetFont()->OnRender();
-	}
-}
-*/
-
-//////////////////////////////////////////////////////////////////////////
-//сравнивает элементы по пространству занимаемому ими в рюкзаке
-//////////////////////////////////////////////////////////////////////////
-
 bool InventoryUtilities::GreaterRoomInRuck(PIItem item1, PIItem item2)
 {
 	Ivector2 r1,r2;

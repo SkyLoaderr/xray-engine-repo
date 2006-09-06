@@ -458,9 +458,6 @@ bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, LPCSTR path,
 	}
 
 
-	float ri = xml_doc.ReadAttribFlt	(path, index, "right_ident", 0.0f);
-	pWnd->SetRightIndention				( UI()->ClientToScreenScaledX( ri ) );
-
 	bool bVertFlip						= (1==xml_doc.ReadAttribInt	(path, index, "flip_vert", 0));
 	pWnd->SetVertFlip					(bVertFlip);
 

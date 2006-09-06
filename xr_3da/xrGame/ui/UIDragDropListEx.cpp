@@ -656,8 +656,8 @@ void CUICellContainer::Draw()
 								 {0.0f,0.0f},{tx,ty},{0.0f,ty}};
 
 	// calculate cell size in screen pixels
-	float		fw				= UI()->ClientToScreenScaledX(float(cell_sz.x));
-	float		fh				= UI()->ClientToScreenScaledY(float(cell_sz.y));
+	Fvector2 f_len;
+	UI()->ClientToScreenScaled(f_len, float(cell_sz.x), float(cell_sz.y) );
 
 	// fill cell buffer
 	u32 vOffset					= 0;
@@ -670,8 +670,8 @@ void CUICellContainer::Draw()
 			for (u32 k=0; k<6; ++k,++pv){
 				const Fvector2& p	= pts[k];
 				const Fvector2& uv	= uvs[k];
-				pv->set			(iFloor(drawLT.x + p.x*(fw) +fw*x)-0.5f, 
-								 iFloor(drawLT.y + p.y*(fh) +fh*y)-0.5f, 
+				pv->set			(iFloor(drawLT.x + p.x*(f_len.x) + f_len.x*x)-0.5f, 
+								 iFloor(drawLT.y + p.y*(f_len.y) + f_len.y*y)-0.5f, 
 								 0xFFFFFFFF,tp.x+uv.x,tp.y+uv.y);
 			}
 		}

@@ -65,9 +65,7 @@ void CUIListWnd::script_register(lua_State *L)
 		.def("ShowSelectedItem",		&CUIListWnd::ShowSelectedItem)
 
 		.def("GetSelectedItem",			&CUIListWnd::GetSelectedItem)
-		.def("ResetFocusCapture",		&CUIListWnd::ResetFocusCapture)
-		.def("SetRightIndention",		&CUIListWnd::SetRightIndention)
-		.def("GetRightIndention",		&CUIListWnd::GetRightIndention),
+		.def("ResetFocusCapture",		&CUIListWnd::ResetFocusCapture),
 
 		class_<CUIListItem, CUIButton>("CUIListItem")
 		.def(							constructor<>()),
