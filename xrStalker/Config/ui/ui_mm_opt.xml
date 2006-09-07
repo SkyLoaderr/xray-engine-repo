@@ -17,9 +17,9 @@
 			<text font="normal" align="c">ui_mm_apply</text>
 			<texture>ui_button_main02</texture>
 			<text_color>
-				<e r="227" g="199" b="178"/>				
-				<t r="180" g="153" b="155"/>				
-				<d r="106" g="95" b="91"/>							
+				<e r="227" g="199" b="178"/>
+				<t r="180" g="153" b="155"/>
+				<d r="106" g="95" b="91"/>
 				<h r="0" g="0" b="0"/>
 			</text_color>
 		</btn_accept>
@@ -105,6 +105,10 @@
 			<options_item entry="ai_use_torch_dynamic_lights" group="mm_opt_video"/>
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_switch_torch</text>
 		</check_dyn_lignt>
+		<check_render_2 x="20" y="230" width="243" height="21">
+			<options_item entry="r2" group="mm_opt_video"/>
+			<text font="letterica16" r="115" g="114" b="112">Render 2</text>
+		</check_render_2>
 		
 		<list_presets x="194" y="20" width="261" height="21">
 			<options_item entry="_preset" group="mm_opt_video"/>

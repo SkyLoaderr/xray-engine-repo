@@ -386,9 +386,6 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		}
 	}
 
-	if (WINDOW_LBUTTON_DB_CLICK == msg && IsChild(pWnd))
-		GetMessageTarget()->SendMessage(this, WINDOW_LBUTTON_DB_CLICK);
-
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
 

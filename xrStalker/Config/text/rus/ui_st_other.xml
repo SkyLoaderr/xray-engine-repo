@@ -10,5 +10,8 @@
 	<stirng id="ui_mm_need_restart">
 		<text>Для того чтобы наступили изменения необходимо перезапустить игру</text>		
 	</stirng>
+	<string id="ui_mm_render_2">
+		<text>Рендер 2</text>
+	</string>
 	
 </string_table>

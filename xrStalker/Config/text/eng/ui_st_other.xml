@@ -10,4 +10,7 @@
 	<stirng id="ui_mm_need_restart">
 		<text>Сhanges will take effect only after game restart</text>		
 	</stirng>
+	<string id="ui_mm_render_2">
+		<text>Render 2</text>
+	</string>
 </string_table>
