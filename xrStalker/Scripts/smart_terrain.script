@@ -560,7 +560,7 @@ function se_smart_terrain:suitable( obj )
 
 		return 1000000 - v
 	else
-		printf	("se_smart_terrain::suitable 0.1")
+--		printf	("se_smart_terrain::suitable 0.1")
 		local self_gv = game_graph():vertex( self.m_game_vertex_id )
 		local obj_gv  = game_graph():vertex( obj.m_game_vertex_id )
 
@@ -677,7 +677,7 @@ end
 function se_smart_terrain:kick_someone_non_exclusive( new_npc_info )
 	for obj_id, npc_info in pairs( self.npc_info ) do
 		if not npc_info.exclusive and self.gulag:obj1_job_suits_obj2( obj_id, new_npc_info ) then
-			printf("[smart_terrain %s] kicking %s", self:name(), npc_info.name)
+--			printf("[smart_terrain %s] kicking %s", self:name(), npc_info.name)
 			self:unregister_npc( npc_info.se_obj )
 			return
 		end
