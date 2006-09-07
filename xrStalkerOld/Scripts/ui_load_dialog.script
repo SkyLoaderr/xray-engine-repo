@@ -190,7 +190,7 @@ function load_dialog:OnListItemClicked()
 end
 
 function load_dialog:OnListItemDbClicked()
-	--self:OnButton_load_clicked()
+	self:OnButton_load_clicked()
 end
 
 function load_dialog:OnMsgOk()
