@@ -266,6 +266,7 @@ void CEntityCondition::UpdateCondition()
 	m_fPower					+= m_fDeltaPower;
 	m_fPsyHealth				+= m_fDeltaPsyHealth;
 	m_fEntityMorale				+= m_fDeltaEntityMorale;
+	m_fRadiation				+= m_fDeltaRadiation;
 
 	m_fDeltaHealth				= 0;
 	m_fDeltaPower				= 0;
