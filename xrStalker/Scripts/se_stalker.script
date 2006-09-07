@@ -157,10 +157,13 @@ function se_stalker:on_register()
 
 	-- Регистрация в таскменеджере
 	task_manager.register_target(self)
-	
-	self:brain():update()
+
 
 	self:fill_exclusives()
+	
+	if self:smart_terrain_id() == 65535 then
+		self:brain():update()
+	end
 end
 --------------------
 function se_stalker:on_unregister()
