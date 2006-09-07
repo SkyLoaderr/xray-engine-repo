@@ -35,17 +35,7 @@
 game_cl_ArtefactHunt::game_cl_ArtefactHunt()
 {
 	m_game_ui = NULL;
-	/*
-	pMessageSounds[0].create("messages\\multiplayer\\mp_artifact_lost");
-	pMessageSounds[1].create("messages\\multiplayer\\mp_artifact_on_base");
-	pMessageSounds[2].create("messages\\multiplayer\\mp_artifact_on_base_radio");
-	pMessageSounds[3].create("messages\\multiplayer\\mp_got_artifact");
-	pMessageSounds[4].create("messages\\multiplayer\\mp_got_artifact_radio");
-	pMessageSounds[5].create("messages\\multiplayer\\mp_new_artifact");
-	pMessageSounds[6].create("messages\\multiplayer\\mp_artifact_delivered_by_enemy");
-	pMessageSounds[7].create("messages\\multiplayer\\mp_artifact_stolen");
-	*/
-	
+		
 	m_bBuyEnabled	= FALSE;
 	//---------------------------------
 	m_Eff_Af_Spawn = "";
@@ -193,15 +183,12 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 
 			if (!Game().local_player) break;
 			if (Game().local_player->GameID == PlayerID)
-				PlaySndMessage(ID_GOT_AF);
-//				pMessageSounds[3].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
+				PlaySndMessage(ID_AF_TEAM1_TAKE + ModifyTeam(Game().local_player->team));
 			else
 				if (Game().local_player->team == Team)
-					PlaySndMessage(ID_GOT_AF_R);
-//					pMessageSounds[4].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
+					PlaySndMessage(ID_AF_TEAM1_TAKE_R + ModifyTeam(Game().local_player->team));
 				else
-					PlaySndMessage(ID_AF_STOLEN);
-//					pMessageSounds[7].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
+					PlaySndMessage(ID_AF_TEAM1_TAKE_ENEMY + ModifyTeam(Game().local_player->team));
 		}break;
 	case GAME_EVENT_ARTEFACT_DROPPED: //ahunt
 		{
@@ -243,15 +230,12 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			
 			if (!Game().local_player) break;
 			if (Game().local_player->GameID == PlayerID)
-//				pMessageSounds[1].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
-				PlaySndMessage(ID_AF_ONBASE);
+				PlaySndMessage(ID_AF_TEAM1_ONBASE + ModifyTeam(Game().local_player->team));
 			else
 				if (Game().local_player->team == Team)
-//					pMessageSounds[2].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
-					PlaySndMessage(ID_AF_ONBASE_R);
+					PlaySndMessage(ID_AF_TEAM1_ONBASE_R + ModifyTeam(Game().local_player->team));
 				else
-//					pMessageSounds[6].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
-					PlaySndMessage(ID_AF_ENEMY);
+					PlaySndMessage(ID_AF_TEAM1_ONBASE_ENEMY + ModifyTeam(Game().local_player->team));
 		}break;
 	case GAME_EVENT_ARTEFACT_SPAWNED: //ahunt
 		{
@@ -260,7 +244,6 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			CommonMessageOut(Text);
 
 			PlaySndMessage(ID_NEW_AF);
-//			pMessageSounds[5].play_at_pos(NULL, Fvector().set(0,0,0), sm_2D, 0);
 		}break;
 	case GAME_EVENT_ARTEFACT_DESTROYED:  //ahunt
 		{
@@ -715,14 +698,22 @@ void	game_cl_ArtefactHunt::OnDestroy				(CObject* pObj)
 
 void	game_cl_ArtefactHunt::LoadSndMessages				()
 {
-	LoadSndMessage("ahunt_snd_messages", "artifact_lost", ID_AF_LOST);
-	LoadSndMessage("ahunt_snd_messages", "artifact_on_base", ID_AF_ONBASE);
-	LoadSndMessage("ahunt_snd_messages", "artifact_on_base_radio", ID_AF_ONBASE_R);
-	LoadSndMessage("ahunt_snd_messages", "got_artifact", ID_GOT_AF);
-	LoadSndMessage("ahunt_snd_messages", "got_artifact_radio", ID_GOT_AF_R);
-	LoadSndMessage("ahunt_snd_messages", "new_artifact", ID_NEW_AF);
-	LoadSndMessage("ahunt_snd_messages", "artifact_delivered_by_enemy", ID_AF_ENEMY);
-	LoadSndMessage("ahunt_snd_messages", "artifact_stolen", ID_AF_STOLEN);
+	LoadSndMessage("ahunt_snd_messages", "artefact_new", ID_NEW_AF);
+	LoadSndMessage("ahunt_snd_messages", "artefact_lost", ID_AF_LOST);
+
+	LoadSndMessage("ahunt_snd_messages", "team1_artefact_on_base", ID_AF_TEAM1_ONBASE);
+	LoadSndMessage("ahunt_snd_messages", "team2_artefact_on_base", ID_AF_TEAM2_ONBASE);
+	LoadSndMessage("ahunt_snd_messages", "team1_artefact_on_base_r", ID_AF_TEAM1_ONBASE_R);
+	LoadSndMessage("ahunt_snd_messages", "team2_artefact_on_base_r", ID_AF_TEAM2_ONBASE_R);
+	LoadSndMessage("ahunt_snd_messages", "team1_artefact_on_base_enemy", ID_AF_TEAM1_ONBASE_ENEMY);
+	LoadSndMessage("ahunt_snd_messages", "team2_artefact_on_base_enemy", ID_AF_TEAM2_ONBASE_ENEMY);
+
+	LoadSndMessage("ahunt_snd_messages", "team1_artefact_take", ID_AF_TEAM1_TAKE);
+	LoadSndMessage("ahunt_snd_messages", "team2_artefact_take", ID_AF_TEAM2_TAKE);
+	LoadSndMessage("ahunt_snd_messages", "team1_artefact_take_r", ID_AF_TEAM1_TAKE_R);
+	LoadSndMessage("ahunt_snd_messages", "team2_artefact_take_r", ID_AF_TEAM2_TAKE_R);
+	LoadSndMessage("ahunt_snd_messages", "team1_artefact_take_enemy", ID_AF_TEAM1_TAKE_ENEMY);
+	LoadSndMessage("ahunt_snd_messages", "team2_artefact_take_enemy", ID_AF_TEAM2_TAKE_ENEMY);
 };
 
 void	game_cl_ArtefactHunt::OnBuySpawnMenu_Ok		()
