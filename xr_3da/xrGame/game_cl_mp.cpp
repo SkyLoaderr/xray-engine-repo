@@ -369,6 +369,8 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			sprintf(Text, "%s%s",Color_Main, *st.translate("mp_match_started"));
 			CommonMessageOut(Text);
 			OnSwitchPhase_InProgress();
+			//-------------------------------
+			PlaySndMessage(ID_MATCH_STARTED);
 		}break;
 	case GAME_EVENT_ROUND_END:
 		{
@@ -876,6 +878,7 @@ void	game_cl_mp::LoadSndMessages				()
 	LoadSndMessage("mp_snd_messages", "butcher", ID_BUTCHER);
 	LoadSndMessage("mp_snd_messages", "assassin", ID_ASSASSIN);
 	LoadSndMessage("mp_snd_messages", "ready", ID_READY);
+	LoadSndMessage("mp_snd_messages", "match_started", ID_MATCH_STARTED);
 };
 
 void	game_cl_mp::OnRankChanged	()

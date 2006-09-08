@@ -494,15 +494,25 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 					ConvertTime2String(&S, TimeRemains);
 					string1024 tmpStr = "";
 					if (TimeRemains > 10000)
-						strconcat(tmpStr, *st.translate("mp_time2start"), S);
+						strconcat(tmpStr, *st.translate("mp_time2start"), " ", S);
 					else
 					{
 						if (TimeRemains < 1000)
 							strconcat(tmpStr, *st.translate("mp_go"), "");
 						else
 						{
-							_itoa(TimeRemains/1000, S, 10);
-							strconcat(tmpStr, *st.translate("mp_ready"), S);
+							static u32 dwLastTimeRemains = 10;
+							u32 dwCurTimeRemains = TimeRemains/1000;
+							if (dwLastTimeRemains != dwCurTimeRemains)
+							{
+								if (dwCurTimeRemains > 0 && dwCurTimeRemains <= 5)
+								{
+									PlaySndMessage(ID_COUNTDOWN_1 + dwCurTimeRemains - 1);
+								}
+							}
+							dwLastTimeRemains = dwCurTimeRemains;
+							_itoa(dwCurTimeRemains, S, 10);								
+							strconcat(tmpStr, *st.translate("mp_ready"), "...", S);
 						}
 					};
 					
@@ -874,6 +884,12 @@ void				game_cl_Deathmatch::LoadSndMessages				()
 	LoadSndMessage("dm_snd_messages", "dm_rank2", ID_RANK_2);
 	LoadSndMessage("dm_snd_messages", "dm_rank3", ID_RANK_3);
 	LoadSndMessage("dm_snd_messages", "dm_rank4", ID_RANK_4);
+
+	LoadSndMessage("dm_snd_messages", "countdown_5", ID_COUNTDOWN_5);
+	LoadSndMessage("dm_snd_messages", "countdown_4", ID_COUNTDOWN_4);
+	LoadSndMessage("dm_snd_messages", "countdown_3", ID_COUNTDOWN_3);
+	LoadSndMessage("dm_snd_messages", "countdown_2", ID_COUNTDOWN_2);
+	LoadSndMessage("dm_snd_messages", "countdown_1", ID_COUNTDOWN_1);
 };
 
 void				game_cl_Deathmatch::OnSwitchPhase_InProgress()
