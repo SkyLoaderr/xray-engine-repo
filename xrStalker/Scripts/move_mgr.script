@@ -1,8 +1,8 @@
 -- Movement manager
 -- Created by: Andrey Fidrya (Zmey), af@svitonline.com
 
---function printf()
---end
+function printf()
+end
 
 local dist_walk = 10 -- < dist_run
 local dist_run = 2500
