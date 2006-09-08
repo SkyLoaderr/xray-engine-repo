@@ -301,7 +301,11 @@ function se_respawn:create(prob)
 		
 		local parent_id = nil
 		if self.parent ~= nil then
-			parent_id = alife():story_object(self.parent).id
+			local s_obj = alife():story_object(self.parent)
+			if s_obj == nil then
+				abort("SPAWNING [%s], cant find parent with SID [%s]", self:name(), self.parent)
+			end
+			parent_id = s_obj.id
 		end
 		
 		local obj
