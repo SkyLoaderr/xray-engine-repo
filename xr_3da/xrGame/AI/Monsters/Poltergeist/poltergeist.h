@@ -29,6 +29,7 @@ class CPoltergeist :	public CBaseMonster ,
 	CPolterSpecialAbility	*m_flame;
 	CPolterSpecialAbility	*m_tele;
 
+
 public:
 					CPoltergeist		();
 	virtual			~CPoltergeist		();	
@@ -81,7 +82,6 @@ public:
 			void	EnableHide				(){m_disable_hide = false;}
 			void	DisableHide				(){m_disable_hide = true;}
 	
-
 private:
 			void	Hide					();
 			void	Show					();
@@ -167,6 +167,22 @@ class CPolterFlame : public CPolterSpecialAbility {
 
 	float					m_pmt_aura_radius;
 
+	
+	// Scanner
+	float					m_scan_radius;
+	u32						m_scan_delay_min;
+	u32						m_scan_delay_max;
+	
+	SPPInfo					m_scan_effector_info;
+	float					m_scan_effector_time;
+	float					m_scan_effector_time_attack;
+	float					m_scan_effector_time_release;
+	ref_sound				m_scan_sound;
+
+	bool					m_state_scanning;
+	u32						m_scan_next_time;
+
+
 	enum EFlameState {
 		ePrepare,
 		eFire,
@@ -198,6 +214,7 @@ public:
 	virtual void	load						(LPCSTR section);
 	virtual void	update_schedule				();
 	virtual void	on_destroy					();
+	virtual void	on_die						();
 
 private:
 			void	select_state				(SFlameElement *elem, EFlameState state);

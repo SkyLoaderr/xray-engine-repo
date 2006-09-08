@@ -7,6 +7,8 @@
 #include "../../../net_utils.h"
 #include "../../../ai_space.h"
 #include "../../../restricted_object.h"
+#include "../../../actor.h"
+#include "../ai_monster_effector.h"
 
 CPolterFlame::CPolterFlame(CPoltergeist *polter) : inherited (polter)
 {
@@ -44,6 +46,38 @@ void CPolterFlame::load(LPCSTR section)
 	m_max_flame_height	= pSettings->r_float(section,"flame_max_height");
 
 	m_pmt_aura_radius	= pSettings->r_float(section,"flame_aura_radius");
+
+	//-----------------------------------------------------------------------------------------
+	// Scanner
+	m_scan_radius		= pSettings->r_float(section,"flame_scan_radius");
+	read_delay			(section,"flame_scan_delay_min_max",m_scan_delay_min,	m_scan_delay_max);
+
+	
+	// load scan effector
+	LPCSTR ppi_section = pSettings->r_string(section, "flame_scan_effector_section");
+	m_scan_effector_info.duality.h			= pSettings->r_float(ppi_section,"duality_h");
+	m_scan_effector_info.duality.v			= pSettings->r_float(ppi_section,"duality_v");
+	m_scan_effector_info.gray				= pSettings->r_float(ppi_section,"gray");
+	m_scan_effector_info.blur				= pSettings->r_float(ppi_section,"blur");
+	m_scan_effector_info.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
+	m_scan_effector_info.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
+	m_scan_effector_info.noise.fps			= pSettings->r_float(ppi_section,"noise_fps");
+	VERIFY(!fis_zero(m_scan_effector_info.noise.fps));
+
+	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &m_scan_effector_info.color_base.r,	&m_scan_effector_info.color_base.g,	&m_scan_effector_info.color_base.b);
+	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &m_scan_effector_info.color_gray.r,	&m_scan_effector_info.color_gray.g,	&m_scan_effector_info.color_gray.b);
+	sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &m_scan_effector_info.color_add.r,	&m_scan_effector_info.color_add.g,	&m_scan_effector_info.color_add.b);
+
+	m_scan_effector_time			= pSettings->r_float(ppi_section,"time");
+	m_scan_effector_time_attack		= pSettings->r_float(ppi_section,"time_attack");
+	m_scan_effector_time_release	= pSettings->r_float(ppi_section,"time_release");
+
+	m_scan_sound.create		(pSettings->r_string(section,"flame_scan_sound"), st_Effect,SOUND_TYPE_WORLD);
+	//-----------------------------------------------------------------------------------------
+
+	m_state_scanning	= false;
+	m_scan_next_time	= 0;
+
 
 	m_time_flame_started	= 0;
 }
@@ -108,6 +142,44 @@ struct remove_predicate {
 void CPolterFlame::update_schedule()
 {
 	inherited::update_schedule();
+
+	//---------------------------------------------------------------------
+	// Update Scanner
+	
+	if (m_object->g_Alive()) {
+		
+		// check the start of scanning
+		if (!m_state_scanning && !m_object->EnemyMan.get_enemy()) {
+			// check radius
+			if (Actor()->Position().distance_to(m_object->Position()) < m_scan_radius) {
+				// check timing
+				if (m_scan_next_time < time()) {
+					// start here
+					m_state_scanning = true;
+
+					// играть звук
+					//m_scan_sound.play_at_pos(m_object, get_head_position(Actor()),sm_2D);
+					::Sound->play_at_pos(m_scan_sound, 0, Actor()->Position());
+
+					// постпроцесс
+					Actor()->Cameras().AddPPEffector(xr_new<CMonsterEffector>(m_scan_effector_info, m_scan_effector_time, m_scan_effector_time_attack, m_scan_effector_time_release));
+				}
+				
+			}
+		} 
+		// check stop of scanning (it currently scans)
+		else {
+			if (!m_scan_sound._feedback()) {
+				// stop here
+				m_state_scanning = false;
+				
+				// count next scan time
+				m_scan_next_time = time() + Random.randI(m_scan_delay_min,m_scan_delay_max);
+			}
+		}
+	}
+	//---------------------------------------------------------------------
+
 
 	// check all flames
 	for (FLAME_ELEMS_IT it = m_flames.begin();it != m_flames.end();it++) {
@@ -177,6 +249,8 @@ void CPolterFlame::update_schedule()
 		}
 	}
 
+	
+
 }
 void CPolterFlame::on_destroy()
 {
@@ -194,7 +268,17 @@ void CPolterFlame::on_destroy()
 	}
 	
 	m_flames.clear();
+
+	if (m_scan_sound._feedback()) m_scan_sound.stop();
 }
+
+void CPolterFlame::on_die()
+{
+	inherited::on_die();
+	if (m_scan_sound._feedback()) m_scan_sound.stop();
+}
+
+
 
 #define FIND_POINT_ATTEMPT_COUNT	5
 
