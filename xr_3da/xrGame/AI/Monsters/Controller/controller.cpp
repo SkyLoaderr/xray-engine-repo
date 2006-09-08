@@ -627,18 +627,17 @@ void CController::create_base_controls()
 
 void CController::TranslateActionToPathParams()
 {
-	if (m_mental_state == eStateIdle) {
-		inherited::TranslateActionToPathParams();
-		return;
-	}
-	
-	custom_anim().set_path_params();
+	//if (m_mental_state == eStateIdle) {
+	//	inherited::TranslateActionToPathParams();
+	//	return;
+	//}
+	//custom_anim().set_path_params();
 
 	if ((anim().m_tAction != ACT_RUN) && (anim().m_tAction != ACT_WALK_FWD)) {
 		inherited::TranslateActionToPathParams();
 		return;
 	}
-
+	
 	u32 vel_mask = (m_bDamaged ? MonsterMovement::eVelocityParamsWalkDamaged : MonsterMovement::eVelocityParamsWalk);
 	u32 des_mask = (m_bDamaged ? MonsterMovement::eVelocityParameterWalkDamaged : MonsterMovement::eVelocityParameterWalkNormal);
 
