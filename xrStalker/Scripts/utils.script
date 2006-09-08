@@ -168,15 +168,15 @@ end
 
 -- Проверяет, находится ли stalker рядом с точкой path_point пути patrol_path
 function stalker_at_waypoint(stalker, patrol_path, path_point)
-	return stalker:level_vertex_id() == patrol_path:level_vertex_id(path_point)
---[[
+--	return stalker:level_vertex_id() == patrol_path:level_vertex_id(path_point)
+
 	local stalker_pos = stalker:position()
-	local distance = stalker_pos:distance_to(patrol_path:point(path_point))
-	if distance <= 0.5 then
+	local distance = stalker_pos:distance_to_sqr(patrol_path:point(path_point))
+	if distance <= 0.2 then
 		return true
 	end
 	return false
---]]
+
 end
 
 -- Послать stalker в заданную точку patrol_path(path_point)
