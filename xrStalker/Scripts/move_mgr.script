@@ -1,8 +1,8 @@
 -- Movement manager
 -- Created by: Andrey Fidrya (Zmey), af@svitonline.com
 
-function printf()
-end
+--function printf()
+--end
 
 local dist_walk = 10 -- < dist_run
 local dist_run = 2500
@@ -253,14 +253,14 @@ function move_mgr:setup_movement_by_patrol_path()
 	self.state = state_moving
 
 	local is_term, idx = self:standing_on_terminal_waypoint()
-	if is_term then
-		printf("_bp: object '%s': TERMINAL WAYPOINT", self.object:name())
-		-- Стоим на терминальной вершине пути  - сразу иммитировать прибытие
-		self:waypoint_callback(self.object, nil, idx)
-	else
+--!	if is_term then
+--!		printf("_bp: object '%s': TERMINAL WAYPOINT", self.object:name())
+--!		-- Стоим на терминальной вершине пути  - сразу иммитировать прибытие
+--!		self:waypoint_callback(self.object, nil, idx)
+--!	else
 		-- Реально идем в вершину
 		self:update_movement_state()
-	end
+--!	end
 
 	local sect = self.object:section()
 
@@ -384,12 +384,12 @@ function move_mgr:time_callback()
 	--	return
 	--end
 	if self.last_index and self.patrol_walk:terminal(self.last_index) then
-		if utils.stalker_at_waypoint(self.object, self.patrol_walk, self.last_index) then
+--!		if utils.stalker_at_waypoint(self.object, self.patrol_walk, self.last_index) then
 			-- Если стоим на конечной точке пути и с нее никуда не сдвинулись,
 			-- сразу иммитируем callback на прибытие, чтобы включить look.
-			self:waypoint_callback(self.object, nil, self.last_index)
-			return
-		end
+--!			self:waypoint_callback(self.object, nil, self.last_index)
+--!			return
+--!		end
 		-- Стоим на конечной точке пути, но неточно. Чтобы вернуться на ближайшую
 		-- точку пути, сбрасываем схему. Обратите внимаине, что здесь нельзя
 		-- просто вызвать update_movement_state, потому что мы УЖЕ были в
