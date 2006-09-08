@@ -176,7 +176,7 @@ void	CInventoryOwner::load	(IReader &input_packet)
 	if(active_slot == u8(-1))
 		inventory().SetActiveSlot(NO_ACTIVE_SLOT);
 	else
-		inventory().Activate(active_slot);
+		inventory().Activate_deffered(active_slot, Device.dwFrame);
 
 	m_tmp_active_slot_num		 = active_slot;
 

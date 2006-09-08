@@ -144,11 +144,11 @@ void			CLight_DB::Update			()
 		light*	_sun_adapted		= (light*) sun_adapted._get();
 		CEnvDescriptor&	E			= g_pGamePersistent->Environment.CurrentEnv;
 		Fvector						OD,OP,AD,AP;
-		OD.set						(E.sun_dir).normalize	();
+		OD.set						(E.sun_dir).normalize			();
 		OP.mad						(Device.vCameraPosition,OD,-500.f);
-		AD.set(0,-.75f,0).add		(E.sun_dir).normalize	();
+		AD.set(0,-1.75f,0).add		(E.sun_dir).normalize			();
 		AP.mad						(Device.vCameraPosition,AD,-500.f);
-		sun_original->set_rotation	(OD,_sun_original->right	);
+		sun_original->set_rotation	(OD,_sun_original->right		);
 		sun_original->set_position	(OP);
 		sun_original->set_color		(E.sun_color.x,E.sun_color.y,E.sun_color.z);
 		sun_original->set_range		(600.f);

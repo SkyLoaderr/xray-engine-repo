@@ -166,8 +166,8 @@ IC float PLC_energy	(Fvector& P, Fvector& N, light* L, float E)
 IC int PLC_calc	(Fvector& P, Fvector& N, light* L, float energy, Fvector& O)
 {
 	float	E		= PLC_energy(P,N,L,energy);
-	float	C1		= Device.vCameraPosition.distance_to_sqr(P)/S_distance2;
-	float	C2		= O.distance_to_sqr(P)/S_fade2;
+	float	C1		= clampr(Device.vCameraPosition.distance_to_sqr(P)/S_distance2,	0.f,1.f);
+	float	C2		= clampr(O.distance_to_sqr(P)/S_fade2,							0.f,1.f);
 	float	A		= 1.f-1.5f*E*(1.f-C1)*(1.f-C2);
 	return			iCeil(255.f*A);
 }
@@ -251,6 +251,7 @@ void CLightShadows::calculate	()
 			float		p_asp	=	1.f;
 			float		p_near	=	p_dist-p_R-eps;									
 			float		p_nearR	=	C.C.distance_to(L.source->position) + p_R*0.85f + eps;
+						p_nearR =	p_near;
 			float		p_far	=	_min(Lrange,_max(p_dist+S_fade,p_dist+p_R));	
 			if (p_near<eps)			continue;
 			if (p_far<(p_near+eps))	continue;

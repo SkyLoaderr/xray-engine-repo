@@ -59,6 +59,7 @@ CInventory::CInventory()
 	m_iActiveSlot								= NO_ACTIVE_SLOT;
 	m_iNextActiveSlot							= NO_ACTIVE_SLOT;
 	m_iPrevActiveSlot							= NO_ACTIVE_SLOT;
+	m_iLoadActiveSlot							= NO_ACTIVE_SLOT;
 	m_pTarget									= NULL;
 
 	string256 temp;
@@ -80,6 +81,7 @@ CInventory::CInventory()
 	m_fTotalWeight								= -1.f;
 	m_dwModifyFrame								= 0;
 	m_drop_last_frame							= false;
+	m_iLoadActiveSlotFrame						= u32(-1);
 }
 
 
@@ -348,8 +350,23 @@ bool CInventory::Ruck(PIItem pIItem)
 	return true;
 }
 
+void CInventory::Activate_deffered	(u32 slot, u32 _frame)
+{
+	 m_iLoadActiveSlot			= slot;
+	 m_iLoadActiveSlotFrame		= _frame;
+}
+
 bool CInventory::Activate(u32 slot, bool force) 
 {	
+	if(Device.dwFrame == m_iLoadActiveSlotFrame) 
+	{
+		 if( (m_iLoadActiveSlot == slot) && m_slots[slot].m_pIItem )
+			m_iLoadActiveSlotFrame = u32(-1);
+		 else
+			return false;
+
+	}
+
 	if( (slot!=NO_ACTIVE_SLOT && m_slots[slot].IsBlocked()) && !force)
 		return false;
 

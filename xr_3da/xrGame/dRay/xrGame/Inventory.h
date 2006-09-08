@@ -55,6 +55,7 @@ public:
 
 
 	bool					Activate			(u32 slot, bool force=false);
+	void					Activate_deffered	(u32 slot, u32 _frame);
 	PIItem					ActiveItem			()const					{return m_iActiveSlot==NO_ACTIVE_SLOT ? NULL :m_slots[m_iActiveSlot].m_pIItem;}
 	PIItem					ItemFromSlot		(u32 slot) const;
 
@@ -134,6 +135,8 @@ protected:
 	u32 				m_iActiveSlot;
 	u32 				m_iNextActiveSlot;
 	u32 				m_iPrevActiveSlot;
+	u32 				m_iLoadActiveSlot;
+	u32 				m_iLoadActiveSlotFrame;
 
 	CInventoryOwner*	m_pOwner;
 

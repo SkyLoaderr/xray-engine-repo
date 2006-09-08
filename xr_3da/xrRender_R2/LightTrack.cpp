@@ -115,7 +115,7 @@ void	CROS_impl::update	(IRenderable* O)
 
 	// sun-tracing
 #if RENDER==R_R1
-	light*	sun		=		(light*)RImplementation.L_DB->sun_original._get()	;
+	light*	sun		=		(light*)RImplementation.L_DB->sun_adapted._get()	;
 #else
 	light*	sun		=		(light*)RImplementation.Lights.sun_adapted._get()	;
 #endif
@@ -208,7 +208,7 @@ void	CROS_impl::update	(IRenderable* O)
 			CROS_impl::Light&	L		= lights.back()				;
 			L.source					= sun						;
 			L.color.mul_rgb				(sun->color,sun_smooth/2)	;
-			L.energy					= sun_smooth/2				;
+			L.energy					= sun_smooth				;
 		}
 
 		// Sort lights by importance - important for R1-shadows
