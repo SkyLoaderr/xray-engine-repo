@@ -123,7 +123,11 @@ bool CControllerPsyHit::check_conditions_final()
 	if (m_object->Position().distance_to(Actor()->Position()) < m_min_tube_dist) 
 												return false;
 
+	
+	
 	// trace enemy (extended check visibility)
+	
+	// 1. head-2-head
 	Fvector trace_from, trace_to;
 	trace_from	= get_head_position(m_object);
 	trace_to	= get_head_position(Actor());
@@ -134,11 +138,46 @@ bool CControllerPsyHit::check_conditions_final()
 
 	collide::rq_result	l_rq;
 	if (Level().ObjectSpace.RayPick(trace_from, trace_dir, dist, collide::rqtBoth, l_rq, m_object)) {
-		if (l_rq.O != Actor()) return false;
+		if (l_rq.O == Actor()) 
+			return true;
 	}
 
-	return true;
+	// 2. head 2 center
+	trace_from	= get_head_position(m_object);
+	Actor()->Center(trace_to);
+
+	dist = trace_from.distance_to(trace_to);
+	trace_dir.sub(trace_to,trace_from);
+
+	if (Level().ObjectSpace.RayPick(trace_from, trace_dir, dist, collide::rqtBoth, l_rq, m_object)) 
+		if (l_rq.O == Actor()) 
+			return true;
+
+	// 3. center 2 head
+	m_object->Center(trace_from);
+	trace_to	= get_head_position(Actor());
+
+	dist = trace_from.distance_to(trace_to);
+	trace_dir.sub(trace_to,trace_from);
+
+	if (Level().ObjectSpace.RayPick(trace_from, trace_dir, dist, collide::rqtBoth, l_rq, m_object)) 
+		if (l_rq.O == Actor()) return true;
+
+	
+	// 4. center 2 center
+	m_object->Center(trace_from);
+	Actor()->Center	(trace_to);
+
+	dist = trace_from.distance_to(trace_to);
+	trace_dir.sub(trace_to,trace_from);
+
+	if (Level().ObjectSpace.RayPick(trace_from, trace_dir, dist, collide::rqtBoth, l_rq, m_object)) 
+		if (l_rq.O == Actor()) return true;
+
+
+	return false;
 }
+
 
 void CControllerPsyHit::death_glide_start()
 {
