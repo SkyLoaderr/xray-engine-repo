@@ -394,6 +394,13 @@ flames_count			= 4
 flames_delay			= 2000	;3500	;2000
 flame_aura_radius		= 10
 
+flame_scan_radius		= 30
+flame_scan_sound			= monsters\burer\burer_scan_affect_0
+flame_scan_effector_section	= m_poltergeist_scan_effector
+flame_scan_delay_min_max	= 5000,10000
+
+
+
 
 flame_min_dist			= 2
 flame_max_dist			= 15
@@ -410,3 +417,20 @@ Particles_Hidden				= monsters\polter_linza_00
 
 Hidden_Particles				= monsters\polter_linza	;monsters\polter_hidden
 Sound_Idle						= anomaly\polter_fire_idle
+
+[m_poltergeist_scan_effector]
+duality_h			= 0.003
+duality_v			= 0.002
+blur				= 1.5
+gray				= 0.3
+noise_intensity		= 0.0
+noise_grain			= 2
+noise_fps			= 8
+color_base			= 0.55,0.5,0.5;0.637,0.442,0.456
+color_gray			= 0.333,0.333,0.333
+color_add			= 0.05,0.0,0.0
+time				= 10.00
+time_attack			= 0.3		; fade in
+time_release		= 0.85		; fade out
+
+
