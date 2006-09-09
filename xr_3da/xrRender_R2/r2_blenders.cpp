@@ -20,9 +20,9 @@ IBlender*	CRender::blender_create	(CLASS_ID cls)
 	switch (cls)
 	{
 	case B_DEFAULT:			return xr_new<CBlender_deffer_flat>		();		
-	case B_DEFAULT_AREF:	return xr_new<CBlender_deffer_aref>		();
+	case B_DEFAULT_AREF:	return xr_new<CBlender_deffer_aref>		(true);
 	case B_VERT:			return xr_new<CBlender_deffer_flat>		();
-	case B_VERT_AREF:		return xr_new<CBlender_deffer_aref>		();
+	case B_VERT_AREF:		return xr_new<CBlender_deffer_aref>		(false);
 	case B_SCREEN_SET:		return xr_new<CBlender_Screen_SET>		();	
 	case B_SCREEN_GRAY:		return 0;
 	case B_EDITOR_WIRE:		return xr_new<CBlender_Editor_Wire>		();	
