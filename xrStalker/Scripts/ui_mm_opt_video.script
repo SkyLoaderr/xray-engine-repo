@@ -23,6 +23,7 @@ function opt_video:InitControls(x, y, xml, handler)
 	xml:InitCheck("tab_video:check_fullscreen",		self)
 	xml:InitCheck("tab_video:check_no_vsync",		self)
 	xml:InitCheck("tab_video:check_dyn_lignt",		self)
+	xml:InitCheck("tab_video:check_render_2",		self)
 	
 	xml:InitTrackBar("tab_video:track_gamma",		self)
 	xml:InitTrackBar("tab_video:track_contrast",	self)
