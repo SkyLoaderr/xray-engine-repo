@@ -790,10 +790,6 @@ LPCSTR CGameObject::Name () const
 	return	(*cName());
 }
 
-void CGameObject::on_reguested_spawn	(CObject *object)
-{
-}
-
 u32	CGameObject::ef_creature_type		() const
 {
 	string16	temp; CLSID2TEXT(CLS_ID,temp);

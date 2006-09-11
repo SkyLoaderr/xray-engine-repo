@@ -178,11 +178,9 @@ void CEntityAlive::UnloadFireParticles()
 void CEntityAlive::reinit()
 {
 	CEntity::reinit			();
-	conditions().reinit		();
 
 	m_fAccuracy				= 25.f;
 	m_fIntelligence			= 25.f;
-
 }
 
 void CEntityAlive::reload		(LPCSTR section)
@@ -231,6 +229,7 @@ BOOL CEntityAlive::net_Spawn	(CSE_Abstract* DC)
 /*	if(monster_community->team() != 255)
 		id_Team = monster_community->team();*/
 
+	conditions().reinit			();
 	inherited::net_Spawn		(DC);
 
 	m_BloodWounds.clear			();

@@ -643,7 +643,10 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 		m_HeavyBreathSnd.stop();
 	}
 	
-	Level().client_spawn_manager().add(E->m_holderID,ID(),this);
+	typedef CClientSpawnManager::CALLBACK_TYPE	CALLBACK_TYPE;
+	CALLBACK_TYPE	callback;
+	callback.bind	(this,&CActor::on_requested_spawn);
+	Level().client_spawn_manager().add(E->m_holderID,ID(),callback);
 	//F
 	//-------------------------------------------------------------
 	m_iLastHitterID = u16(-1);

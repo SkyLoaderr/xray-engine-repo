@@ -58,6 +58,10 @@ public:
 public:
 			void				enable				(const CObject *object, bool enable);
 			CCustomMonster		&object				() const;
+
+public:
+			void				save				(NET_Packet &packet) const;
+			void				load				(IReader &packet);
 };
 
 #include "hit_memory_manager_inline.h"

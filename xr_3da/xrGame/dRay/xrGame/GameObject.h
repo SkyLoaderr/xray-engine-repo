@@ -224,7 +224,6 @@ protected:
 	virtual	void			spawn_supplies		();
 
 public:
-	virtual void				on_reguested_spawn	(CObject *object);
 	IC		CAI_ObjectLocation	&ai_location		() const
 	{
 		VERIFY				(m_ai_location);

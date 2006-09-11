@@ -292,3 +292,17 @@ void CMemoryManager::make_object_visible_somewhen	(const CEntityAlive *enemy)
 //		Msg						("[%6d] make_object_visible_somewhen [%s] = %x",Device.dwTimeGlobal,*enemy->cName(),obj1->m_squad_mask.get());
 	obj1->visible				(mask,prev);
 }
+
+void CMemoryManager::save							(NET_Packet &packet) const
+{
+	visual().save				(packet);
+	sound().save				(packet);
+	hit().save					(packet);
+}
+
+void CMemoryManager::load							(IReader &packet)
+{
+	visual().load				(packet);
+	sound().load				(packet);
+	hit().load					(packet);
+}

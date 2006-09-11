@@ -164,7 +164,6 @@ void CCustomMonster::reinit		()
 	CScriptEntity::reinit		();
 	CEntityAlive::reinit		();
 	material().reinit			();
-	memory().reinit				();
 	movement().reinit			();
 	sound().reinit				();
 
@@ -768,9 +767,9 @@ void CCustomMonster::Die	(CObject* who)
 
 BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 {
+	memory().reinit				();
 	if (!movement().net_Spawn(DC) || !inherited::net_Spawn(DC) || !CScriptEntity::net_Spawn(DC))
 		return					(FALSE);
-
 
 	ISpatial					*self = smart_cast<ISpatial*> (this);
 	if (self) {
@@ -1137,4 +1136,16 @@ void CCustomMonster::on_enemy_change(const CEntityAlive *enemy)
 CVisualMemoryManager *CCustomMonster::visual_memory	() const
 {
 	return						(&memory().visual());
+}
+
+void CCustomMonster::save (NET_Packet &packet)
+{
+	inherited::save			(packet);
+	memory().save			(packet);
+}
+
+void CCustomMonster::load (IReader &packet)		
+{
+	inherited::load			(packet);
+	memory().load			(packet);
 }

@@ -46,6 +46,9 @@ public:
 	IC		void		add_condition			(_world_operator *action, _condition_type condition_id, _value_type condition_value);
 	IC		void		add_effect				(_world_operator *action, _condition_type condition_id, _value_type condition_value);
 
+	virtual	void		save					(NET_Packet &packet) {inherited_planner::save(packet); inherited_action::save(packet);}
+	virtual	void		load					(IReader &packet)	 {inherited_planner::load(packet); inherited_action::load(packet);}
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 typedef CActionPlannerAction<CScriptGameObject> CScriptActionPlannerAction;

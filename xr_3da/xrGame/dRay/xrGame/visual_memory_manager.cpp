@@ -24,6 +24,7 @@
 #include "../camerabase.h"
 #include "gamepersistent.h"
 #include "actor_memory.h"
+#include "client_spawn_manager.h"
 
 #ifdef DEBUG
 #	include "memory_manager.h"
@@ -519,6 +520,8 @@ void CVisualMemoryManager::update				(float time_delta)
 	if (!enabled())
 		return;
 
+	clear_delayed_objects				();
+
 	m_last_update_time					= Device.dwTimeGlobal;
 
 	squad_mask_type						mask = this->mask();
@@ -605,4 +608,119 @@ void CVisualMemoryManager::update				(float time_delta)
 	}
 
 	STOP_PROFILE
+}
+
+void CVisualMemoryManager::save	(NET_Packet &packet) const
+{
+	if (m_actor)
+		return;
+
+	if (!m_object->g_Alive())
+		return;
+
+	packet.w_u8					((u8)objects().size());
+
+	VISIBLES::const_iterator	I = objects().begin();
+	VISIBLES::const_iterator	E = objects().end();
+	for ( ; I != E; ++I) {
+		packet.w_u16			((*I).m_object->ID());
+		// object params
+		packet.w_u32			((*I).m_object_params.m_level_vertex_id);
+		packet.w_vec3			((*I).m_object_params.m_position);
+#ifdef USE_ORIENTATION
+		packet.w_float			((*I).m_object_params.m_orientation.yaw);
+		packet.w_float			((*I).m_object_params.m_orientation.pitch);
+		packet.w_float			((*I).m_object_params.m_orientation.roll);
+#endif
+		// self params
+		packet.w_u32			((*I).m_self_params.m_level_vertex_id);
+		packet.w_vec3			((*I).m_self_params.m_position);
+#ifdef USE_ORIENTATION
+		packet.w_float			((*I).m_self_params.m_orientation.yaw);
+		packet.w_float			((*I).m_self_params.m_orientation.pitch);
+		packet.w_float			((*I).m_self_params.m_orientation.roll);
+#endif
+	}
+}
+
+void CVisualMemoryManager::load	(IReader &packet)
+{
+	if (m_actor)
+		return;
+
+	if (!m_object->g_Alive())
+		return;
+
+	typedef CClientSpawnManager::CALLBACK_TYPE	CALLBACK_TYPE;
+	CALLBACK_TYPE					callback;
+	callback.bind					(this,&CVisualMemoryManager::on_requested_spawn);
+
+	int								count = packet.r_u8();
+	for (int i=0; i<count; ++i) {
+		CDelayedVisibleObject		delayed_object;
+		delayed_object.m_object_id	= packet.r_u16();
+
+		CVisibleObject				&object = delayed_object.m_visible_object;
+		object.m_object				= smart_cast<CGameObject*>(Level().Objects.net_Find(delayed_object.m_object_id));
+		// object params
+		object.m_object_params.m_level_vertex_id	= packet.r_u32();
+		packet.r_fvector3			(object.m_object_params.m_position);
+#ifdef USE_ORIENTATION
+		packet.r_float				(object.m_object_params.m_orientation.yaw);
+		packet.r_float				(object.m_object_params.m_orientation.pitch);
+		packet.r_float				(object.m_object_params.m_orientation.roll);
+#endif
+		// self params
+		object.m_self_params.m_level_vertex_id	= packet.r_u32();
+		packet.r_fvector3			(object.m_self_params.m_position);
+#ifdef USE_ORIENTATION
+		packet.r_float				(object.m_self_params.m_orientation.yaw);
+		packet.r_float				(object.m_self_params.m_orientation.pitch);
+		packet.r_float				(object.m_self_params.m_orientation.roll);
+#endif
+		if (object.m_object) {
+			add_visible_object		(object);
+			continue;
+		}
+
+		m_delayed_objects.push_back	(delayed_object);
+
+		Level().client_spawn_manager().add(delayed_object.m_object_id,m_object->ID(),callback);
+	}
+}
+
+void CVisualMemoryManager::clear_delayed_objects()
+{
+	if (m_actor)
+		return;
+
+	if (m_delayed_objects.empty())
+		return;
+
+	CClientSpawnManager						&manager = Level().client_spawn_manager();
+	DELAYED_VISIBLE_OBJECTS::const_iterator	I = m_delayed_objects.begin();
+	DELAYED_VISIBLE_OBJECTS::const_iterator	E = m_delayed_objects.end();
+	for ( ; I != E; ++I)
+		manager.remove						((*I).m_object_id,m_object->ID());
+
+	m_delayed_objects.clear					();
+}
+
+void CVisualMemoryManager::on_requested_spawn	(CObject *object)
+{
+	DELAYED_VISIBLE_OBJECTS::iterator	I = m_delayed_objects.begin();
+	DELAYED_VISIBLE_OBJECTS::iterator	E = m_delayed_objects.end();
+	for ( ; I != E; ++I) {
+		if ((*I).m_object_id != object->ID())
+			continue;
+
+		
+		(*I).m_visible_object.m_object	= smart_cast<CGameObject*>(object);
+		VERIFY							((*I).m_visible_object.m_object);
+		add_visible_object				((*I).m_visible_object);
+		m_delayed_objects.erase			(I);
+		return;
+	}
+
+	NODEFAULT;
 }

@@ -58,17 +58,33 @@ void CALifeStorageManager::save	(LPCSTR save_name, bool update_name)
 		}
 	}
 
-	CMemoryWriter				stream;
-	header().save				(stream);
-	time_manager().save			(stream);
-	spawns().save				(stream);
-	objects().save				(stream);
-	registry().save				(stream);
+	u32							source_count;
+	u32							dest_count;
+	void						*dest_data;
+	{
+		CMemoryWriter			stream;
+		header().save			(stream);
+		time_manager().save		(stream);
+		spawns().save			(stream);
+		objects().save			(stream);
+		registry().save			(stream);
+
+		source_count			= stream.tell();
+		void					*source_data = stream.pointer();
+		dest_count				= rtc_csize(source_count);
+		dest_data				= xr_malloc(dest_count);
+		dest_count				= rtc_compress(dest_data,dest_count,source_data,source_count);
+	}
 
 	string256					temp;
 	FS.update_path				(temp,"$game_saves$",m_save_name);
-	stream.save_to				(temp);
-	Msg							("* Game %s is successfully saved to file '%s' (%d bytes)",m_save_name,temp,stream.size());
+	IWriter						*writer = FS.w_open(temp);
+	writer->w_u32				(source_count);
+	writer->w					(dest_data,dest_count);
+	xr_free						(dest_data);
+	FS.w_close					(writer);
+	Msg							("* Game %s is successfully saved to file '%s' (%d bytes compressed to %d)",m_save_name,temp,source_count,dest_count + 4);
+
 	if (!update_name)
 		strcpy					(m_save_name,save);
 }
@@ -96,27 +112,34 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 		return					(false);
 	}
 
-	{
-		string512				temp;
-		pApp->LoadTitle			(strconcat(temp,"Loading saved game \"",save_name,SAVE_EXTENSION,"\"..."));
-	}
+	string512					temp;
+	pApp->LoadTitle				(strconcat(temp,"Loading saved game \"",save_name,SAVE_EXTENSION,"\"..."));
 
 	unload						();
 	reload						(m_section);
 
-	header().load				(*stream);
-	time_manager().load			(*stream);
-	spawns().load				(*stream,file_name);
-	objects().load				(*stream,CALifeUpdatePredicate(this));
-	registry().load				(*stream);
-
+	u32							source_count = stream->r_u32();
+	void						*source_data = xr_malloc(source_count);
+	rtc_decompress				(source_data,source_count,stream->pointer(),stream->length() - sizeof(source_count));
 	FS.r_close					(stream);
+
+	{
+		IReader					source(source_data,source_count);
+		header().load			(source);
+		time_manager().load		(source);
+		spawns().load			(source,file_name);
+		objects().load			(source,CALifeUpdatePredicate(this));
+		registry().load			(source);
+	}
+
+	xr_free						(source_data);
 
 	groups().on_after_game_load	();
 
 	VERIFY						(graph().actor());
 	
 	Msg							("* Game %s is successfully loaded from file '%s' (%.3fs)",save_name, file_name,timer.GetElapsed_sec());
+
 	return						(true);
 }
 

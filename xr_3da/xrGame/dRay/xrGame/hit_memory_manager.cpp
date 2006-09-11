@@ -68,11 +68,11 @@ void CHitMemoryManager::Load				(LPCSTR section)
 
 void CHitMemoryManager::reinit				()
 {
+	m_hits					= 0;
 }
 
 void CHitMemoryManager::reload				(LPCSTR section)
 {
-	m_hits					= 0;
 #ifdef USE_SELECTED_HIT
 	xr_delete				(m_selected_hit);
 #endif
@@ -218,4 +218,12 @@ void CHitMemoryManager::remove_links	(CObject *object)
 
 	xr_delete			(m_selected_hit);
 #endif
+}
+
+void CHitMemoryManager::save	(NET_Packet &packet) const
+{
+}
+
+void CHitMemoryManager::load	(IReader &packet)
+{
 }

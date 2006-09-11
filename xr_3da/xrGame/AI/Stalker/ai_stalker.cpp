@@ -872,18 +872,6 @@ void CAI_Stalker::Think			()
 	STOP_PROFILE
 }
 
-void CAI_Stalker::save (NET_Packet &output_packet)
-{
-	inherited::save(output_packet);
-	CInventoryOwner::save(output_packet);
-}
-
-void CAI_Stalker::load (IReader &input_packet)		
-{
-	inherited::load(input_packet);
-	CInventoryOwner::load(input_packet);
-}
-
 void CAI_Stalker::SelectAnimation(const Fvector &view, const Fvector &move, float speed)
 {
 	if (!Device.Pause())
@@ -893,7 +881,8 @@ void CAI_Stalker::SelectAnimation(const Fvector &view, const Fvector &move, floa
 const SRotation CAI_Stalker::Orientation	() const
 {
 	return		(movement().m_head.current);
-};
+}
+
 const MonsterSpace::SBoneRotation &CAI_Stalker::head_orientation	() const
 {
 	return		(movement().head_orientation());
@@ -979,4 +968,18 @@ bool CAI_Stalker::can_attach			(const CInventoryItem *inventory_item) const
 		return							(false);
 
 	return								(CObjectHandler::can_attach(inventory_item));
+}
+
+void CAI_Stalker::save (NET_Packet &packet)
+{
+	inherited::save			(packet);
+	CInventoryOwner::save	(packet);
+	brain().save			(packet);
+}
+
+void CAI_Stalker::load (IReader &packet)		
+{
+	inherited::load			(packet);
+	CInventoryOwner::load	(packet);
+	brain().load			(packet);
 }

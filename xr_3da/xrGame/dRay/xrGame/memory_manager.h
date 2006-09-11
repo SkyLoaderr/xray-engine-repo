@@ -73,6 +73,10 @@ public:
 	IC		CDangerManager		&danger						() const;
 	IC		CCustomMonster		&object						() const;
 	IC		CAI_Stalker			&stalker					() const;
+
+public:
+			void				save						(NET_Packet &packet) const;
+			void				load						(IReader &packet);
 };
 
 #include "memory_manager_inline.h"

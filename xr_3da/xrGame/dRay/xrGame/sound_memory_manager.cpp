@@ -344,3 +344,11 @@ void CSoundMemoryManager::remove_links	(CObject *object)
 	xr_delete				(m_selected_sound);
 #endif
 }
+
+void CSoundMemoryManager::save	(NET_Packet &packet) const
+{
+}
+
+void CSoundMemoryManager::load	(IReader &packet)
+{
+}

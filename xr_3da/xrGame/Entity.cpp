@@ -172,13 +172,23 @@ void CEntity::Load		(LPCSTR section)
 
 BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 {
-	if (!inherited::net_Spawn(DC))
-		return				(FALSE);
-
-//	SetfHealth			(E->fHealth);
+	m_level_death_time		= 0;
+	m_game_death_time		= 0;
+	m_killer_id				= ALife::_OBJECT_ID(-1);
 
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeCreatureAbstract	*E	= smart_cast<CSE_ALifeCreatureAbstract*>(e);
+
+	// Initialize variables
+	if (E) {
+		SetfHealth			(E->fHealth);
+		VERIFY				((E->m_killer_id == ALife::_OBJECT_ID(-1)) || !g_Alive());
+		m_killer_id			= E->m_killer_id;
+		if (m_killer_id == ID())
+			m_killer_id		= ALife::_OBJECT_ID(-1);
+	}
+	else
+		SetfHealth			(1.0f);
 
 	// load damage params
 	if (!E) {
@@ -195,9 +205,7 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 		id_Squad			= E->g_squad();
 		id_Group			= E->g_group();
 
-
 		CSE_ALifeMonsterBase	*monster	= smart_cast<CSE_ALifeMonsterBase*>(E);
-
 		if (monster) {
 			MONSTER_COMMUNITY		monster_community;
 			monster_community.set	(pSettings->r_string(*cNameSect(), "species"));
@@ -206,17 +214,6 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 				id_Team = monster_community.team();
 		}
 	}
-
-	// Initialize variables
-	if (E) {
-		SetfHealth			(E->fHealth);
-		VERIFY				((E->m_killer_id == ALife::_OBJECT_ID(-1)) || !g_Alive());
-		m_killer_id			= E->m_killer_id;
-		if (m_killer_id == ID())
-			m_killer_id		= ALife::_OBJECT_ID(-1);
-	}
-	else
-		SetfHealth			(1.0f);
 
 	if (g_Alive()) {
 		Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member(this);
@@ -227,6 +224,10 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 		m_game_death_time		= E->m_game_death_time;;
 	}
 
+	if (!inherited::net_Spawn(DC))
+		return				(FALSE);
+
+//	SetfHealth			(E->fHealth);
 	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
 	CInifile* ini = NULL;
 
@@ -292,10 +293,6 @@ void CEntity::KillEntity(u16 whoID)
 void CEntity::reinit			()
 {
 	inherited::reinit			();
-
-	m_level_death_time			= 0;
-	m_game_death_time			= 0;
-	m_killer_id					= ALife::_OBJECT_ID(-1);
 }
 
 

@@ -33,10 +33,10 @@ void CClientSpawnManager::add		(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_
 	add								(requesting_id,requested_id,callback);
 }
 
-void CClientSpawnManager::add				(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, CGameObject *object)
+void CClientSpawnManager::add				(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, const CALLBACK_TYPE &object_callback)
 {
 	CSpawnCallback					callback;
-	callback.m_object				= object;
+	callback.m_object_callback		= object_callback;
 	add								(requesting_id,requested_id,callback);
 }
 
@@ -91,8 +91,8 @@ void CClientSpawnManager::clear				(ALife::_OBJECT_ID requested_id)
 
 void CClientSpawnManager::callback			(CSpawnCallback &spawn_callback, CObject *object)
 {
-	if (spawn_callback.m_object)
-		spawn_callback.m_object->on_reguested_spawn(object);
+	if (spawn_callback.m_object_callback)
+		spawn_callback.m_object_callback	(object);
 	CGameObject						*game_object = smart_cast<CGameObject*>(object);
 	CScriptGameObject				*script_game_object = !game_object ? 0 : game_object->lua_game_object();
 	(spawn_callback.m_callback)	(object->ID(),script_game_object);
@@ -114,8 +114,6 @@ void CClientSpawnManager::callback			(CObject *object)
 
 void CClientSpawnManager::merge_spawn_callbacks	(CSpawnCallback &new_callback, CSpawnCallback &old_callback)
 {
-	if (new_callback.m_object)
-		old_callback.m_object	= new_callback.m_object;
-
-	old_callback.m_callback		= new_callback.m_callback;
+	old_callback.m_object_callback	= new_callback.m_object_callback;
+	old_callback.m_callback			= new_callback.m_callback;
 }

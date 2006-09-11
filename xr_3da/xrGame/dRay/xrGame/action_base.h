@@ -75,6 +75,10 @@ public:
 	IC		const _value_type	&property			(const _condition_type &condition_id) const;
 	IC		void 				set_weight			(const _edge_value_type &weight);
 	IC		bool				first_time			() const;
+
+	virtual	void				save				(NET_Packet &packet) {}
+	virtual	void				load				(IReader &packet) {}
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 typedef CActionBase<CScriptGameObject> CScriptActionBase;

@@ -101,11 +101,13 @@ void CStalkerCombatPlanner::initialize			()
 {
 	inherited::initialize	();
 
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,			false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedOut,		false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyPositionHolded,	false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyEnemyDetoured,	false);
-	CScriptActionPlanner::m_storage.set_property(eWorldPropertyUseSuddenness,	true);
+	if (!m_loaded) {
+		CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,			false);
+		CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedOut,		false);
+		CScriptActionPlanner::m_storage.set_property(eWorldPropertyPositionHolded,	false);
+		CScriptActionPlanner::m_storage.set_property(eWorldPropertyEnemyDetoured,	false);
+		CScriptActionPlanner::m_storage.set_property(eWorldPropertyUseSuddenness,	true);
+	}
 
 	object().agent_manager().member().member(m_object).cover(0);
 	m_last_enemy_id			= u16(-1);
@@ -113,10 +115,14 @@ void CStalkerCombatPlanner::initialize			()
 	m_last_wounded			= false;
 
 	if (object().memory().enemy().selected()) {
-		CVisualMemoryManager	*visual_memory_manager = object().memory().enemy().selected()->visual_memory();
-		VERIFY					(visual_memory_manager);
-		CScriptActionPlanner::m_storage.set_property(eWorldPropertyUseSuddenness,	!visual_memory_manager->visible_now(&object()));
+		if (!m_loaded) {
+			CVisualMemoryManager	*visual_memory_manager = object().memory().enemy().selected()->visual_memory();
+			VERIFY					(visual_memory_manager);
+			CScriptActionPlanner::m_storage.set_property(eWorldPropertyUseSuddenness,	!visual_memory_manager->visible_now(&object()));
+		}
 	}
+
+	m_loaded				= false;
 
 	//.
 	if (object().agent_manager().member().members().size() > 1)
@@ -328,4 +334,14 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(planner,eWorldPropertyEnemy,		true);
 	add_effect				(planner,eWorldPropertyEnemy,		false);
 	add_operator			(eWorldOperatorKillWoundedEnemy,	planner);
+}
+
+void CStalkerCombatPlanner::save(NET_Packet &packet)
+{
+	inherited::save			(packet);
+}
+
+void CStalkerCombatPlanner::load(IReader &packet)
+{
+	inherited::load			(packet);
 }

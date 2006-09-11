@@ -105,16 +105,20 @@ void CSE_ALifeDynamicObject::try_switch_online		()
 				alife().scheduled().add		(this);
 	}
 
-	if (!can_switch_online())
+	if (!can_switch_online()) {
+		client_data.clear		();
 		return;
+	}
 	
 	if (!can_switch_offline()) {
 		alife().switch_online	(this);
 		return;
 	}
 
-	if (alife().graph().actor()->o_Position.distance_to(o_Position) > alife().online_distance())
+	if (alife().graph().actor()->o_Position.distance_to(o_Position) > alife().online_distance()) {
+		client_data.clear		();
 		return;
+	}
 
 	alife().switch_online		(this);
 }

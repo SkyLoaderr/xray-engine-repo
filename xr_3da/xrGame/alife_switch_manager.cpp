@@ -158,12 +158,12 @@ void CALifeSwitchManager::try_switch_online	(CSE_ALifeDynamicObject	*I)
 			CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = smart_cast<CSE_ALifeCreatureAbstract*>(objects().object(I->ID_Parent));
 			if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->fHealth < EPS_L))
 				Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->name_replace(),l_tpALifeCreatureAbstract->fHealth);
-			R_ASSERT2			(!l_tpALifeCreatureAbstract || (l_tpALifeCreatureAbstract->fHealth >= EPS_L),"Parent online, item offline...");
+			VERIFY2				(!l_tpALifeCreatureAbstract || (l_tpALifeCreatureAbstract->fHealth >= EPS_L),"Parent online, item offline...");
 			if (objects().object(I->ID_Parent)->m_bOnline)
 				Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->name_replace(),l_tpALifeCreatureAbstract->fHealth);
 		}
+		VERIFY2					(!objects().object(I->ID_Parent)->m_bOnline,"Parent online, item offline...");
 #endif
-		R_ASSERT2				(!objects().object(I->ID_Parent)->m_bOnline,"Parent online, item offline...");
 		return;
 	}
 
@@ -182,14 +182,13 @@ void CALifeSwitchManager::try_switch_offline(CSE_ALifeDynamicObject	*I)
 		if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->fHealth < EPS_L))
 			Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->name_replace(),l_tpALifeCreatureAbstract->fHealth);
 
-		R_ASSERT2			(!smart_cast<CSE_ALifeCreatureAbstract*>(objects().object(I->ID_Parent)) || (smart_cast<CSE_ALifeCreatureAbstract*>(objects().object(I->ID_Parent))->fHealth >= EPS_L),"Parent offline, item online...");
+		VERIFY2				(!smart_cast<CSE_ALifeCreatureAbstract*>(objects().object(I->ID_Parent)) || (smart_cast<CSE_ALifeCreatureAbstract*>(objects().object(I->ID_Parent))->fHealth >= EPS_L),"Parent offline, item online...");
 
 		if (!objects().object(I->ID_Parent)->m_bOnline)
 			Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->name_replace(),l_tpALifeCreatureAbstract->fHealth);
-#endif
 
-		R_ASSERT2			(objects().object(I->ID_Parent)->m_bOnline,"Parent offline, item online...");
-		
+		VERIFY2				(objects().object(I->ID_Parent)->m_bOnline,"Parent offline, item online...");
+#endif
 		return;
 	}
 

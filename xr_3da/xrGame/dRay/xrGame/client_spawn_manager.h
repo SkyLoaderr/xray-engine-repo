@@ -15,14 +15,13 @@
 class CGameObject;
 
 class CClientSpawnManager {
-	struct CSpawnCallback {
-		CGameObject				*m_object;
-		CScriptCallbackEx<void>	m_callback;
+public:
+	typedef fastdelegate::FastDelegate1<CObject*>			CALLBACK_TYPE;
 
-		IC	CSpawnCallback	()
-		{
-			m_object = 0;
-		}
+private:
+	struct CSpawnCallback {
+		CALLBACK_TYPE			m_object_callback;
+		CScriptCallbackEx<void>	m_callback;
 	};
 public:
 	typedef xr_map<ALife::_OBJECT_ID,CSpawnCallback>		REQUESTED_REGISTRY;
@@ -40,8 +39,8 @@ public:
 	virtual				~CClientSpawnManager	();
 			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, const luabind::functor<void> &functor, const luabind::object &object);
 			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, const luabind::functor<void> &lua_function);
+			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, const CALLBACK_TYPE &object_callback);
 			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, CSpawnCallback &callback);
-			void		add						(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id, CGameObject *object);
 			void		remove					(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id);
 			void		clear					(ALife::_OBJECT_ID	requested_id);
 			void		callback				(CObject			*object);

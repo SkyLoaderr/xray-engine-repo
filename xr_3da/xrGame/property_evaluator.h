@@ -35,6 +35,10 @@ public:
 	virtual void				Load				(LPCSTR section);
 	virtual	_value_type			evaluate			();
 	IC		const _value_type	&property			(const _condition_type &condition_id) const;
+
+	virtual	void				save				(NET_Packet &packet) {}
+	virtual	void				load				(IReader &packet) {}
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 typedef CPropertyEvaluator<CScriptGameObject> CScriptPropertyEvaluator;

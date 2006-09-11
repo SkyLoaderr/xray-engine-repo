@@ -27,6 +27,15 @@ public:
 	typedef xr_vector<CNotYetVisibleObject>		NOT_YET_VISIBLES;
 
 private:
+	struct CDelayedVisibleObject {
+		ALife::_OBJECT_ID	m_object_id;
+		CVisibleObject		m_visible_object;
+	};
+
+private:
+	typedef xr_vector<CDelayedVisibleObject>	DELAYED_VISIBLE_OBJECTS;
+
+private:
 	CCustomMonster		*m_object;
 	CAI_Stalker			*m_stalker;
 	CActor				*m_actor;
@@ -35,6 +44,9 @@ private:
 	RAW_VISIBLES		m_visible_objects;
 	VISIBLES			*m_objects;
 	NOT_YET_VISIBLES	m_not_yet_visible_objects;
+
+private:
+	DELAYED_VISIBLE_OBJECTS	m_delayed_objects;
 
 private:
 	CVisionParameters	m_free;
@@ -117,6 +129,16 @@ public:
 #ifdef DEBUG
 			void					check_visibles				() const;
 #endif
+
+public:
+			void					save						(NET_Packet &packet) const;
+			void					load						(IReader &packet);
+
+private:
+			void					clear_delayed_objects		();
+
+private:
+			void xr_stdcall			on_requested_spawn			(CObject *object);
 };
 
 #include "visual_memory_manager_inline.h"

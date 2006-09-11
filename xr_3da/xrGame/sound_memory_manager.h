@@ -87,6 +87,10 @@ public:
 public:
 	IC		void				set_threshold			(float threshold);
 	IC		void				restore_threshold		();
+
+public:
+			void				save					(NET_Packet &packet) const;
+			void				load					(IReader &packet);
 };
 
 #include "sound_memory_manager_inline.h"

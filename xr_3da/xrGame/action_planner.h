@@ -70,6 +70,7 @@ public:
 public:
 	_object_type				*m_object;
 	CPropertyStorage			m_storage;
+	bool						m_loaded;
 
 #ifdef LOG_ACTION
 public:
@@ -96,6 +97,8 @@ public:
 	IC		virtual void		add_operator			(const _edge_type &operator_id,	_operator_ptr _operator);
 	IC		virtual void		add_evaluator			(const _condition_type &condition_id, _condition_evaluator_ptr evaluator);
 	IC		_object_type		&object					() const;
+	virtual	void				save					(NET_Packet &packet);
+	virtual	void				load					(IReader &packet);
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -9,7 +9,6 @@
 #pragma once
 
 #include "action_planner_action.h"
-//#include "script_game_object.h"
 
 class CScriptGameObject;
 

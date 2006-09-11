@@ -51,6 +51,7 @@ void CPlanner::setup					(_object_type *object)
 	m_current_action_id		= _action_id_type(-1);
 	m_storage.clear			();
 	m_initialized			= false;
+	m_loaded				= false;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -272,6 +273,65 @@ IC	void CPlanner::show				(LPCSTR offset)
 	}
 }
 #endif
+
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::save	(NET_Packet &packet)
+{
+	{
+		EVALUATORS::iterator		I = m_evaluators.begin();
+		EVALUATORS::iterator		E = m_evaluators.end();
+		for ( ; I != E; ++I)
+			(*I).second->save		(packet);
+	}
+
+	{
+		OPERATOR_VECTOR::iterator	I = m_operators.begin();
+		OPERATOR_VECTOR::iterator	E = m_operators.end();
+		for ( ; I != E; ++I)
+			(*I).m_operator->save	(packet);
+	}
+
+	{
+		packet.w_u32				(m_storage.m_storage.size());
+		typedef CPropertyStorage::CConditionStorage	CConditionStorage;
+		CConditionStorage::const_iterator	I = m_storage.m_storage.begin();
+		CConditionStorage::const_iterator	E = m_storage.m_storage.end();
+		for ( ; I != E; ++I) {
+			packet.w				(&(*I).m_condition,sizeof((*I).m_condition));
+			packet.w				(&(*I).m_value,sizeof((*I).m_value));
+		}
+	}
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::load	(IReader &packet)
+{
+	{
+		EVALUATORS::iterator		I = m_evaluators.begin();
+		EVALUATORS::iterator		E = m_evaluators.end();
+		for ( ; I != E; ++I)
+			(*I).second->load		(packet);
+	}
+
+	{
+		OPERATOR_VECTOR::iterator	I = m_operators.begin();
+		OPERATOR_VECTOR::iterator	E = m_operators.end();
+		for ( ; I != E; ++I)
+			(*I).m_operator->load	(packet);
+	}
+
+	{
+		u32							count = packet.r_u32();
+		GraphEngineSpace::_solver_condition_type	condition;
+		GraphEngineSpace::_solver_value_type		value;
+		for (u32 i=0; i<count; ++i) {
+			packet.r				(&condition,sizeof(condition));
+			packet.r				(&value,sizeof(value));
+			m_storage.set_property	(condition,value);
+		}
+	}
+	m_loaded						= true;
+}
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CPlanner
