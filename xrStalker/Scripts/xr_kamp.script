@@ -620,6 +620,7 @@ function CKampManager:checkNpcAbility(npc)
 	end
 	
 	-- Если чувак знает истории, надо добавить их к лагерю
+--[[
 	if self.population > 1 and db.story_by_id[npc:id()] ~= nil then
 		self.kamp_states["story"] = true
 		self.kamp_states["post_story"] = true
@@ -627,6 +628,7 @@ function CKampManager:checkNpcAbility(npc)
 		self.kamp_states["story"] = false
 		self.kamp_states["post_story"] = false	
 	end
+]]
 end
 function CKampManager:addNpc(npc)
 	printf("KAMP [%s] add npc", npc:name())
