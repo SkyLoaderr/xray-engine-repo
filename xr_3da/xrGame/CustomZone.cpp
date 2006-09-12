@@ -15,6 +15,7 @@
 #include "ai_object_location.h"
 #include "../skeletoncustom.h"
 #include "zone_effector.h"
+#include "breakableobject.h"
 
 //////////////////////////////////////////////////////////////////////////
 #define PREFETCHED_ARTEFACTS_NUM 4	//количество предварительно проспавненых артефактов
@@ -638,6 +639,7 @@ void CCustomZone::feel_touch_delete(CObject* O)
 BOOL CCustomZone::feel_touch_contact(CObject* O) 
 {
 	if (smart_cast<CCustomZone*>(O))				return FALSE;
+	if (smart_cast<CBreakableObject*>(O))			return FALSE;
 	if (0==smart_cast<CKinematics*>(O->Visual()))	return FALSE;
 
 	if (O->ID() == ID())
