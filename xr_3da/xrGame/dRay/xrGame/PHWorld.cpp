@@ -70,6 +70,22 @@ CPHWorld::CPHWorld()
 	m_gravity	=default_world_gravity;
 	b_exist=false;
 }
+void CPHWorld::SetStep(dReal s)
+{
+	fixed_step											=	s;
+	world_cfm											=	CFM(SPRING_S(base_cfm,base_erp,base_fixed_step),DAMPING(base_cfm,base_erp));
+	world_erp											=	ERP(SPRING_S(base_cfm,base_erp,base_fixed_step),DAMPING(base_cfm,base_erp));
+	world_spring										=	1.0f*SPRING	(world_cfm,world_erp);
+	world_damping										=	1.0f*DAMPING(world_cfm,world_erp);
+	if(ph_world&&ph_world->Exist())
+	{
+		float	frame_time					=	Device.fTimeDelta;
+		u32		it_number					=	iFloor	(frame_time /fixed_step);
+		frame_time							-=	it_number*fixed_step;
+		ph_world->m_previous_frame_time		=	frame_time;
+		ph_world->m_frame_time				=	frame_time;
+	}
+}
 void CPHWorld::Create()
 {
 	dWorldID phWorld=0;

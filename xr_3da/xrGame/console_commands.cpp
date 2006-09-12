@@ -1953,6 +1953,23 @@ public:
 	
 };
 
+
+class CCC_PHFps : public IConsole_Command {
+public:
+	CCC_PHFps(LPCSTR N) :
+	  IConsole_Command(N)
+	  {};
+	  virtual void	Execute	(LPCSTR args)
+	  {
+		  CPHWorld::SetStep(1.f/float(atof(args)));
+	  }
+	  virtual void	Status	(TStatus& S)
+	  {	
+		 	sprintf	(S,"%3.5f",1.f/fixed_step);	  
+	  }
+
+};
+
 #ifdef DEBUG
 extern void print_help(lua_State *L);
 
@@ -2339,7 +2356,7 @@ void CCC_RegisterCommands()
 #endif
 
 	// Physics
-	CMD4(CCC_Integer,			"ph_fps",						&phFPS						,			10,		100				);
+	CMD1(CCC_PHFps,				"ph_fps"																						);
 	CMD4(CCC_Integer,			"ph_tri_clear_disable_count",	&ph_tri_clear_disable_count	,			0,		255				);
 	CMD1(CCC_PHGravity,			"ph_gravity"																					);
 	CMD1(CCC_PHIterations,		"ph_iterations"																					);

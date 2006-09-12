@@ -25,9 +25,9 @@ extern CPHWorld *ph_world;
 #include "ExtendedGeom.h"
 //union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
 PhysicsStepTimeCallback		*physics_step_time_callback				= 0;
-const dReal 		fixed_step										= 0.01f;
-const dReal 		default_w_limit									= M_PI/16.f/fixed_step;
-const dReal 		default_l_limit									= 3.f/fixed_step;
+
+const dReal 		default_w_limit									= 9.8174770f;//(M_PI/16.f/(fixed_step=0.02f));
+const dReal 		default_l_limit									= 150.f;//(3.f/fixed_step=0.02f);
 const dReal 		default_l_scale									= 1.01f;
 const dReal 		default_w_scale									= 1.01f;
 const dReal			default_k_l										= 0.0002f;//square resistance !!
@@ -36,23 +36,23 @@ const dReal			default_k_w										= 0.05f;
 const dReal			mass_limit										= 10000.f;//some conventional value used as evaluative param (there is no code restriction on mass)
 extern const u16	max_joint_allowed_for_exeact_integration		= 30;
 
-#ifndef  ODE_SLOW_SOLVER
-const dReal 		world_cfm										= 1.1363636e-6f;//1.1363636e-06f;///1.e-36f;//
-const dReal 		world_erp										= 0.5f;//0.54545456f;//0.5f;//
-#else
-const dReal 		world_cfm										= 1.1363636e-006f;
-const dReal 		world_erp										= 0.54545456f;
-#endif
+//base	params
+const dReal base_fixed_step											=	0.02f				;
+const dReal base_erp												=	0.54545456f			;
+const dReal base_cfm												=	1.1363636e-006f		;
+//base params
+dReal 			fixed_step											=	0.01f;
+dReal 			world_cfm											=	CFM(SPRING_S(base_cfm,base_erp,base_fixed_step),DAMPING(base_cfm,base_erp));
+dReal 			world_erp											=	ERP(SPRING_S(base_cfm,base_erp,base_fixed_step),DAMPING(base_cfm,base_erp));
+dReal			world_spring										=	1.0f*SPRING	(world_cfm,world_erp);
+dReal			world_damping										=	1.0f*DAMPING(world_cfm,world_erp);
 
-const dReal			world_spring									= 1.0f*SPRING	(world_cfm,world_erp);
-const dReal			world_damping									= 1.0f*DAMPING	(world_cfm,world_erp);
 
-
-const dReal			default_world_gravity							= 2*9.81f;
+const dReal			default_world_gravity							=	2*9.81f;
 
 
 /////////////////////////////////////////////////////
-int			phFPS													= 50;
+
 int			phIterations											= 18;
 float		phTimefactor											= 1.f;
 float		phBreakCommonFactor										= 0.01f;

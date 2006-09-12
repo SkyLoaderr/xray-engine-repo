@@ -73,8 +73,10 @@ IC	float						Gravity							()							{return m_gravity;}
 	void						RemoveUpdateObject				(PH_UPDATE_OBJECT_I i)		;
 	dGeomID						GetMeshGeom						()							{return Mesh.GetGeom();}
 IC	dGeomID						GetMotionRayGeom				()							{return m_motion_ray;}
+	void			static		SetStep							(dReal s)					;
 	void						Destroy							()							;
 IC	float						FrameTime						(bool frame_mark){return b_frame_mark==frame_mark ? m_frame_time :m_previous_frame_time;}
+	
 	void						FrameStep						(dReal step=0.025f)			;
 	void						Step							()							;
 	void						StepTouch						()							;

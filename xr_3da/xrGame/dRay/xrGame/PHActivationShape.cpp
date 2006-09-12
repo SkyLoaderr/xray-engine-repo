@@ -106,7 +106,7 @@ void CPHActivationShape::	Destroy	()
 	dBodyDestroy			(m_body)	;
 	m_body					=NULL		;
 }
-bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,float max_displacement,float max_rotation)										
+bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,float max_displacement,float max_rotation,bool	un_freeze_later/*	=false*/)										
 {
 
 #ifdef	DEBUG 
@@ -173,7 +173,7 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 		 
 	}
 	RestoreVelocityState(temp_state);
-	ph_world->UnFreeze();
+	if(!un_freeze_later)ph_world->UnFreeze();
 #ifdef	DEBUG 
 	if(ph_dbg_draw_mask.test(phDbgDrawDeathActivationBox))
 	{
