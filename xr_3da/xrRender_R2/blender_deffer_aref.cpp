@@ -4,7 +4,7 @@
 #include "uber_deffer.h"
 #include "Blender_deffer_aref.h"
 
-CBlender_deffer_aref::CBlender_deffer_aref	(bool _lmapped) : lmapped(lmapped)	{	
+CBlender_deffer_aref::CBlender_deffer_aref	(bool _lmapped) : lmapped(_lmapped)	{	
 	description.CLS		= B_DEFAULT_AREF;
 	oAREF.value			= 200;
 	oAREF.min			= 0;
