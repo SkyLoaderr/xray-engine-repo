@@ -6,6 +6,13 @@
 #include "../object_broker.h"
 #include "../../xr_input.h"
 #include "../xr_level_controller.h"
+#include "../UIGameSp.h"
+#include "../HUDManager.h"
+#include "../level.h"
+#include "UIPdaWnd.h"
+#include "UIInventoryWnd.h"
+#include "UITalkWnd.h"
+#include "UICarBodyWnd.h"
 
 extern ENGINE_API BOOL bShowPauseString;
 
@@ -135,12 +142,21 @@ void CUISequenceSimpleItem::Update			()
 		if (true==bPlaying&&(false==s.m_visible))			s.Start	();
 		else if ((false==bPlaying)&&(true==s.m_visible))	s.Stop	();
 	}
+	
+	if (g_pGameLevel){
+	CUIGameSP* ui_game_sp	= smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(!m_pda_section || 0 == xr_strlen(m_pda_section) )
+		if ( ui_game_sp->PdaMenu->IsShown()			||
+			ui_game_sp->InventoryMenu->IsShown()	||
+			ui_game_sp->TalkMenu->IsShown()			||
+			ui_game_sp->UICarBodyMenu->IsShown()	||
+			ui_game_sp->UIChangeLevelWnd->IsShown()			)
+			m_UIWindow->Show						(false);
+		else
+			m_UIWindow->Show						(true);
+	}
 }
 
-#include "../UIGameSp.h"
-#include "../HUDManager.h"
-#include "../level.h"
-#include "UIPdaWnd.h"
 void CUISequenceSimpleItem::Start()
 {
 	inherited::Start				();
