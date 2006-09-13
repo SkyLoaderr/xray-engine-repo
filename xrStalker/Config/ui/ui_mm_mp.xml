@@ -21,20 +21,20 @@
 	</anim_00>
 	
 	<cap_multiplayer x="260" y="89" width="378" height="33">
-		<text font="graffiti22" r="215" g="195" b="170">ui_mm_multiplayer</text>
+		<text font="graffiti22" r="215" g="195" b="170" complex_mode="0">ui_mm_multiplayer</text>
 	</cap_multiplayer>
 	<static_player_name x="137" y="143" width="100" height="24">		
-		<text font="letterica16" r="129" g="123" b="113">mm_mp_player_name</text>
+		<text font="letterica16" r="129" g="123" b="113" complex_mode="0">mm_mp_player_name</text>
 	</static_player_name>
 	<edit_player_name x="237" y="143" width="236" height="24">
 		<options_item entry="mm_net_player_name" group="mm_mp_client"/>
 		<text font="letterica18" r="235" g="219" b="185"></text>
 	</edit_player_name>
 	<cap_cd_key x="561" y="143" width="70" height="24">
-		<text font="letterica16" r="129" g="123" b="113">mm_mp_cd_key</text>
+		<text font="letterica16" r="129" g="123" b="113" complex_mode="0">mm_mp_cd_key</text>
 	</cap_cd_key>
 	<edit_cd_key x="617" y="143" width="236" height="24">		
-		<text font="letterica18" r="235" g="219" b="185"></text>
+		<text font="letterica18" r="235" g="219" b="185" complex_mode="0"></text>
 	</edit_cd_key>
 	<static_map_pic x="616" y="242" width="256" height="256">
 		<texture>ui\ui_noise</texture>
@@ -47,7 +47,7 @@
 		<button x="0" y="0" width="114" height="26">
 			<texture_offset x="0" y="-7"/>
 			<texture>ui_button_tablist</texture>
-			<text font="normal" align="c">mm_mp_client</text>
+			<text font="normal" align="c" complex_mode="0">mm_mp_client</text>
 			<text_color>
 				<e r="106" g="95" b="91"/>
 				<t r="227" g="199" b="178"/>
@@ -57,7 +57,7 @@
 		<button x="114" y="0" width="114" height="26">
 			<texture_offset x="0" y="-7"/>
 			<texture>ui_button_tablist</texture>
-			<text font="normal" align="c">mm_mp_server</text>
+			<text font="normal" align="c" complex_mode="0">mm_mp_server</text>
 			<text_color>
 				<e r="106" g="95" b="91"/>				
 				<t r="227" g="199" b="178"/>				
@@ -67,7 +67,7 @@
 		<button x="228" y="0" width="116" height="26">			
 			<texture_offset x="0" y="-7"/>
 			<texture>ui_button_tablist</texture>
-			<text font="normal" align="c">mm_mp_options</text>
+			<text font="normal" align="c" complex_mode="0">mm_mp_options</text>
 			<text_color>
 				<e r="106" g="95" b="91"/>				
 				<t r="227" g="199" b="178"/>				
@@ -90,7 +90,7 @@
 			</frame>
 			<list x="0" y="20" width="535" height="250" height2="140" item_height="18" always_show_scroll="1"/>
 			<list_item>
-				<text r="131" g="131" b="131" font="letterica16"/>
+				<text r="131" g="131" b="131" font="letterica16" complex_mode="0"/>
 			</list_item>
 			<header x="0" y="0" width="0" height="18" frame_mode="1">
 				<text font="arial_14" r="215" g="195" b="170" x="2" y="1" align="l" vert_align="c" complex_mode="0"/>
@@ -106,10 +106,10 @@
 				<texture>ui_table_divider</texture>
 			</separator>
 			<filter>
-				<text font="letterica16" r="215" g="195" b="170"/>
+				<text font="letterica16" r="215" g="195" b="170" complex_mode="0"/>
 			</filter>
 			<edit_gs_filter x="46" y2="167" y="277" width="488" height="21">
-				<text font="letterica16" r="235" g="219" b="185"></text>
+				<text font="letterica16" r="235" g="219" b="185" complex_mode="0"></text>
 				<texture>ui_linetextSmall_e</texture>
 			</edit_gs_filter>
 			<cap_server_properties x="0" y="191" width="329" height="17">
@@ -150,30 +150,30 @@
 	
 		<cap_network_connection x="6" y="12" width="500" height="23">
 			<texture>ui_brokenline</texture>
-			<text font="letterica16" r="215" g="195" b="170" x="10">mm_mp_network_connection</text>
+			<text font="letterica16" r="215" g="195" b="170" x="10" complex_mode="0">mm_mp_network_connection</text>
 		</cap_network_connection>
 		
 		<cap_server_list x="6" y="70" width="535" height="23">
 			<texture>ui_brokenline</texture>
-			<text font="letterica16" r="215" g="195" b="170" x="10">mm_mp_server_list</text>
+			<text font="letterica16" r="215" g="195" b="170" x="10" complex_mode="0">mm_mp_server_list</text>
 		</cap_server_list>
 		
 		<cap_filters x="560" y="12" width="155" height="23">
 			<texture>ui_brokenline</texture>
-			<text font="letterica16" r="215" g="195" b="170" x="10">mm_mp_filters</text>
+			<text font="letterica16" r="215" g="195" b="170" x="10" complex_mode="0">mm_mp_filters</text>
 		</cap_filters>
 
 		<radio_tab_network_connection x="16" y="40" width="500" height="18" radio="1">
 			<button x="0" y="0" width="142">
-				<text font="letterica16" r="115" g="114" b="112">mm_mp_internet</text>
+				<text font="letterica16" r="115" g="114" b="112"  complex_mode="0">mm_mp_internet</text>
 			</button>		
 			<button x="184" y="0" width="142">
-				<text font="letterica16" r="115" g="114" b="112">mm_mp_lan</text>
+				<text font="letterica16" r="115" g="114" b="112" complex_mode="0">mm_mp_lan</text>
 			</button>		
 		</radio_tab_network_connection>
 		
 		<btn_direct_ip x="400" y="40" width="111" height="25">
-			<text align="c" font="letterica16" r="188" g="153" b="123">Direct IP</text>
+			<text align="c" font="letterica16" r="188" g="153" b="123" complex_mode="0">Direct IP</text>
 			<texture>ui_button_ordinary</texture>
 			<texture_offset x="-3"/>
 		</btn_direct_ip>
@@ -201,17 +201,17 @@
 		</check_listen_servers>		
 		
 		<btn_refresh x="596" y="225" width="111" height="25">
-			<text align="c" font="letterica16" r="188" g="153" b="123">mm_mp_refresh</text>	
+			<text align="c" font="letterica16" r="188" g="153" b="123" complex_mode="0">mm_mp_refresh</text>	
 			<texture>ui_button_ordinary</texture>
 			<texture_offset x="-3"/>
 		</btn_refresh>
 		<btn_quick_refresh x="596" y="255" width="111" height="25">
-			<text align="c" font="letterica16" r="188" g="153" b="123">mm_mp_quickrefresh</text>
+			<text align="c" font="letterica16" r="188" g="153" b="123" complex_mode="0">mm_mp_quickrefresh</text>
 			<texture>ui_button_ordinary</texture>
 			<texture_offset x="-3"/>
 		</btn_quick_refresh>
 		<btn_server_info x="596" y="285" width="111" height="25">
-			<text align="c" font="letterica16" r="188" g="153" b="123">mm_mp_serverinfo</text>
+			<text align="c" font="letterica16" r="188" g="153" b="123" complex_mode="0">mm_mp_serverinfo</text>
 			<texture>ui_button_ordinary</texture>
 			<texture_offset x="-3"/>
 		</btn_server_info>
@@ -220,20 +220,20 @@
 	<tab_server>
 		<cap_server_settings x="6" y="12" width="419" height="21">
 			<texture>ui_brokenline</texture>
-			<text font="letterica16" r="215" g="195" b="170" x="10">mm_mp_serversettings</text>
+			<text font="letterica16" r="215" g="195" b="170" x="10" complex_mode="0">mm_mp_serversettings</text>
 		</cap_server_settings>
 		
 		<cap_server_name x="23" y="40" width="121" height="21">
-			<text font="letterica16" r="215" g="195" b="170">mm_mp_servername</text>
+			<text font="letterica16" r="215" g="195" b="170" complex_mode="0">mm_mp_servername</text>
 		</cap_server_name>
 		<cap_password x="23" y="65" width="121" height="21">
-			<text font="letterica16" r="215" g="195" b="170">mm_mp_password</text>
+			<text font="letterica16" r="215" g="195" b="170" complex_mode="0">mm_mp_password</text>
 		</cap_password>
 		<cap_game_mode x="23" y="90" width="121" height="21">
-			<text font="letterica16" r="215" g="195" b="170">mm_mp_gamemode</text>
+			<text font="letterica16" r="215" g="195" b="170" complex_mode="0">mm_mp_gamemode</text>
 		</cap_game_mode>
 		<cap_max_players x="23" y="115" width="121" height="21">
-			<text font="letterica16" r="215" g="195" b="170">mm_mp_maxplayers</text>
+			<text font="letterica16" r="215" g="195" b="170" complex_mode="0">mm_mp_maxplayers</text>
 		</cap_max_players>
 		
 		<spin_max_players x="150" y="115" width="45" height="21">
@@ -244,25 +244,25 @@
 		</spin_game_mode>
 		
 		<edit_server_name x="150" y="40" width="275" height="21">
-			<text font="letterica16" r="235" g="219" b="185" x="2"></text>
+			<text font="letterica16" r="235" g="219" b="185" x="2" complex_mode="0"></text>
 			<options_item entry="mm_net_srv_name" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_server_name>		
 		<edit_password x="150" y="65" width="275" height="21" password="1">		
-			<text font="letterica16" r="235" g="219" b="185" x="2"></text>
+			<text font="letterica16" r="235" g="219" b="185" x="2" complex_mode="0"></text>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_password>
 		
 		<check_dedicated x="307" y="115" width="118" height="18">
-			<text font="letterica16" r="115" g="114" b="112">mm_mp_dedicated</text>			
+			<text font="letterica16" r="115" g="114" b="112" complex_mode="0">mm_mp_dedicated</text>			
 		</check_dedicated>
 		<map_list x="7" y="158" width="419" height="247">
 			<header_1 x="0" y="0" width="186" height="17">
-				<text font="arial_14" r="215" g="195" b="170" x="2" y="2">mm_mp_avail_maps</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2" y="2" complex_mode="0">mm_mp_avail_maps</text>
 				<texture>ui_table_button_e</texture>
 			</header_1>
 			<header_2 x="235" y="0" width="186" height="17">
-				<text font="arial_14" r="215" g="195" b="170" x="2" y="2">mm_mp_sel_maps</text>
+				<text font="arial_14" r="215" g="195" b="170" x="2" y="2" complex_mode="0">mm_mp_sel_maps</text>
 				<texture>ui_table_button_e</texture>
 			</header_2>
 			<frame_1 x="0" y="18" width="166" height="231">
