@@ -10,6 +10,7 @@
 #include "UIOutfitInfo.h"
 #include "../HUDManager.h"
 #include "../level.h"
+#include "../actor.h"
 #include "../game_base_space.h"
 
 #define LIST_ITEM_HEIGHT	15
@@ -129,34 +130,34 @@ void CUIOutfitInfo::Update(CCustomOutfit& outfit){
 	SetItem(ALife::eHitTypeStrike,		 outfit, m_itemStrikeProtection,		m_strStrikeProtection);
 }
 
-void CUIOutfitInfo::Update(shared_str section_name){
-	int vals[6] = {0, 0, 0, 0, 0, 0};
+//void CUIOutfitInfo::Update(shared_str section_name){
+//	int vals[6] = {0, 0, 0, 0, 0, 0};
+//
+//	if (xr_strlen(section_name) != 0)
+//		GetInfoFromSettings(vals, section_name);
+//
+//	if (GameID() == GAME_SINGLE)
+//	{
+//        SetItem(ALife::eHitTypeBurn,		 vals[0], m_itemBurnProtection,			m_strBurnProtection);
+//        SetItem(ALife::eHitTypeChemicalBurn, vals[1], m_itemChemicalBurnProtection,	m_strChemicalBurnProtection);
+//	}
+//	SetItem(ALife::eHitTypeExplosion,	 vals[2], m_itemExplosionProtection,	m_strExplosionProtection);
+//	SetItem(ALife::eHitTypeFireWound,	 vals[3], m_itemFireWoundProtection,	m_strFireWoundProtection);
+//	SetItem(ALife::eHitTypeShock,		 vals[4], m_itemShockProtection,		m_strShockProtection);
+//	SetItem(ALife::eHitTypeStrike,		 vals[5], m_itemStrikeProtection,		m_strStrikeProtection);
+//}
 
-	if (xr_strlen(section_name) != 0)
-		GetInfoFromSettings(vals, section_name);
-
-	if (GameID() == GAME_SINGLE)
-	{
-        SetItem(ALife::eHitTypeBurn,		 vals[0], m_itemBurnProtection,			m_strBurnProtection);
-        SetItem(ALife::eHitTypeChemicalBurn, vals[1], m_itemChemicalBurnProtection,	m_strChemicalBurnProtection);
-	}
-	SetItem(ALife::eHitTypeExplosion,	 vals[2], m_itemExplosionProtection,	m_strExplosionProtection);
-	SetItem(ALife::eHitTypeFireWound,	 vals[3], m_itemFireWoundProtection,	m_strFireWoundProtection);
-	SetItem(ALife::eHitTypeShock,		 vals[4], m_itemShockProtection,		m_strShockProtection);
-	SetItem(ALife::eHitTypeStrike,		 vals[5], m_itemStrikeProtection,		m_strStrikeProtection);
-}
-
-void CUIOutfitInfo::GetInfoFromSettings(int values[], shared_str section_name){
-	if (GameID() == GAME_SINGLE)
-	{
-        values[0] = 100 - iFloor(100.f*pSettings->r_float(section_name, "burn_immunity"));
-        values[1] = 100 - iFloor(100.f*pSettings->r_float(section_name, "chemical_burn_immunity"));
-	}
-	values[2] = 100 - iFloor(100.f*pSettings->r_float(section_name, "explosion_immunity"));
-	values[3] = 100 - iFloor(100.f*pSettings->r_float(section_name, "fire_wound_immunity"));
-	values[4] = 100 - iFloor(100.f*pSettings->r_float(section_name, "shock_immunity"));
-	values[5] = 100 - iFloor(100.f*pSettings->r_float(section_name, "strike_immunity"));
-}
+//void CUIOutfitInfo::GetInfoFromSettings(int values[], shared_str section_name){
+//	if (GameID() == GAME_SINGLE)
+//	{
+//        values[0] = 100 - iFloor(100.f*pSettings->r_float(section_name, "burn_immunity"));
+//        values[1] = 100 - iFloor(100.f*pSettings->r_float(section_name, "chemical_burn_immunity"));
+//	}
+//	values[2] = 100 - iFloor(100.f*pSettings->r_float(section_name, "explosion_immunity"));
+//	values[3] = 100 - iFloor(100.f*pSettings->r_float(section_name, "fire_wound_immunity"));
+//	values[4] = 100 - iFloor(100.f*pSettings->r_float(section_name, "shock_immunity"));
+//	values[5] = 100 - iFloor(100.f*pSettings->r_float(section_name, "strike_immunity"));
+//}
 
 void CUIOutfitInfo::SetItem(ALife::EHitType hitType, CCustomOutfit& outfit, CUIListItem* listItem, shared_str sstr){
 	char	str[256];
@@ -166,9 +167,23 @@ void CUIOutfitInfo::SetItem(ALife::EHitType hitType, CCustomOutfit& outfit, CUIL
 	strcpy(str, *sstr);
 	fValue = &outfit ? outfit.GetDefHitTypeProtection(hitType) : 1.0f;
 	iValue = 100-( iFloor(fValue*100+0.5f) );
-	strcat(str, "  +");
+	strcat(str, "  + ");
 	strcat(str, itoa(iValue, strIVal, 10));
 	strcat(str, "%");
+//	listItem->SetTextComplexMode(false);	
+
+	if (GameID() == GAME_SINGLE){
+		fValue = Actor()->HitArtefactsOnBelt(1, hitType);
+		iValue = 100-( iFloor(fValue*100+0.5f) );
+
+        if (iValue)
+		{
+			strcat(str, "%c<green> + ");
+			strcat(str, itoa(iValue, strIVal, 10));
+			strcat(str, "%");
+		}
+	}
+
 	listItem->SetText(str);
 }
 

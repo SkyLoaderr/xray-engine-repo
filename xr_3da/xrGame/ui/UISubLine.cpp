@@ -104,7 +104,7 @@ void CUISubLine::Draw(CGameFont* pFont, float x, float y) const{
 	Fvector2			pos;
 	pos.set				(x, y);
 	UI()->ClientToScreenScaled(pos);
-	pFont->Out			(pos.x, pos.y, m_text.c_str() );
+	pFont->Out			(pos.x, pos.y, "%s", m_text.c_str() );
 }
 
 float CUISubLine::GetLength(CGameFont* pFont) const{

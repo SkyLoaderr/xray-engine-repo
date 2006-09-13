@@ -249,10 +249,10 @@ void CUILines::Draw(float x, float y){
 			for (int i = 0; i < sz; i++)
 				passText[i] = '*';
 			passText[sz] = 0;
-			m_pFont->Out(text_pos.x, text_pos.y, passText);
+			m_pFont->Out(text_pos.x, text_pos.y, "%s", passText);
 		}
 		else
-			m_pFont->Out(text_pos.x, text_pos.y, m_text.c_str());
+			m_pFont->Out(text_pos.x, text_pos.y, "%s", m_text.c_str());
 	}
 	else
 	{

@@ -90,7 +90,7 @@ void CUITextBanner::Out(float x, float y, const char *fmt, ...)
 
 	Fvector2 pos;
 	UI()->ClientToScreenScaled(pos, x, y);
-	m_pFont->Out(pos.x, pos.y, buf.c_str());
+	m_pFont->Out(pos.x, pos.y, "%s", buf.c_str());
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -20,7 +20,7 @@ public:
 
 	virtual void Update();
 			void Update(CCustomOutfit& outfit);	
-			void Update(shared_str section_name);
+//			void Update(shared_str section_name);
     virtual void SetText(const CStringTable& stringTable);
 	virtual void SetTextColor(u32 color);
 	virtual void SetTitleTextColor(u32 color);
@@ -29,7 +29,7 @@ protected:
 	// methods
 	void SetItem(ALife::EHitType hitType, CCustomOutfit& outfit, CUIListItem* listItem, shared_str sstr);
 	void SetItem(ALife::EHitType hitType, int value,			 CUIListItem* listItem, shared_str sstr);
-	void GetInfoFromSettings(int values[], shared_str section_name);
+//	void GetInfoFromSettings(int values[], shared_str section_name);
 
 	// data
 	CUIListWnd m_listWnd;

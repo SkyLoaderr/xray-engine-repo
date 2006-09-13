@@ -29,7 +29,7 @@ void CUICDkey::Draw(){
 	UI()->ClientToScreenScaled	(pos);
 	if(m_bInputFocus)
 	{		
-		m_lines.m_pFont->Out( pos.x, pos.y,  AddHyphens(m_lines.m_text.c_str()) );
+		m_lines.m_pFont->Out( pos.x, pos.y, "%s" ,AddHyphens(m_lines.m_text.c_str()) );
 	
 		outY = (m_wndSize.y - m_lines.m_pFont->CurrentHeightRel())/2;
 		outX = m_lines.GetDrawCursorPos();
@@ -42,7 +42,7 @@ void CUICDkey::Draw(){
 		string64 tmp = "xxxxxxxxxxxxxxxx";
 		tmp[m_lines.m_text.size()] = 0;
 
-		m_lines.m_pFont->Out(pos.x, pos.y,  AddHyphens(tmp) );
+		m_lines.m_pFont->Out(pos.x, pos.y, "%s" ,AddHyphens(tmp) );
 	}
 }
 
