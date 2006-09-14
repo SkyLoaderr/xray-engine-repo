@@ -212,7 +212,7 @@ int dSortTriPrimitiveCollide (
 						}
 						else
 						{
-							intersect=true;
+								if(T::Proj(o1,tri.norm)>-tri.dist)intersect=true;
 						}
 					}
 					else
