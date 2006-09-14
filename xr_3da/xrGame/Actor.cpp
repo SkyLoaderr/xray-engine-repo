@@ -363,11 +363,6 @@ void CActor::Load	(LPCSTR section )
 	// sounds
 	char buf[256];
 
-/*	::Sound->create		(sndHit[0],			TRUE,	strconcat(buf,*cName(),"\\hurt1"),SOUND_TYPE_MONSTER_INJURING);
-	::Sound->create		(sndHit[1],			TRUE,	strconcat(buf,*cName(),"\\hurt2"),SOUND_TYPE_MONSTER_INJURING);
-	::Sound->create		(sndHit[2],			TRUE,	strconcat(buf,*cName(),"\\hurt3"),SOUND_TYPE_MONSTER_INJURING);
-	::Sound->create		(sndHit[3],			TRUE,	strconcat(buf,*cName(),"\\hurt4"),SOUND_TYPE_MONSTER_INJURING);
-*/	
 	::Sound->create		(sndDie[0],			strconcat(buf,*cName(),"\\die0"), st_Effect,SOUND_TYPE_MONSTER_DYING);
 	::Sound->create		(sndDie[1],			strconcat(buf,*cName(),"\\die1"), st_Effect,SOUND_TYPE_MONSTER_DYING);
 	::Sound->create		(sndDie[2],			strconcat(buf,*cName(),"\\die2"), st_Effect,SOUND_TYPE_MONSTER_DYING);

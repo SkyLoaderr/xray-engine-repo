@@ -240,8 +240,7 @@ protected:
 
 	// media
 	SndShockEffector*		m_sndShockEffector;
-	svector<ref_sound,SND_HIT_COUNT> sndHit[ALife::eHitTypeMax];
-//	ref_sound				sndHit[SND_HIT_COUNT];
+	xr_vector<ref_sound>	sndHit[ALife::eHitTypeMax];
 	ref_sound				sndDie[SND_DIE_COUNT];
 
 

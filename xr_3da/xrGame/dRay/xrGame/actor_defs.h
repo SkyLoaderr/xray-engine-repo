@@ -12,7 +12,7 @@ namespace ACTOR_DEFS
 {
 
 enum ESoundCcount {
-	SND_HIT_COUNT=4,
+//	SND_HIT_COUNT=8,
 	SND_DIE_COUNT=4
 };
 
