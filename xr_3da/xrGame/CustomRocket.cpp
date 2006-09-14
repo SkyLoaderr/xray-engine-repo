@@ -229,10 +229,10 @@ void CCustomRocket::ObjectContactCallback(bool& do_colide,bool bo1,dContact& c ,
 						l_pos.sub(velocity);
 #ifdef DEBUG
 						corrected_pos=true;
-	DBG_OpenCashedDraw();
-	const Fvector*	 V_array	= Level().ObjectSpace.GetStaticVerts();
-	DBG_DrawTri(neg_tri.T, V_array, D3DCOLOR_XRGB(255,255,0));
-	DBG_ClosedCashedDraw(50000);
+//.	DBG_OpenCashedDraw();
+//.	const Fvector*	 V_array	= Level().ObjectSpace.GetStaticVerts();
+//.	DBG_DrawTri(neg_tri.T, V_array, D3DCOLOR_XRGB(255,255,0));
+//.	DBG_ClosedCashedDraw(50000);
 #endif
 					}
 				}
