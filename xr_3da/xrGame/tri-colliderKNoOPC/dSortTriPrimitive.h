@@ -189,6 +189,12 @@ int dSortTriPrimitiveCollide (
 					if(ph_dbg_draw_mask.test(phDBgDrawTriesChangesSign))
 						DBG_DrawTri(T,V_array,D3DCOLOR_XRGB(0,255,0));
 #endif
+					bool contain_pos=TriContainPoint(
+						vertices[0],
+						vertices[1],
+						vertices[2],
+						tri.norm,tri.side0,
+						tri.side1,p);
 					if(!b_pushing)
 					{
 						if(!no_last_pos)
@@ -212,7 +218,8 @@ int dSortTriPrimitiveCollide (
 						}
 						else
 						{
-								if(T::Proj(o1,tri.norm)>-tri.dist)intersect=true;
+								if(contain_pos&&T::Proj(o1,tri.norm)>-tri.dist)
+									intersect=true;
 						}
 					}
 					else
@@ -220,13 +227,8 @@ int dSortTriPrimitiveCollide (
 						intersect=true;
 					}
 
-					if(TriContainPoint(
-						vertices[0],
-						vertices[1],
-						vertices[2],
-						tri.norm,tri.side0,
-						tri.side1,p)
-
+					if(
+							contain_pos
 						){
 							dReal sidePr=T::Proj(o1,tri.norm);
 							tri.depth=sidePr-tri.dist;
