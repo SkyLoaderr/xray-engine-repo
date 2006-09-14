@@ -117,7 +117,7 @@ void CUIActorInfoWnd::FillPointsInfo			()
 		UIMasterList->AddWindow				(itm, true);
 	}
 
-	UIMasterList->SetSelected(UIMasterList->GetItem(0) );
+	UIMasterList->SetSelected(UIMasterList->GetItem(1) );
 
 }
 
