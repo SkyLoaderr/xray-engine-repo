@@ -19,8 +19,8 @@ CFontManager::CFontManager()
 	m_all_fonts.push_back(&pFontSmall				);// used cpp
 	m_all_fonts.push_back(&pFontMedium				);// used cpp
 	m_all_fonts.push_back(&pFontDI					);// used cpp
-	m_all_fonts.push_back(&pFontHeaderEurope		);
-	m_all_fonts.push_back(&pFontHeaderRussian		); // ???
+//.	m_all_fonts.push_back(&pFontHeaderEurope		);
+//.	m_all_fonts.push_back(&pFontHeaderRussian		); // ???
 	m_all_fonts.push_back(&pFontArial14				);// used xml
 	m_all_fonts.push_back(&pFontGraffiti19Russian	);
 	m_all_fonts.push_back(&pFontGraffiti22Russian	);
@@ -46,8 +46,8 @@ void CFontManager::InitializeFonts()
 	InitializeFont(pFontSmall				,"hud_font_small"				);
 	InitializeFont(pFontMedium				,"hud_font_medium"				);
 	InitializeFont(pFontDI					,"hud_font_di",					CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
-	InitializeFont(pFontHeaderEurope		,"ui_font_header_europe"		);
-	InitializeFont(pFontHeaderRussian		,"ui_font_header_russian"		);
+//.	InitializeFont(pFontHeaderEurope		,"ui_font_header_europe"		);
+//.	InitializeFont(pFontHeaderRussian		,"ui_font_header_russian"		);
 	InitializeFont(pFontArial14				,"ui_font_arial_14"				);
 	InitializeFont(pFontGraffiti19Russian	,"ui_font_graffiti19_russian"	);
 	InitializeFont(pFontGraffiti22Russian	,"ui_font_graffiti22_russian"	);
@@ -57,6 +57,10 @@ void CFontManager::InitializeFonts()
 	InitializeFont(pFontGraffiti50Russian	,"ui_font_graff_50"				);
 	InitializeFont(pFontLetterica25			,"ui_font_letter_25"			);
 	InitializeFont(pFontStat				,"stat_font"					);
+
+	float s1 = pFontGraffiti19Russian->SizeOf("New Game");
+	float s2 = pFontGraffiti22Russian->SizeOf("New Game");
+
 
 }
 LPCSTR CFontManager::GetFontTexName (LPCSTR section)
@@ -95,7 +99,7 @@ void CFontManager::InitializeFont(CGameFont*& F, LPCSTR section, u32 flags)
 		else										F->SetSize(sz);
 	}
 	if (pSettings->line_exist(section,"interval"))
-		F->SetInterval(pSettings->r_fvector2(section,"interval"));
+	F->SetInterval(pSettings->r_fvector2(section,"interval"));
 
 }
 
