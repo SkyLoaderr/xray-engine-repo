@@ -472,11 +472,13 @@ bool CUIBuyWnd::ClearTooExpensiveItems(){
 
 	for (u32 i = 0; i < c; i++)
 	{
-		CUICellItem* itm = m_list[MP_SLOT_BELT]->GetItemIdx(0);
-		if (!m_bag.IsActive(itm))
+		CUICellItem* itm = m_list[MP_SLOT_BELT]->GetItemIdx(i);
+		if (itm->GetColor() == PRICE_RESTR_COLOR)
 		{
 			itm->GetMessageTarget()->SendMessage(itm, DRAG_DROP_ITEM_DB_CLICK, NULL);
 			f = true;
+			i = 0;
+			c = m_list[MP_SLOT_BELT]->ItemsCount();
 		}
 	}
 
