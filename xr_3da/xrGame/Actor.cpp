@@ -413,7 +413,14 @@ void CActor::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_o
 	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse,hit_type,!g_Alive());
 }
 
-//void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse, ALife::EHitType hit_type, float AP)
+struct playing_pred
+{
+	IC	bool	operator()			(ref_sound &s)
+	{
+		return	(NULL != s._feedback() );
+	}
+};
+
 void	CActor::Hit							(SHit* pHDS)
 {
 	SHit HDS = *pHDS;	
@@ -462,6 +469,7 @@ if(ph_dbg_draw_mask.test(phDbgCharacterControl))
 
 	if( !sndHit[HDS.hit_type].empty() && (ALife::eHitTypeTelepatic != HDS.hit_type)){
 		ref_sound& S = sndHit[HDS.hit_type][Random.randI(sndHit[HDS.hit_type].size())];
+		bool b_snd_hit_playing = sndHit[HDS.hit_type].end() != std::find_if(sndHit[HDS.hit_type].begin(), sndHit[HDS.hit_type].end(), playing_pred());
 
 		if(ALife::eHitTypeExplosion == HDS.hit_type)
 		{
@@ -476,7 +484,7 @@ if(ph_dbg_draw_mask.test(phDbgCharacterControl))
 			else
 				bPlaySound = false;
 		}
-		if (bPlaySound && !S._feedback()) 
+		if (bPlaySound && !b_snd_hit_playing) 
 		{
 			Fvector point		= Position();
 			point.y				+= CameraHeight();
@@ -580,7 +588,7 @@ void CActor::HitMark	(float P,
 	{
 		HUD().Hit(0, P, dir);
 
-	if(1||psHUD_Flags.test(HUD_CAM_ANIM_HIT)){
+	{
 		CEffectorCam* ce = Cameras().GetCamEffector((ECamEffectorType)effFireHit);
 		if(!ce)
 			{
