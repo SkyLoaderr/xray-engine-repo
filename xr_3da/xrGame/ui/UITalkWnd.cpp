@@ -20,10 +20,6 @@
 #include "../../cameraBase.h"
 #include "UIXmlInit.h"
 
-const float MessageShift	= 30;
-
-//////////////////////////////////////////////////////////////////////////
-
 CUITalkWnd::CUITalkWnd()
 {
 	m_pActor				= NULL;
