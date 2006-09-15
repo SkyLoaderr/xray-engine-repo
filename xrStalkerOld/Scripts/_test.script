@@ -106,7 +106,7 @@ function main()
    h.direction 	= vector():set(0, 0, 1)
    h.impulse 	= 0
    h.draftsman 	= db.actor
-   h.type 		= hit.wound
+   h.type 		= hit.fire_wound
    db.actor:hit(h)
 
 --burn  		1
