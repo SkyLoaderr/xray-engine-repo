@@ -607,7 +607,7 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 	{
 		if(!xr_strcmp(*font_name, HEADER_FONT_NAME))
 		{
-			pFnt = UI()->Font()->pFontHeaderRussian;
+//.			pFnt = UI()->Font()->pFontHeaderRussian;
 		}
 		else if(!xr_strcmp(*font_name, NORMAL_FONT_NAME) || !xr_strcmp(*font_name, GRAFFITI19_FONT_NAME))
 		{
