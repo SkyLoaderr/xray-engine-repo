@@ -67,6 +67,8 @@ function options_dialog:InitControls()
 	self.dlg_video_adv:InitControls(55,40, xml, self)
 	self.dlg_video_adv:Show(false)
 	self.dialog:AttachChild(self.dlg_video_adv)
+	
+	self.message_box = CUIMessageBoxEx()
 end
 
 function options_dialog:UpdateControls()
@@ -86,7 +88,12 @@ function options_dialog:InitCallBacks()
 	self:AddCallback("btn_cancel",			ui_events.BUTTON_CLICKED,	self.OnBtnCancel,	self)
 	self:AddCallback("btn_default_graphic",	ui_events.BUTTON_CLICKED,	self.OnBtnDefGraph,	self)	
 	self:AddCallback("btn_default_sound",	ui_events.BUTTON_CLICKED,	self.OnBtnDefSound,	self)	
-	
+	self:AddCallback("checkbtn_r2",	ui_events.BUTTON_CLICKED,			self.OnBtnR2,		self)	
+end
+
+function options_dialog:OnBtnR2()
+	self.message_box:Init("message_box_restart_game")
+	self:GetHolder():start_stop_menu(self.message_box,true)
 end
 
 function options_dialog:OnBtnDefGraph()	

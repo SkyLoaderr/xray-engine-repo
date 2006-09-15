@@ -23,7 +23,8 @@ function opt_video:InitControls(x, y, xml, handler)
 	xml:InitCheck("tab_video:check_fullscreen",		self)
 	xml:InitCheck("tab_video:check_no_vsync",		self)
 	xml:InitCheck("tab_video:check_dyn_lignt",		self)
-	xml:InitCheck("tab_video:check_render_2",		self)
+	local ch = xml:InitCheck("tab_video:check_render_2",		self)
+	handler:Register(ch, "checkbtn_r2")
 	
 	xml:InitTrackBar("tab_video:track_gamma",		self)
 	xml:InitTrackBar("tab_video:track_contrast",	self)
@@ -34,7 +35,7 @@ function opt_video:InitControls(x, y, xml, handler)
 	xml:InitComboBox("tab_video:list_presets",		self)
 	
 	
-	btn = xml:Init3tButton("tab_video:btn_default_set",	self)	
+	local btn = xml:Init3tButton("tab_video:btn_default_set",	self)	
 	handler:Register(btn, "btn_default_graphic")
 	
 end
