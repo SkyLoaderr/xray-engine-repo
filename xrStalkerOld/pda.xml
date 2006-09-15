@@ -22,7 +22,7 @@
 	<timer_frame_line x="710" y="573" width="161" height="32">
 		<texture>ui_string_01</texture>		
 		<title x="10" y="7" width="140" height="18">
-			<text font="letterica18" r="255" g="255" b="255"></text>
+			<text font="letterica18" r="255" g="255" b="255" complex_mode="0"></text>
 		</title>
 	</timer_frame_line>
                    
