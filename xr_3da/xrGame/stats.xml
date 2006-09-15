@@ -93,7 +93,7 @@
 		<texture>ui_frame</texture>
 		<left_top_texture x="15" y="20">ui\ui_inv_list_over_lt</left_top_texture>
 		<left_bottom_texture x="19" y="155">ui\ui_frame_over_lb</left_bottom_texture>
-		<title x="20" y="0" width="240" height="60"><text font="header" r="255" g="255" b="255">Players</text></title>
+		<title x="20" y="0" width="240" height="60"><text font="graffiti22" r="255" g="255" b="255">Players</text></title>
 	</frame_window>
 
 	<!-- LOG LIST -->
