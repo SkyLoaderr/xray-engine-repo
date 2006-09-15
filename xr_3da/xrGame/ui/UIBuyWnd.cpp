@@ -503,29 +503,30 @@ bool CUIBuyWnd::ClearSlot_ifTooExpensive(int slot){
 		CUIWeaponCellItem*	witm = smart_cast<CUIWeaponCellItem*>(itm);
 		CWeapon*			wpn = (CWeapon*)itm->m_pData;
 
-		R_ASSERT(witm);
-		if (witm->m_addons[CUIWeaponCellItem::eScope])
-		{
-			if (witm->m_addons[CUIWeaponCellItem::eScope]->GetColor() == PRICE_RESTR_COLOR)
+		if(witm){
+			if (witm->m_addons[CUIWeaponCellItem::eScope])
 			{
-				wpn->Detach(*wpn->GetScopeName());
-				add_on = true;
+				if (witm->m_addons[CUIWeaponCellItem::eScope]->GetColor() == PRICE_RESTR_COLOR)
+				{
+					wpn->Detach(*wpn->GetScopeName());
+					add_on = true;
+				}
 			}
-		}
-		if (witm->m_addons[CUIWeaponCellItem::eSilencer])
-		{
-			if (witm->m_addons[CUIWeaponCellItem::eSilencer]->GetColor() == PRICE_RESTR_COLOR)
+			if (witm->m_addons[CUIWeaponCellItem::eSilencer])
 			{
-				wpn->Detach(*wpn->GetSilencerName());
-				add_on = true;
+				if (witm->m_addons[CUIWeaponCellItem::eSilencer]->GetColor() == PRICE_RESTR_COLOR)
+				{
+					wpn->Detach(*wpn->GetSilencerName());
+					add_on = true;
+				}
 			}
-		}
-		if (witm->m_addons[CUIWeaponCellItem::eLauncher])
-		{
-			if (witm->m_addons[CUIWeaponCellItem::eLauncher]->GetColor() == PRICE_RESTR_COLOR)
+			if (witm->m_addons[CUIWeaponCellItem::eLauncher])
 			{
-				wpn->Detach(*wpn->GetGrenadeLauncherName());
-				add_on = true;
+				if (witm->m_addons[CUIWeaponCellItem::eLauncher]->GetColor() == PRICE_RESTR_COLOR)
+				{
+					wpn->Detach(*wpn->GetGrenadeLauncherName());
+					add_on = true;
+				}
 			}
 		}
 	}
