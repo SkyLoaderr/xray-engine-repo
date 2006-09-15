@@ -7,9 +7,9 @@
 		<string id="kb_artefact">
 		<text>Артефакт</text>
 	</string>
-	<stirng id="ui_mm_need_restart">
+	<string id="ui_mm_need_restart">
 		<text>Для того чтобы наступили изменения необходимо перезапустить игру</text>		
-	</stirng>
+	</string>
 	<string id="ui_mm_render_2">
 		<text>Рендер 2</text>
 	</string>
