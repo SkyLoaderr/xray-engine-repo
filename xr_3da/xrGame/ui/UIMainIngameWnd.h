@@ -15,7 +15,6 @@
 //для режима настройки HUD
 extern int				g_bHudAdjustMode;
 extern float			g_fHudAdjustValue;
-extern int				g_bNewsDisable;
 
 class					CUIPdaMsgListItem;
 class					CLAItem;

@@ -58,11 +58,8 @@ void CFontManager::InitializeFonts()
 	InitializeFont(pFontLetterica25			,"ui_font_letter_25"			);
 	InitializeFont(pFontStat				,"stat_font"					);
 
-	float s1 = pFontGraffiti19Russian->SizeOf("New Game");
-	float s2 = pFontGraffiti22Russian->SizeOf("New Game");
-
-
 }
+
 LPCSTR CFontManager::GetFontTexName (LPCSTR section)
 {
 	u32 w = Device.dwWidth;
@@ -72,7 +69,7 @@ LPCSTR CFontManager::GetFontTexName (LPCSTR section)
 	int idx			= def_idx;
 
 	if(w<=800)		idx = 0;
-	else if(w<=1024)idx = 1;
+	else if(w<=1280)idx = 1;
 	else 			idx = 2;
 
 	while(idx>=0){
@@ -93,6 +90,9 @@ void CFontManager::InitializeFont(CGameFont*& F, LPCSTR section, u32 flags)
 	else
 		F->Initialize("font",font_tex_name);
 
+#ifdef DEBUG
+	F->m_font_name = section;
+#endif
 	if (pSettings->line_exist(section,"size")){
 		float sz = pSettings->r_float(section,"size");
 		if (flags&CGameFont::fsDeviceIndependent)	F->SetSizeI(sz);
@@ -217,7 +217,7 @@ void  CHUDManager::RenderUI()
 	if( Device.Pause() && bShowPauseString){
 		CGameFont* pFont	= Font().pFontGraffiti50Russian;
 		pFont->SetColor		(0x80FF0000	);
-		pFont->OutSet		(Device.dwWidth/2.0f-(pFont->SizeOf("Game paused")/2.0f),Device.dwHeight/2.0f);
+		pFont->OutSet		(Device.dwWidth/2.0f-(pFont->SizeOf_("Game paused")/2.0f),Device.dwHeight/2.0f);
 		pFont->OutNext		("Game paused");
 		pFont->OnRender		();
 	}

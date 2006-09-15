@@ -49,13 +49,11 @@ float CUIPdaKillMessage::InitText(CUIStatic& refStatic, float x, PlayerInfo& inf
 	float		selfHeight = GetHeight();
 	CGameFont*	pFont = GetFont();
 
-	float width = pFont->SizeOfRel(*info.m_name);
-	float height = pFont->CurrentHeight();
+	float width = pFont->SizeOf_/*Rel*/(*info.m_name);
+	float height = pFont->CurrentHeight_();
 	y = (selfHeight - height)/2;
 
-	if (width > 110)
-		width = 110;
-
+	clamp(width, 0.0f, 110.0f);
 	refStatic.Init(x, y, width + 1, height);
 	refStatic.SetElipsis(CUIStatic::eepEnd, 0);
 	refStatic.SetText(*info.m_name);

@@ -37,26 +37,18 @@ u32 C_ON_FRIEND		D3DCOLOR_XRGB(0,0xff,0);
 #define SHOW_INFO_SPEED		0.5f
 #define HIDE_INFO_SPEED		10.f
 
-float	g_fMinReconDist		= 2.0f;
-float	g_fMaxReconDist		= 50.0f;
-float	g_fMinReconSpeed	= 0.5f;
-float	g_fMaxReconSpeed	= 10.f;
 
 IC	float	recon_mindist	()		{
-	if (GameID() == GAME_SINGLE)	return g_fMinReconDist;
-	else							return 2.f;
+	return 2.f;
 }
 IC	float	recon_maxdist	()		{
-	if (GameID() == GAME_SINGLE)	return g_fMaxReconDist;
-	else							return 50.f;
+	return 50.f;
 }
 IC	float	recon_minspeed	()		{
-	if (GameID() == GAME_SINGLE)	return g_fMinReconSpeed;
-	else							return 0.5f;
+	return 0.5f;
 }
 IC	float	recon_maxspeed	()		{
-	if (GameID() == GAME_SINGLE)	return g_fMaxReconSpeed;
-	else							return 10.f;
+	return 10.f;
 }
 
 //////////////////////////////////////////////////////////////////////

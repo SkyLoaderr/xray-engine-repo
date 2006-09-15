@@ -151,8 +151,8 @@ void CGameFont::OnRender()
 
 				switch(PS.align)
 				{
-				case alCenter:	X-=iFloor(SizeOf(PS.string,PS.size)*.5f);	break;
-				case alRight:	X-=iFloor(SizeOf(PS.string,PS.size));		break;
+				case alCenter:	X-=iFloor(SizeOf_(PS.string,PS.size)*.5f);	break;
+				case alRight:	X-=iFloor(SizeOf_(PS.string,PS.size));		break;
 				}
 
 				u32	clr,clr2;
@@ -288,15 +288,15 @@ void __cdecl CGameFont::OutPrev(LPCSTR fmt,...)
 
 void CGameFont::OutSkip(float val)
 {
-	fCurrentY += val*CurrentHeight();
+	fCurrentY += val*CurrentHeight_();
 }
 
-float CGameFont::SizeOf(char s,float size)
+float CGameFont::SizeOf_(char s,float size)
 {
-	return		GetCharTC(s).z*size/fHeight*vInterval.x*vTS.x;
+	return		( GetCharTC(s).z*size/fHeight*vInterval.x*vTS.x ) * 1024.0f / ::Render->getTarget()->get_width();
 }
 
-float CGameFont::SizeOf(LPCSTR s,float size)
+float CGameFont::SizeOf_(LPCSTR s,float size)
 {
 	if (s&&s[0]){
 		int		len			= xr_strlen(s);
@@ -304,7 +304,29 @@ float CGameFont::SizeOf(LPCSTR s,float size)
 		if (len) 
 			for (int j=0; j<len; j++) 
 				X			+= GetCharTC(s[j]).z;
-		return				X*size/fHeight*vInterval.x*vTS.x;
+		return				(X*size/fHeight*vInterval.x*vTS.x) * 1024.0f / ::Render->getTarget()->get_width();
 	}
 	return 0;
 }
+
+float CGameFont::CurrentHeight_	()
+{
+	return fCurrentSize * vInterval.y * 768.0f / ::Render->getTarget()->get_height();;
+}
+
+/*
+float CGameFont::SizeOfRel(LPCSTR s)
+{
+	return SizeOf(s)*1024.0f/::Render->getTarget()->get_width();
+}
+
+float CGameFont::SizeOfRel(char s)
+{
+	return SizeOf(s)*1024.0f/::Render->getTarget()->get_width();
+}
+
+float CGameFont::CurrentHeightRel()
+{
+	return CurrentHeight()*768.0f/::Render->getTarget()->get_height();
+}
+*/

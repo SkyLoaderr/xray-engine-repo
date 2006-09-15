@@ -107,14 +107,17 @@ void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCST
 		}
 		st = xr_new<CUIStatic>();
 		st->Init(0,0,m_view->GetDesiredChildWidth(), height);
-		st->SetTextST(xml_doc.ReadAttrib("btn", i, "caption"));
+		st->SetTextComplexMode		(false);
+		st->SetTextST(xml_doc.ReadAttrib	("btn", i, "caption"));
 		if (pF)
 			st->SetFont(pF);
 		st->SetTextColor(color);
 		st->SetTextAlignment(CGameFont::alCenter);
+//		st->SetTextAlignment(CGameFont::alLeft);
 		st->SetVTextAlignment(valCenter);
 		st->SetWindowName(xml_doc.ReadAttrib("btn", i, "name"));
 		st->SetMessageTarget(this);
+
 
 		lst.push_back(st);
 	}
@@ -214,9 +217,6 @@ void CUIMMShniaga::Update(){
 
 	if (m_start_time > Device.dwTimeContinual - m_run_time*10/100)
 		ProcessEvent(E_Finilize);
-
-
-//	if ()
 
 	ProcessEvent(E_Update);
 		

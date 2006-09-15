@@ -35,69 +35,69 @@ public:
 			EVTextAlignment GetVTextAlignment()							{return m_eVTextAlign;}
 
 	// additional
-			void			SetCursorColor(u32 color)					{m_dwCursorColor = color;}
-			void			AddCharAtCursor(const char ch);
-			void			DelChar();
-			void			DelLeftChar();
-			float			GetDrawCursorPos();
-			void			MoveCursorToEnd();
-			bool			MoveCursorUp();
-			bool			MoveCursorDown();
+			void			SetCursorColor								(u32 color)			{m_dwCursorColor = color;}
+			void			AddCharAtCursor								(const char ch);
+			void			DelChar										();
+			void			DelLeftChar									();
+			float			GetDrawCursorPos							();
+			void			MoveCursorToEnd								();
+			bool			MoveCursorUp								();
+			bool			MoveCursorDown								();
 
-			void			SetTextComplexMode(bool mode = true);
-			bool			GetTextComplexMode() const;
-			void			SetPasswordMode(bool mode = true);
-			void			SetColoringMode(bool mode);
-			void			SetCutWordsMode(bool mode);
-			void			SetUseNewLineMode(bool mode);
+			void			SetTextComplexMode							(bool mode = true);
+			bool			GetTextComplexMode							() const;
+			void			SetPasswordMode								(bool mode = true);
+			void			SetColoringMode								(bool mode);
+			void			SetCutWordsMode								(bool mode);
+			void			SetUseNewLineMode							(bool mode);
 
     // IUISimpleWindow methods
-	virtual void			Init(float x, float y, float width, float height);
-	virtual void			Draw();
-			void			DrawCursor(float x, float y);
-	virtual void			Draw(float x, float y);
-	virtual void			Update();
-IC			void			SetWndSize_inline(const Fvector2& wnd_size);
+	virtual void			Init										(float x, float y, float width, float height);
+	virtual void			Draw										();
+			void			DrawCursor									(float x, float y);
+	virtual void			Draw										(float x, float y);
+	virtual void			Update										();
+IC			void			SetWndSize_inline							(const Fvector2& wnd_size);
 
 
     // CDeviceResetNotifier methods
-	virtual void			OnDeviceReset();
+	virtual void			OnDeviceReset								();
 
 	// own methods
-			void			Reset();
-			void			ParseText();
-			float			GetVisibleHeight();
-			float			GetTextLength();
+			void			Reset										();
+			void			ParseText									();
+			float			GetVisibleHeight							();
+			float			GetTextLength								();
 
 	// cursor control
 			int				m_iCursorPos;
-			void			IncCursorPos();
-			void			DecCursorPos();
+			void			IncCursorPos								();
+			void			DecCursorPos								();
 protected:
 			Ivector2		m_cursor_pos;
-			void			UpdateCursor();
+			void			UpdateCursor								();
 				// %c<255,255,255,255>
-		u32		GetColorFromText(const xr_string& str)									const;
-		float	GetIndentByAlign(float length)											const;
-		float	GetVIndentByAlign();
-		void	CutFirstColoredTextEntry(xr_string& entry, u32& color,xr_string& text)	const;
-	CUILine*	ParseTextToColoredLine(const xr_string& str);
+		u32					GetColorFromText							(const xr_string& str)							const;
+		float				GetIndentByAlign							(float length)									const;
+		float				GetVIndentByAlign							();
+		void				CutFirstColoredTextEntry					(xr_string& entry, u32& color,xr_string& text)	const;
+	CUILine*				ParseTextToColoredLine						(const xr_string& str);
 
 	// IUITextControl data
 	typedef xr_string						Text;
 	typedef xr_vector<CUILine>				LinesVector;
 	typedef xr_vector<CUILine>::iterator	LinesVector_it;
-	LinesVector		m_lines;	// parsed text
-	float			m_interval; // interval
+	LinesVector				m_lines;	// parsed text
+	float					m_interval; // interval
 
-	xr_string		m_text;
+	xr_string				m_text;
 
-	ETextAlignment	m_eTextAlign;
-	EVTextAlignment	m_eVTextAlign;
-	u32				m_dwTextColor;
-	u32				m_dwCursorColor;
+	ETextAlignment			m_eTextAlign;
+	EVTextAlignment			m_eVTextAlign;
+	u32						m_dwTextColor;
+	u32						m_dwCursorColor;
 
-	CGameFont*		m_pFont;
+	CGameFont*				m_pFont;
 
 	enum {
 		flNeedReparse		= 1,
@@ -108,31 +108,31 @@ protected:
 		flRecognizeNewLine	= 32
 	};	
 private:
-	Flags32			uFlags;
-	float			m_oldWidth;
+	Flags32					uFlags;
+	float					m_oldWidth;
 };
 
 class CUILinesOwner : public IUITextControl {
 public:
-	virtual ~CUILinesOwner() {}
+	virtual					~CUILinesOwner() {}
 
 	// IUIFontControl{
-	virtual void			SetTextColor(u32 color)						{m_lines.SetTextColor(color);}
-	virtual u32				GetTextColor()								{return m_lines.GetTextColor();}
-	virtual void			SetFont(CGameFont* pFont)					{m_lines.SetFont(pFont);}
-	virtual CGameFont*		GetFont()									{return m_lines.GetFont();}
-	virtual void			SetTextAlignment(ETextAlignment alignment)	{m_lines.SetTextAlignment(alignment);}
-	virtual ETextAlignment	GetTextAlignment()							{return m_lines.GetTextAlignment();}
+	virtual void			SetTextColor					(u32 color)						{m_lines.SetTextColor(color);}
+	virtual u32				GetTextColor					()								{return m_lines.GetTextColor();}
+	virtual void			SetFont							(CGameFont* pFont)				{m_lines.SetFont(pFont);}
+	virtual CGameFont*		GetFont							()								{return m_lines.GetFont();}
+	virtual void			SetTextAlignment				(ETextAlignment alignment)		{m_lines.SetTextAlignment(alignment);}
+	virtual ETextAlignment	GetTextAlignment				()								{return m_lines.GetTextAlignment();}
 
 	// IUITextControl : public IUIFontControl{
-	virtual void			SetText(const char* text)					{m_lines.SetText(text);}
-	virtual const char*		GetText()									{return m_lines.GetText();}
+	virtual void			SetText							(const char* text)				{m_lines.SetText(text);}
+	virtual const char*		GetText							()								{return m_lines.GetText();}
 
 	// own
-	virtual void			SetTextPosX(float x)						{m_textPos.x = x;}
-	virtual void			SetTextPosY(float y)						{m_textPos.y = y;}
+	virtual void			SetTextPosX						(float x)						{m_textPos.x = x;}
+	virtual void			SetTextPosY						(float y)						{m_textPos.y = y;}
 
 protected:
-	Fvector2	m_textPos;
-	CUILines	m_lines;
+	Fvector2				m_textPos;
+	CUILines				m_lines;
 };

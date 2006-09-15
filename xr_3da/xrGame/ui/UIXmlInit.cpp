@@ -35,7 +35,7 @@
 #include "UITextureMaster.h"
 #include "UIDragDropListEx.h"
 
-#define HEADER_FONT_NAME		"header"
+//.#define HEADER_FONT_NAME		"header"
 #define ARIAL_FONT_NAME			"arial"
 
 #define NORMAL_FONT_NAME		"normal"
@@ -605,11 +605,11 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 
 	if(*font_name)
 	{
-		if(!xr_strcmp(*font_name, HEADER_FONT_NAME))
+/*		if(!xr_strcmp(*font_name, HEADER_FONT_NAME))
 		{
 //.			pFnt = UI()->Font()->pFontHeaderRussian;
 		}
-		else if(!xr_strcmp(*font_name, NORMAL_FONT_NAME) || !xr_strcmp(*font_name, GRAFFITI19_FONT_NAME))
+		else*/ if(!xr_strcmp(*font_name, NORMAL_FONT_NAME) || !xr_strcmp(*font_name, GRAFFITI19_FONT_NAME))
 		{
 			pFnt = UI()->Font()->pFontGraffiti19Russian;
 		}

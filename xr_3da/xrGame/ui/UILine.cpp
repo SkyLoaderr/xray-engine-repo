@@ -175,7 +175,7 @@ int CUILine::DrawCursor(int pos, CGameFont* pFont, float x, float y, u32 color) 
 		pos = sz;
 
 	whole_line[pos] = 0;
-	x += pFont->SizeOfRel(whole_line.c_str());
+	x += pFont->SizeOf_/*Rel*/(whole_line.c_str());
 	DrawCursor(pFont, x, y, color);
 
 	return pos;
@@ -430,7 +430,7 @@ const CUILine* CUILine::CutWord(CGameFont* pFont, float length){
 	float len = 0;
 
 	for (u32 i= 0; i<m_subLines[0].m_text.length(); i++){
-		len += pFont->SizeOfRel(m_subLines[0].m_text[i]);
+		len += pFont->SizeOf_/*Rel*/(m_subLines[0].m_text[i]);
 
 		if (len>length){
 			m_tmpLine->AddSubLine(m_subLines[0].Cut2Pos((i?i:1)-1));
@@ -455,7 +455,7 @@ float  CUILine::GetLength_inclusiveWord_1(Position& pos, CGameFont* pFont) const
 	str.assign(m_subLines[pos.curr_subline].m_text, 0, pos.word_1.pos + pos.word_1.len);
 
 	
-	len += int(pFont->SizeOfRel(str.c_str()));
+	len += int(pFont->SizeOf_/*Rel*/(str.c_str()));
 
 	return len;
 }
@@ -476,7 +476,7 @@ float  CUILine::GetLength_inclusiveWord_2(Position& pos, CGameFont* pFont) const
 	xr_string str;
 	str.assign(m_subLines[last + 1].m_text, 0, pos.word_2.pos + pos.word_2.len);
 
-	len += pFont->SizeOfRel(str.c_str());
+	len += pFont->SizeOf_/*Rel*/(str.c_str());
 
 	return len;
 }

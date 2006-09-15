@@ -20,7 +20,7 @@ void CUICDkey::Draw(){
 	GetAbsoluteRect	(rect);
 	float outX, outY;
 
-	outY = (m_wndSize.y - m_lines.m_pFont->CurrentHeightRel())/2;
+	outY = (m_wndSize.y - m_lines.m_pFont->CurrentHeight_/*Rel*/())/2;
 	outX = 0;
 	m_lines.m_pFont->SetColor(m_lines.GetTextColor());
 
@@ -31,9 +31,9 @@ void CUICDkey::Draw(){
 	{		
 		m_lines.m_pFont->Out( pos.x, pos.y, "%s" ,AddHyphens(m_lines.m_text.c_str()) );
 	
-		outY = (m_wndSize.y - m_lines.m_pFont->CurrentHeightRel())/2;
+		outY = (m_wndSize.y - m_lines.m_pFont->CurrentHeight_/*Rel*/())/2;
 		outX = m_lines.GetDrawCursorPos();
-		outX += m_lines.m_pFont->SizeOfRel("-")*(_min(iFloor(m_lines.m_iCursorPos/4.0f),3));
+		outX += m_lines.m_pFont->SizeOf_/*Rel*/("-")*(_min(iFloor(m_lines.m_iCursorPos/4.0f),3));
 
 		CUILine::DrawCursor(m_lines.m_pFont, rect.left+outX, rect.top+outY, m_lines.GetTextColor());
 	}

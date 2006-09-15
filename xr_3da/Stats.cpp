@@ -170,7 +170,7 @@ void CStats::Show()
 		float sz		= pFont->GetSize();
 		pFont->SetSize	(16);
 		pFont->SetColor	(0xFFFF0000	);
-		pFont->OutSet	(Device.dwWidth/2.0f+(pFont->SizeOf("Game paused")/2.0f),Device.dwHeight/2.0f);
+		pFont->OutSet	(Device.dwWidth/2.0f+(pFont->SizeOf_("--= tune =--")/2.0f),Device.dwHeight/2.0f);
 		pFont->OutNext	("--= tune =--");
 		pFont->OnRender	();
 		pFont->SetSize	(sz);

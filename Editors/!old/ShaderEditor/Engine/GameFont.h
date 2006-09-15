@@ -73,14 +73,14 @@ public:
 	IC void					SetInterval		(const Fvector2& v) {vInterval.set(v);};
 	IC void					SetAligment		(EAligment aligment){ eCurrentAlignment=aligment; }
 	IC void					Add				(float _x, float _y, LPCSTR s, u32 _c=0xffffffff, float _size=0.01f);
-	float					SizeOf			(char c, float size);
-	IC float				SizeOf			(char c){return SizeOf(c,fCurrentSize);}
-	float					SizeOf			(LPCSTR s, float size);
-	IC float				SizeOf			(LPCSTR s){return SizeOf(s,fCurrentSize);}
-	IC float				SizeOfRel		(LPCSTR s){return SizeOf(s)*1024.0f/Device.dwWidth;}
-	IC float				SizeOfRel		(char s){return SizeOf(s)*1024.0f/Device.dwWidth;}
-	IC float				CurrentHeight	(){return fCurrentSize*vInterval.y;}
-	IC float				CurrentHeightRel(){return CurrentHeight()*768.0f/Device.dwHeight;}
+	float					SizeOf_			(char c, float size);
+	float					SizeOf_			(char c){return SizeOf_(c,fCurrentSize);}
+	float					SizeOf_			(LPCSTR s, float size);
+	float					SizeOf_			(LPCSTR s){return SizeOf_(s,fCurrentSize);}
+	float					CurrentHeight_	();//{return fCurrentSize*vInterval.y;}
+//.	IC float				SizeOfRel		(LPCSTR s);
+//.	IC float				SizeOfRel		(char s);
+//.	IC float				CurrentHeightRel();
 	void					OutSetI			(float x, float y);
 	void					OutSet			(float x, float y);
 	void __cdecl            OutNext			(LPCSTR fmt, ...);
@@ -92,6 +92,10 @@ public:
 	virtual void			OnRender		();
 
 	IC	void				Clear			()  { strings.clear(); }
+
+#ifdef DEBUG
+	shared_str				m_font_name;
+#endif
 };
 
 #endif // _XR_GAMEFONT_H_

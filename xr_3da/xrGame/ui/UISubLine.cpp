@@ -108,7 +108,7 @@ void CUISubLine::Draw(CGameFont* pFont, float x, float y) const{
 }
 
 float CUISubLine::GetLength(CGameFont* pFont) const{
-	return (pFont->SizeOfRel(m_text.c_str()));
+	return (pFont->SizeOf_/*Rel*/(m_text.c_str()));
 }
 
 float CUISubLine::GetVisibleLength(CGameFont* pFont){
@@ -116,7 +116,7 @@ float CUISubLine::GetVisibleLength(CGameFont* pFont){
 	bool b = (end!=(int)m_text.size()-1);
 	if(b)
 		m_text[end+1] = 0;	
-	float res = (pFont->SizeOfRel(m_text.c_str()));	
+	float res = (pFont->SizeOf_/*Rel*/(m_text.c_str()));	
 	if(b)
 		m_text[end+1] = ' ';
 	return res;

@@ -10223,12 +10223,6 @@
 						Name="ListBox"
 						Filter="">
 						<File
-							RelativePath=".\ui\UIInteractiveListItem.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIInteractiveListItem.h">
-						</File>
-						<File
 							RelativePath=".\ui\UIListItem.cpp">
 						</File>
 						<File

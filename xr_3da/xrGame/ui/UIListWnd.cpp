@@ -4,7 +4,7 @@
 
 #include"stdafx.h"
 #include ".\uilistwnd.h"
-#include "UIInteractiveListItem.h"
+//#include "UIInteractiveListItem.h"
 #include "uiscrollbar.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -743,7 +743,7 @@ float CUIListWnd::WordTailSize(LPCSTR currPos, CGameFont *font, int &charsCount)
 	if (currPos)
 	{
 		strncpy(str, memorizedPos, charsCount);
-		return (font->SizeOf(str));
+		return (font->SizeOf_(str));
 	}
 	else
 		return 0;

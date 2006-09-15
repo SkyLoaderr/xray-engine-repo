@@ -36,7 +36,6 @@ public:
 	virtual ~IUISimpleTextureControl() {}
 	virtual void		CreateShader(const char* tex, const char* sh = "hud\\default")	= 0;
 	virtual void		SetShader(const ref_shader& sh)									= 0;
-//	virtual ref_shader&	GetShader()														= 0;
 	virtual void		SetTextureColor(u32 color)										= 0;
 	virtual u32			GetTextureColor()										const	= 0;
 	virtual void		SetOriginalRect(const Frect& r)									= 0;
@@ -98,23 +97,15 @@ public:
 	virtual void		Update()										= 0;
 	virtual void		SetWndPos(const Fvector2& pos)					= 0;
 	virtual void		SetWndPos(float x, float y)						= 0;
-//.	virtual Fvector2	GetWndPos()								const	= 0;
 	virtual void		SetWndSize(const Fvector2& size)				= 0;
-//.	virtual Fvector2	GetWndSize()							const	= 0;
 	virtual void		SetWndRect(const Frect& rect)					= 0;
-//.	virtual Frect		GetWndRect()							const	= 0;
 	virtual void		SetHeight(float height)							= 0;
-//.	virtual float		GetHeight()								const	= 0;
 	virtual void		SetWidth(float width)							= 0;
-//.	virtual float		GetWidth()								const	= 0;
-//.	virtual void		SetVisible(bool vis)							= 0;
-//.	virtual bool		GetVisible()							const	= 0;
-//.	virtual void		SetAlignment(EWindowAlignment al)				= 0;
 };
 
 class CUISimpleWindow : public IUISimpleWindow {
 public:
-							CUISimpleWindow()							{m_alignment=waNone;}
+							CUISimpleWindow()							{m_alignment=waNone; m_wndPos.set(0,0); m_wndSize.set(0,0);}
 	virtual void			Init(float x, float y, float width, float height)	{m_wndPos.set(x,y);m_wndSize.set(width, height);}
 	virtual void			SetWndPos(const Fvector2& pos)				{m_wndPos.set(pos.x,pos.y);}
 	virtual void			SetWndPos(float x, float y)					{m_wndPos.set(x,y);}
@@ -150,14 +141,11 @@ public:
 			default:
 				NODEFAULT;
 		};
-#ifdef DEBUG
-//.		return Frect().null();
-#endif
 	}
 				void			MoveWndDelta		(float dx, float dy)				{m_wndPos.x+=dx;m_wndPos.y+=dy;}
 				void			MoveWndDelta		(const Fvector2& d)					{ MoveWndDelta(d.x, d.y);	};
 
-protected:    
+protected:
 	bool					m_bShowMe;
 	Fvector2				m_wndPos;
 	Fvector2				m_wndSize;

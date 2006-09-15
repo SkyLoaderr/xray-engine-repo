@@ -61,7 +61,6 @@ using namespace InventoryUtilities;
 //	hud adjust mode
 int			g_bHudAdjustMode			= 0;
 float		g_fHudAdjustValue			= 0.0f;
-int			g_bNewsDisable				= 0;
 
 const u32	g_clWhite					= 0xffffffff;
 
@@ -1087,14 +1086,9 @@ void CUIMainIngameWnd::RenderQuickInfos()
 
 void CUIMainIngameWnd::ReceiveNews(GAME_NEWS_DATA* news)
 {
-	if (g_bNewsDisable) return;
-
 	VERIFY(news->texture_name.size());
 
 	HUD().GetUI()->m_pMessagesWnd->AddIconedPdaMessage(*(news->texture_name), news->tex_rect, news->SingleLineText(), news->show_time);
-	
-//	else
-//		HUD().GetUI()->m_pMessagesWnd->AddPdaMessage(news->SingleLineText(), news->show_time);
 }
 
 void CUIMainIngameWnd::SetWarningIconColor(CUIStatic* s, const u32 cl)

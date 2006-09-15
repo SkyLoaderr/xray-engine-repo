@@ -20,6 +20,5 @@ public:
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 			void FillUpList();
 protected:
-	CUIListWnd m_list;
 	CUIStatic  m_background;
 };

@@ -64,10 +64,6 @@ extern	float	g_cl_lvInterp;
 extern	int		g_cl_InterpolationType; //0 - Linear, 1 - BSpline, 2 - HSpline
 extern	u32		g_cl_InterpolationMaxPoints;
 
-extern	float	g_fMinReconDist;
-extern	float	g_fMaxReconDist;
-extern	float	g_fMinReconSpeed;
-extern	float	g_fMaxReconSpeed;
 extern	u32		g_dwMaxCorpses;
 extern	int		x_m_x;
 extern	int		x_m_z;
@@ -2284,7 +2280,6 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"hud_weapon",			&psHUD_Flags,	HUD_WEAPON);
 	CMD3(CCC_Mask,				"hud_info",				&psHUD_Flags,	HUD_INFO);
 	CMD3(CCC_Mask,				"hud_draw",				&psHUD_Flags,	HUD_DRAW);
-	CMD3(CCC_Mask,				"hud_animate_hit",		&psHUD_Flags,	HUD_CAM_ANIM_HIT);
 
 	CMD2(CCC_Float,				"hud_fov",				&psHUD_FOV);
 
@@ -2383,9 +2378,6 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,		"g_autopickup",				&psActorFlags,	AF_AUTOPICKUP);
 
 
-	// Enable/disable news
-	CMD4(CCC_Integer,	"hud_news_disable",			&g_bNewsDisable,	0, 1);
-
 	// Network
 	CMD4(CCC_Integer,	"net_cl_update_rate",	&psNET_ClientUpdate,0,		100				);
 	CMD4(CCC_Integer,	"net_cl_pending_lim",	&psNET_ClientPending,0,		10				);
@@ -2397,13 +2389,6 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,		"net_cl_log_data",		&psNET_Flags,		NETFLAG_LOG_CL_PACKETS	);
 	CMD1(CCC_Dbg_NumObjects,	"net_dbg_objects"				);
 
-	//Recon params
-	CMD4(CCC_Float,		"recon_min_dist",		&g_fMinReconDist,	1.0f, 50.0f);
-	CMD4(CCC_Float,		"recon_max_dist",		&g_fMaxReconDist,	50.0f, 100.0f);
-	CMD4(CCC_Float,		"recon_min_speed",		&g_fMinReconSpeed,	0.01f, 180.0f);
-	CMD4(CCC_Float,		"recon_max_speed",		&g_fMaxReconSpeed,	0.01f, 180.0f);
-
-///	CMD4(CCC_Integer,	"g_checktime",			&g_bCheckTime,		0,	1);
 	CMD4(CCC_Integer,	"g_eventdelay",			&g_dwEventDelay,	0,	1000);
 
 	CMD4(CCC_Integer,	"g_corpsenum",			(int*)&g_dwMaxCorpses,		0,	100);
