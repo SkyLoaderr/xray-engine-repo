@@ -10,6 +10,7 @@
 #include "../skeletonanimated.h"
 #include "gamemtllib.h"
 #include "level_bullet_manager.h"
+#include "ai_sounds.h"
 
 #define KNIFE_MATERIAL_NAME "objects\\knife"
 
@@ -20,6 +21,11 @@ CWeaponKnife::CWeaponKnife() : CWeapon("KNIFE")
 	SetState				( eHidden );
 	SetNextState			( eHidden );
 	knife_material_idx		= (u16)-1;
+}
+CWeaponKnife::~CWeaponKnife()
+{
+	HUD_SOUND::DestroySound(m_sndShot);
+
 }
 
 void CWeaponKnife::Load	(LPCSTR section)
@@ -39,6 +45,7 @@ void CWeaponKnife::Load	(LPCSTR section)
 	animGet				(mhud_attack_e,	pSettings->r_string(*hud_sect,"anim_shoot1_end"));
 	animGet				(mhud_attack2_e,pSettings->r_string(*hud_sect,"anim_shoot2_end"));
 
+	HUD_SOUND::LoadSound(section,"snd_shoot"		, m_sndShot		, ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING)		);
 	
 	knife_material_idx =  GMLib.GetMaterialIdx(KNIFE_MATERIAL_NAME);
 }
@@ -85,6 +92,8 @@ void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 	while(m_magazine.size() < 2)	m_magazine.push_back(cartridge);
 	iAmmoElapsed					= m_magazine.size();
 	bool SendHit					= SendHitAllowed(H_Parent());
+
+	PlaySound						(m_sndShot,pos);
 
 	Level().BulletManager().AddBullet(	pos, 
 										dir, 

@@ -15,6 +15,8 @@ protected:
 	MotionSVec			mhud_attack_e;
 	MotionSVec			mhud_attack2_e;
 
+	HUD_SOUND			m_sndShot;
+
 	bool				m_attackStart;
 
 protected:
@@ -49,6 +51,7 @@ protected:
 	virtual void		LoadFireParams					(LPCSTR section, LPCSTR prefix);
 public:
 						CWeaponKnife(); 
+	virtual				~CWeaponKnife(); 
 
 	void				Load							(LPCSTR section);
 
