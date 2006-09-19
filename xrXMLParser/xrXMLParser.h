@@ -46,16 +46,16 @@ XRXMLPARSER_API void FunctionSampleExport();
 typedef TiXmlNode		XML_NODE;
 typedef TiXmlAttribute	XML_ATTRIBUTE;
 
-class XRXMLPARSER_API CUIXml  
+class XRXMLPARSER_API CXml  
 {
 public:
 	string_path m_xml_file_name;
-	CUIXml();
-	virtual ~CUIXml();
+	CXml();
+	virtual ~CXml();
 	void	ClearInternal					();
 
 	bool Init(LPCSTR path_alias, LPCSTR path, LPCSTR  xml_filename);
-	bool Init(LPCSTR path_alias, LPCSTR path1, LPCSTR path2, LPCSTR xml_filename);
+//.	bool Init(LPCSTR path_alias, LPCSTR path1, LPCSTR path2, LPCSTR xml_filename);
 	bool Init(LPCSTR path_alias, LPCSTR xml_filename);
 
 
@@ -141,9 +141,11 @@ protected:
 
 	//буфферный вектор для проверки уникальность аттрибутов
 	xr_vector<shared_str> m_AttribValues;
+
+	virtual shared_str correct_file_name	(LPCSTR fn) {return fn;}
 private:
-	CUIXml(const CUIXml& copy);
-	void operator=( const CUIXml& copy );
+	CXml(const CXml& copy);
+	void operator=( const CXml& copy );
 
 	typedef TiXmlElement	XML_ELEM;
 	TiXmlDocument	m_Doc;
