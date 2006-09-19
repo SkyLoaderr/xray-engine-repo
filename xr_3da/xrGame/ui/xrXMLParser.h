@@ -48,8 +48,8 @@ typedef TiXmlAttribute	XML_ATTRIBUTE;
 
 class XRXMLPARSER_API CUIXml  
 {
-	string_path m_xml_file_name;
 public:
+	string_path m_xml_file_name;
 	CUIXml();
 	virtual ~CUIXml();
 	void	ClearInternal					();
