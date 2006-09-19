@@ -142,7 +142,7 @@ protected:
 	//буфферный вектор для проверки уникальность аттрибутов
 	xr_vector<shared_str> m_AttribValues;
 
-	virtual shared_str correct_file_name	(LPCSTR fn) {return fn;}
+	virtual shared_str correct_file_name	(LPCSTR path, LPCSTR fn) {return fn;}
 private:
 	CXml(const CXml& copy);
 	void operator=( const CXml& copy );
