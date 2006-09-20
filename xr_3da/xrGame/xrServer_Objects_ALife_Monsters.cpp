@@ -1022,10 +1022,10 @@ void CSE_ALifeCreatureAbstract::UPDATE_Write(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(timestamp		);
 	tNetPacket.w_u8				(flags			);
 	tNetPacket.w_vec3			(o_Position		);
-	tNetPacket.w_angle8			(o_model		);
-	tNetPacket.w_angle8			(o_torso.yaw	);
-	tNetPacket.w_angle8			(o_torso.pitch	);
-	tNetPacket.w_angle8			(o_torso.roll	);
+	tNetPacket.w_float /*w_angle8*/			(o_model		);
+	tNetPacket.w_float /*w_angle8*/			(o_torso.yaw	);
+	tNetPacket.w_float /*w_angle8*/			(o_torso.pitch	);
+	tNetPacket.w_float /*w_angle8*/			(o_torso.roll	);
 	tNetPacket.w_u8				(s_team);
 	tNetPacket.w_u8				(s_squad);
 	tNetPacket.w_u8				(s_group);
@@ -1040,10 +1040,10 @@ void CSE_ALifeCreatureAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r_u32			(timestamp		);
 	tNetPacket.r_u8				(flags			);
 	tNetPacket.r_vec3			(o_Position		);
-	tNetPacket.r_angle8			(o_model		);
-	tNetPacket.r_angle8			(o_torso.yaw	);
-	tNetPacket.r_angle8			(o_torso.pitch	);
-	tNetPacket.r_angle8			(o_torso.roll	);
+	tNetPacket.r_float /*r_angle8*/			(o_model		);
+	tNetPacket.r_float /*r_angle8*/			(o_torso.yaw	);
+	tNetPacket.r_float /*r_angle8*/			(o_torso.pitch	);
+	tNetPacket.r_float /*r_angle8*/			(o_torso.roll	);
 	
 	tNetPacket.r_u8				(s_team);
 	tNetPacket.r_u8				(s_squad);

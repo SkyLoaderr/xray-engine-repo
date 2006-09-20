@@ -90,10 +90,10 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	Fvector				p = Position();
 	P.w_vec3			(p);//Position());
 
-	P.w_angle8			(r_model_yaw); //Device.vCameraDirection.getH());//
-	P.w_angle8			(unaffected_r_torso.yaw	);//(r_torso.yaw);
-	P.w_angle8			(unaffected_r_torso.pitch);//(r_torso.pitch);
-	P.w_angle8			(unaffected_r_torso.roll);//(r_torso.roll);
+	P.w_float /*w_angle8*/			(r_model_yaw); //Device.vCameraDirection.getH());//
+	P.w_float /*w_angle8*/			(unaffected_r_torso.yaw	);//(r_torso.yaw);
+	P.w_float /*w_angle8*/			(unaffected_r_torso.pitch);//(r_torso.pitch);
+	P.w_float /*w_angle8*/			(unaffected_r_torso.roll);//(r_torso.roll);
 	P.w_u8				(u8(g_Team()));
 	P.w_u8				(u8(g_Squad()));
 	P.w_u8				(u8(g_Group()));
@@ -312,10 +312,10 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 
 	P.r_u8				(flags			);
 	P.r_vec3			(N.p_pos		);
-	P.r_angle8			(N.o_model		);
-	P.r_angle8			(N.o_torso.yaw	); 
-	P.r_angle8			(N.o_torso.pitch);
-	P.r_angle8			(N.o_torso.roll	); if (N.o_torso.roll > PI) N.o_torso.roll -= PI_MUL_2;
+	P.r_float /*r_angle8*/			(N.o_model		);
+	P.r_float /*r_angle8*/			(N.o_torso.yaw	); 
+	P.r_float /*r_angle8*/			(N.o_torso.pitch);
+	P.r_float /*r_angle8*/			(N.o_torso.roll	); if (N.o_torso.roll > PI) N.o_torso.roll -= PI_MUL_2;
 	id_Team				= P.r_u8();
 	id_Squad			= P.r_u8();
 	id_Group			= P.r_u8();
