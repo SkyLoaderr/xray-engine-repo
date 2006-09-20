@@ -32,15 +32,14 @@ void CUIOutfitDragDropList::SetOutfit(CUICellItem* itm)
 	r.x2			= r.x1+CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH;
 	r.y2			= r.y1+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT;
 	
-	m_background->Init(0,0, GetWidth(), GetHeight());
+	m_background->Init					(0,0, GetWidth(), GetHeight());
+	m_background->SetStretchTexture		(true);
+
 
 	if ((GameID() != GAME_SINGLE) && !itm){
 		CObject *pActor = NULL;
 
-//		if (itm)
-//			pActor = (CObject*)itm->m_pData;
-//		else
-            pActor = smart_cast<CActor*>(Level().CurrentEntity());
+        pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
 		xr_string a;
 		if (pActor)
@@ -85,7 +84,7 @@ void CUIOutfitDragDropList::SetOutfit(CUICellItem* itm)
 
 	m_background->TextureAvailable		(true);
 	m_background->TextureOn				();
-	m_background->RescaleRelative2Rect	(r);
+//	m_background->RescaleRelative2Rect	(r);
 }
 
 void CUIOutfitDragDropList::SetDefaultOutfit(LPCSTR default_outfit){

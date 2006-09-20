@@ -130,7 +130,6 @@ void	CHW::DestroyDevice	()
 #endif    
 	DestroyD3D				();
 }
-
 void	CHW::selectResolution	(u32 &dwWidth, u32 &dwHeight)
 {
 	// Select width/height

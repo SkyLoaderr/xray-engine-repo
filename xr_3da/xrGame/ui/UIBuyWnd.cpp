@@ -1,7 +1,6 @@
 #pragma once
 #include "stdafx.h"
 #include "UIBuyWnd.h"
-#include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "UICellCustomItems.h"
 #include "UIDragDropListEx.h"

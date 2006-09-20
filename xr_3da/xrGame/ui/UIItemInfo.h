@@ -33,6 +33,8 @@ public:
 	CUIScrollView*	UIDesc;
 	CUIProgressBar*	UICondProgresBar;
 	CUIWpnParams*	UIWpnParams;
+	CGameFont*		pDescFont;
+	u32				uDescClr;
 
 	//для изображения предмета крупным планом
 	Fvector2	UIItemImageSize; 

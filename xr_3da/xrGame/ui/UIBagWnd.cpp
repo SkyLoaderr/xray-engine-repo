@@ -2,7 +2,6 @@
 #include "UIBagWnd.h"
 #include "UIBuyWnd.h"
 #include "Restrictions.h"
-#include "xrXmlParser.h"
 #include "UIXmlInit.h"
 #include "UITabButtonMP.h"
 #include "UICellCustomItems.h"

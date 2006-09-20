@@ -11,7 +11,7 @@
 #include "StdAfx.h"
 #include "UITextureMaster.h"
 #include "uiabstract.h"
-#include "xrXmlParser.h"
+#include "xrUIXmlParser.h"
 
 xr_map<shared_str, TEX_INFO>	CUITextureMaster::m_textures;
 #ifdef DEBUG

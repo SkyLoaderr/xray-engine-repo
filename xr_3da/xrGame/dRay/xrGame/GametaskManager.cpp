@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "GameTaskManager.h"
 #include "alife_registry_wrappers.h"
-#include "ui/xrXMLParser.h"
+#include "ui/xrUIXmlParser.h"
 #include "GameTask.h"
 #include "Level.h"
 #include "map_manager.h"

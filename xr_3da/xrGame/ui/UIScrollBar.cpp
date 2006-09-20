@@ -6,15 +6,8 @@
 #include ".\uiscrollbar.h"
 #include "UI3tButton.h"
 #include "UIScrollBox.h"
-#include "xrXmlParser.h"
 #include "UIXmlInit.h"
 #include "UITextureMaster.h"
-//#define SCROLLBAR_LEFT_ARROW		"ui\\ui_scb_left_arrow"
-//#define SCROLLBAR_RIGHT_ARROW		"ui\\ui_scb_right_arrow"
-//#define SCROLLBAR_UP_ARROW			"ui\\ui_scb_up_arrow"
-//#define SCROLLBAR_DOWN_ARROW		"ui\\ui_scb_down_arrow"
-//#define SCROLLBAR_BACKGROUND_HORZ	"ui\\ui_scb_back"
-//#define SCROLLBAR_BACKGROUND_VERT	"ui\\ui_scb_back_v"
 
 CUIScrollBar::CUIScrollBar(void)
 {

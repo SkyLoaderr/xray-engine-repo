@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include "UIStatsWnd.h"
-#include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "../UI.h"
 #include "../string_table.h"

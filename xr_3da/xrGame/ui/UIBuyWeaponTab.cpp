@@ -12,7 +12,6 @@
 #include "../string_table.h"
 #include "../HUDManager.h"
 #include "../UI.h"
-#include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
 

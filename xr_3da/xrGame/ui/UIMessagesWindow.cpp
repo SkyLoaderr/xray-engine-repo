@@ -11,7 +11,7 @@
 #include "UIMessagesWindow.h"
 #include "../level.h"
 #include "UIGameLog.h"
-#include "xrXmlParser.h"
+#include "xrUIXmlParser.h"
 #include "UIXmlInit.h"
 #include "UIChatWnd.h"
 #include "UIPdaMsgListItem.h"

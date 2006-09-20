@@ -7,9 +7,9 @@
 #include "character_info.h"
 
 #ifdef XRGAME_EXPORTS
-#	include "ui/xrXMLParser.h"
+#	include "ui/xrUIXmlParser.h"
 #else
-#	include "xrXMLParser.h"
+#	include "xrUIXmlParser.h"
 #endif
 
 

@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "UIKeyBinding.h"
 #include "UIXmlInit.h"
-#include "xrXmlParser.h"
+#include "xrUIXmlParser.h"
 #include "UIListItemAdv.h"
 #include "UIEditKeyBind.h"
 #include "../xr_level_controller.h"

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "UIVotingCategory.h"
 #include "UIXmlInit.h"
-#include "xrXmlParser.h"
 #include "UI3tButton.h"
 #include "../game_cl_teamdeathmatch.h"
 #include "UIKickPlayer.h"

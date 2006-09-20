@@ -9,17 +9,26 @@
 	</properties_box>
 	
 	<main x=0 y=0 width=1024 height=768/>
+	
 	<belt_slots x="0" y="80" width="1024" height="172">
 		<texture>ui_slots_belt</texture>		
 	</belt_slots>
+	
 	<back x="10" y="243" width="1005" height="483">
 		<texture>ui_inventory_main</texture>
 	</back>
 
 
+    <dragdrop_bag x="22" y="46" width="313" height="415"
+            cell_width = "41" cell_height="41" rows_num="10" cols_num="7" 
+            unlimited="1" group_similar="1"/>
+
     <dragdrop_belt x="645" y="136" width="410" height="60"
             cell_width = "60" cell_height="60" rows_num="1" cols_num="5"/>
 
+    <dragdrop_outfit x="858" y="290" width="104" height="260" 
+            cell_width = "57" cell_height="57" rows_num="4" cols_num="4" 
+            custom_placement="0"/>
 
     <dragdrop_pistol x="38" y="118" width="156" height="104"
             cell_width = "52" cell_height="52" rows_num="2" cols_num="3"
@@ -29,35 +38,6 @@
             cell_width = "52" cell_height="52" rows_num="2" cols_num="6"
             custom_placement="0"/>
 
-
-
-    <dragdrop_bag x="22" y="46" width="313" height="415"
-            cell_width = "41" cell_height="41" rows_num="10" cols_num="7" 
-            unlimited="1" group_similar="1"/>
-
-    <dragdrop_0 x="35" y="18" width="104" height="104"
-            cell_width = "52" cell_height="52" rows_num="2" cols_num="2"
-            custom_placement="0"/>
-
-    <dragdrop_1 x="182" y="18" width="156" height="104"
-            cell_width = "52" cell_height="52" rows_num="2" cols_num="3"
-            custom_placement="0"/>
-
-    <dragdrop_2 x="382" y="18" width="312" height="104"
-            cell_width = "52" cell_height="52" rows_num="2" cols_num="6"
-            custom_placement="0"/>
-
-    <dragdrop_3 x="736" y="18" width="104" height="104"
-            cell_width = "52" cell_height="52" rows_num="2" cols_num="2"
-            custom_placement="0"/>
-
-    <dragdrop_4 x="882" y="18" width="104" height="104"
-            cell_width = "52" cell_height="52" rows_num="2" cols_num="2"
-            custom_placement="0"/>
-
-    <dragdrop_outfit x="858" y="314" width="86" height="260" 
-            cell_width = "57" cell_height="57" rows_num="4" cols_num="4" 
-            custom_placement="0"/>
 
 	<bottom_static x=0 y=736 width=1024 height=32 >
 		<texture>ui\ui_bottom_background</texture>
@@ -87,17 +67,12 @@
         </title>
     </character_frame_window>
     
-    <!-- OUTFIT INFO -->
     <outfit_info_window x="20" y="33" width="268" height="460">
 		<text font="letterica16" r="240" g="217" b="182"/>
 	</outfit_info_window>
 
-	<!-- Drop button -->
-    <drop_button x="230" y="413" width="110" height="60">
-        <texture>ui_inv_btn_drop</texture>
-        <text x="0" y="0" font="graffiti22" r="238" g="153" b="26">ui_inv_drop</text>
-    </drop_button>
-    
+	<static_personal x=1 y=285 width=100 height=260/>
+
     <rank x="736" y="272" width="75" height="65">
 		<texture>ui_inventory_rank</texture>
 		<pic x="14" y="17" width="46" height="47" />
@@ -136,10 +111,14 @@
     </progress_bar_rank>
     
     <time_static x="15" y="730" width="200" height="30">        
+		<texture x=0 y=0 width=190 height=36>ui\ui_dg_time</texture>
         <text x="20" y="8" font="medium" r="240" g="217" b="182" a="255">ui_inv_time</text>
 	</time_static>
 
-	<!-- Exit button -->
+    <time_static_str x="115" y="7" width="107" height="30">        
+        <text font="medium" r="240" g="217" b="182" a="255"/>
+	</time_static_str>
+
     <exit_button x="870" y="725" width="157" height="48">
         <texture>ui_button_main02</texture>
         <text font="graffiti22" r="238" g="153" b="26">ui_inv_exit</text>

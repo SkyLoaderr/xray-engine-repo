@@ -3,7 +3,6 @@
 #include "UIMapDesc.h"
 #include "UIStatic.h"
 #include "UIScrollView.h"
-#include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "UI3tButton.h"
 #include "../hudmanager.h"

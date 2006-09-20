@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "UIMapInfo.h"
 #include "UIScrollView.h"
-#include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "UIStatic.h"
 #include "../string_table.h"

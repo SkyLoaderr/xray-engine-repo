@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "UINewsWnd.h"
-#include "xrXMLParser.h"
+#include "xrUIXmlParser.h"
 #include "UIXmlInit.h"
 #include "../UI.h"
 #include "../HUDManager.h"

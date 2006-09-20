@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "UIInventoryWnd.h"
 
-#include "xrXMLParser.h"
+#include "xrUIXmlParser.h"
 #include "UIXmlInit.h"
 #include "../string_table.h"
 
@@ -34,11 +34,8 @@ using namespace InventoryUtilities;
 #include "UIDragDropListEx.h"
 #include "UIOutfitSlot.h"
 
-#define MAX_ITEMS	70
-
 #define				INVENTORY_ITEM_XML		"inventory_item.xml"
 #define				INVENTORY_XML			"inventory_new.xml"
-#define				INVENTORY_CHARACTER_XML	"inventory_character.xml"
 
 
 
@@ -64,10 +61,9 @@ void CUIInventoryWnd::Init()
 {
 	CUIXml								uiXml;
 	bool xml_result						= uiXml.Init(CONFIG_PATH, UI_PATH, INVENTORY_XML);
-	R_ASSERT3							(xml_result, "xml file not found", INVENTORY_XML);
+	R_ASSERT3							(xml_result, "file parsing error ", uiXml.m_xml_file_name);
 
 	CUIXmlInit							xml_init;
-	CStringTable						string_table;
 
 	xml_init.InitWindow					(uiXml, "main", 0, this);
 
@@ -89,20 +85,22 @@ void CUIInventoryWnd::Init()
 	AttachChild							(&UIDescrWnd);
 	xml_init.InitStatic					(uiXml, "descr_static", 0, &UIDescrWnd);
 
+
 	UIDescrWnd.AttachChild				(&UIItemInfo);
 	UIItemInfo.Init						(0, 0, UIDescrWnd.GetWidth(), UIDescrWnd.GetHeight(), INVENTORY_ITEM_XML);
 
 	AttachChild							(&UIPersonalWnd);
 	xml_init.InitFrameWindow			(uiXml, "character_frame_window", 0, &UIPersonalWnd);
 
-	AttachChild(&UIProgressBack);
-	xml_init.InitStatic(uiXml, "progress_background", 0, &UIProgressBack);
-	if (GameID() != GAME_SINGLE){
-		AttachChild(&UIProgressBack_rank);
-		xml_init.InitStatic(uiXml, "progress_back_rank", 0, &UIProgressBack_rank);
+	AttachChild							(&UIProgressBack);
+	xml_init.InitStatic					(uiXml, "progress_background", 0, &UIProgressBack);
 
-		UIProgressBack_rank.AttachChild(&UIProgressBarRank);
-		xml_init.InitProgressBar(uiXml, "progress_bar_rank", 0, &UIProgressBarRank);
+	if (GameID() != GAME_SINGLE){
+		AttachChild						(&UIProgressBack_rank);
+		xml_init.InitStatic				(uiXml, "progress_back_rank", 0, &UIProgressBack_rank);
+
+		UIProgressBack_rank.AttachChild	(&UIProgressBarRank);
+		xml_init.InitProgressBar		(uiXml, "progress_bar_rank", 0, &UIProgressBarRank);
 		UIProgressBarRank.SetProgressPos(100);
 
 	}
@@ -110,23 +108,20 @@ void CUIInventoryWnd::Init()
 
 	UIProgressBack.AttachChild (&UIProgressBarHealth);
 	xml_init.InitProgressBar (uiXml, "progress_bar_health", 0, &UIProgressBarHealth);
-	//UIProgressBarHealth.SetWndPos(0,0);
 	
 	UIProgressBack.AttachChild	(&UIProgressBarPsyHealth);
 	xml_init.InitProgressBar (uiXml, "progress_bar_psy", 0, &UIProgressBarPsyHealth);
 
 	UIProgressBack.AttachChild	(&UIProgressBarRadiation);
 	xml_init.InitProgressBar (uiXml, "progress_bar_radiation", 0, &UIProgressBarRadiation);
-//
-	UIPersonalWnd.AttachChild			(&UIStaticPersonal);
-	UIStaticPersonal.Init				(1, UIPersonalWnd.GetHeight() - 175, 260, 260);
 
-	//информация о персонаже
-	// attributs suit of character (actor)
+	UIPersonalWnd.AttachChild			(&UIStaticPersonal);
+	xml_init.InitStatic					(uiXml, "static_personal",0, &UIStaticPersonal);
+//	UIStaticPersonal.Init				(1, UIPersonalWnd.GetHeight() - 175, 260, 260);
 
 	UIStaticPersonal.AttachChild		(&UIOutfitInfo);
 	xml_init.InitStatic					(uiXml, "outfit_info_window",0, &UIOutfitInfo);
-	UIOutfitInfo.SetText				(string_table);
+	UIOutfitInfo.SetText				();
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic				(uiXml, "auto_static", this);
@@ -167,26 +162,21 @@ void CUIInventoryWnd::Init()
 	m_pUIAutomaticList						= xr_new<CUIDragDropListEx>(); AttachChild(m_pUIAutomaticList); m_pUIAutomaticList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_automatic", 0, m_pUIAutomaticList);
 	BindDragDropListEnents				(m_pUIAutomaticList);
-/*
-	string128	str;
-	for(int i=0; i<SLOTS_NUM; ++i){
-		m_pUITopList[i]					= xr_new<CUIDragDropListEx>(); AttachChild(m_pUITopList[i]); m_pUITopList[i]->SetAutoDelete(true);
-		sprintf(str,"dragdrop_%d",i);
-		xml_init.InitDragDropListEx		(uiXml, str, 0, m_pUITopList[i]);
-		BindDragDropListEnents			(m_pUITopList[i]);
-	}
-*/
 
 	//pop-up menu
 	AttachChild							(&UIPropertiesBox);
 	UIPropertiesBox.Init				(0,0,300,300);
 	UIPropertiesBox.Hide				();
 
-	AttachChild							(&UITimeWnd);
-	xml_init.InitStatic					(uiXml, "time_static", 0, &UITimeWnd);
+	AttachChild							(&UIStaticTime);
+	xml_init.InitStatic					(uiXml, "time_static", 0, &UIStaticTime);
+
+	UIStaticTime.AttachChild			(&UIStaticTimeString);
+	xml_init.InitStatic					(uiXml, "time_static_str", 0, &UIStaticTimeString);
+
 
 	AttachChild							(&UIExitButton);
-	xml_init.InitButton					(uiXml, "exit_button", 0, &UIExitButton);
+	xml_init.Init3tButton				(uiXml, "exit_button", 0, &UIExitButton);
 
 //Load sounds
 
@@ -289,7 +279,9 @@ void CUIInventoryWnd::Update()
 		UIOutfitInfo.Update				(*outfit);		
 	}
 
-	UITimeWnd.Update					();
+//.	UITimeWnd.Update					();
+	UIStaticTimeString.SetText(*InventoryUtilities::GetGameTimeAsString(InventoryUtilities::etpTimeToMinutes));
+
 	CUIWindow::Update					();
 }
 

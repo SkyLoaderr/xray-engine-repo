@@ -21,7 +21,7 @@ public:
 	virtual void Update();
 			void Update(CCustomOutfit& outfit);	
 //			void Update(shared_str section_name);
-    virtual void SetText(const CStringTable& stringTable);
+    virtual void SetText();
 	virtual void SetTextColor(u32 color);
 	virtual void SetTitleTextColor(u32 color);
 	virtual void SetFont(CGameFont* pFont);

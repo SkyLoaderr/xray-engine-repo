@@ -253,3 +253,13 @@ void CHUDManager::SetHitmarkType		(LPCSTR tex_name)
 {
 	HitMarker.InitShader				(tex_name);
 }
+#include "ui\UIMainInGameWnd.h"
+void CHUDManager::OnScreenRatioChanged()
+{
+	xr_delete							(pUI->UIMainIngameWnd);
+
+	pUI->UIMainIngameWnd				= xr_new<CUIMainIngameWnd>	();
+	pUI->UIMainIngameWnd->Init			();
+	pUI->UnLoad							();
+	pUI->Load							();
+}

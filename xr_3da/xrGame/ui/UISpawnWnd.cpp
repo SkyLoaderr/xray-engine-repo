@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include <dinput.h>
 #include "UISpawnWnd.h"
-#include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "../hudmanager.h"
 #include "../level.h"

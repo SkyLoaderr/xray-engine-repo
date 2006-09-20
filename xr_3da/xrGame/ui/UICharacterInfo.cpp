@@ -9,7 +9,7 @@
 #include "../string_table.h"
 #include "../relation_registry.h"
 
-#include "xrXMLParser.h"
+#include "xrUIXmlParser.h"
 #include "UIXmlInit.h"
 
 #include "uistatic.h"

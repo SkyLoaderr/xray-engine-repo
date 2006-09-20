@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "UIRankIndicator.h"
-#include "xrXmlParser.h"
 #include "UIXmlInit.h"
 #include "UIStatic.h"
 

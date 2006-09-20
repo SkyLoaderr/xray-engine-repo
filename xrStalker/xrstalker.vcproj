@@ -1474,7 +1474,13 @@
 					RelativePath=".\Config\ui\car_panel.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\car_panel_16.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\carbody_new.xml">
+				</File>
+				<File
+					RelativePath=".\Config\ui\carbody_new_16.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\color_defs.xml">
@@ -1495,10 +1501,16 @@
 					RelativePath=".\Config\ui\inventory_new.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\inventory_new_16.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\job_item.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\motion_icon.xml">
+				</File>
+				<File
+					RelativePath=".\Config\ui\motion_icon_16.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\sleep_dialog_new.xml">
@@ -1516,7 +1528,13 @@
 					RelativePath=".\Config\ui\talk.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\talk_16.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\trade.xml">
+				</File>
+				<File
+					RelativePath=".\Config\ui\trade_16.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\ui_credits.xml">
@@ -1663,10 +1681,19 @@
 						RelativePath=".\Config\ui\carbody_item.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\carbody_item_16.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\inventory_item.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\inventory_item_16.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\trade_item.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\trade_item_16.xml">
 					</File>
 				</Filter>
 				<Filter
@@ -1686,6 +1713,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\ui\trade_character.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\trade_character_16.xml">
 					</File>
 				</Filter>
 				<Filter
@@ -1766,6 +1796,9 @@
 						RelativePath=".\Config\ui\maingame.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\maingame_16.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\maingame_pda_msg.xml">
 					</File>
 					<File
@@ -1779,6 +1812,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\ui\zone_map.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\zone_map_16.xml">
 					</File>
 				</Filter>
 				<Filter

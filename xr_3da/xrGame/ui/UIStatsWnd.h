@@ -11,7 +11,6 @@
 #include "UIFrameWindow.h"
 #include "UIListWnd.h"
 #include "UIListItem.h"
-#include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "UIButton.h"
 #include "UIMultiTextStatic.h"

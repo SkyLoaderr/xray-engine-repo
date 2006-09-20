@@ -7,7 +7,7 @@
 #include "UIPdaWnd.h"
 #include "../Pda.h"
 
-#include "xrXMLParser.h"
+#include "xrUIXmlParser.h"
 #include "UIXmlInit.h"
 #include "UIJobItem.h"
 #include "UIInventoryUtilities.h"

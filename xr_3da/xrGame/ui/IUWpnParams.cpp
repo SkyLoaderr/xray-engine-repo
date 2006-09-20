@@ -2,7 +2,6 @@
 
 #include "UIWpnParams.h"
 #include "UIXmlInit.h"
-#include "xrXmlParser.h"
 #include "../level.h"
 #include "../game_base_space.h"
 #include "../ai_space.h"

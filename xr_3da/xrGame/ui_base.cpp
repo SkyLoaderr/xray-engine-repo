@@ -210,3 +210,35 @@ void ui_core::RenderFont()
 {
 	Font()->Render();
 }
+
+bool ui_core::is_16_9_mode()
+{
+	return (Device.dwWidth)/float(Device.dwHeight) > (UI_BASE_WIDTH/UI_BASE_HEIGHT +0.01f);
+}
+
+shared_str	ui_core::get_xml_name(LPCSTR fn)
+{
+	string_path				str;
+	if(!is_16_9_mode()){
+		sprintf(str, "%s", fn);
+		if ( NULL==strext(fn) ) strcat(str, ".xml");
+	}else{
+
+		string_path			str_;
+		if ( strext(fn) )
+		{
+			strcpy	(str, fn);
+			str[xr_strlen(str)-4] = 0;
+			strcat	(str-4, "_16.xml");
+		}else
+			sprintf				(str, "%s_16", fn);
+
+		if(NULL==FS.exist(str_, "$game_config$", "ui\\" , str) )
+		{
+			sprintf(str, "%s", fn);
+			if ( NULL==strext(fn) ) strcat(str, ".xml");
+		}
+	}
+
+	return str;
+}

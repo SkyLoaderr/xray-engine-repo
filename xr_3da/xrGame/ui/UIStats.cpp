@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 
 #include "UIStats.h"
-#include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "UIStatsPlayerList.h"
 #include "UIStatic.h"

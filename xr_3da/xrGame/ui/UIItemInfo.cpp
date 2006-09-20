@@ -63,6 +63,8 @@ void CUIItemInfo::Init(LPCSTR xml_name){
 	}
 
 	xml_init.InitScrollView			(uiXml, "descr_list", 0, UIDesc);
+	
+	xml_init.InitFont				(uiXml, "descr_list:font", 0, uDescClr, pDescFont);
 
 	if (uiXml.NavigateToNode("image_static", 0))
 	{	
@@ -112,6 +114,8 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 	VERIFY(0==UIDesc->GetSize());
 	TryAddWpnInfo(*pInvItem->object().cNameSect());
 	CUIStatic* pItem					= xr_new<CUIStatic>();
+	pItem->SetTextColor					(uDescClr);
+	pItem->SetFont						(pDescFont);
 	pItem->SetWidth						(UIDesc->GetDesiredChildWidth());
 	pItem->SetText						(*pInvItem->ItemDescription());
 	pItem->AdjustHeightToText			();

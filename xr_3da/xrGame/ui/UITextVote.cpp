@@ -3,7 +3,6 @@
 #include "UITextVote.h"
 #include "UIVotingCategory.h"
 #include "UIXmlInit.h"
-#include "xrXmlParser.h"
 #include "UI3tButton.h"
 #include "UIEditboxEx.h"
 

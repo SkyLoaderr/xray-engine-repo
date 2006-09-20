@@ -8,7 +8,7 @@
 #include "../Entity.h"
 #include "../character_info.h"
 #include "UIInventoryUtilities.h"
-#include "xrXMLParser.h"
+#include "xrUIXmlParser.h"
 #include "UIXmlInit.h"
 #include "uicoloranimatorwrapper.h"
 #include "../object_broker.h"

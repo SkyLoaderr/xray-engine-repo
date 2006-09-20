@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "string_table.h"
 
-#include "ui/xrxmlparser.h"
+#include "ui/xrUIXmlParser.h"
 #include "xr_level_controller.h"
 
 #define STRING_TABLE_SECT "string_table"
@@ -56,7 +56,10 @@ void CStringTable::Load	(LPCSTR xml_file)
 	CUIXml uiXml;
 	string128 xml_file_full;
 	strconcat(xml_file_full, xml_file, ".xml");
-	bool xml_result = uiXml.Init(CONFIG_PATH, STRING_TABLE_PATH, *(pData->m_sLanguage), xml_file_full);
+	string_path		_s;
+	strconcat(_s, STRING_TABLE_PATH, "\\", *(pData->m_sLanguage) );
+
+	bool xml_result = uiXml.Init(CONFIG_PATH, _s, xml_file_full);
 	if(!xml_result)
 		Debug.fatal("string table xml file not found %s, for language %s", xml_file_full, *(pData->m_sLanguage));
 

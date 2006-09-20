@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "UITradeWnd.h"
 
-#include "xrXMLParser.h"
+#include "xrUIXmlParser.h"
 #include "UIXmlInit.h"
 
 #include "../Entity.h"

@@ -13,7 +13,7 @@
 #include "inventoryowner.h"
 #include "script_space.h"
 #include "ai_debug.h"
-#include "ui/xrXMLParser.h"
+#include "ui/xrUIXmlParser.h"
 #include "actor.h"
 
 CPhraseScript::CPhraseScript	()

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "xrXMLParser.h"
+#include "xrUIXmlParser.h"
 
 class IUIMultiTextureOwner;
 class IUISingleTextureOwner;

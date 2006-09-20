@@ -67,7 +67,7 @@ void ParseFile(LPCSTR path, CMemoryWriter& W, IReader *F )
 
 bool CXml::Init(LPCSTR path_alias, LPCSTR path, LPCSTR _xml_filename)
 {
-	shared_str fn = correct_file_name(_xml_filename);
+	shared_str fn = correct_file_name(path, _xml_filename);
 
 	string_path str;
 	sprintf(str,"%s\\%s", path, *fn);

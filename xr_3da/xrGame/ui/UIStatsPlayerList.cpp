@@ -8,7 +8,6 @@
 #include "../level.h"
 #include "UIStatic.h"
 #include "UIXmlInit.h"
-#include "xrXmlParser.h"
 
 IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);
 

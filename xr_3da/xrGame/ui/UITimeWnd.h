@@ -8,7 +8,7 @@
 //
 
 #pragma once
-
+/*
 #include "UIStatic.h"
 
 class CUITimeWnd : public CUIStatic {
@@ -18,7 +18,7 @@ public:
 	virtual ~CUITimeWnd();
 	virtual void Init(float x, float y, float widht, float height);
 	virtual void Init(float x, float y);	
-	virtual void InitTexture(LPCSTR tex_name, LPCSTR sh_name="hud\\default") {/*only STUB!!: we can't change texture*/};
+	virtual void InitTexture(LPCSTR tex_name, LPCSTR sh_name="hud\\default") {};
 	virtual void SetFont(CGameFont* pFont);
 	virtual void SetTextColor(u32 color);
 	virtual void SetText(LPCSTR str);
@@ -29,3 +29,4 @@ protected:
 	CUIStatic	m_staticString;
 	CUIStatic	m_staticTime;
 };
+*/

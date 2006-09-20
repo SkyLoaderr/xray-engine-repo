@@ -48,8 +48,12 @@ void CRenderDevice::Destroy	(void) {
 	xr_delete					(Statistic);
 }
 
+#include "IGame_Level.h"
+#include "CustomHUD.h"
 void CRenderDevice::Reset		()
 {
+	bool b_16_before	= (float)dwWidth/(float)dwHeight > (1024.0f/768.0f+0.01f);
+
 	ShowCursor				(TRUE);
 	u32 tm_start			= TimerAsync();
 	if (g_pGamePersistent)	g_pGamePersistent->Environment.OnDeviceDestroy();
@@ -72,4 +76,9 @@ void CRenderDevice::Reset		()
 #endif
 		
 	seqDeviceReset.Process(rp_DeviceReset);
+
+	bool b_16_after	= (float)dwWidth/(float)dwHeight > (1024.0f/768.0f+0.01f);
+	if(b_16_after!=b_16_before && g_pGameLevel && g_pGameLevel->pHUD) 
+		g_pGameLevel->pHUD->OnScreenRatioChanged();
+
 }

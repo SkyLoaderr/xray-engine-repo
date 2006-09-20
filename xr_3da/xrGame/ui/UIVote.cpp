@@ -4,8 +4,6 @@
 #include "UI3tButton.h"
 #include "UIListBox.h"
 #include "UIFrameWindow.h"
-//#include "UIListBoxItem.h"
-#include "xrXmlParser.h"
 #include "UIXmlInit.h"
 #include "../level.h"
 #include "../game_cl_base.h"

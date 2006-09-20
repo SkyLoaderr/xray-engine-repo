@@ -9,7 +9,6 @@
 #include "../hudmanager.h"
 #include "../level.h"
 #include "UIListBoxItem.h"
-#include "xrXmlParser.h"
 #include "UIXmlInit.h"
 
 #define OFFSET_X (5)

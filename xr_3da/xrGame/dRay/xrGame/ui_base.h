@@ -78,6 +78,8 @@ public:
 	void			RenderFont						();
 
 	virtual void	OnDeviceReset					();
+	bool			is_16_9_mode					();
+	shared_str		get_xml_name					(LPCSTR fn);
 };
 
 extern CUICursor*	GetUICursor						();

@@ -3,7 +3,6 @@
 #include "UIChangeMap.h"
 #include "UIVotingCategory.h"
 #include "UIXmlInit.h"
-#include "xrXmlParser.h"
 #include "UI3tButton.h"
 #include "UIListBox.h"
 #include "UIListBoxItem.h"

@@ -2,7 +2,6 @@
 
 #include "UIFrags2.h"
 #include "UIStats.h"
-#include "xrXmlParser.h"
 #include "UIXmlInit.h"
 #include "UIStatic.h"
 

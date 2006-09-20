@@ -6,7 +6,7 @@
 #include "stdafx.h"
 #include "UITalkDialogWnd.h"
 
-#include "xrXMLParser.h"
+#include "xrUIXmlParser.h"
 #include "UIXmlInit.h"
 #include "UIScrollView.h"
 #include "UI3tButton.h"

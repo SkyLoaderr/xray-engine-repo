@@ -10,7 +10,6 @@
 #include "StdAfx.h"
 #include "UI3tButton.h"
 #include "../../sound.h"
-#include "xrXmlParser.h"
 #include "UIXmlInit.h"
 
 CUI3tButton::CUI3tButton(){

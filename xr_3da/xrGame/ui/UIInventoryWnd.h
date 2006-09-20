@@ -13,7 +13,6 @@ class CInventory;
 
 #include "UIOutfitInfo.h"
 #include "UIItemInfo.h"
-#include "UITimeWnd.h"
 
 
 class CArtefact;
@@ -86,7 +85,9 @@ protected:
 //	CUIStatic			UIStaticTop;
 //	CUIStatic			UIStaticBelt;
 	CUIStatic			UIStaticBottom;
-	CUITimeWnd			UITimeWnd;
+//	CUITimeWnd			UITimeWnd;
+	CUIStatic			UIStaticTime;
+	CUIStatic			UIStaticTimeString;
 
 	CUIStatic			UIStaticPersonal;
 		

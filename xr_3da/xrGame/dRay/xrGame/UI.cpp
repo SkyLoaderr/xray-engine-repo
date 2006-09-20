@@ -39,6 +39,13 @@ void CUI::Load()
 	pUIGame = Game().createGameUI();
 	R_ASSERT(pUIGame);
 }
+
+void CUI::UnLoad()
+{
+	xr_delete		(pUIGame);
+	pUIGame = Game().createGameUI();
+	R_ASSERT(pUIGame);
+}
 //--------------------------------------------------------------------
 
 void CUI::UIOnFrame()

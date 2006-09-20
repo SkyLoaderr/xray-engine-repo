@@ -8,9 +8,9 @@
 #pragma once
 
 #ifdef XRGAME_EXPORTS
-	#include "ui/xrxmlparser.h"
+	#include "ui/xrUIXmlParser.h"
 #else
-	#include "xrxmlparser.h"
+	#include "xrUIXmlParser.h"
 #endif
 
 
