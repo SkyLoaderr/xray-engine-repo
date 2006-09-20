@@ -77,8 +77,6 @@ end
 
 
 function save(obj, packet)
-	printf("TRADE: save %s", obj:name())
-
 	local tt = trade_manager[obj:id()]
 
 	--' Сохраняем присутствует ли инициализированная торговля в принципе.
@@ -120,12 +118,9 @@ function save(obj, packet)
 	else
 	 	packet:w_s32(tt.resuply_time - cur_tm)
 	end
-	
-	print_table(tt)
 end
 
 function load(obj, packet)
-	printf("TRADE: load %s", obj:name())
 	local a = packet:r_bool()
 	if a == false then
 		return
@@ -161,6 +156,4 @@ function load(obj, packet)
 	if a ~= -1 then
 		tt.resuply_time = cur_tm + a
 	end
-
-	print_table(tt)
 end
