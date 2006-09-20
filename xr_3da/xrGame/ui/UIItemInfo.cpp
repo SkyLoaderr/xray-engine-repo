@@ -136,6 +136,9 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 	UIItemImage->ClipperOn	();
 	UIItemImage->SetStretchTexture(true);
 	Frect v_r				= {0.0f, 0.0f, float(iGridWidth*INV_GRID_WIDTH),	float(iGridHeight*INV_GRID_HEIGHT)};
+	if(UI()->is_16_9_mode())
+		v_r.x2 /= 1.328f;
+
 	UIItemImage->GetUIStaticItem().SetRect(v_r);
 	UIItemImage->SetWidth	(_min(v_r.width(),	UIItemImageSize.x));
 	UIItemImage->SetHeight	(_min(v_r.height(),	UIItemImageSize.y));

@@ -1709,7 +1709,13 @@
 						RelativePath=".\Config\ui\pda_dialog_character.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\pda_dialog_character_16.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\stalkers_ranking_character.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\stalkers_ranking_character_16.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\trade_character.xml">

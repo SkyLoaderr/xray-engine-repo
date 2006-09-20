@@ -39,6 +39,8 @@
             custom_placement="0"/>
 
 
+
+
 	<bottom_static x=0 y=736 width=1024 height=32 >
 		<texture>ui\ui_bottom_background</texture>
 	</bottom_static>
