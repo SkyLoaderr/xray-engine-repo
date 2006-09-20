@@ -499,7 +499,13 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 void game_cl_ArtefactHunt::SetScore				()
 {
 	game_cl_TeamDeathmatch::SetScore();
-	game_cl_Deathmatch::SetScore();
+//	game_cl_Deathmatch::SetScore();
+	if (Level().CurrentViewEntity() && m_game_ui)
+	{
+		game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
+		if (ps&&m_game_ui) m_game_ui->SetRank(ps->team, ps->rank);
+		if (ps&&m_game_ui) m_game_ui->SetFraglimit(ps->kills, artefactsNum);
+	}
 }
 BOOL game_cl_ArtefactHunt::CanCallBuyMenu			()
 {
