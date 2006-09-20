@@ -2,6 +2,7 @@
 
 <window>
 
+	<main x=0 y=0 width=1024 height=768/>
 
 	<static_icon x="27" y="22" width="200" height="200">
 		<texture>ui_charinfo_left</texture>
