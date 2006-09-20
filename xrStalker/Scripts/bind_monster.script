@@ -163,6 +163,7 @@ function generic_object_binder:save(packet)
 	object_binder.save(self, packet)
 
 	xr_logic.save_obj(self.object, packet)
+	trade_manager.save(self.object, packet)
 end
 
 function generic_object_binder:load(reader)
@@ -172,4 +173,5 @@ function generic_object_binder:load(reader)
 	object_binder.load(self, reader)
 
 	xr_logic.load_obj(self.object, reader)
+	trade_manager.load(self.object, reader)
 end

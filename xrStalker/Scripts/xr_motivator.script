@@ -300,7 +300,9 @@ function motivator_binder:save(packet)
 
 	xr_logic.save_obj(self.object, packet)
 	dialog_manager.save(self.object, packet)
+	trade_manager.save(self.object, packet)
 	self.death_manager:save(packet)
+
 end
 
 function motivator_binder:load(reader)
@@ -311,6 +313,7 @@ function motivator_binder:load(reader)
 
 	xr_logic.load_obj(self.object, reader)
 	dialog_manager.load(self.object, reader)
+	trade_manager.load(self.object, reader)
 	self.death_manager:load(reader)
 end
 
