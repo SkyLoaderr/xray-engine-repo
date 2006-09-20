@@ -957,6 +957,9 @@
 						RelativePath=".\xrServer_Space.h">
 					</File>
 					<File
+						RelativePath=".\xrUIXmlParser.h">
+					</File>
+					<File
 						RelativePath=".\xrXMLParser.h">
 					</File>
 				</Filter>
