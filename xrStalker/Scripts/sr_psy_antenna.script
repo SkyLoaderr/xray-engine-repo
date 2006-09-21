@@ -39,6 +39,7 @@ function PsyAntenna:__init				()
 	self.sound_obj_left.volume			= self.sound_intensity
 	self.sound_obj_right.volume			= self.sound_intensity
 	self.snd_volume						= level.get_snd_volume()
+	self.mute_sound_threshold			= 0 --' Предел до которого можно занижать звук уровня. 0 - можно заглушить полностью
 	self.max_mumble_volume				= 10
 end
 function PsyAntenna:destroy				()
@@ -94,7 +95,11 @@ function PsyAntenna:update_sound()
 
 	local vol = 1 - ( self.sound_intensity ^ 3 ) * 0.9
 
-	level.set_snd_volume( vol )
+	if vol < self.mute_sound_threshold then
+		level.set_snd_volume( self.mute_sound_threshold )
+	else
+		level.set_snd_volume( vol )
+	end
 
 	self.sound_obj_left.volume  = 1 / vol - 1
 	self.sound_obj_right.volume = 1 / vol - 1
@@ -148,7 +153,8 @@ function PsyAntenna:save(p)
 	p:w_float(self.hit_intensity)
 	p:w_float(self.sound_intensity)
 	p:w_float(self.sound_intensity_base)	
-	
+	p:w_float(self.mute_sound_threshold)
+
 	p:w_u8(self.postprocess_count)
 	for k,v in pairs(self.postprocess) do
 		p:w_stringZ(k)	
@@ -161,7 +167,8 @@ function PsyAntenna:load(p)
 	self.hit_intensity  = p:r_float()
 	self.sound_intensity  = p:r_float()	
 	self.sound_intensity_base = p:r_float()
-	
+	self.mute_sound_threshold = p:r_float()
+
 	self.postprocess_count = p:r_u8()
 	
 	self.postprocess = {}
@@ -241,6 +248,7 @@ function action_psy_antenna:zone_enter()
 	self.state = state_inside
 
 	psy_antenna.sound_intensity_base = psy_antenna.sound_intensity_base + self.st.intensity
+	psy_antenna.mute_sound_threshold = psy_antenna.mute_sound_threshold + self.st.mute_sound_threshold
 	psy_antenna.hit_intensity  = psy_antenna.hit_intensity  + self.st.hit_intensity
 	psy_antenna.phantom_spawn_probability = psy_antenna.phantom_spawn_probability + self.st.phantom_prob
 
@@ -254,12 +262,13 @@ function action_psy_antenna:zone_enter()
 		level.add_pp_effector(self.st.postprocess, psy_antenna.postprocess[self.st.postprocess].idx, true)
 		level.set_pp_effector_factor(psy_antenna.postprocess[self.st.postprocess].idx, 0.01)
 	end
-	psy_antenna.postprocess[self.st.postprocess].intensity_base = psy_antenna.postprocess[self.st.postprocess].intensity_base + self.st.intensity	
+	psy_antenna.postprocess[self.st.postprocess].intensity_base = psy_antenna.postprocess[self.st.postprocess].intensity_base + self.st.intensity		
 end
 function action_psy_antenna:zone_leave()
 	self.state = state_outside
 
 	psy_antenna.sound_intensity_base = psy_antenna.sound_intensity_base - self.st.intensity
+	psy_antenna.mute_sound_threshold = psy_antenna.mute_sound_threshold - self.st.mute_sound_threshold
 	psy_antenna.hit_intensity  = psy_antenna.hit_intensity  - self.st.hit_intensity
 
 	psy_antenna.phantom_spawn_probability = psy_antenna.phantom_spawn_probability - self.st.phantom_prob
@@ -326,5 +335,5 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.hit_intensity = utils.cfg_get_number(ini, section, "hit_intensity", npc, true) * 0.01
 	st.phantom_prob  = utils.cfg_get_number(ini, section, "phantom_prob",  npc, false, 0) * 0.01
 	
-	st.play_visual   = utils.cfg_get_bool(ini, section, "play_visual",  npc, false, true)
+	st.mute_sound_threshold   = utils.cfg_get_number(ini, section, "mute_sound_threshold",  npc, false, 0)
 end
