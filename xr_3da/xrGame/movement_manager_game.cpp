@@ -54,10 +54,12 @@ void CMovementManager::process_game_path()
 
 			if (game_path().failed()) {
 				Msg			("! Cannot build GAME path!");
-				Msg			("! LEVEL : %s",*Level().name());
+				Msg			("! CURRENT LEVEL : %s",*Level().name());
 				Fvector		temp = ai().game_graph().vertex(object().ai_location().game_vertex_id())->level_point();
 				Msg			("! CURRENT game point position : [%f][%f][%f]",VPUSH(temp));
-				temp		= ai().game_graph().vertex(game_dest_vertex_id())->level_point();
+				const GameGraph::CVertex	*vertex = ai().game_graph().vertex(game_dest_vertex_id());
+				Msg			("! TARGET LEVEL : %s",*ai().game_graph().header().level(vertex->level_id()).name());
+				temp		= vertex->level_point();
 				Msg			("! TARGET  game point position : [%f][%f][%f]",VPUSH(temp));
 				const u8	*target_vertex_type = ai().game_graph().vertex(game_dest_vertex_id())->vertex_type();
 				Msg			(

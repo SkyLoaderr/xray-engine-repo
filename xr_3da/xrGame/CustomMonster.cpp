@@ -182,7 +182,6 @@ void CCustomMonster::reload		(LPCSTR section)
 	sound().reload				(section);
 	CEntityAlive::reload		(section);
 	material().reload			(section);
-	memory().reload				(section);
 	movement().reload			(section);
 	load_killer_clsids			(section);
 
@@ -767,7 +766,9 @@ void CCustomMonster::Die	(CObject* who)
 
 BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 {
+	memory().reload				(*cNameSect());
 	memory().reinit				();
+
 	if (!movement().net_Spawn(DC) || !inherited::net_Spawn(DC) || !CScriptEntity::net_Spawn(DC))
 		return					(FALSE);
 

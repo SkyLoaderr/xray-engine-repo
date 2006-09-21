@@ -12,6 +12,8 @@
 #include "phmovementcontrol.h"
 #include "entity_alive.h"
 #include "CharacterPhysicsSupport.h"
+#include "../skeletoncustom.h"
+
 CMaterialManager::CMaterialManager	(CObject *object, CPHMovementControl *movement_control)
 {
 	VERIFY					(object);
@@ -30,10 +32,7 @@ CMaterialManager::~CMaterialManager	()
 
 void CMaterialManager::Load			(LPCSTR section)
 {
-	if (!pSettings->line_exist(section,"material")) {
-		R_ASSERT3(false,"Material not found in the section ",*(m_object->cNameSect()));
-	}
-	
+	R_ASSERT3				(pSettings->line_exist(section,"material"),"Material not found in the section ",*(m_object->cNameSect()));
 	m_my_material_idx		= GMLib.GetMaterialIdx(pSettings->r_string(section,"material"));
 }
 
@@ -44,9 +43,15 @@ void CMaterialManager::reinit		()
 	m_run_mode				= false;
 
 	CEntityAlive			*entity_alive = smart_cast<CEntityAlive*>(m_object);
-	if (entity_alive ) {
+	if (entity_alive) {
 		if(entity_alive->character_physics_support()->movement()->CharacterExist())
 			entity_alive->character_physics_support()->movement()->SetPLastMaterialIDX	(&m_last_material_idx);
+
+//		if (entity_alive->use_simplified_visual()) {
+//			CKinematics			*kinematics = smart_cast<CKinematics*>(entity_alive->Visual());
+//			m_my_material_idx	= kinematics->LL_GetData(kinematics->LL_GetBoneRoot()).game_mtl_idx;
+//		}
+
 		entity_alive->character_physics_support()->movement()->SetMaterial		(m_my_material_idx);
 	}
 }
