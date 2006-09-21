@@ -130,7 +130,7 @@ void	IGame_Level::OnFrame		( )
 
 	// Update all objects
 	VERIFY						(bReady);
-	Objects.Update				( );
+	Objects.Update				( false );
 	pHUD->OnFrame				( );
 
 	// Ambience

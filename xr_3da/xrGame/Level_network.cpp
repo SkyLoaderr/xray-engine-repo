@@ -23,7 +23,7 @@ void CLevel::net_Stop		()
 		psDeviceFlags.set(rsDisableObjectsAsCrows,TRUE);
 		ClientReceive			();
 		ProcessGameEvents		();
-		Objects.Update			();
+		Objects.Update			( true );
 	}
 	
 	IGame_Level::net_Stop		();

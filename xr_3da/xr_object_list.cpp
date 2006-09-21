@@ -108,9 +108,9 @@ void clear_crow_vec	(xr_vector<CObject*>& o)
 	o.clear_not_free();
 }
 
-void CObjectList::Update		()
+void CObjectList::Update		(bool bForce)
 {
-	if (Device.Pause())		return		;
+	if (Device.Pause() && !bForce)		return		;
 
 	// Select Crow-Mode
 	Device.Statistic->UpdateClient_updated	= 0;
@@ -128,7 +128,7 @@ void CObjectList::Update		()
 	}
 
 	// Clients
-	if (Device.fTimeDelta>EPS_S)			{
+	if (Device.fTimeDelta>EPS_S || bForce)			{
 		Device.Statistic->UpdateClient.Begin		();
 		Device.Statistic->UpdateClient_active	= objects_active.size	();
 		Device.Statistic->UpdateClient_total		= objects_active.size	() + objects_sleeping.size();

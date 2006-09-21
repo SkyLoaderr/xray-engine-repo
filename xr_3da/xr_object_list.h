@@ -51,7 +51,7 @@ public:
 	void						Destroy				( CObject*		O		);
 
 	void						SingleUpdate		( CObject*		O		);
-	void						Update				( );
+	void						Update				( bool bForce );
 
 	void						net_Register		( CObject*		O		);
 	void						net_Unregister		( CObject*		O		);
