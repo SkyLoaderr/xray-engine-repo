@@ -405,10 +405,10 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_ID new_
 	LPCSTR gen_name = "GENERATE_NAME_";
 	if( strstr(m_character_name.c_str(),gen_name) ){
 		//select name and lastname
-		LPCSTR subset				= m_character_name.c_str()+xr_strlen(gen_name);
+		xr_string subset			= m_character_name.c_str()+xr_strlen(gen_name);
 
 		string32					t1;
-		strconcat					(t1,"stalker_names_",subset);
+		strconcat					(t1,"stalker_names_",subset.c_str());
 		u32 name_cnt				= pSettings->r_u32(t1, "name_cnt");
 		u32 last_name_cnt			= pSettings->r_u32(t1, "last_name_cnt");
 		

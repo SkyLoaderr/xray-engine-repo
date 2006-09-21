@@ -12,7 +12,8 @@ function main22222()
 	level.set_pp_effector_factor(1001, 0.01)
 end
 
--- run_string alife():create("medkit", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
+
+-- run_string alife():create("wpn_ak74", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
 
 function get_task_info(task_id, fmt)
 	local _info = GetTextureInfo(task_id..fmt, "default_task_icon"..fmt)

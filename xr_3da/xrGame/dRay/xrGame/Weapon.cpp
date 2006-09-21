@@ -933,7 +933,8 @@ float CWeapon::GetConditionMisfireProbability() const
 BOOL CWeapon::CheckForMisfire	()
 {
 	float rnd = ::Random.randF(0.f,1.f);
-	if(rnd<GetConditionMisfireProbability())
+	float mp = GetConditionMisfireProbability();
+	if(rnd < mp)
 	{
 		FireEnd();
 
