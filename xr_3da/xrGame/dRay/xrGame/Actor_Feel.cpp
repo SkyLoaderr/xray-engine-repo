@@ -163,8 +163,12 @@ void	CActor::PickupModeUpdate_COD	()
 		if (!pIItem->CanTake()) continue;
 		if (pIItem->object().CLS_ID == CLSID_OBJECT_G_RPG7 || pIItem->object().CLS_ID == CLSID_OBJECT_G_FAKE)
 			continue;
+
 		CGrenade*	pGrenade	= smart_cast<CGrenade*> (spatial->dcast_CObject        ());
 		if (pGrenade && !pGrenade->Useful()) continue;
+
+		CMissile*	pMissile	= smart_cast<CMissile*> (spatial->dcast_CObject        ());
+		if (pMissile && !pMissile->Useful()) continue;
 		
 		Fvector A, B, tmp; 
 		pIItem->object().Center			(A);
