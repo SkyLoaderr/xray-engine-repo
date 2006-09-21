@@ -33,4 +33,5 @@
 #	define aiDrawGameGraph				(1<<20)
 #	define aiDrawGameGraphStalkers		(1<<21)
 #	define aiDrawGameGraphObjects		(1<<22)
+#	define aiNilObjectAccess			(1<<23)
 #endif

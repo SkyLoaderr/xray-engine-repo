@@ -17,6 +17,11 @@
 #	include "script_debugger.h"
 #endif
 
+#ifdef DEBUG
+#	include "ai_debug.h"
+	extern Flags32 psAI_Flags;
+#endif
+
 extern void export_classes(lua_State *L);
 
 CScriptEngine::CScriptEngine			()
@@ -228,16 +233,16 @@ void CScriptEngine::process_file_if_exists	(LPCSTR file_name, bool warn_if_not_e
 		FS.update_path		(S,"$game_scripts$",strconcat(S1,file_name,".script"));
 		if (!warn_if_not_exist && !FS.exist(S)) {
 #ifdef DEBUG
-			print_stack		();
-			Msg				("* trying to access variable %s, which doesn't exist, or to load script %s, which doesn't exist too",file_name,S1);
-			m_stack_is_ready= true;
+			if (psAI_Flags.test(aiNilObjectAccess)) {
+				print_stack			();
+				Msg					("* trying to access variable %s, which doesn't exist, or to load script %s, which doesn't exist too",file_name,S1);
+				m_stack_is_ready	= true;
+			}
 #endif
 			add_no_file		(file_name,string_length);
 			return;
 		}
-#if 1//def DEBUG
 		Msg					("* loading script %s",S1);
-#endif
 		m_reload_modules	= false;
 		load_file_into_namespace(S,*file_name ? file_name : "_G");
 	}

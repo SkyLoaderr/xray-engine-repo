@@ -2324,6 +2324,8 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"ai_draw_game_graph_stalkers",		&psAI_Flags,	aiDrawGameGraphStalkers		);
 	CMD3(CCC_Mask,				"ai_draw_game_graph_objects",		&psAI_Flags,	aiDrawGameGraphObjects		);
 
+	CMD3(CCC_Mask,				"ai_nil_object_access",	&psAI_Flags,	aiNilObjectAccess);
+
 	CMD1(CCC_DrawGameGraphAll,		"ai_draw_game_graph_all");
 	CMD1(CCC_DrawGameGraphCurrent,	"ai_draw_game_graph_current_level");
 	CMD1(CCC_DrawGameGraphLevel,	"ai_draw_game_graph_level");
