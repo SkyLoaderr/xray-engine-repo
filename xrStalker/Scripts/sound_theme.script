@@ -179,11 +179,11 @@ ph_snd_themes["bar_arena_fight_7_end"]	= {"characters_voice\\scenario\\bar\\aren
 ph_snd_themes["bar_arena_fight_8"]	= {"characters_voice\\scenario\\bar\\arena_sound\\bar_fight_8_ready"}
 ph_snd_themes["bar_arena_fight_8_end"]	= {"characters_voice\\scenario\\bar\\arena_sound\\bar_fight_8_finish"}
 
-ph_snd_themes["x18_sound_1"] = {"ambient\\x18\\x18_hit_1"}
-ph_snd_themes["x18_sound_2"] = {"ambient\\x18\\x18_hit_2"}
-ph_snd_themes["x18_sound_3"] = {"ambient\\x18\\x18_hit_3"}
-ph_snd_themes["x18_sound_4"] = {"ambient\\x18\\x18_hit_4"}
-ph_snd_themes["x18_sound_5"] = {"ambient\\x18\\x18_hit_5"}
+ph_snd_themes["x18_sound_1"] = {"ambient\\x18\\x18_metal_1"}
+ph_snd_themes["x18_sound_2"] = {"ambient\\x18\\x18_metal_2"}
+ph_snd_themes["x18_sound_3"] = {"ambient\\x18\\x18_metal_3"}
+ph_snd_themes["x18_sound_4"] = {"ambient\\x18\\x18_metal_4"}
+ph_snd_themes["x18_sound_5"] = {"ambient\\x18\\x18_metal_5"}
 ph_snd_themes["x18_sound_6"] = {"ambient\\x18\\x18_hit_6"}
 ph_snd_themes["x18_sound_7"] = {"ambient\\x18\\x18_hit_7"}
 ph_snd_themes["x18_sound_8"] = {"ambient\\x18\\x18_hit_8"}
