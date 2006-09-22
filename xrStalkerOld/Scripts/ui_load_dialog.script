@@ -224,12 +224,12 @@ function load_dialog:OnButton_load_clicked()
 	local fname = item:GetText()
 	
 	console:execute("main_menu off")
---	if (alife() == nil) then
+	if (alife() == nil) then
 		console:execute	("disconnect")	
 		console:execute	("start server(" .. fname .. "/single/alife/load) client(localhost)")	
---	else
---		console:execute	("load " .. fname)	
---	end
+	else
+		console:execute	("load " .. fname)	
+	end
 end
 
 function load_dialog:OnButton_back_clicked()
