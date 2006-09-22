@@ -71,11 +71,8 @@ private:
 	}
 
 public:
-	VALUE_ID					m_tInvalidValueID;
-
 	IC							CID_Generator	()
 	{
-		m_tInvalidValueID		= tInvalidValueID;
 		m_available_count		= 0;
 		for (VALUE_ID i=tMinValue; ; ++i) {
 			vfFreeID			(i,tStartTime);
@@ -85,10 +82,6 @@ public:
 		VERIFY					(m_available_count == m_tBlockCount);
 		for (u32 j=0; j<m_tBlockCount; ++j)
 			std::reverse		(m_tppBlocks[j].m_tpIDs,m_tppBlocks[j].m_tpIDs + m_tppBlocks[j].m_tCount);
-	}
-
-	virtual						~CID_Generator	()
-	{
 	}
 
 	IC		VALUE_ID			tfGetID			(VALUE_ID tValueID = tInvalidValueID)

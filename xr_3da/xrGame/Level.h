@@ -308,9 +308,12 @@ protected:
 	u32		m_dwCL_PingDeltaSend;
 	u32		m_dwCL_PingLastSendTime;
 	u32		m_dwRealPing;
-	virtual	void			SendPingMessage();
+	virtual	void			SendPingMessage				();
 public:
-	virtual	u32				GetRealPing() { return m_dwRealPing; };
+	virtual	u32				GetRealPing					() { return m_dwRealPing; };
+
+public:
+			void			remove_objects				();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

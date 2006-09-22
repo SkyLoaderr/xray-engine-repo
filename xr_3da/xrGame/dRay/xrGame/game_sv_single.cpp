@@ -7,6 +7,8 @@
 #include "alife_time_manager.h"
 #include "net_utils.h"
 #include "object_broker.h"
+#include "gamepersistent.h"
+#include "xrServer.h"
 
 game_sv_Single::game_sv_Single			()
 {
@@ -314,4 +316,17 @@ void game_sv_Single::on_death					(CSE_Abstract *e_dest, CSE_Abstract *e_src)
 		return;
 
 	alife().on_death		(e_dest,e_src);
+}
+
+void game_sv_Single::restart_simulator			(LPCSTR saved_game_name)
+{
+	shared_str				&options = *alife().server_command_line();
+
+	delete_data				(m_alife_simulator);
+	server().clear_ids		();
+
+	strcpy					(g_pGamePersistent->m_game_params.m_game_or_spawn,saved_game_name);
+	strcpy					(g_pGamePersistent->m_game_params.m_new_or_load,"load");
+
+	m_alife_simulator		= xr_new<CALifeSimulator>(&server(),&options);
 }

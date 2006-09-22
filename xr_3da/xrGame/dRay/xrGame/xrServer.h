@@ -57,17 +57,23 @@ private:
 	xrS_entities				entities;
 	xr_multiset<svs_respawn>	q_respawn;
 
-	CID_Generator<
-		u32,		// time identifier type
-		u8,			// compressed id type 
-		u16,		// id type
-		u8,			// block id type
-		u16,		// chunk id type
-		0,			// min value
-		u16(-2),	// max value
-		256,		// block size
-		u16(-1)		// invalid id
-	>							m_tID_Generator;
+private:
+	typedef 
+		CID_Generator<
+			u32,		// time identifier type
+			u8,			// compressed id type 
+			u16,		// id type
+			u8,			// block id type
+			u16,		// chunk id type
+			0,			// min value
+			u16(-2),	// max value
+			256,		// block size
+			u16(-1)		// invalid id
+		> id_generator_type;
+
+private:
+	id_generator_type			m_tID_Generator;
+
 protected:
 	void						Server_Client_Check (IClient* CL);
 	virtual	void				BannedList_Load		();
@@ -80,6 +86,10 @@ public:
 	BOOL					PerformRP				(CSE_Abstract* E);
 	void					PerformMigration		(CSE_Abstract* E, xrClientData* from, xrClientData* to);
 	
+	IC void					clear_ids				()
+	{
+		m_tID_Generator		= id_generator_type();
+	}
 	IC u16					PerformIDgen			(u16 ID)
 	{
 		return				(m_tID_Generator.tfGetID(ID));

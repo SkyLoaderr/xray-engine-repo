@@ -24,6 +24,8 @@ private:
 
 public:
 							CSavedGameWrapper	(LPCSTR saved_game_name);
+	static	LPCSTR			saved_game_full_name(LPCSTR saved_game_name, LPSTR result);
+	static	bool			saved_game_exist	(LPCSTR saved_game_name);
 	inline	const _TIME_ID	&game_time			() const;
 	inline	const _LEVEL_ID	&level_id			() const;
 	inline	const float		&actor_health		() const;

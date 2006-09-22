@@ -24,7 +24,7 @@ CALifeSimulator::CALifeSimulator		(xrServer *server, shared_str *command_line) :
 	setup_command_line			(command_line);
 
 	typedef IGame_Persistent::params params;
-	params							&p = g_pGamePersistent->m_game_params;
+	params						&p = g_pGamePersistent->m_game_params;
 	
 	R_ASSERT2					(
 		xr_strlen(p.m_game_or_spawn) && 

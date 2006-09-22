@@ -8,36 +8,43 @@
 #include "net_queue.h"
 #include "MainMenu.h"
 
-void CLevel::net_Stop		()
+void CLevel::remove_objects	()
 {
-	Msg							("- Disconnect");
-	
+	BOOL						b_stored = psDeviceFlags.test(rsDisableObjectsAsCrows);
+
 	if (OnServer())
 		Server->SLS_Clear		();
 	
 	if (OnClient())
 		ClearAllObjects			();
 
-	BOOL b_stored = psDeviceFlags.test(rsDisableObjectsAsCrows);
 	for (int i=0; i<6; ++i) {
-		psDeviceFlags.set(rsDisableObjectsAsCrows,TRUE);
+		psDeviceFlags.set		(rsDisableObjectsAsCrows,TRUE);
 		ClientReceive			();
 		ProcessGameEvents		();
-		Objects.Update			( true );
+		Objects.Update			(true);
 	}
-	
-	IGame_Level::net_Stop		();
-	IPureClient::Disconnect		();
 
 	BulletManager().Clear		();
 	ph_commander().clear		();
 	ph_commander_scripts().clear();
+
+	psDeviceFlags.set			(rsDisableObjectsAsCrows, b_stored);
+}
+
+void CLevel::net_Stop		()
+{
+	Msg							("- Disconnect");
+
+	remove_objects				();
+	
+	IGame_Level::net_Stop		();
+	IPureClient::Disconnect		();
+
 	if (Server) {
 		Server->Disconnect		();
 		xr_delete				(Server);
 	}
-	psDeviceFlags.set(rsDisableObjectsAsCrows, b_stored);
-
 }
 
 BOOL	g_bCalculatePing = FALSE;

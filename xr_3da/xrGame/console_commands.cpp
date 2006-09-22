@@ -38,6 +38,7 @@
 #include "zone_effector.h"
 #include "GameTask.h"
 #include "MainMenu.h"
+#include "saved_game_wrapper.h"
 
 //#define MASTER_GOLD;
 
@@ -915,19 +916,39 @@ public:
 class CCC_ALifeLoadFrom : public IConsole_Command {
 public:
 	CCC_ALifeLoadFrom(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
-		string256	S;
-		S[0]		= 0;
-		sscanf		(args ,"%s",S);
-		if (!xr_strlen(S)) {
-			Log("* Specify file name!");
+	virtual void Execute(LPCSTR args)
+	{
+		if (!ai().get_alife()) {
+			Log						("! ALife simulator has not been started yet");
 			return;
 		}
 
-		NET_Packet			net_packet;
-		net_packet.w_begin	(M_LOAD_GAME);
-		net_packet.w_stringZ(S);
-		Level().Send		(net_packet,net_flags(TRUE));
+		string256					saved_game;
+		saved_game[0]				= 0;
+		sscanf						(args,"%s",saved_game);
+		if (!xr_strlen(saved_game)) {
+			Log						("! Specify file name!");
+			return;
+		}
+
+		if (!CSavedGameWrapper::saved_game_exist(saved_game)) {
+			Msg						("! Cannot find saved game %s",saved_game);
+			return;
+		}
+
+		CSavedGameWrapper			wrapper(args);
+		if (wrapper.level_id() == ai().level_graph().level_id()) {
+			Level().remove_objects	();
+			game_sv_Single			*game = smart_cast<game_sv_Single*>(Level().Server->game);
+			R_ASSERT				(game);
+			game->restart_simulator	(saved_game);
+			return;
+		}
+
+		NET_Packet					net_packet;
+		net_packet.w_begin			(M_LOAD_GAME);
+		net_packet.w_stringZ		(saved_game);
+		Level().Send				(net_packet,net_flags(TRUE));
 	}
 };
 
