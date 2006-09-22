@@ -187,6 +187,10 @@ ph_snd_themes["x18_sound_5"] = {"ambient\\x18\\x18_hit_5"}
 ph_snd_themes["x18_sound_6"] = {"ambient\\x18\\x18_hit_6"}
 ph_snd_themes["x18_sound_7"] = {"ambient\\x18\\x18_hit_7"}
 ph_snd_themes["x18_sound_8"] = {"ambient\\x18\\x18_hit_8"}
+ph_snd_themes["x18_sound_9"] = {"ambient\\x18\\x18_footsteps_2"}
+ph_snd_themes["x18_sound_10"] = {"ambient\\x18\\x18_move_4"}
+ph_snd_themes["x18_sound_11"] = {"ambient\\x18\\x18_footsteps"}
+ph_snd_themes["x18_sound_12"] = {"ambient\\x18\\x18_move_3"}
 
 
 -----------------------------------------------------------------------------------------------------------------------------------
