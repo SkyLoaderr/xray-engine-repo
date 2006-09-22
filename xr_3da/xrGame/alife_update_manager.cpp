@@ -213,7 +213,7 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 
 void CALifeUpdateManager::new_game			(LPCSTR save_name)
 {
-//	pApp->LoadTitle						("Creating new game...");
+	pApp->LoadTitle						("Creating new game...");
 	Msg									("* Creating new game...");
 
 	unload								();
@@ -229,7 +229,7 @@ void CALifeUpdateManager::new_game			(LPCSTR save_name)
 
 void CALifeUpdateManager::load			(LPCSTR game_name, bool no_assert, bool new_only)
 {
-//	pApp->LoadTitle						("SERVER: Loading alife simulator...");
+	pApp->LoadTitle						("SERVER: Loading alife simulator...");
 
 #ifdef DEBUG
 	Memory.mem_compact					();
@@ -244,7 +244,7 @@ void CALifeUpdateManager::load			(LPCSTR game_name, bool no_assert, bool new_onl
 #ifdef DEBUG
 	Msg									("* Loading alife simulator is successfully completed (%7.3f Mb)",float(Memory.mem_usage() - memory_usage)/1048576.0);
 #endif
-//	pApp->LoadTitle						("SERVER: Connecting...");
+	pApp->LoadTitle						("SERVER: Connecting...");
 }
 
 void CALifeUpdateManager::reload		(LPCSTR section)

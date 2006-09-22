@@ -9,6 +9,7 @@
 #include "object_broker.h"
 #include "gamepersistent.h"
 #include "xrServer.h"
+#include "../x_ray.h"
 
 game_sv_Single::game_sv_Single			()
 {
@@ -328,5 +329,7 @@ void game_sv_Single::restart_simulator			(LPCSTR saved_game_name)
 	strcpy					(g_pGamePersistent->m_game_params.m_game_or_spawn,saved_game_name);
 	strcpy					(g_pGamePersistent->m_game_params.m_new_or_load,"load");
 
+	pApp->LoadBegin			();
 	m_alife_simulator		= xr_new<CALifeSimulator>(&server(),&options);
+	pApp->LoadEnd			();
 }
