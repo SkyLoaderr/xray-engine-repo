@@ -938,6 +938,8 @@ public:
 
 		CSavedGameWrapper			wrapper(args);
 		if (wrapper.level_id() == ai().level_graph().level_id()) {
+			Device.Pause			(FALSE);
+			++(Device.dwFrame);
 			Level().remove_objects	();
 			game_sv_Single			*game = smart_cast<game_sv_Single*>(Level().Server->game);
 			R_ASSERT				(game);
