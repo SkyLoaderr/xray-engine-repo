@@ -60,7 +60,7 @@ void IGame_Persistent::OnAppEnd		()
 	OnGameEnd						();
 }
 
-void IGame_Persistent::Start		(LPCSTR op)
+void IGame_Persistent::PreStart		(LPCSTR op)
 {
 	string256						prev_type;
 	strcpy							(prev_type,m_game_params.m_game_type);
@@ -68,6 +68,16 @@ void IGame_Persistent::Start		(LPCSTR op)
 	// change game type
 	if (0!=xr_strcmp(prev_type,m_game_params.m_game_type)){
 		OnGameEnd					();
+	}
+}
+
+void IGame_Persistent::Start		(LPCSTR op)
+{
+	string256						prev_type;
+	strcpy							(prev_type,m_game_params.m_game_type);
+	m_game_params.parse_cmd_line	(op);
+	// change game type
+	if (0!=xr_strcmp(prev_type,m_game_params.m_game_type)){
 		OnGameStart					();
 	}
 }

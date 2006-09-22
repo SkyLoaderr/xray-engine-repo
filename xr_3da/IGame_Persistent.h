@@ -51,6 +51,7 @@ public:
 	xr_vector<CPS_Instance*>		ps_destroy;
 	xr_vector<CPS_Instance*>		ps_needtoplay;
 public:
+	virtual void					PreStart			(LPCSTR op);
 	virtual void					Start				(LPCSTR op);
 	virtual void					Disconnect			();
 
