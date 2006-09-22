@@ -1,25 +1,5 @@
 
 -- забирает все документы
 function explorer_take_away_docs(first_speaker, second_speaker)
-	local obj = first_speaker:object("dar_document1")
-	if obj ~= nil then
-		dialogs.relocate_item(second_speaker, obj, "out")
-	end
-	
-	obj = first_speaker:object("dar_document2")
-	if obj ~= nil then
-		dialogs.relocate_item(second_speaker, obj, "out")
-	end
-	
-	obj = first_speaker:object("dar_document3")
-	if obj ~= nil then
-		dialogs.relocate_item(second_speaker, obj, "out")
-	end
-
-	obj = first_speaker:object("dar_document5")
-	if obj ~= nil then
-		dialogs.relocate_item(second_speaker, obj, "out")
-	end
-	
 end
 

@@ -35,7 +35,7 @@ function mil_dolg_sniper_complete (stalker, player)
 end
 
 function transfer_flash (player, stalker)
-	dialogs.relocate_item(stalker, player:object("crazy_flash"), "out")
+	dialogs.relocate_item_section(stalker, "crazy_flash", "out")
 end
 
 function is_player_help (player, stalker)
@@ -70,12 +70,6 @@ function set_task3_complete (player, stalker)
 end
 
 function set_courier_task_complete (stalker, player)
-    --if db.actor:has_info ("mil_leader_quest2_start") then
-       --level_tasks.set_task_state (task.completed, "mil_courier_job", 0)
-       --level_tasks.set_task_state (task.completed, "mil_courier_job", 3)
-       --dialogs.relocate_item(stalker, player:object("mil_courier_doc"), "out")
-       --level_tasks.remove_location (707, "mil_lukash_location")
-    --end   
 end    
 
 function actor_has_weapon (stalker, player)
@@ -101,17 +95,15 @@ function actor_punch (first_speaker, second_speaker)
 end
 
 function send_ammo_for_AK (actor, npc)
-    printf ("ACTOR NAME : %s, NPC NAME : %s", actor:name (), npc:name ())
-    dialogs.relocate_item(npc, npc:object("ammo_5.56x45_ap"), "in")
+    dialogs.relocate_item_section(npc, "ammo_5.56x45_ap", "in")
 end
 
 function send_ammo_for_LR (actor, npc)
-    --printf ("ACTOR NAME : %s, NPC NAME : %s", actor:name (), npc:name ())
-    dialogs.relocate_item(npc, npc:object("ammo_11.43x23_hydro"), "in")
+    dialogs.relocate_item_section(npc, "ammo_11.43x23_hydro", "in")
 end
 
 function commander_transfer (actor, npc)
-    dialogs.relocate_money (npc, npc:money() / 2, "in")
+    dialogs.relocate_money(npc, npc:money() / 2, "in")
 end
 
 function set_ugrumy_mapspot (actor, npc)
@@ -135,21 +127,11 @@ function set_cook_subtask2_complete (actor, npc)
 end
 
 function send_artefact (npc, actor)
-    local artefact = npc:object ("af_cristall")
-    if artefact ~= nil then
-       dialogs.relocate_item (npc, artefact, "in")
-    else
-       printf ("MISER DON'T HAVE A ARTEFACT")    
-    end   
+    dialogs.relocate_item_section(npc, "af_cristall", "in")
 end
 
 function send_desert_eagle (npc, actor)
-    local gun = npc:object ("wpn_desert_eagle")
-    if gun ~= nil then
-       dialogs.relocate_item (npc, gun, "in") 
-    else   
-       printf ("MAX DON'T HAVE A DESERT EAGLE")    
-    end   
+    dialogs.relocate_items_section(npc, "wpn_desert_eagle", "in") 
 end
 
 function set_snipers_spots (npc, actor)
@@ -168,13 +150,8 @@ function set_actor_enemy_for (sid)
 end
 
 function transfer_scope (npc, actor)
-    local scope = npc:object ("wpn_addon_scope")
-    if scope ~= nil then
-       dialogs.relocate_item (npc, scope, "in") 
-       dialogs.relocate_item (npc, actor:object ("vodka"), "out")
-    else   
-       printf ("SCREW DON'T HAVE A SCOPE")    
-    end   
+    dialogs.relocate_item_section(npc, "wpn_addon_scope", "in") 
+    dialogs.relocate_item_section(npc, "vodka", "out")
 end
 
 

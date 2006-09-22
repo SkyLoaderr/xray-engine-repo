@@ -230,8 +230,8 @@ function send_encyclopedy(type)
 	pda_task:play(db.actor, 0, sound_object.s2d)
 end
 
-function get_inv_name(item)
-	return system_ini():r_string(item:section(),"inv_name")
+function get_inv_name(section)
+	return system_ini():r_string(section,"inv_name")
 end
 
 function relocate_item(actor, type, item)

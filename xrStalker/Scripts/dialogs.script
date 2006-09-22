@@ -58,30 +58,25 @@ function actor_have_bandage(first_speaker, second_speaker)
 	return first_speaker:object("bandage") ~= nil
 end
 function transfer_medkit(first_speaker, second_speaker)
-	local obj = first_speaker:object("medkit")
-	if obj ~= nil then
-		dialogs.relocate_item(second_speaker, obj, "out")
-		--' Тут надо анлочить аптечку для использования.
-		xr_wounded.unlock_medkit(second_speaker)
+	dialogs.relocate_item_section(second_speaker, "medkit", "out")
+	--' Тут надо анлочить аптечку для использования.
+	xr_wounded.unlock_medkit(second_speaker)
 		
-		if second_speaker:relation(first_speaker) ~= game_object.enemy then
-			second_speaker:set_relation(game_object.friend, first_speaker)
-		end
-		first_speaker:change_character_reputation(10);
-	end
-end
-function transfer_bandage(first_speaker, second_speaker)
-	local obj = first_speaker:object("bandage")
-	if obj ~= nil then
-		dialogs.relocate_item(second_speaker, obj, "out")
+	if second_speaker:relation(first_speaker) ~= game_object.enemy then
 		second_speaker:set_relation(game_object.friend, first_speaker)
 	end
+	first_speaker:change_character_reputation(10);
+end
+function transfer_bandage(first_speaker, second_speaker)
+	dialogs.relocate_item_section(second_speaker, "bandage", "out")
+	second_speaker:set_relation(game_object.friend, first_speaker)
 end
 function kill_yourself(npc, actor)
 	npc:kill(actor)
 end
 
 
+--' Obsolete, do not use!!!
 function relocate_item(victim, obj, type)
 	if db.actor and victim then
 		if type == "in" then
@@ -89,9 +84,26 @@ function relocate_item(victim, obj, type)
 		elseif type == "out" then
 			db.actor:transfer_item(obj, victim)
 		end
-		news_manager.relocate_item(db.actor, type, obj)
+		--'news_manager.relocate_item(db.actor, type, obj)
 	end
 end
+--' Use this function instead.
+function relocate_item_section(victim, section, type)
+	if db.actor and victim then
+		if type == "in" then
+		    alife():create(section,	
+				    db.actor:position(),
+				    db.actor:level_vertex_id(),	
+				    db.actor:game_vertex_id(),
+				    db.actor:id())
+		elseif type == "out" then
+			db.actor:transfer_item(db.actor:object(section), victim)
+		end
+		news_manager.relocate_item(db.actor, type, section)
+	end
+end
+
+
 function relocate_money(victim, num, type)
 	if db.actor and victim then
 		if type == "in" then
@@ -258,16 +270,14 @@ function is_medikit_no_present (helper, player)
 end
 -------------------
 --' Передача медикита халявная
-function drop_medikit (helper, player)
-	local obj = helper:object("medkit")
-	dialogs.relocate_item(helper, obj, "in")   
+function drop_medikit(helper, player)
+	dialogs.relocate_item_section(helper, "medkit", "in")   
 end
 -------------------
 --' Продажа медикита
 function sell_medikit (helper, player)
     if player:money () < 300 then return end
-    local obj = helper:object("medkit")
-    dialogs.relocate_item(helper, obj, "in")   
+    dialogs.relocate_item_section(helper, "medkit", "in")   
     dialogs.relocate_money(helper, 300, "out")   
 end
 -------------------
@@ -370,8 +380,7 @@ function disable_wounded (wounded, helper)
 end
 -------------------
 function transfer_medikit (wounded, player)
-    local obj = player:object("medkit")
-    dialogs.relocate_item(wounded, obj, "out")   
+    dialogs.relocate_item_section(wounded, "medkit", "out")   
 
     local good = wounded:goodwill (player) + 20
     if good > 100 then good = 100 end
@@ -379,10 +388,8 @@ function transfer_medikit (wounded, player)
 end
 -------------------
 function transfer_medikit2 (player, wounded)
-    local obj = player:object("medkit")
-    dialogs.relocate_item(wounded, obj, "out")   
+    dialogs.relocate_item_section(wounded, "medkit", "out")   
 	wounded:set_relation(game_object.friend, player)
-    printf( "wounded=%s goodwill(actor)=%d", wounded:name(), wounded:goodwill(player) )
 end
 
 ------------------------------------------------------------------------------------

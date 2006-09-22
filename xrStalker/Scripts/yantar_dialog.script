@@ -1,19 +1,10 @@
 function yantar_give_bad_psy_helmet(first_speaker, second_speaker)
-	local bad_helmet = second_speaker:object("bad_psy_helmet")
-	if bad_helmet then
-		dialogs.relocate_item(second_speaker, bad_helmet, "in")
-	end
+	dialogs.relocate_item_section(second_speaker, "bad_psy_helmet", "in")
 end
 function yantar_give_good_psy_helmet(first_speaker, second_speaker)
-	local good_helmet = second_speaker:object("good_psy_helmet")
-	if good_helmet then
-		dialogs.relocate_item(second_speaker, good_helmet, "in")
-	end
+	dialogs.relocate_item_section(second_speaker, "good_psy_helmet", "in")
 end
 
 function yantar_give_quest_artefact(first_speaker, second_speaker)
-	local quest_artefact = second_speaker:object("af_cristall_flower")
-	if quest_artefact then
-		dialogs.relocate_item(second_speaker, quest_artefact, "in")
-	end
+	dialogs.relocate_item_section(second_speaker, "af_cristall_flower", "in")
 end

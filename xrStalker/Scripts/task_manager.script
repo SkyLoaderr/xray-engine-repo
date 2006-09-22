@@ -407,11 +407,11 @@ function action_task_reward(npc, actor)
 	for k,v in pairs(active_task) do	
 		if v.completed == true and v.parent == parent then
 			if v.type == "artefact" then
-				dialogs.relocate_item(npc, db.actor:object(v.target), "out")
+				dialogs.relocate_item_section(npc, v.target, "out")
 			elseif v.type == "monster_part" then
-				dialogs.relocate_item(npc, db.actor:object(v.target), "out")
+				dialogs.relocate_item_section(npc, v.target, "out")
 			elseif v.type == "find_item" then
-				dialogs.relocate_item(npc, db.actor:object(v.target), "out")
+				dialogs.relocate_item_section(npc, v.target, "out")
 			end
 
 			active_task[v.type].full_completed = true
@@ -423,7 +423,7 @@ function action_task_reward(npc, actor)
 			if v.reward_item ~= nil then
 				for kk,vv in pairs(v.reward_item) do
 					if npc:object(vv) ~= nil then
-						dialogs.relocate_item(npc, npc:object(vv), "in")
+						dialogs.relocate_item_section(npc, vv, "in")
 					else
 						break
 					end
