@@ -2,19 +2,14 @@
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 
 	<main x=0 y=0 width=1024 height=768/>
+
 	<slots_background x="0" y="80" height="172" width="1024">
 		<texture>ui_slots_belt</texture>
 	</slots_background>
+
 	<background x="0" y="200" width="1024" height="477">
 		<texture>ui_inventory_mp_buy</texture>
 	</background>
-	<!--btn_bullets_pistol x="15" y="198" width="44" height="29">
-		<texture>ui_button_arrow_up</texture>		
-	</btn_bullets_pistol>
-	
-	<btn_bullets_riffle x="444" y="118" width="44" height="29">
-		<texture>ui_button_arrow_up</texture>		
-	</btn_bullets_riffle-->
 
 	<btn_pistol_silencer x="262" y="77" width="22" height="22" hint="ui_inv_silencer_pistol">
 		<texture>ui_beltbut_silencer</texture>
@@ -44,8 +39,6 @@
 		<texture>ui_beltbut_granadeBig</texture>
 	</btn_riffle_granades>	
 
-	<autobuy_indication x="607" y="428" width="129" height="15"/>	
-
 	<!-- BAG WINDOW -->
 	<bag_background_static x="10" y="234" width="350" height="440">
 		<text x="30" y="10" font="graffiti22" r="231" g="153" b="22" align="l">ui_inv_items_list</text>
@@ -69,31 +62,6 @@
 		<text font="graffiti22" r="231" g="153" b="22" align="c" vert_align="c"></text>
 	</money_info>	
 
-	<!-- CHARACTER WINDOW -->
-	<personal_static x="790" y="234" width="200" height="400">
-		<!--texture>ui\ui_dg_personal_multiplayer</texture-->
-		<text x="60" y="7" font="graffiti22" r="231" g="153" b="22">ui_inv_personal</text>
-	</personal_static>
-
-	<!-- BELT STATIC BACKGROUND-->
-	<static x="15" y="126" width="1024" height="128">
-		<!--texture>ui\ui_inv_belt</texture-->
-		<text x="25" y="6" font="graffiti22" r="231" g="153" b="22">ui_inv_belt</text>
-	</static>
-
-	<!-- SLOTS BACKGROUND -->
-	<!--slots_static x="15" y="0" width="1024" height="128">
-		<texture>ui\ui_inv_quick_slots</texture>
-	</slots_static-->
-
-	
-	<!-- BELT LIST -->
-	<dragdrop_list x="32" y="166" width="1024" height="60"
-			cell_width = "53" cell_height="50"
-			rows_num="1" cols_num="18">
-	</dragdrop_list>
-	
-	<dragdrop_list/>
 	
 	<!-- BAG LIST -->
 	<dragdrop_list_bag x="30" y="40" width="260" height="350"
@@ -112,56 +80,10 @@
 			cell_width = "53" cell_height="50"
 			rows_num="2" cols_num="6" show_grid="0" />
 			
-	<outfit_list x="828" y="300" width="150" height="220"
-			cell_width = "53" cell_height="53"
-			rows_num="4" cols_num="4" show_grid="0" />
-			
-	<!--knife-->
-	<dragdrop_list x="37" y="140" width="120" height="120"
-			cell_width = "53" cell_height="53"
-			rows_num="1" cols_num="2" show_grid="0" />
-	<!--pistol-->
-	<dragdrop_list x="188" y="40" width="120" height="120"
-			cell_width = "53" cell_height="53"
-			rows_num="1" cols_num="2" show_grid="0" />
-	<!--rifle-->
-	<dragdrop_list x="333" y="14" width="320" height="120"
-			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="6" show_grid="0" />
-
-	<dragdrop_list x="712" y="40" width="100" height="120"
-			cell_width = "53" cell_height="53"
-			rows_num="1" cols_num="1" show_grid="0" />
-
-	<dragdrop_list x="838" y="14" width="150" height="120"
-			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="3" show_grid="0" />
-
-	<!-- OUTFIT SLOT -->
-	<dragdrop_list x="828" y="300" width="150" height="220"
+	<outfit_list x="840" y="280" width="100" height="250"
 			cell_width = "53" cell_height="53"
 			rows_num="4" cols_num="4" show_grid="0" />
 
-	<!-- TOTAL MONEY AMOUNT -->
-	<total_money_header_static x="631" y="326" width="200" height="50">
-		<text font="small" r="240" g="217" b="182">You have$:</text>
-	</total_money_header_static>
-
-	<total_money_static x="631" y="336" width="200" height="50">
-		<text font="graffiti50" r="238" g="155" b="23">You have:</text>
-	</total_money_static>
-
-	<!-- ITEM COST -->
-	<item_cost_header_static x="518" y="384" width="200" height="50">
-		<text font="small" r="240" g="217" b="182">Item Price:</text>
-	</item_cost_header_static>
-
-	<item_cost_static x="518" y="394" width="200" height="50">
-		<text font="letterica25" r="240" g="217" b="182"></text>
-	</item_cost_static>
-
-	<!-- CHARACTER ICON -->
-	<outfit_static x="858" y="300"  width="86" height="220"></outfit_static>
 
 	<!-- TAB CONTROL FOR WEAPON TYPE SELECT -->
 	<tab x="0" y="701" width="1014" height="200">
