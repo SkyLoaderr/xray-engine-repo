@@ -23,19 +23,25 @@ CSavedGameWrapper::CSavedGameWrapper	(LPCSTR saved_game_name)
 	FS.update_path				(file_name,"$game_saves$",temp);
 	R_ASSERT3					(FS.exist(file_name),"There is no saved game ",file_name);
 	
-	IReader						*reader = FS.r_open(file_name);
+	IReader						*stream = FS.r_open(file_name);
+	u32							source_count = stream->r_u32();
+	void						*source_data = xr_malloc(source_count);
+	rtc_decompress				(source_data,source_count,stream->pointer(),stream->length() - sizeof(source_count));
+	FS.r_close					(stream);
+
+	IReader						reader(source_data,source_count);
 
 	{
 		CALifeTimeManager		time_manager(alife_section);
-		time_manager.load		(*reader);
+		time_manager.load		(reader);
 		m_game_time				= time_manager.game_time();
 	}
 
 	{
-		R_ASSERT2				(reader->find_chunk(OBJECT_CHUNK_DATA),"Can't find chunk OBJECT_CHUNK_DATA!");
-		u32						count = reader->r_u32();
+		R_ASSERT2				(reader.find_chunk(OBJECT_CHUNK_DATA),"Can't find chunk OBJECT_CHUNK_DATA!");
+		u32						count = reader.r_u32();
 		VERIFY					(count > 0);
-		CSE_ALifeDynamicObject	*object = CALifeObjectRegistry::get_object(*reader);
+		CSE_ALifeDynamicObject	*object = CALifeObjectRegistry::get_object(reader);
 		VERIFY					(object->ID == 0);
 		CSE_ALifeCreatureActor	*actor = smart_cast<CSE_ALifeCreatureActor*>(object);
 		VERIFY					(actor);
@@ -46,5 +52,5 @@ CSavedGameWrapper::CSavedGameWrapper	(LPCSTR saved_game_name)
 		F_entity_Destroy		(object);
 	}
 
-	FS.r_close					(reader);
+	xr_free						(source_data);
 }
