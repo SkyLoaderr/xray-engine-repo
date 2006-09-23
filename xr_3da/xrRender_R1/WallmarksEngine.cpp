@@ -186,7 +186,7 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 		Fbox				bb_query;
 		Fvector				bbc,bbd;
 		bb_query.set		(contact_point,contact_point);
-		bb_query.grow		(sz*2);
+		bb_query.grow		(sz*2.5f);
 		bb_query.get_CD		(bbc,bbd);
 		xrc.box_options		(CDB::OPT_FULL_TEST);
 		xrc.box_query		(g_pGameLevel->ObjectSpace.GetStaticModel(),bbc,bbd);
@@ -320,7 +320,7 @@ void CWallmarksEngine::Render()
 //	if (marks.empty())			return;
 	// Projection and xform
 	float _43					= Device.mProject._43;
-	Device.mProject._43			-= 0.001f; 
+	Device.mProject._43			-= ps_r__WallmarkSHIFT; 
 	RCache.set_xform_world		(Fidentity);
 	RCache.set_xform_project	(Device.mProject);
 
