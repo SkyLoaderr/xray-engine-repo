@@ -16,8 +16,9 @@ extern ECORE_API	float		ps_r__Tree_w_amp;
 extern ECORE_API	float		ps_r__Tree_SBC;		// scale bias correct
 extern ECORE_API	Fvector		ps_r__Tree_Wave;
 
-extern ECORE_API	float		ps_r__WallmarkTTL	;
-extern ECORE_API	float		ps_r__WallmarkSHIFT	;
+extern ECORE_API	float		ps_r__WallmarkTTL		;
+extern ECORE_API	float		ps_r__WallmarkSHIFT		;
+extern ECORE_API	float		ps_r__WallmarkSHIFT_V	;
 
 extern ECORE_API	float		ps_r__GLOD_ssa_start;
 extern ECORE_API	float		ps_r__GLOD_ssa_end	;

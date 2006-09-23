@@ -319,10 +319,16 @@ void CWallmarksEngine::Render()
 {
 //	if (marks.empty())			return;
 	// Projection and xform
-	float _43					= Device.mProject._43;
+	float	_43					= Device.mProject._43;
 	Device.mProject._43			-= ps_r__WallmarkSHIFT; 
 	RCache.set_xform_world		(Fidentity);
 	RCache.set_xform_project	(Device.mProject);
+
+	Fmatrix	mSavedView			= Device.mView;
+	Fvector	mViewPos			;
+			mViewPos.mad		(Device.vCameraPosition, Device.vCameraDirection,ps_r__WallmarkSHIFT_V);
+	Device.mView.build_camera_dir	(mViewPos,Device.vCameraDirection,Device.vCameraTop);
+	RCache.set_xform_view		(Device.mView);
 
 	Device.Statistic->RenderDUMP_WM.Begin	();
 	Device.Statistic->RenderDUMP_WMS_Count	= 0;
@@ -407,6 +413,8 @@ void CWallmarksEngine::Render()
 	Device.Statistic->RenderDUMP_WM.End		();
 
 	// Projection
+	Device.mView				= mSavedView;
 	Device.mProject._43			= _43;
+	RCache.set_xform_view		(Device.mView);
 	RCache.set_xform_project	(Device.mProject);
 }

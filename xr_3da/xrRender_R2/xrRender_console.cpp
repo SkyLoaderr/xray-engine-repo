@@ -29,7 +29,8 @@ Fvector		ps_r__Tree_Wave				= {.1f, .01f, .11f};
 float		ps_r__Tree_SBC				= 1.5f	;	// scale bias correct
 
 float		ps_r__WallmarkTTL			= 90.f	;
-float		ps_r__WallmarkSHIFT			= 0.001f;
+float		ps_r__WallmarkSHIFT			= 0.002f;
+float		ps_r__WallmarkSHIFT_V		= 0.005f;
 
 float		ps_r__GLOD_ssa_start		= 256.f	;
 float		ps_r__GLOD_ssa_end			=  64.f	;
@@ -238,7 +239,8 @@ void		xrRender_initconsole	()
 
 	Fvector	tw_min,tw_max;
 	CMD4(CCC_Float,		"r__wallmark_ttl",		&ps_r__WallmarkTTL,			1.0f,	5.f*60.f);
-	CMD4(CCC_Float,		"r__wallmark_shift",	&ps_r__WallmarkSHIFT,		0.0f,	1.f		);
+	CMD4(CCC_Float,		"r__wallmark_shift_pp",	&ps_r__WallmarkSHIFT,		0.0f,	1.f		);
+	CMD4(CCC_Float,		"r__wallmark_shift_v",	&ps_r__WallmarkSHIFT_V,		0.0f,	1.f		);
 	
 	CMD4(CCC_Float,		"r__ssa_glod_start",	&ps_r__GLOD_ssa_start,		128,	512		);
 	CMD4(CCC_Float,		"r__ssa_glod_end",		&ps_r__GLOD_ssa_end,		16,		96		);
