@@ -19,6 +19,9 @@ void CLevel::remove_objects	()
 		ClearAllObjects			();
 
 	for (int i=0; i<6; ++i) {
+		// ugly hack for checks that update is twice on frame
+		// we need it since we do updates for checking network messages
+		++(Device.dwFrame);
 		psDeviceFlags.set		(rsDisableObjectsAsCrows,TRUE);
 		ClientReceive			();
 		ProcessGameEvents		();

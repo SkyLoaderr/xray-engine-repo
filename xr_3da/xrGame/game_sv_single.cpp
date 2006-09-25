@@ -329,8 +329,9 @@ void game_sv_Single::restart_simulator			(LPCSTR saved_game_name)
 	strcpy					(g_pGamePersistent->m_game_params.m_game_or_spawn,saved_game_name);
 	strcpy					(g_pGamePersistent->m_game_params.m_new_or_load,"load");
 
-	CHK_DX					(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_ARGB(255,0,0,0),1,0));
 	pApp->LoadBegin			();
 	m_alife_simulator		= xr_new<CALifeSimulator>(&server(),&options);
+	pApp->LoadTitle			("CLIENT: Synchronising...");
+	Device.PreCache			(30);
 	pApp->LoadEnd			();
 }

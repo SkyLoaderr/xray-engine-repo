@@ -938,14 +938,15 @@ public:
 
 		CSavedGameWrapper			wrapper(args);
 		if (wrapper.level_id() == ai().level_graph().level_id()) {
-			Device.Pause			(FALSE);
-			// ugly hack for checks that update is twice on frame
-			// we need it since we do updates for checking network messages
-			++(Device.dwFrame);
+			if (Device.Pause())
+				Device.Pause		(FALSE);
+
 			Level().remove_objects	();
+
 			game_sv_Single			*game = smart_cast<game_sv_Single*>(Level().Server->game);
 			R_ASSERT				(game);
 			game->restart_simulator	(saved_game);
+
 			return;
 		}
 
