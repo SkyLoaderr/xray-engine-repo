@@ -102,7 +102,11 @@ bool EFS_Utils::GetOpenName( LPCSTR initial, char *buffer, int sz_buf, bool bMul
 
 	OPENFILENAME ofn;
 	Memory.mem_fill		( &ofn, 0, sizeof(ofn) );
-    if (xr_strlen(buffer)){ P._update(buffer,buffer); if (strext(buffer)) *strext(buffer)=0; }
+    if (xr_strlen(buffer)){ 
+        string_path		dr;
+        _splitpath		(buffer,dr,0,0,0);
+        if (0==dr[0])	P._update(buffer,buffer); 
+    }
     ofn.lStructSize		= sizeof(OPENFILENAME);
 	ofn.hwndOwner 		= GetForegroundWindow();
 	ofn.lpstrDefExt 	= P.m_DefExt;
@@ -159,7 +163,11 @@ bool EFS_Utils::GetSaveName( LPCSTR initial, char *buffer, int sz_buf, LPCSTR of
 	MakeFilter(flt,P.m_FilterCaption?P.m_FilterCaption:"",P.m_DefExt);
 	OPENFILENAME ofn;
 	Memory.mem_fill		( &ofn, 0, sizeof(ofn) );
-    if (xr_strlen(buffer)){ P._update(buffer,buffer); if (strext(buffer)) *strext(buffer)=0; }
+    if (xr_strlen(buffer)){ 
+        string_path		dr;
+        _splitpath		(buffer,dr,0,0,0);
+        if (0==dr[0])	P._update(buffer,buffer); 
+    }
 	ofn.hwndOwner 		= GetForegroundWindow();
 	ofn.lpstrDefExt 	= P.m_DefExt;
 	ofn.lpstrFile 		= buffer;

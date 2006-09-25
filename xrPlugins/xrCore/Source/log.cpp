@@ -143,7 +143,10 @@ void CreateLog			(BOOL nl)
 		FS.update_path	(logFName,"$logs$",logFName);
 	if (!no_log){
         IWriter *f		= FS.w_open	(logFName);
-        if (f==NULL)	abort();
+        if (f==NULL){
+        	MessageBox	(NULL,"Can't create log file.","Error",MB_ICONERROR);
+        	abort();
+        }
         FS.w_close		(f);
     }
 	LogFile.reserve		(128);

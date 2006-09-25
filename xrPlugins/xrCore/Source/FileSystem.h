@@ -26,16 +26,8 @@ public:
 	bool 		GetSaveName		(LPCSTR initial, xr_string& buf, LPCSTR offset=0, int start_flt_ext=-1 );
 
 	void 		MarkFile		(LPCSTR fn, bool bDeleteSource);
-	void 		BackupFile		(LPCSTR initial, LPCSTR fname, bool bMsg=FALSE, u32 backup_level=BACKUP_FILE_LEVEL);
 
-	BOOL		CheckLocking	(LPCSTR initial, LPCSTR fn, bool bOnlySelf, bool bMsg, shared_str* owner=0);
-	BOOL		LockFile		(LPCSTR initial, LPCSTR fn, bool bLog=true);
-	BOOL		UnlockFile		(LPCSTR initial, LPCSTR fn, bool bLog=true);
-	shared_str	GetLockOwner	(LPCSTR initial, LPCSTR fn);
-
-	void		WriteAccessLog	(LPCSTR fn, LPCSTR start_msg);
-
-	xr_string AppendFolderToName(xr_string& tex_name, int depth, BOOL full_name);
+	xr_string 	AppendFolderToName(xr_string& tex_name, int depth, BOOL full_name);
 
 	LPCSTR		AppendFolderToName(LPSTR tex_name, int depth, BOOL full_name);
 	LPCSTR		AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth, BOOL full_name);

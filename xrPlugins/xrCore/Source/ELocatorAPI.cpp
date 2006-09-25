@@ -148,6 +148,11 @@ BOOL CLocatorAPI::exist			(char* fn, const char* path, const char* name, const c
 	return exist	(fn);
 }
 
+bool ignore_name(const char* _name)
+{
+	// ignore processing ".svn" folders
+	return ( _name[0]=='.' && _name[1]=='s' && _name[2]=='v' && _name[3]=='n' && _name[4]==0) ;
+}
 
 typedef void	(__stdcall * TOnFind)	(_finddata_t&, void*);
 void Recurse	(LPCSTR, bool, TOnFind, void*);
@@ -157,7 +162,9 @@ void ProcessOne	(LPCSTR path, _finddata_t& F, bool root_only, TOnFind on_find_cb
 	strcpy		(N,path);
 	strcat		(N,F.name);
 	xr_strlwr	(N);
-	
+
+	if (ignore_name(N))					return;
+    
 	if (F.attrib&_A_HIDDEN)				return;
 
 	if (F.attrib&_A_SUBDIR) {

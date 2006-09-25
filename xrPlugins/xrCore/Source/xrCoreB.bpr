@@ -3,11 +3,10 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="x:\xrCoreB.dll"/>
+    <PROJECT value="x:\build\xrCoreB.dll"/>
     <OBJFILES value="Intermediate\xrMemory_pso_Fill32.obj Intermediate\_math.obj 
-      Intermediate\_quaternion.obj Intermediate\_sphere.obj 
-      Intermediate\cpuid.obj Intermediate\stdafx.obj Intermediate\xrCore.obj 
-      Intermediate\xrDebug.obj Intermediate\xrMemory.obj 
+      Intermediate\_sphere.obj Intermediate\cpuid.obj Intermediate\stdafx.obj 
+      Intermediate\xrCore.obj Intermediate\xrDebug.obj Intermediate\xrMemory.obj 
       Intermediate\xrMemory_pso_Copy.obj Intermediate\xrMemory_pso_Fill.obj 
       Intermediate\_compressed_normal.obj Intermediate\xrMemory_align.obj 
       Intermediate\LzHuf.obj Intermediate\log.obj Intermediate\FS.obj 
@@ -46,12 +45,11 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_XRCOREB -DXRCORE_EXPORTS -D_DEBUG 
-      -I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include&quot; -I$(BCB)\include 
+    <IDLCFLAGS value="-I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include&quot; -I$(BCB)\include 
       -I$(BCB)\include\vcl -IR:\SDK\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\Borland\CBuilder6\Include\Mfc 
-      -boa"/>
+      -src_suffix cpp -D_EDITOR -D_XRCOREB -DXRCORE_EXPORTS -D_DEBUG -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -70,7 +68,6 @@
       <FILE FILENAME="xrCoreB.bpf" FORMNAME="" UNITNAME="xrCoreB" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrMemory_pso_Fill32.cpp" FORMNAME="" UNITNAME="xrMemory_pso_Fill32.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="_math.cpp" FORMNAME="" UNITNAME="_math.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="_quaternion.cpp" FORMNAME="" UNITNAME="_quaternion.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="_sphere.cpp" FORMNAME="" UNITNAME="_sphere.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="cpuid.cpp" FORMNAME="" UNITNAME="cpuid.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -261,16 +258,20 @@ Item1=XRLC_Intermediate
 Item2=xrLC_Options
 
 [HistoryLists\hlFinalOutputDir]
-Count=9
-Item0=x:\
-Item1=s:\bin\
-Item2=z:\
-Item3=S:\build_zmey\
-Item4=S:\build_zmey
-Item5=x:\xrCoreB.dll\
-Item6=x:\xrCoreB.dll
-Item7=!run\
-Item8=!run
+Count=13
+Item0=x:\build
+Item1=x:\build\
+Item2=x:\
+Item3=u:\preliminary\
+Item4=u:\preliminary
+Item5=s:\bin\
+Item6=z:\
+Item7=S:\build_zmey\
+Item8=S:\build_zmey
+Item9=x:\xrCoreB.dll\
+Item10=x:\xrCoreB.dll
+Item11=!run\
+Item12=!run
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl
@@ -280,7 +281,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=X:\MemoryStat.exe
+HostApplication=x:\build\ActorEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=
