@@ -246,16 +246,30 @@ public:
 	CCC_SaveCFG(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) 
 	{
-		LPCSTR	c_name		= (xr_strlen(args)>0)?args:Console->ConfigFile;
-		if (SetFileAttributes(c_name,FILE_ATTRIBUTE_NORMAL)){
-			IWriter* F			= FS.w_open(c_name);
-			if (F){
+		string_path			cfg_full_name;
+		strcpy				(cfg_full_name, (xr_strlen(args)>0)?args:Console->ConfigFile);
+
+		bool b_abs_name = xr_strlen(cfg_full_name)>2 && cfg_full_name[1]==':';
+
+		if(!b_abs_name)
+			FS.update_path	(cfg_full_name, "$app_data_root$", cfg_full_name);
+
+		if (strext(cfg_full_name))	
+			*strext(cfg_full_name) = 0;
+		strcat			(cfg_full_name,".ltx");
+		
+		BOOL b_allow = TRUE;
+		if ( FS.exist(cfg_full_name) )
+			b_allow = SetFileAttributes(cfg_full_name,FILE_ATTRIBUTE_NORMAL);
+
+		if ( b_allow ){
+			IWriter* F			= FS.w_open(cfg_full_name);
 				CConsole::vecCMD_IT it;
 				for (it=Console->Commands.begin(); it!=Console->Commands.end(); it++)
 					it->second->Save(F);
 				FS.w_close			(F);
-			}
-		}
+		}else
+			Msg("!Cannot store config file %s", cfg_full_name);
 	}
 };
 CCC_LoadCFG::CCC_LoadCFG(LPCSTR N) : IConsole_Command(N) 
@@ -264,17 +278,25 @@ CCC_LoadCFG::CCC_LoadCFG(LPCSTR N) : IConsole_Command(N)
 void CCC_LoadCFG::Execute(LPCSTR args) 
 {
 		Msg("Executing config-script \"%s\"...",args);
-		string1024 str;
+		string_path						cfg_name;
 
-		//RecordCommands	= false;
-		strcpy	(str,args);
-		if (strext(str))	*strext(str) = 0;
-		strcat	(str,".ltx");
+		strcpy							(cfg_name, args);
+		if (strext(cfg_name))			*strext(cfg_name) = 0;
+		strcat							(cfg_name,".ltx");
+
+		string_path						cfg_full_name;
+
+		FS.update_path					(cfg_full_name, "$app_data_root$", cfg_name);
 		
-		IReader* F = FS.r_open(str);
+		if( NULL == FS.exist(cfg_full_name) )
+			strcpy						(cfg_full_name, cfg_name);
+		
+		IReader* F						= FS.r_open(cfg_full_name);
+		
+		string1024						str;
 		if (F!=NULL) {
 			while (!F->eof()) {
-				F->r_string			(str,sizeof(str));
+				F->r_string				(str,sizeof(str));
 				if(allow(str))
 					Console->Execute	(str);
 			}
@@ -282,7 +304,6 @@ void CCC_LoadCFG::Execute(LPCSTR args)
 		} else {
 			Log("! Cannot open script file.");
 		}
-		//RecordCommands	= true;
 }
 
 CCC_LoadCFG_custom::CCC_LoadCFG_custom(LPCSTR cmd)

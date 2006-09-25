@@ -74,7 +74,10 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs,
 		R_CHK			(GetEnvironmentVariable("USERPROFILE",fn,sizeof(fn)));
 		u32 fn_len		= xr_strlen(fn);
 		if (fn_len && fn[fn_len-1]=='\\') fn[fn_len-1]=0;
-		strconcat		(ApplicationDataPath,fn,"\\Application Data\\",COMPANY_NAME,"\\",PRODUCT_NAME);
+
+//.		strconcat		(ApplicationDataPath,fn,"\\Application Data\\",COMPANY_NAME,"\\",PRODUCT_NAME);
+		strcpy			(ApplicationDataPath, ApplicationPath);
+
 //		_splitpath		(fn,dr,di,0,0);
 //		strconcat		(ApplicationDataPath,dr,di);                                       
 
