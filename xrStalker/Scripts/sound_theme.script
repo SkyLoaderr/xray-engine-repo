@@ -192,9 +192,6 @@ ph_snd_themes["x18_sound_10"] = {"ambient\\x18\\x18_move_4"}
 ph_snd_themes["x18_sound_11"] = {"ambient\\x18\\x18_footsteps"}
 ph_snd_themes["x18_sound_12"] = {"ambient\\x18\\x18_move_3"}
 
-ph_snd_themes["x16_switch_1"] = {"ambient\\switch_1"}
-ph_snd_themes["x16_switch_2"] = {"ambient\\switch_2"}
-
 ph_snd_themes["x16_engine1_run"] = {"ambient\\x16\\x16_engine1_run"}
 ph_snd_themes["x16_engine1_stop"] = {"ambient\\x16\\x16_engine1_stop"}
 
