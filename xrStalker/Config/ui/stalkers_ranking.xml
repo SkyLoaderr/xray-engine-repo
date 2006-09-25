@@ -3,7 +3,7 @@
 
 	<main_wnd x="110" y="90" width="761" height="455"/>
 
-	<character_info x="26" y="58" width="236" height="120"/>
+	<character_info x="20" y="58" width="270" height="450"/>
 
 	<list x="20" y="50" width="422" height="419" top_indent="23" always_show_scroll="1" can_select="1" scroll_profile="pda"/>
 
@@ -12,7 +12,7 @@
 	</chicon_frame_window>
 
 	<chicon_frame_line x="8" y="17" width="284" height="21">
-        <title x="10" y="2" width="545" height="440">
+        <title x="10" y="2" width="274" height="21">
             <text font="letterica16" r="225" g="225" b="250"># /details</text>
         </title>
         <texture>ui_string_03</texture>		
