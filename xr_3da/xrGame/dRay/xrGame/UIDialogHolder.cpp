@@ -30,7 +30,7 @@ bool operator == (const recvItem& i1, const recvItem& i2)
 {
 	return i1.m_item == i2.m_item;
 }
-//----------CDialogHolder--------------
+
 CDialogHolder::CDialogHolder()
 {
 	shedule.t_min			= 5;
@@ -168,6 +168,7 @@ void CDialogHolder::SetMainInputReceiver	(CUIDialogWnd* ir, bool _find_remove)
 			for(;cnt>0;--cnt)
 				if( m_input_receivers[cnt-1].m_item == ir ){
 					m_input_receivers[cnt].m_flags.set(recvItem::eCrosshair, m_input_receivers[cnt-1].m_flags.test(recvItem::eCrosshair) );
+					m_input_receivers[cnt].m_flags.set(recvItem::eIndicators, m_input_receivers[cnt-1].m_flags.test(recvItem::eIndicators) );
 					xr_vector<recvItem>::iterator it = m_input_receivers.begin();
 					std::advance			(it,cnt-1);
 					m_input_receivers.erase	(it);

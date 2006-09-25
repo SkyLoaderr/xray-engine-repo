@@ -1276,7 +1276,7 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 };
 
 
-/*
+
 #include "d3dx9core.h"
 #include "winuser.h"
 #pragma comment(lib,"d3dx9.lib")
@@ -1286,7 +1286,7 @@ ID3DXFont*     g_pTestFont = NULL;
 ID3DXFont*     g_pTestFont2 = NULL;
 ID3DXSprite*        g_pTextSprite = NULL;   // Sprite for batching draw text calls
 ID3DXSprite*        g_pTextSprite2 = NULL;   // Sprite for batching draw text calls
-*/
+
 /*
 #include "UIGameTutorial.h"
 #include "../actor_statistic_mgr.h"
@@ -1324,7 +1324,7 @@ void test_key	(int dik)
 
 
 
-/*
+
 	if(dik==DIK_K){
 		if(g_pTestFont){
 			g_pTestFont->Release();
@@ -1332,7 +1332,7 @@ void test_key	(int dik)
 			g_pTestFont2->Release();
 			g_pTestFont2 = NULL;
 			
-			g_pTextSprite2->Release();
+			g_pTextSprite->Release();
 			g_pTextSprite2->Release();
 			return;
 		}
@@ -1355,8 +1355,9 @@ void test_key	(int dik)
 
 	g_pTestFont->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
 	g_pTestFont2->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
+
 	}
-*/
+
 }
 
 void test_draw	()
@@ -1364,12 +1365,19 @@ void test_draw	()
 //	if(g_MissileForceShape)
 //		g_MissileForceShape->Draw();
 
-	/*
+	
 	if(g_pTestFont){
-
+/*
 	g_pTestFont->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
 	g_pTestFont2->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
 
+	IDirect3DTexture9	*T;
+	RECT				R;
+	POINT				P;
+	g_pTestFont2->PreloadGlyphs(0,255);
+	g_pTestFont2->GetGlyphData(50, &T, &R, &P);
+	R_CHK		(D3DXSaveTextureToFile	("x:\\test_font.dds",D3DXIFF_DDS,T,0));
+*/
 		RECT rc;
         g_pTextSprite->Begin( D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE );
 		SetRect( &rc, 50, 150, 0, 0 );        
@@ -1432,7 +1440,7 @@ void test_draw	()
 		g_pTextSprite2->End();
 		}
 	}
-*/
+
 }
 #ifdef DEBUG
 void CUIMainIngameWnd::draw_adjust_mode()
