@@ -142,8 +142,8 @@ bool CImageManager::MakeGameTexture(LPCSTR game_name, u32* data, const STextureP
     if (1!=res){
     	FS.file_delete(game_name);
         switch(res){
-        case 0:		ELog.DlgMsg	(mtError,"Can't make game texture '%s'.",game_name);break;
-        case -1000:	ELog.DlgMsg	(mtError,"Can't make game texture '%s'. Invalid gloss mask.",game_name);break;
+        case 0:		ELog.DlgMsg	(mtError,"Can't make game texture '%s'.",game_name);	break;
+        case -1000:	ELog.Msg	(mtError,"Invalid gloss mask '%s'.",game_name);break;
         }
 		return false;
     }
@@ -244,8 +244,6 @@ void CImageManager::SafeCopyLocalToServer(FS_FileSet& files)
 		src_name	 	= p_import	+ fn;
 		UpdateFileName	(fn);
 		dest_name 		= p_textures + EFS.ChangeFileExt(fn,".tga");
-        if (FS.exist(dest_name.c_str()))
-	        EFS.BackupFile	(_textures_,EFS.ChangeFileExt(fn,".tga").c_str());
         if (0==strcmp(strext(src_name.c_str()),".tga")){
 			FS.file_copy(src_name.c_str(),dest_name.c_str());
         }else{
@@ -260,7 +258,6 @@ void CImageManager::SafeCopyLocalToServer(FS_FileSet& files)
             xr_delete	(I);
         }
         FS.set_file_age		(dest_name.c_str(), FS.get_file_age(src_name.c_str()));
-        EFS.WriteAccessLog	(dest_name.c_str(),"Replace");
         EFS.MarkFile		(src_name.c_str(),true);
     }
 }    
@@ -289,7 +286,6 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     // sync assoc
 	xr_string 	ltx_nm;
     FS.update_path	(ltx_nm,_game_textures_,"textures.ltx");
-    EFS.BackupFile	(_game_textures_,"textures.ltx",FALSE,50);
 	CInifile* ltx_ini = xr_new<CInifile>(ltx_nm.c_str(),FALSE,TRUE,FALSE);
     
 	SPBItem* pb=0;
@@ -647,11 +643,8 @@ void CImageManager::RemoveTexture(LPCSTR fname, EItemType type, bool& res)
             xr_string game_name= EFS.ChangeFileExt(fname,".dds");
             xr_string game_name2=EFS.ChangeFileExt(fname,"#.dds");
             // source
-            EFS.BackupFile		(_textures_,src_name.c_str());
             FS.file_delete		(_textures_,src_name.c_str());
-            EFS.WriteAccessLog	(src_name.c_str(),"Remove");
             // thumbnail
-            EFS.BackupFile		(_textures_,thm_name.c_str());
             FS.file_delete		(_textures_,thm_name.c_str());
             // game
             FS.file_delete		(_game_textures_,game_name.c_str());
