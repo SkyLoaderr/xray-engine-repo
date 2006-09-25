@@ -623,6 +623,7 @@ void CVisualMemoryManager::save	(NET_Packet &packet) const
 	VISIBLES::const_iterator	I = objects().begin();
 	VISIBLES::const_iterator	E = objects().end();
 	for ( ; I != E; ++I) {
+		VERIFY					((*I).m_object);
 		packet.w_u16			((*I).m_object->ID());
 		// object params
 		packet.w_u32			((*I).m_object_params.m_level_vertex_id);
