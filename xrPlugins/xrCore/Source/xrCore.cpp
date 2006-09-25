@@ -63,11 +63,20 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs,
 
 		strlwr				(strcpy(Params,GetCommandLine()));
 
+		string_path		fn,dr,di;
+
 		// application path
-        string_path		fn,dr,di;
         GetModuleFileName(GetModuleHandle(MODULE_NAME),fn,sizeof(fn));
         _splitpath		(fn,dr,di,0,0);
         strconcat		(ApplicationPath,dr,di);                                       
+
+		// application data path
+		R_CHK			(GetEnvironmentVariable("USERPROFILE",fn,sizeof(fn)));
+		u32 fn_len		= xr_strlen(fn);
+		if (fn_len && fn[fn_len-1]=='\\') fn[fn_len-1]=0;
+		strconcat		(ApplicationDataPath,fn,"\\Application Data\\",COMPANY_NAME,"\\",PRODUCT_NAME);
+//		_splitpath		(fn,dr,di,0,0);
+//		strconcat		(ApplicationDataPath,dr,di);                                       
 
 		// working path
 		GetCurrentDirectory(sizeof(WorkingPath),WorkingPath);

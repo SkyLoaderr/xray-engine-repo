@@ -309,6 +309,11 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder, LPCSTR fs_name)
 	if (m_Flags.is(flScanAppRoot)){
 		append_path		("$app_root$",Core.ApplicationPath,0,FALSE);
     }
+	// append application data path
+	append_path			("$app_data_root$",Core.ApplicationDataPath,0,TRUE);
+	IWriter* w = FS.w_open("$app_data_root$","test.xxx");
+	FS.w_close(w);
+	// target folder 
 	if (m_Flags.is(flTargetFolderOnly)){
 		append_path		("$target_folder$",target_folder,0,TRUE);
 	}else{
