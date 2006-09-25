@@ -35,6 +35,7 @@ extern void release_smart_cast_stats				();
 extern void dump_list_wnd							();
 extern void dump_list_lines							();
 extern void dump_list_sublines						();
+extern void clean_wnd_rects							();
 
 void init_game_globals()
 {
@@ -109,4 +110,5 @@ void clean_game_globals()
 	dump_list_wnd									();
 	dump_list_lines									();
 	dump_list_sublines								();
+	clean_wnd_rects									();
 }

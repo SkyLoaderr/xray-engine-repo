@@ -33,6 +33,13 @@ ref_geom	dbg_draw_gm;
 
 BOOL g_show_wnd_rect = FALSE;
 BOOL g_show_wnd_rect2 = FALSE;
+
+void clean_wnd_rects()
+{
+	dbg_draw_sh.destroy();
+	dbg_draw_gm.destroy();
+}
+
 void add_rect_to_draw(Frect r)
 {
 	g_wnds_rects.push_back(r);
