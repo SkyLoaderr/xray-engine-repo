@@ -52,6 +52,8 @@ public:
 	virtual ALife::_TIME_ID	TimePassedAfterIndependant			() const;
 
 			void			PutNextToSlot						();
+
+	virtual void			Deactivate			();
 protected:
 	ALife::_TIME_ID			m_dwGrenadeRemoveTime;
 	ALife::_TIME_ID			m_dwGrenadeIndependencyTime;

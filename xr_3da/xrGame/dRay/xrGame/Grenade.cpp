@@ -71,22 +71,6 @@ void CGrenade::net_Destroy()
 
 void CGrenade::OnH_B_Independent() 
 {
-	m_pHUD->StopCurrentAnimWithoutCallback();
-	if (Local() && (GetState() == MS_THREATEN || GetState() == MS_READY || GetState() == MS_THROW))
-	{
-		if (m_fake_missile)
-		{
-			CGrenade*		pGrenade	= smart_cast<CGrenade*>(m_fake_missile);
-			if (pGrenade)
-			{
-				m_constpower			= false;
-				m_fThrowForce			= 0;
-				Throw					();
-				m_dwDestroyTime			= 0xffffffff;
-				DestroyObject			();
-			};
-		};
-	};
 	inherited::OnH_B_Independent();
 }
 
@@ -305,3 +289,35 @@ void CGrenade::net_Relcase(CObject* O )
 	inherited::net_Relcase(O);
 }
 
+void			CGrenade::Deactivate			()
+{
+	//Drop grenade if primed
+	m_pHUD->StopCurrentAnimWithoutCallback();
+	if (Local() && (GetState() == MS_THREATEN || GetState() == MS_READY || GetState() == MS_THROW))
+	{
+		if (m_fake_missile)
+		{
+			CGrenade*		pGrenade	= smart_cast<CGrenade*>(m_fake_missile);
+			if (pGrenade)
+			{
+				if (m_pInventory->GetOwner())
+				{
+					CActor* pActor = smart_cast<CActor*>(m_pInventory->GetOwner());
+					if (pActor)
+					{
+						if (!pActor->g_Alive())
+						{
+							m_constpower			= false;
+							m_fThrowForce			= 0;
+						}
+					}
+					
+				}				
+				Throw					();
+				m_dwDestroyTime			= 0xffffffff;
+			};
+		};
+	};
+
+	inherited::Deactivate();
+}
