@@ -404,6 +404,9 @@ void CCustomZone::net_Export(NET_Packet& P)
 
 bool CCustomZone::IdleState()
 {
+	if(	NULL == m_idle_sound._feedback() )
+		m_idle_sound.play_at_pos(0, Position(), true);
+
 	UpdateOnOffState	();
 
 	return false;
