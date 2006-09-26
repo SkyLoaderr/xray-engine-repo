@@ -286,7 +286,7 @@ void CUIGameDM::OnFrame()
 	m_pRankIndicator->Update		();
 	
 	m_pFragLimitIndicator->Update	();
-	m_voteStatusWnd->Update			();
+	if(m_voteStatusWnd->IsShown()) m_voteStatusWnd->Update			();
 }
 
 void CUIGameDM::Render()
@@ -296,7 +296,7 @@ void CUIGameDM::Render()
 	m_pRankIndicator->Draw			();
 
 	m_pFragLimitIndicator->Draw		();
-	m_voteStatusWnd->Draw			();
+	if(m_voteStatusWnd->IsShown()) m_voteStatusWnd->Draw			();
 }
 
 void CUIGameDM::DisplayMoneyChange(LPCSTR deltaMoney)

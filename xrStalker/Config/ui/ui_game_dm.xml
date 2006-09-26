@@ -1,19 +1,19 @@
 <?xml version='1.0' encoding="UTF-8" ?>
 <w>
-	<vote_wnd x="10" y="200" width="200" height="80" stretch="1">
+	<vote_wnd x="10" y="200" width="250" height="80" stretch="1">
 		<texture>ui_frame_01</texture>
 	
-		<static_str_message x="10" y="5" width="300" height="20" complex_mode="0">
-			<text font="normal" r="255" g="255" b="255" a="130">test1</text>
+		<static_str_message x="10" y="5" width="300" height="20">
+			<text font="medium" r="255" g="255" b="255" a="130" complex_mode="0">test1</text>
 		</static_str_message>
 		
-		<static_hint x="10" y="55" width="200" height="20" complex_mode="0">
-			<text font="normal" r="255" g="255" b="255" a="130">mp_vote_hint</text>
-		</static_hint>
-		
-		<static_time_message x="10" y="30" width="200" height="20" complex_mode="0">
-			<text font="normal" r="255" g="255" b="255" a="130">test3</text>
+		<static_time_message x="10" y="30" width="200" height="20">
+			<text font="medium" r="255" g="255" b="255" a="130" complex_mode="0">test3</text>
 		</static_time_message>
+
+		<static_hint x="10" y="55" width="200" height="20">
+			<text font="medium" r="255" g="255" b="255" a="130" complex_mode="0">mp_vote_hint</text>
+		</static_hint>
 	</vote_wnd>
 	
 	<money_wnd x="920" y="10" width="100" height="160">
