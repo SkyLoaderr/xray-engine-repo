@@ -12,6 +12,7 @@ class CUISkinSelectorWnd;
 class game_cl_Deathmatch;
 class CUIMoneyIndicator;
 class CUIRankIndicator;
+class UIVoteStatusWnd;
 
 class CUIGameDM: public CUIGameCustom
 {
@@ -38,8 +39,8 @@ protected:
 	shared_str					m_spectator_caption;
 	shared_str					m_pressjump_caption;
 	shared_str					m_pressbuy_caption;
-	shared_str					m_vote_caption0, m_vote_caption1;
-	shared_str					m_votetimeresult_caption;
+//.	shared_str					m_vote_caption0, m_vote_caption1;
+//.	shared_str					m_votetimeresult_caption;
 	shared_str					m_round_result_caption;		
 	shared_str					m_force_respawn_time_caption;
 	shared_str					m_demo_play_caption;
@@ -51,7 +52,7 @@ protected:
 	CUIMoneyIndicator*				m_pMoneyIndicator;
 	CUIRankIndicator*				m_pRankIndicator;
 	CUIStatic*						m_pFragLimitIndicator;
-
+	UIVoteStatusWnd*				m_voteStatusWnd;
 public:
 									CUIGameDM				();
 	virtual 						~CUIGameDM				();

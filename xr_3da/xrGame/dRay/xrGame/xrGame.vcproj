@@ -10804,6 +10804,12 @@
 					<File
 						RelativePath=".\ui\UIRankIndicator.h">
 					</File>
+					<File
+						RelativePath=".\ui\UIVoteStatusWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIVoteStatusWnd.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="Single"
