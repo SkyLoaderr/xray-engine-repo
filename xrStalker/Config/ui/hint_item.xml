@@ -11,9 +11,7 @@
 	</hint_item>
 	
 	<button_hint x="0" y="0" width="200" height="30">
-		<frame  x="0" y="0" width="200" height="70">             <!--remove me--->
-			<texture>ui_icons_PDA_dialog</texture>
-		</frame>	
+	
 		<frame_line  x="0" y="0" width="200" height="30">
 			<texture>ui_icons_PDA_string_tooltips</texture>
 		</frame_line>	
