@@ -198,6 +198,11 @@ ph_snd_themes["x16_engine1_stop"] = {"ambient\\x16\\x16_engine1_stop"}
 ph_snd_themes["x16_engine2_run"] = {"ambient\\x16\\x16_engine2_run"}
 ph_snd_themes["x16_engine2_stop"] = {"ambient\\x16\\x16_engine2_stop"}
 
+ph_snd_themes["x16_hum_2"] = {"ambient\\x16\\x16_hum_2"}
+ph_snd_themes["x16_switch_1"] = {"ambient\\x16\\switch_1"}
+ph_snd_themes["x16_switch_2"] = {"ambient\\x16\\switch_2"}
+
+
 
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Theme  functions
