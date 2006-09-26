@@ -82,6 +82,7 @@ CUIGameDM::CUIGameDM()
 
 	m_voteStatusWnd					= xr_new<UIVoteStatusWnd>();
 	m_voteStatusWnd->InitFromXML	(uiXml);
+	m_voteStatusWnd->Show			(false);
 }
 //--------------------------------------------------------------------
 void CUIGameDM::SetClGame (game_cl_GameState* g)

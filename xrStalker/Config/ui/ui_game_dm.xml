@@ -1,18 +1,18 @@
 <?xml version='1.0' encoding="UTF-8" ?>
 <w>
-	<vote_wnd x="10" y="200" width="250" height="80" stretch="1">
+	<vote_wnd x="10" y="200" width="250" height="120" stretch="1">
 		<texture>ui_frame_01</texture>
 	
 		<static_str_message x="10" y="5" width="300" height="20">
-			<text font="medium" r="255" g="255" b="255" a="130" complex_mode="0">test1</text>
+			<text font="medium" r="255" g="255" b="255" a="230" complex_mode="0">test1</text>
 		</static_str_message>
 		
 		<static_time_message x="10" y="30" width="200" height="20">
-			<text font="medium" r="255" g="255" b="255" a="130" complex_mode="0">test3</text>
+			<text font="medium" r="255" g="255" b="255" a="230" complex_mode="0">test3</text>
 		</static_time_message>
 
-		<static_hint x="10" y="55" width="200" height="20">
-			<text font="medium" r="255" g="255" b="255" a="130" complex_mode="0">mp_vote_hint</text>
+		<static_hint x="10" y="60" width="200" height="20">
+			<text font="medium" r="255" g="255" b="255" a="130">mp_vote_hint</text>
 		</static_hint>
 	</vote_wnd>
 	
