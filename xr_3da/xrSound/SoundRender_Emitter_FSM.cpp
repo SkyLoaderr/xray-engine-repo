@@ -117,7 +117,7 @@ void CSoundRender_Emitter::update	(float dt)
 		if (iPaused){
 			if (target){
 				SoundRender->i_stop(this);
-				state			= stSimulating;
+				state			= stSimulatingLooped;
 			}
 			dwTimeStarted		+= dwDeltaTime;
 			dwTimeToPropagade	+= dwDeltaTime;
