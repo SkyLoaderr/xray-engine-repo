@@ -228,4 +228,8 @@
 	<string id="server name">
 		<text>SERVER NAME</text>
 	</string>
+	<string id="mp_vote_hint">
+		<text>Yes-[$$ACTION_VOTE_YES$$] No-[$$ACTION_VOTE_NO$$] View-[$$ACTION_VOTE$$]</text>
+	</string>
+	
 </string_table>
