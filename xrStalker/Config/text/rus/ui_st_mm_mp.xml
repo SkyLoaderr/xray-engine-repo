@@ -229,4 +229,7 @@
     <string id="mm_mp_friendlynames">
 		<text>Имена друзей</text>
     </string>    
+	<string id="mp_vote_hint">
+		<text>Голосовать ЗА-[$$ACTION_VOTE_YES$$]\nГолосовать ПРОТИВ-[$$ACTION_VOTE_NO$$]\nРезультаты-[$$ACTION_VOTE$$]</text>
+	</string>
 </string_table>
