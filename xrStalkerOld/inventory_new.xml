@@ -106,8 +106,8 @@
 		</progress>
     </progress_bar_radiation>
     
-    <progress_bar_rank x="20" y="20" width="10" height="174" horz="0" min="0" max="100" pos="0">
-		<progress x="0" y="0" width="10" height="174"  stretch="1">
+    <progress_bar_rank x="20" y="22" width="10" height="124" horz="0" min="0" max="100" pos="0">
+		<progress>
 			<texture>ui_scale_green</texture>
 		</progress>
     </progress_bar_rank>
