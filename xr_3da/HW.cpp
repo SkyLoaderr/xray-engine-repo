@@ -200,6 +200,12 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	R_CHK	(pD3D->GetAdapterIdentifier(DevAdapter,0,&adapterID));
 	Msg		("* GPU [vendor:%X]-[device:%X]: %s",adapterID.VendorId,adapterID.DeviceId,adapterID.Description);
 
+	u16	drv_Product		= HIWORD(adapterID.DriverVersion.HighPart);
+	u16	drv_Version		= LOWORD(adapterID.DriverVersion.HighPart);
+	u16	drv_SubVersion	= HIWORD(adapterID.DriverVersion.LowPart);
+	u16	drv_Build		= LOWORD(adapterID.DriverVersion.LowPart);
+	Msg		("* GPU driver: %d.%d.%d.%d",u32(drv_Product),u32(drv_Version),u32(drv_SubVersion), u32(drv_Build));
+
 	Caps.id_vendor	= adapterID.VendorId;
 	Caps.id_device	= adapterID.DeviceId;
 
@@ -245,8 +251,16 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 		}
 		fDepth  = selectDepthStencil(fTarget);
 	}
-	R_ASSERT				(fTarget != D3DFMT_UNKNOWN);
-	R_ASSERT				(fDepth  != D3DFMT_UNKNOWN);
+
+	// 
+	//R_ASSERT				(fTarget != D3DFMT_UNKNOWN);
+	//R_ASSERT				(fDepth  != D3DFMT_UNKNOWN);
+	if ((D3DFMT_UNKNOWN==fTarget) || (D3DFMT_UNKNOWN==fTarget))	{
+		Msg					("Failed to initialize graphics hardware.\nPlease try to restart the game.");
+		FlushLog			();
+		MessageBox			(NULL,"Failed to initialize graphics hardware.\nPlease try to restart the game.","Error!",MB_OK|MB_ICONERROR);
+		TerminateProcess	(GetCurrentProcess(),0);
+	}
 
     // Set up the presentation parameters
 	D3DPRESENT_PARAMETERS&	P	= DevPP;
