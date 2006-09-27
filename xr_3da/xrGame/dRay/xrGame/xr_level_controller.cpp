@@ -45,7 +45,7 @@ _keybind  keybind[]		= {
 	{ "wpn_6",			kWPN_6			},
 	{ "artefact",		kARTEFACT		},
 	{ "wpn_next",		kWPN_NEXT		},
-	{ "wpn_prev",		kWPN_PREV		},
+//.	{ "wpn_prev",		kWPN_PREV		},
 	{ "wpn_fire",		kWPN_FIRE		},
 	{ "wpn_zoom",		kWPN_ZOOM		},
 	{ "wpn_reload",		kWPN_RELOAD		},
@@ -105,10 +105,10 @@ _keybind  keybind[]		= {
 	{ "speech_menu_8",	kSPEECH_MENU_8	},
 	{ "speech_menu_9",	kSPEECH_MENU_9	},
 
-	{ "insult_msg",		kINSULT_MSG		},
+//.	{ "insult_msg",		kINSULT_MSG		},
+//.	{ "insult_jesture",	kINSULT_JESTURE	},
 	{ "use_bandage",	kUSE_BANDAGE	},
 	{ "use_medkit",		kUSE_MEDKIT		},
-	{ "insult_jesture",	kINSULT_JESTURE	},
 
 	{ NULL, 			0				}
 };

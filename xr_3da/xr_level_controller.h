@@ -35,7 +35,7 @@ enum	EKeyBinding
 	kWPN_6			,
 	kARTEFACT		,
 	kWPN_NEXT		,
-	kWPN_PREV		,
+//.	kWPN_PREV		,
 	kWPN_FIRE		,
 	kWPN_RELOAD		,
 	kWPN_ZOOM		,
@@ -97,8 +97,8 @@ enum	EKeyBinding
 	kSPEECH_MENU_8	,
 	kSPEECH_MENU_9	,
 
-	kINSULT_MSG		,
-	kINSULT_JESTURE	,
+//.	kINSULT_MSG		,
+//.	kINSULT_JESTURE	,
 
 	kUSE_BANDAGE	,
 	kUSE_MEDKIT		,

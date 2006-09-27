@@ -82,10 +82,6 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 public:
-	virtual void			make_Interpolation	();
-	virtual void			PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
-	virtual void			PH_I_CrPr			(); // actions & operations after correction before prediction steps
-	virtual void			PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
 	virtual bool			can_kill			() const;
 	virtual CInventoryItem	*can_kill			(CInventory *inventory) const;
 	virtual const CInventoryItem *can_kill		(const xr_vector<const CGameObject*> &items) const;
@@ -165,8 +161,6 @@ public:
 	// работа с аддонами к оружию
 	//////////////////////////////////////////
 
-	virtual bool Attach(PIItem pIItem);
-	virtual bool Detach(const char* item_section_name);
 
 			bool IsGrenadeLauncherAttached	() const;
 			bool IsScopeAttached			() const;
@@ -454,7 +448,7 @@ public:
 	shared_str				m_ammoName;
 	BOOL					m_bHasTracers;
 	u8						m_u8TracerColorID;
-
+	u32						m_set_next_ammoType_on_reload;
 	// Multitype ammo support
 	xr_vector<CCartridge>	m_magazine;
 	CCartridge				m_DefaultCartridge;

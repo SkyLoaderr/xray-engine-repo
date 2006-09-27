@@ -78,6 +78,7 @@ CWeapon::CWeapon(LPCSTR name)
 	m_ef_main_weapon_type	= u32(-1);
 	m_ef_weapon_type		= u32(-1);
 	m_UIScope				= NULL;
+	m_set_next_ammoType_on_reload = u32(-1);
 }
 
 CWeapon::~CWeapon		()
@@ -670,6 +671,7 @@ void CWeapon::OnHiddenItem ()
 	if (m_pHUD)	m_pHUD->Hide ();
 	SetState					(eHidden);
 	SetNextState				(eHidden);
+	m_set_next_ammoType_on_reload	= u32(-1);
 }
 
 
@@ -679,6 +681,7 @@ void CWeapon::OnH_B_Chield		()
 	inherited::OnH_B_Chield		();
 
 	OnZoomOut					();
+	m_set_next_ammoType_on_reload	= u32(-1);
 }
 
 
@@ -755,7 +758,6 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 				//если оружие чем-то занято, то ничего не делать
 				if(IsPending()) return false;
 
-//				if (!OnClient())
 				{				
 					if(flags&CMD_START) {
 						FireStart();
@@ -767,9 +769,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 			return true;
 		case kWPN_NEXT: 
 			{
-				//если оружие чем-то занято, то ничего не делать
 				if(IsPending()) return false;
-//				if (GameID() == GAME_DEATHMATCH || GameID() == GAME_TEAMDEATHMATCH) return false;
 					
 				if(flags&CMD_START) 
 				{
@@ -784,12 +784,14 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 				
 					if(l_newType != m_ammoType) 
 					{
-						m_ammoType = l_newType;
+						m_set_next_ammoType_on_reload = l_newType;
+/*						m_ammoType = l_newType;
 						m_pAmmo = NULL;
 						if (unlimited_ammo())
 						{
 							m_DefaultCartridge.Load(*m_ammoTypes[m_ammoType], u8(m_ammoType));
 						};							
+*/
 						Reload();
 					}
 				}
@@ -961,14 +963,6 @@ void CWeapon::Reload()
 	OnZoomOut();
 }
 
-bool CWeapon::Attach(PIItem pIItem) 
-{
-	return inherited::Attach(pIItem);
-}
-bool CWeapon::Detach(const char* item_section_name)
-{
-	return inherited::Detach(item_section_name);
-}
 
 bool CWeapon::IsGrenadeLauncherAttached() const
 {
@@ -1005,10 +999,10 @@ bool CWeapon::SilencerAttachable()
 	return (CSE_ALifeItemWeapon::eAddonAttachable == m_eSilencerStatus);
 }
 
-shared_str wpn_scope				= "wpn_scope";
-shared_str wpn_silencer				= "wpn_silencer";
-shared_str wpn_grenade_launcher		= "wpn_grenade_launcher";
-shared_str wpn_launcher				= "wpn_launcher";
+LPCSTR wpn_scope				= "wpn_scope";
+LPCSTR wpn_silencer				= "wpn_silencer";
+LPCSTR wpn_grenade_launcher		= "wpn_grenade_launcher";
+LPCSTR wpn_launcher				= "wpn_launcher";
 
 
 
@@ -1169,25 +1163,6 @@ void CWeapon::OnMagazineEmpty	()
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 }
 
-void CWeapon::make_Interpolation ()
-{
-	inherited::make_Interpolation();
-}
-
-void CWeapon::PH_B_CrPr			()
-{
-	inherited::PH_B_CrPr		();
-}
-
-void CWeapon::PH_I_CrPr			()
-{
-	inherited::PH_I_CrPr		();
-}
-
-void CWeapon::PH_A_CrPr			()
-{
-	inherited::PH_A_CrPr		();
-}
 
 void CWeapon::reinit			()
 {
