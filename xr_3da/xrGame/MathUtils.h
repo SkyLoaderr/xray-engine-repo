@@ -457,7 +457,7 @@ IC bool valid_pos(const Fvector &P,const Fbox &B){
 }
 
 #ifdef DEBUG
-const float				DET_CHECK_EPS =0.35f					;//scale -25%  !? ;)
+const float				DET_CHECK_EPS =0.35f					;//scale -35%  !? ;)
 #define	VERIFY_RMATRIX(M)	{\
 	float d=DET(M);\
 	if( !fsimilar(d,1.f,DET_CHECK_EPS) ){\
