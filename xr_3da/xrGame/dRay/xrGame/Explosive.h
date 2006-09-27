@@ -13,6 +13,7 @@
 #include "script_export_space.h"
 #include "DamageSource.h"
 #include "wallmark_manager.h"
+#include "ParticlesObject.h"
 class IRender_Light;
 DEFINE_VECTOR(CPhysicsShellHolder*,BLASTED_OBJECTS_V,BLASTED_OBJECTS_I);
 class CExplosive : 
@@ -60,6 +61,7 @@ public:
 	virtual	void				GetExplosionBox			(Fvector &size);
 	virtual void				ActivateExplosionBox	(const Fvector &size,Fvector &in_out_pos);
 			void				SetExplosionSize		(const Fvector &new_size);
+	virtual bool				Useful					();
 protected:
 			bool				IsSoundPlaying			(){return !!sndExplode._feedback();}
 			bool				IsExploded				(){return !!m_explosion_flags.test(flExploded);}
@@ -108,6 +110,8 @@ protected:
 	float						m_fExplodeDuration;
 	//общее время взрыва
 	float						m_fExplodeDurationMax;
+	//Время, через которое надо сделать взрывчатку невиимой, если она не становится невидимой во время взрыва
+	float						m_fExplodeHideDurationMax;
 	//флаг состояния взрыва
 	enum{
 		flExploding				=1<<0	,
@@ -116,6 +120,11 @@ protected:
 		flExploded				=1<<3	
 	};
 	Flags8						m_explosion_flags;
+	///////////////////////////////////////////////
+	//Должен ли объект быть скрыт после взрыва: true - для всех кроме дымовой гранаты
+	BOOL						m_bHideInExplosion;
+	bool						m_bAlreadyHidden;
+	virtual void				HideExplosive	();
 	//bool						m_bExploding;
 	//bool						m_bExplodeEventSent;
 
@@ -141,6 +150,10 @@ protected:
 	
 	virtual	void				StartLight	();
 	virtual	void				StopLight	();
+
+	BOOL						m_bDynamicParticles;
+	CParticlesObject*			m_pExpParticle;
+	virtual void				UpdateExplosionParticles ();	
 
 	// эффектор
 	struct {

@@ -154,9 +154,9 @@ void CGrenade::Destroy()
 
 
 
-bool CGrenade::Useful() const
+bool CGrenade::Useful()
 {
-	return m_dwDestroyTime == 0xffffffff;
+	return (m_dwDestroyTime == 0xffffffff && CExplosive::Useful());
 }
 
 void CGrenade::OnEvent(NET_Packet& P, u16 type) 
@@ -314,7 +314,7 @@ void			CGrenade::Deactivate			()
 					
 				}				
 				Throw					();
-				m_dwDestroyTime			= 0xffffffff;
+//				m_dwDestroyTime			= 0xffffffff;
 			};
 		};
 	};

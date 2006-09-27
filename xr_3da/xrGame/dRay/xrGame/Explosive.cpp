@@ -60,6 +60,11 @@ CExplosive::CExplosive(void)
 //	m_bExplodeEventSent		= false;
 	m_explosion_flags.assign(0);
 	m_vExplodeSize.set		(0.001f,0.001f,0.001f);
+
+	m_bHideInExplosion	= TRUE;
+	m_fExplodeHideDurationMax = 0;
+	m_bDynamicParticles		= FALSE;
+	m_pExpParticle			= NULL;
 }
 
 void CExplosive::LightCreate()
@@ -127,7 +132,21 @@ void CExplosive::Load(CInifile *ini,LPCSTR section)
 	effector.amplitude		= ini->r_float("explode_effector","amplitude");
 	effector.period_number	= ini->r_float("explode_effector","period_number");
 	effector.file_name		= ini->r_string("explode_effector","cam_file_name");
-*/
+*/	
+	m_bHideInExplosion = TRUE;
+	if (ini->line_exist(section, "hide_in_explosion"))
+	{
+		m_bHideInExplosion = ini->r_bool(section, "hide_in_explosion");
+		m_fExplodeHideDurationMax = 0;
+		if (ini->line_exist(section, "explode_hide_duration"))
+		{
+			m_fExplodeHideDurationMax = ini->r_float(section, "explode_hide_duration");
+		}
+	}
+
+	m_bDynamicParticles	 = FALSE;
+	if (ini->line_exist(section, "dynamic_explosion_particles"))
+		m_bDynamicParticles = ini->r_bool(section, "dynamic_explosion_particles");
 }
 
 void CExplosive::net_Destroy	()
@@ -320,8 +339,6 @@ void CExplosive::Explode()
 	Sound->play_at_pos(sndExplode, 0, pos, false);
 	
 	//показываем эффекты
-	CParticlesObject* pStaticPG; 
-	pStaticPG = CParticlesObject::Create(*m_sExplodeParticles,TRUE); 
 	
 	m_wallmark_manager.PlaceWallmarks(pos,cast_game_object());
 	Fvector vel;
@@ -333,6 +350,9 @@ void CExplosive::Explode()
 	Fvector::generate_orthonormal_basis(explode_matrix.j, explode_matrix.i, explode_matrix.k);
 	explode_matrix.c.set(pos);
 
+	CParticlesObject* pStaticPG; 
+	pStaticPG = CParticlesObject::Create(*m_sExplodeParticles,!m_bDynamicParticles); 
+	if (m_bDynamicParticles) m_pExpParticle = pStaticPG;
 	pStaticPG->UpdateParent(explode_matrix,vel);
 	pStaticPG->Play();
 
@@ -477,9 +497,17 @@ void CExplosive::UpdateCL()
 
 	} 
 	else
-	{
+	{		
 		m_fExplodeDuration -= Device.fTimeDelta;
+		if (!m_bHideInExplosion && !m_bAlreadyHidden)
+		{
+			if (m_fExplodeHideDurationMax <= (m_fExplodeDurationMax - m_fExplodeDuration))
+			{
+				HideExplosive();
+			}
+		}
 		UpdateExplosionPos();
+		UpdateExplosionParticles();
 		ExplodeWaveProcess();
 		//обновить подсветку взрыва
 		if(m_pLight && m_pLight->get_active() && m_fLightTime>0)
@@ -492,20 +520,35 @@ void CExplosive::UpdateCL()
 			} 
 			else
 				StopLight();
-		}
+		}		
 	}
 }
 
 void CExplosive::OnAfterExplosion()
 {
+	if(m_pExpParticle){
+		m_pExpParticle->Stop();
+		CParticlesObject::Destroy(m_pExpParticle);
+		m_pExpParticle = NULL;
+	}
 	//ликвидировать сам объект 
 	if (cast_game_object()->Local()) cast_game_object()->DestroyObject();
+	
 //	NET_Packet			P;
 //	cast_game_object()->u_EventGen			(P,GE_DESTROY,cast_game_object()->ID());
 //	//		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
 //	if (cast_game_object()->Local()) cast_game_object()->u_EventSend			(P);
 }
 void CExplosive::OnBeforeExplosion()
+{
+	m_bAlreadyHidden = false;
+	if (m_bHideInExplosion) 
+	{
+		HideExplosive();
+		//	Msg("---------CExplosive OnBeforeExplosion setVisible(false) [%d] frame[%d]",cast_game_object()->ID(), Device.dwFrame);
+	}
+}
+void CExplosive::HideExplosive()
 {
 	CGameObject	*GO=cast_game_object();
 	GO->setVisible(FALSE);
@@ -516,9 +559,8 @@ void CExplosive::OnBeforeExplosion()
 		phshell->Disable();
 		phshell->DisableCollision();
 	}
-    //	Msg("---------CExplosive OnBeforeExplosion setVisible(false) [%d] frame[%d]",cast_game_object()->ID(), Device.dwFrame);
-
-}
+	m_bAlreadyHidden = true;
+};
 
 void CExplosive::OnEvent(NET_Packet& P, u16 type) 
 {
@@ -752,4 +794,22 @@ u16	CExplosive::Initiator()
 	u16 initiator=CurrentParentID();
 	if(initiator==u16(-1))initiator=cast_game_object()->ID();
 	return initiator;
+}
+
+void CExplosive::UpdateExplosionParticles ()
+{
+	if (!m_bDynamicParticles || m_pExpParticle == NULL || !m_pExpParticle->IsPlaying()) return;
+	CGameObject	*GO=cast_game_object();
+	if (!GO) return;
+
+	Fmatrix ParticleMatrix = m_pExpParticle->XFORM();	
+	Fvector Vel;
+	Vel.sub(GO->Position(), ParticleMatrix.c);
+	ParticleMatrix.c.set(GO->Position());
+	m_pExpParticle->UpdateParent(ParticleMatrix, Vel);
+}
+
+bool CExplosive::Useful()
+{
+	return m_explosion_flags.flags == 0;
 }

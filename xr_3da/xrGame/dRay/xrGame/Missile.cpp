@@ -199,7 +199,7 @@ void CMissile::UpdateCL()
 void CMissile::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	if(!H_Parent() && getVisible() && m_pPhysicsShell && OnServer()) 
+	if(!H_Parent() && getVisible() && m_pPhysicsShell) 
 	{
 		if(m_dwDestroyTime <= Level().timeServer()) 
 		{
