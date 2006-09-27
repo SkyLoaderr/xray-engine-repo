@@ -684,7 +684,7 @@ protected:
 		Fvector							m_AutoPickUp_AABB_Offset;
 
 		void							Check_for_AutoPickUp			();
-		void							SelectBestWeapon				();
+		void							SelectBestWeapon				(CObject* O);
 public:
 		void							SetWeaponHideState				(u32 State, bool bSet);
 

@@ -19,6 +19,7 @@
 #include "CameraFirstEye.h"
 #include "holder_custom.h"
 #include "ui/uiinventoryWnd.h"
+#include "game_base_space.h"
 #ifdef DEBUG
 #include "PHDebug.h"
 #endif
@@ -79,10 +80,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 					}
 				}
 				
-//				CWeapon* pWeapon = smart_cast<CWeapon*>(O);
-				CWeapon* pWeapon = smart_cast<CWeapon*>(O);
-				CGrenade* pGrenade = smart_cast<CGrenade*>(O);
-				if (pWeapon || pGrenade) SelectBestWeapon();
+				SelectBestWeapon(O);
 #ifdef DEBUG
 //				Msg("OnEvent - %s[%d] - TAKE - %s[%d]0x%X", *cName(), ID(), *O->cName(), id, smart_cast<CInventoryItem*>(O));
 #endif
@@ -121,10 +119,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				feel_touch_deny(O,2000);
 			}
 
-			CWeapon* pWeapon = smart_cast<CWeapon*>(O);
-			CGrenade* pGrenade = smart_cast<CGrenade*>(O);
-			CArtefact* pArtefact = smart_cast<CArtefact*>(O);
-			if (pWeapon || pGrenade || pArtefact) SelectBestWeapon();
+			SelectBestWeapon(O);
 
 			if (Level().CurrentViewEntity() == this && HUD().GetUI() && HUD().GetUI()->UIGame())
 				HUD().GetUI()->UIGame()->ReInitShownUI();

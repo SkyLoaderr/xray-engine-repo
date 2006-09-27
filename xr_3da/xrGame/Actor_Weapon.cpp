@@ -13,6 +13,10 @@
 #include "CharacterPhysicsSupport.h"
 #include "EffectorShot.h"
 #include "WeaponMagazined.h"
+#include "Grenade.h"
+#include "game_base_space.h"
+#include "Artifact.h"
+
 static const float VEL_MAX		= 10.f;
 static const float VEL_A_MAX	= 10.f;
 
@@ -104,10 +108,32 @@ static	u16 BestWeaponSlots [] = {
 	GRENADE_SLOT	,		// 3
 	KNIFE_SLOT		,		// 0
 };
-void CActor::SelectBestWeapon	()
+void CActor::SelectBestWeapon	(CObject* O)
 {
+	if (!O) return;
 	if ( IsGameTypeSingle() ) return;
 	if (OnClient()) return;
+	//-------------------------------------------------
+	CWeapon* pWeapon = smart_cast<CWeapon*>(O);
+	CGrenade* pGrenade = smart_cast<CGrenade*>(O);
+	CArtefact* pArtefact = smart_cast<CArtefact*>(O);
+	CInventoryItem*	pIItem	= smart_cast<CInventoryItem*> (O);
+	bool NeedToSelectBestWeapon = false;
+	if ((pWeapon || pGrenade || pArtefact) && pIItem)
+	{
+		NeedToSelectBestWeapon = true;
+		if (GameID() == GAME_ARTEFACTHUNT)
+		{
+			if (pIItem->GetSlot() == PISTOL_SLOT || pIItem->GetSlot() == RIFLE_SLOT)
+			{
+				CInventoryItem* pIItemInSlot = inventory().ItemFromSlot(pIItem->GetSlot());
+				if (pIItemInSlot != NULL && pIItemInSlot != pIItem)				
+					NeedToSelectBestWeapon = false;
+			}
+		}
+	}
+	if (!NeedToSelectBestWeapon) return;
+	//-------------------------------------------------
 	for (int i=0; i<4; i++)
 	{
 		if (inventory().m_slots[BestWeaponSlots[i]].m_pIItem)
