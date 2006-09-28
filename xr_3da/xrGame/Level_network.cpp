@@ -8,6 +8,8 @@
 #include "net_queue.h"
 #include "MainMenu.h"
 
+const int NET_ObjectsPerPacketInSave	= NET_PacketSizeLimit/1000;
+
 void CLevel::remove_objects	()
 {
 	BOOL						b_stored = psDeviceFlags.test(rsDisableObjectsAsCrows);
@@ -122,7 +124,7 @@ void CLevel::ClientSave	()
 	for (;;) {
 		P.w_begin	(M_SAVE_PACKET);
 		
-		start		= Objects_net_Save(&P, start, NET_ObjectsPerPacket);
+		start		= Objects_net_Save(&P, start, NET_ObjectsPerPacketInSave);
 
 		if (P.B.count>2)
 			Send	(P, net_flags(FALSE));
