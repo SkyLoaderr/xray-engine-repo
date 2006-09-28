@@ -289,7 +289,7 @@ void CGrenade::net_Relcase(CObject* O )
 	inherited::net_Relcase(O);
 }
 
-void			CGrenade::Deactivate			()
+void CGrenade::Deactivate			()
 {
 	//Drop grenade if primed
 	m_pHUD->StopCurrentAnimWithoutCallback();
@@ -320,4 +320,14 @@ void			CGrenade::Deactivate			()
 	};
 
 	inherited::Deactivate();
+}
+
+void CGrenade::GetBriefInfo(xr_string& str_name, xr_string& icon_sect_name, xr_string& str_count)
+{
+	str_name				= NameShort();
+	u32 ThisGrenadeCount	= m_pInventory->dwfGetSameItemCount(*cNameSect(), true);
+	string16				stmp;
+	sprintf					(stmp, "%d", ThisGrenadeCount);
+	str_count				= stmp;
+	icon_sect_name			= *cNameSect();
 }

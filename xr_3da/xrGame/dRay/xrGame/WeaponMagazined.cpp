@@ -1128,3 +1128,33 @@ void CWeaponMagazined::net_Import	(NET_Packet& P)
 	m_iCurFireMode = P.r_u8();
 	SetQueueSize(GetCurrentFireMode());
 }
+#include "string_table.h"
+void CWeaponMagazined::GetBriefInfo(xr_string& str_name, xr_string& icon_sect_name, xr_string& str_count)
+{
+	int	AE					= GetAmmoElapsed();
+	int	AC					= GetAmmoCurrent();
+	
+	if(AE==0 || 0==m_magazine.size() )
+		icon_sect_name	= *m_ammoTypes[m_ammoType];
+	else
+		icon_sect_name	= *m_ammoTypes[m_magazine.back().m_LocalAmmoType];
+
+
+	string256		sItemName;
+	strcpy			(sItemName, *CStringTable().translate(pSettings->r_string(icon_sect_name.c_str(), "inv_name_short")));
+
+	if ( HasFireModes() )
+		strcat(sItemName, GetCurrentFireModeStr());
+
+	str_name		= sItemName;
+
+
+	{
+		if (!unlimited_ammo())
+			sprintf			(sItemName, "%d/%d",AE,AC - AE);
+		else
+			sprintf			(sItemName, "%d/--",AE);
+
+		str_count				= sItemName;
+	}
+}

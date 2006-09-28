@@ -358,9 +358,9 @@ void CUIMainIngameWnd::SetMPChatLog(CUIWindow* pChat, CUIWindow* pLog){
 	m_pMPLogWnd  = pLog;
 }
 
-void CUIMainIngameWnd::SetAmmoIcon (LPCSTR sect_name)
+void CUIMainIngameWnd::SetAmmoIcon (const shared_str& sect_name)
 {
-	if (!sect_name)
+	if ( !sect_name.size() )
 	{
 		UIWeaponIcon.Show			(false);
 		return;
@@ -368,16 +368,16 @@ void CUIMainIngameWnd::SetAmmoIcon (LPCSTR sect_name)
 
 	UIWeaponIcon.Show			(true);
 	//properties used by inventory menu
-	int iGridWidth			= pSettings->r_u32(sect_name, "inv_grid_width");
-	int iGridHeight			= pSettings->r_u32(sect_name, "inv_grid_height");
+	float iGridWidth			= pSettings->r_float(sect_name, "inv_grid_width");
+	float iGridHeight			= pSettings->r_float(sect_name, "inv_grid_height");
 
-	int iXPos				= pSettings->r_u32(sect_name, "inv_grid_x");
-	int iYPos				= pSettings->r_u32(sect_name, "inv_grid_y");
+	float iXPos				= pSettings->r_float(sect_name, "inv_grid_x");
+	float iYPos				= pSettings->r_float(sect_name, "inv_grid_y");
 
-	UIWeaponIcon.GetUIStaticItem().SetOriginalRect(	float(iXPos * INV_GRID_WIDTH),
-		float(iYPos * INV_GRID_HEIGHT),
-		float(iGridWidth * INV_GRID_WIDTH),
-		float(iGridHeight * INV_GRID_HEIGHT));
+	UIWeaponIcon.GetUIStaticItem().SetOriginalRect(	(iXPos		 * INV_GRID_WIDTH),
+													(iYPos		 * INV_GRID_HEIGHT),
+													(iGridWidth	 * INV_GRID_WIDTH),
+													(iGridHeight * INV_GRID_HEIGHT));
 	UIWeaponIcon.SetStretchTexture(true);
 
 	// now perform only width scale for ammo, which (W)size >2
@@ -396,7 +396,6 @@ void CUIMainIngameWnd::Update()
 		m_pMPLogWnd->Update();
 
 
-	static string256 text_str;
 
 	m_pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if (!m_pActor) 
@@ -408,9 +407,12 @@ void CUIMainIngameWnd::Update()
 		return;
 	}
 
-	if (GameID() == GAME_SINGLE && !(Device.dwFrame%30) )
+	if( !(Device.dwFrame%30) )
 	{
-		if(m_pActor->GetPDA())
+	if (GameID() == GAME_SINGLE )
+	{
+		string256				text_str;
+//.		if(m_pActor->GetPDA())
 		{
 			u32 cn = m_pActor->GetPDA()->ActiveContactsNum();
 			if(cn>0){
@@ -419,10 +421,11 @@ void CUIMainIngameWnd::Update()
 			}else
 				UIPdaOnline.SetText("");
 		}
-		else
+/*		else
 		{
 			UIPdaOnline.SetText("");
 		}
+*/
 	};
 
 	// ewiInvincible:
@@ -445,150 +448,19 @@ void CUIMainIngameWnd::Update()
 	PIItem	pItem = m_pActor->inventory().ItemFromSlot(OUTFIT_SLOT);
 	if (pItem)
 	{
-		UIArmorBar.Show(true);
-		UIStaticArmor.Show(true);
-		UIArmorBar.SetProgressPos(pItem->GetCondition()*100);
+		UIArmorBar.Show					(true);
+		UIStaticArmor.Show				(true);
+		UIArmorBar.SetProgressPos		(pItem->GetCondition()*100);
 	}
 	else
 	{
-		UIArmorBar.Show(false);
-		UIStaticArmor.Show(false);
+		UIArmorBar.Show					(false);
+		UIStaticArmor.Show				(false);
 	}
 
-	if(m_pActor->inventory().GetActiveSlot() != NO_ACTIVE_SLOT) 
-	{
-		PIItem item							=  m_pActor->inventory().ItemFromSlot(m_pActor->inventory().GetActiveSlot());
-		CWeapon* pWeapon					= smart_cast<CWeapon*>(item); 
-		CMissile* pMissile					= smart_cast<CMissile*>(item); 
-		CWeaponMagazined* pWeaponMagazined	= smart_cast<CWeaponMagazined*>(pWeapon);
-		
-		bool active_item_changed			= false;
-		// Remember last used ammo types, and if this type doesn't changed 
-		// then no need to update info
-		static u32			prevAmmoID		= static_cast<u32>(-1);
-		static u32			prevState		= static_cast<u32>(-1);
-		static int			prevFireMode	= static_cast<int>(-1);
+	UpdateActiveItemInfo				();
 
-		if(	((item && m_pItem != item) || 
-						 (pWeapon && (prevState != pWeapon->GetState() || prevAmmoID != pWeapon->m_ammoType) )))
-		{
-			m_pItem							= item;
-			if (pWeapon)
-				prevState						= pWeapon->GetState();
-			active_item_changed				= true;
-		};		
 
-		if(pMissile)
-		{
-			UIWeaponIcon.Show				(false);
-			UIWeaponSignAmmo.Show			(false);
-			UIWeaponBack.SetText			(m_pItem->NameShort());
-			
-			CGrenade* pGrenade = smart_cast<CGrenade*>(item); 
-			if (pGrenade)
-			{
-				u32 ThisGrenadeCount = m_pActor->inventory().dwfGetSameItemCount(*pMissile->cNameSect(), true);
-				sprintf			(text_str, "%d",ThisGrenadeCount);
-
-				UIWeaponSignAmmo.SetText(text_str);
-				UIWeaponSignAmmo.Show(true);
-
-				SetAmmoIcon(*pMissile->cNameSect());
-
-				m_pGrenade = pMissile;
-			}
-			else
-			{
-				m_pGrenade = NULL;
-			}
-		}
-		else
-		{
-			m_pGrenade = NULL;
-		}
-
-		if(pWeapon)
-		{
-			if(active_item_changed || !m_pWeapon || prevAmmoID != m_pWeapon->m_ammoType || 
-				(pWeaponMagazined && pWeaponMagazined->HasFireModes() && prevFireMode != pWeaponMagazined->GetCurrentFireMode()))
-			{
-				m_pWeapon					= pWeapon;//		Msg("- New m_pWeapon - %s[%d][0x%8x]", *pWeapon->cNameSect(), pWeapon->ID(), pWeapon);
-				prevState					= pWeapon->GetState();
-
-				if(m_pWeapon->ShowAmmo())
-				{
-					UIWeaponIcon.Show		(NULL!=pWeaponMagazined);
-
-					UIWeaponSignAmmo.Show	(true);
-
-					prevAmmoID				= m_pWeapon->m_ammoType;
-					shared_str sect_name	= m_pWeapon->m_ammoTypes[m_pWeapon->m_ammoType];
-
-					SetAmmoIcon(*sect_name);
-
-					string256 sItemName;
-					strcpy(sItemName, *CStringTable().translate(pSettings->r_string(sect_name, "inv_name_short")));
-
-					if (pWeaponMagazined && pWeaponMagazined->HasFireModes())
-					{
-						prevFireMode = pWeaponMagazined->GetCurrentFireMode();
-						strcat(sItemName, pWeaponMagazined->GetCurrentFireModeStr());
-					};
-
-					UIWeaponBack.SetText	(sItemName);
-				}
-				else
-				{
-					UIWeaponIcon.Show			(false);
-					UIWeaponSignAmmo.Show		(false);
-				}
-			}
-
-			int	AE					= m_pWeapon->GetAmmoElapsed();
-			int	AC					= m_pWeapon->GetAmmoCurrent();
-
-			if((AE>=0)&&(AC>=0))
-			{
-				if (!m_pWeapon->unlimited_ammo())
-					sprintf			(text_str, "%d/%d",AE,AC - AE);
-				else
-					sprintf			(text_str, "%d/--",AE);
-
-				UIWeaponSignAmmo.SetText(text_str);
-			}
-		}
-		else
-		{
-			m_pWeapon					= NULL; //Msg("* m_pWeapon = NULL");
-			UIWeaponBack.SetText		("");
-		}
-	} 
-	else
-	{
-		m_pWeapon					= NULL; //Msg("* m_pWeapon = NULL");
-		m_pGrenade					= NULL;
-		UIWeaponBack.SetText		("");
-	}
-
-	//сбросить индикаторы
-	if(!m_pWeapon && !m_pGrenade)
-	{
-		UIWeaponSignAmmo.SetText	("");
-		UIWeaponIcon.Show			(false);
-	}
-
-    // radar
-	UIZoneMap->UpdateRadar			(Device.vCameraPosition);
-	// viewport
-	float h,p;
-	Device.vCameraDirection.getHP	(h,p);
-	UIZoneMap->SetHeading			(-h);
-		
-	// health&armor
-	UIHealthBar.SetProgressPos		(m_pActor->GetfHealth()*100.0f);
-	UIMotionIcon.SetPower			(m_pActor->conditions().GetPower()*100.0f);
-	
-	
 	EWarningIcons i					= ewiWeaponJammed;
 		
 	while (i < ewiInvincible)
@@ -640,6 +512,16 @@ void CUIMainIngameWnd::Update()
 
 		i = (EWarningIcons)(i + 1);
 	}
+	}
+
+	// health&armor
+	UIHealthBar.SetProgressPos		(m_pActor->GetfHealth()*100.0f);
+	UIMotionIcon.SetPower			(m_pActor->conditions().GetPower()*100.0f);
+
+	UIZoneMap->UpdateRadar			(Device.vCameraPosition);
+	float h,p;
+	Device.vCameraDirection.getHP	(h,p);
+	UIZoneMap->SetHeading			(-h);
 
 	UpdatePickUpItem				();
 	CUIWindow::Update				();
@@ -1275,17 +1157,38 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 	UIPickUpItemIcon.Show(true);
 };
 
+void CUIMainIngameWnd::UpdateActiveItemInfo()
+{
+	PIItem item		=  m_pActor->inventory().ActiveItem();
+	if(item) 
+	{
+		xr_string					str_name;
+		xr_string					icon_sect_name;
+		xr_string					str_count;
+		item->GetBriefInfo			(str_name, icon_sect_name, str_count);
 
+		UIWeaponSignAmmo.Show		(true						);
+		UIWeaponBack.SetText		(str_name.c_str			()	);
+		UIWeaponSignAmmo.SetText	(str_count.c_str		()	);
+		SetAmmoIcon					(icon_sect_name.c_str	()	);
+	}else
+	{
+		UIWeaponIcon.Show			(false);
+		UIWeaponSignAmmo.Show		(false);
+		UIWeaponBack.SetText		("");
+	}
+}
 
+/*
 #include "d3dx9core.h"
 #include "winuser.h"
 #pragma comment(lib,"d3dx9.lib")
 #pragma comment(lib,"d3d9.lib")
-//dxerr9.lib dxguid.lib d3dx9d.lib d3d9.lib 
 ID3DXFont*     g_pTestFont = NULL;
 ID3DXFont*     g_pTestFont2 = NULL;
 ID3DXSprite*        g_pTextSprite = NULL;   // Sprite for batching draw text calls
 ID3DXSprite*        g_pTextSprite2 = NULL;   // Sprite for batching draw text calls
+*/
 
 /*
 #include "UIGameTutorial.h"
@@ -1323,7 +1226,7 @@ void test_key	(int dik)
 	}*/
 
 
-
+/*
 
 	if(dik==DIK_K){
 		if(g_pTestFont){
@@ -1357,7 +1260,7 @@ void test_key	(int dik)
 	g_pTestFont2->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
 
 	}
-
+*/
 }
 
 void test_draw	()
@@ -1365,19 +1268,19 @@ void test_draw	()
 //	if(g_MissileForceShape)
 //		g_MissileForceShape->Draw();
 
-	
+/*	
 	if(g_pTestFont){
-/*
-	g_pTestFont->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
-	g_pTestFont2->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
 
-	IDirect3DTexture9	*T;
-	RECT				R;
-	POINT				P;
-	g_pTestFont2->PreloadGlyphs(0,255);
-	g_pTestFont2->GetGlyphData(50, &T, &R, &P);
-	R_CHK		(D3DXSaveTextureToFile	("x:\\test_font.dds",D3DXIFF_DDS,T,0));
-*/
+//	g_pTestFont->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
+//	g_pTestFont2->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
+
+//	IDirect3DTexture9	*T;
+//	RECT				R;
+//	POINT				P;
+//	g_pTestFont2->PreloadGlyphs(0,255);
+//	g_pTestFont2->GetGlyphData(50, &T, &R, &P);
+//	R_CHK		(D3DXSaveTextureToFile	("x:\\test_font.dds",D3DXIFF_DDS,T,0));
+
 		RECT rc;
         g_pTextSprite->Begin( D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE );
 		SetRect( &rc, 50, 150, 0, 0 );        
@@ -1440,7 +1343,7 @@ void test_draw	()
 		g_pTextSprite2->End();
 		}
 	}
-
+*/
 }
 #ifdef DEBUG
 void CUIMainIngameWnd::draw_adjust_mode()

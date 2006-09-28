@@ -144,6 +144,13 @@ void CWeaponBinoculars::load(IReader &input_packet)
 	load_data		(m_fRTZoomFactor,input_packet);
 }
 
+void CWeaponBinoculars::GetBriefInfo(xr_string& str_name, xr_string& icon_sect_name, xr_string& str_count)
+{
+	str_name		= NameShort();
+	str_count		= "";
+	icon_sect_name	= *cNameSect();
+}
+
 
 #include "script_space.h"
 

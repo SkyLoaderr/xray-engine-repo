@@ -137,8 +137,9 @@ protected:
 	void				InitFlashingIcons				(CUIXml* node);
 	void				DestroyFlashingIcons			();
 	void				UpdateFlashingIcons				();
+	void				UpdateActiveItemInfo			();
 
-	void				SetAmmoIcon						(LPCSTR sect_name);
+	void				SetAmmoIcon						(const shared_str& seсt_name);
 
 	// first - иконка, second - анимация
 	DEF_MAP				(FlashingIcons, EFlashingIcons, CUIStatic*);

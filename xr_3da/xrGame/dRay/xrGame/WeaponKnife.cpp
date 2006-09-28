@@ -246,6 +246,12 @@ void CWeaponKnife::StartIdleAnim()
 {
 	m_pHUD->animDisplay(mhud_idle[Random.randI(mhud_idle.size())], TRUE);
 }
+void CWeaponKnife::GetBriefInfo(xr_string& str_name, xr_string& icon_sect_name, xr_string& str_count)
+{
+	str_name		= NameShort();
+	str_count		= "";
+	icon_sect_name	= *cNameSect();
+}
 
 #include "script_space.h"
 

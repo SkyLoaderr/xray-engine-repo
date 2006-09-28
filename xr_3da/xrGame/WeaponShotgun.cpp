@@ -341,6 +341,12 @@ u8 CWeaponShotgun::AddCartridge		(u8 cnt)
 {
 	if(IsMisfire())	bMisfire = false;
 
+	if(m_set_next_ammoType_on_reload != u32(-1)){
+		m_ammoType						= m_set_next_ammoType_on_reload;
+		m_set_next_ammoType_on_reload	= u32(-1);
+
+	}
+
 	if( !HaveCartridgeInInventory(1) )
 		return 0;
 

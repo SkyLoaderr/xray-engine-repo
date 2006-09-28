@@ -55,6 +55,8 @@ public:
 //.	IC u32		 			State						()				{return m_state;}
 	virtual void 			State						(u32 state);
 	virtual void 			OnStateSwitch				(u32 S);
+	virtual void			GetBriefInfo				(xr_string& str_name, xr_string& icon_sect_name, xr_string& str_count);
+
 protected:
 	virtual void			UpdateFireDependencies_internal	();
 	virtual void			UpdateXForm						();

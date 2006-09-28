@@ -116,6 +116,8 @@ public:
 	bool			IsAmmoAvailable	();
 			void	UnloadMagazine	(bool spawn_ammo = true);
 
+	virtual void	GetBriefInfo				(xr_string& str_name, xr_string& icon_sect_name, xr_string& str_count);
+
 
 	//////////////////////////////////////////////
 	// для стрельбы очередями или одиночными

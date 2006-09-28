@@ -651,7 +651,7 @@ void CMissile::OnDrawUI()
 	}	
 }
 
-void	 CMissile::		ExitContactCallback(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
+void	 CMissile::ExitContactCallback(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {
 	dxGeomUserData	*gd1=NULL,	*gd2=NULL;
 	if(bo1)
@@ -666,5 +666,12 @@ void	 CMissile::		ExitContactCallback(bool& do_colide,bool bo1,dContact& c,SGame
 	}
 	if(gd1&&gd2&&(CPhysicsShellHolder*)gd1->callback_data==gd2->ph_ref_object)	
 																				do_colide=false;
-
 }
+
+void CMissile::GetBriefInfo(xr_string& str_name, xr_string& icon_sect_name, xr_string& str_count)
+{
+	str_name		= NameShort();
+	str_count		= "";
+	icon_sect_name	= "";
+}
+

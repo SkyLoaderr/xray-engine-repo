@@ -415,8 +415,6 @@ public:
 													LPCSTR ammoSect = NULL, 
 													u32 ParentID = 0xffffffff);
 
-	//показывать ли кол-во патронов на экране
-			bool			ShowAmmo			() {return m_bShowAmmo;	}		
 	//  [8/3/2005]
 	virtual	float			Get_PDM_Base		()	const	{ return m_fPDM_disp_base			; };
 	virtual	float			Get_PDM_Vel_F		()	const	{ return m_fPDM_disp_vel_factor		; };
@@ -428,8 +426,6 @@ protected:
 	int						iAmmoElapsed;		// ammo in magazine, currently
 	int						iMagazineSize;		// size (in bullets) of magazine
 	int						iBuckShot;
-
-	bool					m_bShowAmmo;
 
 	//для подсчета в GetAmmoCurrent
 	mutable int				iAmmoCurrent;
