@@ -78,7 +78,7 @@ void	game_sv_Single::OnCreate		(u16 id_who)
 		alife().create					(alife_object);
 }
 
-BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
+BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what, BOOL bForced)
 {
 	CSE_Abstract*		e_who	= get_entity_from_eid(eid_who);		VERIFY(e_who	);
 	CSE_Abstract*		e_what	= get_entity_from_eid(eid_what);	VERIFY(e_what	);

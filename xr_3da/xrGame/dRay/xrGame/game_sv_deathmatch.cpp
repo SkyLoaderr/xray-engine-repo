@@ -1631,10 +1631,10 @@ void	game_sv_Deathmatch::StartAnomalies			(int AnomalySet)
 #endif
 };
 
-BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
+BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what, BOOL bForced)
 {
 	CSE_Abstract*		e_who	= m_server->ID_to_entity(eid_who);		VERIFY(e_who	);
-	CSE_Abstract*		e_what	= m_server->ID_to_entity(eid_what);	VERIFY(e_what	);
+	CSE_Abstract*		e_what	= m_server->ID_to_entity(eid_what);		VERIFY(e_what	);	
 
 	CSE_ALifeCreatureActor*			A		= smart_cast<CSE_ALifeCreatureActor*> (e_who);
 	if (A)
@@ -1654,18 +1654,21 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 				if (0==T)				continue;
 				if (slot == T->get_slot())	
 				{
-/*					// We've found same slot occupied - disallow ownership
-					//-----------------------------------------------------
-					NET_Packet				P;
-					u_EventGen				(P,GE_OWNERSHIP_REJECT,eid_who);
-					P.w_u16					(T->ID);
-					Level().Send(P,net_flags(TRUE,TRUE));
-					//-----------------------------------------------------
-					u_EventGen				(P,GE_OWNERSHIP_TAKE,eid_who);
-					P.w_u16					(eid_what);
-					Level().Send(P,net_flags(TRUE,TRUE));
-					//-----------------------------------------------------
-*/					return FALSE;
+					if (bForced)
+					{
+						// We've found same slot occupied - disallow ownership
+						//-----------------------------------------------------
+						NET_Packet				P;
+						u_EventGen				(P,GE_OWNERSHIP_REJECT,eid_who);
+						P.w_u16					(T->ID);
+						Level().Send(P,net_flags(TRUE,TRUE));
+						//-----------------------------------------------------
+						u_EventGen				(P,GE_OWNERSHIP_TAKE,eid_who);
+						P.w_u16					(eid_what);
+						Level().Send(P,net_flags(TRUE,TRUE));
+						//-----------------------------------------------------						
+					}
+					return FALSE;
 				}
 			}
 
@@ -1737,31 +1740,7 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 		};
 		//---------------------------------------------------------------
 		if (IsBuyableItem(*e_what->s_name)) return TRUE;
-		//---------------------------------------------------------------
-		/*
-		if (e_what->m_tClassID == CLSID_DEVICE_PDA) 
-		{
-			if (e_what->ID_Parent == 0xffff)
-			{			
-				//-------------------------------
-				NET_Packet		P;
-				u_EventGen		(P,GE_DESTROY,e_what->ID);
-				m_server->OnMessage(P, m_server->GetServerClient()->ID);
-				//-------------------------------
-				game_PlayerState* pKiller = get_eid(eid_who);
-				if (pKiller)
-				{
-					if (m_bPDAHunt)
-					{
-						Player_AddBonusMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", "pda_taken",0), SKT_PDA);
-					};
-				};
-				//-------------------------------
-				return FALSE;
-			};
-			return TRUE;
-		};
-		*/
+		//---------------------------------------------------------------		
 	};
 	// We don't know what the hell is it, so disallow ownership just for safety 
 	return FALSE;

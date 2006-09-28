@@ -126,7 +126,7 @@ public:
 	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P); //игрок получил Hit
 	virtual		void				OnPlayerHitPlayer_Case	(game_PlayerState* ps_hitter, game_PlayerState* ps_hitted, SHit* pHitS);	
 
-	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
+	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what, BOOL bForced = FALSE);
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
 
 	virtual		BOOL				OnPreCreate				(CSE_Abstract* E);

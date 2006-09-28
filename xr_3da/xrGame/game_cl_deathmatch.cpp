@@ -996,3 +996,11 @@ void			game_cl_Deathmatch::OnPlayerFlagsChanged	(game_PlayerState* ps)
 	if (!pActor) return;
 	pActor->conditions().SetCanBeHarmedState(!ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE));
 };
+
+void			game_cl_Deathmatch::SendPickUpEvent		(u16 ID_who, u16 ID_what)
+{
+	NET_Packet P;
+	u_EventGen(P,GE_OWNERSHIP_TAKE_MP_FORCED, ID_who);
+	P.w_u16(ID_what);
+	u_EventSend(P);
+};

@@ -768,3 +768,7 @@ void			game_cl_ArtefactHunt::OnPlayerFlagsChanged	(game_PlayerState* ps)
 	pActor->conditions().SetCanBeHarmedState(!g_bShildedBases || !ps->testFlag(GAME_PLAYER_FLAG_ONBASE));
 };
 */
+void			game_cl_ArtefactHunt::SendPickUpEvent		(u16 ID_who, u16 ID_what)
+{
+	game_cl_GameState::SendPickUpEvent(ID_who, ID_what);
+};

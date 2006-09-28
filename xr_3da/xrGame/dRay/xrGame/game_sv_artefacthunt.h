@@ -108,7 +108,7 @@ public:
 //	void							RemoveItemFromActor		(CSE_Abstract* pItem);
 	void							OnArtefactOnBase		(ClientID id_who);
 
-	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
+	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what, BOOL bForced = FALSE);
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
 	virtual		void				OnCreate				(u16 id_who);
 

@@ -488,7 +488,7 @@ void	game_sv_ArtefactHunt::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 	};
 };
 */
-BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
+BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what, BOOL bForced)
 {
 	CSE_Abstract*		e_who	= m_server->ID_to_entity(eid_who);		VERIFY(e_who	);
 	CSE_Abstract*		e_what	= m_server->ID_to_entity(eid_what);	VERIFY(e_what	);
@@ -548,7 +548,7 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 			//---------------------------------------------------------------
 		}
 	}
-	return inherited::OnTouch(eid_who, eid_what);
+	return inherited::OnTouch(eid_who, eid_what, bForced);
 };
 
 BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)

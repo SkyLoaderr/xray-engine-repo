@@ -8,11 +8,13 @@
 #include "xr_level_controller.h"
 #include "UsableScriptObject.h"
 #include "customzone.h"
-#include "level.h"
 #include "GameMtlLib.h"
 #include "ui/UIMainIngameWnd.h"
 #include "Grenade.h"
 #include "clsid_game.h"
+
+#include "game_cl_base.h"
+#include "Level.h"
 
 #define PICKUP_INFO_COLOR 0xFFDDDDDD
 //AAAAAA
@@ -111,6 +113,7 @@ BOOL CanPickItem(const CFrustum& frustum, const Fvector& from, CObject* item)
 void CActor::PickupModeUpdate()
 {
 	if(!m_bPickupMode) return;
+	if (GameID() != GAME_SINGLE) return;
 
 	//подбирание объекта
 	if(inventory().m_pTarget && inventory().m_pTarget->Useful() &&
@@ -198,11 +201,8 @@ void	CActor::PickupModeUpdate_COD	()
 	if (pNearestItem && m_bPickupMode)
 	{
 		//подбирание объекта
-		NET_Packet P;
-		u_EventGen(P,GE_OWNERSHIP_TAKE, ID());
-		P.w_u16(pNearestItem->object().ID());
-		u_EventSend(P);
-
+		Game().SendPickUpEvent(ID(), pNearestItem->object().ID());
+		
 		PickupModeOff();
 	}
 };

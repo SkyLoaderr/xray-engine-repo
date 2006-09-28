@@ -145,6 +145,7 @@ public:
 	virtual		u8					GetTeamCount			() { return 1; };
 	
 	virtual		void				OnPlayerFlagsChanged	(game_PlayerState* ps);
+	virtual		void				SendPickUpEvent			(u16 ID_who, u16 ID_what);
 };
 
 IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);

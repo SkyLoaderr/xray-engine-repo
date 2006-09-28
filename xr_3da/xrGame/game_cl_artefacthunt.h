@@ -55,4 +55,5 @@ public :
 
 	virtual			void				OnSpawn					(CObject* pObj);
 	virtual			void				OnDestroy				(CObject* pObj);	
+	virtual			void				SendPickUpEvent			(u16 ID_who, u16 ID_what);
 };

@@ -121,4 +121,5 @@ public:
 	virtual		void				OnDestroy				(CObject* pObj)	{};
 
 	virtual		void				OnPlayerFlagsChanged	(game_PlayerState* ps)	{};
+	virtual		void				SendPickUpEvent			(u16 ID_who, u16 ID_what);
 };

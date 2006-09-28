@@ -126,7 +126,7 @@ public:
 	virtual		BOOL				OnPreCreate				(CSE_Abstract* E)				{return TRUE;};
 	virtual		void				OnCreate				(u16 id_who)					{};
 	virtual		void				OnPostCreate			(u16 id_who)					{};
-	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
+	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_target, BOOL bForced = FALSE)	= 0;			// TRUE=allow ownership, FALSE=denied
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
 	virtual		void				OnDestroyObject			(u16 eid_who)							{};			
 
