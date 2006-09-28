@@ -173,25 +173,44 @@ void CChangeLevelWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd==m_messageBox){
 		if(msg==MESSAGE_BOX_YES_CLICKED){
-
-			Game().StartStopMenu					(this, true);
-			NET_Packet								p;
-			p.w_begin								(M_CHANGE_LEVEL);
-			p.w										(&m_game_vertex_id,sizeof(m_game_vertex_id));
-			p.w										(&m_level_vertex_id,sizeof(m_level_vertex_id));
-			p.w_vec3								(m_position);
-			p.w_vec3								(m_angles);
-
-			Level().Send							(p,net_flags(TRUE));
+			OnOk									();
 		}else
 		if(msg==MESSAGE_BOX_NO_CLICKED){
-			Game().StartStopMenu					(this, true);
-			if(m_b_position_cancel){
-				Actor()->MoveActor(m_position_cancel, m_angles_cancel);
-			}
+			OnCancel								();
 		}
 	}else
 		inherited::SendMessage(pWnd, msg, pData);
+}
+
+void CChangeLevelWnd::OnOk()
+{
+	Game().StartStopMenu					(this, true);
+	NET_Packet								p;
+	p.w_begin								(M_CHANGE_LEVEL);
+	p.w										(&m_game_vertex_id,sizeof(m_game_vertex_id));
+	p.w										(&m_level_vertex_id,sizeof(m_level_vertex_id));
+	p.w_vec3								(m_position);
+	p.w_vec3								(m_angles);
+
+	Level().Send							(p,net_flags(TRUE));
+}
+
+void CChangeLevelWnd::OnCancel()
+{
+	Game().StartStopMenu					(this, true);
+	if(m_b_position_cancel){
+		Actor()->MoveActor(m_position_cancel, m_angles_cancel);
+	}
+}
+
+bool CChangeLevelWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
+{
+	if(keyboard_action==WINDOW_KEY_PRESSED){
+		if(key_binding[dik]==kQUIT)
+			OnCancel		();
+			return true;
+	}
+	return inherited::OnKeyboard(dik, keyboard_action);
 }
 
 bool g_block_pause	= false;

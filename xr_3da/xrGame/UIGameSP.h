@@ -47,6 +47,8 @@ class CChangeLevelWnd :public CUIDialogWnd
 {
 	CUIMessageBox*			m_messageBox;
 	typedef CUIDialogWnd	inherited;
+	void					OnCancel			();
+	void					OnOk				();
 public:
 	GameGraph::_GRAPH_ID	m_game_vertex_id;
 	u32						m_level_vertex_id;
@@ -60,6 +62,7 @@ public:
 	virtual				~CChangeLevelWnd			()									{};
 	virtual void		SendMessage					(CUIWindow *pWnd, s16 msg, void *pData);
 	virtual bool		WorkInPause					()const {return true;}
-	virtual void		Show							();
-	virtual void		Hide							();
+	virtual void		Show						();
+	virtual void		Hide						();
+	virtual bool		OnKeyboard					(int dik, EUIMessages keyboard_action);
 };
