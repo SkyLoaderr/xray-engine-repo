@@ -10,17 +10,7 @@ u64		g_qwStartGameTime		= 12*60*60*1000;
 float	g_fTimeFactor			= pSettings->r_float("alife","time_factor");
 u64		g_qwEStartGameTime		= 12*60*60*1000;
 
-xr_token game_types[]={
-	{ "any game",		GAME_ANY		},
-	{ "single",			GAME_SINGLE		},
-	{ "deathmatch",		GAME_DEATHMATCH },
-//	{ "CTF",			GAME_CTF		},
-//	{ "assault",		GAME_ASSAULT	},
-	{ "counterstrike",	GAME_CS			},
-	{ "teamdeathmatch",	GAME_TEAMDEATHMATCH },
-	{ "artefacthunt",	GAME_ARTEFACTHUNT },
-	{ 0,				0				}
-};
+xr_token game_types[];
 
 game_PlayerState::game_PlayerState()
 {
