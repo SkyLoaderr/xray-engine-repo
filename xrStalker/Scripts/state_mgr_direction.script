@@ -47,11 +47,12 @@ function eva_state_mgr_direction:evaluate()
 	if sight_type.m_object ~= nil then        
 		return false	
 	end
-	-- »ли если мы смотрели в какую то позицию
-	if sight_type.m_sight_type == look.direction then
-		return false
-	end
 		
+	--' »ли если мы смотрели не так как надо
+    if sight_type.m_sight_type ~= look_position_type(self.object, self.st) then
+        return false
+    end
+
 	self:callback()
 	return true
 end
