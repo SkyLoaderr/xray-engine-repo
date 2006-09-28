@@ -106,10 +106,10 @@ void CUIListWnd::script_register(lua_State *L)
 		.def("SetMapInfo",				&CUIMapList::SetMapInfo)
 		.def("IsEmpty",					&CUIMapList::IsEmpty),
 		
-		class_<enum_exporter<GAME_TYPE> >("GAME_TYPE")
+		class_<enum_exporter<EGameTypes> >("GAME_TYPE")
 		.enum_("gametype")
 		[
-			value("GAME_UNKNOWN",			int(GAME_UNKNOWN)),
+			value("GAME_UNKNOWN",			int(GAME_ANY)),
 			value("GAME_DEATHMATCH",		int(GAME_DEATHMATCH)),
 			value("GAME_TEAMDEATHMATCH",	int(GAME_TEAMDEATHMATCH)),
 			value("GAME_ARTEFACTHUNT",		int(GAME_ARTEFACTHUNT))

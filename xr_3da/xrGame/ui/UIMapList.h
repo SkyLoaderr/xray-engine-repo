@@ -2,6 +2,7 @@
 #pragma once
 
 #include "UIWindow.h"
+#include "../game_base_space.h"
 
 class CUIListBox;
 class CUILabel;
@@ -13,22 +14,20 @@ class CUIMapInfo;
 class CUIComboBox;
 
 class CUIXml;
-
+/*
 enum	GAME_TYPE
 {
-	GAME_UNKNOWN			= 0	,
-	GAME_DEATHMATCH				,
+	GAME_DEATHMATCH				=0,
 	GAME_TEAMDEATHMATCH			,
 	GAME_ARTEFACTHUNT			,
 
 	GAME_END_LIST				,
 };
+*/
 
-#define	MAP_LIST	"map_list.ltx"
-#define	MAP_ROTATION_LIST	"maprot_list.ltx"
 
 bool GetToken(char** sx, char* e, char* token);
-bool MP_map_cmp(shared_str map1, shared_str map2);
+bool MP_map_cmp(const shared_str& map1, const shared_str& map2);
 
 class CUIMapList : public CUIWindow {
 public:
@@ -49,20 +48,20 @@ public:
 			void	LoadMapList();
 			void	SaveMapList();
 	const char*		GetCommandLine(LPCSTR player_name);
-		GAME_TYPE	GetCurGameType();
+		EGameTypes	GetCurGameType();
 			void	StartDedicatedServer();
 			bool	IsEmpty();
 
 private:
 	const char*		GetCLGameModeName(); // CL - command line
-			void	UpdateMapList(GAME_TYPE GameType);						
+			void	UpdateMapList(EGameTypes GameType);						
 			void	SaveRightList();
 
 			void	OnBtnLeftClick();
 			void	OnBtnRightClick();
 			void	OnBtnUpClick();
 			void	OnBtnDownClick();
-			void	AddWeather(char* WeatherType, char* WeatherTime);
+			void	AddWeather(const shared_str& WeatherType, const shared_str& WeatherTime);
 			void	ParseWeather(char** ps, char* e);
 
 	CUIListBox*			m_pList1;
@@ -81,12 +80,14 @@ private:
 	CUIStatic*			m_pMapPic;
 	CUIMapInfo*			m_pMapInfo;
 
-	GAME_TYPE	m_GameType;
+	EGameTypes			m_GameType;
 	
-	xr_vector<shared_str> m_Maps[GAME_END_LIST];
-//	int			m_MapsNum[GAME_END_LIST];	
+	DEF_VECTOR(shared_str_vec, shared_str)
+	DEF_MAP(storage_map, EGameTypes, shared_str_vec)
+	storage_map				m_maps;
+//.	xr_vector<shared_str> m_Maps[GAME_END_LIST];
 
-	xr_map<xr_string,int> m_mapWeather;
+	xr_map<shared_str,int> m_mapWeather;
 	xr_string	m_command;
 	xr_string	m_srv_params;
 

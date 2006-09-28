@@ -360,17 +360,7 @@ Flags16&	CSE_Abstract::flags			()
 	return	(s_flags);
 }
 
-xr_token game_types[]={
-	{ "Any game",		GAME_ANY		},
-	{ "Single",			GAME_SINGLE		},
-	{ "Deathmatch",		GAME_DEATHMATCH },
-//	{ "CTF",			GAME_CTF		},
-//	{ "Assault",		GAME_ASSAULT	},
-	{ "Counter Strike",	GAME_CS			},
-	{ "TeamDeathmatch",	GAME_TEAMDEATHMATCH },
-	{ "ArtefactHunt",	GAME_ARTEFACTHUNT },
-	{ 0,				0				}
-};
+xr_token game_types[];
 
 void CSE_Abstract::FillProps				(LPCSTR pref, PropItemVec& items)
 {

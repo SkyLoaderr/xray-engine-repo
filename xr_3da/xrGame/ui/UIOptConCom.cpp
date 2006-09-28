@@ -3,14 +3,14 @@
 #include "../../xr_ioc_cmd.h"
 #include "UIOptConCom.h"
 #include "../../xrcore/xrCore.h"
+#include "../game_base_space.h"
 
 xr_token g_GameModes	[] = {
-	{ "Deathmatch",			0	},
-	{ "Team Deathmatch",	1	},
-	{ "Artefacthunt",		2	},
+	{ "Deathmatch",			GAME_DEATHMATCH	},
+	{ "Team Deathmatch",	GAME_TEAMDEATHMATCH	},
+	{ "Artefacthunt",		GAME_ARTEFACTHUNT	},
 	{ 0,					0	}
 };
-
 
 CUIOptConCom::CUIOptConCom(){
 			

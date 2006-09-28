@@ -11,16 +11,21 @@
 #include "UIComboBox.h"
 #include "../../xr_ioconsole.h"
 
+
+#define	MAP_LIST			"map_list.ltx"
+#define	MAP_ROTATION_LIST	"maprot_list.ltx"
+
 extern ENGINE_API string512  g_sLaunchOnExit;
 
-static LPSTR	g_GameTypeName	[]		= {
-	"UNKNOWN"					,
-		"Deathmatch"				,
-		"TeamDeathmatch"			,
-		"ArtefactHunt"				,
+xr_token	game_types		[];
+/*
+xr_token	g_GameTypeName	[]	= {
+	{"Deathmatch",			GAME_DEATHMATCH},
+	{"TeamDeathmatch",		GAME_TEAMDEATHMATCH},
+	{"ArtefactHunt",		GAME_ARTEFACTHUNT},
 
-		"END_LIST"					,
-};
+	{0,						0}
+};*/
 
 CUIMapList::CUIMapList(){
 	m_item2del = -1;
@@ -131,7 +136,6 @@ void CUIMapList::OnListItemClicked(){
 
 	m_pMapInfo->InitMap(m_pList1->GetSelectedText());
 }
-
 xr_token g_GameModes[ ];
 
 void CUIMapList::OnModeChange(){
@@ -139,36 +143,23 @@ void CUIMapList::OnModeChange(){
 }
 
 const char* CUIMapList::GetCLGameModeName(){
-	LPCSTR text = m_pModeSelector->GetText();
-
-	if (0 == xr_strcmp(text, g_GameModes[0].name))
-		return	g_GameTypeName[GAME_DEATHMATCH];
-	else if (0 == xr_strcmp(text, g_GameModes[1].name))
-		return	g_GameTypeName[GAME_TEAMDEATHMATCH];
-	else if (0 == xr_strcmp(text, g_GameModes[2].name))
-		return	g_GameTypeName[GAME_ARTEFACTHUNT];
-	else
-		NODEFAULT;
-
-#ifdef DEBUG
-	return NULL;
-#endif
+	return get_token_name(game_types, GetCurGameType() );
 }
 
-GAME_TYPE CUIMapList::GetCurGameType(){
+EGameTypes CUIMapList::GetCurGameType(){
 	LPCSTR text = m_pModeSelector->GetText();
 
-	if (0 == xr_strcmp(text, g_GameModes[0].name))
+	if (0 == xr_strcmp(text, get_token_name(g_GameModes,GAME_DEATHMATCH)) )
 		return	GAME_DEATHMATCH;
-	else if (0 == xr_strcmp(text, g_GameModes[1].name))
+	else if (0 == xr_strcmp(text, get_token_name(g_GameModes,GAME_TEAMDEATHMATCH)) )
 		return	GAME_TEAMDEATHMATCH;
-	else if (0 == xr_strcmp(text, g_GameModes[2].name))
+	else if (0 == xr_strcmp(text, get_token_name(g_GameModes,GAME_ARTEFACTHUNT)) )
 		return	GAME_ARTEFACTHUNT;
 	else
 		NODEFAULT;
 
 #ifdef DEBUG
-	return GAME_UNKNOWN;
+	return GAME_ANY;
 #endif
 }
 
@@ -204,10 +195,47 @@ const char* CUIMapList::GetCommandLine(LPCSTR player_name){
     return m_command.c_str();
 }
 
+void CUIMapList::LoadMapList()
+{
+	CInifile	map_list_cfg(MAP_LIST);
+
+	// maps
+	for (int k=0; game_types[k].name; ++k)
+	{
+		EGameTypes _id			= (EGameTypes)game_types[k].id;
+		LPCSTR _name			= game_types[k].name;
+
+		if( !map_list_cfg.section_exist(_name) ) continue;
+
+		CInifile::Sect& S		= map_list_cfg.r_section(_name);
+		CInifile::SectIt it		= S.begin(), end = S.end();
+		
+		for (;it!=end; ++it){
+			shared_str _map_name = it->first;
+			m_maps[_id].push_back	(_map_name);
+		}
+//		std::sort(m_maps[_id].begin(), m_maps[_id].end(), MP_map_cmp);
+	}
+
+	//weather
+	shared_str				weather_sect = "weather";
+	CInifile::Sect& S		= map_list_cfg.r_section(weather_sect);
+	CInifile::SectIt it		= S.begin(), end = S.end();
+	
+	shared_str				WeatherType;
+	shared_str				WeatherTime;
+
+	for (;it!=end; ++it){
+		WeatherType			= it->first;
+		WeatherTime			= map_list_cfg.r_string(weather_sect, *WeatherType);
+		
+		AddWeather			(WeatherType, WeatherTime);
+	}
+}
+/*
 void CUIMapList::LoadMapList(){
 	char Buffer[1024];
 	ZeroMemory(Buffer, sizeof(Buffer));
-//	memfil(Buffer, 0, sizeof(Buffer));
 	FILE* f = fopen(MAP_LIST, "rb");
 	if (!f) return;
 
@@ -265,7 +293,7 @@ void CUIMapList::LoadMapList(){
 	std::sort(m_Maps[GAME_TEAMDEATHMATCH].begin(),	m_Maps[GAME_TEAMDEATHMATCH].end(),	MP_map_cmp);
 	std::sort(m_Maps[GAME_ARTEFACTHUNT].begin(),	m_Maps[GAME_ARTEFACTHUNT].end(),	MP_map_cmp);
 }
-
+*/
 void	CUIMapList::SaveMapList(){
 	FILE* MapRotFile = fopen(MAP_ROTATION_LIST, "w");
 	if (!MapRotFile)
@@ -281,6 +309,7 @@ void	CUIMapList::SaveMapList(){
 	fclose(MapRotFile);
 }
 
+/*
 void	CUIMapList::ParseWeather(char** ps, char* e)
 {
 	//	char* s = *ps;
@@ -309,7 +338,7 @@ void	CUIMapList::ParseWeather(char** ps, char* e)
 		};
 	};	
 };
-
+*/
 void CUIMapList::SetWeatherSelector(CUIComboBox* ws){
 	m_pWeatherSelector = ws;
 }
@@ -330,18 +359,17 @@ void CUIMapList::SetServerParams(LPCSTR params){
 	m_srv_params = params;
 }
 
-void CUIMapList::AddWeather(char* WeatherType, char* WeatherTime){
-	R_ASSERT2(m_pWeatherSelector, "m_pWeatherSelector == NULL");
-	m_pWeatherSelector->AddItem(WeatherType);
+void CUIMapList::AddWeather(const shared_str& WeatherType, const shared_str& WeatherTime){
+	R_ASSERT2					(m_pWeatherSelector, "m_pWeatherSelector == NULL");
+	m_pWeatherSelector->AddItem	(*WeatherType);
 
-	xr_string	w_type = WeatherType;
-	int			w_time;
+	int	w_time;
 	int hour = 0, min = 0;
 
-	sscanf(WeatherTime, "%d:%d", &hour, &min);
+	sscanf(*WeatherType, "%d:%d", &hour, &min);
 	w_time = hour*60+min;
 
-	m_mapWeather.insert(mk_pair(w_type,w_time));
+	m_mapWeather.insert(mk_pair(WeatherType, w_time));
 }
 
 void CUIMapList::InitFromXml(CUIXml& xml_doc, const char* path){
@@ -359,12 +387,12 @@ void CUIMapList::InitFromXml(CUIXml& xml_doc, const char* path){
 	CUIXmlInit::Init3tButton	(xml_doc, strconcat(buf, path, ":btn_down"),	0, m_pBtnDown);
 }
 
-void CUIMapList::UpdateMapList(GAME_TYPE GameType){
-	m_pList1->Clear();
-	m_pList2->Clear();
+void CUIMapList::UpdateMapList(EGameTypes GameType){
+	m_pList1->Clear				();
+	m_pList2->Clear				();
 
-	for (u32 i=0; i<m_Maps[GameType].size(); i++)
-		m_pList1->AddItem(*m_Maps[GameType][i]);
+	for (u32 i=0; i<m_maps[GameType].size(); ++i)
+		m_pList1->AddItem(*m_maps[GameType][i]);
 }
 
 void CUIMapList::OnBtnLeftClick(){
@@ -487,6 +515,6 @@ skipspace:
 	return true;
 };
 
-bool MP_map_cmp(shared_str map1, shared_str map2){
-    return -1 == xr_strcmp(map1,map2);
+bool MP_map_cmp(const shared_str& map1, const shared_str& map2){
+    return map1 < map2;
 }
