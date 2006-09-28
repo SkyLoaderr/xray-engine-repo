@@ -39,7 +39,7 @@
 		<text align="c" complex_mode="0" font="graffiti32" r="238" g="155" b="23" a="255">Ammo</text>
 	</static_ammo>
 	
-	<static_wpn_icon x="40" y="37" width="55" height="42" alignment="c">
+	<static_wpn_icon x="0" y="13" width="80" height="42" _alignment_="c">
 		<text font="normal" r="239" g="154" b="29" a="230"/>
 	</static_wpn_icon>
 
