@@ -202,7 +202,7 @@ ph_snd_themes["x16_hum_2"] = {"ambient\\x16\\x16_hum_2"}
 ph_snd_themes["x16_switch_1"] = {"ambient\\x16\\switch_1"}
 ph_snd_themes["x16_switch_2"] = {"ambient\\x16\\switch_2"}
 
-
+ph_snd_themes["x18_firedoor"] = {"anomaly\\fireball_idle"}
 
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Theme  functions
