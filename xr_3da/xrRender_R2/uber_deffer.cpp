@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "uber_deffer.h"
+void fix_texture_name(LPSTR fn);
 
 void	uber_deffer	(CBlender_Compile& C, bool hq, LPCSTR _vspec, LPCSTR _pspec, BOOL _aref, LPCSTR _detail_replace)
 {
 	// Uber-parse
 	string256		fname,fnameA,fnameB;
-	strcpy			(fname,*C.L_textures[0]);	if (strext(fname)) *strext(fname)=0;
+	strcpy			(fname,*C.L_textures[0]);	//. andy if (strext(fname)) *strext(fname)=0;
+	fix_texture_name(fname);
 	ref_texture		_t;		_t.create			(fname);
 	bool			bump	= _t.bump_exist		();
 

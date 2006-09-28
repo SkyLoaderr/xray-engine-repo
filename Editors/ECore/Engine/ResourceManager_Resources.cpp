@@ -14,6 +14,8 @@
 #include "blenders\blender.h"
 #include "blenders\blender_recorder.h"
 
+void fix_texture_name(LPSTR fn);
+
 template <class T>
 BOOL	reclaim		(xr_vector<T*>& vec, const T* ptr)
 {
@@ -448,8 +450,8 @@ CTexture* CResourceManager::_CreateTexture	(LPCSTR _Name)
 	if (0==xr_strcmp(_Name,"null"))	return 0;
 	R_ASSERT		(_Name && _Name[0]);
 	string_path		Name;
-	strcpy			(Name,_Name); if (strext(Name)) *strext(Name)=0;
-
+	strcpy			(Name,_Name); //. andy if (strext(Name)) *strext(Name)=0;
+	fix_texture_name (Name);
 	// ***** first pass - search already loaded texture
 	LPSTR N			= LPSTR(Name);
 	map_TextureIt I = m_textures.find	(N);

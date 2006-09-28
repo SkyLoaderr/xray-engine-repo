@@ -5,6 +5,8 @@
 #include "blenders\Blender_Recorder.h"
 #include "blenders\Blender.h"
 
+void fix_texture_name(LPSTR fn);
+
 void	CBlender_Compile::r_Pass		(LPCSTR _vs, LPCSTR _ps, bool bFog, BOOL bZtest, BOOL bZwrite,	BOOL bABlend, D3DBLEND abSRC, D3DBLEND abDST, BOOL aTest, u32 aRef)
 {
 	RS.Invalidate			();
@@ -47,7 +49,8 @@ u32		CBlender_Compile::i_Sampler		(LPCSTR _name)
 	//
 	string256				name;
 	strcpy					(name,_name);
-	if (strext(name)) *strext(name)=0;
+//. andy	if (strext(name)) *strext(name)=0;
+	fix_texture_name		(name);
 
 	// Find index
 	ref_constant C			= ctable.get(name);

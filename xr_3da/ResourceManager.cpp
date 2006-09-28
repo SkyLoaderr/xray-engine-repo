@@ -14,6 +14,16 @@
 #include "blenders\blender.h"
 #include "blenders\blender_recorder.h"
 
+void fix_texture_name(LPSTR fn)
+{
+	LPSTR _ext = strext(fn);
+	if(  _ext					&&
+	  (0==stricmp(_ext,".tga")	||
+		0==stricmp(_ext,".dds")	||
+		0==stricmp(_ext,".bmp")	||
+		0==stricmp(_ext,".ogm")	) )
+		*_ext = 0;
+}
 //--------------------------------------------------------------------------------------------------------------
 template <class T>
 BOOL	reclaim		(xr_vector<T*>& vec, const T* ptr)
@@ -80,7 +90,9 @@ void	CResourceManager::_ParseList(sh_list& dest, LPCSTR names)
 			// flush
 			N.push_back	(0);
 			strlwr		(N.begin());
-			if (strext(N.begin())) *strext(N.begin())=0;
+
+			fix_texture_name( N.begin() );
+//. andy			if (strext(N.begin())) *strext(N.begin())=0;
 			dest.push_back(N.begin());
 			N.clear		();
 		} else {
@@ -93,7 +105,9 @@ void	CResourceManager::_ParseList(sh_list& dest, LPCSTR names)
 		// flush
 		N.push_back	(0);
 		strlwr		(N.begin());
-		if (strext(N.begin())) *strext(N.begin())=0;
+
+		fix_texture_name( N.begin() );
+//. andy		if (strext(N.begin())) *strext(N.begin())=0;
 		dest.push_back(N.begin());
 	}
 }
