@@ -41,6 +41,7 @@ protected:
 			shared_str				normalize_string				(shared_str space_restrictors);
 	IC		void					collect_garbage					();
 	virtual void					on_default_restrictions_changed	(const RestrictionSpace::ERestrictorTypes &restrictor_type, shared_str old_restrictions, shared_str new_restrictions) = 0;
+			void					clear							();
 
 public:
 	IC								CSpaceRestrictionHolder			();

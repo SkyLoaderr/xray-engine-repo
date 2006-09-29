@@ -54,6 +54,7 @@ public:
 			void				add_restrictions				(ALife::_OBJECT_ID id, shared_str out_restrictions, shared_str in_restrictions);
 			void				remove_restrictions				(ALife::_OBJECT_ID id, shared_str out_restrictions, shared_str in_restrictions);
 			void				change_restrictions				(ALife::_OBJECT_ID id, shared_str add_out_restrictions, shared_str add_in_restrictions, shared_str remove_out_restrictions, shared_str remove_in_restrictions);
+			void				clear							();
 
 	template <typename T1, typename T2>
 	IC		void				add_border						(ALife::_OBJECT_ID id, T1 p1, T2 p2);

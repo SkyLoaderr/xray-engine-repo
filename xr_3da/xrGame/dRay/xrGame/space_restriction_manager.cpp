@@ -32,6 +32,13 @@ CSpaceRestrictionManager::~CSpaceRestrictionManager			()
 	delete_data						(m_space_restrictions);
 }
 
+void CSpaceRestrictionManager::clear						()
+{
+	CSpaceRestrictionHolder::clear	();
+	m_clients->clear				();
+	delete_data						(m_space_restrictions);
+}
+
 void CSpaceRestrictionManager::remove_border				(ALife::_OBJECT_ID id)
 {
 	CRestrictionPtr				client_restriction = restriction(id);

@@ -7,6 +7,7 @@
 #include "PHCommander.h"
 #include "net_queue.h"
 #include "MainMenu.h"
+#include "space_restriction_manager.h"
 
 const int NET_ObjectsPerPacketInSave	= NET_PacketSizeLimit/1000;
 
@@ -33,6 +34,7 @@ void CLevel::remove_objects	()
 	BulletManager().Clear		();
 	ph_commander().clear		();
 	ph_commander_scripts().clear();
+	space_restriction_manager().clear	();
 
 	psDeviceFlags.set			(rsDisableObjectsAsCrows, b_stored);
 }
