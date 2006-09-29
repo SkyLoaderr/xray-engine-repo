@@ -203,17 +203,17 @@ BOOL CServerDlg::OnInitDialog()
 	//---------------------------------------
 	SwitchGameType(GAME_DEATHMATCH);
 	
-	if (m_MapsNum[GAME_DEATHMATCH] == 0) 
+	if (m_maps[ST_GAME_DEATHMATCH].size() == 0) 
 	{
 		m_pSVGameTypeDlg->m_pGameDM.EnableWindow(false);
 		SwitchGameType(GAME_TEAMDEATHMATCH);
 	};
-	if (m_MapsNum[GAME_TEAMDEATHMATCH] == 0) 
+	if (m_maps[ST_GAME_TEAMDEATHMATCH].size() == 0) 
 	{
 		m_pSVGameTypeDlg->m_pGameTDM.EnableWindow(false);
 		SwitchGameType(GAME_ARTEFACTHUNT);
 	};
-	if (m_MapsNum[GAME_ARTEFACTHUNT] == 0) 
+	if (m_maps[ST_GAME_ARTEFACTHUNT].size() == 0) 
 	{
 		m_pSVGameTypeDlg->m_pGameAHunt.EnableWindow(false);
 		SwitchGameType(GAME_DEATHMATCH);
@@ -360,9 +360,20 @@ void	CServerDlg::UpdateMapList(GAME_TYPE GameType)
 	m_pMapList.ResetContent();
 	m_pMapList2.ResetContent();
 
-	for (int i=0; i<m_MapsNum[GameType]; i++)
+	EGameTypes xGameType = ST_GAME_ANY;
+	switch (GameType)
 	{
-		m_pMapList.AddString(m_Maps[GameType][i]);
+	case GAME_DEATHMATCH: xGameType = ST_GAME_DEATHMATCH; break;
+	case GAME_TEAMDEATHMATCH: xGameType = ST_GAME_TEAMDEATHMATCH; break;
+	case GAME_ARTEFACTHUNT: xGameType = ST_GAME_ARTEFACTHUNT; break;
+	}
+//	for (int i=0; i<m_MapsNum[GameType]; i++)
+//	{
+//		m_pMapList.AddString(m_Maps[GameType][i]);
+//	};
+	for (int i=0; i<m_maps[xGameType].size(); i++)
+	{
+		m_pMapList.AddString(*(m_maps[xGameType][i]));
 	};
 };
 
