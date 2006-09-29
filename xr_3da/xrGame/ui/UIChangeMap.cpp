@@ -11,8 +11,9 @@
 //#include "../game_cl_base.h"
 #include "../game_cl_teamdeathmatch.h"
 #include "../../xr_ioconsole.h"
+#include "UIMapList.h"
 
-#define	MAP_LIST	"map_list.ltx"
+xr_token	game_types		[];
 
 CUIChangeMap::CUIChangeMap(){
 	m_prev_upd_time = 0;
@@ -107,93 +108,31 @@ void CUIChangeMap::OnBtnOk(){
 		string512 command;
         sprintf(command, "cl_votestart changemap %s", name);		
 		Console->Execute(command);
-		game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
-		game->StartStopMenu(this, true);
+		GetHolder()->StartStopMenu(this, true);
 	}
 	else
 		return;
 }
 
-extern bool GetToken(char** sx, char* e, char* token);
-
 void CUIChangeMap::FillUpList(){
-	char Buffer[1024];
-	ZeroMemory(Buffer, sizeof(Buffer));
-//	memfil(Buffer, 0, sizeof(Buffer));
-	FILE* f = fopen(MAP_LIST, "rb");
-	if (!f) return;
 
-	size_t NumRead = fread(Buffer, 1, 1024, f);
-	if (!NumRead) return;
-	fclose(f);
+	string_path				fn;
+	FS.update_path			(fn, "$game_config$", MAP_LIST);
+	CInifile map_list_cfg	(fn);
 
+	LPCSTR sect_name		= get_token_name( game_types, GameID() );
 
-	char token[1024];
-	char* s = Buffer;
-	char* e = Buffer + xr_strlen(Buffer) + 1;
-
-//	int MapListType = GAME_ANY;
-
-	while (1)
-	{
-//		if ()
-		if (!GetToken(&s, e, token)) break;
-		if (!xr_strcmp(token, "weather"))
-		{
-			do {
-				GetToken(&s, e, token);
-			} while(0!=xr_strcmp(token, "}"));
-			continue;
-		}
-		if (!xr_strcmp(token, "deathmatch"))
-		{
-			if (GameID() != GAME_DEATHMATCH){
-				do {
-					GetToken(&s, e, token);
-				} while(0!=xr_strcmp(token, "}"));
-				continue;
-			}
-		}
-		else if (!xr_strcmp(token, "teamdeathmatch")) 
-		{
-			if (GameID() != GAME_TEAMDEATHMATCH){
-				do {
-					GetToken(&s, e, token);
-				} while(0!=xr_strcmp(token, "}"));
-                continue;
-			}
-		}
-		else if (!xr_strcmp(token, "artefacthunt")) 
-		{
-			if (GameID() != GAME_ARTEFACTHUNT){
-				do {
-					GetToken(&s, e, token);
-				} while(0!=xr_strcmp(token, "}"));
-                continue;
-			}
-		}
-		else break;
-
-		if (!GetToken(&s, e, token)) break;
-		if (xr_strcmp(token, "{")) break;
-
-		while (1)
-		{
-			if (!GetToken(&s, e, token)) break;
-			if (!xr_strcmp(token, "}")) break;
-
-			if (!xr_strcmp(token, "mapname"))
-			{
-				GetToken(&s, e, token);
-				lst->AddItem(token);
-			};
-		};
-	};
+	CInifile::Sect& S		= map_list_cfg.r_section(sect_name);
+	CInifile::SectIt it		= S.begin(), end = S.end();
+	
+	for (;it!=end; ++it){
+		shared_str _map_name = it->first;
+		lst->AddItem(*_map_name);
+	}
 }
 
 void CUIChangeMap::OnBtnCancel(){
-    game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
-	game->StartStopMenu(this, true);
+		GetHolder()->StartStopMenu(this, true);
 }
 
 IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);

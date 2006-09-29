@@ -23,13 +23,18 @@ public:
 
 protected:
 	void ParseWeather();
-	void AddWeather(LPCSTR name, LPCSTR time);
+	void AddWeather(const shared_str& name, const shared_str& time);
 	u32 weather_counter;
-	
+	struct SWeatherData{
+		CUIStatic*	m_static;
+		shared_str	m_weather_name;
+		shared_str	m_weather_time;
+	};
 
 	CUIStatic*		header;
 	CUI3tButton*	btn[4];
-	CUIStatic*		txt[4];
+	SWeatherData	m_data[4];
+//.	CUIStatic*		txt[4];
 	CUIStatic*		bkgrnd;
 	CUI3tButton*	btn_cancel;
 };

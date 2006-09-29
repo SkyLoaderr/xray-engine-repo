@@ -44,6 +44,10 @@ CUIVotingCategory::CUIVotingCategory(){
 
 CUIVotingCategory::~CUIVotingCategory(){
 	xr_delete(kick);
+	xr_delete(change_map);
+	xr_delete(change_weather);
+	xr_delete(text_vote);
+
 	xr_delete(xml_doc);
 }
 

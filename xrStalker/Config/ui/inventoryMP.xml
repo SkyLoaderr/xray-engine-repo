@@ -68,9 +68,9 @@
 			cell_width = "40" cell_height="40"
 			rows_num="2" cols_num="6" rows_num_view="9" group_similar="1" unlimited="1"/>
 
-	<belt_list x="581" y="116" width="1024" height="100"
-			cell_width = "53" cell_height="50"
-			rows_num="2" cols_num="8" />
+	<belt_list x="581" y="116" width="421" height="100"
+			cell_width = "50" cell_height="50"
+			rows_num="2" cols_num="8" group_similar="1"/>
 	
 	<pistol_list x="37" y="140" width="120" height="50"
 			cell_width = "53" cell_height="50"

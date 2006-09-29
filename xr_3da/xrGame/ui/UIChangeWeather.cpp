@@ -26,9 +26,9 @@ CUIChangeWeather::CUIChangeWeather(){
 		btn[i]->SetAutoDelete(true);
 		AttachChild(btn[i]);
 
-		txt[i] = xr_new<CUIStatic>();
-		txt[i]->SetAutoDelete(true);
-		AttachChild(txt[i]);
+		m_data[i].m_static = xr_new<CUIStatic>();
+		m_data[i].m_static->SetAutoDelete(true);
+		AttachChild(m_data[i].m_static);
 	}
 
 	weather_counter = 0;
@@ -45,7 +45,7 @@ void CUIChangeWeather::Init(CUIXml& xml_doc){
 		sprintf(_path, "change_weather:btn_%d", i + 1);
 		CUIXmlInit::Init3tButton(xml_doc, _path, 0, btn[i]);
 		sprintf(_path, "change_weather:txt_%d", i + 1);
-		CUIXmlInit::InitStatic(xml_doc, _path, 0, txt[i]);
+		CUIXmlInit::InitStatic(xml_doc, _path, 0, m_data[i].m_static);
 	}
 
 	CUIXmlInit::Init3tButton(xml_doc, "change_weather:btn_cancel", 0, btn_cancel);
@@ -87,11 +87,10 @@ bool CUIChangeWeather::OnKeyboard(int dik, EUIMessages keyboard_action){
 #include "../../xr_ioconsole.h"
 
 void CUIChangeWeather::OnBtn(int i){
-	game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
-//	LPCSTR weather_time = *txt[i]->WindowName();
-	string1024 command;
-	sprintf(command, "cl_votestart changeweather %s %s", txt[i]->GetText(), *txt[i]->WindowName());
-	Console->Execute(command);
+	game_cl_mp* game		= smart_cast<game_cl_mp*>(&Game());
+	string1024				command;
+	sprintf					(command, "cl_votestart changeweather %s %s", *m_data[i].m_weather_name, *m_data[i].m_weather_time);
+	Console->Execute		(command);
 	game->StartStopMenu(this, true);
 }
 
@@ -100,58 +99,36 @@ void CUIChangeWeather::OnBtnCancel(){
 	game->StartStopMenu(this, true);
 }
 
-extern bool GetToken(char** sx, char* e, char* token);
+#include "UIMapList.h"
 
 void CUIChangeWeather::ParseWeather()
 {
 	weather_counter = 0;
 
-	char Buffer[1024];
-	ZeroMemory(Buffer, sizeof(Buffer));
-//	memfil(Buffer, 0, sizeof(Buffer));
-	FILE* f = fopen("map_list.ltx", "rb");
-	R_ASSERT(f);
 
-	size_t NumRead = fread(Buffer, 1, 1024, f);
-	if (!NumRead) return;
-	fclose(f);
+	string_path				fn;
+	FS.update_path			(fn, "$game_config$", MAP_LIST);
+	CInifile map_list_cfg	(fn);
 
+	shared_str				weather_sect = "weather";
+	CInifile::Sect& S		= map_list_cfg.r_section(weather_sect);
+	CInifile::SectIt it		= S.begin(), end = S.end();
+	
+	shared_str				WeatherType;
+	shared_str				WeatherTime;
 
-	char token[1024];
-	char* s = Buffer;
-	char* e = Buffer + xr_strlen(Buffer) + 1;
-
-	while (true)
-	{
-		if (!GetToken(&s, e, token))
-			return;
-		if (0 == xr_strcmp(token,"weather"))
-			break;		
+	for (;it!=end; ++it){
+		WeatherType			= it->first;
+		WeatherTime			= map_list_cfg.r_string(weather_sect, *WeatherType);
+		
+		AddWeather			(WeatherType, WeatherTime);
 	}
-
-	while (1)
-	{	
-		if (!GetToken(&s, e, token)) break;
-		if (xr_strcmp(token, "{")) break;
-		while (1)
-		{
-			if (!GetToken(&s, e, token)) break;
-			if (!xr_strcmp(token, "}")) return;
-			if (!xr_strcmp(token, "startweather"))
-			{
-				char WeatherType[1024], WeatherTime[1024];
-				GetToken(&s, e, WeatherType);
-				GetToken(&s, e, WeatherTime);
-
-				AddWeather(WeatherType, WeatherTime);
-			};
-		};
-	};
 };
 
-void CUIChangeWeather::AddWeather(LPCSTR weather, LPCSTR time){
-	txt[weather_counter]->SetText(weather);
-	txt[weather_counter]->SetWindowName(time);
+void CUIChangeWeather::AddWeather(const shared_str& weather, const shared_str& time){
+	m_data[weather_counter].m_static->SetTextST	(*weather);
+	m_data[weather_counter].m_weather_name		= weather;
+	m_data[weather_counter].m_weather_time		= time;
 	weather_counter++;
 }
 

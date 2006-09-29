@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "UIWindow.h"
@@ -12,22 +11,10 @@ class CUI3tButton;
 class CUISpinText;
 class CUIMapInfo;
 class CUIComboBox;
-
 class CUIXml;
-/*
-enum	GAME_TYPE
-{
-	GAME_DEATHMATCH				=0,
-	GAME_TEAMDEATHMATCH			,
-	GAME_ARTEFACTHUNT			,
 
-	GAME_END_LIST				,
-};
-*/
-
-
-bool GetToken(char** sx, char* e, char* token);
-bool MP_map_cmp(const shared_str& map1, const shared_str& map2);
+#define	MAP_LIST			"mp\\map_list.ltx"
+#define	MAP_ROTATION_LIST	"maprot_list.ltx"
 
 class CUIMapList : public CUIWindow {
 public:

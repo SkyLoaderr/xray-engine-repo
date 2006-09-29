@@ -12,20 +12,10 @@
 #include "../../xr_ioconsole.h"
 
 
-#define	MAP_LIST			"map_list.ltx"
-#define	MAP_ROTATION_LIST	"maprot_list.ltx"
 
 extern ENGINE_API string512  g_sLaunchOnExit;
 
 xr_token	game_types		[];
-/*
-xr_token	g_GameTypeName	[]	= {
-	{"Deathmatch",			GAME_DEATHMATCH},
-	{"TeamDeathmatch",		GAME_TEAMDEATHMATCH},
-	{"ArtefactHunt",		GAME_ARTEFACTHUNT},
-
-	{0,						0}
-};*/
 
 CUIMapList::CUIMapList(){
 	m_item2del = -1;
@@ -197,7 +187,9 @@ const char* CUIMapList::GetCommandLine(LPCSTR player_name){
 
 void CUIMapList::LoadMapList()
 {
-	CInifile	map_list_cfg(MAP_LIST);
+	string_path				fn;
+	FS.update_path			(fn, "$game_config$", MAP_LIST);
+	CInifile map_list_cfg	(fn);
 
 	// maps
 	for (int k=0; game_types[k].name; ++k)
@@ -214,7 +206,6 @@ void CUIMapList::LoadMapList()
 			shared_str _map_name = it->first;
 			m_maps[_id].push_back	(_map_name);
 		}
-//		std::sort(m_maps[_id].begin(), m_maps[_id].end(), MP_map_cmp);
 	}
 
 	//weather
@@ -232,68 +223,7 @@ void CUIMapList::LoadMapList()
 		AddWeather			(WeatherType, WeatherTime);
 	}
 }
-/*
-void CUIMapList::LoadMapList(){
-	char Buffer[1024];
-	ZeroMemory(Buffer, sizeof(Buffer));
-	FILE* f = fopen(MAP_LIST, "rb");
-	if (!f) return;
 
-	size_t NumRead = fread(Buffer, 1, 1024, f);
-	if (!NumRead) return;
-	fclose(f);
-
-
-	char token[1024];
-	char* s = Buffer;
-	char* e = Buffer + xr_strlen(Buffer) + 1;
-
-	int MapListType = GAME_UNKNOWN;
-
-	while (1)
-	{
-		if (!GetToken(&s, e, token)) break;
-		if (!xr_strcmp(token, "deathmatch")) MapListType = GAME_DEATHMATCH;
-		else
-		{
-			if (!xr_strcmp(token, "teamdeathmatch")) MapListType = GAME_TEAMDEATHMATCH;
-			else
-			{
-				if (!xr_strcmp(token, "artefacthunt")) MapListType = GAME_ARTEFACTHUNT;
-				else 
-				{
-					if (!xr_strcmp(token, "weather"))
-					{
-						ParseWeather(&s, e);
-						continue;
-					}
-					else break;
-				};				
-			}
-		}
-		if (!GetToken(&s, e, token)) break;
-		if (xr_strcmp(token, "{")) break;
-
-//		m_MapsNum[MapListType] = 0;
-		while (1)
-		{
-			if (!GetToken(&s, e, token)) break;
-			if (!xr_strcmp(token, "}")) break;
-
-			if (!xr_strcmp(token, "mapname"))
-			{
-				GetToken(&s, e, token);
-				//strcpy(m_Maps[MapListType][m_MapsNum[MapListType]++], token);
-				m_Maps[MapListType].push_back(token);
-			};
-		};
-	};
-
-	std::sort(m_Maps[GAME_DEATHMATCH].begin(),		m_Maps[GAME_DEATHMATCH].end(),		MP_map_cmp);
-	std::sort(m_Maps[GAME_TEAMDEATHMATCH].begin(),	m_Maps[GAME_TEAMDEATHMATCH].end(),	MP_map_cmp);
-	std::sort(m_Maps[GAME_ARTEFACTHUNT].begin(),	m_Maps[GAME_ARTEFACTHUNT].end(),	MP_map_cmp);
-}
-*/
 void	CUIMapList::SaveMapList(){
 	FILE* MapRotFile = fopen(MAP_ROTATION_LIST, "w");
 	if (!MapRotFile)
@@ -309,36 +239,6 @@ void	CUIMapList::SaveMapList(){
 	fclose(MapRotFile);
 }
 
-/*
-void	CUIMapList::ParseWeather(char** ps, char* e)
-{
-	//	char* s = *ps;
-	char token[1024];
-
-	while (1)
-	{	
-		if (!GetToken(ps, e, token)) break;
-		if (xr_strcmp(token, "{")) break;
-		while (1)
-		{
-			if (!GetToken(ps, e, token)) break;
-			if (!xr_strcmp(token, "}")) 
-			{
-				m_pWeatherSelector->SetItem(0);
-				return;
-			}
-			if (!xr_strcmp(token, "startweather"))
-			{
-				char WeatherType[1024], WeatherTime[1024];
-				GetToken(ps, e, WeatherType);
-				GetToken(ps, e, WeatherTime);
-
-				AddWeather(WeatherType, WeatherTime);
-			};
-		};
-	};	
-};
-*/
 void CUIMapList::SetWeatherSelector(CUIComboBox* ws){
 	m_pWeatherSelector = ws;
 }
@@ -366,7 +266,7 @@ void CUIMapList::AddWeather(const shared_str& WeatherType, const shared_str& Wea
 	int	w_time;
 	int hour = 0, min = 0;
 
-	sscanf(*WeatherType, "%d:%d", &hour, &min);
+	sscanf(*WeatherTime, "%d:%d", &hour, &min);
 	w_time = hour*60+min;
 
 	m_mapWeather.insert(mk_pair(WeatherType, w_time));
@@ -426,95 +326,4 @@ void CUIMapList::OnBtnDownClick(){
 
 bool CUIMapList::IsEmpty(){
 	return 0 == m_pList2->GetSize();
-}
-
-
-
-bool GetToken(char** sx, char* e, char* token)
-{
-	char* s = *sx;
-
-	if (!s || !token) return false;	
-
-skipspace:
-
-	if (s == e) return false;
-	while (*s <= 32 || s == e)
-	{
-		if (s == e) 
-		{
-			*sx = s;
-			return false;
-		}
-		s++;
-	};
-
-	// comments	; # //
-	if (*s == ';' || *s == '#' || (s[0] == '/' && s[1] == '/'))
-	{
-		while (*s++ != '\n')
-		{
-			if (s == e) 
-			{
-				*sx = s;
-				return false;
-			}
-		};
-		goto skipspace;
-	}
-	// comments /* */
-	if (s[0] == '/' && s[1] == '*')
-	{
-		s += 2;
-		while (s[0] != '*' || s[1] != '/')
-		{
-			if (s == e) 
-			{
-				*sx = s;
-				return false;
-			}
-			s++;
-		};
-		s += 2;
-		goto skipspace;
-	};
-
-	char *t = token;
-	char control;
-	if (*s == '"' || *s == '\'')
-	{
-		control = *s;
-		s++;
-		while (*s != control) 
-		{
-			*t++ = *s++;
-			if (s == e) 
-			{
-				*sx = s;
-				return false;
-			}
-		}
-		*t = 0;
-		s++;
-		*sx = s;
-	}
-	else
-	{
-		while (*s > 32 && *s != ';')
-		{
-			*t++ = *s++;
-			if (s == e) 
-			{
-				*sx = s;
-				return false;
-			}
-		};
-		*t = 0;
-		*sx = s;
-	};
-	return true;
-};
-
-bool MP_map_cmp(const shared_str& map1, const shared_str& map2){
-    return map1 < map2;
 }

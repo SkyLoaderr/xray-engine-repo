@@ -41,7 +41,7 @@ protected:
 
 	u32			m_prev_upd_time;
 
-	DEFINE_VECTOR	(LPVOID,ItemVec,ItemIt);
-	ItemVec			items;
+//.	DEFINE_VECTOR	(LPVOID,ItemVec,ItemIt);
+//.	ItemVec			items;
 	u32				selected_item;
 };
