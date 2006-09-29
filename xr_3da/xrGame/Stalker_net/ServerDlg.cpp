@@ -233,7 +233,9 @@ BOOL CServerDlg::OnInitDialog()
 
 void	CServerDlg::LoadMapList()
 {
-	CInifile	map_list_cfg(MAP_LIST);
+	string_path			fn;
+	FS.update_path		(fn, "$game_config$", MAP_LIST);
+	CInifile			map_list_cfg(fn);
 
 	// maps
 	for (int k=0; game_types[k].name; ++k)

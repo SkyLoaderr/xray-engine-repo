@@ -15,7 +15,7 @@
 #ifdef	TESTERS
 
 #define	LTX			"-ltx user_testers.ltx"
-#define	MAP_LIST	"map_list_testers.ltx"
+#define	MAP_LIST	"mp\\map_list_testers.ltx"
 #define ICON_ID		IDR_MAINFRAME1
 #define WND_NAME	"Stalknet_Testers"
 
@@ -23,7 +23,7 @@
 #else
 
 #define	LTX			"-ltx user_net.ltx"
-#define	MAP_LIST	"map_list.ltx"
+#define	MAP_LIST	"mp\\map_list.ltx"
 #define ICON_ID		IDR_MAINFRAME
 #define WND_NAME	"Stalker_Net"
 

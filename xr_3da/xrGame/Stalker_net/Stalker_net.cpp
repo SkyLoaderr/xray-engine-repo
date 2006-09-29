@@ -24,7 +24,10 @@ CStalker_netApp::CStalker_netApp()
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 }
-
+CStalker_netApp::~CStalker_netApp()
+{
+	Core._destroy();
+}
 
 // The one and only CStalker_netApp object
 
@@ -42,6 +45,8 @@ BOOL CStalker_netApp::InitInstance()
 
 	CWinApp::InitInstance();
 
+	Core._initialize("Stalker_net", NULL, TRUE);
+	
 	if (!AfxSocketInit())
 	{
 		AfxMessageBox(IDP_SOCKETS_INIT_FAILED);

@@ -18,6 +18,7 @@ class CStalker_netApp : public CWinApp
 {
 public:
 	CStalker_netApp();
+	virtual	~CStalker_netApp();
 
 // Overrides
 	public:
