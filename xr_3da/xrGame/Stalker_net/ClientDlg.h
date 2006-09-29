@@ -10,10 +10,11 @@
 #define GAMETYPE_NAME_KEY						100
 #define	DEDICATED_KEY							101
 #define	G_FRIENDLY_FIRE_KEY						117
-
+#pragma once
 //#include <dplay8.h>
-
+/*
 #define IC			inline
+
 class xrCriticalSection
 {
 private:
@@ -43,7 +44,7 @@ public:
 		return TryEnterCriticalSection( &m_CritSec );
 	};
 };
-
+*/
 
 // CClientDlg dialog
 

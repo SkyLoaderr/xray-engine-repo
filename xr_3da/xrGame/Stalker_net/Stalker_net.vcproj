@@ -40,6 +40,7 @@
 				AdditionalDependencies="dplayx.lib dxerr8.lib dxguid.lib"
 				OutputFile="x:\Stalker_net.exe "
 				LinkIncremental="2"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				TargetMachine="1"/>

@@ -12,6 +12,18 @@
 #include "Version_Define.h"
 // CServerDlg dialog
 
+xr_token game_types[]={
+	{ "any game",		ST_GAME_ANY		},
+	{ "single",			ST_GAME_SINGLE		},
+	{ "deathmatch",		ST_GAME_DEATHMATCH },
+	//	{ "CTF",			GAME_CTF		},
+	//	{ "assault",		GAME_ASSAULT	},
+	{ "counterstrike",	ST_GAME_CS			},
+	{ "teamdeathmatch",	ST_GAME_TEAMDEATHMATCH },
+	{ "artefacthunt",	ST_GAME_ARTEFACTHUNT },
+	{ 0,				0				}
+};
+
 IMPLEMENT_DYNAMIC(CServerDlg, CSubDlg)
 CServerDlg::CServerDlg(CWnd* pParent /*=NULL*/)
 	: CSubDlg(CServerDlg::IDD, pParent)
@@ -190,7 +202,7 @@ BOOL CServerDlg::OnInitDialog()
 	m_pStartServerBtn.EnableWindow(false);
 	//---------------------------------------
 	SwitchGameType(GAME_DEATHMATCH);
-
+	
 	if (m_MapsNum[GAME_DEATHMATCH] == 0) 
 	{
 		m_pSVGameTypeDlg->m_pGameDM.EnableWindow(false);
@@ -206,6 +218,7 @@ BOOL CServerDlg::OnInitDialog()
 		m_pSVGameTypeDlg->m_pGameAHunt.EnableWindow(false);
 		SwitchGameType(GAME_DEATHMATCH);
 	};
+	
 	//-------------------------------------------
 	OnBnClickedServerOptions();
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -213,7 +226,51 @@ BOOL CServerDlg::OnInitDialog()
 // CServerDlg message handlers
 
 #include "Misc_Ruts.h"
+
+//DEF_VECTOR(shared_str_vec, shared_str)
+//DEF_MAP(storage_map, EGameTypes, shared_str_vec)
+//storage_map				m_maps;
+
 void	CServerDlg::LoadMapList()
+{
+	CInifile	map_list_cfg(MAP_LIST);
+
+	// maps
+	for (int k=0; game_types[k].name; ++k)
+	{
+		EGameTypes _id			= (EGameTypes)game_types[k].id;
+		LPCSTR _name			= game_types[k].name;
+
+		if( !map_list_cfg.section_exist(_name) ) continue;
+
+		CInifile::Sect& S		= map_list_cfg.r_section(_name);
+		CInifile::SectIt it		= S.begin(), end = S.end();
+
+		for (;it!=end; ++it){
+			shared_str _map_name = it->first;
+			m_maps[_id].push_back	(_map_name);
+//			strcpy(m_Maps[MapListType][m_MapsNum[MapListType]++], token);
+		}
+		//		std::sort(m_maps[_id].begin(), m_maps[_id].end(), MP_map_cmp);
+	}
+
+	//weather
+	shared_str				weather_sect = "weather";
+	CInifile::Sect& S		= map_list_cfg.r_section(weather_sect);
+	CInifile::SectIt it		= S.begin(), end = S.end();
+
+	shared_str				WeatherType;
+	shared_str				WeatherTime;
+
+	for (;it!=end; ++it){
+		WeatherType			= it->first;
+		WeatherTime			= map_list_cfg.r_string(weather_sect, *WeatherType);
+
+//		AddWeather			(WeatherType, WeatherTime);
+		m_pSVWeatherOptDlg->AddWeather(*WeatherType, *WeatherTime);
+	}
+}
+/*
 {
 	char Buffer[4096];
 	memset(Buffer, 0, sizeof(Buffer));
@@ -269,6 +326,7 @@ void	CServerDlg::LoadMapList()
 		};
 	};
 };
+*/
 
 void	CServerDlg::ParseWeather(char** ps, char* e)
 {

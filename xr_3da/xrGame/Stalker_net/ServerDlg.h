@@ -41,6 +41,11 @@ protected:
 	char	m_Maps[GAME_END_LIST][20][1024];
 	int		m_MapsNum[GAME_END_LIST];	
 
+	DEF_VECTOR(shared_str_vec, shared_str)
+	DEF_MAP(storage_map, EGameTypes, shared_str_vec)
+	storage_map				m_maps;
+
+
 	BOOL	AddDlg(CSubDlg* pNewDlg, CWnd* ParentWnd, int &CX, int &CY);
 
 public:

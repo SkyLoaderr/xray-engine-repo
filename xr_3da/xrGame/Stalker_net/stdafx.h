@@ -42,3 +42,6 @@
 
 #include <afxsock.h>		// MFC socket extensions
 #include <afxdhtml.h>
+#include "xrcore.h"
+
+//.#include "../../x_ray/stdafx.h"

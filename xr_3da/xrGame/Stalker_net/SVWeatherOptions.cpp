@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "Stalker_net.h"
 #include "SVWeatherOptions.h"
+#include "xrstring.h"
 
 
 // SVWeatherOptions dialog
@@ -41,7 +42,7 @@ BOOL SVWeatherOptions::OnInitDialog()
 	return TRUE;
 };
 
-void	SVWeatherOptions::AddWeather(char* WeatherType, char* WeatherTime)
+void	SVWeatherOptions::AddWeather(const char* WeatherType, const char* WeatherTime)
 {
 	if (!WeatherType || !WeatherTime) return;
 	if (!WeatherType[0] || !WeatherTime[0]) return;

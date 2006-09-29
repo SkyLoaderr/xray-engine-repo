@@ -24,5 +24,5 @@ public:
 	CComboBox m_pStartWeather;
 	CEdit m_pWeatherSpeedCoeff;
 
-	void	AddWeather(char* WeatherType, char* WeatherTime);
+	void	AddWeather(const char* WeatherType, const char* WeatherTime);
 };
