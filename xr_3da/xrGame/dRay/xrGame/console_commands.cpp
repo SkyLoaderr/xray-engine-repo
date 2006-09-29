@@ -39,13 +39,13 @@
 #include "GameTask.h"
 #include "MainMenu.h"
 #include "saved_game_wrapper.h"
+#include "level_graph.h"
 
 //#define MASTER_GOLD;
 
 #ifdef DEBUG
 #	include "PHDebug.h"
 #	include "ui/UIDebugFonts.h" 
-#	include "level_graph.h"
 #endif
 #	include "hudmanager.h"
 
