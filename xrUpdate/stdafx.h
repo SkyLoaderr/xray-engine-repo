@@ -17,4 +17,5 @@
 #undef VERIFY
 #undef STRICT
 #undef _WIN32_WINNT
-#include "../xray/stdafx.h"
+//.#include "../xray/stdafx.h"
+#include "xrcore.h"
