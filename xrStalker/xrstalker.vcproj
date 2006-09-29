@@ -746,6 +746,9 @@
 					RelativePath=".\Config\mp\laststanding_game.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\mp\map_list.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\mp\mp_actor.ltx">
 				</File>
 				<File
