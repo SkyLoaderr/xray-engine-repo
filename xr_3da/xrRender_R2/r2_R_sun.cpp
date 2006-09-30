@@ -521,6 +521,20 @@ void CRender::render_sun				()
 	s_casters.reserve							(s_receivers.size());
 	set_Recorder								(&s_casters);
 	r_dsgraph_render_subspace					(cull_sector, &cull_frustum, cull_xform, cull_COP, TRUE);
+
+	// IGNORE PORTALS
+	if	(ps_r2_ls_flags.test(R2FLAG_SUN_IGNORE_PORTALS))
+	{
+		for		(u32 s=0; s<Sectors.size(); s++)
+		{
+			CSector*			S		= (CSector*)Sectors[s]	;
+			IRender_Visual*		root	= S->root()				;
+
+			set_Frustum			(&cull_frustum);
+			add_Geometry		(root);
+		}
+	}
+
 	set_Recorder								(NULL);
 
 	//	Prepare to interact with D3DX code
