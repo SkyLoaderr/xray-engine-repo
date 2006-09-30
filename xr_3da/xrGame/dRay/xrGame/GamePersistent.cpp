@@ -202,10 +202,16 @@ void CGamePersistent::WeathersUpdate()
 				ambient_sound_next_time	= Device.dwTimeGlobal + env_amb->get_rnd_sound_time();
 				if (snd){
 					Fvector	pos;
-					pos.random_dir		(Fvector().set(0,1,0),PI).normalize().mul(env_amb->get_rnd_sound_dist()).add(Device.vCameraPosition);
+					float	angle		= R.randF(PI_MUL_2);
+					pos.x				= cosf(angle);
+					pos.y				= 0;
+					pos.z				= sinf(angle);
+					pos.normalize		().mul(env_amb->get_rnd_sound_dist()).add(Device.vCameraPosition);
+					pos.y				+= 10.f;
 					snd->play_at_pos	(0,pos);
 				}
 			}
+
 			// start effect
 			if ((FALSE==bIndoor) && (0==ambient_particles) && Device.dwTimeGlobal>ambient_effect_next_time){
 				CEnvAmbient::SEffect* eff			= env_amb->get_rnd_effect(); 
