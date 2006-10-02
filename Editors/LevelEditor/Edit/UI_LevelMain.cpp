@@ -114,14 +114,7 @@ CCommandVar CLevelTools::CommandReadonlyTarget(CCommandVar p1, CCommandVar p2)
         if (!Scene->IfModified()){    
 		    M->m_EditFlags.set(ESceneCustomMTools::flForceReadonly,FALSE);
             res				= FALSE;
-        }else{
-            xr_string pn	= Scene->LevelPartName(LTools->m_LastFileName.c_str(),M->ClassID);
-         	EFS.UnlockFile	(_maps_,pn.c_str(),false);
         }
-    }else{
-        xr_string pn		= Scene->LevelPartName(LTools->m_LastFileName.c_str(),M->ClassID);
-    	if (!EFS.CheckLocking(_maps_,pn.c_str(),false,false))
-         	EFS.LockFile	(_maps_,pn.c_str(),false);
     }
     if (res){
     	Reset				();
@@ -149,14 +142,14 @@ CCommandVar CommandLoadLevelPart(CCommandVar p1, CCommandVar p2)
 {
     xr_string temp_fn	= LTools->m_LastFileName.c_str();
     if (!temp_fn.empty())
-        return			Scene->LoadLevelPart(_maps_,temp_fn.c_str(),p1,p2);
+        return			Scene->LoadLevelPart(temp_fn.c_str(),p2);
     return				FALSE;
 }
 CCommandVar CommandUnloadLevelPart(CCommandVar p1, CCommandVar p2)
 {
     xr_string temp_fn	= LTools->m_LastFileName.c_str();
     if (!temp_fn.empty())
-        return			Scene->UnloadLevelPart(_maps_,temp_fn.c_str(),p1,p2);
+        return			Scene->UnloadLevelPart(temp_fn.c_str(),p2);
     return				FALSE;
 }
 CCommandVar CommandLoad(CCommandVar p1, CCommandVar p2)
@@ -168,15 +161,13 @@ CCommandVar CommandLoad(CCommandVar p1, CCommandVar p2)
             	return 			ExecCommand(COMMAND_LOAD,temp_fn);
         }else{
 	        xr_string temp_fn	= p1; xr_strlwr(temp_fn);
-            if (0==temp_fn.find(FS.get_path(_maps_)->m_Path))
-                temp_fn 		= xr_string(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path));
                 
             if (!Scene->IfModified())	return FALSE;
             
             UI->SetStatus			("Level loading...");
             ExecCommand				(COMMAND_CLEAR);
 
-            if (Scene->Load	(_maps_, temp_fn.c_str(), false)){
+            if (Scene->Load	(temp_fn.c_str(), false)){
                 LTools->m_LastFileName	= temp_fn.c_str();
                 UI->ResetStatus		();
                 Scene->UndoClear	();
@@ -212,26 +203,22 @@ CCommandVar CommandSave(CCommandVar p1, CCommandVar p2)
         if (p2==1){
             xr_string temp_fn	= LTools->m_LastFileName.c_str();
             if (EFS.GetSaveName	( _maps_, temp_fn ))
-                return 				ExecCommand(COMMAND_SAVE,temp_fn,0);
+                return 			ExecCommand(COMMAND_SAVE,temp_fn,0);
         }else{
             if (p1.IsInteger())
-            	return 				ExecCommand(COMMAND_SAVE,xr_string(LTools->m_LastFileName.c_str()),0);
-            xr_string temp_fn		= xr_string(p1);
+            	return 			ExecCommand(COMMAND_SAVE,xr_string(LTools->m_LastFileName.c_str()),0);
+            xr_string temp_fn	= xr_string(p1);
             if (temp_fn.empty()){
-                return 				ExecCommand(COMMAND_SAVE,temp_fn,1);
+                return 			ExecCommand(COMMAND_SAVE,temp_fn,1);
             }else{
-                xr_strlwr			(temp_fn);
-                if (0==temp_fn.find(FS.get_path(_maps_)->m_Path))
-                    temp_fn 		= xr_string(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path));
+                xr_strlwr		(temp_fn);
                 
                 UI->SetStatus	("Level saving...");
-                Scene->Save		(_maps_, temp_fn.c_str(), false);
+                Scene->Save		(temp_fn.c_str(), false);
                 UI->ResetStatus	();
                 // set new name
                 if (0!=xr_strcmp(Tools->m_LastFileName.c_str(),temp_fn.c_str())){
-	                Scene->UnlockLevel		(_maps_,Tools->m_LastFileName.c_str());
     	            Tools->m_LastFileName 	= temp_fn.c_str();
-        	        Scene->LockLevel		(_maps_,Tools->m_LastFileName.c_str());
                 }
                 ExecCommand		(COMMAND_UPDATE_CAPTION);
                 EPrefs->AppendRecentFile(temp_fn.c_str());
@@ -240,19 +227,15 @@ CCommandVar CommandSave(CCommandVar p1, CCommandVar p2)
         }
     } else {
         ELog.DlgMsg			( mtError, "Scene sharing violation" );
+        return				FALSE;
     }
+    ELog.DlgMsg				( mtError, "Can't save level. Unknown error." );
     return 					FALSE;
 }
 CCommandVar CommandClear(CCommandVar p1, CCommandVar p2)
 {
     if( !Scene->locked() ){
         if (!Scene->IfModified()) return TRUE;
-        // backup map
-        if (!Tools->m_LastFileName.IsEmpty()&&Scene->IsModified()){
-        	Scene->BackupLevel	(_maps_,Tools->m_LastFileName.c_str());
-        }
-        // unlock
-        Scene->UnlockLevel		(_maps_,Tools->m_LastFileName.c_str());
         Device.m_Camera.Reset	();
         Scene->Reset			();
         Scene->m_LevelOp.Reset	();
@@ -375,7 +358,7 @@ CCommandVar CommandLoadSelection(CCommandVar p1, CCommandVar p2)
         	if (fn.c_str()==strstr(fn.c_str(),maps_path))
 		        LTools->m_LastSelectionName = fn.c_str()+xr_strlen(maps_path);
             UI->SetStatus		("Fragment loading...");
-            Scene->LoadSelection(0,fn.c_str());
+            Scene->LoadSelection(fn.c_str());
             UI->ResetStatus		();
             Scene->UndoSave		();
             ExecCommand			(COMMAND_CHANGE_ACTION,etaSelect);
@@ -397,7 +380,7 @@ CCommandVar CommandSaveSelection(CCommandVar p1, CCommandVar p2)
         	if (fn.c_str()==strstr(fn.c_str(),maps_path))
 		        LTools->m_LastSelectionName = fn.c_str()+xr_strlen(maps_path);
             UI->SetStatus		("Fragment saving...");
-            Scene->SaveSelection(LTools->CurrentClassID(),0,fn.c_str());
+            Scene->SaveSelection(LTools->CurrentClassID(),fn.c_str());
             UI->ResetStatus		();
 	        return 				TRUE;
         }

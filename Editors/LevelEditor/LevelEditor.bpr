@@ -291,7 +291,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=126
+Build=128
 Debug=1
 PreRelease=0
 Special=0
@@ -303,7 +303,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.126
+FileVersion=1.0.2.128
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -354,17 +354,19 @@ Count=1
 Item0=intermediate
 
 [HistoryLists\hlFinalOutputDir]
-Count=4
+Count=6
 Item0=x:\
-Item1=u:\preliminary\
-Item2=u:\preliminary
-Item3=z:\
+Item1=x:\build\
+Item2=x:\build
+Item3=u:\preliminary\
+Item4=u:\preliminary
+Item5=z:\
 
 [Debugging]
 DebugSourceDirs=
 
 [Parameters]
-RunParams=
+RunParams=-nocache
 Launcher=
 UseLauncher=0
 DebugCWD=

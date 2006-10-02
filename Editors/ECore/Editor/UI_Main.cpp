@@ -529,8 +529,6 @@ bool TUI::OnCreate(TD3DWindow* w, TPanel* p)
 
     m_bReady		= true;
 
-    EFS.WriteAccessLog((LPSTR)UI->EditorDesc(),"Started");
-
     if (!CreateMailslot()){
     	ELog.DlgMsg	(mtError,"Can't create mail slot.\nIt's possible two Editors started.");
         return 		false;
@@ -548,8 +546,6 @@ bool TUI::OnCreate(TD3DWindow* w, TPanel* p)
 
 void TUI::OnDestroy()
 {
-    EFS.WriteAccessLog((LPSTR)UI->EditorDesc(),"Finished");
-
 	VERIFY(m_bReady);
 	m_bReady		= false;
 	UI->IR_Release	();

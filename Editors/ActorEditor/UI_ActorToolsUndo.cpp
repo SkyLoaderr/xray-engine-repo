@@ -23,7 +23,7 @@ void CActorTools::UndoSave()
 	UndoItem item;
 	GetTempFileName( FS.get_path(_temp_)->m_Path, "undo", 0, item.m_FileName );
 
-	Save( 0, item.m_FileName, true );
+	Save( item.m_FileName, true );
 	m_UndoStack.push_back( item );
 
 	while( !m_RedoStack.empty() ){
@@ -49,7 +49,7 @@ bool CActorTools::Undo()
 
 		if( !m_UndoStack.empty() ){
 			Clear();
-         	Load( 0, m_UndoStack.back().m_FileName );
+         	Load( m_UndoStack.back().m_FileName );
         }
 
         Modified();
@@ -63,7 +63,7 @@ bool CActorTools::Redo()
 {
 	if( !m_RedoStack.empty() ){
         Clear();
-		Load( 0, m_RedoStack.back().m_FileName );
+		Load( m_RedoStack.back().m_FileName );
 
 		m_UndoStack.push_back( m_RedoStack.back() );
 		m_RedoStack.pop_back();

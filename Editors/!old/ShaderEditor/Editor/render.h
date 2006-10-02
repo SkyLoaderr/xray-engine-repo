@@ -97,7 +97,7 @@ public:
 	void 					model_RenderSingle		(IRender_Visual* m_pVisual, const Fmatrix& mTransform, float m_fLOD);
 	virtual	GenerationLevel	get_generation			(){return GENERATION_R1;}
 
-	virtual void			add_SkeletonWallmark	(CSkeletonWallmark* wm){};
+	virtual void			add_SkeletonWallmark	(intrusive_ptr<CSkeletonWallmark> wm){};
 	virtual void			add_SkeletonWallmark	(const Fmatrix* xf, CKinematics* obj, ref_shader& sh, const Fvector& start, const Fvector& dir, float size){};
 
 	// Render mode

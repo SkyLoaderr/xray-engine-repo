@@ -90,10 +90,7 @@ bool CSHGameMtlPairTools::Save()
     m_bLockUpdate		= TRUE;
 
     // save
-    EFS.UnlockFile		(_game_data_,GAMEMTL_FILENAME,false);
-    EFS.BackupFile		(_game_data_,GAMEMTL_FILENAME,50);
     bool bRes			= GMLib.Save();
-    EFS.LockFile		(_game_data_,GAMEMTL_FILENAME,false);
     m_bLockUpdate		= FALSE;
     if (bRes)			m_bModified	= FALSE;
     return bRes;

@@ -47,6 +47,8 @@ xr_token eax_environment[]		= {
 CSHSoundEnvTools::CSHSoundEnvTools(ISHInit& init):ISHTools(init)
 {
     m_Env	 			= 0;
+    m_SoundName			= "alexmx\\fld_test";
+    OnChangeWAV			(0);
 }
 
 CSHSoundEnvTools::~CSHSoundEnvTools()
@@ -59,7 +61,7 @@ void CSHSoundEnvTools::OnChangeWAV	(PropValue* prop)
 	BOOL bPlay 		= !!m_PreviewSnd._feedback();
 	m_PreviewSnd.destroy();
 	if (m_SoundName.size()){
-    	m_PreviewSnd.create				(1,*m_SoundName);
+    	m_PreviewSnd.create				(*m_SoundName,st_Effect,sg_Undefined);
         CSoundRender_Source* src= (CSoundRender_Source*)m_PreviewSnd._handle();
         m_Params.min_distance	= src->m_fMinDist;
         m_Params.max_distance	= src->m_fMaxDist;
@@ -78,7 +80,7 @@ void CSHSoundEnvTools::OnControlClick(ButtonValue* V, bool& bModif, bool& bSafe)
 
 void CSHSoundEnvTools::OnActivate()
 {
-	if (!psSoundFlags.is(ssHardware|ssEAX)){
+	if (!psSoundFlags.is(ss_Hardware|ss_EAX)){
     	Log("#!HARDWARE or FX flags are not set. Preview is disabled.");
     }else{
         m_PreviewSnd.play			(0,sm_Looped);
@@ -198,13 +200,9 @@ bool CSHSoundEnvTools::Save()
     // save
 	xr_string fn;
     FS.update_path				(fn,_game_data_,SNDENV_FILENAME);  
-    // backup file
-    EFS.BackupFile				(_game_data_,SNDENV_FILENAME,50);
 
     // save new file
-    EFS.UnlockFile				(0,fn.c_str(),false);
     bool bRes					= m_Library.Save(fn.c_str());
-    EFS.LockFile				(0,fn.c_str(),false);
 	m_bLockUpdate				= FALSE;
 
     if (bRes) 					m_bModified	= FALSE;

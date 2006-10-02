@@ -41,7 +41,7 @@ CEffect_Rain::CEffect_Rain()
 	
 	snd_Ambient.create				("ambient\\rain",st_Effect,sg_Undefined);
 
-	destructor<IReader>	F			(FS.r_open("$game_meshes$","dm\\rain.dm"));
+	destructor<IReader>	F			(FS.r_open("$game_meshes$","dm\\rain.dm")); VERIFY3(&F(),"Can't open file.","dm\\rain.dm");
 	DM_Drop							= ::Render->model_CreateDM		(&F());
 
 	//

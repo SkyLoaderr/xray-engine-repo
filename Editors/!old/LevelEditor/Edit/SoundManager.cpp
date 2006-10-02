@@ -71,7 +71,6 @@ void CSoundManager::RenameSound(LPCSTR nm0, LPCSTR nm1, EItemType type)
         FS.update_path(fn0,_sounds_,nm0); 	fn0+=".wav";
         FS.update_path(fn1,_sounds_,nm1);	fn1+=".wav";
         FS.file_rename(fn0.c_str(),fn1.c_str(),false);
-        EFS.WriteAccessLog	(AnsiString().sprintf("%s -> %s",fn0.c_str(),fn1.c_str()).c_str(),"Rename");
 
         // rename thm
         FS.update_path(fn0,_sounds_,nm0);	fn0+=".thm";
@@ -100,11 +99,8 @@ BOOL CSoundManager::RemoveSound(LPCSTR fname, EItemType type)
             xr_string thm_name = EFS.ChangeFileExt(fname,".thm");
             xr_string game_name= EFS.ChangeFileExt(fname,".ogg");
             // source
-            EFS.BackupFile		(_sounds_,src_name.c_str());
             FS.file_delete		(_sounds_,src_name.c_str());
-            EFS.WriteAccessLog	(src_name.c_str(),"Remove");
             // thumbnail
-            EFS.BackupFile		(_sounds_,thm_name.c_str());
             FS.file_delete		(_sounds_,thm_name.c_str());
             // game
             FS.file_delete		(_game_sounds_,game_name.c_str());
@@ -236,10 +232,6 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
 		ESoundThumbnail* THM	= 0;
 
         // backup base sound
-        if (bThm){
-	        EFS.BackupFile		(_sounds_,EFS.ChangeFileExt(base_name,".wav").c_str(),false);
-	        EFS.BackupFile		(_sounds_,EFS.ChangeFileExt(base_name,".thm").c_str(),false);
-        }
     	// check thumbnail
     	if (sync_thm&&bThm){
         	THM 				= xr_new<ESoundThumbnail>(it->name.c_str());

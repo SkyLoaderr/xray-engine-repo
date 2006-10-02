@@ -93,7 +93,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=114
+Build=116
 Debug=1
 PreRelease=0
 Special=0
@@ -105,7 +105,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.114
+FileVersion=1.0.2.116
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -167,12 +167,14 @@ Item0=Intermediate
 Item1=ShaderEditor
 
 [HistoryLists\hlFinalOutputDir]
-Count=5
+Count=7
 Item0=x:\
-Item1=u:\preliminary\
-Item2=u:\preliminary
-Item3=!run\
-Item4=P:\Editor\!run
+Item1=x:\build\
+Item2=x:\build
+Item3=u:\preliminary\
+Item4=u:\preliminary
+Item5=!run\
+Item6=P:\Editor\!run
 
 [Debugging]
 DebugSourceDirs=c:\rad\borland\cbuilder5\source\vcl

@@ -35,22 +35,26 @@ CCommandVar CActorTools::CommandLoad(CCommandVar p1, CCommandVar p2)
 {
     xr_string temp_fn	= p1.IsString()?xr_string(p1):xr_string(""); 
     if(!p1.IsString()){
-        LPCSTR 			new_val;
-        AnsiString last_nm = ChangeFileExt(m_LastFileName,"");
-        if (!TfrmChoseItem::SelectItem(smObject,new_val,1,last_nm.c_str()))
+        temp_fn			= ChangeFileExt(m_LastFileName,"").c_str();
+        if (!EFS.GetOpenName	( _objects_, temp_fn ))
         	return  	FALSE;
-        temp_fn 		= xr_string(new_val)+".object";
     }
     if( temp_fn.size() ){
 		xr_strlwr				(temp_fn);
         if (!IfModified())		return FALSE;
 
+        if (!FS.exist(temp_fn.c_str())){
+            Msg					("#!Can't load file: %s",temp_fn.c_str());
+        	return FALSE;
+        }
+        
+        
         ExecCommand				(COMMAND_CLEAR);
         
-        BOOL bReadOnly 			= !FS.can_modify_file(_objects_,temp_fn.c_str());
+        BOOL bReadOnly 			= !FS.can_modify_file(temp_fn.c_str());
         m_Flags.set				(flReadOnlyMode,bReadOnly);
         
-        if (bReadOnly || EFS.CheckLocking(_objects_,temp_fn.c_str(),false,true))
+        if (bReadOnly)
             Msg					("#!Object '%s' opened in readonly mode.",temp_fn.c_str());
 
 /*        
@@ -67,7 +71,7 @@ CCommandVar CActorTools::CommandLoad(CCommandVar p1, CCommandVar p2)
         
         CTimer T;
         T.Start();     
-        if (!Load(_objects_,temp_fn.c_str())){
+        if (!Load(temp_fn.c_str())){
             return FALSE;
         }
         m_LastFileName 			= temp_fn.c_str();
@@ -75,8 +79,6 @@ CCommandVar CActorTools::CommandLoad(CCommandVar p1, CCommandVar p2)
         EPrefs->AppendRecentFile(m_LastFileName.c_str());
         ExecCommand	(COMMAND_UPDATE_CAPTION);
         ExecCommand	(COMMAND_UPDATE_PROPERTIES);
-        // lock
-        if (!bReadOnly)			EFS.LockFile(_objects_,m_LastFileName.c_str());
         UndoClear();
         UndoSave();
     }
@@ -105,15 +107,11 @@ CCommandVar CActorTools::CommandSave(CCommandVar p1, CCommandVar p2)
 			return 				ExecCommand(COMMAND_SAVE,temp_fn,1);
         }else{
             xr_strlwr			(temp_fn);
-            if (0==temp_fn.find(FS.get_path(_objects_)->m_Path))
-                temp_fn 		= xr_string(temp_fn.c_str()+strlen(FS.get_path(_objects_)->m_Path));
-            EFS.UnlockFile		(_objects_,temp_fn.c_str());
             CTimer T;
             T.Start();
             CCommandVar			res;
-            if (Tools->Save(_objects_,temp_fn.c_str())){
+            if (Tools->Save(temp_fn.c_str())){
                 ELog.Msg		(mtInformation,"Object '%s' successfully saved. Saving time - %3.2f(s).",m_LastFileName.c_str(),T.GetElapsed_sec());
-                EFS.BackupFile	(_objects_,temp_fn.c_str());
                 m_LastFileName	= temp_fn.c_str();
                 EPrefs->AppendRecentFile	(m_LastFileName.c_str());
                 ExecCommand		(COMMAND_UPDATE_CAPTION);
@@ -121,7 +119,6 @@ CCommandVar CActorTools::CommandSave(CCommandVar p1, CCommandVar p2)
             }else{
                 res				= FALSE;
             }
-            EFS.LockFile		(_objects_,temp_fn.c_str());
             return 				res;
         }
     }
@@ -147,7 +144,6 @@ CCommandVar CActorTools::CommandImport(CCommandVar p1, CCommandVar p2)
                 xr_string mfn;
                 FS.update_path(mfn,_import_,temp_fn.c_str());
                 EFS.MarkFile(mfn.c_str(),true);
-                EFS.BackupFile(_objects_,temp_fn.c_str());
             }else{
                 ExecCommand( COMMAND_CLEAR );
             }
@@ -212,7 +208,6 @@ CCommandVar CActorTools::CommandClear(CCommandVar p1, CCommandVar p2)
 {
     if (!IfModified())	return FALSE;
     // unlock
-    EFS.UnlockFile	(_objects_,m_LastFileName.c_str());
     m_LastFileName	= "";
     Device.m_Camera.Reset();
     Clear			();

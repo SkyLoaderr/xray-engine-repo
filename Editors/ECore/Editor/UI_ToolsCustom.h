@@ -187,8 +187,8 @@ public:
     
     virtual void		ZoomObject			(BOOL bSelOnly)=0;
 
-    virtual bool		Load				(LPCSTR path, LPCSTR name)=0;
-    virtual bool		Save				(LPCSTR path, LPCSTR name, bool bInternal=false)=0;
+    virtual bool		Load				(LPCSTR name)=0;
+    virtual bool		Save				(LPCSTR name, bool bInternal=false)=0;
     virtual void		Reload				()=0;
     
     virtual void		OnDeviceCreate		()=0;

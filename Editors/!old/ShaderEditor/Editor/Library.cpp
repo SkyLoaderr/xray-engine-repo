@@ -203,11 +203,8 @@ void ELibrary::RemoveObject(LPCSTR _fname, EItemType type, bool& res)
         if (FS.exist(src_name.c_str())){
             xr_string thm_name	= EFS.ChangeFileExt(fname,".thm");
             // source
-            EFS.BackupFile		(_objects_,fname.c_str());
             FS.file_delete		(src_name.c_str());
-            EFS.WriteAccessLog	(src_name.c_str(),"Remove");
             // thumbnail
-            EFS.BackupFile		(_objects_,thm_name.c_str());
             FS.file_delete		(_objects_,thm_name.c_str());
 
 	        UnloadEditObject	(_fname);
@@ -230,7 +227,6 @@ void ELibrary::RenameObject(LPCSTR nm0, LPCSTR nm1, EItemType type)
         FS.update_path(fn0,_objects_,nm0);	fn0+=".object";
         FS.update_path(fn1,_objects_,nm1);	fn1+=".object";
         FS.file_rename(fn0.c_str(),fn1.c_str(),false);
-        EFS.WriteAccessLog	(AnsiString().sprintf("%s -> %s",fn0.c_str(),fn1.c_str()).c_str(),"Rename");
 
         // rename thm
         FS.update_path(fn0,_objects_,nm0);	fn0+=".thm";

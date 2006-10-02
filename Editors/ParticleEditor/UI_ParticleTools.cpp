@@ -57,22 +57,12 @@ bool CParticleTools::OnCreate()
     xr_string fn; 
     FS.update_path(fn,_game_data_,PSLIB_FILENAME);
     shared_str owner;
-	if (EFS.CheckLocking(0,fn.c_str(),false,false,&owner)){ 
-    	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbCancel,"Particle Editor locked by '%s'. Send notification?",owner.c_str())==mrYes){
-        	AnsiString tmp; tmp.sprintf("info \"'%s' say: 'Please exit from editor.'\"",Core.CompName);
-        	UI->SendMail("*",UI->EditorName(),tmp.c_str());
-        }
-    	return false;
-    }
 
     m_bReady = true;
 
-    Load(0,0);
+    Load(0);
 
     SetAction(etaSelect);
-
-	// lock
-    EFS.LockFile	(_game_data_,PSLIB_FILENAME);
 
     m_EditPE 		= (PS::CParticleEffect*)::Render->Models->CreatePE(0);
     m_EditPG		= (PS::CParticleGroup*)::Render->Models->CreatePG(0);
@@ -100,8 +90,6 @@ void CParticleTools::OnDestroy()
     m_bReady			= false;                      
 
     xr_delete			(m_ParentAnimator);
-	// unlock                                       
-    EFS.UnlockFile		(_game_data_,PSLIB_FILENAME);
 
 	Lib.RemoveEditObject(m_EditObject);
     TItemList::DestroyForm(m_PList);
@@ -326,14 +314,14 @@ void CParticleTools::ResetPreviewObject()
     UI->RedrawScene();
 }
 
-bool CParticleTools::Load(LPCSTR path, LPCSTR name)
+bool CParticleTools::Load(LPCSTR name)
 {
 	VERIFY(m_bReady);
     UpdateProperties();
     return true;
 }
 
-bool CParticleTools::Save(LPCSTR path, LPCSTR name, bool bInternal)
+bool CParticleTools::Save(LPCSTR name, bool bInternal)
 {
 	VERIFY			(m_bReady);
 
@@ -343,12 +331,7 @@ bool CParticleTools::Save(LPCSTR path, LPCSTR name, bool bInternal)
         return false;
     }
 
-	// backup
-    EFS.BackupFile	(_game_data_,PSLIB_FILENAME);
-	// save   
-    EFS.UnlockFile	(_game_data_,PSLIB_FILENAME,false);
 	bool bRes 		= ::Render->PSLibrary.Save();
-    EFS.LockFile	(_game_data_,PSLIB_FILENAME,false);
     
     if (bRes)		m_bModified = false;
     	

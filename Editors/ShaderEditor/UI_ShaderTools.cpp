@@ -71,29 +71,12 @@ bool CShaderTools::OnCreate()
     m_ItemProps 	= TProperties::CreateForm	("Item Properties",		fraLeftBar->paShaderProps,	alClient);
     m_PreviewProps  = TProperties::CreateForm	("Preview Properties",	fraLeftBar->paPreviewProps,	alClient);
 
-	// shader test locking
-	xr_string 		sh_fn;
-    FS.update_path		(sh_fn,_game_data_,"shaders.xr");
-	if (EFS.CheckLocking(0,sh_fn.c_str(),false,true)) return false;
-	// shader test locking
-	xr_string 		lc_fn;
-    FS.update_path		(lc_fn,_game_data_,"shaders_xrlc.xr");
-	if (EFS.CheckLocking(0,lc_fn.c_str(),false,true)) return false;
-	// material test locking
-	xr_string 		gm_fn;
-    FS.update_path		(gm_fn,_game_data_,GAMEMTL_FILENAME);
-	if (EFS.CheckLocking(0,gm_fn.c_str(),false,true)) return false;
-
     // create tools
     RegisterTools		();
 
 	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
     	if (!it->second->OnCreate()) return false;
 
-   	// lock
-    EFS.LockFile(_game_data_,"shaders.xr");
-    EFS.LockFile(_game_data_,"shaders_xrlc.xr");
-    EFS.LockFile(_game_data_,GAMEMTL_FILENAME);
     return true;
 }
 
@@ -103,10 +86,6 @@ void CShaderTools::OnDestroy()
     TItemList::DestroyForm	(m_Items);
 	TProperties::DestroyForm(m_ItemProps);
     TProperties::DestroyForm(m_PreviewProps);
-	// unlock
-    EFS.UnlockFile(_game_data_,"shaders.xr");
-    EFS.UnlockFile(_game_data_,"shaders_xrlc.xr");
-    EFS.UnlockFile(_game_data_,GAMEMTL_FILENAME);
 	//
 	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
     	it->second->OnDestroy();
@@ -217,12 +196,12 @@ ISHTools* CShaderTools::FindTools(TElTabSheet* sheet)
     return 0;
 }
 
-bool CShaderTools::Load(LPCSTR path, LPCSTR name)
+bool CShaderTools::Load(LPCSTR name)
 {
 	return true;
 }
 
-bool CShaderTools::Save(LPCSTR path, LPCSTR name, bool bInternal)
+bool CShaderTools::Save(LPCSTR name, bool bInternal)
 {
 	bool bRes = true;
     for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)

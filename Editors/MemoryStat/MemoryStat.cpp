@@ -46,9 +46,9 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     Application->Title 		= UI->EditorDesc();
     TfrmLog::CreateLog		();
 
-    Application->CreateForm(__classid(TfrmMain), &frmMain);
-		Application->CreateForm(__classid(TfrmStatistic), &frmStatistic);
-		Application->Run		();
+    Application->CreateForm	(__classid(TfrmMain), &frmMain);
+	Application->CreateForm	(__classid(TfrmStatistic), &frmStatistic);
+	Application->Run		();
 
     TfrmLog::DestroyLog		(); 
 

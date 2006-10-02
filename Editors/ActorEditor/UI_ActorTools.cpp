@@ -444,11 +444,10 @@ bool CActorTools::Import(LPCSTR initial, LPCSTR obj_name)
     return false;
 }
 
-bool CActorTools::Load(LPCSTR initial, LPCSTR obj_name)
+bool CActorTools::Load(LPCSTR obj_name)
 {
-    xr_string 	full_name;
-    if (initial)	FS.update_path	(full_name,initial,obj_name);
-    else			full_name		= obj_name;
+    xr_string 		full_name;
+    full_name		= obj_name;
 
 	VERIFY(m_bReady);
 	CEditableObject* O = xr_new<CEditableObject>(obj_name);
@@ -470,11 +469,10 @@ bool CActorTools::Load(LPCSTR initial, LPCSTR obj_name)
     return false;
 }
 
-bool CActorTools::Save(LPCSTR initial, LPCSTR obj_name, bool bInternal)
+bool CActorTools::Save(LPCSTR obj_name, bool bInternal)
 {
-    xr_string full_name;
-    if (initial)	FS.update_path	(full_name,initial,obj_name);
-    else			full_name 		= obj_name;
+    xr_string 		full_name;
+    full_name 		= obj_name;
 	VERIFY(m_bReady);
     if (m_pEditObject){
     	EFS.MarkFile				(full_name.c_str(),true);

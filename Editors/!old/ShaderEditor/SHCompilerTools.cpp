@@ -83,10 +83,7 @@ bool CSHCompilerTools::Save()
 	xr_string fn;
     FS.update_path			(fn,_game_data_,"shaders_xrlc.xr");
 
-    EFS.UnlockFile			(0,fn.c_str(),false);
-    EFS.BackupFile			(_game_data_,"shaders_xrlc.xr",50);
     bool bRes				= m_Library.Save(fn.c_str());
-    EFS.LockFile			(0,fn.c_str(),false);
 
     if (bRes)				m_bModified	= FALSE;
     return bRes;

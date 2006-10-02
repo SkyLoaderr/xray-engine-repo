@@ -114,25 +114,17 @@ public:
 
     xr_string		LevelPartPath		(LPCSTR map_name);
     xr_string		LevelPartName		(LPCSTR map_name, ObjClassID cls);
-/*    
-    xr_string		LevelPartName		(LPCSTR full_name, ObjClassID cls);
-    xr_string		LevelPartName		(LPCSTR initial, LPCSTR map_name, ObjClassID cls);
-    xr_string		LevelPartPath		(LPCSTR initial, LPCSTR map_name);
-*/    
-    BOOL			LoadLevelPart		(ESceneCustomMTools* M, LPCSTR initial, LPCSTR map_name);
-    BOOL			LoadLevelPart		(LPCSTR initial, LPCSTR map_name, ObjClassID cls, bool bLock);
+
+    BOOL			LoadLevelPart		(ESceneCustomMTools* M, LPCSTR map_name);
+    BOOL			LoadLevelPart		(LPCSTR map_name, ObjClassID cls);
     BOOL		 	UnloadLevelPart		(ESceneCustomMTools* M);
-    BOOL			UnloadLevelPart		(LPCSTR initial, LPCSTR map_name, ObjClassID cls, bool bUnlock);
-                                              
-    void			LockLevel			(LPCSTR initial, LPCSTR map_name);
-    void			UnlockLevel			(LPCSTR initial, LPCSTR map_name);
+    BOOL			UnloadLevelPart		(LPCSTR map_name, ObjClassID cls);
 public:
 	bool			ExportGame			(SExportStreams* F);
-	bool 			Load				(LPCSTR initial, LPCSTR map_name, bool bUndo);
-	void 			Save				(LPCSTR initial, LPCSTR map_name, bool bUndo);
-	bool 			LoadSelection		(LPCSTR initial, LPCSTR fname);
-	void 			SaveSelection		(ObjClassID classfilter, LPCSTR initial, LPCSTR fname);
-    void			BackupLevel			(LPCSTR initial, LPCSTR map_name);
+	bool 			Load				(LPCSTR map_name, bool bUndo);
+	void 			Save				(LPCSTR map_name, bool bUndo);
+	bool 			LoadSelection		(LPCSTR fname);
+	void 			SaveSelection		(ObjClassID classfilter, LPCSTR fname);
 	void 			Unload				(BOOL bEditableToolsOnly);
 	void 			Clear				(BOOL bEditableToolsOnly);    
     void			Reset				();

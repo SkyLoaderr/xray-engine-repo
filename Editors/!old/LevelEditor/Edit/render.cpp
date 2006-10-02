@@ -80,6 +80,7 @@ void CRender::Render()
 
 IRender_DetailModel*	CRender::model_CreateDM(IReader* F)
 {
+	VERIFY				(F);
 	CDetail*	D		= xr_new<CDetail> ();
 	D->Load				(F);
 	return D;

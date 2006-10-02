@@ -93,18 +93,20 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=5
-Item0=R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include;r:\borland\components6\alexmx;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;P:\xrSound;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals;..\xrEProps
-Item1=H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemoryStat;$(BCB)\include;$(BCB)\include\vcl;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore
-Item2=H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemoryStat;$(BCB)\include;$(BCB)\include\vcl;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
-Item3=H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemoryStat;$(BCB)\include;$(BCB)\include\vcl;R:\Borland\Components6\AlexMX
-Item4=H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemoryStat;$(BCB)\include;$(BCB)\include\vcl
+Count=6
+Item0=H:\RAD\Borland\CBuilder6\Projects;R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include;r:\borland\components6\alexmx;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;P:\xrSound;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals;..\xrEProps
+Item1=R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include;r:\borland\components6\alexmx;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;P:\xrSound;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals;..\xrEProps
+Item2=H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemoryStat;$(BCB)\include;$(BCB)\include\vcl;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore
+Item3=H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemoryStat;$(BCB)\include;$(BCB)\include\vcl;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source
+Item4=H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemoryStat;$(BCB)\include;$(BCB)\include\vcl;R:\Borland\Components6\AlexMX
+Item5=H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemoryStat;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=3
-Item0=C:\Rad\Borland\CBuilder6\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib;x:\;..\ECore;..\ECore\Editor
-Item1=$(BCB)\Projects\Lib;H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemoryStat;$(BCB)\lib\obj;$(BCB)\lib;R:\Borland\Components6\AlexMX
-Item2=$(BCB)\Projects\Lib;H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemoryStat;$(BCB)\lib\obj;$(BCB)\lib
+Count=4
+Item0=H:\RAD\Borland\CBuilder6\Projects;C:\Rad\Borland\CBuilder6\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib;x:\;..\ECore;..\ECore\Editor
+Item1=C:\Rad\Borland\CBuilder6\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib;x:\;..\ECore;..\ECore\Editor
+Item2=$(BCB)\Projects\Lib;H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemoryStat;$(BCB)\lib\obj;$(BCB)\lib;R:\Borland\Components6\AlexMX
+Item3=$(BCB)\Projects\Lib;H:\RAD\Borland\CBuilder6\Projects;P:\Editors\MemoryStat;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=2
