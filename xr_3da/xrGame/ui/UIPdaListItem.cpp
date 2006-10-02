@@ -18,7 +18,6 @@
 #include "UIFrameWindow.h"
 #include "..\InventoryOwner.h"
 #include "UICharacterInfo.h"
-#include "UIIconedListItem.h"
 
 #define			PDA_CONTACT_CHAR		"pda_character.xml"
 
