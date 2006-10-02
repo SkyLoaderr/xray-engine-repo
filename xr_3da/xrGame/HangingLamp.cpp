@@ -357,7 +357,7 @@ void CHangingLamp::script_register(lua_State *L)
 	luabind::module(L)
 	[
 		luabind::class_<CHangingLamp>("hanging_lamp")
-			.def(constructor<>())
+			.def(luabind::constructor<>())
 			.def("turn_on",		&CHangingLamp::TurnOn)
 			.def("turn_off",	&CHangingLamp::TurnOff)
 	];
