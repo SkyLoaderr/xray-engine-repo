@@ -118,13 +118,14 @@ void CMemoryManager::enable			(const CObject *object, bool enable)
 template <typename T>
 void CMemoryManager::update			(const xr_vector<T> &objects, bool add_enemies)
 {
+	squad_mask_type					mask = m_stalker ? m_stalker->agent_manager().member().mask(m_stalker) : 0;
 	xr_vector<T>::const_iterator	I = objects.begin();
 	xr_vector<T>::const_iterator	E = objects.end();
 	for ( ; I != E; ++I) {
 		if (!(*I).m_enabled)
 			continue;
 		
-		if (m_stalker && !(*I).m_squad_mask.test(m_stalker->agent_manager().member().mask(m_stalker)))
+		if (m_stalker && !(*I).m_squad_mask.test(mask))
 			continue;
 
 		danger().add				(*I);
