@@ -3,7 +3,7 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="x:\build\xrCoreB.dll"/>
+    <PROJECT value="x:\xrCoreB.dll"/>
     <OBJFILES value="Intermediate\xrMemory_pso_Fill32.obj Intermediate\_math.obj 
       Intermediate\_sphere.obj Intermediate\cpuid.obj Intermediate\stdafx.obj 
       Intermediate\xrCore.obj Intermediate\xrDebug.obj Intermediate\xrMemory.obj 
@@ -259,9 +259,9 @@ Item2=xrLC_Options
 
 [HistoryLists\hlFinalOutputDir]
 Count=13
-Item0=x:\build
+Item0=x:\
 Item1=x:\build\
-Item2=x:\
+Item2=x:\build
 Item3=u:\preliminary\
 Item4=u:\preliminary
 Item5=s:\bin\

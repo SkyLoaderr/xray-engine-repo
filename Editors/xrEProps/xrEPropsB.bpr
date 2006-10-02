@@ -38,10 +38,10 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -DXR_EPROPS_EXPORTS -D_DEBUG -I$(BCB)\include 
-      -I$(BCB)\include\vcl -IR:\Borland\Components6\AlexMX 
+    <IDLCFLAGS value="-I$(BCB)\include -I$(BCB)\include\vcl -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source 
-      -IR:\Borland\CBuilder6\Include\Mfc -IP:\xrCore -boa"/>
+      -IR:\Borland\CBuilder6\Include\Mfc -IP:\xrCore -src_suffix cpp -D_EDITOR 
+      -DXR_EPROPS_EXPORTS -D_DEBUG -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff -X- 
       -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -142,8 +142,10 @@ Count=1
 Item0=intermediate
 
 [HistoryLists\hlFinalOutputDir]
-Count=1
+Count=3
 Item0=x:\
+Item1=x:\build\
+Item2=x:\build
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl

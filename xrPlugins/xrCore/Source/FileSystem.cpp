@@ -104,8 +104,10 @@ bool EFS_Utils::GetOpenName( LPCSTR initial, char *buffer, int sz_buf, bool bMul
 	Memory.mem_fill		( &ofn, 0, sizeof(ofn) );
     if (xr_strlen(buffer)){ 
         string_path		dr;
-        _splitpath		(buffer,dr,0,0,0);
-        if (0==dr[0])	P._update(buffer,buffer); 
+        if (!(buffer[0]=='\\' && buffer[1]=='\\')){ // if !network
+            _splitpath		(buffer,dr,0,0,0);
+            if (0==dr[0])	P._update(buffer,buffer); 
+        }
     }
     ofn.lStructSize		= sizeof(OPENFILENAME);
 	ofn.hwndOwner 		= GetForegroundWindow();
@@ -165,8 +167,10 @@ bool EFS_Utils::GetSaveName( LPCSTR initial, char *buffer, int sz_buf, LPCSTR of
 	Memory.mem_fill		( &ofn, 0, sizeof(ofn) );
     if (xr_strlen(buffer)){ 
         string_path		dr;
-        _splitpath		(buffer,dr,0,0,0);
-        if (0==dr[0])	P._update(buffer,buffer); 
+        if (!(buffer[0]=='\\' && buffer[1]=='\\')){ // if !network
+            _splitpath		(buffer,dr,0,0,0);
+            if (0==dr[0])	P._update(buffer,buffer); 
+        }
     }
 	ofn.hwndOwner 		= GetForegroundWindow();
 	ofn.lpstrDefExt 	= P.m_DefExt;
