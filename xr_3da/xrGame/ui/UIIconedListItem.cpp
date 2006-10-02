@@ -13,10 +13,11 @@
 
 void CUIIconedListItem::SetIcon(shared_str textureName, u32 uIconSize)
 {
-	Frect r		= GetAbsoluteRect();
+	Frect r;
+	GetAbsoluteRect(r);
 	m_uIconSize	= uIconSize;
 	float iconTop	= (r.bottom - r.top)/2.0f + r.top - m_uIconSize/2.0f;
-	m_Icon.Init(*textureName, "hud\\default", GetAbsoluteRect().left, iconTop, alNone);
+	m_Icon.Init(*textureName, "hud\\default", r.left, iconTop, alNone);
 	m_bTexturePresent = true;
 	m_OldAbsoluteWndRect = r;
 }
@@ -51,7 +52,8 @@ void CUIIconedListItem::Show(bool status)
 
 void CUIIconedListItem::Update()
 {
-	Frect r = GetAbsoluteRect();
+	Frect r;
+	GetAbsoluteRect(r);
 
 /*	if (m_OldAbsoluteWndRect.left	!= r.left		||
 		m_OldAbsoluteWndRect.top	!= r.top		||
