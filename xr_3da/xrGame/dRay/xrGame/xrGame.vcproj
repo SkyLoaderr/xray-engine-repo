@@ -9722,6 +9722,18 @@
 					Name="PdaWnd"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIIconedListItem.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIIconedListItem.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIJobItem.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIJobItem.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIPdaAux.cpp">
 					</File>
 					<File
