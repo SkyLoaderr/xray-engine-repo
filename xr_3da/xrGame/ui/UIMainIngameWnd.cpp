@@ -1186,16 +1186,13 @@ void CUIMainIngameWnd::UpdateActiveItemInfo()
 	}
 }
 
-/*
 #include "d3dx9core.h"
 #include "winuser.h"
 #pragma comment(lib,"d3dx9.lib")
 #pragma comment(lib,"d3d9.lib")
 ID3DXFont*     g_pTestFont = NULL;
-ID3DXFont*     g_pTestFont2 = NULL;
 ID3DXSprite*        g_pTextSprite = NULL;   // Sprite for batching draw text calls
-ID3DXSprite*        g_pTextSprite2 = NULL;   // Sprite for batching draw text calls
-*/
+
 
 /*
 #include "UIGameTutorial.h"
@@ -1233,17 +1230,14 @@ void test_key	(int dik)
 	}*/
 
 
-/*
+
 
 	if(dik==DIK_K){
 		if(g_pTestFont){
 			g_pTestFont->Release();
 			g_pTestFont = NULL;
-			g_pTestFont2->Release();
-			g_pTestFont2 = NULL;
 			
 			g_pTextSprite->Release();
-			g_pTextSprite2->Release();
 			return;
 		}
 	HRESULT hr;
@@ -1256,26 +1250,23 @@ void test_key	(int dik)
                          OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, 
                          "Times New Roman", &g_pTestFont );
 
-	hr = D3DXCreateFont( HW.pDevice, _height, _width, FW_NORMAL, 1, TRUE, DEFAULT_CHARSET, 
-                         OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, 
-                         "Times New Roman", &g_pTestFont2 );
 
 	D3DXCreateSprite( HW.pDevice, &g_pTextSprite );
-	D3DXCreateSprite( HW.pDevice, &g_pTextSprite2 );
 
 	g_pTestFont->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
-	g_pTestFont2->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
 
 	}
-*/
-}
 
+}
+D3DCOLOR _clr	= D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f );
+LPCSTR _str		= "This is a trivial call to ID3DXFont::DrawText";
+int _len		= 43;
 void test_draw	()
 {
 //	if(g_MissileForceShape)
 //		g_MissileForceShape->Draw();
 
-/*	
+	
 	if(g_pTestFont){
 
 //	g_pTestFont->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
@@ -1288,69 +1279,40 @@ void test_draw	()
 //	g_pTestFont2->GetGlyphData(50, &T, &R, &P);
 //	R_CHK		(D3DXSaveTextureToFile	("x:\\test_font.dds",D3DXIFF_DDS,T,0));
 
+#define DT_TOP                      0x00000000
+#define DT_LEFT                     0x00000000
+#define DT_CENTER                   0x00000001
+#define DT_RIGHT                    0x00000002
+#define DT_VCENTER                  0x00000004
+#define DT_BOTTOM                   0x00000008
+#define DT_WORDBREAK                0x00000010
+#define DT_SINGLELINE               0x00000020
+#define DT_EXPANDTABS               0x00000040
+#define DT_TABSTOP                  0x00000080
+#define DT_NOCLIP                   0x00000100
+#define DT_EXTERNALLEADING          0x00000200
+#define DT_CALCRECT                 0x00000400
+#define DT_NOPREFIX                 0x00000800
+#define DT_INTERNAL                 0x00001000
+
+
 		RECT rc;
         g_pTextSprite->Begin( D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE );
-		SetRect( &rc, 50, 150, 0, 0 );        
-		g_pTestFont->DrawText( g_pTextSprite, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 50, 200, 0, 0 );        
-		g_pTestFont->DrawText( g_pTextSprite, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 50, 250, 0, 0 );        
-		g_pTestFont->DrawText( g_pTextSprite, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 50, 300, 0, 0 );        
-		g_pTestFont->DrawText( g_pTextSprite, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 50, 350, 0, 0 );        
-		g_pTestFont->DrawText( g_pTextSprite, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 50, 400, 0, 0 );        
-		g_pTestFont->DrawText( g_pTextSprite, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 50, 450, 0, 0 );        
-		g_pTestFont->DrawText( g_pTextSprite, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 50, 500, 0, 0 );        
-		g_pTestFont->DrawText( g_pTextSprite, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 50, 550, 0, 0 );        
-		g_pTestFont->DrawText( g_pTextSprite, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 50, 600, 0, 0 );        
-		g_pTestFont->DrawText( g_pTextSprite, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 50, 650, 0, 0 );        
-		g_pTestFont->DrawText( g_pTextSprite, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 50, 700, 0, 0 );        
-		g_pTestFont->DrawText( g_pTextSprite, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 50, 750, 0, 0 );        
-		g_pTestFont->DrawText( g_pTextSprite, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
+
+		rc.left   = 50;
+		rc.top    = 150;
+		rc.right  = 250;
+		rc.bottom = 180;
+
+		for(int i=0; i<13; ++i){
+			g_pTestFont->DrawText( g_pTextSprite, _str, _len, &rc, DT_SINGLELINE, _clr);
+			rc.top			+= 30; rc.bottom		+= 30;
+		}
+
 		g_pTextSprite->End();
 
-		static int aaa = 1;
-		if(aaa){		
-        g_pTextSprite2->Begin( D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE );
-		SetRect( &rc, 450, 150, 0, 0 );        
-		g_pTestFont2->DrawText( g_pTextSprite2, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 450, 200, 0, 0 );        
-		g_pTestFont2->DrawText( g_pTextSprite2, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 450, 250, 0, 0 );        
-		g_pTestFont2->DrawText( g_pTextSprite2, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 450, 300, 0, 0 );        
-		g_pTestFont2->DrawText( g_pTextSprite2, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 450, 350, 0, 0 );        
-		g_pTestFont2->DrawText( g_pTextSprite2, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 450, 400, 0, 0 );        
-		g_pTestFont2->DrawText( g_pTextSprite2, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 450, 450, 0, 0 );        
-		g_pTestFont2->DrawText( g_pTextSprite2, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 450, 500, 0, 0 );        
-		g_pTestFont2->DrawText( g_pTextSprite2, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 450, 550, 0, 0 );        
-		g_pTestFont2->DrawText( g_pTextSprite2, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 450, 600, 0, 0 );        
-		g_pTestFont2->DrawText( g_pTextSprite2, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 450, 650, 0, 0 );        
-		g_pTestFont2->DrawText( g_pTextSprite2, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 450, 700, 0, 0 );        
-		g_pTestFont2->DrawText( g_pTextSprite2, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		SetRect( &rc, 450, 750, 0, 0 );        
-		g_pTestFont2->DrawText( g_pTextSprite2, "This is a trivial call to ID3DXFont::DrawText", -1, &rc, 0x00000100, D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f ));
-		g_pTextSprite2->End();
-		}
 	}
-*/
+
 }
 #ifdef DEBUG
 void CUIMainIngameWnd::draw_adjust_mode()
