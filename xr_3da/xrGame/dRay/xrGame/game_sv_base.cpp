@@ -363,9 +363,15 @@ void	game_sv_GameState::ReadOptions				(shared_str &options)
 {
 	m_RPointFreezeTime = get_option_i(*options, "rpfrz", 0) * 1000;
 
-	strcpy( MAPROT_LIST, get_option_s(*options, "maprot"));
-	if (MAPROT_LIST[0])
+	string_path						maprotlist;
+//	maprotlist = get_option_s(*options, "maprot");
+	strcpy( maprotlist, get_option_s(*options, "maprot"));
+	if (xr_strlen(maprotlist) != 0)
 	{
+		strcpy(MAPROT_LIST, maprotlist);
+		if (!FS.exist(maprotlist))
+			FS.update_path(MAPROT_LIST, "$app_data_root$", maprotlist);
+
 		Console->ExecuteScript(MAPROT_LIST);
 	};
 

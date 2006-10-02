@@ -338,12 +338,12 @@ void	CServerDlg::ParseWeather(char** ps, char* e)
 	while (1)
 	{	
 		if (!GetToken(ps, e, token)) break;
-		if (strcmp(token, "{")) break;
+		if (xr_strcmp(token, "{")) break;
 		while (1)
 		{
 			if (!GetToken(ps, e, token)) break;
-			if (!strcmp(token, "}")) return;
-			if (!strcmp(token, "startweather"))
+			if (!xr_strcmp(token, "}")) return;
+			if (!xr_strcmp(token, "startweather"))
 			{
 				char WeatherType[1024], WeatherTime[1024];
 				GetToken(ps, e, WeatherType);
@@ -371,7 +371,7 @@ void	CServerDlg::UpdateMapList(GAME_TYPE GameType)
 //	{
 //		m_pMapList.AddString(m_Maps[GameType][i]);
 //	};
-	for (int i=0; i<m_maps[xGameType].size(); i++)
+	for (u32 i=0; i<m_maps[xGameType].size(); i++)
 	{
 		m_pMapList.AddString(*(m_maps[xGameType][i]));
 	};
@@ -683,7 +683,7 @@ void CServerDlg::OnBnClickedStartServer()
 			(NameLen) ? NameAdd : ""
 			);
 	
-	if (strlen(cmdline) > 4096) _ASSERT(0);
+	if (xr_strlen(cmdline) > 4096) _ASSERT(0);
 	OutputDebugString( cmdline );
 	int res = WinExec(cmdline, SW_SHOW);	
 }
@@ -792,8 +792,19 @@ void	CServerDlg::SaveMapList()
 	m_pSVServerOptDlg->m_pMapRotationFile.GetWindowText(MapRotFileName);
 	MapRotFileName += ".ltx";
 
-	FILE* MapRotFile = fopen(MapRotFileName, "w");
-	if (!MapRotFileName) return;
+	string_path			MapRotFileFullPath;
+
+	u32 size = xr_strlen(MapRotFileName);
+//	memmove(MapRotFileFullPath, MapRotFileName, xr_strlen(MapRotFileName));
+	strcpy(MapRotFileFullPath, MapRotFileName);
+
+	IWriter*		fs	= FS.w_open(MapRotFileFullPath);
+	if (!fs)
+	{
+		FS.update_path		(MapRotFileFullPath, "$app_data_root$", MapRotFileName);
+		fs	= FS.w_open(MapRotFileFullPath);
+		if (!fs) return;
+	};
 
 	int SelIndx[1024];
 	m_pMapList.GetSelItems(1024, SelIndx);
@@ -804,11 +815,12 @@ void	CServerDlg::SaveMapList()
 		m_pMapList2.GetText(i, pMapName);
 		if (!pMapName[0]) continue;
 
-		fprintf(MapRotFile, "sv_addmap %s\n", pMapName);
-	};
+		fs->w_printf("sv_addmap %s\n", pMapName);
+	};		
 
-	fclose(MapRotFile);
+	FS.w_close		(fs);
 };
+
 //void CServerDlg::OnLbnDblclkMapList()
 //{
 //	// TODO: Add your control notification handler code here
