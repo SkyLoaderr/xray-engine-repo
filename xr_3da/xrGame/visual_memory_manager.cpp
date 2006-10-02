@@ -510,6 +510,7 @@ IC	squad_mask_type CVisualMemoryManager::mask			() const
 {
 	if (!m_stalker)
 		return					(squad_mask_type(-1));
+
 	return						(m_stalker->agent_manager().member().mask(m_stalker));
 }
 
@@ -568,13 +569,13 @@ void CVisualMemoryManager::update				(float time_delta)
 	// verifying if object is online
 	{
 		xr_vector<CVisibleObject>::iterator	J = remove_if(m_objects->begin(),m_objects->end(),SRemoveOfflinePredicate());
-		m_objects->erase					(J,m_objects->end());
+		m_objects->erase				(J,m_objects->end());
 	}
 
 	// verifying if object is online
 	{
 		xr_vector<CNotYetVisibleObject>::iterator	J = remove_if(m_not_yet_visible_objects.begin(),m_not_yet_visible_objects.end(),SRemoveOfflinePredicate());
-		m_not_yet_visible_objects.erase				(J,m_not_yet_visible_objects.end());
+		m_not_yet_visible_objects.erase	(J,m_not_yet_visible_objects.end());
 	}
 	STOP_PROFILE
 
