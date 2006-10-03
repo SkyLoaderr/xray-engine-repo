@@ -19,7 +19,7 @@
 	</back>
 
 
-    <dragdrop_bag x="22" y="46" width="313" height="415"
+    <dragdrop_bag x="22" y="33" width="310" height="442"
             cell_width = "41" cell_height="41" rows_num="10" cols_num="7" 
             unlimited="1" group_similar="1"/>
 
