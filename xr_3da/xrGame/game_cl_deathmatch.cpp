@@ -106,7 +106,7 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 	//-----------------------------------------------------------
 	pCurBuyMenu	= InitBuyMenu("deathmatch_base_cost", 0);
 //.	pCurBuyMenu		= pBuyMenuTeam0;
-	LoadTeamDefaultPresetItems(TEAM0_MENU, pCurBuyMenu, &PresetItemsTeam0);
+	LoadTeamDefaultPresetItems(GetTeamMenu(0), pCurBuyMenu, &PresetItemsTeam0);
 	//-----------------------------------------------------------
 	pCurSkinMenu	= InitSkinMenu(0);
 //.	pCurSkinMenu	= pSkinMenuTeam0;
@@ -894,7 +894,7 @@ void				game_cl_Deathmatch::LoadSndMessages				()
 
 void				game_cl_Deathmatch::OnSwitchPhase_InProgress()
 {
-	LoadTeamDefaultPresetItems(TEAM0_MENU, pCurBuyMenu, &PresetItemsTeam0);
+	LoadTeamDefaultPresetItems(GetTeamMenu(0), pCurBuyMenu, &PresetItemsTeam0);
 };
 
 void				game_cl_Deathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)
@@ -922,10 +922,23 @@ void				game_cl_Deathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 	};
 }
 
-void				game_cl_Deathmatch::OnRankChanged			()
+void				game_cl_Deathmatch::OnGameRoundStarted				()
 {
-	inherited::OnRankChanged();
+	inherited::OnGameRoundStarted();
 	if (pCurBuyMenu) pCurBuyMenu->SetRank(local_player->rank);
+	ClearBuyMenu();
+	LoadDefItemsForRank(pCurBuyMenu);
+	ChangeItemsCosts(pCurBuyMenu);
+	if (pCurBuyMenu)
+	{
+		LoadTeamDefaultPresetItems(GetTeamMenu(local_player->team), pCurBuyMenu, pCurPresetItems);
+	}
+}
+
+void				game_cl_Deathmatch::OnRankChanged			(u8 OldRank)
+{
+	inherited::OnRankChanged(OldRank);
+	if (pCurBuyMenu) pCurBuyMenu->SetRank(local_player->rank);	
 	LoadDefItemsForRank(pCurBuyMenu);
 	ChangeItemsCosts(pCurBuyMenu);
 	//---------------------------------------------
@@ -1004,3 +1017,8 @@ void			game_cl_Deathmatch::SendPickUpEvent		(u16 ID_who, u16 ID_what)
 	P.w_u16(ID_what);
 	u_EventSend(P);
 };
+
+LPCSTR			game_cl_Deathmatch::GetTeamMenu				(s16 team)
+{
+	return TEAM0_MENU;
+}

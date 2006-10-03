@@ -137,8 +137,8 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 			else
 				cam_Set			(eacFreeFly);			
 		}break;
-	case kCAM_2:	if (cam_active == eacFreeFly)	SelectNextPlayerToLook();	cam_Set			(eacLookAt);		break;
-	case kCAM_3:	if (cam_active == eacFreeFly)	SelectNextPlayerToLook();	cam_Set			(eacFreeLook);		break;
+	case kCAM_2:	if (cam_active == eacFreeFly && SelectNextPlayerToLook())	cam_Set			(eacLookAt);		break;
+	case kCAM_3:	if (cam_active == eacFreeFly && SelectNextPlayerToLook())	cam_Set			(eacFreeLook);		break;
 	case kCAM_4:	cam_Set			(eacFreeFly);	m_pActorToLookAt = NULL;	break;
 	case kWPN_FIRE:	
 		{
@@ -393,12 +393,12 @@ BOOL			CSpectator::net_Spawn				( CSE_Abstract*	DC )
 	return TRUE;
 };
 
-void			CSpectator::SelectNextPlayerToLook	()
+bool			CSpectator::SelectNextPlayerToLook	()
 {
-	if (GameID() == GAME_SINGLE) return;
+	if (GameID() == GAME_SINGLE) return false;
 	
 	game_PlayerState* PS = Game().local_player;
-	if (!PS) return;
+	if (!PS) return false;
 	m_pActorToLookAt = NULL;
 
 	game_cl_mp* pMPGame = smart_cast<game_cl_mp*> (&Game());
@@ -425,8 +425,9 @@ void			CSpectator::SelectNextPlayerToLook	()
 	{
 		look_idx %= PPCount;
 		m_pActorToLookAt = PossiblePlayers[look_idx];
+		return true;
 	};
-
+	return false;
 };
 
 void			CSpectator::net_Relcase				(CObject *O)

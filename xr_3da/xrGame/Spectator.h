@@ -39,7 +39,7 @@ private:
 	void					cam_Update				(CActor* A=0);
 
 	CActor*					m_pActorToLookAt;
-	void					SelectNextPlayerToLook	();
+	bool					SelectNextPlayerToLook	();
 
 	void					FirstEye_ToPlayer		(CObject* pObject);
 public:

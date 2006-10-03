@@ -89,6 +89,7 @@ protected:
 	virtual		bool				OnKeyboardPress			(int key);
 	virtual		bool				OnKeyboardRelease		(int key);
 
+	virtual		LPCSTR				GetTeamMenu				(s16 team);
 	virtual		void				LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWnd* pBuyMenu, PRESET_ITEMS* pPresetItems);
 	virtual		void				LoadPlayerDefItems			(char* TeamName, CUIBuyWnd* pBuyMenu);
 	virtual		void				LoadDefItemsForRank			(CUIBuyWnd* pBuyMenu);
@@ -133,7 +134,7 @@ public:
 
 	virtual		void				OnSpawn					(CObject* pObj);
 	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	
-	virtual		void				OnRankChanged			();
+	virtual		void				OnRankChanged			(u8 OldRank);
 	virtual		void				PlayRankChangesSndMessage ();
 	virtual		void				OnTeamChanged			();
 	virtual		void				OnMoneyChanged			();
@@ -146,6 +147,8 @@ public:
 	
 	virtual		void				OnPlayerFlagsChanged	(game_PlayerState* ps);
 	virtual		void				SendPickUpEvent			(u16 ID_who, u16 ID_what);
+
+	virtual		void				OnGameRoundStarted				();
 };
 
 IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);

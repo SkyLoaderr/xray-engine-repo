@@ -365,12 +365,7 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		}break;
 	case GAME_EVENT_ROUND_STARTED:
 		{
-//			sprintf(Text, "%sRound started !!!",Color_Main);
-			sprintf(Text, "%s%s",Color_Main, *st.translate("mp_match_started"));
-			CommonMessageOut(Text);
-			OnSwitchPhase_InProgress();
-			//-------------------------------
-			PlaySndMessage(ID_MATCH_STARTED);
+			OnGameRoundStarted();
 		}break;
 	case GAME_EVENT_ROUND_END:
 		{
@@ -881,7 +876,7 @@ void	game_cl_mp::LoadSndMessages				()
 	LoadSndMessage("mp_snd_messages", "match_started", ID_MATCH_STARTED);
 };
 
-void	game_cl_mp::OnRankChanged	()
+void	game_cl_mp::OnRankChanged	(u8 OldRank)
 {
 	CStringTable st;
 #ifdef DEBUG
@@ -909,7 +904,7 @@ void	game_cl_mp::net_import_update		(NET_Packet& P)
 	if (local_player)
 	{
 		if (OldTeam != local_player->team)	OnTeamChanged();
-		if (OldRank != local_player->rank)	OnRankChanged();
+		if (OldRank != local_player->rank)	OnRankChanged(OldRank);
 	};
 }
 
@@ -928,7 +923,7 @@ void	game_cl_mp::net_import_state		(NET_Packet& P)
 	if (local_player)
 	{
 		if (OldTeam != local_player->team)	OnTeamChanged();
-		if (OldRank != local_player->rank)	OnRankChanged();
+		if (OldRank != local_player->rank)	OnRankChanged(OldRank);
 	};
 	//-------------------------------------------------------------
 	m_u8SpectatorModes = P.r_u8();
@@ -1084,6 +1079,18 @@ void	game_cl_mp::OnGameMenuRespond		(NET_Packet& P)
 		}break;
 	}
 };
+
+void	game_cl_mp::OnGameRoundStarted				()
+{
+	//			sprintf(Text, "%sRound started !!!",Color_Main);
+	string512 Text;
+	CStringTable st;
+	sprintf(Text, "%s%s",Color_Main, *st.translate("mp_match_started"));
+	CommonMessageOut(Text);
+	OnSwitchPhase_InProgress();
+	//-------------------------------
+	PlaySndMessage(ID_MATCH_STARTED);
+}
 
 void OnBuySpawn(CUIWindow* pWnd, void* p)
 {

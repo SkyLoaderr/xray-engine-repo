@@ -234,12 +234,13 @@ public:
 	virtual		void				OnGameMenuRespond_Spectator		(NET_Packet& P) {};
 	virtual		void				OnGameMenuRespond_ChangeTeam	(NET_Packet& P) {};
 	virtual		void				OnGameMenuRespond_ChangeSkin	(NET_Packet& P) {};
+	virtual		void				OnGameRoundStarted				();
 	
 
 	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase);	
 	virtual		void				net_import_update		(NET_Packet& P);
 	virtual		void				net_import_state		(NET_Packet& P);
-	virtual		void				OnRankChanged			();
+	virtual		void				OnRankChanged			(u8 OldRank);
 	virtual		void				OnTeamChanged			() {};
 	virtual		void				OnMoneyChanged			() {};
 	virtual		void				OnEventMoneyChanged		(NET_Packet& P);
