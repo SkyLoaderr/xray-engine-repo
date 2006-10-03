@@ -236,8 +236,8 @@ void CCharacterPhysicsSupport::in_NetDestroy()
 
 void	CCharacterPhysicsSupport::in_NetSave(NET_Packet& P)
 {
-	if(!m_EntityAlife.use_simplified_visual())
-					CPHSkeleton::SaveNetState(P);
+	
+	CPHSkeleton::SaveNetState(P);
 }
 
 void CCharacterPhysicsSupport::in_Init()
