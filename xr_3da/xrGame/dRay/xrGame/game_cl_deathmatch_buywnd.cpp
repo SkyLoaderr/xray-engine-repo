@@ -59,11 +59,14 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 
 	for (u8 i=0; i<pCurBuyMenu->GetBeltSize(); i++)
 	{
-		u8 SectID, ItemID;
-		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
+		u8 SectID, ItemID, Count;
+		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID, Count);
 //		s16	ID = (s16(SectID) << 0x08) | s16(ItemID);
 		s16 ID = GetBuyMenuItemIndex(SectID, ItemID);
-		pCurPresetItems->push_back(ID);
+		for (u8 c=0; c<Count; c++)
+		{
+			pCurPresetItems->push_back(ID);
+		}		
 	};	
 	//-------------------------------------------------------------------------------
 	for (i=0; i<AdditionalPresetItems.size(); i++)

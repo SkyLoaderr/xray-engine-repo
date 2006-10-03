@@ -66,7 +66,7 @@ public:
 	///////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////
 	const u8	GetWeaponIndex(u32 slotNum);//
-	const u8	GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u8 &itemId);//
+	const u8	GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u8 &itemId, u8 &count);//
 	const u8	GetItemIndex(u32 slotNum, u32 idx, u8 &sectionNum);//
 	
 	void		GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &idx);//

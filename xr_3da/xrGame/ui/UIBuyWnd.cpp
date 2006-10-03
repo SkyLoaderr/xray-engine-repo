@@ -1157,9 +1157,17 @@ const u8 CUIBuyWnd::GetItemIndex(u32 slotNum, u32 idx, u8 &sectionNum)
 	return m_bag.GetItemIndex(itm, sectionNum);	
 }
 
-const u8 CUIBuyWnd::GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u8 &itemId){
-	itemId = GetItemIndex(BELT_SLOT, indexInBelt, sectionId);
-	return itemId;
+const u8 CUIBuyWnd::GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u8 &itemId, u8 &count){
+	CUICellItem *itm = NULL;
+	if (m_list[GetLocalSlot(BELT_SLOT)]->ItemsCount())
+		itm = m_list[GetLocalSlot(BELT_SLOT)]->GetItemIdx(indexInBelt);
+	
+	
+	if (itm) count = u8(itm->ChildsCount()&0x000f)+1;
+	else count = 0;	
+//	itemId = GetItemIndex(BELT_SLOT, indexInBelt, sectionId);
+	itemId = m_bag.GetItemIndex(itm, sectionId);	
+	return itemId;	
 }
 
 const u8 CUIBuyWnd::GetWeaponIndex(u32 slotNum)
