@@ -417,8 +417,8 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	{
 		movement().locations().Load(*SpecificCharacter().terrain_sect());
 	}
-	if (!already_dead())
-		m_pPhysics_support->in_NetSpawn	(e);
+	
+	m_pPhysics_support->in_NetSpawn	(e);
 
 	return							(TRUE);
 }
@@ -632,8 +632,7 @@ void CAI_Stalker::UpdateCL()
 	STOP_PROFILE
 	
 	START_PROFILE("stalker/client_update/physics")
-	if (!already_dead())
-		m_pPhysics_support->in_UpdateCL	();
+	m_pPhysics_support->in_UpdateCL	();
 	STOP_PROFILE
 
 	if (g_Alive()) {

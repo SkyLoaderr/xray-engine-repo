@@ -120,6 +120,21 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 
 void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 {
+	
+	if(m_EntityAlife.use_simplified_visual	())
+	{
+		m_flags.set(fl_death_anim_on,TRUE);
+		CKinematics*	ka=smart_cast<CKinematics*>(m_EntityAlife.Visual());
+		VERIFY(ka);
+		ka->CalculateBones_Invalidate();
+		ka->CalculateBones();
+		CollisionCorrectObjPos(m_EntityAlife.Position());
+		m_pPhysicsShell		= P_build_Shell(&m_EntityAlife,false);
+		ka->CalculateBones_Invalidate();
+		ka->CalculateBones();
+		return;
+	}
+
 	CPHDestroyable::Init();//this zerows colbacks !!;
 	CKinematicsAnimated*ka= smart_cast<CKinematicsAnimated*>(m_EntityAlife.Visual());
 	if(!m_EntityAlife.g_Alive())
@@ -136,6 +151,7 @@ void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 	}
 	ka->CalculateBones_Invalidate();
 	ka->CalculateBones();
+	
 	CPHSkeleton::Spawn(e);
 	movement()->EnableCharacter();
 	movement()->SetPosition(m_EntityAlife.Position());
@@ -220,7 +236,8 @@ void CCharacterPhysicsSupport::in_NetDestroy()
 
 void	CCharacterPhysicsSupport::in_NetSave(NET_Packet& P)
 {
-	CPHSkeleton::SaveNetState(P);
+	if(!m_EntityAlife.use_simplified_visual())
+					CPHSkeleton::SaveNetState(P);
 }
 
 void CCharacterPhysicsSupport::in_Init()
@@ -234,11 +251,17 @@ void CCharacterPhysicsSupport::in_Init()
 void CCharacterPhysicsSupport::in_shedule_Update(u32 DT)
 {
 	//CPHSkeleton::Update(DT);
-	CPHDestroyable::SheduleUpdate(DT);
+	if(!m_EntityAlife.use_simplified_visual	())
+		CPHDestroyable::SheduleUpdate(DT);
+	else	if(m_pPhysicsShell&&m_pPhysicsShell->isFullActive()&&!m_pPhysicsShell->isEnabled())
+	{
+		m_EntityAlife.deactivate_physics_shell();
+	}
 }
 
 void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing)
 {
+	if(m_EntityAlife.use_simplified_visual	())	return;
 	if(m_flags.test(fl_block_hit))
 	{
 		VERIFY(!m_EntityAlife.g_Alive());
@@ -333,7 +356,7 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 		}
 
 	}
-	else if (!m_EntityAlife.g_Alive())
+	else if (!m_EntityAlife.g_Alive()&&!m_EntityAlife.use_simplified_visual	())
 	{
 
 		//Log("mem use %d",Memory.mem_usage());
