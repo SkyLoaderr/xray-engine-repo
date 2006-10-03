@@ -8029,6 +8029,9 @@
 				Name="Common"
 				Filter="">
 				<File
+					RelativePath=".\r2_test_hw.cpp">
+				</File>
+				<File
 					RelativePath=".\xrGame.cpp">
 				</File>
 				<Filter
@@ -10318,22 +10321,6 @@
 					</Filter>
 				</Filter>
 				<Filter
-					Name="ScrollBar"
-					Filter="">
-					<File
-						RelativePath=".\ui\UIScrollBar.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIScrollBar.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIScrollBox.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIScrollBox.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="DragDrop"
 					Filter="">
 					<File
@@ -10733,6 +10720,22 @@
 					</File>
 					<File
 						RelativePath=".\ui\UILabel.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="ScrollBar"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIScrollBar.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIScrollBar.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIScrollBox.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIScrollBox.h">
 					</File>
 				</Filter>
 			</Filter>
