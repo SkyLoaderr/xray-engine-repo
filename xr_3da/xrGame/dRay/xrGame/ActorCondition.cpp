@@ -17,7 +17,6 @@
 #include "object_broker.h"
 #include "weapon.h"
 
-#define ENEMIES_RADIUS				20.f
 #define MAX_SATIETY					1.0f
 #define START_SATIETY				0.5f
 
