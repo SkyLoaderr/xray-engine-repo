@@ -111,17 +111,17 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 		spawns().load			(source,file_name);
 		objects().load			(source);
 
-		CALifeObjectRegistry::OBJECT_REGISTRY::iterator	B= objects().objects().begin();
+		CALifeObjectRegistry::OBJECT_REGISTRY::iterator	B = objects().objects().begin();
 		CALifeObjectRegistry::OBJECT_REGISTRY::iterator	E = objects().objects().end();
 		CALifeObjectRegistry::OBJECT_REGISTRY::iterator	I;
 		for (I = B; I != E; ++I) {
-			ALife::_OBJECT_ID			id = (*I).second->ID;
-			object->ID					= server().PerformIDgen(id);
-			VERIFY						(id == (*I).second->ID);
-			m_manager->register_object	((*I).second,false,false);
+			ALife::_OBJECT_ID	id = (*I).second->ID;
+			(*I).second->ID		= server().PerformIDgen(id);
+			VERIFY				(id == (*I).second->ID);
+			register_object		((*I).second,false,false);
 		}
 
-		for (I = B; I != E; ++I) {
+		for (I = B; I != E; ++I)
 			(*I).second->on_register	();
 
 		registry().load			(source);

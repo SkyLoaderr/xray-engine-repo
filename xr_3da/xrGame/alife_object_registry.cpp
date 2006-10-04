@@ -121,3 +121,23 @@ CSE_ALifeDynamicObject *CALifeObjectRegistry::get_object		(IReader &file_stream)
 
 	return					(tpALifeDynamicObject);
 }
+
+void CALifeObjectRegistry::load				(IReader &file_stream)
+{ 
+	Msg							("* Loading objects...");
+	R_ASSERT2					(file_stream.find_chunk(OBJECT_CHUNK_DATA),"Can't find chunk OBJECT_CHUNK_DATA!");
+
+	m_objects.clear				();
+
+	u32							count = file_stream.r_u32();
+	CSE_ALifeDynamicObject		**objects = (CSE_ALifeDynamicObject**)_alloca(count*sizeof(CSE_ALifeDynamicObject*));
+
+	CSE_ALifeDynamicObject		**I = objects;
+	CSE_ALifeDynamicObject		**E = objects + count;
+	for ( ; I != E; ++I) {
+		*I						= get_object(file_stream);
+		add						(*I);
+	}
+
+	Msg							("* %d objects are successfully loaded",count);
+}
