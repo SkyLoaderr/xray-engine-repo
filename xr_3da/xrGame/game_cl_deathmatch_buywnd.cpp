@@ -69,9 +69,9 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 		}		
 	};	
 	//-------------------------------------------------------------------------------
-	for (i=0; i<AdditionalPresetItems.size(); i++)
+//	for (i=0; i<AdditionalPresetItems.size(); i++)
 	{
-		pCurPresetItems->push_back(AdditionalPresetItems[i]);
+//		pCurPresetItems->push_back(AdditionalPresetItems[i]);
 	}
 	//-------------------------------------------------------------------------------
 	P.w_s32		(s32(pCurBuyMenu->GetMoneyAmount()) - Pl->money_for_round);
@@ -94,17 +94,17 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 	game_PlayerState* P = local_player;
 	if (!P) return;
 	//---------------------------------------------------------
-	AdditionalPresetItems.clear();
+//	AdditionalPresetItems.clear();
 	xr_vector <s16>			TmpPresetItems;
 	PRESET_ITEMS_it		It = pCurPresetItems->begin();
 	PRESET_ITEMS_it		Et = pCurPresetItems->end();
 	for ( ; It != Et; ++It) 
 	{
 		s16 ID = *It;
-		if (((ID & 0xff00) >> 0x08) != (UNBUYABLESLOT-1))
+//		if (((ID & 0xff00) >> 0x08) != (UNBUYABLESLOT-1))
 			TmpPresetItems.push_back(ID);
-		else
-			AdditionalPresetItems.push_back(ID);
+//		else
+//			AdditionalPresetItems.push_back(ID);
 	};
 	//---------------------------------------------------------
 	ClearBuyMenu			();
@@ -174,17 +174,8 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 		u8 SlotID = u8(((*It)&0xff00)>>0x08);
 		u8 ItemID = u8((*It)&0x00ff);
 
-		pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
-/*
-		u8 DesiredAddons = ItemID>>5;
-
-		if (DesiredAddons & CSE_ALifeItemWeapon::eWeaponAddonScope)
-			pCurBuyMenu->AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonScope, SlotID, false);
-		if (DesiredAddons & CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)
-			pCurBuyMenu->AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher, SlotID, false);
-		if (DesiredAddons & CSE_ALifeItemWeapon::eWeaponAddonSilencer)
-			pCurBuyMenu->AddonToSlot(CSE_ALifeItemWeapon::eWeaponAddonSilencer, SlotID, false);
-*/
+		if (SlotID != (UNBUYABLESLOT-1))
+			pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
 	};
 	//---------------------------------------------------------
 	pCurBuyMenu->IgnoreMoney(false);
