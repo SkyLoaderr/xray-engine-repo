@@ -84,7 +84,7 @@
 		<texture>ui_scale_three</texture>
     </progress_background>
     
-    <progress_back_rank x="786" y="343" width="38" height="250">
+    <progress_back_rank x="784" y="340" width="38" height="215">
 		<texture>ui_scale_one</texture>		
     </progress_back_rank>   
 
@@ -106,7 +106,7 @@
 		</progress>
     </progress_bar_radiation>
     
-    <progress_bar_rank x="20" y="22" width="10" height="124" horz="0" min="0" max="100" pos="0">
+    <progress_bar_rank x="20" y="22" width="10" height="141" horz="0" min="0" max="100" pos="0">
 		<progress>
 			<texture>ui_scale_green</texture>
 		</progress>

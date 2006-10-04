@@ -51,10 +51,11 @@
 
 #ifdef DEBUG
 #	include "../debug_renderer.h"
-#endif
 
 void test_draw	();
 void test_key	(int dik);
+#endif
+
 
 using namespace InventoryUtilities;
 
@@ -277,7 +278,9 @@ void CUIMainIngameWnd::Init()
 float UIStaticDiskIO_start_time = 0.0f;
 void CUIMainIngameWnd::Draw()
 {
+#ifdef DEBUG
 	test_draw				();
+#endif
 	// show IO icon
 	bool IOActive	= (FS.dwOpenCounter>0);
 	if	(IOActive)	UIStaticDiskIO_start_time = Device.fTimeGlobal;
@@ -536,8 +539,9 @@ void CUIMainIngameWnd::Update()
 
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 {
+#ifdef DEBUG
 	test_key(dik);
-
+#endif
 	// поддержка режима adjust hud mode
 	bool flag = false;
 	if (g_bHudAdjustMode)
@@ -1186,6 +1190,8 @@ void CUIMainIngameWnd::UpdateActiveItemInfo()
 	}
 }
 
+#ifdef DEBUG
+
 #include "d3dx9core.h"
 #include "winuser.h"
 #pragma comment(lib,"d3dx9.lib")
@@ -1314,7 +1320,7 @@ void test_draw	()
 	}
 
 }
-#ifdef DEBUG
+
 void CUIMainIngameWnd::draw_adjust_mode()
 {
 	if (g_bHudAdjustMode&&m_pWeapon) //draw firePoint,ShellPoint etc

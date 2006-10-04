@@ -83,8 +83,7 @@
     </progress_background>
     
     
-    
-    <progress_back_rank x="592" y="343" width="29" height="250" stretch="1">
+    <progress_back_rank x="592" y="340" width="29" height="179" stretch="1">
 		<texture>ui_scale_one</texture>		
     </progress_back_rank>   
 
