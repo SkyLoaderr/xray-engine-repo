@@ -464,7 +464,7 @@ const float				DET_CHECK_EPS =0.15f					;//scale -35%  !? ;)
 		\
 		Log("matrix--- ",M);	\
 		Log("determinant- ",d);	\
-		VERIFY2(1,"Is not valid rotational matrix");\
+		VERIFY2(0,"Is not valid rotational matrix");\
 	}};
 #else
 #define	VERIFY_RMATRIX(M)	
