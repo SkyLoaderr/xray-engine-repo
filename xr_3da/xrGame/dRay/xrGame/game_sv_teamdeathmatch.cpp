@@ -156,7 +156,7 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(ClientID id_who, s16 team)
 	{
 		team				= AutoTeam();
 	};
-	//-----------------------------------------------------
+	//-----------------------------------------------------	
 	NET_Packet Px;
 	GenerateGameMessage(Px);
 	Px.w_u32(GAME_EVENT_PLAYER_GAME_MENU_RESPOND);
@@ -168,6 +168,8 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(ClientID id_who, s16 team)
 	//-----------------------------------------------------
 	KillPlayer(id_who, ps_who->GameID);
 	//-----------------------------------------------------	
+	ps_who->setFlag(GAME_PLAYER_FLAG_SPECTATOR);
+	//-----------------------------------------------------
 	s16 OldTeam = ps_who->team;
 	ps_who->team = team;
 	TeamStruct* pTS = GetTeamData(team);
