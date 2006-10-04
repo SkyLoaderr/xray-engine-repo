@@ -925,13 +925,16 @@ void				game_cl_Deathmatch::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 void				game_cl_Deathmatch::OnGameRoundStarted				()
 {
 	inherited::OnGameRoundStarted();
-	if (pCurBuyMenu) pCurBuyMenu->SetRank(local_player->rank);
-	ClearBuyMenu();
-	LoadDefItemsForRank(pCurBuyMenu);
-	ChangeItemsCosts(pCurBuyMenu);
-	if (pCurBuyMenu)
+	if (local_player)
 	{
-		LoadTeamDefaultPresetItems(GetTeamMenu(local_player->team), pCurBuyMenu, pCurPresetItems);
+		if (pCurBuyMenu) pCurBuyMenu->SetRank(local_player->rank);
+		ClearBuyMenu();
+		LoadDefItemsForRank(pCurBuyMenu);
+		ChangeItemsCosts(pCurBuyMenu);
+		if (pCurBuyMenu)
+		{
+			LoadTeamDefaultPresetItems(GetTeamMenu(local_player->team), pCurBuyMenu, pCurPresetItems);
+		}
 	}
 }
 
