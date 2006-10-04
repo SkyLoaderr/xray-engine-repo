@@ -21,25 +21,6 @@
 
 using namespace ALife;
 
-class CALifeUpdatePredicate {
-private:
-	CALifeStorageManager			*m_manager;
-
-public:
-	IC								CALifeUpdatePredicate	(CALifeStorageManager *manager)
-	{
-		m_manager					= manager;
-	}
-
-	IC		void					operator()				(CSE_ALifeDynamicObject *object) const
-	{
-		ALife::_OBJECT_ID			id = object->ID;
-		object->ID					= m_manager->server().PerformIDgen(id);
-		VERIFY						(id == object->ID);
-		m_manager->register_object	(object);
-	}
-};
-
 CALifeStorageManager::~CALifeStorageManager	()
 {
 }
@@ -128,7 +109,21 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 		header().load			(source);
 		time_manager().load		(source);
 		spawns().load			(source,file_name);
-		objects().load			(source,CALifeUpdatePredicate(this));
+		objects().load			(source);
+
+		CALifeObjectRegistry::OBJECT_REGISTRY::iterator	B= objects().objects().begin();
+		CALifeObjectRegistry::OBJECT_REGISTRY::iterator	E = objects().objects().end();
+		CALifeObjectRegistry::OBJECT_REGISTRY::iterator	I;
+		for (I = B; I != E; ++I) {
+			ALife::_OBJECT_ID			id = (*I).second->ID;
+			object->ID					= server().PerformIDgen(id);
+			VERIFY						(id == (*I).second->ID);
+			m_manager->register_object	((*I).second,false,false);
+		}
+
+		for (I = B; I != E; ++I) {
+			(*I).second->on_register	();
+
 		registry().load			(source);
 	}
 

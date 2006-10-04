@@ -94,7 +94,7 @@ protected:
 	virtual void								setup_simulator				(CSE_ALifeObject *object) = 0;
 
 public:
-			void								register_object				(CSE_ALifeDynamicObject	*object, bool add_object = false);
+			void								register_object				(CSE_ALifeDynamicObject	*object, bool add_object = false, bool call_on_register = true);
 			void								unregister_object			(CSE_ALifeDynamicObject *object, bool alife_query = true);
 			void								release						(CSE_Abstract			*object, bool alife_query = true);
 			void								create						(CSE_ALifeDynamicObject	*&object, CSE_ALifeDynamicObject *spawn_object,	const ALife::_SPAWN_ID &spawn_id);
