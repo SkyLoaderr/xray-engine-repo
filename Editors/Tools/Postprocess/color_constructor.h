@@ -14,6 +14,8 @@
 #include <ExtCtrls.hpp>
 
 #include <vector>
+#include <xrCore.h>
+#include "PostprocessAnimator.h"
 
 using namespace std;
 
@@ -42,6 +44,7 @@ public:		// User declarations
     void    __fastcall  LoadData           (FILE *file);
     void    __fastcall  Reset              ();
     TForm7* __fastcall  GetEntry           (size_t index);
+    int     __fastcall  ShowModal          (CPostprocessAnimator* animator);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm6 *Form6;

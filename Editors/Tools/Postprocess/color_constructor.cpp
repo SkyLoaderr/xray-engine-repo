@@ -134,4 +134,10 @@ TForm7* __fastcall  TForm6::GetEntry           (size_t index)
        throw Exception ("Color constructor: invalid index");
     return m_Entries[index];
 }
+//---------------------------------------------------------------------------
+int     __fastcall  TForm6::ShowModal           (CPostprocessAnimator* animator)
+{
+    
+    return TForm::ShowModal ();
+}
 

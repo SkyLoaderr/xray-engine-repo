@@ -14,11 +14,7 @@ void CPostProcessValue::save (IWriter &pWriter)
 {
     m_Value.Save (pWriter);
 }
-
-CPostProcessValue::~CPostProcessValue()
-{
-}
-
+ 
 // postprocess color LOAD method implementation
 void CPostProcessColor::load (IReader &pReader)
 {
@@ -123,10 +119,7 @@ void        CPostprocessAnimator::Load                            (LPCSTR name)
 
 	f_length					= GetLength	();
 #ifndef _PP_EDITOR_
-	if(!m_bCyclic) 
-		fLifeTime				= f_length;
-	else
-		fLifeTime				= 100000;
+	if(!m_bCyclic) fLifeTime	= f_length;
 #endif
 
 }
@@ -136,7 +129,6 @@ void        CPostprocessAnimator::Stop       (float sp)
 	if(m_bStop)			return;
 	m_bStop				= true;
 	m_factor_speed		= sp;
-	VERIFY				(_valid(sp));
 }
 
 float       CPostprocessAnimator::GetLength                       ()
@@ -161,39 +153,25 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 {
 	if(m_bCyclic)
 		fLifeTime				= 100000;
-	else
-		fLifeTime				-= Device.fTimeDelta;
-
-	if(!CEffectorPP::Valid()) return FALSE;
+	
 
 	if(m_start_time<0.0f)m_start_time=Device.fTimeGlobal;
 	if(m_bCyclic &&((Device.fTimeGlobal-m_start_time)>f_length)) m_start_time+=f_length;
 
-
 	Update					(Device.fTimeGlobal-m_start_time);
 
-	VERIFY				(_valid(m_factor_speed));
 	if(m_bStop)
 		m_factor			-=	Device.fTimeDelta*m_factor_speed;
-	else{
-		bool b = m_dest_factor>m_factor;
+	else
 		m_factor			+= m_factor_speed*Device.fTimeDelta*(m_dest_factor-m_factor);
-		
-		if(b)
-			clamp		(m_factor, 0.0001f, m_dest_factor);
-		else
-			clamp		(m_factor, m_dest_factor, 1.0f);
-	}
 
-	clamp				(m_factor, 0.0001f, 1.0f);
-
+	clamp					(m_factor, 0.0001f, 1.0f);
 
 	m_EffectorParams.color_base		+= pp_identity.color_base;
 	m_EffectorParams.color_gray		+= pp_identity.color_gray;
 	m_EffectorParams.color_add		+= pp_identity.color_add;
 	m_EffectorParams.noise.fps		*= 100.0f;
 
-	VERIFY					( _valid(m_factor) );
 	PPInfo.lerp				(pp_identity, m_EffectorParams, m_factor);
 	if(PPInfo.noise.grain<=0.0f){
 		R_ASSERT3(0,"noise.grain cant be zero! see postprocess",*m_Name);
@@ -210,8 +188,8 @@ BOOL CPostprocessAnimator::Process(float dt, SPPInfo &PPInfo)
 
 	Update					(dt);
 
-	if(m_bStop)
-		m_factor			-=	dt*m_stop_speed;
+	//if(m_bStop)
+//		m_factor			-=	dt*m_stop_speed;
 
 	clamp					(m_factor, 0.001f, 1.0f);
 
@@ -230,7 +208,6 @@ void        CPostprocessAnimator::Create                          ()
 	m_factor			= 1.0f;
 	m_dest_factor		= 1.0f;
 	m_bStop				= false;
-	m_factor_speed		= 1.0f;
 	m_start_time		= -1.0f;
 
     m_Params[0] = xr_new<CPostProcessColor> (&m_EffectorParams.color_base);			//base color

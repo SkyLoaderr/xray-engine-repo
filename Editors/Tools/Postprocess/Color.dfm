@@ -273,9 +273,9 @@ object ColorForm: TColorForm
   end
   object Button1: TButton
     Left = 608
-    Top = 136
+    Top = 140
     Width = 75
-    Height = 25
+    Height = 21
     Caption = 'Constructor'
     TabOrder = 4
     OnClick = Button1Click

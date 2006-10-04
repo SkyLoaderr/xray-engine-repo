@@ -28,7 +28,9 @@ void __fastcall TColorForm::FormDestroy(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TColorForm::Button1Click(TObject *Sender)
 {
-    if (m_Constructor->ShowModal() == mrCancel) return;
+    UpdateConstructor ();
+    
+    if (m_Constructor->ShowModal(m_Animator) == mrCancel) return;
 
     m_Animator->ResetParam (m_Param);
 
@@ -254,4 +256,43 @@ void    TColorForm::UpdateAfterLoad ()
     float       tb, cb, bb;
 */
 }
+void TColorForm::UpdateConstructor ()
+{
+    m_Constructor->Reset ();
 
+    if (PointList->Items->Count == 0) return;
+    CPostProcessParam* cparam = m_Animator->GetParam (m_Param);
+    if (!cparam) throw "Error get parameter from animator";
+    float time, v, t, c, b, fmul = m_Param == pp_base_color ? 2.0f : 1.0f;
+
+    for (size_t a = 0; a < cparam->get_keys_count() - 1; a++)
+        m_Constructor->AddEntryTemplate (a);
+
+    float prev = 0.0f;
+    for (a = 0; a < cparam->get_keys_count(); a++)
+        {
+        TColor color = clBlack;
+        TForm7 *form = m_Constructor->GetEntry (a);
+        time = cparam->get_key_time(a);
+        cparam->get_value(time, v, t, c, b, 0);
+        form->tr = t;
+        form->cr = c;
+        form->br = b;
+        color |= (TColor)(v * 255.0f * fmul);
+        cparam->get_value(time, v, t, c, b, 1);
+        form->tg = t;
+        form->cg = c;
+        form->bg = b;
+        color |= (TColor)(v * 255.0f * fmul) << 8;
+        cparam->get_value(time, v, t, c, b, 2);
+        form->tg = t;
+        form->cg = c;
+        form->bg = b;
+        color |= (TColor)(v * 255.0f * fmul) << 16;
+        form->ColorPanel->Color = color;
+        form->ColorDialog->Color = color;
+        form->WorkTime->Value = time - prev;
+        prev = time;
+        }
+
+}

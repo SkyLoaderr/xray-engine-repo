@@ -39,6 +39,7 @@ private:	// User declarations
     pp_params                m_Param;
     bool                     m_bInternal;
     void    FillList        ();
+    void    UpdateConstructor ();
 public:		// User declarations
     __fastcall TSingleParam(TComponent* Owner, CPostprocessAnimator *pAnimator, pp_params param);
     void    UpdateAfterLoad ();

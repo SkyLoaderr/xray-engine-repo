@@ -144,4 +144,32 @@ void    TSingleParam::Clear           ()
     Bias->Value = 0.0f;
     m_bInternal = false;
 }
+//---------------------------------------------------------------------------
+void    TSingleParam::UpdateConstructor ()
+{
+    m_Constructor->Reset ();
+
+    if (PointList->Items->Count == 0) return;
+    CPostProcessParam* cparam = m_Animator->GetParam (m_Param);
+    if (!cparam) throw "Error get parameter from animator";
+    float time, v, t, c, b;
+
+    for (size_t a = 0; a < cparam->get_keys_count() - 1; a++)
+        m_Constructor->AddEntryTemplate (a);
+
+    float prev = 0.0f;
+    for (a = 0; a < cparam->get_keys_count(); a++)
+        {
+        TForm9 *form = m_Constructor->GetEntry (a);
+        time = cparam->get_key_time(a);
+        cparam->get_value(time, v, t, c, b, 0);
+        form->t = t;
+        form->c = c;
+        form->b = b;
+        form->Value->Value = v;
+        form->WorkTime->Value = time - prev;
+        prev = time;
+        }
+
+}
 

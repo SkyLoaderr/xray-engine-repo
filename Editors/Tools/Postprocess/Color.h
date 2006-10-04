@@ -65,10 +65,12 @@ private:	// User declarations
     bool                     m_bInternal;
     void    FillList        ();
     void    UpdateColor     ();
+    void    UpdateConstructor ();
 public:		// User declarations
     __fastcall TColorForm(TComponent* Owner, CPostprocessAnimator *pAnimator, pp_params param);
     void    UpdateAfterLoad ();
     void    Clear           ();
+    CPostprocessAnimator*   GetAnimator () { return m_Animator; }
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TColorForm *ColorForm;
