@@ -466,22 +466,16 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	Fvector velocity;
 	m_PhysicMovementControl->GetCharacterVelocity		(velocity);
 	velocity.mul(1.3f);
-	Fvector dp;
-
+	Fvector dp,start;start.set(m_EntityAlife.Position());
 	if(!m_PhysicMovementControl->CharacterExist())
-									dp.set(m_EntityAlife.Position());
+		dp.set(m_EntityAlife.Position());
 	else m_PhysicMovementControl->GetDeathPosition(dp);
 	m_PhysicMovementControl->DestroyCharacter();
-
 	CollisionCorrectObjPos(dp);
 
-
-
 	R_ASSERT2(m_physics_skeleton,"No skeleton created!!");
-
 	m_pPhysicsShell=m_physics_skeleton;
 	m_physics_skeleton=NULL;
-	
 	m_pPhysicsShell->set_Kinematics(K);
 	m_pPhysicsShell->RunSimulation();
 	m_pPhysicsShell->mXFORM.set(mXFORM);
@@ -491,13 +485,10 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 		velocity.mul(1.25f*m_after_death_velocity_factor);
 	}
 	m_pPhysicsShell->set_LinearVel(velocity);
-	
 	K->CalculateBones_Invalidate();
 	K->CalculateBones	();
-	//b_death_anim_on=false;
 	m_flags.set(fl_death_anim_on,FALSE);
 	m_eState=esDead;
-	//b_skeleton_in_shell=true;
 	m_flags.set(fl_skeleton_in_shell,TRUE);
 	
 	if(IsGameTypeSingle())
@@ -510,6 +501,7 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 		m_pPhysicsShell->SetIgnoreDynamic();
 	}
 	m_pPhysicsShell->SetIgnoreSmall();
+	FlyTo(Fvector().sub(start,m_EntityAlife.Position()));
 }
 void CCharacterPhysicsSupport::in_ChangeVisual()
 {
@@ -615,4 +607,51 @@ bool CCharacterPhysicsSupport::set_collision_hit_callback(SCollisionHitCallback*
 SCollisionHitCallback * CCharacterPhysicsSupport::get_collision_hit_callback()
 {
 	return m_collision_hit_callback;
+}
+
+void	StaticEnvironmentCB (bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+{
+	dJointID contact_joint	= dJointCreateContact(0, ContactGroup, &c);
+
+	if(bo1)
+	{
+		((CPHIsland*)(retrieveGeomUserData(c.geom.g1)->callback_data))->DActiveIsland()->ConnectJoint(contact_joint);
+		dJointAttach			(contact_joint, dGeomGetBody(c.geom.g1), 0);
+	}
+	else
+	{
+		((CPHIsland*)(retrieveGeomUserData(c.geom.g2)->callback_data))->DActiveIsland()->ConnectJoint(contact_joint);
+		dJointAttach			(contact_joint, 0, dGeomGetBody(c.geom.g2));
+	}
+	do_colide=false;
+}
+
+void						CCharacterPhysicsSupport::FlyTo(const	Fvector &disp)
+{
+		VERIFY(m_pPhysicsShell);
+		float ammount=disp.magnitude();
+		if(fis_zero(ammount,EPS_L))	return;
+		ph_world->Freeze();
+		bool g=m_pPhysicsShell->get_ApplyByGravity();
+		m_pPhysicsShell->set_ApplyByGravity(false);
+		m_pPhysicsShell->add_ObjectContactCallback(StaticEnvironmentCB);
+		void*	cd=m_pPhysicsShell->get_CallbackData();
+		m_pPhysicsShell->set_CallbackData(m_pPhysicsShell->PIsland());
+		m_pPhysicsShell->UnFreeze();
+		Fvector vel;vel.set(disp);
+		const	u16	steps_num=10;
+		const	float	fsteps_num=steps_num;
+		vel.mul(1.f/fsteps_num/fixed_step);
+
+
+		for(u16	i=0;steps_num>i;++i)
+		{
+			m_pPhysicsShell->set_LinearVel(vel);
+			ph_world->Step();
+		}
+		//u16 step_num=disp.magnitude()/fixed_step;
+		m_pPhysicsShell->set_ApplyByGravity(g);
+		m_pPhysicsShell->set_CallbackData(cd);
+		m_pPhysicsShell->remove_ObjectContactCallback(StaticEnvironmentCB);
+		ph_world->UnFreeze();
 }

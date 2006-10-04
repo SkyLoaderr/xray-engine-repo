@@ -38,6 +38,22 @@ void	ActivateTestDepthCallback (bool& do_colide,bool bo1,dContact& c,SGameMtl* m
 	}
 
 }
+void	StaticEnvironment (bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
+{
+	dJointID contact_joint	= dJointCreateContact(0, ContactGroup, &c);
+
+	if(bo1)
+	{
+		((CPHActivationShape*)(retrieveGeomUserData(c.geom.g1)->callback_data))->DActiveIsland()->ConnectJoint(contact_joint);
+		dJointAttach			(contact_joint, dGeomGetBody(c.geom.g1), 0);
+	}
+	else
+	{
+		((CPHActivationShape*)(retrieveGeomUserData(c.geom.g2)->callback_data))->DActiveIsland()->ConnectJoint(contact_joint);
+		dJointAttach			(contact_joint, 0, dGeomGetBody(c.geom.g2));
+	}
+	do_colide=false;
+}
 void  GetMaxDepthCallback (bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {
 
@@ -76,7 +92,7 @@ CPHActivationShape::~CPHActivationShape()
 {
 	VERIFY(!m_body&&!m_geom);
 }
-void	CPHActivationShape::	Create								(const Fvector start_pos,const Fvector start_size,CPhysicsShellHolder* ref_obj,EType type/*=etBox*/)
+void	CPHActivationShape::	Create								(const Fvector start_pos,const Fvector start_size,CPhysicsShellHolder* ref_obj,EType type/*=etBox*/,u16	flags)
 {
 	m_body			=	dBodyCreate	(0)												;
 	dMass m;
@@ -94,6 +110,7 @@ void	CPHActivationShape::	Create								(const Fvector start_pos,const Fvector s
 	dBodyEnable						(m_body)										;
 	m_safe_state					.create(m_body)									;
 	spatial_register				()												;
+	m_flags.set(flags,TRUE);
 }
 void CPHActivationShape::	Destroy	()
 {
@@ -138,8 +155,9 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 
 	float	max_a_vel=max_rotation/fnum_it*fnum_steps_r/fixed_step;
 	//ph_world->CutVelocity(0.f,0.f);
-	
+	dGeomUserDataSetCallbackData(m_geom,this);
 	dGeomUserDataSetObjectContactCallback(m_geom,ActivateTestDepthCallback)			;
+	if(m_flags.test(flStaticEnvironment))dGeomUserDataAddObjectContactCallback(m_geom,StaticEnvironment);
 	max_depth=0.f;
 	
 	Fvector from_size;
