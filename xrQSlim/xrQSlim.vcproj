@@ -64,7 +64,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="x:\"
-			IntermediateDirectory="Release"
+			IntermediateDirectory=".\Release"
 			ConfigurationType="4"
 			CharacterSet="2">
 			<Tool
@@ -113,8 +113,8 @@
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="x:\"
+			IntermediateDirectory=".\Mixed"
 			ConfigurationType="4"
 			CharacterSet="2">
 			<Tool
