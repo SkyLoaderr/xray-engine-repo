@@ -305,53 +305,14 @@ void CUIMainIngameWnd::Draw()
 	}
 	if(!m_pActor) return;
 
-	UIMotionIcon.SetNoise((s16)(0xffff&iFloor(m_pActor->m_snd_noise*100.0f)));
+	UIMotionIcon.SetNoise		((s16)(0xffff&iFloor(m_pActor->m_snd_noise*100.0f)));
+	CUIWindow::Draw				();
+	UIZoneMap->Render			();			
 
-/*
-	bool zoom_mode = false;
-	bool scope_mode = false;
-	if(m_pActor->inventory().GetActiveSlot() != NO_ACTIVE_SLOT)
-	{
-		PIItem item		=  m_pActor->inventory().ActiveItem();
-
-		if(item && m_pActor->HUDview() && smart_cast<CHudItem*>(item))
-			(smart_cast<CHudItem*>(item))->OnDrawUI();
-
-
-		if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomHideCrosshair())
-		{
-			zoom_mode = true;
-			if(m_pWeapon->ZoomTexture() && !m_pWeapon->IsRotatingToZoom())
-				scope_mode = true;
-
-			if(psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT))
-			{
-				psHUD_Flags.set(HUD_CROSSHAIR_RT, FALSE);
-				m_bShowHudCrosshair = true;
-			}
-
-			zoom_mode = true;			
-		}
-	}
-	if(g_bShowHudInfo)
-	{
-		CUIWindow::Draw();
-		UIZoneMap->Render();			
-	}
-
-	if (m_bShowHudCrosshair && !zoom_mode)
-	{
-		m_bShowHudCrosshair = false;
-		psHUD_Flags.set(HUD_CROSSHAIR_RT, TRUE);
-	}
-*/
-	CUIWindow::Draw();
-	UIZoneMap->Render();			
-
-	RenderQuickInfos();		
+	RenderQuickInfos			();		
 
 #ifdef DEBUG
-	draw_adjust_mode();
+	draw_adjust_mode			();
 #endif
 }
 
@@ -417,36 +378,36 @@ void CUIMainIngameWnd::Update()
 		return;
 	}
 
-	if( !(Device.dwFrame%5) )
+	if( !(Device.dwFrame%30) && IsGameTypeSingle() )
 	{
-	if (GameID() == GAME_SINGLE )
-	{
-		string256				text_str;
-//.		if(m_pActor->GetPDA())
-		{
-			u32 cn = m_pActor->GetPDA()->ActiveContactsNum();
-			if(cn>0){
-				sprintf(text_str, "%d", cn);
-				UIPdaOnline.SetText(text_str);
-			}else
+			string256				text_str;
+			CPda* _pda = m_pActor->GetPDA();
+			if(_pda && _pda->ActiveContactsNum() )
+			{
+				u32 cn = _pda->ActiveContactsNum();
+				if(cn>0){
+					sprintf(text_str, "%d", cn);
+					UIPdaOnline.SetText(text_str);
+				}else
+					UIPdaOnline.SetText("");
+			}
+			else
+			{
 				UIPdaOnline.SetText("");
-		}
-/*		else
-		{
-			UIPdaOnline.SetText("");
-		}
-*/
+			}
 	};
 
-	// ewiInvincible:
+	if( !(Device.dwFrame%5) )
+	{
+
 	bool b_God = (GodMode()||(!Game().local_player)) ? true : Game().local_player->testFlag(GAME_PLAYER_FLAG_INVINCIBLE);
-	if(b_God)
+	if(b_God && !(Device.dwFrame%30) )
 		SetWarningIconColor	(ewiInvincible,0xffffffff);
 	else
 		SetWarningIconColor	(ewiInvincible,0x00ffffff);
 
 	// ewiArtefact
-	if(GameID() == GAME_ARTEFACTHUNT){
+	if( (GameID() == GAME_ARTEFACTHUNT) && !(Device.dwFrame%30) ){
 		bool b_Artefact = (NULL != m_pActor->inventory().ItemFromSlot(ARTEFACT_SLOT));
 		if(b_Artefact)
 			SetWarningIconColor	(ewiArtefact,0xffffffff);
@@ -1191,14 +1152,14 @@ void CUIMainIngameWnd::UpdateActiveItemInfo()
 }
 
 #ifdef DEBUG
-
+/*
 #include "d3dx9core.h"
 #include "winuser.h"
 #pragma comment(lib,"d3dx9.lib")
 #pragma comment(lib,"d3d9.lib")
 ID3DXFont*     g_pTestFont = NULL;
 ID3DXSprite*        g_pTextSprite = NULL;   // Sprite for batching draw text calls
-
+*/
 
 /*
 #include "UIGameTutorial.h"
@@ -1215,28 +1176,6 @@ CUIGameTutorial* g_tut = NULL;
 void test_key	(int dik)
 {
 /*
-	if(dik==DIK_K&&strstr(Core.Params,"andy")){
-		if(!w){
-			w = xr_new<CTestDragDropWnd>	();
-			Game().StartStopMenu			(w,true);
-		}else{
-			Game().StartStopMenu			(w,true);
-			xr_delete						(w);
-		}
-	}
-*/
-	/*if(dik==DIK_Z&&strstr(Core.Params,"satan")){
-		if(!v){
-			v = xr_new<CUIVotingCategory>	();
-			Game().StartStopMenu			(v,true);
-		}else{
-			Game().StartStopMenu			(v,true);
-			xr_delete						(v);
-		}
-	}*/
-
-
-
 
 	if(dik==DIK_K){
 		if(g_pTestFont){
@@ -1262,17 +1201,16 @@ void test_key	(int dik)
 	g_pTestFont->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
 
 	}
-
+*/
 }
+/*
 D3DCOLOR _clr	= D3DXCOLOR( 1.0f, 0.0f, 0.0f, 1.0f );
 LPCSTR _str		= "This is a trivial call to ID3DXFont::DrawText";
 int _len		= 43;
+*/
 void test_draw	()
 {
-//	if(g_MissileForceShape)
-//		g_MissileForceShape->Draw();
-
-	
+/*
 	if(g_pTestFont){
 
 //	g_pTestFont->PreloadText("This is a trivial call to ID3DXFont::DrawText", xr_strlen("This is a trivial call to ID3DXFont::DrawText"));
@@ -1318,7 +1256,7 @@ void test_draw	()
 		g_pTextSprite->End();
 
 	}
-
+*/
 }
 
 void CUIMainIngameWnd::draw_adjust_mode()

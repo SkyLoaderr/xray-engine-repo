@@ -122,13 +122,10 @@ BOOL CPda::feel_touch_contact(CObject* O)
 {
 	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(O);
 	if(pInvOwner){
-		if( this!=pInvOwner->GetPDA() /*&& 
-		 pInvOwner->GetPDA()&& 
-		!pInvOwner->GetPDA()->getDestroy()	&& 
-		pInvOwner->IsActivePDA()*/)
+		if( this!=pInvOwner->GetPDA() )
 		{
 			CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(O);
-			if(pEntityAlive /*&& pEntityAlive->g_Alive()*/ && !pEntityAlive->getDestroy() && !pEntityAlive->cast_base_monster())
+			if(pEntityAlive && !pEntityAlive->getDestroy() && !pEntityAlive->cast_base_monster() )
 				return TRUE;
 		}else
 		return FALSE;

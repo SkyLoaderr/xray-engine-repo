@@ -25,6 +25,7 @@ public:
 	CUIGameSP									();
 	virtual				~CUIGameSP				();
 
+	virtual	void		shedule_Update		(u32 dt);
 	virtual void		SetClGame				(game_cl_GameState* g);
 	virtual bool		IR_OnKeyboardPress		(int dik);
 	virtual bool		IR_OnKeyboardRelease	(int dik);

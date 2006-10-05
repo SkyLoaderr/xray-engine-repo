@@ -39,6 +39,27 @@ CUIGameSP::~CUIGameSP()
 	delete_data(UIChangeLevelWnd);
 }
 
+void CUIGameSP::shedule_Update(u32 dt)
+{
+	inherited::shedule_Update			(dt);
+	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if(!pActor)							return;
+	if(pActor->g_Alive())				return;
+
+	{
+		CUIDialogWnd* mir				= MainInputReceiver();
+		if( mir			&&
+				(	mir==InventoryMenu	||
+					mir==PdaMenu		||
+					mir==TalkMenu		||
+					mir==UICarBodyMenu
+				)
+			)
+		m_game->StartStopMenu			(mir,true);
+
+	}
+}
+
 void CUIGameSP::SetClGame (game_cl_GameState* g)
 {
 	inherited::SetClGame				(g);

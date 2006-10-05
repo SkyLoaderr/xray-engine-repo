@@ -53,19 +53,19 @@ public:
 	virtual CObject*						GetOwnerObject			();
 
 
-	virtual void							TurnOn					() {m_bTurnedOff = false;}
-	virtual void							TurnOff					() {m_bTurnedOff = true;}
+			void							TurnOn					() {m_bTurnedOff = false;}
+			void							TurnOff					() {m_bTurnedOff = true;}
 	
-	virtual bool 							IsActive				() {return (!m_bTurnedOff && !m_bPassiveMode);}
-	virtual bool 							IsPassive				() {return (m_bTurnedOff || m_bPassiveMode);}
-	virtual bool 							IsOn					() {return !m_bTurnedOff;}
-	virtual bool 							IsOff					() {return m_bTurnedOff;}
+			bool 							IsActive				() {return (!m_bTurnedOff && !m_bPassiveMode);}
+			bool 							IsPassive				() {return (m_bTurnedOff || m_bPassiveMode);}
+			bool 							IsOn					() {return !m_bTurnedOff;}
+			bool 							IsOff					() {return m_bTurnedOff;}
 
 
 			xr_vector<CObject*>				ActiveContacts			();
 			void							ActiveContacts			(xr_vector<CPda*>& res);
 			CPda*							GetPdaFromOwner			(CObject* owner);
-	virtual u32								ActiveContactsNum		()							{return ActiveContacts().size();}
+			u32								ActiveContactsNum		()							{return ActiveContacts().size();}
 
 
 	virtual void							save					(NET_Packet &output_packet);
