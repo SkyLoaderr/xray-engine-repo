@@ -274,6 +274,7 @@ void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWnd
 {
 	if (!pSettings->line_exist(caSection, "default_items")) return;
 	if (!pBuyMenu) return;
+	if (!pPresetItems) return;
 
 	pPresetItems->clear();
 

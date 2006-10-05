@@ -75,14 +75,16 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs,
 		u32 fn_len		= xr_strlen(fn);
 		if (fn_len && fn[fn_len-1]=='\\') fn[fn_len-1]=0;
 
+		// working path
+		GetCurrentDirectory(sizeof(WorkingPath),WorkingPath);
+
 //.		strconcat		(ApplicationDataPath,fn,"\\Application Data\\",COMPANY_NAME,"\\",PRODUCT_NAME);
-		strcpy			(ApplicationDataPath, ApplicationPath);
+//.		strcpy			(ApplicationDataPath, ApplicationPath);
+		strcpy			(ApplicationDataPath, WorkingPath);
 
 //		_splitpath		(fn,dr,di,0,0);
 //		strconcat		(ApplicationDataPath,dr,di);                                       
 
-		// working path
-		GetCurrentDirectory(sizeof(WorkingPath),WorkingPath);
 
 		// User/Comp Name
 		DWORD	sz_user		= sizeof(UserName);

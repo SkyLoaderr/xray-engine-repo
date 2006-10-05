@@ -931,7 +931,7 @@ void				game_cl_Deathmatch::OnGameRoundStarted				()
 		ClearBuyMenu();
 		LoadDefItemsForRank(pCurBuyMenu);
 		ChangeItemsCosts(pCurBuyMenu);
-		if (pCurBuyMenu)
+		if (pCurBuyMenu && pCurPresetItems)
 		{
 			LoadTeamDefaultPresetItems(GetTeamMenu(local_player->team), pCurBuyMenu, pCurPresetItems);
 		}
