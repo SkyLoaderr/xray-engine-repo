@@ -67,18 +67,7 @@ function gulag:load_jobs()
 	self:init_ltx( self.name, self.type )
 
 	table.sort( self.Job, function(a,b) return a.prior > b.prior end )
---[[
-	table.sort(self.Job, function(a,b)
-	                         if type(a.prior) ~= "number" then
-	                            printf("gulag <load_jobs>: wrong priority for the job [%s]", a.section)
-	                         end
-	                         if type(b.prior) ~= "number" then
-	                            printf("gulag <load_jobs>: wrong priority for the job [%s]", b.section)
-	                         end
-	                         return a.prior > b.prior
-	                     end
-	          )
---]]
+
 	self:prepare_jobs_for_new_state()
 
 	local capacity = 0
@@ -98,6 +87,7 @@ function gulag:load_jobs()
 	self.capacity               = math.min( capacity, self.capacity )
 	self.capacity_non_exclusive = self.capacity
 
+--	printf("LOAD JOBS %s", tostring(self.name))
 	-- DEBUG
 --	self:validate_jobs()
 end

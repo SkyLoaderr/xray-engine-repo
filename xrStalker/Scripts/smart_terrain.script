@@ -4,8 +4,8 @@ Smart Terrain (механизм, организовывающий всех сталкеров и некоторых монстров в 
 !без симуляции не работает!
 --------------------------------------------------------------------------------------------------------------------]]
 
---function printf()
---end
+function printf()
+end
 
 local check_period
 
@@ -84,6 +84,7 @@ function se_smart_terrain:__init( section ) super( section )
 --	log( "se_smart_terrain::se_smart_terrain called!" )
 
 	self.initialized = false
+	self.registred = false
 end
 
 function se_smart_terrain:detect_probability()
@@ -95,7 +96,7 @@ function se_smart_terrain:print()
 	printf( "NPCs:" )
 	if self.npc_info then
 		for id, v in pairs( self.npc_info ) do
-			printf( "    %d %s", id, v.name )
+			printf( "    %d %s", id, tostring(v.name) )
 		end
 	end
 end
@@ -144,9 +145,9 @@ function se_smart_terrain:STATE_Read( packet, size )
 --	log( "se_smart_terrain::STATE_Read called!" )
 	cse_alife_smart_zone.STATE_Read( self, packet, size )
 
---	printf( "before read" )
+--	printf( "before read_params" )
 --	self:print()
-
+	
 	self:read_params()
 
 	-- под LevelEditor не пытаться читать из пакета ничего
@@ -170,7 +171,7 @@ function se_smart_terrain:STATE_Read( packet, size )
 		local n = packet:r_u8()
 		local o_id, o
 
---		printf( "npc_info=%s", to_str( n ) )
+--		printf( "npc_info=%s", tostring( n ) )
 
 		for i = 1, n do
 			o_id = packet:r_u16()
@@ -188,7 +189,7 @@ function se_smart_terrain:STATE_Read( packet, size )
 		self.population_locked = packet:r_bool()
 	end
 
---	printf( "after read" )
+--	printf( "after read [%s]", self:name())
 --	self:print()
 end
 
@@ -221,6 +222,7 @@ function se_smart_terrain:preserve_exclusives()
 --		printf( "[smart_terrain %s] exclusives=%d", self:name(), e )
 
 		self.exclusives = e
+		printf("%s preserve_exclusives [%s]", self:name(), tostring(self.gulag.capacity_non_exclusive))
 		self.gulag.capacity_non_exclusive = self.gulag.capacity_non_exclusive - e
 
 		exclusives[self:name()] = nil
@@ -323,6 +325,7 @@ function se_smart_terrain:read_params()
 
 	gp.type        = ini:r_string( sect, "type" )
 	gp.preset_name = r_str ( ini, sect, "preset" )
+	printf("%s read_params preset name [%s]", self:name(), tostring(gp.preset_name))
 	gp.capacity    = r_num ( ini, sect, "capacity", 100 ) -- ёмкость. а настоящая ёмкость = min(эта_ёмкость, ёмкость гулага)
 	gp.squad       = r_num ( ini, sect, "squad" )
 
@@ -447,7 +450,8 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 --		if obj:name() == "sim_stalker_master_diador" then
 --			printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
 --		end
-
+	
+		printf("%s preset names [%s]", self:name(), tostring(self.gparams.preset_name))
 		if not self:check_preset( community, obj:rank(), self.gparams.preset_name ) then
 			return false
 		end
@@ -515,7 +519,7 @@ function se_smart_terrain:enabled( obj )
 		return false
 	end
 	--------
-
+	self:register_if_needed()
 	self:initialize_if_needed()
 	if self:is_gulag_available() and not self.population_locked then
 		local b = self:obj_accepts_smart_terrain( obj )
@@ -822,9 +826,19 @@ end
 -- регистрация объекта в симуляторе.
 -- вызывается симулятором.
 function se_smart_terrain:on_register()
---	printf( "[smart_terrain %s] on_register called", self:name() )
 	cse_alife_smart_zone.on_register( self )
 
+	self:register_if_needed()
+end
+
+function se_smart_terrain:register_if_needed()
+	--' Если уже зарегистрены то ничего не делать.
+	if self.registred == true then
+		return
+	end
+	self.registred = true
+	
+	printf( "%s register called", self:name() )
 	-- DEBUG
 	if self.disabled then
 		return
@@ -847,7 +861,6 @@ function se_smart_terrain:on_register()
 	if self.gparams.respawn then
 		db.strn_by_respawn[self.gparams.respawn] = self
 	end
---	print_table(smart_terrains)
 
 	self.gulag:load_jobs()
 
@@ -860,6 +873,8 @@ function se_smart_terrain:on_register()
 	-- Регистрация в таскменеджере
 	task_manager.register_target(self)
 end
+
+
 
 -- дерегистрация объекта в симуляторе.
 -- вызывается симулятором.
