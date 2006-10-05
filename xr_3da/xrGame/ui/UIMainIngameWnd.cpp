@@ -397,12 +397,14 @@ void CUIMainIngameWnd::Update()
 	if( !(Device.dwFrame%5) )
 	{
 
-	bool b_God = (GodMode()||(!Game().local_player)) ? true : Game().local_player->testFlag(GAME_PLAYER_FLAG_INVINCIBLE);
-	if(b_God && !(Device.dwFrame%30) )
-		SetWarningIconColor	(ewiInvincible,0xffffffff);
-	else
-		SetWarningIconColor	(ewiInvincible,0x00ffffff);
-
+	if(!(Device.dwFrame%30))
+	{
+		bool b_God = (GodMode()||(!Game().local_player)) ? true : Game().local_player->testFlag(GAME_PLAYER_FLAG_INVINCIBLE);
+		if(b_God)
+			SetWarningIconColor	(ewiInvincible,0xffffffff);
+		else
+			SetWarningIconColor	(ewiInvincible,0x00ffffff);
+	}
 	// ewiArtefact
 	if( (GameID() == GAME_ARTEFACTHUNT) && !(Device.dwFrame%30) ){
 		bool b_Artefact = (NULL != m_pActor->inventory().ItemFromSlot(ARTEFACT_SLOT));
