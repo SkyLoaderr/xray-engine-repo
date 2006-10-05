@@ -10,6 +10,12 @@
 
 #include "resample.h"
 
+#pragma warning(disable:4995)
+#pragma warning(disable:4244)
+#pragma warning(disable:4130)
+#pragma warning(disable:4018)
+#pragma warning(disable:4267)
+
 /* Some systems don't define this */
 #ifndef M_PI
 #define M_PI       3.14159265358979323846 

@@ -10,7 +10,11 @@
 #include "du_sphere_part.h"
 #include "du_cone.h"
 #include "du_cylinder.h"
+
+#pragma warning(push)
+#pragma warning(disable:4995)
 #include "d3dx9.h"
+#pragma warning(pop)
 
 CDrawUtilities DU;
 

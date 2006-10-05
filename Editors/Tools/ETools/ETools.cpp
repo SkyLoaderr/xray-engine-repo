@@ -2,6 +2,8 @@
 #include	"ETools.h"
 #include	"xrXRC.h"
 
+#pragma warning(disable:4267)
+
 BOOL APIENTRY DllMain( HANDLE hModule, 
 					  DWORD  fdwReason, 
 					  LPVOID lpReserved

@@ -340,7 +340,7 @@ void	CStalker_netDlg::CallToEnterCDKey()
 
 		if (res == ERROR_SUCCESS && KeyCDKey != 0)
 		{
-			DWORD KeyValueSize = (DWORD) strlen(NewCDKey);
+			DWORD KeyValueSize = (DWORD) xr_strlen(NewCDKey);
 			DWORD KeyValueType = REG_SZ;
 			res = RegSetValueEx(KeyCDKey, "value", NULL, KeyValueType, (LPBYTE)NewCDKey, KeyValueSize);
 		}

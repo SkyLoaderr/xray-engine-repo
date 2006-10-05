@@ -119,7 +119,7 @@ BOOL CTheoraStream::ParseHeaders		()
 			ogg_stream_pagein	(&o_stream_state,&o_page);
 		}else{
 			int ret=ReadData(); // someone needs more data
-			if(ret==0) Debug.fatal("End of file while searching for codec headers.");
+			if(ret==0) FATAL	("End of file while searching for codec headers.");
 		}
 	}
 

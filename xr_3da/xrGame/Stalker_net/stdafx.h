@@ -40,4 +40,3 @@
 
 #define NO_XRNEW
 #include "xrcore.h"
-

@@ -31,7 +31,7 @@ BOOL weapon_hud_value::load(const shared_str& section, CHudItem* owner)
 		LPCSTR fire_bone		= pSettings->r_string					(section,"fire_bone");
 		m_fire_bone				= m_animations->LL_BoneID	(fire_bone);
 		if (m_fire_bone>=m_animations->LL_BoneCount())	
-			Debug.fatal	("There is no '%s' bone for weapon '%s'.",fire_bone, *section);
+			Debug.fatal	(DEBUG_INFO,"There is no '%s' bone for weapon '%s'.",fire_bone, *section);
 		m_fp_offset				= pSettings->r_fvector3					(section,"fire_point");
 		if(pSettings->line_exist(section,"fire_point2")) 
 			m_fp2_offset		= pSettings->r_fvector3					(section,"fire_point2");

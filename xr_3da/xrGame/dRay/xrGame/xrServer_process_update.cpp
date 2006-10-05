@@ -42,7 +42,7 @@ void xrServer::Process_update(NET_Packet& P, ClientID sender)
 			if ((P.r_tell()-_pos) != size)	{
 				string16	tmp;
 				CLSID2TEXT	(E->m_tClassID,tmp);
-				Debug.fatal	("Beer from the creator of '%s'",tmp);
+				Debug.fatal	(DEBUG_INFO,"Beer from the creator of '%s'",tmp);
 			}
 		}
 		else

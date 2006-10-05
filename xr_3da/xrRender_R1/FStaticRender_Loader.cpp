@@ -192,7 +192,7 @@ void CRender::LoadBuffers	(IReader *base_fs)
 			fs().advance		(vCount*vSize);
 		}
 	} else {
-		Debug.fatal				("DX7-style FVFs unsupported");
+		FATAL					("DX7-style FVFs unsupported");
 	}
 
 	// Index buffers

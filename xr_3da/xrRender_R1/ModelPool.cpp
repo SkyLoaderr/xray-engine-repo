@@ -75,7 +75,7 @@ IRender_Visual*	CModelPool::Instance_Create(u32 type)
 		break;
 #endif
 	default:
-		Debug.fatal("Unknown visual type");
+		FATAL	("Unknown visual type");
 		break;
 	}
 	R_ASSERT	(V);
@@ -113,7 +113,7 @@ IRender_Visual*	CModelPool::Instance_Load		(const char* N, BOOL allow_register)
 				Msg("!Can't find model file '%s'.",name);
                 return 0;
 #else            
-				Debug.fatal("Can't find model file '%s'.",name);
+				Debug.fatal(DEBUG_INFO,"Can't find model file '%s'.",name);
 #endif
 			}
 	} else {

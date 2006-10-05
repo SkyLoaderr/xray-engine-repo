@@ -23,6 +23,8 @@
 #include <time.h>
 #endif
 
+#pragma warning(disable:4995)
+
 #define _(a) a
 
 #if defined(_WIN32) && defined(_MSC_VER)

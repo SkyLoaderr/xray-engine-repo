@@ -3,6 +3,8 @@
 #include "object.h"
 #include "object_sliding.h"
 
+#pragma warning(disable:4018)
+
 static Object*					g_pObject						= 0;
 static ArbitraryList<MeshPt*>	g_ppTempPts						= 0;
 static float					g_fSlidingWindowErrorTolerance	= 0.1f;

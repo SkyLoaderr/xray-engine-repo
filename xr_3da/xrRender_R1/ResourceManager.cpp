@@ -45,7 +45,7 @@ IBlender* CResourceManager::_GetBlender		(LPCSTR Name)
 #ifdef _EDITOR
 	if (I==m_blenders.end())	return 0;
 #else
-	if (I==m_blenders.end())	{ Debug.fatal("Shader '%s' not found in library.",Name); return 0; }
+	if (I==m_blenders.end())	{ Debug.fatal(DEBUG_INFO,"Shader '%s' not found in library.",Name); return 0; }
 #endif
 	else					return I->second;
 }

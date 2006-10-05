@@ -56,7 +56,7 @@ namespace Feel
 				return	I->cp_LAST;
 			}
 			VERIFY2		(0, "There is no such object in the potentially visible list" );
-			return		Fvector().set(0,0,0).div(0);
+			return		Fvector().set(flt_max,flt_max,flt_max);
 		}
 		virtual		BOOL			feel_vision_isRelevant	(CObject* O)					= 0;
 		virtual		float			feel_vision_mtl_transp	(CObject* O, u32 element)		= 0;	

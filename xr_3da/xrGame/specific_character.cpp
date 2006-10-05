@@ -123,7 +123,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	{
 		data()->m_StartDialog	= start_dialog;
 //		if(!data()->m_StartDialog || !data()->m_StartDialog.size() )
-//			Debug.fatal("start dialog %s doesn't exists in specific character id=%s", start_dialog,  *shared_str(item_data.id));
+//			Debug.fatal(DEBUG_INFO,"start dialog %s doesn't exists in specific character id=%s", start_dialog,  *shared_str(item_data.id));
 	}
 	else
 		data()->m_StartDialog	= NULL;
@@ -199,7 +199,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	xr_free(buf_str);
 	
 	if(data()->m_Community.index() == NO_COMMUNITY_INDEX)
-		Debug.fatal("wrong 'community' '%s' in specific character %s ", team, *m_OwnId);
+		Debug.fatal(DEBUG_INFO,"wrong 'community' '%s' in specific character %s ", team, *m_OwnId);
 
 	data()->m_Rank			= uiXml.ReadInt("rank", 0, NO_RANK);
 	R_ASSERT3(data()->m_Rank != NO_RANK, "'rank' field not fulfiled for specific character", *m_OwnId);

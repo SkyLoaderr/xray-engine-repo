@@ -14,7 +14,10 @@
 #endif
 
 #if defined(_WIN32) || defined(__OS2__)
+#pragma warning(push)
+#pragma warning(disable:4995)
 #include <malloc.h>
+#pragma warning(pop)
 
 void setbinmode(FILE *);
 

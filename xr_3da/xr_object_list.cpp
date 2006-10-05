@@ -217,7 +217,7 @@ u32	CObjectList::net_Export			(NET_Packet* _Packet,	u32 start, u32 count	)
 #ifdef DEBUG
 			u32 size				= u32		(Packet.w_tell()-position)-sizeof(u8);
 			if				(size>=256)			{
-				Debug.fatal	("Object [%s][%d] exceed network-data limit\n size=%d, Pend=%d, Pstart=%d",
+				Debug.fatal	(DEBUG_INFO,"Object [%s][%d] exceed network-data limit\n size=%d, Pend=%d, Pstart=%d",
 					*P->cName(), P->ID(), size, Packet.w_tell(), position);
 			}
 			
@@ -325,7 +325,7 @@ void		CObjectList::Destroy			( CObject*	O		)
 	else {
 		xr_vector<CObject*>::iterator _ii	= std::find(objects_sleeping.begin(),objects_sleeping.end(),O);
 		if	(_ii!=objects_sleeping.end())	objects_sleeping.erase	(_ii);
-		else	Debug.fatal					("! Unregistered object being destroyed");
+		else	FATAL						("! Unregistered object being destroyed");
 	}
 	g_pGamePersistent->ObjectPool.destroy	(O);
 }

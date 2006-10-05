@@ -429,7 +429,7 @@ void CStats::OnDeviceCreate			()
 		||!pSettings->line_exist("evaluation","line1")
 		||!pSettings->line_exist("evaluation","line2")
 		||!pSettings->line_exist("evaluation","line3") )
-		Debug.fatal("");
+		FATAL	("");
 
 	eval_line_1 = pSettings->r_string_wb("evaluation","line1");
 	eval_line_2 = pSettings->r_string_wb("evaluation","line2");

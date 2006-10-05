@@ -31,5 +31,5 @@ public:
 	CButton m_SP_LAM;
 	CButton m_SP_FLM;
 
-	LPCSTR				GetSpectatorModesStr	();
+	LPCSTR GetSpectatorModesStr	(LPSTR result, const u32 &result_size);
 };

@@ -203,9 +203,9 @@ void CGamePersistent::WeathersUpdate()
 				if (snd){
 					Fvector	pos;
 					float	angle		= ::Random.randF(PI_MUL_2);
-					pos.x				= cosf(angle);
+					pos.x				= _cos(angle);
 					pos.y				= 0;
-					pos.z				= sinf(angle);
+					pos.z				= _sin(angle);
 					pos.normalize		().mul(env_amb->get_rnd_sound_dist()).add(Device.vCameraPosition);
 					pos.y				+= 10.f;
 					snd->play_at_pos	(0,pos);

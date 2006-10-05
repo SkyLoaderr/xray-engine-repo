@@ -373,7 +373,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 		}
 		break;
 	default:
-		Debug.fatal	("Invalid vertex type in skinned model '%s'",N);
+		Debug.fatal	(DEBUG_INFO,"Invalid vertex type in skinned model '%s'",N);
 		break;
 	}
 #ifdef _EDITOR

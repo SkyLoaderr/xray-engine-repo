@@ -78,7 +78,7 @@ void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
         }
 		else
 		{
-			Debug.fatal	("Invalid visual");
+			FATAL		("Invalid visual");
     	}
 	}
 }

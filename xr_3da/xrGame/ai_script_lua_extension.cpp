@@ -117,7 +117,7 @@ void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVM)
 
 void LuaError(lua_State* L)
 {
-	Debug.fatal("LUA error: %s",lua_tostring(L,-1));
+	Debug.fatal(DEBUG_INFO,"LUA error: %s",lua_tostring(L,-1));
 }
 
 void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVM)
@@ -225,7 +225,7 @@ bool Script::bfLoadBuffer(CLuaVirtualMachine *tpLuaVM, LPCSTR caBuffer, size_t t
 		string256		insert;
 		sprintf			(insert,"local this = %s\n",caNameSpaceName);
 		size_t			str_len = xr_strlen(insert);
-		LPSTR			script = xr_alloc<char>((str_len + tSize));
+		LPSTR			script = xr_alloc<char>(u32(str_len + tSize));
 		strcpy			(script,insert);
 		CopyMemory	(script + str_len,caBuffer,u32(tSize));
 		l_iErrorCode	= luaL_loadbuffer(tpLuaVM,script,tSize + str_len,caScriptName);
@@ -342,7 +342,7 @@ bool Script::bfGetNamespaceTable(CLuaVirtualMachine *tpLuaVM, LPCSTR N)
 		else 
 			if (!lua_istable(tpLuaVM,-1)) { 
 				lua_pop		(tpLuaVM,2); 
-				Debug.fatal	(" Error : the namespace name is already being used by the non-table object!\n");
+				FATAL		(" Error : the namespace name is already being used by the non-table object!\n");
 				return		(false); 
 			} 
 			lua_remove	(tpLuaVM,-2); 
@@ -376,7 +376,7 @@ CLuaVirtualMachine *Script::get_namespace_table(CLuaVirtualMachine *tpLuaVM, LPC
 		else 
 			if (!lua_istable(tpLuaVM,-1)) { 
 				lua_pop		(tpLuaVM,2); 
-				Debug.fatal	(" Error : the namespace name is already being used by the non-table object!\n");
+				FATAL		(" Error : the namespace name is already being used by the non-table object!\n");
 				return		(0); 
 			} 
 

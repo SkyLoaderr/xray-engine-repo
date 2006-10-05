@@ -5,6 +5,8 @@
 #include "platform.h"
 #include "audio.h"
 
+#pragma warning(disable:4995)
+
 namespace ETOOLS{
 	ETOOLS_API int __stdcall ogg_enc(const char* in_fn, const char* out_fn, float quality, void* comment, int comment_size)
 	{
@@ -17,8 +19,8 @@ namespace ETOOLS{
 		oe_enc_opt      enc_opts;
 		vorbis_comment  vc;
 		FILE *in, *out	= NULL;
-		int foundformat = 0;
-		int closeout	= 0, closein = 0;
+//		int foundformat = 0;
+//		int closeout	= 0, closein = 0;
 		input_format	*format;
 		int res			= 1;
 

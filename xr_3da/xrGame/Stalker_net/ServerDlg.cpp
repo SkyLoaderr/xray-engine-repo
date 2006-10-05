@@ -293,16 +293,16 @@ void	CServerDlg::LoadMapList()
 	while (1)
 	{
 		if (!GetToken(&s, e, token)) break;
-		if (!strcmp(token, "deathmatch")) MapListType = GAME_DEATHMATCH;
+		if (!xr_strcmp(token, "deathmatch")) MapListType = GAME_DEATHMATCH;
 		else
 		{
-			if (!strcmp(token, "teamdeathmatch")) MapListType = GAME_TEAMDEATHMATCH;
+			if (!xr_strcmp(token, "teamdeathmatch")) MapListType = GAME_TEAMDEATHMATCH;
 			else
 			{
-				if (!strcmp(token, "artefacthunt")) MapListType = GAME_ARTEFACTHUNT;
+				if (!xr_strcmp(token, "artefacthunt")) MapListType = GAME_ARTEFACTHUNT;
 				else 
 				{
-					if (!strcmp(token, "weather"))
+					if (!xr_strcmp(token, "weather"))
 					{
 						ParseWeather(&s, e);
 						continue;
@@ -312,15 +312,15 @@ void	CServerDlg::LoadMapList()
 			}
 		}
 		if (!GetToken(&s, e, token)) break;
-		if (strcmp(token, "{")) break;
+		if (xr_strcmp(token, "{")) break;
 		
 		m_MapsNum[MapListType] = 0;
 		while (1)
 		{
 			if (!GetToken(&s, e, token)) break;
-			if (!strcmp(token, "}")) break;
+			if (!xr_strcmp(token, "}")) break;
 
-			if (!strcmp(token, "mapname"))
+			if (!xr_strcmp(token, "mapname"))
 			{
 				GetToken(&s, e, token);
 				strcpy(m_Maps[MapListType][m_MapsNum[MapListType]++], token);
@@ -371,7 +371,7 @@ void	CServerDlg::UpdateMapList(GAME_TYPE GameType)
 //	{
 //		m_pMapList.AddString(m_Maps[GameType][i]);
 //	};
-	for (u32 i=0; i<m_maps[xGameType].size(); i++)
+	for (u32 i=0; i<(u32)m_maps[xGameType].size(); i++)
 	{
 		m_pMapList.AddString(*(m_maps[xGameType][i]));
 	};
@@ -636,6 +636,7 @@ void CServerDlg::OnBnClickedStartServer()
 
 
 //	-noprefetch
+	string512	temp;
 	char cmdline[4096];
 	sprintf(cmdline, "%sxr_3da.exe %s%s%s%s%s%s -nointro -external -nocache -start Server(%s/%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s) client(localhost%s)", 
 			(iDedicated == 1) ? "dedicated\\" : "",
@@ -678,7 +679,7 @@ void CServerDlg::OnBnClickedStartServer()
 			(WeatherTime[0]) ? WeatherTime : "",
 			(WeatherCoeff[0]) ? WeatherCoeff : "",
 			(WarmUpStr[0]) ? WarmUpStr : "",
-			m_pSVSpectatorOptsDlg->GetSpectatorModesStr(),
+			m_pSVSpectatorOptsDlg->GetSpectatorModesStr(temp,sizeof(temp)),
 			//-------------------------------------
 			(NameLen) ? NameAdd : ""
 			);

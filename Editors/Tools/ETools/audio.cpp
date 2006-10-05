@@ -31,6 +31,10 @@
 #include "flac.h"
 #endif
 
+#pragma warning(disable:4995)
+#pragma warning(disable:4267)
+#pragma warning(disable:4244)
+
 #define WAV_HEADER_SIZE 44
 
 /* Macros to read header data */

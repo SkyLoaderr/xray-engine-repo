@@ -322,5 +322,5 @@ void	CRenderDevice::Pause				(BOOL bOn)
 
 void	CRenderDevice::PauseSound			(BOOL val)
 {
-	::Sound->pause_emitters					(val);
+	::Sound->pause_emitters					(!!val);
 }

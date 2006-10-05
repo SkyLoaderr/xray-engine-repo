@@ -49,7 +49,7 @@ void	CBlender_Compile::_cpp_Compile	(ShaderElement* _SH)
 		int id		=	ParseName(BT->oT_Name);
 		base		=	BT->oT_Name;
 		if (id>=0)	{
-			if (id>=int(lst.size()))	Debug.fatal("Not enought textures for shader. Base texture: '%s'.",*lst[0]);
+			if (id>=int(lst.size()))	Debug.fatal(DEBUG_INFO,"Not enought textures for shader. Base texture: '%s'.",*lst[0]);
 			base	=	*lst [id];
 		}
 		if (!Device.Resources->_GetDetailTexture(base,detail_texture,detail_scaler))	bDetail	= FALSE;
@@ -225,7 +225,7 @@ void	CBlender_Compile::Stage_Texture	(LPCSTR name, u32 ,	u32	 fmin, u32 fmip, u3
 	int id		=	ParseName(name);
 	LPCSTR N	=	name;
 	if (id>=0)	{
-		if (id>=int(lst.size()))	Debug.fatal("Not enought textures for shader. Base texture: '%s'.",*lst[0]);
+		if (id>=int(lst.size()))	Debug.fatal(DEBUG_INFO,"Not enought textures for shader. Base texture: '%s'.",*lst[0]);
 		N = *lst [id];
 	}
 	passTextures.push_back	(mk_pair( Stage(),ref_texture( Device.Resources->_CreateTexture(N))));

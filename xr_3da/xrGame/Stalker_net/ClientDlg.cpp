@@ -701,7 +701,7 @@ BOOL	CClientDlg::Client_Create()
 	hr = g_pClientDeviceAddress->GetURLA(URLA, &Len);
 
 	DPN_SP_CAPS	dnSPCaps;
-	memset(&dnSPCaps, 0, sizeof(dnSPCaps));
+	Memory.mem_fill(&dnSPCaps, 0, sizeof(dnSPCaps));
 	dnSPCaps.dwSize = sizeof(dnSPCaps);
 
 	hr = g_pClient->GetSPCaps(&CLSID_DP8SP_TCPIP, &dnSPCaps, 0);
@@ -879,7 +879,7 @@ void	ConvertAddressToName(char* URLA, char* ServerName)
 {
 	if (!URLA || !ServerName) return;
 	char Address[1024];
-	memset(Address, 0, 1024);
+	Memory.mem_fill(Address, 0, 1024);
 	char *pAddress = Address;
 	char* pURLA = strstr(URLA, "hostname=");
 	if (!pURLA) return;
@@ -887,7 +887,7 @@ void	ConvertAddressToName(char* URLA, char* ServerName)
 	if (!pURLA) return;
 	pURLA++;
 	char* pTmp = strstr(pURLA, ";");
-	int Len = (int)strlen(pURLA);
+	int Len = (int)xr_strlen(pURLA);
 	if (pTmp) Len = int(pTmp - pURLA);
 	
 	memcpy(Address, pURLA, pTmp - pURLA);

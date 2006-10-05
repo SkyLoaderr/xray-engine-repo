@@ -135,7 +135,7 @@ void CEnvironment::SetWeather(shared_str name, bool forced)
 #endif
     }else{
 #ifndef _EDITOR
-		Debug.fatal			("! Empty weather name");
+		FATAL				("! Empty weather name");
 #endif
     }
 }
@@ -191,7 +191,7 @@ bool CEnvironment::SetWeatherFX(shared_str name)
 #endif
 	}else{
 #ifndef _EDITOR
-		Debug.fatal			("! Empty weather effect name");
+		FATAL				("! Empty weather effect name");
 #endif
 	}
 	return true;

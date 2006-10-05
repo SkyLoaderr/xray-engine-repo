@@ -24,7 +24,7 @@ IC	CSObjectItemSingle::CObjectItemSingle	(const CLASS_ID &clsid, LPCSTR script_c
 TEMPLATE_SPECIALIZATION
 ObjectFactory::CLIENT_BASE_CLASS *CSObjectItemSingle::client_object	() const
 {
-	Debug.fatal			("Cannot instantiate client object, because client class is not declared!");
+	FATAL				("Cannot instantiate client object, because client class is not declared!");
 	return				(0);
 }
 #endif
@@ -51,7 +51,7 @@ ObjectFactory::CLIENT_BASE_CLASS *CObjectItemSingle<_unknown_type,true>::client_
 template <typename _unknown_type>
 ObjectFactory::SERVER_BASE_CLASS *CObjectItemSingle<_unknown_type,true>::server_object	(LPCSTR section) const
 {
-	Debug.fatal			("Cannot instantiate server object, because server class is not declared!");
+	FATAL				("Cannot instantiate server object, because server class is not declared!");
 	return				(0);
 }
 #endif

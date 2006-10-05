@@ -137,6 +137,7 @@ void	CBlender_Compile::r_End			()
 	dest.M					= 0;
 	SH->passes.push_back	(Device.Resources->_CreatePass(dest.state,dest.ps,dest.vs,dest.constants,dest.T,dest.M,dest.C));
 #else
-	SH->passes.push_back	(Device.Resources->_CreatePass(dest.state,dest.ps,dest.vs,dest.constants,dest.T, ref_matrix_list(0) ,dest.C));
+	ref_matrix_list			temp(0);
+	SH->passes.push_back	(Device.Resources->_CreatePass(dest.state,dest.ps,dest.vs,dest.constants,dest.T,temp,dest.C));
 #endif
 }

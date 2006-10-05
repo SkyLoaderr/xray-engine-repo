@@ -43,7 +43,7 @@ void CObjectAnimator::LoadMotions(LPCSTR fname)
 	string_path			full_path;
 	if (!FS.exist( full_path, "$level$", fname ))
 		if (!FS.exist( full_path, "$game_anims$", fname ))
-			Debug.fatal("Can't find motion file '%s'.",fname);
+			Debug.fatal(DEBUG_INFO,"Can't find motion file '%s'.",fname);
             
     LPCSTR  ext			= strext(full_path);
     if (ext){
@@ -51,14 +51,14 @@ void CObjectAnimator::LoadMotions(LPCSTR fname)
     	if (0==xr_strcmp(ext,".anm")){
             COMotion* M	= xr_new<COMotion> ();
             if (M->LoadMotion(full_path)) m_Motions.push_back(M);
-            else				Debug.fatal("ERROR: Can't load motion. Incorrect file version.");
+            else				FATAL("ERROR: Can't load motion. Incorrect file version.");
         }else if (0==xr_strcmp(ext,".anms")){
             IReader* F			= FS.r_open(full_path);
             u32 dwMCnt			= F->r_u32(); VERIFY(dwMCnt);
             for (u32 i=0; i<dwMCnt; i++){
                 COMotion* M		= xr_new<COMotion> ();
                 bool bRes		= M->Load(*F);
-                if (!bRes)		Debug.fatal("ERROR: Can't load motion. Incorrect file version.");
+                if (!bRes)		FATAL("ERROR: Can't load motion. Incorrect file version.");
                 m_Motions.push_back(M);
             }
             FS.r_close		(F);
@@ -95,7 +95,7 @@ COMotion* CObjectAnimator::Play(bool loop, LPCSTR name)
 			m_MParam.Play	();
             return 		*it;
         }else{
-            Debug.fatal	("OBJ ANIM::Cycle '%s' not found.",name);
+            Debug.fatal	(DEBUG_INFO,"OBJ ANIM::Cycle '%s' not found.",name);
             return NULL;
         }
     }else{
@@ -105,7 +105,7 @@ COMotion* CObjectAnimator::Play(bool loop, LPCSTR name)
 			m_MParam.Play	();
             return 		m_Motions.front();
         }else{
-            Debug.fatal	("OBJ ANIM::Cycle '%s' not found.",name);
+            Debug.fatal	(DEBUG_INFO,"OBJ ANIM::Cycle '%s' not found.",name);
             return NULL;
         }
     }

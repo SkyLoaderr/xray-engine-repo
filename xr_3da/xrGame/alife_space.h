@@ -148,7 +148,7 @@ namespace ALife {
 		else if (!stricmp(caHitType,"wound_2"))
 				return(eHitTypeWound_2);
 		else
-				Debug.fatal("Unsupported hit type!");
+				FATAL	("Unsupported hit type!");
 		NODEFAULT;
 #ifdef DEBUG
 		return(eHitTypeMax);

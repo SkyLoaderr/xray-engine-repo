@@ -60,36 +60,36 @@ static void set_advanced_encoder_options(adv_opt *opts, int count,
         fprintf(stderr, _("Setting advanced encoder option \"%s\" to %s\n"),
                 opts[i].arg, opts[i].val);
 
-        if(!strcmp(opts[i].arg, "bitrate_average_damping")) {
+        if(!xr_strcmp(opts[i].arg, "bitrate_average_damping")) {
             SETD(ai.bitrate_average_damping);
             manage = 1;
         }
-        else if(!strcmp(opts[i].arg, "bitrate_average")) {
+        else if(!xr_strcmp(opts[i].arg, "bitrate_average")) {
             SETL(ai.bitrate_average_kbps);
             manage = 1;
         }
-        else if(!strcmp(opts[i].arg, "bit_reservoir_bias")) {
+        else if(!xr_strcmp(opts[i].arg, "bit_reservoir_bias")) {
             SETD(ai.bitrate_limit_reservoir_bias);
             manage = 1;
         }
-        else if(!strcmp(opts[i].arg, "bit_reservoir_bits")) {
+        else if(!xr_strcmp(opts[i].arg, "bit_reservoir_bits")) {
             SETL(ai.bitrate_limit_reservoir_bits);
             manage = 1;
         }
-        else if(!strcmp(opts[i].arg, "bitrate_hard_min")) {
+        else if(!xr_strcmp(opts[i].arg, "bitrate_hard_min")) {
             SETL(ai.bitrate_limit_min_kbps);
             manage = 1;
         }
-        else if(!strcmp(opts[i].arg, "bitrate_hard_max")) {
+        else if(!xr_strcmp(opts[i].arg, "bitrate_hard_max")) {
             SETL(ai.bitrate_limit_max_kbps);
             manage = 1;
         }
-        else if(!strcmp(opts[i].arg, "impulse_noisetune")) {
+        else if(!xr_strcmp(opts[i].arg, "impulse_noisetune")) {
             double val;
             SETD(val);
             vorbis_encode_ctl(vi, OV_ECTL_IBLOCK_SET, &val);
         }
-        else if(!strcmp(opts[i].arg, "lowpass_frequency")) {
+        else if(!xr_strcmp(opts[i].arg, "lowpass_frequency")) {
             double _prev, _new;
             SETD(_new);
             vorbis_encode_ctl(vi, OV_ECTL_LOWPASS_GET, &_prev);
@@ -262,7 +262,7 @@ int oe_encode(oe_enc_opt *opt)
 		ogg_stream_packetin(&os,&header_comments);
 		ogg_stream_packetin(&os,&header_codebooks);
 
-		while((result = ogg_stream_flush(&os, &og)))
+		while((result = ogg_stream_flush(&os, &og)) == 0)
 		{
 			if(!result) break;
 			ret = oe_write_page(&og, opt->out);
@@ -398,8 +398,8 @@ void update_statistics_notime(char *fn, long total, long done, double time)
 int oe_write_page(ogg_page *page, FILE *fp)
 {
 	int written;
-	written = fwrite(page->header,1,page->header_len, fp);
-	written += fwrite(page->body,1,page->body_len, fp);
+	written = (int)fwrite(page->header,1,page->header_len, fp);
+	written += (int)fwrite(page->body,1,page->body_len, fp);
 
 	return written;
 }
@@ -417,10 +417,10 @@ void final_statistics(char *fn, double time, int rate, long samples, long bytes)
 	fprintf(stderr, _("\n\tFile length:  %dm %04.1fs\n"),
 			(int)(samples/rate/60),
 			samples/rate - 
-			iFloor(samples/rate/60)*60);
+			samples/rate/60*60);
 	fprintf(stderr, _("\tElapsed time: %dm %04.1fs\n"),
 			(int)(time/60),
-			time - iFloor(time/60)*60);
+			time - iFloor((float)time/60)*60);
 	fprintf(stderr, _("\tRate:         %.4f\n"), speed_ratio);
 	fprintf(stderr, _("\tAverage bitrate: %.1f kb/s\n\n"), 
 		8./1000.*((double)bytes/((double)samples/(double)rate)));

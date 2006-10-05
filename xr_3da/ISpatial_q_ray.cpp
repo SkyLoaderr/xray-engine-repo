@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "ISpatial.h"
+#pragma warning(push)
+#pragma warning(disable:4995)
 #include <xmmintrin.h>
+#pragma warning(pop)
 
 // can you say "barebone"?
 #define _MM_ALIGN16		__declspec(align(16))

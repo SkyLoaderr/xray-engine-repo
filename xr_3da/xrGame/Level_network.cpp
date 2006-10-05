@@ -107,7 +107,7 @@ u32	CLevel::Objects_net_Save	(NET_Packet* _Packet, u32 start, u32 count)
 #ifdef DEBUG
 			u32 size				= u32		(Packet.w_tell()-position)-sizeof(u16);
 			if				(size>=65536)			{
-				Debug.fatal	("Object [%s][%d] exceed network-data limit\n size=%d, Pend=%d, Pstart=%d",
+				Debug.fatal	(DEBUG_INFO,"Object [%s][%d] exceed network-data limit\n size=%d, Pend=%d, Pstart=%d",
 					*P->cName(), P->ID(), size, Packet.w_tell(), position);
 			}
 #endif

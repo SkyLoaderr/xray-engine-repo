@@ -229,7 +229,7 @@ CBlend*	CKinematicsAnimated::PlayCycle		(LPCSTR  N, BOOL bMixIn, PlayCallback Ca
 {
 	MotionID motion_ID		= ID_Cycle(N);
 	if (motion_ID.valid())	return PlayCycle(motion_ID,bMixIn,Callback,CallbackParam);
-	else					{ Debug.fatal("! MODEL: can't find cycle: %s", N); return 0; }
+	else					{ Debug.fatal(DEBUG_INFO,"! MODEL: can't find cycle: %s", N); return 0; }
 }
 CBlend*	CKinematicsAnimated::PlayCycle		(MotionID motion_ID,  BOOL bMixIn, PlayCallback Callback, LPVOID CallbackParam)
 {	
@@ -500,7 +500,7 @@ CBlend*	CKinematicsAnimated::IBlend_Create	()
 	CBlend *I=blend_pool.begin(), *E=blend_pool.end();
 	for (; I!=E; I++)
 		if (I->blend == CBlend::eFREE_SLOT) return I;
-	Debug.fatal("Too many blended motions requisted");
+	FATAL("Too many blended motions requisted");
 	return 0;
 }
 void CKinematicsAnimated::Load(const char* N, IReader *data, u32 dwFlags)
@@ -530,7 +530,7 @@ void CKinematicsAnimated::Load(const char* N, IReader *data, u32 dwFlags)
                     Msg			("!Can't find motion file '%s'.",nm);
                     return;
 #else            
-                    Debug.fatal	("Can't find motion file '%s'.",nm);
+                    Debug.fatal	(DEBUG_INFO,"Can't find motion file '%s'.",nm);
 #endif
                 }
             }
@@ -712,7 +712,7 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
                     else				w = w1/ws;
 #ifdef DEBUG
 //.					if (fis_zero(w0+w1) || (!_valid(w))){
-//.						Debug.fatal		("TO ALEXMX VERY IMPORTANT: (TOTAL: %f) w: %f, w0: %f, w1: %f, ws:%f, BIS: %d",w0+w1,w,w0,w1,ws,BLEND_INST.Blend.size());
+//.						Debug.fatal		(DEBUG_INFO,"TO ALEXMX VERY IMPORTANT: (TOTAL: %f) w: %f, w0: %f, w1: %f, ws:%f, BIS: %d",w0+w1,w,w0,w1,ws,BLEND_INST.Blend.size());
 //.					}
 #endif
                     KEY_Interp	(Result,R[0],R[1], clampr(w,0.f,1.f));
@@ -739,7 +739,7 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
 
 #ifdef DEBUG
 //.						if ((total==0) || (!_valid(S[cnt].w/total))){
-//.							Debug.fatal		("TO ALEXMX VERY IMPORTANT: (TOTAL: %f) w: %f, total: %f, count: %d, real count: %d",total,S[cnt].w,total,count,BLEND_INST.Blend.size());
+//.							Debug.fatal		(DEBUG_INFO,"TO ALEXMX VERY IMPORTANT: (TOTAL: %f) w: %f, total: %f, count: %d, real count: %d",total,S[cnt].w,total,count,BLEND_INST.Blend.size());
 //.						}
 #endif
 

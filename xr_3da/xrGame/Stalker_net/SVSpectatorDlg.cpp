@@ -7,6 +7,7 @@
 
 #include "ServerDlg.h"
 #include ".\SVSpectatorDlg.h"
+#include <stdio.h>
 // SVSpectatorDlg dialog
 
 IMPLEMENT_DYNAMIC(SVSpectatorDlg, CSubDlg)
@@ -82,7 +83,7 @@ void	SVSpectatorDlg::OnGameTypeSwitch(byte NewGameType)
 	};
 };
 
-LPCSTR		SVSpectatorDlg::GetSpectatorModesStr	()
+LPCSTR SVSpectatorDlg::GetSpectatorModesStr	(LPSTR result, const u32 &result_size)
 {
 	int res = 0;
 	res |= (m_SP_FFM.GetCheck()) ? 1<<0 : 0;
@@ -91,7 +92,7 @@ LPCSTR		SVSpectatorDlg::GetSpectatorModesStr	()
 	res |= (m_SP_FLM.GetCheck()) ? 1<<3 : 0;
 	res |= (m_SP_TeamOnly.GetCheck()) ? 1<<4 : 0;
 
-    char tmp[1024];
-	sprintf(tmp,"/spectrmds=%d", res);
-	return tmp;
+	sprintf(result,"/spectrmds=%d", res);
+//	sprintf_s(result,result_size,"/spectrmds=%d", res);
+	return (result);
 };

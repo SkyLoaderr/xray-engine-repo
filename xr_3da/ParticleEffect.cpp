@@ -176,7 +176,7 @@ u32 CParticleEffect::ParticlesCount()
 //------------------------------------------------------------------------------
 void CParticleEffect::Copy(IRender_Visual* )
 {
-	Debug.fatal("Can't duplicate particle system - NOT IMPLEMENTED");
+	FATAL	("Can't duplicate particle system - NOT IMPLEMENTED");
 }
 
 void CParticleEffect::OnDeviceCreate()

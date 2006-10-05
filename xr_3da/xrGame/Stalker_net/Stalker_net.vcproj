@@ -355,13 +355,15 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"/>
+							UsePrecompiledHeader="0"
+							WarningLevel="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"/>
+							UsePrecompiledHeader="0"
+							WarningLevel="0"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -400,13 +402,15 @@
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"/>
+							UsePrecompiledHeader="0"
+							WarningLevel="0"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"/>
+							UsePrecompiledHeader="0"
+							WarningLevel="0"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -536,9 +540,6 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt">
-		</File>
 		<File
 			RelativePath=".\res\Stalker_net.manifest">
 		</File>

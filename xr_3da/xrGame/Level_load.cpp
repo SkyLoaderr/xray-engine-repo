@@ -181,7 +181,7 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 		CDB::TRI* T						= tris + it;
 		xr_map<u32,u16>::iterator index	= translator.find(T->material);
 		if (index==translator.end())
-			Debug.fatal	("Game material '%d' not found",T->material);
+			Debug.fatal					(DEBUG_INFO,"Game material '%d' not found",T->material);
 		T->material						= index->second;
 	}
 #endif
@@ -191,7 +191,7 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 		CDB::TRI			*T = tris + it;
 		GameMtlIt			I = std::find_if(GMLib.FirstMaterial(),GMLib.LastMaterial(),mtl_predicate(T->material));
 		if (I==GMLib.LastMaterial())
-			Debug.fatal		("Game material '%d' not found",T->material);
+			Debug.fatal		(DEBUG_INFO,"Game material '%d' not found",T->material);
 		T->material			= u16(I - GMLib.FirstMaterial());
 	}
 #endif
@@ -230,7 +230,7 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 				continue;
 			}
 
-			Debug.fatal					("Game material '%d' not found",(*I).material);
+			Debug.fatal					(DEBUG_INFO,"Game material '%d' not found",(*I).material);
 		}
 		return;
 	}
@@ -249,7 +249,7 @@ void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 				continue;
 			}
 
-			Debug.fatal					("Game material '%d' not found",(*I).material);
+			Debug.fatal					(DEBUG_INFO,"Game material '%d' not found",(*I).material);
 		}
 	}
 #endif

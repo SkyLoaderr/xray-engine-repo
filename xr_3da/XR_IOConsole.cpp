@@ -13,7 +13,10 @@
 #include "GameFont.h"
 #include "xr_trims.h"
 #include "CustomHUD.h"
+#pragma warning(push)
+#pragma warning(disable:4995)
 #include <locale>
+#pragma warning(pop)
 
 #define  LDIST .05f
 

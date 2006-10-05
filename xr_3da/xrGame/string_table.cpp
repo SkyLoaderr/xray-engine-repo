@@ -61,7 +61,7 @@ void CStringTable::Load	(LPCSTR xml_file)
 
 	bool xml_result = uiXml.Init(CONFIG_PATH, _s, xml_file_full);
 	if(!xml_result)
-		Debug.fatal("string table xml file not found %s, for language %s", xml_file_full, *(pData->m_sLanguage));
+		Debug.fatal(DEBUG_INFO,"string table xml file not found %s, for language %s", xml_file_full, *(pData->m_sLanguage));
 
 	//общий список всех записей таблицы в файле
 	int string_num = uiXml.GetNodesNum		(uiXml.GetRoot(), "string");

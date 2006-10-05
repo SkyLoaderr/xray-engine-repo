@@ -47,7 +47,7 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 )
 		vis.box.set			(hdr.bb.min,hdr.bb.max	);
 		vis.sphere.set		(hdr.bs.c,	hdr.bs.r	);
 	} else {
-		Debug.fatal			("Invalid visual");
+		FATAL				("Invalid visual");
 	}
 
 	// Shader

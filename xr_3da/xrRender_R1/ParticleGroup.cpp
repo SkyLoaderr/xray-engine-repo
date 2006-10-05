@@ -201,7 +201,7 @@ void CParticleGroup::SItem::StartFreeChild(CParticleEffect* emitter, LPCSTR nm, 
 #ifdef _EDITOR        
         Msg			("!Can't use looped effect '%s' as 'On Birth' child for group.",nm);
 #else
-        Debug.fatal	("Can't use looped effect '%s' as 'On Birth' child for group.",nm);
+        Debug.fatal	(DEBUG_INFO,"Can't use looped effect '%s' as 'On Birth' child for group.",nm);
 #endif
     }
 }

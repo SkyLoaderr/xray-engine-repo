@@ -168,7 +168,7 @@ void	CResourceManager::OnDeviceCreate	(LPCSTR shName)
 	F->r		(&id,8);
 	if (0==strncmp(id,ID,8))
 	{
-		Debug.fatal			("Unsupported blender library. Compressed?");
+		FATAL				("Unsupported blender library. Compressed?");
 	}
 	OnDeviceCreate			(F);
 	FS.r_close				(F);
