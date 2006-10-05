@@ -381,15 +381,12 @@ void CUIMainIngameWnd::Update()
 	if( !(Device.dwFrame%30) && IsGameTypeSingle() )
 	{
 			string256				text_str;
-			CPda* _pda = m_pActor->GetPDA();
-			if(_pda && _pda->ActiveContactsNum() )
+			CPda* _pda	= m_pActor->GetPDA();
+			u32 _cn		= 0;
+			if(_pda && 0!= (_cn=_pda->ActiveContactsNum()) )
 			{
-				u32 cn = _pda->ActiveContactsNum();
-				if(cn>0){
-					sprintf(text_str, "%d", cn);
-					UIPdaOnline.SetText(text_str);
-				}else
-					UIPdaOnline.SetText("");
+				sprintf(text_str, "%d", _cn);
+				UIPdaOnline.SetText(text_str);
 			}
 			else
 			{
