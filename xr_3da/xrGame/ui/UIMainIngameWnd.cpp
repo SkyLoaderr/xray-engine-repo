@@ -417,7 +417,7 @@ void CUIMainIngameWnd::Update()
 		return;
 	}
 
-	if( !(Device.dwFrame%30) )
+	if( !(Device.dwFrame%5) )
 	{
 	if (GameID() == GAME_SINGLE )
 	{
