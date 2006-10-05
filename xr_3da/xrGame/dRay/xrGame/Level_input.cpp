@@ -299,10 +299,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 ///				return;
 			};
 			Console->Hide	();
-			char fn[256];
-			FS.update_path(fn,"$game_saves$","1.xrdemo");
-//			 strcpy(fn,"x:\\1.xrdemo");
-			g_pGameLevel->Cameras().AddCamEffector(xr_new<CDemoRecord> (fn));
+			Console->Execute("demo_record 1");
 		}
 		break;
 
@@ -318,7 +315,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		break;
 	}
 		return;
-	case DIK_F10:{
+//	case DIK_F10:{
 //		ai().level_graph().set_dest_point();
 //		ai().level_graph().build_detail_path();
 //		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
@@ -331,9 +328,9 @@ void CLevel::IR_OnKeyboardPress	(int key)
 //		luabind::functor<void>	functor;
 //		ai().script_engine().functor("alife_test.set_switch_online",functor);
 //		functor(0,false);
-	}
-		return;
-	case DIK_F11:
+//	}
+//		return;
+//	case DIK_F11:
 //		ai().level_graph().build_detail_path();
 //		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
 //			return;
@@ -343,7 +340,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 //			ai().level_graph().select_cover_point();
 //			m_bSynchronization	= false;
 //		}
-		return;
+//		return;
 #endif
 	}
 

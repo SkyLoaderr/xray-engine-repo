@@ -21,7 +21,7 @@ CDemoPlay::CDemoPlay(const char *name, float ms, u32 cycles, float life_time) : 
 	if(g_bBenchmark)	Console->Execute	("hud_draw 0");
 
 	fSpeed				= ms;
-	dwCyclesLeft		= cycles?1:cycles;
+	dwCyclesLeft		= cycles?cycles:1;
 
 	m_pMotion			= 0;
 	m_MParam			= 0;

@@ -785,7 +785,10 @@ public:
 		};
 		#endif
 		Console->Hide	();
-		char fn[256]; strconcat(fn,args,".xrdemo");
+		string_path fn_; strconcat(fn_, args, ".xrdemo");
+		string_path fn;
+		FS.update_path(fn, "$game_saves$", fn_);
+
 		g_pGameLevel->Cameras().AddCamEffector(xr_new<CDemoRecord> (fn));
 	}
 };
@@ -800,16 +803,17 @@ public:
 		  {
 			  Msg	("! There are no level(s) started");
 		  } else {
-			  Console->Hide		();
-			  string_path		fn;
+			  Console->Hide			();
+			  string_path			fn;
 			  u32		loops	=	0;
 			  LPSTR		comma	=	strchr(args,',');
 			  if (comma)	{
 				  loops			=	atoi	(comma+1);
 				  *comma		=	0;	//. :)
 			  }
-			  strconcat			(fn,args,".xrdemo");
-			  g_pGameLevel->Cameras().AddCamEffector(xr_new<CDemoPlay> (fn,1.0f,loops));
+			  strconcat			(fn, args, ".xrdemo");
+			  FS.update_path	(fn, "$game_saves$", fn);
+			  g_pGameLevel->Cameras().AddCamEffector(xr_new<CDemoPlay> (fn, 1.0f, loops));
 		  }
 	  }
 };
