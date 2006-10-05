@@ -262,6 +262,7 @@ public:
 	virtual void Execute(LPCSTR args) {
 		CObject *l_pObj = Level().CurrentEntity();
 		CActor *l_pPlayer = smart_cast<CActor*>(l_pObj);
+		if (GameID() == GAME_SINGLE) return;
 		if(l_pPlayer) {
 			NET_Packet		P;
 			l_pPlayer->u_EventGen		(P,GE_GAME_EVENT,l_pPlayer->ID()	);
