@@ -163,10 +163,12 @@ void CUICarBodyWnd::InitCarBody(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 	CBaseMonster *monster = NULL;
 	if(m_pOthersObject) {
 		monster										= smart_cast<CBaseMonster *>(m_pOthersObject);
-		if (!monster) {
-			m_pUICharacterInfoRight->InitCharacter	(other_id);
-		} else {
+		if (monster || m_pOthersObject->use_simplified_visual() ) 
+		{
 			m_pUICharacterInfoRight->ClearInfo		();
+		}else 
+		{
+			m_pUICharacterInfoRight->InitCharacter	(other_id);
 		}
 	}
 
