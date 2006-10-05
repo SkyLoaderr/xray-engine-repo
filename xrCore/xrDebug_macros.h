@@ -12,13 +12,13 @@
 #define R_ASSERT2(expr,e2)			do {if (!(expr)) ::Debug.fail(#expr,e2,DEBUG_INFO);} while(0)
 #define R_ASSERT3(expr,e2,e3)		do {if (!(expr)) ::Debug.fail(#expr,e2,e3,DEBUG_INFO);} while(0)
 #define R_CHK(expr)					do {HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,DEBUG_INFO);} while(0)
+#define FATAL(description)			Debug.fatal(DEBUG_INFO,description)
 
 #ifdef VERIFY
 #	undef VERIFY
 #endif // VERIFY
 
 #ifdef DEBUG
-#	define FATAL(description)		Debug.fatal(DEBUG_INFO,description)
 #	define NODEFAULT				FATAL("nodefault reached")
 #	define VERIFY(expr)				do {if (!(expr)) ::Debug.fail(#expr,DEBUG_INFO);} while(0)
 #	define VERIFY2(expr, e2)		do {if (!(expr)) ::Debug.fail(#expr,e2,DEBUG_INFO);} while(0)

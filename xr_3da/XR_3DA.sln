@@ -612,19 +612,12 @@ Global
 		{2EA2CBBA-16BD-4B97-80B3-3F824CFBD4F1}.Release_Dedicated.ActiveCfg = Release|Win32
 		{2EA2CBBA-16BD-4B97-80B3-3F824CFBD4F1}.Release_Dedicated.Build.0 = Release|Win32
 		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Debug.ActiveCfg = Debug|Win32
-		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Debug.Build.0 = Debug|Win32
 		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Debug_Dedicated.ActiveCfg = Debug|Win32
-		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Debug_Dedicated.Build.0 = Debug|Win32
 		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.DebugNoExceptions.ActiveCfg = Debug|Win32
-		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.DebugNoExceptions.Build.0 = Debug|Win32
 		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Mixed.ActiveCfg = Release|Win32
-		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Mixed.Build.0 = Release|Win32
 		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Mixed_Dedicated.ActiveCfg = Release|Win32
-		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Mixed_Dedicated.Build.0 = Release|Win32
 		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Release.ActiveCfg = Release|Win32
-		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Release.Build.0 = Release|Win32
 		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Release_Dedicated.ActiveCfg = Release|Win32
-		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Release_Dedicated.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection
