@@ -54,7 +54,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	CAntirad*			pAntirad			= smart_cast<CAntirad*>			(CurrentIItem());
 	CEatableItem*		pEatableItem		= smart_cast<CEatableItem*>		(CurrentIItem());
 	CCustomOutfit*		pOutfit				= smart_cast<CCustomOutfit*>	(CurrentIItem());
-	CArtefact*			pArtefact			= smart_cast<CArtefact*>		(CurrentIItem());
+//.	CArtefact*			pArtefact			= smart_cast<CArtefact*>		(CurrentIItem());
 	CWeapon*			pWeapon				= smart_cast<CWeapon*>			(CurrentIItem());
 	CScope*				pScope				= smart_cast<CScope*>			(CurrentIItem());
 	CSilencer*			pSilencer			= smart_cast<CSilencer*>		(CurrentIItem());
@@ -176,8 +176,8 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		UIPropertiesBox.AddItem("st_eat",  NULL, INVENTORY_EAT_ACTION);
 	}
 
-	if(pArtefact&&pArtefact->CanBeActivated())
-		UIPropertiesBox.AddItem("st_activate_artefact",  NULL, INVENTORY_ACTIVATE_ARTEFACT_ACTION);
+//.	if(pArtefact&&pArtefact->CanBeActivated())
+//.		UIPropertiesBox.AddItem("st_activate_artefact",  NULL, INVENTORY_ACTIVATE_ARTEFACT_ACTION);
 
 	if(!CurrentIItem()->IsQuestItem()){
 		UIPropertiesBox.AddItem("st_drop", NULL, INVENTORY_DROP_ACTION);
