@@ -639,7 +639,10 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 			m_server->OnBuildVersionRespond(CL, tNetPacket);
 		}break;
 	default:
-		R_ASSERT2	(0,"Game Event not implemented!!!");
+		{
+			string16 tmp;
+			R_ASSERT3	(0,"Game Event not implemented!!!", itoa(type, tmp, 10));
+		};
 	};
 };
 
