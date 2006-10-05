@@ -174,27 +174,12 @@ void CUICharacterInfo::InitCharacter(u16 id)
 	}
 
 	if(m_icons[eUIRank]){
-/*
-	#ifdef _DEBUG
-		sprintf(str, "%s,%d", *stbl.translate(GetRankAsText(chInfo.Rank().value())), chInfo.Rank().value());
-	#else
 		sprintf(str, "%s", *stbl.translate(GetRankAsText(chInfo.Rank().value())));
-	#endif
-*/
-	sprintf(str, "%s", *stbl.translate(GetRankAsText(chInfo.Rank().value())));
-
-	m_icons[eUIRank]->SetText(str);
+		m_icons[eUIRank]->SetText(str);
 	}
 
 
 	if(m_icons[eUIReputation]){
-/*
-	#ifdef _DEBUG
-		sprintf(str, "%s,%d", *stbl.translate(GetReputationAsText(chInfo.Reputation().value())), chInfo.Reputation().value());
-	#else
-		sprintf(str, "%s", *stbl.translate(GetReputationAsText(chInfo.Reputation().value())));
-	#endif
-*/
 		sprintf(str, "%s", *stbl.translate(GetReputationAsText(chInfo.Reputation().value())));
 		m_icons[eUIReputation]->SetText(str);
 	}
@@ -225,8 +210,9 @@ void CUICharacterInfo::InitCharacter(u16 id)
 		}
 	}
 
-//	UpdateRelation	();
 	m_bForceUpdate	= true;
+	for(int i = eUIName; i<eMaxCaption; ++i)
+		if(m_icons[i])m_icons[i]->Show(true);
 }
 
 void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOODWILL goodwill)
@@ -237,13 +223,7 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOO
 
 	m_icons[eUIRelation]->SetTextColor(GetRelationColor(relation));
 	string256		str;
-/*
-#ifdef _DEBUG
-	sprintf(str, "%s,%d", *stbl.translate(GetGoodwillAsText(goodwill)), goodwill);
-#else
-	sprintf(str, "%s", *stbl.translate(GetGoodwillAsText(goodwill)));
-#endif
-*/
+
 	sprintf(str, "%s", *stbl.translate(GetGoodwillAsText(goodwill)));
 
 	m_icons[eUIRelation]->SetText(str);
@@ -314,5 +294,8 @@ void CUICharacterInfo::ClearInfo()
 			float(CHAR_ICON_WIDTH*ICON_GRID_WIDTH),
 			float(CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT));
 	}
+
+	for(int i = eUIName; i<eMaxCaption; ++i)
+		if(m_icons[i])m_icons[i]->Show(false);
 }
 
