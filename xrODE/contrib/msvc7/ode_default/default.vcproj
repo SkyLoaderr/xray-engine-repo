@@ -36,7 +36,8 @@
 				ProgramDataBaseFileName="$(IntDir)/"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
-				DebugInformationFormat="4"/>
+				DebugInformationFormat="4"
+				DisableSpecificWarnings="4100;4505"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -115,7 +116,8 @@
 				ProgramDataBaseFileName="$(OutDir)/"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="FALSE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4100;4505"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -194,16 +196,16 @@
 				EnableFunctionLevelLinking="FALSE"
 				UsePrecompiledHeader="0"
 				ProgramDataBaseFileName="$(IntDir)/"
-				WarningLevel="4"
+				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4100;4505"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				OutputFile="$(OutDir)/ode.dll"
-				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				ModuleDefinitionFile="..\..\..\config\msvcdefs.def"
 				GenerateDebugInformation="TRUE"
@@ -398,12 +400,48 @@
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\collision_quadtreespace.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4244"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4244"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4244"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\collision_space.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\collision_std.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4244"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4244"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						DisableSpecificWarnings="4244"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\collision_transform.cpp">

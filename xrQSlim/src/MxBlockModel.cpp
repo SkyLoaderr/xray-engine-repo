@@ -29,21 +29,21 @@ MxBlockModel *MxBlockModel::clone(MxBlockModel *m)
     for(i=0; i<face_count(); i++)
 	m->add_face(face(i)[0], face(i)[1], face(i)[2]);
 
-    m->normal_binding(normal_binding());
+    m->normal_binding((u8)normal_binding());
     if( normal_binding() != MX_UNBOUND )
     {
 	m->normals->room_for(normal_count());
 	m->normals->bitcopy(*normals);
     }
 
-    m->color_binding(color_binding());
+    m->color_binding((u8)color_binding());
     if( color_binding() != MX_UNBOUND )
     {
 	m->colors->room_for(color_count());
 	m->colors->bitcopy(*colors);
     }
 
-    m->texcoord_binding(texcoord_binding());
+    m->texcoord_binding((u8)texcoord_binding());
     if( texcoord_binding() != MX_UNBOUND )
     {
 	m->tcoords->room_for(texcoord_count());
@@ -220,7 +220,7 @@ void MxBlockModel::normal_binding(unsigned char b)
 void MxBlockModel::texcoord_binding(unsigned char b)
 {
     if( b!=MX_UNBOUND && b!=MX_PERVERTEX )
-		Debug.fatal("Illegal texture coordinate binding.");
+		FATAL	("Illegal texture coordinate binding.");
 
     int size = binding_size(*this, b);
     if( tcoords )  tcoords->reset();
@@ -300,8 +300,8 @@ double MxBlockModel::compute_corner_angle(MxFaceID f, unsigned int i)
     unsigned int i_next = (i==2)?0:i+1;
 
     float e_prev[3], e_next[3];
-    mxv_unitize(mxv_sub(e_prev, corner(f, i_prev), corner(f, i), 3), 3);
-    mxv_unitize(mxv_sub(e_next, corner(f, i_next), corner(f, i), 3), 3);
+    mxv_unitize(mxv_sub(e_prev, corner(f, (short)i_prev), corner(f, (short)i), 3), 3);
+    mxv_unitize(mxv_sub(e_next, corner(f, (short)i_next), corner(f, (short)i), 3), 3);
 
     return acos(mxv_dot(e_prev, e_next, 3));
 }

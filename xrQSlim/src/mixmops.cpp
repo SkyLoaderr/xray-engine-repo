@@ -28,7 +28,7 @@
 static
 double internal_solve(double *_a, double *b, const int N)
 {
-    int i, j, k;
+    int i, j=0, k;
     double max, t, det, sum, pivot;
 
     /*---------- forward elimination ----------*/
@@ -83,7 +83,7 @@ double internal_solve(double *_a, double *b, const int N)
 static
 double internal_invert(double *_a, double *_b, const int N)
 {
-    unsigned int i, j, k;
+    unsigned int i, j=0, k;
     double max, t, det, pivot;
 
     /*---------- forward elimination ----------*/

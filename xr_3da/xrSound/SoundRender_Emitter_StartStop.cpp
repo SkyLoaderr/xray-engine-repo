@@ -90,7 +90,7 @@ void CSoundRender_Emitter::cancel()
 		SoundRender->i_stop		(this);
 		break;
 	default:
-		Debug.fatal	("Non playing ref_sound forced out of render queue");
+		FATAL					("Non playing ref_sound forced out of render queue");
 		break;
 	}
 }

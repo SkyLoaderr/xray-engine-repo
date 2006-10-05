@@ -1,9 +1,12 @@
 #include "stdafx.h"
 #include "net_client.h"
 #include "net_messages.h"
+#include "NET_Log.h"
+
+#pragma warning(push)
+#pragma warning(disable:4995)
 #include "dxerr9.h"
 
-#include "NET_Log.h"
 static	INetLog* pClNetLog = NULL; 
 
 #define BASE_PORT		5445

@@ -355,7 +355,8 @@
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
 					<Tool
-						Name="VCCLCompilerTool"/>
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="DebugNoExceptions|Win32"
@@ -366,6 +367,12 @@
 			</File>
 			<File
 				RelativePath=".\Frustum.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\Frustum.h">
@@ -388,6 +395,7 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"
 						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -402,6 +410,12 @@
 			</File>
 			<File
 				RelativePath="xrCDB.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\xrCDB.h">
@@ -414,9 +428,21 @@
 						Name="VCCLCompilerTool"
 						AssemblerOutput="4"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="xrCDB_Collector.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\xrCDB_frustum.cpp">
@@ -425,6 +451,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						AssemblerOutput="4"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -441,6 +473,12 @@
 						Name="VCCLCompilerTool"
 						AssemblerOutput="4"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -448,18 +486,36 @@
 			Filter="">
 			<File
 				RelativePath=".\OPC_AABB.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_AABB.h">
 			</File>
 			<File
 				RelativePath=".\OPC_AABBCollider.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_AABBCollider.h">
 			</File>
 			<File
 				RelativePath=".\OPC_AABBTree.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_AABBTree.h">
@@ -475,18 +531,36 @@
 			</File>
 			<File
 				RelativePath=".\OPC_Collider.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_Collider.h">
 			</File>
 			<File
 				RelativePath=".\OPC_Common.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_Common.h">
 			</File>
 			<File
 				RelativePath=".\OPC_Container.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_Container.h">
@@ -496,12 +570,24 @@
 			</File>
 			<File
 				RelativePath=".\OPC_Matrix3x3.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_Matrix3x3.h">
 			</File>
 			<File
 				RelativePath=".\OPC_Matrix4x4.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_Matrix4x4.h">
@@ -511,30 +597,60 @@
 			</File>
 			<File
 				RelativePath=".\OPC_Model.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_Model.h">
 			</File>
 			<File
 				RelativePath=".\OPC_OBB.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_OBB.h">
 			</File>
 			<File
 				RelativePath=".\OPC_OBBCollider.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_OBBCollider.h">
 			</File>
 			<File
 				RelativePath=".\OPC_OptimizedTree.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_OptimizedTree.h">
 			</File>
 			<File
 				RelativePath=".\OPC_Plane.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_Plane.h">
@@ -544,6 +660,12 @@
 			</File>
 			<File
 				RelativePath=".\OPC_PlanesCollider.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_PlanesCollider.h">
@@ -553,6 +675,12 @@
 			</File>
 			<File
 				RelativePath=".\OPC_Point.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_Point.h">
@@ -562,6 +690,12 @@
 			</File>
 			<File
 				RelativePath=".\OPC_Ray.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_Ray.h">
@@ -571,6 +705,12 @@
 			</File>
 			<File
 				RelativePath=".\OPC_RayCollider.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_RayCollider.h">
@@ -586,6 +726,12 @@
 			</File>
 			<File
 				RelativePath=".\OPC_SphereCollider.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_SphereCollider.h">
@@ -595,18 +741,36 @@
 			</File>
 			<File
 				RelativePath=".\OPC_TreeBuilders.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_TreeBuilders.h">
 			</File>
 			<File
 				RelativePath=".\OPC_TreeCollider.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_TreeCollider.h">
 			</File>
 			<File
 				RelativePath=".\OPC_Triangle.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_Triangle.h">
@@ -622,12 +786,24 @@
 			</File>
 			<File
 				RelativePath=".\OPC_VolumeCollider.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\OPC_VolumeCollider.h">
 			</File>
 			<File
 				RelativePath=".\Opcode.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						MinimalRebuild="FALSE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\Opcode.h">

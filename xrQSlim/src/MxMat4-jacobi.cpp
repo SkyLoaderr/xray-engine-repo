@@ -112,7 +112,7 @@ bool internal_jacobi4(double a[4][4], double w[4], double v[4][4])
 
     if ( i >= MAX_ROTATIONS )
     {
-		Debug.fatal("Error computing eigenvalues.");
+		FATAL	("Error computing eigenvalues.");
 		return false;
     }
 

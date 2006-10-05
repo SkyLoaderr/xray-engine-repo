@@ -276,7 +276,7 @@ void xrLoad(LPCSTR name)
 					// version
 					u32 version				= 0;
 					R_ASSERT				(THM->r_chunk(THM_CHUNK_VERSION,&version));
-					// if( version!=THM_CURRENT_VERSION )	Debug.fatal("Unsupported version of THM file.");
+					// if( version!=THM_CURRENT_VERSION )	FATAL	("Unsupported version of THM file.");
 
 					// analyze thumbnail information
 					R_ASSERT(THM->find_chunk(THM_CHUNK_TEXTUREPARAM));

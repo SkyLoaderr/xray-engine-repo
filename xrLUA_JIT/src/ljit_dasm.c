@@ -18,9 +18,9 @@
 static void dasm_m_grow(Dst_DECL, void **pp, size_t *szp, int need)
 {
   size_t sz = *szp;
-  if (sz > need) return;
+  if (sz > (size_t)need) return;
   if (sz < 16) sz = 16;
-  while (sz < need) sz += sz;
+  while (sz < (size_t)need) sz += sz;
   *pp = luaM_realloc_(J->L, *pp, *szp, sz);
   *szp = sz;
 }

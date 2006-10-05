@@ -104,8 +104,8 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 				_F->AddChannel		( uv1, uv2, uv3 );
 			} catch (...)
 			{
-				err_save		();
-				Debug.fatal		("* ERROR: Can't process face #%d",i);
+				err_save	();
+				Debug.fatal	(DEBUG_INFO,"* ERROR: Can't process face #%d",i);
 			}
 		}
 		Progress			(p_total+=p_cost);
@@ -115,7 +115,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		if (dwInvalidFaces)	
 		{
 			err_save		();
-			Debug.fatal		("* FATAL: %d invalid faces. Compilation aborted",dwInvalidFaces);
+			Debug.fatal		(DEBUG_INFO,"* FATAL: %d invalid faces. Compilation aborted",dwInvalidFaces);
 		}
 	}
 
@@ -284,7 +284,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 				// version
 				u32 version = 0;
 				R_ASSERT2(THM->r_chunk(THM_CHUNK_VERSION,&version),th_name);
-				// if( version!=THM_CURRENT_VERSION )	Debug.fatal("Unsupported version of THM file.");
+				// if( version!=THM_CURRENT_VERSION )	FATAL	("Unsupported version of THM file.");
 
 				// analyze thumbnail information
 				R_ASSERT2(THM->find_chunk(THM_CHUNK_TEXTUREPARAM),th_name);

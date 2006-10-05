@@ -124,7 +124,7 @@ void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 			}
 			break;
 		default:
-			Debug.fatal	("SOUND: Invalid emitter state");
+			FATAL					("SOUND: Invalid emitter state");
 			break;
 		}
 	} else {

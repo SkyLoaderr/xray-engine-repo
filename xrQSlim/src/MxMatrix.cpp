@@ -23,7 +23,7 @@
 static double internal_invert(MxMatrix& A, MxMatrix& B)
 {
     unsigned int N = A.dim();
-    unsigned int i, j, k;
+    unsigned int i, j=0, k;
     double max, t, det, pivot;
 
     /*---------- forward elimination ----------*/

@@ -78,7 +78,7 @@ void	xrMemory::dbg_unregister	(void* _p)
 
 	// unregister entry
 	if (u32(-1)==_found)	{ 
-		Debug.fatal			("Memory allocation error: double free() ?"); 
+		FATAL					("Memory allocation error: double free() ?"); 
 	} else	{
 #ifdef DEBUG_MEMORY_LEAK
 		if ((debug_info[_found]._size == MEMORY_LEAK_SIZE) && debug_info[_found]._name && !xr_strcmp(MEMORY_LEAK_DESCRIPTION,debug_info[_found]._name)) {

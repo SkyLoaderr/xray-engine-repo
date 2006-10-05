@@ -2,28 +2,38 @@
 #define xrDebug_macrosH
 #pragma once
 
+#ifdef __BORLANDC__
+#	define __FUNCTION__ "cannot invoke function"
+#endif // __BORLANDC__
+
 // ---==( Extended Debugging Support (R) )==---
-#define R_ASSERT(expr) if (!(expr)) ::Debug.fail(#expr,__FILE__, __LINE__)
-#define R_ASSERT2(expr,e2) if (!(expr)) ::Debug.fail(#expr,e2,__FILE__, __LINE__)
-#define R_ASSERT3(expr,e2,e3) if (!(expr)) ::Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
-#define R_CHK(expr) { HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,__FILE__, __LINE__); }
+#define DEBUG_INFO					__FILE__,__LINE__,__FUNCTION__
+#define R_ASSERT(expr)				do {if (!(expr)) ::Debug.fail(#expr,DEBUG_INFO);} while(0)
+#define R_ASSERT2(expr,e2)			do {if (!(expr)) ::Debug.fail(#expr,e2,DEBUG_INFO);} while(0)
+#define R_ASSERT3(expr,e2,e3)		do {if (!(expr)) ::Debug.fail(#expr,e2,e3,DEBUG_INFO);} while(0)
+#define R_CHK(expr)					do {HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,DEBUG_INFO);} while(0)
+
+#ifdef VERIFY
+#	undef VERIFY
+#endif // VERIFY
 
 #ifdef DEBUG
-#define	NODEFAULT Debug.fatal("nodefault: reached")
-#define VERIFY(expr) if (!(expr)) ::Debug.fail(#expr,__FILE__, __LINE__)
-#define VERIFY2(expr, e2) if (!(expr)) ::Debug.fail(#expr,e2,__FILE__, __LINE__)
-#define VERIFY3(expr, e2, e3) if (!(expr)) ::Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
-#define CHK_DX(expr) { HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,__FILE__, __LINE__); }
+#	define FATAL(description)		Debug.fatal(DEBUG_INFO,description)
+#	define NODEFAULT				FATAL("nodefault reached")
+#	define VERIFY(expr)				do {if (!(expr)) ::Debug.fail(#expr,DEBUG_INFO);} while(0)
+#	define VERIFY2(expr, e2)		do {if (!(expr)) ::Debug.fail(#expr,e2,DEBUG_INFO);} while(0)
+#	define VERIFY3(expr, e2, e3)	do {if (!(expr)) ::Debug.fail(#expr,e2,e3,DEBUG_INFO);} while(0)
+#	define CHK_DX(expr)				do {HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,DEBUG_INFO);} while(0)
 #else
-	#ifdef __BORLANDC__
-		#define NODEFAULT
-    #else
-		#define NODEFAULT __assume(0)
-    #endif
-#define VERIFY(expr)
-#define VERIFY2(expr, e2)
-#define VERIFY3(expr, e2, e3)
-#define CHK_DX(a) a
+#	ifdef __BORLANDC__
+#		define NODEFAULT
+#	else
+#		define NODEFAULT __assume(0)
+#	endif
+#	define VERIFY(expr)
+#	define VERIFY2(expr, e2)
+#	define VERIFY3(expr, e2, e3)
+#	define CHK_DX(a) a
 #endif
 
 //---------------------------------------------------------------------------------------------

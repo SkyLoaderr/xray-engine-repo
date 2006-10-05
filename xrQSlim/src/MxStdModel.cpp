@@ -126,7 +126,7 @@ void MxStdModel::mark_neighborhood_delta(MxVertexID vid, short delta)
 	for(unsigned int i=0; i<(unsigned int)neighbors(vid).length(); i++)
 	{
 		unsigned int f = neighbors(vid)(i);
-		fmark(f, fmark(f)+delta);
+		fmark(f, u8(fmark(f)+delta));
 	}
 }
 
@@ -269,7 +269,7 @@ void MxStdModel::synthesize_normals(unsigned int start)
 			add_normal(n[0], n[1], n[2]);
 		}
 	}else
-		Debug.fatal("Unsupported normal binding.");
+		FATAL	("Unsupported normal binding.");
 }
 
 

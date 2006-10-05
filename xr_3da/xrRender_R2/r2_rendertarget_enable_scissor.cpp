@@ -41,6 +41,7 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 	//. if (!HW.Caps.bScissor)	return		near_intersect;
 	return		near_intersect;
 
+#if 0
 	CSector*	S	= (CSector*)L->spatial.sector;
 	_scissor	bb	= S->r_scissor_merged;
 	Irect		R;
@@ -98,6 +99,7 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 	}
 
 	return near_intersect;
+#endif
 }
 /*
 {

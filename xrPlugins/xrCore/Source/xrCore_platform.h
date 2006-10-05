@@ -4,13 +4,17 @@
 
 #define VC_EXTRALEAN				// Exclude rarely-used stuff from Windows headers
 #define WIN32_LEAN_AND_MEAN			// Exclude rarely-used stuff from Windows headers
-#define STRICT						// Enable strict syntax
+#ifndef STRICT
+#	define STRICT					// Enable strict syntax
+#endif // STRICT
 #define IDIRECTPLAY2_OR_GREATER		// ?
 #define DIRECTINPUT_VERSION	0x0700	//
 #define _CRT_SECURE_NO_DEPRECATE	// vc8.0 stuff, don't deprecate several ANSI functions
 
 // windows.h
-#define _WIN32_WINNT 0x0500        
+#ifndef _WIN32_WINNT
+#	define _WIN32_WINNT 0x0500
+#endif
 
 #ifdef __BORLANDC__
 	#include <vcl.h>

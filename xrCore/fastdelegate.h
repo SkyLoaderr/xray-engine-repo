@@ -51,7 +51,10 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#pragma warning(push)
+#pragma warning(disable:4995)
 #include <memory.h> // to allow <,> comparisons
+#pragma warning(pop)
 
 //////////////////////////////////////////////////
 //#define xr_stdcall 
@@ -400,11 +403,14 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 2*sizeof(int) >
 	template <class X, class XFuncType, class GenericMemFuncType>
 	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, 
 		GenericMemFuncType &bound_func) {
+#pragma warning(push)
+#pragma warning(disable:4121)
 		union {
 			XFuncType func;
 			GenericClass* (X::*ProbeFunc)();
 			MicrosoftVirtualMFP s;
 		} u;
+#pragma warning(pop)
 		u.func = function_to_bind;
 		bound_func = reinterpret_cast<GenericMemFuncType>(u.s.codeptr);
 		union {

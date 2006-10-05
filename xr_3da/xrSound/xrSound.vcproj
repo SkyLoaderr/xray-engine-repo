@@ -50,6 +50,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
+				AdditionalOptions="/NODEFAULTLIB:LIBCMTD"
 				AdditionalDependencies="vorbisfile_static_d.lib ogg_static_d.lib OpenAL32.lib"
 				OutputFile="$(OutDir)/xrSound.dll"
 				LinkIncremental="2"

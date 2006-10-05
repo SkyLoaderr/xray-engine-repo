@@ -429,7 +429,7 @@ void ProcessLTX(LPCSTR tgt_name, LPCSTR params, BOOL bFast)
 		FS.append_path	("ltx_path",fn,0,false);
 	
 	if (!FS.exist(ltx_fn)&&!FS.exist(ltx_fn,"$app_root$",tmp)) 
-		Debug.fatal	("ERROR: Can't find ltx file: '%s'",ltx_fn);
+		Debug.fatal	(DEBUG_INFO,"ERROR: Can't find ltx file: '%s'",ltx_fn);
 
 	CInifile ltx	(ltx_fn);
 	printf			("Processing LTX...\n");
@@ -519,7 +519,7 @@ int __cdecl main	(int argc, char* argv[])
 			printf("	[config]\n");
 			printf("	;<path>     = <recurse>\n");
 			printf("	.\\         = false\n");
-			printf("	textures\   = true\n");
+			printf("	textures    = true\n");
 			
 			Core._destroy();
 			return 3;

@@ -48,7 +48,7 @@ IC	void CSolverPathManager::setup					(
 	start_node_index		= _start_node_index;
 	goal_node_index			= _goal_node_index;
 	max_visited_node_count	= params.max_visited_node_count;
-	max_range				= params.max_range;
+	max_range				= (_solver_dist_type)params.max_range;
 	max_iteration_count		= params.max_iteration_count;
 }
 

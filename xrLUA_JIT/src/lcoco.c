@@ -51,10 +51,12 @@
 typedef LPFIBER_START_ROUTINE coco_MainFunc;
 
 // start of code replacement
-//#define COCO_NEW(OL, NL, cstacksize, mainfunc) \
+/**
+#define COCO_NEW(OL, NL, cstacksize, mainfunc) \
   if (GetCurrentFiber() == NULL) ConvertThreadToFiber(NULL); \
   if ((L2COCO(NL)->fib = CreateFiber(cstacksize, mainfunc, NL)) == NULL) \
     luaD_throw(OL, LUA_ERRMEM);
+/**/
 
 #define COCO_NEW(OL, NL, cstacksize, mainfunc) \
 { void *cur = GetCurrentFiber(); \

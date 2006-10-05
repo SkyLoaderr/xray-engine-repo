@@ -120,7 +120,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386 /NODEFAULTLIB:LIBCMT"
+				AdditionalOptions="/MACHINE:I386 /NODEFAULTLIB:msvcrt /NODEFAULTLIB:LIBCMT"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
 				OutputFile="x:\dxt.dll"
 				LinkIncremental="2"
@@ -195,7 +195,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
+				AdditionalOptions="/MACHINE:I386 /NODEFAULTLIB:msvcp"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
 				OutputFile="x:\dxt.dll"
 				LinkIncremental="1"
@@ -250,6 +250,18 @@
 			</File>
 			<File
 				RelativePath=".\DXT.cpp">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="0"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\dxtlib.h">

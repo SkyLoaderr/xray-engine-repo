@@ -62,7 +62,7 @@ void CFS_PathNotificator::Execute(void)
     	Path& P			= *it;
         P.FWaitHandle	= FindFirstChangeNotification(P.FDirectory.c_str(), P.bRecurse, FNotifyOptionFlags);
         if (P.FWaitHandle == INVALID_HANDLE_VALUE)
-            Debug.fatal	("Can't create notify handle for path: '%s'\nwith error: '%s'",P.FDirectory.c_str(),Debug.error2string(GetLastError()));
+            Debug.fatal	(DEBUG_INFO,"Can't create notify handle for path: '%s'\nwith error: '%s'",P.FDirectory.c_str(),Debug.error2string(GetLastError()));
     }
     LeaveCriticalSection(&CS);
 //	if (FWaitHandle == INVALID_HANDLE_VALUE)

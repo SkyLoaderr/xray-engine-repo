@@ -11,9 +11,10 @@
 
 #include <xrCore.h>
 
+#pragma warning(push)
 #pragma warning(disable:4995)
 #include <dplay8.h>
-#pragma warning(default:4995)
+#pragma warning(pop)
 
 #include "NET_Shared.h"
 

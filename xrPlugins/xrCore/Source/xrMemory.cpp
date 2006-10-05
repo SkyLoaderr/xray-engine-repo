@@ -130,13 +130,13 @@ u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
 	case _HEAPEND:
 		break;
 	case _HEAPBADPTR:
-		Debug.fatal		( "bad pointer to heap"		);
+		FATAL			("bad pointer to heap");
 		break;
 	case _HEAPBADBEGIN:
-		Debug.fatal		( "bad start of heap"		);
+		FATAL			("bad start of heap");
 		break;
 	case _HEAPBADNODE:
-		Debug.fatal		( "bad node in heap"		);
+		FATAL			("bad node in heap");
 		break;
 	}
 	return (u32) total;

@@ -146,7 +146,7 @@ double invert_cramer(Mat4& inv, const Mat4& m)
 double invert(Mat4& B, const Mat4& m)
 {
     Mat4 A = m;
-    int i, j, k;
+    int i, j=0, k;
     double max, t, det, pivot;
 
     /*---------- forward elimination ----------*/

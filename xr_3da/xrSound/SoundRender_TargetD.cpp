@@ -49,7 +49,7 @@ BOOL CSoundRender_TargetD::_initialize	()
 	case sq_NOVIRT:		dsBD.guid3DAlgorithm = DS3DALG_NO_VIRTUALIZATION; 	break;
 	case sq_LIGHT:		dsBD.guid3DAlgorithm = DS3DALG_HRTF_LIGHT;			break;
 	case sq_HIGH:		dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;			break;
-	default:			Debug.fatal("Unknown 3D-ref_sound algorithm");		break;
+	default:			FATAL("Unknown 3D-ref_sound algorithm");			break;
 	}
     if (psSoundFlags.test(ss_Hardware)) 
     	dsBD.guid3DAlgorithm = DS3DALG_HRTF_FULL;

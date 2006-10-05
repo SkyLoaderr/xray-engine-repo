@@ -43,7 +43,7 @@ void CSoundRender_Source::decompress		(u32 line, OggVorbis_File* ovf)
 	char*	dest			= (char*)	SoundRender->cache.get_dataptr	(CAT,line);
 	u32		buf_offs		= (psSoundFreq==sf_22K)?(line*line_size):(line*line_size)/2;
 	u32		left_file		= dwBytesTotal - buf_offs;
-	u32		left			= _min	(left_file,line_size);
+	u32		left			= (u32)_min	(left_file,line_size);
 	// seek
 	u32	cur_pos				= u32	(ov_pcm_tell(ovf));
 	if (cur_pos!=buf_offs){

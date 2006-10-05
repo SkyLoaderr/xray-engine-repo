@@ -22,6 +22,7 @@
 
 #include <algorithm>
 
+#define LUA_LIB
 #include <luabind/lua_include.hpp>
 
 #include <luabind/config.hpp>

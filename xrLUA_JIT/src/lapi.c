@@ -366,7 +366,7 @@ LUA_API TString* LUA_CC lua_tostring_object (lua_State *L, int idx) {
     lua_unlock(L);
   }
 //  if (len != NULL) *len = tsvalue(o)->len;
-  return tsvalue(o);
+  return (TString*)(tsvalue(o));
 }
 
 LUA_API size_t LUA_CC lua_objlen (lua_State *L, int idx) {

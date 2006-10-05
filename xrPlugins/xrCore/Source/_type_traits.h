@@ -19,12 +19,16 @@ template<typename T>
 struct	is_pm_class				{
 	struct c1 : public	T		{
 		char	padding	[16];
-		c1()					{}
+		c1();
+		c1(const c1&);
+		c1&operator=(const c1&);
 	};
 	struct c2 : public	T		{
 		char	padding	[16];
-		c2()					{}
-		virtual	~c2		()		{}
+		c2();
+		c2(const c2&);
+		c2&operator=(const c2&);
+		virtual	~c2		();
 	};
 	enum						{	result = (sizeof(c1)==sizeof(c2))						};
 };

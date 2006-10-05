@@ -73,12 +73,14 @@ extern "C"	{
 	void	dlfree(void*);
 };
 
+/**
 static void *lua_alloc_dl	(void *ud, void *ptr, size_t osize, size_t nsize) {
   (void)ud;
   (void)osize;
   if (nsize == 0)	{	dlfree			(ptr);	 return	NULL;  }
   else				return dlrealloc	(ptr, nsize);
 }
+/**/
 
 CScriptStorage::CScriptStorage		()
 {

@@ -21,7 +21,7 @@ Fvector		GetPixel_7x7		(CDB::RESULT& rpinf)
 
 	// Access to texture
 	CDB::TRI& clT										= RCAST_Model->get_tris()[rpinf.id];
-	base_Face* F										= (base_Face*) clT.dummy;
+	base_Face* F										= (base_Face*)(*((void**)&clT.dummy));
 	if (0==F)											return R;
 	Shader_xrLC&	SH									= F->Shader();
 	if (!SH.flags.bLIGHT_CastShadow)					return R;

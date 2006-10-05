@@ -4,6 +4,7 @@
 #include <time.h>
 #include "resource.h"
 #include "log.h"
+#include "BugTrap.h"
 
 extern BOOL					LogExecCB		= TRUE;
 static string64				logFName		= "engine.log";
@@ -148,6 +149,9 @@ void CreateLog			(BOOL nl)
         	abort();
         }
         FS.w_close		(f);
+
+		BT_SetReportFilePath(FS.get_path("$logs$")->m_Path);
+		BT_AddLogFile		(logFName);
     }
 	LogFile.reserve		(128);
 

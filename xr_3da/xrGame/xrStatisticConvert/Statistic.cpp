@@ -20,10 +20,10 @@ void	WeaponUsageStatistic::Clear			()
 
 WeaponUsageStatistic::~WeaponUsageStatistic()
 {
-	aPlayersStatistic.clear_and_free();
-	aUsedFiles.clear_and_free();
-	aWeapons.clear_and_free();
-	aBones.clear_and_free();
+	aPlayersStatistic.clear();
+	aUsedFiles.clear();
+	aWeapons.clear();
+	aBones.clear();
 };
 
 
@@ -57,7 +57,7 @@ Player_Statistic::Player_Statistic(LPCSTR Name)
 
 Player_Statistic::~Player_Statistic()
 {
-	aWeaponStats.clear_and_free();
+	aWeaponStats.clear();
 };
 
 bool	Player_Statistic::GetPlayersWeapon(LPCSTR WeaponName, WEAPON_STATS_it& Weapon_it)
@@ -96,6 +96,6 @@ Weapon_Statistic::Weapon_Statistic(LPCSTR Name, LPCSTR IName)
 };
 Weapon_Statistic::~Weapon_Statistic()
 {
-	m_Hits.clear_and_free();
+	m_Hits.clear();
 	ZeroMemory(m_Basket, sizeof(m_Basket));
 };

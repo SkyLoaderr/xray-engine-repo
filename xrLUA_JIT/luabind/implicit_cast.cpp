@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 
+#define LUA_LIB
 #include <luabind/lua_include.hpp>
 
 #include <luabind/luabind.hpp>
@@ -56,6 +57,7 @@ namespace luabind { namespace detail {
             pointer_offset = offset + i->pointer_offset;
             if (steps >= 0) return steps + 2;
         }
+		pointer_offset	= 0;
         return -1;
     }
 }}

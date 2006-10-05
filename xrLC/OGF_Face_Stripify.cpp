@@ -102,7 +102,7 @@ void OGF::Stripify		()
 			R_CHK		(rhr);
 			vec_XV		_source = x_vertices;
 			for(u32 it=0; it<_source.size(); it++)		x_vertices[remap[it]]		= _source[it];
-			for(u32 it=0; it<x_faces.size(); it++)		for (u32 j=0; j<3; j++)		x_faces[it].v[j]= remap[x_faces[it].v[j]];
+			for(u32 it=0; it<x_faces.size(); it++)		for (u32 j=0; j<3; j++)		x_faces[it].v[j]= (u16)remap[x_faces[it].v[j]];
 			xr_free		(remap);
 		}
 	}

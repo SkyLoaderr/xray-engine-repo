@@ -2,7 +2,11 @@
 //
 
 #include "stdafx.h"
+#pragma warning(push)
+#pragma warning(disable:4244)
+#pragma warning(disable:4018)
 #include "dxtlib.h"
+#pragma warning(pop)
 #include "ETextureParams.h"
 #include "dds.h"
 #include "d3dx.h"

@@ -301,7 +301,7 @@ void CRender::Render		()
 				Lights_LastFrame[it]->svis.flushoccq()	;
 			} catch (...)
 			{
-				Msg	("! Failed to flush-OCCq on light [%d] %X",it,u32(Lights_LastFrame[it]));
+				Msg	("! Failed to flush-OCCq on light [%d] %X",it,*(u32*)(&Lights_LastFrame[it]));
 			}
 		}
 		Lights_LastFrame.clear	();

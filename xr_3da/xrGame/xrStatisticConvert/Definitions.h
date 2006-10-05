@@ -27,41 +27,4 @@ IC float	Magnitude (Fvector v0, Fvector v1)
 	return sqrt(vr[0]*vr[0] + vr[1]*vr[1] + vr[2]*vr[2]);
 }
 
-
-//---------------------------------------------------------------------------
-#ifdef DEBUG
-#define	NODEFAULT Debug.fatal("nodefault: reached")
-#define VERIFY(expr) if (!(expr)) ::Debug.fail(#expr,__FILE__, __LINE__)
-#define VERIFY2(expr, e2) if (!(expr)) ::Debug.fail(#expr,e2,__FILE__, __LINE__)
-#define VERIFY3(expr, e2, e3) if (!(expr)) ::Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
-#define CHK_DX(expr) { HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,__FILE__, __LINE__); }
-#else
-#ifdef __BORLANDC__
-#define NODEFAULT
-#else
-#define NODEFAULT __assume(0)
-#endif
-#define VERIFY(expr)
-#define VERIFY2(expr, e2)
-#define VERIFY3(expr, e2, e3)
-#define CHK_DX(a) a
-#endif
-//---------------------------------------------------------------------------
-template <class T>
-class xr_vector	: public std::vector<T> {
-public: 
-	typedef	size_t		size_type;
-	typedef T&			reference;
-	typedef const T&	const_reference;
-public: 
-	xr_vector			()								: std::vector<T>	()				{}
-	xr_vector			(size_t _count, const T& _value): std::vector<T>	(_count,_value)	{}
-	explicit xr_vector			(size_t _count)					: std::vector<T> 	(_count)		{}
-	void	clear				()								{ erase(begin(),end());				} 
-	void	clear_and_free		()								{ std::vector<T>::clear();			}
-	void	clear_not_free()									{ erase(begin(),end());	}
-	const_reference operator[]	(size_type _Pos) const			{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
-	reference operator[]		(size_type _Pos)				{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
-};
-
-#define DEF_VECTOR(N,T)				typedef xr_vector< T > N;		typedef N::iterator N##_it;
+#define DEF_VECTOR(N,T)				typedef std::vector<T> N;		typedef N::iterator N##_it;

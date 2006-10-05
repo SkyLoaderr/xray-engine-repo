@@ -5,7 +5,10 @@
 #include "soundrender_core.h"
 #include "soundrender_source.h"
 #include "soundrender_emitter.h"
+#pragma warning(push)
+#pragma warning(disable:4995)
 #include <eax.h>
+#pragma warning(pop)
 
 int		psSoundTargets			= 16;
 Flags32	psSoundFlags			= {ss_Hardware | ss_EAX};
