@@ -445,10 +445,10 @@ void CStalkerMovementManager::set_nearest_accessible_position(Fvector desired_po
 
 	VERIFY						(ai().level_graph().inside(level_vertex_id,desired_position));
 
-	VERIFY						(restrictions().accessible(level_vertex_id) || show_restrictions(&restrictions()));
+	VERIFY2						(restrictions().accessible(level_vertex_id) || show_restrictions(&restrictions()),*object().cName());
 	set_level_dest_vertex		(level_vertex_id);
 	
-	VERIFY						(restrictions().accessible(desired_position) || show_restrictions(&restrictions()));
+	VERIFY2						(restrictions().accessible(desired_position) || show_restrictions(&restrictions()),*object().cName());
 	set_desired_position		(&desired_position);
 }
 
