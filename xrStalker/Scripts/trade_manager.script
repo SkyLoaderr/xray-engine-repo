@@ -12,6 +12,7 @@ function trade_init(npc, cfg)
 		trade_manager[npc:id()] = {}
 	end
 
+	trade_manager[npc:id()].cfg_ltx = cfg
 	trade_manager[npc:id()].config = ini_file(cfg)
 	
 	-- коэфициенты покупки
@@ -87,6 +88,8 @@ function save(obj, packet)
 		packet:w_bool(true)
 	end
 
+	packet:w_stringZ(tt.cfg_ltx)
+
 	if tt.current_buy_condition == nil then
 		packet:w_stringZ("")
 	else
@@ -130,14 +133,19 @@ function load(obj, packet)
 
 	local tt = trade_manager[obj:id()]
 
+	tt.cfg_ltx = packet:r_stringZ()
+	tt.config = ini_file(tt.cfg_ltx)
+
 	a = packet:r_stringZ()
 	if a ~= "" then
-		tt.current_buy_condition = a	
+		tt.current_buy_condition = a
+		obj:buy_condition(tt.config, a)
 	end
 	
 	a = packet:r_stringZ()
 	if a ~= "" then
-		tt.current_sell_condition = a	
+		tt.current_sell_condition = a
+		obj:sell_condition(tt.config, a)
 	end
 
 	a = packet:r_stringZ()
