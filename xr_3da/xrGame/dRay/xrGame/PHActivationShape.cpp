@@ -92,14 +92,23 @@ CPHActivationShape::~CPHActivationShape()
 {
 	VERIFY(!m_body&&!m_geom);
 }
-void	CPHActivationShape::	Create								(const Fvector start_pos,const Fvector start_size,CPhysicsShellHolder* ref_obj,EType type/*=etBox*/,u16	flags)
+void	CPHActivationShape::Create(const Fvector start_pos,const Fvector start_size,CPhysicsShellHolder* ref_obj,EType _type/*=etBox*/,u16	flags)
 {
 	m_body			=	dBodyCreate	(0)												;
 	dMass m;
 	dMassSetSphere(&m,1.f,100000.f);
 	dMassAdjust(&m,1.f);
 	dBodySetMass(m_body,&m);
+	switch(_type)
+	{
+	case etBox:
 	m_geom			=	dCreateBox	(0,start_size.x,start_size.y,start_size.z)		;
+	break;
+
+	case etSphere:
+	m_geom			=	dCreateSphere	(0,start_size.x);
+	break;
+	};
 
 	dGeomCreateUserData				(m_geom)										;
 	dGeomUserDataSetObjectContactCallback(m_geom,ActivateTestDepthCallback)			;
