@@ -59,8 +59,8 @@ protected:
 	IC		CALifeStoryRegistry					&story_objects				();
 	IC		CALifeSmartTerrainRegistry			&smart_terrains				();
 	IC		CALifeGroupRegistry					&groups						();
-	IC		const bool							&can_register_objects		(const bool &value);
-	IC		bool								can_register_objects		() const;
+	IC		void								can_register_objects		(const bool &value);
+	IC		const bool							&can_register_objects		() const;
 
 public:
 	IC		CALifeGraphRegistry					&graph						();

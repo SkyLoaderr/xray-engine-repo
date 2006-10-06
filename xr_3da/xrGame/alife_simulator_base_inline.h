@@ -188,13 +188,13 @@ IC	T									&CALifeSimulatorBase::registry				(T *t) const
 	return						(registry()(t));
 }
 
-IC	const bool							&CALifeSimulatorBase::can_register_objects	(const bool &value)
+IC	void								CALifeSimulatorBase::can_register_objects	(const bool &value)
 {
 	VERIFY						(m_can_register_objects != value);
 	m_can_register_objects		= value;
 }
 
-IC	bool								CALifeSimulatorBase::can_register_objects	() const
+IC	const bool							&CALifeSimulatorBase::can_register_objects	() const
 {
 	return						(m_can_register_objects);
 }
