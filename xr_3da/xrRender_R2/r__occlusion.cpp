@@ -43,13 +43,15 @@ u32		R_occlusion::occq_begin		(u32&	ID		)
 	if (!fids.empty())	{
 		ID				= fids.back	();	
 		fids.pop_back	();
-		used[ID]		= pool.back	();
+		VERIFY				( pool.size() );
+		used[ID]			= pool.back	();
 	} else {
-		ID				= used.size	();
-		used.push_back	(pool.back());
+		ID					= used.size	();
+		VERIFY				( pool.size() );
+		used.push_back		(pool.back());
 	}
-	pool.pop_back	();
-	CHK_DX			(used[ID].Q->Issue	(D3DISSUE_BEGIN));
+	pool.pop_back			();
+	CHK_DX					(used[ID].Q->Issue	(D3DISSUE_BEGIN));
 	
 	// Msg				("begin: [%2d] - %d", used[ID].order, ID);
 
