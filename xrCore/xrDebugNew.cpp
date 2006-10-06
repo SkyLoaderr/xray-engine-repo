@@ -111,7 +111,27 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 #ifdef XRCORE_STATIC
 	MessageBox			(NULL,tmp,"X-Ray error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
 #else
-	DebugBreak			();
+	int					result = 
+		MessageBox(
+			NULL,
+			assertion_info,
+			"Fatal Error",
+			MB_ABORTRETRYIGNORE|MB_ICONERROR|MB_SYSTEMMODAL
+		);
+
+	switch (result) {
+		case IDABORT : {
+			DebugBreak	();
+			break;
+		}
+		case IDRETRY : {
+			break;
+		}
+		case IDIGNORE : {
+			break;
+		}
+		default : NODEFAULT;
+	}
 #endif
 
 	CS.Leave			();
@@ -175,7 +195,7 @@ void __cdecl _terminate		()
 void SetupExceptionHandler	()
 {
 	BT_SetAppName			("XRay Engine");
-//	BT_SetActivityType		(BTA_SAVEREPORT);
+	BT_SetActivityType		(BTA_SAVEREPORT);
 	BT_SetReportFormat		(BTRF_TEXT);
 	BT_SetFlags				(BTF_DETAILEDMODE | /**BTF_EDIETMAIL | /**/BTF_ATTACHREPORT /**| BTF_LISTPROCESSES /**/| BTF_SHOWADVANCEDUI | BTF_SCREENCAPTURE);
 	BT_SetDumpType			(
