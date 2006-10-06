@@ -84,7 +84,6 @@ void CDamageManager::load_section(LPCSTR section,CInifile* ini)
 			int						bone = kinematics->LL_BoneID(i->first);
 			R_ASSERT2				(BI_NONE != bone, *(*i).first);
 			CBoneInstance			&bone_instance = kinematics->LL_GetBoneInstance(u16(bone));
-			int Count = _GetItemCount(*(*i).second);
 			bone_instance.set_param	(0,(float)atof(_GetItem(*(*i).second,0,buffer)));
 			bone_instance.set_param	(1,(float)atoi(_GetItem(*(*i).second,1,buffer)));
 			bone_instance.set_param	(2,(float)atof(_GetItem(*(*i).second,2,buffer)));
