@@ -2247,8 +2247,15 @@ public		:
 	}
 };
 
+class CCC_Crash : public IConsole_Command {
+public:
+	CCC_Crash(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR /**args/**/) {
+		VERIFY3					(false,"This is a test crash","Do not post it as a bug");
+	}
+};
 
-#endif
+#endif // DEBUG
 
 void CCC_RegisterCommands()
 {
@@ -2584,4 +2591,7 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"show_wnd_rect_all",			&g_show_wnd_rect2, 0, 1);
 
 	CMD1(CCC_SwapTeams,	"g_swapteams"				);
+#ifdef DEBUG
+	CMD1(CCC_Crash,		"crash"						);
+#endif // DEBUG
 }
