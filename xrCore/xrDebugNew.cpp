@@ -5,6 +5,11 @@
 
 #include "dxerr9.h"
 
+#pragma warning(push)
+#pragma warning(disable:4995)
+#include <malloc.h>
+#pragma warning(pop)
+
 #ifdef __BORLANDC__
 #	include "d3d9.h"
 #	include "d3dx9.h"
@@ -14,8 +19,6 @@
 #else
 	static BOOL			bException	= FALSE;
 #endif
-
-#define DEBUG_INVOKE	DebugBreak	()
 
 #ifndef _M_AMD64
 #	ifndef __BORLANDC__
@@ -49,6 +52,31 @@ void copy_to_clipboard	(const char *string)
 	SetClipboardData	(CF_TEXT,handle);
 	CloseClipboard		();
 }
+
+void update_clipboard	(const char *string)
+{
+	if (!OpenClipboard(0))
+		return;
+
+	HGLOBAL				handle = GetClipboardData(CF_TEXT);
+	if (!handle) {
+		CloseClipboard		();
+		copy_to_clipboard	(string);
+		return;
+	}
+
+	LPSTR				memory = (char*)GlobalLock(handle);
+	u32					memory_length = xr_strlen(memory);
+	u32					string_length = xr_strlen(string);
+	LPSTR				buffer = (LPSTR)_alloca((memory_length + string_length + 1)*sizeof(char));
+	strcpy				(buffer,memory);
+	GlobalUnlock		(handle);
+
+	strcat				(buffer,string);
+	CloseClipboard		();
+	copy_to_clipboard	(buffer);
+}
+
 void xrDebug::backend(const char *expression, const char *description, const char *arguments, const char *file, int line, const char *function) 
 {
 	static xrCriticalSection CS;
@@ -56,28 +84,34 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 	CS.Enter			();
 
 	string4096			assertion_info;
-	LPSTR				buffer = assertion_info;
-	buffer				+= sprintf(buffer,"\r\n");
-	buffer				+= sprintf(buffer,"\nFatal Error\r\n\r\n");
-	buffer				+= sprintf(buffer,"[error] Expression    : %s\r\n",expression);
-	buffer				+= sprintf(buffer,"[error] Description   : %s\r\n",description);
-	if (arguments)buffer+= sprintf(buffer,"[error] Arguments     : %s\r\n",arguments);
-	buffer				+= sprintf(buffer,"[error] Function      : %s\r\n",function);
-	buffer				+= sprintf(buffer,"[error] File          : %s\r\n",file);
-	buffer				+= sprintf(buffer,"[error] Line          : %d\r\n",line);
-	buffer				+= sprintf(buffer,"\r\n");
-	
-	Msg					("%s",assertion_info);
-	FlushLog			();
-
-	copy_to_clipboard	(assertion_info);
+	LPCSTR				endline = "\n";
+	for (int i=0; i<2; ++i) {
+		LPSTR			buffer = assertion_info;
+		buffer			+= sprintf(buffer,"%s",endline);
+		buffer			+= sprintf(buffer,"%sFatal Error%s%s",endline,endline,endline);
+		buffer			+= sprintf(buffer,"[error] Expression    : %s%s",expression,endline);
+		buffer			+= sprintf(buffer,"[error] Description   : %s%s",description,endline);
+		if (arguments)
+			buffer		+= sprintf(buffer,"[error] Arguments     : %s%s",arguments,endline);
+		buffer			+= sprintf(buffer,"[error] Function      : %s%s",function,endline);
+		buffer			+= sprintf(buffer,"[error] File          : %s%s",file,endline);
+		buffer			+= sprintf(buffer,"[error] Line          : %d%s",line,endline);
+		buffer			+= sprintf(buffer,"%s",endline);
+		if (!i) {
+			Msg			("%s",assertion_info);
+			FlushLog	();
+			endline		= "\r\n";
+		}
+		else
+			copy_to_clipboard	(assertion_info);
+	}
 
 	if (handler)		handler();
 
 #ifdef XRCORE_STATIC
 	MessageBox			(NULL,tmp,"X-Ray error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
 #else
-	DEBUG_INVOKE;
+	DebugBreak			();
 #endif
 
 	CS.Leave			();
@@ -180,13 +214,21 @@ LONG WINAPI UnhandledFilter	(struct _EXCEPTION_POINTERS *pExceptionInfo)
 	BuildStackTrace			(pExceptionInfo);
 	*pExceptionInfo->ContextRecord = save;
 
-	for (int i=0; i<g_stackTraceCount; ++i)
+	string4096				buffer;
+
+	Msg						("Stack trace:");
+	update_clipboard		("Stack trace:\r\n\r\n");
+
+	for (int i=0; i<g_stackTraceCount; ++i) {
 		Msg					("%s",g_stackTrace[i]);
+		sprintf				(buffer,"%s\r\n",g_stackTrace[i]);
+		update_clipboard	(buffer);
+	}
+	FlushLog				();
 
 	if (!previous_filter)
 		return				(EXCEPTION_CONTINUE_SEARCH) ;
 
-	FlushLog				();
 	previous_filter			(pExceptionInfo);
 
 	return					(EXCEPTION_CONTINUE_SEARCH) ;
