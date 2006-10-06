@@ -201,7 +201,9 @@ void CALLBACK PreErrorHandler	(INT_PTR)
 	string256				log_folder;
 	FS.update_path			(log_folder,"$logs$","");
 	BT_SetReportFilePath	(log_folder);
+	Msg						("BT_SetReportFilePath(%s)",log_folder);
 	BT_AddLogFile			(log_name());
+	Msg						("BT_AddLogFile(%s)",log_name());
 }
 
 void SetupExceptionHandler	()
