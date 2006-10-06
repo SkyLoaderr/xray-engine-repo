@@ -1138,37 +1138,38 @@
 					RelativePath=".\blackbox\resource.h">
 				</File>
 				<File
-					RelativePath=".\blackbox\StdAfx.cpp">
+					RelativePath=".\blackbox\stdafx_.cpp">
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"
-							WarningLevel="0"/>
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							WarningLevel="0"/>
+							UsePrecompiledHeader="0"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Mixed|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"
-							WarningLevel="0"/>
+							UsePrecompiledHeader="0"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DebugNoExceptions|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
-							WarningLevel="0"/>
+							UsePrecompiledHeader="0"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\blackbox\StdAfx.h">
+					RelativePath=".\blackbox\stdafx_.h">
 				</File>
 				<File
 					RelativePath=".\blackbox\SymbolEngine.h">

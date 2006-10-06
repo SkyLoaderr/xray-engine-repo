@@ -6,7 +6,7 @@ Copyright (c) 1997-2000 John Robbins -- All rights reserved.
 /*//////////////////////////////////////////////////////////////////////
                                 Includes
 //////////////////////////////////////////////////////////////////////*/
-#include "stdafx.h"
+#include "stdafx_.h"
 #include "BugslayerUtil.h"
 // The project internal header file.
 #include "Internal.h"

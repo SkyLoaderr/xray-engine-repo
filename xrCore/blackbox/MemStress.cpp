@@ -4,7 +4,7 @@ Copyright (c) 1997-2000 John Robbins -- All rights reserved.
 ----------------------------------------------------------------------*/
 
 // Get everything included.
-#include "stdafx.h"
+#include "stdafx_.h"
 #include "BugslayerUtil.h"
 #include "MemStressConstants.h"
 #include "CRTDBG_Internals.h"
