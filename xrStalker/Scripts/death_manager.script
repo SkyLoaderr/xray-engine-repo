@@ -140,12 +140,10 @@ function drop_manager:create_release_item()
     for k,v in pairs(spawn_items) do
         --' По каждому объекту необходимо получить зависимости		
         if check_item_dependence(self.npc, k) == true then
-            if math.random(100) <= v then
-                --' По каждому объекту необходимо получить количество
-                local number = math.ceil(math.random(count_by_level[k].min, count_by_level[k].max))
-                --' Необходимо заспавнить нужное количество.
-                create_items(self.npc, k, number)            
-            end
+            --' По каждому объекту необходимо получить количество
+            local number = math.ceil(math.random(count_by_level[k].min, count_by_level[k].max))
+            --' Необходимо заспавнить нужное количество.
+            create_items(self.npc, k, number, v)
         end
     end
 end
@@ -182,7 +180,7 @@ function keep_item(npc, item)
 end
 
 --' Функция спавнит необходимое число предметов
-function create_items(npc, section, number)
+function create_items(npc, section, number, rnd)
     --'printf("create %s of %s", tostring(number), tostring(section))
     if ammo_sections[section] == true then
         if number > 0 then
@@ -195,11 +193,14 @@ function create_items(npc, section, number)
         end
     else
         for i=1,number do
-            alife():create(section,	
-				    npc:position(),
-				    npc:level_vertex_id(),	
-				    npc:game_vertex_id(),
-				    npc:id())
+			--' Проверяем вероятность появить каждый объект в отдельности
+            if math.random(100) <=  rnd then
+				alife():create(section,	
+					    npc:position(),
+						npc:level_vertex_id(),	
+						npc:game_vertex_id(),
+						npc:id())
+			end
         end
     end    
 end
