@@ -213,7 +213,7 @@ void SetupExceptionHandler	()
 	BT_SetAppName			("XRay Engine");
 	BT_SetActivityType		(BTA_SAVEREPORT);
 	BT_SetReportFormat		(BTRF_TEXT);
-	BT_SetFlags				(BTF_DETAILEDMODE | /**BTF_EDIETMAIL | /**/BTF_ATTACHREPORT /**| BTF_LISTPROCESSES /**/| BTF_SHOWADVANCEDUI | BTF_SCREENCAPTURE);
+	BT_SetFlags				(BTF_DETAILEDMODE | /**BTF_EDIETMAIL | /**/BTF_ATTACHREPORT /**| BTF_LISTPROCESSES /**/| BTF_SHOWADVANCEDUI /**| BTF_SCREENCAPTURE/**/);
 	BT_SetDumpType			(
 		MiniDumpNormal |
 //		MiniDumpWithDataSegs |
