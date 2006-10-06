@@ -40,7 +40,10 @@ typedef vector<ULONG> ADDRVECTOR ;
                            File Scope Globals
 //////////////////////////////////////////////////////////////////////*/
 // The HMODULE vector.
+#pragma warning(push)
+#pragma warning(disable:4530)
 static HINSTVECTOR g_HMODVector ;
+#pragma warning(pop)
 
 // The DiagAssert display options.
 static DWORD g_DiagAssertOptions = DA_SHOWMSGBOX | DA_SHOWODS ;
@@ -613,7 +616,10 @@ void DoStackTrace ( LPTSTR szString  ,
     // The symbol engine is initialized so do the stack walk.
 
     // The array of addresses.
+#pragma warning(push)
+#pragma warning(disable:4530)
     ADDRVECTOR vAddrs ;
+#pragma warning(pop)
 
     // The thread information.
     CONTEXT    stCtx  ;

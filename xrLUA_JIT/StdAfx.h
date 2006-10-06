@@ -32,10 +32,6 @@
 #pragma comment( lib, "x:\\xrCore.lib"	)
 #endif
 
-#ifndef DEBUG
-#	define LUABIND_NO_ERROR_CHECKING
-#endif
-
 #if !defined(DEBUG) || defined(FORCE_NO_EXCEPTIONS)
 	// release: no error checking, no exceptions
 	#define LUABIND_NO_EXCEPTIONS

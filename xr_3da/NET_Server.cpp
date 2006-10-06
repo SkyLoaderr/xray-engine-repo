@@ -175,7 +175,9 @@ BOOL IPureServer::Connect(LPCSTR options)
 	Msg("MaxPlayers = %d", dwMaxPlayers);
 
 	//---------------------------
+#ifdef DEBUG
 	string1024 tmp;
+#endif // DEBUG
 //	HRESULT CoInitializeExRes = CoInitializeEx(NULL, 0);	
 //	if (CoInitializeExRes != S_OK && CoInitializeExRes != S_FALSE)
 //	{
