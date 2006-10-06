@@ -303,7 +303,6 @@ BOOL __stdcall RealAssert  ( DWORD  dwOverrideOpts  ,
         {
             hWndParent = GetLastActivePopup ( hWndParent ) ;
         }
-		printf("%s\n",szBuff);
         iRet = MessageBoxA ( hWndParent             ,
                             szBuff                  ,
                             "ASSERTION FAILURE..."  ,

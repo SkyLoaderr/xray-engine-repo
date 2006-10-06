@@ -116,7 +116,7 @@ public  :
 } ;
 
 // The static class
-//static CleanUpCrashHandler g_cBeforeAndAfter ;
+static CleanUpCrashHandler g_cBeforeAndAfter ;
 
 /*//////////////////////////////////////////////////////////////////////
                  Crash Handler Function Implementation

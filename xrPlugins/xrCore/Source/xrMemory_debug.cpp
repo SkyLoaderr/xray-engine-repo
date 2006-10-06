@@ -37,9 +37,6 @@ void	xrMemory::dbg_register		(void* _p, size_t _size, const char* _name)
 	if ((_size == MEMORY_LEAK_SIZE) && _name &&!xr_strcmp(MEMORY_LEAK_DESCRIPTION,_name)) {
 		static int			i = 0;
 		string2048			temp;
-		if (i > 4078) {
-			printf("");
-		}
 		sprintf				(temp,"____[%s][%d] : 0x%8x [REGISTER][%d]\n",_name,_size,(u32)((size_t)_p),i++);
 		OutputDebugString	(temp);
 	}

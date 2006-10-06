@@ -227,7 +227,7 @@ void SetupExceptionHandler	()
 extern void BuildStackTrace(struct _EXCEPTION_POINTERS *pExceptionInfo);
 typedef LONG WINAPI UnhandledExceptionFilterType(struct _EXCEPTION_POINTERS *pExceptionInfo);
 static UnhandledExceptionFilterType	*previous_filter = 0;
-extern char g_stackTrace[100][4096];
+extern char g_stackTrace[100][256];
 extern int g_stackTraceCount;
 
 LONG WINAPI UnhandledFilter	(struct _EXCEPTION_POINTERS *pExceptionInfo)
