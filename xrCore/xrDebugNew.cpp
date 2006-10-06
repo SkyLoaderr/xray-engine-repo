@@ -211,10 +211,7 @@ void CALLBACK PreErrorHandler	(INT_PTR)
 	}
 
 	BT_SetReportFilePath	(log_folder);
-	Msg						("BT_SetReportFilePath(%s)",log_folder);
 	BT_AddLogFile			(log_name());
-	Msg						("BT_AddLogFile(%s)",log_name());
-	FlushLog				();
 }
 
 void SetupExceptionHandler	()
