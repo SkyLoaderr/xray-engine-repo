@@ -111,6 +111,8 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 		spawns().load			(source,file_name);
 		objects().load			(source);
 
+		VERIFY					(can_register_objects());
+		can_register_objects	(false);
 		CALifeObjectRegistry::OBJECT_REGISTRY::iterator	B = objects().objects().begin();
 		CALifeObjectRegistry::OBJECT_REGISTRY::iterator	E = objects().objects().end();
 		CALifeObjectRegistry::OBJECT_REGISTRY::iterator	I;
@@ -118,8 +120,9 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 			ALife::_OBJECT_ID	id = (*I).second->ID;
 			(*I).second->ID		= server().PerformIDgen(id);
 			VERIFY				(id == (*I).second->ID);
-			register_object		((*I).second,false,false);
+			register_object		((*I).second,false);
 		}
+		can_register_objects	(true);
 
 		for (I = B; I != E; ++I)
 			(*I).second->on_register	();

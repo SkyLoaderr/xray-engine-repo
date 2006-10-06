@@ -43,6 +43,7 @@ CALifeSimulatorBase::CALifeSimulatorBase	(xrServer *server, LPCSTR section)
 	m_groups					= 0;
 	m_registry_container		= 0;
 	random().seed				(u32(CPU::QPC() & 0xffffffff));
+	m_can_register_objects		= true;
 }
 
 CALifeSimulatorBase::~CALifeSimulatorBase	()

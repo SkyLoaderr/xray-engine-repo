@@ -47,6 +47,7 @@ protected:
 	CRandom32									m_random;
 	bool										m_initialized;
 	shared_str									*m_server_command_line;
+	bool										m_can_register_objects;
 	// temp
 	ALife::SCHEDULE_P_VECTOR					m_tpaCombatGroups[2];
 
@@ -58,6 +59,8 @@ protected:
 	IC		CALifeStoryRegistry					&story_objects				();
 	IC		CALifeSmartTerrainRegistry			&smart_terrains				();
 	IC		CALifeGroupRegistry					&groups						();
+	IC		const bool							&can_register_objects		(const bool &value);
+	IC		bool								can_register_objects		() const;
 
 public:
 	IC		CALifeGraphRegistry					&graph						();
@@ -94,7 +97,7 @@ protected:
 	virtual void								setup_simulator				(CSE_ALifeObject *object) = 0;
 
 public:
-			void								register_object				(CSE_ALifeDynamicObject	*object, bool add_object = false, bool call_on_register = true);
+			void								register_object				(CSE_ALifeDynamicObject	*object, bool add_object = false);
 			void								unregister_object			(CSE_ALifeDynamicObject *object, bool alife_query = true);
 			void								release						(CSE_Abstract			*object, bool alife_query = true);
 			void								create						(CSE_ALifeDynamicObject	*&object, CSE_ALifeDynamicObject *spawn_object,	const ALife::_SPAWN_ID &spawn_id);

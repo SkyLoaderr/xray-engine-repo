@@ -221,7 +221,17 @@ void CALifeUpdateManager::new_game			(LPCSTR save_name)
 	spawns().load						(save_name);
 	server().PerformIDgen				(0x0000);
 	time_manager().init					(m_section);
+	VERIFY								(can_register_objects());
+	
+	can_register_objects				(false);
 	spawn_new_objects					();
+	can_register_objects				(true);
+
+	CALifeObjectRegistry::OBJECT_REGISTRY::iterator	I = objects().objects().begin();
+	CALifeObjectRegistry::OBJECT_REGISTRY::iterator	E = objects().objects().end();
+	for ( ; I != E; ++I)
+		(*I).second->on_register		();
+
 	save								(save_name);
 
 	Msg									("* New game is successfully created!");

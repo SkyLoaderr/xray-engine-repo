@@ -20,7 +20,7 @@
 
 using namespace ALife;
 
-void CALifeSimulatorBase::register_object	(CSE_ALifeDynamicObject *object, bool add_object, bool call_on_register)
+void CALifeSimulatorBase::register_object	(CSE_ALifeDynamicObject *object, bool add_object)
 {
 	object->on_before_register			();
 
@@ -52,7 +52,7 @@ void CALifeSimulatorBase::register_object	(CSE_ALifeDynamicObject *object, bool 
 			trader_abstract->attach		(item,true,false);
 	}
 
-	if (call_on_register)
+	if (can_register_objects())
 		object->on_register				();
 }
 
