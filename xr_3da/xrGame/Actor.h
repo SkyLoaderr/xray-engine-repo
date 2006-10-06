@@ -745,6 +745,8 @@ public:
 
 	IC float					HitProbability					() {return hit_probability;}
 	virtual	CVisualMemoryManager*visual_memory					() const;
+
+	virtual	BOOL				BonePassBullet					(int boneID);
 };
 
 extern bool		isActorAccelerated			(u32 mstate, bool ZoomMode);

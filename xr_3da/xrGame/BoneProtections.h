@@ -4,6 +4,7 @@ struct SBoneProtections{
 	struct BoneProtection {
 		float		koeff;
 		float		armour;
+		BOOL		BonePassBullet;
 	};
 	float				m_fHitFrac;
 	typedef xr_map<s16,BoneProtection>		storage_type;
@@ -14,5 +15,6 @@ struct SBoneProtections{
 	void				reload				(const shared_str& outfit_section, CKinematics* kinematics);
 	float				getBoneProtection	(s16 bone_id);
 	float				getBoneArmour		(s16 bone_id);
+	BOOL				getBonePassBullet	(s16 bone_id);
 };
 

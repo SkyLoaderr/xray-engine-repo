@@ -458,8 +458,23 @@ void CBulletManager::RegisterEvent			(EventType Type, BOOL _dynamic, SBullet* bu
 			E.tgt_material	= tgt_material		;
 			if (_dynamic)	
 			{
+				//	E.Repeated = (R.O->ID() == E.bullet.targetID);
+				//	bullet->targetID = R.O->ID();
+
 				E.Repeated = (R.O->ID() == E.bullet.targetID);
-				bullet->targetID = R.O->ID();
+				if (GameID() == GAME_SINGLE)
+				{
+					bullet->targetID = R.O->ID();
+				}
+				else
+				{
+					if (bullet->targetID != R.O->ID())
+					{
+						CGameObject* pGO = smart_cast<CGameObject*>(R.O);
+						if (!pGO || !pGO->BonePassBullet(R.element))
+							bullet->targetID = R.O->ID();						
+					}
+				}
 			};
 		}break;
 	case EVENT_REMOVE:

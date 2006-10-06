@@ -27,6 +27,7 @@
 #include "CharacterPhysicsSupport.h"
 #include "Grenade.h"
 #include "WeaponMagazined.h"
+#include "CustomOutfit.h"
 
 #include "actor_anim_defs.h"
 
@@ -1974,3 +1975,16 @@ bool				CActor::InventoryAllowSprint			()
 	return true;
 };
 
+BOOL				CActor::BonePassBullet					(int boneID)
+{
+	if (GameID() == GAME_SINGLE) return inherited::BonePassBullet(boneID);
+
+	CCustomOutfit* pOutfit			= (CCustomOutfit*)inventory().m_slots[OUTFIT_SLOT].m_pIItem;
+	if(!pOutfit)
+	{
+		CKinematics* V		= smart_cast<CKinematics*>(Visual()); VERIFY(V);
+		CBoneInstance			&bone_instance = V->LL_GetBoneInstance(u16(boneID));
+		return (bone_instance.get_param(3)> 0.5f);
+	}
+	return pOutfit->BonePassBullet(boneID);
+}

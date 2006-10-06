@@ -89,6 +89,11 @@ float	CCustomOutfit::HitThruArmour(float hit_power, s16 element, float AP)
 	return NewHitPower;
 };
 
+BOOL	CCustomOutfit::BonePassBullet					(int boneID)
+{
+	return m_boneProtection->getBonePassBullet(s16(boneID));
+};
+
 void	CCustomOutfit::OnMoveToSlot		()
 {
 	if (m_pInventory)

@@ -53,4 +53,5 @@ protected:
 
 public:
 	virtual u32						ef_equipment_type	() const;
+	virtual	BOOL					BonePassBullet					(int boneID);
 };

@@ -129,9 +129,11 @@ AutoPickUp_AABB_offs = 0.0, 0.1, 0.0;	смещение бокса автоподбора предметов относ
 ;spawn_effect = anomaly2\electra2_blast
 
 [mp_actor_damage]
-;bone_name		 = <hit_scale>,<fwd_damage_anim_index>,<wound_scale>
+;bone_name		 = <hit_scale>,<fwd_damage_anim_index>,<wound_scale>,<bonepassbullet>
 ;<hit_scale> - коэфф. изменения хита (уменьшения здоровья) 
 ;<wound_scale> - коэфф. изменения величины открытой раны
+;<bone_pass_bullet> - 0 - после попадания пули в эту кость, эта пуля больше не наносит актеру повреждений
+;					1 - пуля наносит актеру повреждения как обычно
 ;-1 - нет анимаций, четный номер - спереди, нечетный номер - сзади, УКАЗЫВАЕТСЯ ТОЛЬКО ПЕРЕДНИЙ!!! ЗАДНИЙ НА АВТОМАТЕ
 default			 = 0, -1, 0.1
 bip01_pelvis 		 = 0.25, 10, 0.8	;от ядра до пояса
@@ -145,21 +147,21 @@ eye_right 			 = 2, 0, 0.1	;глаза
 jaw_1 		 	 = 1.25, 0, 0.1	;рот от шеи до носа
 
 bip01_l_clavicle	 = 0.4, 10, 0.8	;плечо + bip01_spine1
-bip01_l_upperarm	 = 0.3, 4, 0.6 ;0.2
-bip01_l_forearm	 	 = 0.3, 4, 0.5 ;
-bip01_l_hand	 	 = 0.2, 4, 0.2 ;было 0.15
-bip01_l_finger0	 	 = 0.2, 4, 0.2
-bip01_l_finger1	 	 = 0.2, 4, 0.2
-bip01_l_finger2	 	 = 0.2, 4, 0.2
+bip01_l_upperarm	 = 0.3, 4, 0.6, 1 ;0.2
+bip01_l_forearm	 	 = 0.3, 4, 0.5, 1 ;
+bip01_l_hand	 	 = 0.2, 4, 0.2, 1 ;было 0.15
+bip01_l_finger0	 	 = 0.2, 4, 0.2, 1
+bip01_l_finger1	 	 = 0.2, 4, 0.2, 1
+bip01_l_finger2	 	 = 0.2, 4, 0.2, 1
 
 
 bip01_r_clavicle	 = 0.4, 10, 0.8	;плечо + bip01_spine1 
-bip01_r_upperarm	 = 0.3, 2, 0.6
-bip01_r_forearm	 	 = 0.3, 2, 0.5
-bip01_r_hand	 	 = 0.2, 2, 0.2
-bip01_r_finger0	 	 = 0.2, 2, 0.2
-bip01_r_finger1	 	 = 0.2, 2, 0.2
-bip01_r_finger2	 	 = 0.2, 2, 0.2
+bip01_r_upperarm	 = 0.3, 2, 0.6, 1
+bip01_r_forearm	 	 = 0.3, 2, 0.5, 1
+bip01_r_hand	 	 = 0.2, 2, 0.2, 1
+bip01_r_finger0	 	 = 0.2, 2, 0.2, 1
+bip01_r_finger1	 	 = 0.2, 2, 0.2, 1
+bip01_r_finger2	 	 = 0.2, 2, 0.2, 1
 
 bip01_l_thigh	 	 = 0.3, 8, 0.5	;бедро
 bip01_l_calf	 	 = 0.25, 8, 0.4	;голень
