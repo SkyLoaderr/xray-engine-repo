@@ -194,8 +194,19 @@ void __cdecl _terminate		()
 	FATAL					("Unexpected application termination");
 }
 
+extern LPCSTR log_name();
+
+void CALLBACK PreErrorHandler	(INT_PTR)
+{
+	string256				log_folder;
+	FS.update_path			(log_folder,"$logs$","");
+	BT_SetReportFilePath	(log_folder);
+	BT_AddLogFile			(log_name());
+}
+
 void SetupExceptionHandler	()
 {
+	BT_SetPreErrHandler		(PreErrorHandler,0);
 	BT_SetAppName			("XRay Engine");
 	BT_SetActivityType		(BTA_SAVEREPORT);
 	BT_SetReportFormat		(BTRF_TEXT);
