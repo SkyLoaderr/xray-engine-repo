@@ -8,6 +8,7 @@
 #pragma warning(push)
 #pragma warning(disable:4995)
 #include <malloc.h>
+#include <direct.h>
 #pragma warning(pop)
 
 #ifdef __BORLANDC__
@@ -200,6 +201,15 @@ void CALLBACK PreErrorHandler	(INT_PTR)
 {
 	string256				log_folder;
 	FS.update_path			(log_folder,"$logs$","");
+	if ((log_folder[0] != '\\') && (log_folder[1] != ':')) {
+		string256			current_folder;
+		_getcwd				(current_folder,sizeof(current_folder));
+		
+		string256			relative_path;
+		strcpy				(relative_path,log_folder);
+		strconcat			(log_folder,current_folder,"\\",relative_path);
+	}
+
 	BT_SetReportFilePath	(log_folder);
 	Msg						("BT_SetReportFilePath(%s)",log_folder);
 	BT_AddLogFile			(log_name());
