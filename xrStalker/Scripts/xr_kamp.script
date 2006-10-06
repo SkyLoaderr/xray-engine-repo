@@ -92,7 +92,6 @@ function action_wait:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 	
-	xr_sound.set_sound_play(self.object, "talk_hello")
 	kamps[self.a.center_point]:increasePops(self.object)
 end
 function action_wait:activate_scheme()
