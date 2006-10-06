@@ -572,7 +572,7 @@
 		<rank>300</rank>
 		<reputation>-50</reputation>
 
-		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
+		<visual>actors\stalker_zombi\stalker_zombie3</visual>
 		<snd_config>characters_voice\human_01\zombied\</snd_config>
 		<supplies>
 			[spawn] \n
