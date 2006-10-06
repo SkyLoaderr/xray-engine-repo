@@ -15,8 +15,10 @@
 #	include "d3dx9.h"
 #	include "D3DX_Wrapper.h"
 #	pragma comment(lib,"EToolsB.lib")
+#	define DEBUG_INVOKE	DebugBreak()
 	static BOOL			bException	= TRUE;
 #else
+#	define DEBUG_INVOKE	__asm int 3
 	static BOOL			bException	= FALSE;
 #endif
 
@@ -121,7 +123,7 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 
 	switch (result) {
 		case IDABORT : {
-			DebugBreak	();
+			DEBUG_INVOKE;
 			break;
 		}
 		case IDRETRY : {
