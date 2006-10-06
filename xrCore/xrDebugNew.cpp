@@ -29,25 +29,49 @@
 
 XRCORE_API	xrDebug		Debug;
 
-void xrDebug::backend(const char *reason, const char *expression, const char *arguments, const char *file, int line, const char *function) 
+extern void copy_to_clipboard	(const char *string);
+
+void copy_to_clipboard	(const char *string)
+{
+	if (!OpenClipboard(0))
+		return;
+
+	HGLOBAL				handle = GlobalAlloc(GHND | GMEM_DDESHARE,(strlen(string) + 1)*sizeof(char));
+	if (!handle) {
+		CloseClipboard	();
+		return;
+	}
+
+	char				*memory = (char*)GlobalLock(handle);
+	strcpy				(memory,string);
+	GlobalUnlock		(handle);
+	EmptyClipboard		();
+	SetClipboardData	(CF_TEXT,handle);
+	CloseClipboard		();
+}
+void xrDebug::backend(const char *expression, const char *description, const char *arguments, const char *file, int line, const char *function) 
 {
 	static xrCriticalSection CS;
 
 	CS.Enter			();
 
-	string4096			temp;
-	LPSTR				buffer = temp;
-	buffer				+= sprintf(buffer,"\n");
-	buffer				+= sprintf(buffer,"[error] Error occured : %s\n",reason);
-	buffer				+= sprintf(buffer,"[error] Expression    : %s\n",expression);
-	if (arguments)buffer+= sprintf(buffer,"[error] Arguments     : %s\n",arguments);
-	buffer				+= sprintf(buffer,"[error] File          : %s\n",file);
-	buffer				+= sprintf(buffer,"[error] Line          : %d\n",line);
-	buffer				+= sprintf(buffer,"[error] Function      : %s\n",function);
-	buffer				+= sprintf(buffer,"\n");
+	string4096			assertion_info;
+	LPSTR				buffer = assertion_info;
+	buffer				+= sprintf(buffer,"\r\n");
+	buffer				+= sprintf(buffer,"\nFatal Error\r\n\r\n");
+	buffer				+= sprintf(buffer,"[error] Expression    : %s\r\n",expression);
+	buffer				+= sprintf(buffer,"[error] Description   : %s\r\n",description);
+	if (arguments)buffer+= sprintf(buffer,"[error] Arguments     : %s\r\n",arguments);
+	buffer				+= sprintf(buffer,"[error] Function      : %s\r\n",function);
+	buffer				+= sprintf(buffer,"[error] File          : %s\r\n",file);
+	buffer				+= sprintf(buffer,"[error] Line          : %d\r\n",line);
+	buffer				+= sprintf(buffer,"\r\n");
 	
-	Msg					(temp);
+	Msg					("%s",assertion_info);
 	FlushLog			();
+
+	copy_to_clipboard	(assertion_info);
+
 	if (handler)		handler();
 
 #ifdef XRCORE_STATIC
