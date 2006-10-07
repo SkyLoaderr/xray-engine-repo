@@ -78,7 +78,6 @@ void CUIPdaContactsWnd::Init()
 
 void CUIPdaContactsWnd::Update()
 {
-	inherited::Update();
 	if(TRUE==m_flags.test(flNeedUpdate)){
 		RemoveAll			();
 
@@ -95,6 +94,7 @@ void CUIPdaContactsWnd::Update()
 		}
 		m_flags.set(flNeedUpdate, FALSE);
 	}
+	inherited::Update();
 }
 
 void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
