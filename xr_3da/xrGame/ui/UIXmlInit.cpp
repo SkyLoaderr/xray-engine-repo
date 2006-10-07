@@ -594,14 +594,14 @@ CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, LPCSTR tag_na
 
 bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, CGameFont *&pFnt)
 {
+	color = GetColor	(xml_doc, path, index, 0xff);
+
 	shared_str font_name = xml_doc.ReadAttrib(path, index, "font", NULL);
 	if(*font_name == NULL || xr_strlen(*font_name)<1)
 	{
 		pFnt = NULL;
 		return false;
 	}
-
-	color = GetColor	(xml_doc, path, index, 0xff);
 
 	if(*font_name)
 	{
