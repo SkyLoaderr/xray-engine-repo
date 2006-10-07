@@ -2,11 +2,10 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_CAMERADEBUG_H__B11F8AE3_1213_11D4_B4E3_4854E82A090D__INCLUDED_)
-#define AFX_CAMERADEBUG_H__B11F8AE3_1213_11D4_B4E3_4854E82A090D__INCLUDED_
-
 #pragma once
+# error using of unused old header
 
+/*
 #include "CameraBase.h"
 #include "iinputreceiver.h"
 
@@ -31,5 +30,4 @@ public:
 	CCameraDebug();
 	virtual ~CCameraDebug();
 };
-
-#endif // !defined(AFX_CAMERADEBUG_H__B11F8AE3_1213_11D4_B4E3_4854E82A090D__INCLUDED_)
+*/
