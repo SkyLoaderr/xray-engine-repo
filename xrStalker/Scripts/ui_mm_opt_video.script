@@ -19,6 +19,7 @@ function opt_video:InitControls(x, y, xml, handler)
 	xml:InitLabel("tab_video:cap_gamma",			self)
 	xml:InitLabel("tab_video:cap_contrast",			self)
 	xml:InitLabel("tab_video:cap_brightness",		self)
+	xml:InitLabel("tab_video:cap_detail_density",	self)
 	
 	xml:InitCheck("tab_video:check_fullscreen",		self)
 	xml:InitCheck("tab_video:check_no_vsync",		self)
@@ -29,9 +30,11 @@ function opt_video:InitControls(x, y, xml, handler)
 	handler.ch_r2_sun_det = xml:InitCheck("tab_video:check_r2_sun_details",		self)
 
 	
-	xml:InitTrackBar("tab_video:track_gamma",		self)
-	xml:InitTrackBar("tab_video:track_contrast",	self)
-	xml:InitTrackBar("tab_video:track_brightness",	self)
+	xml:InitTrackBar("tab_video:track_gamma",			self)
+	xml:InitTrackBar("tab_video:track_contrast",		self)
+	xml:InitTrackBar("tab_video:track_brightness",		self)
+	xml:InitTrackBar("tab_video:track_detail_density",	self)
+	
 	
 	
 	xml:InitComboBox("tab_video:list_resolution",	self)
