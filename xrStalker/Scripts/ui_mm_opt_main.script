@@ -92,11 +92,21 @@ function options_dialog:InitCallBacks()
 end
 
 function options_dialog:OnBtnR2()
+	if self.ch_r2:GetCheck() then
+		if not xrRender_test_r2_hw() then
+			self.ch_r2:SetCheck(false)
+			self.message_box:Init("message_box_check_r2")
+			self:GetHolder():start_stop_menu(self.message_box,true)
+			return
+		end	
+--	else	
+	end
+	
 	self.message_box:Init("message_box_restart_game")
 	self:GetHolder():start_stop_menu(self.message_box,true)
 end
 
-function options_dialog:OnBtnDefGraph()	
+function options_dialog:OnBtnDefGraph()
 	local opt = COptionsManager()
 	opt:SendMessage2Group("mm_opt_video","set_default_value")
 end
