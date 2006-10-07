@@ -126,7 +126,11 @@ void CUITrackBar::UpdatePos(){
 void CUITrackBar::OnMessage(const char* message){
 	if (0 == xr_strcmp(message,"set_default_value"))
 	{
-		m_val = m_min + (m_max - m_min)/2.0f;
+		if ("r__detail_density" == m_entry)
+			m_val = 0.3f;
+		else
+            m_val = m_min + (m_max - m_min)/2.0f;
+
 		UpdatePos();
 	}
 }
