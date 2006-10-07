@@ -25,6 +25,9 @@ function opt_video:InitControls(x, y, xml, handler)
 	xml:InitCheck("tab_video:check_dyn_lignt",		self)
 	handler.ch_r2 = xml:InitCheck("tab_video:check_render_2",		self)
 	handler:Register(handler.ch_r2, "checkbtn_r2")
+	handler.ch_r2_sun = xml:InitCheck("tab_video:check_r2_sun",		self)
+	handler.ch_r2_sun_det = xml:InitCheck("tab_video:check_r2_sun_details",		self)
+
 	
 	xml:InitTrackBar("tab_video:track_gamma",		self)
 	xml:InitTrackBar("tab_video:track_contrast",	self)
@@ -36,6 +39,5 @@ function opt_video:InitControls(x, y, xml, handler)
 	
 	
 	local btn = xml:Init3tButton("tab_video:btn_default_set",	self)	
-	handler:Register(btn, "btn_default_graphic")
-	
+	handler:Register(btn, "btn_default_graphic")	
 end

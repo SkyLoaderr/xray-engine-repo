@@ -109,6 +109,14 @@
 			<options_item entry="r2" group="mm_opt_video"/>
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_render_2</text>
 		</check_render_2>
+		<check_r2_sun x="20" y="255" width="243" height="21">
+			<options_item entry="r2_sun" group="mm_opt_video"/>
+			<text font="letterica16" r="115" g="114" b="112">R2 sun shadows</text>
+		</check_r2_sun>
+		<check_r2_sun_details x="20" y="280" width="243" height="21">
+			<options_item entry="r2_sun_details" group="mm_opt_video"/>
+			<text font="letterica16" r="115" g="114" b="112">R2 detailed sun shadows</text>
+		</check_r2_sun_details>
 		
 		<list_presets x="194" y="20" width="261" height="21">
 			<options_item entry="_preset" group="mm_opt_video"/>
