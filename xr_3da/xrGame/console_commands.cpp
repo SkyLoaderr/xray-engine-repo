@@ -89,6 +89,7 @@ extern	BOOL	g_bLeaveTDemo			;
 extern	ESingleGameDifficulty g_SingleGameDifficulty;
 extern	BOOL	g_show_wnd_rect			;
 extern	BOOL	g_show_wnd_rect2			;
+extern string64	gsCDKey;
 
 #ifdef DEBUG
 	extern	BOOL	g_SV_Force_Artefact_Spawn;
@@ -2428,6 +2429,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,		"net_sv_log_data",		&psNET_Flags,		NETFLAG_LOG_SV_PACKETS	);
 	CMD3(CCC_Mask,		"net_cl_log_data",		&psNET_Flags,		NETFLAG_LOG_CL_PACKETS	);
 	CMD1(CCC_Dbg_NumObjects,	"net_dbg_objects"				);
+	CMD3(CCC_String,	"cdkey",				gsCDKey,			sizeof(gsCDKey)			);
 
 	CMD4(CCC_Integer,	"g_eventdelay",			&g_dwEventDelay,	0,	1000);
 

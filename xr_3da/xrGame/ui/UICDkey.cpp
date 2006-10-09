@@ -3,7 +3,7 @@
 #include "UICDkey.h"
 #include "UIColorAnimatorWrapper.h"
 
-#define	REGISTRY_CDKEY_STR	"Software\\S.T.A.L.K.E.R\\CDKey"
+extern string64	gsCDKey;
 
 CUICDkey::CUICDkey(){
 	CreateCDKeyEntry();
@@ -95,6 +95,7 @@ void CUICDkey::SetCurrentValue(){
 	m_lines.SetText(DelHyphens(CDKeyStr));
 
 }
+extern string64	gsCDKey;
 
 void CUICDkey::SaveValue(){
 	CUIOptionsItem::SaveValue();
@@ -102,8 +103,8 @@ void CUICDkey::SaveValue(){
 	char NewCDKey[32];
 	HKEY KeyCDKey = 0;
 
-	sprintf(NewCDKey,"%s",AddHyphens(m_lines.GetText()));
-
+	sprintf(gsCDKey,"%s",AddHyphens(m_lines.GetText()));
+/*
 	long res = RegOpenKeyEx(HKEY_CURRENT_USER, 
 		REGISTRY_CDKEY_STR, 0, KEY_ALL_ACCESS, &KeyCDKey);
 
@@ -115,15 +116,17 @@ void CUICDkey::SaveValue(){
 	}
 
 	if (KeyCDKey) RegCloseKey(KeyCDKey);
+*/
 }
 
 bool CUICDkey::IsChanged(){
-	char CDKeyStr[64];
-	GetCDKey(CDKeyStr);
-	return 0 != xr_strcmp(CDKeyStr, m_lines.GetText());
+	string64	tmpCDKeyStr;
+	GetCDKey	(tmpCDKeyStr);
+	return 0 != xr_strcmp(tmpCDKeyStr, m_lines.GetText());
 }
 
 void CUICDkey::CreateCDKeyEntry(){
+/*
 	HKEY KeyCDKey;
 
 	long res = RegOpenKeyEx(HKEY_CURRENT_USER, 
@@ -160,9 +163,12 @@ void CUICDkey::CreateCDKeyEntry(){
 	};	
 
 	if (KeyCDKey) RegCloseKey(KeyCDKey);
+*/
 }
 
 void CUICDkey::GetCDKey(char* CDKeyStr){
+	strcpy(CDKeyStr, gsCDKey);
+/*
 	HKEY KeyCDKey = 0;
 	long res = RegOpenKeyEx(HKEY_CURRENT_USER, 
 		REGISTRY_CDKEY_STR, 0, KEY_READ, &KeyCDKey);
@@ -180,5 +186,5 @@ void CUICDkey::GetCDKey(char* CDKeyStr){
 	{
 		sprintf(CDKeyStr, "" );
 	};
-
+*/
 }

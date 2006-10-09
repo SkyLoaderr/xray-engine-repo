@@ -2,8 +2,6 @@
 #include "GameSpy_Available.h"
 #include "GameSpy_Base_Defs.h"
 
-#define	REGISTRY_CDKEY_STR	"Software\\S.T.A.L.K.E.R\\CDKey"
-
 CGameSpy_Available::CGameSpy_Available()
 {
 	hGameSpyDLL = NULL;

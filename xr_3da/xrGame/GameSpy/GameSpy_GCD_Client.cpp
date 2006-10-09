@@ -19,7 +19,6 @@ CGameSpy_GCD_Client::~CGameSpy_GCD_Client()
 		hGameSpyDLL = NULL;
 	}
 };
-
 void	CGameSpy_GCD_Client::LoadGameSpy()
 {
 	LPCSTR			g_name	= "xrGameSpy.dll";
@@ -31,8 +30,10 @@ void	CGameSpy_GCD_Client::LoadGameSpy()
 	GAMESPY_LOAD_FN(xrGS_gcd_compute_response);
 }
 
+string64	gsCDKey = "xxxx-xxxx-xxxx-xxxx";
 void CGameSpy_GCD_Client::CreateRespond	(char* RespondStr, char* ChallengeStr)
 {
+/*
 	//--------------- Get CDKey ------------------------------------------
 	string128 CDKeyStr = "aaaa-ssss-dddd-ffff";
 
@@ -55,6 +56,7 @@ void CGameSpy_GCD_Client::CreateRespond	(char* RespondStr, char* ChallengeStr)
 		}break;
 	};
 	//--------------- Create Respond -------------------------------------
+*/
 	string128 ResponseStr;	
-	xrGS_gcd_compute_response(CDKeyStr, ChallengeStr, ResponseStr);
+	xrGS_gcd_compute_response(gsCDKey, ChallengeStr, ResponseStr);
 }
