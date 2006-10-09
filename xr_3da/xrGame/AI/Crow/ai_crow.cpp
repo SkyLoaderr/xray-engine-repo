@@ -62,9 +62,9 @@ void cb_OnHitEndPlaying			(CBlend* B)
 	((CAI_Crow*)B->CallbackParam)->OnHitEndPlaying(B);
 }
 
-void CAI_Crow::OnHitEndPlaying				(CBlend* /**B/**/)
+void CAI_Crow::OnHitEndPlaying	(CBlend* /**B/**/)
 {
-	smart_cast<CKinematicsAnimated*>(Visual())->PlayCycle	(m_Anims.m_death_idle.GetRandom());
+	bPlayDeathIdle				= true;
 }
 
 CAI_Crow::CAI_Crow		()
@@ -94,6 +94,7 @@ void CAI_Crow::init		()
 	vVarGoal.set		(10.f,10.f,100.f);
 	fIdleSoundDelta		= 10.f;
 	fIdleSoundTime		= fIdleSoundDelta;
+	bPlayDeathIdle		= false;
 }
 
 void CAI_Crow::Load( LPCSTR section )
@@ -233,6 +234,10 @@ void CAI_Crow::state_DeathFall()
 		Fvector velocity;
 		m_pPhysicsShell->get_LinearVel(velocity);
 		if(velocity.y>-0.001f) st_target = eDeathDead;
+	}
+	if (bPlayDeathIdle){
+		smart_cast<CKinematicsAnimated*>(Visual())->PlayCycle	(m_Anims.m_death_idle.GetRandom());
+		bPlayDeathIdle		= false;
 	}
 }
 
