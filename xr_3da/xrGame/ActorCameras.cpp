@@ -19,6 +19,7 @@
 #include "elevatorstate.h"
 #include "CharacterPhysicsSupport.h"
 #include "EffectorShot.h"
+#include "phcollidevalidator.h"
 void CActor::cam_Set	(EActorCameras style)
 {
 	CCameraBase* old_cam = cam_Active();
@@ -31,61 +32,52 @@ void CActor::cam_SetLadder()
 {
 	CCameraBase* C			= cameras[eacFirstEye];
 	g_LadderOrient			();
-	float yaw				=(-XFORM().k.getH());
-	float &cam_yaw=C->yaw;
-	//cam_yaw=angle_normalize_signed(cam_yaw);
-	float delta_yaw=angle_difference_signed(yaw,cam_yaw);
+	float yaw				= (-XFORM().k.getH());
+	float &cam_yaw			= C->yaw;
+	float delta_yaw			= angle_difference_signed(yaw,cam_yaw);
+
 	if(-f_Ladder_cam_limit<delta_yaw&&f_Ladder_cam_limit>delta_yaw)
 	{
-		yaw=cam_yaw+delta_yaw;
-		float lo=(yaw-f_Ladder_cam_limit);
-		float hi=(yaw+f_Ladder_cam_limit);
-		C->lim_yaw[0]			= lo;
-		C->lim_yaw[1]			= hi;
-		C->bClampYaw			= true;
+		yaw					= cam_yaw+delta_yaw;
+		float lo			= (yaw-f_Ladder_cam_limit);
+		float hi			= (yaw+f_Ladder_cam_limit);
+		C->lim_yaw[0]		= lo;
+		C->lim_yaw[1]		= hi;
+		C->bClampYaw		= true;
 	}
 }
 void CActor::camUpdateLadder(float dt)
 {
-	VERIFY(character_physics_support()->movement()->ElevatorState());
-	if(cameras[eacFirstEye]->bClampYaw) return;
-	float yaw	= (-XFORM().k.getH());
+	VERIFY					(character_physics_support()->movement()->ElevatorState());
 
-	float & cam_yaw=cameras[eacFirstEye]->yaw;
-	//cam_yaw=angle_normalize_signed(cam_yaw);
-	float delta=angle_difference_signed(yaw,cam_yaw);
+	if(cameras[eacFirstEye]->bClampYaw) return;
+	float yaw				= (-XFORM().k.getH());
+
+	float & cam_yaw			= cameras[eacFirstEye]->yaw;
+	float delta				= angle_difference_signed(yaw,cam_yaw);
 
 	if(-0.05f<delta&&0.05f>delta)
 	{
-		yaw=cam_yaw+delta;
-		float lo=(yaw-f_Ladder_cam_limit);
-		float hi=(yaw+f_Ladder_cam_limit);
-		cameras[eacFirstEye]->lim_yaw[0]			= lo;
-		cameras[eacFirstEye]->lim_yaw[1]			= hi;
-		cameras[eacFirstEye]->bClampYaw				= true;
+		yaw									= cam_yaw+delta;
+		float lo							= (yaw-f_Ladder_cam_limit);
+		float hi							= (yaw+f_Ladder_cam_limit);
+		cameras[eacFirstEye]->lim_yaw[0]	= lo;
+		cameras[eacFirstEye]->lim_yaw[1]	= hi;
+		cameras[eacFirstEye]->bClampYaw		= true;
 	}else{
-		cam_yaw+=delta* _min(dt*10.f,1.f) ;
+		cam_yaw								+= delta * _min(dt*10.f,1.f) ;
 	}
 
 	if(character_physics_support()->movement()->ElevatorState()->State()==CElevatorState::clbClimbingDown)
 	{
-		float &cam_pitch=cameras[eacFirstEye]->pitch;
-		const float ldown_pitch=cameras[eacFirstEye]->lim_pitch.y;
-		float delta=angle_difference_signed(ldown_pitch,cam_pitch);
+		float &cam_pitch					= cameras[eacFirstEye]->pitch;
+		const float ldown_pitch				= cameras[eacFirstEye]->lim_pitch.y;
+		float delta							= angle_difference_signed(ldown_pitch,cam_pitch);
 		if(delta>0.f)
-		{
-			cam_pitch+=delta* _min(dt*10.f,1.f) ;
-		}
+			cam_pitch						+= delta* _min(dt*10.f,1.f) ;
 	}
-	//if(_abs(delta_lo)<_abs(delta_hi))
-	//{
-	//	cam_yaw+=Device.fTimeDelta*delta_lo*10.f;
-	//}
-	//else 
-	//{
-	//	cam_yaw+=Device.fTimeDelta*delta_hi*10.f;
-	//}
 }
+
 void CActor::cam_UnsetLadder()
 {
 	CCameraBase* C			= cameras[eacFirstEye];
@@ -97,7 +89,7 @@ float CActor::CameraHeight()
 {
 	Fvector						R;
 	character_physics_support()->movement()->Box().getsize		(R);
-	return m_fCamHeightFactor*R.y;
+	return						m_fCamHeightFactor*R.y;
 }
 
 IC float viewport_near(float& w, float& h)
@@ -132,30 +124,20 @@ ICF BOOL test_point(xrXRC& xrc, const Fmatrix& xform, const Fmatrix33& mat, cons
 	return FALSE;
 }
 
+#include "physics.h"
+#include "PHActivationShape.h"
+#include "debug_renderer.h"
 void CActor::cam_Update(float dt, float fFOV)
 {
-	if(m_holder)
-		return;
-//	{
-//        m_holder->cam_Update(dt);
-//		EffectorManager().Update(m_holder->Camera());
-//		EffectorManager().ApplyDevice();
-//		return;
-//	}
+	if(m_holder)		return;
+
 	if(mstate_real & mcClimb&&cam_active!=eacFreeLook)
-	{
 		camUpdateLadder(dt);
-	}
+
 	Fvector point={0,CameraHeight(),0}, dangle={0,0,0};
 	
-	// apply inertion
-	switch (cam_active){
-	case eacFirstEye:		break;
-	case eacLookAt: 		break;
-	case eacFreeLook: 		break;
-	}
 
-	Fmatrix xform,xformR;
+	Fmatrix				xform,xformR;
 	xform.setXYZ		(0,r_torso.yaw,0);
 	xform.translate_over(XFORM().c);
 
@@ -212,8 +194,6 @@ void CActor::cam_Update(float dt, float fFOV)
 			}
 			r_torso.roll		= valid_angle*2.f;
 			r_torso_tgt_roll	= r_torso.roll;
-			//		calc_point			(point,radius,0,valid_angle);
-			//		dangle.z			= (PI_DIV_2-((PI+valid_angle)/2));
 		}
 		else
 		{	
@@ -244,12 +224,49 @@ void CActor::cam_Update(float dt, float fFOV)
 	}
 
 	// calc point
-	xform.transform_tiny	(point);
+	xform.transform_tiny			(point);
 
-	CCameraBase* C			= cam_Active();
-	C->Update				(point,dangle);
-	C->f_fov				= fFOV;
-	if(eacFirstEye != cam_active){
+	CCameraBase* C					= cam_Active();
+/*
+	{
+		CCameraBase* C				= cameras[eacFirstEye];
+		float oobox_size			= 2*VIEWPORT_NEAR;
+
+
+		Fmatrix						_rot;
+		_rot.k						= C->vDirection;
+		_rot.c						= C->vPosition;
+		_rot.i.crossproduct			(C->vNormal,	_rot.k);
+		_rot.j.crossproduct			(_rot.k,		_rot.i);
+
+		
+		Fvector						vbox; 
+		vbox.set					(oobox_size, oobox_size, oobox_size);
+
+
+		Level().debug_renderer().draw_aabb  (C->vPosition, 0.05f, 0.051f, 0.05f, D3DCOLOR_XRGB(0,255,0));
+		Level().debug_renderer().draw_obb  (_rot, Fvector().div(vbox,2.0f), D3DCOLOR_XRGB(255,0,0));
+
+		dMatrix3					d_rot;
+		PHDynamicData::FMXtoDMX		(_rot, d_rot);
+
+		CPHActivationShape			activation_shape;
+		activation_shape.Create		(point, vbox, this);
+
+		dBodySetRotation			(activation_shape.ODEBody(), d_rot);
+
+		CPHCollideValidator::SetDynamicNotCollide(activation_shape);
+		activation_shape.Activate	(vbox,1,1.f,0.0F);
+
+		point.set					(activation_shape.Position());
+		
+		activation_shape.Destroy	();
+	}
+*/
+	C->Update						(point,dangle);
+	C->f_fov						= fFOV;
+	if(eacFirstEye != cam_active)
+	{
 		cameras[eacFirstEye]->Update	(point,dangle);
 		cameras[eacFirstEye]->f_fov		= fFOV;
 	}

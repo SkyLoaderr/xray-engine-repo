@@ -7,10 +7,6 @@
 
 #include "CameraBase.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
 CCameraBase::CCameraBase(CObject* p, u32 flags)
 {
 	m_Flags.assign	(flags);
@@ -26,7 +22,7 @@ CCameraBase::CCameraBase(CObject* p, u32 flags)
 	bClampYaw		= false;
 	bClampPitch		= false;
 	bClampRoll		= false;
-	parent			= p;	VERIFY(parent);
+	SetParent		(p);
 	f_fov			= 90;
 	f_aspect		= 1.f;
 	tag				= 0;

@@ -42,7 +42,7 @@ public:
 					CCameraBase		( CObject* p, u32 flags );
 	virtual			~CCameraBase	( );
 
-	void			SetParent		( CObject* p )								{parent=p;}
+	void			SetParent		( CObject* p )								{parent=p; VERIFY(p);}
 	virtual	void	OnActivate		( CCameraBase* old_cam )					{;}
 	virtual	void	OnDeactivate	( )											{;}
 	virtual void	Move			( int cmd, float val=0, float factor=1.0f)	{;}
