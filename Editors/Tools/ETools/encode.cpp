@@ -262,7 +262,7 @@ int oe_encode(oe_enc_opt *opt)
 		ogg_stream_packetin(&os,&header_comments);
 		ogg_stream_packetin(&os,&header_codebooks);
 
-		while((result = ogg_stream_flush(&os, &og)) == 0)
+		while((result = ogg_stream_flush(&os, &og)) != 0)
 		{
 			if(!result) break;
 			ret = oe_write_page(&og, opt->out);
