@@ -6,8 +6,8 @@
 #include "main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "RXCtrls"
-#pragma link "RXSpin"
+#pragma link "multi_edit"
+#pragma link "MXCtrls"
 #pragma resource "*.dfm"
 TSingleParam *SingleParam;
 //---------------------------------------------------------------------------

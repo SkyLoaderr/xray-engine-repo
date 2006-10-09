@@ -34,7 +34,7 @@ object Form7: TForm7
       Height = 22
       Caption = '-'
     end
-    object WorkTime: TRxSpinEdit
+    object WorkTime: TMultiObjSpinEdit
       Left = 4
       Top = 4
       Width = 125

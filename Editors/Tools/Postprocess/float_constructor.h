@@ -11,7 +11,6 @@
 
 #include "float_param.h"
 #include <Dialogs.hpp>
-#include "RXSpin.hpp"
 #include <ExtCtrls.hpp>
 #include <Mask.hpp>
 

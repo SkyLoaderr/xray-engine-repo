@@ -14,14 +14,14 @@ object NGen: TNGen
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object RxLabel7: TRxLabel
+  object RxLabel7: TMxLabel
     Left = 4
     Top = 112
     Width = 32
     Height = 13
     Caption = 'Period'
   end
-  object RxLabel8: TRxLabel
+  object RxLabel8: TMxLabel
     Left = 220
     Top = 112
     Width = 25
@@ -42,28 +42,28 @@ object NGen: TNGen
     Height = 49
     Caption = 'First color'
     TabOrder = 0
-    object RxLabel1: TRxLabel
+    object RxLabel1: TMxLabel
       Left = 48
       Top = 24
       Width = 10
       Height = 13
       Caption = 'R'
     end
-    object RxLabel2: TRxLabel
+    object RxLabel2: TMxLabel
       Left = 144
       Top = 24
       Width = 10
       Height = 13
       Caption = 'G'
     end
-    object RxLabel3: TRxLabel
+    object RxLabel3: TMxLabel
       Left = 240
       Top = 24
       Width = 9
       Height = 13
       Caption = 'B'
     end
-    object FR: TRxSpinEdit
+    object FR: TMultiObjSpinEdit
       Left = 60
       Top = 20
       Width = 73
@@ -72,7 +72,7 @@ object NGen: TNGen
       ValueType = vtFloat
       TabOrder = 0
     end
-    object FG: TRxSpinEdit
+    object FG: TMultiObjSpinEdit
       Left = 156
       Top = 20
       Width = 73
@@ -81,7 +81,7 @@ object NGen: TNGen
       ValueType = vtFloat
       TabOrder = 1
     end
-    object FB: TRxSpinEdit
+    object FB: TMultiObjSpinEdit
       Left = 252
       Top = 20
       Width = 73
@@ -106,28 +106,28 @@ object NGen: TNGen
     Height = 49
     Caption = 'Second color'
     TabOrder = 1
-    object RxLabel4: TRxLabel
+    object RxLabel4: TMxLabel
       Left = 48
       Top = 24
       Width = 10
       Height = 13
       Caption = 'R'
     end
-    object RxLabel5: TRxLabel
+    object RxLabel5: TMxLabel
       Left = 144
       Top = 24
       Width = 10
       Height = 13
       Caption = 'G'
     end
-    object RxLabel6: TRxLabel
+    object RxLabel6: TMxLabel
       Left = 240
       Top = 24
       Width = 9
       Height = 13
       Caption = 'B'
     end
-    object SR: TRxSpinEdit
+    object SR: TMultiObjSpinEdit
       Left = 60
       Top = 20
       Width = 73
@@ -136,7 +136,7 @@ object NGen: TNGen
       ValueType = vtFloat
       TabOrder = 0
     end
-    object SG: TRxSpinEdit
+    object SG: TMultiObjSpinEdit
       Left = 156
       Top = 20
       Width = 73
@@ -145,7 +145,7 @@ object NGen: TNGen
       ValueType = vtFloat
       TabOrder = 1
     end
-    object SB: TRxSpinEdit
+    object SB: TMultiObjSpinEdit
       Left = 252
       Top = 20
       Width = 73
@@ -163,7 +163,7 @@ object NGen: TNGen
       OnClick = SColorClick
     end
   end
-  object Period: TRxSpinEdit
+  object Period: TMultiObjSpinEdit
     Left = 44
     Top = 104
     Width = 85
@@ -172,7 +172,7 @@ object NGen: TNGen
     ValueType = vtFloat
     TabOrder = 2
   end
-  object Time: TRxSpinEdit
+  object Time: TMultiObjSpinEdit
     Left = 248
     Top = 104
     Width = 85

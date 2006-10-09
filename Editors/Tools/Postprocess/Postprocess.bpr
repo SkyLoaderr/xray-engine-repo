@@ -3,23 +3,23 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="Postprocess.exe"/>
+    <PROJECT value="x:\Postprocess.exe"/>
     <OBJFILES value="Postprocess.obj main.obj interp.obj PostprocessAnimator.obj Envelope.obj 
       float_param.obj color_constructor.obj color_param.obj 
-      float_constructor.obj Color.obj single_param.obj"/>
+      float_constructor.obj color.obj single_param.obj"/>
     <RESFILES value="Postprocess.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) main.dfm float_param.dfm color_constructor.dfm color_param.dfm 
-      float_constructor.dfm Color.dfm single_param.dfm"/>
+      float_constructor.dfm color.dfm single_param.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value=""/>
-    <SPARELIBS value="vcl.lib rtl.lib bcbsmp.lib vclx.lib rxctl6.lib"/>
-    <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
-      vcldbx.bpi ibxpress.bpi cds.bpi dsnap.bpi bdecds.bpi qrpt.bpi teeui.bpi 
-      teedb.bpi tee.bpi dss.bpi teeqr.bpi visualclx.bpi visualdbclx.bpi 
-      dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi rxctl6.bpi rxdb6.bpi rxbde6.bpi"/>
+    <SPARELIBS value="vcl.lib rtl.lib bcbsmp.lib vclx.lib editor.lib"/>
+    <PACKAGES value="editor.bpi vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi 
+      bdertl.bpi vcldbx.bpi ibxpress.bpi cds.bpi dsnap.bpi bdecds.bpi qrpt.bpi 
+      teeui.bpi teedb.bpi tee.bpi dss.bpi teeqr.bpi visualclx.bpi 
+      visualdbclx.bpi dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi"/>
     <PATHCPP value=".;"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
@@ -30,14 +30,14 @@
     <USERDEFINES value="_DEBUG;_EDITOR;_PP_EDITOR_;ENGINE_API;IC;ICF;__forceinline"/>
     <SYSDEFINES value="NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="Postprocess.cpp"/>
-    <INCLUDEPATH value="..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl;Y:\postprocess\core_hdr;Y:\postprocess"/>
-    <LIBPATH value="Y:\postprocess;..\RX\Units;..;Postprocess;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="..\..\components\AlexMX;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl;e:\projects\xrcore"/>
+    <LIBPATH value="..\..\components\AlexMX;Y:\postprocess;..;Postprocess;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-pck -w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I..\RX\Units -I.. -IPostprocess -I$(BCB)\include -I$(BCB)\include\vcl 
-      -IY:\postprocess\core_hdr -IY:\postprocess -src_suffix cpp -D_DEBUG 
+    <IDLCFLAGS value="-I..\..\components\AlexMX -I.. -IPostprocess -I$(BCB)\include 
+      -I$(BCB)\include\vcl -Ie:\projects\xrcore -src_suffix cpp -D_DEBUG 
       -D_EDITOR -D_PP_EDITOR_ -DENGINE_API -DIC -DICF -D__forceinline -boa"/>
     <CFLAG1 value="-Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -c -tW -tWM"/>
@@ -64,7 +64,7 @@
       <FILE FILENAME="color_constructor.cpp" FORMNAME="Form6" UNITNAME="color_constructor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="color_param.cpp" FORMNAME="Form7" UNITNAME="color_param" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="float_constructor.cpp" FORMNAME="Form8" UNITNAME="float_constructor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Color.cpp" FORMNAME="ColorForm" UNITNAME="Color" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="color.cpp" FORMNAME="ColorForm" UNITNAME="Color" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="single_param.cpp" FORMNAME="SingleParam" UNITNAME="single_param" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
@@ -99,16 +99,19 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=4
-Item0=..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl;Y:\postprocess\core_hdr;Y:\postprocess
-Item1=..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl;Y:\postprocess\core_hdr
-Item2=Y:\postprocess\core_hdr;..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl
-Item3=..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl
+Count=6
+Item0=..\..\components\AlexMX;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl;e:\projects\xrcore
+Item1=..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl;e:\projects\xrcore
+Item2=..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl;Y:\postprocess\core_hdr;Y:\postprocess
+Item3=..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl;Y:\postprocess\core_hdr
+Item4=Y:\postprocess\core_hdr;..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl
+Item5=..\RX\Units;..;Postprocess;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=2
-Item0=Y:\postprocess;..\RX\Units;..;Postprocess;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
-Item1=..\RX\Units;..;Postprocess;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Count=3
+Item0=..\..\components\AlexMX;Y:\postprocess;..;Postprocess;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item1=Y:\postprocess;..\RX\Units;..;Postprocess;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item2=..\RX\Units;..;Postprocess;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
@@ -137,6 +140,10 @@ Item17=_DEBUG,_EDITOR,_CPPUNWIND,FORCE_NO_EXCEPTIONS
 Item18=_DEBUG,_EDITOR,_CPPUNWIND
 Item19=_DEBUG,__BORLANDC__
 
+[HistoryLists\hlFinalOutputDir]
+Count=1
+Item0=x:\
+
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl
 
@@ -161,5 +168,10 @@ LinkCGLIB=0
 AddServerUnit=1
 AddClientUnit=1
 PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
   </IDEOPTIONS>
 </PROJECT>

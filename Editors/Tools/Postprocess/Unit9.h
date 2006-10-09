@@ -8,7 +8,6 @@
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
 #include <ExtCtrls.hpp>
-#include "RXSpin.hpp"
 #include <Mask.hpp>
 #include <Buttons.hpp>
 #include <ComCtrls.hpp>
@@ -19,8 +18,8 @@ class TForm9 : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;
-    TRxSpinEdit *WorkTime;
-    TRxSpinEdit *Value;
+    TMultiObjSpinEdit *WorkTime;
+    TMultiObjSpinEdit *Value;
     TSpeedButton *AddButton;
     TSpeedButton *DeleteButton;
     TImageList *ImageList;

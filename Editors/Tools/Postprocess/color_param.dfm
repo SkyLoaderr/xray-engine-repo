@@ -34,11 +34,12 @@ object Form7: TForm7
       Height = 22
       Caption = '-'
     end
-    object WorkTime: TRxSpinEdit
+    object WorkTime: TMultiObjSpinEdit
       Left = 4
       Top = 4
       Width = 125
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       MaxValue = 1000
       ValueType = vtFloat

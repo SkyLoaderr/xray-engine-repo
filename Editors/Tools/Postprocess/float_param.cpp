@@ -6,7 +6,7 @@
 #include "float_param.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "RXSpin"
+#pragma link "multi_edit"
 #pragma resource "*.dfm"
 TForm9 *Form9;
 //---------------------------------------------------------------------------

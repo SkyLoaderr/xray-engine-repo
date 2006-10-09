@@ -6,8 +6,6 @@
 #include "NoiseFGen.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "RXCtrls"
-#pragma link "RXSpin"
 #pragma resource "*.dfm"
 TNFGen *NFGen;
 //---------------------------------------------------------------------------

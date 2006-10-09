@@ -6,8 +6,6 @@
 #include "Unit7.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "RXSpin"
-#pragma link "RXSpin"
 #pragma resource "*.dfm"
 TForm7 *Form7;
 //---------------------------------------------------------------------------

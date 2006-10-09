@@ -15,7 +15,7 @@ object SingleParam: TSingleParam
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
-  object RxLabel1: TRxLabel
+  object RxLabel1: TMxLabel
     Left = 0
     Top = 0
     Width = 41
@@ -38,72 +38,76 @@ object SingleParam: TSingleParam
     Height = 121
     Caption = 'Node data'
     TabOrder = 1
-    object RxLabel2: TRxLabel
+    object RxLabel2: TMxLabel
       Left = 12
       Top = 28
       Width = 29
       Height = 13
       Caption = 'Value'
     end
-    object RxLabel3: TRxLabel
+    object RxLabel3: TMxLabel
       Left = 12
       Top = 52
       Width = 40
       Height = 13
       Caption = 'Tension'
     end
-    object RxLabel4: TRxLabel
+    object RxLabel4: TMxLabel
       Left = 12
       Top = 76
       Width = 48
       Height = 13
       Caption = 'Continuity'
     end
-    object RxLabel5: TRxLabel
+    object RxLabel5: TMxLabel
       Left = 12
       Top = 100
       Width = 22
       Height = 13
       Caption = 'Bias'
     end
-    object Value: TRxSpinEdit
+    object Value: TMultiObjSpinEdit
       Left = 88
       Top = 20
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.01
       ValueType = vtFloat
       TabOrder = 0
       OnChange = ChangeParam
     end
-    object Tension: TRxSpinEdit
+    object Tension: TMultiObjSpinEdit
       Left = 88
       Top = 44
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.1
       ValueType = vtFloat
       TabOrder = 1
       OnChange = ChangeParam
     end
-    object Contin: TRxSpinEdit
+    object Contin: TMultiObjSpinEdit
       Left = 88
       Top = 68
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.1
       ValueType = vtFloat
       TabOrder = 2
       OnChange = ChangeParam
     end
-    object Bias: TRxSpinEdit
+    object Bias: TMultiObjSpinEdit
       Left = 88
       Top = 92
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.1
       ValueType = vtFloat

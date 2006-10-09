@@ -6,7 +6,6 @@
 #include "float_constructor.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "RXSpin"
 #pragma resource "*.dfm"
 TForm8 *Form8;
 //---------------------------------------------------------------------------

@@ -7,22 +7,20 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
 #include <ExtCtrls.hpp>
 #include <Mask.hpp>
 //---------------------------------------------------------------------------
 class TNFGen : public TForm
 {
 __published:	// IDE-managed Components
-    TRxLabel *RxLabel1;
-    TRxLabel *RxLabel2;
-    TRxLabel *RxLabel3;
-    TRxLabel *RxLabel4;
-    TRxSpinEdit *First;
-    TRxSpinEdit *Period;
-    TRxSpinEdit *Second;
-    TRxSpinEdit *Time;
+    TMxLabel *RxLabel1;
+    TMxLabel *RxLabel2;
+    TMxLabel *RxLabel3;
+    TMxLabel *RxLabel4;
+    TMultiObjSpinEdit *First;
+    TMultiObjSpinEdit *Period;
+    TMultiObjSpinEdit *Second;
+    TMultiObjSpinEdit *Time;
     TBevel *Bevel1;
     TButton *Button1;
     TButton *Button2;

@@ -6,9 +6,6 @@
 #include "newdialog.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "RXCtrls"
-#pragma link "RXSpin"
-#pragma link "RXCtrls"
 #pragma resource "*.dfm"
 TNewEffectDialog *NewEffectDialog;
 //---------------------------------------------------------------------------

@@ -15,7 +15,7 @@ object ColorForm: TColorForm
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
-  object RxLabel1: TRxLabel
+  object RxLabel1: TMxLabel
     Left = 0
     Top = 0
     Width = 41
@@ -38,72 +38,76 @@ object ColorForm: TColorForm
     Height = 121
     Caption = 'Red component'
     TabOrder = 1
-    object RxLabel2: TRxLabel
+    object RxLabel2: TMxLabel
       Left = 12
       Top = 28
       Width = 29
       Height = 13
       Caption = 'Value'
     end
-    object RxLabel3: TRxLabel
+    object RxLabel3: TMxLabel
       Left = 12
       Top = 52
       Width = 40
       Height = 13
       Caption = 'Tension'
     end
-    object RxLabel4: TRxLabel
+    object RxLabel4: TMxLabel
       Left = 12
       Top = 76
       Width = 48
       Height = 13
       Caption = 'Continuity'
     end
-    object RxLabel5: TRxLabel
+    object RxLabel5: TMxLabel
       Left = 12
       Top = 100
       Width = 22
       Height = 13
       Caption = 'Bias'
     end
-    object RedValue: TRxSpinEdit
+    object RedValue: TMultiObjSpinEdit
       Left = 88
       Top = 20
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.01
       ValueType = vtFloat
       TabOrder = 0
       OnChange = CnahgeRedParam
     end
-    object RedTension: TRxSpinEdit
+    object RedTension: TMultiObjSpinEdit
       Left = 88
       Top = 44
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.1
       ValueType = vtFloat
       TabOrder = 1
       OnChange = CnahgeRedParam
     end
-    object RedContin: TRxSpinEdit
+    object RedContin: TMultiObjSpinEdit
       Left = 88
       Top = 68
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.1
       ValueType = vtFloat
       TabOrder = 2
       OnChange = CnahgeRedParam
     end
-    object RedBias: TRxSpinEdit
+    object RedBias: TMultiObjSpinEdit
       Left = 88
       Top = 92
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.1
       ValueType = vtFloat
@@ -118,72 +122,76 @@ object ColorForm: TColorForm
     Height = 121
     Caption = 'Green component'
     TabOrder = 2
-    object RxLabel6: TRxLabel
+    object RxLabel6: TMxLabel
       Left = 12
       Top = 28
       Width = 29
       Height = 13
       Caption = 'Value'
     end
-    object RxLabel7: TRxLabel
+    object RxLabel7: TMxLabel
       Left = 12
       Top = 52
       Width = 40
       Height = 13
       Caption = 'Tension'
     end
-    object RxLabel8: TRxLabel
+    object RxLabel8: TMxLabel
       Left = 12
       Top = 76
       Width = 48
       Height = 13
       Caption = 'Continuity'
     end
-    object RxLabel9: TRxLabel
+    object RxLabel9: TMxLabel
       Left = 12
       Top = 100
       Width = 22
       Height = 13
       Caption = 'Bias'
     end
-    object GreenValue: TRxSpinEdit
+    object GreenValue: TMultiObjSpinEdit
       Left = 88
       Top = 20
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.01
       ValueType = vtFloat
       TabOrder = 0
       OnChange = ChangeGreenParam
     end
-    object GreenTension: TRxSpinEdit
+    object GreenTension: TMultiObjSpinEdit
       Left = 88
       Top = 44
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.1
       ValueType = vtFloat
       TabOrder = 1
       OnChange = ChangeGreenParam
     end
-    object GreenContin: TRxSpinEdit
+    object GreenContin: TMultiObjSpinEdit
       Left = 88
       Top = 68
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.1
       ValueType = vtFloat
       TabOrder = 2
       OnChange = ChangeGreenParam
     end
-    object GreenBias: TRxSpinEdit
+    object GreenBias: TMultiObjSpinEdit
       Left = 88
       Top = 92
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.1
       ValueType = vtFloat
@@ -198,72 +206,76 @@ object ColorForm: TColorForm
     Height = 121
     Caption = 'Blue component'
     TabOrder = 3
-    object RxLabel10: TRxLabel
+    object RxLabel10: TMxLabel
       Left = 12
       Top = 28
       Width = 29
       Height = 13
       Caption = 'Value'
     end
-    object RxLabel11: TRxLabel
+    object RxLabel11: TMxLabel
       Left = 12
       Top = 52
       Width = 40
       Height = 13
       Caption = 'Tension'
     end
-    object RxLabel12: TRxLabel
+    object RxLabel12: TMxLabel
       Left = 12
       Top = 76
       Width = 48
       Height = 13
       Caption = 'Continuity'
     end
-    object RxLabel13: TRxLabel
+    object RxLabel13: TMxLabel
       Left = 12
       Top = 100
       Width = 22
       Height = 13
       Caption = 'Bias'
     end
-    object BlueValue: TRxSpinEdit
+    object BlueValue: TMultiObjSpinEdit
       Left = 88
       Top = 20
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.01
       ValueType = vtFloat
       TabOrder = 0
       OnChange = ChangeBlueParam
     end
-    object BlueTension: TRxSpinEdit
+    object BlueTension: TMultiObjSpinEdit
       Left = 88
       Top = 44
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.1
       ValueType = vtFloat
       TabOrder = 1
       OnChange = ChangeBlueParam
     end
-    object BlueContin: TRxSpinEdit
+    object BlueContin: TMultiObjSpinEdit
       Left = 88
       Top = 68
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.1
       ValueType = vtFloat
       TabOrder = 2
       OnChange = ChangeBlueParam
     end
-    object BlueBias: TRxSpinEdit
+    object BlueBias: TMultiObjSpinEdit
       Left = 88
       Top = 92
       Width = 93
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.1
       ValueType = vtFloat

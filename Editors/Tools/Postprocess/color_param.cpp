@@ -6,8 +6,7 @@
 #include "color_param.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "RXSpin"
-#pragma link "RXSpin"
+#pragma link "multi_edit"
 #pragma resource "*.dfm"
 TForm7 *Form7;
 //---------------------------------------------------------------------------

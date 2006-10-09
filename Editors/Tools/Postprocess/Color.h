@@ -7,47 +7,47 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
 #include <Mask.hpp>
 #include <ExtCtrls.hpp>
 #include "color_constructor.h"
 #include <xrCore.h>
 #include "PostprocessAnimator.h"
 #include <Dialogs.hpp>
+#include "multi_edit.hpp"
+#include "MXCtrls.hpp"
 //---------------------------------------------------------------------------
 class TColorForm : public TForm
 {
 __published:	// IDE-managed Components
     TListBox *PointList;
-    TRxLabel *RxLabel1;
+    TMxLabel *RxLabel1;
     TGroupBox *GroupBox1;
-    TRxSpinEdit *RedValue;
-    TRxSpinEdit *RedTension;
-    TRxSpinEdit *RedContin;
-    TRxSpinEdit *RedBias;
-    TRxLabel *RxLabel2;
-    TRxLabel *RxLabel3;
-    TRxLabel *RxLabel4;
-    TRxLabel *RxLabel5;
+    TMultiObjSpinEdit *RedValue;
+    TMultiObjSpinEdit *RedTension;
+    TMultiObjSpinEdit *RedContin;
+    TMultiObjSpinEdit *RedBias;
+    TMxLabel *RxLabel2;
+    TMxLabel *RxLabel3;
+    TMxLabel *RxLabel4;
+    TMxLabel *RxLabel5;
     TGroupBox *GroupBox2;
-    TRxLabel *RxLabel6;
-    TRxLabel *RxLabel7;
-    TRxLabel *RxLabel8;
-    TRxLabel *RxLabel9;
-    TRxSpinEdit *GreenValue;
-    TRxSpinEdit *GreenTension;
-    TRxSpinEdit *GreenContin;
-    TRxSpinEdit *GreenBias;
+    TMxLabel *RxLabel6;
+    TMxLabel *RxLabel7;
+    TMxLabel *RxLabel8;
+    TMxLabel *RxLabel9;
+    TMultiObjSpinEdit *GreenValue;
+    TMultiObjSpinEdit *GreenTension;
+    TMultiObjSpinEdit *GreenContin;
+    TMultiObjSpinEdit *GreenBias;
     TGroupBox *GroupBox3;
-    TRxLabel *RxLabel10;
-    TRxLabel *RxLabel11;
-    TRxLabel *RxLabel12;
-    TRxLabel *RxLabel13;
-    TRxSpinEdit *BlueValue;
-    TRxSpinEdit *BlueTension;
-    TRxSpinEdit *BlueContin;
-    TRxSpinEdit *BlueBias;
+    TMxLabel *RxLabel10;
+    TMxLabel *RxLabel11;
+    TMxLabel *RxLabel12;
+    TMxLabel *RxLabel13;
+    TMultiObjSpinEdit *BlueValue;
+    TMultiObjSpinEdit *BlueTension;
+    TMultiObjSpinEdit *BlueContin;
+    TMultiObjSpinEdit *BlueBias;
     TButton *Button1;
     TPanel *Color;
     TColorDialog *ColorDialog;

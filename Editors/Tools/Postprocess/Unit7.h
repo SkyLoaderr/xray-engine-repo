@@ -14,13 +14,12 @@
 #include <ComCtrls.hpp>
 #include <ImgList.hpp>
 #include <ToolWin.hpp>
-#include "RXSpin.hpp"
 //---------------------------------------------------------------------------
 class TForm7 : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;
-    TRxSpinEdit *WorkTime;
+    TMultiObjSpinEdit *WorkTime;
     TPanel *ColorPanel;
     TSpeedButton *AddButton;
     TSpeedButton *DeleteButton;

@@ -14,28 +14,28 @@ object NFGen: TNFGen
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object RxLabel1: TRxLabel
+  object RxLabel1: TMxLabel
     Left = 0
     Top = 16
     Width = 50
     Height = 13
     Caption = 'First value'
   end
-  object RxLabel2: TRxLabel
+  object RxLabel2: TMxLabel
     Left = 144
     Top = 16
     Width = 68
     Height = 13
     Caption = 'Second value'
   end
-  object RxLabel3: TRxLabel
+  object RxLabel3: TMxLabel
     Left = 0
     Top = 40
     Width = 32
     Height = 13
     Caption = 'Period'
   end
-  object RxLabel4: TRxLabel
+  object RxLabel4: TMxLabel
     Left = 144
     Top = 40
     Width = 25
@@ -49,7 +49,7 @@ object NFGen: TNFGen
     Height = 9
     Shape = bsTopLine
   end
-  object First: TRxSpinEdit
+  object First: TMultiObjSpinEdit
     Left = 60
     Top = 8
     Width = 73
@@ -58,7 +58,7 @@ object NFGen: TNFGen
     ValueType = vtFloat
     TabOrder = 0
   end
-  object Period: TRxSpinEdit
+  object Period: TMultiObjSpinEdit
     Left = 60
     Top = 32
     Width = 73
@@ -67,7 +67,7 @@ object NFGen: TNFGen
     ValueType = vtFloat
     TabOrder = 1
   end
-  object Second: TRxSpinEdit
+  object Second: TMultiObjSpinEdit
     Left = 216
     Top = 8
     Width = 73
@@ -76,7 +76,7 @@ object NFGen: TNFGen
     ValueType = vtFloat
     TabOrder = 2
   end
-  object Time: TRxSpinEdit
+  object Time: TMultiObjSpinEdit
     Left = 216
     Top = 32
     Width = 73

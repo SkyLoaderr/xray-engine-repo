@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <float.h>
 #include <math.h>
-#include "_types.h"
 #include <xrCore.h>
-#include <y:\postprocess\core_hdr\vector.h>
+#include <_types.h>
+
 //#include "CameraManager.h"
 #include <stdio.h>
 

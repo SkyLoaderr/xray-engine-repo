@@ -14,14 +14,14 @@ object NewEffectDialog: TNewEffectDialog
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object RxLabel1: TRxLabel
+  object RxLabel1: TMxLabel
     Left = 4
     Top = 16
     Width = 52
     Height = 13
     Caption = 'Effect time'
   end
-  object Time: TRxSpinEdit
+  object Time: TMultiObjSpinEdit
     Left = 68
     Top = 8
     Width = 89

@@ -7,27 +7,27 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
 #include <Mask.hpp>
 #include "float_constructor.h"
 #include <xrCore.h>
 #include "PostprocessAnimator.h"
+#include "multi_edit.hpp"
+#include "MXCtrls.hpp"
 //---------------------------------------------------------------------------
 class TSingleParam : public TForm
 {
 __published:	// IDE-managed Components
-    TRxLabel *RxLabel1;
+    TMxLabel *RxLabel1;
     TListBox *PointList;
     TGroupBox *GroupBox1;
-    TRxLabel *RxLabel2;
-    TRxLabel *RxLabel3;
-    TRxLabel *RxLabel4;
-    TRxLabel *RxLabel5;
-    TRxSpinEdit *Value;
-    TRxSpinEdit *Tension;
-    TRxSpinEdit *Contin;
-    TRxSpinEdit *Bias;
+    TMxLabel *RxLabel2;
+    TMxLabel *RxLabel3;
+    TMxLabel *RxLabel4;
+    TMxLabel *RxLabel5;
+    TMultiObjSpinEdit *Value;
+    TMultiObjSpinEdit *Tension;
+    TMultiObjSpinEdit *Contin;
+    TMultiObjSpinEdit *Bias;
     TButton *Button1;
     void __fastcall FormDestroy(TObject *Sender);
     void __fastcall Button1Click(TObject *Sender);

@@ -11,7 +11,6 @@
 
 #include "Unit9.h"
 #include <Dialogs.hpp>
-#include "RXSpin.hpp"
 #include <ExtCtrls.hpp>
 #include <Mask.hpp>
 
@@ -28,7 +27,7 @@ __published:	// IDE-managed Components
     TSaveDialog *SaveDialog;
     TPanel *Panel2;
     TLabel *Label1;
-    TRxSpinEdit *InitValue;
+    TMultiObjSpinEdit *InitValue;
 private:	// User declarations
     void    AddEntryTemplate    (int iInsertAfter);
     void    RecalcSize          ();

@@ -45,7 +45,7 @@ object Form8: TForm8
       Height = 13
       Caption = 'Initial value'
     end
-    object InitValue: TRxSpinEdit
+    object InitValue: TMultiObjSpinEdit
       Left = 120
       Top = 4
       Width = 121

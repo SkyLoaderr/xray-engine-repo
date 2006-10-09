@@ -7,16 +7,13 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include "RxCtrls.hpp"
-#include "RXSpin.hpp"
 #include <Mask.hpp>
-#include "RXCtrls.hpp"
 //---------------------------------------------------------------------------
 class TNewEffectDialog : public TForm
 {
 __published:	// IDE-managed Components
-    TRxSpinEdit *Time;
-    TRxLabel *RxLabel1;
+    TMultiObjSpinEdit *Time;
+    TMxLabel *RxLabel1;
     TButton *Button1;
     TButton *Button2;
     void __fastcall TimeChange(TObject *Sender);

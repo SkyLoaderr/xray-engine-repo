@@ -33,21 +33,23 @@ object Form9: TForm9
       Height = 22
       Caption = '-'
     end
-    object WorkTime: TRxSpinEdit
+    object WorkTime: TMultiObjSpinEdit
       Left = 4
       Top = 4
       Width = 101
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       MaxValue = 10000
       ValueType = vtFloat
       TabOrder = 0
     end
-    object Value: TRxSpinEdit
+    object Value: TMultiObjSpinEdit
       Left = 108
       Top = 4
       Width = 97
       Height = 21
+      LWSensitivity = 1
       Alignment = taRightJustify
       Increment = 0.05
       MaxValue = 1
