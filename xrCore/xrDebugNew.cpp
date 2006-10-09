@@ -116,7 +116,7 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 
 	buffer				+= sprintf(buffer,"%sPress ABORT to abort execution%s",endline,endline);
 	buffer				+= sprintf(buffer,"Press RETRY to continue execution%s",endline);
-	buffer				+= sprintf(buffer,"Press IGNORE to ignore all the errors of this type%s%s",endline);
+	buffer				+= sprintf(buffer,"Press IGNORE to ignore all the errors of this type%s%s",endline,endline);
 
 	if (handler)		handler();
 
