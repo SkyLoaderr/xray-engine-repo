@@ -16,7 +16,7 @@ public:
 	crashhandler*	get_crashhandler	()							{ return handler;	};
 	void			set_crashhandler	(crashhandler* _handler)	{ handler=_handler;	};
 	LPCSTR			error2string		(long  code	);
-#ifndef __BORLAND_C__
+#ifndef __BORLANDC__
 	void			fail				(const char *e1, const char *file, int line, const char *function);
 	void			fail				(const char *e1, const char *e2, const char *file, int line, const char *function);
 	void			fail				(const char *e1, const char *e2, const char *e3, const char *file, int line, const char *function);
