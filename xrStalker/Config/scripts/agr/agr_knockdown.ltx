@@ -14,7 +14,7 @@ on_timer = 3000 | sr_idle@3 %=run_postprocess(agr_u_fade) +agr_doc_wakeup%
 on_timer  = 5000 | sr_idle@4  %=agr_cam_effect =teleport_actor(kat_teleport_to_dark_city_position:kat_teleport_to_dark_city_orientation) +cit_jail_actor_wake +cit_jail_doctor_pryp_task%
 
 [sr_idle@4]
-on_timer = 120000 | sr_idle@5 %=run_postprocess(agr_u_fade)%
+on_timer = 115000 | sr_idle@5 %=run_postprocess(agr_u_fade)%
 
 [sr_idle@5]
 on_timer = 4000 | nil %=enable_ui =run_cam_effector(prison_1:2508:false)%
