@@ -170,7 +170,7 @@ void __cdecl xrDebug::fatal(const char* F,...)
 }
 int __cdecl _out_of_memory	(size_t size)
 {
-	Debug.fatal				(DEBUG_INFO,"Out of memory. Memory request: %d K",size/1024);
+	Debug.fatal				("Out of memory. Memory request: %d K",size/1024);
 	return					1;
 }
 void __cdecl _terminate		()
