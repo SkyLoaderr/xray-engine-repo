@@ -31,32 +31,32 @@
 #		define VERIFY2(expr, e2)
 #		define VERIFY3(expr, e2, e3)
 #		define CHK_DX(a) a
-#endif
+#	endif
 #else
 	// ---==( Extended Debugging Support (R) )==---
-	#define R_ASSERT(expr) if (!(expr)) ::Debug.fail(#expr,__FILE__, __LINE__)
-	#define R_ASSERT2(expr,e2) if (!(expr)) ::Debug.fail(#expr,e2,__FILE__, __LINE__)
-	#define R_ASSERT3(expr,e2,e3) if (!(expr)) ::Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
-	#define R_CHK(expr) { HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,__FILE__, __LINE__); }
-	#define FATAL(description)			Debug.fatal("%s",description)
+#	define R_ASSERT(expr) if (!(expr)) ::Debug.fail(#expr,__FILE__, __LINE__)
+#	define R_ASSERT2(expr,e2) if (!(expr)) ::Debug.fail(#expr,e2,__FILE__, __LINE__)
+#	define R_ASSERT3(expr,e2,e3) if (!(expr)) ::Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
+#	define R_CHK(expr) { HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,__FILE__, __LINE__); }
+#	define FATAL(description)			Debug.fatal("%s",description)
 
-	#ifdef DEBUG
-	#define	NODEFAULT Debug.fatal("nodefault: reached")
-	#define VERIFY(expr) if (!(expr)) ::Debug.fail(#expr,__FILE__, __LINE__)
-	#define VERIFY2(expr, e2) if (!(expr)) ::Debug.fail(#expr,e2,__FILE__, __LINE__)
-	#define VERIFY3(expr, e2, e3) if (!(expr)) ::Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
-	#define CHK_DX(expr) { HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,__FILE__, __LINE__); }
-	#else
-		#ifdef __BORLANDC__
-			#define NODEFAULT
-		#else
-			#define NODEFAULT __assume(0)
-		#endif
-	#define VERIFY(expr)
-	#define VERIFY2(expr, e2)
-	#define VERIFY3(expr, e2, e3)
-	#define CHK_DX(a) a
-	#endif
+#	ifdef DEBUG
+#		define	NODEFAULT Debug.fatal("nodefault: reached")
+#		define VERIFY(expr) if (!(expr)) ::Debug.fail(#expr,__FILE__, __LINE__)
+#		define VERIFY2(expr, e2) if (!(expr)) ::Debug.fail(#expr,e2,__FILE__, __LINE__)
+#		define VERIFY3(expr, e2, e3) if (!(expr)) ::Debug.fail(#expr,e2,e3,__FILE__, __LINE__)
+#		define CHK_DX(expr) { HRESULT hr = expr; if (FAILED(hr)) ::Debug.error(hr,#expr,__FILE__, __LINE__); }
+#	else
+#		ifdef __BORLANDC__
+#			define NODEFAULT
+#		else
+#			define NODEFAULT __assume(0)
+#		endif
+#		define VERIFY(expr)
+#		define VERIFY2(expr, e2)
+#		define VERIFY3(expr, e2, e3)
+#		define CHK_DX(a) a
+#	endif
 #endif // __BORLANDC__
 
 //---------------------------------------------------------------------------------------------
