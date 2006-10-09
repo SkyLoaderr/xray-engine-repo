@@ -34,7 +34,8 @@ void	CLocatorAPI::auth_runtime		(void*	params)
 {
 	m_auth_lock.Enter	()	;
 	auth_options*		_o	= (auth_options*)	params	;
-	m_auth_code				= 0;
+	m_auth_code			= 0;
+	bool				do_break = false;
 	for (files_it it = files.begin(); it!=files.end(); ++it)
 	{
 		const file&	f	=	*it;
@@ -52,11 +53,18 @@ void	CLocatorAPI::auth_runtime		(void*	params)
 			if (strstr(f.name,_o->important[s].c_str()))	{
 				// crc for file
 				IReader*	r	= FS.r_open	(f.name);
+				if (!r) {
+					do_break	= true;
+					break;
+				}
 				u32 crc			= crc32		(r->pointer(),r->length());
 				r->close		();
 				m_auth_code	^=	u64(crc);
 			}
 		}
+
+		if (do_break)
+			break;
 	}
 	xr_delete			(_o);
 	m_auth_lock.Leave	()	;
