@@ -107,6 +107,7 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 		if (!i) {
 			Msg			("%s",assertion_info);
 			FlushLog	();
+			buffer		= assertion_info;
 			endline		= "\r\n";
 		}
 		else
