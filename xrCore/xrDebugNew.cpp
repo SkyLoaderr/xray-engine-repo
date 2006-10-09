@@ -35,6 +35,8 @@
 
 XRCORE_API	xrDebug		Debug;
 
+static bool	error_after_dialog = false;
+
 extern void copy_to_clipboard	(const char *string);
 
 void copy_to_clipboard	(const char *string)
@@ -80,16 +82,18 @@ void update_clipboard	(const char *string)
 	copy_to_clipboard	(buffer);
 }
 
-void xrDebug::backend(const char *expression, const char *description, const char *arguments, const char *file, int line, const char *function) 
+void xrDebug::backend(const char *expression, const char *description, const char *arguments, const char *file, int line, const char *function, bool &ignore_always) 
 {
 	static xrCriticalSection CS;
 
 	CS.Enter			();
 
+	error_after_dialog	= true;
+
 	string4096			assertion_info;
+	LPSTR				buffer = assertion_info;
 	LPCSTR				endline = "\n";
 	for (int i=0; i<2; ++i) {
-		LPSTR			buffer = assertion_info;
 		buffer			+= sprintf(buffer,"%s",endline);
 		buffer			+= sprintf(buffer,"%sFatal Error%s%s",endline,endline,endline);
 		buffer			+= sprintf(buffer,"[error] Expression    : %s%s",expression,endline);
@@ -108,6 +112,10 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 		else
 			copy_to_clipboard	(assertion_info);
 	}
+
+	buffer				+= sprintf(buffer,"%sPress ABORT to abort execution%s",endline,endline);
+	buffer				+= sprintf(buffer,"Press RETRY to continue execution%s",endline);
+	buffer				+= sprintf(buffer,"Press IGNORE to ignore all the errors of this type%s%s",endline);
 
 	if (handler)		handler();
 
@@ -128,9 +136,12 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 			break;
 		}
 		case IDRETRY : {
+			error_after_dialog	= false;
 			break;
 		}
 		case IDIGNORE : {
+			error_after_dialog	= false;
+			ignore_always	= true;
 			break;
 		}
 		default : NODEFAULT;
@@ -157,23 +168,26 @@ LPCSTR xrDebug::error2string	(long code)
 	return		result	;
 }
 
-void xrDebug::error		(long hr, const char* expr, const char *file, int line, const char *function)
+void xrDebug::error		(long hr, const char* expr, const char *file, int line, const char *function, bool &ignore_always)
 {
-	backend		(error2string(hr),expr,0,file,line,function);
+	backend		(error2string(hr),expr,0,file,line,function,ignore_always);
 }
 
-void xrDebug::fail		(const char *e1, const char *file, int line, const char *function)
+void xrDebug::fail		(const char *e1, const char *file, int line, const char *function, bool &ignore_always)
 {
-	backend		("assertion failed",e1,0,file,line,function);
+	backend		("assertion failed",e1,0,file,line,function,ignore_always);
 }
-void xrDebug::fail		(const char *e1, const char *e2, const char *file, int line, const char *function)
+
+void xrDebug::fail		(const char *e1, const char *e2, const char *file, int line, const char *function, bool &ignore_always)
 {
-	backend		(e1,e2,0,file,line,function);
+	backend		(e1,e2,0,file,line,function,ignore_always);
 }
-void xrDebug::fail		(const char *e1, const char *e2, const char *e3, const char *file, int line, const char *function)
+
+void xrDebug::fail		(const char *e1, const char *e2, const char *e3, const char *file, int line, const char *function, bool &ignore_always)
 {
-	backend		(e1,e2,e3,file,line,function);
+	backend		(e1,e2,e3,file,line,function,ignore_always);
 }
+
 void __cdecl xrDebug::fatal(const char *file, int line, const char *function, const char* F,...)
 {
 	string1024	buffer;
@@ -183,13 +197,17 @@ void __cdecl xrDebug::fatal(const char *file, int line, const char *function, co
 	vsprintf	(buffer,F,p);
 	va_end		(p);
 
-	backend		("fatal error","<no expression>",buffer,file,line,function);
+	bool		ignore_always = true;
+
+	backend		("fatal error","<no expression>",buffer,file,line,function,ignore_always);
 }
+
 int __cdecl _out_of_memory	(size_t size)
 {
 	Debug.fatal				(DEBUG_INFO,"Out of memory. Memory request: %d K",size/1024);
 	return					1;
 }
+
 void __cdecl _terminate		()
 {
 	FATAL					("Unexpected application termination");
@@ -268,6 +286,9 @@ LONG WINAPI UnhandledFilter	(struct _EXCEPTION_POINTERS *pExceptionInfo)
 		update_clipboard	(buffer);
 	}
 	FlushLog				();
+
+	if (!error_after_dialog)
+		MessageBox			(NULL,"Fatal error occured\n\nPress OK to abort program execution","Fatal error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
 
 	if (!previous_filter)
 		return				(EXCEPTION_CONTINUE_SEARCH) ;
