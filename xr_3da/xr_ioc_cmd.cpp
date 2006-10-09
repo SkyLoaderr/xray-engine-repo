@@ -15,8 +15,6 @@
 
 #include "xr_object.h"
 
-ENGINE_API float					VIEWPORT_NEAR = 0.01f;
-
 xr_token							snd_freq_token							[ ]={
 	{ "22khz",						sf_22K										},
 	{ "44khz",						sf_44K										},

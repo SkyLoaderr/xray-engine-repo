@@ -17,8 +17,7 @@ class	ENGINE_API	CGammaControl;
 #include "shader.h"
 #include "R_Backend.h"
 
-//. #define VIEWPORT_NEAR 0.2f
-extern ENGINE_API float	VIEWPORT_NEAR;
+#define VIEWPORT_NEAR 0.01f //0.2f
 
 #define DEVICE_RESET_PRECACHE_FRAME_COUNT 10
 
