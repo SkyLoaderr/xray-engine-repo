@@ -128,6 +128,7 @@ void        CPostprocessAnimator::Stop       (float sp)
 {
 	if(m_bStop)			return;
 	m_bStop				= true;
+	VERIFY				(_valid(sp));
 	m_factor_speed		= sp;
 }
 
@@ -147,6 +148,21 @@ void        CPostprocessAnimator::Update                          (float tm)
     for (int a = 0; a < POSTPROCESS_PARAMS_COUNT; a++)
         m_Params[a]->update (tm);
 }
+void CPostprocessAnimator::SetDesiredFactor	(float f, float sp)			
+{
+	m_dest_factor=f;
+	m_factor_speed=sp;
+	VERIFY				(_valid(m_factor));
+	VERIFY				(_valid(m_dest_factor));
+};
+
+void CPostprocessAnimator::SetCurrentFactor	(float f)					
+{
+	m_factor=f;
+	m_dest_factor=f;
+	VERIFY				(_valid(m_factor));
+	VERIFY				(_valid(m_dest_factor));
+};
 
 #ifndef _PP_EDITOR_
 BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
@@ -160,12 +176,18 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 
 	Update					(Device.fTimeGlobal-m_start_time);
 
+	VERIFY				(_valid(m_factor));
+	VERIFY				(_valid(m_factor_speed));
+	VERIFY				(_valid(m_dest_factor));
 	if(m_bStop)
 		m_factor			-=	Device.fTimeDelta*m_factor_speed;
 	else
 		m_factor			+= m_factor_speed*Device.fTimeDelta*(m_dest_factor-m_factor);
 
 	clamp					(m_factor, 0.0001f, 1.0f);
+
+	VERIFY				(_valid(m_factor));
+	VERIFY				(_valid(m_factor_speed));
 
 	m_EffectorParams.color_base		+= pp_identity.color_base;
 	m_EffectorParams.color_gray		+= pp_identity.color_gray;
@@ -209,6 +231,10 @@ void        CPostprocessAnimator::Create                          ()
 	m_dest_factor		= 1.0f;
 	m_bStop				= false;
 	m_start_time		= -1.0f;
+	m_factor_speed		= 1.0f;
+	m_bCyclic			= false;
+	m_start_time		= 0.0f;
+	f_length			= 0.0f;
 
     m_Params[0] = xr_new<CPostProcessColor> (&m_EffectorParams.color_base);			//base color
     VERIFY (m_Params[0]);

@@ -217,6 +217,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 				_count		+= 1;
 				pp_affected += l_PPInf;
 				pp_affected -= pp_identity;
+				pp_affected.validate		("in cycle");
 //. hack				if( !positive(pp_affected.noise.grain) ) pp_affected.noise.grain = pp_identity.noise.grain;
 			} else RemovePPEffector(eff->Type());
 		}

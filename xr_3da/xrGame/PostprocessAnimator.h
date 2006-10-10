@@ -160,8 +160,8 @@ public:
         void        Load                            (LPCSTR name);
     IC  LPCSTR      Name                            (){return *m_Name;}
   virtual void      Stop                            (float speed);
-		void		SetDesiredFactor				(float f, float sp)			{m_dest_factor=f;m_factor_speed=sp;};
-		void		SetCurrentFactor				(float f)					{m_factor=f;m_dest_factor=f;};
+		void		SetDesiredFactor				(float f, float sp);
+		void		SetCurrentFactor				(float f);
 		void		SetCyclic						(bool b)					{m_bCyclic=b;}
         float       GetLength                       ();
 #ifndef _PP_EDITOR_
@@ -192,6 +192,7 @@ class CPostprocessAnimatorLerpConst :public CPostprocessAnimator
 protected:
 		float		m_power;
 public:
+					CPostprocessAnimatorLerpConst	()					{m_power = 1.0f;}
 		void		SetPower						(float val)			{m_power=val;}
 virtual	BOOL		Process							(SPPInfo &PPInfo);
 };
