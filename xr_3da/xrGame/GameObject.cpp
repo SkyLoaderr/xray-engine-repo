@@ -509,7 +509,7 @@ void CGameObject::setup_parent_ai_locations(bool assign_position)
 	if (!ai().get_level_graph())
 		return;
 
-	if (ai().level_graph().valid_vertex_id(l_tpGameObject->ai_location().level_vertex_id()))
+	if (l_tpGameObject->UsedAI_Locations() && ai().level_graph().valid_vertex_id(l_tpGameObject->ai_location().level_vertex_id()))
 		ai_location().level_vertex	(l_tpGameObject->ai_location().level_vertex_id());
 	else
 		validate_ai_locations	(false);
