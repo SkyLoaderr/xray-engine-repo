@@ -275,7 +275,7 @@ public:
 		sprintf(I,"string with up to %d characters",size);
 	}
 };
-
+/*
 class CCC_Pause : public IConsole_Command
 {
 public:
@@ -305,7 +305,7 @@ public:
 	virtual void	Save	(IWriter *F)	{}
 
 };
-
+*/
 class CCC_LoadCFG : public IConsole_Command
 {
 public:

@@ -587,7 +587,7 @@ void CCC_Register()
 	//psSoundRolloff			= pSettings->r_float	("sound","rolloff");		clamp(psSoundRolloff,			EPS_S,	2.f);
 	psSoundOcclusionScale	= pSettings->r_float	("sound","occlusion_scale");clamp(psSoundOcclusionScale,	0.1f,	.5f);
 
-	CMD1(CCC_Pause,		"pause"			);
+//.	CMD1(CCC_Pause,		"pause"			);
 #ifdef DEBUG
 	extern	INT	g_Dump_Export_Obj;
 	extern	INT	g_Dump_Import_Obj;
