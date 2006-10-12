@@ -1101,7 +1101,7 @@ bool CUIBuyWnd::ToBag(CUICellItem* itm, bool b_use_cursor_pos)
 		else
 			new_owner->SetItem				(i);
 
-		m_bag.SellItem(itm);
+		m_bag.SellItem(i);
 		HightlightCurrAmmo();
 		return true;
 	}
