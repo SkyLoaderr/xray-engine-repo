@@ -406,6 +406,7 @@ void CHelicopter::UpdateCL()
 		MoveStep();
 		m_stepRemains-=STEP;
 	}
+/*
 #ifdef DEBUG
 	if(bDebug){
 		CGameFont* F		= UI()->Font()->pFontDI;
@@ -416,7 +417,7 @@ void CHelicopter::UpdateCL()
 		F->OutNext			("Heli: speed=%4.4f acc=%4.4f dist=%4.4f",m_movement.curLinearSpeed, m_movement.curLinearAcc, m_movement.GetDistanceToDestPosition());
 	}
 #endif
-
+*/
 	if(m_engineSound._feedback())
 		m_engineSound.set_position(XFORM().c);
 	

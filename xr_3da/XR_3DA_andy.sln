@@ -288,8 +288,8 @@ Global
 		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.ActiveCfg = Debug|Win32
-		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.Build.0 = Debug|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.ActiveCfg = Mixed|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.Build.0 = Mixed|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.DebugNoExceptions.ActiveCfg = DebugNoExceptions|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.DebugNoExceptions.Build.0 = DebugNoExceptions|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.Mixed.ActiveCfg = Debug|Win32
@@ -348,8 +348,8 @@ Global
 		{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}.Profile.Build.0 = DebugNoExceptions|Win32
 		{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}.Release.ActiveCfg = Release|Win32
 		{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}.Release.Build.0 = Release|Win32
-		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.Debug.ActiveCfg = Debug|Win32
-		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.Debug.Build.0 = Debug|Win32
+		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.Debug.ActiveCfg = Mixed|Win32
+		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.Debug.Build.0 = Mixed|Win32
 		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.DebugNoExceptions.ActiveCfg = DebugNoExceptions|Win32
 		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.DebugNoExceptions.Build.0 = DebugNoExceptions|Win32
 		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.Mixed.ActiveCfg = Mixed|Win32
@@ -358,8 +358,8 @@ Global
 		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.Profile.Build.0 = DebugNoExceptions|Win32
 		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.Release.ActiveCfg = Release|Win32
 		{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}.Release.Build.0 = Release|Win32
-		{963BA4E5-499A-454D-B002-1D5ECE0527A6}.Debug.ActiveCfg = Debug|Win32
-		{963BA4E5-499A-454D-B002-1D5ECE0527A6}.Debug.Build.0 = Debug|Win32
+		{963BA4E5-499A-454D-B002-1D5ECE0527A6}.Debug.ActiveCfg = Mixed|Win32
+		{963BA4E5-499A-454D-B002-1D5ECE0527A6}.Debug.Build.0 = Mixed|Win32
 		{963BA4E5-499A-454D-B002-1D5ECE0527A6}.DebugNoExceptions.ActiveCfg = DebugNoExceptions|Win32
 		{963BA4E5-499A-454D-B002-1D5ECE0527A6}.DebugNoExceptions.Build.0 = DebugNoExceptions|Win32
 		{963BA4E5-499A-454D-B002-1D5ECE0527A6}.Mixed.ActiveCfg = Debug|Win32
