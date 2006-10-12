@@ -23,6 +23,7 @@
 #include "level_graph.h"
 #include "profiler.h"
 #include "actor.h"
+#include "agent_enemy_manager.h"
 
 CMemoryManager::CMemoryManager		(CEntityAlive *entity_alive, CSound_UserDataVisitor *visitor)
 {
@@ -102,6 +103,31 @@ void CMemoryManager::update			(float time_delta)
 	update				(hit().objects(),registered_in_combat ? true : false);
 	
 	enemy().update		();
+#if 1
+	if	(
+			m_stalker && 
+			(
+				!enemy().selected() || 
+				(
+					smart_cast<const CAI_Stalker*>(enemy().selected()) && 
+					smart_cast<const CAI_Stalker*>(enemy().selected())->wounded()
+				)
+			) &&
+			registered_in_combat
+		)
+	{
+		m_stalker->agent_manager().enemy().distribute_enemies	();
+
+		if (visual().enabled())
+			update		(visual().objects(),true);
+
+		update			(sound().objects(),true);
+		update			(hit().objects(),true);
+		
+		enemy().update	();
+	}
+#endif
+
 	item().update		();
 	danger().update		();
 	

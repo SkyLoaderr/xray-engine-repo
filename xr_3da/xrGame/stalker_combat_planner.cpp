@@ -197,6 +197,7 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyItemToKill,	true);
 	add_condition			(action,eWorldPropertyItemCanKill,	true);
 	add_condition			(action,eWorldPropertyReadyToKill,	false);
+	add_condition			(action,eWorldPropertyEnemyWounded,	false);
 	add_condition			(action,eWorldPropertyPlayerOnThePath,false);
 	add_effect				(action,eWorldPropertyReadyToKill,	true);
 	add_operator			(eWorldOperatorGetReadyToKill,			action);
@@ -207,6 +208,7 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyItemToKill,	true);
 	add_condition			(action,eWorldPropertyItemCanKill,	true);
 	add_condition			(action,eWorldPropertyReadyToDetour,false);
+	add_condition			(action,eWorldPropertyEnemyWounded,	false);
 	add_condition			(action,eWorldPropertyPlayerOnThePath,false);
 	add_effect				(action,eWorldPropertyReadyToDetour,true);
 	add_operator			(eWorldOperatorGetReadyToDetour,		action);
@@ -218,6 +220,7 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertySeeEnemy,		true);
 	add_condition			(action,eWorldPropertyInCover,		true);
 	add_condition			(action,eWorldPropertyPanic,		false);
+	add_condition			(action,eWorldPropertyEnemyWounded,	false);
 	add_effect				(action,eWorldPropertyPureEnemy,	false);
 	add_operator			(eWorldOperatorKillEnemy,				action);
 
@@ -228,6 +231,7 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyItemCanKill,	true);
 	add_condition			(action,eWorldPropertyReadyToKill,	true);
 	add_condition			(action,eWorldPropertyInCover,		false);
+	add_condition			(action,eWorldPropertyEnemyWounded,	false);
 	add_condition			(action,eWorldPropertyPlayerOnThePath,false);
 	add_effect				(action,eWorldPropertyInCover,		true);
 	add_operator			(eWorldOperatorTakeCover,				action);
@@ -239,6 +243,7 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyInCover,		true);
 	add_condition			(action,eWorldPropertyLookedOut,	false);
 	add_condition			(action,eWorldPropertySeeEnemy,		false);
+	add_condition			(action,eWorldPropertyEnemyWounded,	false);
 	add_condition			(action,eWorldPropertyPlayerOnThePath,false);
 	add_effect				(action,eWorldPropertyLookedOut,	true);
 	add_operator			(eWorldOperatorLookOut,					action);
@@ -251,6 +256,7 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyLookedOut,	true);
 	add_condition			(action,eWorldPropertySeeEnemy,		false);
 	add_condition			(action,eWorldPropertyPositionHolded,false);
+	add_condition			(action,eWorldPropertyEnemyWounded,	false);
 	add_condition			(action,eWorldPropertyPlayerOnThePath,false);
 	add_effect				(action,eWorldPropertyInCover,		false);
 	add_effect				(action,eWorldPropertyPositionHolded,true);
@@ -267,6 +273,7 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyLookedOut,	true);
 	add_condition			(action,eWorldPropertyPositionHolded,true);
 	add_condition			(action,eWorldPropertyPanic,		false);
+	add_condition			(action,eWorldPropertyEnemyWounded,	false);
 	add_condition			(action,eWorldPropertyPlayerOnThePath,false);
 	add_effect				(action,eWorldPropertyEnemyDetoured,true);
 	add_operator			(eWorldOperatorDetourEnemy,			action);
@@ -281,6 +288,7 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyPositionHolded,true);
 	add_condition			(action,eWorldPropertyEnemyDetoured,true);
 	add_condition			(action,eWorldPropertyPanic,		false);
+	add_condition			(action,eWorldPropertyEnemyWounded,	false);
 	add_condition			(action,eWorldPropertyPlayerOnThePath,false);
 	add_effect				(action,eWorldPropertyPureEnemy,	false);
 	add_operator			(eWorldOperatorSearchEnemy,			action);
@@ -299,6 +307,7 @@ void CStalkerCombatPlanner::add_actions			()
 //	add_condition			(action,eWorldPropertyPositionHolded,true);
 //	add_effect				(action,eWorldPropertyEnemyDetoured,true);
 	add_condition			(action,eWorldPropertyPanic,		false);
+	add_condition			(action,eWorldPropertyEnemyWounded,	false);
 	add_effect				(action,eWorldPropertyPureEnemy,	false);
 	add_operator			(eWorldOperatorKillEnemyIfNotVisible,	action);
 

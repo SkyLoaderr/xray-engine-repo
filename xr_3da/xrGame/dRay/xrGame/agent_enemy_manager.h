@@ -57,6 +57,7 @@ public:
 			void			wounded_processed	(const CEntityAlive *object, bool value);
 			bool			wounded_processed	(const CEntityAlive *object) const;
 			bool			assigned_wounded	(const CEntityAlive *wounded, const CAI_Stalker *member);
+			bool			useful_enemy		(const CEntityAlive *enemy, const CAI_Stalker *member) const;
 };
 
 #include "agent_enemy_manager_inline.h"

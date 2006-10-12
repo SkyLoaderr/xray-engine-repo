@@ -176,7 +176,7 @@ void CStalkerActionKillWounded::initialize					()
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_mental_state		(eMentalStateDanger);
-	object().movement().set_body_state			(eBodyStateCrouch);
+	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeStand);
 }
 

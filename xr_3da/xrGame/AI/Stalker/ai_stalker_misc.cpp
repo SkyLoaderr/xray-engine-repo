@@ -28,6 +28,7 @@
 #include "../../enemy_manager.h"
 #include "../../danger_manager.h"
 #include "../../visual_memory_manager.h"
+#include "../../agent_enemy_manager.h"
 
 const u32 TOLLS_INTERVAL					= 2000;
 const u32 GRENADE_INTERVAL					= 0*1000;
@@ -78,7 +79,15 @@ float CAI_Stalker::evaluate		(const CItemManager *manager, const CGameObject *ob
 	return				(distance);
 }
 
-ALife::ERelationType  CAI_Stalker::tfGetRelationType	(const CEntityAlive *tpEntityAlive) const
+bool CAI_Stalker::useful		(const CEnemyManager *manager, const CEntityAlive *object) const
+{
+	if (!agent_manager().enemy().useful_enemy(object,this))
+		return			(false);
+
+	return				(memory().enemy().useful(object));
+}
+
+ALife::ERelationType CAI_Stalker::tfGetRelationType	(const CEntityAlive *tpEntityAlive) const
 {
 	const CInventoryOwner* pOtherIO = smart_cast<const CInventoryOwner*>(tpEntityAlive);
 	
