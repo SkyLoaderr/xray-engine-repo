@@ -1157,6 +1157,8 @@ BOOL InternalSymGetLineFromAddr ( IN  HANDLE          hProcess        ,
 #endif
 }
 
+char g_application_path[256];
+
 // Initializes the symbol engine if needed
 void InitSymEng ( void )
 {
@@ -1175,7 +1177,7 @@ void InitSymEng ( void )
         HANDLE hPID = (HANDLE)GetCurrentProcessId ( ) ;
         VERIFY ( BSUSymInitialize ( (DWORD)hPID ,
                                     hPID        ,
-                                    NULL        ,
+                                    g_application_path,
                                     TRUE         ) ) ;
         g_bSymEngInit = TRUE ;
     }

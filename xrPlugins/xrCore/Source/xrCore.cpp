@@ -45,7 +45,10 @@ namespace CPU
 {
 	extern	void			Detect	();
 };
+
 static u32	init_counter	= 0;
+
+extern char g_application_path[256];
 
 void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, LPCSTR fs_fname)
 {
@@ -68,7 +71,8 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs,
 		// application path
         GetModuleFileName(GetModuleHandle(MODULE_NAME),fn,sizeof(fn));
         _splitpath		(fn,dr,di,0,0);
-        strconcat		(ApplicationPath,dr,di);                                       
+        strconcat		(ApplicationPath,dr,di);
+		strcpy			(g_application_path,ApplicationPath);
 
 		// application data path
 		R_CHK			(GetEnvironmentVariable("USERPROFILE",fn,sizeof(fn)));
