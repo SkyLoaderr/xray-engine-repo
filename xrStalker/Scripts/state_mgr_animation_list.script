@@ -441,8 +441,8 @@ animations = {
 		doctor_wakeup = {prop	= { maxidle = 1,
 									sumidle = 1,
 									rnd = 100 },
-						into	= { [0]	= {"prison_1", {s="agr_doctor_1"}, "doc_agr_0"}},
-						out		= { [0]	= {"prison_1"}},
+						into	= { [0]	= {"idle_to_sit_0", {s="agr_doctor_1"}, "doc_agr_0"}},
+						out		= { [0]	= {"idle_to_sit_0"}},
 						idle	= nil,
 						rnd		= nil},
 						
