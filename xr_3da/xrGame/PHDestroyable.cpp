@@ -278,7 +278,7 @@ void CPHDestroyable::NotificatePart(CPHDestroyableNotificate *dn)
 		{
 			CPhysicsElement* e=new_shell->get_ElementByStoreOrder(i);
 			float random_hit=random_min*e->getMass();
-			if(m_fatal_hit.is_valide())
+			if(m_fatal_hit.is_valide() && m_fatal_hit.bone()!=BI_NONE )
 			{
 				Fvector pos;
 				Fmatrix m;m.set(own_K->LL_GetTransform(m_fatal_hit.bone()));
