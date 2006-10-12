@@ -368,7 +368,7 @@ void CActor::ActorUse()
 
 		if(object && Level().IR_GetKeyState(DIK_LSHIFT))
 		{
-			bool b_allow = pSettings->line_exist("ph_capture_visuals",object->cNameVisual());
+			bool b_allow = !!pSettings->line_exist("ph_capture_visuals",object->cNameVisual());
 			if(b_allow && !character_physics_support()->movement()->PHCapture())
 			{
 				character_physics_support()->movement()->PHCaptureObject(object,element);
