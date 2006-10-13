@@ -124,6 +124,8 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 		}
 	}
 
+	buffer				+= sprintf(buffer,"stack trace:%s%s",endline,endline);
+
 	BuildStackTrace		();		
 
 	for (int i=2; i<g_stackTraceCount; ++i) {
@@ -294,13 +296,10 @@ LONG WINAPI UnhandledFilter	(struct _EXCEPTION_POINTERS *pExceptionInfo)
 	BuildStackTrace			(pExceptionInfo);
 	*pExceptionInfo->ContextRecord = save;
 
-	Msg						("Stack trace:");
-	if (error_after_dialog)
-		update_clipboard	("Stack trace:\r\n\r\n");
-	else
+	Msg						("Stack trace:\n");
+	if (!error_after_dialog) {
 		copy_to_clipboard	("Stack trace:\r\n\r\n");
 
-	{
 		string4096			buffer;
 		for (int i=0; i<g_stackTraceCount; ++i) {
 			Msg				("%s",g_stackTrace[i]);
