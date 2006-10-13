@@ -14,6 +14,7 @@
 #include "tri-colliderknoopc/dTriList.h"
 #include "../fbasicvisual.h"
 #include "CalculateTriangle.h"
+#include "actor.h"
 #ifdef DEBUG
 #include "PHDebug.h"
 #endif
@@ -434,6 +435,11 @@ void CCustomRocket::UpdateEnginePh			()
 	Fvector l_pos, l_dir; 
 	l_pos.set(0, 0,-2.f);
 	l_dir.set(XFORM().k);
+
+	if(bDebug && m_pOwner->ID()==Actor()->ID())
+	{
+		Msg("force= %f", force);
+	}
 	
 	l_dir.normalize();
 	m_pPhysicsShell->applyImpulse(l_dir,(1.f+k_back)*force);
@@ -444,6 +450,11 @@ void CCustomRocket::UpdateEnginePh			()
 	l_dir.set(0, 1.f, 0);
 	force = m_fEngineImpulseUp*fixed_step;// * Device.fTimeDelta;
 	m_pPhysicsShell->applyImpulse(l_dir, force);
+
+	if(bDebug && m_pOwner->ID()==Actor()->ID())
+	{
+		Msg("force UP= %f", force);
+	}
 
 	//m_pPhysicsShell->set_AngularVel()
 }
@@ -462,6 +473,10 @@ void CCustomRocket::UpdateEngine				()
 
 	if (m_dwEngineTime <= 0) 
 	{
+		if(m_pOwner->ID()==Actor()->ID())
+		{
+			Msg("stop engine rocket");
+		}
 		StopEngine();
 		return;
 	}
