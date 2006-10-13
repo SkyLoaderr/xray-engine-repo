@@ -31,10 +31,17 @@
 CSpectator::CSpectator() : CGameObject()
 {
 	// Cameras
-	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>	(this, pSettings, "actor_firsteye_cam", false);
-	cameras[eacLookAt]		= xr_new<CCameraLook>		(this, pSettings, "actor_look_cam",		false);
-	cameras[eacFreeLook]	= xr_new<CCameraLook>		(this, pSettings, "actor_free_cam",	false);
-	cameras[eacFreeFly]		= xr_new<CCameraFirstEye>	(this, pSettings, "actor_firsteye_cam", false);
+	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>	(this);
+	cameras[eacFirstEye]->Load("actor_firsteye_cam");
+
+	cameras[eacLookAt]		= xr_new<CCameraLook>		(this);
+	cameras[eacLookAt]->Load("actor_look_cam");
+
+	cameras[eacFreeLook]	= xr_new<CCameraLook>		(this);
+	cameras[eacFreeLook]->Load("actor_free_cam");
+
+	cameras[eacFreeFly]		= xr_new<CCameraFirstEye>	(this);
+	cameras[eacFreeFly]->Load("actor_firsteye_cam");
 
 //	cam_active				= eacFreeFly;
 	cam_active				= eacFreeLook;

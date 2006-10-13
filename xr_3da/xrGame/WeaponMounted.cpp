@@ -41,8 +41,8 @@ void CWeaponMounted::BoneCallbackY(CBoneInstance *B)
 
 CWeaponMounted::CWeaponMounted()
 {
-	camera		= xr_new<CCameraFirstEye>	(this, pSettings, "mounted_weapon_cam",	CCameraBase::flRelativeLink|CCameraBase::flPositionRigid|CCameraBase::flDirectionRigid); 
-	
+	camera		= xr_new<CCameraFirstEye>	(this, CCameraBase::flRelativeLink|CCameraBase::flPositionRigid|CCameraBase::flDirectionRigid); 
+	camera->Load	("mounted_weapon_cam");
 }
 
 CWeaponMounted::~CWeaponMounted()

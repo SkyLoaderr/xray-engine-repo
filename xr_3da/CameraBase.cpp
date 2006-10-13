@@ -32,6 +32,20 @@ CCameraBase::~CCameraBase()
 {
 }
 
+void CCameraBase::Load(LPCSTR section)
+{
+	rot_speed			= pSettings->r_fvector3	(section,"rot_speed");
+
+	lim_yaw				= pSettings->r_fvector2	(section,"lim_yaw");
+	lim_pitch			= pSettings->r_fvector2	(section,"lim_pitch");
+
+	bClampPitch			= (0!=lim_pitch[0])||(0!=lim_pitch[1]);
+	bClampYaw			= (0!=lim_yaw[0])||(0!=lim_yaw[1]);
+
+	if (bClampPitch)	pitch = (lim_pitch[0]+lim_pitch[1])*0.5f;
+	if (bClampYaw)		yaw	  = (lim_yaw[0]+lim_yaw[1])*0.5f;
+}
+
 IC float AClamp(Fvector2& l, float v){
 	return (2*v-l[0]-l[1])/(l[1]-l[0]);
 }

@@ -115,9 +115,15 @@ CActor::CActor() : CEntityAlive()
 	encyclopedia_registry	= xr_new<CEncyclopediaRegistryWrapper	>();
 	game_news_registry		= xr_new<CGameNewsRegistryWrapper		>();
 	// Cameras
-	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>	(this, pSettings, "actor_firsteye_cam", 0);
-	cameras[eacLookAt]		= xr_new<CCameraLook>		(this, pSettings, "actor_look_cam",		0);
-	cameras[eacFreeLook]	= xr_new<CCameraLook>		(this, pSettings, "actor_free_cam",		0);
+	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>				(this);
+	cameras[eacFirstEye]->Load("actor_firsteye_cam");
+
+	cameras[eacLookAt]		= xr_new<CCameraLook>					(this);
+	cameras[eacLookAt]->Load("actor_look_cam");
+
+	cameras[eacFreeLook]	= xr_new<CCameraLook>					(this);
+	cameras[eacFreeLook]->Load("actor_free_cam");
+
 	cam_active				= eacFirstEye;
 	fPrevCamPos				= 0.0f;
 	vPrevCamDir.set			(0.f,0.f,1.f);

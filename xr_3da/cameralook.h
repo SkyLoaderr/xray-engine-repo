@@ -5,12 +5,14 @@
 
 class CCameraLook	: public CCameraBase
 {
+	typedef CCameraBase inherited;
+
 	Fvector2		lim_zoom;
 	float			dist, prev_d;
 public:
-					CCameraLook		( CObject* p, CInifile* ini, LPCSTR section, u32 flags=0);
+					CCameraLook		( CObject* p, u32 flags=0);
 	virtual			~CCameraLook	( );
-
+	virtual void	Load			(LPCSTR section);
 	virtual void	Move			( int cmd, float val=0, float factor=1.0f );
 
 	virtual	void	OnActivate		( CCameraBase* old_cam );

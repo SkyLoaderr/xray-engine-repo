@@ -36,12 +36,17 @@ CCar::CCar(void)
 	m_driver_anim_type = 0;
 	m_bone_steer	= BI_NONE;
 	active_camera	= 0;
-	camera[ectFirst]= xr_new<CCameraFirstEye>	(this, pSettings, "car_firsteye_cam",	CCameraBase::flRelativeLink|CCameraBase::flPositionRigid); 
+	camera[ectFirst]= xr_new<CCameraFirstEye>	(this, CCameraBase::flRelativeLink|CCameraBase::flPositionRigid); 
 	camera[ectFirst]->tag	= ectFirst;
-	camera[ectChase]= xr_new<CCameraLook>		(this, pSettings, "car_look_cam",		CCameraBase::flRelativeLink); 
+	camera[ectFirst]->Load("car_firsteye_cam");
+
+	camera[ectChase]= xr_new<CCameraLook>		(this,	CCameraBase::flRelativeLink); 
 	camera[ectChase]->tag	= ectChase;
-	camera[ectFree]	= xr_new<CCameraLook>		(this, pSettings, "car_free_cam",		0); 
+	camera[ectChase]->Load("car_look_cam");
+
+	camera[ectFree]	= xr_new<CCameraLook>		(this); 
 	camera[ectFree]->tag	= ectFree;
+	camera[ectFree]->Load("car_free_cam");
 	OnCameraChange(ectFirst);
 
 	m_repairing		=false;
