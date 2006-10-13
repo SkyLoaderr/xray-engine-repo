@@ -41,6 +41,9 @@ extern void copy_to_clipboard	(const char *string);
 
 void copy_to_clipboard	(const char *string)
 {
+	if (IsDebuggerPresent())
+		return;
+
 	if (!OpenClipboard(0))
 		return;
 
@@ -60,6 +63,9 @@ void copy_to_clipboard	(const char *string)
 
 void update_clipboard	(const char *string)
 {
+	if (IsDebuggerPresent())
+		return;
+
 	if (!OpenClipboard(0))
 		return;
 
@@ -82,6 +88,10 @@ void update_clipboard	(const char *string)
 	copy_to_clipboard	(buffer);
 }
 
+extern void BuildStackTrace ();
+extern char g_stackTrace[100][256];
+extern int g_stackTraceCount;
+
 void xrDebug::backend(const char *expression, const char *description, const char *arguments, const char *file, int line, const char *function, bool &ignore_always) 
 {
 	static xrCriticalSection CS;
@@ -93,26 +103,36 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 	string4096			assertion_info;
 	LPSTR				buffer = assertion_info;
 	LPCSTR				endline = "\n";
+	LPCSTR				prefix = "[error]";
 	for (int i=0; i<2; ++i) {
-		buffer			+= sprintf(buffer,"%s",endline);
-		buffer			+= sprintf(buffer,"%sFatal Error%s%s",endline,endline,endline);
-		buffer			+= sprintf(buffer,"[error] Expression    : %s%s",expression,endline);
-		buffer			+= sprintf(buffer,"[error] Description   : %s%s",description,endline);
+		if (!i)
+			buffer		+= sprintf(buffer,"%sFATAL ERROR%s%s",endline,endline,endline);
+		buffer			+= sprintf(buffer,"%sExpression    : %s%s",prefix,expression,endline);
+		buffer			+= sprintf(buffer,"%sDescription   : %s%s",prefix,description,endline);
 		if (arguments)
-			buffer		+= sprintf(buffer,"[error] Arguments     : %s%s",arguments,endline);
-		buffer			+= sprintf(buffer,"[error] Function      : %s%s",function,endline);
-		buffer			+= sprintf(buffer,"[error] File          : %s%s",file,endline);
-		buffer			+= sprintf(buffer,"[error] Line          : %d%s",line,endline);
+			buffer		+= sprintf(buffer,"%sArguments     : %s%s",prefix,arguments,endline);
+		buffer			+= sprintf(buffer,"%sFunction      : %s%s",prefix,function,endline);
+		buffer			+= sprintf(buffer,"%sFile          : %s%s",prefix,file,endline);
+		buffer			+= sprintf(buffer,"%sLine          : %d%s",prefix,line,endline);
 		buffer			+= sprintf(buffer,"%s",endline);
 		if (!i) {
 			Msg			("%s",assertion_info);
 			FlushLog	();
 			buffer		= assertion_info;
 			endline		= "\r\n";
+			prefix		= "";
 		}
-		else
-			copy_to_clipboard	(assertion_info);
 	}
+
+	BuildStackTrace		();		
+
+	for (int i=2; i<g_stackTraceCount; ++i) {
+		Msg				("%s",g_stackTrace[i]);
+		buffer			+= sprintf(buffer,"%s%s",g_stackTrace[i],endline);
+	}
+	FlushLog			();
+	
+	copy_to_clipboard	(assertion_info);
 
 	buffer				+= sprintf(buffer,"%sPress ABORT to abort execution%s",endline,endline);
 	buffer				+= sprintf(buffer,"Press RETRY to continue execution%s",endline);
@@ -267,8 +287,6 @@ void SetupExceptionHandler	()
 extern void BuildStackTrace(struct _EXCEPTION_POINTERS *pExceptionInfo);
 typedef LONG WINAPI UnhandledExceptionFilterType(struct _EXCEPTION_POINTERS *pExceptionInfo);
 static UnhandledExceptionFilterType	*previous_filter = 0;
-extern char g_stackTrace[100][256];
-extern int g_stackTraceCount;
 
 LONG WINAPI UnhandledFilter	(struct _EXCEPTION_POINTERS *pExceptionInfo)
 {
