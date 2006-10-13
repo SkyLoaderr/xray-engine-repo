@@ -296,9 +296,10 @@ LONG WINAPI UnhandledFilter	(struct _EXCEPTION_POINTERS *pExceptionInfo)
 	BuildStackTrace			(pExceptionInfo);
 	*pExceptionInfo->ContextRecord = save;
 
-	Msg						("Stack trace:\n");
-	if (!error_after_dialog) {
-		copy_to_clipboard	("Stack trace:\r\n\r\n");
+	if (!error_after_dialog)
+	{
+		Msg					("stack trace:\n");
+		copy_to_clipboard	("stack trace:\r\n\r\n");
 
 		string4096			buffer;
 		for (int i=0; i<g_stackTraceCount; ++i) {
