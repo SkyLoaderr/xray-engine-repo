@@ -531,6 +531,7 @@ void CCustomRocket::UpdateLights()
 
 void CCustomRocket::PhDataUpdate			(float step)
 {
+#ifdef	DEBUG
 			
 			const	float	*v=dBodyGetLinearVel(PPhysicsShell()->get_ElementByStoreOrder(0)->get_body());
 			const	float	*f=dBodyGetForce(PPhysicsShell()->get_ElementByStoreOrder(0)->get_body());
@@ -543,6 +544,7 @@ void CCustomRocket::PhDataUpdate			(float step)
 			{
 					Msg("opa speed	in");
 			}
+#endif
 }
 void CCustomRocket::PhTune					(float step)
 {
