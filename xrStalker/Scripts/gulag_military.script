@@ -659,7 +659,7 @@ function check_state (gulag)
           return 2
        else
           db.actor:disable_info_portion ("mil_freedom_under_attack")
-          printf ("[GULAG_FREEDOM] STATE 4")  
+--          printf ("[GULAG_FREEDOM] STATE 4")  
           return 4
        end          
     end   
@@ -676,27 +676,27 @@ function check_state (gulag)
           return 2
        end   
        if db.actor:has_info ("mil_freedom_attack") then
-          printf ("[GULAG_FREEDOM] STATE 3")  
+--          printf ("[GULAG_FREEDOM] STATE 3")  
           return 3
        end
     end        
     
     if db.actor:has_info ("mil_freedom_under_attack") then
        if this.check_enemy (gulag) == true or db.actor:dont_has_info ("mil_dolg_dead") then
-          printf ("[GULAG_FREEDOM] STATE 2")    
+--          printf ("[GULAG_FREEDOM] STATE 2")    
           return 2
        else
           db.actor:disable_info_portion ("mil_freedom_under_attack")
-          printf ("[GULAG_FREEDOM] STATE 0")    
+--          printf ("[GULAG_FREEDOM] STATE 0")    
           return 0
        end
     end            
     
     if db.actor:has_info ("mil_freedom_attack") then
-       printf ("[GULAG_FREEDOM] STATE 3")   
+--       printf ("[GULAG_FREEDOM] STATE 3")   
        return 3
     end   
-    printf ("[GULAG_FREEDOM] STATE 0")  
+--    printf ("[GULAG_FREEDOM] STATE 0")  
     return 0
 end
 
