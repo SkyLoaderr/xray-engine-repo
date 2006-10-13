@@ -266,7 +266,7 @@ void CSpectator::FirstEye_ToPlayer(CObject* pObject)
 		if (pCurViewEntity->CLS_ID != CLSID_SPECTATOR)
 		{
 			Engine.Sheduler.Unregister	(pCurViewEntity);
-			Engine.Sheduler.Register	(pCurViewEntity);
+			Engine.Sheduler.Register	(pCurViewEntity, TRUE);
 		};
 	};
 	if (pObject)

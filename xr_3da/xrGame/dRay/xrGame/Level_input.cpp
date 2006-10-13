@@ -230,7 +230,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 				if (tpObject)
 				{
 					Engine.Sheduler.Unregister	(tpObject);
-					Engine.Sheduler.Register	(tpObject);
+					Engine.Sheduler.Register	(tpObject, TRUE);
 				};
 				Engine.Sheduler.Unregister	(*I);
 				Engine.Sheduler.Register	(*I, TRUE);
