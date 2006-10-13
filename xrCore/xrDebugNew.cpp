@@ -124,7 +124,7 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 		}
 	}
 
-	Msg					"stack trace:\n");
+	Msg					("stack trace:\n");
 	buffer				+= sprintf(buffer,"stack trace:%s%s",endline,endline);
 
 	BuildStackTrace		();		
