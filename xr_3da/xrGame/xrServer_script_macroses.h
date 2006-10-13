@@ -214,11 +214,18 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 #	define luabind_virtual_dynamic_alife(a,b)
 #endif
 
-#define luabind_virtual_creature(a,b) \
-	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_team	) \
-	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_squad	) \
-	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_group	) \
-	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,on_death)
+#ifdef XRGAME_EXPORTS
+#	define luabind_virtual_creature(a,b) \
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_team	) \
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_squad	) \
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_group	) \
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,on_death)
+#else // XRGAME_EXPORTS
+#	define luabind_virtual_creature(a,b) \
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_team	) \
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_squad	) \
+		DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_group	)
+#endif // XRGAME_EXPORTS
 
 #ifdef XRGAME_EXPORTS
 #	define luabind_virtual_zone(a,b) \
