@@ -145,7 +145,6 @@ grenade_bone				= grenade
 
 ;rocket launcher
 rocket_class				= wpn_rpg7_missile
-launch_speed				= 50
 ;wallmarks
 wallmark_section			= explosion_marks
 ;///////////////////////////////////////////////////////
@@ -254,7 +253,8 @@ kill_msg_height		= 19
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 engine_present				= true		;присутствует ли в ракете двигатель
 engine_work_time			= 3000		;время работы двигателя (в милисекундах)
-engine_impulse				= 1 ;1000
+launch_speed				= 5
+engine_impulse				= 500
 engine_impulse_up			= 133,906	;137.34 ;137.34 = 2*9.81*7 - значение этого параметра (который является некой подъемной силой, вопреки названию),
 										;при котором ракета массой 7кг не опускается под дейсвием 
 										;гравитации. 2*9.81=19.62 - ускорение свободного падения в мире сталкеров
