@@ -13,6 +13,7 @@
 #ifdef DEBUG
 #include "../StatGraph.h"
 #include "PHDebug.h"
+#include	"actor.h"
 #endif
 
 ///////////////////////////////////////////////////////////////
@@ -1035,9 +1036,17 @@ void CPHElement::get_AngularVel	(Fvector& velocity)
 	}
 	dVectorSet((dReal*)&velocity,dBodyGetAngularVel(m_body));
 }
-
+#ifdef	DEBUG
+CActor*			Actor()	;
+#endif
 void CPHElement::set_LinearVel			  (const Fvector& velocity)
 {
+#ifdef	DEBUG
+	if(PhysicsRefObject()->ID()==Actor()->ID())
+	{
+		Msg("in");
+	}
+#endif
 	if(!isActive()||m_flags.test(flFixed)) return;
 	VERIFY2(_valid(velocity),"not valid arqument velocity");
 	float sq_mag=velocity.square_magnitude();

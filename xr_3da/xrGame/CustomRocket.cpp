@@ -40,6 +40,7 @@ CCustomRocket::CCustomRocket()
 	m_LaunchXForm.identity();
 	m_vLaunchVelocity.set(0,0,0);
 	m_vLaunchAngularVelocity.set(0,0,0);
+
 }
 
 CCustomRocket::~CCustomRocket	()
@@ -97,6 +98,10 @@ void CCustomRocket::SetLaunchParams (const Fmatrix& xform,
 	}
 	m_vLaunchAngularVelocity	= angular_vel;
 	m_time_to_explode			= Device.fTimeGlobal + pSettings->r_float(cNameSect(), "force_explode_time")/1000.0f;
+#ifdef	DEBUG
+	gbg_rocket_speed1=0;
+	gbg_rocket_speed2=0;
+#endif	
 }
 
 
@@ -526,11 +531,44 @@ void CCustomRocket::UpdateLights()
 
 void CCustomRocket::PhDataUpdate			(float step)
 {
-	
+			
+			const	float	*v=dBodyGetLinearVel(PPhysicsShell()->get_ElementByStoreOrder(0)->get_body());
+			const	float	*f=dBodyGetForce(PPhysicsShell()->get_ElementByStoreOrder(0)->get_body());
+			if(cast_fv(v).dotproduct(cast_fv(f))<0.f)
+			{
+				Msg("opa fv");
+			}
+			float	s=cast_fv(v).magnitude();
+			if(s<gbg_rocket_speed2/2.f)
+			{
+					Msg("opa speed	in");
+			}
 }
 void CCustomRocket::PhTune					(float step)
 {
 	UpdateEnginePh							();
+#ifdef	DEBUG
+	if(m_pOwner->ID()==Actor()->ID())
+	{
+		
+			const	float	*v=dBodyGetLinearVel(PPhysicsShell()->get_ElementByStoreOrder(0)->get_body());
+			const	float	*f=dBodyGetForce(PPhysicsShell()->get_ElementByStoreOrder(0)->get_body());
+			if(cast_fv(v).dotproduct(cast_fv(f))<0.f)
+			{
+				Msg("opa fv");
+			}
+			float	s=cast_fv(v).magnitude();
+			if(s<gbg_rocket_speed1/2.f)
+			{
+					Msg("opa speed	out");
+			}
+			gbg_rocket_speed1=s;
+			gbg_rocket_speed2=s;
+
+	}
+
+	
+#endif
 }
 
 

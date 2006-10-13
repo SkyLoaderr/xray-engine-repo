@@ -926,7 +926,9 @@ void dInternalStepIsland_x2 (dxWorld *world, dxBody * const *body, int nb,
     dReal *body_invI = invI + i*12;
     for (j=0; j<3; j++)
 	{
-		float &lf=cforce[i*8+j];if(!dValid(lf))lf=0.f;
+		float &lf=cforce[i*8+j];
+		if(!dValid(lf))
+			lf=0.f;
 		float &af=cforce[i*8+4+j];
 		if(!dValid(af))af=0.f;
 		body[i]->lvel[j] += body_invMass * cforce[i*8+j];

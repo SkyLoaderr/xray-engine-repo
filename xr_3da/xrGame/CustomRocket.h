@@ -148,7 +148,10 @@ protected:
 
 	Fvector				m_vPrevVel;
 	float				m_time_to_explode;
-
+#ifdef	DEBUG
+	float				gbg_rocket_speed1;
+	float				gbg_rocket_speed2;
+#endif
 protected:
 	virtual void		StartEngineParticles();
 	virtual void		StopEngineParticles();
