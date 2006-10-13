@@ -83,11 +83,19 @@ class CALifeSmartTerrainTask;
 	DEFINE_LUA_WRAPPER_METHOD_0			(detect_probability,float)
 #endif
 
+#ifdef XRGAME_EXPORTS
 #define INHERIT_CREATURE \
 	INHERIT_DYNAMIC_ALIFE\
 	DEFINE_LUA_WRAPPER_METHOD_0			(g_team,	u8)\
 	DEFINE_LUA_WRAPPER_METHOD_0			(g_squad,	u8)\
+	DEFINE_LUA_WRAPPER_METHOD_0			(g_group,	u8)\
+	DEFINE_LUA_WRAPPER_METHOD_V1		(on_death,	CSE_Abstract*)
+#else // XRGAME_EXPORTS
+	INHERIT_DYNAMIC_ALIFE\
+	DEFINE_LUA_WRAPPER_METHOD_0			(g_team,	u8)\
+	DEFINE_LUA_WRAPPER_METHOD_0			(g_squad,	u8)\
 	DEFINE_LUA_WRAPPER_METHOD_0			(g_group,	u8)
+#endif // XRGAME_EXPORTS
 
 #define INHERIT_MONSTER \
 	INHERIT_CREATURE\
@@ -208,7 +216,8 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 #define luabind_virtual_creature(a,b) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_team	) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_squad	) \
-	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_group	)
+	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_group	) \
+	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,on_death)
 
 #ifdef XRGAME_EXPORTS
 #	define luabind_virtual_zone(a,b) \

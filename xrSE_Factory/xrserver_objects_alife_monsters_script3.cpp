@@ -72,9 +72,6 @@ void CSE_ALifeCreatureAbstract::script_register(lua_State *L)
 		)
 		.def("health",&CSE_ALifeCreatureAbstract::g_Health)
 		.def("alive",&CSE_ALifeCreatureAbstract::g_Alive)
-#ifdef XRGAME_EXPORTS
-		.def("on_death",&CSE_ALifeCreatureAbstract::on_death)
-#endif // XRGAME_EXPORTS
 		.def_readwrite("team",&CSE_ALifeCreatureAbstract::s_team)
 		.def_readwrite("squad",&CSE_ALifeCreatureAbstract::s_squad)
 		.def_readwrite("group",&CSE_ALifeCreatureAbstract::s_group)
