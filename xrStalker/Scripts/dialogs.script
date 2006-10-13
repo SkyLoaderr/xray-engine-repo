@@ -122,9 +122,9 @@ end
 --'---------------------------------------------------------------------------------
 function dialog_allowed(object, victim, id)
 	if id ~= nil then
-		printf("*DIALOGS*: dialog_allowed: %s", id)
+--		printf("*DIALOGS*: dialog_allowed: %s", id)
 	else
-		printf("*DIALOGS*: dialog_allowed: nil")
+--		printf("*DIALOGS*: dialog_allowed: nil")
 	end
 	if db.storage[victim:id()].actor_dialogs ~= nil then
 		for k,v in pairs(db.storage[victim:id()].actor_dialogs) do
@@ -135,9 +135,9 @@ function dialog_allowed(object, victim, id)
 end
 function dialog_not_disable(object, victim, id)
 	if id ~= nil then
-		printf("*DIALOGS*: dialog_disable:%s", id)
+--		printf("*DIALOGS*: dialog_disable:%s", id)
 	else
-		printf("*DIALOGS*: dialog_disable:nil")
+--		printf("*DIALOGS*: dialog_disable:nil")
 	end
 	if db.storage[victim:id()].actor_disable ~= nil then
 		for k,v in pairs(db.storage[victim:id()].actor_disable) do
@@ -152,10 +152,10 @@ function allow_wounded_dialog(object, victim, id)
 		return false
 	end	
 	if db.storage[victim:id()].wounded.help_dialog == id then
-		printf( "*DIALOGS*: allow_wounded_dialog id=%s TRUE", id )
+--		printf( "*DIALOGS*: allow_wounded_dialog id=%s TRUE", id )
 		return true
 	end
-	printf( "*DIALOGS*: allow_wounded_dialog id=%s FALSE", id )
+--	printf( "*DIALOGS*: allow_wounded_dialog id=%s FALSE", id )
 	return false	
 end
 
