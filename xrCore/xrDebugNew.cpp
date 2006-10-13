@@ -148,7 +148,7 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 #else
 	int					result = 
 		MessageBox(
-			NULL,
+			GetTopWindow(NULL),
 			assertion_info,
 			"Fatal Error",
 			MB_ABORTRETRYIGNORE|MB_ICONERROR|MB_SYSTEMMODAL
