@@ -346,31 +346,27 @@ void CActor::Load	(LPCSTR section )
 	//Weapons				= xr_new<CWeaponList> (this);
 
 	LPCSTR hit_snd_sect = pSettings->r_string(section,"hit_sounds");
-	for(int hit_type=0;hit_type<(int)ALife::eHitTypeMax;++hit_type){
+	for(int hit_type=0; hit_type<(int)ALife::eHitTypeMax, !g_pGamePersistent->bDedicatedServer; ++hit_type)
+	{
 		LPCSTR hit_name = ALife::g_cafHitType2String((ALife::EHitType)hit_type);
 		LPCSTR hit_snds = pSettings->r_string(hit_snd_sect, hit_name);
 		int cnt = _GetItemCount(hit_snds);
 		string128 tmp;
-		for(int i=0; i<cnt;++i){
+		for(int i=0; i<cnt;++i)
+		{
 			sndHit[hit_type].push_back		(ref_sound());
 			sndHit[hit_type].back().create	(_GetItem(hit_snds,i,tmp),st_Effect,sg_SourceType);
 		}
+		char buf[256];
+
+		::Sound->create		(sndDie[0],			strconcat(buf,*cName(),"\\die0"), st_Effect,SOUND_TYPE_MONSTER_DYING);
+		::Sound->create		(sndDie[1],			strconcat(buf,*cName(),"\\die1"), st_Effect,SOUND_TYPE_MONSTER_DYING);
+		::Sound->create		(sndDie[2],			strconcat(buf,*cName(),"\\die2"), st_Effect,SOUND_TYPE_MONSTER_DYING);
+		::Sound->create		(sndDie[3],			strconcat(buf,*cName(),"\\die3"), st_Effect,SOUND_TYPE_MONSTER_DYING);
+
+		m_HeavyBreathSnd.create	(pSettings->r_string(section,"heavy_breath_snd"), st_Effect,SOUND_TYPE_MONSTER_INJURING);
+		m_BloodSnd.create		(pSettings->r_string(section,"heavy_blood_snd"), st_Effect,SOUND_TYPE_MONSTER_INJURING);
 	}
-
-
-
-
-	// sounds
-	char buf[256];
-
-	::Sound->create		(sndDie[0],			strconcat(buf,*cName(),"\\die0"), st_Effect,SOUND_TYPE_MONSTER_DYING);
-	::Sound->create		(sndDie[1],			strconcat(buf,*cName(),"\\die1"), st_Effect,SOUND_TYPE_MONSTER_DYING);
-	::Sound->create		(sndDie[2],			strconcat(buf,*cName(),"\\die2"), st_Effect,SOUND_TYPE_MONSTER_DYING);
-	::Sound->create		(sndDie[3],			strconcat(buf,*cName(),"\\die3"), st_Effect,SOUND_TYPE_MONSTER_DYING);
-
-	m_HeavyBreathSnd.create	(pSettings->r_string(section,"heavy_breath_snd"), st_Effect,SOUND_TYPE_MONSTER_INJURING);
-	m_BloodSnd.create		(pSettings->r_string(section,"heavy_blood_snd"), st_Effect,SOUND_TYPE_MONSTER_INJURING);
-
 	cam_Set					(eacFirstEye);
 
 	// sheduler
@@ -436,7 +432,7 @@ if(ph_dbg_draw_mask.test(phDbgCharacterControl))
 	bool bPlaySound = true;
 	if (!g_Alive()) bPlaySound = false;
 
-	if (GameID() != GAME_SINGLE)
+	if (!IsGameTypeSingle() && !g_pGamePersistent->bDedicatedServer)
 	{
 		game_PlayerState* ps = Game().GetPlayerByGameID(ID());
 		if (ps && ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
@@ -467,7 +463,10 @@ if(ph_dbg_draw_mask.test(phDbgCharacterControl))
 		last_hit_frame = Device.dwFrame;
 	};
 
-	if( !sndHit[HDS.hit_type].empty() && (ALife::eHitTypeTelepatic != HDS.hit_type)){
+	if(	!g_pGamePersistent->bDedicatedServer	&& 
+		!sndHit[HDS.hit_type].empty()			&& 
+		(ALife::eHitTypeTelepatic != HDS.hit_type))
+	{
 		ref_sound& S = sndHit[HDS.hit_type][Random.randI(sndHit[HDS.hit_type].size())];
 		bool b_snd_hit_playing = sndHit[HDS.hit_type].end() != std::find_if(sndHit[HDS.hit_type].begin(), sndHit[HDS.hit_type].end(), playing_pred());
 
@@ -502,7 +501,8 @@ if(ph_dbg_draw_mask.test(phDbgCharacterControl))
 	else
 		hit_slowmo = 0.f;
 	//---------------------------------------------------------------
-	if (Level().CurrentViewEntity() == this){
+	if (Level().CurrentViewEntity() == this && !g_pGamePersistent->bDedicatedServer)
+	{
 		CObject* pLastHitter = Level().Objects.net_Find(m_iLastHitterID);
 		CObject* pLastHittingWeapon = Level().Objects.net_Find(m_iLastHittingWeaponID);
 		HitSector(pLastHitter, pLastHittingWeapon);
@@ -516,9 +516,11 @@ if(ph_dbg_draw_mask.test(phDbgCharacterControl))
 //		mstate_real	&=~mcSprint;
 		mstate_wishful	&=~mcSprint;
 	};
-	//---------------------------------------------------------------
-	HitMark			(HDS.damage(), HDS.dir, HDS.who, HDS.bone(), HDS.p_in_bone_space, HDS.impulse, HDS.hit_type);
-	//---------------------------------------------------------------
+	if(!g_pGamePersistent->bDedicatedServer)
+	{
+		HitMark			(HDS.damage(), HDS.dir, HDS.who, HDS.bone(), HDS.p_in_bone_space, HDS.impulse, HDS.hit_type);
+	}
+
 	switch (GameID())
 	{
 	case GAME_SINGLE:		
@@ -756,24 +758,25 @@ void CActor::Die	(CObject* who)
 			};
 		};
 	};
-	//-------------------------------------
-	// Play ref_sound
-	::Sound->play_at_pos	(sndDie[Random.randI(SND_DIE_COUNT)],this,Position());
-	cam_Set					(eacFreeLook);
 
+	cam_Set					(eacFreeLook);
 	mstate_wishful	&=		~mcAnyMove;
 	mstate_real		&=		~mcAnyMove;
 
+	if(!g_pGamePersistent->bDedicatedServer)
+	{
+		::Sound->play_at_pos	(sndDie[Random.randI(SND_DIE_COUNT)],this,Position());
 
-	//остановить звук тяжелого дыхания
-	m_HeavyBreathSnd.stop	();
-	m_BloodSnd.stop			();		
+		m_HeavyBreathSnd.stop	();
+		m_BloodSnd.stop			();		
+	}
+
+	if(IsGameTypeSingle())
+		HUD().GetUI()->UIGame()->AddCustomStatic("game_over", true);
 
 	xr_delete				(m_sndShockEffector);
-	if(IsGameTypeSingle()){
-		HUD().GetUI()->UIGame()->AddCustomStatic("game_over", true);
-	}
 }
+
 void	CActor::SwitchOutBorder(bool new_border_state)
 {
 	if(new_border_state)
@@ -1073,7 +1076,7 @@ void CActor::shedule_Update	(u32 DT)
 	pCamBobbing->SetState						(mstate_real, conditions().IsLimping(), IsZoomAimingMode());
 
 	//звук тяжелого дыхания при уталости и хромании
-	if(this==Level().CurrentControlEntity())
+	if(this==Level().CurrentControlEntity() && !g_pGamePersistent->bDedicatedServer )
 	{
 		if(conditions().IsLimping() && g_Alive()){
 			if(!m_HeavyBreathSnd._feedback()){
