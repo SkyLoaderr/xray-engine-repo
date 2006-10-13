@@ -345,8 +345,10 @@ void CActor::Load	(LPCSTR section )
 
 	//Weapons				= xr_new<CWeaponList> (this);
 
+if(!g_pGamePersistent->bDedicatedServer)
+{
 	LPCSTR hit_snd_sect = pSettings->r_string(section,"hit_sounds");
-	for(int hit_type=0; hit_type<(int)ALife::eHitTypeMax, !g_pGamePersistent->bDedicatedServer; ++hit_type)
+	for(int hit_type=0; hit_type<(int)ALife::eHitTypeMax; ++hit_type)
 	{
 		LPCSTR hit_name = ALife::g_cafHitType2String((ALife::EHitType)hit_type);
 		LPCSTR hit_snds = pSettings->r_string(hit_snd_sect, hit_name);
@@ -367,6 +369,7 @@ void CActor::Load	(LPCSTR section )
 		m_HeavyBreathSnd.create	(pSettings->r_string(section,"heavy_breath_snd"), st_Effect,SOUND_TYPE_MONSTER_INJURING);
 		m_BloodSnd.create		(pSettings->r_string(section,"heavy_blood_snd"), st_Effect,SOUND_TYPE_MONSTER_INJURING);
 	}
+}
 	cam_Set					(eacFirstEye);
 
 	// sheduler
