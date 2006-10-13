@@ -1,34 +1,6 @@
 -- Сбор информации о том, какие сталкеры и в каком количестве обитают в симуляции
 
-
--- Была ли произведена реинициализация после лоада.
-local reinit_complete = false
-local simulator = nil
-
-class "simulation_statistic"
-function simulation_statistic:__init()
-	self.objects = {}
-	self.allocation = {}
-end
-function simulation_statistic:add(npc)
-	local community, rank = self:getNpcType(npc)
-	self.objects[npc.id] = {community = community, rank = rank}
-	if self.allocation[community] == nil then
-		self.allocation[community] = {}
-	end
-	if self.allocation[community][rank] == nil then
-		self.allocation[community][rank] = 0
-	end
-	self.allocation[community][rank] = self.allocation[community][rank] + 1
-end
-function simulation_statistic:remove(npc)
-	if self.objects[npc.id] ~= nil then
-		local community, rank = self.objects[npc.id].community, self.objects[npc.id].rank
-		self.allocation[community][rank] = self.allocation[community][rank] - 1
-		self.objects[npc.id] = nil
-	end
-end
-function simulation_statistic:getNpcType(npc)
+function getNpcType(npc)
 	local cls = npc:clsid()
 
 	if cls == clsid.script_stalker then
@@ -44,6 +16,35 @@ function simulation_statistic:getNpcType(npc)
 	
 		local rank = ranks.get_obj_rank_name(npc)
 		return community, rank
+	end
+end
+
+
+-- Была ли произведена реинициализация после лоада.
+local reinit_complete = false
+local simulator = nil
+
+class "simulation_statistic"
+function simulation_statistic:__init()
+	self.objects = {}
+	self.allocation = {}
+end
+function simulation_statistic:add(npc)
+	local community, rank = getNpcType(npc)
+	self.objects[npc.id] = {community = community, rank = rank}
+	if self.allocation[community] == nil then
+		self.allocation[community] = {}
+	end
+	if self.allocation[community][rank] == nil then
+		self.allocation[community][rank] = 0
+	end
+	self.allocation[community][rank] = self.allocation[community][rank] + 1
+end
+function simulation_statistic:remove(npc)
+	if self.objects[npc.id] ~= nil then
+		local community, rank = self.objects[npc.id].community, self.objects[npc.id].rank
+		self.allocation[community][rank] = self.allocation[community][rank] - 1
+		self.objects[npc.id] = nil
 	end
 end
 function simulation_statistic:simNpcCount(community, rank)
@@ -106,4 +107,39 @@ function pstats()
 		return
 	end
 	simulator:pstats(npc)
+end
+
+
+
+
+--' Отметка всех сталкеров мапспотами. Дебаговая фича!!!
+local reg_objects = {}
+local npc_comm = {stalker = 1, bandit = 1, dolg = 1, freedom = 1, monolith = 1, military = 1, killer = 1, ecolog = 1, zombied = 1}
+
+function register(npc)
+	if npc:alive() then
+		local community, rank = getNpcType(npc)
+		reg_objects[npc.id] = {community = community, name = npc:name()}
+	end
+end
+function unregister(npc)
+	if reg_objects[npc.id] and reg_objects[npc.id].exist == true then
+		if npc_comm[reg_objects[npc.id].community] ~= nil then
+			level.map_remove_object_spot(npc.id, "alife_presentation_"..reg_objects[npc.id].community)
+		else
+			level.map_remove_object_spot(npc.id, "alife_presentation_monstr")
+		end
+	end
+	reg_objects[npc.id] = nil
+end
+
+function mark_all_stalkers()
+	for k,v in pairs(reg_objects) do
+		reg_objects[k].exist = true
+		if npc_comm[v.community] ~= nil then
+			level.map_add_object_spot(k, "alife_presentation_"..v.community, v.name)
+		else
+			level.map_add_object_spot(k, "alife_presentation_monstr", v.name)
+		end
+	end
 end

@@ -159,6 +159,8 @@
 	<debug_stalker hint="invalid hint">
 		<level_map spot="debug_stalker_spot"/>
 	</debug_stalker>
+
+
 	
 	<!--
 	<debug_stalker_spot x="0" y="0" width="60" height="60" alignment="c">
@@ -170,4 +172,76 @@
 		<texture r="50" g="255" b="0">ui\hud_map_point</texture>
 	</debug_stalker_spot>
 	
+
+	<alife_presentation_monolith>
+		<level_map spot="alife_presentation_monolith_spot"/>
+	</alife_presentation_monolith>
+	<alife_presentation_monolith_spot x="0" y="0" width="3" height="3" alignment="c" stretch="1" scale="1"> 
+		<texture r="0" g="255" b="255" width="3" height="3">ui\hud_map_point</texture>
+	</alife_presentation_monolith_spot>
+
+	<alife_presentation_killer>
+		<level_map spot="alife_presentation_killer_spot"/>
+	</alife_presentation_killer>
+	<alife_presentation_killer_spot x="0" y="0" width="3" height="3" alignment="c" stretch="1" scale="1"> 
+		<texture r="255" g="0" b="255" width="3" height="3">ui\hud_map_point</texture>
+	</alife_presentation_killer_spot>
+
+	<alife_presentation_ecolog>
+		<level_map spot="alife_presentation_ecolog_spot"/>
+	</alife_presentation_ecolog>
+	<alife_presentation_ecolog_spot x="0" y="0" width="3" height="3" alignment="c" stretch="1" scale="1"> 
+		<texture r="255" g="128" b="0" width="3" height="3">ui\hud_map_point</texture>
+	</alife_presentation_ecolog_spot>
+
+	<alife_presentation_military>
+		<level_map spot="alife_presentation_military_spot"/>
+	</alife_presentation_military>
+	<alife_presentation_military_spot x="0" y="0" width="3" height="3" alignment="c" stretch="1" scale="1"> 
+		<texture r="255" g="0" b="0" width="3" height="3">ui\hud_map_point</texture>
+	</alife_presentation_military_spot>
+
+	<alife_presentation_dolg>
+		<level_map spot="alife_presentation_dolg_spot"/>
+	</alife_presentation_dolg>
+	<alife_presentation_dolg_spot x="0" y="0" width="3" height="3" alignment="c" stretch="1" scale="1"> 
+		<texture r="0" g="128" b="255" width="3" height="3">ui\hud_map_point</texture>
+	</alife_presentation_dolg_spot>
+
+	<alife_presentation_freedom>
+		<level_map spot="alife_presentation_freedom_spot"/>
+	</alife_presentation_freedom>
+	<alife_presentation_freedom_spot x="0" y="0" width="3" height="3" alignment="c" stretch="1" scale="1"> 
+		<texture r="0" g="255" b="0" width="3" height="3">ui\hud_map_point</texture>
+	</alife_presentation_freedom_spot>
+
+	<alife_presentation_bandit>
+		<level_map spot="alife_presentation_bandit_spot"/>
+	</alife_presentation_bandit>
+	<alife_presentation_bandit_spot x="0" y="0" width="3" height="3" alignment="c" stretch="1" scale="1"> 
+		<texture r="255" g="128" b="128" width="3" height="3">ui\hud_map_point</texture>
+	</alife_presentation_bandit_spot>
+
+	<alife_presentation_stalker>
+		<level_map spot="alife_presentation_stalker_spot"/>
+	</alife_presentation_stalker>
+	<alife_presentation_stalker_spot x="0" y="0" width="3" height="3" alignment="c" stretch="1" scale="1"> 
+		<texture r="128" g="0" b="255" width="3" height="3">ui\hud_map_point</texture>
+	</alife_presentation_stalker_spot>
+
+	<alife_presentation_zombied>
+		<level_map spot="alife_presentation_zombied_spot"/>
+	</alife_presentation_zombied>
+	<alife_presentation_zombied_spot x="0" y="0" width="3" height="3" alignment="c" stretch="1" scale="1"> 
+		<texture r="255" g="255" b="0" width="3" height="3">ui\hud_map_point</texture>
+	</alife_presentation_zombied_spot>
+
+	<alife_presentation_monstr>
+		<level_map spot="alife_presentation_monstr_spot"/>
+	</alife_presentation_monstr>
+	<alife_presentation_monstr_spot x="0" y="0" width="3" height="3" alignment="c" stretch="1" scale="1"> 
+		<texture r="255" g="255" b="255" width="3" height="3">ui\hud_map_point</texture>
+	</alife_presentation_monstr_spot>
+
+
 </map_spots>

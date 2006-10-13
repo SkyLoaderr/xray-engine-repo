@@ -172,14 +172,34 @@ function se_monster:on_register()
 	cse_alife_monster_base.on_register( self )
 
 	self:fill_exclusives()
+
+	-- Регистрация мапспота для демонстрации
+	sim_statistic.register(self)
 end
 --------------------
-function se_monster:read_smart_terrain_conditions()
-	return smart_terrain.read_smart_terrain_conditions( self )
+function se_monster:on_unregister()
+	cse_alife_monster_base.on_unregister( self )
+
+	-- Регистрация мапспота для демонстрации
+	sim_statistic.unregister(self)
+end
+--------------------
+function se_monster:on_death(killer)
+	cse_alife_monster_base.on_death(self, killer)
+
+	-- Регистрация мапспота для демонстрации
+	sim_statistic.unregister(self)
 end
 --------------------
 function se_monster:get_smart_terrain_conditions()
-	return smart_terrain.get_smart_terrain_conditions( self )
+	self:get_ini()
+
+	if not self.smart_terrain_conditions_initialized then
+		self.smart_terrain_conditions             = smart_terrain.read_smart_terrain_conditions( self )
+		self.smart_terrain_conditions_initialized = true
+	end
+
+	return self.smart_terrain_conditions
 end
 --------------------
 function se_monster:fill_exclusives()

@@ -923,7 +923,7 @@ end
 
 -- установить npc работу, к ней рестрикторы, настроить логику, поменять squad, group
 function gulag:setJob(obj_id, job)
-	printf( "[smart_terrain %s] gulag: setJob: obj=%s job=%d %s", self.name, self.npc_info[obj_id].name, job.num, job.section )
+--'	printf( "[smart_terrain %s] gulag: setJob: obj=%s job=%d %s", self.name, self.npc_info[obj_id].name, job.num, job.section )
 
 	job.object = obj_id
 

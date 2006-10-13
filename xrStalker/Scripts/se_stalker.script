@@ -34,17 +34,6 @@ function se_stalker:get_ini()
 
 		self.spawner_present = self.ini:section_exist ("spawner")
 
---[[		if string.find( self:name(), "pri_respawn_freedom" ) ~= nil then
-			printf( "se_stalker:get_ini()", self:name() )
-
-			if self.ini:section_exist ("smart_terrains") then
-				printf( "[smart_terrains]" )
-
-				if self.ini:line_exist( "smart_terrains", "none" ) then
-					printf( "none=", tostring(self.ini:r_string("smart_terrains", "none")) )
-				end
-			end
-		end]]
 	end
 end
 --------------------
@@ -52,8 +41,6 @@ function se_stalker:get_job_online()
 	if self.job_online_condlist == nil then
 		return self.job_online
 	else
---		printf("stalker name %s", self:name())
---		print_table(self.job_online)
 		return xr_logic.pick_section_from_condlist(db.actor_proxy, self, self.job_online) ~= nil
 	end
 end
@@ -96,8 +83,6 @@ function se_stalker:can_switch_online ()
         end
         return false --cse_alife_human_stalker.can_switch_online (self)
     end    	    
-
-	--return xr_spawner.check_spawn (self)
 end
 --------------------
 function se_stalker:STATE_Write (packet)
@@ -141,33 +126,41 @@ function se_stalker:STATE_Read (packet, size)
 	end
 end
 --------------------
+function se_stalker:on_before_register()
+	self:fill_exclusives()
+end
+--------------------
 function se_stalker:on_register()
 	cse_alife_human_stalker.on_register( self )
 
 	if(actor_stats.add_to_ranking~=nil)then
 		local community = self:community()
-		if community == "zombied" or
+		if not(community == "zombied" or
 		   community == "monolith" or
-		   community == "arena_enemy"
+		   community == "arena_enemy")
 		then
-			return
+			actor_stats.add_to_ranking(self.id)
 		end
-		actor_stats.add_to_ranking(self.id)
 	end
 
 	-- Регистрация в таскменеджере
 	task_manager.register_target(self)
 
 
-	self:fill_exclusives()
+--'	self:fill_exclusives()
 	
 	if self:smart_terrain_id() == 65535 then
 		self:brain():update()
 	end
+	
+	-- Регистрация мапспота для демонстрации
+	sim_statistic.register(self)
 end
 --------------------
 function se_stalker:on_unregister()
-	cse_alife_human_stalker.on_unregister( self )
+	cse_alife_human_stalker.on_unregister(self)
+	-- Регистрация мапспота для демонстрации
+	sim_statistic.unregister(self)
 
 	if(actor_stats.remove_from_ranking~=nil)then
 		local community = self:community()
@@ -181,12 +174,21 @@ function se_stalker:on_unregister()
 	end
 end
 --------------------
-function se_stalker:read_smart_terrain_conditions()
-	return smart_terrain.read_smart_terrain_conditions( self )
+function se_stalker:on_death(killer)
+	cse_alife_human_stalker.on_death(self, killer)
+	-- Регистрация мапспота для демонстрации
+	sim_statistic.unregister(self)
 end
 --------------------
 function se_stalker:get_smart_terrain_conditions()
-	return smart_terrain.get_smart_terrain_conditions( self )
+	self:get_ini()
+
+	if not self.smart_terrain_conditions_initialized then
+		self.smart_terrain_conditions             = smart_terrain.read_smart_terrain_conditions( self )
+		self.smart_terrain_conditions_initialized = true
+	end
+
+	return self.smart_terrain_conditions
 end
 --------------------
 function se_stalker:fill_exclusives()
@@ -195,10 +197,8 @@ function se_stalker:fill_exclusives()
 	if self:get_smart_terrain_conditions() then
 		for name, condlist in pairs( self:get_smart_terrain_conditions() ) do
 			smart_terrain.exclusives[name] = ( smart_terrain.exclusives[name] or 0 ) + 1
-
-			if name == "mil_freedom" then
-				printf( "[smart_terrain %s] exclusive=%s", name, self:name() )
-			end
+--			printf("SE STALKER: fill exclusives")
+--			print_table(smart_terrain.exclusives)
 		end
 	end
 end

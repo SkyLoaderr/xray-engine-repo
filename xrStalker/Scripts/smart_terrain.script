@@ -219,10 +219,10 @@ function se_smart_terrain:preserve_exclusives()
 	local e = exclusives[self:name()]
 
 	if e then
---		printf( "[smart_terrain %s] exclusives=%d", self:name(), e )
+--'		printf( "[smart_terrain %s] exclusives=%d", self:name(), e )
 
 		self.exclusives = e
-		printf("%s preserve_exclusives [%s]", self:name(), tostring(self.gulag.capacity_non_exclusive))
+--'		printf("[smart_terrain %s] preserve_exclusives [%s]", self:name(), tostring(self.gulag.capacity_non_exclusive))
 		self.gulag.capacity_non_exclusive = self.gulag.capacity_non_exclusive - e
 
 		exclusives[self:name()] = nil
@@ -524,11 +524,11 @@ function se_smart_terrain:enabled( obj )
 	if self:is_gulag_available() and not self.population_locked then
 		local b = self:obj_accepts_smart_terrain( obj )
 		local a = self:smart_terrain_accepts_obj( obj, b )
-		if obj:name() == "sim_stalker_master_diador" and a == true then
---			printf("[smart_terrain %s] enabled called obj=%s", self:name(), obj:name() )
-		else
+--[[		if a == true then
+			printf("[smart_terrain %s] enabled called obj=%s exclusive=%s", self:name(), obj:name(), tostring(b))
+--		else
 --			printf("[smart_terrain %s] disabled obj=%s  accept_obj = %s", self:name(), obj:name(), tostring(b))
-		end
+		end]]
 		return a
 	else
 		return false
@@ -829,6 +829,7 @@ function se_smart_terrain:on_register()
 	cse_alife_smart_zone.on_register( self )
 
 	self:register_if_needed()
+	self:initialize_if_needed()
 end
 
 function se_smart_terrain:register_if_needed()
@@ -982,9 +983,6 @@ function se_smart_terrain:update()
 
 	self:initialize_if_needed()
 
---	if self.duration_end < game.time() then
---		self:remove_gulag()
---	else
 	if self:is_gulag_available() then
 		if self.check_time < game.get_game_time() then
 			self.check_time = game.get_game_time() + check_period
@@ -1012,7 +1010,6 @@ function se_smart_terrain:update()
 	else
 		self:remove_gulag()
 	end
---	end
 end
 
 --------------------
@@ -1053,19 +1050,6 @@ function read_smart_terrain_conditions( self )
 	end
 
 	return nil
-end
-
--- получить распарсеную секцию [smart_terrains]
--- вызывается объектами, которые могут ходить под smart terrain
-function get_smart_terrain_conditions( self )
-	self:get_ini()
-
-	if not self.smart_terrain_conditions_initialized then
-		self.smart_terrain_conditions             = self:read_smart_terrain_conditions()
-		self.smart_terrain_conditions_initialized = true
-	end
-
-	return self.smart_terrain_conditions
 end
 
 --------------------
