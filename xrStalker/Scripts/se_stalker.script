@@ -162,6 +162,8 @@ function se_stalker:on_unregister()
 	-- Регистрация мапспота для демонстрации
 	sim_statistic.unregister(self)
 
+	smart_terrain.unregister_npc(self)
+	
 	if(actor_stats.remove_from_ranking~=nil)then
 		local community = self:community()
 		if community == "zombied" or

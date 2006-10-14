@@ -182,6 +182,8 @@ function se_monster:on_unregister()
 
 	-- Регистрация мапспота для демонстрации
 	sim_statistic.unregister(self)
+
+	smart_terrain.unregister_npc(self)
 end
 --------------------
 function se_monster:on_death(killer)

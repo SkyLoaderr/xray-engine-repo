@@ -397,19 +397,11 @@ function gulag:update_objs()
 			self:object_setup_offline( obj_id )
 		end
 
-		-- TODO. remove while iterating :\ (вроде бы нормально)
+		--' TODO. remove while iterating :\ (вроде бы нормально)
 		obj = cl_obj or npc_info.se_obj
 
 		if not obj:alive() then
-			if self.name == "gar_hellcar_group" then
-				printf( "Casualities obj=%s cas=%d", obj:name(), self.casualities )
-			end
-
 			self:changeCasualities( 1 )
-
-			if self.name == "gar_hellcar_group" then
-				printf( "Casualities obj=%s cas=%d", obj:name(), self.casualities )
-			end
 
 			if self.ObjectJob[obj_id] then
 				local job = self.Job[self.ObjectJob[obj_id]]
