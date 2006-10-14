@@ -1170,7 +1170,7 @@ void CActor::make_Interpolation	()
 
 		if (CurTime >= m_dwIEndTime)
 		{
-			m_bInInterpolation = false;
+			m_bInInterpolation = false;			
 			mstate_real = mstate_wishful = NET_Last.mstate;
 			NET_SavedAccel = NET_Last.p_accel;
 
@@ -1235,44 +1235,6 @@ void CActor::make_Interpolation	()
 			character_physics_support()->movement()->SetPosition	(ResPosition);
 			character_physics_support()->movement()->SetVelocity	(SpeedVector);
 			cam_Active()->Set		(-unaffected_r_torso.yaw,unaffected_r_torso.pitch, unaffected_r_torso.roll);
-/*
-			if (!(mstate_wishful & mcClimb))
-			{
-				if (SpeedVector.square_magnitude()>0.0001f || IEnd.Pos.distance_to_xz_sqr(IStart.Pos)>0.1f)
-				{
-					SpeedVector.y = 0;
-					float speed = SpeedVector.magnitude();
-					SpeedVector.div(speed);
-					Fvector ModelDir, Up;
-					ModelDir.setHP(r_model_yaw, 0);
-					float Dot = ModelDir.dotproduct(SpeedVector);
-					Up.crossproduct(ModelDir,SpeedVector);
-					if (Dot > 0.382)
-					{
-						mstate_wishful |= mcFwd;
-						mstate_real |= mcFwd;
-					}
-					if (Dot < -0.382)
-					{
-						mstate_wishful |= mcBack;
-						mstate_real |= mcBack;
-					}
-					if (Dot <= 0.924 && Dot >= -0.924)
-					{
-						if (Up.y > 0)
-						{
-							mstate_wishful |= mcRStrafe;
-							mstate_real |= mcRStrafe;
-						}
-						else
-						{
-							mstate_wishful |= mcLStrafe;
-							mstate_real |= mcLStrafe;
-						};
-					};
-				};
-			};
-			*/
 		};
 	}
 	else

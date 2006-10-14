@@ -1012,8 +1012,7 @@ void CActor::shedule_Update	(u32 DT)
 		
 		g_cl_ValidateMState		(dt,mstate_wishful);
 		g_SetAnimation			(mstate_real);
-		UpdateMotionIcon		(mstate_real);
-
+		
 		// Check for game-contacts
 		Fvector C; float R;		
 		//m_PhysicMovementControl->GetBoundingSphere	(C,R);
@@ -1044,7 +1043,7 @@ void CActor::shedule_Update	(u32 DT)
 		}
 	}
 	else 
-	{		
+	{
 		make_Interpolation();
 	
 		if (NET.size())
@@ -1070,7 +1069,14 @@ void CActor::shedule_Update	(u32 DT)
 			else 
 				character_physics_support()->movement()->ActivateBox(0, true);
 		}	
+		mstate_old = mstate_real;
 	}
+
+	if (this == Level().CurrentViewEntity())
+	{
+		UpdateMotionIcon		(mstate_real);
+	};
+
 	NET_Jump = 0;
 
 

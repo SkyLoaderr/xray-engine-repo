@@ -133,13 +133,13 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 //.			_b						= bDoHide;
 			SetWeaponHideState		(INV_STATE_LADDER, bOnClimbNow );
 		};
-
-		if ((mstate_real&mcSprint) != (mstate_old&mcSprint))
-		{
-				CHudItem* pHudItem = smart_cast<CHudItem*>(inventory().ActiveItem());	
-				if (pHudItem) pHudItem->onMovementChanged(mcSprint);
-		};
-
+	/*
+	if ((mstate_real&mcSprint) != (mstate_old&mcSprint))
+	{
+		CHudItem* pHudItem = smart_cast<CHudItem*>(inventory().ActiveItem());	
+		if (pHudItem) pHudItem->onMovementChanged(mcSprint);
+	};
+	*/
 	};
 };
 

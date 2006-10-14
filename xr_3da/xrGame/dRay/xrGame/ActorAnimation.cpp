@@ -283,7 +283,7 @@ void CActor::g_SetSprintAnimation( u32 mstate_rl,MotionID &head,MotionID &torso,
 
 	if		(mstate_rl & mcFwd)		legs = sprint.legs_fwd;
 	else if (mstate_rl & mcLStrafe) legs = sprint.legs_ls;
-	else if (mstate_rl & mcRStrafe)	legs = sprint.legs_rs;
+	else if (mstate_rl & mcRStrafe)	legs = sprint.legs_rs;	
 }
 
 CMotion*        FindMotionKeys(MotionID motion_ID,IRender_Visual* V)
@@ -360,6 +360,16 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		g_SetSprintAnimation			(mstate_rl,M_head,M_torso,M_legs);
 		moving_idx						= STorsoWpn::eSprint;
 	}
+	//---------------------------------------------------------------
+	if (this == Level().CurrentViewEntity())
+	{	
+		if ((mstate_rl&mcSprint) != (mstate_old&mcSprint))
+		{
+			CHudItem* pHudItem = smart_cast<CHudItem*>(inventory().ActiveItem());	
+			if (pHudItem) pHudItem->onMovementChanged(mcSprint);
+		};
+	};
+	//-----------------------------------------------------------------------
 	// Torso
 	if(mstate_rl&mcClimb)
 	{
