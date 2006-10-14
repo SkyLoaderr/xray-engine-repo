@@ -13,12 +13,7 @@ function proceed()
 end
 
 function process_info_portion(info_id)
-	if info_id == "bar_deactivate_radar_start" then
-		level_tasks.add_location(1000, "crlc_big", "rad_antenna_location")
-	elseif info_id == "bar_deactivate_radar_done" then
-		level_tasks.remove_location(1000, "rad_antenna_location")
-
-	elseif info_id == "rad_code_door" then
+	if info_id == "rad_code_door" then
 		level_tasks.add_location(1001, "rad_code_door_location")
 	elseif info_id == "rad_code_door_found" then
 		level_tasks.remove_location(1001, "rad_code_door_location")
