@@ -231,10 +231,10 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	
 	pp_affected.validate		("after applying pp");
 	if (FALSE==bOverlapped && m_bAutoApply)
-			ApplyDevice		();
+			ApplyDevice		(VIEWPORT_NEAR);
 }
 
-void CCameraManager::ApplyDevice ()
+void CCameraManager::ApplyDevice (float _viewport_near)
 {
 	// Device params
 	Device.mView.build_camera_dir(vPosition, vDirection, vNormal);
@@ -247,7 +247,7 @@ void CCameraManager::ApplyDevice ()
 	// projection
 	Device.fFOV					= fFov;
 	Device.fASPECT				= fAspect;
-	Device.mProject.build_projection(deg2rad(fFov*fAspect), fAspect, VIEWPORT_NEAR, fFar);
+	Device.mProject.build_projection(deg2rad(fFov*fAspect), fAspect, _viewport_near, fFar);
 
 	if( g_pGamePersistent && g_pGamePersistent->m_pMainMenu->IsActive() )
 		ResetPP					();

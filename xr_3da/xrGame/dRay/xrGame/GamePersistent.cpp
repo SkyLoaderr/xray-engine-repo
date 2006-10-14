@@ -332,7 +332,7 @@ void CGamePersistent::OnFrame	()
 						C = Actor()->Holder()->Camera();
 
 				Actor()->Cameras().Update		(C);
-				Actor()->Cameras().ApplyDevice	();
+				Actor()->Cameras().ApplyDevice	(VIEWPORT_NEAR);
 				}
 			}
 		}
@@ -345,7 +345,7 @@ void CGamePersistent::OnFrame	()
 				C = Actor()->Holder()->Camera();
 
 			Actor()->Cameras().Update		(C);
-			Actor()->Cameras().ApplyDevice	();
+			Actor()->Cameras().ApplyDevice	(VIEWPORT_NEAR);
 		}
 #endif
 	}

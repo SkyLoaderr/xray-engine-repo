@@ -155,7 +155,7 @@ void CWeaponStatMgun::UpdateCL()
 	{
 		cam_Update(Device.fTimeDelta, DEFAULT_FOV);
 		OwnerActor()->Cameras().Update(Camera());
-		OwnerActor()->Cameras().ApplyDevice();
+		OwnerActor()->Cameras().ApplyDevice(VIEWPORT_NEAR);
 	}
 
 }

@@ -222,11 +222,23 @@ void CActor::cam_Update(float dt, float fFOV)
 	}else{
 		fPrevCamPos			= flCurrentPlayerY;
 	}
-
+	float _viewport_near			= VIEWPORT_NEAR;
 	// calc point
 	xform.transform_tiny			(point);
 
 	CCameraBase* C					= cam_Active();
+
+	if(eacFirstEye == cam_active)
+	{
+		CCameraBase* C				= cameras[eacFirstEye];
+	
+		xrXRC						xrc			;
+		xrc.box_options				(0)			;
+		xrc.box_query				(Level().ObjectSpace.GetStaticModel(), point, Fvector().set(VIEWPORT_NEAR,VIEWPORT_NEAR,VIEWPORT_NEAR) );
+		u32 tri_count				= xrc.r_count();
+		if (tri_count)
+			_viewport_near			= 0.01f;
+	}
 /*
 	{
 		CCameraBase* C				= cameras[eacFirstEye];
@@ -279,7 +291,7 @@ void CActor::cam_Update(float dt, float fFOV)
 	{
 		Level().Cameras().Update	(C);
 		if(eacFirstEye == cam_active && !Level().Cameras().GetCamEffector(cefDemo)){
-			Cameras().ApplyDevice	();
+			Cameras().ApplyDevice	(_viewport_near);
 		}
 	}
 }

@@ -158,7 +158,7 @@ public:
 	IC void					camera_Matrix		(Fmatrix& M){M.set(vRight,vNormal,vDirection,vPosition);}
 	void					Update				(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fASPECT_Dest, float fFAR_Dest, u32 flags=0);
 	void					Update				(const CCameraBase* C);
-	void					ApplyDevice			();
+	void					ApplyDevice			(float _viewport_near);
 	static void				ResetPP				();
 
 							CCameraManager		(bool bApplyOnUpdate);
