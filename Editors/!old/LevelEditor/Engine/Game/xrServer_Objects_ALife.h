@@ -131,6 +131,7 @@ public:
 	virtual void					spawn_supplies		(LPCSTR);
 	virtual void					spawn_supplies		();
 			CALifeSimulator			&alife				() const;
+	virtual Fvector					draw_position		() const;
 #endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObject)

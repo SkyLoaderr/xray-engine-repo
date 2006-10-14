@@ -264,6 +264,11 @@ CALifeSimulator	&CSE_ALifeObject::alife	() const
 	VERIFY						(m_alife_simulator);
 	return						(*m_alife_simulator);
 }
+
+Fvector CSE_ALifeObject::draw_position	() const
+{
+	return						(Position());
+}
 #endif
 
 CSE_ALifeObject::~CSE_ALifeObject			()
