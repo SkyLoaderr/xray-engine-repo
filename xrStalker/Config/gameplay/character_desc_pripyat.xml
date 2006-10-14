@@ -21,7 +21,7 @@
             [spawn] \n
             wpn_beretta \n
             ammo_9x19_fmj = 1 \n
-            wpn_val \n
+            wpn_groza \n
             ammo_9x39_ap = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
@@ -47,7 +47,7 @@
             [spawn] \n
             wpn_walther \n
             ammo_9x19_pbp = 1 \n
-            wpn_val \n
+            wpn_groza \n
             ammo_9x39_sp5 = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
@@ -128,7 +128,7 @@
             [spawn] \n
             wpn_beretta \n
             ammo_9x19_fmj = 1 \n
-            wpn_vintorez \n
+            wpn_groza \n
             ammo_9x39_ap = 1 \n
             grenade_f1 = 2 \n
 #include "gameplay\character_drugs.xml"
