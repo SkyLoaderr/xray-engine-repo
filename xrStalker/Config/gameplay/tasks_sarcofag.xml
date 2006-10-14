@@ -5,7 +5,7 @@
 			<text>sar_monolith_0</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>sar_monolith_go</infoportion_complete>
-			<infoportion_fail>sar_monolith_destory</infoportion_fail>
+			<infoportion_fail>sar_monolith_destroy</infoportion_fail>
 		</objective>
 		<objective>
 			<text>sar_monolith_1</text>
