@@ -229,3 +229,20 @@ void CALifeMonsterDetailPathManager::on_switch_offline	()
 {
 	m_path.clear					();
 }
+
+Fvector CALifeMonsterDetailPathManager::draw_level_position	() const
+{
+	if (path().empty())
+		return						(object().Position());
+
+	u32								path_size = path().size();
+	if (path_size == 1)
+		return						(object().Position());
+
+	VERIFY							(m_path.back() == object().m_tGraphID);
+	Fvector							current_vertex = ai().game_graph().vertex(object().m_tGraphID)->level_point();
+	Fvector							next_vertex = ai().game_graph().vertex(m_path[path_size - 2])->level_point();
+	Fvector							direction = Fvector().sub(next_vertex,current_vertex);
+	direction.normalize				();
+	return							(current_vertex.mad(direction,walked_distance()));
+}

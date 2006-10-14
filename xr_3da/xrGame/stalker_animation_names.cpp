@@ -79,10 +79,16 @@ LPCSTR in_place_names		[] = {
 };
 
 LPCSTR global_names			[] = {
-	"damage_",
-	"escape_",
-	"dead_stop_",
-	"hello_",
+	"damage_",					// 0
+	"escape_",					// 1
+	"dead_stop_",				// 2
+	"hello_",					// 3
+	"critical_hit_head_",		// 4
+	"critical_hit_torso_",		// 5
+	"critical_hit_hend_left_",	// 6
+	"critical_hit_hend_right_",	// 7
+	"critical_hit_legs_left_",	// 8
+	"critical_hit_legs_right_",	// 9
 	0
 };
 

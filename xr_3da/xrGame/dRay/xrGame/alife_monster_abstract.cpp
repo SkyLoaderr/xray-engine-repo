@@ -17,6 +17,8 @@
 #include "ef_storage.h"
 #include "ef_pattern.h"
 #include "alife_monster_brain.h"
+#include "alife_monster_movement_manager.h"
+#include "alife_monster_detail_path_manager.h"
 
 void CSE_ALifeMonsterAbstract::add_online							(const bool &update_registries)
 {
@@ -190,4 +192,9 @@ void CSE_ALifeMonsterAbstract::vfCheckForPopulationChanges	()
 			}
 		}
 	}
+}
+
+Fvector CSE_ALifeMonsterAbstract::draw_level_position	() const
+{
+	return		(brain().movement().detail().draw_level_position());
 }

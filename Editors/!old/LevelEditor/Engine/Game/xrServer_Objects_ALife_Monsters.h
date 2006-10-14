@@ -267,7 +267,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual CSE_ALifeSchedulable	*cast_schedulable		() {return this;};
 	virtual CSE_ALifeMonsterAbstract*cast_monster_abstract	() {return this;};
 
-	IC		CALifeMonsterBrain		&brain					() {VERIFY(m_brain); return(*m_brain);}
+	IC		CALifeMonsterBrain		&brain					() const {VERIFY(m_brain); return(*m_brain);}
 	virtual CALifeMonsterBrain		*create_brain			();
 	virtual u32						ef_creature_type		() const;
 	virtual u32						ef_weapon_type			() const;
@@ -287,6 +287,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 			void					vfCheckForPopulationChanges();
 	virtual	void					add_online				(const bool &update_registries);
 	virtual	void					add_offline				(const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries);
+	virtual Fvector					draw_level_position		() const;
 #endif
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 
@@ -421,7 +422,7 @@ public:
 	virtual CSE_ALifeHumanAbstract	*cast_human_abstract	() {return this;};
 	virtual bool					natural_weapon			() const {return false;}
 	virtual bool					natural_detector		() const {return false;}
-	IC		CALifeHumanBrain		&brain					() {VERIFY(m_brain); return(*m_brain);}
+	IC		CALifeHumanBrain		&brain					() const {VERIFY(m_brain); return(*m_brain);}
 	virtual CALifeMonsterBrain		*create_brain			();
 
 #ifdef XRGAME_EXPORTS

@@ -144,11 +144,6 @@ void CMapLocation::LoadSpot(LPCSTR type, bool bReload)
 		DisableSpot	();
 }
 
-Fvector _get_offline_object_position(CSE_ALifeDynamicObject* O)
-{
-	return O->Position();
-}
-
 Fvector2 CMapLocation::Position()
 {
 	Fvector2 pos;
@@ -166,7 +161,7 @@ Fvector2 CMapLocation::Position()
 		{
 			CSE_ALifeDynamicObject* O = ai().alife().objects().object(m_objectID,true);
 			if(O){
-				m_position_global = _get_offline_object_position(O);
+				m_position_global = O->draw_level_position();
 				pos.set(m_position_global.x, m_position_global.z);
 			}
 		}
