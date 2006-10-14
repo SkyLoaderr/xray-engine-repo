@@ -4078,6 +4078,9 @@
 					<File
 						RelativePath=".\Scripts\task_9.script">
 					</File>
+					<File
+						RelativePath=".\Scripts\task_sim.script">
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>
