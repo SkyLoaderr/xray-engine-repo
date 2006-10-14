@@ -232,8 +232,6 @@ void        CPostprocessAnimator::Create                          ()
 	m_bStop				= false;
 	m_start_time		= -1.0f;
 	m_factor_speed		= 1.0f;
-	m_bCyclic			= false;
-	m_start_time		= 0.0f;
 	f_length			= 0.0f;
 
     m_Params[0] = xr_new<CPostProcessColor> (&m_EffectorParams.color_base);			//base color

@@ -288,8 +288,8 @@ Global
 		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.ActiveCfg = Mixed|Win32
-		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.Build.0 = Mixed|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.ActiveCfg = Debug|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.Build.0 = Debug|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.DebugNoExceptions.ActiveCfg = DebugNoExceptions|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.DebugNoExceptions.Build.0 = DebugNoExceptions|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.Mixed.ActiveCfg = Debug|Win32
