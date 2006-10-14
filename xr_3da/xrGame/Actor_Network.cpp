@@ -1950,3 +1950,8 @@ BOOL				CActor::BonePassBullet					(int boneID)
 	}
 	return pOutfit->BonePassBullet(boneID);
 }
+
+void			CActor::On_B_NotCurrentEntity		()
+{
+	inventory().Items_SetCurrentEntityHud(false);
+};

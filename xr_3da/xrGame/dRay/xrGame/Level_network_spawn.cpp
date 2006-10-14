@@ -109,6 +109,11 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 		client_spawn_manager().callback(O);
 		//Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))	{
+			if (CurrentEntity() != NULL) 
+			{
+				CGameObject* pGO = smart_cast<CGameObject*>(CurrentEntity());
+				if (pGO) pGO->On_B_NotCurrentEntity();
+			}
 			SetEntity			(O);
 			SetControlEntity	(O);
 //			if (net_Syncronised)net_Syncronize	();	// start sync-thread again

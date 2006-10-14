@@ -747,6 +747,7 @@ public:
 	virtual	CVisualMemoryManager*visual_memory					() const;
 
 	virtual	BOOL				BonePassBullet					(int boneID);
+	virtual	void				On_B_NotCurrentEntity		();
 };
 
 extern bool		isActorAccelerated			(u32 mstate, bool ZoomMode);

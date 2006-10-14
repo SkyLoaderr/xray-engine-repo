@@ -269,6 +269,8 @@ private:
 public:
 	CScriptCallbackExVoid	&callback			(GameObject::ECallbackType type) const;
 	virtual	LPCSTR			visual_name			(CSE_Abstract *server_entity);
+
+	virtual	void			On_B_NotCurrentEntity () {};
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)
