@@ -143,3 +143,11 @@ function mark_all_stalkers()
 		end
 	end
 end
+
+function release_all_stalkers()
+	for k,v in pairs(reg_objects) do
+		local obj = alife():object(k)
+		alife():release(obj,true)
+		reg_objects[k] = nil
+	end
+end
