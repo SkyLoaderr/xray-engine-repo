@@ -246,6 +246,9 @@ function se_respawn:on_register()
 	if self.parent ~= nil then
 		respawners_by_parent[self.parent] = self
 	end
+
+	--' Отметка респавнера мапспотом (для статистики)
+	sim_statistic.register_respawn(self)
 end
 -- Создаем объект
 function se_respawn:create(prob)
@@ -370,8 +373,10 @@ function se_respawn:spawn()
 
 	if xr_logic.pick_section_from_condlist(db.actor_proxy, self, self.conditions) == "0" then
 		printf("SPAWNING [%s], CANT SPAWN. PROBABILITY ZERO!!!", tostring(self:name()))
+		sim_statistic.respawn_enabled(self, false)
 		return
 	end
+	sim_statistic.respawn_enabled(self, true)
 	
 	-- экстренный спаун минимального количества объектов
 	if table.getn(self.spawned_obj) < self.min_count then	

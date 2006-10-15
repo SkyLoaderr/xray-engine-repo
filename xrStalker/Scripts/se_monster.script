@@ -174,14 +174,14 @@ function se_monster:on_register()
 	self:fill_exclusives()
 
 	-- Регистрация мапспота для демонстрации
-	sim_statistic.register(self)
+	sim_statistic.register_monster(self)
 end
 --------------------
 function se_monster:on_unregister()
 	cse_alife_monster_base.on_unregister( self )
 
 	-- Регистрация мапспота для демонстрации
-	sim_statistic.unregister(self)
+	sim_statistic.unregister_monster(self)
 
 	smart_terrain.unregister_npc(self)
 end

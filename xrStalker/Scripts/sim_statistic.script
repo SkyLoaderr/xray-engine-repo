@@ -113,41 +113,165 @@ end
 
 
 --' Отметка всех сталкеров мапспотами. Дебаговая фича!!!
-local reg_objects = {}
-local npc_comm = {stalker = 1, bandit = 1, dolg = 1, freedom = 1, monolith = 1, military = 1, killer = 1, ecolog = 1, zombied = 1}
-
-function register(npc)
+local reg_objects_stalker = {}
+local show_stalker_spot = false
+function register_stalker(npc)
 	if npc:alive() then
 		local community, rank = getNpcType(npc)
-		reg_objects[npc.id] = {community = community, name = npc:name()}
-	end
-end
-function unregister(npc)
-	if reg_objects[npc.id] and reg_objects[npc.id].exist == true then
-		if npc_comm[reg_objects[npc.id].community] ~= nil then
-			level.map_remove_object_spot(npc.id, "alife_presentation_"..reg_objects[npc.id].community)
-		else
-			level.map_remove_object_spot(npc.id, "alife_presentation_monstr")
+		reg_objects_stalker[npc.id] = {community = community, name = npc:name()}
+		
+		--' Отметка мапспотами (только для презентации)
+		if show_stalker_spot then
+			reg_objects_stalker[npc.id].exist = true
+			level.map_add_object_spot(npc.id, "alife_presentation_"..reg_objects_stalker[npc.id].community, reg_objects_stalker[npc.id].name)
 		end
 	end
-	reg_objects[npc.id] = nil
 end
-
+function unregister_stalker(npc)
+	if reg_objects_stalker[npc.id] and reg_objects_stalker[npc.id].exist == true then
+		level.map_remove_object_spot(npc.id, "alife_presentation_"..reg_objects_stalker[npc.id].community)
+	end
+	reg_objects_stalker[npc.id] = nil
+end
 function mark_all_stalkers()
-	for k,v in pairs(reg_objects) do
-		reg_objects[k].exist = true
-		if npc_comm[v.community] ~= nil then
-			level.map_add_object_spot(k, "alife_presentation_"..v.community, v.name)
-		else
-			level.map_add_object_spot(k, "alife_presentation_monstr", v.name)
+	show_stalker_spot = true
+	for k,v in pairs(reg_objects_stalker) do
+		reg_objects_stalker[k].exist = true
+		level.map_add_object_spot(k, "alife_presentation_"..v.community, v.name)
+	end
+end
+function unmark_all_stalkers()
+	show_stalker_spot = false
+	for k,v in pairs(reg_objects_stalker) do
+		if reg_objects_stalker[k].exist == true then
+			reg_objects_stalker[k].exist = nil
+			level.map_remove_object_spot(k, "alife_presentation_"..v.community)
 		end
 	end
 end
-
 function release_all_stalkers()
-	for k,v in pairs(reg_objects) do
+	for k,v in pairs(reg_objects_stalker) do
 		local obj = alife():object(k)
 		alife():release(obj,true)
-		reg_objects[k] = nil
+		reg_objects_stalker[k] = nil
+	end
+end
+
+--' Отметка всех монстров мапспотами. Дебаговая фича!!!
+local reg_objects_monster = {}
+local show_stalker_spot = false
+function register_monster(npc)
+	if npc:alive() then
+		local community, rank = getNpcType(npc)
+		reg_objects_monster[npc.id] = {community = community, name = npc:name()}
+		
+		--' Отметка мапспотами (только для презентации)
+		if show_monster_spot then
+			reg_objects_monster[npc.id].exist = true
+			level.map_add_object_spot(npc.id, "alife_presentation_monstr", reg_objects_monster[npc.id].name)
+		end
+	end
+end
+function unregister_monster(npc)
+	if reg_objects_monster[npc.id] and reg_objects_monster[npc.id].exist == true then
+		level.map_remove_object_spot(npc.id, "alife_presentation_monstr")
+	end
+	reg_objects_monster[npc.id] = nil
+end
+function mark_all_monsters()
+	show_monster_spot = true
+	for k,v in pairs(reg_objects_monster) do
+		reg_objects_monster[k].exist = true
+		level.map_add_object_spot(k, "alife_presentation_monstr", v.name)
+	end
+end
+function unmark_all_monsters()
+	show_monster_spot = false
+	for k,v in pairs(reg_objects_monster) do
+		if reg_objects_monster[k].exist == true then
+			reg_objects_monster[k].exist = nil
+			level.map_remove_object_spot(k, "alife_presentation_monstr")
+		end
+	end
+end
+function release_all_monsters()
+	for k,v in pairs(reg_objects_monster) do
+		local obj = alife():object(k)
+		alife():release(obj,true)
+		reg_objects_monster[k] = nil
+	end
+end
+
+
+--' Статистика смарттеррейнов
+
+
+
+--' Статистика респавнеров
+local reg_objects_respawn = {}
+local show_respawn_spot = false
+function register_respawn(obj)
+	--' Не отбражать респавнеры с событийным спауном
+	if obj.item_spawn ~= false then
+		return
+	end
+	local section = ""
+	for k,v in pairs(obj.respawn_section) do
+		section = section .. v.section .. "=" .. v.prob .. "\\n"
+	end
+	reg_objects_respawn[obj.id] = {section = section, enabled = false, max_count = obj.max_count, count = 0}
+	if show_respawn_spot == true then
+		mark_respawn(obj.id)
+	end
+end
+function unregister_respawn(obj)
+	reg_objects_respawn[obj.id] = nil
+end
+function respawn_enabled(obj, enabled)
+	if obj.item_spawn ~= false then
+		return
+	end
+	if show_respawn_spot == true then
+		unmark_respawn(obj.id)
+	end
+	reg_objects_respawn[obj.id].enabled = enabled
+	reg_objects_respawn[obj.id].count = table.getn(obj.spawned_obj)
+	if show_respawn_spot == true then
+		mark_respawn(obj.id)
+	end
+end
+function mark_respawn(obj_id)
+	local rr = reg_objects_respawn[obj_id]
+	if rr.exist ~= true then
+		local str = rr.section.."spawned "..tostring(count).."("..rr.max_count..")"
+		if rr.enabled then
+			level.map_add_object_spot(obj_id, "alife_presentation_respawn_on", str)
+		else
+			level.map_add_object_spot(obj_id, "alife_presentation_respawn_off", str)
+		end
+		reg_objects_respawn[obj_id].exist = true
+	end
+end
+function unmark_respawn(obj_id)
+	local rr = reg_objects_respawn[obj_id]
+	if rr.exist == true then
+		if rr.enabled then
+			level.map_remove_object_spot(obj_id, "alife_presentation_respawn_on")
+		else
+			level.map_remove_object_spot(obj_id, "alife_presentation_respawn_off")
+		end
+		reg_objects_respawn[obj_id].exist = nil
+	end
+end
+function mark_all_respawns()
+	show_respawn_spot = true
+	for k,v in pairs(reg_objects_respawn) do		
+		mark_respawn(k)
+	end
+end
+function unmark_all_respawns()
+	show_respawn_spot = false
+	for k,v in pairs(reg_objects_respawn) do
+		unmark_respawn(obj_id)			
 	end
 end

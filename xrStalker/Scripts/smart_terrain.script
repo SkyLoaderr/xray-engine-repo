@@ -1037,7 +1037,9 @@ function unregister_npc(npc)
 		local strn_id = obj:smart_terrain_id()
 
 		if strn_id ~= 65535 then
-			sim:object(strn_id):unregister_npc(obj)
+			if sim:object(strn_id) then
+				sim:object(strn_id):unregister_npc(obj)
+			end
 		end
 	end
 end

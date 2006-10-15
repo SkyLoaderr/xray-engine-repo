@@ -236,6 +236,12 @@
 		<texture r="255" g="255" b="0" width="3" height="3">ui\hud_map_point</texture>
 	</alife_presentation_zombied_spot>
 
+	<alife_presentation_trader>
+		<level_map spot="alife_presentation_monstr_spot"/>
+	</alife_presentation_trader>
+	<alife_presentation_arena_enemy>
+		<level_map spot="alife_presentation_monstr_spot"/>
+	</alife_presentation_arena_enemy>
 	<alife_presentation_monstr>
 		<level_map spot="alife_presentation_monstr_spot"/>
 	</alife_presentation_monstr>
@@ -243,5 +249,20 @@
 		<texture r="255" g="255" b="255" width="3" height="3">ui\hud_map_point</texture>
 	</alife_presentation_monstr_spot>
 
+
+
+	<alife_presentation_respawn_on>
+		<level_map spot="alife_presentation_respawn_on_spot"/>
+	</alife_presentation_respawn_on>
+	<alife_presentation_respawn_on_spot x="0" y="0" width="10" height="10" alignment="c" stretch="1" scale="1">
+		<texture x="525" y="904" width="32" height="32">ui\ui_common</texture>
+	</alife_presentation_respawn_on_spot>
+	
+	<alife_presentation_respawn_off>
+		<level_map spot="alife_presentation_respawn_off_spot"/>
+	</alife_presentation_respawn_off>
+	<alife_presentation_respawn_off_spot x="0" y="0" width="10" height="10" alignment="c" stretch="1" scale="1">
+		<texture x="665" y="853" width="32" height="32">ui\ui_common</texture>
+	</alife_presentation_respawn_off_spot>
 
 </map_spots>
