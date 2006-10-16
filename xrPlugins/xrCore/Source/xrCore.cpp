@@ -84,7 +84,7 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs,
 
 //.		strconcat		(ApplicationDataPath,fn,"\\Application Data\\",COMPANY_NAME,"\\",PRODUCT_NAME);
 //.		strcpy			(ApplicationDataPath, ApplicationPath);
-		strcpy			(ApplicationDataPath, WorkingPath);
+		strcpy			(ApplicationDataPath, "_AppData_");
 
 //		_splitpath		(fn,dr,di,0,0);
 //		strconcat		(ApplicationDataPath,dr,di);                                       

@@ -92,11 +92,11 @@ void CCustomRocket::SetLaunchParams (const Fmatrix& xform,
 	VERIFY2						(_valid(xform),"SetLaunchParams. Invalid xform argument!");
 	m_LaunchXForm				= xform;
 	m_vLaunchVelocity			= vel;
-	if(m_pOwner->ID()==Actor()->ID())
-	{
-		Msg("set p start v:	%f,%f,%f	\n",m_vLaunchVelocity.x,m_vLaunchVelocity.y,m_vLaunchVelocity.z);
+//	if(m_pOwner->ID()==Actor()->ID())
+//	{
+//		Msg("set p start v:	%f,%f,%f	\n",m_vLaunchVelocity.x,m_vLaunchVelocity.y,m_vLaunchVelocity.z);
 	}
-	m_vLaunchAngularVelocity	= angular_vel;
+//	m_vLaunchAngularVelocity	= angular_vel;
 	m_time_to_explode			= Device.fTimeGlobal + pSettings->r_float(cNameSect(), "force_explode_time")/1000.0f;
 #ifdef	DEBUG
 	gbg_rocket_speed1=0;
@@ -113,10 +113,11 @@ void CCustomRocket::activate_physic_shell	()
 	if( m_pPhysicsShell->isActive())
 		return;
 	VERIFY2(_valid(m_LaunchXForm),"CCustomRocket::activate_physic_shell. Invalid m_LaunchXForm!");
-	if(m_pOwner->ID()==Actor()->ID())
-	{
-		Msg("start v:	%f,%f,%f	\n",m_vLaunchVelocity.x,m_vLaunchVelocity.y,m_vLaunchVelocity.z);
-	}
+
+//	if(m_pOwner->ID()==Actor()->ID())
+//	{
+//		Msg("start v:	%f,%f,%f	\n",m_vLaunchVelocity.x,m_vLaunchVelocity.y,m_vLaunchVelocity.z);
+//	}
 	m_pPhysicsShell->Activate(m_LaunchXForm, m_vLaunchVelocity, m_vLaunchAngularVelocity);
 	m_pPhysicsShell->Update	();
 
