@@ -390,6 +390,8 @@ void CWeaponMagazined::OnStateSwitch	(u32 S)
 		switch2_Fire2	();
 		break;
 	case eMisfire:
+		if(smart_cast<CActor*>(this->H_Parent()) && (Level().CurrentViewEntity()==H_Parent()) )
+			HUD().GetUI()->AddInfoMessage("gun_jammed");
 		break;
 	case eMagEmpty:
 		switch2_Empty	();

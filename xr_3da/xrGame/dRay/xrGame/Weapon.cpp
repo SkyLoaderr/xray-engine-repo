@@ -927,6 +927,8 @@ float CWeapon::GetConditionMisfireProbability() const
 
 BOOL CWeapon::CheckForMisfire	()
 {
+	if (OnClient()) return FALSE;
+
 	float rnd = ::Random.randF(0.f,1.f);
 	float mp = GetConditionMisfireProbability();
 	if(rnd < mp)
@@ -934,10 +936,7 @@ BOOL CWeapon::CheckForMisfire	()
 		FireEnd();
 
 		bMisfire = true;
-		SwitchState(eMisfire);
-		
-		if(smart_cast<CActor*>(this->H_Parent()) && (Level().CurrentControlEntity()==H_Parent()) )
-			HUD().GetUI()->AddInfoMessage("gun_jammed");
+		SwitchState(eMisfire);		
 		
 		return TRUE;
 	}
