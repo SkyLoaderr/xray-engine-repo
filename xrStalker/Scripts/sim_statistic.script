@@ -202,6 +202,25 @@ function release_all_monsters()
 	end
 end
 
+--' Обнуление всех на текущем уровне
+function release_current_level()
+	local local_level = level.name()
+	for k,v in pairs(reg_objects_stalker) do
+		local obj = alife():object(k)
+		if alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id()) == local_level then
+			alife():release(obj,true)
+			reg_objects_stalker[k] = nil
+		end
+	end
+	for k,v in pairs(reg_objects_monster) do
+		local obj = alife():object(k)
+		if alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id()) == local_level then
+			alife():release(obj,true)
+			reg_objects_monster[k] = nil
+		end
+	end
+end
+
 --' Статистика респавнеров
 local reg_objects_respawn = {}
 local show_respawn_spot = false
