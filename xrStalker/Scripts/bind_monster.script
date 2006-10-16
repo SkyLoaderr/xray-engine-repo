@@ -138,7 +138,7 @@ function generic_object_binder:net_destroy()
 	self.object:set_callback(callback.hit,					nil)
 
 	local st = db.storage[self.object:id()]
-	if st.active_scheme then
+	if st and st.active_scheme then
 		xr_logic.issue_event(self.object, st[st.active_scheme], "net_destroy")
 	end
 	
