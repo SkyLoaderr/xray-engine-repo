@@ -14,6 +14,7 @@
 #include "../StatGraph.h"
 #include "PHDebug.h"
 #include	"actor.h"
+#include	"game_base_space.h"
 #endif
 
 ///////////////////////////////////////////////////////////////
@@ -1042,9 +1043,12 @@ CActor*			Actor()	;
 void CPHElement::set_LinearVel			  (const Fvector& velocity)
 {
 #ifdef	DEBUG
-	if(PhysicsRefObject()->ID()==Actor()->ID())
-	{
-		Msg("in");
+	if (GameID() == GAME_SINGLE)
+	{	
+		if(PhysicsRefObject()->ID()==Actor()->ID())
+		{
+			Msg("in");
+		}
 	}
 #endif
 	if(!isActive()||m_flags.test(flFixed)) return;
