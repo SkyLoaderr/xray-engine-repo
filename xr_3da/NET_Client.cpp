@@ -735,9 +735,8 @@ BOOL	IPureClient::net_HasBandwidth	()
 	u32		dwInterval			= 0;
 	if		(net_Disconnected) return FALSE;
 	
-	if		(psNET_Flags.test(NETFLAG_MINIMIZEUPDATES))	dwInterval	= 333;	// approx 3 times per second
-	if (psNET_ClientUpdate != 0)
-		dwInterval = 1000/psNET_ClientUpdate;
+	if (psNET_ClientUpdate != 0) dwInterval = 1000/psNET_ClientUpdate;
+	if		(psNET_Flags.test(NETFLAG_MINIMIZEUPDATES))	dwInterval	= 1000;	// approx 3 times per second
 
 	HRESULT hr;
 	if (0 != psNET_ClientUpdate && (dwTime-net_Time_LastUpdate)>dwInterval)	
