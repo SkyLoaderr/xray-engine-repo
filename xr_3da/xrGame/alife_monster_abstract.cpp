@@ -196,5 +196,6 @@ void CSE_ALifeMonsterAbstract::vfCheckForPopulationChanges	()
 
 Fvector CSE_ALifeMonsterAbstract::draw_level_position	() const
 {
-	return		(brain().movement().detail().draw_level_position());
+	brain().movement().update	();
+	return						(brain().movement().detail().draw_level_position());
 }
