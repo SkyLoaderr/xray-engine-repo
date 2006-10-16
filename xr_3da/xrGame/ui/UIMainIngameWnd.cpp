@@ -368,7 +368,7 @@ void CUIMainIngameWnd::Update()
 
 
 
-	m_pActor = smart_cast<CActor*>(Level().CurrentEntity());
+	m_pActor = smart_cast<CActor*>(Level().CurrentViewEntity());
 	if (!m_pActor) 
 	{
 		m_pItem					= NULL;
@@ -1142,6 +1142,9 @@ void CUIMainIngameWnd::UpdateActiveItemInfo()
 		UIWeaponBack.SetText		(str_name.c_str			()	);
 		UIWeaponSignAmmo.SetText	(str_count.c_str		()	);
 		SetAmmoIcon					(icon_sect_name.c_str	()	);
+
+		//-------------------
+		m_pWeapon = smart_cast<CWeapon*> (item);		
 	}else
 	{
 		UIWeaponIcon.Show			(false);
