@@ -179,7 +179,7 @@ end
 function se_stalker:on_death(killer)
 	cse_alife_human_stalker.on_death(self, killer)
 	-- Регистрация мапспота для демонстрации
-	sim_statistic.unregister(self)
+	sim_statistic.unregister_npc(self)
 end
 --------------------
 function se_stalker:get_smart_terrain_conditions()
