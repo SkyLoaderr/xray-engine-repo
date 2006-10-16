@@ -856,6 +856,6 @@ LPCSTR CGameObject::visual_name			(CSE_Abstract *server_entity)
 
 bool CGameObject::shedule_Needed()
 {
-	return true;
-//	return processing_enabled() || CScriptBinder::object();
+	return						(!getDestroy());
+//	return						(processing_enabled() || CScriptBinder::object());
 };
