@@ -24,6 +24,7 @@ void CLevel::remove_objects	()
 	for (int i=0; i<6; ++i) {
 		// ugly hack for checks that update is twice on frame
 		// we need it since we do updates for checking network messages
+		psNET_Flags.set			(NETFLAG_MINIMIZEUPDATES,FALSE);
 		++(Device.dwFrame);
 		psDeviceFlags.set		(rsDisableObjectsAsCrows,TRUE);
 		ClientReceive			();
