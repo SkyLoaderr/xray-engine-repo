@@ -233,7 +233,8 @@ function se_respawn:on_register()
 	if self.idle_spawn_max == nil then
 		self.idle_spawn_max = self.idle_spawn_min
 	end
-	self.conditions = xr_logic.parse_condlist(self, section_name, "conditions", r_str(ini, section_name, "conditions", 100))
+	self.str_conditions = r_str(ini, section_name, "conditions", 100) 
+	self.conditions = xr_logic.parse_condlist(self, section_name, "conditions", self.str_conditions)
 	self.respawn_radius = r_num(ini, section_name, "respawn_radius", -1)
 	self.parent	= r_num(ini, section_name, "parent", nil)
 	self.item_spawn	= r_bool(ini, section_name, "item_spawn", false)
@@ -443,10 +444,13 @@ function se_respawn:update_online()
 	--'cse_alife_smart_zone.update( self )
 	--'printf("RESPAWN: [%s] se_respawn update_online", tostring(self:name()))
 	if self.respawn_radius == -1 then
+		sim_statistic.respawn_enabled(self, false)
 		return
 	end
 	if db.actor:position():distance_to (self.position) >= self.respawn_radius then
 		self:execute()
+	else
+		sim_statistic.respawn_enabled(self, false)
 	end
 end
 

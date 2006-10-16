@@ -202,11 +202,6 @@ function release_all_monsters()
 	end
 end
 
-
---' Статистика смарттеррейнов
-
-
-
 --' Статистика респавнеров
 local reg_objects_respawn = {}
 local show_respawn_spot = false
@@ -215,7 +210,7 @@ function register_respawn(obj)
 	if obj.item_spawn ~= false then
 		return
 	end
-	local section = ""
+	local section = obj.str_conditions.."\\n"
 	for k,v in pairs(obj.respawn_section) do
 		section = section .. v.section .. "=" .. v.prob .. "\\n"
 	end
@@ -231,11 +226,17 @@ function respawn_enabled(obj, enabled)
 	if obj.item_spawn ~= false then
 		return
 	end
+	local gg = table.getn(obj.spawned_obj)
+	if reg_objects_respawn[obj.id].enabled == enabled and
+	   reg_objects_respawn[obj.id].count == gg
+	then
+		return
+	end
 	if show_respawn_spot == true then
 		unmark_respawn(obj.id)
 	end
 	reg_objects_respawn[obj.id].enabled = enabled
-	reg_objects_respawn[obj.id].count = table.getn(obj.spawned_obj)
+	reg_objects_respawn[obj.id].count = gg
 	if show_respawn_spot == true then
 		mark_respawn(obj.id)
 	end
@@ -243,7 +244,7 @@ end
 function mark_respawn(obj_id)
 	local rr = reg_objects_respawn[obj_id]
 	if rr.exist ~= true then
-		local str = rr.section.."spawned "..tostring(count).."("..rr.max_count..")"
+		local str = rr.section.."spawned "..tostring(rr.count).."("..rr.max_count..")"
 		if rr.enabled then
 			level.map_add_object_spot(obj_id, "alife_presentation_respawn_on", str)
 		else
@@ -273,5 +274,72 @@ function unmark_all_respawns()
 	show_respawn_spot = false
 	for k,v in pairs(reg_objects_respawn) do
 		unmark_respawn(obj_id)			
+	end
+end
+
+
+--' Статистика смарттеррейнов
+local reg_objects_smart = {}
+local show_smart_spot = false
+function register_smart(obj)
+	local section = obj:name().."\\n"
+	reg_objects_smart[obj.id] = {section = section, enabled = false, cap = obj.gulag.capacity, pop = 0}
+	if show_smart_spot == true then
+		mark_smart(obj.id)
+	end
+end
+function unregister_smart(obj)
+	reg_objects_smart[obj.id] = nil
+end
+function smart_enabled(obj, enabled)
+	local pop = obj.gulag:get_population()
+
+	if reg_objects_smart[obj.id].enabled == enabled and
+	   reg_objects_smart[obj.id].pop == pop 		
+	then
+		return
+	end
+	if show_smart_spot == true then
+		unmark_smart(obj.id)
+	end
+	reg_objects_smart[obj.id].enabled = enabled
+	reg_objects_smart[obj.id].pop = pop
+	if show_smart_spot == true then
+		mark_smart(obj.id)
+	end
+end
+function mark_smart(obj_id)
+	local rr = reg_objects_smart[obj_id]
+	if rr.exist ~= true then
+		local str = rr.section.."pop = "..tostring(rr.pop).."("..tostring(rr.cap)..")"
+		if rr.enabled then
+			level.map_add_object_spot(obj_id, "alife_presentation_smart_on", str)
+		else
+			level.map_add_object_spot(obj_id, "alife_presentation_smart_off", str)
+		end
+		reg_objects_smart[obj_id].exist = true
+	end
+end
+function unmark_smart(obj_id)
+	local rr = reg_objects_smart[obj_id]
+	if rr.exist == true then
+		if rr.enabled then
+			level.map_remove_object_spot(obj_id, "alife_presentation_smart_on")
+		else
+			level.map_remove_object_spot(obj_id, "alife_presentation_smart_off")
+		end
+		reg_objects_smart[obj_id].exist = nil
+	end
+end
+function mark_all_smarts()
+	show_smart_spot = true
+	for k,v in pairs(reg_objects_smart) do		
+		mark_smart(k)
+	end
+end
+function unmark_all_smarts()
+	show_smart_spot = false
+	for k,v in pairs(reg_objects_smart) do
+		unmark_smart(obj_id)			
 	end
 end
