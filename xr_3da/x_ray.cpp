@@ -412,7 +412,7 @@ LPCSTR _GetFontTexName (LPCSTR section)
 	int idx			= def_idx;
 
 	if(w<=800)		idx = 0;
-	else if(w<=1024)idx = 1;
+	else if(w<=1080)idx = 1;
 	else 			idx = 2;
 
 	while(idx>=0){
