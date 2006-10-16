@@ -100,8 +100,8 @@ extern string64	gsCDKey;
 void CUICDkey::SaveValue(){
 	CUIOptionsItem::SaveValue();
 
-	char NewCDKey[32];
-	HKEY KeyCDKey = 0;
+//	char NewCDKey[32];
+//	HKEY KeyCDKey = 0;
 
 	sprintf(gsCDKey,"%s",AddHyphens(m_lines.GetText()));
 /*
