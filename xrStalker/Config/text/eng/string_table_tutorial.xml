@@ -45,4 +45,10 @@
 	<string id="wound_tutorial">
 		<text>When the character is hit the wound may bleed. Bleeding causes the character to constantly lose health. The more serious the bleeding (a green icon means slight bleeding while a red icon indicates a serious haemorrhage) the faster the rate at which the character loses health. Bleeding will stop with time but even serious haemorrhages can be stopped immediately by using bandages.</text>
 	</string>
+	
+	<!-- !!!tutorials for presentation!!! -->
+	
+	<string id="tutorial_for_pripyat">
+		<text>Follow the White Rabbit.</text>
+	</string>
 </string_table>

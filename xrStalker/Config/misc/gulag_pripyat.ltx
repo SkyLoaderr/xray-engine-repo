@@ -339,6 +339,7 @@ path_look           = wave7_leader_look2
 def_state_moving1   = assault
 def_state_moving2   = assault
 on_signal           = arrived | {-pri_wave7_start} %+pri_wave7_start%
+on_info				= {-pri_wave7_sound_start =pri_follower_see_ambush} %+pri_wave7_sound_start%
 wounded             = wounded@ignore
 meet                = meet@ignore_abuse ;no_meet
 combat_ignore_cond  = {-pri_wave7_start}

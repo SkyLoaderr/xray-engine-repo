@@ -659,6 +659,29 @@
 			</main_wnd>
 		</item>
 	</part_15_hide_weapon>
+	
+	<!-- !!!tutorials for presentation!!! -->
+	
+	<tutorial_for_pripyat><!--делаю новый туториал-->
+		<global_wnd/>
+		
+		<item><!-- спрятать/достать оружие -->
+			<length_sec>15</length_sec>
+			<pause_state>on</pause_state>
+			<guard_key/>
+			<sound/>
+			<cursor_pos/>
+			<pda_section/>
+			<grab_input>0</grab_input>
+			<main_wnd>
+				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
+							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<text font="graffiti22" r="225" g="225" b="250" a="255">tutorial_for_pripyat</text>
+				</auto_static>
+			</main_wnd>
+		</item>
+	</tutorial_for_pripyat>
 
 #include "ui\ui_credits.xml"
 #include "ui\ui_movies.xml"
