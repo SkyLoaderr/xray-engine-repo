@@ -34,5 +34,4 @@
 #	define aiDrawGameGraphStalkers		(1<<21)
 #	define aiDrawGameGraphObjects		(1<<22)
 #	define aiNilObjectAccess			(1<<23)
-#	define aiEnableScriptProfiler		(1<<24)
 #endif
