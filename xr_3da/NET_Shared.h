@@ -13,9 +13,11 @@
 
 XRNETSERVER_API extern Flags32	psNET_Flags;
 XRNETSERVER_API extern int		psNET_ClientUpdate;
+XRNETSERVER_API extern int		get_psNET_ClientUpdate();
 XRNETSERVER_API extern int		psNET_ClientPending;
 XRNETSERVER_API extern char		psNET_Name[];
 XRNETSERVER_API extern int		psNET_ServerUpdate;
+XRNETSERVER_API extern int		get_psNET_ServerUpdate();
 XRNETSERVER_API extern int		psNET_ServerPending;
 
 enum	{
