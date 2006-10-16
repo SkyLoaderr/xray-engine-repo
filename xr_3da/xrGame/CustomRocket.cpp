@@ -95,7 +95,7 @@ void CCustomRocket::SetLaunchParams (const Fmatrix& xform,
 //	if(m_pOwner->ID()==Actor()->ID())
 //	{
 //		Msg("set p start v:	%f,%f,%f	\n",m_vLaunchVelocity.x,m_vLaunchVelocity.y,m_vLaunchVelocity.z);
-	}
+//	}
 //	m_vLaunchAngularVelocity	= angular_vel;
 	m_time_to_explode			= Device.fTimeGlobal + pSettings->r_float(cNameSect(), "force_explode_time")/1000.0f;
 #ifdef	DEBUG
