@@ -41,6 +41,8 @@ BOOL CSpaceRestrictor::net_Spawn	(CSE_Abstract* data)
 	CSE_ALifeSpaceRestrictor		*se_shape = smart_cast<CSE_ALifeSpaceRestrictor*>(abstract);
 	R_ASSERT						(se_shape);
 
+	m_space_restrictor_type			= se_shape->m_space_restrictor_type;
+
 	CCF_Shape						*shape = xr_new<CCF_Shape>(this);
 	collidable.model				= shape;
 

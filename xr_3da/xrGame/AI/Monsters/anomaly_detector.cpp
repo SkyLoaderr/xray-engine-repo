@@ -73,15 +73,15 @@ void CAnomalyDetector::on_contact(CObject *obj)
 	
 	CCustomZone	*custom_zone = smart_cast<CCustomZone*>(obj);
 	if (!custom_zone) return;
+	
+	// if its NOT A restrictor - skip
+	if (custom_zone->restrictor_type() == RestrictionSpace::eRestrictorTypeNone) return;
 
 	if (Level().space_restriction_manager().restriction_presented(
 		m_object->control().path_builder().restrictions().in_restrictions(),custom_zone->cName())) return;
 
 	ANOMALY_INFO_VEC_IT it = std::find(m_storage.begin(), m_storage.end(), custom_zone);	
-	if (it != m_storage.end()) {
-		it->time_registered = time();
-		return;
-	}
+	if (it != m_storage.end()) return;
 
 	SAnomalyInfo			info;
 	info.object				= obj;

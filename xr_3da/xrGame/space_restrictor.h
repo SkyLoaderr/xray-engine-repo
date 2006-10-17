@@ -9,6 +9,8 @@
 #pragma once
 
 #include "gameobject.h"
+#include "restriction_space.h"
+
 
 class CSpaceRestrictor : public CGameObject {
 private:
@@ -38,6 +40,8 @@ private:
 	mutable bool				m_actuality;
 
 private:
+			u8					m_space_restrictor_type;
+private:
 	IC		void				actual				(bool value) const;
 			void				prepare				() const;
 			bool				prepared_inside		(const Fsphere &sphere) const;
@@ -55,6 +59,8 @@ public:
 	IC		bool				actual				() const;
 	virtual	CSpaceRestrictor	*cast_restrictor	() {return this;}
 	virtual	bool				need_update			() {return false;};
+
+	IC RestrictionSpace::ERestrictorTypes restrictor_type() const; 
 
 public:
 #ifdef DEBUG
