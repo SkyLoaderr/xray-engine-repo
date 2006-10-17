@@ -9,8 +9,6 @@ class CUIPdaWnd;
 class CUIInventoryWnd;
 class CUIMapDesc;
 
-//void OnBuySpawn(CUIWindow* pWnd, void* p);
-
 class game_cl_Deathmatch :public game_cl_mp
 {
 typedef game_cl_mp inherited;
@@ -43,7 +41,19 @@ public :
 // from UIGameDM
 protected:
 //	DEF_VECTOR						(TEAMS_LIST, xr_string);
-	DEF_VECTOR						(PRESET_ITEMS, s16);
+	struct PresetItem
+	{
+		u8	SlotID;
+		u8	ItemID;
+		s16	BigID;
+		PresetItem (u8 Slot, u8 Item) { set(Slot, Item); };
+		PresetItem (s16 Big) { set(Big); };
+		bool	operator ==		(const s16& ID) { return (BigID & 0xff1f) == (ID & 0xff1f);}
+		void		set(s16 Big) { SlotID = u8((Big>>0x08) & 0x00ff); ItemID = u8(Big & 0x00ff); BigID = Big;}
+		void		set(u8 Slot, u8 Item) { SlotID = Slot; ItemID = Item; BigID = (s16(SlotID) << 0x08) | s16(ItemID); };
+	};
+
+	DEF_VECTOR						(PRESET_ITEMS, PresetItem);
 
 //	TEAMS_LIST						m_aTeamSections;
 	PRESET_ITEMS					PresetItemsTeam0;
@@ -72,12 +82,12 @@ protected:
 
 	u32								m_dwVoteEndTime;
 
-			void					CheckItem				(PIItem pItem, PRESET_ITEMS* pPresetItems);
+			void					CheckItem				(PIItem pItem, PRESET_ITEMS* pPresetItems,  BOOL OnlyPreset);
 
 			void					ClearBuyMenu			();
 			CUIBuyWnd*		InitBuyMenu				(LPCSTR BasePriceSection, s16 Team);
 			CUISkinSelectorWnd*		InitSkinMenu			(s16 Team = -1);
-			void					SetBuyMenuItems			(PRESET_ITEMS* pItems);
+			void					SetBuyMenuItems			(PRESET_ITEMS* pItems, BOOL OnlyPreset = FALSE);
 	virtual bool					CanBeReady				();
 	virtual BOOL					CanCallBuyMenu			();
 	virtual BOOL					CanCallSkinMenu			();
