@@ -48,3 +48,17 @@
 		</objective>
 	</game_task>
 
+<!--DELME: only for presentation -->
+	<game_task id="pripyat_task_1">
+		<title>pripyat_task_title</title>
+		<objective>
+			<text>pripyat_task_title</text>
+			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>pri_wave7_end</infoportion_complete>
+		</objective>
+		<objective>
+			<text>pripyat_task_objective</text>
+			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<infoportion_complete>pri_wave7_end</infoportion_complete>
+		</objective>
+	</game_task>
