@@ -44,6 +44,7 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 	DisablePointer		();
 
 	EnableSpot				();
+	m_cached.m_updatedFrame = u32(-1);
 }
 
 CMapLocation::~CMapLocation()
@@ -146,12 +147,16 @@ void CMapLocation::LoadSpot(LPCSTR type, bool bReload)
 
 Fvector2 CMapLocation::Position()
 {
+	if(m_cached.m_updatedFrame==Device.dwFrame) 
+		return m_cached.m_Position;
+
 	Fvector2 pos;
 	pos.set(0.0f,0.0f);
 
 	if(m_flags.test( ePosToActor)){
 		m_position_global = Level().CurrentEntity()->Position();
 		pos.set(m_position_global.x, m_position_global.z);
+		m_cached.m_Position = pos;
 		return pos;
 	}
 
@@ -171,11 +176,15 @@ Fvector2 CMapLocation::Position()
 		pos.set(m_position_global.x, m_position_global.z);
 	}
 
+	m_cached.m_Position = pos;
 	return pos;
 }
 
 Fvector2 CMapLocation::Direction()
 {
+	if(m_cached.m_updatedFrame==Device.dwFrame) 
+		return m_cached.m_Direction;
+
 	Fvector2 res;
 	res.set(0.0f,0.0f);
 
@@ -203,51 +212,87 @@ Fvector2 CMapLocation::Direction()
 		
 	}
 	
-	return res;
+	m_cached.m_Direction	= res;
+	return					res;
 }
 
 shared_str CMapLocation::LevelName()
 {
+	if(m_cached.m_updatedFrame==Device.dwFrame) 
+		return m_cached.m_LevelName;
+
 	if(ai().get_alife() && ai().get_game_graph())		
 	{
-		CSE_Abstract* E = ai().alife().objects().object(m_objectID,true);//Level().Server->game->get_entity_from_eid(m_objectID); //VERIFY(E);
+		CSE_Abstract* E = ai().alife().objects().object(m_objectID,true);
 		if(!E){
 			Msg("! Critical: SMapLocation binded to non-existent object id=%d",m_objectID);
 			return "ERROR";
 		}
 		
 		CSE_ALifeObject* AO = smart_cast<CSE_ALifeObject*>(E);
-		if(AO)	
-			return  ai().game_graph().header().level(ai().game_graph().vertex(AO->m_tGraphID)->level_id()).name();
-		else	
-			return Level().name();
+		if(AO){	
+			m_cached.m_LevelName = ai().game_graph().header().level(ai().game_graph().vertex(AO->m_tGraphID)->level_id()).name();
+			return m_cached.m_LevelName;
+		}else{	
+			m_cached.m_LevelName = Level().name();
+			return m_cached.m_LevelName;
+		}
+	}else{
+		m_cached.m_LevelName = Level().name();
+		return m_cached.m_LevelName;
 	}
-	else
-		return Level().name();
 }
 
 bool CMapLocation::Update() //returns actual
 {
+	if(m_cached.m_updatedFrame==Device.dwFrame) 
+		return m_cached.m_Actuality;
+		
 	if(	m_flags.test(eTTL) ){
-		if( m_actual_time < Device.dwTimeGlobal)
-			return false;
+		if( m_actual_time < Device.dwTimeGlobal){
+			m_cached.m_Actuality		= false;
+			m_cached.m_updatedFrame		= Device.dwFrame;
+			return						m_cached.m_Actuality;
+		}
 	}
 
 	CObject* pObject =  Level().Objects.net_Find(m_objectID);
 	
 	//mp
-	if ( GameID()!=GAME_SINGLE && (pObject) ) return true;
+	if ( GameID()!=GAME_SINGLE && (pObject) ){
+			m_cached.m_Actuality		= true;
+			Position					();
+			Direction					();
+			LevelName					();
+			m_cached.m_updatedFrame		= Device.dwFrame;
+			return						m_cached.m_Actuality;
+	}
 	
 	//single
-	if(pObject) return true; // online
+	if(pObject){
+			m_cached.m_Actuality		= true;
+			Position					();
+			Direction					();
+			LevelName					();
+			m_cached.m_updatedFrame		= Device.dwFrame;
+			return						m_cached.m_Actuality;
+	}
 
 	if(ai().get_alife())		
 	{
-		return ( NULL != ai().alife().objects().object(m_objectID,true) );
+		m_cached.m_Actuality = ( NULL != ai().alife().objects().object(m_objectID,true) );
+		if(m_cached.m_Actuality){
+			Position					();
+			Direction					();
+			LevelName					();
+		}
+		m_cached.m_updatedFrame			= Device.dwFrame;
+		return							m_cached.m_Actuality;
 	}
 
-
-	return false;
+	m_cached.m_Actuality				= false;
+	m_cached.m_updatedFrame				= Device.dwFrame;
+	return								m_cached.m_Actuality;
 }
 
 extern xr_vector<CLevelChanger*>	g_lchangers;

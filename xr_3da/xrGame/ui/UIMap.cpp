@@ -248,6 +248,17 @@ void CUIGlobalMap::Init		(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 	SetMaxZoom				(gameLtx.r_float(m_name,"max_zoom"));
 }
 
+void CUIGlobalMap::Update()
+{
+	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it){
+		CUICustomMap* m = smart_cast<CUICustomMap*>(*it);
+		if (!m)					continue;
+		m->DetachAll			();
+	}
+
+	inherited::Update();
+}
+
 
 void CUIGlobalMap::ClipByVisRect()
 {

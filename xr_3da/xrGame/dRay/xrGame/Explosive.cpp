@@ -339,8 +339,10 @@ void CExplosive::Explode()
 	Sound->play_at_pos(sndExplode, 0, pos, false);
 	
 	//показываем эффекты
-	
-	m_wallmark_manager.PlaceWallmarks(pos,cast_game_object());
+
+//.	if(IsGameTypeSingle())
+		m_wallmark_manager.PlaceWallmarks(pos,cast_game_object());
+
 	Fvector vel;
 	smart_cast<CPhysicsShellHolder*>(cast_game_object())->PHGetLinearVell(vel);
 
@@ -374,26 +376,18 @@ void CExplosive::Explode()
 		frag_dir.random_dir	();
 		frag_dir.normalize	();
 		
-		float		m_fCurrentFireDist		= m_fFragsRadius;
-		float		m_fCurrentHitPower		= m_fFragHit;
-		float		m_fCurrentHitImpulse	= m_fFragHitImpulse;
-		ALife::EHitType m_eCurrentHitType	= m_eHitTypeFrag;
-		float		m_fCurrentWallmarkSize	= fWallmarkSize;
-		Fvector		m_vCurrentShootDir		= frag_dir;
-		Fvector		m_vCurrentShootPos		= pos;
-		
 		CCartridge cartridge;
 		cartridge.m_kDist					= 1.f;
 		cartridge.m_kHit					= 1.f;
 		cartridge.m_kImpulse				= 1.f;
 		cartridge.m_kPierce					= 1.f;
-		cartridge.fWallmarkSize				= m_fCurrentWallmarkSize;
+		cartridge.fWallmarkSize				= fWallmarkSize;
 		cartridge.bullet_material_idx		= GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 		cartridge.m_flags.set				(CCartridge::cfTracer,FALSE);
 
-		Level().BulletManager().AddBullet(	m_vCurrentShootPos, m_vCurrentShootDir, m_fFragmentSpeed,
-											m_fCurrentHitPower, m_fCurrentHitImpulse, Initiator(),
-											cast_game_object()->ID(), m_eCurrentHitType, m_fCurrentFireDist, 
+		Level().BulletManager().AddBullet(	pos, frag_dir, m_fFragmentSpeed,
+											m_fFragHit, m_fFragHitImpulse, Initiator(),
+											cast_game_object()->ID(), m_eHitTypeFrag, m_fFragsRadius, 
 											cartridge, SendHits );
 	}	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

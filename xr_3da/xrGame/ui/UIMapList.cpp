@@ -62,7 +62,7 @@ CUIMapList::~CUIMapList(){
 }
 
 void CUIMapList::StartDedicatedServer(){
-	strcpy(g_sLaunchOnExit,"xr_3da.exe -dedicated -");
+	strcpy(g_sLaunchOnExit,"dedicated//xr_3da.exe -");
 	strcat(g_sLaunchOnExit,GetCommandLine(""));
 	Msg("%s","-- Going to quit before starting dedicated server");
 	Msg("%s",g_sLaunchOnExit);

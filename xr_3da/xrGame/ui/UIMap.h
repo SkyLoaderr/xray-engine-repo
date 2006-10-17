@@ -77,6 +77,7 @@ public:
 	float			CalcOpenRect			(const Fvector2& center_point, Frect& map_desired_rect, float tgt_zoom);
 
 	void			ClipByVisRect			();
+	virtual void	Update					();
 };
 
 class CUILevelMap: public CUICustomMap{
