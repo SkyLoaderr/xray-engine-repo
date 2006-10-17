@@ -79,6 +79,7 @@ void CBaseMonster::reload	(LPCSTR section)
 
 	// load base sounds
 	LOAD_SOUND("sound_idle",			SOUND_TYPE_MONSTER_TALKING,		MonsterSound::eLowPriority,			MonsterSound::eBaseChannel,			MonsterSound::eMonsterSoundIdle);
+	LOAD_SOUND("sound_distant_idle",	SOUND_TYPE_MONSTER_TALKING,		MonsterSound::eLowPriority+1,		MonsterSound::eBaseChannel,			MonsterSound::eMonsterSoundIdleDistant);
 	LOAD_SOUND("sound_eat",				SOUND_TYPE_MONSTER_TALKING,		MonsterSound::eNormalPriority + 4,	MonsterSound::eBaseChannel,			MonsterSound::eMonsterSoundEat);
 	LOAD_SOUND("sound_aggressive",		SOUND_TYPE_MONSTER_ATTACKING,	MonsterSound::eNormalPriority + 3,	MonsterSound::eBaseChannel,			MonsterSound::eMonsterSoundAggressive);
 	LOAD_SOUND("sound_attack_hit",		SOUND_TYPE_MONSTER_ATTACKING,	MonsterSound::eHighPriority + 1,	MonsterSound::eCaptureAllChannels,	MonsterSound::eMonsterSoundAttackHit);
@@ -251,6 +252,9 @@ void CBaseMonster::settings_read(CInifile *ini, LPCSTR section, SMonsterSettings
 	READ_SETTINGS(data.m_dwIdleSndDelay,	"idle_sound_delay",		r_u32, ini, section);
 	READ_SETTINGS(data.m_dwEatSndDelay,		"eat_sound_delay",		r_u32, ini, section);
 	READ_SETTINGS(data.m_dwAttackSndDelay,	"attack_sound_delay",	r_u32, ini, section);
+
+	READ_SETTINGS(data.m_dwDistantIdleSndDelay,	"distant_idle_sound_delay",	r_u32, ini, section);
+	READ_SETTINGS(data.m_fDistantIdleSndRange,	"distant_idle_sound_range",	r_float, ini, section);
 
 	READ_SETTINGS(data.m_fEatFreq,			"eat_freq",				r_float, ini, section);
 	READ_SETTINGS(data.m_fEatSlice,			"eat_slice",			r_float, ini, section);

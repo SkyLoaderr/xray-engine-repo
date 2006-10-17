@@ -14,6 +14,9 @@ struct SMonsterSettings {
 	u32						m_dwEatSndDelay;
 	u32						m_dwAttackSndDelay;
 
+	u32						m_dwDistantIdleSndDelay;
+	float					m_fDistantIdleSndRange;
+
 	// -------------------------------------------------------
 
 	u32						m_dwDayTimeBegin;

@@ -38,6 +38,7 @@
 #include "../../../inventory.h"
 #include "../../../xrserver.h"
 #include "../ai_monster_squad.h"
+#include "../../../actor.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -229,7 +230,15 @@ void CBaseMonster::set_state_sound(u32 type, bool once)
 			u32 delay = 0;
 			switch (type) {
 			case MonsterSound::eMonsterSoundIdle : 
-				delay = u32(float(db().m_dwIdleSndDelay) * _sqrt(float(objects_count)));
+				// check distance to actor
+
+				if (Actor()->Position().distance_to(Position()) > db().m_fDistantIdleSndRange) {
+					delay = u32(float(db().m_dwDistantIdleSndDelay) * _sqrt(float(objects_count)));
+					type  = MonsterSound::eMonsterSoundIdleDistant;
+				} else {
+					delay = u32(float(db().m_dwIdleSndDelay) * _sqrt(float(objects_count)));
+				}
+				
 				break;
 			case MonsterSound::eMonsterSoundEat:
 				delay = u32(float(db().m_dwEatSndDelay) * _sqrt(float(objects_count)));
