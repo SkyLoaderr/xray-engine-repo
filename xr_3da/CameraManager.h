@@ -2,7 +2,7 @@
 
 #include "CameraDefs.h"
 
-struct SPPInfo {
+struct ENGINE_API SPPInfo {
 	struct SColor{
 		float r, g, b;
 		SColor					(){}
@@ -82,39 +82,8 @@ struct SPPInfo {
 		color_gray.set	(.333f, .333f,	.333f);
 		color_add.set	(0.f,	0.f,	0.f);
 	}
-	IC SPPInfo&	lerp(const SPPInfo& def, const SPPInfo& to, float factor)
-	{
-		SPPInfo& pp = *this;
-		clamp(factor, 0.0f, 1.0f);
-
-		pp.duality.h		+= def.duality.h		+ (to.duality.h			- def.duality.h)		* factor; 			
-		pp.duality.v		+= def.duality.v		+ (to.duality.v			- def.duality.v)		* factor;
-		pp.gray				+= def.gray				+ (to.gray				- def.gray)				* factor;
-		pp.blur				+= def.blur				+ (to.blur				- def.blur)				* factor;
-		pp.noise.intensity	+= def.noise.intensity	+ (to.noise.intensity	- def.noise.intensity)	* factor;
-		pp.noise.grain		+= def.noise.grain		+ (to.noise.grain		- def.noise.grain)		* factor;
-		pp.noise.fps		+= def.noise.fps		+ (to.noise.fps			- def.noise.fps)		* factor;	
-
-		pp.color_base.set	(
-			def.color_base.r	+ (to.color_base.r - def.color_base.r) * factor, 
-			def.color_base.g	+ (to.color_base.g - def.color_base.g) * factor, 
-			def.color_base.b	+ (to.color_base.b - def.color_base.b) * factor
-			);
-
-		pp.color_gray.set	(
-			def.color_gray.r	+ (to.color_gray.r - def.color_gray.r) * factor, 
-			def.color_gray.g	+ (to.color_gray.g - def.color_gray.g) * factor, 
-			def.color_gray.b	+ (to.color_gray.b - def.color_gray.b) * factor
-			);
-
-		pp.color_add.set	(
-			def.color_add.r	+ (to.color_add.r - def.color_add.r) * factor, 
-			def.color_add.g	+ (to.color_add.g - def.color_add.g) * factor, 
-			def.color_add.b	+ (to.color_add.b - def.color_add.b) * factor
-			);
-		return *this;
-	}
-	void	validate(LPCSTR str);
+	SPPInfo&	lerp(const SPPInfo& def, const SPPInfo& to, float factor);
+	void		validate(LPCSTR str);
 };
 
 DEFINE_VECTOR				(CEffectorCam*,EffectorCamVec,EffectorCamIt);
