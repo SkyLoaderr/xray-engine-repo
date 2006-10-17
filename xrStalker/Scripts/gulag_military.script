@@ -570,7 +570,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
-		                     if db.actor:has_info ("mil_lukash_dead") then return true end
+		                     if db.actor_proxy:has_info ("mil_lukash_dead") then return true end
 		                     return info.profile_name == "mil_Svoboda_leader" and info.story_id == 707
 		            end
 		}
