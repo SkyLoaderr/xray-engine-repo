@@ -1507,7 +1507,7 @@ function agr_krot_sos_1_2( actor, npc )
 	if actor:dont_has_info( "agr_help_krot_start" ) and
 	   actor:dont_has_info( "agr_help_krot_done" ) and
 	   actor:dont_has_info( "agr_krot_skirmish_start" ) and
-	   actor:dont_has_info( "agr_krot_dead" )
+	   actor:dont_has_info( "agr_krot_dead" ) and not(agroprom_tasks.agr_actor_enemy())
 	then
 		actor:give_info_portion( "agr_help_krot_start" )
 		news_manager.send_tip( actor, "tips_agr_krot_sos1", 0, "krot", 10000 )
