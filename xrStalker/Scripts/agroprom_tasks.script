@@ -94,7 +94,9 @@ function have_gunslingers_flash(task, objective)
 end
 
 function agr_actor_enemy ()
-    local npc = level_object_by_sid (302)
-    local t = db.storage[npc:id()].death
-	return npc:relation(actor) == game_object.enemy or (t ~= nil and t.killer == actor:id())
+    if level_object_by_sid (302) ~= nil then
+		local npc = level_object_by_sid (302)
+		local t = db.storage[npc:id()].death
+		return npc:relation(actor) == game_object.enemy or (t ~= nil and t.killer == actor:id())
+	end
 end
