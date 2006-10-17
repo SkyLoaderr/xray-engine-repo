@@ -240,9 +240,8 @@ local infos_table = {"esc_kill_gunslinger",
 "bar_kruglov_follow_tunnel",
 "bar_go_through_anomaly",
 "bar_rescue_research_follow",
-"bar_ecolog_research_normal",
-"bar_rescue_research_reward",
-"bar_rescue_research_done"
+"bar_rescue_research_fail",
+"bar_heli_scene_professor_die"
 }
 local actor = db.actor
 
