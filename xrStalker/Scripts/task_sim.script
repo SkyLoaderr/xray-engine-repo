@@ -441,7 +441,9 @@ local infos_table = {"esc_kill_gunslinger",
 "sar_enter_command_center",
 "sar_monolith_destroy",
 "esc_find_doctor_done",
-"cit_fail_first_task"
+"cit_fail_first_task",
+"gar_after_battle",
+"agr_krot_band_start"
 }
 local actor = db.actor
 

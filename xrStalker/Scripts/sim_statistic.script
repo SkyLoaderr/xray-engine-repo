@@ -359,6 +359,17 @@ end
 function unmark_all_smarts()
 	show_smart_spot = false
 	for k,v in pairs(reg_objects_smart) do
-		unmark_smart(obj_id)			
+		unmark_smart(k)			
 	end
+end
+
+
+
+function mark_all_npc()
+	mark_all_stalkers()
+	mark_all_monsters()
+end
+function mark_all_addon()
+	mark_all_respawns()
+	mark_all_smarts()
 end
