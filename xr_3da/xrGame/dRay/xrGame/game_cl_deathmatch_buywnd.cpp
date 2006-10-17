@@ -89,22 +89,34 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 	}
 };
 
-void game_cl_Deathmatch::SetBuyMenuItems		()
+void	game_cl_Deathmatch::OnBuyMenu_DefaultItems	()
+{
+	//---------------------------------------------------------
+/*	PRESET_ITEMS_it It = PlayerDefItems.begin();
+	PRESET_ITEMS_it Et = PlayerDefItems.end();
+	for ( ; It != Et; ++It) 
+	{
+		s16	ItemID = (*It);
+
+		pCurBuyMenu->SectionToSlot(u8((ItemID&0xff00)>>0x08), u8(ItemID&0x00ff), false);
+	};
+*/	//---------------------------------------------------------
+	SetBuyMenuItems(&PlayerDefItems);
+};
+
+void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems)
 {
 	game_PlayerState* P = local_player;
 	if (!P) return;
 	//---------------------------------------------------------
 //	AdditionalPresetItems.clear();
 	xr_vector <s16>			TmpPresetItems;
-	PRESET_ITEMS_it		It = pCurPresetItems->begin();
-	PRESET_ITEMS_it		Et = pCurPresetItems->end();
+	PRESET_ITEMS_it		It = pItems->begin();
+	PRESET_ITEMS_it		Et = pItems->end();
 	for ( ; It != Et; ++It) 
 	{
 		s16 ID = *It;
-//		if (((ID & 0xff00) >> 0x08) != (UNBUYABLESLOT-1))
-			TmpPresetItems.push_back(ID);
-//		else
-//			AdditionalPresetItems.push_back(ID);
+		TmpPresetItems.push_back(ID);
 	};
 	//---------------------------------------------------------
 	ClearBuyMenu			();
@@ -115,18 +127,6 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 	CActor* pCurActor = smart_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
 	if (pCurActor)
 	{
-		//проверяем предметы которые есть у игрока
-
-		/*
-		TIItemContainer::const_iterator	I = pCurActor->inventory().m_all.begin();
-		TIItemContainer::const_iterator	E = pCurActor->inventory().m_all.end();
-		
-		for ( ; I != E; ++I) 
-		{
-			CheckItem((*I), &TmpPresetItems);
-		};
-		*/
-
 		//проверяем пояс
 		TIItemContainer::const_iterator	IBelt = pCurActor->inventory().m_belt.begin();
 		TIItemContainer::const_iterator	EBelt = pCurActor->inventory().m_belt.end();
@@ -294,22 +294,6 @@ void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWnd
 		s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);
 		pPresetItems->push_back(ID);
 	};
-};
-
-void	game_cl_Deathmatch::OnBuyMenu_DefaultItems	()
-{
-//	pCurBuyMenu->IgnoreMoney(true);
-	//---------------------------------------------------------
-	PRESET_ITEMS_it It = PlayerDefItems.begin();
-	PRESET_ITEMS_it Et = PlayerDefItems.end();
-	for ( ; It != Et; ++It) 
-	{
-		s16	ItemID = (*It);
-
-		pCurBuyMenu->SectionToSlot(u8((ItemID&0xff00)>>0x08), u8(ItemID&0x00ff), false);
-	};
-	//---------------------------------------------------------
-//	pCurBuyMenu->IgnoreMoney(false);
 };
 
 void				game_cl_Deathmatch::LoadDefItemsForRank(CUIBuyWnd* pBuyMenu)

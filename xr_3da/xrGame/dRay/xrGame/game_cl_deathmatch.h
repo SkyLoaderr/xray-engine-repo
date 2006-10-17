@@ -77,7 +77,7 @@ protected:
 			void					ClearBuyMenu			();
 			CUIBuyWnd*		InitBuyMenu				(LPCSTR BasePriceSection, s16 Team);
 			CUISkinSelectorWnd*		InitSkinMenu			(s16 Team = -1);
-			void					SetBuyMenuItems			();
+			void					SetBuyMenuItems			(PRESET_ITEMS* pItems);
 	virtual bool					CanBeReady				();
 	virtual BOOL					CanCallBuyMenu			();
 	virtual BOOL					CanCallSkinMenu			();

@@ -339,7 +339,7 @@ bool game_cl_Deathmatch::CanBeReady				()
 	SetCurrentBuyMenu();
 	
 	if (pCurBuyMenu && !pCurBuyMenu->IsShown())
-		SetBuyMenuItems		();
+		SetBuyMenuItems		(pCurPresetItems);
 
 	if (!m_bSkinSelected)
 	{
@@ -674,7 +674,7 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 				pCurBuyMenu->ResetItems();
 
 				if (pCurBuyMenu && !pCurBuyMenu->IsShown())
-					SetBuyMenuItems		();				
+					SetBuyMenuItems		(pCurPresetItems);				
 
 				LoadDefItemsForRank(pCurBuyMenu);
 				StartStopMenu(pCurBuyMenu,true);
