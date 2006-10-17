@@ -50,7 +50,8 @@ static		HWND			logoWindow		= NULL;
 			void			doBenchmark		();
 ENGINE_API	bool			g_bBenchmark	= false;
 
-ENGINE_API	string512		g_sLaunchOnExit;
+ENGINE_API	string512		g_sLaunchOnExit_params;
+ENGINE_API	string512		g_sLaunchOnExit_app;
 // -------------------------------------------
 // startup point
 void InitEngine		()
@@ -333,7 +334,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		Sleep					(100);
 	}
 	*/
-	g_sLaunchOnExit[0]		= NULL;
+	g_sLaunchOnExit_app[0]		= NULL;
+	g_sLaunchOnExit_params[0]	= NULL;
 	// Core
 	Core._initialize		("xray",NULL);
 	
@@ -387,14 +389,12 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	Startup	 					( );
 	Core._destroy				( );
 
-//	strcpy(g_sLaunchOnExit,"-i -noprefetch -ltx user_andy.ltx -start server(andy_test/single) client(localhost)");
-	char *N = g_sLaunchOnExit;
 	char* _args[3];
 	// check for need to execute something external
-	if (xr_strlen(N)) 
+	if (xr_strlen(g_sLaunchOnExit_params) && xr_strlen(g_sLaunchOnExit_app) ) 
 	{
-		_args[0] = "x:\\xr_3da.exe";
-		_args[1] = N;
+		_args[0] = g_sLaunchOnExit_app;
+		_args[1] = g_sLaunchOnExit_params;
 		_args[2] = NULL;
 
 		_spawnv(_P_NOWAIT, _args[0], _args);

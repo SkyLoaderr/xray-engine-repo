@@ -13,7 +13,8 @@
 
 
 
-extern ENGINE_API string512  g_sLaunchOnExit;
+extern ENGINE_API string512  g_sLaunchOnExit_app;
+extern ENGINE_API string512  g_sLaunchOnExit_params;
 
 xr_token	game_types		[];
 
@@ -62,11 +63,13 @@ CUIMapList::~CUIMapList(){
 }
 
 void CUIMapList::StartDedicatedServer(){
-	strcpy(g_sLaunchOnExit,"dedicated//xr_3da.exe -");
-	strcat(g_sLaunchOnExit,GetCommandLine(""));
-	Msg("%s","-- Going to quit before starting dedicated server");
-	Msg("%s",g_sLaunchOnExit);
-	Console->Execute("quit");
+	strcpy					(g_sLaunchOnExit_app,"dedicated//xr_3da.exe");
+
+	strcpy					(g_sLaunchOnExit_params,"-");
+	strcat					(g_sLaunchOnExit_params,GetCommandLine(""));
+	Msg						("%s","-- Going to quit before starting dedicated server");
+	Msg						("%s %s",g_sLaunchOnExit_app, g_sLaunchOnExit_params);
+	Console->Execute		("quit");
 }
 
 void CUIMapList::Init(float x, float y, float width, float height){

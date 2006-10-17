@@ -27,10 +27,11 @@ CUICustomMap::~CUICustomMap ()
 
 void CUICustomMap::Update()
 {
-	CUIStatic::Update		();
 	SetPointerDistance		(0.0f);
 	if(!Locked())
 		UpdateSpots			();
+
+	CUIStatic::Update		();
 }
 
 

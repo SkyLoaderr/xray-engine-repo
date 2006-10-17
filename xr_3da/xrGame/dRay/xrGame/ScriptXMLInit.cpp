@@ -25,8 +25,6 @@
 #include "script_space.h"
 using namespace luabind;
 
-extern ENGINE_API string512  g_sLaunchOnExit;
-
 CScriptXmlInit::CScriptXmlInit(){
 
 }
