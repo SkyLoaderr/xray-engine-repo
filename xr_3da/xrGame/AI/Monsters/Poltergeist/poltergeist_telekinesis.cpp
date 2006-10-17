@@ -31,6 +31,10 @@ void CPolterTele::load(LPCSTR section)
 	m_pmt_raise_time_to_wait_in_objects	= READ_IF_EXISTS(pSettings,r_u32,section,	"Tele_Delay_Between_Objects_Raise_Time", 500);
 	m_pmt_fly_velocity					= READ_IF_EXISTS(pSettings,r_float,section, "Tele_Fly_Velocity",				30.f);
 
+	::Sound->create						(m_sound_tele_hold,		pSettings->r_string(section,"sound_tele_hold"),	st_Effect,SOUND_TYPE_WORLD);
+	::Sound->create						(m_sound_tele_throw,	pSettings->r_string(section,"sound_tele_throw"),st_Effect,SOUND_TYPE_WORLD);
+
+
 	m_state								= eWait;
 	m_time								= 0;
 	m_time_next							= 0;
@@ -232,7 +236,9 @@ bool CPolterTele::tele_raise_objects()
 		// применить телекинез на объект
 		bool	rotate = false;
 
-		m_object->CTelekinesis::activate		(obj, m_pmt_raise_speed, m_pmt_object_height, m_pmt_time_object_keep, rotate);
+		CTelekineticObject		*tele_obj = m_object->CTelekinesis::activate		(obj, m_pmt_raise_speed, m_pmt_object_height, m_pmt_time_object_keep, rotate);
+		tele_obj->set_sound		(m_sound_tele_hold,m_sound_tele_throw);
+
 		return true;
 	}
 

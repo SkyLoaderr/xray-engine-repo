@@ -244,6 +244,10 @@ class CPolterTele : public CPolterSpecialAbility {
 	float				m_pmt_raise_speed;
 	float				m_pmt_fly_velocity;
 
+	ref_sound			m_sound_tele_hold;
+	ref_sound			m_sound_tele_throw;
+
+
 	enum ETeleState {
 		eStartRaiseObjects,
 		eRaisingObjects,
