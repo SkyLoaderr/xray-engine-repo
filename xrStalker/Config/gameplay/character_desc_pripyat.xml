@@ -23,6 +23,7 @@
             ammo_9x19_fmj = 1 \n
             wpn_groza \n
             ammo_9x39_ap = 1 \n
+            device_torch \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
@@ -49,6 +50,7 @@
             ammo_9x19_pbp = 1 \n
             wpn_groza \n
             ammo_9x39_sp5 = 1 \n
+            device_torch \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
@@ -76,6 +78,7 @@
             ammo_9x19_fmj = 1 \n
             wpn_groza \n
             ammo_9x39_ap = 1 \n
+            device_torch \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
@@ -103,6 +106,7 @@
             wpn_groza \n
             ammo_9x39_sp5 = 1 \n
             grenade_f1 = 1 \n
+            device_torch \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
@@ -131,6 +135,7 @@
             wpn_groza \n
             ammo_9x39_ap = 1 \n
             grenade_f1 = 2 \n
+            device_torch \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
@@ -157,6 +162,7 @@
             ammo_9x19_pbp = 1 \n
             wpn_vintorez \n
             ammo_9x39_ap = 2 \n
+            device_torch \n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
