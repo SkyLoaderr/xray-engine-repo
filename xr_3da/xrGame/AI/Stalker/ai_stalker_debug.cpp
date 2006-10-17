@@ -299,10 +299,12 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	// enemy
 	HUD().Font().pFontSmall->OutNext	("%senemy",indent);
 	if (inventory().ActiveItem()) {
-		HUD().Font().pFontSmall->OutNext("%s%scan kill member : %s",indent,indent,can_kill_member() ? "+" : "-");
-		HUD().Font().pFontSmall->OutNext("%s%scan kill enemy  : %s",indent,indent,can_kill_enemy() ? "+" : "-");
-		HUD().Font().pFontSmall->OutNext("%s%spick distance   : %f",indent,indent,pick_distance());
-		HUD().Font().pFontSmall->OutNext("%s%sfire make sense : %s",indent,indent,fire_make_sense() ? "+" : "-");
+		HUD().Font().pFontSmall->OutNext("%s%scan kill member   : %s",indent,indent,can_kill_member() ? "+" : "-");
+		HUD().Font().pFontSmall->OutNext("%s%scan kill enemy    : %s",indent,indent,can_kill_enemy() ? "+" : "-");
+		HUD().Font().pFontSmall->OutNext("%s%spick distance     : %f",indent,indent,pick_distance());
+		HUD().Font().pFontSmall->OutNext("%s%sfire make sense   : %s",indent,indent,fire_make_sense() ? "+" : "-");
+		HUD().Font().pFontSmall->OutNext("%s%sactor is enemy    : %c",indent,indent,is_relation_enemy(actor) ? '+' : '-');
+		HUD().Font().pFontSmall->OutNext("%s%sis enemy to actor : %c",indent,indent,actor->is_relation_enemy(this) ? '+' : '-');
 	}
 
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().enemy().objects().size());
