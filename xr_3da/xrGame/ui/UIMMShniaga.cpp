@@ -80,7 +80,7 @@ void CUIMMShniaga::Init(CUIXml& xml_doc, LPCSTR path){
 	m_sound->music_Play();
 }
 
-CActor*		g_actor;
+extern CActor*		g_actor;
 
 void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCSTR path){
 	CGameFont* pF;
