@@ -552,6 +552,9 @@ bool CAgentEnemyManager::assigned_wounded		(const CEntityAlive *wounded, const C
 
 bool CAgentEnemyManager::useful_enemy			(const CEntityAlive *enemy, const CAI_Stalker *member) const
 {
+	if (!object().member().registered_in_combat(member))
+		return						(true);
+
 	ENEMIES::const_iterator			I = std::find(m_enemies.begin(),m_enemies.end(),enemy);
 	if (I == m_enemies.end())
 		return						(true);
