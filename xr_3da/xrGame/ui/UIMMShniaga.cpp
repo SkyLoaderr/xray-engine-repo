@@ -80,6 +80,8 @@ void CUIMMShniaga::Init(CUIXml& xml_doc, LPCSTR path){
 	m_sound->music_Play();
 }
 
+CActor*		g_actor;
+
 void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCSTR path){
 	CGameFont* pF;
 	u32	color;
@@ -102,7 +104,7 @@ void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCST
 	{		
 		if (0 == xr_strcmp("btn_lastsave",xml_doc.ReadAttrib("btn", i, "name")))
 		{
-			if (Actor() && Actor()->g_Alive())
+			if (g_actor && Actor()->g_Alive())
 				continue;
 		}
 		st = xr_new<CUIStatic>();
