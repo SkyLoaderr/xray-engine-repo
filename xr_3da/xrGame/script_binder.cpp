@@ -162,6 +162,9 @@ void CScriptBinder::net_Destroy		()
 			clear			();
 		}
 	}
+#ifdef DEBUG
+	Msg						("* Core object %s is UNbinded from the script object",smart_cast<CGameObject*>(this) ? *smart_cast<CGameObject*>(this)->cName() : "");
+#endif
 	xr_delete				(m_object);
 }
 
