@@ -266,5 +266,6 @@ private:
 			bool	tele_raise_objects			();
 			void	tele_fire_objects			();
 
+			bool	trace_object				(CObject *obj, const Fvector &target);
 };
 

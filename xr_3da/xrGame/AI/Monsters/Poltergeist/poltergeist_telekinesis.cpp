@@ -134,6 +134,26 @@ public:
 
 //////////////////////////////////////////////////////////////////////////
 
+bool CPolterTele::trace_object(CObject *obj, const Fvector &target)
+{
+	Fvector			trace_from;
+	obj->Center		(trace_from);
+	
+	Fvector			dir;
+	float			range;
+	dir.sub			(target, trace_from);
+	
+	range			= dir.magnitude();
+	dir.normalize	();
+
+	collide::rq_result	l_rq;
+	if (Level().ObjectSpace.RayPick(trace_from, dir, range, collide::rqtBoth, l_rq, obj)) {
+		if (l_rq.O == Actor()) return true;
+	}
+
+	return false;
+}
+
 
 void CPolterTele::tele_find_objects(xr_vector<CObject*> &objects, const Fvector &pos) 
 {
@@ -154,7 +174,12 @@ void CPolterTele::tele_find_objects(xr_vector<CObject*> &objects, const Fvector 
 			m_object->CTelekinesis::is_active_object(obj) || 
 			!obj->m_pPhysicsShell->get_ApplyByGravity()) continue;
 
-		objects.push_back(obj);
+		
+		Fvector center;
+		Actor()->Center(center);
+		
+		if (trace_object(obj, center) || trace_object(obj, get_head_position(Actor())))
+			objects.push_back(obj);
 	}
 }
 
