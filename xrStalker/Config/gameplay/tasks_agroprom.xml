@@ -30,6 +30,7 @@
 			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>agr_krot_task_complete</infoportion_complete>
 			<infoportion_set_complete>agr_krot_band_done</infoportion_set_complete>
+			<function_fail>agroprom_tasks.agr_actor_enemy</function_fail>
 		</objective>
 		<objective>
 			<text>agr_meet_krot_band_1</text>
@@ -89,6 +90,7 @@
 			<icon>ui_icons_task_eliminate_lager</icon>
 			<infoportion_complete>agr_help_stalkers_assault_dead</infoportion_complete>
 			<infoportion_fail>agr_help_stalkers_defence_dead</infoportion_fail>
+			<function_fail>agroprom_tasks.agr_actor_enemy</function_fail>
 			<article>article_agr_krot_sos</article>
 		</objective>
 		<objective>
@@ -109,6 +111,7 @@
 			<infoportion_complete>agr_find_gunslinger_cache_start</infoportion_complete>
 			<infoportion_fail>agr_krot_dead</infoportion_fail>
 			<infoportion_set_fail>agr_help_krot_done</infoportion_set_fail>
+			<function_fail>agroprom_tasks.agr_actor_enemy</function_fail>
 			<article>article_agr_krot_sos1</article>
 		</objective>
 		<objective>
