@@ -192,9 +192,22 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 	m_EffectorParams.color_base		+= pp_identity.color_base;
 	m_EffectorParams.color_gray		+= pp_identity.color_gray;
 	m_EffectorParams.color_add		+= pp_identity.color_add;
-	m_EffectorParams.noise.fps		*= 100.0f;
+
+	if(0==m_Params[pp_noise_i]->get_keys_count()){
+		m_EffectorParams.noise.intensity = pp_identity.noise.intensity;
+	}
+	
+	if(0==m_Params[pp_noise_g]->get_keys_count()){
+		m_EffectorParams.noise.grain = pp_identity.noise.grain;
+	}
+
+	if(0==m_Params[pp_noise_f]->get_keys_count()){
+		m_EffectorParams.noise.fps = pp_identity.noise.fps;
+	}else
+		m_EffectorParams.noise.fps		*= 100.0f;
 
 	PPInfo.lerp				(pp_identity, m_EffectorParams, m_factor);
+
 	if(PPInfo.noise.grain<=0.0f){
 		R_ASSERT3(0,"noise.grain cant be zero! see postprocess",*m_Name);
 	}

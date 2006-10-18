@@ -67,9 +67,9 @@ SPPInfo& SPPInfo::lerp(const SPPInfo& def, const SPPInfo& to, float factor)
 	pp.duality.v		+= def.duality.v		+ (to.duality.v			- def.duality.v)		* factor;
 	pp.gray				+= def.gray				+ (to.gray				- def.gray)				* factor;
 	pp.blur				+= def.blur				+ (to.blur				- def.blur)				* factor;
-	pp.noise.intensity	+= to.noise.intensity;//	+ (to.noise.intensity	- def.noise.intensity)	* factor;
-	pp.noise.grain		+= to.noise.grain;//		+ (to.noise.grain		- def.noise.grain)		* factor;
-	pp.noise.fps		+= to.noise.fps; //		+ (to.noise.fps			- def.noise.fps)		* factor;	
+	pp.noise.intensity	= to.noise.intensity;//	+ (to.noise.intensity	- def.noise.intensity)	* factor;
+	pp.noise.grain		= to.noise.grain;//		+ (to.noise.grain		- def.noise.grain)		* factor;
+	pp.noise.fps		= to.noise.fps; //		+ (to.noise.fps			- def.noise.fps)		* factor;	
 
 	pp.color_base.set	(
 		def.color_base.r	+ (to.color_base.r - def.color_base.r) * factor, 
@@ -247,18 +247,19 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 		for(int i = m_EffectorsPP.size()-1; i >= 0; i--) {
 			CEffectorPP* eff	= m_EffectorsPP[i];
 			SPPInfo l_PPInf		= pp_zero;
-			if((eff->Valid())&&eff->Process(l_PPInf)) {
-				_count		+= 1;
-				pp_affected += l_PPInf;
-				pp_affected -= pp_identity;
-				pp_affected.validate		("in cycle");
-//. hack				if( !positive(pp_affected.noise.grain) ) pp_affected.noise.grain = pp_identity.noise.grain;
-			} else RemovePPEffector(eff->Type());
+			if((eff->Valid())&&eff->Process(l_PPInf)) 
+			{
+				++_count;
+				pp_affected			+= l_PPInf;
+				pp_affected			-= pp_identity;
+				pp_affected.validate("in cycle");
+			}else 
+				RemovePPEffector(eff->Type());
 		}
 		if (0==_count)	pp_affected				= pp_identity;
 		else			pp_affected.normalize	();
 	} else {
-		pp_affected				=	pp_identity;
+		pp_affected		=	pp_identity;
 	}
 
 	if( !positive(pp_affected.noise.grain) ) pp_affected.noise.grain = pp_identity.noise.grain;

@@ -45,11 +45,11 @@ public:
     virtual void    load                            (IReader &pReader) = 0;
     virtual void    save                            (IWriter &pWriter) = 0;
     virtual float   get_length                      () = 0;
+    virtual size_t  get_keys_count                  () = 0;
 #ifdef _PP_EDITOR_
     virtual void    add_value                       (float time, float value, float t, float c, float b, int index = 0) = 0;
     virtual void    update_value                    (float time, float value, float t, float c, float b, int index = 0) = 0;
     virtual void    get_value                       (float time, float &value, float &t, float &c, float &b, int index = 0) = 0;
-    virtual size_t  get_keys_count                  () = 0;
     virtual float   get_key_time                    (size_t index) = 0;
 #endif /*_PP_EDITOR_*/
 };
@@ -72,14 +72,14 @@ public:
                     float mn, mx;
                     return m_Value.GetLength (&mn, &mx);
                     }
-#ifdef _PP_EDITOR_
-    virtual void    add_value                       (float time, float value, float t, float c, float b, int index = 0);
-    virtual void    update_value                    (float time, float value, float t, float c, float b, int index = 0);
-    virtual void    get_value                       (float time, float &value, float &t, float &c, float &b, int index = 0);
     virtual size_t  get_keys_count                  ()
                     {
                     return m_Value.keys.size ();
                     }
+#ifdef _PP_EDITOR_
+    virtual void    add_value                       (float time, float value, float t, float c, float b, int index = 0);
+    virtual void    update_value                    (float time, float value, float t, float c, float b, int index = 0);
+    virtual void    get_value                       (float time, float &value, float &t, float &c, float &b, int index = 0);
     virtual float   get_key_time                    (size_t index)
                     {
                     VERIFY (index < get_keys_count ());
@@ -116,14 +116,14 @@ public:
                     mn = (r > g ? r : g);
                     return mn > b ? mn : b;
                     }
-#ifdef _PP_EDITOR_
-    virtual void    add_value                       (float time, float value, float t, float c, float b, int index = 0);
-    virtual void    update_value                    (float time, float value, float t, float c, float b, int index = 0);
-    virtual void    get_value                       (float time, float &value, float &t, float &c, float &b, int index = 0);
     virtual size_t  get_keys_count                  ()
                     {
                     return m_Red.keys.size ();
                     }
+#ifdef _PP_EDITOR_
+    virtual void    add_value                       (float time, float value, float t, float c, float b, int index = 0);
+    virtual void    update_value                    (float time, float value, float t, float c, float b, int index = 0);
+    virtual void    get_value                       (float time, float &value, float &t, float &c, float &b, int index = 0);
     virtual float   get_key_time                    (size_t index)
                     {
                     VERIFY (index < get_keys_count ());
