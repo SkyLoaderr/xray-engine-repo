@@ -26,19 +26,31 @@ void CStalkerAnimationManager::global_play_callback(CBlend *blend)
 	CPropertyStorage				*setup_storage = animation.setup_storage();
 	if (setup_storage) {
 		setup_storage->set_property	(animation.property_id(),animation.property_value());
-
 #ifdef CLEAR_STORAGE_ON_CALLBACK
 		animation.setup_storage		(0);
 #endif
 		return;
 	}
+
 	animation.global().make_inactual();
 }
 
 MotionID CStalkerAnimationManager::assign_global_animation	()
 {
-	if (eMentalStatePanic != object().movement().mental_state())
-		return						(MotionID());
+	if (eMentalStatePanic != object().movement().mental_state()) {
+		if (!object().critically_wounded())
+			return					(MotionID());
+
+		return						(
+			m_data_storage->m_part_animations.A[
+				eBodyStateStand
+			].m_global.A[
+				object().critical_wound_type()
+			].A[
+				0
+			]
+		);
+	}
 
 	if (fis_zero(object().movement().speed(object().character_physics_support()->movement())))
 		return						(MotionID());

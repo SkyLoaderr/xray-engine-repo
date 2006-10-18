@@ -49,6 +49,8 @@ namespace StalkerSpace {
 	enum EBodyAction;
 };
 
+enum ECriticalWoundType;
+
 class CALifeSimulator;
 class CCharacterPhysicsSupport;
 class CWeapon;
@@ -499,6 +501,25 @@ public:
 public:
 			void						dbg_draw_vision						();
 #endif
+
+private:
+	typedef associative_vector<u16,ECriticalWoundType>	BODY_PART;
+
+private:
+	u32									m_last_hit_time;
+	float								m_critical_wound_threshold;
+	float								m_critical_wound_decrease_quant;
+	float								m_critical_wound_accumulator;
+	ECriticalWoundType					m_critical_wound_type;
+	BODY_PART							m_bones_body_parts;
+
+private:
+			void						fill_bones_body_parts				(LPCSTR bone_id, const ECriticalWoundType &wound_type);
+			bool						update_critical_wounded				(const u16 &bone_id, const float &power);
+
+public:
+			bool						critically_wounded					();
+	IC		const ECriticalWoundType	&critical_wound_type				() const;
 
 public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION

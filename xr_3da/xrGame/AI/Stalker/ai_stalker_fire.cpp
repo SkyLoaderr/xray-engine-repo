@@ -45,6 +45,8 @@
 #include "../../missile.h"
 #include "../../phworld.h"
 
+#include "../../stalker_animation_names.h"
+
 using namespace StalkerSpace;
 
 const float DANGER_DISTANCE				= 3.f;
@@ -195,11 +197,12 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 	}
 
 	if (g_Alive()) {
-		const CCoverPoint	*cover = agent_manager().member().member(this).cover();
-		if (cover && pHDS->initiator() && (pHDS->initiator()->ID() != ID()) && !fis_zero(pHDS->damage()) && brain().affect_cover())
-			agent_manager().location().add	(xr_new<CDangerCoverLocation>(cover,Device.dwTimeGlobal,DANGER_INTERVAL,DANGER_DISTANCE));
+		if (!critically_wounded()) {
+			const CCoverPoint	*cover = agent_manager().member().member(this).cover();
+			if (cover && pHDS->initiator() && (pHDS->initiator()->ID() != ID()) && !fis_zero(pHDS->damage()) && brain().affect_cover())
+				agent_manager().location().add	(xr_new<CDangerCoverLocation>(cover,Device.dwTimeGlobal,DANGER_INTERVAL,DANGER_DISTANCE));
+		}
 
-		// Play hit-ref_sound
 		const CEntityAlive	*entity_alive = smart_cast<const CEntityAlive*>(pHDS->initiator());
 		if (!entity_alive || (tfGetRelationType(entity_alive) != ALife::eRelationTypeFriend))
 			sound().play	(eStalkerSoundInjuring);
@@ -207,8 +210,8 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 			if (!wounded())
 				sound().play	(eStalkerSoundInjuringByFriend);
 		}
-		
-		if (animation().script_animations().empty() && (pHDS->bone() != BI_NONE)) {
+
+		if (!wounded() && !update_critical_wounded(HDS.boneID,HDS.power) && animation().script_animations().empty() && (pHDS->bone() != BI_NONE)) {
 			Fvector					D;
 			float					yaw, pitch;
 			D.getHP					(yaw,pitch);
@@ -617,7 +620,7 @@ bool CAI_Stalker::zoom_state			() const
 		case ObjectHandlerSpace::eWorldOperatorQueueWait1 :
 		case ObjectHandlerSpace::eWorldOperatorQueueWait2 :
 		case ObjectHandlerSpace::eWorldOperatorFire1 :
-		// we need this 2 operators to prevent fov/range twitching
+		// we need this 2 operators to prevent fov/range switching
 		case ObjectHandlerSpace::eWorldOperatorReload1 :
 		case ObjectHandlerSpace::eWorldOperatorReload2 :
 		case ObjectHandlerSpace::eWorldOperatorForceReload1 :
@@ -775,4 +778,55 @@ void CAI_Stalker::update_throw_params		()
 	m_throw_force			= velocity.magnitude();
 	m_throw_direction		= velocity.normalize();
 	VERIFY					(_valid(m_throw_force));
+}
+
+bool CAI_Stalker::critically_wounded		()
+{
+	if (critical_wound_type() == critical_wound_type_dummy)
+		return					(false);
+
+	if (!brain().CStalkerPlanner::m_storage.property(StalkerDecisionSpace::eWorldPropertyCriticallyWounded)) {
+		m_critical_wound_type	= critical_wound_type_dummy;
+		return					(false);
+	}
+
+	return						(true);
+}
+
+bool CAI_Stalker::update_critical_wounded	(const u16 &bone_id, const float &power)
+{
+	VERIFY							(Device.dwTimeGlobal >= m_last_hit_time);
+	
+	float							time_delta = m_last_hit_time ? float(Device.dwTimeGlobal - m_last_hit_time)/1000.f : 0.f;
+	m_critical_wound_accumulator	+= power - m_critical_wound_decrease_quant*time_delta;
+	clamp							(m_critical_wound_accumulator,0.f,m_critical_wound_threshold);
+
+	Msg								(
+		"%6d [%s] update_critical_wounded: %f[%f] (%f,%f) [%f]",
+		Device.dwTimeGlobal,
+		*cName(),
+		m_critical_wound_accumulator,
+		power,
+		m_critical_wound_threshold,
+		m_critical_wound_decrease_quant,
+		time_delta
+	);
+
+	m_last_hit_time					= Device.dwTimeGlobal;
+	if (m_critical_wound_accumulator < m_critical_wound_threshold)
+		return						(false);
+
+	m_last_hit_time					= 0;
+	m_critical_wound_accumulator	= 0.f;
+
+	if (movement().body_state() != eBodyStateStand)
+		return						(false);
+
+	BODY_PART::const_iterator		I = m_bones_body_parts.find(bone_id);
+	VERIFY							(I != m_bones_body_parts.end());
+	m_critical_wound_type			= (*I).second;
+
+	brain().CStalkerPlanner::m_storage.set_property(StalkerDecisionSpace::eWorldPropertyCriticallyWounded,true);
+
+	return							(true);
 }

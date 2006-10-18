@@ -35,6 +35,7 @@
 #include "danger_manager.h"
 #include "detail_path_manager.h"
 #include "weaponmagazined.h"
+#include "stalker_animation_manager.h"
 
 #define DISABLE_COVER_BEFORE_DETOUR
 
@@ -1365,4 +1366,42 @@ void CStalkerActionKillEnemyIfPlayerOnThePath::execute			()
 		object().movement().set_level_dest_vertex	(point->level_vertex_id());
 		object().movement().set_desired_position	(&point->position());
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionCriticalHit
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionCriticalHit::CStalkerActionCriticalHit		(CAI_Stalker *object, LPCSTR action_name) :
+	inherited(object,action_name)
+{
+}
+
+void CStalkerActionCriticalHit::initialize					()
+{
+	inherited::initialize					();
+	
+	object().brain().affect_cover			(false);
+	object().movement().set_movement_type	(eMovementTypeStand);
+	
+	u32										min_queue_size, max_queue_size, min_queue_interval, max_queue_interval;
+	float									distance = object().memory().enemy().selected()->Position().distance_to(object().Position());
+	select_queue_params						(distance,min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
+	object().CObjectHandler::set_goal		(eObjectActionIdle,object().best_weapon(),min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
+
+	object().sight().setup					(CSightAction(SightManager::eSightTypeCurrentDirection,true,true));
+	object().animation().setup_storage		(&object().brain().CStalkerPlanner::m_storage);
+	object().animation().property_id		(eWorldPropertyCriticallyWounded);
+	object().animation().property_value		(false);
+}
+
+void CStalkerActionCriticalHit::finalize					()
+{
+	inherited::finalize						();
+	object().animation().setup_storage		(0);
+}
+
+void CStalkerActionCriticalHit::execute						()
+{
+	inherited::execute						();
 }

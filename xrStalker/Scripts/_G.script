@@ -1,3 +1,5 @@
+profiler.setup_hook	()
+
 schemes = {} -- соответствие схем модулям
 stypes = {} -- типы схем
 
@@ -1126,8 +1128,6 @@ end
 function odd( x )
 	return math.floor( x * 0.5 ) * 2 == math.floor( x )
 end
-
---profiler.setup_hook	()
 
 function on_actor_critical_power()
 	if db.actor:has_info("esc_trader_newbie") then

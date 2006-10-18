@@ -65,7 +65,7 @@ void CStalkerKillWoundedPlanner::add_evaluators			()
 	add_evaluator			(eWorldPropertyEnemy				,xr_new<CStalkerPropertyEvaluatorEnemies>		(m_object,"is_there_enemies_delayed"));
 	add_evaluator			(eWorldPropertyWoundedEnemyReached	,xr_new<CStalkerPropertyEvaluatorEnemyReached>	(m_object,"is enemy reached"));
 	
-	add_evaluator			(eWorldPropertyWoundedEnemyPrepared	,xr_new<CStalkerPropertyEvaluatorMember>		(CScriptActionBase::m_storage,eWorldPropertyWoundedEnemyPrepared,true,true,"is_enemy_prepared"));
+	add_evaluator			(eWorldPropertyWoundedEnemyPrepared	,xr_new<CStalkerPropertyEvaluatorMember>		((CPropertyStorage*)0,eWorldPropertyWoundedEnemyPrepared,true,true,"is_enemy_prepared"));
 }
 
 void CStalkerKillWoundedPlanner::add_actions			()

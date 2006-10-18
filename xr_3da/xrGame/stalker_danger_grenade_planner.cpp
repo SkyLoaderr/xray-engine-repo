@@ -51,9 +51,9 @@ void CStalkerDangerGrenadePlanner::add_evaluators			()
 {
 	add_evaluator			(eWorldPropertyDanger			,xr_new<CStalkerPropertyEvaluatorDangers>					(m_object,"danger"));
 	add_evaluator			(eWorldPropertyCoverActual		,xr_new<CStalkerPropertyEvaluatorDangerUnknownCoverActual>	(m_object,"danger grenade : cover actual"));
-	add_evaluator			(eWorldPropertyCoverReached		,xr_new<CStalkerPropertyEvaluatorMember>					(CScriptActionBase::m_storage,eWorldPropertyCoverReached,true,true,"danger grenade : cover reached"));
+	add_evaluator			(eWorldPropertyCoverReached		,xr_new<CStalkerPropertyEvaluatorMember>					((CPropertyStorage*)0,eWorldPropertyCoverReached,true,true,"danger grenade : cover reached"));
 	add_evaluator			(eWorldPropertyGrenadeExploded	,xr_new<CStalkerPropertyEvaluatorDangerGrenadeExploded>		(m_object,"grenade exploded"));
-	add_evaluator			(eWorldPropertyLookedAround		,xr_new<CStalkerPropertyEvaluatorMember>					(CScriptActionBase::m_storage,eWorldPropertyLookedAround,true,true,"danger grenade : looked around"));
+	add_evaluator			(eWorldPropertyLookedAround		,xr_new<CStalkerPropertyEvaluatorMember>					((CPropertyStorage*)0,eWorldPropertyLookedAround,true,true,"danger grenade : looked around"));
 }
 
 void CStalkerDangerGrenadePlanner::add_actions				()

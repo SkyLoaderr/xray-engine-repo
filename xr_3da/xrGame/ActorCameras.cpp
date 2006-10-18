@@ -230,7 +230,7 @@ void CActor::cam_Update(float dt, float fFOV)
 
 	if(eacFirstEye == cam_active)
 	{
-		CCameraBase* C				= cameras[eacFirstEye];
+//		CCameraBase* C				= cameras[eacFirstEye];
 	
 		xrXRC						xrc			;
 		xrc.box_options				(0)			;

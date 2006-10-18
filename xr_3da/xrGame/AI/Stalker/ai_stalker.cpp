@@ -56,6 +56,8 @@
 #include "../../alife_human_brain.h"
 #include "../../profiler.h"
 #include "../../BoneProtections.h"
+#include "../../stalker_animation_names.h"
+#include "../../stalker_decision_space.h"
 
 #ifdef DEBUG
 #	include "../../alife_simulator.h"
@@ -165,6 +167,21 @@ void CAI_Stalker::reinit			()
 	m_throw_force					= flt_max;
 	m_throw_position				= Fvector().set(flt_max,flt_max,flt_max);
 	m_throw_direction				= Fvector().set(flt_max,flt_max,flt_max);
+
+	m_critical_wound_type			= critical_wound_type_dummy;
+	m_last_hit_time					= 0;
+	m_critical_wound_accumulator	= 0.f;
+	m_critical_wound_threshold		= pSettings->r_float(cNameSect(),"critical_wound_threshold");
+	m_critical_wound_decrease_quant	= pSettings->r_float(cNameSect(),"critical_wound_decrease_quant");
+
+	fill_bones_body_parts			("head",		critical_wound_type_head);
+	fill_bones_body_parts			("torso",		critical_wound_type_torso);
+	fill_bones_body_parts			("hand_left",	critical_wound_type_hand_left);
+	fill_bones_body_parts			("hand_right",	critical_wound_type_hand_right);
+	fill_bones_body_parts			("leg_left",	critical_wound_type_leg_left);
+	fill_bones_body_parts			("leg_right",	critical_wound_type_leg_right);
+
+	brain().CStalkerPlanner::m_storage.set_property	(StalkerDecisionSpace::eWorldPropertyCriticallyWounded,	false);
 }
 
 void CAI_Stalker::LoadSounds		(LPCSTR section)
@@ -981,4 +998,27 @@ void CAI_Stalker::load (IReader &packet)
 	inherited::load			(packet);
 	CInventoryOwner::load	(packet);
 	brain().load			(packet);
+}
+
+void CAI_Stalker::fill_bones_body_parts	(LPCSTR bone_id, const ECriticalWoundType &wound_type)
+{
+	LPCSTR					body_parts_section_id = pSettings->r_string(cNameSect(),"body_parts_section_id");
+	VERIFY					(body_parts_section_id);
+
+	LPCSTR					body_part_section_id = pSettings->r_string(body_parts_section_id,bone_id);
+	VERIFY					(body_part_section_id);
+
+	CKinematics				*kinematics	= smart_cast<CKinematics*>(Visual());
+	VERIFY					(kinematics);
+
+	CInifile::Sect			&body_part_section = pSettings->r_section(body_part_section_id);
+	CInifile::SectIt		I = body_part_section.begin();
+	CInifile::SectIt		E = body_part_section.end();
+	for ( ; I != E; ++I)
+		m_bones_body_parts.insert	(
+			std::make_pair(
+				kinematics->LL_BoneID((*I).first),
+				wound_type
+			)
+		);
 }

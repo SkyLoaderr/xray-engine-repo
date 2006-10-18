@@ -24,6 +24,12 @@ CEvaluator::CPropertyEvaluatorMember	(CPropertyStorage *storage, _condition_type
 }
 
 TEMPLATE_SPECIALIZATION
+void CEvaluator::setup					(_object_type *object, CPropertyStorage *storage)
+{
+	inherited::setup	(object,m_storage ? m_storage : storage);
+}
+
+TEMPLATE_SPECIALIZATION
 typename CEvaluator::_value_type CEvaluator::evaluate	()
 {
 	return				((m_storage->property(m_condition_id) == m_value) == m_equality);
