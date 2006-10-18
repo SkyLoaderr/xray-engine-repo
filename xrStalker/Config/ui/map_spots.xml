@@ -281,4 +281,20 @@
 		<texture x="493" y="968" width="32" height="32">ui\ui_common</texture>
 	</alife_presentation_smart_off_spot>
 
+
+	<alife_presentation_smart_ready>
+		<level_map spot="alife_presentation_smart_ready_spot"/>
+	</alife_presentation_smart_ready>
+	<alife_presentation_smart_ready_spot x="0" y="0" width="10" height="10" alignment="c" stretch="1" scale="1">
+		<texture x="493" y="968" width="32" height="32">ui\ui_common</texture>
+	</alife_presentation_smart_ready_spot>
+
+	<alife_presentation_smart_target>
+		<level_map spot="alife_presentation_smart_target_spot"/>
+	</alife_presentation_smart_target>
+	<alife_presentation_smart_target_spot x="0" y="0" width="10" height="10" alignment="c" stretch="1" scale="1">
+		<texture x="493" y="936" width="32" height="32">ui\ui_common</texture>
+	</alife_presentation_smart_target_spot>
+
+
 </map_spots>
