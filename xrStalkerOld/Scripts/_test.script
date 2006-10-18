@@ -7,21 +7,9 @@ function ___main()
  game.start_tutorial("part_14_overload")
 end
 
-function main22222()
-	level.add_pp_effector ("dead_zone.ppe", 1001, true)
-	level.set_pp_effector_factor(1001, 0.01)
-end
-
 
 -- run_string alife():create("device_torch", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
 
-function get_task_info(task_id, fmt)
-	local _info = GetTextureInfo(task_id..fmt, "default_task_icon"..fmt)
-	local r = _info:get_rect()
-	r.x2 = r.x2-r.x1
-	r.y2 = r.y2-r.y1
-	return _info:get_file_name(), r
-end
 
 function main123()
 	local a,b = get_task_info("kill_gunslinger","_small")
@@ -42,18 +30,6 @@ function _main()
 	local ang    = 45
 	local dir    = vector_rotate_y( db.actor:direction(), ang )
 	level.spawn_phantom(db.actor:position():add( dir:mul(radius) ))
-end
-function main222222222222222()
-	db.actor:disable_info_portion("esc_trader_newbie") 
-	db.actor:disable_info_portion("esc_trader_tutorial_chosen") 
-end
-
-function main1111()
---	local news_text = "%c<255,160,160,160>" .. "Задание выполнено" .. "\\n" .. "%c<default>" .. "Информация о винтовке FN-2000 а также куча всякой лабуды типа убить долбаного стрелка или помочь сраному раненому"
-	local news_text = game.translate_string("escape_trader_start_dialog_511")
-
-	db.actor:give_game_news(news_text, "ui\\ui_pop_up_active_back", Frect():set(0,0,16,16), 0, 0)
-
 end
 
 function main_qqqq()
@@ -101,7 +77,8 @@ function main_qqqq()
 end
 
 function main()
-	level.add_pp_effector ("nightvision.ppe", 1001, true)
+--	level.add_pp_effector ("psy_antenna.ppe", 1001, true)
+	level.set_pp_effector_factor(1001, 0.8)
 --	level.remove_pp_effector(1001)
 end
 

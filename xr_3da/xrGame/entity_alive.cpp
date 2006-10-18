@@ -419,14 +419,11 @@ void CEntityAlive::PlaceBloodWallmark(const Fvector& dir, const Fvector& start_p
 			end_point.set(0,0,0);
 			end_point.mad(start_pos, dir, result.range);
 
-			ref_shader* pWallmarkShader = wallmarks_vector.empty()?NULL:
-			&wallmarks_vector[::Random.randI(0,wallmarks_vector.size())];
+			ref_shader wallmarkShader = wallmarks_vector[::Random.randI(wallmarks_vector.size())];
 
-			if (pWallmarkShader)
 			{
 				//добавить отметку на материале
-				::Render->add_StaticWallmark(*pWallmarkShader, end_point,
-					wallmark_size, pTri, pVerts);
+				::Render->add_StaticWallmark(wallmarkShader, end_point, wallmark_size, pTri, pVerts);
 			}
 		}
 	}
