@@ -299,7 +299,7 @@ function se_respawn:create(prob)
 		end
 		
 		if spawn_section == "" then
-			printf("SPAWNING [%s], CANT SPAWN, SIMULATION POPULATION EXCEED", tostring(self:name()))
+--			printf("SPAWNING [%s], CANT SPAWN, SIMULATION POPULATION EXCEED", tostring(self:name()))
 			return false
 		end
 		
@@ -328,7 +328,7 @@ function se_respawn:create(prob)
 
 		local tt = self.sectSpawnProps[spawn_section]
 
-		printf("SPAWN [%s] -> [%s]", tostring(self:name()), obj:name())
+--		printf("SPAWN [%s] -> [%s]", tostring(self:name()), obj:name())
 
 		if self.item_spawn == false then				
 			if tt.check == true then
@@ -342,7 +342,7 @@ function se_respawn:create(prob)
 					return true
 				else
 					alife():release(obj, true)
-					printf("SPAWNING [%s] -> [%s], CANT SPAWN. NO SMART_TERRAIN AVAILABLE!!!", tostring(self:name()), spawn_section)
+--					printf("SPAWNING [%s] -> [%s], CANT SPAWN. NO SMART_TERRAIN AVAILABLE!!!", tostring(self:name()), spawn_section)
 					return false
 				end
 			end
@@ -354,7 +354,7 @@ end
 -- Попытка спаунить объекты. Анализируется сколько уже заспавнено и выбирается один из механизмов - либо 
 -- мы доспавниваем до минимального количества, либо спавним с заданной вероятностью
 function se_respawn:spawn()
-	printf("RESPAWN: [%s] spawn execute", tostring(self:name()))
+--	printf("RESPAWN: [%s] spawn execute", tostring(self:name()))
 	
 	-- Пробегаемся по списку уже заспавненных объектов и удаляем из них мертвые либо уничтоженные.
 	for k,v in pairs(self.spawned_obj) do
@@ -373,7 +373,7 @@ function se_respawn:spawn()
 	end	
 
 	if xr_logic.pick_section_from_condlist(db.actor_proxy, self, self.conditions) == "0" then
-		printf("SPAWNING [%s], CANT SPAWN. PROBABILITY ZERO!!!", tostring(self:name()))
+--		printf("SPAWNING [%s], CANT SPAWN. PROBABILITY ZERO!!!", tostring(self:name()))
 		sim_statistic.respawn_enabled(self, false)
 		return
 	end
@@ -392,7 +392,7 @@ function se_respawn:spawn()
 	-- делаем несколько попыток заспаунить объект.
 	for i=1,self.max_spawn do		
 		if self.max_count ~= -1 and table.getn(self.spawned_obj) >= self.max_count then
-			printf("SPAWNING [%s], CANT SPAWN. MAX COUNT REACHED!!!", tostring(self:name()))
+--			printf("SPAWNING [%s], CANT SPAWN. MAX COUNT REACHED!!!", tostring(self:name()))
 			return
 		end		
 		if self:create(xr_logic.pick_section_from_condlist(db.actor_proxy, self, self.conditions)) == false then
@@ -430,7 +430,7 @@ function se_respawn:execute()
 		-- Производим попытку заспаунить объекты		
 		self:spawn()
 		
-		printf("spawn_count = %s", table.getn(self.spawned_obj))
+--		printf("spawn_count = %s", table.getn(self.spawned_obj))
 	end
 end
 -- Обновление в офлайне
@@ -462,7 +462,7 @@ function spawn(name)
 	
 	for i=1,spawner.max_spawn do
 		if spawner.max_count ~= -1 and table.getn(spawner.spawned_obj) >= spawner.max_count then
-			printf("SPAWNING [%s], CANT SPAWN. MAX COUNT REACHED!!!", tostring(spawner:name()))
+--			printf("SPAWNING [%s], CANT SPAWN. MAX COUNT REACHED!!!", tostring(spawner:name()))
 			return
 		end		
 		if spawner:create(xr_logic.pick_section_from_condlist(db.actor_proxy, spawner, spawner.conditions)) == false then

@@ -133,13 +133,6 @@ function unregister_stalker(npc)
 	end
 	reg_objects_stalker[npc.id] = nil
 end
-function mark_all_stalkers()
-	show_stalker_spot = true
-	for k,v in pairs(reg_objects_stalker) do
-		reg_objects_stalker[k].exist = true
-		level.map_add_object_spot(k, "alife_presentation_"..v.community, v.name)
-	end
-end
 function unmark_all_stalkers()
 	show_stalker_spot = false
 	for k,v in pairs(reg_objects_stalker) do
@@ -149,8 +142,23 @@ function unmark_all_stalkers()
 		end
 	end
 end
+function mark_all_stalkers()
+	if show_stalker_spot == true then
+		unmark_all_stalkers()
+		return
+	end
+	show_stalker_spot = true
+
+	for k,v in pairs(reg_objects_stalker) do
+		reg_objects_stalker[k].exist = true
+		level.map_add_object_spot(k, "alife_presentation_"..v.community, v.name)
+	end
+end
 function release_all_stalkers()
 	for k,v in pairs(reg_objects_stalker) do
+		if v.exist == true then
+			level.map_remove_object_spot(k, "alife_presentation_"..v.community)
+		end
 		local obj = alife():object(k)
 		alife():release(obj,true)
 		reg_objects_stalker[k] = nil
@@ -178,13 +186,6 @@ function unregister_monster(npc)
 	end
 	reg_objects_monster[npc.id] = nil
 end
-function mark_all_monsters()
-	show_monster_spot = true
-	for k,v in pairs(reg_objects_monster) do
-		reg_objects_monster[k].exist = true
-		level.map_add_object_spot(k, "alife_presentation_monstr", v.name)
-	end
-end
 function unmark_all_monsters()
 	show_monster_spot = false
 	for k,v in pairs(reg_objects_monster) do
@@ -194,8 +195,22 @@ function unmark_all_monsters()
 		end
 	end
 end
+function mark_all_monsters()
+	if show_monster_spot == true then
+		unmark_all_monsters()
+		return
+	end
+	show_monster_spot = true
+	for k,v in pairs(reg_objects_monster) do
+		reg_objects_monster[k].exist = true
+		level.map_add_object_spot(k, "alife_presentation_monstr", v.name)
+	end
+end
 function release_all_monsters()
 	for k,v in pairs(reg_objects_monster) do
+		if v.exist == true then
+			level.map_remove_object_spot(k, "alife_presentation_monstr")
+		end
 		local obj = alife():object(k)
 		alife():release(obj,true)
 		reg_objects_monster[k] = nil
@@ -283,16 +298,20 @@ function unmark_respawn(obj_id)
 		reg_objects_respawn[obj_id].exist = nil
 	end
 end
-function mark_all_respawns()
-	show_respawn_spot = true
-	for k,v in pairs(reg_objects_respawn) do		
-		mark_respawn(k)
-	end
-end
 function unmark_all_respawns()
 	show_respawn_spot = false
 	for k,v in pairs(reg_objects_respawn) do
 		unmark_respawn(obj_id)			
+	end
+end
+function mark_all_respawns()
+	if show_respawn_spot == true then
+		unmark_all_respawns()
+		return
+	end
+	show_respawn_spot = true
+	for k,v in pairs(reg_objects_respawn) do		
+		mark_respawn(k)
 	end
 end
 
@@ -350,16 +369,20 @@ function unmark_smart(obj_id)
 		reg_objects_smart[obj_id].exist = nil
 	end
 end
-function mark_all_smarts()
-	show_smart_spot = true
-	for k,v in pairs(reg_objects_smart) do		
-		mark_smart(k)
-	end
-end
 function unmark_all_smarts()
 	show_smart_spot = false
 	for k,v in pairs(reg_objects_smart) do
-		unmark_smart(k)			
+		unmark_smart(k)
+	end
+end
+function mark_all_smarts()
+	if show_smart_spot == true then
+		unmark_smart(k)
+		return
+	end
+	show_smart_spot = true
+	for k,v in pairs(reg_objects_smart) do		
+		mark_smart(k)
 	end
 end
 
