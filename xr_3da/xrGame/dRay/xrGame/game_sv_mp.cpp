@@ -15,12 +15,12 @@
 #include "Spectator.h"
 
 u32		g_dwMaxCorpses = 10;
-#define		VOTE_LENGTH_TIME		2
+#define		VOTE_LENGTH_TIME		1
 
 game_sv_mp::game_sv_mp() :inherited()
 {
 	m_bVotingActive = false;
-	m_fVoteQuota = 0.6f;
+	m_fVoteQuota = 0.5f;
 	m_dwVoteTime = VOTE_LENGTH_TIME;
 	//------------------------------------------------------
 //	g_pGamePersistent->Environment.SetWeather("mp_weather");
@@ -89,6 +89,8 @@ void game_sv_mp::OnRoundStart			()
 void game_sv_mp::OnRoundEnd				(LPCSTR reason)
 {
 	inherited::OnRoundEnd( reason );
+	
+	OnVoteStop();
 
 	switch_Phase		(GAME_PHASE_PENDING);
 	//send "RoundOver" Message To All clients
@@ -617,7 +619,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 	//-----------------------------------------------------------------------------
 	SetVotingActive(true);
 	u32 CurTime = Level().timeServer();
-	m_uVoteEndTime = CurTime+m_dwVoteTime*60000;
+	m_uVoteStartTime = CurTime;
 	if (m_bVotingReal)
 	{
 		if (!stricmp(votecommands[i].name, "changeweather"))
@@ -647,7 +649,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 		if (!l_pC) continue;
 		if (l_pC->ID == sender)
 		{
-			l_pC->ps->m_bCurrentVoteAgreed = 2; // 1;
+			l_pC->ps->m_bCurrentVoteAgreed = 1;
 			pStartedPlayer = l_pC;
 		}
 		else
@@ -687,7 +689,8 @@ void		game_sv_mp::UpdateVote				()
 
 	bool VoteSucceed = false;
 	u32 CurTime = Level().timeServer();
-	if (m_uVoteEndTime > CurTime)
+	
+	if (m_uVoteStartTime + m_dwVoteTime*60000 > CurTime)
 	{
 		if (NumToCount == NumAgreed) VoteSucceed = true;
 		if (!VoteSucceed) return;

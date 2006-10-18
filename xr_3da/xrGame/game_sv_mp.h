@@ -41,7 +41,7 @@ protected:
 	//-------------------------------------------------------
 	bool			m_bVotingActive;
 	bool			m_bVotingReal;
-	u32				m_uVoteEndTime;
+	u32				m_uVoteStartTime;
 	float			m_fVoteQuota;
 	u32				m_dwVoteTime;
 	shared_str		m_pVoteCommand;
