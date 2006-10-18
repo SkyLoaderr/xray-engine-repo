@@ -99,7 +99,7 @@ void CALifeSwitchManager::switch_online(CSE_ALifeDynamicObject *object)
 {
 	START_PROFILE("ALife/switch/switch_online")
 #ifdef DEBUG
-	if (psAI_Flags.test(aiALife))
+//	if (psAI_Flags.test(aiALife))
 		Msg						("[LSS] Going online [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.dwTimeGlobal,object->name_replace(), object->ID,VPUSH(graph().actor()->o_Position),VPUSH(object->o_Position), "*SERVER*");
 #endif
 	object->switch_online		();
@@ -110,7 +110,7 @@ void CALifeSwitchManager::switch_offline(CSE_ALifeDynamicObject *object)
 {
 	START_PROFILE("ALife/switch/switch_offline")
 #ifdef DEBUG
-	if (psAI_Flags.test(aiALife))
+//	if (psAI_Flags.test(aiALife))
 		Msg							("[LSS] Going offline [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.dwTimeGlobal,object->name_replace(), object->ID,VPUSH(graph().actor()->o_Position),VPUSH(object->o_Position), "*SERVER*");
 #endif
 	object->switch_offline			();
