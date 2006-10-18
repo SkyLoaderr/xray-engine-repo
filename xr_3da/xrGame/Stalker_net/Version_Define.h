@@ -22,7 +22,7 @@
 #undef	TESTERS
 #else
 
-#define	LTX			"-ltx user_net.ltx"
+#define	LTX			"-ltx user.ltx"
 #define	MAP_LIST	"mp\\map_list.ltx"
 #define ICON_ID		IDR_MAINFRAME
 #define WND_NAME	"Stalker_Net"
