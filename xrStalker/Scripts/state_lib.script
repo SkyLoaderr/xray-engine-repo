@@ -509,7 +509,7 @@ states = {
 				animstate = "stand",
 				animation = "probe_3"
 			},
-	mode_shlem	= {weapon = "strapped",
+	mode_shlem	= {weapon = "none",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
