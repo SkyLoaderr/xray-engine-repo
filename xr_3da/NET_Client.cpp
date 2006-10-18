@@ -475,8 +475,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 	*/
 
 	// Sync
-	net_TimeDelta	= 0;
-	net_Syncronize	();
+	net_TimeDelta	= 0;	
 	return			TRUE;
 }
 
