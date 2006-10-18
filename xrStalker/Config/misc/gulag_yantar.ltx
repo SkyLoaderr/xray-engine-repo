@@ -167,7 +167,7 @@ wounded = wounded@ignore_scientist
 snd = yantar_kruglov_radiation_quest_2
 anim = guard
 target = actor
-on_signal = sound_end | remark@scientist_41 %=yan_gluk%
+on_signal = sound_end | remark@scientist_41 
 combat_ignore_cond = always
 danger = danger_condition@1
 wounded = wounded@ignore_scientist
@@ -175,7 +175,7 @@ wounded = wounded@ignore_scientist
 [remark@scientist_41]
 anim = probe_1
 target = actor
-on_signal = sound_end | camper@scientist_4 
+on_signal = sound_end | camper@scientist_4 %=yan_gluk%
 combat_ignore_cond = always
 danger = danger_condition@1
 wounded = wounded@ignore_scientist
@@ -200,15 +200,15 @@ combat_ignore_cond = {=fighting_actor =fighting_dist_ge(20)}
 def_state_moving = assault
 radius = 0
 no_retreat = true
-on_timer = 10000 | {!see_enemy} remark@scientist_5 %=yan_gluk%
-on_info = {!see_enemy =rostok_dist_to_actor_le(4)} remark@scientist_5 %=yan_gluk%
+on_timer = 10000 | {!see_enemy} remark@scientist_5 
+on_info = {!see_enemy =rostok_dist_to_actor_le(4)} remark@scientist_5 
 wounded = wounded@ignore_scientist
 
 [remark@scientist_51]
 snd = yantar_kruglov_radiation_quest_2
 anim = guard
 target = actor
-on_signal = sound_end | remark@scientist_5 %=yan_gluk%
+on_signal = sound_end | remark@scientist_5 
 combat_ignore_cond = always
 danger = danger_condition@1
 wounded = wounded@ignore_scientist
@@ -217,7 +217,7 @@ wounded = wounded@ignore_scientist
 [remark@scientist_5]
 ;snd = yantar_kruglov_radiation_quest_4
 anim = probe_2
-on_signal = sound_end | camper@scientist_5 
+on_signal = sound_end | camper@scientist_5 %=yan_gluk%
 combat_ignore_cond = always
 danger = danger_condition@1
 wounded = wounded@ignore_scientist
