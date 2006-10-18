@@ -1,4 +1,4 @@
-profiler.setup_hook	()
+--profiler.setup_hook	()
 
 schemes = {} -- соответствие схем модулям
 stypes = {} -- типы схем
