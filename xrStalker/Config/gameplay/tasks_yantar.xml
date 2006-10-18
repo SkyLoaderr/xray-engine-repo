@@ -135,8 +135,7 @@
 		<objective>
 			<text>yan_find_lab</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_set_complete>yantar_vasilyev_info</infoportion_set_complete>
-			<infoportion_complete>yan_find_vasilyev_end</infoportion_complete>
+			<infoportion_complete>yan_find_laboratory_end</infoportion_complete>
 			<function_call_complete>yantar_tasks.yantar_vasilyev_spam</function_call_complete>
 			<article>descr_yan_find_lab</article>
 		</objective>
@@ -144,12 +143,21 @@
 			<text>yan_find_vasilyev</text>
 			<map_location_type hint="yan_find_vasilyev">green_location</map_location_type>
 			<object_story_id>yan_vasilyev</object_story_id>
+			<infoportion_complete>yan_find_vasilyev_end</infoportion_complete>
 		</objective>
 		<objective>
 			<text>yan_find_vasilyev_pda</text>
 			<map_location_type hint="yan_find_vasilyev">green_location</map_location_type>
 			<object_story_id>yan_vasilyev</object_story_id>
 			<infoportion_complete>yan_find_vasilyev_end</infoportion_complete>
+			<function_call_complete>yantar_tasks.yantar_vasilyev_spam</function_call_complete>
+		</objective>
+		<objective>
+			<text>yan_find_lab</text>
+			<map_location_type hint="yan_find_lab">green_location</map_location_type>
+			<object_story_id>yan_mapspot_from_vasilyev</object_story_id>
+			<map_location_hidden>1</map_location_hidden>
+			<infoportion_complete>yan_find_laboratory_end</infoportion_complete>
 		</objective>
 </game_task>
 

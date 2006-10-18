@@ -16,6 +16,7 @@
 		<article>journal_before_vasilyev_pda</article>
 	</info_portion>
 	<info_portion id="yan_find_vasilyev_end"></info_portion>
+	<info_portion id="yan_find_laboratory_end"></info_portion>
 	<info_portion id="yantar_vasilyev_info">
 		<article>yan_vasilyev_info</article>
 		<task>yan_kill_brain_task</task>
