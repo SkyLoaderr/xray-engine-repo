@@ -222,9 +222,12 @@ void CUIMapList::LoadMapList()
 	for (;it!=end; ++it){
 		WeatherType			= it->first;
 		WeatherTime			= map_list_cfg.r_string(weather_sect, *WeatherType);
-		
+
 		AddWeather			(WeatherType, WeatherTime);
 	}
+
+	if(S.size())
+		m_pWeatherSelector->SetItem(0);
 }
 
 void	CUIMapList::SaveMapList(){
