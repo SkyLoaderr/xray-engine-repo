@@ -113,7 +113,8 @@ protected:
 	//функции родительского объекта
 	virtual const Fvector&	get_CurrentFirePoint()		= 0;
 	virtual const Fmatrix&	get_ParticlesXFORM()		= 0;
-
+	virtual void			ForceUpdateFireParticles	(){};
+	
 	////////////////////////////////////////////////
 	//общие функции для работы с партиклами оружия
 	virtual void			StartParticles		(CParticlesObject*& pParticles, LPCSTR particles_name, const Fvector& pos, const Fvector& vel = zero_vel, bool auto_remove_flag = false);

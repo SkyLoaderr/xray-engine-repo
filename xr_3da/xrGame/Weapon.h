@@ -312,6 +312,7 @@ public:
 	virtual const Fvector&	get_CurrentFirePoint	()			{ return get_LastFP();				}
 	virtual const Fvector&	get_CurrentFirePoint2	()			{ return get_LastFP2();				}
 	virtual const Fmatrix&	get_ParticlesXFORM		()			{ UpdateFireDependencies(); return m_firedeps.m_FireParticlesXForm;	}
+	virtual void			ForceUpdateFireParticles();
 
 	//////////////////////////////////////////////////////////////////////////
 	// Weapon fire

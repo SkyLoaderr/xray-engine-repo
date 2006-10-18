@@ -164,7 +164,7 @@ void CWeapon::UpdateFireDependencies_internal()
 
 		UpdateXForm			();
 
-		if (GetHUDmode() && (0!=H_Parent()))// && Local())
+		if (GetHUDmode() && (0!=H_Parent()) )
 		{
 			// 1st person view - skeletoned
 			CKinematics* V			= smart_cast<CKinematics*>(m_pHUD->Visual());
@@ -213,13 +213,30 @@ void CWeapon::UpdateFireDependencies_internal()
 	}
 }
 
+void CWeapon::ForceUpdateFireParticles()
+{
+	if ( !GetHUDmode() )
+	{//update particlesXFORM real bullet direction
+
+		if (!H_Parent())		return;
+
+		Fvector					p, d; 
+		smart_cast<CEntity*>(H_Parent())->g_fireParams	(this, p,d);
+
+		Fmatrix						_pxf;
+		_pxf.k						= d;
+		_pxf.i.crossproduct			(Fvector().set(0.0f,1.0f,0.0f),	_pxf.k);
+		_pxf.j.crossproduct			(_pxf.k,		_pxf.i);
+		_pxf.c						= XFORM().c;
+		
+		m_firedeps.m_FireParticlesXForm.set	(_pxf);
+
+	}
+
+}
+
 void CWeapon::Load		(LPCSTR section)
 {
-	// verify class
-	LPCSTR Class		= pSettings->r_string		(section,"class");
-	CLASS_ID load_cls	= TEXT2CLSID(Class);
-	R_ASSERT			(load_cls==CLS_ID);
-
 	inherited::Load					(section);
 	CShootingObject::Load			(section);
 

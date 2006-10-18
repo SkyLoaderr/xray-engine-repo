@@ -554,6 +554,7 @@ void CWeaponMagazined::OnShot		()
 	StartFlameParticles	();
 
 	//дым из ствола
+	ForceUpdateFireParticles	();
 	StartSmokeParticles			(get_LastFP(), vel);
 }
 
