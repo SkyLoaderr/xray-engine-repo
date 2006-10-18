@@ -544,7 +544,7 @@ bool	CActor::CanJump				()
 
 #define CANT_WALK			"cant_walk"
 #define CANT_WALK_WEIGHT	"cant_walk_weight"
-#define SHOW_CANT_WALK_TIME 7.f
+#define SHOW_CANT_WALK_TIME 14.f
 
 bool	CActor::CanMove				()
 {
