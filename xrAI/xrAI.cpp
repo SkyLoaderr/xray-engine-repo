@@ -19,9 +19,9 @@
 #pragma comment(lib,"d3dx9.lib")
 #pragma comment(lib,"IMAGEHLP.LIB")
 #pragma comment(lib,"winmm.LIB")
-#pragma comment(lib,"x:/xrcdb.LIB")
-#pragma comment(lib,"x:/MagicFM.LIB")
-#pragma comment(lib,"x:/xrCore.LIB")
+#pragma comment(lib,"xrcdb.LIB")
+#pragma comment(lib,"MagicFM.LIB")
+#pragma comment(lib,"xrCore.LIB")
 
 extern LPCSTR LEVEL_GRAPH_NAME;
 
