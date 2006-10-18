@@ -542,12 +542,13 @@ bool	CActor::CanJump				()
 	return can_Jump;
 }
 
-#define CANT_WALK "cant_walk"
-#define SHOW_CANT_WALK_TIME 5.f
+#define CANT_WALK			"cant_walk"
+#define CANT_WALK_WEIGHT	"cant_walk_weight"
+#define SHOW_CANT_WALK_TIME 7.f
 
 bool	CActor::CanMove				()
 {
-	if(conditions().IsCantWalk())
+	if( conditions().IsCantWalk() )
 	{
 		static float m_fSignTime = 0.f;
 
@@ -557,6 +558,17 @@ bool	CActor::CanMove				()
 			m_fSignTime = Device.fTimeGlobal;
 		}
 		return false;
+	}else
+	if( conditions().IsCantWalkWeight() ){
+		static float m_fSignTime2 = 0.f;
+
+		if(mstate_wishful&mcAnyMove && Device.fTimeGlobal - m_fSignTime2 > SHOW_CANT_WALK_TIME)
+		{
+			HUD().GetUI()->AddInfoMessage(*CStringTable().translate(CANT_WALK_WEIGHT));
+			m_fSignTime2 = Device.fTimeGlobal;
+		}
+		return false;
+	
 	}
 
 	if(IsTalking())

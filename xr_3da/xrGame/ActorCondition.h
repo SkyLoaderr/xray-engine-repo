@@ -45,6 +45,7 @@ public:
 	// хромание при потере сил и здоровья
 	virtual	bool		IsLimping					() const;
 	virtual bool		IsCantWalk					() const;
+	virtual bool		IsCantWalkWeight			() const;
 	virtual bool		IsCantSprint				() const;
 
 			void		ConditionJump				(float weight);
@@ -84,7 +85,8 @@ protected:
 	float m_fOverweightJumpK;
 	float m_fAccelK;
 	float m_fSprintK;
-
+	
+	float	m_MaxWalkWeight;
 
 	mutable bool m_bLimping;
 	mutable bool m_bCantWalk;

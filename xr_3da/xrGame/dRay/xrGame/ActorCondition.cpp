@@ -93,7 +93,8 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 	m_fV_Satiety				= pSettings->r_float(section,"satiety_v");		
 	m_fV_SatietyPower			= pSettings->r_float(section,"satiety_power_v");
 	m_fV_SatietyHealth			= pSettings->r_float(section,"satiety_health_v");
-
+	
+	m_MaxWalkWeight					= pSettings->r_float(section,"max_walk_weight");
 }
 
 
@@ -238,6 +239,16 @@ bool CActorCondition::IsCantWalk() const
 	else if(m_fPower > m_fCantWalkPowerEnd)
 		m_bCantWalk		= false;
 	return				m_bCantWalk;
+}
+
+bool CActorCondition::IsCantWalkWeight() const
+{
+	if(IsGameTypeSingle() && !GodMode())
+	{
+		if( object().inventory().TotalWeight() > m_MaxWalkWeight )
+			return true;
+	}
+	return false
 }
 
 bool CActorCondition::IsCantSprint() const
