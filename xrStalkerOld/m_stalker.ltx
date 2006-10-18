@@ -145,7 +145,7 @@ bip01_r_toe0	 	 		= 0.0, -1, 0.2
 	eye_right
 	jaw_1
 
-[critical_wound_body_section]
+[critical_wound_torso_section]
 	bip01_pelvis
 	bip01_tail
 	bip01_spine
@@ -155,7 +155,7 @@ bip01_r_toe0	 	 		= 0.0, -1, 0.2
 	bip01_l_clavicle	 		
 	bip01_r_clavicle
 
-[critical_wound_left_hand_section]
+[critical_wound_hand_left_section]
 	bip01_l_upperarm	 		
 	bip01_l_forearm	 	 	    
 	bip01_l_hand	 	 	    
@@ -169,7 +169,7 @@ bip01_r_toe0	 	 		= 0.0, -1, 0.2
 	bip01_l_finger21	 		
 	bip01_l_finger22	 		
 
-[critical_wound_right_hand_section]
+[critical_wound_hand_right_section]
 	bip01_r_upperarm	 		
 	bip01_r_forearm	 	 		
 	bip01_r_hand	 	 		
@@ -183,25 +183,25 @@ bip01_r_toe0	 	 		= 0.0, -1, 0.2
 	bip01_r_finger21	 		
 	bip01_r_finger22	 		
 
-[critical_wound_left_leg_section]
+[critical_wound_leg_left_section]
 	bip01_l_thigh
 	bip01_l_calf
 	bip01_l_foot
 	bip01_l_toe0
 
-[critical_wound_right_leg_section]
+[critical_wound_leg_right_section]
 	bip01_r_thigh
 	bip01_r_calf
 	bip01_r_foot
 	bip01_r_toe0
 	
-[critical_wound_body_part_section]
-head						= critical_wound_head_section
-body						= critical_wound_body_section
-left_hand					= critical_wound_left_hand_section
-right_hand					= critical_wound_right_hand_section
-left_leg					= critical_wound_left_leg_section
-right_leg					= critical_wound_right_leg_section
+[critical_wound_body_parts_section]
+	head					= critical_wound_head_section
+	torso					= critical_wound_torso_section
+	hand_left				= critical_wound_hand_left_section
+	hand_right				= critical_wound_hand_right_section
+	leg_left				= critical_wound_leg_left_section
+	leg_right				= critical_wound_leg_right_section
   
 [stalker_immunities]
 burn_immunity 				= 1.0				;коэффициенты иммунитета 
@@ -468,7 +468,7 @@ weapon_max_queue_interval_close	= 500
 ;---CRITICAL WOUND------------------------------------------------------------------
 critical_wound_threshold		= 0.6
 critical_wound_decrease_quant	= 0.1
-body_part_section				= critical_wound_body_part_section
+body_parts_section_id			= critical_wound_body_parts_section
 
 ;---HIT INFO---------------------------------------------------------
 hit_power						= 10
