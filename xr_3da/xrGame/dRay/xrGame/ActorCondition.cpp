@@ -248,7 +248,7 @@ bool CActorCondition::IsCantWalkWeight() const
 		if( object().inventory().TotalWeight() > m_MaxWalkWeight )
 			return true;
 	}
-	return false
+	return false;
 }
 
 bool CActorCondition::IsCantSprint() const
