@@ -44,6 +44,7 @@ void CUIGameCustom::shedule_Update		(u32 dt)
 	inherited::shedule_Update(dt);
 }
 
+bool g_b_ClearGameCaptions = false;
 
 void CUIGameCustom::OnFrame() 
 {
@@ -53,6 +54,12 @@ void CUIGameCustom::OnFrame()
 
 	it = remove_if(m_custom_statics.begin(), m_custom_statics.end(), predicate_remove_stat());
 	m_custom_statics.erase(it, m_custom_statics.end());
+	
+	if(g_b_ClearGameCaptions)
+	{
+		delete_data				(m_custom_statics);
+		g_b_ClearGameCaptions	= false;
+	}
 }
 
 void CUIGameCustom::Render()

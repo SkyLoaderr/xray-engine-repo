@@ -1150,6 +1150,7 @@ void CUIMainIngameWnd::UpdateActiveItemInfo()
 		UIWeaponIcon.Show			(false);
 		UIWeaponSignAmmo.Show		(false);
 		UIWeaponBack.SetText		("");
+		m_pWeapon					= NULL;
 	}
 }
 

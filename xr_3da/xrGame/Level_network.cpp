@@ -10,6 +10,7 @@
 #include "space_restriction_manager.h"
 
 const int NET_ObjectsPerPacketInSave	= NET_PacketSizeLimit/1000;
+extern bool	g_b_ClearGameCaptions;
 
 void CLevel::remove_objects	()
 {
@@ -38,6 +39,7 @@ void CLevel::remove_objects	()
 	space_restriction_manager().clear	();
 
 	psDeviceFlags.set			(rsDisableObjectsAsCrows, b_stored);
+	g_b_ClearGameCaptions		= true;
 }
 
 void CLevel::net_Stop		()

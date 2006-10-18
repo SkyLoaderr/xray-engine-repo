@@ -112,7 +112,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		break;
 
 	case kQUIT:	{
-		if( HUD().GetUI()->MainInputReceiver() ){
+		if(b_ui_exist && HUD().GetUI()->MainInputReceiver() ){
 				if(HUD().GetUI()->MainInputReceiver()->IR_OnKeyboardPress(key))	return;//special case for mp and main_menu
 				HUD().GetUI()->StartStopMenu( HUD().GetUI()->MainInputReceiver(), true);
 		}else
@@ -145,14 +145,13 @@ void CLevel::IR_OnKeyboardPress	(int key)
 
 	// Dima : sometimes it craches when pHUD->GetUI() is null
 	// correct this if correction is incorrect
-	if (!pHUD->GetUI())
-		return;
+	if ( !b_ui_exist )		return;
 
 	if ( b_ui_exist && pHUD->GetUI()->IR_OnKeyboardPress(key)) return;
 
 	if( Device.Pause()		) return;
 
-	if ( Game().IR_OnKeyboardPress(key) ) return;
+	if ( game && Game().IR_OnKeyboardPress(key) ) return;
 
 	switch (key) {
 #ifdef DEBUG
@@ -373,7 +372,7 @@ void CLevel::IR_OnKeyboardRelease(int key)
 	if (g_bDisableAllInput	) return;
 	if ( b_ui_exist && pHUD->GetUI()->IR_OnKeyboardRelease(key)) return;
 	if (Device.Pause()		) return;
-	if (Game().OnKeyboardRelease(key_binding[key]) ) return;
+	if (game && Game().OnKeyboardRelease(key_binding[key]) ) return;
 
 	if( b_ui_exist && HUD().GetUI()->MainInputReceiver() )return;
 	if (CURRENT_ENTITY())		{
