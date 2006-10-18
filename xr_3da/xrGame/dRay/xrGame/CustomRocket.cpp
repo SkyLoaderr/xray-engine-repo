@@ -17,6 +17,7 @@
 #include "actor.h"
 #ifdef DEBUG
 #include "PHDebug.h"
+#include "game_base_space.h"
 #endif
 
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
@@ -449,12 +450,15 @@ void CCustomRocket::UpdateEnginePh			()
 	Fvector l_pos, l_dir; 
 	l_pos.set(0, 0,-2.f);
 	l_dir.set(XFORM().k);
-
-	if(bDebug && m_pOwner->ID()==Actor()->ID())
+#ifdef DEBUG	
+	if (GameID() == GAME_SINGLE)
 	{
-		Msg("force= %f", force);
-	}
-	
+		if(bDebug && m_pOwner->ID()==Actor()->ID())
+		{
+			Msg("force= %f", force);
+		}
+	}	
+#endif
 	l_dir.normalize();
 	m_pPhysicsShell->applyImpulse(l_dir,(1.f+k_back)*force);
 	m_pPhysicsShell->get_LinearVel(l_dir);
@@ -465,19 +469,24 @@ void CCustomRocket::UpdateEnginePh			()
 	force = m_fEngineImpulseUp*fixed_step;// * Device.fTimeDelta;
 	m_pPhysicsShell->applyImpulse(l_dir, force);
 
-	if(bDebug && m_pOwner->ID()==Actor()->ID())
+#ifdef DEBUG	
+	if (GameID() == GAME_SINGLE)
 	{
-		Msg("force UP= %f", force);
-	}
 
+		if(bDebug && m_pOwner->ID()==Actor()->ID())
+		{
+			Msg("force UP= %f", force);
+		}
+	}
+#endif
 	//m_pPhysicsShell->set_AngularVel()
 }
 
 
 void CCustomRocket::UpdateEngine				()
 {
-//	VERIFY( getVisible() );
-//	VERIFY( m_pPhysicsShell);
+	//	VERIFY( getVisible() );
+	//	VERIFY( m_pPhysicsShell);
 	if( !m_pPhysicsShell )
 		Msg("! CCustomRocket::UpdateEngine called, but 0==m_pPhysicsShell");
 
@@ -487,10 +496,16 @@ void CCustomRocket::UpdateEngine				()
 
 	if (m_dwEngineTime <= 0) 
 	{
-		if(m_pOwner->ID()==Actor()->ID())
+#ifdef DEBUG	
+		if (GameID() == GAME_SINGLE)
 		{
-			Msg("stop engine rocket");
+
+			if(m_pOwner->ID()==Actor()->ID())
+			{
+				Msg("stop engine rocket");
+			}
 		}
+#endif
 		StopEngine();
 		return;
 	}
