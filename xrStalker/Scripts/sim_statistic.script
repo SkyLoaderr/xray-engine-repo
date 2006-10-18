@@ -118,7 +118,7 @@ local show_stalker_spot = false
 function register_stalker(npc)
 	if npc:alive() then
 		local community, rank = getNpcType(npc)
-		reg_objects_stalker[npc.id] = {community = community, name = npc:name()}
+		reg_objects_stalker[npc.id] = {community = community, name = community}
 		
 		--' Отметка мапспотами (только для презентации)
 		if show_stalker_spot then
@@ -171,7 +171,7 @@ local show_stalker_spot = false
 function register_monster(npc)
 	if npc:alive() then
 		local community, rank = getNpcType(npc)
-		reg_objects_monster[npc.id] = {community = community, name = npc:name()}
+		reg_objects_monster[npc.id] = {community = community, name = community}
 		
 		--' Отметка мапспотами (только для презентации)
 		if show_monster_spot then
@@ -320,8 +320,8 @@ end
 local reg_objects_smart = {}
 local show_smart_spot = false
 function register_smart(obj)
-	local section = obj:name().."\\n"
-	reg_objects_smart[obj.id] = {section = section, enabled = false, cap = obj.gulag.capacity, pop = 0}
+	local section = obj:name()
+	reg_objects_smart[obj.id] = {section = section, enabled = false, cap = obj.gulag.capacity, pop = 0, comed = 0, state = 0}
 	if show_smart_spot == true then
 		mark_smart(obj.id)
 	end
@@ -331,9 +331,13 @@ function unregister_smart(obj)
 end
 function smart_enabled(obj, enabled)
 	local pop = obj.gulag:get_population()
+	local comed = obj.gulag:get_population_comed()
+	local state = obj.gulag.state
 
 	if reg_objects_smart[obj.id].enabled == enabled and
-	   reg_objects_smart[obj.id].pop == pop 		
+	   reg_objects_smart[obj.id].pop == pop and
+	   reg_objects_smart[obj.id].comed == comed and
+	   reg_objects_smart[obj.id].state == state
 	then
 		return
 	end
@@ -342,6 +346,8 @@ function smart_enabled(obj, enabled)
 	end
 	reg_objects_smart[obj.id].enabled = enabled
 	reg_objects_smart[obj.id].pop = pop
+	reg_objects_smart[obj.id].comed = comed
+	reg_objects_smart[obj.id].state = state
 	if show_smart_spot == true then
 		mark_smart(obj.id)
 	end
@@ -349,7 +355,7 @@ end
 function mark_smart(obj_id)
 	local rr = reg_objects_smart[obj_id]
 	if rr.exist ~= true then
-		local str = rr.section.."pop = "..tostring(rr.pop).."("..tostring(rr.cap)..")"
+		local str = rr.section.." ("..tostring(rr.state)..")\\n".."pop = "..tostring(rr.pop).."("..tostring(rr.cap)..") comed = "..tostring(rr.comed)
 		if rr.enabled then
 			level.map_add_object_spot(obj_id, "alife_presentation_smart_on", str)
 		else
@@ -377,7 +383,7 @@ function unmark_all_smarts()
 end
 function mark_all_smarts()
 	if show_smart_spot == true then
-		unmark_smart(k)
+		unmark_all_smarts()
 		return
 	end
 	show_smart_spot = true

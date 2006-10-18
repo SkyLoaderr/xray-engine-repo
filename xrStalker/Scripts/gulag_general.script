@@ -348,11 +348,16 @@ function load_states(gname, type)
 		return function(gulag)
 			if gulag.state == 0 then
 				if xr_logic.pick_section_from_condlist(db.actor, gulag.smrttrn, gulag.state_switch_1) ~= nil then
+
+					level.map_add_object_spot(gulag.smrttrn.id, "alife_presentation_smart_ready_spot", "")	
+		
 					return 1
 				end
 				return 0
 			elseif gulag.state == 1 then
 				if xr_logic.pick_section_from_condlist(db.actor, gulag.smrttrn, gulag.state_switch_0) ~= nil then
+					
+					level.map_remove_object_spot(gulag.smrttrn.id, "alife_presentation_smart_ready_spot")	
 					return 0
 				end
 				return 1
@@ -361,14 +366,18 @@ function load_states(gname, type)
 	end
 
 	if type == "general_lair" then
-		return function(gulag)
+		return function(gulag) 
 			if gulag.state == 0 then
 				if xr_logic.pick_section_from_condlist(db.actor, gulag.object, gulag.state_switch_1) ~= nil then
+					
+					level.map_add_object_spot(gulag.smrttrn.id, "alife_presentation_smart_ready_spot", "")	
 					return 1
 				end
 				return 0
 			elseif gulag.state == 1 then
 				if xr_logic.pick_section_from_condlist(db.actor, gulag.object, gulag.state_switch_0) ~= nil then
+
+					level.map_remove_object_spot(gulag.smrttrn.id, "alife_presentation_smart_ready_spot")
 					return 0
 				end
 				return 1

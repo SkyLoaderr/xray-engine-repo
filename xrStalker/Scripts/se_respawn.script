@@ -3,8 +3,8 @@ Respawner. —хема обновлени€ попул€ции всего всего всего в симул€ции.
 by Stohe (ƒиденко –услан)
 --------------------------------------------------------------------------------------------------------------------]]
 
-function printf()
-end
+--function printf()
+--end
 
 local section_name = "respawn"
 local i,k,v = 0,0,0
@@ -239,6 +239,11 @@ function se_respawn:on_register()
 	self.parent	= r_num(ini, section_name, "parent", nil)
 	self.item_spawn	= r_bool(ini, section_name, "item_spawn", false)
 	
+	--' ѕроверка дл€ презентации
+	if self.item_spawn == false then
+		self.max_count = -1
+	end
+
 	-- производим первичную инициализацию
 	self.respawn_time = game.CTime()
 	

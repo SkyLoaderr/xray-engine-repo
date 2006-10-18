@@ -847,6 +847,25 @@ function gulag:get_population()
 	return i
 end
 
+-- получить количество живых пришедших объектов под смартом
+function gulag:get_population_comed()
+	local i = 0
+	local obj
+
+	for obj_id, npc_info in pairs( self.npc_info ) do
+		obj = level.object_by_id( obj_id ) or npc_info.se_obj
+
+		if obj then
+			if obj:alive() and self.Object_didnt_begin_job[obj_id] == false then
+				i = i + 1
+			end			
+		end
+
+	end
+
+	return i
+end
+
 -- получить количество живых неэксклюзивных объектов под смартом
 function gulag:get_non_exclusive_population()
 	local i = 0
@@ -1277,6 +1296,13 @@ function getGulagPopulation( name_or_sid )
 	local gulag = get_gulag( name_or_sid )
 
 	return ( gulag and gulag:get_population() ) or 0
+end
+
+-- получить кол-во населения смарта по имени (только пришедшие персонажи)
+function getGulagPopulationComed( name_or_sid )
+	local gulag = get_gulag( name_or_sid )
+
+	return ( gulag and gulag:get_population_comed() ) or 0
 end
 
 -- установить отношение всех членов смарта к указанному объекту

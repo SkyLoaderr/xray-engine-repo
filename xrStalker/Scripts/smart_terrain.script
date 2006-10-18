@@ -543,9 +543,7 @@ end
 --   2) иначе ближе - лучше
 -- TODO Оптимизировать
 function se_smart_terrain:suitable( obj )
---	printf		("se_smart_terrain::suitable 0")
-	if obj.was_in_smart_terrain then
---		printf	("se_smart_terrain::suitable 0.0")
+--'	if obj.was_in_smart_terrain then
 		local v = 0
 
 		for id, strn in pairs( smart_terrains[self:get_level_name()] ) do
@@ -563,20 +561,15 @@ function se_smart_terrain:suitable( obj )
 		        tostring(obj.was_in_smart_terrain) )]]
 
 		return 1000000 - v
+
+--[[
 	else
---		printf	("se_smart_terrain::suitable 0.1")
 		local self_gv = game_graph():vertex( self.m_game_vertex_id )
 		local obj_gv  = game_graph():vertex( obj.m_game_vertex_id )
 
---[[		printf( "[smart_terrain %s] obj=%s suitable=%d was_in_smart_terrain=%s",
-		        self:name(),
-		        obj:name(),
-		        1000000 - obj_gv:game_point():distance_to( self_gv:game_point() ),
-		        tostring(obj.was_in_smart_terrain) )]]
-
---		printf	("se_smart_terrain::suitable 0.2")
 		return 1000000 - obj_gv:game_point():distance_to( self_gv:game_point() )
 	end
+]]
 end
 
 -- добавить npc в smart terrain.
