@@ -137,6 +137,71 @@ bip01_r_thigh	 	 		= 1.0, 6, 0.5
 bip01_r_calf	 	 		= 1.0, 6, 0.4
 bip01_r_foot	 	 		= 0.2, 6, 0.3
 bip01_r_toe0	 	 		= 0.0, -1, 0.2
+
+[critical_wound_head_section]
+	bip01_head
+	eyelid_1
+	eye_left
+	eye_right
+	jaw_1
+
+[critical_wound_body_section]
+	bip01_pelvis
+	bip01_tail
+	bip01_spine
+	bip01_spine1
+	bip01_spine2
+	bip01_neck
+	bip01_l_clavicle	 		
+	bip01_r_clavicle
+
+[critical_wound_left_hand_section]
+	bip01_l_upperarm	 		
+	bip01_l_forearm	 	 	    
+	bip01_l_hand	 	 	    
+	bip01_l_finger0	 	 	    
+	bip01_l_finger01	 		
+	bip01_l_finger02	 		
+	bip01_l_finger1	 	 	    
+	bip01_l_finger11	 		
+	bip01_l_finger12	 		
+	bip01_l_finger2	 	 	    
+	bip01_l_finger21	 		
+	bip01_l_finger22	 		
+
+[critical_wound_right_hand_section]
+	bip01_r_upperarm	 		
+	bip01_r_forearm	 	 		
+	bip01_r_hand	 	 		
+	bip01_r_finger0	 	 		
+	bip01_r_finger01	 		
+	bip01_r_finger02	 		
+	bip01_r_finger1	 	 		
+	bip01_r_finger11	 		
+	bip01_r_finger12	 		
+	bip01_r_finger2	 	 	 	
+	bip01_r_finger21	 		
+	bip01_r_finger22	 		
+
+[critical_wound_left_leg_section]
+	bip01_l_thigh
+	bip01_l_calf
+	bip01_l_foot
+	bip01_l_toe0
+
+[critical_wound_right_leg_section]
+	bip01_r_thigh
+	bip01_r_calf
+	bip01_r_foot
+	bip01_r_toe0
+	
+[critical_wound_body_part_section]
+head						= critical_wound_head_section
+body						= critical_wound_body_section
+left_hand					= critical_wound_left_hand_section
+right_hand					= critical_wound_right_hand_section
+left_leg					= critical_wound_left_leg_section
+right_leg					= critical_wound_right_leg_section
   
 [stalker_immunities]
 burn_immunity 				= 1.0				;коэффициенты иммунитета 
@@ -403,7 +468,7 @@ weapon_max_queue_interval_close	= 500
 ;---CRITICAL WOUND------------------------------------------------------------------
 critical_wound_threshold		= 0.6
 critical_wound_decrease_quant	= 0.1
-
+body_part_section				= critical_wound_body_part_section
 
 ;---HIT INFO---------------------------------------------------------
 hit_power						= 10
