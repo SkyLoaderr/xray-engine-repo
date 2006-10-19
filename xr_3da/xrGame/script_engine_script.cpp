@@ -97,11 +97,16 @@ void prefetch_module(LPCSTR file_name)
 }
 
 struct profile_timer_script {
-	CStatTimer					m_timer;
+	u64							m_start_cpu_tick_count;
+	u64							m_accumulator;
+	u64							m_count;
 	int							m_recurse_mark;
 	
 	IC								profile_timer_script	()
 	{
+		m_start_cpu_tick_count	= 0;
+		m_accumulator			= 0;
+		m_count					= 0;
 		m_recurse_mark			= 0;
 	}
 
@@ -112,14 +117,15 @@ struct profile_timer_script {
 
 	IC		profile_timer_script&	operator=				(const profile_timer_script &profile_timer)
 	{
-		m_timer					= profile_timer.m_timer;
+		m_start_cpu_tick_count	= profile_timer.m_start_cpu_tick_count;
+		m_count					= profile_timer.m_count;
 		m_recurse_mark			= profile_timer.m_recurse_mark;
 		return					(*this);
 	}
 
 	IC		bool					operator<				(const profile_timer_script &profile_timer) const
 	{
-		return					(m_timer.GetElapsed_ticks() < profile_timer.m_timer.GetElapsed_ticks());
+		return					(m_accumulator < profile_timer.m_accumulator);
 	}
 
 	IC		void					start					()
@@ -130,7 +136,8 @@ struct profile_timer_script {
 		}
 
 		++m_recurse_mark;
-		m_timer.Begin			();
+		++m_count;
+		m_start_cpu_tick_count	= CPU::GetCLK();
 	}
 
 	IC		void					stop					()
@@ -141,20 +148,25 @@ struct profile_timer_script {
 		if (m_recurse_mark)
 			return;
 		
-		m_timer.End				();
+		u64						finish = CPU::GetCLK();
+		if (finish > m_start_cpu_tick_count)
+			m_accumulator		+= finish - m_start_cpu_tick_count;
 	}
 
 	IC		float					time					() const
 	{
-		return					(float(m_timer.GetElapsed_sec())*1000000.f);
+		FPU::m64r				();
+		float					result = (float(double(m_accumulator)/double(CPU::clk_per_second))*1000000.f);
+		FPU::m24r				();
+		return					(result);
 	}
 };
 
 IC	profile_timer_script	operator+	(const profile_timer_script &portion0, const profile_timer_script &portion1)
 {
 	profile_timer_script	result;
-	result.m_timer.accum	= portion0.m_timer.accum + portion1.m_timer.accum;
-	result.m_timer.count	= portion0.m_timer.count + portion1.m_timer.count;
+	result.m_accumulator	= portion0.m_accumulator + portion1.m_accumulator;
+	result.m_count			= portion0.m_count + portion1.m_count;
 	return					(result);
 }
 
