@@ -89,8 +89,8 @@ void InitConsole	()
 		sscanf					(strstr(Core.Params,"-ltx ")+5,"%[^ ] ",c_name);
 		strcpy					(Console->ConfigFile,c_name);
 	}
-	if (!FS.exist(Console->ConfigFile))
-		strcpy					(Console->ConfigFile,"user.ltx");
+//	if (!FS.exist(Console->ConfigFile))
+//		strcpy					(Console->ConfigFile,"user.ltx");
 
 }
 
@@ -312,6 +312,7 @@ void	__cdecl		intro_dshow_x	(void*)
 }
 */
 #include "xr_ioc_cmd.h"
+
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      char *    lpCmdLine,
