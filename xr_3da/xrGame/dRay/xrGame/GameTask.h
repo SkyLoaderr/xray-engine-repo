@@ -92,7 +92,7 @@ public:
 	void					AddFailFunc_script		(LPCSTR _str);
 	void					AddOnCompleteFunc_script(LPCSTR _str);
 	void					AddOnFailFunc_script	(LPCSTR _str);
-
+	LPCSTR					GetDescription_script	()					{return *description;};
 	void					ChangeStateCallback		();
 };
 
