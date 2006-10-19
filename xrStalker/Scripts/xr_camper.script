@@ -236,7 +236,7 @@ function action_patrol:execute()
 				end
 			end
 
-			xr_sound.set_sound(self.object, nil)
+			xr_sound.set_sound(self.object, "")
 			if self.a.sniper == true then
 				-- поиск врага (сканирование врага)
 				--printf("SCAN_ENEMY [%s] of [%s]", utils.to_str(time_global() - self.a.mem_enemy), utils.to_str(self.a.idle))
@@ -280,7 +280,7 @@ function action_patrol:execute()
 
 	local danger = self:process_danger()
 	if danger then 
-		xr_sound.set_sound(self.object, nil)
+		xr_sound.set_sound(self.object, "")
 		self.danger = true
 		return
 	end
