@@ -144,11 +144,39 @@ function stats				()
 			k				= "[[C]]:-1 (self)"
 		end
 		table.insert		(out_stats,{name=k,count=j})
+		printf				("%20s : %f : %d",k,j.timer:time()/1000,j.count)
 		script				= script + j.timer
 		count				= count + j.count
     end
 
-    table.sort				(out_stats, function (a,b) return a.count.timer<b.count.timer end)
+--	printf					("\nOUT_STATS (%d elements)\n",table.getn(out_stats))
+--    
+    for i,a in pairs(out_stats) do
+		printf				("%d : %20s : %f : %d",i,a.name,a.count.timer:time()/1000,a.count.count)
+    end
+
+	printf					("\nsorting OUT_STATS\n")
+	
+    table.sort				(
+		out_stats,
+		function (a,b)
+			if (a == nil) then
+--				if (b == nil) then
+--					return	(false)
+--				end
+--				
+				return		(true)
+			end
+--			
+			if (b == nil) then
+				return		(false)
+			end
+--			
+			printf			("a : %20s : %f : %d",a.name,a.count.timer:time()/1000,a.count.count)
+			printf			("b : %20s : %f : %d",b.name,b.count.timer:time()/1000,b.count.count)
+			return			(a.count.timer < b.count.timer)
+		end
+	)
     
     for n,c in pairs(out_stats) do
 		printf				("%9.2fms (%5.2f%%) %9.2fms [%8d] : %s",c.count.timer:time()/1000,c.count.timer:time()*100/script:time(),c.count.child_timer:time()/1000,c.count.count,c.name)
