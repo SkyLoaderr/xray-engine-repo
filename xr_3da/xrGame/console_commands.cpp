@@ -1700,8 +1700,26 @@ public:
 		if (!xr_strlen(args))
 			Log("* Specify string to run!");
 		else {
+#if 1
 			if (ai().script_engine().script_process(ScriptEngine::eScriptProcessorLevel))
 				ai().script_engine().script_process(ScriptEngine::eScriptProcessorLevel)->add_script(args,true,true);
+#else
+			string4096		S;
+			shared_str		m_script_name = "console command";
+			sprintf			(S,"%s\n",args);
+			int				l_iErrorCode = luaL_loadbuffer(ai().script_engine().lua(),S,xr_strlen(S),"@console_command");
+			if (!l_iErrorCode) {
+				l_iErrorCode = lua_pcall(ai().script_engine().lua(),0,0,0);
+				if (l_iErrorCode) {
+					ai().script_engine().print_output(ai().script_engine().lua(),*m_script_name,l_iErrorCode);
+					return;
+				}
+			}
+			else {
+				ai().script_engine().print_output(ai().script_engine().lua(),*m_script_name,l_iErrorCode);
+				return;
+			}
+#endif
 		}
 	}
 };
