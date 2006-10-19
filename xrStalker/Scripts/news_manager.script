@@ -231,10 +231,10 @@ function send_task(actor, type, task, objective)
 		type == "update"
 	then
 		--' Выдать новое подзадание
-		local oo = task:get_objective(objective:get_idx() + 1)
-		if oo ~= nil then
-			news_text = game.translate_string(oo:get_description())
+		if task:get_objectives_cnt() == objective:get_idx()+1 then
+			return
 		end
+		news_text = game.translate_string(task:get_objective(objective:get_idx() + 1):get_description())
 	end
 
 	db.actor:give_game_news(news_text, task_texture, task_rect, 0, 0)
