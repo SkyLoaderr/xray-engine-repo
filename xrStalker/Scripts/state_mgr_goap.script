@@ -222,7 +222,7 @@ function goap_graph(st, npc)
 
 
 
-	action = state_mgr_movement.act_state_mgr_movement_walk("state_mgr_movement_walk")
+	action = state_mgr_movement.act_state_mgr_movement_walk("state_mgr_movement_walk", st)
 	action:add_precondition    (world_property(st.properties["locked"],                 false))
 	action:add_precondition    (world_property(st.properties["movement"],               false))
 	action:add_precondition    (world_property(st.properties["weapon"],                 true))
@@ -232,7 +232,7 @@ function goap_graph(st, npc)
 	action:add_effect    (world_property(st.properties["movement"],                 true))
 	st.planner:add_action(st.operators["movement_walk"], action)
 
-	action = state_mgr_movement.act_state_mgr_movement_run("state_mgr_movement_run")
+	action = state_mgr_movement.act_state_mgr_movement_run("state_mgr_movement_run", st)
 	action:add_precondition    (world_property(st.properties["locked"],                 false))
 	action:add_precondition    (world_property(st.properties["movement"],               false))
 	action:add_precondition    (world_property(st.properties["weapon"],                 true))
@@ -242,12 +242,35 @@ function goap_graph(st, npc)
 	action:add_effect    (world_property(st.properties["movement"],                 true))
 	st.planner:add_action(st.operators["movement_run"], action)
 
-	action = state_mgr_movement.act_state_mgr_movement_stand("state_mgr_movement_stand")
+	action = state_mgr_movement.act_state_mgr_movement_stand("state_mgr_movement_stand", st)
 	action:add_precondition    (world_property(st.properties["movement"],               false))
 	action:add_precondition    (world_property(st.properties["movement_stand"],         true))
 	action:add_effect    (world_property(st.properties["movement"],                 true))
 	st.planner:add_action(st.operators["movement_stand"], action)
 
+
+
+	action = state_mgr_direction.act_state_mgr_direction_turn("state_mgr_direction_turn", st)
+	action:add_precondition    (world_property(st.properties["locked"],                 false))
+	action:add_precondition    (world_property(st.properties["direction"],              false))
+	action:add_precondition    (world_property(st.properties["direction_search"],       false))
+	action:add_precondition    (world_property(st.properties["weapon"],                 true))
+	action:add_precondition    (world_property(st.properties["animation_none_now"],     true))
+	action:add_precondition    (world_property(st.properties["animstate_idle_now"],     true))
+    action:add_precondition    (world_property(st.properties["movement"],               true))
+	action:add_effect    (world_property(st.properties["direction"],                true))
+	st.planner:add_action(st.operators["direction_turn"], action)
+
+	action = state_mgr_direction.act_state_mgr_direction_search("state_mgr_direction_search", st)
+	action:add_precondition    (world_property(st.properties["locked"],                 false))
+	action:add_precondition    (world_property(st.properties["direction"],              false))
+	action:add_precondition    (world_property(st.properties["direction_search"],       true))
+	action:add_precondition    (world_property(st.properties["weapon"],                 true))
+	action:add_precondition    (world_property(st.properties["animation_none_now"],     true))
+	action:add_precondition    (world_property(st.properties["animstate_idle_now"],     true))
+    action:add_precondition    (world_property(st.properties["movement"],               true))
+	action:add_effect    (world_property(st.properties["direction"],                true))
+	st.planner:add_action(st.operators["direction_search"], action)
 
 
 
@@ -304,31 +327,6 @@ function goap_graph(st, npc)
 	action:add_effect    (world_property(st.properties["bodystate"],                true))
 	action:add_effect    (world_property(st.properties["bodystate_standing_now"],   true))
 	st.planner:add_action(st.operators["bodystate_standing"], action)
-
-
-
-	action = state_mgr_direction.act_state_mgr_direction_turn("state_mgr_direction_turn", st)
-	action:add_precondition    (world_property(st.properties["locked"],                 false))
-	action:add_precondition    (world_property(st.properties["direction"],              false))
-	action:add_precondition    (world_property(st.properties["direction_search"],       false))
-	action:add_precondition    (world_property(st.properties["weapon"],                 true))
-	action:add_precondition    (world_property(st.properties["animation_none_now"],     true))
-	action:add_precondition    (world_property(st.properties["animstate_idle_now"],     true))
-    action:add_precondition    (world_property(st.properties["movement"],               true))
-	action:add_effect    (world_property(st.properties["direction"],                true))
-	st.planner:add_action(st.operators["direction_turn"], action)
-
-	action = state_mgr_direction.act_state_mgr_direction_search("state_mgr_direction_search", st)
-	action:add_precondition    (world_property(st.properties["locked"],                 false))
-	action:add_precondition    (world_property(st.properties["direction"],              false))
-	action:add_precondition    (world_property(st.properties["direction_search"],       true))
-	action:add_precondition    (world_property(st.properties["weapon"],                 true))
-	action:add_precondition    (world_property(st.properties["animation_none_now"],     true))
-	action:add_precondition    (world_property(st.properties["animstate_idle_now"],     true))
-    action:add_precondition    (world_property(st.properties["movement"],               true))
-	action:add_effect    (world_property(st.properties["direction"],                true))
-	st.planner:add_action(st.operators["direction_search"], action)
-
 
 
 	action = state_mgr_animstate.act_state_mgr_animstate_2sit("state_mgr_animstate_2sit", st)
