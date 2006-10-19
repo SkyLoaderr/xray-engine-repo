@@ -444,6 +444,7 @@ C++ class story_ids {
     const pri_hotel_zone = 825;
     const pri_monolith_base_zone = 826;
     const pri_monolith_leader = 828;
+    const pri_snork_growl = 829;
     const pri_stadium_zone = 827;
     const pri_wave1_monolith_victim1 = 808;
     const pri_wave2_monolith_victim1 = 804;
@@ -547,6 +548,16 @@ C++ class story_ids {
     const val_zone_robbers = 429;
     const val_zone_south_gate = 430;
     const warlab = 1400;
+    const x18_sound_1 = 471;
+    const x18_sound_10 = 480;
+    const x18_sound_2 = 472;
+    const x18_sound_3 = 473;
+    const x18_sound_4 = 474;
+    const x18_sound_5 = 475;
+    const x18_sound_6 = 476;
+    const x18_sound_7 = 477;
+    const x18_sound_8 = 478;
+    const x18_sound_9 = 479;
     const yan_ecolog_help = 900;
     const yan_general_ecolog = 902;
     const yan_ghost = 918;
@@ -659,6 +670,14 @@ C++ class game_player_flags {
 
 };
 
+C++ class GAME_TYPE {
+    const GAME_ARTEFACTHUNT = 7;
+    const GAME_DEATHMATCH = 2;
+    const GAME_TEAMDEATHMATCH = 6;
+    const GAME_UNKNOWN = 0;
+
+};
+
 C++ class key_bindings {
     const kACCEL = 12;
     const kBACK = 2;
@@ -715,8 +734,7 @@ C++ class key_bindings {
     const kWPN_6 = 29;
     const kWPN_FIRE = 32;
     const kWPN_FUNC = 37;
-    const kWPN_NEXT = 30;
-    const kWPN_PREV = 31;
+    const kWPN_NEXT = 31;
     const kWPN_RELOAD = 33;
     const kWPN_ZOOM = 34;
 
@@ -789,52 +807,48 @@ C++ class task {
 };
 
 C++ class ui_events {
-    const ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED = 56;
-    const ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED = 57;
     const BUTTON_CLICKED = 14;
     const BUTTON_DOWN = 15;
     const CHECK_BUTTON_RESET = 18;
     const CHECK_BUTTON_SET = 17;
-    const DRAG_DROP_ITEM_DB_CLICK = 23;
+    const DRAG_DROP_ITEM_DB_CLICK = 22;
     const DRAG_DROP_ITEM_DRAG = 20;
     const DRAG_DROP_ITEM_DROP  = 21;
-    const DRAG_DROP_ITEM_MOVE = 22;
-    const DRAG_DROP_ITEM_RBUTTON_CLICK = 24;
-    const DRAG_DROP_REFRESH_ACTIVE_ITEM = 25;
-    const INTERACTIVE_ITEM_CLICK = 38;
-    const INVENTORY_ATTACH_ADDON  = 63;
-    const INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON = 66;
-    const INVENTORY_DETACH_SCOPE_ADDON = 64;
-    const INVENTORY_DETACH_SILENCER_ADDON = 65;
-    const INVENTORY_DROP_ACTION = 58;
-    const INVENTORY_EAT_ACTION = 59;
-    const INVENTORY_TO_BAG_ACTION = 62;
-    const INVENTORY_TO_BELT_ACTION  = 60;
-    const INVENTORY_TO_SLOT_ACTION = 61;
-    const LIST_ITEM_CLICKED = 34;
-    const MESSAGE_BOX_CANCEL_CLICKED = 45;
-    const MESSAGE_BOX_NO_CLICKED = 44;
-    const MESSAGE_BOX_OK_CLICKED = 40;
-    const MESSAGE_BOX_QUIT_GAME_CLICKED = 43;
-    const MESSAGE_BOX_QUIT_WIN_CLICKED = 42;
-    const MESSAGE_BOX_YES_CLICKED = 41;
-    const OUTFIT_RETURNED_BACK = 55;
-    const PDA_CONTACTS_WND_CONTACT_SELECTED = 52;
-    const PDA_DIALOG_WND_BACK_BUTTON_CLICKED = 50;
-    const PDA_DIALOG_WND_MESSAGE_BUTTON_CLICKED = 51;
-    const PROPERTY_CLICKED = 39;
+    const DRAG_DROP_ITEM_RBUTTON_CLICK = 23;
+    const INTERACTIVE_ITEM_CLICK = 35;
+    const INVENTORY_ATTACH_ADDON  = 58;
+    const INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON = 64;
+    const INVENTORY_DETACH_SCOPE_ADDON = 60;
+    const INVENTORY_DETACH_SILENCER_ADDON = 62;
+    const INVENTORY_DROP_ACTION = 53;
+    const INVENTORY_EAT_ACTION = 54;
+    const INVENTORY_TO_BAG_ACTION = 57;
+    const INVENTORY_TO_BELT_ACTION  = 55;
+    const INVENTORY_TO_SLOT_ACTION = 56;
+    const LIST_ITEM_CLICKED = 31;
+    const MESSAGE_BOX_CANCEL_CLICKED = 42;
+    const MESSAGE_BOX_NO_CLICKED = 41;
+    const MESSAGE_BOX_OK_CLICKED = 37;
+    const MESSAGE_BOX_QUIT_GAME_CLICKED = 40;
+    const MESSAGE_BOX_QUIT_WIN_CLICKED = 39;
+    const MESSAGE_BOX_YES_CLICKED = 38;
+    const OUTFIT_RETURNED_BACK = 52;
+    const PDA_CONTACTS_WND_CONTACT_SELECTED = 49;
+    const PDA_DIALOG_WND_BACK_BUTTON_CLICKED = 47;
+    const PDA_DIALOG_WND_MESSAGE_BUTTON_CLICKED = 48;
+    const PROPERTY_CLICKED = 36;
     const RADIOBUTTON_SET = 19;
-    const SCROLLBAR_HSCROLL = 31;
-    const SCROLLBAR_VSCROLL = 30;
-    const SCROLLBOX_MOVE = 28;
-    const SCROLLBOX_STOP = 29;
+    const SCROLLBAR_HSCROLL = 28;
+    const SCROLLBAR_VSCROLL = 27;
+    const SCROLLBOX_MOVE = 25;
+    const SCROLLBOX_STOP = 26;
     const STATIC_FOCUS_LOST = 13;
     const STATIC_FOCUS_RECEIVED = 12;
     const TAB_CHANGED = 16;
-    const TALK_DIALOG_QUESTION_CLICKED = 47;
-    const TALK_DIALOG_TRADE_BUTTON_CLICKED = 46;
-    const TRADE_WND_CLOSED = 53;
-    const UNDRESS_OUTFIT = 54;
+    const TALK_DIALOG_QUESTION_CLICKED = 44;
+    const TALK_DIALOG_TRADE_BUTTON_CLICKED = 43;
+    const TRADE_WND_CLOSED = 50;
+    const UNDRESS_OUTFIT = 51;
     const WINDOW_KEYBOARD_CAPTURE_LOST = 11;
     const WINDOW_KEY_PRESSED = 8;
     const WINDOW_KEY_RELEASED = 9;
@@ -845,14 +859,6 @@ C++ class ui_events {
     const WINDOW_MOUSE_MOVE = 4;
     const WINDOW_RBUTTON_DOWN = 1;
     const WINDOW_RBUTTON_UP = 3;
-
-};
-
-C++ class GAME_TYPE {
-    const GAME_ARTEFACTHUNT = 3;
-    const GAME_DEATHMATCH = 1;
-    const GAME_TEAMDEATHMATCH = 2;
-    const GAME_UNKNOWN = 0;
 
 };
 
@@ -870,7 +876,7 @@ C++ class hit_memory_object : entity_memory_object {
 
 C++ class clsid {
     const actor = 78;
-    const ameba_zone = 171;
+    const ameba_zone = 173;
     const art_bast_artefact = 0;
     const art_black_drops = 1;
     const art_dummy = 3;
@@ -944,7 +950,7 @@ C++ class clsid {
     const level_changer = 74;
     const main_menu = 75;
     const mp_players_bag = 76;
-    const nogravity_zone = 177;
+    const nogravity_zone = 179;
     const obj_antirad = 65;
     const obj_attachable = 66;
     const obj_bandage = 67;
@@ -982,8 +988,8 @@ C++ class clsid {
     const spectator = 113;
     const stalker = 32;
     const switcher = 85;
-    const team_base_zone = 180;
-    const torrid_zone = 181;
+    const team_base_zone = 182;
+    const torrid_zone = 183;
     const trader = 34;
     const tushkano = 35;
     const tushkano_s = 110;
@@ -1037,21 +1043,23 @@ C++ class clsid {
     const wpn_vintorez_s = 140;
     const wpn_walther = 165;
     const wpn_walther_s = 141;
+    const wpn_wmagaz = 166;
+    const wpn_wmaggl = 167;
     const zombie = 36;
     const zombie_s = 111;
-    const zone = 182;
-    const zone_acid_fog = 170;
-    const zone_bfuzz = 172;
-    const zone_bfuzz_s = 166;
-    const zone_dead = 173;
-    const zone_galant_s = 167;
-    const zone_galantine = 174;
-    const zone_mbald_s = 168;
-    const zone_mincer = 176;
-    const zone_mincer_s = 169;
-    const zone_mosquito_bald = 175;
-    const zone_radioactive = 178;
-    const zone_rusty_hair = 179;
+    const zone = 184;
+    const zone_acid_fog = 172;
+    const zone_bfuzz = 174;
+    const zone_bfuzz_s = 168;
+    const zone_dead = 175;
+    const zone_galant_s = 169;
+    const zone_galantine = 176;
+    const zone_mbald_s = 170;
+    const zone_mincer = 178;
+    const zone_mincer_s = 171;
+    const zone_mosquito_bald = 177;
+    const zone_radioactive = 180;
+    const zone_rusty_hair = 181;
 
 };
 
@@ -1080,6 +1088,28 @@ C++ class not_yet_visible_object {
     property value;
 
     function object(const not_yet_visible_object&);
+};
+
+C++ class CSightParams {
+    const eSightTypeCover = 5;
+    const eSightTypeCoverLookOver = 8;
+    const eSightTypeCurrentDirection = 0;
+    const eSightTypeDirection = 2;
+    const eSightTypeDummy = -1;
+    const eSightTypeFireObject = 9;
+    const eSightTypeFirePosition = 10;
+    const eSightTypeLookOver = 7;
+    const eSightTypeObject = 4;
+    const eSightTypePathDirection = 1;
+    const eSightTypePosition = 3;
+    const eSightTypeSearch = 6;
+
+    property m_object;
+    property m_sight_type;
+    property m_vector;
+
+    CSightParams ();
+
 };
 
 C++ class sound_memory_object : visible_memory_object {
@@ -1626,8 +1656,8 @@ C++ class CALifeMonsterDetailPathManager {
     function target(const number&);
     function target(const CALifeSmartTerrainTask*);
     function failed() const;
-    function speed        (const number&);
-    function speed        () const;
+    function speed	(const number&);
+    function speed	() const;
     function actual() const;
 };
 
@@ -2046,9 +2076,19 @@ C++ class CHairsZone : CGameObject {
     function use(CGameObject*);
 };
 
-C++ class hanging_lamp {
+C++ class hanging_lamp : CGameObject {
+    hanging_lamp ();
+
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
     function turn_on();
     function turn_off();
+    function net_Export(net_packet&);
+    function _construct();
+    function use(CGameObject*);
 };
 
 C++ class CHelicopter {
@@ -2517,6 +2557,7 @@ C++ class cse_alife_creature_abstract : cse_alife_dynamic_object_visual {
 
     cse_alife_creature_abstract (string);
 
+    function on_death(cse_abstract*);
     function used_ai_locations() const;
     function can_save() const;
     function can_switch_online() const;
@@ -2565,23 +2606,24 @@ C++ class cse_alife_creature_actor : cse_alife_creature_abstract,cse_alife_trade
 
     cse_alife_creature_actor (string);
 
+    function on_death(cse_abstract*);
     function on_before_register();
-    function can_save() const;
+    function g_team();
     function community() const;
-    function g_squad();
+    function move_offline() const;
+    function move_offline(boolean);
     function on_register();
     function UPDATE_Read(net_packet&);
     function can_switch_online() const;
     function can_switch_online(boolean);
     function visible_for_map() const;
     function visible_for_map(boolean);
-    function g_team();
+    function g_squad();
     function alive() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function on_unregister();
     function clsid() const;
-    function move_offline() const;
-    function move_offline(boolean);
+    function can_save() const;
     function can_switch_offline() const;
     function can_switch_offline(boolean);
     function section_name(const cse_abstract*);
@@ -2617,26 +2659,27 @@ C++ class cse_alife_creature_crow : cse_alife_creature_abstract {
 
     cse_alife_creature_crow (string);
 
+    function on_death(cse_abstract*);
     function on_before_register();
     function on_register();
     function can_switch_online() const;
     function can_switch_online(boolean);
     function visible_for_map() const;
     function visible_for_map(boolean);
-    function g_team();
+    function g_squad();
     function alive() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function on_unregister();
     function clsid() const;
-    function move_offline() const;
-    function move_offline(boolean);
+    function can_save() const;
     function can_switch_offline() const;
     function can_switch_offline(boolean);
     function section_name(const cse_abstract*);
     function STATE_Write(net_packet&);
     function name(const cse_abstract*);
     function init();
-    function g_squad();
+    function move_offline() const;
+    function move_offline(boolean);
     function interactive() const;
     function spawn_ini(cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
@@ -2647,7 +2690,7 @@ C++ class cse_alife_creature_crow : cse_alife_creature_abstract {
     function on_spawn();
     function UPDATE_Write(net_packet&);
     function g_group();
-    function can_save() const;
+    function g_team();
 };
 
 C++ class cse_alife_creature_phantom : cse_alife_creature_abstract {
@@ -2665,26 +2708,27 @@ C++ class cse_alife_creature_phantom : cse_alife_creature_abstract {
 
     cse_alife_creature_phantom (string);
 
+    function on_death(cse_abstract*);
     function on_before_register();
     function on_register();
     function can_switch_online() const;
     function can_switch_online(boolean);
     function visible_for_map() const;
     function visible_for_map(boolean);
-    function g_team();
+    function g_squad();
     function alive() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function on_unregister();
     function clsid() const;
-    function move_offline() const;
-    function move_offline(boolean);
+    function can_save() const;
     function can_switch_offline() const;
     function can_switch_offline(boolean);
     function section_name(const cse_abstract*);
     function STATE_Write(net_packet&);
     function name(const cse_abstract*);
     function init();
-    function g_squad();
+    function move_offline() const;
+    function move_offline(boolean);
     function interactive() const;
     function spawn_ini(cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
@@ -2695,7 +2739,7 @@ C++ class cse_alife_creature_phantom : cse_alife_creature_abstract {
     function on_spawn();
     function UPDATE_Write(net_packet&);
     function g_group();
-    function can_save() const;
+    function g_team();
 };
 
 C++ class cse_custom_zone : cse_alife_dynamic_object,cse_shape {
@@ -2897,7 +2941,7 @@ C++ class cse_alife_human_abstract : cse_alife_trader_abstract,cse_alife_monster
 
     cse_alife_human_abstract (string);
 
-    function can_save() const;
+    function on_register();
     function brain(cse_alife_monster_abstract*);
     function brain(cse_alife_human_abstract*);
     function can_switch_online() const;
@@ -2911,31 +2955,32 @@ C++ class cse_alife_human_abstract : cse_alife_trader_abstract,cse_alife_monster
     function section_name(const cse_abstract*);
     function profile_name(cse_alife_trader_abstract*);
     function name(const cse_abstract*);
-    function clear_smart_terrain(cse_alife_monster_abstract*);
+    function on_death(cse_abstract*);
+    function on_before_register();
     function community() const;
     function set_rank(number);
     function visible_for_map() const;
     function visible_for_map(boolean);
     function alive() const;
     function g_group();
-    function g_team();
+    function clear_smart_terrain(cse_alife_monster_abstract*);
     function smart_terrain_task_deactivate(cse_alife_monster_abstract*);
     function on_spawn();
-    function interactive() const;
     function move_offline() const;
     function move_offline(boolean);
-    function on_before_register();
+    function health() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
     function can_switch_offline() const;
     function can_switch_offline(boolean);
     function reputation();
     function update();
-    function on_register();
+    function can_save() const;
     function OnEvent(net_packet&, number, number, ClientID);
-    function g_squad();
+    function g_team();
     function STATE_Read(net_packet&, number);
-    function health() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function interactive() const;
+    function g_squad();
     function smart_terrain_task_activate(cse_alife_monster_abstract*);
     function UPDATE_Write(net_packet&);
     function on_unregister();
@@ -2957,45 +3002,46 @@ C++ class cse_alife_human_stalker : cse_alife_human_abstract,cse_ph_skeleton {
 
     cse_alife_human_stalker (string);
 
-    function on_register();
+    function can_save() const;
     function update();
     function can_switch_online() const;
     function can_switch_online(boolean);
     function UPDATE_Read(net_packet&);
     function smart_terrain_id(cse_alife_monster_abstract*);
     function clsid() const;
-    function STATE_Write(net_packet&);
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function init();
     function spawn_ini(cse_abstract*);
     function section_name(const cse_abstract*);
     function profile_name(cse_alife_trader_abstract*);
     function name(const cse_abstract*);
-    function on_before_register();
+    function on_death(cse_abstract*);
+    function clear_smart_terrain(cse_alife_monster_abstract*);
     function community() const;
     function set_rank(number);
     function visible_for_map() const;
     function visible_for_map(boolean);
     function alive() const;
-    function used_ai_locations() const;
+    function move_offline() const;
+    function move_offline(boolean);
     function on_unregister();
     function smart_terrain_task_deactivate(cse_alife_monster_abstract*);
+    function STATE_Write(net_packet&);
+    function smart_terrain_task_activate(cse_alife_monster_abstract*);
+    function g_squad();
+    function interactive() const;
     function can_switch_offline() const;
     function can_switch_offline(boolean);
-    function smart_terrain_task_activate(cse_alife_monster_abstract*);
-    function FillProps(string, class xr_vector<class PropItem *>&);
-    function health() const;
-    function g_team();
-    function clear_smart_terrain(cse_alife_monster_abstract*);
+    function on_before_register();
     function reputation();
-    function g_squad();
-    function can_save() const;
+    function g_team();
+    function on_register();
     function OnEvent(net_packet&, number, number, ClientID);
     function brain(cse_alife_monster_abstract*);
     function brain(cse_alife_human_abstract*);
     function STATE_Read(net_packet&, number);
-    function interactive() const;
-    function move_offline() const;
-    function move_offline(boolean);
+    function health() const;
+    function used_ai_locations() const;
     function on_spawn();
     function UPDATE_Write(net_packet&);
     function g_group();
@@ -3496,6 +3542,88 @@ C++ class cse_alife_item_weapon : cse_alife_item {
     function can_save() const;
 };
 
+C++ class cse_alife_item_weapon_magazined : cse_alife_item_weapon {
+    property id;
+    property m_game_vertex_id;
+    property m_level_vertex_id;
+    property m_story_id;
+    property online;
+    property parent_id;
+    property position;
+    property script_version;
+
+    cse_alife_item_weapon_magazined (string);
+
+    function used_ai_locations() const;
+    function on_register();
+    function can_switch_online() const;
+    function can_switch_online(boolean);
+    function visible_for_map() const;
+    function visible_for_map(boolean);
+    function clsid() const;
+    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function on_spawn();
+    function init();
+    function UPDATE_Read(net_packet&);
+    function interactive() const;
+    function spawn_ini(cse_abstract*);
+    function section_name(const cse_abstract*);
+    function on_before_register();
+    function STATE_Read(net_packet&, number);
+    function name(const cse_abstract*);
+    function bfUseful();
+    function can_switch_offline() const;
+    function can_switch_offline(boolean);
+    function UPDATE_Write(net_packet&);
+    function on_unregister();
+    function STATE_Write(net_packet&);
+};
+
+C++ class cse_alife_item_weapon_magazined_w_gl : cse_alife_item_weapon_magazined {
+    property id;
+    property m_game_vertex_id;
+    property m_level_vertex_id;
+    property m_story_id;
+    property online;
+    property parent_id;
+    property position;
+    property script_version;
+
+    cse_alife_item_weapon_magazined_w_gl (string);
+
+    function used_ai_locations() const;
+    function can_save() const;
+    function can_switch_online() const;
+    function can_switch_online(boolean);
+    function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function on_register();
+    function section_name(const cse_abstract*);
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function can_switch_offline() const;
+    function can_switch_offline(boolean);
+    function init();
+    function bfUseful();
+    function name(const cse_abstract*);
+    function spawn_ini(cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function on_before_register();
+    function STATE_Read(net_packet&, number);
+    function interactive() const;
+    function move_offline() const;
+    function move_offline(boolean);
+    function on_spawn();
+    function UPDATE_Write(net_packet&);
+    function on_unregister();
+    function visible_for_map() const;
+    function visible_for_map(boolean);
+};
+
 C++ class cse_alife_item_weapon_shotgun : cse_alife_item_weapon {
     property id;
     property m_game_vertex_id;
@@ -3592,40 +3720,41 @@ C++ class cse_alife_monster_abstract : cse_alife_creature_abstract,cse_alife_sch
 
     cse_alife_monster_abstract (string);
 
-    function on_register();
+    function can_save() const;
     function update();
     function can_switch_online() const;
     function can_switch_online(boolean);
     function UPDATE_Read(net_packet&);
-    function g_squad();
+    function g_team();
     function clsid() const;
     function STATE_Write(net_packet&);
     function init();
     function spawn_ini(cse_abstract*);
     function section_name(const cse_abstract*);
     function name(const cse_abstract*);
+    function on_death(cse_abstract*);
     function used_ai_locations() const;
     function visible_for_map() const;
     function visible_for_map(boolean);
     function alive() const;
     function smart_terrain_task_activate(cse_alife_monster_abstract*);
     function smart_terrain_task_deactivate(cse_alife_monster_abstract*);
-    function can_save() const;
+    function interactive() const;
     function on_before_register();
     function brain(cse_alife_monster_abstract*);
     function clear_smart_terrain(cse_alife_monster_abstract*);
     function smart_terrain_id(cse_alife_monster_abstract*);
-    function g_team();
+    function on_register();
+    function g_squad();
     function FillProps(string, class xr_vector<class PropItem *>&);
     function on_unregister();
-    function move_offline() const;
-    function move_offline(boolean);
     function OnEvent(net_packet&, number, number, ClientID);
     function can_switch_offline() const;
     function can_switch_offline(boolean);
     function STATE_Read(net_packet&, number);
     function health() const;
-    function interactive() const;
+    function move_offline() const;
+    function move_offline(boolean);
     function on_spawn();
     function UPDATE_Write(net_packet&);
     function g_group();
@@ -3654,11 +3783,12 @@ C++ class cse_alife_monster_base : cse_alife_monster_abstract,cse_ph_skeleton {
     function UPDATE_Read(net_packet&);
     function smart_terrain_id(cse_alife_monster_abstract*);
     function clsid() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function STATE_Write(net_packet&);
     function init();
     function spawn_ini(cse_abstract*);
     function section_name(const cse_abstract*);
     function name(const cse_abstract*);
+    function on_death(cse_abstract*);
     function on_before_register();
     function visible_for_map() const;
     function visible_for_map(boolean);
@@ -3666,21 +3796,21 @@ C++ class cse_alife_monster_base : cse_alife_monster_abstract,cse_ph_skeleton {
     function clear_smart_terrain(cse_alife_monster_abstract*);
     function smart_terrain_task_deactivate(cse_alife_monster_abstract*);
     function g_group();
-    function can_save() const;
+    function g_squad();
     function used_ai_locations() const;
     function on_spawn();
-    function interactive() const;
-    function STATE_Write(net_packet&);
-    function update();
-    function g_squad();
-    function can_switch_offline() const;
-    function can_switch_offline(boolean);
-    function OnEvent(net_packet&, number, number, ClientID);
     function move_offline() const;
     function move_offline(boolean);
-    function STATE_Read(net_packet&, number);
     function health() const;
+    function can_save() const;
+    function update();
     function g_team();
+    function OnEvent(net_packet&, number, number, ClientID);
+    function can_switch_offline() const;
+    function can_switch_offline(boolean);
+    function STATE_Read(net_packet&, number);
+    function interactive() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function smart_terrain_task_activate(cse_alife_monster_abstract*);
     function UPDATE_Write(net_packet&);
     function on_unregister();
@@ -3709,11 +3839,12 @@ C++ class cse_alife_monster_zombie : cse_alife_monster_abstract {
     function UPDATE_Read(net_packet&);
     function smart_terrain_id(cse_alife_monster_abstract*);
     function clsid() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function STATE_Write(net_packet&);
     function init();
     function spawn_ini(cse_abstract*);
     function section_name(const cse_abstract*);
     function name(const cse_abstract*);
+    function on_death(cse_abstract*);
     function on_before_register();
     function visible_for_map() const;
     function visible_for_map(boolean);
@@ -3721,21 +3852,21 @@ C++ class cse_alife_monster_zombie : cse_alife_monster_abstract {
     function clear_smart_terrain(cse_alife_monster_abstract*);
     function smart_terrain_task_deactivate(cse_alife_monster_abstract*);
     function g_group();
-    function can_save() const;
+    function g_squad();
     function used_ai_locations() const;
     function on_spawn();
-    function interactive() const;
-    function STATE_Write(net_packet&);
-    function update();
-    function g_squad();
-    function can_switch_offline() const;
-    function can_switch_offline(boolean);
-    function OnEvent(net_packet&, number, number, ClientID);
     function move_offline() const;
     function move_offline(boolean);
-    function STATE_Read(net_packet&, number);
     function health() const;
+    function can_save() const;
+    function update();
     function g_team();
+    function OnEvent(net_packet&, number, number, ClientID);
+    function can_switch_offline() const;
+    function can_switch_offline(boolean);
+    function STATE_Read(net_packet&, number);
+    function interactive() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function smart_terrain_task_activate(cse_alife_monster_abstract*);
     function UPDATE_Write(net_packet&);
     function on_unregister();
@@ -4106,26 +4237,27 @@ C++ class cse_alife_psydog_phantom : cse_alife_monster_base {
     function spawn_ini(cse_abstract*);
     function section_name(const cse_abstract*);
     function name(const cse_abstract*);
+    function on_death(cse_abstract*);
     function clear_smart_terrain(cse_alife_monster_abstract*);
     function visible_for_map() const;
     function visible_for_map(boolean);
     function alive() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function move_offline() const;
+    function move_offline(boolean);
     function smart_terrain_task_deactivate(cse_alife_monster_abstract*);
     function on_unregister();
+    function g_team();
     function on_before_register();
     function smart_terrain_task_activate(cse_alife_monster_abstract*);
-    function g_team();
-    function health() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function interactive() const;
     function on_register();
     function brain(cse_alife_monster_abstract*);
     function smart_terrain_id(cse_alife_monster_abstract*);
-    function used_ai_locations() const;
     function OnEvent(net_packet&, number, number, ClientID);
-    function move_offline() const;
-    function move_offline(boolean);
+    function used_ai_locations() const;
     function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function health() const;
     function can_switch_offline() const;
     function can_switch_offline(boolean);
     function on_spawn();
@@ -4605,18 +4737,6 @@ C++ class game_object {
     const animation = 2;
     const dialog_pda_msg = 0;
     const dummy = -1;
-    const eSightTypeCover = 5;
-    const eSightTypeCoverLookOver = 8;
-    const eSightTypeCurrentDirection = 0;
-    const eSightTypeDirection = 2;
-    const eSightTypeDummy = -1;
-    const eSightTypeFireObject = 9;
-    const eSightTypeFirePosition = 10;
-    const eSightTypeLookOver = 7;
-    const eSightTypeObject = 4;
-    const eSightTypePathDirection = 1;
-    const eSightTypePosition = 3;
-    const eSightTypeSearch = 6;
     const enemy = 2;
     const friend = 0;
     const game_path = 0;
@@ -5356,30 +5476,31 @@ C++ class CStalkerOutfit : CGameObject {
 C++ class stalker_ids {
     const action_accomplish_task = 7;
     const action_aim_enemy = 16;
-    const action_alife_planner = 52;
-    const action_anomaly_planner = 54;
-    const action_combat_planner = 53;
+    const action_alife_planner = 54;
+    const action_anomaly_planner = 56;
+    const action_combat_planner = 55;
     const action_communicate_with_customer = 9;
-    const action_danger_by_sound_planner = 37;
-    const action_danger_grenade_look_around = 49;
-    const action_danger_grenade_planner = 36;
-    const action_danger_grenade_search = 50;
-    const action_danger_grenade_take_cover = 46;
-    const action_danger_grenade_take_cover_after_explosion = 48;
-    const action_danger_grenade_wait_for_explosion = 47;
-    const action_danger_in_direction_detour = 44;
-    const action_danger_in_direction_hold_position = 43;
-    const action_danger_in_direction_look_out = 42;
-    const action_danger_in_direction_planner = 35;
-    const action_danger_in_direction_search = 45;
-    const action_danger_in_direction_take_cover = 41;
-    const action_danger_planner = 55;
-    const action_danger_unknown_look_around = 39;
-    const action_danger_unknown_planner = 34;
-    const action_danger_unknown_search = 40;
-    const action_danger_unknown_take_cover = 38;
+    const action_critically_wounded = 35;
+    const action_danger_by_sound_planner = 39;
+    const action_danger_grenade_look_around = 51;
+    const action_danger_grenade_planner = 38;
+    const action_danger_grenade_search = 52;
+    const action_danger_grenade_take_cover = 48;
+    const action_danger_grenade_take_cover_after_explosion = 50;
+    const action_danger_grenade_wait_for_explosion = 49;
+    const action_danger_in_direction_detour = 46;
+    const action_danger_in_direction_hold_position = 45;
+    const action_danger_in_direction_look_out = 44;
+    const action_danger_in_direction_planner = 37;
+    const action_danger_in_direction_search = 47;
+    const action_danger_in_direction_take_cover = 43;
+    const action_danger_planner = 57;
+    const action_danger_unknown_look_around = 41;
+    const action_danger_unknown_planner = 36;
+    const action_danger_unknown_search = 42;
+    const action_danger_unknown_take_cover = 40;
     const action_dead = 0;
-    const action_death_planner = 51;
+    const action_death_planner = 53;
     const action_detour_enemy = 25;
     const action_dying = 1;
     const action_find_ammo = 15;
@@ -5390,14 +5511,19 @@ C++ class stalker_ids {
     const action_get_ready_to_kill = 17;
     const action_hold_position = 23;
     const action_kill_enemy = 19;
+    const action_kill_enemy_if_not_visible = 29;
+    const action_kill_if_player_on_the_path = 34;
+    const action_kill_wounded_enemy = 32;
     const action_look_out = 22;
     const action_make_item_killing = 14;
     const action_no_alife = 3;
     const action_post_combat_wait = 33;
+    const action_prepare_wounded_enemy = 31;
     const action_reach_customer_location = 8;
     const action_reach_task_location = 6;
+    const action_reach_wounded_enemy = 30;
     const action_retreat_from_enemy = 20;
-    const action_script = 56;
+    const action_script = 58;
     const action_search_enemy = 26;
     const action_smart_terrain_task = 4;
     const action_solve_zone_puzzle = 5;
@@ -5408,26 +5534,27 @@ C++ class stalker_ids {
     const property_alife = 3;
     const property_alive = 0;
     const property_already_dead = 2;
-    const property_anomaly = 36;
-    const property_cover_actual = 32;
-    const property_cover_reached = 33;
+    const property_anomaly = 38;
+    const property_cover_actual = 34;
+    const property_cover_reached = 35;
+    const property_critically_wounded = 29;
     const property_danger = 8;
-    const property_danger_by_sound = 31;
-    const property_danger_grenade = 30;
-    const property_danger_in_direction = 29;
-    const property_danger_unknown = 28;
+    const property_danger_by_sound = 33;
+    const property_danger_grenade = 32;
+    const property_danger_in_direction = 31;
+    const property_danger_unknown = 30;
     const property_dead = 1;
     const property_enemy = 7;
     const property_enemy_detoured = 21;
     const property_found_ammo = 12;
     const property_found_item_to_kill = 10;
-    const property_grenade_exploded = 35;
+    const property_grenade_exploded = 37;
     const property_in_cover = 18;
-    const property_inside_anomaly = 37;
+    const property_inside_anomaly = 39;
     const property_item_can_kill = 11;
     const property_item_to_kill = 9;
     const property_items = 6;
-    const property_looked_around = 34;
+    const property_looked_around = 36;
     const property_looked_out = 19;
     const property_panic = 17;
     const property_position_holded = 20;
@@ -5435,7 +5562,7 @@ C++ class stalker_ids {
     const property_puzzle_solved = 4;
     const property_ready_to_detour = 14;
     const property_ready_to_kill = 13;
-    const property_script = 38;
+    const property_script = 40;
     const property_see_enemy = 15;
     const property_smart_terrain_task = 5;
     const property_use_crouch_to_look_out = 24;
@@ -6359,7 +6486,6 @@ C++ class CUIListWnd : CUIWindow {
     function ActivateList(boolean);
     function ScrollToBegin();
     function GetVertFlip();
-    function SetRightIndention(number);
     function GetWidth() const;
     function GetSize();
     function DetachChild(CUIWindow*);
@@ -6375,7 +6501,6 @@ C++ class CUIListWnd : CUIWindow {
     function GetFont();
     function EnableScrollBar(boolean);
     function GetItemPos(CUIListItem*);
-    function GetRightIndention() const;
     function ResetFocusCapture();
     function GetSelectedItem();
     function SetAutoDelete(boolean);
@@ -6596,6 +6721,7 @@ C++ class CUIMessageBoxEx : CUIDialogWnd {
 C++ class COptionsManager {
     COptionsManager ();
 
+    function SendMessage2Group(string, string);
     function SaveValues(string);
     function IsGroupChanged(string);
     function SetCurrentValues(string);
@@ -6611,11 +6737,8 @@ C++ class CUIProgressBar : CUIWindow {
     function Enable(boolean);
     function SetHeight(number);
     function GetRange_max();
-    function ProgressDec();
     function SetAutoDelete(boolean);
     function GetRange_min();
-    function ProgressInc();
-    function GetScrollPos();
     function AttachChild(CUIWindow*);
     function SetRange(number, number);
     function SetWndPos(number, number);
@@ -7450,21 +7573,22 @@ C++ class SGameTaskObjective {
     SGameTaskObjective (CGameTask*, number);
 
     function set_article_key(string);
-    function get_idx();
-    function add_complete_info(string);
-    function add_fail_info(string);
-    function set_object_id(number);
     function add_on_complete_func(string);
-    function set_description(string);
-    function add_on_fail_func(string);
     function set_article_id(string);
-    function set_map_hint(string);
     function add_on_fail_info(string);
     function add_complete_func(string);
-    function add_on_complete_info(string);
     function add_fail_func(string);
     function get_state();
+    function add_fail_info(string);
+    function add_complete_info(string);
+    function add_on_complete_info(string);
+    function set_description(string);
+    function get_description();
+    function get_idx();
+    function set_map_hint(string);
     function set_map_location(string);
+    function add_on_fail_func(string);
+    function set_object_id(number);
 };
 
 C++ class SServerFilters {
@@ -7759,8 +7883,6 @@ namespace  {
     function device();
     function GetTextureInfo(string, string);
     function cast_alife_object_to_trader_abstract(cse_alife_object*);
-    function bit_not(number);
-    function GetFontHeaderRussian();
     function prefetch(string);
     function game_graph();
     function dik_to_bind(number);
@@ -7772,11 +7894,11 @@ namespace  {
     function create_ini_file(string);
     function get_hud();
     function GetFontSmall();
+    function user_name();
     function error_log(string);
     function GetFontLetterica18Russian();
     function command_line();
     function getFS();
-    function GetFontHeaderEurope();
     function get_console();
     function GetFontGraffiti50Russian();
     function app_ready();
@@ -7790,25 +7912,20 @@ namespace  {
     function cast_planner_to_action(action_planner*);
     function GetFontLetterica25();
     function GetFontMedium();
-    function ef_storage();
+    function bit_not(number);
     function flush();
-    function GetFontGraffiti22Russian();
-    function cast_action_to_planner(action_base*);
-    function verify_if_thread_is_running();
     function editor();
-    function GetTextureRect(string);
-    function bit_xor(number, number);
-    function GetFontGraffiti19Russian();
-    function user_name();
+    function GetFontGraffiti22Russian();
     function time_global();
-    function GetARGB(number, number, number, number);
+    function verify_if_thread_is_running();
     function script_server_object_version();
-
-    namespace relation_registry {
-        function community_goodwill(string, number);
-        function change_community_goodwill(string, number, number);
-        function set_community_goodwill(string, number, number);
-    };
+    function GetTextureRect(string);
+    function GetFontGraffiti19Russian();
+    function cast_action_to_planner(action_base*);
+    function ef_storage();
+    function bit_xor(number, number);
+    function xrRender_test_r2_hw();
+    function GetARGB(number, number, number, number);
 
     namespace game {
         function time();
@@ -7878,6 +7995,12 @@ namespace  {
         function get_game_difficulty();
         function show_indicators();
         function debug_actor();
+    };
+
+    namespace relation_registry {
+        function community_goodwill(string, number);
+        function change_community_goodwill(string, number, number);
+        function set_community_goodwill(string, number, number);
     };
 
     namespace actor_stats {
