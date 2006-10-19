@@ -59,7 +59,8 @@ IC	void CStalkerAnimationManager::clear_script_animations	()
 
 IC	void CStalkerAnimationManager::setup_storage			(CPropertyStorage *storage)
 {
-	VERIFY			(!m_storage || (m_storage && !storage));
+	VERIFY			(!m_storage);
+	VERIFY			(m_storage && !storage);
 	m_storage		= storage;
 }
 
