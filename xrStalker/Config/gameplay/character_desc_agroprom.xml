@@ -666,10 +666,10 @@
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_toz34 \n
-			ammo_12x70_buck = 1 \n
+			wpn_mp5 \n
+			ammo_9x19_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -697,10 +697,10 @@
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
+			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_toz34 \n
-			ammo_12x70_buck = 1 \n
+			wpn_mp5 \n
+			ammo_9x19_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
