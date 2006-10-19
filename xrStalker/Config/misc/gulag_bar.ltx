@@ -170,6 +170,7 @@ use_wpn = true
 victim 			= 15| actor
 victim_wpn 		= 15| actor
 zone = bar_dolg_general_warn_zone|{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}talk_hello,bar_dolg_guard_stop
+precond			= visibility
 
 [meet@bar_dolg_general_guard_busy]
 abuse = false
@@ -179,7 +180,7 @@ victim 			= nil
 victim_wpn 		= nil
 meet_state 		= 5|guard@bar_dolg_guard_busy
 meet_state_wpn 	= 5|guard@bar_dolg_guard_busy
-
+precond			= visibility
 ;{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}state,threat_stop
 ;|bar_dolg_general_guard_zone|{+bar_dolg_base_pass}guard,threat@{+bar_dolg_base_pass}state,threat_stop|bar_dolg_general_kill_zone|{-bar_dolg_base_pass}true
 
@@ -297,7 +298,7 @@ victim_wpn 		= 7| actor
 zone = bar_dolg_veterans_bunker_warn_zone|{-bar_dolg_community_leader}threat@bar_dolg_guard_stop,{+bar_dolg_community_leader}guard@talk_hello
 ;zones = bar_dolg_veterans_bunker_warn_zone|{+bar_dolg_community_leader}guard,threat@{+bar_dolg_community_leader}state,threat_stop|bar_dolg_veterans_bunker_kill_zone|{-bar_dolg_community_leader}true
 ; ïğîïèñàòü ôğàçó   <Ñòîé! Â áóíêåğ òåáå íåëüçÿ!> 
-
+precond			= visibility
 
 [logic2@bar_dolg_veterans_guard_bunker2]
 active = walker2@bar_dolg_veterans_guard_bunker
@@ -392,7 +393,7 @@ victim 			= 10| actor
 victim_wpn 		= 10| actor
 meet_state 		= 5|guard@talk_hello|4|guard
 meet_state_wpn 	= 10|guard@threat_weap|7|threat@threat_weap|5|threat@threat_weap
-
+precond			= visibility
 
 
 
@@ -450,6 +451,7 @@ victim_wpn 		= 20| actor
 use = true
 use_wpn = true
 meet_dialog = bar_dolg_zastava
+precond			= visibility
 
 [meet@bar_dolg_zastava_comander1]
 meet_state 		= 10| guard@wait|4| guard
@@ -458,6 +460,7 @@ victim 			= 10| actor
 victim_wpn 		= 10| actor
 use = true
 use_wpn = false
+precond			= visibility
 
 [danger@zastava_1]
 ignore_distance = 10
@@ -502,6 +505,7 @@ victim_wpn 		= 20| actor
 use = true
 use_wpn = true
 meet_dialog = bar_dolg_zastava
+precond			= visibility
 
 
 ; ÍÅÕÎĞÎØÈÅ ÑÒÀËÊÅĞÛ ÂÅÒÅĞÀÍÛ
@@ -1466,6 +1470,7 @@ victim_wpn = actor
 use = true
 use_wpn = true
 meet_dialog = bar_ecolog_dialog
+precond			= visibility
 
 [meet@ecolog_kruglov]
 ;meet_state =  3|hello
@@ -1474,6 +1479,7 @@ meet_dialog = bar_ecolog_dialog
 ;victim_wpn = actor
 use = true
 use_wpn = true
+precond			= visibility
 
 [meet@ecolog_kruglov_1]
 meet_state =  6|wait
@@ -1482,6 +1488,7 @@ victim = actor
 victim_wpn = actor
 use = true
 use_wpn = true
+precond			= visibility
 
 
 [logic@bar_ecolog_crush_sniper_1]
