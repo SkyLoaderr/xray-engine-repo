@@ -173,6 +173,9 @@ void CObjectList::Update		(bool bForce)
 		for (int it = destroy_queue.size()-1; it>=0; it--)
 		{
 			CObject*		O	= destroy_queue[it];
+#ifdef DEBUG
+			Msg				("Destroying object [%d][%s]",O->ID(),*O->cName());
+#endif
 			O->net_Destroy	( );
 			Destroy			(O);
 		}
@@ -287,6 +290,9 @@ void CObjectList::Unload	( )
 		Msg				("! s[%4d]-[%s]-[%s]", O->ID(), *O->cNameSect(), *O->cName());
 		O->setDestroy	( true );
 		
+#ifdef DEBUG
+		Msg				("Destroying object [%d][%s]",O->ID(),*O->cName());
+#endif
 		O->net_Destroy	(   );
 		Destroy			( O );
 	}
@@ -296,6 +302,9 @@ void CObjectList::Unload	( )
 		Msg				("! a[%4d]-[%s]-[%s]", O->ID(), *O->cNameSect(), *O->cName());
 		O->setDestroy	( true );
 
+#ifdef DEBUG
+		Msg				("Destroying object [%d][%s]",O->ID(),*O->cName());
+#endif
 		O->net_Destroy	(   );
 		Destroy			( O );
 	}
