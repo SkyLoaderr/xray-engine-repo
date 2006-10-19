@@ -329,6 +329,7 @@ _value_type CStalkerPropertyEvaluatorEnemyReached::evaluate	()
 		object().memory().visual().visible_now(enemy)
 	);
 }
+
 //////////////////////////////////////////////////////////////////////////
 // CStalkerPropertyEvaluatorPlayerOnThePath
 //////////////////////////////////////////////////////////////////////////
@@ -351,4 +352,26 @@ _value_type CStalkerPropertyEvaluatorPlayerOnThePath::evaluate	()
 		return					(false);
 
 	return						(object().movement().is_object_on_the_way(Actor(),2.f));
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorEnemyCriticallyWounded
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerPropertyEvaluatorEnemyCriticallyWounded::CStalkerPropertyEvaluatorEnemyCriticallyWounded	(CAI_Stalker *object, LPCSTR evaluator_name) :
+	inherited		(object ? object->lua_game_object() : 0,evaluator_name)
+{
+}
+
+_value_type CStalkerPropertyEvaluatorEnemyCriticallyWounded::evaluate	()
+{
+	const CEntityAlive			*enemy = object().memory().enemy().selected();
+	if (!enemy)
+		return					(false);
+
+	const CAI_Stalker			*enemy_stalker = smart_cast<const CAI_Stalker*>(enemy);
+	if (!enemy_stalker)
+		return					(false);
+
+	return						(const_cast<CAI_Stalker*>(enemy_stalker)->critically_wounded());
 }

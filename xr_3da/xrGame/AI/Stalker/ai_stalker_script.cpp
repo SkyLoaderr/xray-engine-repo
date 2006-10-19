@@ -48,6 +48,7 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("property_use_suddenness",					StalkerDecisionSpace::eWorldPropertyUseSuddenness),
 				luabind::value("property_use_crouch_to_look_out",			StalkerDecisionSpace::eWorldPropertyUseCrouchToLookOut),
 				luabind::value("property_critically_wounded",				StalkerDecisionSpace::eWorldPropertyCriticallyWounded),
+				luabind::value("property_enemy_critically_wounded",			StalkerDecisionSpace::eWorldPropertyEnemyCriticallyWounded),
 				
 				luabind::value("property_danger_unknown",					StalkerDecisionSpace::eWorldPropertyDangerUnknown),
 				luabind::value("property_danger_in_direction",				StalkerDecisionSpace::eWorldPropertyDangerInDirection),
@@ -100,6 +101,7 @@ void CAI_Stalker::script_register(lua_State *L)
 				luabind::value("action_kill_wounded_enemy",					StalkerDecisionSpace::eWorldOperatorKillWoundedEnemy),
 				luabind::value("action_kill_if_player_on_the_path",			StalkerDecisionSpace::eWorldOperatorKillEnemyIfPlayerOnThePath),
 				luabind::value("action_critically_wounded",					StalkerDecisionSpace::eWorldOperatorCriticallyWounded),
+				luabind::value("action_kill_if_enemy_critically_wounded",	StalkerDecisionSpace::eWorldOperatorKillEnemyIfCriticallyWounded),
 
 				luabind::value("action_danger_unknown_planner",				StalkerDecisionSpace::eWorldOperatorDangerUnknownPlanner),
 				luabind::value("action_danger_in_direction_planner",		StalkerDecisionSpace::eWorldOperatorDangerInDirectionPlanner),
