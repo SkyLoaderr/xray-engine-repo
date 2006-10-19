@@ -211,7 +211,14 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 				sound().play	(eStalkerSoundInjuringByFriend);
 		}
 
-		if (!wounded() && !update_critical_wounded(HDS.boneID,HDS.power) && animation().script_animations().empty() && (pHDS->bone() != BI_NONE)) {
+		if	(
+				!wounded() &&
+				!critically_wounded() &&
+				!update_critical_wounded(HDS.boneID,HDS.power) &&
+				animation().script_animations().empty() &&
+				(pHDS->bone() != BI_NONE)
+			)
+		{
 			Fvector					D;
 			float					yaw, pitch;
 			D.getHP					(yaw,pitch);
@@ -795,6 +802,7 @@ bool CAI_Stalker::critically_wounded		()
 
 bool CAI_Stalker::update_critical_wounded	(const u16 &bone_id, const float &power)
 {
+	VERIFY							(m_critical_wound_type == critical_wound_type_dummy);
 	VERIFY							(Device.dwTimeGlobal >= m_last_hit_time);
 	
 	float							time_delta = m_last_hit_time ? float(Device.dwTimeGlobal - m_last_hit_time)/1000.f : 0.f;
@@ -820,6 +828,9 @@ bool CAI_Stalker::update_critical_wounded	(const u16 &bone_id, const float &powe
 	m_critical_wound_accumulator	= 0.f;
 
 	if (movement().body_state() != eBodyStateStand)
+		return						(false);
+
+	if (animation().setup_storage())
 		return						(false);
 
 	BODY_PART::const_iterator		I = m_bones_body_parts.find(bone_id);
