@@ -340,7 +340,7 @@ void CStalkerMovementManager::parse_velocity_mask	()
 		}
 		if	(
 				(mental_state() != eMentalStateFree) ||
-				(object().sight().current_action().sight_type() != SightManager::eSightTypePathDirection) ||
+//				(object().sight().current_action().sight_type() != SightManager::eSightTypePathDirection) ||
 				fis_zero(path_direction_angle(),EPS_L) ||
 				(m_last_turn_index == detail().curr_travel_point_index())
 			)
