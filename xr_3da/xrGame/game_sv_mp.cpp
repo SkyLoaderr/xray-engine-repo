@@ -16,12 +16,13 @@
 
 u32		g_dwMaxCorpses = 10;
 #define		VOTE_LENGTH_TIME		1
+#define		VOTE_QUOTA				0.51f
 
 game_sv_mp::game_sv_mp() :inherited()
 {
 	m_bVotingActive = false;
-	m_fVoteQuota = 0.5f;
-	m_dwVoteTime = VOTE_LENGTH_TIME;
+	m_fVoteQuota = VOTE_QUOTA;
+	m_fVoteTime = VOTE_LENGTH_TIME;
 	//------------------------------------------------------
 //	g_pGamePersistent->Environment.SetWeather("mp_weather");
 	m_aRanks.clear();	
@@ -666,7 +667,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 	else
 		P.w_stringZ(VoteCommand+1);
 	P.w_stringZ(pStartedPlayer ? pStartedPlayer->ps->getName() : "");
-	P.w_u32(m_dwVoteTime*60000);
+	P.w_u32(u32(m_fVoteTime*60000));
 	u_EventSend(P);
 	//-----------------------------------------------------------------------------	
 };
@@ -690,14 +691,16 @@ void		game_sv_mp::UpdateVote				()
 	bool VoteSucceed = false;
 	u32 CurTime = Level().timeServer();
 	
-	if (m_uVoteStartTime + m_dwVoteTime*60000 > CurTime)
+	if (m_uVoteStartTime + u32(m_fVoteTime*60000) > CurTime)
 	{
 		if (NumToCount == NumAgreed) VoteSucceed = true;
+		else
+			VoteSucceed = (float(NumAgreed)/float(NumToCount)) >= m_fVoteQuota;
 		if (!VoteSucceed) return;
 	}
 	else
 	{
-		VoteSucceed = (float(NumAgreed)/float(NumToCount)) > m_fVoteQuota;		
+		VoteSucceed = (float(NumAgreed)/float(NumToCount)) >= m_fVoteQuota;
 	};
 
 	SetVotingActive(false);
@@ -1209,7 +1212,7 @@ void game_sv_mp::ConsoleCommands_Create	()
 	CMD_ADD(CCC_SV_Int,"sv_spectr_teamcamera"	,	(int*)&m_bSpectator_TeamCamera	, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);	
 	//-------------------------------------	
 	CMD_ADD(CCC_SV_Float,"sv_vote_quota"		,	&m_fVoteQuota					, 0.0f,1.0f,g_bConsoleCommandsCreated_MP,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_vote_time"			,	(int*)&m_dwVoteTime				, 1, 10 ,g_bConsoleCommandsCreated_MP,Cmnd);	
+	CMD_ADD(CCC_SV_Float,"sv_vote_time"			,	&m_fVoteTime					, 0.0f,10.0f,g_bConsoleCommandsCreated_MP,Cmnd);	
 	//-------------------------------------
 	g_bConsoleCommandsCreated_MP = true;
 };
