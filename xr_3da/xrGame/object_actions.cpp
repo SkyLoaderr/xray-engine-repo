@@ -220,7 +220,7 @@ void CObjectActionStrapping::finalize		()
 #ifdef ALLOW_STRANGE_BEHAVIOUR
 	object().animation().setup_storage	(0);
 #endif
-	VERIFY								(!object().animation().setup_storage());
+	VERIFY								(m_storage != object().animation().setup_storage());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -260,7 +260,7 @@ void CObjectActionStrappingToIdle::finalize		()
 #ifdef ALLOW_STRANGE_BEHAVIOUR
 	object().animation().setup_storage	(0);
 #endif
-	VERIFY								(!object().animation().setup_storage());
+	VERIFY								(m_storage != object().animation().setup_storage());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -301,7 +301,7 @@ void CObjectActionUnstrapping::finalize		()
 #ifdef ALLOW_STRANGE_BEHAVIOUR
 	object().animation().setup_storage	(0);
 #endif
-	VERIFY								(!object().animation().setup_storage());
+	VERIFY								(m_storage != object().animation().setup_storage());
 }
 
 //////////////////////////////////////////////////////////////////////////

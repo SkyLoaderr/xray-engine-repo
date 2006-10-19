@@ -204,12 +204,8 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 		}
 
 		const CEntityAlive	*entity_alive = smart_cast<const CEntityAlive*>(pHDS->initiator());
-		if (!entity_alive || (tfGetRelationType(entity_alive) != ALife::eRelationTypeFriend))
-			sound().play	(eStalkerSoundInjuring);
-		else {
-			if (!wounded())
-				sound().play	(eStalkerSoundInjuringByFriend);
-		}
+		if (entity_alive && (tfGetRelationType(entity_alive) != ALife::eRelationTypeFriend) && !wounded())
+			sound().play	(eStalkerSoundInjuringByFriend);
 
 		if	(
 				!wounded() &&
@@ -241,8 +237,6 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 	}
 
 	inherited::Hit(&HDS);
-
-//	wounded							((GetfHealth() < .1f));
 }
 
 void CAI_Stalker::HitSignal				(float amount, Fvector& vLocalDir, CObject* who, s16 element)

@@ -137,7 +137,7 @@ void CStalkerAnimationManager::update						()
 		if (!script_animations().empty()) {
 #if 0//def DEBUG
 			if (setup_storage()) {
-				Msg				("! Do not setup script animations while strapping/unstrapping");
+				Msg				("! Do not setup script animations while strapping/unstrapping or when critically wounded");
 				Msg				("! ERROR description :");
 				Msg				("! object     %s",*object().cName());
 				Msg				("! item       %s",object().inventory().ActiveItem() ? *object().inventory().ActiveItem()->object().cName() : "no active item");
@@ -146,7 +146,7 @@ void CStalkerAnimationManager::update						()
 				Msg				("! animation  %s",m_skeleton_animated->LL_MotionDefName_dbg(script_animations().front().animation()));
 				Msg				("! animations %d",script_animations().size());
 			}
-			VERIFY2				(!setup_storage(),"Do not setup script animations while strapping/unstrapping");
+			VERIFY2				(!setup_storage(),"Do not setup script animations while strapping/unstrapping or when critically wounded");
 #endif
 
 			global().reset		();

@@ -1393,12 +1393,14 @@ void CStalkerActionCriticalHit::initialize					()
 	object().animation().setup_storage		(&object().brain().CStalkerPlanner::m_storage);
 	object().animation().property_id		(eWorldPropertyCriticallyWounded);
 	object().animation().property_value		(false);
+	object().sound().play					(eStalkerSoundInjuring);
 }
 
 void CStalkerActionCriticalHit::finalize					()
 {
 	inherited::finalize						();
-	object().animation().setup_storage		(0);
+	if (&object().brain().CStalkerPlanner::m_storage == object().animation().setup_storage())
+		object().animation().setup_storage	(0);
 }
 
 void CStalkerActionCriticalHit::execute						()

@@ -266,7 +266,7 @@ bool CObjectHandler::weapon_unstrapped	(CWeapon *weapon) const
 		weapon->strapped_mode()
 	);
 
-	VERIFY						(weapon->strapped_mode() || !planner().object().animation().setup_storage());
+	VERIFY						(weapon->strapped_mode() || (planner().object().animation().setup_storage() != &planner().m_storage));
 	return						(!weapon->strapped_mode());
 }
 
