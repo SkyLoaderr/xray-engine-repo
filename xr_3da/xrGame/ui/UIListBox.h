@@ -14,6 +14,7 @@ public:
 	CUIListBoxItem* GetItemByID(u32 uid);
 	CUIListBoxItem* GetItemByText(LPCSTR text);
 	CUIListBoxItem* GetSelectedItem();
+	u32	 GetItemsCount () {return m_pad->GetChildNum();};
 
     LPCSTR			GetFirstText();
 	LPCSTR			GetNextText();

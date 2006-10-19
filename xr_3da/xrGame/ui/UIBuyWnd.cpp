@@ -769,7 +769,7 @@ void CUIBuyWnd::ActivatePropertiesBox()
     
 
 
-	if((pWeapon || pOutfit ) && m_bag.IsInBag(CurrentItem()) /*&& m_list[GetLocalSlot(CurrentIItem()->GetSlot())]->ItemsCount()*/)
+	if((pWeapon || pOutfit ) && m_bag.IsInBag(CurrentItem()) && m_bag.CanBuy(CurrentItem()) /*&& m_list[GetLocalSlot(CurrentIItem()->GetSlot())]->ItemsCount()*/)
 	{
 		m_propertiesBox.AddItem("st_move_to_slot",  NULL, INVENTORY_TO_SLOT_ACTION);
 	}
@@ -890,6 +890,7 @@ void CUIBuyWnd::ActivatePropertiesBox()
 
 	}
 
+	if (m_propertiesBox.GetItemsCount() == 0) return;
 	m_propertiesBox.AutoUpdateSize	();
 	m_propertiesBox.BringAllToTop	();
 	m_propertiesBox.Show			(x-rect.left, y-rect.top);

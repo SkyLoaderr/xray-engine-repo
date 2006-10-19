@@ -34,6 +34,7 @@ public:
 
 	bool AddItem(const char*  str, void* pData = NULL, int value = 0);
 	bool AddItem_script(const char*  str){return AddItem(str);};
+	u32	 GetItemsCount () {return m_UIListWnd.GetItemsCount();};
 	void RemoveItem(int index);
 	void RemoveAll();
 
