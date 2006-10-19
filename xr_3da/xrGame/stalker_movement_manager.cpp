@@ -338,7 +338,13 @@ void CStalkerMovementManager::parse_velocity_mask	()
 			object().sight().enable	(false);
 //			Msg						("%d FALSE",Device.dwTimeGlobal);
 		}
-		if ((mental_state() != eMentalStateFree) || fis_zero(path_direction_angle(),EPS_L) || (m_last_turn_index == detail().curr_travel_point_index())) {
+		if	(
+				(mental_state() != eMentalStateFree) ||
+				(object().sight().current_action().sight_type() != SightManager::eSightTypePathDirection) ||
+				fis_zero(path_direction_angle(),EPS_L) ||
+				(m_last_turn_index == detail().curr_travel_point_index())
+			)
+		{
 			m_last_turn_index			= detail().curr_travel_point_index();
 			object().sight().enable(true);
 //			Msg						("%d TRUE",Device.dwTimeGlobal);
