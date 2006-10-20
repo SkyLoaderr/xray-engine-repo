@@ -245,7 +245,7 @@ bool CObjectHandler::weapon_unstrapped	(CWeapon *weapon) const
 	VERIFY						(weapon);
 
 	if (!weapon->can_be_strapped()) {
-		VERIFY					(!planner().object().animation().setup_storage());
+		VERIFY					(planner().object().animation().setup_storage() != &planner().m_storage);
 		return					(true);
 	}
 
