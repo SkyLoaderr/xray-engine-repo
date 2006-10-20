@@ -287,18 +287,18 @@ path_look = guard_bunker_1_look
 meet = meet@bar_dolg_veterans_guard_bunker
 soundgroup = bar_dolg_veterans_guard_bunker
 danger = danger@bar_inside
+def_state_standing = guard
 
 [meet@bar_dolg_veterans_guard_bunker]
-;meet_state = 5|{-bar_dolg_community_leader}threat@threat_stop,{+bar_dolg_community_leader}guard@talk_hello
+meet_state 		= 5|guard@talk_hello
+meet_state_wpn 	= 5|guard@talk_hello
 meet_dialog = bar_dolg_guard_bunker_start 
 use = true
 use_wpn = true
-victim 			= 7| actor
-victim_wpn 		= 7| actor
+victim 			= 1| actor
+victim_wpn 		= 1| actor
 zone = bar_dolg_veterans_bunker_warn_zone|{-bar_dolg_community_leader}threat@bar_dolg_guard_stop,{+bar_dolg_community_leader}guard@talk_hello
-;zones = bar_dolg_veterans_bunker_warn_zone|{+bar_dolg_community_leader}guard,threat@{+bar_dolg_community_leader}state,threat_stop|bar_dolg_veterans_bunker_kill_zone|{-bar_dolg_community_leader}true
-; прописать фразу   <Стой! В бункер тебе нельзя!> 
-precond			= visibility
+precond			= usability
 
 [logic2@bar_dolg_veterans_guard_bunker2]
 active = walker2@bar_dolg_veterans_guard_bunker
@@ -307,10 +307,10 @@ actor_dialogs = actor_dialogs
 [walker2@bar_dolg_veterans_guard_bunker]
 path_walk = guard_bunker_2_walk
 path_look = guard_bunker_2_look
-;meet = meet@bar_dolg_veterans_guard_bunker
+meet = meet@bar_dolg_veterans_guard_bunker
 soundgroup = bar_dolg_veterans_guard_bunker
 danger = danger@bar_inside
-
+def_state_standing = guard
 
 [logic3@bar_dolg_veterans_gates1]
 active = walker2@bar_dolg_veterans_gates1
