@@ -136,7 +136,6 @@
 			<text>yan_find_lab</text>
 			<icon x="450" y="100" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>yan_find_laboratory_end</infoportion_complete>
-			<function_call_complete>yantar_tasks.yantar_vasilyev_spam</function_call_complete>
 			<article>descr_yan_find_lab</article>
 		</objective>
 		<objective>
