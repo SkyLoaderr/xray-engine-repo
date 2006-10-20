@@ -198,6 +198,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 		{
 //			Msg			("- CL_destroy %s[%d]",*cName(), ID());
 			setDestroy		(TRUE);
+//			MakeMeCrow		();
 		}
 		break;
 	}
