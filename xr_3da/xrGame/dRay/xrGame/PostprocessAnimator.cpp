@@ -119,7 +119,7 @@ void        CPostprocessAnimator::Load                            (LPCSTR name)
 
 	f_length					= GetLength	();
 #ifndef _PP_EDITOR_
-	if(!m_bCyclic) fLifeTime	= f_length;
+	if(!m_bCyclic)	fLifeTime	= f_length;
 #endif
 
 }
@@ -169,6 +169,8 @@ BOOL CPostprocessAnimator::Process(SPPInfo &PPInfo)
 {
 	if(m_bCyclic)
 		fLifeTime				= 100000;
+
+	CEffectorPP::Process		(PPInfo);
 	
 
 	if(m_start_time<0.0f)m_start_time=Device.fTimeGlobal;
