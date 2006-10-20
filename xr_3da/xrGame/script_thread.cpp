@@ -133,7 +133,12 @@ bool CScriptThread::update()
 		}
 		else {
 			if (l_iErrorCode != LUA_YIELD) {
-				THROW		(!m_current_stack_level);
+				if (m_current_stack_level) {
+					ai().script_engine().print_output(lua(),*script_name(),l_iErrorCode);
+#ifdef DEBUG
+					print_stack		(lua());
+#endif
+				}
 				m_active	= false;
 #ifdef DEBUG
 				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",*m_script_name);
