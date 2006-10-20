@@ -58,7 +58,8 @@
 		</objective>
 		<objective>
 			<text>pripyat_task_objective</text>
-			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<map_location_type hint="pripyat_task_objective">green_location</map_location_type>
+			<object_story_id>pri_bomber</object_story_id>
 			<infoportion_complete>pri_wave7_end</infoportion_complete>
 		</objective>
 	</game_task>
