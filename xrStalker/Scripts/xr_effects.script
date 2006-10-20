@@ -2187,7 +2187,7 @@ function actor_inventory_by_levels ()
 						"ammo_5.45x39_ap",
 						"protection_outfit"}
 	elseif 	level == "l11_pripyat" then
-		start_point = "pri_start_actor"	
+		start_point = "pri_way_if_reject_to_rad"	
 		spawn_items = { "wpn_vintorez",
 						"ammo_9x39_ap",
 						"ammo_9x39_ap",
