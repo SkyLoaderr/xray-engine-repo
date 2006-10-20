@@ -666,12 +666,13 @@
 		<global_wnd/>
 		
 		<item>
-			<length_sec>15</length_sec>
+			<length_sec/>
 			<pause_state>on</pause_state>
 			<guard_key>use</guard_key>
 			<sound/>
 			<cursor_pos/>
 			<pda_section/>
+			<function_on_stop>xr_effects.presentation_task</function_on_stop>
 			<grab_input>0</grab_input>
 			<main_wnd>
 				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
