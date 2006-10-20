@@ -90,6 +90,7 @@ CBulletManager::~CBulletManager()
 {
 	m_Bullets.clear			();
 	m_WhineSounds.clear		();
+	m_Events.clear			();
 }
 
 #define BULLET_MANAGER_SECTION "bullet_manager"
@@ -147,7 +148,8 @@ void CBulletManager::PlayWhineSound(SBullet* bullet, CObject* object, const Fvec
 
 void CBulletManager::Clear		()
 {
-	m_Bullets.clear();
+	m_Bullets.clear			();
+	m_Events.clear			();
 }
 
 void CBulletManager::AddBullet(const Fvector& position,
