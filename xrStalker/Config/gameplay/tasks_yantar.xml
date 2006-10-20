@@ -9,8 +9,8 @@
 		<objective>
 			<text>yan_switcher_off_1</text>
 			<map_location_type>green_location</map_location_type>
-			<object_story_id>yan_labx16switcher_lamp1</object_story_id>
-			<infoportion_complete>yan_labx16_switcher_1_off</infoportion_complete>
+			<object_story_id>yan_labx16switcher_lamp3</object_story_id>
+			<infoportion_complete>yan_labx16_switcher_3_off</infoportion_complete>
 		</objective>
 		<objective>
 			<text>yan_switcher_off_2</text>
@@ -21,8 +21,8 @@
 		<objective>
 			<text>yan_switcher_off_3</text>
 			<map_location_type>green_location</map_location_type>
-			<object_story_id>yan_labx16switcher_lamp3</object_story_id>
-			<infoportion_complete>yan_labx16_switcher_3_off</infoportion_complete>
+			<object_story_id>yan_labx16switcher_lamp1</object_story_id>
+			<infoportion_complete>yan_labx16_switcher_1_off</infoportion_complete>
 		</objective>
 		<objective>
 			<text>yan_kill_brain_task</text>
