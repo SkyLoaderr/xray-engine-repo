@@ -421,7 +421,7 @@ LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 		MessageBox			(NULL,"Fatal error occured\n\nPress OK to abort program execution","Fatal error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
 
 #ifndef DEBUG
-	save_mini_dump			();
+	save_mini_dump			(pExceptionInfo);
 #endif
 
 	if (!previous_filter)
