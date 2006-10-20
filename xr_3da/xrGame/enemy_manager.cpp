@@ -117,12 +117,12 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 
 	bool					visible = m_object->memory().visual().visible_now(object);
 	if (!visible) {
-		const CCustomMonster*monster = smart_cast<const CCustomMonster*>(object);
-		if (monster)
-			visible			= monster->memory().visual().visible_now(m_object);
+		if (actor)
+			visible					= smart_cast<CActor*>(object)->memory().visual().visible_now(m_object);
 		else {
-			if (actor)
-				visible		= actor->memory().visual().visible_now(m_object);
+			const CCustomMonster	*monster = smart_cast<const CCustomMonster*>(object);
+			if (monster)
+				visible				= monster->memory().visual().visible_now(m_object);
 		}
 	}
 
