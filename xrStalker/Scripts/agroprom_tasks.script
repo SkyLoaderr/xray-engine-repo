@@ -87,7 +87,7 @@ end
 
 function have_gunslingers_flash(task, objective)
     if db.actor:object("gunslinger_flash") ~= nil then
-       db.actor:give_info_portion ("agr_find_gunslinger_cache_final")
+       -- db.actor:give_info_portion ("agr_find_gunslinger_cache_final")
        return true
     end
     return false   
