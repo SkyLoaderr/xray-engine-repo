@@ -55,6 +55,9 @@
 	<string id="agroprom_find_gunslinger_cache_2">
 		<text>Find information about Sharpshooter in the stash</text>
 	</string>
+	<string id="agroprom_find_gunslinger_cache_3">
+		<text>Escape from this place. :-)))</text>
+	</string>
 	<string id="agroprom_find_stalker_phantom">
 		<text>Find Ghost</text>
 	</string>
