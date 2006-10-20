@@ -72,6 +72,7 @@
 			<text>agroprom_find_gunslinger_cache_3</text>
 			<map_location_type hint="agroprom_find_gunslinger_cache_3">green_location</map_location_type>
             <object_story_id>agr_zaz</object_story_id>
+            <map_location_hidden>1</map_location_hidden>
 			<infoportion_complete>agr_find_gunslinger_cache_final</infoportion_complete>
 		</objective>
 	</game_task>
