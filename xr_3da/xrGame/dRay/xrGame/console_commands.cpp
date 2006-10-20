@@ -41,8 +41,6 @@
 #include "saved_game_wrapper.h"
 #include "level_graph.h"
 
-//#define MASTER_GOLD;
-
 #ifdef DEBUG
 #	include "PHDebug.h"
 #	include "ui/UIDebugFonts.h" 
@@ -2384,6 +2382,10 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"ai_draw_game_graph_objects",		&psAI_Flags,	aiDrawGameGraphObjects		);
 
 	CMD3(CCC_Mask,				"ai_nil_object_access",	&psAI_Flags,	aiNilObjectAccess);
+
+#ifndef MASTER_GOLD
+	CMD3(CCC_Mask,				"ai_ignore_actor",		&psAI_Flags,	aiIgnoreActor);
+#endif // MASTER_GOLD
 
 	CMD1(CCC_DrawGameGraphAll,		"ai_draw_game_graph_all");
 	CMD1(CCC_DrawGameGraphCurrent,	"ai_draw_game_graph_current_level");

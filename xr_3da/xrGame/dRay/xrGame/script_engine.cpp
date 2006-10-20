@@ -162,6 +162,13 @@ void CScriptEngine::init				()
 	m_stack_is_ready					= true;
 #endif
 
+#ifdef DEBUG
+#	ifdef USE_DEBUGGER
+		if( !debugger() || !debugger()->Active()  )
+#	endif
+			lua_sethook					(lua(),lua_hook_call,	LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET,	0);
+#endif
+
 	bool								save = m_reload_modules;
 	m_reload_modules					= true;
 	process_file_if_exists				("_G",false);
@@ -169,13 +176,6 @@ void CScriptEngine::init				()
 
 	register_script_classes				();
 	object_factory().register_script	();
-
-#ifdef DEBUG
-#	ifdef USE_DEBUGGER
-		if( !debugger() || !debugger()->Active()  )
-#	endif
-			lua_sethook					(lua(),lua_hook_call,	LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET,	0);
-#endif
 
 #ifdef XRGAME_EXPORTS
 	load_common_scripts					();

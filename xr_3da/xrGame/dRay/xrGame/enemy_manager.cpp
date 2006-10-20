@@ -75,10 +75,10 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 		)
 		return				(false);
 
-#ifdef _DEBUG
-//	if (entity_alive->CLS_ID == CLSID_OBJECT_ACTOR)
-//		return				(false);
-#endif
+#ifndef MASTER_GOLD
+	if ((entity_alive->CLS_ID == CLSID_OBJECT_ACTOR) && psAI_Flags.test(aiIgnoreActor))
+		return				(false);
+#endif // MASTER_GOLD
 
 	return					(m_useful_callback ? m_useful_callback(m_object->lua_game_object(),entity_alive->lua_game_object()) : true);
 }
@@ -92,7 +92,8 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 {
 //	Msg						("[%6d] enemy manager %s evaluates %s",Device.dwTimeGlobal,*m_object->cName(),*object->cName());
 
-	if (object->CLS_ID == CLSID_OBJECT_ACTOR)
+	bool					actor = (object->CLS_ID == CLSID_OBJECT_ACTOR);
+	if (actor)
 		m_ready_to_save		= false;
 
 	const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(object);
@@ -120,7 +121,6 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 		if (monster)
 			visible			= monster->memory().visual().visible_now(m_object);
 		else {
-			const CActor	*actor = smart_cast<const CActor*>(object);
 			if (actor)
 				visible		= actor->memory().visual().visible_now(m_object);
 		}

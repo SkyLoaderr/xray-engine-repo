@@ -29,3 +29,5 @@ IC	void		throw_and_log(const xr_string &s) {Msg("! %s",s.c_str()); throw s;}
 #include "../gamefont.h"
 #include "../xr_object.h"
 #include "../igame_level.h"
+
+//#define MASTER_GOLD
