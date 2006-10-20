@@ -704,6 +704,7 @@ void		game_sv_mp::UpdateVote				()
 	};
 
 	SetVotingActive(false);
+
 	if (!VoteSucceed) 
 	{
 		NET_Packet P;
@@ -714,14 +715,14 @@ void		game_sv_mp::UpdateVote				()
 		return;
 	};
 
-	if (m_bVotingReal)
-		Console->Execute(m_pVoteCommand.c_str());
-
 	NET_Packet P;
 	GenerateGameMessage (P);
 	P.w_u32(GAME_EVENT_VOTE_END);
 	P.w_stringZ("Voting Succeed!");
 	u_EventSend(P);
+
+	if (m_bVotingReal)
+		Console->Execute(m_pVoteCommand.c_str());
 };
 
 
@@ -742,6 +743,7 @@ void		game_sv_mp::OnVoteNo				(ClientID sender)
 
 void		game_sv_mp::OnVoteStop				()
 {
+	if (!IsVotingActive()) return;
 	SetVotingActive(false);
 	//-----------------------------------------------------------------
 	NET_Packet P;
