@@ -108,9 +108,9 @@ CScriptStorage::CScriptStorage		()
 
 #ifdef USE_JIT
 	if (strstr(Core.Params,"-nojit")) {
-		luaopen_jit			(lua());
-		luaopen_coco		(lua());
-		luaJIT_setmode		(lua(),2,LUAJIT_MODE_DEBUG);
+//		luaopen_jit			(lua());
+//		luaopen_coco		(lua());
+//		luaJIT_setmode		(lua(),2,LUAJIT_MODE_DEBUG);
 	}
 		else {
 		luaopen_jit			(lua());
