@@ -603,7 +603,7 @@ void CClientDlg::OnBnClickedJoin()
 		};
 		if (nResponse == IDCANCEL) return;
 	};	
-	sprintf(cmdline, "xr_3da.exe %s%s%s%s %s -nocache -external -start Server(%s/deathmatch) client(%s%s%s%s)", //server/name
+	sprintf(cmdline, "xr_3da.exe %s%s%s%s %s -nocache -external -start/* Server(%s/deathmatch)*/ client(%s%s%s%s)", //server/name
 							(iCatchInput == 1) ? "-i " : "",
 							(iPrefetch == 1) ? "" : "-noprefetch ",
 							(iR2 == 1) ? "-r2" : "",
@@ -611,7 +611,7 @@ void CClientDlg::OnBnClickedJoin()
 							//-------------------------------------
 							LTX, 
 							//-------------------------------------
-							N.dpSessionName,
+///							N.dpSessionName,
 							N.dpHostName,//N.dpServerName,
 							(NameLen) ? NameAdd : "",
 							(N.dpPort!=0) ? PortStr : "",
