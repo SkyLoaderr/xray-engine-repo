@@ -289,9 +289,114 @@ void SetupExceptionHandler	()
 #if 1
 extern void BuildStackTrace(struct _EXCEPTION_POINTERS *pExceptionInfo);
 typedef LONG WINAPI UnhandledExceptionFilterType(struct _EXCEPTION_POINTERS *pExceptionInfo);
+typedef LONG ( __stdcall *PFNCHFILTFN ) ( EXCEPTION_POINTERS * pExPtrs ) ;
+extern "C" BOOL __stdcall SetCrashHandlerFilter ( PFNCHFILTFN pFn );
+
 static UnhandledExceptionFilterType	*previous_filter = 0;
 
-LONG WINAPI UnhandledFilter	(struct _EXCEPTION_POINTERS *pExceptionInfo)
+typedef BOOL (WINAPI *MINIDUMPWRITEDUMP)(HANDLE hProcess, DWORD dwPid, HANDLE hFile, MINIDUMP_TYPE DumpType,
+										 CONST PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
+										 CONST PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
+										 CONST PMINIDUMP_CALLBACK_INFORMATION CallbackParam
+										 );
+
+
+void save_mini_dump			(_EXCEPTION_POINTERS *pExceptionInfo)
+{
+	// firstly see if dbghelp.dll is around and has the function we need
+	// look next to the EXE first, as the one in System32 might be old 
+	// (e.g. Windows 2000)
+	HMODULE hDll	= NULL;
+	string_path		szDbgHelpPath;
+
+	if (GetModuleFileName( NULL, szDbgHelpPath, _MAX_PATH ))
+	{
+		char *pSlash = strchr( szDbgHelpPath, '\\' );
+		if (pSlash)
+		{
+			strcpy	(pSlash+1, "DBGHELP.DLL" );
+			hDll = ::LoadLibrary( szDbgHelpPath );
+		}
+	}
+
+	if (hDll==NULL)
+	{
+		// load any version we can
+		hDll = ::LoadLibrary( "DBGHELP.DLL" );
+	}
+
+	LPCTSTR szResult = NULL;
+
+	if (hDll)
+	{
+		MINIDUMPWRITEDUMP pDump = (MINIDUMPWRITEDUMP)::GetProcAddress( hDll, "MiniDumpWriteDump" );
+		if (pDump)
+		{
+			string_path	szDumpPath;
+			string_path	szScratch;
+			string64	t_stemp;
+
+			// work out a good place for the dump file
+			timestamp	(t_stemp);
+			strcpy		( szDumpPath, "logs\\"				);
+			strcat		( szDumpPath, Core.ApplicationName	);
+			strcat		( szDumpPath, "_"					);
+			strcat		( szDumpPath, Core.UserName			);
+			strcat		( szDumpPath, "_"					);
+			strcat		( szDumpPath, t_stemp				);
+			strcat		( szDumpPath, ".mdmp"				);
+
+			// create the file
+			HANDLE hFile = ::CreateFile( szDumpPath, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
+			if (INVALID_HANDLE_VALUE==hFile)	
+			{
+				// try to place into current directory
+				MoveMemory	(szDumpPath,szDumpPath+5,strlen(szDumpPath));
+				hFile		= ::CreateFile( szDumpPath, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
+			}
+			if (hFile!=INVALID_HANDLE_VALUE)
+			{
+				_MINIDUMP_EXCEPTION_INFORMATION ExInfo;
+
+				ExInfo.ThreadId				= ::GetCurrentThreadId();
+				ExInfo.ExceptionPointers	= pExceptionInfo;
+				ExInfo.ClientPointers		= NULL;
+
+				// write the dump
+				MINIDUMP_TYPE	dump_flags	= MINIDUMP_TYPE(MiniDumpNormal | MiniDumpFilterMemory | MiniDumpScanMemory );
+
+				BOOL bOK = pDump( GetCurrentProcess(), GetCurrentProcessId(), hFile, dump_flags, &ExInfo, NULL, NULL );
+				if (bOK)
+				{
+					sprintf( szScratch, "Saved dump file to '%s'", szDumpPath );
+					szResult = szScratch;
+//					retval = EXCEPTION_EXECUTE_HANDLER;
+				}
+				else
+				{
+					sprintf( szScratch, "Failed to save dump file to '%s' (error %d)", szDumpPath, GetLastError() );
+					szResult = szScratch;
+				}
+				::CloseHandle(hFile);
+			}
+			else
+			{
+				sprintf( szScratch, "Failed to create dump file '%s' (error %d)", szDumpPath, GetLastError() );
+				szResult = szScratch;
+			}
+		}
+		else
+		{
+			szResult = "DBGHELP.DLL too old";
+		}
+	}
+	else
+	{
+		szResult = "DBGHELP.DLL not found";
+	}
+}
+
+LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 {
 	CONTEXT					save = *pExceptionInfo->ContextRecord;
 	BuildStackTrace			(pExceptionInfo);
@@ -314,6 +419,10 @@ LONG WINAPI UnhandledFilter	(struct _EXCEPTION_POINTERS *pExceptionInfo)
 
 	if (!error_after_dialog)
 		MessageBox			(NULL,"Fatal error occured\n\nPress OK to abort program execution","Fatal error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
+
+#ifndef DEBUG
+	save_mini_dump			();
+#endif
 
 	if (!previous_filter)
 		return				(EXCEPTION_CONTINUE_SEARCH) ;
@@ -353,6 +462,7 @@ LONG WINAPI UnhandledFilter	(struct _EXCEPTION_POINTERS *pExceptionInfo)
 		std::set_terminate				(_terminate);
 		std::set_unexpected				(_terminate);
 		SetupExceptionHandler			();
+//		SetCrashHandlerFilter			(UnhandledFilter);
 		previous_filter					= ::SetUnhandledExceptionFilter(UnhandledFilter);	// exception handler to all "unhandled" exceptions
 	}
 #endif
