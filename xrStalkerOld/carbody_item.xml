@@ -48,13 +48,6 @@
 		</background>
     </condition_progress>
     
-    <_condition_progress x="215" y="227" width="107" height="8" horz="1" min="0" max="100" pos="100">
-		<min_color r="255" g="0" b="0"/>
-		<max_color r="0" g="255" b="0"/>
-		<progress>
-			<texture r="255" g="0" b="0">ui\ui_mg_progress_efficiency_full</texture>
-		</progress>        
-    </_condition_progress>
     
     <wpn_params x="0" y="0" width="157" height="70">
 		<cap_accuracy x="0" y="8" width="121" height="8">
