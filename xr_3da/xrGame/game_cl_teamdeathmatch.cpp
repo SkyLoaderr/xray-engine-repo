@@ -40,7 +40,9 @@ LPCSTR game_cl_TeamDeathmatch::GetTeamMenu(s16 team)
 	default:
 		NODEFAULT;
 	};
+#ifdef DEBUG
 	return NULL;
+#endif// DEBUG
 }
 
 game_cl_TeamDeathmatch::game_cl_TeamDeathmatch()
