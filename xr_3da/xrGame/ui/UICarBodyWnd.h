@@ -32,6 +32,7 @@ public:
 	virtual void			Update						();
 		
 	virtual void			Show						();
+	virtual void			Hide						();
 
 	void					DisableAll					();
 	void					EnableAll					();

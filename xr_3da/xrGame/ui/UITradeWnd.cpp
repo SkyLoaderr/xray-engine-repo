@@ -272,6 +272,11 @@ void CUITradeWnd::Hide()
 		HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money_mine");
 		HUD().GetUI()->UIGame()->RemoveCustomStatic("not_enough_money_other");
 	}
+
+	m_uidata->UIOurBagList.ClearAll		(true);
+	m_uidata->UIOurTradeList.ClearAll	(true);
+	m_uidata->UIOthersBagList.ClearAll	(true);
+	m_uidata->UIOthersTradeList.ClearAll(true);
 }
 
 void CUITradeWnd::StartTrade()

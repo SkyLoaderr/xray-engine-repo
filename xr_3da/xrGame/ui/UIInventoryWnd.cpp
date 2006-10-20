@@ -44,7 +44,6 @@ CUIInventoryWnd*	g_pInvWnd = NULL;
 CUIInventoryWnd::CUIInventoryWnd()
 {
 	m_iCurrentActiveSlot				= NO_ACTIVE_SLOT;
-	Hide								();	
 
 	UISellAll							= NULL;
 	UIRank								= NULL;
@@ -55,6 +54,7 @@ CUIInventoryWnd::CUIInventoryWnd()
 	SetFont								(HUD().Font().pFontMedium);
 	g_pInvWnd							= this;	
 	m_b_need_reinit						= false;
+	Hide								();	
 }
 
 void CUIInventoryWnd::Init()
@@ -327,6 +327,7 @@ void CUIInventoryWnd::Hide()
 
 	SendInfoToActor						("ui_inventory_hide");
 
+	ClearAllLists						();
 
 	//достать вещь в активный слот
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());

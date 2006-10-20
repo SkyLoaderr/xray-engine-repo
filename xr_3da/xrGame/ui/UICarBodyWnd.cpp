@@ -201,6 +201,13 @@ void CUICarBodyWnd::UpdateLists_delayed()
 		m_b_need_update = true;
 }
 
+void CUICarBodyWnd::Hide()
+{
+	m_pUIOurBagList->ClearAll					(true);
+	m_pUIOthersBagList->ClearAll				(true);
+	inherited::Hide								();
+}
+
 void CUICarBodyWnd::UpdateLists()
 {
 	TIItemContainer								ruck_list;
