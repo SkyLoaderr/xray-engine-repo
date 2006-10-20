@@ -37,7 +37,7 @@
 
 	<image_static x="110" y="95" width="180" height="190" alignment="c"/>
 
-    <condition_progress x="10" y="165" width="130" height="8" horz="1" min="0" max="100" pos="100">
+    <condition_progress x="10" y="165" width="120" height="8" horz="1" min="0" max="100" pos="100">
 		<min_color r="255" g="0" b="0"/>
 		<max_color r="0" g="255" b="0"/>
 		<progress>
