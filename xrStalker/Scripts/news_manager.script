@@ -237,7 +237,6 @@ function send_task(actor, type, task, objective)
 		news_text = game.translate_string(task:get_objective(objective:get_idx() + 1):get_description())
 	end
 
-	db.actor:give_game_news(news_text, task_texture, task_rect, 0, 0)
 	local hud = get_hud()
 	hud:AddCustomStatic("main_task", true)
 	hud:GetCustomStatic("main_task"):wnd():SetTextST(news_text)
