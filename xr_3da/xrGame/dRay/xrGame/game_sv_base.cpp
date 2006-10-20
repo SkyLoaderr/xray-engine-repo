@@ -384,7 +384,7 @@ void	game_sv_GameState::ConsoleCommands_Create	()
 	string1024 Cmnd;
 	//---------------------------------------------------------
 	CMD_ADD(CCC_SV_Int, "sv_rpoint_freeze_time", (int*)&m_RPointFreezeTime, 0, 60000, g_bConsoleCommandsCreated_SV_Base, Cmnd);
-	CMD_ADD(CCC_SV_Int, "sv_voting_enabled", (int*)&m_bVotingEnabled, 0, 1, g_bConsoleCommandsCreated_SV_Base, Cmnd);
+	CMD_ADD(CCC_SV_Int, "sv_vote_enabled", (int*)&m_bVotingEnabled, 0, 1, g_bConsoleCommandsCreated_SV_Base, Cmnd);
 	//---------------------------------------------------------
 	g_bConsoleCommandsCreated_SV_Base = true;
 };
@@ -392,7 +392,7 @@ void	game_sv_GameState::ConsoleCommands_Create	()
 void	game_sv_GameState::ConsoleCommands_Clear	()
 {
 	CMD_CLEAR("sv_rpoint_freeze_time");
-	CMD_CLEAR("sv_voting_enabled");
+	CMD_CLEAR("sv_vote_enabled");
 };
 
 void	game_sv_GameState::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who)

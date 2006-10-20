@@ -672,11 +672,13 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 	//-----------------------------------------------------------------------------	
 };
 
+BOOL g_bCountParticipants = 0;
 void		game_sv_mp::UpdateVote				()
 {
 	if (!IsVotingEnabled() || !IsVotingActive()) return;
 
 	u32 NumAgreed = 0;
+	u32 NumParticipated = 0;
 	u32 NumToCount = 0;
 	u32	cnt = get_players_count();	
 	for(u32 it=0; it<cnt; it++)	
@@ -684,6 +686,7 @@ void		game_sv_mp::UpdateVote				()
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 		game_PlayerState* ps	= l_pC->ps;
 		if (!l_pC || !l_pC->net_Ready || !ps || ps->Skip) continue;
+		if (ps->m_bCurrentVoteAgreed != 2) NumParticipated++;
 		if (ps->m_bCurrentVoteAgreed == 1) NumAgreed++;
 		NumToCount++;
 	};
@@ -700,7 +703,10 @@ void		game_sv_mp::UpdateVote				()
 	}
 	else
 	{
-		VoteSucceed = (float(NumAgreed)/float(NumToCount)) >= m_fVoteQuota;
+		if (g_bCountParticipants) 
+			VoteSucceed = (float(NumAgreed)/float(NumParticipated)) >= m_fVoteQuota;
+		else
+			VoteSucceed = (float(NumAgreed)/float(NumToCount)) >= m_fVoteQuota;
 	};
 
 	SetVotingActive(false);
@@ -1214,7 +1220,8 @@ void game_sv_mp::ConsoleCommands_Create	()
 	CMD_ADD(CCC_SV_Int,"sv_spectr_teamcamera"	,	(int*)&m_bSpectator_TeamCamera	, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);	
 	//-------------------------------------	
 	CMD_ADD(CCC_SV_Float,"sv_vote_quota"		,	&m_fVoteQuota					, 0.0f,1.0f,g_bConsoleCommandsCreated_MP,Cmnd);
-	CMD_ADD(CCC_SV_Float,"sv_vote_time"			,	&m_fVoteTime					, 0.0f,10.0f,g_bConsoleCommandsCreated_MP,Cmnd);	
+	CMD_ADD(CCC_SV_Float,"sv_vote_time"			,	&m_fVoteTime					, 0.5f,10.0f,g_bConsoleCommandsCreated_MP,Cmnd);
+	CMD_ADD(CCC_SV_Int,"sv_vote_participants"	,	(int*)&g_bCountParticipants		,	0,	1,g_bConsoleCommandsCreated_MP,Cmnd);	
 	//-------------------------------------
 	g_bConsoleCommandsCreated_MP = true;
 };
