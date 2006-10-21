@@ -64,4 +64,10 @@
 	<string id="tutorial_for_bar">
 		<text>Меченый, давай ноги в руки и смывайся, военные не дадут тебе просто так уйти. Я сообщил о тебе Бармену - он должен договориться с долговцами чтобы тебя пропустили.</text>
 	</string>
+	<string id="tutorial_skip">
+		<text>To skip press ($$ACTION_USE$$).</text>
+	</string>
+	
+	
 </string_table>
+
