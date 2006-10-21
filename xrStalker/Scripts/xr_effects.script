@@ -2267,6 +2267,8 @@ function presentation_task ()
 		actor:give_info_portion("bar_x16_documents_start")
 	elseif 	level == "l11_pripyat" then
 		actor:give_info_portion("pripyat_task_1_start")
+		actor:give_info_portion("bar_deactivate_radar_done")
+		alife():create("good_psy_helmet",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
 	end
 	db.actor:activate_slot(2)
 end
