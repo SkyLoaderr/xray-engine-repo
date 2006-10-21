@@ -84,7 +84,7 @@ local function hook					(context,line_number)
 	end
 end
 
-function setup_hook					()	
+function setup_hook					(do_not_print_message)
 	if started == true then
 		return
 	end
@@ -99,6 +99,10 @@ function setup_hook					()
 	debug.sethook					(hook, "cr")
     
    	started							= true
+   	
+   	if (do_not_print_message ~= true) then
+   		printf						("profiler is activated")
+   	end
 end
 
 function clear_hook					()	
@@ -169,7 +173,7 @@ function stats						()
 	printf								("script time  : %8.2fms (%5.2f%%)",script:time()/1000,script:time()*100/timer:time())
 	printf								("call count   : %8d",count)
 
-	setup_hook							()
+	setup_hook							(true)
 end
 
 function clear							()
@@ -181,5 +185,5 @@ function clear							()
 	Names								= {}
 	timer								= profile_timer()
 	
-	setup_hook							()
+	setup_hook							(true)
 end

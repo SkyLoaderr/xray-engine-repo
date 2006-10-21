@@ -1,4 +1,6 @@
---profiler.setup_hook	()
+if (jit == nil) then
+	profiler.setup_hook	()
+end
 
 schemes = {} -- соответствие схем модулям
 stypes = {} -- типы схем
