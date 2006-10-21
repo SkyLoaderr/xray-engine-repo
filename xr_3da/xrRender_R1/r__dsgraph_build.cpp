@@ -73,13 +73,23 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 
 	// HUD rendering
 	if (RI.val_bHUD)			{
-		mapHUD_Node* N			= mapHUD.insertInAnyWay		(distSQ);
-		N->val.ssa				= SSA;
-		N->val.pObject			= RI.val_pObject;
-		N->val.pVisual			= pVisual;
-		N->val.Matrix			= *RI.val_pTransform;
-		N->val.se				= sh;
-		return;
+		if (sh->flags.bStrictB2F)	{
+			mapSorted_Node* N		= mapSorted.insertInAnyWay	(distSQ);
+			N->val.ssa				= SSA;
+			N->val.pObject			= RI.val_pObject;
+			N->val.pVisual			= pVisual;
+			N->val.Matrix			= *RI.val_pTransform;
+			N->val.se				= sh;
+			return;
+		} else {
+			mapHUD_Node* N			= mapHUD.insertInAnyWay		(distSQ);
+			N->val.ssa				= SSA;
+			N->val.pObject			= RI.val_pObject;
+			N->val.pVisual			= pVisual;
+			N->val.Matrix			= *RI.val_pTransform;
+			N->val.se				= sh;
+			return;
+		}
 	}
 
 	// Shadows registering
