@@ -32,7 +32,6 @@
 
 #ifndef MASTER_GOLD
 #	include "ai_debug.h"
-	extern Flags32 psAI_Flags;
 #endif // MASTER_GOLD
 
 static const u32 ENEMY_INERTIA_TIME	= 2000;
