@@ -106,7 +106,7 @@ function load_job(sj, gname, type, squad, groups, st)
 							"active = walker@"..way_name.."\n"..
 
 							"[walker@"..way_name.."]\n"..
-							"sound_idle = state\n"
+							"sound_idle = state\n"..
 							"path_walk = walker_"..it.."_walk\n"
 
 			if level.patrol_path_exists(gname.."_walker_"..it.."_look") then
