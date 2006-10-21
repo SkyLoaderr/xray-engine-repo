@@ -719,12 +719,12 @@
 			<function_on_stop>xr_effects.presentation_task</function_on_stop>
 			<grab_input>0</grab_input>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="10000" x="500" y="400" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<text font="graffiti22" r="225" g="225" b="250" a="255">tutorial_for_bar</text>
 				</auto_static>
-				<auto_static start_time="0" length_sec="5000" x="500" y="900" width="550" height="150" alignment="c" stretch="1"
+				<auto_static start_time="0" length_sec="5000" x="500" y="550" width="550" height="150" alignment="c" stretch="1"
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<text font="graffiti22" r="225" g="225" b="250" a="255">binoc_tutorial</text>
