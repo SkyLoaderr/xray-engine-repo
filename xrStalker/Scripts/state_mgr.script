@@ -400,6 +400,9 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 		end
 	end
 	
+--	if switched == true then
+--		self:update()
+--	end
 end
 function state_manager:get_state()
 	return self.target_state
