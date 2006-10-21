@@ -142,7 +142,7 @@ function stats						()
     for i,j in pairs(sort_stats) do
 		local							k = i
 		if k == "[[C]]:-1" then
-			k							= "#compile"
+			k							= "#compile (function registration)"
 		end
 		
 		table.insert					(out_stats,{name=k,count=j})
