@@ -237,7 +237,7 @@ function motivator_binder:update(delta)
 			self.st.state_mgr = nil
 		end
 	end
-
+	
 	--' Апдейт саундменеджера
 	if self.object:alive() then
 		xr_sound.update(self.object)
