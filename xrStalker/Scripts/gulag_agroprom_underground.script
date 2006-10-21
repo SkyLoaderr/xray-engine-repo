@@ -132,7 +132,7 @@ function load_ltx_agr_u_bandits(gname, type)
 				"[walker@" .. gname ..  i .. "]\n" ..
 				"path_walk = walk".. i.. "\n" ..
 				"path_look = look".. i.. "\n" ..
-				"combat_ignore_cond = {!fighting_actor} true \n" ..
+				
 				"on_actor_in_zone = kat_bandit_trigger3 | walker2@" .. gname ..  i .. "\n" ..
 				"danger=danger_condition@" .. gname .. "\n" ..
 
@@ -150,7 +150,7 @@ function load_ltx_agr_u_bandits(gname, type)
 				"[walker@" .. gname ..  i .. "]\n" ..
 				"path_walk = walk".. i.. "\n" ..
 				"path_look = look".. i.. "\n" ..
-				"combat_ignore_cond = {!fighting_actor} true \n" ..
+				
 				"on_actor_in_zone = kat_bandit_trigger3 | walker2@" .. gname ..  i .. "\n" ..
 				"danger=danger_condition@" .. gname .. "\n" ..
 
@@ -169,7 +169,7 @@ function load_ltx_agr_u_bandits(gname, type)
 				"[walker@" .. gname ..  i .. "]\n" ..
 				"path_walk = walk".. i.. "\n" ..
 				"path_look = look".. i.. "\n" ..
-				"combat_ignore_cond = {!fighting_actor} true \n" ..
+				
 				"on_actor_in_zone = kat_bandit_trigger4 | walker2@" .. gname ..  i .. "\n" ..
 				"danger=danger_condition@" .. gname .. "\n" ..
 
@@ -187,7 +187,7 @@ function load_ltx_agr_u_bandits(gname, type)
 				"[walker@" .. gname ..  i .. "]\n" ..
 				"path_walk = walk".. i.. "\n" ..
 				"path_look = look".. i.. "\n" ..
-				"combat_ignore_cond = {!see_actor} true \n" ..
+				
 				"danger=danger_condition@" .. gname .. "\n" 
 
 	end
