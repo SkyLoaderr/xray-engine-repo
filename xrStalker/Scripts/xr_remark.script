@@ -33,7 +33,7 @@ function action_remark_activity:initialize()
 --	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
-	xr_sound.set_sound(self.object, nil)
+	xr_sound.set_sound(self.object, "")
 end
 function action_remark_activity:activate_scheme()
     self.st.signals = {}
