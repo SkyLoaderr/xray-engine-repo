@@ -30,6 +30,11 @@
 #include "agent_manager.h"
 #include "agent_enemy_manager.h"
 
+#ifndef MASTER_GOLD
+#	include "agent_enemy_manager.h"
+	extern Flags32 psAI_Flags;
+#endif // MASTER_GOLD
+
 static const u32 ENEMY_INERTIA_TIME	= 2000;
 
 #define USE_EVALUATOR
