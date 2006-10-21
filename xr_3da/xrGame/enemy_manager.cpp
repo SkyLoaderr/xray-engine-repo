@@ -31,7 +31,7 @@
 #include "agent_enemy_manager.h"
 
 #ifndef MASTER_GOLD
-#	include "agent_enemy_manager.h"
+#	include "ai_debug.h"
 	extern Flags32 psAI_Flags;
 #endif // MASTER_GOLD
 
