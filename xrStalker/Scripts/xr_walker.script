@@ -49,6 +49,7 @@ function action_walker_activity:reset_scheme()
 
 	self.move_mgr:reset(self.st.path_walk, self.st.path_walk_info, self.st.path_look, self.st.path_look_info,
 		self.st.team, self.st.suggested_state)
+	xr_sound.set_sound(self.object, self.st.sound_idle)
 end
 
 function action_walker_activity:execute()
@@ -62,6 +63,7 @@ end
 
 function action_walker_activity:finalize()
 	self.move_mgr:finalize()
+	xr_sound.set_sound(self.object, nil)
 	action_base.finalize(self)
 end
 
@@ -117,6 +119,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, false, gulag_name)
 	st.team      = utils.cfg_get_string(ini, section, "team",      npc, false, gulag_name)
+	st.sound_idle= utils.cfg_get_string(ini, section, "sound_idle",npc, false, gulag_name)
 
 	st.suggested_state = {}
 	st.suggested_state.standing = utils.cfg_get_string(ini, section, "def_state_standing", npc, false, "")
