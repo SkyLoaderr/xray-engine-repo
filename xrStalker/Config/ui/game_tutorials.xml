@@ -710,7 +710,7 @@
 		<global_wnd/>
 		
 		<item>
-			<length_sec>15</length_sec>
+			<length_sec/>
 			<pause_state>on</pause_state>
 			<guard_key>use</guard_key>
 			<sound/>
