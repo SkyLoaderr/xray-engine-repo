@@ -63,12 +63,6 @@ end
 function set_sound(npc, sound, now, into_timeout)
 	--printf("*SND* [%s] try to change SND to [%s]", npc:name(), tostring(sound))
 
-	if sound == nil then
-		sound = "state"
-	elseif sound == "" then
-	    sound = nil
-	end
-
 	local npc_id = npc:id()
 	if (db.sound[npc_id] == nil or
 	   db.sound[npc_id].theme ~= sound) or
