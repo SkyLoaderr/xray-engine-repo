@@ -795,7 +795,7 @@ void CStalkerActionHoldPosition::initialize		()
 	select_queue_params							(distance,min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
 	object().CObjectHandler::set_goal			(eObjectActionAimReady1,object().best_weapon(),min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
 
-	set_inertia_time							(5000 + ::Random32.random(5000));
+	set_inertia_time							(1000 + ::Random32.random(2000));
 	object().brain().affect_cover				(true);
 }
 
