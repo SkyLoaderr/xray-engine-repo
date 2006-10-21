@@ -417,12 +417,12 @@ LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 
 	FlushLog				();
 
-	if (!error_after_dialog)
-		MessageBox			(NULL,"Fatal error occured\n\nPress OK to abort program execution","Fatal error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
-
 #ifndef DEBUG
 	save_mini_dump			(pExceptionInfo);
 #endif
+
+	if (!error_after_dialog)
+		MessageBox			(NULL,"Fatal error occured\n\nPress OK to abort program execution","Fatal error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
 
 	if (!previous_filter)
 		return				(EXCEPTION_CONTINUE_SEARCH) ;
