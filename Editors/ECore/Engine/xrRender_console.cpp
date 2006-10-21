@@ -200,15 +200,18 @@ public:
 
 	virtual void	Execute	(LPCSTR args)	{
 		CCC_Token::Execute	(args);
-		LPCSTR	cmd			= 0;
+		string128		_cfg;
+		string_path		cmd;
+		
 		switch	(*value)	{
-			case 0:		cmd		= "cfg_load gamedata\\rspec_minimum.ltx";	break;
-			case 1:		cmd		= "cfg_load gamedata\\rspec_low.ltx";		break;
-			default:
-			case 2:		cmd		= "cfg_load gamedata\\rspec_default.ltx";	break;
-			case 3:		cmd		= "cfg_load gamedata\\rspec_high.ltx";		break;
-			case 4:		cmd		= "cfg_load gamedata\\rspec_extreme.ltx";	break;
+			case 0:		strcpy(_cfg, "rspec_minimum");	break;
+			case 1:		strcpy(_cfg, "rspec_low");		break;
+			case 2:		strcpy(_cfg, "rspec_default");	break;
+			case 3:		strcpy(_cfg, "rspec_high");		break;
+			case 4:		strcpy(_cfg, "rspec_extreme");	break;
 		}
+		FS.update_path			(_cfg,"$game_data$",_cfg);
+		strconcat				(cmd,"cfg_load", " ", _cfg);
 		Console->Execute		(cmd);
 	}
 };
