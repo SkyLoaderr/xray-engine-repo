@@ -136,7 +136,7 @@ bool CScriptThread::update()
 #ifdef DEBUG
 				if (m_current_stack_level) {
 					ai().script_engine().print_output(lua(),*script_name(),l_iErrorCode);
-					print_stack		(lua());
+//					print_stack		(lua());
 				}
 #endif // DEBUG
 				m_active	= false;
