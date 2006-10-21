@@ -603,7 +603,8 @@ void CClientDlg::OnBnClickedJoin()
 		};
 		if (nResponse == IDCANCEL) return;
 	};	
-	sprintf(cmdline, "xr_3da.exe %s%s%s%s %s -nocache -external -start/* Server(%s/deathmatch)*/ client(%s%s%s%s)", //server/name
+	/* Server(%s/deathmatch)*/ 
+	sprintf(cmdline, "xr_3da.exe %s%s%s%s %s -nocache -external -start client(%s%s%s%s)", //server/name
 							(iCatchInput == 1) ? "-i " : "",
 							(iPrefetch == 1) ? "" : "-noprefetch ",
 							(iR2 == 1) ? "-r2" : "",
