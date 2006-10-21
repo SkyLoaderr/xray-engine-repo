@@ -121,7 +121,7 @@ void CWalmarkManager::StartWorkflow()
 */
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
-		DBG_DrawTri(Res, D3DCOLOR_XRGB(0,255,0) );
+//.		DBG_DrawTri(Res, D3DCOLOR_XRGB(0,255,0) );
 
 		if(wm_count >= max_wallmarks_count) break;
 		
