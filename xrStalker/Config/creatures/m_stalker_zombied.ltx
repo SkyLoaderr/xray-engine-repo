@@ -152,7 +152,10 @@ disp_stand_crouch_zoom			= 1
 ;----------- MONSTR SPECIES ----------------------------
 species							= zombie
 
-
+;---CRITICAL WOUND------------------------------------------------------------------
+critical_wound_threshold		= 1.1
+critical_wound_decrease_quant	= 0.
+body_parts_section_id			= critical_wound_body_parts_section
 
 [stalker_fresh_zombied]:stalker_zombied
 ;---LEVEL EDITOR------------------------------------------------------
@@ -160,3 +163,8 @@ $spawn							= "stalkers\stalker_fresh_zombied"	; option for Level Editor
 
 ;---MOVEMENT----------------------------------------------------------
 movement_speeds					= stalker_movement_speeds
+
+;---CRITICAL WOUND------------------------------------------------------------------
+critical_wound_threshold		= 1.1
+critical_wound_decrease_quant	= 0.
+body_parts_section_id			= critical_wound_body_parts_section
