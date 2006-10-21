@@ -60,7 +60,6 @@ function act_state_mgr_movement_walk:initialize()
 	self.object:set_movement_type(move.walk)
 
 	if not self.st.planner:evaluator(self.st.properties["direction"]):evaluate() then
-		printf("TURNING")
 		if self.st.planner:evaluator(self.st.properties["direction_search"]):evaluate() then
 			self.object:set_sight(state_mgr_direction.look_position_type(self.object, self.st), nil, 0)
 		else
@@ -107,7 +106,6 @@ function act_state_mgr_movement_stand:initialize()
 	self.object:set_movement_type(move.stand)
 
 	if not self.st.planner:evaluator(self.st.properties["direction"]):evaluate() then
-		printf("TURNING")
 		if self.st.planner:evaluator(self.st.properties["direction_search"]):evaluate() then
 			self.object:set_sight(state_mgr_direction.look_position_type(self.object, self.st), nil, 0)
 		else

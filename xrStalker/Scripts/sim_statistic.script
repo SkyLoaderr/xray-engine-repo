@@ -221,6 +221,10 @@ end
 function release_current_level()
 	local local_level = level.name()
 	for k,v in pairs(reg_objects_stalker) do
+		if v.exist == true then
+			level.map_remove_object_spot(k, "alife_presentation_"..v.community)
+			reg_objects_stalker[k].exist = nil
+		end
 		local obj = alife():object(k)
 		if alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id()) == local_level then
 			alife():release(obj,true)
@@ -228,6 +232,10 @@ function release_current_level()
 		end
 	end
 	for k,v in pairs(reg_objects_monster) do
+		if v.exist == true then
+			level.map_remove_object_spot(k, "alife_presentation_monstr")
+			reg_objects_monster[k].exist = nil
+		end
 		local obj = alife():object(k)
 		if alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id()) == local_level then
 			alife():release(obj,true)
@@ -330,6 +338,7 @@ function unregister_smart(obj)
 	reg_objects_smart[obj.id] = nil
 end
 function smart_enabled(obj, enabled)
+--[[
 	local pop = obj.gulag:get_population()
 	local comed = obj.gulag:get_population_comed()
 	local state = obj.gulag.state
@@ -351,6 +360,7 @@ function smart_enabled(obj, enabled)
 	if show_smart_spot == true then
 		mark_smart(obj.id)
 	end
+]]
 end
 function mark_smart(obj_id)
 	local rr = reg_objects_smart[obj_id]
