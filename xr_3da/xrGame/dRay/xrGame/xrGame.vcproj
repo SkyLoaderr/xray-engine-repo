@@ -2024,7 +2024,6 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								CallingConvention="0"
 								DisableSpecificWarnings="4121"/>
 						</FileConfiguration>
 						<FileConfiguration
