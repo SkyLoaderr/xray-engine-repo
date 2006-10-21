@@ -118,6 +118,7 @@ struct profile_timer_script {
 	IC		profile_timer_script&	operator=				(const profile_timer_script &profile_timer)
 	{
 		m_start_cpu_tick_count	= profile_timer.m_start_cpu_tick_count;
+		m_accumulator			= profile_timer.m_accumulator;
 		m_count					= profile_timer.m_count;
 		m_recurse_mark			= profile_timer.m_recurse_mark;
 		return					(*this);
