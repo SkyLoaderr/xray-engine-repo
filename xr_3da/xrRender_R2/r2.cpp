@@ -442,8 +442,10 @@ HRESULT	CRender::shader_compile			(
 	def_it							++;
 
 	// 
-	if ('v'==pTarget[0])			pTarget = D3DXGetVertexShaderProfile	(HW.pDevice);	// vertex	"vs_2_a"; //	
-	else							pTarget = D3DXGetPixelShaderProfile		(HW.pDevice);	// pixel	"ps_2_a"; //	
+	if (0==strcmp(pFunctionName,"main"))	{
+		if ('v'==pTarget[0])			pTarget = D3DXGetVertexShaderProfile	(HW.pDevice);	// vertex	"vs_2_a"; //	
+		else							pTarget = D3DXGetPixelShaderProfile		(HW.pDevice);	// pixel	"ps_2_a"; //	
+	}
 
 	LPD3DXINCLUDE                   pInclude		= (LPD3DXINCLUDE)		_pInclude;
     LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;

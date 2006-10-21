@@ -179,14 +179,20 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,::Render->getShaderPath(),_name,".vs"));
 		LPCSTR						target		= NULL;
 
+		IReader*					fs			= FS.r_open(cname);
+
+		// Select target
+		LPCSTR						c_target	= "vs_2_0";
+		LPCSTR						c_entry		= "main";
 		/*if (HW.Caps.geometry.dwVersion>=CAP_VERSION(3,0))			target="vs_3_0";
-		else*/ if (HW.Caps.geometry_major>=2)						target="vs_2_0";
-		else 														target="vs_1_1";
+		else*/ if (HW.Caps.geometry_major>=2)						c_target="vs_2_0";
+		else 														c_target="vs_1_1";
+		if (strstr(LPCSTR(fs->pointer()),"main_vs_1_1"))			{ c_target = "vs_1_1"; c_entry = "main_vs_1_1";	}
+		if (strstr(LPCSTR(fs->pointer()),"main_vs_2_0"))			{ c_target = "vs_2_0"; c_entry = "main_vs_2_0";	}
 
 		// vertex
-		IReader*					fs			= FS.r_open(cname);
 		R_ASSERT2					(fs,cname);
-		_hr = ::Render->shader_compile(name,LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, "main", target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR /*| D3DXSHADER_PREFER_FLOW_CONTROL*/, &pShaderBuf, &pErrorBuf, NULL);
+		_hr = ::Render->shader_compile(name,LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR /*| D3DXSHADER_PREFER_FLOW_CONTROL*/, &pShaderBuf, &pErrorBuf, NULL);
 //		_hr = D3DXCompileShader		(LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, "main", target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 		FS.r_close					(fs);
 
@@ -267,6 +273,7 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR name)
 		if (strstr(data,"main_ps_1_2"))			{ c_target = "ps_1_2"; c_entry = "main_ps_1_2";	}
 		if (strstr(data,"main_ps_1_3"))			{ c_target = "ps_1_3"; c_entry = "main_ps_1_3";	}
 		if (strstr(data,"main_ps_1_4"))			{ c_target = "ps_1_4"; c_entry = "main_ps_1_4";	}
+		if (strstr(data,"main_ps_2_0"))			{ c_target = "ps_2_0"; c_entry = "main_ps_2_0";	}
 
 		// Compile
 		LPD3DXBUFFER				pShaderBuf	= NULL;
