@@ -77,7 +77,7 @@ void CWalmarkManager::PlaceWallmark(const Fvector& dir, const Fvector& start_pos
 void CWalmarkManager::PlaceWallmarks( const Fvector& start_pos)
 {
 	m_pos				= start_pos;
-	LPCSTR				sect				= pSettings->r_string(m_owner->cNameSect(), "wallmark_section");
+//.	LPCSTR				sect				= pSettings->r_string(m_owner->cNameSect(), "wallmark_section");
 	Load				("explosion_marks");
 
 	Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CWalmarkManager::StartWorkflow));
