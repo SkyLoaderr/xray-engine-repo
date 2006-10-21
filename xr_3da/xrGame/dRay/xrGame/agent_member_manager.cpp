@@ -150,7 +150,7 @@ u32 CAgentMemberManager::in_detour		() const
 bool CAgentMemberManager::can_detour	() const
 {
 	u32									in_detour_count = in_detour();
-	return								(!in_detour_count || (in_detour_count < (members().size()/3)));
+	return								(!in_detour_count || (in_detour_count < (members().size()/2)));
 }
 
 bool CAgentMemberManager::cover_detouring		() const
