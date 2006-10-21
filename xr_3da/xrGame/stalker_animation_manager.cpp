@@ -34,7 +34,7 @@ void CStalkerAnimationManager::reinit				()
 	m_looking_back				= 0;
 
 	m_no_move_actual			= false;
-	m_crouch_state_config		= pSettings->r_s32(*object().cNameSect(),"crouch_type");
+	m_crouch_state_config		= object().SpecificCharacter().crouch_state();
 	VERIFY						((m_crouch_state_config == 0) || (m_crouch_state_config == 1) || (m_crouch_state_config == -1));
 	m_crouch_state				= m_crouch_state_config;
 	

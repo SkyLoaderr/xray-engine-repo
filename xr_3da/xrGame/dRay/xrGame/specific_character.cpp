@@ -37,6 +37,7 @@ SSpecificCharacterData::SSpecificCharacterData()
 	m_bDefaultForCommunity	= false;
 	m_fPanic_threshold		= 0.0f;
 	m_fHitProbabilityFactor	= 1.f;
+	m_crouch_type			= 0;
 }
 
 SSpecificCharacterData::~SSpecificCharacterData()
@@ -146,6 +147,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 
 	data()->m_fPanic_threshold		= uiXml.ReadFlt("panic_threshold",0,0.f);
 	data()->m_fHitProbabilityFactor	= uiXml.ReadFlt("hit_probability_factor",0,1.f);
+	data()->m_crouch_type			= uiXml.ReadInt("crouch_type",0,0);
 #endif
 
 	data()->m_sVisual		= uiXml.Read("visual", 0, "");
@@ -267,6 +269,11 @@ float CSpecificCharacter::panic_threshold () const
 float CSpecificCharacter::hit_probability_factor () const 
 {
 	return data()->m_fHitProbabilityFactor;
+}
+
+int CSpecificCharacter::crouch_type	() const 
+{
+	return data()->m_crouch_type;
 }
 
 #endif
