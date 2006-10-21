@@ -17,15 +17,14 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 				Device.bActive				= bActive;
 				if (Device.bActive)	{
 					Device.seqAppActivate.Process	(rp_AppActivate);
-					Device.PauseSound		(FALSE);
-///					if (!strstr(Core.Params, "-dedicated")) 
+//.					Device.PauseSound		(FALSE);
 #ifndef		DEDICATED_SERVER
 						ShowCursor			(FALSE);
 #endif
 				} else	{
 					Device.seqAppDeactivate.Process(rp_AppDeactivate);
 					ShowCursor				(TRUE);
-					Device.PauseSound		(TRUE);
+//.					Device.PauseSound		(TRUE);
 				}
 			}
 		}

@@ -411,7 +411,10 @@ static BOOL bEntryFlag		= TRUE;
 void CGamePersistent::OnAppActivate		()
 {
 	if(!bRestorePause)
-		Device.Pause(FALSE);
+	{
+		Device.Pause			(FALSE);
+		Device.PauseSound		(FALSE);
+	}
 
 	bEntryFlag = TRUE;
 //.	Level().Cameras().Update(Actor()->cam_Active());
@@ -424,8 +427,9 @@ void CGamePersistent::OnAppDeactivate	()
 	bRestorePause = FALSE;
 	if (!g_pGameLevel || (g_pGameLevel && Level().game && GameID()== GAME_SINGLE) )
 	{
-		bRestorePause = Device.Pause();
-		Device.Pause(TRUE);
+		bRestorePause			= Device.Pause();
+		Device.Pause			(TRUE);
+		Device.PauseSound		(TRUE);
 	}
 	bEntryFlag = FALSE;
 }
