@@ -183,7 +183,7 @@ function stats						()
     for i,j in pairs(sort_stats) do
 		local							k = i
 		if k == "[[C]]:-1" then
-			k							= "[[C]]:-1 (self)"
+			k							= "[[C]]:-1 (script compilation)"
 		end
 		
 		table.insert					(out_stats,{name=k,count=j})
