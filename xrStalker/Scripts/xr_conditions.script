@@ -864,9 +864,7 @@ end
 function pri_followers_can_hear(actor, npc)
 	local gulag = xr_gulag.get_gulag(823)
 
-    return actor:dont_has_info("pri_followers_start") or
-           (actor:has_info("pri_followers_mission_accept") and
-           actor:dont_has_info("pri_followers_actor_leave") and
+    return actor:dont_has_info("pri_followers_start") or           
            gulag ~= nil and gulag:get_population() > 0 and
            not gulag:npc_is_enemy_to_anybody(actor))
 end
