@@ -1,205 +1,226 @@
-local						Counters = {}
-local						Names = {}
-local						timer = profile_timer()
-local						old_hook_func, old_hook_mask, old_hook_count
-local						started = false
+local function printf				(fmt,...)
+	log								(string.format(fmt,...))
+end
 
-local function hook			(context,line_number)
+local								Counters = {}
+local								Names = {}
+local								timer = profile_timer()
+local								old_hook_func, old_hook_mask, old_hook_count
+local								started = false
+
+local function getname				(func)
+    local							n = Names[func]
+    local							loc = string.format("[%s]:%s", n.short_src, n.linedefined)
+    if "" ~= n.namewhat then
+        return						(string.format("%s (%s)", loc, n.name))
+    else
+        return						(string.format("%s", loc))
+    end
+end
+
+local function hook					(context,line_number)
 --	if nil ~= old_hook_func then
 --		if old_hook_func ~= hook then
---			old_hook_func	(context,line_number)
+--			old_hook_func			(context,line_number)
 --		end
 --	end
 	
-	if "line" == context then
-		return
-	end
+	assert							("line" ~= context)
 
-	local					f = debug.getinfo(2, "f").func
-	local					caller = debug.getinfo(3, "f")
-	local					g = nil
+	local							f = debug.getinfo(2, "f").func
+	local							caller = debug.getinfo(3, "f")
+	local							g = nil
 	if caller ~= nil then
-		g					= caller.func;
+		g							= caller.func;
 	end
 
-	if "return" == context then
-		if Counters[f] ~= nil then
-			Counters[f].timer:stop		()
-			Counters[f].child_timer:stop()
-			if g ~= nil then
-				local		object = Counters[g]
+--[[
+]]
+	local							f_name = nil
+	local							g_name = nil
+	local							old_g = Names[g]
+
+	if (Names[f] == nil) then
+		Names[f]					= debug.getinfo(2,"Sn")
+		f_name						= getname(f)
+		Names[f]					= nil
+	else
+		f_name						= getname(f)
+	end
+
+	if (g == nil) then
+		g_name						= ""
+	else
+		if (Names[g] == nil) then
+			Names[g]				= debug.getinfo(3,"Sn")
+			g_name					= "from [" .. getname(g) .. "]"
+			Names[g]				= nil
+		else
+			g_name					= "from [" .. getname(g) .. "]"
+		end
+	end
+
+	printf							("%6s : [%s]%s",context,f_name,g_name)
+	
+	if ("return" == context) then
+		local						object = Counters[f]
+		if (object ~= nil) then
+--			printf					("Counters[f].timer:stop		() [%s]",f_name)
+			object.timer:stop		()
+--			printf					("Counters[f].child_timer:stop	() [%s]",f_name)
+			object.child_timer:stop	()
+			if (g ~= nil) then
+				local				object = Counters[g]
 				if (object ~= nil) then
+--					printf			("Counters[g].timer:start		() [%s]",g_name)
 					object.timer:start	()
 				end
 			end
 		end
+		
 		return
 	end
 
-	if "tail return" == context then
-		if g ~= nil then
-			Counters[g].timer:start	()
+	if ("tail return" == context) then
+--		printf						("TAIL RETURN %s%s",f_name,g_name)
+		if (g ~= nil) then
+			local					object = Counters[g]
+			if (object ~= nil) then
+--				printf				("Counters[g].timer:start		() [%s]",g_name)
+				object.timer:start	()
+			end
 		end
+		
 		return
 	end
 
-	if "call" ~= context then
-		error_log	(string.format("Unknown hook message type : %s",context))
-		return
-	end
+	assert							("call" == context)
 
 	if g ~= nil then
-		local			object = Counters[g]
---		assert			(object ~= nil)
+		local						object = Counters[g]
 		if (object ~= nil) then
-			local		timer = object.timer
-			assert		(timer ~= nil)
-			
-			assert		(timer.stop ~= nil)
-			timer:stop	()
+--			printf					("Counters[g].timer:stop	() [%s]",g_name)
+			object.timer:stop		()
 		end
 	end
 	
-	if nil == Counters[f] then
-		Counters[f]						= {count=1,timer=profile_timer(),child_timer=profile_timer()}
-		Counters[f].child_timer:start	()
-		Counters[f].timer:start			()
-		Names[f]						= debug.getinfo(2,"Sn")
+	if (Counters[f] == nil) then
+		Counters[f]					= {count=1,timer=profile_timer(),child_timer=profile_timer()}
+		local						object = Counters[f]
+--		printf						("Counters[f].child_timer:start	() [%s]",f_name)
+		object.child_timer:start	()
+--		printf						("Counters[f].timer:start		() [%s]",f_name)
+		object.timer:start			()
+		Names[f]					= debug.getinfo(2,"Sn")
 	else
-		Counters[f].count				= Counters[f].count + 1
-		Counters[f].child_timer:start	()
-		Counters[f].timer:start			()
+		local						object = Counters[f]
+		object.count				= object.count + 1
+--		printf						("Counters[f].child_timer:start	() [%s]",f_name)
+		object.child_timer:start	()
+--		printf						("Counters[f].timer:start		() [%s]",f_name)
+		object.timer:start			()
 	end
 end
 
-function setup_hook			()	
+function setup_hook					()	
 	if started == true then
-		printf				("profiler hook is already setup!")
+--		printf						("profiler hook is already setup!")
 		return
 	end
 	
-	timer:start				()
+--	printf							("timer:start		()")
+	timer:start						()
 
 	old_hook_func, 
 	old_hook_mask, 
-	old_hook_count			= debug.gethook();
+	old_hook_count					= debug.gethook();
 	
-    debug.sethook			()
-    debug.sethook			(hook, "cr")
+    debug.sethook					()
+	debug.sethook					(hook, "cr")
     
-   	started					= true
+   	started							= true
 end
 
-function clear_hook			()	
-   	if started == false then
-		printf				("profiler hook wasn't setup!")
+function clear_hook					()	
+   	if started == false then		
+		printf						("profiler hook wasn't setup!")
    		return;
    	end
---	debug.sethook			(old_hook_func,old_hook_mask,old_hook_count)
-	debug.sethook			()
-	timer:stop				()
+--	debug.sethook					(old_hook_func,old_hook_mask,old_hook_count)
+	debug.sethook					()
+--	printf							("timer:stop			()")
+	timer:stop						()
 	
-	started					= false
+	started							= false
 end
 
-local function getname		(func)
-    local					n = Names[func]
-    local					loc = string.format("[%s]:%s", n.short_src, n.linedefined)
-    if "" ~= n.namewhat then
-        return				string.format("%s (%s)", loc, n.name) 
-    else
-        return				string.format("%s", loc)
-    end
-end
-
-function stats				()
+function stats						()
 	if started == false then
-		printf				("profiler hook wasn't setup!")
+		printf						("profiler hook wasn't setup!")
 		return
 	end
 
-	clear_hook				()
+	clear_hook						()
 	
-	printf					("profiler statistics")
+	printf							("profiler statistics")
 	
-	local					sort_stats = {}
+	local							sort_stats = {}
     for func, count in pairs(Counters) do
-		local				n = getname(func)
+		local						n = getname(func)
 		if (nil == sort_stats[n]) then
-			sort_stats[n]	= count
+			sort_stats[n]			= count
 		else 
-			sort_stats[n].count			= sort_stats[n].count		+ count.count
-			sort_stats[n].timer			= sort_stats[n].timer		+ count.timer
+			sort_stats[n].count		= sort_stats[n].count		+ count.count
+			sort_stats[n].timer		= sort_stats[n].timer		+ count.timer
 			sort_stats[n].child_timer	= sort_stats[n].child_timer + count.child_timer
 		end
     end
 
-    local					script = profile_timer()
-    local					count = 0
+    local								script = profile_timer()
+    local								count = 0
     
-	local					out_stats = {}
+	local								out_stats = {}
     for i,j in pairs(sort_stats) do
-		local				k = i
+		local							k = i
 		if k == "[[C]]:-1" then
-			k				= "[[C]]:-1 (self)"
+			k							= "[[C]]:-1 (self)"
 		end
-		table.insert		(out_stats,{name=k,count=j})
-		printf				("%20s : %f : %d",k,j.timer:time()/1000,j.count)
-		script				= script + j.timer
-		count				= count + j.count
+		
+		table.insert					(out_stats,{name=k,count=j})
+		
+		script							= script + j.timer
+		count							= count + j.count
     end
 
---	printf					("\nOUT_STATS (%d elements)\n",table.getn(out_stats))
---    
-    for i,a in pairs(out_stats) do
-		printf				("%d : %20s : %f : %d",i,a.name,a.count.timer:time()/1000,a.count.count)
-    end
-
-	printf					("\nsorting OUT_STATS\n")
-	
-    table.sort				(
+	table.sort							(
 		out_stats,
 		function (a,b)
-			if (a == nil) then
---				if (b == nil) then
---					return	(false)
---				end
---				
-				return		(true)
-			end
---			
-			if (b == nil) then
-				return		(false)
-			end
---			
-			printf			("a : %20s : %f : %d",a.name,a.count.timer:time()/1000,a.count.count)
-			printf			("b : %20s : %f : %d",b.name,b.count.timer:time()/1000,b.count.count)
-			return			(a.count.timer < b.count.timer)
+			return						(a.count.timer < b.count.timer)
 		end
 	)
-    
+	   
     for n,c in pairs(out_stats) do
-		printf				("%9.2fms (%5.2f%%) %9.2fms [%8d] : %s",c.count.timer:time()/1000,c.count.timer:time()*100/script:time(),c.count.child_timer:time()/1000,c.count.count,c.name)
+		printf							("%9.2fms (%5.2f%%) %9.2fms [%8d] : %s",c.count.timer:time()/1000,c.count.timer:time()*100/script:time(),c.count.child_timer:time()/1000,c.count.count,c.name)
     end
     
-	printf					("")
-	printf					(" pure time :   %%%%   :  children  :   count  : function name")
-	printf					("")
-	printf					("profile time : %8.2fms",timer:time()/1000)
-	printf					("script time  : %8.2fms (%5.2f%%)",script:time()/1000,script:time()*100/timer:time())
-	printf					("call count   : %8d",count)
+	printf								("")
+	printf								(" pure time :   %%%%   :  children  :   count  : function name")
+	printf								("")
+	printf								("profile time : %8.2fms",timer:time()/1000)
+	printf								("script time  : %8.2fms (%5.2f%%)",script:time()/1000,script:time()*100/timer:time())
+	printf								("call count   : %8d",count)
 
-	setup_hook				()
+	setup_hook							()
 end
 
-function clear				()
+function clear							()
 	if started == true then
-		clear_hook			()
+		clear_hook						()
 	end
 
-	Counters				= {}
-	Names					= {}
-	timer					= profile_timer()
+	Counters							= {}
+	Names								= {}
+	timer								= profile_timer()
 	
-	setup_hook				()
+	setup_hook							()
 end
