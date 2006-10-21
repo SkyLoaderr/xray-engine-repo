@@ -123,16 +123,12 @@ void CExplosive::Load(CInifile *ini,LPCSTR section)
 	m_fExplodeDurationMax	= ini->r_float(section, "explode_duration");
 
 	effector.effect_sect_name= ini->r_string("explode_effector","effect_sect_name");
-	if( ini->line_exist(section,"wallmark_section") )
-	{
-		m_wallmark_manager.Load(pSettings,ini->r_string(section,"wallmark_section"));
-	}
-/*
-	effector.time			= ini->r_float("explode_effector","time");
-	effector.amplitude		= ini->r_float("explode_effector","amplitude");
-	effector.period_number	= ini->r_float("explode_effector","period_number");
-	effector.file_name		= ini->r_string("explode_effector","cam_file_name");
-*/	
+//	if( ini->line_exist(section,"wallmark_section") )
+//	{
+		m_wallmark_manager.m_owner = cast_game_object();
+//		m_wallmark_manager.Load(pSettings,ini->r_string(section,"wallmark_section"));
+//	}
+
 	m_bHideInExplosion = TRUE;
 	if (ini->line_exist(section, "hide_in_explosion"))
 	{
@@ -152,16 +148,11 @@ void CExplosive::Load(CInifile *ini,LPCSTR section)
 void CExplosive::net_Destroy	()
 {
 	m_blasted_objects.clear		();
-	//m_bExploding				= false;
 	StopLight					();
-	//m_bExplodeEventSent			= false;
-	m_explosion_flags.assign(0);
+	m_explosion_flags.assign	(0);
 }
 
 
-/////////////////////////////////////////////////////////
-// Взрыв 
-/////////////////////////////////////////////////////////
 struct SExpQParams
 {
 #ifdef DEBUG
@@ -340,10 +331,9 @@ void CExplosive::Explode()
 	
 	//показываем эффекты
 
-//.	if(IsGameTypeSingle())
-		m_wallmark_manager.PlaceWallmarks(pos,cast_game_object());
+	m_wallmark_manager.PlaceWallmarks		(pos);
 
-	Fvector vel;
+	Fvector									vel;
 	smart_cast<CPhysicsShellHolder*>(cast_game_object())->PHGetLinearVell(vel);
 
 	Fmatrix explode_matrix;
@@ -371,7 +361,8 @@ void CExplosive::Explode()
 	bool SendHits = false;
 	if (OnServer()) SendHits = true;
 	else SendHits = false;
-	//-------------------------------------
+
+
 	for(int i = 0; i < m_iFragsNum; ++i){
 		frag_dir.random_dir	();
 		frag_dir.normalize	();
@@ -390,7 +381,7 @@ void CExplosive::Explode()
 											cast_game_object()->ID(), m_eHitTypeFrag, m_fFragsRadius, 
 											cartridge, SendHits );
 	}	
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	if (cast_game_object()->Remote()) return;
 	
 	/////////////////////////////////
