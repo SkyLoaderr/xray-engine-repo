@@ -713,7 +713,7 @@
 			<length_sec/>
 			<pause_state>on</pause_state>
 			<guard_key>use</guard_key>
-			<sound/>
+			<sound>characters_voice\scenario\agroprom\trader_pda_1</sound>
 			<cursor_pos/>
 			<pda_section/>
 			<grab_input>0</grab_input>
