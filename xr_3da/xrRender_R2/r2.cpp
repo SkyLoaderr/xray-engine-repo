@@ -442,7 +442,7 @@ HRESULT	CRender::shader_compile			(
 	def_it							++;
 
 	// 
-	if (0==strcmp(pFunctionName,"main"))	{
+	if (0==xr_strcmp(pFunctionName,"main"))	{
 		if ('v'==pTarget[0])			pTarget = D3DXGetVertexShaderProfile	(HW.pDevice);	// vertex	"vs_2_a"; //	
 		else							pTarget = D3DXGetPixelShaderProfile		(HW.pDevice);	// pixel	"ps_2_a"; //	
 	}
