@@ -415,6 +415,8 @@ public:
 //-----------------------------------------------------------------------
 #ifdef	DEBUG
 extern  INT	g_bDR_LM_UsePointsBBox;
+extern	INT	g_bDR_LM_4Steps;
+extern	INT g_iDR_LM_Step;
 extern	Fvector	g_DR_LM_Min, g_DR_LM_Max;
 
 class CCC_DR_ClearPoint : public IConsole_Command
@@ -599,6 +601,8 @@ void CCC_Register()
 	CMD1(CCC_DR_TakePoint,		"demo_record_take_point");
 	CMD1(CCC_DR_ClearPoint,		"demo_record_clear_points");
 	CMD4(CCC_DR_UsePoints,		"demo_record_use_points",	&g_bDR_LM_UsePointsBBox, 0, 1);
+	CMD4(CCC_DR_UsePoints,		"demo_record_4step",	&g_bDR_LM_4Steps, 0, 1);
+	CMD4(CCC_DR_UsePoints,		"demo_record_step",	&g_iDR_LM_Step, 0, 3);
 #endif
 
 

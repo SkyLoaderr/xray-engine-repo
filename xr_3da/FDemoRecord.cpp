@@ -99,9 +99,45 @@ void CDemoRecord::MakeScreenshotFace()
 
 #ifdef DEBUG
 INT	g_bDR_LM_UsePointsBBox = 0;
+INT	g_bDR_LM_4Steps = 0;
+INT g_iDR_LM_Step = 0;
 Fvector	g_DR_LM_Min, g_DR_LM_Max;
 
 #endif
+
+void GetLM_BBox(Fbox &bb, INT Step)
+{
+	float half_x = bb.min.x + (bb.max.x - bb.min.x)/2;
+	float half_z = bb.min.z + (bb.max.z - bb.min.z)/2;
+	switch (Step)
+	{
+	case 0:
+		{
+			bb.max.x = half_x;
+			bb.min.z = half_z;
+		}break;
+	case 1:
+		{
+			bb.min.x = half_x;
+			bb.min.z = half_z;
+		}break;
+	case 2:
+		{
+			bb.max.x = half_x;
+			bb.max.z = half_z;
+		}break;
+	case 3:
+		{
+			bb.min.x = half_x;
+			bb.max.z = half_z;
+		}break;
+	default:
+		{			
+		}break;
+		
+	}
+};
+
 void CDemoRecord::MakeLevelMapProcess()
 {
 	switch (m_Stage){
@@ -125,8 +161,9 @@ void CDemoRecord::MakeLevelMapProcess()
 			bb.max.z = g_DR_LM_Max.z;
 
 			bb.min.x = g_DR_LM_Min.x;
-			bb.min.z = g_DR_LM_Min.z;
+			bb.min.z = g_DR_LM_Min.z;			
 		}
+		if (g_bDR_LM_4Steps) GetLM_BBox(bb, g_iDR_LM_Step);
 #endif
 		// build camera matrix
 		bb.getcenter						(Device.vCameraPosition);
@@ -152,8 +189,9 @@ void CDemoRecord::MakeLevelMapProcess()
 			bb.max.z = g_DR_LM_Max.z;
 
 			bb.min.x = g_DR_LM_Min.x;
-			bb.min.z = g_DR_LM_Min.z;
+			bb.min.z = g_DR_LM_Min.z;			
 		}
+		if (g_bDR_LM_4Steps) GetLM_BBox(bb, g_iDR_LM_Step);
 #endif
 		sprintf(tmp,"%s_[%3.3f, %3.3f]-[%3.3f, %3.3f]",*g_pGameLevel->name(),bb.min.x,bb.min.z,bb.max.x,bb.max.z);
 		Render->Screenshot			(IRender_interface::SM_FOR_LEVELMAP,tmp);
@@ -208,7 +246,7 @@ BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float
 		D.set(m_Camera.k);
 		P.set(m_Camera.c);
 	}else if (m_bMakeLevelMap){
-		MakeLevelMapProcess();
+			MakeLevelMapProcess();
 	}else if (m_bMakeCubeMap){
 		MakeCubeMapFace(D,N);
 		P.set(m_Camera.c);
