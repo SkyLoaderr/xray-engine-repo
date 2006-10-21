@@ -684,6 +684,7 @@
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<text font="graffiti22" r="225" g="225" b="250" a="255">tutorial_skip</text>
+				</auto_static>
 			</main_wnd>
 		</item>
 	</pripyat_tutorial>
@@ -710,6 +711,7 @@
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<text font="graffiti22" r="225" g="225" b="250" a="255">tutorial_skip</text>
+				</auto_static>
 			</main_wnd>
 		</item>
 	</agroprom_tutorial>
@@ -763,6 +765,7 @@
 							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
 					<text font="graffiti22" r="225" g="225" b="250" a="255">tutorial_skip</text>
+				</auto_static>
 			</main_wnd>
 		</item>
 	</yantar_tutorial>
