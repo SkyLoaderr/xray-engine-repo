@@ -2151,7 +2151,7 @@ function actor_inventory_by_levels ()
 						"stalker_outfit"						
 						}
 	elseif level == "l05_bar" then
-		start_point = "bar_start_actor"	
+		start_point = "bar_way_if_reject_to_gar"	
 		spawn_items = { "wpn_abakan",
 						"ammo_5.45x39_ap",
 						"ammo_5.45x39_ap",
