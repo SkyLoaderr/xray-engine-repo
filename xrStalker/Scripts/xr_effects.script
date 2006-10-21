@@ -2261,14 +2261,14 @@ function presentation_task ()
 		actor:give_info_portion("agroprom_military_case")	
 		actor:give_info_portion("agr_krot_band_start")	
 	elseif level == "l05_bar" then
-		alife():create("quest_case_02",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+		alife():create("quest_case_02",actor:position(),actor:level_vertex_id(),actor:game_vertex_id(),actor:id())
 		actor:give_info_portion("agroprom_military_case")
 	elseif level == "l08_yantar" then
 		actor:give_info_portion("bar_x16_documents_start")
 	elseif 	level == "l11_pripyat" then
 		actor:give_info_portion("pripyat_task_1_start")
 		actor:give_info_portion("bar_deactivate_radar_done")
-		alife():create("good_psy_helmet",db.actor:position(),db.actor:level_vertex_id(),db.actor:game_vertex_id(),db.actor:id())
+		alife():create("good_psy_helmet",actor:position(),actor:level_vertex_id(),actor:game_vertex_id(),actor:id())
 	end
 	db.actor:activate_slot(2)
 end
