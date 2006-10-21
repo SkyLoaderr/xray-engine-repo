@@ -55,7 +55,7 @@ const u32	DANGER_INTERVAL				= 120000;
 const float PRECISE_DISTANCE			= 2.5f;
 const float FLOOR_DISTANCE				= 2.f;
 const float NEAR_DISTANCE				= 2.5f;
-const u32	FIRE_MAKE_SENSE_INTERVAL	= 20000;
+const u32	FIRE_MAKE_SENSE_INTERVAL	= 10000;
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
@@ -803,6 +803,7 @@ bool CAI_Stalker::update_critical_wounded	(const u16 &bone_id, const float &powe
 	m_critical_wound_accumulator	+= power - m_critical_wound_decrease_quant*time_delta;
 	clamp							(m_critical_wound_accumulator,0.f,m_critical_wound_threshold);
 
+#ifndef DEBUG
 	Msg								(
 		"%6d [%s] update_critical_wounded: %f[%f] (%f,%f) [%f]",
 		Device.dwTimeGlobal,
@@ -813,6 +814,7 @@ bool CAI_Stalker::update_critical_wounded	(const u16 &bone_id, const float &powe
 		m_critical_wound_decrease_quant,
 		time_delta
 	);
+#endif // DEBUG
 
 	m_last_hit_time					= Device.dwTimeGlobal;
 	if (m_critical_wound_accumulator < m_critical_wound_threshold)

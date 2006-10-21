@@ -53,6 +53,7 @@ private:
 	mutable int						m_looking_back;
 
 private:
+	int								m_crouch_state_config;
 	int								m_crouch_state;
 	bool							m_no_move_actual;
 

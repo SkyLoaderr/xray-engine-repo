@@ -225,7 +225,10 @@ MotionID CStalkerAnimationManager::legs_no_move_animation	()
 
 	if (!m_no_move_actual) {
 		m_no_move_actual		= true;
-		m_crouch_state			= ::Random.randI(2);
+		if (m_crouch_state_config == -1)
+			m_crouch_state		= ::Random.randI(2);
+		else
+			m_crouch_state		= m_crouch_state_config;
 	}
 
 	m_change_direction_time		= Device.dwTimeGlobal;
