@@ -9,7 +9,6 @@
 #pragma once
 
 #ifdef DEBUG
-	extern Flags32						psAI_Flags;
 #	define aiDebug						(1<<0)
 #	define aiBrain						(1<<1)
 #	define aiMotion						(1<<2)
@@ -36,4 +35,7 @@
 #	define aiNilObjectAccess			(1<<23)
 #endif
 
+#ifndef MASTER_GOLD
 #	define aiIgnoreActor				(1<<24)
+	extern Flags32						psAI_Flags;
+#endif // MASTER_GOLD
