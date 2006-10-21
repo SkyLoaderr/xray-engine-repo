@@ -866,7 +866,7 @@ function pri_followers_can_hear(actor, npc)
 
     return actor:dont_has_info("pri_followers_start") or           
            gulag ~= nil and gulag:get_population() > 0 and
-           not gulag:npc_is_enemy_to_anybody(actor))
+           not gulag:npc_is_enemy_to_anybody(actor)
 end
 
 function pri_monolith_combat_ignore(actor, npc)
