@@ -571,6 +571,9 @@ public:
 
 			CSightParams		sight_params						();
 
+			void				enable_movement						(bool enable);
+			bool				movement_enabled					();
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptGameObject)

@@ -832,7 +832,7 @@ u32	CScriptGameObject::active_slot()
 	return inventory_owner->inventory().GetActiveSlot();
 }
 
-void CScriptGameObject::activate_slot(u32 slot_id)
+void CScriptGameObject::activate_slot	(u32 slot_id)
 {
 	CInventoryOwner	*inventory_owner = smart_cast<CInventoryOwner*>(&object());
 	if (!inventory_owner) {
@@ -840,4 +840,26 @@ void CScriptGameObject::activate_slot(u32 slot_id)
 		return						;
 	}
 	inventory_owner->inventory().Activate(slot_id);
+}
+
+void CScriptGameObject::enable_movement	(bool enable)
+{
+	CCustomMonster						*monster = smart_cast<CCustomMonster*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member movement_enabled!");
+		return;
+	}
+
+	monster->movement().enable_movement	(enable);
+}
+
+bool CScriptGameObject::movement_enabled()
+{
+	CCustomMonster						*monster = smart_cast<CCustomMonster*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member movement_enabled!");
+		return							(false);
+	}
+
+	return								(monster->movement().enabled());
 }
