@@ -109,7 +109,7 @@ void CWalmarkManager::StartWorkflow()
 
 
 	u32 _ray_test		= 0;
-	u32 _tri_behind		= 0;
+//	u32 _tri_behind		= 0;
 	u32 _tri_not_plane	= 0;
 	u32 _not_dist		= 0;
 /*
