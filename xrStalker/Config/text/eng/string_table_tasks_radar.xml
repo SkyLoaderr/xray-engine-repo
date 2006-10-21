@@ -10,3 +10,10 @@
 	<string id="rad_get_to_aes_1">
 		<text>Найти вход в саркофаг</text>
 	</string>
+	<string id="pripyat_task_title">
+		<text>Follow the group.</text>
+	</string>
+	<string id="pripyat_task_objective">
+		<text>Follow the group</text>
+	</string>
+	
