@@ -216,6 +216,7 @@ function weather_class(avail_types, npc)
 	end
 	return type
 end
+
 -------------------------------------------------------------------------
 -- ЗВУКИ СТАЛКЕРОВ
 -------------------------------------------------------------------------
@@ -233,6 +234,7 @@ theme = {
 
 	-- состояния тела
 	state				= {min_snd = 10, max_snd = 15, rnd = 75, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+
 	sleep				= {min_snd = 10, max_snd = 15, rnd = 75, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 
 	-- просьба о помощи
