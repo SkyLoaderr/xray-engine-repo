@@ -394,6 +394,14 @@ function inc_counter(actor, npc, p)
 	end
 end
 
+function dec_counter(actor, npc, p)
+	if p[1] then
+		printf( "dec_counter '%s'", p[1] )
+		xr_logic.pstor_store(actor, p[1], xr_logic.pstor_retrieve(actor, p[1], 0) - 1)
+	end
+end
+
+
 -- переключает камеру на монстра или на актёра
 function alien_control( actor, npc, p )
 	printf( "alien_control(%s)", p[1] )
