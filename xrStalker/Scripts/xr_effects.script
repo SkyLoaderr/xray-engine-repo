@@ -2291,5 +2291,5 @@ end
 function arena_release (actor, npc)
     local obj = alife():object(npc.id())
 		alife():release(obj,true)
-		reg_objects_stalker[k] = nil
+		
 end
