@@ -83,7 +83,7 @@ danger              = danger@ignore
 [remark@pri_followers_leader_wait_actor]
 anim                = guard
 target              = logic@pri_followers_bomber_wait ;actor
-on_actor_dist_le_nvis = 10 | remark@pri_followers_leader_wait_phrase2 %+pri_followers_mission_accept%
+on_actor_dist_le_nvis = 15 | remark@pri_followers_leader_wait_phrase2 %+pri_followers_mission_accept%
 on_timer            = 15000| remark@pri_followers_leader_wait_phrase3 %+pri_followers_actor_leave%
 wounded             = wounded@ignore
 meet                = meet@ignore_abuse ;meet@def
@@ -103,8 +103,8 @@ danger              = danger@ignore
 anim                = guard_na
 snd                 = pri_followers_leader_phrase1_3
 ;tips                = pri_followers_leader_phrase1_3
-target              = logic@pri_followers_bomber_wait ;pri_followers_leader_hello_look, 0
-on_signal           = sound_end| %+pri_followers_start% ; remark@pri_followers_leader_wait_switch =smart_terrain_force_update(pri_followers)%
+target              = logic@pri_followers_bomber_wait
+on_signal           = sound_end| %+pri_followers_start%
 wounded             = wounded@ignore
 meet                = meet@ignore_abuse ;meet@def
 danger              = danger@ignore
