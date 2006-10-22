@@ -1044,7 +1044,10 @@
 	<character id="bar_arena_stalker_8_4">
 		<class>bar_arena_stalker_8_4</class>
 	</character>
-
+	
+	<character id="bar_arena_respawner">
+		<class>bar_arena_respawner</class>
+	</character>
 
 		
 </xml>
