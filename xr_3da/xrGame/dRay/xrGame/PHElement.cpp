@@ -1043,13 +1043,15 @@ CActor*			Actor()	;
 void CPHElement::set_LinearVel			  (const Fvector& velocity)
 {
 #ifdef	DEBUG
-	if (GameID() == GAME_SINGLE)
+	/*
+	if ((GameID() == GAME_SINGLE) && Actor())
 	{	
 		if(PhysicsRefObject()->ID()==Actor()->ID())
 		{
 			Msg("in");
 		}
 	}
+	*/
 #endif
 	if(!isActive()||m_flags.test(flFixed)) return;
 	VERIFY2(_valid(velocity),"not valid arqument velocity");
