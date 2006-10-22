@@ -355,7 +355,7 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 	local last_state = self.target_state
 	if self.target_state ~= state_name then
 
-		-- Если мы переключаемся из стреляющего состояния в нестреляющее - необходимо сразу же прекратить стрельбу
+		--' Если мы переключаемся из стреляющего состояния в нестреляющее - необходимо сразу же прекратить стрельбу
 		if (state_lib.states[self.target_state].weapon == "fire" or
 		   state_lib.states[self.target_state].weapon == "sniper_fire") and 
 		   (state_lib.states[state_name].weapon ~= "fire" and
@@ -364,6 +364,15 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 			self.npc:set_item(state_mgr_weapon.get_idle_state(state_name), state_mgr_weapon.get_weapon(self.npc, state_name))
 			--printf("[%s] stop shooting", self.npc:name())
 		end
+
+
+		--' Если мы переключаемся из идущего положения в стоящее - надо задизаблить перемещение
+		if state_lib.states[self.target_state].movement ~= move.stand and
+		   state_lib.states[state_name].movement == move.stand
+		then
+			self.npc:movement_enabled(false)
+		end
+
 
 		self.target_state = state_name	
 		self.current_object = nil

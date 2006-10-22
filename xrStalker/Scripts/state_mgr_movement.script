@@ -57,7 +57,9 @@ function act_state_mgr_movement_walk:__init(name, st) super (nil, name)
 end
 function act_state_mgr_movement_walk:initialize()
 	action_base.initialize(self)
+
 	self.object:set_movement_type(move.walk)
+	self.object:movement_enabled(true)
 
 	if not self.st.planner:evaluator(self.st.properties["direction"]):evaluate() then
 		if self.st.planner:evaluator(self.st.properties["direction_search"]):evaluate() then
@@ -80,7 +82,9 @@ function act_state_mgr_movement_run:__init(name, st) super (nil, name)
 end
 function act_state_mgr_movement_run:initialize()
 	action_base.initialize(self)
+
 	self.object:set_movement_type(move.run)
+	self.object:movement_enabled(true)
 
 	if not self.st.planner:evaluator(self.st.properties["direction"]):evaluate() then
 		if self.st.planner:evaluator(self.st.properties["direction_search"]):evaluate() then
