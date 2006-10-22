@@ -829,6 +829,9 @@ bool CAI_Stalker::update_critical_wounded	(const u16 &bone_id, const float &powe
 	if (animation().setup_storage())
 		return						(false);
 
+	if (!agent_manager().member().registered_in_combat(this))
+		return						(false);
+
 	BODY_PART::const_iterator		I = m_bones_body_parts.find(bone_id);
 	VERIFY							(I != m_bones_body_parts.end());
 	m_critical_wound_type			= (*I).second;
