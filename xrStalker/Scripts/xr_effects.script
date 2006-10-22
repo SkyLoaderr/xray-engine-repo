@@ -2280,3 +2280,11 @@ function presentation_task ()
 	end
 	db.actor:activate_slot(2)
 end
+
+function bar_arena_add_ammo ()
+        alife():create("grenade_f1",	
+						db.actor:position(),
+						db.actor:level_vertex_id(),	
+						db.actor:game_vertex_id(), 
+						db.actor:id())
+end
