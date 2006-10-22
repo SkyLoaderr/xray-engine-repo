@@ -149,6 +149,7 @@ private:
 	EPathType				m_path_type;
 	bool					m_path_actuality;
 	bool					m_enabled;
+	Fvector					m_on_disable_object_position;
 	float					m_old_desirable_speed;
 	bool					m_extrapolate_path;
 	bool					m_build_at_once;
@@ -194,7 +195,7 @@ public:
 			void	set_game_dest_vertex	(const GameGraph::_GRAPH_ID &game_vertex_id);
 			void	set_level_dest_vertex	(const u32 level_vertex_id);
 	IC		void	set_build_path_at_once	();
-	IC		void	enable_movement			(bool enabled);
+			void	enable_movement			(bool enabled);
 			EPathType path_type				() const;
 			GameGraph::_GRAPH_ID game_dest_vertex_id	() const;
 			u32		level_dest_vertex_id	() const;

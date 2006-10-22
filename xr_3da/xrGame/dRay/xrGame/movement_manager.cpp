@@ -349,3 +349,16 @@ void CMovementManager::on_travel_point_change	(const u32 &previous_travel_point_
 {
 	detail().on_travel_point_change	(previous_travel_point_index);
 }
+
+void CMovementManager::enable_movement			(bool enabled)
+{
+//	m_path_actuality					= m_path_actuality && (m_enabled == enabled);
+	if (!enabled && m_enabled)
+		m_on_disable_object_position	= object().Position();
+	else {
+		if (enabled && !m_enabled && !object().Position().similar(m_on_disable_object_position))
+			m_path_actuality			= false;
+	}
+
+	m_enabled							= enabled;
+}

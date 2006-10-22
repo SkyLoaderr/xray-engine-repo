@@ -19,12 +19,6 @@ IC	void CMovementManager::set_path_type(EPathType path_type)
 	m_path_type				= path_type;
 }
 
-IC	void CMovementManager::enable_movement(bool enabled)
-{
-	m_path_actuality		= m_path_actuality && (m_enabled == enabled);
-	m_enabled				= enabled;
-}
-	
 IC	bool CMovementManager::enabled() const
 {
 	return					(m_enabled);
