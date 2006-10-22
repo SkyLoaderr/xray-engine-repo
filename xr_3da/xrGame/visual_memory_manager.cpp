@@ -588,7 +588,7 @@ void CVisualMemoryManager::update				(float time_delta)
 	}
 #endif
 
-	if (m_object && m_object->is_relation_enemy(Actor())) {
+	if (m_object && g_actor && m_object->is_relation_enemy(Actor())) {
 		xr_vector<CNotYetVisibleObject>::iterator	I = std::find_if(
 			m_not_yet_visible_objects.begin(),
 			m_not_yet_visible_objects.end(),
