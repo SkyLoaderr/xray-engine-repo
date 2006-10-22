@@ -34,9 +34,6 @@ void CStalkerAnimationManager::reinit				()
 	m_looking_back				= 0;
 
 	m_no_move_actual			= false;
-	m_crouch_state_config		= object().SpecificCharacter().crouch_type();
-	VERIFY						((m_crouch_state_config == 0) || (m_crouch_state_config == 1) || (m_crouch_state_config == -1));
-	m_crouch_state				= m_crouch_state_config;
 	
 	m_script_animations.clear	();
 
@@ -65,6 +62,10 @@ void CStalkerAnimationManager::reload				(CAI_Stalker *_object)
 {
 	m_object					= _object;
 	m_visual					= object().Visual();
+
+	m_crouch_state_config		= object().SpecificCharacter().crouch_type();
+	VERIFY						((m_crouch_state_config == 0) || (m_crouch_state_config == 1) || (m_crouch_state_config == -1));
+	m_crouch_state				= m_crouch_state_config;
 
 	if (object().already_dead())
 		return;
