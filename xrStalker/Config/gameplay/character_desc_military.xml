@@ -13,7 +13,8 @@
 		<team>Svoboda_specnaz</team>
 
         <snd_config>characters_voice\human_03\freedom\</snd_config>
-		
+		<crouch_type>-1</crouch_type>
+
 		<class>mil_Svoboda_specnaz</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
@@ -44,6 +45,7 @@
 		<team>Svoboda_specnaz</team>
 
         <snd_config>characters_voice\human_01\freedom\</snd_config>
+		<crouch_type>-1</crouch_type>
 		
 		<class>mil_Svoboda_engineer</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
@@ -77,6 +79,7 @@
 		<team>Svoboda_regular</team>
 
         <snd_config>characters_voice\human_01\freedom\</snd_config>
+		<crouch_type>-1</crouch_type>
 		
 		<class>mil_Svoboda_regular</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
@@ -108,6 +111,7 @@
 		<team>Svoboda_sniper</team>
 
         <snd_config>characters_voice\human_01\freedom\</snd_config>
+		<crouch_type>-1</crouch_type>
 		
 		<class>mil_Svoboda_sniper</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
@@ -138,6 +142,7 @@
 		<team>Svoboda_stukach</team>
 
         <snd_config>characters_voice\human_01\freedom\</snd_config>
+		<crouch_type>-1</crouch_type>
 		
 		<class>mil_Svoboda_stukach</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
@@ -172,6 +177,7 @@
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_03\freedom\</snd_config>
+		<crouch_type>0</crouch_type>
 
 		<rank>869</rank>
 		<reputation>125</reputation>
@@ -203,6 +209,7 @@
 		<team>Svoboda_regular</team>
 
         <snd_config>characters_voice\human_03\freedom\</snd_config>
+		<crouch_type>0</crouch_type>
 		
 		<class>mil_Svoboda_bodyguard</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
@@ -234,6 +241,7 @@
 		<bio>mil_Svoboda_leader_bio</bio>
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
+		<crouch_type>0</crouch_type>
 
 		<class>mil_Svoboda_leader</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
@@ -272,7 +280,8 @@
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
-		
+		<crouch_type>-1</crouch_type>
+
 		<rank>730</rank>
 		<reputation>96</reputation>
 
@@ -298,6 +307,7 @@
 		<team>Svoboda_master</team>
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
+		<crouch_type>0</crouch_type>
 		
 		<class>mil_Svoboda_master_Max</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
@@ -334,6 +344,7 @@
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_03\freedom\</snd_config>
+		<crouch_type>0</crouch_type>
 		
 		<rank>904</rank>
 		<reputation>126</reputation>
@@ -362,6 +373,7 @@
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
+		<crouch_type>-1</crouch_type>
 		
 		<rank>644</rank>
 		<reputation>84</reputation>
@@ -411,6 +423,7 @@
 		<reputation>149</reputation>
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
+		<crouch_type>-1</crouch_type>
 
 		<visual>actors\svoboda\stalker_sv_balon_10</visual>
 		<supplies>
@@ -431,7 +444,6 @@
 <!---------------------------SVOBODA MASTER UGRUMIY----------------------->
 	<specific_character id="mil_Svoboda_master_Ugrumiy" team_default = "1">
 		<name>mil_Svoboda_master_Ugrumiy_name</name>		
-		<snd_config>characters_voice\human_03\freedom\</snd_config>
 		<icon x="12" y="0"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>mil_Svoboda_master_Ugrumiy_bio</bio>
@@ -441,6 +453,8 @@
 		<class>mil_Svoboda_master_Ugrumiy</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
+		<snd_config>characters_voice\human_03\freedom\</snd_config>
+		<crouch_type>-1</crouch_type>
 		
 		<rank>934</rank>
 		<reputation>113</reputation>
@@ -479,7 +493,8 @@
 		<reputation>96</reputation>
 
         <snd_config>characters_voice\human_03\dolg\</snd_config>
-        
+  		<crouch_type>0</crouch_type>
+
         <panic_threshold>0.0</panic_threshold>
 
 		<visual>actors\dolg\stalker_do_antigas</visual>
@@ -506,6 +521,7 @@
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_03\dolg\</snd_config>
+  		<crouch_type>0</crouch_type>
 
 		<rank>820</rank>
 		<reputation>79</reputation>
@@ -543,6 +559,7 @@
 		<panic_threshold>0.0</panic_threshold>
 
         <snd_config>characters_voice\human_03\dolg\</snd_config>
+  		<crouch_type>0</crouch_type>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
 		<supplies>
@@ -576,6 +593,7 @@
 		<reputation>-149</reputation>
 
         <snd_config>characters_voice\human_02\\</snd_config>
+  		<crouch_type>-1</crouch_type>
 
 		<visual>actors\killer\stalker_ki_informator</visual>
 		<supplies>
@@ -604,7 +622,7 @@
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_03\killer\</snd_config>
-
+  		<crouch_type>-1</crouch_type>
 		<rank>740</rank>
 		<reputation>-86</reputation>
 
@@ -632,6 +650,7 @@
 		<team>Killer_sniper</team>
 
         <snd_config>characters_voice\human_03\killer\</snd_config>
+  		<crouch_type>-1</crouch_type>
 		
 		<class>mil_killer_sniper</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
@@ -663,7 +682,7 @@
 		<team>Killer_master</team>
 
         <snd_config>characters_voice\human_03\killer\</snd_config>
-		
+  		<crouch_type>-1</crouch_type>		
 		
 		<class>mil_killer_master</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
@@ -705,6 +724,7 @@
 		<reputation>19</reputation>
 
         <snd_config>characters_voice\human_03\stalker\</snd_config>
+  		<crouch_type>0</crouch_type>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
@@ -734,6 +754,7 @@
 		<reputation>-2</reputation>
 
         <snd_config>characters_voice\human_03\stalker\</snd_config>
+  		<crouch_type>-1</crouch_type>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
 		<supplies>
@@ -764,6 +785,7 @@
                 <community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 
                 <snd_config>characters_voice\human_02\zombied\</snd_config>
+  				<crouch_type>-1</crouch_type>
 
                 <rank>569</rank>
                 <reputation>-40</reputation>
@@ -790,6 +812,7 @@
     <community>monolith</community>
 
     <snd_config>characters_voice\human_03\monolith\</snd_config>
+  	<crouch_type>-1</crouch_type>
 
     <rank>340</rank>
     <reputation>-186</reputation>
@@ -826,6 +849,7 @@
     <panic_threshold>0.0</panic_threshold>
 
     <snd_config>characters_voice\human_03\monolith\</snd_config>
+ 	<crouch_type>0</crouch_type>
 
     <visual>actors\monolit\stalker_mo_exo</visual>
     <supplies>

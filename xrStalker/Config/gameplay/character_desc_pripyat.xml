@@ -17,6 +17,8 @@
 
         <visual>actors\monolit\stalker_mo_head_1</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
+  		<crouch_type>-1</crouch_type>
+
         <supplies>
             [spawn] \n
             wpn_beretta \n
@@ -44,6 +46,8 @@
 
         <visual>actors\monolit\stalker_mo_mask</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
+  		<crouch_type>-1</crouch_type>
+
         <supplies>
             [spawn] \n
             wpn_walther \n
@@ -72,6 +76,7 @@
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
+  		<crouch_type>-1</crouch_type>
         <supplies>
             [spawn] \n
             wpn_beretta \n
@@ -99,6 +104,7 @@
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
+  		<crouch_type>-1</crouch_type>
         <supplies>
             [spawn] \n
             wpn_walther \n
@@ -128,6 +134,7 @@
 
         <visual>actors\monolit\stalker_mo_exo</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
+  		<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
             wpn_beretta \n
@@ -156,6 +163,7 @@
 
         <visual>actors\monolit\stalker_mo_exo</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
+  		<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
             wpn_walther \n
@@ -185,6 +193,7 @@
 
         <visual>actors\monolit\stalker_mo_head_1</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
+  		<crouch_type>-1</crouch_type>
         <supplies>
             [spawn] \n
             wpn_fort \n
@@ -212,6 +221,7 @@
 
         <visual>actors\monolit\stalker_mo_mask</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
+  		<crouch_type>-1</crouch_type>
         <supplies>
             [spawn] \n
             wpn_hpsa \n
@@ -239,6 +249,7 @@
 
         <visual>actors\monolit\stalker_mo_head_1</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
+  		<crouch_type>-1</crouch_type>
         <supplies>
             [spawn] \n
             wpn_fort \n
@@ -266,6 +277,7 @@
 
         <visual>actors\monolit\stalker_mo_mask</visual>
         <snd_config>characters_voice\human_02\monolith\</snd_config>
+  		<crouch_type>-1</crouch_type>
         <supplies>
             [spawn] \n
             wpn_hpsa \n
@@ -295,6 +307,7 @@
 
         <visual>actors\monolit\stalker_mo_hood_9</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
+  		<crouch_type>-1</crouch_type>
         <supplies>
             [spawn] \n
             wpn_usp \n
@@ -324,6 +337,7 @@
 
         <visual>actors\monolit\stalker_mo_nauchniy</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
+  		<crouch_type>-1</crouch_type>
         <supplies>
             [spawn] \n
             wpn_walther \n
@@ -354,6 +368,7 @@
 
         <visual>actors\monolit\stalker_mo_exo</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
+  		<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
             wpn_usp \n
@@ -383,6 +398,7 @@
 
         <visual>actors\monolit\stalker_mo_exo</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
+  		<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
             wpn_walther \n
@@ -413,6 +429,7 @@
 
         <visual>actors\monolit\stalker_mo_exo</visual>
         <snd_config>characters_voice\human_03\monolith\</snd_config>
+  		<crouch_type>-1</crouch_type>
         <supplies>
             [spawn] \n
             wpn_desert_eagle \n
@@ -445,6 +462,7 @@
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
+  		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -478,6 +496,7 @@
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
+  		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -510,6 +529,7 @@
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
+  		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -542,6 +562,7 @@
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
+  		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
             wpn_usp \n
@@ -572,6 +593,7 @@
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
+  		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
             wpn_walther \n
@@ -602,6 +624,7 @@
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
+  		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
             wpn_usp \n
@@ -633,6 +656,7 @@
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
+  		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
             wpn_walther \n
@@ -666,6 +690,7 @@
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>
 		<snd_config>characters_voice\human_02\military\</snd_config>
+  		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -689,6 +714,7 @@
 
 		<visual>actors\soldier\soldier_bandana</visual>
 		<snd_config>characters_voice\human_02\military\</snd_config>
+  		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -713,6 +739,7 @@
 
 		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
 		<snd_config>characters_voice\human_02\zombied\</snd_config>
+  		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -737,6 +764,7 @@
 
 		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
 		<snd_config>characters_voice\human_02\zombied\</snd_config>
+  		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -764,6 +792,7 @@
 
 		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
 		<snd_config>characters_voice\human_02\zombied\</snd_config>
+  		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
             wpn_sig220 \n
@@ -790,6 +819,7 @@
 
 		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
 		<snd_config>characters_voice\human_02\zombied\</snd_config>
+  		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
 			wpn_groza \n

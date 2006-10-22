@@ -14,6 +14,7 @@
 		<community>monolith</community>
 
         <snd_config>characters_voice\human_01\</snd_config>
+		<crouch_type>-1</crouch_type>
 
 		<rank>400</rank>
 		<reputation>0</reputation>
@@ -50,6 +51,7 @@
     <panic_threshold>0.0</panic_threshold>
 
     <snd_config>characters_voice\human_02\</snd_config>
+	<crouch_type>-1</crouch_type>
 
     <visual>actors\monolit\stalker_mo_hood_9</visual>
     <supplies>
@@ -79,6 +81,7 @@
     <reputation>0</reputation>
 
     <snd_config>characters_voice\human_02\</snd_config>
+	<crouch_type>-1</crouch_type>
 
     <visual>actors\monolit\stalker_mo_hood_9</visual>
     <supplies>
@@ -108,6 +111,7 @@
     <panic_threshold>0.0</panic_threshold>
 
     <snd_config>characters_voice\human_02\</snd_config>
+	<crouch_type>-1</crouch_type>
 
     <visual>actors\monolit\stalker_mo_head_1</visual>
     <supplies>
@@ -136,6 +140,7 @@
     <reputation>0</reputation>
 
     <snd_config>characters_voice\human_01\</snd_config> 
+	<crouch_type>-1</crouch_type>
 
 	<panic_threshold>0.0</panic_threshold>
 
@@ -169,6 +174,7 @@
     <panic_threshold>0.0</panic_threshold>
 
     <snd_config>characters_voice\human_03\</snd_config>
+	<crouch_type>0</crouch_type>
 
     <visual>actors\monolit\stalker_mo_exo</visual>
     <supplies>
@@ -201,6 +207,7 @@
     	<panic_threshold>0.0</panic_threshold>
 
         <snd_config>characters_voice\human_02\</snd_config>
+		<crouch_type>-1</crouch_type>
 
 		<visual>actors\soldier\soldier_beret_5</visual>		
 		<supplies>
@@ -231,7 +238,8 @@
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 
         <snd_config>characters_voice\human_03\</snd_config>
-		
+		<crouch_type>0</crouch_type>
+
 		<rank>900</rank>
 		<reputation>0</reputation>
 
@@ -270,6 +278,7 @@
     	<panic_threshold>0.0</panic_threshold>
 
         <snd_config>characters_voice\human_03\</snd_config>
+		<crouch_type>0</crouch_type>
 
 		<visual>actors\soldier\soldier_antigas</visual>		
 		<supplies>
@@ -302,6 +311,7 @@
 		<reputation>0</reputation>
 
         <snd_config>characters_voice\human_03\</snd_config>
+		<crouch_type>0</crouch_type>
 
     	<panic_threshold>0.0</panic_threshold>
 
@@ -333,6 +343,7 @@
 		<reputation>0</reputation>
 
         <snd_config>characters_voice\human_03\</snd_config>
+		<crouch_type>-1</crouch_type>
 
     	<panic_threshold>0.0</panic_threshold>
 

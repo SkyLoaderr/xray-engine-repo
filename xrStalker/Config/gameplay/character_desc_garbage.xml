@@ -16,6 +16,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
 
 		<visual>actors\neytral\stalker_neytral_hood_4</visual>
 		<supplies>
@@ -46,6 +47,7 @@
 		<money min="200" max="600" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		<crouch_type>-1</crouch_type>
 
 		<visual>actors\novice\green_stalker_11</visual>
 		<supplies>
@@ -77,6 +79,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
 		
 		<panic_treshold>0</panic_treshold>
 
@@ -113,6 +116,7 @@
 		<reputation>-120</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
+		<crouch_type>1</crouch_type>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
@@ -139,6 +143,7 @@
 		<reputation>-145</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
+		<crouch_type>1</crouch_type>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
 		<supplies>
@@ -169,6 +174,7 @@
 		<reputation>-65</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
+		<crouch_type>1</crouch_type>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
@@ -196,6 +202,7 @@
 		<reputation>-95</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
+		<crouch_type>1</crouch_type>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<supplies>
@@ -225,6 +232,7 @@
 		<reputation>-89</reputation>
 		
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
+		<crouch_type>1</crouch_type>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
 		<supplies>
@@ -255,6 +263,7 @@
 		<reputation>-126</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
+		<crouch_type>1</crouch_type>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
@@ -285,6 +294,7 @@
 		<reputation>-73</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
+		<crouch_type>1</crouch_type>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<supplies>
@@ -315,6 +325,7 @@
 		<reputation>-100</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
+		<crouch_type>1</crouch_type>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
 		<supplies>
@@ -348,6 +359,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
 		
 		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
 		<supplies>
@@ -380,6 +392,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
 		
 		<supplies>
@@ -411,6 +424,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
 
 		<supplies>
@@ -442,6 +456,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
 		<supplies>
@@ -473,6 +488,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
 		
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
 		
@@ -505,6 +521,7 @@
 		<reputation>-90</reputation>
 		
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<crouch_type>1</crouch_type>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
 		<supplies>
@@ -535,6 +552,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_03\dolg\</snd_config>
+		<crouch_type>0</crouch_type>
 
 		<visual>actors\dolg\stalker_do_mask_1</visual>
 		<supplies>
@@ -567,6 +585,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_02\dolg\</snd_config>
+		<crouch_type>0</crouch_type>
 
 		<visual>actors\dolg\stalker_do_balon_8</visual>
 		<supplies>
@@ -599,6 +618,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 		
 		<snd_config>characters_voice\human_02\dolg\</snd_config>
+		<crouch_type>0</crouch_type>
 
 		<visual>actors\dolg\stalker_do_balon_8</visual>
 		<supplies>
@@ -631,6 +651,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<snd_config>characters_voice\human_02\dolg\</snd_config>
+		<crouch_type>0</crouch_type>
 		
 		<visual>actors\dolg\stalker_do_balon_4</visual>
 		<supplies>
@@ -663,6 +684,7 @@
 		<reputation>-100</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
+		<crouch_type>1</crouch_type>
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
 		<supplies>
@@ -694,6 +716,7 @@
 		<reputation>-145</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
+		<crouch_type>1</crouch_type>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
 		<supplies>

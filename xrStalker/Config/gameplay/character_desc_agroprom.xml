@@ -21,6 +21,8 @@
 
 		<visual>actors\neytral\stalker_neytral_rukzak_4</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -51,6 +53,8 @@
 
 		<visual>actors\soldier\soldier_bandana_6</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -81,6 +85,8 @@
 
 		<visual>actors\soldier\soldier_beret</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -115,6 +121,8 @@
 		
 		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -145,6 +153,8 @@
 		
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -175,6 +185,8 @@
 		
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -205,6 +217,8 @@
 		
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -235,6 +249,8 @@
 		
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -265,6 +281,8 @@
 		
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<crouch_type>-1</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_colt1911 \n
@@ -297,6 +315,8 @@
 		
 		<visual>actors\soldier\soldier_bandana</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -327,6 +347,8 @@
 		
 		<visual>actors\soldier\soldier_bandana_5</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -357,6 +379,8 @@
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -387,6 +411,8 @@
 
 		<visual>actors\soldier\soldier_bandana</visual>
 		<snd_config>characters_voice\human_01\military\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -417,6 +443,8 @@
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -449,6 +477,8 @@
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -479,6 +509,8 @@
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -511,6 +543,8 @@
 
 		<visual>actors\soldier\soldier_beret</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -541,6 +575,8 @@
 
 		<visual>actors\soldier\soldier_beret_3</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -572,6 +608,8 @@
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -602,6 +640,8 @@
 
 		<visual>actors\soldier\soldier_bandana</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -632,6 +672,8 @@
 
 		<visual>actors\soldier\soldier_bandana_5</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
+		<crouch_type>0</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -664,6 +706,8 @@
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
+		<crouch_type>1</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -695,6 +739,8 @@
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
+		<crouch_type>1</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
@@ -726,6 +772,8 @@
 
 		<visual>actors\bandit\stalker_bandit_5</visual>
 		<snd_config>characters_voice\human_01\bandit\</snd_config>
+		<crouch_type>1</crouch_type>
+
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
