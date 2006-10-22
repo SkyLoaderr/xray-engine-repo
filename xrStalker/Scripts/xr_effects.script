@@ -2231,7 +2231,7 @@ function actor_inventory_by_levels ()
 	
 	for i = 1,10 do
 		table.insert(spawn_items, "bandage")
-		table.insert(spawn_items, "conserva")
+		table.insert(spawn_items, "grenade_f1")
 	end
 	
 	for k,v in pairs(spawn_items) do
