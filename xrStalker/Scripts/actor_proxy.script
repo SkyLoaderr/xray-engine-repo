@@ -42,6 +42,13 @@ function actor_proxy:deinit()
 	end
 end
 
+-- Получение ID игрока
+function actor_proxy:id()
+	self:init()
+
+	return self.actor_id
+end
+
 function actor_proxy:has_info( name )
 	self:init()
 
