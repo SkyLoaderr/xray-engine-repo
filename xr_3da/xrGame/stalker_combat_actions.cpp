@@ -222,8 +222,12 @@ CStalkerActionGetItemToKill::CStalkerActionGetItemToKill	(CAI_Stalker *object, L
 void CStalkerActionGetItemToKill::initialize	()
 {
 	inherited::initialize	();
+
 	object().sound().remove_active_sounds(u32(eStalkerSoundMaskNoHumming));
+
 	object().sight().setup	(CSightAction(object().m_best_found_item_to_kill ? &object().m_best_found_item_to_kill->object() : 0,true));
+
+	object().movement().set_mental_state		(eMentalStateDanger);
 }
 
 void CStalkerActionGetItemToKill::finalize	()
@@ -241,12 +245,13 @@ void CStalkerActionGetItemToKill::finalize	()
 
 void CStalkerActionGetItemToKill::execute	()
 {
+	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+
 	inherited::execute		();
 
 	if (!object().m_best_found_item_to_kill)
 		return;
 
-	object().movement().set_mental_state		(eMentalStateDanger);
 	object().movement().set_level_dest_vertex	(object().m_best_found_item_to_kill->object().ai_location().level_vertex_id());
 	object().movement().set_desired_position	(&object().m_best_found_item_to_kill->object().Position());
 	object().movement().set_desired_direction	(0);
@@ -269,10 +274,14 @@ CStalkerActionMakeItemKilling::CStalkerActionMakeItemKilling	(CAI_Stalker *objec
 void CStalkerActionMakeItemKilling::initialize	()
 {
 	inherited::initialize			();
+
 	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
+
 	object().sight().clear	();
 	object().sight().add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePathDirection)));
 	object().sight().add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePosition,object().memory().enemy().selected()->Position(),false)));
+
+	object().movement().set_mental_state		(eMentalStateDanger);
 }
 
 void CStalkerActionMakeItemKilling::finalize	()
@@ -290,6 +299,8 @@ void CStalkerActionMakeItemKilling::finalize	()
 
 void CStalkerActionMakeItemKilling::execute	()
 {
+	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+
 	inherited::execute				();
 
 	if (!object().m_best_found_ammo)
@@ -300,7 +311,6 @@ void CStalkerActionMakeItemKilling::execute	()
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_mental_state		(eMentalStateDanger);
 	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeWalk);
 	object().sight().action	(eSightActionTypeWatchEnemy).set_vector3d(object().memory().enemy().selected()->Position());
@@ -428,6 +438,8 @@ void CStalkerActionGetReadyToKill::finalize		()
 
 void CStalkerActionGetReadyToKill::execute		()
 {
+	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+
 	inherited::execute					();
 
 	if (!object().m_best_item_to_kill)
@@ -536,6 +548,8 @@ void CStalkerActionKillEnemy::finalize			()
 
 void CStalkerActionKillEnemy::execute			()
 {
+	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+
 	inherited::execute					();
 	
 	object().sight().setup		(CSightAction(object().memory().enemy().selected(),true,true));
@@ -600,6 +614,8 @@ void CStalkerActionTakeCover::finalize		()
 
 void CStalkerActionTakeCover::execute		()
 {
+	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+
 	inherited::execute					();
 
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
@@ -726,6 +742,8 @@ void CStalkerActionLookOut::finalize		()
 
 void CStalkerActionLookOut::execute		()
 {
+	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+
 	inherited::execute					();
 	
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
@@ -806,6 +824,8 @@ void CStalkerActionHoldPosition::finalize		()
 
 void CStalkerActionHoldPosition::execute		()
 {
+	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+
 	inherited::execute					();
 	
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
@@ -905,6 +925,8 @@ void CStalkerActionDetourEnemy::finalize		()
 
 void CStalkerActionDetourEnemy::execute			()
 {
+	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+
 	inherited::execute					();
 
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
@@ -970,6 +992,8 @@ void CStalkerActionSearchEnemy::finalize		()
 
 void CStalkerActionSearchEnemy::execute			()
 {
+	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+
 	inherited::execute					();
 	
 #ifndef SILENT_COMBAT
@@ -1095,6 +1119,8 @@ void CStalkerActionGetDistance::initialize				()
 
 void CStalkerActionGetDistance::execute					()
 {
+	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+
 	inherited::execute		();
 
 	if (!object().memory().enemy().selected())
@@ -1161,6 +1187,8 @@ void CStalkerActionHideFromGrenade::initialize				()
 
 void CStalkerActionHideFromGrenade::execute					()
 {
+	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+
 	inherited::execute		();
 
 	if (!object().memory().danger().selected())
@@ -1254,6 +1282,8 @@ void CStalkerActionSuddenAttack::finalize					()
 
 void CStalkerActionSuddenAttack::execute					()
 {
+	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+
 	inherited::execute		();
 
 	if (!object().memory().enemy().selected())
@@ -1329,8 +1359,9 @@ void CStalkerActionKillEnemyIfPlayerOnThePath::initialize		()
 {
 	inherited::initialize				();
 	
-	object().movement().set_movement_type(eMovementTypeStand);
-	object().movement().force_update	(true);
+	object().movement().set_mental_state	(eMentalStateDanger);
+	object().movement().set_movement_type	(eMovementTypeStand);
+	object().movement().force_update		(true);
 
 #ifndef SILENT_COMBAT
 	if (object().memory().enemy().selected()->human_being())
@@ -1350,6 +1381,8 @@ void CStalkerActionKillEnemyIfPlayerOnThePath::finalize			()
 
 void CStalkerActionKillEnemyIfPlayerOnThePath::execute			()
 {
+	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+
 	inherited::execute					();
 	
 	object().sight().setup				(CSightAction(object().memory().enemy().selected(),true,true));
