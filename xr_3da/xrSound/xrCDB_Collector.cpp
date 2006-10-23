@@ -74,8 +74,97 @@ namespace CDB
 		faces.push_back(T);
 	}
 
+#pragma warning(push)
+#pragma warning(disable:4995)
+#include <malloc.h>
+#pragma warning(pop)
+
+	struct edge {
+		u32		face_id : 30;
+		u32		edge_id : 2;
+		u32		vertex_id0;
+		u32		vertex_id1;
+	};
+
+	struct sort_predicate {
+		IC	bool	operator()	(const edge &edge0, const edge &edge1) const
+		{
+			if (edge0.vertex_id0 < edge1.vertex_id0)
+				return				(true);
+
+			if (edge1.vertex_id0 < edge0.vertex_id0)
+				return				(false);
+
+			if (edge0.vertex_id1 < edge1.vertex_id1)
+				return				(true);
+
+			if (edge1.vertex_id1 < edge0.vertex_id1)
+				return				(false);
+
+			return					(edge0.face_id < edge1.face_id);
+		}
+	};
+
 	void	Collector::calc_adjacency	(xr_vector<u32>& dest)
 	{
+#if 0
+		const u32						edge_count = faces.size()*3;
+		edge							*edges = (edge*)_alloca(edge_count*sizeof(edge));
+		edge							*i = edges;
+		xr_vector<TRI>::const_iterator	B = faces.begin(), I = B;
+		xr_vector<TRI>::const_iterator	E = faces.end();
+		for ( ; I != E; ++I) {
+			u32							face_id = u32(I - B);
+
+			(*i).face_id				= face_id;
+			(*i).edge_id				= 0;
+			(*i).vertex_id0				= (*I).verts[0];
+			(*i).vertex_id1				= (*I).verts[1];
+			if ((*i).vertex_id0 > (*i).vertex_id1)
+				std::swap				((*i).vertex_id0,(*i).vertex_id1);
+			++i;
+			
+			(*i).face_id				= face_id;
+			(*i).edge_id				= 1;
+			(*i).vertex_id0				= (*I).verts[1];
+			(*i).vertex_id1				= (*I).verts[2];
+			if ((*i).vertex_id0 > (*i).vertex_id1)
+				std::swap				((*i).vertex_id0,(*i).vertex_id1);
+			++i;
+			
+			(*i).face_id				= face_id;
+			(*i).edge_id				= 2;
+			(*i).vertex_id0				= (*I).verts[2];
+			(*i).vertex_id1				= (*I).verts[0];
+			if ((*i).vertex_id0 > (*i).vertex_id1)
+				std::swap				((*i).vertex_id0,(*i).vertex_id1);
+			++i;
+		}
+
+		std::sort						(edges,edges + edge_count,sort_predicate());
+
+		dest.assign						(edge_count,u32(-1));
+
+		{
+			edge						*I = edges, *J;
+			edge						*E = edges + edge_count;
+			for ( ; I != E; ++I) {
+				if (I + 1 == E)
+					continue;
+
+				J							= I + 1;
+
+				if ((*I).vertex_id0 != (*J).vertex_id0)
+					continue;
+
+				if ((*I).vertex_id1 != (*J).vertex_id1)
+					continue;
+
+				dest[(*I).face_id*3 + (*I).edge_id]	= (*J).face_id;
+				dest[(*J).face_id*3 + (*J).edge_id]	= (*I).face_id;
+			}
+		}
+#else
 		dest.assign		(faces.size()*3,0xffffffff);
 		// Dumb algorithm O(N^2) :)
 		for (u32 f=0; f<faces.size(); f++)
@@ -106,6 +195,7 @@ namespace CDB
 				}
 			}
 		}
+#endif
 	}
     IC BOOL similar(TRI& T1, TRI& T2)
     {
