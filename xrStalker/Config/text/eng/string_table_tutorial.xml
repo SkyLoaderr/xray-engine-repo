@@ -61,7 +61,7 @@
 		</text>
 	</string>
 	<string id="tutorial_for_bar">
-		<text>Меченый, давай ноги в руки и смывайся, военные не дадут тебе просто так уйти. Я сообщил о тебе Бармену - он должен договориться с долговцами чтобы тебя пропустили.</text>
+		<text>Marked One, get cracking - militaries won't let you escape easily. I've told Barkeep about you - he should settle on with Duty to let you in.</text>
 	</string>
 	<string id="tutorial_skip">
 		<text>To skip press ($$ACTION_USE$$).</text>
