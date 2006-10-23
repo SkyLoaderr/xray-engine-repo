@@ -17,7 +17,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\ucheniy\ucheniy_2</visual>
-		<snd_config>characters_voice\human_03\ecolog\</snd_config>
+		<snd_config>characters_voice\human_03\ecolog</snd_config>
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -47,7 +47,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog_military</visual>
-		<snd_config>characters_voice\human_03\ecolog\</snd_config>
+		<snd_config>characters_voice\human_03\eco\</snd_config>
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -76,7 +76,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>
-		<snd_config>characters_voice\human_03\ecolog\</snd_config>
+		<snd_config>characters_voice\human_03\eco\</snd_config>
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
