@@ -5,6 +5,10 @@
     <string id="dm_general_cool_info">
         <text>Что можешь интересного рассказать?</text>
     </string>
+    <string id="dm_general_cool_info_no_more">
+        <text>Больше ничего не знаю</text>
+    </string>
+
     <string id="dm_general_action_info">
         <text>Чем ты здесь занимаешься?</text>
     </string>
