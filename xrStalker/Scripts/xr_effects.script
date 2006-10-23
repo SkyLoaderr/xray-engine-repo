@@ -2298,8 +2298,7 @@ end
 
 
 function change_leader(actor, npc)
-	if xr_gulag.getGulagPopulation(823) > 0 then
-	else
+	if xr_gulag.getGulagPopulation(823) == 0 then
 		db.actor:give_info_portion("pri_followers_all_dead")
 	end
 end
