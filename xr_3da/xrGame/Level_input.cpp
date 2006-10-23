@@ -35,7 +35,7 @@
 bool g_bDisableAllInput = false;
 extern	float	g_fTimeFactor;
 
-#define CURRENT_ENTITY()	((GameID() == GAME_SINGLE) ? CurrentEntity() : CurrentControlEntity())
+#define CURRENT_ENTITY()	(game?((GameID() == GAME_SINGLE) ? CurrentEntity() : CurrentControlEntity()):NULL)
 
 void CLevel::IR_OnMouseWheel( int direction )
 {
@@ -44,7 +44,7 @@ void CLevel::IR_OnMouseWheel( int direction )
 	if (HUD().GetUI()->IR_OnMouseWheel(direction)) return;
 	if( Device.Pause()		) return;
 
-	if ( Game().IR_OnMouseWheel(direction) ) return;
+	if (game && Game().IR_OnMouseWheel(direction) ) return;
 
 	if( HUD().GetUI()->MainInputReceiver() )return;
 	if (CURRENT_ENTITY())		{
