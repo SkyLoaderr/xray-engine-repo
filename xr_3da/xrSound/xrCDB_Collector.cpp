@@ -79,12 +79,14 @@ namespace CDB
 #include <malloc.h>
 #pragma warning(pop)
 
+#pragma pack(push,1)
 	struct edge {
 		u32		face_id : 30;
 		u32		edge_id : 2;
-		u32		vertex_id0;
-		u32		vertex_id1;
+		u16		vertex_id0;
+		u16		vertex_id1;
 	};
+#pragma pack(pop)
 
 	struct sort_predicate {
 		IC	bool	operator()	(const edge &edge0, const edge &edge1) const
@@ -108,6 +110,7 @@ namespace CDB
 	void	Collector::calc_adjacency	(xr_vector<u32>& dest)
 	{
 #if 1
+		VERIFY							(faces.size() < 65536);
 		const u32						edge_count = faces.size()*3;
 		edge							*edges = (edge*)_alloca(edge_count*sizeof(edge));
 		edge							*i = edges;
