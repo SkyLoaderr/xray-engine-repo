@@ -15,10 +15,12 @@
 		<task>yan_find_vasilyev_task</task>
 		<article>journal_before_vasilyev_pda</article>
 	</info_portion>
-	<info_portion id="yan_find_vasilyev_end"></info_portion>
-	<info_portion id="yan_find_laboratory_end"></info_portion>
-	<info_portion id="yantar_vasilyev_info">
+	<info_portion id="yan_find_vasilyev_end">
 		<article>yan_vasilyev_info</article>
+	</info_portion>
+	<info_portion id="yan_find_laboratory_end">
+	</info_portion>
+	<info_portion id="yantar_vasilyev_info">
 		<task>yan_kill_brain_task</task>
 	</info_portion>
 	<info_portion id="yantar_find_ghost_task_end">
