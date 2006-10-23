@@ -172,7 +172,7 @@ function stalker_at_waypoint(stalker, patrol_path, path_point)
 
 	local stalker_pos = stalker:position()
 	local distance = stalker_pos:distance_to_sqr(patrol_path:point(path_point))
-	if distance <= 0.2 then
+	if distance <= 0.13 then
 		return true
 	end
 	return false
