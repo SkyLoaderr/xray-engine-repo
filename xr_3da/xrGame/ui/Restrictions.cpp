@@ -110,7 +110,7 @@ bool CRestrictions::IsInRank(LPCSTR itm, int rank){
 }
 
 int	 CRestrictions::GetItemRank(LPCSTR itm){
-	for (int i = 0; i<4; i++){
+	for (int i = 0; i<5; i++){
 		if (IsInRank(itm, i))
 			return i;
 	}
