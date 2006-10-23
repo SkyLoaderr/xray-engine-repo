@@ -57,6 +57,7 @@ IC	void CStalkerMovementManager::set_mental_state(EMentalState mental_state)
 {
 	THROW						((m_target.m_body_state != eBodyStateCrouch) || (mental_state != eMentalStateFree));
 	m_target.m_mental_state		= mental_state;
+	m_path_actuality			= m_path_actuality && (m_target.m_mental_state == m_current.m_mental_state);
 }
 
 IC	void CStalkerMovementManager::set_path_type(EPathType path_type)
