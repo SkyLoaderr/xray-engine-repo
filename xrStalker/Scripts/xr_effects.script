@@ -2290,6 +2290,16 @@ function bar_arena_add_ammo ()
 end
 function arena_release (actor, npc)
     local obj = alife():object(npc:id())
-		alife():release(obj,true)
-		
+		alife():release(obj,true)	
+end
+
+
+
+
+
+function change_leader(actor, npc)
+	if xr_gulag.getGulagPopulation(823) > 0 then
+	else
+		db.actor:give_info_portion("pri_followers_all_dead")
+	end
 end
