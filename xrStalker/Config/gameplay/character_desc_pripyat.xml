@@ -168,7 +168,7 @@
             [spawn] \n
             wpn_walther \n
             ammo_9x19_pbp = 1 \n
-            wpn_vintorez \n
+            wpn_groza \n
             ammo_9x39_ap = 2 \n
             device_torch \n
 #include "gameplay\character_drugs.xml"
