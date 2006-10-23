@@ -83,8 +83,8 @@ namespace CDB
 	struct edge {
 		u32		face_id		: 30;
 		u32		edge_id		: 2;
-		u32		vertex_id0	: 16;
-		u32		vertex_id1	: 16;
+		u16		vertex_id0;
+		u16		vertex_id1;
 	};
 #pragma pack(pop)
 
@@ -121,24 +121,24 @@ namespace CDB
 
 			(*i).face_id				= face_id;
 			(*i).edge_id				= 0;
-			(*i).vertex_id0				= (*I).verts[0];
-			(*i).vertex_id1				= (*I).verts[1];
+			(*i).vertex_id0				= (u16)(*I).verts[0];
+			(*i).vertex_id1				= (u16)(*I).verts[1];
 			if ((*i).vertex_id0 > (*i).vertex_id1)
 				std::swap				((*i).vertex_id0,(*i).vertex_id1);
 			++i;
 			
 			(*i).face_id				= face_id;
 			(*i).edge_id				= 1;
-			(*i).vertex_id0				= (*I).verts[1];
-			(*i).vertex_id1				= (*I).verts[2];
+			(*i).vertex_id0				= (u16)(*I).verts[1];
+			(*i).vertex_id1				= (u16)(*I).verts[2];
 			if ((*i).vertex_id0 > (*i).vertex_id1)
 				std::swap				((*i).vertex_id0,(*i).vertex_id1);
 			++i;
 			
 			(*i).face_id				= face_id;
 			(*i).edge_id				= 2;
-			(*i).vertex_id0				= (*I).verts[2];
-			(*i).vertex_id1				= (*I).verts[0];
+			(*i).vertex_id0				= (u16)(*I).verts[2];
+			(*i).vertex_id1				= (u16)(*I).verts[0];
 			if ((*i).vertex_id0 > (*i).vertex_id1)
 				std::swap				((*i).vertex_id0,(*i).vertex_id1);
 			++i;
