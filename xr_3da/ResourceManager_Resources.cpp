@@ -177,7 +177,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 		HRESULT						_hr			= S_OK;
 		string256					cname;
 		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,::Render->getShaderPath(),_name,".vs"));
-		LPCSTR						target		= NULL;
+//		LPCSTR						target		= NULL;
 
 		IReader*					fs			= FS.r_open(cname);
 
