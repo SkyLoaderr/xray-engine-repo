@@ -67,6 +67,7 @@
 			<text>agroprom_find_gunslinger_cache_2</text>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
             <function_complete>agroprom_tasks.have_gunslingers_flash</function_complete>
+            <function_call_complete>agroprom_tasks.ghost_tips</function_call_complete>
 		</objective>
 		<objective>
 			<text>agroprom_find_gunslinger_cache_3</text>

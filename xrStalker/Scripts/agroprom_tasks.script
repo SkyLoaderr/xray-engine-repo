@@ -93,6 +93,10 @@ function have_gunslingers_flash(task, objective)
     return false   
 end
 
+function ghost_tips ()
+	news_manager.send_tip( db.actor, "ghost_tips", nil, "prizrak", nil )
+end
+
 function agr_actor_enemy ()
     if level_object_by_sid (302) ~= nil then
 		local actor = db.actor
