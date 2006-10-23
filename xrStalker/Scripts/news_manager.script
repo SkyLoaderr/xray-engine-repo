@@ -214,7 +214,7 @@ function send_task(actor, type, task, objective)
 	if db.actor == nil then return false end
 	
 	--' Берем координаты из текстуры таска
-    local task_texture, task_rect = get_texture_info("ui_icons_task_"..task:get_id().."_small", "ui_iconsTotalSmall_locations")
+    local task_texture, task_rect = get_texture_info("ui_icons_task_"..task:get_id(), "ui_iconsTotal_locations")
         
 	--' Играем дефолтный звук
 	pda_task:play(db.actor, 0, sound_object.s2d)
@@ -255,7 +255,7 @@ function relocate_item(actor, type, item)
 	if db.actor == nil then return false end
 	--' Играем дефолтный звук
 	if type == "in" then
-		local task_texture, task_rect = get_texture_info("ui_iconsTotal_found_thing_small")
+		local task_texture, task_rect = get_texture_info("ui_iconsTotal_found_thing")
 		local news_text = "%c<255,160,160,160>"..game.translate_string("general_in_item").."\\n".."%c<default>"..game.translate_string(get_inv_name(item))		
 		if db.actor:is_talking() then
 			db.actor:give_talk_message(news_text, task_texture, task_rect,"iconed_answer_item")
@@ -263,7 +263,7 @@ function relocate_item(actor, type, item)
 			db.actor:give_game_news(news_text, task_texture, task_rect, 0, 0)
 		end		
 	elseif type == "out" then
-		local task_texture, task_rect = get_texture_info("ui_iconsTotal_lost_thing_small")
+		local task_texture, task_rect = get_texture_info("ui_iconsTotal_lost_thing")
 		local news_text = "%c<255,160,160,160>"..game.translate_string("general_out_item").."\\n".."%c<default>"..game.translate_string(get_inv_name(item))		
 		if db.actor:is_talking() then
 			db.actor:give_talk_message(news_text, task_texture, task_rect,"iconed_answer_item")
@@ -279,7 +279,7 @@ function relocate_money(actor, type, amount)
 
 	--' Играем дефолтный звук
 	if type == "in" then
-		local task_texture, task_rect = get_texture_info("ui_iconsTotal_found_money_small")
+		local task_texture, task_rect = get_texture_info("ui_iconsTotal_found_money")
 		local news_text = "%c<255,160,160,160>"..game.translate_string("general_in_money").."\\n".."%c<default>"..game.translate_string(tostring(amount))
 		
 		if db.actor:is_talking() then
@@ -288,7 +288,7 @@ function relocate_money(actor, type, amount)
 			db.actor:give_game_news(news_text, task_texture, task_rect, 0, 0)
 		end		
 	elseif type == "out" then
-		local task_texture, task_rect = get_texture_info("ui_iconsTotal_lost_money_small")
+		local task_texture, task_rect = get_texture_info("ui_iconsTotal_lost_money")
 		local news_text = "%c<255,160,160,160>"..game.translate_string("general_out_money").."\\n".."%c<default>"..game.translate_string(tostring(amount))
 		
 		if db.actor:is_talking() then
