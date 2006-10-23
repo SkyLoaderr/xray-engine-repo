@@ -803,7 +803,7 @@ bool CAI_Stalker::update_critical_wounded	(const u16 &bone_id, const float &powe
 	m_critical_wound_accumulator	+= power - m_critical_wound_decrease_quant*time_delta;
 	clamp							(m_critical_wound_accumulator,0.f,m_critical_wound_threshold);
 
-#ifndef DEBUG
+#ifdef DEBUG
 	Msg								(
 		"%6d [%s] update_critical_wounded: %f[%f] (%f,%f) [%f]",
 		Device.dwTimeGlobal,
