@@ -49,16 +49,15 @@
 	<!-- !!!tutorials for presentation!!! -->
 	
 	<string id="tutorial_for_pripyat">
-		<text>Меченый!? Живой!? Вот и отлично! Ты все таки смог отключить выжигатель, все наши пытаются пробиться через Припять к центру зоны. Что там будет никто не знает, может быть клондайк артефактов, а может и исполнитель желаний. Сейчас как раз перед Припятью собирается отряд ветеранов для прохода вглубь, если поспешишь то сможешь к ним присоединиться, я их предупрежу, чтоб подождали.
+		<text>Marked One!? Alive!? That's perfect! You've managed to disable the scorcher, all our guys are trying to break through to the center of the Zone through Prypyat. What is there is unknown: maybe the klondike of arifacts and maybe the wish fulfiller. At this moment a squad of veterans is assembling to go deep inside the Zone near Prypyat, you can join them, I'll warn them about you.
 		</text>
 	</string>
 	<string id="tutorial_for_agroprom">
-		<text>Судя по всему, вояки, в здании бывшего НИИ Агропром, что-то нашли.Я уверен, что это как-то связано с центром Зоны. Так вот, все, что накопали военные, охраняется, где-то на третьем этаже здания института.
-		Речь судя по всему идет о небольшом белом саквояже. Украсть его под носом спецназа СБУ будет очень непросто. Они - крутые вояки. Действуй очень осмотрительно. 
+		<text>To all appearances the fighters in the former Agroprom Institute building have found something. I'm sure it is somehow related to the center of the Zone. So, that something the militaries dug out is guarded on the second floor of the Institute building. It seems that it's all about a small white case. Snatching it right from under SBU task force nose won't be an easy task at all. They are tough fighters. Be extremely watchful! 
 		</text>
 	</string>
 	<string id="tutorial_for_yantar">
-		<text>Тебе надо пробраться к ученым и узнать где находится лаборатория Х-16, чтобы достать недостающую часть документов.
+		<text>You have to get to the scientists and find out the location of lab X-16 to obtain the missing portion of documents.
 		</text>
 	</string>
 	<string id="tutorial_for_bar">
