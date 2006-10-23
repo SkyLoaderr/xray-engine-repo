@@ -642,7 +642,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 		end								*= dwAllocGranularity;
 		if (end>A.size)					end = A.size;
 		u32 sz							= (end-start);
-		u8* ptr							= (u8*)MapViewOfFile(A.hSrcMap, FILE_MAP_READ, 0, start, sz); VERIFY(ptr);
+		u8* ptr							= (u8*)MapViewOfFile(A.hSrcMap, FILE_MAP_READ, 0, start, sz); VERIFY3(ptr,"cannot crate file mapping on file",fname);
 		u32 ptr_offs					= desc.ptr-start;
 		if (desc.size_real != desc.size_compressed)	{
 			// Compressed
