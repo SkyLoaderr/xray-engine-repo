@@ -220,7 +220,7 @@ void CRenderDevice::Run			()
 				if (bActive)							{
 					if (Begin())				{
 						seqRender.Process						(rp_Render);
-						if (psDeviceFlags.test(rsStatistic) || Statistic->errors.size())	
+						if (psDeviceFlags.test(rsCameraPos) || psDeviceFlags.test(rsStatistic) || Statistic->errors.size())	
 							Statistic->Show						();
 						End										();
 					}

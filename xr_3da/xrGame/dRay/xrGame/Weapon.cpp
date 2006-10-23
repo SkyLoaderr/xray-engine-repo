@@ -802,7 +802,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 							m_DefaultCartridge.Load(*m_ammoTypes[m_ammoType], u8(m_ammoType));
 						};							
 */
-						Reload();
+						if(OnServer()) Reload();
 					}
 				}
 			} 
