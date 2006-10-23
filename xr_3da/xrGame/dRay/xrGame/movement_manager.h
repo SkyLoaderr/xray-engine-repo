@@ -144,10 +144,12 @@ protected:
 public:
 	CBoneRotation			m_body;
 
+protected:
+	bool					m_path_actuality;
+
 private:
 	EPathState				m_path_state;
 	EPathType				m_path_type;
-	bool					m_path_actuality;
 	bool					m_enabled;
 	Fvector					m_on_disable_object_position;
 	float					m_old_desirable_speed;
