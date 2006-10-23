@@ -81,10 +81,10 @@ namespace CDB
 
 #pragma pack(push,1)
 	struct edge {
-		u32		face_id : 30;
-		u32		edge_id : 2;
-		u16		vertex_id0;
-		u16		vertex_id1;
+		u32		face_id		: 30;
+		u32		edge_id		: 2;
+		u32		vertex_id0	: 16;
+		u32		vertex_id1	: 16;
 	};
 #pragma pack(pop)
 
