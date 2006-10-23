@@ -143,11 +143,15 @@ function init_cool_info_dialog(dlg)
 
 	local phr = dlg:AddPhrase("dm_general_cool_info",0,-1,-10000)
 	
+	local phr_def = dlg:AddPhrase("dm_general_cool_info_no_more",get_id("cool_info"),0,-10000)
+	local phrase_script = phr_def:GetPhraseScript()
+	phrase_script:AddPrecondition("dialog_manager.precondition_cool_info_no_more")
+
 	local k,v,kk,vv = 0,0,0,0
 	for k,v in pairs(phrase.cool_info) do
 		local last_id = get_id("cool_info")
 		v.phr_id = last_id
-		phr = dlg:AddPhrase(v.name,last_id,0,-10000)		
+		phr = dlg:AddPhrase(v.name,last_id,0,-10000)
 		if phr then
 			local phrase_script = phr:GetPhraseScript()
 			phrase_script:AddPrecondition("dialog_manager.precondition_cool_info")
@@ -333,7 +337,12 @@ function phrase_action_action_info(npc, actor, p1, p2)
 end
 
 function phrase_action(npc, actor, sel_tbl, p2)
-	sel_tbl[npc:id()] = p2
+	local cc = 1
+	if sel_tbl[npc:id()] ~= nil then
+		cc = sel_tbl[npc:id()].count + 1
+	end
+
+	sel_tbl[npc:id()] = {phrase = p2, count = cc}
 end
 
 
@@ -342,6 +351,15 @@ function precondition_intro(npc, actor)
 end
 function precondition_cool_info(npc, actor)
 	return precondition(npc, actor, phrase.cool_info, selected_phrase_by_id.cool_info)
+end
+function precondition_cool_info_no_more(npc, actor)
+	if selected_phrase_by_id.cool_info == nil or selected_phrase_by_id.cool_info[npc:id()] == nil then
+		return false
+	end
+	if selected_phrase_by_id.cool_info[npc:id()].count >= 1 then
+		return true
+	end 
+	return false
 end
 function precondition_action_info(npc, actor)
 	return precondition(npc, actor, phrase.action_info, selected_phrase_by_id.action_info)
@@ -361,11 +379,11 @@ function precondition(npc, actor, tbl, sel_tbl)
 		--' Надо проверить доступна ли запомненная фраза
 		if sel_tbl ~= nil and sel_tbl[npc:id()] ~= nil then
 			for k,v in pairs(tbl) do
-				if sel_tbl[npc:id()] == v.phr_id then
+				if sel_tbl[npc:id()].phrase == v.phr_id then
 					value, number = calculate_predicate(npc, v)	
 					--' Если запомненная фраза недоступна - необходимо забыть ее
 					if value == false then
-						printf("*** restore memory phrase")
+--						printf("*** restore memory phrase")
 						sel_tbl[npc:id()] = nil
 						break
 					end
@@ -376,15 +394,18 @@ function precondition(npc, actor, tbl, sel_tbl)
 		for k,v in pairs(tbl) do
 			value, number = calculate_predicate(npc, v)			
 			max_count = max_count + 1
-			printf("*** count = %s value = %s number = %s phr_id = %s", max_count, tostring(value), number, v.name)
+--			printf("*** count = %s value = %s number = %s phr_id = %s", max_count, tostring(value), number, v.name)
 
 			--' Проверка на повторяемость фраз.
 			if sel_tbl ~= nil and sel_tbl[npc:id()] ~= nil then
 				--' Если проверяется запомненная фраза
-				if sel_tbl[npc:id()] ~= v.phr_id then
-					printf("*** not memory phrase [%s] ~= [%s]", sel_tbl[npc:id()], v.phr_id)
+				if sel_tbl[npc:id()].phrase ~= v.phr_id then
+--					printf("*** not memory phrase [%s] ~= [%s]", sel_tbl[npc:id()].phrase, v.phr_id)
 					value = false
-				end		
+				end
+				if sel_tbl[npc:id()].count >= 1 then
+					value = false
+				end
 			end	
 
 			if value == true then
@@ -402,7 +423,7 @@ function precondition(npc, actor, tbl, sel_tbl)
 	call_count = call_count + 1
 	return_value = tmp_tbl[call_count] == true
 	
-	printf("  callcount = %s value = %s", call_count, tostring(return_value))
+--	printf("  callcount = %s value = %s", call_count, tostring(return_value))
 	if call_count < max_count then
 		--' При повторном вызове прекондишна (счетчик вызовов не равен количеству сработанных предикатов) 
 		--' всегда возвращаем FALSE, кроме случая, что счетчик равен ранее запомненному порядковому номеру вызова.
@@ -506,17 +527,17 @@ function save(npc, p)
 	if selected_phrase_by_id.intro[npc:id()] == nil then
 		p:w_s16(-1)
 	else
-		p:w_s16(selected_phrase_by_id.intro[npc:id()])
+		p:w_s16(selected_phrase_by_id.intro[npc:id()].phrase)
 	end
 	if selected_phrase_by_id.cool_info[npc:id()] == nil then
 		p:w_s16(-1)
 	else
-		p:w_s16(selected_phrase_by_id.cool_info[npc:id()])
+		p:w_s16(selected_phrase_by_id.cool_info[npc:id()].phrase)
 	end
 	if selected_phrase_by_id.action_info[npc:id()] == nil then
 		p:w_s16(-1)
 	else
-		p:w_s16(selected_phrase_by_id.action_info[npc:id()])
+		p:w_s16(selected_phrase_by_id.action_info[npc:id()].phrase)
 	end	
 end
 function load(npc, reader)
@@ -529,19 +550,19 @@ function load(npc, reader)
 	end
 	local flag = reader:r_s16()
 	if flag ~= -1 then
-		selected_phrase_by_id.intro[npc:id()] = flag
+		selected_phrase_by_id.intro[npc:id()] = {phrase = flag, count = 0}
 	else
 		selected_phrase_by_id.intro[npc:id()] = nil
 	end
 	flag = reader:r_s16()
 	if flag ~= -1 then
-		selected_phrase_by_id.cool_info[npc:id()] = flag
+		selected_phrase_by_id.cool_info[npc:id()] = {phrase = flag, count = 0}
 	else
 		selected_phrase_by_id.cool_info[npc:id()] = nil
 	end
 	flag = reader:r_s16()
 	if flag ~= -1 then
-		selected_phrase_by_id.action_info[npc:id()] = flag
+		selected_phrase_by_id.action_info[npc:id()] = {phrase = flag, count = 0}
 	else
 		selected_phrase_by_id.action_info[npc:id()] = nil
 	end
