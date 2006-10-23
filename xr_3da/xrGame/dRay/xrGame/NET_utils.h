@@ -4,8 +4,9 @@
 #pragma pack(push,1)
 
 #include "client_id.h"
-
-const	u32			NET_PacketSizeLimit	= 8192; //16384;//8192;
+//for presentation
+//const	u32			NET_PacketSizeLimit	= 8192; //16384;//8192;
+const	u32			NET_PacketSizeLimit	= 16384; 
 
 struct	NET_Buffer
 {
