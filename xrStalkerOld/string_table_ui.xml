@@ -9,6 +9,10 @@
 		<text>Глобальная карта</text>
 	</string>
 
+	<string id="gun_jammed">
+		<text>Оружие заклинило. Нужно перезарядить.</text>
+	</string>
+
 	<!-- Надписи внизу основного окна -->
 	<string id="cant_walk">
 		<text>Вы слишком истощены, чтобы идти</text>

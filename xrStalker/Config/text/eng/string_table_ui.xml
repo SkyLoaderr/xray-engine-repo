@@ -15,6 +15,9 @@
 	<string id="dar_poltergeist_hold_the_door">
 		<text>Someone's holding the door.</text>
 	</string>
+	<string id="gun_jammed">
+		<text>Gun jammed. You need to reload.</text>
+	</string>
 	<string id="inventory_box_use">
 		<text>Search the box ($$ACTION_USE$$)</text>
 	</string>
