@@ -95,6 +95,7 @@ function act_state_mgr_to_idle:__init(name,state_manager) super (nil, name)
 end
 function act_state_mgr_to_idle:initialize()
 	action_base.initialize(self)
+	self.object:movement_enabled(true)
 	if self.object:best_enemy() then
 		self.st:set_state("idle", nil, nil, nil, {animation = true})
 		xr_sound.set_sound(self.object, nil)
