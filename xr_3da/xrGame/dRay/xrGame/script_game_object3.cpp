@@ -36,6 +36,7 @@
 #include "trade_parameters.h"
 #include "script_ini_file.h"
 #include "sound_player.h"
+#include "stalker_decision_space.h"
 
 namespace MemorySpace {
 	struct CVisibleObject;
@@ -346,8 +347,15 @@ void  CScriptGameObject::set_mental_state		(EMentalState mental_state)
 	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());
 	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-	else
+	else {
+		if (mental_state != eMentalStateDanger) {
+			if (stalker->brain().current_action_id() == StalkerDecisionSpace::eWorldOperatorCombatPlanner) {
+				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : set_mental_state is used during universal combat!");
+				return;
+			}
+		}
 		stalker->movement().set_mental_state	(mental_state);
+	}
 }
 
 void  CScriptGameObject::set_path_type			(MovementManager::EPathType path_type)
