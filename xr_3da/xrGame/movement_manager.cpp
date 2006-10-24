@@ -279,7 +279,8 @@ void CMovementManager::teleport					(u32 game_vertex_id)
 
 void CMovementManager::clear_path				()
 {
-	m_detail_path_manager->m_path.clear();
+	m_detail_path_manager->m_path.clear	();
+	detail_path_builder().remove		();
 }
 
 bool CMovementManager::distance_to_destination_greater	(const float &distance_to_check) const
