@@ -32,6 +32,7 @@
 #include "ai/stalker/ai_stalker_space.h"
 #include "stalker_planner.h"
 #include "stalker_kill_wounded_planner.h"
+#include "stalker_movement_manager.h"
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
@@ -112,6 +113,11 @@ void CStalkerCombatPlanner::initialize			()
 	}
 
 	object().agent_manager().member().member(m_object).cover(0);
+	// this is fake, should be revisited
+	// we must clear path, since it can be built using eMentalStateFree velocities
+	// and our new path may not be ready
+	object().movement().clear_path();
+
 	m_last_enemy_id			= u16(-1);
 	m_last_level_time		= 0;
 	m_last_wounded			= false;
