@@ -65,7 +65,7 @@ public:
 									game_cl_GameState		();
 	virtual							~game_cl_GameState		();
 				LPCSTR				type_name				() const {return *m_game_type_name;};
-				void				set_type_name			(LPCSTR s)	{ m_game_type_name=s; };
+				void				set_type_name			(LPCSTR s);
 	virtual		void				Init					(){};
 	virtual		void				net_import_state		(NET_Packet& P);
 	virtual		void				net_import_update		(NET_Packet& P);

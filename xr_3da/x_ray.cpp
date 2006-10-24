@@ -518,21 +518,6 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 		pApp->LoadEnd					(); 
 		xr_free							(op_server);
 		xr_free							(op_client);
-/*
-		if (result)	{
-			// start any console command
-			if (strstr(Core.Params,"-$")) {
-				string256				buf,cmd,param;
-				sscanf					(strstr(Core.Params,"-$")+2,"%[^ ] %[^ ] ",cmd,param);
-				strconcat				(buf,cmd," ",param);
-				Console->Execute		(buf);
-			}
-		} else {
-			Msg				("! Failed to start client. Check the connection or level existance.");
-			DEL_INSTANCE	(g_pGameLevel);
-			Console->Execute("main_menu on");
-		}
-*/
 	} else if (E==eDisconnect) {
 		if (g_pGameLevel) {
 			Console->Hide			();
