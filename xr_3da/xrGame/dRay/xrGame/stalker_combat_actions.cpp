@@ -245,7 +245,7 @@ void CStalkerActionGetItemToKill::finalize	()
 
 void CStalkerActionGetItemToKill::execute	()
 {
-	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+	VERIFY					((start_level_time() == Device.dwTimeGlobal) || (object().movement().mental_state() == eMentalStateDanger));
 
 	inherited::execute		();
 
@@ -299,7 +299,7 @@ void CStalkerActionMakeItemKilling::finalize	()
 
 void CStalkerActionMakeItemKilling::execute	()
 {
-	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+	VERIFY					((start_level_time() == Device.dwTimeGlobal) || (object().movement().mental_state() == eMentalStateDanger));
 
 	inherited::execute				();
 
@@ -438,7 +438,7 @@ void CStalkerActionGetReadyToKill::finalize		()
 
 void CStalkerActionGetReadyToKill::execute		()
 {
-	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+	VERIFY					((start_level_time() == Device.dwTimeGlobal) || (object().movement().mental_state() == eMentalStateDanger));
 
 	inherited::execute					();
 
@@ -548,7 +548,7 @@ void CStalkerActionKillEnemy::finalize			()
 
 void CStalkerActionKillEnemy::execute			()
 {
-	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+	VERIFY					((start_level_time() == Device.dwTimeGlobal) || (object().movement().mental_state() == eMentalStateDanger));
 
 	inherited::execute					();
 	
@@ -614,7 +614,7 @@ void CStalkerActionTakeCover::finalize		()
 
 void CStalkerActionTakeCover::execute		()
 {
-	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+	VERIFY					((start_level_time() == Device.dwTimeGlobal) || (object().movement().mental_state() == eMentalStateDanger));
 
 	inherited::execute					();
 
@@ -742,7 +742,7 @@ void CStalkerActionLookOut::finalize		()
 
 void CStalkerActionLookOut::execute		()
 {
-	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+	VERIFY					((start_level_time() == Device.dwTimeGlobal) || (object().movement().mental_state() == eMentalStateDanger));
 
 	inherited::execute					();
 	
@@ -824,7 +824,7 @@ void CStalkerActionHoldPosition::finalize		()
 
 void CStalkerActionHoldPosition::execute		()
 {
-	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+	VERIFY					((start_level_time() == Device.dwTimeGlobal) || (object().movement().mental_state() == eMentalStateDanger));
 
 	inherited::execute					();
 	
@@ -925,7 +925,7 @@ void CStalkerActionDetourEnemy::finalize		()
 
 void CStalkerActionDetourEnemy::execute			()
 {
-	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+	VERIFY					((start_level_time() == Device.dwTimeGlobal) || (object().movement().mental_state() == eMentalStateDanger));
 
 	inherited::execute					();
 
@@ -992,7 +992,7 @@ void CStalkerActionSearchEnemy::finalize		()
 
 void CStalkerActionSearchEnemy::execute			()
 {
-	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+	VERIFY					((start_level_time() == Device.dwTimeGlobal) || (object().movement().mental_state() == eMentalStateDanger));
 
 	inherited::execute					();
 	
@@ -1119,7 +1119,7 @@ void CStalkerActionGetDistance::initialize				()
 
 void CStalkerActionGetDistance::execute					()
 {
-	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+	VERIFY					((start_level_time() == Device.dwTimeGlobal) || (object().movement().mental_state() == eMentalStateDanger));
 
 	inherited::execute		();
 
@@ -1187,7 +1187,7 @@ void CStalkerActionHideFromGrenade::initialize				()
 
 void CStalkerActionHideFromGrenade::execute					()
 {
-	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+	VERIFY					((start_level_time() == Device.dwTimeGlobal) || (object().movement().mental_state() == eMentalStateDanger));
 
 	inherited::execute		();
 
@@ -1282,7 +1282,7 @@ void CStalkerActionSuddenAttack::finalize					()
 
 void CStalkerActionSuddenAttack::execute					()
 {
-	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+	VERIFY					((start_level_time() == Device.dwTimeGlobal) || (object().movement().mental_state() == eMentalStateDanger));
 
 	inherited::execute		();
 
@@ -1381,7 +1381,7 @@ void CStalkerActionKillEnemyIfPlayerOnThePath::finalize			()
 
 void CStalkerActionKillEnemyIfPlayerOnThePath::execute			()
 {
-	VERIFY					(object().movement().mental_state() == eMentalStateDanger);
+	VERIFY					((start_level_time() == Device.dwTimeGlobal) || (object().movement().mental_state() == eMentalStateDanger));
 
 	inherited::execute					();
 	

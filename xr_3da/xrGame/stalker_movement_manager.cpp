@@ -22,6 +22,12 @@
 #include "stalker_velocity_holder.h"
 #include "stalker_velocity_collection.h"
 
+#ifdef DEBUG
+#	include "stalker_decision_space.h"
+#	include "stalker_planner.h"
+#	include "script_game_object.h"
+#endif // DEBUG
+
 using namespace StalkerMovement;
 
 extern bool show_restrictions(CRestrictedObject *object);
@@ -399,6 +405,11 @@ void CStalkerMovementManager::parse_velocity_mask	()
 
 	switch (point.velocity & eVelocityMentalState) {
 		case eVelocityFree : {
+#ifdef DEBUG
+			if (m_object->brain().current_action_id() == StalkerDecisionSpace::eWorldOperatorCombatPlanner) {
+				Msg						("! stalker %s is doing bad thing",*m_object->cName());
+			}
+#endif // DEBUG
 			m_current.m_mental_state	= eMentalStateFree;
 			break;
 		}
