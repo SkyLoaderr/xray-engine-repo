@@ -348,12 +348,14 @@ void  CScriptGameObject::set_mental_state		(EMentalState mental_state)
 	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else {
+#ifdef DEBUG
 		if (mental_state != eMentalStateDanger) {
 			if (stalker->brain().current_action_id() == StalkerDecisionSpace::eWorldOperatorCombatPlanner) {
 				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : set_mental_state is used during universal combat!");
 				return;
 			}
 		}
+#endif // DEBUG
 		stalker->movement().set_mental_state	(mental_state);
 	}
 }
