@@ -829,6 +829,10 @@ bool CAI_Stalker::update_critical_wounded	(const u16 &bone_id, const float &powe
 	if (animation().setup_storage())
 		return						(false);
 
+	CWeapon							*active_weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
+	if (!active_weapon || (active_weapon->animation_slot() != 2))
+		return						(false);
+
 	if (!agent_manager().member().registered_in_combat(this))
 		return						(false);
 
