@@ -372,9 +372,10 @@ void CCustomRocket::OnH_A_Independent()
 {
 	inherited::OnH_A_Independent();
 
-	setVisible(true);
-	StartFlying();
-	StartEngine();
+	if(!g_pGameLevel->bReady)	return;
+	setVisible					(true);
+	StartFlying					();
+	StartEngine					();
 //	Msg("! CCustomRocket::OnH_A_Independent called, id[%d] frame[%d]",ID(),Device.dwFrame);
 
 }

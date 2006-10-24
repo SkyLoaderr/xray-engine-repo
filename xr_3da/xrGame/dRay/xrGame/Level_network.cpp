@@ -45,6 +45,7 @@ void CLevel::remove_objects	()
 void CLevel::net_Stop		()
 {
 	Msg							("- Disconnect");
+	bReady						= false;
 
 	remove_objects				();
 	
