@@ -4,7 +4,9 @@
 --------------------------------------------------------------------------------------------------------------------]]
 
 function is_enemy( obj, enemy, st )
-	--printf( "ENEMY_CALLBACK obj='%s', enemy='%s'", obj:name(), enemy:name() )
+--	if obj:name() == "agr_krot" then
+--		printf( "ENEMY_CALLBACK obj='%s', enemy='%s'", obj:name(), enemy:name() )
+--	end
 
 	if not st then
 		st = db.storage[obj:id()].combat_ignore
@@ -15,19 +17,13 @@ function is_enemy( obj, enemy, st )
 	end
 
 	if not st.enabled then
-		--printf( "true (scheme disabled) - KILL HIM" )
+--		if obj:name() == "agr_krot" then	
+--			printf( "true (scheme disabled) - KILL HIM" )
+--		end
 		return true
 	end
 
 	local overrides = xr_logic.generic_scheme_overrides( obj )
-
---[[	if not overrides then
-		printf( "no overrides" )
-	end
-
-	if not overrides.combat_ignore then
-		printf( "no overrides.combat_ignore" )
-	end]]
 
 	db.storage[obj:id()].enemy = enemy
 
@@ -36,12 +32,16 @@ function is_enemy( obj, enemy, st )
 	   db.actor and
 	   xr_logic.pick_section_from_condlist( db.actor, obj, overrides.combat_ignore.condlist ) ~= nil
 	then
-		--printf( "false - IGNORE COMBAT" )
+--		if obj:name() == "agr_krot" then
+--			printf( "false - IGNORE COMBAT" )
+--		end
 		obj:enable_memory_object( enemy, false )
 		return false
 	end
 
-	--printf( "true - KILL HIM" )
+--	if obj:name() == "agr_krot" then
+--		printf( "true - KILL HIM" )
+--	end
 	return true
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -87,12 +87,12 @@ function add_to_binder( npc, ini, scheme, section, storage )
 end
 
 function set_combat_ignore_checker( npc, ini, scheme, section )
-	printf("_bp: set_combat_ignore_checker: npc='%s'", npc:name())
+--	printf("_bp: set_combat_ignore_checker: npc='%s'", npc:name())
 	local st = xr_logic.assign_storage_and_bind( npc, ini, scheme, section )
 --	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	st.enabled = true
 
-	printf( "xr_combat_ignore: SET ENEMY_CALLBACK, obj=%s", npc:name() )
+--	printf( "xr_combat_ignore: SET ENEMY_CALLBACK, obj=%s", npc:name() )
 	npc:set_enemy_callback( st.action.enemy_callback, st.action )
 
 	-- Подписываемся на hit callback-и:
