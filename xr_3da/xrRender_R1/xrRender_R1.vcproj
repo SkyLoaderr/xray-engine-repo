@@ -148,7 +148,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
-				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="1"
@@ -158,7 +157,7 @@
 				PreprocessorDefinitions="MIXED,WIN32;NDEBUG;_WINDOWS;_USRDLL;XRRENDER_R1_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
-				BufferSecurityCheck="FALSE"
+				BufferSecurityCheck="TRUE"
 				EnableFunctionLevelLinking="FALSE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"

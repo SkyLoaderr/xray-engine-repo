@@ -186,7 +186,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
-				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="1"
@@ -198,7 +197,7 @@
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				StructMemberAlignment="0"
-				BufferSecurityCheck="FALSE"
+				BufferSecurityCheck="TRUE"
 				EnableFunctionLevelLinking="FALSE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
