@@ -76,6 +76,8 @@ void light::set_active		(bool a)
 		spatial_register					();
 		spatial_move						();
 		//Msg								("!!! L-register: %X",u32(this));
+		Fvector	zero = {0,0,0};
+		if (position.similar(zero))			__asm int 3;
 	}
 	else
 	{
