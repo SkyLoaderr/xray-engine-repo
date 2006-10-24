@@ -247,9 +247,10 @@ void	CROS_impl::update	(IRenderable* O)
 }
 
 // hemi & sun: update and smooth
-void	CROS_impl::update_smooth	()
+void	CROS_impl::update_smooth	(IRenderable* O)
 {
 	dwFrameSmooth			=	Device.dwFrame					;
+	if (O && (0==result_count))	update(O)						;	// First time only
 	float	l_f				=	Device.fTimeDelta*lt_smooth		;
 	float	l_i				=	1.f-l_f							;
 	hemi_smooth				=	hemi_value*l_f + hemi_smooth*l_i;

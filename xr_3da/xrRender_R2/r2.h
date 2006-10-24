@@ -157,8 +157,9 @@ public:
 		if (0==O)					return;
 		if (0==O->renderable_ROS())	return;
 		CROS_impl& LT				= *((CROS_impl*)O->renderable_ROS());
-		o_hemi						= 0.75f*LT.get_hemi			();
-		o_sun						= 0.75f*LT.get_sun			();
+		LT.update_smooth			(O)								;
+		o_hemi						= 0.75f*LT.get_hemi			()	;
+		o_sun						= 0.75f*LT.get_sun			()	;
 	}
 	IC void							apply_lmaterial				()
 	{
