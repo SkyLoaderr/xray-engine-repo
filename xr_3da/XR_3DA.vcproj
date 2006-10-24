@@ -1640,6 +1640,21 @@
 					<File
 						RelativePath=".\_scripting.cpp">
 					</File>
+					<File
+						RelativePath=".\ai_script_lua_debug.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script_lua_extension.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script_lua_extension.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_lua_space.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_space.h">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
