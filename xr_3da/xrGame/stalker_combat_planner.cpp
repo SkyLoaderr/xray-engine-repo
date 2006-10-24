@@ -118,6 +118,8 @@ void CStalkerCombatPlanner::initialize			()
 	// and our new path may not be ready
 	object().movement().clear_path();
 
+	object().m_clutched_hammer_enabled	= true;
+
 	m_last_enemy_id			= u16(-1);
 	m_last_level_time		= 0;
 	m_last_wounded			= false;
@@ -150,6 +152,8 @@ void CStalkerCombatPlanner::finalize			()
 
 	object().memory().danger().time_line					(Device.dwTimeGlobal + 3000);
 	object().agent_manager().member().unregister_in_combat	(m_object);
+
+	object().m_clutched_hammer_enabled						= false;
 
 //	object().sound().remove_active_sounds					(eStalkerSoundMaskNoDanger);
 }

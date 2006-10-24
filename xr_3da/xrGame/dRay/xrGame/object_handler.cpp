@@ -56,6 +56,7 @@ void CObjectHandler::reinit			(CAI_Stalker *object)
 	m_strap_object_id			= ALife::_OBJECT_ID(-1);
 	m_strap_bone0				= -1;
 	m_strap_bone1				= -1;
+	m_clutched_hammer_enabled	= false;
 }
 
 void CObjectHandler::reload			(LPCSTR section)
