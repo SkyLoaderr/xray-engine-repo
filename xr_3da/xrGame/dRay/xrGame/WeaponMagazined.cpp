@@ -15,6 +15,7 @@
 #include "xr_level_controller.h"
 #include "level.h"
 #include "object_broker.h"
+#include "string_table.h"
 
 CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapon(name)
 {
@@ -391,7 +392,7 @@ void CWeaponMagazined::OnStateSwitch	(u32 S)
 		break;
 	case eMisfire:
 		if(smart_cast<CActor*>(this->H_Parent()) && (Level().CurrentViewEntity()==H_Parent()) )
-			HUD().GetUI()->AddInfoMessage("gun_jammed");
+			HUD().GetUI()->AddInfoMessage(*CStringTable().translate("gun_jammed"));
 		break;
 	case eMagEmpty:
 		switch2_Empty	();

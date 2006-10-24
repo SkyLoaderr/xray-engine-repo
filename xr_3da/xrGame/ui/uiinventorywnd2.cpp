@@ -134,14 +134,9 @@ void CUIInventoryWnd::InitInventory()
 	std::sort		(ruck_list.begin(),ruck_list.end(),InventoryUtilities::GreaterRoomInRuck);
 
 	int i=1;
-//.	string16	tmp_str;
 	for(it=ruck_list.begin(),it_e=ruck_list.end(); it!=it_e; ++it,++i) 
 	{
 		CUICellItem* itm			= create_cell_item(*it);
-//.		itoa						(i,tmp_str,10);
-//.		CBuyItemCustomDrawCell* p	= xr_new<CBuyItemCustomDrawCell>(tmp_str,HUD().Font().pFontLetterica16Russian);
-//.		itm->SetCustomDraw			(p);
-
 		m_pUIBagList->SetItem		(itm);
 	}
 
