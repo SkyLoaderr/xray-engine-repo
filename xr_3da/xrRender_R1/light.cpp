@@ -8,7 +8,7 @@ light::light		(void)	: ISpatial(g_SpatialSpace)
 	flags.bStatic	= false;
 	flags.bActive	= false;
 	flags.bShadow	= false;
-	position.set	(0,0,0);
+	position.set	(0,-1000,0);
 	direction.set	(0,-1,0);
 	right.set		(0,0,0);
 	range			= 8.f;
@@ -76,8 +76,11 @@ void light::set_active		(bool a)
 		spatial_register					();
 		spatial_move						();
 		//Msg								("!!! L-register: %X",u32(this));
-		Fvector	zero = {0,0,0};
-		if (position.similar(zero))			__asm int 3;
+
+		Fvector	zero = {0,-1000,0}			;
+		if (position.similar(zero))			{
+			Msg	("! Uninitialized light position.");
+		}
 	}
 	else
 	{
