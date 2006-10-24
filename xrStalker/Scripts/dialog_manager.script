@@ -330,16 +330,20 @@ function phrase_action_intro(npc, actor, p1, p2)
 	phrase_action(npc, actor, selected_phrase_by_id.intro, p2)
 end
 function phrase_action_cool_info(npc, actor, p1, p2)
-	phrase_action(npc, actor, selected_phrase_by_id.cool_info, p2)
+	phrase_action(npc, actor, selected_phrase_by_id.cool_info, p2, true)
 end
 function phrase_action_action_info(npc, actor, p1, p2)	
 	phrase_action(npc, actor, selected_phrase_by_id.action_info, p2)
 end
 
-function phrase_action(npc, actor, sel_tbl, p2)
-	local cc = 1
-	if sel_tbl[npc:id()] ~= nil then
-		cc = sel_tbl[npc:id()].count + 1
+function phrase_action(npc, actor, sel_tbl, p2, one_time)
+	local cc = 0
+	if one_time == true then
+		if sel_tbl[npc:id()] ~= nil then
+			cc = sel_tbl[npc:id()].count + 1	
+		else
+			cc = 1
+		end
 	end
 
 	sel_tbl[npc:id()] = {phrase = p2, count = cc}
