@@ -122,11 +122,11 @@ function action_zombie_shoot:execute()
 
 				self.turn_time = time_global() + math.random( 5000, 7000 )
 
-				self:set_state( "guard_na", nil, self.enemy_last_seen_pos )
+				self:set_state( "threat_na", nil, self.enemy_last_seen_pos )
 			elseif self.turn_time < time_global() then
 				self.turn_time = time_global() + math.random( 3000, 5000 )
 
-				self:set_state( "guard_na", nil, self:calc_random_direction() )
+				self:set_state( "threat_na", nil, self:calc_random_direction() )
 			end
 		end
 	end
@@ -237,10 +237,9 @@ function action_zombie_go_to_danger:execute()
 				utils.send_to_nearest_accessible_vertex( self.object, self.bdo_vert_id )
 			end
 
---			self:set_state( "patrol", bdo, nil )
-			self:set_state( "patrol", nil, bd:position() )
+			self:set_state( "raid", nil, bd:position() )
 		else
-			self:set_state( "guard",  nil, bd:position() )
+			self:set_state( "threat_na",  nil, bd:position() )
 		end
 	end
 end
