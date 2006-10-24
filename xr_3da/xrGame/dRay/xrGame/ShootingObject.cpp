@@ -125,7 +125,7 @@ void CShootingObject::Light_Start	()
 		light_build_color.set		(Random.randFs(light_var_color,light_base_color.r),Random.randFs(light_var_color,light_base_color.g),Random.randFs(light_var_color,light_base_color.b),1);
 		light_build_range			= Random.randFs(light_var_range,light_base_range);
 
-		light_render->set_active	(true);
+//.		light_render->set_active	(true);
 	}
 }
 
@@ -133,9 +133,14 @@ void CShootingObject::Light_Render	(const Fvector& P)
 {
 	float light_scale			= light_time/light_lifetime;
 	R_ASSERT(light_render);
+
+
 	light_render->set_position	(P);
 	light_render->set_color		(light_build_color.r*light_scale,light_build_color.g*light_scale,light_build_color.b*light_scale);
 	light_render->set_range		(light_build_range*light_scale);
+
+	if(	!light_render->get_active() )
+			light_render->set_active	(true);
 }
 
 
