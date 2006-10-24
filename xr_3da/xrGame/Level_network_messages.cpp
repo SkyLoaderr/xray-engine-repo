@@ -83,6 +83,10 @@ void CLevel::ClientReceive()
 				u32 NumSteps = ph_world->CalcNumSteps(dTime);
 				SetNumCrSteps(NumSteps);
 			}break;
+		case M_UPDATE_OBJECTS:
+			{
+				Objects.net_Import		(P);
+			}break;
 		//----------- for E3 -----------------------------
 		case M_CL_UPDATE:
 			{

@@ -1034,7 +1034,7 @@ bool CUIBuyWnd::ToSlot(CUICellItem* itm, bool force_place)
 		if(!force_place ||  iitem->GetSlot()==NO_ACTIVE_SLOT ) return false;
 
 		CUIDragDropListEx* slot	= GetSlotList(_slot);
-		VERIFY					(slot->ItemsCount()==1);
+///		VERIFY					(slot->ItemsCount()==1);
 
 		CUICellItem* i			= slot->GetItemIdx(0);
 		if (iitem->GetSlot()==OUTFIT_SLOT)

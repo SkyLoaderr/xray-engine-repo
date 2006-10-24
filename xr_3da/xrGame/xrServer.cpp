@@ -212,8 +212,8 @@ void xrServer::Update	()
 
 		// Send relevant entities to client
 		// CSE_Abstract*	Base	= Client->owner;
-
-		Packet.w_begin	(M_UPDATE);
+		u16 PacketType = M_UPDATE;
+		Packet.w_begin	(PacketType);
 
 		// GameUpdate
 		++(Client->game_replicate_id);
@@ -229,7 +229,9 @@ void xrServer::Update	()
 		{
 #ifdef DEBUG
 			if (g_Dump_Update_Write) Msg("---- UPDATE_Write to %s --- ", *(Client->Name));
-#endif						// Entities
+#endif					// Entities
+			
+			NET_Packet tmpPacket;
 			xrS_entities::iterator	I=entities.begin(),E=entities.end();
 			for (; I!=E; ++I)
 			{
@@ -240,16 +242,32 @@ void xrServer::Update	()
 				if (Test.owner == Client && Client->flags.bLocal)					continue;	// Can't be relevant
 
 				if (Test.s_flags.is(M_SPAWN_OBJECT_PHANTOM))	continue;	// Surely: phantom
-
+				
+				tmpPacket.B.count = 0;
 				// write specific data
 				{
-					Packet.w_u16			(Test.ID		);
-					Packet.w_chunk_open8	(position		);
-					Test.UPDATE_Write		(Packet			);
+					tmpPacket.w_u16			(Test.ID		);
+					tmpPacket.w_chunk_open8	(position		);
+					Test.UPDATE_Write		(tmpPacket			);
 #ifdef DEBUG
-					if (g_Dump_Update_Write) Msg("* %s : %d", Test.name(), u32(Packet.w_tell()-position)-sizeof(u8));
+					if (g_Dump_Update_Write) Msg("* %s : %d", Test.name(), u32(tmpPacket.w_tell()-position)-sizeof(u8));
 #endif
-					Packet.w_chunk_close8	(position		);
+					tmpPacket.w_chunk_close8	(position		);
+					if (Packet.B.count + tmpPacket.B.count < NET_PacketSizeLimit)
+					{
+						Packet.w(tmpPacket.B.data, tmpPacket.B.count);
+					}
+					else
+					{
+						if (Packet.B.count > 2)	
+						{
+//							if (!Client->flags.bLocal)
+//								Msg ("- Server Update[%d] to Client  : %d", PacketType, Packet.B.count);
+							SendTo			(Client->ID,Packet,net_flags(FALSE,TRUE));
+						}
+						PacketType = M_UPDATE_OBJECTS;
+						Packet.w_begin(PacketType);
+					}
 				}
 			}
 #ifdef DEBUG
@@ -259,6 +277,8 @@ void xrServer::Update	()
 
 		if (Packet.B.count > 2)	
 		{
+//			if (!Client->flags.bLocal)
+//				Msg ("- Server Update[%d] to Client  : %d", PacketType, Packet.B.count);
 			SendTo			(Client->ID,Packet,net_flags(FALSE,TRUE));
 		}
 	}
