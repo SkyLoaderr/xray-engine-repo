@@ -328,6 +328,9 @@ end
 local reg_objects_smart = {}
 local show_smart_spot = false
 function register_smart(obj)
+	if true then
+		return
+	end
 	local section = obj:name()
 	reg_objects_smart[obj.id] = {section = section, enabled = false, cap = obj.gulag.capacity, pop = 0, comed = 0, state = 0}
 	if show_smart_spot == true then
