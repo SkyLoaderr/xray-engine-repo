@@ -19,6 +19,11 @@ void set_goal_world_state(CScriptActionPlanner *action_planner, CScriptActionPla
 	action_planner->set_target_state	(*world_state);
 }
 
+bool get_actual(const CScriptActionPlanner *action_planner)
+{
+	return	(action_planner->actual());
+}
+
 #pragma optimize("s",on)
 void CActionPlanner<CScriptGameObject>::script_register(lua_State *L)
 {
@@ -28,6 +33,7 @@ void CActionPlanner<CScriptGameObject>::script_register(lua_State *L)
 			.def_readonly("object",				&CScriptActionPlanner::m_object)
 			.def_readonly("storage",			&CScriptActionPlanner::m_storage)
 			.def(								constructor<>())
+			.def("actual",						&get_actual)
 			.def("setup",						&CScriptActionPlanner::setup,	&CScriptActionPlannerWrapper::setup_static)
 			.def("update",						&CScriptActionPlanner::update,	&CScriptActionPlannerWrapper::update_static)
 			.def("add_action",					&CScriptActionPlanner::add_operator,adopt(_3))
