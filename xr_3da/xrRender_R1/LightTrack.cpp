@@ -128,9 +128,10 @@ void	CROS_impl::update	(IRenderable* O)
 	}
 	
 	// hemi-tracing
+	bool	bFirstTime	=	(0==result_count);
 	if	(MODE & IRender_ObjectSpecific::TRACE_HEMI)	{
 		for (u32 it=0; it<5;	it++)		{	// five samples per one frame
-			u32	sample		= 0					;
+			u32	sample		=	0				;
 			if	(result_count<lt_hemisamples)	{ sample=result_count; result_count++;							}
 			else								{ sample=(result_iterator%lt_hemisamples); result_iterator++;	}
 
@@ -147,6 +148,7 @@ void	CROS_impl::update	(IRenderable* O)
 	int		_pass			=	0;
 	for (int it=0; it<result_count; it++)	if (result[it])	_pass	++;
 	hemi_value				=	float	(_pass)/float(result_count?result_count:1);
+	if (bFirstTime)			hemi_smooth		= hemi_value;
 	update_smooth			()	;
 
 	// light-tracing
