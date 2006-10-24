@@ -696,7 +696,7 @@
 			<length_sec/>
 			<pause_state>on</pause_state>
 			<guard_key>use</guard_key>
-			<sound>characters_voice\scenario_eng\presentation\start_agr</sound>
+			<sound>characters_voice\scenario\presentation\start_agr</sound>
 			<cursor_pos/>
 			<pda_section/>
 			<function_on_stop>xr_effects.presentation_task</function_on_stop>
@@ -723,7 +723,7 @@
 			<length_sec/>
 			<pause_state>on</pause_state>
 			<guard_key>use</guard_key>
-			<sound>characters_voice\scenario_eng\presentation\start_bar</sound>
+			<sound>characters_voice\scenario\presentation\start_bar</sound>
 			<cursor_pos/>
 			<pda_section/>
 			<function_on_stop>xr_effects.presentation_task</function_on_stop>
@@ -750,7 +750,7 @@
 			<length_sec/>
 			<pause_state>on</pause_state>
 			<guard_key>use</guard_key>
-			<sound>characters_voice\scenario_eng\presentation\start_yan</sound>
+			<sound>characters_voice\scenario\presentation\start_yan</sound>
 			<cursor_pos/>
 			<pda_section/>
 			<grab_input>0</grab_input>
