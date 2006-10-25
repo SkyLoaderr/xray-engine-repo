@@ -241,7 +241,7 @@ void CGamePersistent::WeathersUpdate()
 
 void CGamePersistent::start_logo_intro		()
 {
-#ifdef DEBUG
+#if 1//def DEBUG
 	if (0!=strstr(Core.Params,"-nointro")){
 		m_intro_event			= 0;
 		Console->Show			();
@@ -273,7 +273,7 @@ void CGamePersistent::update_logo_intro			()
 //static float save_music_vol=psSoundVMusic;
 void CGamePersistent::start_game_intro		()
 {
-#ifdef DEBUG
+#if 1//def DEBUG
 	if (0!=strstr(Core.Params,"-nointro")){
 		m_intro_event			= 0;
 		return;
