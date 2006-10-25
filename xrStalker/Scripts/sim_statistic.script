@@ -221,23 +221,23 @@ end
 function release_current_level()
 	local local_level = level.name()
 	for k,v in pairs(reg_objects_stalker) do
-		if v.exist == true then
-			level.map_remove_object_spot(k, "alife_presentation_"..v.community)
-			reg_objects_stalker[k].exist = nil
-		end
 		local obj = alife():object(k)
 		if alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id()) == local_level then
+			if v.exist == true then
+				level.map_remove_object_spot(k, "alife_presentation_"..v.community)
+				reg_objects_stalker[k].exist = nil
+			end
 			alife():release(obj,true)
 			reg_objects_stalker[k] = nil
 		end
 	end
 	for k,v in pairs(reg_objects_monster) do
-		if v.exist == true then
-			level.map_remove_object_spot(k, "alife_presentation_monstr")
-			reg_objects_monster[k].exist = nil
-		end
 		local obj = alife():object(k)
 		if alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id()) == local_level then
+			if v.exist == true then
+				level.map_remove_object_spot(k, "alife_presentation_monstr")
+				reg_objects_monster[k].exist = nil
+			end
 			alife():release(obj,true)
 			reg_objects_monster[k] = nil
 		end
