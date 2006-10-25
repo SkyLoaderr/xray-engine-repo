@@ -548,6 +548,7 @@
 			grenade_f1 = 1 \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
+			device_torch \n
 		</supplies>
 			
 #include "gameplay\character_dialogs.xml"
@@ -574,6 +575,7 @@
 			ammo_5.45x39_fmj = 1 \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
+			device_torch \n
 		</supplies>
 			
 #include "gameplay\character_dialogs.xml"
@@ -603,6 +605,7 @@
 			grenade_f1 = 2 \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
+			device_torch \n
 		</supplies>
 			
 #include "gameplay\character_dialogs.xml"
