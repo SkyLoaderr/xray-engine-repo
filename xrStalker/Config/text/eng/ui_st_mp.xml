@@ -244,12 +244,12 @@
 		<text>Rainy</text>
 	</string>
 	<string id="mp_with_backstab">
-		<text>Backstabbed!!!</text>
+		<text> Backstabbed!!!</text>
 	</string>
 	<string id="mp_with_headshot">
-		<text>Headshot!!!</text>
+		<text> Headshot!!!</text>
 	</string>
 	<string id="mp_your_rank">
-		<text>Your rank is now</text>
+		<text>Your rank is now </text>
 	</string>
 </string_table>
