@@ -77,9 +77,10 @@ void light::set_active		(bool a)
 		spatial_move						();
 		//Msg								("!!! L-register: %X",u32(this));
 
+
 		Fvector	zero = {0,-1000,0}			;
 		if (position.similar(zero))			{
-			Msg	("! Uninitialized light position.");
+			Msg	("- Uninitialized light position.");
 		}
 	}
 	else
