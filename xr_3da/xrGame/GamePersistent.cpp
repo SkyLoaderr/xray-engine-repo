@@ -163,14 +163,14 @@ void CGamePersistent::OnGameStart()
 {
 	__super::OnGameStart		();
 	//  [7/11/2005]
-	if (!xr_strcmp(m_game_params.m_game_type, "single")) m_eGameType = GAME_SINGLE;
+	if (!xr_strcmp(m_game_params.m_game_type, "single")) m_game_params.m_e_game_type = GAME_SINGLE;
 	else
-		if (!xr_strcmp(m_game_params.m_game_type, "deathmatch")) m_eGameType = GAME_DEATHMATCH;
+		if (!xr_strcmp(m_game_params.m_game_type, "deathmatch")) m_game_params.m_e_game_type = GAME_DEATHMATCH;
 		else
-			if (!xr_strcmp(m_game_params.m_game_type, "teamdeathmatch")) m_eGameType = GAME_TEAMDEATHMATCH;
+			if (!xr_strcmp(m_game_params.m_game_type, "teamdeathmatch")) m_game_params.m_e_game_type = GAME_TEAMDEATHMATCH;
 			else
-				if (!xr_strcmp(m_game_params.m_game_type, "artfacthunt")) m_eGameType = GAME_ARTEFACTHUNT;
-				else m_eGameType = GAME_ANY;
+				if (!xr_strcmp(m_game_params.m_game_type, "artfacthunt")) m_game_params.m_e_game_type = GAME_ARTEFACTHUNT;
+				else m_game_params.m_e_game_type = GAME_ANY;
 	//  [7/11/2005]
 }
 

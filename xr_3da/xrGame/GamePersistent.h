@@ -35,7 +35,6 @@ class CGamePersistent:
 
 	void				WeathersUpdate			();
 
-	u32					m_eGameType;
 public:
 	ui_core*			m_pUI_core;
 	IReader*			pDemoFile;
@@ -61,7 +60,6 @@ public:
 	virtual void		RegisterModel			(IRender_Visual* V);
 	virtual	float		MtlTransparent			(u32 mtl_idx);
 	virtual	void		Statistics				(CGameFont* F);
-	virtual	u32			GameType				() {return m_eGameType;}
 
 	virtual bool		OnRenderPPUI_query		();
 	virtual void		OnRenderPPUI_main		();
