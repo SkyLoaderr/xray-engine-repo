@@ -458,6 +458,17 @@ public:
 	virtual void	Save	(IWriter *F)	{};
 };
 #endif
+
+class CCC_r2 : public CCC_Mask
+{
+	typedef CCC_Mask inherited;
+public:
+	CCC_r2(LPCSTR N, Flags32* V, u32 M) :inherited(N, V, M){};
+	virtual void	Save	(IWriter *F)	{
+		if (value->test(mask)) inherited::Save(F);
+	}
+
+};
 //-----------------------------------------------------------------------
 ENGINE_API float	psHUD_FOV=0.5f;
 
@@ -584,12 +595,11 @@ void CCC_Register()
 	CMD2(CCC_Float,		"cam_inert",			&psCamInert);
 	CMD2(CCC_Float,		"cam_slide_inert",		&psCamSlideInert);
 
-    g_r2.zero();
-	CMD3(CCC_Mask,		"r2",				&g_r2, 1);
+	g_r2.zero			();
+	CMD3(CCC_r2,		"r2",				&g_r2, 1);
 	//psSoundRolloff			= pSettings->r_float	("sound","rolloff");		clamp(psSoundRolloff,			EPS_S,	2.f);
 	psSoundOcclusionScale	= pSettings->r_float	("sound","occlusion_scale");clamp(psSoundOcclusionScale,	0.1f,	.5f);
 
-//.	CMD1(CCC_Pause,		"pause"			);
 #ifdef DEBUG
 	extern	INT	g_Dump_Export_Obj;
 	extern	INT	g_Dump_Import_Obj;

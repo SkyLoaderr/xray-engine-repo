@@ -367,7 +367,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	InitEngine				();
 	InitSettings			();
 	InitConsole				();
-	
+
 	if(strstr(lpCmdLine, "-batch_benchmark")){
 		doBenchmark();
 		return 0;
@@ -383,6 +383,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	CCC_LoadCFG_custom*	pTmp = xr_new<CCC_LoadCFG_custom>("r2 ");
 	pTmp->Execute				(Console->ConfigFile);
 	xr_delete					(pTmp);
+
+	if(strstr(Core.Params,"-r2"))	Console->Execute			("r2 on");
 
 	Engine.External.Initialize	( );
 //	CheckPrivilegySlowdown		( );

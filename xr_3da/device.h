@@ -161,6 +161,7 @@ extern		ENGINE_API		bool				g_bBenchmark;
 
 typedef fastdelegate::FastDelegate0<bool>		LOADING_EVENT;
 extern	ENGINE_API xr_list<LOADING_EVENT>		g_loading_events;
+extern		ENGINE_API		Flags32				g_r2;
 
 #include	"R_Backend_Runtime.h"
 

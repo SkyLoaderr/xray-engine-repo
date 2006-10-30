@@ -27,8 +27,6 @@ CEngineAPI::~CEngineAPI()
 {
 }
 
-extern Flags32 g_r2;
-
 void CEngineAPI::Initialize(void)
 {
 //#ifndef DEDICATED_SERVER
@@ -36,7 +34,7 @@ void CEngineAPI::Initialize(void)
 	// render
 	LPCSTR			r1_name	= "xrRender_R1.dll";
 	LPCSTR			r2_name	= "xrRender_R2.dll";
-	if (strstr(Core.Params,"-r2") || g_r2.test(1))	{
+	if (g_r2.test(1))	{
 		// try to initialize R2
 		Log				("Loading DLL:",	r2_name);
 		hRender			= LoadLibrary		(r2_name);
