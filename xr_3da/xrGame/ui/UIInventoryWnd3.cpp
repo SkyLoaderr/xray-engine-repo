@@ -259,3 +259,25 @@ void CUIInventoryWnd::ProcessPropertiesBoxClicked	()
 		}
 	}
 }
+
+void CUIInventoryWnd::TryUseItem(PIItem itm)
+{
+}
+
+bool CUIInventoryWnd::DropItem(PIItem itm, CUIDragDropListEx* lst)
+{
+	if(lst==m_pUIOutfitList)
+	{
+		EatCurrentItem		();
+		return				true;
+	}
+	CUICellItem*	_citem	= lst->ItemsCount() ? lst->GetItemIdx(0) : NULL;
+	PIItem _iitem	= _citem ? (PIItem)_citem->m_pData : NULL;
+
+	if(!_iitem)						return	false;
+	if(!_iitem->CanAttach(itm))		return	false;
+	AttachAddon						(_iitem);
+
+
+	return							true;
+}

@@ -127,6 +127,10 @@ protected:
 	CInventory*				m_pInv;
 
 	CUICellItem*			m_pCurrentCellItem;
+
+
+	bool				DropItem					(PIItem itm, CUIDragDropListEx* lst);
+	void				TryUseItem					(PIItem itm);
 	//---------------------------------------------------------------------
 	void				SendEvent_Item2Slot			(PIItem	pItem);
 	void				SendEvent_Item2Belt			(PIItem	pItem);

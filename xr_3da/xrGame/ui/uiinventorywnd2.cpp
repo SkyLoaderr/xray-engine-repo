@@ -318,6 +318,8 @@ bool CUIInventoryWnd::OnItemDrop(CUICellItem* itm)
 		}break;
 	};
 
+	DropItem				(CurrentIItem(), new_owner);
+
 	return true;
 }
 
