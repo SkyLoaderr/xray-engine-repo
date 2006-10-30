@@ -8,7 +8,7 @@
 		<text>Artefact</text>
 	</string>	
 	<string id="ui_mm_need_restart">
-		<text>Сhanges will take effect only after game restart</text>		
+		<text>Changes will take effect only after game restart</text>		
 	</string>
 	<string id="ui_mm_render_2">
 		<text>Render 2</text>
