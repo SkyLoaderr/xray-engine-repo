@@ -13,7 +13,6 @@ public:
 	~CUIStatsPlayerList();
 
 			void Init(CUIXml& xml_doc, LPCSTR path);
-			void SetCmpFunc(player_cmp_func pf);
 			void SetSpectator(bool f);
 			void SetTeam(int team);
 			void AddField(const char* name, float width);
@@ -31,13 +30,12 @@ protected:
 			void		ShowHeader(bool bShow);
 			LPCSTR		GetST_entry(LPCSTR itm);
 
-	player_cmp_func		m_cmp_func;
 	int					m_CurTeam;
 	bool				m_bSpectator;
 	bool				m_bStatus_mode;
     
-	DEFINE_VECTOR	(LPVOID,ItemVec,ItemIt);
-	ItemVec			items;
+//.	DEFINE_VECTOR	(LPVOID,ItemVec,ItemIt);
+//.	ItemVec			items;
 
 	xr_vector<PI_FIELD_INFO>	m_field_info;
 

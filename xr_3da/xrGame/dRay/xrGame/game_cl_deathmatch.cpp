@@ -403,7 +403,7 @@ int game_cl_Deathmatch::GetPlayersPlace			(game_PlayerState* ps)
 	game_cl_GameState::PLAYERS_MAP_IT E=Game().players.end();
 
 	// create temporary map (sort by kills)
-	xr_vector<LPVOID>	Players;
+	xr_vector<game_PlayerState*>	Players;
 	for (;I!=E;++I)		Players.push_back(I->second);
 	std::sort			(Players.begin(),Players.end(),DM_Compare_Players);
 
@@ -834,10 +834,10 @@ void		game_cl_Deathmatch::OnRender				()
 	};
 }
 
-IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2)
+IC bool	DM_Compare_Players		(game_PlayerState* p1, game_PlayerState* p2)
 {
-	game_PlayerState* p1 = (game_PlayerState*)v1;
-	game_PlayerState* p2 = (game_PlayerState*)v2;
+//.	game_PlayerState* p1 = (game_PlayerState*)v1;
+//.	game_PlayerState* p2 = (game_PlayerState*)v2;
 	if (p1->testFlag(GAME_PLAYER_FLAG_SPECTATOR) && !p2->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) return false;
 	if (!p1->testFlag(GAME_PLAYER_FLAG_SPECTATOR) && p2->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) return true;	
 	if (p1->kills==p2->kills)

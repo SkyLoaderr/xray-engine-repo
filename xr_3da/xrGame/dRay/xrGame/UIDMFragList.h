@@ -1,15 +1,14 @@
-#ifndef __XR_UIDMFRAGLIST_H__
-#define __XR_UIDMFRAGLIST_H__
 #pragma once
 
 #include "ui/UIStatsWnd.h"
 
+struct	game_PlayerState;
 class CUIDMFragList:public CUIStatsWnd
 {
 	typedef CUIStatsWnd inherited;
 
 protected:
-	DEFINE_VECTOR	(LPVOID,ItemVec,ItemIt);
+	DEFINE_VECTOR	(game_PlayerState*,ItemVec,ItemIt);
 	ItemVec			items;
 
 public:
@@ -45,5 +44,3 @@ public:
 	virtual void	OnFrame			();
 };
 */
-
-#endif //__XR_UIFRAGLIST_H__

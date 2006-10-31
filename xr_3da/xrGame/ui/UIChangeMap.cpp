@@ -134,5 +134,3 @@ void CUIChangeMap::FillUpList(){
 void CUIChangeMap::OnBtnCancel(){
 		GetHolder()->StartStopMenu(this, true);
 }
-
-IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);

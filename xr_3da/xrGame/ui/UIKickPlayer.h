@@ -41,9 +41,8 @@ protected:
 	CUI3tButton*	btn_ok;
 	CUI3tButton*	btn_cancel;
 
-	u32			m_prev_upd_time;
+	u32				m_prev_upd_time;
 
-	DEFINE_VECTOR	(LPVOID,ItemVec,ItemIt);
-	ItemVec			items;
-	u32				selected_item;
+	u32				selected_item_id;
+	shared_str		selected_item_text;
 };

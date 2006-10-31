@@ -31,8 +31,8 @@ CUIKickPlayer::CUIKickPlayer(){
 	btn_cancel = xr_new<CUI3tButton>(); btn_cancel->SetAutoDelete(true);
 	AttachChild(btn_cancel);
 
-	selected_item = u32(-1);
-	mode = MODE_KICK;
+	selected_item_id		= u32(-1);
+	mode					= MODE_KICK;
 }
 
 void CUIKickPlayer::Init(CUIXml& xml_doc){
@@ -69,7 +69,10 @@ bool CUIKickPlayer::OnKeyboard(int dik, EUIMessages keyboard_action){
 void CUIKickPlayer::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	if (LIST_ITEM_SELECT == msg && pWnd == lst)
 	{		
-		selected_item = *static_cast<u32*>(pData);
+		CUIListBox* lst			= smart_cast<CUIListBox*>	(pWnd);
+		CUIListBoxItem* itm		= lst->GetItemByID			( *((u32*)(pData)) );
+		selected_item_id		= itm->GetID				();
+		selected_item_text		= itm->GetText				();
 	}
 	else if (BUTTON_CLICKED == msg)
 	{
@@ -81,7 +84,6 @@ void CUIKickPlayer::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 }
 
 void CUIKickPlayer::OnBtnOk(){
-//	LPCSTR name = lst->GetSelectedText();
 	CUIListBoxItem* item = smart_cast<CUIListBoxItem*>(lst->GetSelected());
 	if (item)
 	{
@@ -94,22 +96,26 @@ void CUIKickPlayer::OnBtnOk(){
 				sprintf(command, "cl_votestart ban %s", item->GetText());
 				break;
 		}
-		Console->Execute(command);
-		game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
-		game->StartStopMenu(this, true);
+		Console->Execute			(command);
+		game_cl_mp* game			= smart_cast<game_cl_mp*>(&Game());
+		game->StartStopMenu			(this, true);
 	}
 	else
 		return;
 }
 
-void CUIKickPlayer::OnBtnCancel(){
-    game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
-	game->StartStopMenu(this, true);
+void CUIKickPlayer::OnBtnCancel()
+{
+    game_cl_mp* game				= smart_cast<game_cl_mp*>(&Game());
+	game->StartStopMenu				(this, true);
 }
 
-IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);
+IC bool	DM_Compare_Players		(game_PlayerState* v1, game_PlayerState* v2);
 
-void CUIKickPlayer::Update(){
+DEFINE_VECTOR	(game_PlayerState*,ItemVec,ItemIt);
+
+void CUIKickPlayer::Update()
+{
 	CUIDialogWnd::Update();
 
 	static string512 teaminfo;
@@ -119,23 +125,32 @@ void CUIKickPlayer::Update(){
 	game_cl_GameState::PLAYERS_MAP_IT I=Game().players.begin();
 	game_cl_GameState::PLAYERS_MAP_IT E=Game().players.end();
 
-	items.clear			();
+//.	items.clear			();
+	ItemVec			items;
 	for (;I!=E;++I)		
-	{
-//		game_PlayerState* p = (game_PlayerState*) I->second;
 		items.push_back(I->second);
-	};
 
     std::sort(items.begin(), items.end(), DM_Compare_Players);
 
 	lst->Clear();
+	
+	if( selected_item_id+1 > items.size() ) 
+			selected_item_id = u32(-1);
 
 	for (u32 i = 0; i<items.size(); i++){
-		game_PlayerState* p = reinterpret_cast<game_PlayerState*>(items[i]);
-		CUIListBoxItem* item = lst->AddItem(p->name);
-		item->SetID(u32(i+1));
+		game_PlayerState* p			= items[i];
+		CUIListBoxItem* item		= lst->AddItem(p->name);
+		item->SetID					(i);
+		if(selected_item_id == i)
+		{
+			if(p->name != selected_item_text)
+			{
+				selected_item_id	= u32(-1);
+				selected_item_text	= "";
+			}
+		}
 	}
 
-	if (selected_item != u32(-1))
-        lst->SetSelected(selected_item);
+	if (selected_item_id != u32(-1))
+        lst->SetSelected	(selected_item_id);
 }

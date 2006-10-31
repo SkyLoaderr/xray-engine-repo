@@ -9,10 +9,9 @@
 #include "UIStatic.h"
 #include "UIXmlInit.h"
 
-IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);
+IC bool	DM_Compare_Players		(game_PlayerState* p1, game_PlayerState* p2);
 
 CUIStatsPlayerList::CUIStatsPlayerList(){
-	m_cmp_func		= DM_Compare_Players;
 	m_CurTeam		= 0;
 	m_bSpectator	= false;
 	m_bStatus_mode  = false;
@@ -23,7 +22,8 @@ CUIStatsPlayerList::CUIStatsPlayerList(){
 	m_i.c = 0xff000000;	m_i.f = NULL;	m_i.h = 16;
 	m_h = m_i;
 	m_t = m_i;
-	m_prev_upd_time = 0; items.reserve(32);
+	m_prev_upd_time = 0;
+//.	items.reserve(32);
 }
 
 CUIStatsPlayerList::~CUIStatsPlayerList(){
@@ -193,9 +193,14 @@ void CUIStatsPlayerList::InitTeamHeader(CUIXml& xml_doc, LPCSTR path){
 }
 
 void CUIStatsPlayerList::Update(){
+
 	static string512 teaminfo;
 	if (m_prev_upd_time > Device.dwTimeContinual - 100)
 		return;
+
+	DEFINE_VECTOR	(game_PlayerState*,ItemVec,ItemIt);
+	ItemVec			items;
+
 	m_prev_upd_time = Device.dwTimeContinual;
 	game_cl_GameState::PLAYERS_MAP_IT I=Game().players.begin();
 	game_cl_GameState::PLAYERS_MAP_IT E=Game().players.end();
@@ -248,8 +253,7 @@ void CUIStatsPlayerList::Update(){
 			ShowHeader(true);
 	}
 
-	if (m_cmp_func)
-        std::sort(items.begin(), items.end(), m_cmp_func);
+    std::sort(items.begin(), items.end(), DM_Compare_Players);
 
 	int n = (int)items.size();
 	n -= m_pad->GetChildWndList().size();
@@ -290,9 +294,6 @@ void CUIStatsPlayerList::Update(){
 	CUIScrollView::Update();	
 }
 
-void CUIStatsPlayerList::SetCmpFunc(player_cmp_func pf){
-	m_cmp_func = pf;
-}
 
 void CUIStatsPlayerList::SetSpectator(bool f){
     m_bSpectator = f;

@@ -40,13 +40,9 @@ void CUIInventoryWnd::EatCurrentItem()
 #include "../Antirad.h"
 void CUIInventoryWnd::ActivatePropertiesBox()
 {
-	float x,y;
 	// Флаг-признак для невлючения пункта контекстного меню: Dreess Outfit, если костюм уже надет
 	bool bAlreadyDressed = false; 
 
-	Frect rect;
-	GetAbsoluteRect(rect);
-	GetUICursor()->GetPos(x,y);
 		
 	UIPropertiesBox.RemoveAll();
 
@@ -196,7 +192,34 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 
 	UIPropertiesBox.AutoUpdateSize	();
 	UIPropertiesBox.BringAllToTop	();
-	UIPropertiesBox.Show			(x-rect.left, y-rect.top);
+
+	float							x,y;
+	Frect							vis_rect;
+	Fvector2						prop_size;
+	Fvector2						prop_pos;
+	GetAbsoluteRect					(vis_rect);
+	prop_size						= UIPropertiesBox.GetWndSize();
+	GetUICursor()->GetPos			(x,y);
+
+	x								-= vis_rect.left;
+	y								-= vis_rect.top;
+
+	if(x-prop_size.x > vis_rect.x1 && y+prop_size.y < vis_rect.y2)
+	{
+		prop_pos.set				(x-prop_size.x, y);
+	}else
+	if(x-prop_size.x > vis_rect.x1 && y-prop_size.y > vis_rect.y1)
+	{
+		prop_pos.set				(x-prop_size.x, y-prop_size.y);
+	}else
+	if(x+prop_size.x < vis_rect.x2 && y-prop_size.y > vis_rect.y1)
+	{
+		prop_pos.set				(x, y-prop_size.y);
+	}else
+		prop_pos.set				(x, y);
+
+//	prop_pos.set					(x, y);
+	UIPropertiesBox.Show			(prop_pos.x, prop_pos.y);
 	PlaySnd							(eInvProperties);
 }
 

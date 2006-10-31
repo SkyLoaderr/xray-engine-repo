@@ -85,7 +85,7 @@ protected:
 	virtual		u8						GetTeamCount			() { return 2; };
 };
 
-IC bool	TDM_Compare_Players		(LPVOID v1, LPVOID v2)
+IC bool	TDM_Compare_Players		(game_PlayerState* p1, game_PlayerState* p2)
 {
-	return DM_Compare_Players(v1, v2);
+	return DM_Compare_Players(p1, p2);
 };

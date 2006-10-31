@@ -344,22 +344,6 @@ CUIWindow* CUIScrollView::GetSelected(){
 	return NULL;
 }
 
-CUIWindow* CUIScrollView::GetSelectedLast(){
-	if(!m_flags.test(eItemsSelectabe))
-		return NULL;
-
-	WINDOW_LIST_it it = m_pad->GetChildWndList().end();
-	it--;
-
-	for(; m_pad->GetChildWndList().begin()!=it; it--)
-	{
-		if (smart_cast<CUISelectable*>(*it)->GetSelected())
-			return *it;
-	}
-
-    return NULL;
-}
-
 void CUIScrollView::UpdateChildrenLenght(){
 	float len = GetDesiredChildWidth();
 	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end()!=it; ++it)

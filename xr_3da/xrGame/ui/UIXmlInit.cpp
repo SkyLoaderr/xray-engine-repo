@@ -1227,8 +1227,8 @@ bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, C
 bool CUIXmlInit::InitListBox(CUIXml& xml_doc, const char* path, int index, CUIListBox* pWnd){
 	InitScrollView(xml_doc, path, index, pWnd);
 
-	bool b = (1==xml_doc.ReadAttribInt(path, index, "multiselect",0));
-	pWnd->m_flags.set					(CUIScrollView::eMultiSelect, b);
+//.	bool b = (1==xml_doc.ReadAttribInt(path, index, "multiselect",0));
+//.	pWnd->m_flags.set					(CUIScrollView::eMultiSelect, b);
 
 	char _path[512];
 

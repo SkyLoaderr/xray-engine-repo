@@ -161,4 +161,4 @@ public:
 	virtual		void				OnGameRoundStarted				();
 };
 
-IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);
+IC bool	DM_Compare_Players		(game_PlayerState* p1, game_PlayerState* p2);

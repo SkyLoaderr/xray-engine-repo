@@ -158,7 +158,7 @@ EGameTypes CUIMapList::GetCurGameType(){
 
 const char* CUIMapList::GetCommandLine(LPCSTR player_name){
 	char buf[16];
-	LPCSTR txt = m_pList2->GetFirstText();
+	LPCSTR txt = m_pList2->GetText(0);
 	if (NULL == txt)
 		return NULL;
 	if (0 == txt[0])
@@ -235,11 +235,11 @@ void	CUIMapList::SaveMapList(){
 	if (!MapRotFile)
 		return;
 	
-	LPCSTR txt = m_pList2->GetFirstText();
-
-	while(txt){
+	
+	for(u32 idx=0; idx<m_pList2->GetSize(); ++idx)
+	{
+		LPCSTR txt = m_pList2->GetText(idx);
 		fprintf(MapRotFile, "sv_addmap %s\n", txt);
-		txt = m_pList2->GetNextText();
 	}
 
 	fclose(MapRotFile);
@@ -310,7 +310,8 @@ void CUIMapList::Update(){
 }
 
 void CUIMapList::OnBtnRightClick(){
-	if(m_pList2->AddItem(m_pList1->GetSelectedText()))
+	m_pList2->AddItem(m_pList1->GetSelectedText());
+/*
 	{
 		LPCSTR next = m_pList1->GetNextSelectedText();
 		while(next)
@@ -318,8 +319,9 @@ void CUIMapList::OnBtnRightClick(){
 			m_pList2->AddItem(next);
 			next = m_pList1->GetNextSelectedText();
 		}
-		m_pList1->DeselectAll();
+		m_pList1->SetSelected( (CUIWindow*)NULL );
 	}
+*/
 }
 
 void CUIMapList::OnBtnUpClick(){

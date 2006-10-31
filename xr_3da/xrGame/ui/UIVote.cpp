@@ -69,7 +69,8 @@ void CUIVote::Update(){
 	game_cl_GameState::PLAYERS_MAP_IT I=Game().players.begin();
 	game_cl_GameState::PLAYERS_MAP_IT E=Game().players.end();
 
-	items.clear			();
+	DEFINE_VECTOR	(game_PlayerState*,ItemVec,ItemIt);
+	ItemVec			items;
 	for (;I!=E;++I)		
 	{
 //		game_PlayerState* p = (game_PlayerState*) I->second;
@@ -83,7 +84,7 @@ void CUIVote::Update(){
 	list[2]->Clear();
 
 	for (u32 i = 0; i<items.size(); i++){
-		game_PlayerState* p = reinterpret_cast<game_PlayerState*>(items[i]);
+		game_PlayerState* p					= items[i];
 		if (p->m_bCurrentVoteAgreed == 1)
 			list[0]->AddItem(p->name);
 		else if (p->m_bCurrentVoteAgreed == 0)
