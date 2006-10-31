@@ -92,7 +92,7 @@ extern void BuildStackTrace ();
 extern char g_stackTrace[100][256];
 extern int g_stackTraceCount;
 
-void xrDebug::backend(const char *expression, const char *description, const char *arguments, const char *file, int line, const char *function, bool &ignore_always) 
+void xrDebug::backend(const char *expression, const char *description, const char *argument0, const char *argument1, const char *file, int line, const char *function, bool &ignore_always) 
 {
 	static xrCriticalSection CS;
 
@@ -109,8 +109,14 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 			buffer		+= sprintf(buffer,"%sFATAL ERROR%s%s",endline,endline,endline);
 		buffer			+= sprintf(buffer,"%sExpression    : %s%s",prefix,expression,endline);
 		buffer			+= sprintf(buffer,"%sDescription   : %s%s",prefix,description,endline);
-		if (arguments)
-			buffer		+= sprintf(buffer,"%sArguments     : %s%s",prefix,arguments,endline);
+		if (argument0) {
+			if (argument1) {
+				buffer	+= sprintf(buffer,"%sArgument 0    : %s%s",prefix,argument0,endline);
+				buffer	+= sprintf(buffer,"%sArgument 1    : %s%s",prefix,argument1,endline);
+			}
+			else
+				buffer	+= sprintf(buffer,"%sArguments     : %s%s",prefix,argument0,endline);
+		}
 		buffer			+= sprintf(buffer,"%sFunction      : %s%s",prefix,function,endline);
 		buffer			+= sprintf(buffer,"%sFile          : %s%s",prefix,file,endline);
 		buffer			+= sprintf(buffer,"%sLine          : %d%s",prefix,line,endline);
@@ -194,22 +200,27 @@ LPCSTR xrDebug::error2string	(long code)
 
 void xrDebug::error		(long hr, const char* expr, const char *file, int line, const char *function, bool &ignore_always)
 {
-	backend		(error2string(hr),expr,0,file,line,function,ignore_always);
+	backend		(error2string(hr),expr,0,0,file,line,function,ignore_always);
 }
 
 void xrDebug::fail		(const char *e1, const char *file, int line, const char *function, bool &ignore_always)
 {
-	backend		("assertion failed",e1,0,file,line,function,ignore_always);
+	backend		("assertion failed",e1,0,0,file,line,function,ignore_always);
 }
 
 void xrDebug::fail		(const char *e1, const char *e2, const char *file, int line, const char *function, bool &ignore_always)
 {
-	backend		(e1,e2,0,file,line,function,ignore_always);
+	backend		(e1,e2,0,0,file,line,function,ignore_always);
 }
 
 void xrDebug::fail		(const char *e1, const char *e2, const char *e3, const char *file, int line, const char *function, bool &ignore_always)
 {
-	backend		(e1,e2,e3,file,line,function,ignore_always);
+	backend		(e1,e2,e3,0,file,line,function,ignore_always);
+}
+
+void xrDebug::fail		(const char *e1, const char *e2, const char *e3, const char *e4, const char *file, int line, const char *function, bool &ignore_always)
+{
+	backend		(e1,e2,e3,e4,file,line,function,ignore_always);
 }
 
 void __cdecl xrDebug::fatal(const char *file, int line, const char *function, const char* F,...)
@@ -223,7 +234,7 @@ void __cdecl xrDebug::fatal(const char *file, int line, const char *function, co
 
 	bool		ignore_always = true;
 
-	backend		("fatal error","<no expression>",buffer,file,line,function,ignore_always);
+	backend		("fatal error","<no expression>",buffer,0,file,line,function,ignore_always);
 }
 
 int __cdecl _out_of_memory	(size_t size)

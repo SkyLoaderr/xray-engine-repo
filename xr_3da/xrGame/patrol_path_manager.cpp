@@ -132,7 +132,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 			default			: NODEFAULT;
 		}
 		VERIFY3				(vertex || show_restrictions(m_object),*m_path_name,*m_game_object->cName());
-		VERIFY3				(ai().level_graph().valid_vertex_id(vertex->data().level_vertex_id()),*m_path_name,*m_game_object->cName());
+		VERIFY4				(ai().level_graph().valid_vertex_id(vertex->data().level_vertex_id()),*m_path_name,*m_game_object->cName(),*vertex->data().name());
 
 		if (!m_path->vertex(m_prev_point_index))
 			m_prev_point_index	= vertex->vertex_id();
