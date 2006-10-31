@@ -11,6 +11,12 @@
 #include "xrServer_Objects_ALife.h"
 #include "ai_space.h"
 #include "../IGame_Persistent.h"
+#include "script_engine.h"
+
+#pragma warning(push)
+#pragma warning(disable:4995)
+#include <luabind/functor.hpp>
+#pragma warning(pop)
 
 LPCSTR alife_section = "alife";
 
@@ -41,6 +47,11 @@ CALifeSimulator::CALifeSimulator		(xrServer *server, shared_str *command_line) :
 	strcat						(temp,p.m_alife);
 	*command_line				= temp;
 	
+	LPCSTR						start_game_callback = pSettings->r_string(alife_section,"start_game_callback");
+	luabind::functor<void>		functor;
+	R_ASSERT2					(ai().script_engine().functor(start_game_callback,functor),"failed to get start game callback");
+	functor						();
+
 	load						(p.m_game_or_spawn,!xr_strcmp(p.m_new_or_load,"load") ? false : true, !xr_strcmp(p.m_new_or_load,"new"));
 }
 

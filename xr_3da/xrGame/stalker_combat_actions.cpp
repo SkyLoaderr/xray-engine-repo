@@ -39,7 +39,7 @@
 
 #define DISABLE_COVER_BEFORE_DETOUR
 
-#ifdef DEBUG
+#if 0//def DEBUG
 #	define TEST_MENTAL_STATE
 #endif // DEBUG
 
