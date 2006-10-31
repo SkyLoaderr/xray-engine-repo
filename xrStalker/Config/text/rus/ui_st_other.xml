@@ -1,17 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <string_table>
 	<string id="ui_mm_default">
-		<text>РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ</text>
+		<text>По умолчанию</text>
 	</string>
 		<string id="kb_artefact">
-		<text>РђСЂС‚РµС„Р°РєС‚</text>
+		<text>Артефакт</text>
 	</string>
 	<string id="ui_mm_need_restart">
-		<text>Р”Р»СЏ С‚РѕРіРѕ С‡С‚РѕР±С‹ РЅР°СЃС‚СѓРїРёР»Рё РёР·РјРµРЅРµРЅРёСЏ РЅРµРѕР±С…РѕРґРёРјРѕ РїРµСЂРµР·Р°РїСѓСЃС‚РёС‚СЊ РёРіСЂСѓ</text>		
+		<text>Для того, чтобы наступили изменения, необходимо перезапустить игру</text>		
 	</string>
 	<string id="ui_mm_render_2">
-		<text>Р РµРЅРґРµСЂ 2</text>
+		<text>Рендер-2</text>
 	</string>
 	
 </string_table>
