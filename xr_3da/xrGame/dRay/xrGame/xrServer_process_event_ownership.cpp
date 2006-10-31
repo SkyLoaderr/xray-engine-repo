@@ -24,7 +24,7 @@ void xrServer::Process_event_ownership(NET_Packet& P, ClientID sender, u32 time,
 	xrClientData*		c_parent	= e_parent->owner;
 	xrClientData*		c_entity	= e_entity->owner;
 	xrClientData*		c_from		= ID_to_client	(sender);
-	if (c_parent != c_from)					return;	//. hack
+	if ((GetServerClient() != c_from) && (c_parent != c_from))					return;	//. hack
 	//R_ASSERT			(c_parent == c_from);		// assure client only send request for local units
 	
 
