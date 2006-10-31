@@ -32,7 +32,7 @@
 #		define VERIFY(expr)
 #		define VERIFY2(expr, e2)
 #		define VERIFY3(expr, e2, e3)
-#		define VERIFY3(expr, e2, e3, e4)
+#		define VERIFY4(expr, e2, e3, e4)
 #		define CHK_DX(a) a
 #	endif
 #else // __BORLANDC__
