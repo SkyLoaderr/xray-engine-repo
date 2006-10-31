@@ -1190,3 +1190,7 @@ function get_texture_info(id_name, id_default)
 	r.y2 = r.y2 - r.y1
 	return task_info:get_file_name(), r
 end
+
+function start_game_callback	()
+	printf	("start_game_callback called")
+end
