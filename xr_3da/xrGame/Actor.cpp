@@ -403,11 +403,11 @@ if(!g_pGamePersistent->bDedicatedServer)
 	m_AutoPickUp_AABB_Offset		= READ_IF_EXISTS(pSettings,r_fvector3,section,"AutoPickUp_AABB_offs",Fvector().set(0, 0, 0));
 
 	CStringTable string_table;
-	m_sCharacterUseAction			= string_table.translate("character_use");
-	m_sDeadCharacterUseAction		= string_table.translate("dead_character_use");
-	m_sCarCharacterUseAction		= string_table.translate("car_character_use");
-	m_sInventoryItemUseAction		= string_table.translate("inventory_item_use");
-	m_sInventoryBoxUseAction		= string_table.translate("inventory_box_use");
+	m_sCharacterUseAction			= "character_use";
+	m_sDeadCharacterUseAction		= "dead_character_use";
+	m_sCarCharacterUseAction		= "car_character_use";
+	m_sInventoryItemUseAction		= "inventory_item_use";
+	m_sInventoryBoxUseAction		= "inventory_box_use";
 	//---------------------------------------------------------------------
 	m_sHeadShotParticle	= READ_IF_EXISTS(pSettings,r_string,section,"HeadShotParticle",0);
 

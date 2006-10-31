@@ -926,12 +926,12 @@ void CUIMainIngameWnd::RenderQuickInfos()
 
 	if(NULL!=actor_action){
 		if(stricmp(actor_action,UIStaticQuickHelp.GetText()))
-			UIStaticQuickHelp.SetText				(actor_action);
+			UIStaticQuickHelp.SetTextST				(actor_action);
 	}
 
 	if (pObject!=m_pActor->ObjectWeLookingAt())
 	{
-		UIStaticQuickHelp.SetText				(actor_action);
+		UIStaticQuickHelp.SetTextST				(actor_action);
 		UIStaticQuickHelp.ResetAnimation		();
 		pObject	= m_pActor->ObjectWeLookingAt	();
 	}

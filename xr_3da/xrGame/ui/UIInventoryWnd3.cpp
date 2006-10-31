@@ -193,33 +193,13 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	UIPropertiesBox.AutoUpdateSize	();
 	UIPropertiesBox.BringAllToTop	();
 
-	float							x,y;
+	Fvector2						cursor_pos;
 	Frect							vis_rect;
-	Fvector2						prop_size;
-	Fvector2						prop_pos;
+
 	GetAbsoluteRect					(vis_rect);
-	prop_size						= UIPropertiesBox.GetWndSize();
-	GetUICursor()->GetPos			(x,y);
-
-	x								-= vis_rect.left;
-	y								-= vis_rect.top;
-
-	if(x-prop_size.x > vis_rect.x1 && y+prop_size.y < vis_rect.y2)
-	{
-		prop_pos.set				(x-prop_size.x, y);
-	}else
-	if(x-prop_size.x > vis_rect.x1 && y-prop_size.y > vis_rect.y1)
-	{
-		prop_pos.set				(x-prop_size.x, y-prop_size.y);
-	}else
-	if(x+prop_size.x < vis_rect.x2 && y-prop_size.y > vis_rect.y1)
-	{
-		prop_pos.set				(x, y-prop_size.y);
-	}else
-		prop_pos.set				(x, y);
-
-//	prop_pos.set					(x, y);
-	UIPropertiesBox.Show			(prop_pos.x, prop_pos.y);
+	GetUICursor()->GetPos			(cursor_pos.x, cursor_pos.y);
+	cursor_pos.sub					(vis_rect.lt);
+	UIPropertiesBox.Show			(vis_rect, cursor_pos);
 	PlaySnd							(eInvProperties);
 }
 

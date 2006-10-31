@@ -1,9 +1,3 @@
-// UIPropertiesBox.cpp: 
-//
-// окшко с собщением для выбора действий, вызывается по нажатию правой 
-// клавиши мыши
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 #include "UIPropertiesBox.h"
 #include "../hudmanager.h"
@@ -18,15 +12,10 @@
 
 #define ITEM_HEIGHT (GetFont()->CurrentHeight()+2.0f)
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
 CUIPropertiesBox::CUIPropertiesBox()
 {
-//	m_iClickedElement = -1;
-	SetFont(HUD().Font().pFontArial14);
-	m_UIListWnd.SetImmediateSelection(true);
+	SetFont								(HUD().Font().pFontArial14);
+	m_UIListWnd.SetImmediateSelection	(true);
 }
 
 CUIPropertiesBox::~CUIPropertiesBox()
@@ -36,30 +25,21 @@ CUIPropertiesBox::~CUIPropertiesBox()
 
 void CUIPropertiesBox::Init(float x, float y, float width, float height)
 {
-	inherited::Init(x,y, width, height);
+	inherited::Init			(x,y, width, height);
 
-	AttachChild(&m_UIListWnd);
+	AttachChild				(&m_UIListWnd);
 
-	CUIXml	xml_doc;
-	xml_doc.Init(CONFIG_PATH, UI_PATH, "inventory_new.xml");
+	CUIXml					xml_doc;
+	xml_doc.Init			(CONFIG_PATH, UI_PATH, "inventory_new.xml");
 
-	LPCSTR t = xml_doc.Read("properties_box:texture", 0, "");
-	R_ASSERT(t);
-	InitTexture(t);
+	LPCSTR t = xml_doc.Read	("properties_box:texture", 0, "");
+	R_ASSERT				(t);
+	InitTexture				(t);
 
-	CUIXmlInit::InitListBox(xml_doc, "properties_box:list", 0, &m_UIListWnd);
+	CUIXmlInit::InitListBox	(xml_doc, "properties_box:list", 0, &m_UIListWnd);
 
-//	m_UIListWnd.SetItemHeight(ITEM_HEIGHT);
-		
-	m_UIListWnd.Init(OFFSET_X,
-					 OFFSET_Y, 
-					 width - OFFSET_X*2, 
-					 height - OFFSET_Y*2);
-
-
+	m_UIListWnd.Init		(OFFSET_X, OFFSET_Y, width - OFFSET_X*2, height - OFFSET_Y*2);
 }
-
-
 
 void CUIPropertiesBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
@@ -67,19 +47,15 @@ void CUIPropertiesBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		if(msg == LIST_ITEM_CLICKED)
 		{
-//			m_iClickedElement = this->m_UIListWnd.GetSelectedItem()->getin;
-			GetMessageTarget()->SendMessage(this, PROPERTY_CLICKED);
-			
-			Hide();
+			GetMessageTarget()->SendMessage	(this, PROPERTY_CLICKED);
+			Hide							();
 		}
 	}
-
 	inherited::SendMessage(pWnd, msg, pData);
 }
 
 bool CUIPropertiesBox::AddItem(const char*  str, void* pData, int value)
 {
-	//return m_UIListWnd.AddItem<CUIListItem>(str, 0, pData, value);
 	CUIListBoxItem* itm		= m_UIListWnd.AddItem(str);
 	itm->SetID				(u32(value));
 	itm->SetData			(pData);
@@ -96,39 +72,37 @@ void CUIPropertiesBox::RemoveAll()
 	m_UIListWnd.Clear();
 }
 
-void CUIPropertiesBox::Show(float x, float y)
+void CUIPropertiesBox::Show(const Frect& parent_rect, const Fvector2& point)
 {
-	float x_pos, y_pos;
+	Fvector2						prop_pos;
+	Fvector2 prop_size				= GetWndSize();
 
+	if(point.x-prop_size.x > parent_rect.x1 && point.y+prop_size.y < parent_rect.y2)
+	{
+		prop_pos.set				(point.x-prop_size.x, point.y);
+	}else
+	if(point.x-prop_size.x > parent_rect.x1 && point.y-prop_size.y > parent_rect.y1)
+	{
+		prop_pos.set				(point.x-prop_size.x, point.y-prop_size.y);
+	}else
+	if(point.x+prop_size.x < parent_rect.x2 && point.y-prop_size.y > parent_rect.y1)
+	{
+		prop_pos.set				(point.x, point.y-prop_size.y);
+	}else
+		prop_pos.set				(point.x, point.y);
 
-	//выбрать позицию, чтобы окношко полностью влазило в экран
-	if(x+GetWidth()<UI_BASE_WIDTH)
-		x_pos = x;
-	else
-		x_pos = x - (x+GetWidth() - UI_BASE_WIDTH  );
-	
-	if(y+GetHeight()<UI_BASE_HEIGHT)
-		y_pos = y;
-	else
-		y_pos = y - (y+GetHeight() - UI_BASE_HEIGHT  );
-		
-	SetWndPos			(x_pos,y_pos);
+	SetWndPos						(prop_pos);
 
-	inherited::Show		(true);
-	inherited::Enable	(true);
+	inherited::Show					(true);
+	inherited::Enable				(true);
 
-	ResetAll();
+	ResetAll						();
 
-	//сразу захватываем ввод мыши
-	GetParent()->SetCapture(this, true);
-	//запретить дочерним окнам изментять захват мыши 
-	//по отношению к нашему родительскому окну
-	m_pOrignMouseCapturer = this;
-	
-//	m_iClickedElement = -1;
-
+	GetParent()->SetCapture			(this, true);
+	m_pOrignMouseCapturer			= this;
 	m_UIListWnd.Reset();
 }
+
 void CUIPropertiesBox::Hide()
 {
 	CUIWindow::Show(false);

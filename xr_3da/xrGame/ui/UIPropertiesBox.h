@@ -1,9 +1,3 @@
-// UIPropertiesBox.h: 
-//
-// окшко с собщением для выбора действий, вызывается по нажатию правой 
-// клавиши мыши
-//////////////////////////////////////////////////////////////////////
-
 #pragma once
 
 
@@ -17,50 +11,36 @@ class CUIPropertiesBox: public CUIFrameWindow
 private:
 	typedef CUIFrameWindow inherited; 
 public:
-	////////////////////////////////////
-	//конструктор/деструктор
-	CUIPropertiesBox();
-	virtual ~CUIPropertiesBox();
+						CUIPropertiesBox					();
+	virtual				~CUIPropertiesBox					();
 
-
-	////////////////////////////////////
-	//инициализация
-	virtual void Init(float x, float y, float width, float height);
+	virtual void		Init								(float x, float y, float width, float height);
 
 
 
-	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual bool OnMouse(float x, float y, EUIMessages mouse_action);
+	virtual void		SendMessage							(CUIWindow *pWnd, s16 msg, void *pData);
+	virtual bool		OnMouse								(float x, float y, EUIMessages mouse_action);
+	virtual bool		OnKeyboard							(int dik, EUIMessages keyboard_action);
 
-	bool AddItem(const char*  str, void* pData = NULL, int value = 0);
-	bool AddItem_script(const char*  str){return AddItem(str);};
-	u32	 GetItemsCount () {return m_UIListWnd.GetSize();};
-	void RemoveItem(int index);
-	void RemoveAll();
+	bool				AddItem								(const char*  str, void* pData = NULL, int value = 0);
+	bool				AddItem_script						(const char*  str){return AddItem(str);};
+	u32					GetItemsCount						() {return m_UIListWnd.GetSize();};
+	void				RemoveItem							(int index);
+	void				RemoveAll							();
 
-	virtual void Show(float x, float y);
-	virtual void Hide();
+	virtual void		Show								(const Frect& parent_rect, const Fvector2& point);
+	virtual void		Hide								();
 
-	virtual void Update();
-	virtual void Draw();
+	virtual void		Update								();
+	virtual void		Draw								();
 
+	CUIListBoxItem*		GetClickedItem						();
 
-	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
-
-	//возращает индекс нажатого элемента или -1 если
-	//такого элемента не было
-//	int GetClickedIndex();
-	//возвращает нажатый элемент или NULL если нет такого
-	CUIListBoxItem* GetClickedItem();
-
-	//автоматическое изменение размеров в зависимости от количества
-	//элементов
-	void AutoUpdateSize();
+	void				AutoUpdateSize						();
 
 protected:
-	CUIListBox m_UIListWnd;
+	CUIListBox			m_UIListWnd;
 
-//	int m_iClickedElement;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

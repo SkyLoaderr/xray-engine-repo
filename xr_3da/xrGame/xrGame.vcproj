@@ -5369,19 +5369,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ScriptStringTable"
-						Filter="">
-						<File
-							RelativePath=".\script_string_table.cpp">
-						</File>
-						<File
-							RelativePath=".\script_string_table.h">
-						</File>
-						<File
-							RelativePath=".\script_string_table_script.cpp">
-						</File>
-					</Filter>
-					<Filter
 						Name="UI"
 						Filter="">
 						<File

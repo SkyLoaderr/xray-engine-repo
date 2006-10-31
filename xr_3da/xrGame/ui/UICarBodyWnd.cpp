@@ -389,10 +389,6 @@ bool CUICarBodyWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 void CUICarBodyWnd::ActivatePropertiesBox()
 {
 	if(m_pInventoryBox)	return;
-	float x,y;
-
-	Frect rect;	GetAbsoluteRect(rect);
-	GetUICursor()->GetPos(x,y);
 		
 	m_pUIPropertiesBox->RemoveAll();
 	
@@ -439,7 +435,14 @@ void CUICarBodyWnd::ActivatePropertiesBox()
 	if(b_show){
 		m_pUIPropertiesBox->AutoUpdateSize	();
 		m_pUIPropertiesBox->BringAllToTop	();
-		m_pUIPropertiesBox->Show			(x-rect.left, y-rect.top);
+
+		Fvector2						cursor_pos;
+		Frect							vis_rect;
+
+		GetAbsoluteRect					(vis_rect);
+		GetUICursor()->GetPos			(cursor_pos.x, cursor_pos.y);
+		cursor_pos.sub					(vis_rect.lt);
+		m_pUIPropertiesBox->Show		(vis_rect, cursor_pos);
 	}
 }
 

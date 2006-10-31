@@ -4,6 +4,7 @@
 #include "../xr_input.h"
 #include "../xr_ioc_cmd.h"
 #include "xr_level_controller.h"
+#include "string_table.h"
  
 //************************************************ Input
 int key_binding			[ 2048	];
@@ -207,6 +208,8 @@ public:
 			Log("! Can't bind action: ", action);
 			Log("! Syntax error. See 'list_actions'.");
 		}
+		
+		CStringTable::ReparseKeyBindings();
 	}
 	virtual void Save(IWriter* F) 
 	{
@@ -241,6 +244,7 @@ public:
 				}
 			}
 		}
+		CStringTable::ReparseKeyBindings();
 	}
 };
 

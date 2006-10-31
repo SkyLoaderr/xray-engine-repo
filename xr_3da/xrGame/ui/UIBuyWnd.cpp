@@ -751,13 +751,9 @@ MP_BUY_SLOT CUIBuyWnd::GetLocalSlot(u32 slot){
 
 void CUIBuyWnd::ActivatePropertiesBox()
 {
-	float x,y;
 	// Флаг-признак для невлючения пункта контекстного меню: Dreess Outfit, если костюм уже надет
 	bool bAlreadyDressed = false; 
 
-	Frect rect; 
-	GetAbsoluteRect(rect);
-	GetUICursor()->GetPos(x,y);
 		
 	m_propertiesBox.RemoveAll();
 	
@@ -893,8 +889,15 @@ void CUIBuyWnd::ActivatePropertiesBox()
 	if (m_propertiesBox.GetItemsCount() == 0) return;
 	m_propertiesBox.AutoUpdateSize	();
 	m_propertiesBox.BringAllToTop	();
-	m_propertiesBox.Show			(x-rect.left, y-rect.top);
-//	PlaySnd							(eInvProperties);
+
+	Fvector2						cursor_pos;
+	Frect							vis_rect;
+
+	GetAbsoluteRect					(vis_rect);
+	GetUICursor()->GetPos			(cursor_pos.x, cursor_pos.y);
+	cursor_pos.sub					(vis_rect.lt);
+	m_propertiesBox.Show			(vis_rect, cursor_pos);
+
 }
 
 bool CUIBuyWnd::CanPutInSlot(CInventoryItem* iitm){
