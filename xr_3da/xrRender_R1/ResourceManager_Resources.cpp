@@ -187,9 +187,18 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 		/*if (HW.Caps.geometry.dwVersion>=CAP_VERSION(3,0))			target="vs_3_0";
 		else*/ if (HW.Caps.geometry_major>=2)						c_target="vs_2_0";
 		else 														c_target="vs_1_1";
-		if (strstr(LPCSTR(fs->pointer()),"main_vs_1_1"))			{ c_target = "vs_1_1"; c_entry = "main_vs_1_1";	}
-		if (strstr(LPCSTR(fs->pointer()),"main_vs_2_0"))			{ c_target = "vs_2_0"; c_entry = "main_vs_2_0";	}
 
+		LPSTR pfs = (LPSTR)Memory.mem_alloc	( fs->length() + 1 
+#ifdef DEBUG
+								 , "tmp_file"
+#endif
+		);
+		strncpy(pfs, (LPCSTR)fs->pointer(), fs->length());
+		pfs[fs->length()] = 0;
+
+		if (strstr(pfs, "main_vs_1_1"))			{ c_target = "vs_1_1"; c_entry = "main_vs_1_1";	}
+		if (strstr(pfs, "main_vs_2_0"))			{ c_target = "vs_2_0"; c_entry = "main_vs_2_0";	}
+		Memory.mem_free(pfs);
 		// vertex
 		R_ASSERT2					(fs,cname);
 		_hr = ::Render->shader_compile(name,LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR /*| D3DXSHADER_PREFER_FLOW_CONTROL*/, &pShaderBuf, &pErrorBuf, NULL);
