@@ -26,9 +26,9 @@
 	<static_player_name x="137" y="143" width="100" height="24">		
 		<text font="letterica16" r="129" g="123" b="113" complex_mode="0">mm_mp_player_name</text>
 	</static_player_name>
-	<edit_player_name x="237" y="143" width="236" height="24">
+	<edit_player_name x="237" y="143" width="215" height="24" max_symb_count="17">
 		<options_item entry="mm_net_player_name" group="mm_mp_client"/>
-		<text font="letterica18" r="235" g="219" b="185"></text>
+		<text font="letterica18" r="235" g="219" b="185"/>
 	</edit_player_name>
 	<cap_cd_key x="561" y="143" width="70" height="24">
 		<text font="letterica16" r="129" g="123" b="113" complex_mode="0">mm_mp_cd_key</text>
@@ -184,7 +184,7 @@
 		<check_full x="570" y="65" width="80" height="18">
 			<text font="letterica16" r="115" g="114" b="112">mm_mp_full</text>
 		</check_full>
-		<check_with_pass x="570" y="90" width="150" height="18">
+		<check_with_pass x="570" y="90" width="40" height="18">
 			<text font="letterica16" r="115" g="114" b="112">mm_mp_withpassword</text>
 		</check_with_pass>
 		<check_without_pass x="570" y="115" width="150" height="18">
@@ -243,12 +243,12 @@
 			<options_item entry="mm_net_srv_gamemode" group="mm_mp_server"/>	
 		</spin_game_mode>
 		
-		<edit_server_name x="150" y="40" width="275" height="21">
+		<edit_server_name x="150" y="40" width="275" height="21" max_symb_count="24">
 			<text font="letterica16" r="235" g="219" b="185" x="2" complex_mode="0"></text>
 			<options_item entry="mm_net_srv_name" group="mm_mp_server"/>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_server_name>		
-		<edit_password x="150" y="65" width="275" height="21" password="1">		
+		<edit_password x="150" y="65" width="275" height="21" password="1" max_symb_count="8">		
 			<text font="letterica16" r="235" g="219" b="185" x="2" complex_mode="0"></text>
 			<texture>ui_linetextSmall_e</texture>
 		</edit_password>

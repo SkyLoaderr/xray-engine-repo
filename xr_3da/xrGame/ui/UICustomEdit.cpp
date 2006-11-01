@@ -19,6 +19,7 @@ static xr_map<u32, char> gs_DIK2CHR;
 
 CUICustomEdit::CUICustomEdit()
 {
+	m_max_symb_count		= u32(-1);
 	char l_c;
 	for(l_c = 'a'; l_c <= 'z'; ++l_c) 
 		gs_DIK2CHR[DILetters[l_c-'a']] = l_c;
@@ -260,10 +261,11 @@ bool CUICustomEdit::KeyReleased(int dik)
 void CUICustomEdit::AddChar(char c)
 {
 	float text_length;
-	text_length = m_lines.GetFont()->SizeOf_/*Rel*/(m_lines.GetText());
+	text_length = m_lines.GetFont()->SizeOf_(m_lines.GetText());
 
-	if (!m_lines.GetTextComplexMode() && (text_length > GetWidth() - 1))
-            return;
+	if(xr_strlen(m_lines.GetText()) >= m_max_symb_count)					return;
+
+	if (!m_lines.GetTextComplexMode() && (text_length > GetWidth() - 1))	return;
 	m_lines.AddCharAtCursor(c);
 	m_lines.ParseText();
 	if (m_lines.GetTextComplexMode())

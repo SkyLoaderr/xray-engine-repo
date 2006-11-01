@@ -4,6 +4,7 @@
 #include "UIWindow.h"
 
 class CUICustomEdit : public CUIWindow, public CUILinesOwner {
+	u32				m_max_symb_count;
 public:
 	CUICustomEdit();
 	virtual ~CUICustomEdit();
@@ -26,7 +27,7 @@ public:
 			void	CaptureFocus	(bool bCapture) { m_bInputFocus = bCapture; }
 	virtual	void	SetText			(LPCSTR str);
 	virtual const char* GetText();
-
+			void	SetMaxCharCount	(u32 cnt)			{m_max_symb_count = cnt;}
 	virtual void	Enable			(bool status);
 			void	SetNumbersOnly	(bool status);
 			void	SetFloatNumbers	(bool status);

@@ -789,6 +789,10 @@ bool CUIXmlInit::InitCustomEdit(CUIXml& xml_doc, const char* path, int index, CU
 	if (text_y)
         pWnd->SetTextPosY(text_y);
 
+	int cnt = xml_doc.ReadAttribInt(path, index, "max_symb_count",0);
+	if (cnt!=0)
+		pWnd->SetMaxCharCount	(cnt);
+
 	return true;
 
 }

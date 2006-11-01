@@ -91,7 +91,7 @@
 		<text>has joined</text>
 	</string>
 	<string id="mp_kick">
-		<text>Drop</text>
+		<text>Kick</text>
 	</string>
 	<string id="mp_look_at">
 		<text>(Freelook)</text>
