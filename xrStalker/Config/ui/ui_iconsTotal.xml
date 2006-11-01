@@ -51,7 +51,7 @@
     <texture id="ui_iconsTotal_esc_help_wounded_from_raid" x="83" y="188" width="83" height="47" />
     <texture id="ui_iconsTotal_garbage_meet_stalker" x="83" y="235" width="83" height="47" />
     <texture id="ui_iconsTotal_agroprom_get_military_documents" x="83" y="282" width="83" height="47" />
-    <texture id="ui_iconsTotal_agr_meet_krot_band" x="83" y="329" width="83" height="47" />
+    <texture id="ui_iconsTotal_agr_agr_help_krot" x="83" y="329" width="83" height="47" />
     <texture id="ui_iconsTotal_gar_help_dymon" x="83" y="376" width="83" height="47" />
     <texture id="ui_iconsTotal_gar_car_graveyard_quest" x="83" y="423" width="83" height="47" />
     <texture id="ui_iconsTotal_esc_blockpost_case_to_trader" x="83" y="470" width="83" height="47" />
@@ -64,7 +64,7 @@
     <texture id="ui_iconsTotal_bar_darklab_documents" x="83" y="799" width="83" height="47" />
     <texture id="ui_iconsTotal_bar_darklab_documents2" x="83" y="846" width="83" height="47" />
     <texture id="ui_iconsTotal_yan_find_scientist" x="83" y="893" width="83" height="47" />
-    <texture id="ui_iconsTotal_bar_x16_documents" x="83" y="940" width="83" height="47" />
+    <texture id="ui_iconsTotal_yan_find_vasilyev_task" x="83" y="940" width="83" height="47" />
 
     <texture id="ui_iconsTotal_yan_kill_brain_task" x="166" y="0" width="83" height="47" />
     <texture id="ui_iconsTotal_mil_kill_sniper" x="166" y="47" width="83" height="47" />
