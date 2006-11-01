@@ -202,5 +202,17 @@
 
 	<info_portion id="say_hello">
 	</info_portion>
+	
+	<!--DELME:for andy-->
+	
+	<info_portion id="pl_task_1">
+		<task>pl_task_1</task>
+	</info_portion>
+	<info_portion id="pl_task_2">
+		<task>pl_task_2</task>
+	</info_portion>
+	<info_portion id="pl_task_3">
+		<task>pl_task_3</task>
+	</info_portion>
 
 </game_information_portions>

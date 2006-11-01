@@ -106,13 +106,49 @@
 		</objective>
 	</game_task>
 
-	<game_task id="find_item">
-		<title>title</title>
+	
+	<!----------DELME:for andy-------------------->
+	
+	<game_task id="pl_task_1">
+		<title>task_1</title>
 		<objective>
-			<text>objective</text>
+			<text>objective_1</text>
 			<icon>ui_icons_task_find_item</icon>
-			<function_complete>task_manager.task_complete</function_complete>
-			<function_fail>task_manager.task_fail</function_fail>
+			<infoportion_complete>yan_labx16_switcher_1_off</infoportion_complete>
+		</objective>
+		<objective>
+			<text>objective_1</text>
+			<map_location_type>green_location</map_location_type>
+			<object_story_id>yan_labx16switcher_lamp1</object_story_id>
+			<infoportion_complete>yan_labx16_switcher_1_off</infoportion_complete>
+		</objective>
+	</game_task>
+	<game_task id="pl_task_2">
+		<title>task_2</title>
+		<objective>
+			<text>objective_1</text>
+			<icon>ui_icons_task_find_item</icon>
+			<infoportion_complete>yan_labx16_switcher_2_off</infoportion_complete>
+		</objective>
+		<objective>
+			<text>objective_1</text>
+			<map_location_type>green_location</map_location_type>
+			<object_story_id>yan_labx16switcher_lamp2</object_story_id>
+			<infoportion_complete>yan_labx16_switcher_2_off</infoportion_complete>
+		</objective>
+	</game_task>
+	<game_task id="pl_task_3">
+		<title>task_3</title>
+		<objective>
+			<text>objective_1</text>
+			<icon>ui_icons_task_find_item</icon>
+			<infoportion_complete>yan_labx16_switcher_3_off</infoportion_complete>
+		</objective>
+		<objective>
+			<text>objective_1</text>
+			<map_location_type>green_location</map_location_type>
+			<object_story_id>yan_labx16switcher_lamp3</object_story_id>
+			<infoportion_complete>yan_labx16_switcher_3_off</infoportion_complete>
 		</objective>
 	</game_task>
 
