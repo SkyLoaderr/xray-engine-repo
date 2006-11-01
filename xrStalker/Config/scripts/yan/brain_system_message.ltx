@@ -28,7 +28,7 @@ snd = system_message_3
 on_timer = 5000 | ph_idle@primary_idle %=run_cam_effector(radar_stop:2506:false)%
 
 [ph_idle@primary_idle]
-on_timer = 1000 | ph_idle@primary_idle_2 %=run_postprocess(agr_u_fade)%
+on_timer = 9000 | ph_idle@primary_idle_2 %=run_postprocess(agr_u_fade)%
 
 [ph_idle@primary_idle_2]
 on_timer = 3000 | ph_idle@primary_idle_3 %=start_yantar_dream =disable_ui%
