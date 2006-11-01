@@ -339,9 +339,10 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	g_sLaunchOnExit_params[0]	= NULL;
 	// Core
 	Core._initialize		("xray",NULL);
-	
+
 	FPU::m24r				();
 
+	
 	// auth
 	{
 		xr_vector<xr_string>	ignore, test	;
@@ -380,6 +381,12 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 			return 0;
 	};
 	
+	LPCSTR cname = "gamedata\\shaders\\r2\\deffer_tree_bump_d-hq.vs";
+	IReader*					fs			= FS.r_open(cname);
+	LPCSTR	fsp = (LPCSTR) fs->pointer();
+	Msg(fsp);
+	FS.r_close					(fs);
+
 	CCC_LoadCFG_custom*	pTmp = xr_new<CCC_LoadCFG_custom>("r2 ");
 	pTmp->Execute				(Console->ConfigFile);
 	xr_delete					(pTmp);
