@@ -68,12 +68,14 @@ void CStringTable::Load	(LPCSTR xml_file)
 		
 		VERIFY3						(string_text, "string table entry does not has a text", string_name);
 		
+		LPCSTR s = "Голосовать ЗА-[$$ACTION_VOTE_YES$$]\nГолосовать ПРОТИВ-[$$ACTION_VOTE_NO$$]\nРезультаты-[$$ACTION_VOTE$$]";
+		STRING_VALUE str_val_		= ParseLine(s, "mp_vote_hint", false);
+
 		STRING_VALUE str_val		= ParseLine(string_text, string_name, true);
 		
 		pData->m_StringTable[string_name] = str_val;
 	}
 }
-
 void CStringTable::ReparseKeyBindings()
 {
 	if(!pData)					return;

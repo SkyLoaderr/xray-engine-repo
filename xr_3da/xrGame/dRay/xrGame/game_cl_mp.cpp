@@ -113,7 +113,7 @@ CUIGameCustom*		game_cl_mp::createGameUI			()
 	m_iSpawn_Cost = READ_IF_EXISTS(pSettings, r_s32, "artefacthunt_gamedata", "spawn_cost", -10000);
 	//-----------------------------------------------------------
 	pBuySpawnMsgBox		= xr_new<CUIMessageBoxEx>();
-	pBuySpawnMsgBox->SetWorkPhase(GAME_PHASE_INPROGRESS);
+//.	pBuySpawnMsgBox->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	pBuySpawnMsgBox->Init("message_box_buy_spawn");
 	pBuySpawnMsgBox->AddCallback("msg_box", MESSAGE_BOX_YES_CLICKED, boost::bind(&OnBuySpawn,_1,_2));
 	string1024	BuySpawnText;
@@ -273,29 +273,32 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 	return inherited::OnKeyboardPress(key);
 }
 
-void	game_cl_mp::VotingBegin(){
-	if (!m_pVoteStartWindow)
-		m_pVoteStartWindow = xr_new<CUIVotingCategory>();
+void	game_cl_mp::VotingBegin()
+{
+	if(!m_pVoteStartWindow)
+		m_pVoteStartWindow		= xr_new<CUIVotingCategory>();
 
-	m_pVoteStartWindow->SetWorkPhase(GAME_PHASE_INPROGRESS);
+//.	m_pVoteStartWindow->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	StartStopMenu(m_pVoteStartWindow, true);
 }
 
-void	game_cl_mp::Vote(){
-	if (!m_pVoteRespondWindow)
-		m_pVoteRespondWindow = xr_new<CUIVote>();
+void	game_cl_mp::Vote()
+{
+	if(!m_pVoteRespondWindow)
+		m_pVoteRespondWindow	= xr_new<CUIVote>();
 
-	m_pVoteRespondWindow->SetWorkPhase(GAME_PHASE_INPROGRESS);
-	StartStopMenu(m_pVoteRespondWindow, true);
+//.	m_pVoteRespondWindow->SetWorkPhase(GAME_PHASE_INPROGRESS);
+	StartStopMenu			(m_pVoteRespondWindow, true);
 }
 
-void	game_cl_mp::OnCantVoteMsg(LPCSTR Text){
+void	game_cl_mp::OnCantVoteMsg(LPCSTR Text)
+{
 	if (!m_pMessageBox)
 		m_pMessageBox = xr_new<CUIMessageBoxEx>();
 
 	m_pMessageBox->Init("cant_vote");
 	m_pMessageBox->SetText(Text);
-	m_pMessageBox->SetWorkPhase(GAME_PHASE_INPROGRESS);
+//.	m_pMessageBox->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	StartStopMenu(m_pMessageBox, true);
 }
 
@@ -480,6 +483,27 @@ void game_cl_mp::shedule_Update(u32 dt)
 	};
 
 	UpdateMapLocations();	
+
+	u32 cur_game_state = Phase();
+	if(pBuySpawnMsgBox && pBuySpawnMsgBox->IsShown() && cur_game_state!=GAME_PHASE_INPROGRESS)
+	{
+		pBuySpawnMsgBox->GetHolder()->StartStopMenu(pBuySpawnMsgBox, true);
+	}
+
+	if(m_pVoteStartWindow && m_pVoteStartWindow->IsShown() && cur_game_state!=GAME_PHASE_INPROGRESS)
+	{
+		m_pVoteStartWindow->GetHolder()->StartStopMenu(m_pVoteStartWindow, true);
+	}
+	if(m_pVoteRespondWindow && m_pVoteRespondWindow->IsShown() && cur_game_state!=GAME_PHASE_INPROGRESS)
+	{
+		m_pVoteRespondWindow->GetHolder()->StartStopMenu(m_pVoteRespondWindow, true);
+	}
+
+	if(m_pMessageBox && m_pMessageBox->IsShown() && cur_game_state!=GAME_PHASE_INPROGRESS)
+	{
+		m_pMessageBox->GetHolder()->StartStopMenu(m_pMessageBox, true);
+	}
+	
 }
 
 void game_cl_mp::SendStartVoteMessage	(LPCSTR args)

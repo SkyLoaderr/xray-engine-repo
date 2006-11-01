@@ -63,13 +63,6 @@ CUIGameDM::CUIGameDM()
 	
 	m_warm_up_caption =	"warm_up";
 	GameCaptions()->addCustomMessage(m_warm_up_caption, DI2PX(0.0f), DI2PY(-0.75f), SZ(0.05f), HUD().Font().pFontDI, CGameFont::alCenter, WARM_UP_COLOR, "");
-	//-----------------------------------------------------------------------
-//.	m_vote_caption0 = "votecaption0";
-//.	m_vote_caption1 = "votecaption1";
-//.	m_votetimeresult_caption= "votetimeresultcaption";
-//.	GameCaptions()->addCustomMessage(m_vote_caption0, DI2PX(-1.0f), DI2PY(-0.45f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
-//.	GameCaptions()->addCustomMessage(m_vote_caption1, DI2PX(-1.0f), DI2PY(-0.4f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE1_MSG_COLOR, "");
-//.	GameCaptions()->addCustomMessage(m_votetimeresult_caption, DI2PX(-1.0f), DI2PY(-0.35f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
 
 	CUIXml							uiXml;
 	uiXml.Init						(CONFIG_PATH, UI_PATH, "ui_game_dm.xml");
@@ -80,9 +73,10 @@ CUIGameDM::CUIGameDM()
 	m_pFragLimitIndicator			= xr_new<CUIStatic>();
 	CUIXmlInit::InitStatic			(uiXml,"fraglimit",0,m_pFragLimitIndicator);
 
-	m_voteStatusWnd					= xr_new<UIVoteStatusWnd>();
-	m_voteStatusWnd->InitFromXML	(uiXml);
-	m_voteStatusWnd->Show			(false);
+//.	m_voteStatusWnd					= xr_new<UIVoteStatusWnd>();
+//.	m_voteStatusWnd->InitFromXML	(uiXml);
+//.	m_voteStatusWnd->Show			(false);
+	m_voteStatusWnd					= NULL;
 }
 //--------------------------------------------------------------------
 void CUIGameDM::SetClGame (game_cl_GameState* g)
@@ -237,24 +231,25 @@ void CUIGameDM::SetWarmUpCaption				(LPCSTR str)
 
 void CUIGameDM::SetVoteMessage					(LPCSTR str)
 {
-	m_voteStatusWnd->SetVoteMsg(str);
-/*
-	if (str[0])
-	{
-		GameCaptions()->setCaption(m_vote_caption0, str, VOTE0_MSG_COLOR, true);
+	if(!str)
+		xr_delete(m_voteStatusWnd);
+	else{
+		if(!m_voteStatusWnd)
+		{
+			CUIXml							uiXml;
+			uiXml.Init						(CONFIG_PATH, UI_PATH, "ui_game_dm.xml");
+			m_voteStatusWnd					= xr_new<UIVoteStatusWnd>();
+			m_voteStatusWnd->InitFromXML	(uiXml);
+		}
+		m_voteStatusWnd->Show				(true);
+		m_voteStatusWnd->SetVoteMsg			(str);
 	}
-	else
-	{
-		GameCaptions()->setCaption(m_vote_caption0, str, VOTE0_MSG_COLOR, true);
-		GameCaptions()->setCaption(m_vote_caption1, "", VOTE1_MSG_COLOR, true);
-	}
-*/
 };
 
 void CUIGameDM::SetVoteTimeResultMsg			(LPCSTR str)
 {
-	m_voteStatusWnd->SetVoteTimeResultMsg(str);
-//.	GameCaptions()->setCaption(m_votetimeresult_caption, str, VOTE0_MSG_COLOR, true);
+	if(m_voteStatusWnd)
+		m_voteStatusWnd->SetVoteTimeResultMsg(str);
 }
 
 bool		CUIGameDM::IR_OnKeyboardPress		(int dik)
@@ -287,7 +282,8 @@ void CUIGameDM::OnFrame()
 	m_pRankIndicator->Update		();
 	
 	m_pFragLimitIndicator->Update	();
-	if(m_voteStatusWnd->IsShown()) m_voteStatusWnd->Update			();
+	if(m_voteStatusWnd && m_voteStatusWnd->IsShown()) 
+		m_voteStatusWnd->Update		();
 }
 
 void CUIGameDM::Render()
@@ -297,7 +293,8 @@ void CUIGameDM::Render()
 	m_pRankIndicator->Draw			();
 
 	m_pFragLimitIndicator->Draw		();
-	if(m_voteStatusWnd->IsShown()) m_voteStatusWnd->Draw			();
+	if(m_voteStatusWnd && m_voteStatusWnd->IsShown()) 
+		m_voteStatusWnd->Draw		();
 }
 
 void CUIGameDM::DisplayMoneyChange(LPCSTR deltaMoney)

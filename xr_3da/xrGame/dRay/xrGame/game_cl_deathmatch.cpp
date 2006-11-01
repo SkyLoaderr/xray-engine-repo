@@ -116,9 +116,6 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 	pPdaMenu = xr_new<CUIPdaWnd>();
 	//-----------------------------------------------------------
 	pMapDesc = xr_new<CUIMapDesc>();
-	pMapDesc->SetWorkPhase(GAME_PHASE_INPROGRESS);
-	//-----------------------------------------------------------
-
 		
 	return m_game_ui;
 }
@@ -175,7 +172,7 @@ CUIBuyWnd* game_cl_Deathmatch::InitBuyMenu			(LPCSTR BasePriceSection, s16 Team)
 	
 	CUIBuyWnd* pMenu	= xr_new<CUIBuyWnd>();
 	pMenu->Init((LPCSTR)pTeamSect->caSection.c_str(), BasePriceSection);
-	pMenu->SetWorkPhase(GAME_PHASE_INPROGRESS);
+//.	pMenu->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	pMenu->SetSkin(0);
 	return pMenu;
 };
@@ -191,7 +188,7 @@ CUISkinSelectorWnd* game_cl_Deathmatch::InitSkinMenu			(s16 Team)
 	cl_TeamStruct *pTeamSect		= &TeamList[ModifyTeam(Team)];	
 
 	CUISkinSelectorWnd* pMenu		= xr_new<CUISkinSelectorWnd>	((char*)pTeamSect->caSection.c_str(), Team);
-	pMenu->SetWorkPhase				(GAME_PHASE_INPROGRESS);
+//.	pMenu->SetWorkPhase				(GAME_PHASE_INPROGRESS);
 	
 	return							pMenu;
 };
@@ -622,6 +619,23 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 	if (pInventoryMenu && pInventoryMenu->IsShown() && !CanCallInventoryMenu())
 		StartStopMenu(pInventoryMenu,true);
 	//-----------------------------------------
+
+	u32 cur_game_state = Phase();
+	if(pMapDesc && pMapDesc->IsShown() && cur_game_state!=GAME_PHASE_INPROGRESS)
+	{
+		pMapDesc->GetHolder()->StartStopMenu(pMapDesc, true);
+	}
+
+	if(pCurSkinMenu && pCurSkinMenu->IsShown() && cur_game_state!=GAME_PHASE_INPROGRESS)
+	{
+		pCurSkinMenu->GetHolder()->StartStopMenu(pCurSkinMenu, true);
+	}
+	
+	if(pCurBuyMenu && pCurBuyMenu->IsShown() && cur_game_state!=GAME_PHASE_INPROGRESS)
+	{
+		pCurBuyMenu->GetHolder()->StartStopMenu(pCurBuyMenu, true);
+	}
+	
 }
 
 void	game_cl_Deathmatch::SetScore				()
@@ -769,8 +783,8 @@ void game_cl_Deathmatch::OnVoteEnd				(NET_Packet& P)
 	inherited::OnVoteEnd(P);
 	if(m_game_ui)
 	{
-		m_game_ui->SetVoteMessage("");
-		m_game_ui->SetVoteTimeResultMsg("");
+		m_game_ui->SetVoteMessage(NULL);
+		m_game_ui->SetVoteTimeResultMsg(NULL);
 	}
 };
 

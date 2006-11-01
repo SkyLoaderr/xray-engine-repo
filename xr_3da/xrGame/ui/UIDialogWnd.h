@@ -15,7 +15,6 @@ class CUIDialogWnd : public CUIWindow
 private:
 	typedef CUIWindow inherited;
 	CDialogHolder*	m_pHolder;
-	u32				work_phase;
 protected:
 	bool			IR_process					();
 public:
@@ -40,8 +39,6 @@ public:
 	virtual bool StopAnyMove					(){return true;}
 	virtual bool NeedCursor						()const {return true;}
 	virtual bool WorkInPause					()const {return m_bWorkInPause;}
-			void SetWorkPhase					(u32 phase);
-			bool CheckPhase						();
 };
 
 #endif // _UI_DIALOG_WND_H_

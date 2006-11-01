@@ -22,6 +22,5 @@ void UIVoteStatusWnd::SetVoteTimeResultMsg(LPCSTR s)
 
 void UIVoteStatusWnd::SetVoteMsg(LPCSTR s)
 {
-	Show					(0!=xr_strlen(s));
 	m_str_message.SetText	(s);
 }
