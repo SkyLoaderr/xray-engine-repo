@@ -106,7 +106,7 @@
 		<text>LAN</text>
 	</string>
 	<string id="mm_mp_listenservers">
-		<text>Empty</text>
+		<text>Listen servers</text>
 	</string>
 	<string id="mm_mp_mapratation">
 		<text>Map list</text>
