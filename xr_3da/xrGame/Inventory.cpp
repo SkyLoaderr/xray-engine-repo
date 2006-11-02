@@ -205,14 +205,19 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 	default:
 		NODEFAULT;
 	};
-	m_all.erase(std::find(m_all.begin(), m_all.end(), pIItem));
+	TIItemContainer::iterator it = std::find(m_all.begin(), m_all.end(), pIItem);
+	if(it!=m_all.end())
+		m_all.erase(std::find(m_all.begin(), m_all.end(), pIItem));
+	else
+		Msg("! CInventory::Drop item not found in inventory!!!");
+
 	pIItem->m_pInventory = NULL;
 
 	if (call_drop && smart_cast<CInventoryItem*>(pObj))
 		m_pOwner->OnItemDrop	(smart_cast<CInventoryItem*>(pObj));
 
 	CalcTotalWeight					();
-	InvalidateState						();
+	InvalidateState					();
 	m_drop_last_frame				= true;
 	return							true;
 }
