@@ -275,7 +275,7 @@ function se_smart_terrain:fill_npc_info( obj, npc_info )
 		npc_info.is_sniper = string.find( npc_info.profile_name, "sniper" ) ~= nil
 	end
 
-	local t               = obj:get_smart_terrain_conditions()
+	local t               = obj.smart_terrain_conditions
 	if t then
 		t = t[self:name()]
 	end
@@ -325,7 +325,7 @@ function se_smart_terrain:read_params()
 
 	gp.type        = ini:r_string( sect, "type" )
 	gp.preset_name = r_str ( ini, sect, "preset" )
-	printf("%s read_params preset name [%s]", self:name(), tostring(gp.preset_name))
+--'	printf("%s read_params preset name [%s]", self:name(), tostring(gp.preset_name))
 	gp.capacity    = r_num ( ini, sect, "capacity", 100 ) -- ёмкость. а настоящая ёмкость = min(эта_ёмкость, ёмкость гулага)
 	gp.squad       = r_num ( ini, sect, "squad" )
 
@@ -451,7 +451,6 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 --			printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
 --		end
 	
-		printf("%s preset names [%s]", self:name(), tostring(self.gparams.preset_name))
 		if not self:check_preset( community, obj:rank(), self.gparams.preset_name ) then
 			return false
 		end
@@ -486,11 +485,11 @@ end
 -- TODO а если в начале эксклюзивный, а потом в любой?
 -- вариант: any=condlist
 function se_smart_terrain:obj_accepts_smart_terrain( obj )
-	if obj:get_smart_terrain_conditions() then
+	if obj.smart_terrain_conditions then
 		local any_exclusive = false
 		local s
 
-		for name, condlist in pairs( obj:get_smart_terrain_conditions() ) do
+		for name, condlist in pairs(obj.smart_terrain_conditions) do
 			s = xr_logic.pick_section_from_condlist( db.actor_proxy, obj, condlist )
 
 			if s ~= nil then
@@ -521,6 +520,7 @@ function se_smart_terrain:enabled( obj )
 	--------
 	self:register_if_needed()
 	self:initialize_if_needed()
+
 	if self:is_gulag_available() and not self.population_locked then
 		local b = self:obj_accepts_smart_terrain( obj )
 		local a = self:smart_terrain_accepts_obj( obj, b )
@@ -547,7 +547,7 @@ function se_smart_terrain:suitable( obj )
 		local v = 0
 
 		for id, strn in pairs( smart_terrains[self:get_level_name()] ) do
-			strn:initialize_if_needed()
+--'			strn:initialize_if_needed()
 
 			if strn:is_gulag_available() then
 				v = v + strn.gulag.capacity - strn.gulag:get_population()
@@ -977,7 +977,7 @@ function se_smart_terrain:update()
 		return
 	end
 
-	self:initialize_if_needed()
+--'	self:initialize_if_needed()
 
 	if self:is_gulag_available() then
 		if self.check_time < game.get_game_time() then
@@ -1019,7 +1019,7 @@ function on_death( obj_id )
 		local strn_id = obj:smart_terrain_id()
 
 		if strn_id ~= 65535 then
-			sim:object( strn_id ).gulag:update_objs()
+			sim:object( strn_id ).gulag:clear_dead(obj_id)
 		end
 	end
 end

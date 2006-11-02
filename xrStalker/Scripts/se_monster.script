@@ -168,10 +168,14 @@ function se_monster:STATE_Read(packet, size)
 	end
 end
 --------------------
+function se_monster:on_before_register()
+	self:fill_exclusives()
+end
+--------------------
 function se_monster:on_register()
 	cse_alife_monster_base.on_register( self )
 
-	self:fill_exclusives()
+	--'self:fill_exclusives()
 
 	-- Регистрация мапспота для демонстрации
 	sim_statistic.register_monster(self)
@@ -193,6 +197,7 @@ function se_monster:on_death(killer)
 	sim_statistic.unregister_monster(self)
 end
 --------------------
+--[[
 function se_monster:get_smart_terrain_conditions()
 	self:get_ini()
 
@@ -202,14 +207,14 @@ function se_monster:get_smart_terrain_conditions()
 	end
 
 	return self.smart_terrain_conditions
-end
+end]]
 --------------------
 function se_monster:fill_exclusives()
-	local s
+	self.smart_terrain_conditions             = smart_terrain.read_smart_terrain_conditions( self )
 
-	if self:get_smart_terrain_conditions() then
-		for name, condlist in pairs( self:get_smart_terrain_conditions() ) do
-			smart_terrain.exclusives[name] = ( smart_terrain.exclusives[name] or 0 ) + 1
+	if self.smart_terrain_conditions then
+		for name, condlist in pairs(self.smart_terrain_conditions) do
+			smart_terrain.exclusives[name] = (smart_terrain.exclusives[name] or 0) + 1
 		end
 	end
 end

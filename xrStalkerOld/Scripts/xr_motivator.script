@@ -170,13 +170,13 @@ function motivator_binder:death_callback(victim, who)
 	end
 	sr_territory.issue_event(self.object, "death_callback", victim, who)
 
-	self:clear_callbacks()
-
 	sr_light.check_light(self.object)
 
 	smart_terrain.on_death( self.object:id() )
 	
     self.death_manager:create_release_item()
+
+	self:clear_callbacks()
 
 	--' Наносим небольшой импульс вперед.
 	local h = hit()

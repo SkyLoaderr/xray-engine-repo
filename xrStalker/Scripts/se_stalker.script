@@ -146,10 +146,7 @@ function se_stalker:on_register()
 	-- Регистрация в таскменеджере
 	task_manager.register_target(self)
 
-
---'	self:fill_exclusives()
-	
-	if self:smart_terrain_id() == 65535 then
+	if self:alive() and self:smart_terrain_id() == 65535 then
 		self:brain():update()
 	end
 	
@@ -182,6 +179,7 @@ function se_stalker:on_death(killer)
 	sim_statistic.unregister_stalker(self)
 end
 --------------------
+--[[
 function se_stalker:get_smart_terrain_conditions()
 	self:get_ini()
 
@@ -191,16 +189,14 @@ function se_stalker:get_smart_terrain_conditions()
 	end
 
 	return self.smart_terrain_conditions
-end
+end]]
 --------------------
 function se_stalker:fill_exclusives()
-	local s
+	self.smart_terrain_conditions             = smart_terrain.read_smart_terrain_conditions( self )
 
-	if self:get_smart_terrain_conditions() then
-		for name, condlist in pairs( self:get_smart_terrain_conditions() ) do
-			smart_terrain.exclusives[name] = ( smart_terrain.exclusives[name] or 0 ) + 1
---			printf("SE STALKER: fill exclusives")
---			print_table(smart_terrain.exclusives)
+	if self.smart_terrain_conditions then
+		for name, condlist in pairs(self.smart_terrain_conditions) do
+			smart_terrain.exclusives[name] = (smart_terrain.exclusives[name] or 0) + 1
 		end
 	end
 end
