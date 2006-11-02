@@ -122,7 +122,8 @@ void CStepManager::update()
 		if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
 
 			// Играть звук
-			if (!mtl_pair->StepSounds.empty()) {
+			if (!mtl_pair->StepSounds.empty() && is_on_ground() ) 
+			{
 				Fvector sound_pos = m_object->Position();
 				sound_pos.y += 0.5;
 				GET_RANDOM(mtl_pair->StepSounds).play_no_feedback(m_object,0,0,&sound_pos,&m_step_info.params.step[i].power);

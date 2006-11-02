@@ -733,6 +733,8 @@ public:
 			Fvector				weapon_recoil_last_delta		();
 protected:
 	virtual	void				update_camera					(CCameraShotEffector* effector);
+	//step manager
+	virtual bool				is_on_ground					();
 
 private:
 	CActorMemory				*m_memory;
