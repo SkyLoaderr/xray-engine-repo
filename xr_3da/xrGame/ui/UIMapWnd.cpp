@@ -155,7 +155,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	}
 	btnIndex		= eAddSpot;
 	strconcat(pth, sToolbar.c_str(), ":add_spot_btn");
-	if(uiXml.NavigateToNode(pth,0)){
+	if(uiXml.NavigateToNode(pth,0) && IsGameTypeSingle() ){
 		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
 		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
 		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
@@ -164,7 +164,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	}
 	btnIndex		= eRemoveSpot;
 	strconcat(pth, sToolbar.c_str(), ":remove_spot_btn");
-	if(uiXml.NavigateToNode(pth,0)){
+	if(uiXml.NavigateToNode(pth,0 ) && IsGameTypeSingle() ){
 		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
 		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
 		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
@@ -174,7 +174,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 
 	btnIndex		= eHighlightSpot;
 	strconcat(pth, sToolbar.c_str(), ":highlight_spot_btn");
-	if(uiXml.NavigateToNode(pth,0)){
+	if(uiXml.NavigateToNode(pth,0) && IsGameTypeSingle() ){
 		m_ToolBar[btnIndex]				= xr_new<CUI3tButton>(); m_ToolBar[btnIndex]->SetAutoDelete(true);
 		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
 		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
