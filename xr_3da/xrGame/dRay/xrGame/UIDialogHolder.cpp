@@ -4,6 +4,7 @@
 #include "UICursor.h"
 #include "level.h"
 #include "actor.h"
+#include "xr_level_controller.h"
 
 dlgItem::dlgItem(CUIWindow* pWnd)
 {
@@ -73,11 +74,13 @@ void CDialogHolder::StartMenu (CUIDialogWnd* pDialog, bool bDoHideIndicators)
 		GetUICursor()->Show();
 
 	if(g_pGameLevel){
-		CActor* A = smart_cast<CActor*>( Level().CurrentViewEntity() );
-		if ( A && pDialog->StopAnyMove() ){
-			A->StopAnyMove		();
-			A->PickupModeOff	();
+		CActor* A	= smart_cast<CActor*>( Level().CurrentViewEntity() );
+		if ( A && pDialog->StopAnyMove() )
+		{
+			A->StopAnyMove				();
+			A->PickupModeOff			();
 		};
+		if(A)	A->IR_OnKeyboardRelease		(kWPN_ZOOM);
 	}
 }
 
