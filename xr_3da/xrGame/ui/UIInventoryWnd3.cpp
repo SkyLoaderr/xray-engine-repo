@@ -6,6 +6,7 @@
 #include "../grenadelauncher.h"
 #include "../Artifact.h"
 #include "../eatable_item.h"
+#include "../BottleItem.h"
 #include "../WeaponMagazined.h"
 #include "../inventory.h"
 #include "../game_base.h"
@@ -55,6 +56,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	CScope*				pScope				= smart_cast<CScope*>			(CurrentIItem());
 	CSilencer*			pSilencer			= smart_cast<CSilencer*>		(CurrentIItem());
 	CGrenadeLauncher*	pGrenadeLauncher	= smart_cast<CGrenadeLauncher*>	(CurrentIItem());
+	CBottleItem*		pBottleItem			= smart_cast<CBottleItem*>		(CurrentIItem());
     
 
 
@@ -162,15 +164,22 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		 }
 
 	}
-	
+	LPCSTR _action = NULL;
+
 	if(pMedkit || pAntirad)
 	{
-		UIPropertiesBox.AddItem("st_use",  NULL, INVENTORY_EAT_ACTION);
+		_action					= "st_use";
 	}
 	else if(pEatableItem)
 	{
-		UIPropertiesBox.AddItem("st_eat",  NULL, INVENTORY_EAT_ACTION);
+		if(pBottleItem)
+			_action					= "st_drink";
+		else
+			_action					= "st_eat";
 	}
+
+	if(_action)
+		UIPropertiesBox.AddItem(_action,  NULL, INVENTORY_EAT_ACTION);
 
 //.	if(pArtefact&&pArtefact->CanBeActivated())
 //.		UIPropertiesBox.AddItem("st_activate_artefact",  NULL, INVENTORY_ACTIVATE_ARTEFACT_ACTION);

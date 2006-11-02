@@ -45,6 +45,9 @@
 	<string id="st_eat">
 		<text>eat</text>
 	</string>
+	<string id="st_drink">
+		<text>drink</text>
+	</string>
 	<string id="st_move_on_belt">
 		<text>attach to belt</text>
 	</string>
