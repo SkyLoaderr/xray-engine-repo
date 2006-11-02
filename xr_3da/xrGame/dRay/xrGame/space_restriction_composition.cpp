@@ -20,6 +20,11 @@
 #include <malloc.h>
 #pragma warning(pop)
 
+#ifdef DEBUG
+#	include "level.h"
+#	include "space_restrictor.h"
+#endif // DEBUG
+
 int g_restriction_checker = 0;
 
 CSpaceRestrictionComposition::~CSpaceRestrictionComposition	()
@@ -74,6 +79,7 @@ void CSpaceRestrictionComposition::initialize	()
 	if (n == 1) {
 #ifdef DEBUG		
 		m_correct				= true;
+		check_restrictor_type	();
 #endif
 		return;
 	}
@@ -192,3 +198,23 @@ Fsphere CSpaceRestrictionComposition::sphere	() const
 	return							(m_sphere);
 #endif
 }
+
+#ifdef DEBUG
+void CSpaceRestrictionComposition::check_restrictor_type()
+{
+	if (_GetItemCount(*m_space_restrictors) == 1)
+		return;
+
+	if (!ai().get_alife())
+		return;
+
+	CObject							*object = Level().Objects.FindObjectByName(m_space_restrictors);
+	if (!object)
+		return;
+
+	CSpaceRestrictor				*restrictor = smart_cast<CSpaceRestrictor*>(object);
+	VERIFY3							(restrictor,"you are trying to use object as a restrictor",*m_space_restrictors);
+	VERIFY2							(restrictor->restrictor_type() == RestrictionSpace::eRestrictorTypeNone,"you are trying to restrict yourself with restrictor with type eRestrictorTypeNone");
+	VERIFY2							(restrictor->restrictor_type() != RestrictionSpace::eRestrictorTypeNone,"impossible situation: wrong net_Spawn branch used");
+}
+#endif // DEBUG

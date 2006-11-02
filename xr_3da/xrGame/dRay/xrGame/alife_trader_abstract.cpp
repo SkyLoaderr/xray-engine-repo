@@ -143,7 +143,7 @@ void CSE_ALifeTraderAbstract::attach	(CSE_ALifeInventoryItem *tpALifeInventoryIt
 	m_fCumulativeItemMass				+= tpALifeInventoryItem->m_fMass;
 	m_iCumulativeItemVolume				+= tpALifeInventoryItem->m_iVolume;
 
-	VERIFY								(m_fCumulativeItemMass >= 0.f);
+	VERIFY								(fis_zero(m_fCumulativeItemMass) || (m_fCumulativeItemMass >= 0.f));
 	VERIFY								(!bALifeRequest || !bAddChildren || check_inventory_consistency());
 }
 

@@ -13,6 +13,9 @@ IC	CSpaceRestrictionComposition::CSpaceRestrictionComposition	(CSpaceRestriction
 	VERIFY						(space_restriction_holder);
 	m_space_restriction_holder	= space_restriction_holder;
 	m_space_restrictors			= space_restrictors;
+#ifdef DEBUG
+	check_restrictor_type		();
+#endif // DEBUG
 	++g_restriction_checker;
 }
 

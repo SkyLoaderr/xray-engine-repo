@@ -30,6 +30,11 @@ protected:
 	CSpaceRestrictionHolder	*m_space_restriction_holder;
 	Fsphere					m_sphere;
 
+#ifdef DEBUG
+private:
+				void		check_restrictor_type			();
+#endif // DEBUG
+
 protected:
 	IC			void		merge							(CBaseRestrictionPtr restriction);
 
