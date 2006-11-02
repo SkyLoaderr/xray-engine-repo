@@ -106,7 +106,6 @@ const typename CSXML_IdToIndex::ITEM_DATA* CSXML_IdToIndex::GetById (const T_ID&
 			break;
 	}
 
-#ifdef DEBUG
 	if(m_pItemDataVector->end() == it)
 	{
 		int i=0;
@@ -116,9 +115,7 @@ const typename CSXML_IdToIndex::ITEM_DATA* CSXML_IdToIndex::GetById (const T_ID&
 		R_ASSERT3(no_assert, "item not found, id", *str_id);
 		return NULL;
 	}
-#endif
 		
-
 	return &(*it);
 }
 
