@@ -127,6 +127,7 @@ void IPureServer::config_Load()
 
 void IPureServer::config_Save	()
 {
+	return;
 	// traffic in
 	IWriter*		fs	= FS.w_open(nameTraffic);
 	if(fs==NULL) return;
