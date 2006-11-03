@@ -9,12 +9,8 @@
 #include "game_object_space.h"
 #include "../skeletoncustom.h"
 #include <../ode/src/util.h>
-
 #ifdef DEBUG
-#include "../StatGraph.h"
-#include "PHDebug.h"
-#include	"actor.h"
-#include	"game_base_space.h"
+#include	"PHDebug.h"
 #endif
 
 ///////////////////////////////////////////////////////////////
@@ -23,14 +19,7 @@
 
 #include "../ode/src/collision_kernel.h"
 
-//for debug only
-//#include <../ode\src\joint.h>
-//struct dxSphere : public dxGeom {
-//	dReal radius;		// sphere radius
-//	dxSphere (dSpaceID space, dReal _radius);
-//	void computeAABB();
-//};
-//#include <../ode\src\objects.h>
+
 #pragma warning(default:4267)
 #pragma warning(default:4995)
 ///////////////////////////////////////////////////////////////////
@@ -1037,22 +1026,10 @@ void CPHElement::get_AngularVel	(Fvector& velocity)
 	}
 	dVectorSet((dReal*)&velocity,dBodyGetAngularVel(m_body));
 }
-#ifdef	DEBUG
-CActor*			Actor()	;
-#endif
+
 void CPHElement::set_LinearVel			  (const Fvector& velocity)
 {
-#ifdef	DEBUG
-	/*
-	if ((GameID() == GAME_SINGLE) && Actor())
-	{	
-		if(PhysicsRefObject()->ID()==Actor()->ID())
-		{
-			Msg("in");
-		}
-	}
-	*/
-#endif
+
 	if(!isActive()||m_flags.test(flFixed)) return;
 	VERIFY2(_valid(velocity),"not valid arqument velocity");
 	float sq_mag=velocity.square_magnitude();
@@ -1535,7 +1512,7 @@ void CPHElement::applyGravityAccel				(const Fvector& accel)
 
 void CPHElement::CutVelocity(float l_limit,float a_limit)
 {
-	
+
 	if(!isActive())return;
 	VERIFY(_valid(l_limit)&&_valid(a_limit));
 	dVector3 limitedl,limiteda,diffl,diffa;
@@ -1559,6 +1536,9 @@ void CPHElement::ClearDestroyInfo()
 //bool CPHElement::CheckBreakConsistent()
 //{
 //	if(!m_fratures_holder) return true;
+//	m_fratures_holder->m_fractures
+//	m_fratures_holder->Fracture()
+//}) return true;
 //	m_fratures_holder->m_fractures
 //	m_fratures_holder->Fracture()
 //}
