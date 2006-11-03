@@ -7,63 +7,63 @@
 		<text>d2</text>
 	</string>
 	<string id="oso_chernobyl_crush_0">
-		<text>А катастрофа восемьдесят шестого года – тоже ваша работа?</text>
+		<text>Is the explosion of '86 your work too?</text>
 	</string>
 	<string id="oso_chernobyl_crush_1">
-		<text>Нет, мы здесь ни при чем: большинство из нас в то время лишь начинали свою научную деятельность. А в тысяча девятьсот восемьдесят шестом было принято решение о проведении на четвёртом энергоблоке серии экспериментов с реактором. Катастрофа произошла в равной степени от недостатков конструкции самих реакторов данного типа, необдуманного решения о проведении экспериментов и пресловутого человеческого фактора, поскольку в критический момент дежурная смена совершила ряд грубейших ошибок.</text>
+		<text>No, we had nothing to do with that. Most of us were only starting out in science back then. In 1986 it was decided to conduct a series of experiments in block 4 of the reactor. The explosion occurred as a result of several factors: deficiencies in the design of the reactor, the rash decision to conduct experiments on it and the infamous human error, as those on duty at the time made a number of severe mistakes at the critical moment.</text>
 	</string>
 	<string id="oso_death_truck_0">
-		<text>Что представляют собой "грузовики смерти"?</text>
+		<text>What are "death trucks"?</text>
 	</string>
 	<string id="oso_death_truck_1">
-		<text>Почти все виды деятельности связаны с продуцированием отходов, особенно если речь идёт о новом, неизведанном пути. К сожалению, не менее половины сталкеров во время вербовки погибают. Очевидно, своего рода естественный отбор. Отбракованные экземпляры вывозятся. Мы посчитали, что ты не выдержал вербовки, почему и был определён в отбраковку. Сейчас мы пытаемся выяснить, в чём тогда крылась наша ошибка.</text>
+		<text>Almost every activity tends to produce waste, especially where a new, unknown path is followed. Unfortunately, at least half the of stalkers die during recruitment. Apparently it's natural selection at work. We believed that you did not pass the recruitment stage and you were therefore selected for scrapping. Right now, we are trying to understand what caused us to make that mistake.</text>
 	</string>
 	<string id="oso_no_0">
-		<text>Я не стану помогать вам в обмане.</text>
+		<text>I'm not going to help you in this deception.</text>
 	</string>
 	<string id="oso_osoznanie_start_11">
-		<text>Здравствуй, Стрелок. Думаю, сейчас ты сможешь получить ответы на многие вопросы.</text>
+		<text>Hello, Hawkeye. I think you can get answers to many questions now.</text>
 	</string>
 	<string id="oso_osoznanie_start_21">
-		<text>Выбор за тобой, Стрелок.</text>
+		<text>The choice is yours, Hawkeye.</text>
 	</string>
 	<string id="oso_stalker_0">
-		<text>Что означает татуировка?</text>
+		<text>What does the tattoo mean?</text>
 	</string>
 	<string id="oso_stalker_1">
-		<text>С.Т.А.Л.К.Е.Р. – аббревиатура, обозначающая один из... скажем, запретов, которые предназначены для сокрытия в тайне нашего проекта. В данном случае речь идёт о системе управления человеческой особью. Само устройство находится внутри саркофага ЧАЭС и широко известно как Монолит. Все, пожелавшие исполнения собственных желаний, становятся послушны нашим приказам, после чего метятся и получают задание для выполнения. Но произошла непонятного рода накладка... тебе почему-то внушили убить самого себя.</text>
+		<text>S.T.A.L.K.E.R. is an acronym which denotes one of the…taboos, which was to be kept secret by our project. I'm talking about a system for controlling humans. The device itself is located inside the sarcophagus in the power plant and is widely-known as the Monolith. All those who want their wishes to be granted begin to obey our orders. They are marked and given missions. However, some sort of malfunction occurred...for some reason you were instructed to kill yourself.</text>
 	</string>
 	<string id="oso_what_about_me_0">
-		<text>Что со мной произошло?</text>
+		<text>What happened to me?</text>
 	</string>
 	<string id="oso_what_about_me_1">
-		<text>Ты – выпавший из механизма винтик. К сожалению, это было замечено далеко не сразу. С момента образования Зоны многие пытаются проникнуть в её центр, но мы не можем этого допустить. Человечество ещё далеко не готово к истине. Для того мы и вербовали сталкеров, привлекая их обещаниями выполнить самое сокровенное. Затем они отправлялись защищать тайну Зоны.</text>
+		<text>You're a bolt that fell out of the machine. Unfortunately, that did not come to our attention for a long time. From the moment the Zone was formed, many people have tried to get to its center but we cannot let that happen. Humanity is not ready for the truth. That is why we recruited stalkers by promising them the fullfillment of their most coveted desires. Once recruited they would be sent to protect the secret of the Zone.</text>
 	</string>
 	<string id="oso_what_is_the_zone_0">
-		<text>Что такое Зона? Как она возникла?</text>
+		<text>What is the Zone? How did it come about?</text>
 	</string>
 	<string id="oso_what_is_the_zone_1">
-		<text>Ты видишь результат необдуманного вмешательства в ноосферу Земли. Неумелые, хаотичные действия человечества вызвали локальный её надлом. Зона – всего лишь видимое проявление этого надлома. Данное явление гораздо глубже, чем ты можешь себе представить.</text>
+		<text>What you see before you is the result of an ill-considered intervention in the Earth's noosphere. The inept and chaotic actions of humanity brought about a local crack. The Zone is simply the visible manifestation of this crack. The underlying cause is far greater than you can imagine.</text>
 	</string>
 	<string id="oso_what_next_0">
-		<text>Что будет дальше?</text>
+		<text>What will happen now?</text>
 	</string>
 	<string id="oso_what_next_1">
-		<text>Это зависит от тебя. Зона увеличивается в размерах. Мы пытаемся сдерживать её экспансию, но человечество словно задалось целью помешать этому. Наши силы не бесконечны, и много их ушло на борьбу с тобой. Ты можешь присоединиться к нам, и это даст возможность удержать рост Зоны. Если твоё решение будет иным, мы не можем достоверно прогнозировать исход ситуации.</text>
+		<text>That depends on you. The Zone is growing. We're trying to restrain its expansion but humanity seems to be intent on hindering our work. Our resources are not limitless and we have spent a lot of them on fighting you. If you join us, we can restrict the Zone's growth. If you decide otherwise, we cannot make a credible prognosis of the future.</text>
 	</string>
 	<string id="oso_who_are_you_0">
-		<text>Кто ты такой?</text>
+		<text>Who are you?</text>
 	</string>
 	<string id="oso_who_are_you_1">
-		<text>Мы, не я. Мы – группа учёных, предпринимающая попытку изменить мир. Согласно теории академика Вернадского, Землю окружает особое информационное поле, так называемая ноосфера. В неё включены все мыслящие обитатели Земли. Нашей основной идеей стало внесение небольших корректировок в ноосферу: это позволило бы навсегда убрать из неё злобу, жестокость, алчность и другие негативные факторы. Разум индивудуума, к сожалению, не обладает достаточной чувствительностью и мощью, чтобы сознательно влиться в ноосферу и полноценно оитать в ней. С этой целью мы объединили семь сознаний, семь личностей в одну.</text>
+		<text>I am not alone. We're a group of scientists trying to change the world. According to a theory put forward by Academician Vernadsky, the Earth is surrounded by a special informational field, the so-called noosphere. It includes all the inhabitants of the planet with cognitive abilities. Our main idea was to make small adjustments to the noosphere, allowing us to remove things like anger, cruelty, greed and other negative factors from the planet. </text>
 	</string>
 	<string id="oso_why_chernobyl_0">
-		<text>Почему всё это произошло именно здесь?</text>
+		<text>Why did it all happen here?</text>
 	</string>
 	<string id="oso_why_chernobyl_1">
-		<text>Наиболее оптимальный вариант. Уже после аварии 1986 года здесь осталось очень мало людей, и мы могли работать без опаски. Кроме того, в данном районе находились мощные антенны, чрезвычайно важные для наших экспериментов по оптимизации сознания людей.</text>
+		<text>It was the best place. After the explosion in 1986 there were very few people left in this area and we could work without fear of being found. Further, there were many powerful antennae here, which are extremely important for our cognitive optimisation experiments.</text>
 	</string>
 	<string id="oso_yes_0">
-		<text>Я согласен присоединиться к проекту "Осознание"!</text>
+		<text>I want to join the Awareness project.</text>
 	</string>
 </string_table>

@@ -8,7 +8,7 @@
 		<text>Sewer entrance</text>
 	</string>
 	<string id="cit_doctor_escape_task_2_hint">
-		<text>Descent into the sewer</text>
+		<text>Descent into the sewers</text>
 	</string>
 	<string id="cit_doctor_escape_task_3_hint">
 		<text>Pipe</text>
@@ -20,19 +20,19 @@
 		<text>Hotel</text>
 	</string>
 	<string id="cit_doctor_weapon_task_1_hint">
-		<text>Weapons, equipment and other items that were taken from me.</text>
+		<text>Weapons, gear and other items that were taken from me.</text>
 	</string>
 	<string id="cit_gorsovet_zone_hint">
-		<text>Former city council building</text>
+		<text>Former City Council building</text>
 	</string>
 	<string id="cit_killers_base_location_2_hint">
 		<text>Voronin</text>
 	</string>
 	<string id="cit_killers_base_zone_hint">
-		<text>Mercenary camp</text>
+		<text>Merc camp</text>
 	</string>
 	<string id="cit_sewer_hint">
-		<text>Descent into the sewer</text>
+		<text>Descent into the sewers</text>
 	</string>
 	<string id="cit_vp_position_hint">
 		<text>The area where the doctor last saw Petrovich</text>

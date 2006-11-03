@@ -1,10 +1,91 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="af-ameba-mica">
+		<text>Mica</text>
+	</string>
+	<string id="af-ameba-slime">
+		<text>Slime</text>
+	</string>
+	<string id="af-ameba-slug">
+		<text>Slug</text>
+	</string>
+	<string id="af-blood">
+		<text>Stone Blood</text>
+	</string>
+	<string id="af-cristall">
+		<text>Crystal</text>
+	</string>
+	<string id="af-cristall-flower">
+		<text>Stone Flower</text>
+	</string>
+	<string id="af-drops">
+		<text>Sprays</text>
+	</string>
+	<string id="af-dummy-battery">
+		<text>Battery</text>
+	</string>
+	<string id="af-dummy-dummy">
+		<text>Shell</text>
+	</string>
+	<string id="af-dummy-glassbeads">
+		<text>Mama's Beads</text>
+	</string>
+	<string id="af-dummy-pellicle">
+		<text>Cobweb</text>
+	</string>
+	<string id="af-dummy-spring">
+		<text>Spring</text>
+	</string>
+	<string id="af-electra-flash">
+		<text>Flash</text>
+	</string>
+	<string id="af-electra-moonlight">
+		<text>Moonlight</text>
+	</string>
+	<string id="af-electra-sparkler">
+		<text>Sparkler</text>
+	</string>
+	<string id="af-fireball">
+		<text>Fireball</text>
+	</string>
+	<string id="af-fuzz-kolobok">
+		<text>Doughboy</text>
+	</string>
+	<string id="af-gold-fish">
+		<text>Goldfish</text>
+	</string>
+	<string id="af-gravi">
+		<text>Gravi</text>
+	</string>
+	<string id="af-medusa">
+		<text>Jellyfish</text>
+	</string>
+	<string id="af-mincer-meat">
+		<text>Meatball</text>
+	</string>
+	<string id="af-night-star">
+		<text>Night Star</text>
+	</string>
+	<string id="af-rusty-kristall">
+		<text>Crystal Spiker</text>
+	</string>
+	<string id="af-rusty-sea-urchin">
+		<text>Urchin</text>
+	</string>
+	<string id="af-rusty-thorn">
+		<text>Spiker</text>
+	</string>
+	<string id="af-soul">
+		<text>Soul</text>
+	</string>
+	<string id="af-vyvert">
+		<text>Wrencher</text>
+	</string>
 	<string id="Agroprom">
-		<text>"Agroprom"</text>
+		<text>Agroprom</text>
 	</string>
 	<string id="Ameba">
-		<text>"Witches' jelly"</text>
+		<text>Witches' Jelly</text>
 	</string>
 	<string id="Anomalies">
 		<text>Anomalies</text>
@@ -13,7 +94,7 @@
 		<text>Artifacts </text>
 	</string>
 	<string id="Bald">
-		<text>"Springboard"</text>
+		<text>Springboard</text>
 	</string>
 	<string id="Bar">
 		<text>Bar</text>
@@ -25,28 +106,184 @@
 		<text>Erased</text>
 	</string>
 	<string id="Electra">
-		<text>"Electra"</text>
+		<text>Electra</text>
+	</string>
+	<string id="enc_zone_anomalies_ameba">
+		<text>An anomaly of unknown nature. On contact inflicts injuries similar to the effects of a strong acid. Forms three types of artifacts: Slime, Slug, and Mica.</text>
+	</string>
+	<string id="enc_zone_anomalies_bald">
+		<text>One of the first anomalies ever recorded - an unstable gravitational field inflicting shock damage to anyone within its radius. Remains active for a week on average. The amount of damage inflicted changes during its lifetime, ranging from minor bruises, through serious wounds, to instant death. Easy to spot in daylight. Accompanied by air fluctuation above the anomaly, dancing leaves and distinctive crimson-colored stains on the ground. Picked up by all types of detectors, the Springboard can also be revealed by throwing objects into it. Forms three types of artifacts: Jellyfish, Stone Flower and Night Star.</text>
+	</string>
+	<string id="enc_zone_anomalies_electra">
+		<text>An anomalous formation, roughly 10 meters in diameter, accumulating large quantities of static electricity. When triggered, the anomaly bursts out in dozens of miniature lightnings, causing electric shock nearly always lethal to all living beings. Recognizable by the bluish fog hovering above it in daylight. At nighttime, the Electra can be revealed using any type of detector or by throwing metal objects into the anomaly. Forms three types of artifacts: Sparkler, Flash and Moonlight.</text>
+	</string>
+	<string id="enc_zone_anomalies_fuzz">
+		<text>One of the Zone's examples of mutated vegetation. Reacts to rapidly approaching living beings by discharging a cloud of projectiles severely injuring uncovered or lightly protected skin upon contact. Does not react to slowly moving targets. Forms three types of artifacts (possibly its seeds): Spiker, Crystal Spiker and Urchin.</text>
+	</string>
+	<string id="enc_zone_anomalies_gravi">
+		<text>An anomaly of presumably gravitational nature. When triggered, the tremendous power of the Graviconcentrate drags everything within the radius of 10-15 meters towards center. Victims drawn into the core have no chance of survival: their bodies are quickly constricted into a tight lump, only to be blown up in a powerful discharge of energy a moment later. The anomaly remains stationary throughout its lifetime (a week on average). Easily recognizable in daylight by the air fluctuation above, dancing leaves, fragments of dismembered corpses lying around and a distinctive dark stain in the center. Highly dangerous at night since it can be revealed only by means of a detector or by throwing metal objects into it. Forms three types of artifacts: Wrencher, Gravi and Goldfish. </text>
+	</string>
+	<string id="enc_zone_anomalies_lift">
+		<text>A harmless anomaly, temporarily negating normal gravity. Manifests itself as an area - usually several meters in diameter - where Earth's gravitational pull is greatly reduced. Forms the Cobweb artifact.</text>
+	</string>
+	<string id="enc_zone_anomalies_meat">
+		<text>The anomaly snatches its victims up in the air and spins them at a breakneck speed. The exact nature of the Meatgrinder remains unknown. The anomaly can be recognized by a light whirlwind of dust above and by body fragments scattered in the vicinity. Victims caught on its outer rim - far enough from the maximum effect zone at the center - can escape the Meatgrinder with relatively minor injuries. Forms three types of artifacts: Stone Blood, Meatball and Soul.</text>
+	</string>
+	<string id="enc_zone_anomalies_radioactive">
+		<text>An area of increased radiation - over 50 mR/h. Staying in a radiation zone for longer periods of time is strongly discouraged.</text>
+	</string>
+	<string id="enc_zone_anomalies_time">
+		<text>A true miracle of an anomaly: an area several meters in diameter where the time flow is significantly slower than usual. Appears to have no negative effect on human health. However, the Time Machine can be very difficult to get out of. Interestingly, removing Mama's Beads - an artifact usually found in the center of the anomaly - causes the Time Machine to disappear.</text>
+	</string>
+	<string id="enc_zone_anomalies_zharka">
+		<text>While inactive, the anomaly manifests itself as a barely visible cloud of hot air. When triggered by an object or a living being it instantly heats up to lethal temperatures approaching 1500K. At nighttime, it can be revealed by powerful detectors or by throwing metal objects into the trigger area. Forms three types of artifacts: Sprays, Fireball and Crystal.</text>
+	</string>
+	<string id="enc_zone_artifact_af-ameba-mica">
+		<text>An artifact formed in the Witches' Jelly anomaly. A translucent, jelly-like object, known to almost instantly nourish the body with nutrients, drive out radiation and stop bleeding. At the same time, however, it makes the user extremely susceptible to electric, chemical and thermal injury. High value. The artifact is of primary interest to scientific - mainly medical - organizations.</text>
+	</string>
+	<string id="enc_zone_artifact_af-ameba-slime">
+		<text>An artifact formed in the Witches' Jelly anomaly. A translucent, gelatinous object, known to gradually nourish the body with nutrients, drive out radiation and improve blood coagulability. At the same time, however, it makes the user extremely susceptible to electric, chemical and thermal injury. Low value. The artifact is of primary interest to scientific - mainly medical - organizations.</text>
+	</string>
+	<string id="enc_zone_artifact_af-ameba-slug">
+		<text>An artifact formed in the Witches' Jelly anomaly. A translucent, gelatinous object known to nourish the body with nutrients, drive out radiation and improve blood coagulability. At the same time, however, it makes the user extremely susceptible to electric, chemical and thermal injury. Medium value. The artifact if of primary interest to scientific - mainly medical - organizations.</text>
+	</string>
+	<string id="enc_zone_artifact_af-blood">
+		<text>An artifact formed in the Meatgrinder anomaly. A deformed, reddish object made up of compressed, oddly twisted, polymerized scraps of plants, soil and bones. A popular superstition among stalkers is that the strength of people perished in the anomaly is contained in the artifact. Carrying Stone Blood on your belt slightly speeds up the healing process, though in result your flesh softens up and becomes temporarily more susceptible to injury. In addition, healing requires ample nutrients, lack of which may quickly cause exhaustion. Radioactive. Quite common, hence not very valuable. The artifact is of primary interest to scientific - primarily medical - organizations and various cult members.</text>
+	</string>
+	<string id="enc_zone_artifact_af-cristall">
+		<text>An artifact formed in the Scorcher anomaly. A large, glowing, reddish crystal. Stalkers claim that the artifact instantly stops any type of bleeding, at the cost of depleting the user's organism, causing extreme fatigue and hunger. The artifact also provides full immunity from fire, though at the same time it makes the user increasingly susceptible to chemically active substances. Very valuable in view of its scarcity. The artifact is of primary interest to scientific organizations.</text>
+	</string>
+	<string id="enc_zone_artifact_af-cristall-flower">
+		<text>An artifact formed in the Springboard anomaly. A beautiful object with a shiny surface sprinkled with yellow-red inclusions. Oddly shaped, composed of tightly-compressed scraps of plants, soil and anything that happened to be within the striking range of the anomaly. The artifact generates a protective field around the user, reducing damage caused by small arms. Radioactive. Medium value. The artifact is of primary interest to scientific organizations, collectors and jewelers. </text>
+	</string>
+	<string id="enc_zone_artifact_af-drops">
+		<text>An artifact formed in the Scorcher anomaly. A tear-shaped object with a glossy, cracked surface. Stalkers claim that carrying the artifact helps to stop bleeding, though it also depletes the user's organism, causing extreme fatigue and hunger. Additionally, the artifact provides partial resistance to fire, at the cost of increased susceptibility to chemically active substances. Low value. The artifact is of primary interest to collectors and jewelers.</text>
+	</string>
+	<string id="enc_zone_artifact_af-dummy-battery">
+		<text>An artifact of unknown origin. A small, shiny object with a ribbed surface. Said to fortify the user, suppressing fatigue and hunger, and protecting the body from electric discharges. Very valuable. The artifact is of primary interest to scientific organizations.</text>
+	</string>
+	<string id="enc_zone_artifact_af-dummy-dummy">
+		<text>An artifact of unknown origin. Two disks held together by a slimy substance. Reduces damage caused by bullets as well as bites and injuries inflicted in melee combat. Additionally, reduces damage caused by gravitational anomalies. High value. The artifact is of primary interest to scientific organizations.</text>
+	</string>
+	<string id="enc_zone_artifact_af-dummy-glassbeads">
+		<text>An extremely rare artifact of unknown origin, resembling an oddly coiled spiral strewn with pearly droplets. Nourishes the user, completely suppressing the feeling of hunger. Anyone carrying the artifact can do without food or drink for an infinite period of time. The only known side-effect is the increased susceptibility to radiation. The artifact is highly valued by all sorts of organizations and individuals.</text>
+	</string>
+	<string id="enc_zone_artifact_af-dummy-pellicle">
+		<text>A rare artifact of unknown origin. A fine glassy film with uncommon refractive properties. Protects the user from chemical agents and increases the overall stamina. Radioactive. High value. The artifact is of primary interest to scientific organizations, jewelers and show-business celebrities.</text>
+	</string>
+	<string id="enc_zone_artifact_af-dummy-spring">
+		<text>An artifact of unknown origin. Two disks held together by a slimy substance. Significantly reduces the damage caused by bullets as well as bites and injuries inflicted in melee combat. Additionally, the artifact reduces damage caused by gravitational anomalies. Radioactive. The Spring accumulates radiation in the body, at the same time increasing the user's susceptibility to it. Very valuable. The artifact is of primary interest to scientific organizations.</text>
+	</string>
+	<string id="enc_zone_artifact_af-electra-flash">
+		<text>An artifact formed in the Electra anomaly. A translucent, amorphous object with light beams pulsating under the surface, occasionally generating miniature lightning sparks. Carrying Flash on your belt improves your stamina and provides partial resistance to electricity. At the same time, though, the artifact makes the user more susceptible to radiation. Average value. The artifact is of primary interest to scientific organizations, collectors and jewelers. </text>
+	</string>
+	<string id="enc_zone_artifact_af-electra-moonlight">
+		<text>An artifact formed in the Electra anomaly. A translucent, amorphous object with a glowing core, generating miniature lightning sparks. Carrying the Moonlight on your belt makes you tireless and virtually invulnerable to electric damage. At the same time, though, the artifact makes the user much more susceptible to radiation. High value. The artifact is of primary interest to scientific organizations, collectors and jewelers. </text>
+	</string>
+	<string id="enc_zone_artifact_af-electra-sparkler">
+		<text>An artifact formed in the Electra anomaly. A translucent, amorphous object generating miniature lightning sparks. The Sparkler slightly improves the user's stamina and provides some resistance to electricity. At the same time, though, the artifact makes the user more susceptible to radiation. Low value. The artifact is of primary interest to scientific organizations, collectors and jewelers.</text>
+	</string>
+	<string id="enc_zone_artifact_af-fireball">
+		<text>An artifact formed in the Scorcher anomaly. A translucent, reddish, globe-shaped object. Stalkers claim that carrying the artifact helps to stop bleeding, though at the same time it depletes the user's organism, causing extreme fatigue and hunger. While the artifact provides some resistance to fire, it also raises susceptibility to chemically active substances. Average value. The artifact is of primary interest to collectors and jewelers. </text>
+	</string>
+	<string id="enc_zone_artifact_af-fuzz-kolobok">
+		<text>A rare artifact of unknown origin. A globe the size of an orange. Carrying it grants the user a high degree of resistance to fire and electricity. As a side-effect, the artifact slightly increases susceptibility to radiation. High value. The artifact is of primary interest to scientific, mainly medical, organizations.</text>
+	</string>
+	<string id="enc_zone_artifact_af-gold-fish">
+		<text>An artifact formed in the Graviconcentrate anomaly. A beautiful object with a shiny surface. Oddly twisted, composed of highly compressed scraps of plants, soil and anything that happened to be within the striking range of the anomaly at the moment of discharge. Carrying the artifact on your belt greatly reduces the damage caused by bites or inflicted in melee combat. Highly radioactive. Very valuable in view of its scarcity. The artifact is of primary interest to scientific organizations, collectors and jewelers. </text>
+	</string>
+	<string id="enc_zone_artifact_af-gravi">
+		<text>An artifact formed in the Graviconcentrate anomaly. Oddly twisted, composed of highly-compressed scraps of plants, soil and anything that happened to be within the striking range of the anomaly. Carrying the artifact on your belt greatly reduces the damage caused by bites or inflicted in melee combat. Radioactive. Average value. The artifact is of primary interest to scientific organizations, collectors and jewelers. </text>
+	</string>
+	<string id="enc_zone_artifact_af-medusa">
+		<text>An artifact formed in the Springboard anomaly. Oddly twisted, composed of highly-compressed scraps of plants, soil and anything that happened to be within the striking range of the anomaly. Forms a weak protective field around the user reducing damage inflicted by small arms. Radioactive. Quite common, hence not very valuable. The artifact is of primary interest to scientific organizations. </text>
+	</string>
+	<string id="enc_zone_artifact_af-mincer-meat">
+		<text>An artifact formed in the Meatgrinder anomaly. A deformed, yellowish object composed of compressed, oddly twisted, polymerized scraps of plants, soil and bones. A popular superstition among stalkers is that the strength of people perished in the anomaly is contained in the artifact. Carrying the Meatball on your belt greatly speeds up healing, though in result the human flesh softens up and becomes temporarily more susceptible to injury. Additionally, the healing process requires ample nutrients, lack of which may quickly cause exhaustion. Radioactive. Average value. The artifact is of primary interest to scientific - primarily medical - organizations, and various cult members.</text>
+	</string>
+	<string id="enc_zone_artifact_af-night-star">
+		<text>An artifact formed in the Springboard anomaly. A beautiful object with a shiny surface and colorful phosphorescent inclusions. At night produces a greenish sphere of light about 1-2 meters in diameter. Oddly shaped, composed of highly-compressed scraps of plants, soil and anything that happened to be within the striking range of the anomaly. The artifact generates a protective field around the user reducing damage inflicted by small arms. Highly radioactive. Highly valuable in view of its scarcity. The artifact is of primary interest to scientific organizations and the military.</text>
+	</string>
+	<string id="enc_zone_artifact_af-rusty-kristall">
+		<text>An artifact formed in the Burning Fluff anomaly. A dull, cracked gem. Carrying the Crystal Spiker on your belt quickly purges your body of radiation. Known side-effects include a strong feeling of hunger and increased likelihood of ear- and mouth-bleeding. The artifact greatly improves resistance to chemical burns and radiation, but also increases susceptibility to fire and electricity. Average value. The artifact is of primary interest to scientific organizations, collectors and jewelers.</text>
+	</string>
+	<string id="enc_zone_artifact_af-rusty-sea-urchin">
+		<text>An artifact formed in the Burning Fluff anomaly. A grayish sphere covered in small thorns. Carrying the Urchin on your belt will almost instantly clean your body of radiation. Known side effects include the feeling of rapacious hunger, as well as ear and mouth bleeding, plus occasional minor wounds over the entire body. The artifact makes the user almost completely invulnerable to chemical burns and radiation, though it also greatly increases susceptibility to fire and electricity. High value. The artifact is of primary interest to scientific organizations, collectors and jewelers.</text>
+	</string>
+	<string id="enc_zone_artifact_af-rusty-thorn">
+		<text>An artifact formed in the Burning Fluff anomaly, resembling a rusty ball with spikes. Carrying the Spiker on your belt slowly yet efficiently cleans your body of radiation. Known side effects include a strong feeling of hunger and likelihood of occasional ear and mouth bleeding. The artifact greatly improves resistance to chemical burns and radiation, but also increases susceptibility to fire and electricity. Low value. The artifact is of primary interest to scientific organizations and collectors. </text>
+	</string>
+	<string id="enc_zone_artifact_af-soul">
+		<text>An artifact formed in the Meatgrinder anomaly. A yellow-reddish, shiny object composed of highly-compressed and oddly twisted polymerized scraps of plants, soil and bones. A popular superstition among stalkers is that the strength of people perished in the anomaly is contained in the artifact. When placed on your belt, the artifact completely restores the user's health within seconds, though the body temporarily becomes highly susceptible to all sorts of injury. Additionally, the healing process requires a great amount of nutrients, lack of which may quickly lead to exhaustion. Highly radioactive. Very valuable in view of its scarcity. The artifact is of primary interest to scientific - mainly medical - organizations and various cult members. </text>
+	</string>
+	<string id="enc_zone_artifact_af-vyvert">
+		<text>An artifact formed in the Graviconcentrate anomaly. Oddly twisted, composed of highly-compressed scraps of plants, soil and anything that happened to be within the striking range of the anomaly. Carrying the artifact on your belt greatly reduces the damage caused by bites or inflicted in melee combat. Radioactive. Quite common, hence not very valuable. The artifact is of primary interest to scientific organizations.</text>
+	</string>
+	<string id="enc_zone_locations_agroprom">
+		<text>A strange, heavily contaminated area. Should you wander deeper into it, you will see a shallow lake, crammed shore-to-shore with abandoned equipment and other debris. You can also check out the abandoned Institute and the factory, though the military have been hanging around there quite a lot recently.</text>
+	</string>
+	<string id="enc_zone_locations_bar">
+		<text>The Duty faction have set up camp on the plain's edge and they always welcome stalkers in need of rest. A desert oasis of sorts - a place completely devoid of anomalies and mutants. Be sure to check out the 100 Rads bar in the vaults - it's a meeting point for stalkers from all over the Zone. The bar is run by the local trader, so if you're interested in selling or buying wares apart from the local gossip - that's the place to go to. North of the bar is the military base, with the Dump to the South.</text>
+	</string>
+	<string id="enc_zone_locations_darkdolina">
+		<text>Always gloomy, always misty and always rainy. Stalkers venturing into the Dark Valley are likely to find valuable artifacts, instant death, or both. A place frequented by some of the most experienced old-timers, though you may also stumble upon some common bandits. There's supposed to be an underground lab around there somewhere, so it might be worth to look for a hidden entrance along the way. No one has returned from there alive though and no one can tell for sure just what nasty surprises await you there.</text>
+	</string>
+	<string id="enc_zone_locations_escape">
+		<text>Think of it as the Zone's antechamber - it's a good place for rookies to get their head around. You'll find a trader in the vaults at the back of the village, next to the army outpost. Don't miss the chance to talk to him. You'd be advised to steer clear of the outpost itself, however. You don't want the soldiers to catch a sight of you - most of them shoot first and don't bother asking questions later. Yet, as always, there are some who can be bribed as long as the top brass is looking the other way. Attacking the soldiers is not recommended, unless they pose a direct threat.</text>
+	</string>
+	<string id="enc_zone_locations_garbage">
+		<text>A vast machinery graveyard. Right after the first accident whole heaps of radioactive waste were dumped there. Mostly ruins of old buildings infested with mutants. Much like the outskirts of the Zone, the place swarms with rookie stalkers, with an occasional bandit loitering around, always on the lookout for freebies. Some artifacts to be found here, but most of them are just not worth the effort. You'll be better off elsewhere. Going North, you will get to the Wild Area, West lays the entrance to the Dark Valley, with the road to the Agroprom R&D Institute to the East.</text>
+	</string>
+	<string id="enc_zone_locations_military-loc">
+		<text>A deserted army base next to a dilapidated hamlet and a small marsh. The village is an eerie place literally swarming with mutants - the bloodsuckers alone are legion. Stalkers do their best to keep away from it, even if it means going extra kilometers around it. The anarchists from the Freedom faction have settled down in the army base. The road connecting the base to the Zone is guarded by the Brain Burner, which blocks the way to Pripyat and the Chernobyl NPP. </text>
+	</string>
+	<string id="enc_zone_locations_pripiat">
+		<text>This used to be a town built for engineers working at the Chernobyl NPP. Quite a big place once, it is a ghost town now with mutants and zombies as the only residents. There seems to be no way to get in there: the Brain Burner is blocking the way. </text>
+	</string>
+	<string id="enc_zone_locations_radar">
+		<text>A dreadful place. Easy to vanish without a trace there, no matter how lucky you have been in life so far. Whoever gets close to the Brain Burner immediately goes insane, turns into a zombie and starts stalking the Zone restlessly. A human shell is all that’s left. No-one has ever returned with a sound mind. </text>
+	</string>
+	<string id="enc_zone_locations_rostok">
+		<text>The Wild Area used to be the site of a rather large manufacturing plant, currently in ruins. Many stalkers met their death there: the place is swarming with all sorts of monsters. The beasts are literally streaming over there from the entire Zone. It is said that something of great importance is hidden at this site, so there are always plenty of daredevils willing to try their luck. </text>
+	</string>
+	<string id="enc_zone_locations_stancia">
+		<text>The site of the world-famous nuclear power plant. This is the heart of the Zone. If you believe the legends, this is also the site of the Monolith - a mysterious thing capable of granting any wish. </text>
+	</string>
+	<string id="enc_zone_locations_yantar">
+		<text>The legendary lake in the sector of the same name dried up a long ago, leaving a shallow swamp in its place. The place is morbid and sodden with death. Great dangers await any adventurous soul foolish enough to get near it. Anyone who dares to go too far goes insane. Zombie drones are rambling around the whole sector, waiting for new victims. If you walk around the lake and past the zombies, you’ll end up at the scientists' camp, where the eggheads brought there by choppers are doing some research. You can have a chat with them; they buy artifacts and could even send you on a mission.</text>
+	</string>
+	<string id="enc_zone_zone-story_story-2006">
+		<text>The contaminated zone was aglow with the brightest of lights, almost unbearable to the human eye. You could virtually see the clouds in the sky turning into vapor. After a moment of dead silence there came rattling thunder, and then the earth shook. People fell to the ground, screwing up their eyes and covering their ears. Those who could still stand ran for their lives. It looked as though all the nuclear fuel buried under the Sarcophagus had suddenly exploded. The next day the army cordoned off the new Zone. The satellites helped to establish that the epicenter of the explosion was not actually in the vicinity of the NPP reactors, but about half a kilometer away. It is believed that the personnel of the station died at once, though many people still remained within the cordoned area. The rescue operation soon proved a pointless endeavor, as all the people and machinery sent deep into the area would die or malfunction immediately. A little while after the disaster, the Zone diameter hopped out by a few more kilometers. Most of the government troops guarding the border line and the research teams stationed there perished instantly. Panic stricken, people took to flight. The residents of nearby towns and villages were hastily evacuated. An enormous danger is looming over the world and we can only guess what its full impact may be.</text>
+	</string>
+	<string id="enc_zone_zone-story_story-2008">
+		<text>Two years have passed since the disaster in the contaminated zone around Chernobyl NPP. Skyrocketing deathtoll, countless people missing, dead cattle, decaying buildings, maimed forests… Until this day scientists have no explanation as to what exactly happened in Chernobyl. Meanwhile, some inconceivable anomalies were discovered in the area, and the Zone keeps expanding. Rare expeditions encounter mutated species of animals exhibiting unbelievable abilities.</text>
+	</string>
+	<string id="enc_zone_zone-story_story-2010">
+		<text>Following in the tracks of those foolhardy loners who call themselves the stalkers, research expeditions are once again embarking on an in-depth study of the Zone. However, the perimeter guarded by the army has other, dangerous inhabitants now - from common poachers to the worst bandit scum. Most of the stalkers roam the Zone in search of anomalies and the so-called artifacts for which they gain quite a profit.</text>
+	</string>
+	<string id="enc_zone_zone-story_story-raid">
+		<text>The army, including special forces headed by paramilitary stalker detachments, launched a massive raid deep into the Zone. Their objective was to break through to the Chernobyl NPP and wipe out the cause of anomalous fields or at least obtain first-hand information on the current state of affairs. This endeavor, involving over a thousand people and heavy machinery, was a complete failure. Isolated groups of survivors were forced to settle within the Zone with slender hopes of rescue.</text>
 	</string>
 	<string id="Escape">
 		<text>Outpost</text>
 	</string>
 	<string id="Fuzz">
-		<text>"Burning Fluff"</text>
+		<text>Burning Fluff</text>
 	</string>
 	<string id="Garbage">
 		<text>Dump</text>
 	</string>
 	<string id="Gravi">
-		<text>"Graviconcentrate"</text>
+		<text>Graviconcentrate</text>
 	</string>
 	<string id="Lift">
-		<text>"Elevator"</text>
+		<text>Elevator</text>
 	</string>
 	<string id="Locations">
 		<text>Locations</text>
 	</string>
 	<string id="Meat">
-		<text>"Meatgrinder"</text>
+		<text>Meatgrinder</text>
 	</string>
 	<string id="Military-loc">
 		<text>Army base</text>
@@ -55,19 +292,19 @@
 		<text>Pripyat</text>
 	</string>
 	<string id="Radar">
-		<text>Brain Roaster</text>
+		<text>Brain Burner</text>
 	</string>
 	<string id="Radioactive">
 		<text>Source of radioactivity</text>
 	</string>
 	<string id="Rostok">
-		<text>Wilderness</text>
+		<text>Wild Area</text>
 	</string>
 	<string id="Stancia">
 		<text>Chernobyl NPP</text>
 	</string>
 	<string id="Story-2006">
-		<text>14:33, April 12 2008</text>
+		<text>2008, April 12, 14:33</text>
 	</string>
 	<string id="Story-2008">
 		<text>2010 год</text>
@@ -79,7 +316,7 @@
 		<text>Army raid into the Zone. 2011</text>
 	</string>
 	<string id="Time_machine">
-		<text>"Time Machine"</text>
+		<text>Time Machine</text>
 	</string>
 	<string id="Yantar">
 		<text>Yantar</text>
@@ -92,242 +329,5 @@
 	</string>
 	<string id="Zone-story">
 		<text>History of the Zone</text>
-	</string>
-	<string id="af-ameba-mica">
-		<text>"Mica"</text>
-	</string>
-	<string id="af-ameba-slime">
-		<text>"Slime"</text>
-	</string>
-	<string id="af-ameba-slug">
-		<text>"Slug"</text>
-	</string>
-	<string id="af-blood">
-		<text>"Stone Blood"</text>
-	</string>
-	<string id="af-cristall">
-		<text>"Crystal"</text>
-	</string>
-	<string id="af-cristall-flower">
-		<text>"Stone Flower"</text>
-	</string>
-	<string id="af-drops">
-		<text>"Sprays"</text>
-	</string>
-	<string id="af-dummy-battery">
-		<text>"Battery"</text>
-	</string>
-	<string id="af-dummy-dummy">
-		<text>"Empty"</text>
-	</string>
-	<string id="af-dummy-glassbeads">
-		<text>"Mama's beads"</text>
-	</string>
-	<string id="af-dummy-pellicle">
-		<text>"Cobweb"</text>
-	</string>
-	<string id="af-dummy-spring">
-		<text>"Spring"</text>
-	</string>
-	<string id="af-electra-flash">
-		<text>"Flash"</text>
-	</string>
-	<string id="af-electra-moonlight">
-		<text>"Moonlight"</text>
-	</string>
-	<string id="af-electra-sparkler">
-		<text>"Sparkler"</text>
-	</string>
-	<string id="af-fireball">
-		<text>"Fireball"</text>
-	</string>
-	<string id="af-fuzz-kolobok">
-		<text>"Doughboy"</text>
-	</string>
-	<string id="af-gold-fish">
-		<text>"Goldfish"</text>
-	</string>
-	<string id="af-gravi">
-		<text>"Gravi"</text>
-	</string>
-	<string id="af-medusa">
-		<text>"Jellyfish"</text>
-	</string>
-	<string id="af-mincer-meat">
-		<text>"Meatball"</text>
-	</string>
-	<string id="af-night-star">
-		<text>"Night Star"</text>
-	</string>
-	<string id="af-rusty-kristall">
-		<text>"Crystal Spiker"</text>
-	</string>
-	<string id="af-rusty-sea-urchin">
-		<text>"Urchin"</text>
-	</string>
-	<string id="af-rusty-thorn">
-		<text>"Spiker"</text>
-	</string>
-	<string id="af-soul">
-		<text>"Soul"</text>
-	</string>
-	<string id="af-vyvert">
-		<text>"Wrencher"</text>
-	</string>
-	<string id="enc_zone_anomalies_ameba">
-		<text>An anomaly of unknown nature. On contact with human body inflicts injuries similar to the effects of a strong acid. Forms three types of artifacts: "Slime", "Slug", and "Mica".</text>
-	</string>
-	<string id="enc_zone_anomalies_bald">
-		<text>One of the first anomalies ever recorded - a field of altering gravity inflicting shock damage to anyone within its radius. Remains stationary for a week on average. The amount of damage inflicted can vary in its lifetime, ranging from minor bruises, through serious wounds, to instant death. Easy to spot in daylight, recognizable by air fluctuation above the anomaly, dancing leaves and distinctive crimson-colored stains on the ground. Can be revealed by any type of detector, and by throwing objects into it. Forms three types of artifacts: "Jellyfish", "Stone Flower" and "Night Star".</text>
-	</string>
-	<string id="enc_zone_anomalies_electra">
-		<text>An anomalous formation, roughly 10 yards in diameter, accumulating static electricity in vast quantities. When triggered, the anomaly bursts out in dozens of miniature lightnings, causing electric shock, nearly always lethal for all living beings. Recognizable by the bluish fog hovering above it in daylight. At nighttime the "Electra" can be revealed by any type of detector, or by throwing metal objects into the anomaly. Forms three types of artifacts: "Sparkler", "Flash" and "Moonlight".</text>
-	</string>
-	<string id="enc_zone_anomalies_fuzz">
-		<text>Mutated vegetation. Reacts to rapidly approaching living beings by discharging a cloud of projectiles, severely injuring uncovered or lightly protected skin upon contact. Does not react to slowly moving targets. Forms three types of artifacts (possibly its seeds): "Spiker", "Crystal Spiker" and "Urchin".</text>
-	</string>
-	<string id="enc_zone_anomalies_gravi">
-		<text>An anomaly of presumably gravitational nature. When triggered, the tremendous power of the "Graviconcentrate" drags everything within the radius of 10-15 yards into its center. Victims drawn into the core have no chance of survival: the bodies of animals and human beings alike are quickly constricted into a tight lump, only to be blown up a moment later in a powerful discharge of energy. The anomaly remains stationary throughout its lifetime (a week on average). It can be visually detected in daylight by the air fluctuation above, dancing leaves, fragments of dismembered corpses lying around, and a distinctive dark stain in the center. Highly dangerous at night since it can be revealed only by means of a detector, or by throwing metal objects into it. Forms three types of artifacts: "Wrencher", "Gravi" and "Goldfish". </text>
-	</string>
-	<string id="enc_zone_anomalies_lift">
-		<text>A harmless anomaly, temporarily negating the laws of gravity. Manifests itself as an area, usually several yards in diameter, where the gravitational forces of Earth are greatly reduced. Forms the "Cobweb" artifact.</text>
-	</string>
-	<string id="enc_zone_anomalies_meat">
-		<text>The name of the anomaly stems from its snatching any living being up in the air and spinning it a breakneck speed. The exact nature of the "Meatgrinder" remains unknown. The anomaly can be recognized by a light whirlwind of dust and by body fragments scattered in the vicinity. Can be escaped with minor injuries while the victim is on its outer rim - far enough from the maximum effect zone at the center. Forms three types of artifacts: "Stone Blood", "Meatball" and "Soul".</text>
-	</string>
-	<string id="enc_zone_anomalies_radioactive">
-		<text>An area of increased radiation - over 50 mR/h. Prolonged stay in a radiated zone is strongly discouraged.</text>
-	</string>
-	<string id="enc_zone_anomalies_time">
-		<text>A little miracle of an anomaly: an area several yards in diameter where the natural time flow is greatly reduced. Appears to have no negative effect on human health. However, can be very difficult to get out of. Interestingly, removal of "Mama's beads" - an artifact usually found in the center of the anomaly, causes the "Time Machine" to disappear.</text>
-	</string>
-	<string id="enc_zone_anomalies_zharka">
-		<text>While inactive, the anomaly manifests itself as a barely visible cloud of hot air. When triggered by an object or a living being it instantly heats up to lethal temperatures approaching 1500K. At nighttime it can be revealed by powerful detectors or by throwing metal objects into the trigger area. Forms three types of artifacts: "Sprays", "Fireball" and "Crystal".</text>
-	</string>
-	<string id="enc_zone_artifact_af-ameba-mica">
-		<text>An artifact formed in the "Witches' Jelly" anomaly. A translucent, jelly-like object of unknown nature, known to almost instantly nourish the body with nutrients, drive out radiation and stop bleeding. At the same time, however, it makes the bearer extremely susceptible to electric, chemical and thermal injury. High value. The artifact is of primary interest to scientific, primarily medical, organizations.</text>
-	</string>
-	<string id="enc_zone_artifact_af-ameba-slime">
-		<text>An artifact formed in the "Witches' Jelly" anomaly. A translucent, gelatinous object of unknown nature, known to nourish the body with nutrients, gradually drive out radiation and improve blood coagulability. At the same time, however, it makes the bearer extremely susceptible to electric, chemical and thermal injury. Low value. The artifact if of primary interest to scientific, primarily medical, organizations.</text>
-	</string>
-	<string id="enc_zone_artifact_af-ameba-slug">
-		<text>An artifact formed in the "Witches' Jelly" anomaly. A translucent, gelatinous object of unknown nature, known to nourish the body with nutrients, drive out radiation and improve blood coagulability. At the same time, however, it makes the bearer extremely susceptible to electric, chemical and thermal injury. Medium price. The artifact if of primary interest to scientific, primarily medical, organizations.</text>
-	</string>
-	<string id="enc_zone_artifact_af-blood">
-		<text>An artifact formed in the "Meatgrinder" anomaly. A deformed, reddish object made of compressed, oddly twisted, polymerized scraps of plants, soil and bones. A popular superstition among stalkers is that the strength of people perished in the anomaly is contained in the artifact. Carrying the "Stone Blood" artifact on your belt slightly speeds up the healing process, though in result the human flesh softens up and becomes temporarily more susceptible to injury. In addition, healing requires ample nutrients, lack of which may quickly cause exhaustion. Radioactive. Quite common, hence not very valuable. The artifact is of primary interest to scientific, primarily medical, organizations and various cult members.</text>
-	</string>
-	<string id="enc_zone_artifact_af-cristall">
-		<text>An artifact formed in the "Scorcher" anomaly. A large, glowing, reddish crystal. Stalkers assert that the artifact instantly stops any type of bleeding, though also depleting the bearer's organism, causing extreme fatigue and hunger. The artifact also provides full immunity from fire, though at the same time it makes the bearer increasingly susceptible to chemically active substances. Very valuable in view of its scarcity. The artifact is of primary interest to scientific organizations.</text>
-	</string>
-	<string id="enc_zone_artifact_af-cristall-flower">
-		<text>An artifact formed in the "Springboard" anomaly. A beautiful object with a shiny surface sprinkled with yellow-red inclusions. Oddly shaped, composed of tightly-compressed scraps of plants, soil and anything that happened to be within the striking range of the anomaly. The artifact generates a protective field, reducing damage caused by small arms. Radioactive. Average value. The artifact is of primary interest to scientific organizations, collectors and jewelers. </text>
-	</string>
-	<string id="enc_zone_artifact_af-drops">
-		<text>An artifact formed in the "Scorcher" anomaly. Tear-shaped object with a glossy, cracked surface. Stalkers assert that carrying the artifact helps stop bleeding, though it also depletes the bearer's organism, causing extreme fatigue and hunger. Additionally, the artifact provides partial resistance to fire, though at the same time raising susceptibility to chemically active substances. Low value. The artifact is of primary interest to collectors and jewelers.</text>
-	</string>
-	<string id="enc_zone_artifact_af-dummy-battery">
-		<text>An artifact of unknown origin. A small, shiny object with a ribbed surface. It is said to fortify the bearer, suppressing feelings of fatigue and hunger, and protecting the body from electric charges. Very valuable. The artifact is of primary interest to scientific organizations.</text>
-	</string>
-	<string id="enc_zone_artifact_af-dummy-dummy">
-		<text>An artifact of unknown origin. Two disks connected with slime. Reduces damage caused by bullets or bites, and injuries inflicted in melee combat. Additionally reduces damage caused by gravitational anomalies. High value. The artifact is of primary interest to scientific organizations.</text>
-	</string>
-	<string id="enc_zone_artifact_af-dummy-glassbeads">
-		<text>An extremely rare artifact of unknown origin. An oddly coiled spiral strewn with pearly droplets. Nourishes the bearer, completely suppressing the feeling of hunger. Anyone carrying the artifact can do without food or drink for an infinite period of time. The only known side-effect is increased susceptibility to radiation. The artifact is highly valued by all sorts of organizations and individuals.</text>
-	</string>
-	<string id="enc_zone_artifact_af-dummy-pellicle">
-		<text>A rare artifact of unknown origin. A fine glassy film with interesting refractive properties. Protects the bearer from chemical injury, while increasing his or her stamina. Radioactive. High value. The artifact is of primary interest to scientific organizations, jewelers and show-business celebrities.</text>
-	</string>
-	<string id="enc_zone_artifact_af-dummy-spring">
-		<text>An artifact of unknown origin. Two disks connected with slime. Greatly reduces damage caused by bullets or bites, and injuries inflicted in melee combat. Additionally, the artifact reduces damage caused by gravitational anomalies. Radioactive, the "Spring" accumulates radiation in a human body, at the same time increasing the bearer's susceptibility to it. Very valuable. The artifact is of primary interest to scientific organizations.</text>
-	</string>
-	<string id="enc_zone_artifact_af-electra-flash">
-		<text>An artifact formed in the "Electra" anomaly. A translucent, amorphous object with light beams pulsating under the surface, occasionally generating miniature lightning-sparks. Carrying "Flash" on your belt will improve your stamina and provide some resistance to electricity. At the same time, though, the artifact makes the bearer more susceptible to radiation. Average value. The artifact is of primary interest to scientific organizations, collectors and jewelers. </text>
-	</string>
-	<string id="enc_zone_artifact_af-electra-moonlight">
-		<text>An artifact formed in the "Electra" anomaly. A translucent, amorphous object with a glowing core, generating miniature lightning-sparks. Carrying the "Moonlight" on your belt will make you tireless and virtually invulnerable to electric discharges. At the same time, though, the artifact makes the bearer much more susceptible to radiation. High value. The artifact is of primary interest to scientific organizations, collectors and jewelers. </text>
-	</string>
-	<string id="enc_zone_artifact_af-electra-sparkler">
-		<text>An artifact formed in the "Electra" anomaly. A translucent, amorphous object generating miniature lightning-sparks. The "Sparkler" slightly improves the bearer's stamina and provides some resistance to electricity. At the same time, though, the artifact makes the wearer more susceptible to radiation. Low value. The artifact is of primary interest to scientific organizations, collectors and jewelers.</text>
-	</string>
-	<string id="enc_zone_artifact_af-fireball">
-		<text>An artifact formed in the "Scorcher" anomaly. A translucent, reddish, globe-shaped object. Stalkers assert that carrying the artifact helps stop bleeding, though at the same time it depletes the bearer's organism, causing extreme fatigue and hunger. While the artifact provides some resistance to fire, it also raises susceptibility to chemically active substances. Average value. The artifact is of primary interest to collectors and jewelers. </text>
-	</string>
-	<string id="enc_zone_artifact_af-fuzz-kolobok">
-		<text>A rare artifact of unknown origin. A globe the size of an orange. Carrying it grants the bearer a high degree of resistance to fire and electricity. In side-effect, the artifact slightly increases susceptibility to radiation. High value. The artifact is of primary interest to scientific, primarily medical, organizations.</text>
-	</string>
-	<string id="enc_zone_artifact_af-gold-fish">
-		<text>An artifact formed in the "Graviconcentrate" anomaly. A beautiful object with a shiny surface. Oddly twisted, composed of highly compressed scraps of plants, soil and anything that happened to be within the striking range of the anomaly at the moment of discharge. Carrying the artifact on your belt will greatly reduce the level of damage caused by bites or inflicted in melee combat. Highly radioactive. Very valuable in view of its scarcity. The artifact is of primary interest to scientific organizations, collectors and jewelers. </text>
-	</string>
-	<string id="enc_zone_artifact_af-gravi">
-		<text>An artifact formed in the "Graviconcentrate" anomaly. Oddly twisted, composed of highly-compressed scraps of plants, soil and anything that happened to be within the striking range of the anomaly. Carrying the artifact on your belt will greatly reduce the level of damage caused by bites or inflicted in melee combat. Radioactive. Average value. The artifact is of primary interest to scientific organizations, collectors and jewelers. </text>
-	</string>
-	<string id="enc_zone_artifact_af-medusa">
-		<text>An artifact formed in the "Springboard" anomaly. Oddly twisted, composed of highly-compressed scraps of plants, soil and anything that happened to be within the striking range of the anomaly. Forms a weak protective field around the bearer reducing damage inflicted by small arms. Radioactive. Quite common, hence not very valuable. The artifact is of primary interest to scientific organizations. </text>
-	</string>
-	<string id="enc_zone_artifact_af-mincer-meat">
-		<text>An artifact formed in the "Meatgrinder" anomaly. A deformed, yellowish object composed of compressed, oddly twisted, polymerized scraps of plants, soil and bones. A popular superstition among stalkers is that the strength of people perished in the anomaly is contained in the artifact. Carrying the "Meatball" on your belt will greatly speed up healing, though in result the human flesh softens up and becomes temporarily more susceptible to injury. In addition, healing requires ample nutrients, lack of which may quickly cause exhaustion. Radioactive. Average value. The artifact is of primary interest to scientific, primarily medical organizations, and various cult members.</text>
-	</string>
-	<string id="enc_zone_artifact_af-night-star">
-		<text>An artifact formed in the "Springboard" anomaly. A beautiful object with a shiny surface and colorful phosphorescent inclusions. At night emanates a greenish light, in an area about 1-2 yards in diameter. Oddly shaped, composed of highly-compressed scraps of plants, soil and anything that happened to be within the striking range of the anomaly. The artifact generates a protective field around the bearer reducing damage inflicted by small arms. Highly radioactive. Highly valuable in view of its scarcity. The artifact is of primary interest to scientific organizations and the military.</text>
-	</string>
-	<string id="enc_zone_artifact_af-rusty-kristall">
-		<text>An artifact formed in the "Burning Fluff" anomaly. A dull, cracked crystal. Carrying the "Crystal Spiker" on your belt will clean your body of radiation rather fast. Known side-effects include a strong feeling of hunger and the likelihood of ear- and mouth-bleeding. The artifact greatly improves resistance to chemical burns and radiation, but increases susceptibility to fire and electricity. Average value. The artifact is of primary interest to scientific organizations, collectors and jewelers.</text>
-	</string>
-	<string id="enc_zone_artifact_af-rusty-sea-urchin">
-		<text>An artifact formed in the "Burning Fluff" anomaly. A grayish sphere covered in small thorns. Carrying the "Urchin" on your belt will almost instantly clean your body of radiation. Known side effects include the feeling of rapacious hunger, as well as ear- and mouth bleeding, plus occasional minor wounds over the entire body. The artifact makes the bearer almost completely invulnerable to chemical burns and radiation, though it also greatly increases susceptibility to fire and electricity. High value. The artifact is of primary interest to scientific organizations, collectors and jewelers.</text>
-	</string>
-	<string id="enc_zone_artifact_af-rusty-thorn">
-		<text>An artifact formed in the "Burning Fluff" anomaly, resembling a rusty ball with spikes. Carrying the "Spiker" on your belt slowly yet efficiently cleans your body of radiation. The known side effects are a strong feeling of hunger and the likelihood of occasional ear- and mouth bleeding. The artifact greatly improves resistance to chemical burns and radiation, but increases susceptibility to fire and electricity. Low value. The artifact is of primary interest to scientific organizations and collectors. </text>
-	</string>
-	<string id="enc_zone_artifact_af-soul">
-		<text>An artifact formed in the "Meatgrinder" anomaly. A yellow-reddish, shiny object composed of highly-compressed and oddly twisted polymerized scraps of plants, soil and bones. A popular superstition among stalkers is that the strength of people perished in the anomaly is contained in the artifact. When placed on your belt, the artifact will completely restore your health within seconds, though your body will temporarily become highly susceptible to all sorts of injury. In addition, the healing process requires a great amount of nutrients, and lack of food may quickly lead to exhaustion. Highly radioactive. Very valuable in view of its scarcity. The artifact is of primary interest to scientific, primarily medical organizations, and various cult members. </text>
-	</string>
-	<string id="enc_zone_artifact_af-vyvert">
-		<text>An artifact formed in the "Graviconcentrate" anomaly. Oddly twisted, composed of highly-compressed scraps of plants, soil and anything that happened to be within the striking range of the anomaly. Carrying the artifact on your belt will greatly reduce the level of damage caused by bites or inflicted in melee combat. Radioactive. Quite common, hence not very valuable. The artifact is of primary interest to scientific organizations.</text>
-	</string>
-	<string id="enc_zone_locations_agroprom">
-		<text>A strange, heavily contaminated place. Should you wander into it, you will find a shallow lake, crammed shore-to-shore with abandoned equipment and other debris. You can also check out the abandoned institute and the factory, though the military have been hanging around there quite a bit recently.</text>
-	</string>
-	<string id="enc_zone_locations_bar">
-		<text>The "Duty" gang have set up camp at the skirt of the plane, and they always welcome stalkers in need of a rest. A desert oasis of sorts - a place devoid of anomalies and mutants. Be sure to check out the "100 Roentgen" bar in the vaults - it's a meeting point for stalkers from the entire Zone. The bar is run by the local trader, so if you're interested in selling or buying wares apart from the local gossip - that's the place to go to. North of the bar is the military base, with the Dump to the South.</text>
-	</string>
-	<string id="enc_zone_locations_darkdolina">
-		<text>Always gloomy, always misty and always rainy. Stalkers venturing into the Dark Valley are likely to find valuable artifacts, or instant death, or both. A place frequented by some of the most experienced old-timers, as well as common bandits. There's supposed to be an underground lab around there somewhere, so it might be worth to look for a hidden entrance along the way. No one has returned from there alive though, and no one can tell for sure just what nasty surprises await you there.</text>
-	</string>
-	<string id="enc_zone_locations_escape">
-		<text>Think of it as the Zone's antechamber - it's the first place for greenhorns to win their foothold. You'll find a trader in the vaults at the back of the village, by the army outpost. Don't miss the chance to chit-chat with him. You'd be advised to steer clear of the outpost itself. You don't want the soldiers to catch a sight of you - most of them shoot first and don't bother asking questions later. However, there are some, who can be bribed, as long as the top brass is looking the other way. Attacking soldiers is not recommended, unless they pose a direct threat.</text>
-	</string>
-	<string id="enc_zone_locations_garbage">
-		<text>A huge machinery graveyard. Right after the first accident whole heaps of radioactive waste were dumped here. Mostly ruins of old buildings, currently inhabited by mutants. Much like the outskirts of the Zone, the place swarms with stalker rookies, with some bandits loitering around, always on the lookout for freebies. Some artifacts to be found here, but most of them are just not worth the effort. You'll be better off elsewhere. Going North, you will get to the Wilderness, West lays the entrance to the Dark Valley, with the road to the "Agroprom" institute to the East.</text>
-	</string>
-	<string id="enc_zone_locations_military-loc">
-		<text>A deserted army base close to a dilapidating hamlet and a small swamp. The village is an eerie place literally swarming with mutants - the bloodsuckers alone are legion. Stalkers try their best to keep away from it, even if it means going some extra miles around it. The anarchists from the "Freedom" gang have settled down on the premises of the military base. The road connecting the base to the Zone is guarded by the brain roaster: it blocks the way to Pripyat and Chernobyl NPP. </text>
-	</string>
-	<string id="enc_zone_locations_pripiat">
-		<text>This used to be the town built for the power engineers working at the Chernobyl NPP. Quite a big place once, it is more of a ghost city now, with mutants and zombies as its only residents. There seems to be no way to get in there: the brain roaster blocks the way. </text>
-	</string>
-	<string id="enc_zone_locations_radar">
-		<text>A dreadful place. Easy to vanish without a trace, even if you’ve been turning up trumps all your life before. Whoever gets close to the Brain Roaster goes off his rocker, gets turned into a zombie and set a rambling restlessly around the Zone. A human shell is all that’s left, and no one returns in sound mind. </text>
-	</string>
-	<string id="enc_zone_locations_rostok">
-		<text>The Wilderness used to be the premise of a rather large plant, now in ruins. Many stalkers met their death there: the place is swarming with all sorts of crud. The beasts are literally streaming over there from the entire Zone. It is said that something of great importance is hidden at this plant site, so there are always plenty of daredevils willing to try their luck. </text>
-	</string>
-	<string id="enc_zone_locations_stancia">
-		<text>The site of the former world-famous nuclear power station. This is the heart of the Zone. If you believe the legends, there a thing called the Monolith in there capable of granting any wish. </text>
-	</string>
-	<string id="enc_zone_locations_yantar">
-		<text>The legendary lake in the sector of the same name dried up a long ago, leaving just a shallow swamp. The place is morbid, and sodden with death. Great danger awaits any adventurous soul. Anyone who dares to go too far goes mentally deranged. Zombie drones are rambling around the whole sector, waiting for anyone they catch sight of, with intentions that are hardly peaceful. Walking around the lake and the zombies you’ll end up in the scientists' camp where the eggheads brought there by choppers are doing some research. You can have a talk with them; they buy some artifacts and could even send you on a mission.</text>
-	</string>
-	<string id="enc_zone_zone-story_story-2006">
-		<text>The contamination zone was aglow with the brightest of lights, almost unbearable to the human eye. One could virtually see the clouds in the sky turning into vapor. A moment of dead silence was followed by rattling thunder, and then the earth shook. People fell to the ground, screwing up their eyes and covering their ears. Those who could still stand ran for their lives. From the outside it looked as though all the nuclear fuel buried under the Sarcophagus had suddenly exploded. The next day the government troops cordoned off the new Zone. With the help of satellites it was discovered that the epicenter of the explosion was not in the vicinity of the NPP reactors, but about half a mile away. It is believed that the whole personnel of the station died at once, though many people still remained within the cordoned area. The rescue operations soon proved to be a pointless endeavor, as all the people and machinery sent deep into the affected area would die or malfunction immediately. A little while after the disaster the Zone diameter hopped out by a few more miles. Most of the government troops guarding the area border line and the research labs stationed there perished instantly. Panic stricken, people took to flight; the residents of nearby towns and villages were hastily evacuated. Enormous danger is looming over the whole world, and we can only guess what its impact may be.</text>
-	</string>
-	<string id="enc_zone_zone-story_story-2008">
-		<text>Two yeas have passed since the disaster in the contamination zone around the Chernobyl NPP. Sky-rocketing death-rolls, countless people missing, perished cattle, decayed buildings, maimed forests… Until this day scientists have no explanation as to what exactly happened. Meanwhile, the Zone where some inconceivable anomalies were discovered keeps expanding. Rare expeditions encounter mutated species of animals exhibiting amazing abilities.</text>
-	</string>
-	<string id="enc_zone_zone-story_story-2010">
-		<text>Following in the tracks of foolhardy loners, the stalkers, research expeditions are once again embarking on in-depth study of the Zone. However, the enclosed area guarded by the army is already inhabited by a number of "society's riff-raff" from poachers to common bandits. Most of the stalkers roam the Zone in search of various anomalous formations, and the so-called artifacts, for which they gain quite a profit.</text>
-	</string>
-	<string id="enc_zone_zone-story_story-raid">
-		<text>The army, including special forces headed by paramilitary stalker detachments, launched a massive raid deep into the Zone. Their objective was to break through to the Chernobyl NPP and wipe out the cause of deadly anomalous fields, or at least obtain first-hand information on the state of things. This endeavor, involving over a thousand people and heavy machinery, turned out a complete failure. Isolated groups of survivors settled within the Zone with slender hopes of rescue.</text>
 	</string>
 </string_table>

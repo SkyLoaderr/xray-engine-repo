@@ -4,7 +4,7 @@
 		<text>The artifact was destroyed.</text>
 	</string>
 	<string id="mp_art_spowned">
-		<text>The artifact has been spawned. Bring it to the base to score a point.</text>
+		<text>The artifact spawned. Bring it to the base to score a point.</text>
 	</string>
 	<string id="mp_artefacts">
 		<text>Artifacts </text>
@@ -49,7 +49,7 @@
 		<text>has disconnected</text>
 	</string>
 	<string id="mp_enter_text">
-		<text>Enter text for voting</text>
+		<text>Enter text for the vote</text>
 	</string>
 	<string id="mp_entered_game">
 		<text>has joined the game</text>
@@ -58,7 +58,7 @@
 		<text>(First person view)</text>
 	</string>
 	<string id="mp_frags">
-		<text>Frags</text>
+		<text>frags</text>
 	</string>
 	<string id="mp_frags_upcase">
 		<text>Frags</text>
@@ -82,7 +82,7 @@
 		<text>took%s Artifact</text>
 	</string>
 	<string id="mp_headhuntrs">
-		<text>Mercenaries</text>
+		<text>Mercs</text>
 	</string>
 	<string id="mp_is_now">
 		<text>is now</text>
@@ -91,7 +91,7 @@
 		<text>has joined</text>
 	</string>
 	<string id="mp_kick">
-		<text>Kick</text>
+		<text>Drop</text>
 	</string>
 	<string id="mp_look_at">
 		<text>(Freelook)</text>
@@ -148,7 +148,7 @@
 		<text>You have %d$. You can respawn for %d$. Click Yes to pay.</text>
 	</string>
 	<string id="mp_ready">
-		<text>Ready</text>
+		<text>Ready…</text>
 	</string>
 	<string id="mp_restart">
 		<text>Restart</text>
@@ -157,7 +157,7 @@
 		<text>Quick restart</text>
 	</string>
 	<string id="mp_scores">
-		<text>score</text>
+		<text>scored points</text>
 	</string>
 	<string id="mp_select_ban">
 		<text>Select player to ban by voting</text>
@@ -244,12 +244,12 @@
 		<text>Rainy</text>
 	</string>
 	<string id="mp_with_backstab">
-		<text> Backstabbed!!!</text>
+		<text>Backstabbed!!!</text>
 	</string>
 	<string id="mp_with_headshot">
-		<text> Headshot!!!</text>
+		<text>Headshot!!!</text>
 	</string>
 	<string id="mp_your_rank">
-		<text>Your rank is now </text>
+		<text>Your rank is now</text>
 	</string>
 </string_table>

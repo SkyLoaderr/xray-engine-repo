@@ -5,10 +5,7 @@
 		<text>Wounded Fox.</text>
 	</string>
 	<string id="esc_mill">
-		<text>Abandoned mill. A wounded brother was last seen around here somewhere.</text>
-	</string>
-	<string id="escape_dinamit">
-		<text>Dynamite at the factory.</text>
+		<text>Abandoned mill. The wounded brother was last seen somewhere around here.</text>
 	</string>
 	<string id="escape_trader">
 		<text>Trader.</text>
@@ -17,19 +14,19 @@
 		<text>Bandits at the factory.</text>
 	</string>
 	<string id="killers_team">
-		<text>A group of unknown mercenaries.</text>
+		<text>An unknown group of Mercs.</text>
 	</string>
 	<string id="novice_leader">
-		<text>Novice camp leader.</text>
+		<text>Rookie camp leader.</text>
 	</string>
 	<string id="soldiers_bridge">
-		<text>Military checkpoint at the destroyed bridge. Sometimes they take a bribe for allowing passage.</text>
+		<text>Military checkpoint at the destroyed bridge. The soldiers are known to take bribes to let people go through.</text>
 	</string>
 	<string id="tutorial_artefact">
 		<text>Artifact.</text>
 	</string>
 	<string id="tutorial_bandits">
-		<text>Bandits who have pinned in the scout.</text>
+		<text>Bandits who have stopped our scout.</text>
 	</string>
 	<string id="tutorial_secret">
 		<text>Dead stalker's stash.</text>
@@ -38,13 +35,13 @@
 		<text>Dead stalker's stash.</text>
 	</string>
 	<string id="tutorial_secret_shustryi">
-		<text>Sneaky's stash.</text>
+		<text>Nimble's stash.</text>
 	</string>
 	<string id="tutorial_wounded">
-		<text>Sneaky, a captive.</text>
+		<text>Nimble, a prisoner.</text>
 	</string>
 	<string id="volk">
-		<text>Wolf, the leader of the novice camp.</text>
+		<text>Wolf, the leader of the rookie camp.</text>
 	</string>
 	<string id="wolfs_rangers">
 		<text>Wolf's scouts.</text>

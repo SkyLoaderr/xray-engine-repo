@@ -1,94 +1,94 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="item test1">
-		<text>This is a ITEM test string</text>
+		<text>This is an ITEM test string</text>
 	</string>
 	<string id="item test2">
 		<text>This is a another ITEM test string</text>
 	</string>
 	<string id="item_case_esc_desc">
-		<text>A briefcase containing documents. Made from fireproof materials.</text>
+		<text>A fireproof briefcase with documents.</text>
 	</string>
 	<string id="item_decoder_desc">
-		<text>Something like a powerful electronic lock pick. It looks like it was created with a specific electronic lock in mind. Strangely enough the design isn't meant to be general - it was made for one lock and can't break any other codes.</text>
+		<text>A powerful electronic lockpick. Strangely enough, it does not seem to be an all-purpose thieves' instrument. Rather, it seems to have been created with a specific electronic lock in mind and can't be used to override anything else.</text>
 	</string>
 	<string id="item_decoder_name">
 		<text>Decoder</text>
 	</string>
 	<string id="item_detector_yantar_desc">
-		<text>Psy-emission detector</text>
+		<text>Psi-emission detector</text>
 	</string>
 	<string id="item_detector_yantar_name">
 		<text>PP-4a sensor</text>
 	</string>
 	<string id="item_doc_x16_desc">
-		<text>Plastic document file. It's hard to work anything out without a degree in biology.</text>
+		<text>Plastic document file. You'd need a degree in biology to understand a word of what it says.</text>
 	</string>
 	<string id="item_doc_x16_name">
-		<text>Documents from lab X16</text>
+		<text>Documents from Lab X16</text>
 	</string>
 	<string id="item_doc_x18_desc">
-		<text>A thick pile of scientific documents. It's hard to work anything out without a degree in biology.</text>
+		<text>A thick pile of scientific documents. You'd need a degree in biology to understand a word of what it says.</text>
 	</string>
 	<string id="item_doc_x18p1_name">
-		<text>Documents from lab X18 part 1</text>
+		<text>Documents from Lab X18, part 1</text>
 	</string>
 	<string id="item_doc_x18p2_name">
-		<text>Documents from lab X18 part 2</text>
+		<text>Documents from Lab X18, part 2</text>
 	</string>
 	<string id="item_doc_x18p3_name">
-		<text>Documents from lab X18 part 3</text>
+		<text>Documents from Lab X18, part 3</text>
 	</string>
 	<string id="item_doc_x18p4_name">
-		<text>Documents from lab X18 part 4</text>
+		<text>Documents from Lab X18, part 4</text>
 	</string>
 	<string id="item_doc_x18p5_name">
-		<text>Documents from lab X18 part 5</text>
+		<text>Documents from Lab X18, part 5</text>
 	</string>
 	<string id="item_docs_hiden_pri_desc">
-		<text>A worn manuscript in leather binding. Written by Sharpshooter himself. According to the headings it contains explanations of some of the Zone's secrets.</text>
+		<text>A worn manuscript in leather binding. Written by Hawkeye himself. Judging by the headings alone, it might explain some of the Zone's secrets.</text>
 	</string>
 	<string id="item_docs_hiden_pri_name">
 		<text>Documents from the secret stash in Pripyat</text>
 	</string>
 	<string id="item_dynamite_esc_desc">
-		<text>A heavy wooden crate with the word "Explosive" written on it in several languages</text>
+		<text>A heavy wooden crate with the word "Explosives" written in several languages</text>
 	</string>
 	<string id="item_dynamite_esc_name">
-		<text>Dynamite crate</text>
+		<text>Crate of explosives</text>
 	</string>
 	<string id="item_flash_crazy_mil_desc">
-		<text>Flash drive - the most convenient device for transferring information.</text>
+		<text>Flash drive - the best way to store and transfer information.</text>
 	</string>
 	<string id="item_flash_crazy_mil_name">
 		<text>The crazy stalker's flash drive</text>
 	</string>
 	<string id="item_flash_eco_rost_desc">
-		<text>Flash drive - the most convenient device for transferring information.</text>
+		<text>Flash drive - the best way to store and transfer information.</text>
 	</string>
 	<string id="item_flash_eco_rost_name">
 		<text>Professor Kruglov's flash drive</text>
 	</string>
 	<string id="item_flash_esc_desc">
-		<text>Flash drive - the most convenient device for transferring information.</text>
+		<text>Flash drive - the best way to store and transfer information.</text>
 	</string>
 	<string id="item_flash_esc_name">
-		<text>Wounded stalker's flash drive</text>
+		<text>Captive stalker's flash drive</text>
 	</string>
 	<string id="item_flash_gslinger_agro_desc">
-		<text>Flash drive - the most convenient device for transferring information.</text>
+		<text>Flash drive - the best way to store and transfer information.</text>
 	</string>
 	<string id="item_flash_gslinger_agro_name">
-		<text>Flash drive from Sharpshooter's secret stash</text>
+		<text>Flash drive from Hawkeye's secret stash</text>
 	</string>
 	<string id="item_key_x18_desc">
-		<text>Electronic key to underground laboratory X-18.</text>
+		<text>Electronic key to the underground Lab X18.</text>
 	</string>
 	<string id="item_key_x18_name">
-		<text>Hog's key</text>
+		<text>Borov's key</text>
 	</string>
 	<string id="item_krot_flash">
-		<text>Mole's flash drive with information about Sharpshooter's secret stash</text>
+		<text>Mole's flash drive with information about Hawkeye's secret stash</text>
 	</string>
 	<string id="item_pda_lucky_desc">
 		<text>Personal digital assistant. Indispensable in the Zone.</text>
@@ -103,24 +103,24 @@
 		<text>Tyrant's PDA</text>
 	</string>
 	<string id="item_quest_case_02_desc">
-		<text>A briefcase containing documents. Made from fireproof materials.</text>
+		<text>A fireproof briefcase with documents.</text>
 	</string>
 	<string id="item_quest_case_02_name">
-		<text>Military documents from Agroprom research institute</text>
+		<text>Military documents from the Agroprom R&D Institute</text>
 	</string>
 	<string id="item_сase_esc_name">
 		<text>Documents from the checkpoint</text>
 	</string>
 	<string id="yan_bad_psy_helmet_desc">
-		<text>A prototype developed by scientists to protect people from psy-emissions. Not functional.</text>
+		<text>A prototype developed by scientists to protect people from psi-emissions. Not functional.</text>
 	</string>
 	<string id="yan_bad_psy_helmet_name">
-		<text>Psy-protection helmet. Not functional</text>
+		<text>Psi-protection helmet. Not functional</text>
 	</string>
 	<string id="yan_good_psy_helmet_desc">
-		<text>Functional prototype developed by scientists to protect people from psy-emissions</text>
+		<text>Functional prototype developed by scientists to protect people from psi-emissions</text>
 	</string>
 	<string id="yan_good_psy_helmet_name">
-		<text>Functional psy-protection helmet</text>
+		<text>Functional psi-protection helmet</text>
 	</string>
 </string_table>

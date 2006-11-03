@@ -1,1452 +1,1452 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="mil_bodyguard_dialog_0">
-		<text>Чего тебе?</text>
+		<text>What do you want?</text>
 	</string>
 	<string id="mil_bodyguard_dialog_1">
-		<text>Мне нужен лидер "Свободы". Крайне важная информация.</text>
+		<text>I'm looking for the leader of Freedom. I've got extremely important information for him.</text>
 	</string>
 	<string id="mil_bodyguard_dialog_2">
-		<text>И насколько же это важная?</text>
+		<text>Oh, and just how important is it?</text>
 	</string>
 	<string id="mil_bodyguard_dialog_5">
-		<text>Я встретил отряд "Долга" неподалёку от вашей базы.</text>
+		<text>I came across a group of Duty members not far from your base.</text>
 	</string>
 	<string id="mil_bodyguard_dialog_6">
-		<text>Оп-па... Похоже, "Долг" опять пробует отыграться... \nТак, проходи на территорию, только убери ствол. Не вздумай тут у нас пальбу поднимать: вперёд ногами вынесут.</text>
+		<text>Uh-oh… Looks like Duty is trying to equalize again… \nOk, you can enter, but make sure to put that piece away. Don't even think of making a mess in here, or you'll be leaving soon with your feet foremost.</text>
 	</string>
 	<string id="mil_bodyguard_dialog_7">
-		<text>Хорошо.</text>
+		<text>OK.</text>
 	</string>
 	<string id="mil_cook_common1_0">
-		<text>День добрый.</text>
+		<text>Good afternoon.</text>
 	</string>
 	<string id="mil_cook_common1_101">
-		<text>Ага-а!..</text>
+		<text>Uh-huh!</text>
 	</string>
 	<string id="mil_cook_common1_102">
-		<text>То есть?</text>
+		<text>Meaning?</text>
 	</string>
 	<string id="mil_cook_common1_103">
-		<text>Да не вопрос...</text>
+		<text>Sure thing.</text>
 	</string>
 	<string id="mil_cook_common1_104">
-		<text>В чём шутка-то?</text>
+		<text>What's so funny?</text>
 	</string>
 	<string id="mil_cook_common1_105">
-		<text>О, мэн! Здорова!</text>
+		<text>Hey, man! Good to see ya!</text>
 	</string>
 	<string id="mil_cook_common1_106">
-		<text>Здравствуй.</text>
+		<text>Hello.</text>
 	</string>
 	<string id="mil_cook_common1_107">
-		<text>Давненько не виделись!</text>
+		<text>Long time no see!</text>
 	</string>
 	<string id="mil_cook_common1_108">
-		<text>А мы знакомы?</text>
+		<text>Have we met before?</text>
 	</string>
 	<string id="mil_cook_common1_109">
-		<text>Э-э-э... н-да! Хе-хе...</text>
+		<text>Errrr…. Yeah! Hehe…</text>
 	</string>
 	<string id="mil_cook_common1_110">
-		<text>Честно говоря, я тебя не припомню.</text>
+		<text>To be honest, I can't seem to recall who you are.</text>
 	</string>
 	<string id="mil_cook_common1_111">
-		<text>Хм-м... Да нормально, нормально...</text>
+		<text>Hrm… Yeah, it's fine, no problem.</text>
 	</string>
 	<string id="mil_cook_common2_0">
-		<text>А что это вообще за место?</text>
+		<text>What is this place, anyway?</text>
 	</string>
 	<string id="mil_cook_common2_201">
-		<text>Место... местечко-о... Да ничего себе местечко... в черте оседлости, хе-хе...</text>
+		<text>This place… a nice little place… It's just a normal place, you know… just some people making a living, hehe...</text>
 	</string>
 	<string id="mil_cook_common2_202">
-		<text>А всё-таки?</text>
+		<text>So what?</text>
 	</string>
 	<string id="mil_cook_common2_203">
-		<text>Та... ну, ты и вопросы задаёшь, добрый пришелец!..</text>
+		<text>Pfft… You're asking some tough questions, Mr. Stranger!</text>
 	</string>
 	<string id="mil_cook_common2_204">
-		<text>А если по сути?</text>
+		<text>And what if you cut to the chase?</text>
 	</string>
 	<string id="mil_cook_common2_205">
-		<text>Да расслабься! Ща-а... д-да... нормальное место! Спокойное. Всё ништяк! Да... ты\nрасслабся, ага? Не торопись...</text>
+		<text>Hey, relax! Hold on… well… it's just a normal place! A quiet one. All good, all around. Yeah…you\nrelax, alight? Don't get all worked up…</text>
 	</string>
 	<string id="mil_cook_common3_0">
-		<text>А ты сам кто будешь?</text>
+		<text>And who might you be?</text>
 	</string>
 	<string id="mil_cook_common3_301">
-		<text>Я?</text>
+		<text>Me?</text>
 	</string>
 	<string id="mil_cook_common3_302">
-		<text>Точно. Ты. Не я.</text>
+		<text>Exactly. You. Not me.</text>
 	</string>
 	<string id="mil_cook_common3_303">
-		<text>Ну ты да-ал!.. Я... Я-я, фантастиш!.. Ну, я... Еду готовлю... вот. Повар я! Мастер ножа и приправ! Петрушка там... укроп, зелень всякая... ну, трава, в общем... Хлеб тоже... ага?</text>
+		<text>Haha, that's a good one! Me… What about me? I'm fine… Well, I… I make food… So, there. I'm a chef! The master of slices and spices! You know - parsley, dill, herbs, stuff like that... Bread, too... Right?</text>
 	</string>
 	<string id="mil_cook_common3_304">
-		<text>Ясно.</text>
+		<text>Got it.</text>
 	</string>
 	<string id="mil_cook_common3_305">
-		<text>А ещё консерва бывает... сгущёнка... тушёнка... быки в помидорах... да...</text>
+		<text>Also, tinned foods… condensed milk with sugar… ham in a can… roast beef with tomato dressing... yeah…</text>
 	</string>
 	<string id="mil_cook_common3_306">
-		<text>Я понял.</text>
+		<text>I got it.</text>
 	</string>
 	<string id="mil_cook_common3_307">
-		<text>Батон... кетчуп... яйца... хлеб... батон... сыр. Ну там. Сосиски-и! Колбаса-а! Дичь... неживая...</text>
+		<text>French bread… ketchup… eggs… brown bread… cheese. What have you. Wieners, too! And sausages! Fowl… cold, not flying.</text>
 	</string>
 	<string id="mil_cook_common3_308">
-		<text>Всё, я понял! Скажи хоть, как тебя зовут.</text>
+		<text>OK, fine, I understand! Tell me your name at least.</text>
 	</string>
 	<string id="mil_cook_common3_309">
-		<text>Хм-м?.. А! Славик меня зовут... это так за этикетку... Не! За передник!.. Есть у меня передник белый... А вообще да... Ты садись, не маячь... А то ещё снайпер... ка-ак подстрелит!.. Они, знаешь... да, такие они...</text>
+		<text>Huh?.. Oh! Slavik is my name… that's just a label... No! It's an apron! I've got this white apron… Hey, look… Sit down, don't be a target… 'Cause, that sniper, you know… pick you off! .. They're, you know... They're like that…</text>
 	</string>
 	<string id="mil_cook_common4_0">
-		<text>Тут вроде деревня рядом?</text>
+		<text>Isn't there a village nearby?</text>
 	</string>
 	<string id="mil_cook_common4_401">
-		<text>Ну-у...</text>
+		<text>Well…</text>
 	</string>
 	<string id="mil_cook_common4_402">
-		<text>Что – "ну-у"?</text>
+		<text>Well, what?</text>
 	</string>
 	<string id="mil_cook_common4_403">
-		<text>А?</text>
+		<text>Eh?</text>
 	</string>
 	<string id="mil_cook_common4_404">
-		<text>Деревня.</text>
+		<text>A village.</text>
 	</string>
 	<string id="mil_cook_common4_405">
-		<text>А-а... Есть деревня. Продукты там... сгущёнка...</text>
+		<text>Ahh… There is something. Some food there… condensed milk for one…</text>
 	</string>
 	<string id="mil_cook_common4_406">
-		<text>Как туда добраться?</text>
+		<text>How do I get there?</text>
 	</string>
 	<string id="mil_cook_common4_407">
-		<text>А? Ща. Ща подумаю... Не, слушай, оно тебе надо? Расслабься... Садись... Посидим, покурим, угу?</text>
+		<text>Eh? Wait. Let me think… Nah, look, do you really need all that? Relax… Sit… Let's sit and have a smoke, OK?</text>
 	</string>
 	<string id="mil_cook_common4_408">
-		<text>Мне нужно в деревню.</text>
+		<text>I need to get to the village.</text>
 	</string>
 	<string id="mil_cook_common4_409">
-		<text>Лады... вот щас посидим, да... покурим... и нормально, да... Я тебя отведу. Не вопрос.</text>
+		<text>Alright… we just sit here, have a smoke.. Then we go… I'll take you there. No problem.</text>
 	</string>
 	<string id="mil_cook_common4_410">
-		<text>Не напрягайся. Просто расскажи, как туда добраться.</text>
+		<text>Don't go to all that trouble. Just tell me how to get there.</text>
 	</string>
 	<string id="mil_cook_common4_411">
-		<text>Ага... Не, ну ты задачи задаёшь!.. Ща нормально вместе дойдём. Вот посидим, и да...</text>
+		<text>Sure… Hey, you're really challenging me here! We'll go there together in just a sec. First we just sit down, OK, and…</text>
 	</string>
 	<string id="mil_cook_common5_0">
-		<text>Слушай, не знаешь где здесь можно разжиться снаряжением?</text>
+		<text>Listen, would you know where I can get some equipment?</text>
 	</string>
 	<string id="mil_cook_common5_501">
-		<text>Снаряжением? Эт-то, брат, шифры... шифры!..</text>
+		<text>Equipment? That's some code-speak to me, bro!</text>
 	</string>
 	<string id="mil_cook_common5_502">
-		<text>Снаряжение. Оружие. Артефакты.</text>
+		<text>Equipment. Weapons. Artifacts.</text>
 	</string>
 	<string id="mil_cook_common5_503">
-		<text>Оружие... не... нож мой... Хочешь нож? Не? Ага-а... Артефакты. А нафига? Не напрягайся. Давай садись. Покурим. Поговорим... про артефакты...</text>
+		<text>Weapons… no… my knife… Want my knife? No? Yeah… Artifacts. What the hell for? Take it easy. C'mon, sit. Light one up with me. Let's talk… about artifacts…</text>
 	</string>
 	<string id="mil_cook_common5_504">
-		<text>Где в округе можно найти артефакты?</text>
+		<text>Where can I find artifacts in this area?</text>
 	</string>
 	<string id="mil_cook_common5_505">
-		<text>Да не вопрос! Артефакты... выше крыши артефактов!.. Болото радиоактивное знаешь? Не? Ну и пофиг. Там. В смысле артефакты. Там. А вообще ты не суетись. Не напрягай. А? Артефакты... хе-хе... артефакты-артефакты...</text>
+		<text>That's easy! Artifacts… We got artifacts up to our ears! You know the radioactive swamp? No? Doesn’t matter. It's there. I mean, the artifacts. Are there. You just stop flapping about. Take it easy. Eh? Artifacts… he-he-he… artifacts-shmartifacts…</text>
 	</string>
 	<string id="mil_cook_common6_0">
-		<text>Ладно. Будь здоров.</text>
+		<text>OK. Take care.</text>
 	</string>
 	<string id="mil_cook_common6_601">
-		<text>Угу... да ты садись, раз пришёл!</text>
+		<text>Sure… sit down though, you're already here.</text>
 	</string>
 	<string id="mil_cook_common6_602">
-		<text>Я ухожу.</text>
+		<text>I'm leaving.</text>
 	</string>
 	<string id="mil_cook_common6_603">
-		<text>А? Не вопрос... расслабься... Ага? Закрой за мной дверь... я ухожу... там-тадам...</text>
+		<text>Eh? Sure thing… relax… OK? Close the door behind me, I'm leaving… ta-da-da-da…</text>
 	</string>
 	<string id="mil_cook_dialog_0">
-		<text>Да ты присаживайся!.. Посиди-им...</text>
+		<text>Come, sit down! We'll have a good time…</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_1_0">
-		<text>Давай, что ли, дёрнем, а?</text>
+		<text>Let's have a drink, why don't we?</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_1_1">
-		<text>Не вопрос, брат! Наливай!</text>
+		<text>Sure thing, bro! Pour it!</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_1_2">
-		<text>Так-так... Ну, хлопнули!..</text>
+		<text>Well, well… Cheers!</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_1_3">
-		<text>Ух, хорошо пошла!.. Держи бутылку... там ещё чего-то осталось.</text>
+		<text>Yes, that was a good one! Hold the bottle… there's some more left.</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_1_4">
-		<text>Ну что, ещё стопочку?</text>
+		<text>So, how about one more?</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_1_5">
-		<text>Эх-х... кайф! Жаль, бутылка уже уговорилась. Ещё есть?</text>
+		<text>Ahhhh… awesome! Too bad the bottle's been taken care off already. Got some more?</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_1_6">
-		<text>Сейчас посмотрю.</text>
+		<text>Let me see.</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_2_0">
-		<text>Ага, вот! Держи стопку ровнее.</text>
+		<text>Yeah, here! Hold your shot steady.</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_2_1">
-		<text>Хе-хе... а ловко ты это!.. Р-р-раз – и новая бутылка. У тебя там склад, что ли?</text>
+		<text>He-he… that was neat! A new one right out of nowhere. You got a warehouse full of them or what?</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_2_2">
-		<text>Ты это... пей, пей. У меня давненько практики не было.</text>
+		<text>You, umm... Go ahead, drink. I haven't had much practice lately.</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_2_3">
-		<text>За нашу победу! Во-от... \nЭх-х, хорошо сидим!</text>
+		<text>To our victory! Yeaaahh…\n Ahhh, good times, good times!</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_2_4">
-		<text>Да... за нашу победу!</text>
+		<text>Yes… to our victory!</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_2_5">
-		<text>Давай-давай, ещё давай... Есть еш-ш... еш-щё... а?</text>
+		<text>C'mon, c'mon, let's do another one… You got an… an-n-nother one, huh?</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_2_6">
-		<text>Сейчас гляну...</text>
+		<text>Let me look…</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_3_0">
-		<text>Так... это последняя, лады?.. А то я н-не осилю больше...</text>
+		<text>OK… this will be the last one, aight?... That's all I can handle tonight…</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_3_1">
-		<text>Давай её с-сю-у... сю-юда!..</text>
+		<text>Give it h-h-h-eee… hheere!</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_3_2">
-		<text>Ну ты... даёшь... Что ж ты её всю сам оприходо... вывал?..</text>
+		<text>Whoa… look at you… Did you consum---mate all of that on your own?...</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_3_3">
-		<text>Ик!.. Э-э-это, бра-ат, дн... дна!.. М-м-м... Мда-а...</text>
+		<text>Hic! Tha-a-at, bro, is the bbb... bottom! Mmmm… Hhhhhm…</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_1_0">
-		<text>Я слышал, у "Свободы" есть на вооружении РГ-6. Хотелось бы взглянуть на эту штуку.</text>
+		<text>I heard something about Freedom having an RG-6. Sure would be fun to take a look at that baby.</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_1_1">
-		<text>Ты вообще куда клонишь, мэн? Чтобы я... чтобы тебе... взял и всю подноготную?.. Да ты за кого меня держишь?!</text>
+		<text>What are you getting at, man? You want me to… to give you… to spill the guts?.. What kind of fool do you take me for?</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_1_2">
-		<text>Спокойней. Я не знал, что это настолько серьёзно.</text>
+		<text>Calm down. I didn't know it was that serious.</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_1_3">
-		<text>Нечего о нашем оружии разнюхивать, понял? Ты кто вообще такой, а?! В первый раз тебя вижу!..</text>
+		<text>You don't go snooping around for our weapons, got that? Who the hell are you, anyway? I've never seen you before!</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_1_4">
-		<text>Да брось ты! Я просто спросил...</text>
+		<text>Hey, come on! I only asked a question…</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_1_5">
-		<text>Тс-с!.. И осторожней с ним, понял?</text>
+		<text>Tsss! Be careful with it, alright?</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_1_6">
-		<text>Замётано.</text>
+		<text>Done deal.</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_2_0">
-		<text>Я тут… это... Слышал, у вас РГ-6 есть… Мне б одним глазком глянуть, а? Ну очень хочется… а? Н-ну глазочком бы... одним...</text>
+		<text>I, umm… ahem… I heard you guys got an RG-6… All I wanna do is just take a look at it, huh? Just get a glimpse of it… what do you say? Just a real quick look…</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_2_1">
-		<text>Чего-о?.. Ты эта... сходи к... блин, как же там... забыл!.. А чего ты спрашивал?</text>
+		<text>Whaat?... You, umm… go to… ah, hell, what was it… I forgot! What were you asking about?</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_2_2">
-		<text>Гр-р... грамото... гратмо... тьфу! Гра-на-то-мёт бы... мне бы... глянуть!</text>
+		<text>Grrr…great… grant… damn! Gre-nade laun-cher… I'd like to... see it!</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_2_3">
-		<text>Не... это нельзя… вот всё что хочешь, друг, а это нельзя... вот. Ну не можно...</text>
+		<text>Nah… that you can't… anything you want, friend, but not that… No can do!</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_2_4">
-		<text>Да ладно... я, э-э-э... просто! Спросил просто...</text>
+		<text>Umm, ok… I, umm… didn't mean nothing! Just asked…</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_3_0">
-		<text>Ик!.. РГ-6, а?</text>
+		<text>Hic! RG-6, huh?</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_3_1">
-		<text>Ч-чего?.. А! Так это... в деревне он! У нас их вообще... всего два было... а эти... д-дятлы! Посеяли его... про... протеряли!..</text>
+		<text>W-what?.. Oh! Well, it… it's in the village! We actually had… two of 'em… but those… r-retards! They lost it… wasted it!</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_3_2">
-		<text>Да-а? Ну, это... б-болваны...</text>
+		<text>Re-really? Wow, those… m-morons…</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_100">
-		<text>Здравствуй, брат. Я из "Долга", выполняем задание на этой территории. Не желаешь к нам присоединиться?</text>
+		<text>Hello, brother. I'm a Duty member and we're here on a mission. Would you like to join us?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_1001">
-		<text>Нет особого желания.</text>
+		<text>Not particularly interested.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_1002">
-		<text>Тогда под ногами не мешайся... одиночка.</text>
+		<text>Then get our of way way… loner.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_101">
-		<text>Не против.</text>
+		<text>I'm up for it.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_102">
-		<text>Отлично. Тут, за холмом, главный рассадник этих подонков – "свободных", который мы с ребятами собираемся сейчас хорошенько разворошить.\nЕсть, правда, небольшая проблема. Вход на базу один и хорошо охраняется. Мы думали пробить в заборе дыру, но снайпер ихний на вышке нам мешает. Не хочу посылать ребят под пули... а тебя он подпустит близко, сразу стрелять точно не станет. Снимешь его – с нас причитается, а ещё снарягу на базе возьмёшь, какую захочешь, если дело выгорит.</text>
+		<text>Excellent. There behind that hill is the main breeding ground of those bastards - the "Free" ones - and me and my boys are going to stir it up properly.\nThere's just one little problem. The base has only one entrance and it is well guarded. We thought of busting a hole in the fence, but their sniper in the tower won't let us. I don't want to send my guys to catch his bullets... but you - he'll let you come close and definitely won't shoot on sight. If you take him out, we'll owe you. Plus, if it goes as planned, you'll be able to take any equipment at the base, whatever you want.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_103">
-		<text>Продолжай.</text>
+		<text>Go on.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_104">
-		<text>Да я сказал уже: всё, что надо сделать, – снять снайпера на вышке за забором.\nНу так как?</text>
+		<text>I've already told you: all you need to do is knock off the sniper at that tower above the fence.\nSo, what do you say?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_1041">
-		<text>Нет, я пока не готов.</text>
+		<text>No, I'm not ready yet.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_1042">
-		<text>Тогда под ногами не мешайся.</text>
+		<text>Then get out of the way.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_105">
-		<text>Я попробую.</text>
+		<text>I'll try.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_1051">
-		<text>Вот и отлично! Как только ты его снимешь, и мы концерт начнём.</text>
+		<text>That's great! As soon as you take him out, we'll start the fireworks.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_106">
-		<text>Есть небольшая проблема. Так как вход на базу один и хорошо охраняется, мы недолго думая собрались сделать еще один, но..</text>
+		<text>There's one small problem. Since the base has only one entrance, a well-guarded one at that, we quickly thought of making another one, but…</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_107">
-		<text>Но?</text>
+		<text>But what?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_108">
-		<text>Отправил я ночью бойца подорвать забор. Но, то ли снайпер попался хороший, то ли день не наш, в общем, завалили его. Так что теперь взрывчатка установлена на заборе, а взорвать ее мы не можем.</text>
+		<text>I sent my guy at night to blow a hole in the fence. Well, either their sniper is too good or it just wasn't our day, but my guy went down. Now the dynamite is on the fence, but we can't blow it up.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_109">
-		<text>Почему?</text>
+		<text>Why?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_110">
-		<text>Я не хочу посылать ребят под пули этого засранца, но ты вполне можешь его убрать. В тебя то он сразу стрелять не станет. Что скажешь?</text>
+		<text>I don't want to send my boys under that asshole's bullets, but you stand a great chance of taking him out. He won't shoot you on sight for sure. What do you say?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_111">
-		<text>Сколько я за это получу?</text>
+		<text>How much will I get?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_112">
-		<text>Вот это правильный подход. 2000 от нас за снайпера, и кучу снаряжения на базе - трупов там будет много, это я тебе обещаю. И нам поможешь и сам доволен будешь. Так как?</text>
+		<text>Now that's talking business. 2000 from us for the sniper, plus a whole lot of gear at the base. Lots of a dead bodies there, I can promise you that. So, you can help us and help yourself. How about it?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_120">
-		<text>Договорились.</text>
+		<text>Deal.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_121">
-		<text>Удачи.</text>
+		<text>Good luck.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_130">
-		<text>Вначале я должен поглядеть, а потом скажу.</text>
+		<text>First I have to see how it all looks, then I'll tell you.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_131">
-		<text>Ждем. Но не долго.</text>
+		<text>We'll wait. But not for long.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_200">
-		<text>Спасибо за помощь, Меченый. Вот, держи свой гонорар.</text>
+		<text>Thanks for your help, Marked One. Here is your reward.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_201">
-		<text>Спасибо.</text>
+		<text>Thank you.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_300">
-		<text>Мы, кажется, договорились ?</text>
+		<text>We made a deal, didn't we?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_400">
-		<text>Итак, снайпера ты завалил. Получи свои законные.</text>
+		<text>So, you knocked off the sniper. Here's your fair compensation.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_401">
-		<text>Понял.</text>
+		<text>Gotcha.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_402">
-		<text>Чуть в сторонку, ладно? Нам подготовиться надо...</text>
+		<text>Step aside, will you? We need to get ready…</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_403">
 		<text>OK.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_411">
-		<text>В другой раз.</text>
+		<text>Some other time. </text>
 	</string>
 	<string id="mil_dolg_skull_dialog_412">
-		<text>Как знаешь.</text>
+		<text>Do as you will.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_413">
-		<text>До встречи.</text>
+		<text>See you.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_420">
-		<text>Ну что, продолжаем?</text>
+		<text>Shall we continue?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_421">
-		<text>Что именно?</text>
+		<text>What exactly?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_450">
-		<text>Спасибо.</text>
+		<text>Thank you.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_451">
-		<text>Сейчас мы взорвём забор и начнём веселье. Ты, вижу, парень меткий – так, может, займёшься снайперами на вышках? Ну, а без снайперов нам будет проще добраться до этого урода Лукаша.</text>
+		<text>We're about to blow up the fence and get the party going. I can see you're a good shot - maybe you could take care of the tower snipers? With snipers out of the way, we'll have an easier time getting to that spaz Lukash.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_501">
-		<text>Ты снайпера завалил?</text>
+		<text>Did you knock off the sniper?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_502">
-		<text>Да.</text>
+		<text>Yes.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_503">
-		<text>Молодчина! Убрал его с нашей дороги... вот, возьми за работу.</text>
+		<text>Great work! Cleared the road for us… Here's a little something for your troubles.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_504">
-		<text>Спасибо.</text>
+		<text>Thank you.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_506">
-		<text>Что надо делать?</text>
+		<text>What do I have to do?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_507">
-		<text>Пока мы будем разбираться с этими козлами, потолкуй с оставшимися снайперами, а? Ты в этом деле, я гляжу, хорошо сечёшь.</text>
+		<text>Have a chat with the other snipers while we deal with these bastards. I can see you're good at that kind of thing.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_5070">
-		<text>В другой раз.</text>
+		<text>Some other time. </text>
 	</string>
 	<string id="mil_dolg_skull_dialog_5071">
-		<text>Ну, смотри. Неволить не буду.</text>
+		<text>Well, judge for yourself. I won't make you.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_508">
-		<text>Добро.</text>
+		<text>Deal.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_5080">
-		<text>Вот и отлично.</text>
+		<text>There we go, great.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_601">
-		<text>Не мешай, Меченый.</text>
+		<text>Don't interfere, Marked One.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_602">
 		<text>OK.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_701">
-		<text>Иди своей дорогой.</text>
+		<text>Keep along your way.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_702">
-		<text>Хорошо.</text>
+		<text>OK.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_801">
-		<text>Что ещё?</text>
+		<text>What now?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_802">
-		<text>Ничего.</text>
+		<text>Nothing.</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_0">
-		<text>Вот так – на троих засранцев меньше! Ты вовремя появился: и нас не спалил, и сам цел остался. Я так думаю, никто об этом не узнает, а?</text>
+		<text>Three assholes down, just like that! You came just in time: didn't blow our cover and came out safe and sound. By the way, I think no one has to know about this, eh?</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_1">
-		<text>Не думаю.</text>
+		<text>I concur.</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_2">
-		<text>Вот и ладушки. Есть желание заработать, сталкер?</text>
+		<text>Perfect. Are you looking for a way to earn some dough, stalker?</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_20">
-		<text>Сложно сказать.</text>
+		<text>Difficult to say.</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_21">
-		<text>Тебе что, жить надоело?</text>
+		<text>What, you don't feel like living anymore?</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_22">
-		<text>Нет.</text>
+		<text>No.</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_3">
-		<text>Как же без него.</text>
+		<text>Something like that.</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_30">
-		<text>Может быть.</text>
+		<text>Maybe.</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_4">
-		<text>Тогда двигай за нами, потолкуешь с нашим командиром.</text>
+		<text>Then follow us, talk to our commander.</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_5">
-		<text>Командиром?</text>
+		<text>Commander?</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_6">
-		<text>А то. Череп тебе сам всё и расскажет.</text>
+		<text>Sure. Skull will tell you everything himself.</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_7">
-		<text>Хорошо.</text>
+		<text>OK.</text>
 	</string>
 	<string id="mil_freedom_commander_1001">
-		<text>Здорова, сталкер! Вовремя ты! Мы от придурков монолитовских отбиваемся, сейчас будет очередная волна идти! У нас, прикинь, последнего снайпера сняли! Можешь помочь? А после боя сочтёмся, не пожалеешь!</text>
+		<text>What's up, stalker! You're just in time. We're defending against Monolith jerks, and the next wave is about to arrive! Believe it or not, we just had our last sniper knocked off! Can you help? We'll pay back after the fight - you won't be sorry!</text>
 	</string>
 	<string id="mil_freedom_commander_10011">
-		<text>Нет, не смогу помочь.</text>
+		<text>No, I cannot help you.</text>
 	</string>
 	<string id="mil_freedom_commander_10012">
-		<text>Это жаль. Смотри, подходи, если передумаешь.</text>
+		<text>That's too bad. Come back if you change your mind.</text>
 	</string>
 	<string id="mil_freedom_commander_1002">
-		<text>Помогу.</text>
+		<text>I will.</text>
 	</string>
 	<string id="mil_freedom_commander_1003">
-		<text>Отлично! Давай дуй на вышку, там есть СВД и патронов куча. Бей их сверху, вниз не спускайся, а то случайно сами угостим. Задача понятна?</text>
+		<text>Great! Go to the tower, there's a Dragunov and a bunch of ammo. Pick them off from above and don't come down, or you run the risk of getting it from our own guys. Is the assignment clear?</text>
 	</string>
 	<string id="mil_freedom_commander_1004">
-		<text>Как дважды два.</text>
+		<text>As clean as a whistle.</text>
 	</string>
 	<string id="mil_freedom_commander_1005">
-		<text>И правильно. Надеюсь, утром потолкуем. Да, не уходи далеко... а то подумаю, что сбежать решил. Со всеми вытекающими подумаю, учти! Ну, дуй на позицию.</text>
+		<text>As it should be. I hope to talk to you in the morning. Oh, and don't walk off too far… Or I might think you've decided to run off. And that would mean you-know-what, so keep that in mind! Now, assume your position.</text>
 	</string>
 	<string id="mil_freedom_commander_1007">
-		<text>Вот это правильно. Ну ладно, к делу. Есть предположение, что скоро сюда будет прорываться отряд монолитовцев. Так что скоро тут будет жарко.</text>
+		<text>That's right. OK, let's get to work. A Monolith group might be trying to break through here. That means it's gonna get hot real soon.</text>
 	</string>
 	<string id="mil_freedom_commander_1008">
-		<text>Ясно.</text>
+		<text>Got it.</text>
 	</string>
 	<string id="mil_freedom_commander_1009">
-		<text>Это ты прав. Надеюсь их будет не слишком много...</text>
+		<text>You're right. I hope they won't be too many…</text>
 	</string>
 	<string id="mil_freedom_commander_1010">
-		<text>Где мое место?</text>
+		<text>Where is my place?</text>
 	</string>
 	<string id="mil_freedom_commander_1011">
-		<text>Дуй на вышку, там лежит СВД и патроны. Будешь бить их сверху и не спускайся вниз, а то под наши пули попадешь. Задача ясна?</text>
+		<text>Go to the tower, there's a Dragunov and some ammo. You'll be able to pick them off from above, but don't come down - watch out for our own bullets. Is the assignment clear?</text>
 	</string>
 	<string id="mil_freedom_commander_1012">
-		<text>Да.</text>
+		<text>Yes.</text>
 	</string>
 	<string id="mil_freedom_commander_2001">
-		<text>Забей себе место, а то потом некогда будет!</text>
+		<text>Stake out your own spot 'cause later you won't have time!</text>
 	</string>
 	<string id="mil_freedom_commander_3001">
-		<text>Похоже, всех припечатали. Как по мне, на сегодня достаточно. Спасибо за помощь! Вот, держи – тут деньжат немного, с ними веселей.</text>
+		<text>Looks like we took them all down. I say that's enough for today. Thanks for your help! Here, take this - a little bit of money to cheer you up.</text>
 	</string>
 	<string id="mil_freedom_commander_3002">
-		<text>Спасибо.</text>
+		<text>Thank you.</text>
 	</string>
 	<string id="mil_freedom_commander_3003">
-		<text>Удачи, Меченый!</text>
+		<text>Good luck, Marked One!</text>
 	</string>
 	<string id="mil_freedom_commander_4001">
-		<text>Здорово, Меченый. Тебя Лукаш прислал?</text>
+		<text>Hey, Marked One! Did Lukash send you?</text>
 	</string>
 	<string id="mil_freedom_commander_4002">
-		<text>Да. Вам помочь попросил.</text>
+		<text>Yes. He asked me to help you.</text>
 	</string>
 	<string id="mil_freedom_commander_4003">
-		<text>Вовремя ты! Мы как раз от придурков монолитовских отбиваемся, сейчас очередная волна пойдёт. У нас, прикинь, последнего снайпера сняли! Можешь помочь? А после боя сочтёмся, не пожалеешь!</text>
+		<text>You're just in time. We're fending off the Monolith jerks, and the next wave is almost here! Believe it or not, we just had our last sniper knocked off! Can you help? We'll pay back after the fight - you won't be sorry!</text>
 	</string>
 	<string id="mil_freedom_commander_5001">
-		<text>Похоже, всех припечатали. Как по мне, на сегодня достаточно. Спасибо за помощь! Вот, держи – тут деньжат немного, с ними веселей.</text>
+		<text>Looks like we took them all down. I say that's enough for today. Thanks for your help! Here, take this - a little bit of money to cheer you up.</text>
 	</string>
 	<string id="mil_freedom_commander_5002">
-		<text>Спасибо.</text>
+		<text>Thank you.</text>
 	</string>
 	<string id="mil_freedom_commander_5003">
-		<text>Удачи, Меченый.</text>
+		<text>Good luck, Marked One.</text>
 	</string>
 	<string id="mil_freedom_commander_common2_0">
-		<text>Что это за место?</text>
+		<text>What's this place?</text>
 	</string>
 	<string id="mil_freedom_commander_common2_1">
-		<text>Мы называем его Барьером... да так оно, в принципе, и есть. Это, считай, последний нормальный блокпост перед центром Зоны. Буфер такой, знаешь, между людьми и Дикой территорией.</text>
+		<text>We call it the Barrier… that's what it basiсally is. It's about the last normal outpost this side of the Zone's center. It's a sort of buffer, you know, between the people and the Wild Area.</text>
 	</string>
 	<string id="mil_freedom_commander_common2_2">
-		<text>А дальше там что?</text>
+		<text>What is there beyond it?</text>
 	</string>
 	<string id="mil_freedom_commander_common2_3">
-		<text>Дальше только смерть... ну, или служба Монолиту. "Наш Монолит! Во имя твоё!.." Тьфу ты!.. \nОдним словом, ходить туда никому не стоит. Вот мы и стоим тут, не даём дряни всякой заполонить Зону... джедаи, блин. Ещё задерживаем особо тупых – по крайней мере, стараемся, чтобы к центру не совались.</text>
+		<text>Only death… or serving Monolith. "Our Monolith! In your name we..." Damn! \nIn short, no one needs to go there. That's why we're based here, trying to prevent the muck from infesting the Zone. Like some kind of Jedis, hehe. We also detain the really stupid ones - or at least try not to let them creep into the center.</text>
 	</string>
 	<string id="mil_freedom_commander_common2_4">
-		<text>Зачем вам это?</text>
+		<text>Why do you do that?</text>
 	</string>
 	<string id="mil_freedom_commander_common2_5">
-		<text>А кто же тогда, как не мы? "Долг"? Они, конечно, доки по части истребления монстров и неугодных сталкеров, да только попробуй их заставить чего-нибудь по-настояшему полезное сделать! Ты здесь их видишь? Нет? Вот и я о том. А мы, например, не ставим перед собой цель уничтожать тварей, которые тут живут. Барьер, нормальный Барьер – его будет достаточно. Главное, чтоб черту ни одна из сторон не переступила...</text>
+		<text>Who else but us? Duty? They are the shit when it comes to eradicating monsters and eliminating unwanted stalkers, but you should try some time to make them actually do something useful! Do you see them here? No? That's what I mean. We, on the other hand, do not aim to destroy the creatures that live here. A barrier, a normal barrier - that should be enough. As long as no side crosses the line...</text>
 	</string>
 	<string id="mil_freedom_commander_common2_6">
-		<text>Ну а если переступит?</text>
+		<text>And what if someone does?</text>
 	</string>
 	<string id="mil_freedom_commander_common2_7">
-		<text>Всякое может случится. Всякое. Не хочу я...</text>
+		<text>Anything can happen. Anything. I don't want to…</text>
 	</string>
 	<string id="mil_guard_arsenal_dialog_1000">
-		<text>Стой! Доступ к арсеналу разрешён только членам "Свободы".</text>
+		<text>Halt! Access to the arsenal is restricted to Freedom members only.</text>
 	</string>
 	<string id="mil_guard_arsenal_dialog_2000">
-		<text>Ну вот, теперь ты можешь и в арсенал войти. Есть, правда, одна проблема...</text>
+		<text>There, now you can enter the arsenal. Except there's a little problem…</text>
 	</string>
 	<string id="mil_guard_arsenal_dialog_2001">
-		<text>Какая?</text>
+		<text>What problem?</text>
 	</string>
 	<string id="mil_guard_arsenal_dialog_2002">
-		<text>Да не напрягайся ты, ничего страшного. Замок заклинило, вот и все дела. Если ждать невмоготу, отстрели его нахрен, а я позже новый повешу.</text>
+		<text>Don't sweat, it's nothing terrible. The lock is jammed, that's all. If you really can't wait, just shoot it to pieces, I'll replace it later.</text>
 	</string>
 	<string id="mil_guard_arsenal_dialog_2003">
-		<text>Понятно.</text>
+		<text>I see.</text>
 	</string>
 	<string id="mil_hunter_dialog_1">
-		<text>Меня Скряга отправил сюда, чтобы кровососов завалить.</text>
+		<text>Skinflint sent me here to clear off the bloodsuckers.</text>
 	</string>
 	<string id="mil_hunter_dialog_101">
-		<text>А тебя, сталкер, как в это гиблое место занесло? Уноси лучше ноги, пока не поздно!</text>
+		<text>So, stalker, what brought you to this sinister place? My advice is - run for your life before it's too late!</text>
 	</string>
 	<string id="mil_hunter_dialog_2">
-		<text>А-а, ну тогда другое дело... Тут хрен его знает что творится! Парочка наших как пошла в деревню, так и не вернулась. Ну, а нам помирать неохота! Сидим вот пока тут – решаем, что дальше делать.</text>
+		<text>Ahh, now that's another matter… Hell knows what's going on here! A couple of our folks went into the village and never came back. Heck, we're not keen on dying yet! We're sitting here, deciding what to do next.</text>
 	</string>
 	<string id="mil_hunter_dialog_201">
-		<text>Ну, брат, ты вчера и учудил!</text>
+		<text>Hey, bro, way to freak out last night!</text>
 	</string>
 	<string id="mil_hunter_dialog_202">
-		<text>В смысле?</text>
+		<text>Meaning?</text>
 	</string>
 	<string id="mil_hunter_dialog_203">
-		<text>Мы тут сидим, осматриваемся, а тут ты прёшь, пьяный в зюзю! И прёшь, главное, прямо в деревню, к кровососам! Хорошо хоть, было кому тебя тормознуть и и положить отсыпаться.</text>
+		<text>We were sitting around, looking around, and there you go barging in, pissed drunk! And you barge in right into the village, right into those bloodsuckers! Good thing we were there to put some brakes on you and make you sleep it off.</text>
 	</string>
 	<string id="mil_hunter_dialog_204">
-		<text>А вы чего тут сидите?</text>
+		<text>And what are you doing here?</text>
 	</string>
 	<string id="mil_hunter_dialog_205">
-		<text>Тут хрен его знает что творится! Парочка наших как пошла в деревню, так и не вернулась. Ну, а нам помирать неохота! Сидим вот пока тут – решаем, что дальше делать.</text>
+		<text>Hell knows what's going on here! A couple of our folks went into the village and never came back. Heck, we're not keen on dying yet! We're sitting here, deciding what to do next.</text>
 	</string>
 	<string id="mil_hunter_dialog_3">
-		<text>Вы кровососов видели?</text>
+		<text>Did you see the bloodsuckers?</text>
 	</string>
 	<string id="mil_hunter_dialog_301">
-		<text>Ну что? Как успехи?</text>
+		<text>So? How did it go?</text>
 	</string>
 	<string id="mil_hunter_dialog_302">
-		<text>Завалил я их.</text>
+		<text>I eradicated them.</text>
 	</string>
 	<string id="mil_hunter_dialog_303">
-		<text>Ого! Ну, даёшь! Ну, мужик, с тебя причитается, раз жив остался!..</text>
+		<text>Wow! Dude, you rock! Heck, you came out alive, so the next round of drinks is on you!</text>
 	</string>
 	<string id="mil_hunter_dialog_304">
-		<text>Спасибо.</text>
+		<text>Thank you.</text>
 	</string>
 	<string id="mil_hunter_dialog_4">
-		<text>Нет. Наши ребята должны были пойти к старой водонапорной башне – наверное, там где-то и полегли. Раз уж ты со Скрягой договорился, сходи туда и посмотри... Адресок-то черкни! Если что, письмо родне твоей отправим.</text>
+		<text>No. Our guys were supposed to go to the old water tower; that's probably where they went down. Well, if you made a deal with Skinflint, go there and check it out... Write down an address, will you? We'll write to your family if something goes wrong.</text>
 	</string>
 	<string id="mil_hunter_dialog_401">
-		<text>Что ты бродишь тут, как привидение?</text>
+		<text>Why are you wandering around like a ghost?</text>
 	</string>
 	<string id="mil_hunter_dialog_402">
-		<text>Осматриваюсь.</text>
+		<text>Just looking around.</text>
 	</string>
 	<string id="mil_hunter_dialog_5">
-		<text>Добрые вы, как я посмотрю... Ладно, пойду.</text>
+		<text>Seems to me you're too kind… OK, I'll go.</text>
 	</string>
 	<string id="mil_hunter_dialog_501">
-		<text>И чего тебя сюда занесло?</text>
+		<text>What brought you here?</text>
 	</string>
 	<string id="mil_hunter_dialog_502">
-		<text>Осматриваюсь.</text>
+		<text>Just looking around.</text>
 	</string>
 	<string id="mil_hunter_dialog_503">
-		<text>А получше места не нашёл? Здесь, может, самое дерьмовое место в Зоне...</text>
+		<text>Was this the best place you could find? This is probably the shittiest spot in the whole Zone…</text>
 	</string>
 	<string id="mil_hunter_dialog_504">
-		<text>Что здесь плохого?</text>
+		<text>What's so bad about this place?</text>
 	</string>
 	<string id="mil_hunter_dialog_505">
-		<text>Тут хрен его знает что творится... Кровососы, видимо, в деревне завелись. Парочка наших как пошла в деревню, так и не вернулась. Ну, а нам помирать неохота! Сидим вот пока тут – решаем, что дальше делать.</text>
+		<text>Hell knows what's going on here! Looks like the village is now home to a swarm of bloodsuckers. A couple of our folks went into the village and never came back. Heck, we're not keen on dying yet! We're sitting here, deciding what to do next.</text>
 	</string>
 	<string id="mil_hunter_dialog_506">
-		<text>То есть сами вы не в курсе?</text>
+		<text>So, you're not sure yourself?</text>
 	</string>
 	<string id="mil_hunter_dialog_507">
-		<text>Ну так! Если тебе делать нечего и голова не в порядке, можешь пойти погулять по деревне. Завалишь тварей – Скряга раскошелится, это уж точно. Эй, адресок-то черкни! Если что, письмо родне твоей отправим.</text>
+		<text>Right on! If you have nothing else to do and your head isn't working right, you're welcome to take a stroll through the village. If you clear off those critters, Skinflint will surely shell something out for you. Write down an address, will you? We'll write to your family if something goes wrong.</text>
 	</string>
 	<string id="mil_hunter_dialog_508">
-		<text>Ладно, пойду посмотрю.</text>
+		<text>OK, I'll go check it out.</text>
 	</string>
 	<string id="mil_hunter_dialog_601">
-		<text>Ты что, через деревню шёл?!</text>
+		<text>You didn't go through the village, did you?</text>
 	</string>
 	<string id="mil_hunter_dialog_602">
-		<text>Да.</text>
+		<text>Yes.</text>
 	</string>
 	<string id="mil_hunter_dialog_603">
-		<text>Там пара наших ушла и не вернулась. Видел их?</text>
+		<text>A couple of our folks went there and didn't come back. Did you happen to see them?</text>
 	</string>
 	<string id="mil_hunter_dialog_604">
-		<text>Нет, не видел. Вроде только трупы чьи-то были.</text>
+		<text>No, I didn't. Just a few corpses on the ground.</text>
 	</string>
 	<string id="mil_hunter_dialog_605">
-		<text>А кровососов видел?</text>
+		<text>Did you see bloodsuckers?</text>
 	</string>
 	<string id="mil_hunter_dialog_606">
-		<text>Видел. Сами пойдите и посмотрите, уже можно: я их завалил.</text>
+		<text>Yep. Go ahead and look for yourself, it's safe now - I mowed them down.</text>
 	</string>
 	<string id="mil_hunter_dialog_607">
-		<text>Ого! Вот это номер! Ты знаешь что... ты сходи к Скряге на нашу базу. Он за хорошее дело деньги платит.</text>
+		<text>Wow! That's a trick! Know what… go see Skinflint at our base. He pays for good work.</text>
 	</string>
 	<string id="mil_hunter_dialog_7">
-		<text>Ладно, пойду посмотрю.</text>
+		<text>OK, I'll go check it out.</text>
 	</string>
 	<string id="mil_hunter_dialog_701">
-		<text>Ну что? Как успехи?</text>
+		<text>So? How did it go?</text>
 	</string>
 	<string id="mil_hunter_dialog_702">
-		<text>Завалил я этих тварей.</text>
+		<text>I slaughtered those beasts.</text>
 	</string>
 	<string id="mil_hunter_dialog_703">
-		<text>Ого, ну ты дал жару! Ты знаешь что... ты сходи к Скряге на нашу базу. Он за хорошее дело платит.</text>
+		<text>Wow, you showed them! Know what… go see Skinflint at our base. He pays for good work.</text>
 	</string>
 	<string id="mil_hunter_dialog_704">
-		<text>Схожу.</text>
+		<text>I will.</text>
 	</string>
 	<string id="mil_hunter_dialog_80">
-		<text>Как хочешь...</text>
+		<text>OK, whatever…</text>
 	</string>
 	<string id="mil_hunter_dialog_801">
-		<text>И чего тебя сюда занесло ?</text>
+		<text>What brought you here?</text>
 	</string>
 	<string id="mil_hunter_dialog_802">
-		<text>Осматриваюсь...</text>
+		<text>Just looking around…</text>
 	</string>
 	<string id="mil_hunter_dialog_803">
-		<text>А получше места не нашел? Занесло тебя в самое отвратное место Зоны...</text>
+		<text>Was this the best place you could find? This is probably the shittiest spot in the whole Zone…</text>
 	</string>
 	<string id="mil_hunter_dialog_804">
-		<text>Что здесь плохого?</text>
+		<text>What's so bad about this place?</text>
 	</string>
 	<string id="mil_hunter_dialog_805">
-		<text>Да хрен его знает. Похоже, кровососы в деревне завелись. Парочка наших как пошла в деревню, так и не вернулась. Ну, а нам помирать неохота.</text>
+		<text>Ah, hell knows. Looks like bloodsuckers have settled down in the village. A couple of our folks went into the village and never came back. Heck, we're not keen on dying yet!</text>
 	</string>
 	<string id="mil_hunter_dialog_806">
-		<text>То есть сами вы не в курсе ?</text>
+		<text>So, you're not sure yourself?</text>
 	</string>
 	<string id="mil_hunter_dialog_807">
-		<text>Ну так! Если тебе делать нечего и голова не в порядке, можешь пойти погулять по деревне. Завалишь тварей – Скряга раскошелится, это уж точно. Эй, адресок-то черкни! Если что, письмо родне твоей отправим.</text>
+		<text>Right on! If you have nothing else to do and your head isn't working right, you're welcome to take a stroll through the village. If you clear off those critters, Skinflint will surely shell something out for you. Write down an address, will you? We'll write to your family if something goes wrong.</text>
 	</string>
 	<string id="mil_hunter_dialog_808">
-		<text>Ладно, пойду посмотрю.</text>
+		<text>OK, I'll go check it out.</text>
 	</string>
 	<string id="mil_hunter_dialog_901">
-		<text>Ну что? Как успехи?</text>
+		<text>So? How did it go?</text>
 	</string>
 	<string id="mil_hunter_dialog_902">
-		<text>Завалил я этих тварей.</text>
+		<text>I slaughtered those beasts.</text>
 	</string>
 	<string id="mil_hunter_dialog_903">
-		<text>Вот это да так да! Ну, принимай мои поздравления! Да и то – главное, жив остался...</text>
+		<text>Wow, that was awesome! My congratulations! And the best thing is, you're still alive…</text>
 	</string>
 	<string id="mil_hunter_dialog_904">
-		<text>Спасибо.</text>
+		<text>Thank you.</text>
 	</string>
 	<string id="mil_leader_start_dialog_10001">
-		<text>Раз ты помог ребятам на Барьере, можешь рассчитывать на отдых на нашей территории и нашу помощь. Ну, а от меня лично – немного дензнаков... И с этого момента я зачисляю тебя в нашу группировку.</text>
+		<text>Since you helped our guys at the Barrier, you can count on getting some rest on our territory, as well as our help. Oh, and my personal appreciation - a bit of legal tender for you. From this moment, I'm enlisting you in our group.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1001">
-		<text>Привет, сталкер. Что нужно?</text>
+		<text>Hey, stalker. What do you need?</text>
 	</string>
 	<string id="mil_leader_start_dialog_10011">
-		<text>Да ничего, в общем-то.</text>
+		<text>Nothing much, really.</text>
 	</string>
 	<string id="mil_leader_start_dialog_10012">
-		<text>Тогда разбежались, ага? Время – деньги.</text>
+		<text>Then let's get out of here, OK? Time is money.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1100">
-		<text>Я видел отряд "Долга" на хуторе, неподалёку от вашей базы. Человек восемь, хорошо вооружены.</text>
+		<text>I saw a group of Duty members in a farmstead near your base. About eight men, well equipped.</text>
 	</string>
 	<string id="mil_leader_start_dialog_11001">
-		<text>Какого чёрта ты сбежал с Барьера?! Вали-ка ты с моей базы, и чтобы я тебя больше не видел...</text>
+		<text>Why the hell did you split from the Barrier? Bugger off and don't let me catch sight of you near my base ever again.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1101">
-		<text>Блин, никак эти козлы не угомонятся! Ладно, придётся их наказать... Ну, сталкер, если поможешь нам – будем благодарны. Иди к Максу – он у нас главный вояка. Соберёте народ и выкорчуете этих сохатых.</text>
+		<text>Damn, these punks just won't settle down! Fine, we'll have to teach them a lesson. Hey, stalker, want to help us for a reward? Talk to Max, our chief. You two will get a crew together and root out those suckers.</text>
 	</string>
 	<string id="mil_leader_start_dialog_11011">
-		<text>Хорошо.</text>
+		<text>OK.</text>
 	</string>
 	<string id="mil_leader_start_dialog_11012">
-		<text>Удачи, сталкер.</text>
+		<text>Good luck, stalker.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1200">
-		<text>Я уже с ними разобрался.</text>
+		<text>I've already dealt with them.</text>
 	</string>
 	<string id="mil_leader_start_dialog_12001">
-		<text>Со стукачом, значит, не сложилось, и с Барьером тоже? Вали с базы, и чтобы духу твоего здесь не было!</text>
+		<text>So, you didn't handle the snitch business and failed at the Barrier, too? Get lost from my base and don't ever show up again!</text>
 	</string>
 	<string id="mil_leader_start_dialog_1210">
-		<text>Серьёзно? Сколько, ты говорил, их там было?</text>
+		<text>For real? How many of them did you say there were?</text>
 	</string>
 	<string id="mil_leader_start_dialog_1221">
-		<text>Восемь человек.</text>
+		<text>Eight men.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1222">
-		<text>Резвый ты, сталкер... Раз так, то, может, ещё кое в чём нам пособишь? Прискорбно признавать, однако у нас завёлся стукач... Павликом зовут. Информацию передаёт на сторону, и это дело надо прекращать.</text>
+		<text>You're a speedy one, stalker… OK, so, do you mind helping us out with something else? I'm ashamed to admit that there's a snitch among us. His name is Pavlik. He's leaking valuable info and that must be stopped.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1223">
-		<text>Каким образом?</text>
+		<text>In what way?</text>
 	</string>
 	<string id="mil_leader_start_dialog_1300">
-		<text>Твоя задача – пойти за ним на хутор и узнать, кому он передаёт информацию. Тебя он не знает, о нашем разговоре – тоже, так что...</text>
+		<text>You must follow him to the farmstead and discover whose rat he is. He doesn't know you and isn't aware of our conversation either, so…</text>
 	</string>
 	<string id="mil_leader_start_dialog_13001">
-		<text>Ты думаешь, у меня есть для тебя работа?</text>
+		<text>You think I have work for you to do?</text>
 	</string>
 	<string id="mil_leader_start_dialog_13002">
-		<text>Возможно.</text>
+		<text>Perhaps.</text>
 	</string>
 	<string id="mil_leader_start_dialog_13003">
-		<text>У нас на базе завелся крот по имени Павлик, который передает информацию на сторону. Хотя мы и знаем это, но знать мало - надо доказать. Твоя задача - проследить за ним и узнать, кому он передает информацию. Я думаю, что сегодня он пойдет на встречу со связным. Пойдешь тихонько за ним. Только аккуратно, чтобы он не видел - он очень осторожен. Как узнаешь с кем он встречается, то шлепни его, а заодно и того, с кем он встречается.</text>
+		<text>We've learned there's a rat in our midst, by the name of Pavlik. He's leaking valuable information. We know that for a fact, but don't have proof. Your task is to spy him out and discover who he is singing for. I think he's going to a meet tonight. You'll follow him quietly. Just be careful that he doesn't see you - he's extremely cautious. After you find out the identity of his connection, bump him off and the other guy, too, for good measure.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1301">
 		<text>I'll do it.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1302">
-		<text>У нас на базе завелся крот по имени Павлик, который передает информацию на сторону. Хотя мы и знаем это, но знать мало - надо доказать. Твоя задача - проследить за ним и узнать, кому он передает информацию. Я думаю, что сегодня он пойдет на встречу со связным. Пойдешь тихонько за ним. Только аккуратно, чтобы он не видел - он очень осторожен. Как узнаешь с кем он встречается, то шлепни его, а заодно и того, с кем он встречается.</text>
+		<text>We've learned there's a rat in our midst, by the name of Pavlik. He's leaking valuable information. We know that for a fact, but don't have proof. Your task is to spy him out and discover who he is singing for. I think he's going to a meet tonight. You'll follow him quietly. Just be careful that he doesn't see you - he's extremely cautious. After you find out the identity of his connection, bump him off and the other guy, too, for good measure.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1391">
-		<text>Нет, не сейчас.</text>
+		<text>No, not now.</text>
 	</string>
 	<string id="mil_leader_start_dialog_14001">
-		<text>Есть одно дело, о котором я хотел бы тебя попросить.</text>
+		<text>There's one thing I wanted to ask you about.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1500">
-		<text>Он недавно ушёл, так что придётся догонять. Запомни: шлепнуть его можно и нужно, но не раньше, чем он засветит того, кому сливает информацию. Второго тоже придётся убрать.</text>
+		<text>He just left, so you'll have to catch up with him. Remember: you can and should bump him off, but only after he's exposed the agent he's ratting to. You'll have to eliminate the other guy, too.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1501">
-		<text>Ясно.</text>
+		<text>Got it.</text>
 	</string>
 	<string id="mil_leader_start_dialog_2001">
-		<text>Я же говорю – иди к Максу.</text>
+		<text>I told you to go talk to Max.</text>
 	</string>
 	<string id="mil_leader_start_dialog_3001">
-		<text>Задача, стало быть, выполнена... Неплохо. А у меня ещё одна есть!</text>
+		<text>So, the assignment is complete… Good, good. I've got another one for you!</text>
 	</string>
 	<string id="mil_leader_start_dialog_3002">
-		<text>Хм-м... И какая же?</text>
+		<text>Hrm… What is it?</text>
 	</string>
 	<string id="mil_leader_start_dialog_30021">
-		<text>Прискорбно признавать, однако у нас завёлся стукач... Павликом зовут. Информацию передаёт на сторону, и это дело надо прекращать.</text>
+		<text>Sadly, I have to admit there's a snitch in our ranks. His name is Pavlik. He's leaking valuable information, and that must be stopped.</text>
 	</string>
 	<string id="mil_leader_start_dialog_3003">
-		<text>Именно так. Я думаю, что он попытается пойти на встречу где-то между 22:00 и 23:00. В такое время достаточно темно, чтобы мало кто его увидел, а ночные мутанты еще не все повысовывались. Вперед, сталкер. По выполнении задания можешь считать себя членом нашей группировки. Запомни, стукача нужно застать на горячем ! То есть, шлепнуть его нужно во время встречи, иначе задача будет считаться проваленой.</text>
+		<text>Exactly. And I think he will go to his meet some time between 10 and 11 p.m. It's going to be dark enough, so no one sees him, but the nighttime mutants won't be out yet. Go forth, stalker. After you're done, you will become a member of our group. Remember, you must catch the snitch red-handed! You've got to take him down during his meet, otherwise the mission will have failed.</text>
 	</string>
 	<string id="mil_leader_start_dialog_4001">
-		<text>Ты ещё здесь?</text>
+		<text>You're still here?</text>
 	</string>
 	<string id="mil_leader_start_dialog_5001">
-		<text>Отличная работа, Меченый! Держи вот... гонорар за стукача. Приглашаю отдыхать на нашей территории, когда захочешь, и на нашу помощь тоже можешь рассчитывать. Только есть ещё одно дело, которое я хотел бы тебе поручить. Не устал ещё?</text>
+		<text>Great job, Marked One! Here, take this… your payment for taking care of the snitch. You're welcome to rest on our territory whenever you want and you can also count on our help. Only, there's one more business I'd like you to do for me. Are you not too tired? </text>
 	</string>
 	<string id="mil_leader_start_dialog_5002">
-		<text>Какое именно?</text>
+		<text>What exactly?</text>
 	</string>
 	<string id="mil_leader_start_dialog_5003">
-		<text>Если чувствуешь в себе силы, то можешь пойти на заставу у выхода на Радар - по некоторым признакам там ожидается очередная попытка прорыва мутантов или Монолита. Надо помочь ребятам.</text>
+		<text>If you feel up to it, go to the outpost near the Radar exit. We've had reports claiming that either mutants or Monolith are planning a new attempt to break through there. The guys need help.</text>
 	</string>
 	<string id="mil_leader_start_dialog_5004">
-		<text>Ну, ты же ребятам на "Барьере" помог, так что - отдыхай.</text>
+		<text>Well, you did help the guys at the Barrier, so - relax.</text>
 	</string>
 	<string id="mil_leader_start_dialog_6001">
-		<text>Отдыхай. Работы пока нет.</text>
+		<text>Relax. There's no work right now.</text>
 	</string>
 	<string id="mil_leader_start_dialog_7001">
-		<text>Да, задачу ты завалил... плохо дело. Ладно, шанс исправиться всегда есть!</text>
+		<text>Yeah, you screwed up that mission… that sucks. Still, there's always another chance!</text>
 	</string>
 	<string id="mil_leader_start_dialog_7002">
-		<text>И какой?</text>
+		<text>What chance?</text>
 	</string>
 	<string id="mil_leader_start_dialog_7003">
-		<text>Кое-что указывает, что в ближайшее время "монолитовцы" опять будут пытаться прорваться со стороны Радара. Надо сходить к Кэпу – он командир на Барьере – и узнать, не нужна ли ему помощь. Хотя тут и выяснять не нужно, и так всё ясно...</text>
+		<text>Certain things point to the fact that very soon Monolith is gonna try to break through from the Radar side. You gotta go see Cap - he's the commander at the Barrier - and see if he needs any help. Well, it's pretty obvious he does, really…</text>
 	</string>
 	<string id="mil_leader_start_dialog_7004">
-		<text>Хорошо, я возьмусь.</text>
+		<text>OK, I'll do it.</text>
 	</string>
 	<string id="mil_leader_start_dialog_7006">
-		<text>Нет, не буду пока браться.</text>
+		<text>No, I won't do it yet.</text>
 	</string>
 	<string id="mil_leader_start_dialog_7007">
-		<text>Подумай, каково там нашим ребятам придётся! Понимаешь, мне и послать-то, кроме тебя, некого...</text>
+		<text>Think about our guys, they're gonna get wasted! You see, there's no one else but you that I can send… nobody.</text>
 	</string>
 	<string id="mil_leader_start_dialog_8001">
-		<text>Ты провалил задание и теперь этих документов нам не видать, как своих ушей. Нам не нужны такие неудачники.</text>
+		<text>You failed the mission, so we might as well kiss those documents good-bye. We have no use for losers like you.</text>
 	</string>
 	<string id="mil_leader_start_dialog_8004">
-		<text>Да, задачу ты завалил... плохо дело. Ладно, раз уж ты помог ребятам на Барьере, так и быть – отдыхай на нашей территории. Если что, и мы при случае тебе поможем.</text>
+		<text>Well, you screwed up that mission… that sucks. Still, you did help the guys at the Barrier; heck - you can relax on our territory. In case something comes up, we'll help you.</text>
 	</string>
 	<string id="mil_leader_start_dialog_8005">
-		<text>Есть какая-то работа?</text>
+		<text>Got any work?</text>
 	</string>
 	<string id="mil_leader_start_dialog_8006">
-		<text>Пока нет.</text>
+		<text>Not right now.</text>
 	</string>
 	<string id="mil_leader_start_dialog_9001">
-		<text>Я же тебе говорил – иди на Барьер.</text>
+		<text>I've told you - go to the Barrier.</text>
 	</string>
 	<string id="mil_max_dialog_10001">
-		<text>Завалим "долговцев" – тогда и поговорим.</text>
+		<text>We'll talk after we take down those Duty assholes.</text>
 	</string>
 	<string id="mil_max_dialog_10002">
-		<text>Хорошо.</text>
+		<text>OK.</text>
 	</string>
 	<string id="mil_max_dialog_1001">
-		<text>Лукаш сообщал, что ты подойдёшь. Видал этих... на хуторе?</text>
+		<text>Lukash said that you'll do. Did you see those… at the farmstead?</text>
 	</string>
 	<string id="mil_max_dialog_1100">
-		<text>Нет.</text>
+		<text>No.</text>
 	</string>
 	<string id="mil_max_dialog_1101">
-		<text>Хреново... Опять "Долгу" в жопе зудит! Ну да ладно. Пошли с нами, а?</text>
+		<text>Hell… Duty's got something up their ass again! Oh well. Come with us, will you?</text>
 	</string>
 	<string id="mil_max_dialog_1102">
-		<text>Хорошо.</text>
+		<text>OK.</text>
 	</string>
 	<string id="mil_max_dialog_1200">
-		<text>Да.</text>
+		<text>Yes.</text>
 	</string>
 	<string id="mil_max_dialog_1201">
-		<text>И много их там?</text>
+		<text>Are there many of them?</text>
 	</string>
 	<string id="mil_max_dialog_1210">
-		<text>Точно не скажу. Не думаю, что очень много.</text>
+		<text>Can't say for sure. I don't think there's too many.</text>
 	</string>
 	<string id="mil_max_dialog_1220">
-		<text>Человек шесть-восемь. Неплохо экипированы.</text>
+		<text>About six to eight people. Reasonably equipped.</text>
 	</string>
 	<string id="mil_max_dialog_2001">
-		<text>Иди к Лукашу.</text>
+		<text>Go to Lukash.</text>
 	</string>
 	<string id="mil_max_dialog_3001">
-		<text>Есть вопросы ?</text>
+		<text>Got any questions?</text>
 	</string>
 	<string id="mil_max_dialog_3002">
-		<text>Да. Лукаш поставил задачу - перехватить курьера "Долга" по пути с Радара в Мертвый город. Не поскажешь, где лучше это сделать ?</text>
+		<text>Yes. Lukash told me to intercept the Duty courier on the way from Radar to the Dead City. Could you tell me the best place to do that?</text>
 	</string>
 	<string id="mil_max_dialog_3003">
-		<text>Хм. Лучше его перехватить до того, как он дойдет до хутора у прохода на Мертвый город. Там его явно будут ждать и ты вряд ли справишься. Да и через деревню идти надо будет, а там лучше не показываться. Двигай восточнее деревни и быстрее.</text>
+		<text>Hmm. Best thing would be to catch him before he reaches the farmstead near the passage to Dead City. Reinforcements are sure to be waiting for him there, so you'd have trouble dealing with them all. Plus, that way you'd have to pass through the village, which is a bad thing. Better go East of the village, and fast.</text>
 	</string>
 	<string id="mil_max_dialog_3004">
-		<text>А что там в деревне ?</text>
+		<text>What's there in the village?</text>
 	</string>
 	<string id="mil_max_dialog_3005">
-		<text>Поверь - ничего хорошего. Тварей много лазит, аномалий тоже хватает. Потом расскажу.</text>
+		<text>Believe me - not a single good thing. Lots of monsters roaming about, and anomalies, too. I'll tell you about that later.</text>
 	</string>
 	<string id="mil_max_dialog_4001">
-		<text>Тебя можно поздравить ?</text>
+		<text>Are congratulations in order?</text>
 	</string>
 	<string id="mil_max_dialog_4002">
-		<text>Можно.</text>
+		<text>Yes.</text>
 	</string>
 	<string id="mil_max_dialog_4003">
-		<text>Ты, гляжу, парень не промах! Не сделаешь ли для меня одну работёнку? Сделаешь – я тебе мой Desert Eagle отдам. Отличный ствол, мощный!..</text>
+		<text>I see you're the right kind of guy! Would you mind doing another small job for me? Get it done and I'll give you my Desert Eagle. A great piece, and the punch it packs!</text>
 	</string>
 	<string id="mil_max_dialog_4004">
-		<text>А что сделать-то надо?</text>
+		<text>But what am I supposed to do?</text>
 	</string>
 	<string id="mil_max_dialog_4005">
-		<text>Тут на болоте засел один парень. Ребята видели, как он мчался из деревни, не разбирая дороги. Явно что-то увидел такое, что крышу сорвало – теперь обстреливает всех, кого видит. Нужно узнать, что он там такого надыбал, а то наши боятся в деревню ходить.</text>
+		<text>There's this one guy who dug in at the swamp. My boys saw him rushing from the village over hedge and ditch. He must have seen something that knocked a few screws loose in his head. Now he's shooting anyone who comes in sight. You've got to find out what it was he saw, 'cause our people are too afraid to go into the village.</text>
 	</string>
 	<string id="mil_max_dialog_40051">
-		<text>Нет, не в этот раз.</text>
+		<text>No, not this time.</text>
 	</string>
 	<string id="mil_max_dialog_400511">
-		<text>Ну, как хочешь.</text>
+		<text>Well, whatever.</text>
 	</string>
 	<string id="mil_max_dialog_40052">
-		<text>Вот флешка. Я взял её у съехавшего парня.</text>
+		<text>Here's the flash drive I got from the crazy guy.</text>
 	</string>
 	<string id="mil_max_dialog_400521">
-		<text>Вот спасибо, сталкер! Держи ствол – заработал.</text>
+		<text>Hey, thanks, stalker! Take this gun - you've earned it.</text>
 	</string>
 	<string id="mil_max_dialog_400522">
-		<text>А патроны к нему?</text>
+		<text>Got any ammo for it?</text>
 	</string>
 	<string id="mil_max_dialog_400523">
-		<text>Только те, что в обойме. Прости, больше просто нет. Сходи к Скряге – у него, может быть, найдутся.</text>
+		<text>Just what's in the magazine. Sorry, that's all I got. Go see Skinflint, he might have some.</text>
 	</string>
 	<string id="mil_max_dialog_4006">
-		<text>Попробую.</text>
+		<text>I'll try.</text>
 	</string>
 	<string id="mil_max_dialog_4007">
-		<text>Тогда удачи. Держи в голове – там старое минное поле, но с помощью старых верных болтиков мины можно обойти.</text>
+		<text>Good luck, then. Don't forget - there's an old minefield, but with the help of a few good old bolts you can go around any mine.</text>
 	</string>
 	<string id="mil_max_dialog_5001">
-		<text>Ну что, узнал? Что ж там такого нашёл этот психованный?</text>
+		<text>So, what did you learn? What happened to that psycho?</text>
 	</string>
 	<string id="mil_max_dialog_5002">
-		<text>Вот флешка – нашёл её у съехавшего парня.</text>
+		<text>Here's a flash drive - I got it from the crazy guy.</text>
 	</string>
 	<string id="mil_max_dialog_6001">
-		<text>Что, уже?</text>
+		<text>What, already?</text>
 	</string>
 	<string id="mil_max_dialog_7001">
-		<text>Что ты хочешь узнать?</text>
+		<text>What do you want to know?</text>
 	</string>
 	<string id="mil_max_dialog_8001">
-		<text>Здорова, сталкер! С чем пришёл?</text>
+		<text>What's up, stalker! Whatcha got?</text>
 	</string>
 	<string id="mil_max_dialog_8002">
-		<text>По делам пришёл. Не подскажешь, где ваш главный?</text>
+		<text>I've got business to discuss. Can you show me the way to your boss?</text>
 	</string>
 	<string id="mil_max_dialog_8003">
-		<text>К Лукашу – он у нас старший. Иди в главное здание.</text>
+		<text>You want Lukash - he's our leader. Go to the main building.</text>
 	</string>
 	<string id="mil_max_dialog_9001">
-		<text>Вижу, справился с задачей. Отдай Лукашу документы.</text>
+		<text>I see you managed alright. Give the documents to Lukash.</text>
 	</string>
 	<string id="mil_max_dialog_9100">
-		<text>Сходи к Лукашу, доложись, а потом поговорим, лады?</text>
+		<text>Go to Lukash and make your report, then we'll talk, alight?</text>
 	</string>
 	<string id="mil_max_dialog_9101">
-		<text>Хорошо.</text>
+		<text>OK.</text>
 	</string>
 	<string id="mil_patrol_dialog1_0">
-		<text>Чувак,ты на базе "Свободы"! Расслабься, будь как дома!..</text>
+		<text>Mate, you're in the Freedom base! Relax, make yourself at home!</text>
 	</string>
 	<string id="mil_patrol_dialog1_1">
-		<text>Понятно.</text>
+		<text>I see.</text>
 	</string>
 	<string id="mil_patrol_dialog1_2">
-		<text>Только в рамках, да? Понял? Будешь сильно баловать – пеняй на себя. Был тут один непонятливый, так когда всех достал, мы его голяком по минному полю пустили прогуляться. Вот Скряга матерился, когда ему на голову рука этого типа свалилась – это что-то особенного... да-а... Вкурил, в общем?</text>
+		<text>Behave, OK? Got it? Try fooling around and you'll be sorry. We had a slow-witted one here once; he pissed everyone off so bad that we made him take a hike on the minefield - naked. You should have heard Skinflint cursing when that dude's arm fell square on his head! That was something special... yeah... So, you got the idea?</text>
 	</string>
 	<string id="mil_patrol_dialog1_3">
-		<text>Понял.</text>
+		<text>Gotcha.</text>
 	</string>
 	<string id="mil_patrol_dialog1_4">
-		<text>Молодец! Свободен.</text>
+		<text>Good man! Dismissed.</text>
 	</string>
 	<string id="mil_patrol_dialog2_0">
-		<text>А, свежачок... Ходи-ка сюда.</text>
+		<text>Ah, a rookie… Come over a sec. </text>
 	</string>
 	<string id="mil_patrol_dialog2_1">
-		<text>Не понял.</text>
+		<text>I don't get it.</text>
 	</string>
 	<string id="mil_patrol_dialog2_10">
-		<text>Куда? Оставайся! У нас хорошо... обед, опять же сегодня будет.</text>
+		<text>Where are you going? Stay! It's nice here… and we'll be having dinner tonight.</text>
 	</string>
 	<string id="mil_patrol_dialog2_11">
-		<text>Да я невкусный.</text>
+		<text>Nah, I'm not that appetizing.</text>
 	</string>
 	<string id="mil_patrol_dialog2_12">
-		<text>Что?! Вот блин, что ж ты сразу не сказал! Только время зря тратили. Вали отсюда, невкусный... Это я уже на полном серьёзе тебе говорю, чувак.</text>
+		<text>What?! Shit, why didn't you tell me that before! We've just been wasting time. Get lost, buttface. And this time I'm dead serious...</text>
 	</string>
 	<string id="mil_patrol_dialog2_2">
-		<text>Чего ты не понял? А-а, историю про непонятливых не слышал ещё, наверно?</text>
+		<text>What didn't you get? Oh, you haven't heard the story about the slow-witted ones, huh?</text>
 	</string>
 	<string id="mil_patrol_dialog2_3">
-		<text>Не слышал.</text>
+		<text>No, I haven't.</text>
 	</string>
 	<string id="mil_patrol_dialog2_4">
-		<text>Значит, так. Сам посуди: времена нынче голодные...</text>
+		<text>Alright, look. Think about it: these are lean times…</text>
 	</string>
 	<string id="mil_patrol_dialog2_5">
-		<text>В смысле?</text>
+		<text>Meaning?</text>
 	</string>
 	<string id="mil_patrol_dialog2_6">
-		<text>Да в прямом! Голодный боец – плохой боец. А нас тут во-он сколько...</text>
+		<text>Well, that's easy! A hungry soldier is a bad soldier. And there's so many of us…</text>
 	</string>
 	<string id="mil_patrol_dialog2_7">
-		<text>И что?</text>
+		<text>And?</text>
 	</string>
 	<string id="mil_patrol_dialog2_8">
-		<text>Где столько мяса напастись? А тут, как по заказу, ты!</text>
+		<text>Where would we get that much meat? And look, here you are!</text>
 	</string>
 	<string id="mil_patrol_dialog2_9">
-		<text>Ясно.</text>
+		<text>Got it.</text>
 	</string>
 	<string id="mil_screw_dialog_1000">
-		<text>Мужик, у тебя сломалось что?</text>
+		<text>You got something that's broken, mate?</text>
 	</string>
 	<string id="mil_screw_dialog_1001">
-		<text>Сломалось?</text>
+		<text>Broken?</text>
 	</string>
 	<string id="mil_screw_dialog_1002">
-		<text>Так ты не ко мне? Ух ты! А меня задолбали уже. Как что сломается, сразу сюда бегут и канючат.</text>
+		<text>Ahhh, you're not here to ask for my help? Whew! I'm getting sick and tired of that. Soon as something breaks, they run to me and start whining about it.</text>
 	</string>
 	<string id="mil_screw_dialog_1003">
-		<text>А ты кто?</text>
+		<text>And who are you?</text>
 	</string>
 	<string id="mil_screw_dialog_1004">
-		<text>Механик я. Самоделкин... Стволы ремонтирую – и вообще всё, что принесут. Счас вот машины решил в порядок привести.</text>
+		<text>I'm a mechanic. A Mr-Fix-It of sorts… I repair guns and whatever else you bring me. Right now, I'm working on these cars.</text>
 	</string>
 	<string id="mil_screw_dialog_1005">
-		<text>Получается?</text>
+		<text>How's it going?</text>
 	</string>
 	<string id="mil_screw_dialog_1006">
-		<text>Какое! Всё хлам. Задолбался уже. Слушай, у тебя водочки нету? Я б тебе... хочешь, прицел хороший дам? Оптика высший сорт!</text>
+		<text>Pfft! Nothing but rubbish. I'm totally beat. Listen, you got any vodka on you? I'd, umm… you… want a nice scope? The best optics there is! </text>
 	</string>
 	<string id="mil_screw_dialog_1100">
-		<text>Нет.</text>
+		<text>No.</text>
 	</string>
 	<string id="mil_screw_dialog_1101">
-		<text>Это ты зря. Так если будет – ты заходи, не стесняйся.</text>
+		<text>It's your loss. If you have some - come in, don't be a stranger.</text>
 	</string>
 	<string id="mil_screw_dialog_1102">
-		<text>Хорошо.</text>
+		<text>OK.</text>
 	</string>
 	<string id="mil_screw_dialog_1200">
-		<text>Вот, держи.</text>
+		<text>Here, take it.</text>
 	</string>
 	<string id="mil_screw_dialog_1201">
-		<text>Ну, спасибо! Уважил. Теперь хоть будет чем чуть попозжей расслабиться.</text>
+		<text>Well, thanks! How nice of you. Now I'll have something to help me relax later on.</text>
 	</string>
 	<string id="mil_screw_dialog_1202">
-		<text>Удачи.</text>
+		<text>Good luck.</text>
 	</string>
 	<string id="mil_screw_dialog_2000">
-		<text>Не мешай, я думаю...</text>
+		<text>Don't distract me, I'm thinking…</text>
 	</string>
 	<string id="mil_screw_dialog_4">
-		<text>Неужто водку принёс?</text>
+		<text>No way, did you really bring vodka?</text>
 	</string>
 	<string id="mil_trader_dialog_1001">
-		<text>Чего надо ?</text>
+		<text>What is it?</text>
 	</string>
 	<string id="mil_trader_dialog_1002">
-		<text>Вопрос на засыпку - где можно разжиться артефактами, оружием ?</text>
+		<text>Here's a tricky question - where do I go for things like artifacts and weapons?</text>
 	</string>
 	<string id="mil_trader_dialog_1003">
-		<text>У меня, за деньги. Или в деревне на халяву, но больше риска.</text>
+		<text>You come to me, with money. Or go to the village and get them for free, but the risks are much higher.</text>
 	</string>
 	<string id="mil_trader_dialog_1004">
-		<text>В деревне ?</text>
+		<text>The village?</text>
 	</string>
 	<string id="mil_trader_dialog_1005">
-		<text>В деревне. Там аномалий дохрена и всякие новички в них часто попадают. Туда наши ребята пошли, хочешь - присоединись к ним.</text>
+		<text>The village. It's full of anomalies - rookies stumble on them all the time. Our guys just left to go there, you can join them if you want.</text>
 	</string>
 	<string id="mil_trader_dialog_1006">
-		<text>Ясно.</text>
+		<text>Got it.</text>
 	</string>
 	<string id="mil_trader_dialog_2001">
-		<text>И чего ж интересного принёс?</text>
+		<text>What good things did you bring me?</text>
 	</string>
 	<string id="mil_trader_dialog_3001">
-		<text>Чего изволим?</text>
+		<text>What will you be needing?</text>
 	</string>
 	<string id="mil_trader_dialog_3002">
-		<text>Ничего... просто осматриваюсь.</text>
+		<text>Nothing… just looking around.</text>
 	</string>
 	<string id="mil_trader_dialog_3003">
-		<text>Ты лучше делом займись. Тем более, у меня сейчас есть кое-что на примете... Подзаработать тебе интересно?</text>
+		<text>You should do something useful instead. Specially as I've got something you might be interested in… Want to earn, huh?</text>
 	</string>
 	<string id="mil_trader_dialog_3004">
-		<text>Интересно.</text>
+		<text>Interesting…</text>
 	</string>
 	<string id="mil_trader_dialog_3005">
-		<text>Я могу дать тебе "Кристалл", если ты окажешь одну услугу. Тут ситуация сложилась неприятная... последнее время из деревни артефакты не несут – боятся. Говорят, кровососы там завелись. А в эти дни особо и некого послать – хоть "Долг" приглашай.</text>
+		<text>I can give you a Crystal if you do me one particular favor. A nasty situation has developed… Lately, no one has been bringing any artifacts from the village - they are too scared. They say bloodsuckers have settled in there. These days, I can't even send anyone - in fact, I'm that close of asking Duty for help!</text>
 	</string>
 	<string id="mil_trader_dialog_3006">
-		<text>Продолжай.</text>
+		<text>Go on.</text>
 	</string>
 	<string id="mil_trader_dialog_3007">
-		<text>Пара ребят ушли в деревню и не вернулись, а остальные трое так на околице и сидят. Если ты кровососов убьёшь, я тебе "Кристалл" дам. Берёшься?</text>
+		<text>A couple of guys went to the village and didn't come back, and the other three are just sitting there on the outskirts. If you destroy the bloodsuckers, I'll give you a Crystal. Do you agree?</text>
 	</string>
 	<string id="mil_trader_dialog_30071">
-		<text>Не в этот раз.</text>
+		<text>Not right now.</text>
 	</string>
 	<string id="mil_trader_dialog_30072">
-		<text>Смотри, дело такое... Рано или поздно кто-то их всё равно завалит. А "Кристалл" штука редкая и недешёвая.</text>
+		<text>Hey, it's your call… Sooner or later someone will clear them off. Meanwhile, Crystal is rare and rather expensive, too.</text>
 	</string>
 	<string id="mil_trader_dialog_3008">
 		<text>I'll do it.</text>
 	</string>
 	<string id="mil_trader_dialog_3009">
-		<text>Вот и хорошо. А если что ещё найдешь, так тащи – возьму по хорошей цене.</text>
+		<text>Oh, that's swell. If you find more stuff like this, bring it over - I'll pay a good price.</text>
 	</string>
 	<string id="mil_trader_dialog_3101">
-		<text>И что ?</text>
+		<text>And?</text>
 	</string>
 	<string id="mil_trader_dialog_3110">
-		<text>Сидят, осматриваются...</text>
+		<text>There're sitting there, looking around…</text>
 	</string>
 	<string id="mil_trader_dialog_3111">
-		<text>Ну, если ты им поможешь в охоте, то я дам тебе артефакт под названием "Кристалл". Ну как ?</text>
+		<text>If you help them in their hunt, I'll give you an artifact called Crystal. So, what do you say?</text>
 	</string>
 	<string id="mil_trader_dialog_3200">
-		<text>Мы поговорили и пошли по деревне - мутанта какого-то ловить...</text>
+		<text>We had a chat and then went on a walk across the village trying to catch some mutant…</text>
 	</string>
 	<string id="mil_trader_dialog_3201">
-		<text>И что ? Не тяни кота за хвост !</text>
+		<text>And? Cut to the chase already!</text>
 	</string>
 	<string id="mil_trader_dialog_3300">
-		<text>Завалили мы тварь какую-то, но ребята погибли. Как подошли к водокачке, они за головы похватались, да и у меня туман кровавый перед глазами... Тварь эта на мозги действует. Завалил я ее, но ребятам это уже не помогло.</text>
+		<text>We took down some kind of beast, but the guys went down, too. Right as we came to the water tower, they all grabbed their heads, and I had blood in my eyes, too… That shitbucket affects your brain. I killed the thing, but it was too late to help the guys.</text>
 	</string>
 	<string id="mil_trader_dialog_3301">
-		<text>Хреново дело... Угрюмый - умелый сталкер. Жаль. Ладно, возьми артефакт за то, что ребятам помог...</text>
+		<text>That blows. Murk was a skilled stalker. Damn shame. Well, take this artifact for helping the boys.</text>
 	</string>
 	<string id="mil_trader_dialog_3310">
-		<text>Ну, ребята пошли охотиться, а я сюда вернулся...</text>
+		<text>Well, guys went hunting and I returned here…</text>
 	</string>
 	<string id="mil_trader_dialog_3311">
-		<text>Понятно.</text>
+		<text>I see.</text>
 	</string>
 	<string id="mil_trader_dialog_3400">
-		<text>У тебя можно снаряжение раздобыть?</text>
+		<text>Can I stock up on some equipment here?</text>
 	</string>
 	<string id="mil_trader_dialog_3401">
-		<text>За определённую плату можно все.</text>
+		<text>For a fixed price, anything is possible.</text>
 	</string>
 	<string id="mil_trader_dialog_3500">
-		<text>Я уже с ними разобрался.</text>
+		<text>I've already dealt with them.</text>
 	</string>
 	<string id="mil_trader_dialog_3501">
-		<text>Ну, даёшь, сталкер! Резкий, что понос... Ладно, уговор есть уговор – держи "Кристалл".</text>
+		<text>Damn, stalker! You're as explosive as diarrhea! OK, a deal is a deal, here's your Crystal.</text>
 	</string>
 	<string id="mil_trader_dialog_4001">
-		<text>Ну, как прошла охота?</text>
+		<text>So, how did the hunting go?</text>
 	</string>
 	<string id="mil_trader_dialog_4002">
-		<text>Убил я тварей.</text>
+		<text>I killed the monsters.</text>
 	</string>
 	<string id="mil_trader_dialog_4003">
-		<text>Тяжко было?</text>
+		<text>How tough was it?</text>
 	</string>
 	<string id="mil_trader_dialog_4004">
-		<text>Средне.</text>
+		<text>Average.</text>
 	</string>
 	<string id="mil_trader_dialog_4005">
-		<text>Вот интересно... Прёт всякая гадость из центра Зоны – и откуда только берётся?.. Держи; это вот тебе за работу.</text>
+		<text>Hmm, interesting… All kind of guck is spreading from the center of the Zone - but where does it come from?.. OK, take this for your troubles.</text>
 	</string>
 	<string id="mil_trader_dialog_5001">
-		<text>Я же тебя попросил – укокошь кровососов в деревне!</text>
+		<text>But I asked you to zap those bloodsuckers in the village!</text>
 	</string>
 	<string id="mil_trader_dialog_5002">
-		<text>Я передумал.</text>
+		<text>I changed my mind.</text>
 	</string>
 	<string id="mil_trader_dialog_5003">
-		<text>Не вопрос. Только тогда и награды не будет.</text>
+		<text>No problem. Of course, in that case there will be no reward.</text>
 	</string>
 	<string id="mil_trader_dialog_5004">
-		<text>Да и ладно.</text>
+		<text>Fine with me.</text>
 	</string>
 	<string id="mil_trader_dialog_5010">
-		<text>Я попробую.</text>
+		<text>I'll try.</text>
 	</string>
 	<string id="mil_trader_dialog_6001">
-		<text>Итак, задачку ты не решил... Артефакта, стало быть, я тебе не дам.</text>
+		<text>Uh-huh, so, you didn't settle that little problem… Therefore, I'll keep the artifact to myself.</text>
 	</string>
 	<string id="mil_trader_dialog_6002">
-		<text>Кто ж спорит.</text>
+		<text>No arguments from me.</text>
 	</string>
 	<string id="mil_trader_dialog_7001">
-		<text>Тут народ рассказывал, ты кровососов в деревне порешил. Правда, нет?</text>
+		<text>People have been saying you took care of these bloodsuckers in the village. Is that true?</text>
 	</string>
 	<string id="mil_trader_dialog_7002">
-		<text>Было дело.</text>
+		<text>That's right.</text>
 	</string>
 	<string id="mil_trader_dialog_7003">
-		<text>Тяжко пришлось?</text>
+		<text>Was it tough?</text>
 	</string>
 	<string id="mil_trader_dialog_7004">
-		<text>Средне.</text>
+		<text>Average.</text>
 	</string>
 	<string id="mil_trader_dialog_7005">
-		<text>Вот интересно... Прёт всякая гадость из центра Зоны – и откуда только берётся?.. Держи; это вот тебе за работу.</text>
+		<text>Hmm, interesting… All kind of guck is spreading from the center of the Zone - but where does it come from?.. OK, take this for your troubles.</text>
 	</string>
 	<string id="mil_trader_dialog_8001">
-		<text>Ну, чего принес ?</text>
+		<text>So, what have you brought with you?</text>
 	</string>
 	<string id="mil_zoneguard_common1_0">
-		<text>У вас тут повар есть?</text>
+		<text>Is there a cook around here?</text>
 	</string>
 	<string id="mil_zoneguard_common1_1">
-		<text>Есть, как не быть! А на кой ляд он тебе?</text>
+		<text>Sure is, how could we do without one! What the heck do you need him for, anyway?</text>
 	</string>
 	<string id="mil_zoneguard_common1_2">
-		<text>Да вот хочу едой малость разжиться.</text>
+		<text>Well, I need a little bit of food.</text>
 	</string>
 	<string id="mil_zoneguard_common1_3">
-		<text>Так он на кухне своей. Как обычно, сидит и бормочет.</text>
+		<text>He's in his kitchen. Usually, he sits there and mutters.</text>
 	</string>
 	<string id="mil_zoneguard_common1_4">
-		<text>Бормочет?</text>
+		<text>Mutters?</text>
 	</string>
 	<string id="mil_zoneguard_common1_5">
-		<text>А чего ты хотел? Пьянь – она пьянь и есть. Если бы готовить не умел, давно бы его уже спровадили на все четыре стороны. На нухне он. Я тебе привязку дам – найдёшь.</text>
+		<text>What did you expect? A drunk is a drunk. If he couldn't cook, we'd get rid of him a long time ago. He's in the kitchen. I'll tell you how to get there.</text>
 	</string>
 	<string id="mil_zoneguard_common1_6">
-		<text>Спасибо за информацию.</text>
+		<text>Thanks for the information.</text>
 	</string>
 	<string id="mil_zoneguard_common1_7">
-		<text>Не за что.</text>
+		<text>No problem.</text>
 	</string>
 	<string id="mil_zoneguard_common2_0">
-		<text>Кто у вас здесь старший?</text>
+		<text>Who's the boss here?</text>
 	</string>
 	<string id="mil_zoneguard_common2_1">
-		<text>А тебе зачем?</text>
+		<text>And what's your business?</text>
 	</string>
 	<string id="mil_zoneguard_common2_2">
-		<text>Информация для него есть.</text>
+		<text>I've got information for him.</text>
 	</string>
 	<string id="mil_zoneguard_common2_3">
-		<text>Лукаш у нас командиром. Иди в главное здание.</text>
+		<text>Lukash is our leader. Go to the main building.</text>
 	</string>
 	<string id="mil_zoneguard_common2_4">
-		<text>Понял. Спасибо.</text>
+		<text>Got it. Thanks.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_10">
-		<text>Тебе того же. Что тебя сюда привело ?\n</text>
+		<text>Same to you. What brings you here?\n</text>
 	</string>
 	<string id="mil_zoneguard_dialog_100">
-		<text>Кто у вас тут старший ? Дело к нему есть.</text>
+		<text>Who's the boss around here? I've got business to discuss with him.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_1000">
-		<text>Старший у нас Лукаш, находится в главном здании. Но, когда в него войдешь - спрячь оружие, а то могут и пристрелить.\n</text>
+		<text>Lukash is our leader, you can find him in the main building. But as you enter, make sure to put your piece away - unless you wanna get shot for nothing.\n</text>
 	</string>
 	<string id="mil_zoneguard_dialog_10000">
-		<text>Чего так ?</text>
+		<text>What for?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_100000">
-		<text>Да был прецедент - Лукаша чуть было не грохнул какой-то наемник. С тех пор и перестраховываемся.</text>
+		<text>We had some shit happen - once a killer got this close to dropping Lukash. We stopped taking any risks after that.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_1000000">
-		<text>Ясно.</text>
+		<text>Got it.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_10000000">
-		<text>Ладно, иди.</text>
+		<text>OK, you can go.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_20">
-		<text>Да так себе. Не мешай...</text>
+		<text>So-so. Keep out, don't bother me.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_3">
-		<text>Приветствую.</text>
+		<text>Greetings.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_30">
-		<text>Стой! Пароль?!</text>
+		<text>Halt! Who goes there?!</text>
 	</string>
 	<string id="mil_zoneguard_dialog_31">
-		<text>Южноафриканская ласточка!</text>
+		<text>South African swallow!</text>
 	</string>
 	<string id="mil_zoneguard_dialog_32">
-		<text>Ха-ха! Молодец! Проходи.</text>
+		<text>Ha-ha! Correct! You can pass.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_4">
-		<text>Что это тут за болото рядом?</text>
+		<text>What's this swamp nearby?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_41">
-		<text>Совершенно радиоактивная лужа. В неё лучше не соваться: нахватаешься рентген столько, что пупок развяжется. Там посерёдке засел какой-то тип и никого не подпускает. В принципе, его можно понять: кому охота с дураками общаться? А нормальный туда фиг полезет.</text>
+		<text>A real radioactive puddle. Better not touch it, or you'll get enough rads to make your navel button unwind. There's a character in the middle of it, doesn't let anyone come close. Well, I can feel for him: who'd want to mix with idiots? 'Cause a normal person would definitely stay away from there.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_42">
-		<text>Что хоть за тип?</text>
+		<text>Who is that guy, anyway?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_43">
-		<text>А хрен его знает. Говорят, кто-то из наших, который в деревне побывал.</text>
+		<text>Hell knows. They say he's one of our folks that's been to the village.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_44">
-		<text>Что за деревня?</text>
+		<text>What village?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_45">
-		<text>Да есть тут недалеко деревенька одна... Мутантов полно, аномалий. Я сам ещё не был, только недавно на базу попал. Спроси у Макса – он тут сто лет уже.</text>
+		<text>Well, there is one little hamlet nearby. Full of mutants and anomalies. I haven't been there yet - I only came to this base just recently. Ask Max - he's been here a hundred years.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_5">
-		<text>Где можно патронов прикупить? А то до "Ростка" далековато, переть туда не особо хочется...</text>
+		<text>Listen, where can I stock up on some ammo? Rostok is kind of a long walk from here, I don't feel like going there.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_51">
-		<text>Иди в главное здание – на первом этаже найдёшь.</text>
+		<text>Go to the main building and you'll find it on the ground floor.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6">
-		<text>Приветище, бродяга! Решил зарулить к нам на огонёк?</text>
+		<text>Whasssup, rambling man? Looking to drop in at our place, huh?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_601">
-		<text>Что-то вроде.</text>
+		<text>Something like that.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_602">
-		<text>Хочешь присоединиться к нам или как?</text>
+		<text>How about joining us, eh?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_603">
-		<text>Или как. Я по делу.</text>
+		<text>How about not. I'm here on business.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_604">
-		<text>Да ну, присоединяйся лучше! У нас тут весело.</text>
+		<text>C'mon, join us. It's a lot of fun.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_605">
-		<text>Я подумаю.</text>
+		<text>I'll think about it.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_607">
-		<text>Говорящая лошадь?</text>
+		<text>Talking horse?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_608">
-		<text>Мимо.</text>
+		<text>Off target.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_609">
-		<text>А 9?</text>
+		<text>A-9?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_610">
-		<text>Ранил, тьфу блин. Харе зубы заговривать. Еще будут варианты?</text>
+		<text>Battleship sunk. Shit, stop tricking me! Got anything else?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_611">
-		<text>Себе.</text>
+		<text>Hit me.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_612">
-		<text>Очко. Блин опять. Ну ты и жук. Ладно, я понял, пароль ты не знаешь?</text>
+		<text>Twenty-one. Damn, got me again! You're a slick one. OK, so you dunno the password, do you?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_613">
-		<text>Подскажешь?</text>
+		<text>Will you tell me?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_614">
-		<text>Щассс.</text>
+		<text>Yeah, riiiight.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_615">
-		<text>Ну пропусти меня, не в поле же мне ночевать?</text>
+		<text>C'mon, please let me in. I can't spend the night in the fields, can I?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_616">
-		<text>А че погода хорошая - лето можно сказать. Ну ладно пройдешь тест - пущу, нет - свободен.</text>
+		<text>Why not - the weather is fine, almost like summer. Well, alright, if you pass the test - you can go, if not - get lost.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_617">
-		<text>Тест?</text>
+		<text>The test?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_618">
-		<text>Ага, всего три вопроса, на которые должен ответить настоящий мужчина.</text>
+		<text>Sure. Three things every real man has to know.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_619">
-		<text>Я не боюсь, задавай свои вопросы.</text>
+		<text>I'm not scared. Go ahead.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_620">
-		<text>Первый - самый простой. Готов? Слушай: размер груди Памелы Андерсон?</text>
+		<text>OK, the easiest one first. Ready? Alright, what is Pamela Anderson's bra size?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6200">
-		<text>Третий.</text>
+		<text>34 C.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6201">
-		<text>Ни хрена ты не знаешь. Вали отсюда!</text>
+		<text>You're a real idiot. Go fly a kite!</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6202">
-		<text>Ёлки.</text>
+		<text>Crap.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6203">
-		<text>Пятый.</text>
+		<text>35 D.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6204">
-		<text>Ни хрена ты не знаешь. Вали отсюда.</text>
+		<text>You're a real idiot. Go fly a kite!</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6205">
-		<text>Седьмой.</text>
+		<text>36 DD.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6206">
-		<text>Молодец! Сразу видно – правильной ориентации мужик!</text>
+		<text>Good job! I can tell you're the right kind of man!</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6207">
-		<text>Есть такое дело.</text>
+		<text>Yep, I am.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6208">
-		<text>Второй потяжелее! Так... Количество патронов в рожке российского пистолета-пулемета "Бизон"?</text>
+		<text>A bit more difficult now! OK… What's the round capacity of a cartridge that goes into the Russian submachine gun Bizon?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6300">
-		<text>Двадцать пять.</text>
+		<text>Twenty-five.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6301">
-		<text>Шестьдесят восемь.</text>
+		<text>Sixty-eight.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6302">
-		<text>Пятьдесят четыре.</text>
+		<text>Fifty-four.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6400">
-		<text>Отлично! Ты мне нравишься всё больше и больше... не пойми меня неправильно!</text>
+		<text>Awesome! I'm liking you more and more… don't get me wrong, not that way!</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6401">
-		<text>Нормально.</text>
+		<text>Sure.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6402">
-		<text>Поехали третий! С какой скоростью летает южноафриканская ласточка?</text>
+		<text>On to the third one! What's the flight speed of a South African swallow ?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6403">
-		<text>Кто?!</text>
+		<text>A South African what?!</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6404">
-		<text>Ласточка!</text>
+		<text>Swallow!</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6405">
-		<text>Откуда я могу такое знать?! Ты сам-то хоть знаешь?</text>
+		<text>How am I supposed to know that?! Do you even have the answer?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6406">
-		<text>Нет, конечно. В том-то и дело, что никак выяснить не могу... эх. Ладно, проходи.</text>
+		<text>Of course not. That's the thing, I can't seem to solve that puzzle… Well, OK, you can pass.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6407">
-		<text>Ну ты даёшь!</text>
+		<text>Whoa, man!</text>
 	</string>
 	<string id="mil_zoneguard_dialog_81">
-		<text>Хочешь ещё попробовать? Ну давай. Вопрос: размер груди Дотти Стрейнджлав?</text>
+		<text>OK, wanna try again? Alright. Question: what is Dotty Strangelove's bra size?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_91">
-		<text>Экий ты настырный! Повторяю: количество патронов в рожке российского пистолета-пулемета "Бизон"?</text>
+		<text>You're a pushy sort! I repeat: what's the capacity of the magazine that goes into the Russian SMG Bizon?</text>
 	</string>
 </string_table>

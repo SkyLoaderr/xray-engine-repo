@@ -5,13 +5,13 @@
 		<text>Take the documents</text>
 	</string>
 	<string id="yan_find_lab">
-		<text>Get inside the laboratory</text>
+		<text>Get inside the lab</text>
 	</string>
 	<string id="yan_find_labX16">
-		<text>Get inside the laboratory X16</text>
+		<text>Get inside Lab X16</text>
 	</string>
 	<string id="yan_find_scientist">
-		<text>Take measurements of the radiation</text>
+		<text>Take radiation measurements</text>
 	</string>
 	<string id="yan_find_vasilyev">
 		<text>Break through to Vasiliev's dead body</text>
@@ -20,28 +20,28 @@
 		<text>Take Vasiliev's PDA</text>
 	</string>
 	<string id="yan_kill_brain">
-		<text>Turn off PSI-radiation</text>
+		<text>Turn off psi-emission</text>
 	</string>
 	<string id="yan_kill_brain_task">
 		<text>Unplug the mechanism</text>
 	</string>
 	<string id="yan_kill_brain_task_2">
-		<text>Get out of the laboratory</text>
+		<text>Get out of the lab</text>
 	</string>
 	<string id="yan_provodnik_about_doctor">
-		<text>Talk to the Guide</text>
+		<text>Talk to Pathfinder</text>
 	</string>
 	<string id="yan_provodnik_task">
-		<text>Meet the Guide</text>
+		<text>Meet the Pathfinder</text>
 	</string>
 	<string id="yan_psi_zone_find">
-		<text>Escort Kruglov to measurement site</text>
+		<text>Escort Kruglov to the measurement site</text>
 	</string>
 	<string id="yan_psi_zone_find_semenov">
-		<text>Escort Semenov to measurement site</text>
+		<text>Escort Semenov to the measurement site</text>
 	</string>
 	<string id="yan_return_to_bunker">
-		<text>Bring results to Sakharov</text>
+		<text>Bring the results to Sakharov</text>
 	</string>
 	<string id="yan_scientist_return">
 		<text>Talk to Sakharov</text>
@@ -71,5 +71,5 @@
 		<text>Vasiliev's PDA</text>
 	</string>
 	<string id="yan_zombie_zone">
-		<text>Estimated location of laboratory X16</text>
+		<text>Estimated location of Lab X16</text>
 	</string>

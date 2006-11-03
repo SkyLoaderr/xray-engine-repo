@@ -52,7 +52,7 @@
 		<text>Forward</text>
 	</string>
 	<string id="kb_func">
-		<text>Sub-barrel</text>
+		<text>Grenade launcher</text>
 	</string>
 	<string id="kb_grp_common">
 		<text>General</text>
@@ -70,7 +70,7 @@
 		<text>Multiplayer</text>
 	</string>
 	<string id="kb_grp_weapons">
-		<text>Weapons</text>
+		<text>Weapon</text>
 	</string>
 	<string id="kb_inventory">
 		<text>Inventory</text>
@@ -139,7 +139,7 @@
 		<text>Team menu</text>
 	</string>
 	<string id="kb_torch">
-		<text>Torch</text>
+		<text>Flashlight</text>
 	</string>
 	<string id="kb_turn_engine">
 		<text>Turn on</text>
@@ -160,10 +160,10 @@
 		<text>Begin voting</text>
 	</string>
 	<string id="kb_vote_no">
-		<text>Vote "No"</text>
+		<text>Vote "Yes"</text>
 	</string>
 	<string id="kb_vote_yes">
-		<text>Vote "Yes"</text>
+		<text>Vote "No"</text>
 	</string>
 	<string id="kb_weapon1">
 		<text>Weapon 1</text>
@@ -190,7 +190,7 @@
 		<text>Prev weapon of this type</text>
 	</string>
 	<string id="kb_zoom">
-		<text>Zoom in</text>
+		<text>Zoom</text>
 	</string>
 	<string id="speech_menu_group">
 		<text>Voice messages (1)</text>

@@ -1,29 +1,21 @@
-
-    <string id="tips_agr_krot_sos">
-        <text>Мужики, все кто меня слышат помогите! Военные прижали нас на фабрике.</text>
-    </string>
-
-    <string id="tips_agr_krot_sos1">
-        <text>Легавые зажали меня во дворе. Помогайте братцы!</text>
-    </string>
-    
-    <string id="tips_agr_krot_sos2">
-        <text>Всех моих уже положили!</text>
-    </string>
-    
-    <string id="tips_agr_trader_documents">
-        <text> Меченый, давай ноги в руки и смывайся, военные не дадут тебе просто так уйти. Я сообщил о тебе Бармену - он должен договориться с долговцами чтобы тебя пропустили.</text>
-    </string>
-
-    <string id="tips_captain_name">
-        <text>Капитан Максименко</text>
-    </string>
-	
-	<!---new---->
-	
+	<string id="tips_agr_krot_sos">
+		<text>Мужики, все кто меня слышат помогите! Военные прижали нас на фабрике.</text>
+	</string>
+	<string id="tips_agr_krot_sos1">
+		<text>Легавые зажали меня во дворе. Помогайте братцы!</text>
+	</string>
+	<string id="tips_agr_krot_sos2">
+		<text>Всех моих уже положили!</text>
+	</string>
+	<string id="tips_agr_stalker_help_1">
+		<text>.....</text>
+	</string>
 	<string id="tips_agr_stalker_help_2">
-        <text>.....</text>
-    </string>
-    <string id="tips_agr_stalker_help_1">
-        <text>.....</text>
-    </string>
+		<text>.....</text>
+	</string>
+	<string id="tips_agr_trader_documents">
+		<text>Меченый, давай ноги в руки и смывайся, военные не дадут тебе просто так уйти. Я сообщил о тебе Бармену - он должен договориться с долговцами чтобы тебя пропустили.</text>
+	</string>
+	<string id="tips_captain_name">
+		<text>Капитан Максименко</text>
+	</string>

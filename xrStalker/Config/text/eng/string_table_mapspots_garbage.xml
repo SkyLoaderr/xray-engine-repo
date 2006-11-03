@@ -5,7 +5,7 @@
 		<text>Bandit camp by the exit from Agroprom.</text>
 	</string>
 	<string id="gar_bandit_post">
-		<text>Bandit fortification on the road to Agroprom.</text>
+		<text>Bandit base on the road to Agroprom.</text>
 	</string>
 	<string id="gar_bandits_leader">
 		<text>Bandit raid led by the boss.</text>
@@ -14,10 +14,10 @@
 		<text>Horde of boars.</text>
 	</string>
 	<string id="gar_car_graveyard">
-		<text>Abandoned vehicle graveyard.</text>
+		<text>Vehicle scrapyard.</text>
 	</string>
 	<string id="gar_dogs_in_forest">
-		<text>Forest inhabited by lots of dogs.</text>
+		<text>Dog-infested forest</text>
 	</string>
 	<string id="gar_dolg_blokpost">
 		<text>Duty checkpoint on the road to the Bar.</text>
@@ -26,10 +26,10 @@
 		<text>A group of neutral stalkers calling for help.</text>
 	</string>
 	<string id="gar_newbie">
-		<text>A scared and tired newbie.</text>
+		<text>A scared and tired rookie.</text>
 	</string>
 	<string id="gar_secret1">
-		<text>The newbie's secret stash.</text>
+		<text>The rookie's secret stash.</text>
 	</string>
 	<string id="gar_seriy">
 		<text>Gray's group.</text>

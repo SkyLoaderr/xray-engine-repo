@@ -2,20 +2,20 @@
 		<text>Arena.</text>
 	</string>
 	<string id="bar_bar_locator">
-		<text>"100 roentgen" Bar</text>
+		<text>100 Rads Bar.</text>
 	</string>
 	<string id="bar_dolg_locator">
-		<text>Duty's base</text>
+		<text>Duty base</text>
 	</string>
 	<string id="rostok_banda_volkodava">
-		<text>Wolfhound and cutthroats by the chopper</text>
+		<text>Wolfhound and his cutthroats by the chopper</text>
 	</string>
 	<string id="rostok_kruglov">
-		<text>Professor Kruglov</text>
+		<text>Professor Kruglov.</text>
 	</string>
 	<string id="rostok_tainyi_hod">
 		<text>Ambush by the factory</text>
 	</string>
 	<string id="rostok_volkodav">
-		<text>Wolfhound</text>
+		<text>Wolfhound.</text>
 	</string>

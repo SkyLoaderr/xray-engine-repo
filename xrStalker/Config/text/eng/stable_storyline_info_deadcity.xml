@@ -1,36 +1,36 @@
 	<string id="cit_base_location_text">
-		<text>Доктор: Многим необходима карта с точным положением базы наемников, расположением подходов к ней, застав - короче со всей возможной информацией. Если добудешь ее, то штурм этого гадюшника не за горами. Особенно эта информация была бы интересна Свободе и Долгу.</text>
+		<text>Doctor: Many people need a map with the exact location of the Merc base, approaches, guard posts and other relevant information. If you get it, a successful assault will be possible. Freedom and Duty would be especially interested in this information.</text>
 	</string>
 	<string id="cit_compromat_documents_text">
-		<text>Доктор: Нужна информация о планах наемников и вообще узнать, кто они такие. Свобода да и долговцы неплохо заплатили бы за эти данные. Скорее всего эту информацию можно добыть у их лидера.</text>
+		<text>Doctor: Need information about the Merc plans and who they are. Freedom and Duty would pay well for such info. I guess the Merc leader has this information.</text>
 	</string>
 	<string id="cit_deadcity_maps_name">
 		<text>A map of the Dead City</text>
 	</string>
 	<string id="cit_deadcity_maps_txt">
-		<text>На карте кроме основных зданий также обозначена канализационная система, туннель, ведущий на базу Свободы, а также все укрепленные точки в городе.\nДумаю эта информация многим будет интересна.</text>
+		<text>The map details the main buildingsm but also the sewer system, the tunnel which leads to the Freedom base and the fortified positions in the city. \nI think this information will be interesting for a lot of people.</text>
 	</string>
 	<string id="cit_doctor_escape_task_0_txt">
-		<text>Доктор: Пока меня вели, я заметил канализационный люк под лестницей на первом этаже... Если б удалось открыть решетку камеры, то через этот ход можно было бы смотаться отсюда... А уходить лучше на восток. Меня оттуда вели. В той стороне Свобода обитает.</text>
+		<text>Doctor: When they were bringing me in, I noticed a sewer grate under the stairs on the ground floor…If you manag to open the cell, it would be possible to get out of here using that sewer… It's best to go East, I was brought in from there and Freedom is that way, too.</text>
 	</string>
 	<string id="cit_doctor_meet_conclusion">
-		<text>Встреча с Доктором</text>
+		<text>Meeting Doctor</text>
 	</string>
 	<string id="cit_doctor_meet_conclusion_txt">
-		<text>Не знаю что сказать..Радоваться мне или огорчаться? Я узнал, что я и есть Стрелок. Стрелок, потерявший память в одной из последних вылазок к центру Зоны. Стрелок, который потерял всех друзей, кроме Доктора. Стрелок, который узнал что-то такое, что стал предметом преследования. Что я узнал? Следущий вопрос. Доктору удалось сохранить ключ и координаты тайника нашей группы на Припяти. Находится в одной из комнат бывшей гостиницы в центре. Говорит, что там должно быть, что-то, что прольет свет на «Исполнитель Желаний» или Монолит. Он знает только одно – после предпоследней вылазки к ЧАЭС я постоянно говорил, что с Монолитом, связан какой-то подвох. Ну что ж, Монолит, будем разбираться с тобой. Кто ты и что-ты?</text>
+		<text>I don't know what to say… Should I be happy or sad? I found out that I am the Hawkeye I was looking for. The Hawkeye who lost his memory during a raid into the center of the Zone. The Hawkeye who lost all his friends except Doctor. The Hawkeye who found out something which means that everyone is looking for him. What did I find out? Next question. Doctor managed to save a key and the co-ordinates of a stash in Pripyat that belonged to our group. It's located in one of the rooms in the former hotel in the city center. He says it should contain something which will shed light on the Wish-Granting Machine or the Monolith. The only thing he knows is that after the penultimate raid to the power station I kept saying that there is some trick with the Monolith. Well Monolith, time to deal with you. Who are you? What are you?</text>
 	</string>
 	<string id="cit_doctor_task_0_art">
-		<text>Доктор: Когда мы виделись последний раз, ты оставил мне ключ от тайника на Припяти и схему, как его найти... я сумел их сохранить... наемники не нашли... Держи... Возможно там что-то найдешь... А еще ты бормотал постоянно что с Монолитом какой-то подвох... Это точно...</text>
+		<text>Doctor: When we last spoke, you left me a key to the stash in Pripyat and information on its exact location... I managed to hold on to them... the Mercs didn't find them... Here, take them... Maybe you can find something there... Also, you kept saying that it has something to do with the Monolith... That's more than certain...</text>
 	</string>
 	<string id="cit_doctor_weapon_task_txt">
-		<text>Доктор: Все наше барахло они упрятали где то в собственном арсенале. Где-то на верхнем этаже, по крайней мере туда мои шмотки тащили, когда поймали.</text>
+		<text>Doctor: They hid all our stuff in their armory somewhere on the top floor. At least that's where they took my things when they captured me.</text>
 	</string>
 	<string id="cit_killers_documents_name">
-		<text>Документы наемников</text>
+		<text>Merc documents</text>
 	</string>
 	<string id="cit_killers_documents_txt">
-		<text>В бумагах я нашел много интересной информации описывающей деятельность группировки наемников. Судя по ней, они довольно интенсино сотрудничали с иностранными разведками, поставляли им информацию о группировках, работающих в зоне, о действиях военных и о работе ученых. Также наемники занимались поставкой на заказ особо ценных артефактов, не брезговали убийствами на заказ, а также простым разбоем.\nВ общем эта информация будет интересна очень многим в зоне.</text>
+		<text>The documents contain a lot of interesting information about the Mercs. According to this, the group worked in close co-operation with foreign intelligence services and supplied them with information on other groups in the Zone, the army and the scientists. The Mercs also delivered particularly valuable artifacts when requested and didn't shy away from contract killings and robbery. \nBasically, many people in the Zone would be very interested in this.</text>
 	</string>
 	<string id="cit_leader_killer_text">
-		<text>Лукаш: Наемники - это организованная сила. Хорошо обученная и экипированая. У них есть лидер. Я не знаю кто это, но за всеми действиями наемников стоит чья-то железная и жестокая воля. Но змея без головы не представляет опасности. Ты понимаешь о чем я? Их лидер должен умереть. Мне неинтересно, как это будет сделано и сколько это будет стоить. Во имя свободы Зоны, ты должен это сделать.</text>
+		<text>Lukash: The Mercs are an organised force. They are well-trained and equipped. They have a leader. I don't know who it is but someone's iron will is clearly behind the group's actions. However, a headless snake is not dangerous. You understand? Their leader must die. I don't care how it's done, I don't care how much it costs. In the name of freedom in the Zone you must do it.</text>
 	</string>

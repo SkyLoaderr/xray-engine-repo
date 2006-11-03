@@ -1,14 +1,15 @@
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-	<string id="ui_mm_default">
-		<text>Default</text>
-	</string>
 	<string id="kb_artefact">
-		<text>Artefact</text>
-	</string>	
+		<text>Артефакт</text>
+	</string>
+	<string id="ui_mm_default">
+		<text>По умолчанию</text>
+	</string>
 	<string id="ui_mm_need_restart">
-		<text>Changes will take effect only after game restart</text>		
+		<text>Для того чтобы наступили изменения необходимо перезапустить игру</text>
 	</string>
 	<string id="ui_mm_render_2">
-		<text>Render 2</text>
+		<text>Рендер 2</text>
 	</string>
 </string_table>

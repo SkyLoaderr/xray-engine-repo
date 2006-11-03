@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="actor">
+		<text>Loner</text>
+	</string>
+	<string id="actor_dolg">
+		<text>Duty</text>
+	</string>
+	<string id="actor_freedom">
+		<text>Freedom</text>
+	</string>
+	<string id="arena_enemy">
+		<text>Merc</text>
+	</string>
+	<string id="bad">
+		<text>bad</text>
+	</string>
+	<string id="bandit">
+		<text>Bandit</text>
+	</string>
 	<string id="Btn_Cancel">
 		<text>Cancel</text>
 	</string>
@@ -11,27 +29,6 @@
 	</string>
 	<string id="Btn_Yes">
 		<text>Yes</text>
-	</string>
-	<string id="Found_PDA">
-		<text>Found PDAs</text>
-	</string>
-	<string id="actor">
-		<text>Loner</text>
-	</string>
-	<string id="actor_dolg">
-		<text>Duty</text>
-	</string>
-	<string id="actor_freedom">
-		<text>Freedom</text>
-	</string>
-	<string id="arena_enemy">
-		<text>Mercenary</text>
-	</string>
-	<string id="bad">
-		<text>bad</text>
-	</string>
-	<string id="bandit">
-		<text>Bandit</text>
 	</string>
 	<string id="dolg">
 		<text>Duty</text>
@@ -47,6 +44,9 @@
 	</string>
 	<string id="experienced">
 		<text>experienced</text>
+	</string>
+	<string id="Found_PDA">
+		<text>Found PDAs</text>
 	</string>
 	<string id="freedom">
 		<text>Freedom</text>
@@ -64,7 +64,7 @@
 		<text>neutral</text>
 	</string>
 	<string id="killer">
-		<text>Mercenary</text>
+		<text>Merc</text>
 	</string>
 	<string id="l01_escape">
 		<text>Cordon</text>
@@ -73,7 +73,7 @@
 		<text>Dump</text>
 	</string>
 	<string id="l03_agroprom">
-		<text>Agroprom research institute</text>
+		<text>Agroprom R&D Institute</text>
 	</string>
 	<string id="l04_darkvalley">
 		<text>The Dark Valley</text>
@@ -82,7 +82,10 @@
 		<text>Bar</text>
 	</string>
 	<string id="l06_rostok">
-		<text>Wilderness</text>
+		<text>Wild Area</text>
+	</string>
+	<string id="l06_rostok_demo">
+		<text>Дикая территория</text>
 	</string>
 	<string id="l07_military">
 		<text>Army warehouses</text>
@@ -103,7 +106,7 @@
 		<text>Chernobyl NPP</text>
 	</string>
 	<string id="master">
-		<text>master</text>
+		<text>expert</text>
 	</string>
 	<string id="military">
 		<text>Military</text>
@@ -115,7 +118,7 @@
 		<text>neutral</text>
 	</string>
 	<string id="novice">
-		<text>novice</text>
+		<text>rookie</text>
 	</string>
 	<string id="st_autosave">
 		<text>Autosave</text>
@@ -136,7 +139,7 @@
 		<text>the NPC does not have enough money</text>
 	</string>
 	<string id="st_time_till_surge">
-		<text>Time until surge</text>
+		<text>Time until blowout</text>
 	</string>
 	<string id="stalker">
 		<text>Loner</text>
@@ -148,7 +151,7 @@
 		<text>Trader</text>
 	</string>
 	<string id="ui_st_community">
-		<text>group</text>
+		<text>faction</text>
 	</string>
 	<string id="ui_st_rank">
 		<text>rank</text>

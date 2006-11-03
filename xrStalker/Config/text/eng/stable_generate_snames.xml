@@ -1,6 +1,3 @@
-	<string id="Osoznanie">
-		<text>“Awareness” Representative</text>
-	</string>
 	<string id="lname_bandit_0">
 		<text>Gray</text>
 	</string>
@@ -41,7 +38,7 @@
 		<text>Snake</text>
 	</string>
 	<string id="lname_bandit_11">
-		<text>Crouchback</text>
+		<text>Hunchback</text>
 	</string>
 	<string id="lname_bandit_110">
 		<text>Boar</text>
@@ -92,7 +89,7 @@
 		<text>Jack</text>
 	</string>
 	<string id="lname_bandit_125">
-		<text>Screw nail</text>
+		<text>Drill</text>
 	</string>
 	<string id="lname_bandit_126">
 		<text>Dynamite</text>
@@ -104,16 +101,16 @@
 		<text>Knuckles</text>
 	</string>
 	<string id="lname_bandit_129">
-		<text>Joint</text>
+		<text>Spliff</text>
 	</string>
 	<string id="lname_bandit_13">
-		<text>Dead</text>
+		<text>Corpse</text>
 	</string>
 	<string id="lname_bandit_130">
 		<text>Cross</text>
 	</string>
 	<string id="lname_bandit_131">
-		<text>Êðþê</text>
+		<text>Hook</text>
 	</string>
 	<string id="lname_bandit_132">
 		<text>Drip</text>
@@ -128,7 +125,7 @@
 		<text>Feather</text>
 	</string>
 	<string id="lname_bandit_136">
-		<text>Cap</text>
+		<text>Piston</text>
 	</string>
 	<string id="lname_bandit_137">
 		<text>Nickel</text>
@@ -140,7 +137,7 @@
 		<text>Death</text>
 	</string>
 	<string id="lname_bandit_14">
-		<text>Hatrack</text>
+		<text>Percher</text>
 	</string>
 	<string id="lname_bandit_140">
 		<text>Grinder</text>
@@ -149,7 +146,7 @@
 		<text>Ace</text>
 	</string>
 	<string id="lname_bandit_142">
-		<text>Die</text>
+		<text>Chisel</text>
 	</string>
 	<string id="lname_bandit_143">
 		<text>Dummy</text>
@@ -215,7 +212,7 @@
 		<text>Accordion</text>
 	</string>
 	<string id="lname_bandit_162">
-		<text>Mate</text>
+		<text>Bud</text>
 	</string>
 	<string id="lname_bandit_163">
 		<text>Gangrene</text>
@@ -224,10 +221,10 @@
 		<text>Glitch</text>
 	</string>
 	<string id="lname_bandit_165">
-		<text>Degree</text>
+		<text>Grad</text>
 	</string>
 	<string id="lname_bandit_166">
-		<text>Spirit</text>
+		<text>Fog</text>
 	</string>
 	<string id="lname_bandit_167">
 		<text>Fragged</text>
@@ -245,13 +242,13 @@
 		<text>Trump</text>
 	</string>
 	<string id="lname_bandit_171">
-		<text>Joint</text>
+		<text>Spliff</text>
 	</string>
 	<string id="lname_bandit_172">
 		<text>Drip</text>
 	</string>
 	<string id="lname_bandit_173">
-		<text>Sylvan</text>
+		<text>Goblin</text>
 	</string>
 	<string id="lname_bandit_174">
 		<text>Moor</text>
@@ -290,10 +287,10 @@
 		<text>Tightwad</text>
 	</string>
 	<string id="lname_bandit_21">
-		<text>Decadent</text>
+		<text>Zmur</text>
 	</string>
 	<string id="lname_bandit_22">
-		<text>Fiend</text>
+		<text>Monster</text>
 	</string>
 	<string id="lname_bandit_23">
 		<text>Cripple</text>
@@ -311,7 +308,7 @@
 		<text>Corner-cutter</text>
 	</string>
 	<string id="lname_bandit_28">
-		<text>Bald</text>
+		<text>Baldy</text>
 	</string>
 	<string id="lname_bandit_29">
 		<text>Fierce</text>
@@ -371,7 +368,7 @@
 		<text>Capital</text>
 	</string>
 	<string id="lname_bandit_46">
-		<text>Cold meat</text>
+		<text>Spam</text>
 	</string>
 	<string id="lname_bandit_47">
 		<text>Slasher</text>
@@ -386,7 +383,7 @@
 		<text>Prick</text>
 	</string>
 	<string id="lname_bandit_50">
-		<text>Lame</text>
+		<text>Lamer</text>
 	</string>
 	<string id="lname_bandit_51">
 		<text>Chronic</text>
@@ -404,7 +401,7 @@
 		<text>Attorney</text>
 	</string>
 	<string id="lname_bandit_56">
-		<text>Aybolit</text>
+		<text>Dolittle</text>
 	</string>
 	<string id="lname_bandit_57">
 		<text>Artist</text>
@@ -443,7 +440,7 @@
 		<text>Bourgeois</text>
 	</string>
 	<string id="lname_bandit_68">
-		<text>Driver</text>
+		<text>Transporter</text>
 	</string>
 	<string id="lname_bandit_69">
 		<text>Thief</text>
@@ -530,7 +527,7 @@
 		<text>Brigand</text>
 	</string>
 	<string id="lname_bandit_94">
-		<text>Condemned</text>
+		<text>Perp</text>
 	</string>
 	<string id="lname_bandit_95">
 		<text>Pimp</text>
@@ -563,7 +560,7 @@
 		<text>Klimenko</text>
 	</string>
 	<string id="lname_captain_102">
-		<text>Koval’chuk</text>
+		<text>Kovalchuk</text>
 	</string>
 	<string id="lname_captain_103">
 		<text>Koyev</text>
@@ -575,7 +572,7 @@
 		<text>Kolontarev</text>
 	</string>
 	<string id="lname_captain_106">
-		<text>Kolontar’</text>
+		<text>Kolontar</text>
 	</string>
 	<string id="lname_captain_107">
 		<text>Kondratenko</text>
@@ -602,13 +599,13 @@
 		<text>Kuznetsov</text>
 	</string>
 	<string id="lname_captain_114">
-		<text>Kuz’mich</text>
+		<text>Kuzmich</text>
 	</string>
 	<string id="lname_captain_115">
 		<text>Kuzyakin</text>
 	</string>
 	<string id="lname_captain_116">
-		<text>Kul’chitsky</text>
+		<text>Kulchitsky</text>
 	</string>
 	<string id="lname_captain_117">
 		<text>Kuntsev</text>
@@ -656,7 +653,7 @@
 		<text>Bashmakov</text>
 	</string>
 	<string id="lname_captain_130">
-		<text>Mal’tsev</text>
+		<text>Maltsev</text>
 	</string>
 	<string id="lname_captain_131">
 		<text>Mamayev</text>
@@ -665,7 +662,7 @@
 		<text>Merzlyayev</text>
 	</string>
 	<string id="lname_captain_133">
-		<text>Mil’chenko</text>
+		<text>Milchenko</text>
 	</string>
 	<string id="lname_captain_134">
 		<text>Mironyuk</text>
@@ -689,7 +686,7 @@
 		<text>Beshevliy</text>
 	</string>
 	<string id="lname_captain_140">
-		<text>Mys’kov</text>
+		<text>Myskov</text>
 	</string>
 	<string id="lname_captain_141">
 		<text>Navrotsky</text>
@@ -713,7 +710,7 @@
 		<text>Nordiyev</text>
 	</string>
 	<string id="lname_captain_148">
-		<text>Nosan’</text>
+		<text>Nosan</text>
 	</string>
 	<string id="lname_captain_149">
 		<text>Opolev</text>
@@ -797,7 +794,7 @@
 		<text>Rodnyansky</text>
 	</string>
 	<string id="lname_captain_173">
-		<text>Rotan’</text>
+		<text>Rotan</text>
 	</string>
 	<string id="lname_captain_174">
 		<text>Rublev</text>
@@ -890,7 +887,7 @@
 		<text>Boychenko</text>
 	</string>
 	<string id="lname_captain_21">
-		<text>Boldeskul</text>
+		<text>Boldskul</text>
 	</string>
 	<string id="lname_captain_22">
 		<text>Bondarev</text>
@@ -920,7 +917,7 @@
 		<text>Andruschenko</text>
 	</string>
 	<string id="lname_captain_30">
-		<text>Vasilyev</text>
+		<text>Vasiliev</text>
 	</string>
 	<string id="lname_captain_31">
 		<text>Veselov</text>
@@ -935,7 +932,7 @@
 		<text>Volanchuk</text>
 	</string>
 	<string id="lname_captain_35">
-		<text>Volodar’</text>
+		<text>Volodar</text>
 	</string>
 	<string id="lname_captain_36">
 		<text>Voloshin</text>
@@ -950,7 +947,7 @@
 		<text>Vyushinsky</text>
 	</string>
 	<string id="lname_captain_4">
-		<text>Anisyev</text>
+		<text>Aniseyev</text>
 	</string>
 	<string id="lname_captain_40">
 		<text>Galkin</text>
@@ -1013,7 +1010,7 @@
 		<text>Gubar</text>
 	</string>
 	<string id="lname_captain_59">
-		<text>Gun’ko</text>
+		<text>Gunko</text>
 	</string>
 	<string id="lname_captain_6">
 		<text>Babich</text>
@@ -1100,7 +1097,7 @@
 		<text>Zozo</text>
 	</string>
 	<string id="lname_captain_85">
-		<text>Zolotar’</text>
+		<text>Zolotar</text>
 	</string>
 	<string id="lname_captain_86">
 		<text>Zubarev</text>
@@ -1163,7 +1160,7 @@
 		<text>Klimenko</text>
 	</string>
 	<string id="lname_lieutenant_102">
-		<text>Koval’chuk</text>
+		<text>Kovalchuk</text>
 	</string>
 	<string id="lname_lieutenant_103">
 		<text>Koyev</text>
@@ -1175,7 +1172,7 @@
 		<text>Kolontarev</text>
 	</string>
 	<string id="lname_lieutenant_106">
-		<text>Kolontar’</text>
+		<text>Kolontar</text>
 	</string>
 	<string id="lname_lieutenant_107">
 		<text>Kondratenko</text>
@@ -1202,13 +1199,13 @@
 		<text>Kuznetsov</text>
 	</string>
 	<string id="lname_lieutenant_114">
-		<text>Kuz’mich</text>
+		<text>Kuzmich</text>
 	</string>
 	<string id="lname_lieutenant_115">
 		<text>Kuzyakin</text>
 	</string>
 	<string id="lname_lieutenant_116">
-		<text>Kul’chitsky</text>
+		<text>Kulchitsky</text>
 	</string>
 	<string id="lname_lieutenant_117">
 		<text>Kuntsev</text>
@@ -1256,7 +1253,7 @@
 		<text>Bashmakov</text>
 	</string>
 	<string id="lname_lieutenant_130">
-		<text>Mal’tsev</text>
+		<text>Maltsev</text>
 	</string>
 	<string id="lname_lieutenant_131">
 		<text>Mamayev</text>
@@ -1265,7 +1262,7 @@
 		<text>Merzlyayev</text>
 	</string>
 	<string id="lname_lieutenant_133">
-		<text>Mil’chenko</text>
+		<text>Milchenko</text>
 	</string>
 	<string id="lname_lieutenant_134">
 		<text>Mironyuk</text>
@@ -1289,7 +1286,7 @@
 		<text>Beshevliy</text>
 	</string>
 	<string id="lname_lieutenant_140">
-		<text>Mys’kov</text>
+		<text>Myskov</text>
 	</string>
 	<string id="lname_lieutenant_141">
 		<text>Navrotsky</text>
@@ -1313,7 +1310,7 @@
 		<text>Nordiyev</text>
 	</string>
 	<string id="lname_lieutenant_148">
-		<text>Nosan’</text>
+		<text>Nosan</text>
 	</string>
 	<string id="lname_lieutenant_149">
 		<text>Opolev</text>
@@ -1397,7 +1394,7 @@
 		<text>Rodnyansky</text>
 	</string>
 	<string id="lname_lieutenant_173">
-		<text>Rotan’</text>
+		<text>Rotan</text>
 	</string>
 	<string id="lname_lieutenant_174">
 		<text>Rublev</text>
@@ -1520,7 +1517,7 @@
 		<text>Andruschenko</text>
 	</string>
 	<string id="lname_lieutenant_30">
-		<text>Vasilyev</text>
+		<text>Vasiliev</text>
 	</string>
 	<string id="lname_lieutenant_31">
 		<text>Veselov</text>
@@ -1535,7 +1532,7 @@
 		<text>Volanchuk</text>
 	</string>
 	<string id="lname_lieutenant_35">
-		<text>Volodar’</text>
+		<text>Volodar</text>
 	</string>
 	<string id="lname_lieutenant_36">
 		<text>Voloshin</text>
@@ -1550,7 +1547,7 @@
 		<text>Vyushinsky</text>
 	</string>
 	<string id="lname_lieutenant_4">
-		<text>Anisyev</text>
+		<text>Aniseyev</text>
 	</string>
 	<string id="lname_lieutenant_40">
 		<text>Galkin</text>
@@ -1613,7 +1610,7 @@
 		<text>Gubar</text>
 	</string>
 	<string id="lname_lieutenant_59">
-		<text>Gun’ko</text>
+		<text>Gunko</text>
 	</string>
 	<string id="lname_lieutenant_6">
 		<text>Babich</text>
@@ -1700,7 +1697,7 @@
 		<text>Zozo</text>
 	</string>
 	<string id="lname_lieutenant_85">
-		<text>Zolotar’</text>
+		<text>Zolotar</text>
 	</string>
 	<string id="lname_lieutenant_86">
 		<text>Zubarev</text>
@@ -1763,7 +1760,7 @@
 		<text>Klimenko</text>
 	</string>
 	<string id="lname_private_102">
-		<text>Koval’chuk</text>
+		<text>Kovalchuk</text>
 	</string>
 	<string id="lname_private_103">
 		<text>Koyev</text>
@@ -1775,7 +1772,7 @@
 		<text>Kolontarev</text>
 	</string>
 	<string id="lname_private_106">
-		<text>Kolontar’</text>
+		<text>Kolontar</text>
 	</string>
 	<string id="lname_private_107">
 		<text>Kondratenko</text>
@@ -1802,13 +1799,13 @@
 		<text>Kuznetsov</text>
 	</string>
 	<string id="lname_private_114">
-		<text>Kuz’mich</text>
+		<text>Kuzmich</text>
 	</string>
 	<string id="lname_private_115">
 		<text>Kuzyakin</text>
 	</string>
 	<string id="lname_private_116">
-		<text>Kul’chitsky</text>
+		<text>Kulchitsky</text>
 	</string>
 	<string id="lname_private_117">
 		<text>Kuntsev</text>
@@ -1856,7 +1853,7 @@
 		<text>Bashmakov</text>
 	</string>
 	<string id="lname_private_130">
-		<text>Mal’tsev</text>
+		<text>Maltsev</text>
 	</string>
 	<string id="lname_private_131">
 		<text>Mamayev</text>
@@ -1865,7 +1862,7 @@
 		<text>Merzlyayev</text>
 	</string>
 	<string id="lname_private_133">
-		<text>Mil’chenko</text>
+		<text>Milchenko</text>
 	</string>
 	<string id="lname_private_134">
 		<text>Mironyuk</text>
@@ -1889,7 +1886,7 @@
 		<text>Beshevliy</text>
 	</string>
 	<string id="lname_private_140">
-		<text>Mys’kov</text>
+		<text>Myskov</text>
 	</string>
 	<string id="lname_private_141">
 		<text>Navrotsky</text>
@@ -1913,7 +1910,7 @@
 		<text>Nordiyev</text>
 	</string>
 	<string id="lname_private_148">
-		<text>Nosan’</text>
+		<text>Nosan</text>
 	</string>
 	<string id="lname_private_149">
 		<text>Opolev</text>
@@ -1997,7 +1994,7 @@
 		<text>Rodnyansky</text>
 	</string>
 	<string id="lname_private_173">
-		<text>Rotan’</text>
+		<text>Rotan</text>
 	</string>
 	<string id="lname_private_174">
 		<text>Rublev</text>
@@ -2120,7 +2117,7 @@
 		<text>Andruschenko</text>
 	</string>
 	<string id="lname_private_30">
-		<text>Vasilyev</text>
+		<text>Vasiliev</text>
 	</string>
 	<string id="lname_private_31">
 		<text>Veselov</text>
@@ -2135,7 +2132,7 @@
 		<text>Volanchuk</text>
 	</string>
 	<string id="lname_private_35">
-		<text>Volodar’</text>
+		<text>Volodar</text>
 	</string>
 	<string id="lname_private_36">
 		<text>Voloshin</text>
@@ -2150,7 +2147,7 @@
 		<text>Vyushinsky</text>
 	</string>
 	<string id="lname_private_4">
-		<text>Anisyev</text>
+		<text>Aniseyev</text>
 	</string>
 	<string id="lname_private_40">
 		<text>Galkin</text>
@@ -2213,7 +2210,7 @@
 		<text>Gubar</text>
 	</string>
 	<string id="lname_private_59">
-		<text>Gun’ko</text>
+		<text>Gunko</text>
 	</string>
 	<string id="lname_private_6">
 		<text>Babich</text>
@@ -2300,7 +2297,7 @@
 		<text>Zozo</text>
 	</string>
 	<string id="lname_private_85">
-		<text>Zolotar’</text>
+		<text>Zolotar</text>
 	</string>
 	<string id="lname_private_86">
 		<text>Zubarev</text>
@@ -2396,7 +2393,7 @@
 		<text>Larin</text>
 	</string>
 	<string id="lname_science_23">
-		<text>Man’ko</text>
+		<text>Manko</text>
 	</string>
 	<string id="lname_science_24">
 		<text>Mironov</text>
@@ -2450,7 +2447,7 @@
 		<text>Klimenko</text>
 	</string>
 	<string id="lname_sergeant_102">
-		<text>Koval’chuk</text>
+		<text>Kovalchuk</text>
 	</string>
 	<string id="lname_sergeant_103">
 		<text>Koyev</text>
@@ -2462,7 +2459,7 @@
 		<text>Kolontarev</text>
 	</string>
 	<string id="lname_sergeant_106">
-		<text>Kolontar’</text>
+		<text>Kolontar</text>
 	</string>
 	<string id="lname_sergeant_107">
 		<text>Kondratenko</text>
@@ -2489,13 +2486,13 @@
 		<text>Kuznetsov</text>
 	</string>
 	<string id="lname_sergeant_114">
-		<text>Kuz’mich</text>
+		<text>Kuzmich</text>
 	</string>
 	<string id="lname_sergeant_115">
 		<text>Kuzyakin</text>
 	</string>
 	<string id="lname_sergeant_116">
-		<text>Kul’chitsky</text>
+		<text>Kulchitsky</text>
 	</string>
 	<string id="lname_sergeant_117">
 		<text>Kuntsev</text>
@@ -2543,7 +2540,7 @@
 		<text>Bashmakov</text>
 	</string>
 	<string id="lname_sergeant_130">
-		<text>Mal’tsev</text>
+		<text>Maltsev</text>
 	</string>
 	<string id="lname_sergeant_131">
 		<text>Mamayev</text>
@@ -2552,7 +2549,7 @@
 		<text>Merzlyayev</text>
 	</string>
 	<string id="lname_sergeant_133">
-		<text>Mil’chenko</text>
+		<text>Milchenko</text>
 	</string>
 	<string id="lname_sergeant_134">
 		<text>Mironyuk</text>
@@ -2576,7 +2573,7 @@
 		<text>Beshevliy</text>
 	</string>
 	<string id="lname_sergeant_140">
-		<text>Mys’kov</text>
+		<text>Myskov</text>
 	</string>
 	<string id="lname_sergeant_141">
 		<text>Navrotsky</text>
@@ -2600,7 +2597,7 @@
 		<text>Nordiyev</text>
 	</string>
 	<string id="lname_sergeant_148">
-		<text>Nosan’</text>
+		<text>Nosan</text>
 	</string>
 	<string id="lname_sergeant_149">
 		<text>Opolev</text>
@@ -2684,7 +2681,7 @@
 		<text>Rodnyansky</text>
 	</string>
 	<string id="lname_sergeant_173">
-		<text>Rotan’</text>
+		<text>Rotan</text>
 	</string>
 	<string id="lname_sergeant_174">
 		<text>Rublev</text>
@@ -2807,7 +2804,7 @@
 		<text>Andruschenko</text>
 	</string>
 	<string id="lname_sergeant_30">
-		<text>Vasilyev</text>
+		<text>Vasiliev</text>
 	</string>
 	<string id="lname_sergeant_31">
 		<text>Veselov</text>
@@ -2822,7 +2819,7 @@
 		<text>Volanchuk</text>
 	</string>
 	<string id="lname_sergeant_35">
-		<text>Volodar’</text>
+		<text>Volodar</text>
 	</string>
 	<string id="lname_sergeant_36">
 		<text>Voloshin</text>
@@ -2837,7 +2834,7 @@
 		<text>Vyushinsky</text>
 	</string>
 	<string id="lname_sergeant_4">
-		<text>Anisyev</text>
+		<text>Aniseyev</text>
 	</string>
 	<string id="lname_sergeant_40">
 		<text>Galkin</text>
@@ -2900,7 +2897,7 @@
 		<text>Gubar</text>
 	</string>
 	<string id="lname_sergeant_59">
-		<text>Gun’ko</text>
+		<text>Gunko</text>
 	</string>
 	<string id="lname_sergeant_6">
 		<text>Babich</text>
@@ -2987,7 +2984,7 @@
 		<text>Zozo</text>
 	</string>
 	<string id="lname_sergeant_85">
-		<text>Zolotar’</text>
+		<text>Zolotar</text>
 	</string>
 	<string id="lname_sergeant_86">
 		<text>Zubarev</text>
@@ -3071,7 +3068,7 @@
 		<text>Wrangler</text>
 	</string>
 	<string id="lname_stalker_109">
-		<text>Old man</text>
+		<text>Oldtimer</text>
 	</string>
 	<string id="lname_stalker_11">
 		<text>Frantic</text>
@@ -3092,25 +3089,25 @@
 		<text>Dry</text>
 	</string>
 	<string id="lname_stalker_115">
-		<text>Happy</text>
+		<text>Lucky</text>
 	</string>
 	<string id="lname_stalker_116">
 		<text>Quiet</text>
 	</string>
 	<string id="lname_stalker_117">
-		<text>Thick; Fat</text>
+		<text>Fat</text>
 	</string>
 	<string id="lname_stalker_118">
 		<text>Fatty</text>
 	</string>
 	<string id="lname_stalker_119">
-		<text>Cold meat</text>
+		<text>Spam</text>
 	</string>
 	<string id="lname_stalker_12">
 		<text>Beaten</text>
 	</string>
 	<string id="lname_stalker_120">
-		<text>Smart ass</text>
+		<text>Smartass</text>
 	</string>
 	<string id="lname_stalker_121">
 		<text>Slasher</text>
@@ -3125,7 +3122,7 @@
 		<text>Joker</text>
 	</string>
 	<string id="lname_stalker_125">
-		<text>Lame</text>
+		<text>Lamer</text>
 	</string>
 	<string id="lname_stalker_126">
 		<text>Chronic</text>
@@ -3158,7 +3155,7 @@
 		<text>Grad</text>
 	</string>
 	<string id="lname_stalker_135">
-		<text>Aboriginal</text>
+		<text>Native</text>
 	</string>
 	<string id="lname_stalker_136">
 		<text>Aviator</text>
@@ -3170,7 +3167,7 @@
 		<text>Attorney</text>
 	</string>
 	<string id="lname_stalker_139">
-		<text>Aybolit</text>
+		<text>Dolittle</text>
 	</string>
 	<string id="lname_stalker_14">
 		<text>Rogue</text>
@@ -3242,7 +3239,7 @@
 		<text>Pert</text>
 	</string>
 	<string id="lname_stalker_160">
-		<text>Witch man</text>
+		<text>Witcher</text>
 	</string>
 	<string id="lname_stalker_161">
 		<text>Visitor</text>
@@ -3251,7 +3248,7 @@
 		<text>Viking</text>
 	</string>
 	<string id="lname_stalker_163">
-		<text>Driver</text>
+		<text>Transporter</text>
 	</string>
 	<string id="lname_stalker_164">
 		<text>Diver</text>
@@ -3266,7 +3263,7 @@
 		<text>Traveler</text>
 	</string>
 	<string id="lname_stalker_168">
-		<text>Doctor</text>
+		<text>Quack</text>
 	</string>
 	<string id="lname_stalker_169">
 		<text>Rider</text>
@@ -3356,7 +3353,7 @@
 		<text>Indian</text>
 	</string>
 	<string id="lname_stalker_195">
-		<text>Iroquois</text>
+		<text>Mohawk</text>
 	</string>
 	<string id="lname_stalker_196">
 		<text>Captain</text>
@@ -3455,13 +3452,13 @@
 		<text>Butcher</text>
 	</string>
 	<string id="lname_stalker_224">
-		<text>Mercenary</text>
+		<text>Merc</text>
 	</string>
 	<string id="lname_stalker_225">
 		<text>Tuner</text>
 	</string>
 	<string id="lname_stalker_226">
-		<text>Commander</text>
+		<text>Chief</text>
 	</string>
 	<string id="lname_stalker_227">
 		<text>Ninja</text>
@@ -3470,10 +3467,10 @@
 		<text>Operator</text>
 	</string>
 	<string id="lname_stalker_229">
-		<text>Armourer</text>
+		<text>Armorer</text>
 	</string>
 	<string id="lname_stalker_23">
-		<text>Lucky rascal</text>
+		<text>Luckster</text>
 	</string>
 	<string id="lname_stalker_230">
 		<text>Padishah</text>
@@ -3497,16 +3494,16 @@
 		<text>Pastor</text>
 	</string>
 	<string id="lname_stalker_237">
-		<text>Sheppard</text>
+		<text>Herdsman</text>
 	</string>
 	<string id="lname_stalker_238">
-		<text>Clergyman</text>
+		<text>Reverend</text>
 	</string>
 	<string id="lname_stalker_239">
 		<text>Plowman</text>
 	</string>
 	<string id="lname_stalker_24">
-		<text>Lucky</text>
+		<text>Jammy</text>
 	</string>
 	<string id="lname_stalker_240">
 		<text>Pacifist</text>
@@ -3539,7 +3536,7 @@
 		<text>Glider</text>
 	</string>
 	<string id="lname_stalker_25">
-		<text>Big fellow</text>
+		<text>Big Fellow</text>
 	</string>
 	<string id="lname_stalker_250">
 		<text>Polar explorer</text>
@@ -3587,7 +3584,7 @@
 		<text>Rasta</text>
 	</string>
 	<string id="lname_stalker_264">
-		<text>Soldier</text>
+		<text>Warrior</text>
 	</string>
 	<string id="lname_stalker_265">
 		<text>Rocker</text>
@@ -3599,19 +3596,19 @@
 		<text>Samurai</text>
 	</string>
 	<string id="lname_stalker_268">
-		<text>Mine picker</text>
+		<text>Minepicker</text>
 	</string>
 	<string id="lname_stalker_269">
 		<text>Contact</text>
 	</string>
 	<string id="lname_stalker_27">
-		<text>Sharp-sighted</text>
+		<text>Bigeyed</text>
 	</string>
 	<string id="lname_stalker_270">
 		<text>Priest</text>
 	</string>
 	<string id="lname_stalker_271">
-		<text>Secretor</text>
+		<text>Secretary</text>
 	</string>
 	<string id="lname_stalker_272">
 		<text>Heartthrob</text>
@@ -3623,16 +3620,16 @@
 		<text>Skiff</text>
 	</string>
 	<string id="lname_stalker_275">
-		<text>Pathfinder</text>
+		<text>Trailblazer</text>
 	</string>
 	<string id="lname_stalker_276">
 		<text>Locksmith</text>
 	</string>
 	<string id="lname_stalker_277">
-		<text>Condemned</text>
+		<text>Perp</text>
 	</string>
 	<string id="lname_stalker_278">
-		<text>Dog fancier</text>
+		<text>Dogman</text>
 	</string>
 	<string id="lname_stalker_279">
 		<text>Lifeguard</text>
@@ -3677,13 +3674,13 @@
 		<text>Haggler</text>
 	</string>
 	<string id="lname_stalker_291">
-		<text>Mopper-up</text>
+		<text>Cleaner</text>
 	</string>
 	<string id="lname_stalker_292">
-		<text>Chimney sweep</text>
+		<text>Chimneysweep</text>
 	</string>
 	<string id="lname_stalker_293">
-		<text>Native</text>
+		<text>Bushwhacker</text>
 	</string>
 	<string id="lname_stalker_294">
 		<text>Tourist</text>
@@ -3695,7 +3692,7 @@
 		<text>Faggot</text>
 	</string>
 	<string id="lname_stalker_297">
-		<text>Football player</text>
+		<text>Footballer</text>
 	</string>
 	<string id="lname_stalker_298">
 		<text>Sniper</text>
@@ -3713,10 +3710,10 @@
 		<text>Surgeon</text>
 	</string>
 	<string id="lname_stalker_301">
-		<text>Artist</text>
+		<text>Painter</text>
 	</string>
 	<string id="lname_stalker_302">
-		<text>Shepard</text>
+		<text>Shepherd</text>
 	</string>
 	<string id="lname_stalker_303">
 		<text>Shaman</text>
@@ -3740,7 +3737,7 @@
 		<text>Driver</text>
 	</string>
 	<string id="lname_stalker_31">
-		<text>Crouchback</text>
+		<text>Hunchback</text>
 	</string>
 	<string id="lname_stalker_310">
 		<text>Spy</text>
@@ -3785,7 +3782,7 @@
 		<text>Bull</text>
 	</string>
 	<string id="lname_stalker_323">
-		<text>Wild boar</text>
+		<text>Hog</text>
 	</string>
 	<string id="lname_stalker_324">
 		<text>Sparrow</text>
@@ -3797,7 +3794,7 @@
 		<text>Muskrat</text>
 	</string>
 	<string id="lname_stalker_327">
-		<text>Wood grouse</text>
+		<text>Grouse</text>
 	</string>
 	<string id="lname_stalker_328">
 		<text>Goblin</text>
@@ -3809,7 +3806,7 @@
 		<text>Bitter</text>
 	</string>
 	<string id="lname_stalker_330">
-		<text>Vulture</text>
+		<text>Gryphon</text>
 	</string>
 	<string id="lname_stalker_331">
 		<text>Goose</text>
@@ -3833,7 +3830,7 @@
 		<text>Bug</text>
 	</string>
 	<string id="lname_stalker_338">
-		<text>Hare</text>
+		<text>Rabbit</text>
 	</string>
 	<string id="lname_stalker_339">
 		<text>Beast</text>
@@ -3845,7 +3842,7 @@
 		<text>Snake</text>
 	</string>
 	<string id="lname_stalker_341">
-		<text>Bison</text>
+		<text>Auroch</text>
 	</string>
 	<string id="lname_stalker_342">
 		<text>Turkey</text>
@@ -3938,7 +3935,7 @@
 		<text>Marmot</text>
 	</string>
 	<string id="lname_stalker_37">
-		<text>Soft touch</text>
+		<text>Softy</text>
 	</string>
 	<string id="lname_stalker_370">
 		<text>Gopher</text>
@@ -3974,7 +3971,7 @@
 		<text>Dead</text>
 	</string>
 	<string id="lname_stalker_380">
-		<text>Absolute</text>
+		<text>Absolut</text>
 	</string>
 	<string id="lname_stalker_381">
 		<text>Anomaly</text>
@@ -4004,7 +4001,7 @@
 		<text>Tambourine</text>
 	</string>
 	<string id="lname_stalker_39">
-		<text>Hatrack</text>
+		<text>Percher</text>
 	</string>
 	<string id="lname_stalker_390">
 		<text>Bagel</text>
@@ -4022,13 +4019,13 @@
 		<text>Ventilator</text>
 	</string>
 	<string id="lname_stalker_395">
-		<text>Helicopter</text>
+		<text>Chopper</text>
 	</string>
 	<string id="lname_stalker_396">
 		<text>Wind</text>
 	</string>
 	<string id="lname_stalker_397">
-		<text>Screw nail</text>
+		<text>Drill</text>
 	</string>
 	<string id="lname_stalker_398">
 		<text>Collar</text>
@@ -4082,7 +4079,7 @@
 		<text>Lock</text>
 	</string>
 	<string id="lname_stalker_412">
-		<text>Lock</text>
+		<text>Paddle</text>
 	</string>
 	<string id="lname_stalker_413">
 		<text>Isotope</text>
@@ -4094,7 +4091,7 @@
 		<text>Trap</text>
 	</string>
 	<string id="lname_stalker_416">
-		<text>Cardan joint</text>
+		<text>Cardan</text>
 	</string>
 	<string id="lname_stalker_417">
 		<text>Karma</text>
@@ -4118,10 +4115,10 @@
 		<text>Trump</text>
 	</string>
 	<string id="lname_stalker_423">
-		<text>Cap</text>
+		<text>Hood</text>
 	</string>
 	<string id="lname_stalker_424">
-		<text>Axe</text>
+		<text>Woodchuck</text>
 	</string>
 	<string id="lname_stalker_425">
 		<text>Cognac</text>
@@ -4142,13 +4139,13 @@
 		<text>Abject</text>
 	</string>
 	<string id="lname_stalker_430">
-		<text>Joint</text>
+		<text>Spliff</text>
 	</string>
 	<string id="lname_stalker_431">
 		<text>Cross</text>
 	</string>
 	<string id="lname_stalker_432">
-		<text>Êðþê</text>
+		<text>Hook</text>
 	</string>
 	<string id="lname_stalker_433">
 		<text>Rooster</text>
@@ -4160,7 +4157,7 @@
 		<text>Crowbar</text>
 	</string>
 	<string id="lname_stalker_436">
-		<text>Car</text>
+		<text>Machine</text>
 	</string>
 	<string id="lname_stalker_437">
 		<text>Target</text>
@@ -4196,7 +4193,7 @@
 		<text>Feather</text>
 	</string>
 	<string id="lname_stalker_447">
-		<text>Cap</text>
+		<text>Piston</text>
 	</string>
 	<string id="lname_stalker_448">
 		<text>Playdough</text>
@@ -4241,7 +4238,7 @@
 		<text>Burnt</text>
 	</string>
 	<string id="lname_stalker_460">
-		<text>Home-brew</text>
+		<text>Homebrew</text>
 	</string>
 	<string id="lname_stalker_461">
 		<text>Boot</text>
@@ -4271,7 +4268,7 @@
 		<text>Butt</text>
 	</string>
 	<string id="lname_stalker_47">
-		<text>Busy body</text>
+		<text>Busybody</text>
 	</string>
 	<string id="lname_stalker_470">
 		<text>Grinder</text>
@@ -4289,7 +4286,7 @@
 		<text>Lantern</text>
 	</string>
 	<string id="lname_stalker_475">
-		<text>Die</text>
+		<text>Chisel</text>
 	</string>
 	<string id="lname_stalker_476">
 		<text>Maggots</text>
@@ -4388,7 +4385,7 @@
 		<text>Pinocchio</text>
 	</string>
 	<string id="lname_stalker_504">
-		<text>Witch man</text>
+		<text>Witcher</text>
 	</string>
 	<string id="lname_stalker_505">
 		<text>Voland</text>
@@ -4406,13 +4403,13 @@
 		<text>Gioconda </text>
 	</string>
 	<string id="lname_stalker_51">
-		<text>Decadent</text>
+		<text>Zmur</text>
 	</string>
 	<string id="lname_stalker_510">
 		<text>Duremar</text>
 	</string>
 	<string id="lname_stalker_511">
-		<text>Iron</text>
+		<text>Ironstone</text>
 	</string>
 	<string id="lname_stalker_512">
 		<text>Icarus</text>
@@ -4427,13 +4424,13 @@
 		<text>Caesar</text>
 	</string>
 	<string id="lname_stalker_516">
-		<text>Kolobok</text>
+		<text>Doughboy</text>
 	</string>
 	<string id="lname_stalker_517">
 		<text>Kutuzov</text>
 	</string>
 	<string id="lname_stalker_518">
-		<text>Baby boy</text>
+		<text>Little Man</text>
 	</string>
 	<string id="lname_stalker_519">
 		<text>Napoleon</text>
@@ -4478,7 +4475,7 @@
 		<text>Flint</text>
 	</string>
 	<string id="lname_stalker_531">
-		<text>Cesar</text>
+		<text>Caesar</text>
 	</string>
 	<string id="lname_stalker_532">
 		<text>Chapayev</text>
@@ -4493,7 +4490,7 @@
 		<text>Cheburashka</text>
 	</string>
 	<string id="lname_stalker_536">
-		<text>Chingachguk</text>
+		<text>Chingachuk</text>
 	</string>
 	<string id="lname_stalker_537">
 		<text>Genghis </text>
@@ -4505,7 +4502,7 @@
 		<text>Banana</text>
 	</string>
 	<string id="lname_stalker_54">
-		<text>Sharp-sighted</text>
+		<text>Sharpsighted</text>
 	</string>
 	<string id="lname_stalker_540">
 		<text>Barabashka</text>
@@ -4532,13 +4529,13 @@
 		<text>Buffer</text>
 	</string>
 	<string id="lname_stalker_548">
-		<text>Dumpling</text>
+		<text>Ravioli</text>
 	</string>
 	<string id="lname_stalker_549">
 		<text>Whist</text>
 	</string>
 	<string id="lname_stalker_55">
-		<text>Sharp-toothed</text>
+		<text>Sharptoothed</text>
 	</string>
 	<string id="lname_stalker_550">
 		<text>Gangrene</text>
@@ -4556,7 +4553,7 @@
 		<text>Mountaineer</text>
 	</string>
 	<string id="lname_stalker_555">
-		<text>Degree</text>
+		<text>Grad</text>
 	</string>
 	<string id="lname_stalker_556">
 		<text>Gremlin</text>
@@ -4598,19 +4595,19 @@
 		<text>King</text>
 	</string>
 	<string id="lname_stalker_568">
-		<text>Joint</text>
+		<text>Spliff</text>
 	</string>
 	<string id="lname_stalker_569">
 		<text>Drip</text>
 	</string>
 	<string id="lname_stalker_57">
-		<text>Fiend</text>
+		<text>Monster</text>
 	</string>
 	<string id="lname_stalker_570">
 		<text>Ice</text>
 	</string>
 	<string id="lname_stalker_571">
-		<text>Sylvan</text>
+		<text>Goblin</text>
 	</string>
 	<string id="lname_stalker_572">
 		<text>Moor</text>
@@ -4667,7 +4664,7 @@
 		<text>Ryazansky</text>
 	</string>
 	<string id="lname_stalker_589">
-		<text>Home-brew</text>
+		<text>Homebrew</text>
 	</string>
 	<string id="lname_stalker_59">
 		<text>Cripple</text>
@@ -4715,7 +4712,7 @@
 		<text>Squeegee</text>
 	</string>
 	<string id="lname_stalker_63">
-		<text>Bandy-legged</text>
+		<text>Clumsy</text>
 	</string>
 	<string id="lname_stalker_64">
 		<text>Bony</text>
@@ -4724,7 +4721,7 @@
 		<text>Boss-eyed</text>
 	</string>
 	<string id="lname_stalker_66">
-		<text>Bandy-legged</text>
+		<text>Bowlegged</text>
 	</string>
 	<string id="lname_stalker_67">
 		<text>Corner-cutter</text>
@@ -4733,7 +4730,7 @@
 		<text>Shaggy</text>
 	</string>
 	<string id="lname_stalker_69">
-		<text>Bald</text>
+		<text>Baldy</text>
 	</string>
 	<string id="lname_stalker_7">
 		<text>Siniy</text>
@@ -4745,7 +4742,7 @@
 		<text>Fierce</text>
 	</string>
 	<string id="lname_stalker_72">
-		<text>Baby boy</text>
+		<text>Little Man</text>
 	</string>
 	<string id="lname_stalker_73">
 		<text>Corpse</text>
@@ -4805,7 +4802,7 @@
 		<text>Invincible</text>
 	</string>
 	<string id="lname_stalker_90">
-		<text>Rogue</text>
+		<text>Cheat</text>
 	</string>
 	<string id="lname_stalker_91">
 		<text>Jackal</text>
@@ -4833,4 +4830,7 @@
 	</string>
 	<string id="lname_stalker_99">
 		<text>Sharp</text>
+	</string>
+	<string id="Osoznanie">
+		<text>Awareness representative</text>
 	</string>

@@ -5,7 +5,7 @@
 		<text>bandit, expert</text>
 	</string>
 	<string id="bandit_novice">
-		<text>bandit, novice</text>
+		<text>bandit, rookie</text>
 	</string>
 	<string id="bandit_veteran">
 		<text>bandit, veteran</text>
@@ -29,13 +29,13 @@
 		<text>young boar</text>
 	</string>
 	<string id="burer_weak">
-		<text>Burer</text>
+		<text>burer</text>
 	</string>
 	<string id="controller_weak">
 		<text>controller</text>
 	</string>
 	<string id="dog_normal">
-		<text>rathound</text>
+		<text>rat hound</text>
 	</string>
 	<string id="dog_strong">
 		<text>albino dog</text>
@@ -44,19 +44,19 @@
 		<text>wild dog</text>
 	</string>
 	<string id="dolg_experienced">
-		<text>"Duty", experienced</text>
+		<text>Duty, experienced</text>
 	</string>
 	<string id="dolg_master">
-		<text>"Duty", expert</text>
+		<text>Duty, expert</text>
 	</string>
 	<string id="dolg_veteran">
-		<text>"Duty", veteran</text>
+		<text>Duty, veteran</text>
 	</string>
 	<string id="ecolog_experienced">
 		<text>scientist, experienced</text>
 	</string>
 	<string id="ecolog_novice">
-		<text>scientist, novice</text>
+		<text>scientist, rookie</text>
 	</string>
 	<string id="flesh_normal">
 		<text>forest flesh</text>
@@ -68,22 +68,22 @@
 		<text>prairie flesh</text>
 	</string>
 	<string id="freedom_experienced">
-		<text>"Freedom", experienced</text>
+		<text>Freedom, experienced</text>
 	</string>
 	<string id="freedom_master">
-		<text>"Freedom", expert</text>
+		<text>Freedom, expert</text>
 	</string>
 	<string id="freedom_veteran">
-		<text>"Freedom", veteran</text>
+		<text>Freedom, veteran</text>
 	</string>
 	<string id="killer_experienced">
-		<text>mercenary, experienced</text>
+		<text>Merc, experienced</text>
 	</string>
 	<string id="killer_master">
-		<text>mercenary, expert</text>
+		<text>Merc, expert</text>
 	</string>
 	<string id="killer_veteran">
-		<text>mercenary, veteran</text>
+		<text>Merc, veteran</text>
 	</string>
 	<string id="military_experienced">
 		<text>soldier, sergeant</text>
@@ -98,16 +98,16 @@
 		<text>soldier, lieutenant</text>
 	</string>
 	<string id="monolith_experienced">
-		<text>"Monolith", experienced</text>
+		<text>Monolith, experienced</text>
 	</string>
 	<string id="monolith_master">
-		<text>"Monolith", expert</text>
+		<text>Monolith, expert</text>
 	</string>
 	<string id="monolith_novice">
-		<text>"Monolith", novice</text>
+		<text>Monolith, rookie</text>
 	</string>
 	<string id="monolith_veteran">
-		<text>"Monolith", veteran</text>
+		<text>Monolith, veteran</text>
 	</string>
 	<string id="neutral_experienced">
 		<text>stalker, experienced</text>
@@ -116,7 +116,7 @@
 		<text>stalker, expert</text>
 	</string>
 	<string id="neutral_novice">
-		<text>stalker, novice</text>
+		<text>stalker, rookie</text>
 	</string>
 	<string id="neutral_veteran">
 		<text>stalker, veteran</text>
@@ -167,7 +167,7 @@
 		<text>zombified stalker, expert</text>
 	</string>
 	<string id="zombied_novice">
-		<text>zombified stalker, novice</text>
+		<text>zombified stalker, rookie</text>
 	</string>
 	<string id="zombied_veteran">
 		<text>zombified stalker, veteran</text>

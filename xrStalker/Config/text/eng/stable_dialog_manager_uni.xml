@@ -6,10 +6,9 @@
 	<string id="dm_general_cool_info">
 		<text>Can you tell me something that might interest me?</text>
 	</string>
-    <string id="dm_general_cool_info_no_more">
-        <text>I dont know nothing more.</text>
-    </string>
-
+	<string id="dm_general_cool_info_no_more">
+		<text>Больше ничего не знаю</text>
+	</string>
 	<string id="dm_general_help_bandage">
 		<text>Here, take this bandage.</text>
 	</string>

@@ -7,7 +7,7 @@
 		<text>Do you know what they've got there at the factory?</text>
 	</string>
 	<string id="val_escort_captive_dialog_21">
-		<text>I haven't heard much. All I know is that Boar, their boss, has got a part of the key to the dungeon that's there. A laboratory used to be there or something... They were chatting among themselves saying that, like, Boar had been eager to get inside, but no bloody luck without the second half of the key.\nUmm... if you're thinking of trying to get inside, Ц think twice before you do. It's full of thugs.</text>
+		<text>I haven't heard much. All I know is that Borov, their boss, has got a part of the key to the caves there. There used to be a lab or something... They were chatting among themselves saying that, like, Borov had been eager to get inside, but no bloody luck without the second half of the key.\nUmm... if you're thinking of trying to get inside, think twice before you do. It's full of thugs.</text>
 	</string>
 	<string id="val_escort_captive_dialog_211">
 		<text>Gotcha. Thanks, I'll keep it in mind.</text>
@@ -40,31 +40,31 @@
 		<text>I guess you must know this area well. What's interesting here?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_2121">
-		<text>To the north there's a bandits' camp. To the east Ц an old factory. To the south-west Ц a deserted pig farm, and some kind of gate beyond it... I can't say what's there, never been that far.</text>
+		<text>To the North there's a bandit camp. To the East - an old factory. To the Southwest - a deserted pig farm, and some kind of gate beyond it... I can't say what's there, never been that far.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_21211">
-		<text>Would you tell me more about the bandits' camp?</text>
+		<text>Would you tell me more about the bandit camp?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_212111">
-		<text>Hmm, what about it... They settled in at an unfinished building straight north of here. Their leader is Boar Ц a real animal, that bastard. That's why they sent us here, to finish him off.</text>
+		<text>Hmm, what about it... They settled in an unfinished building straight North of here. Their leader is Borov - a real animal, that bastard. That's why they sent us here, to finish him off.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_21212">
 		<text>What's the deal with the factory?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_212121">
-		<text>We managed to find out that there is some kind of dungeon there. Only it's guarded up to the hilt.</text>
+		<text>We managed to find out that there is some kind of vault there. Only it's guarded like Fort Knox.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_2121211">
-		<text>What kind of dungeon? What's inside it?</text>
+		<text>What kind of vault? What's inside it?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_21212111">
-		<text>What I don't know, I don't know: we haven't dared to step inside. Only thing I do know is that Boar has one half of the key to its entrance.</text>
+		<text>What I don't know, I don't know: we daren't step inside. The only thing I do know is that Borov has one half of the key to its entrance.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_21213">
 		<text>A real pig farm? Are there pigs and all that kind of stuff?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_212131">
-		<text>Drooling for some pork chops already, huh? Heck, the Zone is full of boars! Take a bite of one of those and you won't be needing a torch anymore - that's how bad you'll be glowing in the dark! OK, OK, just kidding... The farm has long been abandoned and is now home to some stalkers. They didn't make a good impression on me, though, and I usually trust my gut.</text>
+		<text>Drooling for some pork chops already, huh? Heck, the Zone is full of boars! Take a bite of one of those and you won't be needing a flashlight anymore - that's how bad you'll be glowing in the dark! OK, OK, just kidding... The farm has long been abandoned and is now home to some stalkers. They didn't make a good impression on me, though, and I usually trust my gut feeling.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_21214">
 		<text>What's that gate you were talking about?</text>
@@ -82,19 +82,19 @@
 		<text>Just the two of you went on a scouting raid?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_2131">
-		<text>There was another guy, Serega. I don't know, he's gone and I haven't heard from him... The gang must have pushed him off after all.</text>
+		<text>There was another guy, Serega. I don't know, he's gone and I haven't heard from him... The gang must have dealt with him after all.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_214">
 		<text>Take care.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_31">
-		<text>Oh, mate... What's going to happen with me now, buddy?.. Thanks, bro Ц at least you tried to help. And I do keep my word.</text>
+		<text>Oh, mate... What's going to happen with me now, buddy?.. Thanks, bro - at least you tried to help. And I do keep my word.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_41">
 		<text>Thanks for your help! What else did you want to know about?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_4111">
-		<text>I owe you, and I'm one to pay my debts. Let's go.</text>
+		<text>I owe you and I'm pay my debts. Let's go.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_41111">
 		<text>Great. Now we'll kick anyone's ass.</text>
@@ -115,7 +115,7 @@
 		<text>Bye.</text>
 	</string>
 	<string id="val_prisoner_hello_11">
-		<text>Hey, buddy! Help me! I'm a Duty scout. Help me get out!..</text>
+		<text>Hey, buddy! Help me! I'm a Duty scout. Help me get out!</text>
 	</string>
 	<string id="val_prisoner_hello_111">
 		<text>I'll try.</text>
@@ -124,7 +124,7 @@
 		<text>There's nothing I can do for you.</text>
 	</string>
 	<string id="val_prisoner_hello_21">
-		<text>Thanks, brother! I owe you one. Look what I was able to find out Ц it might prove useful to you, who knows... Boar Ц the one that calls the shots Ц has collected quite a lot of goodies. He's got a piece of the key to the dungeon at the old factory. I heard the guards yacking, they said there used to be some kind of lab there. Thing is, getting close to Boar isn't so simple.</text>
+		<text>Thanks, brother! I owe you one. Look what I was able to find out - it might prove useful to you, who knows... Borov - the one who calls the shots - has collected quite a lot of goodies. He's got a piece of the key to the lower level at the old factory. I heard the guards yacking, they said there used to be some kind of lab there. Thing is, getting close to Borov isn't so simple.</text>
 	</string>
 	<string id="val_prisoner_hello_211">
 		<text>Thanks for the information.</text>
@@ -136,7 +136,7 @@
 		<text>Good luck.</text>
 	</string>
 	<string id="val_prisoner_hello_31">
-		<text>We gotta get outta here until these bastards decide to check this place out! Need something? Get it quick!..</text>
+		<text>We gotta get outta here before these bastards decide to check this place out! Need something? Get it quick!</text>
 	</string>
 	<string id="val_prisoner_hello_311">
 		<text>Nope, nothing.</text>
@@ -148,7 +148,7 @@
 		<text>OK, I'll look.</text>
 	</string>
 	<string id="val_rob_dialog_11">
-		<text>Yo, want an awesome gun? I found a little something near Yantar... a kind of stash, basically. There was this gauss rifle among other things. I tell you, this thing rocks Ц anyone within a hundred metres of it is as good as dead. I can trade you... For just 800 it'll be here in a jiffy!</text>
+		<text>Yo, want an awesome gun? I found a little something near Yantar... a kind of stash, basically. There was this Gauss rifle among other things. I tell you, this thing rocks - anyone within a hundred meters of it is as good as dead... For just 800 it'll be here in a mo'!</text>
 	</string>
 	<string id="val_rob_dialog_111">
 		<text>Here's the money.</text>
@@ -160,7 +160,7 @@
 		<text>Nah, keep it. Money is hard to come by.</text>
 	</string>
 	<string id="val_rob_dialog_21">
-		<text>Got the money? Hurry up though, I've had a lot of askers... They'll be coming back soon.</text>
+		<text>Got the money? Hurry up though, I've had a lot of customers... They'll be coming back soon.</text>
 	</string>
 	<string id="val_rob_dialog_3">
 		<text>Excellent. Wait here, I'll go get it.</text>
@@ -178,9 +178,9 @@
 		<text>Sorry, I don't have a medkit.</text>
 	</string>
 	<string id="val_sos_dialog_21">
-		<text>Thanks, mate, you bailed me out for real. If I live long enough to see you again, I'll try to pay you back. Right now all I can spare is a juicy tip for you. OK, to the south of here there's a farm where some easygoing stalkers set up camp. One of them is selling a gauss rifle real cheap, just 800. I was going to buy it, and then this Ц got knee-deep in shit... So, if you've got the dough, go right ahead.</text>
+		<text>Thanks, mate, you bailed me out for real. If I live long enough to see you again, I'll try to pay you back. Right now all I can spare is a juicy tip for you. OK, to the South of here, there's a farm where some easygoing stalkers set up camp. One of them is selling a Gauss rifle real cheap, just 800. I was going to buy it, and then this - got knee deep in shit... So, if you've got the dough, go right ahead.</text>
 	</string>
 	<string id="val_sos_dialog_211">
-		<text>—пасибо за информацию.</text>
+		<text>Thanks for the information.</text>
 	</string>
 </string_table>

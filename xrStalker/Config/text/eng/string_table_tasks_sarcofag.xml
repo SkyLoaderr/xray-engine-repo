@@ -14,7 +14,7 @@
 		<text>The Monolith's secret.</text>
 	</string>
 	<string id="sar_monolith_destroy_0">
-		<text>Infiltrate the secret laboratory.</text>
+		<text>Infiltrate the secret lab.</text>
 	</string>
 	<string id="sar_monolith_destroy_1">
 		<text>Solve the Monolith's secret.</text>
@@ -26,10 +26,10 @@
 		<text>The Zone's secret.</text>
 	</string>
 	<string id="sar_perception_1">
-		<text>Meet whoever was behind the Monolith.</text>
+		<text>Meet whoever is behind the Monolith.</text>
 	</string>
 	<string id="sar_perception_2">
-		<text>Find the secret laboratory and meet the "puppeteers".</text>
+		<text>Find the secret lab and meet the "puppeteers".</text>
 	</string>
 	<string id="sar_secret_lab_0">
 		<text>Enter the secret bunker.</text>

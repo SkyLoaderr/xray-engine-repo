@@ -1,57 +1,57 @@
 	<string id="cit_compromat_documents_0">
-		<text>Найти секретные документы наемников.</text>
+		<text>Find the secret Merc documents.</text>
 	</string>
 	<string id="cit_compromat_documents_1">
-		<text>Выкрасть документы наемников.</text>
+		<text>Steal Merc documents.</text>
 	</string>
 	<string id="cit_compromat_documents_2">
-		<text>Принести их торговцу.</text>
+		<text>Take them to the Trader.</text>
 	</string>
 	<string id="cit_doctor_escape_task">
-		<text>Выбраться из мертвого города.</text>
+		<text>Escape the Dead City.</text>
 	</string>
 	<string id="cit_doctor_escape_task_1">
-		<text>Выбраться из камеры.</text>
+		<text>Escape from the cell.</text>
 	</string>
 	<string id="cit_doctor_escape_task_3">
-		<text>Уйти из города</text>
+		<text>Leave the city</text>
 	</string>
 	<string id="cit_doctor_task">
-		<text>Тайник на Припяти.</text>
+		<text>Pripyat stash.</text>
 	</string>
 	<string id="cit_doctor_task_0">
-		<text>Найти тайник Стрелка в Припяти.</text>
+		<text>Find Hawkeye's stash in Pripyat.</text>
 	</string>
 	<string id="cit_doctor_task_1">
-		<text>Добраться до гостинницы.</text>
+		<text>Reach the hotel.</text>
 	</string>
 	<string id="cit_doctor_task_2">
-		<text>Найти комнату с тайником.</text>
+		<text>Find the stash room.</text>
 	</string>
 	<string id="cit_doctor_task_3">
-		<text>Обследовать тайник.</text>
+		<text>Examine the stash.</text>
 	</string>
 	<string id="cit_doctor_weapon_task">
-		<text>Найти свои вещи и оружие.</text>
+		<text>Find your things and weapons.</text>
 	</string>
 	<string id="cit_doctor_weapon_task_1">
-		<text>Найти свои вещи и оружие.</text>
+		<text>Find your things and weapons.</text>
 	</string>
 	<string id="cit_killers_base_location">
-		<text>Дислокация наемников.</text>
+		<text>Merc deployment.</text>
 	</string>
 	<string id="cit_killers_base_location_0">
-		<text>Найти базу наемников.</text>
+		<text>Find the Merc base.</text>
 	</string>
 	<string id="cit_killers_base_location_1">
-		<text>Найти карту с базой наемников.</text>
+		<text>Find a map of the Merc base.</text>
 	</string>
 	<string id="cit_killers_base_location_2">
-		<text>Отдать карту Долгу или Свободе.</text>
+		<text>Give the map to Duty or Freedom.</text>
 	</string>
 	<string id="cit_killers_documents">
-		<text>Идентификация наемников.</text>
+		<text>Merc identification.</text>
 	</string>
 	<string id="cit_leader_hunt_0">
-		<text>Найти и уничтожить лидера наемников.</text>
+		<text>Find and kill the Merc leader.</text>
 	</string>

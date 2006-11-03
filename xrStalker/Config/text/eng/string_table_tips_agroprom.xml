@@ -1,11 +1,11 @@
 	<string id="tips_agr_krot_sos">
-		<text>Guys, if you can hear me - help! We're pinned in by the military at the factory.</text>
+		<text>Help! If anyone can hear me! The military got us pinned at the factory!</text>
 	</string>
 	<string id="tips_agr_krot_sos1">
-		<text>The pigs have got me pinned in in the yard. Help me out!</text>
+		<text>The pigs have got me cornered in the yard. Help!</text>
 	</string>
 	<string id="tips_agr_krot_sos2">
-		<text>All of my guys are already dead!</text>
+		<text>All my men are down!</text>
 	</string>
 	<string id="tips_agr_stalker_help_1">
 		<text>.....</text>
@@ -14,20 +14,8 @@
 		<text>.....</text>
 	</string>
 	<string id="tips_agr_trader_documents">
-		<text>Marked One, get the hell outta here - those army bastards won't let you go without a fight. I told the Barman about you. He'll make a deal with Duty so they let you through.</text>
+		<text>Get the hell outta here, Marked One. You won't get past those army bastards without a fight. I told the Barman about you. He'll strike a deal with Duty, and they'll let you through.</text>
 	</string>
 	<string id="tips_captain_name">
-		<text>Captain Maksimenko</text>
-	</string>
-	
-	<!------------DELME:only for presentation----------------->
-	
-	<string id="ghost_tips">
-		<text>Призрак привет. Оставляю тебе инфу. На связь не выхожу. Заметил 
-		слежку. Я ушел на Север... Туда где мы были... Постараюсь проскочить в 
-		одиночку... Извини но ждать тебя времени нет... Потом объясню. Тот урод, 
-		который убил Клыка еще пожалеет что на свет родился... Ты узнай пока кто он, 
-		а я скоро вернусь - разберемся. Встречаемся у нашего общего знакомого. Сам 
-		знаешь у какого и где.Удачи, Призрак.
-		</text>
+		<text>Captain Maximenko</text>
 	</string>

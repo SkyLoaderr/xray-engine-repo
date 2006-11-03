@@ -1,39 +1,39 @@
 	<string id="aes_military_task_1">
-		<text>Захватить ворота</text>
+		<text>Capture the gate</text>
 	</string>
 	<string id="aes_military_task_10">
-		<text>Группа "Сокол"</text>
+		<text>Falcon group</text>
 	</string>
 	<string id="aes_military_task_11">
-		<text>Группа "Гриф"</text>
+		<text>Gryphon group</text>
 	</string>
 	<string id="aes_military_task_12">
-		<text>Группа "Сова"</text>
+		<text>Owl group</text>
 	</string>
 	<string id="aes_military_task_13">
-		<text>Группа "Лунь"</text>
+		<text>Harrier group</text>
 	</string>
 	<string id="aes_military_task_2">
-		<text>Закрепиться</text>
+		<text>Hold position</text>
 	</string>
 	<string id="aes_military_task_3">
-		<text>Прорваться к саркофагу</text>
+		<text>Break through to the sarcophagus</text>
 	</string>
 	<string id="aes_military_task_4">
-		<text>Уничтожить укрепления Монолита 1</text>
+		<text>Destroy the Monolith 1 fortifications</text>
 	</string>
 	<string id="aes_military_task_5">
-		<text>Уничтожить укрепления Монолита 2</text>
+		<text>Destroy the Monolith 2 fortifications</text>
 	</string>
 	<string id="aes_military_task_6">
-		<text>Группа "Сапсан"</text>
+		<text>Peregrine group</text>
 	</string>
 	<string id="aes_military_task_7">
-		<text>Группа "Коршун"</text>
+		<text>Kite group</text>
 	</string>
 	<string id="aes_military_task_8">
-		<text>Группа "Ястреб"</text>
+		<text>Goshawk group</text>
 	</string>
 	<string id="aes_military_task_9">
-		<text>Группа "Пустельга"</text>
+		<text>Kestrel group</text>
 	</string>

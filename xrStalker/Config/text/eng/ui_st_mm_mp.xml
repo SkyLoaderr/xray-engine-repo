@@ -106,7 +106,7 @@
 		<text>LAN</text>
 	</string>
 	<string id="mm_mp_listenservers">
-		<text>Listen servers</text>
+		<text>Empty</text>
 	</string>
 	<string id="mm_mp_mapratation">
 		<text>Map list</text>
@@ -178,7 +178,7 @@
 		<text>Spectator</text>
 	</string>
 	<string id="mm_mp_spectator_firsteye">
-		<text>First eye</text>
+		<text>First person</text>
 	</string>
 	<string id="mm_mp_spectator_freefly">
 		<text>Freefly</text>
@@ -219,6 +219,9 @@
 	<string id="mm_mp_withpassword">
 		<text>Use password</text>
 	</string>
+	<string id="mp_vote_hint">
+		<text>Голосовать ЗА-[$$ACTION_VOTE_YES$$]\nГолосовать ПРОТИВ-[$$ACTION_VOTE_NO$$]\nРезультаты-[$$ACTION_VOTE$$]</text>
+	</string>
 	<string id="ping">
 		<text>PING</text>
 	</string>
@@ -228,8 +231,4 @@
 	<string id="server name">
 		<text>SERVER NAME</text>
 	</string>
-	<string id="mp_vote_hint">
-		<text>Vote YES-[$$ACTION_VOTE_YES$$]\nVote NO-[$$ACTION_VOTE_NO$$]\nView results-[$$ACTION_VOTE$$]</text>
-	</string>
-	
 </string_table>

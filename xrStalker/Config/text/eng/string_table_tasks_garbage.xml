@@ -1,5 +1,5 @@
 	<string id="gar_defend_garbage">
-		<text>Destroy the raiding bandits.</text>
+		<text>Repel the bandit raid.</text>
 	</string>
 	<string id="gar_dialog_hellcar">
 		<text>Offer your help to the leader of the neutral squad.</text>
@@ -11,25 +11,16 @@
 		<text>Talk to Demon.</text>
 	</string>
 	<string id="gar_help_dymon">
-		<text>Repel the bandit's raid.</text>
+		<text>Repel the bandit raid.</text>
 	</string>
 	<string id="gar_help_hellcar_1">
 		<text>Respond to the call for help.</text>
 	</string>
-	<string id="gar_help_tunnel_newbie">
-		<text>Help the rookie leave the Dump</text>
-	</string>
 	<string id="gar_kill_bandits">
-		<text>Destroy the raiding bandits.</text>
-	</string>
-	<string id="gar_kill_bandits_around_tunnel">
-		<text>Kill the bandits by the tunnel</text>
-	</string>
-	<string id="gar_kill_bandits_post">
-		<text>Escort the rookie to the cordon</text>
+		<text>Repel the bandit raid.</text>
 	</string>
 	<string id="gar_kill_boars">
-		<text>Pass to the Bar.</text>
+		<text>Get to the bar.</text>
 	</string>
 	<string id="gar_kill_boars_1">
 		<text>Kill the boars.</text>
@@ -40,15 +31,24 @@
 	<string id="gar_kill_boars_main">
 		<text>The quest to get through to the bar.</text>
 	</string>
-	<string id="gar_say_free_pass">
-		<text>Tell the rookie that the way is clear</text>
-	</string>
 	<string id="garbage_meet_stalker_1">
-		<text>Find out about Sharpshooter from Grey.</text>
+		<text>Learn something of Hawkeye from Grey.</text>
 	</string>
 	<string id="graveyard_raid_text">
-		<text>A new bandit raid is about to begin at the abandoned vehicle graveyard where Demon and his friends have dug in. Help them fight off the bandits.</text>
+		<text>A new bandit raid is about to start at the abandoned vehicle scrapyard where Demon and his friends have dug in. Help them ward off the bandits.</text>
 	</string>
 	<string id="help_for_neitrals_text">
 		<text>There's been a shootout at the abandoned vehicle graveyard between neutral forces and bandits. The neutrals managed to fight the bandits off but are calling for help.</text>
+	</string>
+	<string id="gar_help_tunnel_newbie">
+		<text>Help the rookie leave the Dump</text>
+	</string>
+	<string id="gar_kill_bandits_around_tunnel">
+		<text>Kill the bandits by the tunnel</text>
+	</string>
+	<string id="gar_kill_bandits_post">
+		<text>Escort the rookie to the cordon</text>
+	</string>
+	<string id="gar_say_free_pass">
+		<text>Tell the rookie that the way is clear</text>
 	</string>

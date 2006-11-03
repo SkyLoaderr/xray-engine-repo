@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="cant_walk">
+		<text>too exhausted to walk</text>
+	</string>
+	<string id="cant_walk_weight">
+		<text>Вы слишком перегружены, чтобы идти</text>
+	</string>
+	<string id="dar_poltergeist_hold_the_door">
+		<text>Someone is holding the door.</text>
+	</string>
 	<string id="Global Map">
 		<text>Global map</text>
 	</string>
-	<string id="Local Map">
-		<text>Local map</text>
-	</string>
-	<string id="cant_walk">
-		<text>You are too exhausted to walk</text>
-	</string>
-	<string id="cant_walk_weight">
-		<text>You are to overloaded to walk</text>
-	</string>
-	<string id="dar_poltergeist_hold_the_door">
-		<text>Someone's holding the door.</text>
-	</string>
 	<string id="gun_jammed">
-		<text>Gun jammed. You need to reload.</text>
+		<text>Оружие заклинило. Нужно перезарядить.</text>
 	</string>
 	<string id="inventory_box_use">
 		<text>Search the box ($$ACTION_USE$$)</text>
+	</string>
+	<string id="Local Map">
+		<text>Local map</text>
 	</string>
 	<string id="st_game_saved">
 		<text>game saved</text>
@@ -28,7 +28,7 @@
 		<text>Blocked</text>
 	</string>
 	<string id="tip_car_use">
-		<text>Open door ($$ACTION_USE$$)</text>
+		<text>Open the door ($$ACTION_USE$$)</text>
 	</string>
 	<string id="tip_door_close">
 		<text>Press ($$ACTION_USE$$) to close the door</text>

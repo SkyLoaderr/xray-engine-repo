@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="pri_followers_start_dlg_21">
-		<text>Выдвигаемся вдоль по улице. В случае чего - прикроешь.</text>
+		<text>Let's move up the street. If anything happens, cover me.</text>
 	</string>
 	<string id="pri_followers_start_dlg_211">
-		<text>Хорошо.</text>
+		<text>OK.</text>
 	</string>
 	<string id="pri_followers_start_dlg_31">
-		<text>Спасибо Меченый за помощь. Это был тяжелый бой. Мы сделаем здесь привал.\nЕсли пойдешь дальше, то расскажу тебе о месности. Если вернешся назад по переходу и пойдешь направо, то дойдешь до автовокзала. Но там больно месность открытая и небезопасная. \nЕсли же пройти вперед, то окажешся перед гостинницей. Справа от нее база монолита. Те ребята без крыши. \nЗа базой стадион. Мы планировали через него на станцию пробираться. Это все.</text>
+		<text>Thanks for the help, Marked One. That was a hard fight. We can rest here.\nIf you wanna keep going, I'll tell you more about the area. If you go back and turn right you'll reach the bus station. That area is open and not very safe. \nIf you go forward you'll end up in front of the hotel. To the right of it is the Monolith base. Those guys have no limits. \nBehind the base is the stadium. We were planning to get to the station through it. That's all.</text>
 	</string>
 	<string id="pri_followers_start_dlg_311">
-		<text>Спасибо.</text>
+		<text>Thank you.</text>
 	</string>
 	<string id="pri_followers_start_dlg_41">
-		<text>Спасибо за помощь. Удачи.</text>
+		<text>Thanks for the help. Good luck.</text>
 	</string>
 	<string id="pri_followers_start_dlg_411">
-		<text>Пока.</text>
+		<text>Bye.</text>
 	</string>
 </string_table>

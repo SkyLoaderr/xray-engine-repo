@@ -1,11 +1,8 @@
-	<string id="Kruglov_research">
-		<text>Kruglov's research</text>
-	</string>
 	<string id="bar_bring_hunter_rifle">
 		<text>Return the hunter's family rifle</text>
 	</string>
 	<string id="bar_bring_pda_lucky">
-		<text>Bring the leader's PDA to the barman</text>
+		<text>Bring the leader's PDA to the Barman</text>
 	</string>
 	<string id="bar_crazy_veterans_quest">
 		<text>Kill the mad veterans</text>
@@ -14,7 +11,7 @@
 		<text>Talk to the Duty guard commander</text>
 	</string>
 	<string id="bar_dolg_base_rules_fin">
-		<text>Return to the barman</text>
+		<text>Return to the Barman</text>
 	</string>
 	<string id="bar_dolg_base_rules_talk">
 		<text>Find the Duty guard commander and talk to him</text>
@@ -23,31 +20,31 @@
 		<text>Get an RG-6 for General Voronin</text>
 	</string>
 	<string id="bar_dolg_community_quest">
-		<text>Join &quot;Duty&quot;</text>
+		<text>Join the Duty faction</text>
 	</string>
 	<string id="bar_dolg_community_quest_prisyaga">
 		<text>Swear the oath</text>
 	</string>
 	<string id="bar_dolg_community_quest_recomendation">
-		<text>Get a reference from Captain Invantsov</text>
+		<text>Get a reference from Captain Ivantsov</text>
 	</string>
 	<string id="bar_dolg_community_quest_vernost">
-		<text>Prove your loyalty to &quot;Duty&quot;</text>
+		<text>Prove your loyalty to Duty</text>
 	</string>
 	<string id="bar_dolg_find_cook">
-		<text>Earn the Freedom Chef's trust and find out where the RG-6s are stored</text>
+		<text>Earn the Freedom cook's trust and find out where the RG-6s are stored</text>
 	</string>
 	<string id="bar_dolg_find_rg6">
-		<text>Infiltrate Freedom's base, find and steal an RG-6</text>
+		<text>Infiltrate the Freedom base, find and steal an RG-6</text>
 	</string>
 	<string id="bar_dolg_info_gain">
-		<text>Find the intercepted information about laboratory X18</text>
+		<text>Find the intercepted information about Lab X18</text>
 	</string>
 	<string id="bar_dolg_kill_tiran">
 		<text>Kill Tyrant, the leader of the group</text>
 	</string>
 	<string id="bar_dolg_return_info">
-		<text>Return information about laboratory X18 to General Voronin</text>
+		<text>Return information about Lab X18 to General Voronin</text>
 	</string>
 	<string id="bar_dolg_return_rg6">
 		<text>Bring the RG-6 to General Voronin</text>
@@ -56,7 +53,7 @@
 		<text>Mission required to join Duty</text>
 	</string>
 	<string id="bar_dolg_svoboda_ambush_quest">
-		<text>Kill the mercenaries</text>
+		<text>Kill the Mercs</text>
 	</string>
 	<string id="bar_dolg_svoboda_ambush_return">
 		<text>Give the stripes to General Voronin</text>
@@ -86,10 +83,10 @@
 		<text>Meet Kruglov</text>
 	</string>
 	<string id="bar_resque_information_2">
-		<text>Lead Kruglov to Amber</text>
+		<text>Lead Kruglov to Yantar</text>
 	</string>
 	<string id="bar_resque_scientific_follow">
-		<text>Lead Kruglov to the exit to Amber</text>
+		<text>Lead Kruglov to the exit to Yantar</text>
 	</string>
 	<string id="bar_resque_scientific_information">
 		<text>...</text>
@@ -98,7 +95,7 @@
 		<text>Talk to Kruglov</text>
 	</string>
 	<string id="bar_resque_scientific_information_get">
-		<text>Get through to Kruglov via the Wild Territory</text>
+		<text>Get through to Kruglov via the Wild Area</text>
 	</string>
 	<string id="bar_resque_scientific_information_get_2">
 		<text>Talk to professor Kruglov</text>
@@ -107,7 +104,7 @@
 		<text>Bring the documents to the Barman</text>
 	</string>
 	<string id="deactivate_radar_now">
-		<text>Deactivate machine</text>
+		<text>Deactivate the machine</text>
 	</string>
 	<string id="descr_deactivate_radar">
 		<text>Deactivate the Brain Burner</text>
@@ -118,12 +115,15 @@
 	<string id="get_to_antennas">
 		<text>Reach the antennae</text>
 	</string>
+	<string id="Kruglov_research">
+		<text>Kruglov's research</text>
+	</string>
 	<string id="look_for_x16_lab">
-		<text>Find X16 documents</text>
+		<text>Find the X16 documents</text>
 	</string>
 	<string id="x16_documents">
-		<text>Find documents in laboratory X16</text>
+		<text>Find the documents in Lab X16</text>
 	</string>
 	<string id="x16_yantar">
-		<text>Talk to scientists</text>
+		<text>Talk to the scientists</text>
 	</string>

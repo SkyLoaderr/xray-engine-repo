@@ -2,7 +2,7 @@
 		<text>Find out what happened to Ghost</text>
 	</string>
 	<string id="agr_gunslinger_cache">
-		<text>Sharpshooter's stash</text>
+		<text>Hawkeye's stash</text>
 	</string>
 	<string id="agr_help_krot">
 		<text>Save Mole</text>
@@ -32,7 +32,7 @@
 		<text>Meet the stalkers</text>
 	</string>
 	<string id="agr_meet_krot_band">
-		<text>Get information about Sharpshooter</text>
+		<text>Get information about Hawkeye</text>
 	</string>
 	<string id="agr_meet_krot_band_0">
 		<text>Get information from Mole</text>
@@ -44,35 +44,32 @@
 		<text>Get info from Mole</text>
 	</string>
 	<string id="agroprom_find_gunslinger_cache">
-		<text>Find Sharpshooter's group's stash</text>
+		<text>Find Hawkeye's group's stash</text>
 	</string>
 	<string id="agroprom_find_gunslinger_cache_0">
-		<text>Find Sharpshooter's group's stash</text>
+		<text>Find Hawkeye's group's stash</text>
 	</string>
 	<string id="agroprom_find_gunslinger_cache_1">
 		<text>Find the stash</text>
 	</string>
 	<string id="agroprom_find_gunslinger_cache_2">
-		<text>Find information about Sharpshooter in the stash</text>
-	</string>
-	<string id="agroprom_find_gunslinger_cache_3">
-		<text>Escape from this place. :-)))</text>
+		<text>Find information about Hawkeye in the stash</text>
 	</string>
 	<string id="agroprom_find_stalker_phantom">
 		<text>Find Ghost</text>
 	</string>
 	<string id="agroprom_find_stalker_phantom_0">
-		<text>Ghost knows where Sharpshooter is.</text>
+		<text>Ghost knows where Hawkeye is.</text>
 	</string>
 	<string id="agroprom_get_military_documents">
-		<text>Find military documents</text>
+		<text>Find the military documents</text>
 	</string>
 	<string id="agroprom_get_military_documents_0">
-		<text>Agroprom research institute</text>
+		<text>Agroprom R&D Institute</text>
 	</string>
 	<string id="agroprom_get_military_documents_1">
 		<text>Steal military documents</text>
 	</string>
 	<string id="agroprom_get_military_documents_2">
-		<text>Take the documents to the barman</text>
+		<text>Take the documents to the Barman</text>
 	</string>

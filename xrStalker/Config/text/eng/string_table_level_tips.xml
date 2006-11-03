@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="car_character_use">
-		<text>Open door ($$ACTION_USE$$)</text>
+		<text>Open the door ($$ACTION_USE$$)</text>
 	</string>
 	<string id="character_use">
 		<text>Talk ($$ACTION_USE$$)</text>
@@ -16,7 +16,7 @@
 		<text>Task failed:</text>
 	</string>
 	<string id="general_help">
-		<text>Quick, I need a medkit, I'm dying!</text>
+		<text>Quick, I need a medkit! I'm dying here!</text>
 	</string>
 	<string id="general_in_item">
 		<text>Item received:</text>
@@ -25,7 +25,7 @@
 		<text>Money received:</text>
 	</string>
 	<string id="general_new_diary">
-		<text>New diary entry.</text>
+		<text>New journal entry.</text>
 	</string>
 	<string id="general_new_encyclopedy">
 		<text>New encyclopaedia article.</text>
@@ -52,25 +52,25 @@
 		<text>Combination lock ($$ACTION_USE$$)</text>
 	</string>
 	<string id="test_mega_remark">
-		<text>So mate, how do you like this new flashy radio communication system?</text>
+		<text>Well, mate? How do you like this new flashy radio communication system?</text>
 	</string>
 	<string id="to_agroprom">
 		<text>To Agroprom</text>
 	</string>
 	<string id="to_agroprom_underground">
-		<text>To catacombs</text>
+		<text>To the catacombs</text>
 	</string>
 	<string id="to_bar">
 		<text>To the bar</text>
 	</string>
 	<string id="to_darkvalley">
-		<text>To the dark valley</text>
+		<text>To the Dark Valley</text>
 	</string>
 	<string id="to_escape">
-		<text>To the cordon</text>
+		<text>To the Cordon</text>
 	</string>
 	<string id="to_garbage">
-		<text>To the dump</text>
+		<text>To the Dump</text>
 	</string>
 	<string id="to_military">
 		<text>To the warehouses</text>

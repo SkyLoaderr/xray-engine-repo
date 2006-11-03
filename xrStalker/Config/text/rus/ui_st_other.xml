@@ -1,15 +1,15 @@
+<?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-	<string id="ui_mm_default">
-		<text>По умолчанию</text>
+	<string id="kb_artefact">
+		<text>РђСЂС‚РµС„Р°РєС‚</text>
 	</string>
-		<string id="kb_artefact">
-		<text>Артефакт</text>
+	<string id="ui_mm_default">
+		<text>РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ</text>
 	</string>
 	<string id="ui_mm_need_restart">
-		<text>Для того, чтобы наступили изменения, необходимо перезапустить игру</text>		
+		<text>Р”Р»СЏ С‚РѕРіРѕ С‡С‚РѕР±С‹ РЅР°СЃС‚СѓРїРёР»Рё РёР·РјРµРЅРµРЅРёСЏ РЅРµРѕР±С…РѕРґРёРјРѕ РїРµСЂРµР·Р°РїСѓСЃС‚РёС‚СЊ РёРіСЂСѓ</text>
 	</string>
 	<string id="ui_mm_render_2">
-		<text>Рендер-2</text>
+		<text>Р РµРЅРґРµСЂ 2</text>
 	</string>
-	
 </string_table>

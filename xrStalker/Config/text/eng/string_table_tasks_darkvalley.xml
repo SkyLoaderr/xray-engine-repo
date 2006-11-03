@@ -1,26 +1,26 @@
 	<string id="bar_darklab_documents">
-		<text>Find documents in the dungeon lab</text>
-	</string>
-	<string id="bar_darklab_documents2">
-		<text>Find documents in X-18</text>
-	</string>
-	<string id="bar_darklab_documents2_1">
-		<text>Find documents</text>
-	</string>
-	<string id="bar_darklab_documents2_2">
-		<text>Take documents to the barman</text>
+		<text>Find the documents in the underground lab</text>
 	</string>
 	<string id="bar_darklab_documents_1">
-		<text>Take the key to the laboratory from Boar</text>
+		<text>Take the key to the lab from Borov</text>
 	</string>
 	<string id="bar_darklab_documents_2">
-		<text>Get out of bandits' base</text>
+		<text>Get out of the bandit base</text>
 	</string>
 	<string id="bar_darklab_documents_3">
-		<text>Find the laboratory entrance</text>
+		<text>Find the entrance to the lab</text>
 	</string>
 	<string id="bar_darklab_documents_4">
 		<text>Sneak into the base</text>
+	</string>
+	<string id="bar_darklab_documents2">
+		<text>Find the documents in X18</text>
+	</string>
+	<string id="bar_darklab_documents2_1">
+		<text>Find the documents</text>
+	</string>
+	<string id="bar_darklab_documents2_2">
+		<text>Bring the documents to the Barman</text>
 	</string>
 	<string id="dar_codedoor_1">
 		<text>Find the codelocked door.</text>
@@ -32,7 +32,7 @@
 		<text>Open the door using the code.</text>
 	</string>
 	<string id="dar_codedoor_2">
-		<text>Open the door to the control centre.</text>
+		<text>Open the door to the control center.</text>
 	</string>
 	<string id="dar_codedoor_2_1">
 		<text>Discover the code that opens the door.</text>
@@ -62,16 +62,16 @@
 		<text>Show documents to the trader</text>
 	</string>
 	<string id="val_prisoner_help">
-		<text>Free the Duty member from prison</text>
+		<text>Free the Duty member from the prison</text>
 	</string>
 	<string id="val_prisoner_help_0">
-		<text>Pull the Duty member out of bandits' prison.</text>
+		<text>Pull the Duty member out of the bandit prison.</text>
 	</string>
 	<string id="val_prisoner_help_main">
-		<text>Free the Duty member from bandits' prison</text>
+		<text>Free the Duty member from the bandit prison</text>
 	</string>
 	<string id="val_sos_help">
-		<text>Help stalker</text>
+		<text>Help the stalker</text>
 	</string>
 	<string id="val_sos_help_0">
 		<text>An unknown stalker is calling for help.</text>

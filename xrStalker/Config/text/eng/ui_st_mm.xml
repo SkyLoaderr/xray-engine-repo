@@ -67,7 +67,7 @@
 		<text>Load game</text>
 	</string>
 	<string id="ui_mm_master">
-		<text>Master</text>
+		<text>Expert</text>
 	</string>
 	<string id="ui_mm_master_volume">
 		<text>Volume</text>
@@ -91,7 +91,7 @@
 		<text>No vertical synchronisation</text>
 	</string>
 	<string id="ui_mm_novice">
-		<text>Novice</text>
+		<text>Rookie</text>
 	</string>
 	<string id="ui_mm_options">
 		<text>OPTIONS</text>
@@ -102,9 +102,6 @@
 	<string id="ui_mm_quality_presets">
 		<text>Quality settings</text>
 	</string>
-	<string id="ui_mm_quit2windows">
-		<text>Exit to Windows</text>
-	</string>
 	<string id="ui_mm_quit_game">
 		<text>Quit game</text>
 	</string>
@@ -113,6 +110,9 @@
 	</string>
 	<string id="ui_mm_quit_windows_message">
 		<text>Are you sure you want to exit to Windows?</text>
+	</string>
+	<string id="ui_mm_quit2windows">
+		<text>Exit to Windows</text>
 	</string>
 	<string id="ui_mm_resolution">
 		<text>Resolution</text>
@@ -136,7 +136,7 @@
 		<text>Stalker</text>
 	</string>
 	<string id="ui_mm_switch_torch">
-		<text>AI uses torches</text>
+		<text>AI uses flashlights</text>
 	</string>
 	<string id="ui_mm_tips">
 		<text>Hints</text>
@@ -147,5 +147,4 @@
 	<string id="ui_mm_video">
 		<text>Video</text>
 	</string>
-
 </string_table>
