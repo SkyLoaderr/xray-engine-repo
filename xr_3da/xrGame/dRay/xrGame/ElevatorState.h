@@ -53,7 +53,7 @@ private:
 			void		NewState						();
 
 			void		PhDataUpdate					(float step)																			;
-			void		InitContact						(dContact* c,bool &do_collide,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)		;
+			void		InitContact						(dContact* c,bool &do_collide,u16 /*material_idx_1*/,u16 /*material_2*/)		;
 			void		SwitchState						(Estate new_state);
 			bool		StateSwitchInertion				(Estate new_state);
 			void		UpdateStNone					();

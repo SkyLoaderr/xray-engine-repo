@@ -104,7 +104,7 @@ public:
 	virtual void		SetAcceleration						(Fvector accel);
 	virtual	void		Disable								();
 	virtual	void		Jump								(const Fvector& jump_velocity);
-	virtual void		InitContact							(dContact* c,bool &do_collide,SGameMtl *material_1 ,SGameMtl * material_2);
+	virtual void		InitContact							(dContact* c,bool &do_collide,u16	material_idx_1 ,u16 material_idx_2);
 			void		SetRestrictorRadius					(CPHCharacter::ERestrictionType rtype,float r);
 virtual		void		ChooseRestrictionType				(ERestrictionType my_type,float my_depth,CPHCharacter *ch);
 						CPHActorCharacter					();

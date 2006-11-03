@@ -65,6 +65,9 @@ public:
 	//	Rocket Properties
 	//////////////////////////////////////////////////////////////////////////
 public:
+#ifdef DEBUG
+	CGameObject*			owner					(){return m_pOwner;}
+#endif
 	virtual	void			StartEngine				();
 	virtual	void			StopEngine				();
 	virtual	void			UpdateEngine			();

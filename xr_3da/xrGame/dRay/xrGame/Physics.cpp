@@ -133,8 +133,8 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 		bool do_collide	=	true;
 		dxGeomUserData* usr_data_1		=NULL;
 		dxGeomUserData* usr_data_2		=NULL;
-		u16				material_id_1	=0;
-		u16				material_id_2	=0;
+		u16				material_idx_1	=0;
+		u16				material_idx_2	=0;
 
 		surface.mu =1.f;// 5000.f;
 		surface.soft_erp=1.f;//ERP(world_spring,world_damping);
@@ -144,15 +144,15 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 		usr_data_1 = retrieveGeomUserData(g1);
 		usr_data_2 = retrieveGeomUserData(g2);
 		///////////////////////////////////////////////////////////////////////////////////////////////////
-		if(usr_data_2)	material_id_2=usr_data_2->material;
-		if(usr_data_1)	material_id_1=usr_data_1->material;
+		if(usr_data_2)	material_idx_2=usr_data_2->material;
+		if(usr_data_1)	material_idx_1=usr_data_1->material;
 		bool is_tri_1=dTriListClass == dGeomGetClass(g1);
 		bool is_tri_2=dTriListClass == dGeomGetClass(g2);
 		if(!is_tri_2&&!is_tri_1) surface.mode=0;
-		if(is_tri_1) material_id_1=(u16)surface.mode;
-		if(is_tri_2) material_id_2=(u16)surface.mode;
-		SGameMtl* material_1=GMLib.GetMaterialByIdx(material_id_1);
-		SGameMtl* material_2=GMLib.GetMaterialByIdx(material_id_2);
+		if(is_tri_1) material_idx_1=(u16)surface.mode;
+		if(is_tri_2) material_idx_2=(u16)surface.mode;
+		SGameMtl* material_1=GMLib.GetMaterialByIdx(material_idx_1);
+		SGameMtl* material_2=GMLib.GetMaterialByIdx(material_idx_2);
 		////////////////params can be changed in callbacks//////////////////////////////////////////////////////////////////////////
 		surface.mode =dContactApprox1|dContactSoftERP|dContactSoftCFM;
 		float spring	=material_2->fPHSpring*material_1->fPHSpring*world_spring;
@@ -241,7 +241,7 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 			usr_data_2->pushing_neg		=	usr_data_2->pushing_neg		&& !GMLib.GetMaterialByIdx(usr_data_2->neg_tri->material)->Flags.test(SGameMtl::flPassable);
 			pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
 			if(usr_data_2->ph_object){
-				usr_data_2->ph_object->InitContact(&c,do_collide,material_1,material_2);
+				usr_data_2->ph_object->InitContact(&c,do_collide,material_idx_1,material_idx_2);
 			}
 
 		}
@@ -251,7 +251,7 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 			usr_data_1->pushing_neg		=	usr_data_1->pushing_neg		&& !GMLib.GetMaterialByIdx(usr_data_1->neg_tri->material)->Flags.test(SGameMtl::flPassable);
 			pushing_neg=usr_data_1->pushing_b_neg||usr_data_1->pushing_neg;
 			if(usr_data_1->ph_object){
-				usr_data_1->ph_object->InitContact(&c,do_collide,material_1,material_2);
+				usr_data_1->ph_object->InitContact(&c,do_collide,material_idx_1,material_idx_2);
 
 			}
 		}
@@ -282,11 +282,8 @@ void NearCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomID o2)
 	if(!island1->CanMerge(island2,MAX_CONTACTS)) return;
 	if(CollideIntoGroup(o1,o2,ContactGroup,island1,MAX_CONTACTS)!=0)
 	{	
-		if(obj2)
-		{
-			obj1->MergeIsland(obj2);
-			if(!obj2->is_active())obj2->EnableObject(obj1);
-		}
+		obj1->MergeIsland(obj2);
+		if(!obj2->is_active())obj2->EnableObject(obj1);
 	}
 }
 void CollideStatic(dGeomID o2,CPHObject* obj2)

@@ -35,7 +35,7 @@ private:
 virtual		void			PhDataUpdate						(dReal step)																												;
 virtual		void			PhTune								(dReal step)																												;
 virtual		void			CutVelocity							(float l_limit,float a_limit)																								;						
-virtual		void			InitContact							(dContact* c,bool& do_collide,SGameMtl * ,SGameMtl * )																		;
+virtual		void			InitContact							(dContact* c,bool& do_collide,u16 ,u16 )																		;
 virtual		dGeomID			dSpacedGeom							()																															;
 virtual		void			get_spatial_params					()																															;
 virtual		u16				get_elements_number					()																															{return 0;}

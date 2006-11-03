@@ -196,6 +196,7 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 			}
 			
 		}
+		
 		ph_world->CutVelocity(max_vel,max_a_vel);
 		 
 	}
@@ -240,7 +241,7 @@ void	CPHActivationShape::	get_spatial_params					()
 	spatialParsFromDGeom(m_geom,spatial.sphere.P,AABB,spatial.sphere.R);
 }
 
-void	CPHActivationShape::	InitContact							(dContact* c,bool& do_collide,SGameMtl * ,SGameMtl * )
+void	CPHActivationShape::	InitContact							(dContact* c,bool& do_collide,u16 ,u16 )
 {
 
 }

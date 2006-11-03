@@ -99,9 +99,9 @@ void	CPHAICharacter::	ValidateWalkOn						()
 //	 b_clamb_jump=true;
 	inherited::ValidateWalkOn();
 }
-void CPHAICharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * material_1,SGameMtl * material_2 )
+void CPHAICharacter::InitContact(dContact* c,bool	&do_collide,u16 material_idx_1,u16 material_idx_2 )
 {
-	inherited::InitContact(c,do_collide,material_1,material_2);
+	inherited::InitContact(c,do_collide,material_idx_1,material_idx_2);
 	if(is_control||b_lose_control||b_jumping)
 												c->surface.mu = 0.00f;
 	dxGeomUserData* D1=retrieveGeomUserData(c->geom.g1);

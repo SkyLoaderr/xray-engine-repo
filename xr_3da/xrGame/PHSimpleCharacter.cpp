@@ -19,6 +19,7 @@
 #include "DamageSource.h"
 #include "PHCollideValidator.h"
 #include "CalculateTriangle.h"
+
 IC		bool	PhOutOfBoundaries			(const Fvector& v)
 {
 	return v.y < phBoundaries.y1;
@@ -1424,7 +1425,7 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 ///////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////
-void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * material_1,SGameMtl * material_2){
+void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,u16 material_idx_1,u16 material_idx_2){
 
 	const dReal* normal=c->geom.normal;
 	const dReal* pos=c->geom.pos;
@@ -1433,11 +1434,9 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	bool bo1=(g1==m_wheel)||g1==m_cap_transform||g1==m_shell_transform||g1==m_hat_transform;
 
 	//SGameMtl* tri_material=GMLib.GetMaterialByIdx((u16)c->surface.mode);
-	SGameMtl* tri_material=0;
-	if(bo1)
-		tri_material=material_2;
-	else
-		tri_material=material_1;
+	
+	u16			contact_material=bo1	? material_idx_2:material_idx_1;
+	SGameMtl* tri_material=GMLib.GetMaterialByIdx(contact_material);
 
 	bool bClimable=!!tri_material->Flags.test(SGameMtl::flClimable);
 	if(is_control&&m_elevator_state.ClimbingState())
@@ -1463,16 +1462,10 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	dReal dumping_rate=def_dumping_rate;
 	bool object=(dGeomGetBody(g1)&&dGeomGetBody(g2));
 	b_on_object=b_on_object||object;
-
-	*p_lastMaterialIDX=((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;
-
-
+	u16		foot_material_idx	=	((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;	
+	
 ////////////////////////нужно сместить колижен!!
-
 //////////////
-	
-	
-
 	FootProcess(c,do_collide,bo1);
 	if(!do_collide) return;
 	if(g1==m_hat_transform||g2==m_hat_transform)
@@ -1485,26 +1478,27 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	if(object){
 		spring_rate*=10.f;
 		dBodyID b;
-		SGameMtl* obj_material=NULL;
+		u16 obj_material_idx=u16(-1);
 		if(bo1)
 		{
 			b=dGeomGetBody(c->geom.g2);
-			obj_material=material_2;
+			obj_material_idx=material_idx_2;
 		}
 		else
 		{
 			b=dGeomGetBody(c->geom.g1);
-			obj_material=material_1;
+			obj_material_idx=material_idx_1;
 		}
-		UpdateDynamicDamage(c,obj_material,b,bo1);
+		UpdateDynamicDamage(c,obj_material_idx,b,bo1);
 		if(g1==m_wheel||g2==m_wheel)
 		{
 			dxGeomUserData	*ud=bo1	? retrieveGeomUserData(c->geom.g2) : retrieveGeomUserData(c->geom.g1);
-			*p_lastMaterialIDX	= ud->material;
+			foot_material_idx	= ud->material;
 		}
+		contact_material=obj_material_idx;
 	}
 
-
+	foot_material_update(contact_material,foot_material_idx);
 
 	//if(!((g1==m_wheel) || (g2==m_wheel)||(m_elevator_state.ClimbingState())  ))//
 	//	return;
@@ -1551,11 +1545,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		if(g1==m_wheel||g2==m_wheel&&!bClimable)
 		{
 			c->surface.mu = 0.f;//0.00f;
-			//c->surface.mode|=dContactFDir1|dContactMotion1;
-			//dReal mag=m_acceleration.magnitude();
-			//c->surface.motion1=mag/10.f;
-			//dVectorSet(c->fdir1,cast_fp(m_acceleration));
-			//dVectorMul(c->fdir1,1.f/mag);
+
 		}
 		else{
 				c->surface.mu = 0.00f;

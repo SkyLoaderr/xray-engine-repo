@@ -121,7 +121,7 @@ public:
 	/////////////////CPHObject//////////////////////////////////////////////
 	virtual		void		PhDataUpdate						(dReal step)						;
 	virtual		void		PhTune								(dReal step)						;
-	virtual		void		InitContact							(dContact* c,bool &do_collide,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)		;
+	virtual		void		InitContact							(dContact* c,bool &do_collide,u16 /*material_idx_1*/,u16 /*material_idx_2*/)		;
 	virtual		dSpaceID	dSpace								()									{return m_space;}
 	virtual		dGeomID		dSpacedGeom							()									{return (dGeomID)m_space;}
 	virtual		void		get_spatial_params					()									;
@@ -218,8 +218,9 @@ private:
 	u16			RetriveContactBone					()			;
 	void		SafeAndLimitVelocity				()			;
 	void		UpdateStaticDamage					(dContact* c,SGameMtl* tri_material,bool bo1);
-	void		UpdateDynamicDamage					(dContact* c,SGameMtl* obj_material,dBodyID b,bool bo1);
-	void IC		FootProcess							(dContact* c,bool &do_collide ,bool bo);
+	void		UpdateDynamicDamage					(dContact* c,u16 obj_material_idx,dBodyID b,bool bo1);
+IC	void 		FootProcess							(dContact* c,bool &do_collide ,bool bo);
+IC	void		foot_material_update				(u16	tri_material,u16	foot_material_idx);
 	static void	TestPathCallback(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/);
 public:	
 #ifdef DEBUG

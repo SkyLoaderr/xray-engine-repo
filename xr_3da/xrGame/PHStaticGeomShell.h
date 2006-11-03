@@ -13,7 +13,7 @@ virtual		void			EnableObject		(CPHObject* obj){CPHUpdateObject::Activate();}
 virtual		dGeomID			dSpacedGeom			(){return dSpacedGeometry();}
 virtual		void			PhDataUpdate		(dReal step);
 virtual		void			PhTune				(dReal step){}
-virtual		void			InitContact			(dContact* c,bool& do_collide,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/){}
+virtual		void			InitContact			(dContact* c,bool& do_collide,u16 /*material_idx_1*/,u16 /*material_idx_2*/){}
 virtual		u16				get_elements_number				()								{return 0;};
 virtual		CPHSynchronize	*get_element_sync				(u16 element)					{return NULL;};		
 public:

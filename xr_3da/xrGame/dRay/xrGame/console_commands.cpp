@@ -2410,7 +2410,7 @@ void CCC_RegisterCommands()
 #endif
 
 	// Physics
-	CMD1(CCC_PHFps,				"ph_fps"																						);
+	CMD1(CCC_PHFps,				"ph_frequency",																					);
 	CMD4(CCC_Integer,			"ph_tri_clear_disable_count",	&ph_tri_clear_disable_count	,			0,		255				);
 	CMD1(CCC_PHGravity,			"ph_gravity"																					);
 	CMD1(CCC_PHIterations,		"ph_iterations"																					);

@@ -56,7 +56,7 @@ void CElevatorState::PhDataUpdate(float step)
 
 }
 
-void CElevatorState::InitContact(dContact* c,bool &do_collide,SGameMtl * ,SGameMtl * )
+void CElevatorState::InitContact(dContact* c,bool &do_collide,u16 ,u16 )
 {
 
 }

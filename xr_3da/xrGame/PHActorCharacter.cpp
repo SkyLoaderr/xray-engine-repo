@@ -223,13 +223,15 @@ struct SFindPredicate
 		return *b1||c->geom.g2==o->m_restrictor_transform;
 	}
 };
-void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * material_1,SGameMtl *material_2 )
+void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,u16 material_idx_1,u16	material_idx_2 )
 {
 
 	bool b1;
 	SFindPredicate fp(c,&b1);
 	RESTRICTOR_I r=std::find_if(begin(m_restrictors),end(m_restrictors),fp);
 	bool b_restrictor=(r!=end(m_restrictors));
+	SGameMtl*	material_1=GMLib.GetMaterialByIdx(material_idx_1);
+	SGameMtl*	material_2=GMLib.GetMaterialByIdx(material_idx_2);
 	if((material_1&&material_1->Flags.test(SGameMtl::flActorObstacle))||(material_2&&material_2->Flags.test(SGameMtl::flActorObstacle)))
 		do_collide=true;
 	if(IsGameTypeSingle())
@@ -242,7 +244,7 @@ void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * mate
 			c->surface.mu		=0.00f;
 		}
 		else
-			inherited::InitContact(c,do_collide,material_1,material_2);
+			inherited::InitContact(c,do_collide,material_idx_1,material_idx_2);
 		if(b_restrictor&&
 			do_collide&&
 			!(b1 ? static_cast<CPHCharacter*>(retrieveGeomUserData(c->geom.g2)->ph_object)->ActorMovable():static_cast<CPHCharacter*>(retrieveGeomUserData(c->geom.g1)->ph_object)->ActorMovable())
@@ -275,7 +277,7 @@ void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * mate
 				c->surface.mu=1.f;
 			}
 		}
-		if(do_collide)inherited::InitContact(c,do_collide,material_1,material_2);
+		if(do_collide)inherited::InitContact(c,do_collide,material_idx_1,material_idx_2);
 	}
 
 }
