@@ -16,8 +16,17 @@
 	<string id="gar_help_hellcar_1">
 		<text>Respond to the call for help.</text>
 	</string>
+	<string id="gar_help_tunnel_newbie">
+		<text>Help the rookie leave the Dump</text>
+	</string>
 	<string id="gar_kill_bandits">
 		<text>Repel the bandit raid.</text>
+	</string>
+	<string id="gar_kill_bandits_around_tunnel">
+		<text>Kill the bandits by the tunnel</text>
+	</string>
+	<string id="gar_kill_bandits_post">
+		<text>Escort the rookie to the cordon</text>
 	</string>
 	<string id="gar_kill_boars">
 		<text>Get to the bar.</text>
@@ -31,6 +40,9 @@
 	<string id="gar_kill_boars_main">
 		<text>The quest to get through to the bar.</text>
 	</string>
+	<string id="gar_say_free_pass">
+		<text>Tell the rookie that the way is clear</text>
+	</string>
 	<string id="garbage_meet_stalker_1">
 		<text>Learn something of Hawkeye from Grey.</text>
 	</string>
@@ -39,16 +51,4 @@
 	</string>
 	<string id="help_for_neitrals_text">
 		<text>There's been a shootout at the abandoned vehicle graveyard between neutral forces and bandits. The neutrals managed to fight the bandits off but are calling for help.</text>
-	</string>
-	<string id="gar_help_tunnel_newbie">
-		<text>Help the rookie leave the Dump</text>
-	</string>
-	<string id="gar_kill_bandits_around_tunnel">
-		<text>Kill the bandits by the tunnel</text>
-	</string>
-	<string id="gar_kill_bandits_post">
-		<text>Escort the rookie to the cordon</text>
-	</string>
-	<string id="gar_say_free_pass">
-		<text>Tell the rookie that the way is clear</text>
 	</string>
