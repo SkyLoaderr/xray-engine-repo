@@ -44,7 +44,7 @@
 			</left_frame_header>
 			
 			<work_area x="8" y="44" width="290" height="475">
-				<src_list x="20" y="20" width="265" height="395" right_ident="15" item_height="20">
+				<src_list x="20" y="10" width="265" height="414" right_ident="15" item_height="20" scroll_profile="pda">
 					<font font="letterica18" r="225" g="225" b="250"/>
 					<tree_root_font font="letterica18" r="225" g="225" b="250">Encyclopedia</tree_root_font>
 					<tree_item_font font="letterica16" r="255" g="255" b="255">Encyclopedia</tree_item_font>
