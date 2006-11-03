@@ -102,7 +102,11 @@ void IPureServer::config_Load()
 	//************ Build sys_config
 	
 	// traffic in
-	IReader*		F	= FS.r_open(nameTraffic);
+
+	string_path			pth;
+	FS.update_path		(pth,"$app_data_root$", nameTraffic);
+
+	IReader*		F	= FS.r_open(pth);
 	if (F && F->length()) {
 		F->r	(&traffic_in,sizeof(traffic_in));
 		F->r	(&traffic_out,sizeof(traffic_out));
@@ -127,9 +131,10 @@ void IPureServer::config_Load()
 
 void IPureServer::config_Save	()
 {
-	return;
+	string_path			pth;
+	FS.update_path		(pth,"$app_data_root$", nameTraffic);
 	// traffic in
-	IWriter*		fs	= FS.w_open(nameTraffic);
+	IWriter*		fs	= FS.w_open	(pth);
 	if(fs==NULL) return;
 	fs->w				(&traffic_in,sizeof(traffic_in));
 	fs->w				(&traffic_out,sizeof(traffic_out));
