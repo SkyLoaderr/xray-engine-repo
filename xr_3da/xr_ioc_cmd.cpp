@@ -553,9 +553,9 @@ void CCC_Register()
 	CMD2(CCC_Gamma,		"rs_c_brightness"		,&ps_brightness		);
 	CMD2(CCC_Gamma,		"rs_c_contrast"			,&ps_contrast		);
 	CMD4(CCC_Integer,	"rs_skeleton_update",	&psSkeletonUpdate,	2,		128	);
-	CMD4(CCC_Integer,	"rs_vb_size",			&rsDVB_Size,		32,		4096);
-	CMD4(CCC_Integer,	"rs_ib_size",			&rsDIB_Size,		32,		4096);
-	
+//	CMD4(CCC_Integer,	"rs_vb_size",			&rsDVB_Size,		32,		4096);
+//	CMD4(CCC_Integer,	"rs_ib_size",			&rsDIB_Size,		32,		4096);
+
 	// Texture manager	
 	CMD4(CCC_Integer,	"texture_lod",			&psTextureLOD,				0,	4	);
 	CMD4(CCC_Integer,	"net_dedicated_sleep",	&psNET_DedicatedSleep,		0,	64	);
