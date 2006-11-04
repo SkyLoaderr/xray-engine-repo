@@ -802,11 +802,16 @@ int DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u8* T_normal_map, u32 w
 				for (s32 x=0; x<s32(w); x++)
 				{
 					u32&	dst		= *	(((u32*)((u8*)T_height_pf + (y * pitch)))+x);
-					u32		val		= 
+					u32		val		= /*remove if you want filtering*/ hsample(w,h,p,x+0,y+0,T);
+
+					/*	.. and uncomment this one:
 						hsample(w,h,p,x-1,y-1,T) + hsample(w,h,p,x+0,y-1,T) + hsample(w,h,p,x+1,y-1,T) +
 						hsample(w,h,p,x-1,y+0,T) + hsample(w,h,p,x+0,y+0,T) + hsample(w,h,p,x+1,y+0,T) +
 						hsample(w,h,p,x-1,y+1,T) + hsample(w,h,p,x+0,y+1,T) + hsample(w,h,p,x+1,y+1,T);
-					s32		r		= clampr( s32(val/9) + h_correction, 0, 255);
+						val	/= 9;
+					*/
+
+					s32		r		= clampr( s32(val) + h_correction, 0, 255);
 							dst		= color_rgba(r,r,r,r);
 				}
 			}
