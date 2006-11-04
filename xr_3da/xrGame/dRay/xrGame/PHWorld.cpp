@@ -409,8 +409,10 @@ void CPHWorld::RemoveFromRecentlyDisabled(PH_OBJECT_I i)
 {
 	m_recently_disabled_objects.erase(i);
 }
+
 void CPHWorld::AddUpdateObject(CPHUpdateObject* object)
 {
+	if(object->IsFreezed())m_freezed_update_objects.erase(i);
 	m_update_objects.push_back(object);
 }
 
@@ -438,9 +440,10 @@ void CPHWorld::Freeze()
 	m_freezed_objects.move_items(m_objects);
 	PH_OBJECT_I iter=m_freezed_objects.begin(),
 		e=	m_freezed_objects.end()	;
-
+	
 	for(; e != iter;++iter)
 		(*iter)->FreezeContent();
+	m_freezed_update_objects.move_items(m_update_objects);
 	b_world_freezed=true;
 }
 void CPHWorld::UnFreeze()
@@ -451,6 +454,7 @@ void CPHWorld::UnFreeze()
 	for(; e != iter;++iter)
 		(*iter)->UnFreezeContent();
 	m_objects.move_items(m_freezed_objects);
+	m_update_objects.move_items(m_freezed_update_objects);
 	b_world_freezed=false;
 }
 bool CPHWorld::IsFreezed()

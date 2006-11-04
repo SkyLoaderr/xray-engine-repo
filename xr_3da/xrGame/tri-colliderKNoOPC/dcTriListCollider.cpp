@@ -7,6 +7,9 @@
 #include "../dCylinder/dCylinder.h"
 #include "../MathUtils.h"
 #include "../level.h"
+#ifdef	DEBUG
+#include "../phdebug.h"
+#endif
 
 dcTriListCollider::dcTriListCollider(dxGeom* Geometry)
 {
@@ -72,6 +75,7 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 		AABB.x+=dFabs(velocity[0])*0.04f;
 		AABB.y+=dFabs(velocity[1])*0.04f;
 		AABB.z+=dFabs(velocity[2])*0.04f;
+
 	}
 
 	

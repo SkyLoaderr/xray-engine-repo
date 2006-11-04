@@ -44,6 +44,7 @@ class CPHWorld	: public pureFrame
 	PH_OBJECT_STORAGE			m_freezed_objects											;
 	PH_OBJECT_STORAGE			m_recently_disabled_objects									;
 	PH_UPDATE_OBJECT_STORAGE	m_update_objects											;
+	PH_UPDATE_OBJECT_STORAGE	m_freezed_update_objects									;
 	dGeomID						m_motion_ray;
 	CPHCommander				*m_commander;
 public:
