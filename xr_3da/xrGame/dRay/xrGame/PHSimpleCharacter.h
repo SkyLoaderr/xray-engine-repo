@@ -111,8 +111,8 @@ protected:
 	u64		m_ext_impuls_stop_step		;
 	Fvector m_ext_imulse				;
 	bool	b_death_pos					;
-
-	dReal m_friction_factor;
+	bool	b_foot_mtl_check			;
+	dReal	m_friction_factor;
 
 public:
 							CPHSimpleCharacter					()									;

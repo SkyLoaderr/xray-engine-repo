@@ -172,6 +172,7 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 	dVectorSetZero(m_safe_velocity);
 	m_collision_damage_factor=1.f;
 	b_collision_restrictor_touch=false;
+	b_foot_mtl_check	=true	;
 }
 
 
@@ -337,6 +338,7 @@ void CPHSimpleCharacter::SwitchOFFInitContact()
 	b_lose_control=true;
 	b_any_contacts=false;
 	is_contact=false;
+	b_foot_mtl_check	=true	;
 	b_on_ground=b_valide_ground_contact=false;
 }	
 void CPHSimpleCharacter::SwitchInInitContact()
@@ -503,6 +505,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	m_contact_count				=	0				;
 	m_friction_factor			=	0.f				;
 	b_collision_restrictor_touch=	false			;
+	b_foot_mtl_check			=	true			;
 	dMatrix3 R;
 	dRSetIdentity (R);
 	dBodySetAngularVel(m_body,0.f,0.f,0.f);

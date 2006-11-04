@@ -132,12 +132,13 @@ void CPHSimpleCharacter::UpdateDynamicDamage(dContact* c,u16 obj_material_idx,dB
 
 IC		void	CPHSimpleCharacter::foot_material_update(u16	contact_material_idx,u16	foot_material_idx)
 {
-	SGameMtl	*	current_foot		=GMLib.GetMaterialByIdx( *p_lastMaterialIDX);
-	if(current_foot->Flags.test(SGameMtl::flLiquid))	return;
-	SGameMtl	*	contact_material	=GMLib.GetMaterialByIdx(contact_material_idx);
-	if(contact_material->Flags.test(SGameMtl::flLiquid))
-								*p_lastMaterialIDX=contact_material_idx;
+	SGameMtl	*	current_foot		=GMLib.GetMaterialByIdx( *p_lastMaterialIDX)	;
+	if(current_foot->Flags.test(SGameMtl:: flPassable)&&!b_foot_mtl_check)	return			;
+	b_foot_mtl_check					=false											;
+	SGameMtl	*	contact_material	=GMLib.GetMaterialByIdx(contact_material_idx)	;
+	if(contact_material->Flags.test(SGameMtl:: flPassable))
+								*p_lastMaterialIDX=contact_material_idx					;
 	else	
-								*p_lastMaterialIDX=foot_material_idx;
+								*p_lastMaterialIDX=foot_material_idx					;
 
 }
