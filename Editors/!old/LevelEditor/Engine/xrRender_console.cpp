@@ -61,7 +61,7 @@ int			ps_r2_tf_Anisotropic		= 4		;
 float		ps_r2_tf_Mipbias			= 0.0f	;
 
 // R2-specific
-Flags32		ps_r2_ls_flags				= { R2FLAG_SUN | R2FLAG_FASTBLOOM | R2FLAG_AA };	// r2-only
+Flags32		ps_r2_ls_flags				= { R2FLAG_SUN | R2FLAG_SUN_IGNORE_PORTALS};	// r2-only
 float		ps_r2_df_parallax_h			= 0.02f;
 float		ps_r2_df_parallax_range		= 50.f;
 float		ps_r2_tonemap_middlegray	= 0.01f;			// r2-only
