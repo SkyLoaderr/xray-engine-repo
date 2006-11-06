@@ -29,12 +29,6 @@ struct SInfoPortionData : CSharedResource
 	//из этого InfoPortion
 	DIALOG_ID_VECTOR m_DialogNames;
 
-	//массив с именами диалогов, которые могут быть инициированы актером
-	//при разговоре с персонажем, который имеет данный InfoPortion
-	DIALOG_ID_VECTOR m_ActorDialogNames;
-
-	//список локаций на карте
-//	LOCATIONS_VECTOR	m_MapLocations;
 	//список статей в энциклопедии, которые становятся известными 
 	ARTICLE_ID_VECTOR m_Articles;
 	//список статей в энциклопедии, которые становятся неизвестными (на тот случай если
@@ -52,14 +46,6 @@ struct SInfoPortionData : CSharedResource
 	//исчезнут, после получения этой info_portion
 	DEFINE_VECTOR(INFO_ID, INFO_ID_VECTOR, INFO_ID_VECTOR_IT);
 	INFO_ID_VECTOR m_DisableInfo;
-
-	//текстовое представление информации	
-	shared_str		m_text;
-	
-	//если true, то info_portion будет применена 
-	//(вызвано CInventoryOwner::OnReceiveInfo()) только после получения сообщения
-	//с сервера иначе CInventoryOwner::TransferInfo вызывает мгновенно CInventoryOwner::OnReceiveInfo
-	bool			m_bDeferInit;
 };
 
 
@@ -89,16 +75,12 @@ public:
 	const ARTICLE_ID_VECTOR&						ArticlesDisable	()	const {return info_data()->m_ArticlesDisable;}
 	const TASK_ID_VECTOR&							GameTasks	()	const {return info_data()->m_GameTasks;}
 	const DIALOG_ID_VECTOR&							DialogNames	()	const {return info_data()->m_DialogNames;}
-	const DIALOG_ID_VECTOR&							ActorDialogNames	()	const {return info_data()->m_ActorDialogNames;}
 	const SInfoPortionData::INFO_ID_VECTOR&			DisableInfos()	const {return info_data()->m_DisableInfo;}
 	
-	//запуск присоединенных скриптовых функций	
-	virtual void RunScriptActions   (const CGameObject* pOwner)	{info_data()->m_PhraseScript.Action(pOwner, NULL, -1);}
+			void									RunScriptActions		(const CGameObject* pOwner)	{info_data()->m_PhraseScript.Action(pOwner, NULL, -1);}
 
 	//текстовое представление информации
-	virtual LPCSTR GetText () const ;
-	virtual bool   DeferInit () const;
-
+			shared_str								GetText () const ;
 
 protected:
     INFO_ID		m_InfoId;

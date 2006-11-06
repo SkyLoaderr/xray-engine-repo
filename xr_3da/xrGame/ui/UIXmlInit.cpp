@@ -108,8 +108,9 @@ bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path,
 
 	strconcat(buf,path,":window_name");
 	if(xml_doc.NavigateToNode(buf,index))
-		pWnd->SetWindowName( xml_doc.Read(buf, index, NULL) );
+		pWnd->SetWindowName		( xml_doc.Read(buf, index, NULL) );
 
+	InitAutoStaticGroup			(xml_doc, path, index, pWnd);
 	return true;
 }
 
@@ -125,7 +126,7 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path,
 	InitTexture(xml_doc, path, index, pWnd);
 
 	string256 buf;
-
+/*
 	strconcat(buf,path,":left_top_texture");
 	shared_str tex_name = xml_doc.Read(buf, index, NULL);
 
@@ -142,7 +143,7 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path,
 	y = xml_doc.ReadAttribFlt(buf, index, "y");
 
 	if(*tex_name) pWnd->InitLeftBottom(*tex_name, x,y);
-
+*/
 	//инициализировать заголовок окна
 	strconcat(buf,path,":title");
 	if(xml_doc.NavigateToNode(buf,index)) InitStatic(xml_doc, buf, index, &pWnd->UITitleText);
@@ -546,13 +547,13 @@ bool CUIXmlInit::InitProgressShape(CUIXml& xml_doc, const char* path, int index,
     return true;
 }
 
-CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStaticGroup(CUIXml& xml_doc, LPCSTR path, CUIWindow* pParentWnd)
+CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStaticGroup(CUIXml& xml_doc, LPCSTR path, int index, CUIWindow* pParentWnd)
 {
-	int items_num						= xml_doc.GetNodesNum(path, 0, "auto_static");
+	int items_num						= xml_doc.GetNodesNum(path, index, "auto_static");
 
 	StaticsVec							tmpVec;
 	XML_NODE* _stored_root				= xml_doc.GetLocalRoot();
-	xml_doc.SetLocalRoot				(xml_doc.NavigateToNode(path,0));
+	xml_doc.SetLocalRoot				(xml_doc.NavigateToNode(path,index));
 
 	CUIStatic* pUIStatic				= NULL;
 	string64							sname;

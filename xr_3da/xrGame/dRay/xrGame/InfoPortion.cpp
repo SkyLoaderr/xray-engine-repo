@@ -1,8 +1,3 @@
-///////////////////////////////////////////////////////////////
-// InfoPortion.cpp
-// струтура, предствал€юща€ сюжетную информацию
-///////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 #include "InfoPortion.h"
 #include "gameobject.h"
@@ -15,8 +10,6 @@
 #include "script_engine.h"
 #include "ui\uixmlinit.h"
 #include "object_broker.h"
-//////////////////////////////////////////////////////////////////////////
-// SInfoPortionData: данные дл€ InfoProtion
 
 void INFO_DATA::load (IReader& stream) 
 {
@@ -37,11 +30,6 @@ SInfoPortionData::SInfoPortionData ()
 SInfoPortionData::~SInfoPortionData ()
 {
 }
-
-
-/////////////////////////////////////////
-//	class CInfoPortion
-//
 
 CInfoPortion::CInfoPortion()
 {
@@ -73,17 +61,6 @@ void CInfoPortion::load_shared	(LPCSTR)
 	XML_NODE* pNode = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
 	THROW3(pNode, "info_portion id=", *item_data.id);
 
-
-	int defer_init = uiXml.ReadAttribInt(pNode, "defer_init", 0);
-	if (1 == defer_init) 
-		info_data()->m_bDeferInit = true;
-	else
-		info_data()->m_bDeferInit = false;
-
-
-	//текст
-	info_data()->m_text = uiXml.Read(pNode, "text", 0,"");
-
 	//список названий диалогов
 	int dialogs_num = uiXml.GetNodesNum(pNode, "dialog");
 	info_data()->m_DialogNames.clear();
@@ -93,13 +70,6 @@ void CInfoPortion::load_shared	(LPCSTR)
 		info_data()->m_DialogNames.push_back(dialog_name);
 	}
 
-	dialogs_num = uiXml.GetNodesNum(pNode, "actor_dialog");
-	info_data()->m_ActorDialogNames.clear();
-	for(int i=0; i<dialogs_num; ++i)
-	{
-		shared_str dialog_name = uiXml.Read(pNode, "actor_dialog", i,"");
-		info_data()->m_ActorDialogNames.push_back(dialog_name);
-	}
 	
 	//список названий порций информации, которые деактивируютс€,
 	//после получени€ этой порции
@@ -124,7 +94,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 		THROW(article_str_id);
 		info_data()->m_Articles.push_back(article_str_id);
 	}
-	//индексы статей, которые уберутс€ из реестра
+
 	info_data()->m_ArticlesDisable.clear();
 	articles_num = uiXml.GetNodesNum(pNode, "article_disable");
 	for(i=0; i<articles_num; ++i)
@@ -134,7 +104,6 @@ void CInfoPortion::load_shared	(LPCSTR)
 		info_data()->m_ArticlesDisable.push_back(article_str_id);
 	}
 	
-	//индексы статей, которые уберутс€ из реестра
 	info_data()->m_GameTasks.clear();
 	int task_num = uiXml.GetNodesNum(pNode, "task");
 	for(i=0; i<task_num; ++i)
@@ -143,16 +112,6 @@ void CInfoPortion::load_shared	(LPCSTR)
 		THROW(task_str_id);
 		info_data()->m_GameTasks.push_back(task_str_id);
 	}
-}
-
-LPCSTR  CInfoPortion::GetText () const
-{
-	return *info_data()->m_text;
-}
-
-bool CInfoPortion::DeferInit () const
-{
-	return info_data()->m_bDeferInit;
 }
 
 void   CInfoPortion::InitXmlIdToIndex()

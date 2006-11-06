@@ -138,7 +138,6 @@ void CInventoryOwner::TransferInfo(INFO_ID info_id, bool add_info) const
 
 	CInfoPortion info_portion;
 	info_portion.Load(info_id);
-	if(!info_portion.DeferInit())
 	{
 		if(add_info)
 			OnReceiveInfo	(info_id);

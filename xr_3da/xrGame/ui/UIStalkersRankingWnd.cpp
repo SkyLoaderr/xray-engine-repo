@@ -70,8 +70,8 @@ void CUIStalkersRankingWnd::Init()
 											UICharacterWindow->GetHeight(), 
 											STALKERS_RANKING_CHARACTER_XML);
 
-	xml_init.InitAutoStaticGroup		(uiXml, "left_auto",				UIInfoFrame);
-	xml_init.InitAutoStaticGroup		(uiXml, "right_auto",				UICharIconFrame);
+	xml_init.InitAutoStaticGroup		(uiXml, "left_auto",	0,			UIInfoFrame);
+	xml_init.InitAutoStaticGroup		(uiXml, "right_auto",	0,			UICharIconFrame);
 }
 
 
@@ -235,7 +235,7 @@ void CUIStalkerRankingInfoItem::Init	(CUIXml* xml, LPCSTR path, int idx)
 	AttachChild								(m_text3);
 	xml_init.InitStatic						(*xml, "text_3", 0, m_text3);
 
-	xml_init.InitAutoStaticGroup			(*xml, "auto", this);
+	xml_init.InitAutoStaticGroup			(*xml, "auto", 0, this);
 
 	m_stored_alpha							= color_get_A(m_text2->GetTextColor());
 	xml->SetLocalRoot						(_stored_root);

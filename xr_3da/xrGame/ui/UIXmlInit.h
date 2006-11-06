@@ -102,7 +102,7 @@ public:
 	typedef		StaticsVec::iterator	StaticsVec_it;
 
 	static StaticsVec InitAutoStatic	(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd);
-	static StaticsVec InitAutoStaticGroup(CUIXml& xml_doc, LPCSTR path, CUIWindow* pParentWnd);
+	static StaticsVec InitAutoStaticGroup(CUIXml& xml_doc, LPCSTR path, int index, CUIWindow* pParentWnd);
 
 	// Функции для пересчета координат для применения выравнивания
 	// Params:

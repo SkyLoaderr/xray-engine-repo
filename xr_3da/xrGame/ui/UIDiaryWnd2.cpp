@@ -56,7 +56,7 @@ void CUIDiaryWnd::Init()
 	m_UILeftFrame					= xr_new<CUIFrameWindow>(); m_UILeftFrame->SetAutoDelete(true);
 	xml_init.InitFrameWindow		(uiXml,"main_wnd:left_frame",0,m_UILeftFrame);
 	AttachChild						(m_UILeftFrame);
-	xml_init.InitAutoStaticGroup	(uiXml,"main_wnd:left_frame",m_UILeftFrame);
+//.	xml_init.InitAutoStaticGroup	(uiXml,"main_wnd:left_frame",m_UILeftFrame);
 	
 	m_UILeftHeader					= xr_new<CUIFrameLineWnd>(); m_UILeftHeader->SetAutoDelete(true);
 	xml_init.InitFrameLine			(uiXml, "main_wnd:left_frame:left_frame_header", 0, m_UILeftHeader);
@@ -92,7 +92,7 @@ void CUIDiaryWnd::Init()
 	m_UIRightFrame					= xr_new<CUIFrameWindow>();		m_UIRightFrame->SetAutoDelete(true);
 	xml_init.InitFrameWindow		(uiXml,"main_wnd:right_frame",0,m_UIRightFrame);
 	AttachChild						(m_UIRightFrame);
-	xml_init.InitAutoStaticGroup	(uiXml,"main_wnd:right_frame",m_UIRightFrame);
+//.	xml_init.InitAutoStaticGroup	(uiXml,"main_wnd:right_frame",m_UIRightFrame);
 
 	m_UIRightHeader					= xr_new<CUIFrameLineWnd>();	m_UIRightHeader->SetAutoDelete(true);
 	xml_init.InitFrameLine			(uiXml, "main_wnd:right_frame:right_frame_header", 0, m_UIRightHeader);

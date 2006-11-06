@@ -33,7 +33,7 @@
 
 	<frame_window x="385" y="274" width="267" height="460">
 		<texture>ui_frame</texture>		
-		<left_top_texture x="5" y="10">ui\ui_inv_info_over_lt</left_top_texture>
+		<_left_top_texture x="5" y="10">ui\ui_inv_info_over_lt</_left_top_texture>
 	</frame_window>
 
 	<descr_static x="5" y="184" width="260" height="270" stretch="1">

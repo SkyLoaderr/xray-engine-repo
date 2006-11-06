@@ -1,23 +1,11 @@
-// UIFrameWindow.cpp: 
-//
-// окно осуществялющие граф. вывод через CUIFrameRect
-//////////////////////////////////////////////////////////////////////
-
-
 #include "stdafx.h"
 #include "UIFrameWindow.h"
 #include "../HUDManager.h"
 #include "UITextureMaster.h"
 #include "UIXmlInit.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
 CUIFrameWindow::CUIFrameWindow()
 {
-	m_bOverLeftTop = false; 
-	m_bOverLeftBottom = false;
 	AttachChild(&UITitleText);
 }
 
@@ -25,24 +13,17 @@ CUIFrameWindow::~CUIFrameWindow()
 {
 }
 
-
-//#define BOTTOM_OFFSET 30
-//#define LEFT_TOP_OFFSET 16
-//#define UP_TOP_OFFSET 28
-//#define LEFT_BOTTOM_OFFSET 19
-//#define UP_BOTTOM_OFFSET 125
-
 void CUIFrameWindow::Init(LPCSTR base_name, float x, float y, float width, float height)
 {
-	Init(x,y,width,height);
-	InitTexture(base_name);	
+	Init				(x,y,width,height);
+	InitTexture			(base_name);	
 }
 
 void CUIFrameWindow::Init(float x, float y, float width, float height)
 {
-	CUIWindow::Init(x,y,width,height);
-	m_UIWndFrame.Init(x,y,width,height);
-	UITitleText.Init(0,0, width, 50);
+	CUIWindow::Init		(x,y,width,height);
+	m_UIWndFrame.Init	(x,y,width,height);
+	UITitleText.Init	(0,0, width, 50);
 }
 
 void CUIFrameWindow::Init(LPCSTR base_name, Frect* pRect)
@@ -53,49 +34,10 @@ void CUIFrameWindow::Init(LPCSTR base_name, Frect* pRect)
 }
 
 void CUIFrameWindow::InitTexture(const char* texture){
-	m_UIWndFrame.InitTexture(texture);
-	m_bTextureVisible = true;
+	m_UIWndFrame.InitTexture	(texture);
+	m_bTextureVisible			= true;
 }
 
-
-
-
-void CUIFrameWindow::InitLeftTop(LPCSTR tex_name, float left_offset, float up_offset)
-{
-	m_iLeftTopOffset = left_offset;
-	m_iUpTopOffset = up_offset;
-
-	m_UIStaticOverLeftTop.Init(tex_name, "hud\\default", 
-										  GetWndRect().left - left_offset,
-  										  GetWndRect().top - up_offset,alNone);
-										  
-
-
-	m_bOverLeftTop = true;
-}
-void CUIFrameWindow::InitLeftBottom(LPCSTR tex_name, float left_offset, float up_offset)
-{
-	m_iLeftBottomOffset = left_offset;
-	m_iUpBottomOffset = up_offset;
-
-	m_UIStaticOverLeftBottom.Init(tex_name, "hud\\default", 
-											GetWndRect().left - left_offset,
-											GetWndRect().bottom - up_offset,alNone);
-
-	m_bOverLeftBottom = true;
-}
-//
-//void CUIFrameWindow::SetShader(const ref_shader& sh){
-//	m_UIWndFrame.SetShader(sh);
-//}
-
-//void CUIFrameWindow::SetRect2Item(int item, int x, int y, int width, int height){
-//	m_UIWndFrame.SetRect2Item(item, x, y, width, height);
-//}
-
-//
-// прорисовка окна
-//
 void CUIFrameWindow::Draw()
 {
 	if (m_bTextureVisible)
@@ -109,21 +51,6 @@ void CUIFrameWindow::Draw()
 		m_UIWndFrame.SetWndPos(v);
 
 		m_UIWndFrame.Draw();
-
-		if(m_bOverLeftTop)
-		{
-			m_UIStaticOverLeftTop.SetPos(rect.left- m_iLeftTopOffset, 
-									rect.top- m_iUpTopOffset);
-		
-			m_UIStaticOverLeftTop.Render();
-		}
-		
-		if(m_bOverLeftBottom)
-		{
-			m_UIStaticOverLeftBottom.SetPos(rect.left- m_iLeftBottomOffset, 
-										rect.bottom - m_iUpBottomOffset);
-			m_UIStaticOverLeftBottom.Render();
-		}
 	}
 
 	inherited::Draw();
@@ -134,15 +61,11 @@ void CUIFrameWindow::Update(){
 	m_UIWndFrame.Update();
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIFrameWindow::SetWidth(float width)
 {
 	inherited::SetWidth(width);
 	m_UIWndFrame.SetWidth(width);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIFrameWindow::SetHeight(float height)
 {
@@ -150,16 +73,10 @@ void CUIFrameWindow::SetHeight(float height)
 	m_UIWndFrame.SetHeight(height);
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIFrameWindow::SetColor(u32 cl)
 {
 	m_UIWndFrame.SetTextureColor(cl);
-	m_UIStaticOverLeftBottom.SetColor(cl);
-	m_UIStaticOverLeftTop.SetColor(cl);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIFrameWindow::FrameClip(const Frect parentAbsR)
 {
@@ -200,19 +117,6 @@ void CUIFrameWindow::FrameClip(const Frect parentAbsR)
 		return;
 	}
 
-//	m_UIWndFrame.frame[CUIFrameRect::fmRT].SetRect(null);
-//	m_UIWndFrame.frame[CUIFrameRect::fmR].SetRect(null);
-//	m_UIWndFrame.frame[CUIFrameRect::fmRB].SetRect(null);
-//	m_UIWndFrame.frame[CUIFrameRect::fmB].SetRect(null);
-//	m_UIWndFrame.frame[CUIFrameRect::fmLB].SetRect(null);
-//	m_UIWndFrame.frame[CUIFrameRect::fmL].SetRect(null);
-//	m_UIWndFrame.frame[CUIFrameRect::fmLT].SetRect(null);
-//	m_UIWndFrame.frame[CUIFrameRect::fmT].SetRect(null);
-
-	// Для каждого статик айтема модифицируем его рект
-	// Блин, статикайтем отдает свои размер как размер текстуры, даже если в нем включен тайлинг.
-	// Из-за этого и такой геморой с изменениями размеров у затайленой части FrameRect'a
-
 	// fmRT
 	r.x1 = max(m_UIWndFrame.frame[CUIFrameRect::fmRT].GetPosX(), parentAbsR.left) - m_UIWndFrame.frame[CUIFrameRect::fmRT].GetPosX();
 	r.y1 = max(m_UIWndFrame.frame[CUIFrameRect::fmRT].GetPosY(), parentAbsR.top) - m_UIWndFrame.frame[CUIFrameRect::fmRT].GetPosY() ;
@@ -244,11 +148,6 @@ void CUIFrameWindow::FrameClip(const Frect parentAbsR)
 	set_positive(rem_y);
 
 	m_UIWndFrame.frame[CUIFrameRect::fmR].SetTile(tile_x, tile_y, rem_x, rem_y);
-
-//.	if (max(m_UIWndFrame.frame[CUIFrameRect::fmR].GetPosX(), parentAbsR.left) == parentAbsR.left)
-//.		m_UIWndFrame.frame[CUIFrameRect::fmR].SetReverseRem(true, false);
-//.	else
-//.		m_UIWndFrame.frame[CUIFrameRect::fmR].SetReverseRem(false, false);
 
 	m_UIWndFrame.frame[CUIFrameRect::fmR].SetPos(max(m_UIWndFrame.frame[CUIFrameRect::fmR].GetPosX(), parentAbsR.left),
 			max(m_UIWndFrame.frame[CUIFrameRect::fmR].GetPosY(), parentAbsR.top));
@@ -286,11 +185,6 @@ void CUIFrameWindow::FrameClip(const Frect parentAbsR)
 
 	m_UIWndFrame.frame[CUIFrameRect::fmB].SetTile	(tile_x, tile_y, rem_x, rem_y);
 
-//.	if (max(m_UIWndFrame.frame[CUIFrameRect::fmB].GetPosY(), parentAbsR.top) == parentAbsR.top)
-//.		m_UIWndFrame.frame[CUIFrameRect::fmB].SetReverseRem(false, true);
-//.	else
-//.		m_UIWndFrame.frame[CUIFrameRect::fmB].SetReverseRem(false, false);
-
 	m_UIWndFrame.frame[CUIFrameRect::fmB].SetPos(max(m_UIWndFrame.frame[CUIFrameRect::fmB].GetPosX(), parentAbsR.left),
 		max(m_UIWndFrame.frame[CUIFrameRect::fmB].GetPosY(), parentAbsR.top));
 
@@ -325,11 +219,6 @@ void CUIFrameWindow::FrameClip(const Frect parentAbsR)
 	set_positive(rem_y);
 
 	m_UIWndFrame.frame[CUIFrameRect::fmL].SetTile	(tile_x, tile_y, rem_x, rem_y);
-
-//.	if (max(m_UIWndFrame.frame[CUIFrameRect::fmL].GetPosX(), parentAbsR.left) == parentAbsR.left)
-//.		m_UIWndFrame.frame[CUIFrameRect::fmL].SetReverseRem(true, false);
-//.	else
-//.		m_UIWndFrame.frame[CUIFrameRect::fmL].SetReverseRem(false, false);
 
 	m_UIWndFrame.frame[CUIFrameRect::fmL].SetPos(max(m_UIWndFrame.frame[CUIFrameRect::fmL].GetPosX(), parentAbsR.left),
 		max(m_UIWndFrame.frame[CUIFrameRect::fmL].GetPosY(), parentAbsR.top));
@@ -367,11 +256,6 @@ void CUIFrameWindow::FrameClip(const Frect parentAbsR)
 
 	m_UIWndFrame.frame[CUIFrameRect::fmT].SetTile	(tile_x, tile_y, rem_x, rem_y);
 
-//.	if (max(m_UIWndFrame.frame[CUIFrameRect::fmT].GetPosY(), parentAbsR.top) == parentAbsR.top)
-//.		m_UIWndFrame.frame[CUIFrameRect::fmT].SetReverseRem(false, true);
-//.	else
-//.		m_UIWndFrame.frame[CUIFrameRect::fmT].SetReverseRem(false, false);
-
 	m_UIWndFrame.frame[CUIFrameRect::fmT].SetPos(max(m_UIWndFrame.frame[CUIFrameRect::fmT].GetPosX(), parentAbsR.left),
 		max(m_UIWndFrame.frame[CUIFrameRect::fmT].GetPosY(), parentAbsR.top));
 
@@ -403,8 +287,6 @@ void CUIFrameWindow::FrameClip(const Frect parentAbsR)
 			max(m_UIWndFrame.frame[CUIFrameRect::fmBK].GetPosY(), parentAbsR.top));
 	}
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 inline void CUIFrameWindow::ClampMax_Zero(Frect &r)
 {

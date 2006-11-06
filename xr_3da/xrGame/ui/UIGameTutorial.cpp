@@ -100,7 +100,7 @@ void CUISequencer::Start(LPCSTR tutor_name)
 
 	CUIXmlInit xml_init;
 	xml_init.InitWindow			(uiXml, "global_wnd", 0,	m_UIWindow);
-	xml_init.InitAutoStaticGroup(uiXml, "global_wnd",		m_UIWindow);
+//.	xml_init.InitAutoStaticGroup(uiXml, "global_wnd",		m_UIWindow);
 
 	for(int i=0;i<items_count;++i){
 		LPCSTR	_tp				= uiXml.ReadAttrib			("item",i,"type","");

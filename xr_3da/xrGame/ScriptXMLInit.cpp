@@ -109,7 +109,7 @@ CUIStatic* CScriptXmlInit::InitStatic(LPCSTR path, CUIWindow* parent){
 
 void CScriptXmlInit::InitAutoStaticGroup(LPCSTR path, CUIWindow* pWnd)
 {
-	CUIXmlInit::InitAutoStaticGroup(m_xml, path, pWnd);
+	CUIXmlInit::InitAutoStaticGroup(m_xml, path, 0, pWnd);
 }
 
 CUIStatic* CScriptXmlInit::InitAnimStatic(LPCSTR path, CUIWindow* parent){

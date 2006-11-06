@@ -40,7 +40,7 @@ void CUINewsItemWnd::Init				(LPCSTR xml_name, LPCSTR start_from)
 	AttachChild					(m_UITextDate);
 
 	strconcat(str,start_from,":auto");
-	xml_init.InitAutoStaticGroup(uiXml, str, this);
+	xml_init.InitAutoStaticGroup(uiXml, str, 0, this);
 
 }
 

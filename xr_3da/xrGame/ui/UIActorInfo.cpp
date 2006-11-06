@@ -227,7 +227,7 @@ void CUIActorStaticticHeader::Init	(CUIXml* xml, LPCSTR path, int idx)
 	AttachChild							(m_text2);
 	xml_init.InitStatic					(*xml, "text_2", 0, m_text2);
 
-	xml_init.InitAutoStaticGroup		(*xml, "auto", this);
+	xml_init.InitAutoStaticGroup		(*xml, "auto", 0, this);
 
 	m_index								= _ParseItem(xml->ReadAttrib(xml->GetLocalRoot(),"id",0), actor_stats_token);
 
@@ -276,7 +276,7 @@ void CUIActorStaticticDetail::Init		(CUIXml* xml, LPCSTR path, int idx)
 	AttachChild							(m_text3);
 	xml_init.InitStatic					(*xml, "text_3", 0, m_text3);
 
-	xml_init.InitAutoStaticGroup		(*xml, "auto", this);
+	xml_init.InitAutoStaticGroup		(*xml, "auto", 0, this);
 
 	xml->SetLocalRoot					(_stored_root);
 }

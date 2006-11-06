@@ -90,7 +90,7 @@ void CUISequenceSimpleItem::Load(CUIXml* xml, int idx)
 	XML_NODE* _lsr					= xml->GetLocalRoot();
 	CUIXmlInit xml_init;
 	xml_init.InitWindow				(*xml, "main_wnd", 0,	m_UIWindow);
-	xml_init.InitAutoStaticGroup	(*xml, "main_wnd",		m_UIWindow);
+//.	xml_init.InitAutoStaticGroup	(*xml, "main_wnd",		m_UIWindow);
 	xml->SetLocalRoot				(_lsr);
 
 	// initialize auto_static
@@ -100,9 +100,6 @@ void CUISequenceSimpleItem::Load(CUIXml* xml, int idx)
 	for(int i=0;i<cnt;++i){
 		XML_NODE* _sr				= xml->GetLocalRoot();
 		xml->SetLocalRoot			(xml->NavigateToNode("main_wnd",0));
-
-//		XML_NODE* _wn				= xml->NavigateToNode("auto_static",i);
-//		LPCSTR wnd_name				= xml->Read			(_wn,"window_name",0,"not_cpecified");
 
 		sprintf						(sname,"auto_static_%d", i);
 

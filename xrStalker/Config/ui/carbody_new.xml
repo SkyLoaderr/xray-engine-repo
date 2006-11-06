@@ -32,7 +32,9 @@
 
 	<frame_window x="375" y="274" width="267" height="460">
 		<texture>ui_frame</texture>		
-		<left_top_texture x="5" y="10">ui\ui_inv_info_over_lt</left_top_texture>
+		<auto_static x="5" y="-10">
+			<texture>ui\ui_inv_info_over_lt</texture>
+		</auto_static>
 	</frame_window>
 
 	<descr_static x="5" y="180" width="260" height="310">

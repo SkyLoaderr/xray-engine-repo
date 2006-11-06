@@ -75,7 +75,7 @@ void CUIItemInfo::Init(LPCSTR xml_name){
 	UIItemImage->ClipperOn			();
 	UIItemImageSize.set				(UIItemImage->GetWidth(),UIItemImage->GetHeight());
 
-	xml_init.InitAutoStaticGroup	(uiXml, "auto", this);
+	xml_init.InitAutoStaticGroup	(uiXml, "auto", 0, this);
 }
 
 void CUIItemInfo::Init(float x, float y, float width, float height, LPCSTR xml_name)

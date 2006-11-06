@@ -145,9 +145,7 @@ void CUIWindow::script_register(lua_State *L)
 		.def("SetHeight",				&CUIFrameWindow::SetHeight)
 		.def("SetColor",				&CUIFrameWindow::SetColor)
 		.def("GetTitleStatic",			&CUIFrameWindow::GetTitleStatic)
-		.def("Init",					(void(CUIFrameWindow::*)(LPCSTR,float,float,float,float))CUIFrameWindow::Init)
-		.def("InitLeftTop",				&CUIFrameWindow::InitLeftTop)
-		.def("InitLeftBottom",			&CUIFrameWindow::InitLeftBottom),
+		.def("Init",					(void(CUIFrameWindow::*)(LPCSTR,float,float,float,float))CUIFrameWindow::Init),
 
 		class_<CUIFrameLineWnd, CUIWindow>("CUIFrameLineWnd")
 		.def(					constructor<>())

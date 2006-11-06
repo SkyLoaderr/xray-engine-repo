@@ -24,11 +24,12 @@ void CUITaskDescrWnd::Init	(CUIXml* doc, LPCSTR start_from)
 
 	m_UIMainFrame			= xr_new<CUIFrameWindow>(); m_UIMainFrame->SetAutoDelete(true);
 	AttachChild				(m_UIMainFrame);
+
 	strconcat				(str,start_from,":main_frame");
 	xml_init.InitFrameWindow(*doc,str,0,m_UIMainFrame);
 
-	strconcat				(str,start_from,":main_frame");
-	xml_init.InitAutoStaticGroup(*doc, str, m_UIMainFrame);
+//.	strconcat				(str,start_from,":main_frame");
+//.	xml_init.InitAutoStaticGroup(*doc, str, m_UIMainFrame);
 
 	m_UIMainHeader			= xr_new<CUIFrameLineWnd>();m_UIMainHeader->SetAutoDelete(true);
 	m_UIMainFrame->AttachChild(m_UIMainHeader);

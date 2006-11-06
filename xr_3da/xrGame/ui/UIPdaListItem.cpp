@@ -53,7 +53,7 @@ void CUIPdaListItem::Init(float x, float y, float width, float height)
 		UIInfo->UIIcon().SetMask				(UIMask);
 	}
 
-	xml_init.InitAutoStaticGroup				(uiXml,"pda_char_auto_statics", this);
+	xml_init.InitAutoStaticGroup				(uiXml,"pda_char_auto_statics", 0, this);
 }
 
 void CUIPdaListItem::InitCharacter(CInventoryOwner* pInvOwner)

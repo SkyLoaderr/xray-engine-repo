@@ -28,18 +28,20 @@ CUIGameTDM::CUIGameTDM()
 	m_team1_score					= xr_new<CUIStatic>();
 	m_team2_score					= xr_new<CUIStatic>();
 	xml_init.InitStatic				(uiXml, "team1_icon", 0,	m_team1_icon);
-	xml_init.InitAutoStaticGroup	(uiXml, "team1_icon",		m_team1_icon);
+//.	xml_init.InitAutoStaticGroup	(uiXml, "team1_icon",		m_team1_icon);
 	xml_init.InitStatic				(uiXml, "team2_icon", 0,	m_team2_icon);
-	xml_init.InitAutoStaticGroup	(uiXml, "team2_icon",		m_team2_icon);
-	xml_init.InitStatic				(uiXml, "team1_score", 0,	m_team1_score);
-	CUIXmlInit::StaticsVec gr;
-	gr = xml_init.InitAutoStaticGroup	(uiXml, "team1_score",		m_team1_score);
-	(*gr.back()).SetText(*CTeamInfo::GetTeam1_name());
-	(*gr.back()).SetTextColor(CTeamInfo::GetTeam1_color());
+//.	xml_init.InitAutoStaticGroup	(uiXml, "team2_icon",		m_team2_icon); moved in InitStatic
+
+//.	CUIXmlInit::StaticsVec gr;
+	xml_init.InitStatic					(uiXml, "team1_score", 0,	m_team1_score);
+//.	gr = xml_init.InitAutoStaticGroup	(uiXml, "team1_score",		m_team1_score);
+//.	(*gr.back()).SetText				(*CTeamInfo::GetTeam1_name());
+//.	(*gr.back()).SetTextColor			(CTeamInfo::GetTeam1_color());
+
 	xml_init.InitStatic					(uiXml, "team2_score", 0,	m_team2_score);
-	gr = xml_init.InitAutoStaticGroup	(uiXml, "team2_score",		m_team2_score);
-	(*gr.back()).SetText(*CTeamInfo::GetTeam2_name());
-	(*gr.back()).SetTextColor(CTeamInfo::GetTeam2_color());
+//.	gr = xml_init.InitAutoStaticGroup	(uiXml, "team2_score",		m_team2_score);
+//.	(*gr.back()).SetText				(*CTeamInfo::GetTeam2_name());
+//.	(*gr.back()).SetTextColor			(CTeamInfo::GetTeam2_color());
 }
 //--------------------------------------------------------------------
 void CUIGameTDM::SetClGame (game_cl_GameState* g)
