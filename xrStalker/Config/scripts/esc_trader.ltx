@@ -53,35 +53,35 @@ on_signal = sound_phrase_end | mob_trader@new_idle1
 ;Основной idle (1) - за столом
 [mob_trader@new_idle1]
 anim_global = desk_idle
-on_signal = animation_end| {~15} mob_trader@new_idle1_to_idle3, {~30} mob_trader@new_idle1_to_idle5, {~45} mob_trader@new_idle1_to_idle2, mob_trader@new_idle1_to_idle1
+on_signal = animation_end| {~25} mob_trader@new_idle1_to_idle3, {~50} mob_trader@new_idle1_to_idle5, {~75} mob_trader@new_idle1_to_idle2, mob_trader@new_idle1_to_idle1
 on_info = {=talking} mob_trader@new_idle1_to_idle3
 on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played +esc_trader_hello_played} mob_trader@new_bye %+esc_trader_bye_played%
 
 ; Idle (2) - по диагонали
 [mob_trader@new_idle2]
 anim_global = diagonal_idle
-on_signal = animation_end| {~15} mob_trader@new_idle2_to_idle3, {~30} mob_trader@new_idle2_to_idle4, {~45} mob_trader@new_idle2_to_idle1, mob_trader@new_idle2_to_idle2
+on_signal = animation_end| {~25} mob_trader@new_idle2_to_idle3, {~50} mob_trader@new_idle2_to_idle4, {~75} mob_trader@new_idle2_to_idle1, mob_trader@new_idle2_to_idle2
 on_info = {=talking} mob_trader@new_idle2_to_idle3
 on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played +esc_trader_hello_played} mob_trader@new_bye %+esc_trader_bye_played%
 
 ; Idle (3) - откинувшись на спинку
 [mob_trader@new_idle3]
 anim_global = chair_hack_idle
-on_signal = animation_end| {~30} mob_trader@new_idle3_to_idle2, {~40} mob_trader@new_idle3_to_idle1, mob_trader@new_idle3_to_idle3
+on_signal = animation_end| {~30} mob_trader@new_idle3_to_idle2, {~70} mob_trader@new_idle3_to_idle1, mob_trader@new_idle3_to_idle3
 on_info = {=talking} mob_trader@new_talking
 on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played +esc_trader_hello_played} mob_trader@new_bye %+esc_trader_bye_played%
 
 ; Idle (4) - за компьютером
 [mob_trader@new_idle4]
 anim_global = compute_idle
-on_signal = animation_end| {~25} mob_trader@new_idle4_to_idle2, mob_trader@new_idle4_to_idle4
+on_signal = animation_end| {~40} mob_trader@new_idle4_to_idle2, mob_trader@new_idle4_to_idle4
 on_info = {=talking} mob_trader@new_idle4_to_idle2
 on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played +esc_trader_hello_played} mob_trader@new_bye %+esc_trader_bye_played%
 
 ; Idle (5) - читает
 [mob_trader@new_idle5]
 anim_global = listen_idle
-on_signal = animation_end| {~25} mob_trader@new_idle5_to_idle1, mob_trader@new_idle5_to_idle5
+on_signal = animation_end| {~45} mob_trader@new_idle5_to_idle1, mob_trader@new_idle5_to_idle5
 on_info = {=talking} mob_trader@new_idle5_to_idle1
 on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played +esc_trader_hello_played} mob_trader@new_bye %+esc_trader_bye_played%
 ;----------------------------------
