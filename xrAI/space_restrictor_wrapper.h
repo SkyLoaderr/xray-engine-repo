@@ -43,7 +43,7 @@ private:
 public:
 							CSpaceRestrictorWrapper	(CSE_ALifeSpaceRestrictor *object);
 	IC		object_type		&object					() const;
-			void			verify					(CLevelGraph &level_graph, CGraphEngine &graph_engine);
+			void			verify					(CLevelGraph &level_graph, CGraphEngine &graph_engine, bool separator_check);
 };
 
 #include "space_restrictor_wrapper_inline.h"

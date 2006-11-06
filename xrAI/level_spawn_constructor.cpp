@@ -620,9 +620,6 @@ void CLevelSpawnConstructor::update								()
 
 void CLevelSpawnConstructor::verify_space_restrictors			()
 {
-//	if (m_no_separator_check)
-//		return;
-
 	Msg									("Level [%s] : searching for AI map separators space restrictors",*m_level.name());
 	SPACE_RESTRICTORS::iterator			I = m_space_restrictors.begin();
 	SPACE_RESTRICTORS::iterator			E = m_space_restrictors.end();
@@ -632,9 +629,11 @@ void CLevelSpawnConstructor::verify_space_restrictors			()
 		if ((*I)->object().m_space_restrictor_type == RestrictionSpace::eRestrictorTypeNone)
 			continue;
 
-		(*I)->verify					(*m_level_graph,*m_graph_engine);
+		(*I)->verify					(*m_level_graph,*m_graph_engine,m_no_separator_check);
 	}
 
 	delete_data							(m_space_restrictors);
-	Msg									("Level [%s] : no separators found",*m_level.name());
+
+	if (m_no_separator_check)
+		Msg								("Level [%s] : no separators found",*m_level.name());
 }

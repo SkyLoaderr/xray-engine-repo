@@ -268,7 +268,7 @@ void CSpaceRestrictorWrapper::verify_connectivity	()
 	);
 }
 
-void CSpaceRestrictorWrapper::verify				(CLevelGraph &level_graph, CGraphEngine &graph_engine)
+void CSpaceRestrictorWrapper::verify				(CLevelGraph &level_graph, CGraphEngine &graph_engine, bool separator_check)
 {
 	VERIFY							(!m_level_graph);
 	m_level_graph					= &level_graph;
@@ -277,6 +277,9 @@ void CSpaceRestrictorWrapper::verify				(CLevelGraph &level_graph, CGraphEngine 
 	m_graph_engine					= &graph_engine;
 
 	build_border					();
-	verify_connectivity				();
+
+	if (separator_check)
+		verify_connectivity			();
+
 	clear							();
 }
