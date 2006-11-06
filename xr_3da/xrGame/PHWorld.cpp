@@ -412,7 +412,7 @@ void CPHWorld::RemoveFromRecentlyDisabled(PH_OBJECT_I i)
 
 void CPHWorld::AddUpdateObject(CPHUpdateObject* object)
 {
-	if(object->IsFreezed())m_freezed_update_objects.erase(i);
+//.	if(object->IsFreezed())m_freezed_update_objects.erase(i);
 	m_update_objects.push_back(object);
 }
 
