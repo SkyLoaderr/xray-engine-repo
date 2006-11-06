@@ -29,7 +29,8 @@ float CDelayedActionFuse::Time()
 }
 void CDelayedActionFuse::Initialize(float time,float critical_condition)
 {
-	VERIFY(!isActive());
+	if(isActive())		return;
+
 	VERIFY(time>=0.f&&critical_condition>=0.f);
 	if(!fis_zero(time))
 	{
