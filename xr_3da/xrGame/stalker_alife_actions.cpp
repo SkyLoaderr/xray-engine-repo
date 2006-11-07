@@ -23,6 +23,7 @@
 #include "patrol_path_manager.h"
 #include "sound_player.h"
 #include "ai/stalker/ai_stalker_space.h"
+#include "restricted_object.h"
 
 using namespace StalkerSpace;
 
@@ -76,8 +77,18 @@ void CStalkerActionGatherItems::execute		()
 	if (!object().memory().item().selected())
 		return;
 
-	object().movement().set_level_dest_vertex	(object().memory().item().selected()->ai_location().level_vertex_id());
-	object().movement().set_desired_position	(&object().memory().item().selected()->Position());
+	u32												level_vertex_id = object().memory().item().selected()->ai_location().level_vertex_id();
+	if (object().movement().restrictions().accessible(level_vertex_id)) {
+		object().movement().set_level_dest_vertex	(level_vertex_id);
+		object().movement().set_desired_position	(&object().memory().item().selected()->Position());
+	}
+	else {
+		object().movement().set_nearest_accessible_position	(
+			object().memory().item().selected()->Position(),
+			level_vertex_id
+		);
+	}
+
 	object().sight().setup						(SightManager::eSightTypePosition,&object().memory().item().selected()->Position());
 }
 
