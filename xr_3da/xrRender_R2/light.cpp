@@ -117,7 +117,7 @@ void	light::set_cone			(float angle)		{
 void	light::set_rotation		(const Fvector& D, const Fvector& R)	{ 
 	Fvector	old_D		= direction;
 	direction.normalize	(D);
-	right.normalize_safe(R);
+	right.normalize(R);
 	if (!fsimilar(1.f, old_D.dotproduct(D)))	spatial_move	();
 }
 
