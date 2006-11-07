@@ -171,8 +171,7 @@ void CSheduler::ProcessStep			()
 	// Normal priority
 	u32		dwTime					= Device.dwTimeGlobal;
 	CTimer							eTimer;
-	while (!Items.empty() && Top().dwTimeForExecute < dwTime)
-	{
+	for (int i=0;!Items.empty() && Top().dwTimeForExecute < dwTime; ++i) {
 		u32		delta_ms			= dwTime - Top().dwTimeForExecute;
 
 		// Update
@@ -235,9 +234,12 @@ void CSheduler::ProcessStep			()
 #endif
 
 		// 
+		if ((i % 3) != (3 - 1))
+			continue;
+
 		if (CPU::QPC() > cycles_limit)		{
 			// we have maxed out the load - increase heap
-			psShedulerTarget	+=			(psShedulerReaction * 3);
+			psShedulerTarget		+= (psShedulerReaction * 3);
 			break;
 		}
 	}
