@@ -8,7 +8,11 @@
 extern BOOL					LogExecCB		= TRUE;
 static string64				logFName		= "engine.log";
 static BOOL 				no_log			= TRUE;
-static xrCriticalSection	logCS;
+#ifdef PROFILE_CRITICAL_SECTIONS
+	static xrCriticalSection	logCS("log");
+#else // PROFILE_CRITICAL_SECTIONS
+	static xrCriticalSection	logCS;
+#endif // PROFILE_CRITICAL_SECTIONS
 xr_vector <shared_str>		LogFile;
 static LogCallback			LogCB			= 0;
 
@@ -28,6 +32,10 @@ void FlushLog			()
     }
 }
 
+#ifdef DEBUG
+XRCORE_API extern void dump_phase	();
+#endif // DEBUG
+
 void AddOne				(const char *split) 
 {
 	logCS.Enter			();
@@ -37,7 +45,12 @@ void AddOne				(const char *split)
 	OutputDebugString	("\n");
 #endif
 
-	LogFile.push_back	(shared_str(split));
+//	dump_phase	();
+	{
+		shared_str			temp = shared_str(split);
+//	dump_phase	();
+		LogFile.push_back	(temp);
+	}
 
 	//exec CallBack
 	if (LogExecCB&&LogCB)LogCB(split);

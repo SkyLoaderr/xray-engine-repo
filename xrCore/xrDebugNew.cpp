@@ -11,6 +11,8 @@
 #include <direct.h>
 #pragma warning(pop)
 
+extern bool shared_str_initialized;
+
 #ifdef __BORLANDC__
 #	include "d3d9.h"
 #	include "d3dx9.h"
@@ -94,7 +96,11 @@ extern int g_stackTraceCount;
 
 void xrDebug::backend(const char *expression, const char *description, const char *argument0, const char *argument1, const char *file, int line, const char *function, bool &ignore_always) 
 {
-	static xrCriticalSection CS;
+	static xrCriticalSection CS
+#ifdef PROFILE_CRITICAL_SECTIONS
+	("xrDebug::backend")
+#endif // PROFILE_CRITICAL_SECTIONS
+	;
 
 	CS.Enter			();
 
@@ -122,24 +128,31 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 		buffer			+= sprintf(buffer,"%sLine          : %d%s",prefix,line,endline);
 		buffer			+= sprintf(buffer,"%s",endline);
 		if (!i) {
-			Msg			("%s",assertion_info);
-			FlushLog	();
+			if (shared_str_initialized) {
+				Msg		("%s",assertion_info);
+				FlushLog();
+			}
 			buffer		= assertion_info;
 			endline		= "\r\n";
 			prefix		= "";
 		}
 	}
 
-	Msg					("stack trace:\n");
+	if (shared_str_initialized)
+		Msg				("stack trace:\n");
 	buffer				+= sprintf(buffer,"stack trace:%s%s",endline,endline);
 
 	BuildStackTrace		();		
 
 	for (int i=2; i<g_stackTraceCount; ++i) {
-		Msg				("%s",g_stackTrace[i]);
+		if (shared_str_initialized)
+			Msg			("%s",g_stackTrace[i]);
+
 		buffer			+= sprintf(buffer,"%s%s",g_stackTrace[i],endline);
 	}
-	FlushLog			();
+
+	if (shared_str_initialized)
+		FlushLog		();
 	
 	copy_to_clipboard	(assertion_info);
 
@@ -413,20 +426,22 @@ LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 	BuildStackTrace			(pExceptionInfo);
 	*pExceptionInfo->ContextRecord = save;
 
-	if (!error_after_dialog)
-	{
-		Msg					("stack trace:\n");
+	if (!error_after_dialog) {
+		if (shared_str_initialized)
+			Msg				("stack trace:\n");
 		copy_to_clipboard	("stack trace:\r\n\r\n");
 
 		string4096			buffer;
 		for (int i=0; i<g_stackTraceCount; ++i) {
-			Msg				("%s",g_stackTrace[i]);
+			if (shared_str_initialized)
+				Msg			("%s",g_stackTrace[i]);
 			sprintf			(buffer,"%s\r\n",g_stackTrace[i]);
 			update_clipboard(buffer);
 		}
 	}
 
-	FlushLog				();
+	if (shared_str_initialized)
+		FlushLog			();
 
 #ifndef DEBUG
 	save_mini_dump			(pExceptionInfo);

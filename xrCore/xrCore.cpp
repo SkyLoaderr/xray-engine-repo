@@ -50,6 +50,10 @@ static u32	init_counter	= 0;
 
 extern char g_application_path[256];
 
+#ifdef DEBUG
+XRCORE_API extern void dump_phase	();
+#endif // DEBUG
+
 void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, LPCSTR fs_fname)
 {
 	strcpy					(ApplicationName,_ApplicationName);
@@ -99,13 +103,19 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs,
 
 		// Mathematics & PSI detection
 		CPU::Detect			();
-		if (strstr(Params,"-mem_debug"))	Memory._initialize		(TRUE);
-		else								Memory._initialize		(FALSE);
+		
+		Memory._initialize	(strstr(Params,"-mem_debug") ? TRUE : FALSE);
+
+		dump_phase			();
+
 		_initialize_cpu		();
+
 		Debug._initialize	();
 
 		rtc_initialize		();
+
 		xr_FS				= xr_new<CLocatorAPI>	();
+
 		xr_EFS				= xr_new<EFS_Utils>		();
 	}
 	if (init_fs){

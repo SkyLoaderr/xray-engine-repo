@@ -7,6 +7,10 @@ XRCORE_API	extern		str_container*	g_pStringContainer	= NULL;
 
 #define		HEADER		12			// ref + len + crc
 
+#ifdef DEBUG
+XRCORE_API extern void dump_phase	();
+#endif // DEBUG
+
 str_value*	str_container::dock		(str_c value)
 {
 	if (0==value)				return 0;
@@ -47,11 +51,14 @@ str_value*	str_container::dock		(str_c value)
 	// it may be the case, string is not fount or has "non-exact" match
 	if (0==result)				{
 		// Insert string
+//		dump_phase				();
 		result					= (str_value*)Memory.mem_alloc(HEADER+s_len_with_zero
 #ifdef DEBUG
 			, "storage: sstring"
 #endif
 			);
+//		dump_phase				();
+
 		result->dwReference		= 0;
 		result->dwLength		= sv->dwLength;
 		result->dwCRC			= sv->dwCRC;

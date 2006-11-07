@@ -7,6 +7,7 @@
 
 xrMemory	Memory;
 BOOL		mem_initialized	= FALSE;
+bool		shared_str_initialized	= false;
 
 // Processor specific implementations
 extern		pso_MemCopy		xrMemCopy_MMX;
@@ -15,7 +16,24 @@ extern		pso_MemFill		xrMemFill_x86;
 extern		pso_MemFill32	xrMemFill32_MMX;
 extern		pso_MemFill32	xrMemFill32_x86;
 
+#ifdef DEBUG
+XRCORE_API void dump_phase		()
+{
+	if (!Memory.debug_mode)
+		return;
+
+	static int					phase_counter = 0;
+
+	string256					temp;
+	sprintf						(temp,"x:\\$phase$%d.dump",++phase_counter);
+	Memory.mem_statistic		(temp);
+	}
+#endif // DEBUG
+
 xrMemory::xrMemory()
+#ifdef PROFILE_CRITICAL_SECTIONS
+	:debug_cs("xrMemory")
+#endif // PROFILE_CRITICAL_SECTIONS
 {
 #ifdef DEBUG
 	debug_mode	= FALSE;
@@ -66,8 +84,13 @@ void	xrMemory::_initialize	(BOOL bDebug)
 #else
 	mem_initialized				= TRUE;
 #endif
+
+//	dump_phase					();
 	g_pStringContainer			= xr_new<str_container>		();
+	shared_str_initialized		= true;
+//	dump_phase					();
 	g_pSharedMemoryContainer	= xr_new<smem_container>	();
+//	dump_phase					();
 }
 
 extern void dbg_dump_leaks();
@@ -174,6 +197,22 @@ void	xrMemory::mem_statistic	(LPCSTR fn)
 		int pool_id			= (mem_generic==p_current)?-1:p_current;
 
 		fprintf				(Fa,"0x%08X[%2d]: %8d %s\n",*(u32*)(&debug_info[it]._p),pool_id,debug_info[it]._size,debug_info[it]._name);
+	}
+
+	{
+		for (u32 k=0; k<mem_pools_count; ++k) {
+			MEMPOOL			&pool = mem_pools[k];
+			u8				*list = pool.list;
+			while (list) {
+				pool.cs.Enter	();
+				u32				temp = *(u32*)(&list);
+				if (!temp)
+					break;
+				fprintf			(Fa,"0x%08X[%2d]: %8d mempool\n",temp,k,pool.s_element);
+				list			= (u8*)*pool.access(list);
+				pool.cs.Leave	();
+			}
+		}
 	}
 
 	/*

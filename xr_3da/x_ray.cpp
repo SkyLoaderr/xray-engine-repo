@@ -313,6 +313,10 @@ void	__cdecl		intro_dshow_x	(void*)
 */
 #include "xr_ioc_cmd.h"
 
+#ifdef DEBUG
+XRCORE_API extern void dump_phase	();
+#endif // DEBUG
+
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      char *    lpCmdLine,
@@ -339,6 +343,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	g_sLaunchOnExit_params[0]	= NULL;
 	// Core
 	Core._initialize		("xray",NULL);
+#ifdef DEBUG
+//	dump_phase				();
+#endif // DEBUG
 	
 	FPU::m24r				();
 
@@ -568,7 +575,9 @@ void CApplication::LoadEnd		()
 		Msg						("* phase cmem: %d K", Memory.mem_usage()/1024);
 		Console->Execute		("stat_memory");
 		g_appLoaded				= TRUE;
-
+#ifdef DEBUG
+		dump_phase				();
+#endif // DEBUG
 	}
 }
 
@@ -606,6 +615,9 @@ void CApplication::LoadTitle	(char *S, char *S2)
 	Msg							("* phase time: %d ms",phase_timer.GetElapsed_ms());	phase_timer.Start();
 	Msg							("* phase cmem: %d K", Memory.mem_usage()/1024);
 	Console->Execute			("stat_memory");
+#ifdef DEBUG
+	dump_phase					();
+#endif // DEBUG
 	Log							(app_title);
 	
 	if (g_pGamePersistent->GameType()==1 && strstr(Core.Params,"alife"))
