@@ -31,12 +31,8 @@ public:
     		hf		= _fdopen(handle,"wb");
         }else{
 			hf			= fopen(*fName,"wb");
-#ifdef _EDITOR
 			if (hf==0)
 				Msg		("!Can't write file: '%s'. Error: '%s'.",*fName,_sys_errlist[errno]);
-#else
-			R_ASSERT3	(hf, "Can't write file. File may be open or in use.", *fName );
-#endif
 		}
 	}
 

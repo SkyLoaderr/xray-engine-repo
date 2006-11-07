@@ -2,13 +2,25 @@
 #define xrSyncronizeH
 #pragma once
 
+#ifdef DEBUG
+#	define PROFILE_CRITICAL_SECTIONS
+#endif // DEBUG
+
 // Desc: Simple wrapper for critical section
 class XRCORE_API		xrCriticalSection
 {
 private:
 	void*				pmutex;
+#ifdef PROFILE_CRITICAL_SECTIONS
+	LPCSTR				m_id;
+#endif // PROFILE_CRITICAL_SECTIONS
+
 public:
+#ifdef PROFILE_CRITICAL_SECTIONS
+    xrCriticalSection	(LPCSTR id);
+#else // PROFILE_CRITICAL_SECTIONS
     xrCriticalSection	();
+#endif // PROFILE_CRITICAL_SECTIONS
     ~xrCriticalSection	();
 
     void				Enter	();

@@ -317,7 +317,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
-						ShowIncludes="TRUE"/>
+						ShowIncludes="FALSE"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="DebugNoExceptions|Win32">

@@ -26,6 +26,9 @@ CLocatorAPI*	xr_FS	= NULL;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 CLocatorAPI::CLocatorAPI()
+#ifdef PROFILE_CRITICAL_SECTIONS
+	:m_auth_lock			("CLocatorAPI::m_auth_lock")
+#endif // PROFILE_CRITICAL_SECTIONS
 {
     m_Flags.zero		();
 	// get page size
