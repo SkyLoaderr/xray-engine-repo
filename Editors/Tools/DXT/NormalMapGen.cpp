@@ -647,7 +647,9 @@ IC u32 it_gloss_rev		(u32 d, u32 s)
 {	
 	gloss_power			+= float(color_get_A(s))/255.f;
 	return	color_rgba	(
-	color_get_A(s)+1,		// gloss
+//.	color_get_A(s)+1,		// gloss
+	clampr(color_get_A(s)+1, 0, 255),
+
 	color_get_B(d),
 	color_get_G(d),
 	color_get_R(d)		);
