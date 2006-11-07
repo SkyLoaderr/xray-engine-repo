@@ -5,10 +5,11 @@
 #include <mmsystem.h>
 
 //************************* Log-thread data
-static xrCriticalSection	csLog;
+static xrCriticalSection	csLog
 #ifdef PROFILE_CRITICAL_SECTIONS
 	("csLog")
 #endif // PROFILE_CRITICAL_SECTIONS
+;
 
 volatile BOOL				bClose				= FALSE;
 
