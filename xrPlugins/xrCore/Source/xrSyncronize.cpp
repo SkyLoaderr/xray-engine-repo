@@ -1,7 +1,12 @@
 #include "stdafx.h"
 
 #ifdef PROFILE_CRITICAL_SECTIONS
-	add_profile_portion_callback	*add_profile_portion = 0;
+static add_profile_portion_callback	*add_profile_portion = 0;
+void set_add_profile_portion	(add_profile_portion_callback *callback)
+{
+	add_profile_portion		= callback;
+}
+
 #endif // PROFILE_CRITICAL_SECTIONS
 
 struct profiler {

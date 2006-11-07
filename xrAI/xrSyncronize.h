@@ -7,8 +7,8 @@
 #endif // DEBUG
 
 #ifdef PROFILE_CRITICAL_SECTIONS
-	typedef void __stdcall add_profile_portion_callback(LPCSTR id, const u64 &time);
-	extern XRCORE_API add_profile_portion_callback	*add_profile_portion;
+	typedef void __stdcall add_profile_portion_callback	(LPCSTR id, const u64 &time);
+	XRCORE_API extern void set_add_profile_portion		(add_profile_portion_callback *callback);
 #endif // PROFILE_CRITICAL_SECTIONS
 
 // Desc: Simple wrapper for critical section
