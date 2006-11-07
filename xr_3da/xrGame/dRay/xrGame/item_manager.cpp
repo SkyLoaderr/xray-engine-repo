@@ -34,17 +34,17 @@ bool CItemManager::useful			(const CGameObject *object) const
 	if (m_object->H_Parent())
 		return				(false);
 
-	if (!m_object->movement().restrictions().accessible(m_object->Position()))
+	if (!m_object->movement().restrictions().accessible(object->Position()))
 		return				(false);
 
-	if (!m_object->movement().restrictions().accessible(m_object->ai_location().level_vertex_id()))
+	if (!m_object->movement().restrictions().accessible(object->ai_location().level_vertex_id()))
 		return				(false);
 
 	const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(object);
 	if (inventory_item && !inventory_item->useful_for_NPC())
 		return				(false);
 
-	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_id(m_object->ai_location().level_vertex_id()))
+	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_id(object->ai_location().level_vertex_id()))
 		return				(false);
 
 	return					(true);
@@ -67,6 +67,10 @@ void CItemManager::update			()
 {
 	START_PROFILE("Memory Manager/items::update")
 	inherited::update		();
+	VERIFY					(
+		!selected() ||
+		m_object->movement().restrictions().accessible(selected()->ai_location().level_vertex_id())
+	);
 	STOP_PROFILE
 }
 
