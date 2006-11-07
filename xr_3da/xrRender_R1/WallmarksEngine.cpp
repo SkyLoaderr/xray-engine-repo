@@ -45,6 +45,9 @@ CWallmarksEngine::wm_slot* CWallmarksEngine::AppendSlot	(ref_shader shader)
 //////////////////////////////////////////////////////////////////////
 
 CWallmarksEngine::CWallmarksEngine	()
+#ifdef PROFILE_CRITICAL_SECTIONS
+	:lock("CWallmarksEngine")
+#endif // PROFILE_CRITICAL_SECTIONS
 {
 	static_pool.reserve		(256);
 	marks.reserve			(256);
