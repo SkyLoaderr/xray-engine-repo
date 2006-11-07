@@ -81,6 +81,9 @@ void SBullet::Init(const Fvector& position,
 //
 
 CBulletManager::CBulletManager()
+#ifdef PROFILE_CRITICAL_SECTIONS
+	:m_Lock("CBulletManager")
+#endif // PROFILE_CRITICAL_SECTIONS
 {
 	m_Bullets.clear			();
 	m_Bullets.reserve		(100);

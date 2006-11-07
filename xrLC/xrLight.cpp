@@ -159,7 +159,11 @@ class CVertexLightTasker
 	xrCriticalSection	cs;
 	volatile u32		index;	
 public:
-	CVertexLightTasker	() : index(0)	{};
+	CVertexLightTasker	() : index(0)
+#ifdef PROFILE_CRITICAL_SECTIONS
+		,cs("CVertexLightTasker")
+#endif // PROFILE_CRITICAL_SECTIONS
+	{};
 	
 	void	init		()
 	{
