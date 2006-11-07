@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
-typedef void add_profile_portion_callback(LPCSTR id, const u64 &time);
-add_profile_portion_callback	*add_profile_portion = 0;
-
+#ifdef PROFILE_CRITICAL_SECTIONS
+	add_profile_portion_callback	*add_profile_portion = 0;
+#endif // PROFILE_CRITICAL_SECTIONS
 
 struct profiler {
 	LPCSTR					m_timer_id;

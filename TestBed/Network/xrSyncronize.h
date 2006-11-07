@@ -6,6 +6,11 @@
 #	define PROFILE_CRITICAL_SECTIONS
 #endif // DEBUG
 
+#ifdef PROFILE_CRITICAL_SECTIONS
+	typedef void add_profile_portion_callback(LPCSTR id, const u64 &time);
+	XRCORE_API add_profile_portion_callback	*add_profile_portion;
+#endif // PROFILE_CRITICAL_SECTIONS
+
 // Desc: Simple wrapper for critical section
 class XRCORE_API		xrCriticalSection
 {
