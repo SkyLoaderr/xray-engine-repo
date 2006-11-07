@@ -86,7 +86,7 @@ function se_monster:can_switch_online ()
 		return self:get_job_online()
 	end
 
-	self:get_ini()
+--'	self:get_ini()
 
     --стандартная проверка у родителя, если нет спавнера или игрок помер
 	if self.ini == nil or self.spawner_present == false then --or (db.actor ~= nil and db.actor:alive () == false)
@@ -197,19 +197,8 @@ function se_monster:on_death(killer)
 	sim_statistic.unregister_monster(self)
 end
 --------------------
---[[
-function se_monster:get_smart_terrain_conditions()
-	self:get_ini()
-
-	if not self.smart_terrain_conditions_initialized then
-		self.smart_terrain_conditions             = smart_terrain.read_smart_terrain_conditions( self )
-		self.smart_terrain_conditions_initialized = true
-	end
-
-	return self.smart_terrain_conditions
-end]]
---------------------
 function se_monster:fill_exclusives()
+	self:get_ini()
 	self.smart_terrain_conditions             = smart_terrain.read_smart_terrain_conditions( self )
 
 	if self.smart_terrain_conditions then
