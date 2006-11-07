@@ -21,6 +21,9 @@ void	dump_URL	(LPCSTR p, IDirectPlay8Address* A)
 
 // 
 INetQueue::INetQueue()		
+#ifdef PROFILE_CRITICAL_SECTIONS
+	:cs("INetQueue")
+#endif // PROFILE_CRITICAL_SECTIONS
 {
 	unused.reserve	(128);
 	for (int i=0; i<16; i++)
@@ -171,6 +174,9 @@ static HRESULT WINAPI Handler (PVOID pvUserContext, DWORD dwMessageType, PVOID p
 }
 
 IPureClient::IPureClient	(CTimer* timer): net_Statistic(timer)
+#ifdef PROFILE_CRITICAL_SECTIONS
+	,net_csEnumeration("IPureClient::net_csEnumeration")
+#endif // PROFILE_CRITICAL_SECTIONS
 {
 	device_timer			= timer;
 	net_TimeDelta_User		= 0;

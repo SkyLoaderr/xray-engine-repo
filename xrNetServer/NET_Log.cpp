@@ -61,6 +61,9 @@ string64 PacketName[] = {
 };
 //---------------------------------------------------------
 INetLog::INetLog(LPCSTR sFileName, u32 dwStartTime)
+#ifdef PROFILE_CRITICAL_SECTIONS
+	:m_cs("NET_Log")
+#endif // PROFILE_CRITICAL_SECTIONS
 {
 	strcpy(m_cFileName, sFileName);
 

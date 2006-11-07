@@ -50,6 +50,10 @@ static HRESULT WINAPI Handler (PVOID pvUserContext, DWORD dwMessageType, PVOID p
 }
 
 IPureServer::IPureServer	(CTimer* timer)
+#ifdef PROFILE_CRITICAL_SECTIONS
+	:csPlayers("IPureServer::csPlayers")
+	,csMessage("IPureServer::csMessage")
+#endif // PROFILE_CRITICAL_SECTIONS
 {
 	device_timer			= timer;
 	stats.clear				();
