@@ -393,6 +393,7 @@ void CVisualMemoryManager::add_visible_object	(const CObject *object, float time
 
 void CVisualMemoryManager::add_visible_object	(const CVisibleObject visible_object)
 {
+	VERIFY										(m_objects);
 	xr_vector<CVisibleObject>::iterator			J = std::find(m_objects->begin(),m_objects->end(),object_id(visible_object.m_object));
 	if (m_objects->end() != J)
 		*J				= visible_object;
@@ -518,10 +519,10 @@ void CVisualMemoryManager::update				(float time_delta)
 {
 	START_PROFILE("Memory Manager/visuals/update")
 
+	clear_delayed_objects				();
+
 	if (!enabled())
 		return;
-
-	clear_delayed_objects				();
 
 	m_last_update_time					= Device.dwTimeGlobal;
 
@@ -715,11 +716,13 @@ void CVisualMemoryManager::on_requested_spawn	(CObject *object)
 	for ( ; I != E; ++I) {
 		if ((*I).m_object_id != object->ID())
 			continue;
-
 		
-		(*I).m_visible_object.m_object	= smart_cast<CGameObject*>(object);
-		VERIFY							((*I).m_visible_object.m_object);
-		add_visible_object				((*I).m_visible_object);
+		if (m_object->g_Alive()) {
+			(*I).m_visible_object.m_object	= smart_cast<CGameObject*>(object);
+			VERIFY						((*I).m_visible_object.m_object);
+			add_visible_object			((*I).m_visible_object);
+		}
+
 		m_delayed_objects.erase			(I);
 		return;
 	}
