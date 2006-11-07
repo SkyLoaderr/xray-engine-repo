@@ -11,7 +11,11 @@ const	float			gi_clip				= 0.05f;
 const	u32				gi_maxlevel			= 4;
 //////////////////////////////////////////////////////////////////////////
 xr_vector<R_Light>*		task;
-xrCriticalSection		task_cs;
+xrCriticalSection		task_cs
+#ifdef PROFILE_CRITICAL_SECTIONS
+	("task_cs")
+#endif // PROFILE_CRITICAL_SECTIONS
+;
 u32						task_it;
 
 //////////////////////////////////////////////////////////////////////////

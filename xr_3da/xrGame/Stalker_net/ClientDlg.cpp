@@ -237,7 +237,11 @@ IDirectPlay8Address		*g_pClientDeviceAddress	;
 
 DPNHANDLE				g_dpnhEnum = NULL;
 //-------------------------------------------------
-xrCriticalSection	net_csEnumeration;
+xrCriticalSection	net_csEnumeration
+#ifdef PROFILE_CRITICAL_SECTIONS
+	("net_csEnumeration")
+#endif // PROFILE_CRITICAL_SECTIONS
+;
 
 struct HOST_NODE
 {

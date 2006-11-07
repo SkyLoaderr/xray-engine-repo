@@ -8,7 +8,11 @@
 #include	"Render.h"
 
 int			psSkeletonUpdate	= 32;
-xrCriticalSection	UCalc_Mutex	;
+xrCriticalSection	UCalc_Mutex
+#ifdef PROFILE_CRITICAL_SECTIONS
+	("UCalc_Mutex")
+#endif // PROFILE_CRITICAL_SECTIONS
+;
 
 //////////////////////////////////////////////////////////////////////////
 // BoneInstance methods

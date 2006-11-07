@@ -11,11 +11,11 @@
 #ifdef XRGAME_EXPORTS
 #	ifdef DEBUG
 #		define	USE_PROFILER
-#	endif
-#endif
+#	endif // DEBUG
+#endif // XRGAME_EXPORTS
 
 #ifdef USE_PROFILER
-#include "ai_debug.h"
+#	include "ai_debug.h"
 
 struct CProfileResultPortion {
 	LPCSTR			m_timer_id;
@@ -76,12 +76,12 @@ extern Flags32 psAI_Flags;
 
 IC	CProfiler&	profiler();
 		
-#define START_PROFILE(a) { CProfilePortion	__profile_portion__(a);
-#define STOP_PROFILE     }
+#	define START_PROFILE(a) { CProfilePortion	__profile_portion__(a);
+#	define STOP_PROFILE     }
 
-#include "profiler_inline.h"
+#	include "profiler_inline.h"
 
-#else
+#else // DEBUG
 #	define START_PROFILE(a) {
 #	define STOP_PROFILE		}
-#endif
+#endif // DEBUG

@@ -364,7 +364,11 @@ void OGF::CalculateTB()
 }
 
 // Make Progressive
-xrCriticalSection			progressive_cs;
+xrCriticalSection			progressive_cs
+#ifdef PROFILE_CRITICAL_SECTIONS
+	("progressive_cs")
+#endif // PROFILE_CRITICAL_SECTIONS
+;
 void OGF::MakeProgressive	(float metric_limit)
 {
 	// test

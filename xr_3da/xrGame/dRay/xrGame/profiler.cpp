@@ -10,6 +10,10 @@
 #include "profiler.h"
 #include "../gamefont.h"
 
+#ifdef PROFILE_CRITICAL_SECTIONS
+
+#endif // PROFILE_CRITICAL_SECTIONS
+
 CProfiler	*g_profiler			= 0;
 LPCSTR		indent				= "  ";
 char		white_character		= '.';

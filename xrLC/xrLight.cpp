@@ -3,7 +3,11 @@
 #include "xrThread.h"
 #include "xrSyncronize.h"
 
-xrCriticalSection	task_CS;
+xrCriticalSection	task_CS
+#ifdef PROFILE_CRITICAL_SECTIONS
+	("task_C_S")
+#endif // PROFILE_CRITICAL_SECTIONS
+;
 xr_vector<int>		task_pool;
 
 class CLMThread		: public CThread
@@ -100,7 +104,11 @@ void CBuild::Light()
 typedef	xr_multimap<float,vecVertex>	mapVert;
 typedef	mapVert::iterator				mapVertIt;
 mapVert*								g_trans;
-xrCriticalSection						g_trans_CS;
+xrCriticalSection						g_trans_CS
+#ifdef PROFILE_CRITICAL_SECTIONS
+	("g_trans_CS")
+#endif // PROFILE_CRITICAL_SECTIONS
+;
 
 void	g_trans_register_internal		(Vertex* V)
 {

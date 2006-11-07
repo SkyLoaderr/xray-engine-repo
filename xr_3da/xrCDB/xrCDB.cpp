@@ -27,6 +27,9 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 
 // Model building
 MODEL::MODEL	()
+#ifdef PROFILE_CRITICAL_SECTIONS
+	:cs("MODEL")
+#endif // PROFILE_CRITICAL_SECTIONS
 {
 	tree		= 0;
 	tris		= 0;

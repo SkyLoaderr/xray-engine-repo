@@ -21,6 +21,9 @@ extern LPCSTR GAME_CONFIG;
 #define NO_MULTITHREADING
 
 CGameSpawnConstructor::CGameSpawnConstructor	(LPCSTR name, LPCSTR output, LPCSTR start, bool no_separator_check)
+#ifdef PROFILE_CRITICAL_SECTIONS
+	:m_critical_section("CGameSpawnConstructor")
+#endif // PROFILE_CRITICAL_SECTIONS
 {
 	load_spawns						(name,no_separator_check);
 	process_spawns					();

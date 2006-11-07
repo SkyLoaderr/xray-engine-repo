@@ -9,8 +9,11 @@
 #pragma once
 
 IC	CProfiler::CProfiler				()
+#ifdef PROFILE_CRITICAL_SECTIONS
+	:m_section("")
+#endif // PROFILE_CRITICAL_SECTIONS
 {
-	m_actual					= true;
+	m_actual							= true;
 }
 
 IC	CProfilePortion::CProfilePortion	(LPCSTR timer_id)

@@ -4,6 +4,9 @@
 
 // 
 GameEventQueue::GameEventQueue()		
+#ifdef PROFILE_CRITICAL_SECTIONS
+	:cs("GameEventQueue")
+#endif // PROFILE_CRITICAL_SECTIONS
 {
 	unused.reserve	(128);
 	for (int i=0; i<16; i++)
