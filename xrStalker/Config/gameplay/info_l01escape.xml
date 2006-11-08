@@ -5,10 +5,10 @@
 
 	<!-- Tutorial artefact -->
 	<info_portion id="tutorial_artefact_start">
-		<task>tutorial_find_artefact</task>
+	<!-- 	<task>esc_flash_task</task>
 		<article>zone_anomalies_meat</article>
 		<article>zone_artifact_af-blood</article>
-		<article>tutorial_artefact</article>
+		<article>tutorial_artefact</article> -->
 	</info_portion>
 	<info_portion id="tutorial_artefact_gain"></info_portion>
 	<info_portion id="tutorial_artefact_done"></info_portion>
@@ -28,9 +28,9 @@
 
 	<!-- Tutorial wounded -->
 	<info_portion id="tutorial_wounded_start">
-		<task>tutorial_help_wounded</task>
+	 	<task>esc_flash_task</task>
 		<article>tutorial_wounded_help</article>
-		<article>sl_first_opinions</article>
+		<article>sl_first_opinions</article>   <!--commented -->
 	</info_portion>
 	<info_portion id="esc_first_novice_dead"></info_portion>
 	<info_portion id="esc_second_novice_dead"></info_portion>
@@ -93,8 +93,8 @@
 	
 	<!-- Dinamyte -->
 	<info_portion id="escape_dynamite_start">
-		<task>esc_dinamit_to_volk</task>
-<!--		<article>esc_volk_dynamite</article> -->
+<!--		<task>esc_dinamit_to_volk</task>
+		<article>esc_volk_dynamite</article> -->
 	</info_portion>
 	<info_portion id="escape_dynamite_meet"></info_portion>
 	<info_portion id="esc_petruha_great"></info_portion>
@@ -205,8 +205,8 @@
 	
 	<!-- trader bandits on factory -->
 	<info_portion id="esc_kill_bandits_quest_have">
-		<task>esc_dinamit_to_volk</task>
-		<article>kill_factory_bandits</article>
+	<!--	<task>esc_dinamit_to_volk</task>
+		<article>kill_factory_bandits</article> -->
 	</info_portion>
 	<info_portion id="esc_kill_bandits_quest_kill"></info_portion>
 	<info_portion id="esc_kill_bandits_noquest_kill"></info_portion>
