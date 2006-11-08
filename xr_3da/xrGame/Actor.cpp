@@ -1712,3 +1712,9 @@ bool CActor::is_on_ground()
 {
 	return (character_physics_support()->movement()->Environment() != CPHMovementControl::peInAir);
 }
+
+CCustomOutfit* CActor::GetOutfit()
+{
+	PIItem _of	= inventory().m_slots[OUTFIT_SLOT].m_pIItem;
+	return _of?smart_cast<CCustomOutfit*>(_of):NULL;
+}

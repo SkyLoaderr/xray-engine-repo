@@ -1,9 +1,3 @@
-// Actor.h: interface for the CActor class.
-//
-//////////////////////////////////////////////////////////////////////
- 
-#if !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)
-#define AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_
 #pragma once
 
 #include "../feel_touch.h"
@@ -26,7 +20,7 @@ using namespace ACTOR_DEFS;
 class CInfoPortion;
 struct GAME_NEWS_DATA;
 class CActorCondition;
-
+class CCustomOutfit;
 class CKnownContactsRegistryWrapper;
 class CEncyclopediaRegistryWrapper;
 class CGameTaskRegistryWrapper;
@@ -687,7 +681,7 @@ protected:
 		void							SelectBestWeapon				(CObject* O);
 public:
 		void							SetWeaponHideState				(u32 State, bool bSet);
-
+		CCustomOutfit*					GetOutfit();
 private:
 	CActorCondition				*m_entity_condition;
 
@@ -759,5 +753,3 @@ IC	CActorCondition	&CActor::conditions	() const{ VERIFY(m_entity_condition); ret
 extern CActor*		g_actor;
 CActor*				Actor		();
 extern const float	s_fFallTime;
-
-#endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)

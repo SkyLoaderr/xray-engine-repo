@@ -1,13 +1,16 @@
-[without_outfit]
+[outfit_base]
+additional_inventory_weight		= 0
+additional_inventory_weight2	= 0
+
+[without_outfit]:outfit_base
 ;базовый костюм сталкера - костюм новичка. Обычная одежда туриста - штормовка+сапоги
-full_scale_icon_x	= 6			;иконка сталкера в без костюма в полный рост
-full_scale_icon_y	= 6
+full_scale_icon		= 6,6
 
 
 ;---------------------------------------------------------------------------------------------
 ;		КОСТЮМ НОВИЧКА
 ;---------------------------------------------------------------------------------------------
-[novice_outfit]
+[novice_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\novice_outfit"
@@ -29,8 +32,7 @@ inv_grid_x			= 0
 inv_grid_y			= 18
 cost				= 1000
 slot				= 6
-full_scale_icon_x	= 0		;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
+full_scale_icon		= 0,0		;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_novice_outfit_immunities
 
@@ -61,7 +63,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		КОСТЮМ БАНДИТА
 ;---------------------------------------------------------------------------------------------
-[bandit_outfit]
+[bandit_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\bandit_outfit"
@@ -83,8 +85,7 @@ inv_grid_x			= 12
 inv_grid_y			= 0
 cost				= 3000
 slot				= 6
-full_scale_icon_x	= 0			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
+full_scale_icon		= 0,6			;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_bandit_outfit_immunities
 
@@ -116,7 +117,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		КОСТЮМ НАЕМНИКА
 ;---------------------------------------------------------------------------------------------
-[killer_outfit]
+[killer_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\killer_outfit"
@@ -138,8 +139,7 @@ inv_grid_height		= 3
 inv_grid_x			= 4
 inv_grid_y			= 15
 cost				= 6000
-full_scale_icon_x	= 4			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
+full_scale_icon		= 4,11			;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_killer_outfit_immunities
 
@@ -172,7 +172,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		КОСТЮМ МОНОЛИТОВЦА
 ;---------------------------------------------------------------------------------------------
-[monolit_outfit]
+[monolit_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\monolit_outfit"
@@ -194,8 +194,7 @@ inv_grid_x			= 10
 inv_grid_y			= 16
 cost				= 10000
 slot				= 6
-full_scale_icon_x	= 6			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
+full_scale_icon		= 6,11			;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_monolit_outfit_immunities
 
@@ -228,7 +227,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		КОСТЮМ ВОЕННОГО СПЕЦНАЗА
 ;---------------------------------------------------------------------------------------------
-[specops_outfit]
+[specops_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\specops_outfit"
@@ -250,8 +249,7 @@ inv_grid_x			= 10
 inv_grid_y			= 13
 cost				= 12000
 slot				= 6
-full_scale_icon_x	= 4			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
+full_scale_icon		= 4,6			;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_specops_outfit_immunities
 
@@ -284,7 +282,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		КОСТЮМ МИЛИТАРИ
 ;---------------------------------------------------------------------------------------------
-[military_outfit]
+[military_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\military_outfit"
@@ -306,8 +304,7 @@ inv_grid_height		= 3
 inv_grid_x			= 18
 inv_grid_y			= 17
 cost				= 40000
-full_scale_icon_x	= 10		;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
+full_scale_icon		= 10,6		;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_military_outfit_immunities
 
@@ -340,7 +337,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		КОСТЮМ НЕЙТРАЛЬНОГО СТАЛКЕРА
 ;---------------------------------------------------------------------------------------------
-[stalker_outfit]
+[stalker_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\stalker_outfit"
@@ -362,8 +359,7 @@ inv_grid_x			= 6
 inv_grid_y			= 15
 cost				= 15000
 slot				= 6
-full_scale_icon_x	= 14			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
+full_scale_icon		= 14,11			;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_stalker_outfit_immunities
 
@@ -398,7 +394,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		НАУЧНЫЙ КОСТЮМ НЕЙТРАЛЬНОГО СТАЛКЕРА
 ;---------------------------------------------------------------------------------------------
-[scientific_outfit]
+[scientific_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\scientific_outfit"
@@ -420,8 +416,7 @@ inv_grid_height		= 3
 inv_grid_x			= 16
 inv_grid_y			= 13
 cost				= 30000
-full_scale_icon_x	= 12			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
+full_scale_icon		= 12,11			;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_scientific_outfit_immunities
 
@@ -454,7 +449,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		ЭКЗОСКЕЛЕТ НЕЙТРАЛЬНОГО СТАЛКЕРА
 ;---------------------------------------------------------------------------------------------
-[exo_outfit]
+[exo_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\exo_outfit"
@@ -476,8 +471,7 @@ inv_grid_height		= 3
 inv_grid_x			= 14
 inv_grid_y			= 13
 cost				= 50000
-full_scale_icon_x	= 2			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
+full_scale_icon		= 2,11			;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_exo_outfit_immunities
 
@@ -493,8 +487,10 @@ explosion_protection 			= 0.8
 fire_wound_protection  			= 0.75
 
 ;запрещение режима Sprint для Актера
-sprint_allowed			= false
-bones_koeff_protection = exo_helmet_damage
+sprint_allowed					= false
+bones_koeff_protection			= exo_helmet_damage
+additional_inventory_weight		= 100
+additional_inventory_weight2	= 30 ; 40+
 
 [sect_exo_outfit_immunities]
 burn_immunity				= 0.0001			;коэффициенты иммунитета самого костюма
@@ -512,7 +508,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		ЛЕГКИЙ КОСТЮМ СВОБОДЫ
 ;---------------------------------------------------------------------------------------------
-[svoboda_light_outfit]
+[svoboda_light_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\svoboda_light_outfit"
@@ -534,8 +530,7 @@ inv_grid_x			= 12
 inv_grid_y			= 13
 cost				= 10000
 slot				= 6
-full_scale_icon_x	= 10			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
+full_scale_icon		= 10,11			;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_svoboda_light_outfit_immunities
 
@@ -569,7 +564,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		ТЯЖЕЛЫЙ КОСТЮМ СВОБОДЫ
 ;---------------------------------------------------------------------------------------------
-[svoboda_heavy_outfit]
+[svoboda_heavy_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\svoboda_heavy_outfit"
@@ -591,8 +586,7 @@ inv_grid_x			= 8
 inv_grid_y			= 15
 cost				= 12500
 slot				= 6
-full_scale_icon_x	= 2			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
+full_scale_icon		= 2,6			;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_svoboda_heavy_outfit_immunities
 
@@ -625,7 +619,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		ОБЫЧНЫЙ КОСТЮМ ДОЛГА
 ;---------------------------------------------------------------------------------------------
-[dolg_outfit]
+[dolg_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\dolg_outfit"
@@ -647,8 +641,7 @@ inv_grid_x			= 12
 inv_grid_y			= 16
 cost				= 14000
 slot				= 6
-full_scale_icon_x	= 8			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 11
+full_scale_icon		= 8,11			;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_dolg_outfit_immunities
 
@@ -681,7 +674,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		НАУЧНЫЙ КОСТЮМ ДОЛГА
 ;---------------------------------------------------------------------------------------------
-[dolg_scientific_outfit]
+[dolg_scientific_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\dolg_scientific_outfit"
@@ -703,8 +696,7 @@ inv_grid_height		= 3
 inv_grid_x			= 16
 inv_grid_y			= 16
 cost				= 25000
-full_scale_icon_x	= 8		;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
+full_scale_icon		= 8,6		;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_dolg_scientific_outfit_immunities
 
@@ -737,7 +729,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		ОБЫЧНЫЙ КОСТЮМ УЧЕННОГО
 ;---------------------------------------------------------------------------------------------
-[ecolog_outfit]
+[ecolog_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\ecolog_outfit"
@@ -759,8 +751,7 @@ inv_grid_height		= 3
 inv_grid_x			= 18
 inv_grid_y			= 13
 cost				= 15000
-full_scale_icon_x	= 14			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
+full_scale_icon		= 14,6			;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_ecolog_outfit_immunities
 
@@ -794,7 +785,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		УКРЕПЛЕННЫЙ КОСТЮМ УЧЕННОГО
 ;---------------------------------------------------------------------------------------------
-[protection_outfit]
+[protection_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\protection_outfit"
@@ -816,8 +807,7 @@ inv_grid_height		= 3
 inv_grid_x			= 14
 inv_grid_y			= 16
 cost				= 24000
-full_scale_icon_x	= 12			;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
+full_scale_icon		= 12			;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_protection_outfit_immunities
 
@@ -857,7 +847,7 @@ fire_wound_immunity			= 0.00001
 ;---------------------------------------------------------------------------------------------
 ;		УСТАРЕВШИЕ КОСТЮМЫ! НЕ ЮЗАТЬ
 ;---------------------------------------------------------------------------------------------
-[military_stalker_outfit]
+[military_stalker_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\obsolete\military_stalker"
@@ -879,8 +869,7 @@ inv_grid_height		= 3
 inv_grid_x			= 18
 inv_grid_y			= 17
 cost				= 0
-full_scale_icon_x	= 10		;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
+full_scale_icon		= 10,6		;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_military_stalker_outfit_immunities
 
@@ -910,7 +899,7 @@ fire_wound_immunity			= 1.00
 
 
 
-[military_commander_outfit]
+[military_commander_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\obsolete\commander"
@@ -932,8 +921,7 @@ inv_grid_height		= 3
 inv_grid_x			= 18
 inv_grid_y			= 17
 cost				= 12000
-full_scale_icon_x	= 10		;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
+full_scale_icon		= 10,6		;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_military_commander_outfit_immunities
 
@@ -963,7 +951,7 @@ fire_wound_immunity			= 1.00
 
 
 
-[soldier_outfit]
+[soldier_outfit]:outfit_base
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\obsolete\soldier_outfit"
@@ -985,8 +973,7 @@ inv_grid_x			= 0
 inv_grid_y			= 18
 cost				= 5000
 slot				= 6
-full_scale_icon_x	= 6		;иконка сталкера в костюме в полный рост
-full_scale_icon_y	= 6
+full_scale_icon		= 6,6		;иконка сталкера в костюме в полный рост
 
 immunities_sect			= sect_soldier_outfit_immunities
 

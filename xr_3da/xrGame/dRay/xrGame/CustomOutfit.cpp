@@ -1,8 +1,3 @@
-///////////////////////////////////////////////////////////////
-// CustomOutfit.cpp
-// CustomOutfit - защитные костюмы для персонажей
-///////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 
 #include "customoutfit.h"
@@ -48,9 +43,6 @@ void CCustomOutfit::Load(LPCSTR section)
 	m_HitTypeProtection[ALife::eHitTypeExplosion]	= pSettings->r_float(section,"explosion_protection");
 	m_HitTypeProtection[ALife::eHitTypeFireWound]	= pSettings->r_float(section,"fire_wound_protection");
 
-	m_iOutfitIconX = pSettings->r_u32(section, "full_scale_icon_x");
-	m_iOutfitIconY = pSettings->r_u32(section, "full_scale_icon_y");
-		
 	if (pSettings->line_exist(section, "actor_visual"))
 		m_ActorVisual = pSettings->r_string(section, "actor_visual");
 	else
@@ -61,6 +53,9 @@ void CCustomOutfit::Load(LPCSTR section)
 		m_fPowerLoss = pSettings->r_float(section, "power_loss");
 	else
 		m_fPowerLoss = 1.0f;	
+
+	m_additional_weight				= pSettings->r_u32(section,"additional_inventory_weight");
+	m_additional_weight2			= pSettings->r_u32(section,"additional_inventory_weight2");
 }
 
 void CCustomOutfit::Hit(float hit_power, ALife::EHitType hit_type)
@@ -163,3 +158,8 @@ float CCustomOutfit::GetPowerLoss()
 	};
 	return m_fPowerLoss;
 };
+
+Fvector2 CCustomOutfit::GetIconPos()
+{
+	return pSettings->r_fvector2(cNameSect(),"full_scale_icon");
+}

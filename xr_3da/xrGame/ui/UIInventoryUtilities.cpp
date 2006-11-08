@@ -32,11 +32,11 @@ const LPCSTR ratingField			= "rating_names";
 const LPCSTR reputationgField		= "reputation_names";
 const LPCSTR goodwillField		= "goodwill_names";
 
-static ref_shader	g_BuyMenuShader			= NULL;
-static ref_shader	g_EquipmentIconsShader	= NULL;
-static ref_shader	g_CharIconsShader		= NULL;
-static ref_shader	g_MapIconsShader		= NULL;
-static ref_shader	g_MPCharIconsShader		= NULL;
+ref_shader	g_BuyMenuShader			= NULL;
+ref_shader	g_EquipmentIconsShader	= NULL;
+ref_shader	g_CharIconsShader		= NULL;
+ref_shader	g_MapIconsShader		= NULL;
+ref_shader	g_MPCharIconsShader		= NULL;
 static CUIStatic*	GetUIStatic				();
 const int			hugeValue				= 0x0ddddddd;
 

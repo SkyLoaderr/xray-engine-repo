@@ -16,6 +16,7 @@
 #include "script_callback_ex.h"
 #include "object_broker.h"
 #include "weapon.h"
+#include "CustomOutfit.h"
 
 #define MAX_SATIETY					1.0f
 #define START_SATIETY				0.5f
@@ -122,7 +123,14 @@ void CActorCondition::UpdateCondition()
 
 		if( true /*!IsSleeping()*/ ){
 			float weight = object().inventory().TotalWeight();
+
 			float base_w = 40.0f;
+
+			CCustomOutfit* outfit	= m_object->GetOutfit();
+			if(outfit)
+				base_w += outfit->m_additional_weight2;
+
+
 			k_max_power = 1.0f + _min(weight,base_w)/base_w + _max(0.0f, (weight-base_w)/10.0f);
 		}else
 			k_max_power = 1.0f;
@@ -245,7 +253,13 @@ bool CActorCondition::IsCantWalkWeight() const
 {
 	if(IsGameTypeSingle() && !GodMode())
 	{
-		if( object().inventory().TotalWeight() > m_MaxWalkWeight )
+		float max_w				= m_MaxWalkWeight;
+
+		CCustomOutfit* outfit	= m_object->GetOutfit();
+		if(outfit)
+			max_w += outfit->m_additional_weight;
+
+		if( object().inventory().TotalWeight() > max_w )
 			return true;
 	}
 	return false;

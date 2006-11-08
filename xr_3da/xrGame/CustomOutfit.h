@@ -1,9 +1,3 @@
-///////////////////////////////////////////////////////////////
-// CustomOutfit.h
-// CustomOutfit - защитные костюмы для персонажей
-///////////////////////////////////////////////////////////////
-
-
 #pragma once
 
 #include "inventory_item_object.h"
@@ -33,16 +27,12 @@ public:
 	//если на персонаже надет костюм
 	float							GetPowerLoss		();
 
-	int								GetIconX			()						{return m_iOutfitIconX;}
-	int								GetIconY			()						{return m_iOutfitIconY;}
+	Fvector2						GetIconPos			();
 
 	virtual void					OnMoveToSlot		();
 	virtual void					OnMoveToRuck		();
 
 protected:
-	int								m_iOutfitIconX;
-	int								m_iOutfitIconY;
-
 	HitImmunity::HitTypeSVec		m_HitTypeProtection;
 	float							m_fPowerLoss;
 
@@ -52,6 +42,8 @@ protected:
 	u32								m_ef_equipment_type;
 
 public:
+	float							m_additional_weight;
+	float							m_additional_weight2;
 	virtual u32						ef_equipment_type	() const;
 	virtual	BOOL					BonePassBullet					(int boneID);
 };

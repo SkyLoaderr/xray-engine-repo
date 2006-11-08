@@ -334,9 +334,14 @@ public:
 		}
 */
 		string256	op_server,op_client;
+		op_server[0] = 0;
+		op_client[0] = 0;
 		
 		parse		(op_server,args,"server");	// 1. server
 		parse		(op_client,args,"client");	// 2. client
+		
+		if(!op_client[0] && strstr(op_server,"single"))
+			strcpy(op_client, "localhost");
 
 		if (0==xr_strlen(op_client))	
 		{

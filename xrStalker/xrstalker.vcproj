@@ -2645,6 +2645,9 @@
 					<File
 						RelativePath=".\Config\models\objects\wood_board_br_03.ltx">
 					</File>
+					<File
+						RelativePath=".\Config\models\objects\wood_fence.ltx">
+					</File>
 				</Filter>
 				<Filter
 					Name="vehicles"
