@@ -70,7 +70,8 @@ protected:
 	IC		void		convert_string		(LPCSTR str, shared_str &out, u32 max_string_size);
 
 public:
-	IC					CProfiler			();
+						CProfiler			();
+						~CProfiler			();
 			void		show_stats			(CGameFont *game_font, bool show);
 			void		clear				();
 	IC		void		add_profile_portion	(const CProfileResultPortion &profile_portion);

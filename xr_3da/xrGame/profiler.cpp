@@ -11,7 +11,7 @@
 #include "../gamefont.h"
 
 #ifdef PROFILE_CRITICAL_SECTIONS
-void add_profile_portion(LPCSTR id, const u64 &time)
+void add_profile_portion				(LPCSTR id, const u64 &time)
 {
 	static volatile bool			adding = false;
 	if (adding)
@@ -30,7 +30,7 @@ void add_profile_portion(LPCSTR id, const u64 &time)
 	temp.m_timer_id					= id;
 	temp.m_time						= time;
 	adding							= true;
-	profiler().add_profile_portion	(temp);
+//	profiler().add_profile_portion	(temp);
 	adding							= false;
 }
 #endif // PROFILE_CRITICAL_SECTIONS
@@ -40,13 +40,28 @@ LPCSTR		indent				= "  ";
 char		white_character		= '.';
 
 struct CProfilePortionPredicate {
-	IC		bool operator()	(const CProfileResultPortion &_1, const CProfileResultPortion &_2) const
+	IC		bool operator()			(const CProfileResultPortion &_1, const CProfileResultPortion &_2) const
 	{
 		return					(xr_strcmp(_1.m_timer_id,_2.m_timer_id) < 0);
 	}
 };
 
-IC	u32 compute_string_length(LPCSTR str)
+CProfiler::CProfiler				()
+#ifdef PROFILE_CRITICAL_SECTIONS
+	:m_section("")
+#endif // PROFILE_CRITICAL_SECTIONS
+{
+	m_actual							= true;
+}
+
+CProfiler::~CProfiler				()
+{
+#ifdef PROFILE_CRITICAL_SECTIONS
+	set_add_profile_portion		(0);
+#endif // PROFILE_CRITICAL_SECTIONS
+}
+
+IC	u32 compute_string_length		(LPCSTR str)
 {
 	LPCSTR						i, j = str;
 	u32							count = 0;
@@ -57,7 +72,7 @@ IC	u32 compute_string_length(LPCSTR str)
 	return						(count*xr_strlen(indent) + xr_strlen(j));
 }
 
-IC	void CProfiler::convert_string(LPCSTR str, shared_str &out, u32 max_string_size)
+IC	void CProfiler::convert_string	(LPCSTR str, shared_str &out, u32 max_string_size)
 {
 	string256					m_temp;
 	LPCSTR						i, j = str;
@@ -77,7 +92,7 @@ IC	void CProfiler::convert_string(LPCSTR str, shared_str &out, u32 max_string_si
 	out							= m_temp;
 }
 
-void CProfiler::setup_timer	(LPCSTR timer_id, const u64 &timer_time, const u32 &call_count)
+void CProfiler::setup_timer			(LPCSTR timer_id, const u64 &timer_time, const u32 &call_count)
 {
 	string256					m_temp;
 	float						_time = float(timer_time)*1000.f/CPU::qpc_freq;
@@ -120,7 +135,7 @@ void CProfiler::setup_timer	(LPCSTR timer_id, const u64 &timer_time, const u32 &
 	(*i).second.m_update_time	= Device.dwTimeGlobal;
 }
 
-void CProfiler::clear		()
+void CProfiler::clear				()
 {
 	m_section.Enter				();
 	m_portions.clear			();
@@ -130,7 +145,7 @@ void CProfiler::clear		()
 	m_call_count				= 0;
 }
 
-void CProfiler::show_stats	(CGameFont *game_font, bool show)
+void CProfiler::show_stats			(CGameFont *game_font, bool show)
 {
 #ifdef PROFILE_CRITICAL_SECTIONS
 	set_add_profile_portion		(&::add_profile_portion);

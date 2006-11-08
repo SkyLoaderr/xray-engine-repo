@@ -8,17 +8,6 @@
 
 #pragma once
 
-IC	CProfiler::CProfiler				()
-#ifdef PROFILE_CRITICAL_SECTIONS
-	:m_section("")
-#endif // PROFILE_CRITICAL_SECTIONS
-{
-	m_actual							= true;
-#if 0//def PROFILE_CRITICAL_SECTIONS
-	set_add_profile_portion				(&::add_profile_portion);
-#endif // PROFILE_CRITICAL_SECTIONS
-}
-
 IC	CProfilePortion::CProfilePortion	(LPCSTR timer_id)
 {
 	if (!psAI_Flags.test(aiStats))
