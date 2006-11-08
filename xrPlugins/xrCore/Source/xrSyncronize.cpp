@@ -7,8 +7,6 @@ void set_add_profile_portion	(add_profile_portion_callback callback)
 	add_profile_portion		= callback;
 }
 
-#endif // PROFILE_CRITICAL_SECTIONS
-
 struct profiler {
 	LPCSTR					m_timer_id;
 	CTimer					m_timer;
@@ -28,6 +26,7 @@ struct profiler {
 		(*add_profile_portion)(m_timer_id,time);
 	}
 };
+#endif // PROFILE_CRITICAL_SECTIONS
 
 #ifdef PROFILE_CRITICAL_SECTIONS
 xrCriticalSection::xrCriticalSection	(LPCSTR id) : m_id(id)
@@ -61,4 +60,4 @@ void	xrCriticalSection::Leave	()
 BOOL	xrCriticalSection::TryEnter	()
 {
 	return TryEnterCriticalSection	( (CRITICAL_SECTION*)pmutex );
-};
+}
