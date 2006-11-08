@@ -11,7 +11,28 @@
 #include "../gamefont.h"
 
 #ifdef PROFILE_CRITICAL_SECTIONS
+void add_profile_portion(LPCSTR id, const u64 &time)
+{
+	static bool						adding = false;
+	if (adding)
+		return;
 
+	if (!*id)
+		return;
+
+	if (!psAI_Flags.test(aiStats))
+		return;
+	
+	if (!psDeviceFlags.test(rsStatistic))
+		return;
+
+	adding							= true;
+	CProfileResultPortion			temp;
+	temp.m_timer_id					= id;
+	temp.m_time						= time;
+	profiler().add_profile_portion	(temp);
+	adding							= false;
+}
 #endif // PROFILE_CRITICAL_SECTIONS
 
 CProfiler	*g_profiler			= 0;
