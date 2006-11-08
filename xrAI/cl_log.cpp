@@ -7,7 +7,7 @@
 //************************* Log-thread data
 static xrCriticalSection	csLog
 #ifdef PROFILE_CRITICAL_SECTIONS
-	("csLog")
+	(MUTEX_PROFILE_ID(csLog))
 #endif // PROFILE_CRITICAL_SECTIONS
 ;
 
