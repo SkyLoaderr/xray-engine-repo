@@ -14,7 +14,7 @@ IC	CProfiler::CProfiler				()
 #endif // PROFILE_CRITICAL_SECTIONS
 {
 	m_actual							= true;
-#ifdef PROFILE_CRITICAL_SECTIONS
+#if 0//def PROFILE_CRITICAL_SECTIONS
 	set_add_profile_portion				(&::add_profile_portion);
 #endif // PROFILE_CRITICAL_SECTIONS
 }

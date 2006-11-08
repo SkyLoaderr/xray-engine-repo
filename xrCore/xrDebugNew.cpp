@@ -138,29 +138,32 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 		}
 	}
 
-	if (shared_str_initialized)
-		Msg				("stack trace:\n");
-	buffer				+= sprintf(buffer,"stack trace:%s%s",endline,endline);
-
-	BuildStackTrace		();		
-
-	for (int i=2; i<g_stackTraceCount; ++i) {
+	if (IsDebuggerPresent()) {
 		if (shared_str_initialized)
-			Msg			("%s",g_stackTrace[i]);
+			Msg			("stack trace:\n");
+		buffer			+= sprintf(buffer,"stack trace:%s%s",endline,endline);
 
-		buffer			+= sprintf(buffer,"%s%s",g_stackTrace[i],endline);
+		BuildStackTrace	();		
+
+		for (int i=2; i<g_stackTraceCount; ++i) {
+			if (shared_str_initialized)
+				Msg		("%s",g_stackTrace[i]);
+
+			buffer		+= sprintf(buffer,"%s%s",g_stackTrace[i],endline);
+		}
+
+		if (shared_str_initialized)
+			FlushLog	();
+
+		copy_to_clipboard	(assertion_info);
 	}
-
-	if (shared_str_initialized)
-		FlushLog		();
-	
-	copy_to_clipboard	(assertion_info);
 
 	buffer				+= sprintf(buffer,"%sPress ABORT to abort execution%s",endline,endline);
 	buffer				+= sprintf(buffer,"Press RETRY to continue execution%s",endline);
 	buffer				+= sprintf(buffer,"Press IGNORE to continue execution and ignore all the errors of this type%s%s",endline,endline);
 
-	if (handler)		handler();
+	if (handler)
+		handler			();
 
 #ifdef XRCORE_STATIC
 	MessageBox			(NULL,tmp,"X-Ray error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
