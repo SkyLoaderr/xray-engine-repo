@@ -133,7 +133,7 @@ void CProfiler::clear		()
 void CProfiler::show_stats	(CGameFont *game_font, bool show)
 {
 #ifdef PROFILE_CRITICAL_SECTIONS
-//	set_add_profile_portion		(&::add_profile_portion);
+	set_add_profile_portion		(&::add_profile_portion);
 #endif // PROFILE_CRITICAL_SECTIONS
 
 	if (!show) {
