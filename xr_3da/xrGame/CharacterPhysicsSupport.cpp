@@ -15,10 +15,11 @@
 #include "PHActivationShape.h"
 #include "IKLimbsController.h"
 #include "PHCapture.h"
-const float default_hinge_friction = 5.f;
+//const float default_hinge_friction = 5.f;//gray_wolf comment
 #ifdef DEBUG
 #include "PHDebug.h"
 #endif
+#include "../device.h"
 void  NodynamicsCollide(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {
 	dBodyID body1=dGeomGetBody(c.geom.g1);
@@ -104,6 +105,12 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 	hinge_force_factor1				= pSettings->r_float(section,"ph_skeleton_hinger_factor1");
 	skel_ddelay						= pSettings->r_s32(section,"ph_skeleton_ddelay");
 	skel_fatal_impulse_factor		= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
+	//gray_wolf>„итаем из ltx параметры дл€ поддержки измен€ющегос€ трени€ у персонажей во врем€ смерти
+	skeleton_skin_ddelay			= pSettings->r_float(section,"ph_skeleton_skin_ddelay");
+	skeleton_skin_remain_time		= skeleton_skin_ddelay;
+	skeleton_skin_friction_start	= pSettings->r_float(section,"ph_skeleton_skin_friction_start");
+	skeleton_skin_friction_end		= pSettings->r_float(section,"ph_skeleton_skin_friction_end");
+	//gray_wolf<
 	if(pSettings->line_exist(section,"ph_skel_shot_up_factor")) m_shot_up_factor=pSettings->r_float(section,"ph_skel_shot_up_factor");
 	if(pSettings->line_exist(section,"ph_after_death_velocity_factor")) m_after_death_velocity_factor=pSettings->r_float(section,"ph_after_death_velocity_factor");
 	m_flags.set(fl_specific_bonce_demager,TRUE);
@@ -348,11 +355,31 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 
 			if(skel_ddelay==0)
 			{
-				m_pPhysicsShell->set_JointResistance(default_hinge_friction*hinge_force_factor1);//5.f*hinge_force_factor1
+				//m_pPhysicsShell->set_JointResistance(default_hinge_friction*hinge_force_factor1);//5.f*hinge_force_factor1//gray_wolf comment
+				m_pPhysicsShell->set_JointResistance(hinge_force_factor1);
 				//m_pPhysicsShell->SetAirResistance()
 
 			}else
 				--skel_ddelay;
+			
+		//gray_wolf>»зменение трени€ контактов в зависимости от прошедшего времени после смерти
+		//(трение измен€етьс€ от skeleton_skin_friction_start до skeleton_skin_friction_end в течение skeleton_skin_ddelay)
+			if(skeleton_skin_remain_time!=0)
+			{
+				skeleton_skin_remain_time-=Device.fTimeDelta;
+			}
+			if (skeleton_skin_remain_time<0)
+			{
+				skeleton_skin_remain_time=0;
+			}
+			float curr_skin_friction=skeleton_skin_friction_end+
+				(skeleton_skin_remain_time*
+					(skeleton_skin_friction_start-skeleton_skin_friction_end)
+				)/skeleton_skin_ddelay;
+
+			m_pPhysicsShell->set_AfterDeathSkinFriction(curr_skin_friction);
+		//gray_wolf<
+
 		}
 
 	}
@@ -382,8 +409,10 @@ void CCharacterPhysicsSupport::CreateSkeleton(CPhysicsShell* &pShell)
 	pShell		= P_create_Shell();
 	pShell->preBuild_FromKinematics(smart_cast<CKinematics*>(m_EntityAlife.Visual()));
 	pShell->mXFORM.set(mXFORM);
-	pShell->SetAirResistance(0.002f*skel_airr_lin_factor,
-		0.3f*skel_airr_ang_factor);
+	//pShell->SetAirResistance(0.002f*skel_airr_lin_factor,//gray_wolf comment
+	//	0.3f*skel_airr_ang_factor);//gray_wolf comment
+	pShell->SetAirResistance(skel_airr_lin_factor,skel_airr_ang_factor);
+
 	pShell->SmoothElementsInertia(0.3f);
 	//pShell->set_JointResistance(0.f);
 	pShell->set_PhysicsRefObject(&m_EntityAlife);
@@ -412,8 +441,12 @@ Fvector velocity;
 	m_pPhysicsShell		= P_create_Shell();
 	m_pPhysicsShell->build_FromKinematics(smart_cast<CKinematics*>(m_EntityAlife.Visual()));
 	m_pPhysicsShell->mXFORM.set(mXFORM);
-	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
-		0.3f*skel_airr_ang_factor);
+
+	//m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,//gray_wolf comment
+	//	0.3f*skel_airr_ang_factor);//gray_wolf comment
+	m_pPhysicsShell->SetAirResistance(skel_airr_lin_factor,
+		skel_airr_ang_factor);
+
 	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
 	m_pPhysicsShell->set_PhysicsRefObject(&m_EntityAlife);
 	SAllDDOParams disable_params;

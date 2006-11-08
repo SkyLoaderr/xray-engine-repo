@@ -160,6 +160,41 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 		surface.soft_erp=ERP(spring,damping);
 		surface.soft_cfm=CFM(spring,damping);
 		surface.mu=material_2->fPHFriction*material_1->fPHFriction;
+		//gray_wolf>≈сли один из объектов учавствующий в контакте €вл€етьс€ 
+		//персонажем, то мы должны дл€ него переопределить трение(surface.mu - уже определЄнное строчкой выше)
+		if (usr_data_1)
+		{
+			CPhysicsShellHolder *l_physics_shell_holder=usr_data_1->ph_ref_object;
+			if (l_physics_shell_holder)
+			{
+				 CPhysicsShell* l_physics_shell=l_physics_shell_holder->m_pPhysicsShell;
+				 if (l_physics_shell)
+				 {
+					 dReal l_friction=l_physics_shell->get_AfterDeathSkinFriction();
+					 if (l_friction!=dInfinity)
+					 {
+						 surface.mu=l_friction;
+					 }
+				 }
+			}
+		}
+		if (usr_data_2)
+		{
+			CPhysicsShellHolder *l_physics_shell_holder=usr_data_2->ph_ref_object;
+			if (l_physics_shell_holder)
+			{
+				 CPhysicsShell* l_physics_shell=l_physics_shell_holder->m_pPhysicsShell;
+				 if (l_physics_shell)
+				 {
+					 dReal l_friction=l_physics_shell->get_AfterDeathSkinFriction();
+					 if (l_friction!=dInfinity)
+					 {
+						 surface.mu=l_friction;
+					 }
+				 }
+			}
+		}
+		//gray_wolf<
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 
 

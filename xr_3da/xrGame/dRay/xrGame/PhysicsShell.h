@@ -231,6 +231,7 @@ class CPhysicsShell			: public CPhysicsBase
 protected:
 					CKinematics					*m_pKinematics																															;
 public:
+	
 #ifdef DEBUG
 					CPhysicsShellHolder			*dbg_obj																																;
 #endif
@@ -238,6 +239,10 @@ public:
 IC					CKinematics					*PKinematics								()																{return m_pKinematics		;}
 					void						set_Kinematics								(CKinematics* p)														{m_pKinematics=p	;}
 	virtual			void						set_JointResistance							(float force)																				= 0;
+	//gray_wolf>‘ункции установки-чтени€ трени€ персонажа периода после смерти(абстрактные - перекрываютьс€ в PHShell)
+	virtual			void						set_AfterDeathSkinFriction					(float friction)																			= 0;
+	virtual			float						get_AfterDeathSkinFriction					()																							= 0;
+	//gray_wolf<
 	virtual			void						add_Element									(CPhysicsElement* E)																		= 0;
 	virtual			void						add_Joint									(CPhysicsJoint* E)																			= 0;
 	virtual			CPHIsland					*PIsland									()																							= 0;

@@ -54,6 +54,12 @@ private:
 	float								hinge_force_factor1																																	;
 	float								skel_fatal_impulse_factor																															;
 	int									skel_ddelay																																			;
+	//gray_wolf>ѕеременные дл€ поддержки измен€ющегос€ трени€ у персонажей во врем€ смерти
+	float								skeleton_skin_ddelay;
+	float								skeleton_skin_remain_time;
+	float								skeleton_skin_friction_start;
+	float								skeleton_skin_friction_end;
+	//gray_wolf<
 
 /////////////////////////////////////////////////
 	//bool								b_death_anim_on																																		;

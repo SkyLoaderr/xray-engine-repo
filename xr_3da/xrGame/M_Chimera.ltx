@@ -52,7 +52,7 @@ explosion_immunity = 0.04
 fire_wound_immunity  = 0.050
 
 
-[m_chimera_e]
+[m_chimera_e]:common_ph_friction_params_on_npc_death
 GroupControlSection	= spawn_group
 SpaceRestrictionSection = space_restrictor,zone_mosquito_bald,zone_witches_galantine,zone_burning_fuzz1,zone_mincer,zone_gravi_zone
 ;$spawn               = "monsters\chimera"			; option for Level Editor
@@ -97,10 +97,12 @@ ph_mass 		     = 220;170
 destroyed_vis_name	 = physics\dead_body\skelet_crash_monster
 
 ;---------------------------------------------------------------------
-ph_skeleton_airr_lin_factor   = 550.0
-ph_skeleton_airr_ang_factor   = 0.0
-ph_skeleton_hinger_factor1    = 1.0
-ph_skeleton_ddelay	     	  = 1500
+ph_skeleton_airr_lin_factor   = 1.1 ;550.0 (изменно из-за того, что убрано домножение коэффициент 0.002 из кода)
+ph_skeleton_airr_ang_factor   = 0.0 ;0.0 (изменно из-за того, что убрано домножение на коэффициент 0.3 из кода (0.0*0.3=0.0))
+ph_skeleton_hinger_factor1    = 5.0 ;1.0 (изменно из-за того, что убрано домножение на коэффициент 5.0 из кода)
+ph_skeleton_ddelay	     	  = 1500 ;Время изменения значения трения в суставе с момента создания шелла, фрейм. - замена на сек.
+;todo - convert from frames to seconds
+
 ph_skel_fatal_impulse_factor  = 12.0
 ph_after_death_velocity_factor= 0.75
 ph_skel_shot_up_factor        = 0.25

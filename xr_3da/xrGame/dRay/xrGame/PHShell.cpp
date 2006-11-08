@@ -64,6 +64,9 @@ CPHShell::CPHShell()
 	m_pKinematics=NULL;
 	m_spliter_holder=NULL;
 	m_object_in_root.identity();
+	//gray_wolf>По умолчанию трение для CPHShell не переопределяеться(см. Physics.cpp - CollideIntoGroup())
+	m_after_death_skin_friction=dInfinity;//это значит, что трение после смерти не установлено
+	//gray_wolf<
 }
 
 void CPHShell::EnableObject(CPHObject* obj)
