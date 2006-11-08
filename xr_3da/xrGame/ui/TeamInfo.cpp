@@ -76,7 +76,7 @@ LPCSTR	CTeamInfo::GetTeam_color_tag(int team){
 
 	string256 _buff;
 
-	//"%c<255,64,255,64>", "%c<255,64,64,255>"
+	//"%c[255,64,255,64]", "%c[255,64,64,255]"
 
 	LPCSTR tm_col;
 	if (1 == team)
@@ -86,7 +86,7 @@ LPCSTR	CTeamInfo::GetTeam_color_tag(int team){
 
 	//team1_color = color_argb(155,atoi(_GetItem(tm_col, 0, _buff)),atoi(_GetItem(tm_col, 1, _buff)),atoi(_GetItem(tm_col, 2, _buff)));
 	xr_string str;
-	str = "%c<255,";
+	str = "%c[255,";
 	str += _GetItem(tm_col, 0, _buff);
 	str += ",";
 	str += _GetItem(tm_col, 1, _buff);

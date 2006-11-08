@@ -108,8 +108,8 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
 	CStringTable st;
 	string512 Text;
-//	LPSTR	Color_Teams[3]	= {"%c<255,255,255,255>", "%c<255,64,255,64>", "%c<255,64,64,255>"};
-	char	Color_Main[]	= "%c<255,192,192,192>";
+//	LPSTR	Color_Teams[3]	= {"%c[255,255,255,255]", "%c[255,64,255,64]", "%c[255,64,64,255]"};
+	char	Color_Main[]	= "%c[255,192,192,192]";
 //	LPSTR	TeamsNames[3]	= {"Zero Team", "Team Green", "Team Blue"};
 
 	switch(msg)	{

@@ -28,7 +28,7 @@ void CUIMapInfo::Init(float x, float y, float width, float height){
 							text += *str_tbl.translate(ltx.r_string_wb("map_info",y));		\
 						else																\
 							text += *str_tbl.translate(z);									\
-						text += "%c<default>\\n";											\
+						text += "%c[default]\\n";											\
 						st = xr_new<CUIStatic>();											\
 						st->SetFont(txt_font);												\
 						st->SetTextColor(header_color);										\
@@ -79,7 +79,7 @@ void CUIMapInfo::InitMap(const char* map_name){
 		CUIXmlInit::InitFont(xml_doc,"header",0,header_color, txt_font);
 		txt_color = CUIXmlInit::GetColor(xml_doc,"txt:text", 0, 0x00);
 		string64 txt_color_tag;
-		sprintf(txt_color_tag, "%s<%u,%u,%u,%u>", "%c", (txt_color & 0xff000000)>>24, (txt_color & 0x00ff0000)>>16, (txt_color & 0x0000ff00) >> 8, txt_color & 0x000000ff);
+		sprintf(txt_color_tag, "%s[%u,%u,%u,%u]", "%c", (txt_color & 0xff000000)>>24, (txt_color & 0x00ff0000)>>16, (txt_color & 0x0000ff00) >> 8, txt_color & 0x000000ff);
 
 		ADD_TEXT(*str_tbl.translate("mp_players"),		"players",		"Unknown");		
 		ADD_TEXT(*str_tbl.translate("mp_modes"),		"modes",		"Unknown");		

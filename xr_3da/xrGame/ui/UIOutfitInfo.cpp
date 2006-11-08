@@ -153,7 +153,7 @@ void CUIOutfitInfo::SetItem(ALife::EHitType hitType, CCustomOutfit& outfit, CUIL
 
         if (iValue)
 		{
-			strcat(str, "%c<green> + ");
+			strcat(str, "%c[green] + ");
 			strcat(str, itoa(iValue, strIVal, 10));
 			strcat(str, "%");
 		}

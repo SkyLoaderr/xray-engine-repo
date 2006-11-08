@@ -307,12 +307,12 @@ bool	game_cl_mp::OnKeyboardRelease		(int key)
 	return inherited::OnKeyboardRelease(key);
 }
 
-char	Color_Weapon[]	= "%c<255,255,1,1>";
+char	Color_Weapon[]	= "%c[255,255,1,1]";
 u32		Color_Teams_u32[3]	= {color_rgba(255,240,190,255), color_rgba(64,255,64,255), color_rgba(64,64,255,255)};
-LPSTR	Color_Teams[3]	= {"%c<255,255,240,190>", "%c<255,64,255,64>", "%c<255,64,64,255>"};
-char	Color_Main[]	= "%c<255,192,192,192>";
-char	Color_Radiation[]	= "%c<255,0,255,255>";
-char	Color_Neutral[]	= "%c<255,255,0,255>";
+LPSTR	Color_Teams[3]	= {"%c[255,255,240,190]", "%c[255,64,255,64]", "%c[255,64,64,255]"};
+char	Color_Main[]	= "%c[255,192,192,192]";
+char	Color_Radiation[]	= "%c[255,0,255,255]";
+char	Color_Neutral[]	= "%c[255,255,0,255]";
 u32		Color_Neutral_u32	= color_rgba(255,0,255,255);
 
 void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
@@ -433,7 +433,7 @@ void game_cl_mp::OnChatMessage			(NET_Packet* P)
 	
 //#endif	
 	string256 colPlayerName;
-	sprintf(colPlayerName, "%s%s:%s", Color_Teams[team], PlayerName, "%c<default>");
+	sprintf(colPlayerName, "%s%s:%s", Color_Teams[team], PlayerName, "%c[default]");
 	if (Level().CurrentViewEntity())
 		HUD().GetUI()->m_pMessagesWnd->AddChatMessage(ChatMsg, colPlayerName);
 };
