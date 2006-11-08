@@ -21,6 +21,9 @@ struct profiler {
 
 	IC	profiler::~profiler	()
 	{
+		if (!add_profile_portion)
+			return;
+
 		u64					time = m_timer.GetElapsed_ticks();
 		(*add_profile_portion)(m_timer_id,time);
 	}
