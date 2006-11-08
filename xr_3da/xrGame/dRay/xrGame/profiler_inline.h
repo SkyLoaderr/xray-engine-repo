@@ -21,16 +21,27 @@ IC	CProfiler::CProfiler				()
 
 IC	CProfilePortion::CProfilePortion	(LPCSTR timer_id)
 {
+	if (!psAI_Flags.test(aiStats))
+		return;
+
+	if (!psDeviceFlags.test(rsStatistic))
+		return;
+
 	m_timer_id							= timer_id;
 	m_time								= CPU::QPC();
 }
 
 IC	CProfilePortion::~CProfilePortion	()
 {
+	if (!psAI_Flags.test(aiStats))
+		return;
+
+	if (!psDeviceFlags.test(rsStatistic))
+		return;
+
 	u64									temp = CPU::QPC();
-	m_time								= m_time - temp;
-	if (psAI_Flags.test(aiStats) && psDeviceFlags.test(rsStatistic))
-		profiler().add_profile_portion	(*this);
+	m_time								= temp - m_time;
+	profiler().add_profile_portion		(*this);
 }
 
 IC	void CProfiler::add_profile_portion	(const CProfileResultPortion &profile_portion)
