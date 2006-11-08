@@ -5,7 +5,8 @@ class CUIListBoxItem : public CUILabel, public CUISelectable{
 public:
 	using CUILabel::SetTextColor;
 
-	CUIListBoxItem();
+						CUIListBoxItem();
+	virtual				~CUIListBoxItem();
 
     virtual void		SetSelected(bool b);
 //	virtual void	Update();
@@ -25,12 +26,12 @@ public:
 		LPCSTR			GetField(LPCSTR key);
 
 protected:
-			float	FieldsLength();
-		xr_vector<CUIStatic>	fields;
-		u32	txt_color;
-		u32	txt_color_s;
-		u32	uid;
-		void* pData;
+			float		FieldsLength();
+		xr_vector<CUIStatic*>	fields;
+		u32				txt_color;
+		u32				txt_color_s;
+		u32				uid;
+		void*			pData;
 static	u32	uid_counter;
 };
 

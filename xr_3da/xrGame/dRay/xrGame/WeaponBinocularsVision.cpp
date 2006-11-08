@@ -7,6 +7,7 @@
 #include "actor.h"
 #include "actor_memory.h"
 #include "relation_registry.h"
+#include "object_broker.h"
 
 #include "game_base_space.h"
 #include "Level.h"
@@ -22,8 +23,8 @@ extern u32 C_ON_FRIEND;
 struct FindVisObjByObject{
 	const CObject*			O;
 	FindVisObjByObject(const CObject* o):O(o){}
-	bool operator () (const SBinocVisibleObj& vis){
-		return (O==vis.m_object);
+	bool operator () (const SBinocVisibleObj* vis){
+		return (O==vis->m_object);
 	}
 };
 
@@ -163,6 +164,7 @@ CBinocularsVision::CBinocularsVision(CWeaponBinoculars* parent)
 CBinocularsVision::~CBinocularsVision()
 {
 	m_snd_found.destroy	();
+	delete_data			(m_active_objects);
 }
 
 void CBinocularsVision::Update()
@@ -171,7 +173,7 @@ void CBinocularsVision::Update()
 
 	VIS_OBJECTS_IT	it = m_active_objects.begin();
 	for(;it!=m_active_objects.end();++it)
-		(*it).m_flags.set					(flVisObjNotValid, TRUE) ;
+		(*it)->m_flags.set					(flVisObjNotValid, TRUE) ;
 
 
 	CVisualMemoryManager::VISIBLES::const_iterator v_it = vVisibles.begin();
@@ -193,27 +195,28 @@ void CBinocularsVision::Update()
 		found = std::find_if				(m_active_objects.begin(),m_active_objects.end(),f);
 
 		if( found != m_active_objects.end() ){
-			(*found).m_flags.set			(flVisObjNotValid,FALSE);
+			(*found)->m_flags.set			(flVisObjNotValid,FALSE);
 		}else{
-			m_active_objects.push_back		(SBinocVisibleObj() );
-			SBinocVisibleObj& new_vis_obj	= m_active_objects.back();
-			new_vis_obj.m_flags.set			(flVisObjNotValid,FALSE);
-			new_vis_obj.m_object			= object_;
-			new_vis_obj.create_default		(m_frame_color.get());
-			new_vis_obj.m_upd_speed			= m_rotating_speed;
+			m_active_objects.push_back		(xr_new<SBinocVisibleObj>() );
+			SBinocVisibleObj* new_vis_obj	= m_active_objects.back();
+			new_vis_obj->m_flags.set			(flVisObjNotValid,FALSE);
+			new_vis_obj->m_object			= object_;
+			new_vis_obj->create_default		(m_frame_color.get());
+			new_vis_obj->m_upd_speed			= m_rotating_speed;
 			if(NULL==m_snd_found._feedback())
 				m_snd_found.play_at_pos			(0,Fvector().set(0,0,0),sm_2D);
 		}
 	}
 	std::sort								(m_active_objects.begin(), m_active_objects.end());
 
-	while(m_active_objects.size() && m_active_objects.back().m_flags.test(flVisObjNotValid)){
+	while(m_active_objects.size() && m_active_objects.back()->m_flags.test(flVisObjNotValid)){
+		xr_delete							(m_active_objects.back());
 		m_active_objects.pop_back			();
 	}
 
 	it = m_active_objects.begin();
 	for(;it!=m_active_objects.end();++it)
-		(*it).Update						();
+		(*it)->Update						();
 
 }
 
@@ -221,7 +224,7 @@ void CBinocularsVision::Draw()
 {
 	VIS_OBJECTS_IT	it = m_active_objects.begin();
 	for(;it!=m_active_objects.end();++it)
-		(*it).Draw							();
+		(*it)->Draw							();
 }
 
 void CBinocularsVision::Load(const shared_str& section)

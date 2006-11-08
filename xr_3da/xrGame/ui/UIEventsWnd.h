@@ -1,7 +1,7 @@
-//UIEventsWnd.h
 #pragma once
 #include "UIWindow.h"
 #include "UIWndCallback.h"
+#include "UIXmlInit.h"
 
 class CUIFrameWindow;
 class CUIFrameLineWnd;
@@ -28,7 +28,6 @@ class CUIEventsWnd	:public CUIWindow, public CUIWndCallback{
 	};
 	Flags16						m_flags;
 	ETaskFilters				m_currFilter;
-//	CUI3tButton*				m_primary_or_all_filter_btn;
 	CUIFrameWindow*				m_UILeftFrame;
 	CUIWindow*					m_UIRightWnd;
 	CUIFrameLineWnd*			m_UILeftHeader;
@@ -56,4 +55,7 @@ public:
 	virtual void				Draw					();
 	virtual void				Show					(bool status);
 			void				Reload					();
+
+	CUIXml						m_ui_task_item_xml;
+
 };

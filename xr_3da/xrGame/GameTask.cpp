@@ -70,6 +70,7 @@ CGameTask::CGameTask(const TASK_ID& id)
 	m_ReceiveTime	= 0;
 	m_FinishTime	= 0;
 	m_Title			= NULL;
+	m_priority		= u32(-1);
 	Load			(id);
 }
 
@@ -92,8 +93,12 @@ void CGameTask::Load(const TASK_ID& id)
 	THROW3							(task_node, "game task id=", *id);
 	g_gameTaskXml.SetLocalRoot		(task_node);
 	m_Title							= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "title", 0, NULL);
+	m_priority						= g_gameTaskXml.ReadInt(g_gameTaskXml.GetLocalRoot(), "prio", 0, -1);
+	if(m_priority == u32(-1))
+	{
+		Msg("Game Task [%s] has no priority", *id);
+	}
 	int tag_num						= g_gameTaskXml.GetNodesNum(g_gameTaskXml.GetLocalRoot(),"objective");
-	m_is_task_general				= ( NULL==g_gameTaskXml.NavigateToNode("secondary",0) );
 	m_Objectives.clear		();
 	for(int i=0; i<tag_num; i++)
 	{
@@ -576,7 +581,6 @@ void SGameTaskKey::save(IWriter &stream)
 	save_data(game_task->m_ReceiveTime,		stream);
 	save_data(game_task->m_FinishTime,		stream);
 	save_data(game_task->m_Title,			stream);
-	save_data(game_task->m_is_task_general, stream);
 
 	u32 cnt	= game_task->m_Objectives.size();
 	save_data(cnt, stream);
@@ -595,7 +599,6 @@ void SGameTaskKey::load(IReader &stream)
 	load_data(game_task->m_ReceiveTime,		stream);
 	load_data(game_task->m_FinishTime,		stream);
 	load_data(game_task->m_Title,			stream);
-	load_data(game_task->m_is_task_general, stream);
 
 	u32 cnt;
 	load_data(cnt, stream);

@@ -1,14 +1,19 @@
 #include "StdAfx.h"
 #include "UIListBoxItem.h"
 #include "UIScrollView.h"
+#include "../object_broker.h"
 
 u32 CUIListBoxItem::uid_counter = 0;
 
 CUIListBoxItem::CUIListBoxItem(){
-	txt_color = 0xffffffff;
-	txt_color_s = 0xffffffff;
-	uid = uid_counter++;
+	txt_color			= 0xffffffff;
+	txt_color_s			= 0xffffffff;
+	uid					= uid_counter++;
 	m_bTextureAvailable = false;
+}
+CUIListBoxItem::~CUIListBoxItem()
+{
+	delete_data			(fields);
 }
 
 void CUIListBoxItem::SetID(u32 id){
@@ -56,7 +61,7 @@ void CUIListBoxItem::SetSelected(bool b){
 
 	SetTextColor(col);
 	for (u32 i = 0; i<fields.size(); i++)
-		fields[i].SetTextColor(col);
+		fields[i]->SetTextColor(col);
 }
 
 void CUIListBoxItem::SetTextColor(u32 color, u32 color_s){
@@ -68,7 +73,7 @@ void CUIListBoxItem::SetTextColor(u32 color, u32 color_s){
 float CUIListBoxItem::FieldsLength(){
 	float c = 0;
 	for (u32 i = 0; i<fields.size(); i++)
-		c += fields[i].GetWidth();
+		c += fields[i]->GetWidth();
 	return c;
 }
 
@@ -77,25 +82,25 @@ CGameFont* CUIListBoxItem::GetFont(){
 }
 
 CUIStatic* CUIListBoxItem::AddField(LPCSTR txt, float len, LPCSTR key){
-	fields.resize(fields.size()+1);
-	CUIStatic& st = fields.back();
-	AttachChild(&st);
-	st.Init(FieldsLength(),0, GetWidth(), len);
-	st.SetFont(GetFont());
-	st.SetTextAlignment(GetTextAlignment());
-	st.SetVTextAlignment(m_lines.GetVTextAlignment());
-	st.SetTextColor(GetTextColor());
-	st.SetText(txt);	
-	st.SetWindowName(key);
+	fields.push_back		(xr_new<CUIStatic>());
+	CUIStatic* st			= fields.back();
+	AttachChild				(st);
+	st->Init				(FieldsLength(),0, GetWidth(), len);
+	st->SetFont				(GetFont());
+	st->SetTextAlignment	(GetTextAlignment());
+	st->SetVTextAlignment	(m_lines.GetVTextAlignment());
+	st->SetTextColor		(GetTextColor());
+	st->SetText				(txt);	
+	st->SetWindowName		(key);
 
-	return &st;
+	return st;
 }
 
 LPCSTR CUIListBoxItem::GetField(LPCSTR key){
 	for (u32 i = 0; i<fields.size(); i++)
 	{
-		if (0 == xr_strcmp(fields[i].WindowName(),key))
-			return fields[i].GetText();
+		if (0 == xr_strcmp(fields[i]->WindowName(),key))
+			return fields[i]->GetText();
 	}
 	return NULL;
 }

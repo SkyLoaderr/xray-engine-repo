@@ -2,7 +2,6 @@
 #include "UIEventsWnd.h"
 #include "UIFrameWindow.h"
 #include "UIFrameLineWnd.h"
-#include "UIXmlInit.h"
 #include "UIAnimatedStatic.h"
 #include "UIMapWnd.h"
 #include "UIScrollView.h"
@@ -91,6 +90,8 @@ void CUIEventsWnd::Init				()
 */
    m_currFilter						= eActiveTask;
    SetDescriptionMode				(true);
+
+   m_ui_task_item_xml.Init			(CONFIG_PATH, UI_PATH, "job_item.xml");
 }
 
 void CUIEventsWnd::Update			()
@@ -140,8 +141,6 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 		R_ASSERT(task->m_Objectives.size() > 0);
 
 		if( !Filter(task) ) continue;
-
-		CStringTable		stbl;
 		CUITaskItem			*pTaskItem = NULL;
 		if(task->m_Objectives[0].TaskState()==eTaskUserDefined){
 			VERIFY(task->m_Objectives.size()==1);
@@ -151,11 +150,11 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 		}else
 		for (u32 i = 0; i < task->m_Objectives.size(); ++i)
 		{
-			if(i==0)
+			if(i==0){
 				pTaskItem = xr_new<CUITaskRootItem>(this);
-			else
+			}else{
 				pTaskItem = xr_new<CUITaskSubItem>(this);
-
+			}
 			pTaskItem->SetGameTask			(task, i);
 			m_ListWnd->AddWindow			(pTaskItem,true);
 		}

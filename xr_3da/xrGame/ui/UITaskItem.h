@@ -126,7 +126,7 @@ protected:
 			void			OnCancel				();
 			void			Init					();
 public:
-							CUIUserTaskEditWnd		();
+							CUIUserTaskEditWnd		(CUIUserTaskItem* itm);
 	virtual void			SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
-			void			Start					(CUIUserTaskItem* itm);
+			void			Start					();
 };

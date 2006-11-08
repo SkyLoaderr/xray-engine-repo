@@ -70,9 +70,6 @@ CUITaskRootItem::~CUITaskRootItem		()
 void CUITaskRootItem::Init			()
 {
 	inherited::Init					();
-	CUIXml uiXml;
-	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, "job_item.xml");
-	R_ASSERT3(xml_result, "xml file not found", "job_item.xml");
 
 	m_taskImage			= xr_new<CUIStatic>();		m_taskImage->SetAutoDelete(true);			AttachChild(m_taskImage);
 	m_captionStatic		= xr_new<CUIStatic>();		m_captionStatic->SetAutoDelete(true);		AttachChild(m_captionStatic);
@@ -88,6 +85,7 @@ void CUITaskRootItem::Init			()
 	AddCallback						("m_switchDescriptionBtn",BUTTON_CLICKED,boost::bind(&CUITaskRootItem::OnSwitchDescriptionClicked,this));
 
 	CUIXmlInit xml_init;
+	CUIXml&						uiXml = m_EventsWnd->m_ui_task_item_xml;
 	xml_init.InitWindow			(uiXml,"task_root_item",0,this);
 
 	xml_init.InitStatic			(uiXml,"task_root_item:image",0,m_taskImage);
@@ -197,9 +195,7 @@ CUITaskSubItem::~CUITaskSubItem		()
 void CUITaskSubItem::Init			()
 {
 	inherited::Init					();
-	CUIXml uiXml;
-	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, "job_item.xml");
-	R_ASSERT3(xml_result, "xml file not found", "job_item.xml");
+	CUIXml&						uiXml = m_EventsWnd->m_ui_task_item_xml;
 
 	m_stateStatic		= xr_new<CUIStatic>();		m_stateStatic->SetAutoDelete(true);		AttachChild(m_stateStatic);
 	m_descriptionStatic	= xr_new<CUIStatic>();		m_descriptionStatic->SetAutoDelete(true);	AttachChild(m_descriptionStatic);
@@ -316,9 +312,7 @@ CUIUserTaskItem::~CUIUserTaskItem			()
 void  CUIUserTaskItem::Init					()
 {
 	inherited::Init					();
-	CUIXml uiXml;
-	bool xml_result					= uiXml.Init(CONFIG_PATH, UI_PATH, "job_item.xml");
-	R_ASSERT3						(xml_result, "xml file not found", "job_item.xml");
+	CUIXml&							uiXml = m_EventsWnd->m_ui_task_item_xml;
 
 	m_image							= xr_new<CUIStatic>();		m_image->SetAutoDelete(true);				AttachChild(m_image);
 
@@ -429,8 +423,8 @@ void CUIUserTaskItem::OnDescriptionChanged		()
 void CUIUserTaskItem::OnEditTextClicked		()
 {
 	delete_data			(m_edtWnd);
-	m_edtWnd			= xr_new<CUIUserTaskEditWnd>();
-	m_edtWnd->Start		(this);
+	m_edtWnd			= xr_new<CUIUserTaskEditWnd>(this);
+	m_edtWnd->Start		();
 }
 
 void CUIUserTaskItem::OnRemoveClicked		()
@@ -439,9 +433,9 @@ void CUIUserTaskItem::OnRemoveClicked		()
 }
 
 
-CUIUserTaskEditWnd::CUIUserTaskEditWnd		()
+CUIUserTaskEditWnd::CUIUserTaskEditWnd		(CUIUserTaskItem* itm)
 {
-	m_userTask = NULL;
+	m_userTask = itm;
 	Init();
 }
 
@@ -450,13 +444,11 @@ void CUIUserTaskEditWnd::SendMessage		(CUIWindow* pWnd, s16 msg, void* pData)
 	CUIWndCallback::OnEvent(pWnd, msg, pData);
 }
 
-void CUIUserTaskEditWnd::Start				(CUIUserTaskItem* itm)
+void CUIUserTaskEditWnd::Start()
 {
-	VERIFY(!m_userTask);
-
 	CStringTable stbl;
 
-	m_userTask = itm;
+//.	m_userTask = itm;
 	m_editCaption->SetText			(*stbl.translate(m_userTask->GameTask()->m_Title));
 	m_editDescription->SetText		(*stbl.translate(m_userTask->Objective()->description));
 	HUD().GetUI()->StartStopMenu	(this,true);
@@ -470,21 +462,17 @@ void CUIUserTaskEditWnd::OnOk			()
 	m_userTask->m_EventsWnd->Reload			();
 
 	GetHolder()->StartStopMenu				(this, false);
-	m_userTask = NULL;
 }
 
 void CUIUserTaskEditWnd::OnCancel				()
 {
 	GetHolder()->StartStopMenu(this, false);
-	m_userTask = NULL;
 }
 
 void CUIUserTaskEditWnd::Init					()
 {
 	Hide					();
-	CUIXml uiXml;
-	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, "job_item.xml");
-	R_ASSERT3(xml_result, "xml file not found", "job_item.xml");
+	CUIXml&					uiXml = m_userTask->m_EventsWnd->m_ui_task_item_xml;
 
 	m_background		= xr_new<CUIFrameWindow>();		m_background->SetAutoDelete(true);
 	AttachChild			(m_background);
