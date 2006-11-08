@@ -138,7 +138,7 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 		}
 	}
 
-	if (IsDebuggerPresent()) {
+	if (!IsDebuggerPresent()) {
 		if (shared_str_initialized)
 			Msg			("stack trace:\n");
 		buffer			+= sprintf(buffer,"stack trace:%s%s",endline,endline);
