@@ -698,14 +698,46 @@ end
 function se_smart_terrain:is_gulag_available()
 	if self.gparams.cond then
 		local bb = xr_logic.pick_section_from_condlist( db.actor_proxy, self, self.gparams.cond ) ~= nil
-		sim_statistic.smart_enabled(self, bb)
+		self:show_smart_debug_spot(bb)
 		return bb
 	else
-		sim_statistic.smart_enabled(self, true)
+		self:show_smart_debug_spot(true)
 		return true
 	end
 end
+function se_smart_terrain:show_smart_debug_spot(avail)
+	if sim_statistic.show_smart_spot == true then
+		--' Показать отметку
+		local str = self:name().." ("..tostring(self.gulag.state)..")\\n".."pop = "..tostring(self.gulag:get_population()).."("..tostring(self.gulag.capacity)..") comed = "..tostring(self.gulag:get_population_comed())
 
+		if self.spot_showed ~= str then
+			if self.debug_avail == true then
+				level.map_remove_object_spot(self.id, "alife_presentation_smart_on")
+			else
+				level.map_remove_object_spot(self.id, "alife_presentation_smart_off")
+			end		
+
+			if avail == true then
+				level.map_add_object_spot(self.id, "alife_presentation_smart_on", str)
+			else
+				level.map_add_object_spot(self.id, "alife_presentation_smart_off", str)
+			end
+			self.spot_showed = str
+			self.debug_avail = avail
+		end
+	else
+		--' Убрать отметку
+		if self.spot_showed == nil then
+			return
+		end
+		self.spot_showed = nil
+		if self.debug_avail == true then
+			level.map_remove_object_spot(self.id, "alife_presentation_smart_on")
+		else
+			level.map_remove_object_spot(self.id, "alife_presentation_smart_off")
+		end		
+	end
+end
 -- установка/снятие блокировки приёма персонажей
 function se_smart_terrain:lock_population( need_lock )
 	self.population_locked = need_lock
@@ -868,7 +900,6 @@ function se_smart_terrain:register_if_needed()
 
 	-- Регистрация в таскменеджере
 	task_manager.register_target(self)
-	sim_statistic.register_smart(self)
 end
 
 
