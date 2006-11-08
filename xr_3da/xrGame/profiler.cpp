@@ -26,10 +26,10 @@ void add_profile_portion(LPCSTR id, const u64 &time)
 	if (!psDeviceFlags.test(rsStatistic))
 		return;
 
-	adding							= true;
 	CProfileResultPortion			temp;
 	temp.m_timer_id					= id;
 	temp.m_time						= time;
+	adding							= true;
 	profiler().add_profile_portion	(temp);
 	adding							= false;
 }

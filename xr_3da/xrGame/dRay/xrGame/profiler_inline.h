@@ -22,12 +22,13 @@ IC	CProfiler::CProfiler				()
 IC	CProfilePortion::CProfilePortion	(LPCSTR timer_id)
 {
 	m_timer_id							= timer_id;
-	m_timer.Start						();
+	m_time								= CPU::QPC();
 }
 
 IC	CProfilePortion::~CProfilePortion	()
 {
-	m_time								= m_timer.GetElapsed_ticks();
+	u64									temp = CPU::QPC();
+	m_time								= m_time - temp;
 	if (psAI_Flags.test(aiStats) && psDeviceFlags.test(rsStatistic))
 		profiler().add_profile_portion	(*this);
 }
