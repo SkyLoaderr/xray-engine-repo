@@ -8,13 +8,16 @@ void set_add_profile_portion	(add_profile_portion_callback callback)
 }
 
 struct profiler {
+	u64						m_time;
 	LPCSTR					m_timer_id;
-	CTimer					m_timer;
 
 	IC	profiler::profiler	(LPCSTR timer_id)
 	{
+		if (!add_profile_portion)
+			return;
+
 		m_timer_id			= timer_id;
-		m_timer.Start		();
+		m_time				= CPU::QPC();
 	}
 
 	IC	profiler::~profiler	()
@@ -22,8 +25,8 @@ struct profiler {
 		if (!add_profile_portion)
 			return;
 
-		u64					time = m_timer.GetElapsed_ticks();
-		(*add_profile_portion)(m_timer_id,time);
+		u64					time = CPU::QPC();
+		(*add_profile_portion)(m_timer_id,time - m_time);
 	}
 };
 #endif // PROFILE_CRITICAL_SECTIONS
