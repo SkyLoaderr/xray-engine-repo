@@ -13,7 +13,7 @@
 #ifdef PROFILE_CRITICAL_SECTIONS
 void add_profile_portion(LPCSTR id, const u64 &time)
 {
-	static bool						adding = false;
+	static volatile bool			adding = false;
 	if (adding)
 		return;
 
