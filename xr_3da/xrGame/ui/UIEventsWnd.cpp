@@ -126,34 +126,38 @@ void CUIEventsWnd::Reload					()
 		m_flags.set(flNeedReload,TRUE );
 }
 
-void CUIEventsWnd::ReloadList				(bool bClearOnly)
+void CUIEventsWnd::ReloadList(bool bClearOnly)
 {
-	m_ListWnd->Clear	();
-	if(bClearOnly)		return;
+	m_ListWnd->Clear			();
+	if(bClearOnly)				return;
 
-	if(!Actor()) return;
-	GameTasks& tasks = Actor()->GameTaskManager().GameTasks();
-	GameTasks::reverse_iterator it =  tasks.rbegin();
-	CGameTask* task = NULL;
-	for(;it!=tasks.rend();++it){
-		task = (*it).game_task;
-		R_ASSERT(task);
-		R_ASSERT(task->m_Objectives.size() > 0);
+	if(!Actor())				return;
+	GameTasks& tasks			= Actor()->GameTaskManager().GameTasks();
+	GameTasks::iterator it		= tasks.begin();
+	CGameTask* task				= NULL;
+	
+	for(;it!=tasks.end();++it)
+	{
+		task					= (*it).game_task;
+		R_ASSERT				(task);
+		R_ASSERT				(task->m_Objectives.size() > 0);
 
-		if( !Filter(task) ) continue;
-		CUITaskItem			*pTaskItem = NULL;
-		if(task->m_Objectives[0].TaskState()==eTaskUserDefined){
-			VERIFY(task->m_Objectives.size()==1);
-			pTaskItem = xr_new<CUIUserTaskItem>(this);
+		if( !Filter(task) )		continue;
+		CUITaskItem* pTaskItem	= NULL;
+
+		if(task->m_Objectives[0].TaskState()==eTaskUserDefined)
+		{
+			VERIFY				(task->m_Objectives.size()==1);
+			pTaskItem			= xr_new<CUIUserTaskItem>(this);
 			pTaskItem->SetGameTask			(task, 0);
 			m_ListWnd->AddWindow			(pTaskItem,true);
 		}else
 		for (u32 i = 0; i < task->m_Objectives.size(); ++i)
 		{
 			if(i==0){
-				pTaskItem = xr_new<CUITaskRootItem>(this);
+				pTaskItem					= xr_new<CUITaskRootItem>(this);
 			}else{
-				pTaskItem = xr_new<CUITaskSubItem>(this);
+				pTaskItem					= xr_new<CUITaskSubItem>(this);
 			}
 			pTaskItem->SetGameTask			(task, i);
 			m_ListWnd->AddWindow			(pTaskItem,true);
@@ -163,7 +167,7 @@ void CUIEventsWnd::ReloadList				(bool bClearOnly)
 
 }
 
-void CUIEventsWnd::Show					(bool status)
+void CUIEventsWnd::Show(bool status)
 {
 	inherited::Show			(status);
 	m_UIMapWnd->Show		(status);

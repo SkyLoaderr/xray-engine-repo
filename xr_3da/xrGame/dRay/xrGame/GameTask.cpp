@@ -63,8 +63,6 @@ u16 storyId2GameId	(ALife::_STORY_ID id)
 CUIXml	g_gameTaskXml;
 bool	g_gameTaskXmlInited = false;
 
-Flags32	 CGameTask::m_game_task_flags;
-
 CGameTask::CGameTask(const TASK_ID& id)
 {
 	m_ReceiveTime	= 0;
@@ -93,7 +91,7 @@ void CGameTask::Load(const TASK_ID& id)
 	THROW3							(task_node, "game task id=", *id);
 	g_gameTaskXml.SetLocalRoot		(task_node);
 	m_Title							= g_gameTaskXml.Read(g_gameTaskXml.GetLocalRoot(), "title", 0, NULL);
-	m_priority						= g_gameTaskXml.ReadInt(g_gameTaskXml.GetLocalRoot(), "prio", 0, -1);
+	m_priority						= g_gameTaskXml.ReadAttribInt(g_gameTaskXml.GetLocalRoot(), "prio", -1);
 	if(m_priority == u32(-1))
 	{
 		Msg("Game Task [%s] has no priority", *id);

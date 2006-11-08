@@ -95,7 +95,8 @@ function main_qqqq()
 end
 
 function main()
-	action_give_task()
+--	db.actor:give_info_portion("test_1") 
+	db.actor:set_task_state(task.completed,"task_1",0);
 end
 
 function main___________()

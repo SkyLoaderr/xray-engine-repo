@@ -12,29 +12,6 @@
 #include "gameplay\tasks_yantar.xml"
 #include "gameplay\tasks_sarcofag.xml"
 
-	<game_task id="task1">
-		<title>Task 1. What a shame! It's failed!</title>
-		<objective>
-			<text>test task primary2</text>
-			<script_condition>info_test1.test_task3</script_condition>
-		</objective>
-		<objective>
-			<text>test task secondary 01</text>
-			<script_condition>info_test1.test_task2</script_condition>
-		</objective>
-	</game_task>
-	<game_task id="task2">
-		<title>Task 2. Top priority!</title>
-		<objective>
-			<text>test task primary2</text>
-			<script_condition>info_test1.test_task1</script_condition>
-		</objective>
-		<objective>
-			<text>test task secondary 01</text>
-			<script_condition>info_test1.test_task2</script_condition>
-		</objective>
-	</game_task>
-	
 	<game_task id="user_task">
 		<title>My map task</title>
 		<objective>
@@ -42,29 +19,7 @@
 			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
-<!-- temporary for andy, do not delete !!! -->
-	<game_task id="andy_task_1">
-		<title>andy_task_1_title</title>
-		<objective>
-			<text>andy_task_1_1</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-		<objective>
-			<text>andy_task_1_2</text>
-			<map_location_type hint="my_hint">level_changer</map_location_type>			
-			<object_story_id>Escape_Trader</object_story_id>					
-		</objective>
-	</game_task>
-
-	<game_task id="andy_task_2">
-		<title>qqq</title>
-		<objective>
-			<text>qqq_0</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-	</game_task>
-
-
+	
 	<!-- Tasks for random quest generator -->
 	<game_task id="eliminate_lager">
 		<title>title</title>
@@ -149,6 +104,61 @@
 			<map_location_type>green_location</map_location_type>
 			<object_story_id>yan_labx16switcher_lamp3</object_story_id>
 			<infoportion_complete>yan_labx16_switcher_3_off</infoportion_complete>
+		</objective>
+	</game_task>
+
+<!-- temporary for andy, do not delete !!! -->
+	<game_task id="task_1" prio="1">
+		<title>task_1_title</title>
+		<objective>
+			<text>task_1_0</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>task_1_1</text>
+			<map_location_type>green_location</map_location_type>
+			<object_story_id>Escape_Trader</object_story_id>
+		</objective>
+		<objective>
+			<text>task_1_2</text>
+			<map_location_type>green_location</map_location_type>
+			<object_story_id>Escape_Tutorial_Artefact</object_story_id>
+		</objective>
+	</game_task>
+
+	<game_task id="task_2" prio="2">
+		<title>task_2_title</title>
+		<objective>
+			<text>task_2_0</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>task_2_1</text>
+			<map_location_type>green_location</map_location_type>
+			<object_story_id>Escape_anomaly_field</object_story_id>
+		</objective>
+		<objective>
+			<text>task_2_2</text>
+			<map_location_type>green_location</map_location_type>
+			<object_story_id>Escape_blockpost_case</object_story_id>
+		</objective>
+	</game_task>
+
+	<game_task id="task_3" prio="3">
+		<title>task_3_title</title>
+		<objective>
+			<text>task_3_0</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>task_3_1</text>
+			<map_location_type>green_location</map_location_type>
+			<object_story_id>Escape_bridge_stalkers</object_story_id>
+		</objective>
+		<objective>
+			<text>task_3_2</text>
+			<map_location_type>green_location</map_location_type>
+			<object_story_id>Escape_dinamite</object_story_id>
 		</objective>
 	</game_task>
 

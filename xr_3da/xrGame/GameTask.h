@@ -124,9 +124,6 @@ public:
 	ALife::_TIME_ID			m_FinishTime;
 	u32						m_priority;
 
-	enum		{eForceNewTaskActivation =(1<<0),};
-	static		Flags32		m_game_task_flags;
-
 // for scripting access
 	void					Load_script				(LPCSTR _id);
 	void					SetTitle_script			(LPCSTR _title);

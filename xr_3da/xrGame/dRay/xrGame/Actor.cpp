@@ -359,7 +359,8 @@ if(!g_pGamePersistent->bDedicatedServer)
 		LPCSTR hit_name = ALife::g_cafHitType2String((ALife::EHitType)hit_type);
 		LPCSTR hit_snds = pSettings->r_string(hit_snd_sect, hit_name);
 		int cnt = _GetItemCount(hit_snds);
-		string128 tmp;
+		string128		tmp;
+		VERIFY			(cnt!=0);
 		for(int i=0; i<cnt;++i)
 		{
 			sndHit[hit_type].push_back		(ref_sound());
@@ -428,7 +429,14 @@ struct playing_pred
 
 void	CActor::Hit							(SHit* pHDS)
 {
-	SHit HDS = *pHDS;	
+	SHit HDS = *pHDS;
+	if( HDS.hit_type<ALife::eHitTypeBurn || HDS.hit_type >= ALife::eHitTypeMax )
+	{
+		string256	err;
+		sprintf		(err, "Unknown/unregistered hit type [%d]", HDS.hit_type);
+		R_ASSERT2	(0, err );
+	
+	}
 #ifdef DEBUG
 if(ph_dbg_draw_mask.test(phDbgCharacterControl))
 {
