@@ -104,11 +104,11 @@ volatile u32	mt_Thread_marker		= 0x12345678;
 void 			mt_Thread	(void *ptr)	{
 	while (true) {
 		// waiting for Device permission to execute
-		EnterCriticalSection	(&Device.mt_csEnter);
+		Device.mt_csEnter.Enter	();
 
 		if (Device.mt_bMustExit) {
 			Device.mt_bMustExit = FALSE;				// Important!!!
-			LeaveCriticalSection(&Device.mt_csEnter);	// Important!!!
+			Device.mt_csEnter.Leave();					// Important!!!
 			return;
 		}
 		// we has granted permission to execute
@@ -119,11 +119,11 @@ void 			mt_Thread	(void *ptr)	{
 		Device.seqFrameMT.Process	(rp_Frame);
 
 		// now we give control to device - signals that we are ended our work
-		LeaveCriticalSection	(&Device.mt_csEnter);
+		Device.mt_csEnter.Leave	();
 		// waits for device signal to continue - to start again
-		EnterCriticalSection	(&Device.mt_csLeave);
+		Device.mt_csLeave.Enter	();
 		// returns sync signal to device
-		LeaveCriticalSection	(&Device.mt_csLeave);
+		Device.mt_csLeave.Leave	();
 	}
 }
 
@@ -163,9 +163,9 @@ void CRenderDevice::Run			()
 	}
 
 	// Start all threads
-	InitializeCriticalSection	(&mt_csEnter);
-	InitializeCriticalSection	(&mt_csLeave);
-	EnterCriticalSection		(&mt_csEnter);
+//	InitializeCriticalSection	(&mt_csEnter);
+//	InitializeCriticalSection	(&mt_csLeave);
+	mt_csEnter.Enter			();
 	mt_bMustExit				= FALSE;
 	thread_spawn				(mt_Thread,"X-RAY Secondary thread",0,0);
 
@@ -219,8 +219,8 @@ void CRenderDevice::Run			()
 				// *** Resume threads
 				// Capture end point - thread must run only ONE cycle
 				// Release start point - allow thread to run
-				EnterCriticalSection		(&mt_csLeave);
-				LeaveCriticalSection		(&mt_csEnter);
+				mt_csLeave.Enter			();
+				mt_csEnter.Leave			();
 #ifndef DEDICATED_SERVER
 				Statistic->RenderTOTAL_Real.FrameStart	();
 				Statistic->RenderTOTAL_Real.Begin		();
@@ -239,8 +239,8 @@ void CRenderDevice::Run			()
 				// *** Suspend threads
 				// Capture startup point
 				// Release end point - allow thread to wait for startup point
-				EnterCriticalSection					(&mt_csEnter);
-				LeaveCriticalSection					(&mt_csLeave);
+				mt_csEnter.Enter						();
+				mt_csLeave.Leave						();
 
 				// Ensure, that second thread gets chance to execute anyway
 				if (dwFrame!=mt_Thread_marker)			{
@@ -258,11 +258,11 @@ void CRenderDevice::Run			()
 	seqAppEnd.Process		(rp_AppEnd);
 
 	// Stop Balance-Thread
-	mt_bMustExit = TRUE;
-	LeaveCriticalSection	(&mt_csEnter);
+	mt_bMustExit			= TRUE;
+	mt_csEnter.Leave		();
 	while (mt_bMustExit)	Sleep(0);
-	DeleteCriticalSection	(&mt_csEnter);
-	DeleteCriticalSection	(&mt_csLeave);
+//	DeleteCriticalSection	(&mt_csEnter);
+//	DeleteCriticalSection	(&mt_csLeave);
 }
 
 void ProcessLoading(RP_FUNC *f);

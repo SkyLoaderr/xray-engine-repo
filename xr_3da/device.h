@@ -102,7 +102,11 @@ public:
 	float									fFOV;
 	float									fASPECT;
 	
-	CRenderDevice			() 
+	CRenderDevice			()
+		#ifdef PROFILE_CRITICAL_SECTIONS
+			: mt_csEnter("CRenderDevice::mt_csEnter")
+			,mt_csLeave("CRenderDevice::mt_csLeave")
+		#endif // PROFILE_CRITICAL_SECTIONS
 	{
 	    m_hWnd              = NULL;
 		bActive				= FALSE;
@@ -140,8 +144,8 @@ public:
 	void ShutDown							(void);
 
 	// Multi-threading
-	CRITICAL_SECTION	mt_csEnter;
-	CRITICAL_SECTION	mt_csLeave;
+	xrCriticalSection	mt_csEnter;
+	xrCriticalSection	mt_csLeave;
 	volatile BOOL		mt_bMustExit;
 
 	ICF		void			remove_from_seq_parallel	(const fastdelegate::FastDelegate0<> &delegate)
