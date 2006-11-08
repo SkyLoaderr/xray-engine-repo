@@ -61,7 +61,7 @@ u32			lvInterpSteps		= 0;
 
 CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 #ifdef PROFILE_CRITICAL_SECTIONS
-	,DemoCS("DemoCS")
+	,DemoCS(MUTEX_PROFILE_ID(DemoCS))
 #endif // PROFILE_CRITICAL_SECTIONS
 {
 	g_bDebugEvents				= strstr(Core.Params,"-debug_ge")?TRUE:FALSE;

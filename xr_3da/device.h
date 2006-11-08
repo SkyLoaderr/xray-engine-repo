@@ -104,8 +104,8 @@ public:
 	
 	CRenderDevice			()
 		#ifdef PROFILE_CRITICAL_SECTIONS
-			: mt_csEnter("CRenderDevice::mt_csEnter")
-			,mt_csLeave("CRenderDevice::mt_csLeave")
+			: mt_csEnter(MUTEX_PROFILE_ID(CRenderDevice::mt_csEnter))
+			,mt_csLeave(MUTEX_PROFILE_ID(CRenderDevice::mt_csLeave))
 		#endif // PROFILE_CRITICAL_SECTIONS
 	{
 	    m_hWnd              = NULL;

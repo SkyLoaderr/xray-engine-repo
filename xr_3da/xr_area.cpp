@@ -96,7 +96,7 @@ void __stdcall _sound_event		(ref_sound_data_ptr S, float range)
 //----------------------------------------------------------------------
 CObjectSpace::CObjectSpace	( )
 #ifdef PROFILE_CRITICAL_SECTIONS
-	:Lock("CObjectSpace::Lock")
+	:Lock(MUTEX_PROFILE_ID(CObjectSpace::Lock))
 #endif // PROFILE_CRITICAL_SECTIONS
 {
 #ifdef DEBUG

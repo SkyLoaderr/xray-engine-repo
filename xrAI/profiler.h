@@ -74,7 +74,7 @@ public:
 						~CProfiler			();
 			void		show_stats			(CGameFont *game_font, bool show);
 			void		clear				();
-	IC		void		add_profile_portion	(const CProfileResultPortion &profile_portion);
+			void		add_profile_portion	(const CProfileResultPortion &profile_portion);
 };
 
 extern 	CProfiler *g_profiler;

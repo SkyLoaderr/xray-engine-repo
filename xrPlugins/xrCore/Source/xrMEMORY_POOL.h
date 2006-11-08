@@ -24,7 +24,7 @@ public:
 	void				_initialize		(u32 _element, u32 _sector, u32 _header);
 
 #ifdef PROFILE_CRITICAL_SECTIONS
-	ICF					MEMPOOL			(): cs("memory_pool"){}
+	ICF					MEMPOOL			(): cs(MUTEX_PROFILE_ID(memory_pool)){}
 #endif // PROFILE_CRITICAL_SECTIONS
 	
 	ICF u32				get_block_count	()	{ return block_count; }

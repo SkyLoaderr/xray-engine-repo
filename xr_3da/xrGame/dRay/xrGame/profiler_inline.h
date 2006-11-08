@@ -33,13 +33,6 @@ IC	CProfilePortion::~CProfilePortion	()
 	profiler().add_profile_portion		(*this);
 }
 
-IC	void CProfiler::add_profile_portion	(const CProfileResultPortion &profile_portion)
-{
-	m_section.Enter						();
-	m_portions.push_back				(profile_portion);
-	m_section.Leave						();
-}
-
 IC	CProfiler&	profiler				()
 {
 	return			(*g_profiler);

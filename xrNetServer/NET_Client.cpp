@@ -22,7 +22,7 @@ void	dump_URL	(LPCSTR p, IDirectPlay8Address* A)
 // 
 INetQueue::INetQueue()		
 #ifdef PROFILE_CRITICAL_SECTIONS
-	:cs("INetQueue")
+	:cs(MUTEX_PROFILE_ID(INetQueue))
 #endif // PROFILE_CRITICAL_SECTIONS
 {
 	unused.reserve	(128);
@@ -175,7 +175,7 @@ static HRESULT WINAPI Handler (PVOID pvUserContext, DWORD dwMessageType, PVOID p
 
 IPureClient::IPureClient	(CTimer* timer): net_Statistic(timer)
 #ifdef PROFILE_CRITICAL_SECTIONS
-	,net_csEnumeration("IPureClient::net_csEnumeration")
+	,net_csEnumeration(MUTEX_PROFILE_ID(IPureClient::net_csEnumeration))
 #endif // PROFILE_CRITICAL_SECTIONS
 {
 	device_timer			= timer;

@@ -9,7 +9,7 @@ extern BOOL					LogExecCB		= TRUE;
 static string64				logFName		= "engine.log";
 static BOOL 				no_log			= TRUE;
 #ifdef PROFILE_CRITICAL_SECTIONS
-	static xrCriticalSection	logCS("log");
+	static xrCriticalSection	logCS(MUTEX_PROFILE_ID(log));
 #else // PROFILE_CRITICAL_SECTIONS
 	static xrCriticalSection	logCS;
 #endif // PROFILE_CRITICAL_SECTIONS

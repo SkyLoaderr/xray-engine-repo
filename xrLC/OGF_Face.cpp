@@ -366,7 +366,7 @@ void OGF::CalculateTB()
 // Make Progressive
 xrCriticalSection			progressive_cs
 #ifdef PROFILE_CRITICAL_SECTIONS
-	("progressive_cs")
+	(MUTEX_PROFILE_ID(progressive_cs))
 #endif // PROFILE_CRITICAL_SECTIONS
 ;
 void OGF::MakeProgressive	(float metric_limit)

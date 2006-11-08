@@ -28,7 +28,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 // Model building
 MODEL::MODEL	()
 #ifdef PROFILE_CRITICAL_SECTIONS
-	:cs("MODEL")
+	:cs(MUTEX_PROFILE_ID(MODEL))
 #endif // PROFILE_CRITICAL_SECTIONS
 {
 	tree		= 0;

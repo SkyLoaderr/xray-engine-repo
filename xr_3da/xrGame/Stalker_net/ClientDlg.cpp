@@ -239,7 +239,7 @@ DPNHANDLE				g_dpnhEnum = NULL;
 //-------------------------------------------------
 xrCriticalSection	net_csEnumeration
 #ifdef PROFILE_CRITICAL_SECTIONS
-	("net_csEnumeration")
+	(MUTEX_PROFILE_ID(net_csEnumeration))
 #endif // PROFILE_CRITICAL_SECTIONS
 ;
 

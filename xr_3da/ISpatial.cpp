@@ -137,7 +137,7 @@ void			ISpatial_NODE::_remove			(ISpatial* S)
 
 ISpatial_DB::ISpatial_DB()
 #ifdef PROFILE_CRITICAL_SECTIONS
-	:cs("ISpatial_DB")
+	:cs(MUTEX_PROFILE_ID(ISpatial_DB))
 #endif // PROFILE_CRITICAL_SECTIONS
 {
 	m_root					= NULL;

@@ -5,7 +5,7 @@
 // 
 GameEventQueue::GameEventQueue()		
 #ifdef PROFILE_CRITICAL_SECTIONS
-	:cs("GameEventQueue")
+	:cs(MUTEX_PROFILE_ID(GameEventQueue))
 #endif // PROFILE_CRITICAL_SECTIONS
 {
 	unused.reserve	(128);

@@ -32,7 +32,7 @@ XRCORE_API void dump_phase		()
 
 xrMemory::xrMemory()
 #ifdef PROFILE_CRITICAL_SECTIONS
-	:debug_cs("xrMemory")
+	:debug_cs(MUTEX_PROFILE_ID(xrMemory))
 #endif // PROFILE_CRITICAL_SECTIONS
 {
 #ifdef DEBUG

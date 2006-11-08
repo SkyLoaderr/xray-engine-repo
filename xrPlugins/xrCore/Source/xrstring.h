@@ -34,7 +34,7 @@ public:
 	void				verify			();
 	u32					stat_economy	();
 #ifdef PROFILE_CRITICAL_SECTIONS
-						str_container	():cs("str_container"){}
+						str_container	():cs(MUTEX_PROFILE_ID(str_container)){}
 #endif // PROFILE_CRITICAL_SECTIONS
 						~str_container	();
 };

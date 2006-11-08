@@ -5,7 +5,7 @@
 
 xrCriticalSection	task_CS
 #ifdef PROFILE_CRITICAL_SECTIONS
-	("task_C_S")
+	(MUTEX_PROFILE_ID(task_C_S))
 #endif // PROFILE_CRITICAL_SECTIONS
 ;
 xr_vector<int>		task_pool;
@@ -106,7 +106,7 @@ typedef	mapVert::iterator				mapVertIt;
 mapVert*								g_trans;
 xrCriticalSection						g_trans_CS
 #ifdef PROFILE_CRITICAL_SECTIONS
-	("g_trans_CS")
+	(MUTEX_PROFILE_ID(g_trans_CS))
 #endif // PROFILE_CRITICAL_SECTIONS
 ;
 
@@ -161,7 +161,7 @@ class CVertexLightTasker
 public:
 	CVertexLightTasker	() : index(0)
 #ifdef PROFILE_CRITICAL_SECTIONS
-		,cs("CVertexLightTasker")
+		,cs(MUTEX_PROFILE_ID(CVertexLightTasker))
 #endif // PROFILE_CRITICAL_SECTIONS
 	{};
 	

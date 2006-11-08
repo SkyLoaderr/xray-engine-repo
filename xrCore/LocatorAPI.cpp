@@ -27,7 +27,7 @@ CLocatorAPI*	xr_FS	= NULL;
 //////////////////////////////////////////////////////////////////////
 CLocatorAPI::CLocatorAPI()
 #ifdef PROFILE_CRITICAL_SECTIONS
-	:m_auth_lock			("CLocatorAPI::m_auth_lock")
+	:m_auth_lock			(MUTEX_PROFILE_ID(CLocatorAPI::m_auth_lock))
 #endif // PROFILE_CRITICAL_SECTIONS
 {
     m_Flags.zero		();

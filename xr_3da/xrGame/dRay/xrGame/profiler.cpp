@@ -11,10 +11,11 @@
 #include "../gamefont.h"
 
 #ifdef PROFILE_CRITICAL_SECTIONS
+static volatile bool					inside_critical_section = false;
+
 void add_profile_portion				(LPCSTR id, const u64 &time)
 {
-	static volatile bool			adding = false;
-	if (adding)
+	if (inside_critical_section)
 		return;
 
 	if (!*id)
@@ -29,9 +30,8 @@ void add_profile_portion				(LPCSTR id, const u64 &time)
 	CProfileResultPortion			temp;
 	temp.m_timer_id					= id;
 	temp.m_time						= time;
-	adding							= true;
-//	profiler().add_profile_portion	(temp);
-	adding							= false;
+	
+	profiler().add_profile_portion	(temp);
 }
 #endif // PROFILE_CRITICAL_SECTIONS
 
@@ -137,27 +137,38 @@ void CProfiler::setup_timer			(LPCSTR timer_id, const u64 &timer_time, const u32
 
 void CProfiler::clear				()
 {
+	while (inside_critical_section)
+		Sleep					(0);
+
+	inside_critical_section		= true;
+
 	m_section.Enter				();
 	m_portions.clear			();
 	m_timers.clear				();
 	m_section.Leave				();
 
 	m_call_count				= 0;
+
+	inside_critical_section		= false;
 }
 
 void CProfiler::show_stats			(CGameFont *game_font, bool show)
 {
-#ifdef PROFILE_CRITICAL_SECTIONS
-	set_add_profile_portion		(&::add_profile_portion);
-#endif // PROFILE_CRITICAL_SECTIONS
-
 	if (!show) {
 		clear					();
 		return;
 	}
 
+#ifdef PROFILE_CRITICAL_SECTIONS
+	set_add_profile_portion		(&::add_profile_portion);
+#endif // PROFILE_CRITICAL_SECTIONS
+
 	++m_call_count;
 		
+	while (inside_critical_section)
+		Sleep					(0);
+
+	inside_critical_section		= true;
 	m_section.Enter				();
 
 	if (!m_portions.empty()) {
@@ -200,7 +211,9 @@ void CProfiler::show_stats			(CGameFont *game_font, bool show)
 	}
 	else
 		m_section.Leave			();
-	
+
+	inside_critical_section		= false;
+
 	TIMERS::iterator			I = m_timers.begin();
 	TIMERS::iterator			E = m_timers.end();
 	for ( ; I != E; ++I) {
@@ -230,4 +243,18 @@ void CProfiler::show_stats			(CGameFont *game_font, bool show)
 	}
 
 	game_font->SetColor			(color_xrgb(255,255,255));
+}
+
+void CProfiler::add_profile_portion	(const CProfileResultPortion &profile_portion)
+{
+	if (inside_critical_section)
+		return;
+
+	inside_critical_section		= true;
+
+	m_section.Enter				();
+	m_portions.push_back		(profile_portion);
+	m_section.Leave				();
+
+	inside_critical_section		= false;
 }

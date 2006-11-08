@@ -98,7 +98,7 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 {
 	static xrCriticalSection CS
 #ifdef PROFILE_CRITICAL_SECTIONS
-	("xrDebug::backend")
+	(MUTEX_PROFILE_ID(xrDebug::backend))
 #endif // PROFILE_CRITICAL_SECTIONS
 	;
 
