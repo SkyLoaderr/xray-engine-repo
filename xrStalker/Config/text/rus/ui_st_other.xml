@@ -5,11 +5,11 @@
 		<text>Прямой IP</text>
 	</string>
 	
-	<string id="ui_mm_detail_density>
+	<string id="ui_mm_detail_density">
 		<text>Detail density</text>
 	</string>	
 		
-	<string id="ui_pda_details>
+	<string id="ui_pda_details">
 		<text># /details</text>
 	</string>	
 	
