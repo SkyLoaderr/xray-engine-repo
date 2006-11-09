@@ -53,7 +53,9 @@ private:
 	float								skel_airr_ang_factor																																;
 	float								hinge_force_factor1																																	;
 	float								skel_fatal_impulse_factor																															;
-	int									skel_ddelay																																			;
+	
+	float								skel_ddelay																																			;
+	float								skel_remain_time																																	;
 	//gray_wolf>Переменные для поддержки изменяющегося трения у персонажей во время смерти
 	float								skeleton_skin_ddelay;
 	float								skeleton_skin_remain_time;
@@ -68,6 +70,9 @@ private:
 	float								m_shot_up_factor																																	;
 	float								m_after_death_velocity_factor																														;
 	float								m_BonceDamageFactor																																	;
+	//gray_wolf>Для вычисления дельта времени между пересчётами сопротивления в джоинтах и коэффициента NPC
+	float								m_Pred_Time																																			;
+	//gray_wolf<
 public:
 EType Type()
 	{

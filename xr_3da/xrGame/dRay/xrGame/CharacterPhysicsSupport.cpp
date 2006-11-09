@@ -60,6 +60,7 @@ m_after_death_velocity_factor	=1.f;
 m_ik_controller					=	NULL;
 m_BonceDamageFactor				=1.f;
 m_collision_hit_callback		=	NULL;
+m_Pred_Time						= 0.0;
 switch(atype)
 {
 case etActor:
@@ -103,7 +104,8 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 	skel_airr_ang_factor			= pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
 	skel_airr_lin_factor			= pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
 	hinge_force_factor1				= pSettings->r_float(section,"ph_skeleton_hinger_factor1");
-	skel_ddelay						= pSettings->r_s32(section,"ph_skeleton_ddelay");
+	skel_ddelay						= pSettings->r_float(section,"ph_skeleton_ddelay");
+	skel_remain_time				= skel_ddelay;
 	skel_fatal_impulse_factor		= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
 	//gray_wolf>Читаем из ltx параметры для поддержки изменяющегося трения у персонажей во время смерти
 	skeleton_skin_ddelay			= pSettings->r_float(section,"ph_skeleton_skin_ddelay");
@@ -353,29 +355,43 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 			//	m_saved_impulse=0.f;
 			//}
 
-			if(skel_ddelay==0)
+		//gray_wolf>Преобразование skel_ddelay из кадров в секунды и линейное нарастание сопротивления в джоинтах со временем от момента смерти 
+			float l_time_delta;
+			if (m_Pred_Time==0.0)
 			{
-				//m_pPhysicsShell->set_JointResistance(default_hinge_friction*hinge_force_factor1);//5.f*hinge_force_factor1//gray_wolf comment
-				m_pPhysicsShell->set_JointResistance(hinge_force_factor1);
-				//m_pPhysicsShell->SetAirResistance()
+				l_time_delta=0;
+			}
+			else
+			{
+				l_time_delta=Device.fTimeGlobal-m_Pred_Time;					
+			}
+			m_Pred_Time=Device.fTimeGlobal;
 
-			}else
-				--skel_ddelay;
+			if(skel_remain_time!=0)
+			{
+				skel_remain_time-=l_time_delta;
+			}
+			if (skel_remain_time<0)
+			{
+				skel_remain_time=0;
+			}
+			float curr_joint_resistance=hinge_force_factor1-
+				(skel_remain_time*hinge_force_factor1)/skel_ddelay;
+			m_pPhysicsShell->set_JointResistance(curr_joint_resistance);
+		//gray_wolf<
 			
 		//gray_wolf>Изменение трения контактов в зависимости от прошедшего времени после смерти
 		//(трение изменяеться от skeleton_skin_friction_start до skeleton_skin_friction_end в течение skeleton_skin_ddelay)
 			if(skeleton_skin_remain_time!=0)
 			{
-				skeleton_skin_remain_time-=Device.fTimeDelta;
+				skeleton_skin_remain_time-=l_time_delta;
 			}
 			if (skeleton_skin_remain_time<0)
 			{
 				skeleton_skin_remain_time=0;
 			}
 			float curr_skin_friction=skeleton_skin_friction_end+
-				(skeleton_skin_remain_time*
-					(skeleton_skin_friction_start-skeleton_skin_friction_end)
-				)/skeleton_skin_ddelay;
+				(skeleton_skin_remain_time/skeleton_skin_ddelay)*(skeleton_skin_friction_start-skeleton_skin_friction_end);
 
 			m_pPhysicsShell->set_AfterDeathSkinFriction(curr_skin_friction);
 		//gray_wolf<
