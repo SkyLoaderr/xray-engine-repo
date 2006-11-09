@@ -480,6 +480,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 */
 		case kWPN_ZOOM : 
 		case kTORCH:
+		case kNIGHT_VISION:
 			{
 				SendActionEvent(cmd, flags);
 			}break;

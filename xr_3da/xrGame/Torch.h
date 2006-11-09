@@ -70,6 +70,11 @@ protected:
 	float					m_NightVisionDischargeTime;
 	float					m_NightVisionChargeTime;
 
+	enum EStats{
+		eTorchActive				= (1<<0),
+		eNightVisionActive			= (1<<1)	
+	};
+
 public:
 
 	virtual bool			use_parent_ai_locations	() const

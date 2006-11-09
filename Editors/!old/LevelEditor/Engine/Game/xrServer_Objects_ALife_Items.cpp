@@ -241,6 +241,7 @@ void CSE_ALifeItem::FillProps				(LPCSTR pref, PropItemVec& values)
 CSE_ALifeItemTorch::CSE_ALifeItemTorch		(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
 	m_active					= false;
+	m_nightvision_active		= false;
 }
 
 CSE_ALifeItemTorch::~CSE_ALifeItemTorch		()
@@ -262,13 +263,20 @@ void CSE_ALifeItemTorch::STATE_Write		(NET_Packet	&tNetPacket)
 void CSE_ALifeItemTorch::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
-	m_active					= !!tNetPacket.r_u8();
+	
+	BYTE F = tNetPacket.r_u8();
+	m_active					= !!(F & eTorchActive);
+	m_nightvision_active		= !!(F & eNightVisionActive);
 }
 
 void CSE_ALifeItemTorch::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
-	tNetPacket.w_u8				(m_active ? 1 : 0);
+
+	BYTE F = 0;
+	F |= (m_active ? eTorchActive : 0);
+	F |= (m_nightvision_active ? eNightVisionActive : 0);
+	tNetPacket.w_u8(F);
 }
 
 void CSE_ALifeItemTorch::FillProps			(LPCSTR pref, PropItemVec& values)
