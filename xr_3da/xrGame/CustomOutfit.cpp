@@ -54,8 +54,8 @@ void CCustomOutfit::Load(LPCSTR section)
 	else
 		m_fPowerLoss = 1.0f;	
 
-	m_additional_weight				= pSettings->r_u32(section,"additional_inventory_weight");
-	m_additional_weight2			= pSettings->r_u32(section,"additional_inventory_weight2");
+	m_additional_weight				= pSettings->r_float(section,"additional_inventory_weight");
+	m_additional_weight2			= pSettings->r_float(section,"additional_inventory_weight2");
 }
 
 void CCustomOutfit::Hit(float hit_power, ALife::EHitType hit_type)
