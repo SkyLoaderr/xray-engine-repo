@@ -33,7 +33,22 @@ function main()
 				"wpn_addon_scope_susat",
 				"wpn_addon_silencer",
 				"wpn_addon_grenade_launcher",
-				"wpn_addon_grenade_launcher_m203"
+				"wpn_addon_grenade_launcher_m203",
+				"bandit_outfit",
+				"killer_outfit",
+				"monolit_outfit",
+				"soldier_outfit",
+				"specops_outfit",			
+				"military_outfit",			
+				"stalker_outfit",			
+				"scientific_outfit",		
+				"exo_outfit",
+				"svoboda_light_outfit",	
+				"svoboda_heavy_outfit",	
+				"dolg_outfit",	
+				"dolg_scientific_outfit",	
+				"ecolog_outfit",			
+				"protection_outfit"	
 			    }
 	for i = 1,30 do
 		table.insert(spawn_items, "grenade_f1")
