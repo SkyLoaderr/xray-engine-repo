@@ -1,3 +1,16 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+
+	<string id="st_mp_direct_ip">
+		<text>Прямой IP</text>
+	</string>
+	
+	<string id="ui_mm_detail_density>
+		<text>Detail Density</text>
+	</string>	
+		
+	<string id="ui_pda_details>
+		<text># /details</text>
+	</string>	
+	
 </string_table>
