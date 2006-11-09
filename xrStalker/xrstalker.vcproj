@@ -4087,6 +4087,9 @@
 					<File
 						RelativePath=".\Scripts\task_sim.script">
 					</File>
+					<File
+						RelativePath=".\Scripts\weap.script">
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>
