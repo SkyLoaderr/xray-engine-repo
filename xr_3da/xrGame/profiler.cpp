@@ -137,10 +137,12 @@ void CProfiler::setup_timer			(LPCSTR timer_id, const u64 &timer_time, const u32
 
 void CProfiler::clear				()
 {
+#ifdef PROFILE_CRITICAL_SECTIONS
 	while (inside_critical_section)
 		Sleep					(0);
 
 	inside_critical_section		= true;
+#endif // PROFILE_CRITICAL_SECTIONS
 
 	m_section.Enter				();
 	m_portions.clear			();
@@ -149,7 +151,9 @@ void CProfiler::clear				()
 
 	m_call_count				= 0;
 
+#ifdef PROFILE_CRITICAL_SECTIONS
 	inside_critical_section		= false;
+#endif // PROFILE_CRITICAL_SECTIONS
 }
 
 void CProfiler::show_stats			(CGameFont *game_font, bool show)
@@ -165,10 +169,13 @@ void CProfiler::show_stats			(CGameFont *game_font, bool show)
 
 	++m_call_count;
 		
+#ifdef PROFILE_CRITICAL_SECTIONS
 	while (inside_critical_section)
 		Sleep					(0);
 
 	inside_critical_section		= true;
+#endif // PROFILE_CRITICAL_SECTIONS
+
 	m_section.Enter				();
 
 	if (!m_portions.empty()) {
@@ -212,7 +219,9 @@ void CProfiler::show_stats			(CGameFont *game_font, bool show)
 	else
 		m_section.Leave			();
 
+#ifdef PROFILE_CRITICAL_SECTIONS
 	inside_critical_section		= false;
+#endif // PROFILE_CRITICAL_SECTIONS
 
 	TIMERS::iterator			I = m_timers.begin();
 	TIMERS::iterator			E = m_timers.end();
@@ -247,14 +256,18 @@ void CProfiler::show_stats			(CGameFont *game_font, bool show)
 
 void CProfiler::add_profile_portion	(const CProfileResultPortion &profile_portion)
 {
+#ifdef PROFILE_CRITICAL_SECTIONS
 	if (inside_critical_section)
 		return;
 
 	inside_critical_section		= true;
+#endif // PROFILE_CRITICAL_SECTIONS
 
 	m_section.Enter				();
 	m_portions.push_back		(profile_portion);
 	m_section.Leave				();
 
+#ifdef PROFILE_CRITICAL_SECTIONS
 	inside_critical_section		= false;
+#endif // PROFILE_CRITICAL_SECTIONS
 }
