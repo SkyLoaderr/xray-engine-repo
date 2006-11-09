@@ -10,6 +10,9 @@
 
 #include "HW.h"
 
+void	fill_vid_mode_list			(CHW* _hw);
+void	free_vid_mode_list			();
+
 ENGINE_API CHW			HW;
 
 #ifdef DEBUG
@@ -59,6 +62,7 @@ void CHW::Reset		(HWND hwnd)
 	updateWindowProps	(hwnd);
 #endif
 }
+extern xr_token*							vid_mode_token;
 
 void CHW::CreateD3D	()
 {
@@ -76,6 +80,7 @@ void CHW::CreateD3D	()
     this->pD3D 					= createD3D( D3D_SDK_VERSION );
     R_ASSERT2					(this->pD3D,"Please install DirectX 9.0c");
 }
+
 void CHW::DestroyD3D()
 {
 	_RELEASE					(this->pD3D);
@@ -129,9 +134,15 @@ void	CHW::DestroyDevice	()
 	HW.pDevice				= 0		;
 #endif    
 	DestroyD3D				();
+	
+	free_vid_mode_list		();
 }
 void	CHW::selectResolution	(u32 &dwWidth, u32 &dwHeight)
 {
+	dwWidth		= psCurrentVidMode[0];
+	dwHeight	= psCurrentVidMode[1];
+
+/*
 	// Select width/height
 	dwWidth	= psCurrentMode;
 	switch (dwWidth) {
@@ -154,6 +165,7 @@ void	CHW::selectResolution	(u32 &dwWidth, u32 &dwHeight)
 	case 1600:	dwHeight = 1200;					break;
 	default:	dwWidth  = 1024; dwHeight = 768;	break;
 	}
+*/
 }
 
 void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
@@ -329,6 +341,8 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 #ifndef _EDITOR
 	updateWindowProps	(m_hWnd);
 #endif
+
+	fill_vid_mode_list			(this);
 }
 
 u32	CHW::selectPresentInterval	()
@@ -457,4 +471,61 @@ void	CHW::updateWindowProps	(HWND m_hWnd)
 #ifndef DEDICATED_SERVER
 		ShowCursor	(FALSE);
 #endif
+}
+
+
+struct _uniq_mode
+{
+	_uniq_mode(LPCSTR v):_val(v){}
+	LPCSTR _val;
+	bool operator() (LPCSTR _other) {return !stricmp(_val,_other);}
+};
+
+void free_vid_mode_list()
+{
+	for( int i=0; vid_mode_token[i].name; i++ )
+	{
+		xr_free					(vid_mode_token[i].name);
+	}
+	xr_free						(vid_mode_token);
+	vid_mode_token				= NULL;
+}
+
+void	fill_vid_mode_list			(CHW* _hw)
+{
+	xr_vector<LPCSTR>	_tmp;
+	u32 cnt = _hw->pD3D->GetAdapterModeCount	(_hw->DevAdapter, _hw->Caps.fTarget);
+
+	for(u32 i=0; i<cnt;++i)
+	{
+		D3DDISPLAYMODE	Mode;
+		string32		str;
+
+		_hw->pD3D->EnumAdapterModes(_hw->DevAdapter, _hw->Caps.fTarget, i, &Mode);
+		if(Mode.Width < 640)		continue;
+
+		sprintf						(str,"%dx%d", Mode.Width, Mode.Height);
+	
+		if(_tmp.end() != std::find_if(_tmp.begin(), _tmp.end(), _uniq_mode(str)))
+			continue;
+
+		_tmp.push_back				(NULL);
+		_tmp.back()					= xr_strdup(str);
+	}
+
+	u32 _cnt						= _tmp.size()+1;
+
+	vid_mode_token					= xr_alloc<xr_token>(_cnt);
+
+	vid_mode_token[_cnt-1].id			= -1;
+	vid_mode_token[_cnt-1].name		= NULL;
+
+	Msg("Avialable video modes[%d]:",_tmp.size());
+	for(u32 i=0; i<_tmp.size();++i)
+	{
+		vid_mode_token[i].id		= i;
+		vid_mode_token[i].name		= _tmp[i];
+		Msg							("[%s]",_tmp[i]);
+	}
+
 }

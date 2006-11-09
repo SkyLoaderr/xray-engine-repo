@@ -27,7 +27,10 @@ xr_token							snd_model_token							[ ]={
 	{ "High",						3											},
 	{ 0,							0											}
 };
-xr_token							vid_mode_token							[ ]={
+
+xr_token*							vid_mode_token = NULL;
+
+xr_token							_vid_mode_token							[ ]={
 
 	//normal 4:3 modes
 #ifdef DEBUG
@@ -400,6 +403,29 @@ public:
 		}
 	}
 };
+class CCC_VidMode : public CCC_Token
+{
+	u32		_dummy;
+public :
+					CCC_VidMode(LPCSTR N) : CCC_Token(N, &_dummy, NULL) { bEmptyArgsHandled = FALSE; };
+	virtual void	Execute(LPCSTR args){
+		u32 _w, _h;
+		int cnt = sscanf		(args,"%dx%d",&_w,&_h);
+		if(cnt==2){
+			psCurrentVidMode[0] = _w;
+			psCurrentVidMode[1] = _h;
+		}else{
+			Msg("! Wrong video mode [%s]", args);
+			return;
+		}
+	}
+	virtual void	Status	(TStatus& S)	
+	{ 
+		sprintf(S,"%dx%d",psCurrentVidMode[0],psCurrentVidMode[1]); 
+	}
+	virtual xr_token* GetToken()				{return vid_mode_token;}
+
+};
 //-----------------------------------------------------------------------
 class CCC_SND_Restart : public IConsole_Command
 {
@@ -579,15 +605,15 @@ void CCC_Register()
 	CMD4(CCC_Integer,	"net_dedicated_sleep",	&psNET_DedicatedSleep,		0,	64	);
 
 	// General video control
-	CMD3(CCC_Token,		"vid_mode",				&psCurrentMode, vid_mode_token);
-	CMD3(CCC_Token,		"vid_bpp",				&psCurrentBPP,	vid_bpp_token);
+	CMD1(CCC_VidMode,	"vid_mode"				);
+	CMD3(CCC_Token,		"vid_bpp",				&psCurrentBPP,	vid_bpp_token );
 	CMD1(CCC_VID_Reset, "vid_restart"			);
 	
 	// Sound
 	CMD2(CCC_Float,		"snd_volume_eff",		&psSoundVEffects);
 	CMD2(CCC_Float,		"snd_volume_music",		&psSoundVMusic);
-	CMD3(CCC_Token,		"snd_freq",				&psSoundFreq,		snd_freq_token		);
-	CMD3(CCC_Token,		"snd_model",			&psSoundModel,		snd_model_token		);
+	CMD3(CCC_Token,		"snd_freq",				&psSoundFreq,		snd_freq_token			);
+	CMD3(CCC_Token,		"snd_model",			&psSoundModel,		snd_model_token			);
 	CMD1(CCC_SND_Restart,"snd_restart"			);
 	CMD3(CCC_Mask,		"snd_acceleration",		&psSoundFlags,		ss_Hardware	);
 	CMD3(CCC_Mask,		"snd_efx",				&psSoundFlags,		ss_EAX		);

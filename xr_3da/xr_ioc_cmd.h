@@ -112,7 +112,7 @@ public		:
 
 	virtual void	Execute	(LPCSTR args)
 	{
-		xr_token *tok = tokens;
+		xr_token* tok = tokens;
 		while (tok->name) {
 			if (stricmp(tok->name,args)==0) {
 				*value=tok->id;
@@ -145,7 +145,7 @@ public		:
 			tok++;
 		}
 	}
-	xr_token* GetToken(){return tokens;}
+	virtual xr_token* GetToken(){return tokens;}
 };
 
 class ENGINE_API	CCC_Float : public IConsole_Command
