@@ -173,7 +173,7 @@
 		</radio_tab_network_connection>
 		
 		<btn_direct_ip x="400" y="40" width="111" height="25">
-			<text align="c" font="letterica16" r="188" g="153" b="123" complex_mode="0">Direct IP</text>
+			<text align="c" font="letterica16" r="188" g="153" b="123" complex_mode="0">st_mp_direct_ip</text>
 			<texture>ui_button_ordinary</texture>
 			<texture_offset x="-3"/>
 		</btn_direct_ip>
