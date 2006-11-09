@@ -508,10 +508,6 @@ void g_change_community_goodwill(LPCSTR _community, int _entity_id, int val)
 	RELATION_REGISTRY().ChangeCommunityGoodwill(c.index(), u16(_entity_id), val);
 }
 
-#pragma warning(push)
-#pragma warning(disable:4511)
-#pragma warning(disable:4512)
-
 #pragma optimize("s",on)
 void CLevel::script_register(lua_State *L)
 {
@@ -622,5 +618,3 @@ void CLevel::script_register(lua_State *L)
 		def("change_community_goodwill",		&g_change_community_goodwill)
 	];
 }
-
-#pragma warning(pop)
