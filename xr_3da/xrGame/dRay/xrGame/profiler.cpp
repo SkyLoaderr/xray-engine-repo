@@ -256,7 +256,7 @@ void CProfiler::add_profile_portion	(const CProfileResultPortion &profile_portio
 	do {
 		Sleep					(0);
 	}
-	while (InterlockedExchange(&critical_section_counter,1));
+	while (!InterlockedExchange(&critical_section_counter,1));
 #endif // PROFILE_CRITICAL_SECTIONS
 
 	m_section.Enter				();
