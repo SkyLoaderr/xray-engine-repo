@@ -145,11 +145,11 @@ BOOL CObjectSpace::_RayPick	( const Fvector &start, const Fvector &dir, float ra
 //--------------------------------------------------------------------------------
 BOOL CObjectSpace::RayQuery		(collide::rq_results& dest, const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data, collide::test_callback* tb, CObject* ignore_object)
 {
-	Lock.Enter		();
-	BOOL	_res	= _RayQuery2(dest,R,CB,user_data,tb,ignore_object);
-	r_spatial.clear	();
-	Lock.Leave		();
-	return	_res;
+	Lock.Enter					();
+	BOOL						_res = _RayQuery2(dest,R,CB,user_data,tb,ignore_object);
+	r_spatial.clear_not_free	();
+	Lock.Leave					();
+	return						(_res);
 }
 BOOL CObjectSpace::_RayQuery2	(collide::rq_results& r_dest, const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data, collide::test_callback* tb, CObject* ignore_object)
 {

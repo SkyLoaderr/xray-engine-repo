@@ -17,6 +17,7 @@ namespace Feel
 
 	public:
 		xr_vector<CObject*>		feel_touch;
+		xr_vector<CObject*>		q_nearest;
 
 	public:
 		void __stdcall			feel_touch_relcase			(CObject* O);

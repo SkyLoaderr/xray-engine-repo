@@ -6,8 +6,8 @@
 
 class CHUDManager;
 
-class CHUDTarget
-{
+class CHUDTarget {
+private:
 	friend class CHUDManager;
 
 	ref_shader				hShader;
@@ -17,6 +17,10 @@ class CHUDTarget
 
 	bool					m_bShowCrosshair;
 	CHUDCrosshair			HUDCrosshair;
+
+private:
+	collide::rq_results		RQR;
+
 public:
 							CHUDTarget	();
 							~CHUDTarget	();
