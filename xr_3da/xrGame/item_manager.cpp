@@ -67,9 +67,11 @@ void CItemManager::update			()
 {
 	START_PROFILE("Memory Manager/items::update")
 	inherited::update		();
-	VERIFY					(
+	VERIFY3					(
 		!selected() ||
-		m_object->movement().restrictions().accessible(selected()->ai_location().level_vertex_id())
+		m_object->movement().restrictions().accessible(selected()->ai_location().level_vertex_id()),
+		*m_object->cName(),
+		selected() ? *selected()->cName() : "<no selected item>"
 	);
 	STOP_PROFILE
 }
