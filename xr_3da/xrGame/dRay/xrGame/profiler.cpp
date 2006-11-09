@@ -11,13 +11,10 @@
 #include "../gamefont.h"
 
 #ifdef PROFILE_CRITICAL_SECTIONS
-static volatile bool					inside_critical_section = false;
+static volatile LONG					critical_section_counter = 0;
 
 void add_profile_portion				(LPCSTR id, const u64 &time)
 {
-	if (inside_critical_section)
-		return;
-
 	if (!*id)
 		return;
 
@@ -138,10 +135,8 @@ void CProfiler::setup_timer			(LPCSTR timer_id, const u64 &timer_time, const u32
 void CProfiler::clear				()
 {
 #ifdef PROFILE_CRITICAL_SECTIONS
-	while (inside_critical_section)
+	while (InterlockedExchange(&critical_section_counter,1))
 		Sleep					(0);
-
-	inside_critical_section		= true;
 #endif // PROFILE_CRITICAL_SECTIONS
 
 	m_section.Enter				();
@@ -152,7 +147,7 @@ void CProfiler::clear				()
 	m_call_count				= 0;
 
 #ifdef PROFILE_CRITICAL_SECTIONS
-	inside_critical_section		= false;
+	InterlockedExchange			(&critical_section_counter,0);
 #endif // PROFILE_CRITICAL_SECTIONS
 }
 
@@ -170,10 +165,8 @@ void CProfiler::show_stats			(CGameFont *game_font, bool show)
 	++m_call_count;
 		
 #ifdef PROFILE_CRITICAL_SECTIONS
-	while (inside_critical_section)
+	while (InterlockedExchange(&critical_section_counter,1))
 		Sleep					(0);
-
-	inside_critical_section		= true;
 #endif // PROFILE_CRITICAL_SECTIONS
 
 	m_section.Enter				();
@@ -220,7 +213,7 @@ void CProfiler::show_stats			(CGameFont *game_font, bool show)
 		m_section.Leave			();
 
 #ifdef PROFILE_CRITICAL_SECTIONS
-	inside_critical_section		= false;
+	InterlockedExchange			(&critical_section_counter,0);
 #endif // PROFILE_CRITICAL_SECTIONS
 
 	TIMERS::iterator			I = m_timers.begin();
@@ -257,10 +250,13 @@ void CProfiler::show_stats			(CGameFont *game_font, bool show)
 void CProfiler::add_profile_portion	(const CProfileResultPortion &profile_portion)
 {
 #ifdef PROFILE_CRITICAL_SECTIONS
-	if (inside_critical_section)
+	if (InterlockedExchange(&critical_section_counter,1))
 		return;
 
-	inside_critical_section		= true;
+	do {
+		Sleep					(0);
+	}
+	while (InterlockedExchange(&critical_section_counter,1));
 #endif // PROFILE_CRITICAL_SECTIONS
 
 	m_section.Enter				();
@@ -268,6 +264,6 @@ void CProfiler::add_profile_portion	(const CProfileResultPortion &profile_portio
 	m_section.Leave				();
 
 #ifdef PROFILE_CRITICAL_SECTIONS
-	inside_critical_section		= false;
+	InterlockedExchange			(&critical_section_counter,0);
 #endif // PROFILE_CRITICAL_SECTIONS
 }
