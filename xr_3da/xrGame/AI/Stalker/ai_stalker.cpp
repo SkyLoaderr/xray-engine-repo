@@ -114,7 +114,7 @@ void CAI_Stalker::reinit			()
 		start							= Memory.mem_usage();
 #endif // DEBUG_MEMORY_MANAGER
 	LoadSounds						(*cNameSect());
-#endif // DEBUG_MEMORY_MANAGER
+#ifdef DEBUG_MEMORY_MANAGER
 	if (g_bMEMO)
 		Msg					("CAI_Stalker::LoadSounds() : %d",Memory.mem_usage() - start);
 #endif // DEBUG_MEMORY_MANAGER
