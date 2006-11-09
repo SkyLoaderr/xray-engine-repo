@@ -50,10 +50,6 @@ static u32	init_counter	= 0;
 
 extern char g_application_path[256];
 
-#ifdef DEBUG
-XRCORE_API extern void dump_phase	();
-#endif // DEBUG
-
 void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, LPCSTR fs_fname)
 {
 	strcpy					(ApplicationName,_ApplicationName);
@@ -106,7 +102,7 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs,
 		
 		Memory._initialize	(strstr(Params,"-mem_debug") ? TRUE : FALSE);
 
-		dump_phase			();
+		DUMP_PHASE;
 
 		_initialize_cpu		();
 

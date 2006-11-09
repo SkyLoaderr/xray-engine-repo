@@ -32,10 +32,6 @@ void FlushLog			()
     }
 }
 
-#ifdef DEBUG
-XRCORE_API extern void dump_phase	();
-#endif // DEBUG
-
 void AddOne				(const char *split) 
 {
 	logCS.Enter			();
@@ -45,10 +41,10 @@ void AddOne				(const char *split)
 	OutputDebugString	("\n");
 #endif
 
-//	dump_phase	();
+//	DUMP_PHASE;
 	{
 		shared_str			temp = shared_str(split);
-//	dump_phase	();
+//		DUMP_PHASE;
 		LogFile.push_back	(temp);
 	}
 

@@ -68,6 +68,8 @@ public:
 };
 //-----------------------------------------------------------------------
 extern __declspec(dllimport)	size_t	__cdecl lua_memusage	();
+
+#ifdef DEBUG_MEMORY_MANAGER
 class CCC_MemStat : public IConsole_Command
 {
 public:
@@ -81,6 +83,8 @@ public:
 //		g_pSharedMemoryContainer->dump		();
 	}
 };
+#endif // DEBUG_MEMORY_MANAGER
+
 static void vminfo (size_t *_free, size_t *reserved, size_t *committed) {
 	MEMORY_BASIC_INFORMATION memory_info;
 	memory_info.BaseAddress = 0;
@@ -100,6 +104,7 @@ static void vminfo (size_t *_free, size_t *reserved, size_t *committed) {
 		memory_info.BaseAddress = (char *) memory_info.BaseAddress + memory_info.RegionSize;
 	}
 }
+
 class CCC_MemStats : public IConsole_Command
 {
 public:
@@ -120,18 +125,23 @@ public:
 		Msg		("* [x-ray]: economy: strings[%d K], smem[%d K]",_eco_strings/1024,_eco_smem);
 	}
 };
+
+#ifdef DEBUG_MEMORY_MANAGER
 class CCC_DbgMemCheck : public IConsole_Command
 {
 public:
 	CCC_DbgMemCheck(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) { if (Memory.debug_mode){ Memory.dbg_check();}else{Msg("! Run with -mem_debug options.");} }
 };
+#endif // DEBUG_MEMORY_MANAGER
+
 class CCC_DbgStrCheck : public IConsole_Command
 {
 public:
 	CCC_DbgStrCheck(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) { g_pStringContainer->verify(); }
 };
+
 class CCC_DbgStrDump : public IConsole_Command
 {
 public:
@@ -511,14 +521,17 @@ void CCC_Register()
 	CMD1(CCC_MemStats,		"stat_memory"		);
 	CMD1(CCC_TexturesStat,	"stat_textures"		);
 
+#ifdef DEBUG_MEMORY_MANAGER
 	CMD1(CCC_MemStat,		"dbg_mem_dump"		);
 	CMD1(CCC_DbgMemCheck,	"dbg_mem_check"		);
+#endif // DEBUG_MEMORY_MANAGER
+
 	CMD1(CCC_DbgStrCheck,	"dbg_str_check"		);
 	CMD1(CCC_DbgStrDump,	"dbg_str_dump"		);
 
 	CMD3(CCC_Mask,		"mt_particles",			&psDeviceFlags,			mtParticles);
-#ifdef DEBUG
 
+#ifdef DEBUG
 	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,			mtSound);
 	CMD3(CCC_Mask,		"mt_physics",			&psDeviceFlags,			mtPhysics);
 	CMD3(CCC_Mask,		"mt_network",			&psDeviceFlags,			mtNetwork);
@@ -587,9 +600,9 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"snd_stats_info_name",	&g_stats_flags,		st_sound_info_name );
 	CMD3(CCC_Mask,		"snd_stats_info_object",&g_stats_flags,		st_sound_info_object );
 
-	#ifdef DEBUG
+#ifdef DEBUG
 	CMD4(CCC_Integer,	"error_line_count",		&g_ErrorLineCount,	6,	1024	);
-#endif
+#endif // DEBUG
 
 	// Mouse
 	CMD3(CCC_Mask,		"mouse_invert",			&psMouseInvert,1);

@@ -16,7 +16,7 @@ extern		pso_MemFill		xrMemFill_x86;
 extern		pso_MemFill32	xrMemFill32_MMX;
 extern		pso_MemFill32	xrMemFill32_x86;
 
-#ifdef DEBUG
+#ifdef DEBUG_MEMORY_MANAGER
 XRCORE_API void dump_phase		()
 {
 	if (!Memory.debug_mode)
@@ -27,30 +27,34 @@ XRCORE_API void dump_phase		()
 	string256					temp;
 	sprintf						(temp,"x:\\$phase$%d.dump",++phase_counter);
 	Memory.mem_statistic		(temp);
-	}
-#endif // DEBUG
+}
+#endif // DEBUG_MEMORY_MANAGER
 
 xrMemory::xrMemory()
-#ifdef PROFILE_CRITICAL_SECTIONS
-	:debug_cs(MUTEX_PROFILE_ID(xrMemory))
-#endif // PROFILE_CRITICAL_SECTIONS
+#ifdef DEBUG_MEMORY_MANAGER
+#	ifdef PROFILE_CRITICAL_SECTIONS
+		:debug_cs(MUTEX_PROFILE_ID(xrMemory))
+#	endif // PROFILE_CRITICAL_SECTIONS
+#endif // DEBUG_MEMORY_MANAGER
 {
-#ifdef DEBUG
+#ifdef DEBUG_MEMORY_MANAGER
 	debug_mode	= FALSE;
-#endif
+#endif // DEBUG_MEMORY_MANAGER
 	mem_copy	= xrMemCopy_x86;
 	mem_fill	= xrMemFill_x86;
 	mem_fill32	= xrMemFill32_x86;
 }
 
-XRCORE_API	BOOL	g_bMEMO		= FALSE;
+#ifdef DEBUG_MEMORY_MANAGER
+	XRCORE_API	BOOL	g_bMEMO		= FALSE;
+#endif // DEBUG_MEMORY_MANAGER
 
 void	xrMemory::_initialize	(BOOL bDebug)
 {
-#ifdef DEBUG
+#ifdef DEBUG_MEMORY_MANAGER
 	debug_mode				= bDebug;
 	debug_info_update		= 0;
-#endif
+#endif // DEBUG_MEMORY_MANAGER
 
 	stat_calls				= 0;
 	stat_counter			= 0;
@@ -78,41 +82,46 @@ void	xrMemory::_initialize	(BOOL bDebug)
 	}
 #endif    
 
-#ifdef DEBUG
+#ifdef DEBUG_MEMORY_MANAGER
 	if (0==strstr(Core.Params,"-memo"))	mem_initialized				= TRUE;
 	else								g_bMEMO						= TRUE;
-#else
+#else // DEBUG_MEMORY_MANAGER
 	mem_initialized				= TRUE;
-#endif
+#endif // DEBUG_MEMORY_MANAGER
 
-//	dump_phase					();
+//	DUMP_PHASE;
 	g_pStringContainer			= xr_new<str_container>		();
 	shared_str_initialized		= true;
-//	dump_phase					();
+//	DUMP_PHASE;
 	g_pSharedMemoryContainer	= xr_new<smem_container>	();
-//	dump_phase					();
+//	DUMP_PHASE;
 }
 
-extern void dbg_dump_leaks();
-extern void dbg_dump_str_leaks();
+#ifdef DEBUG_MEMORY_MANAGER
+	extern void dbg_dump_leaks();
+	extern void dbg_dump_str_leaks();
+#endif // DEBUG_MEMORY_MANAGER
+
 void	xrMemory::_destroy()
 {
 #ifndef M_BORLAND
-#ifdef DEBUG
-	if (debug_mode)				dbg_dump_str_leaks	();
-#endif
-#endif
+#	ifdef DEBUG_MEMORY_MANAGER
+		if (debug_mode)				dbg_dump_str_leaks	();
+#	endif // DEBUG_MEMORY_MANAGER
+#endif // M_BORLAND
 	xr_delete					(g_pSharedMemoryContainer);
 	xr_delete					(g_pStringContainer);
 
 #ifndef M_BORLAND
-#ifdef DEBUG
-	if (debug_mode)				dbg_dump_leaks	();
-#endif
-#endif
+#	ifdef DEBUG_MEMORY_MANAGER
+		if (debug_mode)				dbg_dump_leaks	();
+#	endif // DEBUG_MEMORY_MANAGER
+#endif // M_BORLAND
 
 	mem_initialized				= FALSE;
+#ifdef DEBUG_MEMORY_MANAGER
 	debug_mode					= FALSE;
+#endif // DEBUG_MEMORY_MANAGER
 }
 
 void	xrMemory::mem_compact	()
@@ -165,11 +174,7 @@ u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
 	return (u32) total;
 }
 
-#ifndef DEBUG
-void	xrMemory::mem_statistic	(LPCSTR fn)
-{
-}
-#else
+#ifdef DEBUG_MEMORY_MANAGER
 ICF	u8*		acc_header			(void* P)	{	u8*		_P		= (u8*)P;	return	_P-1;	}
 ICF	u32		get_header			(void* P)	{	return	(u32)*acc_header(P);				}
 void	xrMemory::mem_statistic	(LPCSTR fn)
@@ -277,7 +282,7 @@ void	xrMemory::mem_statistic	(LPCSTR fn)
 	}
 	*/
 }
-#endif
+#endif // DEBUG_MEMORY_MANAGER
 
 // xr_strdup
 char*			xr_strdup		(const char* string)
@@ -285,10 +290,10 @@ char*			xr_strdup		(const char* string)
 	VERIFY	(string);
 	u32		len			= u32(xr_strlen(string))+1	;
 	char *	memory		= (char*)	Memory.mem_alloc( len
-#ifdef DEBUG
+#ifdef DEBUG_MEMORY_MANAGER
 		, "strdup"
-#endif
-		);
+#endif // DEBUG_MEMORY_MANAGER
+	);
 	CopyMemory		(memory,string,len);
 	return	memory;
 }

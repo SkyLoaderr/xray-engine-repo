@@ -136,15 +136,9 @@ void CRenderDevice::PreCache	(u32 amount)
 
 ENGINE_API xr_list<LOADING_EVENT>			g_loading_events;
 
-#ifdef DEBUG
-XRCORE_API extern void dump_phase	();
-#endif // DEBUG
-
 void CRenderDevice::Run			()
 {
-#ifdef DEBUG
-//	dump_phase		();
-#endif // DEBUG
+//	DUMP_PHASE;
 	g_bLoaded		= FALSE;
 	MSG				msg;
     BOOL			bGotMsg;

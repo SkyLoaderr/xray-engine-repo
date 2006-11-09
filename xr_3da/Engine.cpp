@@ -45,10 +45,10 @@ void CEngine::Initialize	(void)
 void CEngine::Destroy	()
 {
 	Engine.Sheduler.Destroy				( );
-#ifdef DEBUG
+#ifdef DEBUG_MEMORY_MANAGER
 	extern void	dbg_dump_leaks_prepare	( );
 	if (Memory.debug_mode)				dbg_dump_leaks_prepare	();
-#endif
+#endif // DEBUG_MEMORY_MANAGER
 	Engine.External.Destroy				( );
 	
 	if (hPSGP)	

@@ -1,12 +1,12 @@
 #include "StdAfx.h"
 #pragma hdrstop
 
-#ifndef DEBUG
+#ifndef DEBUG_MEMORY_MANAGER
 void	xrMemory::dbg_register		(void* _p, size_t _size, const char* _name)	{ }
 void	xrMemory::dbg_unregister	(void* _p)									{ }
 void	xrMemory::dbg_check			()											{ }
 
-#else
+#else // DEBUG_MEMORY_MANAGER
 #	if 0
 #		define DEBUG_MEMORY_LEAK		
 #		define MEMORY_LEAK_DESCRIPTION	"C++ NEW"
@@ -172,4 +172,4 @@ XRCORE_API void	dbg_dump_str_leaks			()
 {
 	g_pStringContainer->dump();
 }
-#endif
+#endif // DEBUG_MEMORY_MANAGER

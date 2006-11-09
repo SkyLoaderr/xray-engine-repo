@@ -208,10 +208,6 @@ namespace CPU
 };
 
 //------------------------------------------------------------------------------------
-#ifdef DEBUG
-XRCORE_API extern void dump_phase	();
-#endif // DEBUG
-
 void _initialize_cpu	(void) 
 {
 	Msg("* Detected CPU: %s %s, F%d/M%d/S%d, %.2f mhz, %d-clk 'rdtsc'",
@@ -221,7 +217,7 @@ void _initialize_cpu	(void)
 		u32(CPU::clk_overhead)
 		);
 
-//	dump_phase();
+//	DUMP_PHASE;
 
 	if (strstr(Core.Params,"-x86"))		{
 		CPU::ID.feature	&= ~_CPU_FEATURE_3DNOW	;
