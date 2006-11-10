@@ -154,7 +154,9 @@ void CProfiler::clear				()
 void CProfiler::show_stats			(CGameFont *game_font, bool show)
 {
 	if (!show) {
+#ifdef PROFILE_CRITICAL_SECTIONS
 		set_add_profile_portion	(0);
+#endif // PROFILE_CRITICAL_SECTIONS
 		clear					();
 		return;
 	}
