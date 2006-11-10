@@ -64,8 +64,8 @@
 		<command id="kb_buy_menu"					exe="buy_menu"/>
 		<command id="kb_skin_menu"					exe="skin_menu"/>
 		<command id="kb_team_menu"					exe="team_menu"/>
-		<command id="Vote Begin"					exe="vote_begin"/>
-		<command id="Vote"							exe="vote"/>
+		<command id="kb_vote_begin"					exe="vote_begin"/>
+		<command id="kb_vote_menu"					exe="vote"/>
 		<command id="kb_vote_yes"					exe="vote_yes"/>
 		<command id="kb_vote_no"					exe="vote_no"/>
 		<command id="speech_menu_group"				exe="speech_menu_0"/>

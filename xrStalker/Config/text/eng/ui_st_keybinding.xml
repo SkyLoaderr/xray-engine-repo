@@ -159,6 +159,9 @@
 	<string id="kb_vote_begin">
 		<text>Begin voting</text>
 	</string>
+	<string id="kb_vote_menu">
+		<text>Vote</text>
+	</string>
 	<string id="kb_vote_no">
 		<text>Vote "Yes"</text>
 	</string>
