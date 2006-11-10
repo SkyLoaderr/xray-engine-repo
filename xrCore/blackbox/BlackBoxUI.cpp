@@ -73,6 +73,7 @@ void BuildStackTrace	()
 	BuildStackTrace			(&ex_ptrs);
 }
 
+__declspec(noinline)
 void OutputDebugStackTrace	(const char *header)
 {
 	BuildStackTrace			();		

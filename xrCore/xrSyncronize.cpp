@@ -48,9 +48,7 @@ xrCriticalSection::~xrCriticalSection	()
 }
 
 #ifdef DEBUG
-	extern void BuildStackTrace ();
-	extern char g_stackTrace[100][256];
-	extern int g_stackTraceCount;
+	extern void OutputDebugStackTrace	(const char *header);
 #endif // DEBUG
 
 void	xrCriticalSection::Enter	()
@@ -58,14 +56,8 @@ void	xrCriticalSection::Enter	()
 #ifdef PROFILE_CRITICAL_SECTIONS
 #	ifdef DEBUG
 		static bool					show_call_stack = false;
-		if (show_call_stack) {
-			BuildStackTrace			();		
-
-			for (int i=2; i<g_stackTraceCount; ++i) {
-				OutputDebugString	(g_stackTrace[i]);
-				OutputDebugString	("\r\n");
-			}
-		}
+		if (show_call_stack)
+			OutputDebugStackTrace	();
 #	endif // DEBUG
 	profiler						temp(m_id);
 #endif // PROFILE_CRITICAL_SECTIONS
