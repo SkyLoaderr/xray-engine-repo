@@ -16,6 +16,8 @@
 #include "Actor.h"
 #include "AI/Stalker/ai_stalker.h"
 #include "character_info.h"
+#include "game_cl_base_weapon_usage_statistic.h"
+#include "../xr_collide_defs.h"
 
 //константы shoot_factor, определ€ющие 
 //поведение пули при столкновении с объектом
@@ -72,7 +74,7 @@ BOOL CBulletManager::test_callback(const collide::ray_defs& rd, CObject* object,
 								play_whine			= true;		// play whine sound
 							}else{
 								// real test actor CFORM
-								collide::rq_results	r_temp;
+								m_rq_results.r_clear();
 								if (cform->_RayQuery(rd,r_temp)){
 									bRes			= TRUE;		// hit actor
 									play_whine		= false;	// don't play whine sound
@@ -288,12 +290,12 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 		//-------------------------------------------------
 		bool AddStatistic = false;
 		if (GameID() != GAME_SINGLE && E.bullet.flags.allow_sendhit && E.R.O->CLS_ID == CLSID_OBJECT_ACTOR
-			&& Game().m_WeaponUsageStatistic.CollectData())
+			&& Game().m_WeaponUsageStatistic->CollectData())
 		{
 			CActor* pActor = smart_cast<CActor*>(E.R.O);
 			if (pActor)// && pActor->g_Alive())
 			{
-				Game().m_WeaponUsageStatistic.OnBullet_Hit(&E.bullet, E.R.O->ID(), (s16)E.R.element, E.point);
+				Game().m_WeaponUsageStatistic->OnBullet_Hit(&E.bullet, E.R.O->ID(), (s16)E.R.element, E.point);
 				AddStatistic = true;
 			};
 		};
