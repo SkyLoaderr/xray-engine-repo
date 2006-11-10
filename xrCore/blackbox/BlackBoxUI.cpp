@@ -72,3 +72,18 @@ void BuildStackTrace	()
 
 	BuildStackTrace			(&ex_ptrs);
 }
+
+void OutputDebugStackTrace	(const char *header)
+{
+	BuildStackTrace			();		
+
+	if (header) {
+		OutputDebugString	(header);
+		OutputDebugString	(":\r\n");
+	}
+
+	for (int i=2; i<g_stackTraceCount; ++i) {
+		OutputDebugString	(g_stackTrace[i]);
+		OutputDebugString	("\r\n");
+	}
+}
