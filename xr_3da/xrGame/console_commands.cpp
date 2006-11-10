@@ -40,6 +40,7 @@
 #include "MainMenu.h"
 #include "saved_game_wrapper.h"
 #include "level_graph.h"
+#include "game_cl_base_weapon_usage_statistic.h"
 
 #ifdef DEBUG
 #	include "PHDebug.h"
@@ -219,7 +220,7 @@ class CCC_SaveStatistic : public IConsole_Command {
 public:
 	CCC_SaveStatistic(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR /**args/**/) {
-		Game().m_WeaponUsageStatistic.SaveData();
+		Game().m_WeaponUsageStatistic->SaveData();
 	}
 	virtual void	Info	(TInfo& I)		
 	{

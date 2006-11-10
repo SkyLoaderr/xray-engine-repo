@@ -8,6 +8,7 @@
 #include "Physics.h"
 #include "xrServer.h"
 #include "Actor.h"
+#include "game_cl_base_weapon_usage_statistic.h"
 
 void CLevel::ClientReceive()
 {
@@ -269,19 +270,19 @@ void CLevel::ClientReceive()
 			{
 				if (!game) break;
 				if (GameID() != GAME_SINGLE)
-					Game().m_WeaponUsageStatistic.On_Check_Respond(P);
+					Game().m_WeaponUsageStatistic->On_Check_Respond(P);
 			}break;
 		case M_STATISTIC_UPDATE:
 			{
 				if (!game) break;
 				if (GameID() != GAME_SINGLE)
-					Game().m_WeaponUsageStatistic.OnUpdateRequest(P);
+					Game().m_WeaponUsageStatistic->OnUpdateRequest(P);
 			}break;
 		case M_STATISTIC_UPDATE_RESPOND:
 			{
 				if (!game) break;
 				if (GameID() != GAME_SINGLE)
-					Game().m_WeaponUsageStatistic.OnUpdateRespond(P);
+					Game().m_WeaponUsageStatistic->OnUpdateRespond(P);
 			}break;
 		}
 

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "UIDMStatisticWnd.h"
-//#include "game_cl_base.h"
 #include "Level.h"
+#include "game_cl_base_weapon_usage_statistic.h"
 
 const char * const STATS_XML = "statisticwnd.xml";
 
@@ -44,7 +44,7 @@ void CUIDMStatisticWnd::Update				()
 	if (!Game().local_player) return;
 
 	PLAYERS_STATS_it pPlayerI;
-	if (!Game().m_WeaponUsageStatistic.GetPlayer(Game().local_player->getName(), pPlayerI)) 
+	if (!Game().m_WeaponUsageStatistic->GetPlayer(Game().local_player->getName(), pPlayerI)) 
 	{
 		while (GetItemCount())
 		{

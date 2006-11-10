@@ -5,7 +5,10 @@ class CEntity;
 #define HIT_STACK_SIZE	2
 
 class CMeleeChecker {
+private:
+	collide::rq_results	r_res;
 
+private:
 	CBaseMonster	*m_object;
 
 	// ltx parameters

@@ -46,6 +46,9 @@ class CCar :
 	public CExplosive,
 	public CDelayedActionFuse
 {
+private:
+	collide::rq_results		RQR;
+
 #ifdef DEBUG
 	CFunctionGraph 					m_dbg_power_rpm			;
 	CFunctionGraph 					m_dbg_torque_rpm		;

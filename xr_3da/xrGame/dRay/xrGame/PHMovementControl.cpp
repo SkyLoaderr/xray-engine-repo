@@ -1143,10 +1143,11 @@ void	CPHMovementControl::TraceBorder(const Fvector &prev_position)
 	collide::ray_defs	RD		(from_pos,dir,mag,0,collide::rqtStatic)		;
 	VERIFY							(!fis_zero(RD.dir.square_magnitude()))	;
 
-	STraceBorderQParams p		(this,dir);
-	collide::rq_results		storage	;
+	STraceBorderQParams			p(this,dir);
+	storage.r_clear				();
 	g_pGameLevel->ObjectSpace.RayQuery(storage,RD,BorderTraceCallback,&p,NULL,static_cast<CObject*>(m_character->PhysicsRefObject()));
 }
+
 void	CPHMovementControl::				UpdateObjectBox(CPHCharacter *ach)
 {
 	if(!m_character||!m_character->b_exist) return;

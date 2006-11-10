@@ -5,6 +5,8 @@
 #include "ui/UIStatsWnd.h"
 #include "game_cl_base.h"
 
+struct Weapon_Statistic;
+
 class CUIDMStatisticWnd:public CUIStatsWnd
 {
 	typedef CUIStatsWnd inherited;

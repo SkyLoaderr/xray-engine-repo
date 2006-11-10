@@ -3,7 +3,7 @@
 #include "game_base.h"
 #include "client_id.h"
 #include "WeaponAmmo.h"
-#include "Level_Bullet_Manager.h"
+//#include "Level_Bullet_Manager.h"
 
 class	NET_Packet;
 class	CGameObject;
@@ -21,7 +21,9 @@ add_to_type_list(SZoneMapEntityData)
 #undef script_type_list
 #define script_type_list save_type_list(SZoneMapEntityData)
 
-#include "game_cl_base_weapon_usage_statistic.h"
+//#include "game_cl_base_weapon_usage_statistic.h"
+
+struct WeaponUsageStatistic;
 
 class	game_cl_GameState	: public game_GameState, public ISheduled
 {
@@ -43,7 +45,7 @@ public:
 	xr_vector<CGameObject*>				targets; //bases ???
 
 
-	WeaponUsageStatistic				m_WeaponUsageStatistic;	
+	WeaponUsageStatistic				*m_WeaponUsageStatistic;	
 
 private:
 				void				switch_Phase			(u32 new_phase)		{inherited::switch_Phase(new_phase);};

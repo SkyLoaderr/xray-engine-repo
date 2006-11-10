@@ -17,8 +17,9 @@ class CPHSimpleCharacter :
 	public CPHCharacter,
 	ICollisionDamageInfo
 {
+private:
+	collide::rq_results		RQR;
 
-	
 protected:
 	CElevatorState			m_elevator_state;
 	////////////////////////////damage////////////////////////////////////////

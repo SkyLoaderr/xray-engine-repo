@@ -60,6 +60,9 @@ DEFINE_VECTOR(CLensFlareDescriptor,LensFlareDescVec,LensFlareDescIt);
 
 class ENGINE_API CLensFlare
 {
+private:
+	collide::rq_results	r_dest;
+
 protected:
 	float				fBlend;
 	u32					dwFrame;

@@ -74,8 +74,9 @@ BOOL CBulletManager::test_callback(const collide::ray_defs& rd, CObject* object,
 								play_whine			= true;		// play whine sound
 							}else{
 								// real test actor CFORM
-								m_rq_results.r_clear();
-								if (cform->_RayQuery(rd,r_temp)){
+								Level().BulletManager().m_rq_results.r_clear();
+
+								if (cform->_RayQuery(rd,Level().BulletManager().m_rq_results)){
 									bRes			= TRUE;		// hit actor
 									play_whine		= false;	// don't play whine sound
 								}else{

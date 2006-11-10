@@ -274,10 +274,11 @@ public:
 			bool						inside_anomaly			();
 
 private:
-	bool	m_can_kill_member;
-	bool	m_can_kill_enemy;
-	float	m_pick_distance;
-	u32		m_pick_frame_id;
+	bool				m_can_kill_member;
+	bool				m_can_kill_enemy;
+	float				m_pick_distance;
+	u32					m_pick_frame_id;
+	collide::rq_results	rq_storage;
 
 private:
 			void						can_kill_entity			(const Fvector &position, const Fvector &direction, float distance, collide::rq_results& rq_storage);

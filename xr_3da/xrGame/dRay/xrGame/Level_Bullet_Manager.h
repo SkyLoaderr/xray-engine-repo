@@ -78,6 +78,12 @@ class CLevel;
 
 class CBulletManager
 {
+private:
+	collide::rq_results		rq_storage;
+	xr_vector<ISpatial*>	rq_spatial;
+	collide::rq_results		m_rq_results;
+
+private:
 	DEFINE_VECTOR						(ref_sound,SoundVec,SoundVecIt);
 	DEFINE_VECTOR						(SBullet,BulletVec,BulletVecIt);
 	typedef std::pair<float,float>		_hit		;

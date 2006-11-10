@@ -4,8 +4,9 @@
 #include "render.h"
 #include "pure_relcase.h"
 
-class ENGINE_API IRender_Sector;
-class ENGINE_API CObject;
+class IRender_Sector;
+class CObject;
+class ISpatial;
 
 namespace Feel
 {
@@ -20,6 +21,8 @@ namespace Feel
 		xr_vector<CObject*>			seen;
 		xr_vector<CObject*>			query;
 		xr_vector<CObject*>			diff;
+		collide::rq_results			RQR;
+		xr_vector<ISpatial*>		r_spatial;
 
 		void						o_new		(CObject* E);
 		void						o_delete	(CObject* E);

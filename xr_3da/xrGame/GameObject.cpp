@@ -29,6 +29,7 @@
 #include "net_utils.h"
 #include "script_callback_ex.h"
 #include "MathUtils.h"
+#include "game_cl_base_weapon_usage_statistic.h"
 
 #ifdef DEBUG
 #	include "debug_renderer.h"
@@ -174,7 +175,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 			case GE_HIT_STATISTIC:
 				{
 					if (GameID() != GAME_SINGLE)
-						Game().m_WeaponUsageStatistic.OnBullet_Check_Request(&HDS);
+						Game().m_WeaponUsageStatistic->OnBullet_Check_Request(&HDS);
 				}break;
 			default:
 				{
@@ -190,7 +191,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 			Hit				(&HDS);
 			//---------------------------------------------------------------------------
 			if (GameID() != GAME_SINGLE)
-				Game().m_WeaponUsageStatistic.OnBullet_Check_Result(false);
+				Game().m_WeaponUsageStatistic->OnBullet_Check_Result(false);
 			//---------------------------------------------------------------------------
 		}
 		break;

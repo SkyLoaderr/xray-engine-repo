@@ -16,6 +16,7 @@
 #include "weapon.h"
 #include "eatable_item_object.h" 
 #include "Missile.h"
+#include "game_cl_base_weapon_usage_statistic.h"
 
 //#define DELAYED_ROUND_TIME	7000
 
@@ -213,7 +214,7 @@ void				game_sv_Deathmatch::Processing_Victim		(game_PlayerState* pVictim, game_
 
 	Victim_Exp				(pVictim);
 	//---------------------------------------
-	Game().m_WeaponUsageStatistic.OnPlayerKilled(pVictim);
+	Game().m_WeaponUsageStatistic->OnPlayerKilled(pVictim);
 	//---------------------------------------
 };
 
@@ -1023,8 +1024,8 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 //		SpawnWeapon4Actor(pA->ID, (*pWpnI).WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
 		SpawnWeapon4Actor(pA->ID, pWpnS->WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
 		//-------------------------------------------------------------------------------
-//		Game().m_WeaponUsageStatistic.OnWeaponBought(ps, (*pWpnI).WeaponName.c_str());
-		Game().m_WeaponUsageStatistic.OnWeaponBought(ps, pWpnS->WeaponName.c_str());
+//		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, (*pWpnI).WeaponName.c_str());
+		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, pWpnS->WeaponName.c_str());
 	};
 
 	if (!g_bDMIgnore_Money_OnBuy)

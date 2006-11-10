@@ -9,6 +9,7 @@
 #include "Actor.h"
 #include "gamepersistent.h"
 #include "mt_config.h"
+#include "game_cl_base_weapon_usage_statistic.h"
 
 #ifdef DEBUG
 #	include "debug_renderer.h"
@@ -176,7 +177,7 @@ void CBulletManager::AddBullet(const Fvector& position,
 	bullet.Init			(position, direction, starting_speed, power, impulse, sender_id, sendersweapon_id, e_hit_type, maximum_distance, cartridge, SendHit);
 	bullet.frame_num	= Device.dwFrame;
 	if (SendHit && GameID() != GAME_SINGLE)
-		Game().m_WeaponUsageStatistic.OnBullet_Fire(&bullet, cartridge);
+		Game().m_WeaponUsageStatistic->OnBullet_Fire(&bullet, cartridge);
 	m_Lock.Leave	();
 }
 
@@ -187,8 +188,8 @@ void CBulletManager::UpdateWorkload()
 	u32 step_num		=	delta_time/m_dwStepTime;
 	m_dwTimeRemainder	=	delta_time%m_dwStepTime;
 	
-	collide::rq_results		rq_storage	;
-	xr_vector<ISpatial*>	rq_spatial	;
+	rq_storage.r_clear			();
+	rq_spatial.clear_not_free	();
 
 	for(int k=m_Bullets.size()-1; k>=0; k--){
 		SBullet& bullet = m_Bullets[k];
@@ -209,7 +210,7 @@ void CBulletManager::UpdateWorkload()
 				collide::rq_result res;
 				RegisterEvent(EVENT_REMOVE, FALSE, &bullet, Fvector().set(0, 0, 0), res, (u16)k);
 //				if (bullet.flags.allow_sendhit && GameID() != GAME_SINGLE)
-//					Game().m_WeaponUsageStatistic.OnBullet_Remove(&bullet);
+//					Game().m_WeaponUsageStatistic->OnBullet_Remove(&bullet);
 //				m_Bullets[k] = m_Bullets.back();
 //				m_Bullets.pop_back();
 				break;
@@ -436,7 +437,7 @@ void CBulletManager::CommitEvents			()	// @ the start of frame
 		case EVENT_REMOVE:
 			{
 				if (E.bullet.flags.allow_sendhit && GameID() != GAME_SINGLE)
-					Game().m_WeaponUsageStatistic.OnBullet_Remove(&E.bullet);
+					Game().m_WeaponUsageStatistic->OnBullet_Remove(&E.bullet);
 				m_Bullets[E.tgt_material] = m_Bullets.back();
 				m_Bullets.pop_back();
 			}break;

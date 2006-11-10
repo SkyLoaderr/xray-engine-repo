@@ -85,7 +85,7 @@ namespace Feel {
 		Frustum.CreateFromMatrix				(mFull,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 
 		// Traverse object database
-		xr_vector<ISpatial*>					r_spatial	;
+		r_spatial.clear_not_free				();
 		g_SpatialSpace->q_frustum
 			(
 			r_spatial,
@@ -148,7 +148,7 @@ namespace Feel {
 		o_trace				(P,dt,vis_threshold);
 	}
 	void Vision::o_trace	(Fvector& P, float dt, float vis_threshold)	{
-		collide::rq_results	RQR	;
+		RQR.r_clear			();
 		xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
 		for (; I!=E; I++){
 			if (0==I->O->CFORM())	{ I->fuzzy = -1; continue; }

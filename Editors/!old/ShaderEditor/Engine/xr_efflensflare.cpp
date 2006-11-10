@@ -296,7 +296,7 @@ void CLensFlare::OnFrame(int id)
 			TP.vis			= 0.f;
 		}else{
 			// cache outdated. real query.
-			collide::rq_results		r_dest;
+			r_dest.r_clear	();
 			if (g_pGameLevel->ObjectSpace.RayQuery	(r_dest,RD,material_callback,&TP,NULL,o_main))
 				m_ray_cache.result = FALSE			;
 		}

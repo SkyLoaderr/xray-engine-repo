@@ -345,6 +345,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	// auth
 	{
+#pragma todo("container is created in stack!")
 		xr_vector<xr_string>	ignore, test	;
 		ignore.push_back		(xr_string("user"));
 		ignore.push_back		(xr_string("Stalker_net.exe"));
@@ -662,6 +663,7 @@ void CApplication::Level_Append		(LPCSTR folder)
 
 void CApplication::Level_Scan()
 {
+#pragma todo("container is created in stack!")
 	xr_vector<char*>*		folder			= FS.file_list_open		("$game_levels$",FS_ListFolders|FS_RootOnly);
 	R_ASSERT				(folder&&folder->size());
 	for (u32 i=0; i<folder->size(); i++)	Level_Append((*folder)[i]);

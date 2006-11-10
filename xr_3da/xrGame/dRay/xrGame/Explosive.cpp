@@ -724,14 +724,13 @@ struct SRemovePred
 void CExplosive::ExplodeWaveProcess()
 {
 
-	BLASTED_OBJECTS_I I=std::remove_if(m_blasted_objects.begin(),m_blasted_objects.end(),SRemovePred());
-	m_blasted_objects.erase(I,m_blasted_objects.end());
-	collide::rq_results		rq_storage		;
-	u16 i=BLASTED_OBJ_PROCESSED_PER_FRAME	;
-	while(m_blasted_objects.size()&&0!=i) 
-	{
-		ExplodeWaveProcessObject(rq_storage,m_blasted_objects.back());
-		m_blasted_objects.pop_back();
+	BLASTED_OBJECTS_I		I=std::remove_if(m_blasted_objects.begin(),m_blasted_objects.end(),SRemovePred());
+	m_blasted_objects.erase	(I,m_blasted_objects.end());
+	rq_storage.r_clear		();
+	u16						i = BLASTED_OBJ_PROCESSED_PER_FRAME	;
+	while (m_blasted_objects.size()&&0!=i) {
+		ExplodeWaveProcessObject	(rq_storage,m_blasted_objects.back());
+		m_blasted_objects.pop_back	();
 		--i;
 	}	
 }

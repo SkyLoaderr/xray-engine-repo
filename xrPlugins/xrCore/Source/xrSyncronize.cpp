@@ -47,9 +47,26 @@ xrCriticalSection::~xrCriticalSection	()
 	xr_free							( pmutex		);
 }
 
+#ifdef DEBUG
+	extern void BuildStackTrace ();
+	extern char g_stackTrace[100][256];
+	extern int g_stackTraceCount;
+#endif // DEBUG
+
 void	xrCriticalSection::Enter	()
 {
 #ifdef PROFILE_CRITICAL_SECTIONS
+#	ifdef DEBUG
+		static bool					show_call_stack = false;
+		if (show_call_stack) {
+			BuildStackTrace			();		
+
+			for (int i=2; i<g_stackTraceCount; ++i) {
+				OutputDebugString	(g_stackTrace[i]);
+				OutputDebugString	("\r\n");
+			}
+		}
+#	endif // DEBUG
 	profiler						temp(m_id);
 #endif // PROFILE_CRITICAL_SECTIONS
 	EnterCriticalSection			( (CRITICAL_SECTION*)pmutex );

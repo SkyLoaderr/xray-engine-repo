@@ -743,7 +743,11 @@ public:
 	virtual	CVisualMemoryManager*visual_memory					() const;
 
 	virtual	BOOL				BonePassBullet					(int boneID);
-	virtual	void				On_B_NotCurrentEntity		();
+	virtual	void				On_B_NotCurrentEntity			();
+
+private:
+	collide::rq_results			RQR;
+			BOOL				CanPickItem						(const CFrustum& frustum, const Fvector& from, CObject* item);
 };
 
 extern bool		isActorAccelerated			(u32 mstate, bool ZoomMode);

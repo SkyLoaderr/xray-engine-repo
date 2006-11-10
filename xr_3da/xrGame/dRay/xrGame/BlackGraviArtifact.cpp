@@ -177,7 +177,7 @@ void CBlackGraviArtefact::GraviStrike()
 	Fvector object_pos					; 
 	Fvector strike_dir					;
 
-	collide::rq_results		rq_storage	;
+	rq_storage.r_clear	();
 
 	for(GAME_OBJECT_LIST_it it = m_GameObjectList.begin(); 
 						    m_GameObjectList.end() != it;

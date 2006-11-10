@@ -266,6 +266,8 @@ struct HOST_NODE
 #define	xr_vector	std::vector
 typedef unsigned	int		u32;
 
+//. this vector may be removed after memory manager 
+//. is destroyed
 xr_vector <HOST_NODE>	net_Hosts;
 
 // {0218FA8B-515B-4bf2-9A5F-2F079D1759F3}

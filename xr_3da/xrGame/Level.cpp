@@ -43,6 +43,7 @@
 #include "level_sounds.h"
 #include "car.h"
 #include "trade_parameters.h"
+#include "game_cl_base_weapon_usage_statistic.h"
 
 #ifdef DEBUG
 #	include "level_debug.h"
@@ -399,7 +400,7 @@ void CLevel::ProcessGameEvents		()
 		}
 	}
 	if (OnServer() && GameID()!= GAME_SINGLE)
-		Game().m_WeaponUsageStatistic.Send_Check_Respond();
+		Game().m_WeaponUsageStatistic->Send_Check_Respond();
 }
 
 void CLevel::OnFrame	()

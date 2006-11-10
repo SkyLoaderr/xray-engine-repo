@@ -1,3 +1,7 @@
+#pragma once
+
+#include "level_bullet_manager.h"
+
 struct BulletData 
 {
 	shared_str		FirerName;

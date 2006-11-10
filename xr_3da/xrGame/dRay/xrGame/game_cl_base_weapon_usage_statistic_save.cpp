@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "game_cl_base.h"
 #include "Level.h"
+#include "game_cl_base_weapon_usage_statistic.h"
 
 #define WUS_IDENT	(('S'<<24)+('U'<<16)+('W'<<8)+' ')
 #define WUS_VERSION	2

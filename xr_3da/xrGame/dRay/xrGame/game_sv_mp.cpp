@@ -13,6 +13,7 @@
 #include "date_time.h"
 #include "game_cl_base.h"
 #include "Spectator.h"
+#include "game_cl_base_weapon_usage_statistic.h"
 
 u32		g_dwMaxCorpses = 10;
 #define		VOTE_LENGTH_TIME		1
@@ -332,7 +333,7 @@ void	game_sv_mp::SpawnPlayer				(ClientID id, LPCSTR N)
 		};
 		ps_who->RespawnTime = Device.dwTimeGlobal;
 		//---------------------------------------------
-		Game().m_WeaponUsageStatistic.OnPlayerSpawned(ps_who);
+		Game().m_WeaponUsageStatistic->OnPlayerSpawned(ps_who);
 	}
 	else
 		if (pS)
@@ -1190,7 +1191,7 @@ void	game_sv_mp::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount)
 
 	ps->money_for_round = s32(TotalMoney);
 	//---------------------------------------
-	Game().m_WeaponUsageStatistic.OnPlayerAddMoney(ps, MoneyAmount);
+	Game().m_WeaponUsageStatistic->OnPlayerAddMoney(ps, MoneyAmount);
 	//---------------------------------------	
 };
 //---------------------------------------------------------------------
