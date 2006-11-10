@@ -252,4 +252,10 @@
 	<string id="mp_your_rank">
 		<text>Ваш ранг теперь</text>
 	</string>
+	<string id="ui_st_team1_name">
+		<text>Свобода</text>
+	</string>
+	<string id="ui_st_team2_name">
+		<text>Наемники</text>
+	</string>
 </string_table>
