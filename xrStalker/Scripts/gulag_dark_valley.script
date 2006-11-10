@@ -815,9 +815,9 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                 squad = squad, group = groups[i],
                 online = onlineid[i],
                 in_rest = "", out_rest = restr[i],
-                position_threshold = 100,
-                --info_restr = irestr[i],
-                predicate = lb_predicate3
+                position_threshold = 100
+                --,info_restr = irestr[i],
+                --predicate = lb_predicate3
             }
             table.insert(sj, t)
 
@@ -827,9 +827,9 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                 squad = squad, group = groups[i],
                 online = onlineid[i],
                 in_rest = "", out_rest = restr[i],
-                position_threshold = 100,
-                --info_restr = irestr[i],
-                predicate = lb_predicate3
+                position_threshold = 100
+                --,info_restr = irestr[i],
+                --predicate = lb_predicate3
             }
             table.insert(sj, t)
 
@@ -839,9 +839,9 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
                 squad = squad, group = groups[i],
                 online = onlineid[i],
                 in_rest = "", out_rest = restr[i],
-                position_threshold = 100,
-                --info_restr = irestr[i],
-                predicate = lb_predicate3
+                position_threshold = 100
+                --,info_restr = irestr[i],
+                --predicate = lb_predicate3
             }
             table.insert(sj, t)
 
@@ -870,8 +870,8 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             prior = 6, state = {state_normal},
             squad = squad, group = groups[1],
             --online = false,
-            in_rest = "", out_rest = restr[i],
-            predicate = lb_predicate3
+            in_rest = "", out_rest = restr[i]
+            --,predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -880,8 +880,8 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             prior = 3, state = {state_alarm},
             squad = squad, group = groups[1],
             --online = false,
-            in_rest = "", out_rest = restr[i],
-            predicate = lb_predicate3
+            in_rest = "", out_rest = restr[i]
+            --,predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -890,8 +890,8 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             prior = 3, state = {state_alarm_actor_inside},
             squad = squad, group = groups[1],
             --online = false,
-            in_rest = "", out_rest = restr[i],
-            predicate = lb_predicate3
+            in_rest = "", out_rest = restr[i]
+            --,predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -922,8 +922,8 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             prior = 5, state = {state_normal},
             squad = squad, group = groups[1],
             --online = false,
-            in_rest = "", out_rest = restr[i],
-            predicate = lb_predicate3
+            in_rest = "", out_rest = restr[i]
+            --,predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -932,8 +932,8 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             prior = 3, state = {state_alarm},
             squad = squad, group = groups[1],
             --online = false,
-            in_rest = "", out_rest = restr[i],
-            predicate = lb_predicate3
+            in_rest = "", out_rest = restr[i]
+            --,predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -942,8 +942,8 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             prior = 3, state = {state_alarm_actor_inside},
             squad = squad, group = groups[1],
             --online = false,
-            in_rest = "", out_rest = restr[i],
-            predicate = lb_predicate3
+            in_rest = "", out_rest = restr[i]
+            --,predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -974,8 +974,8 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             prior = 4, state = {state_normal},
             squad = squad, group = groups[1],
             --online = false,
-            in_rest = "", out_rest = restr[i],
-            predicate = lb_predicate3
+            in_rest = "", out_rest = restr[i]
+            ,--predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -984,8 +984,8 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             prior = 4, state = {state_alarm},
             squad = squad, group = groups[1],
             --online = false,
-            in_rest = "", out_rest = restr[i],
-            predicate = lb_predicate3
+            in_rest = "", out_rest = restr[i]
+            ,--predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -994,8 +994,8 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             prior = 3, state = {state_alarm_actor_inside},
             squad = squad, group = groups[1],
             --online = false,
-            in_rest = "", out_rest = restr[i],
-            predicate = lb_predicate3
+            in_rest = "", out_rest = restr[i]
+            ,--predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -1035,8 +1035,8 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             prior = 3, state = {state_normal},
             squad = squad, group = groups[2],
             online = "{+val_lager_bandits_show_nedostroyka_company}",
-            in_rest = "", out_rest = gname .. "_nedostroyka_restrictor", --info_restr = gname .. "_nedostroyka_info_restr",
-            predicate = lb_predicate3
+            in_rest = "", out_rest = gname .. "_nedostroyka_restrictor", --info_restr = gname .. "_nedostroyka_info_restr"
+            ,--predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -1045,8 +1045,8 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             prior = 3, state = {state_alarm},
             squad = squad, group = groups[2],
             online = "{+val_lager_bandits_show_nedostroyka_company}",
-            in_rest = "", out_rest = gname .. "_nedostroyka_restrictor", --info_restr = gname .. "_nedostroyka_info_restr",
-            predicate = lb_predicate3
+            in_rest = "", out_rest = gname .. "_nedostroyka_restrictor", --info_restr = gname .. "_nedostroyka_info_restr"
+            ,--predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -1055,8 +1055,8 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             prior = 6, state = {state_alarm_actor_inside},
             squad = squad, group = groups[2],
             online = "{+val_lager_bandits_show_nedostroyka_company}",
-            in_rest = "", out_rest = gname .. "_nedostroyka_restrictor", --info_restr = gname .. "_nedostroyka_info_restr",
-            predicate = lb_predicate3
+            in_rest = "", out_rest = gname .. "_nedostroyka_restrictor", --info_restr = gname .. "_nedostroyka_info_restr"
+            ,--predicate = lb_predicate3
         }
         table.insert(sj, t)
 
