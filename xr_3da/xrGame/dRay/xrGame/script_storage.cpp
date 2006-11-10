@@ -54,7 +54,7 @@ LPCSTR	file_header = 0;
 #	include "script_debugger.h"
 #endif
 
-//#define USE_XR_ALLOCATOR
+#define USE_XR_ALLOCATOR
 
 #ifdef USE_XR_ALLOCATOR
 static void *lua_alloc_xr	(void *ud, void *ptr, size_t osize, size_t nsize) {
