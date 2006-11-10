@@ -975,7 +975,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             squad = squad, group = groups[1],
             --online = false,
             in_rest = "", out_rest = restr[i]
-            ,--predicate = lb_predicate3
+            --,predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -985,7 +985,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             squad = squad, group = groups[1],
             --online = false,
             in_rest = "", out_rest = restr[i]
-            ,--predicate = lb_predicate3
+            --,predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -995,7 +995,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             squad = squad, group = groups[1],
             --online = false,
             in_rest = "", out_rest = restr[i]
-            ,--predicate = lb_predicate3
+            --,predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -1036,7 +1036,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             squad = squad, group = groups[2],
             online = "{+val_lager_bandits_show_nedostroyka_company}",
             in_rest = "", out_rest = gname .. "_nedostroyka_restrictor", --info_restr = gname .. "_nedostroyka_info_restr"
-            ,--predicate = lb_predicate3
+            --,predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -1046,7 +1046,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             squad = squad, group = groups[2],
             online = "{+val_lager_bandits_show_nedostroyka_company}",
             in_rest = "", out_rest = gname .. "_nedostroyka_restrictor", --info_restr = gname .. "_nedostroyka_info_restr"
-            ,--predicate = lb_predicate3
+            --,predicate = lb_predicate3
         }
         table.insert(sj, t)
 
@@ -1056,7 +1056,7 @@ gulags.val_lager_bandits.job = function(sj, gname, type, squad, groups)
             squad = squad, group = groups[2],
             online = "{+val_lager_bandits_show_nedostroyka_company}",
             in_rest = "", out_rest = gname .. "_nedostroyka_restrictor", --info_restr = gname .. "_nedostroyka_info_restr"
-            ,--predicate = lb_predicate3
+            --,predicate = lb_predicate3
         }
         table.insert(sj, t)
 
