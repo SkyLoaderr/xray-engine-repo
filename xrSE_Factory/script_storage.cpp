@@ -11,6 +11,7 @@
 #include "script_space.h"
 #include "script_thread.h"
 #include <stdarg.h>
+#include "doug_lea_memory_allocator.h"
 
 LPCSTR	file_header_old = "\
 local function script_name() \
@@ -68,12 +69,7 @@ static void *lua_alloc_xr	(void *ud, void *ptr, size_t osize, size_t nsize) {
 #endif // DEBUG_MEMORY_MANAGER
 }
 
-extern "C"	{
-	void*	dlrealloc(void*, size_t);
-	void	dlfree(void*);
-};
-
-/**
+/**/
 static void *lua_alloc_dl	(void *ud, void *ptr, size_t osize, size_t nsize) {
   (void)ud;
   (void)osize;
@@ -89,8 +85,8 @@ CScriptStorage::CScriptStorage		()
 	m_stack_is_ready		= false;
 #endif
 	m_virtual_machine		= 0;
-//	m_virtual_machine		= lua_newstate(lua_alloc_dl, NULL);		// switch to lua_alloc_XR - to track memory consumption
-	m_virtual_machine		= lua_newstate(lua_alloc_xr, NULL);		// switch to lua_alloc_XR - to track memory consumption
+	m_virtual_machine		= lua_newstate(lua_alloc_dl, NULL);		// switch to lua_alloc_XR - to track memory consumption
+//	m_virtual_machine		= lua_newstate(lua_alloc_xr, NULL);		// switch to lua_alloc_XR - to track memory consumption
 	if (!m_virtual_machine) {
 		Msg					("! ERROR : Cannot initialize script virtual machine!");
 		return				;

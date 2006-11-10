@@ -5631,44 +5631,6 @@
 					<File
 						RelativePath=".\script_storage_space.h">
 					</File>
-					<File
-						RelativePath=".\xr_LuaAllocator.c">
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"
-								WarningLevel="0"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"
-								WarningLevel="0"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"
-								WarningLevel="0"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="DebugNoExceptions|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"
-								WarningLevel="0"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\xr_LuaAllocator.h">
-					</File>
 				</Filter>
 				<Filter
 					Name="ScriptThread"
@@ -5701,6 +5663,16 @@
 							RelativePath=".\script_stack_tracker_inline.h">
 						</File>
 					</Filter>
+				</Filter>
+				<Filter
+					Name="memory_allocator"
+					Filter="">
+					<File
+						RelativePath=".\doug_lea_memory_allocator.c">
+					</File>
+					<File
+						RelativePath=".\doug_lea_memory_allocator.h">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter

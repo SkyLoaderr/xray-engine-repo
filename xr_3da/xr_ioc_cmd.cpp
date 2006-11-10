@@ -70,8 +70,6 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
-extern __declspec(dllimport)	size_t	__cdecl lua_memusage	();
-
 #ifdef DEBUG_MEMORY_MANAGER
 class CCC_MemStat : public IConsole_Command
 {
@@ -87,47 +85,6 @@ public:
 	}
 };
 #endif // DEBUG_MEMORY_MANAGER
-
-static void vminfo (size_t *_free, size_t *reserved, size_t *committed) {
-	MEMORY_BASIC_INFORMATION memory_info;
-	memory_info.BaseAddress = 0;
-	*_free = *reserved = *committed = 0;
-	while (VirtualQuery (memory_info.BaseAddress, &memory_info, sizeof (memory_info))) {
-		switch (memory_info.State) {
-		case MEM_FREE:
-			*_free		+= memory_info.RegionSize;
-			break;
-		case MEM_RESERVE:
-			*reserved	+= memory_info.RegionSize;
-			break;
-		case MEM_COMMIT:
-			*committed += memory_info.RegionSize;
-			break;
-		}
-		memory_info.BaseAddress = (char *) memory_info.BaseAddress + memory_info.RegionSize;
-	}
-}
-
-class CCC_MemStats : public IConsole_Command
-{
-public:
-	CCC_MemStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
-	virtual void Execute(LPCSTR args) {
-		Memory.mem_compact		();
-		size_t  w_free, w_reserved, w_committed;
-		vminfo	(&w_free, &w_reserved, &w_committed);
-		u32		_total			= Memory.mem_usage	();
-		u32		_lua			= 0; // u32 (lua_memusage());
-		u32		_eco_strings	= g_pStringContainer->stat_economy			();
-		u32		_eco_smem		= g_pSharedMemoryContainer->stat_economy	();
-		u32	m_base=0,c_base=0,m_lmaps=0,c_lmaps=0;
-		if (Device.Resources)	Device.Resources->_GetMemoryUsage	(m_base,c_base,m_lmaps,c_lmaps);
-		Msg		("* [win32]: free[%d K], reserved[%d K], committed[%d K]",w_free/1024,w_reserved/1024,w_committed/1024);
-		Msg		("* [ D3D ]: textures[%d K]", (m_base+m_lmaps)/1024);
-		Msg		("* [x-ray]: total[%d K], lua[%d K]",_total/1024,_lua/(1024*1024));
-		Msg		("* [x-ray]: economy: strings[%d K], smem[%d K]",_eco_strings/1024,_eco_smem);
-	}
-};
 
 #ifdef DEBUG_MEMORY_MANAGER
 class CCC_DbgMemCheck : public IConsole_Command
@@ -544,7 +501,6 @@ void CCC_Register()
 #endif
 
 	CMD1(CCC_MotionsStat,	"stat_motions"		);
-	CMD1(CCC_MemStats,		"stat_memory"		);
 	CMD1(CCC_TexturesStat,	"stat_textures"		);
 
 #ifdef DEBUG_MEMORY_MANAGER

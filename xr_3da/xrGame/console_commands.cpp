@@ -41,6 +41,8 @@
 #include "saved_game_wrapper.h"
 #include "level_graph.h"
 #include "game_cl_base_weapon_usage_statistic.h"
+#include "../resourcemanager.h"
+#include "doug_lea_memory_allocator.h"
 
 #ifdef DEBUG
 #	include "PHDebug.h"
@@ -118,6 +120,47 @@ enum E_COMMON_FLAGS{
 BOOL g_use_scripts_in_goap = 1;
 
 CUIOptConCom g_OptConCom;
+
+static void vminfo (size_t *_free, size_t *reserved, size_t *committed) {
+	MEMORY_BASIC_INFORMATION memory_info;
+	memory_info.BaseAddress = 0;
+	*_free = *reserved = *committed = 0;
+	while (VirtualQuery (memory_info.BaseAddress, &memory_info, sizeof (memory_info))) {
+		switch (memory_info.State) {
+		case MEM_FREE:
+			*_free		+= memory_info.RegionSize;
+			break;
+		case MEM_RESERVE:
+			*reserved	+= memory_info.RegionSize;
+			break;
+		case MEM_COMMIT:
+			*committed += memory_info.RegionSize;
+			break;
+		}
+		memory_info.BaseAddress = (char *) memory_info.BaseAddress + memory_info.RegionSize;
+	}
+}
+
+class CCC_MemStats : public IConsole_Command
+{
+public:
+	CCC_MemStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) {
+		Memory.mem_compact		();
+		size_t  w_free, w_reserved, w_committed;
+		vminfo	(&w_free, &w_reserved, &w_committed);
+		u32		_total			= Memory.mem_usage	();
+		u32		_lua			= (u32)dlmallinfo().uordblks;
+		u32		_eco_strings	= g_pStringContainer->stat_economy			();
+		u32		_eco_smem		= g_pSharedMemoryContainer->stat_economy	();
+		u32	m_base=0,c_base=0,m_lmaps=0,c_lmaps=0;
+		if (Device.Resources)	Device.Resources->_GetMemoryUsage	(m_base,c_base,m_lmaps,c_lmaps);
+		Msg		("* [win32]: free[%d K], reserved[%d K], committed[%d K]",w_free/1024,w_reserved/1024,w_committed/1024);
+		Msg		("* [ D3D ]: textures[%d K]", (m_base+m_lmaps)/1024);
+		Msg		("* [x-ray]: total[%d K], lua[%d K]",_total/1024,_lua/(1024*1024));
+		Msg		("* [x-ray]: economy: strings[%d K], smem[%d K]",_eco_strings/1024,_eco_smem);
+	}
+};
 
 // console commands
 class CCC_Spawn : public IConsole_Command
@@ -2282,6 +2325,7 @@ void CCC_RegisterCommands()
 	// options
 	g_OptConCom.Init();
 
+	CMD1(CCC_MemStats,		"stat_memory"		);
 	// game
 	psActorFlags.set(AF_ALWAYSRUN, true);
 	CMD3(CCC_Mask,				"g_always_run",			&psActorFlags,	AF_ALWAYSRUN);
