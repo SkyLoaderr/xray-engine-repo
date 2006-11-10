@@ -57,7 +57,7 @@ void	xrCriticalSection::Enter	()
 #	ifdef DEBUG
 		static bool					show_call_stack = false;
 		if (show_call_stack)
-			OutputDebugStackTrace	("PROFILE_CRITICAL_SECTIONS");
+			OutputDebugStackTrace	("----------------------------------------------------");
 #	endif // DEBUG
 	profiler						temp(m_id);
 #endif // PROFILE_CRITICAL_SECTIONS
