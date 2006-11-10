@@ -828,6 +828,16 @@
 					RelativePath=".\script_lua_helper.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="memory_manager"
+				Filter="">
+				<File
+					RelativePath=".\doug_lea_memory_allocator.c">
+				</File>
+				<File
+					RelativePath=".\doug_lea_memory_allocator.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="ServerStuff"
