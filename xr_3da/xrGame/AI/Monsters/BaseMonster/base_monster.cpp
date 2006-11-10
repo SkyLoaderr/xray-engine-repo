@@ -39,6 +39,7 @@
 #include "../../../xrserver.h"
 #include "../ai_monster_squad.h"
 #include "../../../actor.h"
+#include "../../../ai_object_location.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -174,6 +175,12 @@ CPHDestroyable*	CBaseMonster::	ph_destroyable	()
 
 bool CBaseMonster::useful(const CItemManager *manager, const CGameObject *object) const
 {
+	if (!movement().restrictions().accessible(object->Position()))
+		return				(false);
+
+	if (!movement().restrictions().accessible(object->ai_location().level_vertex_id()))
+		return				(false);
+
 	const CEntityAlive *pCorpse = smart_cast<const CEntityAlive *>(object); 
 	if (!pCorpse) return false;
 	
