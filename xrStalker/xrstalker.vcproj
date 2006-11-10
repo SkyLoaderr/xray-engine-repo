@@ -1148,6 +1148,9 @@
 							RelativePath=".\Config\text\eng\ui_st_keybinding.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\ui_st_mapdesc.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\eng\ui_st_mm.xml">
 						</File>
 						<File
@@ -1429,9 +1432,6 @@
 						</File>
 						<File
 							RelativePath=".\Config\text\eng\test_string.xml">
-						</File>
-						<File
-							RelativePath=".\Config\text\eng\ui_st_mapdesc.xml">
 						</File>
 					</Filter>
 				</Filter>
