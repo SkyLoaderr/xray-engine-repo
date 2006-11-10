@@ -189,8 +189,8 @@ size_t dlmalloc_footprint();
   be kept as longs, the reported values may wrap around zero and
   thus be inaccurate.
 */
-#ifndef HAVE_USR_INCLUDE_MALLOC_H
-#ifndef _MALLOC_H
+#if 1//ndef HAVE_USR_INCLUDE_MALLOC_H
+#if 1//ndef _MALLOC_H
 #ifndef MALLINFO_FIELD_TYPE
 #define MALLINFO_FIELD_TYPE size_t
 #endif /* MALLINFO_FIELD_TYPE */
