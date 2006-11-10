@@ -170,8 +170,17 @@ bool CUICustomEdit::KeyPressed(int dik)
 		m_bShift = true;
 		break;
 	case DIK_ESCAPE:
-		SetText("");
-		bChanged = true;
+		if (xr_strlen(GetText()) != 0)
+		{
+			SetText("");
+			bChanged = true;
+		}
+		else
+		{
+			GetParent()->SetKeyboardCapture(this, false);
+			m_bInputFocus = false;
+			m_iKeyPressAndHold = 0;
+		};
 		break;
 	case DIK_RETURN:
 	case DIK_NUMPADENTER:

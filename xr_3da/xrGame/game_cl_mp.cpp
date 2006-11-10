@@ -455,6 +455,10 @@ void game_cl_mp::shedule_Update(u32 dt)
 	{
 	case GAME_PHASE_PENDING:
 		{
+			CUIChatWnd* pChatWnd = HUD().GetUI()->m_pMessagesWnd->GetChatWnd();
+			if (pChatWnd && pChatWnd->IsShown())
+				StartStopMenu(pChatWnd, false);
+
 			if (m_bJustRestarted)
 			{
 				if (Level().CurrentViewEntity())
@@ -474,6 +478,9 @@ void game_cl_mp::shedule_Update(u32 dt)
 		}break;
 	default:
 		{
+			CUIChatWnd* pChatWnd = HUD().GetUI()->m_pMessagesWnd->GetChatWnd();
+			if (pChatWnd && pChatWnd->IsShown())
+				StartStopMenu(pChatWnd, false);
 		}break;
 	}
 
