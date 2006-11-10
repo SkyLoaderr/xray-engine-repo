@@ -198,8 +198,6 @@ public:
 	LPCSTR					WindowName_script	()							{return *m_windowName;}
 	CUIWindow*				FindChild			(const shared_str name);
 
-	IC void					EnableDoubleClick	(bool value)				{ m_bDoubleClickEnabled = value; }
-	IC bool					IsDBClickEnabled	() const					{ return m_bDoubleClickEnabled; }
 	IC bool					CursorOverWindow	() const					{ return m_bCursorOverWindow; }
 
 protected:
@@ -241,7 +239,6 @@ protected:
 	bool					m_bAutoDelete;
 
 	// Флаг разрешающий/запрещающий генерацию даблклика
-	bool					m_bDoubleClickEnabled;
 	bool					m_bPP;
 	//разрешен ли ввод пользователя
 	bool					m_bIsEnabled;

@@ -112,7 +112,6 @@ CUIWindow::CUIWindow()
 	m_bAutoDelete			= false;
     Show					(true);
 	Enable					(true);
-	EnableDoubleClick		(true);
 	m_bCursorOverWindow		= false;
 	m_bClickable			= false;
 	m_bPP					= false;
@@ -283,17 +282,21 @@ bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 	cursor_pos.y = y;
 
 
-	// DOUBLE CLICK GENERATION
-	if( ( WINDOW_LBUTTON_DOWN == mouse_action ) && m_bDoubleClickEnabled )
+	if( WINDOW_LBUTTON_DOWN == mouse_action )
 	{
-		u32 dwCurTime = Device.dwTimeContinual;
-		if(dwCurTime - m_dwLastClickTime < DOUBLE_CLICK_TIME)
-            mouse_action = WINDOW_LBUTTON_DB_CLICK;
+		static u32 _last_db_click_frame		= 0;
+		u32 dwCurTime						= Device.dwTimeContinual;
+
+		if( (_last_db_click_frame!=Device.dwFrame) && (dwCurTime-m_dwLastClickTime < DOUBLE_CLICK_TIME) )
+		{
+            mouse_action			= WINDOW_LBUTTON_DB_CLICK;
+			_last_db_click_frame	= Device.dwFrame;
+		}
 
 		m_dwLastClickTime = dwCurTime;
 	}
 
-	if(GetParent()== NULL) //вызов из главного окна у которого нет предков
+	if(GetParent()== NULL)
 	{
 		if(!wndRect.in(cursor_pos))
             return false;

@@ -38,7 +38,6 @@ CUITreeViewItem::CUITreeViewItem()
 	UIBkg.TextureOff();
 	UIBkg.SetTextureOffset(-20, 0);
 	EnableTextHighlighting(false);
-	EnableDoubleClick(false);
 
 	m_bManualSetColor = false;
 }
