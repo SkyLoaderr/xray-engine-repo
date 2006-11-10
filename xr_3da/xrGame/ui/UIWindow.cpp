@@ -173,7 +173,7 @@ void CUIWindow::Draw()
 		if(!(*it)->IsShown()) continue;
 		(*it)->Draw();
 	}
-#ifndef NDEBUG
+#ifdef DEBUG
 	if(g_show_wnd_rect2){
 		Frect r;
 		GetAbsoluteRect(r);
