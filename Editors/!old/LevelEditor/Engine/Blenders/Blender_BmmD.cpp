@@ -18,9 +18,9 @@ CBlender_BmmD::CBlender_BmmD	()
 	strcpy				(oT2_xform,	"$null");
 	description.version	= 3;
 	strcpy				(oR_Name,	"detail\\detail_grnd_grass");	//"$null");
-	strcpy				(oG_Name,	"detail\\detail_grnd_asphalt_v");//"$null");
-	strcpy				(oB_Name,	"detail\\detail_grnd_earth_v");	//"$null");
-	strcpy				(oA_Name,	"detail\\detail_rocks_det1");	//"$null");
+	strcpy				(oG_Name,	"detail\\detail_grnd_asphalt");	//"$null");
+	strcpy				(oB_Name,	"detail\\detail_grnd_earth");	//"$null");
+	strcpy				(oA_Name,	"detail\\detail_grnd_yantar");	//"$null");
 }
 
 CBlender_BmmD::~CBlender_BmmD	()
@@ -138,7 +138,7 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 	// codepath is the same, only the shaders differ
 	// ***only pixel shaders differ***
 	string256				mask;
-	strconcat				(mask,C.L_textures[0],"_mask");
+	strconcat				(mask,C.L_textures[0].c_str(),"_mask");
 	switch(C.iElement) 
 	{
 	case SE_R2_NORMAL_HQ: 		// deffer

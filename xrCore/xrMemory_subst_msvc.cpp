@@ -42,6 +42,10 @@ ICF	u32		get_pool			(size_t size)
 	else						return pid;
 }
 
+#ifdef DEBUG
+	extern void OutputDebugStackTrace	(const char *header);
+#endif // DEBUG
+
 void*	xrMemory::mem_alloc		(size_t size
 #ifdef DEBUG_MEMORY_MANAGER
 								 , const char* _name
