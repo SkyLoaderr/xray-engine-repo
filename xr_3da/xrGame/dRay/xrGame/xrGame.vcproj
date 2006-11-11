@@ -9303,6 +9303,9 @@
 						RelativePath="tri-colliderKNoOPC\__aabb_tri.h">
 					</File>
 					<File
+						RelativePath=".\tri-colliderknoopc\dcTriangle.h">
+					</File>
+					<File
 						RelativePath="tri-colliderknoopc\dcTriListCollider.cpp">
 						<FileConfiguration
 							Name="Debug|Win32"

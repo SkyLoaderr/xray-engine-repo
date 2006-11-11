@@ -4,15 +4,18 @@
 #define TRI_PRIMITIVE_COLIDE_CLASS_DECLARE(primitive)				\
 class primitive##Tri\
 {\
+		dcTriListCollider &m_tri_list																						;\
+		primitive##Tri&	operator	=	(primitive##Tri&	nx_nado)	{;}											\
 public:\
-IC	static float Proj  (dxGeom* o,const dReal* normal){return d##primitive##Proj(o,normal);}\
-static int	 Collide(\
+		explicit	 primitive##Tri	(dcTriListCollider &tri_list):m_tri_list(tri_list)										{};\
+	IC	float	Proj  (dxGeom* o,const dReal* normal);\
+	IC	int		Collide(\
 					const dReal* v0,const dReal* v1,const dReal* v2,\
 					Triangle* T,\
 					dxGeom *o1,dxGeom *o2,\
 					int flags, dContactGeom *contact, int skip\
 					);\
-static int	CollidePlain(\
+	IC	int		CollidePlain(\
 						const dReal* triSideAx0,const dReal* triSideAx1,\
 						const dReal* triAx,\
 						CDB::TRI* T,\
@@ -25,15 +28,16 @@ static int	CollidePlain(\
 
 
 #define TRI_PRIMITIVE_COLIDE_CLASS_IMPLEMENT(primitive)			\
-	int primitive##Tri:: Collide(\
+	IC	float	dcTriListCollider::primitive##Tri:: Proj  (dxGeom* o,const dReal* normal){return m_tri_list.d##primitive##Proj(o,normal);}\
+	IC	int		dcTriListCollider::primitive##Tri:: Collide(\
 	const dReal* v0,const dReal* v1,const dReal* v2,\
 	Triangle* T,\
 	dxGeom *o1,dxGeom *o2,\
 	int flags, dContactGeom *contact, int skip\
 	){\
-		return dTri##primitive(v0,v1,v2,T,o1,o2,flags,contact,skip);\
+	return m_tri_list.dTri##primitive(v0,v1,v2,T,o1,o2,flags,contact,skip);\
 	}\
-	int primitive##Tri::CollidePlain(\
+	IC	int dcTriListCollider::primitive##Tri::CollidePlain(\
 	const dReal* triSideAx0,const dReal* triSideAx1,\
 	const dReal* triAx,\
 	CDB::TRI* T,\
@@ -42,6 +46,6 @@ static int	CollidePlain(\
 	int flags, dContactGeom *contact, int skip\
 	)\
 	{\
-	return dSortedTri##primitive(triSideAx0,triSideAx1,triAx,T,dist,o1,o2,flags,contact,skip);\
+	return m_tri_list.dSortedTri##primitive(triSideAx0,triSideAx1,triAx,T,dist,o1,o2,flags,contact,skip);\
 	}
 #endif

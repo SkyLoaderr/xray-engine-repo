@@ -9,49 +9,15 @@
 #include "../PHDebug.h"
 #endif
 
-static 	xr_vector<Triangle> 		pos_tries			;
-static 	xr_vector<Triangle> 		neg_tries			;
-		xr_vector< flags8 >			gl_cl_tries_state	;
-		xr_vector<int>::iterator	I,E,B				;
-	
-void VxToGlClTriState(u32 v)
-{
-	CDB::TRI*       T_array      = Level().ObjectSpace.GetStaticTris();
-	xr_vector<int>::iterator LI=I+1;
-	for(;E!=LI;++LI)
-	{
-		u32* verts=T_array[*LI].verts;
-		flags8 &state  =gl_cl_tries_state[LI-B];
-		if(verts[0]==v)state.set(fl_engaged_v0,TRUE);
-		if(verts[1]==v)state.set(fl_engaged_v1,TRUE);
-		if(verts[2]==v)state.set(fl_engaged_v2,TRUE);
-	}
-}
-void SideToGlClTriState(u32 v0,u32 v1)
-{
-	CDB::TRI*       T_array      = Level().ObjectSpace.GetStaticTris();
-	xr_vector<int>::iterator LI=I+1;
-	for(;E!=LI;++LI)
-	{
-		u32* verts=T_array[*LI].verts;
-		flags8 &state  =gl_cl_tries_state[LI-B];
-		if(verts[0]==v1&&verts[1]==v0)state.set(fl_engaged_s0,TRUE);
-		if(verts[1]==v1&&verts[2]==v0)state.set(fl_engaged_s1,TRUE);
-		if(verts[2]==v1&&verts[0]==v0)state.set(fl_engaged_s2,TRUE);
-	}
-}
-
 
 template<class T>
-int dSortTriPrimitiveCollide (	
+IC int dcTriListCollider::dSortTriPrimitiveCollide (
+							  T primitive,
 							  dxGeom		*o1,		dxGeom			*o2,
 							  int			flags,		dContactGeom	*contact,	int skip,
 							  const Fvector&	AABB
 							  )
 {
-
-	
-
 	dxGeomUserData* data=dGeomGetUserData(o1);
 	dReal* last_pos=data->last_pos;
 	bool	no_last_pos	=last_pos[0]==-dInfinity;
@@ -118,7 +84,7 @@ int dSortTriPrimitiveCollide (
 		CalculateTri(data->neg_tri,p,neg_tri,V_array);
 		if(neg_tri.dist<0.f)
 		{
-			dReal sidePr=T::Proj(o1,neg_tri.norm);
+			dReal sidePr=primitive.Proj(o1,neg_tri.norm);
 			neg_tri.depth=sidePr-neg_tri.dist;
 			neg_depth=neg_tri.depth;
 		}
@@ -138,7 +104,7 @@ int dSortTriPrimitiveCollide (
 		CalculateTri(data->b_neg_tri,p,b_neg_tri,V_array);
 		if(b_neg_tri.dist<0.f)
 		{
-			dReal sidePr=T::Proj(o1,b_neg_tri.norm);
+			dReal sidePr=primitive.Proj(o1,b_neg_tri.norm);
 			b_neg_tri.depth=sidePr-b_neg_tri.dist;
 			b_neg_depth=b_neg_tri.depth;
 		}
@@ -216,7 +182,7 @@ int dSortTriPrimitiveCollide (
 						}
 						else
 						{
-								if(contain_pos&&T::Proj(o1,tri.norm)>-tri.dist)
+								if(contain_pos&&primitive.Proj(o1,tri.norm)>-tri.dist)
 									intersect=true;
 						}
 					}
@@ -228,7 +194,7 @@ int dSortTriPrimitiveCollide (
 					if(
 							contain_pos
 						){
-							dReal sidePr=T::Proj(o1,tri.norm);
+							dReal sidePr=primitive.Proj(o1,tri.norm);
 							tri.depth=sidePr-tri.dist;
 							if(neg_depth>tri.depth&&(!(*pushing_neg||spushing_neg)||dDOT(neg_tri.norm,tri.norm)>-M_SQRT1_2)&&(!(*pushing_b_neg||spushing_b_neg)||dDOT(b_neg_tri.norm,tri.norm)>-M_SQRT1_2))//exclude switching on opposite side &&(!*pushing_b_neg||dDOT(b_neg_tri->norm,tri.norm)>-M_SQRT1_2)
 							{
@@ -243,7 +209,7 @@ int dSortTriPrimitiveCollide (
 						}
 					else{
 						++b_count;
-						dReal sidePr=T::Proj(o1,tri.norm);
+						dReal sidePr=primitive.Proj(o1,tri.norm);
 						tri.depth=sidePr-tri.dist;
 						if(b_neg_depth>tri.depth&&(!(*pushing_b_neg||spushing_b_neg)||dDOT(b_neg_tri.norm,tri.norm)>-M_SQRT1_2)&&((!*pushing_neg||!spushing_neg)||dDOT(neg_tri.norm,tri.norm)>-M_SQRT1_2)){//exclude switching on opposite side &&(!*pushing_neg||dDOT(neg_tri->norm,tri.norm)>-M_SQRT1_2)
 							b_neg_depth=tri.depth;
@@ -262,7 +228,7 @@ int dSortTriPrimitiveCollide (
 #endif	
 //				if(ret>10) continue;
 				if(!b_pushing&&(!intersect||no_last_pos))
-					ret+=T::Collide(
+					ret+=primitive.Collide(
 					vertices[0],
 					vertices[1],
 					vertices[2],
@@ -307,7 +273,7 @@ int dSortTriPrimitiveCollide (
 
 		if(include){
 			VERIFY(neg_tri.T&&neg_tri.dist!=-dInfinity);
-			int bret=T::CollidePlain(
+			int bret=primitive.CollidePlain(
 				neg_tri.side0,neg_tri.side1,neg_tri.norm,
 				neg_tri.T,
 				neg_tri.dist,
@@ -357,7 +323,7 @@ int dSortTriPrimitiveCollide (
 		if(include)	
 		{	
 			VERIFY(b_neg_tri.T);
-			int bret=T::CollidePlain(
+			int bret=primitive.CollidePlain(
 				b_neg_tri.side0,
 				b_neg_tri.side1,
 				b_neg_tri.norm,

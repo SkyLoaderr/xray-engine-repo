@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "dTriColliderCommon.h"
 #include "dTriBox.h"
+#include "dcTriListCollider.h"
 
 
-
-int dSortedTriBox (
+int dcTriListCollider::dSortedTriBox (
 						const dReal* triSideAx0,const dReal* triSideAx1,
 						const dReal* triAx,
 						//const dReal* v0,
@@ -172,7 +172,7 @@ contact->depth = outDepth;
 
 }
 
- int dTriBox (
+int dcTriListCollider::dTriBox (
 						const dReal* v0,const dReal* v1,const dReal* v2,
 						Triangle* T,
 						dxGeom *o1, dxGeom *o2,
@@ -696,4 +696,3 @@ contact->depth = outDepth;
 
 }
 
-TRI_PRIMITIVE_COLIDE_CLASS_IMPLEMENT(Box)

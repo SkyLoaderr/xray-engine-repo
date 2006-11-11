@@ -3,13 +3,14 @@
 #include "../dCylinder/dCylinder.h"
 #include "dTriCylinder.h"
 #include "../MathUtils.h"
+#include "dcTrilistCollider.h"
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
 /*(lp+t*lv-cp)^2=r^2 => t1,t2 =>O1=lp+t1*lv;O2=lp+t2*lv */
 //O1,O2 seems to be sphere line intersections
-bool circleLineIntersection(const dReal* cn,const dReal* cp,dReal r,const dReal* lv,const dReal* lp,dReal sign,dVector3 point){
+bool dcTriListCollider::circleLineIntersection(const dReal* cn,const dReal* cp,dReal r,const dReal* lv,const dReal* lp,dReal sign,dVector3 point){
 
 	dVector3 LC={lp[0]-cp[0],lp[1]-cp[1],lp[2]-cp[2]};
 
@@ -60,7 +61,7 @@ bool circleLineIntersection(const dReal* cn,const dReal* cp,dReal r,const dReal*
 	}
 }
 
-int dSortedTriCyl (
+int dcTriListCollider::dSortedTriCyl (
 				   const dReal* triSideAx0,const dReal* triSideAx1,
 				   const dReal* triAx,
 				   //const dReal* v0,
@@ -220,7 +221,7 @@ int dSortedTriCyl (
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 
-bool inline cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
+IC	bool  dcTriListCollider::cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
 						 const dReal* v0,const dReal* v1,const dReal* l,dVector3 pos){
 	dReal _cos=dDOT14(l,R);
 
@@ -263,13 +264,11 @@ bool inline cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
 	#define RETURN0				return 0
 #endif
 
-		int dTriCyl (
+int dcTriListCollider::dTriCyl (
 						const dReal* v0,const dReal* v1,const dReal* v2,
 						Triangle* T,
 						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
-						
-
 						)
 {
 
@@ -626,6 +625,7 @@ if(9!=code)
 //////////////////////////////////////////////////////////////////////
 ///if we get to this poit tri touches cylinder///////////////////////
 /////////////////////////////////////////////////////////////////////
+CDB::TRI*       T_array      = Level().ObjectSpace.GetStaticTris();
 dVector3 norm;
 unsigned int ret;
 flags8& gl_state=gl_cl_tries_state[I-B];
@@ -740,14 +740,14 @@ else if(code<7)//1-6
 	switch((code-1)%3){
 	case 0:
 	if(gl_state.test(fl_engaged_v0))RETURN0;
-	VxToGlClTriState(T->T->verts[0]);
+	VxToGlClTriState(T->T->verts[0],T_array);
 	contact->pos[0]=v0[0];
 	contact->pos[1]=v0[1];
 	contact->pos[2]=v0[2];
 	break;
 	case 1:
 	if(gl_state.test(fl_engaged_v1))RETURN0;
-	VxToGlClTriState(T->T->verts[1]);
+	VxToGlClTriState(T->T->verts[1],T_array);
 	contact->pos[0]=v1[0];
 	contact->pos[1]=v1[1];
 	contact->pos[2]=v1[2];
@@ -755,7 +755,7 @@ else if(code<7)//1-6
 	case 2:
 	if(gl_state.test(fl_engaged_v2))
 									RETURN0;
-	VxToGlClTriState(T->T->verts[2]);
+	VxToGlClTriState(T->T->verts[2],T_array);
 	contact->pos[0]=v2[0];
 	contact->pos[1]=v2[1];
 	contact->pos[2]=v2[2];
@@ -781,7 +781,7 @@ else {//7-12
 	int flag=fl_engaged_s0<<(iv0);
 	if(gl_state.test(u8(flag&0xff)))
 						RETURN0;
-	SideToGlClTriState(T->T->verts[iv0],T->T->verts[iv1]);
+	SideToGlClTriState(T->T->verts[iv0],T->T->verts[iv1],T_array);
 	contact->depth = outDepth;
 	norm[0]=outAx[0]*signum;
 	norm[1]=outAx[1]*signum;
@@ -805,4 +805,3 @@ else {//7-12
  return ret;  
 }
 
-TRI_PRIMITIVE_COLIDE_CLASS_IMPLEMENT(Cyl)

@@ -3,27 +3,7 @@
 #include "__aabb_tri.h"
 #include "../ode_include.h"
 #include "../mathutils.h"
-struct Triangle 
-{
-	//dReal* v0;
-	//dReal* v1;
-	//dReal* v2;
-	dVector3 side0;
-	dVector3 side1;
-	dVector3 norm;
-	dReal dist;
-	dReal pos;
-	dReal depth;
-	CDB::TRI* T ;
-	Triangle()
-	{
-		T		=NULL;
-#ifdef DEBUG
-		depth	=-dInfinity;
-		dist	=-dInfinity;
-#endif
-	}
-};
+#include "dcTriangle.h"
 
 inline bool  TriContainPoint(const dReal* v0,const dReal* v1,const dReal* v2,
 							 const dReal* triSideAx0,const dReal* triSideAx1,const dReal* triSideAx2,

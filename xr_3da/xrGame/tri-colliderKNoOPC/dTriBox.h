@@ -4,12 +4,13 @@
 #include "TriPrimitiveCollideClassDef.h"
 #include "../ode_include.h"
 #include "../MathUtils.h"
+#include "dcTriListCollider.h"
 struct Triangle;
 struct dxBox {
 	dVector3 side;	// side lengths (x,y,z)
 };
 
-IC float	dBoxProj(dxGeom* box,const dReal* normal)
+IC float	dcTriListCollider::	dBoxProj(dxGeom* box,const dReal* normal)
 {
 	VERIFY (dGeomGetClass(box)== dBoxClass);
 	float hside[3];
@@ -22,25 +23,9 @@ IC float	dBoxProj(dxGeom* box,const dReal* normal)
 		dFabs(dDOT14(normal,R+2)*hside[2]);
 }
 
-int dTriBox (
-			 const dReal* v0,const dReal* v1,const dReal* v2,
-			 Triangle* T,
-			 dxGeom *o1,dxGeom *o2,
-			 int flags, dContactGeom *contact, int skip
-			 );
-int dSortedTriBox (
-				   const dReal* triSideAx0,const dReal* triSideAx1,
-				   const dReal* triAx,
-				   //const dReal* v0,
-				   //const dReal* v1,
-				   //const dReal* v2,
-				   CDB::TRI* T,
-				   dReal dist,
-				   dxGeom *o1, dxGeom *o2,
-				   int flags, dContactGeom *contact, int skip
-				   );
 
-inline void CrossProjLine(const dReal* pt1,const dReal* vc1,const dReal* pt2,const dReal* vc2,dReal* proj){
+
+IC void dcTriListCollider::CrossProjLine(const dReal* pt1,const dReal* vc1,const dReal* pt2,const dReal* vc2,dReal* proj){
 	dVector3 ac={pt1[0]-pt2[0],pt1[1]-pt2[1],pt1[2]-pt2[2]};
 	dReal factor=(dDOT(vc2,vc2)*dDOT44(vc1,vc1)-dDOT14(vc2,vc1)*dDOT14(vc2,vc1));
 	if(factor==0.f){
@@ -60,7 +45,7 @@ inline void CrossProjLine(const dReal* pt1,const dReal* vc1,const dReal* pt2,con
 
 }
 
-inline void CrossProjLine1(const dReal* pt1,const dReal* vc1,const dReal* pt2,const dReal* vc2,dReal* proj){
+IC void dcTriListCollider::CrossProjLine1(const dReal* pt1,const dReal* vc1,const dReal* pt2,const dReal* vc2,dReal* proj){
 	dVector3 ac={pt1[0]-pt2[0],pt1[1]-pt2[1],pt1[2]-pt2[2]};
 	dReal factor=(dDOT44(vc2,vc2)*dDOT(vc1,vc1)-dDOT41(vc2,vc1)*dDOT41(vc2,vc1));
 	if(factor==0.f){
@@ -81,7 +66,7 @@ inline void CrossProjLine1(const dReal* pt1,const dReal* vc1,const dReal* pt2,co
 }
 
 
-inline bool CrossProjLine14(const dReal* pt1,const dReal* vc1,const dReal* pt2,const dReal* vc2,dReal hside,dReal* proj){
+IC bool	dcTriListCollider:: CrossProjLine14(const dReal* pt1,const dReal* vc1,const dReal* pt2,const dReal* vc2,dReal hside,dReal* proj){
 	dVector3 ac={pt1[0]-pt2[0],pt1[1]-pt2[1],pt1[2]-pt2[2]};
 
 	//dReal vc2_2=dDOT44(vc2,vc2);
@@ -117,7 +102,7 @@ inline bool CrossProjLine14(const dReal* pt1,const dReal* vc1,const dReal* pt2,c
 	return true;
 }
 //is point in Box
-inline bool IsPtInBx(const dReal* Pt,const dReal* BxP,const dReal* BxEx,const dReal* BxR){
+IC bool dcTriListCollider::IsPtInBx(const dReal* Pt,const dReal* BxP,const dReal* BxEx,const dReal* BxR){
 	dVector3 BxPR,PtR;
 
 	dMULTIPLY1_331 (BxPR,BxR,BxP);
@@ -178,7 +163,7 @@ inline dReal PointBoxTest(const dReal* Pt,const dReal* BxP,const dReal* BxEx,con
 
 }
 
-inline dReal FragmentonBoxTest(const dReal* Pt1,const dReal* Pt2,const dReal* BxP,const dReal* BxEx,const dReal* R,dReal* norm,dReal* pos){
+IC dReal dcTriListCollider:: FragmentonBoxTest(const dReal* Pt1,const dReal* Pt2,const dReal* BxP,const dReal* BxEx,const dReal* R,dReal* norm,dReal* pos){
 
 	dVector3 fragmentonAx={Pt2[0]-Pt1[0],Pt2[1]-Pt1[1],Pt2[2]-Pt1[2]};
 	dReal BxExPr;
@@ -393,6 +378,6 @@ return depth2;
 }
 */
 
-TRI_PRIMITIVE_COLIDE_CLASS_DECLARE(Box)
+
 
 #endif
