@@ -11,6 +11,7 @@ class CTelekinesis : public CPHUpdateObject {
 protected:
 	DEFINE_VECTOR(CTelekineticObject*,TELE_OBJECTS,TELE_OBJECTS_IT);
 	TELE_OBJECTS			objects;
+	xr_vector<CObject*>		m_nearest;
 	bool					active;
 
 public:

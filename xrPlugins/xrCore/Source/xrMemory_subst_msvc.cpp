@@ -13,6 +13,23 @@
 	XRCORE_API void*	g_globalCheckAddr = NULL;
 #endif // DEBUG_MEMORY_MANAGER
 
+#ifdef DEBUG
+extern void OutputDebugStackTrace			(const char *header);
+
+static bool g_mem_alloc_show_call_stack		= false;
+void mem_alloc_show_call_stack				(const bool &value)
+{
+	g_mem_alloc_show_call_stack				= value;
+}
+
+static float g_mem_alloc_show_call_stack_frequency	= 0.f;
+void mem_alloc_show_call_stack_frequency	(const float &value)
+{
+	g_mem_alloc_show_call_stack_frequency	= value;
+}
+
+#endif // DEBUG
+
 MEMPOOL		mem_pools			[mem_pools_count];
 
 // MSVC
@@ -66,6 +83,11 @@ void*	xrMemory::mem_alloc		(size_t size
 			*acc_header(_ptr)		=	mem_generic;
 		} else {
 			// pooled
+#	ifdef DEBUG
+			if (g_mem_alloc_show_call_stack && (::Random.randF() < g_mem_alloc_show_call_stack_frequency))
+				OutputDebugStackTrace	("----------------------------------------------------");
+#	endif // DEBUG
+
 			void*	_real			=	mem_pools[pool].create();
 			_ptr					=	(void*)(((u8*)_real)+1);
 			*acc_header(_ptr)		=	(u8)pool;

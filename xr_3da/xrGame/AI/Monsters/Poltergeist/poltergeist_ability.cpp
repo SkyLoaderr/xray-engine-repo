@@ -104,14 +104,14 @@ void CPolterSpecialAbility::on_hit(SHit* pHDS)
 
 void CPoltergeist::PhysicalImpulse	(const Fvector &position)
 {
-	xr_vector<CObject*> tpObjects	;
-	Level().ObjectSpace.GetNearest	(tpObjects,position, IMPULSE_RADIUS, NULL); 
-	//xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
-	if (tpObjects.empty())			return;
+	m_nearest.clear_not_free		();
+	Level().ObjectSpace.GetNearest	(m_nearest,position, IMPULSE_RADIUS, NULL); 
+	//xr_vector<CObject*> &m_nearest = Level().ObjectSpace.q_nearest;
+	if (m_nearest.empty())			return;
 	
-	u32 index = Random.randI		(tpObjects.size());
+	u32 index = Random.randI		(m_nearest.size());
 	
-	CPhysicsShellHolder  *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[index]);
+	CPhysicsShellHolder  *obj = smart_cast<CPhysicsShellHolder *>(m_nearest[index]);
 	if (!obj || !obj->m_pPhysicsShell) return;
 
 	Fvector dir;

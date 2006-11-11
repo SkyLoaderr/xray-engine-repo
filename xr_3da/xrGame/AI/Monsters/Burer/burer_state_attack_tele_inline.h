@@ -173,11 +173,12 @@ void CStateBurerAttackTeleAbstract::FindObjects	()
 	tele_objects.clear_and_reserve	();
 
 	// получить список объектов вокруг врага
-	xr_vector<CObject*> tpObjects	;	tpObjects.reserve	(res_size);
-	FindFreeObjects(tpObjects, object->EnemyMan.get_enemy()->Position());
+	m_nearest.clear_not_free		();
+	m_nearest.reserve				(res_size);
+	FindFreeObjects					(m_nearest, object->EnemyMan.get_enemy()->Position());
 
 	// получить список объектов вокруг монстра
-	FindFreeObjects(tpObjects, object->Position());
+	FindFreeObjects					(m_nearest, object->Position());
 
 	// получить список объектов между монстром и врагом
 	float dist = object->EnemyMan.get_enemy()->Position().distance_to(object->Position());
@@ -186,8 +187,8 @@ void CStateBurerAttackTeleAbstract::FindObjects	()
 	dir.normalize();
 
 	Fvector pos;
-	pos.mad(object->Position(), dir, dist / 2.f);
-	FindFreeObjects(tpObjects, pos);	
+	pos.mad							(object->Position(), dir, dist / 2.f);
+	FindFreeObjects					(m_nearest, pos);	
 	
 
 	// оставить уникальные объекты

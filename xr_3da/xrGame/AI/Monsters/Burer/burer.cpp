@@ -252,12 +252,12 @@ void CBurer::UpdateGraviObject()
 	ps->Play();
 	
 	// hit objects
-	xr_vector<CObject*> tpObjects	;
-	Level().ObjectSpace.GetNearest	(tpObjects,m_gravi_object.cur_pos, m_gravi_radius, NULL); 
-	//xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
+	m_nearest.clear_not_free		();
+	Level().ObjectSpace.GetNearest	(m_nearest,m_gravi_object.cur_pos, m_gravi_radius, NULL); 
+	//xr_vector<CObject*> &m_nearest = Level().ObjectSpace.q_nearest;
 
-	for (u32 i=0;i<tpObjects.size();i++) {
-		CPhysicsShellHolder  *obj = smart_cast<CPhysicsShellHolder *>(tpObjects[i]);
+	for (u32 i=0;i<m_nearest.size();i++) {
+		CPhysicsShellHolder  *obj = smart_cast<CPhysicsShellHolder *>(m_nearest[i]);
 		if (!obj || !obj->m_pPhysicsShell) continue;
 		
 		Fvector dir;

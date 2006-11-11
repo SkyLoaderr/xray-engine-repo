@@ -197,7 +197,7 @@ void CGameFont::OnRender()
 			RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
 		}
 	}
-	strings.clear();
+	strings.clear_not_free			();
 }
 
 void CGameFont::Add(float _x, float _y, LPCSTR s, u32 _c, float _size)

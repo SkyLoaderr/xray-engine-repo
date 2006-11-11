@@ -161,12 +161,12 @@ bool CPolterTele::trace_object(CObject *obj, const Fvector &target)
 
 void CPolterTele::tele_find_objects(xr_vector<CObject*> &objects, const Fvector &pos) 
 {
-	xr_vector<CObject*> tp_objects;
-	Level().ObjectSpace.GetNearest	(tp_objects, pos, m_pmt_radius, NULL);
+	m_nearest.clear_not_free		();
+	Level().ObjectSpace.GetNearest	(m_nearest, pos, m_pmt_radius, NULL);
 
-	for (u32 i=0;i<tp_objects.size();i++) {
-		CPhysicsShellHolder *obj			= smart_cast<CPhysicsShellHolder *>(tp_objects[i]);
-		CCustomMonster		*custom_monster	= smart_cast<CCustomMonster *>(tp_objects[i]);
+	for (u32 i=0;i<m_nearest.size();i++) {
+		CPhysicsShellHolder *obj			= smart_cast<CPhysicsShellHolder *>(m_nearest[i]);
+		CCustomMonster		*custom_monster	= smart_cast<CCustomMonster *>(m_nearest[i]);
 		if (!obj || 
 			!obj->PPhysicsShell() || 
 			!obj->PPhysicsShell()->isActive()|| 

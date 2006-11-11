@@ -153,8 +153,8 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	Device.Statistic->Physics.Begin	();
 
 	// получить физ. объекты в радиусе
-	xr_vector<CObject*>					tpNearestList	;
-	Level().ObjectSpace.GetNearest		(tpNearestList,dest_position,DISTANCE_PHISICS_ENABLE_CHARACTERS + (movement_control->IsCharacterEnabled() ? 0.5f : 0.f),&object()); 
+	m_nearest_objects.clear_not_free	();
+	Level().ObjectSpace.GetNearest		(m_nearest_objects,dest_position,DISTANCE_PHISICS_ENABLE_CHARACTERS + (movement_control->IsCharacterEnabled() ? 0.5f : 0.f),&object()); 
 
 	// установить позицию
 	motion.mul			(dir_to_target, dist / dist_to_target);
@@ -166,7 +166,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	if(!movement_control->PhyssicsOnlyMode())
 		movement_control->SetCharacterVelocity(velocity);
 
-	if (DBG_PH_MOVE_CONDITIONS(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)||!ph_dbg_draw_mask.test(phDbgAlwaysUseAiPhMove)&&)(tpNearestList.empty())) {  // нет физ. объектов
+	if (DBG_PH_MOVE_CONDITIONS(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)||!ph_dbg_draw_mask.test(phDbgAlwaysUseAiPhMove)&&)(m_nearest_objects.empty())) {  // нет физ. объектов
 		
 		if(DBG_PH_MOVE_CONDITIONS(!ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)&&) !movement_control->TryPosition(dest_position)) {
 			movement_control->Calculate		(detail().path(),desirable_speed,detail().m_current_travel_point,precision);

@@ -33,9 +33,13 @@
 #	define aiDrawGameGraphStalkers		(1<<21)
 #	define aiDrawGameGraphObjects		(1<<22)
 #	define aiNilObjectAccess			(1<<23)
-#endif
+#endif // DEBUG
 
 #ifndef MASTER_GOLD
 #	define aiIgnoreActor				(1<<24)
 	extern Flags32						psAI_Flags;
 #endif // MASTER_GOLD
+
+#ifdef DEBUG
+#	define aiDebugOnFrameAllocs			(1<<25)
+#endif // DEBUG

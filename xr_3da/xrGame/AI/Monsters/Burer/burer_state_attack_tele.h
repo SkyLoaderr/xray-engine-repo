@@ -8,6 +8,7 @@ class CStateBurerAttackTele : public CState<_Object> {
 
 	xr_vector<CPhysicsShellHolder *>	tele_objects;
 	CPhysicsShellHolder					*selected_object;
+	xr_vector<CObject*>					m_nearest;
 	
 	u32									time_started;
 

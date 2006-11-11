@@ -110,6 +110,7 @@ extern string64	gsCDKey;
 		u32		g_dwDebugNodeDest		= 0;
 extern	BOOL	g_bDrawBulletHit;
 
+		float	debug_on_frame_show_frequency	= 0.f;
 #endif
 
 int g_AI_inactive_time = 0;
@@ -2424,6 +2425,10 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"ai_draw_game_graph_objects",		&psAI_Flags,	aiDrawGameGraphObjects		);
 
 	CMD3(CCC_Mask,				"ai_nil_object_access",	&psAI_Flags,	aiNilObjectAccess);
+
+	CMD3(CCC_Mask,				"debug_on_frame_memory_allocations",&psAI_Flags,	aiDebugOnFrameAllocs);
+	CMD4(CCC_Float,				"debug_on_frame_show_frequency",	&debug_on_frame_show_frequency, 0.f, 1.f);
+
 
 	CMD1(CCC_DrawGameGraphAll,		"ai_draw_game_graph_all");
 	CMD1(CCC_DrawGameGraphCurrent,	"ai_draw_game_graph_current_level");

@@ -163,3 +163,8 @@ IC	void	xr_delete	(T* const &ptr)
 		const_cast<T*&>(ptr) = NULL;
 	}
 }
+
+#ifdef DEBUG
+	void XRCORE_API mem_alloc_show_call_stack			(const bool &value);
+	void XRCORE_API mem_alloc_show_call_stack_frequency	(const float &value);
+#endif // DEBUG

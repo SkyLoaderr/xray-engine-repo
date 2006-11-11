@@ -229,6 +229,8 @@ private:
 class CPolterTele : public CPolterSpecialAbility {
 	typedef CPolterSpecialAbility inherited;
 
+	xr_vector<CObject*>	m_nearest;
+
 	// external params
 	float				m_pmt_radius;
 	float				m_pmt_object_min_mass;

@@ -14,6 +14,9 @@ class CBurer :	public CBaseMonster,
 
 	typedef		CBaseMonster				inherited;
 
+private:
+	xr_vector<CObject*>	m_nearest;
+
 public:
 	typedef		CScanningAbility<CBurer>	TScanner;
 

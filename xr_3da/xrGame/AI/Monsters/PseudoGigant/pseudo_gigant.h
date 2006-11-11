@@ -10,6 +10,9 @@ class CPseudoGigant : public CBaseMonster,
 	typedef		CBaseMonster						inherited;
 	typedef		CControlledEntity<CPseudoGigant>	CControlled;
 
+private:
+	xr_vector<CObject*>		m_nearest;
+
 	// step_effector
 	struct {
 		float time;

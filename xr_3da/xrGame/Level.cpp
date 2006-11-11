@@ -403,8 +403,30 @@ void CLevel::ProcessGameEvents		()
 		Game().m_WeaponUsageStatistic->Send_Check_Respond();
 }
 
+#ifdef DEBUG
+	extern Flags32				psAI_Flags;
+	extern float				debug_on_frame_show_frequency;
+
+struct debug_memory_guard {
+	inline debug_memory_guard	()
+	{
+		mem_alloc_show_call_stack			(!!psAI_Flags.test(aiDebugOnFrameAllocs));
+		mem_alloc_show_call_stack_frequency	(debug_on_frame_show_frequency);
+	}
+
+	inline ~debug_memory_guard	()
+	{
+		mem_alloc_show_call_stack	(false);
+	}
+};
+#endif // DEBUG
+
 void CLevel::OnFrame	()
 {
+#ifdef DEBUG
+	debug_memory_guard					__guard__;
+#endif
+
 	if (GameID()!=GAME_SINGLE)			psDeviceFlags.set(rsDisableObjectsAsCrows,true);
 	else								psDeviceFlags.set(rsDisableObjectsAsCrows,false);
 

@@ -748,6 +748,7 @@ public:
 private:
 	collide::rq_results			RQR;
 			BOOL				CanPickItem						(const CFrustum& frustum, const Fvector& from, CObject* item);
+	xr_vector<ISpatial*>		ISpatialResult;
 };
 
 extern bool		isActorAccelerated			(u32 mstate, bool ZoomMode);
