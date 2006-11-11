@@ -142,23 +142,25 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 	switch(C.iElement) 
 	{
 	case SE_R2_NORMAL_HQ: 		// deffer
-		uber_deffer		(C,true,"base","impl",false,oT2_Name[0]?oT2_Name:0,true);
+		uber_deffer		(C, true,	"impl","impl",false,oT2_Name[0]?oT2_Name:0,true);
 		C.r_Sampler		("s_mask",	mask);
 		C.r_Sampler		("s_lmap",	C.L_textures[1]);
+
 		C.r_Sampler		("s_dt_r",	oR_Name);
 		C.r_Sampler		("s_dt_g",	oG_Name);
 		C.r_Sampler		("s_dt_b",	oB_Name);
 		C.r_Sampler		("s_dt_a",	oA_Name);
+
+		C.r_Sampler		("s_dn_r",	strconcat(mask,oR_Name,"_bump")	);
+		C.r_Sampler		("s_dn_g",	strconcat(mask,oG_Name,"_bump") );
+		C.r_Sampler		("s_dn_b",	strconcat(mask,oB_Name,"_bump") );
+		C.r_Sampler		("s_dn_a",	strconcat(mask,oA_Name,"_bump") );
+
 		C.r_End			();
 		break;
 	case SE_R2_NORMAL_LQ: 		// deffer
-		uber_deffer		(C,false,"base","impl",false,oT2_Name[0]?oT2_Name:0,true);
-		C.r_Sampler		("s_mask",	mask);
+		uber_deffer		(C, false,	"base","impl",false,oT2_Name[0]?oT2_Name:0,true);
 		C.r_Sampler		("s_lmap",	C.L_textures[1]);
-		C.r_Sampler		("s_dt_r",	oR_Name);
-		C.r_Sampler		("s_dt_g",	oG_Name);
-		C.r_Sampler		("s_dt_b",	oB_Name);
-		C.r_Sampler		("s_dt_a",	oA_Name);
 		C.r_End			();
 		break;
 	case SE_R2_SHADOW:			// smap
