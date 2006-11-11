@@ -18,6 +18,9 @@
 		<texture>ui_inventory_main</texture>
 	</back>
 
+	<bottom_static x=0 y=736 width=1024 height=32 >
+		<texture>ui\ui_bottom_background</texture>
+	</bottom_static>
 
     <dragdrop_bag x="22" y="33" width="310" height="442"
             cell_width = "41" cell_height="41" rows_num="10" cols_num="7" 
@@ -41,9 +44,6 @@
 
 
 
-	<bottom_static x=0 y=736 width=1024 height=32 >
-		<texture>ui\ui_bottom_background</texture>
-	</bottom_static>
 	
     <bag_static x="15" y="240" width="350" height="480">		
         <text x="30" y="8" font="graffiti22" r="231" g="153" b="22">ui_inv_bag</text>

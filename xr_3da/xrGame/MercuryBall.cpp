@@ -24,11 +24,6 @@ CMercuryBall::~CMercuryBall(void)
 
 void CMercuryBall::Load(LPCSTR section) 
 {
-	// verify class
-	LPCSTR Class = pSettings->r_string(section,"class");
-	CLASS_ID load_cls = TEXT2CLSID(Class);
-	R_ASSERT(load_cls==CLS_ID);
-
 	inherited::Load(section);
 
 	m_timeToUpdate = pSettings->r_u32(section,"time_to_update");

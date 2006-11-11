@@ -31,7 +31,7 @@ public:
 
 	virtual		bool		OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual		void		Draw					();
-	virtual		void		Update					()						{inherited::Update();};
+	virtual		void		Update					()						{inherited::Update(); m_b_already_drawn=false;};
 				
 	virtual		void		OnAfterChild			()						{};
 
@@ -44,12 +44,12 @@ public:
 
 	virtual		CUIDragItem* CreateDragItem			();
 
-	virtual		void		InitInternals			(); //tmp
 	CUIDragDropListEx*		OwnerList				()						{return m_pParentList;}
 				void		SetOwnerList			(CUIDragDropListEx* p);
 				void		SetCustomDraw			(ICustomDrawCell* c);
 				void*		m_pData;
 				int			m_index;
+				bool		m_b_already_drawn;
 };
 
 class CUIDragItem: public CUIWindow, public pureRender, public pureFrame

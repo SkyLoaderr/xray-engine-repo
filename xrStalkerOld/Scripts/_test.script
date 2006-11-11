@@ -29,10 +29,8 @@ end
 -- run_string alife():create("wpn_fn2000", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
 
 
-function main123()
-	local a,b = get_task_info("kill_gunslinger","_small")
-	db.actor:give_game_news("task state changed", a, b, 0, 0)
-	
+function main()
+	db.actor:give_game_news(game.translate_string("pass_to_2nd_door"), "ui\\ui_icons_task", Frect():set(0,100,50,50) ,0, 0)	
 --	db.actor:give_talk_message("trader", "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
 --	db.actor:give_talk_message("Превед", "trader", "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
 --	db.actor:give_talk_message("Превед", "trader", "trader", "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
@@ -94,7 +92,7 @@ function main_qqqq()
 --	db.actor:give_info_portion(info) 
 end
 
-function main()
+function main11111()
 --	db.actor:give_info_portion("test_1") 
 --	db.actor:set_task_state(task.completed,"task_1",0);
 level.map_change_spot_hint(17, "actor_location","test_hint")

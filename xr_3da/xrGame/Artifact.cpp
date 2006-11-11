@@ -61,12 +61,8 @@ CArtefact::CArtefact(void)
 {
 	shedule.t_min				= 20;
 	shedule.t_max				= 50;
-
 	m_sParticlesName			= NULL;
-
 	m_pTrailLight				= NULL;
-
-	m_bActorPropertiesEnabled	= false;
 	m_activationObj				= NULL;
 }
 
@@ -90,9 +86,6 @@ void CArtefact::Load(LPCSTR section)
 	}
 
 
-	m_bActorPropertiesEnabled	= !!pSettings->r_bool(section, "actor_properties");
-	
-	if(m_bActorPropertiesEnabled)
 	{
 		m_fHealthRestoreSpeed = pSettings->r_float		(section,"health_restore_speed"		);
 		m_fRadiationRestoreSpeed = pSettings->r_float	(section,"radiation_restore_speed"	);

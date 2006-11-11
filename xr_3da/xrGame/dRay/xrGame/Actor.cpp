@@ -1532,7 +1532,7 @@ void CActor::UpdateArtefactsOnBelt()
 		inventory().m_belt.end() != it; ++it) 
 	{
 		CArtefact*	artefact = smart_cast<CArtefact*>(*it);
-		if(artefact && artefact->m_bActorPropertiesEnabled)
+		if(artefact)
 		{
 			conditions().ChangeBleeding			(artefact->m_fBleedingRestoreSpeed*f_update_time);
 			conditions().ChangeHealth			(artefact->m_fHealthRestoreSpeed*f_update_time);
@@ -1549,7 +1549,7 @@ float	CActor::HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type)
 		inventory().m_belt.end() != it; ++it) 
 	{
 		CArtefact*	artefact = smart_cast<CArtefact*>(*it);
-		if(artefact && artefact->m_bActorPropertiesEnabled)
+		if(artefact)
 			hit_power = artefact->m_ArtefactHitImmunities.AffectHit(hit_power, hit_type);
 	}
 

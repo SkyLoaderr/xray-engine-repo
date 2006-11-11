@@ -13,8 +13,4 @@ private:
 public:
 	CNeedles(void);
 	virtual ~CNeedles(void);
-
-	virtual void Load				(LPCSTR section);
-
-protected:
 };

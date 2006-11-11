@@ -8,9 +8,10 @@
 
 CUICellItem::CUICellItem()
 {
-	m_pParentList	= NULL;
-	m_pData			= NULL;
-	m_custom_draw	= NULL;
+	m_pParentList		= NULL;
+	m_pData				= NULL;
+	m_custom_draw		= NULL;
+	m_b_already_drawn	= false;
 }
 
 CUICellItem::~CUICellItem()
@@ -19,35 +20,10 @@ CUICellItem::~CUICellItem()
 	delete_data(m_custom_draw);
 }
 
-int kk = 0;
-void CUICellItem::InitInternals()
-{
-	inherited::InitTexture							("ui\\ui_icon_equipment");
-	Frect rect; rect.set							(500,450,550,500);
-	inherited::SetOriginalRect						(rect);
-	inherited::SetStretchTexture					(true);
-	++kk;
-	switch(kk%4){
-	
-		case 0:
-			m_grid_size.set										(1,1);
-			break;
-		case 1:
-			m_grid_size.set										(2,1);
-			break;
-
-		case 2:
-			m_grid_size.set										(1,2);
-			break;
-
-		case 3:
-			m_grid_size.set										(2,2);
-			break;
-	}
-}
 
 void CUICellItem::Draw()
 {
+	m_b_already_drawn		= true;
 	inherited::Draw();
 	if(m_custom_draw) 
 		m_custom_draw->OnDraw(this);

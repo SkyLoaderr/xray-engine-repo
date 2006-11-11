@@ -558,7 +558,7 @@ Ivector2 CUICellContainer::GetItemPos(CUICellItem* itm)
 
 u32 CUICellContainer::GetCellsInRange(const Irect& rect, UI_CELLS_VEC& res)
 {
-	res.clear				();
+	res.clear_not_free				();
 	for(int x=rect.x1;x<=rect.x2;++x)
 		for(int y=rect.y1;y<=rect.y2;++y)
 			res.push_back	(GetCellAt(Ivector2().set(x,y)));
@@ -689,12 +689,12 @@ void CUICellContainer::Draw()
 	}
 
 	//draw shown items in range
-	UI_CELLS_VEC cells_to_draw;
-	if( GetCellsInRange(tgt_cells,cells_to_draw) ){
-		UI_CELLS_VEC_IT it = cells_to_draw.begin();
-		for(;it!=cells_to_draw.end();++it)
-			if( !(*it).Empty() && (*it).MainItem() )
-				(*it).m_item->Draw();
+	if( GetCellsInRange(tgt_cells,m_cells_to_draw) ){
+		UI_CELLS_VEC_IT it = m_cells_to_draw.begin();
+		for(;it!=m_cells_to_draw.end();++it)
+			if( !(*it).Empty() && !(*it).m_item->m_b_already_drawn ){
+				(*it).m_item->Draw				();
+			}
 	}
 
 	UI()->PopScissor			();

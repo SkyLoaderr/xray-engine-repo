@@ -67,7 +67,6 @@ public:
 	virtual void					PhTune								(dReal step)	{};
 
 	bool							m_bCanSpawnZone;
-	bool 							m_bActorPropertiesEnabled;
 	float							m_fHealthRestoreSpeed;
 	float 							m_fRadiationRestoreSpeed;
 	float 							m_fSatietyRestoreSpeed;

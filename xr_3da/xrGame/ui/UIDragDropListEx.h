@@ -43,6 +43,7 @@ private:
 	Flags8					m_flags;
 //	CUIStatic*				m_background;
 	CUICellItem*			m_selected_item;
+
 protected:
 	
 	CUICellContainer*		m_container;
@@ -117,7 +118,7 @@ private:
 	typedef CUIWindow inherited;
 	ref_shader					hShader;  //ownerDraw
 	ref_geom					hGeom;	
-
+	UI_CELLS_VEC				m_cells_to_draw;
 protected:
 	CUIDragDropListEx*			m_pParentDragDropList;
 

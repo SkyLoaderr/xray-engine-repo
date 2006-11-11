@@ -12,6 +12,7 @@
 #include "UICellItem.h"
 #include "UICellItemFactory.h"
 #include "UIDragDropListEx.h"
+#include "UI3tButton.h"
 
 CUICellItem* CUIInventoryWnd::CurrentItem()
 {
@@ -32,28 +33,12 @@ void CUIInventoryWnd::SetCurrentItem(CUICellItem* itm)
 
 void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	if(pWnd == &UIPropertiesBox &&	msg==PROPERTY_CLICKED){
+	if(pWnd == &UIPropertiesBox &&	msg==PROPERTY_CLICKED)
+	{
 		ProcessPropertiesBoxClicked	();
-
-/*	}else if(pWnd==UISleepWnd && msg==SLEEP_WND_PERFORM_BUTTON_CLICKED){
-		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-		if(!pActor) return;
-		
-		if(!IsGameTypeSingle())			return;
-
-		bool b							= pActor->conditions().AllowSleep();
-		ACTOR_DEFS::EActorSleep result	= pActor->conditions().GoSleep(*reinterpret_cast<u32*>(pData));
-		LPCSTR sleep_msg				= NULL;
-		sleep_msg						= *CStringTable().translate(result);
-
-		if(sleep_msg&& !b)				HUD().GetUI()->AddInfoMessage(sleep_msg);
-
-		Game().StartStopMenu			(this,true);
-
-	}else if (&UIDropButton == pWnd && BUTTON_CLICKED == msg){
-		DropCurrentItem					();
-*/
-	}else if (&UIExitButton == pWnd && BUTTON_CLICKED == msg){
+	}else 
+	if (UIExitButton == pWnd && BUTTON_CLICKED == msg)
+	{
 		Game().StartStopMenu			(this,true);
 	}
 
@@ -72,10 +57,6 @@ void CUIInventoryWnd::SellItem()
 	CActor *pActor				= smart_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor)					return;
 
-//.	if (m_pCurrentDragDropItem == UIOutfitSlot.GetDragDropItemsList().front())
-//.		SendMessage(NULL, UNDRESS_OUTFIT, NULL);
-
-
 	//-----------------------------------------------------------------------
 #pragma todo("SATAN -> MAD_MAX: i'm waiting for you (: ")
 	// change to sell item
@@ -90,7 +71,7 @@ void CUIInventoryWnd::InitInventory_delayed()
 {
 	m_b_need_reinit = true;
 }
-//. #include "UICellCustomItems.h"
+
 void CUIInventoryWnd::InitInventory() 
 {
 	CInventoryOwner *pInvOwner	= smart_cast<CInventoryOwner*>(Level().CurrentEntity());
@@ -129,7 +110,7 @@ void CUIInventoryWnd::InitInventory()
 		CUICellItem* itm			= create_cell_item(*it);
 		m_pUIBeltList->SetItem		(itm);
 	}
-
+	
 	ruck_list		= m_pInv->m_ruck;
 	std::sort		(ruck_list.begin(),ruck_list.end(),InventoryUtilities::GreaterRoomInRuck);
 

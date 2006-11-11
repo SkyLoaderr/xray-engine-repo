@@ -33,6 +33,7 @@ using namespace InventoryUtilities;
 #include "../ActorCondition.h"
 #include "UIDragDropListEx.h"
 #include "UIOutfitSlot.h"
+#include "UI3tButton.h"
 
 #define				INVENTORY_ITEM_XML		"inventory_item.xml"
 #define				INVENTORY_XML			"inventory_new.xml"
@@ -174,9 +175,9 @@ void CUIInventoryWnd::Init()
 	UIStaticTime.AttachChild			(&UIStaticTimeString);
 	xml_init.InitStatic					(uiXml, "time_static_str", 0, &UIStaticTimeString);
 
-
-	AttachChild							(&UIExitButton);
-	xml_init.Init3tButton				(uiXml, "exit_button", 0, &UIExitButton);
+	UIExitButton						= xr_new<CUI3tButton>();UIExitButton->SetAutoDelete(true);
+	AttachChild							(UIExitButton);
+	xml_init.Init3tButton				(uiXml, "exit_button", 0, UIExitButton);
 
 //Load sounds
 
