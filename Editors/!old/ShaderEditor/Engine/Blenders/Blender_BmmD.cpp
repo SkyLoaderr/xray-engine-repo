@@ -16,11 +16,15 @@ CBlender_BmmD::CBlender_BmmD	()
 	description.CLS		= B_BmmD;
 	strcpy				(oT2_Name,	"$null");
 	strcpy				(oT2_xform,	"$null");
+	description.version	= 3;
+	strcpy				(oR_Name,	"detail\\detail_grnd_grass");	//"$null");
+	strcpy				(oG_Name,	"detail\\detail_grnd_asphalt_v");//"$null");
+	strcpy				(oB_Name,	"detail\\detail_grnd_earth_v");	//"$null");
+	strcpy				(oA_Name,	"detail\\detail_rocks_det1");	//"$null");
 }
 
 CBlender_BmmD::~CBlender_BmmD	()
 {
-	
 }
 
 void	CBlender_BmmD::Save		(IWriter& fs )
@@ -29,14 +33,28 @@ void	CBlender_BmmD::Save		(IWriter& fs )
 	xrPWRITE_MARKER	(fs,"Detail map");
 	xrPWRITE_PROP	(fs,"Name",				xrPID_TEXTURE,	oT2_Name);
 	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT2_xform);
+	xrPWRITE_PROP	(fs,"R2-R",				xrPID_TEXTURE,	oR_Name);
+	xrPWRITE_PROP	(fs,"R2-G",				xrPID_TEXTURE,	oG_Name);
+	xrPWRITE_PROP	(fs,"R2-B",				xrPID_TEXTURE,	oB_Name);
+	xrPWRITE_PROP	(fs,"R2-A",				xrPID_TEXTURE,	oA_Name);
 }
 
 void	CBlender_BmmD::Load		(IReader& fs, u16 version )
 {
 	IBlender::Load	(fs,version);
-	xrPREAD_MARKER	(fs);
-	xrPREAD_PROP	(fs,xrPID_TEXTURE,	oT2_Name);
-	xrPREAD_PROP	(fs,xrPID_MATRIX,	oT2_xform);
+	if (version<3)	{
+		xrPREAD_MARKER	(fs);
+		xrPREAD_PROP	(fs,xrPID_TEXTURE,	oT2_Name);
+		xrPREAD_PROP	(fs,xrPID_MATRIX,	oT2_xform);
+	} else {
+		xrPREAD_MARKER	(fs);
+		xrPREAD_PROP	(fs,xrPID_TEXTURE,	oT2_Name);
+		xrPREAD_PROP	(fs,xrPID_MATRIX,	oT2_xform);
+		xrPREAD_PROP	(fs,xrPID_TEXTURE,	oR_Name);
+		xrPREAD_PROP	(fs,xrPID_TEXTURE,	oG_Name);
+		xrPREAD_PROP	(fs,xrPID_TEXTURE,	oB_Name);
+		xrPREAD_PROP	(fs,xrPID_TEXTURE,	oA_Name);
+	}
 }
 
 #if RENDER==R_R1
@@ -119,16 +137,28 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 	IBlender::Compile		(C);
 	// codepath is the same, only the shaders differ
 	// ***only pixel shaders differ***
+	string256				mask;
+	strconcat				(mask,C.L_textures[0],"_mask");
 	switch(C.iElement) 
 	{
 	case SE_R2_NORMAL_HQ: 		// deffer
 		uber_deffer		(C,true,"base","impl",false,oT2_Name[0]?oT2_Name:0,true);
+		C.r_Sampler		("s_mask",	mask);
 		C.r_Sampler		("s_lmap",	C.L_textures[1]);
+		C.r_Sampler		("s_dt_r",	oR_Name);
+		C.r_Sampler		("s_dt_g",	oG_Name);
+		C.r_Sampler		("s_dt_b",	oB_Name);
+		C.r_Sampler		("s_dt_a",	oA_Name);
 		C.r_End			();
 		break;
 	case SE_R2_NORMAL_LQ: 		// deffer
 		uber_deffer		(C,false,"base","impl",false,oT2_Name[0]?oT2_Name:0,true);
+		C.r_Sampler		("s_mask",	mask);
 		C.r_Sampler		("s_lmap",	C.L_textures[1]);
+		C.r_Sampler		("s_dt_r",	oR_Name);
+		C.r_Sampler		("s_dt_g",	oG_Name);
+		C.r_Sampler		("s_dt_b",	oB_Name);
+		C.r_Sampler		("s_dt_a",	oA_Name);
 		C.r_End			();
 		break;
 	case SE_R2_SHADOW:			// smap
