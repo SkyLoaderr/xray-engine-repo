@@ -1737,13 +1737,25 @@
 						RelativePath=".\Config\ui\map_desc.xml">
 					</File>
 					<File
+						RelativePath=".\config\ui\map_desc_16.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\skin_selector.xml">
+					</File>
+					<File
+						RelativePath=".\config\ui\skin_selector_16.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\spawn.xml">
 					</File>
 					<File
+						RelativePath=".\config\ui\spawn_16.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\stats.xml">
+					</File>
+					<File
+						RelativePath=".\config\ui\stats_16.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\ui_game_ahunt.xml">
@@ -1759,6 +1771,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\ui\voting_category.xml">
+					</File>
+					<File
+						RelativePath=".\config\ui\voting_category_16.xml">
 					</File>
 				</Filter>
 				<Filter

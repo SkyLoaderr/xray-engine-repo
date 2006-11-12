@@ -12,6 +12,7 @@
 #include "../../LightAnimLibrary.h"
 #include "uilines.h"
 #include "../string_table.h"
+#include "../ui_base.h"
 
 const char * const	clDefault	= "default";
 #define CREATE_LINES if (!m_pLines) {m_pLines = xr_new<CUILines>(); m_pLines->SetTextAlignment(CGameFont::alLeft);}
@@ -611,6 +612,12 @@ void CUIStatic::RescaleRelative2Rect(const Frect& r){
 	Frect my_r = m_xxxRect;
 	float h_rel = my_r.width()/r.width();
 	float v_rel = my_r.height()/r.height();
+
+	if (ui_core::is_16_9_mode())
+	{
+		h_rel	*= (3.0f/4.0f);
+	}
+	
 	float w;
 	float h;
 	if (h_rel < v_rel){
@@ -621,6 +628,8 @@ void CUIStatic::RescaleRelative2Rect(const Frect& r){
 		w = r.width()*v_rel;
 		h = r.height()*v_rel;
 	}
+
+
 	my_r.x1 += (m_xxxRect.width() - w)/2;
 	my_r.y1 += (m_xxxRect.height() - h)/2;
 	my_r.x2 = my_r.x1 + w;
