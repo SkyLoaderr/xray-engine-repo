@@ -6,11 +6,28 @@
 	</string>
 	
 	<string id="ui_mm_detail_density">
-		<text>Detail density</text>
+		<text>Качество деталей</text>
 	</string>	
 		
 	<string id="ui_pda_details">
-		<text># /details</text>
+		<text># /детали</text>
 	</string>	
 	
+	<string id="ui_st_price">
+	<text>Цена</text>
+	</string>	
+	
+	<string id="ui_st_trade">
+	<text>Торговать</text>
+	</string>	
+	ui_st_leave
+
+	<string id="ui_st_your_items">
+	<text>Твои вещи</text>
+	</string>		
+	
+	<string id="ui_st_leave">
+	<text>Уйти</text>
+	</string>	
+		
 </string_table>
