@@ -25,9 +25,6 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	JOINT_STORAGE			joints;
 	CPHShellSplitterHolder	*m_spliter_holder;
 	CPHMoveStorage			m_traced_geoms;
-	//gray_wolf>Переменная трения персонажа после смерти
-	float					m_after_death_skin_friction;
-	//gray_wolf<
 protected:
 	dSpaceID			    m_space;
 public:
@@ -108,16 +105,6 @@ public:
 		}
 		//(*i)->SetForceAndVelocity(force);
 	}
-	//gray_wolf>Функции установки-чтения трения персонажа периода после смерти
-	virtual void			set_AfterDeathSkinFriction		(float friction)
-	{
-		m_after_death_skin_friction=friction;
-	}
-	virtual float			get_AfterDeathSkinFriction		()
-	{
-		return m_after_death_skin_friction;
-	}
-	//gray_wolf<
 	virtual		void				set_DynamicLimits				(float l_limit=default_l_limit,float w_limit=default_w_limit);
 	virtual		void				set_DynamicScales				(float l_scale=default_l_scale,float w_scale=default_w_scale);
 	virtual		void				set_ContactCallback				(ContactCallbackFun* callback);

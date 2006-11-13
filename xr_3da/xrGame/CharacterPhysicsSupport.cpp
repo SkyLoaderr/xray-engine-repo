@@ -28,6 +28,25 @@ void  NodynamicsCollide(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*materi
 	do_colide=false; 
 }
 
+void  OnCharacterContactInDeath(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
+{
+	//gray_wolf>
+	dSurfaceParameters		&surface=c.surface;
+	CCharacterPhysicsSupport* l_character_physic_support=0;
+	if (bo1)
+	{
+		l_character_physic_support=(CCharacterPhysicsSupport*)retrieveGeomUserData(c.geom.g1)->callback_data;
+	}
+	else
+	{
+		l_character_physic_support=(CCharacterPhysicsSupport*)retrieveGeomUserData(c.geom.g2)->callback_data;
+	}
+
+	surface.mu=l_character_physic_support->m_curr_skin_friction_in_death;
+	//gray_wolf<
+}
+
+
 CCharacterPhysicsSupport::~CCharacterPhysicsSupport()
 {
 	if(m_flags.test(fl_skeleton_in_shell))
@@ -344,7 +363,6 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 				{
 						smart_cast<CKinematicsAnimated*>(m_EntityAlife.Visual())->PlayCycle("death_init");
 				}
-	
 				//b_death_anim_on=true;
 				m_flags.set(fl_death_anim_on,TRUE);
 			}
@@ -379,9 +397,8 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 				(skel_remain_time*hinge_force_factor1)/skel_ddelay;
 			m_pPhysicsShell->set_JointResistance(curr_joint_resistance);
 		//gray_wolf<
-			
-		//gray_wolf>Изменение трения контактов в зависимости от прошедшего времени после смерти
-		//(трение изменяеться от skeleton_skin_friction_start до skeleton_skin_friction_end в течение skeleton_skin_ddelay)
+
+		//gray_wolf>
 			if(skeleton_skin_remain_time!=0)
 			{
 				skeleton_skin_remain_time-=l_time_delta;
@@ -390,12 +407,9 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 			{
 				skeleton_skin_remain_time=0;
 			}
-			float curr_skin_friction=skeleton_skin_friction_end+
-				(skeleton_skin_remain_time/skeleton_skin_ddelay)*(skeleton_skin_friction_start-skeleton_skin_friction_end);
-
-			m_pPhysicsShell->set_AfterDeathSkinFriction(curr_skin_friction);
+			m_curr_skin_friction_in_death=skeleton_skin_friction_end+
+				(skeleton_skin_remain_time/skeleton_skin_ddelay)*(skeleton_skin_friction_start-skeleton_skin_friction_end);			
 		//gray_wolf<
-
 		}
 
 	}
@@ -551,6 +565,8 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	}
 	m_pPhysicsShell->SetIgnoreSmall();
 	FlyTo(Fvector().sub(start,m_EntityAlife.Position()));
+	m_pPhysicsShell->add_ObjectContactCallback(OnCharacterContactInDeath);
+	m_pPhysicsShell->set_CallbackData((void*)this);
 }
 void CCharacterPhysicsSupport::in_ChangeVisual()
 {

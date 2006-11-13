@@ -53,16 +53,8 @@ private:
 	float								skel_airr_ang_factor																																;
 	float								hinge_force_factor1																																	;
 	float								skel_fatal_impulse_factor																															;
-	
 	float								skel_ddelay																																			;
-	float								skel_remain_time																																	;
-	//gray_wolf>Переменные для поддержки изменяющегося трения у персонажей во время смерти
-	float								skeleton_skin_ddelay;
-	float								skeleton_skin_remain_time;
-	float								skeleton_skin_friction_start;
-	float								skeleton_skin_friction_end;
-	//gray_wolf<
-
+	float								skel_remain_time																																	;	
 /////////////////////////////////////////////////
 	//bool								b_death_anim_on																																		;
 	//bool								b_skeleton_in_shell																																	;
@@ -70,10 +62,17 @@ private:
 	float								m_shot_up_factor																																	;
 	float								m_after_death_velocity_factor																														;
 	float								m_BonceDamageFactor																																	;
-	//gray_wolf>Для вычисления дельта времени между пересчётами сопротивления в джоинтах и коэффициента NPC
-	float								m_Pred_Time																																			;
+	//gray_wolf>Переменные для поддержки изменяющегося трения у персонажей во время смерти
+	float								skeleton_skin_ddelay;
+	float								skeleton_skin_remain_time;
+	float								skeleton_skin_friction_start;
+	float								skeleton_skin_friction_end;
+	float								m_Pred_Time;//Для вычисления дельта времени между пересчётами сопротивления в джоинтах и коэффициента NPC
 	//gray_wolf<
 public:
+	//gray_wolf>
+	float								m_curr_skin_friction_in_death;
+	//gray_wolf<
 EType Type()
 	{
 		return m_eType;
