@@ -24,6 +24,7 @@ meet = meet@mil_dolg_skull
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)} false
 on_info = {+mil_sniper_dead} walker2@mil_dolg_skull
+wounded = wounded@ignore_scull
 
 [meet@mil_dolg_skull]
 meet_dialog = mil_dolg_skull_dialog
@@ -41,8 +42,14 @@ meet = meet@mil_dolg_skull
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {=check_fighting(704)} false
 on_timer = 120000 | %+mil_dolg_auto_attack +mil_dolg_skull_talk%
+wounded = wounded@ignore_scull
 
-
+[wounded@ignore_scull]
+hp_state        = 0|wounded_heavy@help_heavy
+hp_state_see    = 0|wounded_heavy@help_heavy
+hp_victim       = 0|nil
+hp_fight        = 0|false
+hp_cover        = 0|false
 -------------------------
 ;Солдат с биноклем
 -------------------------
