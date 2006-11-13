@@ -689,22 +689,18 @@ void CExplosive::ExplodeWaveProcessObject(collide::rq_results& storage, CPhysics
 		HS.weaponID = cast_game_object()->ID();		//		P.w_u16			(cast_game_object()->ID());
 		HS.dir = l_dir;								//		P.w_dir			(l_dir);
 		HS.power = l_hit;							//		P.w_float		(l_hit);
-		HS.boneID = 0;								//		P.w_s16			(0);
+		CGameObject* l_game_object=l_pGO->cast_game_object();
+		CKinematics* V=smart_cast<CKinematics*>(l_game_object->Visual());
+		int bone_count=V->LL_BoneCount();
 		HS.p_in_bone_space = l_goPos;				//		P.w_vec3		(l_goPos);
 		HS.impulse = l_impuls;						//		P.w_float		(l_impuls);
 		HS.hit_type = (m_eHitTypeBlast);			//		P.w_u16			(u16(m_eHitTypeBlast));
-		HS.Write_Packet(P);
-
-
-
-
-
-
-
-
-
-
-		cast_game_object()->u_EventSend		(P);
+		for (u16 i=0;i<bone_count;i++)
+		{
+			HS.boneID = i;								//		P.w_s16			(0);
+			HS.Write_Packet(P);
+			cast_game_object()->u_EventSend		(P);
+		}
 	}
 #ifdef DEBUG
 	if(ph_dbg_draw_mask.test(phDbgDrawExplosions))
