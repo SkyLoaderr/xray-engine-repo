@@ -34,7 +34,7 @@ bool CItemManager::useful			(const CGameObject *object) const
 	if (m_object->H_Parent())
 		return				(false);
 
-	if (!object->UsedAI_Locations())
+	if (!const_cast<CGameObject*>(object)->UsedAI_Locations())
 		return				(false);
 
 	if (!m_object->movement().restrictions().accessible(object->Position()))
