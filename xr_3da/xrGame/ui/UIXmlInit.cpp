@@ -491,7 +491,7 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	
 	pWnd->SetRange			(min, max);
 	pWnd->SetProgressPos	(pos);
-
+	pWnd->m_inertion		= xml_doc.ReadAttribFlt(path, index, "inertion", 0.0f);
 	// progress
 	strconcat(buf,path,":progress");
 

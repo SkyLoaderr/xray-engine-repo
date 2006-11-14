@@ -13,6 +13,10 @@ CUIProgressBar::CUIProgressBar(void)
 
 	AttachChild				(&m_UIBackgroundItem);
 	AttachChild				(&m_UIProgressItem);
+	m_ProgressPos.x			= 0.0f;
+	m_ProgressPos.y			= 0.0f;
+	m_inertion				= 0.0f;
+	m_last_render_frame		= u32(-1);
 }
 
 CUIProgressBar::~CUIProgressBar(void)
@@ -28,21 +32,50 @@ void CUIProgressBar::Init(float x, float y, float width, float height, bool bIsH
 
 void CUIProgressBar::UpdateProgressBar()
 {
-	float progressbar_unit;
-	if( fsimilar(m_MaxPos,m_MinPos) )
-		m_MaxPos	+= EPS;
+	if( fsimilar(m_MaxPos,m_MinPos) ) m_MaxPos	+= EPS;
 
-	progressbar_unit = 1/(m_MaxPos-m_MinPos);
+	float progressbar_unit = 1/(m_MaxPos-m_MinPos);
 
-	float fCurrentLength = m_ProgressPos*progressbar_unit;
+	float fCurrentLength = m_ProgressPos.x*progressbar_unit;
 
-	if(m_bIsHorizontal)	m_CurrentLength	= GetWidth()*fCurrentLength; 	
-	else				m_CurrentLength	= GetHeight()*fCurrentLength; 	
+	if(m_bIsHorizontal)	m_CurrentLength			= GetWidth()*fCurrentLength; 	
+	else				m_CurrentLength			= GetHeight()*fCurrentLength; 	
 
 	if(m_bUseColor){
 		Fcolor curr;
 		curr.lerp							(m_minColor,m_maxColor,fCurrentLength);
 		m_UIProgressItem.GetStaticItem		()->SetColor			(curr);
+	}
+}
+
+void CUIProgressBar::SetProgressPos(float _Pos)				
+{ 
+	m_ProgressPos.y		= _Pos; 
+	if(m_last_render_frame+1 != Device.dwFrame)
+		m_ProgressPos.x = m_ProgressPos.y;
+
+	UpdateProgressBar	();
+}
+
+float _sign(const float& v)
+{
+	return (v>0.0f)?+1.0f:-1.0f;
+}
+void CUIProgressBar::Update()
+{
+	inherited::Update();
+	if(!fsimilar(m_ProgressPos.x, m_ProgressPos.y))
+	{
+		if( fsimilar(m_MaxPos,m_MinPos) ) m_MaxPos	+= EPS;	//hack ^(
+		float _diff				= m_ProgressPos.y - m_ProgressPos.x;
+		
+		float _length			= (m_MaxPos-m_MinPos);
+		float _val				= _length*(1.0-m_inertion)*Device.fTimeDelta;
+
+		_val					= _min(_abs(_val), _abs(_diff) );
+		_val					*= _sign(_diff);
+		m_ProgressPos.x			+= _val;
+		UpdateProgressBar		();
 	}
 }
 
@@ -74,4 +107,5 @@ void CUIProgressBar::Draw()
 		m_UIProgressItem.Draw();
 		UI()->PopScissor	();
 	}
+	m_last_render_frame	= Device.dwFrame;
 }

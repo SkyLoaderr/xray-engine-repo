@@ -16,32 +16,29 @@ class CUIPdaContactsWnd: public CUIWindow
 {
 private:
 	typedef CUIWindow inherited;
-	enum		{flNeedUpdate  =(1<<0),};
-	Flags8		m_flags;
+	enum				{flNeedUpdate  =(1<<0),};
+	Flags8				m_flags;
+	xr_vector<CPda*>	m_pda_list;
 public:
-	CUIPdaContactsWnd();
-	virtual ~CUIPdaContactsWnd();
+								CUIPdaContactsWnd		();
+	virtual						~CUIPdaContactsWnd		();
 
-			void Init();
+	void						Init					();
 
 
-	virtual void SendMessage	(CUIWindow *pWnd, s16 msg, void *pData);
+	virtual void				Update					();
 
-	virtual void Update			();
+	virtual void				Show					(bool status);
 
-	virtual void Show			(bool status);
+	void 						AddContact				(CPda* pda);
+	void 						RemoveContact			(CPda* pda);
+	void 						RemoveAll				();
+	void 						Reload					();
 
-	void AddContact				(CPda* pda);
-	void RemoveContact			(CPda* pda);
-	void RemoveAll				();
-	void Reload					();
-
-	CUIScrollView*					UIListWnd;
-	CUIScrollView*					UIDetailsWnd;
+	CUIScrollView*				UIListWnd;
+	CUIScrollView*				UIDetailsWnd;
 
 protected:
-
-	// Элементы оформления
 	CUIFrameWindow*				UIFrameContacts;
 	CUIFrameLineWnd*			UIContactsHeader;
 	CUIFrameWindow*				UIRightFrame;
@@ -52,10 +49,10 @@ protected:
 #include "UIPdaListItem.h"
 class CUIPdaContactItem :public CUIPdaListItem, public CUISelectable
 {
-	CUIPdaContactsWnd*	m_cw;
+	CUIPdaContactsWnd*			m_cw;
 public:
-					CUIPdaContactItem	(CUIPdaContactsWnd* cw)		{m_cw = cw;}
-	virtual			~CUIPdaContactItem	();
-	virtual void	SetSelected			(bool b);
-	virtual bool	OnMouseDown			(bool left_button = true);
+								CUIPdaContactItem		(CUIPdaContactsWnd* cw)		{m_cw = cw;}
+	virtual						~CUIPdaContactItem		();
+	virtual void				SetSelected				(bool b);
+	virtual bool				OnMouseDown				(bool left_button = true);
 };

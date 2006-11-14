@@ -81,25 +81,19 @@ void CUIPdaContactsWnd::Update()
 	if(TRUE==m_flags.test(flNeedUpdate)){
 		RemoveAll			();
 
-		xr_vector<CPda*>	pda_list;
 		CPda*	pPda		= Actor()->GetPDA	();
 		if(!pPda)			return;
 
-		pPda->ActiveContacts(pda_list);
+		pPda->ActivePDAContacts	(m_pda_list);
 
-		xr_vector<CPda*>::iterator it = pda_list.begin();
+		xr_vector<CPda*>::iterator it = m_pda_list.begin();
 
-		for(; it!=pda_list.end();++it){
+		for(; it!=m_pda_list.end();++it){
 			AddContact(*it);
 		}
 		m_flags.set(flNeedUpdate, FALSE);
 	}
 	inherited::Update();
-}
-
-void CUIPdaContactsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
-{
-	inherited::SendMessage(pWnd, msg, pData);
 }
 
 void CUIPdaContactsWnd::AddContact(CPda* pda)

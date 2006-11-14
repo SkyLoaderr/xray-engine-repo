@@ -6,27 +6,27 @@
 
 class CUIProgressBar : public CUIWindow
 {
-	friend class CUIXmlInit;
+	friend class		CUIXmlInit;
+	typedef CUIWindow	inherited;
 protected:
 	bool				m_bIsHorizontal;
 
-	float				m_ProgressPos;
+	Fvector2			m_ProgressPos; //x-current y-dest
 	float				m_MinPos;
 	float				m_MaxPos;
 
-	//текущий состояние полосы в пикселях
 	float				m_CurrentLength;
-
+	
 	bool				m_bBackgroundPresent;
 	Fvector2			m_BackgroundOffset;
-
+	u32					m_last_render_frame;
 	void				UpdateProgressBar();
-
+	
 public:
 	bool				m_bUseColor;
 	Fcolor				m_minColor;
 	Fcolor				m_maxColor;
-
+	float				m_inertion;	//
 public:
 	CUIStatic			m_UIProgressItem;
 	CUIStatic			m_UIBackgroundItem;
@@ -39,16 +39,15 @@ public:
 	virtual void		Init						(float x, float y, float width, float height, bool bIsHorizontal);
 
 	void				SetRange					(float _Min, float _Max)	{ m_MinPos = _Min;  m_MaxPos = _Max; UpdateProgressBar();}
-//.	void				GetRange					(float& _Min, float& _Max)	{ _Min = m_MinPos;  _Max = m_MaxPos;}
-
 	float				GetRange_min				() 							{ return  m_MinPos;}
 	float				GetRange_max				() 							{ return  m_MaxPos;}
 
-	void				SetProgressPos				(float _Pos)				{ m_ProgressPos = _Pos; UpdateProgressBar();}
-	float				GetProgressPos				()							{ return m_ProgressPos; }
+	void				SetProgressPos				(float _Pos);
+	float				GetProgressPos				()							{ return m_ProgressPos.y; }
 
 
 	virtual void		Draw						();
+	virtual void		Update						();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

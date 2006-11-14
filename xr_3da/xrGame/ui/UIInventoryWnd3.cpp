@@ -36,6 +36,7 @@ void CUIInventoryWnd::EatCurrentItem()
 		R_ASSERT(0);
 		SetCurrentItem						(NULL);
 	}
+	PlaySnd									(eInvItemUse);
 }
 
 #include "../Medkit.h"

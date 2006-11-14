@@ -265,7 +265,7 @@ void CActor::UpdateContact		(u16 contact_id)
 */
 void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 {	
-	if(Game().Type() != GAME_SINGLE) return;
+	if(!IsGameTypeSingle()) return;
 
 	bool b_alive = !!(smart_cast<CEntityAlive*>(pInvOwner))->g_Alive();
 	HUD().GetUI()->UIMainIngameWnd->AnimateContacts(b_alive);

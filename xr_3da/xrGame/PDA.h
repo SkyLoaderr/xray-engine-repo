@@ -1,12 +1,3 @@
-///////////////////////////////////////////////////////////////
-// PDA.h
-// PDA - пейджер сталкеров и солдат
-// используется для общения, идентификации на карте 
-// и как хранилище всей важной "сюжетной" информации для
-// всех персонажей игры
-///////////////////////////////////////////////////////////////
-
-
 #pragma once
 
 #include "../feel_touch.h"
@@ -40,8 +31,6 @@ public:
 	virtual void 							OnH_B_Independent		();
 
 	virtual void 							shedule_Update			(u32 dt);
-	virtual void 							UpdateCL				();
-	virtual void 							renderable_Render		();
 
 	virtual void 							feel_touch_new			(CObject* O);
 	virtual void 							feel_touch_delete		(CObject* O);
@@ -56,16 +45,15 @@ public:
 			void							TurnOn					() {m_bTurnedOff = false;}
 			void							TurnOff					() {m_bTurnedOff = true;}
 	
-			bool 							IsActive				() {return (!m_bTurnedOff && !m_bPassiveMode);}
-			bool 							IsPassive				() {return (m_bTurnedOff || m_bPassiveMode);}
+			bool 							IsActive				() {return IsOn();}
 			bool 							IsOn					() {return !m_bTurnedOff;}
 			bool 							IsOff					() {return m_bTurnedOff;}
 
 
-			xr_vector<CObject*>				ActiveContacts			();
-			void							ActiveContacts			(xr_vector<CPda*>& res);
+//.			xr_vector<CObject*>&			ActiveContacts			();
+			void							ActivePDAContacts		(xr_vector<CPda*>& res);
 			CPda*							GetPdaFromOwner			(CObject* owner);
-			u32								ActiveContactsNum		()							{return ActiveContacts().size();}
+			u32								ActiveContactsNum		()							{return m_active_contacts.size();}
 
 
 	virtual void							save					(NET_Packet &output_packet);
@@ -75,22 +63,17 @@ public:
 	virtual LPCSTR							NameComplex				();
 
 protected:
+	void									UpdateActiveContacts	();
+//.	void									PdaEventSend			(u32 pda_ID, EPdaMsg msg, INFO_ID info_id);
+//.	void									AddMessageToLog			(u32 pda_ID, EPdaMsg msg, INFO_ID info_id, bool receive);
 
-	void PdaEventSend(u32 pda_ID, EPdaMsg msg, INFO_ID info_id);
-	void AddMessageToLog(u32 pda_ID, EPdaMsg msg, INFO_ID info_id, bool receive);
 
+	xr_vector<CObject*>						m_active_contacts;
+	float									m_fRadius;
 
-	//радиус обнаружения других PDA
-	float								m_fRadius;
+	u16										m_idOriginalOwner;
+	SPECIFIC_CHARACTER_ID					m_SpecificChracterOwner;
+	xr_string								m_sFullName;
 
-	//первый владелец PDA
-	u16									m_idOriginalOwner;
-	SPECIFIC_CHARACTER_ID				m_SpecificChracterOwner;
-	//полное название PDA с именем владельца
-	xr_string							m_sFullName;
-
-	//пассивный режим работы PDA
-	bool m_bPassiveMode;
-	//PDA выключено
-	bool m_bTurnedOff;
+	bool									m_bTurnedOff;
 };

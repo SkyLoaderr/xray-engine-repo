@@ -1,9 +1,3 @@
-///////////////////////////////////////////////////////////////
-// PDA.cpp
-// PDA - пейджер сталкеров и солдат
-///////////////////////////////////////////////////////////////
-
-
 #include "stdafx.h"
 #include "pda.h"
 #include "hudmanager.h"
@@ -17,35 +11,26 @@
 
 #include "specific_character.h"
 #include "alife_registry_wrappers.h"
-#include "AI/Monsters/BaseMonster/base_monster.h"
 
 
 CPda::CPda(void)						
 {										
-	//специальный слот дл€ PDA
 	m_slot					= PDA_SLOT;
-	//или в рюкзак, если чужой PDA	
 	m_flags.set				(Fruck, TRUE);
 
-	m_idOriginalOwner		= 0xffff;
+	m_idOriginalOwner		= u16(-1);
 	m_SpecificChracterOwner = NULL;
 
-
-	m_bPassiveMode = false;
 	
-	//включим, только когда присоединим к первому владельцу
 	TurnOff					();
-
 }
 
-CPda::~CPda(void) 
-{
-}
+CPda::~CPda() 
+{}
 
 BOOL CPda::net_Spawn(CSE_Abstract* DC) 
 {
-	if (!inherited::net_Spawn(DC))
-		return					(FALSE);
+	inherited::net_Spawn		(DC);
 	CSE_Abstract				*abstract = (CSE_Abstract*)(DC);
 	CSE_ALifeItemPDA			*pda = smart_cast<CSE_ALifeItemPDA*>(abstract);
 	R_ASSERT					(pda);
@@ -60,6 +45,7 @@ void CPda::net_Destroy()
 	inherited::net_Destroy		();
 	TurnOff						();
 	feel_touch.clear			();
+	UpdateActiveContacts		();
 }
 
 void CPda::Load(LPCSTR section) 
@@ -71,13 +57,11 @@ void CPda::Load(LPCSTR section)
 
 void CPda::shedule_Update(u32 dt)	
 {
-	// Msg							("-SUB-:[%x][%s] CPda::shedule_Update",smart_cast<void*>(this),*cName());
 	inherited::shedule_Update	(dt);
 
 	if(!H_Parent()) return;
 	Position().set	(H_Parent()->Position());
 
-	//обновить список дос€гаемых PDA
 	if( IsOn() && Level().CurrentEntity() && Level().CurrentEntity()->ID()==H_Parent()->ID() )
 	{
 		CEntityAlive* EA = smart_cast<CEntityAlive*>(H_Parent());
@@ -87,22 +71,24 @@ void CPda::shedule_Update(u32 dt)
 			return;
 		}
 
-//		m_NewPDAList.clear();
-//		m_DeletedPDAList.clear();
 		feel_touch_update(Position(),m_fRadius);
-		//m_bNewMessage = false;
+		UpdateActiveContacts	();
 	}
 }
 
-void CPda::UpdateCL() 
+void CPda::UpdateActiveContacts	()
 {
-	inherited::UpdateCL();
+	m_active_contacts.clear_not_free();
+	xr_vector<CObject*>::iterator it= feel_touch.begin();
+	for(;it!=feel_touch.end();++it){
+		CEntityAlive* pEA = smart_cast<CEntityAlive*>(*it);
+		if(!!pEA->g_Alive())
+			m_active_contacts.push_back(*it);
+	}
 }
 
 void CPda::feel_touch_new(CObject* O) 
 {
-	if(IsOff()) return;
-
 	CInventoryOwner* pNewContactInvOwner	= smart_cast<CInventoryOwner*>(O);
 	CInventoryOwner* pOwner					= smart_cast<CInventoryOwner*>( H_Parent() );VERIFY(pOwner);
 
@@ -111,7 +97,7 @@ void CPda::feel_touch_new(CObject* O)
 
 void CPda::feel_touch_delete(CObject* O) 
 {
-	if(!H_Parent()) return;//feel_touch_delete called from pure_relcase
+	if(!H_Parent())							return;
 	CInventoryOwner* pLostContactInvOwner	= smart_cast<CInventoryOwner*>(O);
 	CInventoryOwner* pOwner					= smart_cast<CInventoryOwner*>( H_Parent() );VERIFY(pOwner);
 
@@ -125,25 +111,13 @@ BOOL CPda::feel_touch_contact(CObject* O)
 		if( this!=pInvOwner->GetPDA() )
 		{
 			CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(O);
-			if(pEntityAlive && !pEntityAlive->getDestroy() && !pEntityAlive->cast_base_monster() )
+			if(pEntityAlive && !pEntityAlive->cast_base_monster() )
 				return TRUE;
 		}else
 		return FALSE;
 	}
 
 	return FALSE;
-}
-
-void CPda::save(NET_Packet &output_packet)
-{
-	inherited::save	(output_packet);
-	save_data		(m_sFullName, output_packet);
-}
-
-void CPda::load(IReader &input_packet)
-{
-	inherited::load	(input_packet);
-	load_data		(m_sFullName, input_packet);
 }
 
 void CPda::OnH_A_Chield() 
@@ -171,11 +145,6 @@ void CPda::OnH_B_Independent()
 }
 
 
-void CPda::renderable_Render() 
-{
-	inherited::renderable_Render();
-}
-
 CInventoryOwner* CPda::GetOriginalOwner()
 {
 	CObject* pObject =  Level().Objects.net_Find(GetOriginalOwnerID());
@@ -184,12 +153,52 @@ CInventoryOwner* CPda::GetOriginalOwner()
 	return pInvOwner;
 }
 
-CObject* CPda::GetOwnerObject()
+
+
+void CPda::ActivePDAContacts(xr_vector<CPda*>& res)
 {
-	CObject* pObject =  Level().Objects.net_Find(GetOriginalOwnerID());
-	return pObject;
+	res.clear_not_free						();
+	xr_vector<CObject*>::iterator it		= m_active_contacts.begin();
+	xr_vector<CObject*>::iterator it_e		= m_active_contacts.end();
+
+	for(;it!=it_e;++it)
+		res.push_back(GetPdaFromOwner(*it));
 }
 
+/*
+xr_vector<CObject*>&	CPda::ActiveContacts			()							
+{
+	m_active_contacts.clear_not_free();
+	xr_vector<CObject*>::iterator it= feel_touch.begin();
+	for(;it!=feel_touch.end();++it){
+		CEntityAlive* pEA = smart_cast<CEntityAlive*>(*it);
+		if(!!pEA->g_Alive())
+			m_active_contacts.push_back(*it);
+	}
+	return	m_active_contacts;
+}
+*/
+void CPda::save(NET_Packet &output_packet)
+{
+	inherited::save	(output_packet);
+	save_data		(m_sFullName, output_packet);
+}
+
+void CPda::load(IReader &input_packet)
+{
+	inherited::load	(input_packet);
+	load_data		(m_sFullName, input_packet);
+}
+
+LPCSTR		CPda::NameComplex		()
+{
+	return Name();
+}
+
+CObject* CPda::GetOwnerObject()
+{
+	return				Level().Objects.net_Find(GetOriginalOwnerID());
+}
 LPCSTR		CPda::Name				()
 {
 	if( !m_SpecificChracterOwner.size() )
@@ -207,36 +216,8 @@ LPCSTR		CPda::Name				()
 	
 	return m_sFullName.c_str();
 }
-LPCSTR		CPda::NameComplex		()
-{
-	return Name();
-}
 
 CPda* CPda::GetPdaFromOwner(CObject* owner)
 {
-	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(owner);
-	return pInvOwner->GetPDA			();
-}
-
-void CPda::ActiveContacts(xr_vector<CPda*>& res)
-{
-	res.clear				();
-	xr_vector<CObject*>		v = ActiveContacts();
-	xr_vector<CObject*>::iterator it= v.begin();
-	for(;it!=v.end();++it)
-		res.push_back(GetPdaFromOwner(*it));
-}
-
-xr_vector<CObject*>	CPda::ActiveContacts			()							
-{
-	xr_vector<CObject*> res;
-
-	xr_vector<CObject*>::iterator it= feel_touch.begin();
-	for(;it!=feel_touch.end();++it){
-		CEntityAlive* pEA = smart_cast<CEntityAlive*>(*it);
-		if(!!pEA->g_Alive())
-			res.push_back(*it);
-	}
-
-	return	res;
+	return smart_cast<CInventoryOwner*>(owner)->GetPDA			();
 }
