@@ -64,7 +64,7 @@
 	
 	<!----------DELME:for andy-------------------->
 	
-	<game_task id="pl_task_1">
+	<game_task id="pl_task_1" prio="3">
 		<title>task_1</title>
 		<objective>
 			<text>objective_1</text>
@@ -78,7 +78,7 @@
 			<infoportion_complete>yan_labx16_switcher_1_off</infoportion_complete>
 		</objective>
 	</game_task>
-	<game_task id="pl_task_2">
+	<game_task id="pl_task_2" prio="2">
 		<title>task_2</title>
 		<objective>
 			<text>objective_1</text>
@@ -92,7 +92,7 @@
 			<infoportion_complete>yan_labx16_switcher_2_off</infoportion_complete>
 		</objective>
 	</game_task>
-	<game_task id="pl_task_3">
+	<game_task id="pl_task_3" prio="1">
 		<title>task_3</title>
 		<objective>
 			<text>objective_1</text>
