@@ -83,11 +83,14 @@
 
 		BuildStackTrace		();
 
+		if (g_stackTraceCount <= 2)
+			return;
+
 		u32					accumulator = 0;
+		VERIFY				(g_stackTraceCount > 2);
 		int					*lengths = (int*)_alloca((g_stackTraceCount - 2)*sizeof(int));
 		{
 			int				*I = lengths;
-			VERIFY			(g_stackTraceCount > 2);
 			for (int i=2; i<g_stackTraceCount; ++i, ++I) {
 				*I			= xr_strlen(g_stackTrace[i]);
 				accumulator	+= u32((*I)*sizeof(char) + 1);
