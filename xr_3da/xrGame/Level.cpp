@@ -416,7 +416,7 @@ struct debug_memory_guard {
 
 	inline ~debug_memory_guard	()
 	{
-//		mem_alloc_gather_stats				(false);
+		mem_alloc_gather_stats				(false);
 	}
 };
 #endif // DEBUG
