@@ -423,7 +423,7 @@ struct debug_memory_guard {
 
 void CLevel::OnFrame	()
 {
-#if 0//def DEBUG
+#ifdef DEBUG
 	debug_memory_guard					__guard__;
 #endif // DEBUG
 
