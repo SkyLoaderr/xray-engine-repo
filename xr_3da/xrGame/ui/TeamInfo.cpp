@@ -92,7 +92,7 @@ LPCSTR	CTeamInfo::GetTeam_color_tag(int team){
 	str += _GetItem(tm_col, 1, _buff);
 	str += ",";
 	str += _GetItem(tm_col, 2, _buff);
-	str += ">";
+	str += "]";
 
 	if (1 == team){
 		flags.set(flTeam1_col_t,true);
