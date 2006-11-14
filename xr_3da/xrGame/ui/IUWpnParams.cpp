@@ -53,12 +53,12 @@ void CUIWpnParams::InitFromXml(CUIXml& xml_doc){
 void CUIWpnParams::SetInfo(const shared_str& wpn_section){
 
 	m_progressRPM.SetProgressPos(m_functorRPM(*wpn_section));
-	m_progressAccuracy.SetProgressPos(m_functorAccuracy(wpn_section));
+	m_progressAccuracy.SetProgressPos(m_functorAccuracy(*wpn_section));
 	if (GameID() == GAME_SINGLE)
-        m_progressDamage.SetProgressPos(m_functorDamage(wpn_section));
+        m_progressDamage.SetProgressPos(m_functorDamage(*wpn_section));
 	else
-		m_progressDamage.SetProgressPos(m_functorDamageMP(wpn_section));
-	m_progressHandling.SetProgressPos(m_functorHandling(wpn_section));
+		m_progressDamage.SetProgressPos(m_functorDamageMP(*wpn_section));
+	m_progressHandling.SetProgressPos(m_functorHandling(*wpn_section));
 }
 
 bool CUIWpnParams::Check(const shared_str& wpn_section){
