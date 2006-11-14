@@ -150,6 +150,16 @@
 	<string id="ui_inv_outfit_strike_protection">
 		<text>Impact</text>
 	</string>
+	<string id="ui_inv_outfit_wound_protection">
+		<text>Wound</text>
+	</string>
+	<string id="ui_inv_outfit_radiation_protection">
+		<text>Radiation</text>
+	</string>
+	<string id="ui_inv_outfit_telepatic_protection">
+		<text>Telepatic</text>
+	</string>
+	
 	<string id="ui_inv_outfits">
 		<text>Suits</text>
 	</string>
