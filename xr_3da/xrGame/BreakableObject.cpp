@@ -51,7 +51,7 @@ BOOL CBreakableObject::net_Spawn(CSE_Abstract* DC)
 	R_ASSERT				(Visual()&&smart_cast<CKinematics*>(Visual()));
 //	CKinematics* K			= smart_cast<CKinematics*>(Visual());
 	fHealth					= obj->m_health;
-	processing_deactivate	();
+	//processing_deactivate	();
 	setVisible				(TRUE);
 	setEnabled				(TRUE);
 	CreateUnbroken			();
@@ -67,7 +67,12 @@ void CBreakableObject::shedule_Update	(u32 dt)
 	inherited::shedule_Update		(dt);
 	if(m_pPhysicsShell&&!bRemoved&&Device.dwTimeGlobal-m_break_time>m_remove_time) SendDestroy();
 }
-
+void CBreakableObject::UpdateCL()
+{
+	inherited::UpdateCL();
+	Fmatrix	d;
+	if(m_pPhysicsShell&&m_pPhysicsShell->isFullActive())m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
+}
 void CBreakableObject::enable_notificate()
 {
 	if(b_resived_damage)ProcessDamage();
@@ -172,7 +177,8 @@ void CBreakableObject::ActivateBroken()
 	CKinematics* K=smart_cast<CKinematics*>(Visual());
 	m_pPhysicsShell->set_Kinematics(K);
 	m_pPhysicsShell->RunSimulation();
-	m_pPhysicsShell->SetCallbacks(m_pPhysicsShell->GetStaticObjectBonesCallback());
+	m_pPhysicsShell->SetCallbacks(m_pPhysicsShell->GetBonesCallback());
+	K->CalculateBones_Invalidate();
 	K->CalculateBones();
 	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
 }

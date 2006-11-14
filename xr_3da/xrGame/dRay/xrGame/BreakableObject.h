@@ -39,7 +39,7 @@ public:
 	virtual BOOL	net_Spawn			( CSE_Abstract* DC);
 	virtual	void	net_Destroy			();
 	virtual void	shedule_Update		( u32 dt);							// Called by sheduler
-
+	virtual	void	UpdateCL			();
 	virtual BOOL	renderable_ShadowGenerate	( ) { return FALSE;	}
 	virtual BOOL	renderable_ShadowReceive	( ) { return TRUE;	}
 	

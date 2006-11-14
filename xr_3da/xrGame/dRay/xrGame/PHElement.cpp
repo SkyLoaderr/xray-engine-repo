@@ -832,14 +832,12 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 	//VERIFY2(fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS),"Bones callback returns 0 matrix");
 	VERIFY_RMATRIX(B->mTransform);
 	VERIFY(valid_pos(B->mTransform.c,phBoundaries));
-	if( !m_shell->is_active() && !m_flags.test(flUpdate)/*!bUpdate*/ ) return;
+	//if( !m_shell->is_active() && !m_flags.test(flUpdate)/*!bUpdate*/ ) return;
 
 	{
-		InterpolateGlobalTransform(&mXFORM);
-		parent.set			(m_shell->mXFORM);
-		parent.invert		();
-		mXFORM.mulA_43		(parent);
-		B->mTransform.set	(mXFORM);
+		//InterpolateGlobalTransform(&mXFORM);
+		parent.invert			(m_shell->mXFORM);
+		B->mTransform.mul_43	(parent,mXFORM);
 	}
 	//VERIFY2(fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS),"Bones callback returns 0 matrix");
 	VERIFY_RMATRIX(B->mTransform);
@@ -909,25 +907,24 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 
 	
 
-	if( !m_shell->is_active() && !m_flags.test(flUpdate)/*!bUpdate*/) return;
-
+//	if( !m_shell->is_active() && !m_flags.test(flUpdate)/*!bUpdate*/) return;
+/*
 	if(!m_parent_element)
 	{
 	
 		m_shell->InterpolateGlobalTransform(&(m_shell->mXFORM));
 		VERIFY(_valid(m_shell->mXFORM));
 	}
+	*/
 	//VERIFY2(fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS),"Bones callback returns 0 matrix");
 	VERIFY_RMATRIX(B->mTransform);
 	VERIFY(valid_pos(B->mTransform.c,phBoundaries));
 
 	
 	{
-		InterpolateGlobalTransform(&mXFORM);
-		parent.set			(m_shell->mXFORM);
-		parent.invert		();
-		mXFORM.mulA_43		(parent);
-		B->mTransform.set	(mXFORM);
+		//InterpolateGlobalTransform(&mXFORM);
+		parent.invert		(m_shell->mXFORM);
+		B->mTransform.mul_43(parent,mXFORM);
 	}
 	//VERIFY2(fsimilar(DET(B->mTransform),1.f,DET_CHECK_EPS),"Bones callback returns 0 matrix");
 	VERIFY_RMATRIX(B->mTransform);

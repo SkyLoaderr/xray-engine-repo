@@ -22,13 +22,6 @@ void	SetRotation			(const Fquaternion& q, u16 num);
 void	SetPosition			(const Fvector& p, u16 num);
 private:
 	dBodyID m_body;
-	bool	b_frame_mark;
-	bool	b_udating_positions;
-	bool	b_udating_rotations;
-	static	Fvector	bk_pos;
-	static	Fquaternion	bk_quat;
-	static	Fvector	*bkp_pos;
-	static	Fquaternion	*bkp_quat;
 	CCycleConstStorage<Fvector,PH_INTERPOLATION_POINTS>				qPositions;
 	CCycleConstStorage<Fquaternion,PH_INTERPOLATION_POINTS>			qRotations;
 };
