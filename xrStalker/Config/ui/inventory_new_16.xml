@@ -144,6 +144,7 @@
 		<snd_drop_item>interface\inv_drop</snd_drop_item>
 		<snd_attach_addon>interface\inv_attach_addon</snd_attach_addon>
 		<snd_detach_addon>interface\inv_detach_addon</snd_detach_addon>
+		<snd_item_use>interface\inv_slot</snd_item_use>
 	</action_sounds>
 
 </w>
