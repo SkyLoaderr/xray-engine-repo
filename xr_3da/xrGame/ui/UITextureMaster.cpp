@@ -153,7 +153,7 @@ TEX_INFO CUITextureMaster::FindItem(LPCSTR texture_name, LPCSTR def_texture_name
 	if (it != m_textures.end())
 		return (it->second);
 	else{
-		R_ASSERT(m_textures.find(def_texture_name)!=m_textures.end());
+		R_ASSERT2(m_textures.find(def_texture_name)!=m_textures.end(),texture_name);
 		return FindItem	(def_texture_name,NULL);
 	}
 }

@@ -10085,6 +10085,12 @@
 					Name="ItemInfo"
 					Filter="">
 					<File
+						RelativePath=".\ui\ui_af_params.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\ui_af_params.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIItemInfo.cpp">
 					</File>
 					<File

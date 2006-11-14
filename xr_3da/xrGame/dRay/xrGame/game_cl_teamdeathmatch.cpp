@@ -15,6 +15,7 @@
 #include "ui/UIMapDesc.h"
 #include "game_base_menu_events.h"
 #include "ui/TeamInfo.h"
+#include "string_table.h"
 
 //.#define	TEAM0_MENU		"teamdeathmatch_team0"
 //.#define	TEAM1_MENU		"teamdeathmatch_team1"

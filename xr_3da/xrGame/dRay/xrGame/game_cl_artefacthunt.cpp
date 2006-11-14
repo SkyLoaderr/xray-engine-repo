@@ -23,6 +23,7 @@
 #include "ActorCondition.h"
 #include "ui/TeamInfo.h"
 #include "string_table.h"
+#include "CustomOutfit.h"
 
 #define TEAM0_MENU		"artefacthunt_team0"
 #define	TEAM1_MENU		"artefacthunt_team1"

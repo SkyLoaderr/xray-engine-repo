@@ -1,50 +1,39 @@
-// File:		CUIOutfitInfo.h
-// Description:	outfit info window for inventoryWnd.
-// Created:		31.01.2005
-// Author:		Serge Vynnychenko
-// Mail:		narrator@gsc-game.kiev.ua
-
-// Copyright 2005 GSC Game World
-
 #pragma once
 
-#include "UIListWnd.h"
-#include "../CustomOutfit.h"
-#include "../string_table.h"
+#include "UIWindow.h"
 
-class CUIOutfitInfo : public CUIStatic 
+class CUIScrollView;
+class CCustomOutfit;
+class CUIStatic;
+class CUIXml;
+
+class CUIOutfitInfo : public CUIWindow
 {
+CCustomOutfit*		m_outfit;
 public:
 					CUIOutfitInfo			();
 	virtual			~CUIOutfitInfo			();
-	virtual void	Init					(float x, float y, float widht, float height);
 
-	virtual void 	Update					();
-			void 	Update					(CCustomOutfit& outfit);	
-    virtual void 	SetText					();
-	virtual void 	SetTextColor			(u32 color);
-	virtual void 	SetTitleTextColor		(u32 color);
-	virtual void 	SetFont					(CGameFont* pFont);
+			void 	Update					(CCustomOutfit* outfit);	
+			void 	InitFromXml				(CUIXml& xml_doc);
 protected:
-	void			SetItem					(ALife::EHitType hitType, CCustomOutfit& outfit, CUIListItem* listItem, shared_str sstr);
-	void			SetItem					(ALife::EHitType hitType, int value, CUIListItem* listItem, shared_str sstr);
+	void			SetItem					(u32 hitType, bool force_add);
 
-	CUIListWnd		m_listWnd;
-	CUIStatic		m_staticTitle;
-	CUIListItem*	m_itemBurnProtection;
-	CUIListItem*	m_itemStrikeProtection;
-	CUIListItem*	m_itemShockProtection;
-	CUIListItem*	m_itemChemicalBurnProtection;
-	CUIListItem*	m_itemExplosionProtection;
-	CUIListItem*	m_itemFireWoundProtection;	
+	CUIScrollView*	m_listWnd;
 
-	shared_str		m_strBurnProtection;
-	shared_str		m_strStrikeProtection;
-	shared_str		m_strShockProtection;
-	shared_str		m_strChemicalBurnProtection;
-	shared_str		m_strExplosionProtection;
-	shared_str		m_strFireWoundProtection;
+	enum{
+		_item_start						= 0,
+		_item_burn_immunity				= _item_start,
+		_item_shock_immunity,
+		_item_strike_immunity,
+		_item_wound_immunity,		
+		_item_radiation_immunity,
+		_item_telepatic_immunity,
+		_item_chemical_burn_immunity,
+		_item_explosion_immunit,
+		_item_fire_wound_immunity,
 
-	CGameFont*		m_pFont;
-	u32				m_textColor;
+		_max_item_index,
+	};
+	CUIStatic*		m_items[_max_item_index];
 };

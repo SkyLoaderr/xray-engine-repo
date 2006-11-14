@@ -14,6 +14,7 @@
 #include "../xr_level_controller.h"
 #include "UICellItem.h"
 #include "UIListBoxItem.h"
+#include "../CustomOutfit.h"
 
 void	CUIInventoryWnd::Activate_Artefact()
 {
