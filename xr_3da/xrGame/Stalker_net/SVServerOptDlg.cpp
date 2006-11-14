@@ -30,8 +30,8 @@ void SVServerOptDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DEDICATED, m_pDedicated);
 	DDX_Control(pDX, IDC_PUBLIC, m_pPublic);
 	DDX_Control(pDX, IDC_CDKEY, m_pCheckCDKey);
-	DDX_Control(pDX, IDC_MAPROTATION, m_pMapRotation);
-	DDX_Control(pDX, IDC_MAPROTFILE, m_pMapRotationFile);
+//	DDX_Control(pDX, IDC_MAPROTATION, m_pMapRotation);
+//	DDX_Control(pDX, IDC_MAPROTFILE, m_pMapRotationFile);
 	DDX_Control(pDX, IDC_VOTINGALLOWED, m_pVotingAllowed);
 }
 
@@ -55,10 +55,10 @@ BOOL SVServerOptDlg::OnInitDialog()
 	m_pCheckCDKey.SetCheck(0);
 	m_pCheckCDKey.EnableWindow(FALSE);
 
-	m_pMapRotation.SetCheck(0);
-	m_pMapRotation.EnableWindow(TRUE);
-	m_pMapRotationFile.SetWindowText("maprot_list");
-	m_pMapRotationFile.EnableWindow(FALSE);
+//	m_pMapRotation.SetCheck(0);
+//	m_pMapRotation.EnableWindow(TRUE);
+//	m_pMapRotationFile.SetWindowText("maprot_list");
+//	m_pMapRotationFile.EnableWindow(FALSE);
 
 	m_pVotingAllowed.EnableWindow(TRUE);
 	m_pVotingAllowed.SetCheck(1);
@@ -103,12 +103,12 @@ void SVServerOptDlg::OnBnClickedPublic()
 void SVServerOptDlg::OnBnClickedMapRotation()
 {
 	// TODO: Add your control notification handler code here
-	if (m_pMapRotation.GetCheck())
-	{
-		m_pMapRotationFile.EnableWindow(TRUE);
-	}
-	else
-	{
-		m_pMapRotationFile.EnableWindow(FALSE);
-	};
+//	if (m_pMapRotation.GetCheck())
+//	{
+//		m_pMapRotationFile.EnableWindow(TRUE);
+//	}
+//	else
+//	{
+//		m_pMapRotationFile.EnableWindow(FALSE);
+//	};
 }

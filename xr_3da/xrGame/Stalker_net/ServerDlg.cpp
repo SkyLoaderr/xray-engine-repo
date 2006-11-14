@@ -556,14 +556,15 @@ void CServerDlg::OnBnClickedStartServer()
 		sprintf(RPFreezeTimeStr, "/rpfrz=%i", iRPFreezeTime);
 	}
 	char MapRotStr[1024] = "";
-	if (m_pSVServerOptDlg->m_pMapRotation.GetCheck() &&
-		m_pSVServerOptDlg->m_pMapRotationFile.GetWindowTextLength())
-	{
-		CString MapRotFileName;
-		m_pSVServerOptDlg->m_pMapRotationFile.GetWindowText(MapRotFileName);
-		MapRotFileName += ".ltx";
-		sprintf(MapRotStr, "/maprot=%s", MapRotFileName);
-	}
+//	if (m_pSVServerOptDlg->m_pMapRotation.GetCheck() &&
+//		m_pSVServerOptDlg->m_pMapRotationFile.GetWindowTextLength())
+//	{
+//		CString MapRotFileName;
+//		m_pSVServerOptDlg->m_pMapRotationFile.GetWindowText(MapRotFileName);
+//		MapRotFileName += ".ltx";
+//		sprintf(MapRotStr, "/maprot=%s", MapRotFileName);
+//	}
+	
 	char VoteStr[1024] = "";
 	if (m_pSVServerOptDlg->m_pVotingAllowed.GetCheck())
 	{
@@ -784,14 +785,14 @@ void CServerDlg::OnBnClicked2List()
 
 void	CServerDlg::SaveMapList()
 {
-	if (!m_pSVServerOptDlg->m_pMapRotation.GetCheck()) return;
-	if (!m_pSVServerOptDlg->m_pMapRotationFile.GetWindowTextLength()) return;
+//	if (!m_pSVServerOptDlg->m_pMapRotation.GetCheck()) return;
+//	if (!m_pSVServerOptDlg->m_pMapRotationFile.GetWindowTextLength()) return;
 	
 	if (!m_pMapList2.GetCount()) return;
 
-	CString MapRotFileName;
-	m_pSVServerOptDlg->m_pMapRotationFile.GetWindowText(MapRotFileName);
-	MapRotFileName += ".ltx";
+	CString MapRotFileName = MAPROT_LIST_NAME;
+//	m_pSVServerOptDlg->m_pMapRotationFile.GetWindowText(MapRotFileName);
+//	MapRotFileName += ".ltx";
 
 	string_path			MapRotFileFullPath;
 

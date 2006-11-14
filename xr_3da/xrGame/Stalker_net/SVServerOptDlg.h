@@ -32,8 +32,8 @@ public:
 	afx_msg void OnBnClickedSpectatoronly();
 	CButton m_pCheckCDKey;
 	afx_msg void OnBnClickedPublic();
-	CButton m_pMapRotation;
-	CEdit m_pMapRotationFile;
+//	CButton m_pMapRotation;
+//	CEdit m_pMapRotationFile;
 	afx_msg void OnBnClickedMapRotation();
 	CButton m_pVotingAllowed;
 };
