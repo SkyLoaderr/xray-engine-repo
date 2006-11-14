@@ -33,30 +33,31 @@
 	void mem_alloc_show_stats	()
 	{
 		u32						size = (u32)stats.size();
-		const STATS_PAIR		**strings = (const STATS_PAIR**)_alloca(size*sizeof(STATS_PAIR*));
-		const STATS_PAIR		**e = strings + size;
-		const STATS_PAIR		**i = strings;
+		STATS_PAIR				*strings = (STATS_PAIR*)_alloca(size*sizeof(STATS_PAIR));
+		STATS_PAIR				*e = strings + size;
+		STATS_PAIR				*i = strings;
 
 		u32						accumulator = 0;
 		STATS::const_iterator	I = stats.begin();
 		STATS::const_iterator	E = stats.end();
 		for ( ; I != E; ++I, ++i) {
-			*i					= &(*I).second;
+			*i					= (*I).second;
 			accumulator			+= (*I).second.second;
 		}
 
 		struct predicate {
-			static inline bool compare	(const STATS_PAIR *_0, const STATS_PAIR *_1)
+			static inline bool compare	(const STATS_PAIR &_0, const STATS_PAIR &_1)
 			{
-				return			(_0->second < _1->second);
+				return			(_0.second < _1.second);
 			}
 		};
 
 		std::sort				(strings,e,predicate::compare);
 
-		for (i = strings; i != e; ++i) {
-			Msg					("-----------------%d[%d]:%5.2f%%------------------",(*i)->second,accumulator,((*i)->second*100)/float(accumulator));
-			Log					((*i)->first);
+		int						j = 0;
+		for (i = strings; i != e; ++i, ++j) {
+			Msg					("%d(%d)-----------------%d[%d]:%5.2f%%------------------",j,size,(*i).second,accumulator,((*i).second*100)/float(accumulator));
+			Log					((*i).first);
 		}
 	}
 
