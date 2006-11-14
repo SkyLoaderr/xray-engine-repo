@@ -110,7 +110,7 @@ extern string64	gsCDKey;
 		u32		g_dwDebugNodeDest		= 0;
 extern	BOOL	g_bDrawBulletHit;
 
-		float	debug_on_frame_show_frequency	= 0.f;
+		float	debug_on_frame_gather_stats_frequency	= 0.f;
 #endif
 
 int g_AI_inactive_time = 0;
@@ -2319,6 +2319,22 @@ public:
 	}
 };
 
+class CCC_MemAllocShowStats : public IConsole_Command {
+public:
+	CCC_MemAllocShowStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR) {
+		mem_alloc_show_stats	();
+	}
+};
+
+class CCC_MemAllocClearStats : public IConsole_Command {
+public:
+	CCC_MemAllocClearStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR) {
+		mem_alloc_clear_stats	();
+	}
+};
+
 #endif // DEBUG
 
 void CCC_RegisterCommands()
@@ -2426,10 +2442,11 @@ void CCC_RegisterCommands()
 
 	CMD3(CCC_Mask,				"ai_nil_object_access",	&psAI_Flags,	aiNilObjectAccess);
 
-	CMD3(CCC_Mask,				"debug_on_frame_memory_allocations",&psAI_Flags,	aiDebugOnFrameAllocs);
-	CMD4(CCC_Float,				"debug_on_frame_show_frequency",	&debug_on_frame_show_frequency, 0.f, 1.f);
-
-
+	CMD3(CCC_Mask,				"debug_on_frame_gather_stats",				&psAI_Flags,	aiDebugOnFrameAllocs);
+	CMD4(CCC_Float,				"debug_on_frame_gather_stats_frequency",	&debug_on_frame_gather_stats_frequency, 0.f, 1.f);
+	CMD1(CCC_MemAllocShowStats,	"debug_on_frame_show_stats");
+	CMD1(CCC_MemAllocClearStats,"debug_on_frame_clear_stats");
+	
 	CMD1(CCC_DrawGameGraphAll,		"ai_draw_game_graph_all");
 	CMD1(CCC_DrawGameGraphCurrent,	"ai_draw_game_graph_current_level");
 	CMD1(CCC_DrawGameGraphLevel,	"ai_draw_game_graph_level");

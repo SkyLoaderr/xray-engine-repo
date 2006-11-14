@@ -4,7 +4,7 @@
 
 #define MAX_STACK_TRACE	100
 
-char g_stackTrace[MAX_STACK_TRACE][256];
+char g_stackTrace[MAX_STACK_TRACE][4096];
 int g_stackTraceCount = 0;
 
 void BuildStackTrace	(struct _EXCEPTION_POINTERS *g_BlackBoxUIExPtrs)
@@ -18,7 +18,17 @@ void BuildStackTrace	(struct _EXCEPTION_POINTERS *g_BlackBoxUIExPtrs)
 
 	int incr = 85;
 	while ( NULL != traceDump ) {
-		lstrcpy( g_stackTrace[g_stackTraceCount], traceDump );		
+		int				length = strlen(traceDump);
+		if (length < 4096)
+			lstrcpy		(g_stackTrace[g_stackTraceCount], traceDump);
+		else {
+			memcpy		(g_stackTrace[g_stackTraceCount],traceDump,4092);
+			char		*i = g_stackTrace[g_stackTraceCount] + 4092;
+			*i++		= '.';
+			*i++		= '.';
+			*i++		= '.';
+			*i			= 0;
+		}
 	
 		g_stackTraceCount++;
 

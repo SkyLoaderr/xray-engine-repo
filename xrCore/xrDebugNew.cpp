@@ -91,7 +91,7 @@ void update_clipboard	(const char *string)
 }
 
 extern void BuildStackTrace ();
-extern char g_stackTrace[100][256];
+extern char g_stackTrace[100][4096];
 extern int g_stackTraceCount;
 
 void xrDebug::backend(const char *expression, const char *description, const char *argument0, const char *argument1, const char *file, int line, const char *function, bool &ignore_always) 
@@ -435,7 +435,7 @@ LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 		copy_to_clipboard	("stack trace:\r\n\r\n");
 
 		string4096			buffer;
-		for (int i=0; i<g_stackTraceCount; ++i) {
+		for (int i=2; i<g_stackTraceCount; ++i) {
 			if (shared_str_initialized)
 				Msg			("%s",g_stackTrace[i]);
 			sprintf			(buffer,"%s\r\n",g_stackTrace[i]);

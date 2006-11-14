@@ -14,20 +14,7 @@
 #endif // DEBUG_MEMORY_MANAGER
 
 #ifdef DEBUG
-extern void OutputDebugStackTrace			(const char *header);
-
-static bool g_mem_alloc_show_call_stack		= false;
-void mem_alloc_show_call_stack				(const bool &value)
-{
-	g_mem_alloc_show_call_stack				= value;
-}
-
-static float g_mem_alloc_show_call_stack_frequency	= 0.f;
-void mem_alloc_show_call_stack_frequency	(const float &value)
-{
-	g_mem_alloc_show_call_stack_frequency	= value;
-}
-
+	extern void save_stack_trace	();
 #endif // DEBUG
 
 MEMPOOL		mem_pools			[mem_pools_count];
@@ -41,10 +28,6 @@ ICF	u32		get_pool			(size_t size)
 	if (pid>=mem_pools_count)	return mem_generic;
 	else						return pid;
 }
-
-#ifdef DEBUG
-	extern void OutputDebugStackTrace	(const char *header);
-#endif // DEBUG
 
 void*	xrMemory::mem_alloc		(size_t size
 #ifdef DEBUG_MEMORY_MANAGER
@@ -77,24 +60,22 @@ void*	xrMemory::mem_alloc		(size_t size
 		_ptr					=	(void*)(((u8*)_real)+1);
 		*acc_header(_ptr)		=	mem_generic;
 	} else {
+#ifdef DEBUG
+		save_stack_trace		();
+#endif // DEBUG
 		//	accelerated
-		u32	pool					=	get_pool	(size+_footer);
-		if (mem_generic==pool)		
+		u32	pool				=	get_pool	(size+_footer);
+		if (mem_generic==pool)	
 		{
 			// generic
-			void*	_real			=	xr_aligned_offset_malloc	(size + _footer,16,0x1);
-			_ptr					=	(void*)(((u8*)_real)+1);
-			*acc_header(_ptr)		=	mem_generic;
+			void*	_real		=	xr_aligned_offset_malloc	(size + _footer,16,0x1);
+			_ptr				=	(void*)(((u8*)_real)+1);
+			*acc_header(_ptr)	=	mem_generic;
 		} else {
 			// pooled
-#	ifdef DEBUG
-			if (g_mem_alloc_show_call_stack && (::Random.randF() < g_mem_alloc_show_call_stack_frequency))
-				OutputDebugStackTrace	("----------------------------------------------------");
-#	endif // DEBUG
-
-			void*	_real			=	mem_pools[pool].create();
-			_ptr					=	(void*)(((u8*)_real)+1);
-			*acc_header(_ptr)		=	(u8)pool;
+			void*	_real		=	mem_pools[pool].create();
+			_ptr				=	(void*)(((u8*)_real)+1);
+			*acc_header(_ptr)	=	(u8)pool;
 		}
 	}
 

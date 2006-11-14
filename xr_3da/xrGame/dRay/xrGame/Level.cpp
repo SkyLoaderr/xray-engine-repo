@@ -405,27 +405,27 @@ void CLevel::ProcessGameEvents		()
 
 #ifdef DEBUG
 	extern Flags32				psAI_Flags;
-	extern float				debug_on_frame_show_frequency;
+	extern float				debug_on_frame_gather_stats_frequency;
 
 struct debug_memory_guard {
 	inline debug_memory_guard	()
 	{
-		mem_alloc_show_call_stack			(!!psAI_Flags.test(aiDebugOnFrameAllocs));
-		mem_alloc_show_call_stack_frequency	(debug_on_frame_show_frequency);
+		mem_alloc_gather_stats				(!!psAI_Flags.test(aiDebugOnFrameAllocs));
+		mem_alloc_gather_stats_frequency	(debug_on_frame_gather_stats_frequency);
 	}
 
 	inline ~debug_memory_guard	()
 	{
-		mem_alloc_show_call_stack	(false);
+//		mem_alloc_gather_stats				(false);
 	}
 };
 #endif // DEBUG
 
 void CLevel::OnFrame	()
 {
-#ifdef DEBUG
+#if 0//def DEBUG
 	debug_memory_guard					__guard__;
-#endif
+#endif // DEBUG
 
 	if (GameID()!=GAME_SINGLE)			psDeviceFlags.set(rsDisableObjectsAsCrows,true);
 	else								psDeviceFlags.set(rsDisableObjectsAsCrows,false);

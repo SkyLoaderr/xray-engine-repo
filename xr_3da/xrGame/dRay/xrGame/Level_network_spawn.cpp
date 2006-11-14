@@ -71,6 +71,12 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags, Fvector pos)
 	XRCORE_API	BOOL	g_bMEMO;
 #endif // DEBUG_MEMORY_MANAGER
 
+#ifdef DEBUG
+	extern Flags32				psAI_Flags;
+	extern float				debug_on_frame_gather_stats_frequency;
+#	include "ai_debug.h"
+#endif // DEBUG
+
 void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 {
 #ifdef DEBUG_MEMORY_MANAGER
@@ -99,13 +105,22 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 	// Msg				("--spawn--CREATE: %f ms",1000.f*T.GetAsync());
 
 //	T.Start		();
+#ifdef DEBUG
+	mem_alloc_gather_stats		(false);
+#endif // DEBUG
 	if (0==O || (!O->net_Spawn	(E))) 
 	{
 		O->net_Destroy			( );
 		client_spawn_manager().clear(O->ID());
 		Objects.Destroy			(O);
 		Msg						("! Failed to spawn entity '%s'",*E->s_name);
+#ifdef DEBUG
+		mem_alloc_gather_stats	(!!psAI_Flags.test(aiDebugOnFrameAllocs));
+#endif // DEBUG
 	} else {
+#ifdef DEBUG
+		mem_alloc_gather_stats	(!!psAI_Flags.test(aiDebugOnFrameAllocs));
+#endif // DEBUG
 		client_spawn_manager().callback(O);
 		//Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))	{

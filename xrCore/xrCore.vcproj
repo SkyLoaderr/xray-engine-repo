@@ -595,6 +595,9 @@
 			Name="Memory manager"
 			Filter="">
 			<File
+				RelativePath=".\memory_allocation_stats.cpp">
+			</File>
+			<File
 				RelativePath="xrMemory.cpp">
 			</File>
 			<File
