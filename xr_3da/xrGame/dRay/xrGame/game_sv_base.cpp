@@ -14,6 +14,7 @@
 #include "debug_renderer.h"
 
 //#define		MAPROT_LIST				"maprot_list.ltx"	
+#define			MAPROT_LIST_NAME		"maprot_list.ltx"
 string_path		MAPROT_LIST		= "";
 BOOL	net_sv_control_hit	= FALSE		;
 BOOL	g_bCollectStatisticData = FALSE;
@@ -363,17 +364,21 @@ void	game_sv_GameState::ReadOptions				(shared_str &options)
 {
 	m_RPointFreezeTime = get_option_i(*options, "rpfrz", 0) * 1000;
 
-	string_path						maprotlist;
+//	string_path						maprotlist;
 //	maprotlist = get_option_s(*options, "maprot");
-	strcpy( maprotlist, get_option_s(*options, "maprot"));
-	if (xr_strlen(maprotlist) != 0)
-	{
-		strcpy(MAPROT_LIST, maprotlist);
-		if (!FS.exist(maprotlist))
-			FS.update_path(MAPROT_LIST, "$app_data_root$", maprotlist);
+//	strcpy( maprotlist, get_option_s(*options, "maprot"));
+//	if (xr_strlen(maprotlist) != 0)
+//	{
+//		strcpy(MAPROT_LIST, maprotlist);
+//		if (!FS.exist(maprotlist))
+//			FS.update_path(MAPROT_LIST, "$app_data_root$", maprotlist);
 
-		Console->ExecuteScript(MAPROT_LIST);
-	};
+//		Console->ExecuteScript(MAPROT_LIST);
+//	};
+	strcpy(MAPROT_LIST, MAPROT_LIST_NAME);
+	if (!FS.exist(MAPROT_LIST))
+		FS.update_path(MAPROT_LIST, "$app_data_root$", MAPROT_LIST_NAME);
+	Console->ExecuteScript(MAPROT_LIST);
 
 	m_bVotingEnabled = get_option_i(*options,"vote",0) != 0;	
 };
@@ -703,7 +708,6 @@ void game_sv_GameState::MapRotation_AddMap		(LPCSTR MapName)
 {
 	m_pMapRotation_List.push_back(MapName);
 	m_bMapRotation = true;
-
 };
 
 void game_sv_GameState::OnRoundStart			()
