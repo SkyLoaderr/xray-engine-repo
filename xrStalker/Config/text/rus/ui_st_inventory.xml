@@ -198,4 +198,13 @@
 	<string id="ui_inv_weight">
 		<text>Вес</text>
 	</string>
+	<string id="ui_inv_outfit_wound_protection">
+		<text>Разрыв</text>
+	</string>
+	<string id="ui_inv_outfit_radiation_protection">
+		<text>Радиация</text>
+	</string>	
+	<string id="ui_inv_outfit_telepatic_protection">
+		<text>Телепат.</text>
+	</string>	
 </string_table>
