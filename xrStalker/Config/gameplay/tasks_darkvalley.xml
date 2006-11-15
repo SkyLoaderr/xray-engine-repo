@@ -1,4 +1,4 @@
-<game_task id="val_come_to_trader">
+<game_task id="val_come_to_trader" prio="395">
     <title>
         val_come_to_trader
     </title>
@@ -48,7 +48,7 @@
         </infoportion_complete>
     </objective>
 </game_task>
-<game_task id="val_sos_help">
+<game_task id="val_sos_help" prio="410">
     <title>
         val_sos_help
     </title>
@@ -78,7 +78,7 @@
         </object_story_id>
     </objective>
 </game_task>
-<game_task id="val_prisoner_help">
+<game_task id="val_prisoner_help" prio="415">
     <title>
         val_prisoner_help
     </title>
@@ -108,7 +108,7 @@
         </object_story_id>
     </objective>
 </game_task>
-<game_task id="val_captive_help">
+<game_task id="val_captive_help" prio="420">
     <title>
         val_captive_help
     </title>
@@ -237,7 +237,7 @@
         </infoportion_complete>
     </objective>
 </game_task>
-<game_task id="bar_darklab_documents2">
+<game_task id="bar_darklab_documents2" prio="435">
     <title>bar_darklab_documents2</title>
     <objective key="0">
         <icon height="50" width="50" x="200" y="100">ui\ui_icons_task</icon>
@@ -261,7 +261,7 @@
         <infoportion_complete>bar_darklab_document_done</infoportion_complete>
     </objective>
 </game_task>
-<game_task id="dar_codedoor_1">
+<game_task id="dar_codedoor_1" prio="405">
     <title>dar_codedoor_1</title>
     <objective key="0">
         <icon height="50" width="50" x="100" y="50">ui\ui_icons_task</icon>
@@ -282,7 +282,7 @@
         <object_story_id>dar_codedoor_1</object_story_id>
     </objective>
 </game_task>
-<game_task id="dar_codedoor_2">
+<game_task id="dar_codedoor_2" prio="400">
     <title>dar_codedoor_2</title>
     <objective key="0">
         <icon height="50" width="50" x="100" y="50">ui\ui_icons_task</icon>
