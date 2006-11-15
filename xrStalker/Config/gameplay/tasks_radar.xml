@@ -26,7 +26,7 @@
 		</objective>
 	</game_task>
 
-	<game_task id="rad_get_to_aes">
+	<game_task id="rad_get_to_aes" prio="250">
 		<title>rad_get_to_aes</title>
 		<objective>
 			<text>rad_get_to_aes</text>
@@ -49,7 +49,7 @@
 	</game_task>
 
 <!--DELME: only for presentation -->
-	<game_task id="pripyat_task_1">
+	<game_task id="pripyat_task_1" prio="247">
 		<title>pripyat_task_title</title>
 		<objective>
 			<text>pripyat_task_title</text>
