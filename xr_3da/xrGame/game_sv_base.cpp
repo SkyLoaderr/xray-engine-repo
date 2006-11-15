@@ -10,6 +10,7 @@
 #include "ai_space.h"
 #include "game_sv_event_queue.h"
 #include "../XR_IOConsole.h"
+#include "../xr_ioc_cmd.h"
 
 #include "debug_renderer.h"
 
@@ -18,7 +19,10 @@
 string_path		MAPROT_LIST		= "";
 BOOL	net_sv_control_hit	= FALSE		;
 BOOL	g_bCollectStatisticData = FALSE;
-
+//-----------------------------------------------------------------
+u32		g_sv_base_dwRPointFreezeTime	= 0;
+BOOL	g_sv_base_bVotingEnabled	= TRUE;
+//-----------------------------------------------------------------
 // Main
 game_PlayerState*	game_sv_GameState::get_it					(u32 it)
 {
@@ -183,7 +187,7 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, ClientID to)
 	P.w_u16			(phase);
 	P.w_s32			(round);
 	P.w_u32			(start_time);
-	P.w_u8			(u8(m_bVotingEnabled));
+	P.w_u8			(u8(g_sv_base_bVotingEnabled));
 	P.w_u8			(u8(net_sv_control_hit));
 	P.w_u8			(u8(g_bCollectStatisticData));
 
@@ -356,13 +360,18 @@ void game_sv_GameState::Create					(shared_str &options)
 	xr_delete					(l_tpIniFile);
 
 	//---------------------------------------------------------------------
-	ReadOptions(options);
 	ConsoleCommands_Create();
+	//---------------------------------------------------------------------
+//	CCC_LoadCFG_custom*	pTmp = xr_new<CCC_LoadCFG_custom>("sv_");
+//	pTmp->Execute				(Console->ConfigFile);
+//	xr_delete					(pTmp);
+	//---------------------------------------------------------------------
+	ReadOptions(options);	
 }
 
 void	game_sv_GameState::ReadOptions				(shared_str &options)
 {
-	m_RPointFreezeTime = get_option_i(*options, "rpfrz", 0) * 1000;
+	g_sv_base_dwRPointFreezeTime = get_option_i(*options, "rpfrz", g_sv_base_dwRPointFreezeTime/1000) * 1000;
 
 //	string_path						maprotlist;
 //	maprotlist = get_option_s(*options, "maprot");
@@ -378,26 +387,27 @@ void	game_sv_GameState::ReadOptions				(shared_str &options)
 	strcpy(MAPROT_LIST, MAPROT_LIST_NAME);
 	if (!FS.exist(MAPROT_LIST))
 		FS.update_path(MAPROT_LIST, "$app_data_root$", MAPROT_LIST_NAME);
-	Console->ExecuteScript(MAPROT_LIST);
+	if (FS.exist(MAPROT_LIST))
+		Console->ExecuteScript(MAPROT_LIST);
 
-	m_bVotingEnabled = get_option_i(*options,"vote",0) != 0;	
+	g_sv_base_bVotingEnabled = get_option_i(*options,"vote",(g_sv_base_bVotingEnabled ? 1 : 0)) != 0;	
 };
 //-----------------------------------------------------------
 static bool g_bConsoleCommandsCreated_SV_Base = false;
 void	game_sv_GameState::ConsoleCommands_Create	()
 {
-	string1024 Cmnd;
+//	string1024 Cmnd;
 	//---------------------------------------------------------
-	CMD_ADD(CCC_SV_Int, "sv_rpoint_freeze_time", (int*)&m_RPointFreezeTime, 0, 60000, g_bConsoleCommandsCreated_SV_Base, Cmnd);
-	CMD_ADD(CCC_SV_Int, "sv_vote_enabled", (int*)&m_bVotingEnabled, 0, 1, g_bConsoleCommandsCreated_SV_Base, Cmnd);
+//	CMD_ADD(CCC_SV_Int, "sv_rpoint_freeze_time", (int*)&m_RPointFreezeTime, 0, 60000, g_bConsoleCommandsCreated_SV_Base, Cmnd);
+//	CMD_ADD(CCC_SV_Int, "sv_vote_enabled", (int*)&m_bVotingEnabled, 0, 1, g_bConsoleCommandsCreated_SV_Base, Cmnd);
 	//---------------------------------------------------------
-	g_bConsoleCommandsCreated_SV_Base = true;
+//	g_bConsoleCommandsCreated_SV_Base = true;
 };
 
 void	game_sv_GameState::ConsoleCommands_Clear	()
 {
-	CMD_CLEAR("sv_rpoint_freeze_time");
-	CMD_CLEAR("sv_vote_enabled");
+//	CMD_CLEAR("sv_rpoint_freeze_time");
+//	CMD_CLEAR("sv_vote_enabled");
 };
 
 void	game_sv_GameState::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who)
@@ -443,7 +453,7 @@ void	game_sv_GameState::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who)
 	RPoint&				r	= rp[rpoint];
 	if (!tpSpectator)
 	{
-		r.TimeToUnfreeze	= Level().timeServer() + m_RPointFreezeTime;
+		r.TimeToUnfreeze	= Level().timeServer() + g_sv_base_dwRPointFreezeTime;
 	};
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);
@@ -457,7 +467,7 @@ bool				game_sv_GameState::IsPointFreezed			(RPoint* rp)
 void				game_sv_GameState::SetPointFreezed		(RPoint* rp)
 {
 	R_ASSERT(rp);
-	rp->TimeToUnfreeze	= Level().timeServer() + m_RPointFreezeTime;
+	rp->TimeToUnfreeze	= Level().timeServer() + g_sv_base_dwRPointFreezeTime;
 }
 
 CSE_Abstract*		game_sv_GameState::spawn_begin				(LPCSTR N)
@@ -530,7 +540,7 @@ game_sv_GameState::game_sv_GameState()
 	m_bFastRestart = false;
 	m_pMapRotation_List.clear();
 
-	for (int i=0; i<TEAM_COUNT; i++) rpoints_MinDist[i] = 1000.0f;
+	for (int i=0; i<TEAM_COUNT; i++) rpoints_MinDist[i] = 1000.0f;	
 }
 
 game_sv_GameState::~game_sv_GameState()
@@ -707,7 +717,10 @@ void game_sv_GameState::remove_all_restrictions	(NET_Packet &packet, u16 id)
 void game_sv_GameState::MapRotation_AddMap		(LPCSTR MapName)
 {
 	m_pMapRotation_List.push_back(MapName);
-	m_bMapRotation = true;
+	if (m_pMapRotation_List.size() > 1)
+		m_bMapRotation = true;
+	else
+		m_bMapRotation = false;
 };
 
 void game_sv_GameState::OnRoundStart			()
@@ -853,3 +866,5 @@ void		game_sv_GameState::OnRender				()
 };
 #endif
 //  [7/5/2005]
+
+BOOL	game_sv_GameState::IsVotingEnabled			()	{return g_sv_base_bVotingEnabled;};

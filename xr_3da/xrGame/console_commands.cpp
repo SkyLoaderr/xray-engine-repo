@@ -91,7 +91,37 @@ extern	ESingleGameDifficulty g_SingleGameDifficulty;
 extern	BOOL	g_show_wnd_rect			;
 extern	BOOL	g_show_wnd_rect2			;
 extern string64	gsCDKey;
-
+//-----------------------------------------------------------
+extern	u32		g_sv_base_dwRPointFreezeTime	;
+extern	BOOL	g_sv_base_bVotingEnabled		;
+extern	BOOL	g_sv_mp_bSpectator_FreeFly		;
+extern	BOOL	g_sv_mp_bSpectator_FirstEye		;
+extern	BOOL	g_sv_mp_bSpectator_LookAt		;
+extern	BOOL	g_sv_mp_bSpectator_FreeLook		;
+extern	BOOL	g_sv_mp_bSpectator_TeamCamera	;
+extern	BOOL	g_sv_mp_bCountParticipants		;
+extern	float	g_sv_mp_fVoteQuota				;
+extern	float	g_sv_mp_fVoteTime				;
+extern	u32		g_sv_dm_dwForceRespawn			;
+extern	s32		g_sv_dm_dwFragLimit				;
+extern	s32		g_sv_dm_dwTimeLimit				;
+extern	BOOL	g_sv_dm_bDamageBlockIndicators	;
+extern	u32		g_sv_dm_dwDamageBlockTime		;
+extern	BOOL	g_sv_dm_bAnomaliesEnabled		;
+extern	u32		g_sv_dm_dwAnomalySetLengthTime	;
+extern	BOOL	g_sv_dm_bPDAHunt				;
+extern	u32		g_sv_dm_dwWarmUp_MaxTime		;
+extern	BOOL	g_sv_dm_bDMIgnore_Money_OnBuy	;
+extern	BOOL	g_sv_tdm_bAutoTeamBalance		;
+extern	BOOL	g_sv_tdm_bAutoTeamSwap			;
+extern	BOOL	g_sv_tdm_bFriendlyIndicators	;
+extern	BOOL	g_sv_tdm_bFriendlyNames			;
+extern	float	g_sv_tdm_fFriendlyFireModifier	;
+extern	u32		g_sv_ah_dwArtefactRespawnDelta	;
+extern	int		g_sv_ah_dwArtefactsNum			;
+extern	u32		g_sv_ah_dwArtefactStayTime		;
+extern	int		g_sv_ah_iReinforcementTime		;
+//-----------------------------------------------------------
 #ifdef DEBUG
 	extern	BOOL	g_SV_Force_Artefact_Spawn;
 #endif
@@ -2679,4 +2709,40 @@ void CCC_RegisterCommands()
 #ifdef DEBUG
 	CMD1(CCC_Crash,		"crash"						);
 #endif // DEBUG
+	//-------------------------------------------------------------------------------------------------
+	CMD4(CCC_Integer, "sv_rpoint_freeze_time", (int*)&g_sv_base_dwRPointFreezeTime, 0, 60000);
+	CMD4(CCC_Integer, "sv_vote_enabled", (int*)&g_sv_base_bVotingEnabled, 0, 1);
+
+	CMD4(CCC_Integer,"sv_spectr_freefly"	,	(int*)&g_sv_mp_bSpectator_FreeFly	, 0, 1);
+	CMD4(CCC_Integer,"sv_spectr_firsteye"	,	(int*)&g_sv_mp_bSpectator_FirstEye	, 0, 1);
+	CMD4(CCC_Integer,"sv_spectr_lookat"		,	(int*)&g_sv_mp_bSpectator_LookAt	, 0, 1);
+	CMD4(CCC_Integer,"sv_spectr_freelook"	,	(int*)&g_sv_mp_bSpectator_FreeLook	, 0, 1);
+	CMD4(CCC_Integer,"sv_spectr_teamcamera"	,	(int*)&g_sv_mp_bSpectator_TeamCamera, 0, 1);	
+	
+	CMD4(CCC_Integer,"sv_vote_participants"	,	(int*)&g_sv_mp_bCountParticipants	,	0,	1);	
+	CMD4(CCC_Float,"sv_vote_quota"			,	&g_sv_mp_fVoteQuota		, 0.0f,1.0f);
+	CMD4(CCC_Float,"sv_vote_time"			,	&g_sv_mp_fVoteTime		, 0.5f,10.0f);
+
+	CMD4(CCC_Integer,"sv_forcerespawn",			(int*)&g_sv_dm_dwForceRespawn,			0,60000);
+	CMD4(CCC_Integer,"sv_fraglimit",			&g_sv_dm_dwFragLimit,					0,100);
+	CMD4(CCC_Integer,"sv_timelimit",			&g_sv_dm_dwTimeLimit,					0,3600000);
+	CMD4(CCC_Integer,"sv_dmgblockindicator",	(int*)&g_sv_dm_bDamageBlockIndicators,	0, 1);
+	CMD4(CCC_Integer,"sv_dmgblocktime",			(int*)&g_sv_dm_dwDamageBlockTime,		0, 300000);
+	CMD4(CCC_Integer,"sv_anomalies_enabled",	(int*)&g_sv_dm_bAnomaliesEnabled,		0, 1);
+	CMD4(CCC_Integer,"sv_anomalies_length",		(int*)&g_sv_dm_dwAnomalySetLengthTime,	0, 3600000);
+	CMD4(CCC_Integer,"sv_pda_hunt",				(int*)&g_sv_dm_bPDAHunt,				0, 1);
+	CMD4(CCC_Integer,"sv_warm_up",				(int*)&g_sv_dm_dwWarmUp_MaxTime,		0, 3600000);
+	CMD4(CCC_Integer,"sv_ignore_money_on_buy",	(int*)&g_sv_dm_bDMIgnore_Money_OnBuy,	0, 1);
+
+	CMD4(CCC_Integer,"sv_auto_team_balance",	(int*)&g_sv_tdm_bAutoTeamBalance		,	0,1);
+	CMD4(CCC_Integer,"sv_auto_team_swap",		(int*)&g_sv_tdm_bAutoTeamSwap		,	0,1);
+	CMD4(CCC_Integer,"sv_friendly_indicators",	(int*)&g_sv_tdm_bFriendlyIndicators	,	0,1);
+	CMD4(CCC_Integer,"sv_friendly_names",		(int*)&g_sv_tdm_bFriendlyNames		,	0,1);
+	CMD4(CCC_Float,"sv_friendlyfire",			&g_sv_tdm_fFriendlyFireModifier		,	0.0f,2.0f);
+
+	CMD4(CCC_Integer,"sv_artefact_respawn_delta",	(int*)&g_sv_ah_dwArtefactRespawnDelta	,0,1800000);
+	CMD4(CCC_Integer,"sv_artefacts_count",			(int*)&g_sv_ah_dwArtefactsNum			, 1,100);
+	CMD4(CCC_Integer,"sv_artefact_stay_time",		(int*)&g_sv_ah_dwArtefactStayTime		, 0,1800000);
+	CMD4(CCC_Integer,"sv_reinforcement_time",		(int*)&g_sv_ah_iReinforcementTime		, -1,1800000);
+
 }

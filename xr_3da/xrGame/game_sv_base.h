@@ -6,6 +6,7 @@
 #include "client_id.h"
 #include "game_sv_base_console_vars.h"
 
+
 class CSE_Abstract;
 class xrServer;
 // [OLES] Policy:
@@ -18,10 +19,10 @@ class	game_sv_GameState	: public game_GameState
 {
 	typedef game_GameState inherited;
 protected:
-	u32								m_RPointFreezeTime;
+//	u32								m_RPointFreezeTime;
 	xrServer*						m_server;
 	GameEventQueue*					m_event_queue;
-	BOOL							m_bVotingEnabled;
+//	BOOL							m_bVotingEnabled;
 		
 	//Events
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
@@ -74,7 +75,7 @@ public:
 	virtual		void				OnPrevMap				()									{}
 	virtual		bool				SwitchToNextMap			()	{ return m_bMapNeedRotation; };
 	
-	virtual		BOOL				IsVotingEnabled			()	{return m_bVotingEnabled;};
+	virtual		BOOL				IsVotingEnabled			();
 	virtual		bool				IsVotingActive			()	{ return false; };
 	virtual		void				SetVotingActive			( bool Active )	{ };
 	virtual		void				OnVoteStart				(LPCSTR VoteCommand, ClientID sender)			{};

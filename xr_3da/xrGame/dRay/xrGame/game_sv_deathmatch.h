@@ -33,14 +33,8 @@ protected:
 	u32								m_roundEndDelay;
 
 	shared_str							m_sBaseWeaponCostSection;
-	
-	s32								fraglimit; //dm,tdm,ah
-	s32								timelimit; //dm
-	u32								damageblocklimit;//dm,tdm
-	BOOL							m_bDamageBlockIndicators;
-	BOOL							m_bPDAHunt;
-	xr_vector<game_TeamState>		teams;//dm,tdm,ah
-	u32								m_u32ForceRespawn;
+		
+	xr_vector<game_TeamState>		teams;//dm,tdm,ah	
 
 	LPCSTR							pWinnigPlayerName;
 
@@ -53,12 +47,10 @@ protected:
 
 	ANOMALIES						m_AnomaliesPermanent;
 	ANOMALY_SETS					m_AnomalySetsList;
-	xr_vector<u8>					m_AnomalySetID;
-	u32								m_dwAnomalySetLengthTime;
+	xr_vector<u8>					m_AnomalySetID;	
 	u32								m_dwLastAnomalySetID;
 	u32								m_dwLastAnomalyStartTime;	
-	BOOL							m_bAnomaliesEnabled;
-
+	
 	DEF_VECTOR(ANOMALIES_ID, u16);
 	DEF_VECTOR(ANOMALY_SETS_ID, ANOMALIES_ID);
 
@@ -102,8 +94,6 @@ protected:
 
 	virtual		void				Check_ForClearRun		(game_PlayerState* ps);
 
-
-	u32								m_dwWarmUp_MaxTime;
 	u32								m_dwWarmUp_CurTime;
 public:
 									game_sv_Deathmatch		();
@@ -197,16 +187,16 @@ public:
 	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
 	virtual		void				check_InvinciblePlayers	();	
 	virtual		void				check_ForceRespawn		();
-	virtual		BOOL				IsDamageBlockIndEnabled	() {return m_bDamageBlockIndicators; };
 	virtual		void				on_death				(CSE_Abstract *e_dest, CSE_Abstract *e_src);
 	//---------------------------------------------------------------------------------------------------
-	virtual		s32					GetTimeLimit			() {return timelimit; };
-	virtual		s32					GetFragLimit			() {return fraglimit; };
-	virtual		u32					GetDMBLimit				() {return damageblocklimit; };
-	virtual		u32					GetForceRespawn			() {return m_u32ForceRespawn; };
-	virtual		u32					GetWarmUpTime			() {return m_dwWarmUp_MaxTime; };
-	virtual		BOOL				IsAnomaliesEnabled		() {return m_bAnomaliesEnabled; };
-	virtual		u32					GetAnomaliesTime		() {return m_dwAnomalySetLengthTime; };
+	virtual		BOOL				IsDamageBlockIndEnabled	();
+	virtual		s32					GetTimeLimit			();
+	virtual		s32					GetFragLimit			();
+	virtual		u32					GetDMBLimit				();
+	virtual		u32					GetForceRespawn			();
+	virtual		u32					GetWarmUpTime			();
+	virtual		BOOL				IsAnomaliesEnabled		();
+	virtual		u32					GetAnomaliesTime		();
 
 	virtual		u32					GetNumTeams				() {return teams.size();};
 		

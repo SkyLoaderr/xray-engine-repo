@@ -4,6 +4,9 @@
 #include "game_base_kill_type.h"
 #include "game_base_menu_events.h"
 
+#define		VOTE_LENGTH_TIME		1
+#define		VOTE_QUOTA				0.51f
+
 #define MAX_TERMS  2
 struct Rank_Struct
 {
@@ -41,9 +44,7 @@ protected:
 	//-------------------------------------------------------
 	bool			m_bVotingActive;
 	bool			m_bVotingReal;
-	u32				m_uVoteStartTime;
-	float			m_fVoteQuota;
-	float			m_fVoteTime;
+	u32				m_uVoteStartTime;	
 	shared_str		m_pVoteCommand;
 
 	virtual		void				LoadRanks				();
@@ -57,11 +58,6 @@ protected:
 	virtual		void				UpdatePlayersMoney		();
 
 	u8			m_u8SpectatorModes		;
-	BOOL		m_bSpectator_FreeFly	;
-	BOOL		m_bSpectator_FirstEye	;
-	BOOL		m_bSpectator_LookAt		;
-	BOOL		m_bSpectator_FreeLook	;
-	BOOL		m_bSpectator_TeamCamera	;
 	
 protected:
 
@@ -78,6 +74,9 @@ protected:
 
 	virtual		void				Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount);
 	virtual		void				Player_AddBonusMoney	(game_PlayerState* ps, s32 MoneyAmount, SPECIAL_KILL_TYPE Reason, u8 Kill = 0);
+
+				u8					SpectatorModes_Pack		();
+				void				SpectatorModes_UnPack	(u8 SpectrModesPacked);
 
 
 public:

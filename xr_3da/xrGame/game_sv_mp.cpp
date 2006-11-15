@@ -16,23 +16,25 @@
 #include "game_cl_base_weapon_usage_statistic.h"
 
 u32		g_dwMaxCorpses = 10;
-#define		VOTE_LENGTH_TIME		1
-#define		VOTE_QUOTA				0.51f
+//-----------------------------------------------------------------
+BOOL		g_sv_mp_bSpectator_FreeFly		= FALSE;
+BOOL		g_sv_mp_bSpectator_FirstEye		= TRUE;
+BOOL		g_sv_mp_bSpectator_LookAt		= TRUE;
+BOOL		g_sv_mp_bSpectator_FreeLook		= TRUE;
+BOOL		g_sv_mp_bSpectator_TeamCamera	= TRUE;
+
+BOOL		g_sv_mp_bCountParticipants		= FALSE;
+float		g_sv_mp_fVoteQuota			= VOTE_QUOTA;
+float		g_sv_mp_fVoteTime				= VOTE_LENGTH_TIME;
+//-----------------------------------------------------------------
 
 game_sv_mp::game_sv_mp() :inherited()
 {
-	m_bVotingActive = false;
-	m_fVoteQuota = VOTE_QUOTA;
-	m_fVoteTime = VOTE_LENGTH_TIME;
+	m_bVotingActive = false;	
 	//------------------------------------------------------
 //	g_pGamePersistent->Environment.SetWeather("mp_weather");
 	m_aRanks.clear();	
-	//------------------------------------------------------
-	m_bSpectator_FreeFly	= TRUE;
-	m_bSpectator_FirstEye	= TRUE;
-	m_bSpectator_LookAt		= TRUE;
-	m_bSpectator_FreeLook	= TRUE;
-	m_bSpectator_TeamCamera	= TRUE;
+	//------------------------------------------------------	
 }
 
 void	game_sv_mp::Update	()
@@ -235,16 +237,32 @@ void game_sv_mp::Create (shared_str &options)
 	Set_RankUp_Allowed(false);
 };
 
+u8	game_sv_mp::SpectatorModes_Pack		()
+{
+	u8 res = 0;
+	
+	res |= g_sv_mp_bSpectator_FreeFly	  ? (1<<CSpectator::eacFreeFly	) : 0;
+	res |= g_sv_mp_bSpectator_FirstEye	  ? (1<<CSpectator::eacFirstEye	) : 0;
+	res |= g_sv_mp_bSpectator_LookAt	  ? (1<<CSpectator::eacLookAt	) : 0;
+	res |= g_sv_mp_bSpectator_FreeLook	  ? (1<<CSpectator::eacFreeLook	) : 0;
+	res |= g_sv_mp_bSpectator_TeamCamera	? (1<<CSpectator::eacMaxCam	) : 0;	
+	return res;
+}
+
+void game_sv_mp::SpectatorModes_UnPack		(u8 SpectrModesPacked)
+{
+	g_sv_mp_bSpectator_FreeFly	= (SpectrModesPacked & (1<<CSpectator::eacFreeFly	)) != 0;
+	g_sv_mp_bSpectator_FirstEye	= (SpectrModesPacked & (1<<CSpectator::eacFirstEye	)) != 0;
+	g_sv_mp_bSpectator_LookAt		= (SpectrModesPacked & (1<<CSpectator::eacLookAt	)) != 0;
+	g_sv_mp_bSpectator_FreeLook	= (SpectrModesPacked & (1<<CSpectator::eacFreeLook	)) != 0;
+	g_sv_mp_bSpectator_TeamCamera = (SpectrModesPacked & (1<<CSpectator::eacMaxCam	)) != 0;	
+};
+
 void game_sv_mp::net_Export_State		(NET_Packet& P, ClientID id_to)
 {
 	inherited::net_Export_State(P, id_to);
 	//-------------------------------------
-	m_u8SpectatorModes = 0;
-	m_u8SpectatorModes |= m_bSpectator_FreeFly	  ? (1<<CSpectator::eacFreeFly	) : 0;
-	m_u8SpectatorModes |= m_bSpectator_FirstEye	  ? (1<<CSpectator::eacFirstEye	) : 0;
-	m_u8SpectatorModes |= m_bSpectator_LookAt	  ? (1<<CSpectator::eacLookAt	) : 0;
-	m_u8SpectatorModes |= m_bSpectator_FreeLook	  ? (1<<CSpectator::eacFreeLook	) : 0;
-	m_u8SpectatorModes |= m_bSpectator_TeamCamera ? (1<<CSpectator::eacMaxCam	) : 0;	
+	m_u8SpectatorModes = SpectatorModes_Pack();	
 
 	P.w_u8	(m_u8SpectatorModes);
 };
@@ -668,12 +686,12 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 	else
 		P.w_stringZ(VoteCommand+1);
 	P.w_stringZ(pStartedPlayer ? pStartedPlayer->ps->getName() : "");
-	P.w_u32(u32(m_fVoteTime*60000));
+	P.w_u32(u32(g_sv_mp_fVoteTime*60000));
 	u_EventSend(P);
 	//-----------------------------------------------------------------------------	
 };
 
-BOOL g_bCountParticipants = 0;
+
 void		game_sv_mp::UpdateVote				()
 {
 	if (!IsVotingEnabled() || !IsVotingActive()) return;
@@ -695,19 +713,19 @@ void		game_sv_mp::UpdateVote				()
 	bool VoteSucceed = false;
 	u32 CurTime = Level().timeServer();
 	
-	if (m_uVoteStartTime + u32(m_fVoteTime*60000) > CurTime)
+	if (m_uVoteStartTime + u32(g_sv_mp_fVoteTime*60000) > CurTime)
 	{
 		if (NumToCount == NumAgreed) VoteSucceed = true;
 		else
-			VoteSucceed = (float(NumAgreed)/float(NumToCount)) >= m_fVoteQuota;
+			VoteSucceed = (float(NumAgreed)/float(NumToCount)) >= g_sv_mp_fVoteQuota;
 		if (!VoteSucceed) return;
 	}
 	else
 	{
-		if (g_bCountParticipants) 
-			VoteSucceed = (float(NumAgreed)/float(NumParticipated)) >= m_fVoteQuota;
+		if (g_sv_mp_bCountParticipants) 
+			VoteSucceed = (float(NumAgreed)/float(NumParticipated)) >= g_sv_mp_fVoteQuota;
 		else
-			VoteSucceed = (float(NumAgreed)/float(NumToCount)) >= m_fVoteQuota;
+			VoteSucceed = (float(NumAgreed)/float(NumToCount)) >= g_sv_mp_fVoteQuota;
 	};
 
 	SetVotingActive(false);
@@ -1197,45 +1215,42 @@ void	game_sv_mp::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount)
 //---------------------------------------------------------------------
 void	game_sv_mp::ReadOptions				(shared_str &options)
 {
-	inherited::ReadOptions(options);	
-	u8 SpectatorModes = u8(get_option_i(*options,"spectrmds",31) & 0x00ff);
+	inherited::ReadOptions(options);
 
-	m_bSpectator_FreeFly	= (SpectatorModes & (1<<CSpectator::eacFreeFly	)) != 0;
-	m_bSpectator_FirstEye	= (SpectatorModes & (1<<CSpectator::eacFirstEye	)) != 0;
-	m_bSpectator_LookAt		= (SpectatorModes & (1<<CSpectator::eacLookAt	)) != 0;
-	m_bSpectator_FreeLook	= (SpectatorModes & (1<<CSpectator::eacFreeLook	)) != 0;
-	m_bSpectator_TeamCamera = (SpectatorModes & (1<<CSpectator::eacMaxCam	)) != 0;
+	u8 SpectatorModes = SpectatorModes_Pack();
+	SpectatorModes = u8(get_option_i(*options,"spectrmds",s32(SpectatorModes)) & 0x00ff);
+	SpectatorModes_UnPack(SpectatorModes);
 };
 
 static bool g_bConsoleCommandsCreated_MP = false;
 void game_sv_mp::ConsoleCommands_Create	()
 {
-	inherited::ConsoleCommands_Create();
+//	inherited::ConsoleCommands_Create();
 	//-------------------------------------
-	string1024 Cmnd;
+//	string1024 Cmnd;
 	//-------------------------------------	
-	CMD_ADD(CCC_SV_Int,"sv_spectr_freefly"		,	(int*)&m_bSpectator_FreeFly		, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_spectr_firsteye"		,	(int*)&m_bSpectator_FirstEye	, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_spectr_lookat"		,	(int*)&m_bSpectator_LookAt		, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_spectr_freelook"		,	(int*)&m_bSpectator_FreeLook	, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_spectr_teamcamera"	,	(int*)&m_bSpectator_TeamCamera	, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);	
+//	CMD_ADD(CCC_SV_Int,"sv_spectr_freefly"		,	(int*)&m_bSpectator_FreeFly		, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
+//	CMD_ADD(CCC_SV_Int,"sv_spectr_firsteye"		,	(int*)&m_bSpectator_FirstEye	, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
+//	CMD_ADD(CCC_SV_Int,"sv_spectr_lookat"		,	(int*)&m_bSpectator_LookAt		, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
+//	CMD_ADD(CCC_SV_Int,"sv_spectr_freelook"		,	(int*)&m_bSpectator_FreeLook	, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);
+//	CMD_ADD(CCC_SV_Int,"sv_spectr_teamcamera"	,	(int*)&m_bSpectator_TeamCamera	, 0, 1,g_bConsoleCommandsCreated_MP,Cmnd);	
 	//-------------------------------------	
-	CMD_ADD(CCC_SV_Float,"sv_vote_quota"		,	&m_fVoteQuota					, 0.0f,1.0f,g_bConsoleCommandsCreated_MP,Cmnd);
-	CMD_ADD(CCC_SV_Float,"sv_vote_time"			,	&m_fVoteTime					, 0.5f,10.0f,g_bConsoleCommandsCreated_MP,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_vote_participants"	,	(int*)&g_bCountParticipants		,	0,	1,g_bConsoleCommandsCreated_MP,Cmnd);	
+//	CMD_ADD(CCC_SV_Float,"sv_vote_quota"		,	&m_fVoteQuota					, 0.0f,1.0f,g_bConsoleCommandsCreated_MP,Cmnd);
+//	CMD_ADD(CCC_SV_Float,"sv_vote_time"			,	&m_fVoteTime					, 0.5f,10.0f,g_bConsoleCommandsCreated_MP,Cmnd);
+//	CMD_ADD(CCC_SV_Int,"sv_vote_participants"	,	(int*)&g_bCountParticipants		,	0,	1,g_bConsoleCommandsCreated_MP,Cmnd);	
 	//-------------------------------------
-	g_bConsoleCommandsCreated_MP = true;
+//	g_bConsoleCommandsCreated_MP = true;
 };
 
 void game_sv_mp::ConsoleCommands_Clear	()
 {
-	inherited::ConsoleCommands_Clear();
+//	inherited::ConsoleCommands_Clear();
 	//-----------------------------------
-	CMD_CLEAR("sv_spectr_freefly"	);
-	CMD_CLEAR("sv_spectr_firsteye"	);
-	CMD_CLEAR("sv_spectr_lookat"	);
-	CMD_CLEAR("sv_spectr_freelook"	);
-	CMD_CLEAR("sv_spectr_teamcamera");	
+//	CMD_CLEAR("sv_spectr_freefly"	);
+//	CMD_CLEAR("sv_spectr_firsteye"	);
+//	CMD_CLEAR("sv_spectr_lookat"	);
+//	CMD_CLEAR("sv_spectr_freelook"	);
+//	CMD_CLEAR("sv_spectr_teamcamera");	
 	//-----------------------------------
-	CMD_CLEAR("sv_vote_quota");	
+//	CMD_CLEAR("sv_vote_quota");	
 };

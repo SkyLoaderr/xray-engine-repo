@@ -8,11 +8,8 @@ private:
 	typedef game_sv_Deathmatch inherited;
 
 protected:
-	BOOL		m_bAutoTeamBalance;
-	BOOL		m_bAutoTeamSwap;
-	BOOL		m_bFriendlyIndicators;
-	BOOL		m_bFriendlyNames;
-	float		m_fFriendlyFireModifier;
+	
+	
 
 
 	virtual		bool				checkForFragLimit		();
@@ -61,13 +58,13 @@ public:
 	virtual		void				OnFraglimitExceed		();
 	virtual		void				OnTimelimitExceed		();
 
-	virtual		BOOL				isFriendlyFireEnabled	()	{return (m_fFriendlyFireModifier > 0.1f);};
-	virtual		float				GetFriendlyFire			()	{ return (m_fFriendlyFireModifier > 0.1f) ? m_fFriendlyFireModifier : 0.0f;};
+	virtual		BOOL				isFriendlyFireEnabled	();
+	virtual		float				GetFriendlyFire			();
 
-	virtual		BOOL				Get_AutoTeamBalance		()	{return m_bAutoTeamBalance; };
-	virtual		BOOL				Get_AutoTeamSwap		()	{return m_bAutoTeamSwap; };
-	virtual		BOOL				Get_FriendlyIndicators	()	{return m_bFriendlyIndicators; };
-	virtual		BOOL				Get_FriendlyNames		()	{return m_bFriendlyNames; };
+	virtual		BOOL				Get_AutoTeamBalance		();
+	virtual		BOOL				Get_AutoTeamSwap		();
+	virtual		BOOL				Get_FriendlyIndicators	();
+	virtual		BOOL				Get_FriendlyNames		();
 
 
 };

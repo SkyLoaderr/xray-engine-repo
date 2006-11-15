@@ -6,6 +6,22 @@
 #include "Level.h"
 #include "game_cl_base.h"
 
+//-------------------------------------------------------
+extern	s32		g_sv_dm_dwFragLimit;
+//-------------------------------------------------------
+BOOL		g_sv_tdm_bAutoTeamBalance		= FALSE;
+BOOL		g_sv_tdm_bAutoTeamSwap			= TRUE;
+BOOL		g_sv_tdm_bFriendlyIndicators	= FALSE;
+BOOL		g_sv_tdm_bFriendlyNames			= FALSE;
+float		g_sv_tdm_fFriendlyFireModifier	= 1.0f;
+//-------------------------------------------------------
+BOOL	game_sv_TeamDeathmatch::isFriendlyFireEnabled	()	{return (g_sv_tdm_fFriendlyFireModifier > 0.1f);};
+float	game_sv_TeamDeathmatch::GetFriendlyFire			()	{ return (g_sv_tdm_fFriendlyFireModifier > 0.1f) ? g_sv_tdm_fFriendlyFireModifier : 0.0f;};
+BOOL	game_sv_TeamDeathmatch::Get_AutoTeamBalance		()	{return g_sv_tdm_bAutoTeamBalance		; };
+BOOL	game_sv_TeamDeathmatch::Get_AutoTeamSwap		()	{return g_sv_tdm_bAutoTeamSwap			; };
+BOOL	game_sv_TeamDeathmatch::Get_FriendlyIndicators	()	{return g_sv_tdm_bFriendlyIndicators	; };
+BOOL	game_sv_TeamDeathmatch::Get_FriendlyNames		()	{return g_sv_tdm_bFriendlyNames			; };
+//-------------------------------------------------------
 void	game_sv_TeamDeathmatch::Create					(shared_str& options)
 {
 	inherited::Create					(options);
@@ -17,13 +33,14 @@ void	game_sv_TeamDeathmatch::Create					(shared_str& options)
 	td.num_targets	= 0;
 	teams.push_back(td);
 	teams.push_back(td);
+	//-----------------------------------------------------------
 }
 
 void game_sv_TeamDeathmatch::net_Export_State						(NET_Packet& P, ClientID to)
 {
 	inherited::net_Export_State(P, to);
-	P.w_u8			(u8(m_bFriendlyIndicators));
-	P.w_u8			(u8(m_bFriendlyNames));
+	P.w_u8			(u8(g_sv_tdm_bFriendlyIndicators));
+	P.w_u8			(u8(g_sv_tdm_bFriendlyNames));
 }
 
 u8 game_sv_TeamDeathmatch::AutoTeam() 
@@ -41,7 +58,7 @@ u8 game_sv_TeamDeathmatch::AutoTeam()
 
 void	game_sv_TeamDeathmatch::AutoBalanceTeams()
 {
-	if (!m_bAutoTeamBalance) return;
+	if (!g_sv_tdm_bAutoTeamBalance) return;
 	//calc team count
 	s16 MinTeam, MaxTeam;
 	u32 NumToMove;
@@ -257,9 +274,10 @@ bool	game_sv_TeamDeathmatch::OnKillResult			(KILL_RES KillResult, game_PlayerSta
 	return res;
 };
 
+
 bool game_sv_TeamDeathmatch::checkForFragLimit()
 {
-	if (fraglimit && ((teams[0].score >= fraglimit )||(teams[1].score >= fraglimit ) ) ){
+	if (g_sv_dm_dwFragLimit && ((teams[0].score >= g_sv_dm_dwFragLimit )||(teams[1].score >= g_sv_dm_dwFragLimit ) ) ){
 		OnFraglimitExceed();
 		return true;
 	};
@@ -336,30 +354,30 @@ void game_sv_TeamDeathmatch::ReadOptions				(shared_str &options)
 {
 	inherited::ReadOptions(options);
 	//-------------------------------
-	m_bAutoTeamBalance	= get_option_i(*options, "abalance") != 0;
-	m_bAutoTeamSwap		= get_option_i(*options,"aswap") != 0;
-	m_bFriendlyIndicators = get_option_i(*options,"fi",0) != 0;
-	m_bFriendlyNames = get_option_i(*options,"fn",0) != 0;
+	g_sv_tdm_bAutoTeamBalance		= get_option_i(*options, "abalance",	(g_sv_tdm_bAutoTeamBalance		 ? 1 : 0)) != 0;
+	g_sv_tdm_bAutoTeamSwap			= get_option_i(*options,"aswap",		(g_sv_tdm_bAutoTeamSwap		 ? 1 : 0)) != 0;
+	g_sv_tdm_bFriendlyIndicators	= get_option_i(*options,"fi",			(g_sv_tdm_bFriendlyIndicators	 ? 1 : 0)) != 0;
+	g_sv_tdm_bFriendlyNames		= get_option_i(*options,"fn",			(g_sv_tdm_bFriendlyNames		 ? 1 : 0)) != 0;
 
-	int iFF = get_option_i(*options,"ffire",0);
-	if (iFF != 0) m_fFriendlyFireModifier	= float(iFF) / 100.0f;
-	else m_fFriendlyFireModifier = 0.0f;
+	int iFF = get_option_i(*options,"ffire",u32(g_sv_tdm_fFriendlyFireModifier*100));
+	if (iFF != 0) g_sv_tdm_fFriendlyFireModifier	= float(iFF) / 100.0f;
+	else g_sv_tdm_fFriendlyFireModifier = 0.0f;
 }
 
 static bool g_bConsoleCommandsCreated_TDM = false;
 void game_sv_TeamDeathmatch::ConsoleCommands_Create	()
 {
-	inherited::ConsoleCommands_Create();
+//	inherited::ConsoleCommands_Create();
 	//-------------------------------------
-	string1024 Cmnd;
+//	string1024 Cmnd;
 	//-------------------------------------	
-	CMD_ADD(CCC_SV_Int,"sv_auto_team_balance", (int*)&m_bAutoTeamBalance,0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_auto_team_swap", (int*)&m_bAutoTeamSwap,0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_friendly_indicators", (int*)&m_bFriendlyIndicators, 0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_friendly_names", (int*)&m_bFriendlyNames, 0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
-	CMD_ADD(CCC_SV_Float,"sv_friendlyfire", &m_fFriendlyFireModifier, 0.0f,2.0f,g_bConsoleCommandsCreated_TDM,Cmnd);
+//	CMD_ADD(CCC_SV_Int,"sv_auto_team_balance", (int*)&g_sv_tdm_bAutoTeamBalance,0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
+//	CMD_ADD(CCC_SV_Int,"sv_auto_team_swap", (int*)&g_sv_tdm_bAutoTeamSwap,0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
+//	CMD_ADD(CCC_SV_Int,"sv_friendly_indicators", (int*)&g_sv_tdm_bFriendlyIndicators, 0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
+//	CMD_ADD(CCC_SV_Int,"sv_friendly_names", (int*)&g_sv_tdm_bFriendlyNames, 0,1,g_bConsoleCommandsCreated_TDM,Cmnd);
+//	CMD_ADD(CCC_SV_Float,"sv_friendlyfire", &m_fFriendlyFireModifier, 0.0f,2.0f,g_bConsoleCommandsCreated_TDM,Cmnd);
 	//-------------------------------------
-	g_bConsoleCommandsCreated_TDM = true;
+//	g_bConsoleCommandsCreated_TDM = true;
 };
 
 void game_sv_TeamDeathmatch::ConsoleCommands_Clear	()
@@ -375,7 +393,7 @@ void game_sv_TeamDeathmatch::ConsoleCommands_Clear	()
 
 void	game_sv_TeamDeathmatch::AutoSwapTeams			()
 {
-	if (!m_bAutoTeamSwap) return;
+	if (!g_sv_tdm_bAutoTeamSwap) return;
 
 	u32		cnt = get_players_count();
 	for		(u32 it=0; it<cnt; ++it)	

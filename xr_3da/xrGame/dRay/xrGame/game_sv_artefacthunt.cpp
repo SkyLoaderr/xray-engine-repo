@@ -12,14 +12,27 @@
 #ifdef DEBUG
 #	include "debug_renderer.h"
 #endif
-
+//-------------------------------------------------------
+extern	s32		g_sv_dm_dwFragLimit				;
+extern	s32		g_sv_dm_dwTimeLimit				;
+extern	BOOL	g_sv_dm_bAnomaliesEnabled		;
+//-------------------------------------------------------
+u32		g_sv_ah_dwArtefactRespawnDelta	= 30000;
+int		g_sv_ah_dwArtefactsNum			= 10;
+u32		g_sv_ah_dwArtefactStayTime		= 180000;
+int		g_sv_ah_iReinforcementTime		= 0;		//0 - Immediate, -1 - after artefact spawn , other - reinforcement
+//-------------------------------------------------------
+int		game_sv_ArtefactHunt::Get_ArtefactsCount		() {return g_sv_ah_dwArtefactsNum; };
+u32		game_sv_ArtefactHunt::Get_ArtefactsRespawnDelta	() {return g_sv_ah_dwArtefactRespawnDelta; };
+u32		game_sv_ArtefactHunt::Get_ArtefactsStayTime		() {return g_sv_ah_dwArtefactStayTime; };
+int		game_sv_ArtefactHunt::Get_ReinforcementTime		() {return g_sv_ah_iReinforcementTime; };
+//-------------------------------------------------------
 void	game_sv_ArtefactHunt::Create					(shared_str& options)
 {
 	inherited::Create					(options);
 
 	m_delayedRoundEnd = false;
-	m_eAState = NONE;
-	m_bPDAHunt = FALSE;
+	m_eAState = NONE;	
 	//---------------------------------------------------
 	// loading respawn points for artefacts
 	m_LastRespawnPointID = 0;
@@ -193,7 +206,7 @@ void	game_sv_ArtefactHunt::OnPlayerReady			(ClientID id)
 			CSE_Abstract* pOwner	= xrCData->owner;
 			CSE_Spectator* pS		= smart_cast<CSE_Spectator*>(pOwner);
 
-			if (pS && (m_iReinforcementTime != 0 && !xrCData->ps->m_bPayForSpawn) && (m_dwWarmUp_CurTime ==0)) 
+			if (pS && (g_sv_ah_iReinforcementTime != 0 && !xrCData->ps->m_bPayForSpawn) && (m_dwWarmUp_CurTime ==0)) 
 			{
 				return;
 			}
@@ -642,11 +655,11 @@ BOOL	g_bAfReturnPlayersToBases = FALSE;
 BOOL	game_sv_ArtefactHunt::Get_ReturnPlayers() {return g_bAfReturnPlayersToBases; };
 void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 {
-	if (m_iReinforcementTime == -1 || g_bAfReturnPlayersToBases) 
+	if (g_sv_ah_iReinforcementTime == -1 || g_bAfReturnPlayersToBases) 
 	{
 		MoveAllAlivePlayers();
 	};
-	if (m_iReinforcementTime > 0 || m_iReinforcementTime == -1)
+	if (g_sv_ah_iReinforcementTime > 0 || g_sv_ah_iReinforcementTime == -1)
 	{
 		RespawnAllNotAlivePlayers();
 	};
@@ -756,7 +769,7 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 
 	signal_Syncronize();
 	//-------------------------------------------------
-	if (m_bAnomaliesEnabled)	StartAnomalies();
+	if (g_sv_dm_bAnomaliesEnabled)	StartAnomalies();
 	//-------------------------------------------------
 	m_bWasTaken = false;
 };
@@ -803,16 +816,16 @@ void	game_sv_ArtefactHunt::Update			()
 			CheckRPUnblock();
 			//---------------------------------------------------
 			if (m_dwWarmUp_CurTime != 0) break;
-			if (m_iReinforcementTime > 0)
+			if (g_sv_ah_iReinforcementTime > 0)
 			{
 				u32 CurTime = Level().timeServer();
 				if (m_dwNextReinforcementTime < CurTime)
 				{
 					RespawnAllNotAlivePlayers();
-					m_dwNextReinforcementTime = CurTime + m_iReinforcementTime;
+					m_dwNextReinforcementTime = CurTime + g_sv_ah_iReinforcementTime;
 				}
 			};
-			if (m_iReinforcementTime == -1 && m_dwArtefactID != 0)
+			if (g_sv_ah_iReinforcementTime == -1 && m_dwArtefactID != 0)
 			{
 				CheckForAnyAlivePlayer();
 				CheckForTeamElimination();
@@ -914,17 +927,17 @@ BOOL	game_sv_ArtefactHunt::Get_BearerCantSprint		()
 void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, ClientID id_to)
 {
 	inherited::net_Export_State(P, id_to);
-	P.w_u8			(u8(m_dwArtefactsNum));
+	P.w_u8			(u8(g_sv_ah_dwArtefactsNum));
 	P.w_u16			(artefactBearerID);
 	P.w_u8			(teamInPossession);
 	P.w_u16			(m_dwArtefactID);
 	P.w_u8			((u8)g_bBearerCantSprint);
 
-	if ( m_iReinforcementTime > 0)
+	if ( g_sv_ah_iReinforcementTime > 0)
 	{
 		u32		CurTime = Level().timeServer();
 		u32		dTime = m_dwNextReinforcementTime - CurTime;
-		P.w_u32			(m_iReinforcementTime);
+		P.w_u32			(g_sv_ah_iReinforcementTime);
 		P.w_s32			(dTime);
 	}
 	else
@@ -937,7 +950,7 @@ void				game_sv_ArtefactHunt::Artefact_PrepareForSpawn	()
 
 	m_eAState = NOARTEFACT;
 
-	m_dwArtefactSpawnTime = Device.dwTimeGlobal + m_dwArtefactRespawnDelta;
+	m_dwArtefactSpawnTime = Device.dwTimeGlobal + g_sv_ah_dwArtefactRespawnDelta;
 
 	artefactBearerID	= 0;
 	m_iAfBearerMenaceID = 0;
@@ -948,7 +961,7 @@ void				game_sv_ArtefactHunt::Artefact_PrepareForSpawn	()
 
 void				game_sv_ArtefactHunt::Artefact_PrepareForRemove	()
 {
-	m_dwArtefactRemoveTime = Device.dwTimeGlobal + m_dwArtefactStayTime;
+	m_dwArtefactRemoveTime = Device.dwTimeGlobal + g_sv_ah_dwArtefactStayTime;
 	m_dwArtefactSpawnTime = 0;
 };
 
@@ -978,7 +991,7 @@ bool				game_sv_ArtefactHunt::Artefact_NeedToRemove	()
 	if (m_eAState == NOARTEFACT) return false;
 
 
-	if (m_dwArtefactStayTime == 0) return false;
+	if (g_sv_ah_dwArtefactStayTime == 0) return false;
 
 	if (m_dwArtefactRemoveTime < Device.dwTimeGlobal)
 	{
@@ -1024,7 +1037,7 @@ void				game_sv_ArtefactHunt::RespawnAllNotAlivePlayers()
 	}
 	signal_Syncronize();
 
-	m_dwNextReinforcementTime = Level().timeServer() + m_iReinforcementTime;
+	m_dwNextReinforcementTime = Level().timeServer() + g_sv_ah_iReinforcementTime;
 };
 
 void				game_sv_ArtefactHunt::CheckForAnyAlivePlayer()
@@ -1189,12 +1202,12 @@ extern INT g_sv_Skip_Winner_Waiting;
 void	game_sv_ArtefactHunt::CheckForTeamWin()
 {
 	u8 WinTeam = 0;
-	if (GetTeamScore(0) >= m_dwArtefactsNum) WinTeam = 1;
-	else if (GetTeamScore(1) >= m_dwArtefactsNum) WinTeam = 2;
+	if (GetTeamScore(0) >= g_sv_ah_dwArtefactsNum) WinTeam = 1;
+	else if (GetTeamScore(1) >= g_sv_ah_dwArtefactsNum) WinTeam = 2;
 	if (!WinTeam) 
 	{
-		if (!timelimit) return;
-		if (timelimit && ((Level().timeServer()-start_time)) > u32(timelimit))
+		if (!g_sv_dm_dwTimeLimit) return;
+		if (g_sv_dm_dwTimeLimit && ((Level().timeServer()-start_time)) > u32(g_sv_dm_dwTimeLimit))
 		{
 			int Team1 = GetTeamScore(0);
 			int Team2 = GetTeamScore(1);
@@ -1252,40 +1265,40 @@ void game_sv_ArtefactHunt::ReadOptions				(shared_str &options)
 {
 	inherited::ReadOptions(options);
 	//-------------------------------
-	m_dwArtefactRespawnDelta			= get_option_i(*options,"ardelta",0)*1000;
-	m_dwArtefactsNum					= get_option_i(*options,"anum",1);
-	m_dwArtefactStayTime				= get_option_i(*options,"astime",3)*60000;
-	fraglimit = 0;	
+	g_sv_ah_dwArtefactRespawnDelta			= get_option_i(*options,"ardelta",g_sv_ah_dwArtefactRespawnDelta/1000)*1000;
+	g_sv_ah_dwArtefactsNum					= get_option_i(*options,"anum",g_sv_ah_dwArtefactsNum);
+	g_sv_ah_dwArtefactStayTime				= get_option_i(*options,"astime",g_sv_ah_dwArtefactStayTime/60000)*60000;
+	g_sv_dm_dwFragLimit = 0;	
 	//----------------------------------------------------------------------------
-	m_iReinforcementTime = 0;
-	m_iReinforcementTime				= get_option_i(*options,"reinf",0)*1000;
-	if (m_iReinforcementTime<0)	m_iReinforcementTime = -1;
+	g_sv_ah_iReinforcementTime = 0;
+	g_sv_ah_iReinforcementTime				= get_option_i(*options,"reinf",g_sv_ah_iReinforcementTime/1000)*1000;
+	if (g_sv_ah_iReinforcementTime<0)	g_sv_ah_iReinforcementTime = -1;
 	//----------------------------------------------------------------------------
 }
 
 static bool g_bConsoleCommandsCreated_AHUNT = false;
 void game_sv_ArtefactHunt::ConsoleCommands_Create	()
 {
-	inherited::ConsoleCommands_Create();
+//	inherited::ConsoleCommands_Create();
 	//-------------------------------------
-	string1024 Cmnd;
+//	string1024 Cmnd;
 	//-------------------------------------	
-	CMD_ADD(CCC_SV_Int,"sv_artefact_respawn_delta", (int*)&m_dwArtefactRespawnDelta,0,1800000,g_bConsoleCommandsCreated_AHUNT,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_artefacts_count", (int*)&m_dwArtefactsNum, 1,100,g_bConsoleCommandsCreated_AHUNT,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_artefact_stay_time", (int*)&m_dwArtefactStayTime, 0,1800000,g_bConsoleCommandsCreated_AHUNT,Cmnd);
-	CMD_ADD(CCC_SV_Int,"sv_reinforcement_time", (int*)&m_iReinforcementTime, -1,1800000,g_bConsoleCommandsCreated_AHUNT,Cmnd);
+//	CMD_ADD(CCC_SV_Int,"sv_artefact_respawn_delta", (int*)&g_sv_ah_dwArtefactRespawnDelta,0,1800000,g_bConsoleCommandsCreated_AHUNT,Cmnd);
+//	CMD_ADD(CCC_SV_Int,"sv_artefacts_count", (int*)&g_sv_ah_dwArtefactsNum, 1,100,g_bConsoleCommandsCreated_AHUNT,Cmnd);
+//	CMD_ADD(CCC_SV_Int,"sv_artefact_stay_time", (int*)&g_sv_ah_dwArtefactStayTime, 0,1800000,g_bConsoleCommandsCreated_AHUNT,Cmnd);
+//	CMD_ADD(CCC_SV_Int,"sv_reinforcement_time", (int*)&g_sv_ah_iReinforcementTime, -1,1800000,g_bConsoleCommandsCreated_AHUNT,Cmnd);
 	//-------------------------------------
-	g_bConsoleCommandsCreated_AHUNT = true;
+//	g_bConsoleCommandsCreated_AHUNT = true;
 };
 
 void game_sv_ArtefactHunt::ConsoleCommands_Clear	()
 {
-	inherited::ConsoleCommands_Clear();
+//	inherited::ConsoleCommands_Clear();
 	//-----------------------------------
-	CMD_CLEAR("sv_artefact_respawn_delta");
-	CMD_CLEAR("sv_artefacts_count");
-	CMD_CLEAR("sv_artefact_stay_time");
-	CMD_CLEAR("sv_reinforcement_time");
+//	CMD_CLEAR("sv_artefact_respawn_delta");
+//	CMD_CLEAR("sv_artefacts_count");
+//	CMD_CLEAR("sv_artefact_stay_time");
+//	CMD_CLEAR("sv_reinforcement_time");
 };
 
 	//  [7/5/2005]

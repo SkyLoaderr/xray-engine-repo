@@ -16,12 +16,9 @@ private:
 	};
 
 protected:
-	int								m_iReinforcementTime;		//0 - Immediate, -1 - after artefact spawn , other - reinforcement
+	
 	u32								m_dwNextReinforcementTime;
 	int								m_iMoney_for_BuySpawn;
-
-	u32								m_dwArtefactRespawnDelta;
-	u32								m_dwArtefactStayTime;
 
 	u32								m_dwArtefactSpawnTime;
 	u32								m_dwArtefactRemoveTime;
@@ -35,8 +32,7 @@ protected:
 	xr_vector<RPoint>				Artefact_rpoints;
 	xr_vector<u8>					ArtefactsRPoints_ID;
 	u8								m_LastRespawnPointID;
-
-	int								m_dwArtefactsNum;//ah
+	
 	u16								artefactBearerID;//ah,ZoneMap
 	u16								m_iAfBearerMenaceID;
 	u8								teamInPossession;//ah,ZoneMap
@@ -130,10 +126,10 @@ public:
 	virtual		BOOL				CanHaveFriendlyFire		()	{return TRUE;}
 
 	//-----------------------------------------------------------------------------
-	virtual		int					Get_ArtefactsCount			() {return m_dwArtefactsNum; };
-	virtual		u32					Get_ArtefactsRespawnDelta	() {return m_dwArtefactRespawnDelta; };
-	virtual		u32					Get_ArtefactsStayTime		() {return m_dwArtefactStayTime; };
-	virtual		int					Get_ReinforcementTime		() {return m_iReinforcementTime; };
+	virtual		int					Get_ArtefactsCount			();
+	virtual		u32					Get_ArtefactsRespawnDelta	();
+	virtual		u32					Get_ArtefactsStayTime		();
+	virtual		int					Get_ReinforcementTime		();
 	virtual		BOOL				Get_ShieldedBases			();
 	virtual		BOOL				Get_ReturnPlayers			();
 	virtual		BOOL				Get_BearerCantSprint		();
