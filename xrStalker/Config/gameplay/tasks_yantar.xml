@@ -1,4 +1,4 @@
-<game_task id="yan_kill_brain_task">
+<game_task id="yan_kill_brain_task" prio="335">
 		<title>yan_kill_brain</title>
 		<objective>
 			<text>yan_kill_brain</text>
@@ -31,7 +31,7 @@
 			<infoportion_complete>yan_labx16_switcher_primary_off</infoportion_complete>			
 		</objective>
 </game_task>
-<game_task id="yan_kill_brain_task_2">
+<game_task id="yan_kill_brain_task_2" prio="330">
 		<title>yan_kill_brain_task_2</title>		
 		<objective>
 			<text>yan_kill_brain_task_2</text>
@@ -52,7 +52,7 @@
 		</objective>		
 </game_task>
 
-<game_task id="yan_find_scientist">
+<game_task id="yan_find_scientist" prio="355">
 		<title>yan_find_scientist</title>
 		<objective>
 			<text>yan_find_scientist</text>
@@ -83,7 +83,7 @@
 		</objective>
 </game_task>
 
-<game_task id="yan_find_scientist_semenov">
+<game_task id="yan_find_scientist_semenov" prio="355">
 		<title>yan_find_scientist</title>
 		<objective>
 			<text>yan_find_scientist</text>
@@ -114,7 +114,7 @@
 		</objective>
 </game_task>
 
-<game_task id="yan_scientist_return_task">
+<game_task id="yan_scientist_return_task" prio="345">
 		<title>yan_scientist_return_task</title>
 		<objective>
 			<text>yan_scientist_return_task</text>
@@ -130,7 +130,7 @@
 		</objective>
 </game_task>
 
-<game_task id="yan_find_vasilyev_task">
+<game_task id="yan_find_vasilyev_task" prio="340">
 		<title>yan_find_lab</title>
 		<objective>
 			<text>yan_find_lab</text>
@@ -160,7 +160,7 @@
 		</objective>
 </game_task>
 
-<game_task id="yan_find_ghost_task">
+<game_task id="yan_find_ghost_task" prio="325">
 		<title>yan_find_ghost_task</title>
 		<objective>
 			<text>yan_find_ghost_task</text>
