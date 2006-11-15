@@ -138,7 +138,7 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 		}
 	}
 
-	if (!IsDebuggerPresent()) {
+	if (!IsDebuggerPresent() && !strstr(Core.Params,"-no_call_stack_assert")) {
 		if (shared_str_initialized)
 			Msg			("stack trace:\n");
 		buffer			+= sprintf(buffer,"stack trace:%s%s",endline,endline);
@@ -425,11 +425,11 @@ void save_mini_dump			(_EXCEPTION_POINTERS *pExceptionInfo)
 
 LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 {
-	CONTEXT					save = *pExceptionInfo->ContextRecord;
-	BuildStackTrace			(pExceptionInfo);
-	*pExceptionInfo->ContextRecord = save;
+	if (!error_after_dialog && !strstr(Core.Params,"-no_call_stack_assert")) {
+		CONTEXT				save = *pExceptionInfo->ContextRecord;
+		BuildStackTrace		(pExceptionInfo);
+		*pExceptionInfo->ContextRecord = save;
 
-	if (!error_after_dialog) {
 		if (shared_str_initialized)
 			Msg				("stack trace:\n");
 		copy_to_clipboard	("stack trace:\r\n\r\n");
