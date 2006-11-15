@@ -63,7 +63,7 @@
 		</objective>
 	</game_task>
 
-	<game_task id="esc_help_wounded_from_raid">
+	<game_task id="esc_help_wounded_from_raid" prio="485">
 		<title>esc_help_wounded_from_raid</title>
 		<objective>
 			<text>esc_help_wounded_from_raid_0</text>
@@ -86,7 +86,7 @@
 	</game_task>
 
 
-	<game_task id="esc_blockpost_case_to_trader">
+	<game_task id="esc_blockpost_case_to_trader" prio="390">
 		<title>esc_blockpost_case_to_trader</title>
 		<objective>
 			<text>esc_blockpost_case_to_trader_0</text>
@@ -137,7 +137,7 @@
 		</objective>
 	</game_task>
 
-	<game_task id="esc_defend_lager">
+	<game_task id="esc_defend_lager" prio="385">
 		<title>esc_defend_lager_from_killers</title>
 		<objective>
 			<text>esc_defend_lager_from_killers_0</text>
@@ -174,7 +174,7 @@
 	
 	<!----------------------------- NEW: first task from trader----------------------------------->
 	
-	<game_task id="esc_flash_task">
+	<game_task id="esc_flash_task" prio="495">
 		<title>tutorial_help_wounded</title>
 		<objective>
 			<text>tutorial_help_wounded</text>
