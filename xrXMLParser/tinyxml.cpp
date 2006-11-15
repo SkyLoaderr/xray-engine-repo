@@ -311,7 +311,7 @@ TiXmlNode* TiXmlNode::FirstChild( const char * _value ) const
 	for ( node = firstChild; node; node = node->next )
 	{
 //.		if ( node->SValue() == TIXML_STRING( _value ))
-		if ( 0 == strcmp(node->SValue().c_str(), _value ))
+		if ( 0 == xr_strcmp(node->SValue().c_str(), _value ))
 			return node;
 	}
 	return 0;
