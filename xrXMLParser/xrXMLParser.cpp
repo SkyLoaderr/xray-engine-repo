@@ -117,8 +117,10 @@ XML_NODE* CXml::NavigateToNode(XML_NODE* start_node,
 	R_ASSERT3	(start_node && path, "NavigateToNode failed in XML file ",m_xml_file_name);
 	XML_NODE*	node			= NULL;
 	XML_NODE*	node_parent		= NULL;
-
-	char*		buf_str			= xr_strdup(path);
+	string_path					buf_str;
+	buf_str[0]					= NULL;
+	strcpy						(buf_str, path);
+//.	char*		buf_str			= xr_strdup(path);
 
 	char seps[]		= ":";
     char *token;
@@ -151,7 +153,7 @@ XML_NODE* CXml::NavigateToNode(XML_NODE* start_node,
 
     }
 
-	xr_free	(buf_str);
+//.	xr_free	(buf_str);
 	return node;
 }
 
