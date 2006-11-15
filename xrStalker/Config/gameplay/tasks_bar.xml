@@ -1,5 +1,5 @@
 
-	<game_task id="bar_resque_information">
+	<game_task id="bar_resque_information" prio="365">
 		<title>bar_resque_information</title>
 		<objective>
 			<text>bar_resque_scientific_information</text>
@@ -25,7 +25,7 @@
 	</game_task>
 		
 		
-	<game_task id="bar_resque_information_2">
+	<game_task id="bar_resque_information_2" prio="360">
 		<title>bar_resque_information_2</title>
 		<objective>
 			<text>bar_resque_scientific_information_2</text>
@@ -135,7 +135,7 @@
 		</objective>
 	</game_task>
 
-	<game_task id="bar_dolg_base_rules">
+	<game_task id="bar_dolg_base_rules" prio="430">
 		<title>bar_dolg_base_rules</title>
 		<objective>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
@@ -237,7 +237,7 @@
 	</game_task>
 	
 
-	<game_task id="bar_x16_documents">
+	<game_task id="bar_x16_documents" prio="380">
 		<title>x16_documents</title>
 		<objective>
 			<text>x16_yantar</text>
@@ -261,7 +261,7 @@
 		</objective>
 	</game_task>
 
-	<game_task id="bar_radar_deactivate">
+	<game_task id="bar_radar_deactivate" prio="305">
 		<title>descr_deactivate_radar</title>
 		<objective>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
