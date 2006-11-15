@@ -10,3 +10,12 @@
 	<string id="rad_get_to_aes_1">
 		<text>Найти вход в саркофаг</text>
 	</string>
+	<string id="pripyat_task_title">
+		<text>Пробиться через Припять</text>
+	</string>
+	<string id="pripyat_task_objective_1">
+		<text>Следовать за группой</text>
+	</string>
+	<string id="pripyat_task_objective_2">
+		<text>Добраться ко входу в стадион</text>
+	</string>
