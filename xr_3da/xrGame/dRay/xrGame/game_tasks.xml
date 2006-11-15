@@ -61,6 +61,15 @@
 		</objective>
 	</game_task>
 
+	<game_task id="find_item">
+		<title>title</title>
+		<objective>
+			<text>objective</text>
+			<icon>ui_icons_task_find_item</icon>
+			<function_complete>task_manager.task_complete</function_complete>
+			<function_fail>task_manager.task_fail</function_fail>
+		</objective>
+	</game_task>
 	
 	<!----------DELME:for andy-------------------->
 	
