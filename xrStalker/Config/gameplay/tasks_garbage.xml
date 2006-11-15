@@ -1,5 +1,5 @@
 
-	<game_task id="garbage_meet_stalker">
+	<game_task id="garbage_meet_stalker" prio="470">
 		<title>garbage_meet_stalker</title>
 		<objective>
 			<text>garbage_meet_stalker_0</text>
@@ -19,7 +19,7 @@
 		</objective>
 	</game_task>
 	
-	<game_task id="gar_kill_boars">
+	<game_task id="gar_kill_boars" prio="440">
 		<title>gar_kill_boars</title>
 		<objective>
 			<text>gar_kill_boars_main</text>
@@ -44,7 +44,7 @@
 		</objective>
 	</game_task>
 	
-	<game_task id="gar_help_dymon">
+	<game_task id="gar_help_dymon" prio="475">
 		<title>gar_help_dymon</title>
 		<objective>
 			<text>gar_defend_garbage</text>
@@ -70,7 +70,7 @@
 		</objective>
 	</game_task>
 	
-	<game_task id="gar_car_graveyard_quest">
+	<game_task id="gar_car_graveyard_quest" prio="480">
 		<title>gar_help_hellcar_1</title>
 		<objective>
 			<text>gar_dialog_hellcar</text>
