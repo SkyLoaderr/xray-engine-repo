@@ -23,7 +23,7 @@
 		</objective>
 </game_task>
 
-<game_task id="sar_secret_lab">
+<game_task id="sar_secret_lab" prio="245">
 		<title>sar_secret_lab_find</title>
 		<objective>
 			<text>sar_secret_lab_0</text>
@@ -51,7 +51,7 @@
 		</objective>
 </game_task>
 
-<game_task id="sar_monolith_destroy">
+<game_task id="sar_monolith_destroy" prio="240">
 		<title>sar_monolith_destroy</title>
 		<objective>
 			<text>sar_monolith_destroy_0</text>
@@ -73,7 +73,7 @@
 		</objective>	-->
 </game_task>
 
-<game_task id="sar_warlab">
+<game_task id="sar_warlab" prio="275">
 		<title>sar_perception</title>
 		<objective>
 			<text>sar_perception_0</text>
