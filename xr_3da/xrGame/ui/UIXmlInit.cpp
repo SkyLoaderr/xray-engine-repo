@@ -706,17 +706,17 @@ bool CUIXmlInit::InitFrameLine(CUIXml& xml_doc, const char* path, int index, CUI
 	float height	= xml_doc.ReadAttribFlt(path, index, "height");
 	bool vertical	= !!xml_doc.ReadAttribInt(path, index, "vertical");
 
-	u32 color		= GetColor	(xml_doc,buf,index,0xff);
+	strconcat		(buf,path,":texture");
+	shared_str base_name = xml_doc.Read(buf, index, NULL);
 
-	pWnd->SetColor(color);
-
-	shared_str base_name = xml_doc.Read(strconcat(buf,path,":texture"), index, NULL);
-
-	if(!base_name) 
-	{
+	VERIFY			(base_name);
+/*	{
 		pWnd->Init(x, y, width, height);
 		return true;
 	}
+*/
+	u32 color		= GetColor	(xml_doc,buf,index,0xff);
+	pWnd->SetColor	(color);
 
 	pWnd->Init(*base_name, x, y, width, height, !vertical);
 
