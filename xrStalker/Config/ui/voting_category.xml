@@ -344,7 +344,7 @@
 			</text_color>
 		</btn_yes>
 		
-		<btn_no x="414" y="328" width="157" height="48">
+		<btn_no x="257" y="328" width="157" height="48">
 			<text font="normal" align="c">mp_vote_no</text>
 			<texture>ui_button_main03</texture>
 			<text_color>
@@ -355,7 +355,7 @@
 			</text_color>
 		</btn_no>
 		
-		<btn_cancel x="257" y="328" width="157" height="48">
+		<btn_cancel x="414" y="328" width="157" height="48">
 			<text font="normal" align="c">mp_cancel</text>
 			<texture>ui_button_main03</texture>
 			<text_color>
