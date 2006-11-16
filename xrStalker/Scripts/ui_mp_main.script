@@ -47,10 +47,10 @@ function mp_main:InitControls()
 	
 	xml:InitAnimStatic("anim_00", self)
 	
-	xml:InitLabel("cap_multiplayer",self)
-	xml:InitLabel("static_player_name",self)
+	xml:InitStatic("cap_multiplayer",self)
+	xml:InitStatic("static_player_name",self)
 	self.player_name = xml:InitEditBox("edit_player_name", self)
-	xml:InitLabel("cap_cd_key",self)
+	xml:InitStatic("cap_cd_key",self)
 	xml:InitCDkey("edit_cd_key", self)
 		
 	self.dlg_join = ui_mm_mp_join.mp_join()

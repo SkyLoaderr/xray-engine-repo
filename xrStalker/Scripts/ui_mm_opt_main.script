@@ -32,7 +32,7 @@ function options_dialog:InitControls()
 	xml:InitStatic("background", self)
 	self.dialog = xml:InitStatic("main_dialog:dialog", self)
 	
-	xml:InitLabel("main_dialog:cap_options", self.dialog)
+	xml:InitStatic("main_dialog:cap_options", self.dialog)
 		
 	self.dlg_video = ui_mm_opt_video.opt_video()
 	self.dlg_video:InitControls(55,74, xml, self)

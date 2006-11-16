@@ -14,25 +14,25 @@ function opt_video_adv:InitControls(x, y, xml, handler)
 	
 	self.bk = xml:InitFrame("frame_videoadv", self)
 	
-	xml:InitLabel("video_adv:cap_antialiasing",			self)
-	xml:InitLabel("video_adv:cap_texturequality",		self)
-	xml:InitLabel("video_adv:cap_lightingquality",		self)
-	xml:InitLabel("video_adv:cap_shadowsquality",		self)
-	xml:InitLabel("video_adv:cap_texturefilter",		self)
-	xml:InitLabel("video_adv:cap_anisotropicfilter",	self)
-	xml:InitLabel("video_adv:cap_depthofview",			self)
-	xml:InitLabel("video_adv:cap_grassdensity",			self)
-	xml:InitLabel("video_adv:cap_grassradius",			self)
-	xml:InitLabel("video_adv:cap_dinlight",				self)
+	xml:InitStatic("video_adv:cap_antialiasing",			self)
+	xml:InitStatic("video_adv:cap_texturequality",		self)
+	xml:InitStatic("video_adv:cap_lightingquality",		self)
+	xml:InitStatic("video_adv:cap_shadowsquality",		self)
+	xml:InitStatic("video_adv:cap_texturefilter",		self)
+	xml:InitStatic("video_adv:cap_anisotropicfilter",	self)
+	xml:InitStatic("video_adv:cap_depthofview",			self)
+	xml:InitStatic("video_adv:cap_grassdensity",			self)
+	xml:InitStatic("video_adv:cap_grassradius",			self)
+	xml:InitStatic("video_adv:cap_dinlight",				self)
 	
 	xml:InitCheck("video_adv:check_bump",				self)
 	
-	xml:InitLabel("video_adv:cap_phisicqhality",		self)
-	xml:InitLabel("video_adv:cap_corpsetime",			self)
+	xml:InitStatic("video_adv:cap_phisicqhality",		self)
+	xml:InitStatic("video_adv:cap_corpsetime",			self)
 	
 	xml:InitCheck("video_adv:check_particles",			self)
 	
-	xml:InitLabel("video_adv:cap_particlesamount",		self)
+	xml:InitStatic("video_adv:cap_particlesamount",		self)
 	
 	xml:InitSpinNum("video_adv:list_antialiasing",		self)
 	

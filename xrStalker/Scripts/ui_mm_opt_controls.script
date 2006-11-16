@@ -14,7 +14,7 @@ function opt_controls:InitControls(x, y, xml, handler)
 	
 	self.bk = xml:InitFrame("frame", self)
 	
-	xml:InitLabel		("tab_controls:cap_mousesens",		self)
+	xml:InitStatic		("tab_controls:cap_mousesens",		self)
 	xml:InitLabel		("tab_controls:cap_keyboardsetup",	self)
 	xml:InitLabel		("tab_controls:cap_keyboardsetup",	self)
 	xml:InitTrackBar	("tab_controls:track_mousesens",	self)

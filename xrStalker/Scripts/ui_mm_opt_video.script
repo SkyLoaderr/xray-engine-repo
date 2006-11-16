@@ -14,12 +14,12 @@ function opt_video:InitControls(x, y, xml, handler)
 	
 	self.bk = xml:InitFrame("frame", self)
 
-	xml:InitLabel("tab_video:cap_preset",			self)
-	xml:InitLabel("tab_video:cap_resolution",		self)
-	xml:InitLabel("tab_video:cap_gamma",			self)
-	xml:InitLabel("tab_video:cap_contrast",			self)
-	xml:InitLabel("tab_video:cap_brightness",		self)
-	xml:InitLabel("tab_video:cap_detail_density",	self)
+	xml:InitStatic("tab_video:cap_preset",			self)
+	xml:InitStatic("tab_video:cap_resolution",		self)
+	xml:InitStatic("tab_video:cap_gamma",			self)
+	xml:InitStatic("tab_video:cap_contrast",			self)
+	xml:InitStatic("tab_video:cap_brightness",		self)
+	xml:InitStatic("tab_video:cap_detail_density",	self)
 	
 	xml:InitCheck("tab_video:check_fullscreen",		self)
 	xml:InitCheck("tab_video:check_no_vsync",		self)

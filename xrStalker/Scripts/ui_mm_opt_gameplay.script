@@ -17,7 +17,7 @@ function opt_gameplay:InitControls(x, y, xml, handler)
 --	local c
 
 --	xml:InitLabel("tab_gameplay:cap_crosshair",		self)
-	xml:InitLabel("tab_gameplay:cap_difficulty",		self)
+	xml:InitStatic("tab_gameplay:cap_difficulty",		self)
 --	c = xml:InitTrackBar("tab_gameplay:track_crosshair",	self)
 --	c:Enable(false)
 	
