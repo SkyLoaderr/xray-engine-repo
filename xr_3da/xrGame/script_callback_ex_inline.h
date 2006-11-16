@@ -12,43 +12,29 @@
 #define CSScriptCallbackEx				CScriptCallbackEx_<_return_type>
 
 TEMPLATE_SPECIALIZATION
-IC	CSScriptCallbackEx::CScriptCallbackEx_	() 
+IC	CSScriptCallbackEx::CScriptCallbackEx_				() 
 {
-	init				();
 }
 
 TEMPLATE_SPECIALIZATION
-IC	CSScriptCallbackEx::~CScriptCallbackEx_	()
+IC	CSScriptCallbackEx::~CScriptCallbackEx_				()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CSScriptCallbackEx::clear						()
+{
+	m_functor.~functor_type			();
+	new (&m_functor) functor_type	();
+
+	m_object.~object_type			();
+	new (&m_object)	object_type		();
+}
+
+TEMPLATE_SPECIALIZATION
+IC	CSScriptCallbackEx::CScriptCallbackEx_				(const CScriptCallbackEx_ &callback)
 {
 	clear				();
-}
-
-TEMPLATE_SPECIALIZATION
-IC	void CSScriptCallbackEx::init			()
-{
-	m_functor			= 0;
-	m_object			= 0;
-}
-
-TEMPLATE_SPECIALIZATION
-IC	void CSScriptCallbackEx::clear			()
-{
-	try {
-		xr_delete		(m_functor);
-		xr_delete		(m_object);
-	}
-	catch(...) {
-	}
-
-#ifdef DEBUG
-	init				();
-#endif
-}
-
-TEMPLATE_SPECIALIZATION
-IC	CSScriptCallbackEx::CScriptCallbackEx_	(const CScriptCallbackEx_ &callback)
-{
-	init				();
 	*this				= callback;
 }
 
@@ -56,46 +42,36 @@ TEMPLATE_SPECIALIZATION
 IC	CSScriptCallbackEx &CSScriptCallbackEx::operator=	(const CScriptCallbackEx_ &callback)
 {
 	clear				();
+	
+	if (callback.m_functor.is_valid() && callback.m_functor.lua_state())
+		m_functor		= callback.m_functor;
 
-	if (callback.m_functor) {
-		m_functor		= xr_new<functor_type>(*callback.m_functor);
-		VERIFY			(callback.m_functor->lua_state());
-		VERIFY			(m_functor->lua_state());
-	}
-
-	if (callback.m_object) {
-		m_object		= xr_new<object_type>(*callback.m_object);
-		VERIFY			(callback.m_object->lua_state());
-		VERIFY			(m_object->lua_state());
-	}
+	if (callback.m_object.is_valid() && callback.m_object.lua_state())
+		m_object		= callback.m_object;
 
 	return				(*this);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSScriptCallbackEx::set			(const functor_type &functor)
+IC	void CSScriptCallbackEx::set						(const functor_type &functor)
 {
 	clear				();
-	if (functor.lua_state())
-		m_functor		= xr_new<functor_type>	(functor);
+	m_functor			= functor;
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSScriptCallbackEx::set			(const functor_type &functor, const object_type &object)
+IC	void CSScriptCallbackEx::set						(const functor_type &functor, const object_type &object)
 {
 	clear				();
-	if (functor.lua_state())
-		m_functor		= xr_new<functor_type>	(functor);
 	
-	if (object.lua_state())
-		m_object		= xr_new<object_type>	(object);
+	m_functor			= functor;
+	m_object			= object;
 }
 
 TEMPLATE_SPECIALIZATION
-IC	typename CSScriptCallbackEx::functor_type *CSScriptCallbackEx::functor	() const
+IC	bool CSScriptCallbackEx::empty						() const
 {
-	VERIFY				(!m_functor || m_functor->lua_state());
-	return				(m_functor);
+	return				(!!m_functor.lua_state());
 }
 
 #undef TEMPLATE_SPECIALIZATION
