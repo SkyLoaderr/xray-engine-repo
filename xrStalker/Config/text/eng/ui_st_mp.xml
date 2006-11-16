@@ -216,8 +216,14 @@
 	<string id="mp_vote_yes">
 		<text>Yes</text>
 	</string>
+	<string id="mp_voted">
+		<text>voted</text>
+	</string>
+	<string id="mp_voted_yes">
+		<text>"Yes"</text>
+	</string>
 	<string id="mp_voted_no">
-		<text>No</text>
+		<text>"No"</text>
 	</string>
 	<string id="mp_voting_broken">
 		<text>Voting cancelled by the server!</text>
@@ -254,8 +260,5 @@
 	</string>
 	<string id="ui_st_team2_name">
 		<text>Mercenaries</text>
-	</string>
-	<string id="mp_voted">
-		<text>voted</text>
-	</string>
+	</string>	
 </string_table>
