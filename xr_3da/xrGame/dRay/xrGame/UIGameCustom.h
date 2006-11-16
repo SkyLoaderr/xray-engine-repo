@@ -64,6 +64,7 @@ public:
 	
 	virtual void		Render					();
 	virtual void		OnFrame					();
+	virtual	void		reset_ui				()	{};
 
 	virtual bool		IR_OnKeyboardPress		(int dik);
 	virtual bool		IR_OnKeyboardRelease	(int dik);

@@ -27,6 +27,7 @@ public:
 
 
 	virtual void				Update					();
+	virtual void				Reset					();
 
 	virtual void				Show					(bool status);
 

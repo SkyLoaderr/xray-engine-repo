@@ -66,6 +66,7 @@ public:
 
 	virtual void		SendMessage				(CUIWindow* pWnd, s16 msg, void* pData);
 	virtual	void		Draw					();
+	virtual	void		Reset					();
 
 			void		Init					();
 			void		AddNews					();

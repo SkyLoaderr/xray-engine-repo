@@ -738,3 +738,9 @@ void CUIMapWnd::Hint					(const shared_str& text)
 {
 	m_text_hint->SetTextST				(*text);
 }
+
+void CUIMapWnd::Reset()
+{
+	inherited::Reset			();
+	ResetActionPlanner			();
+}

@@ -239,3 +239,9 @@ void CUIEncyclopediaWnd::AddArticle(ARTICLE_ID article_id, bool bReaded)
 	CreateTreeBranch(a->data()->group, a->data()->name, UIIdxList, m_ArticlesDB.size() - 1, 
 		m_pTreeRootFont, m_uTreeRootColor, m_pTreeItemFont, m_uTreeItemColor, bReaded);
 }
+
+void CUIEncyclopediaWnd::Reset()
+{
+	inherited::Reset	();
+	ReloadArticles		();
+}

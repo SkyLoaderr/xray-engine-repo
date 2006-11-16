@@ -21,6 +21,7 @@ public:
 	CUIScrollView&			DetailList			()				{return *UIDetailList;}
 	CUIScrollView&			MasterList			()				{return *UIMasterList;}
 	void					FillPointsDetail	(int idx);
+	virtual void			Reset				();
 
 protected:
 	CUIFrameWindow*			UIInfoFrame;

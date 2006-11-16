@@ -40,6 +40,7 @@ class CUIEventsWnd	:public CUIWindow, public CUIWndCallback{
 	bool						Filter					(CGameTask* t);
 	void						OnFilterChanged			(CUIWindow*,void*);
 	void						ReloadList				(bool bClearOnly);
+
 public:
 	void						SetDescriptionMode		(bool bMap);
 	bool						GetDescriptionMode		();
@@ -55,6 +56,7 @@ public:
 	virtual void				Draw					();
 	virtual void				Show					(bool status);
 			void				Reload					();
+	virtual void				Reset					();
 
 	CUIXml						m_ui_task_item_xml;
 

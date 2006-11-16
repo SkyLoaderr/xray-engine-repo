@@ -42,6 +42,7 @@ public:
 	bool				HasArticle					(ARTICLE_ID);
 
 	void				ReloadArticles				();
+	virtual void		Reset						();
 protected:
 	u32					prevArticlesCount;
 	// Элементы графического оформления

@@ -40,6 +40,7 @@ void CLevel::remove_objects	()
 
 	psDeviceFlags.set			(rsDisableObjectsAsCrows, b_stored);
 	g_b_ClearGameCaptions		= true;
+	Game().reset_ui				();
 }
 
 void CLevel::net_Stop		()

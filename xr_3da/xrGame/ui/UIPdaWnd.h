@@ -55,7 +55,7 @@ public:
 	CUIActorInfoWnd*		UIActorInfo;
 	CUIStalkersRankingWnd*	UIStalkersRanking;
 	CUIEventsWnd*			UIEventsWnd;
-
+	virtual void			Reset				();
 public:
 							CUIPdaWnd			();
 	virtual					~CUIPdaWnd			();

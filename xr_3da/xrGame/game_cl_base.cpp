@@ -406,3 +406,7 @@ void game_cl_GameState::set_type_name(LPCSTR s)
 		g_pGamePersistent->OnGameStart();
 	}
 };
+void game_cl_GameState::reset_ui()
+{
+	m_game_ui_custom->reset_ui();
+}

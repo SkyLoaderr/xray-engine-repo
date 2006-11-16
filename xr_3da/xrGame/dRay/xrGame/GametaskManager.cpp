@@ -13,8 +13,8 @@
 #include "encyclopedia_article.h"
 #include "ui/UIEventsWnd.h"
 
-shared_str	g_active_task_id;
-u16			g_active_task_objective_id = u16(-1);
+shared_str	g_active_task_id			= "";
+u16			g_active_task_objective_id	= u16(-1);
 
 struct FindTaskByID{
 	TASK_ID	id;
@@ -34,6 +34,7 @@ CGameTaskManager::CGameTaskManager()
 	m_gametasks					= xr_new<CGameTaskWrapper>();
 	m_flags.zero				();
 	m_flags.set					(eChanged, TRUE);
+	if(g_active_task_id.size())	SetActiveTask(g_active_task_id, g_active_task_objective_id);
 }
 
 CGameTaskManager::~CGameTaskManager()
@@ -238,10 +239,10 @@ void CGameTaskManager::UpdateActiveTask				()
 		{
 			CGameTask* t						= (*it).game_task;
 			if(t->Objective(0).TaskState()!=eTaskStateInProgress) continue;
-
+			
 			for(u16 i=0; (i<t->m_Objectives.size())&&(!bDone) ;++i)
 			{
-				if(t->Objective(i).TaskState() != eTaskStateInProgress) continue;
+				if( (i==0) || (t->Objective(i).TaskState() != eTaskStateInProgress) ) continue;
 				
 				SetActiveTask				(t->m_ID, i);
 				bDone						= true;
@@ -261,6 +262,9 @@ CGameTask* CGameTaskManager::ActiveTask()
 
 void CGameTaskManager::SetActiveTask(const TASK_ID& id, u16 idx)
 {
+	if(idx==0)
+		Msg("! g_active_task_objective_idx==0");
+
 	g_active_task_id			= id;
 	g_active_task_objective_id	= idx;
 

@@ -179,6 +179,11 @@ void CUIStalkersRankingWnd::AddActorItem(CUIXml* xml, int num, CSE_ALifeTraderAb
 	UIList->AddWindow					(itm, true);
 }
 
+void CUIStalkersRankingWnd::Reset()
+{
+	inherited::Reset		();	
+}
+
 void add_human_to_top_list(u16 id)
 {
 	CSE_ALifeTraderAbstract* t	= ch_info_get_from_id(id);

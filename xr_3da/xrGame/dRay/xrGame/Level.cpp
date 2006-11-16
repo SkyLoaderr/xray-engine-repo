@@ -944,6 +944,7 @@ bool CLevel::IsClient ()
 	return (Server->client_Count() == 0);
 }
 
+
 u32	GameID()
 {
 	return Game().Type();

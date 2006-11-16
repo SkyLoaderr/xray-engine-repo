@@ -46,7 +46,7 @@ public:
 
 
 	WeaponUsageStatistic				*m_WeaponUsageStatistic;	
-
+	virtual		void				reset_ui				();
 private:
 				void				switch_Phase			(u32 new_phase)		{inherited::switch_Phase(new_phase);};
 protected:

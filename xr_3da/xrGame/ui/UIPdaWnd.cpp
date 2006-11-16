@@ -245,7 +245,6 @@ void CUIPdaWnd::SetActiveSubdialog(EPdaTabs section)
 		Msg("not registered button identifier [%d]",UITabControl->GetActiveIndex());
 	}
 	UIMainPdaFrame->AttachChild		(m_pActiveDialog);
-	m_pActiveDialog->Reset			();
 	m_pActiveDialog->Show			(true);
 
 	if(UITabControl->GetActiveIndex()!=section)
@@ -330,4 +329,16 @@ void CUIPdaWnd::DrawUpdatedSections				()
 		draw_sign								(m_updatedSectionImage, r);
 	}
 	
+}
+
+void CUIPdaWnd::Reset()
+{
+	inherited::Reset		();
+	UIMapWnd->Reset			();
+	UIPdaContactsWnd->Reset	();
+	UIEncyclopediaWnd->Reset();
+	UIDiaryWnd->Reset		();
+	UIActorInfo->Reset		();
+	UIStalkersRanking->Reset();
+	UIEventsWnd->Reset		();
 }

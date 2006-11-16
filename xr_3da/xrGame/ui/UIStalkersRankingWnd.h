@@ -30,9 +30,11 @@ protected:
 	CUIScrollView*			UIList;
 	void					AddStalkerItem		(CUIXml* xml, int num, CSE_ALifeTraderAbstract* t);
 	void					AddActorItem		(CUIXml* xml, int num, CSE_ALifeTraderAbstract* t);
+
 public:
 	CUIScrollView&			GetTopList			()			{return *UIList;}
 	void					ShowHumanInfo		(u16 id);
+	virtual void			Reset				();
 };
 
 class CUIStalkerRankingInfoItem :public CUIWindow, public CUISelectable

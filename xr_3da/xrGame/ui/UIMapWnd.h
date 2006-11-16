@@ -76,6 +76,8 @@ private:
 //.	void						RemoveSpot				();
 //.	void						HighlightSpot			();
 	void						ResetActionPlanner		();
+
+
 public:
 	CUICustomMap*				m_tgtMap;
 	Fvector2					m_tgtCenter;
@@ -86,6 +88,7 @@ public:
 	virtual void				Init					(LPCSTR xml_name, LPCSTR start_from);
 	virtual void				Show					(bool status);
 	virtual void				Draw					();
+	virtual void				Reset					();
 	virtual void				Update					();
 			float				GetZoom					()	{return m_currentZoom;}
 			void				SetZoom					(float value);

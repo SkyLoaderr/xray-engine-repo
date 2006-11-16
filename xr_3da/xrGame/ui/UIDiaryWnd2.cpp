@@ -276,3 +276,7 @@ void CUIDiaryWnd::Draw					()
 	}
 
 }
+void CUIDiaryWnd::Reset()
+{
+	inherited::Reset	();
+}

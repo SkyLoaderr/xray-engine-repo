@@ -138,6 +138,12 @@ void CUIPdaContactsWnd::Reload()
 	m_flags.set(flNeedUpdate,TRUE);
 }
 
+void CUIPdaContactsWnd::Reset()
+{
+	inherited::Reset			();
+	Reload						();
+}
+
 CUIPdaContactItem::~CUIPdaContactItem()
 {
 }

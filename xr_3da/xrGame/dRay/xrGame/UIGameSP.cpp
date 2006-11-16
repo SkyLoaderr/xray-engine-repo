@@ -180,6 +180,15 @@ void CUIGameSP::ChangeLevel				(GameGraph::_GRAPH_ID game_vert_id, u32 level_ver
 	}
 }
 
+void CUIGameSP::reset_ui()
+{
+	inherited::reset_ui		();
+	InventoryMenu->Reset	();
+	PdaMenu->Reset			();
+	TalkMenu->Reset			();
+	UICarBodyMenu->Reset	();
+	UIChangeLevelWnd->Reset	();
+}
 
 CChangeLevelWnd::CChangeLevelWnd		()
 {

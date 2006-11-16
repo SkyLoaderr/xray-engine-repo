@@ -167,6 +167,10 @@ void CUIActorInfoWnd::FillPointsDetail	(int idx)
 		UIDetailList->AddWindow				(itm, true);
 	}
 }
+void	CUIActorInfoWnd::Reset()
+{
+	inherited::Reset();
+}
 
 void	CUIActorInfoWnd::FillReputationDetails		(CUIXml* xml, LPCSTR path)
 {

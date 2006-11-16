@@ -281,3 +281,8 @@ bool CUIEventsWnd::ItemHasDescription(CUITaskItem* itm)
 		return b;
 	}
 }
+void CUIEventsWnd::Reset()
+{
+	inherited::Reset	();
+	Reload				();
+}
