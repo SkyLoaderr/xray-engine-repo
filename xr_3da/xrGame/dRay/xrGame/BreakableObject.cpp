@@ -51,7 +51,7 @@ BOOL CBreakableObject::net_Spawn(CSE_Abstract* DC)
 	R_ASSERT				(Visual()&&smart_cast<CKinematics*>(Visual()));
 //	CKinematics* K			= smart_cast<CKinematics*>(Visual());
 	fHealth					= obj->m_health;
-	//processing_deactivate	();
+	processing_deactivate	();
 	setVisible				(TRUE);
 	setEnabled				(TRUE);
 	CreateUnbroken			();
@@ -169,6 +169,7 @@ void CBreakableObject::CreateBroken()
 	Fobb b;
 	Visual()->vis.box.getradius(b.m_halfsize);
 	m_Shell->SetMaxAABBRadius(_max(_max(b.m_halfsize.x,b.m_halfsize.y),b.m_halfsize.z)*2.f);//+2.f
+
 }
 
 void CBreakableObject::ActivateBroken()
