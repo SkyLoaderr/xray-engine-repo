@@ -2370,6 +2370,48 @@ public:
 	}
 };
 
+class CCC_DumpModelBones : public IConsole_Command {
+public:
+	CCC_DumpModelBones	(LPCSTR N) : IConsole_Command(N)
+	{
+	}
+	
+	virtual void Execute(LPCSTR arguments)
+	{
+		if (!arguments || !*arguments) {
+			Msg					("! no arguments passed");
+			return;
+		}
+
+		string512				name;
+		string512				fn;
+
+		if (0==strext(arguments))
+			strconcat			(name,arguments,".ogf");
+		else
+			strcpy				(name,arguments);
+
+		if (!FS.exist(arguments) && !FS.exist(fn, "$level$", name) && !FS.exist(fn, "$game_meshes$", name)) {
+			Msg					("! Cannot find visual \"%s\"",arguments);
+			return;
+		}
+
+		IRender_Visual			*visual = Render->model_Create(arguments);
+		CKinematics				*kinematics = smart_cast<CKinematics*>(visual);
+		if (!kinematics) {
+			Render->model_Delete(visual);
+			Msg					("! Invalid visual type \"%s\" (not a CKinematics)",arguments);
+			return;
+		}
+
+		Msg						("bones for model \"%s\"",arguments);
+		for (u16 i=0, n=kinematics->LL_BoneCount(); i<n; ++i)
+			Msg					("%s",*kinematics->LL_GetData(i).name);
+		
+		Render->model_Delete	(visual);
+	}
+};
+
 #endif // DEBUG
 
 void CCC_RegisterCommands()
@@ -2481,7 +2523,8 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Float,				"debug_on_frame_gather_stats_frequency",	&debug_on_frame_gather_stats_frequency, 0.f, 1.f);
 	CMD1(CCC_MemAllocShowStats,	"debug_on_frame_show_stats");
 	CMD1(CCC_MemAllocClearStats,"debug_on_frame_clear_stats");
-	
+	CMD1(CCC_DumpModelBones,	"debug_dump_model_bones");
+
 	CMD1(CCC_DrawGameGraphAll,		"ai_draw_game_graph_all");
 	CMD1(CCC_DrawGameGraphCurrent,	"ai_draw_game_graph_current_level");
 	CMD1(CCC_DrawGameGraphLevel,	"ai_draw_game_graph_level");
