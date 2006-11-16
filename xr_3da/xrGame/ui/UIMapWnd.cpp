@@ -1,7 +1,3 @@
-// CUIMapWnd.cpp:  диалог интерактивной карты
-// 
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 #include "UIMapWnd.h"
 #include "UIMap.h"
@@ -153,6 +149,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		Register						(m_ToolBar[btnIndex]);
 		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolZoomOutClicked,this,_1,_2));
 	}
+/*
 	btnIndex		= eAddSpot;
 	strconcat(pth, sToolbar.c_str(), ":add_spot_btn");
 	if(uiXml.NavigateToNode(pth,0) && IsGameTypeSingle() ){
@@ -181,7 +178,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		Register						(m_ToolBar[btnIndex]);
 		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolHighlightSpotClicked,this,_1,_2));
 	}
-
+*/
 	m_text_hint							= xr_new<CUIStatic>();
 	strconcat							(pth,start_from,":main_wnd:text_hint");
 	xml_init.InitStatic					(uiXml, pth, 0, m_text_hint);
@@ -562,7 +559,7 @@ void CUIMapWnd::OnToolZoomOutClicked(CUIWindow* w, void*)
 	m_flags.set						(lmZoomOut,bPushed);
 	ValidateToolBar					();
 }
-
+/*
 void CUIMapWnd::OnToolAddSpotClicked	(CUIWindow* w, void*)
 {
 	m_flags.zero		();
@@ -581,15 +578,6 @@ void CUIMapWnd::OnToolRemoveSpotClicked	(CUIWindow* w, void*)
 	ValidateToolBar						();
 }
 
-void CUIMapWnd::OnToolHighlightSpotClicked(CUIWindow* w, void*)
-{
-	m_flags.zero		();
-	CUI3tButton* btn = smart_cast<CUI3tButton*>(w);
-	bool bPushed = btn->GetCheck		();
-	m_flags.set							(lmHighlightSpot,bPushed);
-	ValidateToolBar						();
-}
-
 void CUIMapWnd::RemoveSpot			()
 {
 	if(m_selected_location&&m_selected_location->CanBeUserRemoved()){
@@ -599,6 +587,18 @@ void CUIMapWnd::RemoveSpot			()
 		m_ToolBar[eRemoveSpot]->SetButtonMode(CUIButton::BUTTON_NORMAL);
 	}
 }
+
+
+
+void CUIMapWnd::OnToolHighlightSpotClicked(CUIWindow* w, void*)
+{
+	m_flags.zero		();
+	CUI3tButton* btn = smart_cast<CUI3tButton*>(w);
+	bool bPushed = btn->GetCheck		();
+	m_flags.set							(lmHighlightSpot,bPushed);
+	ValidateToolBar						();
+}
+
 
 void CUIMapWnd::HighlightSpot			()
 {
@@ -614,7 +614,7 @@ void CUIMapWnd::HighlightSpot			()
 		m_flags.set						(lmHighlightSpot,FALSE);
 	}
 }
-
+*/
 void CUIMapWnd::ValidateToolBar			()
 {
 	CUI3tButton* btn	= NULL;
@@ -625,7 +625,7 @@ void CUIMapWnd::ValidateToolBar			()
 	btn					= m_ToolBar[eZoomOut];
 	if(btn)
 		btn->SetCheck	(!!m_flags.test(lmZoomOut));
-
+/*
 	btn					= m_ToolBar[eAddSpot];
 	if(btn)
 		btn->SetCheck	(!!m_flags.test(lmUserSpotAdd));
@@ -637,8 +637,7 @@ void CUIMapWnd::ValidateToolBar			()
 	btn					= m_ToolBar[eHighlightSpot];
 	if(btn)
 		btn->SetCheck	(!!m_flags.test(lmHighlightSpot));
-
-	
+*/
 }
 
 
@@ -659,7 +658,7 @@ void CUIMapWnd::OnToolActorClicked		(CUIWindow*, void*)
 
 	SetTargetMap				(lm, v2, true);
 }
-
+/*
 void CUIMapWnd::AddUserSpot			(CUILevelMap* lm)
 {
 	VERIFY(m_flags.test(lmUserSpotAdd) );
@@ -680,7 +679,7 @@ void CUIMapWnd::AddUserSpot			(CUILevelMap* lm)
 
 	m_flags.set						(lmUserSpotAdd, FALSE);
 	m_ToolBar[eAddSpot]->SetButtonMode(CUIButton::BUTTON_NORMAL);
-}
+}*/
 
 bool is_in(const Frect& b1, const Frect& b2){
 	return (b1.x1<b2.x1)&&(b1.x2>b2.x2)&&(b1.y1<b2.y1)&&(b1.y2>b2.y2);
@@ -726,12 +725,13 @@ void CUIMapWnd::Select				(CMapLocation* ml)
 	if(!ml)		return;
 	if(ml->CanBeSelected())
 		m_selected_location = ml;
-
+/*
 	if(!!m_flags.test(lmUserSpotRemove) && ml->CanBeUserRemoved() )
 		RemoveSpot	();
 
 	if(	!!m_flags.test(lmHighlightSpot))
 		HighlightSpot	();
+*/
 }
 
 void CUIMapWnd::Hint					(const shared_str& text)

@@ -144,7 +144,7 @@ void CUIEventsWnd::ReloadList(bool bClearOnly)
 
 		if( !Filter(task) )		continue;
 		CUITaskItem* pTaskItem	= NULL;
-
+/*
 		if(task->m_Objectives[0].TaskState()==eTaskUserDefined)
 		{
 			VERIFY				(task->m_Objectives.size()==1);
@@ -152,7 +152,8 @@ void CUIEventsWnd::ReloadList(bool bClearOnly)
 			pTaskItem->SetGameTask			(task, 0);
 			m_ListWnd->AddWindow			(pTaskItem,true);
 		}else
-		for (u32 i = 0; i < task->m_Objectives.size(); ++i)
+*/
+		for (u16 i = 0; i < task->m_Objectives.size(); ++i)
 		{
 			if(i==0){
 				pTaskItem					= xr_new<CUITaskRootItem>(this);
@@ -182,7 +183,7 @@ bool CUIEventsWnd::Filter(CGameTask* t)
 	ETaskState task_state		= t->m_Objectives[0].TaskState();
 //	bool bprimary_only			= m_primary_or_all_filter_btn->GetCheck();
 
-	return (m_currFilter==eOwnTask && task_state==eTaskUserDefined )		||
+	return (false/*m_currFilter==eOwnTask && task_state==eTaskUserDefined*/ )		||
 			( 
 			  ( true/*!bprimary_only || (bprimary_only && t->m_is_task_general)*/ )	&&
 				(
@@ -215,7 +216,7 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 {
 	SGameTaskObjective& o		= t->Objective(idx);
 	if(GetDescriptionMode()){//map
-		CMapLocation* ml = o.HasMapLocation();
+		CMapLocation* ml = o.LinkedMapLocation();
 		if(ml&&ml->SpotEnabled())
 			m_UIMapWnd->SetTargetMap(ml->LevelName(), ml->Position(), true);
 	}else{//articles
@@ -268,12 +269,12 @@ bool CUIEventsWnd::ItemHasDescription(CUITaskItem* itm)
 {
 	if(itm->ObjectiveIdx()==0)// root
 	{
-		bool bHasLocation	= itm->GameTask()->HasMapLocations();
+		bool bHasLocation	= itm->GameTask()->HasLinkedMapLocations();
 		return bHasLocation;
 	}else
 	{
 		SGameTaskObjective	*obj				= itm->Objective();
-		CMapLocation* ml						= obj->HasMapLocation();
+		CMapLocation* ml						= obj->LinkedMapLocation();
 		bool bHasLocation						= (NULL != ml);
 		bool bIsMapMode							= GetDescriptionMode(); 
 		bool b									= (bIsMapMode&&bHasLocation&&ml->SpotEnabled());

@@ -13,6 +13,9 @@
 #include "encyclopedia_article.h"
 #include "ui/UIEventsWnd.h"
 
+shared_str	g_active_task_id;
+u16			g_active_task_objective_id = u16(-1);
+
 struct FindTaskByID{
 	TASK_ID	id;
 	FindTaskByID(const TASK_ID& s):id(s){}
@@ -99,8 +102,10 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor(CGameTask* t, bool bCheckExisti
 			ml->SetSerializable			(true);
 		}
 	}
-	if	(t->m_ID != "user_task"){
-		t->HighlightSpotOnMap(1, true);
+	CGameTask* _at = ActiveTask();
+	if	( (NULL==_at) || (_at->m_priority > t->m_priority) )
+	{
+		SetActiveTask(t->m_ID, 1);
 	}
 
 
@@ -110,39 +115,40 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor(CGameTask* t, bool bCheckExisti
 		if(pGameSP) 
 			pGameSP->PdaMenu->PdaContentsChanged	(pda_section::quests);
 	}
-	if(t->m_ID!="user_task")
+	if(true /*t->m_ID!="user_task"*/)
 		t->Objective(0).ChangeStateCallback();
 
 	return t;
 }
 
-void CGameTaskManager::SetTaskState(CGameTask* t, int objective_num, ETaskState state)
+void CGameTaskManager::SetTaskState(CGameTask* t, u16 objective_num, ETaskState state)
 {
 	m_flags.set						(eChanged, TRUE);
-	bool isRoot =				(	objective_num==0);
-	SGameTaskObjective& o			= t->Objective(objective_num);
-	CMapLocation* ml				= o.HasMapLocation();
-	bool bHighlighted				= ml&&ml->PointerEnabled();
+	bool isRoot =					(objective_num==0);
+	SGameTaskObjective* o			= &t->Objective(objective_num);
 
-	if(((state==eTaskStateFail)||(state==eTaskStateCompleted))&&ml ){
-		Level().MapManager().RemoveMapLocation(o.map_location, o.object_id);
-		o.map_location				= NULL;
-		o.object_id					= u16(-1);
+	CMapLocation* ml				= o->LinkedMapLocation();
+//.	bool bHighlighted				= ml&&ml->PointerEnabled();
+	bool bActive					= ActiveObjective()==o;
+
+	if(((state==eTaskStateFail)||(state==eTaskStateCompleted)) && ml ){
+		Level().MapManager().RemoveMapLocation(o->map_location, o->object_id);
+		o->map_location				= NULL;
+		o->object_id				= u16(-1);
 	}
 
-	o.SetTaskState					(state);
+	o->SetTaskState					(state);
 	
 	//highlight next objective if needed
-	if(!isRoot && bHighlighted && objective_num != (int)(t->m_Objectives.size()-1) ){//not last
-		SGameTaskObjective& next_o			= t->Objective(objective_num+1);
-		if(next_o.HasMapLocation())
-			t->HighlightSpotOnMap	(objective_num+1, true);
+
+	if(!isRoot && bActive && objective_num != (t->m_Objectives.size()-1) ){//not last
+		SetActiveTask					(t->m_ID, objective_num+1 );
 	}
 
 
 	if(isRoot){//setState for task and all sub-tasks
 		
-		for(u32 i=0; i<t->m_Objectives.size();++i)
+		for(u16 i=0; i<t->m_Objectives.size();++i)
 			if( t->Objective(i).TaskState()==eTaskStateInProgress )
 				SetTaskState(t,i,state);
 	}
@@ -158,7 +164,7 @@ void CGameTaskManager::SetTaskState(CGameTask* t, int objective_num, ETaskState 
 
 }
 
-void CGameTaskManager::SetTaskState(const TASK_ID& id, int objective_num, ETaskState state)
+void CGameTaskManager::SetTaskState(const TASK_ID& id, u16 objective_num, ETaskState state)
 {
 	CGameTask* t				= HasGameTask(id);
 	if (NULL==t)				{Msg("actor does not has task [%s]", *id);	return;}
@@ -171,7 +177,7 @@ void CGameTaskManager::UpdateTasks						()
 	GameTasks_it it_e	= GameTasks().end();
 	for( ;it!=it_e; ++it ){
 		CGameTask* t		= (*it).game_task;
-		for(u32 i=0; i<t->m_Objectives.size() ;++i){
+		for(u16 i=0; i<t->m_Objectives.size() ;++i){
 			SGameTaskObjective& obj = t->Objective(i);
 			if(obj.TaskState()!=eTaskStateInProgress && i==0) break;
 			if(obj.TaskState()!=eTaskStateInProgress) continue;
@@ -218,7 +224,7 @@ void CGameTaskManager::UpdateActiveTask				()
 					ml->SetSerializable			(true);
 				}
 			}
-			bHasSpotPointer = bHasSpotPointer || t->HighlightedSpotOnMap(i);
+			bHasSpotPointer = bHasSpotPointer || (ActiveObjective()==&t->Objective(i));
 		}
 	}
 	// highlight new spot pointer
@@ -233,17 +239,12 @@ void CGameTaskManager::UpdateActiveTask				()
 			CGameTask* t						= (*it).game_task;
 			if(t->Objective(0).TaskState()!=eTaskStateInProgress) continue;
 
-			for(u32 i=0; (i<t->m_Objectives.size())&&(!bDone) ;++i)
+			for(u16 i=0; (i<t->m_Objectives.size())&&(!bDone) ;++i)
 			{
 				if(t->Objective(i).TaskState() != eTaskStateInProgress) continue;
 				
-				if(t->Objective(i).HasMapLocation())
-				{
-					t->HighlightSpotOnMap		(i,true);
-					bDone						= true;
-				}else
-				if(i!=0)
-					bDone = true;
+				SetActiveTask				(t->m_ID, i);
+				bDone						= true;
 			}
 		}
 	}
@@ -251,31 +252,36 @@ void CGameTaskManager::UpdateActiveTask				()
 	m_flags.set					(eChanged, FALSE);
 }
 
-void CGameTaskManager::RemoveUserTask					(CMapLocation* ml)
+CGameTask* CGameTaskManager::ActiveTask()
 {
-	GameTasks_it it			= GameTasks().begin();
-	GameTasks_it it_e		= GameTasks().end();
-
-	for( ;it!=it_e; ++it ){
-		CGameTask* t		= (*it).game_task;
-		SGameTaskObjective& obj = t->Objective(0);
-		if(obj.TaskState()!=eTaskUserDefined) continue;
-		if(obj.object_id == ml->ObjectID()){
-			GameTasks().erase		(it);
-			m_flags.set				(eChanged, TRUE);
-			CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-			if(pGameSP) 
-				pGameSP->PdaMenu->UIEventsWnd->Reload();
-			return;
-		}
-
-	}
-
+	const TASK_ID&	t_id		= g_active_task_id;
+	if(!t_id.size())			return NULL;
+	return						HasGameTask( t_id );
 }
 
-
-SGameTaskObjective* CGameTaskManager::ActiveTask()
+void CGameTaskManager::SetActiveTask(const TASK_ID& id, u16 idx)
 {
+	g_active_task_id			= id;
+	g_active_task_objective_id	= idx;
+
+	Level().MapManager().DisableAllPointers();
+	SGameTaskObjective* o		= ActiveObjective();
+
+	if(o)
+	{
+		CMapLocation* ml	= o->LinkedMapLocation();
+		if(ml)
+			ml->EnablePointer();
+	}
+}
+
+SGameTaskObjective* CGameTaskManager::ActiveObjective()
+{
+	CGameTask*		t			= ActiveTask();
+	
+	return (t)?&t->Objective(g_active_task_objective_id):NULL;
+
+/*
 	GameTasks_it it			= GameTasks().begin();
 	GameTasks_it it_e		= GameTasks().end();
 	for( ;it!=it_e; ++it ){
@@ -298,4 +304,29 @@ SGameTaskObjective* CGameTaskManager::ActiveTask()
 		}
 	}
 	return NULL;
+*/
 }
+/*
+void CGameTaskManager::RemoveUserTask					(CMapLocation* ml)
+{
+	GameTasks_it it			= GameTasks().begin();
+	GameTasks_it it_e		= GameTasks().end();
+
+	for( ;it!=it_e; ++it ){
+		CGameTask* t		= (*it).game_task;
+		SGameTaskObjective& obj = t->Objective(0);
+		if(obj.TaskState()!=eTaskUserDefined) continue;
+		if(obj.object_id == ml->ObjectID()){
+			if(ActiveTask()==t)
+				SetActiveTask("", 0);
+
+			GameTasks().erase		(it);
+			m_flags.set				(eChanged, TRUE);
+			CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+			if(pGameSP) 
+				pGameSP->PdaMenu->UIEventsWnd->Reload();
+			return;
+		}
+	}
+}
+*/

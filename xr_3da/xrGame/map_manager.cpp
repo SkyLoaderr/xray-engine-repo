@@ -36,14 +36,15 @@ struct FindLocation{
 	}
 };
 
-void CheckUserLocation		(CMapLocation* ml);
+//.void CheckUserLocation		(CMapLocation* ml);
 
 void SLocationKey::save(IWriter &stream)
 {
 	stream.w		(&object_id,sizeof(object_id));
 
 	stream.w_stringZ(spot_type);
-	stream.w_u8		(location->IsUserDefined()?1:0);
+//.	stream.w_u8		(location->IsUserDefined()?1:0);
+	stream.w_u8		(0);
 	location->save	(stream);
 }
 	
@@ -52,12 +53,15 @@ void SLocationKey::load(IReader &stream)
 	stream.r		(&object_id,sizeof(object_id));
 
 	stream.r_stringZ(spot_type);
+	stream.r_u8		();
+/*
 	u8	bUserDefined = stream.r_u8	();
 	if(bUserDefined){
 		Level().Server->PerformIDgen(object_id);
 		location  = xr_new<CUserDefinedMapLocation>(*spot_type, object_id);
 	}else
-		location  = xr_new<CMapLocation>(*spot_type, object_id);
+*/
+	location  = xr_new<CMapLocation>(*spot_type, object_id);
 
 	location->load	(stream);
 }
@@ -150,6 +154,7 @@ CMapLocation* CMapManager::AddRelationLocation(CInventoryOwner* pInvOwner)
 	return (*it).location;
 }
 
+/*	
 CMapLocation* CMapManager::AddUserLocation(const shared_str& spot_type, const shared_str& level_name, Fvector position)
 {
 	u16 _id	= Level().Server->PerformIDgen(0xffff);
@@ -158,7 +163,7 @@ CMapLocation* CMapManager::AddUserLocation(const shared_str& spot_type, const sh
 	Locations().push_back( SLocationKey(spot_type, _id) );
 	Locations().back().location = l;
 	return l;
-}
+}*/
 
 
 void CMapManager::RemoveMapLocation(const shared_str& spot_type, u16 id)
@@ -168,7 +173,7 @@ void CMapManager::RemoveMapLocation(const shared_str& spot_type, u16 id)
 	if( it!=Locations().end() ){
 
 		if( 1==(*it).location->RefCount() ){
-			CheckUserLocation		((*it).location);
+//.			CheckUserLocation		((*it).location);
 			delete_data				(*it);
 			Locations().erase		(it);
 		}else
@@ -182,7 +187,7 @@ void CMapManager::RemoveMapLocationByObjectID(u16 id) //call on destroy object
 	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
 	while( it!= Locations().end() ){
 		
-			CheckUserLocation		((*it).location);
+//.			CheckUserLocation		((*it).location);
 			delete_data				(*it);
 			Locations().erase		(it);
 
@@ -197,7 +202,7 @@ void CMapManager::RemoveMapLocation			(CMapLocation* ml)
 
 	Locations_it it = std::find_if(Locations().begin(),Locations().end(),key);
 	if( it!=Locations().end() ){
-		CheckUserLocation		((*it).location);
+//.		CheckUserLocation		((*it).location);
 		delete_data				(*it);
 		Locations().erase		(it);
 	}
@@ -248,15 +253,15 @@ Locations&	CMapManager::Locations	()
 {
 	return m_locations->registry().objects();
 }
-
+/*
 void CheckUserLocation		(CMapLocation* ml)
 {
 	if(false == ml->IsUserDefined()) return;
 	Level().Server->FreeID(ml->ObjectID(),Device.TimerAsync());
 
 	Actor()->GameTaskManager().RemoveUserTask(ml);
-
 }
+*/
 #ifdef DEBUG
 void CMapManager::Dump						()
 {

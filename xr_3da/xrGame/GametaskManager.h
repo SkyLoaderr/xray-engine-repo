@@ -25,11 +25,13 @@ public:
 	CGameTask*				HasGameTask						(const TASK_ID& id);
 	CGameTask*				GiveGameTaskToActor				(const TASK_ID& id, bool bCheckExisting=true);
 	CGameTask*				GiveGameTaskToActor				(CGameTask* t, bool bCheckExisting=true);
-	void					SetTaskState					(const TASK_ID& id, int objective_num, ETaskState state);
-	void					SetTaskState					(CGameTask* t, int objective_num, ETaskState state);
+	void					SetTaskState					(const TASK_ID& id, u16 objective_num, ETaskState state);
+	void					SetTaskState					(CGameTask* t, u16 objective_num, ETaskState state);
 
 	void					UpdateTasks						();
-	void					RemoveUserTask					(CMapLocation* ml);
+//.	void					RemoveUserTask					(CMapLocation* ml);
 
-	SGameTaskObjective*		ActiveTask						();
+	CGameTask*				ActiveTask						();
+	SGameTaskObjective*		ActiveObjective					();
+	void					SetActiveTask					(const TASK_ID& id, u16 idx);
 };

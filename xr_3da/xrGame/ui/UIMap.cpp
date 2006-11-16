@@ -462,10 +462,11 @@ bool CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
 	if (MapWnd()->m_flags.is_any(CUIMapWnd::lmZoomIn+CUIMapWnd::lmZoomOut))	return false;
 
 	if (mouse_action == WINDOW_LBUTTON_DOWN){			
-
+/*
 		if (MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) )
 			MapWnd()->AddUserSpot(this);
 		else
+*/
 			if(fsimilar(MapWnd()->GlobalMap()->GetCurrentZoom(), MapWnd()->GlobalMap()->GetMinZoom(),EPS_L) )
 				MapWnd()->SetTargetMap( this, true );
 

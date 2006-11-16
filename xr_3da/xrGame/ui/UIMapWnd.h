@@ -30,18 +30,18 @@ class CUIMapWnd: public CUIWindow, public CUIWndCallback
 	enum EMapToolBtn{	eGlobalMap=0,
 						eZoomIn,
 						eZoomOut,
-						eAddSpot,
-						eRemoveSpot,
+//.						eAddSpot,
+//.						eRemoveSpot,
 						eActor,
-						eHighlightSpot,
+//.						eHighlightSpot,
 						eMaxBtn};
 public:
-	enum lmFlags{	lmUserSpotAdd	= (1<<1),
-					lmUserSpotRemove= (1<<2),
+	enum lmFlags{	//. lmUserSpotAdd	= (1<<1),
+					//. lmUserSpotRemove= (1<<2),
 					lmZoomIn		= (1<<3),
 					lmZoomOut		= (1<<4),
 					lmFirst			= (1<<5),
-					lmHighlightSpot = (1<<6),
+//.					lmHighlightSpot = (1<<6),
 				};
 	Flags32						m_flags;
 private:
@@ -63,18 +63,18 @@ private:
 	void						OnScrollV				();
 	void						OnScrollH				();
 	void						OnToolGlobalMapClicked	(CUIWindow*, void*);
-	void						OnToolHighlightSpotClicked(CUIWindow*, void*);
+//.	void						OnToolHighlightSpotClicked(CUIWindow*, void*);
 	void						OnToolActorClicked		(CUIWindow*, void*);
 	void						OnToolNextMapClicked	(CUIWindow*, void*);
 	void						OnToolPrevMapClicked	(CUIWindow*, void*);
 	void						OnToolZoomInClicked		(CUIWindow*, void*);
 	void						OnToolZoomOutClicked	(CUIWindow*, void*);
-	void						OnToolAddSpotClicked	(CUIWindow*, void*);
-	void						OnToolRemoveSpotClicked	(CUIWindow*, void*);
+//.	void						OnToolAddSpotClicked	(CUIWindow*, void*);
+//.	void						OnToolRemoveSpotClicked	(CUIWindow*, void*);
 	void						ValidateToolBar			();
 
-	void						RemoveSpot				();
-	void						HighlightSpot			();
+//.	void						RemoveSpot				();
+//.	void						HighlightSpot			();
 	void						ResetActionPlanner		();
 public:
 	CUICustomMap*				m_tgtMap;
@@ -103,7 +103,7 @@ public:
 	void						SetTargetMap			(CUICustomMap* m, const Fvector2& pos, bool bZoomIn = false);
 	void						SetTargetMap			(const shared_str& name, const Fvector2& pos, bool bZoomIn = false);
 	void						SetTargetMap			(const shared_str& name, bool bZoomIn = false);
-	void						AddUserSpot				(CUILevelMap*);
+//.	void						AddUserSpot				(CUILevelMap*);
 	void						Select					(CMapLocation* ml);
 
 	Frect						ActiveMapRect			()		{Frect r; m_UILevelFrame->GetAbsoluteRect(r); return r;};

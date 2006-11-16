@@ -20,7 +20,7 @@ class CUIEventsWnd	:public CUIWindow, public CUIWndCallback{
 	enum ETaskFilters{	eActiveTask			=	0,
 						eAccomplishedTask,
 						eFailedTask,
-						eOwnTask,
+//.						eOwnTask,
 						eMaxTask};
 	enum EEventWndFlags{
 						flNeedReload	=(1<<0),

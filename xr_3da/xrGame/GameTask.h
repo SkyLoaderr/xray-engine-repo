@@ -55,7 +55,7 @@ public:
 	shared_str				map_location;
 	u16						object_id;
 	shared_str				article_key;
-	CMapLocation*			HasMapLocation		();
+	CMapLocation*			LinkedMapLocation	();
 	ETaskState				TaskState			()	{return task_state;};
 	ETaskState				UpdateState			();
 
@@ -108,12 +108,12 @@ public:
 							CGameTask				(const TASK_ID& id);
 							CGameTask				();
 
-	bool					HighlightedSpotOnMap	(int objective_id);					
-	void					HighlightSpotOnMap		(int objective_id, bool bHighlight);
+//.	bool					HighlightedSpotOnMap	(int objective_id);					
+//.	void					HighlightSpotOnMap		(int objective_id, bool bHighlight);
 	
-	bool					HasMapLocations			();
-	void					ShowLocations			(bool bShow);
-	bool					ShownLocations			();
+	bool					HasLinkedMapLocations	();
+//.	void					ShowLocations			(bool bShow);
+//.	bool					ShownLocations			();
 	
 	SGameTaskObjective&		Objective				(int objectice_id)	{return m_Objectives[objectice_id];};
 

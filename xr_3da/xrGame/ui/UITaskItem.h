@@ -16,7 +16,7 @@ class CUITaskItem :public CUIListItem, public CUIWndCallback
 	typedef		CUIListItem	inherited;
 protected:
 	CGameTask*		m_GameTask;
-	int				m_TaskObjectiveIdx;
+	u16				m_TaskObjectiveIdx;
 	void			OnClick					();
 	void			Init					();
 public:
@@ -24,11 +24,10 @@ public:
 	virtual			~CUITaskItem			();
 	virtual void	SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 					
-	virtual void	SetGameTask				(CGameTask* gt, int obj_idx);
-	virtual void	Update					();
+	virtual void	SetGameTask				(CGameTask* gt, u16 obj_idx);
 
 	CGameTask*		GameTask				()	{return m_GameTask;}
-	int				ObjectiveIdx			()	{return m_TaskObjectiveIdx;}
+	u16				ObjectiveIdx			()	{return m_TaskObjectiveIdx;}
 	SGameTaskObjective*	Objective			();
 
 	CUIEventsWnd*	m_EventsWnd;
@@ -41,7 +40,7 @@ protected:
 	CUIStatic*		m_taskImage;
 	CUIStatic*		m_captionStatic;
 	CUIStatic*		m_captionTime;
-	CUI3tButton*	m_showLocationBtn;
+//.	CUI3tButton*	m_showLocationBtn;
 	CUI3tButton*	m_switchDescriptionBtn;
 	bool			m_curr_descr_mode;
 	void			Init					();
@@ -49,8 +48,8 @@ public:
 					CUITaskRootItem			(CUIEventsWnd* w);
 	virtual			~CUITaskRootItem		();
 	virtual void	Update					();
-	virtual void	SetGameTask				(CGameTask* gt, int obj_idx);
-			void	OnShowLocationClicked	();
+	virtual void	SetGameTask				(CGameTask* gt, u16 obj_idx);
+//.			void	OnShowLocationClicked	();
 			void	OnSwitchDescriptionClicked();
 
 	virtual void	MarkSelected			(bool b);
@@ -64,7 +63,7 @@ class CUITaskSubItem :public CUITaskItem
 	u32				m_failed_color;
 	u32				m_accomplished_color;
 protected:
-	CUI3tButton*	m_showPointerBtn;
+	CUIStatic*		m_ActiveObjectiveStatic;
 	CUI3tButton*	m_showDescriptionBtn;
 	CUIStatic*		m_descriptionStatic;
 	CUIStatic*		m_stateStatic;
@@ -75,13 +74,13 @@ public:
 					CUITaskSubItem			(CUIEventsWnd* w);
 	virtual			~CUITaskSubItem			();
 	virtual void	Update					();
-	virtual void	SetGameTask				(CGameTask* gt, int obj_idx);
-			void	OnShowPointerClicked	();
+	virtual void	SetGameTask				(CGameTask* gt, u16 obj_idx);
+			void	OnActiveObjectiveClicked();
 			void	OnShowDescriptionClicked();
 	virtual void	MarkSelected			(bool b);
 	virtual bool	OnDbClick				();
 };
-
+/*
 class CUIUserTaskEditWnd;
 class CUIUserTaskItem :public CUITaskItem
 {
@@ -101,7 +100,7 @@ public:
 					CUIUserTaskItem			(CUIEventsWnd* w);
 	virtual			~CUIUserTaskItem			();
 	virtual void	Update					();
-	virtual void	SetGameTask				(CGameTask* gt, int obj_idx);
+	virtual void	SetGameTask				(CGameTask* gt, u16 obj_idx);
 			void	OnShowLocationClicked	();
 			void	OnShowPointerClicked	();
 			void	OnDescriptionChanged	();
@@ -129,4 +128,4 @@ public:
 							CUIUserTaskEditWnd		(CUIUserTaskItem* itm);
 	virtual void			SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 			void			Start					();
-};
+};*/

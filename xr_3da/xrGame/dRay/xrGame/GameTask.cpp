@@ -227,16 +227,18 @@ void CGameTask::Load(const TASK_ID& id)
 	g_gameTaskXml.SetLocalRoot		(g_gameTaskXml.GetRoot());
 }
 
+/*
 bool CGameTask::HighlightedSpotOnMap(int objective_id)
 {
 	CMapLocation* ml = m_Objectives[objective_id].HasMapLocation();
 	return (ml && ml->PointerEnabled	());
 }
 
+
 void CGameTask::HighlightSpotOnMap(int objective_id, bool bHighlight)
 {
 	Level().MapManager().DisableAllPointers();
-	CMapLocation* ml = m_Objectives[objective_id].HasMapLocation();
+	CMapLocation* ml = m_Objectives[objective_id].LinkedMapLocation();
 	
 	if(NULL==ml) return;
 
@@ -245,15 +247,17 @@ void CGameTask::HighlightSpotOnMap(int objective_id, bool bHighlight)
 	else
 		ml->DisablePointer();
 }
+*/
 
-bool CGameTask::HasMapLocations			()
+bool CGameTask::HasLinkedMapLocations			()
 {
 	for(u32 i=0; i<m_Objectives.size(); ++i)
-		if(m_Objectives[i].HasMapLocation()!=NULL)return true;
+		if(m_Objectives[i].LinkedMapLocation()!=NULL)return true;
 
 	return false;
 }
 
+/*
 void CGameTask::ShowLocations			(bool bShow)
 {
 	for(u32 i=0; i<m_Objectives.size(); ++i){
@@ -277,6 +281,7 @@ bool CGameTask::ShownLocations			()
 	}
 	return false;
 }
+*/
 
 SGameTaskObjective::SGameTaskObjective		(CGameTask* parent, int _idx)
 :description		(NULL),
@@ -302,7 +307,7 @@ idx					(0)
 {
 }
 
-CMapLocation* SGameTaskObjective::HasMapLocation		()
+CMapLocation* SGameTaskObjective::LinkedMapLocation		()
 {
 	if( map_location.size()==0) return NULL;
 	return Level().MapManager().GetMapLocation(map_location, object_id);
