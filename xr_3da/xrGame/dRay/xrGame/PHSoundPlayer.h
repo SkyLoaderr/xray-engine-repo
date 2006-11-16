@@ -1,6 +1,7 @@
 #pragma once
 #include "GameMtlLib.h"
 
+class CPhysicsShellHolder;
 
 class CPHSoundPlayer
 {

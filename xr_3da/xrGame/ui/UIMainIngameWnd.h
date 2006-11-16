@@ -22,6 +22,10 @@ class					CUIZoneMap;
 class					CUIArtefactPanel;
 class					CUIScrollView;
 struct					GAME_NEWS_DATA;
+class					CActor;
+class					CWeapon;
+class					CMissile;
+class					CInventoryItem;
 
 class CUIMainIngameWnd: public CUIWindow  
 {

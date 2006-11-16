@@ -37,7 +37,7 @@ public:
 	virtual void		Init();
 
 	virtual bool		StopAnyMove					(){return true;}
-	virtual void		SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+	virtual void		SendMessage					(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
 	virtual void		Draw();
 	virtual void		Update();
@@ -57,15 +57,15 @@ public:
 
 protected:
 	//диалог
-	void				InitTalkDialog();
-	void				AskQuestion();
+	void				InitTalkDialog			();
+	void				AskQuestion				();
 
-	void				SayPhrase(PHRASE_ID phrase_id);
+	void				SayPhrase				(int phrase_id);
 
 	// Функции добавления строк в листы вопросов и ответов
 public:
-	void				AddQuestion(LPCSTR text, int value = 0);
-	void				AddAnswer(LPCSTR text, const char* SpeakerName);
+	void				AddQuestion				(LPCSTR text, int value = 0);
+	void				AddAnswer				(LPCSTR text, const char* SpeakerName);
 protected:
 	//для режима торговли
 	CUITradeWnd*			UITradeWnd;
@@ -89,6 +89,6 @@ protected:
 
 	//текущий диалог, если NULL, то переходим в режим выбора темы
 	DIALOG_SHARED_PTR	m_pCurrentDialog;
-	bool				TopicMode	();
-	void				ToTopicMode();
+	bool				TopicMode				();
+	void				ToTopicMode				();
 };

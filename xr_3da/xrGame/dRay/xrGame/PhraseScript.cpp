@@ -108,7 +108,9 @@ void  CPhraseScript::TransferInfo	(const CInventoryOwner* pOwner) const
 
 
 
-bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO, LPCSTR dialog_id, int phrase_num) const 
+bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO, 
+									 LPCSTR dialog_id, 
+									 int phrase_num) const 
 {
 	bool predicate_result = true;
 
@@ -130,7 +132,7 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO, LPCSTR dialog_i
 		if(!predicate_result){
 		#ifdef DEBUG
 			if (psAI_Flags.test(aiDialogs))
-				Msg("dialog [%s] phrase[%d] rejected by script predicate",dialog_id,phrase_num);
+				Msg("dialog [%s] phrase[%d] rejected by script predicate", dialog_id, phrase_num);
 		#endif
 			break;
 		} 
@@ -153,7 +155,11 @@ void CPhraseScript::Action			(const CGameObject* pSpeakerGO, LPCSTR dialog_id, i
 	TransferInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO));
 }
 
-bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO1, const CGameObject* pSpeakerGO2, LPCSTR dialog_id, int phrase_num) const 
+bool CPhraseScript::Precondition	(	const CGameObject* pSpeakerGO1, 
+										const CGameObject* pSpeakerGO2, 
+										LPCSTR dialog_id, 
+										int phrase_num,
+										int next_phrase_num) const 
 {
 	bool predicate_result = true;
 
@@ -170,7 +176,7 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO1, const CGameObj
 		THROW(*Preconditions()[i]);
 		bool functor_exists = ai().script_engine().functor(*Preconditions()[i] ,lua_function);
 		THROW3(functor_exists, "Cannot find phrase precondition", *Preconditions()[i]);
-		predicate_result = lua_function	(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object(), dialog_id, phrase_num);
+		predicate_result = lua_function	(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object(), dialog_id, phrase_num, next_phrase_num);
 		if(!predicate_result){
 		#ifdef DEBUG
 			if (psAI_Flags.test(aiDialogs))

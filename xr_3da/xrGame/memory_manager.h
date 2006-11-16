@@ -16,6 +16,8 @@ class CItemManager;
 class CDangerManager;
 class CCustomMonster;
 class CAI_Stalker;
+class CEntityAlive;
+class CSound_UserDataVisitor;
 
 namespace MemorySpace {
 	struct CMemoryInfo;

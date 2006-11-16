@@ -175,7 +175,7 @@ int	 CCharacterInfo::TradeIconY() const
 	return m_SpecificCharacter.TradeIconY();
 }
 
-PHRASE_DIALOG_ID	CCharacterInfo::StartDialog	()	const
+shared_str	CCharacterInfo::StartDialog	()	const
 {
 	return m_StartDialog;
 }

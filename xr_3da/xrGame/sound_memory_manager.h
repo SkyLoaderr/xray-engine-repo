@@ -19,6 +19,7 @@ namespace MemorySpace {
 enum ESoundTypes;
 
 class CCustomMonster;
+class CAI_Stalker;
 
 class CSoundMemoryManager {
 public:

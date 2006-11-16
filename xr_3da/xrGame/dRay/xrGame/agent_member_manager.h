@@ -12,6 +12,7 @@
 #include "memory_space.h"
 
 class CAgentManager;
+class CEntity;
 
 class CAgentMemberManager {
 public:

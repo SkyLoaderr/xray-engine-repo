@@ -19,6 +19,7 @@ typedef enum {
 } MP_BUY_SLOT;
 
 class CUIWeaponCellItem;
+class CWeapon;
 
 class CUIBuyWnd : public CUIDialogWnd{
 public:

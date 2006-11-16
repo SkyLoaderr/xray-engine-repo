@@ -1,8 +1,3 @@
-///////////////////////////////////////////////////////////////
-// PhraseDialog.h
-// Класс диалога - общения при помощи фраз 2х персонажей в игре
-///////////////////////////////////////////////////////////////
-
 #pragma once
 
 #include "shared_data.h"
@@ -11,12 +6,9 @@
 #include "PhraseDialogDefs.h"
 #include "xml_str_id_loader.h"
 
-typedef CGraphAbstract<CPhrase*, float, PHRASE_ID> CPhraseGraph;
+typedef CGraphAbstract<CPhrase*, float, int> CPhraseGraph;
 
 
-//////////////////////////////////////////////////////////////////////////
-// SPhraseDialogData: данные для представления диалога
-//////////////////////////////////////////////////////////////////////////
 struct SPhraseDialogData : CSharedResource
 {
 	SPhraseDialogData ();
@@ -33,8 +25,6 @@ struct SPhraseDialogData : CSharedResource
 	//для начала диалога
 	CPhraseScript	m_PhraseScript;
 
-//	Flags16			m_eDialogType;
-	
 	//произвольное число - приоритет диалога (0 по умолчанию), может быть отрицательным
 	//в окне выбора у актера диалоги будут сортироваться по этому значению от меньшего (снизу) к большему (сверху)
 	int	m_iPriority;
@@ -45,12 +35,12 @@ DEFINE_VECTOR(CPhrase*, PHRASE_VECTOR, PHRASE_VECTOR_IT);
 class CPhraseDialog;
 class CPhraseDialogManager;
 
-class CPhraseDialog	: public CSharedClass<SPhraseDialogData, PHRASE_DIALOG_ID, false>,
-					  public CXML_IdToIndex<PHRASE_DIALOG_ID, int, CPhraseDialog>
+class CPhraseDialog	: public CSharedClass<SPhraseDialogData, shared_str, false>,
+					  public CXML_IdToIndex<shared_str, int, CPhraseDialog>
 {
 private:
-	typedef CSharedClass<SPhraseDialogData, PHRASE_DIALOG_ID, false>				inherited_shared;
-	typedef CXML_IdToIndex<PHRASE_DIALOG_ID, int, CPhraseDialog>					id_to_index;
+	typedef CSharedClass<SPhraseDialogData, shared_str, false>				inherited_shared;
+	typedef CXML_IdToIndex<shared_str, int, CPhraseDialog>					id_to_index;
 
 	friend id_to_index;
 public:
@@ -63,7 +53,7 @@ public:
 			CPhraseDialog&	operator = (const CPhraseDialog& pharase_dialog) {*this = pharase_dialog; return *this;}
 
 	
-	virtual void			Load				(PHRASE_DIALOG_ID dialog_id);
+	virtual void			Load				(shared_str dialog_id);
 
 	//связь диалога между двумя DialogManager
 	virtual void			Init				(CPhraseDialogManager* speaker_first, CPhraseDialogManager* speaker_second);
@@ -83,11 +73,11 @@ public:
 	//если вернули false, то считаем, что диалог закончился
 	//(сделано статическим, так как мы должны передавать имеенно DIALOG_SHARED_PTR&,
 	//а не обычный указатель)
-	static bool				SayPhrase			(DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phrase_id);
+	static bool				SayPhrase			(DIALOG_SHARED_PTR& phrase_dialog, int phrase_id);
 
-	virtual LPCSTR			GetPhraseText		(PHRASE_ID phrase_id, bool current_speaking = true);
+	virtual LPCSTR			GetPhraseText		(int phrase_id, bool current_speaking = true);
 	virtual LPCSTR			GetLastPhraseText	() {return GetPhraseText(m_iSaidPhraseID, false);}
-	virtual PHRASE_ID		GetLastPhraseID		() {return m_iSaidPhraseID;}
+	virtual int				GetLastPhraseID		() {return m_iSaidPhraseID;}
 
 	//заголовок, диалога, если не задан, то 0-я фраза
 	virtual LPCSTR			DialogCaption		();
@@ -114,10 +104,10 @@ public:
 
 protected:
 	//идентификатор диалога
-	PHRASE_DIALOG_ID		m_DialogId;
+	shared_str				m_DialogId;
 
 	//ID последней сказанной фразы в диалоге, -1 если такой не было
-	PHRASE_ID				m_iSaidPhraseID;
+	int						m_iSaidPhraseID;
 	//диалог закончен
 	bool					m_bFinished;
 
@@ -136,9 +126,9 @@ protected:
 	virtual void			load_shared	(LPCSTR);
 	
 	//рекурсивное добавление фраз в граф
-	void					AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id, PHRASE_ID prev_phrase_id);
+	void					AddPhrase	(XML_NODE* phrase_node, int phrase_id, int prev_phrase_id);
 public:
-	CPhrase*				AddPhrase	(LPCSTR text, PHRASE_ID phrase_id, PHRASE_ID prev_phrase_id, int goodwil_level);
+	CPhrase*				AddPhrase	(LPCSTR text, int phrase_id, int prev_phrase_id, int goodwil_level);
 	void					SetCaption	(LPCSTR str);
 	void					SetPriority	(int val);
 

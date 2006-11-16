@@ -4,7 +4,7 @@
 
 class CObjectAnimator;
 class CEffectorController;
-
+class CActor;
 
 typedef fastdelegate::FastDelegate0<float>		GET_KOEFF_FUNC;
 

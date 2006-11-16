@@ -16,6 +16,7 @@ using namespace MonsterSpace;
 
 class CAI_Stalker;
 class CStalkerVelocityCollection;
+class CGameObject;
 
 class CStalkerMovementManager : public CMovementManager {
 protected:

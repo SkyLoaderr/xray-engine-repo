@@ -2,6 +2,7 @@
 
 // проверить, находится ли объект entity на ноде
 // возвращает позицию объекта, если он находится на ноде, или центр его ноды
+class CEntity;
 extern Fvector get_valid_position(const CEntity *entity, const Fvector &actual_position);
 
 // возвращает true, если объект entity находится на ноде

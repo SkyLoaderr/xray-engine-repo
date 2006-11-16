@@ -18,6 +18,7 @@ namespace MemorySpace {
 
 class CEntityAlive;
 class CCustomMonster;
+class CAI_Stalker;
 
 class CHitMemoryManager {
 public:

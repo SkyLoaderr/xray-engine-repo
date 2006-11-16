@@ -36,6 +36,8 @@ class CExplosive;
 class CHolderCustom;
 class CAttachmentOwner;
 class CBaseMonster;
+class CSpaceRestrictor;
+class CAttachableItem;
 
 namespace GameObject {
 	enum ECallbackType;

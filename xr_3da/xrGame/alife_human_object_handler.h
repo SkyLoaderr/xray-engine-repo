@@ -13,6 +13,7 @@
 class CSE_ALifeItemWeapon;
 class CSE_ALifeInventoryItem;
 class CSE_ALifeGroupAbstract;
+class CSE_ALifeHumanAbstract;
 
 class CALifeHumanObjectHandler {
 public:

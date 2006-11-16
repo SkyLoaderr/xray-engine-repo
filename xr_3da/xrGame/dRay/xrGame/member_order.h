@@ -16,6 +16,7 @@
 class CAI_Stalker;
 class CCoverPoint;
 class CExplosive;
+class CGameObject;
 
 class CMemberOrder {
 public:

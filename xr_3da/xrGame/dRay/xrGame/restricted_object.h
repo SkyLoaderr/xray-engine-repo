@@ -12,6 +12,7 @@
 
 class CSE_Abstract;
 class CCustomMonster;
+class CGameObject;
 
 namespace RestrictionSpace {
 	enum ERestrictorTypes;

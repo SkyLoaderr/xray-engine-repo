@@ -108,8 +108,8 @@ void CUITalkWnd::InitOthersStartDialog()
 		
 		//сказать фразу
 		CStringTable stbl;
-		AddAnswer(m_pCurrentDialog->GetPhraseText(START_PHRASE), m_pOthersInvOwner->Name());
-		m_pOthersDialogManager->SayPhrase(m_pCurrentDialog, START_PHRASE);
+		AddAnswer(m_pCurrentDialog->GetPhraseText(0), m_pOthersInvOwner->Name());
+		m_pOthersDialogManager->SayPhrase(m_pCurrentDialog, 0);
 
 		//если диалог завершился, перейти в режим выбора темы
 		if(!m_pCurrentDialog || m_pCurrentDialog->IsFinished()) ToTopicMode();
@@ -157,7 +157,7 @@ void CUITalkWnd::UpdateQuestions()
 					it++)
 				{
 					CPhrase* phrase = *it;
-					AddQuestion(phrase->GetText(), (PHRASE_ID)phrase->GetIndex());
+					AddQuestion(phrase->GetText(), (int)phrase->GetIndex());
 				}
 			}
 			else
@@ -286,7 +286,7 @@ void  CUITalkWnd::ToTopicMode		()
 void CUITalkWnd::AskQuestion()
 {
 	if(m_bNeedToUpdateQuestions) return;//quick dblclick:(
-	PHRASE_ID phrase_id;
+	int phrase_id;
 
 	//игрок выбрал тему разговора
 	if(TopicMode())
@@ -302,11 +302,11 @@ void CUITalkWnd::AskQuestion()
 		m_pCurrentDialog = m_pOurDialogManager->AvailableDialogs()[UITalkDialogWnd->m_iClickedQuestion];
 		
 		m_pOurDialogManager->InitDialog(m_pOthersDialogManager, m_pCurrentDialog);
-		phrase_id = START_PHRASE;
+		phrase_id = 0;
 	}
 	else
 	{
-		phrase_id = (PHRASE_ID)UITalkDialogWnd->m_iClickedQuestion;
+		phrase_id = (int)UITalkDialogWnd->m_iClickedQuestion;
 	}
 
 	SayPhrase(phrase_id);
@@ -315,7 +315,7 @@ void CUITalkWnd::AskQuestion()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
+void CUITalkWnd::SayPhrase(int phrase_id)
 {
 
 	AddAnswer(m_pCurrentDialog->GetPhraseText(phrase_id), m_pOurInvOwner->Name());

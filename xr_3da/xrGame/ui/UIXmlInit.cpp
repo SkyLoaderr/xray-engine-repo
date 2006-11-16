@@ -147,7 +147,8 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path,
 	//инициализировать заголовок окна
 	strconcat(buf,path,":title");
 	if(xml_doc.NavigateToNode(buf,index)) InitStatic(xml_doc, buf, index, &pWnd->UITitleText);
-
+	
+	pWnd->BringToTop	(&pWnd->UITitleText);
 
 	return true;
 }

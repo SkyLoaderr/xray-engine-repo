@@ -7,6 +7,7 @@
 class CInventory;
 class CGameObject;
 class CCameraBase;
+class CActor;
 
 class CHolderCustom
 {

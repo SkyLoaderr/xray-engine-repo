@@ -1,10 +1,3 @@
-///////////////////////////////////////////////////////////////
-// PhraseDialogManager.h
-// Класс, от которого наследуются персонажи, ведущие диалог
-// между собой.
-//
-///////////////////////////////////////////////////////////////
-
 #pragma once
 
 #include "PhraseDialogDefs.h"
@@ -22,7 +15,7 @@ public:
 	//должна быть переопределена для сталкеров и актера
 	virtual void					ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog);
 	//ответить на сказанную фразу в диалоге
-	virtual void					SayPhrase			(DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phrase_id);
+	virtual void					SayPhrase			(DIALOG_SHARED_PTR& phrase_dialog, int phrase_id);
 
 	//виртуальная функция, заполняет массив, тем диалогами, которые
 	//персонаж может инициировать в данный момент
@@ -32,11 +25,11 @@ public:
 	virtual const DIALOG_VECTOR&	AvailableDialogs	() {return m_AvailableDialogs;}
 
 protected:
-	virtual bool					AddAvailableDialog	(PHRASE_DIALOG_ID dialog_id, CPhraseDialogManager* partner);
+	virtual bool					AddAvailableDialog	(shared_str dialog_id, CPhraseDialogManager* partner);
 	
 	//буфферный список диалогов, которые были проверены
 	//во время UpdateAvailableDialogs
-	xr_vector<PHRASE_DIALOG_ID>		m_CheckedDialogs;
+	DIALOG_ID_VECTOR				m_CheckedDialogs;
 
 	//список активных диалогов
 	DIALOG_VECTOR					m_ActiveDialogs;

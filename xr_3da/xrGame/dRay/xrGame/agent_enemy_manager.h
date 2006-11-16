@@ -12,6 +12,8 @@
 
 class CAgentManager;
 class CMemberOrder;
+class CEntityAlive;
+class CAI_Stalker;
 
 class CAgentEnemyManager {
 public:

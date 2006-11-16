@@ -2,6 +2,8 @@
 #include "ShootingObject.h"
 #include "HudSound.h"
 
+class CPhysicsShellHolder;
+
 class CCarWeapon :public CShootingObject
 {
 protected:

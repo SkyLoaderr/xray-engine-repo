@@ -11,6 +11,7 @@
 #include "alife_monster_brain.h"
 
 class CALifeHumanObjectHandler;
+class CSE_ALifeHumanAbstract;
 
 class CALifeHumanBrain : public CALifeMonsterBrain {
 private:

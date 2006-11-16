@@ -94,7 +94,7 @@ protected:
 	SPECIFIC_CHARACTER_ID m_SpecificCharacterId;
 
 #ifdef XRGAME_EXPORTS
-	PHRASE_DIALOG_ID m_StartDialog;
+	shared_str m_StartDialog;
 
 	//загруженная информация о конкретном персонаже
 	CSpecificCharacter m_SpecificCharacter;
@@ -125,7 +125,7 @@ public:
 //	int		MapIconX	()	const;
 //	int		MapIconY	()	const;
 
-	PHRASE_DIALOG_ID			StartDialog	()	const;
+	shared_str			StartDialog	()	const;
 	const DIALOG_ID_VECTOR&		ActorDialogs()	const;
 #endif
 

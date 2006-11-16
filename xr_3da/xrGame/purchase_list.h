@@ -11,6 +11,7 @@
 #include "associative_vector.h"
 
 class CInventoryOwner;
+class CGameObject;
 
 class CPurchaseList {
 public:

@@ -25,6 +25,7 @@ class CCharacterInfo;
 class CSpecificCharacter;
 class CTradeParameters;
 class CPurchaseList;
+class CWeapon;
 
 class CInventoryOwner : public CAttachmentOwner {							
 public:

@@ -31,6 +31,7 @@ class CEatableItem;
 struct SPHNetState;
 struct net_update_IItem;
 struct net_updateData;
+class CInventoryOwner;
 
 struct SHit;
 

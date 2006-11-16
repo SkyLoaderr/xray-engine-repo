@@ -1,18 +1,9 @@
-//////////////////////////////////////////////////////////////////////////
-// specific_character.cpp:	игровая информация для о конкретном 
-//							персонажей в игре
-//////////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 #include "specific_character.h"
 
 #ifdef  XRGAME_EXPORTS
 #include "PhraseDialog.h"
 #include "string_table.h"
-
-
-//////////////////////////////////////////////////////////////////////////
-
 
 
 SSpecificCharacterData::SSpecificCharacterData()
@@ -26,9 +17,6 @@ SSpecificCharacterData::SSpecificCharacterData()
 
 	m_StartDialog			= NULL;
 	m_ActorDialogs.clear	(); 
-
-//	m_iIconX				= m_iIconY = -1;
-//	m_iMapIconX				= m_iMapIconY = -1;
 
 	m_Rank					= NO_RANK;
 	m_Reputation			= NO_REPUTATION;
@@ -45,10 +33,6 @@ SSpecificCharacterData::~SSpecificCharacterData()
 }
 
 #endif
-
-
-//////////////////////////////////////////////////////////////////////////
-
 CSpecificCharacter::CSpecificCharacter()
 {
 	m_OwnId = NULL;
@@ -115,16 +99,12 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	R_ASSERT3(!(data()->m_bNoRandom && data()->m_bDefaultForCommunity), 
 		"cannot set 'no_random' and 'team_default' flags simultaneously, profile id", *shared_str(item_data.id));
 	
-	/////////////////////////////////////////////////
-
 #ifdef  XRGAME_EXPORTS
 
 	LPCSTR start_dialog = uiXml.Read("start_dialog", 0, NULL);
 	if(start_dialog)
 	{
 		data()->m_StartDialog	= start_dialog;
-//		if(!data()->m_StartDialog || !data()->m_StartDialog.size() )
-//			Debug.fatal(DEBUG_INFO,"start dialog %s doesn't exists in specific character id=%s", start_dialog,  *shared_str(item_data.id));
 	}
 	else
 		data()->m_StartDialog	= NULL;

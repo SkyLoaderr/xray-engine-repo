@@ -1,11 +1,7 @@
-// WeaponHUD.h: HUD для оружия и прочих предметов, которые
-//				могут держать в руках персонажи, также используется
-//				для синхронизации анимаций с видом от 3-го лица
-//////////////////////////////////////////////////////////////////////
-#ifndef __XR_WEAPON_HUD_H__
-#define __XR_WEAPON_HUD_H__
+#pragma once
 
 #include "../SkeletonAnimated.h"
+class CHudItem;
 
 struct weapon_hud_value: public shared_value
 {
@@ -130,5 +126,3 @@ public:
 #define		MAX_ANIM_COUNT							8
 typedef		svector<MotionID,MAX_ANIM_COUNT>		MotionSVec;
 MotionID	random_anim								(MotionSVec& v); 
-
-#endif // __XR_WEAPON_HUD_H__

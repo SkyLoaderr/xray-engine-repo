@@ -11,6 +11,7 @@ class CUIPropertiesBox;
 class CUIButton;
 class CUICellItem;
 class CInventoryBox;
+class CInventoryOwner;
 
 class CUICarBodyWnd: public CUIDialogWnd
 {
