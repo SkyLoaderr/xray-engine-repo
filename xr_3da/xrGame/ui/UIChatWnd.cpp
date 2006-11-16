@@ -62,7 +62,12 @@ void CUIChatWnd::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status
 	{
 			shared_str phrase = UIEditBox.GetText();
 			if (pOwner)
-				pOwner->OnKeyboardPress(kCHAT);
+			{
+				if (sendNextMessageToTeam)
+					pOwner->OnKeyboardPress(kCHAT_TEAM);
+				else
+					pOwner->OnKeyboardPress(kCHAT);
+			}
 			UIEditBox.SetText("");
 	}
 
