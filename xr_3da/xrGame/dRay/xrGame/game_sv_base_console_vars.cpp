@@ -26,7 +26,7 @@ void	CCC_SV_Int::Execute	(LPCSTR args)
 }
 
 
-void	CCC_SV_Float::Execute	(LPCSTR args)
+void	CCC_SV_Flt::Execute	(LPCSTR args)
 {
 	if (strstr(args, "#set_"))
 	{			  

@@ -1666,6 +1666,36 @@ public:
 	};
 };
 
+class CCC_SV_Integer : public CCC_Integer {
+public:
+	CCC_SV_Integer(LPCSTR N, int* V, int _min=0, int _max=999) :
+	  CCC_Integer(N,V,_min,_max)  {};
+
+	  virtual void	Execute	(LPCSTR args)
+	  {
+		  CCC_Integer::Execute(args);
+		  if (g_pGameLevel)
+		  {
+			  Level().Server->game->signal_Syncronize();
+		  };
+	  }
+};
+
+class CCC_SV_Float : public CCC_Float {
+public:
+	CCC_SV_Float(LPCSTR N, float* V, float _min=0, float _max=1) :
+	  CCC_Float(N,V,_min,_max) {};
+
+	  virtual void	Execute	(LPCSTR args)
+	  {
+		  CCC_Float::Execute(args);
+		  if (g_pGameLevel)
+		  {
+			  Level().Server->game->signal_Syncronize();
+		  };
+	  }
+};
+
 class CCC_Net_CL_InputUpdateRate : public CCC_Integer {
 protected:
 	int		*value_blin;
@@ -1682,31 +1712,6 @@ public:
 		  {
 			  g_dwInputUpdateDelta = 1000/(*value_blin);
 		  };
-	  }
-};
-
-class CCC_SvControlHit : public CCC_Integer {
-protected:
-	int		*value_blin;
-public:
-	CCC_SvControlHit(LPCSTR N, int* V, int _min=0, int _max=999) :
-	  CCC_Integer(N,V,_min,_max),
-		  value_blin(V)
-	  {};
-
-	  virtual void	Execute	(LPCSTR args)
-	  {
-		  CCC_Integer::Execute(args);
-		  if (g_pGameLevel)
-		  {
-			  Level().Server->game->signal_Syncronize();
-		  };
-		  /*
-		  if (*value_blin == 0)
-			  Level().Server->game->SetServerControlHits(false);
-		  else
-			  Level().Server->game->SetServerControlHits(true);
-			  */
 	  }
 };
 
@@ -2633,9 +2638,6 @@ void CCC_RegisterCommands()
 
 	CMD4(CCC_Integer,		"cl_calculateping",		&g_bCalculatePing,	0, 1)	;
 
- 
-//	CMD4(CCC_SvControlHit,	"net_sv_control_hit",	&net_sv_control_hit,	0, 1)	;
-
 	CMD4(CCC_Integer,		"dbg_show_ani_info",	&g_ShowAnimationInfo,	0, 1)	;
 	CMD3(CCC_Mask,			"cl_dynamiccrosshair",	&psHUD_Flags,	HUD_CROSSHAIR_DYNAMIC);
 
@@ -2710,39 +2712,39 @@ void CCC_RegisterCommands()
 	CMD1(CCC_Crash,		"crash"						);
 #endif // DEBUG
 	//-------------------------------------------------------------------------------------------------
-	CMD4(CCC_Integer, "sv_rpoint_freeze_time", (int*)&g_sv_base_dwRPointFreezeTime, 0, 60000);
-	CMD4(CCC_Integer, "sv_vote_enabled", (int*)&g_sv_base_bVotingEnabled, 0, 1);
+	CMD4(CCC_SV_Integer,"sv_rpoint_freeze_time", (int*)&g_sv_base_dwRPointFreezeTime, 0, 60000);
+	CMD4(CCC_SV_Integer,"sv_vote_enabled", (int*)&g_sv_base_bVotingEnabled, 0, 1);
 
-	CMD4(CCC_Integer,"sv_spectr_freefly"	,	(int*)&g_sv_mp_bSpectator_FreeFly	, 0, 1);
-	CMD4(CCC_Integer,"sv_spectr_firsteye"	,	(int*)&g_sv_mp_bSpectator_FirstEye	, 0, 1);
-	CMD4(CCC_Integer,"sv_spectr_lookat"		,	(int*)&g_sv_mp_bSpectator_LookAt	, 0, 1);
-	CMD4(CCC_Integer,"sv_spectr_freelook"	,	(int*)&g_sv_mp_bSpectator_FreeLook	, 0, 1);
-	CMD4(CCC_Integer,"sv_spectr_teamcamera"	,	(int*)&g_sv_mp_bSpectator_TeamCamera, 0, 1);	
+	CMD4(CCC_SV_Integer,"sv_spectr_freefly"			,	(int*)&g_sv_mp_bSpectator_FreeFly	, 0, 1);
+	CMD4(CCC_SV_Integer,"sv_spectr_firsteye"		,	(int*)&g_sv_mp_bSpectator_FirstEye	, 0, 1);
+	CMD4(CCC_SV_Integer,"sv_spectr_lookat"			,	(int*)&g_sv_mp_bSpectator_LookAt	, 0, 1);
+	CMD4(CCC_SV_Integer,"sv_spectr_freelook"		,	(int*)&g_sv_mp_bSpectator_FreeLook	, 0, 1);
+	CMD4(CCC_SV_Integer,"sv_spectr_teamcamera"		,	(int*)&g_sv_mp_bSpectator_TeamCamera, 0, 1);	
 	
-	CMD4(CCC_Integer,"sv_vote_participants"	,	(int*)&g_sv_mp_bCountParticipants	,	0,	1);	
-	CMD4(CCC_Float,"sv_vote_quota"			,	&g_sv_mp_fVoteQuota		, 0.0f,1.0f);
-	CMD4(CCC_Float,"sv_vote_time"			,	&g_sv_mp_fVoteTime		, 0.5f,10.0f);
+	CMD4(CCC_SV_Integer,"sv_vote_participants"		,	(int*)&g_sv_mp_bCountParticipants	,	0,	1);	
+	CMD4(CCC_SV_Float,	"sv_vote_quota"				,	&g_sv_mp_fVoteQuota					, 0.0f,1.0f);
+	CMD4(CCC_SV_Float,	"sv_vote_time"				,	&g_sv_mp_fVoteTime					, 0.5f,10.0f);
 
-	CMD4(CCC_Integer,"sv_forcerespawn",			(int*)&g_sv_dm_dwForceRespawn,			0,60000);
-	CMD4(CCC_Integer,"sv_fraglimit",			&g_sv_dm_dwFragLimit,					0,100);
-	CMD4(CCC_Integer,"sv_timelimit",			&g_sv_dm_dwTimeLimit,					0,3600000);
-	CMD4(CCC_Integer,"sv_dmgblockindicator",	(int*)&g_sv_dm_bDamageBlockIndicators,	0, 1);
-	CMD4(CCC_Integer,"sv_dmgblocktime",			(int*)&g_sv_dm_dwDamageBlockTime,		0, 300000);
-	CMD4(CCC_Integer,"sv_anomalies_enabled",	(int*)&g_sv_dm_bAnomaliesEnabled,		0, 1);
-	CMD4(CCC_Integer,"sv_anomalies_length",		(int*)&g_sv_dm_dwAnomalySetLengthTime,	0, 3600000);
-	CMD4(CCC_Integer,"sv_pda_hunt",				(int*)&g_sv_dm_bPDAHunt,				0, 1);
-	CMD4(CCC_Integer,"sv_warm_up",				(int*)&g_sv_dm_dwWarmUp_MaxTime,		0, 3600000);
-	CMD4(CCC_Integer,"sv_ignore_money_on_buy",	(int*)&g_sv_dm_bDMIgnore_Money_OnBuy,	0, 1);
+	CMD4(CCC_SV_Integer,"sv_forcerespawn"			,	(int*)&g_sv_dm_dwForceRespawn		,	0,60000);
+	CMD4(CCC_SV_Integer,"sv_fraglimit"				,	&g_sv_dm_dwFragLimit				,	0,100);
+	CMD4(CCC_SV_Integer,"sv_timelimit"				,	&g_sv_dm_dwTimeLimit				,	0,3600000);
+	CMD4(CCC_SV_Integer,"sv_dmgblockindicator"		,	(int*)&g_sv_dm_bDamageBlockIndicators,	0, 1);
+	CMD4(CCC_SV_Integer,"sv_dmgblocktime"			,	(int*)&g_sv_dm_dwDamageBlockTime	,	0, 300000);
+	CMD4(CCC_SV_Integer,"sv_anomalies_enabled"		,	(int*)&g_sv_dm_bAnomaliesEnabled	,	0, 1);
+	CMD4(CCC_SV_Integer,"sv_anomalies_length"		,	(int*)&g_sv_dm_dwAnomalySetLengthTime,	0, 3600000);
+	CMD4(CCC_SV_Integer,"sv_pda_hunt"				,	(int*)&g_sv_dm_bPDAHunt				,	0, 1);
+	CMD4(CCC_SV_Integer,"sv_warm_up"				,	(int*)&g_sv_dm_dwWarmUp_MaxTime		,	0, 3600000);
+	CMD4(CCC_SV_Integer,"sv_ignore_money_on_buy"	,	(int*)&g_sv_dm_bDMIgnore_Money_OnBuy,	0, 1);
 
-	CMD4(CCC_Integer,"sv_auto_team_balance",	(int*)&g_sv_tdm_bAutoTeamBalance		,	0,1);
-	CMD4(CCC_Integer,"sv_auto_team_swap",		(int*)&g_sv_tdm_bAutoTeamSwap		,	0,1);
-	CMD4(CCC_Integer,"sv_friendly_indicators",	(int*)&g_sv_tdm_bFriendlyIndicators	,	0,1);
-	CMD4(CCC_Integer,"sv_friendly_names",		(int*)&g_sv_tdm_bFriendlyNames		,	0,1);
-	CMD4(CCC_Float,"sv_friendlyfire",			&g_sv_tdm_fFriendlyFireModifier		,	0.0f,2.0f);
+	CMD4(CCC_SV_Integer,"sv_auto_team_balance"		,	(int*)&g_sv_tdm_bAutoTeamBalance	,	0,1);
+	CMD4(CCC_SV_Integer,"sv_auto_team_swap"			,	(int*)&g_sv_tdm_bAutoTeamSwap		,	0,1);
+	CMD4(CCC_SV_Integer,"sv_friendly_indicators"	,	(int*)&g_sv_tdm_bFriendlyIndicators	,	0,1);
+	CMD4(CCC_SV_Integer,"sv_friendly_names"			,	(int*)&g_sv_tdm_bFriendlyNames		,	0,1);
+	CMD4(CCC_SV_Float,	"sv_friendlyfire"			,	&g_sv_tdm_fFriendlyFireModifier		,	0.0f,2.0f);
 
-	CMD4(CCC_Integer,"sv_artefact_respawn_delta",	(int*)&g_sv_ah_dwArtefactRespawnDelta	,0,1800000);
-	CMD4(CCC_Integer,"sv_artefacts_count",			(int*)&g_sv_ah_dwArtefactsNum			, 1,100);
-	CMD4(CCC_Integer,"sv_artefact_stay_time",		(int*)&g_sv_ah_dwArtefactStayTime		, 0,1800000);
-	CMD4(CCC_Integer,"sv_reinforcement_time",		(int*)&g_sv_ah_iReinforcementTime		, -1,1800000);
+	CMD4(CCC_SV_Integer,"sv_artefact_respawn_delta"	,	(int*)&g_sv_ah_dwArtefactRespawnDelta	,0,1800000);
+	CMD4(CCC_SV_Integer,"sv_artefacts_count"		,	(int*)&g_sv_ah_dwArtefactsNum			, 1,100);
+	CMD4(CCC_SV_Integer,"sv_artefact_stay_time"		,	(int*)&g_sv_ah_dwArtefactStayTime		, 0,1800000);
+	CMD4(CCC_SV_Integer,"sv_reinforcement_time"		,	(int*)&g_sv_ah_iReinforcementTime		, -1,1800000);
 
 }

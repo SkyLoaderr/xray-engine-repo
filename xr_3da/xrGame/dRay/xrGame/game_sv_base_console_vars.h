@@ -26,11 +26,11 @@ public:
 	  }
 };
 
-class CCC_SV_Float : public CCC_Float {
+class CCC_SV_Flt : public CCC_Float {
 protected:
 	float StoredValue;
 public:
-	CCC_SV_Float(LPCSTR N, float *pValue,float _min=0, float _max=999) :
+	CCC_SV_Flt(LPCSTR N, float *pValue,float _min=0, float _max=999) :
 	  CCC_Float(N,pValue,_min,_max),
 		  StoredValue(*pValue)
 	  {};

@@ -98,12 +98,20 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 		
 		game_PlayerState*   IP;
 		I = players.find(ID);
-		if( I!=players.end() ){
+		if( I!=players.end() )
+		{
 			IP = I->second;
+			//***********************************************
 			u16 OldFlags = IP->flags;
+			u8 OldVote = IP->m_bCurrentVoteAgreed;
+			//-----------------------------------------------
 			IP->net_Import(P);
+			//-----------------------------------------------
 			if (OldFlags != IP->flags)
 				if (Type() != GAME_SINGLE) OnPlayerFlagsChanged(IP);
+			if (OldVote != IP->m_bCurrentVoteAgreed)
+				OnPlayerVoted(IP);
+			//***********************************************
 
 			players_new.insert(mk_pair(ID,IP));
 			players.erase(I);
@@ -147,11 +155,17 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 	{
 		game_PlayerState* IP		= I->second;
 //		CopyMemory	(&IP,&PS,sizeof(PS));		
-
+		//***********************************************
 		u16 OldFlags = IP->flags;
+		u8 OldVote = IP->m_bCurrentVoteAgreed;
+		//-----------------------------------------------
 		IP->net_Import(P);
+		//-----------------------------------------------
 		if (OldFlags != IP->flags)
 			if (Type() != GAME_SINGLE) OnPlayerFlagsChanged(IP);
+		if (OldVote != IP->m_bCurrentVoteAgreed)
+			OnPlayerVoted(IP);
+		//***********************************************
 	}
 	else
 	{

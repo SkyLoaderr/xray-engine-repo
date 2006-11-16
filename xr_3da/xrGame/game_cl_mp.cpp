@@ -314,6 +314,8 @@ char	Color_Main[]	= "%c[255,192,192,192]";
 char	Color_Radiation[]	= "%c[255,0,255,255]";
 char	Color_Neutral[]	= "%c[255,255,0,255]";
 u32		Color_Neutral_u32	= color_rgba(255,0,255,255);
+char	Color_Red[]	= "%c[255,255,1,1]";
+char	Color_Green[]	= "%c[255,1,255,1]";
 
 void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
@@ -554,7 +556,17 @@ void game_cl_mp::OnVoteEnd				(NET_Packet& P)
 {
 	SetVotingActive(false);
 };
+void game_cl_mp::OnPlayerVoted			(game_PlayerState* ps)
+{
+	if (!IsVotingActive()) return;
+	if (ps->m_bCurrentVoteAgreed == 2) return;
 
+	CStringTable st;
+	string1024 resStr;
+	sprintf(resStr, "%s\"%s\" %s%s %s\"%s\"", Color_Teams[ps->team], ps->getName(), Color_Main, *st.translate("mp_voted"),
+		ps->m_bCurrentVoteAgreed ? Color_Green : Color_Red, *st.translate(ps->m_bCurrentVoteAgreed ? "mp_voted_yes" : "mp_voted_no"));
+	CommonMessageOut(resStr);
+}
 void game_cl_mp::LoadTeamData			(LPCSTR TeamName)
 {
 	cl_TeamStruct Team;

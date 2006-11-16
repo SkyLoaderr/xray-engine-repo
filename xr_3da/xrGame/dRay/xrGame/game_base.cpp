@@ -39,7 +39,7 @@ game_PlayerState::game_PlayerState()
 	LastBuyAcount = 0;
 	m_bClearRun = false;
 	//---------------------------------
-	m_bCurrentVoteAgreed = 0;
+	m_bCurrentVoteAgreed = 2;
 	m_s16LastSRoint = -1;
 	DeathTime = 0;
 	RespawnTime = 0;

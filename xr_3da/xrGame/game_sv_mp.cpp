@@ -669,7 +669,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 		if (!l_pC) continue;
 		if (l_pC->ID == sender)
 		{
-			l_pC->ps->m_bCurrentVoteAgreed = 2;
+			l_pC->ps->m_bCurrentVoteAgreed = 1;
 			pStartedPlayer = l_pC;
 		}
 		else
@@ -764,6 +764,7 @@ void		game_sv_mp::OnVoteNo				(ClientID sender)
 	game_PlayerState* ps = get_id(sender);
 	if (!ps) return;
 	ps->m_bCurrentVoteAgreed = 0;
+	signal_Syncronize();
 };
 
 void		game_sv_mp::OnVoteStop				()
