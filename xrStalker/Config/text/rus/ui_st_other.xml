@@ -25,6 +25,10 @@
 		<text>Твои вещи</text>
 	</string>		
 	
+	<string id="ui_st_opponent_items">
+		<text>Вещи оппонента</text>
+	</string>
+	
 	<string id="ui_st_leave">
 		<text>Уйти</text>
 	</string>	

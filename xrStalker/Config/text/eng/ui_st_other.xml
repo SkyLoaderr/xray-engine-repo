@@ -23,7 +23,11 @@
 
 	<string id="ui_st_your_items">
 		<text>Your items</text>
-	</string>		
+	</string>	
+	
+	<string id="ui_st_opponent_items">
+		<text>Opponent items</text>
+	</string>	
 	
 	<string id="ui_st_leave">
 		<text>Leave</text>
