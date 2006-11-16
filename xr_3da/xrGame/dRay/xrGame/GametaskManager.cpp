@@ -189,7 +189,15 @@ void CGameTaskManager::UpdateTasks						()
 				SetTaskState(t, i, state);
 		}
 	}
-
+	
+	SGameTaskObjective* obj = ActiveObjective();
+	if(obj)
+	{
+		Level().MapManager().DisableAllPointers();
+		CMapLocation* ml = obj->LinkedMapLocation();
+		if(ml && !ml->PointerEnabled())
+			ml->EnablePointer();
+	}
 	if(	m_flags.test(eChanged) )
 		UpdateActiveTask	();
 }
