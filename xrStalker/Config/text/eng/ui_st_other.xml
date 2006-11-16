@@ -57,6 +57,8 @@
 		<text>drink</text>
 	</string>	
 		
-</string_table>
+	<string id="ui_st_take_all">
+		<text>Take all</text>
+	</string>
 
 </string_table>
