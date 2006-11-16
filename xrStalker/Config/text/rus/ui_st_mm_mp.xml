@@ -58,7 +58,7 @@
 		<text>Смерти</text>
 	</string>
 	<string id="mm_mp_dedicated">
-		<text>Выделеный</text>
+		<text>Выделенный</text>
 	</string>
 	<string id="mm_mp_empty">
 		<text>Пустые</text>
@@ -139,7 +139,7 @@
 		<text>Обновить один</text>
 	</string>
 	<string id="mm_mp_rateofchange">
-		<text>Коэф. изминения</text>
+		<text>Коэф. изменения</text>
 	</string>
 	<string id="mm_mp_refresh">
 		<text>Обновить все</text>
@@ -151,7 +151,7 @@
 		<text>Опции рождения</text>
 	</string>
 	<string id="mm_mp_sel_maps">
-		<text>ВЫБРАНЫЕ КАРТЫ</text>
+		<text>ВЫБРАННЫЕ КАРТЫ</text>
 	</string>
 	<string id="mm_mp_server">
 		<text>Сервер</text>
@@ -193,7 +193,7 @@
 		<text>Настройки наблюдателя</text>
 	</string>
 	<string id="mm_mp_spectator_teamonly">
-		<text>Только для комманды</text>
+		<text>Только для команды</text>
 	</string>
 	<string id="mm_mp_startweather">
 		<text>Стартовая погода</text>
