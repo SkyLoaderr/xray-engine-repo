@@ -382,12 +382,10 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 	
 	SGameMtl* mtl = GMLib.GetMaterialByIdx(target_material);
 
-	//shoot_factor: простреливаемость материала (1 - полностью простреливаемый)
-	float shoot_factor = mtl->fShootFactor * bullet->pierce;
-	clamp(shoot_factor, 0.f, 1.f);
-	//material_pierce: 0 - полностью простреливаемый
-	float material_pierce = 1.f - shoot_factor;
-	clamp(material_pierce, 0.f, 1.f);
+	//shoot_factor: коеффициент указывающий на текущие свойства пули 
+	//(Если меньше 1, то пуля либо рикошетит(если контакт идёт по касательной), либо застряёт в текущем 
+	//объекте, если больше 1, то пуля прошивает объект)
+	float shoot_factor = mtl->fShootFactor * bullet->pierce*speed_factor;
 
 	float impulse	= 0.f;
 
@@ -405,6 +403,7 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 	float ricoshet_factor	= bullet->dir.dotproduct(tgt_dir);
 
 	float f			= Random.randF	(0.5f,1.f);
+	//float f				= Random.randF	(0.0f,0.3);
 //	if(shoot_factor<RICOCHET_THRESHOLD &&  )
 	if (((f+shoot_factor)<ricoshet_factor) && bullet->flags.allow_ricochet)	{
 		//уменьшение скорости полета в зависимости 
@@ -420,7 +419,7 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 		bullet->flags.ricochet_was = 1	;
 
 		//уменьшить скорость в зависимости от простреливаемости
-		bullet->speed *= material_pierce*scale;
+		bullet->speed *= (1-mtl->fShootFactor)*scale;
 		//сколько энергии в процентах потеряла пуля при столкновении
 		float energy_lost = 1.f - bullet->speed/old_speed;
 		//импульс переданный объекту равен прямопропорционален потерянной энергии
@@ -429,7 +428,7 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 		#ifdef DEBUG
 		bullet_state = 0;
 		#endif		
-	} else if(shoot_factor <  STUCK_THRESHOLD) {
+	} else if(shoot_factor <  1.0) {
 		//застрявание пули в материале
 		bullet->speed  = 0.f;
 		//передаем весь импульс целиком
@@ -444,7 +443,7 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 		//clamp (speed_lost, 0.f , 1.f);
 		//float speed_lost = shoot_factor;
 		
-		bullet->speed *= shoot_factor;
+		bullet->speed *=mtl->fShootFactor;
 		energy_lost = 1.f - bullet->speed/old_speed;
 		impulse = bullet->hit_impulse*speed_factor*energy_lost;
 		
@@ -461,7 +460,7 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 	extern g_bDrawBulletHit;
 	if(g_bDrawBulletHit)
 		g_hit[bullet_state].push_back(dbg_bullet_pos);
-#endif
+#endif 
 
 	return std::make_pair(power, impulse);
 }
