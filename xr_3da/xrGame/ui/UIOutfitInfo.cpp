@@ -105,7 +105,7 @@ void CUIOutfitInfo::SetItem(u32 hitType, bool force_add)
 		return;
 	}
 
-	LPCSTR			_clr_outfit, _clr_af;
+//	LPCSTR			_clr_outfit, _clr_af;
 	LPCSTR			_imm_name	= *CStringTable().translate(_imm_st_names[hitType]);
 
 	int _sz			= sprintf	(_buff,"%s ", _imm_name);
