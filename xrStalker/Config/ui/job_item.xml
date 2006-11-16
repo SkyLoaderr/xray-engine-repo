@@ -33,7 +33,11 @@
 				<active			r="128" g="128" b="128" a="255"/>
 			</text_colors>
 		</description>
-
+		
+		<active_objecttive_image x="249" y="4" width="18" height="18" stretch="1" light_anim="ui_too_slow_blinking" la_cyclic="1" la_texture="1" la_text="0" la_alpha="1">
+			<texture x="0" y="0" width="10" height="10">ui\ui_pda_contacts_online</texture>
+		</active_objecttive_image>
+		
 		<show_pointer_btn x="249" y="4" width="18" height="18" check_mode="1" hint="pda_show_pointer_btn_hint">
 			<texture>ui_icons_newPDA_setSelect</texture>
 		</show_pointer_btn>
@@ -45,7 +49,7 @@
 	</task_sub_item>
 	
 	
-	<task_user_item x="0" y="0" width="320" height="32">
+	<notused_task_user_item x="0" y="0" width="320" height="32">
 		<image x="8" y="4" width="32" height="32"/>
 
 		<caption x="50" y="5" width="140" height="16">
@@ -72,9 +76,9 @@
 			<texture>ui_icons_newPDA_editUserSpot</texture>
 		</edit_text_btn>
 
-	</task_user_item>
+	</notused_task_user_item>
 	
-	<edit_user_item x="0" y="0" width="1024" height="768">
+	<notused_edit_user_item x="0" y="0" width="1024" height="768">
 		<background x="412" y="284" width="300" height="200">
 			<texture>ui_icons_PDA_dialog</texture>
 			
@@ -107,7 +111,7 @@
 		</background>
 	
 	
-	</edit_user_item>
+	</notused_edit_user_item>
 	
 </window>
 

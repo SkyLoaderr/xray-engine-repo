@@ -44,12 +44,12 @@
 						<t r="231" g="168" b="12"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
 					</text_color>			
 				</button>								
-				<button x="245" y="0" width="47" height="18" hint="pda_btn_own_hint">
+				<notused_button x="245" y="0" width="47" height="18" hint="pda_btn_own_hint">
 					<text align="l"  x="0" y="0" font="letterica18" r="255" g="255" b="255" complex_mode="0">pda_btn_own</text>
 					<text_color>
 						<t r="231" g="168" b="12"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
 					</text_color>			
-				</button>		
+				</notused_button>		
 			</filter_tab>						
 			
 			
@@ -127,10 +127,10 @@
 							</actor_btn>								
 							
 															
-							<highlight_spot_btn x="275" y="1" width="21" height="15" check_mode="1" hint="pda_show_pointer_btn_hint">
+							<notused_highlight_spot_btn x="275" y="1" width="21" height="15" check_mode="1" hint="pda_show_pointer_btn_hint">
 								<window_name>highlight_spot_btn</window_name>
 								<texture>ui_icons_newPDA_mark</texture>
-							</highlight_spot_btn>								
+							</notused_highlight_spot_btn>								
 
 
 							<zoom_in_btn x="296" y="2" width="21" height="15" check_mode="1" hint="zoom_in_btn_hint">
@@ -143,15 +143,15 @@
 								<texture>ui_icons_newPDA_ZoomMin</texture>
 							</zoom_out_btn>								
 
-							<add_spot_btn x="340" y="1" width="21" height="15" check_mode="1" hint="add_spot_btn_hint">
+							<notused_add_spot_btn x="340" y="1" width="21" height="15" check_mode="1" hint="add_spot_btn_hint">
 								<window_name>add_spot_btn</window_name>
 								<texture>ui_icons_newPDA_perssign</texture>
-							</add_spot_btn>								
+							</notused_add_spot_btn>								
 
-							<remove_spot_btn x="362" y="1" width="21" height="15" check_mode="1" hint="remove_spot_btn_hint">
+							<notused_remove_spot_btn x="362" y="1" width="21" height="15" check_mode="1" hint="remove_spot_btn_hint">
 								<window_name>remove_spot_btn</window_name>
 								<texture>ui_icons_newPDA_perssigndel</texture>
-							</remove_spot_btn>								
+							</notused_remove_spot_btn>								
 						</tool_bar>					
 
 					</map_header_frame_line>

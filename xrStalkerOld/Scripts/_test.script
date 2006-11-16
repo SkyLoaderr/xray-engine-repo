@@ -29,7 +29,7 @@ end
 -- run_string alife():create("wpn_fn2000", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
 
 
-function main()
+function main________________()
 	db.actor:give_game_news(game.translate_string("pass_to_2nd_door"), "ui\\ui_icons_task", Frect():set(0,100,50,50) ,0, 0)	
 --	db.actor:give_talk_message("trader", "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
 --	db.actor:give_talk_message("Превед", "trader", "ui\\ui_icons_task",Frect():set(300,100,50,50),"iconed_trade_info")
@@ -98,9 +98,9 @@ function main11111()
 level.map_change_spot_hint(17, "actor_location","test_hint")
 end
 
-function main___________()
+function main()
    local h 		= hit()
-   h.power 		= 0.6
+   h.power 		= 0.1
    h.direction 	= vector():set(0, 0, 1)
    h.impulse 	= 0
    h.draftsman 	= db.actor
@@ -116,5 +116,6 @@ function main___________()
 --telepatic   	1
 --chemical_burn 1
 --explosion
+
 
 end

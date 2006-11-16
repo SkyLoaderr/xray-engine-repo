@@ -23,10 +23,10 @@
 						<window_name>actor_btn</window_name>
 						<texture>ui_icons_newPDA_showpers</texture>
 					</actor_btn>	
-					<add_spot_btn x="60" y="1" width="21" height="15" check_mode="1" hint="add_spot_btn_hint">
+					<notused_add_spot_btn x="60" y="1" width="21" height="15" check_mode="1" hint="add_spot_btn_hint">
 						<window_name>add_spot_btn</window_name>
 						<texture>ui_icons_newPDA_perssign</texture>
-					</add_spot_btn>								
+					</notused_add_spot_btn>								
 
 					<zoom_in_btn x="120" y="2" width="21" height="15" check_mode="1" hint="zoom_in_btn_hint">
 						<window_name>zoom_in_btn</window_name>
