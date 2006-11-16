@@ -219,12 +219,12 @@
 	<string id="mp_voted">
 		<text>проголосовал</text>
 	</string>
-	<string id="mp_voted_no">
-		<text>"Против"</text>
-	</string>	
 	<string id="mp_voted_yes">
 		<text>"За"</text>
 	</string>
+	<string id="mp_voted_no">
+		<text>"Против"</text>
+	</string>	
 	<string id="mp_voting_broken">
 		<text>Голосование анулировано сервером!</text>
 	</string>
