@@ -6,7 +6,7 @@ end
 function se_outfit:on_register()
 	cse_alife_item_custom_outfit.on_register( self )
 	-- Регистрация в таскменеджере
-	task_manager.register_target(self)
+	task_manager.get_random_task():register_target(self)
 	
 	-- Собираем статистику по предметам.
 	if registred_items[self:section_name()] == nil then
@@ -22,7 +22,7 @@ end
 function se_weapon:on_register()
 	cse_alife_item_weapon.on_register( self )
 	-- Регистрация в таскменеджере
-	task_manager.register_target(self)
+	task_manager.get_random_task():register_target(self)
 
 	-- Собираем статистику по предметам.
 	if registred_items[self:section_name()] == nil then
@@ -38,7 +38,7 @@ end
 function se_weapon_shotgun:on_register()
 	cse_alife_item_weapon_shotgun.on_register( self )
 	-- Регистрация в таскменеджере
-	task_manager.register_target(self)
+	task_manager.get_random_task():register_target(self)
 
 	-- Собираем статистику по предметам.
 	if registred_items[self:section_name()] == nil then
@@ -54,7 +54,7 @@ end
 function se_weapon_magazined:on_register()
 	cse_alife_item_weapon_magazined.on_register( self )
 	-- Регистрация в таскменеджере
-	task_manager.register_target(self)
+	task_manager.get_random_task():register_target(self)
 
 	-- Собираем статистику по предметам.
 	if registred_items[self:section_name()] == nil then
@@ -70,7 +70,7 @@ end
 function se_weapon_magazined_w_gl:on_register()
 	cse_alife_item_weapon_magazined_w_gl.on_register( self )
 	-- Регистрация в таскменеджере
-	task_manager.register_target(self)
+	task_manager.get_random_task():register_target(self)
 
 	-- Собираем статистику по предметам.
 	if registred_items[self:section_name()] == nil then
@@ -86,7 +86,7 @@ end
 function se_item:on_register()
 	cse_alife_item.on_register( self )
 	-- Регистрация в таскменеджере
-	task_manager.register_target(self)
+	task_manager.get_random_task():register_target(self)
 
 	-- Собираем статистику по предметам.
 	if registred_items[self:section_name()] == nil then
@@ -102,7 +102,7 @@ end
 function se_item_torch:on_register()
 	cse_alife_item_torch.on_register( self )
 	-- Регистрация в таскменеджере
-	task_manager.register_target(self)
+	task_manager.get_random_task():register_target(self)
 
 	-- Собираем статистику по предметам.
 	if registred_items[self:section_name()] == nil then

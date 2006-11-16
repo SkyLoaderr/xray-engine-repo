@@ -1038,7 +1038,9 @@ function gulag:free_obj( obj_id )
 			self:set_restrictions( self.Object[obj_id], "", "", nil )
 		end
 
-		self.population_comed = self.population_comed - 1
+		if self.Object_begin_job[obj_id] == true then
+			self.population_comed = self.population_comed - 1
+		end
 	end
 end
 

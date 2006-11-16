@@ -710,20 +710,19 @@ function se_smart_terrain:show_smart_debug_spot(avail)
 		--' Показать отметку
 		local str = self:name().." ("..tostring(self.gulag.state)..")\\n".."pop = "..tostring(self.gulag:get_population()).."("..tostring(self.gulag.capacity)..") comed = "..tostring(self.gulag:get_population_comed())
 
-		if self.spot_showed ~= str then
-			if self.debug_avail == true then
-				level.map_remove_object_spot(self.id, "alife_presentation_smart_on")
-			else
-				level.map_remove_object_spot(self.id, "alife_presentation_smart_off")
-			end		
-
+		if self.debug_avail ~= avail then		
 			if avail == true then
 				level.map_add_object_spot(self.id, "alife_presentation_smart_on", str)
 			else
 				level.map_add_object_spot(self.id, "alife_presentation_smart_off", str)
 			end
-			self.spot_showed = str
 			self.debug_avail = avail
+		else
+			if avail == true then
+				level.map_change_spot_hint(self.id, "alife_presentation_smart_on", str)
+			else
+				level.map_change_spot_hint(self.id, "alife_presentation_smart_off", str)
+			end
 		end
 	else
 		--' Убрать отметку
@@ -899,7 +898,7 @@ function se_smart_terrain:register_if_needed()
 	sim_statistic.reinit()
 
 	-- Регистрация в таскменеджере
-	task_manager.register_target(self)
+	task_manager.get_random_task():register_target(self)
 end
 
 
