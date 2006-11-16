@@ -573,7 +573,7 @@ ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_nu
 void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int objective_num)
 {
 	shared_str shared_name = task_id;
-	Actor()->GameTaskManager().SetTaskState(shared_name, objective_num, state);
+	Actor()->GameTaskManager().SetTaskState(shared_name, (u16)objective_num, state);
 }
 
 //////////////////////////////////////////////////////////////////////////
