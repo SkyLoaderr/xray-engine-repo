@@ -228,7 +228,17 @@ void CPHJoint::CreateSlider()
 
 	m_joint=dJointCreateSlider(0,0);
 	dJointAttach(m_joint,body1,body2);
-	
+	if (body1)
+	{
+		axes[0].vs=vs_first;
+		axes[1].vs=vs_first;
+	}
+	else
+	if (body2)
+	{
+		axes[0].vs=vs_second;
+		axes[1].vs=vs_second;
+	}
 
 
 
