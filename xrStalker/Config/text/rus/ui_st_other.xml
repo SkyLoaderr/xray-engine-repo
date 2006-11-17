@@ -60,5 +60,9 @@
 	<string id="ui_st_take_all">
 		<text>Взять все</text>
 	</string>
+	
+	<string id="ui_st_description">
+		<text>Описание</text>
+	</string>	
 		
 </string_table>
