@@ -131,8 +131,8 @@ IC	bool	cmp_textures_ssa_mat	(mapMatrixTextures::TNode* N1, mapMatrixTextures::T
 
 void		sort_tlist_nrm			
 (
- xr_vector<mapNormalTextures::TNode*>& lst, 
- xr_vector<mapNormalTextures::TNode*>& temp, 
+ xr_vector<mapNormalTextures::TNode*,doug_lea_alloc<mapNormalTextures::TNode*> >& lst, 
+ xr_vector<mapNormalTextures::TNode*,doug_lea_alloc<mapNormalTextures::TNode*> >& temp, 
  mapNormalTextures&					textures, 
  BOOL	bSSA
  )
@@ -177,8 +177,8 @@ void		sort_tlist_nrm
 
 void		sort_tlist_mat			
 (
- xr_vector<mapMatrixTextures::TNode*>& lst,
- xr_vector<mapMatrixTextures::TNode*>& temp,
+ xr_vector<mapMatrixTextures::TNode*,doug_lea_alloc<mapMatrixTextures::TNode*> >& lst,
+ xr_vector<mapMatrixTextures::TNode*,doug_lea_alloc<mapMatrixTextures::TNode*> >& temp,
  mapMatrixTextures&					textures,
  BOOL	bSSA
  )

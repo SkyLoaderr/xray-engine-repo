@@ -63,8 +63,8 @@ public:
 
 	xr_vector<R_dsgraph::_LodItem,doug_lea_alloc<R_dsgraph::_LodItem> >	lstLODs		;
 	xr_vector<int,doug_lea_alloc<int> >									lstLODgroups;
-	xr_vector<ISpatial*,doug_lea_alloc<ISpatial*> >						lstRenderables;
-	xr_vector<ISpatial*,doug_lea_alloc<ISpatial*> >						lstSpatial	;
+	xr_vector<ISpatial* /**,doug_lea_alloc<ISpatial*>/**/>				lstRenderables;
+	xr_vector<ISpatial* /**,doug_lea_alloc<ISpatial*>/**/>				lstSpatial	;
 	xr_vector<IRender_Visual*,doug_lea_alloc<IRender_Visual*> >			lstVisuals	;
 
 	xr_vector<IRender_Visual*,doug_lea_alloc<IRender_Visual*> >			lstRecorded	;
