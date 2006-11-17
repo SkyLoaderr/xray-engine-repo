@@ -69,10 +69,6 @@
         </title>
     </character_frame_window>
     
-    <outfit_info_window x="20" y="33" width="268" height="460">
-		<text font="letterica16" r="240" g="217" b="182"/>
-	</outfit_info_window>
-	
 	<outfit_info x="740" y="580" width="260" height="130">
 		<auto_static x="140" y="0">
 			<text font="graffiti22" color="UI_orange" complex_mode="0">ui_st_params</text>

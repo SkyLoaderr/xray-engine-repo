@@ -1,15 +1,7 @@
-// File:        UIArtefactPanel.h
-// Description: HUD artefact panel
-// Created:     14.12.2004
-// Author:      Serhiy 0. Vynnychenk0
-// Mail:        narrator@gsc-game.kiev.ua
-//
-// Copyright 2004 GSC Game World
-//
-
 #include "StdAfx.h"
 #include "UIArtefactPanel.h"
 #include "UIInventoryUtilities.h"
+#include "UIXmlInit.h"
 
 #include "../artifact.h"
 
@@ -17,17 +9,18 @@ using namespace InventoryUtilities;
 
 CUIArtefactPanel::CUIArtefactPanel()
 {		
-	m_fScale = 1.0f;
 }
 
 CUIArtefactPanel::~CUIArtefactPanel()
 {
-
 }
 
-void CUIArtefactPanel::SetScaleXY(float x, float y)
-{	
-	m_fScale = x;
+void CUIArtefactPanel::InitFromXML	(CUIXml& xml, LPCSTR path, int index)
+{
+	CUIXmlInit::InitWindow		(xml, path, index, this);
+	m_cell_size.x				= xml.ReadAttribFlt(path, index, "cell_width");
+	m_cell_size.y				= xml.ReadAttribFlt(path, index, "cell_height");
+	m_fScale					= xml.ReadAttribFlt(path, index, "scale");
 }
 
 void CUIArtefactPanel::InitIcons(const xr_vector<const CArtefact*>& artefacts)
@@ -55,17 +48,19 @@ void CUIArtefactPanel::Draw(){
 		  float iHeight;
 		  float iWidth;
 
-	Frect rect;
-	GetAbsoluteRect(rect);
-	x = rect.left;
-	y = rect.top;	
+	Frect				rect;
+	GetAbsoluteRect		(rect);
+	x					= rect.left;
+	y					= rect.top;	
+	
+	float _s			= m_cell_size.x/m_cell_size.y;
 
 	for (ITr it = m_vRects.begin(); it != m_vRects.end(); ++it)
 	{
 		const Frect& r = *it;		
 
 		iHeight = m_fScale*(r.bottom - r.top);
-		iWidth  = m_fScale*(r.right - r.left);
+		iWidth  = _s*m_fScale*(r.right - r.left);
 
 		m_si.SetOriginalRect(r.left, r.top, r.width(), r.height());
 		m_si.SetRect(0, 0, iWidth, iHeight);

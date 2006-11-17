@@ -1,10 +1,3 @@
-// UIXmlInit.h: класс инициализации элементов окошек при помощи XML
-//
-//////////////////////////////////////////////////////////////////////
-
-#ifndef _UI_XML_INIT_H_
-#define _UI_XML_INIT_H_
-
 #pragma once
 
 #include "xrUIXmlParser.h"
@@ -33,7 +26,6 @@ class CUICustomEdit;
 class CUITextBanner;
 class CUIMultiTextStatic;
 class CUIAnimatedStatic;
-class CUIArtefactPanel;
 class CUIOptionsItem;
 class CUIScrollView;
 class CUIListBox;
@@ -80,7 +72,6 @@ public:
 	static bool InitMultiText			(CUIXml& xml_doc, const char* path, int index, CUIStatic* pWnd);
 	static bool InitTexture				(CUIXml& xml_doc, const char* path, int index, IUIMultiTextureOwner* pWnd);
 	static bool InitTexture				(CUIXml& xml_doc, const char* path, int index, IUISingleTextureOwner* pWnd);
-	static bool InitArtefactPanel		(CUIXml& xml_doc, const char* path, int index, CUIArtefactPanel* pWnd);
 	static bool InitOptionsItem			(CUIXml& xml_doc, const char* paht, int index, CUIOptionsItem* pWnd);
 //	static u32	GetARGB					(CUIXml& xml_doc, const char* path, int index);
 	static bool InitScrollView			(CUIXml& xml_doc, const char* path, int index, CUIScrollView* pWnd);
@@ -124,5 +115,3 @@ public:
 private:
 	static	ColorDefs			*m_pColorDefs;    
 };
-
-#endif // _UI_XML_INIT_H_

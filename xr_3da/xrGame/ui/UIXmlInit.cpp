@@ -1,8 +1,3 @@
-// UIXmlInit.cpp: класс инициализации элементов окошек при помощи XML
-//
-//////////////////////////////////////////////////////////////////////
-
-
 #include "stdafx.h"
 #include "UIXmlInit.h"
 #include "../hudmanager.h"
@@ -27,7 +22,6 @@
 #include "UIMultiTextStatic.h"
 #include "UIAnimatedStatic.h"
 #include "uixmlinit.h"
-#include "uiartefactpanel.h"
 #include "UIListBox.h" //#include "UIScrollView.h"
 #include "UIComboBox.h"
 #include "../game_base_space.h"
@@ -1160,24 +1154,6 @@ void CUIXmlInit::InitColorDefs()
 //		m_pColorDefs->push_back(std::make_pair<shared_str, u32>(name, (a<<24) | (r<<16) | (g<<8) | b));
 	}
 }
-
-//////////////////////////////////////////////////////////////////////////////
-
-bool CUIXmlInit::InitArtefactPanel(CUIXml &xml_doc, const char* path, int index, CUIArtefactPanel* pWnd){
-	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
-
-	float x = xml_doc.ReadAttribFlt(path, index, "x");
-	float y = xml_doc.ReadAttribFlt(path, index, "y");
-	InitAlignment(xml_doc, path, index, x, y, pWnd);
-	float width = xml_doc.ReadAttribFlt(path, index, "width");
-	float height = xml_doc.ReadAttribFlt(path, index, "height");
-	pWnd->Init(x, y, width, height);
-
-	float fScale = xml_doc.ReadAttribFlt(path, index, "scale");
-	pWnd->SetScaleXY(fScale,fScale);
-	return true;
-}
-
 
 bool CUIXmlInit::InitScrollView	(CUIXml& xml_doc, const char* path, int index, CUIScrollView* pWnd)
 {

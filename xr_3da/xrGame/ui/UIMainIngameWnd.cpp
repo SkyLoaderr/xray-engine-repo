@@ -248,23 +248,24 @@ void CUIMainIngameWnd::Init()
 
 
 	// Flashing icons initialize
-	uiXml.SetLocalRoot			(uiXml.NavigateToNode("flashing_icons"));
-	InitFlashingIcons			(&uiXml);
+	uiXml.SetLocalRoot						(uiXml.NavigateToNode("flashing_icons"));
+	InitFlashingIcons						(&uiXml);
 
-	uiXml.SetLocalRoot			(uiXml.GetRoot());
+	uiXml.SetLocalRoot						(uiXml.GetRoot());
 	
-	AttachChild					(&UICarPanel);
-	xml_init.InitWindow			(uiXml, "car_panel", 0, &UICarPanel);
+	AttachChild								(&UICarPanel);
+	xml_init.InitWindow						(uiXml, "car_panel", 0, &UICarPanel);
 
-	AttachChild					(&UIMotionIcon);
-	UIMotionIcon.Init			();
+	AttachChild								(&UIMotionIcon);
+	UIMotionIcon.Init						();
 
-	if(IsGameTypeSingle()){
-		xml_init.InitArtefactPanel(uiXml, "artefact_panel", 0, m_artefactPanel);
-		this->AttachChild(m_artefactPanel);	
+	if(IsGameTypeSingle())
+	{
+		m_artefactPanel->InitFromXML		(uiXml, "artefact_panel", 0);
+		this->AttachChild					(m_artefactPanel);	
 	}
 
-	AttachChild(&UIStaticDiskIO);
+	AttachChild								(&UIStaticDiskIO);
 	UIStaticDiskIO.SetWndRect				(1000,750,16,16);
 	UIStaticDiskIO.GetUIStaticItem().SetRect(0,0,16,16);
 	UIStaticDiskIO.InitTexture				("ui\\ui_disk_io");
@@ -272,7 +273,7 @@ void CUIMainIngameWnd::Init()
 	UIStaticDiskIO.SetStretchTexture		(TRUE);
 
 
-	HUD_SOUND::LoadSound("maingame_ui", "snd_new_contact"		, m_contactSnd		, SOUND_TYPE_IDLE);
+	HUD_SOUND::LoadSound					("maingame_ui", "snd_new_contact"		, m_contactSnd		, SOUND_TYPE_IDLE);
 }
 
 float UIStaticDiskIO_start_time = 0.0f;
