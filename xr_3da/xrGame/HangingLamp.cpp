@@ -136,6 +136,7 @@ BOOL CHangingLamp::net_Spawn(CSE_Abstract* DC)
 	if (smart_cast<CKinematics*>(Visual())){
 		smart_cast<CKinematics*>			(Visual())->CalculateBones_Invalidate	();
 		smart_cast<CKinematics*>			(Visual())->CalculateBones();
+		//.intepolate_pos
 	}
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic)&&!Visual())
 		Msg("! WARNING: lamp, obj name [%s],flag physics set, but has no visual",*cName());

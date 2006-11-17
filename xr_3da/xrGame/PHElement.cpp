@@ -725,9 +725,7 @@ void CPHElement::applyImpact(const SPHImpact& I)
 void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
 	m_body_interpolation.InterpolateRotation(*m);
 	m_body_interpolation.InterpolatePosition(m->c);
-	//m->mulB_43(m_inverse_local_transform);
 	MulB43InverceLocalForm(*m);
-	//bUpdate=false;
 	m_flags.set(flUpdate,FALSE);
 	VERIFY(_valid(*m));
 }
@@ -735,17 +733,12 @@ void CPHElement::GetGlobalTransformDynamic(Fmatrix* m)
 {
 	PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),*m);
 	MulB43InverceLocalForm(*m);
-	//m->mulB_43(m_inverse_local_transform);
-	//bUpdate=false;
-	//m_flags.set(flUpdate,FALSE);
 	VERIFY(_valid(*m));
 }
 
 void CPHElement::InterpolateGlobalPosition(Fvector* v){
 	m_body_interpolation.InterpolatePosition(*v);
 	VERIFY(_valid(*v));
-	//v->add(m_inverse_local_transform.c);
-
 }
 
 

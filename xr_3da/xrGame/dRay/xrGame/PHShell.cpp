@@ -1135,21 +1135,24 @@ void CPHShell::InterpolateGlobalTransform(Fmatrix* m)
 {
 	
 	if(!CPHObject::is_active()&&!CPHObject::NetInterpolation()) return;
-	(*elements.begin())->InterpolateGlobalTransform(m);
-	m->mulB_43	(m_object_in_root);
-	mXFORM.set(*m);
-	VERIFY2(_valid(*m),"not valide transform");
+
 	ELEMENT_I i,e;
 	i=elements.begin(); e=elements.end();
 	for( ;i!=e;++i)
 		(*i)->InterpolateGlobalTransform(&(*i)->mXFORM);
-	//mXFORM.set(*m);
-	//m->c.add(m_object_in_root);
+	m->set((*elements.begin())->mXFORM);
+	m->mulB_43	(m_object_in_root);
+	mXFORM.set(*m);
+	VERIFY2(_valid(*m),"not valide transform");
 }
 
 void CPHShell::GetGlobalTransformDynamic(Fmatrix* m)
 {
-	(*elements.begin())->GetGlobalTransformDynamic(m);
+	ELEMENT_I i,e;
+	i=elements.begin(); e=elements.end();
+	for( ;i!=e;++i)
+		(*i)->GetGlobalTransformDynamic(&(*i)->mXFORM);
+	m->set((*elements.begin())->mXFORM);
 	m->mulB_43	(m_object_in_root);
 	VERIFY2(_valid(*m),"not valide transform");
 }

@@ -68,6 +68,7 @@ void CPhysicObject::RunStartupAnim(CSE_Abstract *D)
 		}
 		smart_cast<CKinematics*>(Visual())->CalculateBones_Invalidate();
 		smart_cast<CKinematics*>(Visual())->CalculateBones	();
+
 	}
 }
 void CPhysicObject::net_Destroy()

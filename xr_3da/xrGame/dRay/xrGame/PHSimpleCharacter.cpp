@@ -20,6 +20,22 @@
 #include "PHCollideValidator.h"
 #include "CalculateTriangle.h"
 
+#ifdef DEBUG
+#define	VERIFY_BOUNDARIES(pos,bounds,obj)\
+{\
+	if(!valid_pos(pos,bounds))\
+	{\
+		Msg(" pos: %f,%f,%f, seems to be invalid", pos.x,pos.y,pos.z);\
+		Msg("Level box: %f,%f,%f-%f,%f,%f,",bounds.x1,bounds.y1,bounds.z1,bounds.x2,bounds.y2,bounds.z2);\
+		Msg("Object: %s",obj->Name());\
+		Msg("Visual: %s",*(obj->cNameVisual()));\
+		VERIFY(0);\
+	}\
+}
+#else
+#define	VERIFY_BOUNDARIES(pos,bounds,obj)
+#endif
+
 IC		bool	PhOutOfBoundaries			(const Fvector& v)
 {
 	return v.y < phBoundaries.y1;
@@ -527,16 +543,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 		);
 	VERIFY2(dBodyStateValide(m_body),"WRONG BODYSTATE IN PhDataUpdate");
 	if(PhOutOfBoundaries(cast_fv(dBodyGetPosition(m_body))))Disable();
-#ifdef DEBUG
-	if(!valid_pos(cast_fv(dBodyGetPosition(m_body)),phBoundaries))
-	{
-		Msg("body pos: %f,%f,%f, seems to be invalid", cast_fv(dBodyGetPosition(m_body)).x,cast_fv(dBodyGetPosition(m_body)).y,cast_fv(dBodyGetPosition(m_body)).z);
-		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
-		Msg("Object: %s",PhysicsRefObject()->Name());
-		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
-		VERIFY(0);
-	}
-#endif
+	VERIFY_BOUNDARIES(cast_fv(dBodyGetPosition(m_body)),phBoundaries,PhysicsRefObject());
 	m_body_interpolation.UpdatePositions();
 }
 
@@ -917,8 +924,7 @@ bool CPHSimpleCharacter::ValidateWalkOnMesh()
 					DBG_DrawTri(Res,D3DCOLOR_XRGB(0,255,0));
 				}
 #endif
-				return 
-				true;
+				return true;
 			}
 		}
 	}
@@ -1016,32 +1022,12 @@ void	CPHSimpleCharacter::IPosition(Fvector& pos) {
 		m_body_interpolation.InterpolatePosition(pos);
 		pos.y-=m_radius;
 	}
-
-#ifdef DEBUG
-	if(!valid_pos(pos,phBoundaries))
-	{
-		Msg("pos: %f,%f,%f, seems to be invalid", pos.x,pos.y,pos.z);
-		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
-		Msg("Object: %s",PhysicsRefObject()->Name());
-		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
-		VERIFY(0);
-	}
-#endif
-
+	VERIFY_BOUNDARIES(pos,phBoundaries,PhysicsRefObject());
 	return;
 }
 
 void CPHSimpleCharacter::SetPosition(Fvector pos){
-#ifdef DEBUG
-	if(!valid_pos(pos,phBoundaries))
-	{
-		Msg("pos: %f,%f,%f, seems to be invalid", pos.x,pos.y,pos.z);
-		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
-		Msg("Object: %s",PhysicsRefObject()->Name());
-		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
-		VERIFY(0);
-	}
-#endif
+	VERIFY_BOUNDARIES(pos,phBoundaries,PhysicsRefObject());
 	if(!b_exist) return;
 	m_death_position[0]=pos.x;
 	m_death_position[1]=pos.y+m_radius;
@@ -1077,16 +1063,8 @@ void CPHSimpleCharacter::GetPosition(Fvector& vpos){
 		dVectorSet((dReal*)&vpos,pos);
 		vpos.y-=m_radius;
 	}
-#ifdef DEBUG
-	if(!valid_pos(vpos,phBoundaries))
-	{
-		Msg("vpos: %f,%f,%f, seems to be invalid", vpos.x,vpos.y,vpos.z);
-		Msg("Level box: %f,%f,%f-%f,%f,%f,",phBoundaries.x1,phBoundaries.y1,phBoundaries.z1,phBoundaries.x2,phBoundaries.y2,phBoundaries.z2);
-		Msg("Object: %s",PhysicsRefObject()->Name());
-		Msg("Visual: %s",*(PhysicsRefObject()->cNameVisual()));
-		VERIFY(0);
-	}
-#endif
+
+	VERIFY_BOUNDARIES(vpos,phBoundaries,PhysicsRefObject());
 }
 void	 CPHSimpleCharacter::	GetPreviousPosition					(Fvector& pos)
 {
@@ -1240,7 +1218,7 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 				Fvector acc;acc.set(Fvector().mul(m_acceleration,1.f/_sqrt(sq_mag)));
 				Fvector vll;vll.mul(cast_fv(linear_velocity),1.f/mag);
 				float mxa=vll.dotproduct(acc);
-				if(mxa*ll_limit>l_limit){
+				if(mxa*ll_limit>l_limit&&!fis_zero(mxa)){
 					ll_limit=l_limit/mxa;
 				}
 		
@@ -1252,17 +1230,25 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 		m_mean_y=m_mean_y*0.9999f+linear_velocity[1]*0.0001f;
 		if(mag>l_limit)
 		{
-			dReal f=mag/l_limit;
+			if(!fis_zero(l_limit))
+			{
+			
+				dReal f=mag/l_limit;
 
-			if(b_lose_ground&&linear_velocity[1]<0.f)
-				dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1],linear_velocity[2]/f);///f
-			else			 
-				dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1]/f,linear_velocity[2]/f);///f
-			if(is_control&&!b_lose_control)
-				dBodySetPosition(m_body,
-				m_safe_position[0]+linear_velocity[0]*fixed_step,
-				m_safe_position[1]+linear_velocity[1]*fixed_step,
-				m_safe_position[2]+linear_velocity[2]*fixed_step);
+				if(b_lose_ground&&linear_velocity[1]<0.f)
+					dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1],linear_velocity[2]/f);///f
+				else			 
+					dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1]/f,linear_velocity[2]/f);///f
+				if(is_control&&!b_lose_control)
+				{
+					dBodySetPosition(m_body,
+					m_safe_position[0]+linear_velocity[0]*fixed_step,
+					m_safe_position[1]+linear_velocity[1]*fixed_step,
+					m_safe_position[2]+linear_velocity[2]*fixed_step);
+					VERIFY_BOUNDARIES(cast_fv(dBodyGetPosition(m_body)),phBoundaries,PhysicsRefObject())
+				}
+			}else	dBodySetLinearVel(m_body,0,0,0);
+
 			
 		}
 	}
