@@ -4,10 +4,8 @@
 #include "CameraLook.h"
 #include "../Cameramanager.h"
 #include "xr_level_controller.h"
-
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+#include "actor.h"
+#include "debug_renderer.h"
 
 CCameraLook::CCameraLook(CObject* p, u32 flags ) 
 :CCameraBase(p, flags)
@@ -40,7 +38,6 @@ void CCameraLook::Update(Fvector& point, Fvector& /**noise_dangle/**/)
 		parent->XFORM().transform_dir(vDirection);
 		parent->XFORM().transform_dir(vNormal);
 	}
-
 	Fvector				vDir;
 	collide::rq_result	R;
 
@@ -48,12 +45,12 @@ void CCameraLook::Update(Fvector& point, Fvector& /**noise_dangle/**/)
 	vDir.invert			(vDirection);
 	g_pGameLevel->ObjectSpace.RayPick( point, vDir, dist+covariance, collide::rqtBoth, R, parent);
 
-	// позиционируем
 	float d				= psCamSlideInert*prev_d+(1.f-psCamSlideInert)*(R.range-covariance);
 	prev_d = d;
 	
 	vPosition.mul		(vDirection,-d-VIEWPORT_NEAR);
 	vPosition.add		(point);
+
 }
 
 void CCameraLook::Move( int cmd, float val, float factor)
@@ -80,4 +77,28 @@ void CCameraLook::OnActivate( CCameraBase* old_cam )
 	}
 	if (yaw>PI_MUL_2) yaw-=PI_MUL_2;
 	if (yaw<-PI_MUL_2)yaw+=PI_MUL_2;
+}
+
+
+void CCameraLook2::Update(Fvector& point, Fvector&)
+{
+	Fmatrix mR;
+	mR.setHPB			(-yaw,-pitch,-roll);
+
+	vDirection.set		(mR.k);
+	vNormal.set			(mR.j);
+
+	CActor* pA						= smart_cast<CActor*>(parent);
+	Fmatrix							a_xform;
+	a_xform.setXYZ					(0, pA->Orientation().yaw, 0);
+	a_xform.translate_over			(point);
+	Fvector _off					= m_offset;
+	a_xform.transform_tiny			(_off);
+	vPosition.set					(_off);
+}
+
+void CCameraLook2::Load(LPCSTR section)
+{
+	CCameraLook::Load	(section);
+	m_offset			= pSettings->r_fvector3	(section,"offset");
 }

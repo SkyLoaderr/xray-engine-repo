@@ -118,9 +118,15 @@ CActor::CActor() : CEntityAlive()
 	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>				(this);
 	cameras[eacFirstEye]->Load("actor_firsteye_cam");
 
-	cameras[eacLookAt]		= xr_new<CCameraLook>					(this);
-	cameras[eacLookAt]->Load("actor_look_cam");
-
+	if(strstr(Core.Params,"-psp"))
+	{
+		cameras[eacLookAt]		= xr_new<CCameraLook2>				(this);
+		cameras[eacLookAt]->Load("actor_look_cam_psp");
+	}else
+	{
+		cameras[eacLookAt]		= xr_new<CCameraLook>				(this);
+		cameras[eacLookAt]->Load("actor_look_cam");
+	}
 	cameras[eacFreeLook]	= xr_new<CCameraLook>					(this);
 	cameras[eacFreeLook]->Load("actor_free_cam");
 

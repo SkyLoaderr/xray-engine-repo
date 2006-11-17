@@ -1,5 +1,4 @@
-#ifndef __CAMERALOOK_H__
-#define __CAMERALOOK_H__
+#pragma once
 
 #include "../CameraBase.h"
 
@@ -22,4 +21,12 @@ public:
 	virtual float	GetWorldPitch	( )	{ return pitch; };
 };
 
-#endif // __CAMERALOOK_H__
+class CCameraLook2	: public CCameraLook
+{
+	Fvector			m_offset;
+public:
+					CCameraLook2	( CObject* p, u32 flags=0):CCameraLook(p, flags){};
+	virtual			~CCameraLook2	(){}
+	virtual void	Update			( Fvector& point, Fvector& noise_dangle );
+	virtual void	Load			(LPCSTR section);
+};
