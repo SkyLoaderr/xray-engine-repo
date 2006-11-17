@@ -48,12 +48,24 @@
 	<string id="ui_map_desc_mp_military_2_short">
 		<text>Эта старая деревенька - место жуткое и гиблое. Но раз уж рискнул добраться сюда, будь готовым получить пулю в лоб.</text>
 	</string>
+	<string id="ui_map_desc_mp_prypiat_short">
+		<text>Город Припять...</text>
+	</string>
+	<string id="ui_map_desc_mp_prypiat_large">
+		<text>Город Припять...</text>
+	</string>
 	<string id="ui_map_desc_mp_railraod_short">
 		<text>Поезда есть, рельсы со шпалами на месте…Даже станция есть…Только вот звуков не хватает, вымерло тут все и травой поросло…</text>
 	</string>
 	<string id="ui_map_desc_mp_railroad_large">
 		<text>Поезда есть, рельсы со шпалами на месте…Даже станция есть…Только вот звуков не хватает, вымерло тут все и травой поросло…Не едут сюда давно поезда и электрички, зато охотники за артефактами тут частые гости. Береги голову от шальной снайперской пули.</text>
 	</string>
+	<string id="ui_map_desc_mp_rostok_short">
+		<text>Завод Росток…</text>
+	</string>
+	<string id="ui_map_desc_mp_rostok_large">
+		<text>Завод Росток…</text>
+	</string>	
 	<string id="ui_map_desc_mp_workshop_large">
 		<text>Окраина завода Росток до прихода Долга. Мрачные места, однако, очень богатые на артефакты. Пустые ангары и склады таят в себе опасность на каждом шагу. Будь предельно осторожен и чаще обращай внимание на белую башню….</text>
 	</string>

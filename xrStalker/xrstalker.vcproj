@@ -1469,7 +1469,13 @@
 						RelativePath=".\Config\text\map_desc\testers_mp_pool.txt">
 					</File>
 					<File
+						RelativePath=".\Config\text\map_desc\testers_mp_prypiat.txt">
+					</File>
+					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_railroad.txt">
+					</File>
+					<File
+						RelativePath=".\Config\text\map_desc\testers_mp_rostok.txt">
 					</File>
 					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_workshop.txt">

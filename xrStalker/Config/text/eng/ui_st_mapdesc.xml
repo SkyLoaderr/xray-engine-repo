@@ -48,12 +48,24 @@
 	<string id="ui_map_desc_mp_military_2_short">
 		<text>This old hamlet is a sinister place and a death-trap. But if you've come this far despite all the risks, be prepared to die a sudden death.</text>
 	</string>
+	<string id="ui_map_desc_mp_prypiat_short">
+		<text>Prypiat...</text>
+	</string>
+	<string id="ui_map_desc_mp_prypiat_large">
+		<text>Prypiat...</text>
+	</string>
 	<string id="ui_map_desc_mp_railraod_short">
 		<text>Trains and tracks as far as the eye can see… Even the station building is still standing. Only the sounds are missing in this idyllic scenery. Everything is dead, except for the plants, which are quickly taking over.</text>
 	</string>
 	<string id="ui_map_desc_mp_railroad_large">
 		<text>Trains and tracks as far as the eye can see… Even the station building is still standing. Only the sounds are missing in this idyllic scenery. Everything is dead, except for the plants, which are quickly taking over. Trains don't come here anymore, but artifact hunters do drop by on a regular basis. Try not to catch a stray bullet from a sniper's rifle.</text>
 	</string>
+		<string id="ui_map_desc_mp_rostok_short">
+		<text>Rostok factory…</text>
+	</string>
+	<string id="ui_map_desc_mp_rostok_large">
+		<text>Rostok factory…</text>
+	</string>	
 	<string id="ui_map_desc_mp_workshop_large">
 		<text>The outskirts of the Rostok factory before Duty's arrival. This dilapidated area is nonetheless very rich in artifacts. The empty hangars and warehouses teem with a hundred dangers every step of the way. Be extremely careful and keep a close watch on the white tower.</text>
 	</string>
