@@ -2,7 +2,7 @@
 #define _FIXEDSET_H
 #pragma once
 
-template<class K>
+template<class K, class allocator = xr_allocator>
 class FixedSET
 {
 	enum	{
@@ -27,7 +27,7 @@ private:
 	{
 		u32	newLimit = limit + SG_REALLOC_ADVANCE;
 		VERIFY(newLimit%SG_REALLOC_ADVANCE == 0);
-		TNode*	newNodes = xr_alloc<TNode>	(newLimit);
+		TNode*	newNodes = (TNode*)allocator::alloc(sizeof(TNode)*newLimit);
 		VERIFY(newNodes);
 
 		ZeroMemory(newNodes, Size(newLimit));
@@ -48,7 +48,7 @@ private:
 				Nnew->right		= newNodes + Rid;
 			}
 		}
-		if (nodes) xr_free(nodes);
+		if (nodes) allocator:dealloc(nodes);
 
 		nodes = newNodes;
 		limit = newLimit;
@@ -89,7 +89,7 @@ public:
 		nodes	= 0; 
 	}
 	~FixedSET() {
-		xr_free	(nodes);
+		allocator:dealloc(nodes);
 	}
 	IC TNode*	insert(const K& k) {
 		if (pool) {
