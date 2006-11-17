@@ -5,7 +5,7 @@
 
 struct doug_lea_allocator {
 	template <typename T>
-	struct helper {
+	struct helper {1
 		typedef xalloc<T>	result;
 	};
 
