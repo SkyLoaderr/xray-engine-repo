@@ -91,7 +91,7 @@
 		<text>Карта в ПДА</text>
 	</string>
 	<string id="kb_next_slot">
-		<text>оружие из следующего слота</text>
+		<text>Оружие из следующего слота</text>
 	</string>
 	<string id="kb_night_vision">
 		<text>Прибор ночного видения</text>
@@ -103,7 +103,7 @@
 		<text>ПДА</text>
 	</string>
 	<string id="kb_prev_slot">
-		<text>оружие из предыдущего слота</text>
+		<text>Оружие из предыдущего слота</text>
 	</string>
 	<string id="kb_quit">
 		<text>Выход</text>
