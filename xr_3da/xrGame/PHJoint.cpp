@@ -1063,19 +1063,6 @@ void CPHJoint::CalcAxis(int ax_num,Fvector& axis, float& lo,float& hi,const Fmat
 	default:		NODEFAULT;							
 	}
 
-
-	float shift_angle;
-	axis_angleA(rotate,axes[ax_num].direction,shift_angle);
-
-	shift_angle-=axes[ax_num].zero;
-
-	if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
-	if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
-
-	lo=axes[ax_num].low;//+shift_angle;
-	hi=axes[ax_num].high;//+shift_angle;
-
-
 	if(lo<-M_PI){ 
 		hi-=(lo+M_PI);
 		lo=-M_PI;
