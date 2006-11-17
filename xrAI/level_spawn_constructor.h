@@ -23,6 +23,7 @@ class CSE_ALifeGraphPoint;
 class CSE_ALifeAnomalousZone;
 class CSpaceRestrictorWrapper;
 class CPatrolPathStorage;
+class CSE_ALifeDynamicObject;
 
 class CLevelSpawnConstructor : public CThread {
 public:
