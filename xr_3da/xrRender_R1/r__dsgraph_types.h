@@ -16,14 +16,14 @@ public:
 
 public:
 	template<class _Other>	
-	struct rebind			{	typedef xalloc<_Other> other;	};
+	struct rebind			{	typedef doug_lea_alloc<_Other> other;	};
 public:
 							pointer					address			(reference _Val) const					{	return (&_Val);	}
 							const_pointer			address			(const_reference _Val) const			{	return (&_Val);	}
-													xalloc			()										{	}
-													xalloc			(const xalloc<T>&)						{	}
-	template<class _Other>							xalloc			(const xalloc<_Other>&)					{	}
-	template<class _Other>	xalloc<T>&				operator=		(const xalloc<_Other>&)					{	return (*this);	}
+													doug_lea_alloc	()										{	}
+													doug_lea_alloc	(const doug_lea_alloc<T>&)				{	}
+	template<class _Other>							doug_lea_alloc	(const doug_lea_alloc<_Other>&)			{	}
+	template<class _Other>	doug_lea_alloc<T>&		operator=		(const doug_lea_alloc<_Other>&)			{	return (*this);	}
 							pointer					allocate		(size_type n, const void* p=0) const	{	return (T*)dlmalloc(sizeof(T)*(u32)n);	}
 							char _FARQ *			_Charalloc		(size_type n)							{	return (char _FARQ *)allocate(n); }
 							void					deallocate		(pointer p, size_type n) const			{	dlfree	(p);				}
