@@ -3,10 +3,43 @@
 #include	"fixedmap.h"
 #include	"doug_lea_memory_allocator.h"
 
+template <class T>
+class doug_lea_alloc {
+public:
+	typedef	size_t		size_type;
+	typedef ptrdiff_t	difference_type;
+	typedef T*			pointer;
+	typedef const T*	const_pointer;
+	typedef T&			reference;
+	typedef const T&	const_reference;
+	typedef T			value_type;
+
+public:
+	template<class _Other>	
+	struct rebind			{	typedef xalloc<_Other> other;	};
+public:
+							pointer					address			(reference _Val) const					{	return (&_Val);	}
+							const_pointer			address			(const_reference _Val) const			{	return (&_Val);	}
+													xalloc			()										{	}
+													xalloc			(const xalloc<T>&)						{	}
+	template<class _Other>							xalloc			(const xalloc<_Other>&)					{	}
+	template<class _Other>	xalloc<T>&				operator=		(const xalloc<_Other>&)					{	return (*this);	}
+							pointer					allocate		(size_type n, const void* p=0) const	{	return (T*)dlmalloc(sizeof(T)*(u32)n);	}
+							char _FARQ *			_Charalloc		(size_type n)							{	return (char _FARQ *)allocate(n); }
+							void					deallocate		(pointer p, size_type n) const			{	dlfree	(p);				}
+							void					deallocate		(void _FARQ* p, size_type n) const		{	dlfree	(p);				}
+							void					construct		(pointer p, const T& _Val)				{	std::_Construct(p, _Val);	}
+							void					destroy			(pointer p)								{	std::_Destroy(p);			}
+							size_type				max_size		() const								{	size_type _Count = (size_type)(-1) / sizeof (T);	return (0 < _Count ? _Count : 1);	}
+};
+
+template<class _Ty,	class _Other>	inline	bool operator==(const doug_lea_alloc<_Ty>&, const doug_lea_alloc<_Other>&)		{	return (true);							}
+template<class _Ty, class _Other>	inline	bool operator!=(const doug_lea_alloc<_Ty>&, const doug_lea_alloc<_Other>&)		{	return (false);							}
+
 struct doug_lea_allocator {
 	template <typename T>
 	struct helper {
-		typedef xalloc<T>	result;
+		typedef doug_lea_alloc<T>	result;
 	};
 
 	static	void	*alloc		(const u32 &n)	{	return dlmalloc((u32)n);	}
