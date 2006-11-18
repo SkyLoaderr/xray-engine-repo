@@ -117,7 +117,7 @@ void CPhysicsShellHolder::activate_physic_shell()
 	l_p2.c.add					(l_fw);
 
 	m_pPhysicsShell->Activate	(l_p1, 0, l_p2);
-	if(H_Parent())
+	if(H_Parent()&&H_Parent()->Visual())
 	{
 		smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones_Invalidate	();
 		smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones	();
@@ -131,6 +131,7 @@ void CPhysicsShellHolder::activate_physic_shell()
 //	XFORM().set					(l_p1);
 	correct_spawn_pos();
 	m_pPhysicsShell->set_LinearVel(l_fw);
+	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
 }
 
 void CPhysicsShellHolder::setup_physic_shell	()
@@ -140,6 +141,7 @@ void CPhysicsShellHolder::setup_physic_shell	()
 	m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
 	smart_cast<CKinematics*>(Visual())->CalculateBones_Invalidate	();
 	smart_cast<CKinematics*>(Visual())->CalculateBones();
+	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
 }
 
 void CPhysicsShellHolder::deactivate_physics_shell()
