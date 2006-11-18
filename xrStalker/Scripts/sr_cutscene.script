@@ -109,7 +109,7 @@ function action_cutscene:zone_enter()
     --' телепорт в выбранную точку
     xr_effects.teleport_actor(db.actor, nil, {self.st.point, self.st.look})
     level.add_pp_effector (self.st.pp_effector, 234, false)
-    self.effector_idle = 1000*level.add_cam_effector2(self.st.cam_effector, 123, false) + 1000
+    self.effector_idle = 1000*level.add_cam_effector2(self.st.cam_effector, 123, false, "sr_cutscene.effector_callback") + 1000
 
     xr_effects.disable_ui(db.actor, nil)
     self.ui_disabled = true
@@ -155,4 +155,9 @@ function set_scheme(obj, ini, scheme, section, gulag_name)
     st.cam_effector = utils.cfg_get_string(ini, section, "cam_effector", obj, true, "") .. ".anm"
     st.cam_effector = "camera_effects\\" .. st.cam_effector
 
+end
+
+----------------------------------------------------------------------------------------------------
+function effector_callback()
+	printf("HUYYASE")
 end

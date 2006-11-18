@@ -66,7 +66,7 @@ function run_cam_effector(actor, npc, p)
         end
         
         --level.add_pp_effector(p[1] .. ".ppe", num, loop)
-	    level.add_cam_effector("camera_effects\\" .. p[1] .. ".anm", num, loop)	                  
+	    level.add_cam_effector("camera_effects\\" .. p[1] .. ".anm", num, loop, "")	                  
     end
 end
 
@@ -453,7 +453,7 @@ function actor_punch(npc)
 	local snd_obj = sound_object([[affects\hit_fist]])
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
 
-	level.add_cam_effector("camera_effects\\fusker.anm", 999, false)		
+	level.add_cam_effector("camera_effects\\fusker.anm", 999, false, "")		
 end
 
 -- Принудительное усыпание игрока на радаре.
@@ -1537,12 +1537,12 @@ end
 function agr_knockdown (npc)
 	local snd_obj = sound_object([[affects\tinnitus3a]])
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
-	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false)
+	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false, "")
 --'    set_postprocess ("scripts\\earthshake.ltx")
 end
 
 function agr_cam_effect ()
-	level.add_cam_effector2("camera_effects\\agroprom_doctor_cam.anm", 123, false)
+	level.add_cam_effector2("camera_effects\\agroprom_doctor_cam.anm", 123, false, "")
 
 end
 
@@ -1956,12 +1956,12 @@ end
 function aes_earthshake (npc)
 	local snd_obj = sound_object([[ambient\earthquake]])
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
-	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false)
+	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false, "")
     --set_postprocess ("scripts\\earthshake.ltx")
 end
 
 function vovan_camera_test (npc)
-	level.add_cam_effector("camera_effects\\test.anm")	                  
+	level.add_cam_effector("camera_effects\\test.anm", "")	                  
 end
 -------------------------------------------------------------------------------------
 -- Функции для Янтаря
@@ -1992,7 +1992,7 @@ function yan_gluk (actor, npc)
         
 		sound_obj_l:play_no_feedback(actor, sound_object.s2d, 0, vector():set(-1, 0, 1), 1.0)
 		sound_obj_r:play_no_feedback(actor, sound_object.s2d, 0, vector():set( 1, 0, 1), 1.0)
-	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false)
+	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false, "")
 --'    set_postprocess ("scripts\\earthshake.ltx")
 end
 
