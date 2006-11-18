@@ -44,7 +44,7 @@ struct doug_lea_allocator {
 
 	static	void	*alloc		(const u32 &n)	{	return dlmalloc((u32)n);	}
 	template <typename T>
-	static	void	dealloc		(T *&p)			{	dlfree(p);					}
+	static	void	dealloc		(T *&p)			{	dlfree(p);	p=0;			}
 };
 
 
