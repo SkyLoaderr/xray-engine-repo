@@ -63,8 +63,8 @@ float		ps_r2_tf_Mipbias			= 0.0f	;
 // R2-specific
 Flags32		ps_r2_ls_flags				= { R2FLAG_SUN | R2FLAG_SUN_IGNORE_PORTALS};	// r2-only
 float		ps_r2_df_parallax_h			= 0.02f;
-float		ps_r2_df_parallax_range		= 50.f;
-float		ps_r2_tonemap_middlegray	= 0.01f;			// r2-only
+float		ps_r2_df_parallax_range		= 75.f;
+float		ps_r2_tonemap_middlegray	= 0.25f;			// r2-only
 float		ps_r2_tonemap_adaptation	= 5.f;				// r2-only
 float		ps_r2_tonemap_low_lum		= 0.001f;			// r2-only
 float		ps_r2_tonemap_amount		= 0.5f;				// r2-only
@@ -343,7 +343,7 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_ls_depth_bias",		&ps_r2_ls_depth_bias,		-0.5,	+0.5	);
 
 	CMD4(CCC_Float,		"r2_parallax_h",		&ps_r2_df_parallax_h,		.0f,	.5f		);
-	CMD4(CCC_Float,		"r2_parallax_range",	&ps_r2_df_parallax_range,	5.0f,	75.0f	);
+//	CMD4(CCC_Float,		"r2_parallax_range",	&ps_r2_df_parallax_range,	5.0f,	175.0f	);
 
 	tw_min.set			(0,0,0);	tw_max.set	(1,1,1);
 	CMD4(CCC_Vector3,	"r2_aa_break",			&ps_r2_aa_barier,			tw_min, tw_max	);
