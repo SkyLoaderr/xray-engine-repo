@@ -254,6 +254,9 @@
 					RelativePath=".\Config\gameplay\encyclopedia_social.xml">
 				</File>
 				<File
+					RelativePath=".\Config\gameplay\encyclopedia_tutorial.xml">
+				</File>
+				<File
 					RelativePath=".\Config\gameplay\encyclopedia_vehicles.xml">
 				</File>
 				<File

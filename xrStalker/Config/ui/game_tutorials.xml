@@ -471,11 +471,11 @@
 			</main_wnd>
 		</item>
 	</part_6_radiation>	
-	
-	<part_7_starvation><!--делаю новый туториал-->
+
+	<part_7_psy><!--делаю новый туториал-->
 		<global_wnd/>
 		
-		<item><!-- Голод -->
+		<item><!-- Радиация -->
 			<length_sec>15</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
@@ -487,12 +487,12 @@
 				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
 							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
 					<window_name>w1</window_name>
-					<text font="graffiti22" r="225" g="225" b="250" a="255">starvation_tutorial</text>
+					<text font="graffiti22" r="225" g="225" b="250" a="255">radiation_tutorial</text>
 				</auto_static>
 			</main_wnd>
 		</item>
-	</part_7_starvation>	
-	
+	</part_7_psy>	
+		
 	<part_8_wound><!--делаю новый туториал-->
 		<global_wnd/>
 		
@@ -597,28 +597,7 @@
 			</main_wnd>
 		</item>
 	</part_12_relations>
-	
-	<part_13_sleep><!--делаю новый туториал-->
-		<global_wnd/>
 		
-		<item><!-- сон -->
-			<length_sec>15</length_sec>
-			<pause_state>off</pause_state>
-			<guard_key/>
-			<sound/>
-			<cursor_pos/>
-			<pda_section/>
-			<grab_input>0</grab_input>
-			<main_wnd>
-				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
-							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
-					<window_name>w1</window_name>
-					<text font="graffiti22" r="225" g="225" b="250" a="255">sleep_tutorial</text>
-				</auto_static>
-			</main_wnd>
-		</item>
-	</part_13_sleep>
-
 	<part_14_overload><!--делаю новый туториал-->
 		<global_wnd/>
 		

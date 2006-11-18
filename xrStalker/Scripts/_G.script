@@ -1131,18 +1131,17 @@ function odd( x )
 	return math.floor( x * 0.5 ) * 2 == math.floor( x )
 end
 
+--' Усталость
 function on_actor_critical_power()
 	if db.actor:has_info("esc_trader_newbie") then
-		game.start_tutorial("part_14_overload")
+		game.start_tutorial("part_11_weakness")
 	end
 end
 
 function on_actor_critical_max_power()
---	if db.actor:has_info("esc_trader_newbie") then
---		game.start_tutorial("part_11_weakness")
---	end
 end
 
+--' Кровотечение
 function on_actor_bleeding()
 	if db.actor:has_info("esc_trader_newbie") then
 		game.start_tutorial("part_8_wound")
@@ -1150,26 +1149,30 @@ function on_actor_bleeding()
 end
 
 function on_actor_satiety()
---	if db.actor:has_info("esc_trader_newbie") then
---		game.start_tutorial("part_7_starvation")
---	end
 end
 
+--' Радиация
 function on_actor_radiation()
 	if db.actor:has_info("esc_trader_newbie") then
 		game.start_tutorial("part_6_radiation")
 	end
 end
 
+--' Заклинило оружие
 function on_actor_weapon_jammed()
 	if db.actor:has_info("esc_trader_newbie") then
 		game.start_tutorial("part_9_weapon")
 	end
 end
 
+--' не может ходить изза веса
 function on_actor_cant_walk_weight()
+	if db.actor:has_info("esc_trader_newbie") then
+		game.start_tutorial("part_14_overload")
+	end
 end
 
+--' пси воздействие
 function on_actor_psy()
 end
 
