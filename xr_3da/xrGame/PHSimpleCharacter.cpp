@@ -19,22 +19,9 @@
 #include "DamageSource.h"
 #include "PHCollideValidator.h"
 #include "CalculateTriangle.h"
+//#include "phvalide.h"
 
-#ifdef DEBUG
-#define	VERIFY_BOUNDARIES(pos,bounds,obj)\
-{\
-	if(!valid_pos(pos,bounds))\
-	{\
-		Msg(" pos: %f,%f,%f, seems to be invalid", pos.x,pos.y,pos.z);\
-		Msg("Level box: %f,%f,%f-%f,%f,%f,",bounds.x1,bounds.y1,bounds.z1,bounds.x2,bounds.y2,bounds.z2);\
-		Msg("Object: %s",obj->Name());\
-		Msg("Visual: %s",*(obj->cNameVisual()));\
-		VERIFY(0);\
-	}\
-}
-#else
-#define	VERIFY_BOUNDARIES(pos,bounds,obj)
-#endif
+
 
 IC		bool	PhOutOfBoundaries			(const Fvector& v)
 {

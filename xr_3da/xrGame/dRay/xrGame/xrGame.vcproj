@@ -8896,6 +8896,9 @@
 					RelativePath=".\PHDebug.h">
 				</File>
 				<File
+					RelativePath=".\phvalide.h">
+				</File>
+				<File
 					RelativePath=".\PHWorld.cpp">
 				</File>
 				<File

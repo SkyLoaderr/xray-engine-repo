@@ -1072,7 +1072,8 @@ void CPHJoint::CalcAxis(int ax_num,Fvector& axis, float& lo,float& hi,const Fmat
 	case vs_global:pShell->mXFORM.transform_dir(axis,axes[ax_num].direction);break;
 	default:		NODEFAULT;							
 	}
-
+	lo=axes[ax_num].low;
+	hi=axes[ax_num].high;
 	if(lo<-M_PI){ 
 		hi-=(lo+M_PI);
 		lo=-M_PI;
