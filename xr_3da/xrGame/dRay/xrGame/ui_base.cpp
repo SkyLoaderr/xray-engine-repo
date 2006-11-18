@@ -228,8 +228,8 @@ shared_str	ui_core::get_xml_name(LPCSTR fn)
 		if ( strext(fn) )
 		{
 			strcpy	(str, fn);
-			str[xr_strlen(str)-4] = 0;
-			strcat	(str-4, "_16.xml");
+			*strext(str)	= 0;
+			strcat	(str, "_16.xml");
 		}else
 			sprintf				(str, "%s_16", fn);
 
@@ -238,7 +238,7 @@ shared_str	ui_core::get_xml_name(LPCSTR fn)
 			sprintf(str, "%s", fn);
 			if ( NULL==strext(fn) ) strcat(str, ".xml");
 		}
+		Msg("[16-9] get_xml_name for[%s] returns [%s]", fn, str);
 	}
-	Msg("[16-9] get_xml_name for[%s] returns [%s]", fn, str);
 	return str;
 }
