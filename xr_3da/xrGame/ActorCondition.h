@@ -23,6 +23,8 @@ private:
 			eCriticalSatietyReached			=(1<<3),
 			eCriticalRadiationReached		=(1<<4),
 			eWeaponJammedReached			=(1<<5),
+			ePhyHealthMinReached			=(1<<6),
+			eCantWalkWeight					=(1<<7),
 			};
 	Flags16											m_condition_flags;
 private:
@@ -45,7 +47,7 @@ public:
 	// хромание при потере сил и здоровья
 	virtual	bool		IsLimping					() const;
 	virtual bool		IsCantWalk					() const;
-	virtual bool		IsCantWalkWeight			() const;
+	virtual bool		IsCantWalkWeight			();
 	virtual bool		IsCantSprint				() const;
 
 			void		ConditionJump				(float weight);

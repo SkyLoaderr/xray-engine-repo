@@ -249,7 +249,7 @@ bool CActorCondition::IsCantWalk() const
 	return				m_bCantWalk;
 }
 
-bool CActorCondition::IsCantWalkWeight() const
+bool CActorCondition::IsCantWalkWeight()
 {
 	if(IsGameTypeSingle() && !GodMode())
 	{
@@ -260,8 +260,12 @@ bool CActorCondition::IsCantWalkWeight() const
 			max_w += outfit->m_additional_weight;
 
 		if( object().inventory().TotalWeight() > max_w )
+		{
+			m_condition_flags.set			(eCantWalkWeight, TRUE);
 			return true;
+		}
 	}
+	m_condition_flags.set					(eCantWalkWeight, FALSE);
 	return false;
 }
 
@@ -320,38 +324,58 @@ void CActorCondition::ChangeSatiety(float value)
 
 void CActorCondition::UpdateTutorialThresholds()
 {
-	string256 cb_name;
+	string256						cb_name;
 	static float _cPowerThr			= pSettings->r_float("tutorial_conditions_thresholds","power");
 	static float _cPowerMaxThr		= pSettings->r_float("tutorial_conditions_thresholds","max_power");
 	static float _cBleeding			= pSettings->r_float("tutorial_conditions_thresholds","bleeding");
 	static float _cSatiety			= pSettings->r_float("tutorial_conditions_thresholds","satiety");
 	static float _cRadiation		= pSettings->r_float("tutorial_conditions_thresholds","radiation");
 	static float _cWpnCondition		= pSettings->r_float("tutorial_conditions_thresholds","weapon_jammed");
+	static float _cPsyHealthThr		= pSettings->r_float("tutorial_conditions_thresholds","psy_health");
+
+
 
 	bool b = true;
 	if(b && !m_condition_flags.test(eCriticalPowerReached) && GetPower()<_cPowerThr){
-		m_condition_flags.set			(eCriticalPowerReached, TRUE);b=false;
+		m_condition_flags.set			(eCriticalPowerReached, TRUE);
+		b=false;
 		strcpy(cb_name,"_G.on_actor_critical_power");
 	}
 
 	if(b && !m_condition_flags.test(eCriticalMaxPowerReached) && GetMaxPower()<_cPowerMaxThr){
-		m_condition_flags.set			(eCriticalMaxPowerReached, TRUE);b=false;
+		m_condition_flags.set			(eCriticalMaxPowerReached, TRUE);
+		b=false;
 		strcpy(cb_name,"_G.on_actor_critical_max_power");
 	}
 
 	if(b && !m_condition_flags.test(eCriticalBleedingSpeed) && BleedingSpeed()>_cBleeding){
-		m_condition_flags.set			(eCriticalBleedingSpeed, TRUE);b=false;
+		m_condition_flags.set			(eCriticalBleedingSpeed, TRUE);
+		b=false;
 		strcpy(cb_name,"_G.on_actor_bleeding");
 	}
 
 	if(b && !m_condition_flags.test(eCriticalSatietyReached) && GetSatiety()<_cSatiety){
-		m_condition_flags.set			(eCriticalSatietyReached, TRUE);b=false;
+		m_condition_flags.set			(eCriticalSatietyReached, TRUE);
+		b=false;
 		strcpy(cb_name,"_G.on_actor_satiety");
 	}
 
 	if(b && !m_condition_flags.test(eCriticalRadiationReached) && GetRadiation()>_cRadiation){
-		m_condition_flags.set			(eCriticalRadiationReached, TRUE);b=false;
+		m_condition_flags.set			(eCriticalRadiationReached, TRUE);
+		b=false;
 		strcpy(cb_name,"_G.on_actor_radiation");
+	}
+
+	if(b && !m_condition_flags.test(ePhyHealthMinReached) && GetPsyHealth()>_cPsyHealthThr){
+//.		m_condition_flags.set			(ePhyHealthMinReached, TRUE);
+		b=false;
+		strcpy(cb_name,"_G.on_actor_psy");
+	}
+
+	if(b && !m_condition_flags.test(eCantWalkWeight)){
+//.		m_condition_flags.set			(eCantWalkWeight, TRUE);
+		b=false;
+		strcpy(cb_name,"_G.on_actor_cant_walk_weight");
 	}
 
 	if(b && !m_condition_flags.test(eWeaponJammedReached)&&m_object->inventory().GetActiveSlot()!=NO_ACTIVE_SLOT){

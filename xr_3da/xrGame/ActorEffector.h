@@ -48,7 +48,15 @@ public:
 			float		GetAnimatorLength		()						{return fLifeTime;};
 };
 
+class CAnimatorCamEffectorScriptCB :public CAnimatorCamEffector 
+{
+	typedef 	CAnimatorCamEffector			inherited;
 
+	shared_str			cb_name;
+public:
+	CAnimatorCamEffectorScriptCB	(LPCSTR _cb){cb_name =_cb;};
+	virtual	BOOL		Valid					();
+};
 
 class CAnimatorCamLerpEffector :public CAnimatorCamEffector
 {

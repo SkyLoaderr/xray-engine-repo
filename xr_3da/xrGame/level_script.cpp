@@ -392,9 +392,9 @@ void iterate_sounds2				(LPCSTR prefix, u32 max_count, luabind::object object, l
 }
 
 #include "actoreffector.h"
-float add_cam_effector(LPCSTR fn, int id, bool cyclic)
+float add_cam_effector(LPCSTR fn, int id, bool cyclic, LPCSTR cb_func)
 {
-	CAnimatorCamEffector* e		= xr_new<CAnimatorCamEffector>();
+	CAnimatorCamEffectorScriptCB* e		= xr_new<CAnimatorCamEffectorScriptCB>(cb_func);
 	e->SetType					((ECamEffectorType)id);
 	e->SetCyclic				(cyclic);
 	e->Start					(fn);
@@ -402,9 +402,9 @@ float add_cam_effector(LPCSTR fn, int id, bool cyclic)
 	return						e->GetAnimatorLength();
 }
 
-float add_cam_effector2(LPCSTR fn, int id, bool cyclic)
+float add_cam_effector2(LPCSTR fn, int id, bool cyclic, LPCSTR cb_func)
 {
-	CAnimatorCamEffector* e		= xr_new<CAnimatorCamEffector>();
+	CAnimatorCamEffectorScriptCB* e		= xr_new<CAnimatorCamEffectorScriptCB>(cb_func);
 	e->m_bAbsolutePositioning	= true;
 	e->SetType					((ECamEffectorType)id);
 	e->SetCyclic				(cyclic);
