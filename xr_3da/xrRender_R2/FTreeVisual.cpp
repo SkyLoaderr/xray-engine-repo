@@ -127,6 +127,7 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_wave,	tvs.wave);													// wave
 	RCache.set_c			(c_wind,	tvs.wind);													// wind
 #if RENDER==R_R2
+	s *= 1.3333f;
 	RCache.set_c			(c_c_scale,	s*c_scale.rgb.x,	s*c_scale.rgb.y,	s*c_scale.rgb.z,	s*c_scale.hemi);	// scale
 	RCache.set_c			(c_c_bias,	s*c_bias.rgb.x,		s*c_bias.rgb.y,		s*c_bias.rgb.z,		s*c_bias.hemi);		// bias
 #else

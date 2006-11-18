@@ -337,6 +337,7 @@ Fvector3		wform	(Fmatrix& m, Fvector3& v)
 const	float	_eps	= 0.000001f;
 struct	DumbClipper
 {
+	CFrustum				frustum;
 	xr_vector<D3DXPLANE>	planes;
 	BOOL					clip	(D3DXVECTOR3& p0, D3DXVECTOR3& p1)		// returns TRUE if result meaningfull
 	{
@@ -369,21 +370,37 @@ struct	DumbClipper
 	{
 		Fbox3		result;		result.invalidate		();
 		for (int it=0; it<int(src.size()); it++)		{
-			Fbox&	bb		= src	[it];
-			for (int c0=0; c0<8; c0++)
+			Fbox&			bb		= src	[it];
+			u32				mask	= frustum.getMask	();
+			EFC_Visible		res		= frustum.testAABB	(&bb.min.x,mask);
+			switch	(res)	
 			{
-				for (int c1=0; c1<8; c1++)
+			case fcvNone:	continue;
+			case fcvFully:	
+				for (int c=0; c<8; c++)
 				{
-					if (c0==c1)			continue;
-					D3DXVECTOR3		p0	= point(bb,c0);
-					D3DXVECTOR3		p1	= point(bb,c1);
-					if (!clip(p0,p1))	continue;
-					Fvector			x0	= wform			(xf,*((Fvector*)(&p0)));
-					Fvector			x1	= wform			(xf,*((Fvector*)(&p1)));
+					D3DXVECTOR3		p0	= point		(bb,c);
+					Fvector			x0	= wform		(xf,*((Fvector*)(&p0)));
 					result.modify	(x0	);
-					result.modify	(x1	);
 				}
-			}
+				break;
+			case fcvPartial:
+				for (int c0=0; c0<8; c0++)
+				{
+					for (int c1=0; c1<8; c1++)
+					{
+						if (c0==c1)			continue;
+						D3DXVECTOR3		p0	= point	(bb,c0);
+						D3DXVECTOR3		p1	= point	(bb,c1);
+						if (!clip(p0,p1))	continue;
+						Fvector			x0	= wform	(xf,*((Fvector*)(&p0)));
+						Fvector			x1	= wform	(xf,*((Fvector*)(&p1)));
+						result.modify	(x0	);
+						result.modify	(x1	);
+					}
+				}
+				break;
+			};
 		}
 		return			result;
 	}
@@ -535,8 +552,7 @@ void CRender::render_sun				()
 			add_Geometry		(root);
 		}
 	}
-
-	set_Recorder								(NULL);
+	set_Recorder						(NULL);
 
 	//	Prepare to interact with D3DX code
 	const D3DXMATRIX&	m_View			= *((D3DXMATRIX*)(&Device.mView));
@@ -753,10 +769,10 @@ void CRender::render_sun				()
 		// create clipper
 		DumbClipper	view_clipper;
 		Fmatrix&	xform		= *((Fmatrix*)&m_LightViewProj);
-		CFrustum	view_planes	; view_planes.CreateFromMatrix(ex_full,FRUSTUM_P_ALL);
-		for		(int p=0; p<view_planes.p_count; p++)
+		view_clipper.frustum.CreateFromMatrix(ex_full,FRUSTUM_P_ALL);
+		for		(int p=0; p<view_clipper.frustum.p_count; p++)
 		{
-			Fplane&		P	= view_planes.planes	[p];
+			Fplane&		P	= view_clipper.frustum.planes	[p];
 			view_clipper.planes.push_back(D3DXPLANE(P.n.x,P.n.y,P.n.z,P.d));
 		}
 

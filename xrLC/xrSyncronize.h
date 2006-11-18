@@ -2,7 +2,7 @@
 #define xrSyncronizeH
 #pragma once
 
-#if 0//def DEBUG
+#ifdef DEBUG
 #	define PROFILE_CRITICAL_SECTIONS
 #endif // DEBUG
 
