@@ -31,6 +31,7 @@ enum		{
 const		Fvector			&Position							()																															;
 			void			Size								(Fvector &size)																												;
 			dBodyID			ODEBody								()																											{return m_body	;}
+			void			set_rotation						(const	Fmatrix	&rot)																											;
 private:
 virtual		void			PhDataUpdate						(dReal step)																												;
 virtual		void			PhTune								(dReal step)																												;
@@ -40,4 +41,5 @@ virtual		dGeomID			dSpacedGeom							()																															;
 virtual		void			get_spatial_params					()																															;
 virtual		u16				get_elements_number					()																															{return 0;}
 virtual		CPHSynchronize	*get_element_sync					(u16 element)																												{return NULL;}		
+
 };

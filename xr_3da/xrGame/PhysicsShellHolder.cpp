@@ -11,7 +11,7 @@
 #include "CustomRocket.h"
 #include "Grenade.h"
 #include "phworld.h"
-
+#include "phactivationshape.h"
 CPhysicsShellHolder::CPhysicsShellHolder()
 {
 	init();
@@ -85,12 +85,25 @@ void CPhysicsShellHolder::init			()
 	m_pPhysicsShell				=	NULL		;
 	b_sheduled					=	false		;
 }
-
+void CPhysicsShellHolder::correct_spawn_pos()
+{
+	VERIFY(PPhysicsShell());
+	Fvector size,c;
+	get_box(PPhysicsShell(),XFORM(),size,c);
+	CPHActivationShape	activation_shape;
+	activation_shape.Create(c,size,this);
+	activation_shape.set_rotation(XFORM());
+	activation_shape.Activate(size,1,1.f,M_PI/8.f);
+	Fmatrix	trans;trans.identity();
+	trans.c.sub(activation_shape.Position(),c);
+	PPhysicsShell()->TransformPosition(trans);
+	PPhysicsShell()->GetGlobalTransformDynamic(&XFORM());
+	activation_shape.Destroy();
+}
 void CPhysicsShellHolder::activate_physic_shell()
 {
 	VERIFY						(!m_pPhysicsShell);
 	create_physic_shell			();
-
 	Fvector						l_fw, l_up;
 	l_fw.set					(XFORM().k);
 	l_up.set					(XFORM().j);
@@ -104,6 +117,11 @@ void CPhysicsShellHolder::activate_physic_shell()
 	l_p2.c.add					(l_fw);
 
 	m_pPhysicsShell->Activate	(l_p1, 0, l_p2);
+	if(H_Parent())
+	{
+		smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones_Invalidate	();
+		smart_cast<CKinematics*>(H_Parent()->Visual())->CalculateBones	();
+	}
 	smart_cast<CKinematics*>(Visual())->CalculateBones_Invalidate	();
 	smart_cast<CKinematics*>(Visual())->CalculateBones();
 	if(!IsGameTypeSingle())
@@ -111,6 +129,8 @@ void CPhysicsShellHolder::activate_physic_shell()
 		if(!smart_cast<CCustomRocket*>(this)&&!smart_cast<CGrenade*>(this)) PPhysicsShell()->SetIgnoreDynamic();
 	}
 //	XFORM().set					(l_p1);
+	correct_spawn_pos();
+	m_pPhysicsShell->set_LinearVel(l_fw);
 }
 
 void CPhysicsShellHolder::setup_physic_shell	()
@@ -118,6 +138,8 @@ void CPhysicsShellHolder::setup_physic_shell	()
 	VERIFY						(!m_pPhysicsShell);
 	create_physic_shell			();
 	m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
+	smart_cast<CKinematics*>(Visual())->CalculateBones_Invalidate	();
+	smart_cast<CKinematics*>(Visual())->CalculateBones();
 }
 
 void CPhysicsShellHolder::deactivate_physics_shell()

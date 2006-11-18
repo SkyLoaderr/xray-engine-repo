@@ -94,6 +94,7 @@ CPHActivationShape::~CPHActivationShape()
 }
 void	CPHActivationShape::Create(const Fvector start_pos,const Fvector start_size,CPhysicsShellHolder* ref_obj,EType _type/*=etBox*/,u16	flags)
 {
+	VERIFY(ref_obj);
 	m_body			=	dBodyCreate	(0)												;
 	dMass m;
 	dMassSetSphere(&m,1.f,100000.f);
@@ -257,4 +258,10 @@ void CPHActivationShape::CutVelocity(float l_limit,float /*a_limit*/)
 		dxStepBody(m_body,fixed_step);
 		dBodySetLinearVel(m_body,limitedl[0],limitedl[1],limitedl[2]);
 	}
+}
+
+void	CPHActivationShape::		set_rotation						(const	Fmatrix	&sof)
+{
+	dMatrix3 rot;PHDynamicData::FMXtoDMX(sof,rot);
+	dBodySetRotation(ODEBody(),rot);
 }

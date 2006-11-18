@@ -278,6 +278,8 @@ void CCar::SaveNetState(NET_Packet& P)
 	P.w_float(GetfHealth());
 }
 
+
+
 void CCar::RestoreNetState(CSE_PHSkeleton* po)
 {
 	if(!po->_flags.test(CSE_PHSkeleton::flSavedData))return;
@@ -327,19 +329,10 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 
 		Fvector center;Center(center);
 		Fvector obj_size;BoundingBox().getsize(obj_size);
-		center.set(0,0,0);
-		for(int i=0;3>i;++i)
-		{	
-			float lo,hi;
-			Fvector &ax=cast_fv(((float*)&restored_form+i*4));
-			PPhysicsShell()->get_Extensions(ax,0,lo,hi);
-			obj_size[i]=hi-lo;center.add(ax.mul((lo+hi)/2));
-		}
+		get_box(PPhysicsShell(),restored_form,obj_size,center);
 		replace.transform(center);
-		activation_shape.Create(center,obj_size,NULL);
-		dMatrix3 rot;PHDynamicData::FMXtoDMX(sof,rot);
-
-		dBodySetRotation(activation_shape.ODEBody(),rot);
+		activation_shape.Create(center,obj_size,this);
+		activation_shape.set_rotation(sof);
 		activation_shape.Activate(obj_size,1,1.f,M_PI/8.f);
 		Fvector dd;
 		dd.sub(activation_shape.Position(),center);

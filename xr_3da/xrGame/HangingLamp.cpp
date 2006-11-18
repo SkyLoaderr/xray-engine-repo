@@ -158,6 +158,11 @@ void	CHangingLamp::SpawnInitPhysics	(CSE_Abstract	*D)
 {
 	CSE_ALifeObjectHangingLamp	*lamp	= smart_cast<CSE_ALifeObjectHangingLamp*>(D);	
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp);
+	if (smart_cast<CKinematics*>(Visual())){
+		smart_cast<CKinematics*>			(Visual())->CalculateBones_Invalidate	();
+		smart_cast<CKinematics*>			(Visual())->CalculateBones();
+		//.intepolate_pos
+	}
 }
 
 void	CHangingLamp::CopySpawnInit		()
