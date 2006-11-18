@@ -237,8 +237,12 @@ shared_str	ui_core::get_xml_name(LPCSTR fn)
 		{
 			sprintf(str, "%s", fn);
 			if ( NULL==strext(fn) ) strcat(str, ".xml");
-		}
+		}else
+			Msg("file not exist [%s]", str);
 	}
+	if(is_16_9_mode())
+		Msg("16-9");
 
+	Msg("get_xml_name %s returns %s", fn, str);
 	return str;
 }
