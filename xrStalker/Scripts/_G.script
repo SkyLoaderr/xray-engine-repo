@@ -1167,6 +1167,11 @@ function on_actor_weapon_jammed()
 	end
 end
 
+function on_actor_cant_walk_weight()
+end
+
+function on_actor_psy()
+end
 
 function set_actor_rank(rank)
 	if rank == "novice" then
