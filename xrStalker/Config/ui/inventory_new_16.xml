@@ -124,9 +124,9 @@
 	<static_personal x=1 y=285 width=95 height=260/>
 	
 
-    <rank x="554" y="272" width="56" height="65">
+    <rank x="732" y="272" width="56" height="65" stretch="1">
 		<texture>ui_inventory_rank</texture>
-		<pic x="10" y="17" width="46" height="35" stretch="1"/>
+		<pic x="10" y="17" width="34" height="35" stretch="1"/>
     </rank>
     
     <progress_background x="739" y="337" width="44" height="179" stretch="1">
@@ -134,7 +134,7 @@
     </progress_background>
     
     
-    <progress_back_rank x="592" y="340" width="29" height="179" stretch="1">
+    <progress_back_rank x="781" y="340" width="29" height="179" stretch="1">
 		<texture>ui_scale_one</texture>		
     </progress_back_rank>   
 
