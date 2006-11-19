@@ -35,7 +35,7 @@
 				<logo x="0" y="0" width="24" height="32" stretch="1"/>
 				<header x="42" y="0" width="368" height="20">
 					<texture></texture>
-					<text>Team Header</text>
+					<text></text>
 				</header>
 			</team_header>
 			
@@ -72,7 +72,7 @@
 				<logo x="0" y="0" width="24" height="32" stretch="1"/>
 				<header x="42" y="0" width="368" height="20">
 					<texture></texture>
-					<text>Team Header</text>
+					<text></text>
 				</header>
 			</team_header>
 			
