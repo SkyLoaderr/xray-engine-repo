@@ -187,9 +187,27 @@ void	light::xform_calc			()
 
 	// build final rotation / translation
 	Fvector					L_dir,L_up,L_right;
-	L_dir.set				(direction).normalize		();
-	L_right.set				(right).normalize			();
-	L_up.crossproduct		(L_dir,L_right).normalize	();
+
+	// dir
+	L_dir.set				(direction);
+	float l_dir_m			= L_dir.magnitude();
+	if (_valid(l_dir_m) && l_dir_m>EPS_S)	L_dir.div(l_dir_m);
+	else									L_dir.set(0,0,1);
+
+	// R&N
+	if (right.square_magnitude()>EPS)				{
+		// use specified 'up' and 'right', just enshure ortho-normalization
+		L_right.set					(right);				L_right.normalize	();
+		L_up.crossproduct			(L_dir,L_right);		L_up.normalize		();
+		L_right.crossproduct		(L_up,L_dir);			L_right.normalize	();
+	} else {
+		// auto find 'up' and 'right' vectors
+		L_up.set					(0,1,0);				if (_abs(L_up.dotproduct(L_dir))>.99f)	L_up.set(0,0,1);
+		L_right.crossproduct		(L_up,L_dir);			L_right.normalize	();
+		L_up.crossproduct			(L_dir,L_right);		L_up.normalize		();
+	}
+
+	// matrix
 	Fmatrix					mR;
 	mR.i					= L_right;	mR._14	= 0;
 	mR.j					= L_up;		mR._24	= 0;
