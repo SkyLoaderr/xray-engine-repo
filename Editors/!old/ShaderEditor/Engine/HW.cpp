@@ -313,6 +313,10 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 								GPU | D3DCREATE_MULTITHREADED,	//. ? locks at present
 								&P,
                                 &pDevice ));
+	
+	// if (FAILED(CreateDevice))	{
+	//	CreateDevice()
+	//}
 
 	_SHOW_REF	("* CREATE: DeviceREF:",HW.pDevice);
 	switch (GPU)
