@@ -1770,10 +1770,19 @@
 						RelativePath=".\Config\ui\ui_game_ahunt.xml">
 					</File>
 					<File
+						RelativePath=".\config\ui\ui_game_ahunt_16.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\ui_game_dm.xml">
 					</File>
 					<File
+						RelativePath=".\config\ui\ui_game_dm_16.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\ui_game_tdm.xml">
+					</File>
+					<File
+						RelativePath=".\config\ui\ui_game_tdm_16.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\ui_mapinfo.xml">

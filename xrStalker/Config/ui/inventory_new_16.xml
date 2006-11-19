@@ -126,7 +126,7 @@
 
     <rank x="732" y="272" width="56" height="65" stretch="1">
 		<texture>ui_inventory_rank</texture>
-		<pic x="10" y="17" width="34" height="35" stretch="1"/>
+		<pic x="10" y="17" width="34" height="40" stretch="1"/>
     </rank>
     
     <progress_background x="739" y="337" width="44" height="179" stretch="1">
@@ -134,7 +134,7 @@
     </progress_background>
     
     
-    <progress_back_rank x="781" y="340" width="29" height="179" stretch="1">
+    <progress_back_rank x="770" y="337" width="29" height="179" stretch="1">
 		<texture>ui_scale_one</texture>		
     </progress_back_rank>   
 
@@ -158,8 +158,8 @@
     </progress_bar_radiation>
     
     
-    <progress_bar_rank x="15" y="20" width="8" height="174" horz="0" min="0" max="100" pos="0">
-		<progress x="0" y="0" width="10" height="174"  stretch="1">
+    <progress_bar_rank x="15" y="20" width="8" height="142" horz="0" min="0" max="100" pos="0">
+		<progress x="0" y="0" width="10" height="142 "  stretch="1">
 			<texture>ui_scale_green</texture>
 		</progress>
     </progress_bar_rank>
