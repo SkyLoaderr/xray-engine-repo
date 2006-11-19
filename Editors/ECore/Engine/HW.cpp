@@ -306,17 +306,29 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
     else					P.FullScreen_RefreshRateInHz	= D3DPRESENT_RATE_DEFAULT;
 
     // Create the device
-	u32 GPU		= selectGPU();
-    R_CHK(HW.pD3D->CreateDevice(DevAdapter,
+	u32 GPU		= selectGPU();	
+	HRESULT R	= HW.pD3D->CreateDevice(DevAdapter,
 								DevT,
                                 m_hWnd,
 								GPU | D3DCREATE_MULTITHREADED,	//. ? locks at present
 								&P,
-                                &pDevice ));
+                                &pDevice );
 	
-	// if (FAILED(CreateDevice))	{
-	//	CreateDevice()
-	//}
+	if (FAILED(R))	{
+		R	= HW.pD3D->CreateDevice(DevAdapter,
+			DevT,
+			m_hWnd,
+			GPU | D3DCREATE_MULTITHREADED,	//. ? locks at present
+			&P,
+			&pDevice );
+	}
+	if (D3DERR_DEVICELOST==R)	{
+		// Fatal error! Cannot create rendering device AT STARTUP !!!
+		Msg					("Failed to initialize graphics hardware.\nPlease try to restart the game.");
+		FlushLog			();
+		MessageBox			(NULL,"Failed to initialize graphics hardware.\nPlease try to restart the game.","Error!",MB_OK|MB_ICONERROR);
+		TerminateProcess	(GetCurrentProcess(),0);
+	};
 
 	_SHOW_REF	("* CREATE: DeviceREF:",HW.pDevice);
 	switch (GPU)
