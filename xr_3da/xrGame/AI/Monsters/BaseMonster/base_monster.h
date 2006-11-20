@@ -400,7 +400,32 @@ protected:
 
 	virtual void			create_base_controls	();
 
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Critical Wounded
+	//////////////////////////////////////////////////////////////////////////
+	enum {
+		critical_wound_type_head	= u32(0),
+		critical_wound_type_torso,
+		critical_wound_type_legs
+	};
+	
+	virtual void			load_critical_wound_bones					();
+	virtual bool			critical_wound_external_conditions_suitable	();
+	virtual void			critical_wounded_state_start				();
+	
+			void			fill_bones_body_parts						(LPCSTR body_part, CriticalWoundType wound_type);
+	
+	LPCSTR					m_critical_wound_anim_head;
+	LPCSTR					m_critical_wound_anim_torso;
+	LPCSTR					m_critical_wound_anim_legs;
+
+	//////////////////////////////////////////////////////////////////////////
+	
+
 public:	
+
 
 //////////////////////////////////////////////////////////////////////////
 // DEBUG stuff

@@ -28,6 +28,7 @@ namespace ControlCom {
 		eControlCustom,
 
 		eComCustom1,
+		eComCriticalWound,
 		
 		eControllersCount,
 
@@ -60,7 +61,8 @@ namespace ControlCom {
 		eventRunAttackEnd,
 		eventPathUpdated,
 		eventPathSelectorFailed,
-		eventThreatenEnd
+		eventThreatenEnd,
+		eventCriticalWoundEnd
 	};
 
 	enum ECaptureType {

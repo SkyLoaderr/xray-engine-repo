@@ -8,6 +8,7 @@
 #include "../../detail_path_manager.h"
 #include "../../level.h"
 #include "control_animation_base.h"
+#include "control_critical_wound.h"
 
 
 CControlManagerCustom::CControlManagerCustom()
@@ -70,6 +71,11 @@ void CControlManagerCustom::add_ability(ControlCom::EControlType type)
 		m_melee_jump	= xr_new<CControlMeleeJump>();
 		m_man->add		(m_melee_jump, ControlCom::eControlMeleeJump);
 		break;
+	case ControlCom::eComCriticalWound:
+		m_critical_wound	= xr_new<CControlCriticalWound>();
+		m_man->add			(m_critical_wound, ControlCom::eComCriticalWound);
+		break;
+
 	}
 }
 
@@ -85,6 +91,7 @@ void CControlManagerCustom::on_start_control(ControlCom::EControlType type)
 	case ControlCom::eControlMeleeJump:			m_man->subscribe	(this, ControlCom::eventMeleeJumpEnd);		break;
 	case ControlCom::eControlRunAttack:			m_man->subscribe	(this, ControlCom::eventRunAttackEnd);		break;
 	case ControlCom::eControlThreaten:			m_man->subscribe	(this, ControlCom::eventThreatenEnd);		break;
+	case ControlCom::eComCriticalWound:			m_man->subscribe	(this, ControlCom::eventCriticalWoundEnd);	break;
 	}
 }
 
@@ -98,6 +105,7 @@ void CControlManagerCustom::on_stop_control	(ControlCom::EControlType type)
 	case ControlCom::eControlMeleeJump:			m_man->unsubscribe	(this, ControlCom::eventMeleeJumpEnd);	break;
 	case ControlCom::eControlRunAttack:			m_man->unsubscribe	(this, ControlCom::eventRunAttackEnd);	break;
 	case ControlCom::eControlThreaten:			m_man->unsubscribe	(this, ControlCom::eventThreatenEnd);	break;
+	case ControlCom::eComCriticalWound:			m_man->unsubscribe	(this, ControlCom::eventCriticalWoundEnd);	break;
 	}
 }
 
@@ -118,6 +126,7 @@ void CControlManagerCustom::on_event(ControlCom::EEventType type, ControlCom::IE
 	case ControlCom::eventMeleeJumpEnd:		m_man->release(this, ControlCom::eControlMeleeJump); break;
 	case ControlCom::eventRunAttackEnd:		m_man->release(this, ControlCom::eControlRunAttack); break;
 	case ControlCom::eventThreatenEnd:		m_man->release(this, ControlCom::eControlThreaten); break;
+	case ControlCom::eventCriticalWoundEnd:		m_man->release(this, ControlCom::eComCriticalWound); break;
 	}
 }
 
@@ -584,4 +593,21 @@ void CControlManagerCustom::fill_rotation_data(SControlRotationJumpData	&data, L
 }
 
 //////////////////////////////////////////////////////////////////////////
+void CControlManagerCustom::critical_wound(LPCSTR anim)
+{
+	if (!m_man->check_start_conditions(ControlCom::eComCriticalWound)) 
+		return;
+
+	m_man->capture				(this,	ControlCom::eComCriticalWound);
+
+	SControlCriticalWoundData	*ctrl_data = (SControlCriticalWoundData*)m_man->data(this, ControlCom::eComCriticalWound); 
+	if (!ctrl_data) return;
+	
+	ctrl_data->animation = anim;
+
+	m_man->activate(ControlCom::eComCriticalWound);
+}
+//////////////////////////////////////////////////////////////////////////
+
+
 

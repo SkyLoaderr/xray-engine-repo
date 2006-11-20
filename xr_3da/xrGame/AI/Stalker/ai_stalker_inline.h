@@ -139,7 +139,3 @@ IC	bool CAI_Stalker::wounded									() const
 	return					(m_wounded);
 }
 
-IC	const ECriticalWoundType &CAI_Stalker::critical_wound_type	() const
-{
-	return					(m_critical_wound_type);
-}

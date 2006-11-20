@@ -11,6 +11,7 @@ class CAnimationSequencer;
 class CControlRotationJump;
 class CControlRunAttack;
 class CControlThreaten;
+class CControlCriticalWound;
 
 class CControlManagerCustom : public CControl_ComBase {
 	typedef					CControl_ComBase	inherited;
@@ -25,6 +26,7 @@ class CControlManagerCustom : public CControl_ComBase {
 	CControlRunAttack		*m_run_attack;
 	CControlThreaten		*m_threaten;
 	CControlMeleeJump		*m_melee_jump;
+	CControlCriticalWound	*m_critical_wound;
 
 	DEFINE_VECTOR			(SControlRotationJumpData, ROT_JUMP_DATA_VEC, ROT_JUMP_DATA_VEC_IT);
 	ROT_JUMP_DATA_VEC		m_rot_jump_data;
@@ -80,6 +82,8 @@ public:
 	//-------------------------------------------------------------------------------
 	// Threaten Animation
 	void		set_threaten_data		(LPCSTR anim, float time) {m_threaten_anim = anim; m_threaten_time = time;}
+
+	void		critical_wound			(LPCSTR anim);
 
 private:
 

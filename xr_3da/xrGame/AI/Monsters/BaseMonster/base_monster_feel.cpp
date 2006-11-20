@@ -294,3 +294,36 @@ void CBaseMonster::Hit_Wound(CObject *object, float value, const Fvector &dir, f
 	HS.Write_Packet(P);
 	u_EventSend	(P);
 }
+
+bool CBaseMonster::critical_wound_external_conditions_suitable	()
+{
+	if (!control().check_start_conditions(ControlCom::eControlSequencer)) 
+		return false;
+
+	if (!anim().IsStandCurAnim()) return false;
+
+	return true;
+}
+
+void CBaseMonster::critical_wounded_state_start() 
+{
+	VERIFY	(m_critical_wound_type != u32(-1));
+
+	LPCSTR anim = 0;
+	switch (m_critical_wound_type)	{
+	case critical_wound_type_head:
+		anim = m_critical_wound_anim_head;
+		break;
+	case critical_wound_type_torso:
+		anim = m_critical_wound_anim_torso;
+		break;
+	case critical_wound_type_legs:
+		anim = m_critical_wound_anim_legs;
+		break;
+	}
+
+	VERIFY	(anim);
+	com_man().critical_wound(anim);	
+}
+
+

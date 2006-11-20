@@ -3094,6 +3094,16 @@
 										RelativePath=".\ai\Monsters\control_threaten.h">
 									</File>
 								</Filter>
+								<Filter
+									Name="CriticalWound"
+									Filter="">
+									<File
+										RelativePath=".\ai\Monsters\control_critical_wound.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\control_critical_wound.h">
+									</File>
+								</Filter>
 							</Filter>
 						</Filter>
 						<Filter

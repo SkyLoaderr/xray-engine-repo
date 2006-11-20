@@ -787,42 +787,15 @@ bool CAI_Stalker::critically_wounded		()
 		return					(false);
 
 	if (!brain().CStalkerPlanner::m_storage.property(StalkerDecisionSpace::eWorldPropertyCriticallyWounded)) {
-		m_critical_wound_type	= critical_wound_type_dummy;
-		return					(false);
+		critical_wounded_state_stop	();
+		return						(false);
 	}
 
 	return						(true);
 }
 
-bool CAI_Stalker::update_critical_wounded	(const u16 &bone_id, const float &power)
+bool CAI_Stalker::critical_wound_external_conditions_suitable()
 {
-	VERIFY							(m_critical_wound_type == critical_wound_type_dummy);
-	VERIFY							(Device.dwTimeGlobal >= m_last_hit_time);
-	
-	float							time_delta = m_last_hit_time ? float(Device.dwTimeGlobal - m_last_hit_time)/1000.f : 0.f;
-	m_critical_wound_accumulator	+= power - m_critical_wound_decrease_quant*time_delta;
-	clamp							(m_critical_wound_accumulator,0.f,m_critical_wound_threshold);
-
-#ifdef _DEBUG
-	Msg								(
-		"%6d [%s] update_critical_wounded: %f[%f] (%f,%f) [%f]",
-		Device.dwTimeGlobal,
-		*cName(),
-		m_critical_wound_accumulator,
-		power,
-		m_critical_wound_threshold,
-		m_critical_wound_decrease_quant,
-		time_delta
-	);
-#endif // DEBUG
-
-	m_last_hit_time					= Device.dwTimeGlobal;
-	if (m_critical_wound_accumulator < m_critical_wound_threshold)
-		return						(false);
-
-	m_last_hit_time					= 0;
-	m_critical_wound_accumulator	= 0.f;
-
 	if (movement().body_state() != eBodyStateStand)
 		return						(false);
 
@@ -835,12 +808,10 @@ bool CAI_Stalker::update_critical_wounded	(const u16 &bone_id, const float &powe
 
 	if (!agent_manager().member().registered_in_combat(this))
 		return						(false);
-
-	BODY_PART::const_iterator		I = m_bones_body_parts.find(bone_id);
-	VERIFY							(I != m_bones_body_parts.end());
-	m_critical_wound_type			= (*I).second;
-
-	brain().CStalkerPlanner::m_storage.set_property(StalkerDecisionSpace::eWorldPropertyCriticallyWounded,true);
-
-	return							(true);
 }
+
+void CAI_Stalker::critical_wounded_state_start()
+{
+	brain().CStalkerPlanner::m_storage.set_property(StalkerDecisionSpace::eWorldPropertyCriticallyWounded,true);
+}
+

@@ -175,6 +175,20 @@ void CCustomMonster::reinit		()
 	m_tEyeShift.set				(0,0,0);
 	m_fEyeShiftYaw				= 0.f;
 	NET_WasExtrapolating		= FALSE;
+
+	//////////////////////////////////////////////////////////////////////////
+	// Critical Wounds
+	//////////////////////////////////////////////////////////////////////////
+	
+	m_critical_wound_type			= u32(-1);
+	m_last_hit_time					= 0;
+	m_critical_wound_accumulator	= 0.f;
+	m_critical_wound_threshold		= pSettings->r_float(cNameSect(),"critical_wound_threshold");
+	m_critical_wound_decrease_quant	= pSettings->r_float(cNameSect(),"critical_wound_decrease_quant");
+
+	if (m_critical_wound_threshold >= 0) 
+		load_critical_wound_bones	();
+	//////////////////////////////////////////////////////////////////////////
 }
 
 void CCustomMonster::reload		(LPCSTR section)
@@ -1150,3 +1164,54 @@ void CCustomMonster::load (IReader &packet)
 	inherited::load			(packet);
 	memory().load			(packet);
 }
+
+
+bool CCustomMonster::update_critical_wounded	(const u16 &bone_id, const float &power)
+{
+	// object should not be critical wounded
+	VERIFY							(m_critical_wound_type == u32(-1));
+	// check 'multiple updates during last hit' situation
+	VERIFY							(Device.dwTimeGlobal >= m_last_hit_time);
+
+	if (m_critical_wound_threshold < 0) return (false);
+
+
+	float							time_delta = m_last_hit_time ? float(Device.dwTimeGlobal - m_last_hit_time)/1000.f : 0.f;
+	m_critical_wound_accumulator	+= power - m_critical_wound_decrease_quant*time_delta;
+	clamp							(m_critical_wound_accumulator,0.f,m_critical_wound_threshold);
+
+#ifdef _DEBUG
+	Msg								(
+		"%6d [%s] update_critical_wounded: %f[%f] (%f,%f) [%f]",
+		Device.dwTimeGlobal,
+		*cName(),
+		m_critical_wound_accumulator,
+		power,
+		m_critical_wound_threshold,
+		m_critical_wound_decrease_quant,
+		time_delta
+		);
+#endif // DEBUG
+
+	m_last_hit_time					= Device.dwTimeGlobal;
+	if (m_critical_wound_accumulator < m_critical_wound_threshold)
+		return						(false);
+
+	m_last_hit_time					= 0;
+	m_critical_wound_accumulator	= 0.f;
+
+	if (critical_wound_external_conditions_suitable()) {
+		BODY_PART::const_iterator		I = m_bones_body_parts.find(bone_id);
+		if (I == m_bones_body_parts.end()) return (false);
+		
+		m_critical_wound_type			= (*I).second;
+
+		critical_wounded_state_start	();
+
+		return (true);
+	}
+
+	return (false);
+}
+
+

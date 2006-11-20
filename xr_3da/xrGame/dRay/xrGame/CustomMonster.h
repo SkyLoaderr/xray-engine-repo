@@ -10,6 +10,7 @@
 #include "../feel_sound.h"
 #include "../feel_touch.h"
 #include "../skeletonanimated.h"
+#include "associative_vector.h"
 
 namespace MonsterSpace {
 	struct SBoneRotation;
@@ -269,6 +270,39 @@ public:
 	IC		float					client_update_fdelta	() const;
 	IC		const u32				&client_update_delta	() const;
 	IC		const u32				&last_client_update_time() const;
+
+	//////////////////////////////////////////////////////////////////////////
+	// Critical Wounds
+	//////////////////////////////////////////////////////////////////////////
+public:
+	typedef u32											CriticalWoundType;
+private:
+	typedef associative_vector<u16,CriticalWoundType>	BODY_PART;
+
+protected:
+	u32								m_last_hit_time;
+	float							m_critical_wound_threshold;
+	float							m_critical_wound_decrease_quant;
+	float							m_critical_wound_accumulator;
+	CriticalWoundType				m_critical_wound_type;
+	BODY_PART						m_bones_body_parts;
+
+protected:
+	virtual void					load_critical_wound_bones					() {}
+
+	virtual bool					critical_wound_external_conditions_suitable	() {return true;}
+	virtual void					critical_wounded_state_start				() {}
+
+			bool					update_critical_wounded						(const u16 &bone_id, const float &power);
+
+public:
+	IC		void					critical_wounded_state_stop					();
+public:
+	IC		bool					critically_wounded							();
+	IC	const u32					&critical_wound_type						() const;
+
+	//////////////////////////////////////////////////////////////////////////
+
 };
 
 #include "custommonster_inline.h"

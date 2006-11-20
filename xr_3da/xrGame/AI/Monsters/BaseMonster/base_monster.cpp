@@ -80,6 +80,8 @@ CBaseMonster::CBaseMonster()
 	CoverMan						= xr_new<CMonsterCoverManager>(this);
 
 	Home							= xr_new<CMonsterHome>(this);
+
+	com_man().add_ability			(ControlCom::eComCriticalWound);
 }
 
 
@@ -159,6 +161,12 @@ void	CBaseMonster::Hit							(SHit* pHDS)
 {
 	if (ignore_collision_hit && (pHDS->hit_type == ALife::eHitTypeStrike)) return;
 	
+	if (g_Alive())
+		if (!critically_wounded()) 
+			update_critical_wounded(pHDS->boneID,pHDS->power);
+	
+
+
 //	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	inherited::Hit(pHDS);
 }

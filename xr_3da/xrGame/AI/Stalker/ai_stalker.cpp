@@ -168,19 +168,6 @@ void CAI_Stalker::reinit			()
 	m_throw_position				= Fvector().set(flt_max,flt_max,flt_max);
 	m_throw_direction				= Fvector().set(flt_max,flt_max,flt_max);
 
-	m_critical_wound_type			= critical_wound_type_dummy;
-	m_last_hit_time					= 0;
-	m_critical_wound_accumulator	= 0.f;
-	m_critical_wound_threshold		= pSettings->r_float(cNameSect(),"critical_wound_threshold");
-	m_critical_wound_decrease_quant	= pSettings->r_float(cNameSect(),"critical_wound_decrease_quant");
-
-	fill_bones_body_parts			("head",		critical_wound_type_head);
-	fill_bones_body_parts			("torso",		critical_wound_type_torso);
-	fill_bones_body_parts			("hand_left",	critical_wound_type_hand_left);
-	fill_bones_body_parts			("hand_right",	critical_wound_type_hand_right);
-	fill_bones_body_parts			("leg_left",	critical_wound_type_leg_left);
-	fill_bones_body_parts			("leg_right",	critical_wound_type_leg_right);
-
 	brain().CStalkerPlanner::m_storage.set_property	(StalkerDecisionSpace::eWorldPropertyCriticallyWounded,	false);
 }
 
@@ -1000,6 +987,16 @@ void CAI_Stalker::load (IReader &packet)
 	brain().load			(packet);
 }
 
+void CAI_Stalker::load_critical_wound_bones()
+{
+	fill_bones_body_parts			("head",		critical_wound_type_head);
+	fill_bones_body_parts			("torso",		critical_wound_type_torso);
+	fill_bones_body_parts			("hand_left",	critical_wound_type_hand_left);
+	fill_bones_body_parts			("hand_right",	critical_wound_type_hand_right);
+	fill_bones_body_parts			("leg_left",	critical_wound_type_leg_left);
+	fill_bones_body_parts			("leg_right",	critical_wound_type_leg_right);
+}
+
 void CAI_Stalker::fill_bones_body_parts	(LPCSTR bone_id, const ECriticalWoundType &wound_type)
 {
 	LPCSTR					body_parts_section_id = pSettings->r_string(cNameSect(),"body_parts_section_id");
@@ -1018,7 +1015,7 @@ void CAI_Stalker::fill_bones_body_parts	(LPCSTR bone_id, const ECriticalWoundTyp
 		m_bones_body_parts.insert	(
 			std::make_pair(
 				kinematics->LL_BoneID((*I).first),
-				wound_type
+				u32(wound_type)
 			)
 		);
 }

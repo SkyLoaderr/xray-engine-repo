@@ -329,3 +329,43 @@ void CBaseMonster::on_before_sell	(CInventoryItem *item)
 	if (alife_object)
 		alife_object->m_flags.set	(CSE_ALifeObject::flCanSave,TRUE);
 }
+
+void CBaseMonster::load_critical_wound_bones()
+{
+	// animation does not exist - no bones loaded
+	if (pSettings->line_exist(cNameSect(),"critical_wound_anim_head")) {
+		fill_bones_body_parts			("critical_wound_bones_head",	critical_wound_type_head);
+		m_critical_wound_anim_head		= pSettings->r_string(cNameSect(),"critical_wound_anim_head");
+	} 
+
+	if (pSettings->line_exist(cNameSect(),"critical_wound_anim_torso")) {
+		fill_bones_body_parts			("critical_wound_bones_torso",	critical_wound_type_torso);
+		m_critical_wound_anim_torso		= pSettings->r_string(cNameSect(),"critical_wound_anim_torso");
+
+	} 
+	
+	if (pSettings->line_exist(cNameSect(),"critical_wound_anim_legs")) {
+		fill_bones_body_parts			("critical_wound_bones_legs",	critical_wound_type_legs);
+		m_critical_wound_anim_legs		= pSettings->r_string(cNameSect(),"critical_wound_anim_legs");
+	} 
+}
+
+void CBaseMonster::fill_bones_body_parts	(LPCSTR body_part, CriticalWoundType wound_type)
+{
+	LPCSTR					body_parts_section = pSettings->r_string(cNameSect(),body_part);
+
+	CKinematics				*kinematics	= smart_cast<CKinematics*>(Visual());
+	VERIFY					(kinematics);
+
+	CInifile::Sect			&body_part_section = pSettings->r_section(body_parts_section);
+	CInifile::SectIt		I = body_part_section.begin();
+	CInifile::SectIt		E = body_part_section.end();
+	for ( ; I != E; ++I)
+		m_bones_body_parts.insert	(
+			std::make_pair(
+				kinematics->LL_BoneID((*I).first),
+				u32(wound_type)
+			)
+		);
+}
+
