@@ -28,6 +28,7 @@ ef_weapon_type		 = 2
 ef_detector_type			 = 1
 panic_threshold		= 0.1
 
+
 script_binding  	= bind_monster.bind
 
 bone_torso			 = bip01_spine1 			; bone name
@@ -198,8 +199,17 @@ DamagedThreshold		= 0.2
 damage					= m_dog_damage
 
 
-critical_wound_threshold		= -1.1
-critical_wound_decrease_quant	= 0
+critical_wound_threshold		= 1.1
+critical_wound_decrease_quant	= 0.
+
+critical_wound_anim_head	= stand_idle_0
+critical_wound_bones_head	= dog_critical_wound_bones_head
+
+critical_wound_anim_torso	= stand_idle_0
+critical_wound_bones_torso	= dog_critical_wound_bones_torso
+
+critical_wound_anim_legs	= stand_idle_0
+critical_wound_bones_legs	= dog_critical_wound_bones_legs
 
 ;-------------------------------------------------------------------------
 ; Other Stuff (refactoring needed)
