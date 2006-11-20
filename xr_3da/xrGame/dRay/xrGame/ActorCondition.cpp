@@ -156,11 +156,21 @@ void CActorCondition::UpdateCondition()
 
 		
 		CEffectorPP* ppe = object().Cameras().GetPPEffector((EEffectorPPType)effPsyHealth);
-		if	((GetPsyHealth()>0.0001f) ){
-			if(!ppe){
-				AddEffector(m_object,effPsyHealth, "effector_psy_health", GET_KOEFF_FUNC(this, &CActorCondition::GetPsy));
+		
+		string_path			pp_sect_name;
+		shared_str ln		= Level().name();
+		strconcat			(pp_sect_name, "effector_psy_health", "_", *ln);
+		if(!pSettings->section_exist(pp_sect_name))
+			strcpy			(pp_sect_name, "effector_psy_health");
+
+		if	( !fsimilar(GetPsyHealth(), 1.0f) )
+		{
+			if(!ppe)
+			{
+				AddEffector(m_object,effPsyHealth, pp_sect_name, GET_KOEFF_FUNC(this, &CActorCondition::GetPsy));
 			}
-		}else{
+		}else
+		{
 			if(ppe)
 				RemoveEffector(m_object,effPsyHealth);
 		}
