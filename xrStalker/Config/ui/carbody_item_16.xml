@@ -96,6 +96,70 @@
 		</progress_rpm>
 		
 	</wpn_params>
+	<af_params x="0" y="0" width="194" height="1">
+		<static_health_restore_speed width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>
+		</static_health_restore_speed>
+
+		<static_radiation_restore_speed width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>
+		</static_radiation_restore_speed>
+
+		<static_satiety_restore_speed width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>
+		</static_satiety_restore_speed>
+
+		<static_power_restore_speed width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>
+		</static_power_restore_speed>
+
+		<static_bleeding_restore_speed width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>
+		</static_bleeding_restore_speed>
+
+		<static_burn_immunity width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>
+		</static_burn_immunity>
+		<static_strike_immunity width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>
+		</static_strike_immunity>
+		<static_shock_immunity width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>
+		</static_shock_immunity>
+		<static_wound_immunity width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>
+		</static_wound_immunity>
+		<static_radiation_immunity width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>
+		</static_radiation_immunity>
+		<static_telepatic_immunity width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>
+		</static_telepatic_immunity>
+		<static_chemical_burn_immunity width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>			
+		</static_chemical_burn_immunity>
+		<static_explosion_immunity width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>
+		</static_explosion_immunity>
+		<static_fire_wound_immunity width="194" height="20">
+			<texture>ui_icons_newPDA_showpers_e</texture>
+			<text font="medium" x="13" y="0"/>
+		</static_fire_wound_immunity>
+	</af_params>
+
 	<static_condition x="210" y="170" width="200" height="20">
 		<text  align="r" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
 	</static_condition>
