@@ -192,6 +192,25 @@ luminocity_factor			= 0.5 				; ôàêòîğ îñâåùåíèÿ (òîëüêî äëÿ Àêò¸ğà)
 transparency_threshold		= 0.25
 
 ;-------------------------------------------------------------------------
+; Damages
+;-------------------------------------------------------------------------
+DamagedThreshold		= 0.2
+damage					= m_dog_damage
+
+
+critical_wound_threshold		= 1.1
+critical_wound_decrease_quant	= 0.
+
+critical_wound_anim_head	= stand_idle_0
+critical_wound_bones_head	= dog_critical_wound_bones_head
+
+critical_wound_anim_torso	= stand_idle_0
+critical_wound_bones_torso	= dog_critical_wound_bones_torso
+
+critical_wound_anim_legs	= stand_idle_0
+critical_wound_bones_legs	= dog_critical_wound_bones_legs
+
+;-------------------------------------------------------------------------
 ; Other Stuff (refactoring needed)
 ;-------------------------------------------------------------------------
 DayTime_Begin		= 0	;6		; ığ¢ğûğ ôı  ôû  üşı¸ª¨ğ
@@ -204,7 +223,7 @@ distance_to_corpse	= 1.3		; ôø¸ª. ôş ª¨ºÿğ, ÿ¨ø úşªş¨şù şı ÿõ¨õ¿şôøª ò ¸ş¸ªş ıøõ
 
 terrain				 = dogs_terrain
 
-DamagedThreshold		= 0.2
+
 
 material				= creatures\medium
 DynamicObjectsCount		= 32
@@ -217,7 +236,7 @@ attack_params			= m_dog_attack_params
 step_params			= m_dog_step_params
 
 LegsCount			= 4
-damage					= m_dog_damage
+
 
 ;species of monster
 species					= dog
@@ -302,6 +321,49 @@ bip01_spine 		= 1.0, -1, 0.5
 bip01_spine1 		= 1.0, -1, 0.5
 bip01_neck 			= 1.0, -1, 1.5
 bip01_head 			= 2.0, -1, 0.5
+
+
+
+[dog_critical_wound_bones_head]
+bip01_neck
+bip01_head
+bip01_ponytail2
+
+[dog_critical_wound_bones_torso]
+bip01_pelvis
+bip01_l_calf
+bip01_r_calf
+bip01_spine
+bip01_spine1
+bip01_spine2
+bip01_l_clavicle
+bip01_r_clavicle
+bip01_tail
+bip01_tail1
+bip01_tail2
+bip01_tail3
+
+[dog_critical_wound_bones_legs]
+bip01_l_horselink
+bip01_l_foot
+bip01_l_toe0
+bip01_r_thigh
+bip01_r_horselink
+bip01_r_foot
+bip01_r_toe0
+bip01_l_upperarm
+bip01_l_forearm
+bip01_l_hand
+bip01_l_finger0
+bip01_l_finger01
+bip01_r_upperarm
+bip01_r_forearm
+bip01_r_hand
+bip01_r_finger0
+bip01_r_finger01
+bip01_l_thigh
+
+
 
 ;=================================================================================
 ; DOG Terrain

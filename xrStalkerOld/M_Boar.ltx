@@ -88,7 +88,7 @@ Run_Attack_Delay		= 1000,		3000
 Melee_Rotation_Factor	= 2.2
 
 hit_type				= wound				; type of attack
-damage					= m_boar_damage
+
 
 ;------------------------------------------------------------------------
 ; Conditions
@@ -113,9 +113,6 @@ immunities_sect			= boar_immunities
 bleeding_v					= 0.05						;потеря крови при номинальной ране в секунду
 wound_incarnation_v			= 0.04				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
 min_wound_size				= 0.01
-
-;Health from which to play injured animation
-DamagedThreshold		= 0.2
 
 ;Sleep Settings
 sleep_health			= 1.0		;1.5				;ъю¤ЇЇшЎшхэЄv ёъюЁюёЄхщ шчьхэхэш  ярЁрьхЄЁют тю тЁхь  ёэр
@@ -189,9 +186,30 @@ Morale_Despondent_Speed			= 0.1
 Morale_Stable_Speed				= 0.05
 Morale_Despondent_Threashold	= 0.5
 
+;-------------------------------------------------------------------------
+; Damages
+;-------------------------------------------------------------------------
+;Health from which to play injured animation
+DamagedThreshold		= 0.2
+damage					= m_boar_damage
+
+
+critical_wound_threshold		= 1.1
+critical_wound_decrease_quant	= 0.
+
+critical_wound_anim_head	= stand_idle_0
+critical_wound_bones_head	= boar_critical_wound_bones_head
+
+critical_wound_anim_torso	= stand_idle_0
+critical_wound_bones_torso	= boar_critical_wound_bones_torso
+
+critical_wound_anim_legs	= stand_idle_0
+critical_wound_bones_legs	= boar_critical_wound_bones_legs
+
 ;------------------------------------------------------------------------
 ; Other
 ;------------------------------------------------------------------------
+
 
 ef_creature_type		= 11						; option for evaluation functions
 ef_weapon_type			= 2
@@ -282,6 +300,61 @@ bip01_spine 		= 0.2, -1, 0.3
 bip01_spine1 		= 0.2, -1, 0.3
 bip01_neck 			= 0.2, -1, 1.5
 bip01_head 			= 0.4, -1, 0.3
+
+
+[boar_critical_wound_bones_head]
+bip01_pelvis
+bip01_l_thigh
+bip01_l_calf
+bip01_l_horselink
+bip01_l_foot
+bip01_l_toe0
+bip01_r_thigh
+bip01_r_calf
+bip01_r_horselink
+bip01_r_foot
+bip01_r_toe0
+bip01_spine
+bip01_spine1
+bip01_spine2
+bip01_neck
+bip01_head
+bip01_ponytail1
+bip01_ponytail2
+bone01
+bone02
+bone04
+bone05
+bone06
+bone07
+bone08
+bone09
+bone10
+bone11
+bone12
+bone13
+bone14
+bone15
+bip01_l_clavicle
+bip01_l_upperarm
+bip01_l_forearm
+bip01_l_hand
+bip01_l_finger0
+bip01_r_clavicle
+bip01_r_upperarm
+bip01_r_forearm
+bip01_r_hand
+bip01_r_finger0
+bone16
+bone17
+bone19
+bone18
+bip01_tail
+bip01_tail1
+
+[boar_critical_wound_bones_torso]
+[boar_critical_wound_bones_legs]
+
 
 ;=================================================================================
 ; Boar Terrain
