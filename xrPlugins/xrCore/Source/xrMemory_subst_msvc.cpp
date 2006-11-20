@@ -15,7 +15,7 @@
 
 #ifdef DEBUG_MEMORY_MANAGER
 	extern void save_stack_trace	();
-#endif // DEBUG
+#endif // DEBUG_MEMORY_MANAGER
 
 MEMPOOL		mem_pools			[mem_pools_count];
 

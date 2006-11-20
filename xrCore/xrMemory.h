@@ -2,9 +2,11 @@
 #define xrMemoryH
 #pragma once
 
-#if 0//def DEBUG
-#	define DEBUG_MEMORY_MANAGER
-#endif // DEBUG
+#ifndef M_BORLAND
+#	if 0//def DEBUG
+#		define DEBUG_MEMORY_MANAGER
+#	endif // DEBUG
+#endif // M_BORLAND
 
 #ifdef DEBUG_MEMORY_MANAGER
 	extern XRCORE_API	void dump_phase	();
