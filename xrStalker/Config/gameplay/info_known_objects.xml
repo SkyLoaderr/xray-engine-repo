@@ -2,7 +2,7 @@
 
 <game_information_portions>
 
-  <info_portion id="encyclopedy">
+<info_portion id="encyclopedy">
   <article>zone_artifact_af-medusa</article>
   <article>zone_artifact_af-cristall-flower</article>
   <article>zone_artifact_af-night-star</article>
@@ -74,7 +74,19 @@
   <article>social_stalker-clans_bandits</article>
   <article>social_stalker-clans_killers</article>
   <article>social_stalker-clans_loners</article>
-  </info_portion>
+
+	<article>tutorial_binocular</article>
+	<article>tutorial_crouch</article>
+	<article>tutorial_hide_weapon</article>
+	<article>tutorial_jump</article>
+	<article>tutorial_overload</article>
+	<article>tutorial_radiation</article>
+	<article>tutorial_relation</article>
+	<article>tutorial_sprint</article>
+	<article>tutorial_weakness</article>
+	<article>tutorial_weapon</article>
+	<article>tutorial_wound</article>
+</info_portion>
   
   <info_portion id="encyclopedy_zone_artifact_af-medusa">
 	<article>zone_artifact_af-medusa</article>
@@ -368,5 +380,39 @@
 	<article>social_stalker-clans_loners</article>
  </info_portion>
  
+	<info_portion id="encyclopedy_tutorial_binocular">
+		<article>tutorial_binocular</article>
+	</info_portion>
+	<info_portion id="encyclopedy_tutorial_crouch">
+		<article>tutorial_crouch</article>
+	</info_portion>
+	<info_portion id="encyclopedy_tutorial_hide_weapon">
+		<article>tutorial_hide_weapon</article>
+	</info_portion>
+	<info_portion id="encyclopedy_tutorial_jump">
+		<article>tutorial_jump</article>
+	</info_portion>
+	<info_portion id="encyclopedy_tutorial_overload">
+		<article>tutorial_overload</article>
+	</info_portion>
+	<info_portion id="encyclopedy_tutorial_radiation">
+		<article>tutorial_radiation</article>
+	</info_portion>
+	<info_portion id="encyclopedy_tutorial_relation">
+		<article>tutorial_relation</article>
+	</info_portion>
+	<info_portion id="encyclopedy_tutorial_sprint">
+		<article>tutorial_sprint</article>
+	</info_portion>
+	<info_portion id="encyclopedy_tutorial_weakness">
+		<article>tutorial_weakness</article>
+	</info_portion>
+	<info_portion id="encyclopedy_tutorial_weapon">
+		<article>tutorial_weapon</article>
+	</info_portion>
+	<info_portion id="encyclopedy_tutorial_wound">
+		<article>tutorial_wound</article>
+	</info_portion>
+
  
 </game_information_portions>
