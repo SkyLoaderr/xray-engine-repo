@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
-	<message_box_change_level type="yes_no" x="200" y="250" width="510" height="206"> <!--alert-->
+	<message_box_change_level type="yes_no" x="200" y="250" width="510" height="206">
 		<texture>ui_frame_error</texture>
 		
 		<picture x="35" y="65" width="77" height="77">
@@ -12,11 +12,11 @@
 		</message_text>
 		
 		<button_yes x="250" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_Yes</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_yes</text>
 			<texture>ui_button_ordinary</texture>
 		</button_yes>
 		<button_no x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_No</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_no</text>
 			<texture>ui_button_ordinary</texture>
 		</button_no>
 	</message_box_change_level>
@@ -29,11 +29,11 @@
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
-			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">error</text>
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_error</text>
 		</message_text>
 		
 		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_OK</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
 			<texture>ui_button_ordinary</texture>
 		</button_ok>
 	</message_box_error>
@@ -46,11 +46,11 @@
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
-			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">The file name is empty</text>
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_file_name_is_empty_q</text>
 		</message_text>
 		
 		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_OK</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
 			<texture>ui_button_ordinary</texture>
 		</button_ok>
 	</message_box_empty_file_name>
@@ -63,15 +63,15 @@
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
-			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">The file with this name already exist. Do you want to overwrite it?</text>
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_file_exist_owerwrite</text>
 		</message_text>
 		
 		<button_yes x="250" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_Yes</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_yes</text>
 			<texture>ui_button_ordinary</texture>
 		</button_yes>
 		<button_no x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_No</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_no</text>
 			<texture>ui_button_ordinary</texture>
 		</button_no>
 	</message_box_file_already_exist>
@@ -88,11 +88,11 @@
 		</message_text>
 		
 		<button_yes x="250" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_Yes</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_yes</text>
 			<texture>ui_button_ordinary</texture>
 		</button_yes>
 		<button_no x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_No</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_no</text>
 			<texture>ui_button_ordinary</texture>
 		</button_no>
 	</message_box_buy_spawn>
@@ -128,11 +128,11 @@
 		
 		
 		<button_yes x="250" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_OK</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
 			<texture>ui_button_ordinary</texture>
 		</button_yes>
 		<button_no x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_Cancel</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_cancel</text>
 			<texture>ui_button_ordinary</texture>
 		</button_no>
 	</message_box_direct_ip>
@@ -154,18 +154,18 @@
 		</edit_password>		
 		
 		<button_yes x="250" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_OK</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
 			<texture>ui_button_ordinary</texture>
 		</button_yes>
 		
 		<button_no x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_Cancel</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_cancel</text>
 			<texture>ui_button_ordinary</texture>
 		</button_no>
 		
 	</message_box_password>
 	
-	<message_box_quit_windows type="quit_windows" x="200" y="250" width="510" height="206"> <!--alert-->
+	<message_box_quit_windows type="quit_windows" x="200" y="250" width="510" height="206">
 		<texture>ui_frame_error</texture>
 		
 		<picture x="35" y="65" width="77" height="77">
@@ -177,11 +177,11 @@
 		</message_text>
 		
 		<button_yes x="250" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_Yes</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_yes</text>
 			<texture>ui_button_ordinary</texture>
 		</button_yes>
 		<button_no x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_No</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_no</text>
 			<texture>ui_button_ordinary</texture>
 		</button_no>
 	</message_box_quit_windows>
@@ -193,15 +193,15 @@
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
-			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">Do you really want to leave the Game?</text>
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_want_to_leave_game_q</text>
 		</message_text>
 		
 		<button_yes x="250" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_Yes</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_yes</text>
 			<texture>ui_button_ordinary</texture>
 		</button_yes>
 		<button_no x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_No</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_no</text>
 			<texture>ui_button_ordinary</texture>
 		</button_no>
 	</message_box_quit_game>
@@ -214,11 +214,11 @@
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
-			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">Connection error: Invalid host</text>
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_invalid_host</text>
 		</message_text>
 		
 		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_OK</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
 			<texture>ui_button_ordinary</texture>
 		</button_ok>
 	</message_box_invalid_host>
@@ -231,11 +231,11 @@
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
-			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">Connection error: Invalid password</text>
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_invalid_pass</text>
 		</message_text>
 		
 		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_OK</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
 			<texture>ui_button_ordinary</texture>
 		</button_ok>
 	</message_box_invalid_pass>
@@ -248,11 +248,11 @@
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
-			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">Connection error: session is full</text>
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_sess_full</text>
 		</message_text>
 		
 		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_OK</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
 			<texture>ui_button_ordinary</texture>
 		</button_ok>
 	</message_box_session_full>
@@ -265,11 +265,11 @@
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
-			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">Connection error: connection rejected by server</text>
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_rejected_server</text>
 		</message_text>
 		
 		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_OK</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
 			<texture>ui_button_ordinary</texture>
 		</button_ok>
 	</message_box_server_reject>
@@ -282,11 +282,11 @@
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
-			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">Voting is disabled</text>
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_voting_disabled</text>
 		</message_text>
 		
 		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_OK</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
 			<texture>ui_button_ordinary</texture>
 		</button_ok>
 	</cant_vote>
@@ -299,11 +299,11 @@
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
-			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">Please select at least one map</text>
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_select_one_map</text>
 		</message_text>
 		
 		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_OK</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
 			<texture>ui_button_ordinary</texture>
 		</button_ok>
 	</select_map>
@@ -320,7 +320,7 @@
 		</message_text>
 		
 		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_OK</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
 			<texture>ui_button_ordinary</texture>
 		</button_ok>
 	</message_box_restart_game>
@@ -333,11 +333,11 @@
 		</picture>
 		
 		<message_text x="170" y="40" width="310" height="60">
-			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">You can't run R2 on your system</text>
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_cant_run_r2</text>
 		</message_text>
 		
 		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
-			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >Btn_OK</text>
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
 			<texture>ui_button_ordinary</texture>
 		</button_ok>
 	</message_box_check_r2>
