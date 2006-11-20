@@ -2354,6 +2354,8 @@ public:
 	}
 };
 
+#ifdef DEBUG_MEMORY_MANAGER
+
 class CCC_MemAllocShowStats : public IConsole_Command {
 public:
 	CCC_MemAllocShowStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -2369,6 +2371,8 @@ public:
 		mem_alloc_clear_stats	();
 	}
 };
+
+#endif // DEBUG_MEMORY_MANAGER
 
 class CCC_DumpModelBones : public IConsole_Command {
 public:
@@ -2519,10 +2523,13 @@ void CCC_RegisterCommands()
 
 	CMD3(CCC_Mask,				"ai_nil_object_access",	&psAI_Flags,	aiNilObjectAccess);
 
+#ifdef DEBUG_MEMORY_MANAGER
 	CMD3(CCC_Mask,				"debug_on_frame_gather_stats",				&psAI_Flags,	aiDebugOnFrameAllocs);
 	CMD4(CCC_Float,				"debug_on_frame_gather_stats_frequency",	&debug_on_frame_gather_stats_frequency, 0.f, 1.f);
 	CMD1(CCC_MemAllocShowStats,	"debug_on_frame_show_stats");
 	CMD1(CCC_MemAllocClearStats,"debug_on_frame_clear_stats");
+#endif // DEBUG_MEMORY_MANAGER
+
 	CMD1(CCC_DumpModelBones,	"debug_dump_model_bones");
 
 	CMD1(CCC_DrawGameGraphAll,		"ai_draw_game_graph_all");

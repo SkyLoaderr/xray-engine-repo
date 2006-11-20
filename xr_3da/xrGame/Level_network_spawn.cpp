@@ -105,22 +105,22 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 	// Msg				("--spawn--CREATE: %f ms",1000.f*T.GetAsync());
 
 //	T.Start		();
-#ifdef DEBUG
+#ifdef DEBUG_MEMORY_MANAGER
 	mem_alloc_gather_stats		(false);
-#endif // DEBUG
+#endif // DEBUG_MEMORY_MANAGER
 	if (0==O || (!O->net_Spawn	(E))) 
 	{
 		O->net_Destroy			( );
 		client_spawn_manager().clear(O->ID());
 		Objects.Destroy			(O);
 		Msg						("! Failed to spawn entity '%s'",*E->s_name);
-#ifdef DEBUG
+#ifdef DEBUG_MEMORY_MANAGER
 		mem_alloc_gather_stats	(!!psAI_Flags.test(aiDebugOnFrameAllocs));
-#endif // DEBUG
+#endif // DEBUG_MEMORY_MANAGER
 	} else {
-#ifdef DEBUG
+#ifdef DEBUG_MEMORY_MANAGER
 		mem_alloc_gather_stats	(!!psAI_Flags.test(aiDebugOnFrameAllocs));
-#endif // DEBUG
+#endif // DEBUG_MEMORY_MANAGER
 		client_spawn_manager().callback(O);
 		//Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))	{
