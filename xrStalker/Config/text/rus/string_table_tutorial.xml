@@ -7,7 +7,7 @@
 		<text>Для того, чтобы пригнуться низко, нажмите ($$ACTION_crouch$$) + (Shift)</text>
 	</string>
 	<string id="crouch_tutorial">
-		<text>Для того, чтобы присесть, нажмите ($$ACTION_crouch$$). Чтобы присесть низко, нажмите ($$ACTION_crouch$$) + (Shift)</text>
+		<text>Для того, чтобы присесть, нажмите ($$ACTION_crouch$$). Чтобы присесть низко, нажмите ($$ACTION_crouch$$) + ($$ACTION_accel$$)</text>
 	</string>
 	<string id="hide_weapon_tutorial">
 		<text>Некоторые сталкеры не захотят говорить, если Вы будете тыкать им оружием в лицо. Чтобы спрятать оружие достаточно выбрать болт ($$ACTION_wpn_6$$).</text>
