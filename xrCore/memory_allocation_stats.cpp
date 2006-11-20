@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#ifdef DEBUG
+#ifdef DEBUG_MEMORY_MANAGER
 #	pragma warning(push)
 #	pragma warning(disable:4995)
 #	include <malloc.h>

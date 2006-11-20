@@ -13,7 +13,7 @@
 	XRCORE_API void*	g_globalCheckAddr = NULL;
 #endif // DEBUG_MEMORY_MANAGER
 
-#ifdef DEBUG
+#ifdef DEBUG_MEMORY_MANAGER
 	extern void save_stack_trace	();
 #endif // DEBUG
 
@@ -60,7 +60,7 @@ void*	xrMemory::mem_alloc		(size_t size
 		_ptr					=	(void*)(((u8*)_real)+1);
 		*acc_header(_ptr)		=	mem_generic;
 	} else {
-#ifdef DEBUG
+#ifdef DEBUG_MEMORY_MANAGER
 		save_stack_trace		();
 #endif // DEBUG
 		//	accelerated
