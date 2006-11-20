@@ -39,4 +39,5 @@ public:
     void				Leave	();
 	BOOL				TryEnter();
 };
-#endif
+
+#endif // xrSyncronizeH
