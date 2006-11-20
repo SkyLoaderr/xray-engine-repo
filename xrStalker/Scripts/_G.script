@@ -1136,6 +1136,9 @@ function on_actor_critical_power()
 	if db.actor:has_info("esc_trader_newbie") then
 		game.start_tutorial("part_11_weakness")
 	end
+	if not db.actor:has_info("encyclopedy_tutorial_weakness") then
+		db.actor:give_info_portion("encyclopedy_tutorial_weakness")
+	end
 end
 
 function on_actor_critical_max_power()
@@ -1145,6 +1148,9 @@ end
 function on_actor_bleeding()
 	if db.actor:has_info("esc_trader_newbie") then
 		game.start_tutorial("part_8_wound")
+	end
+	if not db.actor:has_info("encyclopedy_tutorial_wound") then
+		db.actor:give_info_portion("encyclopedy_tutorial_wound")
 	end
 end
 
@@ -1156,6 +1162,9 @@ function on_actor_radiation()
 	if db.actor:has_info("esc_trader_newbie") then
 		game.start_tutorial("part_6_radiation")
 	end
+	if not db.actor:has_info("encyclopedy_tutorial_radiation") then
+		db.actor:give_info_portion("encyclopedy_tutorial_radiation")
+	end
 end
 
 --' Заклинило оружие
@@ -1163,12 +1172,18 @@ function on_actor_weapon_jammed()
 	if db.actor:has_info("esc_trader_newbie") then
 		game.start_tutorial("part_9_weapon")
 	end
+	if not db.actor:has_info("encyclopedy_tutorial_weapon") then
+		db.actor:give_info_portion("encyclopedy_tutorial_weapon")
+	end
 end
 
 --' не может ходить изза веса
 function on_actor_cant_walk_weight()
 	if db.actor:has_info("esc_trader_newbie") then
 		game.start_tutorial("part_14_overload")
+	end
+	if not db.actor:has_info("encyclopedy_tutorial_overload") then
+		db.actor:give_info_portion("encyclopedy_tutorial_overload")
 	end
 end
 
