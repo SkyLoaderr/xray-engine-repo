@@ -7,6 +7,7 @@ local state_nowhere = 0 --' схема только что включилась
 local state_inside = 1  --' актер внутри 
 local state_outside = 2 --' актер снаружи
 
+local cutscene_finished
 ----------------------------------------------------------------------------------------------------
 
 class "action_cutscene"
@@ -18,8 +19,6 @@ function action_cutscene:__init( obj, storage )
 
 	self.object = obj
 	self.st = storage
-	self.start_time = 0
-	self.effector_idle = 0
 	self.ui_disabled = false
 end
 
@@ -44,16 +43,8 @@ function action_cutscene:update( delta )
 	--' храним персонажа локально (так быстрее обращатьс€)
     local actor = db.actor
 
-    --' выполн€ем архитектурное требование
-	if xr_logic.try_switch_to_another_section( self.object, self.st, actor ) 
-    then
-		return
-	end	
-
-    if self.ui_disabled
-    then
-        if (time_global() - self.start_time) >= self.effector_idle
-        then
+    if self.ui_disabled then
+        if cutscene_finished == true then
             xr_effects.enable_ui(db.actor, nil)
             self.ui_disabled = false
             self.st.signals["cameff_end"] = true
@@ -63,6 +54,11 @@ function action_cutscene:update( delta )
     --' собственно наша функци€, осуществл€юща€ вызов начала сцены
 	self:switch_state( actor )
 
+    --' выполн€ем архитектурное требование
+	if xr_logic.try_switch_to_another_section( self.object, self.st, actor ) 
+    then
+		return
+	end	
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -109,13 +105,12 @@ function action_cutscene:zone_enter()
     --' телепорт в выбранную точку
     xr_effects.teleport_actor(db.actor, nil, {self.st.point, self.st.look})
     level.add_pp_effector (self.st.pp_effector, 234, false)
-    self.effector_idle = 1000*level.add_cam_effector2(self.st.cam_effector, 123, false, "sr_cutscene.effector_callback") + 1000
-
+    
+	level.add_cam_effector2(self.st.cam_effector, 123, false, "sr_cutscene.effector_callback")
     xr_effects.disable_ui(db.actor, nil)
     self.ui_disabled = true
-
-    self.start_time = time_global()
-    
+	cutscene_finished = false
+  
 
 
 end
@@ -160,4 +155,5 @@ end
 ----------------------------------------------------------------------------------------------------
 function effector_callback()
 	printf("HUYYASE")
+	cutscene_finished = true
 end
