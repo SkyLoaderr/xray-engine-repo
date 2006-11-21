@@ -252,7 +252,8 @@
 						Name="Release|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
-							Name="VCCLCompilerTool"/>
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -262,6 +263,12 @@
 					RelativePath=".\GameSpy\common\gsAvailable.c">
 					<FileConfiguration
 						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -286,7 +293,8 @@
 						Name="Release|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
-							Name="VCCLCompilerTool"/>
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -305,7 +313,8 @@
 						Name="Release|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
-							Name="VCCLCompilerTool"/>
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -324,7 +333,8 @@
 						Name="Release|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
-							Name="VCCLCompilerTool"/>
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -343,7 +353,8 @@
 						Name="Release|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
-							Name="VCCLCompilerTool"/>
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -362,7 +373,8 @@
 						Name="Release|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
-							Name="VCCLCompilerTool"/>
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -381,7 +393,8 @@
 						Name="Release|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
-							Name="VCCLCompilerTool"/>
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 				</File>
 				<File
@@ -391,6 +404,12 @@
 					RelativePath=".\GameSpy\common\gsStringUtil.c">
 					<FileConfiguration
 						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
@@ -410,6 +429,12 @@
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\GameSpy\common\win32\gsThreadWin32.c">
@@ -424,7 +449,8 @@
 							Name="Release|Win32"
 							ExcludedFromBuild="TRUE">
 							<Tool
-								Name="VCCLCompilerTool"/>
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -440,7 +466,8 @@
 							Name="Release|Win32"
 							ExcludedFromBuild="TRUE">
 							<Tool
-								Name="VCCLCompilerTool"/>
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
 						</FileConfiguration>
 					</File>
 				</Filter>
