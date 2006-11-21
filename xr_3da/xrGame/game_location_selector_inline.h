@@ -120,12 +120,12 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 			if ((*i).vertex_id() == m_previous_vertex_id)
 				continue;
 
-			// * accessible 
-			if (!accessible(m_graph->vertex((*i).vertex_id())->level_vertex_id()))
-				continue;
-
 			// * вершина на текущем уровне?
 			if ((m_graph->vertex((*i).vertex_id())->level_id() != ai().level_graph().level_id()))
+				continue;
+
+			// * accessible 
+			if (!accessible((*i).vertex_id())
 				continue;
 
 			const u8			*curr_types = m_graph->vertex((*i).vertex_id())->vertex_type();
