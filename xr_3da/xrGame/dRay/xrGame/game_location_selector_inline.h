@@ -125,7 +125,7 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 				continue;
 
 			// * accessible 
-			if (!accessible((*i).vertex_id())
+			if (!accessible((*i).vertex_id()))
 				continue;
 
 			const u8			*curr_types = m_graph->vertex((*i).vertex_id())->vertex_type();
