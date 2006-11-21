@@ -89,7 +89,6 @@ void CCameraLook2::Update(Fvector& point, Fvector&)
 	vDirection.set		(mR.k);
 	vNormal.set			(mR.j);
 
-	CActor* pA						= smart_cast<CActor*>(parent);
 	Fmatrix							a_xform;
 	a_xform.setXYZ					(0, -yaw, 0);
 	a_xform.translate_over			(point);
