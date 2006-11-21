@@ -26,7 +26,14 @@ extern "C" {
 
 #define RESPONSE_SIZE 73
 
-void gcd_compute_response(char *cdkey, char *challenge,/*out*/ char response[73]);
+typedef enum 
+{
+	CDResponseMethod_NEWAUTH, // method = 0 for normal auth
+	CDResponseMethod_REAUTH   // method = 1 for ison proof
+} CDResponseMethod;
+	
+	
+void gcd_compute_response(char *cdkey, char *challenge,/*out*/ char response[73], CDResponseMethod method);
 
 
 #ifdef __cplusplus

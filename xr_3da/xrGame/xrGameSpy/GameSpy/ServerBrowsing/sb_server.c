@@ -1,13 +1,14 @@
 #include "sb_internal.h"
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include "../stringutil.h"
 #include "sb_ascii.h"
 
 //for the unique value list
-#define LIST_NUMKEYBUCKETS 500
-#define LIST_NUMKEYCHAINS 4
+#if defined(_NITRO)
+	#define LIST_NUMKEYBUCKETS 100
+	#define LIST_NUMKEYCHAINS 2
+#else
+	#define LIST_NUMKEYBUCKETS 500
+	#define LIST_NUMKEYCHAINS 4
+#endif
 
 // for unicode version of key/value pairs
 #define UKEY_LENGTH_MAX		255
@@ -15,7 +16,7 @@
 
 #ifndef EXTERN_REFSTR_HASH
 //global, shared unique value list
-#if defined(_WIN32) && !defined(_DLL) && !defined (_USRDLL) && !defined(_MANAGED)
+#if defined(_WIN32) && !defined(_DLL) && !defined (_USRDLL) && !defined(_MANAGED) && defined(GM_2B)
 //for gmaster2b
 __declspec( thread ) 
 #endif
@@ -38,7 +39,7 @@ static int RefStringHash(const void *elem, int numbuckets)
 * Compares two gkeyvaluepair 
 */
 
-static int RefStringCompare(const void *entry1, const void *entry2)
+static int GS_STATIC_CALLBACK RefStringCompare(const void *entry1, const void *entry2)
 {
    	return strcasecmp(((SBRefString *)entry1)->str,((SBRefString *)entry2)->str);
 }
@@ -59,9 +60,9 @@ HashTable SBRefStrHash(SBServerList *slist)
 {
 	if (g_SBRefStrList == NULL)
 		g_SBRefStrList = TableNew2(sizeof(SBRefString),LIST_NUMKEYBUCKETS,LIST_NUMKEYCHAINS,RefStringHash, RefStringCompare, RefStringFree);
-	return g_SBRefStrList;
-	
+
 	GSI_UNUSED(slist);
+	return g_SBRefStrList;
 }
 
 void SBRefStrHashCleanup(SBServerList *slist)
@@ -93,6 +94,9 @@ void SBServerAddKeyValue(SBServer server, const char *keyname, const char *value
 	kv.key = SBRefStr(NULL, keyname);
 	kv.value = SBRefStr(NULL, value);
 	TableEnter(server->keyvals, &kv);
+
+	gsDebugFormat(GSIDebugCat_SB, GSIDebugType_Misc, GSIDebugLevel_Comment,
+			"SBServerAddKeyValue added %s\\%s\r\n", keyname, value);
 }
 
 void SBServerAddIntKeyValue(SBServer server, const char *keyname, int value)
@@ -142,6 +146,13 @@ const char *SBServerGetStringValueA(SBServer server, const char *keyname, const 
 {
 	SBKeyValuePair kv, *ptr;
 	
+	// 11-03-2004 : Saad Nader
+	// Check if we are getting a valid server 
+	//  before doing anything!
+	///////////////////////////////////////////
+	assert(server);
+	if (!server)
+		return NULL;
 	kv.key = keyname;
 	ptr =  (SBKeyValuePair *)TableLookup(server->keyvals, &kv);
 	if (ptr == NULL)
@@ -172,12 +183,19 @@ const unsigned short *SBServerGetStringValueW(SBServer server, const unsigned sh
 
 int SBServerGetIntValueA(SBServer server, const char *key, int idefault)
 {
-	const char *s;
-
+	const char *s, *s2;
+	// check assumtions during development
+	GS_ASSERT(key != NULL);
+	GS_ASSERT(server != NULL);
+	if (server == NULL)
+		return idefault;
 	if (strcmp(key,"ping") == 0) //ooh! they want the ping!
 		return SBServerGetPing(server);
 	s = SBServerGetStringValueA(server, key, NULL);
-	if (s == NULL || !isdigit((unsigned char)*s)) // empty-string/non-numeric should return idefault
+	if (s == NULL)
+		return idefault;
+	s2 = (*s != '-') ? s : s+1;  // check for signed values
+	if (!isdigit((unsigned char)*s2)) // empty-string/non-numeric should return idefault
 		return idefault;
 	else
 		return atoi(s);
@@ -213,7 +231,7 @@ SBBool SBServerGetBoolValueA(SBServer server, const char *key, SBBool bdefault)
 {
 	const char *s;
 	s = SBServerGetStringValueA(server, key, NULL);
-	if (!s)
+	if (!s || !s[0])
 		return bdefault;
 
 	// check the first char for known "false" values
@@ -364,11 +382,15 @@ SBBool SBServerHasFullKeys(SBServer server)
 	return (((server->state & STATE_FULLKEYS) == STATE_FULLKEYS) ? SBTrue : SBFalse);
 }
 
+SBBool SBServerHasValidPing(SBServer server)
+{
+	return (((server->state & STATE_VALIDPING) == STATE_VALIDPING) ? SBTrue : SBFalse);
+}
 
 
 char *SBServerGetPublicAddress(SBServer server)
 {
-	return inet_ntoa(*(struct in_addr *)&server->publicip);
+	return (char *)inet_ntoa(*(struct in_addr *)&server->publicip);
 }
 
 unsigned int SBServerGetPublicInetAddress(SBServer server)
@@ -401,7 +423,7 @@ SBBool SBServerDirectConnect(SBServer server)
 
 char *SBServerGetPrivateAddress(SBServer server)
 {
-	return inet_ntoa(*(struct in_addr *)&server->privateip);
+	return (char *)inet_ntoa(*(struct in_addr *)&server->privateip);
 }
 
 unsigned int SBServerGetPrivateInetAddress(SBServer server)
@@ -498,7 +520,7 @@ If team key list NOT specified
 Team Values: NTS, one per key specified, per team
 
 */
-void SBServerParseQR2FullKeys(SBServer server, char *data, int len)
+void SBServerParseQR2FullKeysSingle(SBServer server, char *data, int len)
 {
 	int dlen;
 	char *k;
@@ -523,8 +545,8 @@ void SBServerParseQR2FullKeys(SBServer server, char *data, int len)
 			return; //not a full NTS
 		v = data;
 		data += dlen;
-		len -= dlen;		
-		SBServerAddKeyValue(server, k, v);		
+		len -= dlen;
+		SBServerAddKeyValue(server, k, v);
 	}
 	//skip the NUL
 	data++;
@@ -574,7 +596,159 @@ void SBServerParseQR2FullKeys(SBServer server, char *data, int len)
 		}		
 	}
 
+}
+
+
+// FullKeys with split response support
+//   Goes something like:
+//       [qr2header]["splitnum"][num (byte)][keytype]
+//            if keytype is server, read KV's until a NULL
+//            otherwise read a keyname, then a number of values until NULL
+#define QR2_SPLITPACKET_NUMSTRING "splitnum"
+#define QR2_SPLITPACKET_MAX	      7      // -xxxxxxx
+#define QR2_SPLITPACKET_FINAL     (1<<7) // x-------
+void SBServerParseQR2FullKeysSplit(SBServer server, char *data, int len)
+{
+	int dlen;
+	char *k;
+	char *v;
+	unsigned int packetNum = 0;
+	gsi_bool isFinal = gsi_false;
+
+	// make sure it's valid
+	if (*data == '\0')
+		return;
 	
+	// data should have "splitnum" followed by BINARY key
+	dlen = NTSLengthSB(data, len);
+	if (dlen < 0)
+		return;
+	k = data;
+	data += dlen;
+	len -= dlen;
+	
+	if (strncasecmp(QR2_SPLITPACKET_NUMSTRING,k,strlen(QR2_SPLITPACKET_NUMSTRING))!=0)
+		return;
+	if (len < 1)
+		return;
+
+	packetNum = (unsigned int)((unsigned char)*data);
+	data++;
+	len--;
+
+	// check final flag
+	if ((packetNum & QR2_SPLITPACKET_FINAL) == QR2_SPLITPACKET_FINAL)
+	{
+		isFinal = gsi_true;
+		packetNum ^= QR2_SPLITPACKET_FINAL;
+	}
+
+	// sanity check the packet num
+	if (packetNum > QR2_SPLITPACKET_MAX)
+		return;
+
+	// update the received flags
+	if (isFinal == SBTrue)
+		// mark all bits higher than the final packet
+		server->splitResponseBitmap |= (char)(0xFF<<packetNum); 
+	else
+		// mark only the bit for the received packet
+		server->splitResponseBitmap |= (1<<packetNum);
+
+	// any data in this packet? (could be a final tag)
+	if (len < 1)
+		return;
+
+	// Parse the key sections (server/player/team)
+	while(len > 0)
+	{
+		int keyType = 0;
+		int nindex = 0;
+
+		// Read the key type
+		keyType = *data;
+		data++;
+		len--;
+
+		if (keyType < 0 || keyType > 2)
+		{
+			gsDebugFormat(GSIDebugCat_SB, GSIDebugType_Network, GSIDebugLevel_WarmError,
+					"Split packet parse error, invalid key type! (%d)\r\n", keyType);
+			return; // invalid key type!
+		}
+
+		// read keys until <null> section terminator
+		while(*data)
+		{
+			// Read key name
+			dlen = NTSLengthSB(data, len);
+			if (dlen < 0)
+				return;
+			k = data;
+			data += dlen;
+			len -= dlen;
+				
+			if (keyType == 0)
+			{
+				// read the server key value
+				dlen = NTSLengthSB(data, len);
+				if (dlen < 0)
+					return;
+				v = data;
+				data += dlen;
+				len -= dlen;
+				SBServerAddKeyValue(server, k, v);
+			}
+			else
+			{
+				char tempkey[128];
+
+				// Read first player/team number
+				if (len < 1)
+					return;
+
+				nindex = *data;
+				data++;
+				len--;
+
+				// read values until <null>
+				while(*data)
+				{
+					// read the value
+					dlen = NTSLengthSB(data, len);
+					if (dlen < 0)
+						return;
+					v = data;
+					data += dlen;
+					len -= dlen;
+					// append team or player index before adding
+					sprintf(tempkey, "%s%d", k, nindex);
+					SBServerAddKeyValue(server, tempkey, v);
+					nindex++; // index increments from start
+				}
+
+				// skip the null (key terminator)
+				if (len > 0)
+				{
+					data++;
+					len--;
+				}
+			}
+		} 
+
+		// skip the null (section terminator)
+		if (len > 0)
+		{
+			if (*data != '\0')
+			{
+				gsDebugFormat(GSIDebugCat_SB, GSIDebugType_Network, GSIDebugLevel_WarmError,
+					"Split packet parse error, NULL byte expected!\r\n");
+				return; // ERROR!
+			}
+			data++;
+			len--;
+		}
+	}
 }
 
 /***********
@@ -586,7 +760,7 @@ static int StringHash(const char *s, int numbuckets)
 	goa_uint32 hashcode = 0;
 	while (*s != 0)
 	{
-		hashcode = hashcode * MULTIPLIER + tolower(*s);
+		hashcode = (goa_uint32)((int)hashcode * MULTIPLIER + tolower(*s));
 		s++;
 	}
     return (int)(hashcode % numbuckets);
@@ -606,9 +780,17 @@ static int KeyValHashKey(const void *elem, int numbuckets)
 }
 
 
-static int KeyValCompareKey(const void *entry1, const void *entry2)
+static int GS_STATIC_CALLBACK KeyValCompareKey(const void *entry1, const void *entry2)
 {
-   	return strcasecmp(((SBKeyValuePair *)entry1)->key, ((SBKeyValuePair *)entry2)->key);
+	GS_ASSERT(entry1)
+	GS_ASSERT(entry2)
+	if	(
+			(((SBKeyValuePair *)entry1)->key == NULL)  ||
+			(((SBKeyValuePair *)entry2)->key == NULL)  
+		)
+		return 1;// treat NULL as not the same
+
+	return strcasecmp(((SBKeyValuePair *)entry1)->key, ((SBKeyValuePair *)entry2)->key);
 }
 
 
@@ -637,15 +819,14 @@ SBServer SBAllocServer(SBServerList *slist, goa_uint32 publicip, unsigned short 
 	server->flags = 0;
 	server->next = NULL;
 	server->updatetime = 0;
-	server->m_totalupdatetime = 0;
 	server->icmpip = 0;
 	server->publicip = publicip;
 	server->publicport = publicport;
 	server->privateip = 0;
 	server->privateport = 0;
-	return server;
-	
+
 	GSI_UNUSED(slist);
+	return server;	
 }
 
 

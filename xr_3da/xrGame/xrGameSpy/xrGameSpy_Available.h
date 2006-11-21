@@ -2,7 +2,7 @@
 #include "xrGameSpy_MainDefs.h"
 
 #include "GameSpy\nonport.h"
-#include "GameSpy\available.h"
+#include "GameSpy\common\gsAvailable.h"
 
 extern "C"
 {

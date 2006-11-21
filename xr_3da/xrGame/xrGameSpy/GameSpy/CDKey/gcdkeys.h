@@ -16,7 +16,7 @@ devsupport@gamespy.com
  information
 
 ******/
-#define QR2CDKEY_INTEGRATION
+
 
 #ifndef _GOACDKEYS_H_
 #define _GOACDKEYS_H_
@@ -33,9 +33,10 @@ the networking of the Query & Reporting 2 SDK and CDKey SDKs are available.
 If you intend to use the integration option for these SDKs, you must uncomment the 
 define below, or provide it as an option to your compiler.
 *******/
-//#define QR2CDKEY_INTEGRATION
+#define QR2CDKEY_INTEGRATION
 
 typedef void (*AuthCallBackFn)(int gameid, int localid, int authenticated, char *errmsg, void *instance);
+typedef void (*RefreshAuthCallBackFn)(int gameid, int localid, int hint, char *challenge, void *instance);
 
 /* The hostname of the validation server.
 If the app resolves the hostname, an
@@ -78,8 +79,16 @@ gcd_authenticate_user
 Creates a new client and sends a request for authorization to the
 validation server.
 *********/
-void gcd_authenticate_user(int gameid, int localid, unsigned int userip, char *challenge, char *response, 
-						   AuthCallBackFn authfn, void *instance);
+void gcd_authenticate_user(int gameid, int localid, unsigned int userip, const char *challenge, 
+						   const char *response, AuthCallBackFn authfn, RefreshAuthCallBackFn refreshfn, void *instance);
+
+/********
+gcd_authenticate_user
+Creates a new client and sends a request for authorization to the
+validation server.
+*********/
+void gcd_process_reauth(int gameid, int localid, int hint, const char *response);
+
 
 /********
 gcd_disconnect_user

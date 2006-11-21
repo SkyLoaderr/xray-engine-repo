@@ -1,7 +1,7 @@
 #ifndef _QR2_H_
 #define _QR2_H_
 
-#include "../nonport.h"
+#include "../common/gsCommon.h"
 
 
 /**********
@@ -45,7 +45,8 @@ e_qrwsockerror, //a standard socket call failed (exhausted resources?)
 e_qrbinderror, //the SDK was unable to find an available port to bind on
 e_qrdnserror, //a DNS lookup (for the master server) failed
 e_qrconnerror,  //the server is behind a nat and does not support negotiation
-e_qrnochallengeerror //no challenge was received from the master - either the master is down, or a firewall is blocking UDP
+e_qrnochallengeerror, //no challenge was received from the master - either the master is down, or a firewall is blocking UDP
+qr2_error_t_count
 } qr2_error_t;
 
 
@@ -57,7 +58,7 @@ key_server - General information about the game in progress
 key_player - Information about a specific player
 key_team - Information about a specific team
 ***************/
-typedef enum {key_server, key_player, key_team} qr2_key_type;
+typedef enum {key_server, key_player, key_team, key_type_count} qr2_key_type;
 
 /*********
 NUM_PORTS_TO_TRY
@@ -111,6 +112,8 @@ This structure stores data that will be sent back to a client in response to
 a query. Use the qr2_buffer_add functions to add data to the buffer in your callbacks.
 ************/
 typedef struct qr2_buffer_s *qr2_buffer_t;
+
+typedef struct qr2_ipverify_node_s *qr2_ipverify_node_t;
 
 
 /********
@@ -340,7 +343,7 @@ QR2_KEYBUFFER_ADD
 Use this function to add a registered key to the key buffer when asked to provide 
 a list of supported keys.
 ******************/
-void qr2_keybuffer_add(qr2_keybuffer_t keybuffer, int keyid);
+gsi_bool qr2_keybuffer_add(qr2_keybuffer_t keybuffer, int keyid);
 
 /*****************
 QR2_BUFFER_ADD / ADD_INT
@@ -348,14 +351,25 @@ QR2_BUFFER_ADD / ADD_INT
 These functions are used to add a key's value to the outgoing buffer when
 requested in a callback function.
 ******************/
-void qr2_buffer_add(qr2_buffer_t outbuf, const gsi_char *value);
-void qr2_buffer_add_int(qr2_buffer_t outbuf, int value);
+gsi_bool qr2_buffer_add(qr2_buffer_t outbuf, const gsi_char *value);
+gsi_bool qr2_buffer_add_int(qr2_buffer_t outbuf, int value);
 
 
 /* for CDKey SDK integration */
 #define REQUEST_KEY_LEN 4
 #define RECENT_CLIENT_MESSAGES_TO_TRACK 10
 typedef void (*cdkey_process_t)(char *buf, int len, struct sockaddr *fromaddr);
+
+/* ip verification / spoof prevention */
+#define QR2_IPVERIFY_TIMEOUT    4000  // timeout after 4 seconds round trip time
+#define QR2_IPVERIFY_ARRAY_SIZE 40    // allow 40 outstanding queryies in those 4 seconds
+struct qr2_ipverify_info_s
+{
+	struct sockaddr_in addr;      // addr = 0 when not in use
+	gsi_u32            challenge;
+	gsi_time           createtime; 
+};
+
 struct qr2_implementation_s
 {
 	SOCKET hbsock;
@@ -387,11 +401,14 @@ struct qr2_implementation_s
 	unsigned int publicip;
 	unsigned short publicport;
 	void *udata;
+
+	gsi_u8 backendoptions; // received from server inside challenge packet 
+	struct qr2_ipverify_info_s ipverify[QR2_IPVERIFY_ARRAY_SIZE];
 };
 
 // These need to be defined, even in GSI_UNICODE MODE
 void qr2_parse_queryA(qr2_t qrec, char *query, int len, struct sockaddr *sender);
-void qr2_buffer_addA(qr2_buffer_t outbuf, const char *value);
+gsi_bool qr2_buffer_addA(qr2_buffer_t outbuf, const char *value);
 qr2_error_t qr2_initA(/*[out]*/qr2_t *qrec, const char *ip, int baseport, const char *gamename, const char *secret_key,
 			int ispublic, int natnegotiate,
 			qr2_serverkeycallback_t server_key_callback,

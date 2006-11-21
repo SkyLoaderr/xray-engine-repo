@@ -6,7 +6,7 @@
 extern "C"
 {
 	EXPORT_FN_DECL(int, GetQueryVersion, ());
-	EXPORT_FN_DECL(ServerBrowser, ServerBrowserNew, (const gsi_char *queryForGamename, const gsi_char *queryFromGamename, const gsi_char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, ServerBrowserCallback callback, void *instance));
+	EXPORT_FN_DECL(ServerBrowser, ServerBrowserNew, (const gsi_char *queryForGamename, const gsi_char *queryFromGamename, const gsi_char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, SBBool bLAN_Only, ServerBrowserCallback callback, void *instance));
 	EXPORT_FN_DECL(void, ServerBrowserFree, (ServerBrowser sb));
 	EXPORT_FN_DECL(void, ServerBrowserClear, (ServerBrowser sb));
 

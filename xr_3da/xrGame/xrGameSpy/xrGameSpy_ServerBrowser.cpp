@@ -10,9 +10,9 @@ XRGAMESPY_API int xrGS_GetQueryVersion ()
 	return QVERSION_QR2;
 }
 
-XRGAMESPY_API ServerBrowser xrGS_ServerBrowserNew(const gsi_char *queryForGamename, const gsi_char *queryFromGamename, const gsi_char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, ServerBrowserCallback callback, void *instance)
+XRGAMESPY_API ServerBrowser xrGS_ServerBrowserNew(const gsi_char *queryForGamename, const gsi_char *queryFromGamename, const gsi_char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, SBBool bLAN_Only, ServerBrowserCallback callback, void *instance)
 {
-	return ServerBrowserNew(queryForGamename, queryFromGamename, queryFromKey, queryFromVersion, maxConcUpdates, queryVersion, callback, instance);
+	return ServerBrowserNew(queryForGamename, queryFromGamename, queryFromKey, queryFromVersion, maxConcUpdates, queryVersion, bLAN_Only, callback, instance);
 }
 
 XRGAMESPY_API void xrGS_ServerBrowserFree (ServerBrowser sb)

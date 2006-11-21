@@ -29,7 +29,9 @@ devsupport@gamespy.com
 extern "C" {
 #endif
 
-void gcd_compute_response(char *cdkey, char *challenge, char response[RESPONSE_SIZE])
+	// method = 0 for normal auth response from game server
+	// method = 1 for reauth response originating from keymaster
+void gcd_compute_response(char *cdkey, char *challenge, char response[RESPONSE_SIZE], CDResponseMethod method)
 {
 	char rawout[RAWSIZE];
 	unsigned int anyrandom;
@@ -49,8 +51,12 @@ void gcd_compute_response(char *cdkey, char *challenge, char response[RESPONSE_S
 	anyrandom = (rand() << 16 | rand()); 
 	sprintf(randstr,"%.8x",anyrandom);
 
-	/* response = MD5(cdkey + random mod 0xffff + challenge) */
-	sprintf(rawout, "%s%d%s",cdkey, anyrandom % 0xFFFF , challenge );
+	/* auth response   = MD5(cdkey + random mod 0xffff + challenge) */
+	/* reauth response = MD5(challenge + random mode 0xffff + cdkey) */ 
+	if (method == 0)
+		sprintf(rawout, "%s%d%s",cdkey, anyrandom % 0xFFFF , challenge );
+	else
+		sprintf(rawout, "%s%d%s",challenge, anyrandom % 0xFFFF, cdkey);
 
 	/* do the cd key md5 */
 	MD5Digest((unsigned char *)cdkey, strlen(cdkey), response);
@@ -58,7 +64,6 @@ void gcd_compute_response(char *cdkey, char *challenge, char response[RESPONSE_S
 	strcpy(&response[32], randstr);
 	/* do the response md5 */
 	MD5Digest((unsigned char *)rawout, strlen(rawout), &response[40]);	
-
 }
 
 

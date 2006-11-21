@@ -27,6 +27,7 @@
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="FALSE"
 				UsePrecompiledHeader="3"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -160,137 +161,235 @@
 		<Filter
 			Name="GameSpy"
 			Filter="">
+			<File
+				RelativePath=".\GameSpy\darray.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GameSpy\darray.h">
+			</File>
+			<File
+				RelativePath=".\GameSpy\hashtable.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GameSpy\hashtable.h">
+			</File>
+			<File
+				RelativePath=".\GameSpy\md5.h">
+			</File>
+			<File
+				RelativePath=".\GameSpy\md5c.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GameSpy\nonport.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+						WarningLevel="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+						WarningLevel="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GameSpy\nonport.h">
+			</File>
 			<Filter
 				Name="Common"
 				Filter="">
 				<File
-					RelativePath=".\GameSpy\available.c">
+					RelativePath=".\GameSpy\common\gsAssert.c">
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsAssert.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsAvailable.c">
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsAvailable.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsCommon.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsDebug.c">
 					<FileConfiguration
-						Name="Release|Win32">
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\GameSpy\available.h">
+					RelativePath=".\GameSpy\common\gsDebug.h">
 				</File>
 				<File
-					RelativePath=".\GameSpy\darray.c">
+					RelativePath=".\GameSpy\common\gsMemory.c">
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsMemory.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsPlatform.c">
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsPlatform.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsPlatformSocket.c">
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsPlatformSocket.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsPlatformThread.c">
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsPlatformThread.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsPlatformUtil.c">
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsPlatformUtil.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsStringUtil.c">
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"/>
-					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\GameSpy\darray.h">
+					RelativePath=".\GameSpy\common\gsStringUtil.h">
 				</File>
-				<File
-					RelativePath=".\GameSpy\gsiDebug.c">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\GameSpy\gsiDebug.h">
-				</File>
-				<File
-					RelativePath=".\GameSpy\hashtable.c">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\GameSpy\hashtable.h">
-				</File>
-				<File
-					RelativePath=".\GameSpy\md5.h">
-				</File>
-				<File
-					RelativePath=".\GameSpy\md5c.c">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\GameSpy\nonport.c">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-							WarningLevel="0"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-							WarningLevel="0"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\GameSpy\nonport.h">
-				</File>
-				<File
-					RelativePath=".\GameSpy\stringutil.c">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\GameSpy\stringutil.h">
-				</File>
+				<Filter
+					Name="win32"
+					Filter="">
+					<File
+						RelativePath=".\GameSpy\common\win32\gsSocketWin32.c">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\GameSpy\common\win32\gsThreadWin32.c">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\GameSpy\common\win32\Win32Common.c">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"/>
+						</FileConfiguration>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="QR2"
