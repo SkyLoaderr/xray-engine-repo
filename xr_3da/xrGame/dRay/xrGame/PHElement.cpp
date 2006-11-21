@@ -802,7 +802,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 	{
 		//if(!dBodyIsEnabled(m_body))
 		//	dBodyEnable(m_body);
-		VERIFY(!ph_world->Processing());
+		VERIFY2(!ph_world->Processing(),*PhysicsRefObject()->cNameSect());
 		VERIFY(_valid(B->mTransform));
 		if(m_shell->dSpace()->lock_count) return;
 		mXFORM.set(B->mTransform);
