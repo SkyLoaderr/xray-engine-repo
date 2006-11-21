@@ -1677,6 +1677,15 @@
 						RelativePath=".\Config\ui\ui_mm_mp.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\ui_mm_mp_tabclient.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_mm_mp_taboptions.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_mm_mp_tabserver.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\ui_mm_opt.xml">
 					</File>
 					<File
