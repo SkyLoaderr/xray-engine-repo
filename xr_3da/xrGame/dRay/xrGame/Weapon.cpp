@@ -547,6 +547,7 @@ void CWeapon::net_Import	(NET_Packet& P)
 	case eFire:
 	case eFire2:
 	case eSwitch:
+	case eReload:
 		{
 #ifdef DEBUG
 			
@@ -558,6 +559,8 @@ void CWeapon::net_Import	(NET_Packet& P)
 				Msg("!! Weapon [%d], State - [%d]", ID(), wstate);
 			else
 			{
+//				if (m_ammoType != ammoType)
+//					Msg("Old AmmoType - %d; NewAmmoType - %d; State - %d", m_ammoType, ammoType, wstate);
 				m_ammoType = ammoType;
 				SetAmmoElapsed((ammo_elapsed));
 			}
@@ -608,7 +611,12 @@ void CWeapon::OnEvent				(NET_Packet& P, u16 type)
 			P.r_u8			(m_sub_state);		
 //			u8 NewAmmoType = 
 				P.r_u8();
-			u8 AmmoElapsed = P.r_u8();	
+			u8 AmmoElapsed = P.r_u8();
+			u8 NextAmmo = P.r_u8();
+			if (NextAmmo == u8(-1))
+				m_set_next_ammoType_on_reload = u32(-1);
+			else
+				m_set_next_ammoType_on_reload = u8(NextAmmo);
 
 			if (OnClient()) SetAmmoElapsed(int(AmmoElapsed));			
 			OnStateSwitch	(u32(state));
@@ -779,8 +787,11 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 			return true;
 		case kWPN_NEXT: 
 			{
-				if(IsPending()) return false;
-					
+				if(IsPending() || OnClient()) 
+				{
+					return false;
+				}
+									
 				if(flags&CMD_START) 
 				{
 					u32 l_newType = m_ammoType;
@@ -789,12 +800,12 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 					{
 						l_newType = (l_newType+1)%m_ammoTypes.size();
 						b1 = l_newType != m_ammoType;
-						b2 = unlimited_ammo() ? false : (!m_pInventory->GetAny(*m_ammoTypes[l_newType]));
+						b2 = unlimited_ammo() ? false : (!m_pInventory->GetAny(*m_ammoTypes[l_newType]));						
 					} while( b1 && b2);
-				
+
 					if(l_newType != m_ammoType) 
 					{
-						m_set_next_ammoType_on_reload = l_newType;
+						m_set_next_ammoType_on_reload = l_newType;						
 /*						m_ammoType = l_newType;
 						m_pAmmo = NULL;
 						if (unlimited_ammo())
@@ -1163,6 +1174,7 @@ void CWeapon::SwitchState(u32 S)
 		P.w_u8			(u8(m_sub_state));
 		P.w_u8			(u8(m_ammoType& 0xff));
 		P.w_u8			(u8(iAmmoElapsed & 0xff));
+		P.w_u8			(u8(m_set_next_ammoType_on_reload & 0xff));
 		CHudItem::object().u_EventSend		(P);
 	}
 }
@@ -1425,9 +1437,13 @@ void CWeapon::OnDrawUI()
 
 bool CWeapon::unlimited_ammo() 
 { 
+	if (GameID() == GAME_SINGLE	)
+		return psActorFlags.test(AF_UNLIMITEDAMMO) && 
+				m_DefaultCartridge.m_flags.test(CCartridge::cfCanBeUnlimited); 
+
 	return (GameID()!=GAME_ARTEFACTHUNT) && 
-			psActorFlags.test(AF_UNLIMITEDAMMO) && 
-			m_DefaultCartridge.m_flags.test(CCartridge::cfCanBeUnlimited); 
+		m_DefaultCartridge.m_flags.test(CCartridge::cfCanBeUnlimited); 
+			
 };
 
 LPCSTR	CWeapon::GetCurrentAmmo_ShortName	()

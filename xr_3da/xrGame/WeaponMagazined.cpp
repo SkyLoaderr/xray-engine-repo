@@ -297,11 +297,11 @@ void CWeaponMagazined::ReloadMagazine()
 	
 	if (!m_pInventory) return;
 
-	if(m_set_next_ammoType_on_reload != u32(-1)){
+	if(m_set_next_ammoType_on_reload != u32(-1)){		
 		m_ammoType						= m_set_next_ammoType_on_reload;
 		m_set_next_ammoType_on_reload	= u32(-1);
-
 	}
+	
 	if(!unlimited_ammo()) 
 	{
 		//попытаться найти в инвентаре патроны текущего типа 

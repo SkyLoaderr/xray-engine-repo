@@ -462,6 +462,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 		case kWPN_RELOAD:
 		case kDROP:
 		case kWPN_FIRE:
+		case kWPN_NEXT:
 			{
 				SendActionEvent(cmd, flags);
 				return true;
@@ -469,7 +470,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 		case kWPN_FUNC:
 		case kWPN_FIREMODE_NEXT:
 		case kWPN_FIREMODE_PREV:
-		case kWPN_NEXT:
+		
 /*		case kWPN_1:
 		case kWPN_2:
 		case kWPN_3:
