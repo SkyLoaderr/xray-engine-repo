@@ -37,9 +37,9 @@ void CDetailManager::soft_Render	()
 		xr_vector <SlotItemVec* >::iterator _vE = _vis.end();
 		for (; _vI!=_vE; _vI++){
 			SlotItemVec*	items	= *_vI;
-			u32	vCount_Total	= items->size()*vCount_Object;
+			u32	vCount_Total		= items->size()*vCount_Object;
 			// calculate lock count needed
-			u32	lock_count		= vCount_Total/vs_size;
+			u32	lock_count			= vCount_Total/vs_size;
 			if	(vCount_Total>(lock_count*vs_size))	lock_count++;
 
 			// calculate objects per lock
@@ -51,8 +51,7 @@ void CDetailManager::soft_Render	()
 			RCache.set_Shader	(Object.shader);
 
 			Fmatrix		mXform;
-			for (u32 L_ID=0; L_ID<lock_count; L_ID++)
-			{
+			for (u32 L_ID=0; L_ID<lock_count; L_ID++){
 				// Calculate params
 				u32	item_start	= L_ID*o_per_lock;
 				u32	item_end	= item_start+o_per_lock;
@@ -68,37 +67,10 @@ void CDetailManager::soft_Render	()
 				u32	vBase,iBase,iOffset=0;
 				CDetail::fvfVertexOut* vDest	= (CDetail::fvfVertexOut*)	_VS.Lock(vCount_Lock,soft_Geom->vb_stride,vBase);
 				u16*	iDest					= (u16*)					_IS.Lock(iCount_Lock,iBase);
-/*
-//.
-                VERIFY(sizeof(CDetail::fvfVertexOut)==soft_Geom->vb_stride);
-                
-                CDetail::fvfVertexOut	*dstIt = vDest;
 
-                VERIFY(items->size()*Object.number_vertices==vCount_Lock);
-                
-                for	(u32 k=0; k<vCount_Lock; k++)
-                {
-					// Transfer vertices
-					{
-						u32					C = 0xffffffff;
-						CDetail::fvfVertexIn	*srcIt = Object.vertices, *srcEnd = Object.vertices+Object.number_vertices;
-						CDetail::fvfVertexOut	*dstIt = vDest;
-
-						for	(; srcIt!=srcEnd; srcIt++, dstIt++)
-						{
-							mXform.transform_tiny	(dstIt->P,srcIt->P);
-							dstIt->C	= C;
-							dstIt->u	= srcIt->u;
-							dstIt->v	= srcIt->v;
-						}
-					}
-                }
-*/                
 				// Filling itself
-				SlotItemVecIt _iI			= items->begin();
-				SlotItemVecIt _iE			= items->end();
-				for (; _iI!=_iE; _iI++){
-					SlotItem&	Instance	= **_iI;
+                for (u32 item_idx=item_start; item_idx<item_end; ++item_idx){
+					SlotItem&	Instance	= *items->at(item_idx);
 					float	scale			= Instance.scale_calculated;
 
 					// Build matrix
@@ -114,12 +86,11 @@ void CDetailManager::soft_Render	()
 						CDetail::fvfVertexIn	*srcIt = Object.vertices, *srcEnd = Object.vertices+Object.number_vertices;
 						CDetail::fvfVertexOut	*dstIt = vDest;
 
-						for	(; srcIt!=srcEnd; srcIt++, dstIt++)
-						{
-							mXform.transform_tiny	(dstIt->P,srcIt->P);
-							dstIt->C	= C;
-							dstIt->u	= srcIt->u;
-							dstIt->v	= srcIt->v;
+						for	(; srcIt!=srcEnd; srcIt++, dstIt++){
+                            mXform.transform_tiny	(dstIt->P,srcIt->P);
+                            dstIt->C	= C;
+                            dstIt->u	= srcIt->u;
+                            dstIt->v	= srcIt->v;
 						}
 					}
 
@@ -154,3 +125,31 @@ void CDetailManager::soft_Render	()
 		_vis.clear_not_free	();
 	}
 }
+
+/*
+//.
+                VERIFY(sizeof(CDetail::fvfVertexOut)==soft_Geom->vb_stride);
+                
+                CDetail::fvfVertexOut	*dstIt = vDest;
+
+                VERIFY(items->size()*Object.number_vertices==vCount_Lock);
+                
+                for	(u32 k=0; k<vCount_Lock; k++)
+                {
+					// Transfer vertices
+					{
+						u32					C = 0xffffffff;
+						CDetail::fvfVertexIn	*srcIt = Object.vertices, *srcEnd = Object.vertices+Object.number_vertices;
+						CDetail::fvfVertexOut	*dstIt = vDest;
+
+						for	(; srcIt!=srcEnd; srcIt++, dstIt++)
+						{
+							mXform.transform_tiny	(dstIt->P,srcIt->P);
+							dstIt->C	= C;
+							dstIt->u	= srcIt->u;
+							dstIt->v	= srcIt->v;
+						}
+					}
+                }
+*/                
+
