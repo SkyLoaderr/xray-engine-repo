@@ -125,4 +125,8 @@
 		<text>The file name is empty</text>
 	</string>
 	
+	<string id="mm_mp_pda_hunt">
+		<text>PDA bonus</text>
+	</string>
+	
 </string_table>

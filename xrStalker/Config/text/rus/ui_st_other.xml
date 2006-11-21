@@ -125,4 +125,8 @@
 		<text>Имя файла пустое</text>
 	</string>
 	
+	<string id="mm_mp_pda_hunt">
+		<text>Бонус за ПДА</text>
+	</string>
+	
 </string_table>
