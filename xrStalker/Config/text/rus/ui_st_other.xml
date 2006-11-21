@@ -64,5 +64,65 @@
 	<string id="ui_st_description">
 		<text>Описание</text>
 	</string>	
-		
+	
+	<string id="ui_st_btn_yes">
+		<text>Да</text>
+	</string>	
+	
+	<string id="ui_st_btn_no">
+		<text>Нет</text>
+	</string>
+	
+	<string id="ui_st_btn_ok">
+		<text>ОК</text>
+	</string>
+	
+	<string id="ui_st_btn_cancel">
+		<text>Отмена</text>
+	</string>
+	
+	<string id="ui_st_error">
+		<text>Ошибка</text>
+	</string>
+	
+	<string id="ui_st_file_exist_owerwrite">
+		<text>Файл с таким именем уже существует. Перезаписать?</text>
+	</string>
+	
+	<string id="ui_st_cant_run_r2">
+		<text>Вы не можете R2 на вашей системе</text>
+	</string>
+	
+	<string id="ui_st_select_one_map">
+		<text>Пожалуйста, выберите хотя бы одну карту</text>
+	</string>
+	
+	<string id="ui_st_voting_disabled">
+		<text>Голосование отключено</text>
+	</string>
+	
+	<string id="ui_st_conn_rejected_server">
+		<text>Ошибка соединения: соединение прервано сервером</text>
+	</string>
+	
+	<string id="ui_st_conn_sess_full">
+		<text>Ошибка соединения: сервер заполнен</text>
+	</string>
+	
+	<string id="ui_st_conn_invalid_pass">
+		<text>Ошибка соединения: неверный пароль</text>
+	</string>
+	
+	<string id="ui_st_conn_invalid_host">
+		<text>Ошибка соединения: неверный хост</text>
+	</string>
+	
+	<string id="ui_st_want_to_leave_game_q">
+		<text>Вы действительно хотите покинуть игру?</text>
+	</string>
+	
+	<string id="ui_st_file_name_is_empty_q">
+		<text>Имя файла пустое!</text>
+	</string>
+	
 </string_table>
