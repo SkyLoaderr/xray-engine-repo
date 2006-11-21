@@ -58,6 +58,9 @@ void CUIButton::script_register(lua_State *L)
 		class_<CUISpinNum, CUICustomSpin>("CUISpinNum")
 		.def(							constructor<>()),
 
+		class_<CUISpinFlt, CUICustomSpin>("CUISpinFlt")
+		.def(							constructor<>()),
+
 		class_<CUISpinText, CUICustomSpin>("CUISpinText")
 		.def(							constructor<>()),
 

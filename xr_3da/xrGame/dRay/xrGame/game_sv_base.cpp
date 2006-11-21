@@ -14,7 +14,6 @@
 
 #include "debug_renderer.h"
 
-//#define		MAPROT_LIST				"maprot_list.ltx"	
 #define			MAPROT_LIST_NAME		"maprot_list.ltx"
 string_path		MAPROT_LIST		= "";
 BOOL	net_sv_control_hit	= FALSE		;
@@ -373,20 +372,9 @@ void	game_sv_GameState::ReadOptions				(shared_str &options)
 {
 	g_sv_base_dwRPointFreezeTime = get_option_i(*options, "rpfrz", g_sv_base_dwRPointFreezeTime/1000) * 1000;
 
-//	string_path						maprotlist;
-//	maprotlist = get_option_s(*options, "maprot");
-//	strcpy( maprotlist, get_option_s(*options, "maprot"));
-//	if (xr_strlen(maprotlist) != 0)
-//	{
-//		strcpy(MAPROT_LIST, maprotlist);
-//		if (!FS.exist(maprotlist))
-//			FS.update_path(MAPROT_LIST, "$app_data_root$", maprotlist);
-
-//		Console->ExecuteScript(MAPROT_LIST);
-//	};
-	strcpy(MAPROT_LIST, MAPROT_LIST_NAME);
-	if (!FS.exist(MAPROT_LIST))
-		FS.update_path(MAPROT_LIST, "$app_data_root$", MAPROT_LIST_NAME);
+//.	strcpy(MAPROT_LIST, MAPROT_LIST_NAME);
+//.	if (!FS.exist(MAPROT_LIST))
+	FS.update_path(MAPROT_LIST, "$app_data_root$", MAPROT_LIST_NAME);
 	if (FS.exist(MAPROT_LIST))
 		Console->ExecuteScript(MAPROT_LIST);
 

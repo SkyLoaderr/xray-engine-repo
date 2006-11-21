@@ -230,19 +230,34 @@ void CUIMapList::LoadMapList()
 		m_pWeatherSelector->SetItem(0);
 }
 
-void	CUIMapList::SaveMapList(){
-	FILE* MapRotFile = fopen(MAP_ROTATION_LIST, "w");
-	if (!MapRotFile)
+void	CUIMapList::SaveMapList()
+{
+	string256					temp;
+	FS.update_path				(temp,"$app_data_root$", MAP_ROTATION_LIST);
+
+	if(m_pList2->GetSize()<=1){
+		FS.file_delete(temp);
 		return;
+	}
+
+	IWriter*	pW = FS.w_open	(temp);
+	if (!pW){
+		Msg("! Cant create map rotation file [%s]", temp);
+		return;
+	}
 	
-	
+	string_path					map_name;
 	for(u32 idx=0; idx<m_pList2->GetSize(); ++idx)
 	{
 		LPCSTR txt = m_pList2->GetText(idx);
-		fprintf(MapRotFile, "sv_addmap %s\n", txt);
+
+		sprintf(map_name, "sv_addmap %s", txt);
+
+		pW->w_string(map_name);
 	}
 
-	fclose(MapRotFile);
+	FS.w_close					(pW);
+//.	fclose(MapRotFile);
 }
 
 void CUIMapList::SetWeatherSelector(CUIComboBox* ws){

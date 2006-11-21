@@ -359,9 +359,17 @@ function mp_main:GatherServerData()
 	if false == self.check_no_anmalies:GetCheck() then
 		tmp = self.edit_anomaly_time:GetText()
 		if string.len(tmp) > 0 then
-			cmdstr = cmdstr .. "/anslen=" .. tmp
+			cmdstr = cmdstr .. "/ans=1/anslen=" .. tmp
 		end
+	else
+		cmdstr = cmdstr .. "/ans=0"
 	end
+
+	-- pda hunt -------------------------------------------------------------------------
+	if self.check_pda_hunt:GetCheck() then
+		cmdstr = cmdstr .. "/pdahunt=1" .. tmp
+	end	
+	
 	-- warm up time ---------------------------------------------------------------------
 	tmp = self.edit_warm_up_time:GetText()
 	if string.len(tmp) > 0 then
@@ -372,14 +380,14 @@ function mp_main:GatherServerData()
 	if string.len(tmp) > 0 then
 		cmdstr = cmdstr .. "/etimef=" .. tmp
 	end
-	
+--[[	
 	if self.check_map_rotation:GetCheck() then
 		tmp = self.edit_maprotlist:GetText()
 		if string.len(tmp) > 0 then
 			cmdstr = cmdstr .. "/maprot=" .. tmp ..".ltx"
 		end	
 	end	
-	
+]]	
 		
 	self.map_list:SetServerParams(cmdstr)	
 end

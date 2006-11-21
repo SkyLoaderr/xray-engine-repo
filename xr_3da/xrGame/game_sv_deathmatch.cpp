@@ -2207,6 +2207,9 @@ void	game_sv_Deathmatch::ReadOptions				(shared_str &options)
 	};
 	//-------------------------------------------------------------------------
 	g_sv_dm_dwWarmUp_MaxTime	= get_option_i		(*options,"warmup",g_sv_dm_dwWarmUp_MaxTime/1000) * 1000;
+
+	g_sv_dm_bPDAHunt = (get_option_i(*options,"pdahunt",(g_sv_dm_bPDAHunt ? 1 : 0)) != 0);
+	
 };
 
 static bool g_bConsoleCommandsCreated_DM = false;

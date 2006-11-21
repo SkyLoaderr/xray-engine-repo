@@ -9,6 +9,7 @@ class CUIStatic;
 class CUICheckButton;
 class CUISpinNum;
 class CUISpinText;
+class CUISpinFlt;
 class CUIComboBox;
 class CUIButton;
 class CUI3tButton;
@@ -51,6 +52,7 @@ public:
 	CUIStatic*			InitAnimStatic(LPCSTR path, CUIWindow* parent);
 	CUICheckButton*		InitCheck(LPCSTR path, CUIWindow* parent);
 	CUISpinNum*			InitSpinNum(LPCSTR path, CUIWindow* parent);
+	CUISpinFlt*			InitSpinFlt(LPCSTR path, CUIWindow* parent);
 	CUISpinText*		InitSpinText(LPCSTR path, CUIWindow* parent);
 	CUIComboBox*		InitComboBox(LPCSTR path, CUIWindow* parent);
 	CUIButton*			InitButton(LPCSTR path, CUIWindow* parent);

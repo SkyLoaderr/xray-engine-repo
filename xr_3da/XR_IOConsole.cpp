@@ -505,7 +505,12 @@ BOOL CConsole::GetBool(LPCSTR cmd, BOOL& val)
 	if (I!=Commands.end()) {
 		IConsole_Command* C = I->second;
 		CCC_Mask* cf = dynamic_cast<CCC_Mask*>(C);
-		val = cf->GetValue();
+		if(cf){
+			val = cf->GetValue();
+		}else{
+			CCC_Integer* cf = dynamic_cast<CCC_Integer*>(C);
+			val = !!cf->GetValue();
+		}
 	}
 	return val;
 }

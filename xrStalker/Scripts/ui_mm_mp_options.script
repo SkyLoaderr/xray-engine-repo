@@ -25,7 +25,6 @@ function mp_options:InitControls(x, y, xml, handler)
 	xml:InitLabel("tab_options:cap_server_list",		self)
 	xml:InitLabel("tab_options:cap_weather_options",	self)
 	xml:InitLabel("tab_options:cap_spectator_options",	self)
---	xml:InitStatic("tab_options:cap_freeze_time",		self)
 	xml:InitStatic("tab_options:cap_damage_block",		self)
 	xml:InitStatic("tab_options:cap_friendly_fire",		self)
 	xml:InitStatic("tab_options:cap_frag_limit",		self)
@@ -39,7 +38,9 @@ function mp_options:InitControls(x, y, xml, handler)
 	xml:InitStatic("tab_options:cap_rate_of_change",	self)
 	
 	handler.check_public_server			= xml:InitCheck("tab_options:check_public_server", 			self)
-	handler.check_map_rotation			= xml:InitCheck("tab_options:check_map_rotation", 			self)
+	handler.check_verify_cdkey			= xml:InitCheck("tab_options:check_verify_cdkey", 			self)
+	
+--	handler.check_map_rotation			= xml:InitCheck("tab_options:check_map_rotation", 			self)
 	handler.check_spectator				= xml:InitCheck("tab_options:check_spectator",				self)
 	handler.check_allow_voting			= xml:InitCheck("tab_options:check_allow_voting",			self)
 	handler.check_damage_block			= xml:InitCheck("tab_options:check_damage_block",			self)
@@ -57,22 +58,13 @@ function mp_options:InitControls(x, y, xml, handler)
 	
 	handler.tab_respawn					= xml:InitTab("tab_options:radio_tab_respawn_options",		self)
 	-- spin boxes
-	handler.spin_friendly_fire			= xml:InitSpinNum("tab_options:spin_friendly_fire",			self)
+	handler.spin_friendly_fire			= xml:InitSpinFlt("tab_options:spin_friendly_fire",			self)
 	handler.spin_artefacts_num			= xml:InitSpinNum("tab_options:spin_artefacts_num",			self)
-	handler.edit_maprotlist				= xml:InitEditBox("tab_options:edit_maprotlist",			self)
+--	handler.edit_maprotlist				= xml:InitEditBox("tab_options:edit_maprotlist",			self)
 	handler.edit_spectator				= xml:InitEditBox("tab_options:edit_spectator",				self)
 	handler.edit_force_respawn			= xml:InitEditBox("tab_options:edit_force_respawn", 		self)
 	handler.edit_reinforcement 			= xml:InitEditBox("tab_options:edit_reinforcement", 		self)
---[[
-	handler.edit_freeze_time			= xml:InitEditBox("tab_options:edit_freeze_time",			self.bk)
-	handler.edit_damage_block			= xml:InitEditBox("tab_options:edit_damage_block",			self.bk)
-	handler.edit_frag_limit				= xml:InitEditBox("tab_options:edit_frag_limit",			self.bk)
-	handler.edit_time_limit				= xml:InitEditBox("tab_options:edit_time_limit",			self.bk)
-	handler.edit_artefact_stay			= xml:InitEditBox("tab_options:edit_artefact_stay",			self.bk)
-	handler.edit_artefact_delay			= xml:InitEditBox("tab_options:edit_artefact_delay",		self.bk)
-	handler.edit_anomaly_time			= xml:InitEditBox("tab_options:edit_anomaly_time",			self.bk)
-	]]
---	handler.edit_freeze_time			= xml:InitSpinNum("tab_options:edit_freeze_time",			self)
+
 	handler.edit_damage_block			= xml:InitSpinNum("tab_options:edit_damage_block",			self)
 	handler.edit_frag_limit				= xml:InitSpinNum("tab_options:edit_frag_limit",			self)
 	handler.edit_time_limit				= xml:InitSpinNum("tab_options:edit_time_limit",			self)
@@ -80,14 +72,18 @@ function mp_options:InitControls(x, y, xml, handler)
 	handler.edit_artefact_delay			= xml:InitSpinNum("tab_options:edit_artefact_delay",		self)
 	handler.edit_anomaly_time			= xml:InitSpinNum("tab_options:edit_anomaly_time",			self)
 	handler.edit_warm_up_time			= xml:InitEditBox("tab_options:edit_warm_up_time",			self)
+
+	handler.check_pda_hunt				= xml:InitCheck("tab_options:check_pda_hunt",				self)	
 	
 	handler.edit_rate_of_change			= xml:InitEditBox("tab_options:edit_rate_of_change",		self)
 	handler.edit_rate_of_change:SetText("0.0")
 	
 	handler.spin_weather				= xml:InitComboBox("tab_options:spin_weather",				self)
 	
-	handler.check_map_rotation:SetDependControl(handler.edit_maprotlist)
+--	handler.check_map_rotation:SetDependControl(handler.edit_maprotlist)
 	handler.check_spectator:SetDependControl(handler.edit_spectator)
+	
+	handler.check_public_server:SetDependControl(handler.check_verify_cdkey)	
 	
 end
 

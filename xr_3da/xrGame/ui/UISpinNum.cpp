@@ -61,7 +61,7 @@ void CUISpinNum::OnBtnDownClick(){
 }
 
 void CUISpinNum::SetValue(){
-	char	buff[8];
+	string16	buff;
 	m_pLines->SetText(itoa(m_iVal, buff, 10)); 
 }
 
@@ -71,4 +71,69 @@ bool CUISpinNum::CanPressUp(){
 }
 bool CUISpinNum::CanPressDown(){
 	return m_iVal - m_iStep >= m_iMin;
+}
+
+/////////////////////////////////////////
+CUISpinFlt::CUISpinFlt()
+:	m_fVal(0),
+	m_fMin(0),
+	m_fMax(100),
+	m_fStep(0.1f)
+{}
+
+CUISpinFlt::~CUISpinFlt()
+{}
+
+void CUISpinFlt::SetCurrentValue()
+{
+	GetOptFloatValue(m_fVal, m_fMin, m_fMax);
+	SetValue();
+}
+
+void CUISpinFlt::SaveValue(){
+	CUIOptionsItem::SaveValue();
+	SaveOptFloatValue(m_fVal);
+}
+
+bool CUISpinFlt::IsChanged(){
+	float val, min, max;
+	GetOptFloatValue(val, min, max);
+    return !fsimilar		(m_fVal,val);
+}
+
+void CUISpinFlt::Init(float x, float y, float width, float height){
+	CUICustomSpin::Init(x,y,width,height);
+	SetValue();
+}
+
+void CUISpinFlt::OnBtnUpClick(){	
+	m_fVal += m_fStep;
+
+	SetValue();
+
+	CUICustomSpin::OnBtnUpClick();
+}
+
+void CUISpinFlt::OnBtnDownClick(){	
+	m_fVal -= m_fStep;
+
+	SetValue();
+
+	CUICustomSpin::OnBtnDownClick();
+}
+
+void CUISpinFlt::SetValue()
+{
+	clamp					(m_fVal, m_fMin, m_fMax);
+	string16				buff;
+	sprintf					(buff,"%.1f",m_fVal);
+	m_pLines->SetText		(buff); 
+}
+
+bool CUISpinFlt::CanPressUp(){
+	return m_fVal + m_fStep <= m_fMax;
+
+}
+bool CUISpinFlt::CanPressDown(){
+	return (m_fVal - m_fStep > m_fMin) || fsimilar(m_fVal-m_fStep, m_fMin);
 }
