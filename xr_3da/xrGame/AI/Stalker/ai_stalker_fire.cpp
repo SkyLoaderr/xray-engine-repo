@@ -808,6 +808,8 @@ bool CAI_Stalker::critical_wound_external_conditions_suitable()
 
 	if (!agent_manager().member().registered_in_combat(this))
 		return						(false);
+
+	return							(true);
 }
 
 void CAI_Stalker::critical_wounded_state_start()
