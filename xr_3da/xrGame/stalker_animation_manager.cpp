@@ -162,7 +162,7 @@ void CStalkerAnimationManager::update						()
 #ifndef USE_HEAD_BONE_PART_FAKE
 			script().play		(m_skeleton_animated,script_play_callback,&object());
 #else
-			script().play		(m_skeleton_animated,script_play_callback,&object(),m_script_bone_part_mask);
+			script().play		(m_skeleton_animated,script_play_callback,&object(),false,m_script_bone_part_mask);
 			head().animation	(assign_head_animation());
 			head().play			(m_skeleton_animated,head_play_callback,&object());
 #endif
@@ -183,7 +183,7 @@ void CStalkerAnimationManager::update						()
 #ifndef USE_HEAD_BONE_PART_FAKE
 			global().play		(m_skeleton_animated,global_play_callback,&object());
 #else
-			global().play		(m_skeleton_animated,global_play_callback,&object(),m_script_bone_part_mask);
+			global().play		(m_skeleton_animated,global_play_callback,&object(),false,m_script_bone_part_mask);
 			head().animation	(assign_head_animation());
 			head().play			(m_skeleton_animated,head_play_callback,&object());
 #endif
@@ -207,7 +207,7 @@ void CStalkerAnimationManager::update						()
 			m_previous_speed	= (m_current_speed - m_previous_speed)*amount + m_previous_speed;
 		}
 
-		legs().play				(m_skeleton_animated,legs_play_callback,&object());
+		legs().play				(m_skeleton_animated,legs_play_callback,&object(),!fis_zero(m_current_speed));
 		
 		if (result && legs().blend()) {
 			float				amount = legs().blend()->blendAmount;

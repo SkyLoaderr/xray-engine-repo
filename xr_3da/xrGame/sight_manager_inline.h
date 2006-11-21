@@ -16,6 +16,11 @@ IC	bool CSightManager::use_torso_look	() const
 		return				(true);
 }
 
+IC	bool CSightManager::turning_in_place() const
+{
+	return					(m_turning_in_place);
+}
+
 IC	bool CSightManager::enabled			() const
 {
 	return					(m_enabled);

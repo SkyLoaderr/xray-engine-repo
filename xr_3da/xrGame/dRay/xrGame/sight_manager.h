@@ -54,6 +54,7 @@ public:
 	IC		void	setup								(T1 _1);
 			void	setup								(const CSightAction &sight_action);
 	virtual void	update								();
+	IC		bool	turning_in_place					() const;
 	IC		bool	enabled								() const;
 	IC		void	enable								(bool value);
 };

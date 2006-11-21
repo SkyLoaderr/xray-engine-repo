@@ -34,6 +34,7 @@ void CStalkerAnimationManager::legs_play_callback			(CBlend *blend)
 	CAI_Stalker				*object = (CAI_Stalker*)blend->CallbackParam;
 	VERIFY					(object);
 	object->animation().legs().make_inactual();
+//	Msg						("%6d legs_play_callback calls legs().make_inactual()",Device.dwTimeGlobal);
 }
 
 IC	float CStalkerAnimationManager::legs_switch_factor		() const
@@ -244,16 +245,18 @@ MotionID CStalkerAnimationManager::legs_no_move_animation	()
 	if (angle_difference(target,current) < EPS_L) {
 
 		float					head_current = movement.head_orientation().current.yaw;
-		if (angle_difference(current,head_current) > standing_turn_angle)
-			movement.m_body.target.yaw	= head_current;
+		if (!object().sight().turning_in_place() && angle_difference(current,head_current) <= standing_turn_angle) {
+			if (movement.mental_state() == eMentalStateFree)
+				return			(animation[1]);
 
-		if (movement.mental_state() == eMentalStateFree)
-			return				(animation[1]);
+			if (body_state == eBodyStateCrouch)
+				return			(animation[m_crouch_state]);
 
-		if (body_state == eBodyStateCrouch)
-			return				(animation[m_crouch_state]);
+			return				(animation[0]);
+		}
 
-		return					(animation[0]);
+		movement.m_body.target.yaw	= movement.head_orientation().target.yaw;
+		target						= movement.m_body.target.yaw;
 	}
 
 	if (left_angle(current,target)) {

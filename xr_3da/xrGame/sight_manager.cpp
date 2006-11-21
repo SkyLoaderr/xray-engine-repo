@@ -300,6 +300,7 @@ void CSightManager::update			()
 			if (!m_turning_in_place) {
 				if (angle_difference(object().movement().m_body.current.yaw,object().movement().m_head.current.yaw) > (left_angle(-object().movement().m_head.current.yaw,-object().movement().m_body.current.yaw) ? m_max_left_angle : m_max_right_angle)) {
 					m_turning_in_place	= true;
+//					Msg					("%6d started turning in place",Device.dwTimeGlobal);
 					object().movement().m_body.target.yaw	= object().movement().m_head.current.yaw;
 				}
 				else {
@@ -307,11 +308,13 @@ void CSightManager::update			()
 				}
 			}
 			else {
-				if (angle_difference(object().movement().m_body.current.yaw,object().movement().m_head.current.yaw) > EPS_L) {
-					object().movement().m_body.target.yaw	= object().movement().m_head.current.yaw;
+				if (angle_difference(object().movement().m_body.current.yaw,object().movement().m_head.target.yaw) > EPS_L) {
+//					object().movement().m_body.target.yaw	= object().movement().m_head.current.yaw;
+					object().movement().m_body.target.yaw	= object().movement().m_head.target.yaw;
 				}
 				else {
 					m_turning_in_place	= false;
+//					Msg					("%6d stopped turning in place",Device.dwTimeGlobal);
 					object().movement().m_body.target.yaw	= object().movement().m_body.current.yaw;
 				}
 			}

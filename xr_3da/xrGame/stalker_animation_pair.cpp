@@ -59,9 +59,9 @@ void CStalkerAnimationPair::play_global_animation	(CKinematicsAnimated *skeleton
 }
 
 #ifndef USE_HEAD_BONE_PART_FAKE
-void CStalkerAnimationPair::play			(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object)
+void CStalkerAnimationPair::play			(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, bool continue_interrupted_animation)
 #else
-void CStalkerAnimationPair::play			(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part)
+void CStalkerAnimationPair::play			(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, bool continue_interrupted_animation, const u32 &bone_part)
 #endif
 {
 	VERIFY					(animation());
@@ -76,12 +76,17 @@ void CStalkerAnimationPair::play			(CKinematicsAnimated *skeleton_animated, Play
 	}
 
 	if (!global_animation()) {
+
 		float				pos = 0.f;
-		VERIFY				(!m_blend || !fis_zero(m_blend->timeTotal));
-		if (m_step_dependence && m_blend)
-			pos				= fmod(m_blend->timeCurrent,m_blend->timeTotal)/m_blend->timeTotal;
+		if (m_step_dependence && continue_interrupted_animation) {
+			VERIFY			(!m_blend || !fis_zero(m_blend->timeTotal));
+			if (m_step_dependence && m_blend)
+				pos			= fmod(m_blend->timeCurrent,m_blend->timeTotal)/m_blend->timeTotal;
+		}
+
 		m_blend				= skeleton_animated->PlayCycle(animation(),TRUE,callback,object);
-		if (m_step_dependence) {
+
+		if (m_step_dependence && continue_interrupted_animation) {
 //			if (we were standing and now we are moving)
 //				pos						= 0.5f*Random.randI(2);
 			if (m_blend)

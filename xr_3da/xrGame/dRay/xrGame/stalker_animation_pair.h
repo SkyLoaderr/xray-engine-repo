@@ -59,9 +59,9 @@ public:
 
 public:
 #ifndef USE_HEAD_BONE_PART_FAKE
-			void			play					(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object);
+			void			play					(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, bool continue_interrupted_animation = true);
 #else
-			void			play					(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part = all_bone_parts);
+			void			play					(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, bool continue_interrupted_animation = true, const u32 &bone_part = all_bone_parts);
 #endif
 
 public:
