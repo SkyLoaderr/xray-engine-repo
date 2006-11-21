@@ -85,7 +85,7 @@
 		<text>Ошибка</text>
 	</string>
 	
-	<string id="ui_st_file_exist_owerwrite">
+	<string id="ui_st_file_exist_owerwrite_q">
 		<text>Файл с таким именем уже существует. Перезаписать?</text>
 	</string>
 	
@@ -121,8 +121,8 @@
 		<text>Вы действительно хотите покинуть игру?</text>
 	</string>
 	
-	<string id="ui_st_file_name_is_empty_q">
-		<text>Имя файла пустое!</text>
+	<string id="ui_st_file_name_is_empty">
+		<text>Имя файла пустое</text>
 	</string>
 	
 </string_table>

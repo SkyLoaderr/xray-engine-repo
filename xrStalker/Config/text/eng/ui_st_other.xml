@@ -85,7 +85,7 @@
 		<text>Error</text>
 	</string>
 	
-	<string id="ui_st_file_exist_owerwrite">
+	<string id="ui_st_file_exist_owerwrite_q">
 		<text>The file with this name already exist. Do you want to overwrite it?</text>
 	</string>
 	
@@ -121,8 +121,8 @@
 		<text>Do you really want to leave the Game?</text>
 	</string>
 	
-	<string id="ui_st_file_name_is_empty_q">
-		<text>File name is empty!</text>
+	<string id="ui_st_file_name_is_empty">
+		<text>The file name is empty</text>
 	</string>
 	
 </string_table>
