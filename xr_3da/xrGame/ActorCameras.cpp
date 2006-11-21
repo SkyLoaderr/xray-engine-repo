@@ -282,8 +282,15 @@ void CActor::cam_Update(float dt, float fFOV)
 		cameras[eacFirstEye]->Update	(point,dangle);
 		cameras[eacFirstEye]->f_fov		= fFOV;
 	}
-	Cameras().Update			(cameras[eacFirstEye]);
 	
+	if( psActorFlags.test(AF_PSP) )
+	{
+		Cameras().Update			(C);
+	}else
+	{
+		Cameras().Update			(cameras[eacFirstEye]);
+	}
+
 	fCurAVelocity			= vPrevCamDir.sub(cameras[eacFirstEye]->vDirection).magnitude()/Device.fTimeDelta;
 	vPrevCamDir				= cameras[eacFirstEye]->vDirection;
 

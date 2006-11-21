@@ -79,6 +79,7 @@ void CCameraLook::OnActivate( CCameraBase* old_cam )
 	if (yaw<-PI_MUL_2)yaw+=PI_MUL_2;
 }
 
+Fvector CCameraLook2::m_cam_offset;
 
 void CCameraLook2::Update(Fvector& point, Fvector&)
 {
@@ -90,9 +91,9 @@ void CCameraLook2::Update(Fvector& point, Fvector&)
 
 	CActor* pA						= smart_cast<CActor*>(parent);
 	Fmatrix							a_xform;
-	a_xform.setXYZ					(0, pA->Orientation().yaw, 0);
+	a_xform.setXYZ					(0, -yaw, 0);
 	a_xform.translate_over			(point);
-	Fvector _off					= m_offset;
+	Fvector _off					= m_cam_offset;
 	a_xform.transform_tiny			(_off);
 	vPosition.set					(_off);
 }
@@ -100,5 +101,5 @@ void CCameraLook2::Update(Fvector& point, Fvector&)
 void CCameraLook2::Load(LPCSTR section)
 {
 	CCameraLook::Load	(section);
-	m_offset			= pSettings->r_fvector3	(section,"offset");
+	m_cam_offset			= pSettings->r_fvector3	(section,"offset");
 }

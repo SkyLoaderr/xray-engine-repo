@@ -23,7 +23,8 @@ public:
 
 class CCameraLook2	: public CCameraLook
 {
-	Fvector			m_offset;
+public:
+	static Fvector	m_cam_offset;
 public:
 					CCameraLook2	( CObject* p, u32 flags=0):CCameraLook(p, flags){};
 	virtual			~CCameraLook2	(){}

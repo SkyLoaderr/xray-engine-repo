@@ -43,6 +43,7 @@
 #include "game_cl_base_weapon_usage_statistic.h"
 #include "../resourcemanager.h"
 #include "doug_lea_memory_allocator.h"
+#include "cameralook.h"
 
 #ifdef DEBUG
 #	include "PHDebug.h"
@@ -2797,4 +2798,5 @@ void CCC_RegisterCommands()
 	CMD4(CCC_SV_Integer,"sv_artefact_stay_time"		,	(int*)&g_sv_ah_dwArtefactStayTime		, 0,1800000);
 	CMD4(CCC_SV_Integer,"sv_reinforcement_time"		,	(int*)&g_sv_ah_iReinforcementTime		, -1,1800000);
 
+	CMD4(CCC_Vector3,		"psp_cam_offset",				&CCameraLook2::m_cam_offset, Fvector().set(-1000,-1000,-1000),Fvector().set(1000,1000,1000));
 }
