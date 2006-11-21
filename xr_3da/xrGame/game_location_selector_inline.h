@@ -89,9 +89,7 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 			continue;
 
 		// * accessible
-		u32						level_vertex_id = m_graph->vertex((*i).vertex_id())->level_vertex_id();
-		VERIFY					(ai().level_graph().valid_vertex_id(level_vertex_id));
-		if (!accessible(level_vertex_id))
+		if (!accessible((*i).vertex_id()))
 			continue;
 
 		// * вершина на текущем уровне?
