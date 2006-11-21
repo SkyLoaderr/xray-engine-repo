@@ -243,6 +243,28 @@ function release_current_level()
 		end
 	end
 end
+--' Обнуление всех на текущем уровне
+function release_all()
+	for k,v in pairs(reg_objects_stalker) do
+		local obj = alife():object(k)
+		if v.exist == true then
+			level.map_remove_object_spot(k, "alife_presentation_"..v.community)
+			reg_objects_stalker[k].exist = nil
+		end
+		alife():release(obj,true)
+		reg_objects_stalker[k] = nil
+	end
+	for k,v in pairs(reg_objects_monster) do
+		local obj = alife():object(k)
+		if v.exist == true then
+			level.map_remove_object_spot(k, "alife_presentation_monstr")
+			reg_objects_monster[k].exist = nil
+		end
+		alife():release(obj,true)
+		reg_objects_monster[k] = nil
+	end
+end
+
 
 --' Статистика респавнеров
 local reg_objects_respawn = {}
