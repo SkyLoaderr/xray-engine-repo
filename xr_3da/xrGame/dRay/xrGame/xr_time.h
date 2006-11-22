@@ -21,6 +21,10 @@ public:
 	void	add				(const xrTime& other);
 	void	sub				(const xrTime& other);
 
+	void	add_script		(xrTime* other){add(*other);};
+	void	sub_script		(xrTime* other){sub(*other);};
+	float	diffSec_script	(xrTime* other){return diffSec(*other);};
+
 	void	setHMS			(int h, int m, int s);
 	void	setHMSms		(int h, int m, int s, int ms);
 	void	set				(int y, int mo, int d, int h, int mi, int s, int ms);

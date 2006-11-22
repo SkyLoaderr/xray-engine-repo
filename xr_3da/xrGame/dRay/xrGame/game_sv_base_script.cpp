@@ -75,9 +75,9 @@ void game_sv_GameState::script_register(lua_State *L)
 		.def(self +					xrTime()					)
 		.def(self -					xrTime()					)
 
-		.def("diffSec"				,&xrTime::diffSec)
-		.def("add"					,&xrTime::add)
-		.def("sub"					,&xrTime::sub)
+		.def("diffSec"				,&xrTime::diffSec_script)
+		.def("add"					,&xrTime::add_script)
+		.def("sub"					,&xrTime::sub_script)
 
 		.def("setHMS"				,&xrTime::setHMS)
 		.def("setHMSms"				,&xrTime::setHMSms)
