@@ -335,3 +335,12 @@ void CMemoryManager::load							(IReader &packet)
 	hit().load					(packet);
 	danger().load				(packet);
 }
+
+// we do this due to the limitation f client spawn manager
+// should be revisited from the acrhitectural point of view
+void CMemoryManager::on_requested_spawn				(CObject *object)
+{
+	visual().on_requested_spawn	(object);
+	sound().on_requested_spawn	(object);
+	hit().on_requested_spawn	(object);
+}

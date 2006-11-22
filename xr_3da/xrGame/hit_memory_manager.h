@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "memory_space.h"
+
 #ifdef DEBUG
 #	define USE_SELECTED_HIT
 #endif
@@ -26,9 +28,19 @@ public:
 	typedef xr_vector<CHitObject>					HITS;
 
 private:
+	struct CDelayedHitObject {
+		ALife::_OBJECT_ID	m_object_id;
+		CHitObject			m_hit_object;
+	};
+
+private:
+	typedef xr_vector<CDelayedHitObject>			DELAYED_HIT_OBJECTS;
+
+private:
 	CCustomMonster				*m_object;
 	CAI_Stalker					*m_stalker;
 	HITS						*m_hits;
+	DELAYED_HIT_OBJECTS			m_delayed_objects;
 	u32							m_max_hit_count;
 #ifdef USE_SELECTED_HIT
 	CHitObject					*m_selected_hit;
@@ -63,6 +75,10 @@ public:
 public:
 			void				save				(NET_Packet &packet) const;
 			void				load				(IReader &packet);
+			void				on_requested_spawn	(CObject *object);
+
+private:
+			void				clear_delayed_objects	();
 };
 
 #include "hit_memory_manager_inline.h"

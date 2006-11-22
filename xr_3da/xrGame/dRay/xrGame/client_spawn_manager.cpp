@@ -117,3 +117,16 @@ void CClientSpawnManager::merge_spawn_callbacks	(CSpawnCallback &new_callback, C
 	old_callback.m_object_callback	= new_callback.m_object_callback;
 	old_callback.m_callback			= new_callback.m_callback;
 }
+
+const CClientSpawnManager::CSpawnCallback *CClientSpawnManager::callback(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id) const
+{
+	REQUEST_REGISTRY::const_iterator	I = m_registry.find(requested_id);
+	if (I == m_registry.end())
+		return						(0);
+
+	REQUESTED_REGISTRY::const_iterator	i = (*I).second.find(requesting_id);
+	if (i == (*I).second.end())
+		return						(0);
+
+	return							(&(*i).second);
+}

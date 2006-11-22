@@ -285,7 +285,16 @@ void CCustomMonster::shedule_Update	( u32 DT )
 	// *** general stuff
 	if (g_Alive()) {
 		if (g_mt_config.test(mtAiVision))
+#ifndef DEBUG
 			Device.seqParallel.push_back	(fastdelegate::FastDelegate0<>(this,&CCustomMonster::Exec_Visibility));
+#else // DEBUG
+		{
+			if (!psAI_Flags.test(aiStalker) || !!smart_cast<CActor*>(Level().CurrentEntity()))
+				Device.seqParallel.push_back(fastdelegate::FastDelegate0<>(this,&CCustomMonster::Exec_Visibility));
+			else
+				Exec_Visibility				();
+		}
+#endif // DEBUG
 		else
 			Exec_Visibility					();
 		memory().update						(dt);

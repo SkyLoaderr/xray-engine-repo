@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "memory_space.h"
+
 #ifdef DEBUG
 #	define USE_SELECTED_SOUND
 #endif
@@ -28,9 +30,19 @@ public:
 	typedef xr_map<ESoundTypes,u32>						PRIORITIES;
 
 private:
+	struct CDelayedSoundObject {
+		ALife::_OBJECT_ID	m_object_id;
+		CSoundObject		m_sound_object;
+	};
+
+private:
+	typedef xr_vector<CDelayedSoundObject>				DELAYED_SOUND_OBJECTS;
+
+private:
 	CCustomMonster				*m_object;
 	CAI_Stalker					*m_stalker;
 	CSound_UserDataVisitor		*m_visitor;
+	DELAYED_SOUND_OBJECTS		m_delayed_objects;
 
 private:
 	SOUNDS						*m_sounds;
@@ -60,6 +72,7 @@ private:
 private:
 	IC		void				update_sound_threshold	();
 	IC		u32					priority				(const CSoundObject &sound) const;
+			void				add						(const CSoundObject &sound_object, bool check_for_existance = false);
 
 protected:
 	IC		void				priority				(const ESoundTypes &sound_type, u32 priority);
@@ -92,6 +105,10 @@ public:
 public:
 			void				save					(NET_Packet &packet) const;
 			void				load					(IReader &packet);
+			void				on_requested_spawn		(CObject *object);
+
+private:
+			void				clear_delayed_objects	();
 };
 
 #include "sound_memory_manager_inline.h"

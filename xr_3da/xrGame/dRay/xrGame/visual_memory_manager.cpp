@@ -25,10 +25,8 @@
 #include "gamepersistent.h"
 #include "actor_memory.h"
 #include "client_spawn_manager.h"
-
-#ifdef DEBUG
-#	include "memory_manager.h"
-#endif
+#include "client_spawn_manager.h"
+#include "memory_manager.h"
 
 struct SRemoveOfflinePredicate {
 	bool		operator()						(const CVisibleObject &object) const
@@ -668,7 +666,7 @@ void CVisualMemoryManager::load	(IReader &packet)
 
 	typedef CClientSpawnManager::CALLBACK_TYPE	CALLBACK_TYPE;
 	CALLBACK_TYPE					callback;
-	callback.bind					(this,&CVisualMemoryManager::on_requested_spawn);
+	callback.bind					(&m_object->memory(),&CMemoryManager::on_requested_spawn);
 
 	int								count = packet.r_u8();
 	for (int i=0; i<count; ++i) {
@@ -715,7 +713,16 @@ void CVisualMemoryManager::load	(IReader &packet)
 
 		m_delayed_objects.push_back	(delayed_object);
 
-		Level().client_spawn_manager().add(delayed_object.m_object_id,m_object->ID(),callback);
+		const CClientSpawnManager::CSpawnCallback	*spawn_callback = Level().client_spawn_manager().callback(delayed_object.m_object_id,m_object->ID());
+		if (!spawn_callback || !spawn_callback->m_object_callback)
+			Level().client_spawn_manager().add	(delayed_object.m_object_id,m_object->ID(),callback);
+#ifdef DEBUG
+		else {
+			if (spawn_callback && spawn_callback->m_object_callback) {
+				VERIFY				(spawn_callback->m_object_callback == callback);
+			}
+		}
+#endif // DEBUG
 	}
 }
 
@@ -753,6 +760,4 @@ void CVisualMemoryManager::on_requested_spawn	(CObject *object)
 		m_delayed_objects.erase			(I);
 		return;
 	}
-
-	NODEFAULT;
 }

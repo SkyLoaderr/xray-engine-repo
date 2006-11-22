@@ -18,11 +18,12 @@ class CClientSpawnManager {
 public:
 	typedef fastdelegate::FastDelegate1<CObject*>			CALLBACK_TYPE;
 
-private:
+public:
 	struct CSpawnCallback {
 		CALLBACK_TYPE			m_object_callback;
 		CScriptCallbackEx<void>	m_callback;
 	};
+
 public:
 	typedef xr_map<ALife::_OBJECT_ID,CSpawnCallback>		REQUESTED_REGISTRY;
 	typedef xr_map<ALife::_OBJECT_ID,REQUESTED_REGISTRY>	REQUEST_REGISTRY;
@@ -45,6 +46,7 @@ public:
 			void		clear					(ALife::_OBJECT_ID	requested_id);
 			void		callback				(CObject			*object);
 			void		callback				(CSpawnCallback		&spawn_callback, CObject *object);
+			const CSpawnCallback *callback		(ALife::_OBJECT_ID	requesting_id, ALife::_OBJECT_ID requested_id) const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CClientSpawnManager)

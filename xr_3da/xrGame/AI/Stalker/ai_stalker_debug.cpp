@@ -133,7 +133,7 @@ void restore_actor()
 template <typename planner_type>
 void draw_planner						(const planner_type &brain, LPCSTR start_indent, LPCSTR indent, LPCSTR planner_id)
 {
-	planner_type				&_brain = const_cast<planner_type&>(brain);
+	planner_type						&_brain = const_cast<planner_type&>(brain);
 	if (brain.solution().empty())
 		return;
 

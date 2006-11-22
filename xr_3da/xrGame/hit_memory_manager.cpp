@@ -19,6 +19,8 @@
 #include "ai/stalker/ai_stalker.h"
 #include "game_object_space.h"
 #include "profiler.h"
+#include "client_spawn_manager.h"
+#include "memory_manager.h"
 
 struct CHitObjectPredicate {
 	const CObject *m_object;
@@ -169,6 +171,8 @@ void CHitMemoryManager::update()
 {
 	START_PROFILE("Memory Manager/hits::update")
 
+	clear_delayed_objects		();
+
 	VERIFY						(m_hits);
 	{
 		HITS::iterator			I = remove_if(m_hits->begin(),m_hits->end(),CRemoveOfflinePredicate());
@@ -193,10 +197,11 @@ void CHitMemoryManager::update()
 
 void CHitMemoryManager::enable			(const CObject *object, bool enable)
 {
-	HITS::iterator	J = std::find(m_hits->begin(),m_hits->end(),object_id(object));
+	HITS::iterator				J = std::find(m_hits->begin(),m_hits->end(),object_id(object));
 	if (J == m_hits->end())
 		return;
-	(*J).m_enabled		= enable;
+
+	(*J).m_enabled				= enable;
 }
 
 void CHitMemoryManager::remove_links	(CObject *object)
@@ -222,8 +227,143 @@ void CHitMemoryManager::remove_links	(CObject *object)
 
 void CHitMemoryManager::save	(NET_Packet &packet) const
 {
+	if (!m_object->g_Alive())
+		return;
+
+	packet.w_u8					((u8)objects().size());
+
+	HITS::const_iterator		I = objects().begin();
+	HITS::const_iterator		E = objects().end();
+	for ( ; I != E; ++I) {
+		VERIFY					((*I).m_object);
+		packet.w_u16			((*I).m_object->ID());
+		// object params
+		packet.w_u32			((*I).m_object_params.m_level_vertex_id);
+		packet.w_vec3			((*I).m_object_params.m_position);
+#ifdef USE_ORIENTATION
+		packet.w_float			((*I).m_object_params.m_orientation.yaw);
+		packet.w_float			((*I).m_object_params.m_orientation.pitch);
+		packet.w_float			((*I).m_object_params.m_orientation.roll);
+#endif // USE_ORIENTATION
+		// self params
+		packet.w_u32			((*I).m_self_params.m_level_vertex_id);
+		packet.w_vec3			((*I).m_self_params.m_position);
+#ifdef USE_ORIENTATION
+		packet.w_float			((*I).m_self_params.m_orientation.yaw);
+		packet.w_float			((*I).m_self_params.m_orientation.pitch);
+		packet.w_float			((*I).m_self_params.m_orientation.roll);
+#endif // USE_ORIENTATION
+#ifdef USE_LEVEL_TIME
+		VERIFY					(Device.dwTimeGlobal >= (*I).m_level_time);
+		packet.w_u32			(Device.dwTimeGlobal - (*I).m_level_time);
+#endif // USE_LAST_LEVEL_TIME
+#ifdef USE_LEVEL_TIME
+		VERIFY					(Device.dwTimeGlobal >= (*I).m_last_level_time);
+		packet.w_u32			(Device.dwTimeGlobal - (*I).m_last_level_time);
+#endif // USE_LAST_LEVEL_TIME
+#ifdef USE_FIRST_LEVEL_TIME
+		VERIFY					(Device.dwTimeGlobal >= (*I).m_first_level_time);
+		packet.w_u32			(Device.dwTimeGlobal - (*I).m_first_level_time);
+#endif // USE_FIRST_LEVEL_TIME
+	}
 }
 
 void CHitMemoryManager::load	(IReader &packet)
 {
+	if (!m_object->g_Alive())
+		return;
+
+	typedef CClientSpawnManager::CALLBACK_TYPE	CALLBACK_TYPE;
+	CALLBACK_TYPE					callback;
+	callback.bind					(&m_object->memory(),&CMemoryManager::on_requested_spawn);
+
+	int								count = packet.r_u8();
+	for (int i=0; i<count; ++i) {
+		CDelayedHitObject			delayed_object;
+		delayed_object.m_object_id	= packet.r_u16();
+
+		CHitObject					&object = delayed_object.m_hit_object;
+		object.m_object				= smart_cast<CEntityAlive*>(Level().Objects.net_Find(delayed_object.m_object_id));
+		// object params
+		object.m_object_params.m_level_vertex_id	= packet.r_u32();
+		packet.r_fvector3			(object.m_object_params.m_position);
+#ifdef USE_ORIENTATION
+		packet.r_float				(object.m_object_params.m_orientation.yaw);
+		packet.r_float				(object.m_object_params.m_orientation.pitch);
+		packet.r_float				(object.m_object_params.m_orientation.roll);
+#endif
+		// self params
+		object.m_self_params.m_level_vertex_id	= packet.r_u32();
+		packet.r_fvector3			(object.m_self_params.m_position);
+#ifdef USE_ORIENTATION
+		packet.r_float				(object.m_self_params.m_orientation.yaw);
+		packet.r_float				(object.m_self_params.m_orientation.pitch);
+		packet.r_float				(object.m_self_params.m_orientation.roll);
+#endif
+#ifdef USE_LEVEL_TIME
+		VERIFY						(Device.dwTimeGlobal >= object.m_level_time);
+		object.m_level_time			= packet.r_u32();
+		object.m_level_time			+= Device.dwTimeGlobal;
+#endif // USE_LEVEL_TIME
+#ifdef USE_LAST_LEVEL_TIME
+		VERIFY						(Device.dwTimeGlobal >= object.m_last_level_time);
+		object.m_last_level_time	= packet.r_u32();
+		object.m_last_level_time	+= Device.dwTimeGlobal;
+#endif // USE_LAST_LEVEL_TIME
+#ifdef USE_FIRST_LEVEL_TIME
+		VERIFY						(Device.dwTimeGlobal >= (*I).m_first_level_time);
+		object.m_first_level_time	= packet.r_u32();
+		object.m_first_level_time	+= Device.dwTimeGlobal;
+#endif // USE_FIRST_LEVEL_TIME
+		if (object.m_object) {
+			add						(object);
+			continue;
+		}
+
+		m_delayed_objects.push_back	(delayed_object);
+
+		const CClientSpawnManager::CSpawnCallback	*spawn_callback = Level().client_spawn_manager().callback(delayed_object.m_object_id,m_object->ID());
+		if (!spawn_callback || !spawn_callback->m_object_callback)
+			Level().client_spawn_manager().add	(delayed_object.m_object_id,m_object->ID(),callback);
+#ifdef DEBUG
+		else {
+			if (spawn_callback && spawn_callback->m_object_callback) {
+				VERIFY				(spawn_callback->m_object_callback == callback);
+			}
+		}
+#endif // DEBUG
+	}
+}
+
+void CHitMemoryManager::clear_delayed_objects()
+{
+	if (m_delayed_objects.empty())
+		return;
+
+	CClientSpawnManager						&manager = Level().client_spawn_manager();
+	DELAYED_HIT_OBJECTS::const_iterator		I = m_delayed_objects.begin();
+	DELAYED_HIT_OBJECTS::const_iterator		E = m_delayed_objects.end();
+	for ( ; I != E; ++I)
+		manager.remove						((*I).m_object_id,m_object->ID());
+
+	m_delayed_objects.clear					();
+}
+
+void CHitMemoryManager::on_requested_spawn	(CObject *object)
+{
+	DELAYED_HIT_OBJECTS::iterator		I = m_delayed_objects.begin();
+	DELAYED_HIT_OBJECTS::iterator		E = m_delayed_objects.end();
+	for ( ; I != E; ++I) {
+		if ((*I).m_object_id != object->ID())
+			continue;
+		
+		if (m_object->g_Alive()) {
+			(*I).m_hit_object.m_object= smart_cast<CEntityAlive*>(object);
+			VERIFY						((*I).m_hit_object.m_object);
+			add							((*I).m_hit_object);
+		}
+
+		m_delayed_objects.erase			(I);
+		return;
+	}
 }

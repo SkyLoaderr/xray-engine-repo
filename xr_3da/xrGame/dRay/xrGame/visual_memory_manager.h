@@ -133,12 +133,10 @@ public:
 public:
 			void					save						(NET_Packet &packet) const;
 			void					load						(IReader &packet);
+			void					on_requested_spawn			(CObject *object);
 
 private:
 			void					clear_delayed_objects		();
-
-private:
-			void xr_stdcall			on_requested_spawn			(CObject *object);
 };
 
 #include "visual_memory_manager_inline.h"
