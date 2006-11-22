@@ -93,7 +93,9 @@ void CPhysicsShellHolder::correct_spawn_pos()
 	CPHActivationShape	activation_shape;
 	activation_shape.Create(c,size,this);
 	activation_shape.set_rotation(XFORM());
+	PPhysicsShell()->DisableCollision();
 	activation_shape.Activate(size,1,1.f,M_PI/8.f);
+	PPhysicsShell()->EnableCollision();
 	Fmatrix	trans;trans.identity();
 	trans.c.sub(activation_shape.Position(),c);
 	PPhysicsShell()->TransformPosition(trans);
