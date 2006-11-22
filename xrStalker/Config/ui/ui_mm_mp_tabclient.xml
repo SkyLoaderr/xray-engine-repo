@@ -14,15 +14,15 @@
 			<list_item>
 				<text r="131" g="131" b="131" font="letterica16" complex_mode="0"/>
 			</list_item>
-			<header x="0" y="0" width="0" height="18" frame_mode="1">
+			<header x="0" y="0" width="10" height="18" frame_mode="1">
 				<text font="arial_14" r="215" g="195" b="170" x="2" y="1" align="l" vert_align="c" complex_mode="0"/>
 				<text_color>
 					<e r="227" g="199" b="178"/>
 					<d r="215" g="195" b="170"/>					
 				</text_color>
-				<texture_e>ui_table_button_e</texture_e>
-				<texture_h>ui_table_button_h</texture_h>
-				<texture_t>ui_table_button_t</texture_t>				
+				<texture_e>ui_table_button_e_back</texture_e>
+				<texture_h>ui_table_button_h_back</texture_h>
+				<texture_t>ui_table_button_t_back</texture_t>				
 			</header>
 			<separator x="0" y="3" width="1" height="29" vertical="1">
 				<texture>ui_table_divider</texture>
@@ -100,13 +100,13 @@
 			<texture_offset x="-3"/>
 		</btn_direct_ip>
 		
-		<check_empty x="570" y="40" width="80" height="18">
+		<check_empty x="570" y="40" width="150" height="18">
 			<text font="letterica16" r="115" g="114" b="112">mm_mp_empty</text>
 		</check_empty>
-		<check_full x="570" y="65" width="80" height="18">
+		<check_full x="570" y="65" width="150" height="18">
 			<text font="letterica16" r="115" g="114" b="112">mm_mp_full</text>
 		</check_full>
-		<check_with_pass x="570" y="90" width="40" height="18">
+		<check_with_pass x="570" y="90" width="150" height="18">
 			<text font="letterica16" r="115" g="114" b="112">mm_mp_withpassword</text>
 		</check_with_pass>
 		<check_without_pass x="570" y="115" width="150" height="18">

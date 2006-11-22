@@ -245,7 +245,7 @@ function mp_main:GatherServerData()
 	end
 	-- spectator --------------------------------------------------------------------
 	if self.check_spectator:GetCheck() then
-		tmp = self.edit_spectator:GetText()
+		tmp = self.spin_spectator:GetText()
 		if string.len(tmp) > 0 then
 			cmdstr = cmdstr .. "/spectr=" .. tmp
 		end
@@ -277,25 +277,20 @@ function mp_main:GatherServerData()
 		cmdstr = cmdstr .. "/vote=1"
 	end
 	-- damage block ------------------------------------------------------------------
-	tmp = self.edit_damage_block:GetText()
+	tmp = self.spin_damage_block:GetText()
 	if string.len(tmp) > 0 then
 		cmdstr = cmdstr .. "/dmgblock=" .. tmp
 	end
 	if self.check_damage_block:GetCheck() then
 		cmdstr = cmdstr .. "/dmbi=1"
 	end
-	--[[ freeze time --------------------------------------------------------------------
-	tmp = self.edit_freeze_time:GetText()
-	if string.len(tmp) > 0 then
-		cmdstr = cmdstr .. "/rpfrz=" .. tmp
-	end]]
 	-- frag limit ---------------------------------------------------------------------
-	tmp = self.edit_frag_limit:GetText()
+	tmp = self.spin_frag_limit:GetText()
 	if string.len(tmp) > 0 then
 		cmdstr = cmdstr .. "/fraglimit=" .. tmp
 	end
 	-- time limit ---------------------------------------------------------------------
-	tmp = self.edit_time_limit:GetText()
+	tmp = self.spin_time_limit:GetText()
 	if string.len(tmp) > 0 then
 		cmdstr = cmdstr .. "/timelimit=" .. tmp
 	end
@@ -314,7 +309,7 @@ function mp_main:GatherServerData()
 	end		
 	-- Force respawn --------------------------------------------------------------
 	if self.tab_respawn:GetActiveIndex() == 1 then
-		tmp = self.edit_force_respawn:GetText()
+		tmp = self.spin_force_respawn:GetText()
 		if string.len(tmp) > 0 then
 			cmdstr = cmdstr .. "/frcrspwn=" .. tmp
 		end
@@ -328,12 +323,12 @@ function mp_main:GatherServerData()
 			cmdstr = cmdstr .. "/anum=" .. tmp
 		end
 		-- aretefact delay --------------------------------------------------------------
-		tmp = self.edit_artefact_delay:GetText()
+		tmp = self.spin_artefact_delay:GetText()
 		if string.len(tmp) > 0 then
 			cmdstr = cmdstr .. "/ardelta=" .. tmp
 		end
 		-- artefact stay ----------------------------------------------------------------
-		tmp = self.edit_artefact_stay:GetText()
+		tmp = self.spin_artefact_stay:GetText()
 		if string.len(tmp) > 0 then
 			cmdstr = cmdstr .. "/astime=" .. tmp
 		end
@@ -341,7 +336,7 @@ function mp_main:GatherServerData()
 		if self.tab_respawn:GetActiveIndex() == 2 then // artefact capture selected
 			cmdstr = cmdstr .. "/reinf=-1"
 		else
-			tmp = self.edit_reinforcement:GetText()
+			tmp = self.spin_reinforcement:GetText()
 			if string.len(tmp) > 0 then
 				cmdstr = cmdstr .. "/reinf=" .. tmp
 			end
@@ -357,7 +352,7 @@ function mp_main:GatherServerData()
 	end	
 	-- anomaly time ---------------------------------------------------------------------	
 	if false == self.check_no_anmalies:GetCheck() then
-		tmp = self.edit_anomaly_time:GetText()
+		tmp = self.spin_anomaly_time:GetText()
 		if string.len(tmp) > 0 then
 			cmdstr = cmdstr .. "/ans=1/anslen=" .. tmp
 		end
@@ -371,23 +366,15 @@ function mp_main:GatherServerData()
 	end	
 	
 	-- warm up time ---------------------------------------------------------------------
-	tmp = self.edit_warm_up_time:GetText()
+	tmp = self.spin_warm_up_time:GetText()
 	if string.len(tmp) > 0 then
 		cmdstr = cmdstr .. "/warmup=" .. tmp
 	end
 	-- rate of weather change -----------------------------------------------------------
-	tmp = self.edit_rate_of_change:GetText()
+	tmp = self.spin_rate_of_change:GetText()
 	if string.len(tmp) > 0 then
 		cmdstr = cmdstr .. "/etimef=" .. tmp
 	end
---[[	
-	if self.check_map_rotation:GetCheck() then
-		tmp = self.edit_maprotlist:GetText()
-		if string.len(tmp) > 0 then
-			cmdstr = cmdstr .. "/maprot=" .. tmp ..".ltx"
-		end	
-	end	
-]]	
 		
 	self.map_list:SetServerParams(cmdstr)	
 end

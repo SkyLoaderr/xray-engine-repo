@@ -54,37 +54,20 @@
 		<options_item entry="sv_dmgblockindicator" group="mm_mp_server"/>
 		<text font="letterica16" r="115" g="114" b="112">mm_mp_damageblockindicator</text>
 	</check_damage_block>
-<!--
-	<check_map_rotation x="18" y="65" width="110" height="18">
-		<options_item entry="mm_net_con_maprotation" group="mm_mp_server"/>
-		<text font="letterica16" r="115" g="114" b="112">mm_mp_mapratation</text>
-	</check_map_rotation>
-	<edit_maprotlist x="130" y="65" width="90" height="23">
-		<text font="letterica16" r="235" g="219" b="185"></text>
-		<options_item entry="mm_net_con_maprotlist" group="mm_mp_server"/>
-		<texture>ui_linetextSmall_e</texture>			
-	</edit_maprotlist>		
--->
-	<edit_spectator x="175" y="90" width="45" height="23" numonly="1">
-		<text font="letterica16" r="235" g="219" b="185"></text>
-		<options_item entry="mm_net_con_spectator" group="mm_mp_server"/>
-		<texture>ui_linetextSmall_e</texture>
-	</edit_spectator>
-	<edit_force_respawn x="175" y="185" width="45" height="23" numonly="1">
-		<text font="letterica16" r="235" g="219" b="185"></text>
-		<options_item entry="sv_forcerespawn" group="mm_mp_server"/>
-		<texture>ui_linetextSmall_e</texture>
-	</edit_force_respawn>
-	<edit_reinforcement x="175" y="210" width="45" height="23" numonly="1">
-		<text font="letterica16" r="235" g="219" b="185"></text>
-		<options_item entry="sv_reinforcement_time" group="mm_mp_server"/>
-		<texture>ui_linetextSmall_e</texture>
-	</edit_reinforcement>
 
-	<edit_damage_block x="175" y="295" width="45" height="23">
+	<spin_spectator x="175" y="90" width="45" height="23">
+		<options_item entry="mm_net_con_spectator" group="mm_mp_server"/>
+	</spin_spectator>
+	<spin_force_respawn x="175" y="185" width="45" height="23">
+		<options_item entry="sv_forcerespawn" group="mm_mp_server"/>
+	</spin_force_respawn>
+	<spin_reinforcement x="175" y="210" width="45" height="23">
+		<options_item entry="sv_reinforcement_time" group="mm_mp_server"/>
+	</spin_reinforcement>
+
+	<spin_damage_block x="175" y="295" width="45" height="23">
 		<options_item entry="sv_dmgblocktime" group="mm_mp_server"/>
-		<texture>ui_linetextSmall_e</texture>
-	</edit_damage_block>
+	</spin_damage_block>
 
 	<radio_tab_respawn_options x="10" y="185" width="142" height="76" radio="1">
 		<_options_item entry="mm_net_srv_artefactsnum" group="mm_mp_server"/>
@@ -110,26 +93,23 @@
 	<cap_frag_limit x="269" y="65" width="150" height="23">
 		<text font="letterica16" r="215" g="195" b="170">mm_mp_fraglimit</text>
 	</cap_frag_limit>
-	<edit_frag_limit x="423" y="65" width="45" height="23">
+	<spin_frag_limit x="423" y="65" width="45" height="23">
 		<options_item entry="sv_fraglimit" group="mm_mp_server"/>
-		<texture>ui_linetextSmall_e</texture>
-	</edit_frag_limit>
+	</spin_frag_limit>
 
 	<cap_time_limit x="269" y="90" width="150" height="23">
 		<text font="letterica16" r="215" g="195" b="170">mm_mp_timelimit</text>
 	</cap_time_limit>
-	<edit_time_limit x="423" y="90" width="45" height="23">
+	<spin_time_limit x="423" y="90" width="45" height="23">
 		<options_item entry="sv_timelimit" group="mm_mp_server"/>
-		<texture>ui_linetextSmall_e</texture>
-	</edit_time_limit>
+	</spin_time_limit>
 
 	<cap_artefact_stay x="269" y="115" width="150" height="23">
 		<text font="letterica16" r="215" g="195" b="170">mm_mp_artefstay</text>
 	</cap_artefact_stay>
-	<edit_artefact_stay x="423" y="115" width="45" height="23">
+	<spin_artefact_stay x="423" y="115" width="45" height="23">
 		<options_item entry="sv_artefact_stay_time" group="mm_mp_server"/>
-		<texture>ui_linetextSmall_e</texture>
-	</edit_artefact_stay>
+	</spin_artefact_stay>
 
 	<cap_artefact_num x="269" y="140" width="150" height="23">
 		<text font="letterica16" r="215" g="195" b="170">mm_mp_artefnum</text>
@@ -141,10 +121,9 @@
 	<cap_artefact_delay x="269" y="165" width="150" height="23">
 		<text font="letterica16" r="215" g="195" b="170">mm_mp_artefdelay</text>
 	</cap_artefact_delay>
-	<edit_artefact_delay x="423" y="165" width="45" height="23">
+	<spin_artefact_delay x="423" y="165" width="45" height="23">
 		<options_item entry="sv_artefact_respawn_delta" group="mm_mp_server"/>
-		<texture>ui_linetextSmall_e</texture>
-	</edit_artefact_delay>
+	</spin_artefact_delay>
 
 	<check_pda_hunt x="269" y="200" width="155" height="18">
 		<options_item entry="sv_pda_hunt" group="mm_mp_server"/>
@@ -175,18 +154,16 @@
 	<cap_anomaly_time x="269" y="350" width="150" height="23">
 		<text font="letterica16" r="215" g="195" b="170">mm_mp_anomalytime</text>
 	</cap_anomaly_time>
-	<edit_anomaly_time x="423" y="350" width="45" height="23">
+	<spin_anomaly_time x="423" y="350" width="45" height="23">
 		<options_item entry="sv_anomalies_length" group="mm_mp_server"/>
-		<texture>ui_linetextSmall_d</texture>
-	</edit_anomaly_time>
+	</spin_anomaly_time>
 
 	<cap_warm_up_time x="269" y="375" width="150" height="23">
 		<text font="letterica16" r="215" g="195" b="170">mm_mp_warmuptime</text>
 	</cap_warm_up_time>
-	<edit_warm_up_time x="423" y="375" width="45" height="23" numonly="1">
+	<spin_warm_up_time x="423" y="375" width="45" height="23">
 		<options_item entry="sv_warm_up" group="mm_mp_server"/>
-		<texture>ui_linetextSmall_d</texture>
-	</edit_warm_up_time>
+	</spin_warm_up_time>
 
 
 <!-- 3rd column-->	
@@ -197,11 +174,8 @@
 		<text font="letterica16" r="215" g="195" b="170">mm_mp_rateofchange</text>
 	</cap_rate_of_change>
 
-	<edit_rate_of_change x="671" y="65" width="45" height="23" numonly="1" float="1">
-		<text font="letterica16" r="235" g="219" b="185"/>
-		<!--options_item entry="mm_net_weather_rateofchange" group="mm_mp_server"/-->
-		<texture>ui_linetextSmall_e</texture>
-	</edit_rate_of_change>
+	<spin_rate_of_change x="671" y="65" width="45" height="23">
+	</spin_rate_of_change>
 	
 	<spin_weather x="637" y="40" width="80" height="23">	
 		<text_color>
