@@ -49,7 +49,8 @@ void CUICheckButton::Init(float x, float y, float width, float height){
 	m_pLines->Init(x,y,width,m_background.GetE()->GetStaticItem()->GetRect().height());
 }
 
-void CUICheckButton::InitTexture(){
+void CUICheckButton::InitTexture()
+{
 	CUI3tButton::InitTexture("ui_checker");
 	Frect r = m_background.GetE()->GetStaticItem()->GetOriginalRect();
 	CUI3tButton::SetTextX(r.width());	

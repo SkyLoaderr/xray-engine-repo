@@ -484,8 +484,6 @@ void	CHW::updateWindowProps	(HWND m_hWnd)
 		SetWindowLong			( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_POPUP|WS_VISIBLE) );
 	}
 
-	// Hide the cursor if necessary
-//	if (!strstr(Core.Params, "-dedicated")) 
 #ifndef DEDICATED_SERVER
 		ShowCursor	(FALSE);
 #endif

@@ -288,7 +288,7 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, const char* path, int index, IUITextC
 bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3tButton* pWnd){
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
-	pWnd->SetFrameMode(xml_doc.ReadAttribInt(path, index, "frame_mode", 0) ? true : false);
+//.	pWnd->SetFrameMode(xml_doc.ReadAttribInt(path, index, "frame_mode", 0) ? true : false);
 
 	InitWindow			(xml_doc, path, index, pWnd);
 	InitMultiText		(xml_doc, path, index, pWnd);
@@ -302,7 +302,7 @@ bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3
 	float shadowOffsetX	= xml_doc.ReadAttribFlt(path, index, "shadow_offset_x", 0);
 	float shadowOffsetY	= xml_doc.ReadAttribFlt(path, index, "shadow_offset_y", 0);
 
-	pWnd->SetShadowOffset(shadowOffsetX, shadowOffsetY);
+	pWnd->SetShadowOffset(Fvector2().set(shadowOffsetX, shadowOffsetY));
 
 	// init hint static
 	string256 hint;
@@ -363,10 +363,9 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 	if(text_hint)
 		pWnd->m_hint_text	= CStringTable().translate(text_hint);
 
-	pWnd->SetShadowOffset	(shadowOffsetX, shadowOffsetY);
-	pWnd->SetPushOffsetX	(pushOffsetX);
-	pWnd->SetPushOffsetY	(pushOffsetY);
-	
+	pWnd->SetShadowOffset	(Fvector2().set(shadowOffsetX, shadowOffsetY) );
+	pWnd->SetPushOffset		(Fvector2().set(pushOffsetX,pushOffsetY) );
+
 	return true;
 }
 
@@ -988,44 +987,32 @@ bool CUIXmlInit::InitMultiTexture(CUIXml &xml_doc, LPCSTR path, int index, CUI3t
 	texture = xml_doc.Read(buff, index, NULL);
 	if (texture.size())
 	{
-		if (!pWnd->m_b_frameMode)
-            pWnd->m_background.CreateE()->InitTexture(*texture);
-		else
-			pWnd->m_background_frame.CreateE()->InitTexture(*texture);
-			success = true;
+        pWnd->m_background.CreateE()->InitTexture(*texture);
+		success = true;
 	}
 
 	strconcat(buff, path, ":texture_t");
 	texture = xml_doc.Read(buff, index, NULL);
 	if (texture.size())
 	{
-		if (!pWnd->m_b_frameMode)
-			pWnd->m_background.CreateT()->InitTexture(*texture);
-		else
-			pWnd->m_background_frame.CreateT()->InitTexture(*texture);
-			success = true;
+		pWnd->m_background.CreateT()->InitTexture(*texture);
+		success = true;
 	}
 
 	strconcat(buff, path, ":texture_d");
 	texture = xml_doc.Read(buff, index, NULL);
 	if (texture.size())
 	{
-		if (!pWnd->m_b_frameMode)
-			pWnd->m_background.CreateD()->InitTexture(*texture);
-		else
-			pWnd->m_background_frame.CreateD()->InitTexture(*texture);
-			success = true;
+		pWnd->m_background.CreateD()->InitTexture(*texture);
+		success = true;
 	}
 
 	strconcat(buff, path, ":texture_h");
 	texture = xml_doc.Read(buff, index, NULL);   
 	if (texture.size())
 	{
-		if (!pWnd->m_b_frameMode)
-			pWnd->m_background.CreateH()->InitTexture(*texture);
-		else
-			pWnd->m_background_frame.CreateH()->InitTexture(*texture);
-			success = true;
+		pWnd->m_background.CreateH()->InitTexture(*texture);
+		success = true;
 	}
 
 	if (success)
