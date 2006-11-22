@@ -2173,7 +2173,9 @@ function presentation_task ()
 end
 
 
-
+function ph_on_death_item(actor, npc)
+	 alife():create("wpn_ak74", npc:position(), npc:level_vertex_id(), npc:game_vertex_id())
+end
 
 
 

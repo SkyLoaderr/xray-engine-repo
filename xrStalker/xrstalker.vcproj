@@ -601,6 +601,18 @@
 					RelativePath=".\Config\misc\outfit.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\ph_box_generic.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\ph_box_items_by_communities.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\ph_box_items_by_levels.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\ph_box_items_count.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\postprocess.ltx">
 				</File>
 				<File

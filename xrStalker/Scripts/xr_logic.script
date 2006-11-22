@@ -486,7 +486,7 @@ end
 
 -- st - storage активной схемы
 function issue_event(npc, st, event_fn, ...)
-	if not st.actions then
+	if not st or not st.actions then
 		return
 	end
 
