@@ -546,9 +546,9 @@ function lstats()
 		total_current = total_current + cs
 		total_limit = total_limit + gl
 		
-		printf("%s max=%s current=%s limit=%s", k, cs, gl)
+		printf("%s current=%s limit=%s", k, cs, gl)
 	end
-	printf("TOTAL: max=%s current=%s limit=%s", total_current, total_limit)
+	printf("TOTAL: current=%s limit=%s", total_current, total_limit)
 end
 
 
