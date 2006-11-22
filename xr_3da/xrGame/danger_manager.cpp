@@ -153,7 +153,7 @@ void CDangerManager::remove_links	(const CObject *object)
 		}
 	}
 
-	IGNORED::const_iterator	I = std::find(m_ignored.begin(),m_ignored.end(),object->ID());
+	IGNORED::iterator		I = std::find(m_ignored.begin(),m_ignored.end(),object->ID());
 	if (I != m_ignored.end())
 		m_ignored.erase		(I);
 }
