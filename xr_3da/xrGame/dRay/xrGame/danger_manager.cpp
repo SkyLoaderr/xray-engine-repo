@@ -14,6 +14,7 @@
 #include "memory_manager.h"
 #include "enemy_manager.h"
 #include "actor.h"
+#include "object_broker.h"
 
 struct CDangerPredicate {
 	const CObject	*m_object;
@@ -154,7 +155,7 @@ void CDangerManager::remove_links	(const CObject *object)
 bool CDangerManager::useful			(const CDangerObject &object) const
 {
 	if (object.object() && !object.dependent_object()) {
-		IGNORED::const_iterator	I = std::find(m_ignored.begin(),m_ignored.end(),object.object());
+		IGNORED::const_iterator	I = std::find(m_ignored.begin(),m_ignored.end(),object.object()->ID());
 		if (I != m_ignored.end())
 			return				(false);
 	}
@@ -307,9 +308,19 @@ void CDangerManager::add			(const CDangerObject &object)
 void CDangerManager::ignore			(const CGameObject *object)
 {
 	VERIFY					(object);
-	IGNORED::const_iterator	I = std::find(m_ignored.begin(),m_ignored.end(),object);
+	IGNORED::const_iterator	I = std::find(m_ignored.begin(),m_ignored.end(),object->ID());
 	if (I != m_ignored.end())
 		return;
 
-	m_ignored.push_back		(object);
+	m_ignored.push_back		(object->ID());
+}
+
+void CDangerManager::save			(NET_Packet &packet) const
+{
+	save_data				(m_ignored,packet);
+}
+
+void CDangerManager::load			(IReader &packet)
+{
+	load_data				(m_ignored,packet);
 }

@@ -325,6 +325,7 @@ void CMemoryManager::save							(NET_Packet &packet) const
 	visual().save				(packet);
 	sound().save				(packet);
 	hit().save					(packet);
+	danger().save				(packet);
 }
 
 void CMemoryManager::load							(IReader &packet)
@@ -332,4 +333,5 @@ void CMemoryManager::load							(IReader &packet)
 	visual().load				(packet);
 	sound().load				(packet);
 	hit().load					(packet);
+	danger().load				(packet);
 }
