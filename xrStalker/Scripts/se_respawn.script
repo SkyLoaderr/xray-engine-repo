@@ -532,11 +532,8 @@ function lstats()
 			local tt = v.sectSpawnProps[vv.section]
 			local community_rank = tt.community.."_"..tt.rank
 			if can_spawn[community_rank] == nil then
-				can_spawn[community_rank] = {num = 0, num_r = 0, community = tt.community, rank = tt.rank}
+				can_spawn[community_rank] = {community = tt.community, rank = tt.rank}
 			end
-			can_spawn[community_rank].num = can_spawn[community_rank].num + v.max_count
-			-- Необходимо запомнить еще и матожидание
-			can_spawn[community_rank].num_r = can_spawn[community_rank].num_r + v.max_count*vv.prob/wage
 		end
 	end	
 	-- Выводим все это в общей статистике
@@ -546,14 +543,12 @@ function lstats()
 		local gl = simMaxCount[k]
 		if gl == nil then gl = 0 end
 
-		total_max = total_max + v.num
-		total_prob = total_prob + math.ceil(v.num_r)
 		total_current = total_current + cs
 		total_limit = total_limit + gl
 		
-		printf("%s max=%s max_prob=%s current=%s limit=%s", k, v.num, math.ceil(v.num_r), cs, gl)
+		printf("%s max=%s current=%s limit=%s", k, cs, gl)
 	end
-	printf("TOTAL: max=%s max_prob=%s current=%s limit=%s", total_max, total_prob, total_current, total_limit)
+	printf("TOTAL: max=%s current=%s limit=%s", total_current, total_limit)
 end
 
 
