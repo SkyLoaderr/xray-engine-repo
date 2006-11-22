@@ -3729,6 +3729,9 @@
 						RelativePath=".\scripts\trade_manager.script">
 					</File>
 					<File
+						RelativePath=".\Scripts\xr_box.script">
+					</File>
+					<File
 						RelativePath=".\scripts\xr_conditions.script">
 					</File>
 					<File
