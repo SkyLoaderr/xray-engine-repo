@@ -26,7 +26,7 @@ local simMaxCount = {
 	flesh_weak = 14, flesh_normal = 38, flesh_strong = 22,
 	boar_weak = 52, boar_normal = 38, boar_strong = 27,
 	dog_weak = 53, dog_normal = 126, dog_strong = 130,
-	pseudodog_weak = 59, pseudodog_normal = 80, pseudodog_strong = 40,
+	pseudodog_weak = 59, pseudodog_normal = 50, pseudodog_strong = 30,
 	psy_dog_weak = 15, psy_dog_normal = 15, psy_dog_strong = 15,
 	zombie_weak = 61, zombie_normal = 50, zombie_strong = 35,
 	snork_weak = 50, snork_normal = 61, snork_strong = 15,
