@@ -12,6 +12,7 @@
 #include "Grenade.h"
 #include "phworld.h"
 #include "phactivationshape.h"
+#include "phvalide.h"
 CPhysicsShellHolder::CPhysicsShellHolder()
 {
 	init();
@@ -97,7 +98,19 @@ void CPhysicsShellHolder::correct_spawn_pos()
 	activation_shape.Activate(size,1,1.f,M_PI/8.f);
 	PPhysicsShell()->EnableCollision();
 	Fmatrix	trans;trans.identity();
-	trans.c.sub(activation_shape.Position(),c);
+	Fvector	ap=activation_shape.Position();
+#ifdef DEBUG
+	if(!valid_pos(ap,phBoundaries))
+	{
+		Msg("not valid position	%f,%f,%f",ap.x,ap.y,ap.z);
+		Msg("size	%f,%f,%f",size.x,size.y,size.z);
+		Msg("Object: %s",Name());
+		Msg("Visual: %s",*(cNameVisual()));
+		Msg("Object	pos	%f,%f,%f",Position().x,Position().y,Position().z);
+	}
+#endif
+	
+	trans.c.sub(ap,c);
 	PPhysicsShell()->TransformPosition(trans);
 	PPhysicsShell()->GetGlobalTransformDynamic(&XFORM());
 	activation_shape.Destroy();

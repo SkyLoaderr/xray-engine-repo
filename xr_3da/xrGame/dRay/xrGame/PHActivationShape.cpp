@@ -161,9 +161,12 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 	float	fnum_steps_r=1.f/fnum_steps;
 	float	resolve_depth=0.01f;
 	float	max_vel=2.f*max_depth/fnum_it*fnum_steps_r/fixed_step;
-	
+	if(max_vel>default_l_limit)
+			max_vel=default_l_limit;
 
 	float	max_a_vel=max_rotation/fnum_it*fnum_steps_r/fixed_step;
+	if(max_a_vel>default_w_limit)
+					max_a_vel=default_w_limit;
 	//ph_world->CutVelocity(0.f,0.f);
 	dGeomUserDataSetCallbackData(m_geom,this);
 	dGeomUserDataSetObjectContactCallback(m_geom,ActivateTestDepthCallback)			;
