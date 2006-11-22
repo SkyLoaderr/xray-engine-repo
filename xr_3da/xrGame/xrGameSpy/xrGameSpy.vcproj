@@ -225,8 +225,7 @@
 						WarningLevel="0"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
+					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"
@@ -314,6 +313,7 @@
 						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"
+							Optimization="0"
 							UsePrecompiledHeader="0"/>
 					</FileConfiguration>
 				</File>
