@@ -2776,15 +2776,15 @@ void CCC_RegisterCommands()
 	CMD4(CCC_SV_Float,	"sv_vote_quota"				,	&g_sv_mp_fVoteQuota					, 0.0f,1.0f);
 	CMD4(CCC_SV_Float,	"sv_vote_time"				,	&g_sv_mp_fVoteTime					, 0.5f,10.0f);
 
-	CMD4(CCC_SV_Integer,"sv_forcerespawn"			,	(int*)&g_sv_dm_dwForceRespawn		,	0,60000);
+	CMD4(CCC_SV_Integer,"sv_forcerespawn"			,	(int*)&g_sv_dm_dwForceRespawn		,	0,3600);	//sec
 	CMD4(CCC_SV_Integer,"sv_fraglimit"				,	&g_sv_dm_dwFragLimit				,	0,100);
-	CMD4(CCC_SV_Integer,"sv_timelimit"				,	&g_sv_dm_dwTimeLimit				,	0,3600000);
+	CMD4(CCC_SV_Integer,"sv_timelimit"				,	&g_sv_dm_dwTimeLimit				,	0,180);		//min
 	CMD4(CCC_SV_Integer,"sv_dmgblockindicator"		,	(int*)&g_sv_dm_bDamageBlockIndicators,	0, 1);
-	CMD4(CCC_SV_Integer,"sv_dmgblocktime"			,	(int*)&g_sv_dm_dwDamageBlockTime	,	0, 300000);
+	CMD4(CCC_SV_Integer,"sv_dmgblocktime"			,	(int*)&g_sv_dm_dwDamageBlockTime	,	0, 600);	//sec
 	CMD4(CCC_SV_Integer,"sv_anomalies_enabled"		,	(int*)&g_sv_dm_bAnomaliesEnabled	,	0, 1);
-	CMD4(CCC_SV_Integer,"sv_anomalies_length"		,	(int*)&g_sv_dm_dwAnomalySetLengthTime,	0, 3600000);
+	CMD4(CCC_SV_Integer,"sv_anomalies_length"		,	(int*)&g_sv_dm_dwAnomalySetLengthTime,	0, 180); //min
 	CMD4(CCC_SV_Integer,"sv_pda_hunt"				,	(int*)&g_sv_dm_bPDAHunt				,	0, 1);
-	CMD4(CCC_SV_Integer,"sv_warm_up"				,	(int*)&g_sv_dm_dwWarmUp_MaxTime		,	0, 3600000);
+	CMD4(CCC_SV_Integer,"sv_warm_up"				,	(int*)&g_sv_dm_dwWarmUp_MaxTime		,	0, 3600); //sec
 	CMD4(CCC_SV_Integer,"sv_ignore_money_on_buy"	,	(int*)&g_sv_dm_bDMIgnore_Money_OnBuy,	0, 1);
 
 	CMD4(CCC_SV_Integer,"sv_auto_team_balance"		,	(int*)&g_sv_tdm_bAutoTeamBalance	,	0,1);
@@ -2793,10 +2793,10 @@ void CCC_RegisterCommands()
 	CMD4(CCC_SV_Integer,"sv_friendly_names"			,	(int*)&g_sv_tdm_bFriendlyNames		,	0,1);
 	CMD4(CCC_SV_Float,	"sv_friendlyfire"			,	&g_sv_tdm_fFriendlyFireModifier		,	0.0f,2.0f);
 
-	CMD4(CCC_SV_Integer,"sv_artefact_respawn_delta"	,	(int*)&g_sv_ah_dwArtefactRespawnDelta	,0,1800000);
+	CMD4(CCC_SV_Integer,"sv_artefact_respawn_delta"	,	(int*)&g_sv_ah_dwArtefactRespawnDelta	,0,600);	//sec
 	CMD4(CCC_SV_Integer,"sv_artefacts_count"		,	(int*)&g_sv_ah_dwArtefactsNum			, 1,100);
-	CMD4(CCC_SV_Integer,"sv_artefact_stay_time"		,	(int*)&g_sv_ah_dwArtefactStayTime		, 0,1800000);
-	CMD4(CCC_SV_Integer,"sv_reinforcement_time"		,	(int*)&g_sv_ah_iReinforcementTime		, -1,1800000);
+	CMD4(CCC_SV_Integer,"sv_artefact_stay_time"		,	(int*)&g_sv_ah_dwArtefactStayTime		, 0,180);	//min
+	CMD4(CCC_SV_Integer,"sv_reinforcement_time"		,	(int*)&g_sv_ah_iReinforcementTime		, -1,3600); //sec
 
 	CMD4(CCC_Vector3,		"psp_cam_offset",				&CCameraLook2::m_cam_offset, Fvector().set(-1000,-1000,-1000),Fvector().set(1000,1000,1000));
 }

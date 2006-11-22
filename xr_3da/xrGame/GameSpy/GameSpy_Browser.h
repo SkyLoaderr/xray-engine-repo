@@ -97,7 +97,7 @@ public:
 
 private:
 	//------------------------------- GameSpy_ServerBrowser -----------------------
-	GAMESPY_FN_VAR_DECL(void*, ServerBrowserNew, (const char *queryForGamename, const char *queryFromGamename, const char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, fnSBCallback callback, void *instance));
+	GAMESPY_FN_VAR_DECL(void*, ServerBrowserNew, (const char *queryForGamename, const char *queryFromGamename, const char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, SBBool bLAN_Only, fnSBCallback callback, void *instance));
 	GAMESPY_FN_VAR_DECL(void, ServerBrowserFree, (void* sb));
 	GAMESPY_FN_VAR_DECL(void, ServerBrowserClear, (void* sb));
 	

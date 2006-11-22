@@ -8,8 +8,9 @@ typedef enum
 	sbc_serverupdatefailed, //an attempt to retrieve information about this server, either directly or from the master, failed
 	sbc_serverdeleted, //a server was removed from the list
 	sbc_updatecomplete, //the server query engine is now idle
-	sbc_queryerror		//the master returned an error string for the provided query
-} SBCallbackReason;
+	sbc_queryerror,		//the master returned an error string for the provided query
+	sbc_serverchallengereceived // received ip verification challenge from server
+} SBCallbackReason;	
 
 // these are possible return types for GSIAvailableCheckThink
 typedef enum
@@ -37,21 +38,22 @@ typedef enum
 	sbe_connecterror,  //connection to master server failed
 	sbe_dataerror, //invalid data was returned from master server
 	sbe_allocerror, //memory allocation failed
-	sbe_paramerror //an invalid parameter was passed to a function
-} SBError;	
+	sbe_paramerror,	//an invalid parameter was passed to a function
+	sbe_duplicateupdateerror //server update requested on a server that was already being updated
+} SBError;		
 
 typedef enum {SBFalse, SBTrue} SBBool;
 
 typedef enum {key_server, key_player, key_team} qr2_key_type;
 
-//These constants are returned from qr2_init and the error callback to signal an error condition
 typedef enum 
 {e_qrnoerror, //no error occured
 e_qrwsockerror, //a standard socket call failed (exhausted resources?)
 e_qrbinderror, //the SDK was unable to find an available port to bind on
 e_qrdnserror, //a DNS lookup (for the master server) failed
 e_qrconnerror,  //the server is behind a nat and does not support negotiation
-e_qrnochallengeerror //no challenge was received from the master - either the master is down, or a firewall is blocking UDP
+e_qrnochallengeerror, //no challenge was received from the master - either the master is down, or a firewall is blocking UDP
+qr2_error_t_count
 } qr2_error_t;
 
 //-----------------------------------------------------------------------------------------------

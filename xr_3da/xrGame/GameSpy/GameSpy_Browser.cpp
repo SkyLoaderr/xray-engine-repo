@@ -106,7 +106,7 @@ bool	CGameSpy_Browser::Init(CServerList* pServerList)
 	//-------------------------------------
 	m_QR2.RegisterAdditionalKeys();
 
-	m_pGSBrowser = xrGS_ServerBrowserNew(GAMESPY_GAMENAME, GAMESPY_GAMENAME, m_SecretKey, 0, GAMESPY_MAX_UPDATES, GSA.xrGS_GetQueryVersion(), SBCallback, this);
+	m_pGSBrowser = xrGS_ServerBrowserNew(GAMESPY_GAMENAME, GAMESPY_GAMENAME, m_SecretKey, 0, GAMESPY_MAX_UPDATES, GSA.xrGS_GetQueryVersion(), SBFalse, SBCallback, this);
 	if (!m_pGSBrowser)
 	{
 		Msg("! Unable to init GameSpy Server Browser!");
@@ -153,29 +153,47 @@ void __cdecl SBCallback(void* sb, SBCallbackReason reason, void* server, void *i
 	{
 	case sbc_serveradded : //a server was added to the list, may just have an IP & port at this point
 		{
+#ifdef _DEBUG
 			Msg("sbc_serveradded");
+#endif
 		}break;
 	case sbc_serverupdated : //server information has been updated - either basic or full information is now available about this server
 		{
+#ifdef _DEBUG
 			Msg("sbc_serverupdated");
+#endif
 			pGSBrowser->UpdateServerList();
 		}break;
 	case sbc_serverupdatefailed : //an attempt to retrieve information about this server, either directly or from the master, failed
 		{
+#ifdef _DEBUG
 			Msg("sbc_serverupdatefailed");
+#endif
 			pGSBrowser->OnUpdateFailed(server);
 		}break;
 	case sbc_serverdeleted : //a server was removed from the list
 		{
+#ifdef _DEBUG
 			Msg("sbc_serverdeleted");
+#endif
 		}break;
 	case sbc_updatecomplete : //the server query engine is now idle 
 		{
+#ifdef _DEBUG
 			Msg("sbc_updatecomplete");
+#endif
 		}break;
 	case sbc_queryerror		://the master returned an error string for the provided query
 		{
+#ifdef _DEBUG
 			Msg("sbc_queryerror");
+#endif
+		}break;
+	case sbc_serverchallengereceived:
+		{
+#ifdef _DEBUG
+			Msg("sbc_serverchallengereceived");
+#endif
 		}break;
 	default:
 		{
