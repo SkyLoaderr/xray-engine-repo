@@ -12,9 +12,6 @@ public:
 					CUIButton				();
 	virtual			~CUIButton				();
 
-	virtual void	Init					(LPCSTR tex_name, float x, float y, float width, float height);
-	virtual void	Init					(float x, float y, float width, float height);
-
 	virtual bool	OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual void	OnClick					();
 
@@ -34,21 +31,14 @@ public:
 				 DOWN_PRESS    //сразу при нажатии
 			} E_PRESS_MODE;
 
-	void			SetPressMode			(E_PRESS_MODE ePressMode)	{m_ePressMode = ePressMode;}
-	E_PRESS_MODE	GetPressMode			()							{return m_ePressMode;}
 
 	//заново подготовить состояние
     virtual void	Reset					();
 
-	void			SetPushOffsetX			(float offset_x)			{m_iPushOffsetX = offset_x;}
-	void			SetPushOffsetY			(float offset_y)			{m_iPushOffsetY = offset_y;}
-	float			GetPushOffsetX			()							{return m_iPushOffsetX;}
-	float			GetPushOffsetY			()							{return m_iPushOffsetY;}
 
 	//подсвечен ли текст на кнопке
 	// принудительная подсветка
 	virtual void	HighlightItem			(bool bHighlight)			{m_bCursorOverWindow = bHighlight; }
-	// Цвет подсветки
 
 	//состояния в которых находится кнопка
 	typedef enum{BUTTON_NORMAL, //кнопка никак не затрагивается
@@ -57,44 +47,34 @@ public:
 	} E_BUTTON_STATE;
 
 	// Установка состояния кнопки: утоплена, не утоплена
-	void			SetButtonMode			(E_BUTTON_STATE eBtnState)	{ m_eButtonState = eBtnState; }
-	E_BUTTON_STATE	GetButtonsState			()							{ return m_eButtonState;}
+	void				SetButtonMode			(E_BUTTON_STATE eBtnState)	{ m_eButtonState = eBtnState; }
+	E_BUTTON_STATE		GetButtonsState			()							{ return m_eButtonState;}
 
 	// Поведение кнопки как переключателя реализовано пока только в режиме NORMAL_PRESS
-	void			SetButtonAsSwitch		(bool bAsSwitch)			{ m_bIsSwitch = bAsSwitch; }
+	void				SetButtonAsSwitch		(bool bAsSwitch)			{ m_bIsSwitch = bAsSwitch; }
 
 	// Работа с акселератором
 	// Код акселератора берется из файла dinput.h, из DirectX SDK.
 	// Например: кнопка A - код 0x1E(DIK_A)
-	void			SetAccelerator			(u32 uAccel)				{ m_uAccelerator = uAccel; }
-	const u32		GetAccelerator			() const					{ return m_uAccelerator; }
+	void				SetAccelerator			(u32 uAccel)				{ m_uAccelerator = uAccel; }
+	const u32			GetAccelerator			() const					{ return m_uAccelerator; }
+
+	void				SetPressMode			(E_PRESS_MODE ePressMode)	{m_ePressMode = ePressMode;}
+	E_PRESS_MODE		GetPressMode			()							{return m_ePressMode;}
 	
-	// Смещение подсветки текста относительно самого текста. Может для при дания эффекта тени
-	void			SetShadowOffset			(float offsetX, float offsetY) { m_iShadowOffsetX = offsetX; m_iShadowOffsetY = offsetY; }
+	void				SetPushOffset			(const Fvector2& offset)	{m_PushOffset = offset;}
+	Fvector2			GetPushOffset			()							{return m_PushOffset;}
+	void				SetShadowOffset			(const Fvector2& offset) { m_ShadowOffset = offset; }
 	shared_str			m_hint_text;
 protected:
 	
 	E_BUTTON_STATE		m_eButtonState;
-
 	bool				m_bIsSwitch;
-
-	//если кнопка была только что нажата
 	bool				m_bButtonClicked;
-
-
-	//режим в котором нажимается кнопка
 	E_PRESS_MODE		m_ePressMode;
-
-	//смещение кнопки при нажатии
-	float				m_iPushOffsetX;
-	float				m_iPushOffsetY;
-
-	// код акселератора
+	Fvector2			m_PushOffset;
 	u32					m_uAccelerator;
-
-	// Смещение подсветки текста
-	float				m_iShadowOffsetX;
-	float				m_iShadowOffsetY;
+	Fvector2			m_ShadowOffset;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

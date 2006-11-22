@@ -18,8 +18,7 @@ CUIScrollBox::CUIScrollBox(void)
 	m_bAvailableTexture = true;
 	m_bIsHorizontal = true;
 	
-	SetPushOffsetX(0);
-	SetPushOffsetY(0);
+	SetPushOffset( Fvector2().set(0.0f,0.0f));
 }
 
 CUIScrollBox::~CUIScrollBox(void)

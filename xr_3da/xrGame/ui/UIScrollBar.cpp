@@ -99,9 +99,7 @@ void CUIScrollBar::Init(float x, float y, float length, bool bIsHorizontal, LPCS
 		m_ScrollWorkArea		= _max(0,iFloor(GetHeight()-2*height));
 	}	
 
-	m_ScrollBox->SetPushOffsetX(0);
-	m_ScrollBox->SetPushOffsetY(0);
-
+	m_ScrollBox->SetPushOffset(Fvector2().set(0.0f,0.0f) );
 	UpdateScrollBar();
 }
 
