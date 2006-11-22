@@ -634,7 +634,7 @@ void CVisualMemoryManager::save	(NET_Packet &packet) const
 		packet.w_float			((*I).m_object_params.m_orientation.yaw);
 		packet.w_float			((*I).m_object_params.m_orientation.pitch);
 		packet.w_float			((*I).m_object_params.m_orientation.roll);
-#endif
+#endif // USE_ORIENTATION
 		// self params
 		packet.w_u32			((*I).m_self_params.m_level_vertex_id);
 		packet.w_vec3			((*I).m_self_params.m_position);
@@ -642,7 +642,19 @@ void CVisualMemoryManager::save	(NET_Packet &packet) const
 		packet.w_float			((*I).m_self_params.m_orientation.yaw);
 		packet.w_float			((*I).m_self_params.m_orientation.pitch);
 		packet.w_float			((*I).m_self_params.m_orientation.roll);
-#endif
+#endif // USE_ORIENTATION
+#ifdef USE_LEVEL_TIME
+		VERIFY					(Device.dwTimeGlobal >= (*I).m_level_time);
+		packet.w_u32			(Device.dwTimeGlobal - (*I).m_level_time);
+#endif // USE_LAST_LEVEL_TIME
+#ifdef USE_LEVEL_TIME
+		VERIFY					(Device.dwTimeGlobal >= (*I).m_last_level_time);
+		packet.w_u32			(Device.dwTimeGlobal - (*I).m_last_level_time);
+#endif // USE_LAST_LEVEL_TIME
+#ifdef USE_FIRST_LEVEL_TIME
+		VERIFY					(Device.dwTimeGlobal >= (*I).m_first_level_time);
+		packet.w_u32			(Device.dwTimeGlobal - (*I).m_first_level_time);
+#endif // USE_FIRST_LEVEL_TIME
 	}
 }
 
@@ -681,6 +693,21 @@ void CVisualMemoryManager::load	(IReader &packet)
 		packet.r_float				(object.m_self_params.m_orientation.pitch);
 		packet.r_float				(object.m_self_params.m_orientation.roll);
 #endif
+#ifdef USE_LEVEL_TIME
+		VERIFY						(Device.dwTimeGlobal >= object.m_level_time);
+		object.m_level_time			= packet.r_u32();
+		object.m_level_time			+= Device.dwTimeGlobal;
+#endif // USE_LEVEL_TIME
+#ifdef USE_LAST_LEVEL_TIME
+		VERIFY						(Device.dwTimeGlobal >= object.m_last_level_time);
+		object.m_last_level_time	= packet.r_u32();
+		object.m_last_level_time	+= Device.dwTimeGlobal;
+#endif // USE_LAST_LEVEL_TIME
+#ifdef USE_FIRST_LEVEL_TIME
+		VERIFY						(Device.dwTimeGlobal >= (*I).m_first_level_time);
+		object.m_first_level_time	= packet.r_u32();
+		object.m_first_level_time	+= Device.dwTimeGlobal;
+#endif // USE_FIRST_LEVEL_TIME
 		if (object.m_object) {
 			add_visible_object		(object);
 			continue;
