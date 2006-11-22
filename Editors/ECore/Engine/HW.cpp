@@ -9,6 +9,7 @@
 #pragma warning(default:4995)
 
 #include "HW.h"
+#include "xr_IOconsole.h"
 
 void	fill_vid_mode_list			(CHW* _hw);
 void	free_vid_mode_list			();
@@ -28,14 +29,13 @@ void CHW::Reset		(HWND hwnd)
 	_RELEASE			(pBaseRT);
 
 #ifndef _EDITOR
-//	BOOL	bWindowed		= strstr(Core.Params,"-dedicated") ? TRUE : !psDeviceFlags.is	(rsFullscreen);
 #ifndef DEDICATED_SERVER
 	BOOL	bWindowed		= !psDeviceFlags.is	(rsFullscreen);
 #else
 	BOOL	bWindowed		= TRUE;
 #endif
 
-	selectResolution		(DevPP.BackBufferWidth,DevPP.BackBufferHeight);
+	selectResolution		(DevPP.BackBufferWidth, DevPP.BackBufferHeight, bWindowed);
 	// Windoze
 	DevPP.SwapEffect			= bWindowed?D3DSWAPEFFECT_COPY:D3DSWAPEFFECT_DISCARD;
 	DevPP.Windowed				= bWindowed;
@@ -62,11 +62,11 @@ void CHW::Reset		(HWND hwnd)
 	updateWindowProps	(hwnd);
 #endif
 }
-extern xr_token*							vid_mode_token;
+
+xr_token*				vid_mode_token = NULL;
 
 void CHW::CreateD3D	()
 {
-//	LPCSTR		_name			= (strstr(Core.Params, "-dedicated") && !strstr(Core.Params, "-notextconsole"))?"d3d9-null.dll":"d3d9.dll";
 #ifndef DEDICATED_SERVER
 	LPCSTR		_name			= "d3d9.dll";
 #else
@@ -139,43 +139,46 @@ void	CHW::DestroyDevice	()
 	free_vid_mode_list		();
 #endif
 }
-void	CHW::selectResolution	(u32 &dwWidth, u32 &dwHeight)
+void	CHW::selectResolution	(u32 &dwWidth, u32 &dwHeight, BOOL bWindowed)
 {
-	dwWidth		= psCurrentVidMode[0];
-	dwHeight	= psCurrentVidMode[1];
+	fill_vid_mode_list			(this);
+#ifdef DEDICATED_SERVER
+	dwWidth		= 640;
+	dwHeight	= 480;
+#else
+	if(bWindowed)
+	{
+		dwWidth		= psCurrentVidMode[0];
+		dwHeight	= psCurrentVidMode[1];
+	}else //check
+	{
+		string64					buff;
+		sprintf						(buff,"%dx%d",psCurrentVidMode[0],psCurrentVidMode[1]);
+		
+		if(_ParseItem(buff,vid_mode_token)==u32(-1)) //not found
+		{ //select safe
+			sprintf					(buff,"vid_mode %s",vid_mode_token[0].name);
+			Console->Execute		(buff);
+		}
 
-/*
-	// Select width/height
-	dwWidth	= psCurrentMode;
-	switch (dwWidth) {
-
-	// 16:9 modes
-	case 480:	dwHeight = 272;						break;
-	case 1366:	dwHeight = 768;						break;
-	case 1920:	dwHeight = 1080;					break;
-	case 1920+1:dwWidth	 = 1920; dwHeight = 1200;	break;
-
-	//normal 4:3 modes
-	case 320:	dwHeight = 240;						break;
-	case 512:	dwHeight = 384;						break;
-	case 640:	dwHeight = 480;						break;
-	case 800:	dwHeight = 600;						break;
-	case 1024:	dwHeight = 768;						break;
-	case 1280:	dwHeight = 960;						break;
-	case 1280+1:dwWidth  = 1280; dwHeight = 1024;	break;
-	case 1600-1:dwWidth  = 1600; dwHeight = 900;	break;
-	case 1600:	dwHeight = 1200;					break;
-	default:	dwWidth  = 1024; dwHeight = 768;	break;
+		dwWidth						= psCurrentVidMode[0];
+		dwHeight					= psCurrentVidMode[1];
 	}
-*/
+#endif
+
 }
 
-void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
+void		CHW::CreateDevice		(HWND m_hWnd)
 {
 	CreateD3D				();
 
 	// General - select adapter and device
+#ifdef DEDICATED_SERVER
+	BOOL  bWindowed			= TRUE;
+#else
 	BOOL  bWindowed			= !psDeviceFlags.is(rsFullscreen);
+#endif
+
 	DevAdapter				= D3DADAPTER_DEFAULT;
 	DevT					= Caps.bForceGPU_REF?D3DDEVTYPE_REF:D3DDEVTYPE_HAL;
 
@@ -194,20 +197,6 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	}
 //. #endif
 
-#ifndef _EDITOR
-	// Select width/height
-	selectResolution	(dwWidth,dwHeight);
-#endif
-	//-------------------------------------------
-#ifdef DEDICATED_SERVER
-//	if (strstr(Core.Params,"-dedicated"))
-	{
-		dwWidth = 640;
-		dwHeight = 480;
-		bWindowed = true;
-	}
-#endif
-	//-------------------------------------------
 
 	// Display the name of video board
 	D3DADAPTER_IDENTIFIER9	adapterID;
@@ -266,9 +255,6 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 		fDepth  = selectDepthStencil(fTarget);
 	}
 
-	// 
-	//R_ASSERT				(fTarget != D3DFMT_UNKNOWN);
-	//R_ASSERT				(fDepth  != D3DFMT_UNKNOWN);
 	if ((D3DFMT_UNKNOWN==fTarget) || (D3DFMT_UNKNOWN==fTarget))	{
 		Msg					("Failed to initialize graphics hardware.\nPlease try to restart the game.");
 		FlushLog			();
@@ -276,13 +262,17 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 		TerminateProcess	(GetCurrentProcess(),0);
 	}
 
+
     // Set up the presentation parameters
 	D3DPRESENT_PARAMETERS&	P	= DevPP;
     ZeroMemory				( &P, sizeof(P) );
 
-	// Back buffer
-	P.BackBufferWidth		= dwWidth;
-    P.BackBufferHeight		= dwHeight;
+#ifndef _EDITOR
+	selectResolution	(P.BackBufferWidth, P.BackBufferHeight, bWindowed);
+#endif
+// Back buffer
+//.	P.BackBufferWidth		= dwWidth;
+//. P.BackBufferHeight		= dwHeight;
 	P.BackBufferFormat		= fTarget;
 	P.BackBufferCount		= 1;
 
@@ -302,25 +292,25 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 
 	// Refresh rate
 	P.PresentationInterval	= D3DPRESENT_INTERVAL_IMMEDIATE;
-    if( !bWindowed )		P.FullScreen_RefreshRateInHz	= selectRefresh	(dwWidth,dwHeight,fTarget);
+    if( !bWindowed )		P.FullScreen_RefreshRateInHz	= selectRefresh	(P.BackBufferWidth, P.BackBufferHeight,fTarget);
     else					P.FullScreen_RefreshRateInHz	= D3DPRESENT_RATE_DEFAULT;
 
     // Create the device
 	u32 GPU		= selectGPU();	
 	HRESULT R	= HW.pD3D->CreateDevice(DevAdapter,
-								DevT,
-                                m_hWnd,
-								GPU | D3DCREATE_MULTITHREADED,	//. ? locks at present
-								&P,
-                                &pDevice );
+										DevT,
+										m_hWnd,
+										GPU | D3DCREATE_MULTITHREADED,	//. ? locks at present
+										&P,
+										&pDevice );
 	
 	if (FAILED(R))	{
-		R	= HW.pD3D->CreateDevice(DevAdapter,
-			DevT,
-			m_hWnd,
-			GPU | D3DCREATE_MULTITHREADED,	//. ? locks at present
-			&P,
-			&pDevice );
+		R	= HW.pD3D->CreateDevice(	DevAdapter,
+										DevT,
+										m_hWnd,
+										GPU | D3DCREATE_MULTITHREADED,	//. ? locks at present
+										&P,
+										&pDevice );
 	}
 	if (D3DERR_DEVICELOST==R)	{
 		// Fatal error! Cannot create rendering device AT STARTUP !!!
@@ -358,8 +348,8 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	Msg		("*     Texture memory: %d M",		memory/(1024*1024));
 	Msg		("*          DDI-level: %2.1f",		float(D3DXGetDriverLevel(pDevice))/100.f);
 #ifndef _EDITOR
-	updateWindowProps	(m_hWnd);
-	fill_vid_mode_list			(this);
+	updateWindowProps							(m_hWnd);
+	fill_vid_mode_list							(this);
 #endif
 }
 
@@ -510,6 +500,7 @@ void free_vid_mode_list()
 
 void	fill_vid_mode_list			(CHW* _hw)
 {
+	if(vid_mode_token != NULL)		return;
 	xr_vector<LPCSTR>	_tmp;
 	u32 cnt = _hw->pD3D->GetAdapterModeCount	(_hw->DevAdapter, _hw->Caps.fTarget);
 

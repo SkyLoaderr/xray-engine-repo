@@ -35,12 +35,12 @@ public:
 
 	void					CreateD3D				();
 	void					DestroyD3D				();
-	void					CreateDevice			(HWND hw,u32 &dwWidth,u32 &dwHeight);
+	void					CreateDevice			(HWND hw);
 	void					DestroyDevice			();
 
 	void					Reset					(HWND hw);
 
-	void					selectResolution		(u32 &dwWidth, u32 &dwHeight);
+	void					selectResolution		(u32 &dwWidth, u32 &dwHeight, BOOL bWindowed);
 	D3DFORMAT				selectDepthStencil		(D3DFORMAT);
 	u32						selectPresentInterval	();
 	u32						selectGPU				();
