@@ -14,7 +14,7 @@ XRGAMESPY_API GSIACResult xrGS_GSIAvailableCheckThink()
 	return GSIAvailableCheckThink();
 }
 
-XRGAMESPY_API void xrGS_msleep(unsigned long msec)
+XRGAMESPY_API void xrGS_msleep(gsi_time msec)
 {
 	msleep(msec);
 }
