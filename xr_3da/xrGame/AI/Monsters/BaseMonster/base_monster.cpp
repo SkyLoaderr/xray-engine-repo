@@ -206,7 +206,10 @@ float CBaseMonster::evaluate(const CItemManager *manager, const CGameObject *obj
 void CBaseMonster::ChangeTeam(int team, int squad, int group)
 {
 	if ((team == g_Team()) && (squad == g_Squad()) && (group == g_Group())) return;
-	VERIFY2(g_Alive(), "Try to change team of a dead object");
+	if (!g_Alive()) {
+		ai().script_engine().print_stack	();
+		VERIFY2								(g_Alive(),"you are trying to change team of a dead entity");
+	}
 
 	// remove from current team
 	monster_squad().remove_member	((u8)g_Team(),(u8)g_Squad(),(u8)g_Group(),this);
