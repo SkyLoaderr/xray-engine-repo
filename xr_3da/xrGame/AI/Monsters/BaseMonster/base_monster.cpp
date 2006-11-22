@@ -40,6 +40,8 @@
 #include "../ai_monster_squad.h"
 #include "../../../actor.h"
 #include "../../../ai_object_location.h"
+#include "../../../ai_space.h"
+#include "../../../script_engine.h"
 
 CBaseMonster::CBaseMonster()
 {
