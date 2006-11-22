@@ -27,7 +27,7 @@ public:
 	BOOL														val_bRecordMP;		// record nearest for multi-pass
 	R_feedback*													val_feedback;		// feedback for geometry being rendered
 	u32															val_feedback_breakp;// breakpoint
-	xr_vector<Fbox3,render_alloc<Fbox3> >*					val_recorder;		// coarse structure recorder
+	xr_vector<Fbox3,render_alloc<Fbox3> >*						val_recorder;		// coarse structure recorder
 	u32															phase;
 	u32															marker;
 	bool														pmask		[2]		;

@@ -55,7 +55,7 @@
 	typedef doug_lea_allocator		render_allocator;
 
 #else // USE_DOUG_LEA_ALLOCATOR_FOR_RENDER
-#	define render_alloc				xr_alloc
+#	define render_alloc				xalloc
 	typedef xr_allocator			render_allocator;
 #endif // USE_DOUG_LEA_ALLOCATOR_FOR_RENDER
 
