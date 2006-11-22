@@ -40,6 +40,8 @@ protected:
 	static	int					vscript_log					(ScriptStorage::ELuaMessageType tLuaMessageType, LPCSTR caFormat, va_list marker);
 			bool				parse_namespace				(LPCSTR caNamespaceName, LPSTR b, LPSTR c);
 			bool				do_file						(LPCSTR	caScriptName, LPCSTR caNameSpaceName);
+
+public:
 #ifdef DEBUG
 			void				print_stack					();
 #endif
