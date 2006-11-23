@@ -129,4 +129,28 @@
 		<text>Бонус за ПДА</text>
 	</string>
 	
+	<string id="ui_st_time_remains">
+		<text>Осталось</text>
+	</string>
+
+	<string id="ui_st_months">
+		<text>мес.</text>
+	</string>
+	
+	<string id="ui_st_days">
+		<text>дн.</text>
+	</string>
+	
+	<string id="ui_st_hours">
+		<text>час.</text>
+	</string>
+	
+	<string id="ui_st_mins">
+		<text>мин.</text>
+	</string>
+	
+	<string id="ui_st_secs">
+		<text>сек.</text>
+	</string>	
+	
 </string_table>
