@@ -24,6 +24,7 @@ protected:
 	Fvector2		m_prev_hp;
 	bool			m_switched_on;
 	ref_light		light_render;
+	ref_light		light_omni;
 	ref_glow		glow_render;
 	Fvector			m_focus;
 	float			m_range;
