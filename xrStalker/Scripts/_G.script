@@ -1216,4 +1216,5 @@ end
 
 function start_game_callback	()
 	printf	("start_game_callback called")
+	task_manager.clear_task_manager()
 end

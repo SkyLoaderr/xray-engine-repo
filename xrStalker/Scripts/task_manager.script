@@ -56,6 +56,9 @@ local return_task_by_type = {
 
 class "CRandomTask"
 function CRandomTask:__init()
+
+	printf("^^^ INIT")
+
 	--' На конструкторе вычитываем LTX и создаем заготовки квестов.
 	self.task_ini = ini_file("misc\\task_manager.ltx")
 	self.task_phrase_id = 100
@@ -124,6 +127,8 @@ function CRandomTask:__init()
 		if self.task_ini:line_exist(id, "condlist") then
 			self.task_info[id].condlist = xr_logic.parse_condlist(db.actor, "task_manager", "condlist", self.task_ini:r_string(id, "condlist"))
 		end		
+	
+		self.task_info[id].need_return = utils.cfg_get_bool(self.task_ini, id, "need_return", nil, false, true)
 
 		self.task_info[id].init_phrase_id = self:get_id()
 		self.task_info[id].desc_phrase_id = self:get_id()
@@ -168,6 +173,58 @@ function CRandomTask:__init()
 		if v.init_condition ~= nil then
 			table.insert(self.task_id_self_inited, k)
 		end
+	end
+end
+--' Сохранение
+function CRandomTask:save(p)
+	printf("^^^ SAVE")
+	--' Считаем количество записей
+	local i = 0
+	for k,v in pairs(self.task_info) do
+		i = i + 1
+	end
+	p:w_u8(i)
+	for k,v in pairs(self.task_info) do
+		p:w_stringZ(k) 
+		p:w_bool(v.enabled)	
+		p:w_bool(v.enabled_props)
+		p:w_stringZ(v.status)
+		p:w_u32(v.selected_target or -1)
+	end
+
+	--' Та же самая процедура с активными тасками
+	i = 0
+	for k,v in pairs(self.active_task_by_type) do
+		i = i + 1
+	end
+	p:w_u8(i)
+	for k,v in pairs(self.active_task_by_type) do
+		p:w_stringZ(k) 
+		p:w_stringZ(v)
+	end
+end
+--' Загрузка
+function CRandomTask:load(p)
+	printf("^^^ LOAD")
+	--' Считаем количество записей
+	local i = p:r_u8()
+	for k = 1,i do
+		local id = p:r_stringZ() 
+		self.task_info[id].enabled = p:r_bool()
+		self.task_info[id].enabled_props = p:r_bool()
+		self.task_info[id].status = p:r_stringZ()
+
+		local selected_target = p:r_u32()
+		if selected_target ~= -1 then
+			self.task_info[id].selected_target = selected_target
+		end
+	end
+
+	--' Та же самая процедура с активными тасками
+	local i = p:r_u8()	
+	for k = 1,i do
+		local id = p:r_stringZ()
+		self.active_task_by_type[id] = p:r_stringZ()	
 	end
 end
 --' Генератор уникальных ID для фраз
@@ -228,15 +285,7 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 	task:set_title(task_desc.type)
 	
 	local objective = SGameTaskObjective(task,1)
-	local name = task_desc.name
-	if task_desc.time ~= nil then
-		self.task_info[self.task_id_by_yes_phrase_id[p2]].eta = game.CTime()
-		self.task_info[self.task_id_by_yes_phrase_id[p2]].eta:setHMS(0,0,task_desc.time)
-		self.task_info[self.task_id_by_yes_phrase_id[p2]].eta:add(game.get_game_time())
-
-		name = name .. " (" .. self.task_info[self.task_id_by_yes_phrase_id[p2]].eta:timeToString(game.CTime.TimeToSeconds) .. ")"
-	end	
-	objective:set_description(name)
+	objective:set_description(task_desc.name)
 	objective:set_article_id(task_desc.description)
 
 	--' Выбираем текущую цель квеста
@@ -268,16 +317,21 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 	objective:add_complete_func("task_manager.task_complete")
 	task:add_objective(objective)
 
-	objective = SGameTaskObjective(task,2)
-	objective:set_description(return_task_by_type[task_desc.type])
+	if task_desc.need_return then
+		objective = SGameTaskObjective(task,2)
+		objective:set_description(return_task_by_type[task_desc.type])
 
-	objective:set_map_hint(return_task_by_type[task_desc.type])
-	objective:set_map_location("blue_location")
-	objective:set_object_id(alife():story_object(tonumber(story_by_parent[task_desc.parent])).id)
-	
-	task:add_objective(objective)
-	
-	db.actor:give_task(task,false)
+		objective:set_map_hint(return_task_by_type[task_desc.type])
+		objective:set_map_location("blue_location")
+		objective:set_object_id(alife():story_object(tonumber(story_by_parent[task_desc.parent])).id)
+		task:add_objective(objective)
+	end
+
+	local time = 0
+	if task_desc.time ~= nil then
+		time = task_desc.time * 1000
+	end
+	db.actor:give_task(task,time,false)
 
 	--' дизаблим все остальные задания данного типа, так как игрок не может одновременно обладать двумя заданиями одного типа.
 	self.task_info[self.task_id_by_yes_phrase_id[p2]].status = "selected"
@@ -309,6 +363,9 @@ function CRandomTask:task_complete(p1, p2)
 
 	if p2 == 0 then
 		local self_task = self.task_info[self.active_task_by_type[p1]]
+		if not self_task.need_return and self_task.status == "completed" then
+			return true
+		end
 		if self_task.status == "rewarded" then
 			return true
 		end
@@ -753,4 +810,15 @@ end
 
 function actor_update()
 	get_random_task():actor_update()
+end
+
+
+function save(p)
+	get_random_task():save(p)
+end
+function load(p)
+	get_random_task():load(p)
+end
+function clear_task_manager()
+	random_task	 = nil
 end
