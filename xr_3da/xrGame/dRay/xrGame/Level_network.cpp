@@ -9,7 +9,7 @@
 #include "MainMenu.h"
 #include "space_restriction_manager.h"
 
-const int NET_ObjectsPerPacketInSave	= NET_PacketSizeLimit/1000;
+const int NET_ObjectsPerPacketInSave	= NET_PacketSizeLimit/2000;
 extern bool	g_b_ClearGameCaptions;
 
 void CLevel::remove_objects	()
