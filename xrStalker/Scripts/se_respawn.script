@@ -416,7 +416,7 @@ function se_respawn:remove_spawned(id)
 end
 -- Обновление респавнера. В зависимости от настроек обновляется либо только в офлайне, либо и там и там.
 function se_respawn:execute()
-	printf("RESPAWN: [%s] se_respawn execute", tostring(self:name()))
+--	printf("RESPAWN: [%s] se_respawn execute", tostring(self:name()))
 	
 	--' Выходим, если у нас установлен событийный спавн.
 	if self.idle_spawn_min == -1 then
