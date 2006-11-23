@@ -38,7 +38,7 @@ void CKinematics::CalculateBones			(BOOL bForceExact)
 	if (UCalc_Visibox>=psSkeletonUpdate) 
 	{
 		// mark
-		UCalc_Visibox		= -(::Random.randI(16));
+		UCalc_Visibox		= -(::Random.randI(psSkeletonUpdate-1));
 
 		// the update itself
 		Fbox	Box; Box.invalidate();
@@ -63,8 +63,10 @@ void CKinematics::CalculateBones			(BOOL bForceExact)
 		}
 
 		// previous frame we have updated box - update sphere
-		vis.box.min.average	(Box.min);
-		vis.box.max.average	(Box.max);
+//.		vis.box.min.average	(Box.min);
+//.		vis.box.max.average	(Box.max);
+		vis.box.min			= (Box.min);
+		vis.box.max			= (Box.max);
 		vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 	}
 

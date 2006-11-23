@@ -466,16 +466,15 @@ float	CActor::GetLookFactor()
 		return m_input_external_handler->mouse_scale_factor();
 
 	
-	float factor = 1.f;
-	//  [7/19/2005]
-	PIItem pItem = (inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
-		inventory().ItemFromSlot(inventory().GetActiveSlot()) : NULL);
+	float factor	= 1.f;
+
+	PIItem pItem	= inventory().ActiveItem();
+
 	if (pItem)
-	{
 		factor *= pItem->GetControlInertionFactor();
-	}
-	//  [7/19/2005]
+
 	VERIFY(!fis_zero(factor));
+
 	return factor;
 }
 
