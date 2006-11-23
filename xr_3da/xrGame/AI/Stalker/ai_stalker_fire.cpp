@@ -207,12 +207,19 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 		if (entity_alive && (tfGetRelationType(entity_alive) != ALife::eRelationTypeFriend) && !wounded())
 			sound().play	(eStalkerSoundInjuringByFriend);
 
+		int					weapon_type = -1;
+		if (best_weapon())
+			weapon_type		= best_weapon()->object().ef_weapon_type();
+
 		if	(
 				!wounded() &&
 				!critically_wounded() &&
 				!update_critical_wounded(HDS.boneID,HDS.power) &&
 				animation().script_animations().empty() &&
-				(pHDS->bone() != BI_NONE)
+				(pHDS->bone() != BI_NONE) &&
+				(weapon_type != 5) && // exclude pistols
+				(weapon_type != 7) && // exclude shotguns
+				(weapon_type != 9)	  // exclude rocket launchers (WARNING: this code should be revisited)
 			)
 		{
 			Fvector					D;
