@@ -254,16 +254,13 @@ void CHitMemoryManager::save	(NET_Packet &packet) const
 		packet.w_float			((*I).m_self_params.m_orientation.roll);
 #endif // USE_ORIENTATION
 #ifdef USE_LEVEL_TIME
-		VERIFY					(Device.dwTimeGlobal >= (*I).m_level_time);
-		packet.w_u32			(Device.dwTimeGlobal - (*I).m_level_time);
+		packet.w_u32			((Device.dwTimeGlobal >= (*I).m_level_time) ? (Device.dwTimeGlobal - (*I).m_level_time) : 0);
 #endif // USE_LAST_LEVEL_TIME
 #ifdef USE_LEVEL_TIME
-		VERIFY					(Device.dwTimeGlobal >= (*I).m_last_level_time);
-		packet.w_u32			(Device.dwTimeGlobal - (*I).m_last_level_time);
+		packet.w_u32			((Device.dwTimeGlobal >= (*I).m_level_time) ? (Device.dwTimeGlobal - (*I).m_last_level_time) : 0);
 #endif // USE_LAST_LEVEL_TIME
 #ifdef USE_FIRST_LEVEL_TIME
-		VERIFY					(Device.dwTimeGlobal >= (*I).m_first_level_time);
-		packet.w_u32			(Device.dwTimeGlobal - (*I).m_first_level_time);
+		packet.w_u32			((Device.dwTimeGlobal >= (*I).m_level_time) ? (Device.dwTimeGlobal - (*I).m_first_level_time) : 0);
 #endif // USE_FIRST_LEVEL_TIME
 	}
 }
