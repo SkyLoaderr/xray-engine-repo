@@ -374,14 +374,16 @@ function CRandomTask:task_callback(p1, p2, state)
 		return
 	end
 
-	self.task_info[self.active_task_by_type[p1]].status = "normal"
-	self.active_task_by_type[p1] = nil	
 
---'	if state == task.completed then
+	if state == task.completed then
+		self.task_info[self.active_task_by_type[p1]].status = "normal"
+		self.active_task_by_type[p1] = nil	
 
---'	elseif state == task.fail then
+	elseif state == task.fail then
+		self.task_info[self.active_task_by_type[p1]].status = "normal"
+		self.active_task_by_type[p1] = nil	
 
---'	end
+	end
 end
 --' Выводит список доступных квестов
 function CRandomTask:action_task_show(npc, actor)
@@ -469,7 +471,6 @@ end
 --' Проверяем можем ли мы сейчас выдать какой либо самоинициализующийся таск
 function CRandomTask:actor_update()
 	for k,v in pairs(self.task_id_self_inited) do
-		printf("^^^ %s", tostring(xr_logic.pick_section_from_condlist(db.actor, db.actor, self.task_info[v].init_condition)))
 		if self.task_info[v].status == "normal" then
 			if xr_logic.pick_section_from_condlist(db.actor, db.actor, self.task_info[v].init_condition) ~= nil then
 				--' Нужно автоматически выдать квест

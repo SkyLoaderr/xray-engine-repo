@@ -56,6 +56,7 @@ ecolog_kill_stalker_1
 
 
 ;--------Dolg------------------------
+dolg_defend_kamp_1
 ;----------Eliminate Camp----
 dolg_eliminate_kamp_1
 dolg_eliminate_kamp_2
@@ -628,6 +629,20 @@ reward_rank = 4
 
 
 
+[dolg_defend_kamp_1]
+type = defend_lager
+community = actor
+text = dolg_eliminate_kamp_1_text
+time = 5
+init_condition = {=gulag_state(test_terrain_boar:1)}
+description = dolg_eliminate_kamp_1_descr
+parent = dolg
+target = test_terrain
+reward_money = 4000
+reward_reputation = +15
+reward_relation = dolg, 60
+reward_rank = 4
+reward_item = bread
 
 
 [dolg_eliminate_kamp_1]
@@ -802,7 +817,6 @@ reward_money = 5000
 reward_reputation = +30
 reward_rank = 5
 reward_relation = dolg, 130
-
 
 
 

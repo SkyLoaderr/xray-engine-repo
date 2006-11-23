@@ -179,6 +179,14 @@ function enemy_gulag(actor, npc, p)
     return false
 end
 
+function gulag_state(actor, npc, p)
+	if xr_gulag.getGulagState(p[1]) == p[2] then
+		return true
+	end
+	return false
+end
+
+
 -- ѕроверка того что удар был нанесен кем-то из npc указанных в списке.
 -- ѕараметры это story_id персонажей. ћожно задавать несколько story_id.
 function hitted_by(actor, npc, p)

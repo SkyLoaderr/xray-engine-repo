@@ -31,6 +31,16 @@
 		</objective>
 	</game_task>
 
+	<game_task id="defend_lager">
+		<title>title</title>
+		<objective>
+			<text>objective</text>
+			<icon>ui_icons_task_eliminate_lager</icon>
+			<function_complete>task_manager.task_complete</function_complete>
+			<function_fail>task_manager.task_fail</function_fail>
+		</objective>
+	</game_task>
+
 	<game_task id="artefact">
 		<title>title</title>
 		<objective>
