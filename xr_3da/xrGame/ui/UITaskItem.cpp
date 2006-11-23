@@ -70,26 +70,23 @@ void CUITaskRootItem::Init			()
 
 	m_taskImage			= xr_new<CUIStatic>();		m_taskImage->SetAutoDelete(true);			AttachChild(m_taskImage);
 	m_captionStatic		= xr_new<CUIStatic>();		m_captionStatic->SetAutoDelete(true);		AttachChild(m_captionStatic);
-//.	m_showLocationBtn	= xr_new<CUI3tButton>();	m_showLocationBtn->SetAutoDelete(true);		AttachChild(m_showLocationBtn);
+	m_remTimeStatic		= xr_new<CUIStatic>();		m_remTimeStatic->SetAutoDelete(true);		AttachChild(m_remTimeStatic);
+
 	m_switchDescriptionBtn= xr_new<CUI3tButton>();	m_switchDescriptionBtn->SetAutoDelete(true); AttachChild(m_switchDescriptionBtn);
 	m_captionTime		= xr_new<CUI3tButton>();	m_captionTime->SetAutoDelete(true);			AttachChild(m_captionTime);
-
-//.	m_showLocationBtn->SetWindowName("m_showLocationBtn");
-//.	Register(m_showLocationBtn);
 	m_switchDescriptionBtn->SetWindowName("m_switchDescriptionBtn");
 	Register(m_switchDescriptionBtn);
-//.	AddCallback						("m_showLocationBtn",BUTTON_CLICKED,boost::bind(&CUITaskRootItem::OnShowLocationClicked,this));
 	AddCallback						("m_switchDescriptionBtn",BUTTON_CLICKED,boost::bind(&CUITaskRootItem::OnSwitchDescriptionClicked,this));
 
 	CUIXmlInit xml_init;
 	CUIXml&						uiXml = m_EventsWnd->m_ui_task_item_xml;
 	xml_init.InitWindow			(uiXml,"task_root_item",0,this);
 
-	xml_init.InitStatic			(uiXml,"task_root_item:image",0,m_taskImage);
-	xml_init.InitStatic			(uiXml,"task_root_item:caption",0,m_captionStatic);
-	xml_init.InitStatic			(uiXml,"task_root_item:caption_time",0,m_captionTime);
+	xml_init.InitStatic			(uiXml,	"task_root_item:image",			0,	m_taskImage);
+	xml_init.InitStatic			(uiXml,	"task_root_item:caption",		0,	m_captionStatic);
+	xml_init.InitStatic			(uiXml,	"task_root_item:caption_time",	0,	m_captionTime);
+	xml_init.InitStatic			(uiXml,	"task_root_item:rem_time",		0,	m_remTimeStatic);
 	
-//.	xml_init.Init3tButton		(uiXml,"task_root_item:location_btn",0,m_showLocationBtn);
 	xml_init.Init3tButton		(uiXml,"task_root_item:switch_description_btn",0,m_switchDescriptionBtn);
 }
 
@@ -121,7 +118,6 @@ void CUITaskRootItem::SetGameTask(CGameTask* gt, u16 obj_idx)
 
 	float h = _max	(m_taskImage->GetWndPos().y+m_taskImage->GetHeight(),m_captionTime->GetWndPos().y+m_captionTime->GetHeight());
 	h	= _max(h,m_switchDescriptionBtn->GetWndPos().y+m_switchDescriptionBtn->GetHeight());
-//.	h	= _max(h,m_showLocationBtn->GetWndPos().y+m_showLocationBtn->GetHeight());
 	SetHeight						(h);
 	
 	
@@ -131,22 +127,14 @@ void CUITaskRootItem::SetGameTask(CGameTask* gt, u16 obj_idx)
 	else
 		m_switchDescriptionBtn->InitTexture	("ui_icons_newPDA_showmap");
 
+	m_remTimeStatic->Show			(	GameTask()->Objective(0).TaskState()==eTaskStateInProgress && 
+										(GameTask()->m_ReceiveTime!=GameTask()->m_TimeToComplete) );
 }
 
 void CUITaskRootItem::Update		()
 {
 	inherited::Update				();
-/*
-	bool bHasLocation				= m_GameTask->HasMapLocations();
-	bool bHasLocation				= Actor()->GameTaskManager().ActiveTask() == m_GameTask;
-	m_showLocationBtn->Show			(m_EventsWnd->ItemHasDescription(this));
 
-
-	if(bHasLocation){
-		bool bShown						= m_GameTask->ShownLocations();
-		m_showLocationBtn->SetButtonMode(bShown ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
-	}
-*/
 	if( m_curr_descr_mode	!= m_EventsWnd->GetDescriptionMode() ){
 		m_curr_descr_mode				= m_EventsWnd->GetDescriptionMode();
 		if(m_curr_descr_mode)
@@ -156,18 +144,21 @@ void CUITaskRootItem::Update		()
 	}
 
 	m_switchDescriptionBtn->SetButtonMode(m_EventsWnd->GetDescriptionMode() ? CUIButton::BUTTON_NORMAL : CUIButton::BUTTON_PUSHED);
+
+	if(m_remTimeStatic->IsShown())
+	{
+		string512									buff, buff2;
+		InventoryUtilities::GetTimePeriodAsString	(buff, sizeof(buff), Level().GetGameTime(), GameTask()->m_TimeToComplete);
+		sprintf										(buff2,"%s %s", *CStringTable().translate("ui_st_time_remains"), buff);
+		m_remTimeStatic->SetText					(buff2);
+	
+	}
 }
 
 bool CUITaskRootItem::OnDbClick	()
 {
 	return true;
 }
-
-//.void CUITaskRootItem::OnShowLocationClicked	()
-//.{
-//.	bool bPushed = m_showLocationBtn->GetCheck	();
-//.	m_GameTask->ShowLocations					(bPushed);
-//.}
 
 void CUITaskRootItem::OnSwitchDescriptionClicked	()
 {
@@ -255,25 +246,14 @@ void CUITaskSubItem::Update					()
 {
 	inherited::Update						();
 	SGameTaskObjective	*obj				= &m_GameTask->m_Objectives[m_TaskObjectiveIdx];
-//.	CMapLocation* ml						= obj->LinkedMapLocation();
-//.	bool bHasLocation						= (NULL != ml);
-
-//.	m_showPointerBtn->Show					(bHasLocation&&ml->SpotEnabled());
 	bool bIsActive							= (Actor()->GameTaskManager().ActiveObjective() == obj); 
 	m_ActiveObjectiveStatic->Show			(bIsActive);
 	m_showDescriptionBtn->Show				(m_EventsWnd->ItemHasDescription(this));
 
-//.	bool bIsMapMode							= m_EventsWnd->GetDescriptionMode(); 
-//.	m_showDescriptionBtn->Show				(!bIsMapMode||(bIsMapMode&&bHasLocation&&ml->SpotEnabled()) );
-//.	if(bHasLocation){
-//.		bool bPointer						= (Actor()->GameTaskManager().ActiveObjective() == obj);
-//.		m_showPointerBtn->SetButtonMode		(bPointer ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
-//.	}
 }
 
 bool CUITaskSubItem::OnDbClick()
 {
-//.	m_GameTask->HighlightSpotOnMap				(m_TaskObjectiveIdx,true);
 	SGameTaskObjective	*obj					= &m_GameTask->m_Objectives[m_TaskObjectiveIdx];
 	if(obj->TaskState()!=eTaskStateInProgress)	return true;
 
@@ -284,7 +264,6 @@ bool CUITaskSubItem::OnDbClick()
 
 void CUITaskSubItem::OnActiveObjectiveClicked()
 {
-//.	Actor()->GameTaskManager().SetActiveTask((bPushed)?m_GameTask->m_ID:"", m_TaskObjectiveIdx);
 	m_EventsWnd->ShowDescription			(GameTask(), ObjectiveIdx());
 }
 
@@ -297,6 +276,7 @@ void CUITaskSubItem::MarkSelected (bool b)
 {
 	m_showDescriptionBtn->SetButtonMode		(b ? CUIButton::BUTTON_PUSHED : CUIButton::BUTTON_NORMAL);
 }
+
 /*
 CUIUserTaskItem::CUIUserTaskItem(CUIEventsWnd* w)
 :inherited(w)

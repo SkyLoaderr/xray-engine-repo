@@ -40,7 +40,7 @@ protected:
 	CUIStatic*		m_taskImage;
 	CUIStatic*		m_captionStatic;
 	CUIStatic*		m_captionTime;
-//.	CUI3tButton*	m_showLocationBtn;
+	CUIStatic*		m_remTimeStatic;
 	CUI3tButton*	m_switchDescriptionBtn;
 	bool			m_curr_descr_mode;
 	void			Init					();
@@ -49,7 +49,6 @@ public:
 	virtual			~CUITaskRootItem		();
 	virtual void	Update					();
 	virtual void	SetGameTask				(CGameTask* gt, u16 obj_idx);
-//.			void	OnShowLocationClicked	();
 			void	OnSwitchDescriptionClicked();
 
 	virtual void	MarkSelected			(bool b);

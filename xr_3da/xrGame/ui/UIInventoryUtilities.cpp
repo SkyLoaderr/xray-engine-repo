@@ -1,9 +1,3 @@
-// UIInventoryUtilities.cpp:  функции утилиты для работы с
-// различными окнами инвентаря 
-//////////////////////////////////////////////////////////////////////
-
-
-
 #include "stdafx.h"
 #include "UIInventoryUtilities.h"
 #include "../WeaponAmmo.h"
@@ -30,7 +24,7 @@
 const LPCSTR relationsLtxSection	= "game_relations";
 const LPCSTR ratingField			= "rating_names";
 const LPCSTR reputationgField		= "reputation_names";
-const LPCSTR goodwillField		= "goodwill_names";
+const LPCSTR goodwillField			= "goodwill_names";
 
 ref_shader	g_BuyMenuShader			= NULL;
 ref_shader	g_EquipmentIconsShader	= NULL;
@@ -47,7 +41,6 @@ CharInfoStrings		*charInfoReputationStrings	= NULL;
 CharInfoStrings		*charInfoRankStrings		= NULL;
 CharInfoStrings		*charInfoGoodwillStrings	= NULL;
 
-//////////////////////////////////////////////////////////////////////////
 
 void InventoryUtilities::DestroyShaders()
 {
@@ -85,7 +78,6 @@ bool InventoryUtilities::GreaterRoomInRuck(PIItem item1, PIItem item2)
    	return					false;
 }
 
-//////////////////////////////////////////////////////////////////////////
 bool InventoryUtilities::FreeRoom_inBelt	(TIItemContainer& item_list, PIItem _item, int width, int height)
 {
 	bool*				ruck_room	= (bool*)alloca(width*height);
@@ -161,8 +153,6 @@ bool InventoryUtilities::FreeRoom_inBelt	(TIItemContainer& item_list, PIItem _it
 	return true;
 }
 
-/////////////////////////////////////////////////////////////
-
 ref_shader& InventoryUtilities::GetBuyMenuShader()
 {	
 	if(!g_BuyMenuShader)
@@ -172,7 +162,6 @@ ref_shader& InventoryUtilities::GetBuyMenuShader()
 
 	return g_BuyMenuShader;
 }
-//////////////////////////////////////////////////////////////////////////
 
 ref_shader& InventoryUtilities::GetEquipmentIconsShader()
 {	
@@ -184,8 +173,6 @@ ref_shader& InventoryUtilities::GetEquipmentIconsShader()
 	return g_EquipmentIconsShader;
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 ref_shader& InventoryUtilities::GetCharIconsShader()
 {
 	if(!g_CharIconsShader)
@@ -196,8 +183,6 @@ ref_shader& InventoryUtilities::GetCharIconsShader()
 	return g_CharIconsShader;
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 ref_shader&  InventoryUtilities::GetMapIconsShader()
 {
 	if(!g_MapIconsShader)
@@ -207,10 +192,6 @@ ref_shader&  InventoryUtilities::GetMapIconsShader()
 
 	return g_MapIconsShader;
 }
-
-////////////////////////////////////////////////////////////////////////////////
-// shader на иконки персонажей в мультиплеере
-//////////////////////////////////////////////////////////////////////////
 
 ref_shader&	InventoryUtilities::GetMPCharIconsShader()
 {
@@ -271,8 +252,6 @@ const shared_str InventoryUtilities::GetTimeAsString(ALife::_TIME_ID time, ETime
 	return bufTime;
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 const shared_str InventoryUtilities::GetDateAsString(ALife::_TIME_ID date, EDatePrecision datePrec, char dateSeparator)
 {
 	string32 bufDate;
@@ -300,6 +279,35 @@ const shared_str InventoryUtilities::GetDateAsString(ALife::_TIME_ID date, EDate
 	}
 
 	return bufDate;
+}
+
+LPCSTR InventoryUtilities::GetTimePeriodAsString(LPSTR _buff, u32 buff_sz, ALife::_TIME_ID _from, ALife::_TIME_ID _to)
+{
+	u32 year1,month1,day1,hours1,mins1,secs1,milisecs1;
+	u32 year2,month2,day2,hours2,mins2,secs2,milisecs2;
+	
+	split_time(_from, year1, month1, day1, hours1, mins1, secs1, milisecs1);
+	split_time(_to, year2, month2, day2, hours2, mins2, secs2, milisecs2);
+	
+	int cnt		= 0;
+	_buff[0]	= 0;
+
+	if(month1!=month2)
+		cnt = sprintf(_buff+cnt,"%d %s ",month2-month1, *CStringTable().translate("ui_st_months"));
+
+	if(!cnt && day1!=day2)
+		cnt = sprintf(_buff+cnt,"%d %s",day2-day1, *CStringTable().translate("ui_st_days"));
+
+	if(!cnt && hours1!=hours2)
+		cnt = sprintf(_buff+cnt,"%d %s",hours2-hours1, *CStringTable().translate("ui_st_hours"));
+
+	if(!cnt && mins1!=mins2)
+		cnt = sprintf(_buff+cnt,"%d %s",mins2-mins1, *CStringTable().translate("ui_st_mins"));
+
+	if(!cnt && secs1!=secs2)
+		cnt = sprintf(_buff+cnt,"%d %s",secs2-secs1, *CStringTable().translate("ui_st_secs"));
+
+	return _buff;
 }
 
 //////////////////////////////////////////////////////////////////////////

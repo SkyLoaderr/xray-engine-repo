@@ -140,9 +140,7 @@ public:
 	_DECLARE_FUNCTION10	(Mass		,	float		);
 	_DECLARE_FUNCTION10	(ID			,	u32			);
 	_DECLARE_FUNCTION10	(getVisible	,	BOOL		);
-//	_DECLARE_FUNCTION11	(setVisible	,	void, BOOL	);
 	_DECLARE_FUNCTION10	(getEnabled	,	BOOL		);
-//	_DECLARE_FUNCTION11	(setEnabled	,	void, BOOL	);
 	_DECLARE_FUNCTION10	(story_id	,	ALife::_STORY_ID);
 	
 			LPCSTR				Name				() const;
@@ -155,7 +153,6 @@ public:
 
 	// CEntity
 	_DECLARE_FUNCTION10	(DeathTime	,	u32		);
-//	_DECLARE_FUNCTION10	(Armor		,	float	);
 	_DECLARE_FUNCTION10	(MaxHealth	,	float	);
 	_DECLARE_FUNCTION10	(Accuracy	,	float	);
 	_DECLARE_FUNCTION10	(Team		,	int		);
@@ -170,7 +167,6 @@ public:
 	_DECLARE_FUNCTION10	(GetHealth			,			float);
 	_DECLARE_FUNCTION10	(GetPsyHealth		,			float);
 	_DECLARE_FUNCTION10	(GetPower			,			float);
-//	_DECLARE_FUNCTION10	(GetSatiety			,			float);
 	_DECLARE_FUNCTION10	(GetRadiation		,			float);
 	_DECLARE_FUNCTION10	(GetBleeding		,			float);
 	_DECLARE_FUNCTION10	(GetMorale			,			float);
@@ -193,8 +189,6 @@ public:
 	_DECLARE_FUNCTION12	(SetScriptControl,	void, bool,				LPCSTR);
 	_DECLARE_FUNCTION10	(GetScriptControl	,			bool	);
 	_DECLARE_FUNCTION10	(GetScriptControlName,			LPCSTR	);
-//	_DECLARE_FUNCTION12	(AddAction,			void,const CScriptEntityAction *,				bool);
-//	_DECLARE_FUNCTION10	(GetCurrentAction,const CScriptEntityAction *);
 	_DECLARE_FUNCTION10	(GetEnemyStrength, int);
 	_DECLARE_FUNCTION10	(can_script_capture, bool);
 	
@@ -251,9 +245,6 @@ public:
 	// CProjector
 			Fvector				GetCurrentDirection		();
 
-	//////////////////////////////////////////////////////////////////////////
-	// CInventoryOwner
-	
 	//передача порции информации InventoryOwner
 			bool				GiveInfoPortion		(LPCSTR info_id);
 			bool				DisableInfoPortion	(LPCSTR info_id);
@@ -267,7 +258,7 @@ public:
 	//работа с заданиями
 			ETaskState			GetGameTaskState	(LPCSTR task_id, int objective_num);
 			void				SetGameTaskState	(ETaskState state, LPCSTR task_id, int objective_num);
-			void				GiveTaskToActor		(CGameTask* t, bool bCheckExisting);
+			void				GiveTaskToActor		(CGameTask* t, u32 dt, bool bCheckExisting);
 
 			
 			bool				IsTalking			();
@@ -309,9 +300,6 @@ public:
 			void				SwitchToTrade		();
 			void				SwitchToTalk		();	
 			void				RunTalkDialog		(CScriptGameObject* pToWho);
-//			void				ActorSleep			(int hours, int minutes);
-//			void				ActorFakeSleep		(int hours, int minutes);
-//			bool				IsActorSleepeng		();
 
 			void				HideWeapon			();
 			void				RestoreWeapon		();
@@ -367,8 +355,6 @@ public:
 			void				SetAmmoElapsed		(int ammo_elapsed);
 			u32					GetAmmoCurrent		() const;
 			void				SetQueueSize		(u32 queue_size);
-//			const MemorySpace::CHitObject	*GetBestHit			() const;
-//			const MemorySpace::CSoundObject	*GetBestSound		() const;
 			CScriptGameObject	*GetBestEnemy		();
 			const CDangerObject	*GetBestDanger		();
 			CScriptGameObject	*GetBestItem		();
@@ -399,7 +385,6 @@ public:
 			CScriptGameObject		*GetCurrentOutfit() const;
 			
 
-	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
 			void				set_body_state		(MonsterSpace::EBodyState body_state);
@@ -496,13 +481,6 @@ public:
 			//////////////////////////////////////////////////////////////////////////
 			void				enable_attachable_item	(bool value);
 			bool				attachable_item_enabled	() const;
-			//////////////////////////////////////////////////////////////////////////
-			// для подключения info_portion для pda
-//			void				set_character_pda_info (LPCSTR info_id);
-//			LPCSTR				get_character_pda_info ();
-//			void				set_pda_info		   (LPCSTR info_id);
-//			LPCSTR				get_pda_info		   ();
-			//////////////////////////////////////////////////////////////////////////
 			// CustomZone
 			void				EnableAnomaly			();
 			void				DisableAnomaly			();

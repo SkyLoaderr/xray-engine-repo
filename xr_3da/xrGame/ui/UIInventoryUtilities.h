@@ -1,14 +1,8 @@
-// CUIInventoryUtilities.h:  функции утилиты для работы с
-// различными окнами инвентаря, торговли и т.д.
-//////////////////////////////////////////////////////////////////////
-
 #pragma once
 
 #include "../inventory_item.h"
-//#include "UIStatic.h"
 #include "../character_info_defs.h"
 
-//////////////////////////////////////////////////////////////////////////
 class CUIStatic;
 
 //размеры сетки в текстуре инвентаря
@@ -43,10 +37,6 @@ bool GreaterRoomInRuck	(PIItem item1, PIItem item2);
 //для проверки свободного места
 bool FreeRoom_inBelt	(TIItemContainer& item_list, PIItem item, int width, int height);
 
-//для надписей на иконках с оружием
-//.void AmmoDrawProc(CUIDragDropItem* pItem);
-//для надписей на иконках с едой
-//.void FoodDrawProc(CUIDragDropItem* pItem);
 
 // get shader for BuyWeaponWnd
 ref_shader&	GetBuyMenuShader();
@@ -85,7 +75,7 @@ const shared_str GetGameDateAsString(EDatePrecision datePrec, char dateSeparator
 const shared_str GetGameTimeAsString(ETimePrecision timePrec, char timeSeparator = ':');
 const shared_str GetDateAsString(ALife::_TIME_ID time, EDatePrecision datePrec, char dateSeparator = '/');
 const shared_str GetTimeAsString(ALife::_TIME_ID time, ETimePrecision timePrec, char timeSeparator = ':');
-
+LPCSTR GetTimePeriodAsString	(LPSTR _buff, u32 buff_sz, ALife::_TIME_ID _from, ALife::_TIME_ID _to);
 // Отобразить вес, который несет актер
 void UpdateWeight(CUIStatic &wnd, bool withPrefix = false);
 

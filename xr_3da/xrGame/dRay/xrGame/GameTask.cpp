@@ -227,28 +227,6 @@ void CGameTask::Load(const TASK_ID& id)
 	g_gameTaskXml.SetLocalRoot		(g_gameTaskXml.GetRoot());
 }
 
-/*
-bool CGameTask::HighlightedSpotOnMap(int objective_id)
-{
-	CMapLocation* ml = m_Objectives[objective_id].HasMapLocation();
-	return (ml && ml->PointerEnabled	());
-}
-
-
-void CGameTask::HighlightSpotOnMap(int objective_id, bool bHighlight)
-{
-	Level().MapManager().DisableAllPointers();
-	CMapLocation* ml = m_Objectives[objective_id].LinkedMapLocation();
-	
-	if(NULL==ml) return;
-
-	if(bHighlight)
-		ml->EnablePointer();
-	else
-		ml->DisablePointer();
-}
-*/
-
 bool CGameTask::HasLinkedMapLocations			()
 {
 	for(u32 i=0; i<m_Objectives.size(); ++i)
@@ -256,32 +234,6 @@ bool CGameTask::HasLinkedMapLocations			()
 
 	return false;
 }
-
-/*
-void CGameTask::ShowLocations			(bool bShow)
-{
-	for(u32 i=0; i<m_Objectives.size(); ++i){
-		SGameTaskObjective& obj = 	m_Objectives[i];
-		CMapLocation* ml		= obj.HasMapLocation		();
-		if(NULL!=ml){
-			if(bShow)
-				ml->EnableSpot();
-			else
-				ml->DisableSpot();
-		}
-	}
-}
-
-bool CGameTask::ShownLocations			()
-{
-	for(u32 i=0; i<m_Objectives.size(); ++i){
-		SGameTaskObjective& obj						= m_Objectives[i];
-		CMapLocation* ml  = obj.HasMapLocation		();
-		if(ml) return ml->SpotEnabled				();
-	}
-	return false;
-}
-*/
 
 SGameTaskObjective::SGameTaskObjective		(CGameTask* parent, int _idx)
 :description		(NULL),
@@ -333,6 +285,13 @@ void SGameTaskObjective::SetTaskState		(ETaskState new_state)
 
 ETaskState SGameTaskObjective::UpdateState	()
 {
+	if( (idx==0) && (parent->m_ReceiveTime != parent->m_TimeToComplete) )
+	{
+		if(Level().GetGameTime() > parent->m_TimeToComplete)
+		{
+			return		eTaskStateFail;
+		}
+	}
 //check fail infos
 	if( CheckInfo(m_failInfos) )
 		return		eTaskStateFail;
@@ -583,6 +542,7 @@ void SGameTaskKey::save(IWriter &stream)
 	save_data(task_id,						stream);
 	save_data(game_task->m_ReceiveTime,		stream);
 	save_data(game_task->m_FinishTime,		stream);
+	save_data(game_task->m_TimeToComplete,	stream);
 	save_data(game_task->m_Title,			stream);
 
 	u32 cnt	= game_task->m_Objectives.size();
@@ -601,6 +561,8 @@ void SGameTaskKey::load(IReader &stream)
 	game_task = xr_new<CGameTask>			(task_id);
 	load_data(game_task->m_ReceiveTime,		stream);
 	load_data(game_task->m_FinishTime,		stream);
+	load_data(game_task->m_TimeToComplete,	stream);
+
 	load_data(game_task->m_Title,			stream);
 
 	u32 cnt;

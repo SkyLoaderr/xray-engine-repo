@@ -817,9 +817,9 @@ CScriptGameObject *CScriptGameObject::item_in_slot	(u32 slot_id) const
 	return			(result ? result->object().lua_game_object() : 0);
 }
 
-void CScriptGameObject::GiveTaskToActor(CGameTask* t, bool bCheckExisting)
+void CScriptGameObject::GiveTaskToActor(CGameTask* t, u32 dt, bool bCheckExisting)
 {
-	Actor()->GameTaskManager().GiveGameTaskToActor(t, bCheckExisting);
+	Actor()->GameTaskManager().GiveGameTaskToActor(t, dt, bCheckExisting);
 }
 
 u32	CScriptGameObject::active_slot()

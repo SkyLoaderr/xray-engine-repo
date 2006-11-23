@@ -108,12 +108,7 @@ public:
 							CGameTask				(const TASK_ID& id);
 							CGameTask				();
 
-//.	bool					HighlightedSpotOnMap	(int objective_id);					
-//.	void					HighlightSpotOnMap		(int objective_id, bool bHighlight);
-	
 	bool					HasLinkedMapLocations	();
-//.	void					ShowLocations			(bool bShow);
-//.	bool					ShownLocations			();
 	
 	SGameTaskObjective&		Objective				(int objectice_id)	{return m_Objectives[objectice_id];};
 
@@ -122,6 +117,7 @@ public:
 	OBJECTIVE_VECTOR		m_Objectives;
 	ALife::_TIME_ID			m_ReceiveTime;
 	ALife::_TIME_ID			m_FinishTime;
+	ALife::_TIME_ID			m_TimeToComplete;
 	u32						m_priority;
 
 // for scripting access

@@ -103,7 +103,7 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion) const
 	for(TASK_ID_VECTOR::const_iterator it = info_portion->GameTasks().begin();
 		it != info_portion->GameTasks().end(); it++)
 	{
-		GameTaskManager().GiveGameTaskToActor(*it);
+		GameTaskManager().GiveGameTaskToActor(*it, 0);
 	}
 }
 
