@@ -88,32 +88,46 @@ void CPhysicsShellHolder::init			()
 }
 void CPhysicsShellHolder::correct_spawn_pos()
 {
-	VERIFY(PPhysicsShell());
-	Fvector size,c;
-	get_box(PPhysicsShell(),XFORM(),size,c);
-	CPHActivationShape	activation_shape;
-	activation_shape.Create(c,size,this);
-	activation_shape.set_rotation(XFORM());
-	PPhysicsShell()->DisableCollision();
-	activation_shape.Activate(size,1,1.f,M_PI/8.f);
-	PPhysicsShell()->EnableCollision();
-	Fmatrix	trans;trans.identity();
-	Fvector	ap=activation_shape.Position();
+	VERIFY								(PPhysicsShell());
+
+	Fvector								size;
+	Fvector								c;
+	get_box								(PPhysicsShell(),XFORM(),size,c);
+
+	CPHActivationShape					activation_shape;
+	activation_shape.Create				(c,size,this);
+	activation_shape.set_rotation		(XFORM());
+	PPhysicsShell()->DisableCollision	();
+	activation_shape.Activate			(size,1,1.f,M_PI/8.f);
+//	VERIFY								(valid_pos(activation_shape.Position(),phBoundaries));
+	if (!valid_pos(activation_shape.Position(),phBoundaries)) {
+		CPHActivationShape				activation_shape;
+		activation_shape.Create			(c,size,this);
+		activation_shape.set_rotation	(XFORM());
+		activation_shape.Activate		(size,1,1.f,M_PI/8.f);
+//		VERIFY							(valid_pos(activation_shape.Position(),phBoundaries));
+	}
+
+	PPhysicsShell()->EnableCollision	();
+	VERIFY								(valid_pos(activation_shape.Position(),phBoundaries));
+
+	Fvector								ap = activation_shape.Position();
 #ifdef DEBUG
-	if(!valid_pos(ap,phBoundaries))
-	{
+	if (!valid_pos(ap,phBoundaries)) {
 		Msg("not valid position	%f,%f,%f",ap.x,ap.y,ap.z);
 		Msg("size	%f,%f,%f",size.x,size.y,size.z);
 		Msg("Object: %s",Name());
 		Msg("Visual: %s",*(cNameVisual()));
 		Msg("Object	pos	%f,%f,%f",Position().x,Position().y,Position().z);
 	}
-#endif
+#endif // DEBUG
 	
-	trans.c.sub(ap,c);
-	PPhysicsShell()->TransformPosition(trans);
+	Fmatrix								trans;
+	trans.identity						();
+	trans.c.sub							(ap,c);
+	PPhysicsShell()->TransformPosition	(trans);
 	PPhysicsShell()->GetGlobalTransformDynamic(&XFORM());
-	activation_shape.Destroy();
+	activation_shape.Destroy			();
 }
 void CPhysicsShellHolder::activate_physic_shell()
 {
@@ -144,7 +158,8 @@ void CPhysicsShellHolder::activate_physic_shell()
 		if(!smart_cast<CCustomRocket*>(this)&&!smart_cast<CGrenade*>(this)) PPhysicsShell()->SetIgnoreDynamic();
 	}
 //	XFORM().set					(l_p1);
-	correct_spawn_pos();
+#pragma todo("Dima to Kostya: fix this bug ASAP")
+//.	correct_spawn_pos();
 	m_pPhysicsShell->set_LinearVel(l_fw);
 	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
 }
