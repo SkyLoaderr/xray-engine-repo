@@ -435,6 +435,7 @@ void CCustomMonster::UpdateCL	()
 			net_update&	B			= NET[select+1];
 			u32	d1					= dwTime-A.dwTimeStamp;
 			u32	d2					= B.dwTimeStamp - A.dwTimeStamp;
+			VERIFY					(d2);
 			float	factor			= (float(d1)/float(d2));
 			Fvector					l_tOldPosition = Position();
 			NET_Last.lerp			(A,B,factor);
