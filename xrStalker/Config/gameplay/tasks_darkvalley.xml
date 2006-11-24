@@ -156,7 +156,7 @@
         </object_story_id>
     </objective>
 </game_task>
-<game_task id="bar_darklab_documents" prio="435" prio="435">
+<game_task id="bar_darklab_documents" prio="435">
     <title>
         bar_darklab_documents
     </title>
