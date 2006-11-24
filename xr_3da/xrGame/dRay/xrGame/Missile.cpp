@@ -629,6 +629,8 @@ void CMissile::setup_physic_shell	()
 	VERIFY(!m_pPhysicsShell);
 	create_physic_shell();
 	m_pPhysicsShell->Activate	(XFORM(),0,XFORM(),true);
+	kinematics->CalculateBones_Invalidate();
+	kinematics->CalculateBones			();
 }
 
 u32	CMissile::ef_weapon_type		() const
