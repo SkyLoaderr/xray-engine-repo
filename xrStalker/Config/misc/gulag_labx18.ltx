@@ -11,16 +11,15 @@ home_max_radius = 25
 
 
 [logic@com_center_poltergeist]
-active = mob_home@com_center_poltergeist
+active = mob_walker@com_center_poltergeist
 on_death = mob_death@com_center_poltergeist
 
 [mob_death@com_center_poltergeist]
 on_info =%+dar_door3_free%
 
-[mob_home@com_center_poltergeist]
-path_home = home
-home_min_radius = 20
-home_max_radius = 25
+[mob_walker@com_center_poltergeist]
+path_walk = walk_1
+braindead = true
 on_actor_in_zone = dar_poltergeist_territory | mob_home@com_center_actor_inside %=play_snd(monsters\poltergeist\die_0)%
 
 [mob_home@com_center_actor_inside]
