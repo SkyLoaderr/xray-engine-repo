@@ -83,7 +83,7 @@ void CALifeGraphRegistry::setup_current_level	()
 	R_ASSERT2					(ai().game_graph().header().levels().end() != I,"Graph point level ID not found!");
 
 	int							id = pApp->Level_ID(*(*I).second.name());
-	VERIFY						(id >= 0);
+	VERIFY3						(id >= 0,"Level is corrupted or doesn't exist",*(*I).second.name());
 	pApp->Level_Set				(id);
 	ai().load					(*(*I).second.name());
 }
