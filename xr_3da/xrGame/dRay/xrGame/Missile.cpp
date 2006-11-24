@@ -602,6 +602,7 @@ void CMissile::activate_physic_shell()
 
 	CKinematics							*kinematics = smart_cast<CKinematics*>(Visual());
 	VERIFY								(kinematics);
+	kinematics->CalculateBones_Invalidate();
 	kinematics->CalculateBones			();
 }
 void	CMissile::net_Relcase(CObject* O)
