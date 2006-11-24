@@ -486,6 +486,14 @@ void ProcessLTX(LPCSTR tgt_name, LPCSTR params, BOOL bFast)
 		}
 	}
 	// compress
+	{
+		CInifile::Sect& if_sect	= ltx.r_section("include_files");
+		for (CInifile::SectIt if_it=if_sect.begin(); if_it!=if_sect.end(); if_it++)
+			{
+				  list.push_back	(xr_strdup(if_it->first.c_str()));
+			}	
+	
+	}
 	CompressList	(tgt_name,&list,&fl_list,bFast,make_pack,copy_path);
 
 	// free
