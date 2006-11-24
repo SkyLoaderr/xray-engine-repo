@@ -220,7 +220,7 @@ function send_task(actor, type, task, objective)
 	if db.actor == nil then return false end
 	
 	--' Берем координаты из текстуры таска
-    local task_texture, task_rect = get_texture_info("ui_icons_task_"..task:get_id(), "ui_iconsTotal_locations")
+    local task_texture, task_rect = get_texture_info("ui_iconsTotal_"..task:get_id(), "ui_iconsTotal_locations")
         
 	--' Играем дефолтный звук
 	pda_task:play(db.actor, 0, sound_object.s2d)
