@@ -437,6 +437,9 @@ DEFAULT_MMAP_THRESHOLD       default: 256K
   disable mmap by setting to MAX_SIZE_T.
 
 */
+#ifdef DEBUG
+#	undef DEBUG
+#endif // DEBUG
 
 #ifndef WIN32
 #ifdef _WIN32
