@@ -936,79 +936,15 @@ function bar_arena_hit(actor, npc)
 	h.type = hit.wound
 	npc:hit(h)
 end
-function bar_arena_introduce(actor, npc)
-	if db.actor:has_info("bar_arena_pseudodog_choosen") then
-		news_manager.send_tip(actor, "bar_arena_fight_pseudodog", nil, "arena", 7000)
-	elseif db.actor:has_info("bar_arena_snork_choosen") then
-		news_manager.send_tip(actor, "bar_arena_fight_snork", nil, "arena", 7000)
-	elseif db.actor:has_info("bar_arena_bloodsucker_choosen") then
-		news_manager.send_tip(actor, "bar_arena_fight_bloodsucker", nil, "arena", 7000)
-	elseif db.actor:has_info("bar_arena_burer_choosen") then
-		news_manager.send_tip(actor, "bar_arena_fight_burer", nil, "arena", 7000)
-	elseif db.actor:has_info("bar_arena_savage_choosen") then
-		news_manager.send_tip(actor, "bar_arena_fight_savage", nil, "arena", 7000)
-	end
-end
-function bar_arena_fight_begin(actor, npc)
-	news_manager.send_tip(actor, "bar_arena_fight_begin", nil, "arena")
-end
-function bar_arena_fight_10(actor, npc)
-	news_manager.send_tip(actor, "bar_arena_fight_10", nil, "arena")
-end
-function bar_arena_fight_20(actor, npc)
-	news_manager.send_tip(actor, "bar_arena_fight_20", nil, "arena")
-end
-function bar_arena_fight_30(actor, npc)
-	news_manager.send_tip(actor, "bar_arena_fight_30", nil, "arena")
-end
-function bar_arena_fight_40(actor, npc)
-	news_manager.send_tip(actor, "bar_arena_fight_40", nil, "arena")
-end
-function bar_arena_fight_50(actor, npc)
-	news_manager.send_tip(actor, "bar_arena_fight_50", nil, "arena")
-end
-function bar_arena_fight_60(actor, npc)
-	news_manager.send_tip(actor, "bar_arena_fight_60", nil, "arena")
-end
-function bar_arena_fight_70(actor, npc)
-	news_manager.send_tip(actor, "bar_arena_fight_70", nil, "arena")
-end
-function bar_arena_fight_80(actor, npc)
-	news_manager.send_tip(actor, "bar_arena_fight_80", nil, "arena")
-end
-function bar_arena_fight_90(actor, npc)
-	news_manager.send_tip(actor, "bar_arena_fight_90", nil, "arena")
-end
-function bar_arena_check_lose(actor, npc)
-	if db.actor:has_info("bar_arena_100_p") then
-		if db.actor:has_info("bar_arena_fight_30") then
-			db.actor:give_info_portion("bar_arena_actor_lose")
-			news_manager.send_tip(actor, "bar_arena_fight_timeout", nil, "arena")			
-		end
-		return
-	end
-	if db.actor:has_info("bar_arena_50_p") then
-		if db.actor:has_info("bar_arena_fight_90") then
-			db.actor:give_info_portion("bar_arena_actor_lose")
-			news_manager.send_tip(actor, "bar_arena_fight_timeout", nil, "arena")			
-		end
-		return
-	end
-end
-function bar_arena_after_fight(actor, npc)
-	if db.actor:dont_has_info("bar_arena_actor_lose") then
-		db.actor:give_info_portion("bar_arena_actor_victory")
-		news_manager.send_tip(actor, "bar_arena_fight_victory", nil, "arena")
-	else
-		news_manager.send_tip(actor, "bar_arena_fight_lose", nil, "arena")
-	end
-	db.actor:give_info_portion("bar_arena_start_introduce")
-end
-function bar_arena_actor_afraid(actor, npc)
-	news_manager.send_tip(actor, "bar_arena_actor_afraid", nil, "arena")
-end
-function bar_arena_actor_dead(actor, npc)
-	news_manager.send_tip(actor, "bar_arena_fight_dead", nil, "arena")
+function esc_hit_from_fox(actor, npc)
+	local fox = level_object_by_sid (005)
+	local h = hit()
+	h.power = 0.01
+	h.direction = npc:direction()
+	h.draftsman = fox 
+	h.impulse = 1
+	h.type = hit.wound
+	npc:hit(h)
 end
 
 function bar_territory_logic(actor, npc)
@@ -1113,12 +1049,6 @@ local function transfer_object_item(item)
 end
 function bar_arena_teleport ( actor, npc)
 
---	level.add_pp_effector ("blink.ppe", 234, false)				
---	
---		db.actor:set_actor_position(patrol("t_way"):point(0))
---		local dir = patrol("t_look"):point(0):sub(patrol("t_way"):point(0))
---		db.actor:set_actor_direction(-dir:getH())
-	
 	inv_box_1 = level_object_by_sid (573)
 
 	out_object = actor
