@@ -76,7 +76,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 				break;
 
 			if (inventory().Drop(smart_cast<CGameObject*>(O)) && !O->getDestroy()) {
-				O->H_SetParent	(0,P.r_eof() || !P.r_u8());
+				O->H_SetParent	(0,!P.r_eof() && P.r_u8());
 				feel_touch_deny	(O,2000);
 			}
 			break;
