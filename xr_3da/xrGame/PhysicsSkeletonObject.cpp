@@ -34,7 +34,12 @@ BOOL CPhysicsSkeletonObject::net_Spawn(CSE_Abstract* DC)
 void	CPhysicsSkeletonObject::SpawnInitPhysics	(CSE_Abstract	*D)
 {
 	CreatePhysicsShell(D);
-	smart_cast<CKinematics*>(Visual())->CalculateBones	();
+	CKinematics* K=smart_cast<CKinematics*>	(Visual());
+	if(K)	
+	{	
+		K->CalculateBones_Invalidate();
+		K->CalculateBones	();
+	}
 }
 
 void CPhysicsSkeletonObject::net_Destroy()
@@ -42,8 +47,7 @@ void CPhysicsSkeletonObject::net_Destroy()
 
 	inherited::net_Destroy		();
 	CPHSkeleton::RespawnInit	();
-	CKinematics* K=smart_cast<CKinematics*>	(Visual());
-	if(K)	K->CalculateBones	();
+
 }
 
 void CPhysicsSkeletonObject::Load(LPCSTR section)
@@ -58,6 +62,7 @@ void CPhysicsSkeletonObject::CreatePhysicsShell(CSE_Abstract* e)
 	if(m_pPhysicsShell) return;
 	if (!Visual()) return;
 	m_pPhysicsShell=P_build_Shell(this,!po->_flags.test(CSE_PHSkeleton::flActive));
+
 }
 
 
