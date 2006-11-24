@@ -24,16 +24,13 @@ end
 
 function motivator_binder:extrapolate_callback(cur_pt)
 	if self.st.active_section then
-		--printf("___ACTIVE_SECTION___")
 		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "extrapolate_callback")
+		self.st.move_mgr:extrapolate_callback(self.object)
 	end
 
-	--printf("_bp: motivator_binder: extrapolate_callback: cur_pt = %d", cur_pt)
 	if patrol(self.object:patrol()):flags(cur_pt):get() == 0 then
-		--printf("_bp: motivator_binder: extrapolate_callback: true")
 		return true
 	end
-	--printf("_bp: motivator_binder: extrapolate_callback: false")
 	return false
 end
 
@@ -56,8 +53,11 @@ function motivator_binder:reinit()
     --' Создание менеджера контроля положений тела
     --memusage.collect_info(self.object, "before_statemgr")
 	self.st.state_mgr = state_mgr.bind_manager(self.object)
-	--memusage.collect_info(self.object, "after_statemgr")
 
+	self.st.move_mgr = move_mgr.move_mgr(self.object)
+	self.st.move_mgr:initialize()
+
+	--memusage.collect_info(self.object, "after_statemgr")
 	--memusage.collect_info(self.object, "reinit_end")
 
 	--' Инициализируем генератор вещей при смерти
@@ -70,11 +70,6 @@ function motivator_binder:net_spawn(sobject)
 	if not object_binder.net_spawn(self, sobject) then
 		return false
 	end
-
-	--local sim = alife()
-	--if sim ~= nil then
-		--xr_spawner.spawn(sobject)
-	--end
 
 	db.add_obj(self.object)
 

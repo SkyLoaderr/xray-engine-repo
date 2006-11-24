@@ -473,9 +473,9 @@ end
 ----------------------
 class "action_commander" (action_base)
 ----------------------
-function action_commander:__init (npc_name, action_name, storage) super(nil, action_name)
+function action_commander:__init (npc, action_name, storage) super(nil, action_name)
 	self.st = storage
-	self.move_mgr = move_mgr.move_mgr (storage.npc)
+	self.move_mgr = db.storage[npc:id()].move_mgr
 	self.was_reset = false
 	self.cur_state = "patrol"
 end
@@ -491,7 +491,6 @@ end
 ----------------------
 function action_commander:activate_scheme()
 	self.st.signals = {}
-	self.move_mgr:initialize ()
 	printf ("[XR_PATROL] SET PATROL PATH : %s", self.st.path_walk)
 	if self.st.path_walk_info == nil then
 		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
@@ -556,7 +555,7 @@ end
 ----------------------
 class "action_patrol" (action_base)
 ----------------------
-function action_patrol:__init (npc_name, action_name, storage) super (nil, action_name)
+function action_patrol:__init (npc, action_name, storage) super (nil, action_name)
 	self.st = storage
 	self.l_vid = -1
 	self.dist = 0
@@ -680,7 +679,7 @@ function add_to_binder (object, ini, scheme, section, storage)
 
 	-- Actions
 	-- create action for patrol commander
-	local action = this.action_commander (object:name(), "action_commander", storage)
+	local action = this.action_commander (object, "action_commander", storage)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_danger,false))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
@@ -692,7 +691,7 @@ function add_to_binder (object, ini, scheme, section, storage)
 	manager:add_action          (operators["action_commander"], action)
 	xr_logic.subscribe_action_for_events (object, storage, action)
 	
-	action = this.action_patrol (object:name(),"action_patrol", storage)
+	action = this.action_patrol (object,"action_patrol", storage)
 	action:add_precondition		(world_property(stalker_ids.property_alive,  true))
 	action:add_precondition		(world_property(stalker_ids.property_danger, false))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	 false))

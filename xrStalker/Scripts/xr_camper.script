@@ -81,9 +81,9 @@ end
 --' Патрулировать территорию по патрульному пути
 
 class "action_patrol" (action_base)
-function action_patrol:__init (npc_name,action_name,storage) super (nil,action_name)
+function action_patrol:__init (npc,action_name,storage) super (nil,action_name)
 	self.a = storage
-	self.move_mgr = move_mgr.move_mgr(self.a.npc)
+	self.move_mgr = db.storage[npc:id()].move_mgr
 	self.a.scan_table = {}
 end
 function action_patrol:initialize()
@@ -99,7 +99,6 @@ function action_patrol:reset_scheme()
 	state_mgr.set_state(self.object, "patrol")	
 	self.a.signals = {}
 	self.a.scan_table = {}
-	self.move_mgr:initialize()
 	if self.a.sniper == true then
 		self.move_mgr:reset(self.a.path_walk, 
 			utils.path_parse_waypoints(self.a.path_walk),
@@ -504,7 +503,7 @@ function add_to_binder(object, ini, scheme, section, storage)
 		manager:add_evaluator (properties["end"], this.evaluator_end("camper_end", storage))
 		manager:add_evaluator (properties["close_combat"], this.evaluator_close_combat("camper_close_combat", storage))
 
-		local action = this.action_patrol (object:name(),"action_camper_patrol", storage)
+		local action = this.action_patrol (object,"action_camper_patrol", storage)
 		action:add_precondition	(world_property(stalker_ids.property_alive, true))
 		action:add_precondition	(world_property(properties["end"],			false))
 		action:add_precondition	(world_property(properties["close_combat"],	false))

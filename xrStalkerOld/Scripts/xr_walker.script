@@ -21,9 +21,9 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 class "action_walker_activity" (action_base)
 
-function action_walker_activity:__init (npc_name, action_name, storage) super(nil, action_name)
+function action_walker_activity:__init (npc, action_name, storage) super(nil, action_name)
 	self.st = storage
-	self.move_mgr = move_mgr.move_mgr(storage.npc)
+	self.move_mgr = db.storage[npc:id()].move_mgr
 end
 
 function action_walker_activity:initialize()
@@ -39,7 +39,6 @@ function action_walker_activity:activate_scheme()
 end
 
 function action_walker_activity:reset_scheme()
-	self.move_mgr:initialize()
 	if self.st.path_walk_info == nil then			
 		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
 	end
@@ -47,8 +46,7 @@ function action_walker_activity:reset_scheme()
 		self.st.path_look_info = utils.path_parse_waypoints(self.st.path_look)
 	end
 
-	self.move_mgr:reset(self.st.path_walk, self.st.path_walk_info, self.st.path_look, self.st.path_look_info,
-		self.st.team, self.st.suggested_state)
+	self.move_mgr:reset(self.st.path_walk, self.st.path_walk_info, self.st.path_look, self.st.path_look_info, self.st.team, self.st.suggested_state)
 	xr_sound.set_sound(self.object, self.st.sound_idle)
 end
 

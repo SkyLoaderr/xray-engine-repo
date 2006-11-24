@@ -1,8 +1,8 @@
 -- Movement manager
 -- Created by: Andrey Fidrya (Zmey), af@svitonline.com
 
---function printf()
---end
+function printf()
+end
 
 local dist_walk = 10 -- < dist_run
 local dist_run = 2500
@@ -25,11 +25,7 @@ local state_none = 0
 local state_moving = 1
 local state_standing = 2
 
-local sl_speed_h = 0.52 -- горизонтальная скорость вращения прожекторов
-local sl_speed_v = 0.22 -- вертикальная скорость вращения прожекторов
-
 local sync = {}
-
 -------------------------------------------------------------------------------------------------------------------------
 function choose_look_point(patrol_look, path_look_info, search_for)
 	local this_val -- значение флагов текущей точки
@@ -62,7 +58,6 @@ end
 
 -------------------------------------------------------------------------------------------------------------------------
 class "move_mgr"
-
 function move_mgr:__init(npc)
 	if npc == nil then
 		abort("move_mgr:__init() - npc is nil, please update the script")
@@ -78,8 +73,7 @@ function move_mgr:initialize(npc)
 
 	self.object:set_callback(callback.patrol_path_in_point, self.waypoint_callback, self)
 end
-
--- Удостоверяется, что пути и флажки на них проставлены корректно
+--' Удостоверяется, что пути и флажки на них проставлены корректно
 function move_mgr:validate_paths()
 	if self.no_validation then
 		return
@@ -110,130 +104,123 @@ function move_mgr:standing_on_terminal_waypoint()
 	return false
 end
 
--- Может быть вызвано внешним скриптом после вызова reset() и до вызова finalize()
--- Возвращает true, если персонаж прибыл в конечную точку пути
+--' Может быть вызвано внешним скриптом после вызова reset() и до вызова finalize()
+--' Возвращает true, если персонаж прибыл в конечную точку пути
 function move_mgr:at_terminal_waypoint()
 	return self.at_terminal_waypoint_flag
 end
 
--- Из move_cb вернуть true, чтобы приостановить работу схемы. Чтобы продолжить движение,
--- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
--- скоростью.
+--' Из move_cb вернуть true, чтобы приостановить работу схемы. Чтобы продолжить движение,
+--' нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
+--' скоростью.
 function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, suggested_state, move_cb_info, no_validation, continue, use_default_sound)
 	printf("move_mgr:reset() [%s]", self.object:name())
 
-	self.no_validation = no_validation
-	
-	self.patrol_walk = patrol(path_walk)
-	if not self.patrol_walk then
-		abort("object '%s': unable to find path_walk '%s' on the map",
-			self.object:name(), path_walk)
-	end
-	if not path_walk_info then
-		abort("object '%s': path_walk ('%s') field was supplied, but path_walk_info field is nil",
-			self.object:name(), path_walk)
-	end
-	self.path_walk_info = path_walk_info
+	--' сколько ждать в точке, где играем анимацию 
+	self.pt_wait_time = default_wait_time
 
-	if path_look then
-		if not path_look_info then
-			abort("object '%s': path_look ('%s') field was supplied, but path_look_info field is nil",
-				self.object:name(), path_look)
-		end
-		self.patrol_look = patrol(path_look)
-		if not self.patrol_look then
-			abort("object '%s': unable to find path_look '%s' on the map",
-				self.object:name(), path_look)
-		end
-	else
-		self.patrol_look = nil
-	end
-	
-	self.path_walk = path_walk
-	self.path_look = path_look
-	self.path_look_info = path_look_info
-	self.team = team
-
-	self:validate_paths()
-
-	self.pt_wait_time = default_wait_time -- сколько ждать в точке, где играем анимацию 
-
-	self.at_terminal_waypoint_flag = false
-
-	-- Запоминаем массив целиком на случай, если придется себя сбросить, повторно
-	-- вызвав reset():
+	--' Запоминаем массив целиком на случай, если придется себя сбросить, повторно
+	--' вызвав reset():
 	self.suggested_state = suggested_state
-	-- После этого распарсиваем массив:
+	--' После этого распарсиваем массив:
 	if not suggested_state then
 		self.default_state_standing = default_state_standing
 		self.default_state_moving1 = default_state_moving1
 		self.default_state_moving2 = default_state_moving2
 		self.default_state_moving3 = default_state_moving3
 	else
-		self.default_state_standing = if_then_else(
-			suggested_state.standing, suggested_state.standing, default_state_standing)
-		self.default_state_moving1 = if_then_else(
-			suggested_state.moving1, suggested_state.moving1, default_state_moving1)
-		self.default_state_moving2 = if_then_else(
-			suggested_state.moving2, suggested_state.moving1, default_state_moving2)
-		self.default_state_moving3 = if_then_else(
-			suggested_state.moving3, suggested_state.moving1, default_state_moving3)
+		self.default_state_standing = if_then_else(suggested_state.standing, suggested_state.standing, default_state_standing)
+		self.default_state_moving1 = if_then_else(suggested_state.moving1, suggested_state.moving1, default_state_moving1)
+		self.default_state_moving2 = if_then_else(suggested_state.moving2, suggested_state.moving1, default_state_moving2)
+		self.default_state_moving3 = if_then_else(suggested_state.moving3, suggested_state.moving1, default_state_moving3)
 	end
 
-	self.cur_state_standing = self.default_state_standing
-	self.cur_state_moving = self.default_state_moving1
-
-	self.moving = false -- переменная для проверки из внешнего скрипта, стоит ли персонаж на месте
-
-	self.retval_after_rotation = nil
-
-	-- С момента включения схемы должна пройти как минимум секунда, прежде чем
-	-- проверять состояние синхронизации с другими сталкерами (иначе после лоада
-	-- они могут не успеть заспавниться).
+	--' С момента включения схемы должна пройти как минимум секунда, прежде чем
+	--' проверять состояние синхронизации с другими сталкерами (иначе после лоада
+	--' они могут не успеть заспавниться).
 	self.syn_signal_set_tm = time_global() + 1000
 	self.syn_signal = nil
 
-	self.sound_after_anim_start = nil
-
 	self.move_cb_info = move_cb_info
 	 
-	self.sl = nil -- прожектор, запоминается, чтобы отпустить его потом из под скрипта
-	
-	-- Подписаться на уведомления о extrapolate_callback
-	local npc_id = self.object:id()
-	local scheme = db.storage[npc_id].active_scheme
---	printf("%s ACTIVE SCHEME[%s]", self.object:name(), tostring(scheme))
-	xr_logic.subscribe_action_for_events(self.object, db.storage[npc_id][scheme], self)
-
-	-- Пока этот флаг не станет true (он будет установлен в extrapolate_callback), нельзя использовать
-	-- значение, которое возвращает get_current_point_index().
-	self.can_use_get_current_point_index = false
-	self.current_point_index = nil
-	self.walk_until = time_global() + walk_min_time
-	self.run_until = time_global() + walk_min_time + run_min_time
-	self.keep_state_until = time_global()
-
-	self.team = team
-	if self.team then
-		local s = sync[self.team]
-		if not s then
-			sync[self.team] = {}
-			s = sync[self.team]
+	--' Возможные изменения
+	--' Изменилась команда
+	if team ~= self.team then
+		self.team = team
+		if self.team then
+			local s = sync[self.team]
+			if not s then
+				sync[self.team] = {}
+				s = sync[self.team]
+			end
+			s[self.object:id()] = false -- not synchronized
 		end
-		s[self.object:id()] = false -- not synchronized
 	end
 
-	self.last_index = nil
-	self.last_look_index = nil
+	--' Изменились пути
+	if self.path_walk ~= path_walk or self.path_look ~= path_look then
 
-	self.use_default_sound = use_default_sound
+		self.no_validation = no_validation
+		
+		self.path_walk = path_walk		
+		self.patrol_walk = patrol(path_walk)
+		if not self.patrol_walk then
+			abort("object '%s': unable to find path_walk '%s' on the map",
+				self.object:name(), path_walk)
+		end
+		if not path_walk_info then
+			abort("object '%s': path_walk ('%s') field was supplied, but path_walk_info field is nil",
+				self.object:name(), path_walk)
+		end
+		self.path_walk_info = path_walk_info
 
-	self.object:patrol_path_make_inactual()
+		if path_look then
+			if not path_look_info then
+				abort("object '%s': path_look ('%s') field was supplied, but path_look_info field is nil",
+					self.object:name(), path_look)
+			end
+			self.patrol_look = patrol(path_look)
+			if not self.patrol_look then
+				abort("object '%s': unable to find path_look '%s' on the map",
+					self.object:name(), path_look)
+			end
+		else
+			self.patrol_look = nil
+		end		
+		self.path_look = path_look
+		self.path_look_info = path_look_info
+
+		self:validate_paths()
+
+		self.at_terminal_waypoint_flag = false
+
+		self.cur_state_standing = self.default_state_standing
+		self.cur_state_moving = self.default_state_moving1
+
+		self.retval_after_rotation = nil
+		self.sound_after_anim_start = nil
+
+		--' Пока этот флаг не станет true (он будет установлен в extrapolate_callback), нельзя использовать
+		--' значение, которое возвращает get_current_point_index().
+		self.can_use_get_current_point_index = false
+		self.current_point_index = nil
+		self.walk_until = time_global() + walk_min_time
+		self.run_until = time_global() + walk_min_time + run_min_time
+		self.keep_state_until = time_global()
+
+
+		self.last_index = nil
+		self.last_look_index = nil
+
+		self.use_default_sound = use_default_sound
+
+		self.object:patrol_path_make_inactual()
+	end
 	self:setup_movement_by_patrol_path()
 end
 
--- продолжить движение со следующей точки, а не с ближайшей.
--- состояние move manager-a не сбрасывается.
+--' продолжить движение со следующей точки, а не с ближайшей.
+--' состояние move manager-a не сбрасывается.
 function move_mgr:continue()
 	printf("_bp: object '%s': continue moving", self.object:name())
 	self:setup_movement_by_patrol_path()
@@ -244,7 +231,6 @@ function move_mgr:setup_movement_by_patrol_path()
 	self.object:set_detail_path_type(move.line)
 
 	if self.current_point_index then
-		printf("start point index=%d", self.current_point_index)
 		self.object:set_start_point(self.current_point_index)
 		self.object:set_patrol_path(self.path_walk, patrol.next,    patrol.continue, true)
 	else
@@ -254,14 +240,14 @@ function move_mgr:setup_movement_by_patrol_path()
 	self.state = state_moving
 
 	local is_term, idx = self:standing_on_terminal_waypoint()
---!	if is_term then
---!		printf("_bp: object '%s': TERMINAL WAYPOINT", self.object:name())
---!		-- Стоим на терминальной вершине пути  - сразу иммитировать прибытие
---!		self:waypoint_callback(self.object, nil, idx)
---!	else
+	if is_term then
+		printf("_bp: object '%s': TERMINAL WAYPOINT", self.object:name())
+		-- Стоим на терминальной вершине пути  - сразу иммитировать прибытие
+		self:waypoint_callback(self.object, nil, idx)
+	else
 		-- Реально идем в вершину
 		self:update_movement_state()
---!	end
+	end
 
 	local sect = self.object:section()
 
@@ -279,8 +265,8 @@ function move_mgr:arrived_to_first_waypoint()
 end
 
 
--- Проверка синхронизации с остальными солдатами на пути.
--- Возвращает true, если дальнейшее движение разрешено.
+--' Проверка синхронизации с остальными солдатами на пути.
+--' Возвращает true, если дальнейшее движение разрешено.
 function move_mgr:sync_ok()
 	if self.team then
 		local s = sync[self.team]
@@ -332,36 +318,20 @@ function move_mgr:update()
 end
 
 function move_mgr:finalize(npc)
-	self.object:set_callback(game_object.movement, nil)
-
-	self.at_terminal_waypoint_flag = false
-	
 	xr_sound.set_sound(self.object, nil)
-	
 	if self.team then
 		sync[self.team][self.object:id()] = nil
 	end
-
 	-- чтобы избежать дальнейшего движения по пути при установке рестрикторов
 	self.object:set_path_type(game_object.level_path)
 end
 
-function move_mgr:reset_sl()
-	if self.sl then
-		if self.sl:get_script() then
-			self.sl:script(false, "move_mgr")
-		end
-		self.sl = nil
-	end
-end
-
--------------------------------------------------------------------------------
--- IMPLEMENTATION
--------------------------------------------------------------------------------
-
+--'-----------------------------------------------------------------------------
+--' IMPLEMENTATION
+--'-----------------------------------------------------------------------------
 function move_mgr:update_movement_state()
+	printf("%s UPDATE movement state", self.object:name())
 	state_mgr.set_state(self.object, self.cur_state_moving, nil, nil, nil)
-	self.moving = true
 end
 
 function move_mgr:update_standing_state(look_pos, snd)
@@ -372,7 +342,6 @@ function move_mgr:update_standing_state(look_pos, snd)
 		{ look_position = look_pos },
 		nil,
 		snd )
-	self.moving = false
 end
 
 function move_mgr:time_callback()
@@ -387,16 +356,16 @@ function move_mgr:time_callback()
 	end
 	if self.last_index and self.patrol_walk:terminal(self.last_index) then
 		if utils.stalker_at_waypoint(self.object, self.patrol_walk, self.last_index) then
-			-- Если стоим на конечной точке пути и с нее никуда не сдвинулись,
-			-- сразу иммитируем callback на прибытие, чтобы включить look.
+			--' Если стоим на конечной точке пути и с нее никуда не сдвинулись,
+			--' сразу иммитируем callback на прибытие, чтобы включить look.
 			self:waypoint_callback(self.object, nil, self.last_index)
 			return
 		end
-		-- Стоим на конечной точке пути, но неточно. Чтобы вернуться на ближайшую
-		-- точку пути, сбрасываем схему. Обратите внимаине, что здесь нельзя
-		-- просто вызвать update_movement_state, потому что мы УЖЕ были в
-		-- конечной точке пути и дальше идти некуда, а reset_scheme сбросит
-		-- настройки movement manager-а и выберет ближайшую точку, куда и пойдет.
+		--' Стоим на конечной точке пути, но неточно. Чтобы вернуться на ближайшую
+		--' точку пути, сбрасываем схему. Обратите внимаине, что здесь нельзя
+		--' просто вызвать update_movement_state, потому что мы УЖЕ были в
+		--' конечной точке пути и дальше идти некуда, а reset_scheme сбросит
+		--' настройки movement manager-а и выберет ближайшую точку, куда и пойдет.
 		self:reset(self.path_walk, self.path_walk_info,
 			self.path_look, self.path_look_info,
 			self.team,
@@ -429,7 +398,6 @@ end
 function move_mgr:turn_end_callback()
 	local syn = self.path_look_info[self.last_look_index]["syn"]
 	if syn then
-		--self.syn_signal_set_tm = time_global() + 1000
 		self.syn_signal = self.path_look_info[self.last_look_index]["sig"]
 		if not self.syn_signal then
 			abort("object '%s': path_look '%s': syn flag uset without sig flag", self.object:name(), self.path_look)
@@ -460,16 +428,16 @@ function move_mgr:turn_end_callback()
 				"callback function wasn't registered in move_mgr:reset()",
 				self.object:name(), self.path_look)
 		end
-		-- Отключаем таймер путем установки того же самого состояния, но без таймера,
-		-- затем вызываем callback.
-		-- Если callback вернул false, т.е. решил не вмешиваться в перемещение,
-		-- то включаем опять таймер.
-		-- Если callback вернул true - не восстанавливаем таймер т.к. это могли сделать в
-		-- самом callback-е.
+		--' Отключаем таймер путем установки того же самого состояния, но без таймера,
+		--' затем вызываем callback.
+		--' Если callback вернул false, т.е. решил не вмешиваться в перемещение,
+		--' то включаем опять таймер.
+		--' Если callback вернул true - не восстанавливаем таймер т.к. это могли сделать в
+		--' самом callback-е.
 		
-		-- 1) Отключаем таймер
+		--' 1) Отключаем таймер
 		state_mgr.set_state(self.object, self.cur_state_standing, nil, nil, nil)
-		-- 2) Вызываем callback
+		--' 2) Вызываем callback
 		if not self.move_cb_info then
 			abort("object '%s': path_look '%s': ret flag is set, but " ..
 				"callback function wasn't registered in move_mgr:reset()",
@@ -478,10 +446,10 @@ function move_mgr:turn_end_callback()
 
 		if self.move_cb_info.func(self.move_cb_info.obj, this.arrival_after_rotation, self.retval_after_rotation, self.last_index)
 		then
-			-- Callback решил перехватить управление перемещением, не восстанавливаем таймер
+			--' Callback решил перехватить управление перемещением, не восстанавливаем таймер
 			return
 		end
-		-- Callback не перехватил управление, нужно восстановить таймер:
+		--' Callback не перехватил управление, нужно восстановить таймер:
 		local look_pos = self.patrol_look:point(self.last_look_index)
 		self:update_standing_state(look_pos, anim_synced_snd)
 	end
@@ -501,39 +469,16 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		self.at_terminal_waypoint_flag = true
 	end
 
-	-- <ЗВУК>
+	--' <ЗВУК>
 	local suggested_snd = self.path_walk_info[index]["s"]
 	if suggested_snd then
-		local snd_from = self.path_walk_info[index]["sf"]
-		if snd_from then
-			abort("move_mgr: object '%s': 'sf' field is deprecated",
-				self.object:name())
-		end
-		local snd_to = self.path_walk_info[index]["st"]
-		if snd_to then
-			abort("move_mgr: object '%s': 'st' field is deprecated",
-				self.object:name())
-		end
-
 		local snd_prob = self.path_walk_info[index]["sp"]
 		if snd_prob then
 			snd_prob = tonumber(snd_prob)
 		else
 			snd_prob = 100
 		end
-
-		local suggested_snd_cont = self.path_walk_info[index]["sc"]
-		if suggested_snd_cont then
-			abort("move_mgr: object '%s': 'sc' field is deprecated",
-				self.object:name())
-		end
-
-		local snd_wait_anim = self.path_walk_info[index]["sa"]
-		if snd_wait_anim then
-			abort("move_mgr: object '%s': 'sa' field is deprecated",
-				self.object:name())
-		end
-		
+	
 		if snd_prob == 100 or snd_prob >= math.random(1, 100) then
 			xr_sound.set_sound(self.object, suggested_snd)
 		else
@@ -542,7 +487,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	else
 		xr_sound.set_sound(self.object, self.default_sound)
 	end
-	-- </ЗВУК>
+	--' </ЗВУК>
 
 	local suggested_state_moving = self.path_walk_info[index]["a"]
 	if suggested_state_moving then
@@ -574,7 +519,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	
 	if not self.patrol_look or
 	   (stop_probability and tonumber(stop_probability) < math.random(1, 100)) then
-		self:update_movement_state() -- идти дальше
+		self:update_movement_state() --' идти дальше
 		return
 	end
 
@@ -582,7 +527,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	local search_for = self.path_walk_info[index].flags
 
 	if search_for:get() == 0 then
-		self:update_movement_state() -- идти дальше
+		self:update_movement_state() --' идти дальше
 		return
 	end
 
@@ -619,7 +564,6 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			self.retval_after_rotation = nil
 		end
 
-		--printf("[%s] pt_chosen_idx == %d", self.object:name(), pt_chosen_idx)
 		if not suggested_snd then -- в path_walk звук не задан, проверить, задан ли он на точке
 			suggested_snd = self.path_look_info[pt_chosen_idx]["s"]
 			if suggested_snd then
@@ -645,8 +589,8 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 
 		self.state = state_standing
 
-		-- Сразу же стартовать update, не ждать execute. Тогда, если мы уже смотрим
-		-- в нужную сторону - не будет паузы в несколько миллисекунд на поворот.
+		--' Сразу же стартовать update, не ждать execute. Тогда, если мы уже смотрим
+		--' в нужную сторону - не будет паузы в несколько миллисекунд на поворот.
 		self:update()
 	else
 		abort("object '%s': path_walk '%s', index %d: cannot find corresponding point(s) on path_look '%s'",
