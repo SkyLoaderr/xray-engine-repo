@@ -99,17 +99,16 @@ void CPhysicsShellHolder::correct_spawn_pos()
 	activation_shape.set_rotation		(XFORM());
 	PPhysicsShell()->DisableCollision	();
 	activation_shape.Activate			(size,1,1.f,M_PI/8.f);
-//	VERIFY								(valid_pos(activation_shape.Position(),phBoundaries));
-	if (!valid_pos(activation_shape.Position(),phBoundaries)) {
-		CPHActivationShape				activation_shape;
-		activation_shape.Create			(c,size,this);
-		activation_shape.set_rotation	(XFORM());
-		activation_shape.Activate		(size,1,1.f,M_PI/8.f);
-//		VERIFY							(valid_pos(activation_shape.Position(),phBoundaries));
-	}
+////	VERIFY								(valid_pos(activation_shape.Position(),phBoundaries));
+//	if (!valid_pos(activation_shape.Position(),phBoundaries)) {
+//		CPHActivationShape				activation_shape;
+//		activation_shape.Create			(c,size,this);
+//		activation_shape.set_rotation	(XFORM());
+//		activation_shape.Activate		(size,1,1.f,M_PI/8.f);
+////		VERIFY							(valid_pos(activation_shape.Position(),phBoundaries));
+//	}
 
 	PPhysicsShell()->EnableCollision	();
-	VERIFY								(valid_pos(activation_shape.Position(),phBoundaries));
 
 	Fvector								ap = activation_shape.Position();
 #ifdef DEBUG
@@ -121,6 +120,7 @@ void CPhysicsShellHolder::correct_spawn_pos()
 		Msg("Object	pos	%f,%f,%f",Position().x,Position().y,Position().z);
 	}
 #endif // DEBUG
+	VERIFY								(valid_pos(activation_shape.Position(),phBoundaries));
 	
 	Fmatrix								trans;
 	trans.identity						();

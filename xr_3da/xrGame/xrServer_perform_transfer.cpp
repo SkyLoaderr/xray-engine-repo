@@ -51,18 +51,19 @@ void xrServer::Perform_reject(CSE_Abstract* what, CSE_Abstract* from, int delta)
 
 	NET_Packet				P;
 	u32						time = Device.dwTimeGlobal - delta;
-	u16						dummy;
+//	u16						dummy;
 
 	P.w_begin				(M_EVENT);
 	P.w_u32					(time);
 	P.w_u16					(GE_OWNERSHIP_REJECT);
 	P.w_u16					(from->ID);
 	P.w_u16					(what->ID);
+	P.w_u8					(1);
 
-	P.r_begin				(dummy);
-	P.r_u32					(time);
-	P.r_u16					(dummy);
-	P.r_u16					(dummy);
+//	P.r_begin				(dummy);
+//	P.r_u32					(time);
+//	P.r_u16					(dummy);
+//	P.r_u16					(dummy);
 	ClientID				clientID;
 	clientID.setBroadcast	();
 	Process_event_reject	(P,clientID,time,from->ID,what->ID);
