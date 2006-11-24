@@ -68,9 +68,9 @@ void CArtefactMerger::OnH_A_Chield()
 	inherited::OnH_A_Chield		();
 }
 
-void CArtefactMerger::OnH_B_Independent() 
+void CArtefactMerger::OnH_B_Independent(bool just_before_destroy) 
 {
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 }
 
 void CArtefactMerger::renderable_Render() 

@@ -33,26 +33,23 @@ void xrServer::Process_event_destroy	(NET_Packet& P, ClientID sender, u32 time, 
 	P2.w_begin	(M_EVENT_PACK);
 	//---------------------------------------------
 	// check if we have children 
-	if (!e_dest->children.empty())
-	{
+	if (!e_dest->children.empty()) {
 		if (!pEventPack) pEventPack = &P2;
 
 		while (!e_dest->children.empty())
 			Process_event_destroy		(P,sender,time,*e_dest->children.begin(), pEventPack);
 	};
 
-	if (0xffff == parent_id && NULL == pEventPack)
-	{
+	if (0xffff == parent_id && NULL == pEventPack) {
 		ClientID clientID;clientID.setBroadcast();
 		SendBroadcast				(clientID,P,MODE);
 	}
-	else
-	{
+	else {
 		NET_Packet	tmpP;
-		if (0xffff != parent_id && Process_event_reject(P,sender,time,parent_id,ID,false))
-		{
+		if (0xffff != parent_id && Process_event_reject(P,sender,time,parent_id,ID,false)) {
 			game->u_EventGen(tmpP, GE_OWNERSHIP_REJECT, parent_id);
 			tmpP.w_u16(id_dest);
+			tmpP.w_u8(1);
 		
 			if (!pEventPack) pEventPack = &P2;
 			

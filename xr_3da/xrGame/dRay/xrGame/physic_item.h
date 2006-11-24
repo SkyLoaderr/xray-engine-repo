@@ -26,7 +26,7 @@ public:
 	virtual void	reinit							();
 	virtual void	Load							(LPCSTR section);
 	virtual void	reload							(LPCSTR section);
-	virtual void	OnH_B_Independent				();
+	virtual void	OnH_B_Independent				(bool just_before_destroy);
 	virtual void	OnH_B_Chield					();
 	virtual void	UpdateCL						();
 	virtual BOOL	net_Spawn						(CSE_Abstract* DC);

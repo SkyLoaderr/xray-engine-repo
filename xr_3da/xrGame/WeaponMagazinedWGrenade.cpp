@@ -443,9 +443,9 @@ void CWeaponMagazinedWGrenade::OnAnimationEnd(u32 state)
 }
 
 
-void CWeaponMagazinedWGrenade::OnH_B_Independent()
+void CWeaponMagazinedWGrenade::OnH_B_Independent(bool just_before_destroy)
 {
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 
 	m_bPending		= false;
 	if (m_bGrenadeMode) {

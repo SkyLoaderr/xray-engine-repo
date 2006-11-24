@@ -198,9 +198,9 @@ void CCustomDetector::OnH_A_Chield()
 	inherited::OnH_A_Chield		();
 }
 
-void CCustomDetector::OnH_B_Independent() 
+void CCustomDetector::OnH_B_Independent(bool just_before_destroy) 
 {
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 	
 	m_pCurrentActor				= NULL;
 	m_pCurrentInvOwner			= NULL;

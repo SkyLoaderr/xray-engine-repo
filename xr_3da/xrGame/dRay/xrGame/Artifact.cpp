@@ -168,10 +168,10 @@ void CArtefact::OnH_A_Chield()
 	}
 }
 
-void CArtefact::OnH_B_Independent() 
+void CArtefact::OnH_B_Independent(bool just_before_destroy) 
 {
 	VERIFY(!ph_world->Processing());
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 
 	StartLights();
 	if (*m_sParticlesName) 

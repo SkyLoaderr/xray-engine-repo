@@ -43,9 +43,9 @@ void CScope::OnH_A_Chield()
 	inherited::OnH_A_Chield		();
 }
 
-void CScope::OnH_B_Independent() 
+void CScope::OnH_B_Independent(bool just_before_destroy) 
 {
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 }
 
 void CScope::renderable_Render() 

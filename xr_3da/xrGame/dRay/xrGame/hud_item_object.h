@@ -33,7 +33,7 @@ public:
 	virtual void		OnEvent				(NET_Packet& P, u16 type);
 	virtual void		OnH_A_Chield		();
 	virtual void		OnH_B_Chield		();
-	virtual void		OnH_B_Independent	();
+	virtual void		OnH_B_Independent	(bool just_before_destroy);
 	virtual void		OnH_A_Independent	();
 	virtual	BOOL		net_Spawn			(CSE_Abstract* DC);
 	virtual void		net_Destroy			();

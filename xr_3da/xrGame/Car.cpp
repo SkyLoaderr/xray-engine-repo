@@ -1669,7 +1669,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 
 			if(GetInventory()->Drop(smart_cast<CGameObject*>(O))) 
 			{
-				O->H_SetParent(0);
+				O->H_SetParent(0,P.r_eof() || !P.r_u8());
 			}
 		}break;
 	}

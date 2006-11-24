@@ -359,9 +359,9 @@ void CCustomRocket::OnH_A_Chield		()
 }
 
 
-void CCustomRocket::OnH_B_Independent() 
+void CCustomRocket::OnH_B_Independent(bool just_before_destroy) 
 {
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 	//-------------------------------------------
 	m_pOwner = H_Parent() ? smart_cast<CGameObject*>(H_Parent()->H_Root()) : NULL;
 	//-------------------------------------------

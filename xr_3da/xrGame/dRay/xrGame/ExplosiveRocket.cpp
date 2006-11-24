@@ -62,10 +62,10 @@ void CExplosiveRocket::OnH_A_Independent()
 	inherited::OnH_A_Independent();
 }
 
-void CExplosiveRocket::OnH_B_Independent() 
+void CExplosiveRocket::OnH_B_Independent(bool just_before_destroy) 
 {
-	CInventoryItem::OnH_B_Independent();
-	inherited::OnH_B_Independent();
+	CInventoryItem::OnH_B_Independent(just_before_destroy);
+	inherited::OnH_B_Independent(just_before_destroy);
 }
 
 void CExplosiveRocket::UpdateCL() 

@@ -84,12 +84,10 @@ void CBolt::Destroy()
 	inherited::Destroy();
 }
 
-void CBolt::OnH_B_Independent()
+void CBolt::activate_physic_shell	()
 {
-	//VERIFY(!m_pPhysicsShell);
-	//create_physic_shell();
-	inherited::OnH_B_Independent();
-	m_pPhysicsShell->SetAirResistance(.0001f);
+	inherited::activate_physic_shell	();
+	m_pPhysicsShell->SetAirResistance	(.0001f);
 }
 
 void CBolt::SetInitiator			(u16 id)

@@ -31,7 +31,7 @@ void CMPPlayersBag::OnEvent(NET_Packet& P, u16 type)
 			{
 				P.r_u16			(id);
 				CObject* O = Level().Objects.net_Find(id);
-				O->H_SetParent(0);
+				O->H_SetParent(0,P.r_eof() || !P.r_u8());
 			}break;
 
 	}

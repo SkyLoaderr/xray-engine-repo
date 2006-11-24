@@ -191,7 +191,7 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
 			if(inventory().Drop(smart_cast<CGameObject*>(Obj))) 
-				Obj->H_SetParent(0);
+				Obj->H_SetParent(0,P.r_eof() || !P.r_u8());
 			break;
 		case GE_TRANSFER_AMMO:
 			break;

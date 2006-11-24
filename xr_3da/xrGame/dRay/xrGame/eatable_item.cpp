@@ -80,7 +80,7 @@ void CEatableItem::OnH_A_Independent()
 	}	
 }
 
-void CEatableItem::OnH_B_Independent()
+void CEatableItem::OnH_B_Independent(bool just_before_destroy)
 {
 	if(!Useful()) 
 	{
@@ -89,7 +89,7 @@ void CEatableItem::OnH_B_Independent()
 		if (m_physic_item)
 			m_physic_item->m_ready_to_destroy	= true;
 	}
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 }
 
 void CEatableItem::UseBy (CEntityAlive* entity_alive)

@@ -639,11 +639,11 @@ void CWeapon::shedule_Update	(u32 dT)
 	inherited::shedule_Update	(dT);
 }
 
-void CWeapon::OnH_B_Independent	()
+void CWeapon::OnH_B_Independent	(bool just_before_destroy)
 {
 	RemoveShotEffector			();
 
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 
 	if (m_pHUD)
 		m_pHUD->Hide			();

@@ -65,10 +65,10 @@ void CHudItemObject::OnH_B_Chield		()
 	CHudItem::OnH_B_Chield				();
 }
 
-void CHudItemObject::OnH_B_Independent	()
+void CHudItemObject::OnH_B_Independent	(bool just_before_destroy)
 {
-	CHudItem::OnH_B_Independent				();
-	CInventoryItemObject::OnH_B_Independent	();
+	CHudItem::OnH_B_Independent				(just_before_destroy);
+	CInventoryItemObject::OnH_B_Independent	(just_before_destroy);
 }
 
 void CHudItemObject::OnH_A_Independent	()

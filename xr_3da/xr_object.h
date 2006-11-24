@@ -97,7 +97,7 @@ public:
 	IC const CObject*					H_Parent			()			const	{ return Parent;						}
 	CObject*							H_Root				()					{ return Parent?Parent->H_Root():this;	}
 	const CObject*						H_Root				()			const	{ return Parent?Parent->H_Root():this;	}
-	virtual CObject*					H_SetParent			(CObject* O);
+	CObject*							H_SetParent			(CObject* O, bool just_before_destroy = false);
 
 	// Geometry xform
 	virtual void						Center				(Fvector& C) const;
@@ -185,7 +185,7 @@ public:
 
 	// Active/non active
 	virtual void						OnH_B_Chield		();		// before
-	virtual void						OnH_B_Independent	();
+	virtual void						OnH_B_Independent	(bool just_before_destroy);
 	virtual void						OnH_A_Chield		();		// after
 	virtual void						OnH_A_Independent	();
 };

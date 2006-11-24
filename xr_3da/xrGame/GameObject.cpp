@@ -665,9 +665,9 @@ void CGameObject::OnH_B_Chield()
 	///PHSetPushOut();????
 }
 
-void CGameObject::OnH_B_Independent()
+void CGameObject::OnH_B_Independent(bool just_before_destroy)
 {
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 
 	setup_parent_ai_locations	(false);
 

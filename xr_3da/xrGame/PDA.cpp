@@ -136,9 +136,9 @@ void CPda::OnH_A_Chield()
 	inherited::OnH_A_Chield		();
 }
 
-void CPda::OnH_B_Independent() 
+void CPda::OnH_B_Independent(bool just_before_destroy) 
 {
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 	
 	//выключить
 	TurnOff();

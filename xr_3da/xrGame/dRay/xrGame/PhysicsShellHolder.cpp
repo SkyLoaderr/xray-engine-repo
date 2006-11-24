@@ -158,8 +158,7 @@ void CPhysicsShellHolder::activate_physic_shell()
 		if(!smart_cast<CCustomRocket*>(this)&&!smart_cast<CGrenade*>(this)) PPhysicsShell()->SetIgnoreDynamic();
 	}
 //	XFORM().set					(l_p1);
-#pragma todo("Dima to Kostya: fix this bug ASAP")
-//.	correct_spawn_pos();
+	correct_spawn_pos();
 	m_pPhysicsShell->set_LinearVel(l_fw);
 	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
 }

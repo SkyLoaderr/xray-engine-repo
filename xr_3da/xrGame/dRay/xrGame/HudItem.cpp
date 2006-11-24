@@ -266,7 +266,7 @@ void CHudItem::OnH_B_Chield		()
 	OnHiddenItem ();
 }
 
-void CHudItem::OnH_B_Independent	()
+void CHudItem::OnH_B_Independent	(bool just_before_destroy)
 {
 	SetHUDmode				(FALSE);
 

@@ -214,7 +214,7 @@ s32 CInventoryItem::Sort(PIItem )
 	return 0;
 }
 */
-void CInventoryItem::OnH_B_Independent	()
+void CInventoryItem::OnH_B_Independent	(bool just_before_destroy)
 {
 	UpdateXForm();
 	m_eItemPlace = eItemPlaceUndefined ;

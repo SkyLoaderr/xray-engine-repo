@@ -291,7 +291,7 @@ void CObject::renderable_Render	()
 	MakeMeCrow	();
 }
 
-CObject* CObject::H_SetParent	(CObject* new_parent)
+CObject* CObject::H_SetParent	(CObject* new_parent, bool just_before_destroy)
 {
 	if (new_parent==Parent)	return new_parent;
 
@@ -301,7 +301,7 @@ CObject* CObject::H_SetParent	(CObject* new_parent)
 
 	// if (Parent) Parent->H_ChildRemove	(this);
 	if (0==old_parent)	OnH_B_Chield		();	// before attach
-	else				OnH_B_Independent	(); // before detach
+	else				OnH_B_Independent	(just_before_destroy); // before detach
 	if (new_parent)		spatial_unregister	();
 	else				spatial_register	();
 	Parent				= new_parent;
@@ -323,7 +323,7 @@ void CObject::OnH_A_Independent	()
 {
 	setVisible	(true);
 }
-void CObject::OnH_B_Independent	()
+void CObject::OnH_B_Independent	(bool just_before_destroy)
 {
 }
 void CObject::MakeMeCrow			()

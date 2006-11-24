@@ -47,9 +47,9 @@ void CAntirad::OnH_A_Chield()
 	inherited::OnH_A_Chield		();
 }
 
-void CAntirad::OnH_B_Independent() 
+void CAntirad::OnH_B_Independent(bool just_before_destroy) 
 {
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 }
 
 void CAntirad::renderable_Render() 

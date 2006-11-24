@@ -121,7 +121,7 @@ void CWeaponAmmo::OnH_B_Chield()
 	inherited::OnH_B_Chield	();
 }
 
-void CWeaponAmmo::OnH_B_Independent() 
+void CWeaponAmmo::OnH_B_Independent(bool just_before_destroy) 
 {
 	if(!Useful()) {
 		
@@ -130,7 +130,7 @@ void CWeaponAmmo::OnH_B_Independent()
 		}
 		m_ready_to_destroy	= true;
 	}
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 }
 
 

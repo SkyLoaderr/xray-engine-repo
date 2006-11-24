@@ -77,10 +77,10 @@ void				CInventoryItemObject::Hit					(SHit* pHDS)
 	CInventoryItem::Hit(pHDS);
 }
 
-void CInventoryItemObject::OnH_B_Independent()
+void CInventoryItemObject::OnH_B_Independent(bool just_before_destroy)
 {
-	CInventoryItem::OnH_B_Independent	();
-	CPhysicItem::OnH_B_Independent		();
+	CInventoryItem::OnH_B_Independent	(just_before_destroy);
+	CPhysicItem::OnH_B_Independent		(just_before_destroy);
 }
 
 void CInventoryItemObject::OnH_A_Independent()

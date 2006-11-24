@@ -161,9 +161,9 @@ void CMissile::OnH_A_Chield()
 }
 
 
-void CMissile::OnH_B_Independent() 
+void CMissile::OnH_B_Independent(bool just_before_destroy) 
 {
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 
 	m_pHUD->Hide();
 
@@ -469,7 +469,7 @@ void CMissile::OnEvent(NET_Packet& P, u16 type)
 			{
 				break;
 			}
-			missile->H_SetParent(0);
+			missile->H_SetParent(0,P.r_eof() || !P.r_u8());
 			if (IsFakeMissile && OnClient()) 
 				missile->set_destroy_time(m_dwDestroyTimeMax);
 			break;

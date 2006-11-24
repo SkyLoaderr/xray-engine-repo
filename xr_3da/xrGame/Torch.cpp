@@ -260,9 +260,9 @@ void CTorch::OnH_A_Chield()
 	m_focus.set						(Position());
 }
 
-void CTorch::OnH_B_Independent	() 
+void CTorch::OnH_B_Independent	(bool just_before_destroy) 
 {
-	inherited::OnH_B_Independent	();
+	inherited::OnH_B_Independent	(just_before_destroy);
 	time2hide						= TIME_2_HIDE;
 
 	Switch						(false);

@@ -535,7 +535,7 @@ void CBaseMonster::OnEvent(NET_Packet& P, u16 type)
 			VERIFY		(O);
 
 			if (inventory().Drop(smart_cast<CGameObject*>(O)) && !O->getDestroy()) {
-				O->H_SetParent	(0);
+				O->H_SetParent	(0,P.r_eof() || !P.r_u8());
 				feel_touch_deny	(O,2000);
 
 				CSE_Abstract					*e	= Level().Server->game->get_entity_from_eid(ID()); 

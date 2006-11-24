@@ -35,7 +35,7 @@ public:
 	virtual void	Load					(LPCSTR section);
 	virtual	void	Hit						(SHit* pHDS);
 
-	virtual void	OnH_B_Independent		();
+	virtual void	OnH_B_Independent		(bool just_before_destroy);
 	virtual void	OnH_A_Independent		();
 	virtual void	OnH_B_Chield			();
 	virtual void	OnH_A_Chield			();

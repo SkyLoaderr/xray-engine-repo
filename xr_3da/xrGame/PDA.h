@@ -28,7 +28,7 @@ public:
 	virtual void 							net_Destroy				();
 
 	virtual void 							OnH_A_Chield			();
-	virtual void 							OnH_B_Independent		();
+	virtual void 							OnH_B_Independent		(bool just_before_destroy);
 
 	virtual void 							shedule_Update			(u32 dt);
 

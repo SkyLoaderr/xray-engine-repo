@@ -21,7 +21,7 @@ public:
 	virtual void 			net_Destroy							();
 	virtual void 			net_Relcase							(CObject* O );
 
-	virtual void 			OnH_B_Independent					();
+	virtual void 			OnH_B_Independent					(bool just_before_destroy);
 	virtual void 			OnH_A_Independent					();
 	virtual void 			OnH_A_Chield						();
 	

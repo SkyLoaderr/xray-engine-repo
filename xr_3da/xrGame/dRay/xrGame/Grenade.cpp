@@ -69,9 +69,9 @@ void CGrenade::net_Destroy()
 	CExplosive::net_Destroy				();
 }
 
-void CGrenade::OnH_B_Independent() 
+void CGrenade::OnH_B_Independent(bool just_before_destroy) 
 {
-	inherited::OnH_B_Independent();
+	inherited::OnH_B_Independent(just_before_destroy);
 }
 
 void CGrenade::OnH_A_Independent() 

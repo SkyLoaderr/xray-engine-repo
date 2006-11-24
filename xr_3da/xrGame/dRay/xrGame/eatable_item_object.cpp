@@ -68,10 +68,10 @@ void CEatableItemObject::OnH_A_Independent	()
 	CPhysicItem::OnH_A_Independent		();
 }
 
-void CEatableItemObject::OnH_B_Independent	()
+void CEatableItemObject::OnH_B_Independent	(bool just_before_destroy)
 {
-	CEatableItem::OnH_B_Independent		();
-	CPhysicItem::OnH_B_Independent		();
+	CEatableItem::OnH_B_Independent		(just_before_destroy);
+	CPhysicItem::OnH_B_Independent		(just_before_destroy);
 }
 
 void CEatableItemObject::OnH_B_Chield		()
