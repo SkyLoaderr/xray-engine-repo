@@ -36,10 +36,14 @@ active = mob_home@angar_gigant
 
 [mob_home@angar_gigant]
 path_home = home
-home_min_radius = 20
-home_max_radius = 25
+home_min_radius = 25
+home_max_radius = 30
+on_dist_to_actor_le_nvis = 30 | mob_home@angar_gigant_2 %=bar_arena_hit%
 
-
+[mob_home@angar_gigant_2]
+path_home = home
+home_min_radius = 25
+home_max_radius = 30
 
 [logic@com_center_tushkano]
 active = mob_home@com_center_tushkano
