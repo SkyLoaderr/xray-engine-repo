@@ -3,7 +3,7 @@
 		<title>storyline_escape_eliminate_gunslinger</title>
 		<objective>
 			<text>storyline_escape_eliminate_gunslinger</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_iconsTotal_storyline_eliminate_gunslinger</icon>
 			<infoportion_fail>cit_fail_first_task</infoportion_fail>
 		</objective>
 		<objective>
