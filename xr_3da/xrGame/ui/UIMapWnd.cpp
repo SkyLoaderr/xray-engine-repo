@@ -24,11 +24,6 @@
 #include <dinput.h>				//remove me !!!
 #include "../../xr_input.h"		//remove me !!!
 
-#include "../gameTaskmanager.h" //remove me !!!
-#include "../gameTask.h"		//remove me !!!
-#include "../actor.h"			//remove me !!!
-
-
 const				SCROLLBARS_SHIFT			= 5;
 const				VSCROLLBAR_STEP				= 20; // В пикселях
 const				HSCROLLBAR_STEP				= 20; // В пикселях
@@ -43,7 +38,7 @@ CUIMapWnd::CUIMapWnd()
 	m_flags.zero			();
 	m_currentZoom			= 1.0f;
 	m_hint					= NULL;
-	m_selected_location		= NULL;
+//.	m_selected_location		= NULL;
 	m_text_hint				= NULL;
 }
 
@@ -247,9 +242,6 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	Register						(m_GlobalMap);
 	m_ActionPlanner					= xr_new<CMapActionPlanner>();
 	m_ActionPlanner->setup			(this);
-
-//	OnToolActorClicked	(NULL,NULL);
-//	SetTargetMap					(m_GlobalMap);
 	m_flags.set						(lmFirst,TRUE);
 }
 
@@ -370,10 +362,10 @@ bool CUIMapWnd::OnKeyboardHold(int dik)
 				Fvector2 pos_delta; pos_delta.set(0.0f, 0.0f);
 
 
-				if(dik==DIK_UP)					pos_delta.y	-= 1.0f;
-				if(dik==DIK_DOWN)				pos_delta.y	+= 1.0f;
-				if(dik==DIK_LEFT)				pos_delta.x	-= 1.0f;
-				if(dik==DIK_RIGHT)				pos_delta.x	+= 1.0f;
+				if(dik==DIK_UP)					pos_delta.y	+= 1.0f;
+				if(dik==DIK_DOWN)				pos_delta.y	-= 1.0f;
+				if(dik==DIK_LEFT)				pos_delta.x	+= 1.0f;
+				if(dik==DIK_RIGHT)				pos_delta.x	-= 1.0f;
 				GlobalMap()->MoveWndDelta		(pos_delta);
 				UpdateScroll					();
 				m_hint->SetOwner				(NULL);
@@ -409,17 +401,23 @@ bool CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 	Fvector2 cursor_pos = GetUICursor()->GetPos();
 
 	if(GlobalMap() && !GlobalMap()->Locked() && ActiveMapRect().in( cursor_pos ) ){
-		switch (mouse_action){
+		switch (mouse_action)
+		{
 		case WINDOW_MOUSE_MOVE:
-			if( pInput->iGetAsyncBtnState(1) ){
+			if( pInput->iGetAsyncBtnState(0) ){
 				GlobalMap()->MoveWndDelta	(GetUICursor()->GetPosDelta());
 				UpdateScroll					();
 				m_hint->SetOwner				(NULL);
 				return							true;
 			}
 		break;
+/*
 		case WINDOW_LBUTTON_DOWN:
-			if (m_flags.is_any(lmZoomIn+lmZoomOut)){
+			if (	((mouse_action==WINDOW_LBUTTON_DOWN)&&(m_flags.is_any(lmZoomIn+lmZoomOut))) || 
+					(mouse_action==WINDOW_MOUSE_WHEEL_DOWN) ||
+					(mouse_action==WINDOW_MOUSE_WHEEL_UP)	
+				)
+			{
 				CUIGlobalMap* gm				= GlobalMap();
 				if(m_flags.test(lmZoomIn))		SetZoom(GetZoom()*1.5f);
 				else							SetZoom(GetZoom()/1.5f);
@@ -432,27 +430,65 @@ bool CUIMapWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 				return							true;
 			}
 		break;
+
 		case WINDOW_MOUSE_WHEEL_UP:
 			m_UIMainScrollV->TryScrollDec		();
-			m_hint->SetOwner				(NULL);
+			m_hint->SetOwner					(NULL);
 			return								true;
 		break;
+
 		case WINDOW_MOUSE_WHEEL_DOWN:
-			m_UIMainScrollV->TryScrollInc();
-			m_hint->SetOwner				(NULL);
+			m_UIMainScrollV->TryScrollInc		();
+			m_hint->SetOwner					(NULL);
 			return								true;
 		break;
+*/
 		}	
 	};
-	return								false;
+
+	if (	((mouse_action==WINDOW_LBUTTON_DOWN)&&(m_flags.is_any(lmZoomIn+lmZoomOut)))		|| 
+			(mouse_action==WINDOW_MOUSE_WHEEL_DOWN)											||
+			(mouse_action==WINDOW_MOUSE_WHEEL_UP)	
+		)
+		{
+			bool b_zoom_in =	(mouse_action==WINDOW_LBUTTON_DOWN && m_flags.test(lmZoomIn)) || 
+								(mouse_action==WINDOW_MOUSE_WHEEL_DOWN);
+
+			if(mouse_action==WINDOW_MOUSE_WHEEL_UP)
+			{
+				Msg("up");
+			}
+			if(mouse_action==WINDOW_MOUSE_WHEEL_DOWN)
+			{
+				Msg("down");
+			}
+			CUIGlobalMap* gm				= GlobalMap();
+			float _prev_zoom				= GetZoom();
+			if(b_zoom_in)					SetZoom(GetZoom()*1.5f);
+			else							SetZoom(GetZoom()/1.5f);
+
+			if(!fsimilar(_prev_zoom, GetZoom()))
+			{
+				m_tgtCenter						= cursor_pos;
+				Fvector2 _p;					gm->GetAbsolutePos(_p);
+				m_tgtCenter.sub					(_p);
+				m_tgtCenter.div					(gm->GetCurrentZoom());
+				ResetActionPlanner				();
+				m_hint->SetOwner				(NULL);
+			}
+			return								true;
+		}
+
+
+	return										false;
 }
 
 void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
-	CUIWndCallback::OnEvent(pWnd, msg, pData);
+	CUIWndCallback::OnEvent						(pWnd, msg, pData);
 }
 
-CUICustomMap*	CUIMapWnd::GetMapByIdx				(u16 idx)
+CUICustomMap*	CUIMapWnd::GetMapByIdx(u16 idx)
 {
 	VERIFY							(idx!=u16(-1));
 	GameMapsPairIt it				= m_GameMaps.begin();
@@ -468,7 +504,6 @@ u16 CUIMapWnd::GetIdxByName			(const shared_str& map_name)
 		return						u16(-1);
 	}
 	return (u16)std::distance		(m_GameMaps.begin(),it);
-	
 }
 
 void CUIMapWnd::UpdateScroll()
@@ -490,6 +525,7 @@ void CUIMapWnd::OnScrollV()
 		GlobalMap()->SetWndPos	(w_pos.x,float(-s_pos));
 	}
 }
+
 void CUIMapWnd::OnScrollH()
 {
 	if (GlobalMap()){
@@ -509,6 +545,7 @@ void CUIMapWnd::Update()
 
 void CUIMapWnd::SetZoom	( float value)
 {
+	float _prev_zoom = m_currentZoom;
 	m_currentZoom	= value;
 	clamp		(m_currentZoom, GlobalMap()->GetMinZoom(), GlobalMap()->GetMaxZoom());
 }
@@ -718,6 +755,7 @@ void CUIMapWnd::HideHint					(CUIWindow* parent)
 		m_hint->SetOwner	(NULL);
 }
 
+/*
 void CUIMapWnd::Select				(CMapLocation* ml)
 {
 	m_selected_location		= NULL;
@@ -725,14 +763,13 @@ void CUIMapWnd::Select				(CMapLocation* ml)
 	if(!ml)		return;
 	if(ml->CanBeSelected())
 		m_selected_location = ml;
-/*
+
 	if(!!m_flags.test(lmUserSpotRemove) && ml->CanBeUserRemoved() )
 		RemoveSpot	();
 
 	if(	!!m_flags.test(lmHighlightSpot))
 		HighlightSpot	();
-*/
-}
+}*/
 
 void CUIMapWnd::Hint					(const shared_str& text)
 {

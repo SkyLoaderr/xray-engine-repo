@@ -44,17 +44,15 @@ void CMapSpot::Update()
 	}
 }
 
-void CMapSpot::Draw()
-{
-	inherited::Draw();
-}
-
 bool CMapSpot::OnMouseDown		(bool left_button)
 {
+/*
 	if(left_button){
 		GetMessageTarget()->SendMessage(this, MAP_SELECT_SPOT);
 		return true;
 	}else
+		return false;
+*/
 		return false;
 }
 
@@ -74,16 +72,6 @@ CMapSpotPointer::CMapSpotPointer(CMapLocation* ml)
 
 CMapSpotPointer::~CMapSpotPointer()
 {
-}
-
-void CMapSpotPointer::Draw()
-{
-	inherited::Draw();
-}
-
-void CMapSpotPointer::Update()
-{
-	inherited::Update();
 }
 
 LPCSTR CMapSpotPointer::GetHint()
@@ -183,9 +171,4 @@ void CMiniMapSpot::Draw()
 	};
 
 	inherited::Draw();
-}
-
-void CMiniMapSpot::Update()
-{
-	inherited::Update();
 }

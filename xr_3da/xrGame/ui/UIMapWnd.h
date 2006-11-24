@@ -53,7 +53,7 @@ private:
 	CUIFrameLineWnd*			UIMainMapHeader;
 	CUI3tButton*				m_ToolBar[eMaxBtn];
 	CUIMapHint*					m_hint;
-	CMapLocation*				m_selected_location;
+//.	CMapLocation*				m_selected_location;
 	CUIStatic*					m_text_hint;
 
 	void						OnScrollV				();
@@ -103,7 +103,7 @@ public:
 	void						SetTargetMap			(const shared_str& name, const Fvector2& pos, bool bZoomIn = false);
 	void						SetTargetMap			(const shared_str& name, bool bZoomIn = false);
 //.	void						AddUserSpot				(CUILevelMap*);
-	void						Select					(CMapLocation* ml);
+//.	void						Select					(CMapLocation* ml);
 
 	Frect						ActiveMapRect			()		{Frect r; m_UILevelFrame->GetAbsoluteRect(r); return r;};
 	void						AddMapToRender			(CUICustomMap*);

@@ -217,10 +217,12 @@ void	CUICustomMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
 bool CUIGlobalMap::OnMouse	(float x, float y, EUIMessages mouse_action)
 {
 	if(inherited::OnMouse(x,y,mouse_action)) return true;
-	if(mouse_action==WINDOW_MOUSE_MOVE){
-		if(MapWnd()&&(FALSE==pInput->iGetAsyncBtnState(1))){
-			MapWnd()->Hint(MapName());
-			return true;
+	if(mouse_action==WINDOW_MOUSE_MOVE && (FALSE==pInput->iGetAsyncBtnState(0)))
+	{
+		if( MapWnd() )
+		{
+			MapWnd()->Hint	(MapName());
+			return			true;
 		}
 	}
 	return false;
@@ -459,24 +461,25 @@ bool CUILevelMap::OnMouse	(float x, float y, EUIMessages mouse_action)
 {
 	if (inherited::OnMouse(x,y,mouse_action))	return true;
 	if (MapWnd()->GlobalMap()->Locked())		return true;
+/*
 	if (MapWnd()->m_flags.is_any(CUIMapWnd::lmZoomIn+CUIMapWnd::lmZoomOut))	return false;
 
-	if (mouse_action == WINDOW_LBUTTON_DOWN){			
-/*
+	if (mouse_action == WINDOW_LBUTTON_DOWN)
+	{
 		if (MapWnd()->m_flags.test(CUIMapWnd::lmUserSpotAdd) )
 			MapWnd()->AddUserSpot(this);
 		else
-*/
-			if(fsimilar(MapWnd()->GlobalMap()->GetCurrentZoom(), MapWnd()->GlobalMap()->GetMinZoom(),EPS_L) )
-				MapWnd()->SetTargetMap( this, true );
-
+		if(fsimilar(MapWnd()->GlobalMap()->GetCurrentZoom(), MapWnd()->GlobalMap()->GetMinZoom(),EPS_L) )
+			MapWnd()->SetTargetMap( this, true );
 		return true;
 	};
-
-	if(mouse_action==WINDOW_MOUSE_MOVE){
-		if(MapWnd()&&(FALSE==pInput->iGetAsyncBtnState(1))){
-			MapWnd()->Hint(MapName());
-			return true;
+*/
+	if(mouse_action==WINDOW_MOUSE_MOVE && (FALSE==pInput->iGetAsyncBtnState(0)) )
+	{
+		if( MapWnd() )
+		{
+			MapWnd()->Hint	(MapName());
+			return			true;
 		}
 	}
 
@@ -493,12 +496,14 @@ void	CUILevelMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
 	}else
 	if(msg==MAP_HIDE_HINT){
 		MapWnd()->HideHint(pWnd);
-	}else
+	}
+	/*
+	else
 	if(msg==MAP_SELECT_SPOT){
 		CMapSpot* sp =smart_cast<CMapSpot*>(pWnd);VERIFY(sp);
 		MapWnd()->Select(sp->MapLocation());
 	}	
-
+*/
 }
 
 void CUILevelMap::OnFocusLost			()

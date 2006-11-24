@@ -17,7 +17,6 @@ public:
 	CMapLocation*			MapLocation						()							{return m_map_location;}
 	virtual LPCSTR			GetHint							();
 	virtual		void		Update							();
-	virtual		void		Draw							();
 	virtual		bool		OnMouseDown						(bool left_button = true);
 	virtual		void		OnFocusLost						();
 };
@@ -30,8 +29,6 @@ class CMapSpotPointer :public CMapSpot
 public:
 							CMapSpotPointer					(CMapLocation*);
 	virtual					~CMapSpotPointer				();
-	virtual		void		Draw							();
-	virtual		void		Update							();
 	virtual		LPCSTR		GetHint							();
 };
 
@@ -45,5 +42,4 @@ public:
 	virtual					~CMiniMapSpot					();
 	virtual		void		Load							(CUIXml* xml, LPCSTR path);
 	virtual		void		Draw							();
-	virtual		void		Update							();
 };
