@@ -361,7 +361,7 @@ function activate_by_section(npc, ini, section, loading)
 		-- schemes[scheme] даст имя файла (модуля), в котором реализована схема
 		-- _G[] даст указатель на неймспейс (таблицу) этого модуля
 		local filename = schemes[scheme]
-		if not filename then
+		if filename == nil then
 			abort("xr_logic: scheme '%s' is not registered in modules.script", scheme)
 		end
 		printf("_bp: calling module('%s')", filename)
