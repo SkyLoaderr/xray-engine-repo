@@ -1,35 +1,3 @@
-function calculate_predicate(npc, tbl)
-	local parent = get_parent(npc)
-	local aa = alife()
-
-	if tbl.parent ~= nil then
-		if tbl.parent ~= parent then return false end
-	end
-	if tbl.community ~= nil then
-		if tbl.community ~= db.actor:character_community() then return false end
-	end
-	if tbl.condlist ~= nil then
-		if xr_logic.pick_section_from_condlist(db.actor, db.actor, tbl.condlist) ~= "true" then return false end
-	end
-
-
-	-- Проверка что квест еще не выдан
-	if active_task[tbl.type] ~= nil then
-		return false
-	end
-	
-	-- Проверка по времени последнего выполнения/проваливания
-	if tbl.last_time ~= nil and game.get_game_time():diffSec(tbl.last_time) < 172800 then
-		return false
-	end
-
-	return true
-end
-
-
---'------------------------------------------------------------------------------
---' NEW RANDOM TASK
---'------------------------------------------------------------------------------
 local random_task = nil
 
 local parent_by_story = {
@@ -506,7 +474,7 @@ function CRandomTask:check_task_props(task_id)
 				self.task_info[task_id].enabled_props = true
 				return
 			else
-				tbl.target_objects[k] = nil
+				self.task_info[task_id].target_objects[k] = nil
 			end
 		end
 		self.task_info[task_id].enabled_props = false
@@ -516,7 +484,7 @@ function CRandomTask:check_task_props(task_id)
 			self.task_info[task_id].enabled_props = false
 			return
 		end
-		local obj = alife():object(tbl.target_objects)
+		local obj = alife():object(self.task_info[task_id].target_objects)
 		if obj ~= nil then
 			self.task_info[task_id].enabled_props = true
 			return
