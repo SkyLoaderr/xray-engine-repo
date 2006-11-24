@@ -431,6 +431,9 @@ function CRandomTask:task_callback(p1, p2, state)
 		return
 	end
 
+	if self.active_task_by_type[p1] == nil then
+		return
+	end
 
 	if state == task.completed then
 		self.task_info[self.active_task_by_type[p1]].status = "normal"
