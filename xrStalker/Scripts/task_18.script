@@ -1,6 +1,9 @@
 function main ()
 
 local infos_table = {"esc_kill_gunslinger",
+"cit_jail_actor_wake",
+"cit_jail_doctor_pryp_task",
+"esc_find_doctor_start",
 "storyline_actor_start",
 "global_dialogs",
 "level_changer_icons",
