@@ -37,6 +37,7 @@ enum {
 	mtParticles						= (1ul<<17ul),
 
 	rsCameraPos						= (1ul<<18ul),
+	rsR2							= (1ul<<19ul),
 
 	// 20-32 bit - reserved to Editor
 };

@@ -2,9 +2,14 @@
 #define xrDebug_macrosH
 #pragma once
 
-#ifndef __BORLANDC__
+//.#ifndef __BORLANDC__
 	// ---==( Extended Debugging Support (R) )==---
+#ifndef __BORLANDC__
 #	define DEBUG_INFO					__FILE__,__LINE__,__FUNCTION__
+#else
+#	define DEBUG_INFO					__FILE__,__LINE__,__FILE__
+#endif
+
 #	define R_ASSERT(expr)				do {static bool ignore_always = false; if (!ignore_always && !(expr)) ::Debug.fail(#expr,DEBUG_INFO,ignore_always);} while(0)
 #	define R_ASSERT2(expr,e2)			do {static bool ignore_always = false; if (!ignore_always && !(expr)) ::Debug.fail(#expr,e2,DEBUG_INFO,ignore_always);} while(0)
 #	define R_ASSERT3(expr,e2,e3)		do {static bool ignore_always = false; if (!ignore_always && !(expr)) ::Debug.fail(#expr,e2,e3,DEBUG_INFO,ignore_always);} while(0)
@@ -35,6 +40,7 @@
 #		define VERIFY4(expr, e2, e3, e4)
 #		define CHK_DX(a) a
 #	endif
+/*
 #else // __BORLANDC__
 	// ---==( Extended Debugging Support (R) )==---
 #	define R_ASSERT(expr) if (!(expr)) ::Debug.fail(#expr,__FILE__, __LINE__)
@@ -61,7 +67,7 @@
 #		define CHK_DX(a) a
 #	endif
 #endif // __BORLANDC__
-
+*/
 //---------------------------------------------------------------------------------------------
 // FIXMEs / TODOs / NOTE macros
 //---------------------------------------------------------------------------------------------

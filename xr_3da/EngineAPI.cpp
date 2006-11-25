@@ -34,7 +34,7 @@ void CEngineAPI::Initialize(void)
 	// render
 	LPCSTR			r1_name	= "xrRender_R1.dll";
 	LPCSTR			r2_name	= "xrRender_R2.dll";
-	if (g_r2.test(1))	{
+	if (psDeviceFlags.test(rsR2))	{
 		// try to initialize R2
 		Log				("Loading DLL:",	r2_name);
 		hRender			= LoadLibrary		(r2_name);
