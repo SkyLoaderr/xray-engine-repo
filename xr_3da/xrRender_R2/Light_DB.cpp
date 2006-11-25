@@ -143,12 +143,21 @@ void			CLight_DB::Update			()
 		light*	_sun_original		= (light*) sun_original._get();
 		light*	_sun_adapted		= (light*) sun_adapted._get();
 		CEnvDescriptor&	E			= g_pGamePersistent->Environment.CurrentEnv;
+		VERIFY						(_valid(E.sun_dir));
+		VERIFY2						(E.sun_dir.y<0,"Invalid sun direction settings in evironment-config");
 		Fvector						OD,OP,AD,AP;
 		OD.set						(E.sun_dir).normalize			();
 		OP.mad						(Device.vCameraPosition,OD,-500.f);
-		AD.set(0,-1.75f,0).add		(E.sun_dir).normalize			();
+		AD.set(0,-.75f,0).add		(E.sun_dir);
+
+		// for some reason E.sun_dir can point-up
+		int		counter = 0;
+		while	(AD.magnitude()<0.001 && counter<10)	{
+			AD.add(E.sun_dir); counter++;
+		}
+		AD.normalize				();
 		AP.mad						(Device.vCameraPosition,AD,-500.f);
-		sun_original->set_rotation	(OD,_sun_original->right		);
+		sun_original->set_rotation	(OD,_sun_original->right	);
 		sun_original->set_position	(OP);
 		sun_original->set_color		(E.sun_color.x,E.sun_color.y,E.sun_color.z);
 		sun_original->set_range		(600.f);
