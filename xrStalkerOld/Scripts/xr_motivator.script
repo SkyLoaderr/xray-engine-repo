@@ -65,7 +65,7 @@ function motivator_binder:reinit()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_spawn(sobject)
-	--printf("motivator_binder:net_spawn(): self.object:name()='%s'", self.object:name())
+	printf("motivator_binder:net_spawn(): self.object:name()='%s'", self.object:name())
 	--memusage.collect_info(self.object, "netspawn_start")
 	if not object_binder.net_spawn(self, sobject) then
 		return false
