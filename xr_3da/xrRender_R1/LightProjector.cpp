@@ -200,9 +200,11 @@ void CLightProjector::calculate	()
 		v_C.y					+=	P_cam_dist;
 		v_N.set					(0,0,1);
 		VERIFY					(_valid(v_C) && _valid(v_Cs) && _valid(v_N));
-#ifdef DEBUG
-		Fvector v;
+
+		// validate
+		Fvector		v;
 		v.sub		(v_Cs,v_C);;
+#ifdef DEBUG
 		if ((v.x*v.x+v.y*v.y+v.z*v.z)<=flt_zero)	{
 			CObject* OO = dynamic_cast<CObject*>(R.O);
 			Msg("Object[%s] Visual[%s] has invalid position. ",*OO->cName(),*OO->cNameVisual());
@@ -229,9 +231,17 @@ void CLightProjector::calculate	()
 				Log("bone_matrix",tr);
 			}
 			Log("end-------");
-
 		}
 #endif
+		// handle invalid object-bug
+		if ((v.x*v.x+v.y*v.y+v.z*v.z)<=flt_zero)	{
+			// invalidate record, so that object will be unshadowed, but doesn't crash
+			R.dwTimeValid			= Device.dwTimeGlobal;
+			LT->shadow_recv_frame	= Device.dwFrame-1;
+			LT->shadow_recv_slot	= -1; 
+			continue				;
+		}
+
 		mView.build_camera		(v_C,v_Cs,v_N);
 		RCache.set_xform_view	(mView);
 
