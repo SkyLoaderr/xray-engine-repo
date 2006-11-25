@@ -1249,7 +1249,6 @@ function save_obj(obj, packet)
 	printf("save_obj: ini_filename='%s'", utils.to_str(st.ini_filename))
 	printf("save_obj: section_logic='%s'", utils.to_str(st.section_logic))
 	printf("save_obj: active_section='%s'", utils.to_str(st.active_section))
-	--printf("save_obj: active_scheme='%s'", utils.to_str(st.active_scheme))
 	printf("save_obj: gulag_name='%s'", utils.to_str(st.gulag_name))
 
 	if st.ini_filename then
