@@ -484,13 +484,15 @@ function CRandomTask:check_task_props(task_id)
 			self.task_info[task_id].enabled_props = false
 			return
 		end
-		local obj = alife():object(self.task_info[task_id].target_objects)
-		if obj ~= nil then
-			self.task_info[task_id].enabled_props = true
+		for k,v in pairs(self.task_info[task_id].target_objects) do
+			local obj = alife():object(v)
+			if obj ~= nil then
+				self.task_info[task_id].enabled_props = true
+				return
+			end	
+			self.task_info[task_id].enabled_props = false
 			return
-		end	
-		self.task_info[task_id].enabled_props = false
-		return
+		end
 	else
 		self.task_info[task_id].enabled_props = true
 		return		
