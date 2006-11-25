@@ -69,7 +69,7 @@ static INT_PTR CALLBACK DialogProc	( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 	return TRUE;
 }
 
-void xrDebug::backend(const char* reason, const char *file, int line) 
+void xrDebug::backend(const char* reason, const char* expression, const char *argument0, const char *argument1, const char* file, int line, const char *function, bool &ignore_always) 
 {
 	static	xrCriticalSection	CS;
 
@@ -130,47 +130,47 @@ LPCSTR xrDebug::error2string	(long code)
 	return		result	;
 }
 
-void xrDebug::error		(long hr, const char* expr, const char *file, int line)
+void xrDebug::error		(long hr, const char* expr, const char *file, int line, const char *function, bool &ignore_always)
 {
-	string1024	reason;
-	sprintf		(reason,"*** API-failure ***\n%s\nExpression: %s",error2string(hr),expr);
-	backend		(reason,file,line);
+	backend		(error2string(hr),expr,0,0,file,line,function,ignore_always);
 }
 
-void xrDebug::fail		(const char *e1, const char *file, int line)
+void xrDebug::fail		(const char *e1, const char *file, int line, const char *function, bool &ignore_always)
 {
-	string1024	reason;
-	sprintf		(reason,"*** Assertion failed ***\nExpression: %s\n",e1);
-	backend		(reason,file,line);
+	backend		("assertion failed",e1,0,0,file,line,function,ignore_always);
 }
-void xrDebug::fail		(const char *e1, const char *e2, const char *file, int line)
+
+void xrDebug::fail		(const char *e1, const char *e2, const char *file, int line, const char *function, bool &ignore_always)
 {
-	string1024	reason;
-	sprintf		(reason,"*** Assertion failed ***\nExpression: %s\n%s",e1,e2);
-	backend		(reason,file,line);
+	backend		(e1,e2,0,0,file,line,function,ignore_always);
 }
-void xrDebug::fail		(const char *e1, const char *e2, const char *e3, const char *file, int line)
+
+void xrDebug::fail		(const char *e1, const char *e2, const char *e3, const char *file, int line, const char *function, bool &ignore_always)
 {
-	string1024	reason;
-	sprintf		(reason,"*** Assertion failed ***\nExpression: %s\n%s\n%s",e1,e2,e3);
-	backend		(reason,file,line);
+	backend		(e1,e2,e3,0,file,line,function,ignore_always);
 }
-void __cdecl xrDebug::fatal(const char* F,...)
+
+void xrDebug::fail		(const char *e1, const char *e2, const char *e3, const char *e4, const char *file, int line, const char *function, bool &ignore_always)
+{
+	backend		(e1,e2,e3,e4,file,line,function,ignore_always);
+}
+
+void __cdecl xrDebug::fatal(const char *file, int line, const char *function, const char* F,...)
 {
 	string1024	buffer;
-	string1024	reason;
 
 	va_list		p;
 	va_start	(p,F);
 	vsprintf	(buffer,F,p);
 	va_end		(p);
 
-	sprintf		(reason,"*** Fatal Error ***\n%s",buffer);
-	backend		(reason,0,0);
+	bool		ignore_always = true;
+
+	backend		("fatal error","<no expression>",buffer,0,file,line,function,ignore_always);
 }
 int __cdecl _out_of_memory	(size_t size)
 {
-	Debug.fatal				("Out of memory. Memory request: %d K",size/1024);
+	Debug.fatal				(DEBUG_INFO,"Out of memory. Memory request: %d K",size/1024);
 	return					1;
 }
 void __cdecl _terminate		()
@@ -285,7 +285,8 @@ LONG WINAPI UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 
 	string1024		reason;
 	sprintf			(reason,"*** Internal Error ***\n%s",szResult);
-	Debug.backend	(reason,0,0);
+    bool ref		= false;
+	Debug.backend	(reason,0,0,0,0,0,0,ref);
 
 	return retval;
 }

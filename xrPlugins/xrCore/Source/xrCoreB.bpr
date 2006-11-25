@@ -6,7 +6,7 @@
     <PROJECT value="x:\xrCoreB.dll"/>
     <OBJFILES value="Intermediate\xrMemory_pso_Fill32.obj Intermediate\_math.obj 
       Intermediate\_sphere.obj Intermediate\cpuid.obj Intermediate\stdafx.obj 
-      Intermediate\xrCore.obj Intermediate\xrDebug.obj Intermediate\xrMemory.obj 
+      Intermediate\xrCore.obj Intermediate\xrMemory.obj 
       Intermediate\xrMemory_pso_Copy.obj Intermediate\xrMemory_pso_Fill.obj 
       Intermediate\_compressed_normal.obj Intermediate\xrMemory_align.obj 
       Intermediate\LzHuf.obj Intermediate\log.obj Intermediate\FS.obj 
@@ -18,7 +18,7 @@
       Intermediate\xrstring.obj Intermediate\xrsharedmem.obj 
       Intermediate\_std_extensions.obj Intermediate\crc32.obj 
       Intermediate\xrSyncronize.obj Intermediate\ELocatorAPI.obj 
-      Intermediate\LocatorAPI_defs.obj"/>
+      Intermediate\LocatorAPI_defs.obj Intermediate\xrDebug.obj"/>
     <RESFILES value="Intermediate\xrCore.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -72,7 +72,6 @@
       <FILE FILENAME="cpuid.cpp" FORMNAME="" UNITNAME="cpuid.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrCore.cpp" FORMNAME="" UNITNAME="xrCore.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="xrDebug.cpp" FORMNAME="" UNITNAME="xrDebug.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrMemory.cpp" FORMNAME="" UNITNAME="xrMemory.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrMemory_pso_Copy.cpp" FORMNAME="" UNITNAME="xrMemory_pso_Copy.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrMemory_pso_Fill.cpp" FORMNAME="" UNITNAME="xrMemory_pso_Fill.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -140,7 +139,6 @@
       <FILE FILENAME="xr_trims.h" FORMNAME="" UNITNAME="xr_trims.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrCore.h" FORMNAME="" UNITNAME="xrCore.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrCPU_Pipe.h" FORMNAME="" UNITNAME="xrCPU_Pipe.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="xrDebug.h" FORMNAME="" UNITNAME="xrDebug.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrDebug_macros.h" FORMNAME="" UNITNAME="xrDebug_macros.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrMemory.h" FORMNAME="" UNITNAME="xrMemory.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="xrMemory_align.h" FORMNAME="" UNITNAME="xrMemory_align.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -159,6 +157,7 @@
       <FILE FILENAME="ELocatorAPI.cpp" FORMNAME="" UNITNAME="ELocatorAPI" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LocatorAPI_defs.h" FORMNAME="" UNITNAME="LocatorAPI_defs.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LocatorAPI_defs.cpp" FORMNAME="" UNITNAME="LocatorAPI_defs" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xrDebug.cpp" FORMNAME="" UNITNAME="xrDebug" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

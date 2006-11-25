@@ -96,7 +96,7 @@ void TItemList::OnDestroy()
 void TItemList::ClearParams(TElTreeItem* node)
 {
 	if (node){
-    	Debug.fatal("ClearParams - node");
+    	FATAL("ClearParams - node");
     }else{
         // save last selected items
         last_selected_items.clear();

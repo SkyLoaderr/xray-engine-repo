@@ -202,22 +202,23 @@ Item1=XRLC_Intermediate
 Item2=xrLC_Options
 
 [HistoryLists\hlFinalOutputDir]
-Count=5
+Count=6
 Item0=x:\
-Item1=x:\xrCoreB.dll\
-Item2=x:\xrCoreB.dll
-Item3=!run\
-Item4=!run
+Item1=x:\build\
+Item2=x:\xrCoreB.dll\
+Item3=x:\xrCoreB.dll
+Item4=!run\
+Item5=!run
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl;P:\Editors\xrEProps\
 
 [Parameters]
-RunParams=
+RunParams=-dsound
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\LevelEditor.exe
+HostApplication=x:\ShaderEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=

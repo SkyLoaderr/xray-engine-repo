@@ -172,11 +172,7 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 			if (Current){
 				RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),*Current->Name,sect_pred);
 				if ((I!=DATA.end())&&((*I)->Name==Current->Name))
-#ifndef __BORLANDC__
 					Debug.fatal(DEBUG_INFO,"Duplicate section '%s' found.",*Current->Name);
-#else // __BORLANDC__
-					Debug.fatal("Duplicate section '%s' found.",*Current->Name);
-#endif // __BORLANDC__
 				DATA.insert		(I,Current);
 			}
 			Current				= xr_new<Sect>();
@@ -237,11 +233,7 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 	{
 		RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),*Current->Name,sect_pred);
 		if ((I!=DATA.end())&&((*I)->Name==Current->Name))
-#ifndef __BORLANDC__
 			Debug.fatal(DEBUG_INFO,"Duplicate section '%s' found.",*Current->Name);
-#else // __BORLANDC__
-			Debug.fatal("Duplicate section '%s' found.",*Current->Name);
-#endif // __BORLANDC__
 		DATA.insert		(I,Current);
 	}
 }
@@ -346,11 +338,7 @@ CInifile::Sect& CInifile::r_section( LPCSTR S )
 	char	section[256]; strcpy(section,S); strlwr(section);
 	RootIt I = std::lower_bound(DATA.begin(),DATA.end(),section,sect_pred);
 	if (!(I!=DATA.end() && xr_strcmp(*(*I)->Name,section)==0))
-#ifndef __BORLANDC__
 		Debug.fatal(DEBUG_INFO,"Can't open section '%s'",S);
-#else // __BORLANDC__
-		Debug.fatal("Can't open section '%s'",S);
-#endif // __BORLANDC__
 	return	**I;
 }
 
@@ -360,11 +348,7 @@ LPCSTR	CInifile::r_string(LPCSTR S, LPCSTR L)
 	SectIt	A = std::lower_bound(I.begin(),I.end(),L,item_pred);
 	if (A!=I.end() && xr_strcmp(*A->first,L)==0)	return *A->second;
 	else
-#ifndef __BORLANDC__
 		Debug.fatal(DEBUG_INFO,"Can't find variable %s in [%s]",L,S);
-#else // __BORLANDC__
-		Debug.fatal("Can't find variable %s in [%s]",L,S);
-#endif // __BORLANDC__
 	return 0;
 }
 

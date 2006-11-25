@@ -105,9 +105,11 @@ void	xrMemory::_initialize	(BOOL bDebug)
 void	xrMemory::_destroy()
 {
 #ifdef DEBUG
+#ifndef M_BORLAND
 	mem_alloc_gather_stats		(false);
 	mem_alloc_show_stats		();
 	mem_alloc_clear_stats		();
+#endif
 #endif // DEBUG
 
 #ifndef M_BORLAND

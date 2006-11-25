@@ -43,7 +43,7 @@
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mu /w2 /zi"/>
-    <LFLAGS value="-l&quot;x:\&quot; -IIntermediate -D&quot;&quot; -aa -Tpd -x -Gi -v"/>
+    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpd -x -Gi -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -158,8 +158,10 @@ Count=1
 Item0=Intermediate
 
 [HistoryLists\hlFinalOutputDir]
-Count=1
+Count=3
 Item0=x:\
+Item1=x:\build\
+Item2=x:\build
 
 [HistoryLists\hIBPIOutputDir]
 Count=1

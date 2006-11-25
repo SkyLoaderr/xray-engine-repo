@@ -72,8 +72,9 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs,
         GetModuleFileName(GetModuleHandle(MODULE_NAME),fn,sizeof(fn));
         _splitpath		(fn,dr,di,0,0);
         strconcat		(ApplicationPath,dr,di);
+#ifndef _EDITOR        
 		strcpy			(g_application_path,ApplicationPath);
-
+#endif
 		// application data path
 		R_CHK			(GetEnvironmentVariable("USERPROFILE",fn,sizeof(fn)));
 		u32 fn_len		= xr_strlen(fn);

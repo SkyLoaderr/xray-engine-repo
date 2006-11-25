@@ -229,7 +229,7 @@ void CEditableMesh::GenerateSVertices(u32 influence)
                     wb.push_back(st_WB(m_Parent->GetBoneIndexByWMap(VM.name.c_str()),VM.getW(vmpt_lst.pts[vmpt_id].index)));
                     if (wb.back().bone==BI_NONE){
                         ELog.DlgMsg	(mtError,"Can't find bone assigned to weight map %s",*VM.name);
-                        Debug.fatal("Editor crashed.");
+                        FATAL("Editor crashed.");
                         return;
                     }
                 }else if(VM.type==vmtUV){	

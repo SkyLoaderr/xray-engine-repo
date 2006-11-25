@@ -44,7 +44,7 @@ const LPSTR TEXTUREString[TSTRING_COUNT]={"Custom...","-","$null","$base0"};
 void TProperties::ClearParams(TElTreeItem* node)
 {
 	if (node){
-    	Debug.fatal("ClearParams - node");
+    	FATAL("ClearParams - node");
     	//S когда будут все итемы удалить у каждого
 /*
 //s
@@ -664,7 +664,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                     OutText(prop->GetDrawText().c_str(),Surface,R,prop->Enabled());
             break;
             default:
-                Debug.fatal("Unknown prop type");
+                FATAL("Unknown prop type");
             };
         }
         // show LW edit
@@ -738,7 +738,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                     if (!FlagOnEdit<u8>(prop,bRes))
                         if (!FlagOnEdit<u16>(prop,bRes))
                             if (!FlagOnEdit<u32>(prop,bRes))
-                                Debug.fatal		("Unknown flag type");
+                                FATAL			("Unknown flag type");
                     if (bRes){
                         Modified				();
                         RefreshForm				();
@@ -860,7 +860,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                     }
                 }break;
                 default:
-                    Debug.fatal("Unknown prop type");
+                    FATAL("Unknown prop type");
                 };
                 switch(prop->type){
                 case PROP_TOKEN:
@@ -983,7 +983,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             if (!TokenOnEdit<u8>(prop,new_val,bRes))
                 if (!TokenOnEdit<u16>(prop,new_val,bRes))
                     if (!TokenOnEdit<u32>(prop,new_val,bRes))
-                        Debug.fatal	("Unknown token type");
+                        FATAL		("Unknown token type");
             if (bRes){
                 Modified			();
             }
@@ -996,7 +996,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             if (!RTokenOnEdit<u8>(prop,new_val,bRes))
                 if (!RTokenOnEdit<u16>(prop,new_val,bRes))
                     if (!RTokenOnEdit<u32>(prop,new_val,bRes))
-                        Debug.fatal	("Unknown rtoken type");
+                        FATAL		("Unknown rtoken type");
             if (bRes){
                 Modified			();
             }
@@ -1123,7 +1123,7 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
                 }
         }
     }break;
-    default: Debug.fatal("Unsupported type");
+    default: FATAL("Unsupported type");
     }
 }
 //---------------------------------------------------------------------------
@@ -1213,7 +1213,7 @@ void TProperties::PrepareLWNumber(TElTreeItem* item)
                     if (!NumericBeforeEdit<s16>(prop,seNumber))
                         if (!NumericBeforeEdit<s32>(prop,seNumber))
                             if (!NumericBeforeEdit<float>(prop,seNumber))
-                                Debug.fatal	("Unknown numeric type");
+                                FATAL("Unknown numeric type");
     seNumber->Tag 	= (int)item;
     tvProperties->Refresh();
 }
@@ -1253,7 +1253,7 @@ void TProperties::ApplyLWNumber()
                         if (!NumericOnEdit<s16>(prop,seNumber->Value,bRes))
                             if (!NumericOnEdit<s32>(prop,seNumber->Value,bRes))
 	                            if (!NumericOnEdit<float>(prop,seNumber->Value,bRes))
-				                    Debug.fatal	("Unknown numeric type");
+				                    FATAL("Unknown numeric type");
         if (bRes){
             Modified			();
         }

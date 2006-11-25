@@ -347,7 +347,7 @@ void CObjectOGFCollectorPacked::CalculateTB()
 		NVMeshMender::DontWeightNormalsByFaceSize	// weigh vertex normals by the triangle's size
 		))
 	{
-		Debug.fatal	("NVMeshMender failed (%s)",mender.GetLastError().c_str());
+		Debug.fatal	(DEBUG_INFO,"NVMeshMender failed (%s)",mender.GetLastError().c_str());
 	}
 
 	// Bind declarators

@@ -68,8 +68,8 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 
 #define DLL_API			__declspec(dllimport)
 #define PropertyGP(a,b)	__declspec( property( get=a, put=b ) )
-#define THROW			Debug.fatal("THROW");
-#define THROW2(a)		Debug.fatal(a);
+#define THROW			FATAL("THROW");
+#define THROW2(a)		FATAL(a);
 #define NO_XRC_STATS
 
 #define clMsg 			Msg

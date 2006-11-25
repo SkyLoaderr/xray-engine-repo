@@ -1,9 +1,7 @@
 #ifndef xr_efflensflareH
 #define xr_efflensflareH
 
-#ifndef _EDITOR
-#	include "xr_collide_defs.h"
-#endif
+#include "xr_collide_defs.h"
 
 class ENGINE_API CInifile;
 

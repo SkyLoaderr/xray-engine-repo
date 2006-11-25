@@ -284,8 +284,11 @@ _DDS_2D:
 			// Check for LMAP and compress if needed
 			strlwr					(fn);
 
+
+#ifndef _EDITOR
 #ifdef DEBUG
 			Memory.dbg_check		();
+#endif
 #endif
 			// Load   SYS-MEM-surface, bound to device restrictions
 			IDirect3DTexture9*		T_sysmem;
