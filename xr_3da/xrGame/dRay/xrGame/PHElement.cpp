@@ -377,7 +377,7 @@ void CPHElement::PhTune(dReal step)
 void CPHElement::PhDataUpdate(dReal step){
 
 	if(! isActive())return;
-	VERIFY_BOUNDARIES2(cast_fv(dBodyGetPosition(m_body)),phBoundaries,PhysicsRefObject(),"PhDataUpdate begin, body position");
+	
 	///////////////skip for disabled elements////////////////////////////////////////////////////////////
 	//b_enabled_onstep=!!dBodyIsEnabled(m_body);
 #ifdef DEBUG
@@ -453,16 +453,12 @@ void CPHElement::PhDataUpdate(dReal step){
 	VERIFY(dV_valid(linear_velocity));
 	if(linear_velocity_mag>m_l_limit)
 	{
-		dReal f=linear_velocity_mag/m_l_limit;
-		linear_velocity_mag=m_l_limit;
-		linear_velocity_smag=m_l_limit*m_l_limit;
-		VERIFY(!fis_zero(f));
-		dBodySetLinearVel(
-			m_body,
-			linear_velocity[0]/f,
-			linear_velocity[1]/f,
-			linear_velocity[2]/f
-			);
+		CutVelocity(m_l_limit,m_w_limit);
+		VERIFY_BOUNDARIES2(cast_fv(dBodyGetPosition(m_body)),phBoundaries,PhysicsRefObject(),"PhDataUpdate end, body position");
+		linear_velocity_smag	=	dDOT(linear_velocity,linear_velocity);
+		linear_velocity_mag		=	_sqrt(linear_velocity_smag);
+		angular_velocity_smag	=	dDOT(angular_velocity,angular_velocity);
+		angular_velocity_mag	=	_sqrt(angular_velocity_smag);
 	}
 	////////////////secure position///////////////////////////////////////////////////////////////////////////////////
 	const dReal* position=dBodyGetPosition(m_body);
@@ -472,15 +468,11 @@ void CPHElement::PhDataUpdate(dReal step){
 
 	if(angular_velocity_mag>m_w_limit)
 	{
-		dReal f=angular_velocity_mag/m_w_limit;
-		angular_velocity_mag=m_w_limit;
-		angular_velocity_smag=m_w_limit*m_w_limit;
-		VERIFY(!fis_zero(f));
-		dBodySetAngularVel(
-			m_body,
-			angular_velocity[0]/f,
-			angular_velocity[1]/f,
-			angular_velocity[2]/f);
+		CutVelocity(m_l_limit,m_w_limit);
+		angular_velocity_smag	=	dDOT(angular_velocity,angular_velocity);
+		angular_velocity_mag	=	_sqrt(angular_velocity_smag);
+		linear_velocity_smag	=	dDOT(linear_velocity,linear_velocity);
+		linear_velocity_mag		=	_sqrt(linear_velocity_smag);
 	}
 
 	////////////////secure rotation////////////////////////////////////////////////////////////////////////////////////////
@@ -1430,6 +1422,7 @@ void CPHElement::applyGravityAccel				(const Fvector& accel)
 	applyForce(val.x,val.y,val.z);
 }
 
+
 void CPHElement::CutVelocity(float l_limit,float a_limit)
 {
 
@@ -1438,6 +1431,7 @@ void CPHElement::CutVelocity(float l_limit,float a_limit)
 	dVector3 limitedl,limiteda,diffl,diffa;
 	bool blimitl=dVectorLimit(dBodyGetLinearVel(m_body),l_limit,limitedl);
 	bool blimita=dVectorLimit(dBodyGetAngularVel(m_body),a_limit,limiteda);
+
 	if(blimitl||blimita)
 	{
 			dVectorSub(diffl,limitedl,dBodyGetLinearVel(m_body));

@@ -21,7 +21,12 @@ static	float max_depth			=0.f;
 static	float friction_factor	=0.f;
 static	float cfm				=1.e-10f;
 static	float erp				=1.f;
+#ifdef DEBUG
+#define	CHECK_POS(pos,msg,br)			if (!valid_pos(pos,phBoundaries)){Msg("pos:%f,%f,%f",pos.x,pos.y,pos.z);Msg(msg);VERIFY(!br);}
 
+#else
+		CHECK_POS(pos,msg,br)				
+#endif
 void	ActivateTestDepthCallback (bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {
 	
@@ -61,7 +66,8 @@ void  GetMaxDepthCallback (bool& do_colide,bool bo1,dContact& c,SGameMtl* materi
 	{
 		float& depth=c.geom.depth;
 		float test_depth=depth;
-		save_max(max_depth,test_depth);
+		//save_max(max_depth,test_depth);
+		max_depth+=test_depth;
 	}
 	//do_colide=false;
 }
@@ -160,9 +166,11 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 	float	fnum_steps=float(steps);
 	float	fnum_steps_r=1.f/fnum_steps;
 	float	resolve_depth=0.01f;
-	float	max_vel=2.f*max_depth/fnum_it*fnum_steps_r/fixed_step;
-	if(max_vel>default_l_limit)
-			max_vel=default_l_limit;
+	float	max_vel=max_depth/fnum_it*fnum_steps_r/fixed_step;
+	float	limit_l_vel=_max(_max(need_size.x,need_size.y),need_size.z)/fnum_it*fnum_steps_r/fixed_step;
+	if(limit_l_vel>default_l_limit)limit_l_vel=default_l_limit;
+	if(max_vel>limit_l_vel)
+			max_vel=limit_l_vel;
 
 	float	max_a_vel=max_rotation/fnum_it*fnum_steps_r/fixed_step;
 	if(max_a_vel>default_w_limit)
@@ -188,23 +196,30 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 		//InterpolateBox(id,param);
 		size.add(step_size);
 		dGeomBoxSetLengths(m_geom,size.x,size.y,size.z);
-		ret=false;
-		for(int i=0;num_it>i;++i){
-			max_depth=0.f;
-			ph_world->Step();
-			//if(m==0&&i==0)ph_world->GetState(temp_state);
-			if(max_depth	<	resolve_depth) 
-			{
-				ret=true;
-				break;
-			}
-			
-		}
+		u16		attempts=10;
+		do{
 		
-		ph_world->CutVelocity(max_vel,max_a_vel);
-		 
+			ret=false;
+			for(int i=0;num_it>i;++i)
+			{
+				max_depth=0.f;
+				ph_world->Step();
+				CHECK_POS(Position(),"pos after ph_world->Step()",false);
+				ph_world->CutVelocity(max_vel,max_a_vel);
+				CHECK_POS(Position(),"pos after CutVelocity",true);
+				//if(m==0&&i==0)ph_world->GetState(temp_state);
+				if(max_depth	<	resolve_depth) 
+				{
+						ret=true;
+						break;
+				}
+			}
+			attempts--;
+		}while(!ret&&attempts>0);
+		Msg("correction attempts %d",10-attempts);
 	}
 	RestoreVelocityState(temp_state);
+	CHECK_POS(Position(),"pos after RestoreVelocityState(temp_state);",true);
 	if(!un_freeze_later)ph_world->UnFreeze();
 #ifdef	DEBUG 
 	if(ph_dbg_draw_mask.test(phDbgDrawDeathActivationBox))
