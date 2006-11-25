@@ -362,8 +362,10 @@ void CWallmarksEngine::Render()
 					}
 					static_wm_render	(W,w_verts);
 				}
+				W->ttl	-= 0.1f*Device.fTimeDelta;	// visible wallmarks fade much slower
+			} else {
+				W->ttl	-= Device.fTimeDelta;
 			}
-			W->ttl	-= Device.fTimeDelta;
 			if (W->ttl<=EPS){	
 				static_wm_destroy	(W);
 				*w_it				= slot->static_items.back();
