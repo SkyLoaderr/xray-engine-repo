@@ -176,28 +176,28 @@ function load_job(sj, gname, type, squad, groups)
        	t = { section = "logic@dar_military_scout_hide",
 		    idle = 0,
 		    prior = 5, state = {0},
-            online = "{+bar_darklab_document_gain}",
+            online = "{+x18_actor_fall}",
 		    in_rest = "", out_rest = "",
 		}
 		table.insert(sj, t)
        	t = { section = "logic@dar_military_scout_camper1",
 			idle = 0,
 			prior = 5, state = {0},
-			online = "{+bar_darklab_document_gain}",
+			online = "{+x18_actor_fall}",
 			in_rest = "", out_rest = "",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@dar_military_scout_camper2",
 			idle = 0,
 			prior = 5, state = {0},
-			online = "{+bar_darklab_document_gain}",
+			online = "{+x18_actor_fall}",
 			in_rest = "", out_rest = "",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@dar_military_scout_camper3",
 			idle = 0,
 			prior = 5, state = {0},
-			online = "{+bar_darklab_document_gain}",
+			online = "{+x18_actor_fall}",
 			in_rest = "", out_rest = "",
 		}
 		table.insert(sj, t)
