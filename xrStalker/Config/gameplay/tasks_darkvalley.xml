@@ -1,53 +1,19 @@
 <game_task id="val_come_to_trader" prio="395">
-    <title>
-        val_come_to_trader
-    </title>
+    <title>val_come_to_trader_1</title>
     <objective key="0">
-        <icon height="50" width="50" x="100" y="0">
-            ui\ui_icons_task
-        </icon>
-        <infoportion_complete>
-            esc_darklab_documents_read
-        </infoportion_complete>
-        <infoportion_fail>
-            bar_darklab_document_done
-        </infoportion_fail>
+        <icon height="50" width="50" x="100" y="0">ui\ui_icons_task</icon>
+        <infoportion_complete>val_actor_behind_gate</infoportion_complete>
+        <infoportion_fail>bar_darklab_document_done</infoportion_fail>
     </objective>
     <objective key="1">
-        <text>
-            val_come_to_trader_1
-        </text>
-        <icon height="50" width="50" x="100" y="50">
-            ui\ui_icons_task
-        </icon>
-        <map_location_type hint="val_come_to_trader_1_hint">
-            green_location
-        </map_location_type>
-        <object_story_id>
-            val_exit_gate
-        </object_story_id>
-        <infoportion_complete>
-            val_actor_behind_gate
-        </infoportion_complete>
-    </objective>
-    <objective key="2">
-        <text>
-            val_come_to_trader_2
-        </text>
-        <icon height="50" width="50" x="100" y="0">
-            ui\ui_icons_task
-        </icon>
-        <map_location_type hint="val_come_to_trader_2_hint">
-            blue_location
-        </map_location_type>
-        <object_story_id>
-            Escape_Trader
-        </object_story_id>
-        <infoportion_complete>
-            esc_darklab_documents_read
-        </infoportion_complete>
+        <text>val_come_to_trader</text>
+        <icon height="50" width="50" x="100" y="50">ui\ui_icons_task</icon>
+        <map_location_type hint="val_come_to_trader">green_location</map_location_type>
+        <object_story_id>val_exit_gate</object_story_id>
+        <infoportion_complete>val_actor_behind_gate</infoportion_complete>
     </objective>
 </game_task>
+
 <game_task id="val_prisoner_help" prio="415">
     <title>val_prisoner_help</title>
     <objective key="0">
