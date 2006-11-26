@@ -11,7 +11,7 @@ delay_max   = 3560
 on_signal   = sound_end | sr_idle2
 
 [sr_idle2]
-on_timer    = 2157| nil %=send_tip(val_monolith_trader_pda1:trader)%
+on_timer    = 2157| nil %=send_tip(val_monolith_trader_pda1:trader) +val_come_to_trader_task%
 
 [sr_sound_act2]
 snd         = characters_voice\scenario\val\val_desant_3
