@@ -150,7 +150,7 @@
 <game_task id="dar_codedoor_1" prio="405">
     <title>dar_codedoor_1</title>
     <objective key="0">
-        <icon height="50" width="50" x="100" y="50">ui\ui_icons_task</icon>
+        <icon>ui_iconsTotal_dar_codedoor_1</icon>
         <infoportion_complete>dar_open_door1</infoportion_complete>
 		<article>dar_codedoor_1_art</article>
     </objective>
@@ -171,7 +171,7 @@
 <game_task id="dar_codedoor_2" prio="400">
     <title>dar_codedoor_2</title>
     <objective key="0">
-        <icon height="50" width="50" x="100" y="50">ui\ui_icons_task</icon>
+        <icon>ui_iconsTotal_dar_codedoor_2</icon>
         <infoportion_complete>dar_open_door2</infoportion_complete>
 		<article>dar_codedoor_2_art</article>
     </objective>
