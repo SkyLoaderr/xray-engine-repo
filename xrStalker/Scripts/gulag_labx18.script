@@ -265,11 +265,11 @@ function load_states(gname, type)
 	
 	if type == "dar_poltergeist_ring" then        
 		return function(gulag)
-			if db.actor:dont_has_info("dar_codelock1_unlock") then
+			if not has_alife_info("dar_codelock1_unlock") then
 				return 3 -- оффлайн все
-			elseif db.actor:has_info("dar_ring_spawn1") and db.actor:dont_has_info("dar_ring_spawn2") then
+			elseif has_alife_info("dar_ring_spawn1") and not has_alife_info("dar_ring_spawn2") then
 				return 1 -- онлайн 2
-			elseif 	db.actor:has_info("dar_ring_spawn2") then
+			elseif has_alife_info("dar_ring_spawn2") then
 				return 2 -- онлайн 3
 			else			
 				return 0 -- онлайн 1
@@ -280,7 +280,7 @@ function load_states(gname, type)
 
 	if type == "dar_military_scout" then        
 		return function(gulag)
-            if db.actor_proxy:has_info("bar_darklab_document_gain") == true then
+            if has_alife_info("bar_darklab_document_gain") == true then
                 return 1
             end
 			return 0
