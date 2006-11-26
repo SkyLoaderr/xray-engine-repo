@@ -386,6 +386,7 @@ function play_snd_now(actor, npc, p)
 	xr_sound.set_sound_play(npc, p[1])
 end
 
+
 -- прибавить к указанному счётчику актёра 1
 function inc_counter(actor, npc, p)
 	if p[1] then
@@ -587,6 +588,12 @@ function gar_boars_counter(actor, npc)
 end
 
 --' Escape
+
+function play_snd_from_radio(actor, npc)
+	local snd_obj	= sound_object([[characters_voice\scenario\escape\wolf_to_rangers_1]])
+	local obj		= npc:object("hand_radio")
+	snd_obj:play_no_feedback(obj, sound_object.s3d, 0, obj:position(), 1.0)	
+end
 
 function esc_direction_fire(actor, npc)
 	if not has_alife_info("esc_fanat_die") then
