@@ -568,8 +568,9 @@ function gar_direction_fire(actor, npc)
 end
 
 function gar_hellcar_victory(actor, npc)
-	if has_alife_info("gar_hellcar_help") and not has_alife_info("gar_hellcar_thanks") then
+	if not has_alife_info("gar_hellcar_tips_end") and has_alife_info("gar_hellcar_help") and not has_alife_info("gar_hellcar_thanks") then
 		news_manager.send_tip(actor, "gar_hellcar_victory", 0, "stalker", 0)
+		db.actor:give_info_portion("gar_hellcar_tips_end")
 	end
 end
 
