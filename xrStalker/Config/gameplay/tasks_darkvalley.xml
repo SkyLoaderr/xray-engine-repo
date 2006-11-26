@@ -14,7 +14,7 @@
     </objective>
 </game_task>
 
-<game_task id="val_prisoner_help" prio="415">
+<game_task id="val_prisoner_help" prio="422">
     <title>val_prisoner_help</title>
     <objective key="0">
         <icon>ui_iconsTotal_val_prisoner_help</icon>
