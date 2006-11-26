@@ -1462,11 +1462,18 @@ function agr_krot_sos_1_2( actor, npc )
 	end
 end
 
-function agr_knockdown (npc)
+function agr_knockdown ()
 	local snd_obj = sound_object([[affects\tinnitus3a]])
 	snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
 	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false, "")
---'    set_postprocess ("scripts\\earthshake.ltx")
+end
+
+function agr_contuz (actor, npc)
+		local sound_obj_l		= sound_object( [[affects\psy_blackout_l]] )
+        local sound_obj_r		= sound_object( [[affects\psy_blackout_r]] )
+        
+		sound_obj_l:play_no_feedback(actor, sound_object.s2d, 0, vector():set(-1, 0, 1), 1.0)
+		sound_obj_r:play_no_feedback(actor, sound_object.s2d, 0, vector():set( 1, 0, 1), 1.0)
 end
 
 function agr_cam_effect ()
