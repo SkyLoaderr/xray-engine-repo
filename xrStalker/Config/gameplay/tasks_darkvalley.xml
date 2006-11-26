@@ -48,20 +48,6 @@
         </infoportion_complete>
     </objective>
 </game_task>
-<game_task id="val_sos_help" prio="410">
-    <title>val_sos_help</title>
-    <objective key="0">
-        <icon height="50" width="50" x="100" y="100">ui\ui_icons_task</icon>
-        <infoportion_complete>val_sos_got_medkit</infoportion_complete>
-        <infoportion_fail>val_sos_dead</infoportion_fail>
-    </objective>
-    <objective key="1">
-        <text>val_sos_help_main</text>
-        <icon height="50" width="50" x="250" y="0">ui\ui_icons_task</icon>
-        <map_location_type hint="val_sos_help_main_hint">green_location</map_location_type>
-        <object_story_id>val_sos_stalker</object_story_id>
-    </objective>
-</game_task>
 <game_task id="val_prisoner_help" prio="415">
     <title>val_prisoner_help</title>
     <objective key="0">
@@ -105,6 +91,7 @@
     <objective key="0">
         <icon height="50" width="50" x="100" y="50">ui\ui_icons_task</icon>
         <infoportion_complete>val_x18_door_open</infoportion_complete>
+		<article>bar_darklab_documents_art</article>
     </objective>
     <objective key="4">
         <text>bar_darklab_documents_4</text>
@@ -140,6 +127,7 @@
     <objective key="0">
         <icon height="50" width="50" x="200" y="100">ui\ui_icons_task</icon>
         <infoportion_complete>bar_darklab_document_done</infoportion_complete>
+		<article>bar_darklab_documents2_art</article>
     </objective>
     <objective key="1">
         <text>bar_darklab_documents2_1</text>
