@@ -1962,10 +1962,14 @@ function sar_monolith_miracle(actor, npc)
 end
 
 function game_credits(actor, npc)
+	db.gameover_credits_started = true
 	game.start_tutorial("credits_seq")
 end
 
 function game_over(actor, npc)
+	if db.gameover_credits_started ~= true then
+		return
+	end
 	local c = get_console()
 	c:execute("disconnect")
 end
