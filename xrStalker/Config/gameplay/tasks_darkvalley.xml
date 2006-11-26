@@ -51,7 +51,7 @@
 <game_task id="val_prisoner_help" prio="415">
     <title>val_prisoner_help</title>
     <objective key="0">
-        <icon height="50" width="50" x="100" y="100">ui\ui_icons_task</icon>
+        <icon>ui_iconsTotal_val_prisoner_help</icon>
         <infoportion_complete>val_prisoner_free</infoportion_complete>
         <infoportion_fail>val_prisoner_dead</infoportion_fail>
 		<article>val_prisoner_help_art</article>
@@ -66,7 +66,7 @@
 <game_task id="val_captive_help" prio="420">
     <title>val_captive_help</title>
     <objective key="0">
-        <icon height="50" width="50" x="150" y="0">ui\ui_icons_task</icon>
+        <icon>ui_iconsTotal_val_captive_help</icon>
         <function_fail>darkvalley_tasks.escort_task_fail</function_fail>
         <function_complete>darkvalley_tasks.escort_task_done</function_complete>
 	    <article>val_captive_help_art</article>
@@ -89,7 +89,7 @@
 <game_task id="bar_darklab_documents" prio="435">
     <title>bar_darklab_documents</title>
     <objective key="0">
-        <icon height="50" width="50" x="100" y="50">ui\ui_icons_task</icon>
+        <icon>ui_iconsTotal_bar_darklab_documents</icon>
         <infoportion_complete>val_x18_door_open</infoportion_complete>
 		<article>bar_darklab_documents_art</article>
     </objective>
@@ -125,7 +125,7 @@
 <game_task id="bar_darklab_documents2" prio="435">
     <title>bar_darklab_documents2</title>
     <objective key="0">
-        <icon height="50" width="50" x="200" y="100">ui\ui_icons_task</icon>
+        <icon>ui_iconsTotal_bar_darklab_documents2</icon>
         <infoportion_complete>bar_darklab_document_done</infoportion_complete>
 		<article>bar_darklab_documents2_art</article>
     </objective>
