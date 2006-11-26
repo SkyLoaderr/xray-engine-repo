@@ -41,7 +41,7 @@
 		<text>Открыть дверь с помощью кода</text>
 	</string>
 	<string id="val_captive_help">
-		<text>Освободить долговца</text>
+		<text>Отбить долговца</text>
 	</string>
 	<string id="val_captive_help_1">
 		<text>Следовать за Пулей к месту засады</text>
@@ -62,7 +62,7 @@
 		<text>Показать документы торговцу</text>
 	</string>
 	<string id="val_prisoner_help">
-		<text>Освободить долговца из тюрьмы</text>
+		<text>Спасти долговца</text>
 	</string>
 	<string id="val_prisoner_help_0">
 		<text>Вытащить долговца из плена бандитов</text>
