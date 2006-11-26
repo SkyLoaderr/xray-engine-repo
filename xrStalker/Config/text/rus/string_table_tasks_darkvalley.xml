@@ -70,12 +70,3 @@
 	<string id="val_prisoner_help_main">
 		<text>Освободить долговца из тюрьмы бандитов</text>
 	</string>
-	<string id="val_sos_help">
-		<text>Помочь сталкеру</text>
-	</string>
-	<string id="val_sos_help_0">
-		<text>Неизвестный сталкер просит о помощи</text>
-	</string>
-	<string id="val_sos_help_main">
-		<text>Помочь сталкеру на заправке</text>
-	</string>
