@@ -2099,7 +2099,10 @@ function presentation_tutorial ()
 end
 
 function presentation_task ()
-	db.actor:activate_slot(2)
+	local actor = db.actor
+	actor:give_info_portion("agroprom_military_case")	
+	actor:give_info_portion("agr_krot_band_start")	
+	actor:activate_slot(2)
 end
 
 
