@@ -1119,9 +1119,9 @@ end
 
 function bar_arena_weapon_slot ()
 if	db.actor:has_info("bar_arena_fight_1") then  
-		db.actor:activate_slot(2)
+		db.actor:activate_slot(1)
 	else 
-		db.actor:activate_slot(3)
+		db.actor:activate_slot(2)
 	end
 end
 
@@ -2104,10 +2104,7 @@ function presentation_tutorial ()
 end
 
 function presentation_task ()
-	local actor = db.actor
-	actor:give_info_portion("agroprom_military_case")	
-	actor:give_info_portion("agr_krot_band_start")	
-	actor:activate_slot(2)
+	
 end
 
 
