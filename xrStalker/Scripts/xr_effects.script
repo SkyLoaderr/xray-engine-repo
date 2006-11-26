@@ -1922,14 +1922,27 @@ function yan_dream_voices (actor, npc)
 end
 
 function yan_gluk (actor, npc)
+		
 		local sound_obj_l		= sound_object( [[affects\psy_blackout_l]] )
         local sound_obj_r		= sound_object( [[affects\psy_blackout_r]] )
         
 		sound_obj_l:play_no_feedback(actor, sound_object.s2d, 0, vector():set(-1, 0, 1), 1.0)
 		sound_obj_r:play_no_feedback(actor, sound_object.s2d, 0, vector():set( 1, 0, 1), 1.0)
 	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false, "")
---'    set_postprocess ("scripts\\earthshake.ltx")
+
 end
+function x18_gluk (actor, npc)
+		level.add_pp_effector ("blink.ppe", 234, false)
+		local sound_obj_l		= sound_object( [[affects\psy_blackout_l]] )
+        local sound_obj_r		= sound_object( [[affects\psy_blackout_r]] )
+        
+		sound_obj_l:play_no_feedback(actor, sound_object.s2d, 0, vector():set(-1, 0, 1), 1.0)
+		sound_obj_r:play_no_feedback(actor, sound_object.s2d, 0, vector():set( 1, 0, 1), 1.0)
+	level.add_cam_effector("camera_effects\\earthquake.anm", 1974, false, "")
+
+end
+
+
 
 function yan_sleep_not_relocate (actor, npc)
 		db.actor:actor_sleep(0, 180)
