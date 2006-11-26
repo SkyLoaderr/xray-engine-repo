@@ -1033,7 +1033,10 @@ function load_ltx_bloodsucker(gname, type)
 					"[mob_home@" .. gname .. "_suck" .. i .. "]\n" ..
 					"path_home = home" .. i .. "\n" ..
 					"npc_friendly = true\n"..
-					"path_look = look" .. i .. "\n" 
+					"path_look = look" .. i .. "\n"..
+					"home_min_radius = 45\n"..
+					"home_max_radius = 60\n"
+					 
 	end
 	return res
 end
