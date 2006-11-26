@@ -580,11 +580,9 @@ function gar_boars_counter(actor, npc)
 	local c = xr_logic.pstor_retrieve(actor, "gar_boars_counter", 0)
 	if c < 1 then
 		news_manager.send_tip(actor, "gar_actor_looser", 0, "dolg", 0)
-	elseif c <= 2 then
-		news_manager.send_tip(actor, "gar_actor_normal", 0, "dolg", 0)
 	else
-		news_manager.send_tip(actor, "gar_actor_winner", 0, "dolg", 0)
-		db.actor:give_info_portion("gar_free_pass")
+		news_manager.send_tip(actor, "gar_actor_normal", 0, "dolg", 0)
+		db.actor:give_info_portion("gar_kill_boars_request")
 	end
 end
 
