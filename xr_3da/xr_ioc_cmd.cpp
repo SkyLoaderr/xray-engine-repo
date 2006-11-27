@@ -30,27 +30,7 @@ xr_token							snd_model_token							[ ]={
 
 extern xr_token*							vid_mode_token;
 
-xr_token							_vid_mode_token							[ ]={
 
-	//normal 4:3 modes
-#ifdef DEBUG
-	{ "320x240",					320											},
-	{ "512x384",					512											},
-#endif
-	{ "640x480",					640											},
-	{ "800x600",					800											},
-	{ "1024x768",					1024										},
-	{ "1280x960",					1280										},
-	{ "1280x1024",					1280+1										},
-	{ "1600x1200",					1600										},
-	// 16:9 modes
-	{ "480x272(16:9)",					480											}, //PSP emulation
-	{ "1366x768(16:9)",					1366										},
-	{ "1600x900(16:9)",					1600-1										},
-	{ "1920x1080(16:9)",				1920										},
-	{ "1920x1200(16:10)",				1920+1										},
-	{ 0,							0											}
-};
 xr_token							vid_bpp_token							[ ]={
 	{ "16",							16											},
 	{ "32",							32											},
@@ -380,6 +360,11 @@ public :
 		sprintf(S,"%dx%d",psCurrentVidMode[0],psCurrentVidMode[1]); 
 	}
 	virtual xr_token* GetToken()				{return vid_mode_token;}
+	virtual void	Info	(TInfo& I)
+	{	
+		strcpy(I,"change screen resolution WxH");
+	}
+
 
 };
 //-----------------------------------------------------------------------
