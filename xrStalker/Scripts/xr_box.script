@@ -83,6 +83,7 @@ function ph_item_box:__init(obj)
 end
 
 function ph_item_box:spawn_items()
+	local spawn_items = {}
 	local ini = self.obj:spawn_ini()
 	local community	= utils.cfg_get_string(ini, "drop_box", "community", self.obj, false, "", "def_box")
 	if r_items(ini, "drop_box", "items") ~= nil then
