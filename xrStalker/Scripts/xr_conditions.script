@@ -1111,7 +1111,7 @@ function rostok_gulag_inactive(actor, npc)
 		   (v:alive() and
 		    not xr_wounded.is_heavy_wounded_by_id(k) and
 		    not xr_wounded.is_psy_wounded_by_id(k) and
-			job_prior == 2)
+			job_prior == 5)
 		then
 			val = val + 1
 		end
