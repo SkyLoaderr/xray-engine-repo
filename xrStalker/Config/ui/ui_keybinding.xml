@@ -54,7 +54,7 @@
 		<command id="kb_screenshot"					exe="screenshot"/>
 		<command id="kb_quit"						exe="quit"/>
 		<command id="kb_console"					exe="console"/>
-		<command id="kb_turn_engine"				exe="turn_engine"/>
+		<_command id="kb_turn_engine"				exe="turn_engine"/>
 	</group>
 	<group name="kb_grp_multiplayer">
 		<command id="kb_artefact"					exe="artefact"/>
