@@ -1276,3 +1276,7 @@ function actor_in_freedom(actor, npc)
 	end
 	return false
 end
+
+function actor_on_level(actor, npc, p)
+	return p[1] == level.name()
+end
