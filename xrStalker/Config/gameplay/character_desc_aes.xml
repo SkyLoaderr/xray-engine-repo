@@ -409,7 +409,7 @@
 		<crouch_type>0</crouch_type>
     	<panic_threshold>0.0</panic_threshold>
 
-		<visual>militari\stalker_militari_antigas_1</visual>		
+		<visual>actors\militari\stalker_militari_antigas_1</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
@@ -447,7 +447,7 @@
 
     	<panic_threshold>0.0</panic_threshold>
 
-		<visual>militari\stalker_militari_antigas_1</visual>		
+		<visual>actors\militari\stalker_militari_antigas_1</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
