@@ -658,7 +658,10 @@ function gar_boars_nest2_dead(actor, npc)
 end
 
 function gar_damaged_bandits(actor, npc)
-	return gulag_population_le(actor, npc, {"gar_bandit_agr",5})
+	if (gulag_population_active(actor, npc, {"gar_bandit_agr"}) < 5) then
+		return true
+	end
+	return false
 end
 
 function gar_angar_sleep(actor,npc)
@@ -672,7 +675,7 @@ end
 
 function gar_bandits_seryi_die()
 	if db.actor then
-		if xr_gulag.getGulagPopulation("gar_seryi_bandits") == 0 then
+		if gulag_population_active(actor, npc, {"gar_seryi_bandits"}) == 0 then
 			return true			
 		else
 			return false
