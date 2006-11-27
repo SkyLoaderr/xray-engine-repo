@@ -974,7 +974,7 @@ function pri_follower_see_ambush (actor, npc)
 	end
 	
 	for k,v in pairs(gulag.Object) do
-		if v ~= false and (npc:see(v) or (npc:best_enemy() and npc:best_enemy():id() == v:id()))
+		if v ~= nil and (npc:see(v) or (npc:best_enemy() and npc:best_enemy():id() == v:id()))
 			then
 				-- printf("[plecha] %s see %s or has enemy %s", utils.to_str(npc), utils.to_str(v), utils.to_str(npc:best_enemy()))
 				return true
