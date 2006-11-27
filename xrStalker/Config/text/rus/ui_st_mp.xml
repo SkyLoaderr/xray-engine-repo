@@ -112,13 +112,13 @@
 		<text>Дальше</text>
 	</string>
 	<string id="mp_no_voted">
-		<text>Не прголосовали</text>
+		<text>Не проголосовали</text>
 	</string>
 	<string id="mp_ping">
 		<text>пинг</text>
 	</string>
 	<string id="mp_player_wins">
-		<text>Игрок %s выигрывает сражение!</text>
+		<text>Игрок %s выиграл бой!</text>
 	</string>
 	<string id="mp_players">
 		<text>Игроков</text>
@@ -148,7 +148,7 @@
 		<text>Вы имеете %d$. Вы можете купить рождение за %d$. Нажмите Да чтобы заплатить.</text>
 	</string>
 	<string id="mp_ready">
-		<text>Готово ...</text>
+		<text>Внимание...</text>
 	</string>
 	<string id="mp_restart">
 		<text>Рестарт</text>
