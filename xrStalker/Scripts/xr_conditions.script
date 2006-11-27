@@ -1282,6 +1282,6 @@ function actor_on_level(actor, npc, p)
 end
 
 function treasure_exist(actor, npc, p)
-	printf("%s %s", actor:name(), npc:name())
+	--printf("%s %s", actor:name(), npc:name())
 	return true
 end
