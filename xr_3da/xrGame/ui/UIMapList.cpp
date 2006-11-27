@@ -219,11 +219,13 @@ void CUIMapList::LoadMapList()
 	shared_str				WeatherType;
 	shared_str				WeatherTime;
 
-	for (;it!=end; ++it){
+		
+	for (u32 cnt=0; it!=end; ++it, ++cnt)
+	{
 		WeatherType			= it->first;
 		WeatherTime			= map_list_cfg.r_string(weather_sect, *WeatherType);
 
-		AddWeather			(WeatherType, WeatherTime);
+		AddWeather			(WeatherType, WeatherTime, cnt);
 	}
 
 	if(S.size())
@@ -280,9 +282,11 @@ void CUIMapList::SetServerParams(LPCSTR params){
 	m_srv_params = params;
 }
 
-void CUIMapList::AddWeather(const shared_str& WeatherType, const shared_str& WeatherTime){
+#include "uilistboxitem.h"
+void CUIMapList::AddWeather(const shared_str& WeatherType, const shared_str& WeatherTime, u32 _id)
+{
 	R_ASSERT2					(m_pWeatherSelector, "m_pWeatherSelector == NULL");
-	m_pWeatherSelector->AddItem	(*WeatherType);
+	m_pWeatherSelector->AddItem_	(*WeatherType, 0)->SetID(_id);
 
 	int	w_time;
 	int hour = 0, min = 0;

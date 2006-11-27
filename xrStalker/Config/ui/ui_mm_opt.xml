@@ -9,7 +9,7 @@
 		<dialog x="233" y="157" width="548" height="461">
 			<texture>ui_menu_options_dlg</texture>
 		</dialog>
-		<cap_options x="45" y="3" width="378" height="33">
+		<cap_options x="45" y="9" width="378" height="33">
 			<text font="graffiti22" r="215" g="195" b="170">ui_mm_options</text>
 		</cap_options>
 		<btn_accept x="219" y="426" width="157" height="48">

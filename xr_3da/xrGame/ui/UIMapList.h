@@ -48,7 +48,7 @@ private:
 			void	OnBtnRightClick();
 			void	OnBtnUpClick();
 			void	OnBtnDownClick();
-			void	AddWeather(const shared_str& WeatherType, const shared_str& WeatherTime);
+			void	AddWeather(const shared_str& WeatherType, const shared_str& WeatherTime, u32 _id);
 			void	ParseWeather(char** ps, char* e);
 
 	CUIListBox*			m_pList1;

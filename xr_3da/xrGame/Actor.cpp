@@ -388,7 +388,10 @@ if(!g_pGamePersistent->bDedicatedServer)
 		m_BloodSnd.create		(pSettings->r_string(section,"heavy_blood_snd"), st_Effect,SOUND_TYPE_MONSTER_INJURING);
 	}
 }
-	cam_Set					(eacFirstEye);
+	if( psActorFlags.test(AF_PSP) )
+		cam_Set					(eacLookAt);
+	else
+		cam_Set					(eacFirstEye);
 
 	// sheduler
 	shedule.t_min				= shedule.t_max = 1;
