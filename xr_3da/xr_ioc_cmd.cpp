@@ -28,7 +28,7 @@ xr_token							snd_model_token							[ ]={
 	{ 0,							0											}
 };
 
-xr_token*							vid_mode_token = NULL;
+extern xr_token*							vid_mode_token;
 
 xr_token							_vid_mode_token							[ ]={
 
