@@ -2,11 +2,12 @@
 #define _SB_INTERNAL_H_
 
 
-#include "../nonport.h"
+#include "../common/gsCommon.h"
+#include "../common/gsAvailable.h"
+
 #include "../darray.h"
 #include "../hashtable.h"
-#include "../stringutil.h"
-#include "../available.h"
+
 #include "sb_serverbrowsing.h"
 #include "../qr2/qr2regkeys.h"
 
@@ -49,13 +50,15 @@ typedef enum {sl_lanbrowse, sl_disconnected, sl_connected, sl_mainlist} SBServer
 //states for SBServer->state 
 #define STATE_BASICKEYS			(1 << 0)
 #define STATE_FULLKEYS			(1 << 1)
-#define STATE_PENDINGBASICQUERY		(1 << 2)
-#define STATE_PENDINGFULLQUERY		(1 << 3)
+#define STATE_PENDINGBASICQUERY	(1 << 2)
+#define STATE_PENDINGFULLQUERY	(1 << 3)
 #define STATE_QUERYFAILED		(1 << 4)
+#define STATE_PENDINGICMPQUERY	(1 << 5)
+#define STATE_VALIDPING	        (1 << 6)
+#define STATE_PENDINGQUERYCHALLENGE (1 << 7)
 
 //how long before a server query times out
 #define MAX_QUERY_MSEC 2500
-#define MAX_DELTA_QUERY_MSEC	50
 
 //game server flags
 #define UNSOLICITED_UDP_FLAG	1
@@ -66,6 +69,9 @@ typedef enum {sl_lanbrowse, sl_disconnected, sl_connected, sl_mainlist} SBServer
 #define NONSTANDARD_PRIVATE_PORT_FLAG	32
 #define HAS_KEYS_FLAG					64
 #define HAS_FULL_RULES_FLAG				128
+
+//backend query flags (set in hbmaster, don't change)
+#define QR2_USE_QUERY_CHALLENGE 128
 
 //key types for the key type list
 #define KEYTYPE_STRING	0
@@ -132,6 +138,7 @@ typedef enum {sl_lanbrowse, sl_disconnected, sl_connected, sl_mainlist} SBServer
 //query types
 #define QTYPE_BASIC 0
 #define QTYPE_FULL  1
+#define QTYPE_ICMP  2
 
 //query strings for old-style servers
 #define BASIC_GOA_QUERY "\\basic\\\\info\\"
@@ -139,6 +146,8 @@ typedef enum {sl_lanbrowse, sl_disconnected, sl_connected, sl_mainlist} SBServer
 #define FULL_GOA_QUERY "\\status\\"
 #define FULL_GOA_QUERY_LEN 8
 
+//maximum length of a sortkey string
+#define SORTKEY_LENGTH 255
 
 //a key/value pair
 typedef struct _SBKeyValuePair
@@ -163,9 +172,9 @@ typedef struct _SBServerList *SBServerListPtr;
 typedef struct _SBQueryEngine *SBQueryEnginePtr;
 
 //callback types for server lists
-typedef enum {slc_serveradded, slc_serverupdated, slc_serverdeleted, slc_initiallistcomplete, slc_disconnected, slc_queryerror, slc_publicipdetermined} SBListCallbackReason;
+typedef enum {slc_serveradded, slc_serverupdated, slc_serverdeleted, slc_initiallistcomplete, slc_disconnected, slc_queryerror, slc_publicipdetermined, slc_serverchallengereceived} SBListCallbackReason;
 //callback types for query engine
-typedef enum {qe_updatesuccess, qe_updatefailed, qe_engineidle} SBQueryEngineCallbackReason;
+typedef enum {qe_updatesuccess, qe_updatefailed, qe_engineidle, qe_challengereceived} SBQueryEngineCallbackReason;
 
 //callback function prototypes
 typedef void (*SBListCallBackFn)(SBServerListPtr serverlist, SBListCallbackReason reason, SBServer server, void *instance);
@@ -189,14 +198,20 @@ typedef struct _SBServerList SBServerList;
 #endif
 
 
+//keeps track of previous and current sorting information
+typedef struct _SortInfo
+{
+	gsi_char sortkey[SORTKEY_LENGTH];
+	SBCompareMode comparemode;	
+} SortInfo;
 
 struct _SBServerList
 {
 	SBServerListState state;
 	DArray servers;
 	DArray keylist;
-	char queryforgamename[32];
-	char queryfromgamename[32];
+	char queryforgamename[36];
+	char queryfromgamename[36];
 	char queryfromkey[32];
 	char mychallenge[LIST_CHALLENGE_LEN];
 	char *inbuffer;
@@ -209,7 +224,10 @@ struct _SBServerList
 	SBMaploopCallbackFn MaploopCallback;
 	SBPlayerSearchCallbackFn PlayerSearchCallback;
 	void *instance;
-	char *sortkey;
+
+	SortInfo currsortinfo;
+	SortInfo prevsortinfo;
+
 	SBBool sortascending;
 	goa_uint32 mypublicip;
 	goa_uint32 srcip;
@@ -226,6 +244,7 @@ struct _SBServerList
 	GOACryptState cryptkey;
 	int queryoptions;
 	SBListParseState pstate;
+	gsi_u16 backendgameflags;
 
 	const char* mLanAdapterOverride;
 
@@ -255,8 +274,9 @@ struct _SBServer
 	unsigned char flags;
 	HashTable keyvals;
 	gsi_time updatetime;
-	gsi_time m_totalupdatetime;
+	gsi_u32 querychallenge;
 	struct _SBServer *next;
+	gsi_u8 splitResponseBitmap;
 };
 
 #endif
@@ -275,6 +295,9 @@ typedef struct _SBQueryEngine
 	SBServerFIFO querylist;
 	SBServerFIFO pendinglist;
 	SOCKET querysock;
+	#if !defined(SN_SYSTEMS)
+	SOCKET icmpsock;
+	#endif
 	goa_uint32 mypublicip;
 	unsigned char serverkeys[MAX_QUERY_KEYS];
 	int numserverkeys;	
@@ -295,8 +318,45 @@ struct _ServerBrowser
 	void *instance;
 };
 
+#define SB_ICMP_ECHO 8
+#define SB_ICMP_ECHO_REPLY	0
+
+typedef struct _IPHeader {
+	gsi_u8	ip_hl_ver;
+	gsi_u8  ip_tos;
+	gsi_i16   ip_len;
+	gsi_u16 ip_id; 
+	gsi_i16   ip_off;
+	gsi_u8  ip_ttl;
+	gsi_u8  ip_p;
+	gsi_u16 ip_sum;
+	struct  in_addr ip_src,ip_dst; 
+} SBIPHeader;
+
+
+
+typedef struct _ICMPHeader
+{
+	gsi_u8		type;
+	gsi_u8		code;
+	gsi_u16	cksum;
+	union {
+		struct {
+			gsi_u16 id;
+			gsi_u16 sequence;
+		} echo;
+		gsi_u32 idseq;
+		gsi_u16 gateway;
+		struct {
+			gsi_u16 __notused;
+			gsi_u16 mtu;
+		} frag;
+	} un;
+} SBICMPHeader;
+
+
 //server list functions
-void SBServerListInit(SBServerList *slist, const char *queryForGamename, const char *queryFromGamename, const char *queryFromKey, int queryFromVersion, SBListCallBackFn callback, void *instance);
+void SBServerListInit(SBServerList *slist, const char *queryForGamename, const char *queryFromGamename, const char *queryFromKey, int queryFromVersion, SBBool lanBrowse, SBListCallBackFn callback, void *instance);
 SBError SBServerListConnectAndQuery(SBServerList *slist, const char *fieldList, const char *serverFilter, int options, int maxServers);
 SBError SBServerListGetLANList(SBServerList *slist, unsigned short startport, unsigned short endport, int queryversion);
 void SBServerListDisconnect(SBServerList *slist);
@@ -311,7 +371,7 @@ int SBServerListFindServerByIP(SBServerList *slist, goa_uint32 ip, unsigned shor
 int SBServerListFindServer(SBServerList *slist, SBServer findserver);
 void SBServerListRemoveAt(SBServerList *slist, int index);
 void SBServerListAppendServer(SBServerList *slist, SBServer server);
-void SBServerListSort(SBServerList *slist, SBBool ascending, char *sortkey, SBCompareMode comparemode);
+void SBServerListSort(SBServerList *slist, SBBool ascending, SortInfo sortinfo);
 int SBServerListCount(SBServerList *slist);
 SBServer SBServerListNth(SBServerList *slist, int i);
 SBError SBListThink(SBServerList *slist);
@@ -327,7 +387,8 @@ void SBServerFree(void *elem);
 void SBServerAddKeyValue(SBServer server, const char *keyname, const char *value);
 void SBServerAddIntKeyValue(SBServer server, const char *keyname, int value);
 void SBServerParseKeyVals(SBServer server, char *keyvals);
-void SBServerParseQR2FullKeys(SBServer server, char *data, int len);
+void SBServerParseQR2FullKeysSingle(SBServer server, char *data, int len);
+void SBServerParseQR2FullKeysSplit(SBServer server, char *data, int len);
 void SBServerSetFlags(SBServer server, unsigned char flags);
 void SBServerSetPublicAddr(SBServer server, goa_uint32 ip, unsigned short port);
 void SBServerSetPrivateAddr(SBServer server, goa_uint32 ip, unsigned short port);
@@ -352,10 +413,10 @@ extern char *SBOverrideMasterServer;
 
 
 //query engine functions
-void SBQueryEngineInit(SBQueryEngine *engine, int maxupdates, int queryversion, SBEngineCallbackFn callback, void *instance);
-void SBQueryEngineUpdateServer(SBQueryEngine *engine, SBServer server, int addfront, int querytype);
+void SBQueryEngineInit(SBQueryEngine *engine, int maxupdates, int queryversion, SBBool lanBrowse, SBEngineCallbackFn callback, void *instance);
+void SBQueryEngineUpdateServer(SBQueryEngine *engine, SBServer server, int addfront, int querytype, SBBool usequerychallenge);
 void SBQueryEngineSetPublicIP(SBQueryEngine *engine, goa_uint32 mypublicip);
-SBServer SBQueryEngineUpdateServerByIP(SBQueryEngine *engine, const char *ip, unsigned short queryport, int addfront, int querytype);
+SBServer SBQueryEngineUpdateServerByIP(SBQueryEngine *engine, const char *ip, unsigned short queryport, int addfront, int querytype, SBBool usequerychallenge);
 void SBQueryEngineThink(SBQueryEngine *engine);
 void SBQueryEngineAddQueryKey(SBQueryEngine *engine, unsigned char keyid);
 void SBEngineCleanup(SBQueryEngine *engine);

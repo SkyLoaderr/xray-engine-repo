@@ -1,7 +1,4 @@
 #include "sb_internal.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include "../stringutil.h"
 #include "sb_ascii.h"
 
 //Future Versions:
@@ -16,31 +13,40 @@ static void ListCallback(SBServerList *serverlist, SBListCallbackReason reason, 
 	{
 	case slc_serveradded:
 		sb->BrowserCallback(sb, sbc_serveradded, server, sb->instance);
-		if ((server->state & (STATE_BASICKEYS|STATE_FULLKEYS)) == 0) //we need to do an update
+		if ((server->state & (STATE_BASICKEYS|STATE_FULLKEYS)) == 0 || (server->state & STATE_VALIDPING) == 0) //we need to do an update
 		{
 			// Don't update if an update is already pending
-			if (server->state & (STATE_PENDINGBASICQUERY|STATE_PENDINGFULLQUERY))
+			if (server->state & (STATE_PENDINGBASICQUERY|STATE_PENDINGFULLQUERY|STATE_PENDINGICMPQUERY))
 				break;
 
 			if (!sb->dontUpdate) //if this flag is set, we don't want to trigger updates
 			{
 				int qtype;
-				if (sb->list.state == sl_lanbrowse || sb->engine.numserverkeys == 0)
-					qtype = QTYPE_FULL;
+				if (server->flags & UNSOLICITED_UDP_FLAG)
+				{
+					if (sb->list.state == sl_lanbrowse || sb->engine.numserverkeys == 0)
+						qtype = QTYPE_FULL;
+					else
+						qtype = QTYPE_BASIC;
+				} else
+					qtype = QTYPE_ICMP; //we can only do an ICMP query
+
+				if (serverlist->backendgameflags & QR2_USE_QUERY_CHALLENGE)
+					SBQueryEngineUpdateServer(&sb->engine, server, 0, qtype, SBTrue);
 				else
-					qtype = QTYPE_BASIC;
-				SBQueryEngineUpdateServer(&sb->engine, server, 0, qtype);
+					SBQueryEngineUpdateServer(&sb->engine, server, 0, qtype, SBFalse);
+
 			}
 		}
-		break;
+		break; 
 	case slc_serverupdated:
-		if ((server->state & (STATE_BASICKEYS|STATE_FULLKEYS)) == 0) //if it was updated, but with no data, then the update failed!
+		if ((server->state & (STATE_BASICKEYS|STATE_FULLKEYS|STATE_VALIDPING)) == 0) //if it was updated, but with no data, then the update failed!
 			sb->BrowserCallback(sb, sbc_serverupdatefailed, server, sb->instance);
 		else
 			sb->BrowserCallback(sb, sbc_serverupdated, server, sb->instance);
 		break;
 	case slc_serverdeleted:
-		if ((server->state & (STATE_PENDINGBASICQUERY|STATE_PENDINGFULLQUERY)) != 0) 
+		if ((server->state & (STATE_PENDINGBASICQUERY|STATE_PENDINGFULLQUERY|STATE_PENDINGICMPQUERY)) != 0) 
 			SBQueryEngineRemoveServerFromFIFOs(&sb->engine, server);
 		sb->BrowserCallback(sb, sbc_serverdeleted, server, sb->instance);
 		break;
@@ -58,6 +64,8 @@ static void ListCallback(SBServerList *serverlist, SBListCallbackReason reason, 
 		break;
 	case slc_publicipdetermined:
 		SBQueryEngineSetPublicIP(&sb->engine, sb->list.mypublicip);
+		break;
+	case slc_serverchallengereceived:
 		break;
 	}
 	if (server != NULL && server->publicip == sb->triggerIP && server->publicport == sb->triggerPort)
@@ -79,6 +87,10 @@ static void EngineCallback(SBQueryEnginePtr engine, SBQueryEngineCallbackReason 
 	case qe_engineidle:
 		sb->BrowserCallback(sb, sbc_updatecomplete, server, sb->instance);
 		break;
+	case qe_challengereceived:
+		sb->BrowserCallback(sb, sbc_serverchallengereceived, server, sb->instance);
+		//challenge received will return instead of break - since the game has not yet been updated
+		return;
 	}
 	if (server != NULL && server->publicip == sb->triggerIP && server->publicport == sb->triggerPort)
 		sb->triggerIP = 0; //clear the trigger
@@ -88,23 +100,27 @@ static void EngineCallback(SBQueryEnginePtr engine, SBQueryEngineCallbackReason 
 
 
 
-ServerBrowser ServerBrowserNewA(const char *queryForGamename, const char *queryFromGamename, const char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, ServerBrowserCallback callback, void *instance)
+ServerBrowser ServerBrowserNewA(const char *queryForGamename, const char *queryFromGamename, const char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, SBBool lanBrowse, ServerBrowserCallback callback, void *instance)
 {
 	ServerBrowser sb;
-	if(__GSIACResult != GSIACAvailable)
-		return NULL;
+	if(lanBrowse == SBFalse)
+	{
+		if(__GSIACResult != GSIACAvailable)
+			return NULL;
+	}
+	
 	sb = (ServerBrowser)gsimalloc(sizeof(struct _ServerBrowser));
 	if (sb == NULL)
 		return NULL;
 	sb->BrowserCallback = callback;
 	sb->instance = instance;
-	sb->dontUpdate = SBFalse;;
-	SBServerListInit(&sb->list, queryForGamename, queryFromGamename, queryFromKey, queryFromVersion, ListCallback, sb);
-	SBQueryEngineInit(&sb->engine, maxConcUpdates, queryVersion, EngineCallback, sb);
+	sb->dontUpdate = SBFalse;
+	SBServerListInit(&sb->list, queryForGamename, queryFromGamename, queryFromKey, queryFromVersion, lanBrowse, ListCallback, sb);
+	SBQueryEngineInit(&sb->engine, maxConcUpdates, queryVersion, lanBrowse, EngineCallback, sb);
 	return sb;
 }
 #ifdef GSI_UNICODE
-ServerBrowser ServerBrowserNewW(const unsigned short *queryForGamename, const unsigned short *queryFromGamename, const unsigned short *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, ServerBrowserCallback callback, void *instance)
+ServerBrowser ServerBrowserNewW(const unsigned short *queryForGamename, const unsigned short *queryFromGamename, const unsigned short *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, SBBool lanBrowse, ServerBrowserCallback callback, void *instance)
 {
 	char forGameName_A[255];
 	char fromGameName_A[255];
@@ -117,7 +133,7 @@ ServerBrowser ServerBrowserNewW(const unsigned short *queryForGamename, const un
 	UCS2ToAsciiString(queryForGamename, forGameName_A);
 	UCS2ToAsciiString(queryFromGamename, fromGameName_A);
 	UCS2ToAsciiString(queryFromKey, fromGameKey_A);
-	return ServerBrowserNewA(forGameName_A, fromGameName_A, fromGameKey_A, queryFromVersion, maxConcUpdates, queryVersion, callback, instance);
+	return ServerBrowserNewA(forGameName_A, fromGameName_A, fromGameKey_A, queryFromVersion, maxConcUpdates, queryVersion, lanBrowse, callback, instance);
 }
 #endif
 
@@ -150,6 +166,17 @@ SBError ServerBrowserBeginUpdate2(ServerBrowser sb, SBBool async, SBBool disconn
 		//add to the engine query list
 		SBQueryEngineAddQueryKey(&sb->engine, basicFields[i]);
 	}
+
+#if defined(SN_SYSTEMS) && defined(SB_ICMP_SUPPORT)
+	{
+		// reset SNSystems internal ICMP ping structures
+		sndev_set_ping_reset_type optval;
+		optval.timeout_ms = MAX_QUERY_MSEC; // this gets rounded up to 3 sec
+		optval.reserved = 0;
+		sndev_set_options(0, SN_DEV_SET_PING_RESET, &optval, sizeof(optval));
+	}
+#endif
+
 	err = SBServerListConnectAndQuery(&sb->list, keyList, serverFilter, updateOptions, maxServers);
 	if (err != sbe_noerror)
 		return err;
@@ -199,7 +226,6 @@ SBError ServerBrowserLANUpdate(ServerBrowser sb, SBBool async, unsigned short st
 	SBError err = sbe_noerror;
 	ServerBrowserHalt(sb);
 	SBServerListGetLANList(&sb->list, startSearchPort, endSearchPort, sb->engine.queryversion);
-	OutputDebugString("-----------\n");
 	if (!async)
 	{
 		while ((sb->list.state == sl_lanbrowse) || ((sb->engine.querylist.count > 0) && (err == sbe_noerror)))
@@ -258,22 +284,29 @@ SBError ServerBrowserAuxUpdateIPA(ServerBrowser sb, const char *ip, unsigned sho
 	
 	SBError err = sbe_noerror;
 	sb->dontUpdate = SBTrue;
+
 	if (!viaMaster) //do an engine query
 	{
 		SBServer server;
 		int i;
+		SBBool usequerychallenge = (sb->list.backendgameflags & QR2_USE_QUERY_CHALLENGE) > 0 ? SBTrue:SBFalse;
+
 		//need to see if the server exists...
 		i = SBServerListFindServerByIP(&sb->list, inet_addr(ip), htons(port));
 		if (i == -1)
 		{
-			server = SBQueryEngineUpdateServerByIP(&sb->engine, ip, port, 1, (fullUpdate) ? QTYPE_FULL : QTYPE_BASIC);
+			server = SBQueryEngineUpdateServerByIP(&sb->engine, ip, port, 1, (fullUpdate) ? QTYPE_FULL : QTYPE_BASIC, usequerychallenge);
 			SBServerListAppendServer(&sb->list, server);
 		}
 		else
 		{
-			server = SBServerListNth(&sb->list, i);
-			SBQueryEngineRemoveServerFromFIFOs(&sb->engine, server); // Remove FIFO entry (if exists)
-			SBQueryEngineUpdateServer(&sb->engine, server, 1, (fullUpdate) ? QTYPE_FULL : QTYPE_BASIC);
+			// Don't overwrite the existing update, otherwise the response for the first update
+			// will be mistaken as the response for the second update.  (Which is bad if they have different update parameters.)
+			return sbe_duplicateupdateerror;
+
+			//server = SBServerListNth(&sb->list, i);
+			//SBQueryEngineRemoveServerFromFIFOs(&sb->engine, server); // Remove FIFO entry (if exists)
+			//SBQueryEngineUpdateServer(&sb->engine, server, 1, (fullUpdate) ? QTYPE_FULL : QTYPE_BASIC, usequerychallenge);
 		}
 	} else //do a master update
 	{
@@ -302,14 +335,15 @@ SBError ServerBrowserAuxUpdateServer(ServerBrowser sb, SBServer server, SBBool a
 {
 	SBBool viaMaster;
 	SBError err = sbe_noerror;
+	SBBool usequerychallenge = (sb->list.backendgameflags & QR2_USE_QUERY_CHALLENGE) > 0 ? SBTrue:SBFalse;
 
 	sb->dontUpdate = SBTrue;
-
+	
 	if (server->flags & UNSOLICITED_UDP_FLAG) //do an engine query
 	{
 		//remove from the existing update lists if present
 		SBQueryEngineRemoveServerFromFIFOs(&sb->engine, server);
-		SBQueryEngineUpdateServer(&sb->engine, server, 1, (fullUpdate) ? QTYPE_FULL : QTYPE_BASIC);
+		SBQueryEngineUpdateServer(&sb->engine, server, 1, (fullUpdate) ? QTYPE_FULL : QTYPE_BASIC, usequerychallenge);
 		viaMaster = SBFalse;
 	} else //do a master update
 	{
@@ -375,29 +409,32 @@ const char *ServerBrowserErrorDescA(ServerBrowser sb, SBError error)
 	{
 	case sbe_noerror:
 		return "None";
-		break;
+		//break;
 	case sbe_socketerror:
 		return "Socket creation error";
-		break;
+		//break;
 	case sbe_dnserror:
 		return "DNS lookup error";
-		break;
+		//break;
 	case sbe_connecterror:
 		return "Connection failed";
-		break;
+		//break;
 	case sbe_dataerror:
 		return "Data stream error";
-		break;
+		//break;
 	case sbe_allocerror:
 		return "Memory allocation error";
-		break;
+		//break;
 	case sbe_paramerror:
 		return "Function parameter error";
-		break;
+		//break;
+	case sbe_duplicateupdateerror:
+		return "Duplicate update request error";
+		//break;
 	}
-	return "";
-	
+
 	GSI_UNUSED(sb);
+	return "";
 }
 #ifdef GSI_UNICODE
 const unsigned short *ServerBrowserErrorDescW(ServerBrowser sb, SBError error)
@@ -424,6 +461,9 @@ const unsigned short *ServerBrowserErrorDescW(ServerBrowser sb, SBError error)
 		break;
 	case sbe_paramerror:
 		return L"Function parameter error";
+		break;
+	case sbe_duplicateupdateerror:
+		return L"Duplicate update request error";
 		break;
 	}
 	return L"";
@@ -494,23 +534,36 @@ int ServerBrowserCount(ServerBrowser sb)
 	return SBServerListCount(&sb->list);
 }
 
-
-void ServerBrowserSortA(ServerBrowser sb, SBBool ascending, char *sortkey, SBCompareMode comparemode)
+void ServerBrowserSortA(ServerBrowser sb, SBBool ascending, const char *sortkey, SBCompareMode comparemode)
 {
-	SBServerListSort(&sb->list, ascending, sortkey, comparemode);
+	SortInfo info;
+	info.comparemode = comparemode;
+#ifdef GSI_UNICODE
+	GS_ASSERT(sortkey != NULL && _tcslen((const unsigned short *)sortkey) <= SORTKEY_LENGTH);
+	_tcscpy(info.sortkey, (const unsigned short *)sortkey);
+#else
+	GS_ASSERT(sortkey != NULL && _tcslen(sortkey) <= SORTKEY_LENGTH);
+	_tcscpy(info.sortkey, sortkey);
+#endif
+	SBServerListSort(&sb->list, ascending, info);
 }
 #ifdef GSI_UNICODE
-void ServerBrowserSortW(ServerBrowser sb, SBBool ascending, unsigned short *sortkey, SBCompareMode comparemode)
+void ServerBrowserSortW(ServerBrowser sb, SBBool ascending, const unsigned short *sortkey, SBCompareMode comparemode)
 {
 	char sortkey_A[255];
 	UCS2ToUTF8String(sortkey, sortkey_A);
+	//struct SortInfo info;
+	//info.comparemode = comparemode;
+	//GS_ASSERT(sortkey != NULL && _tcslen((const unsigned short *)sortkey) <= SORTKEY_LENGTH);
+	//_tcscpy(info.sortkey, (const unsigned short *)sortkey_A);
+	//SBServerListSort(&sb->list, ascending, info);
 	ServerBrowserSortA(sb, ascending, sortkey_A, comparemode);
 }
 #endif
 
 char *ServerBrowserGetMyPublicIP(ServerBrowser sb)
 {
-	return inet_ntoa(*(struct in_addr *)&sb->list.mypublicip);
+	return (char *)inet_ntoa(*(struct in_addr *)&sb->list.mypublicip);
 }
 
 unsigned int ServerBrowserGetMyPublicIPAddr(ServerBrowser sb)
@@ -527,4 +580,42 @@ void ServerBrowserDisconnect(ServerBrowser sb)
 void ServerBrowserLANSetLocalAddr(ServerBrowser sb, const char* theAddr)
 {
 	sb->list.mLanAdapterOverride = theAddr;
+}
+
+
+/* SBServerGetConnectionInfo
+----------------
+Check if Nat Negotiation is requires, based off whether it is a lan game, public ip present and several other facts. 
+Returns an IP string to use for NatNeg, or direct connect if possible
+Work for subsequent connection to this server, One of three results will occur
+i) Lan game, connect using ipstring
+2) Internet game, connect using ipstring
+3) nat traversal required, perform nat negotiation using Nat SDK and this ipstring before connecting. 
+
+return sb_true if further processing is required... i.e. NAT.   sb_false if not.
+fills an IP string
+*/
+SBBool SBServerGetConnectionInfo(ServerBrowser gSB, SBServer server, gsi_u16 PortToConnectTo, char *ipstring)
+{
+	SBBool natneg = SBFalse;
+    if (SBServerHasPrivateAddress(server) == SBTrue && (SBServerGetPublicInetAddress(server) == ServerBrowserGetMyPublicIPAddr(gSB)))
+	{
+
+		//directly connect to private IP (LAN)
+		sprintf(ipstring,"%s:%d", SBServerGetPrivateAddress(server),PortToConnectTo );
+ 
+	}
+	else
+	if ((SBServerDirectConnect(server) == SBTrue )&& (SBServerHasPrivateAddress(server) == SBFalse))
+	{
+            //can directly connect to public IP, no negotiation required
+			sprintf(ipstring,"%s:%d", SBServerGetPrivateAddress(server),	PortToConnectTo );
+	}
+	else
+	{
+		//Nat Negotiation required
+		natneg = SBTrue;
+		sprintf(ipstring,"%s:%d", SBServerGetPublicAddress(server),	SBServerGetPublicQueryPort	(server) );
+	}
+	return natneg;
 }

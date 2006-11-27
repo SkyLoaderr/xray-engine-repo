@@ -20,12 +20,12 @@
 #define DEF_GROWBY 8
 
 #ifdef _NO_NOPORT_H_
-	#define gsimalloc malloc
-	#define gsifree free
-	#define gsirealloc realloc
-	#include <assert.h>
+	#define gsimalloc	malloc
+	#define gsifree		free
+	#define gsirealloc	realloc
+	#include "common/gsAssert.h"
 #else
-	#include "nonport.h" //for gsimalloc/realloc/free/assert
+	#include "nonport.h" //for gsimalloc/realloc/free/GS_ASSERT
 #endif
 
 
@@ -60,9 +60,10 @@ static void FreeElement(DArray array, int n)
  */
 static void ArrayGrow(DArray array)
 {
+	GS_ASSERT(array->elemsize)	// sanity check -mj Oct 31st
 	array->capacity +=  array->growby;
 	array->list = gsirealloc(array->list, (size_t) array->capacity * array->elemsize);
-	assert(array->list);
+	GS_ASSERT(array->list);
 }
 
 /* SetElement
@@ -70,6 +71,10 @@ static void ArrayGrow(DArray array)
  */
 static void SetElement(DArray array, const void *elem, int pos)
 {
+	GS_ASSERT(array)			// safety check -mj Oct 31st
+	GS_ASSERT(elem)	
+	GS_ASSERT(array->elemsize)	
+
 	memcpy(ArrayNth(array,pos), elem, (size_t)array->elemsize);
 }
 
@@ -79,19 +84,19 @@ DArray ArrayNew(int elemSize, int numElemsToAllocate,
 	DArray array;
 
 	array = (DArray) gsimalloc(sizeof(struct DArrayImplementation));
-	assert(array);
-	assert(elemSize);
+	GS_ASSERT(array);
+	GS_ASSERT(elemSize);
 	if (numElemsToAllocate == 0)
 		numElemsToAllocate = DEF_GROWBY;
-	array->count = 0;
+	array->count	= 0;
 	array->capacity = numElemsToAllocate;;
 	array->elemsize = elemSize;
-	array->growby = numElemsToAllocate;
+	array->growby	= numElemsToAllocate;
 	array->elemfreefn = elemFreeFn;
 	if (array->capacity != 0)
 	{
 		array->list = gsimalloc((size_t)array->capacity * array->elemsize);
-		assert(array->list);
+		GS_ASSERT(array->list);
 	} else
 		array->list = NULL;
 
@@ -102,18 +107,21 @@ void ArrayFree(DArray array)
 {
 	int i;
 	
-	assert(array);
+	GS_ASSERT(array);
 	for (i = 0; i < array->count; i++)
 	{
 		FreeElement(array, i);
 	}
+	// mj to do: move these asserts into gsi_free.  maybe, depends on whether user overloads them
+	GS_ASSERT(array->list)
+	GS_ASSERT(array)
 	gsifree(array->list);
 	gsifree(array);
 }
 
 void *ArrayGetDataPtr(DArray array)
 {
-	assert(array);
+	GS_ASSERT(array);
 	return array->list;
 }
 
@@ -121,7 +129,7 @@ void ArraySetDataPtr(DArray array, void *ptr, int count, int capacity)
 {
 	int i;
 	
-	assert(array);
+	GS_ASSERT(array);
 	if (array->list != NULL)
 	{
 		for (i = 0; i < array->count; i++)
@@ -139,12 +147,16 @@ void ArraySetDataPtr(DArray array, void *ptr, int count, int capacity)
 
 int ArrayLength(const DArray array)
 {
+	GS_ASSERT(array)
 	return array->count;
 }
 
 void *ArrayNth(DArray array, int n)
 {
-	assert( (n >= 0) && (n < array->count));
+	// 2004.Nov.16.JED - modified GS_ASSERT to include "if" to add robustness
+	GS_ASSERT( (n >= 0) && (n < array->count));
+	if( ! ((n >= 0) && (n < array->count)) )
+		return NULL;
 	
 	return (char *)array->list + array->elemsize*n;
 }
@@ -154,14 +166,15 @@ void *ArrayNth(DArray array, int n)
  */
 void ArrayAppend(DArray array, const void *newElem)
 {
-	assert(array);
+	GS_ASSERT(array);
 	if(array)
 		ArrayInsertAt(array, newElem, array->count);
 }
 
 void ArrayInsertAt(DArray array, const void *newElem, int n)
 {
-	assert( (n >= 0) && (n <= array->count));
+	GS_ASSERT (array)
+	GS_ASSERT ( (n >= 0) && (n <= array->count));
 
 	if (array->count == array->capacity)
 		ArrayGrow(array);
@@ -177,7 +190,10 @@ void ArrayInsertSorted(DArray array, const void *newElem, ArrayCompareFn compara
 	int n;
 	void *res;
 	int found;
-	assert( comparator);
+
+	GS_ASSERT (array)
+	GS_ASSERT (comparator);
+
 	res=mybsearch(newElem, array->list,	array->count, array->elemsize, comparator, &found);
 	n = (((char *)res - (char *)array->list) / array->elemsize);
 	ArrayInsertAt(array, newElem, n);
@@ -186,7 +202,8 @@ void ArrayInsertSorted(DArray array, const void *newElem, ArrayCompareFn compara
 
 void ArrayRemoveAt(DArray array, int n)
 {
-   	assert( (n >= 0) && (n < array->count));
+ 	GS_ASSERT (array)
+  	GS_ASSERT( (n >= 0) && (n < array->count));
 
 	if (n < array->count - 1) //if not last element
 		memmove(ArrayNth(array,n),ArrayNth(array,n+1),
@@ -196,7 +213,8 @@ void ArrayRemoveAt(DArray array, int n)
 
 void ArrayDeleteAt(DArray array, int n)
 {
-   	assert( (n >= 0) && (n < array->count));
+ 	GS_ASSERT (array)
+   	GS_ASSERT ( (n >= 0) && (n < array->count));
 
 	FreeElement(array,n);
 	ArrayRemoveAt(array, n);
@@ -205,7 +223,8 @@ void ArrayDeleteAt(DArray array, int n)
 
 void ArrayReplaceAt(DArray array, const void *newElem, int n)
 {
-	assert( (n >= 0) && (n < array->count));
+ 	GS_ASSERT (array)
+	GS_ASSERT ( (n >= 0) && (n < array->count));
 
 	FreeElement(array, n);
 	SetElement(array, newElem,n);
@@ -214,10 +233,11 @@ void ArrayReplaceAt(DArray array, const void *newElem, int n)
 
 void ArraySort(DArray array, ArrayCompareFn comparator)
 {
+ 	GS_ASSERT (array)
 	qsort(array->list, (size_t)array->count, (size_t)array->elemsize, comparator);
 }
 
-//assert will be raised by ArrayNth if fromindex out of range
+//GS_ASSERT will be raised by ArrayNth if fromindex out of range
 int ArraySearch(DArray array, const void *key, ArrayCompareFn comparator, 
                   int fromIndex, int isSorted)
 {
@@ -243,7 +263,8 @@ void ArrayMap(DArray array, ArrayMapFn fn, void *clientData)
 {
 	int i;
 
-	assert(fn);
+ 	GS_ASSERT (array)
+	GS_ASSERT(fn);
 
 	for (i = 0; i < array->count; i++)
 		fn(ArrayNth(array,i), clientData);
@@ -254,7 +275,7 @@ void ArrayMapBackwards(DArray array, ArrayMapFn fn, void *clientData)
 {
 	int i;
 
-	assert(fn);
+	GS_ASSERT(fn);
 
 	for (i = (array->count - 1) ; i >= 0 ; i--)
 		fn(ArrayNth(array,i), clientData);
@@ -266,7 +287,8 @@ void * ArrayMap2(DArray array, ArrayMapFn2 fn, void *clientData)
 	int i;
 	void * pcurr;
 
-	assert(fn);
+	GS_ASSERT(fn);
+	GS_ASSERT(clientData);
 
 	for (i = 0; i < array->count; i++)
 	{
@@ -283,7 +305,8 @@ void * ArrayMapBackwards2(DArray array, ArrayMapFn2 fn, void *clientData)
 	int i;
 	void * pcurr;
 
-	assert(fn);
+	GS_ASSERT(fn);
+	GS_ASSERT(clientData);
 
 	for (i = (array->count - 1) ; i >= 0 ; i--)
 	{
@@ -313,6 +336,8 @@ static void *mylsearch(const void *key, void *base, int count, int size,
 					 ArrayCompareFn comparator)
 {
 	int i;
+	GS_ASSERT(key);
+	GS_ASSERT(base);
 	for (i = 0; i < count; i++)
 	{
 		if (comparator(key, (char *)base + size*i) == 0)
@@ -328,6 +353,10 @@ static void *mybsearch(const void *elem, void *base, int num, int elemsize, Arra
 {
 	int L, H, I, C;
 	
+	GS_ASSERT(elem);
+	GS_ASSERT(base);
+	GS_ASSERT(found);
+
 	L = 0;
 	H = num - 1;
 	*found = 0;

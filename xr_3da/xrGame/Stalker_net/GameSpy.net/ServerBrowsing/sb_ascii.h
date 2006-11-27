@@ -27,7 +27,7 @@ devsupport@gamespy.com
 extern "C" {
 #endif
 	
-#include "../nonport.h"
+#include "../common/gsCommon.h"
 
 /*
 ServerBrowserNew
@@ -43,7 +43,7 @@ maxConcUpdates - Max number of concurent updates (10-15 for modem users, 20-30 f
 queryVersion - Query protocol to use. Use QVERSION_GOA for DeveloperSpec/Query&Reporting1 games, and QVERSION_QR2 for games that use Query & Reporting 2
 callback - The function that will be called with list updates
 instance - User-defined instance data (e.g. structure or object pointer)  */
-ServerBrowser ServerBrowserNewA(const char *queryForGamename, const char *queryFromGamename, const char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, ServerBrowserCallback callback, void *instance);
+ServerBrowser ServerBrowserNewA(const char *queryForGamename, const char *queryFromGamename, const char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, SBBool lanBrowse, ServerBrowserCallback callback, void *instance);
 
 
 /* ServerBrowserUpdate
@@ -123,7 +123,7 @@ SBError ServerBrowserSendMessageToServerA(ServerBrowser sb, const char *ip, unsi
 Sort the server list in either ascending or descending order using the 
 specified comparemode.
 sortkey can be a normal server key, or "ping" or "hostaddr" */
-void ServerBrowserSortA(ServerBrowser sb, SBBool ascending, char *sortkey, SBCompareMode comparemode);
+void ServerBrowserSortA(ServerBrowser sb, SBBool ascending, const char *sortkey, SBCompareMode comparemode);
 
 /*******************
 SBServer Object Functions

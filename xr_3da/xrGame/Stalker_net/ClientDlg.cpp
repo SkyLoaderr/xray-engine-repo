@@ -11,7 +11,7 @@
 #include "Version_Define.h"
 //-------------------------------------
 #include "GameSpy.net/nonport.h"
-#include "GameSpy.net/available.h"
+#include "GameSpy.net/common/gsAvailable.h"
 #include "GameSpy.net/qr2/qr2regkeys.h"
 //-------------------------------------
 #include "GameSpyFuncs.h"
@@ -149,7 +149,7 @@ BOOL CClientDlg::OnInitDialog()
 		return TRUE;
 	}
 
-	m_serverBrowser = ServerBrowserNew(GAME_NAME, GAME_NAME, SECRET_KEY, 0, MAX_UPDATES, QVERSION_QR2, SBCallback, this);
+	m_serverBrowser = ServerBrowserNew(GAME_NAME, GAME_NAME, SECRET_KEY, 0, MAX_UPDATES, QVERSION_QR2, SBFalse, SBCallback, this);
 	if(!m_serverBrowser)
 	{
 		MessageBox("Unable to create the server browser object");
@@ -1053,19 +1053,19 @@ void CClientDlg::OnBnClickedGSUpdateList()
 		ServerBrowserHalt(m_serverBrowser);
 //		m_pGameSpyUpdateList.EnableWindow(TRUE);
 //		m_pGameSpyRefreshList.EnableWindow(TRUE);
-		MessageBox("GameSpy Refresh Stopped\n");
+//		MessageBox("GameSpy Refresh Stopped\n");
 
-		m_pGameSpyUpdateList.EnableWindow(TRUE);
-		m_pGameSpyRefreshList.EnableWindow(TRUE);
+//		m_pGameSpyUpdateList.EnableWindow(TRUE);
+//		m_pGameSpyRefreshList.EnableWindow(TRUE);
 		if (m_timerID)
 			KillTimer(m_timerID);
 		m_timerID = 0;
 
-		return;
+//		return;
 	};
 
-	m_pGameSpyUpdateList.EnableWindow(FALSE);
-	m_pGameSpyRefreshList.EnableWindow(FALSE);
+//	m_pGameSpyUpdateList.EnableWindow(FALSE);
+//	m_pGameSpyRefreshList.EnableWindow(FALSE);
 
 	// clear the server browser and list
 	ServerBrowserClear(m_serverBrowser);
@@ -1086,9 +1086,9 @@ void CClientDlg::OnBnClickedGSUpdateList()
 	// do an update
 	SBError error;
 	if(internet)
-		error = ServerBrowserUpdate(m_serverBrowser, SBFalse, SBFalse, fields, numFields, (char *)(const char *)"");
+		error = ServerBrowserUpdate(m_serverBrowser, SBTrue, SBFalse, fields, numFields, (char *)(const char *)"");
 	else
-		error = ServerBrowserLANUpdate(m_serverBrowser, SBFalse, START_PORT, END_PORT);
+		error = ServerBrowserLANUpdate(m_serverBrowser, SBTrue, START_PORT, END_PORT);
 
 	if (error != sbe_noerror)
 	{
@@ -1124,7 +1124,7 @@ void CClientDlg::OnBnClickedGSRefreshList()
 //	m_pGameSpyRefreshList.EnableWindow(FALSE);
 
 	m_bQuickRefresh = TRUE;
-	ServerBrowserAuxUpdateServer(m_serverBrowser, N.dpServer, SBFalse, SBTrue);
+	ServerBrowserAuxUpdateServer(m_serverBrowser, N.dpServer, SBTrue, SBTrue);
 
 //	if(!m_timerID)
 //		m_timerID = SetTimer(TIMER_ID, TIMER_FREQUENCY, NULL);

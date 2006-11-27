@@ -24,7 +24,7 @@ devsupport@gamespy.com
 extern "C" {
 #endif
 	
-#include "../nonport.h"
+#include "../common/gsCommon.h"
 
 	
 
@@ -50,7 +50,8 @@ typedef enum
 	sbe_connecterror,  //connection to master server failed
 	sbe_dataerror, //invalid data was returned from master server
 	sbe_allocerror, //memory allocation failed
-	sbe_paramerror //an invalid parameter was passed to a function
+	sbe_paramerror,	//an invalid parameter was passed to a function
+	sbe_duplicateupdateerror //server update requested on a server that was already being updated
 } SBError;	
 
 //States the ServerBrowser object can be in
@@ -70,7 +71,8 @@ typedef enum
 	sbc_serverupdatefailed, //an attempt to retrieve information about this server, either directly or from the master, failed
 	sbc_serverdeleted, //a server was removed from the list
 	sbc_updatecomplete, //the server query engine is now idle
-	sbc_queryerror		//the master returned an error string for the provided query
+	sbc_queryerror,		//the master returned an error string for the provided query
+	sbc_serverchallengereceived // received ip verification challenge from server
 } SBCallbackReason;	
 
 
@@ -147,7 +149,7 @@ maxConcUpdates - Max number of concurent updates (10-15 for modem users, 20-30 f
 queryVersion - Query protocol to use. Use QVERSION_GOA for DeveloperSpec/Query&Reporting1 games, and QVERSION_QR2 for games that use Query & Reporting 2
 callback - The function that will be called with list updates
 instance - User-defined instance data (e.g. structure or object pointer)  */
-ServerBrowser ServerBrowserNew(const gsi_char *queryForGamename, const gsi_char *queryFromGamename, const gsi_char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, ServerBrowserCallback callback, void *instance);
+ServerBrowser ServerBrowserNew(const gsi_char *queryForGamename, const gsi_char *queryFromGamename, const gsi_char *queryFromKey, int queryFromVersion, int maxConcUpdates, int queryVersion, SBBool lanBrowse, ServerBrowserCallback callback, void *instance);
 
 /* 
 ServerBrowserFree
@@ -340,7 +342,7 @@ typedef enum {sbcm_int, sbcm_float, sbcm_strcase, sbcm_stricase} SBCompareMode;
 Sort the server list in either ascending or descending order using the 
 specified comparemode.
 sortkey can be a normal server key, or "ping" or "hostaddr" */
-void ServerBrowserSort(ServerBrowser sb, SBBool ascending, gsi_char *sortkey, SBCompareMode comparemode);
+void ServerBrowserSort(ServerBrowser sb, SBBool ascending, const gsi_char *sortkey, SBCompareMode comparemode);
 
 /* ServerBrowserLANSetLocalAddr
 -------------------
@@ -355,6 +357,21 @@ SBServer Object Functions
 
 // Callback function used for enumerating the keys/values for a server
 typedef void (*SBServerKeyEnumFn)(gsi_char *key, gsi_char *value, void *instance);
+
+
+/* SBServerGetConnectionInfo
+----------------
+Check if Nat Negotiation is requires, based off whether it is a lan game, public ip present and several other facts. 
+Returns an IP string to use for NatNeg, or direct connect if possible
+Work for subsequent connection to this server, One of three results will occur
+i) Lan game, connect using ipstring
+2) Internet game, connect using ipstring
+3) nat traversal required, perform nat negotiation using Nat SDK and this ipstring before connecting. 
+
+return sb_true if further processing is required... i.e. NAT.   sb_false if not.
+fills an IP string
+*/
+SBBool SBServerGetConnectionInfo(ServerBrowser gSB, SBServer server, gsi_u16 PortToConnectTo, char *ipstring_out);
 
 
 /* SBServerHasPrivateAddress
@@ -406,6 +423,11 @@ SBBool SBServerHasBasicKeys(SBServer server);
 Returns SBTrue if a server has full keys available for it. This includes all server
 rules and player/team keys. */
 SBBool SBServerHasFullKeys(SBServer server);
+
+/* SBServerHasValidPing
+----------------
+Returns SBTrue if a server has a valid ping value for it (otherwise the ping will be 0) */
+SBBool SBServerHasValidPing(SBServer server);
 
 
 /* SBServerGet[]Value
