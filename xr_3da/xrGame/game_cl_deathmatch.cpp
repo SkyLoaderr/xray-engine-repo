@@ -129,13 +129,12 @@ void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
 {
 	inherited::net_import_state	(P);
 
-	P.r_s32			(fraglimit);
-	timelimit	= P.r_s32			()*60000;
+	m_s32FragLimit				= P.r_s32			();
+	m_s32TimeLimit				= P.r_s32			()*60000;
 //	P.r_u32			(damageblocklimit);
-	m_u32ForceRespawn = P.r_u32() * 1000;
-	m_cl_dwWarmUp_Time = P.r_u32();
-	m_bDamageBlockIndicators = !!P.r_u8();
-	// Teams
+	m_u32ForceRespawn			= P.r_u32() * 1000;
+	m_cl_dwWarmUp_Time			= P.r_u32();
+	m_bDamageBlockIndicators	= !!P.r_u8();
 	// Teams
 	u16				t_count;
 	P.r_u16			(t_count);
@@ -447,12 +446,12 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 		{
 			Check_Invincible_Players();
 
-			if (timelimit)
+			if (m_s32TimeLimit && m_cl_dwWarmUp_Time == 0)
 			{
-				if (Level().timeServer()<(start_time + timelimit))
+				if (Level().timeServer()<(start_time + m_s32TimeLimit))
 				{
 					u32 lts = Level().timeServer();
-					u32 Rest = (start_time + timelimit) - lts;
+					u32 Rest = (start_time + m_s32TimeLimit) - lts;
 					string64 S;
 					ConvertTime2String(&S, Rest);
 					if(m_game_ui)
@@ -589,7 +588,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 				{
 					game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
 					if (ps&&m_game_ui) m_game_ui->SetRank(ps->team, ps->rank);
-					if (ps&&m_game_ui) m_game_ui->SetFraglimit(ps->kills, fraglimit);
+					if (ps&&m_game_ui) m_game_ui->SetFraglimit(ps->kills, m_s32FragLimit);
 				}
 			};
 		}break;
@@ -644,7 +643,7 @@ void	game_cl_Deathmatch::SetScore				()
 	{
 		game_PlayerState* ps = GetPlayerByGameID(Level().CurrentViewEntity()->ID());
 		if (ps&&m_game_ui) m_game_ui->SetRank(ps->team, ps->rank);
-		if (ps&&m_game_ui) m_game_ui->SetFraglimit(ps->kills, fraglimit);
+		if (ps&&m_game_ui) m_game_ui->SetFraglimit(ps->kills, m_s32FragLimit);
 	}
 };
 

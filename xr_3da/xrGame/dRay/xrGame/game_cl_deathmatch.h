@@ -21,9 +21,9 @@ protected:
 public :
 									game_cl_Deathmatch();
 	virtual							~game_cl_Deathmatch();
-	s32								fraglimit; //dm,tdm,ah
-	s32								timelimit; //dm
-	u32								damageblocklimit;//dm,tdm
+	s32								m_s32FragLimit; //dm,tdm,ah
+	s32								m_s32TimeLimit; //dm
+//	u32								damageblocklimit;//dm,tdm
 	bool							m_bDamageBlockIndicators;
 	xr_vector<game_TeamState>		teams;//dm,tdm,ah
 	u32								m_u32ForceRespawn;

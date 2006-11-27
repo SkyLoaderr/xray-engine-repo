@@ -396,6 +396,8 @@ void	game_sv_Deathmatch::Update					()
 	{
 	case GAME_PHASE_INPROGRESS:
 		{
+			check_for_WarmUp();
+
 			checkForRoundEnd();
 			
 			check_InvinciblePlayers();
@@ -420,9 +422,7 @@ void	game_sv_Deathmatch::Update					()
 
 					if (GameDM) GameDM->SetSpectrModeMsgCaption(Text);
 				};
-			};
-
-			check_for_WarmUp();
+			};			
 		}
 		break;
 	case GAME_PHASE_PENDING:
@@ -463,6 +463,7 @@ bool game_sv_Deathmatch::checkForRoundStart()
 
 bool game_sv_Deathmatch::checkForTimeLimit()
 {
+	if (m_dwWarmUp_CurTime != 0) return false;
 	if (GetTimeLimit() && ((Level().timeServer()-start_time)) > u32(GetTimeLimit()*60000) )
 	{
 		if (!HasChampion()) return false;
@@ -491,7 +492,7 @@ bool game_sv_Deathmatch::checkForFragLimit()
 
 bool game_sv_Deathmatch::checkForRoundEnd()
 {
-
+	if (m_dwWarmUp_CurTime != 0) return false;
 	if( checkForTimeLimit() )
 			return true;
 
@@ -2206,7 +2207,7 @@ void	game_sv_Deathmatch::ReadOptions				(shared_str &options)
 		if (m_dwSM_SwitchDelta<1000) m_dwSM_SwitchDelta = 1000;
 	};
 	//-------------------------------------------------------------------------
-	g_sv_dm_dwWarmUp_MaxTime	= get_option_i		(*options,"warmup",g_sv_dm_dwWarmUp_MaxTime/1000) * 1000;
+	g_sv_dm_dwWarmUp_MaxTime	= get_option_i		(*options,"warmup",g_sv_dm_dwWarmUp_MaxTime);
 
 	g_sv_dm_bPDAHunt = (get_option_i(*options,"pdahunt",(g_sv_dm_bPDAHunt ? 1 : 0)) != 0);
 	
