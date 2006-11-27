@@ -788,8 +788,6 @@ void	CServerDlg::SaveMapList()
 //	if (!m_pSVServerOptDlg->m_pMapRotation.GetCheck()) return;
 //	if (!m_pSVServerOptDlg->m_pMapRotationFile.GetWindowTextLength()) return;
 	
-	if (!m_pMapList2.GetCount()) return;
-
 	CString MapRotFileName = MAPROT_LIST_NAME;
 //	m_pSVServerOptDlg->m_pMapRotationFile.GetWindowText(MapRotFileName);
 //	MapRotFileName += ".ltx";
@@ -800,13 +798,15 @@ void	CServerDlg::SaveMapList()
 //	memmove(MapRotFileFullPath, MapRotFileName, xr_strlen(MapRotFileName));
 	strcpy(MapRotFileFullPath, MapRotFileName);
 
-	IWriter*		fs	= FS.w_open(MapRotFileFullPath);
-	if (!fs)
+	FS.update_path		(MapRotFileFullPath, "$app_data_root$", MapRotFileName);
+	if (m_pMapList2.GetCount()<=0)
 	{
-		FS.update_path		(MapRotFileFullPath, "$app_data_root$", MapRotFileName);
-		fs	= FS.w_open(MapRotFileFullPath);
-		if (!fs) return;
+		FS.file_delete(MapRotFileFullPath);
+		return;
 	};
+
+	IWriter*		fs	= FS.w_open(MapRotFileFullPath);
+	if (!fs) return;
 
 	int SelIndx[1024];
 	m_pMapList.GetSelItems(1024, SelIndx);

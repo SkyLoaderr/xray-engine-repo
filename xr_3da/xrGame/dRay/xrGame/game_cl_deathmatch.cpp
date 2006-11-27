@@ -130,9 +130,9 @@ void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
 	inherited::net_import_state	(P);
 
 	P.r_s32			(fraglimit);
-	P.r_s32			(timelimit);
+	timelimit	= P.r_s32			()*60000;
 //	P.r_u32			(damageblocklimit);
-	m_u32ForceRespawn = P.r_u32();
+	m_u32ForceRespawn = P.r_u32() * 1000;
 	m_cl_dwWarmUp_Time = P.r_u32();
 	m_bDamageBlockIndicators = !!P.r_u8();
 	// Teams

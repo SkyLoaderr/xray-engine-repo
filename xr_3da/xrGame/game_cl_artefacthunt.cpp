@@ -140,7 +140,7 @@ void game_cl_ArtefactHunt::net_import_state	(NET_Packet& P)
 	P.r_u16	(artefactID);
 	bBearerCantSprint = !!P.r_u8();
 
-	P.r_u32(iReinforcementTime);
+	iReinforcementTime = P.r_u32()*1000;
 	if (iReinforcementTime != 0)
 	{
 		P.r_s32	(dReinforcementTime);
