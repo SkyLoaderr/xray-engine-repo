@@ -14,7 +14,6 @@ CUIDragDropListEx::CUIDragDropListEx()
 	m_flags.zero				();
 	m_container					= xr_new<CUICellContainer>(this);
 	m_vScrollBar				= xr_new<CUIScrollBar>();
-
 	m_vScrollBar->SetAutoDelete	(true);
 	m_selected_item				= NULL;
 

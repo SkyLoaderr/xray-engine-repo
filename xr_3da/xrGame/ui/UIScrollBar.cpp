@@ -129,7 +129,8 @@ void CUIScrollBar::SetRange(int iMin, int iMax)
 {
 	m_iMinPos				= iMin;  
 	m_iMaxPos				= iMax;
-	R_ASSERT				(iMax>=iMin);
+	VERIFY					(iMax>=iMin);
+	if(iMax<iMin)			iMax=iMin;
 	UpdateScrollBar			();
 }
 void CUIScrollBar::Show(bool b)
