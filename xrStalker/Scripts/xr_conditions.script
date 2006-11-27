@@ -1280,3 +1280,8 @@ end
 function actor_on_level(actor, npc, p)
 	return p[1] == level.name()
 end
+
+function treasure_exist(actor, npc, p)
+	printf("%s %s", actor:name(), npc:name())
+	return true
+end
