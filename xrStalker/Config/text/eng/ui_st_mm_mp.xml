@@ -231,7 +231,4 @@
 	<string id="server name">
 		<text>SERVER NAME</text>
 	</string>
-	<string id="id_mp_money">
-		<text>Money</text>
-	</string>
 </string_table>
