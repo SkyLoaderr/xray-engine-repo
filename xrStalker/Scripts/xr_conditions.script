@@ -461,6 +461,25 @@ function gulag_inactive(actor, npc, p)
 	return val == 0
 end
 
+function gulag_population_active_le(actor, npc, p)
+	 local gulag = xr_gulag.get_gulag_by_name( p[1] )
+
+    if gulag == nil then
+		return false
+	end
+	
+	local val = 0
+	
+	for k,v in pairs(gulag.Object) do
+		if v == true or ( v:alive() and
+		   not(xr_wounded.is_heavy_wounded_by_id(k) or
+		       xr_wounded.is_psy_wounded_by_id(k)) )
+		then
+			val = val + 1
+		end
+	end
+	return val <= p[2]
+end
 
 -- true, если в указанном гулаге потери больше или равны заданным
 function gulag_casualities_ge(actor, npc, p)
