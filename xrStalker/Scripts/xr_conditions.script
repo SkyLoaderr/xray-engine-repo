@@ -186,6 +186,17 @@ function gulag_state(actor, npc, p)
 	return false
 end
 
+function npc_community(actor, npc, p)
+	if p[1] == nil then
+		abort("Wrong number of params in npc_community")
+	end
+
+	if npc:character_community() = p[1] then
+		return true
+	end
+	return false
+end
+
 
 -- ѕроверка того что удар был нанесен кем-то из npc указанных в списке.
 -- ѕараметры это story_id персонажей. ћожно задавать несколько story_id.
