@@ -729,7 +729,7 @@ function gar_boars_nest2_dead(actor, npc)
 end
 
 function gar_damaged_bandits(actor, npc)
-	if (gulag_population_active(actor, npc, {"gar_bandit_agr"}) < 5) then
+	if (gulag_population_active(actor, npc, {"gar_bandit_agr"}) <= 5) then
 		return true
 	end
 	return false
