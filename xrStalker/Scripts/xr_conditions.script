@@ -1111,6 +1111,13 @@ function is_wfx_playing (actor, npc)
     return level.is_wfx_playing ()
 end
 
+function agr_nii_pop_check(actor, npc)
+	if (gulag_population_active(actor, npc, {"agr_nii"}) < 6) then
+		return true
+	end
+	return false
+end
+
 
 -------------------------------------------------------------------------------------
 -- Special for rostok
@@ -1164,6 +1171,7 @@ function agr_factory_hold_inactive (actor, npc)
 	end
 	return false
 end
+
 
 function rostok_gulag_2_inactive(actor, npc)
 	 local gulag = xr_gulag.get_gulag_by_name("bar_freedom_chasers_attack")
