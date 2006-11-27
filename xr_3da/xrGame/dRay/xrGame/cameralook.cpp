@@ -82,13 +82,26 @@ void CCameraLook::OnActivate( CCameraBase* old_cam )
 #include "visual_memory_manager.h"
 #include "actor_memory.h"
 
+int cam_dik = DIK_LSHIFT;
+
 Fvector CCameraLook2::m_cam_offset;
+void CCameraLook2::OnActivate( CCameraBase* old_cam )
+{
+	CCameraLook::OnActivate( old_cam );
+	for(int i=0; i < 2048; ++i)
+	{
+		if(kEXT_1 == key_binding[i]){
+			cam_dik = i;
+			break;
+		}
+	}
+}
 
 void CCameraLook2::Update(Fvector& point, Fvector&)
 {
 	if(!m_locked_enemy)
 	{//autoaim
-		if( pInput->iGetAsyncKeyState(DIK_LSHIFT) )
+		if( pInput->iGetAsyncKeyState(cam_dik) )
 		{
 			const CVisualMemoryManager::VISIBLES& vVisibles = Actor()->memory().visual().objects();
 			CVisualMemoryManager::VISIBLES::const_iterator v_it = vVisibles.begin();
@@ -116,7 +129,7 @@ void CCameraLook2::Update(Fvector& point, Fvector&)
 		}
 	}else
 	{
-		if( !pInput->iGetAsyncKeyState(DIK_LSHIFT) ){
+		if( !pInput->iGetAsyncKeyState(cam_dik) ){
 			m_locked_enemy	= NULL;
 //.			Msg				("enemy is NILL");
 		}
@@ -156,14 +169,7 @@ void CCameraLook2::UpdateAutoAim()
 
 	Fvector								xyz;
 	_m.getXYZi							(xyz);
-/*
-	float d_yaw							= yaw-xyz.y;
-	float d_yaw_max						= rot_speed.y * Device.fTimeDelta;
-	float d_pitch						= pitch-xyz.x;
-	float d_pitch_max					= rot_speed.y * Device.fTimeDelta;
-	yaw									+= d_yaw * rot_speed.y * Device.fTimeDelta;
-	pitch								+= d_yaw * rot_speed.x * Device.fTimeDelta;
-*/	
+
 	yaw				= angle_inertion_var(	yaw,xyz.y,
 											m_autoaim_inertion_yaw.x,
 											m_autoaim_inertion_yaw.y,

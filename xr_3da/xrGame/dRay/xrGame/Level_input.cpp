@@ -141,22 +141,18 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		break;
 	};
 
-	if(	g_bDisableAllInput	) return;
-
-	// Dima : sometimes it craches when pHUD->GetUI() is null
-	// correct this if correction is incorrect
-	if ( !b_ui_exist )		return;
+	if(	g_bDisableAllInput )	return;
+	if ( !b_ui_exist )			return;
 
 	if ( b_ui_exist && pHUD->GetUI()->IR_OnKeyboardPress(key)) return;
 
-	if( Device.Pause()		) return;
+	if( Device.Pause() )		return;
 
 	if ( game && Game().IR_OnKeyboardPress(key) ) return;
 
 	switch (key) {
 #ifdef DEBUG
 	case DIK_RETURN:
-//		if (GameID() == GAME_SINGLE)
 			bDebug	= !bDebug;
 		return;
 	case DIK_BACK:
@@ -164,11 +160,9 @@ void CLevel::IR_OnKeyboardPress	(int key)
 			HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
 		return;
 #endif
-//	case DIK_F12:
-//		Render->Screenshot			();
-//		return;
+
 	case DIK_F6: {
-		if (GameID() != GAME_SINGLE) return;
+		if ( !IsGameTypeSingle() ) return;
 //		if (!autosave_manager().ready_for_autosave()) {
 //			Msg("! Cannot save the game right now!");
 //			return;
@@ -189,7 +183,6 @@ void CLevel::IR_OnKeyboardPress	(int key)
 	}
 #ifdef DEBUG
 	case DIK_F4: {
-//		if (GameID() != GAME_SINGLE) return;
 		bool bOk = false;
 		u32 i=0, j, n=Objects.o_count();
 		if (pCurrentEntity)

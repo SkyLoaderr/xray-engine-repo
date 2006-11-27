@@ -33,6 +33,7 @@ protected:
 public:
 					CCameraLook2	( CObject* p, u32 flags=0):CCameraLook(p, flags){m_locked_enemy=NULL;};
 	virtual			~CCameraLook2	(){}
+	virtual	void	OnActivate		( CCameraBase* old_cam );
 	virtual void	Update			( Fvector& point, Fvector& noise_dangle );
 	virtual void	Load			(LPCSTR section);
 };
