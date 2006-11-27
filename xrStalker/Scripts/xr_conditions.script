@@ -371,9 +371,7 @@ function check_fighting(actor, npc, p)
 	        --printf("_bp: %s.check_fighting(%d)", npc:name(), v)
 		    if type(v) == 'number' and sid == v then
 			    --printf("TRUE")
-			    return true
-		    --else
-			--    printf("FALSE")
+			    return true		   
 		    end
 	    end
 	end
