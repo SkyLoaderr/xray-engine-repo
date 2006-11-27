@@ -191,7 +191,7 @@ function npc_community(actor, npc, p)
 		abort("Wrong number of params in npc_community")
 	end
 
-	if npc:character_community() = p[1] then
+	if npc:character_community() == p[1] then
 		return true
 	end
 	return false
