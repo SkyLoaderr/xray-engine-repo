@@ -411,7 +411,7 @@ function gulag_inactive(actor, npc, p)
 	 local gulag = xr_gulag.get_gulag_by_name( p[1] )
 
     if gulag == nil then
-		return 0
+		return false
 	end
 	
 	local val = 0
