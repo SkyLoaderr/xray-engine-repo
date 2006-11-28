@@ -87,11 +87,39 @@ local function checkCommon(npc_community, gulag_type, npc_rank, se_obj, stalker)
 end
 
 function checkStalker(npc_community, gulag_type, npc_rank, se_obj)
-    return checkCommon(npc_community, gulag_type, npc_rank, se_obj, true)
+   -- return checkCommon(npc_community, gulag_type, npc_rank, se_obj, true)
+if gulag_type == "val_escort" then
+		return npc_community == "dolg" or npc_community == "bandit"
+	end
+	if gulag_type == "val_sacrifice" then
+		return npc_community == "dolg" or npc_community == "bandit"
+	end
+	if gulag_type == "val_prisoner" then
+		return npc_community == "dolg"
+	end
+	if gulag_type == "val_sos" then
+		return npc_community == "stalker"
+	end
+	if gulag_type == "val_rob" then
+		return npc_community == "stalker"
+	end
+	if gulag_type == "val_lager_bandits" then
+		return npc_community == "bandit"
+	end
+	if gulag_type == "val_watchtower" then
+		return true
+	end
+	if gulag_type == "val_soldiers_raid" then
+		return npc_community == "military"
+	end
+	if gulag_type == "offline_group" then
+		return true
+	end
+	return false
 end
 
 function checkMonster(npc_community, gulag_type, npc_rank, se_obj)
-    return checkCommon(npc_community, gulag_type, npc_rank, se_obj, false)
+    return false
 end
 
 
