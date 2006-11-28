@@ -98,8 +98,7 @@ function has_darklab_documents(task, objective)
 end
 
 function escort_task_done(task, objective)
-    local actor = db.actor
-    return not has_alife_info("val_escort_captive_dead") and
+       return not has_alife_info("val_escort_captive_dead") and
            has_alife_info("val_escort_guard1_dead") and
            has_alife_info("val_escort_guard2_dead") and
            has_alife_info("val_escort_actor_helped")
