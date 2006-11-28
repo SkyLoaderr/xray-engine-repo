@@ -100,15 +100,15 @@ protected:
 	CGameFont*				m_pFont;
 
 	enum {
-		flNeedReparse		= 1,
-		flComplexMode		= 2,
-		flPasswordMode		= 4,
-		flColoringMode		= 8,
-		flCutWordsMode		= 16,
-		flRecognizeNewLine	= 32
+		flNeedReparse		= (1<<0),
+		flComplexMode		= (1<<1),
+		flPasswordMode		= (1<<2),
+		flColoringMode		= (1<<3),
+		flCutWordsMode		= (1<<4),
+		flRecognizeNewLine	= (1<<5)
 	};	
 private:
-	Flags32					uFlags;
+	Flags8					uFlags;
 	float					m_oldWidth;
 };
 
