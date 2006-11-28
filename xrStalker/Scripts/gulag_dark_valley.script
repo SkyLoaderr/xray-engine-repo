@@ -442,7 +442,7 @@ end
 
 -- States ----------------------------------------------------------------
 gulags.val_prisoner.state = function(gulag)
-    if db.actor:has_info("val_prisoner_door_unlocked") then
+    if has_alife_info("val_prisoner_door_unlocked") then
         return 1
     end
     return 0
