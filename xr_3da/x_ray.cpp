@@ -815,20 +815,20 @@ void CApplication::load_draw_internal()
 		Fvector2					back_size;
 
 //progress background
+		static float offs			= -0.5f;
 
 		back_size.set				(1024,768);
 		back_text_coords.lt.set		(0,0);back_text_coords.rb.add(back_text_coords.lt,back_size);
-		back_coords.lt.set			(0,0);back_coords.rb.add(back_coords.lt,back_size);
+		back_coords.lt.set			(offs, offs); back_coords.rb.add(back_coords.lt,back_size);
 
 		back_coords.lt.mul			(k);back_coords.rb.mul(k);
 
 		back_text_coords.lt.x/=tsz.x; back_text_coords.lt.y/=tsz.y; back_text_coords.rb.x/=tsz.x; back_text_coords.rb.y/=tsz.y;
-
 		pv							= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
-		pv->set						(back_coords.lt.x,	back_coords.rb.y,	0+EPS_S, 1, C,back_text_coords.lt.x,	back_text_coords.rb.y);	pv++;
-		pv->set						(back_coords.lt.x,	back_coords.lt.y,	0+EPS_S, 1, C,back_text_coords.lt.x,	back_text_coords.lt.y);	pv++;
-		pv->set						(back_coords.rb.x,	back_coords.rb.y,	0+EPS_S, 1, C,back_text_coords.rb.x,	back_text_coords.rb.y);	pv++;
-		pv->set						(back_coords.rb.x,	back_coords.lt.y,	0+EPS_S, 1, C,back_text_coords.rb.x,	back_text_coords.lt.y);	pv++;
+		pv->set						(back_coords.lt.x,	back_coords.rb.y,	C,back_text_coords.lt.x,	back_text_coords.rb.y);	pv++;
+		pv->set						(back_coords.lt.x,	back_coords.lt.y,	C,back_text_coords.lt.x,	back_text_coords.lt.y);	pv++;
+		pv->set						(back_coords.rb.x,	back_coords.rb.y,	C,back_text_coords.rb.x,	back_text_coords.rb.y);	pv++;
+		pv->set						(back_coords.rb.x,	back_coords.lt.y,	C,back_text_coords.rb.x,	back_text_coords.lt.y);	pv++;
 		RCache.Vertex.Unlock		(4,ll_hGeom.stride());
 
 		RCache.set_Geometry			(ll_hGeom);
@@ -877,14 +877,16 @@ void CApplication::load_draw_internal()
 		if(hLevelLogo){
 			Frect						r;
 			r.lt.set					(257,369);
+			r.lt.x						+= offs;
+			r.lt.y						+= offs;
 			r.rb.add					(r.lt,Fvector2().set(512,256));
 			r.lt.mul					(k);						
 			r.rb.mul					(k);						
 			pv							= (FVF::TL*) RCache.Vertex.Lock(4,ll_hGeom.stride(),Offset);
-			pv->set						(r.lt.x,				r.rb.y,		0+EPS_S, 1, C, 0, 1);	pv++;
-			pv->set						(r.lt.x,				r.lt.y,		0+EPS_S, 1, C, 0, 0);	pv++;
-			pv->set						(r.rb.x,				r.rb.y,		0+EPS_S, 1, C, 1, 1);	pv++;
-			pv->set						(r.rb.x,				r.lt.y,		0+EPS_S, 1, C, 1, 0);	pv++;
+			pv->set						(r.lt.x,				r.rb.y,		C, 0, 1);	pv++;
+			pv->set						(r.lt.x,				r.lt.y,		C, 0, 0);	pv++;
+			pv->set						(r.rb.x,				r.rb.y,		C, 1, 1);	pv++;
+			pv->set						(r.rb.x,				r.lt.y,		C, 1, 0);	pv++;
 			RCache.Vertex.Unlock		(4,ll_hGeom.stride());
 
 			RCache.set_Shader			(hLevelLogo);
