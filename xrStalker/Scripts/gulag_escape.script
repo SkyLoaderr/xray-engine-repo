@@ -503,7 +503,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 20, state = {2},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone",
 			predicate = function(obj_info)
-        					return obj_info.profile_name == "esc_wolf" and not has_alife_info("agroprom_military_case_have")
+        					return obj_info.profile_name == "esc_wolf" and not (has_alife_info("agroprom_military_case_have") and has_alife_info("esc_fanat_spawn"))
 						end
 		}
 		table.insert(sj, t)
