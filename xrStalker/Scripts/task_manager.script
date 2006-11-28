@@ -5,14 +5,30 @@ local parent_by_story = {
 	[500] = "barman",
 	[902] = "ecolog",
 	[507] = "dolg",
-	[707] = "freedom"}
+	[707] = "freedom",
+	[006] = "wolf",
+	[004] = "shustriy",
+	[510] = "drunk_dolg",
+	[504] = "hunter",
+	[518] = "zastava_commander",
+	[506] = "petrenko",
+	[607] = "lisiy"
+}
 
 local story_by_parent = {
-	trader = 003,
-	barman = 500,
-	ecolog = 902,
-	dolg = 507,
-	freedom = 707}
+	trader						= 003,
+	barman						= 500,
+	ecolog						= 902,
+	dolg						= 507,
+	freedom						= 707,
+	wolf	= 006,
+	shustriy		= 004,
+	drunk_dolg				= 510,
+	hunter					= 504,
+	zastava_commander	= 518,
+	petrenko = 506,
+	lisiy					= 607
+}
 
 local return_task_by_type = {
 	eliminate_lager = "return_for_reward",

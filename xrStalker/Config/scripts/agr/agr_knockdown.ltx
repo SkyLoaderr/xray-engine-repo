@@ -20,7 +20,7 @@ on_timer = 1500 | sr_idle@3 %=stop_cam_effector(1984) =run_postprocess(deadcity_
 on_timer  = 1500 | sr_idle@4  %=agr_cam_effect =teleport_actor(kat_teleport_to_dark_city_position:kat_teleport_to_dark_city_orientation) +cit_jail_actor_wake%
 
 [sr_idle@4]
-on_timer = 88000 | sr_idle@5 %=run_postprocess(agr_u_fade) +cit_jail_doctor_pryp_task%
+on_timer = 85500 | sr_idle@5 %=run_postprocess(agr_u_fade) +cit_jail_doctor_pryp_task%
 
 [sr_idle@5]
 on_timer = 3000 | sr_idle@last %+cit_jail_doctor_pryp_task =stop_cam_effector(123) =run_cam_effector(prison_1:2508:false)%
