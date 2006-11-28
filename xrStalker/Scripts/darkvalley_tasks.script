@@ -4,47 +4,47 @@
 function proceed()
     local actor = db.actor	
     
-    if actor:dont_has_info("dar_document1") and
+    if not has_alife_info("dar_document1") and
  		actor:object("dar_document1") then
  		actor:give_info_portion("dar_document1") 
 	end
  	
-	if actor:dont_has_info("dar_document2") and
+	if not has_alife_info("dar_document2") and
  		actor:object("dar_document2") then
  		actor:give_info_portion("dar_document2") 
 	end
  
-	if actor:dont_has_info("dar_document3") and
+	if not has_alife_info("dar_document3") and
  		actor:object("dar_document3") then
  		actor:give_info_portion("dar_document3")
 	end
  	
-	if actor:dont_has_info("dar_document4") and
+	if not has_alife_info("dar_document4") and
  		actor:object("dar_document4") then
  		actor:give_info_portion("dar_document4") 
 	end		
 	
-	if actor:dont_has_info("dar_document5") and
+	if not has_alife_info("dar_document5") and
  		actor:object("dar_document5") then
  		actor:give_info_portion("dar_document5") 
 	end	
 	
-	if actor:has_info("dar_ring_spawn2_1") and
-		actor:has_info("dar_ring_spawn2_2") and
-		actor:dont_has_info("dar_ring_spawn2")
+	if has_alife_info("dar_ring_spawn2_1") and
+		has_alife_info("dar_ring_spawn2_2") and
+		not has_alife_info("dar_ring_spawn2")
 	then
 		actor:give_info_portion("dar_ring_spawn2")
 	end
 	
-	if actor:has_info("dar_password_info1") and
-		actor:dont_has_info("dar_password_info1_know") 
+	if has_alife_info("dar_password_info1") and
+		not has_alife_info("dar_password_info1_know") 
 	then
 		actor:give_info_portion("dar_password_info1_know")
 		news_manager.send_tip(db.actor, "pass_to_1st_door")
 	end
 	
-	if actor:has_info("dar_password_info2") and
-		actor:dont_has_info("dar_password_info2_know") 
+	if has_alife_info("dar_password_info2") and
+		not has_alife_info("dar_password_info2_know") 
 	then
 		actor:give_info_portion("dar_password_info2_know")
 		news_manager.send_tip(db.actor, "pass_to_2nd_door")
@@ -99,18 +99,18 @@ end
 
 function escort_task_done(task, objective)
     local actor = db.actor
-    return actor:dont_has_info("val_escort_captive_dead") and
-           actor:has_info("val_escort_guard1_dead") and
-           actor:has_info("val_escort_guard2_dead") and
-           actor:has_info("val_escort_actor_helped")
+    return not has_alife_info("val_escort_captive_dead") and
+           has_alife_info("val_escort_guard1_dead") and
+           has_alife_info("val_escort_guard2_dead") and
+           has_alife_info("val_escort_actor_helped")
 end
 
 function escort_task_fail(task, objective)
     local actor = db.actor
-    return actor:has_info("val_escort_captive_dead") or
-           actor:has_info("val_escort_guard1_dead") and
-           actor:has_info("val_escort_guard2_dead") and
-           actor:dont_has_info("val_escort_actor_helped")
+    return has_alife_info("val_escort_captive_dead") or
+           has_alife_info("val_escort_guard1_dead") and
+           has_alife_info("val_escort_guard2_dead") and
+           not has_alife_info("val_escort_actor_helped")
 end
 
 
