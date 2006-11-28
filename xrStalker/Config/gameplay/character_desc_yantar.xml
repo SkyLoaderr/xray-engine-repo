@@ -145,6 +145,8 @@
 			ammo_9x19_fmj \n
 			lab_x16_documents \n
 			outfit_stalker_m1 \n
+			wpn_l85_m2 \n
+			ammo_5.56x45_ap = 2 \n
 		</supplies>
 </specific_character>
 
