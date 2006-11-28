@@ -51,8 +51,8 @@
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
-			ammo_11.43x23_fmj = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
 			kruglov_flash \n			
 		</supplies>
 			
@@ -80,8 +80,8 @@
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_beretta_m1 \n
-			ammo_9x19_fmj = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
 			kruglov_flash \n			
 		</supplies>
 			
@@ -107,8 +107,8 @@
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
-			ammo_11.43x23_fmj = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
 		</supplies>
 			
 		<start_dialog>yantar_help_scientist</start_dialog>
@@ -135,8 +135,8 @@
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
-			ammo_11.43x23_fmj = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
 			lab_x16_documents \n	
 			outfit_stalker_anom2 \n
 		</supplies>
@@ -161,8 +161,8 @@
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
-			ammo_11.43x23_fmj = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
 		</supplies>
 			
 #include "gameplay\character_dialogs.xml"
@@ -186,8 +186,8 @@
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_hpsa \n
-			ammo_9x19_fmj = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
 		</supplies>
 				
 #include "gameplay\character_dialogs.xml"
@@ -212,8 +212,8 @@
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_fmj = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
 			device_torch \n
 		</supplies>
 			
@@ -233,12 +233,12 @@
 		<reputation>20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
-		<snd_config>characters_voice\human_01\zombied\</snd_config>
+		<snd_config>characters_voice\human_02\zombied\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
-			ammo_9x18_fmj = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
 			device_torch \n
 		</supplies>
 			
@@ -264,8 +264,8 @@
 			[spawn] \n
 			wpn_bm16 \n
 			ammo_12x70_buck = 1 \n
-			wpn_hpsa \n
-			ammo_9x19_fmj = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
 			device_torch \n
 		</supplies>
 			
@@ -285,7 +285,7 @@
 		<reputation>-20</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie4</visual>
-		<snd_config>characters_voice\human_01\zombied\</snd_config>
+		<snd_config>characters_voice\human_02\zombied\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -312,7 +312,7 @@
 		<reputation>50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie5</visual>
-		<snd_config>characters_voice\human_01\zombied\</snd_config>
+		<snd_config>characters_voice\human_02\zombied\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -424,7 +424,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie3</visual>
-		<snd_config>characters_voice\human_01\zombied\</snd_config>
+		<snd_config>characters_voice\human_02\zombied\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -455,8 +455,8 @@
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_spas12 \n
-			ammo_12x70_buck = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_fmj = 1 \n
 			device_torch \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
@@ -507,12 +507,12 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie6</visual>
-		<snd_config>characters_voice\human_01\zombied\</snd_config>
+		<snd_config>characters_voice\human_02\zombied\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_spas12 \n
-			ammo_12x70_buck = 1 \n
+			wpn_lr300 \n
+			ammo_5.56x45_fmj = 1 \n
 			device_torch \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
@@ -537,7 +537,7 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\stalker_zombie2</visual>
-		<snd_config>characters_voice\human_01\zombied\</snd_config>
+		<snd_config>characters_voice\human_02\zombied\</snd_config>
 		<crouch_type>0</crouch_type>
 
 		<supplies>
@@ -600,7 +600,7 @@
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_spas12 \n
+			wpn_bm16 \n
 			ammo_12x70_buck = 1 \n
 			grenade_f1 = 2 \n
 			wpn_pm \n
@@ -625,11 +625,11 @@
 		<reputation>-50</reputation>
 
 		<visual>actors\stalker_zombi\zombie_fresh_0</visual>
-		<snd_config>characters_voice\human_01\zombied\</snd_config>
+		<snd_config>characters_voice\human_02\zombied\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_spas12 \n
+			wpn_bm16 \n
 			ammo_12x70_buck = 1 \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
