@@ -987,6 +987,10 @@ function m_predicate_r(npc_info)
     return npc_info.profile_name == "pri_monolith_regular"
 end
 
+function m_predicate_all(npc_info)
+    return true
+end
+
 function m_predicate_s(npc_info)
     return npc_info.profile_name == "pri_monolith_specnaz"
 end
@@ -1004,7 +1008,7 @@ end
 --end
 
 function m_predicate_s_sniper(npc_info)
-    return npc_info.profile_name == "pri_monolith_specnaz" and npc_info.is_sniper == true
+    return npc_info.profile_name == "pri_monolith_specnaz" and npc_info.is_sniper_name == true
 end
 
 function m_predicate_e_rpg(npc_info)
@@ -1089,9 +1093,10 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
                 "combat_ignore_cond  = {=pri_monolith_combat_ignore}\n"
 
     -- walkers (одиночные патрули вокруг базы)
-    prior = {6, 7, 8, 12, 12, 5}
+    prior = {8, 7, 8, 12, 12, 7}
     state1_restr = {"", "_kolos_restr", "_base_restr", "", "", "_hotel_restr"}
-    for i, v in pairs({1, 3, 4, 5, 6, 8}) do
+    local pred_pl = {m_predicate_s, m_predicate_s, m_predicate_s, m_predicate_s, m_predicate_s, m_predicate_all}
+	for i, v in pairs({1, 3, 4, 5, 6, 8}) do
         --- state: main
         t = { section = "logic@" .. gname .. "_patrol" .. v, 
             idle = 0,
@@ -1099,7 +1104,7 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
             squad = squad, group = groups[6],
             in_rest = in_r, out_rest = "",
             online = "{+pri_monolith_spawn1}",
-            predicate = m_predicate_s
+            predicate = pred_pl[i]
         } table.insert(sj, t)
         ltx = ltx.. "[logic@" .. gname .. "_patrol" .. v .. "]\n" ..
                     "active              = walker@" .. gname .. "_patrol" .. v .. "\n" ..
@@ -1132,7 +1137,7 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
     end
 
     -- followers (парные патрули перед базой)
-    prior = {6, 6, 4, 4}
+    prior = {8, 8, 8, 8}
     state1_kamp  = {"_fight_in_kolos", "_fight_in_hotel"}
     state1_restr = {"_kolos_restr",    "_hotel_restr"}
     for i, v in pairs({7, 10}) do
@@ -1172,11 +1177,12 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
     -- rpg, svd, machine-gun (гранатометчики и снайпер на центральном проходе на базу)
     local id = {11, 12, 14}
     pred = {m_predicate_s, m_predicate_s_sniper, m_predicate_s}
+	local prior_arr = {14, 16, 14}
     for i, v in pairs({"rpg", "svd", "machine_gun"}) do
         --- state: main
         t = { section = "logic@" .. gname .. "_stalker_" .. v, 
             idle = 0,
-            prior = 14, state = {0,1},
+            prior = prior_arr[i], state = {0,1},
             squad = squad, group = groups[8],
             in_rest = in_r, out_rest = "",
             online = "{+pri_monolith_spawn1}",
@@ -1205,7 +1211,7 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
     end
 
     -- prayers (молящиеся вокруг алтаря)
-    for i, v in pairs({14, 14, 14, 13, 8, 2}) do
+    for i, v in pairs({14, 14, 14, 13, 8, 8}) do
         t = { section = "logic@" .. gname .. "_prayer" .. i, 
             idle = 0,
             prior = v, state = {0,1},
@@ -1228,12 +1234,12 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
     end
 
     -- kamps
-    prior = {{11, 11, 11, 3}, {10, 10, 10, 2}, {11, 11, 11}, {9, 9, 9}, {13, 13, 1}}
-    pred = {{m_predicate_s, m_predicate_s, m_predicate_s, m_predicate_s},
-            {m_predicate_s, m_predicate_s, m_predicate_s, m_predicate_s},
+    prior = {{11, 11, 11, 7}, {10, 10, 10, 7}, {11, 11, 11}, {9, 9, 9}, {13, 13, 7}}
+    pred = {{m_predicate_s, m_predicate_s, m_predicate_all, m_predicate_all},
+            {m_predicate_s, m_predicate_s, m_predicate_all, m_predicate_all},
             {m_predicate_e, m_predicate_e, m_predicate_e},
             {m_predicate_s, m_predicate_s, m_predicate_s},
-            {m_predicate_e, m_predicate_e, m_predicate_s}}
+            {m_predicate_e, m_predicate_all, m_predicate_all}}
     online_cond  = {"{+pri_monolith_spawn2}", "{+pri_monolith_spawn2}", "{+pri_monolith_spawn1}", "{+pri_monolith_spawn1}", "{+pri_monolith_spawn2}"}
     state1_restr = {"_base_restr", "_base_restr", "", "_kolos_restr", "_base_restr"}
     local pr, pd
@@ -1285,7 +1291,7 @@ gulags.pri_monolith.job = function(sj, gname, type, squad, groups)
     for i = 1, 2 do
         t = { section = "logic@" .. gname .. "_sniper" .. i, 
             idle = 0,
-            prior = 14, state = {0,1},
+            prior = 16, state = {0,1},
             squad = squad, group = groups[9],
             in_rest = in_r, out_rest = "",
             online = "{+pri_monolith_spawn1}",
