@@ -424,7 +424,7 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 					if (s32(CurTime) > dReinforcementTime) dTime = 0;
 					else dTime = iCeil(float(dReinforcementTime - CurTime) / 1000);
 							
-					m_game_ui->m_pReinforcementInidcator->SetPos(dTime, iReinforcementTime/1000);
+					m_game_ui->m_pReinforcementInidcator->SetPos(dTime, iReinforcementTime);
 				}else
 					m_game_ui->m_pReinforcementInidcator->SetPos(0, 0);
 
