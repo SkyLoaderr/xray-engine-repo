@@ -189,7 +189,9 @@ void CTorch::Switch	(bool light_on)
 	m_switched_on			= light_on;
 	if (can_use_dynamic_lights()){
 		light_render->set_active(light_on);
-		light_omni->set_active(light_on);
+		
+		CActor *pA = smart_cast<CActor *>(H_Parent());
+		if(!pA)light_omni->set_active(light_on);
 	}
 	glow_render->set_active	(light_on);
 
@@ -319,17 +321,24 @@ void CTorch::UpdateCL()
 				offset.mad					(M.k,TORCH_OFFSET.z);
 				light_render->set_position	(offset);
 
-				offset						= M.c; 
-				offset.mad					(M.i,OMNI_OFFSET.x);
-				offset.mad					(M.j,OMNI_OFFSET.y);
-				offset.mad					(M.k,OMNI_OFFSET.z);
-				light_omni->set_position	(offset);
+				if(false)
+				{
+					offset						= M.c; 
+					offset.mad					(M.i,OMNI_OFFSET.x);
+					offset.mad					(M.j,OMNI_OFFSET.y);
+					offset.mad					(M.k,OMNI_OFFSET.z);
+					light_omni->set_position	(offset);
+				}
 			}
 			glow_render->set_position	(M.c);
 
 			if (can_use_dynamic_lights()){
 				light_render->set_rotation	(dir, right);
-				light_omni->set_rotation	(dir, right);
+				
+				if(false)
+				{
+					light_omni->set_rotation	(dir, right);
+				}
 			}
 			glow_render->set_direction	(dir);
 
