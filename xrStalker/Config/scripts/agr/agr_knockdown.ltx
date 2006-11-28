@@ -5,16 +5,19 @@ active = sr_idle
 on_info = {+agr_knockdown} sr_idle@1
 
 [sr_idle@1]
-on_timer = 300 | sr_idle@2 %=agr_knockdown =run_cam_effector(dis_consciousness) =disable_ui%
+on_timer = 300 | sr_idle@2 %=agr_knockdown =run_cam_effector(dis_consciousness:1984:true) =disable_ui%
 
 [sr_idle@2]
-on_timer = 3000 | sr_idle@3 %=turn_on(399) =run_postprocess(agr_u_fade) +agr_doc_wakeup%
+on_timer = 3000 | sr_idle@3_1 %=turn_on(399) =run_postprocess(agr_u_fade) +agr_doc_wakeup%
+
+[sr_idle@3_1]
+on_timer = 2500 | sr_idle@3 %=stop_cam_effector(1984)%
 
 [sr_idle@3]
-on_timer  = 5000 | sr_idle@4  %=agr_cam_effect =teleport_actor(kat_teleport_to_dark_city_position:kat_teleport_to_dark_city_orientation) +cit_jail_actor_wake +cit_jail_doctor_pryp_task%
+on_timer  = 2000 | sr_idle@4  %=agr_cam_effect =teleport_actor(kat_teleport_to_dark_city_position:kat_teleport_to_dark_city_orientation) +cit_jail_actor_wake +cit_jail_doctor_pryp_task%
 
 [sr_idle@4]
-on_timer = 115000 | sr_idle@5 %=turn_off(399) =run_postprocess(agr_u_fade)%
+on_timer = 101000 | sr_idle@5 %=turn_off(399) =run_postprocess(agr_u_fade)%
 
 [sr_idle@5]
-on_timer = 4000 | nil %=enable_ui =run_cam_effector(prison_1:2508:false)%
+on_timer = 4000 | nil %=enable_ui +cit_jail_doctor_pryp_task =run_cam_effector(prison_1:2508:false)%
