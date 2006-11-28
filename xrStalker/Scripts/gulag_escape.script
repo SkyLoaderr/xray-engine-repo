@@ -2040,7 +2040,7 @@ function load_states(gname, type)
 			if not actor then
 				return gulag.state
 			end
-			if actor:has_info("escape_lager_help") and actor:dont_has_info("escape_lager_killers_die") then
+			if has_alife_info("escape_lager_help") and has_alife_info("escape_lager_killers_die") then
 				return 2 -- оборона лагеря
 			elseif level.get_time_hours() >= 8 and level.get_time_hours() <= 21 then
 				return 0  -- день
@@ -2086,16 +2086,12 @@ function load_states(gname, type)
 	if type == "esc_dogs_to_fox" then
 		return function(gulag)
 			local actor = db.actor
-			if actor:dont_has_info("escape_stalker_dog_spawn") then
+			if not has_alife_info("escape_stalker_dog_spawn") then
 				return 0 -- оффлайн
-			elseif (actor:has_info("escape_stalker_dog_spawn") and actor:dont_has_info("escape_stalker_done")) or actor:has_info("esc_dogs_return") then 
+			elseif (has_alife_info("escape_stalker_dog_spawn") and not has_alife_info("escape_stalker_done")) or has_alife_info("esc_dogs_return") then 
 				return 2 -- онлайн
 			else
 				return 1 -- атака
---			if actor:has_info("escape_stalker_done") and actor:dont_has_info("esc_dogs_return") then
---				return 1
---			else
---				return 0
 			end
 		end
 	end
@@ -2103,17 +2099,7 @@ function load_states(gname, type)
 	if type == "esc_specnaz" then
 		return function(gulag)
 			local actor = db.actor
-			if actor:has_info("esc_raid1_start") then
---				if gulag.alarm_start == nil then
---					xr_gulag.changeCasualities( "esc_blockpost", -xr_gulag.getCasualities("esc_blockpost"))
---					gulag.alarm_start = game.get_game_time()
---					return 1  -- рейд
---				end
---
---				if game.get_game_time():diffSec(gulag.alarm_start) > 57600 then
---					actor:disable_info_portion("esc_raid1_start")
---					return 0
---				end
+			if has_alife_info("esc_raid1_start") then
 				return 1
 			end
 			return 0
@@ -2123,7 +2109,7 @@ function load_states(gname, type)
 
 	if type == "esc_boars_dogs" then
 	    return function(gulag)
-			if db.actor:has_info("tutorial_wounded_give_info") then
+			if has_alife_info("tutorial_wounded_give_info") then
 				return 1
 			else
 				return 0
@@ -2138,15 +2124,15 @@ function load_states(gname, type)
 			if not actor then
 				return gulag.state
 			end
-			if actor:dont_has_info("escape_lager_spawn_killers") then
+			if not has_alife_info("escape_lager_spawn_killers") then
 				return 4 -- offline
-			elseif actor:has_info("escape_lager_spawn_killers") and actor:dont_has_info("esc_killers_raid") then
+			elseif has_alife_info("escape_lager_spawn_killers") and not has_alife_info("esc_killers_raid") then
 				return 3 -- wait
-			elseif actor:has_info("esc_killers_raid") and actor:dont_has_info("esc_open_killer_fire") then
+			elseif has_alife_info("esc_killers_raid") and not has_alife_info("esc_open_killer_fire") then
 				return 0 -- raid
-			elseif actor:has_info("esc_open_killer_fire") and xr_gulag.getGulagPopulation("esc_lager") > 0 then
+			elseif has_alife_info("esc_open_killer_fire") and xr_gulag.getGulagPopulation("esc_lager") > 0 then
 				return 1 -- fight
-			elseif actor:has_info("esc_open_killer_fire") and xr_gulag.getGulagPopulation("esc_lager") <= 0 then
+			elseif has_alife_info("esc_open_killer_fire") and xr_gulag.getGulagPopulation("esc_lager") <= 0 then
 				return 2 -- kamp
 			end
 			return gulag.state
@@ -2176,7 +2162,7 @@ function load_states(gname, type)
 	end
 	if type == "esc_corps" then
 		return function(gulag)
-			if db.actor:has_info("tutorial_wounded_start") then
+			if has_alife_info("tutorial_wounded_start") then
 				return 1
 			else
 				return 0
@@ -2252,7 +2238,7 @@ function load_states(gname, type)
 
 	if type == "esc_stalker_camp" then
 		return function(gulag)
-			if db.actor:has_info("yan_provodnik_spawn") then
+			if has_alife_info("yan_provodnik_spawn") then
 				return 1
 			else
 				return 0
@@ -2262,13 +2248,13 @@ function load_states(gname, type)
 
 	if type == "esc_assault" then
 		return function(gulag)
-			if db.actor:has_info("esc_kill_bandits_quest_have") and db.actor:dont_has_info("esc_assault_start") then
+			if has_alife_info("esc_kill_bandits_quest_have") and not has_alife_info("esc_assault_start") then
 				return 1 -- сидят у костра
-			elseif db.actor:has_info("esc_assault_start") and db.actor:dont_has_info("esc_kill_bandits_quest_kill") then
+			elseif has_alife_info("esc_assault_start") and not has_alife_info("esc_kill_bandits_quest_kill") then
 				return 2 -- атакуют фабрику
-			elseif db.actor:has_info("esc_kill_bandits_quest_kill") and (db.actor:dont_has_info("esc_kill_bandits_quest_done") or db.actor:dont_has_info("esc_petruha_great")) then
+			elseif has_alife_info("esc_kill_bandits_quest_kill") and (not has_alife_info("esc_kill_bandits_quest_done") or not has_alife_info("esc_petruha_great")) then
 				return 3 -- идут домой	
-			elseif db.actor:has_info("esc_kill_bandits_quest_done") or db.actor:has_info("esc_petruha_great") then
+			elseif has_alife_info("esc_kill_bandits_quest_done") or has_alife_info("esc_petruha_great") then
 				return 4 -- идут домой
 			else
 				return 0 -- сидят в оффлайне
