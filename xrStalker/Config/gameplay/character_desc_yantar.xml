@@ -137,8 +137,7 @@
 			[spawn] \n
 			wpn_walther \n
 			ammo_9x19_fmj \n
-			lab_x16_documents \n	
-			outfit_stalker_anom2 \n
+			lab_x16_documents \n
 		</supplies>
 </specific_character>
 
