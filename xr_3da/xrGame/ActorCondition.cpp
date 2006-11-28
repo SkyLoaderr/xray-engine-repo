@@ -107,7 +107,7 @@ void CActorCondition::UpdateCondition()
 {
 	if (GodMode())				return;
 	if (!object().g_Alive())	return;
-	if (!object().Local())		return;	
+	if (!object().Local() && m_object != Level().CurrentViewEntity())		return;	
 	
 
 	if ((object().mstate_real&mcAnyMove)) {
