@@ -103,7 +103,15 @@ ignore_types = corpse
 id = mil_cook_common1,mil_cook_common2,mil_cook_common3,mil_cook_common4,mil_cook_common5,mil_cook_common6,mil_cook_drink_for_rg6_1,mil_cook_drink_for_rg6_2,mil_cook_drink_for_rg6_3,mil_cook_drink_question_about_rg6_1,mil_cook_drink_question_about_rg6_2,mil_cook_drink_question_about_rg6_3
 
 
-
+-----------------------------------------------------------
+убираем состо€ние раненого дл€ снайпера
+-----------------------------------------------------------
+[wounded_ignore@mil_sniper]
+hp_state        = 0|wounded_heavy@help_heavy
+hp_state_see    = 0|wounded_heavy@help_heavy
+hp_victim       = 0|nil
+hp_fight        = 0|false
+hp_cover        = 0|false 
 -------------------------
 ;—найпер на первой вышке (на него задание дает „ереп)
 -------------------------
@@ -126,7 +134,7 @@ enemy_idle = 60000
 radius = 20
 on_info = {=heavy_wounded} %+mil_sniper_dead%
 combat_ignore_cond = {=check_fighting(740)} true
-
+wounded = wounded_ignore@mil_sniper
 
 -------------------------
 ;—найпер на второй вышке (средн€€, в центре базы) (mil_sniper2)
@@ -149,6 +157,7 @@ radius = 0
 no_retreat = true
 on_info = {+mil_freedom_under_attack} camper2@mil_freedom_sniper2
 danger = danger_condition@mil_freedom_sniper2
+wounded = wounded_ignore@mil_sniper
 
 [camper2@mil_freedom_sniper2]
 path_walk = sniper_defense_walk1
@@ -157,6 +166,7 @@ sniper = true
 radius = 0
 on_info = {-mil_freedom_under_attack} camper1@mil_freedom_sniper2
 danger = danger_condition@mil_freedom_sniper2
+wounded = wounded_ignore@mil_sniper
 
 [danger_condition@mil_freedom_sniper2]
 ignore_distance = 0
@@ -185,6 +195,7 @@ path_look = sniper_look2
 radius = 0
 no_retreat = true
 on_info = {+mil_freedom_under_attack} camper2@mil_freedom_sniper5
+wounded = wounded_ignore@mil_sniper
 
 [camper2@mil_freedom_sniper5]
 path_walk = sniper_defense_walk2
@@ -192,6 +203,7 @@ path_look = sniper_defense_look2
 sniper = true
 radius = 0
 on_info = {-mil_freedom_under_attack} camper1@mil_freedom_sniper5
+wounded = wounded_ignore@mil_sniper
 
 
 -------------------------
@@ -213,6 +225,7 @@ path_walk = path_walk10
 path_look = path_look10
 on_info = {+mil_freedom_under_attack} camper1@mil_freedom_sniper3
 danger = danger_condition@mil_freedom_sniper3
+wounded = wounded_ignore@mil_sniper
 
 [camper1@mil_freedom_sniper3]
 path_walk = camp_walk10
@@ -220,6 +233,7 @@ path_look = camp_look10
 radius = 20
 on_info = {-mil_freedom_under_attack} walker1@mil_freedom_sniper3
 sniper = true
+wounded = wounded_ignore@mil_sniper
 
 [danger_condition@mil_freedom_sniper3]
 ignore_distance = 0
@@ -242,6 +256,7 @@ radius = 0
 no_retreat = true
 on_info = {+mil_freedom_under_attack} camper2@mil_freedom_sniper4
 danger = danger_condition@mil_freedom_sniper4
+wounded = wounded_ignore@mil_sniper
 
 [camper2@mil_freedom_sniper4]
 path_walk = sniper_defense_walk3
@@ -250,6 +265,7 @@ sniper = true
 radius = 0
 on_info = {-mil_freedom_under_attack} camper1@mil_freedom_sniper4
 danger = danger_condition@mil_freedom_sniper4
+wounded = wounded_ignore@mil_sniper
 
 [danger_condition@mil_freedom_sniper4]
 ignore_distance = 0
