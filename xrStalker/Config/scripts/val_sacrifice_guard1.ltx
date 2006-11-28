@@ -20,7 +20,7 @@ def_state_campering_fire    = guard_fire
 def_state_moving            = patrol
 def_state_moving_fire       = patrol_fire
 on_info                     = {+val_sacrifice_victim_phrase1_end} remark@val_sacrifice_guard1_phrase1
-meet                        = meet@val_sacrifice
+meet                        = no_meet
 danger                      = danger@val_sacrifice_guard
 combat_ignore_cond          = {=check_fighting(401)}
 
@@ -34,7 +34,7 @@ snd                 = speech
 target              = 405
 on_signal           = sound_end | %+val_sacrifice_guard1_phrase1_end%
 on_info             = {+val_sacrifice_guard2_phrase2_end} remark@val_sacrifice_guard1_phrase2
-meet                = meet@val_sacrifice
+meet                = no_meet
 danger              = danger@val_sacrifice_guard
 combat_ignore_cond  = {=check_fighting(401)}
 
@@ -46,7 +46,7 @@ anim                = guard
 snd                 = speech
 target              = 405
 on_signal           = sound_end | remark@val_sacrifice_guard1_phrase3
-meet                = meet@val_sacrifice
+meet                = no_meet
 danger              = danger@val_sacrifice_guard
 combat_ignore_cond  = {=check_fighting(401)}
 
@@ -59,7 +59,7 @@ snd                 = speech
 target              = 401
 on_signal           = sound_end | %+val_sacrifice_guard1_phrase3_end%
 on_info             = {+val_sacrifice_victim_phrase2_end} remark@val_sacrifice_guard1_phrase4
-meet                = meet@val_sacrifice
+meet                = no_meet
 danger              = danger@val_sacrifice_guard
 combat_ignore_cond  = {=check_fighting(401)}
 
@@ -71,7 +71,7 @@ anim                = threat
 snd                 = speech
 target              = 401
 on_signal           = sound_end | camper@val_sacrifice_guard1_kill %+val_sacrifice_guard1_phrase4_end%
-meet                = meet@val_sacrifice
+meet                = no_meet
 danger              = danger@val_sacrifice_guard
 combat_ignore_cond  = {=check_fighting(401)}
 
@@ -86,7 +86,7 @@ def_state_campering_fire    = threat_fire
 radius                      = 0
 no_retreat                  = true
 on_info                     = {+val_sacrifice_victim_dead} remark@val_sacrifice_guard1_phrase5
-meet                        = meet@val_sacrifice
+meet                        = no_meet
 danger                      = danger@val_sacrifice_guard
 
 ;--------------------------------------------------------------------------
@@ -96,7 +96,7 @@ danger                      = danger@val_sacrifice_guard
 anim                = threat
 target              = 401
 on_info             = {+val_sacrifice_victim_dead} remark@val_sacrifice_guard1_phrase5
-meet                = meet@val_sacrifice
+meet                = no_meet
 danger              = danger@val_sacrifice_guard
 combat_ignore_cond  = {=check_fighting(401)}
 
@@ -107,5 +107,5 @@ combat_ignore_cond  = {=check_fighting(401)}
 anim                = guard
 snd                 = speech
 on_signal           = sound_end | %+val_sacrifice_finish%
-meet                = meet@val_sacrifice
+meet                = no_meet
 danger              = danger@val_sacrifice_guard
