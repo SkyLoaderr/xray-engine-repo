@@ -121,5 +121,42 @@ path_look = ambush_look
 
 
 
-[logic@sar_monolith_guard]
-active = nil
+[logic@sar_monolith_guard_offline]
+active = walker@sar_monolith_guard_offline
+
+[walker@sar_monolith_guard_offline]
+path_walk = offline_walk
+
+
+[logic@sar_monolith_guard_camper_1]
+active = camper@sar_monolith_guard_camper_1
+
+[camper@sar_monolith_guard_camper_1]
+path_walk = walk_4
+path_look = look_1
+radius = 7
+danger = danger@sar_monolith_guard
+def_state_moving = raid
+
+[logic@sar_monolith_guard_camper_2]
+active = camper@sar_monolith_guard_camper_2
+
+[camper@sar_monolith_guard_camper_2]
+path_walk = walk_2
+path_look = look_1
+radius = 7
+danger = danger@sar_monolith_guard
+def_state_moving = raid
+
+[logic@sar_monolith_guard_camper_3]
+active = camper@sar_monolith_guard_camper_3
+
+[camper@sar_monolith_guard_camper_3]
+path_walk = walk_3
+path_look = look_1
+radius = 7
+danger = danger@sar_monolith_guard
+def_state_moving = raid
+
+[danger@sar_monolith_guard]
+ignore_distance = 0

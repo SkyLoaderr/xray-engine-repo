@@ -104,23 +104,50 @@ function load_job(sj, gname, type, squad, groups)
 	end
 	
 	if type == "sar_monolith_guard" then
-		t = { section = "logic@sar_monolith_guard",
+		t = { section = "logic@sar_monolith_guard_offline",
 			idle = 0,
 			prior = 7, state = {0},
-			in_rest = "", out_rest = "mon_guard_restr"
+			online = false,
+			in_rest = "", out_rest = "mon_guard_offline_restr"
 		}
 		table.insert(sj, t)
-		t = { section = "logic@sar_monolith_guard",
+		t = { section = "logic@sar_monolith_guard_offline",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "mon_guard_restr",
+			online = false,
+			in_rest = "", out_rest = "mon_guard_offline_restr",
 		}
 		table.insert(sj, t)
-		t = { section = "logic@sar_monolith_guard",
+		t = { section = "logic@sar_monolith_guard_offline",
 			idle = 0,
 			prior = 5, state = {0},
-			in_rest = "", out_rest = "mon_guard_restr",
+			online = false,
+			in_rest = "", out_rest = "mon_guard_offline_restr",
 		}
+		table.insert(sj, t)
+
+		t = { section = "logic@sar_monolith_guard_camper_1",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = "mon_contorol_room_restr",
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_guard_camper_1",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = "mon_contorol_room_restr",
+		}
+		table.insert(sj, t)
+		t = { section = "logic@sar_monolith_guard_camper_1",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = "mon_contorol_room_restr",
+		}
+		table.insert(sj, t)
+
+
+
+		
 	end
 end
 
@@ -139,6 +166,9 @@ function load_states(gname, type)
     end
     if type == "sar_monolith_guard" then
 		return function(gulag)
+			if has_alife_info("mon_door_unlocked") then
+				return 1
+			end
 			return 0
 		end
     end
