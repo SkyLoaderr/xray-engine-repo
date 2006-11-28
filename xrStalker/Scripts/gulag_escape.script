@@ -1960,20 +1960,6 @@ function load_job(sj, gname, type, squad, groups)
 			            end
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_stalker_camp2",
-			idle = 0,
-			prior = 8, state = {0},
-			online = false,
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_stalker_camp3",
-			idle = 0,
-			prior = 8, state = {0},
-			online = false,
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
 
 		t = { section = "logic@esc_stalker_camp_provodnik",
 			idle = 0,
@@ -1987,22 +1973,11 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_stalker_camp1",
 			idle = 0,
 			prior = 8, state = {1},
+			online = false,
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info)
 			            	return obj_info.profile_name == "esc_fox"
 			            end
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_stalker_camp2",
-			idle = 0,
-			prior = 8, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@esc_stalker_camp3",
-			idle = 0,
-			prior = 8, state = {1},
-			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 	end
