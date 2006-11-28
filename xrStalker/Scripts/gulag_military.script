@@ -1587,27 +1587,27 @@ function load_job_monolith (sj, gname, type, squad, groups)
 		    }
 	    table.insert(sj, t)	
 	    
-        t = {section = "logic@mil_monolith_soldier7",
-	    	idle = 0,
-		    prior = a, state = {0},
-		    squad = squad, group = groups[0],
-		    in_rest = "", out_rest = "",
-		    predicate = function (info)
-		                         return info.community == "monolith"
-		                end
-		    }
-	    table.insert(sj, t)	
-	    
-        t = {section = "logic@mil_monolith_soldier8",
-	    	idle = 0,
-		    prior = a, state = {0},
-		    squad = squad, group = groups[0],
-		    in_rest = "", out_rest = "",
-		    predicate = function (info)
-		                         return info.community == "monolith"
-		                end
-		    }
-	    table.insert(sj, t)	
+--	     t = {section = "logic@mil_monolith_soldier7",
+--	    	idle = 0,
+--		    prior = a, state = {0},
+--		    squad = squad, group = groups[0],
+--		    in_rest = "", out_rest = "",
+--		    predicate = function (info)
+--		                         return info.community == "monolith"
+--		                end
+--		    }
+--	    table.insert(sj, t)	
+--	    
+--      t = {section = "logic@mil_monolith_soldier8",
+--	    	idle = 0,
+--		    prior = a, state = {0},
+--		    squad = squad, group = groups[0],
+--		    in_rest = "", out_rest = "",
+--		    predicate = function (info)
+--		                         return info.community == "monolith"
+--		                end
+--		    }
+--	    table.insert(sj, t)
     end	    
 end
 -------------------------------------------------------------------------------------------
