@@ -191,7 +191,14 @@
 	<info_portion id="sar2_death_58"></info_portion>
 	<info_portion id="sar2_death_59"></info_portion>
 	<info_portion id="sar2_death_60"></info_portion>
+	
 	<info_portion id="mon_door_unlocked"></info_portion>
+	<info_portion id="sar_mon_poltergeist_1_spawn"></info_portion>
+	<info_portion id="sar_mon_poltergeist_2_spawn"></info_portion>
+	<info_portion id="sar_mon_poltergeist_3_spawn"></info_portion>
+	<info_portion id="sar_mon_poltergeist_1_dead"></info_portion>
+	<info_portion id="sar_mon_poltergeist_2_dead"></info_portion>
+	<info_portion id="sar_mon_poltergeist_3_dead"></info_portion>
 	
 	
 	
