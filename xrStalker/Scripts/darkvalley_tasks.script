@@ -106,7 +106,6 @@ function escort_task_done(task, objective)
 end
 
 function escort_task_fail(task, objective)
-    local actor = db.actor
     return has_alife_info("val_escort_captive_dead") or
            has_alife_info("val_escort_guard1_dead") and
            has_alife_info("val_escort_guard2_dead") and
