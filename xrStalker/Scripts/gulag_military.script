@@ -744,7 +744,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --мужик у костра 1    
     t = {section = "logic@mil_fblockpost_stalker",
 		idle = 0,
-		prior = 1, state = {0, 1},
+		prior = 5, state = {0, 1},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -753,7 +753,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --мужик у костра 2
     t = {section = "logic@mil_fblockpost_stalker",
 		idle = 0,
-		prior = 1, state = {0, 1},
+		prior = 5, state = {0, 1},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -762,7 +762,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --мужик у костра 3
     t = {section = "logic@mil_fblockpost_stalker",
 		idle = 0,
-		prior = 1, state = {0, 1},
+		prior = 5, state = {0, 1},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -771,7 +771,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --мужик у костра 4
     t = {section = "logic@mil_fblockpost_stalker",
 		idle = 0,
-		prior = 1, state = {0, 1},
+		prior = 5, state = {0, 1},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -780,7 +780,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --мужик у костра 5
     t = {section = "logic@mil_fblockpost_stalker",
 		idle = 0,
-		prior = 1, state = {0},
+		prior = 5, state = {0},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -789,7 +789,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --командир
     t = {section = "logic@mil_fblockpost_commander",
 		idle = 0,
-		prior = 4, state = {0, 1},
+		prior = 10, state = {0, 1},
 		squad = squad, group = groups[0],
 		in_rest = "", out_rest = "",
 		position_threshold = 100,
@@ -801,7 +801,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --патрульный 1
     t = {section = "logic@mil_fblockpost_patrol1",
 		idle = 0,
-		prior = 3, state = {0, 1},
+		prior = 5, state = {0, 1},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -810,7 +810,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --патрульный 2
     t = {section = "logic@mil_fblockpost_patrol2",
 		idle = 0,
-		prior = 2, state = {0, 1},
+		prior = 5, state = {0, 1},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -819,7 +819,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --кэмпер 1
     t = {section = "logic@mil_fblockpost_camper3",
 		idle = 0,
-		prior = 2, state = {0, 1},
+		prior = 5, state = {0, 1},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -828,7 +828,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --кэмпер 2
     t = {section = "logic@mil_fblockpost_camper6",
 		idle = 0,
-		prior = 1, state = {0, 1},
+		prior = 5, state = {0, 1},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -838,7 +838,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --кэмпер 1
     t = {section = "logic@mil_fblockpost_camper1",
 		idle = 0,
-		prior = 1, state = {2},
+		prior = 5, state = {2},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -847,7 +847,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --кэмпер 2
     t = {section = "logic@mil_fblockpost_camper2",
 		idle = 0,
-		prior = 1, state = {2},
+		prior = 5, state = {2},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -856,7 +856,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --кэмпер 3
     t = {section = "logic@mil_fblockpost_camper3",
 		idle = 0,
-		prior = 1, state = {2},
+		prior = 5, state = {2},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -865,7 +865,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --кэмпер 4
     t = {section = "logic@mil_fblockpost_camper4",
 		idle = 0,
-		prior = 1, state = {2},
+		prior = 5, state = {2},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -874,7 +874,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --кэмпер 5
     t = {section = "logic@mil_fblockpost_camper5",
 		idle = 0,
-		prior = 1, state = {2},
+		prior = 5, state = {2},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -883,7 +883,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --кэмпер 6
     t = {section = "logic@mil_fblockpost_camper6",
 		idle = 0,
-		prior = 1, state = {2},
+		prior = 5, state = {2},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
@@ -892,7 +892,7 @@ function load_job_fblockpost (sj, gname, type, squad, groups)
     --кэмпер 7
     t = {section = "logic@mil_fblockpost_camper7",
 		idle = 0,
-		prior = 1, state = {2},
+		prior = 5, state = {2},
 		squad = squad, group = groups[0],
 		position_threshold = 100,
 		in_rest = "", out_rest = ""
