@@ -11,7 +11,6 @@
 	</info_portion>
 	<info_portion id="sar_enter_command_center">
 		<task>sar_monolith_destroy</task>
-		<article>sar_command_center_info</article> 
 	</info_portion>
 	
 	<!-- спавн монолитовцев -->
@@ -52,7 +51,6 @@
 	<!-- поиск Монолита -->
 	<info_portion id="sar_monolith_call">
 		<task>sar_monolith</task>
-		<article>sar_monolith_call_info</article>
 	</info_portion>
 	<info_portion id="sar_monolith_find"></info_portion>
 	<info_portion id="sar_monolith_go"></info_portion>
