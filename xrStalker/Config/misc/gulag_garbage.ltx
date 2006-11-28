@@ -1418,6 +1418,13 @@ ignore_distance = 1
 ;*************************
 ; Seryi angar
 ;*************************
+[wounded@ignore_Seryi]
+hp_state        = 0|wounded_heavy@help_heavy
+hp_state_see    = 0|wounded_heavy@help_heavy
+hp_victim       = 0|nil
+hp_fight        = 0|false
+hp_cover        = 0|false
+
 
 [logic@gar_angar_seryi]
 active = walker@gar_angar_seryi
@@ -1433,6 +1440,7 @@ combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
 on_actor_dist_le = 30| remark@gar_angar_seryi
 meet = meet@gar_angar_seryi
 danger = danger_condition@gar_angar_seryi
+wounded = wounded@ignore_Seryi
 
 [remark@gar_angar_seryi]
 snd = gar_seryi_see_actor
@@ -1443,6 +1451,7 @@ combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
 meet = no_meet
 anim = hide
 danger = danger_condition@gar_angar_seryi
+wounded = wounded@ignore_Seryi
 
 [walker2@gar_angar_seryi]
 path_walk = seryi_defend_walk
@@ -1452,12 +1461,14 @@ combat_ignore_cond = {-gar_seryi_counter_fire -gar_seryi_open_fire}
 meet = no_meet
 danger = danger_condition@gar_angar_seryi
 on_info = {=gar_bandits_seryi_die} remark@sound_gar_angar_seryi
+wounded = wounded@ignore_Seryi
 
 [remark@sound_gar_angar_seryi]
 on_timer = 1000| walker@seryi_gar_angar_seryi %=gar_seryi_victory%
 anim = wait
 target = actor
 meet = no_meet
+wounded = wounded@ignore_Seryi
 
 
 [hit@gar_angar_seryi]
@@ -1472,6 +1483,7 @@ path_look = seryi_look_end
 meet = meet@friend
 danger = danger_condition@gar_angar_seryi
 on_info = {+agr_krot_band_start} kamp@gar_angar_seryi
+wounded = wounded@ignore_Seryi
 
 [kamp@gar_angar_seryi]
 center_point = gar_seryi_kamp
@@ -1479,6 +1491,7 @@ path_walk = gar_seryi_kamp_task
 on_game_timer = 150000 | %+gar_seryi_change_st%
 danger = danger_condition@gar_angar_seryi
 meet = meet@in_camp
+wounded = wounded@ignore_Seryi
 
 [meet@gar_angar_seryi]
 meet_state 	= 2| idle %+gar_seryi_silence%
