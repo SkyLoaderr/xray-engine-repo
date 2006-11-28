@@ -667,7 +667,7 @@ function load_states(gname, type)
  
    if type == "bun_camper1" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -677,7 +677,7 @@ function load_states(gname, type)
    
    if type == "bun_camper2" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -687,7 +687,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper3" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -697,7 +697,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper4" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -708,7 +708,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper5" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -718,7 +718,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper6" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -728,7 +728,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper7" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -738,7 +738,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper8" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -748,7 +748,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper9" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -758,7 +758,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper10" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -768,7 +768,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper11" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -778,7 +778,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper12" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -788,7 +788,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper13" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -799,7 +799,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper14" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -809,7 +809,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper15" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -819,7 +819,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper16" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -829,7 +829,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper17" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -839,7 +839,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper18" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -849,7 +849,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper19" then
 		return function(gulag)
-			if db.actor:has_info("+bun_actor_vstal") then
+			if has_alife_info("+bun_actor_vstal") then
 				return 1
 			else
 				return 0
@@ -859,7 +859,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper20" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -869,7 +869,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper21" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -879,7 +879,7 @@ function load_states(gname, type)
 	
 	if type == "bun_camper22" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -889,7 +889,7 @@ function load_states(gname, type)
 	
 	if type == "bun_patrol1" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -899,7 +899,7 @@ function load_states(gname, type)
 	
 	if type == "bun_patrol2" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -909,7 +909,7 @@ function load_states(gname, type)
 	
 	if type == "bun_patrol3" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
@@ -919,7 +919,7 @@ function load_states(gname, type)
 	
 	if type == "bun_patrol4" then
 		return function(gulag)
-			if db.actor:has_info("bun_antenna_off") then
+			if has_alife_info("bun_antenna_off") then
 				return 1
 			else
 				return 0
