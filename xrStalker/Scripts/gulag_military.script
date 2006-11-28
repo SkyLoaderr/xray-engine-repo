@@ -570,7 +570,7 @@ function load_job_base (sj, gname, type, squad, groups)
 		in_rest = "mil_freedom_wall_restrictor", out_rest = "",
 		position_threshold = 100,
 		predicate = function (info)
-		                     if db.actor_proxy:has_info ("mil_lukash_dead") then return true end
+		                     if has_alife_info("mil_lukash_dead") then return true end
 		                     return info.profile_name == "mil_Svoboda_leader" and info.story_id == 707
 		            end
 		}
@@ -649,7 +649,7 @@ end
 function check_state (gulag)
     
     -- отсеиваем четвертое состояние.
-    if db.actor:has_info ("mil_lukash_dead") or db.actor:has_info ("mil_freedom_quests_end") then
+    if has_alife_info("mil_lukash_dead") or has_alife_info("mil_freedom_quests_end") then
        if this.check_enemy (gulag) == true then
           -- поскольку вопрос об отношении к актеру решаться не собирается, то выход будет именно таким.
           if gulag:npc_is_enemy_to_anybody (db.actor) == true then
@@ -665,7 +665,7 @@ function check_state (gulag)
     end   
     
     if gulag.state == 3 then
-       if db.actor:has_info ("mil_dolg_after_explode") or gulag:npc_is_enemy_to_anybody (db.actor) == true then
+       if has_alife_info("mil_dolg_after_explode") or gulag:npc_is_enemy_to_anybody (db.actor) == true then
           db.actor:disable_info_portion ("mil_freedom_attack")
           -- поскольку вопрос об отношении к актеру решаться не собирается, то выход будет именно таким.
           if gulag:npc_is_enemy_to_anybody (db.actor) == true then
@@ -675,14 +675,14 @@ function check_state (gulag)
           end   
           return 2
        end   
-       if db.actor:has_info ("mil_freedom_attack") then
+       if has_alife_info("mil_freedom_attack") then
 --          printf ("[GULAG_FREEDOM] STATE 3")  
           return 3
        end
     end        
     
-    if db.actor:has_info ("mil_freedom_under_attack") then
-       if this.check_enemy (gulag) == true or db.actor:dont_has_info ("mil_dolg_dead") then
+    if has_alife_info("mil_freedom_under_attack") then
+       if this.check_enemy (gulag) == true or not has_alife_info("mil_dolg_dead") then
 --          printf ("[GULAG_FREEDOM] STATE 2")    
           return 2
        else
@@ -692,7 +692,7 @@ function check_state (gulag)
        end
     end            
     
-    if db.actor:has_info ("mil_freedom_attack") then
+    if has_alife_info("mil_freedom_attack") then
 --       printf ("[GULAG_FREEDOM] STATE 3")   
        return 3
     end   
@@ -908,7 +908,7 @@ function check_fblockpost_state (gulag)
        xr_gulag.setGulagEnemy ("mil_fneutral", db.actor)
     end   
 
-    if db.actor:has_info ("mil_fblockpost_alarm") then
+    if has_alife_info("mil_fblockpost_alarm") then
        return 2 
     elseif utils.is_day () == true then
          return 0
@@ -1058,7 +1058,7 @@ function check_blockpost_state (gulag)
        xr_gulag.setGulagEnemy ("mil_fblockpost", db.actor)
     end   
 
-    if db.actor:has_info ("mil_fblockpost_alarm") then
+    if has_alife_info("mil_fblockpost_alarm") then
        return 2 
     elseif utils.is_day () == true then
          return 0
@@ -1182,8 +1182,8 @@ end
 -- Функция проверки состояния гулага деревни
 --------------------------------------------------------------------------
 function check_village_state (gulag)
-    if db.actor:has_info ("mil_miser_task_complete") or 
-       db.actor:has_info ("mil_after_hunt_talked") then 
+    if has_alife_info("mil_miser_task_complete") or 
+       has_alife_info("mil_after_hunt_talked") then 
        printf ("VILLAGE GULAG CHANGE STATE TO 1")
        return 1 
     end
@@ -1305,7 +1305,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		position_threshold = 100,
 		predicate = function (info)
 		                     if info.community ~= "dolg" then return false end
-		                     if db.actor:has_info ("mil_scull_dead") then return true end
+		                     if has_alife_info("mil_scull_dead") then return true end
 		                     return info.story_id == 708
 		            end
 		}
@@ -1403,7 +1403,7 @@ function load_job_dolg (sj, gname, type, squad, groups)
 		position_threshold = 100,
 		predicate = function (info)
 		                     if info.community ~= "dolg" then return false end
-		                     if db.actor:has_info ("mil_scull_dead") then return true end
+		                     if has_alife_info("mil_scull_dead") then return true end
 		                     return info.story_id == 708
 		            end
 		}
@@ -1503,11 +1503,11 @@ end
 function check_dolg_state (gulag)
     local actor = db.actor
     
-    if actor:has_info ("mil_lukash_dead") == true then
+    if has_alife_info("mil_lukash_dead") == true then
        return 2
     end    
     
-    if actor:has_info ("mil_dolg_skull_talk") == true and db.actor:dont_has_info ("mil_lukash_dead") then
+    if has_alife_info("mil_dolg_skull_talk") == true and not has_alife_info("mil_lukash_dead") then
        return 1
     end    
     
