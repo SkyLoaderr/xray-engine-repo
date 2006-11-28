@@ -380,7 +380,7 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_lager_sleeper3",
+		t = { section = "logic@esc_lager_kamp1",
 			idle = 0,
 			prior = 3, state = {1},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
@@ -393,7 +393,7 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
-		t = { section = "logic@esc_lager_sleeper6",
+		t = { section = "logic@esc_lager_kamp1",
 			idle = 0,
 			prior = 0, state = {0,1},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
