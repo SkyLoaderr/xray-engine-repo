@@ -633,6 +633,35 @@
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
+<!---------------------------ZOMBIED dolg----------------------->
+<specific_character id="yan_zombied_dolg" team_default = "1">
+		<name>GENERATE_NAME_stalker</name>
+		<icon>ui_npc_u_stalker_zombie2</icon>
+		<map_icon x="7" y="0"></map_icon>
+		<bio>sim_zombied_veteran_bio</bio>
+
+		<class>yan_zombied_dolg</class>
+		<community>zombied</community> <terrain_sect>stalker_zombied_terrain</terrain_sect>
+	
+		<rank>100</rank>
+		<reputation>20</reputation>
+
+		<visual>actors\stalker_zombi\stalker_zombie2</visual>
+		<snd_config>characters_voice\human_02\zombied\</snd_config>
+		<crouch_type>0</crouch_type>
+		<supplies>
+			[spawn] \n
+			wpn_abakan \n
+			ammo_5.45x39_fmj \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
+			device_torch \n
+		</supplies>
+
+#include "gameplay\character_criticals_1.xml"
+#include "gameplay\character_dialogs.xml"
+	</specific_character>
+
 <!---------------------------ÑÂÅÆÅZOMBIED STALKER----------------------->
 	<specific_character id="yan_fresh_Zombied_stalker_1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
