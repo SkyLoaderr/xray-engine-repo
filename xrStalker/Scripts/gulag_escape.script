@@ -2208,7 +2208,7 @@ function load_states(gname, type)
 		end
 	end
 	
-	if type == "esc_bridge_boars" then
+	if type == "esc_bridge_boar" then
 		return function(gulag)
 			return 0
 		end
@@ -2361,7 +2361,7 @@ function checkMonster(npc_community, gulag_type)
 		return npc_community == "flesh"
 	end
 	
-	if gulag_type == "esc_bridge_boars" then
+	if gulag_type == "esc_bridge_boar" then
 		return npc_community == "boar"
 	end
 	

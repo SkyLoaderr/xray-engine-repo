@@ -84,10 +84,10 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 ; фразы: ...Рассказывай, иначе узнаешь, как легко пуля пробивает череп.
 ;--------------------------------------------------------------------------
 [remark@val_escort_nap1_phrase1]
-anim                = guard
+anim                = threat_heli
 snd                 = val_escort_nap1_phrase1
 target              = 424 ;logic@val_escort_wounded_bandit
-on_signal           = sound_end | walker@val_escort_nap1_phrase1_wait %+val_nap1_phrase1_end%
+on_signal           = sound_end | remark@val_escort_nap1_phrase1_wait %+val_nap1_phrase1_end%
 on_info             = {=is_dead_one(424)} remark@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
 meet                = no_meet
 danger              = danger@val_escort_nap1_small
@@ -97,9 +97,11 @@ combat_ignore_cond  = always ;{=check_fighting(424)}
 ;--------------------------------------------------------------------------
 ; ожидание
 ;--------------------------------------------------------------------------
-[walker@val_escort_nap1_phrase1_wait]
-path_walk           = nap1_walk
-path_look           = nap1_look
+[remark@val_escort_nap1_phrase1_wait]
+anim                = threat_heli
+target              = 424 ;logic@val_escort_wounded_bandit
+;path_walk           = nap1_walk
+;path_look           = nap1_look
 on_info             = {+val_halfdead_phrase_end} remark@val_escort_nap1_phrase2
 on_info2            = {=is_dead_one(424)} remark@val_escort_nap1_phrase3 %+val_nap1_stop_talk_to_bandit%
 meet                = no_meet
