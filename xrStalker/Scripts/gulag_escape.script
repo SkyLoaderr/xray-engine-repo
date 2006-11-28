@@ -355,6 +355,15 @@ function load_job(sj, gname, type, squad, groups)
 						end
 		}
 		table.insert(sj, t)
+		t = { section = "logic@esc_lager_kamp1",
+			idle = 0,
+			prior = 16, state = {2},
+			in_rest = "", out_rest = "",
+			predicate = function(obj_info)
+        					return obj_info.profile_name == "esc_shustryi"
+						end
+		}
+		table.insert(sj, t)
 		
 		-- Фанат
 		t = { section = "logic@esc_lager_fanat",
