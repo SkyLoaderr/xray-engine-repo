@@ -503,7 +503,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 20, state = {2},
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone",
 			predicate = function(obj_info)
-        					return obj_info.profile_name == "esc_wolf"
+        					return obj_info.profile_name == "esc_wolf" and not has_alife_info("agroprom_military_case_have")
 						end
 		}
 		table.insert(sj, t)
@@ -1983,6 +1983,20 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+	if type == "pl_gulag" then
+		t = { section = "logic@pl_gulag_walker",
+			idle = 0,
+			prior = 10, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@pl_gulag_kamp",
+			idle = 0,
+			prior = 10, state = {1},
+			in_rest = "", out_rest = "pl_gulag_restr"
+		}
+		table.insert(sj, t)
+	end
 
 
 end
@@ -2231,6 +2245,16 @@ function load_states(gname, type)
 			end
 		end
 	end
+	
+	if type == "pl_gulag" then
+		return function(gulag)
+			if has_alife_info("pl_test_info_1") then
+				return 1
+			end
+			return 0
+		end
+	end
+
 
 	if type == "esc_assault" then
 		return function(gulag)
@@ -2249,6 +2273,8 @@ function load_states(gname, type)
 	end
 
 end
+
+
 
 --------------------------------------------------------------------------
 -- Dynamic ltx
@@ -2297,6 +2323,10 @@ function checkStalker(npc_community, gulag_type, npc_rank, se_obj)
 
 	if gulag_type == "esc_stalker_camp" then
 		return npc_community == "stalker"
+	end
+	
+	if gulag_type == "pl_gulag" then
+		return npc_community == "monolith"
 	end
 
 	return false
