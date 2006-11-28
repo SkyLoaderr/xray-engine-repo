@@ -293,7 +293,9 @@ function give_money_for_informer_5(actor, npc)
 	dialogs.relocate_money(npc, 5000, "out")
 end
 
-
+function barman_give_outfit(first_speaker, second_speaker)
+	dialogs.relocate_item_section(second_speaker, "stalker_outfit", "in")
+end
 
 
 -- спасение исследований ученных
