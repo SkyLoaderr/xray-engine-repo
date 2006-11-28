@@ -726,6 +726,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 15, state = {1},
 			online = true,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone",
+			position_threshold = 400,
 			predicate = function(obj_info)
 			            	return obj_info.profile_name == "esc_killer_master"
 			            end
@@ -735,6 +736,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
@@ -742,6 +744,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
@@ -749,6 +752,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
@@ -756,6 +760,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
@@ -763,6 +768,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
@@ -770,6 +776,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
@@ -777,6 +784,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = "esc_lager_guard_kill_zone"
 		}
 		table.insert(sj, t)
@@ -785,6 +793,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 15, state = {2},
 			in_rest = "", out_rest = "",
+			position_threshold = 400,
 			predicate = function(obj_info)
 			            	return obj_info.profile_name == "esc_killer_master"
 			            end
@@ -793,42 +802,49 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_killer_kamp",
 			idle = 0,
 			prior = 5, state = {2},
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_kamp",
 			idle = 0,
 			prior = 5, state = {2},
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_kamp",
 			idle = 0,
 			prior = 5, state = {2},
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_kamp",
 			idle = 0,
 			prior = 5, state = {2},
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_kamp",
 			idle = 0,
 			prior = 5, state = {2},
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_kamp",
 			idle = 0,
 			prior = 5, state = {2},
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_killer_kamp",
 			idle = 0,
 			prior = 5, state = {2},
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -837,6 +853,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {3},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -844,6 +861,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {3},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -851,6 +869,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {3},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -859,6 +878,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 15, state = {3},
 			in_rest = "", out_rest = "",
 			online = true,
+			position_threshold = 400,
 			predicate = function(obj_info)
 			            	return obj_info.profile_name == "esc_killer_master"
 			            end
@@ -868,6 +888,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {3},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -875,6 +896,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 8, state = {3},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -882,6 +904,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 8, state = {3},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -889,6 +912,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 8, state = {3},
 			online = true,
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -939,6 +963,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {0},
 			online = false,
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -946,6 +971,7 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {0},
 			online = false,
+			position_threshold = 400,
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -1983,22 +2009,7 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
-	if type == "pl_gulag" then
-		t = { section = "logic@pl_gulag_walker",
-			idle = 0,
-			prior = 10, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "logic@pl_gulag_kamp",
-			idle = 0,
-			prior = 10, state = {1},
-			in_rest = "", out_rest = "pl_gulag_restr"
-		}
-		table.insert(sj, t)
-	end
-
-
+	
 end
 
 function load_states(gname, type)
@@ -2246,14 +2257,7 @@ function load_states(gname, type)
 		end
 	end
 	
-	if type == "pl_gulag" then
-		return function(gulag)
-			if has_alife_info("pl_test_info_1") then
-				return 1
-			end
-			return 0
-		end
-	end
+	
 
 
 	if type == "esc_assault" then
@@ -2325,10 +2329,7 @@ function checkStalker(npc_community, gulag_type, npc_rank, se_obj)
 		return npc_community == "stalker"
 	end
 	
-	if gulag_type == "pl_gulag" then
-		return npc_community == "monolith"
-	end
-
+	
 	return false
 end
 
