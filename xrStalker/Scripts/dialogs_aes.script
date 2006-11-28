@@ -1,7 +1,8 @@
 
 --' Мы отказываемся вступить в осознание, нас переносит на вторую станцию
 function osoznanie_decline(npc, actor)
-    npc:stop_talk()
+    db.actor:disable_info_portion("oso_init_dialog")
+	npc:stop_talk()
     actor:stop_talk()
 
 	local point = patrol("mon_jump_aes2_walk")
@@ -14,5 +15,6 @@ end
 
 --' Мы соглашаемся вступить в осознание, конец игры.
 function osoznanie_agree(npc, actor)
+	db.actor:disable_info_portion("oso_init_dialog")
     game.start_tutorial("mov_join_osoznanie")
 end

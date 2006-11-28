@@ -690,6 +690,14 @@ animations = {
 						out		= nil,
 						idle	= nil,
 						rnd		= nil},
+		
+		oso_flying	= {	prop	= { maxidle = 5,
+									sumidle = 10,
+									rnd = 100 },
+						into	= nil,
+						out		= nil,
+						idle	= {	[0]	= "fly_0" },
+						rnd		= nil },
 
 										   
 		raciya		= {	prop	= { maxidle = 1,

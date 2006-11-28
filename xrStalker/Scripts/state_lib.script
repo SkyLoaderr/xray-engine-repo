@@ -759,6 +759,12 @@ states = {
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = "help_agr"
+			},
+	oso_flying = {	weapon = "none",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "oso_flying"
 			}
-			
 }
