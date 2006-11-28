@@ -110,6 +110,10 @@
         <icon height="50" width="50" x="0" y="0">
             ui\ui_icons_task
         </icon>
+        
+        <map_location_type hint="cit_doctor_task_2">green_location</map_location_type>
+			<object_story_id>pri_decoder_room_door</object_story_id>		
+        
         <infoportion_complete>
             pri_actor_in_hiding_place
         </infoportion_complete>
