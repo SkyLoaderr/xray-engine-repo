@@ -118,7 +118,7 @@ function courier_job_failed (task_id, subtask)
 end
 
 function fblockpost_job_failed (task_id, subtask)
-    if has_alife_info("mil_fblockpost_quest_fail") or 
+    if has_alife_info("mil_fblockpost_quest_fail") or has_alife_info("mil_fblockpost_commander_dead") or 
        this.is_actor_enemy_freedom() then
        return true
     end
