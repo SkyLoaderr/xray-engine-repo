@@ -272,21 +272,21 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                "combat_ignore   = combat_ignore\n" ..
 
                "[wounded@" .. gname .. "_halfdead]\n" ..
-               "hp_state        = 10|wounded_heavy@nil\n" ..
-               "hp_state_see    = 10|wounded_heavy@nil\n" ..
-               "hp_cover        = 10|false\n" ..
-               "hp_fight        = 10|false\n" ..
+               "hp_state        = 0|wounded_heavy@nil\n" ..
+               "hp_state_see    = 0|wounded_heavy@nil\n" ..
+               "hp_cover        = 0|false\n" ..
+               "hp_fight        = 0|false\n" ..
 
                "[wounded@" .. gname .. "_halfdead1]\n" ..
-               "hp_state        = 10|wounded_heavy@nil\n" ..
-               "hp_state_see    = 10|wounded_heavy@nil\n" ..
-               "hp_cover        = 10|false\n" ..
-               "hp_fight        = 10|false\n" ..
+               "hp_state        = 0|wounded_heavy@nil\n" ..
+               "hp_state_see    = 0|wounded_heavy@nil\n" ..
+               "hp_cover        = 0|false\n" ..
+               "hp_fight        = 0|false\n" ..
 
                "[remark@" .. gname .. "_halfdead_wait]\n" ..
                "path_walk           = nap1_look\n" ..
                "anim                = wounded_heavy ;wait\n" ..
-               --"target              = 406\n" ..
+               "target              = 406\n" ..
                "on_info             = {+val_nap1_phrase1_end} remark@" .. gname .. "_halfdead_phrase\n" ..
                "wounded             = wounded@" .. gname .. "_halfdead\n" ..
                "combat_ignore_cond  = always\n" ..
@@ -298,15 +298,16 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                "[remark@" .. gname .. "_halfdead_phrase]\n" ..
                "anim                = wounded_heavy ;wait\n" ..
                "snd                 = speech\n" ..
-               --"target              = 406\n" ..
+               "target              = 406\n" ..
                "on_signal           = sound_end | remark@" .. gname .. "_halfdead_end %+val_halfdead_phrase_end%\n" ..
                "wounded             = wounded@" .. gname .. "_halfdead1\n" ..
                "combat_ignore_cond  = always\n" ..
 
                "[remark@" .. gname .. "_halfdead_end]\n" ..
                "anim            = wounded_heavy ;wait\n" ..
-               --"target          = 406\n" ..
-               "wounded         = wounded@" .. gname .. "_halfdead\n"
+               "target          = 406\n" ..
+               "wounded         = wounded@" .. gname .. "_halfdead\n" ..
+			   "combat_ignore_cond  = always\n"
 
     gulags.val_escort.ltx = ltx
 end
