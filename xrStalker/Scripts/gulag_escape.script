@@ -1021,35 +1021,35 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 5, state = {1},
 			position_threshold = 100,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox",
 			idle = 0,
 			prior = 5, state = {1},
 			position_threshold = 100,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox",
 			idle = 0,
 			prior = 5, state = {1},
 			position_threshold = 100,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox",
 			idle = 0,
 			prior = 5, state = {1},
 			position_threshold = 100,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@esc_dogs_to_fox",
 			idle = 0,
 			prior = 5, state = {1},
 			position_threshold = 100,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "esc_dogs_fox_attack"
 		}
 		table.insert(sj, t)
 
