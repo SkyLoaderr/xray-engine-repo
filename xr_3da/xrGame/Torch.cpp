@@ -304,7 +304,8 @@ void CTorch::UpdateCL()
 			M.c.y	+= H_Parent()->Radius	()*2.f/3.f;
 		}
 
-		if (actor) {
+		if (actor) 
+		{
 			m_prev_hp.x		= angle_inertion_var(m_prev_hp.x,-actor->cam_FirstEye()->yaw,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
 			m_prev_hp.y		= angle_inertion_var(m_prev_hp.y,-actor->cam_FirstEye()->pitch,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
 
@@ -329,34 +330,39 @@ void CTorch::UpdateCL()
 					offset.mad					(M.k,OMNI_OFFSET.z);
 					light_omni->set_position	(offset);
 				}
-			}
+			}//if (can_use_dynamic_lights())
 			glow_render->set_position	(M.c);
 
-			if (can_use_dynamic_lights()){
+			if (can_use_dynamic_lights())
+			{
 				light_render->set_rotation	(dir, right);
 				
 				if(false)
 				{
 					light_omni->set_rotation	(dir, right);
 				}
-			}
+			}//if (can_use_dynamic_lights())
 			glow_render->set_direction	(dir);
 
-		}
-		else {
-			if (can_use_dynamic_lights()) {
+		}// if(actor)
+		else 
+		{
+			if (can_use_dynamic_lights()) 
+			{
 				light_render->set_position	(M.c);
 				light_render->set_rotation	(M.k,M.i);
 				light_omni->set_position	(M.c);
 				light_omni->set_rotation	(M.k,M.i);
-			}
+			}//if (can_use_dynamic_lights()) 
 
 			glow_render->set_position	(M.c);
 			glow_render->set_direction	(M.k);
 		}
-	}
-	else {
-		if (getVisible() && m_pPhysicsShell) {
+	}//if(HParent())
+	else 
+	{
+		if (getVisible() && m_pPhysicsShell) 
+		{
 			M.mul						(XFORM(),BI.mTransform);
 
 			//. what should we do in case when 
@@ -375,7 +381,7 @@ void CTorch::UpdateCL()
 				light_omni->set_active(false);
 				glow_render->set_active	(false);
 			}
-		} 
+		}//if (getVisible() && m_pPhysicsShell)  
 	}
 
 	if (!m_switched_on)					return;
