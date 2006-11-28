@@ -4,6 +4,7 @@
 #include "UIGameDM.h"
 
 #define DEMO_DATA_SIZE	65536
+u32	g_dwDemoDeltaFrame = 1;
 
 void						CLevel::Demo_StoreData			(void* data, u32 size, DEMO_CHUNK DataType)
 {
@@ -201,11 +202,15 @@ void						CLevel::Demo_Load				(LPCSTR DemoName)
 		m_dwCurDemoFrame = 0;
 	}
 	xr_free(pDemoData);
+	//-----------------------------------------------
+	g_dwDemoDeltaFrame = 1;
 }
 
 static long lFileSize = 0;
 void						CLevel::Demo_Load_toFrame	(LPCSTR FileName, DWORD toFrame, long &ofs)
 {
+	if (ofs == 1) g_dwDemoDeltaFrame = 1;
+
 	m_sDemoFileName = FileName;
 	string1024	DemoFileName;
 	FS.update_path      (DemoFileName,"$logs$",FileName);
@@ -258,6 +263,11 @@ void						CLevel::Demo_Load_toFrame	(LPCSTR FileName, DWORD toFrame, long &ofs)
 static DWORD dFrame = 1;
 void						CLevel::Demo_Update				()
 {
+	if (float(m_lDemoOfs)/lFileSize>0.95f)
+	{
+		g_dwDemoDeltaFrame = 1;
+		dFrame = 1;
+	}
 	if (!IsDemoPlay() || m_aDemoData.empty() || !m_bDemoStarted) return;
 	static u32 Pos = 0;
 
@@ -425,5 +435,7 @@ void						CLevel::Demo_EndFrame			()
 		m_dwCurDemoFrame+=dFrame;		
 	else
 		m_dwCurDemoFrame++;	
+
+	dFrame = g_dwDemoDeltaFrame;
 };
 

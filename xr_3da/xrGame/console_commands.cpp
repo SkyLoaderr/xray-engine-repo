@@ -2799,4 +2799,10 @@ void CCC_RegisterCommands()
 	CMD4(CCC_SV_Integer,"sv_reinforcement_time"		,	(int*)&g_sv_ah_iReinforcementTime		, -1,3600); //sec
 
 	CMD4(CCC_Vector3,		"psp_cam_offset",				&CCameraLook2::m_cam_offset, Fvector().set(-1000,-1000,-1000),Fvector().set(1000,1000,1000));
+
+#ifdef DEBUG
+	extern	u32	g_dwDemoDeltaFrame;
+	CMD4(CCC_SV_Integer,"demo_delta_frame"	,	(int*)&g_dwDemoDeltaFrame	,	1,100);
+#endif // DEBUG
+
 }
