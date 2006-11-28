@@ -349,6 +349,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_lager_shustryi",
 			idle = 0,
 			prior = 16, state = {0,1},
+            online = true,
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info)
         					return obj_info.profile_name == "esc_shustryi"
@@ -358,6 +359,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@esc_lager_kamp1",
 			idle = 0,
 			prior = 16, state = {2},
+            online = true,
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info)
         					return obj_info.profile_name == "esc_shustryi"
