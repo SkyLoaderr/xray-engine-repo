@@ -11,10 +11,10 @@ on_timer = 300 | sr_idle@2 %=agr_knockdown =run_cam_effector(dis_consciousness:1
 on_timer = 3000 | sr_idle@3_1 %=turn_on(399) =run_postprocess(agr_u_fade) +agr_doc_wakeup%
 
 [sr_idle@3_1]
-on_timer = 2500 | sr_idle@3 %=stop_cam_effector(1984)%
+on_timer = 1500 | sr_idle@3 %=stop_cam_effector(1984)%
 
 [sr_idle@3]
-on_timer  = 2000 | sr_idle@4  %=agr_cam_effect =teleport_actor(kat_teleport_to_dark_city_position:kat_teleport_to_dark_city_orientation) +cit_jail_actor_wake +cit_jail_doctor_pryp_task%
+on_timer  = 1500 | sr_idle@4  %=agr_cam_effect =teleport_actor(kat_teleport_to_dark_city_position:kat_teleport_to_dark_city_orientation) +cit_jail_actor_wake +cit_jail_doctor_pryp_task%
 
 [sr_idle@4]
 on_timer = 101000 | sr_idle@5 %=turn_off(399) =run_postprocess(agr_u_fade)%
