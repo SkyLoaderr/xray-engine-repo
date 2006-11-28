@@ -63,11 +63,11 @@ hp_cover        = 0|false
 [walker@val_escort_nap1_begin]
 path_walk           = nap1_walk
 path_look           = nap1_look
-on_info             = {+val_escort_begin} remark@val_escort_nap1_phrase1
+on_info             = {+val_escort_begin !actor_enemy} remark@val_escort_nap1_phrase1
 meet                = no_meet
 danger              = danger@val_escort_nap1_small
 wounded             = wounded@val_escort_nap1
-combat_ignore_cond  = always ;{=check_fighting(424)}
+combat_ignore_cond  = {!actor_enemy}
 
 ;--------------------------------------------------------------------------
 ; начало

@@ -2053,7 +2053,7 @@ function load_states(gname, type)
 	if type == "esc_bridge" then
 		return function(gulag)
 			if db.actor ~= nil then
-				if ( level.get_time_hours() >= 7 and level.get_time_hours() <= 22 ) then
+				if ( level.get_time_hours() >= 5 and level.get_time_hours() <= 22 ) then
 					return 0  -- день
 				else
 					return 1  -- ночь
