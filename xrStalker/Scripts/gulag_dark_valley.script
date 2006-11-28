@@ -278,8 +278,8 @@ gulags.val_escort.job = function(sj, gname, type, squad, groups)
                "hp_fight        = 10|false\n" ..
 
                "[wounded@" .. gname .. "_halfdead1]\n" ..
-               "hp_state        = 1|wounded_heavy@nil\n" ..
-               "hp_state_see    = 1|wounded_heavy@nil\n" ..
+               "hp_state        = 10|wounded_heavy@nil\n" ..
+               "hp_state_see    = 10|wounded_heavy@nil\n" ..
                "hp_cover        = 10|false\n" ..
                "hp_fight        = 10|false\n" ..
 
