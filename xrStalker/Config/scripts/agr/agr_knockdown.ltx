@@ -1,5 +1,8 @@
 [logic]
-active = sr_idle
+active = sr_idle@start
+
+[sr_idle@start]
+on_info = sr_idle %=turn_off(399)%
 
 [sr_idle]
 on_info = {+agr_knockdown} sr_idle@1
