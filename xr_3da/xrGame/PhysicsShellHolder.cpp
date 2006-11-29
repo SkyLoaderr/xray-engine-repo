@@ -129,6 +129,7 @@ void CPhysicsShellHolder::correct_spawn_pos()
 	PPhysicsShell()->GetGlobalTransformDynamic(&XFORM());
 	activation_shape.Destroy			();
 }
+
 void CPhysicsShellHolder::activate_physic_shell()
 {
 	VERIFY						(!m_pPhysicsShell);
@@ -159,7 +160,8 @@ void CPhysicsShellHolder::activate_physic_shell()
 	}
 //	XFORM().set					(l_p1);
 	correct_spawn_pos();
-	m_pPhysicsShell->set_LinearVel(l_fw);
+
+m_pPhysicsShell->set_LinearVel(l_fw);
 	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
 }
 
