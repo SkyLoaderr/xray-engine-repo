@@ -1,5 +1,5 @@
 
-	<game_task id="garbage_meet_stalker" prio="470">
+	<game_task id="garbage_meet_stalker" prio="482">
 		<title>garbage_meet_stalker</title>
 		<objective>
 			<text>garbage_meet_stalker_0</text>
@@ -92,26 +92,4 @@
 		</objective>
 	</game_task>
 	
-	<game_task id="gar_help_tunnel_newbie">
-		<title>gar_help_tunnel_newbie</title>
-		<objective>
-			<text>gar_kill_bandits_post</text>
-			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_fail>gar_help_newbie_die</infoportion_fail>
-			<infoportion_complete>gar_help_newbie_reward</infoportion_complete>
-		</objective>
-		<objective>
-			<text>gar_kill_bandits_around_tunnel</text>
-			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="gar_kill_bandits_around_tunnel">green_location</map_location_type>
-			<object_story_id>gar_bandit_post</object_story_id>
-			<infoportion_complete>gar_help_newbie_done</infoportion_complete>
-		</objective>
-		<objective>
-			<text>gar_say_free_pass</text>
-			<icon x="400" y="150" width="50" height="50">ui\ui_icons_task</icon>
-			<map_location_type hint="gar_say_free_pass">green_location</map_location_type>
-			<object_story_id>gar_newbie_in_tunnel</object_story_id>
-			<infoportion_complete>gar_help_newbie_reward</infoportion_complete>
-		</objective>
-	</game_task>
+	
