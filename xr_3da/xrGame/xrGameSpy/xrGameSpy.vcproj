@@ -167,13 +167,15 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
+						UsePrecompiledHeader="0"
+						Detect64BitPortabilityProblems="FALSE"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
+						UsePrecompiledHeader="0"
+						Detect64BitPortabilityProblems="FALSE"/>
 				</FileConfiguration>
 			</File>
 			<File
