@@ -2005,8 +2005,8 @@ function esc_init_dialod ()
 end
 
 function oso_init_dialod ()
-	local oso = level_object_by_sid(1307)
-	db.actor:run_talk_dialog(oso)
+	-- local oso = level_object_by_sid(1307)
+	-- db.actor:run_talk_dialog(oso)
 end
 -- DELME:only for presentation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
