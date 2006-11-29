@@ -33,7 +33,7 @@ CTorch::CTorch(void)
 	light_render->set_type		(IRender_Light::SPOT);
 	light_render->set_shadow	(true);
 	light_omni					= ::Render->light_create();
-	light_render->set_type		(IRender_Light::OMNIPART);
+	light_omni->set_type		(IRender_Light::POINT);
 	light_omni->set_shadow		(false);
 
 	m_switched_on				= false;
@@ -187,19 +187,21 @@ void CTorch::Switch()
 void CTorch::Switch	(bool light_on)
 {
 	m_switched_on			= light_on;
-	if (can_use_dynamic_lights()){
+	if (can_use_dynamic_lights())
+	{
 		light_render->set_active(light_on);
 		
 		CActor *pA = smart_cast<CActor *>(H_Parent());
 		if(!pA)light_omni->set_active(light_on);
 	}
-	glow_render->set_active	(light_on);
+	glow_render->set_active					(light_on);
 
-	if (*light_trace_bone) {
-		CKinematics* pVisual = smart_cast<CKinematics*>(Visual()); VERIFY(pVisual);
-		pVisual->LL_SetBoneVisible(pVisual->LL_BoneID(light_trace_bone),light_on,TRUE);
-		pVisual->CalculateBones_Invalidate();
-		pVisual->CalculateBones();
+	if (*light_trace_bone) 
+	{
+		CKinematics* pVisual				= smart_cast<CKinematics*>(Visual()); VERIFY(pVisual);
+		pVisual->LL_SetBoneVisible			(pVisual->LL_BoneID(light_trace_bone),light_on,TRUE);
+		pVisual->CalculateBones_Invalidate	();
+		pVisual->CalculateBones				();
 	}
 }
 
@@ -217,18 +219,24 @@ BOOL CTorch::net_Spawn(CSE_Abstract* DC)
 	if (!inherited::net_Spawn(DC))
 		return				(FALSE);
 	
+	bool b_r2				= !!psDeviceFlags.test(rsR2);
+
 	CKinematics* K			= smart_cast<CKinematics*>(Visual());
 	CInifile* pUserData		= K->LL_UserData(); 
 	R_ASSERT3				(pUserData,"Empty Torch user data!",torch->get_visual());
 	lanim					= LALib.FindItem(pUserData->r_string("torch_definition","color_animator"));
 	guid_bone				= K->LL_BoneID	(pUserData->r_string("torch_definition","guide_bone"));	VERIFY(guid_bone!=BI_NONE);
-	Fcolor clr				= pUserData->r_fcolor				("torch_definition","color");
+
+	Fcolor clr				= pUserData->r_fcolor				("torch_definition",(b_r2)?"color_r2":"color");
 	fBrightness				= clr.intensity();
-	m_range					= pUserData->r_float				("torch_definition","range");
+	float range				= pUserData->r_float				("torch_definition",(b_r2)?"range_r2":"range");
 	light_render->set_color	(clr);
-	light_omni->set_color	(clr);
-	light_render->set_range	(m_range);
-	light_omni->set_range	(1.5f);
+	light_render->set_range	(range);
+
+	Fcolor clr_o			= pUserData->r_fcolor				("torch_definition",(b_r2)?"omni_color_r2":"omni_color");
+	float range_o			= pUserData->r_float				("torch_definition",(b_r2)?"omni_range_r2":"omni_range");
+	light_omni->set_color	(clr_o);
+	light_omni->set_range	(range_o);
 
 	light_render->set_cone	(deg2rad(pUserData->r_float			("torch_definition","spot_angle")));
 	light_render->set_texture(pUserData->r_string				("torch_definition","spot_texture"));
@@ -243,7 +251,7 @@ BOOL CTorch::net_Spawn(CSE_Abstract* DC)
 	
 	SwitchNightVision		(false);
 
-	m_delta_h				= PI_DIV_2-atan((m_range*0.5f)/_abs(TORCH_OFFSET.x));
+	m_delta_h				= PI_DIV_2-atan((range*0.5f)/_abs(TORCH_OFFSET.x));
 
 	return					(TRUE);
 }
@@ -314,7 +322,7 @@ void CTorch::UpdateCL()
 			Fvector::generate_orthonormal_basis_normalized(dir,up,right);
 
 
-			if (can_use_dynamic_lights())
+			if (true)
 			{
 				Fvector offset				= M.c; 
 				offset.mad					(M.i,TORCH_OFFSET.x);
@@ -330,10 +338,10 @@ void CTorch::UpdateCL()
 					offset.mad					(M.k,OMNI_OFFSET.z);
 					light_omni->set_position	(offset);
 				}
-			}//if (can_use_dynamic_lights())
+			}//if (true)
 			glow_render->set_position	(M.c);
 
-			if (can_use_dynamic_lights())
+			if (true)
 			{
 				light_render->set_rotation	(dir, right);
 				
@@ -341,7 +349,7 @@ void CTorch::UpdateCL()
 				{
 					light_omni->set_rotation	(dir, right);
 				}
-			}//if (can_use_dynamic_lights())
+			}//if (true)
 			glow_render->set_direction	(dir);
 
 		}// if(actor)
@@ -351,6 +359,11 @@ void CTorch::UpdateCL()
 			{
 				light_render->set_position	(M.c);
 				light_render->set_rotation	(M.k,M.i);
+
+				Fvector offset				= M.c; 
+				offset.mad					(M.i,OMNI_OFFSET.x);
+				offset.mad					(M.j,OMNI_OFFSET.y);
+				offset.mad					(M.k,OMNI_OFFSET.z);
 				light_omni->set_position	(M.c);
 				light_omni->set_rotation	(M.k,M.i);
 			}//if (can_use_dynamic_lights()) 
@@ -396,7 +409,8 @@ void CTorch::UpdateCL()
 	Fcolor					fclr;
 	fclr.set				((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
 	fclr.mul_rgb			(fBrightness/255.f);
-	if (can_use_dynamic_lights()){
+	if (can_use_dynamic_lights())
+	{
 		light_render->set_color	(fclr);
 		light_omni->set_color	(fclr);
 	}
