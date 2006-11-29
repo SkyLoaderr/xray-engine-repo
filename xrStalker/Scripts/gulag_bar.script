@@ -1124,11 +1124,11 @@ function load_states(gname, type)
 	if type == "bar_visitors" then
 		return function(gulag)
 			-- Проверка боя на арене
-			if db.actor:has_info("bar_arena_start") and
-			   db.actor:dont_has_info("bar_arena_actor_victory") and
-			   db.actor:dont_has_info("bar_arena_actor_lose") and
-			   db.actor:dont_has_info("bar_arena_actor_afraid") and
-			   db.actor:dont_has_info("bar_arena_actor_dead")
+			if has_alife_info("bar_arena_start") and
+			   not has_alife_info("bar_arena_actor_victory") and
+			   not has_alife_info("bar_arena_actor_lose") and
+			   not has_alife_info("bar_arena_actor_afraid") and
+			   not has_alife_info("bar_arena_actor_dead")
 			then
 				return 2
 			end
@@ -1223,16 +1223,16 @@ function load_states(gname, type)
 
 	if type == "bar_freedom_attack" then        
 		return function (gulag)
-			if db.actor:has_info("bar_freedom_attack_ecolog") and
-			   db.actor:dont_has_info("bar_rescue_research_chasing_start") and 
-               db.actor:dont_has_info("bar_heli_scene_professor_die") then
+			if has_alife_info("bar_freedom_attack_ecolog") and
+			   not has_alife_info("bar_rescue_research_chasing_start") and 
+               not has_alife_info("bar_heli_scene_professor_die") then
 				 return 1 -- actor enemy
 			end
-			if db.actor:has_info("bar_rescue_research_chasing_start") and
-			   db.actor:dont_has_info("bar_heli_scene_professor_die") then
+			if has_alife_info("bar_rescue_research_chasing_start") and
+			   not has_alife_info("bar_heli_scene_professor_die") then
 				 return 2 -- start chasing			
 			end
-			if db.actor:has_info("bar_heli_scene_professor_die") then
+			if has_alife_info("bar_heli_scene_professor_die") then
 			     return 3 -- relax
 			end	 
 			return 0
@@ -1240,7 +1240,7 @@ function load_states(gname, type)
 	end
 	if type == "bar_freedom_chasers_attack" then        
 		return function (gulag)
-			if db.actor:has_info("bar_bandits_alive") then
+			if has_alife_info("bar_bandits_alive") then
 				return 0
 			end
 			return 1
@@ -1260,8 +1260,7 @@ function load_states(gname, type)
 	
 	if type == "bar_arena_monstr" then
 		return function(gulag)
-			if db.actor and
-			   db.actor:has_info("bar_arena_state_1")
+			if has_alife_info("bar_arena_state_1")
 			then
 				return 1
 			end
