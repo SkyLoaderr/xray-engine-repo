@@ -109,7 +109,7 @@
 	<title>agr_help_krot</title>
 	<objective>
 		<text>agr_help_krot_0</text>
-		<icon>ui_icons_task_kill_stalker</icon>
+		<icon>ui_iconsTotal_kill_stalker</icon>
 		<infoportion_complete>agr_find_gunslinger_cache_start</infoportion_complete>
 		<infoportion_fail>agr_krot_dead</infoportion_fail>
 		<infoportion_set_fail>agr_help_krot_done</infoportion_set_fail>
