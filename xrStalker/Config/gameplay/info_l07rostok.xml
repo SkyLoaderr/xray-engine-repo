@@ -67,9 +67,7 @@
 	<info_portion id="bar_dolg_base_pass"></info_portion>
 
         <!-- Отметиться у начальника охраны Долга -->
-	<info_portion id="bar_dolg_base_rules_start">
-		<task>bar_dolg_base_rules</task>
-	</info_portion>
+	<info_portion id="bar_dolg_base_rules_start"></info_portion>
 	<info_portion id="bar_dolg_base_rules_talk"></info_portion>	
 	<info_portion id="bar_dolg_base_rules_finish"></info_portion>	
 
