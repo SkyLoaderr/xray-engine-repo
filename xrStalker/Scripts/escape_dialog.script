@@ -157,7 +157,6 @@ end
 --' fox help
 
 function transfer_medikit_to_fox (player, wounded)
-    dialogs.relocate_item_section(wounded, "medkit", "out")   
 	wounded:set_relation(game_object.friend, player)
 	db.actor:give_info_portion("escape_fox_heal")
 end
