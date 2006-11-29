@@ -22,12 +22,12 @@ private:
 		Fvector			Phit;
 		Fvector			D;
 		float			fSpeed;
-		float			fTime_Life;
-		float			fTime_Hit;
+		u32				dwTime_Life;
+		u32				dwTime_Hit;
 		u32				uv_set;
 		void			invalidate	()
 		{
-			fTime_Life	= 0.f;
+			dwTime_Life	= 0;
 		}
 	};
 	struct	Particle

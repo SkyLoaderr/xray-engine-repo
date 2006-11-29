@@ -103,12 +103,12 @@ void CEffect_Rain::RenewItem(Item& dest, float height, BOOL bHit)
 {
 	dest.uv_set			= Random.randI(2);
     if (bHit){
-		dest.fTime_Life	= height/dest.fSpeed;
-		dest.fTime_Hit	= height/dest.fSpeed;
+		dest.dwTime_Life= Device.dwTimeGlobal + iFloor(1000.f*height/dest.fSpeed) - Device.dwTimeDelta;
+		dest.dwTime_Hit	= Device.dwTimeGlobal + iFloor(1000.f*height/dest.fSpeed) - Device.dwTimeDelta;
 		dest.Phit.mad	(dest.P,dest.D,height);
 	}else{
-		dest.fTime_Life	= (height*1)/dest.fSpeed;
-		dest.fTime_Hit	= (height*2)/dest.fSpeed;
+		dest.dwTime_Life= Device.dwTimeGlobal + iFloor(1000.f*height/dest.fSpeed) - Device.dwTimeDelta;
+		dest.dwTime_Hit	= Device.dwTimeGlobal + iFloor(2*1000.f*height/dest.fSpeed)-Device.dwTimeDelta;
 		dest.Phit.set	(dest.P);
 	}
 }
@@ -189,15 +189,18 @@ void	CEffect_Rain::Render	()
 	u32			vOffset;
 	FVF::LIT	*verts		= (FVF::LIT	*) RCache.Vertex.Lock(desired_items*4,hGeom_Rain->vb_stride,vOffset);
 	FVF::LIT	*start		= verts;
-	float		dt			= Device.fTimeDelta;
 	const Fvector&	vEye	= Device.vCameraPosition;
 	for (u32 I=0; I<items.size(); I++){
 		// physics and time control
 		Item&	one		=	items[I];
 
-		one.fTime_Hit	-=  dt;	if (one.fTime_Hit<0)	Hit (one.Phit);
-		one.fTime_Life	-=	dt; if (one.fTime_Life<0)	Born(one,source_radius);
+		if (one.dwTime_Hit<Device.dwTimeGlobal)		Hit (one.Phit);
+		if (one.dwTime_Life<Device.dwTimeGlobal)	Born(one,source_radius);
 
+// последн€€ дельта ??
+//.		float xdt		= float(one.dwTime_Hit-Device.dwTimeGlobal)/1000.f;
+//.		float dt		= Device.fTimeDelta;//xdt<Device.fTimeDelta?xdt:Device.fTimeDelta;
+		float dt		= Device.fTimeDelta;
 		one.P.mad		(one.D,one.fSpeed*dt);
 
 		Device.Statistic->TEST1.Begin();
