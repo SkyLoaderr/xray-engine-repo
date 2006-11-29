@@ -2,7 +2,7 @@
 	<title>agroprom_get_military_documents</title>
 	<objective>
 		<text>agroprom_get_military_documents_0</text>
-		<icon x="250" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		<icon>ui_iconsTotal_agroprom_get_military_documents</icon>
 		<infoportion_complete>agroprom_military_case_done</infoportion_complete>
 		<article>agr_task_case</article>
 	</objective>
