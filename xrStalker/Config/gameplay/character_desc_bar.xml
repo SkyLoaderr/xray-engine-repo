@@ -53,7 +53,9 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 		</supplies>
-				
+
+#include "gameplay\character_criticals_3.xml"
+
 		<start_dialog>bar_bar_visitors_3_start</start_dialog>
 	</specific_character>
 	
@@ -79,7 +81,9 @@
 			wpn_mp5 \n
 			ammo_9x19_pbp \n
 		</supplies>
-					
+
+#include "gameplay\character_criticals_3.xml"
+
 		<start_dialog>bar_bar_visitors_4_start</start_dialog>
 	</specific_character>
 
@@ -105,7 +109,9 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj \n
 		</supplies>
-					
+
+#include "gameplay\character_criticals_3.xml"
+
 		<start_dialog>bar_bar_visitors_5_start</start_dialog>
 	</specific_character>
 	
@@ -131,7 +137,9 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj \n
 		</supplies>
-					
+
+#include "gameplay\character_criticals_3.xml"
+
 		<start_dialog>bar_bar_visitors_6_start</start_dialog>
 	</specific_character>
 
@@ -157,7 +165,9 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 		</supplies>
-					
+
+#include "gameplay\character_criticals_4.xml"
+
 		<start_dialog>bar_bar_visitors_7_start</start_dialog>
 	</specific_character>
 
@@ -183,7 +193,9 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 		</supplies>
-					
+
+#include "gameplay\character_criticals_4.xml"
+
 		<start_dialog>bar_bar_visitors_8_start</start_dialog>
 	</specific_character>
 
@@ -211,7 +223,9 @@
 			wpn_abakan \n
 			ammo_5.45x39_fmj \n
 		</supplies>
-					
+		
+#include "gameplay\character_criticals_6.xml"
+
 		<start_dialog>bar_bar_visitors_9_start</start_dialog>
 	</specific_character>
 
@@ -237,7 +251,9 @@
 			wpn_val \n
 			ammo_9x39_pab9 \n
 		</supplies>
-					
+
+#include "gameplay\character_criticals_4.xml"
+
 		<start_dialog>bar_bar_visitors_10_start</start_dialog>
 	</specific_character>
 
@@ -264,6 +280,8 @@
 			ammo_5.56x45_ss190 \n
 		</supplies>
 		
+#include "gameplay\character_criticals_4.xml"
+
 		<start_dialog>bar_bar_visitors_13_start</start_dialog>
 	</specific_character>	
 
@@ -289,7 +307,8 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 		</supplies>
-					
+
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -315,7 +334,8 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 		</supplies>
-					
+
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -343,7 +363,7 @@
 			wpn_addon_grenade_launcher \n
 		</supplies>
 	
-		
+#include "gameplay\character_criticals_4.xml"
 	
 		<start_dialog>bar_bar_osvedomitel_start</start_dialog>
 		<actor_dialog>bar_bar_osvedomitel_trade_info</actor_dialog>
@@ -374,6 +394,8 @@
 			[spawn] \n
 			ammo_5.56x45_ss190 \n
 		</supplies>
+		
+#include "gameplay\character_criticals_3.xml"
 		
 		<start_dialog>bar_bar_hunter_start</start_dialog>
 		<actor_dialog>bar_bar_hunter_quest_start</actor_dialog>
@@ -407,6 +429,8 @@
 			detector_advances \n
 		</supplies>
 		
+#include "gameplay\character_criticals_6.xml"
+		
 		<start_dialog>bar_bar_drunk_dolg_start</start_dialog>
 		<actor_dialog>tm_drunk_dolg_dialog</actor_dialog>	
 		<actor_dialog>tm_drunk_dolg_reward</actor_dialog>	
@@ -436,6 +460,8 @@
 			ammo_5.45x39_fmj \n
 		</supplies>
 		
+#include "gameplay\character_criticals_4.xml"
+		
 		<start_dialog>bar_bar_visitors_14_start</start_dialog>
 		<actor_dialog>tm_lisiy_dialog</actor_dialog>
 		<actor_dialog>tm_lisiy_reward</actor_dialog>
@@ -462,6 +488,8 @@
 			wpn_walther \n
 			ammo_9x19_fmj \n
 		</supplies>
+		
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>bar_bar_psih_start_pain</start_dialog>
 		<actor_dialog>bar_bar_psih_talk_pain</actor_dialog>
@@ -499,6 +527,8 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>		
 				
+#include "gameplay\character_criticals_4.xml"
+				
 		<start_dialog>bar_arena_man_start</start_dialog>
 		<actor_dialog>bar_arena_man_job</actor_dialog>
 	</specific_character>
@@ -528,6 +558,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -554,6 +585,7 @@
 			ammo_12x70_buck \n
 		</supplies>
 				
+#include "gameplay\character_criticals_1.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -584,6 +616,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+#include "gameplay\character_criticals_6.xml"
 		
 		<start_dialog>bar_dolg_leader_start</start_dialog>
 		<actor_dialog>bar_dolg_leader_join</actor_dialog>
@@ -621,6 +655,8 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 		
+#include "gameplay\character_criticals_6.xml"
+		
 		<start_dialog>bar_dolg_petrenko_start</start_dialog>
 		
 		<actor_dialog>tm_petrenko_dialog</actor_dialog>
@@ -656,6 +692,8 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 		
+#include "gameplay\character_criticals_6.xml"
+		
 		<start_dialog>bar_dolg_ivancov_start</start_dialog>
 		#include "gameplay\character_dialogs.xml"
 	</specific_character>	
@@ -688,6 +726,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+#include "gameplay\character_criticals_6.xml"
 		
 		<start_dialog>bar_dolg_base_guard_start</start_dialog>
 		<actor_dialog>bar_dolg_base_guard_talk</actor_dialog>
@@ -724,6 +764,8 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 		
+#include "gameplay\character_criticals_6.xml"
+		
 		<start_dialog>bar_dolg_zastava</start_dialog>
 		<actor_dialog>bar_dolg_zastava_about_zastava</actor_dialog>
 		<actor_dialog>bar_dolg_zastava_talk</actor_dialog>
@@ -759,6 +801,8 @@
 			hand_radio \n
 		</supplies>
 				
+#include "gameplay\character_criticals_3.xml"
+				
 		<start_dialog>bar_ecolog_crush_professor_start</start_dialog>
 		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
 		<actor_dialog>bar_ecolog_crush_professor_give_info_dp</actor_dialog>
@@ -792,6 +836,8 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
+#include "gameplay\character_criticals_4.xml"
+			
 		<start_dialog>bar_svoboda_volkodav_start</start_dialog>
 		<actor_dialog>bar_svoboda_volkodav_info_dp</actor_dialog>
 	</specific_character>
@@ -824,7 +870,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-
+		
+#include "gameplay\character_criticals_2.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -857,6 +904,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -885,6 +933,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
@@ -912,7 +961,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-			
+
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -940,6 +990,7 @@
 			ammo_11.43x23_fmj \n
 		</supplies>
 			
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
@@ -977,6 +1028,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
+#include "gameplay\character_criticals_6.xml"
 #include "gameplay\character_dialogs.xml"
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>	
 	</specific_character>
@@ -1009,6 +1061,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
+#include "gameplay\character_criticals_6.xml"
 #include "gameplay\character_dialogs.xml"		
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>
 	</specific_character>
@@ -1041,6 +1094,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
+#include "gameplay\character_criticals_6.xml"
 #include "gameplay\character_dialogs.xml"
 		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>
 	</specific_character>
@@ -1073,7 +1127,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-				
+
+#include "gameplay\character_criticals_6.xml"				
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -1104,7 +1159,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-				
+
+#include "gameplay\character_criticals_6.xml"				
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -1135,7 +1191,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-				
+
+#include "gameplay\character_criticals_6.xml"				
 #include "gameplay\character_dialogs.xml"
 		</specific_character>
 
@@ -1166,7 +1223,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>		
-			
+
+#include "gameplay\character_criticals_6.xml"			
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -1197,7 +1255,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>		
-			
+
+#include "gameplay\character_criticals_6.xml"			
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -1230,7 +1289,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>		
-			
+
+#include "gameplay\character_criticals_6.xml"			
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -1261,7 +1321,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>		
-			
+
+#include "gameplay\character_criticals_6.xml"			
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -1293,7 +1354,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>			
-		
+
+#include "gameplay\character_criticals_2.xml"
 #include "gameplay\character_dialogs.xml"
 
 	</specific_character>
@@ -1325,7 +1387,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>	
-				
+
+#include "gameplay\character_criticals_6.xml"
 #include "gameplay\character_dialogs.xml"
 
 	</specific_character>
@@ -1356,7 +1419,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-					
+		
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -1384,7 +1448,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-			
+
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"
 
 	</specific_character>
@@ -1413,7 +1478,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-					
+
+#include "gameplay\character_criticals_3.xml"					
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -1442,6 +1508,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -1469,7 +1536,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-			
+
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -1497,7 +1565,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-			
+
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -1525,7 +1594,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-			
+		
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -1554,6 +1624,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 			
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -1586,6 +1657,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 				
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 
 	</specific_character>
@@ -1617,7 +1689,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-				
+
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 </specific_character>
 
@@ -1649,6 +1722,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 </specific_character>
 
@@ -1680,6 +1754,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
@@ -1711,6 +1786,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
@@ -1742,7 +1818,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-			
+
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 
 	</specific_character>
@@ -1774,7 +1851,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-			
+
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 
 	</specific_character>
@@ -1806,7 +1884,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-			
+
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 
 	</specific_character>
@@ -1838,7 +1917,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-			
+
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 
 	</specific_character>
@@ -1870,7 +1950,8 @@
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
-			
+
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 
 	</specific_character>
@@ -1901,6 +1982,7 @@
 			ammo_5.56x45_ap = 1 \n
 		</supplies>
 			
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -1929,6 +2011,7 @@
 			ammo_5.56x45_ap = 1 \n
 		</supplies>
 				
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -1960,6 +2043,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -1989,6 +2073,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -2018,6 +2103,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -2047,6 +2133,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -2075,6 +2162,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -2105,6 +2193,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -2136,6 +2225,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -2165,6 +2255,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"		
 	</specific_character>
 
@@ -2195,6 +2286,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"		
 	</specific_character>
 
@@ -2225,6 +2317,7 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 					
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"		
 	</specific_character>
 <!-----------DELME:only for presentation--------------------->
@@ -2255,6 +2348,7 @@
 #include "gameplay\character_items.xml"			
 		</supplies>
 					
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -2286,6 +2380,7 @@
 #include "gameplay\character_items.xml"			
 		</supplies>
 					
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -2317,6 +2412,7 @@
 #include "gameplay\character_items.xml"			
 		</supplies>
 					
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -2347,6 +2443,7 @@
 #include "gameplay\character_items.xml"			
 		</supplies>
 					
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -2377,6 +2474,7 @@
 #include "gameplay\character_items.xml"			
 		</supplies>
 					
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -2407,6 +2505,7 @@
 #include "gameplay\character_items.xml"			
 		</supplies>
 					
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
