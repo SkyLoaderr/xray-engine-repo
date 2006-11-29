@@ -297,15 +297,16 @@ meet_dialog = mil_trader_dialog
 
 ;------------------------------------- Охранник арсенала --------------------------
 [logic@mil_freedom_aguard]
-active = walker1@mil_freedom_aguard
+active = camper@mil_freedom_aguard
 on_combat = combat
 
-[walker1@mil_freedom_aguard]
+[camper@mil_freedom_aguard]
 path_walk = armory_walk_warn
 path_look = armory_look_warn
-on_info = {!is_day} kamp1@mil_freedom_aguard
+;on_info = {!is_day} kamp1@mil_freedom_aguard
 meet = meet@mil_freedom_aguard
 danger = danger_condition@mil_freedom_aguard
+radius = 1
 
 [meet@mil_freedom_aguard]
 meet_dialog = mil_guard_arsenal_dialog
@@ -318,7 +319,7 @@ victim_wpn = 5|actor
 
 [kamp1@mil_freedom_aguard]
 center_point = aguard_kamp
-on_info = {=is_day} walker1@mil_freedom_aguard
+on_info = {=is_day} camper@mil_freedom_aguard
 danger = danger_condition@mil_freedom_aguard
 
 [danger_condition@mil_freedom_aguard]
