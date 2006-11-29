@@ -33,7 +33,7 @@
 	</objective>
 	<objective>
 		<text>agr_meet_krot_band_1</text>
-		<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		<icon>ui_iconsTotal_agr_meet_krot_band</icon>
 		<map_location_type hint="agr_meet_krot_hint">green_location</map_location_type>
 		<object_story_id>agr_factory_skirmish1</object_story_id>
 		<infoportion_complete>agr_meet_krot_band_done</infoportion_complete>
@@ -41,7 +41,7 @@
 	</objective>
 	<objective>
 		<text>agr_meet_krot_band_2</text>
-		<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		<icon>ui_iconsTotal_agr_meet_krot_band</icon>
 		<map_location_type hint="agr_take_krots_info_hint">green_location</map_location_type>
 		<object_story_id>agr_krot</object_story_id>
 		<infoportion_complete>agr_krot_secret_info</infoportion_complete>
