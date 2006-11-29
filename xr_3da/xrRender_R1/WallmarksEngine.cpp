@@ -382,11 +382,11 @@ void CWallmarksEngine::Render()
 		for (xr_vector<intrusive_ptr<CSkeletonWallmark> >::iterator w_it=slot->skeleton_items.begin(); w_it!=slot->skeleton_items.end(); w_it++){
 			intrusive_ptr<CSkeletonWallmark> W	= *w_it;
 			if (!W){
-				Msg("what is it ???");
+//.				Msg("what is it ???");
 				continue	;
 			}
 			
-			VERIFY(W->used_in_render == Device.dwFrame);
+//.			VERIFY(W->used_in_render == Device.dwFrame);
 
 			float dst	= Device.vCameraPosition.distance_to_sqr(W->m_Bounds.P);
 			float ssa	= W->m_Bounds.R * W->m_Bounds.R / dst;
