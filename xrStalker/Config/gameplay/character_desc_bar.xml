@@ -418,7 +418,7 @@
 		<bio>bar_drunk_bio</bio>
 		
 		<class>bar_stalker_drunk_dolg</class>
-		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		<money min="600" max="2000" infinitive="0"></money>
 		
 		<rank>417</rank>
