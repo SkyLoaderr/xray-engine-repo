@@ -1822,7 +1822,7 @@ on_info = %+esc_assault_start +esc_petruha_die%
 path_walk = escape_btr_path1
 path_look = escape_btr_look1
 on_actor_dist_le_nvis = 10| remark@call_esc_assault3
-;meet = meet@attacker
+meet = no_meet
 danger = danger_condition@esc_assault
 wounded = wounded@petruha
 
@@ -1831,7 +1831,7 @@ anim = guard
 snd = esc_petruha_call
 target = actor
 on_signal = sound_end| remark@talk_esc_assault 
-meet = meet@attacker
+meet = no_meet
 wounded = wounded@petruha
 on_info = {+esc_bandits_start} remark@kamp_esc_assault3 %=smart_terrain_force_update(esc_assault)%
 
