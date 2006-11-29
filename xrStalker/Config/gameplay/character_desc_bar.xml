@@ -564,7 +564,7 @@
 			[spawn] \n
 			wpn_groza_coll \n
 			ammo_9x39_ap \n
-			dolg_outfit \n
+			dolg_scientific_outfit \n
 #include "gameplay\character_food.xml" \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
