@@ -1338,5 +1338,17 @@ function treasure_exist(actor, npc, p)
 end
 
 function can_send_tutorial(actor, npc, p)
+	if db.actor:is_talking() then
+		return false
+	end
+	if game.has_active_tutorial() then
+		return false
+	end
+	if db.actor:has_info("ui_inventory") then
+		return false
+	end
+	if db.actor:has_info("ui_inventory_hide") then
+		return false
+	end
 	return true
 end
