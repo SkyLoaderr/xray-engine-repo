@@ -721,6 +721,7 @@
             <phrase id="6111111">
                 <text>escape_trader_jobs_6111111</text>
                 <give_info>agroprom_military_case</give_info>
+				<give_info>esc_find_railroad_passage_start</give_info>
                 <next>61111111</next>
             </phrase>
             <phrase id="61111111">
