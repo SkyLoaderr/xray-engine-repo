@@ -449,9 +449,10 @@ function gulag_inactive(actor, npc, p)
 	local val = 0
 	
 	for k,v in pairs(gulag.Object) do
-		if v == true or ( v:alive() and
+		if (v == true or ( v:alive() and
 		   not(xr_wounded.is_heavy_wounded_by_id(k) or
-		       xr_wounded.is_psy_wounded_by_id(k)) )
+		       xr_wounded.is_psy_wounded_by_id(k)))) and
+			gulag.Object_begin_job[k] == true
 		then
 			val = val + 1
 		end
@@ -469,9 +470,10 @@ function gulag_population_active_le(actor, npc, p)
 	local val = 0
 	
 	for k,v in pairs(gulag.Object) do
-		if v == true or ( v:alive() and
+		if (v == true or ( v:alive() and
 		   not(xr_wounded.is_heavy_wounded_by_id(k) or
-		       xr_wounded.is_psy_wounded_by_id(k)) )
+		       xr_wounded.is_psy_wounded_by_id(k)))) and
+			gulag.Object_begin_job[k] == true
 		then
 			val = val + 1
 		end
@@ -1185,11 +1187,11 @@ function rostok_gulag_inactive(actor, npc)
 	for k,v in pairs(gulag.Object) do
 		local job_prior = gulag.Job[gulag.ObjectJob[k]].prior
 
-		if v == true or 
+		if (v == true or 
 		   (v:alive() and
 		    not xr_wounded.is_heavy_wounded_by_id(k) and
 		    not xr_wounded.is_psy_wounded_by_id(k) and
-			job_prior == 5)
+			job_prior == 5)) and gulag.Object_begin_job[k] == true
 		then
 			val = val + 1
 		end
@@ -1210,9 +1212,10 @@ function agr_factory_hold_inactive (actor, npc)
 	local val = 0
 	
 	for k,v in pairs(gulag.Object) do
-		if v == true or ( v:alive() and
+		if (v == true or ( v:alive() and
 		   not(xr_wounded.is_heavy_wounded_by_id(k) or
-		       xr_wounded.is_psy_wounded_by_id(k)) )
+		       xr_wounded.is_psy_wounded_by_id(k)))) and
+			gulag.Object_begin_job[k] == true
 		then
 			val = val + 1
 		end
@@ -1234,9 +1237,10 @@ function rostok_gulag_2_inactive(actor, npc)
 	local val = 0
 	
 	for k,v in pairs(gulag.Object) do
-		if v == true or ( v:alive() and
+		if (v == true or ( v:alive() and
 		   not(xr_wounded.is_heavy_wounded_by_id(k) or
-		       xr_wounded.is_psy_wounded_by_id(k)) )
+		       xr_wounded.is_psy_wounded_by_id(k)))) and
+			gulag.Object_begin_job[k] == true
 		then
 			val = val + 1
 		end
