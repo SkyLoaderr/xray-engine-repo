@@ -165,6 +165,9 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 	if (handler)
 		handler			();
 
+	if (get_on_dialog())
+		get_on_dialog()	(true);
+
 #ifdef XRCORE_STATIC
 	MessageBox			(NULL,tmp,"X-Ray error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
 #else
@@ -193,6 +196,9 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 		default : NODEFAULT;
 	}
 #endif
+
+	if (get_on_dialog())
+		get_on_dialog()	(false);
 
 	CS.Leave			();
 }
@@ -450,13 +456,24 @@ LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 	save_mini_dump			(pExceptionInfo);
 #endif
 
-	if (!error_after_dialog)
-		MessageBox			(NULL,"Fatal error occured\n\nPress OK to abort program execution","Fatal error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
+	if (!error_after_dialog) {
+		if (Debug.get_on_dialog())
+			Debug.get_on_dialog()	(true);
 
-	if (!previous_filter)
+		MessageBox			(NULL,"Fatal error occured\n\nPress OK to abort program execution","Fatal error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
+	}
+
+	if (!previous_filter) {
+		if (Debug.get_on_dialog())
+			Debug.get_on_dialog()	(false);
+
 		return				(EXCEPTION_CONTINUE_SEARCH) ;
+	}
 
 	previous_filter			(pExceptionInfo);
+
+	if (Debug.get_on_dialog())
+		Debug.get_on_dialog()		(false);
 
 	return					(EXCEPTION_CONTINUE_SEARCH) ;
 }
@@ -475,6 +492,8 @@ LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 
     void	xrDebug::_initialize		()
     {
+		handler							= 0;
+		m_on_dialog						= 0;
         std::set_new_handler			(def_new_handler);	// exception-handler for 'out of memory' condition
 //		::SetUnhandledExceptionFilter	(UnhandledFilter);	// exception handler to all "unhandled" exceptions
     }

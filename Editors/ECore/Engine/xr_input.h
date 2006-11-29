@@ -86,6 +86,9 @@ public:
 	virtual void				OnAppDeactivate				(void);
 
 	IInputReceiver*				CurrentIR					();
+
+public:
+			void				exclusive_mode				(const bool &exclusive);
 };
 
 extern ENGINE_API CInput *		pInput;

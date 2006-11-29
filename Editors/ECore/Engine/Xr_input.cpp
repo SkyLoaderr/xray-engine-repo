@@ -15,8 +15,19 @@ ENGINE_API Flags32	psMouseInvert		= {FALSE};
 #define KEYBOARDBUFFERSIZE		64
 #define _KEYDOWN(name,key)		( name[key] & 0x80 )
 
+static bool g_exclusive	= true;
+void on_error_dialog			(bool before)
+{
+	if (!pInput || !g_exclusive)
+		return;
+
+	pInput->exclusive_mode		(!before);
+}
+
 CInput::CInput						( BOOL bExclusive, int deviceForInit)
 {
+	g_exclusive							= !!bExclusive;
+
 	Log("Starting INPUT device...");
 
 	pDI 								=	NULL;
@@ -50,6 +61,8 @@ CInput::CInput						( BOOL bExclusive, int deviceForInit)
 		&pMouse,		GUID_SysMouse,		&c_dfDIMouse,
 		((bExclusive)?DISCL_EXCLUSIVE:DISCL_NONEXCLUSIVE) | DISCL_FOREGROUND | DISCL_NOWINKEY,
 		MOUSEBUFFERSIZE ));
+
+	Debug.set_on_dialog				(&on_error_dialog);
 
 #ifdef ENGINE_BUILD
 	Device.seqAppActivate.Add		(this);
@@ -299,4 +312,17 @@ IInputReceiver*	 CInput::CurrentIR()
 		return cbStack.back();
 	else
 		return NULL;
+}
+
+void CInput::exclusive_mode			(const bool &exclusive)
+{
+	pKeyboard->SetCooperativeLevel	(
+		Device.m_hWnd, 
+		(exclusive ? DISCL_EXCLUSIVE : DISCL_NONEXCLUSIVE) | DISCL_FOREGROUND
+	);
+
+	pMouse->SetCooperativeLevel		(
+		Device.m_hWnd, 
+		(exclusive ? DISCL_EXCLUSIVE : DISCL_NONEXCLUSIVE) | DISCL_FOREGROUND | DISCL_NOWINKEY
+	);
 }
