@@ -655,11 +655,13 @@ def_state_moving = assault
 heli_hunter = {-bar_ecolog_crush_heli_down} true, false
 soundgroup = bar_freedom_attack1
 on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_1
+danger = danger_condition@freedom_attackers
 
 [walker@bar_freedom_attack_actor_near_1]
 path_walk = camper_1_walk
 path_look = camper_1_look
 on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_sniper_1
+danger = danger_condition@freedom_attackers
 
 [logic@bar_freedom_attack_sniper_c1]
 active = camper1@bar_freedom_attack_sniper_1
@@ -672,6 +674,7 @@ def_state_moving = assault
 radius = 15
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
+danger = danger_condition@freedom_attackers
 
 ;********************************************************
 
@@ -685,11 +688,13 @@ path_look = camper_2_look
 def_state_moving = assault
 soundgroup = bar_freedom_attack1
 on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_2
+danger = danger_condition@freedom_attackers
 
 [walker@bar_freedom_attack_actor_near_2]
 path_walk = camper_2_walk
 path_look = camper_2_look
 on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_sniper_2
+danger = danger_condition@freedom_attackers
 
 [logic@bar_freedom_attack_sniper_c2]
 active = camper1@bar_freedom_attack_sniper_2
@@ -702,6 +707,7 @@ def_state_moving = assault
 radius = 15
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
+danger = danger_condition@freedom_attackers
 
 ;*******************************************************
 
@@ -717,11 +723,13 @@ def_state_moving = assault
 heli_hunter = {-bar_ecolog_crush_heli_down} true, false
 soundgroup = bar_freedom_attack1
 on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_3
+danger = danger_condition@freedom_attackers
 
 [walker@bar_freedom_attack_actor_near_3]
 path_walk = camper_3_walk
 path_look = camper_3_look
 on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_sniper_3
+danger = danger_condition@freedom_attackers
 
 [logic@bar_freedom_attack_sniper_c3]
 active = camper1@bar_freedom_attack_sniper_3
@@ -734,6 +742,7 @@ def_state_moving = assault
 radius = 15
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
+danger = danger_condition@freedom_attackers
 
 ;*******************************************************
 
@@ -747,11 +756,13 @@ path_look = camper_4_look
 def_state_moving = assault
 soundgroup = bar_freedom_attack1
 on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_4
+danger = danger_condition@freedom_attackers
 
 [walker@bar_freedom_attack_actor_near_4]
 path_walk = camper_4_walk
 path_look = camper_4_look
 on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_sniper_4
+danger = danger_condition@freedom_attackers
 
 [logic@bar_freedom_attack_sniper_c4]
 active = camper1@bar_freedom_attack_sniper_4
@@ -764,6 +775,7 @@ def_state_moving = assault
 radius = 15
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
+danger = danger_condition@freedom_attackers
 
 ;*******************************************************
 
@@ -779,6 +791,7 @@ soundgroup = bar_freedom_attack1
 radius = 0
 combat_ignore_cond = always
 on_info = {+bar_ecolog_crush_heli_down} camper@bar_freedom_attack_guard_rpg
+danger = danger_condition@freedom_attackers
 
 [camper@bar_freedom_attack_guard_rpg]
 path_walk = guard_1_walk
@@ -789,6 +802,7 @@ def_state_moving = assault
 def_state_campering = threat_na
 soundgroup = bar_freedom_attack1
 on_timer = 3000 | nil %=kill%
+danger = danger_condition@freedom_attackers
 
 [logic@bar_freedom_attack_guard_c1]
 active = camper1@bar_freedom_attack_guard_1
@@ -801,6 +815,7 @@ def_state_moving = assault
 radius = 15
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
+danger = danger_condition@freedom_attackers
 
 ;*****************************************************************
 
@@ -816,11 +831,13 @@ def_state_moving = assault
 heli_hunter = {-bar_ecolog_crush_heli_down} true, false
 soundgroup = bar_freedom_attack1
 on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_guard_2
+danger = danger_condition@freedom_attackers
 
 [walker@bar_freedom_attack_actor_near_guard_2]
 path_walk = guard_2_walk
 path_look = guard_2_look
 on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_guard_2
+danger = danger_condition@freedom_attackers
 
 [logic@bar_freedom_attack_guard_c2]
 active = camper1@bar_freedom_attack_guard_2
@@ -833,6 +850,7 @@ def_state_moving = assault
 radius = 15
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
+danger = danger_condition@freedom_attackers
 
 ;***********************************************************************
 
@@ -848,6 +866,7 @@ def_state_moving = assault
 meet = meet@freedom_volkodav
 ;combat_ignore_cond = {!see_actor}
 on_info = {-bar_freedom_talk_end +bar_freedom_talk_v1} remark@volkodav_talk_1
+danger = danger_condition@freedom_attackers
 
 [remark@volkodav_talk_1]
 snd = rostok_volkodav_talk_1
@@ -857,6 +876,7 @@ no_move = true
 no_rotate = true
 ;combat_ignore_cond = {!see_actor}
 on_info = {+bar_freedom_talk_v2} remark@volkodav_talk_2
+danger = danger_condition@freedom_attackers
 
 [remark@volkodav_talk_2]
 snd = rostok_volkodav_talk_2
@@ -865,6 +885,7 @@ no_move = true
 no_rotate = true
 combat_ignore_cond = {!see_actor}
 on_info = {+bar_freedom_talk_end} camper@bar_freedom_attack_commander
+danger = danger_condition@freedom_attackers
 
 ;*********************************************************************************
 
@@ -882,11 +903,13 @@ radius = 20
 ;combat_ignore_cond = always
 on_info = {-bar_freedom_talk_end +bar_actor_heared_freedom_talk} remark@camper_talk
 soundgroup = bar_freedom_attack1
+danger = danger_condition@freedom_attackers
 
 [remark@camper_talk]
 snd = rostok_volkodav_assistant_talk_1
 on_signal = sound_end | %+bar_freedom_talk_v1%
 combat_ignore_cond = {!see_actor}
+danger = danger_condition@freedom_attackers
 on_info = {+bar_freedom_talk_c1} remark@camper_talk_1
  
 [remark@camper_talk_1]
@@ -900,6 +923,7 @@ snd = rostok_volkodav_assistant_talk_3
 on_signal = sound_end | %+bar_freedom_talk_end%
 combat_ignore_cond = always
 on_info = {+bar_freedom_talk_end} camper@bar_freedom_attack_camper_6
+danger = danger_condition@freedom_attackers
 
 [logic@bar_freedom_attack_camper6_c1]
 active = camper@bar_freedom_attack_acamper_6
@@ -912,6 +936,7 @@ def_state_moving = assault
 radius = 25
 ;no_retreat = true
 soundgroup = bar_freedom_attack1
+danger = danger_condition@freedom_attackers
 
 ;*********************************************************************************
 
@@ -927,11 +952,13 @@ soundgroup = bar_freedom_attack1
 radius = 15
 ;no_retreat = true
 on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_5
+danger = danger_condition@freedom_attackers
 
 [walker@bar_freedom_attack_actor_near_5]
 path_walk = camper_5_walk
 path_look = camper_5_look
 on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_sniper_5
+danger = danger_condition@freedom_attackers
 
 ;*******************************************************************************
 
@@ -947,11 +974,13 @@ soundgroup = bar_freedom_attack1
 radius = 15
 ;no_retreat = true
 on_info = {=rostok_dist_to_actor_le(35)} walker@bar_freedom_attack_actor_near_7
+danger = danger_condition@freedom_attackers
 
 [walker@bar_freedom_attack_actor_near_7]
 path_walk = camper_7_walk
 path_look = camper_7_look
 on_info = {!rostok_dist_to_actor_le(40)} camper@bar_freedom_attack_sniper_7
+danger = danger_condition@freedom_attackers
 
 
 ;*************************************************************************************
@@ -967,6 +996,7 @@ def_state_moving = assault
 soundgroup = bar_freedom_attack1
 radius = 15
 ;no_retreat = true
+danger = danger_condition@freedom_attackers
 
 [logic@bar_freedom_attack_camper8]
 active = camper@bar_freedom_attack_camper_8
@@ -979,6 +1009,7 @@ def_state_moving = assault
 soundgroup = bar_freedom_attack1
 radius = 25
 ;no_retreat = true
+danger = danger_condition@freedom_attackers
 
 [logic@bar_freedom_attack_camper9]
 active = camper@bar_freedom_attack_camper_9
@@ -991,6 +1022,7 @@ def_state_moving = assault
 soundgroup = bar_freedom_attack1
 radius = 15
 ;no_retreat = true
+danger = danger_condition@freedom_attackers
 
 [logic@bar_freedom_attack_camper10]
 active = camper@bar_freedom_attack_camper_10
@@ -1003,6 +1035,7 @@ def_state_moving = assault
 soundgroup = bar_freedom_attack1
 radius = 15
 ;no_retreat = true
+danger = danger_condition@freedom_attackers
 
 
 
@@ -1025,7 +1058,7 @@ no_retreat = true
 soundgroup = bar_freedom_attack1
 on_info = {=rostok_dist_to_actor_le(25)} walker@bar_freedom_attack_chaser_1
 ;combat_ignore_cond = {!see_actor_and_kruglov}
-;danger = danger_condition@2
+danger = danger_condition@freedom_attackers
 
 [logic@bar_freedom_attack_chaser_2]
 active = camper@bar_freedom_attack_chaser_2
@@ -1042,7 +1075,7 @@ soundgroup = bar_freedom_attack1
 on_info = {=rostok_dist_to_actor_le(25)} walker@bar_freedom_attack_chaser_2
 
 ;combat_ignore_cond = {!see_actor_and_kruglov}
-;danger = danger_condition@2
+danger = danger_condition@freedom_attackers
 
 [logic@bar_freedom_attack_chaser_3]
 active = camper@bar_freedom_attack_chaser_3
@@ -1057,7 +1090,7 @@ radius = 5
 no_retreat = true
 soundgroup = bar_freedom_attack1
 ;combat_ignore_cond = {!see_actor_and_kruglov}
-;danger = danger_condition@2
+danger = danger_condition@freedom_attackers
 on_info = {=rostok_dist_to_actor_le(25)} walker@bar_freedom_attack_chaser_3
 
 [logic@bar_freedom_attack_chaser_4]
@@ -1073,7 +1106,7 @@ radius = 5
 no_retreat = true
 soundgroup = bar_freedom_attack1
 ;combat_ignore_cond = {!see_actor_and_kruglov}
-;danger = danger_condition@2
+danger = danger_condition@freedom_attackers
 on_info = {=rostok_dist_to_actor_le(25)} walker@bar_freedom_attack_chaser_4
 
 [logic@bar_freedom_attack_chaser_5]
@@ -1089,7 +1122,7 @@ radius = 5
 no_retreat = true
 soundgroup = bar_freedom_attack1
 ;combat_ignore_cond = {!see_actor_and_kruglov}
-;danger = danger_condition@2
+danger = danger_condition@freedom_attackers
 on_info = {=rostok_dist_to_actor_le(25)} walker@bar_freedom_attack_chaser_5
 
 [logic@bar_freedom_attack_chaser_6]
@@ -1105,7 +1138,7 @@ radius = 5
 no_retreat = true
 soundgroup = bar_freedom_attack1
 ;combat_ignore_cond = {!see_actor_and_kruglov}
-;danger = danger_condition@2
+danger = danger_condition@freedom_attackers
 on_info = {=rostok_dist_to_actor_le(25)} walker@bar_freedom_attack_chaser_6
 
 [logic@bar_freedom_attack_chaser_7]
@@ -1121,7 +1154,7 @@ radius = 5
 no_retreat = true
 soundgroup = bar_freedom_attack1
 ;combat_ignore_cond = {!see_actor_and_kruglov}
-;danger = danger_condition@2
+danger = danger_condition@freedom_attackers
 on_info = {=rostok_dist_to_actor_le(25)} walker@bar_freedom_attack_chaser_7
 
 [logic@bar_freedom_attack_chaser_8]
@@ -1137,7 +1170,7 @@ radius = 5
 no_retreat = true
 soundgroup = bar_freedom_attack1
 ;combat_ignore_cond = {!see_actor_and_kruglov}
-;danger = danger_condition@2
+danger = danger_condition@freedom_attackers
 on_info = {=rostok_dist_to_actor_le(25)} walker@bar_freedom_attack_chaser_8
 
 [logic@bar_freedom_attack_chaser_9]
@@ -1153,7 +1186,7 @@ radius = 5
 no_retreat = true
 soundgroup = bar_freedom_attack1
 ;combat_ignore_cond = {!see_actor_and_kruglov}
-;danger = danger_condition@2
+danger = danger_condition@freedom_attackers
 on_info = {=rostok_dist_to_actor_le(25)} walker@bar_freedom_attack_chaser_9
 
 [logic@bar_freedom_attack_chaser_10]
@@ -1168,7 +1201,7 @@ radius = 0
 no_retreat = true
 soundgroup = bar_freedom_attack1
 ;combat_ignore_cond = {!see_actor_and_kruglov}
-;danger = danger_condition@2
+danger = danger_condition@freedom_attackers
 on_info = {=rostok_dist_to_actor_le(25)} walker@bar_freedom_attack_chaser_10
 
 [logic@bar_freedom_attack_chaser_11]
@@ -1183,7 +1216,7 @@ radius = 0
 no_retreat = true
 soundgroup = bar_freedom_attack1
 ;combat_ignore_cond = {!see_actor_and_kruglov}
-;danger = danger_condition@2
+danger = danger_condition@freedom_attackers
 on_info = {=rostok_dist_to_actor_le(25)} walker@bar_freedom_attack_chaser_11
 
 [logic@bar_freedom_attack_chaser_12]
@@ -1198,7 +1231,7 @@ radius = 0
 no_retreat = true
 soundgroup = bar_freedom_attack1
 ;combat_ignore_cond = {!see_actor_and_kruglov}
-;danger = danger_condition@2
+danger = danger_condition@freedom_attackers
 on_info = {=rostok_dist_to_actor_le(25)} walker@bar_freedom_attack_chaser_12
 
 [logic@bar_freedom_attack_chaser_13]
@@ -1214,7 +1247,7 @@ radius = 0
 no_retreat = true
 soundgroup = bar_freedom_attack1
 ;combat_ignore_cond = {!see_actor_and_kruglov}
-;danger = danger_condition@2
+danger = danger_condition@freedom_attackers
 on_info = {=rostok_dist_to_actor_le(25)} walker@bar_freedom_attack_chaser_13
 
 
@@ -1889,6 +1922,11 @@ danger_inertion_time_corpse = 1
 danger_inertion_time_hit = 1
 danger_inertion_time_sound = 1
 
+[danger_condition@freedom_attackers]
+ignore_distance_grenade = 0
+ignore_distance_corpse  = 0
+ignore_distance_sound   = 20 
+danger_inertion_time_sound = 1
 
 
 ;*******************************************************************
