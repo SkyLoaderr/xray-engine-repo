@@ -260,7 +260,7 @@
 		<class>mil_Svoboda_leader</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 		
-		<rank>920</rank>
+		<rank>914</rank>
 		<reputation>136</reputation>
 
 		<visual>actors\svoboda\stalker_sv_leader</visual>
@@ -331,7 +331,7 @@
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		
-		<rank>917</rank>
+		<rank>912</rank>
 		<reputation>145</reputation>
 
 		<visual>actors\svoboda\stalker_sv_max</visual>
@@ -481,7 +481,7 @@
 		<snd_config>characters_voice\human_03\freedom\</snd_config>
 		<crouch_type>-1</crouch_type>
 		
-		<rank>934</rank>
+		<rank>902</rank>
 		<reputation>113</reputation>
 
 		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
