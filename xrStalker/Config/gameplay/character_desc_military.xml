@@ -179,7 +179,7 @@
         <snd_config>characters_voice\human_03\freedom\</snd_config>
 		<crouch_type>0</crouch_type>
 
-		<rank>869</rank>
+		<rank>910</rank>
 		<reputation>125</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
@@ -523,7 +523,7 @@
         <snd_config>characters_voice\human_03\dolg\</snd_config>
   		<crouch_type>0</crouch_type>
 
-		<rank>820</rank>
+		<rank>907</rank>
 		<reputation>79</reputation>
 		
 		<panic_threshold>0.0</panic_threshold>
