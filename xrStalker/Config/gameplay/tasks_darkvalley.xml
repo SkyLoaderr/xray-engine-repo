@@ -35,6 +35,7 @@
         <icon>ui_iconsTotal_val_captive_help</icon>
         <function_fail>darkvalley_tasks.escort_task_fail</function_fail>
         <function_complete>darkvalley_tasks.escort_task_done</function_complete>
+        <infoportion_fail>val_escort_nap1_dead</infoportion_fail>
 	    <article>val_captive_help_art</article>
     </objective>
     <objective key="1">
@@ -43,6 +44,7 @@
         <map_location_type hint="val_captive_help_1_hint">green_location</map_location_type>
         <object_story_id>val_escort_nap1</object_story_id>
         <infoportion_complete>val_escort_actor_at_ambush</infoportion_complete>
+        <infoportion_fail>val_escort_nap1_dead</infoportion_fail>
     </objective>
     <objective key="2">
         <text>val_captive_help_2</text>
