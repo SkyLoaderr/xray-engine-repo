@@ -369,7 +369,7 @@
 		<rank>930</rank>
 		<reputation>126</reputation>
 
-		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
+		<visual>actors\svoboda\stalker_sv_balon_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_usp  \n
