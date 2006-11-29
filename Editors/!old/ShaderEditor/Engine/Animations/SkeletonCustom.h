@@ -119,7 +119,7 @@ class ENGINE_API CSkeletonWallmark : public intrusive_base // 4+4+4+12+4+16+16 =
 	float				m_fTimeStart;	// 4
 public:
 #ifdef DEBUG
-	bool				used_in_render;	
+	u32					used_in_render;	
 #endif
 	Fsphere				m_LocalBounds;	// 16		model space
 	struct WMFace{
@@ -135,13 +135,15 @@ public:
 public:									
 						CSkeletonWallmark	(CKinematics* p,const Fmatrix* m, ref_shader s, const Fvector& cp, float ts):
 						m_Parent(p),m_XForm(m),m_Shader(s),m_fTimeStart(ts),m_ContactPoint(cp)
+						{
 #ifdef DEBUG
-						,used_in_render(false)
+						used_in_render = u32(-1);
 #endif
-						{}
+						
+						}
 						~CSkeletonWallmark	()
 						{
-							VERIFY			(!used_in_render);
+							VERIFY			(used_in_render==u32(-1));
 						}
 
 	IC CKinematics*		Parent				(){return m_Parent;}
