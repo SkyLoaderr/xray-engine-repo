@@ -17,6 +17,12 @@
 		<visual>actors\barman\barman</visual>
 		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
+		
+		<supplies>
+			[spawn] \n
+			stalker_outfit \n
+			
+		</supplies>
 					
 		<start_dialog>bar_bar_barmen_start</start_dialog>
 		<actor_dialog>bar_bar_barmen_talk_info</actor_dialog>
