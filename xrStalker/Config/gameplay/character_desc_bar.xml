@@ -673,7 +673,7 @@
 		
 		<start_dialog>bar_dolg_base_guard_start</start_dialog>
 		<actor_dialog>bar_dolg_base_guard_talk</actor_dialog>
-		<actor_dialog>bar_dolg_base_guard_acces</actor_dialog>
+		
 		<actor_dialog>bar_dolg_base_guard_rules</actor_dialog>
 	</specific_character>	
 
