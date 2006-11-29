@@ -865,6 +865,9 @@ function bar_arena_hit(actor, npc)
 end
 function esc_hit_from_fox(actor, npc)
 	local fox = level_object_by_sid (005)
+	if fox == nil then
+		return
+	end
 	local h = hit()
 	h.power = 0.01
 	h.direction = npc:direction()
