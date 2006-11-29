@@ -556,6 +556,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_ecolog_professor", 
 			idle = 0,
 			prior = 10, state = {0}, squad = squad, group = groups[0],
+			online = true,
 			in_rest = "", out_rest = "",
 			predicate = function(obj_info)
 				         	return obj_info.story_id == 503
