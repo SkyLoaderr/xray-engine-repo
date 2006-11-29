@@ -6,6 +6,7 @@
 			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>garbage_meetstalker_done</infoportion_complete>
 			<infoportion_fail>garbage_meetstalker_die</infoportion_fail>
+			<article>meet_seryi_start</article>
 		</objective>
 		<objective>
 			<text>garbage_meet_stalker_1</text>
@@ -25,7 +26,7 @@
 			<text>gar_kill_boars_main</text>
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>gar_kill_boars_request</infoportion_complete>
-			
+			<article>gar_kill_boars_descr</article>
 		</objective>
 		<objective>
 			<text>gar_kill_boars_1</text>
@@ -81,6 +82,7 @@
 			<infoportion_complete>gar_hellcar_help</infoportion_complete>
 			<infoportion_fail>gar_hellcar_reject</infoportion_fail>
 			<function_fail>garbage_tasks.task_hellcar_fail2</function_fail>
+			<article>help_for_hellcar</article>
 		</objective>
 		<objective>
 			<text>gar_dialog_hellcar_1</text>
