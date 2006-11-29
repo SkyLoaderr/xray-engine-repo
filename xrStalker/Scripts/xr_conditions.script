@@ -1347,7 +1347,7 @@ function can_send_tutorial(actor, npc, p)
 	if db.actor:has_info("ui_inventory") then
 		return false
 	end
-	if db.actor:has_info("ui_inventory_hide") then
+	if db.actor:has_info("ui_pda") then
 		return false
 	end
 	return true
