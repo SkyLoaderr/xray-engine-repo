@@ -32,6 +32,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
 		</supplies>
+		
+#include "gameplay\character_criticals_5.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -64,7 +66,10 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
-		</supplies>					
+		</supplies>
+
+#include "gameplay\character_criticals_5.xml"
+		
 		<start_dialog>mil_screw_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 	</specific_character>
@@ -98,7 +103,9 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
-		</supplies>					
+		</supplies>
+		
+#include "gameplay\character_criticals_5.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 <!---------------------------SVOBODA SNIPER---------------------->
@@ -129,7 +136,9 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"				
-		</supplies>			
+		</supplies>
+
+#include "gameplay\character_criticals_5.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 <!---------------------------SVOBODA SPECNAZ STUKACH---------------------->
@@ -161,7 +170,9 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
-		</supplies>				
+		</supplies>
+		
+#include "gameplay\character_criticals_5.xml"	
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 <!---------------------------SVOBODA ZONEGUARD---------------------->
@@ -193,7 +204,9 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
 		</supplies>
-			
+
+#include "gameplay\character_criticals_2.xml"
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>mil_zoneguard_common1</actor_dialog>
 		<actor_dialog>mil_zoneguard_common2</actor_dialog>
@@ -229,6 +242,7 @@
 #include "gameplay\character_food.xml"			
 		</supplies>
 
+#include "gameplay\character_criticals_2.xml"
 #include "gameplay\character_dialogs.xml"				
 	</specific_character>
 	
@@ -260,7 +274,9 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
 		</supplies>
-			
+
+#include "gameplay\character_criticals_5.xml"
+
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>tm_freedom_dialog</actor_dialog>
 		<actor_dialog>tm_freedom_reward</actor_dialog>
@@ -293,7 +309,9 @@
 			wpn_sig550 \n
 			ammo_5.56x45_ap = 1 \n
 		</supplies>
-			
+
+#include "gameplay\character_criticals_5.xml"
+
 		<start_dialog>mil_trader_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
@@ -327,7 +345,9 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
 		</supplies>
-			
+
+#include "gameplay\character_criticals_5.xml"
+
 		<start_dialog>mil_max_dialog</start_dialog>
 #include "gameplay\character_dialogs.xml"		
 	</specific_character>
@@ -360,6 +380,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
 		</supplies>
+		
+#include "gameplay\character_criticals_2.xml"
 #include "gameplay\character_dialogs.xml"			
 	</specific_character>
 <!---------------------------SVOBODA COOK----------------------->
@@ -390,6 +412,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"				
 		</supplies>
+		
+#include "gameplay\character_criticals_5.xml"
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>mil_cook_common1</actor_dialog>
@@ -436,7 +460,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
 		</supplies>
-					
+
+#include "gameplay\character_criticals_5.xml"
 #include "gameplay\character_dialogs.xml"
 
 		<actor_dialog>mil_freedom_commander_common2</actor_dialog>
@@ -470,7 +495,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
 		</supplies>
-			
+
+#include "gameplay\character_criticals_5.xml"
 #include "gameplay\character_dialogs.xml"
 
 	</specific_character>
@@ -507,7 +533,9 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"				
-		</supplies>		
+		</supplies>
+		
+#include "gameplay\character_criticals_6.xml"
 #include "gameplay\character_dialogs.xml"			
 	</specific_character>
 <!---------------------------DOLG SPECNAZ SILENCE---------------------->
@@ -538,7 +566,9 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"
-		</supplies>		
+		</supplies>
+
+#include "gameplay\character_criticals_2.xml"
 #include "gameplay\character_dialogs.xml"				
 	</specific_character>	
 <!---------------------------DOLG SPECNAZ CHEREP---------------------->
@@ -572,7 +602,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
 		</supplies>		
-			
+
+#include "gameplay\character_criticals_2.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>	
 	
@@ -606,7 +637,10 @@
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
-		</supplies>					
+		</supplies>
+		
+#include "gameplay\character_criticals_4.xml"
+				
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
 <!---------------------------KILLER SPECNAZ---------------------->
@@ -637,6 +671,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
 		</supplies>
+		
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"					
 	</specific_character>
 
@@ -669,6 +705,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
 		</supplies>
+		
+#include "gameplay\character_criticals_4.xml"
 	#include "gameplay\character_dialogs.xml"				
 	</specific_character>
 
@@ -703,6 +741,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
 		</supplies>
+		
+#include "gameplay\character_criticals_2.xml"
 	#include "gameplay\character_dialogs.xml"
 
 	</specific_character>
@@ -738,6 +778,8 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
 		</supplies>
+		
+#include "gameplay\character_criticals_2.xml"
 #include "gameplay\character_dialogs.xml"						
 	</specific_character>
 <!---------------------------STALKER VETERAN---------------------->
@@ -769,6 +811,7 @@
 #include "gameplay\character_food.xml"	
 		</supplies>
 
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"			
 	</specific_character>
 	
@@ -799,6 +842,7 @@
                         ammo_5.45x39_ap = 1 \n
                 </supplies>
 
+#include "gameplay\character_criticals_1.xml"
 #include "gameplay\character_dialogs.xml"
         </specific_character> 
 <!---------------------------MONOLIT REGULAR----------------------->
@@ -828,7 +872,9 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
     </supplies>
-					
+
+#include "gameplay\character_criticals_1.xml"
+	
 		<start_dialog>hello_dialog</start_dialog>
   </specific_character>
 
@@ -862,7 +908,9 @@
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
     </supplies>
-					
+
+#include "gameplay\character_criticals_1.xml"
+	
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
