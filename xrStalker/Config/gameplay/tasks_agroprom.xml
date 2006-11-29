@@ -29,6 +29,7 @@
 		<infoportion_complete>agr_krot_task_complete</infoportion_complete>
 		<infoportion_set_complete>agr_krot_band_done</infoportion_set_complete>
 		<function_fail>agroprom_tasks.agr_actor_enemy</function_fail>
+		<article>storyline_seriy_flash_info</article>
 	</objective>
 	<objective>
 		<text>agr_meet_krot_band_1</text>
@@ -52,6 +53,7 @@
 		<text>agroprom_find_gunslinger_cache_0</text>
 		<icon>ui_iconsTotal_grouping</icon>
 		<infoportion_complete>agr_find_gunslinger_cache_final</infoportion_complete>
+		<article>agroprom_find_gunslinger_cache</article>
 	</objective>
 	<objective>
 		<text>agroprom_find_gunslinger_cache_1</text>
@@ -137,6 +139,7 @@
 		<text>agr_find_ghost</text>
 		<icon>ui_iconsTotal_grouping</icon>
 		<infoportion_complete>yan_find_vasilyev_end</infoportion_complete>
+		<article>agr_find_ghost_descr</article>
 	</objective>
 	<objective>
 		<text>agr_find_ghost</text>
