@@ -528,7 +528,7 @@
 		<community>arena_enemy</community>
 		<money min="2000" max="5000" infinitive="0"></money>
 		
-		<rank>658</rank>
+		<rank>930</rank>
 		<reputation>0</reputation>
 
 		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
@@ -1261,7 +1261,7 @@
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		<money min="2000" max="5000" infinitive="0"></money>
 		
-		<rank>795</rank>
+		<rank>914</rank>
 		<reputation>60</reputation>
 
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
@@ -1840,7 +1840,7 @@
 		<rank>591</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<visual>actors\neytral\stalker_neytral_hood_8</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
