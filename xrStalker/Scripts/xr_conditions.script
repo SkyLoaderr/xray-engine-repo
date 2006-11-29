@@ -429,9 +429,10 @@ function gulag_population_active(actor, npc, p)
 	local val = 0
 	
 	for k,v in pairs(gulag.Object) do
-		if v == true or ( v:alive() and
+		if (v == true or ( v:alive() and
 		   not(xr_wounded.is_heavy_wounded_by_id(k) or
-		       xr_wounded.is_psy_wounded_by_id(k)) )
+		       xr_wounded.is_psy_wounded_by_id(k)))) and
+			gulag.Object_begin_job[k] == true
 		then
 			val = val + 1
 		end
