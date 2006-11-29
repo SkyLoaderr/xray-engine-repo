@@ -289,7 +289,7 @@ void CWallmarksEngine::AddSkeletonWallmark(intrusive_ptr<CSkeletonWallmark> wm)
 		// no similar - register _new_
 		slot->skeleton_items.push_back(wm);
 #ifdef	DEBUG
-		wm->used_in_render	= true;
+		wm->used_in_render	= Device.dwFrame;
 #endif
 		lock.Leave			();
 	}
@@ -381,7 +381,12 @@ void CWallmarksEngine::Render()
 		// dynamic wallmarks
 		for (xr_vector<intrusive_ptr<CSkeletonWallmark> >::iterator w_it=slot->skeleton_items.begin(); w_it!=slot->skeleton_items.end(); w_it++){
 			intrusive_ptr<CSkeletonWallmark> W	= *w_it;
-			if (!W)		continue	;
+			if (!W){
+				Msg("what is it ???");
+				continue	;
+			}
+			
+			VERIFY(W->used_in_render == Device.dwFrame);
 
 			float dst	= Device.vCameraPosition.distance_to_sqr(W->m_Bounds.P);
 			float ssa	= W->m_Bounds.R * W->m_Bounds.R / dst;
@@ -403,7 +408,7 @@ void CWallmarksEngine::Render()
 				}
 			}
 			#ifdef	DEBUG
-			 W->used_in_render	= false;
+			 W->used_in_render	= u32(-1);
 			#endif
 		}
 		slot->skeleton_items.clear();

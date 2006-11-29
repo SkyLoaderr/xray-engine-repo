@@ -121,6 +121,8 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	hemi_color				= pSettings->r_fvector4	(S,"hemi_color");
 	sun_color				= pSettings->r_fvector3	(S,"sun_color");
 	Fvector2 sund			= pSettings->r_fvector2	(S,"sun_dir");	sun_dir.setHP	(deg2rad(sund.y),deg2rad(sund.x));
+	VERIFY2					(sun_dir.y<0,"Invalid sun direction settings while loading");
+
 	lens_flare_id			= parent->eff_LensFlare->AppendDef(pSettings,pSettings->r_string(S,"flares"));
 	tb_id					= parent->eff_Thunderbolt->AppendDef(pSettings,pSettings->r_string(S,"thunderbolt"));
 	bolt_period				= (tb_id>=0)?pSettings->r_float	(S,"bolt_period"):0.f;
@@ -220,6 +222,8 @@ void CEnvDescriptorMixer::lerp	(CEnvironment* , CEnvDescriptor& A, CEnvDescripto
 	hemi_color.z			*= _power;
 	sun_color.lerp			(A.sun_color,B.sun_color,f);
 	sun_dir.lerp			(A.sun_dir,B.sun_dir,f).normalize();
+	VERIFY2					(sun_dir.y<0,"Invalid sun direction settings while lerp");
+
 }
 
 //-----------------------------------------------------------------------------

@@ -213,6 +213,8 @@ void CEffect_Thunderbolt::OnFrame(int id, float period, float duration)
 
 		if (::Render->get_generation()==IRender_interface::GENERATION_R2)	{
 			g_pGamePersistent->Environment.CurrentEnv.sun_dir = current_direction;
+			VERIFY2(g_pGamePersistent->Environment.CurrentEnv.sun_dir.y<0,"Invalid sun direction settings while CEffect_Thunderbolt");
+
 		} 
     }
 }

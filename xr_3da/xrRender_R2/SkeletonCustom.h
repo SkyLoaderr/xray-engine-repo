@@ -4,7 +4,7 @@
 
 #include		"fhierrarhyvisual.h"
 #include		"bone.h"
-
+#error 11111
 // consts
 const	u32					MAX_BONE_PARAMS		=	4;
 const	u32					UCalc_Interval		=	100;	// 10 fps
