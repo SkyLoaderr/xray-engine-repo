@@ -29,6 +29,7 @@
 		<infoportion_complete>agr_krot_task_complete</infoportion_complete>
 		<infoportion_set_complete>agr_krot_band_done</infoportion_set_complete>
 		<function_fail>agroprom_tasks.agr_actor_enemy</function_fail>
+		<infoportion_fail>agr_find_gunslinger_cache_found</infoportion_fail>
 		<article>storyline_seriy_flash_info</article>
 	</objective>
 	<objective>
