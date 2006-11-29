@@ -436,7 +436,7 @@ path_walk = walk1
 combat_ignore_cond = always
 team = agr_assault
 on_signal = s | %+agr_factory_assault_skirmish%
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_walker2]
 active = walker2@agr_factory_assault
@@ -449,7 +449,7 @@ path_walk = walk2
 combat_ignore_cond = always
 team = agr_assault
 on_signal = s | %+agr_factory_assault_skirmish%
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_walker3]
 active = walker3@agr_factory_assault
@@ -462,7 +462,7 @@ path_walk = walk3
 combat_ignore_cond = always
 team = agr_assault
 on_signal = s | %+agr_factory_assault_skirmish%
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_walker4]
 active = walker4@agr_factory_assault
@@ -475,7 +475,7 @@ path_walk = walk4
 combat_ignore_cond = always
 team = agr_assault
 on_signal = s | %+agr_factory_assault_skirmish%
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_walker5]
 active = walker5@agr_factory_assault
@@ -488,7 +488,7 @@ path_walk = walk5
 combat_ignore_cond = always
 team = agr_assault
 on_signal = s | %+agr_factory_assault_skirmish%
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_walker6]
 active = walker6@agr_factory_assault
@@ -501,7 +501,7 @@ path_walk = walk6
 combat_ignore_cond = always
 team = agr_assault
 on_signal = s | %+agr_factory_assault_skirmish%
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_walker7]
 active = walker7@agr_factory_assault
@@ -514,7 +514,7 @@ path_walk = walk7
 combat_ignore_cond = always
 team = agr_assault
 on_signal = s | %+agr_factory_assault_skirmish%
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_walker8]
 active = walker8@agr_factory_assault
@@ -527,7 +527,7 @@ path_walk = walk8
 combat_ignore_cond = always
 team = agr_assault
 on_signal = s | %+agr_factory_assault_skirmish%
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 ;--------------------------- дерутся с группой Крота. -------------------------
 [logic@agr_factory_assault_skirmish_walker1]
@@ -537,7 +537,7 @@ active = walker1@agr_factory_assault_skirmish
 [walker1@agr_factory_assault_skirmish]
 path_walk = skirmish_walk1
 ;path_look = skirmish_look1
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_skirmish_walker2]
 active = walker2@agr_factory_assault_skirmish
@@ -546,7 +546,7 @@ active = walker2@agr_factory_assault_skirmish
 [walker2@agr_factory_assault_skirmish]
 path_walk = skirmish_walk2
 ;path_look = skirmish_look2
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_skirmish_walker3]
 active = walker3@agr_factory_assault_skirmish
@@ -555,7 +555,7 @@ active = walker3@agr_factory_assault_skirmish
 [walker3@agr_factory_assault_skirmish]
 path_walk = skirmish_walk3
 ;path_look = skirmish_look3
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_skirmish_walker4]
 active = walker4@agr_factory_assault_skirmish
@@ -564,7 +564,7 @@ active = walker4@agr_factory_assault_skirmish
 [walker4@agr_factory_assault_skirmish]
 path_walk = skirmish_walk4
 ;path_look = skirmish_look4
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_skirmish_walker5]
 active = walker5@agr_factory_assault_skirmish
@@ -573,7 +573,7 @@ active = walker5@agr_factory_assault_skirmish
 [walker5@agr_factory_assault_skirmish]
 path_walk = skirmish_walk5
 ;path_look = skirmish_look5
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_skirmish_walker6]
 active = walker6@agr_factory_assault_skirmish
@@ -582,7 +582,7 @@ active = walker6@agr_factory_assault_skirmish
 [walker6@agr_factory_assault_skirmish]
 path_walk = skirmish_walk6
 ;path_look = skirmish_look6
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_skirmish_walker7]
 active = walker7@agr_factory_assault_skirmish
@@ -591,7 +591,7 @@ active = walker7@agr_factory_assault_skirmish
 [walker7@agr_factory_assault_skirmish]
 path_walk = skirmish_walk7
 ;path_look = skirmish_look7
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_assault_skirmish_walker8]
 active = walker8@agr_factory_assault_skirmish
@@ -600,7 +600,7 @@ active = walker8@agr_factory_assault_skirmish
 [walker8@agr_factory_assault_skirmish]
 path_walk = skirmish_walk8
 ;path_look = skirmish_look8
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 ;--------------------------- идут добивать в дом -------------------------
 
@@ -775,7 +775,7 @@ path_look = look1
 def_state_moving1 = assault
 def_state_moving2 = assault
 def_state_moving3 = assault
-
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_defence_skirmish_walker2]
 active = walker2@agr_factory_defence_skirmish
@@ -786,6 +786,7 @@ path_look = look2
 def_state_moving1 = assault
 def_state_moving2 = assault
 def_state_moving3 = assault
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_defence_skirmish_walker3]
 active = walker3@agr_factory_defence_skirmish
@@ -796,6 +797,7 @@ path_look = look3
 def_state_moving1 = assault
 def_state_moving2 = assault
 def_state_moving3 = assault
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_defence_skirmish_walker4]
 active = walker4@agr_factory_defence_skirmish
@@ -806,6 +808,7 @@ path_look = look4
 def_state_moving1 = assault
 def_state_moving2 = assault
 def_state_moving3 = assault
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 [logic@agr_factory_defence_skirmish_walker5]
 active = walker5@agr_factory_defence_skirmish
@@ -813,6 +816,7 @@ active = walker5@agr_factory_defence_skirmish
 [walker5@agr_factory_defence_skirmish]
 path_walk = walk5
 path_look = look5
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 
 [logic@agr_factory_defence_skirmish_walker6]
@@ -824,6 +828,7 @@ path_look = look6
 def_state_moving1 = assault
 def_state_moving2 = assault
 def_state_moving3 = assault
+danger = danger_condition@agr_factory_defence_ignore_corpses
 
 ;---------------- помогают Кроту -----------------
 
