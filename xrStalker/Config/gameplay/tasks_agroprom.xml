@@ -25,7 +25,7 @@
 	<title>agr_meet_krot_band</title>
 	<objective>
 		<text>agr_meet_krot_band_0</text>
-		<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		<icon>ui_iconsTotal_agr_meet_krot_band</icon>
 		<infoportion_complete>agr_krot_task_complete</infoportion_complete>
 		<infoportion_set_complete>agr_krot_band_done</infoportion_set_complete>
 		<function_fail>agroprom_tasks.agr_actor_enemy</function_fail>
