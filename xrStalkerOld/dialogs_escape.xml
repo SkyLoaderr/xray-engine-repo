@@ -79,8 +79,8 @@
             </phrase>
             <phrase id="2">
                 <text>tutorial_wounded_give_medkit_2</text>
-                <precondition>dialogs.medikit_yes</precondition>
-                <action>dialogs.transfer_medikit2</action>
+                <precondition>dialogs.actor_have_medkit</precondition>
+                <action>dialogs.transfer_medkit</action>
                 <give_info>tutorial_wounded_help</give_info>
                 <next>121</next>
             </phrase>
@@ -248,7 +248,8 @@
             </phrase>
             <phrase id="55">
                 <text>escape_fox_hello_dialog_55</text>
-                <precondition>dialogs.medikit_yes</precondition>
+                <precondition>dialogs.actor_have_medkit</precondition>
+				<action>dialogs.transfer_medkit</action>
                 <action>escape_dialog.transfer_medikit_to_fox</action>
                 <action>dialogs.break_dialog</action>
             </phrase>
