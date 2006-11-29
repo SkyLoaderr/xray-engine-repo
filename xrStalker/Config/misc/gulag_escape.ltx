@@ -757,12 +757,14 @@ anim = guard
 snd = esc_fanat_ready
 on_signal = sound_end| walker@esc_lager_defend12
 meet = meet@wolf
+danger = danger_condition@shustryi
 
 [walker@esc_lager_defend12]
 path_walk = defend12_walk
 path_look = defend12_look
 combat_ignore_cond = {-esc_open_lager_fire}
-meet = no_meet
+meet = meet@wolf
+danger = danger_condition@shustryi
 
 
 [logic@esc_lager_defend13]
