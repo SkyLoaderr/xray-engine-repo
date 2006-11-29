@@ -1665,7 +1665,7 @@ wounded = wounded@ignore_kruglov
 
 [walker@bar_ecolog_professor_companion]
 path_walk = escape_1_walk
-on_signal = freedom_chase | camper@bar_rescue_research_hide_1a %=bar_freedom_spam_5 +bar_rescue_research_chasing_start%
+on_signal = freedom_chase | camper@bar_rescue_research_hide_1a %=bar_freedom_spam_5 +bar_rescue_research_chasing_start =smart_terrain_force_update(bar_ecolog_crush)%
 combat_ignore_cond = {!actor_enemy}
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
@@ -1673,7 +1673,7 @@ wounded = wounded@ignore_kruglov
 [camper@bar_rescue_research_hide_1a]
 path_walk = escape_1a_walk
 path_look = escape_hide_1_look
-on_signal = arrived_1 | camper@bar_rescue_research_hide_1 %=rostok_kruglov_attract_1 -bar_kruglov_follow_talk%
+on_signal = arrived_1 | camper@bar_rescue_research_hide_1 %=rostok_kruglov_attract_1 -bar_kruglov_follow_talk =smart_terrain_force_update(bar_freedom_attack)%
 combat_ignore_cond = {!actor_enemy}
 def_state_moving = assault
 danger = danger_condition@2
