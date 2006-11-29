@@ -546,7 +546,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	}
 #endif
 
-#if 0//def _DEBUG
+#ifdef _DEBUG
 	if ((Level().CurrentControlEntity() == this) && g_ShowAnimationInfo) {
 		string128 buf;
 		strcpy(buf,"");
@@ -564,7 +564,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		if (mstate_rl&mcRLookout)	strcat(buf,"RLookout ");
 		if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
 		HUD().Font().pFontSmall->OutNext	("MSTATE:     [%s]",buf);
-
+/*
 		switch (m_PhysicMovementControl->Environment())
 		{
 		case CPHMovementControl::peOnGround:	strcpy(buf,"ground");			break;
@@ -577,6 +577,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		HUD().Font().pFontSmall->OutNext	("vertex ID   %d",ai_location().level_vertex_id());
 		
 		Game().m_WeaponUsageStatistic->Draw();
+		*/
 	};
 #endif
 
