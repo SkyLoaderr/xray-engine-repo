@@ -25,7 +25,7 @@ static	float erp				=1.f;
 #define	CHECK_POS(pos,msg,br)			if (!valid_pos(pos,phBoundaries)){Msg("pos:%f,%f,%f",pos.x,pos.y,pos.z);Msg(msg);VERIFY(!br);}
 
 #else
-		CHECK_POS(pos,msg,br)				
+#define	CHECK_POS(pos,msg,br)				
 #endif
 void	ActivateTestDepthCallback (bool& do_colide,bool bo1,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {
