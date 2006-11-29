@@ -94,7 +94,20 @@ extern void BuildStackTrace ();
 extern char g_stackTrace[100][4096];
 extern int g_stackTraceCount;
 
-void xrDebug::backend(const char *expression, const char *description, const char *argument0, const char *argument1, const char *file, int line, const char *function, bool &ignore_always) 
+void XRCORE_API LogStackTrace	(LPCSTR header)
+{
+	if (!shared_str_initialized)
+		return;
+
+	BuildStackTrace	();		
+
+	Msg				("%s",header);
+
+	for (int i=1; i<g_stackTraceCount; ++i)
+		Msg			("%s",g_stackTrace[i]);
+}
+
+void xrDebug::backend(const char *expression, const char *description, const char *argument0, const char *argument1, const char *file, int line, const char *function, bool &ignore_always)
 {
 	static xrCriticalSection CS
 #ifdef PROFILE_CRITICAL_SECTIONS
