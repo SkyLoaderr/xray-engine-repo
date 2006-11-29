@@ -73,7 +73,7 @@ void CKinematics::CalculateBones			(BOOL bForceExact)
 		// Validate
 		VERIFY3	(_valid(vis.box.min)&&_valid(vis.box.max),	"Invalid bones-xform in model", dbg_name.c_str());
 //.		VERIFY3	(vis.sphere.R<1000.f,						"Invalid bones-xform in model", dbg_name.c_str());
-		if(vis.sphere.R<1000.f)
+		if(vis.sphere.R>1000.f)
 		{
 			Log("all bones transform:--------");
 			CKinematics* K = this;
