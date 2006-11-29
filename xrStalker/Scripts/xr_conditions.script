@@ -1336,3 +1336,7 @@ function treasure_exist(actor, npc, p)
 	--printf("%s %s", actor:name(), npc:name())
 	return true
 end
+
+function can_send_tutorial(actor, npc, p)
+	return true
+end
