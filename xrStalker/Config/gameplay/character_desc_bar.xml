@@ -600,7 +600,7 @@
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		<money min="5000" max="10000" infinitive="0"></money>
 
-		<rank>989</rank>
+		<rank>918</rank>
 		<reputation>0</reputation>
  
 		<visual>actors\dolg\stalker_do_komandir</visual>
