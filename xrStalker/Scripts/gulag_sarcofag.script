@@ -107,21 +107,21 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@sar_monolith_guard_offline",
 			idle = 0,
 			prior = 7, state = {0},
-			online = false,
+			-- online = false,
 			in_rest = "", out_rest = "mon_guard_offline_restr"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@sar_monolith_guard_offline",
 			idle = 0,
 			prior = 5, state = {0},
-			online = false,
+			-- online = false,
 			in_rest = "", out_rest = "mon_guard_offline_restr",
 		}
 		table.insert(sj, t)
 		t = { section = "logic@sar_monolith_guard_offline",
 			idle = 0,
 			prior = 5, state = {0},
-			online = false,
+			-- online = false,
 			in_rest = "", out_rest = "mon_guard_offline_restr",
 		}
 		table.insert(sj, t)
