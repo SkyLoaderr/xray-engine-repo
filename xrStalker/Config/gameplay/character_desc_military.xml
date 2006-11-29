@@ -26,7 +26,7 @@
 			[spawn] \n
 			wpn_usp  \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_lr300 \n
+			wpn_sig550 = 1 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
@@ -56,9 +56,9 @@
 		<visual>actors\svoboda\stalker_sv_rukzak_3</visual>
 		<supplies>
 			[spawn] \n
-			wpn_usp  \n
-			ammo_11.43x23_hydro = 1 \n
-			wpn_lr300 \n
+			wpn_walther \n
+			ammo_9x19_pbp \n
+			wpn_sig550 = 1 \n
 			ammo_5.56x45_ap = 1 \n
 			wpn_addon_scope = 1 \n
 #include "gameplay\character_items.xml" \n
@@ -90,9 +90,9 @@
 		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
-			ammo_11.43x23_hydro = 1 \n
-			wpn_l85 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
+			wpn_lr300 \n
 			ammo_5.56x45_ss190 = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml" \n
@@ -124,7 +124,7 @@
 			[spawn] \n
 			wpn_sig220 \n
 			ammo_11.43x23_hydro = 1 \n
-            wpn_svd \n
+            wpn_svu \n
             ammo_7.62x54_ap = 1 \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
@@ -187,7 +187,7 @@
 			[spawn] \n
 			wpn_usp  \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_lr300 \n
+			wpn_sig550 = 1 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
@@ -220,8 +220,8 @@
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_pbp = 1 \n
+			wpn_usp  \n
+			ammo_11.43x23_hydro = 1 \n
 			wpn_wincheaster1300 \n
 			ammo_12x76_zhekan = 1 \n
 #include "gameplay\character_items.xml" \n
@@ -252,9 +252,9 @@
 		<visual>actors\svoboda\stalker_sv_leader</visual>
 		<supplies>
 			[spawn] \n
-			wpn_sig220 \n
+			wpn_usp  \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_sig550 \n
+			wpn_g36 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
@@ -319,7 +319,7 @@
 		<visual>actors\svoboda\stalker_sv_max</visual>
 		<supplies>
 			[spawn] \n
-			wpn_desert_eagle \n
+			wpn_usp  \n
 			ammo_11.43x23_hydro = 1 \n
 			wpn_svu_m1 \n
 			ammo_7.62x54_7h14 = 1 \n
@@ -352,9 +352,9 @@
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
-			wpn_sig220 \n
+			wpn_usp  \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_sig550 \n
+			wpn_g36 \n
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
@@ -428,10 +428,10 @@
 		<visual>actors\svoboda\stalker_sv_balon_10</visual>
 		<supplies>
 			[spawn] \n
-			wpn_sig220 \n
-			ammo_11.43x23_hydro = 4 \n
-			wpn_sig550 \n
-			ammo_5.56x45_ap = 4 \n
+			wpn_usp  \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_g36 \n
+			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
@@ -462,10 +462,10 @@
 		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
 		<supplies>
 			[spawn] \n
-			wpn_sig220 \n
+			wpn_usp  \n
 			ammo_11.43x23_hydro = 1 \n
-            wpn_sig550 \n
-            ammo_5.56x45_ap \n
+			wpn_g36 \n
+			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
@@ -500,10 +500,10 @@
 		<visual>actors\dolg\stalker_do_antigas</visual>
 		<supplies>
 			[spawn] \n
-			wpn_colt1911 \n
-			ammo_11.43x23_hydro = 1 \n
-			wpn_val \n
-			ammo_9x39_sp5 = 1 \n
+			wpn_walther \n
+			ammo_9x19_pbp \n
+			wpn_groza \n
+			ammo_9x39_sp5 \n	
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"				
@@ -531,10 +531,10 @@
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
-			wpn_colt1911 \n
-			ammo_11.43x23_hydro = 1 \n
-			wpn_val \n
-			ammo_9x39_sp5 = 1 \n
+			wpn_walther \n
+			ammo_9x19_pbp \n
+			wpn_groza \n
+			ammo_9x39_sp5 \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"
@@ -564,9 +564,9 @@
 		<visual>actors\dolg\stalker_do_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
-			ammo_11.43x23_hydro	= 1 \n
-			wpn_groza \n
+			wpn_sig220 \n
+			ammo_11.43x23_hydro \n	
+			wpn_val \n
 			ammo_9x39_pab9 = 1 \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
@@ -598,10 +598,10 @@
 		<visual>actors\killer\stalker_ki_informator</visual>
 		<supplies>
 			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_pbp = 1 \n
-			wpn_abakan \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_walther \n
+			ammo_9x19_pbp \n
+			wpn_lr300 \n
+			ammo_5.56x45_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
@@ -629,8 +629,8 @@
 		<visual>actors\killer\stalker_ki_antigas</visual>
 		<supplies>
 			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_pbp = 1 \n
+			wpn_walther \n
+			ammo_9x19_pbp \n
 			wpn_lr300 \n
 			ammo_5.56x45_ss190 = 1 \n
 #include "gameplay\character_items.xml" \n
@@ -661,10 +661,10 @@
 		<visual>actors\killer\stalker_ki_mask</visual>
 		<supplies>
 			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_pbp = 1 \n
-			wpn_svu \n
-			ammo_7.62x54_ap = 1 \n
+			wpn_walther \n
+			ammo_9x19_pbp \n
+			wpn_l85 \n
+			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
@@ -729,10 +729,10 @@
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_pbp = 1 \n
-			wpn_ak74 = 1, 1, 0, 0 \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
+			wpn_val \n
+			ammo_9x39_sp5 = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
@@ -759,10 +759,10 @@
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
 		<supplies>
 			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_pbp = 1 \n
-			wpn_ak74 = 1, 1, 0, 0 \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
+			wpn_lr300 \n
+			ammo_5.56x45_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
@@ -793,8 +793,8 @@
                 <visual>actors\stalker_zombi\stalker_zombie5</visual>
                 <supplies>
                         [spawn] \n
-                        wpn_beretta \n
-                        ammo_9x19_pbp = 1 \n
+						wpn_walther \n
+						ammo_9x19_fmj \n
                         wpn_ak74 = 1, 1, 1, 0 \n
                         ammo_5.45x39_ap = 1 \n
                 </supplies>
@@ -856,8 +856,8 @@
       [spawn] \n
       wpn_fort \n
       ammo_9x18_fmj = 1 \n
-      wpn_ak74 \n
-      ammo_5.45x39_ap = 1 \n
+	  wpn_g36 \n
+	  ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"	
