@@ -4,7 +4,7 @@
 
 	<specific_character id="bar_barman" no_random = "1">
 		<name>bar_barmen_name</name>
-		<icon x="0" y="0"></icon>
+		<icon>ui_npc_u_barman</icon>
 		<map_icon x="1" y="4"></map_icon>
 		<bio>bar_barmen_bio</bio>
 
@@ -33,7 +33,7 @@
 
 	<specific_character id="bar_stalker_white_novice_1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="30" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_1</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_novice_bio</bio>
 
@@ -61,7 +61,7 @@
 	
 	<specific_character id="bar_stalker_white_novice_2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="26" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_7</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_novice_bio</bio>
 
@@ -89,7 +89,7 @@
 
 	<specific_character id="bar_stalker_brown_novice_1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="0" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_2</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_novice_bio</bio>
 
@@ -117,7 +117,7 @@
 	
 	<specific_character id="bar_stalker_brown_novice_2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="22" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_8</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_novice_bio</bio>
 
@@ -145,7 +145,7 @@
 
 	<specific_character id="bar_stalker_general_1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="4"></icon>
+		<icon>ui_npc_u_stalker_neytral_hood_uzor</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
@@ -173,7 +173,7 @@
 
 	<specific_character id="bar_stalker_general_2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="4"></icon>
+		<icon>ui_npc_u_stalker_neytral_hood_2</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
@@ -201,7 +201,7 @@
 
 	<specific_character id="bar_stalker_dolg_1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="16" y="8"></icon>
+		<icon>ui_npc_u_stalker_do_mask_1</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_dolg_regular_bio</bio>
 
@@ -231,7 +231,7 @@
 
 	<specific_character id="bar_stalker_bandit_1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="14"></icon>
+		<icon>ui_npc_u_stalker_bandit_veteran</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_bandit_general_bio</bio>
 
@@ -259,7 +259,7 @@
 
 	<specific_character id="bar_stalker_killer_1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="18" y="8"></icon>
+		<icon>ui_npc_u_stalker_ki_head_1</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_killer_veteran_bio</bio>
 
@@ -287,7 +287,7 @@
 
 	<specific_character id="bar_stalker_guard" team_default = "1">
 		<name>bar_bar_guard_name</name>
-		<icon x="24" y="12"></icon>
+		<icon>ui_npc_u_stalker_bar_security</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>bar_bar_guard_bio</bio>
 
@@ -314,7 +314,7 @@
 
 	<specific_character id="bar_stalker_guard2" team_default = "1">
 		<name>bar_bar_guard2_name</name>
-		<icon x="24" y="12"></icon>
+		<icon>ui_npc_u_stalker_bar_security</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>bar_bar_guard2_bio</bio>
 
@@ -342,7 +342,7 @@
 	<!---------------------------BAR OSVEDOMITEL---------------------->
 	<specific_character id="bar_bar_osvedomitel" team_default = "1">
 		<name>bar_informer_name</name>
-		<icon x="22" y="14"></icon>
+		<icon>ui_npc_u_stalker_bandit_master</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>bar_informer_bio</bio>
 
@@ -375,7 +375,7 @@
 	<!---------------------------BAR HUNTER---------------------->
 	<specific_character id="bar_bar_hunter" team_default = "1">
 		<name>bar_hunter_name</name>
-		<icon x="0" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_3</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Добродушный весельчак, единственная его проблема это то, что умеет стрелять только из охотничьего ружья. Остальное даже не пробует. Недавно попал в передрягу на Дикой территории и потерял там свое фамильное ружье. Теперь околачивается в баре, надеется, что кто-то вернет ему его ружье.</bio>
 
@@ -407,7 +407,7 @@
 	<!---------------------------BAR DRUNK DOLG---------------------->
 	<specific_character id="bar_bar_drunk_dolg" team_default = "1">
 		<name>bar_drunk_name</name>
-		<icon x="18" y="12"></icon>
+		<icon>ui_npc_u_stalker_do_balon_4</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>bar_drunk_bio</bio>
 		
@@ -438,7 +438,7 @@
 	<!---------------------------BAR LISIY---------------------->
 	<specific_character id="bar_bar_lisiy" team_default = "1">
 		<name>bar_lisiy_name</name>
-		<icon x="16" y="10"></icon>
+		<icon>ui_npc_u_stalker_neytral_balon_4</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
@@ -467,7 +467,7 @@
 
 	<specific_character id="bar_psih" team_default = "1">
 		<name>bar_ryaboy_name</name>
-		<icon x="8" y="0"></icon>
+		<icon>ui_npc_u_stalker_zombie4</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>bar_ryaboy_bio</bio>
 
@@ -502,7 +502,7 @@
 	<!-- ******************* ARENA ********************** -->
 	<specific_character id="bar_arena_manager" team_default = "1">
 		<name>bar_arny_name</name>
-		<icon x="16" y="14"></icon>
+		<icon>ui_npc_u_stalker_neytral_balon_6</icon>
 		<map_icon x="1" y="6"></map_icon>
 		<bio>bar_arny_bio</bio>
 
@@ -533,7 +533,7 @@
 
 	<specific_character id="bar_arena_guard" team_default = "1">
 		<name>bar_lelik_name</name>
-		<icon x="24" y="12"></icon>
+		<icon>ui_npc_u_stalker_bar_security</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>bar_lelik_bio</bio>
 
@@ -562,7 +562,7 @@
 
 	<specific_character id="bar_arena_savage" team_default = "1">
 		<name>bar_beast_name</name>
-		<icon x="8" y="0"></icon>
+		<icon>ui_npc_u_zombie_exoskeleton</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>sim_zombied_master_bio</bio>
 
@@ -590,7 +590,7 @@
 	<!---------------------------DOLG LEADER---------------------->
 	<specific_character id="bar_dolg_leader" team_default = "1">
 		<name>bar_voronin_name</name>
-		<icon x="18" y="0"></icon>
+		<icon>ui_npc_u_stalker_do_komandir</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>bar_voronin_bio</bio>
 
@@ -628,7 +628,7 @@
 	<!---------------------------DOLG PETRENKO---------------------->
 	<specific_character id="bar_dolg_petrenko" team_default = "1">
 		<name>bar_petrenko_name</name>
-		<icon x="16" y="2"></icon>
+		<icon>ui_npc_u_stalker_do_balon_3</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>bar_petrenko_bio</bio>
 
@@ -665,7 +665,7 @@
 	<!---------------------------DOLG IVANCOV---------------------->
 	<specific_character id="bar_dolg_ivancov" team_default = "1">
 		<name>bar_ivancov_name</name>
-		<icon x="16" y="0"></icon>
+		<icon>ui_npc_u_stalker_do_balon_5</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>bar_ivancov_bio</bio>
 
@@ -699,7 +699,7 @@
 	<!---------------------------DOLG Начальник Охраны---------------------->
 	<specific_character id="bar_dolg_guard_commander" team_default = "1">
 		<name>bar_plichko_name</name>
-		<icon x="26" y="8"></icon>
+		<icon>ui_npc_u_stalker_do_balon_1</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>bar_plichko_bio</bio>
 
@@ -735,7 +735,7 @@
 
 	<specific_character id="bar_zastava_commander_1" team_default = "1">
 		<name>bar_kicenko_name</name>
-		<icon x="8" y="2"></icon>
+		<icon>ui_npc_u_stalker_do_balon_1</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_dolg_veteran_bio</bio>
 
@@ -776,7 +776,7 @@
 	<!-- ******************* Helicopter scene ********************** -->
 	<specific_character id="bar_ecolog_professor" team_default = "1">
 		<name>ros_kruglov_name</name>
-		<icon x="8" y="4"></icon>
+		<icon>ui_npc_u_stalker_ecolog_military</icon>
 		<map_icon x="1" y="6"></map_icon>
 		<bio>ros_kruglov_bio</bio>
 
@@ -808,7 +808,7 @@
 
 	<specific_character id="bar_svoboda_attack_commander" team_default = "1">
 		<name>ros_volkodav_name</name>
-		<icon x="18" y="2"></icon>
+		<icon>ui_npc_u_stalker_ki_head_5</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>ros_volkodav_bio</bio>
 
@@ -843,7 +843,7 @@
 	<!-- ******************* KILLER AMBUSH ********************** -->
 	<specific_character id="bar_killer_ambush_tiran" team_default = "1">
 		<name>ros_tiran_name</name>
-		<icon x="30" y="6"></icon>
+		<icon>ui_npc_u_stalker_ki_exoskeleton</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>ros_tiran_bio</bio>
 
@@ -876,7 +876,7 @@
 	<!-- ******************* CRAZY VETERANS ********************** -->
 	<specific_character id="bar_crazy_veterans_lucky" team_default = "1">
 		<name>ros_happy_name</name>
-		<icon x="22" y="14"></icon>
+		<icon>ui_npc_u_stalker_bandit_master</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>ros_happy_bio</bio>
 
@@ -908,7 +908,7 @@
 
 	<specific_character id="bar_crazy_veterans_1" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="24" y="14"></icon>
+		<icon>ui_npc_u_stalker_bandit_veteran</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>sim_bandit_veteran_bio</bio>
 
@@ -937,7 +937,7 @@
 	
 	<specific_character id="bar_crazy_veterans_2" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="24" y="14"></icon>
+		<icon>ui_npc_u_stalker_bandit_veteran</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>sim_bandit_veteran_bio</bio>
 
@@ -967,7 +967,7 @@
 	<!-- ************************ Гордон Фримен *********************** -->	
 	<specific_character id="bar_stalker_freeman" team_default = "1">
 		<name>ros_freeman_name</name>
-		<icon x="26" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_7</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>ros_freeman_bio</bio>
 
@@ -997,7 +997,7 @@
 <!---------------------------DOLG REGULAR----------------------->
 	<specific_character id="bar_dolg_regular_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="0"></icon>
+		<icon>ui_npc_u_stalker_do_mask</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_regular_bio</bio>
 
@@ -1033,7 +1033,7 @@
 
 	<specific_character id="bar_dolg_regular_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="4"></icon>
+		<icon>ui_npc_u_stalker_do_balon_8</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_regular_bio</bio>
 
@@ -1066,7 +1066,7 @@
 
 	<specific_character id="bar_dolg_regular_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="16" y="8"></icon>
+		<icon>ui_npc_u_stalker_do_mask_1</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_regular_bio</bio>
 		
@@ -1100,7 +1100,7 @@
 <!---------------------------DOLG SNIPER---------------------->
 	<specific_character id="bar_dolg_sniper_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="4"></icon>
+		<icon>ui_npc_u_stalker_do_balon_8</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_sniper_bio</bio>
 
@@ -1132,7 +1132,7 @@
 
 	<specific_character id="bar_dolg_sniper_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="16" y="8"></icon>
+		<icon>ui_npc_u_stalker_do_mask_1</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_sniper_bio</bio>
 
@@ -1164,7 +1164,7 @@
 
 	<specific_character id="bar_dolg_sniper_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="0"></icon>
+		<icon>ui_npc_u_stalker_do_mask</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_sniper_bio</bio>
 
@@ -1197,7 +1197,7 @@
 <!---------------------------DOLG SPECNAZ---------------------->
 	<specific_character id="bar_dolg_veteran_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="2" y="4"></icon>
+		<icon>ui_npc_u_stalker_do_nauchniy</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_veteran_bio</bio>
 
@@ -1229,7 +1229,7 @@
 
 	<specific_character id="bar_dolg_veteran_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="8" y="2"></icon>
+		<icon>ui_npc_u_stalker_do_antigas</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_veteran_bio</bio>
 
@@ -1261,7 +1261,7 @@
 
 	<specific_character id="bar_dolg_veteran_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="2" y="4"></icon>
+		<icon>ui_npc_u_stalker_do_nauchniy</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_veteran_bio</bio>
 
@@ -1295,7 +1295,7 @@
 
 	<specific_character id="bar_dolg_veteran_default4" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="8" y="2"></icon>
+		<icon>ui_npc_u_stalker_do_antigas</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_veteran_bio</bio>
 
@@ -1328,7 +1328,7 @@
 <!---------------------------DOLG MASTER----------------------->
 	<specific_character id="bar_dolg_master_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="30" y="4"></icon>
+		<icon>ui_npc_u_stalker_do_exoskeleton</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_master_bio</bio>
 
@@ -1360,7 +1360,7 @@
 
 	<specific_character id="bar_dolg_master_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="2" y="4"></icon>
+		<icon>ui_npc_u_stalker_do_nauchniy</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_master_bio</bio>
 		
@@ -1395,7 +1395,7 @@
 <!---------------------------STALKER NOVICE----------------------->
 	<specific_character id="bar_stalker_novice_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="0" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_2</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_novice_bio</bio>
 
@@ -1424,7 +1424,7 @@
 
 	<specific_character id="bar_stalker_novice_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="0" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_3</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_novice_bio</bio>
 
@@ -1454,7 +1454,7 @@
 
 	<specific_character id="bar_stalker_novice_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="0" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_4</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_novice_bio</bio>
 
@@ -1483,7 +1483,7 @@
 
 	<specific_character id="bar_stalker_novice_default4" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="10"></icon>
+		<icon>ui_npc_u_green_stalker_5</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_novice_bio</bio>
 
@@ -1512,7 +1512,7 @@
 
 	<specific_character id="bar_stalker_novice_default5" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="0" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_6</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_novice_bio</bio>
 
@@ -1541,7 +1541,7 @@
 
 	<specific_character id="bar_stalker_novice_default6" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="10"></icon>
+		<icon>ui_npc_u_green_stalker_10</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_novice_bio</bio>
 
@@ -1570,7 +1570,7 @@
 
 	<specific_character id="bar_stalker_novice_default9" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="20" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_antigas</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_novice_bio</bio>
 
@@ -1599,7 +1599,7 @@
 
 	<specific_character id="bar_stalker_novice_default10" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="20" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_antigas</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_novice_bio</bio>
 
@@ -1629,7 +1629,7 @@
 <!---------------------------STALKER GENERAL---------------------->
 	<specific_character id="bar_stalker_general_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="14"></icon>
+		<icon>ui_npc_u_stalker_neytral_hood_uzor</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
@@ -1662,7 +1662,7 @@
 
 <specific_character id="bar_stalker_general_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="16" y="6"></icon>
+		<icon>ui_npc_u_stalker_neytral_balon_8</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
@@ -1694,7 +1694,7 @@
 
 <specific_character id="bar_stalker_general_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="4"></icon>
+		<icon>ui_npc_u_stalker_neytral_hood_2</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
@@ -1726,7 +1726,7 @@
 
 	<specific_character id="bar_stalker_general_default4" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="26" y="12"></icon>
+		<icon>ui_npc_u_stalker_neytral_hood_8</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
@@ -1758,7 +1758,7 @@
 	
 	<specific_character id="bar_stalker_general_default5" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="2" y="2"></icon>
+		<icon>ui_npc_u_stalker_neytral_hood_9</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
@@ -1791,7 +1791,7 @@
 <!---------------------------STALKER VETERAN---------------------->
 	<specific_character id="bar_stalker_veteran_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="2" y="2"></icon>
+		<icon>ui_npc_u_stalker_neytral_hood_9</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_veteran_bio</bio>
 
@@ -1824,7 +1824,7 @@
 
 	<specific_character id="bar_stalker_veteran_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="16" y="6"></icon>
+		<icon>ui_npc_u_stalker_neytral_rukzak_2</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_veteran_bio</bio>
 
@@ -1857,7 +1857,7 @@
 
 	<specific_character id="bar_stalker_veteran_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="10" y="0"></icon>
+		<icon>ui_npc_u_stalker_neytral_nauchniy</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_veteran_bio</bio>
 
@@ -1890,7 +1890,7 @@
 
 	<specific_character id="bar_stalker_veteran_default4" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="2" y="2"></icon>
+		<icon>ui_npc_u_stalker_neytral_hood_9</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_veteran_bio</bio>
 
@@ -1923,7 +1923,7 @@
 
 	<specific_character id="bar_stalker_veteran_default5" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="20" y="8"></icon>
+		<icon>ui_npc_u_stalker_neytral_hood_8</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_veteran_bio</bio>
 
@@ -1958,7 +1958,7 @@
 <!---------------------------ECOLOG GUARD------------------------>
 	<specific_character id="bar_ecolog_guard_default1" team_default = "1">
 		<name>GENERATE_NAME_science</name>
-		<icon x="10" y="4"></icon>
+		<icon>ui_npc_u_stalker_ecolog</icon>
 		<map_icon x="0" y="6"></map_icon>
 		<bio>ros_ecolog_guard_bio</bio>
 
@@ -1987,7 +1987,7 @@
 
 	<specific_character id="bar_ecolog_guard_default2" team_default = "1">
 		<name>GENERATE_NAME_science</name>
-		<icon x="10" y="4"></icon>
+		<icon>ui_npc_u_stalker_ecolog</icon>
 		<map_icon x="1" y="6"></map_icon>
 		<bio>ros_ecolog_guard_bio</bio>
 		
@@ -2018,7 +2018,7 @@
 <!---------------------------KILLER REGULAR----------------------->
 	<specific_character id="bar_killer_regular_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="18" y="8"></icon>
+		<icon>ui_npc_u_stalker_ki_head_1</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>sim_killer_general_bio</bio>
 		
@@ -2048,7 +2048,7 @@
 
 	<specific_character id="bar_killer_regular_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="6"></icon>
+		<icon>ui_npc_u_stalker_ki_mask</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>sim_killer_general_bio</bio>
 		
@@ -2078,7 +2078,7 @@
 
 	<specific_character id="bar_killer_regular_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="4" y="2"></icon>
+		<icon>ui_npc_u_stalker_ki_antigas</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>sim_killer_general_bio</bio>
 		
@@ -2109,7 +2109,7 @@
 <!---------------------------KILLER SNIPER---------------------->
 	<specific_character id="bar_killer_sniper_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="6"></icon>
+		<icon>ui_npc_u_stalker_ki_mask</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>sim_killer_sniper_bio</bio>
 		
@@ -2138,7 +2138,7 @@
 
 <specific_character id="bar_killer_sniper_on_enter" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="4" y="2"></icon>
+		<icon>ui_npc_u_stalker_ki_antigas</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>sim_killer_sniper_bio</bio>
 		
@@ -2167,7 +2167,7 @@
 	
 	<specific_character id="bar_killer_rpg" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="4" y="2"></icon>
+		<icon>ui_npc_u_stalker_ki_antigas</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>sim_killer_sniper_bio</bio>
 		
@@ -2199,7 +2199,7 @@
 <!---------------------------KILLER SPECNAZ---------------------->
 	<specific_character id="bar_killer_specnaz_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="14" y="0"></icon>
+		<icon>ui_npc_u_stalker_ki_nauchniy</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>sim_killer_veteran_bio</bio>
 		
@@ -2229,7 +2229,7 @@
 
 	<specific_character id="bar_killer_specnaz_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="14" y="0"></icon>
+		<icon>ui_npc_u_stalker_ki_nauchniy</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>sim_killer_veteran_bio</bio>
 		
@@ -2259,7 +2259,7 @@
 
 	<specific_character id="bar_killer_specnaz_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="14" y="0"></icon>
+		<icon>ui_npc_u_stalker_ki_nauchniy</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>sim_killer_veteran_bio</bio>
 		
@@ -2290,7 +2290,7 @@
 
 	<specific_character id="bar_killer_specnaz_default4" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="14" y="0"></icon>
+		<icon>ui_npc_u_stalker_ki_nauchniy</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>sim_killer_veteran_bio</bio>
 		
@@ -2321,7 +2321,7 @@
 <!-----------DELME:only for presentation--------------------->
 	<specific_character id="bar_arena_respawner_default1" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="14" y="4"></icon>
+		<icon>ui_npc_u_stalker_bandit_3</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>sim_bandit_general_bio</bio>
 	
@@ -2353,7 +2353,7 @@
 
 	<specific_character id="bar_arena_respawner_default2" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="28" y="2"></icon>
+		<icon>ui_npc_u_stalker_bandit_4</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>sim_bandit_general_bio</bio>
 		
@@ -2385,7 +2385,7 @@
 
 	<specific_character id="bar_arena_respawner_default3" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="24" y="2"></icon>
+		<icon>ui_npc_u_stalker_bandit_5</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>sim_bandit_general_bio</bio>
 				
@@ -2416,7 +2416,7 @@
 	</specific_character>
 	<specific_character id="bar_arena_respawner_default4" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="24" y="2"></icon>
+		<icon>ui_npc_u_stalker_bandit_5</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>sim_bandit_general_bio</bio>
 				
@@ -2447,7 +2447,7 @@
 	</specific_character>
 	<specific_character id="bar_arena_respawner_default5" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="24" y="2"></icon>
+		<icon>ui_npc_u_stalker_bandit_5</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>sim_bandit_general_bio</bio>
 				
@@ -2478,7 +2478,7 @@
 	</specific_character>
 	<specific_character id="bar_arena_respawner_default6" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="24" y="2"></icon>
+		<icon>ui_npc_u_stalker_bandit_5</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>sim_bandit_general_bio</bio>
 				
