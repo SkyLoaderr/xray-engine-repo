@@ -52,9 +52,7 @@
 
 
 	<info_portion id="test_1">
-		<task>task_1</task>
-		<task>task_2</task>
-		<task>task_3</task>
+		<task>pl_task_1</task>
 	</info_portion>
 
 </game_information_portions>
