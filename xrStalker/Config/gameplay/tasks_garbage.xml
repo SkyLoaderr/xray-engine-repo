@@ -73,7 +73,7 @@
 	</game_task>
 	
 	<game_task id="gar_car_graveyard_quest" prio="480">
-		<title>gar_help_hellcar_1</title>
+		<title>gar_car_graveyard_quest</title>
 		<objective>
 			<text>gar_dialog_hellcar</text>
 			<icon>ui_iconsTotal_gar_car_graveyard_quest</icon>
