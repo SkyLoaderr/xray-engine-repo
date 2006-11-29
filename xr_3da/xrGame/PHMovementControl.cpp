@@ -55,6 +55,7 @@ CPHMovementControl::CPHMovementControl(CObject* parent)
 	vExternalImpulse.set(0,0,0);
 	bExernalImpulse		=false;
 	fLastMotionMag		= 1.f;
+	vPathDir.set		(0,0,1);
 	//fAirFriction		= AIR_FRICTION;
 	//fWallFriction		= WALL_FRICTION;
 	//fGroundFriction		= GROUND_FRICTION;
