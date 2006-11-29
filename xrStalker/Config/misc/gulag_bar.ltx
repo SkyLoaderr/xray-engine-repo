@@ -1702,6 +1702,7 @@ on_signal = freedom_chase | camper@bar_rescue_research_hide_1a %=bar_freedom_spa
 combat_ignore_cond = {!actor_enemy}
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
+meet = no_meet
 
 [camper@bar_rescue_research_hide_1a]
 path_walk = escape_1a_walk
@@ -1711,6 +1712,7 @@ combat_ignore_cond = {!actor_enemy}
 def_state_moving = assault
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
+meet = no_meet
 
 [camper@bar_rescue_research_hide_1]
 path_walk = escape_hide_1_walk
@@ -1734,7 +1736,7 @@ combat_ignore_cond = {!actor_enemy}
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
 tips = rostok_kruglov_follow
-
+meet = no_meet
 
 
 [camper@bar_ecolog_professor_companion_1]
@@ -1746,6 +1748,7 @@ on_signal = bandits_alive | {=rostok_gulag_2_inactive} camper@bar_ecolog_profess
 def_state_moving = assault
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
+meet = no_meet
 
 [camper@bar_ecolog_professor_companion_1a]
 path_walk = escape_2a_walk
@@ -1756,6 +1759,7 @@ on_signal = arrived_hide_2 | camper@bar_rescue_research_hide_2 %=rostok_kruglov_
 def_state_moving = assault
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
+meet = no_meet
 
 [camper@bar_rescue_research_hide_2]
 path_walk = escape_hide_2_walk
@@ -1777,7 +1781,7 @@ combat_ignore_cond = {!actor_enemy}
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
 tips = rostok_kruglov_follow
-
+meet = no_meet
 
 [camper@bar_ecolog_professor_companion_2a]
 path_walk = escape_3a_walk
@@ -1789,7 +1793,7 @@ radius = 0
 no_retreat = true
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
-
+meet = no_meet
 
 [camper@bar_rescue_research_ambush_hide]
 path_walk = escape_hide_3_walk
@@ -1811,6 +1815,7 @@ combat_ignore_cond = {!actor_enemy}
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
 tips = rostok_kruglov_follow
+meet = no_meet
 
 [camper@bar_ecolog_professor_companoin_2]
 path_walk = escape_3_walk
@@ -1822,6 +1827,7 @@ on_info = {+bar_fire_anomaly_forward} camper@bar_rescue_research_hide_3 %-bar_kr
 def_state_moving = assault
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
+meet = no_meet
 
 [camper@bar_rescue_research_hide_3]
 path_walk = escape_stay
@@ -1852,6 +1858,7 @@ on_signal = arrived_torrid |camper@bar_ecolog_professor_companoin_3
 def_state_moving = assault
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
+meet = no_meet
 
 
 [camper@bar_ecolog_professor_companoin_3]
@@ -1863,6 +1870,7 @@ on_signal = arrived |camper@bar_rescue_research_hide_4 %+bar_rescue_research_fol
 def_state_moving = assault
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
+meet = no_meet
 
 
 [camper@bar_rescue_research_hide_4]
@@ -1903,7 +1911,7 @@ on_timer = 5000 | walker@bar_ecolog_professor_exit_w
 
 [walker@bar_ecolog_professor_exit_w]
 path_walk = escape_5_walk
-meet = meet@ecolog_kruglov_1
+meet = no_meet
 danger = danger_condition@2
 wounded = wounded@ignore_kruglov
 
@@ -1913,14 +1921,14 @@ on_info = %+bar_rescue_research_fail +bar_heli_scene_professor_die +bar_rescue_r
 
 [danger_condition@2]
 ignore_distance       = 0
-ignore_distance_grenade = 1
-ignore_distance_corpse  = 1
-ignore_distance_danger_hit     = 1
-ignore_distance_sound   = 1 
-danger_inertion_time_grenade = 1
-danger_inertion_time_corpse = 1
-danger_inertion_time_hit = 1
-danger_inertion_time_sound = 1
+ignore_distance_grenade = 0
+ignore_distance_corpse  = 0
+ignore_distance_danger_hit     = 0
+ignore_distance_sound   = 0
+danger_inertion_time_grenade = 0
+danger_inertion_time_corpse = 0
+danger_inertion_time_hit = 0
+danger_inertion_time_sound = 0
 
 [danger_condition@freedom_attackers]
 ignore_distance_grenade = 0
