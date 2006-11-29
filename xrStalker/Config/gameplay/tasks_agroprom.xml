@@ -90,7 +90,7 @@
 	<title>agr_help_stalkers</title>
 	<objective>
 		<text>agr_help_stalkers_0</text>
-		<icon>ui_icons_task_eliminate_lager</icon>
+		<icon>ui_iconsTotal_eliminate_lager</icon>
 		<infoportion_complete>agr_help_stalkers_assault_dead</infoportion_complete>
 		<infoportion_fail>agr_help_stalkers_defence_dead</infoportion_fail>
 		<function_fail>agroprom_tasks.agr_actor_enemy</function_fail>
