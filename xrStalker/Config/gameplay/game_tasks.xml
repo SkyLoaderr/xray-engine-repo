@@ -11,6 +11,7 @@
 #include "gameplay\tasks_aes.xml"
 #include "gameplay\tasks_yantar.xml"
 #include "gameplay\tasks_sarcofag.xml"
+#include "gameplay\game_tasks_by_vendor.xml"
 
 	<game_task id="user_task">
 		<title>My map task</title>
