@@ -51,6 +51,7 @@
 			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<function_complete>garbage_tasks.task_hellcar_complete</function_complete>
 			<function_fail>garbage_tasks.task_hellcar_fail</function_fail>
+			<article>graveyard_raid</article>
 		</objective>
 		<objective>
 			<text>gar_kill_bandits</text>
