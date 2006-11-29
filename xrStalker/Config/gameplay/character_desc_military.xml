@@ -260,7 +260,7 @@
 		<class>mil_Svoboda_leader</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 		
-		<rank>987</rank>
+		<rank>920</rank>
 		<reputation>136</reputation>
 
 		<visual>actors\svoboda\stalker_sv_leader</visual>
@@ -331,7 +331,7 @@
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
 		
-		<rank>964</rank>
+		<rank>917</rank>
 		<reputation>145</reputation>
 
 		<visual>actors\svoboda\stalker_sv_max</visual>
@@ -443,7 +443,7 @@
 		<class>mil_Svoboda_blockpost_leader</class>
 		<community>freedom</community> <terrain_sect>stalker_freedom_terrain</terrain_sect>
 
-		<rank>975</rank>
+		<rank>916</rank>
 		<reputation>149</reputation>
 
         <snd_config>characters_voice\human_02\freedom\</snd_config>
@@ -583,7 +583,7 @@
 		<class>mil_Dolg_specnaz_cherep</class>
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 
-		<rank>967</rank>
+		<rank>915</rank>
 		<reputation>135</reputation>
 		
 		<panic_threshold>0.0</panic_threshold>
@@ -620,7 +620,7 @@
 		<class>mil_Killer_informator</class>
 		<community>killer</community> <terrain_sect>stalker_killer_terrain</terrain_sect>
 
-		<rank>954</rank>
+		<rank>904</rank>
 		<reputation>-149</reputation>
 
         <snd_config>characters_voice\human_02\\</snd_config>
