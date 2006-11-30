@@ -27,8 +27,11 @@ float CControlMovement::real_velocity()
 	CPHMovementControl		*movement_control = m_object->character_physics_support()->movement();
 	VERIFY					(movement_control);
 
-	if (movement_control->IsCharacterEnabled()) 
-		return				(movement_control->GetXZActVelInGoingDir());
+	if (movement_control->IsCharacterEnabled()){ 
+		float tmp			= 	movement_control->GetXZActVelInGoingDir();
+		VERIFY2				(_abs(tmp<1000),"movement_control->GetXZActVelInGoingDir() returns too big speed");
+		return				tmp;
+	}
 
 	return m_velocity_current;
 }
