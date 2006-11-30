@@ -539,7 +539,7 @@ function load_job(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 	end
 	
-	--' Boars nest
+	--' Boars nest (to Dolg)
 
 	if type == "gar_boars_nest" then
 		t = { section = "logic@gar_boars_nest", 
@@ -732,7 +732,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {2},
 			online = true,
 			position_threshold = 300,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_boars_rush"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
@@ -740,7 +740,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {2},
 			online = true,
 			position_threshold = 300,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_boars_rush"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
@@ -748,7 +748,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {2},
 			online = true,
 			position_threshold = 300,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_boars_rush"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
@@ -756,7 +756,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {2},
 			online = true,
 			position_threshold = 300,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_boars_rush"
 		}
 		table.insert(sj, t)	
 		t = { section = "logic@gar_boars_nest_rush", 
@@ -764,7 +764,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {2},
 			online = true,
 			position_threshold = 300,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_boars_rush"
 		}
 		table.insert(sj, t)	
 		t = { section = "logic@gar_boars_nest_rush", 
@@ -772,7 +772,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {2},
 			online = true,
 			position_threshold = 300,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_boars_rush"
 		}
 		table.insert(sj, t)	
 		t = { section = "logic@gar_boars_nest_rush", 
@@ -780,7 +780,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {2},
 			online = true,
 			position_threshold = 300,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_boars_rush"
 		}
 		table.insert(sj, t)	
 		t = { section = "logic@gar_boars_nest_rush", 
@@ -788,7 +788,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {2},
 			online = true,
 			position_threshold = 300,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_boars_rush"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
@@ -796,7 +796,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {2},
 			online = true,
 			position_threshold = 300,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_boars_rush"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
@@ -804,7 +804,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {2},
 			online = true,
 			position_threshold = 300,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_boars_rush"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
@@ -812,7 +812,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {2},
 			online = true,
 			position_threshold = 300,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_boars_rush"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
@@ -820,7 +820,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {2},
 			online = true,
 			position_threshold = 300,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_boars_rush"
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_boars_nest_rush", 
@@ -828,7 +828,7 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 5, state = {2},
 			online = true,
 			position_threshold = 300,
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "gar_boars_rush"
 		}
 		table.insert(sj, t)
 	end
