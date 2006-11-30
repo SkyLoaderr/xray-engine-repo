@@ -204,8 +204,12 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 		}
 
 		const CEntityAlive	*entity_alive = smart_cast<const CEntityAlive*>(pHDS->initiator());
-		if (entity_alive && (tfGetRelationType(entity_alive) != ALife::eRelationTypeFriend) && !wounded())
-			sound().play	(eStalkerSoundInjuringByFriend);
+		if (entity_alive && !wounded()) {
+			if (is_relation_enemy(entity_alive))
+				sound().play(eStalkerSoundInjuring);
+			else
+				sound().play(eStalkerSoundInjuringByFriend);
+		}
 
 		int					weapon_type = -1;
 		if (best_weapon())
