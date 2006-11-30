@@ -10,3 +10,18 @@ function give_ecolog_outfit(first_speaker, second_speaker)
 		db.actor:give_info_portion("yan_ecolog_outfit_given")
 	end
 end
+
+function yan_professor_talk_outfit (first_speaker, second_speaker)
+	if has_alife_info("bar_heli_scene_professor_die") then
+		return true
+	end
+	if not has_alife_info("bar_x16_documents_start") then
+		if has_alife_info("bar_rescue_research_done") and  has_alife_info("yan_ecolog_outfit_given") then
+			return true
+		else 
+			return false
+		end
+		return true
+	end
+	return false
+end
