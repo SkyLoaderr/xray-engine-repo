@@ -293,7 +293,7 @@
 	</game_task>
 
 
-	<game_task id="bar_barman_job">
+	<game_task id="bar_barman_job" prio="0">
 		<title>bar_barman_job</title>
 		<objective>
 			<icon>ui_iconsTotal_esc_blockpost_case_to_trader</icon>
