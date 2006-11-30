@@ -148,6 +148,9 @@ public:
 	void				SetPLastMaterialIDX	(u16* p){m_character->SetPLastMaterialIDX(p);}
 	dBodyID				GetBody						( )		{if(m_character) return m_character->get_body(); else return NULL;}
 	const Fvector&		GetVelocity					( )		{ return vVelocity;	}
+	const Fvector&		GetPathDir					( )		{ return vPathDir;	}
+
+
 	void				GetCharacterVelocity		(Fvector& velocity )		{if(m_character)m_character->GetVelocity(velocity); else velocity.set(0.f,0.f,0.f);}
 	float				GetVelocityMagnitude		()		{ return vVelocity.magnitude();	}
 	float				GetVelocityActual			()		{ return fActualVelocity;	}

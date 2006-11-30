@@ -29,7 +29,13 @@ float CControlMovement::real_velocity()
 
 	if (movement_control->IsCharacterEnabled()){ 
 		float tmp			= 	movement_control->GetXZActVelInGoingDir();
-		VERIFY2				(_abs(tmp<1000),"movement_control->GetXZActVelInGoingDir() returns too big speed");
+		if(_abs(tmp)<1000)
+		{
+			Log					("GetVelocity",	movement_control->GetVelocity() );
+			Log					("GetPathDir",	movement_control->GetPathDir() );
+		
+		}
+		VERIFY2				(_abs(tmp)<1000,"movement_control->GetXZActVelInGoingDir() returns too big speed");
 		return				tmp;
 	}
 
