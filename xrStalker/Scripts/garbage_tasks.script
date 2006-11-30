@@ -22,7 +22,7 @@ function task_hellcar_complete()
 end
 
 function task_hellcar_fail()
-	if xr_gulag.getGulagPopulation("gar_hellcar_group") < 1 
+	if (xr_gulag.getGulagPopulation("gar_hellcar_group") < 1) or has_alife_info("gar_hellcar_death")
 	then
 		return true
 	else
@@ -32,8 +32,8 @@ end
 
 function task_hellcar_fail2()
 	local actor = db.actor
-	if 	xr_gulag.getCasualities("gar_hellcar_group") > 0 and
-	   not has_alife_info("gar_hellcar_help")
+	if 	(xr_gulag.getCasualities("gar_hellcar_group") > 0 and
+	   not has_alife_info("gar_hellcar_help")) or has_alife_info("gar_hellcar_death")
 	then
 	   return true
 	else
