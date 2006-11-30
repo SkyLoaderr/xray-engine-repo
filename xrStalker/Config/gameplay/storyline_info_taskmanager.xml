@@ -1,3 +1,8 @@
+;--------Defend Lager------------
+;----------Dolg------------
+<article id="dolg_defend_lager_1_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_defend_lager_1_descr</text>
+</article>
 
 ;--------Eliminate Lager------------
 ;---------trader--------------
@@ -48,20 +53,54 @@
         <text>barmen_eliminate_camp_7_descr</text>
 </article>
 ;----------Dolg------------
-<article id="dolg_eliminate_kamp_1_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
-        <text>dolg_eliminate_kamp_1_descr</text>
+<article id="dolg_eliminate_lager_1_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_1_descr</text>
 </article>
-<article id="dolg_eliminate_kamp_2_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
-        <text>dolg_eliminate_kamp_2_descr</text>
+<article id="dolg_eliminate_lager_2_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_2_descr</text>
 </article>
-<article id="dolg_eliminate_kamp_3_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
-        <text>dolg_eliminate_kamp_3_descr</text>
+<article id="dolg_eliminate_lager_3_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_3_descr</text>
 </article>
-<article id="dolg_eliminate_kamp_4_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
-        <text>dolg_eliminate_kamp_4_descr</text>
+<article id="dolg_eliminate_lager_4_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_4_descr</text>
 </article>
-<article id="dolg_eliminate_kamp_5_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
-        <text>dolg_eliminate_kamp_5_descr</text>
+<article id="dolg_eliminate_lager_5_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_5_descr</text>
+</article>
+<article id="dolg_eliminate_lager_6_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_6_descr</text>
+</article>
+<article id="dolg_eliminate_lager_7_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_7_descr</text>
+</article>
+<article id="dolg_eliminate_lager_8_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_8_descr</text>
+</article>
+<article id="dolg_eliminate_lager_9_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_9_descr</text>
+</article>
+<article id="dolg_eliminate_lager_10_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_10_descr</text>
+</article>
+<article id="dolg_eliminate_lager_11_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_11_descr</text>
+</article>
+<article id="dolg_eliminate_lager_12_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_12_descr</text>
+</article>
+<article id="dolg_eliminate_lager_13_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_13_descr</text>
+</article>
+<article id="dolg_eliminate_lager_14_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>dolg_eliminate_lager_14_descr</text>
+</article>
+;---------ecolog--------
+<article id="ecolog_eliminate_lager_1_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>ecolog_eliminate_lager_1_descr</text>
+</article>
+<article id="ecolog_eliminate_lager_2_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>ecolog_eliminate_lager_2_descr</text>
 </article>
 ;--------Freedom---------
 <article id="freedom_eliminate_camp_1_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
@@ -181,21 +220,6 @@
 <article id="dolg_kill_stalker_1_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>dolg_kill_stalker_1_descr</text>
 </article>
-<article id="dolg_kill_stalker_2_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
-        <text>dolg_kill_stalker_2_descr</text>
-</article>
-<article id="dolg_kill_stalker_3_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
-        <text>dolg_kill_stalker_3_descr</text>
-</article>
-<article id="dolg_kill_stalker_4_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
-        <text>dolg_kill_stalker_4_descr</text>
-</article>
-<article id="dolg_kill_stalker_5_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
-        <text>dolg_kill_stalker_5_descr</text>
-</article>
-<article id="dolg_kill_stalker_6_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
-        <text>dolg_kill_stalker_6_descr</text>
-</article>
 ;------Freedom----------
 <article id="freedom_kill_stalker_1_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>freedom_kill_stalker_1_descr</text>
@@ -244,15 +268,6 @@
 <article id="dolg_find_item_1_descr" name="find_item" group="find_item/1" article_type="task">
         <text>dolg_find_item_1_descr</text>
 </article>
-<article id="dolg_find_item_2_descr" name="find_item" group="find_item/1" article_type="task">
-        <text>dolg_find_item_2_descr</text>
-</article>
-<article id="dolg_find_item_3_descr" name="find_item" group="find_item/1" article_type="task">
-        <text>dolg_find_item_3_descr</text>
-</article>
-<article id="dolg_find_item_4_descr" name="find_item" group="find_item/1" article_type="task">
-        <text>dolg_find_item_4_descr</text>
-</article>
 ;-------Freedom---------
 <article id="freedom_find_item_1_descr" name="find_item" group="find_item/1" article_type="task">
         <text>freedom_find_item_1_descr</text>
@@ -263,8 +278,10 @@
 <article id="freedom_find_item_3_descr" name="find_item" group="find_item/1" article_type="task">
         <text>freedom_find_item_3_descr</text>
 </article>
-
-
+;---------ecolog--------
+<article id="ecolog_find_item_1_descr" name="find_item" group="find_item/1" article_type="task">
+        <text>ecolog_find_item_2_descr</text>
+</article>
 
 ;---------Monster Part--------------
 ;---------trader--------------
