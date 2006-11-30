@@ -2,11 +2,11 @@ function proceed()
     local actor = db.actor
 	-- Bar Rostok
 	-- выдача информации с флешки профессора
-	if actor:dont_has_info("bar_ecolog_research_normal") and
-	   actor:dont_has_info("bar_ecolog_research_corrupted") and
+	if not has_alife_info("bar_ecolog_research_normal") and
+	   not has_alife_info("bar_ecolog_research_corrupted") and
 	   actor:object("bar_ecolog_flash") 
 	then
-		if actor:has_info("bar_rescue_research_corruped") then
+		if has_alife_info("bar_rescue_research_corruped") then
 			actor:give_info_portion("bar_ecolog_research_corrupted")
 		else
 			actor:give_info_portion("bar_ecolog_research_normal")
