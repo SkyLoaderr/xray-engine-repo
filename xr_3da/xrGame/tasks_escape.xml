@@ -36,40 +36,13 @@
 		</objective>
 	</game_task>
 
-	<game_task id="tutorial_help_wounded">
-		<title>tutorial_help_wounded</title>
-		<objective>
-			<text>tutorial_help_wounded_0</text>
-			<icon>ui_iconsTotal_tutorial_help_wounded</icon>
-			<infoportion_complete>esc_serious_talk</infoportion_complete>
-		</objective>
-		<objective>
-			<text>tutorial_help_wounded_1</text>
-			<map_location_type hint="volk">green_location</map_location_type>
-			<object_story_id>Escape_novice_lager_volk</object_story_id>
-			<infoportion_complete>esc_kill_bandits_quest_have</infoportion_complete>
-			<function_fail>escape_tasks.task_volk_fail</function_fail>
-		</objective>
-		<objective>
-			<text>tutorial_help_wounded_2</text>
-			<map_location_type hint="tutorial_wounded">green_location</map_location_type>
-			<map_location_hidden>1</map_location_hidden>
-			<object_story_id>Escape_tutorial_wounded</object_story_id>
-			<infoportion_complete>tutorial_wounded_give_info</infoportion_complete>
-		</objective>
-		<objective>
-			<text>tutorial_help_wounded_3</text>
-			<map_location_type hint="escape_trader">blue_location</map_location_type>
-			<object_story_id>Escape_Trader</object_story_id>
-		</objective>
-	</game_task>
-
 	<game_task id="esc_help_wounded_from_raid" prio="485">
 		<title>esc_help_wounded_from_raid</title>
 		<objective>
 			<text>esc_help_wounded_from_raid_0</text>
 			<icon>ui_iconsTotal_esc_help_wounded_from_raid</icon>
 			<function_complete>escape_tasks.task_fox_complete</function_complete>
+			<article>esc_fox_help</article>
 		</objective>
 		<objective>
 			<text>esc_help_wounded_from_raid_1</text>
@@ -167,6 +140,7 @@
 			<text>meet_with_doctor_1</text>
 			<icon>ui_iconsTotal_doctor_meet</icon>
 			<infoportion_complete>esc_find_doctor_done</infoportion_complete>
+			<article>esc_doctor_meet</article>
 		</objective>
 		<objective>
 			<text>meet_with_doctor_2</text>
@@ -181,6 +155,7 @@
 			<text>tutorial_help_wounded</text>
 			<icon>ui_iconsTotal_tutorial_help_wounded</icon>
 			<infoportion_complete>esc_serious_talk</infoportion_complete>
+			<article>esc_flash_task_descr</article>
 		</objective>
 		<objective>
 			<text>tutorial_help_wounded_1</text>
