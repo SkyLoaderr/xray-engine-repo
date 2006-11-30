@@ -238,7 +238,7 @@
 	
 
 	<game_task id="bar_x16_documents" prio="380">
-		<title>x16_documents</title>
+		<title>bar_x16_documents</title>
 		<objective>
 			<text>x16_yantar</text>
 			<icon x="400" y="50" width="50" height="50">ui_iconsTotal_bar_x16_documents</icon>
@@ -262,7 +262,7 @@
 	</game_task>
 
 	<game_task id="bar_radar_deactivate" prio="305">
-		<title>descr_deactivate_radar</title>
+		<title>bar_radar_deactivate</title>
 		<objective>
 			<icon>ui_iconsTotal_bar_radar_deactivate</icon>
 			<infoportion_complete>bar_deactivate_radar_done</infoportion_complete>
