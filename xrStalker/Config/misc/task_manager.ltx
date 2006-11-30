@@ -219,11 +219,12 @@ reward_item = grenade_rgd5
 type = eliminate_lager
 community = actor
 text = tm_eliminate_camp_3_text
+condlist = {=actor_on_level(l03u_agr_underground)}
 init_condition = {=actor_on_level(l03u_agr_underground)}
 description = tm_eliminate_camp_3_descr
 parent = trader
 target = agr_u_bandits
-reward_money = 5000
+reward_money = 4000
 reward_reputation = +25
 reward_relation = dolg, 10
 reward_rank = 5
@@ -295,6 +296,7 @@ reward_item = vodka
 [tm_find_artefact_3]
 type = artefact
 community = actor
+condlist = {+val_raid_start}
 text = tm_find_artefact_3_text
 description = tm_find_artefact_3_descr
 parent = trader
@@ -334,9 +336,9 @@ community = actor
 text = tm_kill_stalker_2_text
 description = tm_kill_stalker_2_descr
 parent = trader
-target = gar_stalker_general
+target = sim_stalker_general
 reward_money = 3000
-reward_reputation = -25
+reward_reputation = -15
 reward_item = medkit_army
 reward_rank = 5
 
@@ -355,6 +357,7 @@ reward_item = bandage
 [tm_kill_stalker_4]
 type = kill_stalker
 community = actor
+condlist = {+agroprom_military_case_have}
 text = tm_kill_stalker_4_text
 description = tm_kill_stalker_4_descr
 parent = trader
@@ -367,6 +370,7 @@ reward_item = wpn_walther_m1
 [tm_kill_stalker_5]
 type = kill_stalker
 community = actor
+condlist = {+val_raid_start}
 text = tm_kill_stalker_5_text
 description = tm_kill_stalker_5_descr
 parent = trader
@@ -403,7 +407,7 @@ type = defend_lager
 community = actor
 text = tm_defend_kamp_1_text
 time = 50
-init_condition = {=actor_on_level(l02_garbage)} ;-- +agroprom_military_case_have}
+init_condition = {=actor_on_level(l02_garbage)}
 description = tm_defend_kamp_1_descr
 parent = trader
 target = val_smart_bandit_3
@@ -427,6 +431,7 @@ reward_rank = 5
 [tm_monster_part_2]
 type = monster_part
 community = actor
+condlist = {+val_raid_start}
 text = tm_monster_part_2_text
 description = tm_monster_part_2_descr
 parent = trader
@@ -560,7 +565,7 @@ text = barmen_find_artefact_3_text
 description = barmen_find_artefact_3_descr
 parent = barman
 target = af-night-star
-reward_money = 15000
+reward_money = 12000
 reward_reputation = +60
 reward_rank = 7
 
@@ -582,9 +587,9 @@ text = barmen_find_artefact_5_text
 description = barmen_find_artefact_5_descr
 parent = barman
 target = af_gold_fish
-reward_money = 15000
-reward_reputation = +20
-reward_rank = 4
+reward_money = 12000
+reward_reputation = +40
+reward_rank = 7
 
 [barmen_kill_stalker_1]
 type = kill_stalker
