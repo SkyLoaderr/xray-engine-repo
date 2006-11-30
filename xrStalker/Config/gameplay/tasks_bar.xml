@@ -8,7 +8,7 @@
 			<object_story_id>bar_ecolog_professor</object_story_id>
 			<infoportion_complete>bar_kruglov_follow_actor</infoportion_complete>
 			<infoportion_fail>bar_rescue_research_fail</infoportion_fail>
-			<article>descr_bar_resque_information</article>
+			<article>descr_bar_resque_information_1</article>
 		</objective>
 		<objective>
 			<text>bar_resque_scientific_information_get</text>
@@ -34,7 +34,7 @@
 			<object_story_id>bar_ecolog_professor</object_story_id>
 			<infoportion_complete>bar_rescue_research_done</infoportion_complete>
 			<infoportion_fail>bar_rescue_research_fail</infoportion_fail>
-			<article>descr_bar_resque_information</article>
+			<article>descr_bar_resque_information_2</article>
 		</objective>
 		<objective>
 			<text>bar_resque_scientific_follow</text>
