@@ -548,9 +548,6 @@
 			Name="Wallmarks"
 			Filter="">
 			<File
-				RelativePath=".\SkeletonCustom.h">
-			</File>
-			<File
 				RelativePath=".\WallmarksEngine.cpp">
 			</File>
 			<File
