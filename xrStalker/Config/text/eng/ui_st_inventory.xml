@@ -144,22 +144,21 @@
 	<string id="ui_inv_outfit_params">
 		<text>Parameters</text>
 	</string>
+	<string id="ui_inv_outfit_radiation_protection">
+		<text>Радиация</text>
+	</string>
 	<string id="ui_inv_outfit_shock_protection">
 		<text>Electric shock</text>
 	</string>
 	<string id="ui_inv_outfit_strike_protection">
 		<text>Impact</text>
 	</string>
-	<string id="ui_inv_outfit_wound_protection">
-		<text>Wound</text>
-	</string>
-	<string id="ui_inv_outfit_radiation_protection">
-		<text>Radiation</text>
-	</string>
 	<string id="ui_inv_outfit_telepatic_protection">
-		<text>Telepatic</text>
+		<text>Телепат.</text>
 	</string>
-	
+	<string id="ui_inv_outfit_wound_protection">
+		<text>Разрыв</text>
+	</string>
 	<string id="ui_inv_outfits">
 		<text>Suits</text>
 	</string>

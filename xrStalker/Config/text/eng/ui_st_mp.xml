@@ -217,13 +217,13 @@
 		<text>Yes</text>
 	</string>
 	<string id="mp_voted">
-		<text>voted</text>
-	</string>
-	<string id="mp_voted_yes">
-		<text>"Yes"</text>
+		<text>проголосовал</text>
 	</string>
 	<string id="mp_voted_no">
-		<text>"No"</text>
+		<text>No</text>
+	</string>
+	<string id="mp_voted_yes">
+		<text>Yes</text>
 	</string>
 	<string id="mp_voting_broken">
 		<text>Voting cancelled by the server!</text>
@@ -255,10 +255,13 @@
 	<string id="mp_your_rank">
 		<text>Your rank is now</text>
 	</string>
+	<string id="ui_st_description">
+		<text>Описание</text>
+	</string>
 	<string id="ui_st_team1_name">
-		<text>Freedom</text>
+		<text>Свобода</text>
 	</string>
 	<string id="ui_st_team2_name">
-		<text>Mercenaries</text>
-	</string>	
+		<text>Наемники</text>
+	</string>
 </string_table>

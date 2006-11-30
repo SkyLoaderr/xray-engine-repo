@@ -1,156 +1,108 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-
-	<string id="st_mp_direct_ip">
-		<text>Direct IP</text>
-	</string>
-	
-	<string id="ui_mm_detail_density">
-		<text>Detail density</text>
-	</string>	
-		
-	<string id="ui_pda_details">
-		<text># /details</text>
-	</string>	
-	
-	<string id="ui_st_price">
-		<text>Price</text>
-	</string>	
-	
-	<string id="ui_st_trade">
-		<text>Trade</text>
-	</string>	
-
-	<string id="ui_st_your_items">
-		<text>Your items</text>
-	</string>	
-	
-	<string id="ui_st_opponent_items">
-		<text>Opponent items</text>
-	</string>	
-	
-	<string id="ui_st_leave">
-		<text>Leave</text>
-	</string>	
-		
-	<string id="ui_mm_default">
-		<text>Default</text>
-	</string>
-	
-	<string id="ui_mm_render_2">
-		<text>Render-2</text>
-	</string>
-	
-	<string id="ui_mm_r2_sun">
-		<text>R2 sun shadows</text>
-	</string>
-	
-	<string id="ui_mm_r2_sun_details">
-		<text>R2 detailed sun shadows</text>
-	</string>
-	
 	<string id="id_mp_money">
-		<text>Money</text>
-	</string>	
-	
+		<text>Деньги</text>
+	</string>
+	<string id="mm_mp_pda_hunt">
+		<text>Бонус за ПДА</text>
+	</string>
 	<string id="st_drink">
-		<text>drink</text>
-	</string>	
-		
-	<string id="ui_st_take_all">
-		<text>Take all</text>
+		<text>выпить</text>
 	</string>
-
-	<string id="ui_st_description">
-		<text>Description</text>
-	</string>	
-	
-		<string id="ui_st_btn_yes">
-		<text>Yes</text>
-	</string>	
-	
+	<string id="st_mp_direct_ip">
+		<text>Прямой IP</text>
+	</string>
+	<string id="ui_mm_default">
+		<text>По умолчанию</text>
+	</string>
+	<string id="ui_mm_detail_density">
+		<text>Качество деталей</text>
+	</string>
+	<string id="ui_mm_r2_sun">
+		<text>R2 тени</text>
+	</string>
+	<string id="ui_mm_r2_sun_details">
+		<text>R2 детальные тени</text>
+	</string>
+	<string id="ui_mm_render_2">
+		<text>Рендер-2</text>
+	</string>
+	<string id="ui_pda_details">
+		<text># /детали</text>
+	</string>
+	<string id="ui_st_btn_cancel">
+		<text>Отмена</text>
+	</string>
 	<string id="ui_st_btn_no">
-		<text>No</text>
+		<text>Нет</text>
 	</string>
-	
 	<string id="ui_st_btn_ok">
 		<text>ОК</text>
 	</string>
-	
-	<string id="ui_st_btn_cancel">
-		<text>Cancel</text>
+	<string id="ui_st_btn_yes">
+		<text>Да</text>
 	</string>
-	
-	<string id="ui_st_error">
-		<text>Error</text>
-	</string>
-	
-	<string id="ui_st_file_exist_owerwrite_q">
-		<text>The file with this name already exist. Do you want to overwrite it?</text>
-	</string>
-	
 	<string id="ui_st_cant_run_r2">
-		<text>You can't run R2 on your system</text>
+		<text>Вы не можете R2 на вашей системе</text>
 	</string>
-	
-	<string id="ui_st_select_one_map">
-		<text>Please select at least one map</text>
-	</string>
-	
-	<string id="ui_st_voting_disabled">
-		<text>Voting is disabled</text>
-	</string>
-	
-	<string id="ui_st_conn_rejected_server">
-		<text>Connection error: connection rejected by server</text>
-	</string>
-	
-	<string id="ui_st_conn_sess_full">
-		<text>Connection error: session is full</text>
-	</string>
-	
-	<string id="ui_st_conn_invalid_pass">
-		<text>Connection error: Invalid password</text>
-	</string>
-	
 	<string id="ui_st_conn_invalid_host">
 		<text>Connection error: Invalid host</text>
 	</string>
-	
-	<string id="ui_st_want_to_leave_game_q">
-		<text>Do you really want to leave the Game?</text>
+	<string id="ui_st_conn_invalid_pass">
+		<text>Connection error: Invalid password</text>
 	</string>
-	
+	<string id="ui_st_conn_rejected_server">
+		<text>Connection error: connection rejected by server</text>
+	</string>
+	<string id="ui_st_conn_sess_full">
+		<text>Connection error: session is full</text>
+	</string>
+	<string id="ui_st_days">
+		<text></text>
+	</string>
+	<string id="ui_st_error">
+		<text>Error</text>
+	</string>
+	<string id="ui_st_file_exist_owerwrite_q">
+		<text>The file with this name already exist. Do you want to overwrite it?</text>
+	</string>
 	<string id="ui_st_file_name_is_empty">
 		<text>The file name is empty</text>
 	</string>
-	
-	<string id="mm_mp_pda_hunt">
-		<text>PDA bonus</text>
-	</string>
-	
-	<string id="ui_st_time_remains">
-		<text>Осталось</text>
-	</string>
-
-	<string id="ui_st_months">
-		<text>мес.</text>
-	</string>
-	
-	<string id="ui_st_days">
-		<text>дн.</text>
-	</string>
-	
 	<string id="ui_st_hours">
-		<text>час.</text>
+		<text></text>
 	</string>
-	
+	<string id="ui_st_leave">
+		<text>Уйти</text>
+	</string>
 	<string id="ui_st_mins">
-		<text>мин.</text>
+		<text></text>
 	</string>
-	
+	<string id="ui_st_months">
+		<text></text>
+	</string>
 	<string id="ui_st_secs">
 		<text>сек.</text>
-	</string>	
-	
+	</string>
+	<string id="ui_st_select_one_map">
+		<text>Please select at least one map</text>
+	</string>
+	<string id="ui_st_take_all">
+		<text>Взять все</text>
+	</string>
+	<string id="ui_st_time_remains">
+		<text></text>
+	</string>
+	<string id="ui_st_trade">
+		<text>Торговать</text>
+	</string>
+	<string id="ui_st_voting_disabled">
+		<text>Voting is disabled</text>
+	</string>
+	<string id="ui_st_want_to_leave_game_q">
+		<text>Do you really want to leave the Game?</text>
+	</string>
+	<string id="ui_st_your_items">
+		<text>Твои вещи</text>
+	</string>
 </string_table>

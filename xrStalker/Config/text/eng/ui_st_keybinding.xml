@@ -6,6 +6,9 @@
 	<string id="kb_always_run">
 		<text>Always run</text>
 	</string>
+	<string id="kb_artefact">
+		<text>Артефакт</text>
+	</string>
 	<string id="kb_backward">
 		<text>Back</text>
 	</string>
@@ -123,11 +126,8 @@
 	<string id="kb_right_strafe">
 		<text>Strafe right</text>
 	</string>
-	<string id="kb_artefact">
-		<text>Artefact</text>
-	</string>
 	<string id="kb_scores">
-		<text>Scores</text>
+		<text>Points</text>
 	</string>
 	<string id="kb_screenshot">
 		<text>Screenshot</text>
@@ -163,13 +163,13 @@
 		<text>Begin voting</text>
 	</string>
 	<string id="kb_vote_menu">
-		<text>Vote</text>
+		<text>Проголосовать</text>
 	</string>
 	<string id="kb_vote_no">
-		<text>Vote "No"</text>
+		<text>Vote "Yes"</text>
 	</string>
 	<string id="kb_vote_yes">
-		<text>Vote "Yes"</text>
+		<text>Vote "No"</text>
 	</string>
 	<string id="kb_weapon1">
 		<text>Weapon 1</text>

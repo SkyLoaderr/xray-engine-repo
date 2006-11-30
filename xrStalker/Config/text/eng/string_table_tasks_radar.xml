@@ -1,3 +1,6 @@
+	<string id="pripyat_task_title">
+		<text>Пробиться через Припять</text>
+	</string>
 	<string id="rad_antenna">
 		<text>Antennae</text>
 	</string>
@@ -9,13 +12,4 @@
 	</string>
 	<string id="rad_get_to_aes_1">
 		<text>Find the entrance to the sarcophagus</text>
-	</string>
-	<string id="pripyat_task_title">
-		<text>Make your way through Prypyat</text>
-	</string>
-	<string id="pripyat_task_objective_1">
-		<text>Follow the group</text>
-	</string>
-	<string id="pripyat_task_objective_2">
-		<text>Get to the stadium entrance</text>
 	</string>
