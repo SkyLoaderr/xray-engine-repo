@@ -57,43 +57,48 @@ barmen_defend_camp_1
 barmen_defend_camp_2
 
 ;---------------Ecolog---------------------
+;---------Eliminate lager-----------
+ecolog_eliminate_lager_1
+ecolog_eliminate_lager_2
+;---------Find Item-----------
+ecolog_find_item_1
 ;---------Monster Part-----------
+ecolog_monster_part_1
 ecolog_monster_part_2
 ecolog_monster_part_3
 ecolog_monster_part_4
 ecolog_monster_part_5
-ecolog_monster_part_6
-ecolog_monster_part_8
 ;--------Artefact---------------
 ecolog_find_artefact_1
 ecolog_find_artefact_2
 ecolog_find_artefact_3
 ecolog_find_artefact_4
 ecolog_find_artefact_5
-ecolog_find_artefact_6
-;-------Kill Stalker-----
-ecolog_kill_stalker_1
 
 
 ;--------Dolg------------------------
-dolg_defend_kamp_1
+;----------Defend Camp----
+dolg_defend_lager_1
 ;----------Eliminate Camp----
-dolg_eliminate_kamp_1
-dolg_eliminate_kamp_2
-dolg_eliminate_kamp_3
-dolg_eliminate_kamp_4
-dolg_eliminate_kamp_5
+dolg_eliminate_lager_1
+dolg_eliminate_lager_2
+dolg_eliminate_lager_3
+dolg_eliminate_lager_4
+dolg_eliminate_lager_5
+dolg_eliminate_lager_6
+dolg_eliminate_lager_7
+dolg_eliminate_lager_8
+dolg_eliminate_lager_9
+dolg_eliminate_lager_10
+dolg_eliminate_lager_11
+dolg_eliminate_lager_12
+dolg_eliminate_lager_13
+dolg_eliminate_lager_14
 ;----------Kill Staker-------
 dolg_kill_stalker_1
-dolg_kill_stalker_2
-dolg_kill_stalker_3
-dolg_kill_stalker_4
-dolg_kill_stalker_5
-dolg_kill_stalker_6
 ;----------Find Item---------
 dolg_find_item_1
-dolg_find_item_2
-dolg_find_item_3
+
 ;--------Freedom------------------------
 ;----------Eliminate Camp----
 freedom_eliminate_camp_1
@@ -718,6 +723,55 @@ reward_relation = dolg, 50
 reward_rank = 8
 
 
+;--------------------Ecolog-----------------------------
+
+[ecolog_eliminate_lager_1]
+type = eliminate_lager
+community = actor
+text = ecolog_eliminate_lager_1_text
+description = ecolog_eliminate_lager_1_descr
+parent = ecolog
+target = yantar2_snork_small4
+reward_money = 4000
+reward_reputation = +20
+reward_relation = ecolog, 20
+reward_rank = 4
+
+[ecolog_eliminate_lager_2]
+type = eliminate_lager
+community = actor
+text = ecolog_eliminate_lager_2_text
+description = ecolog_eliminate_lager_2_descr
+parent = ecolog
+target = ros_smart_monster_2
+reward_money = 8000
+reward_reputation = +20
+reward_relation = ecolog, 20
+reward_rank = 4
+
+[ecolog_find_item_1]
+type = find_item
+community = actor
+text = ecolog_find_item_1_text
+description = ecolog_find_item_1_descr
+parent = ecolog
+target = outfit_stalker_m1
+reward_money = 9000
+reward_reputation = +30
+reward_relation = ecolog, +30
+reward_rank = 8
+
+[ecolog_monster_part_1]
+type = monster_part
+community = actor
+text = ecolog_monster_part_1_text
+description = ecolog_monster_part_1_descr
+parent = ecolog
+target = mutant_snork_leg
+reward_money = 3000
+reward_reputation = +10
+reward_relation = ecolog, +15
+reward_rank = 2
 
 [ecolog_monster_part_2]
 type = monster_part
@@ -726,8 +780,9 @@ text = ecolog_monster_part_2_text
 description = ecolog_monster_part_2_descr
 parent = ecolog
 target = mutant_flesh_eye
-reward_money = 2100
+reward_money = 4000
 reward_reputation = +10
+reward_relation = ecolog, +15
 reward_rank = 2
 
 [ecolog_monster_part_3]
@@ -736,10 +791,11 @@ community = actor
 text = ecolog_monster_part_3_text
 description = ecolog_monster_part_3_descr
 parent = ecolog
-target = mutant_dog_tail
-reward_money = 3200
-reward_reputation = +15
-reward_rank = 3
+target = mutant_boar_leg
+reward_money = 4000
+reward_reputation = +20
+reward_relation = ecolog, +20
+reward_rank = 4
 
 [ecolog_monster_part_4]
 type = monster_part
@@ -747,10 +803,11 @@ community = actor
 text = ecolog_monster_part_4_text
 description = ecolog_monster_part_4_descr
 parent = ecolog
-target = mutant_boar_leg
+target = mutant_psevdodog_tail
 reward_money = 4000
-reward_reputation = +20
-reward_rank = 4
+reward_reputation = +10
+reward_relation = ecolog, +15
+reward_rank = 2
 
 [ecolog_monster_part_5]
 type = monster_part
@@ -758,31 +815,10 @@ community = actor
 text = ecolog_monster_part_5_text
 description = ecolog_monster_part_5_descr
 parent = ecolog
-target = mutant_snork_leg
-reward_money = 5100
-reward_reputation = +25
-reward_rank = 5
-
-[ecolog_monster_part_6]
-type = monster_part
-community = actor
-text = ecolog_monster_part_6_text
-description = ecolog_monster_part_6_descr
-parent = ecolog
-target = mutant_psevdodog_tail
-reward_money = 6000
-reward_reputation = +30
-reward_rank = 6
-
-[ecolog_monster_part_8]
-type = monster_part
-community = actor
-text = ecolog_monster_part_8_text
-description = ecolog_monster_part_8_descr
-parent = ecolog
 target = mutant_krovosos_jaw
 reward_money = 8000
-reward_reputation = +40
+reward_reputation = +25
+reward_relation = ecolog, +15
 reward_rank = 8
 
 
@@ -793,10 +829,11 @@ community = actor
 text = ecolog_find_artefact_1_text
 description = ecolog_find_artefact_1_descr
 parent = ecolog
-target = af_fuzz kolobok
-reward_money = 10500
-reward_reputation = +50
-reward_rank = 10
+target = af_fireball
+reward_reputation = +10
+reward_rank = 5
+reward_relation = ecolog, +25
+reward_item = af_dummy_pellicle
 
 [ecolog_find_artefact_2]
 type = artefact
@@ -804,10 +841,11 @@ community = actor
 text = ecolog_find_artefact_2_text
 description = ecolog_find_artefact_2_descr
 parent = ecolog
-target = af_dummy glassbeads
-reward_money = 10000
-reward_reputation = +50
-reward_rank = 10
+target = af_gravi
+reward_money = 8000
+reward_reputation = +10
+reward_relation = ecolog, +25
+reward_rank = 5
 
 [ecolog_find_artefact_3]
 type = artefact
@@ -815,10 +853,11 @@ community = actor
 text = ecolog_find_artefact_3_text
 description = ecolog_find_artefact_3_descr
 parent = ecolog
-target = af_dummy pellicle
+target = af_medusa
 reward_money = 10000
-reward_reputation = +50
-reward_rank = 10
+reward_reputation = +10
+reward_relation = ecolog, +25
+reward_rank = 5
 
 [ecolog_find_artefact_4]
 type = artefact
@@ -826,9 +865,10 @@ community = actor
 text = ecolog_find_artefact_4_text
 description = ecolog_find_artefact_4_descr
 parent = ecolog
-target = af_dummy battery
-reward_money = 10000
-reward_reputation = +50
+target = af_electra_moonlight
+reward_money = 12000
+reward_reputation = +20
+reward_relation = ecolog, +40
 reward_rank = 10
 
 [ecolog_find_artefact_5]
@@ -837,187 +877,211 @@ community = actor
 text = ecolog_find_artefact_5_text
 description = ecolog_find_artefact_5_descr
 parent = ecolog
-target = af_dummy dummy
-reward_money = 10000
-reward_reputation = +45
-reward_rank = 10
-
-[ecolog_find_artefact_6]
-type = artefact
-community = actor
-text = ecolog_find_artefact_6_text
-description = ecolog_find_artefact_6_descr
-parent = ecolog
-target = af_dummy spring
-reward_money = 10000
-reward_reputation = +45
+target = af_rusty_sea-urchin
+reward_money = 12000
+reward_reputation = +20
+reward_relation = ecolog, +40
 reward_rank = 10
 
 
-;-----Kill Stalker----
-[ecolog_kill_stalker_1]
-type = kill_stalker
-community = actor
-text = ecolog_kill_stalker_1_text
-description = ecolog_kill_stalker_1_descr
-parent = ecolog
-target = sim_ecolog_zob
-reward_money = 4000
-reward_reputation = -50
-reward_rank = 4
 
 
 
-[dolg_defend_kamp_1]
+
+
+[dolg_defend_lager_1]
 type = defend_lager
 community = actor
-text = dolg_eliminate_kamp_1_text
-time = 50
-init_condition = {=gulag_state(test_terrain_boar:1)}
-need_return = false
-description = dolg_eliminate_kamp_1_descr
+text = dolg_defend_lager_1_text
+description = dolg_defend_lager_1_descr
 parent = dolg
-target = test_terrain
-reward_money = 4000
-reward_reputation = +15
-reward_relation = dolg, 60
-reward_rank = 4
-reward_item = bread
+target = gar_dolg_blockpost
+reward_money = 5000
+reward_reputation = +40
+reward_relation = dolg, +150
+reward_rank = 6
 
 
-[dolg_eliminate_kamp_1]
+[dolg_eliminate_lager_1]
 type = eliminate_lager
 community = actor
-text = dolg_eliminate_kamp_1_text
-description = dolg_eliminate_kamp_1_descr
+text = dolg_eliminate_lager_1_text
+description = dolg_eliminate_lager_1_descr
+parent = dolg
+target = yan_st_zombie2
+reward_money = 5000
+reward_reputation = +40
+reward_relation = dolg, +150
+reward_rank = 6
+
+
+[dolg_eliminate_lager_2]
+type = eliminate_lager
+community = actor
+text = dolg_eliminate_lager_2_text
+description = dolg_eliminate_lager_2_descr
+parent = dolg
+target = gar_nest_flesh
+reward_money = 5000
+reward_reputation = +25
+reward_relation = dolg, +70
+reward_rank = 5
+reward_item = vodka
+
+[dolg_eliminate_lager_3]
+type = eliminate_lager
+community = actor
+text = dolg_eliminate_lager_3_text
+description = dolg_eliminate_lager_3_descr
+parent = dolg
+target = mil_lair2
+reward_money = 5000
+reward_reputation = +25
+reward_relation = dolg, +70
+reward_rank = 5
+
+[dolg_eliminate_lager_4]
+type = eliminate_lager
+community = actor
+text = dolg_eliminate_lager_4_text
+description = dolg_eliminate_lager_4_descr
+parent = dolg
+target = mil_mercs
+reward_money = 4000
+reward_reputation = +40
+reward_relation = dolg, +100
+reward_rank = 7
+
+[dolg_eliminate_lager_5]
+type = eliminate_lager
+community = actor
+text = dolg_eliminate_kamp_5_text
+description = dolg_eliminate_kamp_5_descr
+parent = dolg
+target = ros_smart_killers1
+reward_money = 7000
+reward_reputation = +50
+reward_relation = dolg, +200
+reward_rank = 8
+
+[dolg_eliminate_lager_6]
+type = eliminate_lager
+community = actor
+text = dolg_eliminate_lager_6_text
+description = dolg_eliminate_lager_6_descr
+parent = dolg
+target = ros_smart_stalker_bandits1
+reward_money = 5000
+reward_reputation = +50
+reward_relation = dolg, +100
+reward_rank = 8
+
+[dolg_eliminate_lager_7]
+type = eliminate_lager
+community = actor
+text = dolg_eliminate_lager_7_text
+description = dolg_eliminate_lager_7_descr
+parent = dolg
+target = yan_smart_controler1
+reward_money = 7000
+reward_reputation = +60
+reward_relation = dolg, +200
+reward_rank = 8
+
+[dolg_eliminate_lager_8]
+type = eliminate_lager
+community = actor
+text = dolg_eliminate_lager_8_text
+description = dolg_eliminate_lager_8_descr
+parent = dolg
+target = mil_village
+reward_reputation = -10
+reward_relation = dolg, +225, freedom, -250
+reward_rank = 8
+reward_item = wpn_vintorez_coll
+
+[dolg_eliminate_lager_9]
+type = eliminate_lager
+community = actor
+text = dolg_eliminate_lager_9_text
+description = dolg_eliminate_lager_9_descr
+parent = dolg
+target = gar_smart_bandit2
+reward_money = 4000
+reward_reputation = +50
+reward_relation = dolg, +150
+reward_rank = 5
+
+[dolg_eliminate_lager_10]
+type = eliminate_lager
+community = actor
+text = dolg_eliminate_lager_10_text
+description = dolg_eliminate_lager_10_descr
 parent = dolg
 target = gar_smart_monster_lair2
 reward_money = 4000
 reward_reputation = +15
-reward_relation = dolg, 60
+reward_relation = dolg, +60
 reward_rank = 4
 reward_item = bread
 
-[dolg_eliminate_kamp_2]
+[dolg_eliminate_lager_11]
 type = eliminate_lager
 community = actor
-text = dolg_eliminate_kamp_2_text
-description = dolg_eliminate_kamp_2_descr
+text = dolg_eliminate_lager_11_text
+description = dolg_eliminate_lager_11_descr
 parent = dolg
 target = agr2_st_factory
 reward_money = 7000
 reward_reputation = -35
-reward_relation = dolg, 170
+reward_relation = dolg, +170
 reward_rank = 7
 reward_item = medkit,bandage
 
-[dolg_eliminate_kamp_3]
+[dolg_eliminate_lager_12]
 type = eliminate_lager
-community = actor_dolg
-text = dolg_eliminate_kamp_3_text
-description = dolg_eliminate_kamp_3_descr
+community = actor
+text = dolg_eliminate_lager_12_text
+description = dolg_eliminate_lager_12_descr
 parent = dolg
 target = ros_smart_stalker_killers1
-reward_money = 6100
-reward_reputation = +30
-reward_relation = dolg, 90
+reward_money = 6000
+reward_reputation = +20
+reward_relation = dolg, +100
 reward_rank = 6
-reward_item = medkit,bandage
 
-[dolg_eliminate_kamp_4]
+[dolg_eliminate_lager_13]
 type = eliminate_lager
-community = actor_dolg
-text = dolg_eliminate_kamp_4_text
-description = dolg_eliminate_kamp_4_descr
+community = actor
+text = dolg_eliminate_lager_13_text
+description = dolg_eliminate_lager_13_descr
 parent = dolg
-target = val_bandits
+target = val_lager_bandits
 reward_money = 7000
 reward_reputation = +40
-reward_relation = dolg, 150
-reward_rank = 7
-reward_item = medkit,bandage
+reward_relation = dolg, +150
+reward_rank = 8
 
-[dolg_eliminate_kamp_5]
+[dolg_eliminate_lager_14]
 type = eliminate_lager
-community = actor_dolg
-text = dolg_eliminate_kamp_5_text
-description = dolg_eliminate_kamp_5_descr
+community = actor
+text = dolg_eliminate_lager_14_text
+description = dolg_eliminate_lager_14_descr
 parent = dolg
 target = yan_tonnel_snorks
 reward_money = 6000
 reward_reputation = +40
-reward_relation = dolg, 100
+reward_relation = dolg, +100
 reward_rank = 6
-reward_item = medkit
 
 [dolg_kill_stalker_1]
 type = kill_stalker
-community = actor_dolg
+community = actor
 text = dolg_kill_stalker_1_text
 description = dolg_kill_stalker_1_descr
 parent = dolg
-target = mil_Svoboda_blockpost_leader
-reward_money = 7000
-reward_reputation = -40
-reward_relation = dolg, 200, freedom, -250
-reward_rank = 7
-
-[dolg_kill_stalker_2]
-type = kill_stalker
-community = actor
-text = dolg_kill_stalker_2_text
-description = dolg_kill_stalker_2_descr
-parent = dolg
-target = mil_Svoboda_engineer
-reward_money = 6000
-reward_reputation = -10
-reward_relation = dolg, 150,freedom, -200
-reward_rank = 6
-
-[dolg_kill_stalker_3]
-type = kill_stalker
-community = actor_dolg
-text = dolg_kill_stalker_3_text
-description = dolg_kill_stalker_3_descr
-parent = dolg
-target = mil_Svoboda_master_Max
-reward_money = 7000
-reward_reputation = -60
-reward_relation = dolg, 250, freedom, -300
-reward_rank = 7
-
-[dolg_kill_stalker_4]
-type = kill_stalker
-community = actor_dolg
-text = dolg_kill_stalker_4_text
-description = dolg_kill_stalker_4_descr
-parent = dolg
-target = sim_monolith_master
-reward_money = 5000
-reward_reputation = +35
-reward_relation = dolg, 100
-reward_rank = 5
-
-[dolg_kill_stalker_5]
-type = kill_stalker
-community = actor_dolg
-text = dolg_kill_stalker_5_text
-description = dolg_kill_stalker_5_descr
-parent = dolg
-target = sim_Svoboda_specnaz_leshii
-reward_money = 4110
-reward_reputation = -3
-reward_relation = dolg, 50, freedom, -75
-reward_rank = 4
-
-[dolg_kill_stalker_6]
-type = kill_stalker
-community = actor_dolg
-text = dolg_kill_stalker_6_text
-description = dolg_kill_stalker_6_descr
-parent = dolg
 target = sim_bandit_master_kocherga
-reward_money = 7100
+reward_money = 7000
 reward_reputation = +120
 reward_relation = dolg, 125
 reward_rank = 7
@@ -1028,35 +1092,13 @@ community = actor
 text = dolg_find_item_1_text
 description = dolg_find_item_1_descr
 parent = dolg
-target = outfit_stalker_anom
-reward_money = 7000
-reward_reputation = +35
-reward_rank = 7
+target = wpn_lr300_m1
+reward_money = 6000
+reward_reputation = +50
+reward_rank = 6
 reward_relation = dolg, 100
 
-[dolg_find_item_2]
-type = find_item
-community = actor_dolg
-text = dolg_find_item_2_text
-description = dolg_find_item_2_descr
-parent = dolg
-target = wpn_ak74_m1
-reward_money = 4000
-reward_reputation = -10
-reward_rank = 4
-reward_relation = dolg, 70
 
-[dolg_find_item_3]
-type = find_item
-community = actor
-text = dolg_find_item_3_text
-description = dolg_find_item_3_descr
-parent = dolg
-target = wpn_walther_coll
-reward_money = 5000
-reward_reputation = +30
-reward_rank = 5
-reward_relation = dolg, 130
 
 
 
