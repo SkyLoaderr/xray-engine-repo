@@ -67,7 +67,11 @@ private:
 	float								skeleton_skin_remain_time;
 	float								skeleton_skin_friction_start;
 	float								skeleton_skin_friction_end;
+	float								skeleton_skin_ddelay_after_wound;
+	float								skeleton_skin_remain_time_after_wound;
+	bool								m_was_wounded;
 	float								m_Pred_Time;//Для вычисления дельта времени между пересчётами сопротивления в джоинтах и коэффициента NPC
+	float								pelvis_factor_low_pose_detect;
 	//gray_wolf<
 public:
 	//gray_wolf>

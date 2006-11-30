@@ -131,6 +131,10 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 	skeleton_skin_remain_time		= skeleton_skin_ddelay;
 	skeleton_skin_friction_start	= pSettings->r_float(section,"ph_skeleton_skin_friction_start");
 	skeleton_skin_friction_end		= pSettings->r_float(section,"ph_skeleton_skin_friction_end");
+	skeleton_skin_ddelay_after_wound= pSettings->r_float(section,"ph_skeleton_skin_ddelay_after_wound");
+	skeleton_skin_remain_time_after_wound= skeleton_skin_ddelay_after_wound;
+	pelvis_factor_low_pose_detect= pSettings->r_float(section,"ph_pelvis_factor_low_pose_detect");
+	
 	//gray_wolf<
 	if(pSettings->line_exist(section,"ph_skel_shot_up_factor")) m_shot_up_factor=pSettings->r_float(section,"ph_skel_shot_up_factor");
 	if(pSettings->line_exist(section,"ph_after_death_velocity_factor")) m_after_death_velocity_factor=pSettings->r_float(section,"ph_after_death_velocity_factor");
@@ -307,8 +311,116 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 	}
 	if(!m_pPhysicsShell&&is_killing)
 	{
+		m_was_wounded=false;
+		CKinematics* CKA=smart_cast<CKinematics*>(m_EntityAlife.Visual());
+		CKA->CalculateBones();
+		{
+			CBoneData CBD=CKA->LL_GetData(0);
+			SBoneShape SBS=CBD.shape;
+			
+			CBoneInstance CBI=CKA->LL_GetBoneInstance(0);
+			Fmatrix position_matrix;
+			position_matrix.mul(mXFORM,CBI.mTransform);
+			
+			R_ASSERT2((SBS.type==SBoneShape::EShapeType::stSphere)||(SBS.type==SBoneShape::EShapeType::stBox),"Root bone shape isn't sphere or box");
+				
+			Fvector AA,BB;
+			AA.set(0.0f,0.0f,0.0f);
+			BB.set(0.0f,0.0f,0.0f);
+
+			switch (SBS.type)
+			{	
+			case SBoneShape::EShapeType::stSphere:
+				Fvector P;
+				float R;
+				
+				P=SBS.sphere.P;
+				R=SBS.sphere.R;
+				position_matrix.transform(P);
+
+				AA=P;
+				BB=P;
+				AA.x-=R;
+				AA.y-=R;
+				AA.z-=R;
+				BB.x+=R;
+				BB.y+=R;
+				BB.z+=R;
+
+				break;
+			case SBoneShape::EShapeType::stBox:
+				Fmatrix M;
+				Fvector Ps[8];
+				SBS.box.xform_full(M);
+				M.mul_43(position_matrix,M);
+				for (u16 i=0;i<8;i++)
+				{
+					Ps[i].x=(i&1)? 1.0f : -1.0f;
+					Ps[i].y=(i&2)? 1.0f : -1.0f;
+					Ps[i].z=(i&3)? 1.0f : -1.0f;
+					M.transform(Ps[i]);
+					if (i==0)
+					{
+						AA=Ps[i];
+						BB=Ps[i];
+					}
+					else
+					{
+						if (Ps[i].x<AA.x)
+						{
+							AA.x=Ps[i].x;
+						}
+						if (Ps[i].y<AA.y)
+						{
+							AA.y=Ps[i].y;
+						}
+						if (Ps[i].z<AA.z)
+						{
+							AA.z=Ps[i].z;
+						}
+
+						if (Ps[i].x>BB.x)
+						{
+							BB.x=Ps[i].x;
+						}
+
+						if (Ps[i].y>BB.y)
+						{
+							BB.y=Ps[i].y;
+						}
+						if (Ps[i].z>BB.z)
+						{
+							BB.z=Ps[i].z;
+						}
+					}
+				}
+				break;
+			}
+			Fvector Size,Center;
+			Center.add(AA,BB);
+			Center.div(2.0f);
+			Size.sub(AA,BB);
+			Size.x=abs(Size.x);
+			Size.y=abs(Size.y);
+			Size.z=abs(Size.z);
+			Size.mul(0.5f);
+			Size.mul(pelvis_factor_low_pose_detect);
+
+			xrXRC						xrc			;
+			xrc.ray_options				(0);
+			xrc.ray_query(Level().ObjectSpace.GetStaticModel(),Center,Fvector().set(0.0f,-1.0f,0.0f),Size.magnitude());
+			
+			if (xrc.r_count())
+			{
+				m_was_wounded=true;
+			}
+		}
+		//m_was_wounded=m_EntityAlife.was_wounded();
 		ActivateShell(who);
-		impulse*=(hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
+		if (!m_was_wounded)
+		{
+			impulse*=(hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
+		}
 		m_flags.set(fl_block_hit,TRUE);
 	}
 	if(!(m_pPhysicsShell&&m_pPhysicsShell->isActive()))
@@ -325,8 +437,6 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 	}
 	else {
 		{//if (!m_EntityAlife.g_Alive()) 
-			
-
 			if(m_pPhysicsShell&&m_pPhysicsShell->isActive()) 
 				m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
 			//m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse);
@@ -388,11 +498,12 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 			if(skel_remain_time!=0)
 			{
 				skel_remain_time-=l_time_delta;
-			}
+			};
 			if (skel_remain_time<0)
 			{
 				skel_remain_time=0;
-			}
+			};
+			
 			float curr_joint_resistance=hinge_force_factor1-
 				(skel_remain_time*hinge_force_factor1)/skel_ddelay;
 			m_pPhysicsShell->set_JointResistance(curr_joint_resistance);
@@ -407,8 +518,30 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 			{
 				skeleton_skin_remain_time=0;
 			}
+
+			if(skeleton_skin_remain_time_after_wound!=0)
+			{
+				skeleton_skin_remain_time_after_wound-=l_time_delta;
+			};
+			if (skeleton_skin_remain_time_after_wound<0)
+			{
+				skeleton_skin_remain_time_after_wound=0;
+			};
+
+			float ddelay,remain;
+			if (m_was_wounded)
+			{
+				ddelay=skeleton_skin_ddelay_after_wound;
+				remain=skeleton_skin_remain_time_after_wound;
+			}
+			else
+			{
+				ddelay=skeleton_skin_ddelay;
+				remain=skeleton_skin_remain_time;
+			}
+
 			m_curr_skin_friction_in_death=skeleton_skin_friction_end+
-				(skeleton_skin_remain_time/skeleton_skin_ddelay)*(skeleton_skin_friction_start-skeleton_skin_friction_end);			
+				(remain/ddelay)*(skeleton_skin_friction_start-skeleton_skin_friction_end);			
 		//gray_wolf<
 		}
 
@@ -534,7 +667,7 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 		dp.set(m_EntityAlife.Position());
 	else m_PhysicMovementControl->GetDeathPosition(dp);
 	m_PhysicMovementControl->DestroyCharacter();
-	CollisionCorrectObjPos(dp);
+	//CollisionCorrectObjPos(dp);
 
 	R_ASSERT2(m_physics_skeleton,"No skeleton created!!");
 	m_pPhysicsShell=m_physics_skeleton;
