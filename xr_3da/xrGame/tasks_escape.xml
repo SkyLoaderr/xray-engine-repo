@@ -214,6 +214,7 @@
 		<objective>
 			<text>find_railroad_passage_1</text>
 			<infoportion_complete>esc_find_railroad_passage_find_stalker</infoportion_complete>
+			<object_story_id>esc_dead_tunel_novice</object_story_id>
 		</objective>
 		<objective>
 			<text>find_railroad_passage_2</text>
