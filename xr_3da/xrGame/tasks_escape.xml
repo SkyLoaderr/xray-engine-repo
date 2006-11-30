@@ -194,4 +194,12 @@
 		</objective>
 	</game_task>
 	
-	
+	<game_task id="esc_trader_job">
+		<title>esc_trader_job</title>
+		<objective>
+			<icon>ui_iconsTotal_esc_blockpost_case_to_trader</icon>
+		</objective>
+		<objective>
+			<text>esc_trader_job_text</text>
+		</objective>
+	</game_task>
