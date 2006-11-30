@@ -55,6 +55,12 @@
 <article id="freedom_eliminate_camp_5_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>freedom_eliminate_camp_5_descr</text>
 </article>
+<article id="freedom_eliminate_camp_6_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>freedom_eliminate_camp_6_descr</text>
+</article>
+<article id="freedom_eliminate_camp_7_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>freedom_eliminate_camp_7_descr</text>
+</article>
 
 
 ;--------Artefact------------------
