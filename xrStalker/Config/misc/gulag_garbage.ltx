@@ -1386,8 +1386,8 @@ meet = no_meet
 [remark2@gar_dram_novice]
 target = actor
 anim = wait
-on_actor_dist_le_nvis = 7 | remark3@gar_dram_novice %=gar_dm_bandits_fight%
-on_actor_dist_ge = 15 | %=gar_dm_bandits_fight%
+on_actor_dist_le_nvis = 15 | remark3@gar_dram_novice %=gar_dm_bandits_fight%
+on_actor_dist_ge_nvis = 15 | %=gar_dm_bandits_fight%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight_gar_dram_novice
 on_info3 = {+gar_dm_end} %=gar_dm_bandits_fight%
 on_timer = 15000 | %=gar_dm_bandits_fight%
