@@ -28,7 +28,7 @@ void CControlAnimation::reset_data()
 	m_data.global.init	();		
 	m_data.legs.init	();		
 	m_data.torso.init	();
-	m_data.speed		= -1.f;
+	m_data.set_speed	(-1.f);
 }
 
 void CControlAnimation::update_frame() 
@@ -85,9 +85,11 @@ void CControlAnimation::play()
 
 	// speed only for global
 	if (m_data.global.blend) {
-		if (m_data.speed > 0) {
-			m_data.global.blend->speed	= m_data.speed;		// TODO: make factor
-		} else {
+		if (m_data.get_speed() > 0) 
+		{
+			m_data.global.blend->speed	= m_data.get_speed();		// TODO: make factor
+		}else
+		{
 			m_data.global.blend->speed	= m_saved_global_speed;
 		}
 	}
@@ -115,8 +117,10 @@ void CControlAnimation::play_part(SAnimationPart &part, PlayCallback callback)
 ///////////////////////////////////////////////////////////////////////////////
 	
 	// synchronize prev and current animations
-	if ((pos > 0) && part.blend && !part.blend->stop_at_end) 
+	if ((pos > 0) && part.blend && !part.blend->stop_at_end)
+	{ 
 		part.blend->timeCurrent = part.blend->timeTotal*pos;
+	}
 
 	part.time_started	= Device.dwTimeGlobal;
 	part.actual			= true;
@@ -237,8 +241,13 @@ void CControlAnimation::unfreeze()
 	if (!m_freeze)				return;
 	m_freeze					= false;
 
-	if (m_data.global.blend)	{m_data.global.blend->speed = m_saved_global_speed;}
-	if (m_data.legs.blend)		{m_data.legs.blend->speed	= m_saved_legs_speed;}
-	if (m_data.torso.blend)		{m_data.torso.blend->speed	= m_saved_torso_speed;}
+	if (m_data.global.blend)	{
+		m_data.global.blend->speed = m_saved_global_speed;
+	}
+	if (m_data.legs.blend)		{
+		m_data.legs.blend->speed	= m_saved_legs_speed;
+	}
+	if (m_data.torso.blend)		{
+		m_data.torso.blend->speed	= m_saved_torso_speed;
+	}
 }
-

@@ -61,8 +61,8 @@ void CControlAnimationBase::reinit()
 	m_cur_anim.motion			= eAnimStandIdle;
 	m_cur_anim.index			= 0;
 	m_cur_anim.time_started		= 0;
-	m_cur_anim.speed.current	= -1.f;
-	m_cur_anim.speed.target		= -1.f;
+	m_cur_anim.speed._set_current	(-1.f);
+	m_cur_anim.speed._set_target	(-1.f);
 	m_cur_anim.blend			= 0;
 	m_cur_anim.speed_change_vel	= 1.f;
 
@@ -150,7 +150,7 @@ void CControlAnimationBase::select_animation(bool anim_end)
 	// Setup Com
 	ctrl_data->global.motion	= cur_anim;
 	ctrl_data->global.actual	= false;
-	ctrl_data->speed			= m_cur_anim.speed.target;
+	ctrl_data->set_speed		(m_cur_anim.speed._get_target());
 
 	// «аполнить текущую анимацию
 	string64	st,tmp;
@@ -159,8 +159,8 @@ void CControlAnimationBase::select_animation(bool anim_end)
 	m_cur_anim.name				= st; 
 	m_cur_anim.index			= u8(index);
 	m_cur_anim.time_started		= Device.dwTimeGlobal;
-	m_cur_anim.speed.current	= -1.f;
-	m_cur_anim.speed.target		= -1.f;
+	m_cur_anim.speed._set_current	(1.f);
+	m_cur_anim.speed._set_target	(-1.f);
 }
 
 // проверить существует ли переход из анимации from в to
@@ -480,7 +480,7 @@ void CControlAnimationBase::set_animation_speed()
 	// Setup Com
 	SControlAnimationData		*ctrl_data = (SControlAnimationData*)m_man->data(this, ControlCom::eControlAnimation); 
 	if (!ctrl_data) return;
-	ctrl_data->speed			= m_cur_anim.speed.target;
+	ctrl_data->set_speed		(m_cur_anim.speed._get_target() );
 }
 
 void CControlAnimationBase::check_hit(MotionID motion, float time_perc)

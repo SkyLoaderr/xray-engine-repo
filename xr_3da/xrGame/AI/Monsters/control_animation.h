@@ -18,8 +18,9 @@ struct SAnimationPart {
 };
 
 struct SControlAnimationData : public ControlCom::IComData {
-	float				speed;
-	
+	float				_speed;
+	IC void				set_speed	(float v)		{_speed=v; VERIFY2(_abs(_speed)<1000,"SControlAnimationData::set_speed too big");};
+	IC float			get_speed	()				{return _speed;};
 	SAnimationPart		global;
 	SAnimationPart		legs;
 	SAnimationPart		torso;
