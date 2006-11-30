@@ -197,11 +197,11 @@
 			<infoportion_fail>esc_petruha_die</infoportion_fail>
 		</objective>
 		<objective>
-			<text>esc_dinamit_to_volk_0</text>
-			<map_location_type hint="esc_dinamit_to_volk_0">green_location</map_location_type>
+			<text>esc_dinamit_to_volk</text>
+			<map_location_type hint="esc_dinamit_to_volk">green_location</map_location_type>
 			<map_location_hidden>1</map_location_hidden>
 			<object_story_id>esc_bandits_factory</object_story_id>
-			<infoportion_complete>esc_kill_bandits_quest_done</infoportion_complete>
+			<infoportion_complete>esc_kill_bandits_quest_kill</infoportion_complete>
 		<!--			<function_fail>escape_tasks.is_actor_enemy_lager</function_fail> -->
 		</objective>
 		<objective>
