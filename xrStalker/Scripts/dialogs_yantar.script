@@ -25,3 +25,10 @@ function yan_professor_talk_outfit (first_speaker, second_speaker)
 	end
 	return false
 end
+
+function yan_professor_task_x16_precond (first_speaker, second_speaker)
+	if has_alife_info("bar_rescue_research_fail") or has_alife_info("bar_heli_scene_professor_die") then
+		return true
+	end
+	return false
+end
