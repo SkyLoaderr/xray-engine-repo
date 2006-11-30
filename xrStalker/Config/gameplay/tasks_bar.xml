@@ -293,13 +293,43 @@
 	</game_task>
 
 
-	<game_task id="bar_barman_job" prio="0">
+	<game_task id="bar_barman_job_1" prio="0">
 		<title>bar_barman_job</title>
 		<objective>
 			<icon>ui_iconsTotal_bar_barman_job</icon>
+			<infoportion_complete>bar_darklab_document_start</infoportion_complete>
 		</objective>
 		<objective>
 			<text>bar_barman_job_text</text>
+			<map_location_type hint="bar_barman_job_text">blue_location</map_location_type>
+			<object_story_id>bar_Barman</object_story_id>
+			<infoportion_complete>bar_darklab_document_start</infoportion_complete>
+		</objective>
+	</game_task>
+	<game_task id="bar_barman_job_2" prio="0">
+		<title>bar_barman_job</title>
+		<objective>
+			<icon>ui_iconsTotal_bar_barman_job</icon>
+			<infoportion_complete>bar_x16_documents_start</infoportion_complete>
+		</objective>
+		<objective>
+			<text>bar_barman_job_text</text>
+			<map_location_type hint="bar_barman_job_text">blue_location</map_location_type>
+			<object_story_id>bar_Barman</object_story_id>
+			<infoportion_complete>bar_x16_documents_start</infoportion_complete>
+		</objective>
+	</game_task>
+	<game_task id="bar_barman_job_3" prio="0">
+		<title>bar_barman_job</title>
+		<objective>
+			<icon>ui_iconsTotal_bar_barman_job</icon>
+			<infoportion_complete>bar_deactivate_radar_start</infoportion_complete>
+		</objective>
+		<objective>
+			<text>bar_barman_job_text</text>
+			<map_location_type hint="bar_barman_job_text">blue_location</map_location_type>
+			<object_story_id>bar_Barman</object_story_id>
+			<infoportion_complete>bar_deactivate_radar_start</infoportion_complete>
 		</objective>
 	</game_task>
 	
