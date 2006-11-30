@@ -1205,8 +1205,8 @@ void	game_sv_mp::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount)
 
 	if (TotalMoney<pTeam->m_iM_Min) 
 		TotalMoney = pTeam->m_iM_Min;
-	if (TotalMoney > 32767)
-		TotalMoney = 32767;
+	if (TotalMoney > 1000000)
+		TotalMoney = 1000000;
 
 	ps->money_for_round = s32(TotalMoney);
 	//---------------------------------------
