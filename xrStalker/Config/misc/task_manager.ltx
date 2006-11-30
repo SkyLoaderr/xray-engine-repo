@@ -407,7 +407,7 @@ type = defend_lager
 community = actor
 text = tm_defend_kamp_1_text
 time = 50
-init_condition = {=actor_on_level(l02_garbage)}
+init_condition = {=actor_on_level(l04_darkvalley) =gulag_state(val_smart_bandit_2:1)}
 description = tm_defend_kamp_1_descr
 parent = trader
 target = val_smart_bandit_3
@@ -715,8 +715,8 @@ type = defend_lager
 community = actor
 text = barmen_defend_kamp_1_text
 time = 50
-cond = {=actor_on_level(l02_garbage)}
-init_condition = {=actor_on_level(l02_garbage) +agroprom_military_case_done}
+;---condlist = {=actor_on_level(l02_garbage)}
+init_condition = {+agroprom_military_case_done =actor_on_level(l02_garbage) =gulag_state(gar_smart_bandit_large_lager:1)}, {=gulag_state(gar_smart_garage:1)}
 description = barmen_defend_kamp_1_descr
 parent = barman
 target = gar_smart_garage
@@ -730,6 +730,7 @@ type = defend_lager
 community = actor
 text = barmen_defend_kamp_2_text
 time = 50
+init_condition = {=actor_on_level(l03_agroprom) =gulag_state(agr2_bandit_st:1)}
 description = barmen_defend_kamp_2_descr
 parent = barman
 target = agr2_st_factory
