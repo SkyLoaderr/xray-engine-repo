@@ -137,9 +137,9 @@ function cfg_get_number(char_ini, section, field, object, mandatory, default_val
 	if not mandatory then
 		return default_val
 	end
-	local err = "object name '" .. object:name() .. "': attempt to read a non-existant numeric field '" ..
-		field .. "' in section '" .. section .. "'";
-	abort("%s", err)
+	-- local err = "object name '" .. object:name() .. "': attempt to read a non-existant numeric field '" ..
+	--	field .. "' in section '" .. section .. "'";
+	-- abort("%s", err)
 end
 
 function mob_get_string(char_ini, section, field, override, object, mandatory, default_val)

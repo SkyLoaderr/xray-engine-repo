@@ -68,6 +68,67 @@
 		<init_func>task_manager.init_freedom_reward_dialog</init_func>
 		<precondition>task_manager.has_active_vendor_task</precondition>
     </dialog>
+    <dialog id="tm_shustriy_dialog" priority="-1">
+		<init_func>task_manager.init_shustriy_task_dialog</init_func>
+    </dialog>
+    <dialog id="tm_shustriy_reward" priority="0">
+		<init_func>task_manager.init_shustriy_reward_dialog</init_func>
+		<precondition>task_manager.has_active_vendor_task</precondition>
+    </dialog>
+    <dialog id="tm_wolf_dialog" priority="-1">
+		<init_func>task_manager.init_wolf_task_dialog</init_func>
+    </dialog>
+    <dialog id="tm_wolf_reward" priority="0">
+		<init_func>task_manager.init_wolf_reward_dialog</init_func>
+		<precondition>task_manager.has_active_vendor_task</precondition>
+    </dialog>
+    
+    <dialog id="tm_lisiy_dialog" priority="-1">
+		<init_func>task_manager.init_lisiy_task_dialog</init_func>
+    </dialog>
+    <dialog id="tm_lisiy_reward" priority="0">
+		<init_func>task_manager.init_lisiy_reward_dialog</init_func>
+		<precondition>task_manager.has_active_vendor_task</precondition>
+    </dialog>
+    
+    <dialog id="tm_mercenary_dialog" priority="-1">
+		<init_func>task_manager.init_mercenary_task_dialog</init_func>
+    </dialog>
+    <dialog id="tm_mercenary_reward" priority="0">
+		<init_func>task_manager.init_mercenary_reward_dialog</init_func>
+		<precondition>task_manager.has_active_vendor_task</precondition>
+    </dialog>
+    
+     <dialog id="tm_drunk_dolg_dialog" priority="-1">
+		<init_func>task_manager.init_drunk_dolg_task_dialog</init_func>
+    </dialog>
+    <dialog id="tm_drunk_dolg_reward" priority="0">
+		<init_func>task_manager.init_drunk_dolg_reward_dialog</init_func>
+		<precondition>task_manager.has_active_vendor_task</precondition>
+    </dialog>
+    
+     <dialog id="tm_hunter_dialog" priority="-1">
+		<init_func>task_manager.init_hunter_task_dialog</init_func>
+    </dialog>
+    <dialog id="tm_hunter_reward" priority="0">
+		<init_func>task_manager.init_hunter_reward_dialog</init_func>
+		<precondition>task_manager.has_active_vendor_task</precondition>
+    </dialog>
+    
+     <dialog id="tm_petrenko_dialog" priority="-1">
+		<init_func>task_manager.init_petrenko_task_dialog</init_func>
+    </dialog>
+    <dialog id="tm_petrenko_reward" priority="0">
+		<init_func>task_manager.init_petrenko_reward_dialog</init_func>
+		<precondition>task_manager.has_active_vendor_task</precondition>
+    </dialog>
+     <dialog id="tm_zastava_commander_dialog" priority="-1">
+		<init_func>task_manager.init_zastava_commander_task_dialog</init_func>
+    </dialog>
+    <dialog id="tm_zastava_commander_reward" priority="0">
+		<init_func>task_manager.init_zastava_commander_reward_dialog</init_func>
+		<precondition>task_manager.has_active_vendor_task</precondition>
+    </dialog>
 
 
     <!-- FINAL DIALOGS -->
