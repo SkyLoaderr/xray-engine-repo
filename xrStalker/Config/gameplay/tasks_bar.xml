@@ -296,7 +296,7 @@
 	<game_task id="bar_barman_job" prio="0">
 		<title>bar_barman_job</title>
 		<objective>
-			<icon>ui_iconsTotal_esc_blockpost_case_to_trader</icon>
+			<icon>ui_iconsTotal_bar_barman_job</icon>
 		</objective>
 		<objective>
 			<text>bar_barman_job_text</text>
