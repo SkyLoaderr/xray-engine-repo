@@ -240,6 +240,7 @@ public:
 	virtual void					rmNear					()											= 0;
 	virtual void					rmFar					()											= 0;
 	virtual void					rmNormal				()											= 0;
+	virtual u32						memory_usage			()											= 0;
 
 	// Constructor/destructor
 	virtual ~IRender_interface();
