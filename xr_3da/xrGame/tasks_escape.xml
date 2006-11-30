@@ -197,7 +197,7 @@
 	<game_task id="esc_trader_job" prio="0">
 		<title>esc_trader_job</title>
 		<objective>
-			<icon>ui_iconsTotal_esc_blockpost_case_to_trader</icon>
+			<icon>ui_iconsTotal_esc_trader_job</icon>
 		</objective>
 		<objective>
 			<text>esc_trader_job_text</text>
@@ -207,7 +207,7 @@
 	<game_task id="find_railroad_passage" prio="386">
 		<title>find_railroad_passage</title>
 		<objective>
-			<icon>ui_iconsTotal_esc_blockpost_case_to_trader</icon>
+			<icon>ui_iconsTotal_find_railroad_passage</icon>
 			<article>find_railroad_passage_descr</article>
 			<infoportion_complete>esc_find_railroad_passage_done</infoportion_complete>
 		</objective>
