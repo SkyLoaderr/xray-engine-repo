@@ -4,38 +4,58 @@
 tm_eliminate_camp_1
 tm_eliminate_camp_2
 tm_eliminate_camp_3
+tm_eliminate_camp_4
+tm_eliminate_camp_5
+tm_eliminate_camp_6
 ;-----------Artefact------------
 tm_find_artefact_1
 tm_find_artefact_2
 tm_find_artefact_3
+tm_find_artefact_4
 ;----------Kill Staker-------
 tm_kill_stalker_1
 tm_kill_stalker_2
 tm_kill_stalker_3
 tm_kill_stalker_4
 tm_kill_stalker_5
+tm_kill_stalker_6
 ;---------Find Item-----------
 tm_find_item_1
-tm_find_item_2
+;---------defend Camp--------------
+tm_defend_camp_1
+;---------Monster Part-----------
+tm_monster_part_1
+tm_monster_part_2
+
+
 ;--------Barmen----------------------------------------------------------
 ;-----------Eliminate Camp--------
 barmen_eliminate_camp_1
 barmen_eliminate_camp_2
-barmen_eliminate_camp_3
+;--barmen_eliminate_camp_3
 ;-----------Artefact------------
 barmen_find_artefact_1
 barmen_find_artefact_2
 barmen_find_artefact_3
+barmen_find_artefact_4
+barmen_find_artefact_5
 ;----------Kill Staker-------
 barmen_kill_stalker_1
 barmen_kill_stalker_2
-barmen_kill_stalker_3
+;--- barmen_kill_stalker_3
 barmen_kill_stalker_4
 barmen_kill_stalker_5
 ;---------Find Item-----------
-barmen_find_item_1
-barmen_find_item_2
-barmen_find_item_3
+;--barmen_find_item_1
+;--barmen_find_item_2
+;--barmen_find_item_3
+;---------Monster Part-----------
+barmen_monster_part_1
+barmen_monster_part_2
+;---------defend Camp--------------
+barmen_defend_camp_1
+barmen_defend_camp_2
+
 ;---------------Ecolog---------------------
 ;---------Monster Part-----------
 ecolog_monster_part_2
@@ -167,34 +187,78 @@ community = actor
 text = tm_eliminate_camp_1_text
 description = tm_eliminate_camp_1_descr
 parent = trader
-target = gar_smart_bandit_large_lager
+target = gar_bandit_stroyka
 reward_money = 5000
 reward_reputation = +30
 reward_relation = dolg, 15
 reward_rank = 5
+reward_item = grenade_rgd5
+
 
 [tm_eliminate_camp_2]
 type = eliminate_lager
 community = actor
 text = tm_eliminate_camp_2_text
+;--condlist = {+garbage_meetstalker_done}
 description = tm_eliminate_camp_2_descr
 parent = trader
 target = esc2_st_fabric
-reward_money = 5100
+reward_money = 4500
 reward_reputation = +35
 reward_relation = dolg, 5
 reward_rank = 3
+
 
 [tm_eliminate_camp_3]
 type = eliminate_lager
 community = actor
 text = tm_eliminate_camp_3_text
+init_condition = {=actor_on_level(l03u_agr_underground)}
 description = tm_eliminate_camp_3_descr
 parent = trader
 target = agr_u_bandits
-reward_money = 5300
+reward_money = 5000
 reward_reputation = +25
 reward_relation = dolg, 10
+reward_rank = 5
+reward_item = grenade_rgd5
+
+[tm_eliminate_camp_4]
+type = eliminate_lager
+community = actor
+text = tm_eliminate_camp_4_text
+description = tm_eliminate_camp_4_descr
+parent = trader
+target = esc_bridge_boar
+reward_money = 3000
+reward_reputation = +15
+reward_relation = dolg, 5
+reward_rank = 2
+reward_item = ammo_12x76_zhekan,ammo_12x76_zhekan
+
+[tm_eliminate_camp_5]
+type = eliminate_lager
+community = actor
+text = tm_eliminate_camp_5_text
+description = tm_eliminate_camp_5_descr
+parent = trader
+target = gar_smart_bandit2
+reward_money = 4000
+reward_reputation = +50
+reward_relation = dolg, 20
+reward_rank = 10
+
+[tm_eliminate_camp_6]
+type = eliminate_lager
+community = actor
+text = tm_eliminate_camp_6_text
+;----------condlist = {+val_chase_start}
+description = tm_eliminate_camp_6_descr
+parent = trader
+target = val_smart_monster_lair_3
+reward_money = 5000
+reward_reputation = +15
+reward_relation = dolg, 5
 reward_rank = 5
 
 [tm_find_artefact_1]
@@ -215,7 +279,7 @@ text = tm_find_artefact_2_text
 description = tm_find_artefact_2_descr
 parent = trader
 target = af_cristall_flower
-reward_money = 3200
+reward_money = 3500
 reward_reputation = +20
 reward_rank = 3
 reward_item = vodka
@@ -227,9 +291,21 @@ text = tm_find_artefact_3_text
 description = tm_find_artefact_3_descr
 parent = trader
 target = af_night_star
-reward_money = 7100
+reward_money = 15000
 reward_reputation = +40
 reward_rank = 7
+
+[tm_find_artefact_4]
+type = artefact
+community = actor
+text = tm_find_artefact_4_text
+description = tm_find_artefact_4_descr
+parent = trader
+target = af_mincer meat
+reward_money = 3500
+reward_reputation = +20
+reward_rank = 3
+reward_item = medkit_scientic
 
 [tm_kill_stalker_1]
 type = kill_stalker
@@ -237,8 +313,8 @@ community = actor
 text = tm_kill_stalker_1_text
 description = tm_kill_stalker_1_descr
 parent = trader
-target = sim_Bandit_master
-reward_money = 6250
+target = gar_bandit_leader
+reward_money = 5000
 reward_reputation = +15
 reward_relation = dolg, 5
 reward_item = medkit,bandage
@@ -250,10 +326,10 @@ community = actor
 text = tm_kill_stalker_2_text
 description = tm_kill_stalker_2_descr
 parent = trader
-target = sim_stalker_veteran
-reward_money = 4000
+target = gar_stalker_general
+reward_money = 3000
 reward_reputation = -25
-reward_item = medkit
+reward_item = medkit_army
 reward_rank = 4
 
 [tm_kill_stalker_3]
@@ -274,9 +350,10 @@ text = tm_kill_stalker_4_text
 description = tm_kill_stalker_4_descr
 parent = trader
 target = sim_stalker_veteran_gusarov
-reward_money = 4100
+reward_money = 5000
 reward_reputation = -25
 reward_rank = 4
+reward_item = wpn_walther_m1
 
 [tm_kill_stalker_5]
 type = kill_stalker
@@ -289,31 +366,65 @@ reward_reputation = -60
 reward_rank = 7
 reward_item = af_fuzz kolobok
 
+[tm_kill_stalker_6]
+type = kill_stalker
+community = actor
+text = tm_kill_stalker_6_text
+description = tm_kill_stalker_6_descr
+parent = trader
+target = sim_stalker_novice
+reward_money = 2000
+reward_reputation = -10
+reward_rank = 2
+reward_item = conserva
+
 [tm_find_item_1]
 type = find_item
 community = actor
 text = tm_find_item_1_text
 description = tm_find_item_1_descr
 parent = trader
-target = outfit_bandit_anom
-reward_money = 5500
-reward_reputation = +35
-reward_item = medkit,bandage
-reward_rank = 6
-
-[tm_find_item_2]
-type = find_item
-community = actor
-text = tm_find_item_2_text
-description = tm_find_item_2_descr
-parent = trader
 target = wpn_fort_m1
-reward_money = 3200
+reward_money = 2000
 reward_reputation = +15
 reward_rank = 3
 
+[tm_defend_camp_1]
+type = defend_lager
+community = actor
+text = tm_defend_kamp_1_text
+time = 50
+init_condition = {=actor_on_level(l02_garbage)} ;-- +agroprom_military_case_have}
+description = tm_defend_kamp_1_descr
+parent = trader
+target = val_smart_bandit_3
+;---reward_money = 5000
+reward_reputation = +35
+reward_relation = dolg, 50
+reward_rank = 10
+reward_item = stalker_outfit
 
+[tm_monster_part_1]
+type = monster_part
+community = actor
+text = tm_monster_part_1_text
+description = tm_monster_part_1_descr
+parent = trader
+target = mutant_krovosos_jaw
+reward_money = 5500
+reward_reputation = +20
+reward_rank = 5
 
+[tm_monster_part_2]
+type = monster_part
+community = actor
+text = tm_monster_part_2_text
+description = tm_monster_part_2_descr
+parent = trader
+target = mutant_psevdodog_tail
+reward_money = 4500
+reward_reputation = +10
+reward_rank = 5
 
 
 [barmen_eliminate_camp_1]
@@ -323,11 +434,11 @@ text = barmen_eliminate_camp_1_text
 description = barmen_eliminate_camp_1_descr
 parent = barman
 target = gar_smart_bandit
-reward_money = 4000
+reward_money = 5000
 reward_reputation = +25
 reward_relation = dolg, 10
 reward_rank = 4
-reward_item = bandage
+reward_item = grenade_f1
 
 [barmen_eliminate_camp_2]
 type = eliminate_lager
@@ -336,22 +447,77 @@ text = barmen_eliminate_camp_2_text
 description = barmen_eliminate_camp_2_descr
 parent = barman
 target = ros_smart_killers1
-reward_money = 6200
+reward_money = 6500
 reward_reputation = +35
 reward_relation = dolg, 15
 reward_rank = 6
-reward_item = bandage,medkit
+reward_item = grenade_f1,medkit_army
 
-[barmen_eliminate_camp_3]
+;--[barmen_eliminate_camp_3]
+;--type = eliminate_lager
+;--community = actor
+;--text = barmen_eliminate_camp_3_text
+;--description = barmen_eliminate_camp_3_descr
+;--parent = barman
+;--target = mil_bandit
+;--reward_money = 7000
+;--reward_reputation = +40
+;--reward_rank = 7
+
+[barmen_eliminate_camp_4]
 type = eliminate_lager
 community = actor
-text = barmen_eliminate_camp_3_text
-description = barmen_eliminate_camp_3_descr
+text = barmen_eliminate_camp_4_text
+description = barmen_eliminate_camp_4_descr
 parent = barman
-target = mil_bandit
+target = ros_smart_stalker_bandits1
 reward_money = 7000
 reward_reputation = +40
+reward_relation = dolg, 25
 reward_rank = 7
+reward_item = grenade_f1,medkit_army
+
+[barmen_eliminate_camp_5]
+type = eliminate_lager
+community = actor
+text = barmen_eliminate_camp_5_text
+description = barmen_eliminate_camp_5_descr
+parent = barman
+target = ros_smart_monster1
+reward_money = 5000
+reward_reputation = +35
+reward_relation = dolg, 14
+reward_rank = 5
+reward_item = grenade_rgd5,bandage
+
+
+[barmen_eliminate_camp_6]
+type = eliminate_lager
+community = actor
+text = barmen_eliminate_camp_6_text
+description = barmen_eliminate_camp_6_descr
+parent = barman
+target = agr2_bandit_st
+reward_money = 6000
+reward_reputation = +35
+reward_relation = dolg, 20
+reward_rank = 7
+reward_item = grenade_rgd5,grenade_rgd5
+
+
+[barmen_eliminate_camp_7]
+type = eliminate_lager
+community = actor
+text = barmen_eliminate_camp_7_text
+description = barmen_eliminate_camp_7_descr
+parent = barman
+target = dar_smart_snork
+reward_money = 6000
+reward_reputation = +35
+reward_relation = dolg, 15
+reward_rank = 6
+reward_item = grenade_f1,grenade_rgd5
+
 
 [barmen_find_artefact_1]
 type = artefact
@@ -360,7 +526,7 @@ text = barmen_find_artefact_1_text
 description = barmen_find_artefact_1_descr
 parent = barman
 target = af_mincer meat
-reward_money = 5100
+reward_money = 3500
 reward_reputation = +35
 reward_rank = 5
 
@@ -371,8 +537,8 @@ text = barmen_find_artefact_2_text
 description = barmen_find_artefact_2_descr
 parent = barman
 target = af_rusty kristall
-reward_money = 6000
-reward_reputation = +45
+reward_money = 4000
+reward_reputation = +25
 reward_rank = 6
 
 [barmen_find_artefact_3]
@@ -381,10 +547,32 @@ community = actor
 text = barmen_find_artefact_3_text
 description = barmen_find_artefact_3_descr
 parent = barman
-target = af_gold_fish
-reward_money = 7000
+target = af-night-star
+reward_money = 15000
 reward_reputation = +60
 reward_rank = 7
+
+[barmen_find_artefact_4]
+type = artefact
+community = actor
+text = barmen_find_artefact_4_text
+description = barmen_find_artefact_4_descr
+parent = barman
+target = af_electra_flash
+reward_money = 6000
+reward_reputation = +20
+reward_rank = 4
+
+[barmen_find_artefact_5]
+type = artefact
+community = actor
+text = barmen_find_artefact_5_text
+description = barmen_find_artefact_5_descr
+parent = barman
+target = af_gold_fish
+reward_money = 15000
+reward_reputation = +20
+reward_rank = 4
 
 [barmen_kill_stalker_1]
 type = kill_stalker
@@ -392,11 +580,10 @@ community = actor
 text = barmen_kill_stalker_1_text
 description = barmen_kill_stalker_1_descr
 parent = barman
-target = sim_soldier_specnaz
+target = agr_ratcatcher
 reward_money = 5000
 reward_reputation = +25
 reward_relation = dolg, -5
-reward_item = medkit
 reward_rank = 5
 
 [barmen_kill_stalker_2]
@@ -405,7 +592,7 @@ community = actor
 text = barmen_kill_stalker_2_text
 description = barmen_kill_stalker_2_descr
 parent = barman
-target = sim_stalker_master
+target = sim_stalker_veteran
 reward_money = 6000
 reward_reputation = -45
 reward_rank = 6
@@ -413,10 +600,12 @@ reward_rank = 6
 [barmen_kill_stalker_3]
 type = kill_stalker
 community = actor
+init_condition = {=actor_on_level(l10_radar) +yan_kill_brain_done}
+need_return = false
 text = barmen_kill_stalker_3_text
 description = barmen_kill_stalker_3_descr
 parent = barman
-target = sim_monolith_master
+target = rad_monolith_master
 reward_money = 8000
 reward_reputation = +80
 reward_rank = 8
@@ -428,9 +617,10 @@ text = barmen_kill_stalker_4_text
 description = barmen_kill_stalker_4_descr
 parent = barman
 target = sim_stalker_general_upir
-reward_money = 4100
+reward_money = 3000
 reward_reputation = +5
 reward_rank = 4
+reward_item = wpn_colt_m1,ammo_11.43x23_hydro,ammo_11.43x23_hydro
 
 [barmen_kill_stalker_5]
 type = kill_stalker
@@ -442,38 +632,89 @@ target = sim_stalker_veteran_vorobey
 reward_money = 5000
 reward_reputation = -20
 reward_rank = 5
+reward_item = wpn_abakan_m1,ammo_5.45x39_ap,ammo_5.45x39_ap,ammo_5.45x39_ap
 
-[barmen_find_item_1]
-type = find_item
+;--[barmen_find_item_1]
+;--type = find_item
+;--community = actor
+;--text = barmen_find_item_1_text
+;--description = barmen_find_item_1_descr
+;--parent = barman
+;--target = outfit_monolith_m1
+;--reward_money = 5000
+;--reward_reputation = +30
+;--reward_rank = 5
+
+;--[barmen_find_item_2]
+;--type = find_item
+;--community = actor
+;--text = barmen_find_item_2_text
+;--description = barmen_find_item_2_descr
+;--parent = barman
+;--target = wpn_deserteagle_coll
+;--reward_money = 6000
+;--reward_reputation = +35
+;--reward_rank = 6
+
+;--[barmen_find_item_3]
+;--type = find_item
+;--community = actor
+;--text = barmen_find_item_3_text
+;--description = barmen_find_item_3_descr
+;--parent = barman
+;--target = wpn_vintorez_coll
+;--reward_money = 8500
+;--reward_reputation = +40
+;--reward_rank = 8
+
+[barmen_monster_part_1]
+type = monster_part
 community = actor
-text = barmen_find_item_1_text
-description = barmen_find_item_1_descr
-parent = barman
-target = outfit_monolith_m1
-reward_money = 5000
-reward_reputation = +30
+text = tm_monster_part_1_text
+description = tm_monster_part_1_descr
+parent = trader
+target = mutant_flesh_eye
+reward_money = 3000
+reward_reputation = +20
 reward_rank = 5
 
-[barmen_find_item_2]
-type = find_item
+[barmen_monster_part_2]
+type = monster_part
 community = actor
-text = barmen_find_item_2_text
-description = barmen_find_item_2_descr
-parent = barman
-target = wpn_deserteagle_coll
-reward_money = 6000
-reward_reputation = +35
-reward_rank = 6
+text = tm_monster_part_2_text
+description = tm_monster_part_2_descr
+parent = trader
+target = mutant_boar_leg
+reward_money = 3000
+reward_reputation = +20
+reward_rank = 5
 
-[barmen_find_item_3]
-type = find_item
+[barmen_defend_camp_1]
+type = defend_lager
 community = actor
-text = barmen_find_item_3_text
-description = barmen_find_item_3_descr
-parent = barman
-target = wpn_vintorez_coll
-reward_money = 8500
-reward_reputation = +40
+text = barmen_defend_kamp_1_text
+time = 50
+cond = {=actor_on_level(l02_garbage)}
+init_condition = {=actor_on_level(l02_garbage) +agroprom_military_case_done}
+description = barmen_defend_kamp_1_descr
+parent = trader
+target = gar_smart_garage
+reward_money = 5000
+reward_reputation = +45
+reward_relation = dolg, 30
+reward_rank = 10
+
+[barmen_defend_camp_2]
+type = defend_lager
+community = actor
+text = barmen_defend_kamp_2_text
+time = 50
+description = barmen_defend_kamp_2_descr
+parent = trader
+target = agr2_st_factory
+reward_money = 5000
+reward_reputation = +35
+reward_relation = dolg, 50
 reward_rank = 8
 
 
