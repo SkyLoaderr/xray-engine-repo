@@ -14,6 +14,7 @@
 #include "stalker_property_evaluators.h"
 #include "script_game_object.h"
 #include "ai/stalker/ai_stalker.h"
+#include "stalker_movement_manager.h"
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
@@ -58,6 +59,7 @@ void CStalkerKillWoundedPlanner::execute				()
 void CStalkerKillWoundedPlanner::finalize				()
 {
 	inherited::finalize		();
+	object().movement().set_mental_state	(MonsterSpace::eMentalStateDanger);
 }
 
 void CStalkerKillWoundedPlanner::add_evaluators			()

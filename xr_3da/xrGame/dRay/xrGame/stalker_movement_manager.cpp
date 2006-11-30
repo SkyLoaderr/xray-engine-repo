@@ -26,6 +26,7 @@
 #	include "stalker_decision_space.h"
 #	include "stalker_planner.h"
 #	include "script_game_object.h"
+#	include "stalker_combat_planner.h"
 #endif // DEBUG
 
 using namespace StalkerMovement;
@@ -407,7 +408,9 @@ void CStalkerMovementManager::parse_velocity_mask	()
 		case eVelocityFree : {
 #ifdef DEBUG
 			if (m_object->brain().current_action_id() == StalkerDecisionSpace::eWorldOperatorCombatPlanner) {
-				Msg						("! stalker %s is doing bad thing",*m_object->cName());
+				CStalkerCombatPlanner	&planner = smart_cast<CStalkerCombatPlanner&>(m_object->brain().current_action());
+				if (planner.current_action_id() != StalkerDecisionSpace::eWorldOperatorCriticallyWounded)
+					Msg					("! stalker %s is doing bad thing (action %s)",*m_object->cName(),planner.current_action().m_action_name);
 			}
 #endif // DEBUG
 			m_current.m_mental_state	= eMentalStateFree;
