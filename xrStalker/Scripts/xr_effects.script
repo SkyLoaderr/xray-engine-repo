@@ -1079,6 +1079,37 @@ function bar_arena_teleport_2 ( actor, npc)
     in_object  = inv_box_2
 		actor:inventory_for_each(transfer_object_item) 
 end
+
+function barman_give_extra_task (actor, npc)
+	if has_alife_info ("agroprom_military_case_done") and not has_alife_info ("bar_darklab_document_start") then
+		db.actor:give_info_portion("barman_job_1")
+		return
+	elseif has_alife_info ("bar_darklab_document_done") and not has_alife_info ("bar_x16_documents_start") then
+		db.actor:give_info_portion("barman_job_2")
+		return
+	elseif has_alife_info ("bar_x16_documents_done") and not has_alife_info ("bar_deactivate_radar_start") then
+		db.actor:give_info_portion("barman_job_3")
+		return
+	end
+	return	
+end
+
+function trader_extra_task (actor, npc)
+	if has_alife_info ("esc_serious_talk") and not has_alife_info ("agroprom_military_case") then
+		db.actor:give_info_portion("trader_job")
+		return
+	end
+	return
+end
+
+function scientist_extra_task (actor, npc)
+	if has_alife_info ("yan_find_scientist_done") and not has_alife_info ("yan_find_vasilyev_start") then
+		db.actor:give_info_portion("scientist_job")
+		return
+	end
+	return
+end
+
 function military_max_dead (actor, npc)
 end
 
