@@ -320,7 +320,15 @@ void CKinematicsAnimated::UpdateTracks	()
 			CBlend& B = *(*I);
 			if (B.dwFrame==Device.dwFrame)	continue;
 			B.dwFrame		=	Device.dwFrame;
-			if (B.playing) 	B.timeCurrent += dt*B.speed; // stop@end - time is not going 
+
+			if (B.playing) {
+				if(B.timeCurrent > 10000 || B.speed > 10000)
+					Msg("--Atc %f %f",B.timeCurrent,B.speed);
+				B.timeCurrent += dt*B.speed; // stop@end - time is not going 
+				if(B.timeCurrent > 10000)
+					Msg("--Btc %f %f",B.timeCurrent,B.speed);
+
+			}
 			switch (B.blend) 
 			{
 			case CBlend::eFREE_SLOT: 
@@ -682,6 +690,43 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
                     T2.z		= float(K2t->z)*M._sizeT.z+M._initT.z;
                     
 	                D->T.lerp	(T1,T2,delta);
+/*					
+					if ((_abs(D->T.y)>10000) || (_abs(D->T.x)>10000) || (_abs(D->T.z)>10000)){
+						Log("xxx");
+						Log("Blend--------");
+						Log("blendAmount", B->blendAmount);
+						Log("timeCurrent", B->timeCurrent);
+						Log("timeTotal", B->timeTotal);
+						Log("bone_or_part", B->bone_or_part);
+
+						Log("blendAccrue", B->blendAccrue);
+						Log("blendFalloff", B->blendFalloff);
+						Log("blendPower", B->blendPower);
+						Log("speed", B->speed);
+						Log("playing", B->playing);
+						Log("stop_at_end", B->stop_at_end);
+						Log("motionID", (u32)B->motionID.idx);
+						Log("blend", B->blend);
+
+						Log("dwFrame", B->dwFrame);
+						Log("Device.dwFrame", Device.dwFrame);
+						Log("Blend-------end");
+
+						Log("Bone",LL_BoneName_dbg(SelfID));
+						Log("parent",*parent);
+						Msg("K1t %d,%d,%d",K1t->x,K1t->y,K1t->z);
+						Msg("K2t %d,%d,%d",K2t->x,K2t->y,K2t->z);
+
+						Log("count",count);
+						Log("time",time);
+						Log("frame",frame);
+						Log("T1",T1);
+						Log("T2",T2);
+						Log("delta",delta);
+						Log("Dt",D->T);
+						VERIFY(0);
+*/
+					}
 				}else{
 	                D->T.set	(M._initT);
                 }
@@ -701,6 +746,16 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
                 break;
             case 1: 
                 Result			= R[0];
+/*
+				if(Result.T.y>10000){
+					Log("1");
+					Log("BLEND_INST",BLEND_INST.Blend.size());
+					Log("Bone",LL_BoneName_dbg(SelfID));
+					Msg("Result.Q %f,%f,%f,%f",Result.Q.x,Result.Q.y,Result.Q.z,Result.Q.w);
+					Log("Result.T",Result.T);
+					VERIFY(0);
+				}
+*/
                 break;
             case 2:
                 {
@@ -716,6 +771,17 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
 //.					}
 #endif
                     KEY_Interp	(Result,R[0],R[1], clampr(w,0.f,1.f));
+/*
+					if(Result.T.y>10000){
+						Log("2");
+						Log("BLEND_INST",BLEND_INST.Blend.size());
+						Log("Bone",LL_BoneName_dbg(SelfID));
+						Msg("Result.Q %f,%f,%f,%f",Result.Q.x,Result.Q.y,Result.Q.z,Result.Q.w);
+						Log("Result.T",Result.T);
+						Log("parent",*parent);
+						VERIFY(0);
+					}
+*/
                 }
                 break;
             default:
@@ -754,6 +820,62 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
             Fmatrix					RES;
             RES.mk_xform			(Result.Q,Result.T);
             BONE_INST.mTransform.mul_43(*parent,RES);
+/*
+			if(BONE_INST.mTransform.c.y>10000)
+			{
+				Log("BLEND_INST",BLEND_INST.Blend.size());
+				Log("Bone",LL_BoneName_dbg(SelfID));
+				Msg("Result.Q %f,%f,%f,%f",Result.Q.x,Result.Q.y,Result.Q.z,Result.Q.w);
+				Log("Result.T",Result.T);
+				Log("lp parent",(u32)parent);
+				Log("parent",*parent);
+				Log("RES",RES);
+				Log("mT",BONE_INST.mTransform);
+
+                CBlend*			B		=	*BI;
+                CMotion&		M		=	*LL_GetMotion(B->motionID,SelfID);
+                float			time	=	B->timeCurrent*float(SAMPLE_FPS);
+                u32				frame	=	iFloor(time);
+                u32				count	=	M.get_count();
+                float			delta	=	time-float(frame);
+
+				Log("flTKeyPresent",M.test_flag(flTKeyPresent));
+				Log("M._initT",M._initT);
+				Log("M._sizeT",M._sizeT);
+				
+                // translate
+                if (M.test_flag(flTKeyPresent))
+				{
+	                CKeyQT*	K1t	= &M._keysT[(frame+0)%count];
+    	            CKeyQT*	K2t	= &M._keysT[(frame+1)%count];
+
+                    Fvector T1,T2,Dt;
+                    T1.x		= float(K1t->x)*M._sizeT.x+M._initT.x;
+                    T1.y		= float(K1t->y)*M._sizeT.y+M._initT.y;
+                    T1.z		= float(K1t->z)*M._sizeT.z+M._initT.z;
+                    T2.x		= float(K2t->x)*M._sizeT.x+M._initT.x;
+                    T2.y		= float(K2t->y)*M._sizeT.y+M._initT.y;
+                    T2.z		= float(K2t->z)*M._sizeT.z+M._initT.z;
+                    
+	                Dt.lerp	(T1,T2,delta);
+
+					Msg("K1t %d,%d,%d",K1t->x,K1t->y,K1t->z);
+					Msg("K2t %d,%d,%d",K2t->x,K2t->y,K2t->z);
+
+					Log("count",count);
+					Log("frame",frame);
+					Log("T1",T1);
+					Log("T2",T2);
+					Log("delta",delta);
+					Log("Dt",Dt);
+
+				}else
+				{
+					D->T.set	(M._initT);
+                }
+				VERIFY(0);
+			}
+*/
             if (BONE_INST.Callback)		BONE_INST.Callback(&BONE_INST);
         }
         BONE_INST.mRenderTransform.mul_43(BONE_INST.mTransform,bd->m2b_transform);
