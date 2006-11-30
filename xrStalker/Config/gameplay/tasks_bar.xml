@@ -241,7 +241,7 @@
 		<title>x16_documents</title>
 		<objective>
 			<text>x16_yantar</text>
-			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="400" y="50" width="50" height="50">ui_iconsTotal_bar_x16_documents</icon>
 			<infoportion_complete>bar_x16_documents_done</infoportion_complete>
 			<article>descr_bar_x16_documents</article>
 		</objective>
