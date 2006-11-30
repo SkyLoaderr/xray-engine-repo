@@ -104,7 +104,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 	sprintf				(str, "%d RU", pInvItem->Cost());		// will be owerwritten in multiplayer
 	UICost->SetText		(str);
 	
-	float cond = pInvItem->GetCondition();
+	float cond = pInvItem->GetConditionToShow();
 
 	if(UICondProgresBar){
 		UICondProgresBar->Show				(true);

@@ -90,6 +90,7 @@ public:
 			void				restartDebugger				();
 			CScriptDebugger		*debugger					();
 #endif
+			void				collect_all_garbage			();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

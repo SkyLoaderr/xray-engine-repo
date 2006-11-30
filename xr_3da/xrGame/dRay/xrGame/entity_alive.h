@@ -171,6 +171,7 @@ public:
 	virtual void				OnCriticalRadiationHealthLoss() {};	//вызывается если entity умрет от радиации 
 
 	virtual	CVisualMemoryManager*visual_memory				() const {return(0);}
+	virtual	void				net_Relcase					(CObject *O);
 };
 
 #include "entity_alive_inline.h"

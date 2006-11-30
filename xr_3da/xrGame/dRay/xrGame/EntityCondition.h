@@ -34,6 +34,7 @@ public:
 	virtual					~CEntityCondition		(void);
 
 	virtual void			LoadCondition			(LPCSTR section);
+	virtual void			remove_links			(const CObject *object);
 
 	virtual void			save					(NET_Packet &output_packet);
 	virtual void			load					(IReader &input_packet);

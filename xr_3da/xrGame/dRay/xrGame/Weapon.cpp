@@ -1500,3 +1500,7 @@ bool CWeapon::show_indicators()
 	return ! ( IsZoomed() && ZoomTexture() );
 }
 
+float CWeapon::GetConditionToShow	() const
+{
+	return	(pow(GetCondition(),.25f));
+}

@@ -421,7 +421,7 @@ void CUIMainIngameWnd::Update()
 	{
 		UIArmorBar.Show					(true);
 		UIStaticArmor.Show				(true);
-		UIArmorBar.SetProgressPos		(pItem->GetCondition()*100);
+		UIArmorBar.SetProgressPos		(pItem->GetConditionToShow()*100);
 	}
 	else
 	{

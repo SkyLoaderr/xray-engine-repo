@@ -688,9 +688,16 @@ SCollisionHitCallback*	CEntityAlive::	get_collision_hit_callback		()
   if(cs)return cs->get_collision_hit_callback();
   else return false;
 }
+
 bool					CEntityAlive::	set_collision_hit_callback		(SCollisionHitCallback *cc)
 {
 	CCharacterPhysicsSupport* cs=character_physics_support();
 	if(cs)return cs->set_collision_hit_callback(cc);
 	else return false;
+}
+
+void CEntityAlive::net_Relcase	(CObject *object)
+{
+	inherited::net_Relcase		(object);
+	conditions().remove_links	(object);
 }

@@ -541,3 +541,12 @@ void CEntityCondition::SConditionChangeV::load(LPCSTR sect, LPCSTR prefix)
 	m_fV_WoundIncarnation	= pSettings->r_float(sect,strconcat(str,"wound_incarnation_v",prefix));
 	m_fV_HealthRestore		= READ_IF_EXISTS(pSettings,r_float,sect, strconcat(str,"health_restore_v",prefix),0.0f);
 }
+
+void CEntityCondition::remove_links	(const CObject *object)
+{
+	if (m_pWho != object)
+		return;
+
+	m_pWho					= m_object;
+	m_iWhoID				= m_object->ID();
+}

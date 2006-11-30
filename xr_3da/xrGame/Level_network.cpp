@@ -8,6 +8,8 @@
 #include "net_queue.h"
 #include "MainMenu.h"
 #include "space_restriction_manager.h"
+#include "ai_space.h"
+#include "script_engine.h"
 
 const int NET_ObjectsPerPacketInSave	= NET_PacketSizeLimit/2000;
 extern bool	g_b_ClearGameCaptions;
@@ -23,9 +25,9 @@ void CLevel::remove_objects	()
 		ClearAllObjects			();
 
 	for (int i=0; i<6; ++i) {
+		psNET_Flags.set			(NETFLAG_MINIMIZEUPDATES,FALSE);
 		// ugly hack for checks that update is twice on frame
 		// we need it since we do updates for checking network messages
-		psNET_Flags.set			(NETFLAG_MINIMIZEUPDATES,FALSE);
 		++(Device.dwFrame);
 		psDeviceFlags.set		(rsDisableObjectsAsCrows,TRUE);
 		ClientReceive			();
@@ -41,6 +43,8 @@ void CLevel::remove_objects	()
 	psDeviceFlags.set			(rsDisableObjectsAsCrows, b_stored);
 	g_b_ClearGameCaptions		= true;
 	Game().reset_ui				();
+
+	ai().script_engine().collect_all_garbage	();
 }
 
 void CLevel::net_Stop		()
@@ -57,6 +61,8 @@ void CLevel::net_Stop		()
 		Server->Disconnect		();
 		xr_delete				(Server);
 	}
+
+	ai().script_engine().collect_all_garbage	();
 }
 
 BOOL	g_bCalculatePing = FALSE;

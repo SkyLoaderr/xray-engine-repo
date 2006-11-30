@@ -139,6 +139,7 @@ public:
 			float				GetKillMsgHeight	() const ;
 	//---------------------------------------------------------------------
 			float				GetCondition		() const					{return m_fCondition;}
+	virtual	float				GetConditionToShow	() const					{return GetCondition();}
 			void				ChangeCondition		(float fDeltaCondition);
 
 	virtual u32					GetSlot				()  const					{return m_slot;}
