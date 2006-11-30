@@ -1,21 +1,19 @@
 function proceed()
-    local actor = db.actor
-    
-	if actor:has_info("garbage_meetstalker_die") and
-		actor:has_info("agr_can_ask_krot_about_gunslinger") and
-		actor:dont_has_info("agr_krot_band_start")
+	if db.actor ~= nil and 
+		has_alife_info("garbage_meetstalker_die") and
+		has_alife_info("agr_can_ask_krot_about_gunslinger") and
+		not has_alife_info("agr_krot_band_start")
 	then
-		actor:give_info_portion("agr_krot_band_start")
+		db.actor:give_info_portion("agr_krot_band_start")
 		news_manager.send_tip(db.actor, "gar_seryi_info")
 	end
 end
 
 function task_hellcar_complete()
-	local actor = db.actor
-	if actor:has_info("gar_hellcar_help") and
-	   actor:has_info("gar_bandits_killed") and
-	   (actor:has_info("gar_hellcar_death") or
-	   actor:has_info("gar_hellcar_dialog_end"))
+	if has_alife_info("gar_hellcar_help") and
+	   has_alife_info("gar_bandits_killed") and
+	   (has_alife_info("gar_hellcar_death") or
+	   has_alife_info("gar_hellcar_dialog_end"))
 	then
 		return true
 	else
@@ -35,7 +33,7 @@ end
 function task_hellcar_fail2()
 	local actor = db.actor
 	if 	xr_gulag.getCasualities("gar_hellcar_group") > 0 and
-	   actor:dont_has_info("gar_hellcar_help")
+	   not has_alife_info("gar_hellcar_help")
 	then
 	   return true
 	else
