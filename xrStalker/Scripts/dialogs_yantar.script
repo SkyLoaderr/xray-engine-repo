@@ -12,7 +12,7 @@ function give_ecolog_outfit(first_speaker, second_speaker)
 end
 
 function yan_professor_talk_outfit (first_speaker, second_speaker)
-	if has_alife_info("bar_heli_scene_professor_die") then
+	if not has_alife_info("bar_x16_documents_start") and has_alife_info("bar_heli_scene_professor_die") then
 		return true
 	end
 	if not has_alife_info("bar_x16_documents_start") then
