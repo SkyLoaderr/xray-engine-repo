@@ -108,7 +108,7 @@ private:
 	Fvector				vPosition;
 
 	Fvector				vPathPoint;
-	Fvector				vPathDir;
+	Fvector				_vPathDir;
 	int					m_path_size;
 	int					m_start_index;
 
@@ -148,7 +148,8 @@ public:
 	void				SetPLastMaterialIDX	(u16* p){m_character->SetPLastMaterialIDX(p);}
 	dBodyID				GetBody						( )		{if(m_character) return m_character->get_body(); else return NULL;}
 	const Fvector&		GetVelocity					( )		{ return vVelocity;	}
-	const Fvector&		GetPathDir					( )		{ return vPathDir;	}
+	const Fvector&		GetPathDir					( )		{ return _vPathDir;	}
+	void				SetPathDir					( const Fvector& v);
 
 
 	void				GetCharacterVelocity		(Fvector& velocity )		{if(m_character)m_character->GetVelocity(velocity); else velocity.set(0.f,0.f,0.f);}
@@ -156,8 +157,8 @@ public:
 	float				GetVelocityActual			()		{ return fActualVelocity;	}
 	float				GetXZVelocityActual			()		{ return dXZMag(vVelocity);}
 	float				GetActVelProj				(const Fvector & dir){return vVelocity.dotproduct(dir);}
-	float				GetActVelInGoingDir			(){float r= GetActVelProj(vPathDir);return r>0.f ? r : 0.f;}
-	float				GetXZActVelInGoingDir		(){float r= dXZDot(vPathDir,vVelocity);return r>0.f ? r : 0.f;}
+	float				GetActVelInGoingDir			(){float r= GetActVelProj(GetPathDir());return r>0.f ? r : 0.f;}
+	float				GetXZActVelInGoingDir		(){float r= dXZDot(GetPathDir(),vVelocity);return r>0.f ? r : 0.f;}
 	void				GetSmoothedVelocity			(Fvector& v){if(m_character)m_character->GetSmothedVelocity(v);else v.set(0,0,0);}
 	float				GetContactSpeed				()		{ return fContactSpeed; }
 	void				GroundNormal				(Fvector &norm)					;

@@ -55,7 +55,7 @@ CPHMovementControl::CPHMovementControl(CObject* parent)
 	vExternalImpulse.set(0,0,0);
 	bExernalImpulse		=false;
 	fLastMotionMag		= 1.f;
-	vPathDir.set		(0,0,1);
+	SetPathDir			(Fvector().set(0,0,1));
 	//fAirFriction		= AIR_FRICTION;
 	//fWallFriction		= WALL_FRICTION;
 	//fGroundFriction		= GROUND_FRICTION;
@@ -219,7 +219,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 		dir.normalize_safe();
 		vPosition.set(new_position);
 		m_path_distance=0;
-		vPathDir.set(dir);
+		SetPathDir	(dir);
 		vPathPoint.set(vPosition);
 
 
@@ -235,11 +235,15 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 			vPosition.set(new_position);	//todo - insert it in PathNearestPoint
 			index=0;
 			vPathPoint.set(path[0].position);
-			vPathDir.sub(path[0].position,new_position);
-			m_path_distance=vPathDir.magnitude();
+			Fvector _d;
+			_d.sub(path[0].position,new_position);
+			SetPathDir	(_d);
+			m_path_distance=GetPathDir().magnitude();
 			if(m_path_distance>EPS)
 			{
-				vPathDir.mul(1.f/m_path_distance);
+				Fvector _d = GetPathDir();
+				_d.mul(1.f/m_path_distance);
+				SetPathDir(_d);
 			}
 			near_line=false;
 		}
@@ -354,7 +358,7 @@ void CPHMovementControl::PathNearestPoint(const xr_vector<DetailPathManager::STr
 					m_path_distance=temp;
 					index=i;
 					vPathPoint.set(first);
-					vPathDir.set(dir);
+					SetPathDir(dir);
 					near_line=false;
 				}
 			}
@@ -377,7 +381,7 @@ void CPHMovementControl::PathNearestPoint(const xr_vector<DetailPathManager::STr
 					m_path_distance=temp;
 					index=i;
 					vPathPoint.set(path_point);
-					vPathDir.set(dir);
+					SetPathDir(dir);
 					near_line=true;
 				}
 			}
@@ -394,7 +398,7 @@ void CPHMovementControl::PathNearestPoint(const xr_vector<DetailPathManager::STr
 		R_ASSERT2(after_line,"Must be after line");
 		vtemp.sub(new_position,path[i].position);
 		m_path_distance=vtemp.magnitude();
-		vPathDir.set(dir);
+		SetPathDir(dir);
 		vPathPoint.set(path[i].position);
 		index=i;
 		near_line=false;
@@ -424,6 +428,7 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<DetailPathManage
 
 	Fvector path_point,vtemp;
 	float temp;
+	dir.set		(0,0,1);
 
 	for(int i=m_start_index;i<m_path_size-1;++i)
 	{
@@ -445,7 +450,7 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<DetailPathManage
 					m_path_distance=temp;
 					index=i;
 					vPathPoint.set(first);
-					vPathDir.set(dir);
+					SetPathDir(dir);
 					near_line=false;
 				}
 			}
@@ -468,7 +473,7 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<DetailPathManage
 					m_path_distance=temp;
 					index=i;
 					vPathPoint.set(path_point);
-					vPathDir.set(dir);
+					SetPathDir(dir);
 					near_line=true;
 				}
 				if(temp>radius) break;//exit test
@@ -487,7 +492,7 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<DetailPathManage
 		R_ASSERT2															(after_line,"Must be after line");
 		vtemp										.sub					(new_position,path[i].position)		;
 		m_path_distance								=vtemp.magnitude		()									;
-		vPathDir									.set					(dir)								;
+		SetPathDir									(dir);
 		vPathPoint									.set					(path[i].position)					;
 		index										=i															;
 		near_line									=false														;
@@ -533,7 +538,7 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<DetailPathMana
 					m_path_distance		=temp		;
 					index				=i			;
 					vPathPoint			.set(second);
-					vPathDir			.set(dir)	;
+					SetPathDir			(dir)	;
 					near_line			=false		;
 				}
 			}
@@ -555,10 +560,10 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<DetailPathMana
 				if(temp<m_path_distance)
 				{
 					m_path_distance=temp;
-					index=i-1;
-					vPathPoint.set(path_point);
-					vPathDir.set(dir);
-					near_line=true;
+					index			=i-1;
+					vPathPoint.set	(path_point);
+					SetPathDir		(dir);
+					near_line		=true;
 				}
 				if(temp>radius) break;//exit test
 			}
@@ -573,13 +578,13 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<DetailPathMana
 	if(m_path_distance==dInfinity && i==1)	
 	{
 
-		R_ASSERT2(after_line,"Must be after line");
-		vtemp.sub(new_position,path[i].position);
-		m_path_distance=vtemp.magnitude();
-		vPathDir.set(dir);
-		vPathPoint.set(path[i].position);
-		index=i;
-		near_line=false;
+		R_ASSERT2				(after_line,"Must be after line");
+		vtemp.sub				(new_position,path[i].position);
+		m_path_distance			=vtemp.magnitude();
+		SetPathDir				(dir);
+		vPathPoint.set			(path[i].position);
+		index					=i;
+		near_line				=false;
 	}
 
 
@@ -618,7 +623,7 @@ void CPHMovementControl::PathDIrLine(const xr_vector<DetailPathManager::STravelP
 {
 
 	Fvector to_path_point;
-	Fvector corrected_path_dir;CorrectPathDir(vPathDir,path,index,corrected_path_dir);
+	Fvector corrected_path_dir;CorrectPathDir(GetPathDir(),path,index,corrected_path_dir);
 	to_path_point.sub(vPathPoint,vPosition);	//_new position
 	float mag=to_path_point.magnitude();
 	if(mag<EPS)
@@ -636,7 +641,7 @@ void CPHMovementControl::PathDIrLine(const xr_vector<DetailPathManager::STravelP
 void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravelPathPoint> &path,  int index,  float distance,  float precesition, Fvector &dir  )
 {
 	Fvector to_path_point;
-	Fvector corrected_path_dir;CorrectPathDir(vPathDir,path,index,corrected_path_dir);
+	Fvector corrected_path_dir;CorrectPathDir(GetPathDir(),path,index,corrected_path_dir);
 	to_path_point.sub(vPathPoint,vPosition);	//_new position
 	float mag=to_path_point.magnitude();
 
@@ -1138,4 +1143,17 @@ void	CPHMovementControl::				UpdateObjectBox(CPHCharacter *ach)
 	m_character->SetObjectRadius(R);
 	ach->ChooseRestrictionType(CPHCharacter::rtStalker,1.f,m_character);
 	m_character->UpdateRestrictionType(ach);
+}
+
+void CPHMovementControl::SetPathDir( const Fvector& v)
+{
+	_vPathDir = v;
+
+	if(_abs(_vPathDir.x)>1000 || _abs(_vPathDir.y)>1000 || _abs(_vPathDir.z)>1000)
+	{
+		Log					("_vPathDir",	_vPathDir );
+	
+	}
+	VERIFY2				( _abs(_vPathDir.x)<1000," incorrect SetPathDir ");
+
 }
