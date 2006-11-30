@@ -2907,9 +2907,9 @@
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
-			wpn_usp  \n
-			ammo_11.43x23_hydro = 1 \n
-			wpn_fn2000 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
+			wpn_lr300 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"\n
@@ -3153,9 +3153,9 @@
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
-			wpn_usp \n
-			ammo_11.43x23_hydro = 1 \n
-			wpn_g36 = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
+			wpn_lr300 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"\n
