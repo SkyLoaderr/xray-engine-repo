@@ -6,6 +6,10 @@
 
 extern int	psSkeletonUpdate;
 
+#ifdef DEBUG
+void check_kinematics(CKinematics* _k, LPCSTR s);
+#endif
+
 void CKinematics::CalculateBones			(BOOL bForceExact)
 {
 	// early out.
@@ -28,8 +32,10 @@ void CKinematics::CalculateBones			(BOOL bForceExact)
 #ifdef DEBUG
 	Device.Statistic->Animation.Begin();
 #endif
+
 	Bone_Calculate					(bones->at(iRoot),&Fidentity);
 #ifdef DEBUG
+	check_kinematics				(this, dbg_name.c_str() );
 	Device.Statistic->Animation.End	();
 #endif
 
@@ -72,21 +78,7 @@ void CKinematics::CalculateBones			(BOOL bForceExact)
 #ifdef DEBUG
 		// Validate
 		VERIFY3	(_valid(vis.box.min)&&_valid(vis.box.max),	"Invalid bones-xform in model", dbg_name.c_str());
-//.		VERIFY3	(vis.sphere.R<1000.f,						"Invalid bones-xform in model", dbg_name.c_str());
-		if(vis.sphere.R>1000.f)
-		{
-			Log("all bones transform:--------");
-			CKinematics* K = this;
-			
-			for(u16 ii=0; ii<K->LL_BoneCount();++ii){
-				Fmatrix tr;
-
-				tr = K->LL_GetTransform(ii);
-				Log("bone ",K->LL_BoneName_dbg(ii));
-				Log("bone_matrix",tr);
-			}
-			Log("end-------");
-		}
+		VERIFY3	(vis.sphere.R<1000.f,						"Invalid bones-xform in model", dbg_name.c_str());
 		VERIFY3	(vis.sphere.R<1000.f,						"Invalid bones-xform in model", dbg_name.c_str());
 #endif
 	}
@@ -94,6 +86,28 @@ void CKinematics::CalculateBones			(BOOL bForceExact)
 	//
 	if (Update_Callback)	Update_Callback(this);
 }
+
+#ifdef DEBUG
+void check_kinematics(CKinematics* _k, LPCSTR s)
+{
+	CKinematics* K = _k;
+	Fmatrix&	MrootBone		= K->LL_GetBoneInstance(K->LL_GetBoneRoot()).mTransform;
+	if(MrootBone.c.y >10000)
+	{	
+		Msg("all bones transform:--------[%s]",s);
+		
+		for(u16 ii=0; ii<K->LL_BoneCount();++ii){
+			Fmatrix tr;
+
+			tr = K->LL_GetTransform(ii);
+			Log("bone ",K->LL_BoneName_dbg(ii));
+			Log("bone_matrix",tr);
+		}
+		Log("end-------");
+		VERIFY2(0,"check_kinematics failed for ", s);
+	}
+}
+#endif
 
 void CKinematics::Bone_Calculate	(CBoneData* bd, Fmatrix *parent)
 {

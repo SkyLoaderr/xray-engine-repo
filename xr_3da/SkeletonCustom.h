@@ -142,9 +142,11 @@ public:
 						
 						}
 						~CSkeletonWallmark	()
-						{
-							VERIFY			(used_in_render==u32(-1));
-						}
+#ifdef DEBUG
+							;
+#else
+							{}
+#endif
 
 	IC CKinematics*		Parent				(){return m_Parent;}
 	IC u32				VCount				(){return m_Faces.size()*3;}
