@@ -227,6 +227,7 @@
     </info_portion>
 	<info_portion id="yan_x16_documents_gain"></info_portion>
     <info_portion id="bar_x16_documents_done"></info_portion>
+    <info_portion id="rostok_spawn_dogs_food"></info_portion>
 
 		 <!-- PSIHOPAT -->
 	<info_portion id="bar_psih_come"></info_portion>
