@@ -81,21 +81,19 @@ freedom_eliminate_camp_2
 freedom_eliminate_camp_3
 freedom_eliminate_camp_4
 freedom_eliminate_camp_5
-;----------Kill Staker-------
-freedom_kill_stalker_1
-freedom_kill_stalker_2
-freedom_kill_stalker_3
+freedom_eliminate_camp_6
+freedom_eliminate_camp_7
+;----------Kill Stalker-------
 freedom_kill_stalker_4
 freedom_kill_stalker_5
 freedom_kill_stalker_6
-freedom_kill_stalker_7
 ;----------Find Item---------
-freedom_find_item_1
-freedom_find_item_2
 freedom_find_item_3
 ;-------Monster Part-------
 freedom_monster_part_1
-
+;-------Defend Lager-------
+freedom_defend_lager_1
+freedom_defend_lager_2
 
 
 ;-------STORYLINE TASKS-------
@@ -903,57 +901,21 @@ reward_money = 4000
 reward_reputation = +25
 reward_rank = 4
 
-[freedom_kill_stalker_1]
-type = kill_stalker
-community = actor_freedom
-text = freedom_kill_stalker_1_text
-description = freedom_kill_stalker_1_descr
-parent = freedom
-target = bar_dolg_guard_commander
-reward_money = 6000
-reward_reputation = +5
-reward_relation = freedom, +100, dolg, -100
-reward_rank = 6
-
-[freedom_kill_stalker_2]
-type = kill_stalker
-community = actor_freedom
-text = freedom_kill_stalker_2_text
-description = freedom_kill_stalker_2_descr
-parent = freedom
-target = bar_dolg_ivancov
-reward_money = 8000
-reward_reputation = 0
-reward_relation = freedom, +200, dolg, -200
-reward_rank = 8
-
-[freedom_kill_stalker_3]
-type = kill_stalker
-community = actor_freedom
-text = freedom_kill_stalker_3_text
-description = freedom_kill_stalker_3_descr
-parent = freedom
-target = bar_dolg_petrenko
-reward_money = 9000
-reward_reputation = 0
-reward_relation = freedom, +250, dolg, -250
-reward_rank = 9
-
 [freedom_kill_stalker_4]
 type = kill_stalker
-community = actor_freedom
+community = actor
 text = freedom_kill_stalker_4_text
 description = freedom_kill_stalker_4_descr
 parent = freedom
-target = bar_dolg_leader
-reward_money = 10000
-reward_reputation = 0
-reward_relation = freedom, +300, dolg, -300
-reward_rank = 10
+target = sim_stalker_veteran
+reward_money = 5000
+reward_reputation = +30
+reward_relation = freedom, +80
+reward_rank = 5
 
 [freedom_kill_stalker_5]
 type = kill_stalker
-community = actor_freedom
+community = actor
 text = freedom_kill_stalker_5_text
 description = freedom_kill_stalker_5_descr
 parent = freedom
@@ -965,7 +927,7 @@ reward_rank = 8
 
 [freedom_kill_stalker_6]
 type = kill_stalker
-community = actor_freedom
+community = actor
 text = freedom_kill_stalker_6_text
 description = freedom_kill_stalker_6_descr
 parent = freedom
@@ -975,49 +937,13 @@ reward_reputation = +67
 reward_relation = freedom, +150
 reward_rank = 7
 
-[freedom_kill_stalker_7]
-type = kill_stalker
-community = actor_freedom
-text = freedom_kill_stalker_7_text
-description = freedom_kill_stalker_7_descr
-parent = freedom
-target = sim_dolg_veteran_barin
-reward_money = 6000
-reward_reputation = +50
-reward_relation = freedom, +110, dolg, -150
-reward_rank = 6
-
-[freedom_find_item_1]
-type = find_item
-community = actor
-text = freedom_find_item_1_text
-description = freedom_find_item_1_descr
-parent = freedom
-target = wpn_svd_m1
-reward_money = 8000
-reward_reputation = +45
-reward_rank = 8
-reward_relation = dolg, -150, freedom +150
-
-[freedom_find_item_2]
-type = find_item
-community = actor_freedom
-text = freedom_find_item_2_text
-description = freedom_find_item_2_descr
-parent = freedom
-target = wpn_winchester_m1
-reward_money = 5000
-reward_reputation = +30
-reward_rank = 5
-reward_relation = dolg, -50, freedom +70
-
 [freedom_find_item_3]
 type = find_item
-community = actor_freedom
+community = actor
 text = freedom_find_item_3_text
 description = freedom_find_item_3_descr
 parent = freedom
-target = outfit_specops_m1
+target = outfit_specnaz_m1
 reward_money = 7000
 reward_reputation = +40
 reward_rank = 7
@@ -1034,6 +960,31 @@ reward_money = 4000
 reward_reputation = +15
 reward_rank = 4
 reward_relation = dolg, -50, freedom +50
+
+[freedom_defend_lager_1]
+type = defend_lager
+community = actor
+text = freedom_defend_lager_1_text
+description = freedom_defend_lager_1_descr
+parent = freedom
+target = agr2_st_factory
+reward_money = 5000
+reward_reputation = +30
+reward_relation = freedom, +100
+reward_rank = 5
+
+[freedom_defend_lager_2]
+type = defend_lager
+community = actor
+text = freedom_defend_lager_2_text
+description = freedom_defend_lager_2_descr
+parent = freedom
+target = mil_fblockpost
+init_condition = {+mil_fblockpost_quest_complete +actor_on_level(l07_military) +gulag_state(mil_fblockpost, 1)}, {+mil_fblockpost_quest_fail +actor_on_level(l07_military) +gulag_state(mil_fblockpost, 1)}
+reward_money = 8000
+reward_reputation = 150
+reward_relation = freedom, +150
+reward_rank = 8
 
 
 
