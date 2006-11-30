@@ -264,6 +264,16 @@
         <text>freedom_monster_part_1_descr</text>
 </article>
 
+;---------Defend Lager--------------
+;--------Freedom---------
+<article id="freedom_defend_lager_1_descr" name="defend_lager" group="defend_lager/1" article_type="task">
+        <text>freedom_defend_lager_1_descr</text>
+</article>
+<article id="freedom_defend_lager_2_descr" name="defend_lager" group="defend_lager/1" article_type="task">
+        <text>freedom_defend_lager_2_descr</text>
+</article>
+
+
 <!-- TREASURES -->
 <article id="tr_escape_broken_car" name="shron_1_name" group="treasures" article_type="journal">
         <text>shron_1_description</text>
