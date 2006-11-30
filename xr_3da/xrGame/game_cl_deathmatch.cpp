@@ -907,6 +907,10 @@ void				game_cl_Deathmatch::LoadSndMessages				()
 
 void				game_cl_Deathmatch::OnSwitchPhase_InProgress()
 {
+	if (pCurBuyMenu && pCurBuyMenu->IsShown())
+	{
+		StartStopMenu(pCurBuyMenu, true);
+	}
 	LoadTeamDefaultPresetItems(GetTeamMenu(0), pCurBuyMenu, &PresetItemsTeam0);
 };
 

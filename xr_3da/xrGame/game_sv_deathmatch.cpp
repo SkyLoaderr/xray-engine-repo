@@ -64,6 +64,7 @@ game_sv_Deathmatch::game_sv_Deathmatch()
 	m_dwLastRPoint = u32(-1);
 	//-------------------------------
 	m_dwWarmUp_CurTime = 0;
+	m_bInWarmUp = false;
 	//-------------------------------
 };
 
@@ -132,11 +133,13 @@ void	game_sv_Deathmatch::OnRoundStart			()
 
 	///////////////////////////////////////////	
 	m_dwWarmUp_CurTime = 0;
+	m_bInWarmUp = false;
 	if (!m_bFastRestart)
 	{
 		if (GetWarmUpTime() != 0)
 		{
 			m_dwWarmUp_CurTime = Level().timeServer()+GetWarmUpTime()*1000;
+			m_bInWarmUp = true;
 		}
 	}
 	//////////////////////////////////////////
@@ -463,7 +466,7 @@ bool game_sv_Deathmatch::checkForRoundStart()
 
 bool game_sv_Deathmatch::checkForTimeLimit()
 {
-	if (m_dwWarmUp_CurTime != 0) return false;
+	if (m_dwWarmUp_CurTime != 0 || m_bInWarmUp) return false;
 	if (GetTimeLimit() && ((Level().timeServer()-start_time)) > u32(GetTimeLimit()*60000) )
 	{
 		if (!HasChampion()) return false;
@@ -492,7 +495,7 @@ bool game_sv_Deathmatch::checkForFragLimit()
 
 bool game_sv_Deathmatch::checkForRoundEnd()
 {
-	if (m_dwWarmUp_CurTime != 0) return false;
+	if (m_dwWarmUp_CurTime != 0 || m_bInWarmUp) return false;
 	if( checkForTimeLimit() )
 			return true;
 
@@ -2318,11 +2321,12 @@ void game_sv_Deathmatch::OnRender				()
 
 void		game_sv_Deathmatch::check_for_WarmUp()
 {
-	if (GetWarmUpTime() == 0) return;
-	if (m_dwWarmUp_CurTime == 0) return;
+//	if (GetWarmUpTime() == 0) return;
+	if (m_dwWarmUp_CurTime == 0 && !m_bInWarmUp) return;
 	if (m_dwWarmUp_CurTime < Level().timeServer())
 	{
 		m_dwWarmUp_CurTime = 0;
+		m_bInWarmUp = false;
 		Console->Execute("g_restart_fast");
 	};
 };
