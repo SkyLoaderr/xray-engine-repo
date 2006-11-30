@@ -164,6 +164,7 @@ public:
 		void		SetCurrentFactor				(float f);
 		void		SetCyclic						(bool b)					{m_bCyclic=b;}
         float       GetLength                       ();
+virtual	BOOL		Valid							();
 #ifndef _PP_EDITOR_
 virtual	BOOL		Process							(SPPInfo &PPInfo);
 #else

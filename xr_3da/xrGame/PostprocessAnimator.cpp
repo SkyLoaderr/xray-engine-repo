@@ -53,6 +53,13 @@ CPostprocessAnimator::~CPostprocessAnimator           ()
     Clear ();
 }
 
+BOOL CPostprocessAnimator::Valid()
+{
+	if(m_bCyclic)	return TRUE;
+
+	return CEffectorPP::Valid	();
+}
+
 void        CPostprocessAnimator::Clear                           ()
 {
     for (int a = 0; a < POSTPROCESS_PARAMS_COUNT; a++)
