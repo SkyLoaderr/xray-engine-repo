@@ -10,6 +10,8 @@
 #include "..\GameFont.h"
 #include "..\SkeletonCustom.h"
 
+u32 g_r = 1;
+
 namespace WallmarksEngine {
 	struct wm_slot
 	{
@@ -281,7 +283,8 @@ void CWallmarksEngine::AddSkeletonWallmark	(const Fmatrix* xf, CKinematics* obj,
 
 void CWallmarksEngine::AddSkeletonWallmark(intrusive_ptr<CSkeletonWallmark> wm)
 {
-	if (!::RImplementation.val_bHUD){
+	if (!::RImplementation.val_bHUD && g_r)
+	{
 		lock.Enter			();
 		// search if similar wallmark exists
 		wm_slot* slot		= FindSlot	(wm->Shader());
@@ -382,11 +385,17 @@ void CWallmarksEngine::Render()
 		for (xr_vector<intrusive_ptr<CSkeletonWallmark> >::iterator w_it=slot->skeleton_items.begin(); w_it!=slot->skeleton_items.end(); w_it++){
 			intrusive_ptr<CSkeletonWallmark> W	= *w_it;
 			if (!W){
-//.				VERIFY2		(0, "why W is not valid");
 				continue	;
 			}
-			
-//.			VERIFY(W->used_in_render == Device.dwFrame);
+
+#ifdef DEBUG
+			if(W->used_in_render != Device.dwFrame)			
+			{
+				Log("W->used_in_render",W->used_in_render);
+				Log("Device.dwFrame",Device.dwFrame);
+				VERIFY(W->used_in_render == Device.dwFrame);
+			}
+#endif
 
 			float dst	= Device.vCameraPosition.distance_to_sqr(W->m_Bounds.P);
 			float ssa	= W->m_Bounds.R * W->m_Bounds.R / dst;

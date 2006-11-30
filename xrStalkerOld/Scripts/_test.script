@@ -33,7 +33,7 @@ function ___main()
 end
 
 
--- run_string alife():create("wpn_wincheaster1300", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
+-- run_string alife():create("wpn_fn2000", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
 
 
 function main________________()

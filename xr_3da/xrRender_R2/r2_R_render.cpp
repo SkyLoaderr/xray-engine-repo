@@ -168,10 +168,12 @@ void CRender::render_menu	()
 	RCache.Vertex.Unlock			(4,Target->g_menu->vb_stride);
 	RCache.Render					(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 }
+extern u32 g_r;
 
 void CRender::Render		()
 {
 	VERIFY					(0==mapDistort.size());
+	g_r						= 1; //allow wm append
 
 	bool	_menu_pp		= g_pGamePersistent?g_pGamePersistent->OnRenderPPUI_query():false;
 	if (_menu_pp)			{
@@ -289,7 +291,9 @@ void CRender::Render		()
 	// Wall marks
 	if(Wallmarks)	{
 		Target->phase_wallmarks					();
+		g_r										= 0;
 		Wallmarks->Render						();				// wallmarks has priority as normal geometry
+
 	}
 
 	// Update incremental shadowmap-visibility solver
