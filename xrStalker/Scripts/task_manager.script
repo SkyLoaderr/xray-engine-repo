@@ -12,7 +12,8 @@ local parent_by_story = {
 	[504] = "hunter",
 	[518] = "zastava_commander",
 	[506] = "petrenko",
-	[607] = "lisiy"
+	[607] = "lisiy",
+	[515] = "mercenary"
 }
 
 local story_by_parent = {
@@ -21,13 +22,14 @@ local story_by_parent = {
 	ecolog						= 902,
 	dolg						= 507,
 	freedom						= 707,
-	wolf	= 006,
-	shustriy		= 004,
-	drunk_dolg				= 510,
-	hunter					= 504,
-	zastava_commander	= 518,
-	petrenko = 506,
-	lisiy					= 607
+	wolf						= 006,
+	shustriy					= 004,
+	drunk_dolg					= 510,
+	hunter						= 504,
+	zastava_commander			= 518,
+	petrenko					= 506,
+	lisiy						= 607,
+	mercenary					= 515
 }
 
 local return_task_by_type = {
@@ -762,6 +764,9 @@ end
 function init_zastava_commander_task_dialog(dlg)
 	get_random_task():init_task_dialog(dlg, "zastava_commander")
 end
+function init_mercenary_task_dialog(dlg)
+	get_random_task():init_task_dialog(dlg, "mercenary")
+end
 
 
 
@@ -803,6 +808,9 @@ function init_wolf_reward_dialog(dlg)
 end
 function init_zastava_commander_reward_dialog(dlg)
 	get_random_task():init_reward_dialog(dlg, "zastava_commander")
+end
+function init_mercenary_reward_dialog(dlg)
+	get_random_task():init_reward_dialog(dlg, "mercenary")
 end
 
 

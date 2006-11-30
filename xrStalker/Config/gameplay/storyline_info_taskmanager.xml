@@ -398,7 +398,7 @@
 	
 	<!-- tasks for Mercenary -->
 	
-	<article id="Mercenary_kill_stalker_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
-		<text>Mercenary_kill_stalker_descr</text>
+	<article id="mercenary_kill_stalker_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
+		<text>mercenary_kill_stalker_descr</text>
 	</article>
 	
