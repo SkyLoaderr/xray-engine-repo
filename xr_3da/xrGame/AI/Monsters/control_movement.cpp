@@ -29,7 +29,7 @@ float CControlMovement::real_velocity()
 
 	if (movement_control->IsCharacterEnabled()){ 
 		float tmp			= 	movement_control->GetXZActVelInGoingDir();
-		if(_abs(tmp)<1000)
+		if(_abs(tmp)>1000)
 		{
 			Log					("GetVelocity",	movement_control->GetVelocity() );
 			Log					("GetPathDir",	movement_control->GetPathDir() );
