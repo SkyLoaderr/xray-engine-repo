@@ -5,7 +5,14 @@ local parent_by_story = {
 	[500] = "barman",
 	[902] = "ecolog",
 	[507] = "dolg",
-	[707] = "freedom"
+	[707] = "freedom",
+	[006] = "wolf",
+	[004] = "shustriy",
+	[510] = "drunk_dolg",
+	[504] = "hunter",
+	[518] = "zastava_commander",
+	[506] = "petrenko",
+	[607] = "lisiy"
 }
 
 local story_by_parent = {
@@ -13,7 +20,14 @@ local story_by_parent = {
 	barman						= 500,
 	ecolog						= 902,
 	dolg						= 507,
-	freedom						= 707
+	freedom						= 707,
+	wolf	= 006,
+	shustriy		= 004,
+	drunk_dolg				= 510,
+	hunter					= 504,
+	zastava_commander	= 518,
+	petrenko = 506,
+	lisiy					= 607
 }
 
 local return_task_by_type = {
@@ -93,9 +107,11 @@ function CRandomTask:__init()
 		self.task_info[id].reward_rank = utils.cfg_get_number(self.task_ini, id, "reward_rank", nil, false, 0)
 		self.task_info[id].reward_reputation = utils.cfg_get_number(self.task_ini, id, "reward_reputation", nil, false)
 		self.task_info[id].reward_relation = parse_key_value(utils.cfg_get_string(self.task_ini, id, "reward_relation", nil, false, ""))
-	
+		
 		if self.task_ini:line_exist(id, "condlist") then
 			self.task_info[id].condlist = xr_logic.parse_condlist(db.actor, "task_manager", "condlist", self.task_ini:r_string(id, "condlist"))
+		else
+			self.task_info[id].condlist = xr_logic.parse_condlist(db.actor, "task_manager", "condlist", "true")
 		end		
 	
 		self.task_info[id].need_return = utils.cfg_get_bool(self.task_ini, id, "need_return", nil, false, true)
@@ -437,8 +453,7 @@ function CRandomTask:check_task_props(task_id)
 		self.task_info[task_id].enabled_props = false
 		return
 	end
-
-
+	
 	--' проверка по таргету
 	if self.task_info[task_id].type == "eliminate_lager" then
 		if self.task_info[task_id].target_objects == nil then
@@ -725,6 +740,31 @@ function init_freedom_task_dialog(dlg)
 	get_random_task():init_task_dialog(dlg, "freedom")
 end
 
+
+function init_shustriy_task_dialog(dlg)
+	get_random_task():init_task_dialog(dlg, "shustriy")
+end
+function init_lisiy_task_dialog(dlg)
+	get_random_task():init_task_dialog(dlg, "lisiy")
+end
+function init_hunter_task_dialog(dlg)
+	get_random_task():init_task_dialog(dlg, "hunter")
+end
+function init_drunk_dolg_task_dialog(dlg)
+	get_random_task():init_task_dialog(dlg, "drunk_dolg")
+end
+function init_petrenko_task_dialog(dlg)
+	get_random_task():init_task_dialog(dlg, "petrenko")
+end
+function init_wolf_task_dialog(dlg)
+	get_random_task():init_task_dialog(dlg, "wolf")
+end
+function init_zastava_commander_task_dialog(dlg)
+	get_random_task():init_task_dialog(dlg, "zastava_commander")
+end
+
+
+
 function init_trader_reward_dialog(dlg)
 	get_random_task():init_reward_dialog(dlg, "trader")
 end
@@ -740,6 +780,31 @@ end
 function init_freedom_reward_dialog(dlg)
 	get_random_task():init_reward_dialog(dlg, "freedom")
 end
+
+
+
+function init_shustriy_reward_dialog(dlg)
+	get_random_task():init_reward_dialog(dlg, "shustriy")
+end
+function init_lisiy_reward_dialog(dlg)
+	get_random_task():init_reward_dialog(dlg, "lisiy")
+end
+function init_hunter_reward_dialog(dlg)
+	get_random_task():init_reward_dialog(dlg, "hunter")
+end
+function init_drunk_dolg_reward_dialog(dlg)
+	get_random_task():init_reward_dialog(dlg, "drunk_dolg")
+end
+function init_petrenko_reward_dialog(dlg)
+	get_random_task():init_reward_dialog(dlg, "petrenko")
+end
+function init_wolf_reward_dialog(dlg)
+	get_random_task():init_reward_dialog(dlg, "wolf")
+end
+function init_zastava_commander_reward_dialog(dlg)
+	get_random_task():init_reward_dialog(dlg, "zastava_commander")
+end
+
 
 function has_active_vendor_task(actor, npc)
 	return get_random_task():active_parent_task(actor, npc)

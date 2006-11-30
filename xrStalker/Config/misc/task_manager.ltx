@@ -121,6 +121,25 @@ freedom_defend_lager_1
 freedom_defend_lager_2
 
 
+;tasks for zastava_commander
+zastava_commander_eliminate_lager
+;tasks for wolf  
+wolf_eliminate_lager_1
+wolf_eliminate_lager_2
+;tasks for petrenko 
+petrenko_kill_stalker
+;tasks for hunter	
+hunter_eliminate_lager
+;tasks for lisiy	
+lisiy_kill_stalker	
+;tasks for drunk dolg
+drunk_dolg_find_item	
+;tasks for shustriy	
+shustriy_find_item
+;tasks for Mercenary
+mercenary_kill_stalker
+	
+
 ;-------STORYLINE TASKS-------
 tutorial_find_artefact
 tutorial_help_wounded
@@ -1561,3 +1580,129 @@ reward_rank = 50
 [sar_warlab]
 type = storyline
 reward_rank = 10
+
+;------------ pl's tasks -----------------
+
+;tasks for zastava_commander
+[zastava_commander_eliminate_lager]
+type = eliminate_lager
+community = actor
+text = zastava_commander_eliminate_lager_text
+description = zastava_commander_eliminate_lager_descr
+;condlist = {+esc_serious_talk}
+parent = zastava_commander
+target = bar_zastava_dogs_lair
+reward_money = 4000
+reward_reputation = +40
+reward_rank = 8
+reward_item = medkit,bandage
+
+;tasks for wolf  
+[wolf_eliminate_lager_1]
+type = eliminate_lager
+community = actor
+text = wolf_eliminate_lager_1_text
+description = wolf_eliminate_lager_1_descr
+;condlist = {+esc_serious_talk}
+parent = wolf
+target = esc_bridge_boar
+reward_money = 1500
+reward_reputation = +20
+reward_rank = 3
+reward_item = medkit,bandage
+
+
+[wolf_eliminate_lager_2]
+type = eliminate_lager
+community = actor
+text = wolf_eliminate_lager_2_text
+description = wolf_eliminate_lager_2_descr
+;condlist = {+esc_serious_talk}
+parent = wolf
+target = esc_flesh_2
+reward_money = 2500
+reward_reputation = +30
+reward_rank = 4
+reward_item = medkit
+
+;tasks for petrenko 
+[petrenko_kill_stalker]
+type = kill_stalker
+community = actor
+text = petrenko_kill_stalker_text
+description = petrenko_kill_stalker_descr
+parent = petrenko
+target = sim_svoboda_specnaz_prut
+reward_money = 5000
+reward_reputation = +3
+reward_rank = 9
+reward_item = medkit,bandage
+
+
+;tasks for hunter	
+[hunter_eliminate_lager]
+type = eliminate_lager
+community = actor
+text = hunter_eliminate_lager_text
+description = hunter_eliminate_lager_descr
+;condlist = {+esc_serious_talk}
+parent = hunter
+target = mil_hunters_bloodsucker
+reward_money = 1500
+reward_reputation = +20
+reward_rank = 3
+reward_item = medkit,bandage
+
+;tasks for lisiy	
+[lisiy_kill_stalker]	
+type = kill_stalker
+community = actor
+text = lisiy_kill_stalker_text
+description = lisiy_kill_stalker_descr
+parent = lisiy
+target = sim_stalker_veteran_umnik
+reward_money = 5000
+reward_reputation = +3
+reward_rank = 9
+reward_item = medkit,bandage
+
+
+;tasks for drunk dolg
+[drunk_dolg_find_item]
+type = find_item
+community = actor
+text = drunk_dolg_find_item_text
+description = drunk_dolg_find_item_descr
+parent = drunk_dolg
+target = wpn_abakan_m2
+reward_money = 8000
+reward_reputation = 10
+reward_rank = 4	
+
+
+;tasks for shustriy	
+
+[shustriy_find_item]
+type = find_item
+community = actor
+text = shustriy_find_item_text
+description = shustriy_find_item_descr
+parent = shustriy
+target = outfit_bandit_m1
+reward_money = 4000
+reward_reputation = 10
+reward_rank = 4
+
+;tasks for Mercenary
+
+[mercenary_kill_stalker]
+type = kill_stalker
+community = actor
+text = Mercenary_kill_stalker_text
+description = Mercenary_kill_stalker_descr
+parent = mercenary
+target = sim_stalker_master_master
+reward_money = 5000
+reward_reputation = +3
+reward_rank = 9
+reward_item = medkit,bandage
