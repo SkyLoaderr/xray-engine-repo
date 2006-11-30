@@ -402,6 +402,9 @@
     <info_portion id="ros_zombied_spawn_01"></info_portion>
     <info_portion id="rostok_camera_start"></info_portion>
     <info_portion id="bar_arena_survival"></info_portion>
-
+	
+	<info_portion id="barman_job">
+		<task>bar_barman_job</task>
+	</info_portion>
     
 </game_information_portions>
