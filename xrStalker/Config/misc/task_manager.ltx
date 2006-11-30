@@ -1267,8 +1267,9 @@ type = defend_lager
 community = actor
 text = freedom_defend_lager_1_text
 description = freedom_defend_lager_1_descr
+init_condition = {+mil_leader_quest2_complete =actor_on_level(l07_military) =gulag_state(mil_bandit:1)}, {++mil_leader_quest2_failed =actor_on_level(l07_military) =gulag_state(mil_bandit:1)}
 parent = freedom
-target = agr2_st_factory
+target = mil_lager
 reward_money = 5000
 reward_reputation = +30
 reward_relation = freedom, +100
