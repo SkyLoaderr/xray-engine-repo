@@ -118,6 +118,7 @@
 			<icon>ui_iconsTotal_esc_defend_lager</icon>
 			<function_complete>escape_tasks.task_lager_complete</function_complete>
 			<infoportion_fail>esc_lager_destroyed</infoportion_fail>
+			<function_fail>escape_tasks.is_actor_enemy_lager</function_fail>
 		</objective>
 		<objective>
 			<text>esc_defend_lager_from_killers_1</text>
