@@ -104,7 +104,7 @@ void check_kinematics(CKinematics* _k, LPCSTR s)
 			Log("bone_matrix",tr);
 		}
 		Log("end-------");
-		VERIFY2(0,"check_kinematics failed for ", s);
+		VERIFY3(0,"check_kinematics failed for ", s);
 	}
 }
 #endif
