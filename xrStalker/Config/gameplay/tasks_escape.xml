@@ -198,9 +198,13 @@
 		<title>esc_trader_job</title>
 		<objective>
 			<icon>ui_iconsTotal_esc_trader_job</icon>
+			<infoportion_complete>agroprom_military_case</infoportion_complete>
 		</objective>
 		<objective>
 			<text>esc_trader_job_text</text>
+			<map_location_type hint="esc_trader_job_text">blue_location</map_location_type>
+			<object_story_id>Escape_Trader</object_story_id>
+			<infoportion_complete>agroprom_military_case</infoportion_complete>
 		</objective>
 	</game_task>
 
