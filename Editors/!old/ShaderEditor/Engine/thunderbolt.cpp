@@ -140,7 +140,7 @@ BOOL CEffect_Thunderbolt::RayPick(const Fvector& s, const Fvector& d, float& dis
     return bRes;
 }
 #define FAR_DIST g_pGamePersistent->Environment.CurrentEnv.far_plane
-#define SUN_DIR  g_pGamePersistent->Environment.CurrentEnv.sun_dir
+
 void CEffect_Thunderbolt::Bolt(int id, float period, float lt)
 {
 	VERIFY					(id>=0 && id<(int)collection.size());
@@ -152,7 +152,7 @@ void CEffect_Thunderbolt::Bolt(int id, float period, float lt)
     Fmatrix XF,S;
     Fvector pos,dev;
     float sun_h, sun_p; 
-    SUN_DIR.getHP			(sun_h,sun_p);
+    g_pGamePersistent->Environment.CurrentEnv.sun_dir.getHP			(sun_h,sun_p);
     float alt	            = Random.randF(p_var_alt.x,p_var_alt.y);
     float lng	            = Random.randF(sun_h-p_var_long+PI,sun_h+p_var_long+PI); 
     float dist	            = Random.randF(FAR_DIST*p_min_dist,FAR_DIST*MAX_DIST_FACTOR);

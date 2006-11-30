@@ -304,7 +304,19 @@ void CEnvironment::OnFrame()
 		mpower				+= EM.sum(*mit,view);
 
 	// final lerp
-	CurrentEnv.lerp							(this,*Current[0],*Current[1],current_weight,EM,mpower);
+	CurrentEnv.lerp				(this,*Current[0],*Current[1],current_weight,EM,mpower);
+	if(CurrentEnv.sun_dir.y>0)
+	{
+		Log("CurrentEnv.sun_dir", CurrentEnv.sun_dir);
+		Log("current_weight", current_weight);
+		Log("mpower", mpower);
+
+		Log("Current[0]->sun_dir", Current[0]->sun_dir);
+		Log("Current[1]->sun_dir", Current[1]->sun_dir);
+
+	}
+	VERIFY2						(CurrentEnv.sun_dir.y<0,"Invalid sun direction settings in lerp");
+
 	if (::Render->get_generation()==IRender_interface::GENERATION_R2){
 		//. very very ugly hack
 		if (HW.Caps.raster_major >= 3){
