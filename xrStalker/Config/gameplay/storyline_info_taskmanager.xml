@@ -329,3 +329,59 @@
 <article id="tr_escape_broken_car" name="shron_1_name" group="treasures" article_type="journal">
         <text>shron_1_description</text>
 </article>
+
+
+<!-- my -->
+
+<!-- tasks for plichko  -->
+	
+	<article id="zastava_commander_eliminate_lager_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+		<text>zastava_commander_eliminate_lager_descr</text>
+	</article>
+	
+	
+	<!-- tasks for wolf  -->
+	
+	<article id="wolf_eliminate_lager_1_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+		<text>wolf_eliminate_lager_1_descr</text>
+	</article>
+	
+	<article id="wolf_eliminate_lager_2_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+		<text>wolf_eliminate_lager_2_descr</text>
+	</article>
+	
+	<!-- tasks for petrenko  -->
+	
+	<article id="petrenko_kill_stalker_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
+		<text>petrenko_kill_stalker_descr</text>
+	</article>
+	
+	<!-- tasks for hunter -->
+	
+	<article id="hunter_eliminate_lager_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+		<text>hunter_eliminate_lager_descr</text>
+	</article>
+	
+	<!-- tasks for lisiy -->
+	
+	<article id="lisiy_kill_stalker_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
+		<text>lisiy_kill_stalker_descr</text>
+	</article>
+	
+	<!-- tasks for drunk dolg -->
+	<article id="drunk_dolg_find_item_descr" name="find_item" group="find_item/1" article_type="task">
+		<text>drunk_dolg_find_item_descr</text>
+	</article>
+	
+	<!-- tasks for shustriy -->
+	
+	<article id="shustriy_find_item_descr" name="find_item" group="find_item/1" article_type="task">
+		<text>shustriy_find_item_descr</text>
+	</article>
+	
+	<!-- tasks for Mercenary -->
+	
+	<article id="Mercenary_kill_stalker_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
+		<text>Mercenary_kill_stalker_descr</text>
+	</article>
+	
