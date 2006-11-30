@@ -139,6 +139,9 @@
 	<info_portion id="yan_tonnel_snork_spawn_4"></info_portion>
 	<info_portion id="yan_tonnel_snork_spawn_5"></info_portion>
 
-    
+    <info_portion id="scientist_job">
+		<task>yan_scientist_job</task>
+    </info_portion>
+
 
 </game_information_portions>
