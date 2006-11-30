@@ -264,7 +264,7 @@
 	<game_task id="bar_radar_deactivate" prio="305">
 		<title>descr_deactivate_radar</title>
 		<objective>
-			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_iconsTotal_bar_radar_deactivate</icon>
 			<infoportion_complete>bar_deactivate_radar_done</infoportion_complete>
 		</objective>
 		<objective>
