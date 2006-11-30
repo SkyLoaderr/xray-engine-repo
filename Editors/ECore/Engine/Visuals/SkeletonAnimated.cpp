@@ -677,7 +677,8 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
                 }
 
                 // translate
-                if (M.test_flag(flTKeyPresent)){
+                if (M.test_flag(flTKeyPresent))
+				{
 	                CKeyQT*	K1t	= &M._keysT[(frame+0)%count];
     	            CKeyQT*	K2t	= &M._keysT[(frame+1)%count];
 
@@ -691,7 +692,8 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
                     
 	                D->T.lerp	(T1,T2,delta);
 /*					
-					if ((_abs(D->T.y)>10000) || (_abs(D->T.x)>10000) || (_abs(D->T.z)>10000)){
+					if ((_abs(D->T.y)>10000) || (_abs(D->T.x)>10000) || (_abs(D->T.z)>10000))
+					{
 						Log("xxx");
 						Log("Blend--------");
 						Log("blendAmount", B->blendAmount);
@@ -725,11 +727,15 @@ void CKinematicsAnimated::Bone_Calculate(CBoneData* bd, Fmatrix *parent)
 						Log("delta",delta);
 						Log("Dt",D->T);
 						VERIFY(0);
-*/
+
 					}
-				}else{
+*/
+				} //if (M.test_flag(flTKeyPresent))
+				else
+				{
 	                D->T.set	(M._initT);
                 }
+
 //                PSGP.blerp				(D,&K1,&K2,delta);
             }
 
