@@ -57,3 +57,4 @@ end
 function has_dolg_arhive_documents(task, objective)
 	return db.actor:object("dolg_arhive_documents") ~= nil
 end
+

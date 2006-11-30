@@ -403,8 +403,14 @@
     <info_portion id="rostok_camera_start"></info_portion>
     <info_portion id="bar_arena_survival"></info_portion>
 	
-	<info_portion id="barman_job">
-		<task>bar_barman_job</task>
+	<info_portion id="barman_job_1">
+		<task>bar_barman_job_1</task>
+	</info_portion>
+	<info_portion id="barman_job_2">
+		<task>bar_barman_job_2</task>
+	</info_portion>
+	<info_portion id="barman_job_3">
+		<task>bar_barman_job_3</task>
 	</info_portion>
     
 </game_information_portions>
