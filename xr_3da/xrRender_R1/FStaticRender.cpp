@@ -475,11 +475,9 @@ void	CRender::rmNormal	()
 	D3DVIEWPORT9 VP		= {0,0,T->get_width(),T->get_height(),0,1.f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
-extern u32 g_r;
 
 void	CRender::Render		()
 {
-	g_r											= 1;
 	Device.Statistic->RenderDUMP.Begin();
 	// Begin
 	Target->Begin								();
@@ -488,17 +486,14 @@ void	CRender::Render		()
 	r_dsgraph_render_hud						();				// hud
 	r_dsgraph_render_graph						(0);			// normal level
 	if(Details)Details->Render					();				// grass / details
-	r_dsgraph_render_lods						(true,false);	w/ lods - FB
+	r_dsgraph_render_lods						(true,false);	// lods - FB
 	g_pGamePersistent->Environment.RenderSky	();				// sky / sun
 	g_pGamePersistent->Environment.RenderClouds	();				// clouds
 	r_pmask										(true,false);	// disable priority "1"
 	o.vis_intersect								= TRUE			;
 	HOM.Disable									();
 	L_Dynamic->render							();				// addititional light sources
-	if(Wallmarks){
-		g_r										= 0;
-		Wallmarks->Render						();				// wallmarks has priority as normal geometry
-	}
+	if(Wallmarks)Wallmarks->Render				();				// wallmarks has priority as normal geometry
 	HOM.Enable									();
 	o.vis_intersect								= FALSE			;
 	phase										= PHASE_NORMAL	;
