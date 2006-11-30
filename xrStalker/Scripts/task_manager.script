@@ -432,6 +432,13 @@ function CRandomTask:task_avail(actor, npc, p1, p2, p3)
 end
 --' Проверка свойств таска
 function CRandomTask:check_task_props(task_id)
+	--' Проверка по кондлисту
+	if xr_logic.pick_section_from_condlist(db.actor, db.actor, self.task_info[task_id].condlist) == nil then
+		self.task_info[task_id].enabled_props = false
+		return
+	end
+
+
 	--' проверка по таргету
 	if self.task_info[task_id].type == "eliminate_lager" then
 		if self.task_info[task_id].target_objects == nil then
