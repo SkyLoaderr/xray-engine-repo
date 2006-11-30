@@ -3286,6 +3286,7 @@
 			wpn_ak74 = 1, 1, 1, 0 \n
 			ammo_5.45x39_ap = 1 \n
 			device_torch \n
+			wpn_abakan_m2 \n
 #include "gameplay\character_items.xml"			
 		</supplies>
 #include "gameplay\character_dialogs.xml"
