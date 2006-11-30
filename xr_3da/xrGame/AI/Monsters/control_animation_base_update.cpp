@@ -244,11 +244,12 @@ void CControlAnimationBase::SelectVelocities()
 			cur_anim_info().motion			= new_anim;
 			
 			if (a_speed < 0.5f) a_speed		+= 0.5f;
-			cur_anim_info().speed.target	= a_speed;
+
+			cur_anim_info().speed._set_target	(a_speed);
 		} else 
-			cur_anim_info().speed.target	= -1.f;
+			cur_anim_info().speed._set_target	(-1.f);
 	} else 
-		cur_anim_info().speed.target	= -1.f;
+		cur_anim_info().speed._set_target		(-1.f);
 
 	set_animation_speed	();
 

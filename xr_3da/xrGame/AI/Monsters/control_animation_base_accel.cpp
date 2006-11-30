@@ -46,6 +46,8 @@ void CControlAnimationBase::accel_chain_add(EMotionAnim anim1, EMotionAnim anim2
 
 bool CControlAnimationBase::accel_chain_get(float cur_speed, EMotionAnim target_anim, EMotionAnim &new_anim, float &a_speed)
 {
+	VERIFY2(_abs(cur_speed)<1000, "CControlAnimationBase cur_speed too big");
+
 	VELOCITY_CHAIN_VEC_IT B = m_accel.chain.begin(), I;
 	VELOCITY_CHAIN_VEC_IT E = m_accel.chain.end();
 
@@ -84,7 +86,10 @@ bool CControlAnimationBase::accel_chain_get(float cur_speed, EMotionAnim target_
 		R_ASSERT2(best_param,"probably incompatible speed ranges");
 		// calc anim_speed
 		new_anim	= *best_anim;
-		a_speed		= GetAnimSpeed(new_anim) * cur_speed / best_param->velocity.linear;
+		float tmp	= GetAnimSpeed(new_anim);
+		VERIFY2(_abs(tmp)<1000, "CControlAnimationBase GetAnimSpeed returns too big speed");
+		a_speed		=  tmp * cur_speed / best_param->velocity.linear;
+		VERIFY2(_abs(a_speed)<1000, "CControlAnimationBase a_speed too big");
 		return true;
 	}
 	return false;
