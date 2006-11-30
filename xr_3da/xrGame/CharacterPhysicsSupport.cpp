@@ -349,10 +349,10 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 
 				break;
 			case SBoneShape::EShapeType::stBox:
-				Fmatrix M;
+				Fmatrix M,XFF;
 				Fvector Ps[8];
-				SBS.box.xform_full(M);
-				M.mul_43(position_matrix,M);
+				SBS.box.xform_full(XFF);
+				M.mul_43(position_matrix,XFF);
 				for (u16 i=0;i<8;i++)
 				{
 					Ps[i].x=(i&1)? 1.0f : -1.0f;
