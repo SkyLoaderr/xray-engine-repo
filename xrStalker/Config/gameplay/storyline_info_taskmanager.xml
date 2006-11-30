@@ -13,6 +13,18 @@
 <article id="tm_eliminate_camp_3_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>tm_eliminate_camp_3_descr</text>
 </article>
+
+<article id="tm_eliminate_camp_4_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>tm_eliminate_camp_4_descr</text>
+</article>
+
+<article id="tm_eliminate_camp_5_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>tm_eliminate_camp_5_descr</text>
+</article>
+
+<article id="tm_eliminate_camp_6_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>tm_eliminate_camp_6_descr</text>
+</article>
 ;----------Barmen-----------
 <article id="barmen_eliminate_camp_1_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>barmen_eliminate_camp_1_descr</text>
@@ -22,6 +34,18 @@
 </article>
 <article id="barmen_eliminate_camp_3_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
         <text>barmen_eliminate_camp_3_descr</text>
+</article>
+<article id="barmen_eliminate_camp_4_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>barmen_eliminate_camp_4_descr</text>
+</article>
+<article id="barmen_eliminate_camp_5_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>barmen_eliminate_camp_5_descr</text>
+</article>
+<article id="barmen_eliminate_camp_6_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>barmen_eliminate_camp_6_descr</text>
+</article>
+<article id="barmen_eliminate_camp_7_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
+        <text>barmen_eliminate_camp_7_descr</text>
 </article>
 ;----------Dolg------------
 <article id="dolg_eliminate_kamp_1_descr" name="eliminate_lager" group="eliminate_lager/1" article_type="task">
@@ -77,6 +101,10 @@
 <article id="tm_find_artefact_3_descr" name="artefact" group="artefact/1" article_type="task">
         <text>tm_find_artefact_3_descr</text>
 </article>
+
+<article id="tm_find_artefact_4_descr" name="artefact" group="artefact/1" article_type="task">
+        <text>tm_find_artefact_4_descr</text>
+</article>
 ;---------Barmen-----------
 <article id="barmen_find_artefact_1_descr" name="artefact" group="artefact/1" article_type="task">
         <text>barmen_find_artefact_1_descr</text>
@@ -86,6 +114,12 @@
 </article>
 <article id="barmen_find_artefact_3_descr" name="artefact" group="artefact/1" article_type="task">
         <text>barmen_find_artefact_3_descr</text>
+</article>
+<article id="barmen_find_artefact_4_descr" name="artefact" group="artefact/1" article_type="task">
+        <text>barmen_find_artefact_4_descr</text>
+</article>
+<article id="barmen_find_artefact_5_descr" name="artefact" group="artefact/1" article_type="task">
+        <text>barmen_find_artefact_5_descr</text>
 </article>
 ;---------ecolog--------
 <article id="ecolog_find_artefact_1_descr" name="artefact" group="artefact/1" article_type="task">
@@ -123,6 +157,9 @@
 </article>
 <article id="tm_kill_stalker_5_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>tm_kill_stalker_5_descr</text>
+</article>
+<article id="tm_kill_stalker_6_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
+        <text>tm_kill_stalker_6_descr</text>
 </article>
 ;------Barmen--------
 <article id="barmen_kill_stalker_1_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
@@ -193,10 +230,6 @@
 <article id="tm_find_item_1_descr" name="find_item" group="find_item/1" article_type="task">
         <text>tm_find_item_1_descr</text>
 </article>
-
-<article id="tm_find_item_2_descr" name="find_item" group="find_item/1" article_type="task">
-        <text>tm_find_item_2_descr</text>
-</article>
 ;--------Barmen-------
 <article id="barmen_find_item_1_descr" name="find_item" group="find_item/1" article_type="task">
         <text>barmen_find_item_1_descr</text>
@@ -234,6 +267,20 @@
 
 
 ;---------Monster Part--------------
+;---------trader--------------
+<article id="tm_monster_part_1_descr" name="monster_part" group="monster_part/1" article_type="task">
+        <text>tm_monster_part_1_descr</text>
+</article>
+<article id="tm_monster_part_2_descr" name="monster_part" group="monster_part/1" article_type="task">
+        <text>tm_monster_part_2_descr</text>
+</article>
+;----------Barmen-----------
+<article id="barmen_monster_part_1_descr" name="monster_part" group="monster_part/1" article_type="task">
+        <text>tm_monster_part_1_descr</text>
+</article>
+<article id="barmen_monster_part_2_descr" name="monster_part" group="monster_part/1" article_type="task">
+        <text>tm_monster_part_2_descr</text>
+</article>
 ;--------Ecolog---------
 <article id="ecolog_monster_part_1_descr" name="monster_part" group="monster_part/1" article_type="task">
         <text>ecolog_monster_part_1_descr</text>
@@ -264,13 +311,17 @@
         <text>freedom_monster_part_1_descr</text>
 </article>
 
-;---------Defend Lager--------------
-;--------Freedom---------
-<article id="freedom_defend_lager_1_descr" name="defend_lager" group="defend_lager/1" article_type="task">
-        <text>freedom_defend_lager_1_descr</text>
+;--------Defend Kamp------------
+;---------trader--------------
+<article id="tm_defend_camp_1_descr" name="defend_lager" group="defend_lager/1" article_type="task">
+        <text>tm_defend_camp_1_descr</text>
 </article>
-<article id="freedom_defend_lager_2_descr" name="defend_lager" group="defend_lager/1" article_type="task">
-        <text>freedom_defend_lager_2_descr</text>
+;--------Barmen-------
+<article id="barmen_defend_camp_1_descr" name="defend_lager" group="defend_lager/1" article_type="task">
+        <text>barmen_defend_camp_1_descr</text>
+</article>
+<article id="barmen_defend_camp_2_descr" name="defend_lager" group="defend_lager/1" article_type="task">
+        <text>barmen_defend_camp_2_descr</text>
 </article>
 
 

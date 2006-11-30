@@ -204,7 +204,6 @@ reward_item = grenade_rgd5
 type = eliminate_lager
 community = actor
 text = tm_eliminate_camp_2_text
-;--condlist = {+garbage_meetstalker_done}
 description = tm_eliminate_camp_2_descr
 parent = trader
 target = esc2_st_fabric
@@ -219,7 +218,7 @@ reward_item = grenade_rgd5
 type = eliminate_lager
 community = actor
 text = tm_eliminate_camp_3_text
-condlist = {=actor_on_level(l03u_agr_underground)}
+condlist = {+garbage_meetstalker_done},{+garbage_meetstalker_die}
 init_condition = {=actor_on_level(l03u_agr_underground)}
 description = tm_eliminate_camp_3_descr
 parent = trader
@@ -494,6 +493,7 @@ reward_item = grenade_f1
 [barmen_eliminate_camp_5]
 type = eliminate_lager
 community = actor
+condlist = {+bar_darklab_document_done}
 text = barmen_eliminate_camp_5_text
 description = barmen_eliminate_camp_5_descr
 parent = barman
@@ -548,6 +548,7 @@ reward_item = medkit_scientic
 [barmen_find_artefact_2]
 type = artefact
 community = actor
+condlist = {+bar_darklab_document_done}
 text = barmen_find_artefact_2_text
 description = barmen_find_artefact_2_descr
 parent = barman
@@ -561,6 +562,7 @@ reward_item = antirad
 [barmen_find_artefact_3]
 type = artefact
 community = actor
+condlist = {+yan_kill_brain_done}
 text = barmen_find_artefact_3_text
 description = barmen_find_artefact_3_descr
 parent = barman
@@ -572,6 +574,7 @@ reward_rank = 7
 [barmen_find_artefact_4]
 type = artefact
 community = actor
+condlist = {+bar_darklab_document_done}
 text = barmen_find_artefact_4_text
 description = barmen_find_artefact_4_descr
 parent = barman
@@ -583,6 +586,7 @@ reward_rank = 4
 [barmen_find_artefact_5]
 type = artefact
 community = actor
+condlist = {+yan_kill_brain_done}
 text = barmen_find_artefact_5_text
 description = barmen_find_artefact_5_descr
 parent = barman
@@ -607,6 +611,7 @@ reward_item = medkit_scientic
 [barmen_kill_stalker_2]
 type = kill_stalker
 community = actor
+condlist = {+bar_darklab_document_done}
 text = barmen_kill_stalker_2_text
 description = barmen_kill_stalker_2_descr
 parent = barman
@@ -646,6 +651,7 @@ reward_item = medkit_scientic
 [barmen_kill_stalker_5]
 type = kill_stalker
 community = actor
+condlist = {+bar_darklab_document_done}
 text = barmen_kill_stalker_5_text
 description = barmen_kill_stalker_5_descr
 parent = barman
@@ -716,7 +722,7 @@ community = actor
 text = barmen_defend_kamp_1_text
 time = 50
 ;---condlist = {=actor_on_level(l02_garbage)}
-init_condition = {+agroprom_military_case_done =actor_on_level(l02_garbage) =gulag_state(gar_smart_bandit_large_lager:1)}, {=gulag_state(gar_smart_garage:1)}
+init_condition = {+agroprom_military_case_done =actor_on_level(l02_garbage) =gulag_state(gar_smart_bandit_large_lager:1)}, {+agroprom_military_case_done =actor_on_level(l02_garbage) =gulag_state(gar_smart_garage:1)}
 description = barmen_defend_kamp_1_descr
 parent = barman
 target = gar_smart_garage
