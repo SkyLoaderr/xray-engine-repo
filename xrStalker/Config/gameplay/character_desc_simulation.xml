@@ -2827,7 +2827,7 @@
 ;----------------------Stalkers Quest Profiles-----------------------
 <!---------------------------Oleg Gusarov---------------------->
 	<specific_character id="sim_stalker_veteran_gusarov" team_default = "1">
-		<name>Олег "Демон" Гусаров</name>
+		<name>sim_stalker_veteran_gusarov_name</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_veteran_gusarov_bio</bio>
@@ -2858,7 +2858,7 @@
 ;-------------------Leshii--------------------	
 	
 <specific_character id="sim_Svoboda_specnaz_leshii" team_default = "1">
-		<name>Леший</name>
+		<name>sim_Svoboda_specnaz_leshii_name</name>
 		<icon x="26" y="14"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>sim_Svoboda_specnaz_leshii_bio</bio>
@@ -2891,7 +2891,7 @@
 
 ;-----------------Chuchelo----------------------------------
 	<specific_character id="sim_stalker_master_chuchelo" team_default = "1">
-		<name>Чучело</name>
+		<name>sim_stalker_master_chuchelo_name</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_master_chuchelo_bio</bio>
@@ -2923,7 +2923,7 @@
 ;--------------------Upir------------------------
 
 	<specific_character id="sim_stalker_general_upir" team_default = "1">
-		<name>Упырь</name>
+		<name>sim_stalker_general_upir_name</name>
 		<icon x="24" y="4"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_upir_bio</bio>
@@ -2953,7 +2953,7 @@
 	
 	;------------------Otec Diador-------------------
 	<specific_character id="sim_stalker_master_diador" team_default = "1">
-		<name>Отец Диодор</name>
+		<name>sim_stalker_master_diador_name</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_master_diador_bio</bio>
@@ -2985,7 +2985,7 @@
 	;------------------Zob-----------------------------
 	
 	<specific_character id="sim_ecolog_zob" team_default = "1">
-		<name>Зоб</name>
+		<name>sim_ecolog_zob_name</name>
 		<icon x="8" y="4"></icon>
 		<map_icon x="0" y="6"></map_icon>
 		<bio>sim_ecolog_zob_bio</bio>
@@ -3015,7 +3015,7 @@
 	
 	;-----------------Neumeha----------------------
 <specific_character id="sim_stalker_novice_neumeha" team_default = "1">
-		<name>Неумеха</name>
+		<name>sim_stalker_novice_neumeha_name</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>sim_stalker_novice_neumeha_bio</bio>
@@ -3043,7 +3043,7 @@
 	
 ;-----------------Kocherga---------------------------
 	<specific_character id="sim_bandit_master_kocherga" team_default = "1">
-		<name>Кочерга</name>
+		<name>sim_bandit_master_kocherga_name</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>sim_bandit_master_kocherga_bio</bio>
@@ -3074,7 +3074,7 @@
 	;----------------------Barin------------------------------
 	
 	<specific_character id="sim_dolg_veteran_barin" team_default = "1">
-		<name>Барин</name>
+		<name>sim_dolg_veteran_barin_name</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_veteran_barin_bio</bio>
@@ -3106,7 +3106,7 @@
 	
 ;--------------------Воробей-------------------------------------	
 	<specific_character id="sim_stalker_veteran_vorobey" team_default = "1">
-		<name>Воробей</name>
+		<name>sim_stalker_veteran_vorobey_name</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_veteran_vorobey_bio</bio>
@@ -3137,7 +3137,7 @@
 	
 ;------------------Stalker "Master"-------------------
 	<specific_character id="sim_stalker_master_master" team_default = "1">
-		<name>Мастер</name>
+		<name>sim_stalker_master_master_name</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_master_master_bio</bio>
@@ -3168,7 +3168,7 @@
 	
 ;------------------Stalker "Prapor"-------------------
 	<specific_character id="sim_dolg_veteran_prapor" team_default = "1">
-		<name>Прапор</name>
+		<name>sim_dolg_veteran_prapor_name</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>sim_dolg_veteran_prapor_bio</bio>
@@ -3201,7 +3201,7 @@
 ;-------------------Prut--------------------	
 	
 <specific_character id="sim_svoboda_specnaz_prut" team_default = "1">
-		<name>Прут</name>
+		<name>sim_svoboda_specnaz_prut_name</name>
 		<icon x="26" y="14"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>sim_svoboda_specnaz_prut_bio</bio>
@@ -3232,7 +3232,7 @@
 	
 ;--------------------Умник-------------------------------------	
 	<specific_character id="sim_stalker_veteran_umnik" team_default = "1">
-		<name>Умник</name>
+		<name>sim_stalker_veteran_umnik_name</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_veteran_umnik_bio</bio>
@@ -3262,7 +3262,7 @@
 	
 ;-----------------Fraer---------------------------
 	<specific_character id="sim_bandit_master_fraer" team_default = "1">
-		<name>Фраер</name>
+		<name>sim_bandit_master_fraer_name</name>
 		<icon x="24" y="14"></icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>sim_bandit_master_fraer_bio</bio>
@@ -3294,7 +3294,7 @@
 	
 ;------------------Stalker "Полкан"-------------------
 	<specific_character id="sim_stalker_master_polkan" team_default = "1">
-		<name>Полкан</name>
+		<name>sim_stalker_master_polkan_name</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_master_polkan_bio</bio>
@@ -3327,7 +3327,7 @@
 
 <!---------------------------STALKER 1---------------------->
 	<specific_character id="bar_arena_stalker_1" team_default = "1">
-		<name>Мясо</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>bar_arena_stalker</bio>
@@ -3352,7 +3352,7 @@
 
 ;-----------------STALKER 2----------------------------------
 <specific_character id="bar_arena_stalker_2" team_default = "1">
-		<name>Трупоед</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>bar_arena_stalker</bio>
@@ -3376,7 +3376,7 @@
 
 ;--------------------STALKER 3_1 and 3_2----------------------
 <specific_character id="bar_arena_stalker_3_1" team_default = "1">
-		<name>Эстонец</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>bar_arena_stalker</bio>
@@ -3399,7 +3399,7 @@
 	</specific_character>
 
 <specific_character id="bar_arena_stalker_3_2" team_default = "1">
-		<name>Финн</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>bar_arena_stalker</bio>
@@ -3426,7 +3426,7 @@
 
 ;---enemy---
 <specific_character id="bar_arena_stalker_4_1" team_default = "1">
-		<name>Макароник</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>bar_arena_stalker</bio>
@@ -3449,7 +3449,7 @@
 	</specific_character>
 
 <specific_character id="bar_arena_stalker_4_2" team_default = "1">
-		<name>Гнилой ствол</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>bar_arena_stalker</bio>
@@ -3472,7 +3472,7 @@
 	</specific_character>
 
 <specific_character id="bar_arena_stalker_4_3" team_default = "1">
-		<name>Мушка</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="2" y="2"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>bar_arena_stalker</bio>
@@ -3497,7 +3497,7 @@
 ;----friends----
 
 	<specific_character id="bar_arena_stalker_4_4" team_default = "1">
-		<name>Зося</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>bar_arena_stalker</bio>
@@ -3521,7 +3521,7 @@
 	</specific_character>
 
 	<specific_character id="bar_arena_stalker_4_5" team_default = "1">
-		<name>Зуко</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="0" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>bar_arena_stalker</bio>
@@ -3548,7 +3548,7 @@
 ;------------STALKER 5_1,5_2-------------------------
 
 	<specific_character id="bar_arena_stalker_5_1" team_default = "1">
-		<name>Сарж</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>bar_arena_stalker</bio>
@@ -3572,7 +3572,7 @@
 	</specific_character>
 
 	<specific_character id="bar_arena_stalker_5_2" team_default = "1">
-		<name>Дед</name>
+		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>bar_arena_stalker</bio>
