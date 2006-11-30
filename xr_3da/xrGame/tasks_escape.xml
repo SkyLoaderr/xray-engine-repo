@@ -207,6 +207,7 @@
 			<text>tutorial_help_wounded_2</text>
 			<map_location_type hint="tutorial_wounded">green_location</map_location_type>
 			<object_story_id>Escape_tutorial_wounded</object_story_id>
+			<map_location_hidden>1</map_location_hidden>
 			<infoportion_complete>tutorial_wounded_give_info</infoportion_complete>
 		</objective>
 		<objective>
