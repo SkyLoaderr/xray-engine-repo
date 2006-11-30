@@ -5,6 +5,7 @@
 			<text>storyline_escape_eliminate_gunslinger</text>
 			<icon>ui_iconsTotal_storyline_eliminate_gunslinger</icon>
 			<infoportion_fail>cit_fail_first_task</infoportion_fail>
+			<article>storyline_gunslinger</article>
 		</objective>
 		<objective>
 			<text>storyline_escape_find_gunslinger</text>
