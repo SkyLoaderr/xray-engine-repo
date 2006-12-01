@@ -138,5 +138,6 @@ static void _stdcall 					IKVisualCallback				(CKinematics* K)																		
 		void							CalculateIK						(CKinematics* K)																									;
 		void							CollisionCorrectObjPos			(const Fvector& start_from);
 		void							FlyTo							(const	Fvector &disp);
+		void							TestForWounded					();
 };
 #endif  //CHARACTER_PHYSICS_SUPPORT
