@@ -4,17 +4,22 @@ function osoznanie_decline(npc, actor)
     db.actor:disable_info_portion("oso_init_dialog")
 	npc:stop_talk()
     actor:stop_talk()
-
+	xr_effects.enable_ui(db.actor, nil)	  
 	local point = patrol("mon_jump_aes2_walk")
 	local look = patrol("mon_jump_aes2_look")
 	
 	db.actor:set_actor_position(point:point(0))
 	local dir = look:point(0):sub(point:point(0))
-	db.actor:set_actor_direction(-dir:getH())	  
+	db.actor:set_actor_direction(-dir:getH())
+	
 end
 
 --' ћы соглашаемс€ вступить в осознание, конец игры.
 function osoznanie_agree(npc, actor)
 	db.actor:disable_info_portion("oso_init_dialog")
-    game.start_tutorial("mov_join_osoznanie")
+	npc:stop_talk()
+    actor:stop_talk()
+	xr_effects.enable_ui(db.actor, nil)	  
+	game.start_tutorial("mov_join_osoznanie")
+	
 end

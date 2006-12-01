@@ -45,9 +45,13 @@ function action_cutscene:update( delta )
 
     if self.ui_disabled then
         if cutscene_finished == true then
-            xr_effects.enable_ui(db.actor, nil)
-            self.ui_disabled = false
-            self.st.signals["cameff_end"] = true
+           if not db.actor:is_talking() then 
+				xr_effects.enable_ui(db.actor, nil)
+		   else
+				level.enable_input()	
+		   end
+           self.ui_disabled = false
+           self.st.signals["cameff_end"] = true
         end
     end
 	
