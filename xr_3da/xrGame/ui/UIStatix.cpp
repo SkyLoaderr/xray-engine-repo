@@ -1,30 +1,32 @@
 #include "stdafx.h"
 
 #include "UIStatix.h"
-#include "UIColorAnimatorWrapper.h"
 
 CUIStatix::CUIStatix(){
-	m_anim = xr_new<CUIColorAnimatorWrapper>("ui_slow_blinking");
-	m_anim->Cyclic(true);
-
-	m_bSelected = false;
+	m_bSelected		= false;
 }
 
-CUIStatix::~CUIStatix(){
-	xr_delete(m_anim);
+CUIStatix::~CUIStatix()
+{}
+
+void CUIStatix::start_anim()
+{
+	SetLightAnim	("ui_slow_blinking", true, true, true, true);
+	ResetAnimation	();
+}
+
+void CUIStatix::stop_anim()
+{
+	SetLightAnim	(NULL, true, true, true, true);
 }
 
 void CUIStatix::Update(){
-	CUIStatic::Update();
 	if (m_bCursorOverWindow)
 	{
 		SetColor(0xff349F06);
 	}
-	if (m_bSelected)
-	{
-		m_anim->Update();
-		SetColor(subst_alpha(GetColor(), color_get_A(m_anim->GetColor())));
-	}
+
+	CUIStatic::Update();
 }
 
 void CUIStatix::OnFocusLost()
@@ -36,18 +38,29 @@ void CUIStatix::OnFocusLost()
 void CUIStatix::OnFocusReceive()
 {
 	CUIStatic::OnFocusReceive	();
-	m_anim->Reset();
+	ResetAnimation				();
 }
 
-bool CUIStatix::OnMouseDown(bool left_button /* = true */){
+bool CUIStatix::OnMouseDown(bool left_button)
+{
 	GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
 	return true;
 }
 
-void CUIStatix::SetSelectedState(bool state){
+void CUIStatix::SetSelectedState(bool state)
+{
+	bool b		= m_bSelected;
 	m_bSelected = state;
+
+	if(	b==m_bSelected )		return;
+	
 	if (!state)
 		OnFocusLost();
+
+	if(state)
+		start_anim();
+	else
+		stop_anim();
 }
 
 bool CUIStatix::GetSelectedState(){

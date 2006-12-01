@@ -4,19 +4,21 @@
 
 class CUIColorAnimatorWrapper;
 
-class CUIStatix : public CUIStatic {
+class CUIStatix : public CUIStatic 
+{
 public:
-	CUIStatix();
-	~CUIStatix();
+					CUIStatix			();
+	virtual			~CUIStatix			();
 
-	virtual void Update();
-	virtual void OnFocusReceive();
-	virtual void OnFocusLost();
-	virtual bool OnMouseDown(bool left_button = true);
-			void SetSelectedState(bool state);
-			bool GetSelectedState();
+	virtual void 	Update				();
+	virtual void 	OnFocusReceive		();
+	virtual void 	OnFocusLost			();
+	virtual bool 	OnMouseDown			(bool left_button = true);
+			void 	SetSelectedState	(bool state);
+			bool 	GetSelectedState	();
 
 private:
-	bool		m_bSelected;
-	CUIColorAnimatorWrapper*	m_anim;
+	bool			m_bSelected;
+	void			start_anim			();
+	void			stop_anim			();
 };
