@@ -318,7 +318,7 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 				m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
 
 		}
-	}
+	
 }
 
 void CCharacterPhysicsSupport::in_UpdateCL()
