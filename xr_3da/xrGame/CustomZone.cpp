@@ -980,6 +980,7 @@ void CCustomZone::AffectObjects()
 			Affect( &(*it) );
 	}
 
+	m_dwDeltaTime = 0;
 }
 
 void CCustomZone::UpdateBlowout()

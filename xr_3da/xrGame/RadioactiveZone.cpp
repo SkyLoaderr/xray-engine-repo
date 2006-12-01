@@ -31,7 +31,7 @@ void CRadioactiveZone::Affect(SZoneObjectInfo* O)
 {
 	// вермя срабатывания не чаще, чем заданный период
 	if(m_dwDeltaTime < m_dwPeriod) return;
-	m_dwDeltaTime = 0;
+//.	m_dwDeltaTime = 0;
 	
 	CGameObject *GO = O->object;
 	
@@ -54,7 +54,7 @@ void CRadioactiveZone::Affect(SZoneObjectInfo* O)
 		float impulse = 0.f;
 		if(power > EPS) 
 		{
-			m_dwDeltaTime = 0;
+//.			m_dwDeltaTime = 0;
 			position_in_bone_space.set(0.f,0.f,0.f);
 
 			CreateHit(GO->ID(),ID(),dir,power,BI_NONE,position_in_bone_space,impulse,ALife::eHitTypeRadiation);
@@ -73,6 +73,19 @@ void CRadioactiveZone::feel_touch_new					(CObject* O	)
 		}
 	};
 };
+
+#include "actor.h"
+BOOL CRadioactiveZone::feel_touch_contact(CObject* O)
+{
+
+	CActor* A = smart_cast<CActor*>(O);
+	if ( A )
+	{ 
+		if (!((CCF_Shape*)CFORM())->Contact(O))		return	FALSE;
+		return										A->feel_touch_on_contact(this);
+	}else
+		return										FALSE;
+}
 
 void CRadioactiveZone::UpdateWorkload					(u32	dt)
 {
