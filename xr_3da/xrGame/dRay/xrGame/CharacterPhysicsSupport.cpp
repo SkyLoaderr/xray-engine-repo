@@ -30,7 +30,6 @@ void  NodynamicsCollide(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*materi
 
 void  OnCharacterContactInDeath(bool& do_colide,bool bo1,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 {
-	//gray_wolf>
 	dSurfaceParameters		&surface=c.surface;
 	CCharacterPhysicsSupport* l_character_physic_support=0;
 	if (bo1)
@@ -43,7 +42,6 @@ void  OnCharacterContactInDeath(bool& do_colide,bool bo1,dContact& c,SGameMtl * 
 	}
 
 	surface.mu=l_character_physic_support->m_curr_skin_friction_in_death;
-	//gray_wolf<
 }
 
 
@@ -307,18 +305,14 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 	}
 	if(!(m_pPhysicsShell&&m_pPhysicsShell->isActive()))
 	{
-
 		if(!is_killing&&m_EntityAlife.g_Alive())
 			m_PhysicMovementControl->ApplyHit(dir,impulse,hit_type);
-
 	}
-	else {
-
-			if(m_pPhysicsShell&&m_pPhysicsShell->isActive()) 
-				m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
-
-		}
-	
+	else
+	{
+		if(m_pPhysicsShell&&m_pPhysicsShell->isActive()) 
+			m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
+	}
 }
 
 void CCharacterPhysicsSupport::in_UpdateCL()
@@ -343,66 +337,8 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 				}
 				m_flags.set(fl_death_anim_on,TRUE);
 			}
-		//gray_wolf>ѕреобразование skel_ddelay из кадров в секунды и линейное нарастание сопротивлени€ в джоинтах со временем от момента смерти 
-			float l_time_delta;
-			if (m_Pred_Time==0.0)
-			{
-				l_time_delta=0;
-			}
-			else
-			{
-				l_time_delta=Device.fTimeGlobal-m_Pred_Time;					
-			}
-			m_Pred_Time=Device.fTimeGlobal;
-
-			if(skel_remain_time!=0)
-			{
-				skel_remain_time-=l_time_delta;
-			};
-			if (skel_remain_time<0)
-			{
-				skel_remain_time=0;
-			};
-			
-			float curr_joint_resistance=hinge_force_factor1-
-				(skel_remain_time*hinge_force_factor1)/skel_ddelay;
-			m_pPhysicsShell->set_JointResistance(curr_joint_resistance);
-		//gray_wolf<
-
-		//gray_wolf>
-			if(skeleton_skin_remain_time!=0)
-			{
-				skeleton_skin_remain_time-=l_time_delta;
-			}
-			if (skeleton_skin_remain_time<0)
-			{
-				skeleton_skin_remain_time=0;
-			}
-
-			if(skeleton_skin_remain_time_after_wound!=0)
-			{
-				skeleton_skin_remain_time_after_wound-=l_time_delta;
-			};
-			if (skeleton_skin_remain_time_after_wound<0)
-			{
-				skeleton_skin_remain_time_after_wound=0;
-			};
-
-			float ddelay,remain;
-			if (m_was_wounded)
-			{
-				ddelay=skeleton_skin_ddelay_after_wound;
-				remain=skeleton_skin_remain_time_after_wound;
-			}
-			else
-			{
-				ddelay=skeleton_skin_ddelay;
-				remain=skeleton_skin_remain_time;
-			}
-
-			m_curr_skin_friction_in_death=skeleton_skin_friction_end+
-				(remain/ddelay)*(skeleton_skin_friction_start-skeleton_skin_friction_end);			
-		//gray_wolf<
+		
+			UpdateFrictionAndJointResistanse();
 		}
 
 	}
@@ -798,4 +734,68 @@ void CCharacterPhysicsSupport::TestForWounded()
 			m_was_wounded=true;
 		}
 	}
+};
+
+void CCharacterPhysicsSupport::UpdateFrictionAndJointResistanse()
+{
+	//ѕреобразование skel_ddelay из кадров в секунды и линейное нарастание сопротивлени€ в джоинтах со временем от момента смерти 
+	float l_time_delta;
+	if (m_Pred_Time==0.0)
+	{
+		l_time_delta=0;
+	}
+	else
+	{
+		l_time_delta=Device.fTimeGlobal-m_Pred_Time;					
+	}
+	m_Pred_Time=Device.fTimeGlobal;
+
+	if(skel_remain_time!=0)
+	{
+		skel_remain_time-=l_time_delta;
+	};
+	if (skel_remain_time<0)
+	{
+		skel_remain_time=0;
+	};
+			
+	float curr_joint_resistance=hinge_force_factor1-
+		(skel_remain_time*hinge_force_factor1)/skel_ddelay;
+	m_pPhysicsShell->set_JointResistance(curr_joint_resistance);
+
+
+
+
+	if(skeleton_skin_remain_time!=0)
+	{
+		skeleton_skin_remain_time-=l_time_delta;
+	}
+	if (skeleton_skin_remain_time<0)
+	{
+		skeleton_skin_remain_time=0;
+	}
+
+	if(skeleton_skin_remain_time_after_wound!=0)
+	{
+		skeleton_skin_remain_time_after_wound-=l_time_delta;
+	};
+	if (skeleton_skin_remain_time_after_wound<0)
+	{
+		skeleton_skin_remain_time_after_wound=0;
+	};
+
+	float ddelay,remain;
+	if (m_was_wounded)
+	{
+		ddelay=skeleton_skin_ddelay_after_wound;
+		remain=skeleton_skin_remain_time_after_wound;
+	}
+	else
+	{
+		ddelay=skeleton_skin_ddelay;
+		remain=skeleton_skin_remain_time;
+	}
+
+	m_curr_skin_friction_in_death=skeleton_skin_friction_end+
+		(remain/ddelay)*(skeleton_skin_friction_start-skeleton_skin_friction_end);			
 };
