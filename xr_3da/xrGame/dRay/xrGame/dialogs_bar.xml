@@ -3384,6 +3384,9 @@
                 <text>bar_bar_barmen_start_1315</text>
                 <next>1316</next>
             </phrase>
+            <phrase id="1316">
+                <text>bar_bar_barmen_start_1316</text>
+            </phrase>
             <phrase id="211">
                 <text>bar_bar_barmen_start_211</text>
                 <next>2111</next>
