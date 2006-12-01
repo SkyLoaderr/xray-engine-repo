@@ -239,5 +239,12 @@
 	<info_portion id="esc_bridge_soldiers"></info_portion>
 	
 	<info_portion id="esc_dog_spawn"></info_portion>
+
+	<info_portion id="esc_find_railroad_passage_start">
+		<task>find_railroad_passage</task>
+	</info_portion>
+	<info_portion id="esc_find_railroad_passage_find_stalker"></info_portion>
+	<info_portion id="esc_find_railroad_passage_done"></info_portion>
+
 	
 </game_information_portions>
