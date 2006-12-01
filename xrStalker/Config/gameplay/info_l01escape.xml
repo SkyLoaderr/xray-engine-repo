@@ -251,5 +251,7 @@
 	<info_portion id="trader_job">
 		<task>esc_trader_job</task>
 	</info_portion>
+	<info_portion id="esc_fanat_dead"></info_portion>
+	
 	
 </game_information_portions>
