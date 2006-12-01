@@ -232,12 +232,7 @@ void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
 void CCharacterPhysicsSupport::in_NetDestroy()
 {
 	m_PhysicMovementControl->DestroyCharacter();
-	//if((!b_skeleton_in_shell||m_pPhysicsShell)&&m_physics_skeleton)//.
-	//{
-	//		m_physics_skeleton->Deactivate();
-	//		xr_delete(m_physics_skeleton);
-	//		b_skeleton_in_shell=false;
-	//} 
+
 	if(m_physics_skeleton)
 	{
 		m_physics_skeleton->Deactivate();
@@ -248,21 +243,12 @@ void CCharacterPhysicsSupport::in_NetDestroy()
 		m_pPhysicsShell->Deactivate();
 		xr_delete(m_pPhysicsShell);
 	}
-	//b_skeleton_in_shell=false;
+
 	m_flags.set(fl_skeleton_in_shell,FALSE);
 	CPHSkeleton::RespawnInit();
 	CPHDestroyable::RespawnInit();
 	m_eState=esAlive;
-	//if(m_pPhysicsShell)	
-	//{
-	//	//m_pPhysicsShell->Deactivate();
-	//	//m_pPhysicsShell->ZeroCallbacks();
-	//	m_pPhysicsShell=0;
-	//	b_skeleton_in_shell=false;
 
-	//}
-	
-	//xr_delete				(m_pPhysicsShell);
 	DestroyIKController();
 }
 
@@ -321,27 +307,16 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 	}
 	if(!(m_pPhysicsShell&&m_pPhysicsShell->isActive()))
 	{
-		//m_saved_impulse=impulse* (hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
-		//m_saved_element=element;
-		//m_saved_hit_type=hit_type;
-		//m_saved_hit_dir.set(dir);
-		//m_saved_hit_position.set(p_in_object_space);
 
 		if(!is_killing&&m_EntityAlife.g_Alive())
 			m_PhysicMovementControl->ApplyHit(dir,impulse,hit_type);
 
 	}
 	else {
-		{//if (!m_EntityAlife.g_Alive()) 
+
 			if(m_pPhysicsShell&&m_pPhysicsShell->isActive()) 
 				m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
-			//m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse);
-//			else{
-	/*			m_saved_hit_dir.set(dir);
-				m_saved_impulse=impulse*(hit_type==ALife::eHitTypeExplosion ? 1.f : skel_fatal_impulse_factor);
-				m_saved_element=element;
-				m_saved_hit_position.set(p_in_object_space);*/
-//			}
+
 		}
 	}
 }
@@ -354,8 +329,6 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 	}
 	if(m_pPhysicsShell&&m_pPhysicsShell->isFullActive())
 	{
-
-		//XFORM().set(m_pPhysicsShell->mXFORM);
 		m_pPhysicsShell->InterpolateGlobalTransform(&mXFORM);
 	}
 
@@ -365,20 +338,11 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 		{
 			if(!m_flags.test(fl_death_anim_on)&&m_pPhysicsShell->isFullActive())//!b_death_anim_on&&m_pPhysicsShell->isFullActive()
 			{
-				///if(m_eType==etStalker)
 				{
 						smart_cast<CKinematicsAnimated*>(m_EntityAlife.Visual())->PlayCycle("death_init");
 				}
-				//b_death_anim_on=true;
 				m_flags.set(fl_death_anim_on,TRUE);
 			}
-
-			//if(!fsimilar(0.f,m_saved_impulse) && !m_pPhysicsShell->bActivating)
-			//{
-			//	m_pPhysicsShell->applyHit(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element,m_saved_hit_type);
-			//	m_saved_impulse=0.f;
-			//}
-
 		//gray_wolf>ѕреобразование skel_ddelay из кадров в секунды и линейное нарастание сопротивлени€ в джоинтах со временем от момента смерти 
 			float l_time_delta;
 			if (m_Pred_Time==0.0)
@@ -444,15 +408,8 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 	}
 	else if (!m_EntityAlife.g_Alive()&&!m_EntityAlife.use_simplified_visual	())
 	{
-
-		//Log("mem use %d",Memory.mem_usage());
-
 		ActivateShell(NULL);
-		//CreateSkeleton();
-		//Log("mem use %d",Memory.mem_usage());
-
 		m_PhysicMovementControl->DestroyCharacter();
-		//m_EntityAlife.PHSetPushOut();
 	}
 }
 
@@ -468,12 +425,8 @@ void CCharacterPhysicsSupport::CreateSkeleton(CPhysicsShell* &pShell)
 	pShell		= P_create_Shell();
 	pShell->preBuild_FromKinematics(smart_cast<CKinematics*>(m_EntityAlife.Visual()));
 	pShell->mXFORM.set(mXFORM);
-	//pShell->SetAirResistance(0.002f*skel_airr_lin_factor,//gray_wolf comment
-	//	0.3f*skel_airr_ang_factor);//gray_wolf comment
 	pShell->SetAirResistance(skel_airr_lin_factor,skel_airr_ang_factor);
-
 	pShell->SmoothElementsInertia(0.3f);
-	//pShell->set_JointResistance(0.f);
 	pShell->set_PhysicsRefObject(&m_EntityAlife);
 	SAllDDOParams disable_params;
 	disable_params.Load(smart_cast<CKinematics*>(m_EntityAlife.Visual())->LL_UserData());
@@ -491,22 +444,13 @@ Fvector velocity;
 	m_PhysicMovementControl->GetCharacterVelocity(velocity);
 	m_PhysicMovementControl->GetDeathPosition	(m_EntityAlife.Position());
 	m_PhysicMovementControl->DestroyCharacter();
-	//Position().y+=.1f;
-	//#else
-	//Position().y+=0.1f;
-
 	if (!m_EntityAlife.Visual())
 		return;
 	m_pPhysicsShell		= P_create_Shell();
 	m_pPhysicsShell->build_FromKinematics(smart_cast<CKinematics*>(m_EntityAlife.Visual()));
 	m_pPhysicsShell->mXFORM.set(mXFORM);
-
-	//m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,//gray_wolf comment
-	//	0.3f*skel_airr_ang_factor);//gray_wolf comment
 	m_pPhysicsShell->SetAirResistance(skel_airr_lin_factor,
 		skel_airr_ang_factor);
-
-	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
 	m_pPhysicsShell->set_PhysicsRefObject(&m_EntityAlife);
 	SAllDDOParams disable_params;
 	disable_params.Load(smart_cast<CKinematics*>(m_EntityAlife.Visual())->LL_UserData());
