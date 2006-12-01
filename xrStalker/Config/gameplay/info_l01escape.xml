@@ -238,4 +238,6 @@
 	<!-- Коррумпированый пост на мосту -->
 	<info_portion id="esc_bridge_soldiers"></info_portion>
 	
+	<info_portion id="esc_dog_spawn"></info_portion>
+	
 </game_information_portions>
