@@ -180,6 +180,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 //		LPCSTR						target		= NULL;
 
 		IReader*					fs			= FS.r_open(cname);
+		R_ASSERT3					(fs, "shader file doesnt exist", cname);
 
 		// Select target
 		LPCSTR						c_target	= "vs_2_0";
