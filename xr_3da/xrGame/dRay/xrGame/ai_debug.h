@@ -42,4 +42,5 @@
 
 #ifdef DEBUG
 #	define aiDebugOnFrameAllocs			(1<<25)
+#	define aiDrawVisibilityRays			(1<<26)
 #endif // DEBUG

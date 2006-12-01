@@ -482,10 +482,10 @@ IC BOOL ray_query_callback	(collide::rq_result& result, LPVOID params)
 	float								power = param->m_holder->feel_vision_mtl_transp(result.O,result.element);
 	param->m_power						*= power;
 
-	if (power >= .05f) {
-		param->m_pick_distance			= result.range;
-		return							(true);
-	}
+//	if (power >= .05f) {
+//		param->m_pick_distance			= result.range;
+//		return							(true);
+//	}
 
 	if (!result.O) {
 		if (param->m_power > param->m_power_threshold)

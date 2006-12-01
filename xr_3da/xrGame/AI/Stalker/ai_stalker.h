@@ -501,6 +501,7 @@ public:
 #ifdef DEBUG
 public:
 			void						dbg_draw_vision						();
+			void						dbg_draw_visibility_rays			();
 #endif
 
 

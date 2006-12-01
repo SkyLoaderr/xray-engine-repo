@@ -600,183 +600,6 @@ void CCustomMonster::UpdateCamera()
 	g_pGameLevel->Cameras().Update(eye_matrix.c,eye_matrix.k,eye_matrix.j,new_fov,.75f,new_range);
 }
 
-
-#ifdef DEBUG
-
-extern void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
-
-void CCustomMonster::OnRender()
-{
-	//if (!bDebug)					return;
-	//if (!psAI_Flags.test(aiDebug))	return;
-
-	//	m_PhysicMovementControl->DBG_Render();
-
-	RCache.OnFrameEnd				();
-	for (int i=0; i<1; ++i) {
-		const xr_vector<CDetailPathManager::STravelPoint>		&keys	= !i ? movement().detail().m_key_points					: movement().detail().m_key_points;
-		const xr_vector<DetailPathManager::STravelPathPoint>	&path	= !i ? movement().detail().path()	: movement().detail().path();
-		u32									color0	= !i ? D3DCOLOR_XRGB(0,255,0)		: D3DCOLOR_XRGB(0,0,255);
-		u32									color1	= !i ? D3DCOLOR_XRGB(255,0,0)		: D3DCOLOR_XRGB(255,255,0);
-		u32									color2	= !i ? D3DCOLOR_XRGB(0,0,255)		: D3DCOLOR_XRGB(0,255,255);
-		u32									color3	= !i ? D3DCOLOR_XRGB(255,255,255)	: D3DCOLOR_XRGB(255,0,255);
-		float								radius0 = !i ? .1f : .15f;
-		float								radius1 = !i ? .2f : .3f;
-		{
-			for (u32 I=1; I<path.size(); ++I) {
-				const DetailPathManager::STravelPathPoint&	N1 = path[I-1];	Fvector	P1; P1.set(N1.position); P1.y+=0.1f;
-				const DetailPathManager::STravelPathPoint&	N2 = path[I];	Fvector	P2; P2.set(N2.position); P2.y+=0.1f;
-				if (!fis_zero(P1.distance_to_sqr(P2),EPS_L))
-					Level().debug_renderer().draw_line			(Fidentity,P1,P2,color0);
-				if ((path.size() - 1) == I) // песледний box?
-					Level().debug_renderer().draw_aabb			(P1,radius0,radius0,radius0,color1);
-				else 
-					Level().debug_renderer().draw_aabb			(P1,radius0,radius0,radius0,color2);
-			}
-
-			for (u32 I=1; I<keys.size(); ++I) {
-				CDetailPathManager::STravelPoint	temp;
-				temp		= keys[I - 1]; 
-				Fvector		P1;
-				P1.set		(temp.position.x,ai().level_graph().vertex_plane_y(temp.vertex_id),temp.position.y);
-				P1.y		+= 0.1f;
-
-				temp		= keys[I]; 
-				Fvector		P2;
-				P2.set		(temp.position.x,ai().level_graph().vertex_plane_y(temp.vertex_id),temp.position.y);
-				P2.y		+= 0.1f;
-
-				if (!fis_zero(P1.distance_to_sqr(P2),EPS_L))
-					Level().debug_renderer().draw_line		(Fidentity,P1,P2,color1);
-				Level().debug_renderer().draw_aabb			(P1,radius1,radius1,radius1,color3);
-			}
-		}
-	}
-	{
-		u32					node = movement().level_dest_vertex_id();
-		if (node == u32(-1)) node = 0;
-
-		Fvector				P1 = ai().level_graph().vertex_position(node);
-		P1.y				+= 1.f;
-		Level().debug_renderer().draw_aabb	(P1,.5f,1.f,.5f,D3DCOLOR_XRGB(255,0,0));
-	}
-	if (g_Alive()) {
-		if (memory().enemy().selected()) {
-			Fvector				P1 = memory().memory(memory().enemy().selected()).m_object_params.m_position;
-			P1.y				+= 1.f;
-			Level().debug_renderer().draw_aabb	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
-		}
-		if (memory().danger().selected()) {
-			Fvector				P1 = memory().danger().selected()->position();
-			P1.y				+= 1.f;
-			Level().debug_renderer().draw_aabb	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
-		}
-	}
-	/*
-	{
-	for (u32 I=1; I<AI_Path.TravelPath_dbg.size(); ++I)
-	{
-	CTravelNode&	N1 = AI_Path.TravelPath_dbg[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
-	CTravelNode&	N2 = AI_Path.TravelPath_dbg[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
-	Level().debug_renderer().draw_line(precalc_identity,P1,P2,D3DCOLOR_XRGB(255,0,0));
-	Level().debug_renderer().draw_aabb(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
-	}
-	}
-	*/
-	{
-
-		//	for (int I=0, N = (int)movement().detail().path().size(); I<N - 1; ++I)
-		//	{
-		//		Fvector P1 = movement().detail().path()[I].position;		P1.y+=0.1f;
-		//		Fvector P2 = movement().detail().path()[I + 1].position;	P2.y+=0.1f;
-		//		{
-		//			const STravelParams&		i = velocity(movement().detail().path()[I].velocity);
-		//			float	r = i.linear_velocity/i.angular_velocity;
-		//			Fmatrix						V = Fidentity;
-		//			V.c							= P1;
-		//			V.c.y						+= r + float(I)/100.f;
-		//			V.i.x						= .05f;//r;
-		//			V.j.y						= .05f;//r;
-		//			V.k.z						= .05f;//r;
-		//			Level().debug_renderer().draw_ellipse		(V,D3DCOLOR_XRGB(255,0,0));
-		//		}
-		//		{
-		//			const STravelParams&		i = velocity(movement().detail().path()[I + 1].velocity);
-		//			float	r = i.linear_velocity/i.angular_velocity;
-		//			Fmatrix						V = Fidentity;
-		//			V.c							= P2;
-		//			V.c.y						+= r + float(I + 1)/100.f;
-		//			V.i.x						= .05f;//r;
-		//			V.j.y						= .05f;//r;
-		//			V.k.z						= .05f;//r;
-		//			Level().debug_renderer().draw_ellipse		(V,D3DCOLOR_XRGB(255,0,0));
-		//		}
-		//		Level().debug_renderer().draw_aabb(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
-		//		Level().debug_renderer().draw_aabb(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
-		//		Level().debug_renderer().draw_line(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
-		//	}
-	}
-
-	//	if (this == Level().Teams[g_Team()].Squads[g_Squad()].Leader) {
-	//		CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	//		for (unsigned i=0; i<Group.m_tpaSuspiciousNodes.size(); ++i) {
-	//			Fvector tP0 = ai().level_graph().vertex_position(Group.m_tpaSuspiciousNodes[i].dwNodeID);
-	//			tP0.y += .35f;
-	//			if (!Group.m_tpaSuspiciousNodes[i].dwSearched)
-	//				Level().debug_renderer().draw_aabb(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));
-	//			else
-	//				if (1 == Group.m_tpaSuspiciousNodes[i].dwSearched)
-	//					Level().debug_renderer().draw_aabb(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,0));
-	//				else
-	//					Level().debug_renderer().draw_aabb(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,255,0));
-	//			switch (Group.m_tpaSuspiciousNodes[i].dwGroup) {
-	//				case 0 : {
-	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
-	//					break;
-	//				}
-	//				case 1 : {
-	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,0));
-	//					break;
-	//				}
-	//				case 2 : {
-	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
-	//					break;
-	//				}
-	//				case 3 : {
-	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,0));
-	//					break;
-	//				}
-	//				case 4 : {
-	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,255));
-	//					break;
-	//				}
-	//				case 5 : {
-	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,255));
-	//					break;
-	//				}
-	//				default : {
-	//					Level().debug_renderer().draw_aabb(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,255));
-	//					break;
-	//				}
-	//			}
-	//		}
-	//	}
-
-	if (psAI_Flags.test(aiFrustum)) {
-		float									new_range = eye_range, new_fov = eye_fov;
-		if (g_Alive())
-			update_range_fov					(new_range, new_fov, memory().visual().current_state().m_max_view_distance*eye_range, eye_fov);
-		dbg_draw_frustum(new_fov,new_range,1,eye_matrix.c,eye_matrix.k,eye_matrix.j);
-	}
-
-	if (psAI_Flags.test(aiMotion)) 
-	{
-		character_physics_support()->movement()->dbg_Draw();
-	}
-	if (bDebug) smart_cast<CKinematics*>(Visual())->DebugRender(XFORM());
-}
-#endif
-
 void CCustomMonster::HitSignal(float /**perc/**/, Fvector& /**vLocalDir/**/, CObject* /**who/**/)
 {
 }
@@ -1224,4 +1047,89 @@ bool CCustomMonster::update_critical_wounded	(const u16 &bone_id, const float &p
 	return (false);
 }
 
+#ifdef DEBUG
 
+extern void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
+void draw_visiblity_rays	(CCustomMonster *self, const CObject *object, collide::rq_results& rq_storage);
+
+void CCustomMonster::OnRender()
+{
+	RCache.OnFrameEnd				();
+
+	for (int i=0; i<1; ++i) {
+		const xr_vector<CDetailPathManager::STravelPoint>		&keys	= !i ? movement().detail().m_key_points					: movement().detail().m_key_points;
+		const xr_vector<DetailPathManager::STravelPathPoint>	&path	= !i ? movement().detail().path()	: movement().detail().path();
+		u32									color0	= !i ? D3DCOLOR_XRGB(0,255,0)		: D3DCOLOR_XRGB(0,0,255);
+		u32									color1	= !i ? D3DCOLOR_XRGB(255,0,0)		: D3DCOLOR_XRGB(255,255,0);
+		u32									color2	= !i ? D3DCOLOR_XRGB(0,0,255)		: D3DCOLOR_XRGB(0,255,255);
+		u32									color3	= !i ? D3DCOLOR_XRGB(255,255,255)	: D3DCOLOR_XRGB(255,0,255);
+		float								radius0 = !i ? .1f : .15f;
+		float								radius1 = !i ? .2f : .3f;
+		{
+			for (u32 I=1; I<path.size(); ++I) {
+				const DetailPathManager::STravelPathPoint&	N1 = path[I-1];	Fvector	P1; P1.set(N1.position); P1.y+=0.1f;
+				const DetailPathManager::STravelPathPoint&	N2 = path[I];	Fvector	P2; P2.set(N2.position); P2.y+=0.1f;
+				if (!fis_zero(P1.distance_to_sqr(P2),EPS_L))
+					Level().debug_renderer().draw_line			(Fidentity,P1,P2,color0);
+				if ((path.size() - 1) == I) // песледний box?
+					Level().debug_renderer().draw_aabb			(P1,radius0,radius0,radius0,color1);
+				else 
+					Level().debug_renderer().draw_aabb			(P1,radius0,radius0,radius0,color2);
+			}
+
+			for (u32 I=1; I<keys.size(); ++I) {
+				CDetailPathManager::STravelPoint	temp;
+				temp		= keys[I - 1]; 
+				Fvector		P1;
+				P1.set		(temp.position.x,ai().level_graph().vertex_plane_y(temp.vertex_id),temp.position.y);
+				P1.y		+= 0.1f;
+
+				temp		= keys[I]; 
+				Fvector		P2;
+				P2.set		(temp.position.x,ai().level_graph().vertex_plane_y(temp.vertex_id),temp.position.y);
+				P2.y		+= 0.1f;
+
+				if (!fis_zero(P1.distance_to_sqr(P2),EPS_L))
+					Level().debug_renderer().draw_line		(Fidentity,P1,P2,color1);
+				Level().debug_renderer().draw_aabb			(P1,radius1,radius1,radius1,color3);
+			}
+		}
+	}
+	{
+		u32					node = movement().level_dest_vertex_id();
+		if (node == u32(-1)) node = 0;
+
+		Fvector				P1 = ai().level_graph().vertex_position(node);
+		P1.y				+= 1.f;
+		Level().debug_renderer().draw_aabb	(P1,.5f,1.f,.5f,D3DCOLOR_XRGB(255,0,0));
+	}
+	if (g_Alive()) {
+		if (memory().enemy().selected()) {
+			Fvector				P1 = memory().memory(memory().enemy().selected()).m_object_params.m_position;
+			P1.y				+= 1.f;
+			Level().debug_renderer().draw_aabb	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
+		}
+
+		if (memory().danger().selected()) {
+			Fvector				P1 = memory().danger().selected()->position();
+			P1.y				+= 1.f;
+			Level().debug_renderer().draw_aabb	(P1,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,0));
+		}
+	}
+
+	if (psAI_Flags.test(aiFrustum)) {
+		float					new_range = eye_range, new_fov = eye_fov;
+		
+		if (g_Alive())
+			update_range_fov	(new_range, new_fov, memory().visual().current_state().m_max_view_distance*eye_range, eye_fov);
+
+		dbg_draw_frustum		(new_fov,new_range,1,eye_matrix.c,eye_matrix.k,eye_matrix.j);
+	}
+
+	if (psAI_Flags.test(aiMotion)) 
+		character_physics_support()->movement()->dbg_Draw();
+	
+	if (bDebug)
+		smart_cast<CKinematics*>(Visual())->DebugRender(XFORM());
+}
+#endif // DEBUG

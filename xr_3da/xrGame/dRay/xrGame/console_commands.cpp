@@ -2527,6 +2527,8 @@ void CCC_RegisterCommands()
 
 	CMD3(CCC_Mask,				"ai_nil_object_access",	&psAI_Flags,	aiNilObjectAccess);
 
+	CMD3(CCC_Mask,				"ai_draw_visibility_rays",	&psAI_Flags,	aiDrawVisibilityRays);
+
 #ifdef DEBUG_MEMORY_MANAGER
 	CMD3(CCC_Mask,				"debug_on_frame_gather_stats",				&psAI_Flags,	aiDebugOnFrameAllocs);
 	CMD4(CCC_Float,				"debug_on_frame_gather_stats_frequency",	&debug_on_frame_gather_stats_frequency, 0.f, 1.f);

@@ -920,4 +920,137 @@ void CAI_Stalker::dbg_draw_vision	()
 	HUD().Font().pFontMedium->OutNext	(out_text);
 }
 
+typedef xr_vector<Fvector>	COLLIDE_POINTS;
+
+class ray_query_param	{
+public:
+	CCustomMonster			*m_holder;
+	float					m_power;
+	float					m_power_threshold;
+	float					m_pick_distance;
+	Fvector					m_start_position;
+	Fvector					m_direction;
+	COLLIDE_POINTS			*m_points;
+
+public:
+	IC				ray_query_param		(CCustomMonster *holder, float power_threshold, float distance, const Fvector &start_position, const Fvector &direction, COLLIDE_POINTS &points)
+	{
+		m_holder			= holder;
+		m_power				= 1.f;
+		m_power_threshold	= power_threshold;
+		m_pick_distance		= distance;
+		m_start_position	= start_position;
+		m_direction			= direction;
+		m_points			= &points;
+	}
+};
+
+BOOL _ray_query_callback	(collide::rq_result& result, LPVOID params)
+{
+	ray_query_param						*param = (ray_query_param*)params;
+	param->m_points->push_back			(
+		Fvector().mad(
+			param->m_start_position,
+			param->m_direction,
+			result.range
+		)
+	);
+	
+	float								power = param->m_holder->feel_vision_mtl_transp(result.O,result.element);
+	param->m_power						*= power;
+	if (param->m_power > param->m_power_threshold)
+		return							(true);
+
+	param->m_pick_distance				= result.range;
+	return								(false);
+}
+
+void fill_points			(CCustomMonster *self, const Fvector &position, const Fvector &direction, float distance, collide::rq_results& rq_storage, COLLIDE_POINTS &points, float &pick_distance)
+{
+	VERIFY							(!fis_zero(direction.square_magnitude()));
+
+	collide::ray_defs				ray_defs(position,direction,distance,CDB::OPT_CULL,collide::rqtBoth);
+	VERIFY							(!fis_zero(ray_defs.dir.square_magnitude()));
+	
+	ray_query_param					params(self,self->memory().visual().transparency_threshold(),distance,position,direction,points);
+
+	Level().ObjectSpace.RayQuery	(rq_storage,ray_defs,_ray_query_callback,&params,NULL,self);
+
+	pick_distance					= params.m_pick_distance;
+}
+
+void draw_visiblity_rays	(CCustomMonster *self, const CObject *object, collide::rq_results& rq_storage)
+{
+	typedef Feel::Vision::feel_visible_Item		feel_visible_Item;
+	typedef xr_vector<feel_visible_Item>		VISIBLE_ITEMS;
+
+	feel_visible_Item		*item = 0;
+	{
+		VISIBLE_ITEMS::iterator	I = self->feel_visible.begin();
+		VISIBLE_ITEMS::iterator	E = self->feel_visible.end();
+		for ( ; I!=E; ++I) {
+			if ((*I).O == object) {
+				item		= &*I;
+				break;
+			}
+		}
+	}
+	
+	if (!item)
+		return;
+
+	Fvector					start_position = self->eye_matrix.c;
+	Fvector					dest_position = item->cp_LAST;
+	Fvector					direction = Fvector().sub(dest_position,start_position);
+	float					distance = direction.magnitude();
+	direction.normalize		();
+	float					pick_distance = flt_max;
+	rq_storage.r_clear		();
+	COLLIDE_POINTS			points;
+	points.push_back		(start_position);
+	fill_points				(
+		self,
+		start_position,
+		direction,
+		distance,
+		rq_storage,
+		points,
+		pick_distance
+	);
+
+//	VERIFY					(fsimilar(pick_distance,distance));
+	if (fsimilar(pick_distance,distance) && !dest_position.similar(points.back()))
+		points.push_back	(dest_position);
+
+	VERIFY					(points.size() > 1);
+	
+	Fvector					size = Fvector().set(.05f,.05f,.05f);
+	Level().debug_renderer().draw_aabb	(points.front(),size.x,size.y,size.z,D3DCOLOR_XRGB(0,0,255));
+
+	{
+		COLLIDE_POINTS::const_iterator	I = points.begin() + 1;
+		COLLIDE_POINTS::const_iterator	E = points.end();
+		for ( ; I != E; ++I) {
+			Level().debug_renderer().draw_line	(Fidentity,*(I-1),*I,D3DCOLOR_XRGB(0,255,0));
+			Level().debug_renderer().draw_aabb	(*I,size.x,size.y,size.z,D3DCOLOR_XRGB(0,255,0));
+		}
+	}
+
+	Level().debug_renderer().draw_aabb	(points.back(),size.x,size.y,size.z,D3DCOLOR_XRGB(255,0,0));
+}
+
+void CAI_Stalker::dbg_draw_visibility_rays	()
+{
+	if (!g_Alive())
+		return;
+
+	const CEntityAlive		*enemy = memory().enemy().selected();
+	if (enemy) {
+		if (memory().visual().visible_now(enemy)) {
+			collide::rq_results	rq_storage;
+			draw_visiblity_rays	(this,enemy,rq_storage);
+		}
+	}
+}
+
 #endif

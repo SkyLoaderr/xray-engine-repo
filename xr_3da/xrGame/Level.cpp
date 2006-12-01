@@ -669,6 +669,18 @@ void CLevel::OnRender()
 			stalker->dbg_draw_vision	();
 		}
 	}
+
+
+	if (psAI_Flags.test(aiDrawVisibilityRays)) {
+		for (u32 I=0; I < Level().Objects.o_count(); I++) {
+			CObject						*object = Objects.o_get_by_iterator(I);
+			CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(object);
+			if (!stalker)
+				continue;
+
+			stalker->dbg_draw_visibility_rays	();
+		}
+	}
 #endif
 }
 
