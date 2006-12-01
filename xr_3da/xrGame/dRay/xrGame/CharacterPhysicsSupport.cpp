@@ -667,7 +667,7 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 		dp.set(m_EntityAlife.Position());
 	else m_PhysicMovementControl->GetDeathPosition(dp);
 	m_PhysicMovementControl->DestroyCharacter();
-	//CollisionCorrectObjPos(dp);
+	CollisionCorrectObjPos(dp);
 
 	R_ASSERT2(m_physics_skeleton,"No skeleton created!!");
 	m_pPhysicsShell=m_physics_skeleton;
