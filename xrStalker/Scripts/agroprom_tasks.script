@@ -19,7 +19,7 @@ end
 
 function process_info_portion(info_id)
 	if info_id == "agr_krot_secret_info" and
-	   db.actor:dont_has_info("agr_find_gunslinger_cache_start")
+	   not has_alife_info("agr_find_gunslinger_cache_start")
 	then
 
 		db.actor:give_info_portion("agr_find_gunslinger_cache_start")
