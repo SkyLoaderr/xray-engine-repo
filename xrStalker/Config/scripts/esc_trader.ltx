@@ -56,7 +56,7 @@ anim_global = desk_idle
 on_signal = animation_end| {~25} mob_trader@new_idle1_to_idle3, {~50} mob_trader@new_idle1_to_idle5, {~75} mob_trader@new_idle1_to_idle2, mob_trader@new_idle1_to_idle1
 on_info = {=talking} mob_trader@new_idle1_to_idle3
 on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played} mob_trader@new_bye %+esc_trader_bye_played%
-on_actor_dist_ge_nvis2 = 10 | mob_trader@new_wait
+on_actor_dist_ge_nvis2 = 12 | mob_trader@new_wait
 
 ; Idle (2) - по диагонали
 [mob_trader@new_idle2]
@@ -64,7 +64,7 @@ anim_global = diagonal_idle
 on_signal = animation_end| {~25} mob_trader@new_idle2_to_idle3, {~50} mob_trader@new_idle2_to_idle4, {~75} mob_trader@new_idle2_to_idle1, mob_trader@new_idle2_to_idle2
 on_info = {=talking} mob_trader@new_idle2_to_idle3
 on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played} mob_trader@new_bye %+esc_trader_bye_played%
-on_actor_dist_ge_nvis2 = 10 | mob_trader@new_wait
+on_actor_dist_ge_nvis2 = 12 | mob_trader@new_wait
 
 ; Idle (3) - откинувшись на спинку
 [mob_trader@new_idle3]
@@ -72,7 +72,7 @@ anim_global = chair_hack_idle
 on_signal = animation_end| {~30} mob_trader@new_idle3_to_idle2, {~70} mob_trader@new_idle3_to_idle1, mob_trader@new_idle3_to_idle3
 on_info = {=talking} mob_trader@new_talking
 on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played} mob_trader@new_bye %+esc_trader_bye_played%
-on_actor_dist_ge_nvis2 = 10 | mob_trader@new_wait
+on_actor_dist_ge_nvis2 = 12 | mob_trader@new_wait
 
 ; Idle (4) - за компьютером
 [mob_trader@new_idle4]
@@ -80,7 +80,7 @@ anim_global = compute_idle
 on_signal = animation_end| {~40} mob_trader@new_idle4_to_idle2, mob_trader@new_idle4_to_idle4
 on_info = {=talking} mob_trader@new_idle4_to_idle2
 on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played} mob_trader@new_bye %+esc_trader_bye_played%
-on_actor_dist_ge_nvis2 = 10 | mob_trader@new_wait
+on_actor_dist_ge_nvis2 = 12 | mob_trader@new_wait
 
 ; Idle (5) - читает
 [mob_trader@new_idle5]
@@ -88,7 +88,7 @@ anim_global = listen_idle
 on_signal = animation_end| {~45} mob_trader@new_idle5_to_idle1, mob_trader@new_idle5_to_idle5
 on_info = {=talking} mob_trader@new_idle5_to_idle1
 on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played} mob_trader@new_bye %+esc_trader_bye_played%
-on_actor_dist_ge_nvis2 = 10 | mob_trader@new_wait
+on_actor_dist_ge_nvis2 = 12 | mob_trader@new_wait
 ;----------------------------------
 ;--------   Автопереходы   --------
 ;----------------------------------
@@ -198,7 +198,7 @@ anim_global = chair_hack_idle
 anim_head = angry
 sound_phrase = trader_bad_trade
 on_signal = sound_phrase_end | mob_trader@new_idle2
-on_actor_dist_ge_nvis = 10 | mob_trader@new_wait
+on_actor_dist_ge_nvis = 12 | mob_trader@new_wait
 
 [mob_trader@new_trade_exchanged]
 ;anim_global = diagonal_talk
@@ -206,7 +206,7 @@ anim_global = chair_hack_idle
 anim_head = normal
 sound_phrase = trader_exchanged
 on_signal = sound_phrase_end | mob_trader@new_idle2
-on_actor_dist_ge_nvis = 10 | mob_trader@new_wait
+on_actor_dist_ge_nvis = 12 | mob_trader@new_wait
 
 [mob_trader@new_trade_good]
 ;anim_global = diagonal_talk
@@ -214,7 +214,7 @@ anim_global = chair_hack_idle
 anim_head = good
 sound_phrase = trader_good_trade
 on_signal = sound_phrase_end | mob_trader@new_idle2
-on_actor_dist_ge_nvis = 10 | mob_trader@new_wait
+on_actor_dist_ge_nvis = 12 | mob_trader@new_wait
 
 
 ;-------------------------------------
@@ -228,7 +228,7 @@ sound_phrase = trader_hello_what_have_you_got
 on_signal = animation_end | mob_trader@new_idle2
 
 [mob_trader@new_bye]
-on_actor_dist_ge_nvis = 14 |mob_trader@new_wait
+on_actor_dist_ge_nvis = 12 |mob_trader@new_wait
 anim_global = hello
 anim_head = normal
 sound_phrase = trader_bye
@@ -238,5 +238,5 @@ on_signal = animation_end | mob_trader@new_wait
 anim_global = diagonal_idle_short
 on_actor_dist_le_nvis = 3 | {-esc_trader_hello_played} mob_trader@new_hello %+esc_trader_hello_played%
 on_actor_dist_ge_nvis = 5 | {-esc_trader_bye_played +esc_trader_hello_played} mob_trader@new_bye %+esc_trader_bye_played%
-on_actor_dist_ge_nvis2 = 10 | %-esc_trader_hello_played -esc_trader_bye_played%
+on_actor_dist_ge_nvis2 = 12 | %-esc_trader_hello_played -esc_trader_bye_played%
 on_info = {=talking} mob_trader@new_talking
