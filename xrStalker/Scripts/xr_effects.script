@@ -634,6 +634,10 @@ end
 
 --' garbage
 
+function gar_mapspot_blockpost (actor, npc)
+	level_tasks.add_location(115, "crlc_mdl", "gar_dolg_blokpost")
+end
+
 
 	
 function actor_friend(actor, npc)
