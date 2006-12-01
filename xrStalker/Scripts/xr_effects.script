@@ -603,7 +603,7 @@ function esc_direction_fire(actor, npc)
 end
 
 function esc_fanat_victory(actor, npc)
-	if has_alife_info("escape_lager_killers_die") then
+	if has_alife_info("escape_lager_killers_die") and not has_alife_info("esc_fanat_die") then
 		news_manager.send_tip(actor, "esc_fanat_victory", 0, "stalker", 10000)
 	end
 end
