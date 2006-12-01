@@ -635,7 +635,7 @@ end
 --' garbage
 
 function gar_mapspot_blockpost (actor, npc)
-	level_tasks.add_location(115, "green_location", "gar_dolg_blokpost_leader_name")
+	level_tasks.add_location(108, "green_location", "gar_dolg_blokpost_leader_name")
 end
 
 
