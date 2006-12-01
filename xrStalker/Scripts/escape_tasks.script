@@ -122,7 +122,8 @@ end
 
 function is_actor_enemy_lager ()
     local gulag = xr_gulag.get_gulag_by_name ("esc_lager")
-    if gulag == nil or gulag:npc_is_enemy_to_anybody (db.actor) == false then
+    if has_alife_info("esc_fanat_die") then return true end
+	if gulag == nil or gulag:npc_is_enemy_to_anybody (db.actor) == false then
        return false
     end    
     return true
