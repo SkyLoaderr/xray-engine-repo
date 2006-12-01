@@ -528,6 +528,8 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 		-linear_velocity[1]*l_air,
 		-linear_velocity[2]*l_air
 		);
+	m_last_move.sub(cast_fv(dBodyGetPosition(m_body)),m_last_move);
+	m_last_move.mul(1.f/fixed_step);
 	VERIFY2(dBodyStateValide(m_body),"WRONG BODYSTATE IN PhDataUpdate");
 	if(PhOutOfBoundaries(cast_fv(dBodyGetPosition(m_body))))Disable();
 	VERIFY_BOUNDARIES(cast_fv(dBodyGetPosition(m_body)),phBoundaries,PhysicsRefObject());
@@ -543,8 +545,8 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	//	Log("time %f",Device.fTimeGlobal);
 	//}
 	//if(!b_exist)return;
-	m_elevator_state.PhTune(step);
-	b_air_contact_state=!is_contact;
+	m_last_move.set(cast_fv(dBodyGetPosition(m_body)));
+
 #ifdef DEBUG
 	if(ph_dbg_draw_mask.test(phDbgCharacterControl))
 	{
@@ -1249,8 +1251,7 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
 		m_safe_position[2]-m_safe_velocity[2]*fixed_step);
 		
-	dVectorSub(cast_fp(m_last_move),dBodyGetPosition(m_body),m_safe_position);
-	m_last_move.mul(1.f/fixed_step);
+
 	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
 	dVectorSet(m_safe_velocity,linear_velocity);
 
