@@ -376,9 +376,9 @@ BEGIN
                     WS_EX_ACCEPTFILES
     CONTROL         "don't catch input",IDC_CATCHINPUT,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,25,69,10
-    EDITTEXT        IDC_PLAYERNAME,120,7,71,14,ES_AUTOHSCROLL | 
+    EDITTEXT        IDC_PLAYERNAME,114,7,87,14,ES_AUTOHSCROLL | 
                     ES_WANTRETURN | NOT WS_BORDER,WS_EX_CLIENTEDGE
-    LTEXT           "Player :",IDC_STATIC,88,9,26,8
+    LTEXT           "Player :",IDC_STATIC,88,9,25,8
     CONTROL         "build",IDC_BUILD,"Button",BS_AUTOCHECKBOX | NOT 
                     WS_VISIBLE | WS_TABSTOP,7,7,31,10
     CONTROL         156,IDC_STATIC,"Static",SS_BITMAP | SS_CENTERIMAGE,202,7,

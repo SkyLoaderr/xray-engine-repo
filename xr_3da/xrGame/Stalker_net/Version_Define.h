@@ -12,6 +12,10 @@
 #define START_PORT       5445
 #define END_PORT         65535//(START_PORT + 200) //GameSpy only process 500 ports
 
+#define MAX_PLAYERNAME_LEN		17
+#define MAX_SERVERNAME_LEN		24
+#define MAX_SERVERPASSW_LEN		8
+
 #ifdef	TESTERS
 
 #define	LTX			"-ltx user_testers.ltx"

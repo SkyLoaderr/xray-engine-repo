@@ -121,13 +121,15 @@ BOOL CStalker_netDlg::OnInitDialog()
 	//---------------------------------------
 	m_pCatchInput.SetCheck(0);
 
-	m_pPlayerName.SetWindowText("");
+	m_pPlayerName.SetWindowText("");	
 	//---------------------------------------
 	char CompName[1024];
 	DWORD CompNameSize = 1024;
 	GetComputerName(CompName, &CompNameSize);
-
+	
+	CompName[MAX_PLAYERNAME_LEN] = 0;
 	m_pPlayerName.SetWindowText(CompName);
+	m_pPlayerName.LimitText(MAX_PLAYERNAME_LEN);
 
 	m_pBuild.SetCheck(0);
 	m_pBuild.EnableWindow(FALSE);

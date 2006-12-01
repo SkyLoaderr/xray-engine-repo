@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "Stalker_net.h"
+#include "Version_Define.h"
 #include "SVServerOptDlg.h"
 #include ".\svserveroptdlg.h"
 
@@ -42,9 +43,14 @@ BOOL SVServerOptDlg::OnInitDialog()
 	char CompName[1024];
 	DWORD CompNameSize = 1024;
 	GetComputerName(CompName, &CompNameSize);
-	//-------------------------------------------------
+	//-------------------------------------------------	
+	CompName[MAX_SERVERNAME_LEN] = 0;
 	m_pHostName.SetWindowText(CompName);
+	m_pHostName.LimitText(MAX_SERVERNAME_LEN);
+	
 	m_pPassword.SetWindowText("");
+	m_pPassword.LimitText(MAX_SERVERPASSW_LEN);
+
 	m_pMaxPlayers.SetWindowText("32");
 	m_pSpectrMode.SetCheck(0);
 	m_pSpectrSwitchTime.SetWindowText("20"); 
