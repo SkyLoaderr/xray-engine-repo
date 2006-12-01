@@ -95,6 +95,7 @@ end
 
 function ghost_tips ()
 	news_manager.send_tip( db.actor, "ghost_tips", nil, "prizrak", nil )
+	db.actor:give_info_portion ("agr_gunslinger_flash_have")
 end
 
 function agr_actor_enemy ()
