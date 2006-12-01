@@ -68,9 +68,23 @@ void CWeaponKnife::OnStateSwitch	(u32 S)
 		switch2_Hidden	();
 		break;
 	case eFire:
+		{
+			//-------------------------------------------
+			m_eHitType		= m_eHitType_1;
+			fHitPower		= fHitPower_1;
+			fHitImpulse		= fHitImpulse_1;
+			//-------------------------------------------
+			switch2_Attacking	(S);
+		}break;
 	case eFire2:
-		switch2_Attacking	(S);
-		break;
+		{
+			//-------------------------------------------
+			m_eHitType		= m_eHitType_2;
+			fHitPower		= fHitPower_2;
+			fHitImpulse		= fHitImpulse_2;
+			//-------------------------------------------
+			switch2_Attacking	(S);
+		}break;
 	}
 }
 	
@@ -191,25 +205,13 @@ void CWeaponKnife::switch2_Showing	()
 
 
 void CWeaponKnife::FireStart()
-{
-	//-------------------------------------------
-	m_eHitType		= m_eHitType_1;
-	fHitPower		= fHitPower_1;
-	fHitImpulse		= fHitImpulse_1;
-	//-------------------------------------------
+{	
 	inherited::FireStart();
 	SwitchState			(eFire);
 }
 
-
-
 void CWeaponKnife::Fire2Start () 
 {
-	//-------------------------------------------
-	m_eHitType		= m_eHitType_2;
-	fHitPower		= fHitPower_2;
-	fHitImpulse		= fHitImpulse_2;
-	//-------------------------------------------
 	inherited::Fire2Start();
 	SwitchState(eFire2);
 }
@@ -220,6 +222,7 @@ bool CWeaponKnife::Action(s32 cmd, u32 flags)
 	if(inherited::Action(cmd, flags)) return true;
 	switch(cmd) 
 	{
+
 		case kWPN_ZOOM : 
 			if(flags&CMD_START) Fire2Start();
 			else Fire2End();

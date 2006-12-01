@@ -107,7 +107,7 @@ void SHit::Write_Packet_Cont		(NET_Packet	&Packet)
 	Packet.w_u16		(boneID);
 	Packet.w_vec3		(p_in_bone_space);
 	Packet.w_float		(impulse);
-	Packet.w_u16		(u16(hit_type));	
+	Packet.w_u16		(u16(hit_type&0xffff));	
 	if (hit_type == ALife::eHitTypeFireWound)
 	{
 		Packet.w_float	(ap);
