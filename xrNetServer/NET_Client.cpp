@@ -505,6 +505,9 @@ void IPureClient::Disconnect()
 	_RELEASE	(net_Address_device);
 	_SHOW_REF	("cl_netCORE",NET);
 	_RELEASE	(NET);
+
+	net_Connected = FALSE;
+	net_Syncronised = FALSE;
 }
 
 HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)

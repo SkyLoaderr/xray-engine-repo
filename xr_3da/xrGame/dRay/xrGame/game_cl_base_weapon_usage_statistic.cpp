@@ -440,7 +440,7 @@ void				WeaponUsageStatistic::Send_Check_Respond			()
 		if ((char*)pSTrue != (char*)STrue) P.w(STrue, u32((char*)pSTrue-(char*)STrue));
 		//-----------------------------------------------------
 		ClientID ClID; ClID.set(BChA_Request.SenderID);
-		Level().Server->SendTo(ClID, P);
+		if(Level().Server) Level().Server->SendTo(ClID, P);
 	};
 }
 
