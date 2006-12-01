@@ -14,7 +14,7 @@ function load_job( sj, gname, type, squad, groups )
 				idle = 0,
 				prior = 5, state = {0},
 				squad = squad, group = groups[1],
-				in_rest = "", out_rest = ""
+				in_rest = "", out_rest = "agr_patrol_1_space_restrictor"
 			}
 			table.insert(sj, t)
 		end
