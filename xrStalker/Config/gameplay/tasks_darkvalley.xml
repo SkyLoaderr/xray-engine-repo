@@ -2,7 +2,7 @@
     <title>val_come_to_trader_1</title>
     <objective key="0">
         <icon height="50" width="50" x="100" y="0">ui\ui_icons_task</icon>
-        <infoportion_complete>val_actor_behind_gate</infoportion_complete>
+        <infoportion_complete>esc_return</infoportion_complete>
         <infoportion_fail>bar_darklab_document_done</infoportion_fail>
     </objective>
     <objective key="1">
@@ -10,7 +10,7 @@
         <icon height="50" width="50" x="100" y="50">ui\ui_icons_task</icon>
         <map_location_type hint="val_come_to_trader">green_location</map_location_type>
         <object_story_id>val_exit_gate</object_story_id>
-        <infoportion_complete>val_actor_behind_gate</infoportion_complete>
+        <infoportion_complete>esc_return</infoportion_complete>
     </objective>
 </game_task>
 
