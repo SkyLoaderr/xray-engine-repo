@@ -361,9 +361,11 @@ public:
 		if (GameID() == GAME_SINGLE) return;
 		if (!Game().local_player) return;
 		
-		string1024 NewName = "";
+		string4096 NewName = "";
 		sscanf	(args,"%s", NewName);
 		if (!xr_strlen(NewName)) return;
+		if (xr_strlen(NewName) > 17)
+			NewName[17] = 0;
 	
 		NET_Packet		P;
 		Game().u_EventGen		(P,GE_GAME_EVENT,Game().local_player->GameID);
