@@ -28,7 +28,6 @@
 	<!-- Tutorial wounded -->
 	<info_portion id="tutorial_wounded_start">
 	 	<task>esc_flash_task</task>
-		<article>tutorial_wounded_help</article>
 		<article>sl_first_opinions</article>   <!--commented -->
 	</info_portion>
 	<info_portion id="esc_first_novice_dead"></info_portion>
@@ -70,7 +69,6 @@
 	<info_portion id="escape_stalker_dog_die"></info_portion>	
 	<info_portion id="escape_stalker_meet">
 		<task>esc_help_wounded_from_raid</task>
-		<article>esc_fox_help</article>
 		<article>sl_usefull_info</article>
 	</info_portion>
 	<info_portion id="escape_stalker_give">	
@@ -232,7 +230,6 @@
 	<!-- проводник -->
 	<info_portion id="esc_find_doctor_start">
 		<task>doctor_meet</task>
-		<article>esc_doctor_meet</article>
 		<article>esc_provodnik_pda</article>
 		<article>sl_provodnik</article>
 	</info_portion>
