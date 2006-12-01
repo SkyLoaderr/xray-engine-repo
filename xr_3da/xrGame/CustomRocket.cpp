@@ -567,9 +567,11 @@ void CCustomRocket::PhTune					(float step)
 {
 	UpdateEnginePh							();
 #ifdef	DEBUG
-	if(m_pOwner->ID()==Actor()->ID())
+	if (GameID() == GAME_SINGLE)
 	{
-		
+		if(m_pOwner->ID()==Actor()->ID())
+		{
+
 			const	float	*v=dBodyGetLinearVel(PPhysicsShell()->get_ElementByStoreOrder(0)->get_body());
 			const	float	*f=dBodyGetForce(PPhysicsShell()->get_ElementByStoreOrder(0)->get_body());
 			if(cast_fv(v).dotproduct(cast_fv(f))<0.f)
@@ -579,14 +581,12 @@ void CCustomRocket::PhTune					(float step)
 			float	s=cast_fv(v).magnitude();
 			if(s<gbg_rocket_speed1/2.f)
 			{
-					Msg("opa speed	out");
+				Msg("opa speed	out");
 			}
 			gbg_rocket_speed1=s;
 			gbg_rocket_speed2=s;
-
-	}
-
-	
+		}
+	}	
 #endif
 }
 
