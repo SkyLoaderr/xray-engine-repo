@@ -247,4 +247,9 @@
 	<info_portion id="esc_find_railroad_passage_done"></info_portion>
 
 	<info_portion id="esc_tutorial_start"></info_portion>
+	
+	<info_portion id="trader_job">
+		<task>esc_trader_job</task>
+	</info_portion>
+	
 </game_information_portions>
