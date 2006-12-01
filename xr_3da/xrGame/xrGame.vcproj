@@ -10191,9 +10191,6 @@
 				<Filter
 					Name="WpnDragDropItem"
 					Filter="">
-					<File
-						RelativePath=".\ui\UIWpnDragDropItem.h">
-					</File>
 				</Filter>
 				<Filter
 					Name="InventoryUtilities"
@@ -10353,16 +10350,6 @@
 							</File>
 						</Filter>
 					</Filter>
-				</Filter>
-				<Filter
-					Name="DragDrop"
-					Filter="">
-					<File
-						RelativePath=".\ui\UIDragDropItem.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIDragDropList.h">
-					</File>
 				</Filter>
 				<Filter
 					Name="Static"
@@ -10860,30 +10847,6 @@
 					Name="Deathmatch"
 					Filter="">
 					<File
-						RelativePath="UIDMFragList.cpp">
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="UIDMFragList.h">
-					</File>
-					<File
-						RelativePath="UIDMPlayerList.cpp">
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="UIDMPlayerList.h">
-					</File>
-					<File
 						RelativePath=".\UIDMStatisticWnd.cpp">
 						<FileConfiguration
 							Name="Debug|Win32">
@@ -10932,58 +10895,10 @@
 					<File
 						RelativePath=".\UIGameTDM.h">
 					</File>
-					<File
-						RelativePath=".\UITDMFragList.cpp">
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\UITDMFragList.h">
-					</File>
-					<File
-						RelativePath=".\UITDMPlayerList.cpp">
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\UITDMPlayerList.h">
-					</File>
 				</Filter>
 				<Filter
 					Name="ArtefactHunt"
 					Filter="">
-					<File
-						RelativePath=".\UIAHuntFragList.cpp">
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\UIAHuntFragList.h">
-					</File>
-					<File
-						RelativePath=".\UIAHuntPlayerList.cpp">
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\UIAHuntPlayerList.h">
-					</File>
 					<File
 						RelativePath=".\UIGameAHunt.cpp">
 					</File>

@@ -11,7 +11,6 @@ typedef struct {
 } RESTR;
 
 class CRestrictions {
-	friend class CUIDragDropItemMP;
 	friend class CUIBag;
 	friend class CUIBagWnd;
 	friend class CUIBuyWnd;
