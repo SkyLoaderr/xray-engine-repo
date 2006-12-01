@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "UIGameDM.h"
 
-#include "UIDMPlayerList.h"
-#include "UIDMFragList.h"
+//.#include "UIDMPlayerList.h"
+//.#include "UIDMFragList.h"
 #include "UIDMStatisticWnd.h"
 #include "ui/UIBuyWnd.h"
 #include "ui/UISkinSelector.h"

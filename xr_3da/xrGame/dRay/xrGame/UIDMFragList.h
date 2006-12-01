@@ -1,3 +1,5 @@
+#error 111
+
 #pragma once
 
 #include "ui/UIStatsWnd.h"

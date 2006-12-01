@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "UIGameTDM.h"
 
-#include "UITDMPlayerList.h"
-#include "UITDMFragList.h"
+//. #include "UITDMPlayerList.h"
+//.#include "UITDMFragList.h"
 #include "UIDMStatisticWnd.h"
 
 #include "hudmanager.h"

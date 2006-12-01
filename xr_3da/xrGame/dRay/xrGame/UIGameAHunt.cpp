@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "UIGameAHunt.h"
 
-#include "UIAHuntPlayerList.h"
-#include "UIAHuntFragList.h"
+//.#include "UIAHuntPlayerList.h"
+//.#include "UIAHuntFragList.h"
 #include "UIDMStatisticWnd.h"
 
 #include "hudmanager.h"
@@ -11,6 +11,7 @@
 #include "game_cl_ArtefactHunt.h"
 #include "ui/UIFrags2.h"
 #include "ui/UIProgressShape.h"
+#include "ui/UIXmlInit.h"
 
 #define MSGS_OFFS 510
 

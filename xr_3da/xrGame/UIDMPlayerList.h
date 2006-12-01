@@ -1,5 +1,4 @@
-#ifndef __XR_UIDMPLAYERLIST_H__
-#define __XR_UIDMPLAYERLIST_H__
+#error 111
 #pragma once
 
 //#include "uiListBox.h"
@@ -12,11 +11,5 @@ public:
 	CUIDMPlayerList					();
 	~CUIDMPlayerList				();
 
-//	void			Init			();
-//	virtual void	OnFrame			();
-//	virtual void Update				();
-//	virtual void Show				();
 	virtual bool					SetItemData		(u32 ItemID, CUIStatsListItem *pItem);
 };
-
-#endif //__XR_UIDMPLAYERLIST_H__

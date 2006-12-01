@@ -1,5 +1,4 @@
-#ifndef __XR_UITDMPLAYERLIST_H__
-#define __XR_UITDMPLAYERLIST_H__
+#error 111
 #pragma once
 
 //#include "uiListBox.h"
@@ -14,5 +13,3 @@ public:
 	void			Init			(u8 Team);
 	virtual void	UpdateItemsList	();
 };
-
-#endif //__XR_UITDMPLAYERLIST_H__

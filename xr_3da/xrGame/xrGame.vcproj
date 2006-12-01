@@ -10861,18 +10861,35 @@
 					Filter="">
 					<File
 						RelativePath="UIDMFragList.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="UIDMFragList.h">
 					</File>
 					<File
 						RelativePath="UIDMPlayerList.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="UIDMPlayerList.h">
 					</File>
 					<File
 						RelativePath=".\UIDMStatisticWnd.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\UIDMStatisticWnd.h">
@@ -10917,12 +10934,24 @@
 					</File>
 					<File
 						RelativePath=".\UITDMFragList.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\UITDMFragList.h">
 					</File>
 					<File
 						RelativePath=".\UITDMPlayerList.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\UITDMPlayerList.h">
@@ -10933,12 +10962,24 @@
 					Filter="">
 					<File
 						RelativePath=".\UIAHuntFragList.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\UIAHuntFragList.h">
 					</File>
 					<File
 						RelativePath=".\UIAHuntPlayerList.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\UIAHuntPlayerList.h">
@@ -11078,6 +11119,11 @@
 							Filter="">
 							<File
 								RelativePath=".\ui\UIStatsWnd.cpp">
+								<FileConfiguration
+									Name="Debug|Win32">
+									<Tool
+										Name="VCCLCompilerTool"/>
+								</FileConfiguration>
 							</File>
 							<File
 								RelativePath=".\ui\UIStatsWnd.h">

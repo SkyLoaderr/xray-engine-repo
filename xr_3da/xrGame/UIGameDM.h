@@ -4,7 +4,6 @@
 #include "ui/KillMessageStruct.h"
 
 
-class CUIDMFragList;
 class CUIDMPlayerList;
 class CUIDMStatisticWnd;
 class CUIBuyWnd;
@@ -25,8 +24,7 @@ protected:
 		fl_force_dword	= u32(-1)	};
 
 
-	DEF_VECTOR			(FRAGS_LISTS, CUIDMFragList*);
-	DEF_VECTOR			(PLAYERS_LISTS, CUIDMPlayerList*);
+//.	DEF_VECTOR			(PLAYERS_LISTS, CUIDMPlayerList*);
 
 	CUIWindow*				m_pFragLists;
 	CUIWindow*				m_pPlayerLists;

@@ -1,5 +1,3 @@
-#ifndef __XR_UIDMStatisticWnd_H__
-#define __XR_UIDMStatisticWnd_H__
 #pragma once
 
 #include "ui/UIStatsWnd.h"
@@ -28,5 +26,3 @@ public:
 	virtual void Draw();
 
 };
-
-#endif //__XR_UIDMStatisticWnd_H__

@@ -1,5 +1,4 @@
-#ifndef __XR_UIAHUNTFRAGLIST_H__
-#define __XR_UIAHUNTFRAGLIST_H__
+#error 111
 #pragma once
 
 //#include "uilistbox.h"
@@ -16,5 +15,3 @@ public:
 //	virtual void		Update();
 	virtual bool					SetItemData		(u32 ItemID, CUIStatsListItem *pItem);
 };
-
-#endif //__XR_UIAHUNTFRAGLIST_H__

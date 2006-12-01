@@ -1,5 +1,4 @@
-#ifndef __XR_UITDMFRAGLIST_H__
-#define __XR_UITDMFRAGLIST_H__
+#error 111
 #pragma once
 
 //#include "uilistbox.h"
@@ -15,5 +14,3 @@ public:
 	virtual void		UpdateItemsList	();
 //	virtual void		Update();
 };
-
-#endif //__XR_UITDMFRAGLIST_H__
