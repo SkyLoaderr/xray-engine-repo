@@ -83,7 +83,7 @@ end
 
 function task_fox_complete()
 	if has_alife_info("garbage_meetstalker_start") or
-	   has_alife_info("garbage_meetstalker_done")
+	   has_alife_info("escape_stalker_done")
 	then
 		return true
 	else
