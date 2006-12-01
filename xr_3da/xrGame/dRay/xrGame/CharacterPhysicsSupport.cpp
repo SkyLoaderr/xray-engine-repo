@@ -698,6 +698,7 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	}
 	m_pPhysicsShell->SetIgnoreSmall();
 	FlyTo(Fvector().sub(start,m_EntityAlife.Position()));
+	m_pPhysicsShell->GetGlobalTransformDynamic(&mXFORM);
 	m_pPhysicsShell->add_ObjectContactCallback(OnCharacterContactInDeath);
 	m_pPhysicsShell->set_CallbackData((void*)this);
 }
