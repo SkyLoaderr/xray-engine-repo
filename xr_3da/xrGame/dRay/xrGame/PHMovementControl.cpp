@@ -518,7 +518,7 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<DetailPathMana
 	Fvector path_point,vtemp;
 	float temp;
 	//(going down)
-	
+	dir.set(0,0,1);
 	for(int i=m_start_index;i>1;--i)
 	{
 		const Fvector &first=path[i-1].position, &second=path[i].position;
