@@ -19,7 +19,6 @@
 	</info_portion>
 	<info_portion id="agr_krot_band_start">
 		<task>agr_meet_krot_band</task>
-		<article>storyline_seriy_flash_info</article>
 	</info_portion>
 	<info_portion id="agr_can_ask_krot_about_gunslinger">
 	</info_portion>
@@ -33,7 +32,6 @@
 
 	<info_portion id="agr_find_gunslinger_cache_start">
 		<task>agroprom_find_gunslinger_cache</task>
-		<!--article>storyline_gunslinger_cache_info</article-->
 	</info_portion>
 	<info_portion id="agr_find_ghost_start">
 		<task>agr_find_ghost</task>
@@ -48,7 +46,6 @@
 	</info_portion>
 
 	<info_portion id="agr_krot_secret_info">
-		<article>agr_krot_secret_info</article>
 	</info_portion>
 
 
