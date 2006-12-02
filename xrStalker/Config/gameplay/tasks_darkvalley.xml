@@ -14,7 +14,7 @@
     </objective>
 </game_task>
 
-<game_task id="val_prisoner_help" prio="422">
+<game_task id="val_prisoner_help" prio="415">
     <title>val_prisoner_help</title>
     <objective key="0">
         <icon>ui_iconsTotal_val_prisoner_help</icon>
@@ -29,6 +29,8 @@
         <object_story_id>val_prisoner</object_story_id>
     </objective>
 </game_task>
+
+
 <game_task id="val_captive_help" prio="420">
     <title>val_captive_help</title>
     <objective key="0">
@@ -54,6 +56,8 @@
         <object_story_id>val_escort_captive</object_story_id>
     </objective>
 </game_task>
+
+
 <game_task id="bar_darklab_documents" prio="435">
     <title>bar_darklab_documents</title>
     <objective key="0">
@@ -90,7 +94,9 @@
         <infoportion_complete>val_x18_door_open</infoportion_complete>
     </objective>
 </game_task>
-<game_task id="bar_darklab_documents2" prio="435">
+
+
+<game_task id="bar_darklab_documents2" prio="399">
     <title>bar_darklab_documents2</title>
     <objective key="0">
         <icon>ui_iconsTotal_bar_darklab_documents2</icon>
@@ -115,6 +121,8 @@
         <infoportion_complete>bar_darklab_document_done</infoportion_complete>
     </objective>
 </game_task>
+
+
 <game_task id="dar_codedoor_1" prio="405">
     <title>dar_codedoor_1</title>
     <objective key="0">
@@ -136,6 +144,8 @@
         <object_story_id>dar_codedoor_1</object_story_id>
     </objective>
 </game_task>
+
+
 <game_task id="dar_codedoor_2" prio="400">
     <title>dar_codedoor_2</title>
     <objective key="0">
@@ -155,6 +165,5 @@
         <icon>ui_iconsTotal_dar_codedoor_2</icon>
         <map_location_type>green_location</map_location_type>
         <object_story_id>dar_codedoor_2</object_story_id>
-
     </objective>
 </game_task>
