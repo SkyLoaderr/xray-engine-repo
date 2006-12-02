@@ -1,30 +1,4 @@
-	<game_task id="rad_find_stalkers">
-		<title>rad_find_stalkers</title>
-		<objective>
-			<text>rad_find_stalkers_0</text>
-			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-		<objective>
-			<text>rad_find_stalkers_1</text>
-			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-		<objective>
-			<text>rad_find_stalkers_2</text>
-			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-	</game_task>
-
-	<game_task id="rad_find_treasurer">
-		<title>rad_find_treasurer</title>
-		<objective>
-			<text>rad_find_treasurer_0</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-		<objective>
-			<text>rad_find_treasurer_1</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-	</game_task>
+	
 
 	<game_task id="rad_get_to_aes" prio="250">
 		<title>rad_get_to_aes</title>
@@ -65,7 +39,7 @@
 	</game_task>
 
 <!--DELME: only for presentation -->
-	<game_task id="pripyat_task_1" prio="247">
+	<game_task id="pripyat_task_1" prio="277">
 		<title>pripyat_task_title</title>
 		<objective>
 			<text>pripyat_task_title</text>
