@@ -538,14 +538,10 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 
 void CPHSimpleCharacter::PhTune(dReal step){
 
-	//if(b_jumping)
-	//{
-	//	Log("vel" ,*((const Fvector*)(dBodyGetLinearVel(m_body))));
-	//	Log("pos" ,*((const Fvector*)(dBodyGetPosition(m_body))));
-	//	Log("time %f",Device.fTimeGlobal);
-	//}
-	//if(!b_exist)return;
 	m_last_move.set(cast_fv(dBodyGetPosition(m_body)));
+	m_elevator_state.PhTune(step);
+	b_air_contact_state=!is_contact;
+
 
 #ifdef DEBUG
 	if(ph_dbg_draw_mask.test(phDbgCharacterControl))
