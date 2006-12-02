@@ -451,15 +451,7 @@ void CCustomRocket::UpdateEnginePh			()
 	Fvector l_pos, l_dir; 
 	l_pos.set(0, 0,-2.f);
 	l_dir.set(XFORM().k);
-#ifdef DEBUG	
-	if (GameID() == GAME_SINGLE)
-	{
-		if(bDebug && m_pOwner->ID()==Actor()->ID())
-		{
-			Msg("force= %f", force);
-		}
-	}	
-#endif
+
 	l_dir.normalize();
 	m_pPhysicsShell->applyImpulse(l_dir,(1.f+k_back)*force);
 	m_pPhysicsShell->get_LinearVel(l_dir);
@@ -470,16 +462,7 @@ void CCustomRocket::UpdateEnginePh			()
 	force = m_fEngineImpulseUp*fixed_step;// * Device.fTimeDelta;
 	m_pPhysicsShell->applyImpulse(l_dir, force);
 
-#ifdef DEBUG	
-	if (GameID() == GAME_SINGLE)
-	{
 
-		if(bDebug && m_pOwner->ID()==Actor()->ID())
-		{
-			Msg("force UP= %f", force);
-		}
-	}
-#endif
 	//m_pPhysicsShell->set_AngularVel()
 }
 
@@ -497,16 +480,7 @@ void CCustomRocket::UpdateEngine				()
 
 	if (m_dwEngineTime <= 0) 
 	{
-#ifdef DEBUG	
-		if (GameID() == GAME_SINGLE)
-		{
 
-			if(m_pOwner->ID()==Actor()->ID())
-			{
-				Msg("stop engine rocket");
-			}
-		}
-#endif
 		StopEngine();
 		return;
 	}
@@ -548,46 +522,12 @@ void CCustomRocket::UpdateLights()
 
 void CCustomRocket::PhDataUpdate			(float step)
 {
-#ifdef	DEBUG
-			
-			const	float	*v=dBodyGetLinearVel(PPhysicsShell()->get_ElementByStoreOrder(0)->get_body());
-			const	float	*f=dBodyGetForce(PPhysicsShell()->get_ElementByStoreOrder(0)->get_body());
-			if(cast_fv(v).dotproduct(cast_fv(f))<0.f)
-			{
-				Msg("opa fv");
-			}
-			float	s=cast_fv(v).magnitude();
-			if(s<gbg_rocket_speed2/2.f)
-			{
-					Msg("opa speed	in");
-			}
-#endif
+
 }
 void CCustomRocket::PhTune					(float step)
 {
 	UpdateEnginePh							();
-#ifdef	DEBUG
-	if (GameID() == GAME_SINGLE)
-	{
-		if(m_pOwner->ID()==Actor()->ID())
-		{
 
-			const	float	*v=dBodyGetLinearVel(PPhysicsShell()->get_ElementByStoreOrder(0)->get_body());
-			const	float	*f=dBodyGetForce(PPhysicsShell()->get_ElementByStoreOrder(0)->get_body());
-			if(cast_fv(v).dotproduct(cast_fv(f))<0.f)
-			{
-				Msg("opa fv");
-			}
-			float	s=cast_fv(v).magnitude();
-			if(s<gbg_rocket_speed1/2.f)
-			{
-				Msg("opa speed	out");
-			}
-			gbg_rocket_speed1=s;
-			gbg_rocket_speed2=s;
-		}
-	}	
-#endif
 }
 
 

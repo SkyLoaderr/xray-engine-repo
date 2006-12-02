@@ -216,7 +216,10 @@ bool	CPHActivationShape::	Activate							(const Fvector need_size,u16 steps,floa
 			}
 			attempts--;
 		}while(!ret&&attempts>0);
+#ifdef	DEBUG
 		Msg("correction attempts %d",10-attempts);
+#endif
+	
 	}
 	RestoreVelocityState(temp_state);
 	CHECK_POS(Position(),"pos after RestoreVelocityState(temp_state);",true);
