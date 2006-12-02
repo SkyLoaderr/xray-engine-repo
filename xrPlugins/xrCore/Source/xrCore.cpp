@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include <mmsystem.h>
 #include <objbase.h>
 #include "xrCore.h"
  
@@ -32,6 +33,7 @@ XRCORE_API		xrCore Core;
 		break;
 	case DLL_THREAD_ATTACH:
 		CoInitializeEx	(NULL, COINIT_MULTITHREADED);
+		timeBeginPeriod	(1);
 		break;
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
