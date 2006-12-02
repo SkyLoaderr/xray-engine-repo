@@ -160,12 +160,6 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	motion.mul			(dir_to_target, dist / dist_to_target);
 	dest_position.add	(motion);
 	
-	Fvector velocity					=	dir_to_target;
-	velocity.normalize_safe();							  //как не странно, mdir - не нормирован
-	velocity.mul						(desirable_speed);//*1.25f
-	if(!movement_control->PhyssicsOnlyMode()&&movement_control->b_exect_position)
-			movement_control->SetCharacterVelocity(velocity);
-
 	if (DBG_PH_MOVE_CONDITIONS(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)||!ph_dbg_draw_mask.test(phDbgAlwaysUseAiPhMove)&&)(m_nearest_objects.empty())) {  // нет физ. объектов
 		
 		if(DBG_PH_MOVE_CONDITIONS(!ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)&&) !movement_control->TryPosition(dest_position)) {
