@@ -35,6 +35,7 @@
 	</info_portion>
 	<info_portion id="agr_find_ghost_start">
 		<task>agr_find_ghost</task>
+		<article>storyline_gunslinger_flash_info</article>
 	</info_portion>
 	<info_portion id="agr_find_gunslinger_cache_found">
 	</info_portion>
