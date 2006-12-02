@@ -644,7 +644,8 @@ void CCharacterPhysicsSupport::TestForWounded()
 		Fmatrix position_matrix;
 		position_matrix.mul(mXFORM,CBI.mTransform);
 			
-		R_ASSERT2((SBS.type==SBoneShape::EShapeType::stSphere)||(SBS.type==SBoneShape::EShapeType::stBox),"Root bone shape isn't sphere or box");
+		if( (SBS.type==SBoneShape::EShapeType::stSphere)||(SBS.type==SBoneShape::EShapeType::stBox))
+		{
 				
 		Fvector AA,BB;
 		AA.set(0.0f,0.0f,0.0f);
@@ -733,6 +734,7 @@ void CCharacterPhysicsSupport::TestForWounded()
 		{
 			m_was_wounded=true;
 		}
+	}
 	}
 };
 

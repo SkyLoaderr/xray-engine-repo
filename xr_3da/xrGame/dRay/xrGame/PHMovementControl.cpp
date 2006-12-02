@@ -264,8 +264,8 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 			vPosition.set(new_position);//for PathDirLine && PathDirPoint
 			if(near_line) PathDIrLine(path,index,m_path_distance,precision,dir);
 			else		  PathDIrPoint(path,index,m_path_distance,precision,dir);
-
-
+			
+	
 			travel_point=(u32)index;
 			m_start_index=index;
 			if(fis_zero(speed)) dir.set(0,0,0);
@@ -276,6 +276,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 	dir.y=0.f;
 	//VERIFY(!(fis_zero(dir.magnitude())&&!fis_zero(speed)));
 	dir.normalize_safe();
+	SetPathDir(dir);
 	/////////////////////////////////////////////////////////////////
 	if(bExernalImpulse)
 	{
