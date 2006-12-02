@@ -175,4 +175,7 @@
 
 	<info_portion id="agr_u_zombie_start"></info_portion>	 
 	<info_portion id="agr_u_controller_start"></info_portion>	 
-	<info_portion id="agr_u_bloodsucker_start"></info_portion>	 
+	<info_portion id="agr_u_bloodsucker_start"></info_portion>
+	<info_portion id="agr_gunslinger_flash_have"></info_portion>
+	
+		 
