@@ -25,7 +25,7 @@
 </game_task>
 
 <game_task id="sar_secret_lab" prio="245">
-		<title>sar_secret_lab_find</title>
+		<title>sar_secret_lab</title>
 		<objective>
 			<text>sar_secret_lab_0</text>
 			<icon>ui_iconsTotal_sar_secret_lab</icon>
