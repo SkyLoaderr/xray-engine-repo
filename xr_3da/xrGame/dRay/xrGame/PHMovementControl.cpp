@@ -299,7 +299,14 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 		vExternalImpulse.set(0.f,0.f,0.f);
 		bExernalImpulse=false;
 	}
-
+	/////////////////////////
+	if(!PhyssicsOnlyMode()){
+		Fvector	v;//m_character->GetVelocity(v);
+		v.mul(dir,speed);
+		SetVelocity(v);//hk
+		
+	}
+	/////////////////////////
 	m_character->SetMaximumVelocity(speed);
 	m_character->SetAcceleration(dir);
 	//////////////////////////////////////////////////////
