@@ -151,10 +151,10 @@ namespace MemorySpace {
 			m_visible.set			(mask,value ? TRUE : FALSE);
 		}
 
-		IC	void	fill							(const CGameObject *game_object, const CGameObject *self, const squad_mask_type &mask)
+		IC	void	fill							(const CGameObject *game_object, const CGameObject *self, const squad_mask_type &mask, const squad_mask_type &visibility_mask)
 		{
 			inherited::fill			(game_object,self,mask);
-			m_visible.set			(mask,TRUE);
+			m_visible.set			(visibility_mask,TRUE);
 		}
 	};
 
@@ -164,13 +164,13 @@ namespace MemorySpace {
 		float						m_amount;
 	};
 	
-	struct CSoundObject : public CVisibleObject {
+	struct CSoundObject : public CMemoryObject<CGameObject> {
 		ESoundTypes					m_sound_type;
 		float						m_power;
 
 		IC	void	fill							(const CGameObject *game_object, const CGameObject *self, const ESoundTypes sound_type, const float sound_power, const squad_mask_type &mask)
 		{
-			CVisibleObject::fill	(game_object,self,mask);
+			CMemoryObject<CGameObject>::fill	(game_object,self,mask);
 			m_sound_type			= sound_type;
 			m_power					= sound_power;
 		}

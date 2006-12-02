@@ -368,7 +368,7 @@ void CVisualMemoryManager::add_visible_object	(const CObject *object, float time
 	if (m_objects->end() == J) {
 		CVisibleObject			visible_object;
 
-		visible_object.fill		(game_object,self,mask());
+		visible_object.fill		(game_object,self,mask(),mask());
 #ifdef USE_FIRST_GAME_TIME
 		visible_object.m_first_game_time	= Level().GetGameTime();
 #endif
@@ -385,7 +385,7 @@ void CVisualMemoryManager::add_visible_object	(const CObject *object, float time
 			m_objects->push_back	(visible_object);
 	}
 	else
-		(*J).fill				(game_object,self,(*J).m_squad_mask.get() | mask());
+		(*J).fill				(game_object,self,(*J).m_squad_mask.get() | mask(),(*J).m_visible.get() | mask());
 //	STOP_PROFILE
 }
 

@@ -122,7 +122,7 @@ void CMemoryInfo::script_register(lua_State *L)
 			.def_readonly("sound_info",		&MemorySpace::CMemoryInfo::m_sound_info)
 			.def_readonly("hit_info",		&MemorySpace::CMemoryInfo::m_hit_info),
 
-		class_<MemorySpace::CSoundObject,MemorySpace::CVisibleObject>("sound_memory_object")
+		class_<MemorySpace::CSoundObject,MemorySpace::CMemoryObject<CGameObject> >("sound_memory_object")
 			.def("type",					&MemorySpace::CSoundObject::sound_type)
 			.def_readonly("power",			&MemorySpace::CSoundObject::m_power),
 
