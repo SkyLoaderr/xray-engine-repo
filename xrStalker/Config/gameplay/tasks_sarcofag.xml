@@ -28,7 +28,7 @@
 		<title>sar_secret_lab_find</title>
 		<objective>
 			<text>sar_secret_lab_0</text>
-			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_iconsTotal_sar_secret_lab</icon>
 			<infoportion_complete>sar_enter_command_center</infoportion_complete>
 		</objective>
 		<objective>
@@ -56,7 +56,7 @@
 		<title>sar_monolith_destroy</title>
 		<objective>
 			<text>sar_monolith_destroy_0</text>
-			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_iconsTotal_sar_monolith_destroy</icon>
 			<infoportion_complete>sar_monolith_destroy</infoportion_complete>
 			<article>sar_command_center_info</article> 
 		</objective>
