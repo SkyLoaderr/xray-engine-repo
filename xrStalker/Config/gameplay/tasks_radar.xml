@@ -35,13 +35,28 @@
 			<article>rad_get_to_aes</article>
 		</objective>
 		<objective>
-			<text>rad_get_to_aes_0</text>
-			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>aes_arrive_to</infoportion_complete>
+			<text>pripyat_task_title</text>
+			<map_location_type hint="pripyat_task_title">green_location</map_location_type>
+			<object_story_id>pri_bomber</object_story_id>
+			<infoportion_complete>pri_followers_leader_phrase1_end</infoportion_complete>
+		</objective>
+		<objective>
+			<text>pripyat_task_objective_1</text>
+			<map_location_type hint="pripyat_task_objective_1">green_location</map_location_type>
+			<object_story_id>pri_bomber</object_story_id>
+			<map_location_hidden>1</map_location_hidden>
+			<infoportion_complete>pri_wave7_end</infoportion_complete>
+			<infoportion_fail>pri_followers_all_dead</infoportion_fail>
+		</objective>
+		<objective>
+			<text>pripyat_task_objective_2</text>
+			<map_location_type hint="pripyat_task_objective_2">green_location</map_location_type>
+			<object_story_id>pri_stadium_entrance</object_story_id>
+			<map_location_hidden>1</map_location_hidden>
+			<infoportion_complete>pri_stadium_reached</infoportion_complete>
 		</objective>
 		<objective>
 			<text>rad_get_to_aes_1</text>
-			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
 			<map_location_type hint="aes_sarcofag_hint">green_location</map_location_type>
 			<infoportion_complete>aes_found_sarcofag</infoportion_complete>
 			<object_story_id>aes_sarcofag</object_story_id>

@@ -1,5 +1,5 @@
 
-<game_task id="sar_monolith">
+<game_task id="sar_monolith" prio="282">
 		<title>sar_monolith</title>
 		<objective>
 			<text>sar_monolith_0</text>
@@ -68,7 +68,7 @@
 		</objective>
 </game_task>
 
-<game_task id="sar_warlab" prio="275">
+<game_task id="sar_warlab" prio="235">
 		<title>sar_perception</title>
 		<objective>
 			<text>sar_perception_0</text>
