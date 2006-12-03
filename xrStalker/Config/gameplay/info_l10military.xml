@@ -303,7 +303,7 @@
 	<info_portion id="mil_bloodsucker1_dead"></info_portion>
 	<info_portion id="mil_bloodsucker2_dead"></info_portion>
 	<info_portion id="mil_bloodsucker3_dead"></info_portion>
-
+	<info_portion id="mil_bloodsucker4_dead"></info_portion>
 	<!-- Охотнички, мля -->
 	<info_portion id="mil_hunt_ready"></info_portion>
 	<info_portion id="mil_controller_ready">
