@@ -369,7 +369,7 @@
 		<rank>930</rank>
 		<reputation>126</reputation>
 
-		<visual>actors\svoboda\stalker_sv_balon_1</visual>
+		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_usp  \n
@@ -381,7 +381,7 @@
 #include "gameplay\character_food.xml"			
 		</supplies>
 		
-#include "gameplay\character_criticals_2.xml"
+#include "gameplay\character_criticals_5.xml"
 #include "gameplay\character_dialogs.xml"			
 	</specific_character>
 <!---------------------------SVOBODA COOK----------------------->
