@@ -157,12 +157,8 @@
 	<info_portion id="mil_lukash_final"></info_portion>
 	<info_portion id="mil_lukash_arrive"></info_portion>
 	<info_portion id="mil_lukash_dead"></info_portion>
-	<info_portion id="mil_lukash_blockpost">
-		<task>mil_blockpost_job2</task>
-	</info_portion>		
-	<info_portion id="mil_blockpost_free_task">
-		<task>mil_blockpost_job2</task>
-	</info_portion>
+	<info_portion id="mil_lukash_blockpost"></info_portion>		
+	<info_portion id="mil_blockpost_free_task"></info_portion>
 	<info_portion id="mil_actor_on_lukash"></info_portion>
 	<info_portion id="mil_bodyguard_talk"></info_portion>
 	<info_portion id="mil_lukash_delay"></info_portion>
@@ -273,6 +269,7 @@
 			<task>mil_blockpost_job</task>
 	</info_portion>			
 	<info_portion id="mil_fblockpost_quest_complete"></info_portion>
+	<info_portion id="mil_fblockpost_quest_reward"></info_portion>
 	<info_portion id="mil_fblockpost_quest_fail"></info_portion>
 	<info_portion id="mil_fblockpost_rush_end"></info_portion>
 	<info_portion id="mil_fblockpost_ammo"></info_portion>
