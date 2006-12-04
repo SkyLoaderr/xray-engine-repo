@@ -52,6 +52,7 @@ anim = wait
 on_signal = action_end | remark2@mil_freedom_max_attack
 danger = danger@mil_freedom_attack
 target = logic@mil_freedom_stalker4_attack
+meet = no_meet
 
 [remark2@mil_freedom_max_attack]
 snd = mil_max_to_kolyan
@@ -59,6 +60,7 @@ anim = wait
 on_signal = action_end | %+mil_freedom_attack_continue1% walker22@mil_freedom_max_attack
 target = logic@mil_freedom_stalker4_attack
 danger = danger@mil_freedom_attack
+meet = no_meet
 
 [walker22@mil_freedom_max_attack]                   ;Поведение 4
 path_walk = attack_way7_2
@@ -85,6 +87,7 @@ no_rotate = true
 no_move = true
 anim = wait
 on_signal = action_end | walker15@mil_freedom_max_attack
+meet = no_meet
 
 [walker14@mil_freedom_max_attack]                    ;Поведение 6
 path_walk = attack_way7_5
