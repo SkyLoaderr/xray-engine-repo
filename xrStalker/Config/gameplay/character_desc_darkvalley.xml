@@ -12,7 +12,7 @@
 		<class>val_bandit_borov</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>932</rank>
+		<rank>621</rank>
 		<hit_probability_factor>1.5</hit_probability_factor>
 		<reputation>-147</reputation>
 
@@ -49,7 +49,7 @@
 		<class>val_bandit_bodyguard</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>734</rank>
+		<rank>544</rank>
 		<reputation>-138</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
