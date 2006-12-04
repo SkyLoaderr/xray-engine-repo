@@ -92,6 +92,7 @@ private:
 	MonsterSpace::EBodyState		m_body_state;
 	MonsterSpace::EMovementType		m_movement_type;
 	bool							m_affect_properties;
+	bool							m_enable_enemy_change;
 
 public:
 						CStalkerActionGetReadyToKill(bool affect_properties, CAI_Stalker *object, LPCSTR action_name = "");

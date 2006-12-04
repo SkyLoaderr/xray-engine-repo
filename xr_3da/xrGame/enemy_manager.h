@@ -31,6 +31,7 @@ private:
 	u32							m_last_enemy_time;
 	const CEntityAlive			*m_last_enemy;
 	USEFULE_CALLBACK			m_useful_callback;
+	bool						m_enable_enemy_change;
 
 private:
 	u32							m_last_enemy_change;
@@ -64,6 +65,10 @@ public:
 public:
 			void				wounded				(const CEntityAlive *wounded_enemy);
 	IC		const CEntityAlive	*wounded			() const;
+
+public:
+	IC		void				enable_enemy_change	(const bool &value);
+	IC		bool				enable_enemy_change	() const;
 };
 
 #include "enemy_manager_inline.h"

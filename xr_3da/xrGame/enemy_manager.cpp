@@ -49,6 +49,7 @@ CEnemyManager::CEnemyManager									(CCustomMonster *object)
 	m_last_enemy_time			= 0;
 	m_last_enemy_change			= 0;
 	m_stalker					= smart_cast<CAI_Stalker*>(object);
+	m_enable_enemy_change		= true;
 }
 
 bool CEnemyManager::is_useful				(const CEntityAlive *entity_alive) const
@@ -239,7 +240,7 @@ void CEnemyManager::update					()
 
 	if	(
 			!selected() ||
-			!m_object->memory().visual().visible_now(selected()) ||
+			(!m_object->memory().visual().visible_now(selected()) && m_enable_enemy_change) ||
 			!selected()->g_Alive()
 		)
 		inherited::update		();

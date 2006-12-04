@@ -436,12 +436,18 @@ void CStalkerActionGetReadyToKill::initialize	()
 		m_storage->set_property							(eWorldPropertyLookedOut,false);
 		m_storage->set_property							(eWorldPropertyPositionHolded,false);
 		m_storage->set_property							(eWorldPropertyEnemyDetoured,false);
+
+		m_enable_enemy_change							= object().memory().enemy().enable_enemy_change();
+		object().memory().enemy().enable_enemy_change	(false);
 	}
 }
 
 void CStalkerActionGetReadyToKill::finalize		()
 {
 	inherited::finalize					();
+
+	if (m_affect_properties)
+		object().memory().enemy().enable_enemy_change	(m_enable_enemy_change);
 }
 
 void CStalkerActionGetReadyToKill::execute		()

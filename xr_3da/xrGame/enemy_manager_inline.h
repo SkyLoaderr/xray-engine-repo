@@ -22,3 +22,13 @@ IC	CEnemyManager::USEFULE_CALLBACK &CEnemyManager::useful_callback	()
 {
 	return						(m_useful_callback);
 }
+
+IC	void CEnemyManager::enable_enemy_change							(const bool &value)
+{
+	m_enable_enemy_change		= value;
+}
+
+IC	bool CEnemyManager::enable_enemy_change							() const
+{
+	return						(m_enable_enemy_change);
+}
