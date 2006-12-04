@@ -533,6 +533,7 @@ danger = danger_condition@mil_dolg
 on_info = {+mil_dolg_phase2} walker11@mil_dolg_skull_attack
 def_state_moving1 = walk
 team = dolg_attack
+meet = no_meet
 
 [remark1@mil_dolg_skull_attack]
 snd = mil_dolg_before_attack2
@@ -540,12 +541,14 @@ on_signal = action_end | %+mil_dolg_phase1% remark20@mil_dolg_skull_attack
 anim = wait
 danger = danger_condition@mil_dolg
 target = logic@mil_dolg_soldier4_attack
+meet = no_meet
 
 [remark20@mil_dolg_skull_attack]
 anim = salut
 on_signal = action_end | walker11@mil_dolg_skull_attack %+mil_dolg_phase2%
 danger = danger_condition@mil_dolg
 target = logic@mil_dolg_soldier4_attack
+meet = no_meet
 
 [walker11@mil_dolg_skull_attack]
 path_walk = attack_way1
@@ -557,6 +560,7 @@ team = dolg
 on_signal = bomb | remark2@mil_dolg_skull_attack
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {!fighting_actor} true
+meet = no_meet
 
 [remark2@mil_dolg_skull_attack]
 no_move = true
@@ -566,6 +570,7 @@ target = 723
 on_signal = action_end | walker2@mil_dolg_skull_attack %+mil_dolg_before_explode%
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {!fighting_actor} true
+meet = no_meet
 
 [walker2@mil_dolg_skull_attack]
 path_walk = attack_way_bomb
@@ -575,6 +580,7 @@ team = dolg
 on_info = {+mil_dolg_after_explode} remark12@mil_dolg_skull_attack
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {!fighting_actor} true
+meet = no_meet
 
 [remark12@mil_dolg_skull_attack]
 snd = mil_dolg_go_attack
@@ -583,6 +589,7 @@ on_signal = action_end | camper2@mil_dolg_skull_attack
 danger = danger_condition@mil_dolg
 combat_ignore_cond = {!fighting_actor} true
 target = mil_dolg_attack_look_bomb,0
+meet = no_meet
 
 [camper2@mil_dolg_skull_attack]
 path_walk = attack_way1_2
@@ -595,6 +602,7 @@ on_signal2 = dolg | %+mil_headquarter_attack%
 danger = danger_condition@mil_dolg
 on_signal3 = sound_1 | {+mil_dolg_final_task} %+mil_dolg_sound_1%
 on_signal4 = sound_8 | {+mil_dolg_final_task} %+mil_dolg_sound_8%
+meet = no_meet
 
 
 -------------------------------
@@ -613,6 +621,7 @@ on_info = {+mil_dolg_phase1} remark10@mil_dolg_soldier1_attack
 team = dolg_attack
 danger = danger_condition@mil_dolg
 def_state_moving1 = run
+meet = no_meet
 
 [remark10@mil_dolg_soldier1_attack]
 on_signal = action_end | walker1@mil_dolg_soldier1_attack
@@ -621,6 +630,7 @@ anim = salut
 ;snd = mil_dolg_fight
 target = mil_dolg_attack_before_walk1,1
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [walker1@mil_dolg_soldier1_attack]
 path_walk = attack_way8
@@ -631,6 +641,7 @@ team = dolg
 on_info = {+mil_dolg_after_explode} camper1@mil_dolg_soldier1_attack
 on_info2 = {+mil_dolg_before_explode} remark30@mil_dolg_soldier1_attack
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [remark30@mil_dolg_soldier1_attack]
 snd = mil_dolg_getready
@@ -639,6 +650,7 @@ no_rotate = true
 anim = hide
 on_signal = action_end | walker1@mil_dolg_soldier1_attack
 danger = danger_condition
+meet = no_meet
 
 [camper1@mil_dolg_soldier1_attack]
 path_walk = attack_way8_2
@@ -649,6 +661,7 @@ radius = 20
 on_signal = dolg | %+mil_headquarter_attack%
 danger = danger_condition@mil_dolg
 on_signal2 = sound_2 | {+mil_dolg_attack} %+mil_dolg_sound_2%
+meet = no_meet
 
 -------------------------------
 ;Солдат 2
@@ -665,6 +678,7 @@ on_info = {+mil_dolg_phase1} remark10@mil_dolg_soldier2_attack
 team = dolg_attack
 danger = danger_condition@mil_dolg
 def_state_moving1 = run
+meet = no_meet
 
 [remark10@mil_dolg_soldier2_attack]
 on_signal = action_end | walker1@mil_dolg_soldier2_attack
@@ -673,6 +687,7 @@ anim = salut
 snd = mil_dolg_fight
 target = mil_dolg_attack_before_walk1,1
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [walker1@mil_dolg_soldier2_attack]
 path_walk = attack_way7
@@ -682,6 +697,7 @@ on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier2_attack
 combat_ignore_cond = {!fighting_actor} true
 team = dolg
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [camper3@mil_dolg_soldier2_attack]
 path_walk = attack_way7_2
@@ -692,6 +708,7 @@ radius = 0
 on_signal = dolg | %+mil_headquarter_attack%
 danger = danger_condition@mil_dolg
 on_signal2 = sound_4 | {+mil_dolg_final_task} %+mil_dolg_sound_4%
+meet = no_meet
 
 
 -------------------------------
@@ -709,6 +726,7 @@ on_info = {+mil_dolg_phase1} remark10@mil_dolg_soldier3_attack
 team = dolg_attack
 danger = danger_condition@mil_dolg
 def_state_moving1 = run
+meet = no_meet
 
 [remark10@mil_dolg_soldier3_attack]
 anim = salut
@@ -717,6 +735,7 @@ anim = salut
 on_signal = action_end | walker3@mil_dolg_soldier3_attack
 target = mil_dolg_attack_before_walk1,1
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [walker3@mil_dolg_soldier3_attack]
 path_walk = attack_way4
@@ -726,6 +745,7 @@ on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier3_attack
 combat_ignore_cond = {!fighting_actor} true
 team = dolg
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [camper3@mil_dolg_soldier3_attack]
 path_walk = attack_way4_2
@@ -737,6 +757,7 @@ on_signal = dolg | %+mil_headquarter_attack%
 danger = danger_condition@mil_dolg
 on_signal2 = sound_6 | {+mil_dolg_final_task} %+mil_dolg_sound_6%
 on_signal3 = sound_11 | {+mil_dolg_final_task} %+mil_dolg_sound_11%
+meet = no_meet
 
 
 
@@ -756,6 +777,7 @@ on_info = {+mil_dolg_phase1} remark10@mil_dolg_soldier4_attack
 team = dolg_attack
 danger = danger_condition@mil_dolg
 def_state_moving1 = run
+meet = no_meet
 
 [remark10@mil_dolg_soldier4_attack]
 anim = salut
@@ -764,6 +786,7 @@ snd = mil_dolg_fight
 on_signal = action_end | walker3@mil_dolg_soldier4_attack
 target = mil_dolg_attack_before_walk1,1
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [walker3@mil_dolg_soldier4_attack]
 path_walk = attack_way5
@@ -773,6 +796,7 @@ on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier4_attack
 combat_ignore_cond = {!fighting_actor} true
 team = dolg
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [camper3@mil_dolg_soldier4_attack]
 path_walk = attack_way5_2
@@ -783,6 +807,7 @@ radius = 20
 on_signal = dolg | %+mil_headquarter_attack%
 danger = danger_condition@mil_dolg
 on_signal2 = sound_5 | {+mil_dolg_final_task} %+mil_dolg_sound_5%
+meet = no_meet
 
 
 -------------------------------
@@ -800,6 +825,7 @@ on_info = {+mil_dolg_phase1} remark10@mil_dolg_soldier5_attack
 team = dolg_attack
 danger = danger_condition@mil_dolg
 def_state_moving1 = run
+meet = no_meet
 
 [remark10@mil_dolg_soldier5_attack]
 anim = salut
@@ -808,6 +834,7 @@ anim = salut
 on_signal = action_end | walker1@mil_dolg_soldier5_attack
 target = mil_dolg_attack_before_walk1,1
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [walker1@mil_dolg_soldier5_attack]
 path_walk = attack_way6
@@ -817,6 +844,7 @@ on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier5_attack
 combat_ignore_cond = {!fighting_actor} true
 team = dolg
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [camper3@mil_dolg_soldier5_attack]
 path_walk = attack_way6_2
@@ -827,6 +855,7 @@ radius = 20
 on_signal = dolg | %+mil_headquarter_attack%
 danger = danger_condition@mil_dolg
 on_signal2 = sound_7 | {+mil_dolg_final_task} %+mil_dolg_sound_7%
+meet = no_meet
 
 
 -------------------------------
@@ -844,6 +873,7 @@ on_info = {+mil_dolg_phase1} remark10@mil_dolg_soldier6_attack
 team = dolg_attack
 danger = danger_condition@mil_dolg
 def_state_moving1 = run
+meet = no_meet
 
 [remark10@mil_dolg_soldier6_attack]
 anim = salut
@@ -852,6 +882,7 @@ snd = mil_dolg_fight
 on_signal = action_end | walker3@mil_dolg_soldier6_attack
 target = mil_dolg_attack_before_walk1,1
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [walker3@mil_dolg_soldier6_attack]
 path_walk = attack_way2
@@ -861,6 +892,7 @@ on_info = {+mil_dolg_after_explode} camper3@mil_dolg_soldier6_attack
 combat_ignore_cond = {!fighting_actor} true
 team = dolg
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [camper3@mil_dolg_soldier6_attack]
 path_walk = attack_way2_2
@@ -871,6 +903,7 @@ radius = 0
 on_signal = dolg | %+mil_headquarter_attack%
 danger = danger_condition@mil_dolg
 on_signal2 = sound_10 | {+mil_dolg_final_task} %+mil_dolg_sound_10%
+meet = no_meet
 
 
 -------------------------------
@@ -888,6 +921,7 @@ team = dolg_attack
 on_info = {+mil_dolg_phase1} remark10@mil_dolg_soldier7_attack
 danger = danger_condition@mil_dolg
 def_state_moving1 = run
+meet = no_meet
 
 [remark10@mil_dolg_soldier7_attack]
 anim = salut
@@ -896,6 +930,7 @@ snd = mil_dolg_fight
 on_signal = action_end | walker1@mil_dolg_soldier7_attack
 target = mil_dolg_attack_before_walk1,1
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [walker1@mil_dolg_soldier7_attack]
 path_walk = attack_way3
@@ -905,6 +940,7 @@ on_info = {+mil_dolg_after_explode} camper1@mil_dolg_soldier7_attack
 combat_ignore_cond = {!fighting_actor} true
 team = dolg
 danger = danger_condition@mil_dolg
+meet = no_meet
 
 [camper1@mil_dolg_soldier7_attack]
 path_walk = attack_way3_2
@@ -915,6 +951,7 @@ radius = 20
 on_signal = dolg | %+mil_headquarter_attack%
 on_signal2 = sound_3 | {+mil_dolg_final_task} %+mil_dolg_sound_3%
 on_signal3 = sound_9 | {+mil_dolg_final_task} %+mil_dolg_sound_9%
+meet = no_meet
 
 
 
