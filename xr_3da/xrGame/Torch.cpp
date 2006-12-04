@@ -199,9 +199,12 @@ void CTorch::Switch	(bool light_on)
 	if (*light_trace_bone) 
 	{
 		CKinematics* pVisual				= smart_cast<CKinematics*>(Visual()); VERIFY(pVisual);
-		pVisual->LL_SetBoneVisible			(pVisual->LL_BoneID(light_trace_bone),light_on,TRUE);
-		pVisual->CalculateBones_Invalidate	();
+		u16 bi								= pVisual->LL_BoneID(light_trace_bone);
+
+		pVisual->LL_SetBoneVisible			(bi,	light_on,	TRUE);
 		pVisual->CalculateBones				();
+
+		pVisual->LL_SetBoneVisible			(bi,	light_on,	TRUE); //hack
 	}
 }
 
