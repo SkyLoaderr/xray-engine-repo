@@ -24,6 +24,7 @@
 #include "entity_alive.h"
 
 #include "inventory_item.h"
+#include "inventory.h"
 
 u32 C_ON_ENEMY		D3DCOLOR_XRGB(0xff,0,0);
 u32 C_ON_NEUTRAL	D3DCOLOR_XRGB(0xff,0xff,0x80);
@@ -156,9 +157,10 @@ void CHUDTarget::Render()
 
 			if (IsGameTypeSingle())
 			{
+				CInventoryOwner* our_inv_owner		= smart_cast<CInventoryOwner*>(pCurEnt);
 				if (E && E->g_Alive() && !E->cast_base_monster())
 				{
-					CInventoryOwner* our_inv_owner		= smart_cast<CInventoryOwner*>(pCurEnt);
+//.					CInventoryOwner* our_inv_owner		= smart_cast<CInventoryOwner*>(pCurEnt);
 					CInventoryOwner* others_inv_owner	= smart_cast<CInventoryOwner*>(E);
 
 					if(our_inv_owner && others_inv_owner){
@@ -184,7 +186,7 @@ void CHUDTarget::Render()
 					fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
 				}
 				else 
-					if (l_pI)
+					if (l_pI && our_inv_owner && RQ.range < 2.0f*our_inv_owner->inventory().GetTakeDist())
 					{
 						if (fuzzyShowInfo>0.5f){
 							F->SetColor	(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
