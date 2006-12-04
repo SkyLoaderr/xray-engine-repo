@@ -2,8 +2,6 @@
 
 #include "UIStatic.h"
 
-class CUIColorAnimatorWrapper;
-
 class CUIStatix : public CUIStatic 
 {
 public:
