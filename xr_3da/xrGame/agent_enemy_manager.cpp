@@ -361,6 +361,17 @@ IC	void CAgentEnemyManager::setup_mask			(CMemberEnemy &enemy, const squad_mask_
 
 void CAgentEnemyManager::assign_enemy_masks		()
 {
+	{
+		ENEMIES::iterator		I = m_enemies.begin();
+		ENEMIES::iterator		E = m_enemies.end();
+		for ( ; I != E; ++I) {
+			CAgentMemberManager::MEMBER_STORAGE::const_iterator	i = object().member().combat_members().begin();
+			CAgentMemberManager::MEMBER_STORAGE::const_iterator	e = object().member().combat_members().end();
+			for ( ; i != e; ++i)
+				(*i)->object().memory().make_object_visible_somewhen((*I).m_object);
+		}
+	}
+
 	squad_mask_type			non_combat_members = object().member().non_combat_members_mask();
 
 	ENEMIES::iterator		I = m_enemies.begin();
