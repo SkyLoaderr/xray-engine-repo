@@ -85,30 +85,7 @@
 			<main_wnd/>
 		</item>
 		
-		<item><!--и... если оно тебя в данный момент не интересует - то переключайся на предыдущее вручную. 
-				Для  собственных заданий и пометок на карте существует отдельный раздел…Во-оот-->
-			<length_sec>13</length_sec>
-			<pause_state>off</pause_state>
-			<guard_key/>
-			<sound>characters_voice\scenario\trader\trader_tutorial_pda_4_1</sound>
-			<cursor_pos/>
-			<grab_input>1</grab_input>
-			<pda_section>pda_quests</pda_section>
-
-			<main_wnd>
-				<auto_static start_time="3" length_sec="4" x="372" y="235" width="20" height="20" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
-					<window_name>w1</window_name>
-					<texture>ui_icons_newPDA_setSelect_t</texture>
-				</auto_static>
-				
-				<auto_static start_time="8" length_sec="5" x="403" y="565" width="50" height="50" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
-					<window_name>w2</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
-				</auto_static>
-			</main_wnd>
-		</item>
+		
 
 		<item><!--Дальше: Второй раздел ПДА - это Карта.-->
 			<length_sec>4</length_sec>
