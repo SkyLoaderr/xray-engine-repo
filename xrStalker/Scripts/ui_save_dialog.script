@@ -53,9 +53,9 @@ function save_dialog:InitControls()
 	local ctrl
 	
 	local st = xml:InitStatic("back_video", self)
-	math.randomseed(time_global())
-	local vid_file ="ui\\credits_back_512_v10" -- .. math.random(1,4)
-	st:InitTexture(vid_file)
+--	math.randomseed(time_global())
+--	local vid_file ="ui\\credits_back_512_v10" -- .. math.random(1,4)
+--	st:InitTexture(vid_file)
 	
 	xml:InitStatic("background",				self)	
 	self.form = xml:InitStatic("form",			self)
