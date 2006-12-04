@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <window>
-	<back_video x="0" y="0" width="600" height="600" stretch="1">		
-	</back_video>
+	<back_video x="0" y="0" width="600" height="600" stretch="1"/>		
+
 	<background x="0" y="0" width="1024" height="768">
 		<texture>ui\ui_static_mm_back_02</texture>
 	</background>
