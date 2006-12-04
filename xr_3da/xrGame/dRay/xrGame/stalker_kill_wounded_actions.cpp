@@ -30,8 +30,8 @@
 
 const u32 MIN_QUEUE		= 0;
 const u32 MAX_QUEUE		= 1;
-const u32 MIN_INTERVAL	= 1000;
-const u32 MAX_INTERVAL	= 1200;
+const u32 MIN_INTERVAL	= 2500;
+const u32 MAX_INTERVAL	= 3000;
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
