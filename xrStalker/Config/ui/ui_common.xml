@@ -435,4 +435,24 @@
     <texture id="ui_scroll_PDA_btn_right_h" x="939" y="571" width="21" height="17" />
     <texture id="ui_scroll_PDA_btn_right_e" x="867" y="571" width="21" height="17" />
     <texture id="ui_scroll_PDA_box_e" x="922" y="259" width="17" height="28" />
+
+    <texture id="ui_mapQuest_gold" x="720" y="794" width="29" height="29" />
+    <texture id="ui_mapQuest_item" x="720" y="823" width="29" height="29" />
+    <texture id="ui_mapQuest_camp_destroy" x="720" y="852" width="29" height="29" />
+    <texture id="ui_mapQuest_camp_defend" x="720" y="881" width="29" height="29" />
+    <texture id="ui_mapQuest_stalker_destroy" x="720" y="910" width="29" height="29" />
+    <texture id="ui_mapQuest_artefact" x="720" y="939" width="29" height="29" />
+    <texture id="ui_mapQuest_lair_destroy" x="720" y="968" width="29" height="29" />
+    <texture id="ui_mapQuest_monster_find" x="720" y="997" width="29" height="29" />
+
+    <texture id="ui_sm_mapQuest_camp_defend" x="749" y="920" width="13" height="13" />
+    <texture id="ui_sm_mapQuest_stalker_destroy" x="749" y="933" width="13" height="13" />
+    <texture id="ui_sm_mapQuest_camp_destroy" x="749" y="946" width="13" height="13" />
+    <texture id="ui_sm_mapQuest_monster_find" x="749" y="959" width="13" height="13" />
+    <texture id="ui_sm_mapQuest_item" x="749" y="972" width="13" height="13" />
+    <texture id="ui_sm_mapQuest_lair_destroy" x="749" y="985" width="13" height="13" />
+    <texture id="ui_sm_mapQuest_artefact" x="749" y="998" width="13" height="13" />
+    <texture id="ui_sm_mapQuest_gold" x="749" y="1011" width="13" height="13" />
+
+
 </ui_texture>
