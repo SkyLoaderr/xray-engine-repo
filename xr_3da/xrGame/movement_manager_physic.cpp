@@ -160,7 +160,11 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	motion.mul			(dir_to_target, dist / dist_to_target);
 	dest_position.add	(motion);
 	Fvector velocity					=	dir_to_target;
-	if(velocity.y>0.9f)velocity.y=0.8f;
+	velocity.normalize_safe();
+	if(velocity.y>0.9f)
+		velocity.y=0.8f;
+	if(velocity.y<-0.9f)
+		velocity.y=-0.8f;
 	velocity.normalize_safe();							  //как не странно, mdir - не нормирован
 	velocity.mul						(desirable_speed);//*1.25f
 	if(!movement_control->PhyssicsOnlyMode())
