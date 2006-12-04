@@ -130,7 +130,7 @@ function send_artefact (npc, actor)
     dialogs.relocate_item_section(npc, "af_cristall", "in")
 end
 
-function send_desert_eagle (npc, actor)
+function send_desert_eagle (actor, npc)
     dialogs.relocate_items_section(npc, "wpn_walther", "in") 
 end
 
