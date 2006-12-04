@@ -49,7 +49,7 @@
         <text x="30" y="8" font="graffiti22" r="231" g="153" b="22">ui_inv_bag</text>
     </bag_static>
     
-    <money_static x="744" y="559" width="108" height="33" stretch="1">
+    <money_static x="744" y="530" width="108" height="33" stretch="1">
 		<text font="graffiti22" r="238" g="153" b="26" align="c" vert_align="c"></text>
     </money_static>
 
@@ -69,56 +69,55 @@
         </title>
     </character_frame_window>
     
-	<outfit_info x="740" y="580" width="260" height="130">
+	<outfit_info x="740" y="550" width="260" height="180">
 		<auto_static x="140" y="0">
 			<text font="graffiti22" color="UI_orange" complex_mode="0">ui_st_params</text>
 		</auto_static>
 		
-		<scroll_view x="10" y="33" width="240" height="97" always_show_scroll="0">
-		</scroll_view>
+		<scroll_view x="10" y="33" width="240" height="147" always_show_scroll="0"/>
 		
 		<static_burn_immunity x="0" y="0" width="230" height="15">
-			<texture>ui_icons_newPDA_showpers_e</texture>
+			<texture>ui_inv_icon_burn_immunity</texture>
 			<text font="letterica16" x="17" y="0" color="ui_clr_1"/>
 		</static_burn_immunity>
 		
 		<static_strike_immunity x="0" y="0" width="230" height="15">
-			<texture>ui_icons_newPDA_showpers_e</texture>
+			<texture>ui_inv_icon_strike_immunity</texture>
 			<text font="letterica16" x="17" y="0" color="ui_clr_1"/>
 		</static_strike_immunity>
 		
 		<static_shock_immunity x="0" y="0" width="230" height="15">
-			<texture>ui_icons_newPDA_showpers_e</texture>
+			<texture>ui_inv_icon_shock_immunity</texture>
 			<text font="letterica16" x="17" y="0" color="ui_clr_1"/>
 		</static_shock_immunity>
 		
 		<static_wound_immunity x="0" y="0" width="230" height="15">
-			<texture>ui_icons_newPDA_showpers_e</texture>
+			<texture>ui_inv_icon_wound_immunity</texture>
 			<text font="letterica16" x="17" y="0" color="ui_clr_1"/>
 		</static_wound_immunity>
 		
 		<static_radiation_immunity x="0" y="0" width="230" height="15">
-			<texture>ui_icons_newPDA_showpers_e</texture>
+			<texture>ui_inv_icon_radiation_immunity</texture>
 			<text font="letterica16" x="17" y="0" color="ui_clr_1"/>
 		</static_radiation_immunity>
 		
 		<static_telepatic_immunity x="0" y="0" width="230" height="15">
-			<texture>ui_icons_newPDA_showpers_e</texture>
+			<texture>ui_inv_icon_telepatic_immunity</texture>
 			<text font="letterica16" x="17" y="0" color="ui_clr_1"/>
 		</static_telepatic_immunity>
 		
 		<static_chemical_burn_immunity x="0" y="0" width="230" height="15">
-			<texture>ui_icons_newPDA_showpers_e</texture>
+			<texture>ui_inv_icon_chemical_burn_immunity</texture>
 			<text font="letterica16" x="17" y="0" color="ui_clr_1"/>
 		</static_chemical_burn_immunity>
 		
 		<static_explosion_immunity x="0" y="0" width="230" height="15">
-			<texture>ui_icons_newPDA_showpers_e</texture>
+			<texture>ui_inv_icon_explosion_immunity</texture>
 			<text font="letterica16" x="17" y="0" color="ui_clr_1"/>
 		</static_explosion_immunity>
 		
 		<static_fire_wound_immunity x="0" y="0" width="230" height="15">
-			<texture>ui_icons_newPDA_showpers_e</texture>
+			<texture>ui_inv_icon_fire_wound_immunity</texture>
 			<text font="letterica16" x="17" y="0" color="ui_clr_1"/>
 		</static_fire_wound_immunity>
 		

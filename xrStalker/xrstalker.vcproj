@@ -1708,6 +1708,12 @@
 					Name="item_infos"
 					Filter="">
 					<File
+						RelativePath=".\Config\ui\af_params.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\af_params_16.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\buy_mp_item.xml">
 					</File>
 					<File

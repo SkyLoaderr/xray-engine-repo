@@ -28,8 +28,8 @@ function main111()
 	c:execute("disconnect")
 end
 
-function ___main()
- game.start_tutorial("part_14_overload")
+function main()
+ game.start_tutorial("part_1_pda")
 end
 
 
@@ -55,9 +55,10 @@ function _main()
 	level.spawn_phantom(db.actor:position():add( dir:mul(radius) ))
 end
 
-function main_qqqq()
-	local info = "test_andy_info" 
-	db.actor:give_info_portion(info) 
+function ___main()
+	action_give_task()
+--	local info = "test_andy_info" 
+--	db.actor:give_info_portion(info) 
 --	alife():create("wpn_binoc", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())		
 	
 
@@ -103,13 +104,13 @@ function ___main()
 	action_give_task()
 end
 
-function main()
+function ______________main()
    local h 		= hit()
    h.power 		= 0.5
    h.direction 	= vector():set(0, 0, 1)
    h.impulse 	= 0
    h.draftsman 	= db.actor
-   h.type 		= hit.fire_wound
+   h.type 		= hit.telepatic
    db.actor:hit(h)
 
 --burn  		1
