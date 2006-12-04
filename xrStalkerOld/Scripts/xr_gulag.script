@@ -1,7 +1,7 @@
 --' Диденко Руслан (Stohe), Чугай Александр (Chugai)
 
-function printf()
-end
+--function printf()
+--end
 
 --' в работах поле object хранит id объекта
 
