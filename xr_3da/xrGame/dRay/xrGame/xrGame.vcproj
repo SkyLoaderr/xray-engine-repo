@@ -10098,6 +10098,9 @@
 					Name="ItemInfo"
 					Filter="">
 					<File
+						RelativePath=".\ui\IUWpnParams.cpp">
+					</File>
+					<File
 						RelativePath=".\ui\ui_af_params.cpp">
 					</File>
 					<File
@@ -10108,6 +10111,9 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIItemInfo.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIWpnParams.h">
 					</File>
 				</Filter>
 				<Filter
@@ -10187,10 +10193,6 @@
 					<File
 						RelativePath=".\ui\UISleepWnd.h">
 					</File>
-				</Filter>
-				<Filter
-					Name="WpnDragDropItem"
-					Filter="">
 				</Filter>
 				<Filter
 					Name="InventoryUtilities"
@@ -10848,11 +10850,6 @@
 					Filter="">
 					<File
 						RelativePath=".\UIDMStatisticWnd.cpp">
-						<FileConfiguration
-							Name="Debug|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\UIDMStatisticWnd.h">
@@ -11034,11 +11031,6 @@
 							Filter="">
 							<File
 								RelativePath=".\ui\UIStatsWnd.cpp">
-								<FileConfiguration
-									Name="Debug|Win32">
-									<Tool
-										Name="VCCLCompilerTool"/>
-								</FileConfiguration>
 							</File>
 							<File
 								RelativePath=".\ui\UIStatsWnd.h">
@@ -11120,16 +11112,6 @@
 						</File>
 						<File
 							RelativePath=".\ui\UITabButtonMP.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="WpnParams"
-						Filter="">
-						<File
-							RelativePath=".\ui\IUWpnParams.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIWpnParams.h">
 						</File>
 					</Filter>
 					<Filter
