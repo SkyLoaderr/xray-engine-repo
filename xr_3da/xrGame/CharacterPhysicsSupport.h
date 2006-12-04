@@ -72,6 +72,9 @@ private:
 	bool								m_was_wounded;
 	float								m_Pred_Time;//Для вычисления дельта времени между пересчётами сопротивления в джоинтах и коэффициента NPC
 	float								pelvis_factor_low_pose_detect;
+	float								wound_blend_remain_time;
+	Fvector								pos_entity_before_death_from_wound;
+	BOOL								character_have_wounded_state;
 	//gray_wolf<
 public:
 	//gray_wolf>

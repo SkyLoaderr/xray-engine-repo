@@ -78,6 +78,7 @@ m_ik_controller					=	NULL;
 m_BonceDamageFactor				=1.f;
 m_collision_hit_callback		=	NULL;
 m_Pred_Time						= 0.0;
+wound_blend_remain_time			= 0.5;
 switch(atype)
 {
 case etActor:
@@ -129,6 +130,7 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 	skeleton_skin_remain_time		= skeleton_skin_ddelay;
 	skeleton_skin_friction_start	= pSettings->r_float(section,"ph_skeleton_skin_friction_start");
 	skeleton_skin_friction_end		= pSettings->r_float(section,"ph_skeleton_skin_friction_end");
+	character_have_wounded_state	= pSettings->r_bool(section,"ph_character_have_wounded_state");
 	skeleton_skin_ddelay_after_wound= pSettings->r_float(section,"ph_skeleton_skin_ddelay_after_wound");
 	skeleton_skin_remain_time_after_wound= skeleton_skin_ddelay_after_wound;
 	pelvis_factor_low_pose_detect= pSettings->r_float(section,"ph_pelvis_factor_low_pose_detect");
@@ -296,6 +298,7 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 	if(!m_pPhysicsShell&&is_killing)
 	{
 		TestForWounded();
+
 		ActivateShell(who);
 		if (!m_was_wounded)
 		{
@@ -634,107 +637,24 @@ void						CCharacterPhysicsSupport::FlyTo(const	Fvector &disp)
 void CCharacterPhysicsSupport::TestForWounded()
 {
 	m_was_wounded=false;
+	if (!character_have_wounded_state)
+	{
+		return;
+	}
+	
 	CKinematics* CKA=smart_cast<CKinematics*>(m_EntityAlife.Visual());
 	CKA->CalculateBones();
-	{
-		CBoneData CBD=CKA->LL_GetData(0);
-		SBoneShape SBS=CBD.shape;
+	CBoneInstance CBI=CKA->LL_GetBoneInstance(0);
+	Fmatrix position_matrix;
+	position_matrix.mul(mXFORM,CBI.mTransform);
+	
+	xrXRC						xrc;
+	xrc.ray_options				(0);
+	xrc.ray_query(Level().ObjectSpace.GetStaticModel(),position_matrix.c,Fvector().set(0.0f,-1.0f,0.0f),pelvis_factor_low_pose_detect);
 		
-		CBoneInstance CBI=CKA->LL_GetBoneInstance(0);
-		Fmatrix position_matrix;
-		position_matrix.mul(mXFORM,CBI.mTransform);
-			
-		if( (SBS.type==SBoneShape::EShapeType::stSphere)||(SBS.type==SBoneShape::EShapeType::stBox))
-		{
-				
-		Fvector AA,BB;
-		AA.set(0.0f,0.0f,0.0f);
-		BB.set(0.0f,0.0f,0.0f);
-		switch (SBS.type)
-		{	
-		case SBoneShape::EShapeType::stSphere:
-			Fvector P;
-			float R;
-			
-			P=SBS.sphere.P;
-			R=SBS.sphere.R;
-			position_matrix.transform(P);
-
-			AA=P;
-			BB=P;
-			AA.x-=R;
-			AA.y-=R;
-			AA.z-=R;
-			BB.x+=R;
-			BB.y+=R;
-			BB.z+=R;
-
-			break;
-		case SBoneShape::EShapeType::stBox:
-			Fmatrix M,XFF;
-			Fvector Ps[8];
-			SBS.box.xform_full(XFF);
-			M.mul_43(position_matrix,XFF);
-			for (u16 i=0;i<8;i++)
-			{
-				Ps[i].x=(i&1)? 1.0f : -1.0f;
-				Ps[i].y=(i&2)? 1.0f : -1.0f;
-				Ps[i].z=(i&3)? 1.0f : -1.0f;
-				M.transform(Ps[i]);
-				if (i==0)
-				{
-					AA=Ps[i];
-					BB=Ps[i];
-				}
-				else
-				{
-					if (Ps[i].x<AA.x)
-					{
-						AA.x=Ps[i].x;
-					}
-					if (Ps[i].y<AA.y)
-					{
-						AA.y=Ps[i].y;
-					}
-					if (Ps[i].z<AA.z)
-					{
-						AA.z=Ps[i].z;
-					}
-					if (Ps[i].x>BB.x)
-					{
-						BB.x=Ps[i].x;
-					}
-					if (Ps[i].y>BB.y)
-					{
-						BB.y=Ps[i].y;
-					}
-					if (Ps[i].z>BB.z)
-					{
-						BB.z=Ps[i].z;
-					}
-				}
-			}
-			break;
-		}
-		Fvector Size,Center;
-		Center.add(AA,BB);
-		Center.div(2.0f);
-		Size.sub(AA,BB);
-		Size.x=abs(Size.x);
-		Size.y=abs(Size.y);
-		Size.z=abs(Size.z);
-		Size.mul(0.5f);
-		Size.mul(pelvis_factor_low_pose_detect);
-
-		xrXRC						xrc			;
-		xrc.ray_options				(0);
-		xrc.ray_query(Level().ObjectSpace.GetStaticModel(),Center,Fvector().set(0.0f,-1.0f,0.0f),Size.magnitude());
-			
-		if (xrc.r_count())
-		{
-			m_was_wounded=true;
-		}
-	}
+	if (xrc.r_count())
+	{
+		m_was_wounded=true;
 	}
 };
 
@@ -799,5 +719,17 @@ void CCharacterPhysicsSupport::UpdateFrictionAndJointResistanse()
 	}
 
 	m_curr_skin_friction_in_death=skeleton_skin_friction_end+
-		(remain/ddelay)*(skeleton_skin_friction_start-skeleton_skin_friction_end);			
+		(remain/ddelay)*(skeleton_skin_friction_start-skeleton_skin_friction_end);	
+
+	if (m_was_wounded)
+	{
+		if(wound_blend_remain_time!=0)
+		{
+			wound_blend_remain_time-=l_time_delta;
+		};
+		if (wound_blend_remain_time<0)
+		{
+			wound_blend_remain_time=0;
+		};
+	}
 };
