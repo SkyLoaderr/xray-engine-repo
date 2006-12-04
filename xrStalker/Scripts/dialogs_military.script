@@ -57,13 +57,13 @@ function set_freedom_enemy (player, stalker)
 end
 
 function set_task1_complete (player, stalker)
-    if db.actor:has_info ("mil_leader_quest1_start") then
+    if has_alife_info("mil_leader_quest1_start") then
        level_tasks.set_task_state (task.completed, "mil_lukash_job", 1)
     end   
 end
 
 function set_task3_complete (player, stalker)
-    if db.actor:has_info ("mil_leader_quest1_start") then
+    if has_alife_info("mil_leader_quest1_start") then
        level_tasks.set_task_state (task.completed, "mil_lukash_job", 0)
        level_tasks.set_task_state (task.completed, "mil_lukash_job", 3)
     end   
