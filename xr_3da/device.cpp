@@ -305,7 +305,7 @@ void ProcessLoading				(RP_FUNC *f)
 
 	for (; processed_idx<R.size(); processed_idx++)	{
 		f(R[processed_idx].Object);
-		if	(Device.TimerAsync_MMT() > tm+50) return;
+//.		if	(Device.TimerAsync_MMT() > tm+50) return;
 	}
 
 	g_bLoaded				= TRUE;
