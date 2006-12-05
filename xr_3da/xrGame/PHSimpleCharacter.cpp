@@ -1420,10 +1420,12 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,u16 material_i
 		b_any_contacts=true;
 		is_contact=true;
 	}
-	
+	u16		foot_material_idx	=	((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;	
 	if(tri_material->Flags.test(SGameMtl::flPassable)&&!do_collide)
 	{
+		
 		UpdateStaticDamage(c,tri_material,bo1);
+		foot_material_update(contact_material,foot_material_idx);
 		return;
 	}
 	if(do_collide)
@@ -1435,7 +1437,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,u16 material_i
 	dReal dumping_rate=def_dumping_rate;
 	bool object=(dGeomGetBody(g1)&&dGeomGetBody(g2));
 	b_on_object=b_on_object||object;
-	u16		foot_material_idx	=	((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;	
+	
 	
 ////////////////////////нужно сместить колижен!!
 //////////////
