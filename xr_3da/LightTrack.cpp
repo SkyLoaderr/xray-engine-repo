@@ -111,7 +111,7 @@ void	CROS_impl::update	(IRenderable* O)
 	float	radius;		radius	= O->renderable.visual->vis.sphere.R;
 	position.y			+=  .3f * radius;
 	Fvector	direction;	direction.random_dir();
-//			position.mad(direction,0.25f*radius);
+//.			position.mad(direction,0.25f*radius);
 			position.mad(direction,0.025f*radius);
 
 	// sun-tracing
@@ -138,7 +138,8 @@ void	CROS_impl::update	(IRenderable* O)
 
 			// take sample
 			Fvector	direction;	direction.set	(hdir[sample][0],hdir[sample][1],hdir[sample][2]).normalize	();
-			result[sample]	=	!g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache[sample],_object);
+//.			result[sample]	=	!g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache[sample],_object);
+			result[sample]	=	!g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtStatic,&cache[sample],_object);
 			//	Msg				("%d:-- %s",sample,result[sample]?"true":"false");
 		}
 	}
