@@ -297,6 +297,9 @@ void CRenderDevice::FrameMove()
 
 void ProcessLoading				(RP_FUNC *f)
 {
+	Device.seqFrame.Process				();
+	g_bLoaded							= TRUE;
+/*
 	static u32 processed_idx			= 0;
 	u32 tm = Device.TimerAsync_MMT		();
 
@@ -305,11 +308,12 @@ void ProcessLoading				(RP_FUNC *f)
 
 	for (; processed_idx<R.size(); processed_idx++)	{
 		f(R[processed_idx].Object);
-//.		if	(Device.TimerAsync_MMT() > tm+50) return;
+		if	(Device.TimerAsync_MMT() > tm+50) return;
 	}
 
 	g_bLoaded				= TRUE;
 	processed_idx			= 0;
+*/
 }
 
 ENGINE_API BOOL bShowPauseString			= TRUE;
