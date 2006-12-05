@@ -40,6 +40,13 @@ __published:	// IDE-managed Components
 	TBevel *Bevel5;
 	TPanel *Panel1;
 	TMxPanel *paImage;
+	TPanel *paFilter;
+	TExtBtn *ttImage;
+	TExtBtn *ttBumpMap;
+	TExtBtn *ttNormalMap;
+	TExtBtn *ttCubeMap;
+	TExtBtn *ttTerrain;
+	TExtBtn *ebSyncTypes;
     void __fastcall ebOkClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
@@ -53,6 +60,8 @@ __published:	// IDE-managed Components
 	void __fastcall ebRemoveTextureClick(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
 	void __fastcall paImagePaint(TObject *Sender);
+	void __fastcall ttImageClick(TObject *Sender);
+	void __fastcall ebSyncTypesClick(TObject *Sender);
 private:
 // list functions
     void __stdcall 		RemoveTexture		(LPCSTR fname, EItemType type, bool& res);

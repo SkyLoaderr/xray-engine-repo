@@ -7,7 +7,7 @@
 class ListItem{
 	friend class		CListHelper;
     friend class		TItemList;
-    shared_str				key;
+    shared_str		  	key;
     int					type;
 	void*				item;
 public:                        
@@ -28,6 +28,7 @@ public:
 		flDrawThumbnail	= (1<<2),
 		flDrawCanvas	= (1<<3),
         flSorted		= (1<<4),
+        flHidden		= (1<<5),
     };
     Flags32				m_Flags;
 public:
@@ -35,6 +36,7 @@ public:
 	virtual 			~ListItem		(){};
     void				SetName			(LPCSTR _key){key=_key;}
 
+    IC void				Visible			(BOOL val){m_Flags.set(flHidden, !val);}
     IC int				Type			(){return type;}
 	IC void*			Item			(){return item;}
 	IC LPCSTR			Key				(){return *key;}

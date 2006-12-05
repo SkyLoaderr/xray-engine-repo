@@ -173,6 +173,7 @@ void STextureParams::OnTypeChange(PropValue* prop)
 	    flags.set			(flGenerateMipMaps|flBinaryAlpha|flAlphaBorder|flColorBorder|flFadeToColor
         					|flFadeToAlpha|flDitherColor|flDitherEachMIPLevel|flBumpDetail,FALSE);
 	    flags.set			(flImplicitLighted,TRUE);
+        fmt					= tfDXT1;
     break;
     }
     if (!OnTypeChangeEvent.empty()) OnTypeChangeEvent(prop);
@@ -235,6 +236,19 @@ void STextureParams::FillProp(LPCSTR base_name, PropItemVec& items, PropValue::T
 
 	    PHelper().CreateFlag32		(items, "MipMaps\\Enabled",			&flags,				flGenerateMipMaps);
     	PHelper().CreateToken32		(items, "MipMaps\\Filter",			(u32*)&mip_filter,	tparam_token);
+    break;
+    case ttTerrain:	
+	    P = PHelper().CreateToken32	(items, "Format",	   				(u32*)&fmt, 		tfmt_token); P->Owner()->Enable(false);
+
+        PHelper().CreateFlag32		(items, "Details\\Use As Diffuse",	&flags,				flDiffuseDetail);
+        PHelper().CreateFlag32		(items, "Details\\Use As Bump (R2)",&flags,				flBumpDetail);
+        PHelper().CreateChoose		(items, "Details\\Texture",			&detail_name,		smTexture);
+        PHelper().CreateFloat	   	(items, "Details\\Scale",			&detail_scale,		0.1f,10000.f,0.1f,2);
+
+        PHelper().CreateToken32		(items, "Material\\Base",			(u32*)&material,	tmtl_token);
+        PHelper().CreateFloat	   	(items, "Material\\Weight",			&material_weight	);
+
+        P = PHelper().CreateFlag32	(items, "Flags\\Implicit Lighted",	&flags,				flImplicitLighted);  P->Owner()->Enable(false);
     break;
     }
 }

@@ -128,6 +128,7 @@ public:		// User declarations
     virtual void 		AssignItems				(ListItemsVec& values, bool full_expand, bool full_sort=false);
     bool 				IsFocused				(){return tvItems->Focused();}
 
+    const ListItemsVec&	GetItems				(){return m_Items;}
     virtual int  		GetSelected				(RStringVec& items);
     virtual int  		GetSelected				(LPCSTR pref, ListItemsVec& items, bool bOnlyObject);
     virtual TElTreeItem*GetSelected				(){R_ASSERT(!tvItems->MultiSelect); return (tvItems->MultiSelect)?0:tvItems->Selected;}

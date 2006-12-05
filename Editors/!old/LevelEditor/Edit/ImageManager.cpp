@@ -403,7 +403,8 @@ void CImageManager::ChangeFileAgeTo(FS_FileSet* tgt_map, int age)
 */
 void CImageManager::WriteAssociation(CInifile* ltx_ini, LPCSTR base_name, const STextureParams& fmt)
 {
-	if (STextureParams::ttImage==fmt.type){
+    ltx_ini->w_u32				("types", base_name,fmt.type);
+	if (STextureParams::ttImage==fmt.type || STextureParams::ttTerrain==fmt.type || STextureParams::ttNormalMap==fmt.type){
         // save to assoc ltx
         // details
         if (fmt.detail_name.size()&&fmt.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
@@ -429,8 +430,8 @@ void CImageManager::WriteAssociation(CInifile* ltx_ini, LPCSTR base_name, const 
                                 AnsiString().sprintf("bump_mode[%s%s], material[%3.2f]",
                                 					bm.c_str(),det.c_str(),fmt.material+fmt.material_weight).c_str());
     }else{
-        ltx_ini->remove_line("association", base_name);
-        ltx_ini->remove_line("specification", base_name);
+        ltx_ini->remove_line("association", 	base_name);
+        ltx_ini->remove_line("specification", 	base_name);
     }
 }
 

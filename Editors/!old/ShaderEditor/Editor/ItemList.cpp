@@ -422,14 +422,27 @@ void __fastcall TItemList::miDrawThumbnailsClick(TObject *Sender)
 
 void __fastcall TItemList::RefreshForm()
 {
-    LockUpdating			();
-    for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
-    	ListItem* prop = *it;
-    	if (prop->m_Flags.is(ListItem::flDrawThumbnail)) 
-        	((TElTreeItem*)prop->item)->OwnerHeight = !miDrawThumbnails->Checked;
-        else
-        	((TElTreeItem*)prop->item)->OwnerHeight = true;
+    LockUpdating					();
+    for (TElTreeItem* item=tvItems->Items->GetFirstNode(); item; item=item->GetNext()){
+        ListItem* prop				= (ListItem*)item->Tag;
+        if (prop){
+            item->Hidden			= prop->m_Flags.is(ListItem::flHidden);
+            if (prop->m_Flags.is(ListItem::flHidden)){
+                item->Selected		= false;
+            }else{
+                item->OwnerHeight 	= prop->m_Flags.is(ListItem::flDrawThumbnail)?!miDrawThumbnails->Checked:true;
+            }
+        }
     }
+    for (item=tvItems->Items->GetFirstNode(); item; item=item->GetNext()){
+        ListItem* prop				= (ListItem*)item->Tag;
+        if (!prop) item->Hidden		= !item->HasVisibleChildren;
+    }
+
+//	for (it=m_Items.begin(); it!=m_Items.end(); it++){
+//		ListItem* prop 		= *it;
+//		((TElTreeItem*)prop->item)->Hidden	= prop->m_Flags.is(ListItem::flHidden);
+//	}
 	UnlockUpdating			();
 	tvItems->Repaint		();
 }

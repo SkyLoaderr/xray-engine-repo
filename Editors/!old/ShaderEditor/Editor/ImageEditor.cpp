@@ -27,7 +27,12 @@ __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
     : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
-    bImportMode = false;
+    bImportMode 	= false;
+    ttImage->Tag    = STextureParams::ttImage;
+    ttCubeMap->Tag	= STextureParams::ttCubeMap;
+    ttBumpMap->Tag  = STextureParams::ttBumpMap;
+    ttNormalMap->Tag= STextureParams::ttNormalMap;
+    ttTerrain->Tag  = STextureParams::ttTerrain;
 }
 //---------------------------------------------------------------------------
 
@@ -64,8 +69,9 @@ void __fastcall TfrmImageLib::EditLib(AnsiString& title, bool bImport)
 	        form->ebRebuildAssociation->Enabled = false;
             form->m_ItemProps->SetReadOnly		(TRUE);
         }
-		form->modif_map.clear();
-        m_Flags.zero		();
+		form->modif_map.clear	();
+        form->paFilter->Enabled	= !bImport;
+        m_Flags.zero			();
     }
 
     form->ShowModal();
@@ -170,13 +176,23 @@ void TfrmImageLib::InitItemsList()
 {
     if (!form->bImportMode)  ImageLib.GetTextures(texture_map);
     
-	ListItemsVec items;
+	ListItemsVec 		items;
 
+	xr_string 			ltx_nm;
+    FS.update_path		(ltx_nm,_game_textures_,"textures.ltx");
+	CInifile* ltx_ini 	= xr_new<CInifile>		(ltx_nm.c_str(),FALSE,TRUE,FALSE);
+	SPBItem* pb			= UI->ProgressStart		(texture_map.size(),"Fill list...");
     // fill
 	FS_FileSetIt it = texture_map.begin();
 	FS_FileSetIt _E = texture_map.end();
-    for (; it!=_E; it++) LHelper().CreateItem(items,it->name.c_str(),0);
+    for (; it!=_E; it++){ 
+		pb->Inc			();
+    	ListItem* I		= LHelper().CreateItem(items,it->name.c_str(),0);
+        I->tag			= ltx_ini->line_exist("types",it->name.c_str())?ltx_ini->r_u32("types",it->name.c_str()):-1;
+    }
+    UI->ProgressEnd		(pb);
     m_ItemList->AssignItems(items,false,true);
+    xr_delete			(ltx_ini);
 }
 
 //---------------------------------------------------------------------------
@@ -236,6 +252,46 @@ void __fastcall TfrmImageLib::fsStorageSavePlacement(TObject *)
 {
 	m_ItemProps->SaveParams(fsStorage);
     m_ItemList->SaveParams(fsStorage);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmImageLib::ebSyncTypesClick(TObject *Sender)
+{
+	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo,"Are you sure to sync types?")==mrNo) return;
+
+    if (!modif_map.empty()){
+        int res = ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo<<mbCancel,"Save modified properties?");
+        switch (res){
+        case mrYes: 	UpdateLib();	break;
+        case mrNo: 			  			break;
+        case mrCancel: 		  			return;
+        }
+    }
+
+	xr_string nm;
+    FS.update_path	 	(nm,_game_textures_,"textures.ltx");
+	CInifile* ini 	 	= xr_new<CInifile>(nm.c_str(), FALSE, FALSE, TRUE);
+
+	LockForm				();
+
+    FS_FileSetIt it		= texture_map.begin();
+    FS_FileSetIt _E		= texture_map.end();
+	SPBItem* pb = UI->ProgressStart(texture_map.size(),"Syncronising types");
+    bool bRes=true;
+    for (;it!=_E; it++){
+        ETextureThumbnail* m_Thm = xr_new<ETextureThumbnail>(it->name.c_str());
+	    pb->Inc				(it->name.c_str());
+        AnsiString base_name= ChangeFileExt(it->name.c_str(),"");
+        ini->w_u32			("types", base_name.c_str(),m_Thm->_Format().type);
+        xr_delete			(m_Thm);
+		if (UI->NeedAbort()){ bRes=false; break; }
+    }
+	UI->ProgressEnd(pb);
+
+	UnlockForm();
+
+    if (!bRes) ini->bSaveAtEnd = false;
+	xr_delete(ini);
 }
 //---------------------------------------------------------------------------
 
@@ -342,6 +398,9 @@ void TfrmImageLib::OnItemsFocused(ListItemsVec& items)
                     if (!thm) m_THM_Used.push_back(thm=xr_new<ETextureThumbnail>(prop->Key()));
                 }
                 m_THM_Current.push_back	(thm);
+		        prop->tag				= thm->_Format().type;
+                
+                // fill prop
                 thm->FillProp			(props,PropValue::TOnChange(this,&TfrmImageLib::OnTypeChange));
 				if (thm->_Format().type==STextureParams::ttCubeMap){
 				    ButtonValue* B		= PHelper().CreateButton (props, "CubeMap\\Edit", "Make Small", 0);
@@ -391,5 +450,23 @@ void TfrmImageLib::OnFrame()
     	ELog.DlgMsg(mtError,"At first select item!");
     }
 */
+
+void __fastcall TfrmImageLib::ttImageClick(TObject *Sender)
+{
+    const ListItemsVec&	items	= m_ItemList->GetItems();
+    u32 cnt = items.size();
+    for (u32 k=0; k<cnt; ++k){
+    	ListItem* I	= items[k];
+        I->Visible	(FALSE);
+        if (I->tag==-1)                                       	I->Visible(TRUE);
+        else if (ttImage->Down && ttImage->Tag==I->tag) 		I->Visible(TRUE);
+        else if (ttCubeMap->Down && ttCubeMap->Tag==I->tag) 	I->Visible(TRUE);
+        else if (ttBumpMap->Down && ttBumpMap->Tag==I->tag) 	I->Visible(TRUE);
+        else if (ttNormalMap->Down && ttNormalMap->Tag==I->tag) I->Visible(TRUE);
+        else if (ttTerrain->Down && ttTerrain->Tag==I->tag) 	I->Visible(TRUE);
+    }
+    m_ItemList->RefreshForm	();
+}
+//---------------------------------------------------------------------------
 
 
