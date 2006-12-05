@@ -10,6 +10,8 @@ struct ECORE_API STextureParams{
     	ttImage	= 0,
         ttCubeMap,
         ttBumpMap,
+        ttNormalMap,
+        ttTerrain,
 		ttForceU32	= u32(-1)
 	};
 	enum ETFormat{
@@ -118,7 +120,9 @@ struct ECORE_API STextureParams{
 		material		= tmBlin_Phong;
         bump_virtual_height = 0.05f;
 	}
-    IC BOOL HasAlpha(){ // исходная текстура содержит альфа канал
+    IC BOOL HasAlpha()
+    { 
+    	// исходная текстура содержит альфа канал
     	return flags.is(flHasAlpha);
     }
 	IC BOOL HasAlphaChannel() // игровая текстура содержит альфа канал

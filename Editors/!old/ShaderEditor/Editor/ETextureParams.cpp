@@ -30,6 +30,8 @@ xr_token					ttype_token								[ ]={
 	{ "2D Texture",			STextureParams::ttImage						},
 	{ "Cube Map",  			STextureParams::ttCubeMap					},
 	{ "Bump Map",			STextureParams::ttBumpMap					},
+	{ "Normal Map",			STextureParams::ttNormalMap					},
+	{ "Terrain",			STextureParams::ttTerrain					},
 	{ 0,					0											}
 };
 
@@ -158,7 +160,19 @@ void STextureParams::OnTypeChange(PropValue* prop)
     case ttCubeMap:	
     break;
     case ttBumpMap:	
-	    flags.set	(flGenerateMipMaps,FALSE);
+	    flags.set			(flGenerateMipMaps,FALSE);
+    break;
+    case ttNormalMap:
+	    flags.set			(flImplicitLighted|flBinaryAlpha|flAlphaBorder|flColorBorder|flFadeToColor
+        					|flFadeToAlpha|flDitherColor|flDitherEachMIPLevel|flBumpDetail,FALSE);
+	    flags.set			(flGenerateMipMaps,TRUE);
+        mip_filter			= kMIPFilterKaiser;
+        fmt					= tfRGBA;
+    break;
+    case ttTerrain:
+	    flags.set			(flGenerateMipMaps|flBinaryAlpha|flAlphaBorder|flColorBorder|flFadeToColor
+        					|flFadeToAlpha|flDitherColor|flDitherEachMIPLevel|flBumpDetail,FALSE);
+	    flags.set			(flImplicitLighted,TRUE);
     break;
     }
     if (!OnTypeChangeEvent.empty()) OnTypeChangeEvent(prop);
@@ -215,6 +229,12 @@ void STextureParams::FillProp(LPCSTR base_name, PropItemVec& items, PropValue::T
     case ttBumpMap:	
         PHelper().CreateChoose		(items, "Bump\\Special NormalMap",	&ext_normal_map_name,smTexture,base_name);
         PHelper().CreateFloat	   	(items, "Bump\\Virtual Height (m)",	&bump_virtual_height, 0.f, 0.1f, 0.001f, 3);
+    break;
+    case ttNormalMap:	
+	    P = PHelper().CreateToken32	(items, "Format",	   				(u32*)&fmt, 		tfmt_token); P->Owner()->Enable(false);
+
+	    PHelper().CreateFlag32		(items, "MipMaps\\Enabled",			&flags,				flGenerateMipMaps);
+    	PHelper().CreateToken32		(items, "MipMaps\\Filter",			(u32*)&mip_filter,	tparam_token);
     break;
     }
 }
