@@ -444,17 +444,12 @@ bool CAI_Stalker::ready_to_kill			()
 
 bool CAI_Stalker::ready_to_detour		()
 {
-	if (!ready_to_kill()) {
-		// we need this because these 2 properties are self-exclusive
-		return			(true);
-	}
+	if (!ready_to_kill())
+		return			(false);
 
 	CWeapon				*weapon = smart_cast<CWeapon*>(m_best_item_to_kill);
 	if (!weapon)
-		return			(true);
-
-//	if (weapon->GetAmmoMagSize() < 5)
-//		return			(true);
+		return			(false);
 
 	return				(weapon->GetAmmoElapsed() > weapon->GetAmmoMagSize()/2);
 }
