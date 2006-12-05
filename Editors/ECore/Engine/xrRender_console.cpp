@@ -104,6 +104,8 @@ float		ps_r2_zfill					= 0.1f;				// .1f
 float		ps_r2_dhemi_scale			= 1.5f;				// 1.5f
 int			ps_r2_dhemi_count			= 5;				// 5
 
+float		ps_r2_lt_smooth				= 1.f;				// 1.f
+
 
 //- Mad Max
 float		ps_r2_gloss_factor			= 1.0f;
@@ -346,6 +348,7 @@ void		xrRender_initconsole	()
 
 	CMD4(CCC_Integer,	"r2_dhemi_count",		&ps_r2_dhemi_count,			4,		25		);
 	CMD4(CCC_Float,		"r2_dhemi_scale",		&ps_r2_dhemi_scale,			.5f,	3.f		);
+	CMD4(CCC_Float,		"r2_smooth",			&ps_r2_lt_smooth,			0.f,	1000.f	);
 
 	CMD4(CCC_Float,		"r2_ls_depth_scale",	&ps_r2_ls_depth_scale,		0.5,	1.5		);
 	CMD4(CCC_Float,		"r2_ls_depth_bias",		&ps_r2_ls_depth_bias,		-0.5,	+0.5	);

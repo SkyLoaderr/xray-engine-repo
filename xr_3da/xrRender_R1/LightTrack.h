@@ -8,7 +8,6 @@
 
 const	float				lt_inc			= 4.f	;
 const	float				lt_dec			= 2.f	;
-const	float				lt_smooth		= 1.f	;
 const	int					lt_hemisamples	= 26	;
 
 class	CROS_impl			: public IRender_ObjectSpecific
