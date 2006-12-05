@@ -284,6 +284,7 @@ void CWallmarksEngine::AddSkeletonWallmark	(const Fmatrix* xf, CKinematics* obj,
 
 void CWallmarksEngine::AddSkeletonWallmark(intrusive_ptr<CSkeletonWallmark> wm)
 {
+	if(0==g_r)				return;
 	R_ASSERT2(g_r==1, "incorrect call of AddSkeletonWallmark");
 
 	if(::RImplementation.phase != CRender::PHASE_NORMAL) return;
