@@ -36,7 +36,7 @@
 
 static const u32 ENEMY_INERTIA_TIME	= 2000;
 
-#ifdef DEBUG
+#ifdef _DEBUG
 bool g_enemy_manager_second_update	 = false;
 #endif // _DEBUG
 
@@ -338,7 +338,7 @@ void CEnemyManager::process_wounded			(bool &only_wounded)
 	}
 
 	if (only_wounded) {
-#ifdef DEBUG
+#ifdef _DEBUG
 		if (g_enemy_manager_second_update)
 			Msg					("%6d ONLY WOUNDED LEFT %s",Device.dwTimeGlobal,*m_object->cName());
 #endif // _DEBUG
@@ -414,10 +414,10 @@ void CEnemyManager::update					()
 		Level().autosave_manager().inc_not_ready();
 	}
 
-#ifdef DEBUG
+#ifdef _DEBUG
 	if (g_enemy_manager_second_update && selected() && smart_cast<const CAI_Stalker*>(selected()) && smart_cast<const CAI_Stalker*>(selected())->wounded())
 		Msg						("%6d WOUNDED CHOOSED %s",Device.dwTimeGlobal,*m_object->cName());
-#endif // DEBUG
+#endif // _DEBUG
 
 	STOP_PROFILE
 }
