@@ -123,26 +123,26 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 //		return				(penalty + 10000.f + 1.f/distance);
 	}
 
-	float					penalty = 0.f;
+	float					penalty = 10000.f;
 
 	// if we are hit
 	if (object->ID() == m_object->memory().hit().last_hit_object_id())
-		penalty				+= 500.f;
+		penalty				-= 500.f;
 
 	// if we see object
 	if (m_object->memory().visual().visible_now(object))
-		penalty				+= 1000.f;
+		penalty				-= 1000.f;
 
 	// if object is actor and he/she sees us
 	if (actor) {
 		if (smart_cast<const CActor*>(object)->memory().visual().visible_now(m_object))
-			penalty			+= 900.f;
+			penalty			-= 900.f;
 	}
 	else {
 		// if object is npc and it sees us
 		const CCustomMonster	*monster = smart_cast<const CCustomMonster*>(object);
 		if (monster && monster->memory().visual().visible_now(m_object))
-			penalty			= 300.f;
+			penalty			-= 300.f;
 	}
 
 #ifdef USE_EVALUATOR
@@ -157,14 +157,13 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 		distance/100.f +
 		ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f
 	);
-#else
+#else // USE_EVALUATOR
 	float					distance = m_object->Position().distance_to_sqr(object->Position());
-//	distance				= !fis_zero(distance) ? distance : EPS_L;
 	return					(
 		1000.f*(visible ? 0.f : 1.f) +
 		distance
 	);
-#endif
+#endif // USE_EVALUATOR
 }
 
 bool CEnemyManager::expedient				(const CEntityAlive *object) const
