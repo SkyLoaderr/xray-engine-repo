@@ -931,6 +931,11 @@ void	game_sv_mp::OnPlayerChangeName		(NET_Packet& P, ClientID sender)
 	game_PlayerState* ps = pClient->ps;
 	if (!ps) return;
 
+	if (NewPlayerName_Exists(pClient, NewName))
+	{
+		NewPlayerName_Generate(pClient, NewName);
+	};
+
 	if (pClient->owner)
 	{
 		NET_Packet			P;
@@ -952,17 +957,7 @@ void	game_sv_mp::OnPlayerChangeName		(NET_Packet& P, ClientID sender)
 		//---------------------------------------------------
 		pClient->owner->set_name_replace(NewName);
 //		pClient->owner->set_name(NewName);
-		if (strstr(pClient->Name.c_str(), "name="))
-		{
-			string1024 tmpName = "";
-			strcpy(tmpName, pClient->Name.c_str());
-			*(strstr(tmpName, "name=")+5) = 0;
-			sprintf(tmpName, "%s%s", tmpName, NewName);
-			char* ptmp = strstr(strstr(pClient->Name.c_str(), "name="), "/");
-			if (ptmp)
-				sprintf(tmpName, "%s%s", tmpName, ptmp);
-			pClient->Name._set(tmpName);
-		}
+		NewPlayerName_Replace(pClient, NewName);
 	};
 
 	ps->setName(NewName);

@@ -38,6 +38,10 @@ protected:
 	bool							m_bFastRestart;
 	MAP_ROTATION_LIST				m_pMapRotation_List;
 
+	bool							NewPlayerName_Exists	(void* pClient, LPCSTR NewName);
+	void							NewPlayerName_Generate	(void* pClient, LPSTR NewPlayerName);
+	void							NewPlayerName_Replace	(void* pClient, LPCSTR NewPlayerName);
+
 public:
 #define		TEAM_COUNT 4
 

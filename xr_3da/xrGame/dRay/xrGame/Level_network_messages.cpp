@@ -260,6 +260,10 @@ void CLevel::ClientReceive()
 					Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup(*m_caServerOptions)),size_t(xr_strdup(*m_caClientOptions)));
 				};
 			}break;
+		case M_CHANGE_SELF_NAME:
+			{
+				net_OnChangeSelfName(P);
+			}break;
 		case M_PAUSE_GAME:
 			{
 				u8 Pause = P->r_u8();

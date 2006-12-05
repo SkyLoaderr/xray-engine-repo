@@ -62,6 +62,8 @@ enum {
 	//-----------------------------------------------------
 	M_MOVE_PLAYERS,
 	M_MOVE_PLAYERS_RESPOND,
+	//-----------------------------------------------------
+	M_CHANGE_SELF_NAME,
 
 	MSG_FORCEDWORD				= u32(-1)
 };

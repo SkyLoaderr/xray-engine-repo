@@ -632,6 +632,15 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 			P->ID						= sender;
 			//tNetPacket.r_clientID(P->ID);
 			tNetPacket.r_stringZ		(P->Name);
+			
+			string64 NewPlayerName;
+			strcpy(NewPlayerName, get_option_s(*P->Name, "name", ""));
+
+			if (NewPlayerName_Exists(P, NewPlayerName))
+			{
+				NewPlayerName_Generate(P, NewPlayerName);
+				NewPlayerName_Replace(P, NewPlayerName);
+			}
 			P->flags.bLocal				= !!tNetPacket.r_u8();
 			P->flags.bConnected			= TRUE;
 			m_server->AttachNewClient	(P);
@@ -647,6 +656,59 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 			R_ASSERT3	(0,"Game Event not implemented!!!", itoa(type, tmp, 10));
 		};
 	};
+};
+
+bool game_sv_GameState::NewPlayerName_Exists	(void* pClient, LPCSTR NewName)
+{
+	if (!pClient || !NewName) return false;
+	u32		cnt		= get_players_count	();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		IClient*	pIC	= m_server->client_Get		(it);
+		if (!pIC || pIC == pClient) continue;
+		string64 xName;
+		strcpy(xName, get_option_s(*pIC->Name, "name", *pIC->Name));
+		int x=0;
+		x=x;
+		if (!xr_strcmp(NewName, xName)) return true;
+	};
+	return false;
+};
+
+void game_sv_GameState::NewPlayerName_Generate(void* pClient, LPSTR NewPlayerName)
+{
+	if (!pClient || !NewPlayerName) return;
+	NewPlayerName[14]=0;
+	for (int i=1; i<100; i++)
+	{
+		string64 NewXName;
+		sprintf(NewXName, "%s_%d", NewPlayerName, i);
+		if (!NewPlayerName_Exists(pClient, NewXName))
+		{
+			strcpy(NewPlayerName, NewXName);
+			return;
+		}
+	}
+};
+
+void game_sv_GameState::NewPlayerName_Replace	(void* pClient, LPCSTR NewPlayerName)
+{
+	if (!pClient || !NewPlayerName) return;
+	if (!strstr(((IClient*)pClient)->Name.c_str(), "name=")) return;
+	
+	string2048 tmpName = "";
+	strcpy(tmpName, ((IClient*)pClient)->Name.c_str());
+	*(strstr(tmpName, "name=")+5) = 0;
+	sprintf(tmpName, "%s%s", tmpName, NewPlayerName);
+	char* ptmp = strstr(strstr(((IClient*)pClient)->Name.c_str(), "name="), "/");
+	if (ptmp)
+		sprintf(tmpName, "%s%s", tmpName, ptmp);
+	((IClient*)pClient)->Name._set(tmpName);
+	//---------------------------------------------------------
+	NET_Packet P;
+	P.w_begin(M_CHANGE_SELF_NAME);
+	P.w_stringZ(NewPlayerName);	
+	m_server->SendTo(((IClient*)pClient)->ID, P);
 };
 
 void game_sv_GameState::OnSwitchPhase(u32 old_phase, u32 new_phase)

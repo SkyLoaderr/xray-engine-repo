@@ -185,6 +185,8 @@ protected:
 	bool	xr_stdcall			net_start_client5				();
 	bool	xr_stdcall			net_start_client6				();
 
+	void						net_OnChangeSelfName			(NET_Packet* P);
+
 public:
 	// sounds
 	xr_vector<ref_sound*>		static_Sounds;

@@ -335,3 +335,29 @@ void				CLevel::OnConnectRejected		()
 	IPureClient::OnConnectRejected();
 	MainMenu()->OnServerReject();
 };
+
+void				CLevel::net_OnChangeSelfName			(NET_Packet* P)
+{
+	if (!P) return;
+	string64 NewName			;
+	P->r_stringZ(NewName)		;
+	if (!strstr(*m_caClientOptions, "/name="))
+	{
+		string1024 tmpstr;
+		strcpy(tmpstr, *m_caClientOptions);
+		strcat(tmpstr, "/name=");
+		strcat(tmpstr, NewName);
+		m_caClientOptions = tmpstr;
+	}
+	else
+	{
+		string1024 tmpstr;
+		strcpy(tmpstr, *m_caClientOptions);
+		*(strstr(tmpstr, "name=")+5) = 0;
+		strcat(tmpstr, NewName);
+		char* ptmp = strstr(strstr(*m_caClientOptions, "name="), "/");
+		if (ptmp)
+			strcat(tmpstr, ptmp);
+		m_caClientOptions = tmpstr;
+	}
+}
