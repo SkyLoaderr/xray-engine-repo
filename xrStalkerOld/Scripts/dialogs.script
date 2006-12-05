@@ -52,7 +52,9 @@ function is_not_wounded(first_speaker, second_speaker)
 	return not this.is_wounded(first_speaker, second_speaker)
 end
 function actor_have_medkit(first_speaker, second_speaker)
-	return first_speaker:object("medkit") ~= nil
+	return first_speaker:object("medkit") ~= nil or
+		   first_speaker:object("medkit_army") ~= nil or
+		   first_speaker:object("medkit_scientic") ~= nil
 end
 function actor_have_bandage(first_speaker, second_speaker)
 	return first_speaker:object("bandage") ~= nil

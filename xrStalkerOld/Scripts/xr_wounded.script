@@ -181,8 +181,14 @@ function Cwound_manager:unlock_medkit()
 	self.can_use_medkit = true
 end
 function Cwound_manager:eat_medkit()
-	if self.can_use_medkit == true and self.npc:object("medkit") ~= nil then
+	if self.can_use_medkit == true then
+		if self.npc:object("medkit") ~= nil then
 			self.npc:eat(self.npc:object("medkit"))
+		elseif self.npc:object("medkit_army") ~= nil then
+			self.npc:eat(self.npc:object("medkit_army"))
+		elseif self.npc:object("medkit_scientic") ~= nil then
+			self.npc:eat(self.npc:object("medkit_scientic"))
+		end
 	end
 	self.can_use_medkit = false
 end
