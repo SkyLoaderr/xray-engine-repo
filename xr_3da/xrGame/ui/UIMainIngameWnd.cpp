@@ -421,7 +421,7 @@ void CUIMainIngameWnd::Update()
 	{
 		UIArmorBar.Show					(true);
 		UIStaticArmor.Show				(true);
-		UIArmorBar.SetProgressPos		(pItem->GetConditionToShow()*100);
+		UIArmorBar.SetProgressPos		(pItem->GetCondition()*100);
 	}
 	else
 	{
@@ -448,7 +448,7 @@ void CUIMainIngameWnd::Update()
 			break;
 		case ewiWeaponJammed:
 			if (m_pWeapon)
-				value = 1 - m_pWeapon->GetCondition();
+				value = 1 - m_pWeapon->GetConditionToShow();
 			break;
 		case ewiStarvation:
 			value = 1 - m_pActor->conditions().GetSatiety();

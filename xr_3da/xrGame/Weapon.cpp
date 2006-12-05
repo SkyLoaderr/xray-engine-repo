@@ -1502,5 +1502,5 @@ bool CWeapon::show_indicators()
 
 float CWeapon::GetConditionToShow	() const
 {
-	return	(pow(GetCondition(),.25f));
+	return	(powf(GetCondition(),4.0f));
 }
