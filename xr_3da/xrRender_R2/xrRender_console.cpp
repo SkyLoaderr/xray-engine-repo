@@ -100,6 +100,11 @@ float		ps_r2_sun_lumscale_hemi		= 1.0f;				// 1.0f
 float		ps_r2_sun_lumscale_amb		= 1.0f;
 float		ps_r2_gmaterial				= 0.f;				// 
 float		ps_r2_zfill					= 0.1f;				// .1f
+
+float		ps_r2_dhemi_scale			= 1.5f;				// 1.5f
+int			ps_r2_dhemi_count			= 5;				// 5
+
+
 //- Mad Max
 float		ps_r2_gloss_factor			= 1.0f;
 //- Mad Max
@@ -338,6 +343,9 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Integer,	"r2_gi_depth",			&ps_r2_GI_depth,			1,		5		);
 	CMD4(CCC_Integer,	"r2_gi_photons",		&ps_r2_GI_photons,			8,		256		);
 	CMD4(CCC_Float,		"r2_gi_refl",			&ps_r2_GI_refl,				EPS_L,	0.99f	);
+
+	CMD4(CCC_Integer,	"r2_dhemi_count",		&ps_r2_dhemi_count,			4,		25		);
+	CMD4(CCC_Float,		"r2_dhemi_scale",		&ps_r2_dhemi_scale,			.5f,	3.f		);
 
 	CMD4(CCC_Float,		"r2_ls_depth_scale",	&ps_r2_ls_depth_scale,		0.5,	1.5		);
 	CMD4(CCC_Float,		"r2_ls_depth_bias",		&ps_r2_ls_depth_bias,		-0.5,	+0.5	);

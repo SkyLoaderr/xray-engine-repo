@@ -93,6 +93,9 @@ extern ECORE_API float			ps_r2_sun_lumscale_hemi;	// 1.0f
 extern ECORE_API float			ps_r2_sun_lumscale_amb;		// 1.0f
 extern ECORE_API float			ps_r2_zfill;				// .1f
 
+extern ECORE_API float			ps_r2_dhemi_scale;			// 1.5f
+extern ECORE_API int			ps_r2_dhemi_count;			// 5
+
 enum
 {
 	R2FLAG_SUN					= (1<<0),
