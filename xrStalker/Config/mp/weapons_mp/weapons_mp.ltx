@@ -37,6 +37,10 @@ bullet_speed			= 290;начальная скорость пули
 rpm              	        = 260
 ; end ttc
 
+;addons
+scope_status				= 0
+silencer_status				= 1
+grenade_launcher_status		= 0
 ;-----------------------------------------------------------------------------------
 [mp_wpn_pm]:wpn_pm
 $spawn              		= ""
@@ -81,6 +85,11 @@ silencer_hit_power       	= 29
 silencer_hit_impulse	 	= 60
 silencer_fire_distance   	= 100
 silencer_bullet_speed	 	= 220
+
+;addons
+scope_status				= 0
+silencer_status				= 2
+grenade_launcher_status		= 0
 
 ;-----------------------------------------------------------------------------------
 
@@ -127,6 +136,10 @@ silencer_hit_impulse	 	= 60
 silencer_fire_distance   	= 100
 silencer_bullet_speed	 	= 220
 
+;addons
+scope_status				= 0
+silencer_status				= 2
+grenade_launcher_status		= 0
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_hpsa]:wpn_hpsa
@@ -172,6 +185,11 @@ silencer_hit_power       	= 36
 silencer_hit_impulse	 	= 60
 silencer_fire_distance   	= 100
 silencer_bullet_speed	 	= 230
+
+;addons
+scope_status				= 0
+silencer_status				= 2
+grenade_launcher_status		= 0
 
 ;-----------------------------------------------------------------------------------
 
@@ -219,6 +237,10 @@ silencer_hit_impulse	 	= 100
 silencer_fire_distance   	= 100
 silencer_bullet_speed	 	= 280
 
+;addons
+scope_status				= 0							; 0 - no addon
+silencer_status				= 2							; 1 - permanent
+grenade_launcher_status		= 0		
 ;-----------------------------------------------------------------------------------
 [mp_wpn_beretta]:wpn_beretta
 $spawn              	 	= ""
@@ -264,6 +286,10 @@ silencer_hit_impulse	 	= 80
 silencer_fire_distance   	= 100
 silencer_bullet_speed	 	= 240
 
+;addons
+scope_status				= 0
+silencer_status				= 2
+grenade_launcher_status		= 0
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_colt1911]:wpn_colt1911
@@ -311,6 +337,10 @@ silencer_hit_impulse	 	= 100
 silencer_fire_distance   	= 100
 silencer_bullet_speed	 	= 280
 
+;addons
+scope_status				= 0
+silencer_status				= 2
+grenade_launcher_status		= 0
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_usp]:wpn_usp
@@ -353,6 +383,10 @@ silencer_hit_impulse	 	= 80
 silencer_fire_distance   	= 100
 silencer_bullet_speed	 	= 300
 
+;addons
+scope_status				= 0
+silencer_status				= 2
+grenade_launcher_status		= 0
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_sig220]:wpn_sig220
@@ -398,6 +432,10 @@ silencer_hit_impulse	 	= 90
 silencer_fire_distance   	= 100
 silencer_bullet_speed	 	= 240
 
+;addons
+scope_status				= 0
+silencer_status				= 2
+grenade_launcher_status		= 0
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_desert_eagle]:wpn_desert_eagle
@@ -446,6 +484,11 @@ silencer_hit_impulse	 	= 60
 silencer_fire_distance   	= 100
 silencer_bullet_speed	 	= 250
 
+;addons
+scope_status				= 0
+silencer_status				= 2
+grenade_launcher_status		= 0
+
 ;-----------------------------------------------------------------------------------
 [mp_wpn_bm16]:wpn_bm16
 $spawn              	= ""
@@ -483,6 +526,11 @@ PDM_disp_vel_factor 		= 1.1;1.8
 PDM_disp_accel_factor 		= 1.1;1.8
 PDM_crouch	 		= 1.0
 PDM_crouch_no_acc 		= 1.0
+
+;addons
+scope_status				= 0
+silencer_status				= 0
+grenade_launcher_status		= 0
 
 ;-----------------------------------------------------------------------------------
 
@@ -523,6 +571,10 @@ fire_distance            	= 200
 bullet_speed			= 290;начальная скорость пули
 rpm                      	= 1000
 
+;addons
+scope_status				= 0
+silencer_status				= 0
+grenade_launcher_status		= 0
 ;-----------------------------------------------------------------------------------
 [mp_wpn_wincheaster1300]:wpn_wincheaster1300
 $spawn              			= ""
@@ -562,6 +614,10 @@ fire_distance            	= 200
 bullet_speed			= 280;начальная скорость пули
 rpm                      	= 100
 
+;addons
+scope_status				= 0
+silencer_status				= 0
+grenade_launcher_status		= 0
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_spas12]:wpn_spas12
@@ -603,6 +659,10 @@ bullet_speed			= 280;начальная скорость пули
 rpm                      	= 150
 ; end ttc
 
+;addons
+scope_status				= 0
+silencer_status				= 0
+grenade_launcher_status		= 0
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_ak74u]:wpn_ak74u
@@ -650,6 +710,10 @@ silencer_hit_impulse	 		= 120
 silencer_fire_distance   		= 250
 silencer_bullet_speed	 		= 600
 
+;addons
+scope_status				= 0							; 0 - no addon
+silencer_status				= 2							; 1 - permanent
+grenade_launcher_status		= 0							; 2 - attachable
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_ak74]:wpn_ak74
@@ -702,7 +766,10 @@ silencer_hit_impulse	 	= 120
 silencer_fire_distance   	= 250
 silencer_bullet_speed	 	= 600
 
-
+;addons
+scope_status				= 2							; 0 - no addon
+silencer_status				= 2							; 1 - permanent
+grenade_launcher_status		= 2							; 2 - attachable
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_mp5]:wpn_mp5
@@ -751,6 +818,10 @@ silencer_hit_impulse	 	= 120
 silencer_fire_distance   	= 250
 silencer_bullet_speed	 	= 290
 
+;addons
+scope_status			= 0
+silencer_status			= 2
+grenade_launcher_status	= 0
 ;-----------------------------------------------------------------------------------
 [mp_wpn_l85]:wpn_l85
 $spawn              		= ""
@@ -801,6 +872,10 @@ silencer_hit_impulse	 	= 120
 silencer_fire_distance   	= 250
 silencer_bullet_speed	 	= 600
 
+;addons
+scope_status				= 1
+silencer_status				= 2
+grenade_launcher_status		= 2
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_lr300]:wpn_lr300
@@ -846,7 +921,10 @@ bullet_speed			= 750;930	;начальная скорость пули
 rpm                      	= 750
 ; end ttc	
 
-
+;addons
+scope_status				= 2
+silencer_status				= 2
+grenade_launcher_status		= 2
 ;-----------------------------------------------------------------------------------
 [mp_wpn_abakan]:wpn_abakan
 $spawn              			= ""
@@ -898,6 +976,15 @@ silencer_hit_impulse	 		= 120
 silencer_fire_distance   		= 600
 silencer_bullet_speed	 		= 310
 
+;addons
+scope_status				= 2							; 0 - no addon
+silencer_status				= 0							; 1 - permanent
+grenade_launcher_status		= 0						    ; 2 - attachable
+
+;addons
+scope_status				= 2							; 0 - no addon
+silencer_status				= 2							; 1 - permanent
+grenade_launcher_status		= 2							; 2 - attachable
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_sig550]:wpn_sig550
@@ -946,6 +1033,10 @@ bullet_speed			= 970;начальная скорость пули
 rpm                     	= 700
 ; end ttc
 
+;addons
+scope_status				= 2
+silencer_status				= 2
+grenade_launcher_status		= 2
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_groza]:wpn_groza
@@ -998,6 +1089,10 @@ silencer_hit_impulse	 	= 120
 silencer_fire_distance   	= 250
 silencer_bullet_speed	 	= 280
 
+;addons
+scope_status			= 2
+silencer_status			= 2
+grenade_launcher_status	= 1
 ;-----------------------------------------------------------------------------------
 [mp_wpn_g36]:wpn_g36
 $spawn              			= ""
@@ -1042,6 +1137,10 @@ bullet_speed			= 900;925	;начальная скорость пули
 rpm                      	= 750;850
 ; end ttc
 
+;addons
+scope_status				= 1
+silencer_status				= 2
+grenade_launcher_status		= 2
 ;-----------------------------------------------------------------------------------
 
 
@@ -1087,6 +1186,11 @@ bullet_speed			= 925;начальная скорость пули
 rpm                      	= 860
 ; end ttc
 
+;addons
+scope_status				= 1
+silencer_status				= 2
+grenade_launcher_status		= 1
+zoom_enabled				= true
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_val]:wpn_val
@@ -1130,6 +1234,10 @@ rpm             		= 800
 
 scope_name 				= mp_wpn_addon_scope
 
+;addons
+scope_status				= 2
+silencer_status				= 1
+grenade_launcher_status		= 0
 ;-----------------------------------------------------------------------------------
 
 
@@ -1174,6 +1282,11 @@ fire_distance            	= 1000
 bullet_speed			= 475;425;380	;начальная скорость пули
 rpm                      	= 800;600
 
+;addons
+scope_status				= 1
+silencer_status				= 1
+grenade_launcher_status		= 0
+zoom_enabled				= true
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_svd]:wpn_svd
@@ -1216,7 +1329,11 @@ bullet_speed		 	= 1000;850	;начальная скорость пули
 rpm                     	= 90;120
 ; end ttc
 
-
+;addons
+scope_status				= 1
+silencer_status				= 0
+grenade_launcher_status		= 0
+zoom_enabled				= true
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_svu]:wpn_svu
@@ -1259,6 +1376,11 @@ bullet_speed			= 1000;830	;начальная скорость пули
 rpm                     	= 100;160;150;250
 ; end ttc
 
+;addons
+scope_status			= 1
+silencer_status			= 0
+grenade_launcher_status	= 0
+zoom_enabled			= true
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_gauss]:wpn_gauss
@@ -1303,7 +1425,10 @@ bullet_speed		 	= 1500;начальная скорость пули
 rpm                     	= 30
 ; end ttc
 
-
+;addons
+scope_status			= 1
+silencer_status			= 0
+grenade_launcher_status	= 0
 ;-----------------------------------------------------------------------------------
 
 [mp_wpn_binoc]:wpn_binoc
