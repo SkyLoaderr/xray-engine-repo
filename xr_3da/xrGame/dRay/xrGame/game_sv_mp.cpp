@@ -891,8 +891,9 @@ void	game_sv_mp::OnPlayerHitted			(NET_Packet P)
 	game_PlayerState* PSHitter		=	get_eid			(id_hitter);
 	if (!PSHitter) return;
 	game_PlayerState* PSHitted		=	get_eid			(id_hitted);
+	if (!PSHitted) return;
 	if (PSHitted == PSHitter) return;
-	if (!PSHitted || !CheckTeams() || PSHitted->team != PSHitter->team)
+	if (!CheckTeams() || (PSHitted->team != PSHitter->team))
 	{
 		Rank_Struct* pCurRank = &(m_aRanks[PSHitter->rank]);
 		Player_AddExperience(PSHitter, dHealth*pCurRank->m_aRankDiff_ExpBonus[PSHitted->rank]);
