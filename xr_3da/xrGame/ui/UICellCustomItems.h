@@ -27,10 +27,10 @@ public:
 
 class CUIWeaponCellItem :public CUIInventoryCellItem
 {
-	friend class CUIBagWnd;
-	friend class CUIBuyWnd;
 	typedef  CUIInventoryCellItem	inherited;
+public:
 	enum eAddonType{	eSilencer=0, eScope, eLauncher, eMaxAddon};
+protected:
 	CUIStatic*					m_addons					[eMaxAddon];
 	Fvector2					m_addon_offset				[eMaxAddon];
 	void						CreateIcon					(eAddonType);
@@ -47,6 +47,7 @@ public:
 	virtual		void			OnAfterChild				();
 	virtual		CUIDragItem*	CreateDragItem				();
 	virtual		bool			EqualTo						(CUICellItem* itm);
+	CUIStatic*					get_addon_static			(u32 idx)				{return m_addons[idx];}
 };
 
 class CBuyItemCustomDrawCell :public ICustomDrawCell

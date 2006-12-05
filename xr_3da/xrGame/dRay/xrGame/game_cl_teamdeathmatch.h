@@ -50,15 +50,9 @@ public :
 
 //from UIGameTDM
 protected:
-	virtual LPCSTR						GetBaseCostSect			() {return "teamdeathmatch_base_cost";}
-	virtual LPCSTR						GetTeamMenu				(s16 team);
+	virtual const shared_str			GetBaseCostSect			() {return "teamdeathmatch_base_cost";}
+	virtual const shared_str			GetTeamMenu				(s16 team);
 	CUISpawnWnd*						pUITeamSelectWnd;
-
-//.	CUIBuyWnd*							pBuyMenuTeam1;
-//.	CUIBuyWnd*							pBuyMenuTeam2;
-
-//.	CUISkinSelectorWnd*					pSkinMenuTeam1;
-//.	CUISkinSelectorWnd*					pSkinMenuTeam2;
 
 	PRESET_ITEMS						PresetItemsTeam1;
 	PRESET_ITEMS						PresetItemsTeam2;

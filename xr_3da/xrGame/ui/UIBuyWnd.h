@@ -21,76 +21,73 @@ typedef enum {
 class CUIWeaponCellItem;
 class CWeapon;
 
-class CUIBuyWnd : public CUIDialogWnd{
+class CUIBuyWnd : public CUIDialogWnd
+{
+	typedef CUIDialogWnd	inherited;
 public:
-	CUIBuyWnd();
-	~CUIBuyWnd();
+					CUIBuyWnd					();
+	virtual			~CUIBuyWnd					();
 
 	// own
-	void Init(LPCSTR sectionName, LPCSTR sectionPrice);
-	void ResetItems();
-	void OnTabChange();
-	void OnMenuLevelChange();
-	void SetSkin(u8 SkinID);
-	bool CanBuyAllItems();
-	void SetMoneyAmount(int money);
-	bool CheckBuyAvailabilityInSlots();
-	void CheckAddons(CUICellItem* itm);
-	void UpdItem(CUICellItem* itm);
-	void UpdAddon(CUIWeaponCellItem* itm, CSE_ALifeItemWeapon::EWeaponAddonState add_on);
+	void 			Init						(const shared_str& sectionName, const shared_str& sectionPrice);
+	void 			ResetItems					();
+	void 			OnTabChange					();
+	void 			OnMenuLevelChange			();
+	void 			SetSkin						(u8 SkinID);
+	bool 			CanBuyAllItems				();
+	void 			SetMoneyAmount				(int money);
+	bool 			CheckBuyAvailabilityInSlots	();
+	void 			CheckAddons					(CUICellItem* itm);
+	void 			UpdItem						(CUICellItem* itm);
+	void 			UpdAddon					(CUIWeaponCellItem* itm, CSE_ALifeItemWeapon::EWeaponAddonState add_on);
 
 	// handlers
-	void OnBtnOk();
-	void OnBtnCancel();
-	void OnBtnClear();
-	void OnMoneyChange();
-	void OnBtnBulletBuy(int slot);
-	void OnBtnRifleGrenade();
-	void AfterBuy();
-	void HightlightCurrAmmo();
+	void 			OnBtnOk						();
+	void 			OnBtnCancel					();
+	void 			OnBtnClear					();
+	void 			OnMoneyChange				();
+	void 			OnBtnBulletBuy				(int slot);
+	void 			OnBtnRifleGrenade			();
+	void 			AfterBuy					();
+	void 			HightlightCurrAmmo			();
 
 	// CUIWindow
-	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
-	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
-	virtual void Update();
-	virtual void Show();
-	virtual void Hide();
+	virtual bool 	OnKeyboard					(int dik, EUIMessages keyboard_action);
+	virtual void 	SendMessage					(CUIWindow* pWnd, s16 msg, void* pData = 0);
+	virtual void 	Update						();
+	virtual void 	Show						();
+	virtual void 	Hide						();
 
 	// drag drop handlers
-	void		BindDragDropListEvents(CUIDragDropListEx* lst);
-	bool		xr_stdcall		OnItemDrop			(CUICellItem* itm);
-	bool		xr_stdcall		OnItemStartDrag		(CUICellItem* itm);
-	bool		xr_stdcall		OnItemDbClick		(CUICellItem* itm);
-	bool		xr_stdcall		OnItemSelected		(CUICellItem* itm);
-	bool		xr_stdcall		OnItemRButtonClick	(CUICellItem* itm);
+	void				BindDragDropListEvents	(CUIDragDropListEx* lst, bool bDrag);
+	bool	xr_stdcall	OnItemDrop				(CUICellItem* itm);
+	bool	xr_stdcall	OnItemStartDrag			(CUICellItem* itm);
+	bool	xr_stdcall	OnItemDbClick			(CUICellItem* itm);
+	bool	xr_stdcall	OnItemSelected			(CUICellItem* itm);
+	bool	xr_stdcall	OnItemRButtonClick		(CUICellItem* itm);
 
-	///////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////
-	const u8	GetWeaponIndex(u32 slotNum);//
-	const u8	GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u8 &itemId, u8 &count);//
-	const u8	GetItemIndex(u32 slotNum, u32 idx, u8 &sectionNum);//
+	const u8			GetWeaponIndex			(u32 slotNum);//
+	const u8			GetWeaponIndexInBelt	(u32 indexInBelt, u8 &sectionId, u8 &itemId, u8 &count);
+	const u8			GetItemIndex			(u32 slotNum, u32 idx, u8 &sectionNum);
 	
-	void		GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &idx);//
-	char*		GetWeaponNameByIndex(u8 grpNum, u8 idx);//
+	void				GetWeaponIndexByName	(const shared_str& sectionName, u8 &grpNum, u8 &idx);
+	const shared_str&	GetWeaponNameByIndex	(u8 grpNum, u8 idx);
 
 	// Получить данные о аддонах к оружию. Младшие 3 бита, если установлены в 1 означают:
 	// 2 - Silencer, 1 - Grenade Launcher, 0 - Scope
-	const u8	GetWeaponAddonInfoByIndex(u8 idx);//
-	const u8	GetBeltSize();//
-	void		SetRank(int rank);//
-//	void		ReInitItems	(LPCSTR strSectionName);
+	const u8			GetWeaponAddonInfoByIndex	(u8 idx);
+	const u8			GetBeltSize					();
+	void				SetRank						(int rank);
 
-	void		SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet);
-//	void		SectionToSlot(LPCSTR name, const u8 addon_info, bool bRealRepresentationSet);
-//	void		SectionToSlot(const char *sectionName, bool bRealRepresentationSet);
-	void		AddonToSlot(CSE_ALifeItemWeapon::EWeaponAddonState add_on, int slot, bool bRealRepresentationSet);
-	void		ClearSlots();
-	void		ClearRealRepresentationFlags();
+	void				SectionToSlot				(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet);
+	void				AddonToSlot					(CSE_ALifeItemWeapon::EWeaponAddonState add_on, int slot, bool bRealRepresentationSet);
+	void				ClearSlots					();
+	void				ClearRealRepresentationFlags();
 
-	void		ReloadItemsPrices	();
-	void		IgnoreMoney(bool ignore);
-	void		IgnoreMoneyAndRank	(bool ignore);
-	int			GetMoneyAmount() const;
+	void				ReloadItemsPrices			();
+	void				IgnoreMoney					(bool ignore);
+	void				IgnoreMoneyAndRank			(bool ignore);
+	int					GetMoneyAmount				() const;
 
 protected:
 	void				DestroyAllItems				();
@@ -124,28 +121,26 @@ protected:
 	shared_str			m_sectionPrice;
 	CUICellItem*		m_pCurrentCellItem;
 
-//	bool		m_bIgnoreMoney;
-	bool		m_bIgnoreMoneyAndRank;
+	bool				m_bIgnoreMoneyAndRank;
 
 	// background textures
-	CUIStatic	m_slotsBack;
-	CUIStatic	m_back;
+	CUIStatic			m_slotsBack;
+	CUIStatic			m_back;
 
 	// buttons
-	CUI3tButton m_btnOk;
-	CUI3tButton m_btnCancel;
-	CUI3tButton m_btnClear;
+	CUI3tButton 		m_btnOk;
+	CUI3tButton 		m_btnCancel;
+	CUI3tButton 		m_btnClear;
 
-	CUI3tButton m_btnPistolBullet;
-	CUI3tButton m_btnPistolSilencer;
-	CUI3tButton m_btnRifleBullet;
-	CUI3tButton m_btnRifleSilencer;
-	CUI3tButton m_btnRifleScope;
-	CUI3tButton m_btnRifleGrenadelauncer;
-	CUI3tButton m_btnRifleGrenade;
+	CUI3tButton 		m_btnPistolBullet;
+	CUI3tButton 		m_btnPistolSilencer;
+	CUI3tButton 		m_btnRifleBullet;
+	CUI3tButton 		m_btnRifleSilencer;
+	CUI3tButton 		m_btnRifleScope;
+	CUI3tButton 		m_btnRifleGrenadelauncer;
+	CUI3tButton 		m_btnRifleGrenade;
 
-	// text
-	CUIStatic	m_moneyInfo;
+	CUIStatic			m_moneyInfo;
 	
 	// controls
 	CUIPropertiesBox	m_propertiesBox;

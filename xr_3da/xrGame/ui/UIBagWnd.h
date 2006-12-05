@@ -7,16 +7,16 @@
 
 class CUITabButtonMP;
 
-#define PRICE_RESTR_COLOR (0xffff8080)
+#define PRICE_RESTR_COLOR			(0xffff8080)
 
-#define SET_RANK_RESTR_COLOR(x) x->SetColor(0x88ff9999)
-#define SET_PRICE_RESTR_COLOR(x) x->SetColor(PRICE_RESTR_COLOR)
-#define SET_NO_RESTR_COLOR(x) x->SetColor(0xffffffff)
-#define SET_EXTERNAL_COLOR(x) x->SetColor(0xff9696ff)
+#define SET_RANK_RESTR_COLOR(x)		x->SetColor(0x88ff9999)
+#define SET_PRICE_RESTR_COLOR(x)	x->SetColor(PRICE_RESTR_COLOR)
+#define SET_NO_RESTR_COLOR(x)		x->SetColor(0xffffffff)
+#define SET_EXTERNAL_COLOR(x)		x->SetColor(0xff9696ff)
 
-#define HIGHTLIGHT_ITEM(x)		x->SetLightAnim("ui_slow_blinking", true, true, false, true)
-#define UNHIGHTLIGHT_ITEM(x)	x->SetLightAnim(NULL, true, true, false, true); \
-								x->SetColor(0xffffffff)
+#define HIGHTLIGHT_ITEM(x)			x->SetLightAnim("ui_slow_blinking", true, true, false, true)
+#define UNHIGHTLIGHT_ITEM(x)		x->SetLightAnim(NULL, true, true, false, true); \
+									x->SetColor(0xffffffff)
 
 
 enum Groups {
@@ -51,106 +51,108 @@ typedef enum {
 		SILENCER,
 		GRENADELAUNCHER,
 		SCOPE
-	} eWpnAddon;
+} eWpnAddon;
 
-class CUIBagWnd : public CUIStatic{
+
+class CUIBagWnd : public CUIStatic
+{
+	typedef CUIStatic inherited;
 public:
-	CUIBagWnd();
-	~CUIBagWnd();
+				CUIBagWnd				();
+				~CUIBagWnd				();
 
     // own
-	void		Init(CUIXml& xml, LPCSTR path, LPCSTR sectionName, LPCSTR sectionPrice);
-	void		HideAll();
-	void		ShowSection(int iSection);
-MENU_LEVELS		GetMenuLevel();
-CUIDragDropListEx*	GetItemList(CUICellItem* pItem);
-	void		SetRank(int r);	
-	bool		IsInBag(CUICellItem* pItem);
-	bool		IsActive(CUICellItem* pItem);
-	void		BuyItem(CUICellItem* pItem);
-	void		SellItem(CUICellItem* pItem);
-	bool		CanBuy(CUICellItem* pItem);
-	bool		CanBuy(LPCSTR item);
-	void		IgnoreRank(bool ignore)		{m_bIgnoreRank = ignore; };
-	void		IgnoreMoney(bool ignore)	{m_bIgnoreMoney = ignore; };
-	int			GetItemPrice(CUICellItem* itm);
-CUICellItem*	CreateItem(LPCSTR name);
-	void		DestroyItem(CUICellItem* itm);
-	void		ClearAmmoHighlight();
-	void		HightlightAmmo(LPCSTR ammo);
-	bool		IsBlueTeamItem(CUICellItem* itm);
-	int			GetItemRank(CUICellItem* itm);
-	void		InitItems();
-	void		DestroyAllItems();
+	void		Init					(CUIXml& xml, LPCSTR path, const shared_str& sectionName, const shared_str& sectionPrice);
+	void		HideAll					();
+	void		ShowSection				(int iSection);
+MENU_LEVELS		GetMenuLevel			();
+CUIDragDropListEx*	GetItemList			(CUICellItem* pItem);
+	void		SetRank					(int r);	
+	bool		IsInBag					(CUICellItem* pItem);
+	bool		IsActive				(CUICellItem* pItem);
+	void		BuyItem					(CUICellItem* pItem);
+	void		SellItem				(CUICellItem* pItem);
+	bool		CanBuy					(CUICellItem* pItem);
+	bool		CanBuy					(LPCSTR item);
+	void		IgnoreRank				(bool ignore)					{m_bIgnoreRank = ignore; };
+	void		IgnoreMoney				(bool ignore)					{m_bIgnoreMoney = ignore; };
+	int			GetItemPrice			(CUICellItem* itm);
+CUICellItem*	CreateItem				(const shared_str& name_sect);
+	void		DestroyItem				(CUICellItem* itm);
+	void		ClearAmmoHighlight		();
+	void		HightlightAmmo			(LPCSTR ammo);
+	bool		IsBlueTeamItem			(CUICellItem* itm);
+	int			GetItemRank				(CUICellItem* itm);
+	void		InitItems				();
+	void		DestroyAllItems			();
 
 
-	u8		GetItemIndex(CUICellItem* pItem, u8 &sectionNum);
-	void	GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &idx);
-	char*	GetWeaponNameByIndex(u8 grpNum, u8 idx);
+	u8		GetItemIndex				(CUICellItem* pItem, u8 &sectionNum);
+	void	GetWeaponIndexByName		(const shared_str& sectionName, u8 &grpNum, u8 &idx);
+	const shared_str& GetWeaponNameByIndex	(u8 grpNum, u8 idx);
 
-	CUICellItem* GetItemBySectoin(const char *sectionName, bool bCreateOnFail = false);
-	CUICellItem* GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot);
-	CUICellItem* CreateNewItem(const u8 grpNum, u8 uIndexInSlot);
+	CUICellItem* GetItemBySectoin		(const shared_str& sectionName, bool bCreateOnFail = false);
+	CUICellItem* GetItemBySectoin		(const u8 grpNum, u8 uIndexInSlot);
+	CUICellItem* CreateNewItem			(const u8 grpNum, u8 uIndexInSlot);
 
-	void	SetExternal(CUICellItem* itm, bool status);
-	bool	GetExternal(CUICellItem* itm);
-	void	ClearExternalStatus();
-	void	AttachAddon(CUICellItem* itm, CSE_ALifeItemWeapon::EWeaponAddonState add_on, bool external);
-	void	ReloadItemsPrices();
-	bool	HasEnoughtMoney(CUICellItem* itm);
-//	void	PayForItem(CUICellItem* itm);
-//	void	GetMoneyFor(CUICellItem* itm);
+	void	SetExternal					(CUICellItem* itm, bool status);
+	bool	GetExternal					(CUICellItem* itm);
+	void	ClearExternalStatus			();
+	void	AttachAddon					(CUICellItem* itm, CSE_ALifeItemWeapon::EWeaponAddonState add_on, bool external);
+	void	ReloadItemsPrices			();
+	bool	HasEnoughtMoney				(CUICellItem* itm);
 
 	// handlers
-	void	OnBtnShotgunsClicked();
-	void	OnBtnMachinegunsClicked();
-	void	OnBtnSniperClicked();
-	void	OnBtnHeavyClicked();
-	void	OnBackClick();
+	void	OnBtnShotgunsClicked		();
+	void	OnBtnMachinegunsClicked		();
+	void	OnBtnSniperClicked			();
+	void	OnBtnHeavyClicked			();
+	void	OnBackClick					();
 
 	// drag drop handlers
-	bool		xr_stdcall		OnItemDrop			(CUICellItem* itm);
-	bool		xr_stdcall		OnItemStartDrag		(CUICellItem* itm);
-	bool		xr_stdcall		OnItemDbClick		(CUICellItem* itm);
-	bool		xr_stdcall		OnItemSelected		(CUICellItem* itm);
-	bool		xr_stdcall		OnItemRButtonClick	(CUICellItem* itm);
+	bool xr_stdcall	OnItemDrop			(CUICellItem* itm);
+	bool xr_stdcall	OnItemStartDrag		(CUICellItem* itm);
+	bool xr_stdcall	OnItemDbClick		(CUICellItem* itm);
+	bool xr_stdcall	OnItemSelected		(CUICellItem* itm);
+	bool xr_stdcall	OnItemRButtonClick	(CUICellItem* itm);
 
 	// CUIWindow
-	bool OnKeyboard(int dik, EUIMessages keyboard_action);
-	void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
-	void UpdateBuyPossibility();
-	void Update();
+	virtual bool	OnKeyboard			(int dik, EUIMessages keyboard_action);
+	virtual void	SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = 0);
+	void			UpdateBuyPossibility();
+	virtual void	Update				();
 
-	int m_money;
+	int				m_money;
 
 protected:
 
-	void	InitBoxes(CUIXml& pXml);
-	void	InitWpnSectStorage();
-	void	FillUpGroups();
-	void	FillUpGroup(const u32 group);
-//	void	FillUpItem(CUICellItem* pItem, const char* name);
-	void	PutItemToGroup(CUICellItem* pItem, int iGroup);
-	int		GetCurrentGroupIndex();
-CUICellItem* GetItemByKey(int dik, int section);
+	void			InitBoxes			(CUIXml& pXml);
+	void			InitWpnSectStorage	();
+	void			FillUpGroups		();
+	void			FillUpGroup			(const u32 group);
+	void			PutItemToGroup		(CUICellItem* pItem, int iGroup);
+	int				GetCurrentGroupIndex();
+CUICellItem*		GetItemByKey		(int dik, int section);
 
-	bool	SetMenuLevel(MENU_LEVELS level);
-	void	ShowSectionEx(int iSection);
+	bool			SetMenuLevel		(MENU_LEVELS level);
+	void			ShowSectionEx		(int iSection);
 
-IC	bool	UpdateRank(CUICellItem* pItem);
-IC	bool	UpdatePrice(CUICellItem* pItem, int index);
+IC	bool			UpdateRank			(CUICellItem* pItem);
+IC	bool			UpdatePrice			(CUICellItem* pItem, int index);
 
-	CUI3tButton					m_btnBack;
-	shared_str					m_sectionName;
-	shared_str					m_sectionPrice;
-	MENU_LEVELS					m_mlCurrLevel;
-	bool						m_bIgnoreRank;
-	bool						m_bIgnoreMoney;
+	CUI3tButton		m_btnBack;
+	shared_str		m_sectionName;
+	shared_str		m_sectionPrice;
+	MENU_LEVELS		m_mlCurrLevel;
+	bool			m_bIgnoreRank;
+	bool			m_bIgnoreMoney;
 
-	BoxInfo m_boxesDefs[4];
-	DEF_VECTOR(WPN_SECT_NAMES, xr_string); // vector of weapons. it represents ONE section 
+	BoxInfo			m_boxesDefs[4];
+
+	DEF_VECTOR(WPN_SECT_NAMES, shared_str); // vector of weapons. it represents ONE section 
 	DEF_VECTOR(WPN_LISTS, WPN_SECT_NAMES); // vector of sections
-	WPN_LISTS	m_wpnSectStorage;
+	
+	WPN_LISTS		m_wpnSectStorage;
 
 	enum  AddonIDs { 
 		ID_NONE				= -1, 
@@ -171,8 +173,8 @@ IC	bool	UpdatePrice(CUICellItem* pItem, int index);
 		bool	external;
 	};
 
-	xr_vector<CUICellItem*> m_allItems;
-	xr_vector<ItmInfo>		m_info;
+	xr_vector<CUICellItem*>				m_allItems;
+	xr_vector<ItmInfo>					m_info;
 
 	// “аблица соответсви€ имени армора с именами моделей персонажей. «аполн€етс€ на этапе считывани€ 
 	// информации из ltx файла соответствующего типу сетевой игры
@@ -180,6 +182,6 @@ IC	bool	UpdatePrice(CUICellItem* pItem, int index);
 	typedef CONFORMITY_TABLE::iterator						CONFORMITY_TABLE_it;
 	CONFORMITY_TABLE										m_ConformityTable;
 
-	CUIDragDropListEx m_groups[NUMBER_OF_GROUPS];
-	int subSection_group3[4];
+	CUIDragDropListEx					m_groups[NUMBER_OF_GROUPS];
+	int subSection_group3				[4];
 };

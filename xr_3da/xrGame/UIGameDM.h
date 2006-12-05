@@ -6,7 +6,6 @@
 
 class CUIDMPlayerList;
 class CUIDMStatisticWnd;
-class CUIBuyWnd;
 class CUISkinSelectorWnd;
 class game_cl_Deathmatch;
 class CUIMoneyIndicator;

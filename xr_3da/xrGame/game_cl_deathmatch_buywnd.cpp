@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "game_cl_deathmatch.h"
 #include "level.h"
-#include "ui/UIBuyWnd.h"
 #include "actor.h"
 #include "inventory.h"
 #include "xrServer_Objects_ALife_Items.h"
@@ -302,7 +301,7 @@ void game_cl_Deathmatch::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems, 
 	};
 };
 
-void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWnd* pBuyMenu, PRESET_ITEMS* pPresetItems)
+void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(const shared_str& caSection, BUY_WND* pBuyMenu, PRESET_ITEMS* pPresetItems)
 {
 	if (!pSettings->line_exist(caSection, "default_items")) return;
 	if (!pBuyMenu) return;
@@ -328,7 +327,7 @@ void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWnd
 	};
 };
 
-void				game_cl_Deathmatch::LoadDefItemsForRank(CUIBuyWnd* pBuyMenu)
+void				game_cl_Deathmatch::LoadDefItemsForRank(BUY_WND* pBuyMenu)
 {
 	if (!pBuyMenu) return;
 	//---------------------------------------------------
@@ -347,9 +346,9 @@ void				game_cl_Deathmatch::LoadDefItemsForRank(CUIBuyWnd* pBuyMenu)
 //			s16* pItemID = &(PlayerDefItems[it]);
 //			char* ItemName = pBuyMenu->GetWeaponNameByIndex(u8(((*pItemID)&0xff00)>>0x08), u8((*pItemID)&0x00ff));
 			PresetItem *pDefItem = &(PlayerDefItems[it]);
-			char* ItemName = pBuyMenu->GetWeaponNameByIndex(pDefItem->SlotID, pDefItem->ItemID);
-			if (!ItemName) continue;
-			strconcat(ItemStr, "def_item_repl_", ItemName);
+			const shared_str& ItemName = pBuyMenu->GetWeaponNameByIndex(pDefItem->SlotID, pDefItem->ItemID);
+			if (!ItemName.size()) continue;
+			strconcat(ItemStr, "def_item_repl_", ItemName.c_str() );
 			if (!pSettings->line_exist(RankStr, ItemStr)) continue;
 
 			strcpy(NewItemStr,pSettings->r_string(RankStr, ItemStr));
@@ -370,8 +369,8 @@ void				game_cl_Deathmatch::LoadDefItemsForRank(CUIBuyWnd* pBuyMenu)
 //		s16* pItemID = &(PlayerDefItems[it]);
 //		char* ItemName = pBuyMenu->GetWeaponNameByIndex(u8(((*pItemID)&0xff00)>>0x08), u8((*pItemID)&0x00ff));
 		PresetItem *pDefItem = &(PlayerDefItems[it]);
-		char* ItemName = pBuyMenu->GetWeaponNameByIndex(pDefItem->SlotID, pDefItem->ItemID);
-		if (!ItemName) continue;
+		const shared_str& ItemName = pBuyMenu->GetWeaponNameByIndex(pDefItem->SlotID, pDefItem->ItemID);
+		if ( !ItemName.size() ) continue;
 		if (!pSettings->line_exist(ItemName, "ammo_class")) continue;
 		
 		string1024 wpnAmmos, BaseAmmoName;
@@ -388,7 +387,7 @@ void				game_cl_Deathmatch::LoadDefItemsForRank(CUIBuyWnd* pBuyMenu)
 	};
 };
 
-void				game_cl_Deathmatch::ChangeItemsCosts			(CUIBuyWnd* pBuyMenu)
+void				game_cl_Deathmatch::ChangeItemsCosts			(BUY_WND* pBuyMenu)
 {
 	if (!pBuyMenu) return;
 };

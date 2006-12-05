@@ -164,11 +164,11 @@ public:
 
 	
 	virtual		void				LoadTeams				();
-	virtual		void				LoadTeamData			(char* caSection);
-	virtual		void				FillWeaponData			(WeaponDataStruct* NewWpnData, LPCSTR wpnSingleName, char* caSection);
-	virtual		void				LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList);
-	virtual		void				LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* pTeamSkins);
-	virtual		void				LoadDefItemsForTeam		(char* caSection, TEAM_WPN_LIST *pWpnList, DEF_ITEMS_LIST* pDefItems);
+	virtual		void				LoadTeamData			(const shared_str& caSection);
+	virtual		void				FillWeaponData			(WeaponDataStruct* NewWpnData, const shared_str& wpnSingleName, const shared_str& caSection);
+	virtual		void				LoadWeaponsForTeam		(const shared_str& caSection, TEAM_WPN_LIST *pTeamWpnList);
+	virtual		void				LoadSkinsForTeam		(const shared_str& caSection, TEAM_SKINS_NAMES* pTeamSkins);
+	virtual		void				LoadDefItemsForTeam		(const shared_str& caSection, TEAM_WPN_LIST *pWpnList, DEF_ITEMS_LIST* pDefItems);
 
 	virtual		char*				GetAnomalySetBaseName	() {return "deathmatch_game_anomaly_sets";};
 	virtual		void				LoadAnomalySets			();
@@ -179,7 +179,7 @@ public:
 	void							RemoveItemFromActor		(CSE_Abstract* pItem);
 	//----- Money routines -----------------------------------------------------------------
 	virtual		void				Money_SetStart			(ClientID	id_who);
-	virtual		s32					GetMoneyAmount			(char* caSection, char* caMoneyStr);
+	virtual		s32					GetMoneyAmount			(const shared_str& caSection, char* caMoneyStr);
 //	virtual		s16					GetItemCost				(u32 id_who, s16 ItemID);
 				int					GetTeamScore			(u32 idx);
 				void				SetTeamScore			(u32 idx, int val);

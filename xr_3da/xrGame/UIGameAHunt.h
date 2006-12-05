@@ -7,13 +7,11 @@
 #include "ui/UIInventoryWnd.h"
 #include "ui/UISpawnWnd.h"
 
-#include "ui/UIBuyWnd.h"
 #include "ui/UITextBanner.h"
 
 // refs 
 class CUIAHuntFragList;
 class CUIAHuntPlayerList;
-class CUIBuyWnd;
 class game_cl_ArtefactHunt;
 class CUIProgressShape;
 

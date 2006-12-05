@@ -28,7 +28,6 @@ public:
 	virtual void		SaveValue					();
 	virtual bool		IsChanged					();
 
-	virtual void		Init						(float x, float y, float width, float height);
 	virtual bool		OnKeyboard					(int dik, EUIMessages keyboard_action);
 	virtual void		OnTabChange					(int iCur, int iPrev);
 	virtual void		OnStaticFocusReceive		(CUIWindow* pWnd);

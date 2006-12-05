@@ -11084,6 +11084,18 @@
 				<Filter
 					Name="BuyWeaponWnd"
 					Filter="">
+					<File
+						RelativePath=".\ui\UIBuyWndShared.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIMpTradeWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMpTradeWnd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIMpTradeWnd_misc.cpp">
+					</File>
 					<Filter
 						Name="BAG"
 						Filter="">
@@ -11093,10 +11105,6 @@
 						<File
 							RelativePath=".\ui\Restrictions.h">
 						</File>
-					</Filter>
-					<Filter
-						Name="BUY WND"
-						Filter="">
 					</Filter>
 					<Filter
 						Name="TAB"

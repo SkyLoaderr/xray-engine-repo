@@ -25,7 +25,7 @@
 
 #include "game_cl_teamdeathmatch_snd_messages.h"
 
-LPCSTR game_cl_TeamDeathmatch::GetTeamMenu(s16 team) 
+const shared_str game_cl_TeamDeathmatch::GetTeamMenu(s16 team) 
 {
 	switch (team)
 	{

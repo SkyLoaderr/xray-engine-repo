@@ -2,7 +2,6 @@
 #include "game_sv_deathmatch.h"
 #include "HUDmanager.h"
 #include "xrserver_objects_alife_monsters.h"
-#include "ui\UIBuyWnd.h"
 #include "level.h"
 #include "xrserver.h"
 #include "Inventory.h"
@@ -1054,10 +1053,10 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 		Player_AddMoney(ps, ps->LastBuyAcount);
 };
 
-void	game_sv_Deathmatch::FillWeaponData			(WeaponDataStruct* NewWpnData, LPCSTR wpnSingleName, char* caSection)
+void	game_sv_Deathmatch::FillWeaponData(WeaponDataStruct* NewWpnData, const shared_str& wpnSingleName, const shared_str& caSection)
 {
 	NewWpnData->WeaponName = wpnSingleName;
-	NewWpnData->Cost = pSettings->r_s16(m_sBaseWeaponCostSection, wpnSingleName);
+	NewWpnData->Cost = pSettings->r_s16(m_sBaseWeaponCostSection, wpnSingleName.c_str());
 	if (pSettings->line_exist(wpnSingleName, "ammo_class"))
 	{
 		string1024 wpnAmmos, BaseAmmoName;
@@ -1066,14 +1065,15 @@ void	game_sv_Deathmatch::FillWeaponData			(WeaponDataStruct* NewWpnData, LPCSTR 
 		NewWpnData->WeaponBaseAmmo = BaseAmmoName;
 	};
 
-	string1024 tmpName;
-	strcpy(tmpName, wpnSingleName);
-	std::strcat(tmpName, "_cost");
+	string1024		tmpName;
+	strcpy			(tmpName, wpnSingleName.c_str() );
+	strcat			(tmpName, "_cost");
+
 	if (pSettings->line_exist(caSection, tmpName))
 		NewWpnData->Cost = pSettings->r_s16(caSection, tmpName);
 };
 
-void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList)
+void	game_sv_Deathmatch::LoadWeaponsForTeam		(const shared_str& caSection, TEAM_WPN_LIST *pTeamWpnList)
 {
 	
 	R_ASSERT(xr_strcmp(caSection,""));
@@ -1122,7 +1122,7 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pT
 
 		WeaponDataStruct	NewWpnData;
 		NewWpnData.SlotItem_ID = (s16(i-1) << 8) | s16(CountAdded++);
-		FillWeaponData(&NewWpnData, N, (char*)caSection);	
+		FillWeaponData(&NewWpnData, N, caSection);	
 		pTeamWpnList->push_back(NewWpnData);
 	}
 	//-----------------------------------------------------------
@@ -1144,7 +1144,7 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pT
 	};
 };
 
-void	game_sv_Deathmatch::LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* pTeamSkins)
+void	game_sv_Deathmatch::LoadSkinsForTeam		(const shared_str& caSection, TEAM_SKINS_NAMES* pTeamSkins)
 {
 	string256			SkinSingleName;
 	string4096			Skins;
@@ -1169,7 +1169,7 @@ void	game_sv_Deathmatch::LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* p
 };
 
 
-void	game_sv_Deathmatch::LoadDefItemsForTeam	(char* caSection, TEAM_WPN_LIST *pWpnList, DEF_ITEMS_LIST* pDefItems)
+void	game_sv_Deathmatch::LoadDefItemsForTeam	(const shared_str& caSection, TEAM_WPN_LIST *pWpnList, DEF_ITEMS_LIST* pDefItems)
 {
 	string256			ItemName;
 	string4096			DefItems;
@@ -1302,7 +1302,7 @@ void	game_sv_Deathmatch::LoadTeams			()
 	LoadTeamData("deathmatch_team0");
 };
 
-s32		game_sv_Deathmatch::GetMoneyAmount			(char* caSection, char* caMoneyStr)
+s32		game_sv_Deathmatch::GetMoneyAmount			(const shared_str& caSection, char* caMoneyStr)
 {
 	if (pSettings->line_exist(caSection, caMoneyStr))
 		return pSettings->r_s32(caSection, caMoneyStr);
@@ -1310,7 +1310,7 @@ s32		game_sv_Deathmatch::GetMoneyAmount			(char* caSection, char* caMoneyStr)
 	return 0;
 };
 
-void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
+void	game_sv_Deathmatch::LoadTeamData			(const shared_str& caSection)
 {
 	TeamStruct	NewTeam;
 

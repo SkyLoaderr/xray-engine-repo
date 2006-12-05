@@ -4,7 +4,6 @@
 //.#include "UIDMPlayerList.h"
 //.#include "UIDMFragList.h"
 #include "UIDMStatisticWnd.h"
-#include "ui/UIBuyWnd.h"
 #include "ui/UISkinSelector.h"
 #include "ui/UIInventoryWnd.h"
 #include "HUDManager.h"

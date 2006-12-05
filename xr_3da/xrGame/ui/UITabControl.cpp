@@ -152,11 +152,6 @@ void CUITabControl::OnTabChange(int iCur, int iPrev){
 	GetMessageTarget()->SendMessage			(this, TAB_CHANGED, NULL);
 }
 
-void CUITabControl::Init(float x, float y, float width, float height)
-{
-	CUIWindow::Init(x, y, width, height);
-}
-
 void CUITabControl::SetNewActiveTab(const int iNewTab)
 {
 	if (m_iPushedIndex == iNewTab)

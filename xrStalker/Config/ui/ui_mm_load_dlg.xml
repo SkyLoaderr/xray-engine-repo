@@ -2,7 +2,8 @@
 
 <window>
 	<back_video x="0" y="0" width="1024" height="768" stretch="1">
-		<texture>ui\credits_back_512_v10</texture>
+		<_texture>ui\credits_back_512_v10</_texture>
+		<texture>ui\1_hyuv_sq</texture>
 	</back_video>
 
 	<background x="0" y="0" width="1024" height="768">

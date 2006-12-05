@@ -567,7 +567,7 @@ void game_cl_mp::OnPlayerVoted			(game_PlayerState* ps)
 		ps->m_bCurrentVoteAgreed ? Color_Green : Color_Red, *st.translate(ps->m_bCurrentVoteAgreed ? "mp_voted_yes" : "mp_voted_no"));
 	CommonMessageOut(resStr);
 }
-void game_cl_mp::LoadTeamData			(LPCSTR TeamName)
+void game_cl_mp::LoadTeamData			(const shared_str& TeamName)
 {
 	cl_TeamStruct Team;
 	ZeroMemory(&Team, sizeof(Team));

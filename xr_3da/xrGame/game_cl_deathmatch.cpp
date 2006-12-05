@@ -9,7 +9,6 @@
 #include "clsid_game.h"
 #include "actor.h"
 #include "ui/UIMainIngameWnd.h"
-#include "ui/UIBuyWnd.h"
 #include "ui/UISkinSelector.h"
 #include "ui/UIPdaWnd.h"
 #include "ui/UIInventoryWnd.h"
@@ -103,18 +102,13 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 	R_ASSERT(m_game_ui);
 	m_game_ui->SetClGame(this);
 	m_game_ui->Init();
-	//-----------------------------------------------------------
+
 	pCurBuyMenu	= InitBuyMenu("deathmatch_base_cost", 0);
-//.	pCurBuyMenu		= pBuyMenuTeam0;
 	LoadTeamDefaultPresetItems(GetTeamMenu(0), pCurBuyMenu, &PresetItemsTeam0);
-	//-----------------------------------------------------------
+
 	pCurSkinMenu	= InitSkinMenu(0);
-//.	pCurSkinMenu	= pSkinMenuTeam0;
-	
 	pInventoryMenu	= xr_new<CUIInventoryWnd>();
-	//-----------------------------------------------------------	
 	pPdaMenu = xr_new<CUIPdaWnd>();
-	//-----------------------------------------------------------
 	pMapDesc = xr_new<CUIMapDesc>();
 		
 	return m_game_ui;
@@ -122,23 +116,22 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 
 void game_cl_Deathmatch::SetCurrentSkinMenu		()	
 {
-//.	pCurSkinMenu = pSkinMenuTeam0; 
 }
 
 void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
 {
 	inherited::net_import_state	(P);
 
-	m_s32FragLimit				= P.r_s32			();
-	m_s32TimeLimit				= P.r_s32			()*60000;
-//	P.r_u32			(damageblocklimit);
+	m_s32FragLimit				= P.r_s32();
+	m_s32TimeLimit				= P.r_s32() * 60000;
 	m_u32ForceRespawn			= P.r_u32() * 1000;
 	m_cl_dwWarmUp_Time			= P.r_u32();
 	m_bDamageBlockIndicators	= !!P.r_u8();
 	// Teams
-	u16				t_count;
-	P.r_u16			(t_count);
-	teams.clear	();
+	u16							t_count;
+	P.r_u16						(t_count);
+	teams.clear					();
+
 	for (u16 t_it=0; t_it<t_count; ++t_it)
 	{
 		game_TeamState	ts;
@@ -160,35 +153,31 @@ void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
 	}
 }
 
-CUIBuyWnd* game_cl_Deathmatch::InitBuyMenu			(LPCSTR BasePriceSection, s16 Team)
+BUY_WND* game_cl_Deathmatch::InitBuyMenu			(const shared_str& BasePriceSection, s16 Team)
 {
 	if (Team == -1)
 	{
-		Team = local_player->team;
+		Team						= local_player->team;
 	};
 
-	cl_TeamStruct *pTeamSect = &TeamList[ModifyTeam(Team)];
+	cl_TeamStruct *pTeamSect		= &TeamList[ModifyTeam(Team)];
 	
-	CUIBuyWnd* pMenu	= xr_new<CUIBuyWnd>();
-	pMenu->Init((LPCSTR)pTeamSect->caSection.c_str(), BasePriceSection);
-//.	pMenu->SetWorkPhase(GAME_PHASE_INPROGRESS);
-	pMenu->SetSkin(0);
-	return pMenu;
+	BUY_WND* pMenu				= xr_new<BUY_WND>();
+	pMenu->Init						(pTeamSect->caSection, BasePriceSection);
+	pMenu->SetSkin					(0);
+	return							pMenu;
 };
 
-//--------------------------------------------------------------------
 CUISkinSelectorWnd* game_cl_Deathmatch::InitSkinMenu			(s16 Team)
 {
 	if (Team == -1)
 	{
-		Team = local_player->team;
+		Team						= local_player->team;
 	};
 
 	cl_TeamStruct *pTeamSect		= &TeamList[ModifyTeam(Team)];	
 
 	CUISkinSelectorWnd* pMenu		= xr_new<CUISkinSelectorWnd>	((char*)pTeamSect->caSection.c_str(), Team);
-//.	pMenu->SetWorkPhase				(GAME_PHASE_INPROGRESS);
-	
 	return							pMenu;
 };
 
@@ -980,65 +969,70 @@ void				game_cl_Deathmatch::PlayRankChangesSndMessage()
 	}
 }
 
-void				game_cl_Deathmatch::OnTeamChanged			()
+void game_cl_Deathmatch::OnTeamChanged()
 {
-	if (!pCurBuyMenu) return;
-	if (pCurBuyMenu) pCurBuyMenu->SetRank(local_player->rank);
-	LoadDefItemsForRank(pCurBuyMenu);
-	ChangeItemsCosts(pCurBuyMenu);
+	if (!pCurBuyMenu)				return;
+	if (pCurBuyMenu)				pCurBuyMenu->SetRank(local_player->rank);
+	LoadDefItemsForRank				(pCurBuyMenu);
+	ChangeItemsCosts				(pCurBuyMenu);
 };
 
-void				game_cl_Deathmatch::LoadPlayerDefItems			(char* TeamName, CUIBuyWnd* pBuyMenu)
+void game_cl_Deathmatch::LoadPlayerDefItems(char* TeamName, BUY_WND* pBuyMenu)
 {
-	if (!local_player) return;
-	LoadTeamDefaultPresetItems(TeamName, pBuyMenu, &PlayerDefItems);
+	if (!local_player)				return;
+	LoadTeamDefaultPresetItems		(TeamName, pBuyMenu, &PlayerDefItems);
 };
 
-void				game_cl_Deathmatch::OnGameMenuRespond_ChangeSkin	(NET_Packet& P)
+void game_cl_Deathmatch::OnGameMenuRespond_ChangeSkin(NET_Packet& P)
 {
-	s8 NewSkin = P.r_s8();
-	local_player->skin = NewSkin;
+	s8 NewSkin						= P.r_s8();
+	local_player->skin				= NewSkin;
 	
 	if (pCurSkinMenu && pCurSkinMenu->IsShown())
-		StartStopMenu(pCurSkinMenu, true);
-	if (pMapDesc && pMapDesc->IsShown())
-		StartStopMenu(pMapDesc, TRUE);
+		StartStopMenu				(pCurSkinMenu, true);
 
-	SetCurrentSkinMenu();
-	if (pCurSkinMenu) pCurSkinMenu->SetCurSkin(local_player->skin);
-	SetCurrentBuyMenu();
-	if (pCurBuyMenu) pCurBuyMenu->SetSkin(local_player->skin);	
-	m_bSpectatorSelected = FALSE;
+	if (pMapDesc && pMapDesc->IsShown())
+		StartStopMenu				(pMapDesc, TRUE);
+
+	SetCurrentSkinMenu				();
+	if (pCurSkinMenu)				pCurSkinMenu->SetCurSkin(local_player->skin);
+	SetCurrentBuyMenu				();
+	if (pCurBuyMenu)				pCurBuyMenu->SetSkin(local_player->skin);	
+	m_bSpectatorSelected			= FALSE;
 	
 	if (m_bMenuCalledFromReady)
 	{
-		OnKeyboardPress(kJUMP);
+		OnKeyboardPress				(kJUMP);
 	}
 };
 
-void			game_cl_Deathmatch::OnPlayerFlagsChanged	(game_PlayerState* ps)
+void game_cl_Deathmatch::OnPlayerFlagsChanged(game_PlayerState* ps)
 {
-	inherited::OnPlayerFlagsChanged(ps);
-	if (!ps) return;
+	inherited::OnPlayerFlagsChanged	(ps);
+	if (!ps)						return;
+
 	if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
-	CObject* pObject = Level().Objects.net_Find(ps->GameID);
-	if (!pObject) return;
+
+	CObject* pObject				= Level().Objects.net_Find(ps->GameID);
+	if (!pObject)					return;
 
 	if (pObject->CLS_ID != CLSID_OBJECT_ACTOR) return;
-	CActor* pActor = smart_cast<CActor*>(pObject);
-	if (!pActor) return;
+
+	CActor* pActor					= smart_cast<CActor*>(pObject);
+	if (!pActor)					return;
+
 	pActor->conditions().SetCanBeHarmedState(!ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE));
 };
 
-void			game_cl_Deathmatch::SendPickUpEvent		(u16 ID_who, u16 ID_what)
+void game_cl_Deathmatch::SendPickUpEvent(u16 ID_who, u16 ID_what)
 {
-	NET_Packet P;
-	u_EventGen(P,GE_OWNERSHIP_TAKE_MP_FORCED, ID_who);
-	P.w_u16(ID_what);
-	u_EventSend(P);
+	NET_Packet						P;
+	u_EventGen						(P,GE_OWNERSHIP_TAKE_MP_FORCED, ID_who);
+	P.w_u16							(ID_what);
+	u_EventSend						(P);
 };
 
-LPCSTR			game_cl_Deathmatch::GetTeamMenu				(s16 team)
+const shared_str game_cl_Deathmatch::GetTeamMenu(s16 team)
 {
 	return TEAM0_MENU;
 }

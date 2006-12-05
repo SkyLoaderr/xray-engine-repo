@@ -368,7 +368,7 @@ bool CAI_Stalker::conflicted						(const CInventoryItem *item, const CWeapon *ne
 	if (weapon->ef_weapon_type() != new_weapon->ef_weapon_type())
 		return				(weapon->ef_weapon_type() >= new_weapon->ef_weapon_type());
 
-	int						weapon_rank = get_rank(*weapon->cNameSect());
+	int						weapon_rank = get_rank(weapon->cNameSect());
 
 	if (weapon_rank != new_weapon_rank)
 		return				(weapon_rank >= new_weapon_rank);
