@@ -254,6 +254,9 @@ extern float ps_r2_lt_smooth;
 // hemi & sun: update and smooth
 void	CROS_impl::update_smooth	(IRenderable* O)
 {
+	if (dwFrameSmooth == Device.dwFrame)
+		return;
+
 	dwFrameSmooth			=	Device.dwFrame					;
 	if (O && (0==result_count))	update(O)						;	// First time only
 	float	l_f				=	Device.fTimeDelta*ps_r2_lt_smooth;
