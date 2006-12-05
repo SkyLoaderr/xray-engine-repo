@@ -327,10 +327,7 @@ void CEnemyManager::process_wounded			(bool &only_wounded)
 	ENEMIES::const_iterator		E = m_objects.end();
 	for ( ; I != E; ++I) {
 		const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(*I);
-		if (!stalker)
-			continue;
-
-		if (stalker->wounded())
+		if (stalker && stalker->wounded())
 			continue;
 
 		only_wounded			= false;
