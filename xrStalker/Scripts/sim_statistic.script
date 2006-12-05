@@ -116,6 +116,9 @@ end
 local reg_objects_stalker = {}
 local show_stalker_spot = false
 function register_stalker(npc)
+	if true then
+		return
+	end
 	if npc:alive() then
 		local community, rank = getNpcType(npc)
 		reg_objects_stalker[npc.id] = {community = community, name = community}
@@ -128,12 +131,20 @@ function register_stalker(npc)
 	end
 end
 function unregister_stalker(npc)
+	if true then
+		return
+	end
+
 	if reg_objects_stalker[npc.id] and reg_objects_stalker[npc.id].exist == true then
 		level.map_remove_object_spot(npc.id, "alife_presentation_"..reg_objects_stalker[npc.id].community)
 	end
 	reg_objects_stalker[npc.id] = nil
 end
 function unmark_all_stalkers()
+	if true then
+		return
+	end
+
 	show_stalker_spot = false
 	for k,v in pairs(reg_objects_stalker) do
 		if reg_objects_stalker[k].exist == true then
@@ -143,6 +154,10 @@ function unmark_all_stalkers()
 	end
 end
 function mark_all_stalkers()
+	if true then
+		return
+	end
+
 	if show_stalker_spot == true then
 		unmark_all_stalkers()
 		return
@@ -155,6 +170,10 @@ function mark_all_stalkers()
 	end
 end
 function release_all_stalkers()
+	if true then
+		return
+	end
+
 	for k,v in pairs(reg_objects_stalker) do
 		if v.exist == true then
 			level.map_remove_object_spot(k, "alife_presentation_"..v.community)
@@ -169,6 +188,10 @@ end
 local reg_objects_monster = {}
 local show_stalker_spot = false
 function register_monster(npc)
+	if true then
+		return
+	end
+
 	if npc:alive() then
 		local community, rank = getNpcType(npc)
 		reg_objects_monster[npc.id] = {community = community, name = community}
@@ -181,12 +204,20 @@ function register_monster(npc)
 	end
 end
 function unregister_monster(npc)
+	if true then
+		return
+	end
+
 	if reg_objects_monster[npc.id] and reg_objects_monster[npc.id].exist == true then
 		level.map_remove_object_spot(npc.id, "alife_presentation_monstr")
 	end
 	reg_objects_monster[npc.id] = nil
 end
 function unmark_all_monsters()
+	if true then
+		return
+	end
+
 	show_monster_spot = false
 	for k,v in pairs(reg_objects_monster) do
 		if reg_objects_monster[k].exist == true then
@@ -196,6 +227,10 @@ function unmark_all_monsters()
 	end
 end
 function mark_all_monsters()
+	if true then
+		return
+	end
+
 	if show_monster_spot == true then
 		unmark_all_monsters()
 		return
@@ -207,6 +242,10 @@ function mark_all_monsters()
 	end
 end
 function release_all_monsters()
+	if true then
+		return
+	end
+
 	for k,v in pairs(reg_objects_monster) do
 		if v.exist == true then
 			level.map_remove_object_spot(k, "alife_presentation_monstr")
