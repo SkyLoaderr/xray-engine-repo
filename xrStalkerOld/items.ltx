@@ -381,6 +381,75 @@ animation_slot		= 4
 ;hud item
 hud = wpn_vodka_hud
 
+[medkit_army]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "food and drugs\medkit"
+$prefetch 			= 8
+class				= II_MEDKI
+cform				= skeleton
+visual				= equipments\item_aptechka.ogf
+description			= enc_equipment_medi_medkit1
+inv_name			= Medkit
+inv_name_short		= Medkit
+inv_weight			= 0.3	;0.2
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 6
+inv_grid_y			= 14
+cost				= 150
+
+; eatable item
+eat_health			= 1.0
+eat_satiety			= 0
+eat_power			= 0.0
+eat_radiation		= -0.1
+wounds_heal_perc	= 0.3
+eat_portions_num	= 1
+eat_max_power		= 0.1
+
+; food item
+animation_slot		= 4
+
+;hud item
+hud = wpn_vodka_hud
+
+[medkit_scientic]:identity_immunities
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "food and drugs\medkit"
+$prefetch 			= 8
+class				= II_MEDKI
+cform				= skeleton
+visual				= equipments\item_aptechka.ogf
+description			= enc_equipment_medi_medkit1
+inv_name			= Medkit
+inv_name_short		= Medkit
+inv_weight			= 0.3	;0.2
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 6
+inv_grid_y			= 14
+cost				= 150
+
+; eatable item
+eat_health			= 1.0
+eat_satiety			= 0
+eat_power			= 0.0
+eat_radiation		= -0.1
+wounds_heal_perc	= 0.3
+eat_portions_num	= 1
+eat_max_power		= 0.1
+
+; food item
+animation_slot		= 4
+
+;hud item
+hud = wpn_vodka_hud
+
+
 [energy_drink]:vodka
 $spawn 				= "food and drugs\energy_drink"
 inv_name			= energy_drink_name
