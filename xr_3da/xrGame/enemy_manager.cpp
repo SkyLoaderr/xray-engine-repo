@@ -49,7 +49,6 @@ CEnemyManager::CEnemyManager									(CCustomMonster *object)
 	m_ignore_monster_threshold	= 1.f;
 	m_max_ignore_distance		= 0.f;
 	m_ready_to_save				= true;
-	m_penalty_now				= false;
 	m_last_enemy_time			= 0;
 	m_last_enemy_change			= 0;
 	m_stalker					= smart_cast<CAI_Stalker*>(object);
@@ -124,27 +123,27 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 //		return				(penalty + 10000.f + 1.f/distance);
 	}
 
-	// if we see object
-	bool					penalty = m_object->memory().visual().visible_now(object);
-	if (!penalty) {
-		// if object is actor and he/she sees us
-		if (actor)
-			penalty			= smart_cast<const CActor*>(object)->memory().visual().visible_now(m_object);
-		else {
-			// if object is npc and he/she sees us
-			const CCustomMonster	*monster = smart_cast<const CCustomMonster*>(object);
-			if (monster)
-				penalty		= monster->memory().visual().visible_now(m_object);
-		}
-	}
+	float					penalty = 0.f;
 
 	// if we are hit
-	if (!penalty) {
-		if (object->ID() == m_object->memory().hit().last_hit_object_id())
-			penalty			= true;
-	}
+	if (object->ID() == m_object->memory().hit().last_hit_object_id())
+		penalty				+= 500.f;
 
-	m_penalty_now			= penalty;
+	// if we see object
+	if (m_object->memory().visual().visible_now(object))
+		penalty				+= 1000.f;
+
+	// if object is actor and he/she sees us
+	if (actor) {
+		if (smart_cast<const CActor*>(object)->memory().visual().visible_now(m_object))
+			penalty			+= 900.f;
+	}
+	else {
+		// if object is npc and it sees us
+		const CCustomMonster	*monster = smart_cast<const CCustomMonster*>(object);
+		if (monster && monster->memory().visual().visible_now(m_object))
+			penalty			= 300.f;
+	}
 
 #ifdef USE_EVALUATOR
 	ai().ef_storage().non_alife().member_item()	= 0;
@@ -154,7 +153,7 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 
 	float					distance = m_object->Position().distance_to_sqr(object->Position());
 	return					(
-		1000.f*(penalty ? 0.f : 1.f) +
+		penalty +
 		distance/100.f +
 		ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f
 	);
@@ -186,7 +185,6 @@ void CEnemyManager::reload					(LPCSTR section)
 {
 	m_ignore_monster_threshold	= READ_IF_EXISTS(pSettings,r_float,section,"ignore_monster_threshold",1.f);
 	m_max_ignore_distance		= READ_IF_EXISTS(pSettings,r_float,section,"max_ignore_distance",0.f);
-	m_penalty_now				= false;
 	m_last_enemy_time			= 0;
 	m_last_enemy				= 0;
 	m_last_enemy_change			= 0;
@@ -403,7 +401,6 @@ void CEnemyManager::update					()
 	}
 
 	m_ready_to_save				= true;
-	m_penalty_now				= false;
 
 	try_change_enemy			();
 

@@ -27,7 +27,6 @@ private:
 	float						m_ignore_monster_threshold;
 	float						m_max_ignore_distance;
 	mutable bool				m_ready_to_save;
-	mutable bool				m_penalty_now;
 	u32							m_last_enemy_time;
 	const CEntityAlive			*m_last_enemy;
 	USEFULE_CALLBACK			m_useful_callback;
