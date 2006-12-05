@@ -15,6 +15,9 @@ void CPHShellSimpleCreator::CreatePhysicsShell()
 
 	if(owner->PPhysicsShell())		return;
 	owner->PPhysicsShell()			= P_create_Shell();
+#ifdef DEBUG
+	owner->PPhysicsShell()->dbg_obj=owner;
+#endif
 	owner->m_pPhysicsShell->build_FromKinematics	(pKinematics,0);
 
 	owner->PPhysicsShell()->set_PhysicsRefObject	(owner);
