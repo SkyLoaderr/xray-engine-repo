@@ -111,7 +111,8 @@ void	CROS_impl::update	(IRenderable* O)
 	float	radius;		radius	= O->renderable.visual->vis.sphere.R;
 	position.y			+=  .3f * radius;
 	Fvector	direction;	direction.random_dir();
-			position.mad(direction,0.25f*radius);
+//			position.mad(direction,0.25f*radius);
+			position.mad(direction,0.025f*radius);
 
 	// sun-tracing
 #if RENDER==R_R1
