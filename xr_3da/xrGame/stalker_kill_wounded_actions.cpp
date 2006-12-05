@@ -122,7 +122,7 @@ void CStalkerActionPrepareWounded::initialize				()
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_mental_state		(eMentalStateDanger);
-	object().movement().set_body_state			(eBodyStateCrouch);
+	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeStand);
 	object().sound().play						(eStalkerSoundKillWounded);
 	object().CObjectHandler::set_goal			(eObjectActionAimReady1,weapon_to_kill(&object()),MIN_QUEUE,MAX_QUEUE,MIN_INTERVAL,MAX_INTERVAL);

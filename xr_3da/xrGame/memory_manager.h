@@ -39,6 +39,9 @@ protected:
 	CCustomMonster				*m_object;
 	CAI_Stalker					*m_stalker;
 
+private:
+			void				update_enemies				(const bool &registered_in_combat);
+
 protected:
 	template <typename T>
 			void				update						(const xr_vector<T> &objects, bool add_enemies);

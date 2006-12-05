@@ -184,21 +184,22 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 
 void			CAI_Stalker::Hit					(SHit* pHDS)
 {
-//	pHDS->power *= .1f;
+//	pHDS->power						*= .1f;
+
 	//хит может меняться в зависимости от ранга (новички получают больше хита, чем ветераны)
-	SHit HDS = *pHDS;
-	HDS.power *= m_fRankImmunity;
-	if(m_boneHitProtection && HDS.hit_type == ALife::eHitTypeFireWound){
-		float BoneArmour = m_boneHitProtection->getBoneArmour(HDS.bone());	
-		float NewHitPower = HDS.damage() - BoneArmour;
+	SHit							HDS = *pHDS;
+	HDS.power						*= m_fRankImmunity;
+	if (m_boneHitProtection && HDS.hit_type == ALife::eHitTypeFireWound){
+		float						BoneArmour = m_boneHitProtection->getBoneArmour(HDS.bone());	
+		float						NewHitPower = HDS.damage() - BoneArmour;
 		if (NewHitPower < HDS.power*m_boneHitProtection->m_fHitFrac) HDS.power = HDS.power*m_boneHitProtection->m_fHitFrac;
 		else
-			HDS.power = NewHitPower;
+			HDS.power				= NewHitPower;
 	}
 
 	if (g_Alive()) {
 		if (!critically_wounded()) {
-			const CCoverPoint	*cover = agent_manager().member().member(this).cover();
+			const CCoverPoint		*cover = agent_manager().member().member(this).cover();
 			if (cover && pHDS->initiator() && (pHDS->initiator()->ID() != ID()) && !fis_zero(pHDS->damage()) && brain().affect_cover())
 				agent_manager().location().add	(xr_new<CDangerCoverLocation>(cover,Device.dwTimeGlobal,DANGER_INTERVAL,DANGER_DISTANCE));
 		}
@@ -206,14 +207,14 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 		const CEntityAlive	*entity_alive = smart_cast<const CEntityAlive*>(pHDS->initiator());
 		if (entity_alive && !wounded()) {
 			if (is_relation_enemy(entity_alive))
-				sound().play(eStalkerSoundInjuring);
+				sound().play		(eStalkerSoundInjuring);
 //			else
-//				sound().play(eStalkerSoundInjuringByFriend);
+//				sound().play		(eStalkerSoundInjuringByFriend);
 		}
 
-		int					weapon_type = -1;
+		int							weapon_type = -1;
 		if (best_weapon())
-			weapon_type		= best_weapon()->object().ef_weapon_type();
+			weapon_type				= best_weapon()->object().ef_weapon_type();
 
 		if	(
 				!wounded() &&
@@ -233,12 +234,13 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 #pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
 			float					power_factor = m_power_fx_factor*pHDS->damage()/100.f;
 			clamp					(power_factor,0.f,1.f);
+
 			CKinematicsAnimated		*tpKinematics = smart_cast<CKinematicsAnimated*>(Visual());
 #ifdef DEBUG
-			tpKinematics->LL_GetBoneInstance(pHDS->bone());
-			if(pHDS->bone()>=tpKinematics->LL_BoneCount()){
-				Msg("tpKinematics has no bone_id %d",pHDS->bone());
-				pHDS->_dump();
+			tpKinematics->LL_GetBoneInstance	(pHDS->bone());
+			if (pHDS->bone() >= tpKinematics->LL_BoneCount()) {
+				Msg					("tpKinematics has no bone_id %d",pHDS->bone());
+				pHDS->_dump			();
 			}
 #endif
 			int						fx_index = iFloor(tpKinematics->LL_GetBoneInstance(pHDS->bone()).get_param(1) + (angle_difference(movement().m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1));
@@ -247,7 +249,7 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 		}
 	}
 
-	inherited::Hit(&HDS);
+	inherited::Hit					(&HDS);
 }
 
 void CAI_Stalker::HitSignal				(float amount, Fvector& vLocalDir, CObject* who, s16 element)

@@ -36,6 +36,10 @@
 
 static const u32 ENEMY_INERTIA_TIME	= 2000;
 
+#ifdef _DEBUG
+bool g_enemy_manager_second_update	 = false;
+#endif // _DEBUG
+
 #define USE_EVALUATOR
 
 CEnemyManager::CEnemyManager									(CCustomMonster *object)
@@ -45,7 +49,7 @@ CEnemyManager::CEnemyManager									(CCustomMonster *object)
 	m_ignore_monster_threshold	= 1.f;
 	m_max_ignore_distance		= 0.f;
 	m_ready_to_save				= true;
-	m_visible_now				= false;
+	m_penalty_now				= false;
 	m_last_enemy_time			= 0;
 	m_last_enemy_change			= 0;
 	m_stalker					= smart_cast<CAI_Stalker*>(object);
@@ -120,21 +124,27 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 //		return				(penalty + 10000.f + 1.f/distance);
 	}
 
-	bool					visible = m_object->memory().visual().visible_now(object);
-	if (!visible) {
+	// if we see object
+	bool					penalty = m_object->memory().visual().visible_now(object);
+	if (!penalty) {
+		// if object is actor and he/she sees us
 		if (actor)
-			visible					= smart_cast<const CActor*>(object)->memory().visual().visible_now(m_object);
+			penalty			= smart_cast<const CActor*>(object)->memory().visual().visible_now(m_object);
 		else {
+			// if object is npc and he/she sees us
 			const CCustomMonster	*monster = smart_cast<const CCustomMonster*>(object);
 			if (monster)
-				visible				= monster->memory().visual().visible_now(m_object);
+				penalty		= monster->memory().visual().visible_now(m_object);
 		}
 	}
 
-//	if (!visible && m_visible_now)
-//		return				(1000.f);
-	
-	m_visible_now			= visible;
+	// if we are hit
+	if (!penalty) {
+		if (object->ID() == m_object->memory().hit().last_hit_object_id())
+			penalty			= true;
+	}
+
+	m_penalty_now			= penalty;
 
 #ifdef USE_EVALUATOR
 	ai().ef_storage().non_alife().member_item()	= 0;
@@ -144,7 +154,7 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 
 	float					distance = m_object->Position().distance_to_sqr(object->Position());
 	return					(
-		1000.f*(visible ? 0.f : 1.f) +
+		1000.f*(penalty ? 0.f : 1.f) +
 		distance/100.f +
 		ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f
 	);
@@ -176,100 +186,12 @@ void CEnemyManager::reload					(LPCSTR section)
 {
 	m_ignore_monster_threshold	= READ_IF_EXISTS(pSettings,r_float,section,"ignore_monster_threshold",1.f);
 	m_max_ignore_distance		= READ_IF_EXISTS(pSettings,r_float,section,"max_ignore_distance",0.f);
-	m_visible_now				= false;
+	m_penalty_now				= false;
 	m_last_enemy_time			= 0;
 	m_last_enemy				= 0;
 	m_last_enemy_change			= 0;
 	m_useful_callback.clear		();
 	VERIFY						(m_ready_to_save);
-}
-
-struct no_wounded_predicate {
-	IC	bool	operator()	(const CEntityAlive *enemy) const
-	{
-		const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(enemy);
-		if (!stalker)
-			return				(false);
-
-		if (!stalker->wounded())
-			return				(false);
-
-		return					(true);
-	}
-};
-
-void CEnemyManager::update					()
-{
-	START_PROFILE("Memory Manager/enemies::update")
-
-	if (!m_ready_to_save) {
-//		Msg						("%6d %s DEcreased enemy counter for player (%d -> %d)",Device.dwTimeGlobal,*m_object->cName(),Level().autosave_manager().not_ready_count(),Level().autosave_manager().not_ready_count()-1);
-		Level().autosave_manager().dec_not_ready();
-	}
-
-	m_ready_to_save				= true;
-	m_visible_now				= false;
-
-	const CEntityAlive			*previous_selected = selected();
-
-	bool						only_wounded = true;
-	ENEMIES::const_iterator		I = m_objects.begin();
-	ENEMIES::const_iterator		E = m_objects.end();
-	for ( ; I != E; ++I) {
-		const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(*I);
-		if (!stalker)
-			continue;
-
-		if (stalker->wounded())
-			continue;
-
-		only_wounded			= false;
-		break;
-	}
-
-	if (!only_wounded) {
-		m_objects.erase			(
-			remove_if(
-				m_objects.begin(),
-				m_objects.end(),
-				no_wounded_predicate()
-			),
-			m_objects.end()
-		);
-	}
-
-	if	(
-			!selected() ||
-			(!m_object->memory().visual().visible_now(selected()) && m_enable_enemy_change) ||
-			!selected()->g_Alive()
-		)
-		inherited::update		();
-	else {
-		const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(selected());
-		if (stalker && stalker->wounded())
-			inherited::update	();
-	}
-
-	if (selected() && previous_selected && (selected()->ID() != previous_selected->ID()))
-		on_enemy_change			(previous_selected);
-	else {
-		if (selected() && !previous_selected)
-			m_last_enemy_change	= Device.dwTimeGlobal;
-	}
-
-	if (selected() != previous_selected)
-		m_object->on_enemy_change	(previous_selected);
-
-	if (selected()) {
-		m_last_enemy_time		= Device.dwTimeGlobal;
-		m_last_enemy			= selected();
-	}
-
-	if (!m_ready_to_save) {
-//		Msg						("%6d %s INcreased enemy counter for player (%d -> %d)",Device.dwTimeGlobal,*m_object->cName(),Level().autosave_manager().not_ready_count(),Level().autosave_manager().not_ready_count()+1);
-		Level().autosave_manager().inc_not_ready();
-	}
-	STOP_PROFILE
 }
 
 void CEnemyManager::set_ready_to_save		()
@@ -327,37 +249,178 @@ float CEnemyManager::max_ignore_monster_distance		() const
 	return						(m_max_ignore_distance);
 }
 
+bool CEnemyManager::change_from_wounded					(const CEntityAlive *current, const CEntityAlive *previous) const
+{
+	const CAI_Stalker			*current_stalker = smart_cast<const CAI_Stalker*>(current);
+	if (!current_stalker)
+		return					(false);
+
+	if (current_stalker->wounded())
+		return					(false);
+
+	const CAI_Stalker			*previous_stalker = smart_cast<const CAI_Stalker*>(previous);
+	if (!previous_stalker)
+		return					(false);
+
+	if (!previous_stalker->wounded())
+		return					(false);
+
+	return						(true);
+}
+
 void CEnemyManager::on_enemy_change						(const CEntityAlive *previous_enemy)
 {
 	VERIFY						(previous_enemy);
 	VERIFY						(selected());
 
 	if (!previous_enemy->g_Alive()) {
-//		Msg						("[%d] [%s] changes enemy from [%s] to [%s] because previous is DEAD",Device.dwTimeGlobal,*m_object->cName(),*previous_enemy->cName(),*selected()->cName());
 		m_last_enemy_change		= Device.dwTimeGlobal;
 		return;
 	}
 
-	if (m_object->memory().visual().visible_now(previous_enemy) && !m_object->memory().visual().visible_now(selected())) {
-		const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(previous_enemy);
-		const CAI_Stalker		*stalker2 = smart_cast<const CAI_Stalker*>(selected());
-		bool					wounded0 = stalker && stalker->wounded(&m_object->movement().restrictions());
-		bool					wounded1 = stalker2 && stalker2->wounded(&m_object->movement().restrictions());
-		if ((!wounded0 && !wounded1) || (wounded0 && wounded1))
-			m_selected			= previous_enemy;
-		else {
-//			Msg					("wounded enemy [%s] is selected by [%s]",*stalker2->cName(),*stalker->cName());
-			m_last_enemy_change	= Device.dwTimeGlobal;
-		}
-
+	if (change_from_wounded(selected(),previous_enemy)) {
+		m_last_enemy_change		= Device.dwTimeGlobal;
 		return;
 	}
 
+	if (!m_object->memory().visual().visible_now(previous_enemy) && m_object->memory().visual().visible_now(selected())) {
+		m_last_enemy_change		= Device.dwTimeGlobal;
+		return;
+	}
+	
 	if (Device.dwTimeGlobal <= (m_last_enemy_change + ENEMY_INERTIA_TIME)) {
 		m_selected				= previous_enemy;
 		return;
 	}
 
-//	Msg							("[%d] [%s] changes enemy from [%s] to [%s] because NO INERTIA",Device.dwTimeGlobal,*m_object->cName(),*previous_enemy->cName(),*selected()->cName());
 	m_last_enemy_change			= Device.dwTimeGlobal;
+}
+
+void CEnemyManager::remove_wounded			()
+{
+	struct no_wounded {
+		IC	static bool	predicate	(const CEntityAlive *enemy)
+		{
+			const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(enemy);
+			if (!stalker)
+				return				(false);
+
+			if (!stalker->wounded())
+				return				(false);
+
+			return					(true);
+		}
+	};
+
+	m_objects.erase				(
+		remove_if(
+			m_objects.begin(),
+			m_objects.end(),
+			&no_wounded::predicate
+		),
+		m_objects.end()
+	);
+}
+
+void CEnemyManager::process_wounded			(bool &only_wounded)
+{
+	only_wounded				= true;
+	ENEMIES::const_iterator		I = m_objects.begin();
+	ENEMIES::const_iterator		E = m_objects.end();
+	for ( ; I != E; ++I) {
+		const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(*I);
+		if (!stalker)
+			continue;
+
+		if (stalker->wounded())
+			continue;
+
+		only_wounded			= false;
+		break;
+	}
+
+	if (only_wounded) {
+#ifdef _DEBUG
+		if (/**!m_objects.empty() && /**/g_enemy_manager_second_update)
+			Msg					("%6d ONLY WOUNDED LEFT %s",Device.dwTimeGlobal,*m_object->cName());
+#endif // _DEBUG
+		return;
+	}
+
+	remove_wounded				();
+}
+
+bool CEnemyManager::need_update				(const bool &only_wounded) const
+{
+	if (!selected())
+		return					(true);
+
+	if (!selected()->g_Alive())
+		return					(true);
+
+	if (enable_enemy_change() && !m_object->memory().visual().visible_now(selected()))
+		return					(true);
+
+	if (only_wounded)
+		return					(false);
+
+//	const CAI_Stalker			*stalker = smart_cast<const CAI_Stalker*>(selected());
+//	if (stalker && stalker->wounded())
+//		return					(true);
+
+	return						(false);
+}
+
+void CEnemyManager::try_change_enemy		()
+{
+	const CEntityAlive			*previous_selected = selected();
+
+	bool						only_wounded;
+	process_wounded				(only_wounded);
+	if (!need_update(only_wounded))
+		return;
+
+	inherited::update			();
+
+	if (selected() != previous_selected) {
+		if (selected() && previous_selected)
+			on_enemy_change		(previous_selected);
+		else
+			m_last_enemy_change	= Device.dwTimeGlobal;
+	}
+
+	if (selected() != previous_selected)
+		m_object->on_enemy_change	(previous_selected);
+}
+
+void CEnemyManager::update					()
+{
+	START_PROFILE("Memory Manager/enemies::update")
+
+	if (!m_ready_to_save) {
+//		Msg						("%6d %s DEcreased enemy counter for player (%d -> %d)",Device.dwTimeGlobal,*m_object->cName(),Level().autosave_manager().not_ready_count(),Level().autosave_manager().not_ready_count()-1);
+		Level().autosave_manager().dec_not_ready();
+	}
+
+	m_ready_to_save				= true;
+	m_penalty_now				= false;
+
+	try_change_enemy			();
+
+	if (selected()) {
+		m_last_enemy_time		= Device.dwTimeGlobal;
+		m_last_enemy			= selected();
+	}
+
+	if (!m_ready_to_save) {
+//		Msg						("%6d %s INcreased enemy counter for player (%d -> %d)",Device.dwTimeGlobal,*m_object->cName(),Level().autosave_manager().not_ready_count(),Level().autosave_manager().not_ready_count()+1);
+		Level().autosave_manager().inc_not_ready();
+	}
+
+#ifdef _DEBUG
+	if (g_enemy_manager_second_update && selected() && smart_cast<const CAI_Stalker*>(selected()) && smart_cast<const CAI_Stalker*>(selected())->wounded())
+		Msg						("%6d WOUNDED CHOOSED %s",Device.dwTimeGlobal,*m_object->cName());
+#endif // _DEBUG
+
+	STOP_PROFILE
 }

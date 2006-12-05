@@ -409,7 +409,7 @@ void CStalkerMovementManager::parse_velocity_mask	()
 #ifdef DEBUG
 			if (m_object->brain().current_action_id() == StalkerDecisionSpace::eWorldOperatorCombatPlanner) {
 				CStalkerCombatPlanner	&planner = smart_cast<CStalkerCombatPlanner&>(m_object->brain().current_action());
-				if (planner.current_action_id() != StalkerDecisionSpace::eWorldOperatorCriticallyWounded)
+				if (planner.current_action_id() != StalkerDecisionSpace::eWorldOperatorKillWoundedEnemy)
 					Msg					("! stalker %s is doing bad thing (action %s)",*m_object->cName(),planner.current_action().m_action_name);
 			}
 #endif // DEBUG

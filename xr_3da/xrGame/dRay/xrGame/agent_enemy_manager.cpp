@@ -135,8 +135,14 @@ void CAgentEnemyManager::fill_enemies			()
 	}
 
 	if (!m_only_wounded_left && m_is_any_wounded) {
-		ENEMIES::iterator				I = std::remove_if(enemies().begin(),enemies().end(),remove_wounded_predicate());
-		enemies().erase					(I,enemies().end());
+		enemies().erase					(
+			std::remove_if(
+				enemies().begin(),
+				enemies().end(),
+				remove_wounded_predicate()
+			),
+			enemies().end()
+		);
 	}
 
 	VERIFY								(!m_enemies.empty());
@@ -343,7 +349,7 @@ void CAgentEnemyManager::permutate_enemies		()
 template <typename T>
 IC	void CAgentEnemyManager::setup_mask			(xr_vector<T> &objects, CMemberEnemy &enemy, const squad_mask_type &non_combat_members)
 {
-	xr_vector<T>::iterator			I = std::find(objects.begin(),objects.end(),enemy.m_object->ID());
+	xr_vector<T>::iterator	I = std::find(objects.begin(),objects.end(),enemy.m_object->ID());
 	if (I != objects.end()) {
 		(*I).m_squad_mask.assign	(
 			(*I).m_squad_mask.get() |
@@ -362,8 +368,8 @@ IC	void CAgentEnemyManager::setup_mask			(CMemberEnemy &enemy, const squad_mask_
 void CAgentEnemyManager::assign_enemy_masks		()
 {
 	{
-		ENEMIES::iterator		I = m_enemies.begin();
-		ENEMIES::iterator		E = m_enemies.end();
+		ENEMIES::iterator	I = m_enemies.begin();
+		ENEMIES::iterator	E = m_enemies.end();
 		for ( ; I != E; ++I) {
 			CAgentMemberManager::MEMBER_STORAGE::const_iterator	i = object().member().combat_members().begin();
 			CAgentMemberManager::MEMBER_STORAGE::const_iterator	e = object().member().combat_members().end();
@@ -376,19 +382,8 @@ void CAgentEnemyManager::assign_enemy_masks		()
 
 	ENEMIES::iterator		I = m_enemies.begin();
 	ENEMIES::iterator		E = m_enemies.end();
-	for ( ; I != E; ++I) {
+	for ( ; I != E; ++I)
 		setup_mask			(*I,non_combat_members);
-
-#if 1
-		CAgentMemberManager::MEMBER_STORAGE::const_iterator	i = object().member().combat_members().begin();
-		CAgentMemberManager::MEMBER_STORAGE::const_iterator	e = object().member().combat_members().end();
-		for ( ; i != e; ++i) {
-			(*i)->object().memory().make_object_visible_somewhen((*I).m_object);
-//			if ((*I).m_distribute_mask.test(object().member().mask(&(*i)->object())))
-//				Msg			("Enemy %s is assigned to %s",*(*I).m_object->cName(),*(*i)->object().cName());
-		}
-#endif
-	}
 }
 
 void CAgentEnemyManager::assign_wounded			()

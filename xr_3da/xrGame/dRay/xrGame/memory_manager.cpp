@@ -80,6 +80,44 @@ void CMemoryManager::reload			(LPCSTR section)
 	danger().reload		(section);
 }
 
+#ifdef _DEBUG
+extern bool g_enemy_manager_second_update;
+#endif // _DEBUG
+
+void CMemoryManager::update_enemies	(const bool &registered_in_combat)
+{
+#ifdef _DEBUG
+	g_enemy_manager_second_update	= false;
+#endif // _DEBUG
+	enemy().update		();
+
+	if	(
+			m_stalker && 
+			(
+				!enemy().selected() || 
+				(
+					smart_cast<const CAI_Stalker*>(enemy().selected()) && 
+					smart_cast<const CAI_Stalker*>(enemy().selected())->wounded()
+				)
+			) &&
+			registered_in_combat
+		)
+	{
+		m_stalker->agent_manager().enemy().distribute_enemies	();
+
+		if (visual().enabled())
+			update		(visual().objects(),true);
+
+		update			(sound().objects(),true);
+		update			(hit().objects(),true);
+
+#ifdef _DEBUG
+		g_enemy_manager_second_update	= true;
+#endif // _DEBUG
+		enemy().update	();
+	}
+}
+
 void CMemoryManager::update			(float time_delta)
 {
 	START_PROFILE("Memory Manager")
@@ -102,32 +140,7 @@ void CMemoryManager::update			(float time_delta)
 	update				(sound().objects(),registered_in_combat ? true : false);
 	update				(hit().objects(),registered_in_combat ? true : false);
 	
-	enemy().update		();
-#if 1
-	if	(
-			m_stalker && 
-			(
-				!enemy().selected() || 
-				(
-					smart_cast<const CAI_Stalker*>(enemy().selected()) && 
-					smart_cast<const CAI_Stalker*>(enemy().selected())->wounded()
-				)
-			) &&
-			registered_in_combat
-		)
-	{
-		m_stalker->agent_manager().enemy().distribute_enemies	();
-
-		if (visual().enabled())
-			update		(visual().objects(),true);
-
-		update			(sound().objects(),true);
-		update			(hit().objects(),true);
-		
-		enemy().update	();
-	}
-#endif
-
+	update_enemies		(registered_in_combat);
 	item().update		();
 	danger().update		();
 	

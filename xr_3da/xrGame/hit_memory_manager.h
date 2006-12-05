@@ -29,8 +29,8 @@ public:
 
 private:
 	struct CDelayedHitObject {
-		ALife::_OBJECT_ID	m_object_id;
-		CHitObject			m_hit_object;
+		ALife::_OBJECT_ID		m_object_id;
+		CHitObject				m_hit_object;
 	};
 
 private:
@@ -45,6 +45,7 @@ private:
 #ifdef USE_SELECTED_HIT
 	CHitObject					*m_selected_hit;
 #endif
+	ALife::_OBJECT_ID			m_last_hit_object_id;
 
 public:
 	IC							CHitMemoryManager	(CCustomMonster *object, CAI_Stalker *stalker);
@@ -67,6 +68,7 @@ public:
 #endif
 			const CHitObject	*hit				(const CEntityAlive *object) const;
 	IC		void				set_squad_objects	(HITS *squad_objects);
+	IC		const ALife::_OBJECT_ID	&last_hit_object_id	() const;
 
 public:
 			void				enable				(const CObject *object, bool enable);

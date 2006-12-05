@@ -949,7 +949,7 @@ DLL_Pure *CAI_Stalker::_construct			()
 
 bool CAI_Stalker::use_center_to_aim		() const
 {
-	return								(movement().body_state() != eBodyStateCrouch);
+	return								(!wounded() && (movement().body_state() != eBodyStateCrouch));
 }
 
 void CAI_Stalker::UpdateCamera			()

@@ -27,7 +27,7 @@ private:
 	float						m_ignore_monster_threshold;
 	float						m_max_ignore_distance;
 	mutable bool				m_ready_to_save;
-	mutable bool				m_visible_now;
+	mutable bool				m_penalty_now;
 	u32							m_last_enemy_time;
 	const CEntityAlive			*m_last_enemy;
 	USEFULE_CALLBACK			m_useful_callback;
@@ -35,6 +35,13 @@ private:
 
 private:
 	u32							m_last_enemy_change;
+
+private:
+			bool				need_update			(const bool &only_wounded) const;
+			void				process_wounded		(bool &only_wounded);
+			bool				change_from_wounded	(const CEntityAlive *current, const CEntityAlive *previous) const;
+			void				remove_wounded		();
+			void				try_change_enemy	();
 
 protected:
 			void				on_enemy_change		(const CEntityAlive *previous_enemy);

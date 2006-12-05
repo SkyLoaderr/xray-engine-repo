@@ -94,7 +94,7 @@ void CAI_Stalker::update_best_cover_actuality		(const Fvector &position_to_cover
 
 	if (m_best_cover->position().distance_to_sqr(position_to_cover_from) < _sqr(MIN_SUITABLE_ENEMY_DISTANCE)) {
 		m_best_cover_actual				= false;
-#ifdef _DEBUG
+#if 0//def _DEBUG
 		Msg								("* [%6d][%s] enemy too close",Device.dwTimeGlobal,*cName());
 #endif
 		return;
@@ -103,7 +103,7 @@ void CAI_Stalker::update_best_cover_actuality		(const Fvector &position_to_cover
 	float								cover_value = best_cover_value(position_to_cover_from);
 	if (cover_value >= m_best_cover_value + 1.f) {
 		m_best_cover_actual				= false;
-#ifdef _DEBUG
+#if 0//def _DEBUG
 		Msg								("* [%6d][%s] cover became too bad",Device.dwTimeGlobal,*cName());
 #endif
 		return;

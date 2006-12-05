@@ -71,6 +71,7 @@ void CHitMemoryManager::Load				(LPCSTR section)
 void CHitMemoryManager::reinit				()
 {
 	m_hits					= 0;
+	m_last_hit_object_id	= ALife::_OBJECT_ID(-1);
 }
 
 void CHitMemoryManager::reload				(LPCSTR section)
@@ -89,6 +90,9 @@ void CHitMemoryManager::add					(float amount, const Fvector &vLocalDir, const C
 
 	if (who && (m_object->ID() == who->ID()))
 		return;
+
+	if (who)
+		m_last_hit_object_id	= who->ID();
 
 	object().callback(GameObject::eHit)(
 		m_object->lua_game_object(), 
