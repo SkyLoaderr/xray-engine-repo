@@ -123,22 +123,38 @@ void xrDebug::backend(const char *expression, const char *description, const cha
 	LPSTR				buffer = assertion_info;
 	LPCSTR				endline = "\n";
 	LPCSTR				prefix = "[error]";
+	bool				extended_description = (description && !argument0 && strchr(description,'\n'));
 	for (int i=0; i<2; ++i) {
 		if (!i)
 			buffer		+= sprintf(buffer,"%sFATAL ERROR%s%s",endline,endline,endline);
 		buffer			+= sprintf(buffer,"%sExpression    : %s%s",prefix,expression,endline);
-		buffer			+= sprintf(buffer,"%sDescription   : %s%s",prefix,description,endline);
-		if (argument0) {
-			if (argument1) {
-				buffer	+= sprintf(buffer,"%sArgument 0    : %s%s",prefix,argument0,endline);
-				buffer	+= sprintf(buffer,"%sArgument 1    : %s%s",prefix,argument1,endline);
-			}
-			else
-				buffer	+= sprintf(buffer,"%sArguments     : %s%s",prefix,argument0,endline);
-		}
 		buffer			+= sprintf(buffer,"%sFunction      : %s%s",prefix,function,endline);
 		buffer			+= sprintf(buffer,"%sFile          : %s%s",prefix,file,endline);
 		buffer			+= sprintf(buffer,"%sLine          : %d%s",prefix,line,endline);
+		
+		if (extended_description) {
+			buffer		+= sprintf(buffer,"%s%s%s",endline,description,endline);
+			if (argument0) {
+				if (argument1) {
+					buffer	+= sprintf(buffer,"%s%s",argument0,endline);
+					buffer	+= sprintf(buffer,"%s%s",argument1,endline);
+				}
+				else
+					buffer	+= sprintf(buffer,"%s%s",argument0,endline);
+			}
+		}
+		else {
+			buffer		+= sprintf(buffer,"%sDescription   : %s%s",prefix,description,endline);
+			if (argument0) {
+				if (argument1) {
+					buffer	+= sprintf(buffer,"%sArgument 0    : %s%s",prefix,argument0,endline);
+					buffer	+= sprintf(buffer,"%sArgument 1    : %s%s",prefix,argument1,endline);
+				}
+				else
+					buffer	+= sprintf(buffer,"%sArguments     : %s%s",prefix,argument0,endline);
+			}
+		}
+
 		buffer			+= sprintf(buffer,"%s",endline);
 		if (!i) {
 			if (shared_str_initialized) {
@@ -241,6 +257,11 @@ void xrDebug::error		(long hr, const char* expr, const char *file, int line, con
 void xrDebug::fail		(const char *e1, const char *file, int line, const char *function, bool &ignore_always)
 {
 	backend		("assertion failed",e1,0,0,file,line,function,ignore_always);
+}
+
+void xrDebug::fail		(const char *e1, const std::string &e2, const char *file, int line, const char *function, bool &ignore_always)
+{
+	backend		(e1,e2.c_str(),0,0,file,line,function,ignore_always);
 }
 
 void xrDebug::fail		(const char *e1, const char *e2, const char *file, int line, const char *function, bool &ignore_always)
