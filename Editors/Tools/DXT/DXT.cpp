@@ -264,6 +264,8 @@ int  __stdcall DXTCompress	(LPCSTR out_name, u8* raw_data, u8* normal_map, u32 w
 	switch (fmt->type){
 	case STextureParams::ttImage:	
 	case STextureParams::ttCubeMap: 
+	case STextureParams::ttNormalMap:
+	case STextureParams::ttTerrain:
 		return DXTCompressImage	(out_name, raw_data, w, h, pitch, fmt, depth);
 	break;
 	case STextureParams::ttBumpMap: 
