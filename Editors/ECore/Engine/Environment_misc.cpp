@@ -86,6 +86,37 @@ void CEnvAmbient::load(const shared_str& sect)
 //-----------------------------------------------------------------------------
 CEnvDescriptor::CEnvDescriptor()
 {
+	exec_time			= 0.0f;
+	exec_time_loaded	= 0.0f;
+	
+	clouds_color.set	(1,1,1,1);
+	sky_color.set		(1,1,1);
+	sky_rotation		= 0.0f;
+
+	far_plane			= 400.0f;;
+
+	fog_color.set		(1,1,1);
+	fog_density			= 0.0f;
+	fog_distance		= 400.0f;
+
+	rain_density		= 0.0f;
+	rain_color.set		(0,0,0);
+
+	bolt_period			= 0.0f;
+	bolt_duration		= 0.0f;
+
+    wind_velocity		= 0.0f;
+    wind_direction		= 0.0f;
+    
+	ambient.set			(0,0,0);
+	hemi_color.set		(1,1,1,1);
+	sun_color.set		(1,1,1);
+	sun_dir.set			(0,-1,0);
+
+    lens_flare_id		= -1;
+	tb_id				= -1;
+    
+	env_ambient			= NULL;
 }
 
 #define	C_CHECK(C)	if (C.x<0 || C.x>2 || C.y<0 || C.y>2 || C.z<0 || C.z>2)	{ Msg("! Invalid '%s' in env-section '%s'",#C,S);}

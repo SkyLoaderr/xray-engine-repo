@@ -297,7 +297,7 @@ void CRenderDevice::FrameMove()
 
 void ProcessLoading				(RP_FUNC *f)
 {
-	Device.seqFrame.Process				();
+	Device.seqFrame.Process				(rp_Frame);
 	g_bLoaded							= TRUE;
 /*
 	static u32 processed_idx			= 0;
