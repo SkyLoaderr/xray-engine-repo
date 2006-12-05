@@ -994,7 +994,24 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 
 	if(element_added&&E->isBreakable())setElementSplitter(element_number,splitter_position);
 #ifdef DEBUG
-	VERIFY3(lvis_check||(!breakable && root_e),*dbg_obj->cNameVisual(),"has breaking parts with no vertexes or size less than 1mm");//
+	bool bbb = lvis_check||(!breakable && root_e);
+	if(!bbb)
+	{	
+		CKinematics* K = m_pKinematics;
+
+		Msg("all bones transform:--------");
+		
+		for(u16 ii=0; ii<K->LL_BoneCount();++ii){
+			Fmatrix tr;
+
+			tr = K->LL_GetTransform(ii);
+			Log("bone ",K->LL_BoneName_dbg(ii));
+			Log("bone_matrix",tr);
+		}
+		Log("end-------");
+	}
+
+	VERIFY3(bbb,*dbg_obj->cNameVisual(),"has breaking parts with no vertexes or size less than 1mm");//
 #endif
 	
 }

@@ -477,6 +477,7 @@ BOOL CWeapon::net_Spawn		(CSE_Abstract* DC)
 	//  [10/5/2005]
 	m_bAmmoWasSpawned = false;
 	//  [10/5/2005]
+
 	return bResult;
 }
 
@@ -1116,10 +1117,11 @@ void CWeapon::UpdateAddonsVisibility()
 			if(pWeaponVisual->LL_GetBoneVisible				(bone_id))
 				pWeaponVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 		}
-	}else{
-		if(bone_id!=BI_NONE && pWeaponVisual->LL_GetBoneVisible(bone_id) )
-			pWeaponVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 	}
+	if(m_eScopeStatus==CSE_ALifeItemWeapon::eAddonDisabled && bone_id!=BI_NONE && 
+		pWeaponVisual->LL_GetBoneVisible(bone_id) )
+
+		pWeaponVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 
 	bone_id = pWeaponVisual->LL_BoneID					(wpn_silencer);
 	if(SilencerAttachable())
@@ -1128,13 +1130,14 @@ void CWeapon::UpdateAddonsVisibility()
 			if(FALSE==pWeaponVisual->LL_GetBoneVisible		(bone_id))
 				pWeaponVisual->LL_SetBoneVisible			(bone_id,TRUE,TRUE);
 		}else{
-			if(pWeaponVisual->LL_GetBoneVisible				(bone_id))
+			if( pWeaponVisual->LL_GetBoneVisible				(bone_id))
 				pWeaponVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 		}
-	}else{
-		if(bone_id!=BI_NONE && pWeaponVisual->LL_GetBoneVisible(bone_id) )
-			pWeaponVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 	}
+	if(m_eSilencerStatus==CSE_ALifeItemWeapon::eAddonDisabled && bone_id!=BI_NONE && 
+		pWeaponVisual->LL_GetBoneVisible(bone_id) )
+
+		pWeaponVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 
 	bone_id = pWeaponVisual->LL_BoneID					(wpn_launcher);
 	if(GrenadeLauncherAttachable())
@@ -1147,10 +1150,12 @@ void CWeapon::UpdateAddonsVisibility()
 			if(pWeaponVisual->LL_GetBoneVisible				(bone_id))
 				pWeaponVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 		}
-	}else{
-		if(bone_id!=BI_NONE && pWeaponVisual->LL_GetBoneVisible(bone_id) )
-			pWeaponVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
 	}
+	if(m_eGrenadeLauncherStatus==CSE_ALifeItemWeapon::eAddonDisabled && bone_id!=BI_NONE && 
+		pWeaponVisual->LL_GetBoneVisible(bone_id) )
+
+		pWeaponVisual->LL_SetBoneVisible			(bone_id,FALSE,TRUE);
+	
 
 	pWeaponVisual->CalculateBones_Invalidate				();
 	pWeaponVisual->CalculateBones							();
