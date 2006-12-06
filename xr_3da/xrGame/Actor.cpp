@@ -278,7 +278,8 @@ void CActor::Load	(LPCSTR section )
 	CInventoryOwner::Load	(section);
 	memory().Load			(section);
 
-	OnDifficultyChanged		();
+	if (GameID() == GAME_SINGLE)
+		OnDifficultyChanged		();
 	//////////////////////////////////////////////////////////////////////////
 	ISpatial*		self			=	smart_cast<ISpatial*> (this);
 	if (self)	{
