@@ -504,13 +504,17 @@ bool CInventory::Action(s32 cmd, u32 flags)
 	case kWPN_6:
        {
 		   if (cmd == kWPN_6 && GameID() != GAME_SINGLE) return false;
+
 			if(flags&CMD_START)
 			{
                 if((int)m_iActiveSlot == cmd - kWPN_1 &&
 					m_slots[m_iActiveSlot].m_pIItem && GameID() == GAME_SINGLE)
 				{
 					b_send_event = Activate(NO_ACTIVE_SLOT);
-				}else{ 
+				}else{ 					
+					if ((int)m_iActiveSlot == cmd - kWPN_1 && GameID() != GAME_SINGLE)
+						break;
+
 					b_send_event = Activate(cmd - kWPN_1);
 				}
 

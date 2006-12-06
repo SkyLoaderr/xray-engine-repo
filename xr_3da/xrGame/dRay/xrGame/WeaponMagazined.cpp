@@ -639,6 +639,8 @@ void CWeaponMagazined::switch2_Hidden()
 {
 	CWeapon::FireEnd();
 
+	if (m_pHUD) m_pHUD->StopCurrentAnimWithoutCallback();
+
 	signal_HideComplete		();
 	RemoveShotEffector		();
 }
