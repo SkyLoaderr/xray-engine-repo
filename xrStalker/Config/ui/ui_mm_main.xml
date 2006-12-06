@@ -74,7 +74,7 @@
 		<whell_click>car\test_car_stop</whell_click-->
 		
 		<menu_music>music\09_dead_cities_pt</menu_music>
-		<menu_music>music\05_wasteland2_str</menu_music>
+		<_menu_music>music\05_wasteland2_str</_menu_music>
 		
 		<!--menu_music>music\guitar_2</menu_music>
 		<menu_music>music\guitar_1</menu_music>
