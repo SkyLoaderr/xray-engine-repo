@@ -322,6 +322,8 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
+			wpn_mp5 \n
+			ammo_9x19_fmj \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>
@@ -436,6 +438,8 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
+			wpn_mp5 \n
+			ammo_9x19_fmj \n
 			device_torch \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"
@@ -926,7 +930,7 @@
 		<rank>599</rank>
 		<reputation>-109</reputation>
 	
-		<snd_config>characters_voice\human_01\killer\</snd_config>
+		<snd_config>characters_voice\human_03\killer\</snd_config>
 		<crouch_type>0</crouch_type>
 		
 		<visual>actors\killer\stalker_ki_antigas</visual>
@@ -964,8 +968,8 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
-			wpn_ak74u \n
-			ammo_5.45x39_fmj = 1 \n
+			wpn_mp5 \n
+			ammo_9x19_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"				
