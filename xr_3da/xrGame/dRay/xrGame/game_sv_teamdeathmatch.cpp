@@ -359,9 +359,8 @@ void game_sv_TeamDeathmatch::ReadOptions				(shared_str &options)
 	g_sv_tdm_bFriendlyIndicators	= get_option_i(*options,"fi",			(g_sv_tdm_bFriendlyIndicators	 ? 1 : 0)) != 0;
 	g_sv_tdm_bFriendlyNames		= get_option_i(*options,"fn",			(g_sv_tdm_bFriendlyNames		 ? 1 : 0)) != 0;
 
-	int iFF = get_option_i(*options,"ffire",u32(g_sv_tdm_fFriendlyFireModifier*100));
-	if (iFF != 0) g_sv_tdm_fFriendlyFireModifier	= float(iFF) / 100.0f;
-	else g_sv_tdm_fFriendlyFireModifier = 0.0f;
+	float fFF = get_option_f				(*options,"ffire",g_sv_tdm_fFriendlyFireModifier);
+	g_sv_tdm_fFriendlyFireModifier			= fFF;
 }
 
 static bool g_bConsoleCommandsCreated_TDM = false;

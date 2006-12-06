@@ -70,7 +70,7 @@
 	</spin_damage_block>
 
 	<radio_tab_respawn_options x="10" y="185" width="142" height="76" radio="1">
-		<_options_item entry="mm_net_srv_artefactsnum" group="mm_mp_server"/>
+		<options_item entry="mm_net_srv_reinforcement_type" group="mm_mp_server"/>
 		<button x="0" y="0" width="142">
 			<text font="letterica16" r="115" g="114" b="112">mm_mp_forcerespawn</text>
 		</button>		
@@ -175,6 +175,7 @@
 	</cap_rate_of_change>
 
 	<spin_rate_of_change x="671" y="65" width="45" height="23">
+		<options_item entry="mm_net_weather_rateofchange" group="mm_mp_server"/>
 	</spin_rate_of_change>
 	
 	<spin_weather x="637" y="40" width="80" height="23">	

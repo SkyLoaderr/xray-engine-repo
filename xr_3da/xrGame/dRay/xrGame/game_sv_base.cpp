@@ -153,6 +153,23 @@ s32					game_sv_GameState::get_option_i				(LPCSTR lst, LPCSTR name, s32 def)
 	else				return def;
 }
 
+float					game_sv_GameState::get_option_f				(LPCSTR lst, LPCSTR name, float def)
+{
+	string64		op;
+	strconcat		(op,"/",name,"=");
+	LPSTR found =	strstr(lst,op);
+
+	if (found)
+	{	
+		float		val;
+		int cnt		= sscanf(found+xr_strlen(op),"%f",&val);
+		VERIFY		(cnt==1);
+		return		val;
+//.		return atoi	(strstr(lst,op)+xr_strlen(op));
+	}else
+		return def;
+}
+
 string64&			game_sv_GameState::get_option_s				(LPCSTR lst, LPCSTR name, LPCSTR def)
 {
 	static string64	ret;
