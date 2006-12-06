@@ -658,16 +658,17 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 
 bool CUIXmlInit::InitTabControl(CUIXml &xml_doc, LPCSTR path, int index, CUITabControl *pWnd)
 {
-	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
+	R_ASSERT3				(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 	
-	bool status = true;
+	bool status				= true;
 
-	status &= InitWindow(xml_doc, path, index, pWnd);
-	int tabsCount	= xml_doc.GetNodesNum(path, index, "button");
-	int radio		= xml_doc.ReadAttribInt(path, index, "radio");
+	status &= InitWindow	(xml_doc, path, index, pWnd);
+	InitOptionsItem			(xml_doc, path, index, pWnd);
+	int tabsCount			= xml_doc.GetNodesNum(path, index, "button");
+	int radio				= xml_doc.ReadAttribInt(path, index, "radio");
 
-	XML_NODE* tab_node = xml_doc.NavigateToNode(path,index);
-	xml_doc.SetLocalRoot(tab_node);
+	XML_NODE* tab_node		= xml_doc.NavigateToNode(path,index);
+	xml_doc.SetLocalRoot	(tab_node);
 
 	CUITabButton* newButton;
 
