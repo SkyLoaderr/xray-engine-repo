@@ -46,14 +46,10 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
-			grenade_f1 \n
-			bandage \n
 			wpn_ak74u \n
 			ammo_5.45x39_fmj \n
 			device_torch \n
-			medkit \n
 			hand_radio \n
-			af_medusa \n
 		</supplies>
 		
 
@@ -84,9 +80,8 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
-			wpn_ak74 \n
+			wpn_ak74u \n
 			ammo_5.45x39_fmj \n
-			medkit \n
 		</supplies>
 				
 		<start_dialog>escape_lager_leader_hello</start_dialog>
