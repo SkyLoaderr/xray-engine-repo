@@ -26,9 +26,6 @@
 #include "string_table.h"
 
 
-#include <boost/function.hpp>
-#include <boost/bind.hpp>
-
 #define EQUIPMENT_ICONS "ui\\ui_mp_icon_kill"
 #define KILLEVENT_ICONS "ui\\ui_hud_mp_icon_death"
 #define RADIATION_ICONS "ui\\ui_mn_radiations_hard"
@@ -115,7 +112,7 @@ CUIGameCustom*		game_cl_mp::createGameUI			()
 	pBuySpawnMsgBox		= xr_new<CUIMessageBoxEx>();
 //.	pBuySpawnMsgBox->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	pBuySpawnMsgBox->Init("message_box_buy_spawn");
-	pBuySpawnMsgBox->AddCallback("msg_box", MESSAGE_BOX_YES_CLICKED, boost::bind(&OnBuySpawn,_1,_2));
+	pBuySpawnMsgBox->AddCallback("msg_box", MESSAGE_BOX_YES_CLICKED, CUIWndCallback::void_function(&OnBuySpawn));
 	string1024	BuySpawnText;
 	sprintf(BuySpawnText, "You can buy a spawn for %d $. Press Yes to pay.", 
 		abs(m_iSpawn_Cost));

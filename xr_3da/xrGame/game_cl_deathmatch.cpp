@@ -22,9 +22,6 @@
 #include "game_cl_deathmatch_snd_messages.h"
 #include "game_base_menu_events.h"
 
-#include <boost/function.hpp>
-#include <boost/bind.hpp>
-
 #include "ActorCondition.h"
 
 #define	TEAM0_MENU		"deathmatch_team0"
