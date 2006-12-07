@@ -198,6 +198,9 @@ end
 
 function motivator_binder:use_callback(obj, who)
 	xr_use.notify_on_use(obj, who)
+
+	treasure_manager:get_treasure_manager():use(obj)
+
 	if self.st.active_section then
 		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "use_callback", obj, who)
 	end

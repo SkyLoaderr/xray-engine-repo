@@ -414,5 +414,12 @@
 		<article>tutorial_wound</article>
 	</info_portion>
 
+
+
+
+	<info_portion id="tr_escape_broken_car">
+		<article>tr_escape_broken_car</article>
+	</info_portion>
+
  
 </game_information_portions>
