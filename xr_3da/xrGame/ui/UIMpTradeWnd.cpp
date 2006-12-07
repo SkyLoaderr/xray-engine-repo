@@ -36,9 +36,9 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 	CUIXmlInit::Init3tButton			(xml_doc, "btn_ok",					0, m_btn_ok);
 	CUIXmlInit::Init3tButton			(xml_doc, "btn_cancel",				0, m_btn_cancel);
 	Register							(m_btn_ok);
-	AddCallback							("btn_ok",	BUTTON_CLICKED,	boost::bind(&CUIMpTradeWnd::OnBtnOkClicked, this, _1, _2));
+	AddCallback							("btn_ok",	BUTTON_CLICKED,	CUIWndCallback::void_function(this, &CUIMpTradeWnd::OnBtnOkClicked));
 	Register							(m_btn_cancel);
-	AddCallback							("btn_cancel",BUTTON_CLICKED,boost::bind(&CUIMpTradeWnd::OnBtnCancelClicked, this, _1, _2));
+	AddCallback							("btn_cancel",BUTTON_CLICKED,CUIWndCallback::void_function(this,&CUIMpTradeWnd::OnBtnCancelClicked));
 
 }
 

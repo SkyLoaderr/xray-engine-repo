@@ -51,7 +51,7 @@ private:
 	CUIBuyWeaponTab*	m_tab_control;
 
 //handlers
-	void				OnBtnOkClicked				(CUIWindow* w, void* d);
-	void				OnBtnCancelClicked			(CUIWindow* w, void* d);
+	void __stdcall		OnBtnOkClicked				(CUIWindow* w, void* d);
+	void __stdcall		OnBtnCancelClicked			(CUIWindow* w, void* d);
 
 };
