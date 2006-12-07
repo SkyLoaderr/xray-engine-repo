@@ -67,7 +67,7 @@
 		<text>Патроны 7,62х54R 7Н14</text>
 	</string>
 	<string id="ammo-7.62x54-7h14_s">
-		<text>7,62х54R 7Н14</text>
+		<text>7,62 7Н14</text>
 	</string>
 	<string id="ammo-7.62x54-ap">
 		<text>Патроны 7,62x54 мм БП</text>
@@ -115,7 +115,7 @@
 		<text>Патроны 9х39 мм СП-5</text>
 	</string>
 	<string id="ammo-9x39-sp5_s">
-		<text>9х39 мм СП-5</text>
+		<text>9х39 СП-5</text>
 	</string>
 	<string id="ammo-gauss">
 		<text>Гаусс-патроны</text>
