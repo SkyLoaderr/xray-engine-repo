@@ -4,7 +4,7 @@
 --	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
 
-function printf() end
+--'function printf() end
 
 local key = nil
 local data = nil
@@ -285,12 +285,12 @@ function PatrolManager:reset_positions ()
         end
         -- пересчитаем позиции
         if self.commander_id ~= self.npc_list[key].soldier:id () then
-           --if self.npc_list[key].accepted == false then
-              self.npc_list[key].dir = form_[index].dir
-              self.npc_list[key].dist = form_[index].dist
-              self.npc_list[key].vertex_id = -1
-              self.npc_list[key].accepted = true
-           --end   
+		   printf("key[%s] index[%s]", tostring(key), tostring(index))
+           self.npc_list[key].dir = form_[index].dir
+           self.npc_list[key].dist = form_[index].dist
+	       self.npc_list[key].vertex_id = -1
+           self.npc_list[key].accepted = true
+
            index = index + 1
         end   
     end    
