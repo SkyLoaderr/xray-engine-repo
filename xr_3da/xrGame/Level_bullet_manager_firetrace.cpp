@@ -394,6 +394,15 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 	dbg_bullet_pos.mad(bullet->pos,bullet->dir,R.range);
 	int bullet_state		= 0;
 #endif
+
+	if (mtl->fShootFactor==1.0f)//Если материал полностью простреливаемый, то
+	{
+		#ifdef DEBUG
+		bullet_state = 2;
+		#endif	
+		return std::make_pair(power, impulse);
+	}
+
 	//рикошет
 	Fvector			new_dir;
 	new_dir.reflect	(bullet->dir,hit_normal);
