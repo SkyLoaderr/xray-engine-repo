@@ -262,10 +262,10 @@ void CAI_Stalker::Die				(CObject* who)
 	
 	agent_manager().corpse().register_corpse	(this);
 
-	inherited::Die					(who);
-	
 	m_hammer_is_clutched			= m_clutched_hammer_enabled && !CObjectHandler::planner().m_storage.property(ObjectHandlerSpace::eWorldPropertyStrapped) && !::Random.randI(0,2);
 
+	inherited::Die					(who);
+	
 	//запретить использование слотов в инвенторе
 	inventory().SetSlotsUseful		(false);
 

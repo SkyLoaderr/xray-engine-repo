@@ -34,6 +34,7 @@
 #include "infoportion.h"
 #include "AI/Monsters/BaseMonster/base_monster.h"
 #include "weaponmagazined.h"
+#include "ai/stalker/ai_stalker.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
@@ -261,6 +262,10 @@ void CScriptGameObject::UnloadMagazine		()
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject::UnloadMagazine non-CWeaponMagazined object !!!");
 		return;
 	}
+
+	CAI_Stalker				*stalker = smart_cast<CAI_Stalker*>(weapon_magazined->H_Parent());
+	if (stalker && stalker->hammer_is_clutched())
+		return;
 
 	weapon_magazined->UnloadMagazine	(false);
 }

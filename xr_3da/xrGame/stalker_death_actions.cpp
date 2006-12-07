@@ -26,50 +26,85 @@ using namespace StalkerDecisionSpace;
 //////////////////////////////////////////////////////////////////////////
 
 CStalkerActionDead::CStalkerActionDead	(CAI_Stalker *object, LPCSTR action_name) :
-	inherited				(object,action_name)
+	inherited							(object,action_name)
 {
+}
+
+bool CStalkerActionDead::fire			() const
+{
+	if (object().inventory().TotalWeight() <= 0)
+		return							(false);
+	
+	CWeapon								*weapon = smart_cast<CWeapon*>(object().inventory().ActiveItem());
+	if (!weapon)
+		return							(false);
+
+	if (!weapon->GetAmmoElapsed())
+		return							(false);
+
+	if (!object().hammer_is_clutched())
+		return							(false);
+
+	if (Device.dwTimeGlobal - object().GetLevelDeathTime() > 500)
+		return							(false);
+
+	return								(true);
 }
 
 void CStalkerActionDead::initialize		()
 {
-	inherited::initialize	();
-	if (object().inventory().TotalWeight() <= 0)
+	inherited::initialize				();
+
+	if (!fire())
 		return;
-	
-	CWeapon					*tpWeapon = smart_cast<CWeapon*>(object().inventory().ActiveItem());
-	if (!(!tpWeapon || !tpWeapon->GetAmmoElapsed() || !object().hammer_is_clutched() || (Device.dwTimeGlobal - object().GetLevelDeathTime() > 500))) {
-		object().inventory().Action(kWPN_FIRE,	CMD_START);
-		xr_vector<CInventorySlot>::iterator I = object().inventory().m_slots.begin(), B = I;
-		xr_vector<CInventorySlot>::iterator E = object().inventory().m_slots.end();
-		for ( ; I != E; ++I)
-			if ((I - B) != (int)object().inventory().GetActiveSlot())
-				if ((*I).m_pIItem && ((*I).m_pIItem->object().CLS_ID != CLSID_IITEM_BOLT))
-					object().inventory().Ruck((*I).m_pIItem);
+
+	object().inventory().Action			(kWPN_FIRE,CMD_START);
+		
+	typedef xr_vector<CInventorySlot>	SLOTS;
+
+	SLOTS::iterator						I = object().inventory().m_slots.begin(), B = I;
+	SLOTS::iterator						E = object().inventory().m_slots.end();
+	for ( ; I != E; ++I) {
+		if ((I - B) == (int)object().inventory().GetActiveSlot())
+			continue;
+
+		if (!(*I).m_pIItem)
+			continue;
+
+		if ((*I).m_pIItem->object().CLS_ID == CLSID_IITEM_BOLT)
+			continue;
+
+		object().inventory().Ruck		((*I).m_pIItem);
 	}
 }
 
 void CStalkerActionDead::execute		()
 {
-	inherited::execute		();
+	inherited::execute					();
+
 	object().movement().enable_movement(false);
 
-	CWeapon					*tpWeapon = smart_cast<CWeapon*>(object().inventory().ActiveItem());
-	if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !object().hammer_is_clutched() || (Device.dwTimeGlobal - object().GetLevelDeathTime() > 500)) {
-		xr_vector<CInventorySlot>::iterator I = object().inventory().m_slots.begin(), B = I;
-		xr_vector<CInventorySlot>::iterator E = object().inventory().m_slots.end();
-		for ( ; I != E; ++I)
-			if ((I - B) == (int)object().inventory().GetActiveSlot()) {
-				if ((*I).m_pIItem && (*I).m_pIItem->object().CLS_ID != CLSID_IITEM_BOLT) {
-					(*I).m_pIItem->Drop();
-//					Msg("----CAI_Stalker called Drop for inventoryItem[%d] time is [%f]",(*I).m_pIItem->object().ID(),Device.fTimeGlobal);
-				}
-			}
-			else
-				if((*I).m_pIItem)
-					if ((*I).m_pIItem->object().CLS_ID != CLSID_IITEM_BOLT)
-						object().inventory().Ruck((*I).m_pIItem);
+	if (fire())
+		return;
 
-		set_property		(eWorldPropertyDead,true);
+	typedef xr_vector<CInventorySlot>	SLOTS;
+
+	SLOTS::iterator						I = object().inventory().m_slots.begin(), B = I;
+	SLOTS::iterator						E = object().inventory().m_slots.end();
+	for ( ; I != E; ++I) {
+		if (!(*I).m_pIItem)
+			continue;
+		
+		if ((*I).m_pIItem->object().CLS_ID == CLSID_IITEM_BOLT)
+			continue;
+
+		if ((I - B) == (int)object().inventory().GetActiveSlot()) {
+			(*I).m_pIItem->Drop			();
+			continue;
+		}
+
+		object().inventory().Ruck		((*I).m_pIItem);
 	}
-}
 
+	set_property						(eWorldPropertyDead,true);
+}

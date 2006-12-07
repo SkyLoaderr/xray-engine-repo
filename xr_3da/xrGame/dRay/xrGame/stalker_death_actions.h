@@ -18,6 +18,9 @@ class CStalkerActionDead : public CStalkerActionBase {
 protected:
 	typedef CStalkerActionBase inherited;
 
+private:
+			bool		fire						() const;
+
 public:
 						CStalkerActionDead			(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();
