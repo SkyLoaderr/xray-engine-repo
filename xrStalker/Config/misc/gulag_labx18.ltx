@@ -37,7 +37,7 @@ active = mob_home@angar_gigant
 path_home = home
 home_min_radius = 25
 home_max_radius = 30
-on_actor_dist_le_nvis = 30 | mob_home@angar_gigant_2 %=bar_arena_hit%
+on_actor_dist_le_nvis = 30 | mob_home@angar_gigant_2 %=bar_arena_hit =play_snd(monsters\giant\giant_underground_0)%
 
 [mob_home@angar_gigant_2]
 path_home = home
@@ -100,20 +100,15 @@ path_home = way
 ;Military assault
 ;*****************************************************************
 [logic@dar_military_scout_hide]
-active = walker@dar_military_scout_hide
+active = camper@dar_military_scout_hide
 
-[walker@dar_military_scout_hide]
+[camper@dar_military_scout_hide]
 path_walk = walk_hide
 path_look = look_hide
-
-
-[logic@dar_military_scout_assault]
-active = camper@dar_military_scout_assault
-
-[camper@dar_military_scout_assault]
-path_walk = assault_walk
-path_look = assault_look
-def_state_moving = sneak
+def_state_moving = assault
+def_state_campering = hide_na
+radius = 10
+danger = danger_condition@scout
 
 [logic@dar_military_scout_camper1]
 active = camper@dar_military_scout_camper1
@@ -121,8 +116,10 @@ active = camper@dar_military_scout_camper1
 [camper@dar_military_scout_camper1]
 path_walk = camper1_walk
 path_look = camper1_look
-def_state_moving = sneak
-radius = 3
+def_state_moving = assault
+def_state_campering = hide_na
+radius = 10
+danger = danger_condition@scout
 
 [logic@dar_military_scout_camper2]
 active = camper@dar_military_scout_camper2
@@ -130,8 +127,10 @@ active = camper@dar_military_scout_camper2
 [camper@dar_military_scout_camper2]
 path_walk = camper2_walk
 path_look = camper2_look
-def_state_moving = sneak
-radius = 3
+def_state_moving = assault
+def_state_campering = hide_na
+radius = 10
+danger = danger_condition@scout
 
 [logic@dar_military_scout_camper3]
 active = camper@dar_military_scout_camper3
@@ -139,5 +138,15 @@ active = camper@dar_military_scout_camper3
 [camper@dar_military_scout_camper3]
 path_walk = camper3_walk
 path_look = camper3_look
-def_state_moving = sneak
-radius = 3
+def_state_moving = assault
+def_state_campering = hide_na
+radius = 10
+danger = danger_condition@scout
+
+[danger_condition@scout]
+ignore_distance       = 10
+ignore_distance_grenade = 10
+ignore_distance_corpse  = 0
+ignore_distance_danger_hit     = 20
+ignore_distance_sound   = 0 
+danger_inertion_time_hit = 1
