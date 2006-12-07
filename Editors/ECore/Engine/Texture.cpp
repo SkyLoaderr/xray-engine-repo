@@ -233,6 +233,7 @@ IDirect3DBaseTexture9*	CRender::texture_load(LPCSTR fRName, u32& msize)
 	string_path				fname;
 	strcpy(fname,fRName); //. andy if (strext(fname)) *strext(fname)=0;
 	fix_texture_name		(fname);
+	IReader* S				= NULL;
 	//if (FS.exist(fn,"$game_textures$",fname,	".dds")	&& strstr(fname,"_bump"))	goto _BUMP;
 	if (!FS.exist(fn,"$game_textures$",	fname,	".dds")	&& strstr(fname,"_bump"))	goto _BUMP_from_base;
 	if (FS.exist(fn,"$level$",			fname,	".dds"))							goto _DDS;
@@ -250,7 +251,7 @@ _DDS:
 	{
 		// Load and get header
 		D3DXIMAGE_INFO			IMG;
-		IReader*	S			= FS.r_open	(fn);
+		S						= FS.r_open	(fn);
 		msize					= S->length	();
 		R_ASSERT				(S);
 		R_CHK					(D3DXGetImageInfoFromFileInMemory	(S->pointer(),S->length(),&IMG));
@@ -388,11 +389,15 @@ _BUMP_from_base:
 		Msg			("! auto-generated bump map: %s",fname);
 //////////////////
 		if (strstr(fname,"_bump#"))			{
-			R_ASSERT2	(FS.exist(fn,"$game_textures$",	"ed_dummy_bump#",	".dds"),fname);
+			R_ASSERT2	(FS.exist(fn,"$game_textures$",	"ed\\ed_dummy_bump#",	".dds"), "ed_dummy_bump#");
+			S						= FS.r_open	(fn);
+			msize					= S->length	();
 			goto		_DDS_2D;
 		}
 		if (strstr(fname,"_bump"))			{
-			R_ASSERT2	(FS.exist(fn,"$game_textures$",	"ed_dummy_bump",	".dds"),fname);
+			R_ASSERT2	(FS.exist(fn,"$game_textures$",	"ed\\ed_dummy_bump",	".dds"),"ed_dummy_bump");
+			S						= FS.r_open	(fn);
+			msize					= S->length	();
 			goto		_DDS_2D;
 		}
 //////////////////
@@ -402,7 +407,7 @@ _BUMP_from_base:
 
 		// Load   SYS-MEM-surface, bound to device restrictions
 		D3DXIMAGE_INFO			IMG;
-		IReader* S				= FS.r_open	(fn);
+		S						= FS.r_open	(fn);
 		msize					= S->length	();
 		IDirect3DTexture9*		T_base;
 		R_CHK(D3DXCreateTextureFromFileInMemoryEx(
