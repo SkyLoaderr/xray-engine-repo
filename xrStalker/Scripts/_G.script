@@ -1217,4 +1217,29 @@ end
 function start_game_callback	()
 	printf	("start_game_callback called")
 	task_manager.clear_task_manager()
+	treasure_manager.clear_treasure_manager()
 end
+
+ammo_section = {}
+ammo_section["ammo_9x18_fmj"]		= true
+ammo_section["ammo_9x18_pbp"]		= true
+ammo_section["ammo_9x19_fmj"]		= true
+ammo_section["ammo_9x19_pbp"]		= true
+ammo_section["ammo_5.45x39_fmj"]	= true
+ammo_section["ammo_5.45x39_ap"]		= true
+ammo_section["ammo_5.56x45_ss190"]	= true
+ammo_section["ammo_5.56x45_ap"]		= true
+ammo_section["ammo_5.7x28_fmj"]		= true
+ammo_section["ammo_5.7x28_ap"]		= true
+ammo_section["ammo_7.62x54_7h1"]	= true
+ammo_section["ammo_7.62x54_ap"]		= true
+ammo_section["ammo_7.62x54_7h14"]	= true
+ammo_section["ammo_9x39_pab9"]		= true
+ammo_section["ammo_gauss"]			= true
+ammo_section["ammo_9x39_ap"]		= true
+ammo_section["ammo_9x39_sp5"]		= true
+ammo_section["ammo_11.43x23_fmj"]	= true
+ammo_section["ammo_11.43x23_hydro"]	= true
+ammo_section["ammo_12x70_buck"]		= true
+ammo_section["ammo_12x76_dart"]		= true
+ammo_section["ammo_12x76_zhekan"]	= true
