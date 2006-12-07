@@ -24,8 +24,8 @@
 		<visual>actors\monolit\stalker_mo_mask</visual>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
-			ammo_9x18_fmj = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj \n
 			wpn_rpg7 \n
 			ammo_og-7b = 1 \n
 		</supplies>
@@ -84,8 +84,8 @@
     <visual>actors\monolit\stalker_mo_hood_9</visual>
     <supplies>
       [spawn] \n
-      wpn_colt1911 \n
-      ammo_11.43x23_hydro  = 1 \n
+	  wpn_usp  \n
+	  ammo_11.43x23_hydro = 1 \n
     </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
