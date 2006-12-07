@@ -163,13 +163,13 @@
 		<text>Begin voting</text>
 	</string>
 	<string id="kb_vote_menu">
-		<text>Проголосовать</text>
+		<text>Vote</text>
 	</string>
 	<string id="kb_vote_no">
-		<text>Vote "Yes"</text>
+		<text>Vote "No"</text>
 	</string>
 	<string id="kb_vote_yes">
-		<text>Vote "No"</text>
+		<text>Vote "Yes"</text>
 	</string>
 	<string id="kb_weapon1">
 		<text>Weapon 1</text>
