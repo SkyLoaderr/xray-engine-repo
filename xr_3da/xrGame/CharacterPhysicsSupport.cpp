@@ -78,7 +78,7 @@ m_ik_controller					=	NULL;
 m_BonceDamageFactor				=1.f;
 m_collision_hit_callback		=	NULL;
 m_Pred_Time						= 0.0;
-wound_blend_remain_time			= 0.5;
+m_was_wounded					= false;
 switch(atype)
 {
 case etActor:
@@ -298,7 +298,7 @@ void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir, CObject *who,s16 ele
 	if(!m_pPhysicsShell&&is_killing)
 	{
 		TestForWounded();
-
+		
 		ActivateShell(who);
 		if (!m_was_wounded)
 		{
@@ -324,6 +324,7 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 	{
 		return;
 	}
+	CalculateTimeDelta();
 	if(m_pPhysicsShell&&m_pPhysicsShell->isFullActive())
 	{
 		m_pPhysicsShell->InterpolateGlobalTransform(&mXFORM);
@@ -661,20 +662,10 @@ void CCharacterPhysicsSupport::TestForWounded()
 void CCharacterPhysicsSupport::UpdateFrictionAndJointResistanse()
 {
 	//ѕреобразование skel_ddelay из кадров в секунды и линейное нарастание сопротивлени€ в джоинтах со временем от момента смерти 
-	float l_time_delta;
-	if (m_Pred_Time==0.0)
-	{
-		l_time_delta=0;
-	}
-	else
-	{
-		l_time_delta=Device.fTimeGlobal-m_Pred_Time;					
-	}
-	m_Pred_Time=Device.fTimeGlobal;
 
 	if(skel_remain_time!=0)
 	{
-		skel_remain_time-=l_time_delta;
+		skel_remain_time-=m_time_delta;
 	};
 	if (skel_remain_time<0)
 	{
@@ -690,7 +681,7 @@ void CCharacterPhysicsSupport::UpdateFrictionAndJointResistanse()
 
 	if(skeleton_skin_remain_time!=0)
 	{
-		skeleton_skin_remain_time-=l_time_delta;
+		skeleton_skin_remain_time-=m_time_delta;
 	}
 	if (skeleton_skin_remain_time<0)
 	{
@@ -699,7 +690,7 @@ void CCharacterPhysicsSupport::UpdateFrictionAndJointResistanse()
 
 	if(skeleton_skin_remain_time_after_wound!=0)
 	{
-		skeleton_skin_remain_time_after_wound-=l_time_delta;
+		skeleton_skin_remain_time_after_wound-=m_time_delta;
 	};
 	if (skeleton_skin_remain_time_after_wound<0)
 	{
@@ -721,15 +712,18 @@ void CCharacterPhysicsSupport::UpdateFrictionAndJointResistanse()
 	m_curr_skin_friction_in_death=skeleton_skin_friction_end+
 		(remain/ddelay)*(skeleton_skin_friction_start-skeleton_skin_friction_end);	
 
-	if (m_was_wounded)
+	
+};
+
+void CCharacterPhysicsSupport::CalculateTimeDelta()
+{
+	if (m_Pred_Time==0.0)
 	{
-		if(wound_blend_remain_time!=0)
-		{
-			wound_blend_remain_time-=l_time_delta;
-		};
-		if (wound_blend_remain_time<0)
-		{
-			wound_blend_remain_time=0;
-		};
+		m_time_delta=0;
 	}
+	else
+	{
+		m_time_delta=Device.fTimeGlobal-m_Pred_Time;					
+	}
+	m_Pred_Time=Device.fTimeGlobal;
 };
