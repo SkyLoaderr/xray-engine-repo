@@ -1,7 +1,7 @@
 --' Диденко Руслан (Stohe), Чугай Александр (Chugai)
 
-function printf()
-end
+--function printf()
+--end
 
 --' в работах поле object хранит id объекта
 
@@ -854,6 +854,7 @@ function gulag:setup_squad_and_group( obj_id, job )
 		local obj = self.Object[obj_id]
 
 		local squad = level_groups[level.name()]
+		printf("CHANGE TEAM [%s] to [%s][%s][%s]", obj:name(), npc_info.team, squad or npc_info.o_squad, job.group or npc_info.o_group )
 		obj:change_team( npc_info.team, squad or npc_info.o_squad, job.group or npc_info.o_group )
 
 		npc_info.squad = obj:squad()
