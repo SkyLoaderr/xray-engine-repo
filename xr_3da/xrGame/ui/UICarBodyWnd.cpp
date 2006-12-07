@@ -24,6 +24,7 @@
 #include "../game_object_space.h"
 #include "../script_callback_ex.h"
 #include "../script_game_object.h"
+#include "../BottleItem.h"
 
 #define				CAR_BODY_XML		"carbody_new.xml"
 #define				CARBODY_ITEM_XML	"carbody_item.xml"
@@ -396,6 +397,7 @@ void CUICarBodyWnd::ActivatePropertiesBox()
 	CEatableItem*			pEatableItem	= smart_cast<CEatableItem*>(CurrentIItem());
 	CMedkit*				pMedkit			= smart_cast<CMedkit*>			(CurrentIItem());
 	CAntirad*				pAntirad		= smart_cast<CAntirad*>			(CurrentIItem());
+	CBottleItem*			pBottleItem		= smart_cast<CBottleItem*>		(CurrentIItem());
     bool					b_show			= false;
 	if(pWeapon)
 	{
@@ -432,6 +434,22 @@ void CUICarBodyWnd::ActivatePropertiesBox()
 		b_show			= true;
 	}
 	
+	LPCSTR _action				= NULL;
+	if(pMedkit || pAntirad)
+	{
+		_action						= "st_use";
+	}
+	else if(pEatableItem)
+	{
+		if(pBottleItem)
+			_action					= "st_drink";
+		else
+			_action					= "st_eat";
+	}
+	if(_action)
+		m_pUIPropertiesBox->AddItem(_action,  NULL, INVENTORY_EAT_ACTION);
+
+
 	if(b_show){
 		m_pUIPropertiesBox->AutoUpdateSize	();
 		m_pUIPropertiesBox->BringAllToTop	();
