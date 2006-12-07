@@ -545,7 +545,7 @@ void CUIMapWnd::Update()
 
 void CUIMapWnd::SetZoom	( float value)
 {
-	float _prev_zoom = m_currentZoom;
+//	float _prev_zoom = m_currentZoom;
 	m_currentZoom	= value;
 	clamp		(m_currentZoom, GlobalMap()->GetMinZoom(), GlobalMap()->GetMaxZoom());
 }
