@@ -131,7 +131,7 @@ void	CROS_impl::update	(IRenderable* O)
 	// hemi-tracing
 	bool	bFirstTime	=	(0==result_count);
 	if	(MODE & IRender_ObjectSpecific::TRACE_HEMI)	{
-		for (u32 it=0; it<ps_r2_dhemi_count;	it++)		{	// five samples per one frame
+		for (u32 it=0; it<(u32)ps_r2_dhemi_count;	it++)		{	// five samples per one frame
 			u32	sample		=	0				;
 			if	(result_count<lt_hemisamples)	{ sample=result_count; result_count++;							}
 			else								{ sample=(result_iterator%lt_hemisamples); result_iterator++;	}
