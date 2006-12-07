@@ -3,12 +3,9 @@
 #include "UIMap.h"
 #include "UIXmlInit.h"
 
-#include <boost/function.hpp>
-#include <boost/bind.hpp>
 #include "../map_manager.h"
 #include "UIInventoryUtilities.h"
 #include "../map_location.h"
-
 
 #include "UIScrollBar.h"
 #include "UIFrameWindow.h"
@@ -84,7 +81,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	m_UIMainScrollH->SetPageSize	(iFloor(m_UILevelFrame->GetWidth()));
 	m_UIMainFrame->AttachChild		(m_UIMainScrollH);
 	Register						(m_UIMainScrollH);
-	AddCallback						("scroll_h",SCROLLBAR_HSCROLL,boost::bind(&CUIMapWnd::OnScrollH,this));
+	AddCallback						("scroll_h",SCROLLBAR_HSCROLL,CUIWndCallback::void_function(this,&CUIMapWnd::OnScrollH));
 
 	m_UIMainScrollV					= xr_new<CUIScrollBar>(); m_UIMainScrollV->SetAutoDelete(true);
 	m_UIMainScrollV->Init			(r.right + SCROLLBARS_SHIFT, r.top, m_UIMainScrollH->GetWndRect().bottom - r.top , false, "pda");
@@ -93,7 +90,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	m_UIMainScrollV->SetPageSize	(iFloor(m_UILevelFrame->GetHeight()));
 	m_UIMainFrame->AttachChild		(m_UIMainScrollV);
 	Register						(m_UIMainScrollV);
-	AddCallback						("scroll_v",SCROLLBAR_VSCROLL,boost::bind(&CUIMapWnd::OnScrollV,this));
+	AddCallback						("scroll_v",SCROLLBAR_VSCROLL,CUIWndCallback::void_function(this,&CUIMapWnd::OnScrollV));
 
 	UIMainMapHeader					= xr_new<CUIFrameLineWnd>(); UIMainMapHeader->SetAutoDelete(true);
 	m_UIMainFrame->AttachChild		(UIMainMapHeader);
@@ -112,7 +109,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
 		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
 		Register						(m_ToolBar[btnIndex]);
-		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolGlobalMapClicked,this,_1,_2));
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,CUIWndCallback::void_function(this,&CUIMapWnd::OnToolGlobalMapClicked));
 	}
 
 	btnIndex		= eActor;
@@ -122,7 +119,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
 		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
 		Register						(m_ToolBar[btnIndex]);
-		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolActorClicked,this,_1,_2));
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,CUIWndCallback::void_function(this,&CUIMapWnd::OnToolActorClicked));
 	}
 
 
@@ -133,7 +130,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
 		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
 		Register						(m_ToolBar[btnIndex]);
-		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolZoomInClicked,this,_1,_2));
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUIMapWnd::OnToolZoomInClicked));
 	}
 	btnIndex		= eZoomOut;
 	strconcat(pth, sToolbar.c_str(), ":zoom_out_btn");
@@ -142,7 +139,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
 		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
 		Register						(m_ToolBar[btnIndex]);
-		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolZoomOutClicked,this,_1,_2));
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUIMapWnd::OnToolZoomOutClicked));
 	}
 /*
 	btnIndex		= eAddSpot;
@@ -152,7 +149,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
 		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
 		Register						(m_ToolBar[btnIndex]);
-		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolAddSpotClicked,this,_1,_2));
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,CUIWndCallback::void_function(&CUIMapWnd::OnToolAddSpotClicked,this,_1,_2));
 	}
 	btnIndex		= eRemoveSpot;
 	strconcat(pth, sToolbar.c_str(), ":remove_spot_btn");
@@ -161,7 +158,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
 		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
 		Register						(m_ToolBar[btnIndex]);
-		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolRemoveSpotClicked,this,_1,_2));
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,CUIWndCallback::void_function(&CUIMapWnd::OnToolRemoveSpotClicked,this,_1,_2));
 	}
 
 	btnIndex		= eHighlightSpot;
@@ -171,7 +168,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 		xml_init.Init3tButton			(uiXml, pth, 0, m_ToolBar[btnIndex]);
 		UIMainMapHeader->AttachChild	(m_ToolBar[btnIndex]);
 		Register						(m_ToolBar[btnIndex]);
-		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,boost::bind(&CUIMapWnd::OnToolHighlightSpotClicked,this,_1,_2));
+		AddCallback						(*m_ToolBar[btnIndex]->WindowName(),BUTTON_CLICKED,CUIWndCallback::void_function(&CUIMapWnd::OnToolHighlightSpotClicked,this,_1,_2));
 	}
 */
 	m_text_hint							= xr_new<CUIStatic>();
@@ -517,7 +514,7 @@ void CUIMapWnd::UpdateScroll()
 }
 
 
-void CUIMapWnd::OnScrollV()
+void CUIMapWnd::OnScrollV(CUIWindow*, void*)
 {
 	if (GlobalMap()){
 		int s_pos					= m_UIMainScrollV->GetScrollPos();
@@ -526,7 +523,7 @@ void CUIMapWnd::OnScrollV()
 	}
 }
 
-void CUIMapWnd::OnScrollH()
+void CUIMapWnd::OnScrollH(CUIWindow*, void*)
 {
 	if (GlobalMap()){
 		int s_pos					= m_UIMainScrollH->GetScrollPos();

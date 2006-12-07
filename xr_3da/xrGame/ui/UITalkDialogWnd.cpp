@@ -12,10 +12,6 @@
 #include "UI3tButton.h"
 #include "../UI.h"
 
-#include <boost/function.hpp>
-#include <boost/bind.hpp>
-
-//////////////////////////////////////////////////////////////////////////
 
 #define				TALK_XML				"talk.xml"
 #define				TRADE_CHARACTER_XML		"trade_character.xml"
@@ -96,8 +92,8 @@ void CUITalkDialogWnd::Init(float x, float y, float width, float height)
 	SetWindowName("----CUITalkDialogWnd");
 
 	Register						(&UIToTradeButton);
-	AddCallback						("question_item",LIST_ITEM_CLICKED,boost::bind(&CUITalkDialogWnd::OnQuestionClicked,this,_1,_2));
-	AddCallback						("trade_btn",BUTTON_CLICKED,boost::bind(&CUITalkDialogWnd::OnTradeClicked,this));
+	AddCallback						("question_item",LIST_ITEM_CLICKED,CUIWndCallback::void_function(this, &CUITalkDialogWnd::OnQuestionClicked));
+	AddCallback						("trade_btn",BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUITalkDialogWnd::OnTradeClicked));
 }
 
 
@@ -121,7 +117,7 @@ void CUITalkDialogWnd::OnQuestionClicked(CUIWindow* w, void*)
 		GetMessageTarget()->SendMessage(this, TALK_DIALOG_QUESTION_CLICKED);
 }
 
-void CUITalkDialogWnd::OnTradeClicked()
+void CUITalkDialogWnd::OnTradeClicked(CUIWindow* w, void*)
 {
 		GetTop()->SendMessage(this, TALK_DIALOG_TRADE_BUTTON_CLICKED);
 }
@@ -215,7 +211,7 @@ CUIQuestionItem::CUIQuestionItem			(CUIXml* xml_doc, LPCSTR path)
 
 	Register						(m_text);
 	m_text->SetWindowName			("text_button");
-	AddCallback						("text_button",BUTTON_CLICKED,boost::bind(&CUIQuestionItem::OnTextClicked,this));
+	AddCallback						("text_button",BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUIQuestionItem::OnTextClicked));
 
 }
 
@@ -228,7 +224,7 @@ void CUIQuestionItem::Init			(int val, LPCSTR text)
 	SetHeight						(new_h);
 }
 
-void	CUIQuestionItem::OnTextClicked()
+void	CUIQuestionItem::OnTextClicked(CUIWindow* w, void*)
 {
 	GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED, (void*)this);
 }

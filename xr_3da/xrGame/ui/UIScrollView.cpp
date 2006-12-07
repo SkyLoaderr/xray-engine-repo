@@ -3,8 +3,6 @@
 #include "UIScrollBar.h"
 #include "../ui_base.h"
 #include "../UICursor.h"
-#include <boost/function.hpp>
-#include <boost/bind.hpp>
 #include "../../xr_input.h"	
 
 CUIScrollView::CUIScrollView()
@@ -49,16 +47,16 @@ void CUIScrollView::Init				()
         m_VScrollBar				= xr_new<CUIScrollBar>();m_VScrollBar->SetAutoDelete(true);
 		AttachChild					(m_VScrollBar);
 		Register					(m_VScrollBar);
-		AddCallback					("scroll_v",SCROLLBAR_VSCROLL,boost::bind(&CUIScrollView::OnScrollV,this));
+		AddCallback					("scroll_v",	SCROLLBAR_VSCROLL, CUIWndCallback::void_function (this, &CUIScrollView::OnScrollV) );
 	}
 	if (!!m_scrollbar_profile)
         m_VScrollBar->Init			(GetWndSize().x, 0.0f, GetWndSize().y, false, *m_scrollbar_profile);
 	else
 		m_VScrollBar->Init			(GetWndSize().x, 0.0f, GetWndSize().y, false);
-	m_VScrollBar->SetWndPos		(m_VScrollBar->GetWndPos().x - m_VScrollBar->GetWndSize().x, m_VScrollBar->GetWndPos().y);
-	m_VScrollBar->SetWindowName	("scroll_v");
-	m_VScrollBar->SetStepSize	(_max(1,iFloor(GetHeight()/10)));
-	m_VScrollBar->SetPageSize	(iFloor(GetHeight()));
+	m_VScrollBar->SetWndPos			(m_VScrollBar->GetWndPos().x - m_VScrollBar->GetWndSize().x, m_VScrollBar->GetWndPos().y);
+	m_VScrollBar->SetWindowName		("scroll_v");
+	m_VScrollBar->SetStepSize		(_max(1,iFloor(GetHeight()/10)));
+	m_VScrollBar->SetPageSize		(iFloor(GetHeight()));
 	
 
 }
@@ -196,7 +194,7 @@ bool CUIScrollView::NeedShowScrollBar(){
 	return m_flags.test(eFixedScrollBar) || GetHeight()<m_pad->GetHeight();
 }
 
-void CUIScrollView::OnScrollV			()
+void CUIScrollView::OnScrollV			(CUIWindow*, void*)
 {
 	int s_pos					= m_VScrollBar->GetScrollPos();
 	Fvector2 w_pos				= m_pad->GetWndPos();
@@ -251,7 +249,7 @@ void CUIScrollView::SetScrollPos(int value)
 {
 	clamp(value,GetMinScrollPos(),GetMaxScrollPos());
 	m_VScrollBar->SetScrollPos(value);
-	OnScrollV();
+	OnScrollV(NULL,NULL);
 }
 
 void CUIScrollView::ScrollToBegin		()
@@ -260,7 +258,7 @@ void CUIScrollView::ScrollToBegin		()
 		RecalcSize			();
 
 	m_VScrollBar->SetScrollPos(m_VScrollBar->GetMinRange());
-	OnScrollV();
+	OnScrollV(NULL,NULL);
 }
 
 void CUIScrollView::ScrollToEnd			()
@@ -269,7 +267,7 @@ void CUIScrollView::ScrollToEnd			()
 		RecalcSize			();
 
 	m_VScrollBar->SetScrollPos(m_VScrollBar->GetMaxRange());
-	OnScrollV();
+	OnScrollV(NULL,NULL);
 }
 
 void CUIScrollView::SetRightIndention	(float val)

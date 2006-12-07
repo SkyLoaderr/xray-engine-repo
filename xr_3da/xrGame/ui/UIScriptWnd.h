@@ -5,11 +5,11 @@
 #include "../script_export_space.h"
 
 struct SCallbackInfo;
-
+/*
 namespace boost {
 	template<typename Signature, typename Allocator>
 	class function;
-};
+};*/
 
 class CUIDialogWndEx :public CUIDialogWnd, public DLL_Pure
 {

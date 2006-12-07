@@ -3,8 +3,6 @@
 #include "UIScrollBar.h"
 #include "../object_broker.h"
 #include "UICellItem.h"
-#include <boost/function.hpp>
-#include <boost/bind.hpp>
 
 CUIDragItem* CUIDragDropListEx::m_drag_item = NULL;
 
@@ -25,12 +23,12 @@ CUIDragDropListEx::CUIDragDropListEx()
 
 	m_vScrollBar->SetWindowName	("scroll_v");
 	Register					(m_vScrollBar);
-	AddCallback					("scroll_v",SCROLLBAR_VSCROLL,boost::bind(&CUIDragDropListEx::OnScrollV,this, _1, _2));
-	AddCallback					("cell_item",DRAG_DROP_ITEM_DRAG,boost::bind(&CUIDragDropListEx::OnItemStartDragging,this, _1, _2));
-	AddCallback					("cell_item",DRAG_DROP_ITEM_DROP,boost::bind(&CUIDragDropListEx::OnItemDrop,this, _1, _2));
-	AddCallback					("cell_item",DRAG_DROP_ITEM_SELECTED,boost::bind(&CUIDragDropListEx::OnItemSelected,this, _1, _2));
-	AddCallback					("cell_item",DRAG_DROP_ITEM_RBUTTON_CLICK,boost::bind(&CUIDragDropListEx::OnItemRButtonClick,this, _1, _2));
-	AddCallback					("cell_item",DRAG_DROP_ITEM_DB_CLICK,boost::bind(&CUIDragDropListEx::OnItemDBClick,this, _1, _2));
+	AddCallback					("scroll_v",	SCROLLBAR_VSCROLL,				CUIWndCallback::void_function				(this, &CUIDragDropListEx::OnScrollV)		);
+	AddCallback					("cell_item",	DRAG_DROP_ITEM_DRAG,			CUIWndCallback::void_function			(this, &CUIDragDropListEx::OnItemStartDragging)	);
+	AddCallback					("cell_item",	DRAG_DROP_ITEM_DROP,			CUIWndCallback::void_function			(this, &CUIDragDropListEx::OnItemDrop)			);
+	AddCallback					("cell_item",	DRAG_DROP_ITEM_SELECTED,		CUIWndCallback::void_function		(this, &CUIDragDropListEx::OnItemSelected)			);
+	AddCallback					("cell_item",	DRAG_DROP_ITEM_RBUTTON_CLICK,	CUIWndCallback::void_function	(this, &CUIDragDropListEx::OnItemRButtonClick)			);
+	AddCallback					("cell_item",	DRAG_DROP_ITEM_DB_CLICK,		CUIWndCallback::void_function		(this, &CUIDragDropListEx::OnItemDBClick)			);
 }
 
 CUIDragDropListEx::~CUIDragDropListEx()

@@ -51,8 +51,8 @@ protected:
 	typedef xr_vector<CEncyclopediaArticle*>::iterator	ArticlesDB_it;
 	ArticlesDB				m_ArticlesDB;
 
-			void		OnFilterChanged			(CUIWindow*,void*);
-			void		OnSrcListItemClicked	(CUIWindow*,void*);
+			void __stdcall	OnFilterChanged			(CUIWindow*,void*);
+			void __stdcall	OnSrcListItemClicked	(CUIWindow*,void*);
 			void		UnloadJournalTab		();
 			void		LoadJournalTab			(ARTICLE_DATA::EArticleType _type);
 			void		UnloadInfoTab			();

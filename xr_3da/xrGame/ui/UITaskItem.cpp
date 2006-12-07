@@ -4,8 +4,6 @@
 #include "UI3tButton.h"
 #include "../gametask.h"
 #include "../string_table.h"
-#include <boost/function.hpp>
-#include <boost/bind.hpp>
 #include "UIEventsWnd.h"
 #include "UIEditBoxEx.h"
 #include "UIEditBox.h"
@@ -46,10 +44,10 @@ SGameTaskObjective*	CUITaskItem::Objective	()
 void CUITaskItem::Init				()
 {
 	SetWindowName					("job_item");
-	AddCallback						("job_item",BUTTON_CLICKED,boost::bind(&CUITaskItem::OnClick,this));
+	AddCallback						("job_item",BUTTON_CLICKED,CUIWndCallback::void_function(this,&CUITaskItem::OnClick));
 }
 
-void CUITaskItem::OnClick				()
+void CUITaskItem::OnClick				(CUIWindow*, void*)
 {
 	m_EventsWnd->ShowDescription						(GameTask(), ObjectiveIdx());
 }
@@ -76,7 +74,7 @@ void CUITaskRootItem::Init			()
 	m_captionTime		= xr_new<CUI3tButton>();	m_captionTime->SetAutoDelete(true);			AttachChild(m_captionTime);
 	m_switchDescriptionBtn->SetWindowName("m_switchDescriptionBtn");
 	Register(m_switchDescriptionBtn);
-	AddCallback						("m_switchDescriptionBtn",BUTTON_CLICKED,boost::bind(&CUITaskRootItem::OnSwitchDescriptionClicked,this));
+	AddCallback						("m_switchDescriptionBtn",BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUITaskRootItem::OnSwitchDescriptionClicked));
 
 	CUIXmlInit xml_init;
 	CUIXml&						uiXml = m_EventsWnd->m_ui_task_item_xml;
@@ -160,7 +158,7 @@ bool CUITaskRootItem::OnDbClick	()
 	return true;
 }
 
-void CUITaskRootItem::OnSwitchDescriptionClicked	()
+void CUITaskRootItem::OnSwitchDescriptionClicked	(CUIWindow*, void*)
 {
 	bool bPushed = 	m_switchDescriptionBtn->GetCheck	();
 	m_EventsWnd->SetDescriptionMode						(!bPushed);
@@ -194,7 +192,7 @@ void CUITaskSubItem::Init			()
 	m_showDescriptionBtn->SetWindowName				("m_showDescriptionBtn");
 	Register										(m_showDescriptionBtn);
 
-	AddCallback						("m_showDescriptionBtn",BUTTON_CLICKED,boost::bind(&CUITaskSubItem::OnShowDescriptionClicked,this));
+	AddCallback						("m_showDescriptionBtn",BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUITaskSubItem::OnShowDescriptionClicked));
 
 
 	CUIXmlInit xml_init;
@@ -267,7 +265,7 @@ void CUITaskSubItem::OnActiveObjectiveClicked()
 	m_EventsWnd->ShowDescription			(GameTask(), ObjectiveIdx());
 }
 
-void CUITaskSubItem::OnShowDescriptionClicked ()
+void CUITaskSubItem::OnShowDescriptionClicked (CUIWindow*, void*)
 {
 	m_EventsWnd->ShowDescription						(GameTask(), ObjectiveIdx());
 }

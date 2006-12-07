@@ -6,8 +6,6 @@
 #include "UIAnimatedStatic.h"
 #include "UIXmlInit.h"
 #include "../object_broker.h"
-#include <boost/function.hpp>
-#include <boost/bind.hpp>
 #include "UITabControl.h"
 #include "UIScrollView.h"
 #include "UIListWnd.h"
@@ -67,7 +65,7 @@ void CUIDiaryWnd::Init()
 	xml_init.InitTabControl			(uiXml, "main_wnd:left_frame:left_frame_header:filter_tab", 0, m_FilterTab);
 	m_FilterTab->SetWindowName		("filter_tab");
 	Register						(m_FilterTab);
-    AddCallback						("filter_tab",TAB_CHANGED,boost::bind(&CUIDiaryWnd::OnFilterChanged,this,_1,_2));
+    AddCallback						("filter_tab",TAB_CHANGED,CUIWndCallback::void_function(this,&CUIDiaryWnd::OnFilterChanged));
 
 	m_UIAnimation					= xr_new<CUIAnimatedStatic>(); m_UIAnimation->SetAutoDelete(true);
 	xml_init.InitAnimatedStatic		(uiXml, "main_wnd:left_frame:left_frame_header:anim_static", 0, m_UIAnimation);
@@ -82,7 +80,7 @@ void CUIDiaryWnd::Init()
 	xml_init.InitListWnd			(uiXml, "main_wnd:left_frame:work_area:src_list", 0, m_SrcListWnd);
 	m_SrcListWnd->SetWindowName		("src_list");
 	Register						(m_SrcListWnd);
-    AddCallback						("src_list",LIST_ITEM_CLICKED,boost::bind(&CUIDiaryWnd::OnSrcListItemClicked,this,_1,_2));
+    AddCallback						("src_list",LIST_ITEM_CLICKED,CUIWndCallback::void_function(this,&CUIDiaryWnd::OnSrcListItemClicked));
 
 	xml_init.InitFont				(uiXml, "main_wnd:left_frame:work_area:src_list:tree_item_font", 0, m_uTreeItemColor, m_pTreeItemFont);
 	R_ASSERT						(m_pTreeItemFont);
