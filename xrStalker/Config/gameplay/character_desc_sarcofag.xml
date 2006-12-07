@@ -19,7 +19,7 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
-            wpn_colt1911 \n
+            wpn_usp \n
             ammo_11.43x23_hydro = 1 \n
             wpn_fn2000 \n
             ammo_5.56x45_ap = 1 \n
@@ -46,7 +46,7 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
-            wpn_colt1911 \n
+            wpn_usp \n
             ammo_11.43x23_hydro = 1 \n
             wpn_g36 \n
             ammo_5.56x45_ap = 1 \n
@@ -73,7 +73,7 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
-            wpn_colt1911 \n
+            wpn_usp \n
             ammo_11.43x23_hydro = 1 \n
             wpn_val \n
 			ammo_9x39_ap = 1 \n
@@ -100,7 +100,7 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
-            wpn_colt1911 \n
+            wpn_usp \n
             ammo_11.43x23_hydro = 1 \n
             wpn_groza \n
 			ammo_9x39_ap \n
@@ -127,7 +127,7 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
-            wpn_colt1911 \n
+            wpn_usp \n
             ammo_11.43x23_hydro = 1 \n
             wpn_groza \n
 			ammo_9x39_ap \n
@@ -158,8 +158,8 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
-            wpn_desert_eagle \n
-            ammo_11.43x23_fmj = 1 \n
+            wpn_usp \n
+            ammo_11.43x23_hydro = 1 \n
             wpn_groza \n
 			ammo_9x39_ap \n
 #include "gameplay\character_drugs.xml"
@@ -186,8 +186,8 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
-            wpn_desert_eagle \n
-            ammo_11.43x23_fmj = 1 \n
+            wpn_usp \n
+            ammo_11.43x23_hydro = 1 \n
             wpn_groza \n
 			ammo_9x39_ap \n
 #include "gameplay\character_drugs.xml"
@@ -214,8 +214,8 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
-            wpn_desert_eagle \n
-            ammo_11.43x23_fmj = 1 \n
+            wpn_usp \n
+            ammo_11.43x23_hydro = 1 \n
             wpn_groza \n
 			ammo_9x39_ap \n
 #include "gameplay\character_drugs.xml"
@@ -243,9 +243,9 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
-            wpn_desert_eagle \n
-            ammo_11.43x23_fmj = 1 \n
-            wpn_wincheaster1300 \n
+            wpn_usp \n
+            ammo_11.43x23_hydro = 1 \n
+            wpn_spas12 \n
 			ammo_12x76_zhekan = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
@@ -271,8 +271,8 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
-            wpn_desert_eagle \n
-            ammo_11.43x23_fmj = 1 \n
+            wpn_usp \n
+            ammo_11.43x23_hydro = 1 \n
             wpn_spas12 \n
 			ammo_12x76_zhekan = 1 \n
 #include "gameplay\character_drugs.xml"
@@ -299,8 +299,8 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
-            wpn_desert_eagle \n
-            ammo_11.43x23_fmj = 1 \n
+            wpn_usp \n
+            ammo_11.43x23_hydro = 1 \n
             wpn_val \n
 			ammo_9x39_ap = 1 \n
 #include "gameplay\character_drugs.xml"
@@ -327,8 +327,8 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
-            wpn_desert_eagle \n
-            ammo_11.43x23_fmj = 1 \n
+            wpn_usp \n
+            ammo_11.43x23_hydro = 1 \n
             wpn_g36_m1 \n
             ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_drugs.xml"
@@ -355,9 +355,10 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
             [spawn] \n
-            wpn_desert_eagle \n
-            ammo_11.43x23_fmj = 1 \n
+            wpn_usp \n
+            ammo_11.43x23_hydro = 1 \n
             wpn_gauss \n
+            ammo_gauss = 1\n
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
@@ -381,8 +382,8 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
 			[spawn] \n
-			wpn_ak74 \n
-            ammo_5.45x39_ap = 1 \n
+			wpn_groza \n
+			ammo_9x39_ap \n	
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
@@ -405,8 +406,8 @@
 	  	<crouch_type>0</crouch_type>
         <supplies>
 			[spawn] \n
-			wpn_ak74 \n
-            ammo_5.45x39_ap = 1 \n
+			wpn_groza \n
+			ammo_9x39_ap \n	
         </supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
