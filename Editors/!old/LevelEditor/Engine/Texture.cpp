@@ -386,6 +386,17 @@ _BUMP:
 _BUMP_from_base:
 	{
 		Msg			("! auto-generated bump map: %s",fname);
+//////////////////
+		if (strstr(fname,"_bump#"))			{
+			R_ASSERT2	(FS.exist(fn,"$game_textures$",	"dummy_bump#",	".dds"),fname);
+			goto		_DDS_2D;
+		}
+		if (strstr(fname,"_bump"))			{
+			R_ASSERT2	(FS.exist(fn,"$game_textures$",	"dummy_bump",	".dds"),fname);
+			goto		_DDS_2D;
+		}
+//////////////////
+
 		*strstr		(fname,"_bump")	= 0;
 		R_ASSERT2	(FS.exist(fn,"$game_textures$",	fname,	".dds"),fname);
 
