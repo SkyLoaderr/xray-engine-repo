@@ -1,7 +1,7 @@
 [trader]
 buy_condition = dolg_generic_buy
-sell_condition = {=actor_in_dolg} sell_in_dolg, sell_not_in_dolg
-buy_supplies = {=actor_in_dolg} supplies_in_dolg, supplies_not_in_dolg
+sell_condition = dolg_sell_start, {+bar_svoboda_rg6_done} dolg_sell_after_rg6
+buy_supplies = supplies_start, {+bar_svoboda_rg6_done} supplies_after_rg6
 
 
 [dolg_generic_buy]
@@ -90,6 +90,8 @@ wpn_svu					= 0.3,	0.1
 wpn_svd					= 0.3,	0.1
 wpn_rg-6				= 0.3,	0.1
 wpn_rpg7				= 0.3,	0.1
+wpn_g36					= 0.3,	0.1
+wpn_fn2000				= 0.3,	0.1
 
 ;ADDONS
 wpn_addon_scope					= 0.7,	0.2
@@ -99,6 +101,7 @@ wpn_addon_grenade_launcher		= 0.7,	0.2
 wpn_addon_grenade_launcher_m203 = 0.7,	0.2
 
 ;Броники
+novice_outfit			= 1,	0.3
 bandit_outfit			= 1,	0.3
 killer_outfit			= 1,	0.3
 monolit_outfit			= 1,	0.3
@@ -118,6 +121,8 @@ protection_outfit		= 1,	0.3
 ;Медикаменты
 bandage					= 1,	0.5
 medkit					= 1,	0.5
+medkit_scientic			= 1,	0.5
+medkit_army				= 1,	0.5
 antirad					= 1,	0.5
 
 ;Детали монстров
@@ -148,6 +153,7 @@ guitar_a				;NO TRADE
 harmonica_a				;NO TRADE
 
 ;Квестовые предметы
+gunslinger_flash		;NO TRADE
 af_blood_tutorial		;NO TRADE
 esc_wounded_flash		;NO TRADE
 quest_case_02			;NO TRADE
@@ -210,52 +216,62 @@ wpn_fn2000_arena		;NO TRADE
 wpn_g36_arena			;NO TRADE
 
 
-[supplies_not_in_dolg]
-;Медикаменты
-bandage					= 10,	0.6
-medkit					= 10,	0.3
-antirad					= 10,	0.3
-
-;Еда
-bread					= 10,	0.5
-kolbasa					= 10,	0.5
-conserva				= 10,	0.5
-vodka					= 10,	0.3
-energy_drink			= 10,	0.3
-
-
-[supplies_in_dolg]
+[supplies_start]
 ;Аммуниция
-ammo_12x70_buck			= 10,	0.6
-ammo_12x76_dart			= 10,	0.2
-ammo_12x76_zhekan		= 10,	0.4
-ammo_9x39_sp5			= 10,	0.6
-ammo_9x39_ap			= 10,	0.5
-ammo_9x39_pab9			= 10,	0.4
-ammo_vog-25p			= 10,	0.4
-ammo_vog-25				= 10,	0.5
-grenade_f1				= 10,	0.4
-grenade_rgd5			= 10,	0.5
-
+ammo_5.45x39_fmj    	= 5,	1
+ammo_9x18_fmj			= 10,	0.6
+ammo_9x19_pbp			= 10,	0.5
+ammo_12x70_buck 		= 10,	0.6
 
 ;Оружие
-wpn_spas12				= 3,	0.7
-wpn_groza				= 2,	0.6
-wpn_val					= 1,	0.5
-wpn_vintorez			= 1,	0.5
-
-;ADDONS
-wpn_addon_scope			= 2,	0.9
-wpn_addon_silencer		= 2,	0.9
+wpn_walther				= 3,	0.6
+wpn_abakan				= 3,	0.6
 
 ;Броники
-dolg_outfit				= 2,	0.6
-dolg_scientific_outfit	= 1,	0.6
+scientific_outfit		= 2,	0.3
+dolg_outfit				= 2,	0.5
 
 ;Медикаменты
-bandage					= 10,	0.6
-medkit					= 10,	0.3
-antirad					= 10,	0.3
+bandage					= 5,	0.6
+medkit					= 5,	0.3
+antirad					= 5,	0.3
+
+;Еда
+bread					= 10,	0.5
+kolbasa					= 10,	0.5
+conserva				= 10,	0.5
+vodka					= 10,	0.3
+energy_drink			= 10,	0.3
+
+
+[supplies_after_rg6]
+;Аммуниция
+ammo_9x18_fmj			= 10,	0.6
+ammo_9x19_pbp			= 10,	0.5
+ammo_11.43x23_hydro 	= 10,	0.4
+ammo_11.43x23_fmj		= 10,	0.5
+ammo_12x70_buck 		= 10,	0.6
+ammo_5.45x39_fmj 		= 5,	1
+ammo_9x39_sp5 			= 10,	0.4
+ammo_9x39_pab9 			= 10,	0.6
+grenade_f1 				= 5,	0.4
+grenade_rgd5 			= 5,	0.5
+
+;Оружие
+wpn_walther				= 3,	0.6
+wpn_sig220				= 3,	0.5
+wpn_abakan				= 3,	0.6
+wpn_groza				= 3,	0.5
+
+;Броники
+scientific_outfit		= 3,	0.6
+dolg_outfit				= 3,	0.5
+
+;Медикаменты
+bandage					= 5,	0.6
+medkit					= 5,	0.5
+medkit_army				= 5,	0.3
+antirad					= 5,	0.5
 
 ;Еда
 bread					= 10,	0.5
@@ -266,7 +282,7 @@ energy_drink			= 10,	0.3
 
 
 
-[sell_not_in_dolg]
+[dolg_sell_start]
 ;Артефакты
 af_medusa				;NO TRADE
 af_cristall_flower		;NO TRADE
@@ -297,17 +313,17 @@ af_dummy_spring			;NO TRADE
 af_fuzz_kolobok			;NO TRADE
 
 ;Аммуниция
-ammo_9x18_fmj			;NO TRADE
+ammo_9x18_fmj			= 1,	3
 ammo_9x18_pmm			;NO TRADE
 ammo_9x19_pbp			;NO TRADE
-ammo_9x19_fmj			;NO TRADE
+ammo_9x19_fmj			= 1,	3
 ammo_11.43x23_hydro		;NO TRADE
 ammo_11.43x23_fmj		;NO TRADE
 ammo_12x70_buck			;NO TRADE
 ammo_12x76_dart			;NO TRADE
 ammo_12x76_zhekan		;NO TRADE
 ammo_5.45x39_ap			;NO TRADE
-ammo_5.45x39_fmj		;NO TRADE
+ammo_5.45x39_fmj		= 1,	3
 ammo_9x39_sp5			;NO TRADE
 ammo_9x39_ap			;NO TRADE
 ammo_9x39_pab9			;NO TRADE
@@ -329,7 +345,7 @@ wpn_pb					;NO TRADE
 wpn_fort				;NO TRADE
 wpn_hpsa				;NO TRADE
 wpn_beretta				;NO TRADE
-wpn_walther				;NO TRADE
+wpn_walther				= 1,	3
 wpn_sig220				;NO TRADE
 wpn_colt1911			;NO TRADE
 wpn_usp					;NO TRADE
@@ -341,7 +357,7 @@ wpn_spas12				;NO TRADE
 wpn_ak74u				;NO TRADE
 wpn_mp5					;NO TRADE
 wpn_ak74				;NO TRADE
-wpn_abakan				;NO TRADE
+wpn_abakan				= 1,	3
 wpn_l85					;NO TRADE
 wpn_lr300				;NO TRADE
 wpn_sig550				;NO TRADE
@@ -352,6 +368,8 @@ wpn_svu					;NO TRADE
 wpn_svd					;NO TRADE
 wpn_rg-6				;NO TRADE
 wpn_rpg7				;NO TRADE
+wpn_g36					;NO TRADE
+wpn_fn2000				;NO TRADE
 
 ;ADDONS
 wpn_addon_scope					;NO TRADE
@@ -361,13 +379,14 @@ wpn_addon_grenade_launcher		;NO TRADE
 wpn_addon_grenade_launcher_m203 ;NO TRADE
 
 ;Броники
+novice_outfit			;NO TRADE
 bandit_outfit			;NO TRADE
 killer_outfit			;NO TRADE
 monolit_outfit			;NO TRADE
 soldier_outfit			;NO TRADE
 specops_outfit			;NO TRADE
 military_outfit			;NO TRADE
-stalker_outfit			;NO TRADE
+stalker_outfit			= 1,	3
 scientific_outfit		;NO TRADE
 exo_outfit				;NO TRADE
 svoboda_light_outfit	;NO TRADE
@@ -380,6 +399,8 @@ protection_outfit		;NO TRADE
 ;Медикаменты
 bandage					= 1,	3
 medkit					= 1,	3
+medkit_scientic			;NO TRADE
+medkit_army				;NO TRADE
 antirad					= 1,	3
 
 ;Детали монстров
@@ -410,6 +431,7 @@ guitar_a				;NO TRADE
 harmonica_a				;NO TRADE
 
 ;Квестовые предметы
+gunslinger_flash		;NO TRADE
 af_blood_tutorial		;NO TRADE
 esc_wounded_flash		;NO TRADE
 quest_case_02			;NO TRADE
@@ -472,7 +494,7 @@ wpn_fn2000_arena		;NO TRADE
 wpn_g36_arena			;NO TRADE
 
 
-[sell_in_dolg]
+[dolg_sell_after_rg6]
 ;Артефакты
 af_medusa				;NO TRADE
 af_cristall_flower		;NO TRADE
@@ -503,19 +525,19 @@ af_dummy_spring			;NO TRADE
 af_fuzz_kolobok			;NO TRADE
 
 ;Аммуниция
-ammo_9x18_fmj			;NO TRADE
+ammo_9x18_fmj			= 1,	3
 ammo_9x18_pmm			;NO TRADE
 ammo_9x19_pbp			;NO TRADE
-ammo_9x19_fmj			;NO TRADE
-ammo_11.43x23_hydro		;NO TRADE
-ammo_11.43x23_fmj		;NO TRADE
+ammo_9x19_fmj			= 1,	3
+ammo_11.43x23_hydro		= 1,	3
+ammo_11.43x23_fmj		= 1,	3
 ammo_12x70_buck			= 1,	3
-ammo_12x76_dart			= 1,	3
-ammo_12x76_zhekan		= 1,	3
+ammo_12x76_dart			;NO TRADE
+ammo_12x76_zhekan		;NO TRADE
 ammo_5.45x39_ap			;NO TRADE
-ammo_5.45x39_fmj		;NO TRADE
+ammo_5.45x39_fmj		= 1,	3
 ammo_9x39_sp5			= 1,	3
-ammo_9x39_ap			= 1,	3
+ammo_9x39_ap			;NO TRADE
 ammo_9x39_pab9			= 1,	3
 ammo_5.56x45_ss190		;NO TRADE
 ammo_5.56x45_ap			;NO TRADE
@@ -523,8 +545,8 @@ ammo_7.62x54_7h14		;NO TRADE
 ammo_7.62x54_7h1		;NO TRADE
 ammo_7.62x54_ap			;NO TRADE
 ammo_og-7b				;NO TRADE
-ammo_vog-25p			= 1,	3
-ammo_vog-25				= 1,	3
+ammo_vog-25p			;NO TRADE
+ammo_vog-25				;NO TRADE
 grenade_f1				= 1,	3
 grenade_rgd5			= 1,	3
 ammo_m209				;NO TRADE
@@ -535,57 +557,62 @@ wpn_pb					;NO TRADE
 wpn_fort				;NO TRADE
 wpn_hpsa				;NO TRADE
 wpn_beretta				;NO TRADE
-wpn_walther				;NO TRADE
-wpn_sig220				;NO TRADE
+wpn_walther				= 1,	3
+wpn_sig220				= 1,	3
 wpn_colt1911			;NO TRADE
 wpn_usp					;NO TRADE
 wpn_desert_eagle		;NO TRADE
 wpn_bm16				;NO TRADE
 wpn_toz34				;NO TRADE
 wpn_wincheaster1300		;NO TRADE
-wpn_spas12				= 1,	3
+wpn_spas12				;NO TRADE
 wpn_ak74u				;NO TRADE
 wpn_mp5					;NO TRADE
 wpn_ak74				;NO TRADE
-wpn_abakan				;NO TRADE
+wpn_abakan				= 1,	3
 wpn_l85					;NO TRADE
 wpn_lr300				;NO TRADE
 wpn_sig550				;NO TRADE
 wpn_groza				= 1,	3
-wpn_val					= 1,	3
-wpn_vintorez			= 1,	3
+wpn_val					;NO TRADE
+wpn_vintorez			;NO TRADE
 wpn_svu					;NO TRADE
 wpn_svd					;NO TRADE
 wpn_rg-6				;NO TRADE
 wpn_rpg7				;NO TRADE
+wpn_g36					;NO TRADE
+wpn_fn2000				;NO TRADE
 
 ;ADDONS
-wpn_addon_scope					= 1,	3
+wpn_addon_scope					;NO TRADE
 wpn_addon_scope_susat			;NO TRADE
-wpn_addon_silencer				= 1,	3
+wpn_addon_silencer				;NO TRADE
 wpn_addon_grenade_launcher		;NO TRADE
 wpn_addon_grenade_launcher_m203 ;NO TRADE
 
 ;Броники
+novice_outfit			;NO TRADE
 bandit_outfit			;NO TRADE
 killer_outfit			;NO TRADE
 monolit_outfit			;NO TRADE
 soldier_outfit			;NO TRADE
 specops_outfit			;NO TRADE
 military_outfit			;NO TRADE
-stalker_outfit			;NO TRADE
-scientific_outfit		;NO TRADE
+stalker_outfit			= 1,	3
+scientific_outfit		= 1,	3
 exo_outfit				;NO TRADE
 svoboda_light_outfit	;NO TRADE
 svoboda_heavy_outfit	;NO TRADE
 dolg_outfit				= 1,	3
-dolg_scientific_outfit	= 1,	3
+dolg_scientific_outfit	;NO TRADE
 ecolog_outfit			;NO TRADE
 protection_outfit		;NO TRADE
 
 ;Медикаменты
 bandage					= 1,	3
 medkit					= 1,	3
+medkit_scientic			;NO TRADE
+medkit_army				= 1,	3
 antirad					= 1,	3
 
 ;Детали монстров
@@ -616,6 +643,7 @@ guitar_a				;NO TRADE
 harmonica_a				;NO TRADE
 
 ;Квестовые предметы
+gunslinger_flash		;NO TRADE
 af_blood_tutorial		;NO TRADE
 esc_wounded_flash		;NO TRADE
 quest_case_02			;NO TRADE
