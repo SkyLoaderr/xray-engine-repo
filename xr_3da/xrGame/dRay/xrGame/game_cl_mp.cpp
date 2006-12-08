@@ -698,7 +698,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 	game_PlayerState* pPlayer = GetPlayerByGameID(KilledID);
 	R_ASSERT(pPlayer);
 	game_PlayerState* pKiller = GetPlayerByGameID(KillerID);
-	R_ASSERT(pKiller);
+//	R_ASSERT(pKiller);
 	//-----------------------------------------------------------
 	KillMessageStruct KMS;
 	KMS.m_victim.m_name = pPlayer->name;
