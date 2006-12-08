@@ -419,22 +419,21 @@ bool CCharacterPhysicsSupport::DoCharacterShellCollide()
 void CCharacterPhysicsSupport::CollisionCorrectObjPos(const Fvector& start_from,bool	character_create/*=false*/)
 {
 	Fvector shift;shift.sub(start_from,m_EntityAlife.Position());
-	Fvector activation_pos;m_EntityAlife.Center(activation_pos);
-	Fvector center_shift;center_shift.sub(m_EntityAlife.Position(),activation_pos);
-	activation_pos.add(shift);
-	CPHActivationShape activation_shape;
-	Fbox box;box.set(m_EntityAlife.BoundingBox());
-	Fvector vbox;
-	box.getsize(vbox);
-	activation_shape.Create(activation_pos,vbox,&m_EntityAlife);
 
+	Fbox box;
+	if(character_create)box.set(movement()->Box());
+	else	box.set(m_EntityAlife.BoundingBox());
+	Fvector vbox;Fvector activation_pos;
+	box.get_CD(activation_pos,vbox);shift.add(activation_pos);vbox.mul(2.f);
+	activation_pos.add(shift,m_EntityAlife.Position());
+	CPHActivationShape activation_shape;
+	activation_shape.Create(activation_pos,vbox,&m_EntityAlife);
 	if(!DoCharacterShellCollide()&&!character_create)
 	{
 		CPHCollideValidator::SetCharacterClassNotCollide(activation_shape);
 	}
 	activation_shape.Activate(vbox,1,1.f,M_PI/8.f);
-	m_EntityAlife.Position().set(activation_shape.Position());
-	m_EntityAlife.Position().add(center_shift);
+	m_EntityAlife.Position().sub(activation_shape.Position(),shift);
 	activation_shape.Destroy();
 }
 void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
