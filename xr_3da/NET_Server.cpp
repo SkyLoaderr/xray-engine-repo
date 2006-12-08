@@ -10,7 +10,7 @@ static	INetLog* pSvNetLog = NULL;
 void	dump_URL	(LPCSTR p, IDirectPlay8Address* A);
 
 LPCSTR nameTraffic	= "traffic.net";
-LPCSTR nameBanned	= "banned.ltx";
+#define	BANNED_LIST		"banned.ltx"
 
 XRNETSERVER_API int		psNET_ServerUpdate	= 30;		// FPS
 XRNETSERVER_API int		psNET_ServerPending	= 2;
@@ -701,7 +701,9 @@ void			IPureServer::BannedAddress_Save	(u32 it, IWriter* fs)
 
 void			IPureServer::BannedList_Save	()
 {
-	IWriter*		fs	= FS.w_open(nameBanned);
+	string256					temp;
+	FS.update_path				(temp,"$app_data_root$", BANNED_LIST);
+	IWriter*		fs	= FS.w_open(temp);
 	for	(u32 it=0; it<BannedAddresses.size(); it++)
 	{
 		BannedAddress_Save(it, fs);
@@ -711,5 +713,7 @@ void			IPureServer::BannedList_Save	()
 
 LPCSTR			IPureServer::GetBannedListName	()
 {
-	return nameBanned;
+//	string256					temp;
+//	FS.update_path				(temp,"$app_data_root$", BANNED_LIST);
+	return (LPCSTR)BANNED_LIST;
 }
