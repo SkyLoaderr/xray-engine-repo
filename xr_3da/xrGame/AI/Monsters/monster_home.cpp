@@ -10,6 +10,37 @@
 #include "../../ai_object_location.h"
 #include "../../restricted_object.h"
 
+#ifdef DEBUG
+#	include "../../game_graph.h"
+void check_path	(const CBaseMonster *monster, const CPatrolPath *path)
+{
+	VERIFY2			(
+		ai().game_graph().vertex(
+			path->vertices().begin()->second->data().game_vertex_id()
+		)->level_id()
+		==
+		ai().level_graph().level_id(),
+		make_string(
+			"invalid patrol path [%s] as home specified for monster [%s]\nmonster is on level %s\npatrol path is on level %s",
+			*path->m_name,
+			*monster->cName(),
+			*ai().game_graph().header().level(
+				ai().game_graph().vertex(
+					monster->ai_location().game_vertex_id()
+				)->level_id()
+			).name(),
+			*ai().game_graph().header().level(
+				ai().game_graph().vertex(
+					path->vertices().begin()->second->data().game_vertex_id()
+				)->level_id()
+			).name()
+		)
+	);
+}
+#else // DEBUG
+#	define check_path(a,b)
+#endif // DEBUG
+
 void CMonsterHome::load(LPCSTR line)
 {
 	m_path			= 0;
@@ -18,6 +49,7 @@ void CMonsterHome::load(LPCSTR line)
 
 	if (m_object->spawn_ini() && m_object->spawn_ini()->section_exist(line)) {
 		m_path			= ai().patrol_paths().path(m_object->spawn_ini()->r_string(line,"path"));
+		check_path		(m_object,m_path);
 		if (m_object->spawn_ini()->line_exist(line,"radius_min"))
 			m_radius_min	= m_object->spawn_ini()->r_float(line,"radius_min");
 		if (m_object->spawn_ini()->line_exist(line,"radius_max"))
@@ -32,6 +64,7 @@ void CMonsterHome::load(LPCSTR line)
 void CMonsterHome::setup(LPCSTR path_name, float min_radius, float max_radius, bool aggressive)
 {
 	m_path			= ai().patrol_paths().path(path_name);
+	check_path		(m_object,m_path);
 	m_radius_min	= min_radius;
 	m_radius_max	= max_radius;
 
