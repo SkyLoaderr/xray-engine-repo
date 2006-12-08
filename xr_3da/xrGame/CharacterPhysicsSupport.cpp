@@ -15,6 +15,8 @@
 #include "PHActivationShape.h"
 #include "IKLimbsController.h"
 #include "PHCapture.h"
+#include "PHCollideValidator.h"
+#include "ai/stalker/ai_stalker.h"
 //const float default_hinge_friction = 5.f;//gray_wolf comment
 #ifdef DEBUG
 #include "PHDebug.h"
@@ -197,7 +199,7 @@ void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 void CCharacterPhysicsSupport::CreateCharacter()
 {
 	if(m_PhysicMovementControl->CharacterExist())return;
-	CollisionCorrectObjPos(m_EntityAlife.Position());
+	CollisionCorrectObjPos(m_EntityAlife.Position(),true);
 	m_PhysicMovementControl->CreateCharacter();
 	m_PhysicMovementControl->SetPhysicsRefObject(&m_EntityAlife);
 	m_PhysicMovementControl->SetPosition	(m_EntityAlife.Position());
@@ -404,7 +406,17 @@ Fvector velocity;
 	m_flags.set(fl_death_anim_on,FALSE);
 	m_eState=esDead;
 }
-void CCharacterPhysicsSupport::CollisionCorrectObjPos(const Fvector& start_from)
+bool CCharacterPhysicsSupport::DoCharacterShellCollide()
+{
+	if(m_eType==etStalker)
+	{
+		CAI_Stalker*	OBJ=smart_cast<CAI_Stalker*>(&m_EntityAlife);
+		VERIFY			(OBJ);
+		return			!OBJ->wounded();
+	}
+	return true;
+}
+void CCharacterPhysicsSupport::CollisionCorrectObjPos(const Fvector& start_from,bool	character_create/*=false*/)
 {
 	Fvector shift;shift.sub(start_from,m_EntityAlife.Position());
 	Fvector activation_pos;m_EntityAlife.Center(activation_pos);
@@ -415,6 +427,11 @@ void CCharacterPhysicsSupport::CollisionCorrectObjPos(const Fvector& start_from)
 	Fvector vbox;
 	box.getsize(vbox);
 	activation_shape.Create(activation_pos,vbox,&m_EntityAlife);
+
+	if(!DoCharacterShellCollide()&&!character_create)
+	{
+		CPHCollideValidator::SetCharacterClassNotCollide(activation_shape);
+	}
 	activation_shape.Activate(vbox,1,1.f,M_PI/8.f);
 	m_EntityAlife.Position().set(activation_shape.Position());
 	m_EntityAlife.Position().add(center_shift);
@@ -459,6 +476,10 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	if(!smart_cast<CCustomZone*>(who))
 	{
 		velocity.mul(1.25f*m_after_death_velocity_factor);
+	}
+	if(!DoCharacterShellCollide())
+	{
+		m_pPhysicsShell->DisableCharacterCollision();
 	}
 	m_pPhysicsShell->set_LinearVel(velocity);
 	K->CalculateBones_Invalidate();

@@ -138,10 +138,11 @@ static void _stdcall 					IKVisualCallback				(CKinematics* K)																		
 		void							CreateIKController				()																													;
 		void							DestroyIKController				()																													;
 		void							CalculateIK						(CKinematics* K)																									;
-		void							CollisionCorrectObjPos			(const Fvector& start_from);
+		void							CollisionCorrectObjPos			(const Fvector& start_from,bool character_create=false);
 		void							FlyTo							(const	Fvector &disp);
 		void							TestForWounded					();
-inline	void							UpdateFrictionAndJointResistanse();
-inline	void							CalculateTimeDelta();
+IC		void							UpdateFrictionAndJointResistanse();
+IC		void							CalculateTimeDelta				();
+IC		bool							DoCharacterShellCollide			();
 };
 #endif  //CHARACTER_PHYSICS_SUPPORT

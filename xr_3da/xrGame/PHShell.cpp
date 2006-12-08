@@ -77,7 +77,11 @@ void CPHShell::DisableObject()
 	CPHObject::deactivate();
 	if(m_spliter_holder)m_spliter_holder->Deactivate();
 	if(m_flags.test(flRemoveCharacterCollisionAfterDisable))
-			CPHCollideValidator::SetCharacterClassNotCollide(*this);
+										DisableCharacterCollision		();
+}
+void	 CPHShell::	DisableCharacterCollision		()
+{
+		CPHCollideValidator::SetCharacterClassNotCollide(*this);
 }
 void CPHShell::Disable()
 {
