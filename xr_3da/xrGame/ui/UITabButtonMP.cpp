@@ -14,11 +14,9 @@ const int TEXT_INDENTION = 43;
 
 CUITabButtonMP::CUITabButtonMP()
 {
-	m_orientationVertical = true;
+	m_orientationVertical	= true;
+	m_temp_index			= 0;
 }
-
-CUITabButtonMP::~CUITabButtonMP()
-{}
 
 
 void CUITabButtonMP::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
