@@ -1,5 +1,36 @@
 #include "stdafx.h"
 #include "UIMpTradeWnd.h"
+#include "UIStatic.h"
+#include "UIMpItemsStoreWnd.h"
+
+
+bool CUIMpTradeWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
+{
+	if(!m_store_hierarchy->CurrentIsRoot())
+	{
+		if (m_shop_wnd->OnKeyboard(dik, keyboard_action) )
+			return true;
+	}
+	return inherited::OnKeyboard(dik, keyboard_action);
+}
+
+void CUIMpTradeWnd::Update()
+{
+	inherited::Update			();
+	UpdateMomeyIndicator		();
+}
+
+void CUIMpTradeWnd::UpdateMomeyIndicator()
+{
+	string128					buff;
+	sprintf						(buff, "%d", m_money);
+	m_static_money->SetText		(buff);
+}
+
+void CUIMpTradeWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
+{
+	CUIWndCallback::OnEvent						(pWnd, msg, pData);
+}
 
 void CUIMpTradeWnd::BindDragDropListEvents(CUIDragDropListEx* lst, bool bDrag)
 {}
@@ -9,9 +40,10 @@ const u8 CUIMpTradeWnd::GetWeaponIndex(u32 slotNum)
 	return 0;
 }
 
+shared_str _fake;
 const shared_str& CUIMpTradeWnd::GetWeaponNameByIndex(u8 grpNum, u8 idx)
 {
-	return "";
+	return _fake;
 }
 
 

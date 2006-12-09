@@ -1782,6 +1782,9 @@
 						RelativePath=".\Config\ui\mp_buy_menu.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\mp_buy_menu_buttons.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\skin_selector.xml">
 					</File>
 					<File
