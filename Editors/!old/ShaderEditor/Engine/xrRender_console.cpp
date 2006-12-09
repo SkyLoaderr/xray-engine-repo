@@ -348,7 +348,7 @@ void		xrRender_initconsole	()
 
 	CMD4(CCC_Integer,	"r2_dhemi_count",		&ps_r2_dhemi_count,			4,		25		);
 	CMD4(CCC_Float,		"r2_dhemi_scale",		&ps_r2_dhemi_scale,			.5f,	3.f		);
-	CMD4(CCC_Float,		"r2_smooth",			&ps_r2_lt_smooth,			0.f,	1000.f	);
+	CMD4(CCC_Float,		"r2_dhemi_smooth",		&ps_r2_lt_smooth,			0.f,	1000.f	);
 
 	CMD4(CCC_Float,		"r2_ls_depth_scale",	&ps_r2_ls_depth_scale,		0.5,	1.5		);
 	CMD4(CCC_Float,		"r2_ls_depth_bias",		&ps_r2_ls_depth_bias,		-0.5,	+0.5	);
