@@ -25,9 +25,9 @@ void CUITabControl::script_register(lua_State *L)
 
 		class_<CUITabButton, CUIButton>("CUITabButton")
 		.def(							constructor<>())		
-		.def("AssociateWindow",			&CUITabButton::AssociateWindow)
-		.def("GetAssociatedWindow",		&CUITabButton::GetAssociatedWindow)
-		.def("ShowAssociatedWindow",	&CUITabButton::ShowAssociatedWindow)
+//.		.def("AssociateWindow",			&CUITabButton::AssociateWindow)
+//.		.def("GetAssociatedWindow",		&CUITabButton::GetAssociatedWindow)
+//.		.def("ShowAssociatedWindow",	&CUITabButton::ShowAssociatedWindow)
 	];
 
 }

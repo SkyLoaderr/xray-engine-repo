@@ -44,8 +44,7 @@ bool CUITabControl::IsChanged(){
 bool CUITabControl::AddItem(const char *pItemName, const char *pTexName, float x, float y, float width, float height)
 {
 	CUITabButton *pNewButton = xr_new<CUITabButton>();
-	if (!pNewButton)			return false;
-
+	pNewButton->SetAutoDelete	(true);
 	pNewButton->Init			(pTexName, x, y, width, height);
 	pNewButton->SetText			(pItemName);
 	pNewButton->SetTextColor	(m_cGlobalTextColor);
@@ -56,6 +55,7 @@ bool CUITabControl::AddItem(const char *pItemName, const char *pTexName, float x
 
 bool CUITabControl::AddItem(CUITabButton *pButton)
 {
+	pButton->SetAutoDelete		(true);
 	pButton->Show				(true);
 	pButton->Enable				(true);
 	pButton->SetButtonAsSwitch	(true);
@@ -92,7 +92,6 @@ void CUITabControl::RemoveAll()
 	for (; it != m_TabsArr.end(); ++it)
 	{
 		DetachChild(*it);
-		xr_delete(*it);
 	}
 	m_TabsArr.clear();
 }
@@ -146,10 +145,11 @@ void CUITabControl::OnStaticFocusLost(CUIWindow* pWnd){
 	GetMessageTarget()->SendMessage			(this, STATIC_FOCUS_LOST, static_cast<void*>(pWnd));
 }
 
-void CUITabControl::OnTabChange(int iCur, int iPrev){
-	m_TabsArr[iPrev]->SendMessage			(m_TabsArr[iCur], TAB_CHANGED, NULL);
-	m_TabsArr [iCur]->SendMessage			(m_TabsArr[iCur], TAB_CHANGED, NULL);	
-	GetMessageTarget()->SendMessage			(this, TAB_CHANGED, NULL);
+void CUITabControl::OnTabChange(int iCur, int iPrev)
+{
+	if(iPrev!=-1)	m_TabsArr[iPrev]->SendMessage	(m_TabsArr[iCur],	TAB_CHANGED, NULL);
+	m_TabsArr [iCur]->SendMessage					(m_TabsArr[iCur],	TAB_CHANGED, NULL);	
+	GetMessageTarget()->SendMessage					(this,				TAB_CHANGED, NULL);
 }
 
 void CUITabControl::SetNewActiveTab(const int iNewTab)
@@ -168,7 +168,7 @@ bool CUITabControl::OnKeyboard(int dik, EUIMessages keyboard_action)
 	{
 		for (u32 i = 0; i < m_TabsArr.size(); ++i)
 		{
-			if (m_TabsArr[i]->GetAccelerator() == static_cast<u32>(dik))
+			if (m_TabsArr[i]->GetAccelerator() == dik)
 			{
 				SetNewActiveTab(i);
 				return true;
@@ -197,4 +197,13 @@ CUIButton* CUITabControl::GetButtonByCommand			(const shared_str& n)
 			return m_TabsArr[i];
 
 	return NULL;
+}
+
+void CUITabControl::ResetTab()
+{
+	for (u32 i = 0; i < m_TabsArr.size(); ++i)
+	{
+		m_TabsArr[i]->SetButtonMode	(CUIButton::BUTTON_NORMAL);
+	}
+	m_iPushedIndex=m_iPrevPushedIndex=-1;
 }

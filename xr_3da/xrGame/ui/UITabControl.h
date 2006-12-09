@@ -55,7 +55,8 @@ public:
 	TABS_VECTOR *		GetButtonsVector			()								{ return &m_TabsArr; }
 	CUIButton*			GetButtonByIndex			(int i);
 	const shared_str	GetCommandName				(int i);
-	CUIButton*			GetButtonByCommand			(const shared_str& n);	
+	CUIButton*			GetButtonByCommand			(const shared_str& n);
+			void		ResetTab					();
 protected:
 	// Список кнопок - переключателей закладок
 	TABS_VECTOR			m_TabsArr;
