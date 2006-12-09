@@ -21,7 +21,7 @@
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_walther_coll \n
+			wpn_walther \n
 			ammo_9x19_pbp = 2 \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
