@@ -22,7 +22,7 @@ public:
 
 	virtual void	Update					();
 	virtual void	Enable					(bool status);
-
+	virtual bool	OnKeyboard				(int dik, EUIMessages keyboard_action);
 	virtual void	OnFocusLost				();
 
 	//режимы в которых можно нажимать кнопку
@@ -56,8 +56,8 @@ public:
 	// Работа с акселератором
 	// Код акселератора берется из файла dinput.h, из DirectX SDK.
 	// Например: кнопка A - код 0x1E(DIK_A)
-	void				SetAccelerator			(u32 uAccel)				{ m_uAccelerator = uAccel; }
-	const u32			GetAccelerator			() const					{ return m_uAccelerator; }
+	void				SetAccelerator			(int uAccel)				{ m_uAccelerator = uAccel; }
+	const int			GetAccelerator			() const					{ return m_uAccelerator; }
 
 	void				SetPressMode			(E_PRESS_MODE ePressMode)	{m_ePressMode = ePressMode;}
 	E_PRESS_MODE		GetPressMode			()							{return m_ePressMode;}
@@ -73,7 +73,7 @@ protected:
 	bool				m_bButtonClicked;
 	E_PRESS_MODE		m_ePressMode;
 	Fvector2			m_PushOffset;
-	u32					m_uAccelerator;
+	int					m_uAccelerator;
 	Fvector2			m_ShadowOffset;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION

@@ -180,6 +180,19 @@ _keybind keynames[] = {
 	{ NULL, 			0				}
 };
 ConsoleBindCmds	bindConsoleCmds;
+
+int keyname_to_dik(LPCSTR keyname)
+{
+	int idx				= 0;
+	while( keynames[idx].name )
+	{
+		if(!stricmp(keyname, keynames[idx].name) )
+			return keynames[idx].DIK;
+		++idx;
+	}
+	R_ASSERT2("cant find corresponding DIK for keyname", keyname);
+	return 0;
+}
 //-----------------------------------------------------------------------
 // Bind/Unbind/List
 //-----------------------------------------------------------------------

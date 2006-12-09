@@ -284,6 +284,7 @@ bool CUIXmlInit::InitText(CUIXml& xml_doc, const char* path, int index, IUITextC
 	return true;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
+extern int keyname_to_dik(LPCSTR);
 
 bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3tButton* pWnd){
 	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
@@ -296,8 +297,14 @@ bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3
 	InitTextureOffset	(xml_doc, path, index, pWnd);
 	InitSound			(xml_doc, path, index, pWnd);
 
-	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
-	pWnd->SetAccelerator(accel);
+//.	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
+
+	LPCSTR accel		= xml_doc.ReadAttrib(path, index, "accel", NULL);
+	if(accel)
+	{
+		int acc				= keyname_to_dik(accel);
+		pWnd->SetAccelerator(acc);
+	}
 
 	float shadowOffsetX	= xml_doc.ReadAttribFlt(path, index, "shadow_offset_x", 0);
 	float shadowOffsetY	= xml_doc.ReadAttribFlt(path, index, "shadow_offset_y", 0);

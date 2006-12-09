@@ -17,7 +17,6 @@
 
 CUIBuyWeaponTab::CUIBuyWeaponTab()
 {
-	AttachChild			(&m_staticBackground);
 	m_bActiveState		= true;
 }
 

@@ -24,7 +24,7 @@ CUIButton:: CUIButton()
 	m_PushOffset.set			(PUSH_OFFSET_RIGHT, PUSH_OFFSET_DOWN);
 
 	m_HighlightColor			= 0xFFFFFFFF;
-	m_uAccelerator				= u32(-1);
+	m_uAccelerator				= 0;
 
 	m_bEnableTextHighlighting	= true;
 
@@ -257,3 +257,12 @@ void CUIButton::OnFocusLost()
 		g_btnHint->Discard	();
 }
 
+bool CUIButton::OnKeyboard(int dik, EUIMessages keyboard_action)
+{
+	if (WINDOW_KEY_PRESSED == keyboard_action)
+	{
+		if (GetAccelerator() == dik)
+			return OnMouseDown		(true);
+	}
+	return false;
+}

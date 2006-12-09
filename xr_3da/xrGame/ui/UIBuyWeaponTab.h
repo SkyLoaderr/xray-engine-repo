@@ -24,6 +24,5 @@ public:
 			void SetActiveState				(bool bState = true);
 private:
 	bool		m_bActiveState;
-	CUIStatic	m_staticBackground;
 	int			m_iStubIndex;
 };

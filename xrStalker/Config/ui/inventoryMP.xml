@@ -88,7 +88,7 @@
 	<!-- TAB CONTROL FOR WEAPON TYPE SELECT -->
 	<tab x="0" y="701" width="1014" height="200">
 		<!-- BUTTONS -->
-		<button x="18" y="0" width="150" height="52" accel="2">
+		<button x="18" y="0" width="150" height="52" accel="k1">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_sec_t</texture_t>
 			<texture_e>ui\ui_btn_mp_e</texture_e>
@@ -113,7 +113,7 @@
 			</hint>
 						
 		</button>
-		<button x="202" y="0" width="150" height="52" accel="3">
+		<button x="202" y="0" width="150" height="52" accel="k2">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_prim_t</texture_t>
 			<texture_e>ui\ui_btn_mp_e</texture_e>
@@ -137,7 +137,7 @@
 				</text_color>
 			</hint>
 		</button>
-		<button x="386" y="0" width="150" height="52" accel="4">
+		<button x="386" y="0" width="150" height="52" accel="k3">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_gren_t</texture_t>
 			<texture_e>ui\ui_btn_mp_e</texture_e>
@@ -161,7 +161,7 @@
 				</text_color>
 			</hint>
 		</button>
-		<button x="570" y="0" width="150" height="52" accel="5">
+		<button x="570" y="0" width="150" height="52" accel="k4">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_suit_t</texture_t>
 			<texture_e>ui\ui_btn_mp_e</texture_e>
@@ -185,7 +185,7 @@
 				</text_color>
 			</hint>
 		</button>
-		<button x="753" y="0" width="150" height="52" accel="6">
+		<button x="753" y="0" width="150" height="52" accel="k5">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_equip_t</texture_t>
 			<texture_e>ui\ui_btn_mp_e</texture_e>
@@ -305,7 +305,7 @@
 	</btn_bag_heavy>
 
 	<!-- OK DIALOG BUTTON -->
-	<ok_button x="931" y="682" width="79" height="30" accel="28">		
+	<ok_button x="931" y="682" width="79" height="30" accel="kRETURN">		
 		<texture_offset x="-8" y="-23"/>
 		<texture_e>ui\ui_mp_buy_ok_e</texture_e>
 		<texture_t>ui\ui_mp_buy_ok_h</texture_t>
@@ -319,7 +319,7 @@
 	</ok_button>
 
 	<!-- CANCEL DIALOG BUTTON -->
-	<cancel_button x="931" y="724" width="79" height="30" accel="1">
+	<cancel_button x="931" y="724" width="79" height="30" accel="kESCAPE">
 		<texture_offset x="-8" y="-23"/>
 		<texture_e>ui\ui_mp_buy_ok_e</texture_e>
 		<texture_t>ui\ui_mp_buy_ok_h</texture_t>

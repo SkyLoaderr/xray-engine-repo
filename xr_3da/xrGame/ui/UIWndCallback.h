@@ -1,12 +1,6 @@
 #pragma once
 
 struct SCallbackInfo;
-/*
-namespace boost {
-	template<typename Signature, typename Allocator>
-	class function;
-};
-*/
 class CUIWindow;
 
 class CUIWndCallback
@@ -14,7 +8,6 @@ class CUIWndCallback
 public:
 	typedef fastdelegate::FastDelegate2<CUIWindow*,void*,void>				void_function;
 private:
-//.	typedef boost::function<void(CUIWindow*,void*),std::allocator<void> >	void_function;
 	typedef xr_vector<SCallbackInfo*>	CALLBACKS;
 	typedef CALLBACKS::iterator			CALLBACK_IT;
 private:

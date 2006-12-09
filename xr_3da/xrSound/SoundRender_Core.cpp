@@ -264,7 +264,7 @@ void	CSoundRender_Core::verify_refsound		( ref_sound& S)
 	void*		ptr_local		= &local_value;
 	ptrdiff_t	difference		= (ptrdiff_t)_abs(s64(ptrdiff_t(ptr_local) - ptrdiff_t(ptr_refsound)));
 	string256	err_str;
-	if(difference < (64*1024))
+	if(difference < (4*1024))
 	{
 		sprintf		(err_str,"diff=[%d] local/stack-based ref_sound passed. memory corruption will accur.",difference);
 		VERIFY2		(0, err_str);
