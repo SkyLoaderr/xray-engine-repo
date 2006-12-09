@@ -32,8 +32,12 @@ void CSE_ALifeDynamicObject::on_before_register		()
 {
 }
 
-void CSE_ALifeDynamicObject::on_unregister			()
+#include "level.h"
+#include "map_manager.h"
+
+void CSE_ALifeDynamicObject::on_unregister()
 {
+	Level().MapManager().RemoveMapLocationByObjectID(ID);
 }
 
 void CSE_ALifeDynamicObject::switch_online			()
