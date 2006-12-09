@@ -656,7 +656,7 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_fmj \n
-            wpn_spas12_m1 \n
+			wpn_bm16 \n
 			ammo_12x76_dart \n
 			device_torch \n
 #include "gameplay\character_drugs.xml" \n
