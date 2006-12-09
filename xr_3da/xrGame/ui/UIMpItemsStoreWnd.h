@@ -1,4 +1,50 @@
 #pragma once
+#include "../object_interfaces.h"
+
+class CUIXml;
+class CUITabButtonMP;
+
+
+class CStoreHierarchy
+{
+public:
+	struct item :public IPureDestroyableObject
+	{
+								item				():m_parent(NULL),m_button(NULL){}
+	virtual void				destroy				();
+
+		shared_str				m_name;
+		shared_str				m_btn_xml_name; //debug
+		item*					m_parent;
+		xr_vector<item*>		m_childs;
+		xr_vector<shared_str>	m_items_in_group;
+		CUITabButtonMP*			m_button;
+		IC u32					ChildCount			()			const				{return m_childs.size();}
+		IC const item&			ChildAt				(u32 idx)	const				{VERIFY(idx<ChildCount());return *m_childs[idx];}
+		IC bool					HasSubLevels		()			const				{return ChildCount()!=0;}
+	};
+
+private:
+	const item*				m_current_level;
+	item*					m_root;
+
+	void					LoadLevel			(CUIXml& xml, int index, item* _itm, int depth_level);
+public:
+							CStoreHierarchy		();
+							~CStoreHierarchy	();
+
+	void					Init				(CUIXml& xml, LPCSTR path);
+	void					InitItemsInGroup	(const shared_str& sect, item* =NULL);
+	const item&				GetRoot				()								{VERIFY(m_root); return *m_root;};
+	void					Reset				()								{VERIFY(m_root); m_current_level = m_root;};
+	IC bool					CurrentIsRoot		()								{return m_current_level == m_root;}
+
+	const item&				CurrentLevel		()								{VERIFY(m_current_level); return *m_current_level;};
+	bool					MoveUp				();
+	bool					MoveDown			(u32 idx);
+};
+
+/*
 
 #include "UIStatic.h"
 #include "UIDragDropListEx.h"
@@ -17,6 +63,7 @@ class CUITabButtonMP;
 #define HIGHTLIGHT_ITEM(x)			x->SetLightAnim("ui_slow_blinking", true, true, false, true)
 #define UNHIGHTLIGHT_ITEM(x)		x->SetLightAnim(NULL, true, true, false, true); \
 									x->SetColor(0xffffffff)
+
 
 
 enum Groups {
@@ -43,7 +90,8 @@ struct BoxInfo
 {
 	shared_str			xmlTag;
 	shared_str			filterString;
-	int					gridWidth, gridHeight;
+	int					gridWidth;
+	int					gridHeight;
 	CUITabButtonMP*		pButton;
 };
 
@@ -54,12 +102,12 @@ typedef enum {
 } eWpnAddon;
 
 
-class CUIBagWnd : public CUIStatic
+class CUIMpItemsStoreWnd : public CUIStatic
 {
 	typedef CUIStatic inherited;
 public:
-				CUIBagWnd				();
-				~CUIBagWnd				();
+				CUIMpItemsStoreWnd		();
+				~CUIMpItemsStoreWnd		();
 
     // own
 	void		Init					(CUIXml& xml, LPCSTR path, const shared_str& sectionName, const shared_str& sectionPrice);
@@ -149,8 +197,8 @@ IC	bool			UpdatePrice			(CUICellItem* pItem, int index);
 
 	BoxInfo			m_boxesDefs[4];
 
-	DEF_VECTOR(WPN_SECT_NAMES, shared_str); // vector of weapons. it represents ONE section 
-	DEF_VECTOR(WPN_LISTS, WPN_SECT_NAMES); // vector of sections
+	DEF_VECTOR		(WPN_SECT_NAMES, shared_str);
+	DEF_VECTOR		(WPN_LISTS, WPN_SECT_NAMES);
 	
 	WPN_LISTS		m_wpnSectStorage;
 
@@ -179,3 +227,4 @@ IC	bool			UpdatePrice			(CUICellItem* pItem, int index);
 	CUIDragDropListEx					m_groups[NUMBER_OF_GROUPS];
 	int subSection_group3				[4];
 };
+*/

@@ -1,9 +1,124 @@
 #include "stdafx.h"
-#include "UIBagWnd.h"
-#include "UIBuyWndShared.h"
-#include "Restrictions.h"
+#include "UIMpItemsStoreWnd.h"
 #include "UIXmlInit.h"
 #include "UITabButtonMP.h"
+#include "../object_broker.h"
+
+void CStoreHierarchy::item::destroy()
+{
+	delete_data(m_childs);
+	delete_data(m_button);
+}
+
+CStoreHierarchy::CStoreHierarchy()
+{
+	m_root					= NULL;
+	m_current_level			= NULL;
+}
+
+CStoreHierarchy::~CStoreHierarchy()
+{
+	delete_data(m_root);
+}
+
+
+void CStoreHierarchy::LoadLevel(CUIXml& xml, int index, item* _item, int depth_level)
+{
+	XML_NODE* stored_root = xml.GetLocalRoot();
+
+	XML_NODE* node					= xml.NavigateToNode	("level", index);
+	_item->m_name					= xml.ReadAttrib		("level", index, "name",	NULL);
+	_item->m_btn_xml_name			= xml.ReadAttrib		("level", index, "btn_ref", NULL);
+
+	if( depth_level>0 && _item->m_btn_xml_name.size() )
+	{
+		CUITabButtonMP* btn			= xr_new<CUITabButtonMP>();
+		_item->m_button				= btn;
+		btn->SetAutoDelete			(false);
+	
+		XML_NODE* stored_root2		= xml.GetLocalRoot();
+		xml.SetLocalRoot			(xml.GetRoot());
+		CUIXmlInit::Init3tButton	(xml, _item->m_btn_xml_name.c_str(), 0, btn);
+		int horz					= xml.ReadAttribInt	(_item->m_btn_xml_name.c_str(), 0, "horz_al", 0);
+		btn->SetOrientation			(horz==1);
+		xml.SetLocalRoot			(stored_root2);
+	}
+	
+	string1024			buff;
+	buff[0] = 0;
+	for(int c = 0; c<depth_level; ++c) strcat(buff,"-");
+	Msg("%s%s",buff,_item->m_name.c_str());
+
+	int cnt				= xml.GetNodesNum("level", index, "level");
+	for(int i=0; i<cnt; ++i)
+	{
+		xml.SetLocalRoot			(node);
+		item*	it					= xr_new<CStoreHierarchy::item>();
+		it->m_parent				= _item;
+		_item->m_childs.push_back	(it);
+		LoadLevel					(xml, i ,it, depth_level+1);
+	}
+	xml.SetLocalRoot				(stored_root);
+}
+
+void CStoreHierarchy::Init(CUIXml& xml, LPCSTR path)
+{
+ 	XML_NODE* p_stored_root = xml.GetLocalRoot();
+
+	XML_NODE* node			= xml.NavigateToNode	(path, 0);
+	xml.SetLocalRoot		(node);
+
+	m_root					= xr_new<CStoreHierarchy::item>();
+	LoadLevel				(xml, 0 ,m_root, 0);
+	xml.SetLocalRoot		(p_stored_root);
+	m_current_level			= m_root;
+}
+
+void CStoreHierarchy::InitItemsInGroup(const shared_str& sect, item* _itm)
+{
+	if(!_itm)	_itm	= m_root;
+	u32 cnt				= _itm->ChildCount();
+	
+	if( !_itm->HasSubLevels() )
+	{
+		shared_str v	= pSettings->r_string(sect, _itm->m_name.c_str());
+		u32 n			= _GetItemCount	(v.c_str());
+		string512		buff;
+
+		for(u32 i=0; i<n;++i)
+		{
+			_GetItem							(v.c_str(),i,buff);
+			_itm->m_items_in_group.push_back	(buff);
+		}
+		Msg("group[%s]", _itm->m_name.c_str());
+		Msg("items[%s]", v.c_str());
+		Msg("");
+	}else
+		for(u32 i=0; i<cnt;++i)
+			InitItemsInGroup					(sect,_itm->m_childs[i]);
+}
+
+bool CStoreHierarchy::MoveUp()
+{
+	VERIFY							(m_current_level); 
+	if(m_current_level==m_root)		return false;
+
+	m_current_level					= m_current_level->m_parent;
+	return							true;
+};
+
+bool CStoreHierarchy::MoveDown(u32 idx)
+{
+	VERIFY							(m_current_level); 
+	VERIFY							(m_current_level->ChildCount() && idx<m_current_level->ChildCount());
+	m_current_level					= &m_current_level->ChildAt(idx);
+	return							true;
+}
+
+/*
+
+#include "UIBuyWndShared.h"
+#include "Restrictions.h"
 #include "UICellCustomItems.h"
 #include "UICellItemFactory.h"
 #include <dinput.h>
@@ -12,7 +127,7 @@
 #include "../xrServer_Objects_ALife_Items.h"
 #include "../game_cl_Deathmatch.h"
 
-CUIBagWnd::CUIBagWnd()
+CUIMpItemsStoreWnd::CUIMpItemsStoreWnd()
 {
 	m_mlCurrLevel					= mlRoot;
 
@@ -50,12 +165,12 @@ CUIBagWnd::CUIBagWnd()
 	m_money							= 400;
 }
 
-CUIBagWnd::~CUIBagWnd()
+CUIMpItemsStoreWnd::~CUIMpItemsStoreWnd()
 {
 	DestroyAllItems();
 }
 
-void CUIBagWnd::DestroyAllItems()
+void CUIMpItemsStoreWnd::DestroyAllItems()
 {
     u32 sz = m_allItems.size();
 	for (u32 i = 0; i < sz; i++)
@@ -73,7 +188,7 @@ void CUIBagWnd::DestroyAllItems()
         subSection_group3[i] = 0;
 }
 
-void CUIBagWnd::Init(CUIXml& xml, LPCSTR path, const shared_str& sectionName, const shared_str& sectionPrice)
+void CUIMpItemsStoreWnd::Init(CUIXml& xml, LPCSTR path, const shared_str& sectionName, const shared_str& sectionPrice)
 {
 	m_sectionName				= sectionName;
 	m_sectionPrice				= sectionPrice;
@@ -95,14 +210,14 @@ void CUIBagWnd::Init(CUIXml& xml, LPCSTR path, const shared_str& sectionName, co
 	InitItems								();	
 }
 
-void CUIBagWnd::InitItems()
+void CUIMpItemsStoreWnd::InitItems()
 {
     FillUpGroups			();
 	HideAll					();
 	SetMenuLevel			(mlRoot);
 }
 
-void CUIBagWnd::UpdateBuyPossibility()
+void CUIMpItemsStoreWnd::UpdateBuyPossibility()
 {
 	u32 sz		= m_allItems.size();
 
@@ -126,7 +241,7 @@ void CUIBagWnd::UpdateBuyPossibility()
 	}
 }
 
-bool CUIBagWnd::UpdateRank(CUICellItem* pItem)
+bool CUIMpItemsStoreWnd::UpdateRank(CUICellItem* pItem)
 {
 	CInventoryItem*						pIItem;
 	pIItem								= (CInventoryItem*)pItem->m_pData;
@@ -148,7 +263,7 @@ bool CUIBagWnd::UpdateRank(CUICellItem* pItem)
 
 
 
-bool CUIBagWnd::IsBlueTeamItem(CUICellItem* itm)
+bool CUIMpItemsStoreWnd::IsBlueTeamItem(CUICellItem* itm)
 {
 	if (GameID() == GAME_DEATHMATCH)
 		return true;					//in deathmath always blue
@@ -186,14 +301,14 @@ bool CUIBagWnd::IsBlueTeamItem(CUICellItem* itm)
 	return !blue;
 }
 
-int CUIBagWnd::GetItemRank(CUICellItem* itm)
+int CUIMpItemsStoreWnd::GetItemRank(CUICellItem* itm)
 {
 	CInventoryItem* iitm		= (CInventoryItem*)itm->m_pData;
-	return get_rank				(iitm->object().cNameSect());
+	return	get_rank			(iitm->object().cNameSect());
 //.    return g_mp_restrictions.GetItemRank(iitm->object().cNameSect());
 }
 
-bool CUIBagWnd::UpdatePrice(CUICellItem* pItem, int index)
+bool CUIMpItemsStoreWnd::UpdatePrice(CUICellItem* pItem, int index)
 {
 	if (m_info[index].price > m_money && !m_bIgnoreMoney)
 	{
@@ -209,14 +324,14 @@ bool CUIBagWnd::UpdatePrice(CUICellItem* pItem, int index)
 	}
 }
 
-void CUIBagWnd::Update()
+void CUIMpItemsStoreWnd::Update()
 {
 	UpdateBuyPossibility				();
 	inherited::Update					();
 }
 
 // Init Boxes SLOT
-void CUIBagWnd::InitBoxes(CUIXml& xml)
+void CUIMpItemsStoreWnd::InitBoxes(CUIXml& xml)
 {
 
 	for (u32 i = 0; i < 4; ++i)
@@ -231,7 +346,7 @@ void CUIBagWnd::InitBoxes(CUIXml& xml)
 	}
 }
 
-void CUIBagWnd::InitWpnSectStorage()
+void CUIMpItemsStoreWnd::InitWpnSectStorage()
 {
 	WPN_SECT_NAMES		wpnOneType;
 	string64			wpnSection;
@@ -264,9 +379,8 @@ void CUIBagWnd::InitWpnSectStorage()
 			wpnOneType.push_back	(wpnSingleName);
 		}
 
-		if (!wpnOneType.empty()){
+		if (!wpnOneType.empty())
 			m_wpnSectStorage.push_back(wpnOneType);
-		}
 	}
 
 	wpnOneType.clear();
@@ -283,12 +397,11 @@ void CUIBagWnd::InitWpnSectStorage()
 			wpnOneType.push_back((*it).first.c_str());			//
 		}	
 	}
-	if (!wpnOneType.empty()){
+	if (!wpnOneType.empty())
 			m_wpnSectStorage.push_back(wpnOneType);
-	}
 }
 
-void CUIBagWnd::FillUpGroups()
+void CUIMpItemsStoreWnd::FillUpGroups()
 {	
 	for (u32 i = 0; i < m_wpnSectStorage.size(); ++i)
 		FillUpGroup(i);
@@ -297,7 +410,7 @@ void CUIBagWnd::FillUpGroups()
 extern "C"
 DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID clsid);
 
-void CUIBagWnd::FillUpGroup(const u32 group)
+void CUIMpItemsStoreWnd::FillUpGroup(const u32 group)
 {
 	string64 tmp_str;
 
@@ -338,7 +451,7 @@ void CUIBagWnd::FillUpGroup(const u32 group)
 	}
 }
 
-void	CUIBagWnd::ReloadItemsPrices	()
+void CUIMpItemsStoreWnd::ReloadItemsPrices	()
 {
 	string256 ItemCostStr	= "";
 	string256 RankStr		= "";
@@ -358,7 +471,7 @@ void	CUIBagWnd::ReloadItemsPrices	()
 			m_info[itm->m_index].price	= pSettings->r_u32(m_sectionPrice, ItemCostStr);
 
 
-		for (u32 i=1; i<=g_mp_restrictions.GetRank(); ++i)
+		for (u32 i=1; i<=g_mp_restrictions.GetRank(); i++)
 		{
 			sprintf						(RankStr, "rank_%d", i);
 			if (!pSettings->line_exist	(RankStr, ItemCostStr))	continue;
@@ -369,7 +482,7 @@ void	CUIBagWnd::ReloadItemsPrices	()
 
 static int counter = 0;
 
-CUICellItem* CUIBagWnd::CreateItem(const shared_str& name_sect)
+CUICellItem* CUIMpItemsStoreWnd::CreateItem(const shared_str& name_sect)
 {
 	counter++;
 	CLASS_ID	class_id		= pSettings->r_clsid(name_sect,"class");
@@ -382,7 +495,7 @@ CUICellItem* CUIBagWnd::CreateItem(const shared_str& name_sect)
 	return create_cell_item		(pIItem);
 }
 
-void CUIBagWnd::DestroyItem(CUICellItem* itm)
+void CUIMpItemsStoreWnd::DestroyItem(CUICellItem* itm)
 {
 	R_ASSERT					(itm);
 	if (itm->m_pData)
@@ -395,7 +508,7 @@ void CUIBagWnd::DestroyItem(CUICellItem* itm)
 	}
 }
 
-void CUIBagWnd::PutItemToGroup(CUICellItem* pItem, int iGroup)
+void CUIMpItemsStoreWnd::PutItemToGroup(CUICellItem* pItem, int iGroup)
 {
 	int iActiveSection			= -1;
 	shared_str					weapon_class;
@@ -465,12 +578,12 @@ void CUIBagWnd::PutItemToGroup(CUICellItem* pItem, int iGroup)
 	}
 }
 
-CUIDragDropListEx*	CUIBagWnd::GetItemList(CUICellItem* pItem)
+CUIDragDropListEx*	CUIMpItemsStoreWnd::GetItemList(CUICellItem* pItem)
 {
 	return &m_groups[m_info[pItem->m_index].group_index];
 }
 
-void CUIBagWnd::GetWeaponIndexByName(const shared_str& sectionName, u8 &grpNum, u8 &idx)
+void CUIMpItemsStoreWnd::GetWeaponIndexByName(const shared_str& sectionName, u8 &grpNum, u8 &idx)
 {
 	grpNum	= (u8)(-1);
 	idx		= (u8)(-1);
@@ -489,13 +602,13 @@ void CUIBagWnd::GetWeaponIndexByName(const shared_str& sectionName, u8 &grpNum, 
 	}
 }
 
-void CUIBagWnd::HideAll()
+void CUIMpItemsStoreWnd::HideAll()
 {
 	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
 		m_groups[i].Show	(false);
 }
 
-bool CUIBagWnd::SetMenuLevel(MENU_LEVELS level)
+bool CUIMpItemsStoreWnd::SetMenuLevel(MENU_LEVELS level)
 {
 	// check range
 	if (level < mlRoot || level > mlWpnSubType) 
@@ -514,7 +627,7 @@ bool CUIBagWnd::SetMenuLevel(MENU_LEVELS level)
 	return true;
 }
 
-void CUIBagWnd::ShowSection(int iSection)
+void CUIMpItemsStoreWnd::ShowSection(int iSection)
 {
 	R_ASSERT2(  (GROUP_2 <= iSection) && (iSection <= GROUP_6 + 1), "CUIBagWnd::ShowSection() - invalid section number");
 
@@ -533,13 +646,15 @@ void CUIBagWnd::ShowSection(int iSection)
 		SetMenuLevel(mlRoot);
 }
 
-MENU_LEVELS CUIBagWnd::GetMenuLevel()
+MENU_LEVELS CUIMpItemsStoreWnd::GetMenuLevel()
 {
 	return m_mlCurrLevel;
 }
 
-bool CUIBagWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
+bool CUIMpItemsStoreWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
+	if(keyboard_action!=WINDOW_KEY_PRESSED)		return false;
+
 	int iGroup;
 
 	if (DIK_ESCAPE == dik)
@@ -602,19 +717,19 @@ bool CUIBagWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	return false;
 }
 
-bool CUIBagWnd::IsInBag(CUICellItem* pItem)
+bool CUIMpItemsStoreWnd::IsInBag(CUICellItem* pItem)
 {
 	VERIFY				(pItem);
 	return GetItemList	(pItem)->IsOwner(pItem);
 }
 
-bool CUIBagWnd::IsActive(CUICellItem* itm)
+bool CUIMpItemsStoreWnd::IsActive(CUICellItem* itm)
 {
 	VERIFY				(itm);
 	return m_info[itm->m_index].active;
 }
 
-void CUIBagWnd::BuyItem(CUICellItem* itm)
+void CUIMpItemsStoreWnd::BuyItem(CUICellItem* itm)
 {
 	VERIFY(itm);
 
@@ -636,7 +751,7 @@ void CUIBagWnd::BuyItem(CUICellItem* itm)
 	}
 }
 
-void CUIBagWnd::ClearAmmoHighlight()
+void CUIMpItemsStoreWnd::ClearAmmoHighlight()
 {
 	u32 sz = m_groups[GROUP_4].ItemsCount();
 
@@ -647,14 +762,14 @@ void CUIBagWnd::ClearAmmoHighlight()
 	}
 }
 
-void CUIBagWnd::HightlightAmmo(LPCSTR ammo)
+void CUIMpItemsStoreWnd::HightlightAmmo(LPCSTR ammo)
 {
 	CUICellItem* itm		= GetItemBySectoin(ammo);
 	if (itm)
         HIGHTLIGHT_ITEM		(itm);
 }
 
-void CUIBagWnd::SellItem(CUICellItem* itm)
+void CUIMpItemsStoreWnd::SellItem(CUICellItem* itm)
 {
 	VERIFY					(itm);
 
@@ -674,7 +789,7 @@ void CUIBagWnd::SellItem(CUICellItem* itm)
 	}
 }
 
-bool CUIBagWnd::CanBuy(CUICellItem* itm)
+bool CUIMpItemsStoreWnd::CanBuy(CUICellItem* itm)
 {
 	VERIFY					(itm);
 	if (!IsInBag(itm))
@@ -698,12 +813,12 @@ bool CUIBagWnd::CanBuy(CUICellItem* itm)
 	return m_info[itm->m_index].active && (!m_info[itm->m_index].bought);
 }
 
-bool CUIBagWnd::CanBuy(LPCSTR item)
+bool CUIMpItemsStoreWnd::CanBuy(LPCSTR item)
 {
 	return CanBuy		(GetItemBySectoin(item));
 }
 
-CUICellItem* CUIBagWnd::GetItemByKey(int dik, int section){
+CUICellItem* CUIMpItemsStoreWnd::GetItemByKey(int dik, int section){
 	R_ASSERT2((GROUP_2 <= section) && (section <= GROUP_34), "CUIBagWnd::GetItemByKey() - invalid section number");
 	u32 index = static_cast<u32>(dik - 1);
 
@@ -718,7 +833,7 @@ CUICellItem* CUIBagWnd::GetItemByKey(int dik, int section){
 	return NULL;
 }
 
-void CUIBagWnd::ShowSectionEx(int iSection){
+void CUIMpItemsStoreWnd::ShowSectionEx(int iSection){
 	HideAll();
 
 	if (-1 == iSection)
@@ -736,28 +851,28 @@ void CUIBagWnd::ShowSectionEx(int iSection){
 		SetMenuLevel(mlWpnSubType);
 }
 
-void CUIBagWnd::OnBtnShotgunsClicked(){
+void CUIMpItemsStoreWnd::OnBtnShotgunsClicked(){
 	m_boxesDefs[0].pButton->OnClick();
 	m_boxesDefs[0].pButton->OnMouse(-1, -1, WINDOW_MOUSE_MOVE);
 	ShowSectionEx(GROUP_31);
 }
-void CUIBagWnd::OnBtnMachinegunsClicked(){
+void CUIMpItemsStoreWnd::OnBtnMachinegunsClicked(){
 	m_boxesDefs[1].pButton->OnClick();
 	m_boxesDefs[1].pButton->OnMouse(-1, -1, WINDOW_MOUSE_MOVE);
 	ShowSectionEx(GROUP_32);
 }
-void CUIBagWnd::OnBtnSniperClicked(){
+void CUIMpItemsStoreWnd::OnBtnSniperClicked(){
 	m_boxesDefs[2].pButton->OnClick();
 	m_boxesDefs[2].pButton->OnMouse(-1, -1, WINDOW_MOUSE_MOVE);
 	ShowSectionEx(GROUP_33);
 }
-void CUIBagWnd::OnBtnHeavyClicked(){
+void CUIMpItemsStoreWnd::OnBtnHeavyClicked(){
 	m_boxesDefs[3].pButton->OnClick();
 	m_boxesDefs[3].pButton->OnMouse(-1, -1, WINDOW_MOUSE_MOVE);
 	ShowSectionEx(GROUP_34);
 }
 
-void CUIBagWnd::OnBackClick(){
+void CUIMpItemsStoreWnd::OnBackClick(){
 	int iGroup;
 
 	switch (GetMenuLevel())
@@ -780,7 +895,7 @@ void CUIBagWnd::OnBackClick(){
 	}
 }
 
-int CUIBagWnd::GetCurrentGroupIndex(){
+int CUIMpItemsStoreWnd::GetCurrentGroupIndex(){
 	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
 		if(m_groups[i].IsShown())
 			return i;
@@ -788,7 +903,7 @@ int CUIBagWnd::GetCurrentGroupIndex(){
 	return GROUP_DEFAULT;
 }
 
-void CUIBagWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
+void CUIMpItemsStoreWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	switch (msg)
 	{
 		// we using our super-puper tab buttons enstead of DragDropItems
@@ -809,10 +924,10 @@ void CUIBagWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 			OnBackClick();
 		break;
 	}
-	CUIWindow::SendMessage(pWnd, msg, pData);
+	inherited::SendMessage(pWnd, msg, pData);
 }
 
-u8 CUIBagWnd::GetItemIndex(CUICellItem* pItem, u8 &sectionNum){
+u8 CUIMpItemsStoreWnd::GetItemIndex(CUICellItem* pItem, u8 &sectionNum){
 	sectionNum = 0;
 	u8 ret = static_cast<u8>(-1);
 
@@ -838,34 +953,15 @@ u8 CUIBagWnd::GetItemIndex(CUICellItem* pItem, u8 &sectionNum){
 			ret |= 1<<7;
 	}
 	
-	
-	//returnID = static_cast<u8>(pDDItem->GetPosInSectionsGroup());
-	//sectionNum = static_cast<u8>(pDDItem->GetSectionGroupID());
-
-	//// Проверяем на наличие приаттаченых аддонов к оружию
-	//if (pDDItem->bAddonsAvailable)
-	//{
-	//	u8	flags = 0;
-	//	for (int i = 0; i < 3; ++i)
-	//	{
-	//		if (1 == pDDItem->m_AddonInfo[i].iAttachStatus)
-	//			flags |= 1;
-	//		flags = flags << 1;
-	//	}
-	//	flags = flags << 4;
-	//	// В результате старшие 3 бита являются флагами признаков аддонов:
-	//	// FF - Scope, FE - Silencer, FD - Grenade Launcher
-	//	returnID |= flags;
-	//}
 	return ret;
 }
 
-void CUIBagWnd::SetRank(int r)
+void CUIMpItemsStoreWnd::SetRank(int r)
 {
 	g_mp_restrictions.SetRank(r);
 }
 
-const shared_str& CUIBagWnd::GetWeaponNameByIndex(u8 grpNum, u8 idx)
+const shared_str& CUIMpItemsStoreWnd::GetWeaponNameByIndex(u8 grpNum, u8 idx)
 {
 	R_ASSERT (grpNum < m_wpnSectStorage.size() );
 
@@ -873,26 +969,26 @@ const shared_str& CUIBagWnd::GetWeaponNameByIndex(u8 grpNum, u8 idx)
 	return m_wpnSectStorage[grpNum][idx];
 }
 
-void CUIBagWnd::SetExternal(CUICellItem* itm, bool status){
+void CUIMpItemsStoreWnd::SetExternal(CUICellItem* itm, bool status){
 	m_info[itm->m_index].external = status;
 }
 
-bool CUIBagWnd::GetExternal(CUICellItem* itm){
+bool CUIMpItemsStoreWnd::GetExternal(CUICellItem* itm){
 	return m_info[itm->m_index].external;
 }
 
-bool CUIBagWnd::HasEnoughtMoney(CUICellItem* itm){
+bool CUIMpItemsStoreWnd::HasEnoughtMoney(CUICellItem* itm){
 	if (m_bIgnoreMoney) 
 		return true;
 	R_ASSERT(itm);
 	return m_info[itm->m_index].price <= m_money;
 }
 
-int CUIBagWnd::GetItemPrice(CUICellItem* itm){
+int CUIMpItemsStoreWnd::GetItemPrice(CUICellItem* itm){
 	return m_info[itm->m_index].price;
 }
 
-void CUIBagWnd::ClearExternalStatus(){
+void CUIMpItemsStoreWnd::ClearExternalStatus(){
 	u32 sz = m_info.size();
 
 	for (u32 i = 0; i<sz; i++)
@@ -901,7 +997,7 @@ void CUIBagWnd::ClearExternalStatus(){
 	}
 }
 
-void CUIBagWnd::AttachAddon(CUICellItem* itm, CSE_ALifeItemWeapon::EWeaponAddonState add_on, bool external){
+void CUIMpItemsStoreWnd::AttachAddon(CUICellItem* itm, CSE_ALifeItemWeapon::EWeaponAddonState add_on, bool external){
 	R_ASSERT(itm);
 	CWeapon* wpn = (CWeapon*)itm->m_pData;	
 	CUICellItem* add_itm = NULL;
@@ -946,7 +1042,7 @@ void CUIBagWnd::AttachAddon(CUICellItem* itm, CSE_ALifeItemWeapon::EWeaponAddonS
 }
 
 
-CUICellItem* CUIBagWnd::GetItemBySectoin(const shared_str& sectionName, bool bCreateOnFail){
+CUICellItem* CUIMpItemsStoreWnd::GetItemBySectoin(const shared_str& sectionName, bool bCreateOnFail){
 
 	u32 sz			= m_allItems.size();
 
@@ -963,7 +1059,7 @@ CUICellItem* CUIBagWnd::GetItemBySectoin(const shared_str& sectionName, bool bCr
 	return NULL;
 }
 
-CUICellItem* CUIBagWnd::GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot)
+CUICellItem* CUIMpItemsStoreWnd::GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot)
 {
 	u32 sz				= m_allItems.size();
 	CUICellItem*		item;
@@ -982,7 +1078,7 @@ CUICellItem* CUIBagWnd::GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot)
 	return NULL;
 }
 
-CUICellItem* CUIBagWnd::CreateNewItem(const u8 grpNum, u8 uIndexInSlot)
+CUICellItem* CUIMpItemsStoreWnd::CreateNewItem(const u8 grpNum, u8 uIndexInSlot)
 {
 	u32			 sz = m_allItems.size();
 	VERIFY		 (sz);
@@ -1022,3 +1118,4 @@ CUICellItem* CUIBagWnd::CreateNewItem(const u8 grpNum, u8 uIndexInSlot)
     
 	return					new_item;
 }
+*/

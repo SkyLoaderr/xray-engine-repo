@@ -11086,7 +11086,16 @@
 					Name="BuyWeaponWnd"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIBuyWndShared.cpp">
+					</File>
+					<File
 						RelativePath=".\ui\UIBuyWndShared.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIMpItemsStoreWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMpItemsStoreWnd.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIMpTradeWnd.cpp">
@@ -11098,7 +11107,7 @@
 						RelativePath=".\ui\UIMpTradeWnd_misc.cpp">
 					</File>
 					<Filter
-						Name="BAG"
+						Name="rank_restrictions"
 						Filter="">
 						<File
 							RelativePath=".\ui\Restrictions.cpp">

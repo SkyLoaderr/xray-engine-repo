@@ -1,4 +1,3 @@
-#pragma once
 #include "stdafx.h"
 #include "UIBuyWnd.h"
 #include "UIXmlInit.h"
@@ -15,11 +14,13 @@
 #include "UIListBoxItem.h"
 #include <dinput.h>
 #include "../actor.h"
+#include "restrictions.h"
 
 #define 	BELT_SLOT			5
 
 CUIBuyWnd::CUIBuyWnd()
 {
+	g_mp_restrictions.InitGroups	();
 	// background textures
 	AttachChild				(&m_slotsBack);
 	AttachChild				(&m_back);
@@ -627,9 +628,6 @@ void CUIBuyWnd::SetCurrentItem(CUICellItem* itm)
 		m_rankInfo.InitTexture		(tex_name);
 	}
 }
-
-#include "Restrictions.h"
-extern CRestrictions g_mp_restrictions;
 
 bool CUIBuyWnd::OnItemStartDrag(CUICellItem* itm)
 {

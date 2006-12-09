@@ -1,7 +1,17 @@
 #pragma once
 
-#include "UIMpTradeWnd.h"
-#include "UIBuyWnd.h"
+//.#define _new_buy_wnd
 
- typedef		CUIBuyWnd			BUY_WND;
-//. typedef		CUIMpTradeWnd			BUY_WND;
+#ifdef _new_buy_wnd
+
+	#include	"UIMpTradeWnd.h"
+	typedef		CUIMpTradeWnd			BUY_WND;
+
+#else
+
+	#include	"UIBuyWnd.h"
+	typedef		CUIBuyWnd				BUY_WND;
+
+#endif
+
+
