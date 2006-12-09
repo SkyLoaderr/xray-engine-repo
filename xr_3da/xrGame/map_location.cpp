@@ -307,8 +307,10 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 		{
 			obj = ai().alife().objects().object(m_objectID,true);
 			if(!obj)
+			{
 				Msg("! Critical: CMapLocation::UpdateSpot binded to non-existent object id=%d",m_objectID);
 				return;
+			}
 		}
 		
 		if(	m_flags.test(eHideInOffline) && 
