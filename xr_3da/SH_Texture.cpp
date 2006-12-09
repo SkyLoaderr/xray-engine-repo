@@ -274,6 +274,7 @@ void CTexture::Load		()
 
 void CTexture::Unload	()
 {
+	if (flags.bLoaded)		Msg		("* Unloaded: %s",cName.c_str());
 	flags.bLoaded			= FALSE;
 	if (!seqDATA.empty())	{
 		for (u32 I=0; I<seqDATA.size(); I++)
