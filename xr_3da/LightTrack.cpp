@@ -111,7 +111,7 @@ void	CROS_impl::update	(IRenderable* O)
 	float	radius;		radius	= O->renderable.visual->vis.sphere.R;
 	position.y			+=  .3f * radius;
 	Fvector	direction;	direction.random_dir();
-			position.mad(direction,0.25f*radius);
+//.			position.mad(direction,0.25f*radius);
 //.			position.mad(direction,0.025f*radius);
 
 	// sun-tracing
@@ -138,8 +138,8 @@ void	CROS_impl::update	(IRenderable* O)
 
 			// take sample
 			Fvector	direction;	direction.set	(hdir[sample][0],hdir[sample][1],hdir[sample][2]).normalize	();
-			result[sample]	=	!g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache[sample],_object);
-//.			result[sample]	=	!g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtStatic,&cache[sample],_object);
+//.			result[sample]	=	!g_pGameLevel->ObjectSpace.RayTest(position,direction,50.f,collide::rqtBoth,&cache[sample],_object);
+			result[sample]	=	!g_pGameLevel->ObjectSpace.RayTest(position,direction,50.f,collide::rqtStatic,&cache[sample],_object);
 			//	Msg				("%d:-- %s",sample,result[sample]?"true":"false");
 		}
 	}
@@ -260,6 +260,7 @@ void	CROS_impl::update_smooth	(IRenderable* O)
 	dwFrameSmooth			=	Device.dwFrame					;
 	if (O && (0==result_count))	update(O)						;	// First time only
 	float	l_f				=	Device.fTimeDelta*ps_r2_lt_smooth;
+	clamp	(l_f,0.f,1.f)	;
 	float	l_i				=	1.f-l_f							;
 	hemi_smooth				=	hemi_value*l_f + hemi_smooth*l_i;
 	sun_smooth				=	sun_value *l_f + sun_smooth *l_i;
