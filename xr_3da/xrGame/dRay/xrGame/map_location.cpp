@@ -303,9 +303,12 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 	if( map->MapName()==LevelName() ){
 		CSE_ALifeDynamicObject* obj = NULL;
 		
-		if(ai().get_alife() && !IsUserDefined()){
-			obj = ai().alife().objects().object(m_objectID);
-			VERIFY(obj);
+		if(ai().get_alife() && !IsUserDefined())
+		{
+			obj = ai().alife().objects().object(m_objectID,true);
+			if(!obj)
+				Msg("! Critical: SMapLocation binded to non-existent object id=%d",m_objectID);
+				return;
 		}
 		
 		if(	m_flags.test(eHideInOffline) && 
