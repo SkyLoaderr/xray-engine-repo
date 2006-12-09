@@ -93,7 +93,6 @@ cam_eff_name	= camera_effects\shell_shock.anm
 [effector_fire_hit]
 pp_eff_name		= fire_hit.ppe
 pp_eff_cyclic	= 0
-
 cam_eff_cyclic	= 0
 
 [effector_fire_hit_0]:effector_fire_hit
@@ -147,6 +146,10 @@ pp_eff_cyclic	= 0
 ;cam_eff_name	= camera_effects\radar_stop.anm ;fixme
 ;cam_eff_cyclic	= 0 ; fixme
 
-[effector_controller_aura2]:effector_fire_hit
-cam_eff_name	= camera_effects\hit_front.anm
+;[effector_controller_aura2]:effector_fire_hit
+;cam_eff_name	= camera_effects\hit_front.anm
+
+[effector_controller_aura2]:effector_alcohol
+pp_eff_cyclic	= 0
+cam_eff_cyclic	= 0
 
