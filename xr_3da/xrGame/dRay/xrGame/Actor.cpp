@@ -87,6 +87,7 @@
 #include "Game_Object_Space.h"
 #include "script_callback_ex.h"
 #include "InventoryBox.h"
+#include "location_manager.h"
 
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
@@ -111,7 +112,6 @@ Flags32			psActorFlags={0};
 
 CActor::CActor() : CEntityAlive()
 {
-
 	encyclopedia_registry	= xr_new<CEncyclopediaRegistryWrapper	>();
 	game_news_registry		= xr_new<CGameNewsRegistryWrapper		>();
 	// Cameras
@@ -213,11 +213,15 @@ CActor::CActor() : CEntityAlive()
 	m_feel_touch_characters = 0;
 	//-----------------------------------------------------------------------------------
 	m_dwILastUpdateTime		= 0;
+
+	m_location_manager		= xr_new<CLocationManager>(this);
 }
 
 
 CActor::~CActor()
 {
+	xr_delete				(m_location_manager);
+
 	xr_delete				(m_memory);
 
 	xr_delete				(encyclopedia_registry);
@@ -245,7 +249,6 @@ CActor::~CActor()
 
 void CActor::reinit	()
 {
-
 	character_physics_support()->movement()->CreateCharacter		();
 	character_physics_support()->movement()->SetPhysicsRefObject	(this);
 	CEntityAlive::reinit						();
@@ -263,20 +266,22 @@ void CActor::reinit	()
 
 void CActor::reload	(LPCSTR section)
 {
-	CEntityAlive::reload	(section);
-	CInventoryOwner::reload	(section);
-	material().reload		(section);
-	CStepManager::reload	(section);
-	memory().reload			(section);
+	CEntityAlive::reload		(section);
+	CInventoryOwner::reload		(section);
+	material().reload			(section);
+	CStepManager::reload		(section);
+	memory().reload				(section);
+	m_location_manager->reload	(section);
 }
 
 void CActor::Load	(LPCSTR section )
 {
-	// Msg					("Loading actor: %s",section);
-	inherited::Load			(section);
-	material().Load			(section);
-	CInventoryOwner::Load	(section);
-	memory().Load			(section);
+	// Msg						("Loading actor: %s",section);
+	inherited::Load				(section);
+	material().Load				(section);
+	CInventoryOwner::Load		(section);
+	memory().Load				(section);
+	m_location_manager->Load	(section);
 
 	if (GameID() == GAME_SINGLE)
 		OnDifficultyChanged		();

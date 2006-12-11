@@ -23,6 +23,7 @@
 #include "level_changer.h"
 #include "actor_memory.h"
 #include "visual_memory_manager.h"
+#include "location_manager.h"
 
 CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 {
@@ -372,7 +373,15 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 		}
 
 		map_point_path.clear();
-		bool res = ai().graph_engine().search(ai().game_graph(),Actor()->ai_location().game_vertex_id(), dest_graph_id, &map_point_path, GraphEngineSpace::CBaseParameters());
+
+		GraphEngineSpace::CGameVertexParams		params(Actor()->locations().vertex_types(),flt_max);
+		bool res = ai().graph_engine().search(
+			ai().game_graph(),
+			Actor()->ai_location().game_vertex_id(),
+			dest_graph_id,
+			&map_point_path,
+			params
+		);
 		if(res){
 			xr_vector<u32>::reverse_iterator it = map_point_path.rbegin();
 			xr_vector<u32>::reverse_iterator it_e = map_point_path.rend();

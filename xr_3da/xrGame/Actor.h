@@ -57,6 +57,8 @@ class CActorInputHandler;
 class CActorMemory;
 class CActorStatisticMgr;
 
+class CLocationManager;
+
 class	CActor: 
 	public CEntityAlive, 
 	public IInputReceiver,
@@ -749,6 +751,16 @@ private:
 	collide::rq_results			RQR;
 			BOOL				CanPickItem						(const CFrustum& frustum, const Fvector& from, CObject* item);
 	xr_vector<ISpatial*>		ISpatialResult;
+
+private:
+	CLocationManager				*m_location_manager;
+
+public:
+	IC		const CLocationManager	&locations					() const
+	{
+		VERIFY						(m_location_manager);
+		return						(*m_location_manager);
+	}
 };
 
 extern bool		isActorAccelerated			(u32 mstate, bool ZoomMode);
