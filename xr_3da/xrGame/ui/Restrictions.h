@@ -1,8 +1,9 @@
 #pragma once
 
+#include "UIBuyWndShared.h"
+
 u32 get_rank(const shared_str &section);
 
-#define _RANK_COUNT 5
 
 typedef struct 
 {
@@ -20,7 +21,7 @@ public:
 	const u32  				GetRank					() const				{return m_rank;}
 	bool 					IsAvailable				(const shared_str& itm);
     u32  					GetItemCount			(const shared_str& itm)								const;
-	void 					SetRank					(u32 rank)				{m_rank = rank;}
+	void 					SetRank					(u32 rank)						{VERIFY(rank>=0 && rank <5); m_rank = rank;}
 
 protected:
 	void					Dump					() const;

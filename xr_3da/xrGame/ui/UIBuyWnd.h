@@ -35,10 +35,10 @@ public:
 	virtual const u8			GetBeltSize					();
 	virtual const u8			GetWeaponIndexInBelt		(u32 indexInBelt, u8 &sectionId, u8 &itemId, u8 &count);
 	virtual void				GetWeaponIndexByName		(const shared_str& sectionName, u8 &grpNum, u8 &idx);
-	virtual int					GetMoneyAmount				() const;
+	virtual u32					GetMoneyAmount				() const;
 	virtual void				IgnoreMoney					(bool ignore);
 	virtual void				SectionToSlot				(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet);
-	virtual void 				SetMoneyAmount				(int money);
+	virtual void 				SetMoneyAmount				(u32 money);
 	virtual bool 				CheckBuyAvailabilityInSlots	();
 	virtual void				AddonToSlot					(int add_on, int slot, bool bRealRepresentationSet);
 	virtual const shared_str&	GetWeaponNameByIndex		(u8 grpNum, u8 idx);
@@ -49,7 +49,7 @@ public:
 	virtual const u8			GetWeaponIndex				(u32 slotNum);//
 	virtual bool 				CanBuyAllItems				();
 	virtual void 				ResetItems					();
-	virtual void				SetRank						(int rank);
+	virtual void				SetRank						(u32 rank);
 	/////
 
 	void 			OnTabChange					();

@@ -115,6 +115,46 @@ bool CStoreHierarchy::MoveDown(u32 idx)
 	return							true;
 }
 
+void CItemCostMgr::Load(const shared_str& sect_cost)
+{
+	CInifile::Sect &sect = pSettings->r_section(sect_cost);
+
+	u32 idx	=0;
+	for (CInifile::SectIt it = sect.begin(); it != sect.end(); ++it,++idx)
+	{
+		_i&		val			= m_items[it->first]; 
+		int c = sscanf		(it->second.c_str(),"%d,%d,%d,%d,%d",&val.foo[0],&val.foo[1],&val.foo[2],&val.foo[3],&val.foo[4]);
+		VERIFY				(c>0);
+
+		while(c<_RANK_COUNT)
+		{
+			val.foo[c]	= val.foo[c-1];
+			++c;
+		}
+	}
+}
+
+u32	CItemCostMgr::GetItemCost	(const shared_str& sect_name, u32 rank)
+{
+	COST_MAP_IT it		= m_items.find(sect_name);
+	VERIFY				(it!=m_items.end());
+	return				it->second.foo[rank];
+}
+
+void CItemCostMgr::Dump() const
+{
+	COST_MAP_CIT it		= m_items.begin();
+	COST_MAP_CIT it_e	= m_items.end();
+
+	Msg("--CItemCostMgr::Dump");
+	for(;it!=it_e;++it)
+	{
+		const _i&		val		= it->second; 
+		Msg				("[%s] = %d,%d,%d,%d,%d",it->first.c_str(),val.foo[0],val.foo[1],val.foo[2],val.foo[3],val.foo[4]);
+	}
+
+}
+
 /*
 
 #include "UIBuyWndShared.h"

@@ -2,6 +2,7 @@
 #include "game_cl_mp.h"
 
 #include "ui\UIBuyWndShared.h"
+#include "ui\UIBuyWndBase.h"
 
 
 class CUISkinSelectorWnd;

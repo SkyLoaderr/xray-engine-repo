@@ -1196,7 +1196,7 @@ bool CUIBuyWnd::ToBelt(CUICellItem* itm, bool b_use_cursor_pos)
 	return								false;
 }
 
-void CUIBuyWnd::SetRank(int rank)
+void CUIBuyWnd::SetRank(u32 rank)
 {
 	m_bag.SetRank(rank);
 }
@@ -1346,7 +1346,7 @@ void CUIBuyWnd::DetachAddon(const char* addon_name)
 	}
 }
 
-int CUIBuyWnd::GetMoneyAmount() const
+u32 CUIBuyWnd::GetMoneyAmount() const
 {
 	return m_bag.m_money;
 }
@@ -1364,7 +1364,7 @@ void CUIBuyWnd::SetSkin(u8 SkinID)
 	lst->SetDefaultOutfit(item);
 }
 
-void CUIBuyWnd::SetMoneyAmount(int money)
+void CUIBuyWnd::SetMoneyAmount(u32 money)
 {
 	m_bag.m_money		= money;
 	SendMessage			(this, MP_MONEY_CHANGE);

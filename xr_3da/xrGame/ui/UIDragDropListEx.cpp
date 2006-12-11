@@ -198,6 +198,8 @@ void CUIDragDropListEx::ClearAll(bool bDestroy)
 	DestroyDragItem			();
 	m_container->ClearAll	(bDestroy);
 	m_selected_item			= NULL;
+	m_container->SetWndPos	(0,0);
+	ResetCellsCapacity		();
 }
 
 void CUIDragDropListEx::Compact()

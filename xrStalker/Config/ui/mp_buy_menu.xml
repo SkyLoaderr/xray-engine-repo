@@ -22,21 +22,30 @@
 	</items_hierarchy>
 	
 	<main x=0 y=0 width=1024 height=768>
-		<auto_static x="0" y="130" width="315" height="540" stretch="1">
+		<auto_static x="0" y="130" width="330" height="540" stretch="1">
 			<text x="30" y="10" font="graffiti22" r="231" g="153" b="22" align="l">ui_inv_items_list</text>
 			<texture>ui_inventory_mp_shop</texture>
 		</auto_static>
 	</main>
 	
-	<static_money x="30" y="10" width="112" height="34">
+	<static_money x="0" y="10" width="112" height="34">
 		<text font="graffiti22" r="231" g="153" b="22" align="c" vert_align="c"/>
 	</static_money>
+	<static_current_item x="0" y="60" width="250" height="34">
+		<text font="graffiti22" r="231" g="153" b="22" align="c" vert_align="c"/>
+	</static_current_item>
+
+	<static_rank x="115" y="10" width="32" height="32"/>
 	
-	<shop_wnd x="0" y="130" width="315" height="540"/>
+	<shop_wnd x="0" y="130" width="325" height="540"/>
 	
-    <lst_bag x="32" y="80" width="283" height="460"
-            cell_width = "40" cell_height="40" rows_num="11" cols_num="7"
+    <lst_player_bag x="340" y="300" width="544" height="330"
+            cell_width = "52" cell_height="52" rows_num="6" cols_num="10"
             unlimited="1" group_similar="1"/>
+
+    <lst_shop x="32" y="80" width="293" height="440"
+            cell_width = "40" cell_height="40" rows_num="10" cols_num="7"
+            unlimited="1" group_similar="1" custom_placement="0"/>
 
 
     <lst_pistol x="330" y="50" width="156" height="104"
@@ -79,7 +88,7 @@
 	
 #include "ui\mp_buy_menu_buttons.xml"
 
-	<shop_back_btn x="230" y="130" width="85" height="32" accel="kBACK">
+	<shop_back_btn x="240" y="130" width="85" height="32" accel="kBACK">
 		<window_name>btn_shop_back</window_name>
 		<texture_offset x="-26" y="0"/>
 		<texture>ui\ui_btn_mp_back</texture>			

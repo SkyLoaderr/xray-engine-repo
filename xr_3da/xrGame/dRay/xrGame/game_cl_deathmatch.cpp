@@ -24,19 +24,24 @@
 
 #include "ActorCondition.h"
 
+#ifdef _new_buy_wnd
+	#include	"ui\UIMpTradeWnd.h"
+#else
+	#include	"ui\UIBuyWnd.h"
+#endif
+
+
 #define	TEAM0_MENU		"deathmatch_team0"
 
 game_cl_Deathmatch::game_cl_Deathmatch()
 {
 	pInventoryMenu	= NULL;
-//.	pBuyMenuTeam0	= NULL;
 	pCurBuyMenu		= NULL;
 	
 	PresetItemsTeam0.clear();
 	PlayerDefItems.clear();
 	pCurPresetItems	= NULL;;
 
-//.	pSkinMenuTeam0	= NULL;
 	pCurSkinMenu	= NULL;
 
 	pMapDesc		= NULL;
@@ -203,8 +208,7 @@ void game_cl_Deathmatch::OnSkinMenu_Ok			()
 	P.w_u8(PLAYER_CHANGE_SKIN);
 
 
-#pragma todo("SATAN -> MAD_MAX: select skin you like if (-1 == pCurSkinMenu->GetActiveIndex()) :)")
-	
+
     P.w_s8	((u8)pCurSkinMenu->GetActiveIndex());
 	l_pPlayer->u_EventSend		(P);
 	//-----------------------------------------------------------------

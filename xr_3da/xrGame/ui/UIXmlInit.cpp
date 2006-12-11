@@ -399,7 +399,7 @@ bool CUIXmlInit::InitDragDropListEx(CUIXml& xml_doc, const char* path, int index
 	w_cells.y				= xml_doc.ReadAttribInt(path, index, "rows_num");
 	w_cells.x				= xml_doc.ReadAttribInt(path, index, "cols_num");
 	pWnd->SetCellSize		(w_cell_sz);	
-	pWnd->SetCellsCapacity	(w_cells);	
+	pWnd->SetStartCellsCapacity	(w_cells);	
 
 	int tmp					= xml_doc.ReadAttribInt(path, index, "unlimited", 0);
 	pWnd->SetAutoGrow		(tmp!=0);

@@ -1,9 +1,10 @@
 #pragma once
 #include "../object_interfaces.h"
+#include "UIBuyWndShared.h"
 
 class CUIXml;
 class CUITabButtonMP;
-
+class CUICellItem;
 
 class CStoreHierarchy
 {
@@ -44,6 +45,22 @@ public:
 	bool					MoveDown			(u32 idx);
 };
 
+#include "../associative_vector.h"
+
+class CItemCostMgr
+{
+	struct _i{
+		u32			foo[_RANK_COUNT];
+	};
+	typedef associative_vector<shared_str, _i>	COST_MAP;
+	typedef COST_MAP::iterator									COST_MAP_IT;
+	typedef COST_MAP::const_iterator							COST_MAP_CIT;
+	COST_MAP				m_items;
+public:
+	void					Load		(const shared_str& sect);
+	u32						GetItemCost	(const shared_str& sect_name, u32 rank);
+	void					Dump		() const;
+};
 /*
 
 #include "UIStatic.h"

@@ -43,6 +43,7 @@ private:
 	Flags8					m_flags;
 //	CUIStatic*				m_background;
 	CUICellItem*			m_selected_item;
+	Ivector2				m_orig_cell_capacity;
 
 protected:
 	
@@ -72,6 +73,8 @@ public:
 
 	const	Ivector2&		CellsCapacity		();
 			void			SetCellsCapacity	(const Ivector2 c);
+			void			SetStartCellsCapacity(const Ivector2 c){m_orig_cell_capacity=c;SetCellsCapacity(c);};
+			void			ResetCellsCapacity	(){VERIFY(ItemsCount()==0);SetCellsCapacity(m_orig_cell_capacity);};
 	 const	Ivector2&		CellSize			();
 			void			SetCellSize			(const Ivector2 new_sz);
 			int				ScrollPos			();

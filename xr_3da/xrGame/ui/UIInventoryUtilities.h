@@ -22,12 +22,6 @@ class CUIStatic;
 
 #define TRADE_ICONS_SCALE		(4.f/5.f)
 
-class CUIDragDropItem;
-class CUIWpnDragDropItem;
-
-DEFINE_VECTOR(CUIWpnDragDropItem*, DD_ITEMS_VECTOR, DD_ITEMS_VECTOR_IT);
-
-
 namespace InventoryUtilities
 {
 

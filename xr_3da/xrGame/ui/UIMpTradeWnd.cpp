@@ -8,20 +8,24 @@
 #include "UITabButton.h"
 #include "UITabButtonMP.h"
 #include "UITabControl.h"
+#include "../UIDialogHolder.h"
 #include "../object_broker.h"
+#include "../level.h"
+#include "../game_cl_deathmatch.h"
 
 CUIMpTradeWnd::CUIMpTradeWnd()
 {
-	m_rank			= 0;
-	m_money			= 0;
-	g_mp_restrictions.InitGroups	();
+	m_money								= 0;
+	g_mp_restrictions.InitGroups		();
 }
 
 CUIMpTradeWnd::~CUIMpTradeWnd()
 {
-	m_root_tab_control->RemoveAll	();
-	delete_data						(m_store_hierarchy);
-	delete_data						(m_list[e_bag]);
+	m_root_tab_control->RemoveAll		();
+	delete_data							(m_store_hierarchy);
+	delete_data							(m_list[e_shop]);
+	delete_data							(m_all_items);
+	delete_data							(m_cost_mngr);
 }
 
 void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectionPrice)
@@ -43,7 +47,7 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 	Register							(m_root_tab_control);
 	AddCallback							("tab_control",	TAB_CHANGED,		CUIWndCallback::void_function	(this, &CUIMpTradeWnd::OnRootTabChanged));
 
-	u32 root_cnt = m_store_hierarchy->GetRoot().ChildCount();
+	u32 root_cnt						= m_store_hierarchy->GetRoot().ChildCount();
 	for(u32 i=0; i<root_cnt; ++i)
 	{
 		const CStoreHierarchy::item& it	= m_store_hierarchy->GetRoot().ChildAt(i);
@@ -84,102 +88,130 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 			"lst_medkit",
 			"lst_granade",
 			"lst_others",
-			"lst_bag"
+			"lst_shop",
+			"lst_player_bag"
 	};
 	for(int idx = e_first; idx<e_total_lists; ++idx)
 	{
-		CUIDragDropListEx* lst				= xr_new<CUIDragDropListEx>();
-		m_list[idx]							= lst;
-		if(idx!=e_bag)
+		CUIDragDropListEx* lst			= xr_new<CUIDragDropListEx>();
+		m_list[idx]						= lst;
+		if(idx!=e_shop)
 		{
-			AttachChild						(lst);
-			lst->SetAutoDelete				(true);
+			AttachChild					(lst);
+			lst->SetAutoDelete			(true);
 		}
-		CUIXmlInit::InitDragDropListEx		(xml_doc, _list_names[idx], 0, lst);
+		CUIXmlInit::InitDragDropListEx	(xml_doc, _list_names[idx], 0, lst);
+		BindDragDropListEvents			(lst, true);
 	}
 
-	m_static_money							= xr_new<CUIStatic>(); AttachChild(m_static_money); m_static_money->SetAutoDelete(true);
-	CUIXmlInit::InitStatic					(xml_doc, "static_money",					0, m_static_money);
-	UpdateShop								();
+	m_static_money						= xr_new<CUIStatic>(); AttachChild(m_static_money); m_static_money->SetAutoDelete(true);
+	CUIXmlInit::InitStatic				(xml_doc, "static_money",					0, m_static_money);
+
+	m_static_current_item				= xr_new<CUIStatic>(); AttachChild(m_static_current_item); m_static_current_item->SetAutoDelete(true);
+	CUIXmlInit::InitStatic				(xml_doc, "static_current_item",			0, m_static_current_item);
+
+	m_static_rank						= xr_new<CUIStatic>(); AttachChild(m_static_rank); m_static_rank->SetAutoDelete(true);
+	CUIXmlInit::InitStatic				(xml_doc, "static_rank",					0, m_static_rank);
+
+	m_cost_mngr							= xr_new<CItemCostMgr>();
+	m_cost_mngr->Load					(sectionPrice);
+	m_cost_mngr->Dump					();
+	UpdateShop							();
+	SetCurrentItem						(NULL);
 }
 
 void CUIMpTradeWnd::OnBtnOkClicked(CUIWindow* w, void* d)
-{}
+{
+	GetHolder()->StartStopMenu			(this,true);
+	game_cl_Deathmatch * dm				= smart_cast<game_cl_Deathmatch *>(&(Game()));
+	dm->OnBuyMenu_Ok					();
+}
 
 void CUIMpTradeWnd::OnBtnCancelClicked(CUIWindow* w, void* d)
-{}
+{
+	GetHolder()->StartStopMenu			(this,true);
+}
 
 void CUIMpTradeWnd::OnBtnShopBackClicked(CUIWindow* w, void* d)
 {
-	m_store_hierarchy->MoveUp	();
-	UpdateShop					();
+	m_store_hierarchy->MoveUp			();
+	UpdateShop							();
 }
 
 void CUIMpTradeWnd::OnRootTabChanged(CUIWindow* w, void* d)
 {
-	int curr					= m_root_tab_control->GetActiveIndex();
-	m_store_hierarchy->Reset	();
-	m_store_hierarchy->MoveDown	(curr);
+	int curr							= m_root_tab_control->GetActiveIndex();
+	m_store_hierarchy->Reset			();
+	m_store_hierarchy->MoveDown			(curr);
 	
-	UpdateShop					();
+	UpdateShop							();
 }
 
 void CUIMpTradeWnd::OnSubLevelBtnClicked(CUIWindow* w, void* d)
 {
-	CUITabButtonMP* btn			= smart_cast<CUITabButtonMP*>(w);
+	CUITabButtonMP* btn					= smart_cast<CUITabButtonMP*>(w);
 
-	u32 curr					= btn->m_temp_index;
-	m_store_hierarchy->MoveDown	(curr);
+	u32 curr							= btn->m_temp_index;
+	m_store_hierarchy->MoveDown			(curr);
 	
-	UpdateShop					();
+	UpdateShop							();
 }
 
 void CUIMpTradeWnd::UpdateShop()
 {
-	m_shop_wnd->DetachAll					();
+	m_shop_wnd->DetachAll				();
 	
 
-	bool b_matched_root						= m_store_hierarchy->CurrentIsRoot();
-	m_btn_shop_back->Enable					( !b_matched_root );
+	bool b_matched_root					= m_store_hierarchy->CurrentIsRoot();
+	m_btn_shop_back->Enable				( !b_matched_root );
 	if(b_matched_root)
-		m_root_tab_control->ResetTab		();
+		m_root_tab_control->ResetTab	();
 
-	Msg("current level=[%s]",m_store_hierarchy->CurrentLevel().m_name.c_str());
+	Msg									("current level=[%s]",m_store_hierarchy->CurrentLevel().m_name.c_str());
 	if(m_store_hierarchy->CurrentIsRoot())	return;
 
 	if(m_store_hierarchy->CurrentLevel().HasSubLevels())
 	{	//show sub-levels
-		FillUpSubLevelButtons	();
+		FillUpSubLevelButtons			();
 	}else
 	{//show items
-		FillUpSubLevelItems		();
+		FillUpSubLevelItems				();
 	}
 }
 
 void CUIMpTradeWnd::FillUpSubLevelButtons()
 {
-	u32 root_cnt = m_store_hierarchy->CurrentLevel().ChildCount();
+	u32 root_cnt						= m_store_hierarchy->CurrentLevel().ChildCount();
 
-	Fvector2		pos;
-	pos.set			(40.0f,90.0f);
+	Fvector2							pos;
+	pos.set								(40.0f,90.0f);
 
 	for(u32 i=0; i<root_cnt; ++i)
 	{
-		const CStoreHierarchy::item& it		= m_store_hierarchy->CurrentLevel().ChildAt(i);
-		CUITabButtonMP* btn					= it.m_button;
-		btn->m_temp_index					= i;
-		Register							(btn);
-		btn->SetWndPos						(pos);
-		pos.add								(btn->GetWndSize().y);
-		pos.y								+= 40.0f;
-		pos.x								= 40.0f;
-		m_shop_wnd->AttachChild				(btn);
+		const CStoreHierarchy::item& it	= m_store_hierarchy->CurrentLevel().ChildAt(i);
+		CUITabButtonMP* btn				= it.m_button;
+		btn->m_temp_index				= i;
+		Register						(btn);
+		btn->SetWndPos					(pos);
+		pos.add							(btn->GetWndSize().y);
+		pos.y							+= 40.0f;
+		pos.x							= 40.0f;
+		m_shop_wnd->AttachChild			(btn);
 	}
 }
 
 void CUIMpTradeWnd::FillUpSubLevelItems()
 {
-	CUIDragDropListEx*	pList	= m_list[e_bag];
-	m_shop_wnd->AttachChild		(pList);
-	pList->ClearAll				(false);
+	CUIDragDropListEx*	pList			= m_list[e_shop];
+	m_shop_wnd->AttachChild				(pList);
+	pList->ClearAll						(false);
+	
+	const CStoreHierarchy::item& curr_level = m_store_hierarchy->CurrentLevel();
+
+	for(u32 idx=0; idx<curr_level.m_items_in_group.size();++idx)
+	{
+		const shared_str& sect			= curr_level.m_items_in_group	[idx];
+		SBuyItemInfo* pitem				= CreateItem	(sect, SBuyItemInfo::e_shop);
+		pList->SetItem					(pitem->m_cell_item);
+	}
 }
