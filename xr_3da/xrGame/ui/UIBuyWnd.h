@@ -1,6 +1,6 @@
 #pragma once
 
-#include "UIDialogWnd.h"
+#include "UIBuyWndBase.h"
 #include "UIStatic.h"
 #include "UIDragDropListEx.h"
 #include "UIBuyWeaponTab.h"
@@ -21,22 +21,39 @@ typedef enum {
 class CUIWeaponCellItem;
 class CWeapon;
 
-class CUIBuyWnd : public CUIDialogWnd
+class CUIBuyWnd :	public IBuyWnd
 {
 	typedef CUIDialogWnd	inherited;
 public:
 					CUIBuyWnd					();
 	virtual			~CUIBuyWnd					();
 
-	// own
-	void 			Init						(const shared_str& sectionName, const shared_str& sectionPrice);
-	void 			ResetItems					();
+	// IBuyWnd
+	virtual void 				Init						(const shared_str& sectionName, const shared_str& sectionPrice);
+	virtual void				BindDragDropListEvents		(CUIDragDropListEx* lst, bool bDrag);
+	virtual const u8			GetItemIndex				(u32 slotNum, u32 idx, u8 &sectionNum);
+	virtual const u8			GetBeltSize					();
+	virtual const u8			GetWeaponIndexInBelt		(u32 indexInBelt, u8 &sectionId, u8 &itemId, u8 &count);
+	virtual void				GetWeaponIndexByName		(const shared_str& sectionName, u8 &grpNum, u8 &idx);
+	virtual int					GetMoneyAmount				() const;
+	virtual void				IgnoreMoney					(bool ignore);
+	virtual void				SectionToSlot				(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet);
+	virtual void 				SetMoneyAmount				(int money);
+	virtual bool 				CheckBuyAvailabilityInSlots	();
+	virtual void				AddonToSlot					(int add_on, int slot, bool bRealRepresentationSet);
+	virtual const shared_str&	GetWeaponNameByIndex		(u8 grpNum, u8 idx);
+	virtual void 				SetSkin						(u8 SkinID);
+	virtual void				IgnoreMoneyAndRank			(bool ignore);
+	virtual void				ClearSlots					();
+	virtual void				ClearRealRepresentationFlags();
+	virtual const u8			GetWeaponIndex				(u32 slotNum);//
+	virtual bool 				CanBuyAllItems				();
+	virtual void 				ResetItems					();
+	virtual void				SetRank						(int rank);
+	/////
+
 	void 			OnTabChange					();
 	void 			OnMenuLevelChange			();
-	void 			SetSkin						(u8 SkinID);
-	bool 			CanBuyAllItems				();
-	void 			SetMoneyAmount				(int money);
-	bool 			CheckBuyAvailabilityInSlots	();
 	void 			CheckAddons					(CUICellItem* itm);
 	void 			UpdItem						(CUICellItem* itm);
 	void 			UpdAddon					(CUIWeaponCellItem* itm, CSE_ALifeItemWeapon::EWeaponAddonState add_on);
@@ -59,35 +76,19 @@ public:
 	virtual void 	Hide						();
 
 	// drag drop handlers
-	void				BindDragDropListEvents	(CUIDragDropListEx* lst, bool bDrag);
 	bool	xr_stdcall	OnItemDrop				(CUICellItem* itm);
 	bool	xr_stdcall	OnItemStartDrag			(CUICellItem* itm);
 	bool	xr_stdcall	OnItemDbClick			(CUICellItem* itm);
 	bool	xr_stdcall	OnItemSelected			(CUICellItem* itm);
 	bool	xr_stdcall	OnItemRButtonClick		(CUICellItem* itm);
 
-	const u8			GetWeaponIndex			(u32 slotNum);//
-	const u8			GetWeaponIndexInBelt	(u32 indexInBelt, u8 &sectionId, u8 &itemId, u8 &count);
-	const u8			GetItemIndex			(u32 slotNum, u32 idx, u8 &sectionNum);
 	
-	void				GetWeaponIndexByName	(const shared_str& sectionName, u8 &grpNum, u8 &idx);
-	const shared_str&	GetWeaponNameByIndex	(u8 grpNum, u8 idx);
 
 	// Получить данные о аддонах к оружию. Младшие 3 бита, если установлены в 1 означают:
 	// 2 - Silencer, 1 - Grenade Launcher, 0 - Scope
 	const u8			GetWeaponAddonInfoByIndex	(u8 idx);
-	const u8			GetBeltSize					();
-	void				SetRank						(int rank);
-
-	void				SectionToSlot				(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet);
-	void				AddonToSlot					(CSE_ALifeItemWeapon::EWeaponAddonState add_on, int slot, bool bRealRepresentationSet);
-	void				ClearSlots					();
-	void				ClearRealRepresentationFlags();
 
 	void				ReloadItemsPrices			();
-	void				IgnoreMoney					(bool ignore);
-	void				IgnoreMoneyAndRank			(bool ignore);
-	int					GetMoneyAmount				() const;
 
 protected:
 	void				DestroyAllItems				();

@@ -301,7 +301,7 @@ void game_cl_Deathmatch::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems, 
 	};
 };
 
-void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(const shared_str& caSection, BUY_WND* pBuyMenu, PRESET_ITEMS* pPresetItems)
+void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(const shared_str& caSection, IBuyWnd* pBuyMenu, PRESET_ITEMS* pPresetItems)
 {
 	if (!pSettings->line_exist(caSection, "default_items")) return;
 	if (!pBuyMenu) return;
@@ -327,7 +327,7 @@ void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(const shared_str& caSection
 	};
 };
 
-void				game_cl_Deathmatch::LoadDefItemsForRank(BUY_WND* pBuyMenu)
+void				game_cl_Deathmatch::LoadDefItemsForRank(IBuyWnd* pBuyMenu)
 {
 	if (!pBuyMenu) return;
 	//---------------------------------------------------
@@ -387,7 +387,7 @@ void				game_cl_Deathmatch::LoadDefItemsForRank(BUY_WND* pBuyMenu)
 	};
 };
 
-void				game_cl_Deathmatch::ChangeItemsCosts			(BUY_WND* pBuyMenu)
+void				game_cl_Deathmatch::ChangeItemsCosts			(IBuyWnd* pBuyMenu)
 {
 	if (!pBuyMenu) return;
 };

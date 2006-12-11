@@ -1254,14 +1254,14 @@ const u8 CUIBuyWnd::GetBeltSize()
 	return static_cast<u8>(m_list[MP_SLOT_BELT]->ItemsCount());	
 }
 
-void CUIBuyWnd::AddonToSlot(CSE_ALifeItemWeapon::EWeaponAddonState add_on, int slot, bool bRealRepresentationSet)
+void CUIBuyWnd::AddonToSlot(int add_on, int slot, bool bRealRepresentationSet)
 {
 	VERIFY(PISTOL_SLOT == slot || RIFLE_SLOT == slot);
 	VERIFY(m_list[GetLocalSlot(slot)]->ItemsCount());
 
 	CUICellItem* wpn = m_list[GetLocalSlot(slot)]->GetItemIdx(0);
 
-	m_bag.AttachAddon(wpn, add_on, bRealRepresentationSet);
+	m_bag.AttachAddon(wpn, (CSE_ALifeItemWeapon::EWeaponAddonState)add_on, bRealRepresentationSet);
 };
 
 void CUIBuyWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet){

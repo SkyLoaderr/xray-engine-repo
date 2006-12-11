@@ -262,7 +262,10 @@ bool CUIButton::OnKeyboard(int dik, EUIMessages keyboard_action)
 	if (WINDOW_KEY_PRESSED == keyboard_action)
 	{
 		if (GetAccelerator() == dik)
-			return OnMouseDown		(true);
+		{
+			OnClick		();
+			return		true;
+		}
 	}
 	return false;
 }

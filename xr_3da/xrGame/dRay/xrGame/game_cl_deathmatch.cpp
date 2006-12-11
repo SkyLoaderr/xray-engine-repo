@@ -150,7 +150,7 @@ void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
 	}
 }
 
-BUY_WND* game_cl_Deathmatch::InitBuyMenu			(const shared_str& BasePriceSection, s16 Team)
+IBuyWnd* game_cl_Deathmatch::InitBuyMenu			(const shared_str& BasePriceSection, s16 Team)
 {
 	if (Team == -1)
 	{
@@ -159,7 +159,7 @@ BUY_WND* game_cl_Deathmatch::InitBuyMenu			(const shared_str& BasePriceSection, 
 
 	cl_TeamStruct *pTeamSect		= &TeamList[ModifyTeam(Team)];
 	
-	BUY_WND* pMenu				= xr_new<BUY_WND>();
+	IBuyWnd* pMenu					= xr_new<BUY_WND_TYPE>();
 	pMenu->Init						(pTeamSect->caSection, BasePriceSection);
 	pMenu->SetSkin					(0);
 	return							pMenu;
@@ -974,7 +974,7 @@ void game_cl_Deathmatch::OnTeamChanged()
 	ChangeItemsCosts				(pCurBuyMenu);
 };
 
-void game_cl_Deathmatch::LoadPlayerDefItems(char* TeamName, BUY_WND* pBuyMenu)
+void game_cl_Deathmatch::LoadPlayerDefItems(char* TeamName, IBuyWnd* pBuyMenu)
 {
 	if (!local_player)				return;
 	LoadTeamDefaultPresetItems		(TeamName, pBuyMenu, &PlayerDefItems);

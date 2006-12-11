@@ -84,7 +84,7 @@ void CUIBagWnd::Init(CUIXml& xml, LPCSTR path, const shared_str& sectionName, co
 	{
 		CUIXmlInit::InitDragDropListEx		(xml, "dragdrop_list_bag", 0, &m_groups[i]);
 		m_groups[i].SetMessageTarget		(GetParent());
-		BUY_WND*	w = smart_cast<BUY_WND*>(GetParent());
+		IBuyWnd*	w = smart_cast<IBuyWnd*>(GetParent());
 		w->BindDragDropListEvents			(&m_groups[i], true);
 	}
 

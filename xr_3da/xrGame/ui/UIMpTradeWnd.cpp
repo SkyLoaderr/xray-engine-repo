@@ -72,6 +72,7 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 	Register							(m_btn_shop_back);
 	AddCallback							("btn_shop_back",	BUTTON_CLICKED,		CUIWndCallback::void_function	(this, &CUIMpTradeWnd::OnBtnShopBackClicked));
 	AddCallback							("sub_btn",			TAB_CHANGED,		CUIWndCallback::void_function	(this, &CUIMpTradeWnd::OnSubLevelBtnClicked));
+	AddCallback							("sub_btn",			BUTTON_CLICKED,		CUIWndCallback::void_function	(this, &CUIMpTradeWnd::OnSubLevelBtnClicked));
 
 
 	LPCSTR _list_names[]= {

@@ -1,14 +1,6 @@
-//////////////////////////////////////////////////////////////////////
-// UITabControl.h: класс окна с закладками.
-//////////////////////////////////////////////////////////////////////
-
-#ifndef UI_TABCONTROL_H_
-#define UI_TABCONTROL_H_
-
 #pragma once
 
 #include "uiwindow.h"
-//#include "UITabButton.h"
 #include "../script_export_space.h"
 #include "UIOptionsItem.h"
 
@@ -48,7 +40,7 @@ public:
 	const	int			GetTabsCount				() const						{ return m_TabsArr.size(); }
 	
 	// Режим клавилатурных акселераторов (вкл/выкл)
-	bool				GetAcceleratorsMode			() const						{ return m_bAcceleratorsEnable; }
+	IC bool				GetAcceleratorsMode			() const						{ return m_bAcceleratorsEnable; }
 	void				SetAcceleratorsMode			(bool bEnable)					{ m_bAcceleratorsEnable = bEnable; }
 
 
@@ -81,5 +73,3 @@ protected:
 add_to_type_list(CUITabControl)
 #undef script_type_list
 #define script_type_list save_type_list(CUITabControl)
-
-#endif

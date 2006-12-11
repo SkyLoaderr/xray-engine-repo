@@ -1,6 +1,6 @@
 #pragma once
 
-#include "UIDialogWnd.h"
+#include "UIBuyWndBase.h"
 #include "UIWndCallback.h"
 
 
@@ -12,7 +12,8 @@ class CUIMpItemsStoreWnd;
 class CStoreHierarchy;
 class CUITabControl;
 
-class CUIMpTradeWnd :public CUIDialogWnd, public CUIWndCallback
+class CUIMpTradeWnd :	public IBuyWnd, 
+						public CUIWndCallback
 {
 		typedef CUIDialogWnd	inherited;
 public:
@@ -39,28 +40,28 @@ public:
 	virtual bool 		OnKeyboard				(int dik, EUIMessages keyboard_action);
 
 public:
-	void 				Init					(const shared_str& sectionName, const shared_str& sectionPrice);
-	void				BindDragDropListEvents	(CUIDragDropListEx* lst, bool bDrag);
+	virtual void 		Init					(const shared_str& sectionName, const shared_str& sectionPrice);
+	virtual void		BindDragDropListEvents	(CUIDragDropListEx* lst, bool bDrag);
 
-	const u8			GetItemIndex			(u32 slotNum, u32 idx, u8 &sectionNum);
-	const u8			GetBeltSize				();
-	const u8			GetWeaponIndexInBelt	(u32 indexInBelt, u8 &sectionId, u8 &itemId, u8 &count);
-	void				GetWeaponIndexByName	(const shared_str& sectionName, u8 &grpNum, u8 &idx);
-	int					GetMoneyAmount			() const;
-	void				IgnoreMoney				(bool ignore);
-	void				SectionToSlot			(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet);
-	void 				SetMoneyAmount			(int money);
-	bool 				CheckBuyAvailabilityInSlots	();
-	void				AddonToSlot				(int add_on, int slot, bool bRealRepresentationSet);
-	const shared_str&	GetWeaponNameByIndex	(u8 grpNum, u8 idx);
-	void 				SetSkin					(u8 SkinID);
-	void				IgnoreMoneyAndRank			(bool ignore);
-	void				ClearSlots					();
-	void				ClearRealRepresentationFlags();
-	const u8			GetWeaponIndex				(u32 slotNum);//
-	bool 				CanBuyAllItems				();
-	void 				ResetItems					();
-	void				SetRank						(int rank);
+	virtual const u8			GetItemIndex			(u32 slotNum, u32 idx, u8 &sectionNum);
+	virtual const u8			GetBeltSize				();
+	virtual const u8			GetWeaponIndexInBelt	(u32 indexInBelt, u8 &sectionId, u8 &itemId, u8 &count);
+	virtual void				GetWeaponIndexByName	(const shared_str& sectionName, u8 &grpNum, u8 &idx);
+	virtual int					GetMoneyAmount			() const;
+	virtual void				IgnoreMoney				(bool ignore);
+	virtual void				SectionToSlot			(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet);
+	virtual void 				SetMoneyAmount			(int money);
+	virtual bool 				CheckBuyAvailabilityInSlots	();
+	virtual void				AddonToSlot				(int add_on, int slot, bool bRealRepresentationSet);
+	virtual const shared_str&	GetWeaponNameByIndex	(u8 grpNum, u8 idx);
+	virtual void 				SetSkin					(u8 SkinID);
+	virtual void				IgnoreMoneyAndRank			(bool ignore);
+	virtual void				ClearSlots					();
+	virtual void				ClearRealRepresentationFlags();
+	virtual const u8			GetWeaponIndex				(u32 slotNum);//
+	virtual bool 				CanBuyAllItems				();
+	virtual void 				ResetItems					();
+	virtual void				SetRank						(int rank);
 
 private:
 	//data

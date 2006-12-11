@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "UIMpTradeWnd.h"
-#include "UIStatic.h"
 #include "UIMpItemsStoreWnd.h"
+#include "UITabControl.h"
+#include "UIStatic.h"
 
 
 bool CUIMpTradeWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
@@ -10,8 +11,14 @@ bool CUIMpTradeWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	{
 		if (m_shop_wnd->OnKeyboard(dik, keyboard_action) )
 			return true;
-	}
-	return inherited::OnKeyboard(dik, keyboard_action);
+	}else
+		m_root_tab_control->SetAcceleratorsMode		(false);
+
+	bool res =  inherited::OnKeyboard(dik, keyboard_action);
+
+	m_root_tab_control->SetAcceleratorsMode		(true);
+
+	return			res;
 }
 
 void CUIMpTradeWnd::Update()

@@ -164,7 +164,8 @@ void CUITabControl::SetNewActiveTab(const int iNewTab)
 
 bool CUITabControl::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
-	if (m_bAcceleratorsEnable && WINDOW_KEY_PRESSED == keyboard_action)
+
+	if (GetAcceleratorsMode() && WINDOW_KEY_PRESSED == keyboard_action)
 	{
 		for (u32 i = 0; i < m_TabsArr.size(); ++i)
 		{

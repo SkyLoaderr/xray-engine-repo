@@ -61,7 +61,7 @@ protected:
 	PRESET_ITEMS					AdditionalPresetItems;
 	PRESET_ITEMS*					pCurPresetItems;
 	PRESET_ITEMS					PlayerDefItems;
-	BUY_WND*						pCurBuyMenu;
+	IBuyWnd*						pCurBuyMenu;
 
 	CUISkinSelectorWnd*				pCurSkinMenu;
 	CUIInventoryWnd*				pInventoryMenu;
@@ -82,7 +82,7 @@ protected:
 			void					CheckItem				(PIItem pItem, PRESET_ITEMS* pPresetItems,  BOOL OnlyPreset);
 
 			void					ClearBuyMenu			();
-			BUY_WND*				InitBuyMenu				(const shared_str& BasePriceSection, s16 Team);
+			IBuyWnd*				InitBuyMenu				(const shared_str& BasePriceSection, s16 Team);
 			CUISkinSelectorWnd*		InitSkinMenu			(s16 Team = -1);
 			void					SetBuyMenuItems			(PRESET_ITEMS* pItems, BOOL OnlyPreset = FALSE);
 	virtual bool					CanBeReady				();
@@ -97,10 +97,10 @@ protected:
 	virtual		bool				OnKeyboardRelease		(int key);
 
 	virtual		const shared_str	GetTeamMenu				(s16 team);
-	virtual		void				LoadTeamDefaultPresetItems	(const shared_str& caSection, BUY_WND* pBuyMenu, PRESET_ITEMS* pPresetItems);
-	virtual		void				LoadPlayerDefItems			(char* TeamName, BUY_WND* pBuyMenu);
-	virtual		void				LoadDefItemsForRank			(BUY_WND* pBuyMenu);
-	virtual		void				ChangeItemsCosts			(BUY_WND* pBuyMenu);
+	virtual		void				LoadTeamDefaultPresetItems	(const shared_str& caSection, IBuyWnd* pBuyMenu, PRESET_ITEMS* pPresetItems);
+	virtual		void				LoadPlayerDefItems			(char* TeamName, IBuyWnd* pBuyMenu);
+	virtual		void				LoadDefItemsForRank			(IBuyWnd* pBuyMenu);
+	virtual		void				ChangeItemsCosts			(IBuyWnd* pBuyMenu);
 	virtual		s16					GetBuyMenuItemIndex			(u8 SlotID, u8 ItemID);
 
 	virtual		void				ConvertTime2String		(string64* str, u32 Time);
