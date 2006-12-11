@@ -2064,6 +2064,9 @@
 					RelativePath=".\Config\weathers\weather_prypyat.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\weathers\weather_radar.ltx">
+				</File>
+				<File
 					RelativePath=".\config\weathers\weather_rain.ltx">
 				</File>
 				<File
