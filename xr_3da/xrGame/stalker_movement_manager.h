@@ -39,6 +39,7 @@ protected:
 public:
 	MonsterSpace::SBoneRotation			m_head;
 	u32									m_last_turn_index;
+	float								m_danger_head_speed;
 
 protected:
 	IC		void	setup_head_speed				();
@@ -110,6 +111,7 @@ public:
 			void									update_object_on_the_way(const CGameObject *object, const float &distance);
 			bool									is_object_on_the_way	(const CGameObject *object, const float &distance);
 			void									force_update			(const bool &force_update);
+	IC		void									danger_head_speed		(const float &speed);
 };
 
 #include "stalker_movement_manager_inline.h"

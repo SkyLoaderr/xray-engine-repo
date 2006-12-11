@@ -40,7 +40,7 @@ IC	void CStalkerMovementManager::setup_head_speed		()
 			m_head.speed		= PI_DIV_2;
 	}
 	else
-		m_head.speed			= 3*PI_DIV_2;
+		m_head.speed			= m_danger_head_speed;
 }
 
 IC	void CStalkerMovementManager::add_velocity		(int mask, float linear, float compute_angular, float angular)
@@ -177,7 +177,8 @@ void CStalkerMovementManager::reinit				()
 {
 	inherited::reinit					();
 	m_body.speed						= PI_MUL_2;
-	m_head.speed						= 3*PI_DIV_2;
+	m_danger_head_speed					= 3*PI_DIV_2;
+	m_head.speed						= m_danger_head_speed;
 
 	m_current.m_use_desired_position	= false;
 	m_current.m_use_desired_direction	= false;

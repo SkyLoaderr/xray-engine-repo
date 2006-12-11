@@ -236,8 +236,12 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		return;
 
 	CActor								*actor = smart_cast<CActor*>(Level().Objects.net_Find(0));
-	if (!actor)
-		return;
+	if (!actor) {
+		if (!g_debug_actor)
+			return;
+
+		actor							= g_debug_actor;
+	}
 
 	float								up_indent = 40.f;
 	LPCSTR								indent = "  ";
@@ -441,6 +445,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	(" ");
 	HUD().Font().pFontSmall->OutNext	("%sobjects",indent);
 	HUD().Font().pFontSmall->OutNext	("%s%sobjects             : %d",indent,indent,inventory().m_all.size());
+	HUD().Font().pFontSmall->OutNext	("%s%sactive item         : %s",indent,indent,inventory().ActiveItem() ? *inventory().ActiveItem()->object().cName() : "");
 	HUD().Font().pFontSmall->OutNext	("%s%sbest weapon         : %s",indent,indent,best_weapon() ? *best_weapon()->object().cName() : "");
 	HUD().Font().pFontSmall->OutNext	("%s%sitem to kill        : %s",indent,indent,item_to_kill() ? *m_best_item_to_kill->object().cName() : "");
 	HUD().Font().pFontSmall->OutNext	("%s%sitem can kill       : %s",indent,indent,item_can_kill() ? "+" : "-");
@@ -450,7 +455,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 	HUD().Font().pFontSmall->OutNext	("%s%sitem to spawn       : %s",indent,indent,item_to_spawn().size() ? *item_to_spawn() : "no item to spawn");
 	HUD().Font().pFontSmall->OutNext	("%s%sammo in box to spawn: %d",indent,indent,item_to_spawn().size() ? ammo_in_box_to_spawn() : 0);
 	
-	CWeaponMagazined					*weapon = smart_cast<CWeaponMagazined*>(best_weapon());
+	CWeaponMagazined					*weapon = smart_cast<CWeaponMagazined*>(inventory().ActiveItem());
 	if (weapon) {
 		CObjectHandlerPlanner			&planner = CObjectHandler::planner();
 		HUD().Font().pFontSmall->OutNext("%s%squeue size          : %d",indent,indent,weapon->GetQueueSize());
@@ -678,7 +683,7 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 				indent,
 				indent,
 				indent,
-				(Device.dwTimeGlobal > (*I).m_start_time)
+				(Device.dwTimeGlobal < (*I).m_start_time)
 				?
 				"not yet started"
 				:
@@ -1053,4 +1058,4 @@ void CAI_Stalker::dbg_draw_visibility_rays	()
 	}
 }
 
-#endif
+#endif // DEBUG

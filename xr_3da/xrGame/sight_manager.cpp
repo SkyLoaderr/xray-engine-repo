@@ -236,7 +236,6 @@ void CSightManager::Exec_Look		(float dt)
 	if (current_action().change_head_speed())
 		head_speed		= current_action().head_speed();
 
-
 #ifdef SIGHT_DEBUG
 	Msg					("%6d BEFORE BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
 	Msg					("%6d BEFORE HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
@@ -260,7 +259,7 @@ void CSightManager::Exec_Look		(float dt)
 	head.current.pitch	= angle_normalize_signed	(head.current.pitch);
 
 	Msg					("%6d AFTER  BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
-	Msg					("%6d AFTER  HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
+	Msg					("%6d AFTER  HEAD [%f][%f] -> [%f][%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.current.pitch,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
 #endif
 
 #if 0

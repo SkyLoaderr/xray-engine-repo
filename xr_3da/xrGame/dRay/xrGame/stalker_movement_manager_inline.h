@@ -138,3 +138,8 @@ IC	const MonsterSpace::EMovementType CStalkerMovementManager::target_movement_ty
 {
 	return						(m_target.m_movement_type);
 }
+
+IC	void CStalkerMovementManager::danger_head_speed						(const float &speed)
+{
+	m_danger_head_speed			= speed;
+}

@@ -100,6 +100,7 @@ private:
 	Fvector										m_start_position;
 	Fvector										m_start_direction;
 	Fvector										m_dest_position;
+	Fvector										m_corrected_dest_position;
 	Fvector										m_dest_direction;
 
 private:

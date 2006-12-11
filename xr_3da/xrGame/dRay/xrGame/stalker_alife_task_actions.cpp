@@ -59,7 +59,7 @@ void CStalkerActionSolveZonePuzzle::initialize	()
 	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
 		m_stop_weapon_handling_time				+= ::Random32.random(30000) + 30000;
 
-	object().movement().set_desired_position	(0);
+//	object().movement().set_desired_position	(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeGamePath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -68,20 +68,34 @@ void CStalkerActionSolveZonePuzzle::initialize	()
 	object().movement().set_mental_state		(eMentalStateFree);
 	object().sight().setup						(CSightAction(SightManager::eSightTypeCover,false,true));
 #else
-	object().movement().set_desired_position	(0);
-	object().movement().set_desired_direction	(0);
-	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
-	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_body_state			(eBodyStateStand);
-	object().movement().set_movement_type		(eMovementTypeStand);
-	object().movement().set_mental_state		(eMentalStateDanger);
-	object().sight().setup						(CSightAction(g_actor,true));
+#	if 1
+//		object().movement().set_desired_position	(0);
+		object().movement().set_desired_direction	(0);
+		object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+		object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+		object().movement().set_body_state			(eBodyStateStand);
+		object().movement().set_movement_type		(eMovementTypeStand);
+		object().movement().set_mental_state		(eMentalStateDanger);
+		object().sight().setup						(CSightAction(g_actor,true));
+#	else
+		object().movement().set_mental_state		(eMentalStateDanger);
+		object().movement().set_movement_type		(eMovementTypeStand);
+		object().movement().set_body_state			(eBodyStateStand);
+		object().movement().set_desired_direction	(0);
+		object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+		object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+		object().movement().set_nearest_accessible_position();
+		object().sight().setup						(CSightAction(SightManager::eSightTypeCurrentDirection));
+		object().CObjectHandler::set_goal			(eObjectActionFire1,object().inventory().m_slots[1].m_pIItem,0,1,2500,3000);
+#	endif
 #endif
 }
 
 void CStalkerActionSolveZonePuzzle::finalize	()
 {
 	inherited::finalize				();
+
+//	object().movement().set_desired_position	(0);
 
 	if (!object().g_Alive())
 		return;
@@ -102,8 +116,10 @@ void CStalkerActionSolveZonePuzzle::execute		()
 	else
 		object().CObjectHandler::set_goal		(eObjectActionIdle,object().best_weapon());
 #else
-	object().throw_target						(g_actor->Position());
-	object().CObjectHandler::set_goal			(eObjectActionFire1,object().inventory().m_slots[3].m_pIItem);
+#	if 1
+		object().throw_target					(g_actor->Position());
+		object().CObjectHandler::set_goal		(eObjectActionFire1,object().inventory().m_slots[3].m_pIItem);
+#	endif
 #endif
 }
 
@@ -120,7 +136,7 @@ CStalkerActionSmartTerrain::CStalkerActionSmartTerrain	(CAI_Stalker *object, LPC
 void CStalkerActionSmartTerrain::initialize				()
 {
 	inherited::initialize							();
-	object().movement().set_desired_position		(0);
+//	object().movement().set_desired_position		(0);
 	object().movement().set_desired_direction		(0);
 	object().movement().game_selector().set_selection_type		(eSelectionTypeMask);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
@@ -146,6 +162,7 @@ void CStalkerActionSmartTerrain::initialize				()
 void CStalkerActionSmartTerrain::finalize				()
 {
 	inherited::finalize					();
+//	object().movement().set_desired_position	(0);
 	object().movement().game_selector().set_selection_type		(eSelectionTypeRandomBranching);
 }
 

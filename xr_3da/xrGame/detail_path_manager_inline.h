@@ -47,7 +47,12 @@ IC	void CDetailPathManager::set_start_direction	(const Fvector &start_direction)
 IC	void CDetailPathManager::set_dest_position	(const Fvector &dest_position)
 {
 	THROW2					(!m_restricted_object || m_restricted_object->accessible(dest_position),"Old movement destination is not accessible after changing restrictions!");
-	m_actuality				= m_actuality && m_dest_position.similar(dest_position, .1f);
+
+	bool					value = !!m_dest_position.similar(dest_position,.1f);
+	if (!value)
+		m_corrected_dest_position	= dest_position;
+
+	m_actuality				= m_actuality && value;
 	m_dest_position			= dest_position;
 }
 

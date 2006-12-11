@@ -26,6 +26,24 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
+// CStalkerActionAimWounded
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionAimWounded : public CStalkerActionCombatBase {
+protected:
+	typedef CStalkerActionCombatBase inherited;
+
+private:
+//	float				m_speed;
+
+public:
+						CStalkerActionAimWounded	(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+};
+
+//////////////////////////////////////////////////////////////////////////
 // CStalkerActionPrepareWounded
 //////////////////////////////////////////////////////////////////////////
 
@@ -53,4 +71,18 @@ public:
 	virtual void		initialize					();
 	virtual void		execute						();
 	virtual void		finalize					();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionPauseAfterKill
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionPauseAfterKill : public CStalkerActionCombatBase {
+protected:
+	typedef CStalkerActionCombatBase inherited;
+
+public:
+						CStalkerActionPauseAfterKill(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
 };

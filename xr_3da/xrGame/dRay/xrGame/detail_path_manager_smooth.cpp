@@ -500,6 +500,9 @@ bool CDetailPathManager::init_build(
 	dest.vertex_id						= level_path.back();
 	
 	validate_vertex_position			(dest);
+	m_corrected_dest_position.x			= dest.position.x;
+	m_corrected_dest_position.y			= ai().level_graph().vertex_plane_y(dest.vertex_id,dest.position.x,dest.position.y);
+	m_corrected_dest_position.z			= dest.position.y;
 
 	if (start.direction.square_magnitude() < EPS_L)
 		start.direction.set				(0.f,1.f);

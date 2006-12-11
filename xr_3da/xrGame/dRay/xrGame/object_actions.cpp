@@ -170,8 +170,11 @@ void CObjectActionFire::execute			()
 	VERIFY						(object().inventory().ActiveItem());
 	VERIFY						(object().inventory().ActiveItem()->object().ID() == m_item->object().ID());
 
-	if (!m_object->can_kill_member())
-		object().inventory().Action	(kWPN_FIRE,	CMD_START);
+	if (!m_object->can_kill_member()) {
+		CWeapon					*weapon = smart_cast<CWeapon*>(object().inventory().ActiveItem());
+		if (!weapon || (weapon->GetState() != CWeapon::eFire))
+			object().inventory().Action	(kWPN_FIRE,	CMD_START);
+	}
 	else
 		object().inventory().Action	(kWPN_FIRE,	CMD_STOP);
 }

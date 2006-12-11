@@ -1060,7 +1060,7 @@ void CStalkerActionSearchEnemy::execute			()
 #else
 		if (object().movement().accessible(mem_object.m_object_params.m_level_vertex_id)) {
 			object().movement().set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
-			object().movement().set_desired_position	(0);
+//			object().movement().set_desired_position	(0);
 		}
 		else {
 			object().movement().set_nearest_accessible_position	(

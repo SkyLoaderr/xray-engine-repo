@@ -30,8 +30,8 @@
 
 const u32 MIN_QUEUE		= 0;
 const u32 MAX_QUEUE		= 1;
-const u32 MIN_INTERVAL	= 2500;
-const u32 MAX_INTERVAL	= 3000;
+const u32 MIN_INTERVAL	= 1000;
+const u32 MAX_INTERVAL	= 1500;
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
@@ -64,7 +64,10 @@ void CStalkerActionReachWounded::initialize					()
 {
 	inherited::initialize	();
 
+	m_storage->set_property						(eWorldPropertyWoundedEnemyPrepared,false);
+	m_storage->set_property						(eWorldPropertyWoundedEnemyAimed,false);
 	object().movement().set_desired_direction	(0);
+//.	object().movement().set_desired_position	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_body_state			(eBodyStateStand);
@@ -77,6 +80,7 @@ void CStalkerActionReachWounded::initialize					()
 void CStalkerActionReachWounded::finalize					()
 {
 	inherited::finalize		();
+//.	object().movement().set_desired_position	(0);
 }
 
 void CStalkerActionReachWounded::execute					()
@@ -96,13 +100,79 @@ void CStalkerActionReachWounded::execute					()
 		object().movement().set_movement_type	(eMovementTypeStand);
 		return;
 	}
-	else
+	else {
+		ALife::_OBJECT_ID					processor_id = object().agent_manager().enemy().wounded_processor(enemy);
+		if ((processor_id != ALife::_OBJECT_ID(-1)) && (processor_id != object().ID())) {
+			CObject							*processor = Level().Objects.net_Find(processor_id);
+			VERIFY							(processor);
+			if (processor->Position().distance_to(object().Position()) < 2.f) {
+				object().movement().set_movement_type	(eMovementTypeStand);
+				return;
+			}
+		}
 		object().movement().set_movement_type	(eMovementTypeWalk);
+	}
 
 	if (object().movement().accessible(mem_object.m_object_params.m_level_vertex_id))
 		object().movement().set_level_dest_vertex			(mem_object.m_object_params.m_level_vertex_id);
 	else
 		object().movement().set_nearest_accessible_position	(ai().level_graph().vertex_position(mem_object.m_object_params.m_level_vertex_id),mem_object.m_object_params.m_level_vertex_id);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionAimWounded
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionAimWounded::CStalkerActionAimWounded	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object, action_name)
+{
+}
+
+void CStalkerActionAimWounded::initialize				()
+{
+	inherited::initialize	();
+
+	object().movement().set_desired_direction	(0);
+	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_mental_state		(eMentalStateDanger);
+	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_movement_type		(eMovementTypeStand);
+	object().CObjectHandler::set_goal			(eObjectActionAimReady1,weapon_to_kill(&object()),MIN_QUEUE,MAX_QUEUE,MIN_INTERVAL,MAX_INTERVAL);
+
+	const CEntityAlive							*enemy = object().memory().enemy().selected();
+	object().sight().setup						(CSightAction(enemy,true));
+	object().agent_manager().enemy().wounded_processed(enemy,true);
+
+//	m_speed									= object().movement().m_head.speed;
+//	object().movement().danger_head_speed	(PI_DIV_4);
+}
+
+void CStalkerActionAimWounded::execute					()
+{
+	inherited::execute		();
+
+	if (first_time())
+		return;
+
+	if (!completed())
+		return;
+
+	const SBoneRotation		&head = object().movement().m_head;
+	if (!fsimilar(head.current.yaw,head.target.yaw))
+		return;
+
+	if (!fsimilar(head.current.pitch,head.target.pitch))
+		return;
+
+	m_storage->set_property	(eWorldPropertyWoundedEnemyAimed,true);
+}
+
+void CStalkerActionAimWounded::finalize					()
+{
+	inherited::finalize		();
+
+//	object().movement().danger_head_speed	(m_speed);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -126,13 +196,6 @@ void CStalkerActionPrepareWounded::initialize				()
 	object().movement().set_movement_type		(eMovementTypeStand);
 	object().sound().play						(eStalkerSoundKillWounded);
 	object().CObjectHandler::set_goal			(eObjectActionAimReady1,weapon_to_kill(&object()),MIN_QUEUE,MAX_QUEUE,MIN_INTERVAL,MAX_INTERVAL);
-
-	const CEntityAlive							*enemy = object().memory().enemy().selected();
-	VERIFY										(enemy);
-
-	object().agent_manager().enemy().wounded_processed(enemy,true);
-//	if (object().agent_manager().enemy().wounded_processor(enemy) == ALife::_OBJECT_ID(-1))
-//		object().agent_manager().enemy().wounded_processor	(enemy,object().ID());
 }
 
 void CStalkerActionPrepareWounded::finalize					()
@@ -172,6 +235,7 @@ void CStalkerActionKillWounded::initialize					()
 {
 	inherited::initialize	();
 
+	m_storage->set_property						(eWorldPropertyPausedAfterKill,true);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -196,4 +260,37 @@ void CStalkerActionKillWounded::execute					()
 	VERIFY					(object().memory().visual().visible_now(enemy));
 	object().sight().setup	(CSightAction(enemy,true));
 	object().set_goal		(eObjectActionFire1,weapon_to_kill(&object()),MIN_QUEUE,MAX_QUEUE,MIN_INTERVAL,MAX_INTERVAL);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionPauseAfterKill
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionPauseAfterKill::CStalkerActionPauseAfterKill	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object, action_name)
+{
+}
+
+void CStalkerActionPauseAfterKill::initialize	()
+{
+	inherited::initialize	();
+
+	object().movement().set_desired_direction	(0);
+	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_mental_state		(eMentalStateDanger);
+	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_movement_type		(eMovementTypeStand);
+	object().CObjectHandler::set_goal			(eObjectActionAimReady1,weapon_to_kill(&object()),MIN_QUEUE,MAX_QUEUE,MIN_INTERVAL,MAX_INTERVAL);
+	object().sight().setup						(CSightAction(SightManager::eSightTypeCurrentDirection,true));
+}
+
+void CStalkerActionPauseAfterKill::execute		()
+{
+	inherited::execute		();
+
+	if (!completed())
+		return;
+
+	m_storage->set_property	(eWorldPropertyPausedAfterKill,false);
 }

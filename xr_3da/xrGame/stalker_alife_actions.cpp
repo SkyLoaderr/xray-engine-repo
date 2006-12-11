@@ -28,12 +28,81 @@
 using namespace StalkerSpace;
 
 #ifdef _DEBUG
-//#	define STALKER_DEBUG_MODE
+#	define STALKER_DEBUG_MODE
 #endif
 
 #ifdef STALKER_DEBUG_MODE
 #	include "attachable_item.h"
 #endif
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionNoALife
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionNoALife::CStalkerActionNoALife	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionNoALife::initialize	()
+{
+	inherited::initialize						();
+#ifndef STALKER_DEBUG_MODE
+//	object().movement().set_desired_position	(0);
+	object().movement().set_desired_direction	(0);
+	object().movement().set_path_type			(MovementManager::ePathTypeGamePath);
+	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_movement_type		(eMovementTypeWalk);
+	object().movement().set_mental_state		(eMentalStateFree);
+	object().sight().setup						(CSightAction(SightManager::eSightTypeCover,false,true));
+	
+	m_stop_weapon_handling_time					= Device.dwTimeGlobal;
+	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
+		m_stop_weapon_handling_time				+= ::Random32.random(30000) + 30000;
+
+#else
+	object().movement().set_mental_state		(eMentalStateDanger);
+	object().movement().set_movement_type		(eMovementTypeStand);
+	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_desired_direction	(0);
+	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_nearest_accessible_position();
+	object().sight().setup						(CSightAction(SightManager::eSightTypeCurrentDirection));
+	object().CObjectHandler::set_goal			(eObjectActionFire1,object().inventory().m_slots[1].m_pIItem,0,1,2500,3000);
+//	object().movement().patrol().set_path		("way_0000",PatrolPathManager::ePatrolStartTypeNearest);
+#endif
+}
+
+void CStalkerActionNoALife::finalize	()
+{
+	inherited::finalize				();
+
+//	object().movement().set_desired_position	(0);
+
+	if (!object().g_Alive())
+		return;
+
+	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
+}
+
+void CStalkerActionNoALife::execute		()
+{
+	inherited::execute				();
+#ifndef STALKER_DEBUG_MODE
+	object().sound().play			(eStalkerSoundHumming,60000,10000);
+	if (Device.dwTimeGlobal >= m_stop_weapon_handling_time)
+		if (!object().best_weapon())
+			object().CObjectHandler::set_goal	(eObjectActionIdle);
+		else
+			object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
+	else
+		object().CObjectHandler::set_goal		(eObjectActionIdle,object().best_weapon());
+#else
+//	object().movement().set_movement_type		(eMovementTypeRun);
+#endif
+}
 
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionGatherItems
@@ -64,6 +133,8 @@ void CStalkerActionGatherItems::finalize	()
 {
 	inherited::finalize		();
 
+//	object().movement().set_desired_position	(0);
+
 	if (!object().g_Alive())
 		return;
 
@@ -90,71 +161,4 @@ void CStalkerActionGatherItems::execute		()
 //	}
 
 	object().sight().setup						(SightManager::eSightTypePosition,&object().memory().item().selected()->Position());
-}
-
-//////////////////////////////////////////////////////////////////////////
-// CStalkerActionNoALife
-//////////////////////////////////////////////////////////////////////////
-
-CStalkerActionNoALife::CStalkerActionNoALife	(CAI_Stalker *object, LPCSTR action_name) :
-	inherited				(object,action_name)
-{
-}
-
-void CStalkerActionNoALife::initialize	()
-{
-	inherited::initialize						();
-#ifndef STALKER_DEBUG_MODE
-	object().movement().set_desired_position	(0);
-	object().movement().set_desired_direction	(0);
-	object().movement().set_path_type			(MovementManager::ePathTypeGamePath);
-	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_body_state			(eBodyStateStand);
-	object().movement().set_movement_type		(eMovementTypeWalk);
-	object().movement().set_mental_state		(eMentalStateFree);
-	object().sight().setup						(CSightAction(SightManager::eSightTypeCover,false,true));
-	
-	m_stop_weapon_handling_time		= Device.dwTimeGlobal;
-	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
-		m_stop_weapon_handling_time	+= ::Random32.random(30000) + 30000;
-
-#else
-	object().CObjectHandler::set_goal			(eObjectActionIdle);
-	object().movement().set_desired_direction	(0);
-	object().movement().set_path_type			(MovementManager::ePathTypePatrolPath);
-	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().patrol().set_path		("way_0000",PatrolPathManager::ePatrolStartTypeNearest);
-//	object().movement().set_nearest_accessible_position();
-	object().movement().set_body_state			(eBodyStateStand);
-	object().movement().set_movement_type		(eMovementTypeRun);
-	object().movement().set_mental_state		(eMentalStatePanic);
-	object().sight().setup						(CSightAction(SightManager::eSightTypePathDirection));
-#endif
-}
-
-void CStalkerActionNoALife::finalize	()
-{
-	inherited::finalize				();
-
-	if (!object().g_Alive())
-		return;
-
-	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
-}
-
-void CStalkerActionNoALife::execute		()
-{
-	inherited::execute				();
-#ifndef STALKER_DEBUG_MODE
-	object().sound().play			(eStalkerSoundHumming,60000,10000);
-	if (Device.dwTimeGlobal >= m_stop_weapon_handling_time)
-		if (!object().best_weapon())
-			object().CObjectHandler::set_goal	(eObjectActionIdle);
-		else
-			object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
-	else
-		object().CObjectHandler::set_goal		(eObjectActionIdle,object().best_weapon());
-#else
-//	object().movement().set_movement_type		(eMovementTypeRun);
-#endif
 }

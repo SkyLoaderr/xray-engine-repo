@@ -52,7 +52,8 @@ bool CDetailPathManager::valid			() const
 	if (m_state_patrol_path)
 		b					= b && (fis_zero(m_path[m_last_patrol_point].position.distance_to_xz_sqr(m_dest_position)));
 	else
-		b					= b && fis_zero(m_path.back().position.distance_to_xz_sqr(m_dest_position));
+		b					= b && fis_zero(m_path.back().position.distance_to_xz_sqr(m_corrected_dest_position));
+//		b					= b && fis_zero(m_path.back().position.distance_to_xz_sqr(m_dest_position));
 	return					(b);
 }
 

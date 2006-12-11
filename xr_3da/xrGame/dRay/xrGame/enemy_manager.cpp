@@ -334,7 +334,7 @@ void CEnemyManager::process_wounded			(bool &only_wounded)
 	}
 
 	if (only_wounded) {
-#ifdef _DEBUG
+#if 0//def _DEBUG
 		if (g_enemy_manager_second_update)
 			Msg					("%6d ONLY WOUNDED LEFT %s",Device.dwTimeGlobal,*m_object->cName());
 #endif // _DEBUG
@@ -410,7 +410,7 @@ void CEnemyManager::update					()
 		Level().autosave_manager().inc_not_ready();
 	}
 
-#ifdef _DEBUG
+#if 0//def _DEBUG
 	if (g_enemy_manager_second_update && selected() && smart_cast<const CAI_Stalker*>(selected()) && smart_cast<const CAI_Stalker*>(selected())->wounded())
 		Msg						("%6d WOUNDED CHOOSED %s",Device.dwTimeGlobal,*m_object->cName());
 #endif // _DEBUG
