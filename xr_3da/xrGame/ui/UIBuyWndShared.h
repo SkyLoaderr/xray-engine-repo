@@ -1,6 +1,6 @@
 #pragma once
 
-#define _new_buy_wnd
+//#define _new_buy_wnd
 
 #include	"UIMpTradeWnd.h"
 #include	"UIBuyWnd.h"
