@@ -3,38 +3,14 @@
 	<string id="bandit_outfit_description">
 		<text>Traditional outfit of a bandit - a leather jacket with kevlar elements. It slightly increases bullet and splinter protection. It does not protect from anomalies.</text>
 	</string>
-	<string id="bandit_outfit_description_anom">
-		<text>SPECIAL SUIT. This jacket was taken from the body of a stalker who died in a Kissel anomaly. Having spent a long time in the anomaly, this jacket has acquired anomalous properties: it greatly accelerates the user's metabolism. Traditional bandit outfit - a leather jacket with attached kevlar elements. It slightly increases bullet and splinter protection.</text>
-	</string>
-	<string id="bandit_outfit_description_m">
-		<text>SPECIAL SUIT. It is based on a standard stalker jacket but due to sewn-in thick felt strips, its protective properties are increased, especially in respect of gravitational anomalies.</text>
-	</string>
-	<string id="bandit_outfit_description_m2">
-		<text>SPECIAL SUIT. The lining of this jacket contains chainmail made of hardened wire. The chainmail provides excellent protection against bites and cuts, but is totally ineffective against bullets and anomalies. Besides, the metal makes the jacket heavier.</text>
-	</string>
 	<string id="bandit_outfit_name">
 		<text>Bandit jacket</text>
-	</string>
-	<string id="bandit_outfit_name_anom">
-		<text>Animated jacket</text>
-	</string>
-	<string id="bandit_outfit_name_m">
-		<text>Thick bandit jacket</text>
-	</string>
-	<string id="bandit_outfit_name_m2">
-		<text>Chainmail jacket</text>
 	</string>
 	<string id="dolg_outfit_description">
 		<text>Produced by one of Kiev's defence research institutes and commissioned by the Duty faction. It is as simple and reliable as the standard PSZ-9 model, but due to the new materials, it provides good protection from bullets and splinters, as well as from weak anomalies. It has no breathing protection system, so its level of radiation protection is low.</text>
 	</string>
-	<string id="dolg_outfit_description_m1">
-		<text>SPECIAL SUIT. Special rubber added to the kevlar fabric makes it more resistant to cuts. Unlike standard kevlar, this suit provides excellent protection against bites and hits inflicted by monsters.</text>
-	</string>
 	<string id="dolg_outfit_name">
 		<text>PSZ-9d Duty Armor</text>
-	</string>
-	<string id="dolg_outfit_name_m1">
-		<text>Rubberized Duty armor</text>
 	</string>
 	<string id="dolg_scientific_outfit_description">
 		<text>A wonderful protective suit for the Zone. It combines excellent anomaly-proof and bullet-proof qualities. It includes the PSZ-9d suit, a closed cycle breathing system and an integrated system of anomalous field suppression. It provides good bullet and splinter protection. It has an average level of anomaly protection and a high level of radiation protection.</text>
@@ -57,44 +33,20 @@
 	<string id="killer_outfit_description">
 		<text>Stalker suit from the Merc faction. Its design is based on the suit used by the special forces of the Western armies. Due to a special treatment, its fabric provides better heat and radiation protection. Its protective properties are slightly better then those of the PSZ-7 military bulletproof suits.</text>
 	</string>
-	<string id="killer_outfit_description_m1">
-		<text>SPECIAL SUIT. This suit is reinforced with a set of steel plates which improve protection from gunfire and monster bites. In all other respects, it is the standard suit of the Merc faction.</text>
-	</string>
-	<string id="killer_outfit_description_m2">
-		<text>SPECIAL SUIT. This suit was specially designed for long trips. The trousers have integrated elastic ribbons which decrease the joint load during long walks. Some artifacts were also added (but no one knows exactly which ones). As a result the suit became practically weightless and acquired better protective characteristics.</text>
-	</string>
 	<string id="killer_outfit_name">
 		<text>Merc suit</text>
-	</string>
-	<string id="killer_outfit_name_m1">
-		<text>Reinforced Merc suit</text>
-	</string>
-	<string id="killer_outfit_name_m2">
-		<text>Modified Merc suit</text>
 	</string>
 	<string id="military_outfit_description">
 		<text>This Skat-9M military suit is designed for assault operations in areas of increased anomalous activity. It includes a PSZ-12p heavy military bulletproof vest, an integrated compensation suit and a Sphere-12M helmet. It provides perfect protection from bullets and splinters and it doesn’t decrease the soldier’s mobility. It has a balanced system of anomaly protection.</text>
 	</string>
-	<string id="military_outfit_description_m1">
-		<text>SPECIAL SUIT. A light version of the military bulletproof vest made with super-modern titanium alloys. It is somewhat lighter then the standard bulletproof vest but provides the same reliable protection.</text>
-	</string>
 	<string id="military_outfit_name">
 		<text>Military armored suit </text>
-	</string>
-	<string id="military_outfit_name_m1">
-		<text>Modified armored suit</text>
 	</string>
 	<string id="monolit_outfit_description">
 		<text>Stalker suit from the Monolith faction. The producer is unknown. Its protective properties are slightly worse then those of the PSZ-9a military bulletproof vest. Its structure is similar to the popular neutral stalker suit which combine a bulletproof vest and a radiation protection suit. It provides good protection from gunfire. Its level of anomaly protection is low due to the absence of an air filtering system.</text>
 	</string>
-	<string id="monolit_outfit_description_m1">
-		<text>SPECIAL SUIT. A special model of the Monolith personal protection suit. It is made of advanced technology materials and has a prototype psi-protection. Its defensive properties are superior to the ones of some military bulletproof suits, besides, it can resist psi-attacks.</text>
-	</string>
 	<string id="monolit_outfit_name">
 		<text>Monolith suit</text>
-	</string>
-	<string id="monolit_outfit_name_m1">
-		<text>Modified Monolith suit</text>
 	</string>
 	<string id="outfit_soldier_description">
 		<text>An ordinary thick jacket, one of the many. It slightly increases bullet and splinter protection. It does not protect from anomalies.</text>
@@ -117,38 +69,14 @@
 	<string id="specops_outfit_description">
 		<text>A Berill-5M special forces suit modified for the Zone environment. It includes a PSZ-9a military bulletproof vest with beryllium coating and a Sphere-08 helmet. It is designed for assault operations in areas with high background radiation. Its level of anomaly protection is low.</text>
 	</string>
-	<string id="specops_outfit_description_m1">
-		<text>SPECIAL SUIT. Even a small cut can have serious consequences in the Zone, but it is very risky to take off the chemical and radiation protection suits to treat the wound. This suit is designed to solve this problem. It has a lining impregnated with a mixture of disinfectants and coagulants. As a result, any wound is tended as if it was bandaged. In all other respects, it is a usual Berill-5M suit. The Berill-5M is a special forces suit modified for the Zone environment. It includes a PSZ-9a military bulletproof vest with beryllium coating and a Sphere-08 helmet.</text>
-	</string>
 	<string id="specops_outfit_name">
 		<text>Berill-5M armored suit</text>
-	</string>
-	<string id="specops_outfit_name_m1">
-		<text>Healing Berill</text>
 	</string>
 	<string id="stalker_outfit_description">
 		<text>Stalker suit. It is an effective combination of a light military bulletproof vest and of a rubberized fabric suit. It is reinforced with inserted kevlar plates and provides good protection from gunfire. It can also protect from a weak anomaly or radiation.</text>
 	</string>
-	<string id="stalker_outfit_description_m1">
-		<text>SPECIAL SUIT. Having spent a long time in an anomaly, this suit has acquired the capability to reflect bullets. It cannot stop a bullet completely, but it can reduce its energy before the physical contact thus protecting the user.</text>
-	</string>
-	<string id="stalker_outfit_description_m2">
-		<text>SPECIAL SUIT. The spectral stalker never uses medkits and all his wounds heal very quickly. He has an unusual suit he found in an anomaly. Or so the legend goes…</text>
-	</string>
-	<string id="stalker_outfit_description_m3">
-		<text>SPECIAL SUIT. A suit with additional radiation protection and bottles from a scientific protective suit. Probably, the stalker had no money to buy a scientific suit, so he modified his own, increased its psi protection.</text>
-	</string>
 	<string id="stalker_outfit_name">
 		<text>Stalker suit</text>
-	</string>
-	<string id="stalker_outfit_name_m1">
-		<text>Enchanted suit</text>
-	</string>
-	<string id="stalker_outfit_name_m2">
-		<text>Spectral stalker suit</text>
-	</string>
-	<string id="stalker_outfit_name_m3">
-		<text>Hermetic suit</text>
 	</string>
 	<string id="svoboda_heavy_outfit_description">
 		<text>Reinforced stalker suit produced by the gunsmiths of the Freedom faction. It is made up of a medium military bulletproof vest plated with reinforcing zirconium elements which provide good protection from rifle bullets and splinters from medium and long range. The material of the suit consists of two layers: specially treated leather and fabric with asbestos yarn. The suit provides good protection from radiation and weak anomalies.</text>
@@ -161,5 +89,60 @@
 	</string>
 	<string id="svoboda_light_outfit_name">
 		<text>Wind of Freedom suit</text>
+	</string>
+	;-----------------------------Уникальные вещи----------------------------------		
+	<string id="novice_outfit_name_m">
+		<text>Аномальная кожанка</text>
+	</string>
+	<string id="novice_outfit_description_m">
+		<text>Эту куртку сняли с трупа одного из сталкеров, умерших в аномалии "кисель". Пролежав долгое время в аномалии, куртка обрела свойство ускорять метаболизм.</text>
+	</string>
+	<string id="bandit_outfit_name_m">
+		<text>Кольчужная куртка</text>
+	</string>
+	<string id="bandit_outfit_description_m">
+		<text>Обычный слабенький бандитский бронежилет, но в подкладку вшито кольчужное полотно. Под силу это сделать почти любому, но терпения хватит далеко не всем.</text>
+	</string>
+	<string id="dolg_outfit_name_m1">
+		<text>Охотничий ПСЗ-9д</text>
+	</string>
+	<string id="dolg_outfit_description_m1">
+		<text>Долговский бронекостюм с улучшенной защитой от укусов и порезов. </text>
+	</string>
+	<string id="killer_outfit_name_m1">
+		<text>Укрепленный комбез</text>
+	</string>
+	<string id="killer_outfit_description_m1">
+		<text>В подкладку куртки вшита кольчужная сетка, повышающая защиту от огнестрельного оружия, а также от укусов монстров. В комплект также включен ПНВ.</text>
+	</string>
+	<string id="specnaz_outfit_name_m1">
+		<text>Лечебный Берилл</text>
+	</string>
+	<string id="specnaz_outfit_description_m1">
+		<text>Ткань костюма пропитана стрептоцидовой мазью, ускоряющей заживление ран.</text>
+	</string>
+	<string id="stalker_outfit_name_m1">
+		<text>Комбинезон Призрака</text>
+	</string>
+	<string id="stalker_outfit_description_m1">
+		<text>Ходят легенды о том, что призрачный сталкер никогда не носит с собой аптечки. Все на нем заживает, как на собаке. Говорят, что у него необычный комбинезон и что он его из аномалии достал.</text>
+	</string>
+	<string id="stalker_outfit_name_m2">
+		<text>Комбинезон туриста</text>
+	</string>
+	<string id="stalker_outfit_description_m2">
+		<text>Бывший хозяин этой вещи был настоящим туристом, и, видать, не раз хаживал в тяжелые, на грани человеческих возможностей походы. Он знал, как правильно распределить вес, который нес и каким вещам отдать предпочтение. Карманы на куртке и грамотно подобраный рюкзак позволяют нести больший вес.</text>
+	</string>
+	<string id="svoboda_outfit_name_m1">
+		<text>Комбез Свободы М2</text>
+	</string>
+	<string id="svoboda_outfit_description_m1">
+		<text>В комбинизон интегрирована металлическая сетка, защищающая от электрических и магнитных полей. В комплект также включен прибор ночного видения.</text>
+	</string>
+	<string id="exo_outfit_name_m1">
+		<text>Экзоскелет ПНБ-4УЗ</text>
+	</string>
+	<string id="exo_outfit_description_m1">
+		<text>Базовый прибор ночного видения заменен на более современную модель с цифровой фильтрацией сигнала.</text>
 	</string>
 </string_table>
