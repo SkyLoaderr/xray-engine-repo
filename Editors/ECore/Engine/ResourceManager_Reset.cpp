@@ -84,6 +84,11 @@ template<class C>	void mdump(C c)
 
 CResourceManager::~CResourceManager		()
 {
+	Dump	();
+}
+
+void CResourceManager::Dump()
+{
 	Msg		("* RM_Dump: textures : %d",m_textures.size());		mdump(m_textures);
 	Msg		("* RM_Dump: rtargets : %d",m_rtargets.size());		mdump(m_rtargets);
 	Msg		("* RM_Dump: rtargetsc: %d",m_rtargets_c.size());	mdump(m_rtargets_c);
@@ -92,4 +97,3 @@ CResourceManager::~CResourceManager		()
 	Msg		("* RM_Dump: dcl      : %d",v_declarations.size());
 	Msg		("* RM_Dump: states   : %d",v_states.size());
 }
-

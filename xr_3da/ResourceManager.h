@@ -168,6 +168,7 @@ public:
 	void			DeferredUpload			();
 	void			DeferredUnload			();
 	void			Evict					();
+	void			Dump					();
 };
 
 #endif //ResourceManagerH

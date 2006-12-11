@@ -188,6 +188,15 @@ public:
 		thread_spawn	(crashthread,"crash",0,0);
 	}
 };
+
+class CCC_DumpResources : public IConsole_Command
+{
+public:
+	CCC_DumpResources(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) {
+		Device.Resources->Dump();
+	}
+};
 //-----------------------------------------------------------------------
 class CCC_SaveCFG : public IConsole_Command
 {
@@ -598,6 +607,7 @@ void CCC_Register()
 	CMD4(CCC_DR_UsePoints,		"demo_record_step",	&g_iDR_LM_Step, 0, 3);
 #endif
 
-
+	CMD1(CCC_DumpResources,		"dump_resources");
+	
 };
  
