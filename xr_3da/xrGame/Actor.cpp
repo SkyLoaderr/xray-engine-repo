@@ -1184,8 +1184,8 @@ void CActor::shedule_Update	(u32 DT)
 
 				else if (inventory().m_pTarget)
 					m_sDefaultObjAction = m_sInventoryItemUseAction;
-				else if (m_pInvBoxWeLookingAt)
-					m_sDefaultObjAction = m_sInventoryBoxUseAction;
+//.				else if (m_pInvBoxWeLookingAt)
+//.					m_sDefaultObjAction = m_sInventoryBoxUseAction;
 				else 
 					m_sDefaultObjAction = NULL;
 			}

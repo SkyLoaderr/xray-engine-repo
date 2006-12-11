@@ -36,6 +36,8 @@ BOOL CInventoryBox::net_Spawn(CSE_Abstract* DC)
 	inherited::net_Spawn	(DC);
 	setVisible				(TRUE);
 	setEnabled				(TRUE);
+	set_tip_text			("inventory_box_use");
+
 	return					TRUE;
 }
 

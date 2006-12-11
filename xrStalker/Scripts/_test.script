@@ -29,7 +29,13 @@ function main111()
 end
 
 function main()
- game.start_tutorial("part_1_pda")
+ -- game.start_tutorial("part_1_pda")
+	local o = level.debug_object("level_prefix_inventory_box")
+	
+ 	o:set_tip_text("hello world")
+--	o:set_tip_text_default("default hello world")
+	o:set_nonscript_usable(true)
+
 end
 
 

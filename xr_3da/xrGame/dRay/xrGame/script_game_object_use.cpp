@@ -23,7 +23,7 @@ void CScriptGameObject::SetTipText (LPCSTR tip_text)
 {
 	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(&object());
 	if (!l_tpUseableScriptObject)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"Can not clear use callback . Reason: the object is not usable");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"SetTipText. Reason: the object is not usable");
 	else l_tpUseableScriptObject->set_tip_text(tip_text);
 }
 
@@ -31,7 +31,7 @@ void CScriptGameObject::SetTipTextDefault ()
 {
 	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(&object());
 	if (!l_tpUseableScriptObject)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"Can not clear use callback . Reason: the object is not usable");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"SetTipTextDefault . Reason: the object is not usable");
 	else l_tpUseableScriptObject->set_tip_text_default();
 }
 
@@ -39,7 +39,7 @@ void CScriptGameObject::SetNonscriptUsable(bool nonscript_usable)
 {
 	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(&object());
 	if (!l_tpUseableScriptObject)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"Can not clear use callback . Reason: the object is not usable");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"SetNonscriptUsable . Reason: the object is not usable");
 	else l_tpUseableScriptObject->set_nonscript_usable(nonscript_usable);
 }
 
