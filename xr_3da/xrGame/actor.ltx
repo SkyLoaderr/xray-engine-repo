@@ -1,3 +1,6 @@
+[actor_terrain]
+	255,255,255,255
+
 [actor]:common_ph_friction_params_on_npc_death
 GroupControlSection		= spawn_group
 $spawn 					= "actor"
@@ -11,6 +14,8 @@ rank					= 3;
 script_binding			= bind_stalker.actor_init
 visual					= actors\hero\stalker_novice.ogf 
 destroyed_vis_name		= physics\Dead_Body\skelet_crash
+
+terrain					= actor_terrain
 
 max_item_mass			= 40.0
 jump_speed              = 6.
