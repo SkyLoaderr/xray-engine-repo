@@ -530,9 +530,9 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what, BOOL bForced)
 				P.w_u16				(ps_who->team);
 				u_EventSend(P);
 				//-- Artefact is taken for first time
-				if (!m_bWasTaken)
+				if (!m_bArtefactWasTaken)
 				{
-					m_bWasTaken = true;
+					m_bArtefactWasTaken = true;
 					TeamStruct* pTeam		= GetTeamData(u8(ps_who->team));
 					if (pTeam)
 					{					
@@ -580,6 +580,7 @@ BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 			teamInPossession = 0;
 			signal_Syncronize();
 			m_eAState = ON_FIELD;
+			m_bArtefactWasDropped = true;
 
 			xrClientData* xrCData	= e_who->owner;
 			game_PlayerState*	ps_who	=	xrCData->ps;
@@ -693,7 +694,8 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 			else
 			{
 				Player_AddMoney(pstate, pTeam->m_iM_TargetFailed);
-				pstate->experience_New *= READ_IF_EXISTS(pSettings, r_float, "mp_bonus_exp", "target_failed_all_mul",1.0f);				
+				if (!m_bArtefactWasDropped)
+					pstate->experience_New *= READ_IF_EXISTS(pSettings, r_float, "mp_bonus_exp", "target_failed_all_mul",1.0f);
 			};
 			
 			Player_AddExperience(pstate, 0);
@@ -771,7 +773,8 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 	//-------------------------------------------------
 	if (g_sv_dm_bAnomaliesEnabled)	StartAnomalies();
 	//-------------------------------------------------
-	m_bWasTaken = false;
+	m_bArtefactWasTaken = false;
+	m_bArtefactWasDropped = false;
 };
 
 void	game_sv_ArtefactHunt::RemoveArtefact			()

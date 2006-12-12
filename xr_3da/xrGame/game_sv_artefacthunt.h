@@ -27,7 +27,8 @@ protected:
 	u16								m_dwArtefactID;	
 
 	ARTEFACT_STATE					m_eAState;
-	bool							m_bWasTaken;
+	bool							m_bArtefactWasTaken;
+	bool							m_bArtefactWasDropped;
 
 	xr_vector<RPoint>				Artefact_rpoints;
 	xr_vector<u8>					ArtefactsRPoints_ID;
