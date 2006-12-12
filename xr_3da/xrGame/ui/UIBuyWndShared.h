@@ -2,7 +2,7 @@
 
 #define _RANK_COUNT 5
 
-#define _new_buy_wnd
+//.#define _new_buy_wnd
 
 #ifdef _new_buy_wnd
 	class		CUIMpTradeWnd;
