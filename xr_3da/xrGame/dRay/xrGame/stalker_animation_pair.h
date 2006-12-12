@@ -30,11 +30,14 @@ private:
 	bool					m_step_dependence;
 	bool					m_global_animation;
 
-private:
 #ifdef DEBUG
+private:
 	LPCSTR					m_object_name;
 	LPCSTR					m_animation_type_name;
-#endif
+
+public:
+	bool					m_just_started;
+#endif // DEBUG
 
 protected:
 #ifndef USE_HEAD_BONE_PART_FAKE
@@ -66,7 +69,8 @@ public:
 
 public:
 #ifdef DEBUG
-	IC		void			set_dbg_info			(LPCSTR object_name, LPCSTR animation_type_name);
+	IC		void				set_dbg_info		(LPCSTR object_name, LPCSTR animation_type_name);
+	std::pair<LPCSTR,LPCSTR>	*blend_id			(CKinematicsAnimated *skeleton_animated, std::pair<LPCSTR,LPCSTR> &result) const;
 #endif
 };
 

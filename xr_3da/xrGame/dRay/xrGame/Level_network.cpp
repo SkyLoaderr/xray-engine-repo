@@ -47,6 +47,10 @@ void CLevel::remove_objects	()
 	ai().script_engine().collect_all_garbage	();
 }
 
+#ifdef DEBUG
+	extern void	show_animation_stats	();
+#endif // DEBUG
+
 void CLevel::net_Stop		()
 {
 	Msg							("- Disconnect");
@@ -63,6 +67,9 @@ void CLevel::net_Stop		()
 	}
 
 	ai().script_engine().collect_all_garbage	();
+#ifdef DEBUG
+	show_animation_stats		();
+#endif // DEBUG
 }
 
 BOOL	g_bCalculatePing = FALSE;

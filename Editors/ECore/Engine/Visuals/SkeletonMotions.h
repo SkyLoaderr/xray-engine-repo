@@ -130,6 +130,9 @@ struct ENGINE_API		motions_value
 	u32					m_dwReference;
 	BoneMotionMap		m_motions;
     MotionDefVec		m_mdefs;
+#ifdef DEBUG
+	shared_str			m_id;
+#endif // DEBUG
 
 	BOOL				load				(LPCSTR N, IReader *data, vecBones* bones);
 	MotionVec*			bone_motions		(shared_str bone_name);
@@ -180,13 +183,16 @@ public:
 	bool				operator==		(shared_motions const &rhs)	const {return (p_ == rhs.p_);}
 
 	// misc func
-	MotionVec*			bone_motions	(shared_str bone_name)		{	VERIFY(p_); return p_->bone_motions(bone_name);		}
+	MotionVec*			bone_motions	(shared_str bone_name)		{	VERIFY(p_); return p_->bone_motions(bone_name);	}
 	accel_map*			motion_map		()							{	VERIFY(p_); return &p_->m_motion_map;			}
 	accel_map*			cycle			()							{	VERIFY(p_); return &p_->m_cycle;				}
 	accel_map*			fx				()							{	VERIFY(p_); return &p_->m_fx;					}
 	CPartition*			partition		()							{	VERIFY(p_); return &p_->m_partition;			}
     MotionDefVec*		motion_defs		()							{	VERIFY(p_); return &p_->m_mdefs;				}
     CMotionDef*			motion_def		(u16 idx)					{	VERIFY(p_); return &p_->m_mdefs[idx];			}
+#ifdef DEBUG
+	const shared_str	&id				() const					{	VERIFY(p_); return p_->m_id;					}
+#endif // DEBUG
 };
 //---------------------------------------------------------------------------
 #endif

@@ -162,7 +162,7 @@ protected:
 //.	bool						LoadMotions				(LPCSTR N, IReader *data);
 public:
 #ifdef DEBUG
-	LPCSTR						LL_MotionDefName_dbg	(MotionID	ID);
+	std::pair<LPCSTR,LPCSTR>	LL_MotionDefName_dbg	(MotionID	ID);
 //	LPCSTR						LL_MotionDefName_dbg	(LPVOID		ptr);
 #endif
 #ifdef _EDITOR
@@ -217,6 +217,12 @@ public:
 	{
 		u32 sz					= CKinematics::mem_usage(bInstance)+sizeof(*this)+(bInstance&&blend_instances?blend_instances->mem_usage():0);
 		return sz;
+	}
+
+	IC	const BlendSVec			&blend_cycle	(const u32 &bone_part_id) const
+	{
+		VERIFY					(bone_part_id < MAX_PARTS);
+		return					(blend_cycles[bone_part_id]);
 	}
 };
 IC CKinematicsAnimated* PKinematicsAnimated(IRender_Visual* V) { return V?V->dcast_PKinematicsAnimated():0; }

@@ -893,6 +893,7 @@ void CStalkerActionHoldPosition::execute		()
 	}
 
 	if (object().agent_manager().member().cover_detouring() && fire_make_sense()) {
+		object().sound().play		(eStalkerSoundDetour,3000,3000,10000,10000);
 		fire						();
 	}
 	else {
@@ -1032,11 +1033,6 @@ void CStalkerActionSearchEnemy::execute			()
 
 	inherited::execute					();
 	
-#ifndef SILENT_COMBAT
-	if (object().agent_manager().member().can_cry_noninfo_phrase())
-		object().sound().play			(eStalkerSoundSearch,10000,5000);
-#endif
-
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
 
 	if (!mem_object.m_object)
@@ -1069,8 +1065,14 @@ void CStalkerActionSearchEnemy::execute			()
 			);
 		}
 
-		if (object().movement().path_completed() && completed())
-			object().memory().enable(object().memory().enemy().selected(),false);
+		if (object().movement().path_completed()) {
+#ifndef SILENT_COMBAT
+			if (object().agent_manager().member().can_cry_noninfo_phrase())
+				object().sound().play		(eStalkerSoundSearch,0,0,10000,10000);
+#endif // SILENT_COMBAT
+			if (completed())
+				object().memory().enable	(object().memory().enemy().selected(),false);
+		}
 
 		object().sight().setup		(
 			CSightAction(

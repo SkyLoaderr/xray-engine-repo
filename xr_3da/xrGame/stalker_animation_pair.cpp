@@ -72,8 +72,16 @@ void CStalkerAnimationPair::play			(CKinematicsAnimated *skeleton_animated, Play
 			Msg				("%6d [%s][%s][%s][%f]",Device.dwTimeGlobal,m_object_name,m_animation_type_name,*animation()->name(),blend()->timeCurrent);
 #	endif
 #endif
+
+#ifdef DEBUG
+		m_just_started		= false;
+#endif // DEBUG
 		return;
 	}
+
+#ifdef DEBUG
+	m_just_started			= true;
+#endif // DEBUG
 
 	if (!global_animation()) {
 
@@ -108,8 +116,36 @@ void CStalkerAnimationPair::play			(CKinematicsAnimated *skeleton_animated, Play
 	if (psAI_Flags.is(aiAnimation)) {
 		CMotionDef			*motion = skeleton_animated->LL_GetMotionDef(animation());
 		VERIFY				(motion);
-		LPCSTR				name = skeleton_animated->LL_MotionDefName_dbg(animation());
+		LPCSTR				name = skeleton_animated->LL_MotionDefName_dbg(animation()).first;
 		Msg					("%6d [%s][%s][%s][%d] - LOOPED: %d",Device.dwTimeGlobal,m_object_name,m_animation_type_name,name,motion->bone_or_part,! (motion->flags & esmStopAtEnd));
 	}
 #endif
 }
+
+#ifdef DEBUG
+std::pair<LPCSTR,LPCSTR> *CStalkerAnimationPair::blend_id	(CKinematicsAnimated *skeleton_animated, std::pair<LPCSTR,LPCSTR> &result) const
+{
+	if (!blend())
+		return				(0);
+
+	u32						bone_part_id = 0;
+	if (!global_animation())
+		bone_part_id		= blend()->bone_or_part;
+
+	const BlendSVec			&blends = skeleton_animated->blend_cycle(bone_part_id);
+	if (blends.size() < 2)
+		return				(0);
+
+#if 0
+	VERIFY2					(
+		blends[blends.size() - 2]->motionID != animation(),
+		make_string(
+			"animation is blending with itself (%s)",
+			skeleton_animated->LL_MotionDefName_dbg(animation()).first
+		)
+	);
+#endif
+	result					= skeleton_animated->LL_MotionDefName_dbg(blends[blends.size() - 2]->motionID);
+	return					(&result);
+}
+#endif // DEBUG

@@ -2420,6 +2420,17 @@ public:
 	}
 };
 
+extern void show_animation_stats	();
+
+class CCC_ShowAnimationStats : public IConsole_Command {
+public:
+	CCC_ShowAnimationStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR)
+	{
+		show_animation_stats	();
+	}
+};
+
 #endif // DEBUG
 
 void CCC_RegisterCommands()
@@ -2528,6 +2539,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"ai_nil_object_access",	&psAI_Flags,	aiNilObjectAccess);
 
 	CMD3(CCC_Mask,				"ai_draw_visibility_rays",	&psAI_Flags,	aiDrawVisibilityRays);
+	CMD3(CCC_Mask,				"ai_animation_stats",		&psAI_Flags,	aiAnimationStats);
 
 #ifdef DEBUG_MEMORY_MANAGER
 	CMD3(CCC_Mask,				"debug_on_frame_gather_stats",				&psAI_Flags,	aiDebugOnFrameAllocs);
@@ -2556,6 +2568,8 @@ void CCC_RegisterCommands()
 	// adjust mode support
 	CMD4(CCC_Integer,			"hud_adjust_mode",		&g_bHudAdjustMode,	0, 5);
 	CMD4(CCC_Float,				"hud_adjust_value",		&g_fHudAdjustValue,	0.0f, 1.0f);
+
+	CMD1(CCC_ShowAnimationStats,"ai_show_animation_stats");
 #endif // DEBUG
 	
 #ifndef MASTER_GOLD

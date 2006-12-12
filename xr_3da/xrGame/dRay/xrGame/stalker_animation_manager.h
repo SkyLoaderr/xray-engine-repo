@@ -149,6 +149,13 @@ public:
 	IC		void					property_id				(_condition_type value);
 	IC		_value_type				property_value			() const;
 	IC		void					property_value			(_value_type value);
+
+#ifdef DEBUG
+private:
+			void					add_animation_stats		(const std::pair<LPCSTR,LPCSTR> &animation_id, const std::pair<LPCSTR,LPCSTR> *blend_id, bool just_started);
+public:
+			void					add_animation_stats		();
+#endif // DEBUG
 };
 
 #include "stalker_animation_manager_inline.h"

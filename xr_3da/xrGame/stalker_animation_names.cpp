@@ -89,6 +89,7 @@ LPCSTR global_names			[] = {
 	"critical_hit_hend_right_",	// 7
 	"critical_hit_legs_left_",	// 8
 	"critical_hit_legs_right_",	// 9
+	"panic_stand_",
 	0
 };
 

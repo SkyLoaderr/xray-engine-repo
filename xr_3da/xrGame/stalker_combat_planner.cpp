@@ -138,9 +138,10 @@ void CStalkerCombatPlanner::initialize			()
 	if (object().agent_manager().member().members().size() > 1)
 		CScriptActionPlanner::m_storage.set_property	(eWorldPropertyUseSuddenness,	false);
 
-	if (m_object->memory().visual().visible_now(m_object->memory().enemy().selected()) && m_object->memory().enemy().selected()->human_being())
+	if (m_object->memory().visual().visible_now(m_object->memory().enemy().selected()) && m_object->memory().enemy().selected()->human_being() && object().agent_manager().member().can_cry_noninfo_phrase()) {
 		if (!CScriptActionPlanner::m_storage.property(eWorldPropertyUseSuddenness))
 			object().sound().play						(eStalkerSoundAlarm);
+	}
 }
 
 void CStalkerCombatPlanner::finalize			()

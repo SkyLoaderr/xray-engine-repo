@@ -181,7 +181,7 @@ LPCSTR animation_name(CAI_Stalker *self, const MotionID &animation)
 		return			("");
 	CKinematicsAnimated	*skeleton_animated = smart_cast<CKinematicsAnimated*>(self->Visual());
 	VERIFY				(skeleton_animated);
-	LPCSTR				name = skeleton_animated->LL_MotionDefName_dbg(animation);
+	LPCSTR				name = skeleton_animated->LL_MotionDefName_dbg(animation).first;
 	return				(name);
 }
 

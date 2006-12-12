@@ -195,6 +195,9 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 		if (NewHitPower < HDS.power*m_boneHitProtection->m_fHitFrac) HDS.power = HDS.power*m_boneHitProtection->m_fHitFrac;
 		else
 			HDS.power				= NewHitPower;
+
+		if (wounded())
+			HDS.power				= 1000.f;
 	}
 
 	if (g_Alive()) {
