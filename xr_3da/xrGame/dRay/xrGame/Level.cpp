@@ -967,5 +967,4 @@ u32	GameID()
 bool	IsGameTypeSingle()
 {
 	return g_pGamePersistent->GameType()==GAME_SINGLE;
-//	return		(GameID()==GAME_SINGLE);
 }

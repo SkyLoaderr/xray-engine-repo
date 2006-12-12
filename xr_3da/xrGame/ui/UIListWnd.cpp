@@ -518,6 +518,10 @@ bool CUIListWnd::OnMouse(float x, float y, EUIMessages mouse_action)
 	return inherited::OnMouse(x, y, mouse_action);
 }
 
+bool CUIListWnd::OnKeyboard	(int dik, EUIMessages keyboard_action)
+{
+	return inherited::OnKeyboard(dik, keyboard_action);
+}
 //////////////////////////////////////////////////////////////////////////
 
 int CUIListWnd::GetLongestSignWidth()

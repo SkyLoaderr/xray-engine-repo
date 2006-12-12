@@ -267,5 +267,5 @@ bool CUIButton::OnKeyboard(int dik, EUIMessages keyboard_action)
 			return		true;
 		}
 	}
-	return false;
+	return inherited::OnKeyboard(dik, keyboard_action);
 }

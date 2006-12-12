@@ -226,6 +226,6 @@ void CDialogHolder::CleanInternals()
 	while( !m_input_receivers.empty() )
 		m_input_receivers.pop_back();
 
-	m_dialogsToRender.clear();
-	GetUICursor()->Hide();
+	m_dialogsToRender.clear	();
+	GetUICursor()->Hide		();
 }
