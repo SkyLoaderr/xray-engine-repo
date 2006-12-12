@@ -1,26 +1,26 @@
 	<string id="gar_defend_garbage">
-		<text>Уничтожить рейд бандитов.</text>
+		<text>Уничтожить рейд бандитов</text>
 	</string>
 	<string id="gar_dialog_hellcar">
-		<text>Предложить свою помощь лидеру нейтралов.</text>
+		<text>Предложить свою помощь лидеру нейтралов</text>
 	</string>
 	<string id="gar_dialog_hellcar_1">
-		<text>Предложить свою помощь Бесу.</text>
+		<text>Предложить свою помощь Бесу</text>
 	</string>
 	<string id="gar_hellcar_alive">
-		<text>Поговорить с Бесом.</text>
+		<text>Поговорить с Бесом</text>
 	</string>
 	<string id="gar_help_dymon">
-		<text>Отбить рейд бандитов.</text>
+		<text>Отбить рейд бандитов</text>
 	</string>
 	<string id="gar_help_hellcar_1">
-		<text>Ответить на призыв о помощи.</text>
+		<text>Ответить на призыв о помощи</text>
 	</string>
 	<string id="gar_help_tunnel_newbie">
 		<text>Помочь новичку со свалки</text>
 	</string>
 	<string id="gar_kill_bandits">
-		<text>Уничтожить рейд бандитов.</text>
+		<text>Уничтожить рейд бандитов</text>
 	</string>
 	<string id="gar_kill_bandits_around_tunnel">
 		<text>Убить бандитов рядом с туннелем</text>
@@ -29,22 +29,22 @@
 		<text>Проводить новичка на кордон</text>
 	</string>
 	<string id="gar_kill_boars">
-		<text>Пропуск на Бар.</text>
+		<text>Пропуск на Бар</text>
 	</string>
 	<string id="gar_kill_boars_1">
-		<text>Убить кабанов.</text>
+		<text>Убить кабанов</text>
 	</string>
 	<string id="gar_kill_boars_2">
-		<text>Получить пропуск у Долга.</text>
+		<text>Получить пропуск у Долга</text>
 	</string>
 	<string id="gar_kill_boars_main">
-		<text>Квест для прохода на Бар.</text>
+		<text>Квест для прохода на Бар</text>
 	</string>
 	<string id="gar_say_free_pass">
 		<text>Сообщить новичку, что путь свободен</text>
 	</string>
 	<string id="garbage_meet_stalker_1">
-		<text>Узнать у Серого о Стрелке.</text>
+		<text>Узнать у Серого о Стрелке</text>
 	</string>
 	<string id="graveyard_raid_text">
 		<text>Сейчас пойдет новый рейд бандитов на кладбище заброшенной техники, где окопался Бес со товарищи. Помочь им отбиться от бандитов.</text>

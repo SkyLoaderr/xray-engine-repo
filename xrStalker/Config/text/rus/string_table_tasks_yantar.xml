@@ -14,10 +14,7 @@
 		<text>Сделать замеры излучения</text>
 	</string>
 	<string id="yan_find_vasilyev">
-		<text>Пробиться к трупу Васильева</text>
-	</string>
-	<string id="yan_find_vasilyev_pda">
-		<text>Взять PDA Васильева</text>
+		<text>Обыскать труп Васильева</text>
 	</string>
 	<string id="yan_kill_brain">
 		<text>Отключить пси-излучение</text>
