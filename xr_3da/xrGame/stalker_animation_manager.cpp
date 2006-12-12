@@ -103,7 +103,7 @@ void CStalkerAnimationManager::play_fx(float power_factor, int fx_index)
 	VERIFY						(fx_index < (int)m_data_storage->m_part_animations.A[object().movement().body_state()].m_global.A[0].A.size());
 #ifdef DEBUG
 	if (psAI_Flags.is(aiAnimation)) {
-		LPCSTR					name = m_skeleton_animated->LL_MotionDefName_dbg(m_data_storage->m_part_animations.A[object().movement().body_state()].m_global.A[0].A[fx_index]).first;
+		LPCSTR					name = m_skeleton_animated->LL_MotionDefName_dbg(m_data_storage->m_part_animations.A[object().movement().body_state()].m_global.A[0].A[fx_index]);
 		Msg						("%6d [%s][%s][%s][%f]",Device.dwTimeGlobal,*object().cName(),"FX",name,power_factor);
 	}
 #endif
@@ -231,90 +231,3 @@ void CStalkerAnimationManager::update						()
 	}
 	STOP_PROFILE
 }
-
-#ifdef DEBUG
-typedef std::pair<shared_str,shared_str>	ANIMATION_ID;
-
-IC	bool animation_id_predicate	(const ANIMATION_ID &_1, const ANIMATION_ID &_2)
-{
-	if (_1.first._get() < _2.first._get())
-		return	(true);
-
-	if (_2.first._get() < _1.first._get())
-		return	(false);
-
-	return		(_1.second._get() < _2.second._get());
-}
-
-//IC	bool shared_str_predicate	(const shared_str &_1, const shared_str &_2)
-//{
-//	return		(_1._get() < _2._get());
-//}
-//
-//typedef xr_set<shared_str,shared_str_predicate>	VISUALS;
-
-struct animation_stats {
-//	shared_str	m_visual_id;
-	u32			m_frame_count;
-	u32			m_start_count;
-
-	IC	animation_stats	(
-			const shared_str &visual_id,
-			const u32		 &frame_count,
-			const u32		 &start_count
-		) :
-//		m_visual_id		(visual_id),
-		m_frame_count	(frame_count),
-		m_start_count	(start_count)
-	{
-	}
-};
-
-typedef xr_map<ANIMATION_ID,animation_stats,&animation_id_predicate>	ANIMATION_STATS;
-static ANIMATION_STATS	g_animation_stats;
-
-void add_animation_stats	(const shared_str &animation_id, const shared_str &animation_set_id, const shared_str &visual_id, bool just_started)
-{
-	ANIMATION_ID				query(animation_id,animation_set_id);
-	ANIMATION_STATS::iterator	I = g_animation_stats.find(query);
-	if (I == g_animation_stats.end()) {
-		g_animation_stats.insert(
-			std::make_pair(
-				query,
-				animation_stats(
-					visual_id,
-					1,
-					just_started ? 1 : 0
-				)
-			)
-		);
-		return;
-	}
-
-	++((*I).second.m_frame_count);
-	if (just_started)
-		++((*I).second.m_start_count);
-}
-
-void CStalkerAnimationManager::add_animation_stats	(const std::pair<LPCSTR,LPCSTR> &animation_id, bool just_started)
-{
-	::add_animation_stats		(animation_id.first,animation_id.second,Visual()->Name(),just_started);
-}
-
-void CStalkerAnimationManager::add_animation_stats	()
-{
-	if (script().animation()) {
-		add_animation_stats		(m_skeleton_animated->LL_MotionDefName_dbg(script().animation()),script().m_just_started);
-		return;
-	}
-
-	if (global().animation()) {
-		add_animation_stats		(m_skeleton_animated->LL_MotionDefName_dbg(global().animation()),global().m_just_started);
-		return;
-	}
-
-//	add_animation_stats			(m_skeleton_animated->LL_MotionDefName_dbg(head().animation()),head().m_just_started);
-	add_animation_stats			(m_skeleton_animated->LL_MotionDefName_dbg(torso().animation()),torso().m_just_started);
-	add_animation_stats			(m_skeleton_animated->LL_MotionDefName_dbg(legs().animation()),legs().m_just_started);
-}
-#endif // DEBUG
