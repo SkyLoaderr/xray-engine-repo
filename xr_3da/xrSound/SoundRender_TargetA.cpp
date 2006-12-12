@@ -70,8 +70,8 @@ void	CSoundRender_TargetA::stop			()
 	if (rendering)
 	{
 		A_CHK		(alSourceStop(pSource));
-        A_CHK		(alSourcei	(pSource, AL_BUFFER,   NULL));
-		A_CHK		(alSourcei	(pSource, AL_SOURCE_RELATIVE,	FALSE));
+		A_CHK		(alSourcei	(pSource, AL_BUFFER,   NULL));
+		A_CHK		(alSourcei	(pSource, AL_SOURCE_RELATIVE,	TRUE));
 	}
     inherited::stop	();
 }
@@ -79,6 +79,7 @@ void	CSoundRender_TargetA::stop			()
 void	CSoundRender_TargetA::rewind			()
 {
 	inherited::rewind();
+
 	A_CHK			(alSourceStop(pSource));
 	A_CHK			(alSourcei	(pSource, AL_BUFFER,   NULL));
 	for (u32 buf_idx=0; buf_idx<sdef_target_count; buf_idx++)

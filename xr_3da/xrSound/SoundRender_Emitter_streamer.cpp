@@ -104,6 +104,16 @@ void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 			break;
 		case stPlayingLooped:
 			{
+            	u32 hw_position		= 0;
+				do{
+					u32	sz_data		= source->dwBytesTotal - position;
+                    u32 sz_write	= _min(size-hw_position,sz_data);
+					fill_data		(dest+hw_position,	position,	sz_write);
+                    hw_position		+= sz_write;
+                    position		+= sz_write;
+					position		%= source->dwBytesTotal;
+                }while(0!=(size-hw_position));
+/*				            	
 				// Fill in two parts - looping :)
 				u32		sz_first	= source->dwBytesTotal - position;
                 u32		sz_second	= 0;
@@ -121,6 +131,7 @@ void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 //				Msg					("        looping: [%d]-first,[%d]-second",sz_first,sz_second);
 				position			+= size;
 				position			%= source->dwBytesTotal;
+*/                
 			}
 			break;
 		default:

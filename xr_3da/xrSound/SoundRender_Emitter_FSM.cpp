@@ -178,7 +178,7 @@ BOOL	CSoundRender_Emitter::update_culling	(float dt)
 {
 	if (b2D){
 		occluder_volume		= 1.f;
-		fade_volume			+= dt*1.f*(bStopping?-1.f:1.f);
+		fade_volume			+= dt*10.f*(bStopping?-1.f:1.f);
 	}else{
 		// Check range
 		float	dist		= SoundRender->listener_position().distance_to	(p_source.position);
@@ -187,7 +187,7 @@ BOOL	CSoundRender_Emitter::update_culling	(float dt)
 		// Calc attenuated volume
 		float att			= p_source.min_distance/(psSoundRolloff*dist);	clamp(att,0.f,1.f);
 		float fade_scale	= bStopping||(att*p_source.base_volume*p_source.volume*(owner_data->s_type==st_Effect?psSoundVEffects*psSoundVFactor:psSoundVMusic)<psSoundCull)?-1.f:1.f;
-		fade_volume			+=	dt*1.f*fade_scale;
+		fade_volume			+=	dt*10.f*fade_scale;
 
 		// Update occlusion
 		volume_lerp			(occluder_volume,SoundRender->get_occlusion	(p_source.position,.2f,occluder),1.f,dt);
