@@ -56,6 +56,8 @@ public:
 	void			PerformSwitchGL	();
 	void			OnAnimationEnd	(u32 state);
 
+	virtual bool	IsNecessaryItem	    (const shared_str& item_sect);
+
 	//виртуальные функции для проигрывания анимации HUD
 	virtual void	PlayAnimShow();
 	virtual void	PlayAnimHide();

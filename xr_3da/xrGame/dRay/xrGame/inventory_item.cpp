@@ -1097,3 +1097,8 @@ int  CInventoryItem::GetYPos				() const
 {
 	return pSettings->r_u32(m_object->cNameSect(), "inv_grid_y");
 }
+
+bool CInventoryItem::IsNecessaryItem(CInventoryItem* item)		
+{
+	return IsNecessaryItem(item->object().cNameSect());
+};

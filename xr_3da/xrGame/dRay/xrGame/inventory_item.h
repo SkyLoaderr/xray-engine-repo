@@ -152,7 +152,8 @@ public:
 			
 	virtual bool				CanTake				() const					{return !!m_flags.test(FCanTake);}
 			bool				CanTrade			() const;
-	virtual bool 				IsNecessaryItem	    (CInventoryItem* item)		{return false;};
+	virtual bool 				IsNecessaryItem	    (CInventoryItem* item);
+	virtual bool				IsNecessaryItem	    (const shared_str& item_sect){return false;};
 protected:
 	
 	u32							m_slot;

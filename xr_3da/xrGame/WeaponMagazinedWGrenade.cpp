@@ -733,3 +733,11 @@ void CWeaponMagazinedWGrenade::net_Import	(NET_Packet& P)
 	inherited::net_Import (P);
 
 }
+
+bool CWeaponMagazinedWGrenade::IsNecessaryItem	    (const shared_str& item_sect)
+{
+	
+	return (	std::find(m_ammoTypes.begin(), m_ammoTypes.end(), item_sect) != m_ammoTypes.end() ||
+				std::find(m_ammoTypes2.begin(), m_ammoTypes2.end(), item_sect) != m_ammoTypes2.end() 
+			);
+}

@@ -436,7 +436,7 @@ protected:
 	bool					m_bAmmoWasSpawned;
 	//  [10/5/2005]
 
-	virtual bool 			IsNecessaryItem	    (CInventoryItem* item);
+	virtual bool			IsNecessaryItem	    (const shared_str& item_sect);
 
 public:
 	xr_vector<shared_str>	m_ammoTypes;

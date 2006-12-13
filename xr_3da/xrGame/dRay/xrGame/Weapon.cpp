@@ -1453,9 +1453,9 @@ u32	CWeapon::ef_weapon_type	() const
 	return	(m_ef_weapon_type);
 }
 
-bool CWeapon::IsNecessaryItem	    (CInventoryItem* item)
+bool CWeapon::IsNecessaryItem	    (const shared_str& item_sect)
 {
-	return (std::find(m_ammoTypes.begin(), m_ammoTypes.end(), item->object().cNameSect()) != m_ammoTypes.end() );
+	return (std::find(m_ammoTypes.begin(), m_ammoTypes.end(), item_sect) != m_ammoTypes.end() );
 }
 
 void CWeapon::modify_holder_params		(float &range, float &fov) const
