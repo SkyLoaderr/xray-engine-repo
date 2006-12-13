@@ -112,7 +112,7 @@ CUIGameCustom*		game_cl_mp::createGameUI			()
 	pBuySpawnMsgBox		= xr_new<CUIMessageBoxEx>();
 //.	pBuySpawnMsgBox->SetWorkPhase(GAME_PHASE_INPROGRESS);
 	pBuySpawnMsgBox->Init("message_box_buy_spawn");
-	pBuySpawnMsgBox->AddCallback("msg_box", MESSAGE_BOX_YES_CLICKED, CUIWndCallback::void_function(&OnBuySpawn));
+	pBuySpawnMsgBox->AddCallback("msg_box", MESSAGE_BOX_YES_CLICKED, CUIWndCallback::void_function(this, &game_cl_mp::OnBuySpawn));
 	string1024	BuySpawnText;
 	sprintf(BuySpawnText, "You can buy a spawn for %d $. Press Yes to pay.", 
 		abs(m_iSpawn_Cost));
@@ -1134,11 +1134,9 @@ void	game_cl_mp::OnGameRoundStarted				()
 	PlaySndMessage(ID_MATCH_STARTED);
 }
 
-void OnBuySpawn(CUIWindow* pWnd, void* p)
+void game_cl_mp::OnBuySpawn(CUIWindow* pWnd, void* p)
 {
-	game_cl_mp* game = smart_cast<game_cl_mp*>(&Game());
-	if (!game) return;
-	game->OnBuySpawnMenu_Ok();
+	OnBuySpawnMenu_Ok();
 };
 
 void		game_cl_mp::LoadBonuses				()

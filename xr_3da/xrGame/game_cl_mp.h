@@ -10,7 +10,6 @@
 class CUISpeechMenu;
 class CUIMessageBoxEx;
 
-void OnBuySpawn(CUIWindow* pWnd, void* p);
 
 struct SND_Message{
 	ref_sound	pSound;
@@ -196,6 +195,7 @@ public:
 	virtual							~game_cl_mp();
 
 
+	void xr_stdcall					OnBuySpawn				(CUIWindow* pWnd, void* p);
 	virtual		void				TranslateGameMessage	(u32 msg, NET_Packet& P);
 	virtual		void				CommonMessageOut		(LPCSTR msg);
 
