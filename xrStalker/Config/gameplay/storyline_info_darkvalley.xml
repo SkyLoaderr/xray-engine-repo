@@ -61,7 +61,7 @@
 <article article_type="task" group="val_captive_help/0" id="val_captive_help_art" name="val_captive_help">
     <text>val_captive_help_txt</text>
 </article>
-<article article_type="task" group="val_prisoner_help/0" id="val_captive_help_art" name="val_prisoner_help">
+<article article_type="task" group="val_prisoner_help/0" id="val_prisoner_help_art" name="val_prisoner_help">
     <text>val_prisoner_help_art_txt</text>
 </article>
 
