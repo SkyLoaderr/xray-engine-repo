@@ -42,9 +42,6 @@
 	<string id="general_update_task">
 		<text>Задание обновлено:</text>
 	</string>
-	<string id="inventory_item_use">
-		<text>Поднять предмет ($$ACTION_USE$$)</text>
-	</string>
 	<string id="physic_shell_use">
 		<text>Двигать объект ()</text>
 	</string>

@@ -153,6 +153,12 @@
 	<string id="ui_st_community">
 		<text>группировка</text>
 	</string>
+	<string id="ui_st_opponent_items">
+		<text>Вещи оппонента</text>
+	</string>
+	<string id="ui_st_price">
+		<text>Цена</text>
+	</string>
 	<string id="ui_st_rank">
 		<text>ранг</text>
 	</string>
