@@ -19,7 +19,7 @@
 		<text>Захват артефакта</text>
 	</string>
 	<string id="mm_mp_artefdelay">
-		<text>Задержка артефакта</text>
+		<text>Задержка артефакта (сек.)</text>
 	</string>
 	<string id="mm_mp_artefnum">
 		<text>Количество артефактов</text>
@@ -49,7 +49,7 @@
 		<text>Создать</text>
 	</string>
 	<string id="mm_mp_damageblock">
-		<text>Неуязвимость</text>
+		<text>Неуязвимость (сек.)</text>
 	</string>
 	<string id="mm_mp_damageblockindicator">
 		<text>Индикатор неуязвимости</text>
@@ -67,7 +67,7 @@
 		<text>Фильтры</text>
 	</string>
 	<string id="mm_mp_forcerespawn">
-		<text>Принудительное рождение</text>
+		<text>Принудительное рождение (сек.)</text>
 	</string>
 	<string id="mm_mp_fraglimit">
 		<text>Лимит фрагов</text>
@@ -79,7 +79,7 @@
 		<text>Время задержки</text>
 	</string>
 	<string id="mm_mp_friendlyfire">
-		<text>Огонь союзника</text>
+		<text>Огонь союзника (коэф.)</text>
 	</string>
 	<string id="mm_mp_friendlyindicators">
 		<text>Индикаторы союзников</text>
@@ -145,7 +145,7 @@
 		<text>Обновить все</text>
 	</string>
 	<string id="mm_mp_reinforcement">
-		<text>Подкрепление</text>
+		<text>Подкрепление (сек.)</text>
 	</string>
 	<string id="mm_mp_respawnoptions">
 		<text>Опции рождения</text>
@@ -199,7 +199,7 @@
 		<text>Стартовая погода</text>
 	</string>
 	<string id="mm_mp_timelimit">
-		<text>Лимит времени</text>
+		<text>Лимит времени (мин.)</text>
 	</string>
 	<string id="mm_mp_warmuptime">
 		<text>Разогрев (сек.)</text>

@@ -264,140 +264,122 @@
 	<string id="dolg_kill_stalker_6_text">
 		<text>The target's nickname is Poker. He is one of the fiercest bandits’ leader, a scumbag and a tyrant… He’s obviously brainsick, they say he got himself some rare disease in the Zone. Now he suffers from frequent black-outs, and when he comes to his senses he can’t remember where or who he is. Still, he’s always armed to the teeth and highly aggressive. Supposed location: Dark Valley. Ready for the mission?</text>
 	</string>
+	<string id="ecolog_eliminate_lager_1">
+		<text>Зачистить логово снорков</text>
+	</string>
+	<string id="ecolog_eliminate_lager_1_descr">
+		<text>На Янтаре уничтожить логово снорков.</text>
+	</string>
+	<string id="ecolog_eliminate_lager_1_text">
+		<text>Я хочу предложить вам небольшую сумму денег которую вы получите в том случае, если снорки, обитающие на болотах, перестанут отвлекать меня и мох коллег. Иногда во время экспериментов просто не получается сосредоточиться.</text>
+	</string>
+	<string id="ecolog_eliminate_lager_2">
+		<text>Уничтожить логово диких собак</text>
+	</string>
+	<string id="ecolog_eliminate_lager_2_descr">
+		<text>На "Дикой территории" зачистить логово собак.</text>
+	</string>
+	<string id="ecolog_eliminate_lager_2_text">
+		<text>На "Дикой территории" есть логово собак-мутантов, я хочу, чтобы Вы отправились и зачистили его. Эти твари опасны для наших экспедиций. Я знаю, зоологи меня не поддержат, но здесь, согласитесь, не зоопарк. Эти собаки разносят бешенство, чуму и еще Бог знает что.</text>
+	</string>
+	<string id="ecolog_find_item_1">
+		<text>Принести уникальный комбинезон</text>
+	</string>
+	<string id="ecolog_find_item_1_descr">
+		<text>Принести из подземной лаборатории X16 необычный комбинезон.</text>
+	</string>
+	<string id="ecolog_find_item_1_text">
+		<text>У нас к Вам дело. Мы недавно наняли одного сталкера, чтобы он проник внутрь лаборатории. Еще тогда я заметил его необычный костюм, как будто теплом от него веяло. Сталкер говорил, что этот костюм раны сам заживляет. Вообщем сталкер не вернулся из лаборатории. Нет! Вы не подумайте, мы тут не при чем! И костюм его до сих пор наверное там лежит. Я бы с удовольствием получил его для изучения. </text>
+	</string>
 	<string id="ecolog_find_artefact_1">
-		<text>Find the Doughboy artifact</text>
+		<text>Принести артефакт "Огненный шар"</text>
 	</string>
 	<string id="ecolog_find_artefact_1_descr">
-		<text>Sounds like the poor devil made a run for it, far away from those psychos. So, getting the Doughboy artifact… Now that’s some scavenger hunt. Still, it’s better than working as an assistant for this egghead.</text>
+		<text>Достать для исследований ученым артефакт "Огненный шар".</text>
 	</string>
 	<string id="ecolog_find_artefact_1_text">
-		<text>I have a rather special request, stalker… I think you’ve already encountered this rather curious artifact called Doughboy and you are aware that somehow it prevents injuries inflicted by the hardest radiation. Unfortunately, after a number of experiments we lost contact with one of our assistants who was with … ehhh… the Doughboy in a high radioactivity area. This is a great loss to all of us. In view of these circumstances, we need another such artifact. By the way, I would be happy if you agreed to work with me as my assistant. </text>
+		<text>Нам удалось получить артефакт в лабораторных условиях! Это прорыв! Теперь о наших успехах услышит весь мир. А там и Нобелевская премия не за горами! Это уникальный артефакт - «Плёнка», его главное качество - защита от химических ожогов. Хотите, я вам его подарю от имени науки? Однако одна просьба - взамен мне нужен артефакт - "Огненный шар", знаете такой? Уникальные термические свойства его поверхности требуют детального изучения.</text>
 	</string>
 	<string id="ecolog_find_artefact_2">
-		<text>Find the Mama's Beads artifact</text>
+		<text>Найти артефакт "Грави"</text>
 	</string>
 	<string id="ecolog_find_artefact_2_descr">
-		<text>So they don’t need the smart and the talented. That’s it, eh. Mama’s Beads slow down the flow of time… alright, we’ll figure it out. As long as one mission doesn’t take three years.</text>
+		<text>Доставить артефакт "Грави" в руки ученых.</text>
 	</string>
 	<string id="ecolog_find_artefact_2_text">
-		<text>Good news, young man! Together with our colleagues, we worked out a daring plan to reduce the time dedicated to research using the effect of the Mama’s Beads artifact. The artifact, as you know, slows down the flow of time in a limited volume of space. However, we fear it may affect the brain's activity and this particularity cannot possibly be ignored. I would like to ask you to bring back this artifact, because I see that I’m dealing with a strong and enduring man.</text>
+		<text>Мы подошли вплотную к пониманию природы гравитации, возможно совсем скоро мы сможем создать новое поколение двигателей на антигравитационной основе, и вполне возможно нам откроется дорога к звездам. Для этого нам нужен артефакт "Грави", и быстро.</text>
 	</string>
 	<string id="ecolog_find_artefact_3">
-		<text>Find the Cobweb artifact</text>
+		<text>Добыть артефакт "Медуза"</text>
 	</string>
 	<string id="ecolog_find_artefact_3_descr">
-		<text>So now they’re going to make the working class toil away for one shift instead of two: from 4 am till 10 pm. A good stalker with such an artifact could cross half the Zone in a day.</text>
+		<text>Артефакт "Медуза" нужен ученым для исследований в области пространства-времени.</text>
 	</string>
 	<string id="ecolog_find_artefact_3_text">
-		<text>Listen, my dear man... We’re now doing a research on "Increasing manpower efficiency and production intensification". In particular, we’re studying the possibility of increasing duration of a working day from eight to eighteen hours. The curious effect of the "Cobweb" artifact, when applied appropriately, endows its owner with tremendous stamina… So, do I have you working on this job?</text>
+		<text>Наш исследовательский комплекс вплотную подошел к пониманию проблемы пространства-времени. Возможность телепортации - это не фантастика!!! «Воронка» - это аномалия, которая сжимает пространство, а не просто гравитационно воздействует на предметы, как думают некоторые мои закостеневшие оппоненты-теоретики, которые сидят в теплых НИИ, усердно жуя мел. У них очки вспотеют, когда они узнают, каких результатов может добиться наука в полевых условиях! Достаньте мне артефакт "Медуза", пожалуйста.</text>
 	</string>
 	<string id="ecolog_find_artefact_4">
-		<text>Find the Battery artifact</text>
+		<text>Достать артефакт "Лунный свет"</text>
 	</string>
 	<string id="ecolog_find_artefact_4_descr">
-		<text>The artifact is good, no question about that, but the side effect is pretty sad. I’m really sorry for those guys in uniforms.</text>
+		<text>Обеспечить ученых на Янтаре "Лунным светом". Хороший артефакт…</text>
 	</string>
 	<string id="ecolog_find_artefact_4_text">
-		<text>Let me ask you, stalker… are you a patriot? Yes. I see, young man, that I made the right assumption. Listen, I have a very important request. The thing is, and I’m not afraid to say it, we’ve come very close to creating a super-soldier, the foundation of our future army, a great army! The "Battery" artifact has an amazing effect on human body: raises total immunity, speeds up blood coagulability, provides incredible resistance to radioactivity, to say nothing of stamina! Unfortunately, a side effect has also been detected. Wearing the artifact for a day or longer completely suppresses the reproductive function, and we do not know whether this process is reversible. That is why I strongly recommend that you do not abuse this artifact.</text>
+		<text>Нам срочно нужны материалы для продолжения исследования в области энергетики. Понимаете, мы научились добывать электричество из артефактов. Правда пока КПД недостаточно высокий. Наилучших результатов мы добились с артефактом "Лунный свет". Принесите нам образец для экспериментов.</text>
 	</string>
 	<string id="ecolog_find_artefact_5">
-		<text>Find the Shell artifact.</text>
+		<text>Достать артефакт "Морской ёж"</text>
 	</string>
 	<string id="ecolog_find_artefact_5_descr">
-		<text>I wonder if they did those experiments at the Chernobyl NPP?</text>
+		<text>Ученым для улучшения костюмов нужен артефакт "Морской ёж".</text>
 	</string>
 	<string id="ecolog_find_artefact_5_text">
-		<text>Alright, dear stalker. As you've heard, there is a rather curious artifact in the Zone, the Shell. I have to say it matches its name perfectly. The only property that our devices have been able to discover was the complete absorption of any type of energy. This is the property that we would like to examine more thoroughly. To think of the prospects… imagine if a certain number of these artifacts had been installed within the security system of the NPP... Disasters caused by the "peaceful atom" will become history!</text>
-	</string>
-	<string id="ecolog_find_artefact_6">
-		<text>Find the Spring artifact</text>
-	</string>
-	<string id="ecolog_find_artefact_6_descr">
-		<text>If they do invent some new form of transport based on the Spring, it’ll jump instead of flying. It will be a one of a kind contraption.</text>
-	</string>
-	<string id="ecolog_find_artefact_6_text">
-		<text>Hello, Mr. Native! Forgive my little joke, no offence intended. Would you be willing to help us procure the Spring artifact? We have all the reasons to believe that identifying its properties will speed up the invention of antigravitational transport. However, we cannot be sure yet… anyway, if you are willing to assist human progress, now is the time to act.</text>
-	</string>
-	<string id="ecolog_kill_stalker_1">
-		<text>Kill stalker Goiter.</text>
-	</string>
-	<string id="ecolog_kill_stalker_1_descr">
-		<text>Could've just said it straight out: find and kill the runaway.</text>
-	</string>
-	<string id="ecolog_kill_stalker_1_text">
-		<text>I have a rather unusual request for you, stalker. Do you know the man named Lu… forgive me, I meant a certain colleague of yours nicknamed Goiter? Hmm… I guess I’m not going to divulge any secret by saying that he used to be a rather promising young scientist. For some unknown reasons during the last experiment he destroyed not only all the equipment that had been delivered here with great difficulty, but the fruit of many months of hard work. After that, he vanished, but at about the same time a stalker appeared in the Zone with a similar description, nicknamed Goiter. The dementia may have been caused by experiments on mutants. Since this man and scientist is probably lost to society for good, we have decided to make a thorough examination of his brain so that in future… Well, enough of that. You mission will be to find Goiter and… well, we need to make sure he agrees to undergo the examination.</text>
+		<text>Вы наверное знаете, что наши костюмы обладают лучшей защитой от радиации. Секрет в том, что мы пропитываем их эссенцией из особого, достаточно редкого, артефакта. Для изготовления очередной партии костюмов нам нужен такой артефакт, вы его зовете "Морской еж".</text>
 	</string>
 	<string id="ecolog_monster_part_1">
-		<text>Bring the arm of a zombie</text>
+		<text>Принести часть тела снорка</text>
 	</string>
 	<string id="ecolog_monster_part_1_descr">
-		<text>Holy Moly. These nuts won’t miss a chance to turn us all into zombies… Alright. They need this scum’s arm? We’ve got plenty of this stuff.</text>
+		<text>Достать фрагмент снорка в этих местах не проблема.</text>
 	</string>
 	<string id="ecolog_monster_part_1_text">
-		<text>Oh, young man! You know, we feel a need for a part of the body of a specific creature. Your colleagues call it a zombie, and I must say, this is not a very successful name for a body that had modified itself so that... Anyway, we need its arm. I have to tell you: our team is working on implanting the extremities of... eh... zombies to those who have lost an arm or a leg for some reason. In addition, further down the line, we intend to use vital organs as well; however, for the time being, this is a purely theoretical issue. So, the arm! Would you be interested, young man?</text>
+		<text>Мы познакомились с Семеновым, когда я читал лекции по генетике в университете, а он был моим студентом. Так я стал его научным руководителем. Тогда мы только приоткрывали завесу тайны модифицирования генома. О чем это я? Ах да. Для генетических исследований нам понадобятся образцы свежих клеток мышечной ткани снорка. За генным материалом Вам придется отправиться на болота, их там водится в изобилии.</text>
 	</string>
 	<string id="ecolog_monster_part_2">
-		<text>Bring the eye of a flesh</text>
+		<text>Добыть глаз плоти</text>
 	</string>
 	<string id="ecolog_monster_part_2_descr">
-		<text>I'd better keep my body away from these eggheads just in case! Very well, I'll get them a flesh's eye, and they can do all they want with their volunteers.</text>
+		<text>На всякий случай стоит держать своё тело подальше от яйцеголовых! А глаз плоти, так и быть, я им достану.</text>
 	</string>
 	<string id="ecolog_monster_part_2_text">
-		<text>Good news, young man: we have a very interesting assignment for you! I think as an intellectual being with quite a bit of experience you will be able to appreciate my colleagues' theories. The thing is, our research revealed: the eyes of the creatures called flesh in the common language, are equipped with... are you following me?... with olfactory receptors! Thus, they can not only see with their eyes, but smell with them as well! We're getting ready for an operation on transplanting this miraculous eye to one of ... one of our voluntary assistants. I believe we're about to start a craze! By the way, would you like to become a recepient of this rather amazing organ?</text>
+		<text>Хорошие новости, молодой человек: у нас найдётся для вас очень интересное задание! Думаю, Вы, как мыслящая личность, обладающая достаточным жизненным опытом, оцените всю революционность задумки моих коллег. Дело в том, что исследования показали: глаза существ, именуемых в просторечии "плотью", снабжены - вы внимательно слушаете? - обонятельными рецепторами! Таким образом, они не только видят глазами, но и нюхают ими! Мы готовимся к операции по пересадке этого чудо-глаза одному из... из наших ассистентов-добровольцев. Полагаю, нас ждёт настоящий фурор! Но нам нужен донорский орган. Вы нам поможете?</text>
 	</string>
 	<string id="ecolog_monster_part_3">
-		<text>Bring the tail of a blind dog</text>
+		<text>Достать кабанью ногу</text>
 	</string>
 	<string id="ecolog_monster_part_3_descr">
-		<text>Well, look at Science! Trying to find a second brain in humans?.. Poor dogs, one of them will have to do without a tail now.</text>
+		<text>Принести кабаний окорок ученым. В принципе, обойдутся копытом.</text>
 	</string>
 	<string id="ecolog_monster_part_3_text">
-		<text>Good day, dear boy! Listen, would you like to help us once again? I hope you know that dogs belong to the vertebrates subtype... meaning their vertebral column starts with the head and ends with the tail. And here's the catch! One of my young collegues proved theoretically that the spine of the blind dogs - this is how you named this type of animals - starts from the tail, not from the head! Think of it, it totally turns upside down our assumptions pertaining to this area of knowledge. There are already some rather daring theories about human beings having around their sacrum a... well, this is a subject of many discussions. In short, we need the head of the dog, the blind dog, which through ignorance we considered to be its tail.</text>
+		<text>Приветствую Вас... э-э-э... странник! Рад, что Вы решили нас посетить: нам как раз необходим человек для участия в очень важном эксперименте. Коллега Бентер хочет попытаться приготовить нечто съедобное из местной фауны для практического эксперимента по исследованию влияния мутированного белка на людские организмы. Пока мы решили остановиться на кабанах. Нам нужен окорок. Нога кабана, Вы понимаете? Если возьметесь за это дело, прошу Вас, выбирайте особь поупитаннее.</text>
 	</string>
 	<string id="ecolog_monster_part_4">
-		<text>Bring the leg of a boar</text>
+		<text>Найти хвост псевдособаки</text>
 	</string>
 	<string id="ecolog_monster_part_4_descr">
-		<text>Gourmet thrillseekers… Alright, I'll get them some ham.</text>
+		<text>Обеспечить ученых хвостом псевдособаки для их странных экспериментов.</text>
 	</string>
 	<string id="ecolog_monster_part_4_text">
-		<text>Welcome, eh... traveler! I'm so glad you dropped by: we are in need of a man to take part in a highly important experiment. My colleague Brenter wants to try and cook a meal using local fauna for a practical experiment to study the influence of mutated protein on human body. For a start, we decided to try the boars. We need ham. A boar's leg, do you undestand? And if you agree to do it, please select the healthiest specimen.</text>
+		<text>Здравствуйте, коллега! Мы всё ещё не можем разгадать механизм наблюдаемых у псевдособаки удивительных свойств, поэтому решили изменить вектор наших поисков. На сей раз мы начнём с конца... Почему Вы улыбаетесь? Что Вас так... ах, да. Я, кажется, понимаю. Видите ли, молодой человек, нам нужен хвост этого существа, расположенный на конце... да, на конце тела. Речь шла отнюдь не о репродуктивных органах данного млекопитающего! За ними, возможно, Вам придется прогуляться в следующий раз.</text>
 	</string>
 	<string id="ecolog_monster_part_5">
-		<text>Bring the foot of a snork'</text>
+		<text>Добыть челюсть кровососа</text>
 	</string>
 	<string id="ecolog_monster_part_5_descr">
-		<text>Heal the snorks… speaking of queer eggheads! Alright, at least that will stop these monsters from jumping around.</text>
+		<text>Что они собираются делать с челюстью кровососа - меня не волнует. Мне важно, сколько они дадут за эту редкость.</text>
 	</string>
 	<string id="ecolog_monster_part_5_text">
-		<text>Good news, dear stalker! We've been racking our brain over this one question: what makes snorks literally drift above the ground, crawl up the walls, jump amazing distances... And the solution turned out very simple, young man! Snorks panic at the sight of the ground! They suffer from geophobia! The receptors that developed at the tips of their extremities send a signal of the greatest irritation when in contact with the ground or any more or less horizontal surface. We need a sample of the snork's paw: we'll try to inject a vaccine that may relieve these poor creatures of this unusual disease.</text>
-	</string>
-	<string id="ecolog_monster_part_6">
-		<text>Bring the tail of a pseudodog.</text>
-	</string>
-	<string id="ecolog_monster_part_6_descr">
-		<text>It was my luck the "tail" in their terminology actually means a tail. We'll see what happens next…</text>
-	</string>
-	<string id="ecolog_monster_part_6_text">
-		<text>Good day, colleague! We still can't figure out the amazing abilities exhibited by the pseudodogs, therefore we've decided to shift the vector of our research. This time we're going to start with another end... What are you smiling at? What is so... oh, yes. I think I understand. You see, young man, we need the tail of this creature situated right at the end... yes, at the end of its body. And I'm not talking about the reproductive organs of this mammal! You may have to look for these some other time.</text>
-	</string>
-	<string id="ecolog_monster_part_7">
-		<text>Bring the paw of a burer</text>
-	</string>
-	<string id="ecolog_monster_part_7_descr">
-		<text>How on earth do they come up with these ideas? Who let these nutcases into the Zone in the first place? They want the hand of a pseudogiant now…</text>
-	</string>
-	<string id="ecolog_monster_part_7_text">
-		<text>Listen, I've got some great news! It looks like together with my colleagues we've come close to solving the mystery of graviational fields emitted by the pseudogiants! We all unanimously agree that these creatures acquired this amazing ability to protect themselves from insatiable mosquitoes that this place is swarming with. The pseudogiant generates this field with his hand.. and, consequently, we need this part of his body for our experiments. Just think of it: summer, windows wide open, the light is on... and not a single bug! I'm sure in a short run compact gravitational fields generators will serve as a barrier not only against insects, but allergenic pollen, excessive noise and... however, I got carried away. So what do you say?</text>
-	</string>
-	<string id="ecolog_monster_part_8">
-		<text>Bring the jaw of a bloodsucker.</text>
-	</string>
-	<string id="ecolog_monster_part_8_descr">
-		<text>Psychos. Definitely psychos.</text>
-	</string>
-	<string id="ecolog_monster_part_8_text">
-		<text>Oh, stalker, glad to see you! Listen.. you've already encountered bloodsuckers, haven't you? If not, we would like for it to happen. As soon as you can, please bring us the lower jaw of one of this species representatives, with all of its, so to say, mess gear. Unfortunately, I cannot let you in on the details of our experiment... it may have a negative effect on your mental health. We'll be waiting.</text>
+		<text>О, сталкер, рад видеть Вас! Послушайте... Вы ведь уже сталкивались с кровососами в своих путешествиях? Если нет, то мы хотели бы, чтобы это произошло. Как только сможете, принесите нам нижнюю челюсть представителя данного вида - и со всеми, так сказать, столовыми приборами. К сожалению, не могу посвятить Вас в детали эксперимента... возможно, это негативно скажется на устойчивости Вашей психики. Мы будем ждать.</text>
 	</string>
 	<string id="eliminate_lager">
 		<text>Camp elimination.</text>

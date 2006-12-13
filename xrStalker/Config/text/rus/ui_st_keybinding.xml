@@ -6,6 +6,9 @@
 	<string id="kb_always_run">
 		<text>Всегда бежать</text>
 	</string>
+	<string id="kb_artefact">
+		<text>Артефакт</text>
+	</string>
 	<string id="kb_backward">
 		<text>Назад</text>
 	</string>
@@ -122,10 +125,6 @@
 	</string>
 	<string id="kb_right_strafe">
 		<text>Шаг вправо</text>
-	</string>
-	kb_artefact
-	<string id="kb_artefact">
-		<text>Артефакт</text>
 	</string>
 	<string id="kb_scores">
 		<text>Очки</text>
