@@ -183,6 +183,7 @@ void	CMainMenu::IR_OnMouseHold(int btn)
 void	CMainMenu::IR_OnMouseMove(int x, int y)
 {
 	if(!IsActive()) return;
+	if(MainInputReceiver())
 		MainInputReceiver()->IR_OnMouseMove(x, y);
 };
 
@@ -205,14 +206,16 @@ void	CMainMenu::IR_OnKeyboardPress(int dik)
 		return;
 	}
 
-
-	MainInputReceiver()->IR_OnKeyboardPress( dik);
+	if(MainInputReceiver())
+		MainInputReceiver()->IR_OnKeyboardPress( dik);
 };
 
 void	CMainMenu::IR_OnKeyboardRelease			(int dik)
 {
 	if(!IsActive()) return;
-	MainInputReceiver()->IR_OnKeyboardRelease(dik);
+	
+	if(MainInputReceiver())
+		MainInputReceiver()->IR_OnKeyboardRelease(dik);
 };
 
 void	CMainMenu::IR_OnKeyboardHold				(int dik)	
@@ -223,7 +226,9 @@ void	CMainMenu::IR_OnKeyboardHold				(int dik)
 void CMainMenu::IR_OnMouseWheel(int direction)
 {
 	if(!IsActive()) return;
-	MainInputReceiver()->IR_OnMouseWheel(direction);
+	
+	if(MainInputReceiver())
+		MainInputReceiver()->IR_OnMouseWheel(direction);
 }
 
 
