@@ -58,7 +58,7 @@
 		<text>Connection error: session is full</text>
 	</string>
 	<string id="ui_st_days">
-		<text>days</text>
+		<text>дн.</text>
 	</string>
 	<string id="ui_st_error">
 		<text>Error</text>
@@ -70,16 +70,16 @@
 		<text>The file name is empty</text>
 	</string>
 	<string id="ui_st_hours">
-		<text>hours</text>
+		<text>час.</text>
 	</string>
 	<string id="ui_st_leave">
 		<text>Уйти</text>
 	</string>
 	<string id="ui_st_mins">
-		<text>mins</text>
+		<text>мин.</text>
 	</string>
 	<string id="ui_st_months">
-		<text>months</text>
+		<text>мес.</text>
 	</string>
 	<string id="ui_st_secs">
 		<text>сек.</text>
@@ -91,7 +91,7 @@
 		<text>Взять все</text>
 	</string>
 	<string id="ui_st_time_remains">
-		<text>remains</text>
+		<text>Осталось</text>
 	</string>
 	<string id="ui_st_trade">
 		<text>Торговать</text>

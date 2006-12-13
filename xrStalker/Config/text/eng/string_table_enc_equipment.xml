@@ -105,6 +105,12 @@
 	<string id="enc_equipment_medi_medkit1">
 		<text>An all-purpose medkit. Used to treat injuries of various types and severities - wounds, burns, poisonings, etc.</text>
 	</string>
+	<string id="enc_equipment_medi_medkit2">
+		<text>Специализированный медицинский набор для борьбы с физическими повреждениями и кровотечением. В него входят компоненты для ускорения свертывания крови, обезбаливающие, антибиотики и имунные стимуляторы.</text>
+	</string>
+	<string id="enc_equipment_medi_medkit3">
+		<text>Медицинский набор, разработанный специально для работы в условиях Зоны. Состав набора подобран как для борьбы с ранениямы, так и для вывода радионуклидов из организма. Препятствует развитию лучевой болезни а также снижает дозу накопленной радиации.</text>
+	</string>
 	<string id="energy_drink_name">
 		<text>Non-Stop energy drink</text>
 	</string>
@@ -125,6 +131,12 @@
 	</string>
 	<string id="Medkit">
 		<text>Medkit</text>
+	</string>
+	<string id="Medkit_army">
+		<text>Армейская аптечка</text>
+	</string>
+	<string id="Medkit_scientific">
+		<text>Научная аптечка</text>
 	</string>
 	<string id="Sci2">
 		<text>Scientific EXP-4</text>
