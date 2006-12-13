@@ -44,10 +44,11 @@ SGameTaskObjective*	CUITaskItem::Objective	()
 void CUITaskItem::Init				()
 {
 	SetWindowName					("job_item");
-	AddCallback						("job_item",BUTTON_CLICKED,CUIWndCallback::void_function(this,&CUITaskItem::OnClick));
+	Register						(this);
+	AddCallback						("job_item",BUTTON_CLICKED,CUIWndCallback::void_function(this,&CUITaskItem::OnItemClicked));
 }
 
-void CUITaskItem::OnClick				(CUIWindow*, void*)
+void CUITaskItem::OnItemClicked(CUIWindow*, void*)
 {
 	m_EventsWnd->ShowDescription						(GameTask(), ObjectiveIdx());
 }
@@ -66,15 +67,16 @@ void CUITaskRootItem::Init			()
 {
 	inherited::Init					();
 
-	m_taskImage			= xr_new<CUIStatic>();		m_taskImage->SetAutoDelete(true);			AttachChild(m_taskImage);
-	m_captionStatic		= xr_new<CUIStatic>();		m_captionStatic->SetAutoDelete(true);		AttachChild(m_captionStatic);
-	m_remTimeStatic		= xr_new<CUIStatic>();		m_remTimeStatic->SetAutoDelete(true);		AttachChild(m_remTimeStatic);
+	m_taskImage					= xr_new<CUIStatic>();		m_taskImage->SetAutoDelete(true);			AttachChild(m_taskImage);
+	m_captionStatic				= xr_new<CUIStatic>();		m_captionStatic->SetAutoDelete(true);		AttachChild(m_captionStatic);
+	m_remTimeStatic				= xr_new<CUIStatic>();		m_remTimeStatic->SetAutoDelete(true);		AttachChild(m_remTimeStatic);
 
-	m_switchDescriptionBtn= xr_new<CUI3tButton>();	m_switchDescriptionBtn->SetAutoDelete(true); AttachChild(m_switchDescriptionBtn);
-	m_captionTime		= xr_new<CUI3tButton>();	m_captionTime->SetAutoDelete(true);			AttachChild(m_captionTime);
+	m_switchDescriptionBtn		= xr_new<CUI3tButton>();	m_switchDescriptionBtn->SetAutoDelete(true); AttachChild(m_switchDescriptionBtn);
+	m_captionTime				= xr_new<CUI3tButton>();	m_captionTime->SetAutoDelete(true);			AttachChild(m_captionTime);
+	
 	m_switchDescriptionBtn->SetWindowName("m_switchDescriptionBtn");
-	Register(m_switchDescriptionBtn);
-	AddCallback						("m_switchDescriptionBtn",BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUITaskRootItem::OnSwitchDescriptionClicked));
+	Register					(m_switchDescriptionBtn);
+	AddCallback					("m_switchDescriptionBtn",BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUITaskRootItem::OnSwitchDescriptionClicked));
 
 	CUIXmlInit xml_init;
 	CUIXml&						uiXml = m_EventsWnd->m_ui_task_item_xml;
@@ -162,7 +164,8 @@ void CUITaskRootItem::OnSwitchDescriptionClicked	(CUIWindow*, void*)
 {
 	bool bPushed = 	m_switchDescriptionBtn->GetCheck	();
 	m_EventsWnd->SetDescriptionMode						(!bPushed);
-	m_EventsWnd->ShowDescription						(GameTask(), ObjectiveIdx());
+	OnItemClicked										(this, NULL);
+//	m_EventsWnd->ShowDescription						(GameTask(), ObjectiveIdx());
 }
 
 void CUITaskRootItem::MarkSelected (bool b)
@@ -189,23 +192,23 @@ void CUITaskSubItem::Init			()
 	m_ActiveObjectiveStatic	= xr_new<CUIStatic>();		m_ActiveObjectiveStatic->SetAutoDelete(true);	AttachChild(m_ActiveObjectiveStatic);
 	m_showDescriptionBtn	= xr_new<CUI3tButton>();	m_showDescriptionBtn->SetAutoDelete(true);		AttachChild(m_showDescriptionBtn);
 
-	m_showDescriptionBtn->SetWindowName				("m_showDescriptionBtn");
-	Register										(m_showDescriptionBtn);
+	m_showDescriptionBtn->SetWindowName	("m_showDescriptionBtn");
+	Register						(m_showDescriptionBtn);
 
 	AddCallback						("m_showDescriptionBtn",BUTTON_CLICKED,CUIWndCallback::void_function(this, &CUITaskSubItem::OnShowDescriptionClicked));
 
 
 	CUIXmlInit xml_init;
-	xml_init.InitWindow				(uiXml,"task_sub_item",0,this);
-	xml_init.InitStatic				(uiXml,"task_sub_item:state_image",0,m_stateStatic);
-	xml_init.InitStatic				(uiXml,"task_sub_item:description",0,m_descriptionStatic);
-	xml_init.InitStatic				(uiXml,"task_sub_item:active_objecttive_image",0,m_ActiveObjectiveStatic);
-	xml_init.Init3tButton			(uiXml,"task_sub_item:show_descr_btn",0,m_showDescriptionBtn);
+	xml_init.InitWindow				(uiXml,	"task_sub_item",							0,	this);
+	xml_init.InitStatic				(uiXml,	"task_sub_item:state_image",				0,	m_stateStatic);
+	xml_init.InitStatic				(uiXml,	"task_sub_item:description",				0,	m_descriptionStatic);
+	xml_init.InitStatic				(uiXml,	"task_sub_item:active_objecttive_image",	0,	m_ActiveObjectiveStatic);
+	xml_init.Init3tButton			(uiXml,	"task_sub_item:show_descr_btn",			0,	m_showDescriptionBtn);
 
 
-	m_active_color					= xml_init.GetColor(uiXml, "task_sub_item:description:text_colors:active", 0, 0x00);
-	m_failed_color					= xml_init.GetColor(uiXml, "task_sub_item:description:text_colors:failed", 0 , 0x00);
-	m_accomplished_color			= xml_init.GetColor(uiXml, "task_sub_item:description:text_colors:accomplished", 0, 0x00);
+	m_active_color					= xml_init.GetColor(uiXml, "task_sub_item:description:text_colors:active",		0, 0x00);
+	m_failed_color					= xml_init.GetColor(uiXml, "task_sub_item:description:text_colors:failed",		0, 0x00);
+	m_accomplished_color			= xml_init.GetColor(uiXml, "task_sub_item:description:text_colors:accomplished",0, 0x00);
 }
 
 void CUITaskSubItem::SetGameTask	(CGameTask* gt, u16 obj_idx)				

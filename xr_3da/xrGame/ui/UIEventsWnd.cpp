@@ -212,55 +212,72 @@ bool CUIEventsWnd::GetDescriptionMode		()
 
 void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 {
-	SGameTaskObjective& o		= t->Objective(idx);
 	if(GetDescriptionMode()){//map
-		CMapLocation* ml = o.LinkedMapLocation();
+		SGameTaskObjective& o		= t->Objective(idx);
+		CMapLocation* ml			= o.LinkedMapLocation();
+
 		if(ml&&ml->SpotEnabled())
 			m_UIMapWnd->SetTargetMap(ml->LevelName(), ml->Position(), true);
-	}else{//articles
+	}else
+	{//articles
+		SGameTaskObjective& o		= t->Objective(0);
+		idx							= 0;
+
 		m_UITaskInfoWnd->ClearAll	();
 
-	if(Actor()->encyclopedia_registry->registry().objects_ptr())
-	{
-		string512	need_group;
-		if(0==idx){
-			strcpy(need_group,*t->m_ID);
-		}else
-		if(o.article_key.size()){
-			sprintf(need_group, "%s/%s", *t->m_ID, *o.article_key);
-		}else{
-			sprintf(need_group, "%s/%d", *t->m_ID, idx);
-		}
-
-		ARTICLE_VECTOR::const_iterator it = Actor()->encyclopedia_registry->registry().objects_ptr()->begin();
-		for(; it != Actor()->encyclopedia_registry->registry().objects_ptr()->end(); it++)
+		if(Actor()->encyclopedia_registry->registry().objects_ptr())
 		{
-			if (ARTICLE_DATA::eTaskArticle == it->article_type)
-			{
-				CEncyclopediaArticle	A;
-				A.Load					(it->article_id);
-
-				if(strstr(*(A.data()->group), need_group)== *(A.data()->group))
-					m_UITaskInfoWnd->AddArticle(&A);
+			string512	need_group;
+			if(0==idx){
+				strcpy(need_group,*t->m_ID);
 			}else
-			if(o.article_id.size() && it->article_id ==o.article_id){
-				CEncyclopediaArticle			A;
-				A.Load							(it->article_id);
-				m_UITaskInfoWnd->AddArticle		(&A);
+			if(o.article_key.size())
+			{
+				sprintf(need_group, "%s/%s", *t->m_ID, *o.article_key);
+			}else
+			{
+				sprintf(need_group, "%s/%d", *t->m_ID, idx);
+			}
+
+			ARTICLE_VECTOR::const_iterator it		= Actor()->encyclopedia_registry->registry().objects_ptr()->begin();
+
+			for(; it != Actor()->encyclopedia_registry->registry().objects_ptr()->end(); ++it)
+			{
+				if (ARTICLE_DATA::eTaskArticle == it->article_type)
+				{
+					CEncyclopediaArticle	A;
+					A.Load					(it->article_id);
+
+					const shared_str& group = A.data()->group;
+
+					if( strstr(group.c_str(), need_group)== group.c_str() )
+					{
+						u32 sz			= xr_strlen(need_group);
+						if ( group.size()== sz || group.c_str()[sz]=='/' )
+							m_UITaskInfoWnd->AddArticle(&A);
+					}
+				}else
+				if(o.article_id.size() && it->article_id ==o.article_id)
+				{
+					CEncyclopediaArticle			A;
+					A.Load							(it->article_id);
+					m_UITaskInfoWnd->AddArticle		(&A);
+				}
 			}
 		}
 	}
-	}
 
-	int sz = m_ListWnd->GetSize		();
-	for(int i=0; i<sz;++i){
-		CUITaskItem* itm = (CUITaskItem*)m_ListWnd->GetItem(i);
+	int sz			= m_ListWnd->GetSize		();
+
+	for(int i=0; i<sz;++i)
+	{
+		CUITaskItem* itm			= (CUITaskItem*)m_ListWnd->GetItem(i);
+
 		if((itm->GameTask()==t) && (itm->ObjectiveIdx()==idx) )	
-			itm->MarkSelected	(true);
+			itm->MarkSelected		(true);
 		else
-			itm->MarkSelected	(false);
+			itm->MarkSelected		(false);
 	}
-
 }
 
 bool CUIEventsWnd::ItemHasDescription(CUITaskItem* itm)

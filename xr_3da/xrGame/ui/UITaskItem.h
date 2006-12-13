@@ -15,10 +15,10 @@ class CUITaskItem :public CUIListItem, public CUIWndCallback
 {
 	typedef		CUIListItem	inherited;
 protected:
-	CGameTask*		m_GameTask;
-	u16				m_TaskObjectiveIdx;
-	void __stdcall	OnClick					(CUIWindow*, void*);
-	void			Init					();
+	CGameTask*				m_GameTask;
+	u16						m_TaskObjectiveIdx;
+	void __stdcall	OnItemClicked			(CUIWindow*, void*);
+	void					Init			();
 public:
 					CUITaskItem				(CUIEventsWnd* w);
 	virtual			~CUITaskItem			();
