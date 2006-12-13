@@ -7,8 +7,6 @@
 #include "material_manager.h"
 #include "profiler.h"
 
-#define TIME_OFFSET 10
-
 CStepManager::CStepManager()
 {
 }
@@ -119,7 +117,7 @@ void CStepManager::update()
 
 		// вычислить смещённое время шага в соответствии с параметрами анимации ходьбы
 		u32 offset_time = m_time_anim_started + u32(1000 * (cycle_anim_time * (m_step_info.cur_cycle-1) + cycle_anim_time * step.step[i].time));
-		if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
+		if (offset_time <= cur_time){
 
 			// Играть звук
 			if (!mtl_pair->StepSounds.empty() && is_on_ground() ) 
