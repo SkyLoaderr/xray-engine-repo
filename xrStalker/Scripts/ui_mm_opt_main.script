@@ -181,23 +181,26 @@ function options_dialog:OnBtnAdvVideo()
 end
 
 function options_dialog:OnKeyboard(dik, keyboard_action)
-	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+	local res = CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
 	
-	local bind = dik_to_bind(dik)
-	local console = get_console()
+	if res==false then
 	
-	if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
-		if dik == DIK_keys.DIK_ESCAPE then
-			if self.dlg_video_adv:IsShown() then
-				self.dlg_video_adv:Show(false)
-			else
-				self:GetHolder():start_stop_menu(self,true)
-				self.owner:Show(true)
-			end
-		end	
-	
+		local bind = dik_to_bind(dik)
+		local console = get_console()
+		
+		if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+			if dik == DIK_keys.DIK_ESCAPE then
+				if self.dlg_video_adv:IsShown() then
+					self.dlg_video_adv:Show(false)
+				else
+					self:GetHolder():start_stop_menu(self,true)
+					self.owner:Show(true)
+				end
+			end	
+		
+		end
 	end
-   
-	return true
+	   
+	return res
 end
 
