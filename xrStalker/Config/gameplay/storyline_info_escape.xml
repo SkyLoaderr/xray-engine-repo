@@ -1,4 +1,4 @@
-    <article id="storyline_gunslinger" name="storyline_eliminate_gunslinger" article_type="task" group="storyline_eliminate_gunslinger">
+    <article id="storyline_gunslinger" name="storyline_eliminate_gunslinger" article_type="task" group="storyline_eliminate_gunslinger/0">
         <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
         <text>gunslinger_clan_cache</text>
     </article>

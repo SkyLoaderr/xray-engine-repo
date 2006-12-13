@@ -1,8 +1,8 @@
-    <article id="sar_command_center_info" name="sar_monolith_destroy" article_type="task" group="sar_monolith_destroy">
+    <article id="sar_command_center_info" name="sar_monolith_destroy" article_type="task" group="sar_monolith_destroy/0">
         <text>sar_command_center_text</text>
     </article>
 
-	<article id="sar_monolith_call_info" name="sar_monolith" article_type="task" group="sar_monolith">
+	<article id="sar_monolith_call_info" name="sar_monolith" article_type="task" group="sar_monolith/0">
         <text>sar_monolith_call_text</text>
     </article>
     

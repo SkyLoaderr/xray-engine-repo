@@ -7,7 +7,7 @@
         <text>help_for_neitrals_text</text>
     </article>
     
-    <article id="graveyard_raid" name="gar_help_dymon" article_type="task" group="gar_help_dymon">
+    <article id="graveyard_raid" name="gar_help_dymon" article_type="task" group="gar_help_dymon/0">
         <text>graveyard_raid_text</text>
     </article>
     

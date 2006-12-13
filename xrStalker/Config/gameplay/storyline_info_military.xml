@@ -43,23 +43,19 @@
     <text>mil_mad_flash_job_descr</text>
 </article>
 
-<article id="mil_lukash_job_descr" name="mil_lukash_job_descr" group="Diary" article_type="info">
-	<texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
+<article id="mil_lukash_job_descr" name="mil_lukash_job_descr" group="mil_lukash_job/0" article_type="task">	
     <text>mil_lukash_job_descr</text>
 </article>
 
-<article id="mil_courier_job_descr" name="mil_courier_job_descr" group="Diary" article_type="info">
-	<texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
+<article id="mil_courier_job_descr" name="mil_courier_job_descr" group="mil_courier_job/0" article_type="task">
     <text>mil_courier_job_descr</text>
 </article>
 
-<article id="mil_blockpost_job_descr" name="mil_blockpost_job_descr" group="Diary" article_type="info">
-	<texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
-    <text>mil_courier_job_descr</text>
+<article id="mil_blockpost_job_descr" name="mil_blockpost_job" group="mil_blockpost_job/0" article_type="task">
+    <text>mil_blockpost_job_descr</text>
 </article>
 
-<article id="mil_blockpost_job2_descr" name="mil_blockpost_job2_descr" group="Diary" article_type="info">
-	<texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
+<article id="mil_blockpost_job2_descr" name="mil_blockpost_job2" group="mil_blockpost_job2/0" article_type="task">
     <text>mil_blockpost_job2_descr</text>
 </article>
 

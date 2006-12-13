@@ -26,7 +26,6 @@
     <info_portion id="val_escort_show_tip"></info_portion>
     <info_portion id="val_escort_task_start">
 	    <task>val_captive_help</task>
-	    <article>val_captive_help_art</article>
     </info_portion>
     <info_portion id="val_escort_start"></info_portion>
 

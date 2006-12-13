@@ -37,6 +37,7 @@
 			<text>yan_kill_brain_task_2</text>
 			<icon x="450" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
+			<article>descr_yan_kill_brain_2</article>
 		</objective>	
 		<objective>
 			<text>yan_secret_tonnel</text>

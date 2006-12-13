@@ -3,7 +3,6 @@
 <game_information_portions>
   <info_portion id="storyline_actor_start">
     <task>storyline_eliminate_gunslinger</task>
-    <article>storyline_gunslinger</article>
   </info_portion>
 
   <info_portion id="global_dialogs">
