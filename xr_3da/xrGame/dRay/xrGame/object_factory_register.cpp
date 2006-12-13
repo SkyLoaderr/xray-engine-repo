@@ -139,7 +139,6 @@
 
 #	include "torch.h"
 #	include "pda.h"
-#	include "artifactmerger.h"
 
 #	include "searchlight.h"
 
@@ -348,7 +347,6 @@ void CObjectFactory::register_classes	()
 	// Devices
 	ADD(CTorch					,CSE_ALifeItemTorch				,CLSID_DEVICE_TORCH				,"device_torch");
 	ADD(CPda					,CSE_ALifeItemPDA				,CLSID_DEVICE_PDA				,"device_pda");
-	ADD(CArtefactMerger			,CSE_ALifeItem					,CLSID_DEVICE_AF_MERGER			,"device_art_merger");
 
 	// objects
 	ADD(CProjector				,CSE_ALifeObjectProjector		,CLSID_OBJECT_PROJECTOR			,"projector");

@@ -24,6 +24,8 @@ IC	void CStalkerAnimationPair::reset				()
 	m_animation.invalidate	();
 	m_blend					= 0;
 	m_actual				= true;
+	m_array					= 0;
+	m_array_animation.invalidate();
 }
 
 IC	bool CStalkerAnimationPair::actual				() const

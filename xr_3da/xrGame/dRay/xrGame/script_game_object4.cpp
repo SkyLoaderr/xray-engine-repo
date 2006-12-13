@@ -195,3 +195,14 @@ CSightParams CScriptGameObject::sight_params	()
 	result.m_vector					= action.vector3d();
 	return							(result);
 }
+
+bool CScriptGameObject::critically_wounded		()
+{
+	CCustomMonster						*custom_monster = smart_cast<CCustomMonster*>(&object());
+	if (!custom_monster) {
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member critically_wounded!");
+		return							(false);
+	}
+
+	return								(custom_monster->critically_wounded());
+}

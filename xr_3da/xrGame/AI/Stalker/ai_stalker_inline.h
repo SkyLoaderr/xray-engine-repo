@@ -139,3 +139,8 @@ IC	bool CAI_Stalker::wounded									() const
 	return					(m_wounded);
 }
 
+IC	const CAI_Stalker::CRITICAL_WOUND_WEIGHTS &CAI_Stalker::critical_wound_weights	() const
+{
+	VERIFY					(!m_critical_wound_weights.empty());
+	return					(m_critical_wound_weights);
+}

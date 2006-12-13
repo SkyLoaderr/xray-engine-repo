@@ -43,7 +43,6 @@
 #	include "ai/stalker/ai_stalker.h"
 #	include "script_effector.h"
 #	include "particlesobject.h"
-#	include "artifactmerger.h"
 #	include "level.h"
 #	include "memory_space.h"
 #	include "script_render_device.h"

@@ -150,7 +150,7 @@ MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBod
 	return							(animation[6].A[3]);
 }
 
-MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState &body_state) const
+MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState &body_state)
 {
 	const xr_vector<CAniVector>		&animation = m_data_storage->m_part_animations.A[body_state].m_torso.A[slot].A;
 
@@ -171,9 +171,9 @@ MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState 
 #endif
 		}
 		case CWeapon::eShowing :
-			return					(animation[0].A[0]);
+			return					(torso().select(animation[0].A));
 		case CWeapon::eHiding :
-			return					(animation[3].A[0]);
+			return					(torso().select(animation[3].A));
 		case CWeapon::eFire:
 		case CWeapon::eFire2 : {
 			CAI_Stalker				&stalker = object();
@@ -199,7 +199,7 @@ MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState 
 	return							(unknown_object_animation(slot,body_state));
 }
 
-MotionID CStalkerAnimationManager::missile_animation	(u32 slot, const EBodyState &body_state) const
+MotionID CStalkerAnimationManager::missile_animation	(u32 slot, const EBodyState &body_state)
 {
 	VERIFY							(m_missile);
 
@@ -210,9 +210,9 @@ MotionID CStalkerAnimationManager::missile_animation	(u32 slot, const EBodyState
 
 	switch (m_missile->GetState()) {
 		case MS_SHOWING	 :
-			return					(animation[0].A[0]);
+			return					(torso().select(animation[0].A));
 		case MS_HIDING	 :
-			return					(animation[3].A[0]);
+			return					(torso().select(animation[3].A));
 		case MS_THREATEN :
 			return					(animation[1].A[0]);
 		case MS_READY	 :
@@ -227,7 +227,7 @@ MotionID CStalkerAnimationManager::missile_animation	(u32 slot, const EBodyState
 		case MS_HIDDEN	 :
 		case MS_EMPTY	 :
 		default			 :
-			return					(animation[6].A[0]);
+			return					(torso().select(animation[6].A));
 	}
 }
 

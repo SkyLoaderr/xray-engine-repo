@@ -267,5 +267,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("movement_enabled",			&CScriptGameObject::enable_movement)
 		.def("movement_enabled",			&CScriptGameObject::movement_enabled)
 
+		.def("critically_wounded",			&CScriptGameObject::critically_wounded)
+
 	;return	(instance);
 }

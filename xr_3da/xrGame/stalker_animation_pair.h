@@ -9,6 +9,7 @@
 #pragma once
 
 #include "../skeletonanimated.h"
+#include "ai/ai_monsters_anims.h"
 
 class CBlend;
 class CAI_Stalker;
@@ -23,12 +24,17 @@ public:
 	};
 #endif
 
+public:
+	typedef xr_vector<float>	ANIMATION_WEIGHTS;
+
 private:
 	MotionID				m_animation;
 	CBlend					*m_blend;
 	bool					m_actual;
 	bool					m_step_dependence;
 	bool					m_global_animation;
+	const ANIM_VECTOR		*m_array;
+	MotionID				m_array_animation;
 
 #ifdef DEBUG
 private:
@@ -39,7 +45,8 @@ public:
 	bool					m_just_started;
 #endif // DEBUG
 
-protected:
+private:
+			void			select_animation		(const ANIM_VECTOR &array, const ANIMATION_WEIGHTS *weights);
 #ifndef USE_HEAD_BONE_PART_FAKE
 			void			play_global_animation	(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object);
 #else
@@ -50,6 +57,7 @@ public:
 	IC						CStalkerAnimationPair	();
 	IC		void			reset					();
 			void			synchronize				(CKinematicsAnimated *skeleton_animated, const CStalkerAnimationPair &stalker_animation_pair) const;
+			MotionID		select					(const ANIM_VECTOR &array, const ANIMATION_WEIGHTS *weights = 0);
 	IC		bool			actual					() const;
 	IC		bool			animation				(const MotionID &animation);
 	IC		const MotionID	&animation				() const;

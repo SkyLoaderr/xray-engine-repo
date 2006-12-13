@@ -77,7 +77,7 @@ private:
 #ifdef USE_HEAD_BONE_PART_FAKE
 private:
 	u32								m_script_bone_part_mask;
-#endif
+#endif // USE_HEAD_BONE_PART_FAKE
 
 private:
 	float							m_previous_speed;
@@ -96,8 +96,8 @@ private:
 private:
 			MotionID				no_object_animation		(const EBodyState &body_state) const;
 			MotionID				unknown_object_animation(u32 slot, const EBodyState &body_state) const;
-			MotionID				weapon_animation		(u32 slot, const EBodyState &body_state) const;
-			MotionID				missile_animation		(u32 slot, const EBodyState &body_state) const;
+			MotionID				weapon_animation		(u32 slot, const EBodyState &body_state);
+			MotionID				missile_animation		(u32 slot, const EBodyState &body_state);
 
 private:
 	IC		float					legs_switch_factor		() const;
@@ -106,7 +106,7 @@ private:
 			MotionID				legs_move_animation		();
 			MotionID				legs_no_move_animation	();
 
-protected:
+private:
 			void					assign_bone_callbacks	();
 			MotionID				assign_global_animation	();
 			MotionID				assign_head_animation	();
@@ -114,7 +114,26 @@ protected:
 			MotionID				assign_legs_animation	();
 			MotionID				assign_script_animation	();
 
-protected:
+private:
+	IC		bool 					script_callback			() const;
+	IC		bool					need_update_tracks		() const;
+	IC		void 					update_tracks			();
+
+private:
+	IC		void					play_script_impl		();
+			bool 					play_script				();
+
+private:
+	IC		void					play_global_impl		(const MotionID &animation);
+			bool 					play_global				();
+
+private:
+	IC		void 					play_head				();
+	IC		void 					play_torso				();
+			void 					play_legs				();
+			void 					update_impl				();
+
+private:
 	static	void					global_play_callback	(CBlend *blend);
 	static	void					head_play_callback		(CBlend *blend);
 	static	void					torso_play_callback		(CBlend *blend);
@@ -125,8 +144,8 @@ public:
 	virtual	void					reinit					();
 	virtual	void					reload					(CAI_Stalker *object);
 	virtual void					update					();
-			void					play_delayed_callbacks	();
 			void					play_fx					(float power_factor, int fx_index);
+			void 					play_delayed_callbacks	();
 
 public:
 			void					add_script_animation	(LPCSTR animation, bool hand_usage = false);

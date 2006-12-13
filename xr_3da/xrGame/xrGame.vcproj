@@ -3972,10 +3972,16 @@
 								RelativePath=".\stalker_animation_manager.h">
 							</File>
 							<File
+								RelativePath=".\stalker_animation_manager_debug.cpp">
+							</File>
+							<File
 								RelativePath=".\stalker_animation_manager_impl.h">
 							</File>
 							<File
 								RelativePath=".\stalker_animation_manager_inline.h">
+							</File>
+							<File
+								RelativePath=".\stalker_animation_manager_update.cpp">
 							</File>
 							<File
 								RelativePath=".\stalker_animation_script.cpp">
@@ -7513,22 +7519,6 @@
 								</File>
 								<File
 									RelativePath="Torch.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="ArtifactMerger"
-								Filter="">
-								<File
-									RelativePath=".\artifact_merger_script.cpp">
-								</File>
-								<File
-									RelativePath=".\ArtifactMerger.cpp">
-								</File>
-								<File
-									RelativePath=".\ArtifactMerger.h">
-								</File>
-								<File
-									RelativePath=".\ArtifactMerger2.cpp">
 								</File>
 							</Filter>
 						</Filter>

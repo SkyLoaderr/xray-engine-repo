@@ -225,8 +225,8 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 				!update_critical_wounded(HDS.boneID,HDS.power) &&
 				animation().script_animations().empty() &&
 				(pHDS->bone() != BI_NONE) &&
-				(weapon_type != 5) && // exclude pistols
-				(weapon_type != 7) && // exclude shotguns
+//				(weapon_type != 5) && // exclude pistols
+//				(weapon_type != 7) && // exclude shotguns
 				(weapon_type != 9)	  // exclude rocket launchers (WARNING: this code should be revisited)
 			)
 		{

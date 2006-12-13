@@ -79,16 +79,32 @@ LPCSTR in_place_names		[] = {
 };
 
 LPCSTR global_names			[] = {
-	"damage_",					// 0
-	"escape_",					// 1
-	"dead_stop_",				// 2
-	"hello_",					// 3
-	"critical_hit_head_",		// 4
-	"critical_hit_torso_",		// 5
-	"critical_hit_hend_left_",	// 6
-	"critical_hit_hend_right_",	// 7
-	"critical_hit_legs_left_",	// 8
-	"critical_hit_legs_right_",	// 9
+	"damage_",						// 0
+	"escape_",						// 1
+	"dead_stop_",					// 2
+	"hello_",						// 3
+
+	"1_critical_hit_head_",			// 4
+	"1_critical_hit_torso_",		// 5
+	"1_critical_hit_hend_left_",	// 6
+	"1_critical_hit_hend_right_",	// 7
+	"1_critical_hit_legs_left_",	// 8
+	"1_critical_hit_legs_right_",	// 9
+
+	"2_critical_hit_head_",			// 10
+	"2_critical_hit_torso_",		// 11
+	"2_critical_hit_hend_left_",	// 12
+	"2_critical_hit_hend_right_",	// 13
+	"2_critical_hit_legs_left_",	// 14
+	"2_critical_hit_legs_right_",	// 15
+
+	"3_critical_hit_head_",			// 16
+	"3_critical_hit_torso_",		// 17
+	"3_critical_hit_hend_left_",	// 18
+	"3_critical_hit_hend_right_",	// 19
+	"3_critical_hit_legs_left_",	// 20
+	"3_critical_hit_legs_right_",	// 21
+
 	"panic_stand_",
 	0
 };

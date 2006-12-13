@@ -514,10 +514,15 @@ private:
 	virtual void						critical_wounded_state_start				();
 
 			void						fill_bones_body_parts						(LPCSTR bone_id, const ECriticalWoundType &wound_type);
+public:
+	typedef xr_vector<float>			CRITICAL_WOUND_WEIGHTS;
+
+private:
+	CRITICAL_WOUND_WEIGHTS				m_critical_wound_weights;
 
 public:
-	
 			bool						critically_wounded							();
+	IC		const CRITICAL_WOUND_WEIGHTS&critical_wound_weights						() const;
 	//////////////////////////////////////////////////////////////////////////
 
 public:

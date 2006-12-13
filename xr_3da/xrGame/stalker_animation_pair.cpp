@@ -79,6 +79,11 @@ void CStalkerAnimationPair::play			(CKinematicsAnimated *skeleton_animated, Play
 		return;
 	}
 
+	if (animation() != m_array_animation) {
+		m_array_animation.invalidate	();
+		m_array							= 0;
+	}
+
 #ifdef DEBUG
 	m_just_started			= true;
 #endif // DEBUG
@@ -149,3 +154,52 @@ std::pair<LPCSTR,LPCSTR> *CStalkerAnimationPair::blend_id	(CKinematicsAnimated *
 	return					(&result);
 }
 #endif // DEBUG
+
+void CStalkerAnimationPair::select_animation(const ANIM_VECTOR &array, const ANIMATION_WEIGHTS *weights)
+{
+	if (!weights) {
+		m_array_animation		= array[::Random.randI(array.size())];
+		VERIFY					(m_animation);
+		return;
+	}
+
+	float						accumulator = 0.f;
+	ANIMATION_WEIGHTS::const_iterator	I = weights->begin(), B = I;
+	ANIMATION_WEIGHTS::const_iterator	E = weights->end();
+	
+	u32							array_size = array.size();
+	if (array_size < weights->size())
+		E						= B + array_size;
+
+	for ( ; I != E; ++I)
+		accumulator				+= *I;
+
+	float						chosen = ::Random.randF()*accumulator;
+	accumulator					= 0.f;
+	for (I = B; I != E; ++I) {
+		if ((accumulator + *I) >= chosen)
+			break;
+
+		accumulator				+= *I;
+		continue;
+	}
+
+	VERIFY						(I != E);
+	VERIFY						(u32(I - B) < array.size());
+	m_array_animation			= array[I - B];
+	VERIFY						(m_array_animation);
+}
+
+MotionID CStalkerAnimationPair::select	(const ANIM_VECTOR &array, const ANIMATION_WEIGHTS *weights)
+{
+	VERIFY						(!array.empty());
+
+	if (m_array == &array) {
+		VERIFY					(animation());
+		return					(animation());
+	}
+
+	m_array						= &array;
+	select_animation			(array,weights);
+	return						(m_array_animation);
+}

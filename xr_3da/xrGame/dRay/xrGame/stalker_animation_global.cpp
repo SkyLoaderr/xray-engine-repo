@@ -15,6 +15,7 @@
 #include "stalker_movement_manager.h"
 #include "ai/stalker/ai_stalker_space.h"
 #include "stalker_animation_data.h"
+#include "weapon.h"
 
 using namespace StalkerSpace;
 
@@ -41,19 +42,36 @@ MotionID CStalkerAnimationManager::assign_global_animation	()
 		if (!object().critically_wounded())
 			return					(MotionID());
 
+#if 0
+		VERIFY						(object().inventory().ActiveItem());
+
+		CWeapon						*weapon = smart_cast<CWeapon*>(object().inventory().ActiveItem());
+		VERIFY						(weapon);
+#else
+		VERIFY						(object().best_weapon());
+
+		CWeapon						*weapon = smart_cast<CWeapon*>(object().best_weapon());
+		VERIFY						(weapon);
+#endif
+
+		u32							animation_slot = weapon->animation_slot();
+		VERIFY						(animation_slot >= 1);
+		VERIFY						(animation_slot <= 3);
+
 		return						(
-			m_data_storage->m_part_animations.A[
-				eBodyStateStand
-			].m_global.A[
-				object().critical_wound_type()
-			].A[
-				0
-			]
+			global().select(
+				m_data_storage->m_part_animations.A[
+					eBodyStateStand
+				].m_global.A[
+					object().critical_wound_type() + 6*(animation_slot - 1)
+				].A,
+				&object().critical_wound_weights()
+			)
 		);
 	}
 
 	if (fis_zero(object().movement().speed(object().character_physics_support()->movement())))
 		return						(MotionID());
 
-	return							(m_data_storage->m_part_animations.A[body_state()].m_global.A[1].A[0]);
+	return							(global().select(m_data_storage->m_part_animations.A[body_state()].m_global.A[1].A));
 }

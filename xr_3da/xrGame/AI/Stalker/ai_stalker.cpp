@@ -169,6 +169,14 @@ void CAI_Stalker::reinit			()
 	m_throw_direction				= Fvector().set(flt_max,flt_max,flt_max);
 
 	brain().CStalkerPlanner::m_storage.set_property	(StalkerDecisionSpace::eWorldPropertyCriticallyWounded,	false);
+
+	{
+		m_critical_wound_weights.clear	();
+		LPCSTR							weights = pSettings->r_string(cNameSect(),"critical_wound_weights");
+		string16						temp;
+		for (int i=0, n=_GetItemCount(weights); i<n; ++i)
+			m_critical_wound_weights.push_back((float)atof(_GetItem(weights,i,temp)));
+	}
 }
 
 void CAI_Stalker::LoadSounds		(LPCSTR section)
