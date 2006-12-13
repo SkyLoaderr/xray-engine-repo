@@ -226,9 +226,9 @@ public:
 				for (it=Console->Commands.begin(); it!=Console->Commands.end(); it++)
 					it->second->Save(F);
 				FS.w_close			(F);
-				Msg("Config-file [%s] saved succesfully",cfg_full_name);
+				Msg("Config-file [%s] saved successfully",cfg_full_name);
 		}else
-			Msg("!Cannot store config file %s", cfg_full_name);
+			Msg("!Cannot store config file [%s]", cfg_full_name);
 	}
 };
 CCC_LoadCFG::CCC_LoadCFG(LPCSTR N) : IConsole_Command(N) 
@@ -260,8 +260,9 @@ void CCC_LoadCFG::Execute(LPCSTR args)
 					Console->Execute	(str);
 			}
 			FS.r_close(F);
+			Msg("[%s] successfully loaded.",cfg_full_name);
 		} else {
-			Log("! Cannot open script file.");
+			Msg("! Cannot open script file [%s]",cfg_full_name);
 		}
 }
 
