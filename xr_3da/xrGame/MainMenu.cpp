@@ -72,15 +72,19 @@ void CMainMenu::Activate	(bool bActivate)
 	{
 		Device.PauseSound			(TRUE);
 		m_Flags.set					(flActive|flNeedChangeCapture,TRUE);
-		DLL_Pure* dlg = NEW_INSTANCE(TEXT2CLSID("MAIN_MNU"));
-		if(!dlg) 
+
+		if(!m_startDialog)
 		{
-			m_Flags.set				(flActive|flNeedChangeCapture,FALSE);
-			return;
+			DLL_Pure* dlg = NEW_INSTANCE(TEXT2CLSID("MAIN_MNU"));
+			if(!dlg) 
+			{
+				m_Flags.set				(flActive|flNeedChangeCapture,FALSE);
+				return;
+			}
+			xr_delete					(m_startDialog);
+			m_startDialog				= smart_cast<CUIDialogWnd*>(dlg);
+			VERIFY						(m_startDialog);
 		}
-		xr_delete					(m_startDialog);
-		m_startDialog				= smart_cast<CUIDialogWnd*>(dlg);
-		VERIFY						(m_startDialog);
 
 		m_Flags.set					(flRestoreConsole,Console->bVisible);
 		
@@ -128,7 +132,7 @@ void CMainMenu::Activate	(bool bActivate)
 
 		StartStopMenu						(m_startDialog,true);
 		CleanInternals						();
-		xr_delete							(m_startDialog);
+//.		xr_delete							(m_startDialog);
 		if(g_pGameLevel)
 		{
 			if(b_is_single)
@@ -171,25 +175,29 @@ void	CMainMenu::IR_OnMousePress				(int btn)
 void	CMainMenu::IR_OnMouseRelease(int btn)	
 {
 	if(!IsActive()) return;
+
 	IR_OnKeyboardRelease(mouse_button_2_key[btn]);
 };
 
 void	CMainMenu::IR_OnMouseHold(int btn)	
 {
 	if(!IsActive()) return;
+
 	IR_OnKeyboardHold(mouse_button_2_key[btn]);
+
 };
 
 void	CMainMenu::IR_OnMouseMove(int x, int y)
 {
 	if(!IsActive()) return;
+
 	if(MainInputReceiver())
 		MainInputReceiver()->IR_OnMouseMove(x, y);
+
 };
 
 void	CMainMenu::IR_OnMouseStop(int x, int y)
 {
-	if(!IsActive()) return;
 };
 
 void	CMainMenu::IR_OnKeyboardPress(int dik)
@@ -208,6 +216,7 @@ void	CMainMenu::IR_OnKeyboardPress(int dik)
 
 	if(MainInputReceiver())
 		MainInputReceiver()->IR_OnKeyboardPress( dik);
+
 };
 
 void	CMainMenu::IR_OnKeyboardRelease			(int dik)
@@ -216,11 +225,11 @@ void	CMainMenu::IR_OnKeyboardRelease			(int dik)
 	
 	if(MainInputReceiver())
 		MainInputReceiver()->IR_OnKeyboardRelease(dik);
+
 };
 
 void	CMainMenu::IR_OnKeyboardHold				(int dik)	
 {
-	if(!IsActive()) return;
 };
 
 void CMainMenu::IR_OnMouseWheel(int direction)
@@ -286,7 +295,7 @@ void CMainMenu::OnFrame()
 {
 	if(!IsActive() && m_startDialog)
 	{
-		xr_delete					(m_startDialog);
+//.		xr_delete					(m_startDialog);
 	}
 	if (m_Flags.test(flNeedChangeCapture))
 	{
