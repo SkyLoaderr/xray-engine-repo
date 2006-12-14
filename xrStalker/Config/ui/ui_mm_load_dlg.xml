@@ -7,7 +7,7 @@
 	</back_video>
 
 	<background x="0" y="0" width="1024" height="768">
-		<texture>ui\ui_static_mm_back_02</texture>
+		<texture>ui\ui_static_mm_back_04</texture>
 	</background>
 	
 	<form x="415" y="168" width="560" height="460">
