@@ -239,11 +239,6 @@ function se_respawn:on_register()
 	self.parent	= r_num(ini, section_name, "parent", nil)
 	self.item_spawn	= r_bool(ini, section_name, "item_spawn", false)
 	
-	--' Проверка для презентации
-	if self.item_spawn == false then
-		self.max_count = -1
-	end
-
 	-- производим первичную инициализацию
 	self.respawn_time = game.CTime()
 	
@@ -344,7 +339,7 @@ function se_respawn:create(prob)
 				if smart_terrain_id ~= 65535 then		
 					table.insert(self.spawned_obj ,obj.id)
 					local pos = obj.position
-	--				printf("SPAWNING [%s] -> [%s], position [%s][%s][%s]", tostring(self:name()), spawn_section, pos.x, pos.y, pos.z)
+					printf("SPAWNING [%s] -> [%s], position [%s][%s][%s]", tostring(self:name()), spawn_section, pos.x, pos.y, pos.z)
 					return true
 				else
 					alife():release(obj, true)
