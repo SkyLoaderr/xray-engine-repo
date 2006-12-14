@@ -226,22 +226,28 @@ function PatrolManager:__init (path_name)
 end
 -----------------------
 function PatrolManager:add_npc (npc, leader)
-    --validate npc
-    if npc == nil or npc:alive () == false or self.npc_list[npc:id ()] ~= nil then 
-       printf ("[XR_PATROL] NO PASSED VALIDATE TEST FOR NPC") 
+    --'validate npc
+    if npc == nil or npc:alive() == false or self.npc_list[npc:id()] ~= nil then 
        return 
     end
+
+	--' Проверка на то что в патруле не больше 7 сталкеров (иначе будет вылетать дальше)
+	if self.npc_count == 7 then
+		abort("[XR_PATROL] attempt to add mor then 7 npc. [%s]", npc:name())
+		return
+	end
     
-    -- if this npc first in command then set him as commander
+    --' if this npc first in command then set him as commander
     self.npc_list[npc:id ()] = {soldier = npc, dir = vector ():set (1, 0, 0), dist = 0}
       
     self.npc_count = self.npc_count + 1
-    -- если мужик первый или считается лидером, то установим, как лидера    
+    --' если мужик первый или считается лидером, то установим, как лидера    
     if self.npc_count == 1 or leader == true then
        self.commander_id = npc:id ()
        printf ("[XR_PATROL] ASSIGNED NPC %s AS PATROL COMMANDER", npc:name ())
     end    
     
+
     printf ("[XR_PATROL] NPC %s added to patrol manager %s", npc:name (), self.path_name) 
     
     if tm_enabled == true then
