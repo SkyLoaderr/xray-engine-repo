@@ -104,7 +104,7 @@ IC	void CStalkerAnimationManager::play_global_impl			(const MotionID &animation)
 	torso().reset			();
 	legs().reset			();
 
-	global().animation		(global_animation);
+	global().animation		(animation);
 	global().play			(m_skeleton_animated,global_play_callback,&object());
 }
 #endif // USE_HEAD_BONE_PART_FAKE
