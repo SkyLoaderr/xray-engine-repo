@@ -2,7 +2,7 @@
 		<title>yan_kill_brain</title>
 		<objective>
 			<text>yan_kill_brain</text>
-			<icon x="450" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_iconsTotal_yan_kill_brain_task</icon>
 			<infoportion_complete>yan_labx16_switcher_primary_off</infoportion_complete>
 			<article>descr_yan_kill_brain</article>
 		</objective>
@@ -57,7 +57,7 @@
 		<title>yan_find_scientist</title>
 		<objective>
 			<text>yan_find_scientist</text>
-			<icon x="450" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_iconsTotal_yan_find_scientist</icon>
 			<map_location_type hint="yan_find_scientist">green_location</map_location_type>
 			<object_story_id>yan_ecolog_help</object_story_id>
 			<infoportion_complete>yan_find_scientist_done</infoportion_complete>
