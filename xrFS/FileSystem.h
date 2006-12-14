@@ -32,6 +32,12 @@ public:
 	LPCSTR		AppendFolderToName(LPSTR tex_name, int depth, BOOL full_name);
 	LPCSTR		AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth, BOOL full_name);
 
+	BOOL		LockFile		(LPCSTR fn, bool bLog=true);
+	BOOL		UnlockFile		(LPCSTR fn, bool bLog=true);
+	BOOL		CheckLocking	(LPCSTR fn, bool bOnlySelf, bool bMsg);//, shared_str* owner=0);
+	void 		WriteAccessLog	(LPCSTR fn, LPCSTR start_msg);
+//.	shared_str 	GetLockOwner	(LPCSTR initial, LPCSTR fn);
+
     xr_string	ChangeFileExt	(LPCSTR src, LPCSTR ext);
     xr_string	ChangeFileExt	(const xr_string& src, LPCSTR ext);
 

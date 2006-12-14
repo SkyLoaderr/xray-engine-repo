@@ -54,7 +54,7 @@ CCommandVar CActorTools::CommandLoad(CCommandVar p1, CCommandVar p2)
         BOOL bReadOnly 			= !FS.can_modify_file(temp_fn.c_str());
         m_Flags.set				(flReadOnlyMode,bReadOnly);
         
-        if (bReadOnly)
+        if (bReadOnly || EFS.CheckLocking(temp_fn.c_str(),false,true))
             Msg					("#!Object '%s' opened in readonly mode.",temp_fn.c_str());
 
 /*        
@@ -79,6 +79,8 @@ CCommandVar CActorTools::CommandLoad(CCommandVar p1, CCommandVar p2)
         EPrefs->AppendRecentFile(m_LastFileName.c_str());
         ExecCommand	(COMMAND_UPDATE_CAPTION);
         ExecCommand	(COMMAND_UPDATE_PROPERTIES);
+        // lock
+        if (!bReadOnly)			EFS.LockFile(m_LastFileName.c_str());
         UndoClear();
         UndoSave();
     }
@@ -107,6 +109,7 @@ CCommandVar CActorTools::CommandSave(CCommandVar p1, CCommandVar p2)
 			return 				ExecCommand(COMMAND_SAVE,temp_fn,1);
         }else{
             xr_strlwr			(temp_fn);
+            EFS.UnlockFile		(temp_fn.c_str());
             CTimer T;
             T.Start();
             CCommandVar			res;
@@ -119,6 +122,7 @@ CCommandVar CActorTools::CommandSave(CCommandVar p1, CCommandVar p2)
             }else{
                 res				= FALSE;
             }
+            EFS.LockFile		(temp_fn.c_str());
             return 				res;
         }
     }
@@ -208,6 +212,7 @@ CCommandVar CActorTools::CommandClear(CCommandVar p1, CCommandVar p2)
 {
     if (!IfModified())	return FALSE;
     // unlock
+    EFS.UnlockFile	(m_LastFileName.c_str());
     m_LastFileName	= "";
     Device.m_Camera.Reset();
     Clear			();
