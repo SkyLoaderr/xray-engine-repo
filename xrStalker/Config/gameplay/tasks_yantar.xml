@@ -35,7 +35,7 @@
 		<title>yan_kill_brain_task_2</title>		
 		<objective>
 			<text>yan_kill_brain_task_2</text>
-			<icon x="450" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_iconsTotal_yan_kill_brain_task_2</icon>
 			<infoportion_complete>yan_kill_brain_done</infoportion_complete>
 			<article>descr_yan_kill_brain_2</article>
 		</objective>	
@@ -180,7 +180,7 @@
 		<title>yan_provodnik_task</title>
 		<objective>
 			<text>yan_provodnik_task</text>
-			<icon x="350" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_iconsTotal_yan_provodnik_task</icon>
 			<infoportion_complete>esc_find_doctor_start</infoportion_complete>
 			<article>descr_yan_provodnik_task</article>
 		</objective>

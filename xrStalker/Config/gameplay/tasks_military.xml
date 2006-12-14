@@ -255,7 +255,7 @@
 		<title>mil_freedom_rg6_task</title>
 		<objective>
 			<text>mil_freedom_rg6_task</text>
-			<icon x="50" y="150" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_iconsTotal_mil_freedom_rg6_task</icon>
 			<infoportion_complete>bar_svoboda_rg6_done</infoportion_complete>
 			<article>mil_freedom_rg6_task_descr</article>
 		</objective>
