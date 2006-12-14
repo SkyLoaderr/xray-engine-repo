@@ -97,7 +97,6 @@
     <info_portion id="val_sos_actor_near_wounded"></info_portion>
     <info_portion id="val_sos_give_tip"></info_portion>
     <info_portion id="val_sos_start_task">
-	    <task>val_sos_help</task>
     </info_portion>
     <info_portion id="val_sos_got_medkit"></info_portion>
     <info_portion id="val_sos_dead"></info_portion>

@@ -65,9 +65,14 @@
     <text>val_prisoner_help_art_txt</text>
 </article>
 
-<article article_type="task" group="bar_darklab_documents" id="bar_darklab_documents_art" name="bar_darklab_documents">
+<article article_type="task" group="bar_darklab_documents/0" id="bar_darklab_documents_art" name="bar_darklab_documents">
     <text>
         bar_darklab_documents_txt
+    </text>
+</article>
+<article article_type="task" group="bar_darklab_documents2/0" id="bar_darklab_documents2_art" name="bar_darklab_documents2">
+    <text>
+        bar_darklab_documents2_txt
     </text>
 </article>
 <article article_type="task" group="dar_codedoor_1/0" id="dar_codedoor_1_art" name="dar_codedoor_1">

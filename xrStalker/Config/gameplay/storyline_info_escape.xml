@@ -28,8 +28,8 @@
         <text>tutorial_artefact_find</text>
     </article>
     
-    <article id="tutorial_wounded_help" name="tutorial_help_wounded" article_type="task" group="tutorial_help_wounded">
-        <text>tutorial_wounded_text</text>
+    <article id="esc_flash_task_descr" name="esc_flash_task" article_type="task" group="esc_flash_task/0">
+        <text>esc_flash_task_descr</text>
     </article>
     
     <article id="esc_blokpost_case" name="esc_blockpost_case_to_trader" article_type="task" group="esc_blockpost_case_to_trader">
@@ -44,11 +44,11 @@
         <text>factory_trader_text</text>
     </article> 
     
-    <article id="meet_seryi_start" name="garbage_meet_stalker" article_type="task" group="garbage_meet_stalker">
+    <article id="meet_seryi_start" name="garbage_meet_stalker" article_type="task" group="garbage_meet_stalker/0">
         <text>meet_seryi_text</text>
     </article> 
     
-    <article id="esc_fox_help" name="esc_help_wounded_from_raid" article_type="task" group="esc_help_wounded_from_raid">
+    <article id="esc_fox_help" name="esc_help_wounded_from_raid" article_type="task" group="esc_help_wounded_from_raid/0">
         <text>help_to_fox</text>
     </article> 
     
@@ -56,7 +56,7 @@
         <text>doctor_meet_text</text>
     </article> 
     
-    <article id="esc_doctor_meet" name="doctor_meet_2" article_type="task" group="doctor_meet_2">
+    <article id="esc_doctor_meet" name="doctor_meet" article_type="task" group="doctor_meet/0">
         <text>doctor_meet_quest_text</text>
     </article>
     

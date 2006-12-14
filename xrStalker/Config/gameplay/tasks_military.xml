@@ -225,36 +225,31 @@
 		<objective>
 			<text>mil_blockpost_help</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>mil_fblockpost_quest_complete</infoportion_complete>
+			<infoportion_complete>mil_fblockpost_quest_reward</infoportion_complete>
 			<function_fail>mil_tasks.fblockpost_job_failed</function_fail>
 			<article>mil_blockpost_job_descr</article>
 		</objective>
 		<objective>
-			<text>mil_fblockpost_phase2</text>
-			<icon x="0" y="150" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>mil_fblockpost_quest_complete</infoportion_complete>
-			<infoportion_fail>mil_fblockpost_quest_fail</infoportion_fail>
-		</objective>
-	</game_task>
-
-	<game_task id="mil_blockpost_job2" prio="275">
-		<title>mil_talk_with_cap</title>
-		<objective>
-			<text>mil_talk_with_cap</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
-			<infoportion_complete>mil_freedom_commander_talk</infoportion_complete>
-			<function_fail>mil_tasks.fblockpost_job_failed2</function_fail>
-			<article>mil_blockpost_job2_descr</article>
-		</objective>
-		<objective>
 			<text>mil_fblockpost_phase3</text>
-			<icon x="400" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_freedom_commander_talk</infoportion_complete>
 			<infoportion_fail>mil_fblockpost_commander_dead</infoportion_fail>
             <map_location_type hint="mil_cap_hint">blue_location</map_location_type>
             <object_story_id>Mil_Kap</object_story_id>
 		</objective>
+		<objective>
+			<text>mil_fblockpost_phase2</text>
+			<infoportion_complete>mil_fblockpost_quest_complete</infoportion_complete>
+			<infoportion_fail>mil_fblockpost_quest_fail</infoportion_fail>
+		</objective>
+		<objective>
+			<text>mil_fblockpost_phase3</text>
+			<infoportion_complete>mil_fblockpost_quest_reward</infoportion_complete>
+			<infoportion_fail>mil_fblockpost_commander_dead</infoportion_fail>
+            <map_location_type hint="mil_cap_hint">blue_location</map_location_type>
+            <object_story_id>Mil_Kap</object_story_id>
+		</objective>
 	</game_task>
+
 
 	<game_task id="mil_freedom_rg6_task" prio="425">
 		<title>mil_freedom_rg6_task</title>
@@ -262,6 +257,7 @@
 			<text>mil_freedom_rg6_task</text>
 			<icon x="50" y="150" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>bar_svoboda_rg6_done</infoportion_complete>
+			<article>mil_freedom_rg6_task_descr</article>
 		</objective>
 		<objective>
 			<text>mil_find_cook</text>
