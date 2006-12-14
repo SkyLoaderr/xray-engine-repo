@@ -55,7 +55,7 @@
     <texture id="ui_iconsTotal_mil_kill_controller" x="166" y="188" width="83" height="47" />
     <texture id="ui_iconsTotal_mil_lukash_job" x="166" y="235" width="83" height="47" />
     <texture id="ui_iconsTotal_mil_mad_job" x="166" y="282" width="83" height="47" />
-    <texture id="ui_iconsTotal_mil_blockpost_job2" x="166" y="329" width="83" height="47" />
+    <texture id="ui_iconsTotal_mil_blockpost_job" x="166" y="329" width="83" height="47" />
     <texture id="ui_iconsTotal_mil_courier_job" x="166" y="376" width="83" height="47" />
     <texture id="ui_iconsTotal_bar_radar_deactivate" x="166" y="423" width="83" height="47" />
     <texture id="ui_iconsTotal_sar_monolith" x="166" y="470" width="83" height="47" />

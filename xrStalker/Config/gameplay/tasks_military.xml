@@ -224,7 +224,7 @@
 		<title>mil_blockpost_help</title>
 		<objective>
 			<text>mil_blockpost_help</text>
-			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+			<icon>ui_iconsTotal_mil_blockpost_job</icon>
 			<infoportion_complete>mil_fblockpost_quest_reward</infoportion_complete>
 			<function_fail>mil_tasks.fblockpost_job_failed</function_fail>
 			<article>mil_blockpost_job_descr</article>
