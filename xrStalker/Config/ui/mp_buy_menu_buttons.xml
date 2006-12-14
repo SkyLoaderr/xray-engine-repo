@@ -186,3 +186,88 @@
 		</text_color>
 	</hint>
 </btn_bag_heavy>	
+
+<shop_back_btn x="200" y="130" width="85" height="32" accel="kBACK">
+	<window_name>btn_shop_back</window_name>
+	<texture_offset x="-26" y="0"/>
+	<texture>ui\ui_btn_mp_back</texture>			
+	<sound_t>weapons\generic_close</sound_t>
+</shop_back_btn>
+
+<btn_ok x="925" y="675" width="79" height="30" accel="kRETURN">		
+	<window_name>btn_ok</window_name>
+	<texture_offset x="-8" y="-23"/>
+	<texture_e>ui\ui_mp_buy_ok_e</texture_e>
+	<texture_t>ui\ui_mp_buy_ok_h</texture_t>
+	<texture_h>ui\ui_mp_buy_ok_h</texture_h>
+	<text font="graffiti22" align="c">ui_inv_ok</text>
+	<text_color>
+		<e r="156" g="122" b="46"/>	<h r="255" g="255" b="180"/> <t r="255" g="255" b="180"/>
+	</text_color>		
+	<sound_t>weapons\generic_close</sound_t>
+</btn_ok>
+
+<btn_cancel x="925" y="730" width="79" height="30" accel="kESCAPE">
+	<window_name>btn_cancel</window_name>
+	<texture_offset x="-8" y="-23"/>
+	<texture_e>ui\ui_mp_buy_ok_e</texture_e>
+	<texture_t>ui\ui_mp_buy_ok_h</texture_t>
+	<texture_h>ui\ui_mp_buy_ok_h</texture_h>
+	<text font="graffiti22" align="c">ui_inv_cancel</text>		
+	<text_color>
+		<e r="156" g="122" b="46"/>	<h r="255" g="255" b="180"/> <t r="255" g="255" b="180"/>
+	</text_color>
+	<sound_t>weapons\generic_close</sound_t>
+</btn_cancel>
+
+
+
+
+<btn_preset_1 x="300" y="60" width="117" height="29">
+	<window_name>btn_preset_1</window_name>
+	<texture>ui_button_ordinary</texture>
+	<text font="graffiti22" r="238" g="153" b="26">ui_st_preset1</text>
+	<sound_t>weapons\generic_close</sound_t>
+</btn_preset_1>
+
+<btn_preset_2 x="420" y="60" width="117" height="29">
+	<window_name>btn_preset_2</window_name>
+	<texture>ui_button_ordinary</texture>
+	<text font="graffiti22" r="238" g="153" b="26">ui_st_preset2</text>
+	<sound_t>weapons\generic_close</sound_t>
+</btn_preset_2>
+
+<btn_preset_3 x="540" y="60" width="117" height="29">
+	<window_name>btn_preset_3</window_name>
+	<texture>ui_button_ordinary</texture>
+	<text font="graffiti22" r="238" g="153" b="26">ui_st_preset3</text>
+	<sound_t>weapons\generic_close</sound_t>
+</btn_preset_3>
+
+<btn_last_set x="660" y="60" width="117" height="29">
+	<window_name>btn_last_set</window_name>
+	<texture>ui_button_ordinary</texture>
+	<text font="graffiti22" r="238" g="153" b="26">ui_st_last_set</text>
+	<sound_t>weapons\generic_close</sound_t>
+</btn_last_set>
+
+<btn_save_preset x="780" y="60" width="117" height="29" check_mode="1">
+	<window_name>btn_save_preset</window_name>
+	<texture>ui_button_ordinary</texture>
+	<text font="graffiti22" r="238" g="153" b="26">ui_st_save_preset</text>
+	<sound_t>weapons\generic_close</sound_t>
+</btn_save_preset>
+
+<btn_sell x="780" y="630" width="117" height="29">
+	<window_name>btn_sell</window_name>
+	<texture>ui_button_ordinary</texture>
+	<text font="graffiti22" r="238" g="153" b="26">ui_st_sell_all</text>
+	<sound_t>weapons\generic_close</sound_t>
+</btn_sell>
+
+<btn_reset x="900" y="630" width="117" height="29">
+	<window_name>btn_reset</window_name>
+	<texture>ui_button_ordinary</texture>
+	<text font="graffiti22" r="238" g="153" b="26">ui_st_reset</text>
+	<sound_t>weapons\generic_close</sound_t>
+</btn_reset>

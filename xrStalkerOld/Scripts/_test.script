@@ -28,7 +28,7 @@ function main111()
 	c:execute("disconnect")
 end
 
-function main()
+function aaa_main()
  -- game.start_tutorial("part_1_pda")
 	local o = level.debug_object("level_prefix_inventory_box")
 	
@@ -110,13 +110,13 @@ function ___main()
 	action_give_task()
 end
 
-function ______________main()
+function main()
    local h 		= hit()
-   h.power 		= 0.5
+   h.power 		= 0.1
    h.direction 	= vector():set(0, 0, 1)
    h.impulse 	= 0
    h.draftsman 	= db.actor
-   h.type 		= hit.telepatic
+   h.type 		= hit.wound
    db.actor:hit(h)
 
 --burn  		1

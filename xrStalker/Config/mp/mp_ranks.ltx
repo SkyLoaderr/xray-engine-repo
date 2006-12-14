@@ -2,26 +2,42 @@
 texture			= ui\ui_icon_rank
 
 [mp_item_groups]
-infinite_items	= mp_ammo_9x18_fmj,mp_ammo_9x18_pbp,mp_ammo_9x18_pmm,mp_ammo_9x19_fmj,mp_ammo_9x19_pbp,mp_ammo_5.45x39_fmj,mp_ammo_5.45x39_ap,mp_ammo_5.56x45_ss190,mp_ammo_5.56x45_ap,mp_ammo_7.62x54_7h1,mp_ammo_7.62x54_ap,mp_ammo_9x39_pab9,mp_ammo_gauss,mp_ammo_9x39_ap,mp_ammo_11.43x23_fmj,mp_ammo_11.43x23_hydro,mp_ammo_12x70_buck,mp_ammo_12x76_dart,mp_ammo_12x76_zhekan ;mp_ammo_9x39_sp5, mp_ammo_7.62x54_7h14
+
 mk				= mp_medkit
+mka				= mp_antirad
 expl			= mp_grenade_rgd5,mp_grenade_f1 
 smk				= mp_grenade_gd-05
 glgr			= mp_ammo_vog-25, mp_ammo_m209, mp_ammo_og-7b
 g_a				= mp_ammo_gauss
-standart_ammo	= mp_ammo_9x18_fmj,mp_ammo_9x19_fmj,mp_ammo_5.45x39_fmj,mp_ammo_5.56x45_ss190,mp_ammo_9x39_pab9,mp_ammo_11.43x23_fmj,mp_ammo_12x70_buck
-advanced_ammo	= mp_ammo_9x18_pmm,mp_ammo_9x19_pbp,mp_ammo_5.45x39_ap,mp_ammo_7.62x54_ap,mp_ammo_9x39_ap,mp_ammo_11.43x23_hydro,mp_ammo_7.62x54_7h1,mp_ammo_12x76_zhekan
-best_ammo		= mp_ammo_9x18_pbp,mp_ammo_5.56x45_ap,mp_ammo_7.62x54_ap,mp_ammo_gauss,mp_ammo_9x39_ap,mp_ammo_12x76_dart
+
+standart_ammo_p	= mp_ammo_9x18_fmj, mp_ammo_9x19_fmj, mp_ammo_11.43x23_fmj
+advanced_ammo_p = mp_ammo_9x18_pbp, mp_ammo_9x19_pbp, mp_ammo_11.43x23_hydro
+
+standart_ammo	= mp_ammo_5.45x39_fmj, mp_ammo_7.62x54_7h1, mp_ammo_5.56x45_ss190, mp_ammo_9x39_pab9, mp_ammo_12x70_buck
+advanced_ammo	= mp_ammo_5.45x39_ap, mp_ammo_7.62x54_ap, mp_ammo_5.56x45_ap, mp_ammo_9x39_ap, mp_ammo_12x76_zhekan
+
+best_ammo		= mp_ammo_12x76_dart
+wpn_auto		= mp_wpn_bm16, mp_wpn_toz34, mp_wpn_wincheaster1300, mp_wpn_spas12, mp_wpn_ak74u, mp_wpn_ak74,  mp_wpn_mp5, mp_wpn_l85, mp_wpn_lr300, mp_wpn_abakan, mp_wpn_sig550, mp_wpn_groza, mp_wpn_g36, mp_wpn_fn2000, mp_wpn_val, mp_wpn_vintorez, mp_wpn_svd, mp_wpn_svu, mp_wpn_gauss, mp_wpn_rpg7, mp_wpn_rg-6
+wpn_pist		= mp_wpn_pm, mp_wpn_pb, mp_wpn_fort, mp_wpn_hpsa, mp_wpn_walther, mp_wpn_beretta, mp_wpn_colt1911, mp_wpn_usp, mp_wpn_sig220, mp_wpn_desert_eagle
+outfit			= mp_scientific_outfit, mp_military_stalker_outfit, mp_exo_outfit
+scp				= mp_wpn_addon_scope_susat, mp_wpn_addon_scope
+sil				= mp_wpn_addon_silencer
+gl				= mp_wpn_addon_grenade_launcher, mp_wpn_addon_grenade_launcher_m203
+torch			= mp_device_torch
+det				= mp_detector_advances
+binoc			= mp_wpn_binoc
+kf				= mp_wpn_knife
 
 [rank_base]
-amount_restriction				= infinite_items:3
+amount_restriction = standart_ammo_p:20, wpn_auto:1, wpn_pist:1, device:1, mka:1, outfit:1, scp:1, sil:1, gl:1, torch:1, det:1, binoc:1, g_a:0, kf:1
 
 [rank_0]
 rank_name						= Novice		; звание
 rank_exp						= 0, 0          ; опыт, артефакты
 rank_diff_exp_bonus				= 1, 1.5, 2, 3, 4
 ;----------------- new items -------------------------
-available_items					= mp_wpn_knife,mp_wpn_pm,mp_wpn_pb,mp_wpn_fort,mp_wpn_hpsa,mp_wpn_walther,mp_wpn_beretta,mp_wpn_colt1911,mp_wpn_usp,mp_wpn_sig220,mp_wpn_desert_eagle,mp_wpn_bm16,mp_wpn_toz34,mp_wpn_ak74u,mp_wpn_ak74,mp_wpn_mp5,mp_wpn_l85,mp_device_torch,mp_antirad,mp_detector_advances,mp_medkit,mp_wpn_binoc,mp_grenade_f1,mp_grenade_rgd5,mp_grenade_gd-05,mp_wpn_addon_silencer,mp_ammo_9x18_fmj,mp_ammo_9x18_pbp,mp_ammo_9x18_pmm,mp_ammo_9x19_fmj,mp_ammo_9x19_pbp,mp_ammo_5.45x39_fmj,mp_ammo_5.45x39_ap,mp_ammo_5.56x45_ss190,mp_ammo_5.56x45_ap,mp_ammo_7.62x54_7h1,mp_ammo_7.62x54_ap,mp_ammo_9x39_pab9,mp_ammo_gauss,mp_ammo_9x39_ap,mp_ammo_11.43x23_fmj,mp_ammo_11.43x23_hydro,mp_ammo_12x70_buck,mp_ammo_12x76_dart,mp_ammo_12x76_zhekan ;mp_ammo_9x39_sp5, mp_ammo_7.62x54_7h14
-amount_restriction				= mk:1, expl:1, smk:1, standart_ammo:5, advanced_ammo:4, best_ammo:3 
+available_items					= mp_wpn_knife,mp_wpn_pm,mp_wpn_pb,mp_wpn_fort,mp_wpn_hpsa,mp_wpn_walther,mp_wpn_beretta,mp_wpn_colt1911,mp_wpn_usp,mp_wpn_sig220,mp_wpn_desert_eagle,mp_wpn_bm16,mp_wpn_toz34,mp_wpn_ak74u,mp_wpn_ak74,mp_wpn_mp5,mp_wpn_l85,mp_device_torch,mp_antirad,mp_detector_advances,mp_medkit,mp_wpn_binoc,mp_grenade_f1,mp_grenade_rgd5,mp_grenade_gd-05,mp_wpn_addon_silencer,mp_ammo_9x18_fmj,mp_ammo_9x18_pbp,mp_ammo_9x18_pmm,mp_ammo_9x19_fmj,mp_ammo_9x19_pbp,mp_ammo_5.45x39_fmj,mp_ammo_5.45x39_ap,mp_ammo_5.56x45_ss190,mp_ammo_5.56x45_ap,mp_ammo_7.62x54_7h1,mp_ammo_7.62x54_ap,mp_ammo_9x39_pab9,mp_ammo_9x39_ap,mp_ammo_11.43x23_fmj,mp_ammo_11.43x23_hydro,mp_ammo_12x70_buck,mp_ammo_12x76_dart,mp_ammo_12x76_zhekan
+amount_restriction				= mk:1, expl:1, smk:1, advanced_ammo_p:4, standart_ammo:5, advanced_ammo:4, best_ammo:3, glgr:0
 
 [rank_1]
 rank_name						= Experienced
@@ -40,7 +56,7 @@ mp_ammo_9x19_fmj_cost			= 0
 ;----------------- new def items ---------------------
 def_item_repl_mp_wpn_pm 		= mp_wpn_hpsa
 def_item_repl_mp_wpn_pb 		= mp_wpn_fort
-amount_restriction				= mk:1, expl:2, smk:1, standart_ammo:5, advanced_ammo:4, best_ammo:3
+amount_restriction				= mk:1, expl:2, smk:1, advanced_ammo_p:4, standart_ammo:5, advanced_ammo:4, best_ammo:3
 
 [rank_2]
 rank_name						= Professional
@@ -55,7 +71,7 @@ mp_wpn_walther_cost				= 0
 ;----------------- new def items ---------------------
 def_item_repl_mp_wpn_hpsa		= mp_wpn_walther
 def_item_repl_mp_wpn_fort		= mp_wpn_beretta
-amount_restriction				= mk:2, expl:3, smk:2, glgr:3, standart_ammo:5, advanced_ammo:4, best_ammo:3
+amount_restriction				= mk:2, expl:3, smk:2, glgr:3, advanced_ammo_p:4, standart_ammo:5, advanced_ammo:4, best_ammo:3
 
 [rank_3]
 rank_name						= Veteran
@@ -71,7 +87,7 @@ mp_ammo_11.43x23_fmj_cost		= 0
 ;----------------- new def items ---------------------
 def_item_repl_mp_wpn_beretta	= mp_wpn_sig220
 def_item_repl_mp_wpn_walther	= mp_wpn_colt1911
-amount_restriction				= mk:2, expl:3, smk:3, glgr:6, standart_ammo:5, advanced_ammo:4, best_ammo:3
+amount_restriction				= mk:2, expl:3, smk:3, glgr:6, advanced_ammo_p:4, standart_ammo:5, advanced_ammo:4, best_ammo:3
 
 
 [rank_4]
@@ -88,6 +104,4 @@ mp_wpn_colt1911_cost			= 0
 ;----------------- new def items ---------------------
 def_item_repl_mp_wpn_beretta	= mp_wpn_sig220
 def_item_repl_mp_wpn_walther	= mp_wpn_colt1911
-amount_restriction				= mk:3, expl:3, smk:3, glgr:12, standart_ammo:5, advanced_ammo:4, best_ammo:3, g_a:4
-
-
+amount_restriction				= mk:3, expl:3, smk:3, glgr:12, advanced_ammo_p:4, standart_ammo:5, advanced_ammo:4, best_ammo:3, g_a:4

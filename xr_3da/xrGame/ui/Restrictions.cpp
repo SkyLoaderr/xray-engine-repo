@@ -5,7 +5,7 @@
 #include "../../xr_ioconsole.h"
 #include "../../xr_ioc_cmd.h"
 #endif //#ifdef DEBUG
-
+#include "../string_table.h"
 CRestrictions g_mp_restrictions;
 
 shared_str	g_ranks[_RANK_COUNT];
@@ -67,6 +67,7 @@ void CRestrictions::InitGroups()
 		sprintf				(rank,"rank_%d", i);
 		
         AddRestriction4rank	(i, pSettings->r_string(rank, "amount_restriction"));
+		m_names[i]			= CStringTable().translate( pSettings->r_string(rank, "rank_name"));
 	}
 
 	AddRestriction4rank			(_RANK_COUNT, pSettings->r_string("rank_base", "amount_restriction"));
@@ -79,6 +80,7 @@ void CRestrictions::InitGroups()
 
 void CRestrictions::AddRestriction4rank(u32 rank, const shared_str& lst)
 {// private
+	VERIFY					(m_bInited);
 
 	rank_rest_vec& rest		= m_restrictions[rank];
 
@@ -100,6 +102,8 @@ bool CRestrictions::IsAvailable(const shared_str& itm)
 
 void CRestrictions::AddGroup(LPCSTR group, LPCSTR lst)
 {// private
+	VERIFY							(m_bInited);
+
 	VERIFY(m_goups.find(group) == m_goups.end());
 
 	group_items& _new	= m_goups[group];
@@ -108,6 +112,10 @@ void CRestrictions::AddGroup(LPCSTR group, LPCSTR lst)
 	for (u32 j = 0; j < count; ++j)
 	{
 		_GetItem(lst, j, singleItem);
+#ifdef DEBUG
+		const shared_str& _exist = GetItemGroup(singleItem);
+		VERIFY3(_exist.size()==0, "item has duplicate record in groups", singleItem);
+#endif
 		_new.push_back	(singleItem);
 	}
 }
@@ -119,6 +127,7 @@ bool CRestrictions::IsGroupExist(const shared_str& group) const
 
 RESTR CRestrictions::GetRestr(const shared_str& item)
 { // private function
+	VERIFY				(m_bInited);
 	RESTR				ret;
 	string512			_name;
 	int _cnt			= 0;
@@ -137,6 +146,7 @@ RESTR CRestrictions::GetRestr(const shared_str& item)
 
 shared_str CRestrictions::GetItemGroup(const shared_str& item) const
 {	// private function
+	VERIFY								(m_bInited);
 	Groups::const_iterator				it;
 	group_items::const_iterator			IT;
 	
@@ -148,49 +158,39 @@ shared_str CRestrictions::GetItemGroup(const shared_str& item) const
 	return		NULL;
 }
 
-u32 CRestrictions::GetItemCount(const shared_str& item) const
+u32 CRestrictions::GetItemCount(const shared_str& item_sect) const
 {
-	VERIFY					(m_bInited);
-	if (HasAmountControl(item))
-	{
-		if ( !item.size() )
-			return 1;
+	VERIFY							(m_bInited);
 
-		if (!IsGroupExist(item))
-			return GetItemCount(GetItemGroup(item));		
+	const shared_str& group_name	= GetItemGroup(item_sect);
+	VERIFY3		(group_name.size(), "item has no group", item_sect.c_str());
+	const restr_item* res			= find_restr_item(m_rank, group_name);
+	
+	VERIFY4		(res,				"group has no restrictions for rank", group_name.c_str(), GetRankName(m_rank).c_str());
 
-		const restr_item*	res			= find_restr_item(m_rank, item);
-		return (res)?res->second:1;
-	}
-	else
-        return 1;
+	return							res->second;
 }
 
-bool CRestrictions::HasAmountControl(const shared_str& item) const
+u32 CRestrictions::GetGroupCount(const shared_str& group_name)		const
 {
-	if (!item.size()) //.REMOVE this hack
-			return false;
+	VERIFY							(m_bInited);
+	const restr_item* res			= find_restr_item(m_rank, group_name);
+	
+	VERIFY3		(res,		"group has no restrictions for rank", GetRankName(m_rank).c_str());
 
-	VERIFY (item.size());
-
-	if ( !IsGroupExist(item) )
-		if (HasAmountControl(GetItemGroup(item)))
-            return true;
-
-
-	const restr_item* res				= find_restr_item(m_rank, item);
-	return	(res!=NULL);
+	return							res->second;
 
 }
 
-const CRestrictions::restr_item* CRestrictions::find_restr_item(const u32& rank, const shared_str& name ) const
+const CRestrictions::restr_item* CRestrictions::find_restr_item(const u32& rank, const shared_str& group_name ) const
 {
+	VERIFY									(m_bInited);
 	rank_rest_vec::const_iterator it		= m_restrictions[rank].begin();
 	rank_rest_vec::const_iterator it_e		= m_restrictions[rank].end();
 
 	for(;it!=it_e;++it)
 	{
-		if(it->first==name)
+		if(it->first==group_name)
 			return &(*it);
 	}
 
@@ -199,7 +199,7 @@ const CRestrictions::restr_item* CRestrictions::find_restr_item(const u32& rank,
 
 	for(;it!=it_e;++it)
 	{
-		if(it->first==name)
+		if(it->first==group_name)
 			return &(*it);
 	}
 

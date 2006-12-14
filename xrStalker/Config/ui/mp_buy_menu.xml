@@ -22,7 +22,10 @@
 	</items_hierarchy>
 	
 	<main x=0 y=0 width=1024 height=768>
-		<auto_static x="0" y="130" width="330" height="540" stretch="1">
+		<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+			<texture x="100" y="80" width="300" height="300">ui\ui_pda</texture>
+		</auto_static>
+		<auto_static x="0" y="100" width="290" height="570" stretch="1">
 			<text x="30" y="10" font="graffiti22" r="231" g="153" b="22" align="l">ui_inv_items_list</text>
 			<texture>ui_inventory_mp_shop</texture>
 		</auto_static>
@@ -35,49 +38,54 @@
 		<text font="graffiti22" r="231" g="153" b="22" align="c" vert_align="c"/>
 	</static_current_item>
 
-	<static_rank x="115" y="10" width="32" height="32"/>
+
+	<static_rank x="135" y="10" width="44" height="44"/>
+
+	<static_info x="190" y="10" width="830" height="34" light_anim="buy_menu_info" la_cyclic="0" la_texture="0" la_alpha="1">
+		<text font="graffiti22" r="231" g="153" b="22" align="c" vert_align="c"/>
+	</static_info>
 	
-	<shop_wnd x="0" y="130" width="325" height="540"/>
+	<shop_wnd x="0" y="100" width="285" height="570"/>
 	
-    <lst_player_bag x="340" y="300" width="544" height="330"
-            cell_width = "52" cell_height="52" rows_num="6" cols_num="10"
+    <lst_player_bag x="340" y="350" width="648" height="280"
+            cell_width = "52" cell_height="52" rows_num="5" cols_num="12"
             unlimited="1" group_similar="1"/>
 
-    <lst_shop x="32" y="80" width="293" height="440"
-            cell_width = "40" cell_height="40" rows_num="10" cols_num="7"
+    <lst_shop x="32" y="70" width="253" height="480"
+            cell_width = "40" cell_height="40" rows_num="10" cols_num="6"
             unlimited="1" group_similar="1" custom_placement="0"/>
 
 
-    <lst_pistol x="330" y="50" width="156" height="104"
+    <lst_pistol x="300" y="100" width="156" height="104"
             cell_width = "52" cell_height="52" rows_num="2" cols_num="3"
             custom_placement="0"/>
 
-    <lst_pistol_ammo x="330" y="160" width="156" height="52"
+    <lst_pistol_ammo x="300" y="210" width="156" height="52"
             cell_width = "52" cell_height="52" rows_num="1" cols_num="4"
             custom_placement="0" group_similar="1"/>
 
 
-    <lst_rifle x="490" y="50" width="312" height="104"
+    <lst_rifle x="470" y="100" width="312" height="104"
             cell_width = "52" cell_height="52" rows_num="2" cols_num="6"
             custom_placement="0"/>
 
-    <lst_rifle_ammo x="490" y="160" width="312" height="52"
+    <lst_rifle_ammo x="470" y="210" width="312" height="52"
             cell_width = "52" cell_height="52" rows_num="1" cols_num="6"
             custom_placement="0" group_similar="1"/>
 	
-    <lst_outfit x="805" y="50" width="104" height="156"
+    <lst_outfit x="790" y="103" width="104" height="156"
             cell_width = "52" cell_height="52" rows_num="3" cols_num="2"
             custom_placement="0"/>
 	
-    <lst_medkit x="910" y="50" width="104" height="104"
+    <lst_medkit x="910" y="100" width="104" height="52"
+            cell_width = "52" cell_height="52" rows_num="1" cols_num="2"
+            custom_placement="0" group_similar="1"/>`
+	
+    <lst_granade x="910" y="158" width="104" height="104"
             cell_width = "52" cell_height="52" rows_num="2" cols_num="2"
             custom_placement="0" group_similar="1"/>
-	
-    <lst_granade x="910" y="160" width="104" height="52"
-            cell_width = "52" cell_height="52" rows_num="1" cols_num="2"
-            custom_placement="0" group_similar="1"/>
             
-    <lst_others x="330" y="230" width="678" height="52"
+    <lst_others x="330" y="280" width="678" height="52"
             cell_width = "52" cell_height="52" rows_num="1" cols_num="13"
             group_similar="1"/>
 
@@ -87,36 +95,4 @@
 	</tab_control>
 	
 #include "ui\mp_buy_menu_buttons.xml"
-
-	<shop_back_btn x="240" y="130" width="85" height="32" accel="kBACK">
-		<window_name>btn_shop_back</window_name>
-		<texture_offset x="-26" y="0"/>
-		<texture>ui\ui_btn_mp_back</texture>			
-		<sound_t>weapons\generic_close</sound_t>
-	</shop_back_btn>
-
-	<btn_ok x="925" y="675" width="79" height="30" accel="kRETURN">		
-		<window_name>btn_ok</window_name>
-		<texture_offset x="-8" y="-23"/>
-		<texture_e>ui\ui_mp_buy_ok_e</texture_e>
-		<texture_t>ui\ui_mp_buy_ok_h</texture_t>
-		<texture_h>ui\ui_mp_buy_ok_h</texture_h>
-		<text font="graffiti22" align="c">ui_inv_ok</text>
-		<text_color>
-			<e r="156" g="122" b="46"/>	<h r="255" g="255" b="180"/> <t r="255" g="255" b="180"/>
-		</text_color>		
-	</btn_ok>
-
-	<btn_cancel x="925" y="730" width="79" height="30" accel="kESCAPE">
-		<window_name>btn_cancel</window_name>
-		<texture_offset x="-8" y="-23"/>
-		<texture_e>ui\ui_mp_buy_ok_e</texture_e>
-		<texture_t>ui\ui_mp_buy_ok_h</texture_t>
-		<texture_h>ui\ui_mp_buy_ok_h</texture_h>
-		<text font="graffiti22" align="c">ui_inv_cancel</text>		
-		<text_color>
-			<e r="156" g="122" b="46"/>	<h r="255" g="255" b="180"/> <t r="255" g="255" b="180"/>
-		</text_color>
-	</btn_cancel>
-
 </w>

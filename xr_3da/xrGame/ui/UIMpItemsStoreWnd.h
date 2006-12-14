@@ -23,6 +23,7 @@ public:
 		IC u32					ChildCount			()			const				{return m_childs.size();}
 		IC const item&			ChildAt				(u32 idx)	const				{VERIFY(idx<ChildCount());return *m_childs[idx];}
 		IC bool					HasSubLevels		()			const				{return ChildCount()!=0;}
+		bool					HasItem				(const shared_str& name_sect) const;
 	};
 
 private:
@@ -45,22 +46,6 @@ public:
 	bool					MoveDown			(u32 idx);
 };
 
-#include "../associative_vector.h"
-
-class CItemCostMgr
-{
-	struct _i{
-		u32			foo[_RANK_COUNT];
-	};
-	typedef associative_vector<shared_str, _i>	COST_MAP;
-	typedef COST_MAP::iterator									COST_MAP_IT;
-	typedef COST_MAP::const_iterator							COST_MAP_CIT;
-	COST_MAP				m_items;
-public:
-	void					Load		(const shared_str& sect);
-	u32						GetItemCost	(const shared_str& sect_name, u32 rank);
-	void					Dump		() const;
-};
 /*
 
 #include "UIStatic.h"
