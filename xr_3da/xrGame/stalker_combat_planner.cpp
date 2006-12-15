@@ -67,6 +67,8 @@ void CStalkerCombatPlanner::setup				(CAI_Stalker *object, CPropertyStorage *sto
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyEnemyDetoured,		false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyUseSuddenness,		true);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyUseCrouchToLookOut,	true);
+	CScriptActionPlanner::m_storage.set_property(eWorldPropertyKilledWounded,		false);
+
 	this->object().brain().CStalkerPlanner::m_storage.set_property(eWorldPropertyCriticallyWounded,	false);
 	
 	clear					();
@@ -104,11 +106,14 @@ void CStalkerCombatPlanner::initialize			()
 	inherited::initialize	();
 
 	if (!m_loaded) {
+		
 		CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,			false);
 		CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedOut,		false);
 		CScriptActionPlanner::m_storage.set_property(eWorldPropertyPositionHolded,	false);
 		CScriptActionPlanner::m_storage.set_property(eWorldPropertyEnemyDetoured,	false);
 		CScriptActionPlanner::m_storage.set_property(eWorldPropertyUseSuddenness,	true);
+		CScriptActionPlanner::m_storage.set_property(eWorldPropertyKilledWounded,	false);
+
 		object().brain().CStalkerPlanner::m_storage.set_property(eWorldPropertyCriticallyWounded,	false);
 	}
 
@@ -134,7 +139,6 @@ void CStalkerCombatPlanner::initialize			()
 
 	m_loaded				= false;
 
-	//.
 	if (object().agent_manager().member().members().size() > 1)
 		CScriptActionPlanner::m_storage.set_property	(eWorldPropertyUseSuddenness,	false);
 
@@ -183,6 +187,7 @@ void CStalkerCombatPlanner::add_evaluators		()
 	add_evaluator			(eWorldPropertyEnemyDetoured	,xr_new<CStalkerPropertyEvaluatorMember>			((CPropertyStorage*)0,eWorldPropertyEnemyDetoured,true,true,"enemy detoured"));
 	add_evaluator			(eWorldPropertyUseSuddenness	,xr_new<CStalkerPropertyEvaluatorMember>			((CPropertyStorage*)0,eWorldPropertyUseSuddenness,true,true,"use suddenness"));
 	add_evaluator			(eWorldPropertyCriticallyWounded,xr_new<CStalkerPropertyEvaluatorMember>			(&object().brain().CStalkerPlanner::m_storage,eWorldPropertyCriticallyWounded,true,true,"critically wounded"));
+	add_evaluator			(eWorldPropertyKilledWounded	,xr_new<CStalkerPropertyEvaluatorMember>			(&object().brain().CStalkerPlanner::m_storage,eWorldPropertyKilledWounded,true,true,"killed critically wounded"));
 }
 
 void CStalkerCombatPlanner::add_actions			()

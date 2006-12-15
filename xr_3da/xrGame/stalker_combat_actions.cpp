@@ -1114,15 +1114,22 @@ void CStalkerActionPostCombatWait::initialize		()
 	
 	object().movement().set_movement_type	(eMovementTypeStand);
 	
+	EObjectAction			action = eObjectActionAimReady1;
+	if (m_storage->property(eWorldPropertyKilledWounded))
+		action				= eObjectActionIdle;
+
 	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
-		object().set_goal	(eObjectActionAimReady1,object().best_weapon());
+		object().set_goal	(action,object().best_weapon());
 	else {
 		if (object().inventory().m_slots[1].m_pIItem) {
 			CWeaponMagazined				*temp = smart_cast<CWeaponMagazined*>(object().inventory().m_slots[1].m_pIItem);
 			if (object().inventory().ActiveItem() && temp && (object().inventory().ActiveItem()->object().ID() == temp->ID()))
-				object().set_goal			(eObjectActionAimReady1,object().inventory().m_slots[1].m_pIItem);
+				object().set_goal			(action,object().inventory().m_slots[1].m_pIItem);
 		}
 	}
+
+	if (m_storage->property(eWorldPropertyKilledWounded))
+		return;
 
 	if (object().memory().enemy().last_enemy() && object().memory().visual().visible_now(object().memory().enemy().last_enemy()))
 		object().sight().setup				(CSightAction(object().memory().enemy().last_enemy(),true,true));

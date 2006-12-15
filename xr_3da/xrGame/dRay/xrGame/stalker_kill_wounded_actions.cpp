@@ -51,6 +51,18 @@ CInventoryItem *weapon_to_kill(const CAI_Stalker *object)
 	return				(temp);
 }
 
+bool should_process	(CAI_Stalker &object, const CEntityAlive *enemy)
+{
+	if (object.agent_manager().enemy().wounded_processed(enemy))
+		return			(false);
+
+	ALife::_OBJECT_ID	processor_id = object.agent_manager().enemy().wounded_processor(enemy);
+	if ((processor_id != ALife::_OBJECT_ID(-1)) && (processor_id != object.ID()))
+		return			(false);
+
+	return				(true);
+}
+
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionReachWounded
 //////////////////////////////////////////////////////////////////////////
@@ -95,27 +107,36 @@ void CStalkerActionReachWounded::execute					()
 	if (!mem_object.m_object)
 		return;
 
-	if (object().agent_manager().enemy().wounded_processed(enemy)) {
-		object().movement().set_movement_type	(eMovementTypeStand);
-		return;
-	}
-	else {
-		ALife::_OBJECT_ID					processor_id = object().agent_manager().enemy().wounded_processor(enemy);
-		if ((processor_id != ALife::_OBJECT_ID(-1)) && (processor_id != object().ID())) {
-			CObject							*processor = Level().Objects.net_Find(processor_id);
-			VERIFY							(processor);
-			if (processor->Position().distance_to(object().Position()) < 2.f) {
-				object().movement().set_movement_type	(eMovementTypeStand);
-				return;
-			}
-		}
-		object().movement().set_movement_type	(eMovementTypeWalk);
-	}
 
 	if (object().movement().accessible(mem_object.m_object_params.m_level_vertex_id))
 		object().movement().set_level_dest_vertex			(mem_object.m_object_params.m_level_vertex_id);
 	else
 		object().movement().set_nearest_accessible_position	(ai().level_graph().vertex_position(mem_object.m_object_params.m_level_vertex_id),mem_object.m_object_params.m_level_vertex_id);
+
+	if (should_process(object(),enemy)) {
+		object().movement().set_movement_type	(eMovementTypeWalk);
+		return;
+	}
+
+	if (object().agent_manager().enemy().wounded_processed(enemy)) {
+		object().movement().set_movement_type	(eMovementTypeStand);
+		return;
+	}
+
+	ALife::_OBJECT_ID					processor_id = object().agent_manager().enemy().wounded_processor(enemy);
+	if (!((processor_id != ALife::_OBJECT_ID(-1)) && (processor_id != object().ID()))) {
+		object().movement().set_movement_type	(eMovementTypeStand);
+		return;
+	}
+
+	CObject								*processor = Level().Objects.net_Find(processor_id);
+	VERIFY								(processor);
+	if (processor->Position().distance_to(object().Position()) < 2.f) {
+		object().movement().set_movement_type	(eMovementTypeStand);
+		return;
+	}
+
+	object().movement().set_movement_type		(eMovementTypeWalk);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -155,6 +176,9 @@ void CStalkerActionAimWounded::execute					()
 		return;
 
 	if (!completed())
+		return;
+
+	if (!should_process(object(),object().memory().enemy().selected()))
 		return;
 
 	const SBoneRotation		&head = object().movement().m_head;
@@ -200,6 +224,8 @@ void CStalkerActionPrepareWounded::initialize				()
 void CStalkerActionPrepareWounded::finalize					()
 {
 	inherited::finalize		();
+
+	object().sound().set_sound_mask				(0);
 }
 
 void CStalkerActionPrepareWounded::execute					()
@@ -208,6 +234,11 @@ void CStalkerActionPrepareWounded::execute					()
 
 	if (!object().memory().enemy().selected())
 		return;
+
+	if (!should_process(object(),object().memory().enemy().selected())) {
+		object().sound().set_sound_mask	((u32)eStalkerSoundMaskKillWounded);
+		return;
+	}
 
 	const CEntityAlive		*enemy = object().memory().enemy().selected();
 

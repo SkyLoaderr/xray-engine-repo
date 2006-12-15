@@ -15,6 +15,8 @@
 #include "script_game_object.h"
 #include "ai/stalker/ai_stalker.h"
 #include "stalker_movement_manager.h"
+#include "memory_manager.h"
+#include "enemy_manager.h"
 
 using namespace StalkerSpace;
 using namespace StalkerDecisionSpace;
@@ -42,6 +44,11 @@ void CStalkerKillWoundedPlanner::setup					(CAI_Stalker *object, CPropertyStorag
 void CStalkerKillWoundedPlanner::update					()
 {
 	inherited::update		();
+
+//	if (current_action_id() == eWorldOperatorKillWoundedEnemy)
+//		inherited_action::m_storage->set_property	(eWorldPropertyKilledWounded,true);
+//	else
+//		inherited_action::m_storage->set_property	(eWorldPropertyKilledWounded,false);
 }
 
 void CStalkerKillWoundedPlanner::initialize				()
@@ -51,6 +58,8 @@ void CStalkerKillWoundedPlanner::initialize				()
 	CScriptActionPlanner::m_storage.set_property	(eWorldPropertyWoundedEnemyPrepared,false);
 	CScriptActionPlanner::m_storage.set_property	(eWorldPropertyWoundedEnemyAimed,false);
 	CScriptActionPlanner::m_storage.set_property	(eWorldPropertyPausedAfterKill,false);
+
+	inherited_action::m_storage->set_property		(eWorldPropertyKilledWounded,true);
 }
 
 void CStalkerKillWoundedPlanner::execute				()
@@ -61,7 +70,11 @@ void CStalkerKillWoundedPlanner::execute				()
 void CStalkerKillWoundedPlanner::finalize				()
 {
 	inherited::finalize		();
-	object().movement().set_mental_state	(MonsterSpace::eMentalStateDanger);
+
+	if (object().memory().enemy().selected()) {
+		inherited_action::m_storage->set_property	(eWorldPropertyKilledWounded,false);
+		object().movement().set_mental_state		(MonsterSpace::eMentalStateDanger);
+	}
 }
 
 void CStalkerKillWoundedPlanner::add_evaluators			()
