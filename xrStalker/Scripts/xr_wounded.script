@@ -18,6 +18,9 @@ function evaluator_wound:evaluate ()
 	if self.mgr == nil then
 		self.mgr = self.object:motivation_action_manager()
 	end
+	if self.object:critically_wounded() == true then
+		return false
+	end
 	if self.mgr:evaluator(stalker_ids.property_enemy):evaluate() and
 	   self.a.wound_manager.fight == "true"
 	then
