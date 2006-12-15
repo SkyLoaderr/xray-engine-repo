@@ -44,6 +44,8 @@ struct SSpecificCharacterData : CSharedResource
 	float		m_fPanic_threshold;
 	float		m_fHitProbabilityFactor;
 	int			m_crouch_type;
+
+	xr_string	m_critical_wound_weights;
 #endif
 	shared_str	m_terrain_sect;
 
@@ -142,6 +144,7 @@ public:
 	float						panic_threshold			() const ;
 	float						hit_probability_factor	() const ;
 	int							crouch_type				() const ;
+	LPCSTR						critical_wound_weights	() const ;
 
 	int							TradeIconX				() const	 {return data()->m_iIconX;}
 	int							TradeIconY				() const	 {return data()->m_iIconY;}

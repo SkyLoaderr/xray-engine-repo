@@ -128,6 +128,9 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	data()->m_fPanic_threshold		= uiXml.ReadFlt("panic_threshold",0,0.f);
 	data()->m_fHitProbabilityFactor	= uiXml.ReadFlt("hit_probability_factor",0,1.f);
 	data()->m_crouch_type			= uiXml.ReadInt("crouch_type",0,0);
+
+	data()->m_critical_wound_weights= uiXml.Read("critical_wound_weights", 0, "1");
+
 #endif
 
 	data()->m_sVisual		= uiXml.Read("visual", 0, "");
@@ -254,6 +257,11 @@ float CSpecificCharacter::hit_probability_factor () const
 int CSpecificCharacter::crouch_type	() const 
 {
 	return data()->m_crouch_type;
+}
+
+LPCSTR CSpecificCharacter::critical_wound_weights () const 
+{
+	return data()->m_critical_wound_weights.c_str();
 }
 
 #endif
