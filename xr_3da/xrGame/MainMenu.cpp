@@ -73,7 +73,7 @@ void CMainMenu::Activate	(bool bActivate)
 		Device.PauseSound			(TRUE);
 		m_Flags.set					(flActive|flNeedChangeCapture,TRUE);
 
-		if(!m_startDialog)
+//.		if(!m_startDialog)
 		{
 			DLL_Pure* dlg = NEW_INSTANCE(TEXT2CLSID("MAIN_MNU"));
 			if(!dlg) 
