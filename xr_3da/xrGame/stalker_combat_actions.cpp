@@ -650,6 +650,7 @@ void CStalkerActionTakeCover::initialize		()
 		if (object().agent_manager().member().can_cry_noninfo_phrase()) {
 			if (object().memory().visual().visible_now(object().memory().enemy().selected()) && object().agent_manager().member().group_behaviour())
 				object().sound().play			(eStalkerSoundBackup,0,0,6000,4000);
+
 //			else
 //				object().sound().play			(eStalkerSoundAttack,0,0,6000,4000);
 		}
@@ -893,7 +894,8 @@ void CStalkerActionHoldPosition::execute		()
 	}
 
 	if (object().agent_manager().member().cover_detouring() && fire_make_sense()) {
-		object().sound().play		(eStalkerSoundDetour,3000,3000,10000,10000);
+//		object().sound().play		(eStalkerSoundDetour,3000,3000,10000,10000);
+		object().sound().play		(eStalkerSoundNeedBackup,3000,3000,10000,10000);
 		fire						();
 	}
 	else {
@@ -948,7 +950,8 @@ void CStalkerActionDetourEnemy::initialize		()
 
 //#ifndef SILENT_COMBAT
 	if (object().memory().enemy().selected()->human_being() && object().agent_manager().member().group_behaviour())
-		object().sound().play			(eStalkerSoundNeedBackup);
+//		object().sound().play			(eStalkerSoundNeedBackup);
+		object().sound().play			(eStalkerSoundDetour);
 //#endif
 }
 
