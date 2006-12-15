@@ -59,7 +59,14 @@ int							m_nb					;
 static	const int			JOINTS_LIMIT	=		1500;
 static	const int			BODIES_LIMIT	=		500;
 public:
-
+IC	bool			IsObjGroun()
+{
+	return	nb>m_nb;
+}
+IC	bool			IsJointGroun()
+{
+	return	nj>m_nj;
+}
 IC	bool			CheckSize()		
 {
 	return nj<JOINTS_LIMIT && nb<BODIES_LIMIT;

@@ -25,16 +25,69 @@ void CPHAICharacter::Create(dVector3 sizes)
 	inherited::Create(sizes);
 	m_forced_physics_control=false;//.
 }
-bool CPHAICharacter::TryPosition(Fvector pos){
+bool CPHAICharacter::TryPosition(Fvector pos,bool exact_state){
 	if(!b_exist) return false;
-	if(b_was_on_object||b_on_object||m_forced_physics_control||JumpState()) return false;
+	if(m_forced_physics_control||JumpState()) return false;//b_was_on_object||b_on_object||
+	if(	DoCollideObj	())	return false;
+	Fvector	current_pos;
+	GetPosition(current_pos);
+	Fvector	cur_vel;GetVelocity(cur_vel);
+
+	Fvector	displace;displace.sub(pos,current_pos);
+	float	disp_mag=displace.magnitude();
+	
+	if(fis_zero(disp_mag)||fis_zero(Device.fTimeDelta))return true;
+	const	u32		max_steps=15;
+	const	float	fmax_steps=float(max_steps);
+	float	fsteps_num=1.f;
+	u32		steps_num=1;
+	float	disp_pstep=FootRadius();
+	if(disp_pstep<disp_mag)
+	{
+		float	parts	=disp_mag/disp_pstep;
+		fsteps_num=ceil(parts);
+		steps_num=iCeil(parts);
+		if(steps_num>max_steps)
+		{
+			steps_num	=max_steps	;
+			fsteps_num	=fmax_steps	;
+			disp_pstep	=disp_mag/fsteps_num;
+		}
+	}else{
+		disp_pstep=disp_mag;
+	}
+
+	Fvector	vel;vel.mul(displace,disp_pstep/fixed_step/disp_mag);
+	bool	ret=true;
+	for(u32	i=0;steps_num>i;++i)
+	{
+		SetVelocity(vel);
+		Enable();
+		if(!step_single(fixed_step))
+		{	
+			SetVelocity(cur_vel);
+			ret=	false;
+			break;
+		}
+	}
+	
+	SetVelocity(cur_vel);
+	Fvector	pos_new;GetPosition(pos_new);
+	SetPosition(pos_new);
+	m_last_move.sub(pos_new,current_pos).mul(1.f/Device.fTimeDelta);
+	m_body_interpolation.UpdatePositions();
+	m_body_interpolation.UpdatePositions();
+	if(ret)
+		Disable();
+	/*
 	dVectorSub(cast_fp(m_last_move),cast_fp(pos),dBodyGetPosition(m_body));
 	m_last_move.mul(1.f/Device.fTimeDelta);
 	SetPosition(pos);
 	m_body_interpolation.UpdatePositions();
 	m_body_interpolation.UpdatePositions();
 	Disable();
-	return true;
+	*/
+	return ret;
 }
 
 void CPHAICharacter::		SetPosition							(Fvector pos)	

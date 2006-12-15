@@ -112,7 +112,13 @@ void CPHObject::Collide()
 				}
 		}
 	}
-
+	CollideDynamics					();
+///////////////////////////////
+	if(CPHCollideValidator::DoCollideStatic(*this)) CollideStatic(dSpacedGeom(),this);
+	m_flags.set(st_dirty,FALSE);
+}
+void	CPHObject::		CollideDynamics					()
+{
 	g_SpatialSpacePhysic->q_box				(ph_world->r_spatial,0,STYPE_PHYSIC,spatial.sphere.P,AABB);
 	qResultVec& result=ph_world->r_spatial	;
 	qResultIt i=result.begin(),e=result.end();
@@ -121,10 +127,45 @@ void CPHObject::Collide()
 		if(obj2==this || !obj2->m_flags.test(st_dirty))		continue;
 		if(CPHCollideValidator::DoCollide(*this,*obj2)) NearCallback(this,obj2,dSpacedGeom(),obj2->dSpacedGeom());
 	}
+}
+void	CPHObject::reinit_single()
+{
+	IslandReinit					();
+	qResultVec& result=ph_world->r_spatial	;
+	qResultIt i=result.begin(),e=result.end();
+	for(;i!=e;++i)	
+	{
+		CPHObject* obj=static_cast<CPHObject*>(*i);
+		obj->IslandReinit();
+	}
+	dJointGroupEmpty(ContactGroup);
+	ContactFeedBacks.empty();
+	ContactEffectors.empty();
+}
+bool	CPHObject::step_single(dReal	step)
+{
 	
-///////////////////////////////
-	if(CPHCollideValidator::DoCollideStatic(*this)) CollideStatic(dSpacedGeom(),this);
-	m_flags.set(st_dirty,FALSE);
+	CollideDynamics					();
+	bool ret=!m_island.IsObjGroun	();
+	if(ret)
+	{
+		PhTune							(step);
+		IslandStep						(step);
+		ret		=!m_island.IsObjGroun	();
+		reinit_single					();
+		PhDataUpdate					(step);
+		spatial_move					();
+		CollideDynamics					();
+	}	
+	reinit_single						();
+	return	ret							;
+}
+bool		CPHObject::	DoCollideObj	()
+{
+	CollideDynamics					();
+	bool ret=m_island.IsObjGroun	();
+	reinit_single();
+	return	ret;
 }
 
 void CPHObject::FreezeContent()

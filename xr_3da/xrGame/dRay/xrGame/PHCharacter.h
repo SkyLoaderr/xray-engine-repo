@@ -147,7 +147,7 @@ virtual		CPhysicsShellHolder* PhysicsRefObject					()									{return m_phys_ref
 virtual		void		GetDesiredPosition					(Fvector& /**dpos/**/)										{}
 virtual		void		SetDesiredPosition					(const Fvector& /**pos/**/)									{}
 virtual		void		BringToDesired						(float /**time/**/,float /**velocity/**/,float force=1.f)	{}
-virtual		bool		TryPosition							(Fvector /**pos/**/)										{return false;}
+virtual		bool		TryPosition							(Fvector /**pos/**/,bool)										{return false;}
 virtual		bool		TouchBorder							()															{return false;}
 virtual		void		getForce							(Fvector& force)											;
 virtual		void		setForce							(const	Fvector& force)										;

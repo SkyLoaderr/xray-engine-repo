@@ -170,9 +170,10 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	if(!movement_control->PhyssicsOnlyMode())
 		movement_control->SetCharacterVelocity(velocity);
 
-	if (DBG_PH_MOVE_CONDITIONS(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)||!ph_dbg_draw_mask.test(phDbgAlwaysUseAiPhMove)&&)(m_nearest_objects.empty())) {  // нет физ. объектов
+	if (DBG_PH_MOVE_CONDITIONS(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)||!ph_dbg_draw_mask.test(phDbgAlwaysUseAiPhMove)&&)!(m_nearest_objects.empty())) {  //  физ. объект
 		
 		if(DBG_PH_MOVE_CONDITIONS(!ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)&&) !movement_control->TryPosition(dest_position)) {
+			movement_control->GetPosition	(dest_position);
 			movement_control->Calculate		(detail().path(),desirable_speed,detail().m_current_travel_point,precision);
 			movement_control->GetPosition	(dest_position);
 			// проверка на хит
@@ -183,6 +184,15 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 			movement_control->b_exect_position	=	true;
 
 		}
+	}
+	else {
+		//DBG_PH_MOVE_CONDITIONS( if(ph_dbg_draw_mask.test(phDbgNeverUseAiPhMove)){movement_control->SetPosition(dest_position);movement_control->DisableCharacter();})
+			movement_control->SetPosition(dest_position);
+			movement_control->DisableCharacter();
+			movement_control->b_exect_position	=	true;
+
+	}
+	/*
 	} else { // есть физ. объекты
 
 		movement_control->Calculate				(detail().path(), desirable_speed, detail().m_current_travel_point, precision);
@@ -191,7 +201,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		// проверка на хит
 		apply_collision_hit						(movement_control);
 	}
-		
+		*/
 
 	// установить скорость
 	float	real_motion	= motion.magnitude() + desirable_dist - dist;

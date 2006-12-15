@@ -1214,16 +1214,17 @@ void CPHSimpleCharacter::SafeAndLimitVelocity()
 ////////////////////////////////////////////////////////////////////////////////////////////
 		m_mean_y=m_mean_y*0.9999f+linear_velocity[1]*0.0001f;
 		if(mag>l_limit)
-		{
+		{	//CutVelocity(m_l_limit,m_w_limit);
 			if(!fis_zero(l_limit))
 			{
 			
 				dReal f=mag/l_limit;
 
-				if(b_lose_ground&&linear_velocity[1]<0.f)
+				if(b_lose_ground&&linear_velocity[1]<0.f&&linear_velocity[1]>-default_l_limit)
 					dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1],linear_velocity[2]/f);///f
-				else			 
-					dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1]/f,linear_velocity[2]/f);///f
+				else
+					CutVelocity(l_limit,0.f);
+					//dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1]/f,linear_velocity[2]/f);///f
 				if(is_control&&!b_lose_control)
 				{
 					dBodySetPosition(m_body,

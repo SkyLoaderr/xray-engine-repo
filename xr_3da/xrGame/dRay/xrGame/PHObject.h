@@ -73,9 +73,11 @@ public:
 	virtual		void			FreezeContent					()								;
 	virtual		void			UnFreezeContent					()								;
 	virtual		void 			EnableObject					(CPHObject* obj)				;
-
-	virtual 	void 			PhDataUpdate					(dReal step)					=0;
-	virtual 	void 			PhTune							(dReal step)					=0;
+	virtual		bool			DoCollideObj					()								;
+	virtual		bool			step_single						(dReal	step)					;
+				void			reinit_single					();
+	virtual 	void 			PhDataUpdate					(dReal	step)					=0;
+	virtual 	void 			PhTune							(dReal	step)					=0;
 	virtual		void 			spatial_move					()								;
 	virtual 	void 			InitContact						(dContact* c,bool& do_collide,u16 /*material_idx_1*/,u16 /*material_idx_2*/)	=0;
 	virtual		void			CutVelocity						(float l_limit,float a_limit)	{};						
@@ -112,6 +114,7 @@ IC			CLBits&						collide_bits		()										{return m_collide_bits;}
 IC			_flags<CLClassBits>&		collide_class_bits	()										{return m_collide_class_bits;}
 IC			const CLBits&				collide_bits		()const 								{return m_collide_bits;}
 IC			const _flags<CLClassBits>&	collide_class_bits 	()const 								{return m_collide_class_bits;}
+			void			CollideDynamics					()										;
 };
 
 
