@@ -273,10 +273,13 @@ function move_mgr:sync_ok()
 		local self_id = self.object:id()
 		
 		for k, v in pairs(s) do
-			if k and level.object_by_id(k):alive() then
+			local obj = level.object_by_id(k)
+			if obj and obj:alive() then
 				if v ~= true then
 					return false
 				end
+			else
+				sync[self.team][k] = nil
 			end
 		end
 	end
