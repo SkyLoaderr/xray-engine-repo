@@ -65,11 +65,29 @@ void CShaderTools::Modified()
 
 bool CShaderTools::OnCreate()
 {
+	xr_string 			fn;
+	// shader test locking
+    FS.update_path		(fn,_game_data_,"shaders.xr");
+	if (EFS.CheckLocking(fn.c_str(),false,true)) return false;
+    EFS.LockFile		(fn.c_str());
+	// shader test locking
+    FS.update_path		(fn,_game_data_,"shaders_xrlc.xr");
+	if (EFS.CheckLocking(fn.c_str(),false,true)) return false;
+    EFS.LockFile		(fn.c_str());
+	// material test locking
+    FS.update_path		(fn,_game_data_,GAMEMTL_FILENAME);
+	if (EFS.CheckLocking(fn.c_str(),false,true)) return false;
+    EFS.LockFile		(fn.c_str());
+	// sound_env test locking
+    FS.update_path		(fn,_game_data_,SNDENV_FILENAME);  
+	if (EFS.CheckLocking(fn.c_str(),false,true)) return false;
+    EFS.LockFile		(fn.c_str());
+
     // create props
-    m_Items			= TItemList::CreateForm		("Items",				fraLeftBar->paItemList,		alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed|TItemList::ilFolderStore);
+    m_Items				= TItemList::CreateForm		("Items",				fraLeftBar->paItemList,		alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed|TItemList::ilFolderStore);
 	m_Items->SetOnItemsFocusedEvent(fastdelegate::bind<TOnILItemsFocused>(this,&CShaderTools::OnItemFocused));
-    m_ItemProps 	= TProperties::CreateForm	("Item Properties",		fraLeftBar->paShaderProps,	alClient);
-    m_PreviewProps  = TProperties::CreateForm	("Preview Properties",	fraLeftBar->paPreviewProps,	alClient);
+    m_ItemProps 		= TProperties::CreateForm	("Item Properties",		fraLeftBar->paShaderProps,	alClient);
+    m_PreviewProps  	= TProperties::CreateForm	("Preview Properties",	fraLeftBar->paPreviewProps,	alClient);
 
     // create tools
     RegisterTools		();
@@ -82,6 +100,17 @@ bool CShaderTools::OnCreate()
 
 void CShaderTools::OnDestroy()
 {
+	// unlock
+	xr_string 			fn;
+    FS.update_path		(fn,_game_data_,"shaders.xr");
+    EFS.UnlockFile		(fn.c_str());
+    FS.update_path		(fn,_game_data_,"shaders_xrlc.xr");
+    EFS.UnlockFile		(fn.c_str());
+    FS.update_path		(fn,_game_data_,GAMEMTL_FILENAME);
+    EFS.UnlockFile		(fn.c_str());
+    FS.update_path		(fn,_game_data_,SNDENV_FILENAME);  
+    EFS.UnlockFile		(fn.c_str());
+
 	// destroy props
     TItemList::DestroyForm	(m_Items);
 	TProperties::DestroyForm(m_ItemProps);

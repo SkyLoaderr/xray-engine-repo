@@ -56,13 +56,20 @@ bool CParticleTools::OnCreate()
 	// shader test locking
     xr_string fn; 
     FS.update_path(fn,_game_data_,PSLIB_FILENAME);
-    shared_str owner;
 
-    m_bReady = true;
+	if (EFS.CheckLocking(fn.c_str(),false,false)){ 
+    	ELog.DlgMsg	(mtInformation,"Particle Editor locked by any user.");
+    	return 		false;
+    }
 
-    Load(0);
+    m_bReady 		= true;
 
-    SetAction(etaSelect);
+    Load			(0);
+
+    SetAction		(etaSelect);
+
+	// lock
+    EFS.LockFile	(fn.c_str());
 
     m_EditPE 		= (PS::CParticleEffect*)::Render->Models->CreatePE(0);
     m_EditPG		= (PS::CParticleGroup*)::Render->Models->CreatePG(0);
@@ -90,6 +97,11 @@ void CParticleTools::OnDestroy()
     m_bReady			= false;                      
 
     xr_delete			(m_ParentAnimator);
+
+	// unlock                                       
+    xr_string fn; 
+    FS.update_path		(fn,_game_data_,PSLIB_FILENAME);
+    EFS.UnlockFile		(fn.c_str());
 
 	Lib.RemoveEditObject(m_EditObject);
     TItemList::DestroyForm(m_PList);
@@ -331,7 +343,14 @@ bool CParticleTools::Save(LPCSTR name, bool bInternal)
         return false;
     }
 
+	// backup
+    xr_string fn; 
+    FS.update_path	(fn,_game_data_,PSLIB_FILENAME);
+    EFS.MarkFile	(fn.c_str(),false);
+	// save   
+    EFS.UnlockFile	(fn.c_str(),false);
 	bool bRes 		= ::Render->PSLibrary.Save();
+    EFS.LockFile	(fn.c_str(),false);
     
     if (bRes)		m_bModified = false;
     	

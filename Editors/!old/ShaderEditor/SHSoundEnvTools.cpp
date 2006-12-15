@@ -47,7 +47,7 @@ xr_token eax_environment[]		= {
 CSHSoundEnvTools::CSHSoundEnvTools(ISHInit& init):ISHTools(init)
 {
     m_Env	 			= 0;
-    m_SoundName			= "alexmx\\fld_test";
+    m_SoundName			= "alexmx\\beep";
     OnChangeWAV			(0);
 }
 
@@ -77,7 +77,7 @@ void CSHSoundEnvTools::OnControlClick(ButtonValue* V, bool& bModif, bool& bSafe)
 	}
     bModif = false;
 }
-
+                                        
 void CSHSoundEnvTools::OnActivate()
 {
 	if (!psSoundFlags.is(ss_Hardware|ss_EAX)){
@@ -202,12 +202,16 @@ bool CSHSoundEnvTools::Save()
     FS.update_path				(fn,_game_data_,SNDENV_FILENAME);  
 
     // save new file
+    EFS.MarkFile				(fn.c_str(),false);
+    EFS.UnlockFile				(fn.c_str(),false);
     bool bRes					= m_Library.Save(fn.c_str());
+    EFS.LockFile				(fn.c_str(),false);
 	m_bLockUpdate				= FALSE;
 
     if (bRes) 					m_bModified	= FALSE;
     return bRes;
 }
+
 
 CSoundRender_Environment* CSHSoundEnvTools::FindItem(LPCSTR name)
 {

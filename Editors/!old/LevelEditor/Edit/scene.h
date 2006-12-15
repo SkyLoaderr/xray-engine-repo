@@ -116,9 +116,11 @@ public:
     xr_string		LevelPartName		(LPCSTR map_name, ObjClassID cls);
 
     BOOL			LoadLevelPart		(ESceneCustomMTools* M, LPCSTR map_name);
-    BOOL			LoadLevelPart		(LPCSTR map_name, ObjClassID cls);
+    BOOL			LoadLevelPart		(LPCSTR map_name, ObjClassID cls, bool lock);
     BOOL		 	UnloadLevelPart		(ESceneCustomMTools* M);
-    BOOL			UnloadLevelPart		(LPCSTR map_name, ObjClassID cls);
+    BOOL			UnloadLevelPart		(LPCSTR map_name, ObjClassID cls, bool unlock);
+	void 			LockLevel			(LPCSTR map_name);
+	void 			UnlockLevel			(LPCSTR map_name);
 public:
 	bool			ExportGame			(SExportStreams* F);
 	bool 			Load				(LPCSTR map_name, bool bUndo);

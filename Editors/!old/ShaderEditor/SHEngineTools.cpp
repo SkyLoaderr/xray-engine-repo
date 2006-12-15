@@ -399,7 +399,10 @@ bool CSHEngineTools::Save()
     Save(F);
 
     // save new file
+    EFS.UnlockFile				(fn.c_str(),false);
+    EFS.MarkFile				(fn.c_str(),false);
     bool bRes					= F.save_to(fn.c_str());
+    EFS.LockFile				(fn.c_str(),false);
 
     if (bRes){	
     	m_bModified	= FALSE;

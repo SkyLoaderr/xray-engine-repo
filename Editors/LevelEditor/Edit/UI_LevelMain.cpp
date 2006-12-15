@@ -114,7 +114,14 @@ CCommandVar CLevelTools::CommandReadonlyTarget(CCommandVar p1, CCommandVar p2)
         if (!Scene->IfModified()){    
 		    M->m_EditFlags.set(ESceneCustomMTools::flForceReadonly,FALSE);
             res				= FALSE;
+        }else{
+            xr_string pn	= Scene->LevelPartName(LTools->m_LastFileName.c_str(),M->ClassID);
+         	EFS.UnlockFile	(pn.c_str(),false);
         }
+    }else{
+        xr_string pn		= Scene->LevelPartName(LTools->m_LastFileName.c_str(),M->ClassID);
+    	if (!EFS.CheckLocking(pn.c_str(),false,false))
+         	EFS.LockFile	(pn.c_str(),false);
     }
     if (res){
     	Reset				();
@@ -142,14 +149,14 @@ CCommandVar CommandLoadLevelPart(CCommandVar p1, CCommandVar p2)
 {
     xr_string temp_fn	= LTools->m_LastFileName.c_str();
     if (!temp_fn.empty())
-        return			Scene->LoadLevelPart(temp_fn.c_str(),p2);
+        return			Scene->LoadLevelPart(temp_fn.c_str(),p1,p2);
     return				FALSE;
 }
 CCommandVar CommandUnloadLevelPart(CCommandVar p1, CCommandVar p2)
 {
     xr_string temp_fn	= LTools->m_LastFileName.c_str();
     if (!temp_fn.empty())
-        return			Scene->UnloadLevelPart(temp_fn.c_str(),p2);
+        return			Scene->UnloadLevelPart(temp_fn.c_str(),p1,p2);
     return				FALSE;
 }
 CCommandVar CommandLoad(CCommandVar p1, CCommandVar p2)
@@ -218,7 +225,9 @@ CCommandVar CommandSave(CCommandVar p1, CCommandVar p2)
                 UI->ResetStatus	();
                 // set new name
                 if (0!=xr_strcmp(Tools->m_LastFileName.c_str(),temp_fn.c_str())){
+	                Scene->UnlockLevel		(Tools->m_LastFileName.c_str());
     	            Tools->m_LastFileName 	= temp_fn.c_str();
+        	        Scene->LockLevel		(Tools->m_LastFileName.c_str());
                 }
                 ExecCommand		(COMMAND_UPDATE_CAPTION);
                 EPrefs->AppendRecentFile(temp_fn.c_str());
@@ -236,6 +245,7 @@ CCommandVar CommandClear(CCommandVar p1, CCommandVar p2)
 {
     if( !Scene->locked() ){
         if (!Scene->IfModified()) return TRUE;
+        Scene->UnlockLevel		(Tools->m_LastFileName.c_str());
         Device.m_Camera.Reset	();
         Scene->Reset			();
         Scene->m_LevelOp.Reset	();
