@@ -12,6 +12,7 @@
 
 #include "ui/UIFrags2.h"
 #include "ui/TeamInfo.h"
+#include <dinput.h>
 
 #define MSGS_OFFS 510
 

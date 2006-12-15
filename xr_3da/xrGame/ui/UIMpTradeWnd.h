@@ -15,19 +15,19 @@ class CUITabControl;
 class CUICellItem;
 class CInventoryItem;
 class CItemMgr;
-class CPresetMgr;
 
 struct SBuyItemInfo
 {
 	enum EItmState{e_undefined,e_bought,e_sold,e_own,e_shop};
-	~SBuyItemInfo		();
-	SBuyItemInfo		();
+
+						~SBuyItemInfo		();
+						SBuyItemInfo		();
 	shared_str			m_name_sect;
 	CUICellItem*		m_cell_item;
 	
-	const EItmState&	GetState	() const				{return m_item_state;}
-	void				SetState	(const EItmState& s);
-	LPCSTR				GetStateAsText() const;
+	const EItmState&	GetState			() const				{return m_item_state;}
+	void				SetState			(const EItmState& s);
+	LPCSTR				GetStateAsText		() const;
 private:
 	EItmState			m_item_state;
 
@@ -42,7 +42,7 @@ class CUIMpTradeWnd :	public IBuyWnd,
 		typedef CUIDialogWnd	inherited;
 public:
 	enum{
-		e_first					=0,
+		e_first					= 0,
 		e_pistol				= e_first,
 		e_pistol_ammo,
 		e_rifle,
@@ -51,8 +51,9 @@ public:
 		e_medkit,
 		e_granade,
 		e_others,
-		e_shop,
 		e_player_bag,
+		e_player_total,
+		e_shop					= e_player_total,
 		e_total_lists,
 	};
 	enum dd_list_type{
@@ -60,6 +61,19 @@ public:
 		dd_own_bag				=1,
 		dd_own_slot				=2,
 	};
+
+	struct _preset_item
+	{
+		shared_str			sect_name;
+		u32					count;
+		shared_str			addons_sect[3];
+		bool operator ==	(const shared_str& what)
+		{
+			return (sect_name==what);
+		}
+	};
+	DEF_VECTOR					(preset_items,_preset_item);
+
 public:
 								CUIMpTradeWnd				();
 	virtual						~CUIMpTradeWnd				();
@@ -93,9 +107,10 @@ public:
 	virtual void 				ResetItems					();
 	virtual void				SetRank						(u32 rank);
 
-	void						SetInfoString				(LPCSTR str);
+	const preset_items&			GetPreset			(u32 idx);
 
 private:
+#define _preset_count	5
 	//data
 	shared_str			m_sectionName;
 	shared_str			m_sectionPrice;
@@ -104,7 +119,7 @@ private:
 	CUICellItem*		m_pCurrentCellItem;
 	ITEMS_vec			m_all_items;
 	CItemMgr*			m_item_mngr;
-	CPresetMgr*			m_preset_mngr;
+	preset_items		m_preset_storage[_preset_count]; // 0-last set / 1-2-3 user preset / 4-origin
 //controls
 	CUIWindow*			m_shop_wnd;
 	CUIStatic*			m_static_money;
@@ -153,8 +168,8 @@ private:
 	void				FillUpSubLevelButtons		();
 	void				FillUpSubLevelItems			();
 
-	bool				TryToBuyItem				(CUICellItem* itm);
-	bool				TryToSellItem				(CUICellItem* itm);
+	bool				TryToBuyItem				(SBuyItemInfo* itm);
+	bool				TryToSellItem				(SBuyItemInfo* itm);
 
 	bool				CheckBuyPossibility			(const shared_str& sect_name);
 
@@ -164,19 +179,25 @@ private:
 	int					GetItemPrice				(CInventoryItem* itm);
 
 	CInventoryItem*		CreateItem_internal			(const shared_str& name_sect);
-	SBuyItemInfo*		CreateItem					(const shared_str& name_sect, SBuyItemInfo::EItmState state);
+	SBuyItemInfo*		CreateItem					(const shared_str& name_sect, SBuyItemInfo::EItmState state, bool find_if_exist);
 	SBuyItemInfo*		FindItem					(CUICellItem* item);
-	SBuyItemInfo*		FindItem					(const shared_str& name_sect, SBuyItemInfo::EItmState type);
+	SBuyItemInfo*		FindItem					(const shared_str& name_sect, SBuyItemInfo::EItmState state);
+	SBuyItemInfo*		FindItem					(SBuyItemInfo::EItmState state);
 	void				DestroyItem					(SBuyItemInfo* item);
 
 	void				RenewShopItem				(const shared_str& sect_name, bool b_just_bought);
 	u32					GetItemCount				(const shared_str& name_sect, SBuyItemInfo::EItmState state) const;
 	u32					GetGroupCount				(const shared_str& name_group, SBuyItemInfo::EItmState state)const;
 
-
+	void				ResetToOrigin				();
+	void				ApplyPreset					(u32 idx);
+	void				StorePreset					(u32 idx);
+	void				DumpPreset					(u32 idx);
+	void				DumpAllItems				(LPCSTR reason);
 	dd_list_type		GetListType					(CUIDragDropListEx* l);
 	CUIDragDropListEx*	GetMatchedListForItem		(const shared_str& sect_name);
 	const u32			GetRank						() const;
+	void				SetInfoString				(LPCSTR str);
 };
 
 #include "../associative_vector.h"
@@ -195,22 +216,4 @@ public:
 	const u32				GetItemCost		(const shared_str& sect_name, u32 rank)	const;
 	const u8				GetItemSlotIdx	(const shared_str& sect_name) const;
 	void					Dump			() const;
-};
-
-class CPresetMgr
-{
-public:
-	struct _item
-	{
-		shared_str			sect_name;
-		u32					count;
-		shared_str			addons_sect[3];
-	};
-private:
-	DEF_VECTOR				(items,_item);
-	items					m_storage[4]; // 0 -last set 1-2-3 user preset
-public:
-		CPresetMgr			();
-	const items&			GetPreset			(u32 idx);
-	void					StorePreset			(u32 idx, CUIMpTradeWnd* source);
 };

@@ -24,11 +24,13 @@ protected:
 	CUIDragDropListEx*		m_pParentList;
 	Ivector2				m_grid_size;
 	ICustomDrawCell*		m_custom_draw;
+	int						m_accelerator;
 	virtual void			UpdateItemText			();
 public:
 							CUICellItem				();
 	virtual					~CUICellItem			();
 
+	virtual		bool		OnKeyboard				(int dik, EUIMessages keyboard_action);
 	virtual		bool		OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual		void		Draw					();
 	virtual		void		Update					()						{inherited::Update(); m_b_already_drawn=false;};
@@ -41,6 +43,7 @@ public:
 				CUICellItem* Child					(u32 idx)				{return m_childs[idx];};
 	virtual		bool		EqualTo					(CUICellItem* itm);
 	IC const	Ivector2&	GetGridSize				()						{return m_grid_size;}; //size in grid
+	IC			void		SetAccelerator			(int dik)					{m_accelerator=dik;};
 
 	virtual		CUIDragItem* CreateDragItem			();
 

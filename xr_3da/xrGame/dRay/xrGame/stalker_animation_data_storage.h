@@ -22,6 +22,7 @@ private:
 public:
 	virtual								~CStalkerAnimationDataStorage	();
 			const CStalkerAnimationData	*object							(CKinematicsAnimated *skeleton_animated);
+			void						clear							();
 };
 
 IC		CStalkerAnimationDataStorage	&stalker_animation_data_storage	();

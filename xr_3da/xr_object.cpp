@@ -34,6 +34,10 @@ void CObject::cNameVisual_set	(shared_str N)
 	if (*N && N[0]) 
 	{
 		IRender_Visual			*old_v = renderable.visual;
+		
+		if(NameVisual.size())
+			Msg("---change NameVisual from[%s] to [%s]",NameVisual.c_str(), N.c_str());
+
 		NameVisual				= N;
 		renderable.visual		= Render->model_Create	(*N);
 		
@@ -127,8 +131,15 @@ void CObject::Load				(LPCSTR section )
 	cNameSect_set				(section);
 	
 	// Visual and light-track
-	if (pSettings->line_exist(section,"visual")) 
-		cNameVisual_set	(pSettings->r_string(section,"visual"));
+	if (pSettings->line_exist(section,"visual")){
+		string_path					tmp;
+		strcpy					(tmp, pSettings->r_string(section,"visual"));
+		if(strext(tmp)) 
+			*strext(tmp)			=0;
+		xr_strlwr					(tmp);
+
+		cNameVisual_set				(tmp);
+	}
 	setVisible					(false);
 }
 

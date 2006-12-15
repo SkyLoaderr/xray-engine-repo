@@ -47,6 +47,7 @@ private:
 	rank_rest_vec									m_restrictions[_RANK_COUNT+1];
 	shared_str										m_names[_RANK_COUNT];
 
-	const restr_item*		find_restr_item			(const u32& rank, const shared_str& what ) const;
+	const restr_item*		find_restr_item			(const u32& rank, const shared_str& what )const;
+	restr_item*				find_restr_item_internal(const u32& rank, const shared_str& what );
 };
 extern CRestrictions g_mp_restrictions;

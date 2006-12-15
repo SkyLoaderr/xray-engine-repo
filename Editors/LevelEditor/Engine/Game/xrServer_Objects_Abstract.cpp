@@ -19,7 +19,17 @@
 ////////////////////////////////////////////////////////////////////////////
 CSE_Visual::CSE_Visual		   	(LPCSTR name)
 {
-	visual_name					= name;
+	if(name)
+	{
+		string_path					tmp;
+		strcpy						(tmp, name);
+		if(strext(tmp)) 
+			*strext(tmp)			=0;
+		xr_strlwr					(tmp);
+		visual_name					= tmp;
+	}else
+		visual_name					= NULL;
+
     startup_animation			= "$editor";
 	flags.zero					();
 }
@@ -33,6 +43,7 @@ void CSE_Visual::set_visual	   	(LPCSTR name, bool load)
 	string_path					tmp;
     strcpy						(tmp,name);
     if (strext(tmp))		 	*strext(tmp) = 0;
+	xr_strlwr					(tmp);
 	visual_name					= tmp; 
 }
 

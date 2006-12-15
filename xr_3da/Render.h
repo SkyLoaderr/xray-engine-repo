@@ -224,7 +224,7 @@ public:
 	virtual void 					model_Delete			(IRender_DetailModel* & F)					= 0;
 	virtual void					model_Logging			(BOOL bEnable)								= 0;
 	virtual void					models_Prefetch			()											= 0;
-	virtual void					models_Clear			()											= 0;
+	virtual void					models_Clear			(BOOL b_complete)							= 0;
 
 	// Occlusion culling
 	virtual BOOL					occ_visible				(vis_data&	V)								= 0;

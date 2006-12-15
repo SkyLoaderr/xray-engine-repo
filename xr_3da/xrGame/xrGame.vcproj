@@ -11097,7 +11097,16 @@
 						RelativePath=".\ui\UIMpTradeWnd.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIMpTradeWnd_init.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMpTradeWnd_items.cpp">
+					</File>
+					<File
 						RelativePath=".\ui\UIMpTradeWnd_misc.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMpTradeWnd_trade.cpp">
 					</File>
 					<Filter
 						Name="rank_restrictions"

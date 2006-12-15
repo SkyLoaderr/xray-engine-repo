@@ -40,6 +40,11 @@ public:
 
 CStalkerAnimationDataStorage::~CStalkerAnimationDataStorage	()
 {
+	clear					();
+}
+
+void CStalkerAnimationDataStorage::clear					()
+{
 	while (!m_objects.empty()) {
 		xr_delete			(m_objects.back().second);
 		m_objects.pop_back	();

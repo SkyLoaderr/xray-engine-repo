@@ -10,6 +10,7 @@
 #include "space_restriction_manager.h"
 #include "ai_space.h"
 #include "script_engine.h"
+#include "stalker_animation_data_storage.h"
 
 const int NET_ObjectsPerPacketInSave	= NET_PacketSizeLimit/2000;
 extern bool	g_b_ClearGameCaptions;
@@ -45,6 +46,8 @@ void CLevel::remove_objects	()
 	Game().reset_ui				();
 
 	ai().script_engine().collect_all_garbage	();
+	stalker_animation_data_storage().clear		();
+	Render->models_Clear						(FALSE);
 }
 
 #ifdef DEBUG

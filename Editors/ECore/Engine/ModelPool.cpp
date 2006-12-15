@@ -235,7 +235,7 @@ IRender_Visual* CModelPool::Create(const char* name, IReader* data)
 #ifdef _EDITOR
 	if (!name||!name[0])	return 0;
 #endif
-	string1024 low_name;	VERIFY	(xr_strlen(name)<sizeof(low_name));
+	string_path low_name;	VERIFY	(xr_strlen(name)<sizeof(low_name));
 	strcpy(low_name,name);	strlwr	(low_name);
 	if (strext(low_name))	*strext	(low_name)=0;
 //	Msg						("-CREATE %s",low_name);
@@ -265,7 +265,7 @@ IRender_Visual* CModelPool::Create(const char* name, IReader* data)
 		}
         // 3. If found - return (cloned) reference
         IRender_Visual*		Model	= Instance_Duplicate(Base);
-        Registry.insert		(mk_pair(Model,xr_strdup(low_name)));
+        Registry.insert		( mk_pair(Model,low_name) );
         return				Model;
 	}
 }
@@ -291,7 +291,7 @@ void	CModelPool::DeleteInternal	(IRender_Visual* &V, BOOL bDiscard)
     if (!V)					return;
 	V->Depart				();
 	if (bDiscard||bForceDiscard){
-    	Discard	(V); 
+    	Discard	(V, TRUE); 
 	}else{
 		//
 		REGISTRY_IT	it		= Registry.find	(V);
@@ -326,33 +326,42 @@ void	CModelPool::DeleteQueue		()
 	ModelsToDelete.clear			();
 }
 
-void	CModelPool::Discard	(IRender_Visual* &V)
+void	CModelPool::Discard	(IRender_Visual* &V, BOOL b_complete)
 {
 	//
 	REGISTRY_IT	it		= Registry.find	(V);
-	if (it!=Registry.end()){
+	if (it!=Registry.end())
+	{
 		// Pool - OK
 
-		// Base
-		LPCSTR	name	= it->second;
-		for (xr_vector<ModelDef>::iterator I=Models.begin(); I!=Models.end(); I++){
-			if (I->name[0] && (0==xr_strcmp(*I->name,name))){
-            	VERIFY(I->refs>0);
-            	I->refs--; 
-                if (0==I->refs){
-                	bForceDiscard	= TRUE;
-	            	I->model->Release();
-					xr_delete		(I->model);	
-					Models.erase	(I);
-                    bForceDiscard	= FALSE;
-                }
-				break;
+		if(b_complete)
+		{
+			// Base
+			const shared_str&	name	= it->second;
+			xr_vector<ModelDef>::iterator I = Models.begin();
+			xr_vector<ModelDef>::iterator I_e = Models.end();
+			
+			for (; I!=I_e; ++I)
+			{
+				if (I->name==name)
+				{
+            		VERIFY(I->refs>0);
+            		I->refs--; 
+					if (0==I->refs)
+					{
+                		bForceDiscard		= TRUE;
+	            		I->model->Release	();
+						xr_delete			(I->model);	
+						Models.erase		(I);
+						bForceDiscard		= FALSE;
+					}
+					break;
+				}
 			}
 		}
-
 		// Registry
 		xr_delete		(V);	
-		xr_free			(name);
+//.		xr_free			(name);
 		Registry.erase	(it);
 	} else {
 		// Registry entry not-found - just special type of visual / particles / etc.
@@ -376,12 +385,12 @@ void CModelPool::Prefetch()
 	Logging					(TRUE);
 }
 
-void CModelPool::ClearPool()
+void CModelPool::ClearPool( BOOL b_complete)
 {
 	POOL_IT	_I			=	Pool.begin();
 	POOL_IT	_E			=	Pool.end();
 	for (;_I!=_E;_I++)	{
-		Discard	(_I->second)	;
+		Discard	(_I->second, b_complete)	;
 	}
 	Pool.clear			();
 }
@@ -416,17 +425,20 @@ void CModelPool::dump()
 	Msg ("--- models: %d, mem usage: %d Kb ",k,sz/1024);
 	sz						= 0;
 	k						= 0;
+	int free_cnt			= 0;
 	for (REGISTRY_IT it=Registry.begin(); it!=Registry.end(); it++)
 	{
 		CKinematics* K		= PKinematics((IRender_Visual*)it->first);
+		VERIFY				(K);
 		if (K){
 			u32 cur			= K->mem_usage	(true);
 			sz				+= cur;
 			bool b_free		= (Pool.find(it->second)!=Pool.end() );
-			Msg("#%3d: [%s] [%5d Kb] - %s",k++, (b_free)?"free":"used", cur/1024,it->second);
+			if(b_free)		++free_cnt;
+			Msg("#%3d: [%s] [%5d Kb] - %s",k++, (b_free)?"free":"used", cur/1024,it->second.c_str());
 		}
 	}
-	Msg ("--- instances: %d, mem usage: %d Kb ",k,sz/1024);
+	Msg ("--- instances: %d, free %d, mem usage: %d Kb ",k, free_cnt, sz/1024);
 	Log	("--- model pool --- end.");
 }
 

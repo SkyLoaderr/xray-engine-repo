@@ -16,10 +16,10 @@ class ECORE_API CModelPool
 private:
 	friend class CRender;
 
-	struct str_pred : public std::binary_function<char*, char*, bool> 
+	struct str_pred : public std::binary_function<const shared_str&, const shared_str&, bool> 
 	{	
-		IC bool operator()(LPCSTR x, LPCSTR y) const
-		{	return xr_strcmp(x,y)<0;	}
+		IC bool operator()(const shared_str& x, const shared_str& y) const
+		{	return xr_strcmp(x,y)<0;}
 	};
 	struct ModelDef
 	{
@@ -29,10 +29,10 @@ private:
         ModelDef()			{ refs=0;model=0; }
 	};
 
-	typedef xr_multimap<LPCSTR,IRender_Visual*,str_pred>	POOL;
-	typedef POOL::iterator									POOL_IT;
-	typedef xr_map<IRender_Visual*,LPCSTR>					REGISTRY;
-	typedef REGISTRY::iterator								REGISTRY_IT;
+	typedef xr_multimap<shared_str,IRender_Visual*,str_pred>	POOL;
+	typedef POOL::iterator										POOL_IT;
+	typedef xr_map<IRender_Visual*,shared_str>					REGISTRY;
+	typedef REGISTRY::iterator									REGISTRY_IT;
 private:
 	xr_vector<ModelDef>			Models;				// Reference / Base
 	xr_vector<IRender_Visual*>	ModelsToDelete;		// 
@@ -58,14 +58,14 @@ public:
 	IRender_Visual*			Create				(LPCSTR name, IReader* data=0);
 	IRender_Visual*			CreateChild			(LPCSTR name, IReader* data);
 	void					Delete				(IRender_Visual* &V, BOOL bDiscard=FALSE);
-	void					Discard				(IRender_Visual* &V);
+	void					Discard				(IRender_Visual* &V, BOOL b_complete);
 	void					DeleteInternal		(IRender_Visual* &V, BOOL bDiscard=FALSE);
 	void					DeleteQueue			();
 
 	void					Logging				(BOOL bEnable)	{ bLogging=bEnable; }
 	
 	void					Prefetch			();
-	void					ClearPool			();
+	void					ClearPool			( BOOL b_complete );
 
 	void					dump 				();
 #ifdef _EDITOR    

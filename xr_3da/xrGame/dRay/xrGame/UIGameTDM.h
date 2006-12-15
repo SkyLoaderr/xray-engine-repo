@@ -7,8 +7,6 @@
 #include "ui/UIInventoryWnd.h"
 #include "ui/UISpawnWnd.h"
 
-#include <dinput.h>
-
 // refs 
 
 class CUITDMFragList;

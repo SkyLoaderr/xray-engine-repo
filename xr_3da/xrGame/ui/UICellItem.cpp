@@ -12,6 +12,7 @@ CUICellItem::CUICellItem()
 	m_pData				= NULL;
 	m_custom_draw		= NULL;
 	m_b_already_drawn	= false;
+	m_accelerator		= 0;
 }
 
 CUICellItem::~CUICellItem()
@@ -50,6 +51,19 @@ bool CUICellItem::OnMouse(float x, float y, EUIMessages mouse_action)
 	
 	return false;
 };
+
+bool CUICellItem::OnKeyboard(int dik, EUIMessages keyboard_action)
+{
+	if (WINDOW_KEY_PRESSED == keyboard_action)
+	{
+		if (m_accelerator == dik)
+		{
+			GetMessageTarget()->SendMessage(this, DRAG_DROP_ITEM_DB_CLICK, NULL);
+			return		true;
+		}
+	}
+	return inherited::OnKeyboard(dik, keyboard_action);
+}
 
 CUIDragItem* CUICellItem::CreateDragItem()
 {
