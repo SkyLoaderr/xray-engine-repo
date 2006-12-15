@@ -180,7 +180,9 @@ void CModelPool::Destroy()
 #endif
 		DeleteInternal	(V,TRUE);
 	}
-	VERIFY				(Models.empty());
+	//. tmp
+	//.	 VERIFY				(Models.empty());
+
 /*
 	for (REGISTRY_IT it=Registry.begin(); it!=Registry.end(); it++){
 		IRender_Visual* V = (IRender_Visual*)it->first;
@@ -188,7 +190,7 @@ void CModelPool::Destroy()
 		xr_free		(it->second);
 	}
 	Registry.clear();
-
+*/
 	// Base/Reference
 	xr_vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++){
@@ -196,7 +198,7 @@ void CModelPool::Destroy()
 		xr_delete(I->model);
 	}
 	Models.clear();
-*/
+
 
 	// cleanup motions container
 	g_pMotionsContainer->clean(false);
@@ -334,8 +336,6 @@ void	CModelPool::Discard	(IRender_Visual* &V, BOOL b_complete)
 	{
 		// Pool - OK
 
-		if(b_complete)
-		{
 			// Base
 			const shared_str&	name	= it->second;
 			xr_vector<ModelDef>::iterator I = Models.begin();
@@ -345,20 +345,26 @@ void	CModelPool::Discard	(IRender_Visual* &V, BOOL b_complete)
 			{
 				if (I->name==name)
 				{
-            		VERIFY(I->refs>0);
-            		I->refs--; 
-					if (0==I->refs)
+					if(b_complete)
 					{
-                		bForceDiscard		= TRUE;
-	            		I->model->Release	();
-						xr_delete			(I->model);	
-						Models.erase		(I);
-						bForceDiscard		= FALSE;
-					}
+						VERIFY(I->refs>0);
+            			I->refs--; 
+						if (0==I->refs)
+						{
+                			bForceDiscard		= TRUE;
+	            			I->model->Release	();
+							xr_delete			(I->model);	
+							Models.erase		(I);
+							bForceDiscard		= FALSE;
+						}
+						break;
+					}else{
+					if(I->refs>0)
+						I->refs--;
 					break;
+					}
 				}
 			}
-		}
 		// Registry
 		xr_delete		(V);	
 //.		xr_free			(name);
