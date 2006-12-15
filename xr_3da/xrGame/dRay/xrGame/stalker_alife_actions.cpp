@@ -28,7 +28,7 @@
 using namespace StalkerSpace;
 
 #ifdef _DEBUG
-#	define STALKER_DEBUG_MODE
+//#	define STALKER_DEBUG_MODE
 #endif
 
 #ifdef STALKER_DEBUG_MODE
@@ -48,7 +48,7 @@ void CStalkerActionNoALife::initialize	()
 {
 	inherited::initialize						();
 #ifndef STALKER_DEBUG_MODE
-//	object().movement().set_desired_position	(0);
+	object().movement().set_desired_position	(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeGamePath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -79,7 +79,7 @@ void CStalkerActionNoALife::finalize	()
 {
 	inherited::finalize				();
 
-//	object().movement().set_desired_position	(0);
+	object().movement().set_desired_position	(0);
 
 	if (!object().g_Alive())
 		return;
@@ -133,7 +133,7 @@ void CStalkerActionGatherItems::finalize	()
 {
 	inherited::finalize		();
 
-//	object().movement().set_desired_position	(0);
+	object().movement().set_desired_position	(0);
 
 	if (!object().g_Alive())
 		return;

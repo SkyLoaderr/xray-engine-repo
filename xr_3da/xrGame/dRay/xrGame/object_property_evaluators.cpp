@@ -41,8 +41,7 @@ CObjectPropertyEvaluatorWeaponHidden::_value_type CObjectPropertyEvaluatorWeapon
 {
 	VERIFY			(m_item);
 
-	return			(m_item !=  m_item->m_pInventory->ActiveItem() );
-//	return			((m_item->IsHidden() || !m_item->m_pInventory->ActiveItem() ));
+	return			((m_item !=  m_item->m_pInventory->ActiveItem()) || (m_item->GetState() == CWeapon::eShowing));
 }
 //////////////////////////////////////////////////////////////////////////
 // CObjectPropertyEvaluatorAmmo
@@ -144,7 +143,20 @@ CObjectPropertyEvaluatorNoItems::CObjectPropertyEvaluatorNoItems(CAI_Stalker *ow
 
 CObjectPropertyEvaluatorNoItems::_value_type CObjectPropertyEvaluatorNoItems::evaluate	()
 {
-	return			(!object().inventory().ActiveItem() || object().inventory().ActiveItem()->IsHidden());
+	if (!object().inventory().ActiveItem())
+		return		(true);
+	
+	CWeapon			*weapon = smart_cast<CWeapon*>(object().inventory().ActiveItem());
+	if (!weapon)
+		return		(false);
+
+	if (weapon->GetState() == CWeapon::eShowing)
+		return		(true);
+
+	if (weapon->GetState() == CWeapon::eHidden)
+		return		(true);
+
+	return			(false);
 }
 
 //////////////////////////////////////////////////////////////////////////

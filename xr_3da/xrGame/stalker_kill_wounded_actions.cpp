@@ -67,7 +67,6 @@ void CStalkerActionReachWounded::initialize					()
 	m_storage->set_property						(eWorldPropertyWoundedEnemyPrepared,false);
 	m_storage->set_property						(eWorldPropertyWoundedEnemyAimed,false);
 	object().movement().set_desired_direction	(0);
-//.	object().movement().set_desired_position	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_body_state			(eBodyStateStand);
@@ -80,7 +79,7 @@ void CStalkerActionReachWounded::initialize					()
 void CStalkerActionReachWounded::finalize					()
 {
 	inherited::finalize		();
-//.	object().movement().set_desired_position	(0);
+//	object().movement().set_desired_position	(0);
 }
 
 void CStalkerActionReachWounded::execute					()

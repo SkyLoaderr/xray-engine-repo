@@ -75,8 +75,9 @@ void CStalkerActionSolveZonePuzzle::initialize	()
 		object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 		object().movement().set_body_state			(eBodyStateStand);
 		object().movement().set_movement_type		(eMovementTypeStand);
-		object().movement().set_mental_state		(eMentalStateDanger);
-		object().sight().setup						(CSightAction(g_actor,true));
+		object().movement().set_mental_state		(eMentalStateFree);
+//		object().sight().setup						(CSightAction(g_actor,true));
+		object().sight().setup						(CSightAction(SightManager::eSightTypeCurrentDirection));
 #	else
 		object().movement().set_mental_state		(eMentalStateDanger);
 		object().movement().set_movement_type		(eMovementTypeStand);
@@ -116,9 +117,46 @@ void CStalkerActionSolveZonePuzzle::execute		()
 	else
 		object().CObjectHandler::set_goal		(eObjectActionIdle,object().best_weapon());
 #else
-#	if 1
+#	if 0
 		object().throw_target					(g_actor->Position());
 		object().CObjectHandler::set_goal		(eObjectActionFire1,object().inventory().m_slots[3].m_pIItem);
+#	else
+#		if 0
+			const CWeapon							*weapon = smart_cast<const CWeapon*>(object().best_weapon());
+			VERIFY									(weapon);
+			if (!weapon->strapped_mode())
+				object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
+			else
+				object().CObjectHandler::set_goal	(eObjectActionIdle,object().best_weapon());
+#		else
+			const CWeapon							*weapon = smart_cast<const CWeapon*>(object().best_weapon());
+			VERIFY									(weapon);
+//			Msg										("weapon %s is strapped : %c",*weapon->cName(),weapon->strapped_mode() ? '+' : '-');
+
+			static u32 m_time_to_strap = 0;
+			static u32 m_time_to_idle = 0;
+			if (!object().inventory().ActiveItem() || (object().inventory().ActiveItem() == object().inventory().m_slots[1].m_pIItem)) {
+				if (!m_time_to_strap)
+					m_time_to_strap					= Device.dwTimeGlobal + 10000;
+				if (Device.dwTimeGlobal >= m_time_to_strap) {
+					m_time_to_idle					= 0;
+					object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
+				}
+			}
+			else {
+				const CWeapon						*weapon = smart_cast<const CWeapon*>(object().best_weapon());
+				VERIFY								(weapon);
+				if (weapon->strapped_mode()) {
+					if (!m_time_to_idle)
+						m_time_to_idle					= Device.dwTimeGlobal + 10000;
+					if (Device.dwTimeGlobal >= m_time_to_idle) {
+						m_time_to_strap					= 0;
+						object().CObjectHandler::set_goal	(eObjectActionIdle,object().inventory().m_slots[1].m_pIItem);
+					}
+				}
+			}
+
+#		endif
 #	endif
 #endif
 }

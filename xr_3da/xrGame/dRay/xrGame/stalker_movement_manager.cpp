@@ -214,6 +214,14 @@ bool CStalkerMovementManager::script_control		()
 void CStalkerMovementManager::setup_movement_params	()
 {
 	inherited::set_path_type				(path_type());
+	switch (path_type()) {
+		case MovementManager::ePathTypeGamePath :
+		case MovementManager::ePathTypePatrolPath : {
+			set_desired_position			(0);
+			break;
+		}
+	}
+
 	detail().set_path_type					(detail_path_type());
 	level_path().set_evaluator				(base_level_params());
 

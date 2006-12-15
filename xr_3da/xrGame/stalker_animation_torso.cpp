@@ -30,6 +30,7 @@ void CStalkerAnimationManager::torso_play_callback	(CBlend *blend)
 
 	CPropertyStorage				*setup_storage = animation.setup_storage();
 	if (setup_storage) {
+//		Msg							("torso set property id %d with value %s",animation.property_id(),animation.property_value() ? "true" : "false");
 		setup_storage->set_property	(animation.property_id(),animation.property_value());
 #ifdef CLEAR_STORAGE_ON_CALLBACK
 		animation.setup_storage		(0);
@@ -174,6 +175,8 @@ MotionID CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState 
 			return					(torso().select(animation[0].A));
 		case CWeapon::eHiding :
 			return					(torso().select(animation[3].A));
+		case CWeapon::eHidden :
+			return					(no_object_animation(body_state));
 		case CWeapon::eFire:
 		case CWeapon::eFire2 : {
 			CAI_Stalker				&stalker = object();
