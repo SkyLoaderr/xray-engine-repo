@@ -422,7 +422,8 @@ void CModelPool::dump()
 		if (K){
 			u32 cur			= K->mem_usage	(true);
 			sz				+= cur;
-			Msg("#%3d: [%5d Kb] - %s",k++,cur/1024,it->second);
+			bool b_free		= (Pool.find(it->second)!=Pool.end() );
+			Msg("#%3d: [%s] [%5d Kb] - %s",k++, (b_free)?"free":"used", cur/1024,it->second);
 		}
 	}
 	Msg ("--- instances: %d, mem usage: %d Kb ",k,sz/1024);
