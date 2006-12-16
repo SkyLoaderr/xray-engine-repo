@@ -2160,6 +2160,9 @@
 				<File
 					RelativePath=".\Config\scripts\test_hit_in_actor_dir2.ltx">
 				</File>
+				<File
+					RelativePath=".\Config\scripts\treasure_inventory_box.ltx">
+				</File>
 				<Filter
 					Name="Military"
 					Filter="">
