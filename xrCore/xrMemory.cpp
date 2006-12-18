@@ -104,19 +104,16 @@ void	xrMemory::_initialize	(BOOL bDebug)
 
 void	xrMemory::_destroy()
 {
-#ifdef DEBUG
-#ifndef M_BORLAND
+#ifdef DEBUG_MEMORY_MANAGER
 	mem_alloc_gather_stats		(false);
 	mem_alloc_show_stats		();
 	mem_alloc_clear_stats		();
-#endif
 #endif // DEBUG
 
-#ifndef M_BORLAND
-#	ifdef DEBUG_MEMORY_MANAGER
-		if (debug_mode)				dbg_dump_str_leaks	();
-#	endif // DEBUG_MEMORY_MANAGER
-#endif // M_BORLAND
+#ifdef DEBUG_MEMORY_MANAGER
+	if (debug_mode)				dbg_dump_str_leaks	();
+#endif // DEBUG_MEMORY_MANAGER
+
 	xr_delete					(g_pSharedMemoryContainer);
 	xr_delete					(g_pStringContainer);
 
