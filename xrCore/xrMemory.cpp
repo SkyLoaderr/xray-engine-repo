@@ -137,7 +137,7 @@ void	xrMemory::mem_compact	()
 	HeapCompact						(GetProcessHeap(),0);
 	if (g_pStringContainer)			g_pStringContainer->clean		();
 	if (g_pSharedMemoryContainer)	g_pSharedMemoryContainer->clean	();
-	SetProcessWorkingSetSize		(GetCurrentProcess(),size_t(-1),size_t(-1));
+//	SetProcessWorkingSetSize		(GetCurrentProcess(),size_t(-1),size_t(-1));
 }
 
 u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
