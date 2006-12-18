@@ -205,9 +205,7 @@ public:
 	}
 	bool				TryPosition				(Fvector& pos);
 	bool				IsCharacterEnabled		()																		{return m_character->IsEnabled()||bExernalImpulse;}
-#ifdef DEBUG
 	void				DisableCharacter		(){m_character->Disable();}
-#endif
 	void				Calculate				(Fvector& vAccel,const Fvector& camDir, float ang_speed, float jump, float dt, bool bLight);
 	void				Calculate				(const xr_vector<DetailPathManager::STravelPathPoint>& path, //in path
 												float speed,						 //in speed
