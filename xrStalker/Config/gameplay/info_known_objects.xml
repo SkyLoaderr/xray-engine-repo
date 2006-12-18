@@ -62,7 +62,6 @@
   <article>mutant_bloodsucker_general</article>
   <article>mutant_pseudogiant_general</article>
   <article>mutant_poltergeist_general</article>
-  <article>mutant_zombie_general</article>
   <article>mutant_snork_general</article>
   <article>social_military_army</article>
   <article>social_military_milstalkers</article>
@@ -331,10 +330,6 @@
  </info_portion>
  
    <info_portion id="encyclopedy_mutant_controller_general"></info_portion>
- 
-   <info_portion id="encyclopedy_mutant_zombie_general">
-	<article>mutant_zombie_general</article>
- </info_portion>
  
    <info_portion id="encyclopedy_mutant_snork_general">
 	<article>mutant_snork_general</article>
