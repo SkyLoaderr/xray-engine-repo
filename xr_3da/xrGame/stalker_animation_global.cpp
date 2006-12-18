@@ -42,17 +42,13 @@ MotionID CStalkerAnimationManager::assign_global_animation	()
 		if (!object().critically_wounded())
 			return					(MotionID());
 
-#if 0
-		VERIFY						(object().inventory().ActiveItem());
-
-		CWeapon						*weapon = smart_cast<CWeapon*>(object().inventory().ActiveItem());
-		VERIFY						(weapon);
-#else
-		VERIFY						(object().best_weapon());
+		if (!object().best_weapon()) {
+			VERIFY					(global().animation());
+			return					(global().animation());
+		}
 
 		CWeapon						*weapon = smart_cast<CWeapon*>(object().best_weapon());
 		VERIFY						(weapon);
-#endif
 
 		u32							animation_slot = weapon->animation_slot();
 		VERIFY						(animation_slot >= 1);
