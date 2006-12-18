@@ -4,8 +4,30 @@
 
 class CUIDragDropListEx;
 
+
+enum ETradePreset{	_preset_idx_last =0, 
+					_preset_idx_1, 
+					_preset_idx_2, 
+					_preset_idx_3, 
+					_preset_idx_origin, 
+					_preset_count};
+
+struct _preset_item
+{
+	shared_str			sect_name;
+	u32					count;
+	shared_str			addons_sect[3];
+	bool operator ==	(const shared_str& what)
+	{
+		return (sect_name==what);
+	}
+};
+DEF_VECTOR			(preset_items,_preset_item);
+
+
 class IBuyWnd:			public CUIDialogWnd
 {
+
 public:
 	virtual						~IBuyWnd					()	{};
 	virtual void 				Init						(const shared_str& sectionName, const shared_str& sectionPrice)	=0;
@@ -31,5 +53,10 @@ public:
 	virtual bool 				CanBuyAllItems				()																=0;
 	virtual void 				ResetItems					()																=0;
 	virtual void				SetRank						(u32 rank)														=0;
-
+	virtual void				ItemToBelt					(const shared_str& sectionName)									=0;
+	virtual void				ItemToRuck					(const shared_str& sectionName, u32 addons)						=0;
+	virtual void				ItemToSlot					(const shared_str& sectionName, u32 addons)						=0;
+	virtual void				SetupPlayerItemsBegin		(){};
+	virtual void				SetupPlayerItemsEnd			(){};
+	virtual const preset_items&	GetPreset					(ETradePreset idx)												=0;
 };

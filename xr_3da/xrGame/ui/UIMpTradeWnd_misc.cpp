@@ -115,7 +115,41 @@ void CUIMpTradeWnd::BindDragDropListEvents(CUIDragDropListEx* lst, bool bDrag)
 
 bool CUIMpTradeWnd::OnItemDrop(CUICellItem* itm)
 {
-	return							false;
+	CUIDragDropListEx*	_owner_list		= itm->OwnerList();
+	dd_list_type		_owner_type		= GetListType	(_owner_list);
+
+	CUIDragDropListEx*	_new_owner		= CUIDragDropListEx::m_drag_item->BackList();
+	
+	if(!_new_owner || _new_owner==_owner_list)		
+		return			true;
+
+	dd_list_type		_new_owner_type	= GetListType	(_new_owner);
+
+	SBuyItemInfo*		iinfo 		= FindItem(itm);
+
+	if(_owner_type==dd_shop)
+	{
+		bool res		= TryToBuyItem			(iinfo, false);
+		VERIFY			(res);
+	}
+
+	if(_new_owner_type==dd_shop)
+	{
+		bool res		= TryToSellItem			(iinfo);
+		VERIFY			(res);
+	}
+	
+	{
+		if(_new_owner_type==dd_own_bag)
+		{
+			CUICellItem* citm			= _owner_list->RemoveItem(itm, false);
+			_new_owner->SetItem			(citm);
+		}else
+		{
+			VERIFY(_new_owner_type==dd_own_slot);
+		}
+	}	
+	return							true;
 }
 
 bool CUIMpTradeWnd::OnItemStartDrag(CUICellItem* itm)
@@ -125,15 +159,15 @@ bool CUIMpTradeWnd::OnItemStartDrag(CUICellItem* itm)
 
 bool CUIMpTradeWnd::OnItemDbClick(CUICellItem* itm)
 {
-	CUIDragDropListEx*	_owner		= itm->OwnerList();
-	dd_list_type		_type		= GetListType	(_owner);
+	CUIDragDropListEx*	_owner_list		= itm->OwnerList();
+	dd_list_type		_owner_type		= GetListType	(_owner_list);
 
 	SBuyItemInfo*		iinfo 		= FindItem(itm);
 
-	switch(_type)
+	switch(_owner_type)
 	{
 		case dd_shop:
-			TryToBuyItem			(iinfo);
+			TryToBuyItem			(iinfo, false);
 			break;
 
 		case dd_own_bag:
@@ -214,7 +248,12 @@ const u8 CUIMpTradeWnd::GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u8 
 }
 
 void CUIMpTradeWnd::GetWeaponIndexByName(const shared_str& sectionName, u8 &grpNum, u8 &idx)
-{}
+{
+	
+	u32 idx__	= m_item_mngr->GetItemIdx(sectionName);
+	grpNum		= idx__;
+	idx			= 0;
+}
 
 const u8 CUIMpTradeWnd::GetItemIndex(u32 slotNum, u32 idx, u8 &sectionNum)
 {
@@ -259,7 +298,12 @@ void CUIMpTradeWnd::SetMoneyAmount(u32 money)
 }
 
 void CUIMpTradeWnd::ResetItems()
-{}
+{
+	ResetToOrigin						();
+	m_store_hierarchy->Reset			();
+	UpdateShop							();
+	SetCurrentItem						(NULL);
+}
 
 bool CUIMpTradeWnd::CanBuyAllItems()
 {
@@ -267,10 +311,15 @@ bool CUIMpTradeWnd::CanBuyAllItems()
 }
 
 void CUIMpTradeWnd::AddonToSlot(int add_on, int slot, bool bRealRepresentationSet)
-{}
+{
+// own
+
+}
 
 void CUIMpTradeWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet)
-{}
+{
+// own
+}
 
 bool CUIMpTradeWnd::CheckBuyAvailabilityInSlots()
 {

@@ -48,8 +48,8 @@ void SBuyItemInfo::SetState	(const EItmState& s)
 		};
 	case e_sold:
 		{
-			VERIFY2			(s==e_own,"incorrect SBuyItemInfo::SetState sequence");
-			m_item_state	= s;
+			VERIFY2			(s==e_own||s==e_bought,"incorrect SBuyItemInfo::SetState sequence");
+			m_item_state	= e_own;
 			break;
 		};
 	case e_own:
@@ -106,6 +106,7 @@ SBuyItemInfo* CUIMpTradeWnd::CreateItem(const shared_str& name_sect, SBuyItemInf
 	iinfo->m_name_sect			= name_sect;
 	iinfo->SetState				(type);
 	iinfo->m_cell_item			= create_cell_item(CreateItem_internal(name_sect));
+	iinfo->m_cell_item->m_b_destroy_childs = false;
 	return						iinfo;
 }
 
@@ -164,6 +165,21 @@ void CUIMpTradeWnd::DestroyItem(SBuyItemInfo* item)
 	delete_data			(item);
 }
 
+u32 CUIMpTradeWnd::GetItemCount(SBuyItemInfo::EItmState state) const
+{
+	u32 res					= 0;
+	ITEMS_vec_cit it		= m_all_items.begin();
+	ITEMS_vec_cit it_e		= m_all_items.end();
+
+	for(;it!=it_e;++it)
+	{
+		SBuyItemInfo* pitm = *it;
+		if( pitm->GetState()==state )
+			++res;
+	}
+	return	res;
+}
+
 u32 CUIMpTradeWnd::GetItemCount(const shared_str& name_sect, SBuyItemInfo::EItmState state) const
 {
 	u32 res					= 0;
@@ -194,7 +210,7 @@ u32 CUIMpTradeWnd::GetGroupCount(const shared_str& name_group, SBuyItemInfo::EIt
 	}
 	return	res;
 }
-const CUIMpTradeWnd::preset_items& CUIMpTradeWnd::GetPreset(u32 idx)
+const preset_items& CUIMpTradeWnd::GetPreset(ETradePreset idx)
 {
 	VERIFY			(idx<_preset_count); 
 	return			m_preset_storage[idx];
@@ -220,7 +236,7 @@ u32 _list_prio[]={
 struct preset_sorter {
 	CItemMgr* m_mgr;
 	preset_sorter(CItemMgr* mgr):m_mgr(mgr){};
-	bool operator() (const CUIMpTradeWnd::_preset_item& i1, const CUIMpTradeWnd::_preset_item& i2)
+	bool operator() (const _preset_item& i1, const _preset_item& i2)
 	{
 		u8 list_idx1	= m_mgr->GetItemSlotIdx(i1.sect_name);
 		u8 list_idx2	= m_mgr->GetItemSlotIdx(i2.sect_name);
@@ -229,7 +245,7 @@ struct preset_sorter {
 	};
 };
 
-void CUIMpTradeWnd::StorePreset(u32 idx)
+void CUIMpTradeWnd::StorePreset(ETradePreset idx)
 {
 	string512						buff;
 	sprintf							(buff,	"%s [%d]",
@@ -263,7 +279,7 @@ void CUIMpTradeWnd::StorePreset(u32 idx)
 	std::sort						(v.begin(), v.end(), preset_sorter(m_item_mngr));
 }
 
-void CUIMpTradeWnd::ApplyPreset(u32 idx)
+void CUIMpTradeWnd::ApplyPreset(ETradePreset idx)
 {
 	ResetToOrigin						();
 
@@ -279,7 +295,7 @@ void CUIMpTradeWnd::ApplyPreset(u32 idx)
 		{
 			SBuyItemInfo* pitem				= CreateItem(_one.sect_name, SBuyItemInfo::e_undefined, false);
 			// dont forget about addons		!!!
-			bool b_res						= TryToBuyItem(pitem);
+			bool b_res						= TryToBuyItem(pitem, (idx==_preset_idx_origin) );
 			if(!b_res)
 				DestroyItem					(pitem);
 		}
@@ -307,11 +323,38 @@ void CUIMpTradeWnd::ResetToOrigin()
 	do{
 		iinfo			= FindItem(SBuyItemInfo::e_sold);
 		if(iinfo)
-			b_ok		= TryToBuyItem(iinfo);
+			b_ok		= TryToBuyItem(iinfo, false);
 
 		R_ASSERT		(b_ok);
 	}while(iinfo);
 
+	do{
+		iinfo						= FindItem(SBuyItemInfo::e_own);
+		if(iinfo)
+		{
+			VERIFY					(iinfo->m_cell_item->OwnerList());
+			CUICellItem* citem		= iinfo->m_cell_item->OwnerList()->RemoveItem(iinfo->m_cell_item, false );
+			SBuyItemInfo* iinfo_int = FindItem(citem);
+			DestroyItem				(iinfo_int);
+		}
+	}while(iinfo);
+}
+
+void CUIMpTradeWnd::SetupPlayerItemsBegin()
+{
+	if(
+		(0!=GetItemCount(SBuyItemInfo::e_own))		||
+		(0!=GetItemCount(SBuyItemInfo::e_sold))		||
+		(0!=GetItemCount(SBuyItemInfo::e_bought))
+		){
+			DumpAllItems("");
+			VERIFY2(0, "0!=GetItemCount");
+		}
+}
+
+void CUIMpTradeWnd::SetupPlayerItemsEnd()
+{
+	StorePreset			(_preset_idx_origin);
 }
 
 void CUIMpTradeWnd::DumpAllItems(LPCSTR s)
@@ -327,7 +370,7 @@ void CUIMpTradeWnd::DumpAllItems(LPCSTR s)
 	Msg("------");
 }
 
-void CUIMpTradeWnd::DumpPreset(u32 idx)
+void CUIMpTradeWnd::DumpPreset(ETradePreset idx)
 {
 	const preset_items&		v			=  GetPreset(idx);
 	preset_items::const_iterator it		= v.begin();
@@ -394,6 +437,19 @@ const u8 CItemMgr::GetItemSlotIdx	(const shared_str& sect_name) const
 	COST_MAP_CIT it		= m_items.find(sect_name);
 	VERIFY				(it!=m_items.end());
 	return				it->second.slot_idx;
+}
+
+const u32 CItemMgr::GetItemIdx(const shared_str& sect_name) const
+{
+	COST_MAP_CIT it		= m_items.find(sect_name);
+	
+	if		(it==m_items.end())
+	{
+		Msg("item not found in registry [%s]", sect_name.c_str());
+		return u32(-1);
+	}
+
+	return				u32( std::distance(m_items.begin(), it) );
 }
 
 void CItemMgr::Dump() const

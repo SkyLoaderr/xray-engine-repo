@@ -12,13 +12,16 @@ CUICellItem::CUICellItem()
 	m_pData				= NULL;
 	m_custom_draw		= NULL;
 	m_b_already_drawn	= false;
-	m_accelerator		= 0;
+	SetAccelerator		(0);
+	m_b_destroy_childs	= true;
 }
 
 CUICellItem::~CUICellItem()
 {
-	delete_data(m_childs);
-	delete_data(m_custom_draw);
+	if(m_b_destroy_childs)
+		delete_data	(m_childs);
+
+	delete_data		(m_custom_draw);
 }
 
 
@@ -56,7 +59,7 @@ bool CUICellItem::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
 	if (WINDOW_KEY_PRESSED == keyboard_action)
 	{
-		if (m_accelerator == dik)
+		if (GetAccelerator() == dik)
 		{
 			GetMessageTarget()->SendMessage(this, DRAG_DROP_ITEM_DB_CLICK, NULL);
 			return		true;
@@ -92,6 +95,7 @@ u32 CUICellItem::ChildsCount()
 
 void CUICellItem::PushChild(CUICellItem* c)
 {
+	VERIFY				(this!=c);
 	m_childs.push_back	(c);
 	UpdateItemText		();
 }

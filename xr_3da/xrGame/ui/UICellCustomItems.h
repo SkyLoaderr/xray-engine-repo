@@ -59,3 +59,9 @@ public:
 	virtual void		OnDraw					(CUICellItem* cell);
 
 };
+
+class CUICellItemAccelDraw :public ICustomDrawCell
+{
+public:
+	virtual void		OnDraw					(CUICellItem* cell);
+};

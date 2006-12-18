@@ -43,7 +43,8 @@ public:
 				CUICellItem* Child					(u32 idx)				{return m_childs[idx];};
 	virtual		bool		EqualTo					(CUICellItem* itm);
 	IC const	Ivector2&	GetGridSize				()						{return m_grid_size;}; //size in grid
-	IC			void		SetAccelerator			(int dik)					{m_accelerator=dik;};
+	IC			void		SetAccelerator			(int dik)				{m_accelerator=dik;};
+	IC			int			GetAccelerator			()		const			{return m_accelerator;};
 
 	virtual		CUIDragItem* CreateDragItem			();
 
@@ -53,6 +54,7 @@ public:
 				void*		m_pData;
 				int			m_index;
 				bool		m_b_already_drawn;
+				bool		m_b_destroy_childs;
 };
 
 class CUIDragItem: public CUIWindow, public pureRender, public pureFrame

@@ -105,7 +105,7 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 	m_game_ui->SetClGame(this);
 	m_game_ui->Init();
 
-	pCurBuyMenu	= InitBuyMenu("deathmatch_base_cost", 0);
+	pCurBuyMenu	= InitBuyMenu(GetBaseCostSect(), 0);
 	LoadTeamDefaultPresetItems(GetTeamMenu(0), pCurBuyMenu, &PresetItemsTeam0);
 
 	pCurSkinMenu	= InitSkinMenu(0);

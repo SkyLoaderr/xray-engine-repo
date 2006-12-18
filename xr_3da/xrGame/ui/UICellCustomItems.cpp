@@ -57,17 +57,23 @@ void CUIAmmoCellItem::Update()
 
 void CUIAmmoCellItem::UpdateItemText()
 {
-	xr_vector<CUICellItem*>::iterator it = m_childs.begin();
-	xr_vector<CUICellItem*>::iterator it_e = m_childs.end();
-	
-	u16 total				= object()->m_boxCurr;
-	for(;it!=it_e;++it)
-		total				= total + ((CUIAmmoCellItem*)(*it))->object()->m_boxCurr;
+	if(NULL==m_custom_draw)
+	{
+		xr_vector<CUICellItem*>::iterator it = m_childs.begin();
+		xr_vector<CUICellItem*>::iterator it_e = m_childs.end();
+		
+		u16 total				= object()->m_boxCurr;
+		for(;it!=it_e;++it)
+			total				= total + ((CUIAmmoCellItem*)(*it))->object()->m_boxCurr;
 
-	string32				str;
-	sprintf					(str,"%d",total);
+		string32				str;
+		sprintf					(str,"%d",total);
 
-	SetText					(str);
+		SetText					(str);
+	}else
+	{
+		SetText					("");
+	}
 }
 
 
@@ -272,4 +278,24 @@ void CBuyItemCustomDrawCell::OnDraw(CUICellItem* cell)
 	UI()->ClientToScreenScaled			(pos, pos.x, pos.y);
 	m_pFont->Out						(pos.x, pos.y, m_string);
 	m_pFont->OnRender					();
+}
+
+#include <dinput.h>
+#include "../HUDManager.h"
+void CUICellItemAccelDraw::OnDraw(CUICellItem* cell)
+{
+	int acc									= cell->GetAccelerator();
+	if(acc!=0)
+	{
+		if(acc==10)							acc = 0;
+		Fvector2							pos;
+		string64							buff;
+
+		sprintf								(buff,"%d", acc - DIK_ESCAPE);
+		CGameFont* pFont					= UI()->Font()->pFontLetterica16Russian;
+		cell->GetAbsolutePos				(pos);
+		UI()->ClientToScreenScaled			(pos, pos.x, pos.y);
+		pFont->Out							(pos.x, pos.y, buff);
+		pFont->OnRender						();
+	}
 }

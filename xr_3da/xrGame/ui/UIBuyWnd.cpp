@@ -1544,3 +1544,13 @@ void CUIBuyWnd::IgnoreMoney(bool ignore)
 		m_bag.IgnoreMoney		(ignore);
 	};
 }
+
+
+void CUIBuyWnd::ItemToBelt(const shared_str& sectionName)
+{}
+
+void CUIBuyWnd::ItemToRuck(const shared_str& sectionName, u32 addons)
+{}
+
+void CUIBuyWnd::ItemToSlot(const shared_str& sectionName, u32 addons)
+{}

@@ -62,18 +62,6 @@ public:
 		dd_own_slot				=2,
 	};
 
-	struct _preset_item
-	{
-		shared_str			sect_name;
-		u32					count;
-		shared_str			addons_sect[3];
-		bool operator ==	(const shared_str& what)
-		{
-			return (sect_name==what);
-		}
-	};
-	DEF_VECTOR					(preset_items,_preset_item);
-
 public:
 								CUIMpTradeWnd				();
 	virtual						~CUIMpTradeWnd				();
@@ -107,10 +95,15 @@ public:
 	virtual void 				ResetItems					();
 	virtual void				SetRank						(u32 rank);
 
-	const preset_items&			GetPreset			(u32 idx);
+	virtual void				ItemToBelt					(const shared_str& sectionName);
+	virtual void				ItemToRuck					(const shared_str& sectionName, u32 addons);
+	virtual void				ItemToSlot					(const shared_str& sectionName, u32 addons);
+	virtual void				SetupPlayerItemsBegin		();
+	virtual void				SetupPlayerItemsEnd			();
+
+	virtual const preset_items&	GetPreset					(ETradePreset idx);
 
 private:
-#define _preset_count	5
 	//data
 	shared_str			m_sectionName;
 	shared_str			m_sectionPrice;
@@ -119,7 +112,7 @@ private:
 	CUICellItem*		m_pCurrentCellItem;
 	ITEMS_vec			m_all_items;
 	CItemMgr*			m_item_mngr;
-	preset_items		m_preset_storage[_preset_count]; // 0-last set / 1-2-3 user preset / 4-origin
+	preset_items		m_preset_storage[_preset_count];
 //controls
 	CUIWindow*			m_shop_wnd;
 	CUIStatic*			m_static_money;
@@ -137,6 +130,14 @@ private:
 	CUI3tButton* 		m_btn_save_preset;
 	CUI3tButton* 		m_btn_reset;
 	CUI3tButton* 		m_btn_sell;
+
+	CUI3tButton* 		m_btn_pistol_ammo;
+	CUI3tButton*		m_btn_pistol_silencer;
+	CUI3tButton* 		m_btn_rifle_ammo;
+	CUI3tButton* 		m_btn_rifle_silencer;
+	CUI3tButton* 		m_btn_rifle_scope;
+	CUI3tButton* 		m_btn_rifle_glauncher;
+	CUI3tButton* 		m_btn_rifle_ammo2;
 
 	CUITabControl*		m_root_tab_control;
 	CUIDragDropListEx*	m_list[e_total_lists];
@@ -158,6 +159,15 @@ private:
 	void	xr_stdcall	OnBtnResetClicked			(CUIWindow* w, void* d);
 	void	xr_stdcall	OnBtnSellClicked			(CUIWindow* w, void* d);
 
+
+	void	xr_stdcall	OnBtnPistolAmmoClicked		(CUIWindow* w, void* d);
+	void	xr_stdcall	OnBtnPistolSilencerClicked	(CUIWindow* w, void* d);
+	void	xr_stdcall	OnBtnRifleAmmoClicked		(CUIWindow* w, void* d);
+	void	xr_stdcall	OnBtnRifleSilencerClicked	(CUIWindow* w, void* d);
+	void	xr_stdcall	OnBtnRifleScopeClicked		(CUIWindow* w, void* d);
+	void	xr_stdcall	OnBtnRifleGLClicked			(CUIWindow* w, void* d);
+	void	xr_stdcall	OnBtnRifleAmmo2Clicked		(CUIWindow* w, void* d);
+
 	// drag drop handlers
 	bool	xr_stdcall	OnItemDrop					(CUICellItem* itm);
 	bool	xr_stdcall	OnItemStartDrag				(CUICellItem* itm);
@@ -168,7 +178,7 @@ private:
 	void				FillUpSubLevelButtons		();
 	void				FillUpSubLevelItems			();
 
-	bool				TryToBuyItem				(SBuyItemInfo* itm);
+	bool				TryToBuyItem				(SBuyItemInfo* itm, bool own_item);
 	bool				TryToSellItem				(SBuyItemInfo* itm);
 
 	bool				CheckBuyPossibility			(const shared_str& sect_name);
@@ -186,13 +196,14 @@ private:
 	void				DestroyItem					(SBuyItemInfo* item);
 
 	void				RenewShopItem				(const shared_str& sect_name, bool b_just_bought);
+	u32					GetItemCount				(SBuyItemInfo::EItmState state) const;
 	u32					GetItemCount				(const shared_str& name_sect, SBuyItemInfo::EItmState state) const;
 	u32					GetGroupCount				(const shared_str& name_group, SBuyItemInfo::EItmState state)const;
 
 	void				ResetToOrigin				();
-	void				ApplyPreset					(u32 idx);
-	void				StorePreset					(u32 idx);
-	void				DumpPreset					(u32 idx);
+	void				ApplyPreset					(ETradePreset idx);
+	void				StorePreset					(ETradePreset idx);
+	void				DumpPreset					(ETradePreset idx);
 	void				DumpAllItems				(LPCSTR reason);
 	dd_list_type		GetListType					(CUIDragDropListEx* l);
 	CUIDragDropListEx*	GetMatchedListForItem		(const shared_str& sect_name);
@@ -215,5 +226,6 @@ public:
 	void					Load			(const shared_str& sect);
 	const u32				GetItemCost		(const shared_str& sect_name, u32 rank)	const;
 	const u8				GetItemSlotIdx	(const shared_str& sect_name) const;
+	const u32				GetItemIdx		(const shared_str& sect_name) const;
 	void					Dump			() const;
 };

@@ -80,6 +80,7 @@ protected:
 
 	u32								m_dwVoteEndTime;
 
+	virtual const shared_str		GetBaseCostSect			() {return "deathmatch_base_cost";}
 			void					CheckItem				(PIItem pItem, PRESET_ITEMS* pPresetItems,  BOOL OnlyPreset);
 
 			void					ClearBuyMenu			();

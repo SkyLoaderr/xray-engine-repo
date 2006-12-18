@@ -12,6 +12,7 @@
 
 void CUIMpTradeWnd::OnBtnOkClicked(CUIWindow* w, void* d)
 {
+	StorePreset							(_preset_idx_last);
 	GetHolder()->StartStopMenu			(this,true);
 	game_cl_Deathmatch * dm				= smart_cast<game_cl_Deathmatch *>(&(Game()));
 	dm->OnBuyMenu_Ok					();
@@ -33,7 +34,7 @@ void CUIMpTradeWnd::OnBtnPreset1Clicked(CUIWindow* w, void* d)
 {
 	if(pInput->iGetAsyncKeyState(DIK_LSHIFT))
 	{
-		DumpPreset					(1);
+		DumpPreset					(_preset_idx_1);
 		return;
 	}
 
@@ -41,32 +42,32 @@ void CUIMpTradeWnd::OnBtnPreset1Clicked(CUIWindow* w, void* d)
 	if(b)
 	{
 		m_btn_save_preset->SetCheck	(false);
-		StorePreset					(1);
+		StorePreset					(_preset_idx_1);
 	}else
-		ApplyPreset					(1);
+		ApplyPreset					(_preset_idx_1);
 }
 
 void CUIMpTradeWnd::OnBtnPreset2Clicked(CUIWindow* w, void* d)
 {
 	if(pInput->iGetAsyncKeyState(DIK_LSHIFT))
 	{
-		DumpPreset					(2);
+		DumpPreset					(_preset_idx_2);
 		return;
 	};
 	bool b = m_btn_save_preset->GetCheck();
 	if(b)
 	{
 		m_btn_save_preset->SetCheck	(false);
-		StorePreset					(2);
+		StorePreset					(_preset_idx_2);
 	}else
-		ApplyPreset					(2);
+		ApplyPreset					(_preset_idx_2);
 }
 
 void CUIMpTradeWnd::OnBtnPreset3Clicked(CUIWindow* w, void* d)
 {
 	if(pInput->iGetAsyncKeyState(DIK_LSHIFT))
 	{
-		DumpPreset					(3);
+		DumpPreset					(_preset_idx_3);
 		return;
 	};
 
@@ -74,19 +75,19 @@ void CUIMpTradeWnd::OnBtnPreset3Clicked(CUIWindow* w, void* d)
 	if(b)
 	{
 		m_btn_save_preset->SetCheck	(false);
-		StorePreset					(3);
+		StorePreset					(_preset_idx_3);
 	}else
-		ApplyPreset					(3);
+		ApplyPreset					(_preset_idx_3);
 }
 
 void CUIMpTradeWnd::OnBtnLastSetClicked(CUIWindow* w, void* d)
 {
 	if(pInput->iGetAsyncKeyState(DIK_LSHIFT))
 	{
-		DumpPreset					(0);
+		DumpPreset					(_preset_idx_last);
 		return;
 	};
-		ApplyPreset					(0);
+		ApplyPreset					(_preset_idx_last);
 }
 
 void CUIMpTradeWnd::OnBtnSavePresetClicked(CUIWindow* w, void* d)
@@ -101,7 +102,7 @@ void CUIMpTradeWnd::OnBtnSavePresetClicked(CUIWindow* w, void* d)
 
 void CUIMpTradeWnd::OnBtnResetClicked(CUIWindow* w, void* d)
 {
-	ApplyPreset				(4); //origin
+	ApplyPreset				(_preset_idx_origin); //origin
 }
 
 void CUIMpTradeWnd::OnBtnSellClicked(CUIWindow* w, void* d)
@@ -142,7 +143,7 @@ void CUIMpTradeWnd::UpdateShop()
 	if(m_store_hierarchy->CurrentIsRoot())	return;
 
 	if(m_store_hierarchy->CurrentLevel().HasSubLevels())
-	{	//show sub-levels
+	{//show sub-levels
 		FillUpSubLevelButtons			();
 	}else
 	{//show items
@@ -183,8 +184,6 @@ void CUIMpTradeWnd::FillUpSubLevelItems()
 	{
 		const shared_str& sect			= curr_level.m_items_in_group[idx];
 		RenewShopItem					(sect, false);
-//.		SBuyItemInfo* pitem				= CreateItem	(sect, SBuyItemInfo::e_shop);
-//.		pList->SetItem					(pitem->m_cell_item);
 	}
 }
 

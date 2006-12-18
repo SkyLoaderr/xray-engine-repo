@@ -45,6 +45,33 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 	//-------------------------------------------------------------------------------
 	pCurPresetItems->clear();
 
+	const preset_items& _p	= pCurBuyMenu->GetPreset(_preset_idx_last);
+	
+	u32 ItemsCount							= _p.size();
+	for (u32 i=0; i<ItemsCount; ++i)
+	{
+		const _preset_item& _pitem = _p[i];
+
+		for(u32 idx=0; idx<_pitem.count; ++idx)
+		{
+			u8 SlotID		= 0;
+			u8 ItemID		= 0;
+			pCurBuyMenu->GetWeaponIndexByName(_pitem.sect_name, ItemID, SlotID);
+
+			u8 Addons		= 0;
+			if(_pitem.addons_sect[0].c_str()) //first addon name_sect
+			{}
+
+			if(_pitem.addons_sect[1].c_str()) //second addon name_sect
+			{}
+
+			if(_pitem.addons_sect[2].c_str()) //third addon name_sect
+			{}
+			s16 ID = GetBuyMenuItemIndex(u8(SlotID), ItemID);
+			pCurPresetItems->push_back(ID);
+		}
+	}
+/*
 	for (u8 s =0; s<3; s++)
 	{
 //		u8 ItemID = pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]);
@@ -67,11 +94,13 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 			pCurPresetItems->push_back(ID);
 		}		
 	};
+
 	//-------------------------------------------------------------------------------
 	//принудительно добавляем нож
 	u8 SectID, ItemID;
 	pCurBuyMenu->GetWeaponIndexByName("mp_wpn_knife", SectID, ItemID);
 	pCurPresetItems->push_back(GetBuyMenuItemIndex(SectID, ItemID));
+*/
 	//-------------------------------------------------------------------------------
 //	for (i=0; i<AdditionalPresetItems.size(); i++)
 	{
@@ -80,7 +109,7 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 	//-------------------------------------------------------------------------------
 	P.w_s32		(s32(pCurBuyMenu->GetMoneyAmount()) - Pl->money_for_round);
 	P.w_u8		(u8(pCurPresetItems->size()));
-	for (s=0; s<pCurPresetItems->size(); s++)
+	for (u8 s=0; s<pCurPresetItems->size(); s++)
 	{
 		P.w_s16((*pCurPresetItems)[s].BigID);
 	}
@@ -128,17 +157,35 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 	//---------------------------------------------------------
 	pCurBuyMenu->Update();
 	pCurBuyMenu->IgnoreMoney(true);	
+	pCurBuyMenu->SetupPlayerItemsBegin();
 	//---------------------------------------------------------
 	CActor* pCurActor = smart_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
 	if (pCurActor)
 	{
+		//проверяем слоты
+		TISlotArr::const_iterator	ISlot = pCurActor->inventory().m_slots.begin();
+		TISlotArr::const_iterator	ESlot = pCurActor->inventory().m_slots.end();
+
+		for ( ; ISlot != ESlot; ++ISlot) 
+		{
+//			CheckItem((*ISlot).m_pIItem, &TmpPresetItems, OnlyPreset);
+			PIItem pItem = (*ISlot).m_pIItem;
+			if (!pItem || pItem->object().getDestroy() || pItem->GetDrop()) continue;
+			if(pSettings->line_exist(GetBaseCostSect(), pItem->object().cNameSect()))
+				pCurBuyMenu->ItemToSlot(pItem->object().cNameSect(), 0);
+		};
+
 		//проверяем пояс
 		TIItemContainer::const_iterator	IBelt = pCurActor->inventory().m_belt.begin();
 		TIItemContainer::const_iterator	EBelt = pCurActor->inventory().m_belt.end();
 
 		for ( ; IBelt != EBelt; ++IBelt) 
 		{
-			CheckItem((*IBelt), &TmpPresetItems, OnlyPreset);
+			PIItem pItem = (*IBelt);
+			if (!pItem || pItem->object().getDestroy() || pItem->GetDrop()) continue;
+			if(pSettings->line_exist(GetBaseCostSect(), pItem->object().cNameSect()))
+				pCurBuyMenu->ItemToBelt(pItem->object().cNameSect());
+//			CheckItem((*IBelt), &TmpPresetItems, OnlyPreset);
 		};
 
 		//проверяем ruck
@@ -148,7 +195,10 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 		for ( ; IRuck != ERuck; ++IRuck) 
 		{
 			PIItem pItem = *IRuck;
-			if (!pItem) continue;
+			if (!pItem || pItem->object().getDestroy() || pItem->GetDrop()) continue;
+			if(pSettings->line_exist(GetBaseCostSect(), pItem->object().cNameSect()))
+				pCurBuyMenu->ItemToRuck(pItem->object().cNameSect(), 0);
+/*			if (!pItem) continue;
 			CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*> (pItem);
 			if (!pAmmo) 
 			{
@@ -158,19 +208,14 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 					CEatableItemObject* pEatableItem  = smart_cast<CEatableItemObject*> (pItem);
 					if (!pEatableItem) continue;
 				}
-			}
+			}			
 			CheckItem((*IRuck), &TmpPresetItems, OnlyPreset);
+*/
 		};
 
-		//проверяем слоты
-		TISlotArr::const_iterator	ISlot = pCurActor->inventory().m_slots.begin();
-		TISlotArr::const_iterator	ESlot = pCurActor->inventory().m_slots.end();
-
-		for ( ; ISlot != ESlot; ++ISlot) 
-		{
-			CheckItem((*ISlot).m_pIItem, &TmpPresetItems, OnlyPreset);
-		};
 	};
+	pCurBuyMenu->SetupPlayerItemsEnd();
+
 	//---------------------------------------------------------
 	It = TmpPresetItems.begin();
 	Et = TmpPresetItems.end();

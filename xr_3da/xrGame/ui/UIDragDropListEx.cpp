@@ -401,7 +401,8 @@ bool CUICellContainer::AddSimilar(CUICellItem* itm)
 {
 	if(!m_pParentDragDropList->IsGrouping())	return false;
 
-	CUICellItem* i = FindSimilar(itm);
+	CUICellItem* i	= FindSimilar(itm);
+	VERIFY			(i!=itm);
 	if(i)	
 		i->PushChild	(itm);
 	
@@ -417,6 +418,7 @@ CUICellItem* CUICellContainer::FindSimilar(CUICellItem* itm)
 #else
 		CUICellItem* i = (CUICellItem*)(*it);
 #endif
+		VERIFY			(i!=itm);
 		if(i->EqualTo(itm))
 			return i;
 	}

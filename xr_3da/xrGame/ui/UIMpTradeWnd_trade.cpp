@@ -4,54 +4,68 @@
 
 #include "UICellItem.h"
 #include "UIDragDropListEx.h"
+#include "UICellCustomItems.h"
 #include <dinput.h>
 
 bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* buy_itm)
 {
-	SBuyItemInfo* iinfo 				= buy_itm;
-	u32		_item_cost					= m_item_mngr->GetItemCost(iinfo->m_name_sect, GetRank() );
+	u32		_item_cost					= m_item_mngr->GetItemCost(buy_itm->m_name_sect, GetRank() );
 	
 	SetMoneyAmount						(GetMoneyAmount() + _item_cost);
 
-	CUICellItem* _itm					= iinfo->m_cell_item->OwnerList()->RemoveItem(iinfo->m_cell_item, false );
+	CUICellItem* _itm					= buy_itm->m_cell_item->OwnerList()->RemoveItem(buy_itm->m_cell_item, false );
 
-	SBuyItemInfo* _in_shop				= FindItem(iinfo->m_name_sect, SBuyItemInfo::e_shop);
-	if(_in_shop)
+	SBuyItemInfo* iinfo					= FindItem(_itm); //just detached
+
+	u32 cnt_in_shop						= GetItemCount(buy_itm->m_name_sect, SBuyItemInfo::e_shop);
+
+	if(cnt_in_shop!=0)
 	{
-		SBuyItemInfo* _to_del			= FindItem(_itm);
-		DestroyItem						(_to_del);
+		DestroyItem						(iinfo);
 	}else
 	{//return to shop
 		iinfo->SetState					(SBuyItemInfo::e_sold);
 
 		if(m_store_hierarchy->CurrentLevel().HasItem(iinfo->m_name_sect) )
 		{
-			CUIDragDropListEx* _new_owner	= m_list[e_shop];
-			_new_owner->SetItem				(_itm);
-			int accel_idx					= m_store_hierarchy->CurrentLevel().GetItemIdx(iinfo->m_name_sect);
-			VERIFY							(accel_idx!=-1);
-			_itm->SetAccelerator			(DIK_1+accel_idx);
+			CUIDragDropListEx* _new_owner		= m_list[e_shop];
+			_new_owner->SetItem					(iinfo->m_cell_item);
+			int accel_idx						= m_store_hierarchy->CurrentLevel().GetItemIdx(iinfo->m_name_sect);
+			VERIFY								(accel_idx!=-1);
+			iinfo->m_cell_item->SetAccelerator	( (accel_idx>9) ? 0 : DIK_1+accel_idx );
+			iinfo->m_cell_item->SetCustomDraw	(xr_new<CUICellItemAccelDraw>());
+
 		}
 	}
-	string64							buff;
-	sprintf								(buff,"+%d RU",_item_cost);
-	SetInfoString						(buff);
-
+	if(_item_cost!=0)
+	{
+		string64							buff;
+		sprintf								(buff,"+%d RU",_item_cost);
+		SetInfoString						(buff);
+	}
 	return true;
 }
 
-bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm)
+bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm, bool own_item)
 {
 	SBuyItemInfo* iinfo 		= buy_itm;
 	
-	bool	b_can_buy			= CheckBuyPossibility(iinfo->m_name_sect);
-	
-	if(!b_can_buy)
-		return					false;
-	
+	if(!own_item)
+	{
+		bool	b_can_buy			= CheckBuyPossibility(iinfo->m_name_sect);
+		if(!b_can_buy)
+			return					false;
+	}
+
 	u32 _item_cost				= m_item_mngr->GetItemCost(iinfo->m_name_sect, GetRank() );
-	SetMoneyAmount				(GetMoneyAmount() - _item_cost);
-	iinfo->SetState				(SBuyItemInfo::e_bought);
+
+	if(!own_item)
+	{
+		SetMoneyAmount				(GetMoneyAmount() - _item_cost);
+		iinfo->SetState				(SBuyItemInfo::e_bought);
+	}else
+		iinfo->SetState				(SBuyItemInfo::e_own);
+
 
 	CUICellItem* cell_itm				= NULL;
 	if(iinfo->m_cell_item->OwnerList())// just from shop
@@ -63,14 +77,17 @@ bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm)
 	CUIDragDropListEx*_new_owner = NULL;
 	_new_owner					= GetMatchedListForItem(iinfo->m_name_sect);
 	_new_owner->SetItem			(cell_itm);
+	cell_itm->SetCustomDraw		(NULL);
 	cell_itm->SetAccelerator	(0);
 
 	RenewShopItem				(iinfo->m_name_sect, true);
 
-	string64					buff;
-	sprintf						(buff,"-%d RU",_item_cost);
-	SetInfoString				(buff);
-
+	if(!own_item && _item_cost!=0)
+	{
+		string64					buff;
+		sprintf						(buff,"-%d RU",_item_cost);
+		SetInfoString				(buff);
+	}
 	return						true;
 }
 
@@ -149,8 +166,61 @@ void CUIMpTradeWnd::RenewShopItem(const shared_str& sect_name, bool b_just_bough
 
 		SBuyItemInfo* pitem					= CreateItem(sect_name, SBuyItemInfo::e_shop, true);
 		int accel_idx						= m_store_hierarchy->CurrentLevel().GetItemIdx(sect_name);
-		pitem->m_cell_item->SetAccelerator	( DIK_1 + accel_idx );
+		pitem->m_cell_item->SetAccelerator	( (accel_idx>9) ? 0 : DIK_1+accel_idx );
+
+		pitem->m_cell_item->SetCustomDraw	(xr_new<CUICellItemAccelDraw>());
 		pList->SetItem						(pitem->m_cell_item);
 	}
 }
 
+void CUIMpTradeWnd::ItemToBelt(const shared_str& sectionName)
+{
+	VERIFY(m_item_mngr->GetItemIdx(sectionName)!=u32(-1) );
+
+	CUIDragDropListEx*	pList			= GetMatchedListForItem(sectionName);
+
+	SBuyItemInfo* pitem					= CreateItem(sectionName, SBuyItemInfo::e_own, false);
+	pList->SetItem						(pitem->m_cell_item);
+}
+
+void CUIMpTradeWnd::ItemToRuck(const shared_str& sectionName, u32 addons)
+{
+	VERIFY(m_item_mngr->GetItemIdx(sectionName)!=u32(-1) );
+
+	CUIDragDropListEx*	pList			= GetMatchedListForItem(sectionName);
+
+	SBuyItemInfo* pitem					= CreateItem(sectionName, SBuyItemInfo::e_own, false);
+	pList->SetItem						(pitem->m_cell_item);
+}
+
+void CUIMpTradeWnd::ItemToSlot(const shared_str& sectionName, u32 addons)
+{
+	VERIFY(m_item_mngr->GetItemIdx(sectionName)!=u32(-1) );
+
+	CUIDragDropListEx*	pList			= GetMatchedListForItem(sectionName);
+
+	SBuyItemInfo* pitem					= CreateItem(sectionName, SBuyItemInfo::e_own, false);
+	pList->SetItem						(pitem->m_cell_item);
+}
+
+
+void CUIMpTradeWnd::OnBtnPistolAmmoClicked(CUIWindow* w, void* d)
+{}
+
+void CUIMpTradeWnd::OnBtnPistolSilencerClicked(CUIWindow* w, void* d)
+{}
+
+void CUIMpTradeWnd::OnBtnRifleAmmoClicked(CUIWindow* w, void* d)
+{}
+
+void CUIMpTradeWnd::OnBtnRifleSilencerClicked(CUIWindow* w, void* d)
+{}
+
+void CUIMpTradeWnd::OnBtnRifleScopeClicked(CUIWindow* w, void* d)
+{}
+
+void CUIMpTradeWnd::OnBtnRifleGLClicked(CUIWindow* w, void* d)
+{}
+
+void CUIMpTradeWnd::OnBtnRifleAmmo2Clicked(CUIWindow* w, void* d)
+{}

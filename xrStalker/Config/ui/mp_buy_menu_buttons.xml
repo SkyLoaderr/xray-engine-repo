@@ -271,3 +271,41 @@
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_reset</text>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_reset>
+
+<!-- quick buttons -->
+
+<btn_pistol_ammo x="430" y="178" width="22" height="22" hint="_ui_inv_ammo_pistol">
+	<window_name>btn_pistol_ammo</window_name>
+	<texture>ui_beltbut_patrons</texture>
+</btn_pistol_ammo>
+
+<btn_pistol_silencer x="430" y="156" width="22" height="22" hint="_ui_inv_silencer_pistol">
+	<window_name>btn_pistol_silencer</window_name>
+	<texture>ui_beltbut_silencer</texture>
+</btn_pistol_silencer>
+
+
+<btn_rifle_ammo x="760" y="100" width="22" height="22" hint="_ui_inv_ammo_rifle">
+	<window_name>btn_rifle_ammo</window_name>
+	<texture>ui_beltbut_patrons</texture>
+</btn_rifle_ammo>	
+
+<btn_rifle_silencer x="760" y="122" width="22" height="22" hint="_ui_inv_silencer_rifle">
+	<window_name>btn_rifle_silencer</window_name>
+	<texture>ui_beltbut_silencer</texture>		
+</btn_rifle_silencer>
+
+<btn_rifle_scope x="760" y="144" width="22" height="22" hint="_ui_inv_scope_rifle">
+	<window_name>btn_rifle_scope</window_name>
+	<texture>ui_beltbut_aim</texture>		
+</btn_rifle_scope>
+
+<btn_rifle_glauncher x="760" y="166" width="22" height="22" hint="_ui_inv_granadelauncher_rifle">
+	<window_name>btn_rifle_glauncher</window_name>
+	<texture>ui_beltbut_granadeBig</texture>
+</btn_rifle_glauncher>
+
+<btn_rifle_ammo2 x="760" y="188" width="22" height="22" hint="_ui_inv_granades_rifle">
+	<window_name>btn_rifle_ammo2</window_name>
+	<texture>ui_beltbut_granadeBig</texture>
+</btn_rifle_ammo2>	

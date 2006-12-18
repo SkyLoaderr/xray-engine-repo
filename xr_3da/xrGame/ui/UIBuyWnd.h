@@ -50,6 +50,11 @@ public:
 	virtual bool 				CanBuyAllItems				();
 	virtual void 				ResetItems					();
 	virtual void				SetRank						(u32 rank);
+
+	virtual void				ItemToBelt					(const shared_str& sectionName);
+	virtual void				ItemToRuck					(const shared_str& sectionName, u32 addons);
+	virtual void				ItemToSlot					(const shared_str& sectionName, u32 addons);
+
 	/////
 
 	void 			OnTabChange					();
