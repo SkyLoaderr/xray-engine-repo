@@ -16,7 +16,8 @@
 
 [weathers]
 map				= sect_map
-default			= sect_default_weather
+mapscreen		= sect_mapscreen
+default			= mapscreen; sect_default_weather
 test			= sect_test;
 stancia         = sect_stancia
 sarkofag        = sect_sarkofag
@@ -1009,4 +1010,89 @@ hemi_color		=   0.25,	0.25,	0.25,	1.0
 sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-31.0, 296
 env_ambient		=	ambient_env_night
+;___________________________________________________________________
+;___________________________________________________________________
+;___________________________________________________________________
+
+
+[sect_mapscreen]
+01:00:00	   		=	mapscreen_01
+02:00:00	   		=	mapscreen_02
+03:00:00	   		=	mapscreen_01
+04:00:00	   		=	mapscreen_02
+05:00:00	   		=	mapscreen_01
+05:00:00			=	mapscreen_02
+06:00:00			=	mapscreen_01
+07:00:00			=	mapscreen_02
+08:00:00			=	mapscreen_01
+09:00:00			=	mapscreen_02
+10:00:00			=	mapscreen_01
+11:00:00			=	mapscreen_02
+12:00:00			=	mapscreen_01
+13:00:00			=	mapscreen_02
+14:00:00			=	mapscreen_01
+15:00:00			=	mapscreen_02
+16:00:00			=	mapscreen_01
+17:00:00			=	mapscreen_02
+18:00:00			=	mapscreen_01
+19:00:00			=	mapscreen_02
+20:00:00  			=	mapscreen_01
+21:00:00	   		=	mapscreen_02
+22:00:00	   		=	mapscreen_01
+23:00:00	   		=	mapscreen_02
+00:00:00	   		=	mapscreen_01
+
+[mapscreen_01]
+flares			=	
+sky_texture		=	sky\sky_yantar_cube
+sky_rotation	=	0
+sky_color		=	1.0,	1.0,	1.0
+clouds_texture	=	sky\sky_oblaka
+clouds_color	=	0.7, 0.7, 0.7, 1.0, 2.0
+far_plane		=	850
+fog_distance	=	840
+fog_color		=	0.227, 0.227, 0.215
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		=
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	0.0
+wind_direction	=	0.0
+ambient			=	0.048,   0.056,  	0.064
+lmap_color		=	1.0,	1.0,	1.0
+hemi_color		=	0.7,    0.74,  	0.78,	1.0
+sun_color		=	0.2,    0.2,  	0.2
+sun_dir			=	-25.0, 291
+env_ambient		=	ambient_env_rain
+
+
+[mapscreen_02]
+flares			=	
+sky_texture		=	sky\sky_yantar_cube
+sky_rotation	=	0
+sky_color		=	1.0,	1.0,	1.0
+clouds_texture	=	sky\sky_oblaka
+clouds_color	=	0.7, 0.7, 0.7, 1.0, 2.0
+far_plane		=	850
+fog_distance	=	840
+fog_color		=	0.227, 0.227, 0.215
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	
+bolt_period		=	6.f
+bolt_duration	=	0.25f
+wind_velocity	=	0.0
+wind_direction	=	0.0
+ambient			=	0.048,   0.056,  	0.064
+lmap_color		=	1.0,	1.0,	1.0
+hemi_color		=	0.7,    0.74,  	0.78,	1.0
+sun_color		=	0.2,    0.2,  	0.2
+sun_dir			=	-25.0, 291
+env_ambient		=	ambient_env_rain
+
+;___________________________________________________________________
+;___________________________________________________________________
 ;___________________________________________________________________
