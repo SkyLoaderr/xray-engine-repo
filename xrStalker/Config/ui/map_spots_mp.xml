@@ -124,8 +124,12 @@
 		<texture_above x="0" y="0" width="8" height="4" r="255" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
 	</mp_af_neutral_mini_spot>
 	
-	<mp_hit_sector_mini_spot x="0" y="0" width="256" height="256" heading="1" alignment="c"> 
+	<___mp_hit_sector_mini_spot x="0" y="0" width="256" height="256" heading="1" alignment="c"> 
 		<texture x="0" y="0" width="256" height="256">ui\ui_mp_minimap_hit_sector</texture>
+	</___mp_hit_sector_mini_spot>
+
+	<mp_hit_sector_mini_spot x="0" y="0" width="80" height="256" heading="1" alignment="c"> 
+		<texture x="305" y="762" width="80" height="256">ui\ui_hud</texture>
 	</mp_hit_sector_mini_spot>
 
 	<!-- multiplayer -->
