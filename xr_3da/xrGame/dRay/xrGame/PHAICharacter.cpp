@@ -59,6 +59,8 @@ bool CPHAICharacter::TryPosition(Fvector pos,bool exact_state){
 
 	Fvector	vel;vel.mul(displace,disp_pstep/fixed_step/disp_mag);
 	bool	ret=true;
+	int save_gm=dBodyGetGravityMode(m_body);
+	dBodySetGravityMode(m_body,0);
 	for(u32	i=0;steps_num>i;++i)
 	{
 		SetVelocity(vel);
@@ -70,7 +72,7 @@ bool CPHAICharacter::TryPosition(Fvector pos,bool exact_state){
 			break;
 		}
 	}
-	
+	dBodySetGravityMode(m_body,save_gm);
 	SetVelocity(cur_vel);
 	Fvector	pos_new;GetPosition(pos_new);
 	SetPosition(pos_new);
