@@ -20,6 +20,7 @@
 #include "CharacterPhysicsSupport.h"
 #include "EffectorShot.h"
 #include "phcollidevalidator.h"
+#include "PHShell.h"
 void CActor::cam_Set	(EActorCameras style)
 {
 	CCameraBase* old_cam = cam_Active();
@@ -238,7 +239,23 @@ void CActor::cam_Update(float dt, float fFOV)
 		xrc.box_query				(Level().ObjectSpace.GetStaticModel(), point, Fvector().set(VIEWPORT_NEAR,VIEWPORT_NEAR,VIEWPORT_NEAR) );
 		u32 tri_count				= xrc.r_count();
 		if (tri_count)
+		{
 			_viewport_near			= 0.01f;
+		}
+		else
+		{
+			xr_vector<ISpatial*> ISpatialResult;
+			g_SpatialSpacePhysic->q_box(ISpatialResult, 0, STYPE_PHYSIC, point, Fvector().set(VIEWPORT_NEAR,VIEWPORT_NEAR,VIEWPORT_NEAR));
+			for (u32 o_it=0; o_it<ISpatialResult.size(); o_it++)
+			{
+				CPHShell*		pCPHS= smart_cast<CPHShell*>(ISpatialResult[o_it]);
+				if (pCPHS)
+				{
+					_viewport_near			= 0.01f;
+					break;
+				}
+			}
+		}
 	}
 /*
 	{
