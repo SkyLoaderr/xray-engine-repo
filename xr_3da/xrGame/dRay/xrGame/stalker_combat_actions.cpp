@@ -958,6 +958,7 @@ void CStalkerActionDetourEnemy::initialize		()
 void CStalkerActionDetourEnemy::finalize		()
 {
 	inherited::finalize					();
+	
 	if (object().g_Alive())
 		object().agent_manager().member().member(&object()).detour	(false);
 }
@@ -1233,6 +1234,11 @@ void CStalkerActionHideFromGrenade::initialize				()
 	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeRun);
 	object().m_ce_best->invalidate				();
+
+	m_storage->set_property						(eWorldPropertyInCover,false);
+	m_storage->set_property						(eWorldPropertyLookedOut,false);
+	m_storage->set_property						(eWorldPropertyPositionHolded,false);
+	m_storage->set_property						(eWorldPropertyEnemyDetoured,false);
 }
 
 void CStalkerActionHideFromGrenade::execute					()
@@ -1400,6 +1406,11 @@ void CStalkerActionKillEnemyIfPlayerOnThePath::initialize		()
 	object().movement().set_movement_type	(eMovementTypeStand);
 	object().movement().force_update		(true);
 
+	m_storage->set_property					(eWorldPropertyInCover,false);
+	m_storage->set_property					(eWorldPropertyLookedOut,false);
+	m_storage->set_property					(eWorldPropertyPositionHolded,false);
+	m_storage->set_property					(eWorldPropertyEnemyDetoured,false);
+
 #ifndef SILENT_COMBAT
 	if (object().memory().enemy().selected()->human_being())
 		if (object().agent_manager().member().can_cry_noninfo_phrase())
@@ -1468,8 +1479,11 @@ void CStalkerActionCriticalHit::initialize					()
 void CStalkerActionCriticalHit::finalize					()
 {
 	inherited::finalize						();
+
 	if (&object().brain().CStalkerPlanner::m_storage == object().animation().setup_storage())
 		object().animation().setup_storage	(0);
+
+	m_storage->set_property					(eWorldPropertyCriticallyWounded,false);
 }
 
 void CStalkerActionCriticalHit::execute						()
