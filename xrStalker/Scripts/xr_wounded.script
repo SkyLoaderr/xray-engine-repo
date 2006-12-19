@@ -34,6 +34,10 @@ function evaluator_can_fight:__init(name, storage) super(nil, name)
     self.a = storage
 end
 function evaluator_can_fight:evaluate ()
+	if self.object:critically_wounded() == true then
+		return true
+	end
+
     return self.a.wound_manager.fight ~= "false"
 end    
 
