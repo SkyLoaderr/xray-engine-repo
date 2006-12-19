@@ -10,17 +10,22 @@
 
 IC	CStalkerAnimationPair::CStalkerAnimationPair	()
 {
-	reset					();
-	m_step_dependence		= false;
-	m_global_animation		= false;
 #ifdef DEBUG
 	m_object_name			= "unassigned";
 	m_animation_type_name	= "unassigned";
 #endif
+	reset					();
+	m_step_dependence		= false;
+	m_global_animation		= false;
 }
 
 IC	void CStalkerAnimationPair::reset				()
 {
+#if 0//def DEBUG
+	if (m_animation)
+		Msg					("animation [%s][%s] is reset",m_object_name,m_animation_type_name);
+#endif // DEBUG
+
 	m_animation.invalidate	();
 	m_blend					= 0;
 	m_actual				= true;
