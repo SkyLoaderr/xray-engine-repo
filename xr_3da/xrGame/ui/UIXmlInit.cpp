@@ -183,12 +183,17 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	int flag_texture			= xml_doc.ReadAttribInt(path, index, "la_texture",	1);
 	int flag_alpha				= xml_doc.ReadAttribInt(path, index, "la_alpha",	0);
 		
-	pWnd->SetLightAnim(str_flag,	(flag_cyclic)?true:false, 
+	pWnd->SetClrLightAnim(str_flag,	(flag_cyclic)?true:false, 
 									(flag_alpha)?true:false,
 									(flag_text)?true:false,
 									(flag_texture)?true:false
 									);
 
+
+	str_flag					= xml_doc.ReadAttrib(path, index, "xform_anim",				"");
+	flag_cyclic					= xml_doc.ReadAttribInt(path, index, "xform_anim_cyclic",	1);
+		
+	pWnd->SetXformLightAnim		(str_flag, (flag_cyclic)?true:false );
 
 	int flag_highlight_txt		= xml_doc.ReadAttribInt(path, index, "highlight_text", 0);
 	if(flag_highlight_txt){

@@ -44,7 +44,7 @@ void CUIMpTradeWnd::UpdateMomeyIndicator()
 void CUIMpTradeWnd::SetInfoString(LPCSTR str)
 {
 	m_static_information->SetText			(str);
-	m_static_information->ResetAnimation	();
+	m_static_information->ResetClrAnimation	();
 	Msg("Buy menu message:%s", str);
 }
 

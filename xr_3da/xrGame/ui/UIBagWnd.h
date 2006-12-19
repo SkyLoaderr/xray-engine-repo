@@ -14,8 +14,8 @@ class CUITabButtonMP;
 #define SET_NO_RESTR_COLOR(x)		x->SetColor(0xffffffff)
 #define SET_EXTERNAL_COLOR(x)		x->SetColor(0xff9696ff)
 
-#define HIGHTLIGHT_ITEM(x)			x->SetLightAnim("ui_slow_blinking", true, true, false, true)
-#define UNHIGHTLIGHT_ITEM(x)		x->SetLightAnim(NULL, true, true, false, true); \
+#define HIGHTLIGHT_ITEM(x)			x->SetClrLightAnim("ui_slow_blinking", true, true, false, true)
+#define UNHIGHTLIGHT_ITEM(x)		x->SetClrLightAnim(NULL, true, true, false, true); \
 									x->SetColor(0xffffffff)
 
 

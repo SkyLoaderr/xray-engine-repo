@@ -32,16 +32,16 @@ void CUITabButtonMP::UpdateTextAlign()
 	if(m_orientationVertical)
 	{
         if (CUIButton::BUTTON_PUSHED == m_eButtonState)
-            m_iTextOffsetY =  - TEXT_INDENTION;
+            m_TextOffset.y =  - TEXT_INDENTION;
 		else
-			m_iTextOffsetY = 0;
+			m_TextOffset.y = 0;
 	}
 	else
 	{
 	if (m_bCursorOverWindow)
-		m_iTextOffsetX = 100;
+		m_TextOffset.x = 100;
 	else
-		m_iTextOffsetX = 0;
+		m_TextOffset.x = 0;
 	}
 
 }

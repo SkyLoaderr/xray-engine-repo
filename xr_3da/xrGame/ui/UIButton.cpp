@@ -146,9 +146,9 @@ void CUIButton::DrawTexture()
 	if(m_bAvailableTexture && m_bTextureEnable)
 	{
 		if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
-			m_UIStaticItem.SetPos(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
+			m_UIStaticItem.SetPos(rect.left + m_TextureOffset.x, rect.top + m_TextureOffset.y);
 		else
-			m_UIStaticItem.SetPos(rect.left + m_PushOffset.x + m_iTexOffsetX, rect.top + m_PushOffset.y + m_iTexOffsetY);
+			m_UIStaticItem.SetPos(rect.left + m_PushOffset.x + m_TextureOffset.x, rect.top + m_PushOffset.y + m_TextureOffset.y);
 
 		if(m_bStretchTexture)
 			m_UIStaticItem.SetRect(0, 0, rect.width(), rect.height());
@@ -187,8 +187,8 @@ void CUIButton::DrawHighlightedText(){
 	u32 def_col = m_pLines->GetTextColor();
 	m_pLines->SetTextColor(m_HighlightColor);
 
-	m_pLines->Draw(	rect.left + right_offset + 0 +m_iTextOffsetX + m_ShadowOffset.x, 
-					rect.top + down_offset   - 0 +m_iTextOffsetY + m_ShadowOffset.y);
+	m_pLines->Draw(	rect.left + right_offset + 0 +m_TextOffset.x + m_ShadowOffset.x, 
+					rect.top + down_offset   - 0 +m_TextOffset.y + m_ShadowOffset.y);
 
 	m_pLines->SetTextColor(def_col);
 

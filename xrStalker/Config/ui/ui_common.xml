@@ -454,5 +454,6 @@
     <texture id="ui_sm_mapQuest_artefact" x="749" y="998" width="13" height="13" />
     <texture id="ui_sm_mapQuest_gold" x="749" y="1011" width="13" height="13" />
 
+    <texture id="ui_highlight" x="723" y="627" width="128" height="128" />
 
 </ui_texture>

@@ -7,15 +7,6 @@
 	<function_on_stop>xr_effects.esc_init_dialod</function_on_stop>
 <!--
 		<global_wnd x="0" y="0" width="1024" height="768">
-			<auto_static x=900 y="750" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">pda_tutorial</text>
-			</auto_static>
-			<auto_static x=10 y="750" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">pda_tutorial</text>
-			</auto_static>
-			<auto_static x=10 y="10" width="150" height="50">
-				<text font="graffiti22" r="255" g="0" b="0" a="255">pda_tutorial</text>
-			</auto_static>
 			<auto_static x=900 y="10" width="150" height="50">
 				<text font="graffiti22" r="255" g="0" b="0" a="255">pda_tutorial</text>
 			</auto_static>
@@ -48,10 +39,9 @@
 			<pda_section>pda_quests</pda_section>
 
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="156" y="608" width="50" height="50" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="0" length_sec="4" x="156" y="608" width="50" height="50"  stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w2</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+					<texture>ui_highlight</texture>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -66,10 +56,9 @@
 			<pda_section>pda_quests</pda_section>
 
 			<main_wnd>
-				<auto_static start_time="0" length_sec="6" x="404" y="186" width="50" height="50" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="0" length_sec="6" x="404" y="186" width="50" height="50"  stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w2</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+					<texture>ui_highlight</texture>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -84,8 +73,6 @@
 			<pda_section>pda_quests</pda_section>
 			<main_wnd/>
 		</item>
-		
-		
 
 		<item><!--Дальше: Второй раздел ПДА - это Карта.-->
 			<length_sec>4</length_sec>
@@ -96,10 +83,9 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_map</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="216" y="608" width="50" height="50" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="0" length_sec="4" x="216" y="608" width="50" height="50"  stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+					<texture>ui_highlight</texture>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -113,15 +99,14 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_map</pda_section>
 			<main_wnd>
-				<auto_static start_time="2" length_sec="4" x="245" y="135" width="30" height="30" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="2" length_sec="4" x="248" y="135" width="30" height="30" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+					<texture>ui_highlight</texture>
 				</auto_static>
-				<auto_static start_time="2" length_sec="4" x="266" y="135" width="30" height="30" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+				
+				<auto_static start_time="2" length_sec="4" x="269" y="135" width="30" height="30" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w2</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+					<texture>ui_highlight</texture>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -135,15 +120,14 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_map</pda_section>
 			<main_wnd>
-				<auto_static start_time="4" length_sec="2" x="154" y="135" width="30" height="30" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="4" length_sec="2" x="154" y="135" width="30" height="30" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+					<texture>ui_highlight</texture>
 				</auto_static>
 			</main_wnd>
 		</item>
 
-		<item><!--…Еще сможешь добавлять или убирать собственные пометки на карте... -->
+		<delme_item><!--…Еще сможешь добавлять или убирать собственные пометки на карте... -->
 			<length_sec>5</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
@@ -163,7 +147,7 @@
 					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
 				</auto_static>
 			</main_wnd>
-		</item>
+		</delme_item>
 
 		<item><!--вобщем разберешься…там не сложно…В ПДА есть раздел Контакты -->
 			<length_sec>6</length_sec>
@@ -188,15 +172,14 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_contacts</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="357" y="608" width="50" height="50" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="0" length_sec="4" x="357" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+					<texture>ui_highlight</texture>
 				</auto_static>
-				<auto_static start_time="4" length_sec="19" x="202" y="211" width="50" height="50" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+				
+				<auto_static start_time="4" length_sec="19" x="202" y="211" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w2</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+					<texture>ui_highlight</texture>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -209,15 +192,14 @@
 			<guard_key/>
 			<function_on_start>mob_trader.on_start_tutorial_item_1</function_on_start>
 			<function_on_stop>mob_trader.on_stop_tutorial_item</function_on_stop>
-			<sound/>
+			<sound>characters_voice\scenario\trader\trader_tutorial_pda_12</sound>
 			<cursor_pos/>
 			<grab_input>1</grab_input>
 			<pda_section>pda_closed</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="18" x="100" y="100" width="150" height="150" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="0" length_sec="18" x="100" y="100" width="150" height="150" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+					<texture>ui_highlight</texture>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -233,10 +215,9 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_diary</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="280" y="608" width="50" height="50" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="0" length_sec="4" x="275" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+					<texture>ui_highlight</texture>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -252,10 +233,9 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_ranking</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="437" y="608" width="50" height="50" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="0" length_sec="4" x="437" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+					<texture>ui_highlight</texture>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -269,10 +249,9 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_statistics</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="515" y="608" width="50" height="50" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="0" length_sec="4" x="515" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+					<texture>ui_highlight</texture>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -287,10 +266,9 @@
 			<grab_input>1</grab_input>
 			<pda_section>pda_encyclopedia</pda_section>
 			<main_wnd>
-				<auto_static start_time="0" length_sec="4" x="622" y="608" width="50" height="50" alignment="c" stretch="1"
-							light_anim="ui_pda_contacts" la_cyclic="1" la_texture="1" la_alpha="1">
+				<auto_static start_time="0" length_sec="6" x="622" y="608" width="50" height="50" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
 					<window_name>w1</window_name>
-					<texture>ui_icons_newPDA_CrclMiddle_h</texture>
+					<texture>ui_highlight</texture>
 				</auto_static>
 			</main_wnd>
 		</item>

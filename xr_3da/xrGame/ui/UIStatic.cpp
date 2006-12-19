@@ -1,8 +1,3 @@
-// UIStatic.h: класс статического элемента
-//
-//////////////////////////////////////////////////////////////////////
-
-
 #include "stdafx.h"
 #include "uistatic.h"
 #include "UIXmlInit.h"
@@ -21,6 +16,14 @@ const char * const	clDefault	= "default";
 #define LA_TEXTCOLOR		(1<<2)
 #define LA_TEXTURECOLOR		(1<<3)
 
+void lanim_cont::set_defaults()
+{
+	m_lanim					= NULL;	
+	m_lanim_start_time		= -1.0f;
+	m_lanim_delay_time		= 0.0f;
+	m_lanimFlags.zero		();
+}
+
 CUIStatic:: CUIStatic()
 {
 	m_bAvailableTexture		= false;
@@ -28,28 +31,22 @@ CUIStatic:: CUIStatic()
 	m_bClipper				= false;
 	m_bStretchTexture		= false;
 
-	m_iTextOffsetX			= 0.0f;
-	m_iTextOffsetY			= 0.0f;
-	m_iTexOffsetY			= 0.0f;
-	m_iTexOffsetX			= 0.0f;
+	m_TextureOffset.set		(0.0f,0.0f);
+	m_TextOffset.set		(0.0f,0.0f);
 
 	m_pMask					= NULL;
 	m_ElipsisPos			= eepNone;
 	m_iElipsisIndent		= 0;
 
-	m_ClipRect.bottom		= -1;
-	m_ClipRect.top			= -1;
-	m_ClipRect.left			= -1;
-	m_ClipRect.right		= -1;
+	m_ClipRect.set			(-1,-1,-1,-1);
 
 	m_bCursorOverWindow		= false;
 	m_bHeading				= false;
 	m_fHeading				= 0.0f;
-	m_lanim					= NULL;	
-	m_lanim_start_time		= -1.0f;
-	m_lanim_delay_time		= 0.0f;
+	m_lanim_clr.set_defaults	();
+	m_lanim_xform.set_defaults	();
+
 	m_pLines				= NULL;
-	m_lanimFlags.zero		();
 	m_bEnableTextHighlighting = false;
 }
 
@@ -58,19 +55,31 @@ CUIStatic::~ CUIStatic()
 	xr_delete(m_pLines);
 }
 
-void CUIStatic::SetLightAnim(LPCSTR lanim, bool bCyclic, bool bOnlyAlpha, bool bTextColor, bool bTextureColor)
+void CUIStatic::SetXformLightAnim(LPCSTR lanim, bool bCyclic)
 {
 	if(lanim && lanim[0]!=0)
-		m_lanim	= LALib.FindItem(lanim);
+		m_lanim_xform.m_lanim	= LALib.FindItem(lanim);
 	else
-		m_lanim	= NULL;
+		m_lanim_xform.m_lanim	= NULL;
 	
-	m_lanimFlags.zero		();
+	m_lanim_xform.m_lanimFlags.zero		();
 
-	m_lanimFlags.set		(LA_CYCLIC,			bCyclic);
-	m_lanimFlags.set		(LA_ONLYALPHA,		bOnlyAlpha);
-	m_lanimFlags.set		(LA_TEXTCOLOR,		bTextColor);
-	m_lanimFlags.set		(LA_TEXTURECOLOR,	bTextureColor);
+	m_lanim_xform.m_lanimFlags.set		(LA_CYCLIC,			bCyclic);
+}
+
+void CUIStatic::SetClrLightAnim(LPCSTR lanim, bool bCyclic, bool bOnlyAlpha, bool bTextColor, bool bTextureColor)
+{
+	if(lanim && lanim[0]!=0)
+		m_lanim_clr.m_lanim	= LALib.FindItem(lanim);
+	else
+		m_lanim_clr.m_lanim	= NULL;
+	
+	m_lanim_clr.m_lanimFlags.zero		();
+
+	m_lanim_clr.m_lanimFlags.set		(LA_CYCLIC,			bCyclic);
+	m_lanim_clr.m_lanimFlags.set		(LA_ONLYALPHA,		bOnlyAlpha);
+	m_lanim_clr.m_lanimFlags.set		(LA_TEXTCOLOR,		bTextColor);
+	m_lanim_clr.m_lanimFlags.set		(LA_TEXTURECOLOR,	bTextureColor);
 }
 
 void CUIStatic::Init(LPCSTR tex_name, float x, float y, float width, float height)
@@ -157,7 +166,7 @@ void CUIStatic::DrawText(){
 		else{
 			Fvector2			p;
 			GetAbsolutePos		(p);
-			m_pLines->Draw		(p.x + m_iTextOffsetX, p.y + m_iTextOffsetY);
+			m_pLines->Draw		(p.x + m_TextOffset.x, p.y + m_TextOffset.y);
 		}
 
 	}
@@ -168,7 +177,7 @@ void CUIStatic::DrawTexture(){
 	if(m_bAvailableTexture && m_bTextureEnable){
 		Frect			rect;
 		GetAbsoluteRect	(rect);
-		m_UIStaticItem.SetPos	(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
+		m_UIStaticItem.SetPos	(rect.left + m_TextureOffset.x, rect.top + m_TextureOffset.y);
 
 		if(m_bStretchTexture)
 			m_UIStaticItem.SetRect(0, 0, rect.width(), rect.height());
@@ -190,50 +199,79 @@ void CUIStatic::Update()
 {
 	inherited::Update();
 	//update light animation if defined
-	if (m_lanim)
+	if (m_lanim_clr.m_lanim)
 	{
-		if(m_lanim_start_time<0.0f)		ResetAnimation	();
+		if(m_lanim_clr.m_lanim_start_time<0.0f)		ResetClrAnimation	();
 		float t = Device.dwTimeContinual/1000.0f;
 
-		if (t < m_lanim_start_time)	// consider animation delay
+		if (t < m_lanim_clr.m_lanim_start_time)	// consider animation delay
 			return;
 
-		if(m_lanimFlags.test(LA_CYCLIC) || t-m_lanim_start_time < m_lanim->Length_sec()){
+		if(m_lanim_clr.m_lanimFlags.test(LA_CYCLIC) || t-m_lanim_clr.m_lanim_start_time < m_lanim_clr.m_lanim->Length_sec()){
 
 			int frame;
-			u32 clr					= m_lanim->CalculateRGB(t-m_lanim_start_time,frame);
+			u32 clr					= m_lanim_clr.m_lanim->CalculateRGB(t-m_lanim_clr.m_lanim_start_time,frame);
 
-			if(m_lanimFlags.test(LA_TEXTURECOLOR))
-				if(m_lanimFlags.test(LA_ONLYALPHA))
+			if(m_lanim_clr.m_lanimFlags.test(LA_TEXTURECOLOR))
+				if(m_lanim_clr.m_lanimFlags.test(LA_ONLYALPHA))
 					SetColor				(subst_alpha(GetColor(), color_get_A(clr)));
 				else
 					SetColor				(clr);
 
-			if(m_lanimFlags.test(LA_TEXTCOLOR))
-				if(m_lanimFlags.test(LA_ONLYALPHA))
+			if(m_lanim_clr.m_lanimFlags.test(LA_TEXTCOLOR))
+				if(m_lanim_clr.m_lanimFlags.test(LA_ONLYALPHA))
 					SetTextColor				(subst_alpha(GetTextColor(), color_get_A(clr)));
 				else
 					SetTextColor				(clr);
 			
 		}
 	}
+	
+	if(m_lanim_xform.m_lanim)
+	{
+		if(m_lanim_xform.m_lanim_start_time<0.0f){
+			m_lanim_xform.m_lanim_start_time = Device.dwTimeContinual/1000.0f;
+		}
+		float t = Device.dwTimeContinual/1000.0f;
+
+		if(	m_lanim_xform.m_lanimFlags.test(LA_CYCLIC) || 
+			t - m_lanim_xform.m_lanim_start_time < m_lanim_xform.m_lanim->Length_sec() )
+		{
+			int frame;
+			u32 clr				= m_lanim_xform.m_lanim->CalculateRGB(t-m_lanim_xform.m_lanim_start_time,frame);
+			
+			EnableHeading		(true);
+			float heading		= (PI_MUL_2/255.0f) * color_get_A(clr);
+			SetHeading			(heading);
+
+			float _value		= color_get_R(clr);
+			
+			float f_scale		= _value / 128.0f;
+
+			float _w			= m_xxxRect.width();
+			float _h			= m_xxxRect.height();
+			Fvector2 _sz;
+			_sz.set				(m_xxxRect.width()*f_scale, m_xxxRect.height()*f_scale );
+			SetWndSize			(_sz);
+		}
+	}
 }
 
-void CUIStatic::ResetAnimation()
+void CUIStatic::ResetClrAnimation()
 {
-	m_lanim_start_time = Device.dwTimeContinual/1000.0f + m_lanim_delay_time/1000.0f;
+	m_lanim_clr.m_lanim_start_time = Device.dwTimeContinual/1000.0f + m_lanim_clr.m_lanim_delay_time/1000.0f;
 }
 
-void CUIStatic::SetAnimDelay(float delay){
-	m_lanim_delay_time = delay;
+void CUIStatic::SetClrAnimDelay(float delay){
+	m_lanim_clr.m_lanim_delay_time = delay;
 }
 
-bool CUIStatic::IsAnimStoped(){
-	if (m_lanimFlags.test(LA_CYCLIC) || m_lanim_start_time<0.0f)
+bool CUIStatic::IsClrAnimStoped(){
+	if (m_lanim_clr.m_lanimFlags.test(LA_CYCLIC) || m_lanim_clr.m_lanim_start_time<0.0f)
 		return false;
 	
 	float t = Device.dwTimeContinual/1000.0f;
-	if(t-m_lanim_start_time < m_lanim->Length_sec())
+	if(t-m_lanim_clr.m_lanim_start_time < m_lanim_clr.m_lanim->Length_sec())
 		return false;
 	else 
 		return true;
@@ -459,104 +497,6 @@ u32 CUIStatic::GetTextAlign_script(){
 	return static_cast<u32>(m_pLines->GetTextAlignment());
 }
 
-//void CUIStatic::PreprocessText(STRING &str, float width, CGameFont *pFont)
-//{
-//#pragma todo("Satan->Satan : bad function")
-//	R_ASSERT(false);
-//	// Codde guards
-//	R_ASSERT(pFont);
-//	if (str.empty()) return;
-//
-//	STRING		processedStr, word, tmp;
-//	processedStr.reserve(str.size());
-//
-//	const char	delimSpace		= ' ';
-//	const char	delimTab		= '\t';
-//	STRING_IT	it				= str.begin();
-//	float		lineWidth		= 0;
-//
-//	bool		delimiterBegin	= false;
-//
-//	// Идем по словам и считаем их длину
-//	while (str.end() != it)
-//	{
-//		if (lineWidth < width)
-//		{
-//			if (delimSpace == *it || delimTab == *it)
-//			{
-//				if (!delimiterBegin)
-//				{
-//					delimiterBegin = true;
-//					processedStr.insert(processedStr.end(), word.begin(), word.end());
-//					word.clear();
-//				}
-//			}
-//			else
-//			{
-//				if (delimiterBegin)
-//				{
-//					delimiterBegin = false;
-//				}
-//			}
-//
-//			if ('\\' == *it && 'n' == *(it + 1))
-//			{
-//				lineWidth = 0;
-//			}
-//
-//			if ('%' == *it && 'c' == *(it + 1))
-//			{
-//				// Try default color first
-//				if (strstr(&*(it + 2), clDefault) == &*(it + 2))
-//				{
-//					lineWidth -= pFont->SizeOf("%c");
-//					lineWidth -= pFont->SizeOf(clDefault);
-//				}
-//				else
-//				{
-//					// Try predefined colors
-//					for (CUIXmlInit::ColorDefs::const_iterator it2 = CUIXmlInit::GetColorDefs()->begin(); it2 != CUIXmlInit::GetColorDefs()->end(); ++it2)
-//					{
-//						if (strstr(&*(it + 2), *it2->first) == &*(it + 2))
-//						{
-//							lineWidth -= pFont->SizeOf("%c");
-//							lineWidth -= pFont->SizeOf(*it2->first);
-//							break;
-//						}
-//					}
-//				}
-//			}
-//
-//			word.push_back(*it);
-//			lineWidth += pFont->SizeOf(*it++);
-//		}
-//		else
-//		{
-//			processedStr.push_back('\\');
-//			processedStr.push_back('n');
-//
-//			// Remove leading spaces
-//			tmp.clear();
-//
-//			STRING_IT it = word.begin();
-//			for (; it != word.end(); ++it)
-//			{
-//				if (delimSpace == *it || delimTab == *it)
-//					break;
-//			}
-//
-//			tmp.assign(++it, word.end());
-//			word.swap(tmp);
-//			word.push_back(0);
-//			lineWidth = pFont->SizeOf(&word.front());
-//			word.pop_back();
-//		}
-//	}
-//	processedStr.insert(processedStr.end(), word.begin(), word.end());
-//	processedStr.push_back(0);
-//    processedStr.swap(str);
-//}
-
 
 void CUIStatic::Elipsis(const Frect &rect, EElipsisPosition elipsisPos)
 {
@@ -657,7 +597,7 @@ void CUIStatic::DrawHighlightedText(){
 	m_pLines->Draw(	rect.left - 0 + m_iTextOffsetX,	rect.top + 1 + m_iTextOffsetY);
 	m_pLines->Draw(	rect.left + 0 + m_iTextOffsetX, rect.top - 1 + m_iTextOffsetY);
 */
-	m_pLines->Draw(	rect.left + 0 + m_iTextOffsetX, rect.top - 0 + m_iTextOffsetY);
+	m_pLines->Draw(	rect.left + 0 + m_TextOffset.x, rect.top - 0 + m_TextOffset.y);
 	m_pLines->SetTextColor(def_col);
 }
 

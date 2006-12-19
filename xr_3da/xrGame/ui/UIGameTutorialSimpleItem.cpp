@@ -118,7 +118,7 @@ void CUISequenceSimpleItem::Load(CUIXml* xml, int idx)
 void CUISequenceSimpleItem::SSubItem::Start	()
 {
 	m_wnd->Show						(true);
-	m_wnd->ResetAnimation			();
+	m_wnd->ResetClrAnimation			();
 	m_visible						= true;
 }
 

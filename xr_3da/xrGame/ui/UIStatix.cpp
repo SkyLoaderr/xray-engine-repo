@@ -11,13 +11,13 @@ CUIStatix::~CUIStatix()
 
 void CUIStatix::start_anim()
 {
-	SetLightAnim	("ui_slow_blinking", true, true, true, true);
-	ResetAnimation	();
+	SetClrLightAnim	("ui_slow_blinking", true, true, true, true);
+	ResetClrAnimation	();
 }
 
 void CUIStatix::stop_anim()
 {
-	SetLightAnim	(NULL, true, true, true, true);
+	SetClrLightAnim	(NULL, true, true, true, true);
 }
 
 void CUIStatix::Update(){
@@ -38,7 +38,7 @@ void CUIStatix::OnFocusLost()
 void CUIStatix::OnFocusReceive()
 {
 	CUIStatic::OnFocusReceive	();
-	ResetAnimation				();
+	ResetClrAnimation				();
 }
 
 bool CUIStatix::OnMouseDown(bool left_button)

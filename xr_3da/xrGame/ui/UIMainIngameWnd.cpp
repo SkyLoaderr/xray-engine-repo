@@ -912,7 +912,7 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 void CUIMainIngameWnd::AddInfoMessage(LPCSTR message)
 {
 	CUIStatic* pItem = UIInfoMessages.AddLogMessage(message);
-	pItem->SetLightAnim("ui_main_msgs", false, true, true, true);
+	pItem->SetClrLightAnim("ui_main_msgs", false, true, true, true);
 	pItem->SetTextAlignment(CGameFont::alCenter);
 }
 
@@ -933,7 +933,7 @@ void CUIMainIngameWnd::RenderQuickInfos()
 	if (pObject!=m_pActor->ObjectWeLookingAt())
 	{
 		UIStaticQuickHelp.SetTextST				(actor_action);
-		UIStaticQuickHelp.ResetAnimation		();
+		UIStaticQuickHelp.ResetClrAnimation		();
 		pObject	= m_pActor->ObjectWeLookingAt	();
 	}
 }
@@ -1067,7 +1067,7 @@ void CUIMainIngameWnd::UpdateFlashingIcons()
 
 void CUIMainIngameWnd::AnimateContacts(bool b_snd)
 {
-	UIPdaOnline.ResetAnimation	();
+	UIPdaOnline.ResetClrAnimation	();
 
 	if(b_snd)
 		HUD_SOUND::PlaySound	(m_contactSnd, Fvector().set(0,0,0), 0, true );

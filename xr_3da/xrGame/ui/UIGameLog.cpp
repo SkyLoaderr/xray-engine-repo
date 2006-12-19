@@ -32,8 +32,8 @@ CUIStatic* CUIGameLog::AddLogMessage(LPCSTR msg)
 	ADD_TEXT_TO_VIEW3(msg, pItem, this);
 	pItem->SetFont(GetFont());
 	pItem->SetTextColor(txt_color);
-	pItem->SetAnimDelay(5000.0f);
-	pItem->SetLightAnim(CHAT_LOG_ITEMS_ANIMATION, false, true, true, true);
+	pItem->SetClrAnimDelay(5000.0f);
+	pItem->SetClrLightAnim(CHAT_LOG_ITEMS_ANIMATION, false, true, true, true);
 	ForceUpdate();
 	return pItem;
 }
@@ -44,8 +44,8 @@ CUIPdaMsgListItem* CUIGameLog::AddPdaMessage(LPCSTR msg, float delay){
 	CUIPdaMsgListItem* pItem = xr_new<CUIPdaMsgListItem>();
 	pItem->Init(0,0, GetDesiredChildWidth(), 10);	//fake height
 	pItem->UIMsgText.SetTextST(msg);
-	pItem->SetAnimDelay(delay);
-    pItem->SetLightAnim(CHAT_LOG_ITEMS_ANIMATION, false, true, true, true);
+	pItem->SetClrAnimDelay(delay);
+    pItem->SetClrLightAnim(CHAT_LOG_ITEMS_ANIMATION, false, true, true, true);
 	AddWindow(pItem, true);
 
 	return pItem;
@@ -62,8 +62,8 @@ CUIPdaKillMessage* CUIGameLog::AddLogMessage(KillMessageStruct& msg){
 	pItem->SetHeight(kill_msg_height);
 	pItem->Init(msg);
 //	pItem->SetTextColor(GetTextColor());
-	pItem->SetAnimDelay(5000.0f);
-	pItem->SetLightAnim(CHAT_LOG_ITEMS_ANIMATION, false, true, true, true);
+	pItem->SetClrAnimDelay(5000.0f);
+	pItem->SetClrLightAnim(CHAT_LOG_ITEMS_ANIMATION, false, true, true, true);
 	AddWindow(pItem, true);
 	return pItem;
 }
@@ -79,8 +79,8 @@ void CUIGameLog::AddChatMessage(LPCSTR msg, LPCSTR author){
     pItem->m_pLines->SetCutWordsMode(true);
 	pItem->SetFont(GetFont());
 	pItem->SetTextColor(txt_color);
-	pItem->SetAnimDelay(5000.0f);
-	pItem->SetLightAnim(CHAT_LOG_ITEMS_ANIMATION, false, true, true, true);	
+	pItem->SetClrAnimDelay(5000.0f);
+	pItem->SetClrLightAnim(CHAT_LOG_ITEMS_ANIMATION, false, true, true, true);	
 	pItem->SetWidth(this->GetDesiredChildWidth());
 	pItem->AdjustHeightToText();
 	AddWindow(pItem, true);	
@@ -107,7 +107,7 @@ void CUIGameLog::Update()
 		VERIFY(pItem);
 		pItem->Update();
 
-		if (pItem->IsAnimStoped())
+		if (pItem->IsClrAnimStoped())
 			toDelList.push_back(pItem);
 	}
 
