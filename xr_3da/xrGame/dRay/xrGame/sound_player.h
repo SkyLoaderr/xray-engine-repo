@@ -53,10 +53,12 @@ public:
 
 	struct CSoundCollection : public CRandom32 {
 		xr_vector<ref_sound*>					m_sounds;
+		u32										m_last_sound_id;
 
-						CSoundCollection		(const CSoundCollectionParams &params);
-						~CSoundCollection		();
-		IC	ref_sound	*add					(ESoundTypes type, LPCSTR name) const;
+							CSoundCollection	(const CSoundCollectionParams &params);
+							~CSoundCollection	();
+		IC	ref_sound		*add				(ESoundTypes type, LPCSTR name) const;
+			const ref_sound	&random				(const u32 &id);
 	};
 
 	struct CSoundSingle : public CSoundParams {

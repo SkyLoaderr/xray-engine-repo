@@ -176,8 +176,9 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	CSoundSingle				sound_single;
 	(CSoundParams&)sound_single	= (CSoundParams&)sound;
 	sound_single.m_bone_id		= smart_cast<CKinematics*>(m_object->Visual())->LL_BoneID(sound.m_bone_name);
-	
+
 	sound_single.m_sound		= xr_new<ref_sound>();
+	/**
 	sound_single.m_sound->clone	(
 		*(*I).second.second->m_sounds[
 			id == u32(-1)
@@ -191,6 +192,13 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 		st_Effect,
 		sg_SourceType
 	);
+	/**/
+	sound_single.m_sound->clone	(
+		(*I).second.second->random(id),
+		st_Effect,
+		sg_SourceType
+	);
+
 	sound_single.m_sound->_p->g_object		= m_object;
 	sound_single.m_sound->_p->g_userdata	= (*I).second.first.m_data;
 	VERIFY						(sound_single.m_sound->_handle());
@@ -224,6 +232,8 @@ IC	Fvector CSoundPlayer::compute_sound_point(const CSoundSingle &sound)
 
 CSoundPlayer::CSoundCollection::CSoundCollection	(const CSoundCollectionParams &params)
 {
+	m_last_sound_id						= u32(-1);
+
 	seed								(u32(CPU::QPC() & 0xffffffff));
 	m_sounds.clear						();
 	for (int j=0, N = _GetItemCount(*params.m_sound_prefix); j<N; ++j) {
@@ -265,3 +275,27 @@ CSoundPlayer::CSoundCollection::~CSoundCollection	()
 	delete_data						(m_sounds);
 }
 
+const ref_sound &CSoundPlayer::CSoundCollection::random	(const u32 &id)
+{
+	VERIFY					(!m_sounds.empty());
+
+	if (id != u32(-1)) {
+		m_last_sound_id		= id;
+		VERIFY				(id < m_sounds.size());
+		return				(*m_sounds[id]);
+	}
+
+	if (m_sounds.size() <= 2) {
+		m_last_sound_id		= CRandom32::random(m_sounds.size());
+		return				(*m_sounds[m_last_sound_id]);
+	}
+	
+	u32						result;
+	do {
+		result				= CRandom32::random(m_sounds.size());
+	}
+	while (result == m_last_sound_id);
+
+	m_last_sound_id			= result;
+	return					(*m_sounds[result]);
+}
