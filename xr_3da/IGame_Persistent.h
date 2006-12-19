@@ -109,6 +109,7 @@ public:
 	virtual			~IMainMenu						()							{};
 	virtual void	Activate						(bool bActive)				=0; 
 	virtual	bool	IsActive						()							=0; 
+	virtual void	DestroyInternal					()							=0;
 };
 
 extern ENGINE_API	IGame_Persistent*	g_pGamePersistent;

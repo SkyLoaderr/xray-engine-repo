@@ -30,11 +30,14 @@ class CMainMenu :
 	Flags8			m_Flags;
 	string_path		m_screenshot_name;
 	u32				m_screenshotFrame;
-			void	ReadTextureInfo();
+			void	ReadTextureInfo		();
+
 
 	xr_vector<CUIWindow*>		m_pp_draw_wnds;
 
 public:
+	u32				m_deactivated_frame;
+	virtual void	DestroyInternal					();
 					CMainMenu						();
 	virtual			~CMainMenu						();
 

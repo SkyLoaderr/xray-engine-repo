@@ -27,7 +27,8 @@ CMainMenu::CMainMenu	()
 	CUIXmlInit::InitColorDefs	();
 	g_btnHint					= xr_new<CUIButtonHint>();
 
-	m_pMessageBox = NULL;
+	m_pMessageBox				= NULL;
+	m_deactivated_frame			= 0;
 }
 
 CMainMenu::~CMainMenu	()
@@ -115,6 +116,7 @@ void CMainMenu::Activate	(bool bActivate)
 		Device.seqRender.Add				(this, 3); // 1-console 2-cursor
 
 	}else{
+		m_deactivated_frame					= Device.dwFrame;
 		m_Flags.set							(flActive,				FALSE);
 		m_Flags.set							(flNeedChangeCapture,	TRUE);
 
@@ -401,4 +403,10 @@ void CMainMenu::OnServerReject()
 
 	m_pMessageBox->Init("message_box_server_reject");
 	StartStopMenu(m_pMessageBox, false);	
+}
+
+void CMainMenu::DestroyInternal()
+{
+	if(m_startDialog && m_deactivated_frame < Device.dwFrame+4)
+		xr_delete		(m_startDialog);
 }

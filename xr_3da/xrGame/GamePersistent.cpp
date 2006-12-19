@@ -310,6 +310,9 @@ void CGamePersistent::OnFrame	()
 #endif
 	if (!m_intro_event.empty())	m_intro_event();
 
+	if( !m_pMainMenu->IsActive() )
+		m_pMainMenu->DestroyInternal();
+
 	if(!g_pGameLevel)			return;
 	if(!g_pGameLevel->bReady)	return;
 

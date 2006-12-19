@@ -6,7 +6,7 @@
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
 -- Version:     0.9
 
-function main()
+function _main()
 	local dlg = ui_main_menu.main_menu()
 	level.start_stop_menu(dlg,true)
 	while true do
