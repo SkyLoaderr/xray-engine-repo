@@ -11108,6 +11108,9 @@
 					<File
 						RelativePath=".\ui\UIMpTradeWnd_trade.cpp">
 					</File>
+					<File
+						RelativePath=".\ui\UIMpTradeWnd_wpn.cpp">
+					</File>
 					<Filter
 						Name="rank_restrictions"
 						Filter="">

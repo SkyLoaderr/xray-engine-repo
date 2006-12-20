@@ -29,11 +29,6 @@
 			<text x="30" y="10" font="graffiti22" r="231" g="153" b="22" align="l">ui_inv_items_list</text>
 			<texture>ui_inventory_mp_shop</texture>
 		</auto_static>
-
-		<auto_static x="200" y="300" width="128" height="128" stretch="1" light_anim="tutor_rad_sign_clr" light_anim_cyclic="1" la_alpha="0" la_texture="1" xform_anim="tutor_rad_sign_xform" xform_anim_cyclic="1" alignment="c">
-			<texture>ui_highlight</texture>
-		</auto_static>
-		
 	</main>
 	
 	<static_money x="0" y="10" width="112" height="34">

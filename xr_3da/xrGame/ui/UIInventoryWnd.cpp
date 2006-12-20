@@ -361,7 +361,7 @@ void CUIInventoryWnd::AttachAddon(PIItem item_to_upgrade)
 		item_to_upgrade->object().u_EventSend	(P);
 	};
 
-	item_to_upgrade->Attach						(CurrentIItem());
+	item_to_upgrade->Attach						(CurrentIItem(), true);
 
 
 	//спрятать вещь из активного слота в инвентарь на время вызова менюшки
@@ -385,7 +385,7 @@ void CUIInventoryWnd::DetachAddon(const char* addon_name)
 		P.w_stringZ								(addon_name);
 		CurrentIItem()->object().u_EventSend	(P);
 	};
-	CurrentIItem()->Detach						(addon_name);
+	CurrentIItem()->Detach						(addon_name, true);
 
 	//спрятать вещь из активного слота в инвентарь на время вызова менюшки
 	CActor *pActor								= smart_cast<CActor*>(Level().CurrentEntity());

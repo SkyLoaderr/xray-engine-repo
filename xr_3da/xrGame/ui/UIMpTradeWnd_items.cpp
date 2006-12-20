@@ -357,8 +357,21 @@ void CUIMpTradeWnd::SetupPlayerItemsEnd()
 	StorePreset			(_preset_idx_origin);
 }
 
+struct items_sorter {
+	items_sorter(){};
+	bool operator() (SBuyItemInfo* i1, SBuyItemInfo* i2)
+	{
+		if(i1->m_name_sect == i2->m_name_sect)
+			return i1->GetState()<i2->GetState();
+
+		return		i1->m_name_sect < i2->m_name_sect;
+	};
+};
+
 void CUIMpTradeWnd::DumpAllItems(LPCSTR s)
 {
+	std::sort		(m_all_items.begin(), m_all_items.end(), items_sorter());
+
 	Msg("CUIMpTradeWnd::DumpAllItems.total[%d] reason [%s]", m_all_items.size(), s);
 	ITEMS_vec_cit it = m_all_items.begin();
 	ITEMS_vec_cit it_e = m_all_items.end();

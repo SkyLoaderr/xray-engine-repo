@@ -76,10 +76,10 @@ public:
 	virtual void				OnEvent				(NET_Packet& P, u16 type);
 	
 	virtual bool				Useful				() const;									// !!! Переопределить. (см. в Inventory.cpp)
-	virtual bool				Attach				(PIItem pIItem) {return false;}
+	virtual bool				Attach				(PIItem pIItem, bool b_send_event) {return false;}
 	virtual bool				Detach				(PIItem pIItem) {return false;}
 	//при детаче спаунится новая вещь при заданно названии секции
-	virtual bool				Detach				(const char* item_section_name);
+	virtual bool				Detach				(const char* item_section_name, bool b_spawn_item);
 	virtual bool				CanAttach			(PIItem pIItem) {return false;}
 	virtual bool				CanDetach			(LPCSTR item_section_name) {return false;}
 

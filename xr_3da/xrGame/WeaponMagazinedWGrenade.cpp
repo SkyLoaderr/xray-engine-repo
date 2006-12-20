@@ -478,7 +478,7 @@ bool CWeaponMagazinedWGrenade::CanDetach(const char* item_section_name)
 	   return inherited::CanDetach(item_section_name);
 }
 
-bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
+bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem, bool b_send_event)
 {
 	CGrenadeLauncher* pGrenadeLauncher = smart_cast<CGrenadeLauncher*>(pIItem);
 	
@@ -492,19 +492,21 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 		CRocketLauncher::m_fLaunchSpeed = pGrenadeLauncher->GetGrenadeVel();
 
  		//уничтожить подствольник из инвентаря
-		pIItem->Drop();
-		if (OnServer()) 
-			pIItem->object().DestroyObject	();
-
+		if(b_send_event)
+		{
+			pIItem->Drop();
+			if (OnServer()) 
+				pIItem->object().DestroyObject	();
+		}
 		InitAddons();
 		UpdateAddonsVisibility();
 		return true;
 	}
 	else
-        return inherited::Attach(pIItem);
+        return inherited::Attach(pIItem, b_send_event);
 }
 
-bool CWeaponMagazinedWGrenade::Detach(const char* item_section_name)
+bool CWeaponMagazinedWGrenade::Detach(const char* item_section_name, bool b_spawn_item)
 {
 	if (CSE_ALifeItemWeapon::eAddonAttachable == m_eGrenadeLauncherStatus &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
@@ -518,10 +520,10 @@ bool CWeaponMagazinedWGrenade::Detach(const char* item_section_name)
 		}
 
 		UpdateAddonsVisibility();
-		return CInventoryItemObject::Detach(item_section_name);
+		return CInventoryItemObject::Detach(item_section_name, b_spawn_item);
 	}
 	else
-		return inherited::Detach(item_section_name);;
+		return inherited::Detach(item_section_name, b_spawn_item);
 }
 
 

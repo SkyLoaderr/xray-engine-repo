@@ -5,6 +5,7 @@
 #include "UITabButtonMP.h"
 #include "UITabControl.h"
 #include "UIDragDropListEx.h"
+#include "UICellItem.h"
 
 #include "../UIDialogHolder.h"
 #include "../game_cl_deathmatch.h"

@@ -131,12 +131,14 @@ bool CUIMpTradeWnd::OnItemDrop(CUICellItem* itm)
 	{
 		bool res		= TryToBuyItem			(iinfo, false);
 		VERIFY			(res);
+		return			true;
 	}
 
 	if(_new_owner_type==dd_shop)
 	{
 		bool res		= TryToSellItem			(iinfo);
 		VERIFY			(res);
+		return			true;
 	}
 	
 	{

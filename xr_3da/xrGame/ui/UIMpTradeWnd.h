@@ -180,7 +180,8 @@ private:
 
 	bool				TryToBuyItem				(SBuyItemInfo* itm, bool own_item);
 	bool				TryToSellItem				(SBuyItemInfo* itm);
-
+	bool				TryToAttachItemAsAddon		(SBuyItemInfo* buy_itm);
+	void				SellItemAddons				(SBuyItemInfo* sell_itm, u8 addon_id);
 	bool				CheckBuyPossibility			(const shared_str& sect_name);
 
 	void				SetCurrentItem				(CUICellItem* itm);
@@ -218,7 +219,7 @@ class CItemMgr
 		u8			slot_idx;
 		u32			cost[_RANK_COUNT];
 	};
-	typedef associative_vector<shared_str, _i>	COST_MAP;
+	typedef associative_vector<shared_str, _i>					COST_MAP;
 	typedef COST_MAP::iterator									COST_MAP_IT;
 	typedef COST_MAP::const_iterator							COST_MAP_CIT;
 	COST_MAP				m_items;

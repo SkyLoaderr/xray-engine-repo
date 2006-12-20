@@ -7,17 +7,26 @@
 #include "UICellCustomItems.h"
 #include <dinput.h>
 
-bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* buy_itm)
+bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm)
 {
-	u32		_item_cost					= m_item_mngr->GetItemCost(buy_itm->m_name_sect, GetRank() );
+	SellItemAddons						(sell_itm, 0);
+	SellItemAddons						(sell_itm, 1);
+	SellItemAddons						(sell_itm, 2);
+
+	u32		_item_cost					= m_item_mngr->GetItemCost(sell_itm->m_name_sect, GetRank() );
 	
 	SetMoneyAmount						(GetMoneyAmount() + _item_cost);
 
-	CUICellItem* _itm					= buy_itm->m_cell_item->OwnerList()->RemoveItem(buy_itm->m_cell_item, false );
+	CUICellItem* _itm					= NULL;
+
+	if(sell_itm->m_cell_item->OwnerList())
+		_itm = sell_itm->m_cell_item->OwnerList()->RemoveItem(sell_itm->m_cell_item, false );
+	else
+		_itm	= sell_itm->m_cell_item;
 
 	SBuyItemInfo* iinfo					= FindItem(_itm); //just detached
 
-	u32 cnt_in_shop						= GetItemCount(buy_itm->m_name_sect, SBuyItemInfo::e_shop);
+	u32 cnt_in_shop						= GetItemCount(sell_itm->m_name_sect, SBuyItemInfo::e_shop);
 
 	if(cnt_in_shop!=0)
 	{
@@ -32,7 +41,7 @@ bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* buy_itm)
 			_new_owner->SetItem					(iinfo->m_cell_item);
 			int accel_idx						= m_store_hierarchy->CurrentLevel().GetItemIdx(iinfo->m_name_sect);
 			VERIFY								(accel_idx!=-1);
-			iinfo->m_cell_item->SetAccelerator	( (accel_idx>9) ? 0 : DIK_1+accel_idx );
+			iinfo->m_cell_item->SetAccelerator	( (accel_idx>10) ? 0 : DIK_1+accel_idx );
 			iinfo->m_cell_item->SetCustomDraw	(xr_new<CUICellItemAccelDraw>());
 
 		}
@@ -48,16 +57,16 @@ bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* buy_itm)
 
 bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm, bool own_item)
 {
-	SBuyItemInfo* iinfo 		= buy_itm;
-	
+	SBuyItemInfo* iinfo 			= buy_itm;
+	const shared_str& buy_item_name = iinfo->m_name_sect;
 	if(!own_item)
 	{
-		bool	b_can_buy			= CheckBuyPossibility(iinfo->m_name_sect);
+		bool	b_can_buy		= CheckBuyPossibility(buy_item_name);
 		if(!b_can_buy)
-			return					false;
+			return				false;
 	}
 
-	u32 _item_cost				= m_item_mngr->GetItemCost(iinfo->m_name_sect, GetRank() );
+	u32 _item_cost				= m_item_mngr->GetItemCost(buy_item_name, GetRank() );
 
 	if(!own_item)
 	{
@@ -69,18 +78,23 @@ bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm, bool own_item)
 
 	CUICellItem* cell_itm				= NULL;
 	if(iinfo->m_cell_item->OwnerList())// just from shop
-		cell_itm				= iinfo->m_cell_item->OwnerList()->RemoveItem(iinfo->m_cell_item, false );
+		cell_itm					= iinfo->m_cell_item->OwnerList()->RemoveItem(iinfo->m_cell_item, false );
 	else //new created
-		cell_itm				= iinfo->m_cell_item;
+		cell_itm					= iinfo->m_cell_item;
 
 
-	CUIDragDropListEx*_new_owner = NULL;
-	_new_owner					= GetMatchedListForItem(iinfo->m_name_sect);
-	_new_owner->SetItem			(cell_itm);
-	cell_itm->SetCustomDraw		(NULL);
-	cell_itm->SetAccelerator	(0);
+	bool b_addon	= TryToAttachItemAsAddon(iinfo);
+	if(!b_addon)
+	{
+		CUIDragDropListEx*_new_owner = NULL;
+		_new_owner					= GetMatchedListForItem(buy_item_name);
+		_new_owner->SetItem			(cell_itm);
+		cell_itm->SetCustomDraw		(NULL);
+		cell_itm->SetAccelerator	(0);
+	}else
+		DestroyItem					(iinfo);
 
-	RenewShopItem				(iinfo->m_name_sect, true);
+	RenewShopItem					(buy_item_name, true);
 
 	if(!own_item && _item_cost!=0)
 	{
@@ -202,25 +216,3 @@ void CUIMpTradeWnd::ItemToSlot(const shared_str& sectionName, u32 addons)
 	SBuyItemInfo* pitem					= CreateItem(sectionName, SBuyItemInfo::e_own, false);
 	pList->SetItem						(pitem->m_cell_item);
 }
-
-
-void CUIMpTradeWnd::OnBtnPistolAmmoClicked(CUIWindow* w, void* d)
-{}
-
-void CUIMpTradeWnd::OnBtnPistolSilencerClicked(CUIWindow* w, void* d)
-{}
-
-void CUIMpTradeWnd::OnBtnRifleAmmoClicked(CUIWindow* w, void* d)
-{}
-
-void CUIMpTradeWnd::OnBtnRifleSilencerClicked(CUIWindow* w, void* d)
-{}
-
-void CUIMpTradeWnd::OnBtnRifleScopeClicked(CUIWindow* w, void* d)
-{}
-
-void CUIMpTradeWnd::OnBtnRifleGLClicked(CUIWindow* w, void* d)
-{}
-
-void CUIMpTradeWnd::OnBtnRifleAmmo2Clicked(CUIWindow* w, void* d)
-{}

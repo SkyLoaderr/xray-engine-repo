@@ -924,7 +924,7 @@ void CUIBagWnd::AttachAddon(CUICellItem* itm, CSE_ALifeItemWeapon::EWeaponAddonS
 	if (external)
         m_info[add_itm->m_index].external = external;
 	BuyItem(add_itm);
-	wpn->Attach((CInventoryItem*)add_itm->m_pData);
+	wpn->Attach((CInventoryItem*)add_itm->m_pData, true);
 
 	wpn_itm->Update();
 

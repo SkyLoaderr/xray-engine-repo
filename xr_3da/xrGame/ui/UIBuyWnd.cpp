@@ -530,7 +530,7 @@ bool CUIBuyWnd::ClearSlot_ifTooExpensive(int slot)
 			{
 				if (witm->get_addon_static(CUIWeaponCellItem::eScope)->GetColor() == PRICE_RESTR_COLOR)
 				{
-					wpn->Detach		(*wpn->GetScopeName());
+					wpn->Detach		(*wpn->GetScopeName(), true);
 					add_on			= true;
 				}
 			}
@@ -538,7 +538,7 @@ bool CUIBuyWnd::ClearSlot_ifTooExpensive(int slot)
 			{
 				if (witm->get_addon_static(CUIWeaponCellItem::eSilencer)->GetColor() == PRICE_RESTR_COLOR)
 				{
-					wpn->Detach		(*wpn->GetSilencerName());
+					wpn->Detach		(*wpn->GetSilencerName(), true);
 					add_on			= true;
 				}
 			}
@@ -546,7 +546,7 @@ bool CUIBuyWnd::ClearSlot_ifTooExpensive(int slot)
 			{
 				if (witm->get_addon_static(CUIWeaponCellItem::eLauncher)->GetColor() == PRICE_RESTR_COLOR)
 				{
-					wpn->Detach		(*wpn->GetGrenadeLauncherName());
+					wpn->Detach		(*wpn->GetGrenadeLauncherName(), true);
 					add_on			= true;
 				}
 			}
@@ -1005,7 +1005,7 @@ bool CUIBuyWnd::ToSlot(CUICellItem* itm, bool force_place)
 	{		// try to buy silencer
 		if (pRifle && pRifle->SilencerAttachable() && !pRifle->IsSilencerAttached())
 		{
-			if (pRifle->Attach(pSilencer))
+			if (pRifle->Attach(pSilencer, true))
 			{
 				m_bag.BuyItem(itm);					// BUY
 				return true;
@@ -1016,7 +1016,7 @@ bool CUIBuyWnd::ToSlot(CUICellItem* itm, bool force_place)
 		
 		if (pPistol && pPistol->SilencerAttachable() && !pPistol->IsSilencerAttached())
 		{
-			if (pPistol->Attach(pSilencer))
+			if (pPistol->Attach(pSilencer, true))
 			{
 				m_bag.BuyItem(itm);					// BUY
 				return true;
@@ -1028,7 +1028,7 @@ bool CUIBuyWnd::ToSlot(CUICellItem* itm, bool force_place)
 	if (pScope){
 		if (pRifle && pRifle->ScopeAttachable() && !pRifle->IsScopeAttached())
 		{
-			if (pRifle->Attach(pScope))
+			if (pRifle->Attach(pScope, true))
 			{
 				m_bag.BuyItem(itm);					// BUY
 				return true;
@@ -1039,7 +1039,7 @@ bool CUIBuyWnd::ToSlot(CUICellItem* itm, bool force_place)
 
 		if (pPistol && pPistol->ScopeAttachable() && !pPistol->IsScopeAttached())
 		{
-			if(pPistol->Attach(pScope))
+			if(pPistol->Attach(pScope, true))
 			{
 				m_bag.BuyItem(itm);					// BUY
 				return true;
@@ -1054,7 +1054,7 @@ bool CUIBuyWnd::ToSlot(CUICellItem* itm, bool force_place)
 			!pRifle->IsGrenadeLauncherAttached()
 		)
 	{
-		if (pRifle->Attach(pGrenadeLauncher))
+		if (pRifle->Attach(pGrenadeLauncher, true))
 		{
 			m_bag.BuyItem		(itm);
 			return				true;
@@ -1330,7 +1330,7 @@ void CUIBuyWnd::AttachAddon(CInventoryItem* item_to_upgrade)
 {
 	R_ASSERT									(item_to_upgrade);
 
-	item_to_upgrade->Attach						(CurrentIItem());
+	item_to_upgrade->Attach						(CurrentIItem(), true);
 	m_bag.BuyItem								(CurrentItem());
 
 	SetCurrentItem								(NULL);
@@ -1338,7 +1338,7 @@ void CUIBuyWnd::AttachAddon(CInventoryItem* item_to_upgrade)
 
 void CUIBuyWnd::DetachAddon(const char* addon_name)
 {
-	if (CurrentIItem()->Detach(addon_name))
+	if (CurrentIItem()->Detach(addon_name, true) )
 	{
 		CUICellItem* itm						= m_bag.GetItemBySectoin	(addon_name);
 		R_ASSERT								(itm);

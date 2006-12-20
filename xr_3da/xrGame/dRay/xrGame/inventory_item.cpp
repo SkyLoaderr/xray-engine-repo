@@ -267,7 +267,7 @@ void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 			P.r_u32			(ItemID);
 			CInventoryItem*	 ItemToAttach	= smart_cast<CInventoryItem*>(Level().Objects.net_Find(ItemID));
 			if (!ItemToAttach) break;
-			Attach(ItemToAttach);
+			Attach(ItemToAttach,true);
 			CActor* pActor = smart_cast<CActor*>(object().H_Parent());
 			if (pActor && pActor->inventory().ActiveItem() == this)
 			{
@@ -280,7 +280,7 @@ void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 		{
 			string64			i_name;
 			P.r_stringZ			(i_name);
-			Detach(i_name);
+			Detach(i_name, true);
 			CActor* pActor = smart_cast<CActor*>(object().H_Parent());
 			if (pActor && pActor->inventory().ActiveItem() == this)
 			{
@@ -308,46 +308,47 @@ void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 //процесс отсоединения вещи заключается в спауне новой вещи 
 //в инвентаре и установке соответствующих флагов в родительском
 //объекте, поэтому функция должна быть переопределена
-bool CInventoryItem::Detach(const char* item_section_name) 
+bool CInventoryItem::Detach(const char* item_section_name, bool b_spawn_item) 
 {
 	if (OnClient()) return true;
-
-	CSE_Abstract*		D	= F_entity_Create(item_section_name);
-	R_ASSERT		   (D);
-	CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = 
-							 smart_cast<CSE_ALifeDynamicObject*>(D);
-	R_ASSERT			(l_tpALifeDynamicObject);
-	
-	l_tpALifeDynamicObject->m_tNodeID = object().ai_location().level_vertex_id();
-		
-	// Fill
-	D->s_name			=	item_section_name;
-	D->set_name_replace	("");
-	D->s_gameid			=	u8(GameID());
-	D->s_RP				=	0xff;
-	D->ID				=	0xffff;
-	if (GameID() == GAME_SINGLE)
+	if(b_spawn_item)
 	{
-		D->ID_Parent		=	u16(object().H_Parent()->ID());
+		CSE_Abstract*		D	= F_entity_Create(item_section_name);
+		R_ASSERT		   (D);
+		CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = 
+								smart_cast<CSE_ALifeDynamicObject*>(D);
+		R_ASSERT			(l_tpALifeDynamicObject);
+		
+		l_tpALifeDynamicObject->m_tNodeID = object().ai_location().level_vertex_id();
+			
+		// Fill
+		D->s_name			=	item_section_name;
+		D->set_name_replace	("");
+		D->s_gameid			=	u8(GameID());
+		D->s_RP				=	0xff;
+		D->ID				=	0xffff;
+		if (GameID() == GAME_SINGLE)
+		{
+			D->ID_Parent		=	u16(object().H_Parent()->ID());
+		}
+		else	// i'm not sure this is right
+		{		// but it is simpliest way to avoid exception in MP BuyWnd... [Satan]
+			if (object().H_Parent())
+				D->ID_Parent	=	u16(object().H_Parent()->ID());
+			else
+				D->ID_Parent	= NULL;
+		}
+		D->ID_Phantom		=	0xffff;
+		D->o_Position		=	object().Position();
+		D->s_flags.assign	(M_SPAWN_OBJECT_LOCAL);
+		D->RespawnTime		=	0;
+		// Send
+		NET_Packet			P;
+		D->Spawn_Write		(P,TRUE);
+		Level().Send		(P,net_flags(TRUE));
+		// Destroy
+		F_entity_Destroy	(D);
 	}
-	else	// i'm not sure this is right
-	{		// but it is simpliest way to avoid exception in MP BuyWnd... [Satan]
-		if (object().H_Parent())
-			D->ID_Parent	=	u16(object().H_Parent()->ID());
-		else
-			D->ID_Parent	= NULL;
-	}
-	D->ID_Phantom		=	0xffff;
-	D->o_Position		=	object().Position();
-	D->s_flags.assign	(M_SPAWN_OBJECT_LOCAL);
-	D->RespawnTime		=	0;
-	// Send
-	NET_Packet			P;
-	D->Spawn_Write		(P,TRUE);
-	Level().Send		(P,net_flags(TRUE));
-	// Destroy
-	F_entity_Destroy	(D);
-
 	return true;
 }
 

@@ -731,7 +731,7 @@ bool CWeaponMagazined::CanDetach(const char* item_section_name)
 		return inherited::CanDetach(item_section_name);
 }
 
-bool CWeaponMagazined::Attach(PIItem pIItem)
+bool CWeaponMagazined::Attach(PIItem pIItem, bool b_send_event)
 {
 	bool result = false;
 
@@ -766,7 +766,7 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 
 	if(result)
 	{
-		if (OnServer())
+		if (b_send_event && OnServer())
 		{
 			//уничтожить подсоединенную вещь из инвентаря
 			pIItem->Drop					();
@@ -779,11 +779,11 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 		return true;
 	}
 	else
-        return inherited::Attach(pIItem);
+        return inherited::Attach(pIItem, b_send_event);
 }
 
 
-bool CWeaponMagazined::Detach(const char* item_section_name)
+bool CWeaponMagazined::Detach(const char* item_section_name, bool b_spawn_item)
 {
 	if(		m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) &&
@@ -794,7 +794,7 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 		UpdateAddonsVisibility();
 		InitAddons();
 
-		return CInventoryItemObject::Detach(item_section_name);
+		return CInventoryItemObject::Detach(item_section_name, b_spawn_item);
 	}
 	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) &&
@@ -804,7 +804,7 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 
 		UpdateAddonsVisibility();
 		InitAddons();
-		return CInventoryItemObject::Detach(item_section_name);
+		return CInventoryItemObject::Detach(item_section_name, b_spawn_item);
 	}
 	else if(m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 			0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
@@ -814,10 +814,10 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 
 		UpdateAddonsVisibility();
 		InitAddons();
-		return CInventoryItemObject::Detach(item_section_name);
+		return CInventoryItemObject::Detach(item_section_name, b_spawn_item);
 	}
 	else
-		return inherited::Detach(item_section_name);;
+		return inherited::Detach(item_section_name, b_spawn_item);;
 }
 
 void CWeaponMagazined::InitAddons()
