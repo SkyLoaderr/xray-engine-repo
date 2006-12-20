@@ -9,7 +9,7 @@
 
 bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm)
 {
-`	SellItemAddons						(sell_itm, at_scope);
+	SellItemAddons						(sell_itm, at_scope);
 	SellItemAddons						(sell_itm, at_silencer);
 	SellItemAddons						(sell_itm, at_glauncher);
 
