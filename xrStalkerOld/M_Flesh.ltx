@@ -209,8 +209,17 @@ Morale_Despondent_Threashold	= 0.5
 ; Other Stuff (refactoring needed)
 ;-------------------------------------------------------------------------
 
-critical_wound_threshold		= -1
+critical_wound_threshold		= 0.4
 critical_wound_decrease_quant	= 0.
+
+critical_wound_anim_head	= critical_hit_head_0
+critical_wound_bones_head	= flesh_critical_wound_bones_head
+
+critical_wound_anim_torso	= critical_hit_torso_0
+critical_wound_bones_torso	= flesh_critical_wound_bones_torso
+
+critical_wound_anim_legs	= critical_hit_torso_0
+critical_wound_bones_legs	= flesh_critical_wound_bones_legs
 
 
 distance_to_corpse	= 0.9; ôø¸ª. ôþ ª¨ºÿð, ÿ¨ø úþªþ¨þù þý ÿõ¨õ¿þôøª ò ¸þ¸ªþ ýøõ õôv
@@ -445,3 +454,42 @@ $npc			    = on						; option for Level Editor
 Human		     	= off						; option for ALife Simulator
 class               = AI_FLE_G					; AI class
 monster_section		= m_flesh_e
+
+
+
+
+[flesh_critical_wound_bones_head]
+bip01_neck
+bip01_head
+bip01_ponytail1
+bip01_ponytail2
+
+[flesh_critical_wound_bones_torso]
+bip01_pelvis
+bip01_l_calf
+bip01_r_calf
+bip01_spine
+bip01_spine1
+bip01_spine2
+bip01_l_clavicle
+bip01_r_clavicle
+
+[flesh_critical_wound_bones_legs]
+bip01_l_horselink
+bip01_l_foot
+bip01_l_toe0
+bip01_r_thigh
+bip01_r_horselink
+bip01_r_foot
+bip01_r_toe0
+bip01_l_upperarm
+bip01_l_forearm
+bip01_l_hand
+bip01_l_finger0
+bip01_l_finger01
+bip01_r_upperarm
+bip01_r_forearm
+bip01_r_hand
+bip01_r_finger0
+bip01_r_finger01
+bip01_l_thigh

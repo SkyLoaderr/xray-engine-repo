@@ -217,16 +217,16 @@ Morale_Despondent_Threashold	= 0.5
 damage					= m_bloodsucker_damage
 
 
-critical_wound_threshold		= -1 ;1.1
+critical_wound_threshold		= 0.4 ;1.1
 critical_wound_decrease_quant	= 0.
 
-critical_wound_anim_head	= stand_idle_0
+critical_wound_anim_head	= critical_hit_torso_0
 critical_wound_bones_head	= bloodsucker_critical_wound_bones_head
 
-critical_wound_anim_torso	= stand_idle_0
+critical_wound_anim_torso	= critical_hit_torso_0
 critical_wound_bones_torso	= bloodsucker_critical_wound_bones_torso
 
-critical_wound_anim_legs	= stand_idle_0
+critical_wound_anim_legs	= critical_hit_torso_0
 critical_wound_bones_legs	= bloodsucker_critical_wound_bones_legs
 
 ;-------------------------------------------------------------------------
@@ -304,19 +304,6 @@ bip01_head 			= 2.0, -1, 0.5
 
 
 [bloodsucker_critical_wound_bones_head]
-bip01_pelvis
-bip01_l_thigh
-bip01_l_calf
-bip01_l_foot
-bip01_l_toe1
-bip01_r_thigh
-bip01_r_calf
-bip01_r_foot
-bip01_r_toe1
-bip01_spine
-bip01_spine1
-bip01_spine2
-bip01_spine3
 bip01_neck
 bip01_head
 bip01_ponytail1
@@ -337,6 +324,13 @@ bone24
 bone20
 bone21
 bone22
+
+[bloodsucker_critical_wound_bones_torso]
+bip01_spine
+bip01_spine1
+bip01_spine2
+bip01_spine3
+bip01_pelvis
 bip01_l_clavicle
 bip01_l_upperarm
 bip01_l_forearm
@@ -366,8 +360,19 @@ bip01_r_finger31
 bip01_r_finger4
 bip01_r_finger41
 
-[bloodsucker_critical_wound_bones_torso]
+
 [bloodsucker_critical_wound_bones_legs]
+bip01_l_thigh
+bip01_l_calf
+bip01_l_foot
+bip01_l_toe1
+bip01_r_thigh
+bip01_r_calf
+bip01_r_foot
+bip01_r_toe1
+
+
+
 
 ;=================================================================================
 ; Bloodsucker Terrain
