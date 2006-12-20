@@ -295,12 +295,12 @@ void						CLevel::Demo_Load_toFrame	(LPCSTR FileName, DWORD toFrame, long &ofs)
 static DWORD dFrame = 1;
 void						CLevel::Demo_Update				()
 {
+	if (!IsDemoPlay() || m_aDemoData.empty() || !m_bDemoStarted) return;
 	if (float(m_lDemoOfs)/lFileSize>0.95f)
 	{
 		g_dwDemoDeltaFrame = 1;
 		dFrame = 1;
 	}
-	if (!IsDemoPlay() || m_aDemoData.empty() || !m_bDemoStarted) return;
 	static u32 Pos = 0;
 
 	if (m_bDemoPlayByFrame)
