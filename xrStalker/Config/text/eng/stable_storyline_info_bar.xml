@@ -1,9 +1,3 @@
-	<string id="bar_ecolog_research_corrupted">
-		<text>I, professor Kruglov, am deleting the results of our research for the sake of science and humanity as a whole. Dangerous knowledge must not pass into the hands of unreliable people who will seek to use it for the achievement of their criminal objectives. Those who read this note should know that our group was shot down above the Wild Area by Freedom anarchists led by a notorious cutthroat called Wolfhound. By the time you read this we will probably be dead.</text>
-	</string>
-	<string id="bar_ecolog_research_normal">
-		<text>... as it turns out, the emissions affect primarily the advanced spheres of cognitive activity. Experiments show that only humans and animals with developed cognitive processes, such as dogs and horses are susceptible to these emissions. Of the above, only humans enter a state of trance - in animals the effect is limited to a strong feeling of fear. Judging by this evidence, it would be reasonable to conclude that the emissions are geared specifically towards the human brain. Extensive studies on "volunteers" have shown that subjects will leave the trance state if given medicamental treatment. We also developed experimental devices that will protect, to a certain extent,  the human brain from these emissions. According to our calculations, the source of these emissions is located in the center of Lake Yantar. The source itself is likely to be artificial in nature, which means that it can be disabled. There is also the danger of criminals attempting to reach the source of the emissions and gaining control over it.</text>
-	</string>
 	<string id="descr_bar_crazy_veterans_quest">
 		<text>Barman: "Duty has a reputation to uphold. That's why they want this thing done quietly. All you need to do it whack the leader called Lucky and bring his PDA as proof."</text>
 	</string>
@@ -31,41 +25,26 @@
 	<string id="descr_bar_resque_information">
 		<text>- get through to the scientists and avoid the Merc ambush\n \n Kruglov: "Stalker, help! We were attacked by the Mercs and half of our team is dead. Help us and you won't regret it"\n \n "...be careful, there are about fifteen of them, but we don't know for sure"</text>
 	</string>
+	<string id="descr_bar_resque_information_2">
+		<text>Круглов: "Мы возвращались с Янтаря, когда нас сбили наемники. Говорят что им информация нужна, но я то знаю - перестреляют они нас. Выведи меня к Янтарю и я поделюсь с тобой тем что знаю о вашем "выжигателе мозгов", а бармен тебе за это хорошо заплатит. Боец из меня плохой, но я знаю дорогу, поэтому я буду вести, а ты прикрывай нас по пути."</text>
+	</string>
 	<string id="descr_bar_x16_documents">
 		<text>Barman: "You need to get through to the scientists and find out where Lab X16 is located to find the missing documents."</text>
 	</string>
 	<string id="journal_after_agroprom_documents">
 		<text>I looked through the documents found at the Institute. It appears that the Institute was used as a front for an unofficial lab called X18 in the years preceding the accident. This lab hosted a number of very unusual experiments; its location is not clear from the documents and the military don't seem to know anything about it either. Well, well... the plot thickens... But perhaps, this is the starting point which the traders need. Now I have to travel further North to a trader known as the Barman.</text>
 	</string>
-	<string id="journal_after_agroprom_documents_name">
-		<text>Military documents</text>
-	</string>
 	<string id="journal_bar_darklab_documents">
 		<text>Hell... Lab X18 wasn't fun...and its current residents...I didn't think things like that existed. I found some documents...I didn't understand much of what was written in there except that they contained technical specifications for some components for Kaimanov emitters. What's interesting is that the parts were destined for another lab with the codename X16 and it's probably a secret one too.</text>
-	</string>
-	<string id="journal_bar_darklab_documents_name">
-		<text>Lab X18</text>
 	</string>
 	<string id="journal_bar_x16_documents">
 		<text>Hmm...The traders have dug up a lot of information about these laboratories. The Barman wasn't surprised to find out about the emitters and X16. Now he's convinced that this Brain Burner is man-made. He thinks that Lab X16 is near the scientists' camp by Lake Yantar. It's interesting that they're studying emissions that resemble the effects of the Burner. So now I must pay a visit to the Zone's scientific community.</text>
 	</string>
-	<string id="journal_bar_x16_documents_name">
-		<text>The Brain Burner is man-made?</text>
-	</string>
 	<string id="journal_before_darklab_documents">
 		<text>I met with the Barman. Having looked through the documents from the Institute he thinks that this X18 is in the so called Dark Valley and asked me to go there to look for information and documents. He says he sent Duty scouts to get into the underground vaults there but they disappeared. The Barman thinks they were captured by bandits who have a base nearby. If that's true, everything those Duty guys found will be in the hands of Borov, the leader of the bandits. The Barman told me to be careful and... clearly didn't tell me everything about these underground vaults. Oh well, time to get to work: first of all I need to go pay Borov a visit and if the "conversation" goes well, I'll explore the underground.</text>
 	</string>
-	<string id="journal_before_darklab_documents_name">
-		<text>Barman</text>
-	</string>
 	<string id="journal_before_radar_task">
 		<text>Well, I am ready to go to the Burner. I found out from Crazy the times when the emission levels decrease. He also told me about a safe place where I can wait for these periods. My psi-protection won't work at other times anyway. I'll have to find a way into the underground bunker of Lab X19. Inside I should find the controls for the Brain Burner antennae.</text>
-	</string>
-	<string id="journal_before_radar_task_name">
-		<text>Information about the Burner</text>
-	</string>
-	<string id="rostok_tunel_gordon_diary">
-		<text>12.01.2012 \n God damn my bosses...won't leave an old man alone. First Black Mesa, then some strange town in Russia. And now they send poor little Gordon into the endless Ukrainian plains. Take your jemmy and have fun. \n \n 20.03.2012 \n Made it into the Zone. Are there really no bears here? Who am I going to fight then? I'm not finding my bearings too well in this place. In America everyone recognises me and gives me hamburgers for free but here I had to give my little crowbar away for a can of meat. \n \n 26.04.2012 \n The blowout has started. The barman told me to hide my American ass and keep it hidden. I chased some rats out of an abandoned tunnel. I hope to wait out the bad weather in here.</text>
 	</string>
 	<string id="st_gordon_diary">
 		<text>Gordon's PDA</text>

@@ -210,9 +210,6 @@
 	<string id="agr_stalker_talk_level_4">
 		<text>Спасибо.</text>
 	</string>
-	<string id="agr_swamp_ratcatcher_start_0">
-		<text>О! Человечина пришла! Какими судьбами?</text>
-	</string>
 	<string id="agr_swamp_ratcatcher_talks_0">
 		<text>Что делаешь?</text>
 	</string>
@@ -247,7 +244,7 @@
 		<text>Хм. Не знаю. По военным законам я дезертир. А выбираться из Зоны как-то нужно. \n Когда мы сюда пришли, тут в гараже Запорожец стоял, почти на ходу. Я его к жизни вернул за полчаса, а капитан, собака, его себе забрал - мол ему по уставу положено! По дороге, что тут рядом катался, и у ворот под дождь бросил. Вот бы спереть этот Запорожец - на колесах убегать надежнее!</text>
 	</string>
 	<string id="agr_swamp_ratcatcher_talks1_0">
-		<text>Здраствуй.</text>
+		<text>Здравствуй.</text>
 	</string>
 	<string id="agr_swamp_ratcatcher_talks1_01">
 		<text>С чем пожаловал?</text>

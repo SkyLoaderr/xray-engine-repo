@@ -1,3 +1,6 @@
+	<string id="agr_find_ghost_descr">
+		<text>... узнал что одного из группы Стрелка зовут Призраком. Хоть какая то зацепка. Если смогу найти Призрака - смогу найти и Стрелка.</text>
+	</string>
 	<string id="agr_journal_cache">
 		<text>Well, it seems that the stash gave me a new direction to follow. I found a flash drive with what appears to be a diary used by Hawkeye's group. Despite the few entries, I could work out that the group had two other members: Ghost and Fang. The diary also mentioned a "mutual friend" but I don't know whether he was part of the group. He definitely helped them out, that's for sure. According to Ghost's entry, Fang died when they were ambushed. So, at last, I have something solid: the name of someone who definitely knows Hawkeye - Ghost. As for Hawkeye himself, he may be somewhere in the North of the Zone.</text>
 	</string>
@@ -40,9 +43,6 @@
 	<string id="st_operation_agroprom">
 		<text>The Agroprom operation</text>
 	</string>
-	<string id="storyline_gunslinger_cache_info">
-		<text>We found the entrance to Hawkeye's stash under the factory, but there wasn't anything interesting there. Go take a look yourself if you want.</text>
-	</string>
 	<string id="storyline_gunslinger_flash_info">
-		<text>Received from Ghost: \n \n Hawkeye, I got some shitty news. Fang is dead. They were waiting for us in the village by the Warehouses, three of them and it seemed like they'd been waiting for a while...they looked like normal neutrals. Fang sensed them somehow, you know how good his gut feeling was. We took two of them down - they were obviously just thugs but the third one was clever, he waited about 100 meters away with a Vintorez and that was the end of Fang. So there will only be two of us next time we go to the Center. And one more thing: those two had our descriptions. I've got no clue who put a contract out on us. Then again, there are plenty of people with an axe to grind. The third one got away. I think he was one of the mercenaries. He had a big scar on his face and light eyes. I'll try to find him. \n That's about it. Be alert and good luck. \n Ghost \n \n To Ghost \n \n "Yo man. \n I'm leaving you some info. Can't make contact right now - I'm being followed. \n Man, I've gone North... To that place where we were before... I'll try to make it on my own... Sorry but I can't wait for you... I'll explain later. \n The bastard who killed Fang will regret ever being born... I am going to cut him to pieces... You just find out who he is for now. When I get back we'll deal with him. \n Meet me at our mutual friend's place. You know which one :)  \n Good luck. \n Hawkeye" \n \n To Hawkeye \n \n "Hey. I went there but didn't find you. You shouldn't have go to the center alone but it's your business, man. Yeah, I know whose place you mean :) \n Ghost"</text>
+		<text>We found the entrance to Hawkeye's stash under the factory, but there wasn't anything interesting there. Go take a look yourself if you want.</text>
 	</string>

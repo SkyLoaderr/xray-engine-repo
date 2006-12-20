@@ -70,12 +70,3 @@
 	<string id="val_prisoner_help_main">
 		<text>Free the Duty member from the bandit prison</text>
 	</string>
-	<string id="val_sos_help">
-		<text>Help the stalker</text>
-	</string>
-	<string id="val_sos_help_0">
-		<text>An unknown stalker is calling for help.</text>
-	</string>
-	<string id="val_sos_help_main">
-		<text>Help the stalker at the gas station</text>
-	</string>

@@ -30,45 +30,6 @@
 	<string id="actor_help_wounded_141">
 		<text>It's your business, mate, but it doesn't do you any credit.</text>
 	</string>
-	<string id="companion_hire_dialog_0">
-		<text>Wanna join me?</text>
-	</string>
-	<string id="companion_hire_dialog_1">
-		<text>Why not? Let's do it.</text>
-	</string>
-	<string id="companion_hire_dialog_2">
-		<text>Sorry, I've got other plans.</text>
-	</string>
-	<string id="companion_management_dialog_0">
-		<text>Listen up!</text>
-	</string>
-	<string id="companion_management_dialog_1">
-		<text>I'm listening.</text>
-	</string>
-	<string id="companion_management_dialog_11">
-		<text>Follow me.</text>
-	</string>
-	<string id="companion_management_dialog_13">
-		<text>Follow me but don't attack enemies unless attacked.</text>
-	</string>
-	<string id="companion_management_dialog_14">
-		<text>Wait here.</text>
-	</string>
-	<string id="companion_management_dialog_16">
-		<text>Wait here but don't attack enemies unless attacked.</text>
-	</string>
-	<string id="companion_management_dialog_17">
-		<text>I wasted all your money on booze…</text>
-	</string>
-	<string id="companion_release_dialog_0">
-		<text>Thanks for your help. You're free to go.</text>
-	</string>
-	<string id="companion_release_dialog_1">
-		<text>Thank you too. Good luck.</text>
-	</string>
-	<string id="hello_dialog_0">
-		<text>Hey</text>
-	</string>
 	<string id="hello_dialog_2">
 		<text>Hey!</text>
 	</string>

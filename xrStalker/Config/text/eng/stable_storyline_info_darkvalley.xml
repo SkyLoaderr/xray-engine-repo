@@ -1,6 +1,9 @@
 	<string id="bar_darklab_documents_txt">
 		<text>Barman: "According to the documents you brought from Agroprom, things are starting to clear up, but some data is missing. There is evidence to suggest the presence of a Brain Burner which blocks the road to the North, but no one knows exactly what it is. Also, there is mention of Lab X18 whose description matches that of abandoned underground structures in the Dark Valley. Its present activity is unknown and besides, bandits have now set up their base in the Dark Valley.\n Several Duty scouts went there very recently, but so far there is no news from them.\n To get inside the lab, you will need two electronic keys; I will give you one, but the second one you will have to take from Borov, the bandit leader. \n\n So, you need to take the second key to the lab from Borov, then sneak inside the lab and get the documents. Before doing  this you must acquire an antiradiation suit because you won’t make it inside the Dark Valley without one - the radiation is too strong."</text>
 	</string>
+	<string id="bar_darklab_documents2_txt">
+		<text>Необходимо найти документы об исследованиях, проводившихся в лаборатории X-18. Они могут пролить свет на "выжигатель мозгов".</text>
+	</string>
 	<string id="dar_codedoor_1_txt">
 		<text>A combination lock is blocking the way into the depths of the lab. You must find someone who knows the combination.</text>
 	</string>
@@ -60,6 +63,9 @@
 	</string>
 	<string id="val_captive_help_txt">
 		<text>Duty member Bullet wants me to rescue his partner who was captured by bandits. He is soon to be escorted to the deserted factory.</text>
+	</string>
+	<string id="val_prisoner_help_art_txt">
+		<text>Долговец: "У них есть ещё один наш, Серёга. Его держат в подвале... там здание такое... большое, недостроенное. Помоги ему, ладно? А то они его тоже..."</text>
 	</string>
 	<string id="val_x18_conclusion">
 		<text>Lab X18</text>

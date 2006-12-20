@@ -30,45 +30,6 @@
 	<string id="actor_help_wounded_141">
 		<text>Твое дело, но не думай, что это делает тебе чести.</text>
 	</string>
-	<string id="companion_hire_dialog_0">
-		<text>Не желаешь составить мне компанию?</text>
-	</string>
-	<string id="companion_hire_dialog_1">
-		<text>Отчего бы и не составить. Я согласен.</text>
-	</string>
-	<string id="companion_hire_dialog_2">
-		<text>Извини, у меня другие планы.</text>
-	</string>
-	<string id="companion_management_dialog_0">
-		<text>Слушай команду.</text>
-	</string>
-	<string id="companion_management_dialog_1">
-		<text>Я слушаю.</text>
-	</string>
-	<string id="companion_management_dialog_11">
-		<text>Следуй за мной.</text>
-	</string>
-	<string id="companion_management_dialog_13">
-		<text>Следуй за мной и не атакуй врагов первым.</text>
-	</string>
-	<string id="companion_management_dialog_14">
-		<text>Жди здесь.</text>
-	</string>
-	<string id="companion_management_dialog_16">
-		<text>Жди здесь и не атакуй врагов первым.</text>
-	</string>
-	<string id="companion_management_dialog_17">
-		<text>Я пропил все твои деньги...</text>
-	</string>
-	<string id="companion_release_dialog_0">
-		<text>Спасибо за сотрудничество. Ты свободен.</text>
-	</string>
-	<string id="companion_release_dialog_1">
-		<text>И тебе спасибо. Удачи.</text>
-	</string>
-	<string id="hello_dialog_0">
-		<text>Привет</text>
-	</string>
 	<string id="hello_dialog_2">
 		<text>Привет!</text>
 	</string>

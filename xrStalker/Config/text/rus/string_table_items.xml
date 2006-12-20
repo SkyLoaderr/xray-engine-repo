@@ -49,7 +49,7 @@
 		<text>Потёртая рукопись в кожанной обложке. Написанна самим Стрелком. Судя по заглавиям, в ней раскрываются некоторые загадки Зоны.</text>
 	</string>
 	<string id="item_docs_hiden_pri_name">
-		<text>Документы из тайника в Припяти</text>
+		<text>Документы из Припяти</text>
 	</string>
 	<string id="item_dynamite_esc_desc">
 		<text>Тяжёлый деревянный ящик, с надписями "Взрывоопасно" на нескольких языках.</text>
@@ -61,7 +61,7 @@
 		<text>Флеш-диск - удобное устройство для переноса информации.</text>
 	</string>
 	<string id="item_flash_crazy_mil_name">
-		<text>Флешка сумасшедшего сталкера</text>
+		<text>Флешка сумасшедшего</text>
 	</string>
 	<string id="item_flash_eco_rost_desc">
 		<text>Флеш-диск - удобное устройство для переноса информации.</text>
@@ -73,13 +73,13 @@
 		<text>Флеш-диск - удобное устройство для переноса информации.</text>
 	</string>
 	<string id="item_flash_esc_name">
-		<text>Флешка пленного сталкера</text>
+		<text>Флешка пленного</text>
 	</string>
 	<string id="item_flash_gslinger_agro_desc">
 		<text>Флеш-диск - удобное устройство для переноса информации.</text>
 	</string>
 	<string id="item_flash_gslinger_agro_name">
-		<text>Флешка из тайника Стрелка</text>
+		<text>Флешка Стрелка</text>
 	</string>
 	<string id="item_key_x18_desc">
 		<text>Электронный ключ от подземной лаборатории Х-18.</text>
@@ -88,7 +88,7 @@
 		<text>Ключ Борова</text>
 	</string>
 	<string id="item_krot_flash">
-		<text>Флешка Крота с информацией о тайнике Стрелка</text>
+		<text>Флешка Крота</text>
 	</string>
 	<string id="item_pda_lucky_desc">
 		<text>Карманный персональный компьютер. Незаменимое устройство в Зоне.</text>
@@ -115,12 +115,12 @@
 		<text>Ненастроеный прототип, разработанный учеными для защиты от ПСИ-излучения</text>
 	</string>
 	<string id="yan_bad_psy_helmet_name">
-		<text>Ненастроеный шлем пси-защиты</text>
+		<text>Ненастроеный пси-шлем</text>
 	</string>
 	<string id="yan_good_psy_helmet_desc">
 		<text>Настроеный прототип, разработанный учеными для защиты от ПСИ-излучения</text>
 	</string>
 	<string id="yan_good_psy_helmet_name">
-		<text>Настроеный шлем пси-защиты</text>
+		<text>Настроеный пси-шлем</text>
 	</string>
 </string_table>

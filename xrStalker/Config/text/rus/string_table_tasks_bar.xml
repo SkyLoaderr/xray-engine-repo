@@ -121,6 +121,9 @@
 	<string id="look_for_x16_lab">
 		<text>Найти документы x16</text>
 	</string>
+	<string id="wpn-winchester_m1">
+		<text>Боевой винчестер</text>
+	</string>
 	<string id="x16_documents">
 		<text>Найти документы в лаборатории X16</text>
 	</string>

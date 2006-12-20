@@ -108,6 +108,9 @@
 	<string id="Electra">
 		<text>Electra</text>
 	</string>
+	<string id="enc_weapons1_wpn-winchester_m1">
+		<text>Модификация винчестера. В подствольную емкость для патронов был встроен небольшой фрагмент артефакта "Грави", ориентированный таким образом, чтобы увеличивать скорость полета пули.</text>
+	</string>
 	<string id="enc_zone_anomalies_ameba">
 		<text>An anomaly of unknown nature. On contact inflicts injuries similar to the effects of a strong acid. Forms three types of artifacts: Slime, Slug, and Mica.</text>
 	</string>

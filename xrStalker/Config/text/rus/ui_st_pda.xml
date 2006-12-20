@@ -189,6 +189,9 @@
 	<string id="st_tip">
 		<text>Сообщение</text>
 	</string>
+	<string id="svoboda_outfit_description_m1">
+		<text>В комбинизон интегрирована металлическая сетка, защищающая от электрических и магнитных полей. В комплект также включен прибор ночного видения.</text>
+	</string>
 	<string id="Tasks">
 		<text>Задания</text>
 	</string>

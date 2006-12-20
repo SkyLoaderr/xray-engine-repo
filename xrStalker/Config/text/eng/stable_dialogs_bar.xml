@@ -3,9 +3,6 @@
 	<string id="bar_arena_man_job_0">
 		<text>Go on…</text>
 	</string>
-	<string id="bar_arena_man_job_1">
-		<text>What?</text>
-	</string>
 	<string id="bar_arena_man_job_11">
 		<text>So, your first fight? Your opponent is a piece of meat just like you. He's here because of debts and he only has two options: to come out and fight or to land himself in the nearest anomaly. He's gonna fight like a cornered animal. Equipment for today... lemme think... OK! Why don't you two use Makarovs...two clips each should be plenty. Either you kick his arse or we feed you to the dogs - not much of a choice. Go on now.</text>
 	</string>
@@ -92,9 +89,6 @@
 	</string>
 	<string id="bar_arena_man_start_51">
 		<text>You're not experienced enough for this fight.</text>
-	</string>
-	<string id="bar_arena_man_start_61">
-		<text>Hello, meat! If you haven't fought in the Arena you're meat and that's what you'll remain! Remember: you're a piece of meat, mate! The good thing is that this problem ain't hard to solve. Fight and prove that you're a real man! \nThe rules are as simple as it gets. Two pieces of meat... sometimes more... enter the Arena and try to beat their opponent by any means available. Whoever is standing at the end - wins. The loser is fed to the blind dogs. A weapon is chosen for every round but the fighters only find out what it is right before the fight. Don't worry tho', we don't send anyone into the Arena without some firepower. Your things will fit perfectly in this box, the one next to me...\nSo whaddaya say, meat?</text>
 	</string>
 	<string id="bar_bar_barman_ecolog_flash_done_0">
 		<text>Here is the flash drive professor Kruglov gave me.</text>
@@ -339,6 +333,9 @@
 	<string id="bar_bar_barmen_start_1315">
 		<text>Got it.</text>
 	</string>
+	<string id="bar_bar_barmen_start_1316">
+		<text>Да, вот еще! Начальнику Долга, я его отметил тебе на карте, нужен доброволец на выполнение какого-то задания на Военных складах, если интересно, можешь зайти к нему. С охраной я договорюсь, они тебя пропустят.</text>
+	</string>
 	<string id="bar_bar_barmen_start_132">
 		<text>No, I'm not ready yet.</text>
 	</string>
@@ -431,6 +428,9 @@
 	</string>
 	<string id="bar_bar_barmen_start_2211">
 		<text>OK.</text>
+	</string>
+	<string id="bar_bar_barmen_start_22111">
+		<text>Теперь слушай!</text>
 	</string>
 	<string id="bar_bar_barmen_start_3">
 		<text>What do you want, Marked One?</text>
@@ -716,12 +716,6 @@
 	</string>
 	<string id="bar_bar_visitors_10_start_71111">
 		<text>Thanks for your advice.</text>
-	</string>
-	<string id="bar_bar_visitors_11_start_71">
-		<text>Duty... sounds good. Ex-military, deserve respect. They consider it their, heh, duty to protect the world from mutants. Modern vampire hunters, only they don't care about little things like our Wild Area - they want large concentrations of mutants... hotshots… They only accept veterans because they don't sit around... they clean up.</text>
-	</string>
-	<string id="bar_bar_visitors_11_start_711">
-		<text>They clean what? Their trousers? I'm only joking… They really deserve respect.</text>
 	</string>
 	<string id="bar_bar_visitors_12_start_71">
 		<text>What do you want?</text>

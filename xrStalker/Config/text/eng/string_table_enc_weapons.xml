@@ -231,6 +231,12 @@
 	<string id="enc_weapons1_wpn-abakan">
 		<text>The weapon of the elite troops in the Russian army. It was designed as a replacement for the outdated AK-74. Not only the Abakan’s internal mechanisms but also its receiver and its barrel are movable, which decreases the recoil and increases accuracy.\n Ammunition:\n standard 5.45x39 mm,\n armor-piercing 5.45x39 mm BP.</text>
 	</string>
+	<string id="enc_weapons1_wpn-abakan_m1">
+		<text>UNIQUE WEAPON. A new version of the AN-94 assault rifle equipped with an improved recoil compensation system. It is more accurate even in burst mode.\n Ammunition:\n standard 5.45x39 mm,\n armor-piercing 5.45x39 mm BP.</text>
+	</string>
+	<string id="enc_weapons1_wpn-abakan_m2">
+		<text>Данный автомат снабжен интегрированным подствольным гранатометом, что делает эту модель еще более универсальным оружием.</text>
+	</string>
 	<string id="enc_weapons1_wpn-addon-grenade-launcher">
 		<text>A grenade launcher for the AK-74 and AKS-74.\n Ammunition: VOG-25 grenade,\n and VOG-25R grenade.</text>
 	</string>
@@ -249,8 +255,14 @@
 	<string id="enc_weapons1_wpn-ak74">
 		<text>Kalashnikov assault rifle with a folding butt, 1974 model, uses 5.45x39 mm ammunition. It is a simple and reliable weapon, but the cheapness of its production affected its ergonomy and accuracy. In the Zone, it is the main weapon of the military stalkers and of many solo fighters.\n Ammunition:\n standard 5.45x39 mm,\n armor-piercing 5.45x39 mm BP.</text>
 	</string>
+	<string id="enc_weapons1_wpn-ak74_m1">
+		<text>UNIQUE WEAPON. The original gas chamber and the frame lock spring of this assault rifle were replaced with parts modified by an unknown gunsmith. As a result, the rate of fire is increased from 600 to 850 rounds per minute.\n Ammunition:\n standard 5.54x39 mm,\n armor-piercing 5.45x39 mm BP.</text>
+	</string>
 	<string id="enc_weapons1_wpn-ak74u">
 		<text>The weight and size of the AKS-74U are similar to those of a submachine gun, but its operation mode and the ammunition it uses place it into the class of the assault rifles. Its advantages are its small dimensions very useful when fighting inside a building or in a thick forest and a relatively high piercing capabilities. Its main disadvantages are a limited accuracy range and quick overheating when firing bursts.\n Ammunition:\n standard 5.45x39 mm,\n armor-piercing 5.45x39 mm BP.</text>
+	</string>
+	<string id="enc_weapons1_wpn-ak74u_m1">
+		<text>Модифицированный автомат. Снабжен неснимаемым глушителем.</text>
 	</string>
 	<string id="enc_weapons1_wpn-beretta">
 		<text>Adopted by the American army and police, as well as many military and police units all over the world. It is also very popular among the criminals for its high-powered round and its high-capacity magazine.\n Ammunition:\n standard 9x19 mm Parabellum,\n improved 9x19 mm PBP.</text>
@@ -258,17 +270,26 @@
 	<string id="enc_weapons1_wpn-bm16">
 		<text>A sawn-off BM-16 rifle. It is lighter and more compact then the original two-barrel rifle, but it is effective only at a close range. One of the weapons most commonly used by beginners.\n Ammunition:\n 12x70 shot,\n 12x76 slug,\n 12x76 dart.</text>
 	</string>
+	<string id="enc_weapons1_wpn-colt_m1">
+		<text>Оружие наемных убийц. Старый добрый надежный кольт, снабженный неснимаемым глушителем.</text>
+	</string>
 	<string id="enc_weapons1_wpn-colt1911">
 		<text>A classical automatic Colt which present in all the conflicts of the 20th century with honor and entered the new century with confidence. Its small-size magazine is partially compensated by the use of a high-powered round.\n Ammunition:\n standard .45 ACP,\n improved .45 ACP Hydro-Shock.</text>
 	</string>
 	<string id="enc_weapons1_wpn-desert-eagle">
 		<text>A real gun for real heroes. It is big, heavy and very destructive. It is not very popular in the Zone due to its price and size. After all, you don't go hunting for elephants every day!\n Ammunition:\n standard .45 ACP,\n improved .45 ACP Hydro-Shock.</text>
 	</string>
+	<string id="enc_weapons1_wpn-eagle_m1">
+		<text>И без того мощный пистолет переработан под винтовочный патрон. Поистине убийственная штука для ближнего боя.</text>
+	</string>
 	<string id="enc_weapons1_wpn-fn2000">
 		<text>An assault rifle combined with a grenade launcher. It is equipped with an electronic fire control module and a 40-mm grenade launcher.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm АР.</text>
 	</string>
 	<string id="enc_weapons1_wpn-fort">
 		<text>A police pistol of Ukrainian production, replaced the PM. In comparison with the Makarov pistol, it has improved accuracy, ergonomics and a larger magazine, but it is less reliable.\n Ammunition:\n standard 9x18 mm,\n improved 9x18 mm +P+.</text>
+	</string>
+	<string id="enc_weapons1_wpn-fort_m1">
+		<text>UNIQUE WEAPON. This model seems to be a prototype - no one knows how it got into the Zone. It has a new magazine fixation system which allows to use magazines with larger capacity in comparison with standard models.\n Ammunition:\n standard 9x18 mm, \n improved 9x18 mm +P+.</text>
 	</string>
 	<string id="enc_weapons1_wpn-g36">
 		<text>A German assault rifle. It is a first-grade specimen of the modern weaponry: it is light, reliable, and ergonomic.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm АР.</text>
@@ -279,6 +300,9 @@
 	<string id="enc_weapons1_wpn-groza">
 		<text>An assault rifle combined with a grenade launcher. It is a very good type of assault rifle for the Zone conditions: it is compact, reliable, but universal and powerful. The Groza is one of the favorite rifles of the military stalkers.\n Ammunition:\n standard 9x39 mm PAB-9,\n armor-piercing 9x39 mm SP-6,\n sniper 9x39 mm SP-5,\n VOG-25 and VOG-25R grenades for the grenade launcher.</text>
 	</string>
+	<string id="enc_weapons1_wpn-groza_m1">
+		<text>UNIQUE WEAPON. This weapon was presented to General Voronin by a gunsmith in gratitude for saving his life. This Groza was skilfully and thoroughly customized and many parts were replaced completely. Due to the improvement, its combat characteristics are much better then those of the standard model.\n Ammunition:\n standard 9x39 mm PAB-9,\n armor-piercing 9x39 mm SP-6,\n sniper 9x39 mm SP-5,\n VOG-25 and VOG-25R grenades for the grenade launcher.</text>
+	</string>
 	<string id="enc_weapons1_wpn-hpsa">
 		<text>The Browning deserves to be considered as one of the best pistols of the 20th century. It is reliable, powerful and has a good grouping of shots. The magazine can hold 13 rounds.\n Ammunition:\n standard 9x19 mm Parabellum,\n improved 9х19 mm PBP.</text>
 	</string>
@@ -288,11 +312,26 @@
 	<string id="enc_weapons1_wpn-l85">
 		<text>After the British army replaced this rifle with the German-made G36, it appeared in large quantities first on the black market and then in the Zone. The L85A2’s main advantages are a standard 4-x scope and the high accuracy of the first shot. In burst mode, its accuracy decreases greatly, and the main mechanisms of the rifle are not reliable enough.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm АР.</text>
 	</string>
+	<string id="enc_weapons1_wpn-l85_m1">
+		<text>UNIQUE WEAPON. It seems that this rifle was modified by a talented gunsmith some time ago. He had to spend some time on it, but as a result this rifle became more reliable and much more stable when shooting.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm АР.</text>
+	</string>
+	<string id="enc_weapons1_wpn-l85_m2">
+		<text>Оружие снабжено интегрированным глушителем. Многие детали заменены на более легкие аналоги, что существенно уменьшает вес оружия.</text>
+	</string>
 	<string id="enc_weapons1_wpn-lr300">
 		<text>A new stage of development of the famous M-16, a light rifle with an effective fire range of up to 300 meters. Due its to exceptionally easy triggering, high ergonomics and low weight, the weapon is highly accurate, though it is too sensitive to dirt and is not always suitable for use under difficult field conditions.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm АР.</text>
 	</string>
+	<string id="enc_weapons1_wpn-lr300_m1">
+		<text>UNIQUE WEAPON. This model of the LR300 rifle was originally designed for a sniper. The operation of the rifle's mechanisms doesn't affect this rifle’s stability during the shot, therefore a more accurate fire is achieved. However, it has a significantly reduced rate of fire in burst mode.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm АР</text>
+	</string>
 	<string id="enc_weapons1_wpn-mp5">
 		<text>One of the best weapons in the submachine gun class. During the last decades of the 20th century it was adopted by the army and police special forces units in many countries. When it was gradually replaced with more up-to-date models, it appeared on the black market, and then in the Zone.\n Ammunition:\n standard 9x19 mm Parabellum,\n improved 9x19 mm PBP.</text>
+	</string>
+	<string id="enc_weapons1_wpn-mp5_m1">
+		<text>Легкий, компактный, а теперь еще и переделанный под распространенный калибр, этот пистолет-пулемет является настоящей находкой для начинающих сталкеров.</text>
+	</string>
+	<string id="enc_weapons1_wpn-mp5_m2">
+		<text>Модификация базовой модели. Добавлен неснимаемый глушитель.</text>
 	</string>
 	<string id="enc_weapons1_wpn-pb">
 		<text>A pistol with an integrated silencer, it was used by Soviet special forces. It is now outdated, but in skilful hands, still very effective.\n Ammunition:\n standard 9x18 mm,\n improved 9x18 mm +P+.</text>
@@ -303,8 +342,17 @@
 	<string id="enc_weapons1_wpn-rg-6">
 		<text>A revolver-type grenade launcher. Sometimes, it is just indispensable, particularly when targeting large numbers of mutants, attacking well-guarded stationary objects or fighting especially tough creatures.\n Ammunition: VOG-25 grenade,\n and VOG-25R grenade.</text>
 	</string>
+	<string id="enc_weapons1_wpn-rg6_m1">
+		<text>Модификация револьверного гранатомета. Данная модель приспособлена для ведения огня гранатами западного образца.</text>
+	</string>
 	<string id="enc_weapons1_wpn-rpg7">
 		<text>A grenade launcher developed in the 1960s. Such grenade launchers are stored in large quantities in army depots, from where they are transferred to the Zone. Such weapon is rare for stalkers: its huge dimensions and heavy weight make it unpopular, though it is indispensable for some missions.\n Ammunition: OG-7V.</text>
+	</string>
+	<string id="enc_weapons1_wpn-sig_m1">
+		<text>Оружие создавалось для ведения боев в условиях города. Чтобы облегчить вес, были убраны или заменены некоторые компоненты. В результате на оружие больше нельзя повесить ни прицел, ни подствольный гранатомет. Зато и вес снизился почти вдвое.</text>
+	</string>
+	<string id="enc_weapons1_wpn-sig_m2">
+		<text>Модификация для ведения снайперского огня. Оружие снабжено неснимаемым оптическим прицелом повышенной кратности.</text>
 	</string>
 	<string id="enc_weapons1_wpn-sig220">
 		<text>A model developed back in 1975 but still popular all around the world. Its magazine is low capacity, but its mechanism is absolutely reliable. Its second advantage is the use of the high-powered Colt round.\n Ammunition:\n standard .45 ACP,\n improved .45 ACP Hydro-Shock.</text>
@@ -315,8 +363,14 @@
 	<string id="enc_weapons1_wpn-spas12">
 		<text>The SPAS 12 smooth-bore rifle was developed in the late 1970th as an universal combat weapon for the police and the army assault units. This weapon is very reliable and flexibly used. It is however relatively big, expensive and its mechanism is too complex. Probably, this is the best close range gun in the Zone.\n Ammunition:\n 12x70 shot,\n 12x76 slug,\n 12x76 dart.</text>
 	</string>
+	<string id="enc_weapons1_wpn-spas12_m1">
+		<text>UNIQUE WEAPON. This shotgun model has a rifled bore which greatly increases its accuracy when firing darts or slugs. However, using shot is more difficult.\n Ammunition:\n 12x70 shot,\n 12x76 slug,\n 12x76 dart.</text>
+	</string>
 	<string id="enc_weapons1_wpn-svd">
 		<text>This rifle was widely used in all operations of the Soviet and Russian armies since 1960. It proved itself to be an exceptionally reliable and handy weapon. In the Zone it is preferred by the experienced stalkers of the Duty faction which hunt mutants.\n Ammunition:\n standard 7.62x54 mm 7N1,\n armor-piercing 7.62x54 mm BP,\n sniper 7.62x54 mm 7N14.</text>
+	</string>
+	<string id="enc_weapons1_wpn-svd_m1">
+		<text>UNIQUE WEAPON. A modification of the Dragunov sniper rifle. It includes a more sensitive firing mechanism and a recoil compensation system.\n Ammunition:\n standard 7.62x54 mm 7N1,\n armor-piercing 7.62x54 mm BP,\n sniper 7.62x54 mm 7N14.</text>
 	</string>
 	<string id="enc_weapons1_wpn-svu">
 		<text>A more up-to-date version of the Dragunov rifle. A compact bullpup model. It is excellent for long trips in the Zone.\n Ammunition:\n standard 7.62x54 mm 7N1,\n armor-piercing 7.62x54 mm BP,\n sniper 7.62x54 mm 7N14.</text>
@@ -330,11 +384,17 @@
 	<string id="enc_weapons1_wpn-val">
 		<text>This weapon is based on the Vintorez noiseless sniper rifle, but it has a folding butt, can fire bursts and has a larger magazine. It was originally designed for special forces operating in conditions demanding noiseless and flameless fire.\n Ammunition:\n standard 9x39 mm PAB-9,\n armor-piercing 9x39 mm SP-6,\n sniper 9x39 mm SP-5.</text>
 	</string>
+	<string id="enc_weapons1_wpn-val_m1">
+		<text>От базовой модели отличается возможностью добавлять оптический прицел ПСО-1.</text>
+	</string>
 	<string id="enc_weapons1_wpn-vintorez">
 		<text>A special sniper rifle designed for noiseless and flameless sniper fire and equipped with an integrated silencer. It can pierce any bulletproof vest at a range of 400 meters. It is a weapon highly valued by stalkers of any level.\n Ammunition:\n standard 9x39 mm PAB-9,\n armor-piercing 9x39 mm SP-6,\n sniper 9x39 mm SP-5.</text>
 	</string>
 	<string id="enc_weapons1_wpn-walther">
 		<text>An excellent German pistol. Highly reliable with a high capacity magazine and a good fire accuracy, especially in the case of the model designed for the 9 mm Parabellum round.\n Ammunition:\n standard 9x19 mm Parabellum,\n improved 9х19 mm PBP.</text>
+	</string>
+	<string id="enc_weapons1_wpn-walther_m1">
+		<text>Модификация пистолета для ведения огня боеприпасами калибра 9x18 мм.</text>
 	</string>
 	<string id="enc_weapons1_wpn-wincheaster1300">
 		<text>An American smooth-bore pump-action rifle made for use in the most hostile environment. It is very reliable. All its details are covered with anticorrosive coating.\n Ammunition:\n 12x70 shot,\n 12x76 slug,\n 12x76 dart.</text>
@@ -363,6 +423,12 @@
 	<string id="wpn-abakan">
 		<text>AN-94 Abakan</text>
 	</string>
+	<string id="wpn-abakan_m1">
+		<text>AH-94М</text>
+	</string>
+	<string id="wpn-abakan_m2">
+		<text>GP-25 Kostyer</text>
+	</string>
 	<string id="wpn-addon-grenade-launcher">
 		<text>GP-25 Kostyer</text>
 	</string>
@@ -381,8 +447,14 @@
 	<string id="wpn-ak74">
 		<text>AKS-74</text>
 	</string>
+	<string id="wpn-ak74_m1">
+		<text>Improved AKS-74</text>
+	</string>
 	<string id="wpn-ak74u">
 		<text>AKS-74U</text>
+	</string>
+	<string id="wpn-ak74u_m1">
+		<text>АКС-74У спецназ</text>
 	</string>
 	<string id="wpn-beretta">
 		<text>Beretta 92FS</text>
@@ -390,14 +462,23 @@
 	<string id="wpn-bm16">
 		<text>Sawn-off two-barrel rifle</text>
 	</string>
+	<string id="wpn-colt_m1">
+		<text>Безшумный кольт</text>
+	</string>
 	<string id="wpn-colt1911">
 		<text>Colt 1911A1</text>
+	</string>
+	<string id="wpn-eagle_m1">
+		<text>Большой Бэн</text>
 	</string>
 	<string id="wpn-fn2000">
 		<text>FN2000</text>
 	</string>
 	<string id="wpn-fort">
 		<text>Fort-12</text>
+	</string>
+	<string id="wpn-fort_m">
+		<text>Форт-15</text>
 	</string>
 	<string id="wpn-g36">
 		<text>HK G36</text>
@@ -408,14 +489,32 @@
 	<string id="wpn-groza">
 		<text>OC-14 Groza</text>
 	</string>
+	<string id="wpn-groza_m1">
+		<text>"Гроза" 5.45</text>
+	</string>
 	<string id="wpn-l85">
 		<text>Springfield L85A2</text>
+	</string>
+	<string id="wpn-l85_m1">
+		<text>Л85 Баланс</text>
+	</string>
+	<string id="wpn-l85_m2">
+		<text>Облегченная Л85</text>
 	</string>
 	<string id="wpn-lr300">
 		<text>ZM LR300</text>
 	</string>
+	<string id="wpn-lr300_m1">
+		<text>ЛР300 снайперская</text>
+	</string>
 	<string id="wpn-mp5">
 		<text>HK MP5А3</text>
+	</string>
+	<string id="wpn-mp5_m1">
+		<text>МП5 9х18</text>
+	</string>
+	<string id="wpn-mp5_m2">
+		<text>Безшумная МП5</text>
 	</string>
 	<string id="wpn-pb">
 		<text>Noiseless pistol (PB)</text>
@@ -426,8 +525,17 @@
 	<string id="wpn-rg-6">
 		<text>RG-6</text>
 	</string>
+	<string id="wpn-rg6_m1">
+		<text>РГ-6 м209</text>
+	</string>
 	<string id="wpn-rpg7">
 		<text>RPG-7V</text>
+	</string>
+	<string id="wpn-sig_m1">
+		<text>Штурмовой СиГ</text>
+	</string>
+	<string id="wpn-sig_m2">
+		<text>СиГ снайперский</text>
 	</string>
 	<string id="wpn-sig220">
 		<text>SigSauer P220</text>
@@ -438,8 +546,14 @@
 	<string id="wpn-spas12">
 		<text>Franchi SPAS 12</text>
 	</string>
+	<string id="wpn-spas12_m1">
+		<text>СПАС-12 нарезной</text>
+	</string>
 	<string id="wpn-svd">
 		<text>Dragunov sniper rifle (SVD)</text>
+	</string>
+	<string id="wpn-svd_m1">
+		<text>СВД "Дальнобойщик"</text>
 	</string>
 	<string id="wpn-svu">
 		<text>SVU</text>
@@ -450,140 +564,19 @@
 	<string id="wpn-val">
 		<text>Val special assault rifle</text>
 	</string>
+	<string id="wpn-val_m1">
+		<text>Снайперский Вал</text>
+	</string>
 	<string id="wpn-vintorez">
 		<text>Vintorez VSS</text>
 	</string>
 	<string id="wpn-walther">
 		<text>Walther P99</text>
 	</string>
-	<string id="wpn-wincheaster1300">
-		<text>Winchester 1300</text>
-	</string>
-	;-----------------------------Уникальные оружия----------------------------------		
-	<string id="wpn-ak74_m1">
-		<text>Скорострельный АКС-74</text>
-	</string>
-	<string id="enc_weapons1_wpn-ak74_m1">
-		<text>Модифицированный затворный механизм увеличивает скорость стрельбы.</text>
-	</string>
-	<string id="wpn-abakan_m1">
-		<text>АН-94 снайперский</text>
-	</string>
-	<string id="enc_weapons1_wpn-abakan_m1">
-		<text>Автомат, снабженный модифицированным оптическим прицелом для ведения снайперского огня. Вмонтированная в корпус оптика обладает большей кратностью, чем стандартные прицелы.</text>
-	</string>
-		<string id="wpn-fort_m">
-		<text>Форт-15</text>
-	</string>
-	<string id="enc_weapons1_wpn-fort_m1">
-		<text>Экспериментальный прототип пистолета Форт.</text>
-	</string>
-	<string id="wpn-ak74u_m1">
-		<text>АКС-74У спецназ</text>
-	</string>
-	<string id="enc_weapons1_wpn-ak74u_m1">
-		<text>Модифицированный автомат. Снабжен неснимаемым глушителем.</text>
-	</string>
-	<string id="wpn-mp5_m1">
-		<text>МП5 9х18</text>
-	</string>
-	<string id="enc_weapons1_wpn-mp5_m1">
-		<text>Легкий, компактный, а теперь еще и переделанный под распространенный калибр, этот пистолет-пулемет является настоящей находкой для начинающих сталкеров.</text>
-	</string>
-	<string id="wpn-groza_m1">
-		<text>"Гроза" 5.45</text>
-	</string>
-	<string id="enc_weapons1_wpn-groza_m1">
-		<text>Данный ствол - отличная работа одного из сталкеров-умельцев, которому удалось переделать винтовку под более распространенный патрон 5,45 мм.</text>
-	</string>
-	<string id="wpn-spas12_m1">
-		<text>СПАС-12 нарезной</text>
-	</string>
-	<string id="enc_weapons1_wpn-spas12_m1">
-		<text>Модифицированный на уменьшение дисперсии этот СПАС-12 плохо подходит для стрельбы дробью, зато идеально для стрельбы жеканом или дротиком.</text>
-	</string>
-	<string id="wpn-winchester_m1">
-		<text>Боевой винчестер</text>
-	</string>
-	<string id="enc_weapons1_wpn-winchester_m1">
-		<text>Модификация винчестера. В подствольную емкость для патронов был встроен небольшой фрагмент артефакта "Грави", ориентированный таким образом, чтобы увеличивать скорость полета пули.</text>
-	</string>
-	<string id="wpn-l85_m1">
-		<text>Л85 Баланс</text>
-	</string>
-	<string id="enc_weapons1_wpn-l85_m1">
-		<text>С помощью нескольких модификаций удалось уменьшить эффект подкидывания ствола.</text>
-	</string>		
-	<string id="wpn-lr300_m1">
-		<text>ЛР300 снайперская</text>
-	</string>
-	<string id="enc_weapons1_wpn-lr300_m1">
-		<text>Модификация штурмового оружия под стрельбу одиночными выстрелами. Предполагалось, что она будет использоваться, как дешевый аналог снайперской винтовки.</text>
-	</string>	
-	<string id="wpn-svd_m1">
-		<text>СВД "Дальнобойщик"</text>
-	</string>
-	<string id="enc_weapons1_wpn-svd_m1">
-		<text>Модифицирована оптика, за счет чего увеличена кратность зума. Улучшен балланс оружия, в результате уменьшена отдача.</text>
-	</string>	
-	<string id="wpn-sig_m1">
-		<text>Штурмовой СиГ</text>
-	</string>
-	<string id="enc_weapons1_wpn-sig_m1">
-		<text>Оружие создавалось для ведения боев в условиях города. Чтобы облегчить вес, были убраны или заменены некоторые компоненты. В результате на оружие больше нельзя повесить ни прицел, ни подствольный гранатомет. Зато и вес снизился почти вдвое.</text>
-	</string>	
-	<string id="wpn-eagle_m1">
-		<text>Большой Бэн</text>
-	</string>
-	<string id="enc_weapons1_wpn-eagle_m1">
-		<text>И без того мощный пистолет переработан под винтовочный патрон. Поистине убийственная штука для ближнего боя.</text>
-	</string>	
-	<string id="wpn-colt_m1">
-		<text>Безшумный кольт</text>
-	</string>
-	<string id="enc_weapons1_wpn-colt_m1">
-		<text>Оружие наемных убийц. Старый добрый надежный кольт, снабженный неснимаемым глушителем.</text>
-	</string>	
-	<string id="wpn-val_m1">
-		<text>Снайперский Вал</text>
-	</string>
-	<string id="enc_weapons1_wpn-val_m1">
-		<text>От базовой модели отличается возможностью добавлять оптический прицел ПСО-1.</text>
-	</string>	
-	<string id="wpn-mp5_m2">
-		<text>Безшумная МП5</text>
-	</string>
-	<string id="enc_weapons1_wpn-mp5_m2">
-		<text>Модификация базовой модели. Добавлен неснимаемый глушитель. </text>
-	</string>	
-	<string id="wpn-abakan_m2">
-		<text>АН-94 штурмовой</text>
-	</string>
-	<string id="enc_weapons1_wpn-abakan_m2">
-		<text>Данный автомат снабжен интегрированным подствольным гранатометом, что делает эту модель еще более универсальным оружием.</text>
-	</string>	
-	<string id="wpn-l85_m2">
-		<text>Облегченная Л85</text>
-	</string>
-	<string id="enc_weapons1_wpn-l85_m2">
-		<text>Оружие снабжено интегрированным глушителем. Многие детали заменены на более легкие аналоги, что существенно уменьшает вес оружия.</text>
-	</string>	
-	<string id="wpn-sig_m2">
-		<text>СиГ снайперский</text>
-	</string>
-	<string id="enc_weapons1_wpn-sig_m2">
-		<text>Модификация для ведения снайперского огня. Оружие снабжено неснимаемым оптическим прицелом повышенной кратности.</text>
-	</string>	
-	<string id="wpn-rg6_m1">
-		<text>РГ-6 м209</text>
-	</string>
-	<string id="enc_weapons1_wpn-rg6_m1">
-		<text>Модификация револьверного гранатомета. Данная модель приспособлена для ведения огня гранатами западного образца.</text>
-	</string>	
 	<string id="wpn-walther_m1">
 		<text>Вальтер 9x18</text>
 	</string>
-	<string id="enc_weapons1_wpn-walther_m1">
-		<text>Модификация пистолета для ведения огня боеприпасами калибра 9x18 мм.</text>
-	</string>	
+	<string id="wpn-wincheaster1300">
+		<text>Winchester 1300</text>
+	</string>
 </string_table>

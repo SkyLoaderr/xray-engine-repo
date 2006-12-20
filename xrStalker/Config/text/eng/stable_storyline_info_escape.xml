@@ -28,6 +28,9 @@
 	<string id="doctor_meet_text">
 		<text>OK, I'll meet with Ghost's man. I will be waiting for him in Hawkeye's hiding place. If he's one of our own, he will know where to look for me. Doctor.</text>
 	</string>
+	<string id="esc_flash_task_descr">
+		<text>Торговец: "... мои ребята возвращались с задания и пропали. Один из них – звать Шустрый – нёс мне кой-какую инфу… И пропали совсем рядом, под боком, потому что мост прошли. Не знаю, что и думать. Короче: найди Шустрого, живого или мертвого – главное, чтобы флешка при нём была. Принесёшь мне. Шустрый был из людей Волка – а этот тут, в лагере. Спроси его: наверняка что-то знает. C оружием и боеприпасами он тебе поможет."</text>
+	</string>
 	<string id="esc_fox_info">
 		<text>Grey to Fox: a friend wants me to give a helping hand to a bunch of stalkers that dug out Hawkeye's stash. I'm off to the hangar at the Dump with my boys. That's where you can find me. </text>
 	</string>
@@ -75,7 +78,4 @@
 	</string>
 	<string id="tutorial_secret_place">
 		<text>I left a small cache at the deserted farm. It's got some food and ammo. I'm way too weak to carry it now. I'm not sure if I can make it to the camp.</text>
-	</string>
-	<string id="tutorial_wounded_text">
-		<text>Trader: the scout who went to Agroprom to spy on the military was ambushed by bandits very close to the camp, in a wagon on the side of the road. Kill the bandits, take the scout's flash drive and take it to the trader.</text>
 	</string>

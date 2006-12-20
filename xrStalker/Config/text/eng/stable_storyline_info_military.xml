@@ -31,6 +31,9 @@
 	<string id="mil_flash_ugrumy_descr">
 		<text>1. The Devil made me go to Radar. I barely made it - a little slower and I would have made for just another exhibit with liquified brains.\n\n 2: Four thugs surrounded me like I was a three-year old. I did my part - didn't see their trap. I was only saved by their chattiness and greed. Instead of stuffing me full of lead, they jumped out and began disrobing me - got hooked on the suit. That was their last mistake; still, one of them caught me with a bullet... heh, I'm getting old...\n\n 3: By the time I arrived, Hawkeye's messenger was no longer breathing. Three bloodsuckers are a match for anyone, but this guy took out four of them, and a few more bloody trails lead out in different directions. The only information on him is a door code (19840519), but identifying the door it unlocks doesn't seem possible.\n\n 4: We intercepted a few army men on their way to Radar. They carried no documents or orders, but were very adequately equipped. I think I'll leave that RG-6 in the basement until I need it.</text>
 	</string>
+	<string id="mil_freedom_rg6_task_descr">
+		<text>Воронин: "У Свободы есть несколько отличных гранатометов РГ-6, если бы у тебя получилось проникнуть на территорию Свободы и выкрасть хотя бы один такой гранатомет, то я бы щедро тебя вознаградил. Т.к. ты не в нашей группировке, ты легко можешь втереться в доверие к Свободе и при удачном раскладе спереть РГ-6. Я скину тебе информацию по местонахождению базы Свободы. Там тебе надо найти некоего Повара, члена группы "Свободы", он знает где именно хранится РГ-6. Он слаб на выпивку, поэтому постарайся его опоить. Возьми для этого побольше водки."</text>
+	</string>
 	<string id="mil_go_to_miser_descr">
 		<text>Hrm. I will get my reward at Freedom's base from Skinflint… Nice name. I should hope for a can of meat with last year's best by date.</text>
 	</string>

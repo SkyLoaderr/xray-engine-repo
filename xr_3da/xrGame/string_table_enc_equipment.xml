@@ -24,7 +24,7 @@
 	<string id="cit_deadcity_maps_desc">
 		<text>Подробная карта Мёртвого города, содержащая схему расположения позиций наёмников</text>
 	</string>
-	<string id="cit_deadcity_maps_short_desc">
+	<string id="cit_deadcity_maps_name">
 		<text>Карта Мёртвого города</text>
 	</string>
 	<string id="cit_doctors_key_desc">
@@ -32,12 +32,6 @@
 	</string>
 	<string id="cit_doctors_key_short_desc">
 		<text>Ключ Доктора</text>
-	</string>
-	<string id="cit_killers_documents_desc">
-		<text>Подробная информация о деятельности группировки наёмников в течение последних месяцев</text>
-	</string>
-	<string id="cit_killers_documents_short_desc">
-		<text>Документы наёмников</text>
 	</string>
 	<string id="Conserva">
 		<text>"Завтрак туриста"</text>

@@ -19,7 +19,7 @@
 		<text>Мне надо пройти, у меня дело к бармену.</text>
 	</string>
 	<string id="gar_dolg_blokpost_111121">
-		<text>Даже если это и так, проход стоит денег. Плати полштуки и мы тебя пропустим. Или ты можешь оказать нам одну услугу. Выбирай.</text>
+		<text>Да, Бармен сообщил нам о тебе, ты можешь пройти.</text>
 	</string>
 	<string id="gar_dolg_blokpost_1111211">
 		<text>Нет, я лучше заплачу за проход. Вот держи.</text>
@@ -50,6 +50,12 @@
 	</string>
 	<string id="gar_dolg_blokpost_111123">
 		<text>Тогда в бар тебе прохода нет.</text>
+	</string>
+	<string id="gar_dolg_blokpost_1231">
+		<text>Спасибо тебе, что помог нам отбиться от кабанов, за услугу возьми заслуженную награду.</text>
+	</string>
+	<string id="gar_dolg_blokpost_12311">
+		<text>Спасибо!</text>
 	</string>
 	<string id="gar_dolg_blokpost_22">
 		<text>Ну что, перебил стаю кабанов?</text>

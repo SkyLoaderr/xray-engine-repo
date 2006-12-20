@@ -3,6 +3,24 @@
 	<string id="artefact">
 		<text>Get the artifact.</text>
 	</string>
+	<string id="barmen_defend_camp_1">
+		<text>Защитить стоянку сталкеров на Свалке от нападения бандитов</text>
+	</string>
+	<string id="barmen_defend_camp_1_descr">
+		<text>Защитить стоянку сталкеров на Свалке от нападения бандитов</text>
+	</string>
+	<string id="barmen_defend_camp_1_text">
+		<text>Ко мне идет группа сталкеров, в благополучном приходе которых я заинтересован лично. Они остановились недалеко от Бара. Один раскаявшийся криминальный элемент почти добровольно сообщил нам, что на них в ближайшее время должны напасть. Так что направляйся туда и защити их стоянку от нападения.</text>
+	</string>
+	<string id="barmen_defend_camp_2">
+		<text>На Агропроме помочь сталкерам отбиться от бандитов</text>
+	</string>
+	<string id="barmen_defend_camp_2_descr">
+		<text>На Агропроме помочь сталкерам отбиться от бандитов</text>
+	</string>
+	<string id="barmen_defend_camp_2_text">
+		<text>Вобщем такое дело есть. Недавно на Агропром группа сталкеров ушла, последний раз когда они на связь выходили, сказали что в подземке, надыбали что-то ценное, но на них бандюки насели. Пока они держатся, но и свалить не могут. Поможешь им?</text>
+	</string>
 	<string id="barmen_eliminate_camp_1">
 		<text>Eliminate the bandits at the Dump.</text>
 	</string>
@@ -30,6 +48,42 @@
 	<string id="barmen_eliminate_camp_3_text">
 		<text>There’s this farmstead by the old warehouses. Used to be a perfect place for a rendezvous, to exchange goods, you know… that sort of thing. But now the bandits have occupied it and, by the looks of it, they are not about to make off. Now, that doesn’t suit me at all. I need this farmstead asap. I don’t care what happens to the lodgers.</text>
 	</string>
+	<string id="barmen_eliminate_camp_4">
+		<text>Зачистить лагерь бандитов на "Дикой территории"</text>
+	</string>
+	<string id="barmen_eliminate_camp_4_descr">
+		<text>Зачистить лагерь бандитов на "Дикой территории"</text>
+	</string>
+	<string id="barmen_eliminate_camp_4_text">
+		<text>На "Дикой территории" бандиты. Мы не можем допустить, чтобы эти подонки разводили антисанитарию прямо рядом с баром. Надо зачистить их лагерь.</text>
+	</string>
+	<string id="barmen_eliminate_camp_5">
+		<text>Уничтожить логово диких собак-мутантов на "Дикой территории"</text>
+	</string>
+	<string id="barmen_eliminate_camp_5_descr">
+		<text>Уничтожить логово диких собак-мутантов на "Дикой территории"</text>
+	</string>
+	<string id="barmen_eliminate_camp_5_text">
+		<text>Несколько наших ребят пошли в экспедицию, вернулся один. Весь ободранный, в крови, глаза стеклянные. Нарвались на собак скорее всего. Их там целая стая. Так вот, найди их логово и перебей всех до последнего.</text>
+	</string>
+	<string id="barmen_eliminate_camp_6">
+		<text>Уничтожить группу бандитов на Агропроме</text>
+	</string>
+	<string id="barmen_eliminate_camp_6_descr">
+		<text>Уничтожить группу бандитов на Агропроме</text>
+	</string>
+	<string id="barmen_eliminate_camp_6_text">
+		<text>Помню, как-то в 94-м прицепились ко мне рэкетиры - давай, мол, отстегивай. Ух, натерпелся я тогда, ресторан у меня был. Тогда на них управы не было! А тут вдруг узнаю, что эта же шайка теперь орудует на Агропроме, проценты за находку артефактов собирает! Но здесь у меня руки длинные. Я даже знаю, где именно они засели. Будь добр, накажи их.</text>
+	</string>
+	<string id="barmen_eliminate_camp_7">
+		<text>Уничтожить логово снорков в "Темной долине"</text>
+	</string>
+	<string id="barmen_eliminate_camp_7_descr">
+		<text>Уничтожить логово снорков в "Темной долине"</text>
+	</string>
+	<string id="barmen_eliminate_camp_7_text">
+		<text>Мда… Похоже правы те, кто говорит что зона расширяется. В темной долине несколько снорков заметили, раньше они там не попадались. Ну тут уже паниковать некоторые начали. Долговцы обещали снорков уничтожить, но все не соберутся никак. Возьмешься?</text>
+	</string>
 	<string id="barmen_find_artefact_1">
 		<text>Find the Meatball artifact</text>
 	</string>
@@ -56,6 +110,24 @@
 	</string>
 	<string id="barmen_find_artefact_3_text">
 		<text>I need the Goldfish artifact. I’m sorry to say it doesn’t grant any wishes, been there, done that, but it can grant you some dough. The scientists cough up for it. They say they make some military stuff out of it… So, are you up for it?</text>
+	</string>
+	<string id="barmen_find_artefact_4">
+		<text>Найти артефакт "Вспышка"</text>
+	</string>
+	<string id="barmen_find_artefact_4_descr">
+		<text>Найти артефакт "Вспышка"</text>
+	</string>
+	<string id="barmen_find_artefact_4_text">
+		<text>Задание простое, а оплата хорошая. Нужно найти артефакт "Вспышка". Даже и не спрашивай - кто и зачем заказал. Берешься?</text>
+	</string>
+	<string id="barmen_find_artefact_5">
+		<text>Найти артефакт "Золотая рыбка"</text>
+	</string>
+	<string id="barmen_find_artefact_5_descr">
+		<text>Найти артефакт "Золотая рыбка"</text>
+	</string>
+	<string id="barmen_find_artefact_5_text">
+		<text>Меченый, знаешь сказку про Золотую рыбку? Во, во! Еще анекдотов много про нее. Так вот, есть один старик, который все хочет ее поймать. В общем, нужен уникальный артефакт "Золотая рыбка", заказчик внешний, солидный. Поможешь?</text>
 	</string>
 	<string id="barmen_find_item_1">
 		<text>Find the psi-suit</text>
@@ -129,50 +201,158 @@
 	<string id="barmen_kill_stalker_5_text">
 		<text>Damn musketeers! Playing D'Artagnan, assholes! As if surfing around anomalies and bowing to bullets is not enough, the oafs have now taken to fighting duels! Get this: there was this row… no one can even remember any more what started it. So these two dumbheads decided to shed some blood. And there you go, one dropped dead… a fine stalker he was, too! And the other one, Sparrow, beetled off, because I’d be the first one to put a bullet in his head. Find him. I’m sure he’s still in the Zone. Will you do it?</text>
 	</string>
-	<string id="dolg_eliminate_kamp_1">
-		<text>Destroy the monster lair.</text>
+	<string id="barmen_monster_part_1">
+		<text>Достать глаз "плоти"</text>
 	</string>
-	<string id="dolg_eliminate_kamp_1_descr">
-		<text>Destroy the monster lair at the Dump.</text>
+	<string id="barmen_monster_part_1_descr">
+		<text>Достать глаз "плоти"</text>
 	</string>
-	<string id="dolg_eliminate_kamp_1_text">
-		<text>Well, we don’t usually send strange stalkers on missions. But on the other hand, the job’s such a milk run  that it’s not even worth bothering our guys. So here’s the deal. A lair of creatures needs to be wiped out at the Dump. One of our groups is already working on it, so in case of trouble you’ll have a place to retreat. On the other hand, troubles are highly undesirable, because there really aren’t that many creatures, about ten, no more. They’re probably dogs: a rather large pack migration had been reported in this area. You may proceed with your mission.</text>
+	<string id="barmen_monster_part_1_text">
+		<text>Скоро у нас праздник, и будет праздничный ужин, а некоторые местные гурманы в особо приподнятом настроении (не будем показывать пальцем) обязательно захотят попробовать мое коронное блюдо - глаза "плоти" под свинным соусом. То есть, в собственном соку под майонезом. В общем, нужен глаз этой твари, и поскорее.</text>
 	</string>
-	<string id="dolg_eliminate_kamp_2">
-		<text>Destroy the stalker camp</text>
+	<string id="barmen_monster_part_2">
+		<text>Принести копыто кабана</text>
 	</string>
-	<string id="dolg_eliminate_kamp_2_descr">
-		<text>Destroy the stalker camp at Agroprom.</text>
+	<string id="barmen_monster_part_2_descr">
+		<text>Принести копыто кабана</text>
 	</string>
-	<string id="dolg_eliminate_kamp_2_text">
-		<text>There’s one rather tricky, but there's no way I can ask our guys. Our allies find the presence of neutrals at the Agroprom highly undesirable. The mission is: clear the industrial area of all stalkers, whatever gangs they belong to. Is that clear?</text>
+	<string id="barmen_monster_part_2_text">
+		<text>Знаешь, что мы заготовляем рога и копыта? Это сейчас большая редкость. Из местных мутированных копыт делают отличные украшения, я знаю одного ювелира, он заинтересован. Так что вперед, найди копыто кабана, и тебе в карман денег прибудет.</text>
 	</string>
-	<string id="dolg_eliminate_kamp_3">
-		<text>Destroy the sniper unit.</text>
+	<string id="dolg_defend_lager_1">
+		<text>Защитить заставу Долга</text>
 	</string>
-	<string id="dolg_eliminate_kamp_3_descr">
-		<text>Destroy the sniper unit holed up in Rostok.</text>
+	<string id="dolg_defend_lager_1_descr">
+		<text>Защитить заставу Долга на Свалке.</text>
 	</string>
-	<string id="dolg_eliminate_kamp_3_text">
-		<text>So here’s the deal: there’s a group of Merc snipers that needs to be eliminated. Details: the snipers are holding the top floor of the building complex. Assumed number: at least two, no more than five. Apparently, armed with Dragunov sniper rifles. Advice: don’t go there during the day.</text>
+	<string id="dolg_defend_lager_1_text">
+		<text>Значит так, ты наверняка встречал наших ребят на Свалке. Они там что-то вроде внешнего кордона, защищают бар от мутантов, прущих из темной долины. Пришла информация, что большая стая кабанов как раз приближается к ним. Помоги им отбить волну мутантов, за мной не заржавеет.</text>
 	</string>
-	<string id="dolg_eliminate_kamp_4">
-		<text>Destroy the main base of the bandits.</text>
+	<string id="dolg_eliminate_lager_1">
+		<text>Уничтожить зомби</text>
 	</string>
-	<string id="dolg_eliminate_kamp_4_descr">
-		<text>Destroy the main base of the bandits in the Dark Valley.</text>
+	<string id="dolg_eliminate_lager_1_descr">
+		<text>На Янтаре уничтожить зомбированых долговцев.</text>
 	</string>
-	<string id="dolg_eliminate_kamp_4_text">
-		<text>We need to make a raid on the bandits’ main base and eliminate as much as enemy personnel as possible. Enemy strength: around thirty fighters; armed with light automatic weapons, pistols, shotguns. Chances of support: there should be a temporary military base in the region. We can ask them for cover in case of retreat, but we must try to make it a neat job ourselves. Any questions?</text>
+	<string id="dolg_eliminate_lager_1_text">
+		<text>Недавно мы посылали группу на Янтарь, к сожалению, никто из группы не вернулся. Мне доложили, что недалеко от мобильной лаборатории ученых на Янтаре видели несколько зомбированых сталкеров из группы. Мы не можем допустить, чтобы они оставались в этом ужасном состоянии. Твое задание: найти и уничтожить то, во что они превратились.</text>
 	</string>
-	<string id="dolg_eliminate_kamp_5">
-		<text>Destroy the snork lair.</text>
+	<string id="dolg_eliminate_lager_10">
+		<text>Убрать стаю собак</text>
 	</string>
-	<string id="dolg_eliminate_kamp_5_descr">
-		<text>Clear the tunnels of snorks in the Yantar area.</text>
+	<string id="dolg_eliminate_lager_10_descr">
+		<text>Убрать стаю собак на Свалке.</text>
 	</string>
-	<string id="dolg_eliminate_kamp_5_text">
-		<text>This time, it’s clean-up time. The tunnels in Yantar sector are crammed with snorks: approximately two dozen. Well, you can no longer wait through a thunder storm in there anymore…</text>
+	<string id="dolg_eliminate_lager_10_text">
+		<text>Мы, конечно, не поручаем заданий чужим сталкерам. С другой стороны, эта задача проста, так что гонять наших ребят никакого смысла нет. Так, слушай. Надо зачистить небольшое логово тварей на Свалке. Одна наша группа там уже работает, потому в случае неприятностей есть куда отступить. С другой стороны, желательно, чтобы неприятностей не было, потому что тварей там немного - не больше десятка. Скорее всего, собаки: недавно была замечена миграция достаточно большой стаи в этом районе. Можешь приступать к выполнению задания.</text>
+	</string>
+	<string id="dolg_eliminate_lager_11">
+		<text>Уничтожить лагерь сталкеров</text>
+	</string>
+	<string id="dolg_eliminate_lager_11_descr">
+		<text>Уничтожить лагерь сталкеров на "Агропроме".</text>
+	</string>
+	<string id="dolg_eliminate_lager_11_text">
+		<text>Есть одно деликатное дело, но наших парней к его выполнению привлекать никак нельзя. Нашим союзникам невыгодно присутствие нейтралов на заводе при "Агропроме". Задача такая: освободить промзону от присутствия на ней сталкеров, кем бы они ни были и к каким бы группировкам ни принадлежали. Всё ясно?</text>
+	</string>
+	<string id="dolg_eliminate_lager_12">
+		<text>Уничтожить отряд наемников</text>
+	</string>
+	<string id="dolg_eliminate_lager_12_descr">
+		<text>Уничтожить отряд наемников на "Ростке".</text>
+	</string>
+	<string id="dolg_eliminate_lager_12_text">
+		<text>Значит, задача вот какая: нужно уничтожить отряд снайперов группировки наёмников. Обстановка: снайперы эти удерживают верхний этаж строительного комплекса. Предположительное количество - не менее двух, не более пяти. Вооружены, судя по всему, снайперскими винтовками Драгунова. Совет: днём к ним не суйся.</text>
+	</string>
+	<string id="dolg_eliminate_lager_13">
+		<text>Зачистить базу бандитов</text>
+	</string>
+	<string id="dolg_eliminate_lager_13_descr">
+		<text>Зачистить основную базу бандитов в Тёмной долине.</text>
+	</string>
+	<string id="dolg_eliminate_lager_13_text">
+		<text>Необходимо совершить рейд на основную базу бандитов и уничтожить максимальное количество живой силы противника. Это в Тёмной долине, там, где недостроенный научный центр. Численность противника: около тридцати боевиков; вооружены лёгким автоматическим оружием, пистолетами, дробовиками. Всё ясно?</text>
+	</string>
+	<string id="dolg_eliminate_lager_14">
+		<text>Зачистить cнорков</text>
+	</string>
+	<string id="dolg_eliminate_lager_14_descr">
+		<text>Зачистить тоннели от снорков в секторе "Янтарь".</text>
+	</string>
+	<string id="dolg_eliminate_lager_14_text">
+		<text>В этот раз придётся заняться зачисткой. Тоннели в секторе "Янтарь" просто ломятся от снорков: их там приблизительно около десятка. Да, теперь там от грозы не отсидишься, как раньше…</text>
+	</string>
+	<string id="dolg_eliminate_lager_2">
+		<text>Уничтожить стаю плотей</text>
+	</string>
+	<string id="dolg_eliminate_lager_2_descr">
+		<text>Уничтожить стаю плотей на "Дикой територии".</text>
+	</string>
+	<string id="dolg_eliminate_lager_2_text">
+		<text>Мы зафиксировали перемещение большой стаи тварей... Весьма гадкие свиноподобные мутанты, которых все называют плотями. Сейчас они в районе свалки. У нас все люди заняты, но этих тварей нужно уничтожить. Работа специфическая, мы заплатим.</text>
+	</string>
+	<string id="dolg_eliminate_lager_3">
+		<text>Уничтожить псевдособак</text>
+	</string>
+	<string id="dolg_eliminate_lager_3_descr">
+		<text>Зачистить логово псевдособак возле военных складов.</text>
+	</string>
+	<string id="dolg_eliminate_lager_3_text">
+		<text>Наши союзники сообщили об обнаружении логова монстров на територии возле военных складов. Предположительно стая псевдособак. Нам сейчас там шуметь не к чему, так что это задание для нейтрала. Берешься?</text>
+	</string>
+	<string id="dolg_eliminate_lager_4">
+		<text>Уничтожить заставу наемников</text>
+	</string>
+	<string id="dolg_eliminate_lager_4_descr">
+		<text>Недалеко от военных складов уничтожить заставу наемников.</text>
+	</string>
+	<string id="dolg_eliminate_lager_4_text">
+		<text>Последнее время увеличилась активность групп наемников, совершено несколько нападений на ученых, иследователей зоны. Безнаказаным это оставлять нельзя. Нужно совершить небольшую карательную операцию. Объект - застава наемников возле военных складов, за заброшеной деревней.</text>
+	</string>
+	<string id="dolg_eliminate_lager_5">
+		<text>Уничтожить наемников на "Дикой территории"</text>
+	</string>
+	<string id="dolg_eliminate_lager_5_descr">
+		<text>Уничтожить наемников на "Дикой территории".</text>
+	</string>
+	<string id="dolg_eliminate_lager_5_text">
+		<text>Группа ученых собирается провести исследования "Дикой территории". Но там последнее время небезопасно, активизировались наемники. Проследи, чтобы наемников больше не было на "Дикой территории".</text>
+	</string>
+	<string id="dolg_eliminate_lager_6">
+		<text>Убить бандитов</text>
+	</string>
+	<string id="dolg_eliminate_lager_6_descr">
+		<text>Убить бандитов, проникших на "Дикую территорию".</text>
+	</string>
+	<string id="dolg_eliminate_lager_6_text">
+		<text>Буду краток. Бандиты обошли наши заставы на Баре и сейчас находятся на "Дикой территории". Их надо устранить.</text>
+	</string>
+	<string id="dolg_eliminate_lager_7">
+		<text>Уничтожить контролера</text>
+	</string>
+	<string id="dolg_eliminate_lager_7_descr">
+		<text>Уничтожить контролера на Янтаре.</text>
+	</string>
+	<string id="dolg_eliminate_lager_7_text">
+		<text>Для выполнения этого задания необходимо обладать специальными навыками. Ученые сообщили нам, что на Янтаре возле входа в подземную лабораторию (в центральном здании) ими был замечен контролер. Контролеры очень опасны, но я уверен что ты справишься.</text>
+	</string>
+	<string id="dolg_eliminate_lager_8">
+		<text>Зачистить свободовцев</text>
+	</string>
+	<string id="dolg_eliminate_lager_8_descr">
+		<text>Зачистить заброшеную деревню недалеко от военных складов от присутствия свободовцев.</text>
+	</string>
+	<string id="dolg_eliminate_lager_8_text">
+		<text>В заброшеной деревне возле военных складов повысилась активность патрулей Свободы. Зачисти деревню от боевиков. После выполнения тебя ждет особое вознаграждение.</text>
+	</string>
+	<string id="dolg_eliminate_lager_9">
+		<text>Уничтожить бандитов</text>
+	</string>
+	<string id="dolg_eliminate_lager_9_descr">
+		<text>Уничтожить бандитов на Свалке.</text>
+	</string>
+	<string id="dolg_eliminate_lager_9_text">
+		<text>Оперативная обстановка неблагоприятная, бандиты концентрируются в районе Свалки и Темной долины. Лучшим решением будет одновременно нанести два упреждающих удара! Долиной займутся наши боевики, тебе достанется Свалка.</text>
 	</string>
 	<string id="dolg_find_item_1">
 		<text>Find the suit</text>
@@ -183,33 +363,6 @@
 	<string id="dolg_find_item_1_text">
 		<text>There’s an off the record mission, stalker. My friend’s birthday is coming up, and I’d like to surprise him with a neat present. We’ve gone through many things together… I hear there’s an Enchanted suit by the storehouse in the deserted village. Silly name, but that’s the name it goes by, so we’ll stick to it. In short, try to get hold of it. But remember: the village is not a safe place, so be on your guard.</text>
 	</string>
-	<string id="dolg_find_item_2">
-		<text>Find the modified AK-74</text>
-	</string>
-	<string id="dolg_find_item_2_descr">
-		<text>Find and deliver the modified AK-74 to the Duty base.</text>
-	</string>
-	<string id="dolg_find_item_2_text">
-		<text>This mission is pretty tough: you’ll have to get a modified AK-74. The last known owner is a stalker called Grey. To allow a detailed examination of the gun, it is crucial that the weapon remains intact. Any questions?</text>
-	</string>
-	<string id="dolg_find_item_3">
-		<text>Find the Walther</text>
-	</string>
-	<string id="dolg_find_item_3_descr">
-		<text>Find and return the unique Walther piece.</text>
-	</string>
-	<string id="dolg_find_item_3_text">
-		<text>Listen, stalker… I used to have a friend. And my friend used to have his favorite Walther. One of the bandits owns it now, probably, their leader, the gun is a bit too good. Don’t ask me how the "walter" ended up with him, just try to bring it to me. If you do, I’ll never forget it.</text>
-	</string>
-	<string id="dolg_find_item_4">
-		<text>Find the Diamond Scope</text>
-	</string>
-	<string id="dolg_find_item_4_descr">
-		<text>Find the Diamond Scope, probably in the Dead City.</text>
-	</string>
-	<string id="dolg_find_item_4_text">
-		<text>Have you heard about the Diamond Scope, stalker? Never mind the stupid name, it does exist. An anomaly forced the glasses in its optics into gems, and its power is now ten times as many dioptres. It was last seen in the Dead City. Can you find it for me?</text>
-	</string>
 	<string id="dolg_kill_stalker_1">
 		<text>Neutralize Cap</text>
 	</string>
@@ -219,50 +372,14 @@
 	<string id="dolg_kill_stalker_1_text">
 		<text>Listen closely. This is a tough mission. A man nicknamed Cap needs to be neutralized. He's the Freedom leader. Currently the troops under his command are holding positions at the border line with Radar. Target neutralization will wear down the cordon between Radar and Freedom’s main base. Consequence: elimination of the whole enemy gang by the penetration of Monolith and hordes of monsters. </text>
 	</string>
-	<string id="dolg_kill_stalker_2">
-		<text>Kill the traitor</text>
+	<string id="drunk_dolg_find_item">
+		<text>Найти оружие Долговца.</text>
 	</string>
-	<string id="dolg_kill_stalker_2_descr">
-		<text>Kill the deserter that ran off from Duty and now works as a mechanic at the Freedom base.</text>
+	<string id="drunk_dolg_find_item_descr">
+		<text>Долговец просит найти его оружие, он потерял его где-то в Темной долине, во время очередной вылазки.</text>
 	</string>
-	<string id="dolg_kill_stalker_2_text">
-		<text>I really shouldn’t say anything to you… Anyway, some bastard has wormed his way into our ranks, made himself comfy and then took off to those damn anarchists. The scumbag made off with gear and weapons to rig ten people, and ruined five times as much. Worked as an armorer here, and now repairs machinery for that scum. Finish him off, that’ll show them how we deal with traitors!</text>
-	</string>
-	<string id="dolg_kill_stalker_3">
-		<text>Neutralize Max</text>
-	</string>
-	<string id="dolg_kill_stalker_3_descr">
-		<text>Neutralize Freedom's military leader, Max.</text>
-	</string>
-	<string id="dolg_kill_stalker_3_text">
-		<text>Head of the Freedom faction fighters, Max, needs to be neutralized. Fill in: Freedom’s main base is on the site of the former military camp. The target is in the center of the base. Can I give you some advice? For your own safety don’t even try to approach the target. Use your sniper rifle.</text>
-	</string>
-	<string id="dolg_kill_stalker_4">
-		<text>Neutralize the Monolith group leader</text>
-	</string>
-	<string id="dolg_kill_stalker_4_descr">
-		<text>Find and neutralize the Monolith leader.</text>
-	</string>
-	<string id="dolg_kill_stalker_4_text">
-		<text>Here’s the mission: find and neutralize the alleged Monolith leader. The target is most likely in the Radar area. Try not to get too close, as he is very dangerous. It’s a long-range operation.</text>
-	</string>
-	<string id="dolg_kill_stalker_5">
-		<text>Neutralize the stalker called Goblin</text>
-	</string>
-	<string id="dolg_kill_stalker_5_descr">
-		<text>Neutralize Goblin, one of the Freedom stalkers.</text>
-	</string>
-	<string id="dolg_kill_stalker_5_text">
-		<text>There’s this stalker, Goblin… at the moment supposedly in the vicinity of the warehouses, recently joined Freedom. We suspect he is the one responsible for the failure of several of our expeditions: always lounging about the bar, all ears, plus some shady dealings on his record… The job’s easy: neutralize. Are you on it?</text>
-	</string>
-	<string id="dolg_kill_stalker_6">
-		<text>Neutralize the stalker called Poker.</text>
-	</string>
-	<string id="dolg_kill_stalker_6_descr">
-		<text>Neutralize the bandit stalker Poker. Armed and highly dangerous.</text>
-	</string>
-	<string id="dolg_kill_stalker_6_text">
-		<text>The target's nickname is Poker. He is one of the fiercest bandits’ leader, a scumbag and a tyrant… He’s obviously brainsick, they say he got himself some rare disease in the Zone. Now he suffers from frequent black-outs, and when he comes to his senses he can’t remember where or who he is. Still, he’s always armed to the teeth and highly aggressive. Supposed location: Dark Valley. Ready for the mission?</text>
+	<string id="drunk_dolg_find_item_text">
+		<text>Ну надо же было так облажаться. Что же это зона делает с мозгами. Вроде же нервы крепкие, никогда ничего не боялся, а тут такое. Все этот вой в ушах стоит. Все же шло как и обычно. Была вылазка темную долину, сели с Кривым в засаде прикрывать основную группу, а тут как услышал вой, такой ужас охватил. Блин, я даже не помню оказался на кордоне. Когда вернулся на базу, Воронин чуть не расстрелял на месте: он мне как раз выдал пушку улучшенную, за хорошую службу так сказать. А тут… я в панике как деру дал, так видимо ее там и оставил. Если бы ты смог ее принести мне, а то куда я теперь, без нормального оружия.</text>
 	</string>
 	<string id="ecolog_eliminate_lager_1">
 		<text>Зачистить логово снорков</text>
@@ -271,7 +388,7 @@
 		<text>На Янтаре уничтожить логово снорков.</text>
 	</string>
 	<string id="ecolog_eliminate_lager_1_text">
-		<text>Я хочу предложить вам небольшую сумму денег которую вы получите в том случае, если снорки, обитающие на болотах, перестанут отвлекать меня и мох коллег. Иногда во время экспериментов просто не получается сосредоточиться.</text>
+		<text>Я хочу предложить вам небольшую сумму денег, которую вы получите в том случае, если снорки, обитающие на болотах, перестанут отвлекать меня и мох коллег. Иногда во время экспериментов просто не получается сосредоточиться.</text>
 	</string>
 	<string id="ecolog_eliminate_lager_2">
 		<text>Уничтожить логово диких собак</text>
@@ -280,7 +397,52 @@
 		<text>На "Дикой территории" зачистить логово собак.</text>
 	</string>
 	<string id="ecolog_eliminate_lager_2_text">
-		<text>На "Дикой территории" есть логово собак-мутантов, я хочу, чтобы Вы отправились и зачистили его. Эти твари опасны для наших экспедиций. Я знаю, зоологи меня не поддержат, но здесь, согласитесь, не зоопарк. Эти собаки разносят бешенство, чуму и еще Бог знает что.</text>
+		<text>На "Дикой территории" есть логово собак-мутантов, я хочу, чтобы Вы отправились и зачистили его. Эти мутанты опасны для наших экспедиций. Я знаю, зоологи меня не поддержат, но здесь, согласитесь, не зоопарк. Такие твари разносят бешенство, чуму и еще Бог знает что.</text>
+	</string>
+	<string id="ecolog_find_artefact_1">
+		<text>Find the Doughboy artifact</text>
+	</string>
+	<string id="ecolog_find_artefact_1_descr">
+		<text>Sounds like the poor devil made a run for it, far away from those psychos. So, getting the Doughboy artifact… Now that’s some scavenger hunt. Still, it’s better than working as an assistant for this egghead.</text>
+	</string>
+	<string id="ecolog_find_artefact_1_text">
+		<text>I have a rather special request, stalker… I think you’ve already encountered this rather curious artifact called Doughboy and you are aware that somehow it prevents injuries inflicted by the hardest radiation. Unfortunately, after a number of experiments we lost contact with one of our assistants who was with … ehhh… the Doughboy in a high radioactivity area. This is a great loss to all of us. In view of these circumstances, we need another such artifact. By the way, I would be happy if you agreed to work with me as my assistant. </text>
+	</string>
+	<string id="ecolog_find_artefact_2">
+		<text>Find the Mama's Beads artifact</text>
+	</string>
+	<string id="ecolog_find_artefact_2_descr">
+		<text>So they don’t need the smart and the talented. That’s it, eh. Mama’s Beads slow down the flow of time… alright, we’ll figure it out. As long as one mission doesn’t take three years.</text>
+	</string>
+	<string id="ecolog_find_artefact_2_text">
+		<text>Good news, young man! Together with our colleagues, we worked out a daring plan to reduce the time dedicated to research using the effect of the Mama’s Beads artifact. The artifact, as you know, slows down the flow of time in a limited volume of space. However, we fear it may affect the brain's activity and this particularity cannot possibly be ignored. I would like to ask you to bring back this artifact, because I see that I’m dealing with a strong and enduring man.</text>
+	</string>
+	<string id="ecolog_find_artefact_3">
+		<text>Find the Cobweb artifact</text>
+	</string>
+	<string id="ecolog_find_artefact_3_descr">
+		<text>So now they’re going to make the working class toil away for one shift instead of two: from 4 am till 10 pm. A good stalker with such an artifact could cross half the Zone in a day.</text>
+	</string>
+	<string id="ecolog_find_artefact_3_text">
+		<text>Listen, my dear man... We’re now doing a research on "Increasing manpower efficiency and production intensification". In particular, we’re studying the possibility of increasing duration of a working day from eight to eighteen hours. The curious effect of the "Cobweb" artifact, when applied appropriately, endows its owner with tremendous stamina… So, do I have you working on this job?</text>
+	</string>
+	<string id="ecolog_find_artefact_4">
+		<text>Find the Battery artifact</text>
+	</string>
+	<string id="ecolog_find_artefact_4_descr">
+		<text>The artifact is good, no question about that, but the side effect is pretty sad. I’m really sorry for those guys in uniforms.</text>
+	</string>
+	<string id="ecolog_find_artefact_4_text">
+		<text>Let me ask you, stalker… are you a patriot? Yes. I see, young man, that I made the right assumption. Listen, I have a very important request. The thing is, and I’m not afraid to say it, we’ve come very close to creating a super-soldier, the foundation of our future army, a great army! The "Battery" artifact has an amazing effect on human body: raises total immunity, speeds up blood coagulability, provides incredible resistance to radioactivity, to say nothing of stamina! Unfortunately, a side effect has also been detected. Wearing the artifact for a day or longer completely suppresses the reproductive function, and we do not know whether this process is reversible. That is why I strongly recommend that you do not abuse this artifact.</text>
+	</string>
+	<string id="ecolog_find_artefact_5">
+		<text>Find the Shell artifact.</text>
+	</string>
+	<string id="ecolog_find_artefact_5_descr">
+		<text>I wonder if they did those experiments at the Chernobyl NPP?</text>
+	</string>
+	<string id="ecolog_find_artefact_5_text">
+		<text>Alright, dear stalker. As you've heard, there is a rather curious artifact in the Zone, the Shell. I have to say it matches its name perfectly. The only property that our devices have been able to discover was the complete absorption of any type of energy. This is the property that we would like to examine more thoroughly. To think of the prospects… imagine if a certain number of these artifacts had been installed within the security system of the NPP... Disasters caused by the "peaceful atom" will become history!</text>
 	</string>
 	<string id="ecolog_find_item_1">
 		<text>Принести уникальный комбинезон</text>
@@ -289,103 +451,76 @@
 		<text>Принести из подземной лаборатории X16 необычный комбинезон.</text>
 	</string>
 	<string id="ecolog_find_item_1_text">
-		<text>У нас к Вам дело. Мы недавно наняли одного сталкера, чтобы он проник внутрь лаборатории. Еще тогда я заметил его необычный костюм, как будто теплом от него веяло. Сталкер говорил, что этот костюм раны сам заживляет. Вообщем сталкер не вернулся из лаборатории. Нет! Вы не подумайте, мы тут не при чем! И костюм его до сих пор наверное там лежит. Я бы с удовольствием получил его для изучения. </text>
-	</string>
-	<string id="ecolog_find_artefact_1">
-		<text>Принести артефакт "Огненный шар"</text>
-	</string>
-	<string id="ecolog_find_artefact_1_descr">
-		<text>Достать для исследований ученым артефакт "Огненный шар".</text>
-	</string>
-	<string id="ecolog_find_artefact_1_text">
-		<text>Нам удалось получить артефакт в лабораторных условиях! Это прорыв! Теперь о наших успехах услышит весь мир. А там и Нобелевская премия не за горами! Это уникальный артефакт - «Плёнка», его главное качество - защита от химических ожогов. Хотите, я вам его подарю от имени науки? Однако одна просьба - взамен мне нужен артефакт - "Огненный шар", знаете такой? Уникальные термические свойства его поверхности требуют детального изучения.</text>
-	</string>
-	<string id="ecolog_find_artefact_2">
-		<text>Найти артефакт "Грави"</text>
-	</string>
-	<string id="ecolog_find_artefact_2_descr">
-		<text>Доставить артефакт "Грави" в руки ученых.</text>
-	</string>
-	<string id="ecolog_find_artefact_2_text">
-		<text>Мы подошли вплотную к пониманию природы гравитации, возможно совсем скоро мы сможем создать новое поколение двигателей на антигравитационной основе, и вполне возможно нам откроется дорога к звездам. Для этого нам нужен артефакт "Грави", и быстро.</text>
-	</string>
-	<string id="ecolog_find_artefact_3">
-		<text>Добыть артефакт "Медуза"</text>
-	</string>
-	<string id="ecolog_find_artefact_3_descr">
-		<text>Артефакт "Медуза" нужен ученым для исследований в области пространства-времени.</text>
-	</string>
-	<string id="ecolog_find_artefact_3_text">
-		<text>Наш исследовательский комплекс вплотную подошел к пониманию проблемы пространства-времени. Возможность телепортации - это не фантастика!!! «Воронка» - это аномалия, которая сжимает пространство, а не просто гравитационно воздействует на предметы, как думают некоторые мои закостеневшие оппоненты-теоретики, которые сидят в теплых НИИ, усердно жуя мел. У них очки вспотеют, когда они узнают, каких результатов может добиться наука в полевых условиях! Достаньте мне артефакт "Медуза", пожалуйста.</text>
-	</string>
-	<string id="ecolog_find_artefact_4">
-		<text>Достать артефакт "Лунный свет"</text>
-	</string>
-	<string id="ecolog_find_artefact_4_descr">
-		<text>Обеспечить ученых на Янтаре "Лунным светом". Хороший артефакт…</text>
-	</string>
-	<string id="ecolog_find_artefact_4_text">
-		<text>Нам срочно нужны материалы для продолжения исследования в области энергетики. Понимаете, мы научились добывать электричество из артефактов. Правда пока КПД недостаточно высокий. Наилучших результатов мы добились с артефактом "Лунный свет". Принесите нам образец для экспериментов.</text>
-	</string>
-	<string id="ecolog_find_artefact_5">
-		<text>Достать артефакт "Морской ёж"</text>
-	</string>
-	<string id="ecolog_find_artefact_5_descr">
-		<text>Ученым для улучшения костюмов нужен артефакт "Морской ёж".</text>
-	</string>
-	<string id="ecolog_find_artefact_5_text">
-		<text>Вы наверное знаете, что наши костюмы обладают лучшей защитой от радиации. Секрет в том, что мы пропитываем их эссенцией из особого, достаточно редкого, артефакта. Для изготовления очередной партии костюмов нам нужен такой артефакт, вы его зовете "Морской еж".</text>
+		<text>У нас к Вам дело. Мы недавно наняли одного сталкера, чтобы он проник внутрь лаборатории. Еще тогда я заметил его необычный костюм, от него ощутимо отдавало теплом. Сталкер говорил, что этот костюм раны сам заживляет. В общем, сталкер не вернулся из лаборатории. Нет! Вы не подумайте, мы тут не при чем! И костюм его до сих пор, наверное, там лежит. Я бы с удовольствием получил его для изучения.</text>
 	</string>
 	<string id="ecolog_monster_part_1">
-		<text>Принести часть тела снорка</text>
+		<text>Bring the arm of a zombie</text>
 	</string>
 	<string id="ecolog_monster_part_1_descr">
-		<text>Достать фрагмент снорка в этих местах не проблема.</text>
+		<text>Holy Moly. These nuts won’t miss a chance to turn us all into zombies… Alright. They need this scum’s arm? We’ve got plenty of this stuff.</text>
 	</string>
 	<string id="ecolog_monster_part_1_text">
-		<text>Мы познакомились с Семеновым, когда я читал лекции по генетике в университете, а он был моим студентом. Так я стал его научным руководителем. Тогда мы только приоткрывали завесу тайны модифицирования генома. О чем это я? Ах да. Для генетических исследований нам понадобятся образцы свежих клеток мышечной ткани снорка. За генным материалом Вам придется отправиться на болота, их там водится в изобилии.</text>
+		<text>Oh, young man! You know, we feel a need for a part of the body of a specific creature. Your colleagues call it a zombie, and I must say, this is not a very successful name for a body that had modified itself so that... Anyway, we need its arm. I have to tell you: our team is working on implanting the extremities of... eh... zombies to those who have lost an arm or a leg for some reason. In addition, further down the line, we intend to use vital organs as well; however, for the time being, this is a purely theoretical issue. So, the arm! Would you be interested, young man?</text>
 	</string>
 	<string id="ecolog_monster_part_2">
-		<text>Добыть глаз плоти</text>
+		<text>Bring the eye of a flesh</text>
 	</string>
 	<string id="ecolog_monster_part_2_descr">
-		<text>На всякий случай стоит держать своё тело подальше от яйцеголовых! А глаз плоти, так и быть, я им достану.</text>
+		<text>I'd better keep my body away from these eggheads just in case! Very well, I'll get them a flesh's eye, and they can do all they want with their volunteers.</text>
 	</string>
 	<string id="ecolog_monster_part_2_text">
-		<text>Хорошие новости, молодой человек: у нас найдётся для вас очень интересное задание! Думаю, Вы, как мыслящая личность, обладающая достаточным жизненным опытом, оцените всю революционность задумки моих коллег. Дело в том, что исследования показали: глаза существ, именуемых в просторечии "плотью", снабжены - вы внимательно слушаете? - обонятельными рецепторами! Таким образом, они не только видят глазами, но и нюхают ими! Мы готовимся к операции по пересадке этого чудо-глаза одному из... из наших ассистентов-добровольцев. Полагаю, нас ждёт настоящий фурор! Но нам нужен донорский орган. Вы нам поможете?</text>
+		<text>Good news, young man: we have a very interesting assignment for you! I think as an intellectual being with quite a bit of experience you will be able to appreciate my colleagues' theories. The thing is, our research revealed: the eyes of the creatures called flesh in the common language, are equipped with... are you following me?... with olfactory receptors! Thus, they can not only see with their eyes, but smell with them as well! We're getting ready for an operation on transplanting this miraculous eye to one of ... one of our voluntary assistants. I believe we're about to start a craze! By the way, would you like to become a recepient of this rather amazing organ?</text>
 	</string>
 	<string id="ecolog_monster_part_3">
-		<text>Достать кабанью ногу</text>
+		<text>Bring the tail of a blind dog</text>
 	</string>
 	<string id="ecolog_monster_part_3_descr">
-		<text>Принести кабаний окорок ученым. В принципе, обойдутся копытом.</text>
+		<text>Well, look at Science! Trying to find a second brain in humans?.. Poor dogs, one of them will have to do without a tail now.</text>
 	</string>
 	<string id="ecolog_monster_part_3_text">
-		<text>Приветствую Вас... э-э-э... странник! Рад, что Вы решили нас посетить: нам как раз необходим человек для участия в очень важном эксперименте. Коллега Бентер хочет попытаться приготовить нечто съедобное из местной фауны для практического эксперимента по исследованию влияния мутированного белка на людские организмы. Пока мы решили остановиться на кабанах. Нам нужен окорок. Нога кабана, Вы понимаете? Если возьметесь за это дело, прошу Вас, выбирайте особь поупитаннее.</text>
+		<text>Good day, dear boy! Listen, would you like to help us once again? I hope you know that dogs belong to the vertebrates subtype... meaning their vertebral column starts with the head and ends with the tail. And here's the catch! One of my young collegues proved theoretically that the spine of the blind dogs - this is how you named this type of animals - starts from the tail, not from the head! Think of it, it totally turns upside down our assumptions pertaining to this area of knowledge. There are already some rather daring theories about human beings having around their sacrum a... well, this is a subject of many discussions. In short, we need the head of the dog, the blind dog, which through ignorance we considered to be its tail.</text>
 	</string>
 	<string id="ecolog_monster_part_4">
-		<text>Найти хвост псевдособаки</text>
+		<text>Bring the leg of a boar</text>
 	</string>
 	<string id="ecolog_monster_part_4_descr">
-		<text>Обеспечить ученых хвостом псевдособаки для их странных экспериментов.</text>
+		<text>Gourmet thrillseekers… Alright, I'll get them some ham.</text>
 	</string>
 	<string id="ecolog_monster_part_4_text">
-		<text>Здравствуйте, коллега! Мы всё ещё не можем разгадать механизм наблюдаемых у псевдособаки удивительных свойств, поэтому решили изменить вектор наших поисков. На сей раз мы начнём с конца... Почему Вы улыбаетесь? Что Вас так... ах, да. Я, кажется, понимаю. Видите ли, молодой человек, нам нужен хвост этого существа, расположенный на конце... да, на конце тела. Речь шла отнюдь не о репродуктивных органах данного млекопитающего! За ними, возможно, Вам придется прогуляться в следующий раз.</text>
+		<text>Welcome, eh... traveler! I'm so glad you dropped by: we are in need of a man to take part in a highly important experiment. My colleague Brenter wants to try and cook a meal using local fauna for a practical experiment to study the influence of mutated protein on human body. For a start, we decided to try the boars. We need ham. A boar's leg, do you undestand? And if you agree to do it, please select the healthiest specimen.</text>
 	</string>
 	<string id="ecolog_monster_part_5">
-		<text>Добыть челюсть кровососа</text>
+		<text>Bring the foot of a snork'</text>
 	</string>
 	<string id="ecolog_monster_part_5_descr">
-		<text>Что они собираются делать с челюстью кровососа - меня не волнует. Мне важно, сколько они дадут за эту редкость.</text>
+		<text>Heal the snorks… speaking of queer eggheads! Alright, at least that will stop these monsters from jumping around.</text>
 	</string>
 	<string id="ecolog_monster_part_5_text">
-		<text>О, сталкер, рад видеть Вас! Послушайте... Вы ведь уже сталкивались с кровососами в своих путешествиях? Если нет, то мы хотели бы, чтобы это произошло. Как только сможете, принесите нам нижнюю челюсть представителя данного вида - и со всеми, так сказать, столовыми приборами. К сожалению, не могу посвятить Вас в детали эксперимента... возможно, это негативно скажется на устойчивости Вашей психики. Мы будем ждать.</text>
+		<text>Good news, dear stalker! We've been racking our brain over this one question: what makes snorks literally drift above the ground, crawl up the walls, jump amazing distances... And the solution turned out very simple, young man! Snorks panic at the sight of the ground! They suffer from geophobia! The receptors that developed at the tips of their extremities send a signal of the greatest irritation when in contact with the ground or any more or less horizontal surface. We need a sample of the snork's paw: we'll try to inject a vaccine that may relieve these poor creatures of this unusual disease.</text>
 	</string>
 	<string id="eliminate_lager">
 		<text>Camp elimination.</text>
 	</string>
 	<string id="find_item">
 		<text>Find the item.</text>
+	</string>
+	<string id="freedom_defend_lager_1">
+		<text>Защитить сталкеров на Агропроме</text>
+	</string>
+	<string id="freedom_defend_lager_1_descr">
+		<text>На Агропроме отбить атаку бандитов на лагерь сталкеров.</text>
+	</string>
+	<string id="freedom_defend_lager_1_text">
+		<text>Есть группа сталкеров, на Агропроме живут. Нормальные такие ребята, понимают, что Зона - место свободы, что законы тут вообще не применимы, а жить надо просто правильно, по своей морали. И вот они сейчас подумывают, не присоединиться ли к нам, да. Надо помочь им отбиться от бандитов, а? А мы тебе снаряженьица подкинем.</text>
+	</string>
+	<string id="freedom_defend_lager_2">
+		<text>Защитить барьер</text>
+	</string>
+	<string id="freedom_defend_lager_2_descr">
+		<text>Защитить барьер возле армейских складов от монстров.</text>
+	</string>
+	<string id="freedom_defend_lager_2_text">
+		<text>Тут опять монстры прут со стороны выжигателя. Помоги ребятам на барьере отбиться. Награду гарантирую.</text>
 	</string>
 	<string id="freedom_eliminate_camp_1">
 		<text>Destroy the military camp </text>
@@ -431,6 +566,24 @@
 	</string>
 	<string id="freedom_eliminate_camp_5_text">
 		<text>Man, will you look at all those bloodsucking monsters swarming in the village! No one gets within a hundred meters of it, except complete dumbheads. And some say they've been seeing things there... a controller is all we need right now! Anyway, it's high time we put an end to it. I'm not forcing you, to tell you the truth I wouldn't go there myself. But if you're not afraid, then my gratitude won't have any bounds.</text>
+	</string>
+	<string id="freedom_eliminate_camp_6">
+		<text>Уничтожить стаю кабанов и плотей</text>
+	</string>
+	<string id="freedom_eliminate_camp_6_descr">
+		<text>Возле военных складов уничтожить стаю кабанов и плотей.</text>
+	</string>
+	<string id="freedom_eliminate_camp_6_text">
+		<text>Возле главного входа на базу, сидит наш снайпер. Сидит он себе ночью на вышке... тишина, ночь... и тут, взрыв, дикий визг, вспышка! Что за!... А дело вот в чём - рядом с минным полем повадились бродить кабаны и плоти. Чёрт его знает, чего их туда тянет, но минимум раз в неделю одна из этих тварей на мину нарывается. Задание простое - перебить всех этих существ к ядрёне фене. Сделаешь?</text>
+	</string>
+	<string id="freedom_eliminate_camp_7">
+		<text>Уничтожить стаю тушкано</text>
+	</string>
+	<string id="freedom_eliminate_camp_7_descr">
+		<text>На "Дикой территории" уничтожить стаю тушкано.</text>
+	</string>
+	<string id="freedom_eliminate_camp_7_text">
+		<text>Вот возле нашей базы нигде нет тушканов, хоть эти твари проникают куда угодно. А ещё недавно их тут было - закачаешься. Два месяца мы с ними разбирались, хе-хе. Ну так вот. Мы вычислили, откуда приходили тушканы к нам на базу. С "Дикой территории", прикинь? Есть такое опасение, что эти крысы прыгающие размножатся, и опять повалят к нам. Нам нужен человек, который сможет с ними разобраться. Пойдешь?</text>
 	</string>
 	<string id="freedom_find_item_1">
 		<text>Steal the sniper rifle</text>
@@ -531,17 +684,62 @@
 	<string id="freedom_monster_part_1_text">
 		<text>We're planning a dinner party to celebrate Bob Marley's birthday. So why don't you get us some delicious ham? The more the better! Jah will never forget you!</text>
 	</string>
+	<string id="hunter_eliminate_lager">
+		<text>Уничтожить логово кровососа.</text>
+	</string>
+	<string id="hunter_eliminate_lager_descr">
+		<text>Охотник просит зачистить логово кровососа в деревне возле военных складов, в награду обещает редкий артефакт.</text>
+	</string>
+	<string id="hunter_eliminate_lager_text">
+		<text>Ты кровососа встречал? Жуть, правда? А я вот давеча пошел в деревню возле военных складов, думал артефактами разжиться. И представь себе – вижу кровососа, черного такого, весь в рубцах. Сидит над трупом, меня не видит. Я испугался, и как дал оттуда деру… Зря я побежал, он меня услыхал и давай за мной, и сразу вой такой поднялся вокруг… тут я и понял что он не один был. Думаю логово у них там. Если бы ты смог прогнать их оттуда, я бы тебе отдал один редкий артефакт, который пару дней назад нашел.</text>
+	</string>
 	<string id="kill_stalker">
 		<text>Kill the stalker.</text>
 	</string>
+	<string id="lisiy_kill_stalker">
+		<text>Убить предателя.</text>
+	</string>
+	<string id="lisiy_kill_stalker_descr">
+		<text>Лысый просит убить одного сталкера, который смылся с очень редкими артефактами.</text>
+	</string>
+	<string id="lisiy_kill_stalker_text">
+		<text>Я недавно с одним сталкером за артефактами ходил, около самого выжигателя искали. Столько всего нашли, даже нашли пару артефактов, которых я вообще еще никогда не видел, даже на фотографиях. Так вот этот сукин сын меня подставил. На последней ночевке куда то слинял и заныкал самые дорогие артефакты. И еще мне втирал что типа они сами исчезли. А пару дней назад увидел один тот самый редкий артефакт у бармена. И такая злость меня взяла…. Вообщем сталкер, если сможешь найти его – передай ему от меня свинцовый привет. А может заодно узнаешь где у него тайники и найдешь второй артефакт. Он того стоит, поверь мне.</text>
+	</string>
+	<string id="Mercenary_kill_stalker">
+		<text>Убить сталкера мастера.</text>
+	</string>
+	<string id="Mercenary_kill_stalker_descr">
+		<text>За убийство каждого мастера, наемник готов хорошо платить. Чем меньше мастеров, тем легче наемникам.</text>
+	</string>
+	<string id="Mercenary_kill_stalker_text">
+		<text>Мы не заинтересованы в том, чтобы в Зоне бродили ходячие танки: вооруженные до зубов сталкеры в экзосклетах. Работа от этого становится только сложнее и опаснее. И чем их меньше – тем нам лучше. Убьеш одного такого – получить награду.</text>
+	</string>
 	<string id="monster_part">
 		<text>Get a part of a monster body.</text>
+	</string>
+	<string id="petrenko_kill_stalker">
+		<text>Уничтожить сталкера Свободы.</text>
+	</string>
+	<string id="petrenko_kill_stalker_descr">
+		<text>Один сталкер, бывший долговец, который знал много информации о важных объектах на Припяти, недавно переметнулся на сторону Свободы, нужно убить его, пока он не наболтал лишнего.</text>
+	</string>
+	<string id="petrenko_kill_stalker_text">
+		<text>Слушай сюда. Есть у нас карты Припяти, не современные, а старые, военные, сделанные в начале девяностых. Самое главное на них – это обозначения всех военных объектов: подземные склады, бомбоубежища. Сейчас от этого пользы мало конечно, но если вдруг мы найдем дорогу в Припять – эта информация станет бесценна. Проблема вот в чем. Один из офицеров переметнулся к Свободе, и он знал об этой информации. Вообщем надо его уничтожить, пока не наболтал лишнего.</text>
 	</string>
 	<string id="return_for_reward">
 		<text>Come back for the reward.</text>
 	</string>
 	<string id="return_for_reward_bring">
 		<text>Bring the customer what's been promised.</text>
+	</string>
+	<string id="shustriy_find_item">
+		<text>Найти усовершенствованный костюм.</text>
+	</string>
+	<string id="shustriy_find_item_descr">
+		<text>Шустрый рассказал о схроне бандитов, в котором они прятали хабар. Просит принести навороченный костюмчик, за награду, разумеется.</text>
+	</string>
+	<string id="shustriy_find_item_text">
+		<text>Пока сидел в плену, слышал что бандиты говорли об их тайнике, где они хабар складывают. Слышал что они куртку там клевую спрятали, и что на следующий день их тайник для себя какой-то монстр облюбовал. Да так облюбовал, что они теперь ходить туда бояться. Принеси мне костюмчик, будь другом, а я уж с тобой рассчитаюсь.</text>
 	</string>
 	<string id="tm_barman_has_no_job">
 		<text>I can't offer anything at the moment.</text>
@@ -558,6 +756,15 @@
 	<string id="tm_barman_list_job">
 		<text>Look what we've got now:</text>
 	</string>
+	<string id="tm_defend_camp_1">
+		<text>Прикрыть отряд Долга от атаки бандитов в Тёмной Долине</text>
+	</string>
+	<string id="tm_defend_camp_1_descr">
+		<text>Прикрыть отряд Долга от атаки бандитов в Тёмной Долине</text>
+	</string>
+	<string id="tm_defend_camp_1_text">
+		<text>Всё-таки наконец-то удалось мне вдолбить в тупые головы долговцев, что давно уж пора зачистить Свалку от бандитов... И Долг свою территорию расширит, и мне постоянных клиентов реже портить будут. Ну, в общем, дело в том, что командование Долга решило для начала отсечь приток бандитов из Тёмной Долины. Выслали, они, значит, отряд заграждения, и обнаружили, что бандиты этому не рады. Кто бы мог подумать! Так к чему это я - помог бы ты бойцам закрепиться у входа в Долину, а? Отблагодарю достойно.</text>
+	</string>
 	<string id="tm_dolg_has_no_job">
 		<text>There are no jobs available right now.</text>
 	</string>
@@ -572,6 +779,21 @@
 	</string>
 	<string id="tm_dolg_list_job">
 		<text>Here's the job update:</text>
+	</string>
+	<string id="tm_drunk_dolg_has_no_job">
+		<text>На данный момент ничего нет.</text>
+	</string>
+	<string id="tm_drunk_dolg_job_ask">
+		<text>Насчёт какого задания ты хочешь поговорить?</text>
+	</string>
+	<string id="tm_drunk_dolg_job_complete">
+		<text>Задание выполнено... а вот и гонорар!</text>
+	</string>
+	<string id="tm_drunk_dolg_job_what">
+		<text>И что там с заданием?</text>
+	</string>
+	<string id="tm_drunk_dolg_list_job">
+		<text>Есть кое-что:</text>
 	</string>
 	<string id="tm_ecolog_has_no_job">
 		<text>Sorry, but we don't have any jobs at the moment.</text>
@@ -615,6 +837,33 @@
 	<string id="tm_eliminate_camp_3_text">
 		<text>Some bandits turned up by the Agroprom R&D Institute. They're disturbing my diggers when they sort through the rubbish. You solve the problem, I'll owe you.</text>
 	</string>
+	<string id="tm_eliminate_camp_4">
+		<text>Зачистить местность от мутантов.</text>
+	</string>
+	<string id="tm_eliminate_camp_4_descr">
+		<text>Зачистить местность от мутантов.</text>
+	</string>
+	<string id="tm_eliminate_camp_4_text">
+		<text>Дело есть, не очень тяжелое. Тут ко мне тут туриста иностранного привезти хотят. Он деньжат моим корешам подкинул, чтоб на зону посмотреть. Ну и там где водить его будут, надо почистить район от мутантов. Возьмешься?</text>
+	</string>
+	<string id="tm_eliminate_camp_5">
+		<text>Устранить двух бандитов на Свалке.</text>
+	</string>
+	<string id="tm_eliminate_camp_5_descr">
+		<text>Сделать проход в одно из лучших мест Зоны свободным</text>
+	</string>
+	<string id="tm_eliminate_camp_5_text">
+		<text>Недавно одно из лучших мест Зоны стало недоступным для любителей прекрасного. На Свалке... Угу, именно на Свалке есть закуток, вроде ничего такого, но тебя покидают все печали, в котором ты забываешь о грязи, о деньгах, о крови... Точнее забывал. Потому что теперь там сидят два грязных урода, которые грозятся пустить кровь каждому, кто не заплатит им за посещение этого края. Устрани их, мне туристов водить некуда.</text>
+	</string>
+	<string id="tm_eliminate_camp_6">
+		<text>Убить кровососа в Темной долине.</text>
+	</string>
+	<string id="tm_eliminate_camp_6_descr">
+		<text>Убить кровососа в Темной долине</text>
+	</string>
+	<string id="tm_eliminate_camp_6_text">
+		<text>Говорят, что военные ушли из Темной долины. А после изо всех щелей попёрли монстры. Сталкеры уже видели там кровососа, причём необычного - он не боится открытых пространств. В общем, когда слух докатится до учёных - они обязательно захотят исследовать этого кровососа. И я хочу быть тем человеком, который продаст ученным труп. Твоя задача - убить кровососа, а дальше я все беру на себя.</text>
+	</string>
 	<string id="tm_find_artefact_1">
 		<text>Find the Jellyfish artifact</text>
 	</string>
@@ -642,6 +891,15 @@
 	<string id="tm_find_artefact_3_text">
 		<text>There is this one little job... rather unpleasant. Apparently, it's coming from the military, they're working on some new protection. Anyway, there's an order for the Night Star. It's quite a rare artifact, but it provides pretty good protection from bullets... So will you do it? I'll pay you well! </text>
 	</string>
+	<string id="tm_find_artefact_4">
+		<text>Найти артефакт "Ломоть мяса"</text>
+	</string>
+	<string id="tm_find_artefact_4_descr">
+		<text>Найти заживляющий раны артефакт "Ломоть мяса"</text>
+	</string>
+	<string id="tm_find_artefact_4_text">
+		<text>Есть заказ на артефакт, нужен такой чтоб раны лечить мог, называеться "Ломоть мяса"! Клиника у них вроде какая то. Достанешь - и сам денег получишь и людям поможешь.</text>
+	</string>
 	<string id="tm_find_item_1">
 		<text>Find the unique suit</text>
 	</string>
@@ -650,15 +908,6 @@
 	</string>
 	<string id="tm_find_item_1_text">
 		<text>I heard that the bandits got hold of a rather curious suit. They say the loser that thought of bringing it to the Zone got caught in an anomaly... the Witches' Jelly was it? Nevermind. It seems that the suit acquired some rather uncommon properties after being exposed to the anomaly. If you bring it to me, I'll make sure you get more than your fair share. So what do you say?</text>
-	</string>
-	<string id="tm_find_item_2">
-		<text>Find the improved pistol</text>
-	</string>
-	<string id="tm_find_item_2_descr">
-		<text>Get the Fort pistol which is rumored to fit more rounds in the magazine. The last known owner is the commander of the outpost under the ruined bridge.</text>
-	</string>
-	<string id="tm_find_item_2_text">
-		<text>What's with this latest fad for all these fancy weapons, even the rookies are getting fussy about good ol' guns! Anyway, there's an order for an enhanced gun. They say the military commander, one of those that takes bribes for passing under the bridge, has a "Fort" with a full charger. Can you get it?</text>
 	</string>
 	<string id="tm_freedom_has_no_job">
 		<text>There's no job right now, really…</text>
@@ -674,6 +923,21 @@
 	</string>
 	<string id="tm_freedom_list_job">
 		<text>Here's what I've got:</text>
+	</string>
+	<string id="tm_hunter_has_no_job">
+		<text>На данный момент ничего нет.</text>
+	</string>
+	<string id="tm_hunter_job_ask">
+		<text>Насчёт какого задания ты хочешь поговорить?</text>
+	</string>
+	<string id="tm_hunter_job_complete">
+		<text>Задание выполнено... а вот и гонорар!</text>
+	</string>
+	<string id="tm_hunter_job_what">
+		<text>И что там с заданием?</text>
+	</string>
+	<string id="tm_hunter_list_job">
+		<text>Есть кое-что:</text>
 	</string>
 	<string id="tm_job_nothing">
 		<text>It's alright. Some other time.</text>
@@ -726,6 +990,78 @@
 	<string id="tm_kill_stalker_5_text">
 		<text>I always said business and religion can't go together, they can never cross, and should never ever meddle in the other's affairs! It's just this padre, Lord forgive me, Diodor... well... he just can't see this simple truth. He keeps raving about artifact hunting, says that trading in them drives people to sin not just in the Zone, but in the whole world, on and on along those lines. Get this, he preaches the destruction of artifacts altogether!! See what he is up to? The worst bit is that he's actually got some converts! I've tried to approach this Diodor this way and other, but he just keeps at it. Here's the deal: you're going to send him upstairs wher he can preach all he likes... you get the point, right? And I'll give you a cool artifact. So, we've got a deal? </text>
 	</string>
+	<string id="tm_kill_stalker_6">
+		<text>Убить "торгового представителя"</text>
+	</string>
+	<string id="tm_kill_stalker_6_descr">
+		<text>Убить "торгового представителя". Торговец следит за своей репутацией</text>
+	</string>
+	<string id="tm_kill_stalker_6_text">
+		<text>Прикинь, тут недалеко крутится какой-то чудак, который представляется моим торговым представителем, пользуется, значит, моей репутацией, а потом толкает некондиционку! Сломанные стволы, разваливающуюся броню, просроченые консервы... У меня тут уже было пару разборок с недовольными. Короче, мне нужен человек, который пообщается с "торговым представителем". Вплоть до некондиции.</text>
+	</string>
+	<string id="tm_lisiy_has_no_job">
+		<text>На данный момент ничего нет.</text>
+	</string>
+	<string id="tm_lisiy_job_ask">
+		<text>Насчёт какого задания ты хочешь поговорить?</text>
+	</string>
+	<string id="tm_lisiy_job_complete">
+		<text>Задание выполнено... а вот и гонорар!</text>
+	</string>
+	<string id="tm_lisiy_job_what">
+		<text>И что там с заданием?</text>
+	</string>
+	<string id="tm_lisiy_list_job">
+		<text>Есть кое-что:</text>
+	</string>
+	<string id="tm_Mercenary_has_no_job">
+		<text>На данный момент ничего нет.</text>
+	</string>
+	<string id="tm_Mercenary_job_ask">
+		<text>Насчёт какого задания ты хочешь поговорить?</text>
+	</string>
+	<string id="tm_Mercenary_job_complete">
+		<text>Задание выполнено... а вот и гонорар!</text>
+	</string>
+	<string id="tm_Mercenary_job_what">
+		<text>И что там с заданием?</text>
+	</string>
+	<string id="tm_Mercenary_list_job">
+		<text>Есть кое-что:</text>
+	</string>
+	<string id="tm_monster_part_1">
+		<text>Принести челюсть кровососа</text>
+	</string>
+	<string id="tm_monster_part_1_descr">
+		<text>Зуб кровососа притягивает удачу? Посмотрим повезет ли кровососу</text>
+	</string>
+	<string id="tm_monster_part_1_text">
+		<text>Слышал поверье, что зуб кровососа притягивает удачу? Будто бы того, кто на шее носит такой зуб, аномалии отпускают, и артефакты сами в руки идут? В общем, это всё фигня, но есть болваны, которые верят и готовы платить хорошие деньги. Принесешь челюсть кровососа, я тебе хорошо заплачу.</text>
+	</string>
+	<string id="tm_monster_part_2">
+		<text>Притащить хвост псевдособаки</text>
+	</string>
+	<string id="tm_monster_part_2_descr">
+		<text>Притащить хвост псевдособаки</text>
+	</string>
+	<string id="tm_monster_part_2_text">
+		<text>Зима скоро. А что зимой там, на большой земле, бабы носить любят? Правильно! Меха носить они любят. Вот и пошла мода новая, из хвостов псевдо собак аксессуары всякие делать. Шерсть там какая то особенная! Короче, есть заказ на такой хвост. Возьмешься?</text>
+	</string>
+	<string id="tm_petrenko_has_no_job">
+		<text>На данный момент ничего нет.</text>
+	</string>
+	<string id="tm_petrenko_job_ask">
+		<text>Насчёт какого задания ты хочешь поговорить?</text>
+	</string>
+	<string id="tm_petrenko_job_complete">
+		<text>Задание выполнено... а вот и гонорар!</text>
+	</string>
+	<string id="tm_petrenko_job_what">
+		<text>И что там с заданием?</text>
+	</string>
+	<string id="tm_petrenko_list_job">
+		<text>Есть кое-что:</text>
+	</string>
 	<string id="tm_reward_job">
 		<text>I'm here for the job.</text>
 	</string>
@@ -755,5 +1091,77 @@
 	</string>
 	<string id="tm_trader_list_job">
 		<text>Here's something to do:</text>
+	</string>
+	<string id="tm_shustriy_has_no_job">
+		<text>На данный момент ничего нет.</text>
+	</string>
+	<string id="tm_shustriy_job_ask">
+		<text>Насчёт какого задания ты хочешь поговорить?</text>
+	</string>
+	<string id="tm_shustriy_job_complete">
+		<text>Задание выполнено... а вот и гонорарчик!</text>
+	</string>
+	<string id="tm_shustriy_job_what">
+		<text>И что там с заданием?</text>
+	</string>
+	<string id="tm_shustriy_list_job">
+		<text>Есть кое-что:</text>
+	</string>
+	<string id="tm_wolf_has_no_job">
+		<text>На данный момент ничего нет.</text>
+	</string>
+	<string id="tm_wolf_job_ask">
+		<text>Насчёт какого задания ты хочешь поговорить?</text>
+	</string>
+	<string id="tm_wolf_job_complete">
+		<text>Задание выполнено... а вот и гонорар!</text>
+	</string>
+	<string id="tm_wolf_job_what">
+		<text>И что там с заданием?</text>
+	</string>
+	<string id="tm_wolf_list_job">
+		<text>Есть кое-что:</text>
+	</string>
+	<string id="tm_zastava_commander_has_no_job">
+		<text>На данный момент ничего нет.</text>
+	</string>
+	<string id="tm_zastava_commander_job_ask">
+		<text>Насчёт какого задания ты хочешь поговорить?</text>
+	</string>
+	<string id="tm_zastava_commander_job_complete">
+		<text>Задание выполнено... а вот и гонорар!</text>
+	</string>
+	<string id="tm_zastava_commander_job_what">
+		<text>И что там с заданием?</text>
+	</string>
+	<string id="tm_zastava_commander_list_job">
+		<text>Есть кое-что:</text>
+	</string>
+	<string id="wolf_eliminate_lager_1">
+		<text>Уничтожить логово кабанов</text>
+	</string>
+	<string id="wolf_eliminate_lager_1_descr">
+		<text>Кабаны устроили догово, аккурат рядом с тем местом, где Волк с другом схрон сделали. Волк просит зачистить логово, обещал щедро наградить.</text>
+	</string>
+	<string id="wolf_eliminate_lager_1_text">
+		<text>Это, у нас с другом схрон тут недалеко был, аккурат за АТП, там еще деревья погуще растут, то что надо короче. Так вот там недавно кабаны логово себе устроили. И получается что до схрона нам теперь не добраться. Помоги - убей кабанов, а я тебя отблагодарю, и за себя, и за друга.</text>
+	</string>
+	<string id="wolf_eliminate_lager_2">
+		<text>Уничтожить мутантов на ферме</text>
+	</string>
+	<string id="wolf_eliminate_lager_2_descr">
+		<text>Волк просит зачистить ферму от мутантов, хочет организовать там перевалочный лагерь.</text>
+	</string>
+	<string id="wolf_eliminate_lager_2_text">
+		<text>Тут хоть и граница Зоны, но новичкам и здесь несладко. Бандиты то еще пол-беды, они хоть русский язык понимают. А вот мутанты - с ними совсем худо. Устроили себе логово на заброшенной ферме, единственное хорошее место для перевалочного лагеря заняли. Если сможешь очистить ферму от мутантов - с меня причитается.</text>
+	</string>
+	<string id="zastava_commander_eliminate_lager">
+		<text>Зачистить логово собак</text>
+	</string>
+	<string id="zastava_commander_eliminate_lager_descr">
+		<text>Возле Южной заставы на Баре обосновалась стая собак. Начальник заставы просит зачистить логово, обещал наградить.</text>
+	</string>
+	<string id="zastava_commander_eliminate_lager_text">
+		<text>Несмотря на наши усилия некоторые монстры все таки прорываются со стороны Свалки. Да ты наверное и сам видел стаю собак к югу от нас. Убьешь их – получишь награду.</text>
 	</string>
 </string_table>

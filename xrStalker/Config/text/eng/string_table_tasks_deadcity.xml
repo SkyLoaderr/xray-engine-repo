@@ -1,57 +1,15 @@
-	<string id="cit_compromat_documents_0">
-		<text>Find the secret Merc documents.</text>
-	</string>
-	<string id="cit_compromat_documents_1">
-		<text>Steal Merc documents.</text>
-	</string>
-	<string id="cit_compromat_documents_2">
-		<text>Take them to the Trader.</text>
-	</string>
-	<string id="cit_doctor_escape_task">
-		<text>Escape the Dead City.</text>
-	</string>
-	<string id="cit_doctor_escape_task_1">
-		<text>Escape from the cell.</text>
-	</string>
-	<string id="cit_doctor_escape_task_3">
-		<text>Leave the city</text>
-	</string>
 	<string id="cit_doctor_task">
-		<text>Pripyat stash.</text>
+		<text>Тайник на Припяти.</text>
 	</string>
 	<string id="cit_doctor_task_0">
-		<text>Find Hawkeye's stash in Pripyat.</text>
+		<text>Найти тайник Стрелка в Припяти.</text>
 	</string>
 	<string id="cit_doctor_task_1">
-		<text>Reach the hotel.</text>
+		<text>Добраться до гостинницы.</text>
 	</string>
 	<string id="cit_doctor_task_2">
-		<text>Find the stash room.</text>
+		<text>Найти комнату с тайником.</text>
 	</string>
 	<string id="cit_doctor_task_3">
-		<text>Examine the stash.</text>
-	</string>
-	<string id="cit_doctor_weapon_task">
-		<text>Find your things and weapons.</text>
-	</string>
-	<string id="cit_doctor_weapon_task_1">
-		<text>Find your things and weapons.</text>
-	</string>
-	<string id="cit_killers_base_location">
-		<text>Merc deployment.</text>
-	</string>
-	<string id="cit_killers_base_location_0">
-		<text>Find the Merc base.</text>
-	</string>
-	<string id="cit_killers_base_location_1">
-		<text>Find a map of the Merc base.</text>
-	</string>
-	<string id="cit_killers_base_location_2">
-		<text>Give the map to Duty or Freedom.</text>
-	</string>
-	<string id="cit_killers_documents">
-		<text>Merc identification.</text>
-	</string>
-	<string id="cit_leader_hunt_0">
-		<text>Find and kill the Merc leader.</text>
+		<text>Обследовать тайник.</text>
 	</string>

@@ -13,6 +13,9 @@
 	<string id="descr_yan_kill_brain">
 		<text>Sakharov: "Well done, Marked One, you've made it to the laboratory after all. It is extremely important for us to study the mechanism that is based in the laboratory. Try to disable it so that we can investigate it.\n\n ...listen, the prototype will not be able to protect you against severe radiation. I've thought of this beforehand, so there is a timer in our armor that will start ticking when you come under strong exposure. When the time is up, the prototype will stop protecting you. Be most careful and don't forget about the timer."</text>
 	</string>
+	<string id="descr_yan_kill_brain_2">
+		<text>Установка отключена. Осталось дело за малым - выбраться живым.</text>
+	</string>
 	<string id="descr_yan_provodnik_task">
 		<text>Ghost: "Entry #257\n >>Pathfinder, I am sending a man to meet you, we have important information for Doctor, help him. \n >>Ghost\n Good. But, Ghost, let's not repeat what happened last time. You make the trip yourself, I've wanted to have a chat with you for a while. I'll be waiting at the usual place, in the camp by the bridge. Don't get lost and don't let the army patrols get you."</text>
 	</string>

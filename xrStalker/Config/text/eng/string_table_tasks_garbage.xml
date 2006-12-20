@@ -17,16 +17,10 @@
 		<text>Respond to the call for help.</text>
 	</string>
 	<string id="gar_help_tunnel_newbie">
-		<text>Help the rookie leave the Dump</text>
+		<text>Помочь новичку со свалки</text>
 	</string>
 	<string id="gar_kill_bandits">
 		<text>Repel the bandit raid.</text>
-	</string>
-	<string id="gar_kill_bandits_around_tunnel">
-		<text>Kill the bandits by the tunnel</text>
-	</string>
-	<string id="gar_kill_bandits_post">
-		<text>Escort the rookie to the cordon</text>
 	</string>
 	<string id="gar_kill_boars">
 		<text>Get to the bar.</text>
@@ -37,11 +31,11 @@
 	<string id="gar_kill_boars_2">
 		<text>Get a pass from Duty.</text>
 	</string>
+	<string id="gar_kill_boars_descr">
+		<text>Долг: "Всем прием, говорит застава Долга на свалке. Из темной Долины по направлению к бару идет волна мутантов. Всем кто поможетотстрелять нечисть, признаетльность с нашей стороны гарантируем. Слово Долга."</text>
+	</string>
 	<string id="gar_kill_boars_main">
 		<text>The quest to get through to the bar.</text>
-	</string>
-	<string id="gar_say_free_pass">
-		<text>Tell the rookie that the way is clear</text>
 	</string>
 	<string id="garbage_meet_stalker_1">
 		<text>Learn something of Hawkeye from Grey.</text>

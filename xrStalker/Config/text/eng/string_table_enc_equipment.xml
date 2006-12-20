@@ -24,7 +24,7 @@
 	<string id="cit_deadcity_maps_desc">
 		<text>A detailed map of the Dead City including Merc positions</text>
 	</string>
-	<string id="cit_deadcity_maps_short_desc">
+	<string id="cit_deadcity_maps_name">
 		<text>Map of the Dead City</text>
 	</string>
 	<string id="cit_doctors_key_desc">
@@ -32,12 +32,6 @@
 	</string>
 	<string id="cit_doctors_key_short_desc">
 		<text>Doctor's key</text>
-	</string>
-	<string id="cit_killers_documents_desc">
-		<text>Detailed information on the Merc activities in recent months</text>
-	</string>
-	<string id="cit_killers_documents_short_desc">
-		<text>Merc papers</text>
 	</string>
 	<string id="Conserva">
 		<text>Can of Tourist's Delight</text>

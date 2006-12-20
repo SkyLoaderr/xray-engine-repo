@@ -19,7 +19,7 @@
 		<text>I need to pass, I have some business with the Barman.</text>
 	</string>
 	<string id="gar_dolg_blokpost_111121">
-		<text>Even so, passage costs money. We'll let you through for half a grand or you can do us a favor - up to you.</text>
+		<text>ƒа, Ѕармен сообщил нам о тебе, ты можешь пройти.</text>
 	</string>
 	<string id="gar_dolg_blokpost_1111211">
 		<text>I'd rather pay. Here.</text>
@@ -50,6 +50,12 @@
 	</string>
 	<string id="gar_dolg_blokpost_111123">
 		<text>Well, you can't go through to the bar then.</text>
+	</string>
+	<string id="gar_dolg_blokpost_1231">
+		<text>—пасибо тебе, что помог нам отбитьс€ от кабанов, за услугу возьми заслуженную награду.</text>
+	</string>
+	<string id="gar_dolg_blokpost_12311">
+		<text>—пасибо!</text>
 	</string>
 	<string id="gar_dolg_blokpost_22">
 		<text>So, you killed those boars yet?</text>
@@ -175,7 +181,7 @@
 		<text>Are there any large buildings in the Dump?</text>
 	</string>
 	<string id="gar_hellcar_start_3111411121">
-		<text>There's a big abandoned hangar in the center which is pretty quiet - you can even stay the night if you really have to. Going West, towards the Institute, you'll find the bandit camp. That's where the bastards we killed earlier came from, and I doubt that's the end of that.</text>
+		<text>ѕо центру стоит большой заброшенный ангар, там в принципе достаточно тихо. ¬ крайнем случае можно и переночевать. ≈сли пойти на запад, в сторону агропрома - там лагерь бандитов, именно оттуда и шли эти отморозки, которых мы недавно пострел€ли, но € чувствую, что это далеко не все.</text>
 	</string>
 	<string id="gar_hellcar_start_31114111211">
 		<text>Thank you.</text>
