@@ -10,9 +10,11 @@ u32	g_dwDemoDeltaFrame = 1;
 void						CLevel::Demo_StoreServerData	(void* data, u32 size)
 {
 	return;
+/* warning 4702 - unreachable code
 	DemoCS.Enter();
 	Demo_StoreData(data, size, DATA_SERVER_PACKET);
 	DemoCS.Leave();
+*/
 }
 
 void						CLevel::Demo_StoreData			(void* data, u32 size, DEMO_CHUNK DataType)
