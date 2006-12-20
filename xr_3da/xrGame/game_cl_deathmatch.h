@@ -53,12 +53,14 @@ protected:
 		PresetItem (s16 Big) { set(Big); };
 		bool	operator ==		(const s16& ID) 
 		{ 
+/*
 #ifdef	_new_buy_wnd
 			s16 mask = 0xffff;
 #else
 			s16 mask = 0xff1f;
 #endif
-			return (BigID & mask) == (ID & mask);
+			*/
+			return (BigID/* & mask*/) == (ID/* & mask*/);
 		}
 		void		set(s16 Big) { SlotID = u8((Big>>0x08) & 0x00ff); ItemID = u8(Big & 0x00ff); BigID = Big;}
 		void		set(u8 Slot, u8 Item) { SlotID = Slot; ItemID = Item; BigID = (s16(SlotID) << 0x08) | s16(ItemID); };
