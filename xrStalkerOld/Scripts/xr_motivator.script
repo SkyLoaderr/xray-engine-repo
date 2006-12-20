@@ -293,7 +293,7 @@ function motivator_binder:net_save_relevant()
 end
 
 function motivator_binder:save(packet)
-	--printf("motivator_binder:save(): self.object:name()='%s'", self.object:name())
+	printf("motivator_binder:save(): self.object:name()='%s'", self.object:name())
 	object_binder.save(self, packet)
 
 	xr_logic.save_obj(self.object, packet)
@@ -306,7 +306,7 @@ end
 function motivator_binder:load(reader)
 	self.loaded = true
 
-	--printf("motivator_binder:load(): self.object:name()='%s'", self.object:name())
+	printf("motivator_binder:load(): self.object:name()='%s'", self.object:name())
 	object_binder.load(self, reader)
 
 	xr_logic.load_obj(self.object, reader)

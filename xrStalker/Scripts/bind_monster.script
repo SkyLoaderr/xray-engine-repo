@@ -159,7 +159,7 @@ function generic_object_binder:net_save_relevant()
 end
 
 function generic_object_binder:save(packet)
-	--printf("generic_object_binder:save(): self.object:name()='%s'", self.object:name())
+	printf("generic_object_binder:save(): self.object:name()='%s'", self.object:name())
 	object_binder.save(self, packet)
 
 	xr_logic.save_obj(self.object, packet)
@@ -169,7 +169,7 @@ end
 function generic_object_binder:load(reader)
 	self.loaded = true
 
-	--printf("generic_object_binder:load(): self.object:name()='%s'", self.object:name())
+	printf("generic_object_binder:load(): self.object:name()='%s'", self.object:name())
 	object_binder.load(self, reader)
 
 	xr_logic.load_obj(self.object, reader)
