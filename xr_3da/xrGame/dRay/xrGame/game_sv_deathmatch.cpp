@@ -881,8 +881,7 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 	{
 		s16 ItemID = (*pItemsDesired)[it];
 //		if ((ItemID & 0xff1f) != pWpnS->SlotItem_ID) continue;
-		if ((ItemID) != u16(m_strWeaponsData->GetItemIdx(pItem->object().cNameSect()))) continue;
-
+		if ((ItemID & 0x00ff) != u16(m_strWeaponsData->GetItemIdx(pItem->object().cNameSect()))) continue;
 
 		found = true;
 		CWeaponAmmo* pAmmo = 	smart_cast<CWeaponAmmo*>(pItem);
@@ -896,7 +895,7 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 		if (pWeapon)
 		{
 			u8 OldAddons  = pWeapon->GetAddonsState();
-			u8 NewAddons  = 0/*u8(ItemID&0x00ff)>>0x05*/;
+			u8 NewAddons  = u8((ItemID&0xff00)>>0x08)/*u8(ItemID&0x00ff)>>0x05*/;
 			if (OldAddons != NewAddons)
 			{
 				CSE_ALifeItemWeapon* pSWeapon = smart_cast<CSE_ALifeItemWeapon*>(get_entity_from_eid(pWeapon->ID()));
@@ -1052,7 +1051,7 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 //		SpawnWeapon4Actor(pA->ID, pWpnS->WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
 		//-------------------------------------------------------------------------------
 //		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, pWpnS->WeaponName.c_str());
-		SpawnWeapon4Actor(pA->ID, *m_strWeaponsData->GetItemName(ItemID), 0/*u8(ItemID & 0x00FF)>>0x05*/);
+		SpawnWeapon4Actor(pA->ID, *m_strWeaponsData->GetItemName(ItemID), u8((ItemID & 0xFF00)>>0x08)/*u8(ItemID & 0x00FF)>>0x05*/);
 		//-------------------------------------------------------------------------------
 		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, *m_strWeaponsData->GetItemName(ItemID));
 	};

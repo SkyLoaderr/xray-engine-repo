@@ -22,7 +22,7 @@ bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm)
 	if(sell_itm->m_cell_item->OwnerList())
 		_itm = sell_itm->m_cell_item->OwnerList()->RemoveItem(sell_itm->m_cell_item, false );
 	else
-		_itm	= sell_itm->m_cell_item;`
+		_itm	= sell_itm->m_cell_item;
 
 	SBuyItemInfo* iinfo					= FindItem(_itm); //just detached
 

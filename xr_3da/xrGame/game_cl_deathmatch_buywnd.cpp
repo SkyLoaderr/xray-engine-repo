@@ -20,11 +20,12 @@ static	u16 SlotsToCheck [] = {
 
 #define UNBUYABLESLOT		20
 
-s16	game_cl_Deathmatch::GetBuyMenuItemIndex		(u8 SlotID, u8 ItemID)
+//s16	game_cl_Deathmatch::GetBuyMenuItemIndex		(u8 SlotID, u8 ItemID)
+s16	game_cl_Deathmatch::GetBuyMenuItemIndex		(u8 Addons, u8 ItemID)
 {
-	R_ASSERT2(SlotID != 0xff && ItemID != 0xff, "Bad Buy Manu Item");
-	if (SlotID == OUTFIT_SLOT) SlotID = APPARATUS_SLOT;
-	s16	ID = (s16(SlotID) << 0x08) | s16(ItemID);
+//	R_ASSERT2(SlotID != 0xff && ItemID != 0xff, "Bad Buy Manu Item");
+//	if (SlotID == OUTFIT_SLOT) SlotID = APPARATUS_SLOT;
+	s16	ID = (s16(Addons) << 0x08) | s16(ItemID);
 	return ID;
 };
 
@@ -60,7 +61,8 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 
 			u8 Addons		= _pitem.addon_state;
 
-			s16 ID			= GetBuyMenuItemIndex(u8(SlotID), ItemID);
+//			s16 ID			= GetBuyMenuItemIndex(u8(SlotID), ItemID);
+			s16 ID			= GetBuyMenuItemIndex(Addons, ItemID);
 			pCurPresetItems->push_back(ID);
 		}
 	}
@@ -165,7 +167,14 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 			PIItem pItem = (*ISlot).m_pIItem;
 			if (!pItem || pItem->object().getDestroy() || pItem->GetDrop()) continue;
 			if(pSettings->line_exist(GetBaseCostSect(), pItem->object().cNameSect()))
-				pCurBuyMenu->ItemToSlot(pItem->object().cNameSect(), 0);
+			{
+				u8 Addons = 0;
+				CWeapon* pWeapon = smart_cast<CWeapon*> (pItem);
+				{
+					if (pWeapon) Addons = pWeapon->GetAddonsState();
+				}
+				pCurBuyMenu->ItemToSlot(pItem->object().cNameSect(), Addons);
+			}
 		};
 
 		//проверяем пояс
@@ -190,7 +199,14 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 			PIItem pItem = *IRuck;
 			if (!pItem || pItem->object().getDestroy() || pItem->GetDrop()) continue;
 			if(pSettings->line_exist(GetBaseCostSect(), pItem->object().cNameSect()))
-				pCurBuyMenu->ItemToRuck(pItem->object().cNameSect(), 0);
+			{
+				u8 Addons = 0;
+				CWeapon* pWeapon = smart_cast<CWeapon*> (pItem);
+				{
+					if (pWeapon) Addons = pWeapon->GetAddonsState();
+				}
+				pCurBuyMenu->ItemToRuck(pItem->object().cNameSect(), Addons);
+			}
 /*			if (!pItem) continue;
 			CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*> (pItem);
 			if (!pAmmo) 
@@ -345,7 +361,8 @@ void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(const shared_str& caSection
 		u8 SlotID, ItemID;
 		pBuyMenu->GetWeaponIndexByName(ItemName, SlotID, ItemID);
 		if (SlotID == 0xff || ItemID == 0xff) continue;
-		s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);
+//		s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);
+		s16 ID = GetBuyMenuItemIndex(0, ItemID);
 		pPresetItems->push_back(ID);
 	};
 };
@@ -380,7 +397,8 @@ void				game_cl_Deathmatch::LoadDefItemsForRank(IBuyWnd* pBuyMenu)
 			pBuyMenu->GetWeaponIndexByName(NewItemStr, SlotID, ItemID);
 			if (SlotID == 0xff || ItemID == 0xff) continue;
 
-			s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);
+//			s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);
+			s16 ID = GetBuyMenuItemIndex(0, ItemID);
 
 //			*pItemID = ID;
 			pDefItem->set(ID);			
@@ -404,7 +422,8 @@ void				game_cl_Deathmatch::LoadDefItemsForRank(IBuyWnd* pBuyMenu)
 		pBuyMenu->GetWeaponIndexByName(BaseAmmoName, SlotID, ItemID);
 		if (SlotID == 0xff || ItemID == 0xff) continue;
 
-		s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);
+//		s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);
+		s16 ID = GetBuyMenuItemIndex(0, ItemID);
 		PlayerDefItems.push_back(ID);
 		PlayerDefItems.push_back(ID);
 	};
