@@ -190,6 +190,7 @@ public:
 	const shared_str& GetSilencerName			()		{return m_sSilencerName;}
 
 	u8		GetAddonsState						()		const		{return m_flagsAddOnState;};
+	void	SetAddonsState						(u8 st)	{m_flagsAddOnState=st;}//dont use!!! for buy menu only!!!
 protected:
 	//состояние подключенных аддонов
 	u8 m_flagsAddOnState;

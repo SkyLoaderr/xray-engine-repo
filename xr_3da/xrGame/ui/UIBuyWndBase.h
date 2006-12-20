@@ -16,7 +16,7 @@ struct _preset_item
 {
 	shared_str			sect_name;
 	u32					count;
-	shared_str			addons_sect[3];
+	u8					addon_state;
 	bool operator ==	(const shared_str& what)
 	{
 		return (sect_name==what);
@@ -54,8 +54,8 @@ public:
 	virtual void 				ResetItems					()																=0;
 	virtual void				SetRank						(u32 rank)														=0;
 	virtual void				ItemToBelt					(const shared_str& sectionName)									=0;
-	virtual void				ItemToRuck					(const shared_str& sectionName, u32 addons)						=0;
-	virtual void				ItemToSlot					(const shared_str& sectionName, u32 addons)						=0;
+	virtual void				ItemToRuck					(const shared_str& sectionName, u8 addons)						=0;
+	virtual void				ItemToSlot					(const shared_str& sectionName, u8 addons)						=0;
 	virtual void				SetupPlayerItemsBegin		(){};
 	virtual void				SetupPlayerItemsEnd			(){};
 	virtual const preset_items&	GetPreset					(ETradePreset idx)												=0;

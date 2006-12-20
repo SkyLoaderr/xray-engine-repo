@@ -106,11 +106,11 @@ function ___main()
 --	db.actor:give_info_portion(info) 
 end
 
-function ___main()
-	action_give_task()
+function main()
+	game.start_tutorial("part_1_pda")
 end
 
-function main()
+function sss_main()
    local h 		= hit()
    h.power 		= 0.1
    h.direction 	= vector():set(0, 0, 1)

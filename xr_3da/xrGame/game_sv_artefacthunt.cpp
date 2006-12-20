@@ -8,6 +8,7 @@
 #include "Actor.h"
 #include "game_cl_base.h"
 #include "clsid_game.h"
+#include "ui\UIBuyWndShared.h"
 
 #ifdef DEBUG
 #	include "debug_renderer.h"
@@ -363,7 +364,7 @@ void	game_sv_ArtefactHunt::LoadTeams			()
 		R_ASSERT2(0, "No section for base weapon cost for this type of the Game!");
 		return;
 	};
-	m_strWeaponsData.Load(m_sBaseWeaponCostSection);
+	m_strWeaponsData->Load(m_sBaseWeaponCostSection);
 
 	LoadTeamData("artefacthunt_team0");
 	LoadTeamData("artefacthunt_team1");

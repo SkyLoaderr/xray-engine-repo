@@ -9,9 +9,9 @@
 
 bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm)
 {
-	SellItemAddons						(sell_itm, 0);
-	SellItemAddons						(sell_itm, 1);
-	SellItemAddons						(sell_itm, 2);
+`	SellItemAddons						(sell_itm, at_scope);
+	SellItemAddons						(sell_itm, at_silencer);
+	SellItemAddons						(sell_itm, at_glauncher);
 
 	u32		_item_cost					= m_item_mngr->GetItemCost(sell_itm->m_name_sect, GetRank() );
 	
@@ -22,7 +22,7 @@ bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm)
 	if(sell_itm->m_cell_item->OwnerList())
 		_itm = sell_itm->m_cell_item->OwnerList()->RemoveItem(sell_itm->m_cell_item, false );
 	else
-		_itm	= sell_itm->m_cell_item;
+		_itm	= sell_itm->m_cell_item;`
 
 	SBuyItemInfo* iinfo					= FindItem(_itm); //just detached
 
@@ -83,7 +83,7 @@ bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm, bool own_item)
 		cell_itm					= iinfo->m_cell_item;
 
 
-	bool b_addon	= TryToAttachItemAsAddon(iinfo);
+	bool b_addon					= TryToAttachItemAsAddon(iinfo);
 	if(!b_addon)
 	{
 		CUIDragDropListEx*_new_owner = NULL;
@@ -197,7 +197,7 @@ void CUIMpTradeWnd::ItemToBelt(const shared_str& sectionName)
 	pList->SetItem						(pitem->m_cell_item);
 }
 
-void CUIMpTradeWnd::ItemToRuck(const shared_str& sectionName, u32 addons)
+void CUIMpTradeWnd::ItemToRuck(const shared_str& sectionName, u8 addons)
 {
 	VERIFY(m_item_mngr->GetItemIdx(sectionName)!=u32(-1) );
 
@@ -205,9 +205,11 @@ void CUIMpTradeWnd::ItemToRuck(const shared_str& sectionName, u32 addons)
 
 	SBuyItemInfo* pitem					= CreateItem(sectionName, SBuyItemInfo::e_own, false);
 	pList->SetItem						(pitem->m_cell_item);
+
+	SetItemAddonsState_ext				(pitem, addons);
 }
 
-void CUIMpTradeWnd::ItemToSlot(const shared_str& sectionName, u32 addons)
+void CUIMpTradeWnd::ItemToSlot(const shared_str& sectionName, u8 addons)
 {
 	VERIFY(m_item_mngr->GetItemIdx(sectionName)!=u32(-1) );
 
@@ -215,4 +217,5 @@ void CUIMpTradeWnd::ItemToSlot(const shared_str& sectionName, u32 addons)
 
 	SBuyItemInfo* pitem					= CreateItem(sectionName, SBuyItemInfo::e_own, false);
 	pList->SetItem						(pitem->m_cell_item);
+	SetItemAddonsState_ext				(pitem, addons);
 }

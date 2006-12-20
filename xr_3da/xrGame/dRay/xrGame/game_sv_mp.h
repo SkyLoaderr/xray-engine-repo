@@ -4,8 +4,7 @@
 #include "game_base_kill_type.h"
 #include "game_base_menu_events.h"
 
-#include "ui\UIMpTradeWnd.h"
-
+class		CItemMgr;
 #define		VOTE_LENGTH_TIME		1
 #define		VOTE_QUOTA				0.51f
 
@@ -42,7 +41,7 @@ protected:
 	bool							m_bRankUp_Allowed;
 
 	TEAM_DATA_LIST					TeamList;
-	CItemMgr						m_strWeaponsData;
+	CItemMgr*						m_strWeaponsData;
 
 	//-------------------------------------------------------
 	bool			m_bVotingActive;
@@ -84,6 +83,7 @@ protected:
 
 public:
 									game_sv_mp				();
+				virtual				~game_sv_mp				();
 	virtual		void				Create					(shared_str &options);
 	virtual		void				OnPlayerConnect			(ClientID id_who);
 	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID);

@@ -58,16 +58,9 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 			u8 ItemID		= 0;
 			pCurBuyMenu->GetWeaponIndexByName(_pitem.sect_name, SlotID, ItemID);
 
-			u8 Addons		= 0;
-			if(_pitem.addons_sect[0].c_str()) //first addon name_sect
-			{}
+			u8 Addons		= _pitem.addon_state;
 
-			if(_pitem.addons_sect[1].c_str()) //second addon name_sect
-			{}
-
-			if(_pitem.addons_sect[2].c_str()) //third addon name_sect
-			{}
-			s16 ID = GetBuyMenuItemIndex(u8(SlotID), ItemID);
+			s16 ID			= GetBuyMenuItemIndex(u8(SlotID), ItemID);
 			pCurPresetItems->push_back(ID);
 		}
 	}

@@ -28,13 +28,21 @@ float		g_sv_mp_fVoteQuota			= VOTE_QUOTA;
 float		g_sv_mp_fVoteTime				= VOTE_LENGTH_TIME;
 //-----------------------------------------------------------------
 
+#include "ui\UIBuyWndShared.h"
+
 game_sv_mp::game_sv_mp() :inherited()
 {
+	m_strWeaponsData		= xr_new<CItemMgr>();
 	m_bVotingActive = false;	
 	//------------------------------------------------------
 //	g_pGamePersistent->Environment.SetWeather("mp_weather");
 	m_aRanks.clear();	
 	//------------------------------------------------------	
+}
+
+game_sv_mp::~game_sv_mp()
+{
+	xr_delete(m_strWeaponsData);
 }
 
 void	game_sv_mp::Update	()
@@ -829,18 +837,18 @@ void	game_sv_mp::SetPlayersDefItems		(game_PlayerState* ps)
 			u16* pItemID = &(ps->pItemList[it]);
 //			WeaponDataStruct* pWpnS = NULL;
 //			if (!GetTeamItem_ByID(&pWpnS, &(TeamList[ps->team].aWeapons), *pItemID)) continue;
-			if (m_strWeaponsData.GetItemsCount() <= *pItemID) continue;
-			shared_str WeaponName = m_strWeaponsData.GetItemName(*pItemID);
+			if (m_strWeaponsData->GetItemsCount() <= *pItemID) continue;
+			shared_str WeaponName = m_strWeaponsData->GetItemName(*pItemID);
 //			strconcat(ItemStr, "def_item_repl_", pWpnS->WeaponName.c_str());
 			strconcat(ItemStr, "def_item_repl_", *WeaponName);
 			if (!pSettings->line_exist(RankStr, ItemStr)) continue;
 			
 			strcpy(NewItemStr,pSettings->r_string(RankStr, ItemStr));
 //			if (!GetTeamItem_ByName(&pWpnS, &(TeamList[ps->team].aWeapons), NewItemStr)) continue;
-			if (m_strWeaponsData.GetItemIdx(NewItemStr) == u32(-1)) continue;
+			if (m_strWeaponsData->GetItemIdx(NewItemStr) == u32(-1)) continue;
 
 //			*pItemID = pWpnS->SlotItem_ID;
-			*pItemID = u16(m_strWeaponsData.GetItemIdx(NewItemStr) & 0xffff);
+			*pItemID = u16(m_strWeaponsData->GetItemIdx(NewItemStr) & 0xffff);
 		}
 	}
 	//---------------------------------------------------
@@ -849,16 +857,16 @@ void	game_sv_mp::SetPlayersDefItems		(game_PlayerState* ps)
 		u16* pItemID = &(ps->pItemList[it]);
 //		WeaponDataStruct* pWpnS = NULL;
 //		if (!GetTeamItem_ByID(&pWpnS, &(TeamList[ps->team].aWeapons), *pItemID)) continue;
-		if (m_strWeaponsData.GetItemsCount() <= *pItemID) continue;
+		if (m_strWeaponsData->GetItemsCount() <= *pItemID) continue;
 		
-		shared_str WeaponName = m_strWeaponsData.GetItemName(*pItemID);
+		shared_str WeaponName = m_strWeaponsData->GetItemName(*pItemID);
 		u16 AmmoID = u16(-1);
 		if (pSettings->line_exist(WeaponName, "ammo_class"))
 		{
 			string1024 wpnAmmos, BaseAmmoName;
 			std::strcpy(wpnAmmos, pSettings->r_string(WeaponName, "ammo_class"));
 			_GetItem(wpnAmmos, 0, BaseAmmoName);
-			AmmoID = u16(m_strWeaponsData.GetItemIdx(BaseAmmoName)&0xffff);
+			AmmoID = u16(m_strWeaponsData->GetItemIdx(BaseAmmoName)&0xffff);
 		};
 //		if (!pWpnS->WeaponBaseAmmo.size()) continue;
 //		WeaponDataStruct* pWpnAmmo = NULL;

@@ -18,6 +18,7 @@
 #include "game_cl_base_weapon_usage_statistic.h"
 
 //#define DELAYED_ROUND_TIME	7000
+#include "ui\UIBuyWndShared.h"
 
 #define UNBUYABLESLOT		20
 
@@ -836,7 +837,7 @@ bool	game_sv_Deathmatch::IsBuyableItem			(LPCSTR	ItemName)
 		if (GetTeamItem_ByName(&pWpnS, &WpnList, ItemName)) return true;
 	};
 	*/
-	if (m_strWeaponsData.GetItemIdx(ItemName) == u32(-1)) return false;
+	if (m_strWeaponsData->GetItemIdx(ItemName) == u32(-1)) return false;
 	return false;
 };
 /*
@@ -873,14 +874,14 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 	};
 	if (!pWpnS) return;
 */	
-	if (m_strWeaponsData.GetItemIdx(pItem->object().cNameSect()) == u32(-1)) return;
+	if (m_strWeaponsData->GetItemIdx(pItem->object().cNameSect()) == u32(-1)) return;
 	//-------------------------------------------
 	bool	found = false;
 	for (u32 it = 0; it < pItemsDesired->size(); it++)
 	{
 		s16 ItemID = (*pItemsDesired)[it];
 //		if ((ItemID & 0xff1f) != pWpnS->SlotItem_ID) continue;
-		if ((ItemID) != u16(m_strWeaponsData.GetItemIdx(pItem->object().cNameSect()))) continue;
+		if ((ItemID) != u16(m_strWeaponsData->GetItemIdx(pItem->object().cNameSect()))) continue;
 
 
 		found = true;
@@ -1051,9 +1052,9 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 //		SpawnWeapon4Actor(pA->ID, pWpnS->WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
 		//-------------------------------------------------------------------------------
 //		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, pWpnS->WeaponName.c_str());
-		SpawnWeapon4Actor(pA->ID, *m_strWeaponsData.GetItemName(ItemID), 0/*u8(ItemID & 0x00FF)>>0x05*/);
+		SpawnWeapon4Actor(pA->ID, *m_strWeaponsData->GetItemName(ItemID), 0/*u8(ItemID & 0x00FF)>>0x05*/);
 		//-------------------------------------------------------------------------------
-		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, *m_strWeaponsData.GetItemName(ItemID));
+		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, *m_strWeaponsData->GetItemName(ItemID));
 	};
 
 	if (!g_sv_dm_bDMIgnore_Money_OnBuy)
@@ -1231,7 +1232,7 @@ void	game_sv_Deathmatch::LoadDefItemsForTeam	(const shared_str& caSection, DEF_I
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(DefItems, i, ItemName);
-		pDefItems->push_back(u16(m_strWeaponsData.GetItemIdx(ItemName)&0xffff));
+		pDefItems->push_back(u16(m_strWeaponsData->GetItemIdx(ItemName)&0xffff));
 	};
 };
 
@@ -1334,7 +1335,7 @@ void	game_sv_Deathmatch::LoadTeams			()
 		R_ASSERT2(0, "No section for base weapon cost for this type of the Game!");
 		return;
 	};
-	m_strWeaponsData.Load(m_sBaseWeaponCostSection);
+	m_strWeaponsData->Load(m_sBaseWeaponCostSection);
 
 	LoadTeamData("deathmatch_team0");
 };

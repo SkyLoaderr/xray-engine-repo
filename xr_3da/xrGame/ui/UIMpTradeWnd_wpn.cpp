@@ -80,10 +80,14 @@ void CUIMpTradeWnd::OnBtnRifleAmmo2Clicked(CUIWindow* w, void* d)
 		DestroyItem				(pitem);
 }
 
-bool CUIMpTradeWnd::TryToAttachItemAsAddon(SBuyItemInfo* buy_itm)
+bool CUIMpTradeWnd::TryToAttachItemAsAddon(SBuyItemInfo* itm)
 {
 	bool	b_res						= false;
-	for(u32 i=0; i<2;++i)
+	
+	item_addon_type _addon_type			= GetItemType(itm->m_name_sect);
+	if(_addon_type==at_not_addon)		return b_res;
+
+	for(u32 i=0; i<2; ++i)
 	{
 		u32 list_idx					= (i==0) ? e_rifle : e_pistol;
 		CUIDragDropListEx*	_list		= m_list[list_idx];
@@ -94,51 +98,170 @@ bool CUIMpTradeWnd::TryToAttachItemAsAddon(SBuyItemInfo* buy_itm)
 		if(!ci)	
 			return	false;
 
-		CInventoryItem* item_to_upgrade	= (CInventoryItem*)ci->m_pData;
-		CInventoryItem* item_to_attach	= (CInventoryItem*)buy_itm->m_cell_item->m_pData;
-		
-		if(item_to_upgrade->CanAttach	(item_to_attach))
+		SBuyItemInfo* attach_to			= FindItem(ci);
+
+		if(CanAttachAddon(attach_to,_addon_type))
 		{
-			item_to_upgrade->Attach		(item_to_attach, false);
-			b_res = true;
+			AttachAddon					(attach_to,_addon_type);
+			b_res						= true;
 			break;
 		}
-
 	}		
 
 	return				b_res;
 }
 
-void CUIMpTradeWnd::SellItemAddons(SBuyItemInfo* sell_itm, u8 addon_id)
+void CUIMpTradeWnd::SellItemAddons(SBuyItemInfo* sell_itm, item_addon_type addon_type)
 {
 	CInventoryItem* item_	= (CInventoryItem*)sell_itm->m_cell_item->m_pData;
 	CWeapon* w				= smart_cast<CWeapon*>(item_);
 	if(!w)					return; //ammo,medkit etc.
 
-	if(addon_id==0 && w->ScopeAttachable() && w->IsScopeAttached())
+	if(IsAddonAttached(sell_itm, addon_type))
 	{
-		const shared_str& _name = w->GetScopeName();
-		u32 _item_cost			= m_item_mngr->GetItemCost(_name, GetRank() );
-		SetMoneyAmount			(GetMoneyAmount() + _item_cost);
-		
-		w->Detach				(_name.c_str(), false);
-	};
-
-	if(addon_id==1 && w->SilencerAttachable() && w->IsSilencerAttached())
-	{
-		const shared_str& _name = w->GetSilencerName();
-		u32 _item_cost			= m_item_mngr->GetItemCost(_name, GetRank() );
-		SetMoneyAmount			(GetMoneyAmount() + _item_cost);
-
-		w->Detach				(_name.c_str(), false);
-	};
-
-	if(addon_id==2 && w->GrenadeLauncherAttachable() && w->IsGrenadeLauncherAttached())
-	{
-		const shared_str& _name = w->GetGrenadeLauncherName();
-		u32 _item_cost			= m_item_mngr->GetItemCost(_name, GetRank() );
-		SetMoneyAmount			(GetMoneyAmount() + _item_cost);
-	
-		w->Detach				(_name.c_str(), false);
+		SBuyItemInfo* detached_addon	= DetachAddon(sell_itm, addon_type);
+		u32 _item_cost					= m_item_mngr->GetItemCost(detached_addon->m_name_sect, GetRank() );
+		SetMoneyAmount					(GetMoneyAmount() + _item_cost);
+		DestroyItem						(detached_addon);
 	}
+}
+
+bool CUIMpTradeWnd::IsAddonAttached(SBuyItemInfo* itm, item_addon_type at)
+{
+	bool b_res				= false;
+	CInventoryItem* item_	= (CInventoryItem*)itm->m_cell_item->m_pData;
+	CWeapon* w				= smart_cast<CWeapon*>(item_);
+	
+	if(!w)					return b_res;
+	switch(at)
+	{
+	case at_scope:
+		{
+			b_res = ( w->ScopeAttachable() && w->IsScopeAttached() );
+		}break;
+
+	case at_silencer:
+		{
+			b_res = ( w->SilencerAttachable() && w->IsSilencerAttached() );
+		}break;
+
+	case at_glauncher:
+		{
+			b_res = ( w->GrenadeLauncherAttachable() && w->IsGrenadeLauncherAttached() );
+		}break;
+	};
+	return			b_res;
+}
+
+bool CUIMpTradeWnd::CanAttachAddon(SBuyItemInfo* itm, item_addon_type at)
+{
+	if(IsAddonAttached(itm, at))
+		return				false;
+
+	bool b_res				= false;
+	CInventoryItem* item_	= (CInventoryItem*)itm->m_cell_item->m_pData;
+	CWeapon* w				= smart_cast<CWeapon*>(item_);
+	
+	if(!w)					return b_res;
+	switch(at)
+	{
+	case at_scope:
+		{
+			b_res = ( w->ScopeAttachable() && !w->IsScopeAttached() );
+		}break;
+
+	case at_silencer:
+		{
+			b_res = ( w->ScopeAttachable() && !w->IsScopeAttached() );
+		}break;
+
+	case at_glauncher:
+		{
+			b_res = ( w->GrenadeLauncherAttachable() && !w->IsGrenadeLauncherAttached() );
+		}break;
+	};
+	return b_res;
+}
+
+SBuyItemInfo* CUIMpTradeWnd::DetachAddon(SBuyItemInfo* itm, item_addon_type at)
+{
+	VERIFY					(IsAddonAttached(itm,at));
+
+	CInventoryItem* item_	= (CInventoryItem*)itm->m_cell_item->m_pData;
+	CWeapon* w				= smart_cast<CWeapon*>(item_);
+	R_ASSERT				(w);
+
+	u8 curr_addon_state		= w->GetAddonsState();
+	curr_addon_state		&= ~at;
+
+	shared_str				addon_name_sect;	
+	switch(at)
+	{
+	case at_scope:
+		{
+			addon_name_sect			= w->GetScopeName();
+		}break;
+
+	case at_silencer:
+		{
+			addon_name_sect			= w->GetSilencerName();
+		}break;
+
+	case at_glauncher:
+		{
+			addon_name_sect			= w->GetGrenadeLauncherName();
+		}break;
+	};
+
+	w->SetAddonsState				(curr_addon_state);
+	SBuyItemInfo* detached_addon	= CreateItem(addon_name_sect, SBuyItemInfo::e_own, false);
+	return							detached_addon;
+}
+
+bool CUIMpTradeWnd::AttachAddon(SBuyItemInfo* itm, item_addon_type at)
+{
+	VERIFY					(!IsAddonAttached(itm,at));
+
+	CInventoryItem* item_	= (CInventoryItem*)itm->m_cell_item->m_pData;
+	CWeapon* w				= smart_cast<CWeapon*>(item_);
+	R_ASSERT				(w);
+
+	u8 curr_addon_state		= w->GetAddonsState();
+	curr_addon_state		|= at;
+	w->SetAddonsState		(curr_addon_state);
+	return					true;
+}
+
+CUIMpTradeWnd::item_addon_type CUIMpTradeWnd::GetItemType(const shared_str& name_sect)
+{
+	const shared_str& group = g_mp_restrictions.GetItemGroup(name_sect);
+	if(group=="scp")
+		return		at_scope;
+	else
+	if(group=="sil")
+		return		at_silencer;
+	else
+	if(group=="gl")
+		return		at_glauncher;
+	else
+		return		at_not_addon;
+}
+
+u8 GetItemAddonsState_ext(SBuyItemInfo* item)
+{
+	CInventoryItem* item_	= (CInventoryItem*)item->m_cell_item->m_pData;
+	CWeapon* w				= smart_cast<CWeapon*>(item_);
+	if(!w)	
+		return				0;
+	return w->GetAddonsState();
+}
+
+void SetItemAddonsState_ext(SBuyItemInfo* item, u8 addons)
+{
+	CInventoryItem* item_	= (CInventoryItem*)item->m_cell_item->m_pData;
+	CWeapon* w				= smart_cast<CWeapon*>(item_);
+	if(!w)	
+		return;
+
+	w->SetAddonsState		(addons);
 }

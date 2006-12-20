@@ -33,6 +33,7 @@ private:
 
 };
 
+
 DEF_VECTOR(ITEMS_vec,SBuyItemInfo*);
 typedef ITEMS_vec::const_iterator ITEMS_vec_cit;
 
@@ -61,7 +62,12 @@ public:
 		dd_own_bag				=1,
 		dd_own_slot				=2,
 	};
-
+	enum item_addon_type{
+		at_not_addon			=0,
+		at_scope				=0x1,
+		at_glauncher			=0x2,
+		at_silencer				=0x4,
+	};
 public:
 								CUIMpTradeWnd				();
 	virtual						~CUIMpTradeWnd				();
@@ -96,8 +102,8 @@ public:
 	virtual void				SetRank						(u32 rank);
 
 	virtual void				ItemToBelt					(const shared_str& sectionName);
-	virtual void				ItemToRuck					(const shared_str& sectionName, u32 addons);
-	virtual void				ItemToSlot					(const shared_str& sectionName, u32 addons);
+	virtual void				ItemToRuck					(const shared_str& sectionName, u8 addons);
+	virtual void				ItemToSlot					(const shared_str& sectionName, u8 addons);
 	virtual void				SetupPlayerItemsBegin		();
 	virtual void				SetupPlayerItemsEnd			();
 
@@ -180,9 +186,18 @@ private:
 
 	bool				TryToBuyItem				(SBuyItemInfo* itm, bool own_item);
 	bool				TryToSellItem				(SBuyItemInfo* itm);
-	bool				TryToAttachItemAsAddon		(SBuyItemInfo* buy_itm);
-	void				SellItemAddons				(SBuyItemInfo* sell_itm, u8 addon_id);
 	bool				CheckBuyPossibility			(const shared_str& sect_name);
+
+//---item addons---
+	bool				TryToAttachItemAsAddon		(SBuyItemInfo* buy_itm);
+	void				SellItemAddons				(SBuyItemInfo* sell_itm, item_addon_type at);
+
+	bool				IsAddonAttached				(SBuyItemInfo* sell_itm, item_addon_type at);
+	bool				CanAttachAddon				(SBuyItemInfo* sell_itm, item_addon_type at);
+	SBuyItemInfo*		DetachAddon					(SBuyItemInfo* sell_itm, item_addon_type at);
+	bool				AttachAddon					(SBuyItemInfo* sell_itm, item_addon_type at);
+	item_addon_type		GetItemType					(const shared_str& name_sect);
+//-----
 
 	void				SetCurrentItem				(CUICellItem* itm);
 	CInventoryItem*		CurrentIItem				();
@@ -199,6 +214,7 @@ private:
 	void				RenewShopItem				(const shared_str& sect_name, bool b_just_bought);
 	u32					GetItemCount				(SBuyItemInfo::EItmState state) const;
 	u32					GetItemCount				(const shared_str& name_sect, SBuyItemInfo::EItmState state) const;
+	u32					GetItemCount				(const shared_str& name_sect, SBuyItemInfo::EItmState state, u8 addon) const;
 	u32					GetGroupCount				(const shared_str& name_group, SBuyItemInfo::EItmState state)const;
 
 	void				ResetToOrigin				();
@@ -212,23 +228,5 @@ private:
 	void				SetInfoString				(LPCSTR str);
 };
 
-#include "../associative_vector.h"
-class CItemMgr
-{
-	struct _i{
-		u8			slot_idx;
-		u32			cost[_RANK_COUNT];
-	};
-	typedef associative_vector<shared_str, _i>					COST_MAP;
-	typedef COST_MAP::iterator									COST_MAP_IT;
-	typedef COST_MAP::const_iterator							COST_MAP_CIT;
-	COST_MAP				m_items;
-public:
-	void					Load			(const shared_str& sect);
-	const u32				GetItemCost		(const shared_str& sect_name, u32 rank)	const;
-	const u8				GetItemSlotIdx	(const shared_str& sect_name) const;
-	const u32				GetItemIdx		(const shared_str& sect_name) const;
-	void					Dump			() const;
-	const u32				GetItemsCount	() const;
-	const shared_str&		GetItemName		(u32 Idx) const;
-};
+u8		GetItemAddonsState_ext		(SBuyItemInfo* item);
+void	SetItemAddonsState_ext		(SBuyItemInfo* item, u8 addons);

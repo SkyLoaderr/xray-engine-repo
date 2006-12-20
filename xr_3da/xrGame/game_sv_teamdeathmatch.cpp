@@ -6,6 +6,8 @@
 #include "Level.h"
 #include "game_cl_base.h"
 
+#include "ui\UIBuyWndShared.h"
+
 //-------------------------------------------------------
 extern	s32		g_sv_dm_dwFragLimit;
 //-------------------------------------------------------
@@ -307,7 +309,7 @@ void	game_sv_TeamDeathmatch::LoadTeams			()
 		R_ASSERT2(0, "No section for base weapon cost for this type of the Game!");
 		return;
 	};
-	m_strWeaponsData.Load(m_sBaseWeaponCostSection);
+	m_strWeaponsData->Load(m_sBaseWeaponCostSection);
 
 	LoadTeamData("teamdeathmatch_team0");
 	LoadTeamData("teamdeathmatch_team1");

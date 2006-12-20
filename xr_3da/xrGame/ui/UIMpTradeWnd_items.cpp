@@ -165,8 +165,65 @@ void CUIMpTradeWnd::DestroyItem(SBuyItemInfo* item)
 	delete_data			(item);
 }
 
+struct eq_name_state_comparer
+{
+	shared_str				m_name;
+	SBuyItemInfo::EItmState m_state;
+	eq_name_state_comparer	(const shared_str& _name, SBuyItemInfo::EItmState _state):m_name(_name),m_state(_state){}
+	bool	operator	() (SBuyItemInfo* info)
+	{
+		return (info->m_name_sect==m_name)&&(info->GetState()==m_state);
+	}
+};
+
+struct eq_name_state_addon_comparer
+{
+	shared_str				m_name;
+	SBuyItemInfo::EItmState m_state;
+	u8						m_addons;
+
+	eq_name_state_addon_comparer	(const shared_str& _name, SBuyItemInfo::EItmState _state, u8 ad):m_name(_name),m_state(_state),m_addons(ad){}
+	bool	operator	() (SBuyItemInfo* info)
+	{
+		if( (info->m_name_sect==m_name)&&(info->GetState()==m_state) )
+		{
+			return GetItemAddonsState_ext(info) == m_addons;
+		}else
+			return	false;
+	}
+};
+
+struct eq_group_state_comparer
+{
+	shared_str				m_group;
+	SBuyItemInfo::EItmState m_state;
+
+	eq_group_state_comparer	(const shared_str& _group, SBuyItemInfo::EItmState _state):m_group(_group),m_state(_state){}
+	bool	operator	() (SBuyItemInfo* info)
+	{
+		if((info->GetState()==m_state))
+		{
+			const shared_str& _grp = g_mp_restrictions.GetItemGroup(info->m_name_sect);
+			return			(_grp==m_group);
+		}else
+			return			false;
+	}
+};
+
+struct eq_state_comparer
+{
+	SBuyItemInfo::EItmState m_state;
+	eq_state_comparer	(SBuyItemInfo::EItmState _state):m_state(_state){}
+	bool	operator	() (SBuyItemInfo* info)
+	{
+		return (info->GetState()==m_state);
+	}
+};
+
 u32 CUIMpTradeWnd::GetItemCount(SBuyItemInfo::EItmState state) const
 {
+	return	(u32)count_if(m_all_items.begin(), m_all_items.end(),eq_state_comparer(state));
+/*
 	u32 res					= 0;
 	ITEMS_vec_cit it		= m_all_items.begin();
 	ITEMS_vec_cit it_e		= m_all_items.end();
@@ -178,10 +235,13 @@ u32 CUIMpTradeWnd::GetItemCount(SBuyItemInfo::EItmState state) const
 			++res;
 	}
 	return	res;
+*/
 }
 
 u32 CUIMpTradeWnd::GetItemCount(const shared_str& name_sect, SBuyItemInfo::EItmState state) const
 {
+	return	(u32)count_if(m_all_items.begin(), m_all_items.end(),eq_name_state_comparer(name_sect,state));
+/*
 	u32 res					= 0;
 	ITEMS_vec_cit it		= m_all_items.begin();
 	ITEMS_vec_cit it_e		= m_all_items.end();
@@ -193,10 +253,17 @@ u32 CUIMpTradeWnd::GetItemCount(const shared_str& name_sect, SBuyItemInfo::EItmS
 			++res;
 	}
 	return	res;
+*/
+}
+u32 CUIMpTradeWnd::GetItemCount(const shared_str& name_sect, SBuyItemInfo::EItmState state, u8 addon) const
+{
+	return	(u32)count_if(m_all_items.begin(), m_all_items.end(),eq_name_state_addon_comparer(name_sect,state,addon));
 }
 
 u32 CUIMpTradeWnd::GetGroupCount(const shared_str& name_group, SBuyItemInfo::EItmState state) const
 {
+	return	(u32)count_if(m_all_items.begin(), m_all_items.end(),eq_group_state_comparer(name_group,state));
+/*
 	u32 res					= 0;
 	ITEMS_vec_cit it		= m_all_items.begin();
 	ITEMS_vec_cit it_e		= m_all_items.end();
@@ -209,6 +276,7 @@ u32 CUIMpTradeWnd::GetGroupCount(const shared_str& name_group, SBuyItemInfo::EIt
 			++res;
 	}
 	return	res;
+*/
 }
 const preset_items& CUIMpTradeWnd::GetPreset(ETradePreset idx)
 {
@@ -244,6 +312,15 @@ struct preset_sorter {
 		return		(_list_prio[list_idx1] > _list_prio[list_idx2]);
 	};
 };
+struct preset_eq {
+	shared_str		m_name;
+	u8				m_addon;
+	preset_eq(const shared_str& _name, u8 ad):m_name(_name),m_addon(ad){};
+	bool operator() (const _preset_item& pitem)
+	{
+		return (pitem.sect_name==m_name)&&(pitem.addon_state==m_addon);
+	};
+};
 
 void CUIMpTradeWnd::StorePreset(ETradePreset idx)
 {
@@ -260,12 +337,17 @@ void CUIMpTradeWnd::StorePreset(ETradePreset idx)
 	for(;it!=it_e; ++it)
 	{
 		SBuyItemInfo* iinfo			= *it;
-		preset_items::iterator fit	= std::find(v.begin(), v.end(), iinfo->m_name_sect);
+		if(	!(iinfo->GetState()==SBuyItemInfo::e_bought || iinfo->GetState()==SBuyItemInfo::e_own)	)
+		continue;
+
+		u8 addon_state				= GetItemAddonsState_ext(iinfo);
+
+		preset_items::iterator fit	= std::find_if(v.begin(), v.end(), preset_eq(iinfo->m_name_sect, addon_state) );
 		if(fit!=v.end())
 			continue;
 
-		u32 cnt						= GetItemCount(iinfo->m_name_sect, SBuyItemInfo::e_bought);
-		cnt							+=GetItemCount(iinfo->m_name_sect, SBuyItemInfo::e_own);
+		u32 cnt						= GetItemCount(iinfo->m_name_sect, SBuyItemInfo::e_bought, addon_state);
+		cnt							+=GetItemCount(iinfo->m_name_sect, SBuyItemInfo::e_own, addon_state);
 		if(0==cnt)				
 			continue;
 
@@ -273,7 +355,7 @@ void CUIMpTradeWnd::StorePreset(ETradePreset idx)
 		_preset_item& _one			= v.back();
 		_one.sect_name				= iinfo->m_name_sect;
 		_one.count					= cnt;
-//.		addons_sect
+		_one.addon_state			= addon_state;
 	}
 
 	std::sort						(v.begin(), v.end(), preset_sorter(m_item_mngr));
@@ -294,7 +376,8 @@ void CUIMpTradeWnd::ApplyPreset(ETradePreset idx)
 		for(u32 i=_cnt; i<_one.count; ++i)
 		{
 			SBuyItemInfo* pitem				= CreateItem(_one.sect_name, SBuyItemInfo::e_undefined, false);
-			// dont forget about addons		!!!
+			SetItemAddonsState_ext			(pitem, _one.addon_state);
+
 			bool b_res						= TryToBuyItem(pitem, (idx==_preset_idx_origin) );
 			if(!b_res)
 				DestroyItem					(pitem);
@@ -398,95 +481,3 @@ void CUIMpTradeWnd::DumpPreset(ETradePreset idx)
 	}
 }
 
-extern LPCSTR _list_names[];
-
-void CItemMgr::Load(const shared_str& sect_cost)
-{
-	CInifile::Sect &sect = pSettings->r_section(sect_cost);
-
-	u32 idx	=0;
-	for (CInifile::SectIt it = sect.begin(); it != sect.end(); ++it,++idx)
-	{
-		_i&		val			= m_items[it->first]; 
-		val.slot_idx		= 0xff;
-		int c = sscanf		(it->second.c_str(),"%d,%d,%d,%d,%d",&val.cost[0],&val.cost[1],&val.cost[2],&val.cost[3],&val.cost[4]);
-		VERIFY				(c>0);
-
-		while(c<_RANK_COUNT)
-		{
-			val.cost[c]	= val.cost[c-1];
-			++c;
-		}
-	}
-	
-	for(u8 i=CUIMpTradeWnd::e_first; i<CUIMpTradeWnd::e_total_lists; ++i)
-	{
-		const shared_str& buff		= pSettings->r_string("buy_menu_items_place", _list_names[i]);
-		
-		u32 cnt						= _GetItemCount(buff.c_str());
-		string1024					_one;
-
-		for(u32 c=0; c<cnt; ++c)
-		{
-			_GetItem				(buff.c_str(), c, _one);
-			shared_str _one_str		= _one;
-			COST_MAP_IT it			= m_items.find(_one_str);
-			R_ASSERT				(it!=m_items.end());
-			R_ASSERT3				(it->second.slot_idx==0xff,"item has duplicate record in [buy_menu_items_place] section ",_one);
-			it->second.slot_idx		= i;
-		}
-	}
-}
-
-const u32	CItemMgr::GetItemCost(const shared_str& sect_name, u32 rank) const
-{
-	COST_MAP_CIT it		= m_items.find(sect_name);
-	VERIFY				(it!=m_items.end());
-	return				it->second.cost[rank];
-}
-
-const u8 CItemMgr::GetItemSlotIdx	(const shared_str& sect_name) const
-{
-	COST_MAP_CIT it		= m_items.find(sect_name);
-	VERIFY				(it!=m_items.end());
-	return				it->second.slot_idx;
-}
-
-const u32 CItemMgr::GetItemIdx(const shared_str& sect_name) const
-{
-	COST_MAP_CIT it		= m_items.find(sect_name);
-	
-	if		(it==m_items.end())
-	{
-		Msg("item not found in registry [%s]", sect_name.c_str());
-		return u32(-1);
-	}
-
-	return				u32( std::distance(m_items.begin(), it) );
-}
-
-void CItemMgr::Dump() const
-{
-	COST_MAP_CIT it		= m_items.begin();
-	COST_MAP_CIT it_e	= m_items.end();
-
-	Msg("--CItemMgr::Dump");
-	for(;it!=it_e;++it)
-	{
-		const _i&		val		= it->second; 
-		R_ASSERT3		(it->second.slot_idx!=0xff,"item has no record in [buy_menu_items_place] section ",it->first.c_str());
-		Msg				("[%s] slot=[%d] cost= %d,%d,%d,%d,%d",it->first.c_str(),val.slot_idx,val.cost[0],val.cost[1],val.cost[2],val.cost[3],val.cost[4]);
-	}
-
-}
-
-const u32	CItemMgr::GetItemsCount	() const
-{
-	return m_items.size();
-}
-
-const shared_str&	CItemMgr::GetItemName		(u32 Idx) const
-{
-	R_ASSERT(Idx<m_items.size());
-	return (m_items.begin()+Idx)->first;
-}
