@@ -828,15 +828,18 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who
 
 bool	game_sv_Deathmatch::IsBuyableItem			(LPCSTR	ItemName)
 {
+	/*
 	for (u8 i=0; i<TeamList.size(); i++)
 	{
 		TEAM_WPN_LIST	WpnList = TeamList[i].aWeapons;
 		WeaponDataStruct* pWpnS = NULL;
 		if (GetTeamItem_ByName(&pWpnS, &WpnList, ItemName)) return true;
 	};
+	*/
+	if (m_strWeaponsData.GetItemIdx(ItemName) == u32(-1)) return false;
 	return false;
 };
-
+/*
 bool	game_sv_Deathmatch::GetBuyableItemCost		(LPCSTR	ItemName, u16* pCost)
 {
 	*pCost = 0;
@@ -853,11 +856,11 @@ bool	game_sv_Deathmatch::GetBuyableItemCost		(LPCSTR	ItemName, u16* pCost)
 	};
 	return false;
 };
-
+*/
 void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vector<s16> *pItemsDesired, xr_vector<u16> *pItemsToDelete)
 {
 	if (!pItem || !pItemsDesired || !pItemsToDelete) return;
-
+/*
 	WeaponDataStruct* pWpnS = NULL;
 	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
 	if (!GetTeamItem_ByName(&pWpnS, &WpnList, *(pItem->object().cNameSect())))
@@ -869,12 +872,16 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 		};
 	};
 	if (!pWpnS) return;
+*/	
+	if (m_strWeaponsData.GetItemIdx(pItem->object().cNameSect()) == u32(-1)) return;
 	//-------------------------------------------
 	bool	found = false;
 	for (u32 it = 0; it < pItemsDesired->size(); it++)
 	{
 		s16 ItemID = (*pItemsDesired)[it];
-		if ((ItemID & 0xff1f) != pWpnS->SlotItem_ID) continue;
+//		if ((ItemID & 0xff1f) != pWpnS->SlotItem_ID) continue;
+		if ((ItemID) != u16(m_strWeaponsData.GetItemIdx(pItem->object().cNameSect()))) continue;
+
 
 		found = true;
 		CWeaponAmmo* pAmmo = 	smart_cast<CWeaponAmmo*>(pItem);
@@ -956,6 +963,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 		{
 			pItem = (*IRuck);			
 			if (!pItem) continue;
+			/*
 			CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*> (pItem);
 			if (!pAmmo) 
 			{
@@ -966,6 +974,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 					if (!pEatableItem) continue;
 				}
 			}
+			*/
 			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete);
 		};
 
@@ -1032,27 +1041,25 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 
 	if (!(ps->team < s16(TeamList.size()))) return;
 
-	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
+//	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
 	
 	for (u32 i = 0; i<ps->pItemList.size(); i++)
 	{
 		u16 ItemID = ps->pItemList[i];
-//		TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), (ItemID & 0xFF1f));
-//		if (pWpnI == WpnList.end() || !((*pWpnI) == (ItemID & 0xFF1f))) continue;
-		WeaponDataStruct* pWpnS = NULL;
-		if (!GetTeamItem_ByID(&pWpnS, &WpnList, ItemID)) continue;
-
-//		SpawnWeapon4Actor(pA->ID, (*pWpnI).WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
-		SpawnWeapon4Actor(pA->ID, pWpnS->WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
+//		WeaponDataStruct* pWpnS = NULL;
+//		if (!GetTeamItem_ByID(&pWpnS, &WpnList, ItemID)) continue;
+//		SpawnWeapon4Actor(pA->ID, pWpnS->WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
 		//-------------------------------------------------------------------------------
-//		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, (*pWpnI).WeaponName.c_str());
-		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, pWpnS->WeaponName.c_str());
+//		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, pWpnS->WeaponName.c_str());
+		SpawnWeapon4Actor(pA->ID, *m_strWeaponsData.GetItemName(ItemID), u8(ItemID & 0x00FF)>>0x05);
+		//-------------------------------------------------------------------------------
+		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, *m_strWeaponsData.GetItemName(ItemID));
 	};
 
 	if (!g_sv_dm_bDMIgnore_Money_OnBuy)
 		Player_AddMoney(ps, ps->LastBuyAcount);
 };
-
+/*
 void	game_sv_Deathmatch::FillWeaponData(WeaponDataStruct* NewWpnData, const shared_str& wpnSingleName, const shared_str& caSection)
 {
 	NewWpnData->WeaponName = wpnSingleName;
@@ -1072,14 +1079,18 @@ void	game_sv_Deathmatch::FillWeaponData(WeaponDataStruct* NewWpnData, const shar
 	if (pSettings->line_exist(caSection, tmpName))
 		NewWpnData->Cost = pSettings->r_s16(caSection, tmpName);
 };
-
+*/
+/*
+#ifdef _new_buy_wnd
+#include "ui\UIMpTradeWnd.h"
+#endif
 void	game_sv_Deathmatch::LoadWeaponsForTeam		(const shared_str& caSection, TEAM_WPN_LIST *pTeamWpnList)
 {
 	
 	R_ASSERT(xr_strcmp(caSection,""));
 
 	pTeamWpnList->clear();
-
+#ifndef _new_buy_wnd
 	for (int i = 1; i < UNBUYABLESLOT; ++i)
 	{
 		// Имя поля
@@ -1110,6 +1121,7 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(const shared_str& caSection, TEAM_
 			pTeamWpnList->push_back(NewWpnData);
 		}
 	}
+#endif
 	//-----------------------------------------------------------
 	u32 TotalItemsCount = pSettings->line_count(m_sBaseWeaponCostSection);
 	int CountAdded = 0;
@@ -1121,7 +1133,7 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(const shared_str& caSection, TEAM_
 		if (GetTeamItem_ByName(&pWpnS, pTeamWpnList, N)) continue;
 
 		WeaponDataStruct	NewWpnData;
-		NewWpnData.SlotItem_ID = (s16(i-1) << 8) | s16(CountAdded++);
+		NewWpnData.SlotItem_ID = (s16(0) << 8) | s16(CountAdded++);
 		FillWeaponData(&NewWpnData, N, caSection);	
 		pTeamWpnList->push_back(NewWpnData);
 	}
@@ -1143,7 +1155,7 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(const shared_str& caSection, TEAM_
 		pTeamWpnList->push_back(NewWpnData);
 	};
 };
-
+*/
 void	game_sv_Deathmatch::LoadSkinsForTeam		(const shared_str& caSection, TEAM_SKINS_NAMES* pTeamSkins)
 {
 	string256			SkinSingleName;
@@ -1168,7 +1180,7 @@ void	game_sv_Deathmatch::LoadSkinsForTeam		(const shared_str& caSection, TEAM_SK
 	};
 };
 
-
+/*
 void	game_sv_Deathmatch::LoadDefItemsForTeam	(const shared_str& caSection, TEAM_WPN_LIST *pWpnList, DEF_ITEMS_LIST* pDefItems)
 {
 	string256			ItemName;
@@ -1197,7 +1209,31 @@ void	game_sv_Deathmatch::LoadDefItemsForTeam	(const shared_str& caSection, TEAM_
 		pDefItems->push_back(pWpnS->SlotItem_ID);
 	};
 };
+*/
 
+void	game_sv_Deathmatch::LoadDefItemsForTeam	(const shared_str& caSection, DEF_ITEMS_LIST* pDefItems)
+{
+	string256			ItemName;
+	string4096			DefItems;
+
+	// Поле strSectionName должно содержать имя секции
+	R_ASSERT(xr_strcmp(caSection,""));
+
+	pDefItems->clear();
+
+	// Имя поля
+	if (!pSettings->line_exist(caSection, "default_items")) return;
+
+	// Читаем данные этого поля
+	std::strcpy(DefItems, pSettings->r_string(caSection, "default_items"));
+	u32 count	= _GetItemCount(DefItems);
+	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
+	for (u32 i = 0; i < count; ++i)
+	{
+		_GetItem(DefItems, i, ItemName);
+		pDefItems->push_back(u16(m_strWeaponsData.GetItemIdx(ItemName)&0xffff));
+	};
+};
 
 void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 {
@@ -1298,6 +1334,7 @@ void	game_sv_Deathmatch::LoadTeams			()
 		R_ASSERT2(0, "No section for base weapon cost for this type of the Game!");
 		return;
 	};
+	m_strWeaponsData.Load(m_sBaseWeaponCostSection);
 
 	LoadTeamData("deathmatch_team0");
 };
@@ -1316,9 +1353,9 @@ void	game_sv_Deathmatch::LoadTeamData			(const shared_str& caSection)
 
 	NewTeam.caSection	= caSection;
 
-	LoadWeaponsForTeam	(caSection, &NewTeam.aWeapons);
+//	LoadWeaponsForTeam	(caSection, &NewTeam.aWeapons);
 	LoadSkinsForTeam	(caSection, &NewTeam.aSkins);
-	LoadDefItemsForTeam	(caSection, &NewTeam.aWeapons, &NewTeam.aDefaultItems);	
+	LoadDefItemsForTeam	(caSection, /*&NewTeam.aWeapons, */&NewTeam.aDefaultItems);	
 	//-------------------------------------------------------------
 	if( pSettings->section_exist(caSection) )//money
 	{
@@ -2340,6 +2377,7 @@ void		game_sv_Deathmatch::on_death	(CSE_Abstract *e_dest, CSE_Abstract *e_src)
 
 void		game_sv_Deathmatch::OnPlayer_Sell_Item		(ClientID id_who, NET_Packet &P)
 {
+	/*
 	game_PlayerState*	ps	=	get_id	(id_who);
 	if (!ps || ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
 
@@ -2366,5 +2404,6 @@ void		game_sv_Deathmatch::OnPlayer_Sell_Item		(ClientID id_who, NET_Packet &P)
 		//-----------------------------------------------------------------
 	};
 	signal_Syncronize();
+	*/
 };
 

@@ -88,7 +88,18 @@ void	xrServer::SendConnectResult(IClient* CL, u8 res, char* ResultStr)
 	P.w_begin	(M_CLIENT_CONNECT_RESULT);
 	P.w_u8		(res);
 	P.w_stringZ	(ResultStr);
+//	string128 tmp;
+//	strcpy(tmp, *(Level().Server->level_name(Level().m_caServerOptions)));
+//	P.w_stringZ(*(Level().Server->level_name(Level().m_caServerOptions)));
+//	P.w_stringZ	(game->type_name() );
+	if (SV_Client && SV_Client == CL)
+		P.w_u8(1);
+	else
+		P.w_u8(0);
+	P.w_stringZ(Level().m_caServerOptions);
+	
 	SendTo		(CL->ID, P);
+	
 };
 
 void xrServer::Check_GameSpy_CDKey_Success			(IClient* CL)

@@ -378,8 +378,8 @@ IC CPHCommander & CLevel::ph_commander_scripts()
 	return *m_ph_commander_scripts;
 }
 //by Mad Max 
-IC bool					OnServer()	{ return Level().IsServer();				}
-IC bool					OnClient()	{ return Level().IsClient();				}
+IC bool					OnServer()	{ return Level().IsServer();}
+IC bool					OnClient()	{ return Level().IsClient();}
 
 	bool				IsGameTypeSingle();
 

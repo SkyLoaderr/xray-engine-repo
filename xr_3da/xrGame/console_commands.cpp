@@ -2821,7 +2821,7 @@ void CCC_RegisterCommands()
 
 #ifdef DEBUG
 	extern	u32	g_dwDemoDeltaFrame;
-	CMD4(CCC_SV_Integer,"demo_delta_frame"	,	(int*)&g_dwDemoDeltaFrame	,	1,100);
+	CMD4(CCC_SV_Integer,"demo_delta_frame"	,	(int*)&g_dwDemoDeltaFrame	,	0,100);
 #endif // DEBUG
 
 }

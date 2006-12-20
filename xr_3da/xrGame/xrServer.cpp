@@ -303,6 +303,7 @@ void xrServer::Update	()
 
 u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means broadcasting with "flags" as returned
 {
+	if (g_pGameLevel && Level().IsDemoSave()) Level().Demo_StoreServerData(P.B.data, P.B.count);
 	u16			type;
 	P.r_begin	(type);
 

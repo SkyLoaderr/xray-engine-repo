@@ -167,11 +167,13 @@ void	game_sv_mp::OnEvent (NET_Packet &P, u16 type, u32 time, ClientID sender )
 	case GAME_EVENT_PLAYER_READY:// cs & dm 
 		{
 			xrClientData *l_pC = m_server->ID_to_client(sender);
+			if (!l_pC) break;
 			OnPlayerReady		(l_pC->ID);
 		}break;
 	case GAME_EVENT_PLAYER_BUY_SPAWN:
 		{
 			xrClientData *l_pC = m_server->ID_to_client(sender);
+			if (!l_pC) break;
 			OnPlayerBuySpawn	(l_pC->ID);
 		}break;
 	case GAME_EVENT_VOTE_START:
@@ -825,31 +827,48 @@ void	game_sv_mp::SetPlayersDefItems		(game_PlayerState* ps)
 		for (u32 it=0; it<ps->pItemList.size(); it++)
 		{
 			u16* pItemID = &(ps->pItemList[it]);
-			WeaponDataStruct* pWpnS = NULL;
-			if (!GetTeamItem_ByID(&pWpnS, &(TeamList[ps->team].aWeapons), *pItemID)) continue;
-
-			strconcat(ItemStr, "def_item_repl_", pWpnS->WeaponName.c_str());
+//			WeaponDataStruct* pWpnS = NULL;
+//			if (!GetTeamItem_ByID(&pWpnS, &(TeamList[ps->team].aWeapons), *pItemID)) continue;
+			if (m_strWeaponsData.GetItemsCount() <= *pItemID) continue;
+			shared_str WeaponName = m_strWeaponsData.GetItemName(*pItemID);
+//			strconcat(ItemStr, "def_item_repl_", pWpnS->WeaponName.c_str());
+			strconcat(ItemStr, "def_item_repl_", *WeaponName);
 			if (!pSettings->line_exist(RankStr, ItemStr)) continue;
 			
 			strcpy(NewItemStr,pSettings->r_string(RankStr, ItemStr));
-			if (!GetTeamItem_ByName(&pWpnS, &(TeamList[ps->team].aWeapons), NewItemStr)) continue;
+//			if (!GetTeamItem_ByName(&pWpnS, &(TeamList[ps->team].aWeapons), NewItemStr)) continue;
+			if (m_strWeaponsData.GetItemIdx(NewItemStr) == u32(-1)) continue;
 
-			*pItemID = pWpnS->SlotItem_ID;
+//			*pItemID = pWpnS->SlotItem_ID;
+			*pItemID = u16(m_strWeaponsData.GetItemIdx(NewItemStr) & 0xffff);
 		}
 	}
 	//---------------------------------------------------
 	for (u32 it=0; it<ps->pItemList.size(); it++)
 	{
 		u16* pItemID = &(ps->pItemList[it]);
-		WeaponDataStruct* pWpnS = NULL;
-		if (!GetTeamItem_ByID(&pWpnS, &(TeamList[ps->team].aWeapons), *pItemID)) continue;
+//		WeaponDataStruct* pWpnS = NULL;
+//		if (!GetTeamItem_ByID(&pWpnS, &(TeamList[ps->team].aWeapons), *pItemID)) continue;
+		if (m_strWeaponsData.GetItemsCount() <= *pItemID) continue;
 		
-		if (!pWpnS->WeaponBaseAmmo.size()) continue;
-		WeaponDataStruct* pWpnAmmo = NULL;
-		if (!GetTeamItem_ByName(&pWpnAmmo, &(TeamList[ps->team].aWeapons), *(pWpnS->WeaponBaseAmmo))) continue;
+		shared_str WeaponName = m_strWeaponsData.GetItemName(*pItemID);
+		u16 AmmoID = u16(-1);
+		if (pSettings->line_exist(WeaponName, "ammo_class"))
+		{
+			string1024 wpnAmmos, BaseAmmoName;
+			std::strcpy(wpnAmmos, pSettings->r_string(WeaponName, "ammo_class"));
+			_GetItem(wpnAmmos, 0, BaseAmmoName);
+			AmmoID = u16(m_strWeaponsData.GetItemIdx(BaseAmmoName)&0xffff);
+		};
+//		if (!pWpnS->WeaponBaseAmmo.size()) continue;
+//		WeaponDataStruct* pWpnAmmo = NULL;
+//		if (!GetTeamItem_ByName(&pWpnAmmo, &(TeamList[ps->team].aWeapons), *(pWpnS->WeaponBaseAmmo))) continue;
+		if (AmmoID == u16(-1)) continue;
 		
-		ps->pItemList.push_back(pWpnAmmo->SlotItem_ID);
-		ps->pItemList.push_back(pWpnAmmo->SlotItem_ID);
+//		ps->pItemList.push_back(pWpnAmmo->SlotItem_ID);
+//		ps->pItemList.push_back(pWpnAmmo->SlotItem_ID);
+		ps->pItemList.push_back(AmmoID);
+		ps->pItemList.push_back(AmmoID);
 	};
 };
 
@@ -1160,12 +1179,12 @@ void	game_sv_mp::UpdatePlayersMoney		()
 		m_server->SendTo(l_pC->ID, P);
 	};
 };
-
+/*
 bool	game_sv_mp::GetTeamItem_ByID		(WeaponDataStruct** pRes, TEAM_WPN_LIST* pWpnList, u16 ItemID)
 {
 	if (!pWpnList) return false;
-	TEAM_WPN_LIST_it pWpnI	= std::find(pWpnList->begin(), pWpnList->end(), (ItemID & 0xFF1f));
-	if (pWpnI == pWpnList->end() || !((*pWpnI) == (ItemID & 0xFF1f))) return false;
+	TEAM_WPN_LIST_it pWpnI	= std::find(pWpnList->begin(), pWpnList->end(), (ItemID));
+	if (pWpnI == pWpnList->end() || !((*pWpnI) == (ItemID))) return false;
 	*pRes = &(*pWpnI);
 	return true;
 };
@@ -1178,7 +1197,7 @@ bool	game_sv_mp::GetTeamItem_ByName		(WeaponDataStruct** pRes,TEAM_WPN_LIST* pWp
 	*pRes = &(*pWpnI);
 	return true;
 };
-
+*/
 void	game_sv_mp::Player_AddBonusMoney	(game_PlayerState* ps, s32 MoneyAmount, SPECIAL_KILL_TYPE Reason, u8 Kill)
 {
 	if (!ps) return;

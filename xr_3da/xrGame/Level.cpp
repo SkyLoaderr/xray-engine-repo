@@ -138,16 +138,17 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 	m_pStoredDemoData = NULL;
 	m_pOldCrashHandler = NULL;
 	m_we_used_old_crach_handler	= false;
-	if (!strstr(Core.Params,"-tdemo ") && !strstr(Core.Params,"-tdemof "))
-	{
-		Demo_PrepareToStore();
-	};
+//	if (!strstr(Core.Params,"-tdemo ") && !strstr(Core.Params,"-tdemof "))
+//	{
+//		Demo_PrepareToStore();
+//	};
 	//---------------------------------------------------------
-	m_bDemoPlayMode = FALSE;
-	m_aDemoData.clear();
-	m_bDemoStarted	= FALSE;
+//	m_bDemoPlayMode = FALSE;
+//	m_aDemoData.clear();
+//	m_bDemoStarted	= FALSE;
 
 	Msg("%s", Core.Params);
+	/*
 	if (strstr(Core.Params,"-tdemo ") || strstr(Core.Params,"-tdemof ")) {		
 		string1024				f_name;
 		if (strstr(Core.Params,"-tdemo "))
@@ -165,7 +166,8 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 			m_lDemoOfs = 0;
 			Demo_Load_toFrame(f_name, 100, m_lDemoOfs);
 		};		
-	}	
+	}
+	*/
 	//---------------------------------------------------------	
 }
 
@@ -942,7 +944,10 @@ void CLevel::SetGameTime(ALife::_TIME_ID GameTime)
 bool CLevel::IsServer ()
 {
 //	return (!!Server);
-	if (IsDemoPlay()) return false;
+	if (IsDemoPlay())
+	{
+		return IsServerDemo();
+	};	
 	if (!Server) return false;
 	return (Server->client_Count() != 0);
 
@@ -951,7 +956,10 @@ bool CLevel::IsServer ()
 bool CLevel::IsClient ()
 {
 //	return (!Server);
-	if (IsDemoPlay()) return true;
+	if (IsDemoPlay())
+	{
+		return IsClientDemo();
+	};	
 	if (!Server) return true;
 	return (Server->client_Count() == 0);
 }

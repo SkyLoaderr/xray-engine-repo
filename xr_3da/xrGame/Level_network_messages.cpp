@@ -62,12 +62,12 @@ void CLevel::ClientReceive()
 //				if (m_dwPingLastSendTime == 0) m_dwPingLastSendTime = timeServer_Async();
 
 				game->net_import_update	(*P);
-				Objects.net_Import		(P);
-
-				if (OnClient()) UpdateDeltaUpd(timeServer());
 				//-------------------------------------------
 				if (OnServer()) break;
 				//-------------------------------------------
+				Objects.net_Import		(P);
+
+				if (OnClient()) UpdateDeltaUpd(timeServer());
 				IClientStatistic pStat = Level().GetStatistic();
 				u32 dTime = 0;
 				
@@ -91,6 +91,7 @@ void CLevel::ClientReceive()
 		//----------- for E3 -----------------------------
 		case M_CL_UPDATE:
 			{
+				if (OnClient()) break;
 				P->r_u16		(ID);
 				u32 Ping = P->r_u32();
 				CGameObject*	O	= smart_cast<CGameObject*>(Objects.net_Find		(ID));
@@ -324,7 +325,7 @@ void				CLevel::OnMessage				(void* data, u32 size)
 
 	if (IsDemoSave() && net_IsSyncronised()) 
 	{
-		Demo_StoreData(data, size, DATA_PACKET);
+		Demo_StoreData(data, size, DATA_CLIENT_PACKET);
 	}	
 
 	IPureClient::OnMessage(data, size);	

@@ -7,7 +7,7 @@
 #include "../fbasicvisual.h"
 #include "PhysicsShell.h"
 #include "ai_space.h"
-#include "CustomMonster.h"
+#include "CustomMonster.h" 
 #include "physicobject.h"
 #include "HangingLamp.h"
 #include "PhysicsShell.h"
@@ -263,6 +263,11 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 
 	// Net params
 	setLocal						(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
+	if (Level().IsDemoPlay() && OnClient())
+	{
+		setLocal(FALSE);
+	};
+
 	setReady						(TRUE);
 	g_pGameLevel->Objects.net_Register	(this);
 

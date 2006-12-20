@@ -251,8 +251,8 @@ void CUIMpTradeWnd::GetWeaponIndexByName(const shared_str& sectionName, u8 &grpN
 {
 	
 	u32 idx__	= m_item_mngr->GetItemIdx(sectionName);
-	grpNum		= idx__;
-	idx			= 0;
+	grpNum		= 0;
+	idx			= idx__;
 }
 
 const u8 CUIMpTradeWnd::GetItemIndex(u32 slotNum, u32 idx, u8 &sectionNum)

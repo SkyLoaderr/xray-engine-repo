@@ -228,4 +228,6 @@ public:
 	const u8				GetItemSlotIdx	(const shared_str& sect_name) const;
 	const u32				GetItemIdx		(const shared_str& sect_name) const;
 	void					Dump			() const;
+	const u32				GetItemsCount	() const;
+	const shared_str&		GetItemName		(u32 Idx) const;
 };

@@ -11,7 +11,8 @@ private:
 	enum	DEMO_CHUNK
 	{
 		DATA_FRAME		= u32(0),
-		DATA_PACKET,
+		DATA_CLIENT_PACKET,
+		DATA_SERVER_PACKET,
 
 		DATA_DUMMY		= u32(-1),
 	};
@@ -24,6 +25,16 @@ private:
 		u32										dwTimeServer;
 		u32										dwTimeServer_Delta;
 	};
+
+	struct DemoHeaderStruct {
+		u8			bServerClient;
+		char		Head[31];
+		shared_str		ServerOptions;
+//		string64		LevelName;
+//		string64		GameType;
+	};
+
+	DemoHeaderStruct							m_sDemoHeader;
 
 	struct DemoDataStruct {
 		u32			m_dwDataType;
@@ -56,6 +67,8 @@ private:
 	void						Demo_DumpData			();
 	void						Demo_Clear				();
 
+	
+
 	crashhandler*				m_pOldCrashHandler;
 	bool						m_we_used_old_crach_handler;
 
@@ -64,11 +77,16 @@ private:
 	void						Demo_EndFrame			();
 	
 public:
+	void						Demo_StoreServerData	(void* data, u32 size);
+
 	void						CallOldCrashHandler		();
 	void						WriteStoredDemo			();
 
-	BOOL						IsDemoPlay				()	{return (m_bDemoPlayMode && !m_bDemoSaveMode);};
-	BOOL						IsDemoSave				()	{return (m_bDemoSaveMode && !m_bDemoPlayMode && IsClient());};
+	BOOL						IsDemoPlay				()	{return (!m_bDemoSaveMode &&  m_bDemoPlayMode);};
+	BOOL						IsDemoSave				()	{return ( m_bDemoSaveMode && !m_bDemoPlayMode);};
+
+	bool						IsServerDemo			()	{return (m_sDemoHeader.bServerClient != 0);};
+	bool						IsClientDemo			()	{return (m_sDemoHeader.bServerClient == 0);};
 
 	virtual	NET_Packet*			net_msg_Retreive		();
 private:

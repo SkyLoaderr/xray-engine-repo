@@ -307,6 +307,7 @@ void	game_sv_TeamDeathmatch::LoadTeams			()
 		R_ASSERT2(0, "No section for base weapon cost for this type of the Game!");
 		return;
 	};
+	m_strWeaponsData.Load(m_sBaseWeaponCostSection);
 
 	LoadTeamData("teamdeathmatch_team0");
 	LoadTeamData("teamdeathmatch_team1");

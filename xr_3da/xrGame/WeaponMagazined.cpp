@@ -589,7 +589,7 @@ void CWeaponMagazined::switch2_Fire	()
 	m_bFireSingleShot = true;
 	m_iShotNum = 0;
 
-    if(OnClient() && !IsWorking())
+    if((OnClient() || Level().IsDemoPlay())&& !IsWorking())
 		FireStart();
 
 /*	if(SingleShotMode())

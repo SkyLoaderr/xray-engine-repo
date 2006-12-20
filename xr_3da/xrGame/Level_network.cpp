@@ -87,22 +87,39 @@ void CLevel::ClientSend	()
 	NET_Packet				P;
 	u32						start	= 0;
 	//----------- for E3 -----------------------------
-	if (OnClient()) 
+	if (IsDemoSave()) 
 	{
 //		if (!(Game().local_player) || Game().local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
-		if (!CurrentControlEntity()) return;
-		CObject* pObj = CurrentControlEntity();
-		if (pObj->getDestroy() || !pObj->net_Relevant()) return;
+		if (CurrentControlEntity()) 
+		{
+			CObject* pObj = CurrentControlEntity();
+			if (!pObj->getDestroy() && pObj->net_Relevant())
+			{				
+				P.w_begin		(M_CL_UPDATE);
+				
 
-		P.w_begin		(M_CL_UPDATE);
-		
-		P.w_u16			(u16(pObj->ID())	);
-		P.w_u32			(0);	//reserved place for client's ping
+				P.w_u16			(u16(pObj->ID())	);
+				P.w_u32			(0);	//reserved place for client's ping
 
-		pObj->net_Export			(P);
-		
-		if (P.B.count>9)				Send	(P, net_flags(FALSE));
-		return;
+				pObj->net_Export			(P);
+
+				if (P.B.count>9)				
+				{
+					if (OnServer())
+					{
+						if (net_IsSyncronised()) 
+						{
+							DemoCS.Enter();
+							Demo_StoreData(P.B.data, P.B.count, DATA_CLIENT_PACKET);
+							DemoCS.Leave();
+						}						
+					}
+					else
+						Send	(P, net_flags(FALSE));
+				}
+				if (OnClient()) return;
+			}			
+		}		
 	};
 	//-------------------------------------------------
 	while (1)				{
@@ -161,6 +178,7 @@ extern		BOOL		g_SV_Disable_Auth_Check;
 
 void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
+	if (IsDemoPlay() && m_bDemoStarted) return;
 	// optimize the case when server located in our memory
 	if (Server && game_configured && OnServer()){
 		Server->OnMessage	(P,Game().local_svdpnid	);
@@ -250,6 +268,25 @@ void			CLevel::OnConnectResult				(NET_Packet*	P)
 	if (!result)				m_bConnectResult	= false			;	// and
 	string128 ResultStr			;
 	P->r_stringZ(ResultStr)		;
+	if (IsDemoSave())
+	{
+//		P->r_stringZ(m_sDemoHeader.LevelName);
+//		P->r_stringZ(m_sDemoHeader.GameType);
+		m_sDemoHeader.bServerClient = P->r_u8();
+		P->r_stringZ(m_sDemoHeader.ServerOptions);
+		//-----------------------------------------
+		FILE* fTDemo = fopen(m_sDemoName, "ab");
+		if (fTDemo)
+		{
+			fwrite(&m_sDemoHeader.bServerClient, 32, 1, fTDemo);
+			
+			DWORD OptLen = m_sDemoHeader.ServerOptions.size();
+			fwrite(&OptLen, 4, 1, fTDemo);
+			fwrite(*m_sDemoHeader.ServerOptions, OptLen, 1, fTDemo);
+			fclose(fTDemo);
+		};
+		//-----------------------------------------
+	};	
 	m_sConnectResult			= ResultStr;
 };
 

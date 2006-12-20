@@ -56,7 +56,7 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 		{
 			u8 SlotID		= 0;
 			u8 ItemID		= 0;
-			pCurBuyMenu->GetWeaponIndexByName(_pitem.sect_name, ItemID, SlotID);
+			pCurBuyMenu->GetWeaponIndexByName(_pitem.sect_name, SlotID, ItemID);
 
 			u8 Addons		= 0;
 			if(_pitem.addons_sect[0].c_str()) //first addon name_sect
@@ -265,22 +265,7 @@ void game_cl_Deathmatch::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems, 
 	
 	pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
 	//-----------------------------------------------------	
-	s16 DesiredAddons = 0;
-	/*
-	PRESET_ITEMS_it It = pPresetItems->begin();
-	PRESET_ITEMS_it Et = pPresetItems->end();
-	for ( ; It != Et; ++It) 
-	{
-//		if (BigID == ((*It)& 0xff1f))
-		if ((*It) == BigID)
-		{
-//			DesiredAddons = ((*It)&0x00ff)>>5;
-			DesiredAddons = (*It).ItemID >> 5;
-			pPresetItems->erase(It);
-			break;
-		}
-	}
-	*/
+	s16 DesiredAddons = 0;	
 	if (PresetItemIt != pPresetItems->end())
 	{
 		DesiredAddons = (*PresetItemIt).ItemID >> 5;

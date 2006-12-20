@@ -2,13 +2,22 @@
 #include "Level.h"
 #include "HUDManager.h"
 #include "UIGameDM.h"
+#include "xrServer.h"
 
 #define DEMO_DATA_SIZE	65536
 u32	g_dwDemoDeltaFrame = 1;
 
+void						CLevel::Demo_StoreServerData	(void* data, u32 size)
+{
+	return;
+	DemoCS.Enter();
+	Demo_StoreData(data, size, DATA_SERVER_PACKET);
+	DemoCS.Leave();
+}
+
 void						CLevel::Demo_StoreData			(void* data, u32 size, DEMO_CHUNK DataType)
 {
-	if (!IsDemoSave()) return;
+ 	if (!IsDemoSave()) return;
 
 //	DemoCS.Enter();
 	
@@ -20,7 +29,8 @@ void						CLevel::Demo_StoreData			(void* data, u32 size, DEMO_CHUNK DataType)
 		{
 			TotalSize += size;
 		}break;
-	case DATA_PACKET:
+	case DATA_SERVER_PACKET:
+	case DATA_CLIENT_PACKET:
 		{
 			TotalSize += size + 4;
 		}break;
@@ -42,7 +52,8 @@ void						CLevel::Demo_StoreData			(void* data, u32 size, DEMO_CHUNK DataType)
 		{
 			CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, data, size);		m_dwStoredDemoDataSize += size;		
 		}break;
-	case DATA_PACKET:
+	case DATA_SERVER_PACKET:
+	case DATA_CLIENT_PACKET:
 		{
 			CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, &size, 4);		m_dwStoredDemoDataSize += 4;
 			CopyMemory(m_pStoredDemoData + m_dwStoredDemoDataSize, data, size);		m_dwStoredDemoDataSize += size;		
@@ -110,6 +121,9 @@ void						CLevel::Demo_PrepareToStore			()
 	m_pStoredDemoData = xr_alloc<u8>(DEMO_DATA_SIZE/sizeof(u8));
 	//---------------------------------------------------------------
 	m_dwCurDemoFrame = 0;
+//	ZeroMemory(&m_sDemoHeader, sizeof(m_sDemoHeader));
+	m_sDemoHeader.Head[0] = 0;
+	m_sDemoHeader.ServerOptions = "";
 };
 
 void						CLevel::CallOldCrashHandler			()
@@ -181,7 +195,8 @@ void						CLevel::Demo_Load				(LPCSTR DemoName)
 //					fread(&(NewData.FrameTime), sizeof(NewData.FrameTime), 1, fTDemo);
 					m_dwLastDemoFrame = NewData.m_dwFrame;
 				}break;
-			case DATA_PACKET:
+			case DATA_CLIENT_PACKET:
+			case DATA_SERVER_PACKET:
 				{
 					CopyMemory(&(NewData.Packet.B.count), pTDemoData, sizeof(NewData.Packet.B.count));	pTDemoData += sizeof(NewData.Packet.B.count);
 					CopyMemory((NewData.Packet.B.data), pTDemoData, NewData.Packet.B.count);			pTDemoData += NewData.Packet.B.count;
@@ -219,16 +234,31 @@ void						CLevel::Demo_Load_toFrame	(LPCSTR FileName, DWORD toFrame, long &ofs)
 	if (!fTDemo) return;
 	if (ofs == 0)
 	{
+		//-------------- get file size ------------------------
 		fseek(fTDemo, 0, SEEK_END);
 		lFileSize = ftell(fTDemo);
 		fseek(fTDemo, 0, SEEK_SET);
+
+		//-------------- load file header ---------------------		
+		fread(&m_sDemoHeader.bServerClient, 32, 1, fTDemo);
+		DWORD OptSize = 0;
+		fread(&OptSize, 4, 1, fTDemo);
+		string4096 ServerOptions = "";
+		fread(&ServerOptions, OptSize, 1, fTDemo);
+		m_sDemoHeader.ServerOptions = ServerOptions;
+		ofs = ftell(fTDemo);
+		//------------- replace server and client options -----
+//		m_caServerOptions.sprintf("%s/%s", m_sDemoHeader.LevelName, m_sDemoHeader.GameType);
+		m_caServerOptions = m_sDemoHeader.ServerOptions;
+		m_caClientOptions = "localhost";
+		//-----------------------------------------------------
 	}
 	if (fseek(fTDemo, ofs, SEEK_SET))
 	{
 		R_ASSERT(0);
 	};
-	DemoDataStruct NewData;
-	while (!feof(fTDemo))
+	DemoDataStruct NewData;	
+	while (!feof(fTDemo) && (ofs < lFileSize))
 	{
 		fread(&(NewData.m_dwDataType), sizeof(NewData.m_dwDataType), 1, fTDemo);
 		fread(&(NewData.m_dwFrame), sizeof(NewData.m_dwFrame), 1, fTDemo);
@@ -240,17 +270,19 @@ void						CLevel::Demo_Load_toFrame	(LPCSTR FileName, DWORD toFrame, long &ofs)
 				fread(&(NewData.FrameTime), sizeof(NewData.FrameTime), 1, fTDemo);
 				m_dwLastDemoFrame = NewData.m_dwFrame;
 			}break;
-		case DATA_PACKET:
+		case DATA_CLIENT_PACKET:
+		case DATA_SERVER_PACKET:
 			{
 				fread(&(NewData.Packet.B.count), sizeof(NewData.Packet.B.count), 1, fTDemo);
 				fread((NewData.Packet.B.data), 1, NewData.Packet.B.count, fTDemo);
 			}break;
 		};			
 
+		ofs = ftell(fTDemo);
 		m_aDemoData.push_back(NewData);
 		if (NewData.m_dwFrame > toFrame) break;
 	};
-	ofs = ftell(fTDemo);
+	
 	fclose(fTDemo);
 
 	if (!m_aDemoData.empty()) 
@@ -283,16 +315,34 @@ void						CLevel::Demo_Update				()
 			u32 CurTime = timeServer_Async();
 			DemoDataStruct* P = &(m_aDemoData[Pos]);
 			{
-				if (P->m_dwDataType != DATA_PACKET) continue;
-				if (P->m_dwTimeReceive <= CurTime) 
+				switch (P->m_dwDataType)
 				{
-					Msg("tReceive [%d] - CurTime [%d]",P->m_dwTimeReceive, CurTime);
-					IPureClient::OnMessage(P->Packet.B.data, P->Packet.B.count);
-				}
-				else 
-				{			
+				case DATA_SERVER_PACKET:
 					break;
-				};
+				case DATA_CLIENT_PACKET:
+					{
+						if (P->m_dwTimeReceive <= CurTime) 
+						{
+							Msg("tReceive [%d] - CurTime [%d]",P->m_dwTimeReceive, CurTime);
+							IPureClient::OnMessage(P->Packet.B.data, P->Packet.B.count);
+						}
+						else 
+						{			
+							break;
+						};
+					}break;
+				case DATA_FRAME:
+					if (P->m_dwTimeReceive <= CurTime) 
+					{
+						Msg("tsReceive [%d] - CurTime [%d]",P->m_dwTimeReceive, CurTime);
+						Server->OnMessage(P->Packet, ClientID());
+					}
+					else 
+					{			
+						break;
+					};
+					break;
+				}				
 			}		
 		};
 	}
@@ -318,58 +368,22 @@ void						CLevel::Demo_Update				()
 					Device.fTimeGlobal		= P->FrameTime.fTimeGlobal;
 
 				}break;
-			case DATA_PACKET:
+			case DATA_CLIENT_PACKET:
 				{
+					u16			m_type;					
+					P->Packet.r_begin	(m_type);
 					IPureClient::OnMessage(P->Packet.B.data, P->Packet.B.count);
+				}break;
+			case DATA_SERVER_PACKET:
+				{
+					u16			m_type;					
+					P->Packet.r_begin	(m_type);
+					Server->OnMessage(P->Packet, ClientID());
 				}break;
 			}
 			m_aDemoData.pop_front();
 		};
-	};
-	/*
-	for (Pos; Pos < m_aDemoData.size(); Pos++)
-	{
-		u32 CurTime = timeServer_Async();
-		DemoDataStruct* P = &(m_aDemoData[Pos]);
-		if (!m_bDemoPlayByFrame)
-		{
-			if (P->m_dwDataType != DATA_PACKET) continue;
-			if (P->m_dwTimeReceive <= CurTime) 
-			{
-				Msg("tReceive [%d] - CurTime [%d]",P->m_dwTimeReceive, CurTime);
-				IPureClient::OnMessage(P->Packet.B.data, P->Packet.B.count);
-			}
-			else 
-			{			
-				break;
-			};
-		}
-		else
-		{
-			if (P->m_dwFrame != m_dwCurDemoFrame) 
-			{
-				break;
-			};
-			switch (P->m_dwDataType)
-			{
-			case DATA_FRAME:
-				{
-					Device.dwTimeDelta		= P->FrameTime.dwTimeDelta;
-					Device.dwTimeGlobal		= P->FrameTime.dwTimeGlobal;
-//					CurFrameTime.dwTimeServer		= Level().timeServer();
-//					CurFrameTime.dwTimeServer_Delta = Level().timeServer_Delta();
-					Device.fTimeDelta		= P->FrameTime.fTimeDelta;
-					Device.fTimeGlobal		= P->FrameTime.fTimeGlobal;
-
-				}break;
-			case DATA_PACKET:
-				{
-					IPureClient::OnMessage(P->Packet.B.data, P->Packet.B.count);
-				}break;
-			}
-		}
-	}
-	*/
+	};	
 	//-------------------------------
 	if (HUD().GetUI())
 	{
@@ -404,7 +418,7 @@ void						CLevel::Demo_Update				()
 
 //	m_dwCurDemoFrame++;
 
-	if (Pos >= m_aDemoData.size())
+	if (Pos >= m_aDemoData.size() || m_lDemoOfs>lFileSize)
 	{
 		Msg("! ------------- Demo Ended ------------");
 	};	

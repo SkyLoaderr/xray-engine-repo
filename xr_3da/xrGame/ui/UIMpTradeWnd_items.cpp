@@ -466,3 +466,14 @@ void CItemMgr::Dump() const
 	}
 
 }
+
+const u32	CItemMgr::GetItemsCount	() const
+{
+	return m_items.size();
+}
+
+const shared_str&	CItemMgr::GetItemName		(u32 Idx) const
+{
+	R_ASSERT(Idx<m_items.size());
+	return (m_items.begin()+Idx)->first;
+}

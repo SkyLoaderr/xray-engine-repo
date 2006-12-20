@@ -4,6 +4,8 @@
 #include "game_base_kill_type.h"
 #include "game_base_menu_events.h"
 
+#include "ui\UIMpTradeWnd.h"
+
 #define		VOTE_LENGTH_TIME		1
 #define		VOTE_QUOTA				0.51f
 
@@ -40,6 +42,7 @@ protected:
 	bool							m_bRankUp_Allowed;
 
 	TEAM_DATA_LIST					TeamList;
+	CItemMgr						m_strWeaponsData;
 
 	//-------------------------------------------------------
 	bool			m_bVotingActive;
@@ -69,8 +72,8 @@ protected:
 				void				AllowDeadBodyRemove		(ClientID id, u16 GameID);
 				void				SpawnWeapon4Actor		(u16 actorId,  LPCSTR N, u8 Addons );
 				void				SpawnWeaponForActor		(u16 actorId,  LPCSTR N, bool isScope, bool isGrenadeLauncher, bool isSilencer);
-	virtual		bool				GetTeamItem_ByID		(WeaponDataStruct** pRes, TEAM_WPN_LIST* pWpnList, u16 ItemID);
-	virtual		bool				GetTeamItem_ByName		(WeaponDataStruct** pRes,TEAM_WPN_LIST* pWpnList, LPCSTR ItemName);
+//	virtual		bool				GetTeamItem_ByID		(WeaponDataStruct** pRes, TEAM_WPN_LIST* pWpnList, u16 ItemID);
+//	virtual		bool				GetTeamItem_ByName		(WeaponDataStruct** pRes,TEAM_WPN_LIST* pWpnList, LPCSTR ItemName);
 
 	virtual		void				Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount);
 	virtual		void				Player_AddBonusMoney	(game_PlayerState* ps, s32 MoneyAmount, SPECIAL_KILL_TYPE Reason, u8 Kill = 0);

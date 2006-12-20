@@ -165,17 +165,17 @@ public:
 	
 	virtual		void				LoadTeams				();
 	virtual		void				LoadTeamData			(const shared_str& caSection);
-	virtual		void				FillWeaponData			(WeaponDataStruct* NewWpnData, const shared_str& wpnSingleName, const shared_str& caSection);
-	virtual		void				LoadWeaponsForTeam		(const shared_str& caSection, TEAM_WPN_LIST *pTeamWpnList);
+//	virtual		void				FillWeaponData			(WeaponDataStruct* NewWpnData, const shared_str& wpnSingleName, const shared_str& caSection);
+//	virtual		void				LoadWeaponsForTeam		(const shared_str& caSection, TEAM_WPN_LIST *pTeamWpnList);
 	virtual		void				LoadSkinsForTeam		(const shared_str& caSection, TEAM_SKINS_NAMES* pTeamSkins);
-	virtual		void				LoadDefItemsForTeam		(const shared_str& caSection, TEAM_WPN_LIST *pWpnList, DEF_ITEMS_LIST* pDefItems);
+	virtual		void				LoadDefItemsForTeam		(const shared_str& caSection, /*TEAM_WPN_LIST *pWpnList,*/ DEF_ITEMS_LIST* pDefItems);
 
 	virtual		char*				GetAnomalySetBaseName	() {return "deathmatch_game_anomaly_sets";};
 	virtual		void				LoadAnomalySets			();
 	virtual		void				StartAnomalies			(int AnomalySet = -1);
 
 	virtual		bool				IsBuyableItem			(LPCSTR	ItemName);
-	virtual		bool				GetBuyableItemCost		(LPCSTR	ItemName, u16* pCost);
+//	virtual		bool				GetBuyableItemCost		(LPCSTR	ItemName, u16* pCost);
 	void							RemoveItemFromActor		(CSE_Abstract* pItem);
 	//----- Money routines -----------------------------------------------------------------
 	virtual		void				Money_SetStart			(ClientID	id_who);

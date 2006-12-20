@@ -363,6 +363,7 @@ void	game_sv_ArtefactHunt::LoadTeams			()
 		R_ASSERT2(0, "No section for base weapon cost for this type of the Game!");
 		return;
 	};
+	m_strWeaponsData.Load(m_sBaseWeaponCostSection);
 
 	LoadTeamData("artefacthunt_team0");
 	LoadTeamData("artefacthunt_team1");
