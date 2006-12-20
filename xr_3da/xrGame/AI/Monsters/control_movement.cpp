@@ -35,6 +35,7 @@ float CControlMovement::real_velocity()
 			Log					("GetPathDir",	movement_control->GetPathDir() );
 		
 		}
+		clamp				(tmp, 0.0f, 15.0f);
 		VERIFY2				(_abs(tmp)<1000,"movement_control->GetXZActVelInGoingDir() returns too big speed");
 		return				tmp;
 	}
