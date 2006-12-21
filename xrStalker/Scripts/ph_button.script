@@ -12,14 +12,9 @@ function ph_button:__init(obj, storage)
 end
 
 function ph_button:reset_scheme()
-	--local visual = self.object:Visual()
-	--local ska = visual:dcast_PKinematicsAnimated()
-	--ska:PlayCycle(self.st.anim)
 	self.object:play_cycle(self.st.anim, self.st.blending)
 
 	self.last_hit_tm = time_global()
-	--self.object:set_callback(callback.hit, self.hit_callback, self)
-	--self.object:set_callback(callback.use_object, self.use_callback, self)
 end
 
 function ph_button:update(delta)
