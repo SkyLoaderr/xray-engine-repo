@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding="UTF-8"?>
-<window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
+<window>
 	<!-- ICONS OF TRADING CHARACTERS -->	
 	<static_icon x="27" y="22" width="143" height="199">
 		<texture>ui_charinfo_left</texture>
@@ -39,7 +39,7 @@
 		<text align="c" y="10" font="graffiti22" r="238" g="155" b="23" complex_mode="0"/>
 	</our_money_static>
 
-	<dragdrop_list x="29" y="37" width="262" height="410"
+	<dragdrop_list x="29" y="37" width="266" height="410"
 			cell_width = "41" cell_height="41" rows_num="10" cols_num="6" 
 			group_similar="1" unlimited="1"/>
 
@@ -84,7 +84,7 @@
 		<texture>ui_frame_03</texture>		
 	</desc_frame_window>
 
-	<desc_static x="258" y="22" width="507" height="232">
+	<desc_static x="225" y="22" width="507" height="232">
 		<texture>ui_hud_frame_buyM</texture>		
 	</desc_static>
 
@@ -95,4 +95,3 @@
 	</price_mt_static>
 
 </window>
-
