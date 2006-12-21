@@ -48,11 +48,11 @@ void CUIItemInfo::Init(LPCSTR xml_name){
 	if(uiXml.NavigateToNode("main_frame",0))
 	{
 		Frect wnd_rect;
-		wnd_rect.x1		= uiXml.ReadAttribInt("main_frame", 0, "x", 0);
-		wnd_rect.y1		= uiXml.ReadAttribInt("main_frame", 0, "y", 0);
+		wnd_rect.x1		= uiXml.ReadAttribFlt("main_frame", 0, "x", 0);
+		wnd_rect.y1		= uiXml.ReadAttribFlt("main_frame", 0, "y", 0);
 
-		wnd_rect.x2		= uiXml.ReadAttribInt("main_frame", 0, "width", 0);
-		wnd_rect.y2		= uiXml.ReadAttribInt("main_frame", 0, "height", 0);
+		wnd_rect.x2		= uiXml.ReadAttribFlt("main_frame", 0, "width", 0);
+		wnd_rect.y2		= uiXml.ReadAttribFlt("main_frame", 0, "height", 0);
 		
 		inherited::Init(wnd_rect.x1, wnd_rect.y1, wnd_rect.x2, wnd_rect.y2);
 	}
