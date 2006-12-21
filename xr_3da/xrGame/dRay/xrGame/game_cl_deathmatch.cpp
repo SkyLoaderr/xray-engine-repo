@@ -325,7 +325,10 @@ bool game_cl_Deathmatch::CanBeReady				()
 	SetCurrentBuyMenu();
 	
 	if (pCurBuyMenu && !pCurBuyMenu->IsShown())
+	{
+		pCurBuyMenu->ResetItems();
 		SetBuyMenuItems		(pCurPresetItems);
+	}
 
 	if (!m_bSkinSelected)
 	{

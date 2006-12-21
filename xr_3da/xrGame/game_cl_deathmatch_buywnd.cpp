@@ -46,6 +46,8 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 	P.w_u16(GAME_EVENT_PLAYER_BUY_FINISHED);
 	//-------------------------------------------------------------------------------
 	pCurPresetItems->clear();
+	PRESET_ITEMS		TmpPresetItems;
+	TmpPresetItems.clear();
 
 	const preset_items& _p	= pCurBuyMenu->GetPreset(_preset_idx_last);
 	
@@ -65,6 +67,7 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 //			s16 ID			= GetBuyMenuItemIndex(u8(SlotID), ItemID);
 			s16 ID			= GetBuyMenuItemIndex(Addons, ItemID);
 			pCurPresetItems->push_back(ID);
+//			TmpPresetItems.push_back(ID);
 		}
 	}
 /*
@@ -97,18 +100,16 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 	u8 SectID, ItemID;
 	pCurBuyMenu->GetWeaponIndexByName("mp_wpn_knife", SectID, ItemID);
 	pCurPresetItems->push_back(GetBuyMenuItemIndex(SectID, ItemID));
-
-	//-------------------------------------------------------------------------------
-//	for (i=0; i<AdditionalPresetItems.size(); i++)
-	{
-//		pCurPresetItems->push_back(AdditionalPresetItems[i]);
-	}
+//	TmpPresetItems.push_back(GetBuyMenuItemIndex(SectID, ItemID));
 	//-------------------------------------------------------------------------------
 	P.w_s32		(s32(pCurBuyMenu->GetMoneyAmount()) - Pl->money_for_round);
 	P.w_u8		(u8(pCurPresetItems->size()));
+//	P.w_u8		(u8(TmpPresetItems.size()));
 	for (u8 s=0; s<pCurPresetItems->size(); s++)
+//	for (u8 s=0; s<TmpPresetItems.size(); s++)
 	{
 		P.w_s16((*pCurPresetItems)[s].BigID);
+//		P.w_s16((TmpPresetItems)[s].BigID);
 	}
 	//-------------------------------------------------------------------------------
 	l_pPlayer->u_EventSend		(P);
@@ -140,20 +141,9 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 	if (!P) return;
 	//---------------------------------------------------------
 //	AdditionalPresetItems.clear();
-	PRESET_ITEMS		TmpPresetItems;
-	PRESET_ITEMS_it		It = pItems->begin();
-	PRESET_ITEMS_it		Et = pItems->end();
-	for ( ; It != Et; ++It) 
-	{
-		PresetItem PIT = *It;
-//		s16 ID = (*It).BigID;
-		TmpPresetItems.push_back(PIT);
-	};
 	//---------------------------------------------------------
 	ClearBuyMenu			();
 	//---------------------------------------------------------
-	pCurBuyMenu->Update();
-	pCurBuyMenu->IgnoreMoney(true);	
 	pCurBuyMenu->SetupPlayerItemsBegin();
 	//---------------------------------------------------------
 	CActor* pCurActor = smart_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
@@ -226,25 +216,38 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 			CheckItem((*IRuck), &TmpPresetItems, OnlyPreset);
 */
 		};
+	}
+	else
+	{
+		//---------------------------------------------------------
+		u8 KnifeSlot, KnifeIndex;
+		pCurBuyMenu->GetWeaponIndexByName("mp_wpn_knife", KnifeSlot, KnifeIndex);
+		//---------------------------------------------------------
+		PRESET_ITEMS		TmpPresetItems;
+		PRESET_ITEMS_it		It = pItems->begin();
+		PRESET_ITEMS_it		Et = pItems->end();
+		for ( ; It != Et; ++It) 
+		{
+			PresetItem PIT = *It;
+			//		s16 ID = (*It).BigID;
+			if (PIT.ItemID == KnifeIndex) continue;
+//			TmpPresetItems.push_back(PIT);
+			pCurBuyMenu->ItemToSlot(pCurBuyMenu->GetWeaponNameByIndex(0, PIT.ItemID), PIT.SlotID);
+		};
+		//---------------------------------------------------------
+/*		It = TmpPresetItems.begin();
+		Et = TmpPresetItems.end();
+		for ( ; It != Et; ++It) 
+		{
+			u8 SlotID = (*It).SlotID;
+			u8 ItemID = (*It).ItemID;
 
+			if (SlotID != (UNBUYABLESLOT-1))
+				pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
+		};
+*/		//---------------------------------------------------------
 	};
 	pCurBuyMenu->SetupPlayerItemsEnd();
-
-	//---------------------------------------------------------
-	It = TmpPresetItems.begin();
-	Et = TmpPresetItems.end();
-	for ( ; It != Et; ++It) 
-	{
-//		u8 SlotID = u8(((*It)&0xff00)>>0x08);
-//		u8 ItemID = u8((*It)&0x00ff);
-		u8 SlotID = (*It).SlotID;
-		u8 ItemID = (*It).ItemID;
-
-		if (SlotID != (UNBUYABLESLOT-1))
-			pCurBuyMenu->SectionToSlot(SlotID, ItemID, false);
-	};
-	//---------------------------------------------------------
-	pCurBuyMenu->IgnoreMoney(false);
 
 	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
 	pCurBuyMenu->CheckBuyAvailabilityInSlots();
