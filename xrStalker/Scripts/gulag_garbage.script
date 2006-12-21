@@ -1376,9 +1376,9 @@ end
 
 
 function gar_seryi_killed()
-	return db.actor:has_info("garbage_meetstalker_die") and
-	       db.actor:has_info("gar_seryi_drug_die") and
-	       db.actor:has_info("gar_seryi_drug2_die")
+	return has_alife_info("garbage_meetstalker_die") and
+	       has_alife_info("gar_seryi_drug_die") and
+	       has_alife_info("gar_seryi_drug2_die")
 end
 
 function load_states(gname, type)
@@ -1386,8 +1386,8 @@ function load_states(gname, type)
 		return function(gulag)
 			local actor = db.actor
 			if actor ~= nil then
-				if actor:has_info("gar_alarm") then
-					if actor:has_info("gar_bandits_killed") then
+				if has_alife_info("gar_alarm") then
+					if has_alife_info("gar_bandits_killed") then
 						return 1
 					else
 						return 2
@@ -1406,7 +1406,7 @@ function load_states(gname, type)
 			local actor = db.actor
 			if actor ~= nil then
 				if gulag.state == 1 then
-					if actor:has_info("gar_counter_fire") then
+					if has_alife_info("gar_counter_fire") then
 						return 3
 					end
 				end
@@ -1417,9 +1417,9 @@ function load_states(gname, type)
 					end	
 				end
 				
-				if xr_gulag.getGulagPopulation("gar_hellcar_group") == 0 and actor:has_info("gar_bandits_raid")then
+				if xr_gulag.getGulagPopulation("gar_hellcar_group") == 0 and has_alife_info("gar_bandits_raid")then
 						return 2 -- в кемпе
-					elseif actor:has_info("gar_bandits_raid") and actor:dont_has_info("gar_counter_fire") then
+					elseif has_alife_info("gar_bandits_raid") and not has_alife_info("gar_counter_fire") then
 						return 1  -- идут
 					else
 						return 0  -- ждут
@@ -1439,7 +1439,7 @@ function load_states(gname, type)
 						return 3
 					end
 
-					if actor:has_info("gar_seryi_actor_enter") then
+					if has_alife_info("gar_seryi_actor_enter") then
 						return 1
 					else
 						return 0
@@ -1449,7 +1449,7 @@ function load_states(gname, type)
 						return 3
 					end
 
-					if actor:has_info("gar_seryi_ceitnot") then
+					if has_alife_info("gar_seryi_ceitnot") then
 						return 2
 					else
 						return 1
@@ -1477,9 +1477,9 @@ function load_states(gname, type)
 	
 	if type == "gar_boars_nest" then        
 		return function(gulag)
-			if db.actor:has_info("gar_test_info2") and db.actor:dont_has_info("gar_test_info1") then
+			if has_alife_info("gar_test_info2") and not has_alife_info("gar_test_info1") then
 				return 1
-			elseif db.actor:has_info("gar_test_info1") then
+			elseif has_alife_info("gar_test_info1") then
 				return 2 -- attack				
 			else
 				return 0
@@ -1543,7 +1543,7 @@ function load_states(gname, type)
 	
 	if type == "gar_dolg_blokpost" then
 		return function(gulag)
-			if db.actor:has_info("gar_test_info2") then
+			if has_alife_info("gar_test_info2") then
 				return 1 -- кабаны атакуют
 			else
 				return 0 -- спокойное состояние

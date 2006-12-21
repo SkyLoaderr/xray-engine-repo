@@ -18,7 +18,7 @@ end
 
 function blokpost_pass (actor, npc)
      if dialogs.actor_in_dolg() == true or
-          actor:has_info("gar_free_pass")
+          has_alife_info("gar_free_pass")
      then
           return true
      end

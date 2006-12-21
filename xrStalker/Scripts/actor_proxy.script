@@ -52,13 +52,7 @@ end
 function actor_proxy:has_info( name )
 	self:init()
 
-	if self.online then
---		printf( "actor_proxy: has_info online: info=%s", name )
-		return self.actor:has_info( name )
-	else
---		printf( "actor_proxy: has_info offline: info=%s", name )
-		return self.alife:has_info( self.actor_id, name )
-	end
+	has_alife_info(name)
 end
 
 function actor_proxy:dont_has_info( name )
@@ -66,10 +60,10 @@ function actor_proxy:dont_has_info( name )
 
 	if self.online then
 --		printf( "actor_proxy: dont_has_info online: info=%s", name )
-		return self.actor:dont_has_info( name )
+		return not has_alife_info( name )
 	else
 --		printf( "actor_proxy: dont_has_info offline: info=%s", name )
-		return self.alife:dont_has_info( self.actor_id, name )
+		return not has_alife_info( self.actor_id, name )
 	end
 end
 

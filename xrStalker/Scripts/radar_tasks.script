@@ -2,7 +2,7 @@ function proceed()
     local actor = db.actor
 
 	-- Radar
-	if actor:dont_has_info("rad_code_door") and
+	if not has_alife_info("rad_code_door") and
 	   actor:object("rad_scientist_flash")
 	then
 		actor:give_info_portion("rad_code_door") 

@@ -98,7 +98,7 @@ function zone_spawner:on_enter (obj)
     local size = table.getn (self.infoportions)
     if size ~= 0 then
        for a = 1, size, 1 do
-          if actor:has_info (self.infoportions[a]) == true then
+          if has_alife_info(self.infoportions[a]) == true then
              --printf ("Actor have a infoportion %s", self.infoportions[a]) 
              founded = true
           --else

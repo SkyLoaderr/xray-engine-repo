@@ -556,7 +556,7 @@ function pick_section_from_condlist(actor, npc, condlist)
 						end
 					end
 				end
-			elseif actor:has_info(infop.name) then
+			elseif has_alife_info(infop.name) then
 				if not infop.required then
 					--printf("FAILED: actor has infop '%s', which is NOT needed", infop.name)
 					infop_conditions_met = false -- инфопоршен есть, но он не должен присутствовать
@@ -574,6 +574,9 @@ function pick_section_from_condlist(actor, npc, condlist)
 		if infop_conditions_met then
 			-- Условия выполнены. Независимо от того, задана ли секция, нужно проставить требуемые
 			-- infoportions:
+			if db.actor == nil then
+				abort("TRYING TO SET INFOS THEN ACTOR IS NIL")
+			end
 			for inum, infop in pairs(cond.infop_set) do
 				if infop.func then
 					if not xr_effects[infop.func] then
@@ -586,13 +589,11 @@ function pick_section_from_condlist(actor, npc, condlist)
 						xr_effects[infop.func](actor, npc)
 					end
 				elseif infop.required then
-					if not actor:has_info(infop.name) then
-						--printf("_bp: setting infoportion: %s", infop.name)
+					if not has_alife_info(infop.name) then
 						actor:give_info_portion(infop.name)
 					end
 				else
-					if actor:has_info(infop.name) then
-						--printf("_bp: disabling infoportion: %s", infop.name)
+					if has_alife_info(infop.name) then
 						actor:disable_info_portion(infop.name)
 					end
 				end

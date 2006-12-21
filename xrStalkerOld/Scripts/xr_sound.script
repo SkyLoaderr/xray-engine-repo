@@ -263,11 +263,11 @@ function process_tutor_on_sound(theme)
 		return
 	end
 	
-	if db.actor:dont_has_info("esc_trader_newbie") then
+	if not has_alife_info("esc_trader_newbie") then
 		return
 	end
 	
-	if theme == "threat_weap" and db.actor:dont_has_info("tutorial_part_15_hide_weapon") then		
+	if theme == "threat_weap" and not has_alife_info("tutorial_part_15_hide_weapon") then		
 		game.start_tutorial("part_15_hide_weapon")
 		db.actor:give_info_portion("tutorial_part_15_hide_weapon")
 	end

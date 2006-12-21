@@ -163,7 +163,7 @@ end
 
 function main()
 	while db.actor==nil do wait(); end;
-	if false==db.actor:has_info("psy_antenna_off") then
+	if false==has_alife_info("psy_antenna_off") then
 		g_PsyAntenna:construct			();
 		local prev_time					= time_global();
 		while 1 do

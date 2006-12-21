@@ -124,7 +124,7 @@ end
 function loadStates(gname, type)
 	if type == "test" or type == "test1" or type == "test2" or type == "test_out" then
 		return function(gulag)
-			if db.actor:has_info( "tutorial_end" ) then
+			if has_alife_info( "tutorial_end" ) then
 				return 1
 			else
 				return 0

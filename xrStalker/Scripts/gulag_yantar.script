@@ -388,16 +388,16 @@ function load_states(gname, type)
 		return function(gulag)
 			local t
 
-			if 	db.actor:has_info("bar_heli_scene_professor_die") then
+			if 	has_alife_info("bar_heli_scene_professor_die") then
 				t = 0
 			else
 				t = 3
 			end
 
-			if db.actor:has_info("yan_scientist_gulag_state_2") then 
+			if has_alife_info("yan_scientist_gulag_state_2") then 
 				return t+1
 			end
-			if db.actor:has_info("yan_scientist_gulag_state_3") then 
+			if has_alife_info("yan_scientist_gulag_state_3") then 
 				return t+2
 			end
 			

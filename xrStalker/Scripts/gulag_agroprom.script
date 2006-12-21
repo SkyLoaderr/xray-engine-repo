@@ -438,7 +438,7 @@ function load_states( gname, type )
 			local be
 			local alarm = false
 
-			if actor:has_info( "agr_nii_sniper_alarm" ) then
+			if has_alife_info( "agr_nii_sniper_alarm" ) then
 				alarm = true
 			else
 				for k, v in pairs(gulag.Object) do
@@ -474,21 +474,21 @@ function load_states( gname, type )
 			end
 
 			if gulag.state == 0 then
-				if actor:has_info( "agr_factory_assault_skirmish" ) then
+				if has_alife_info( "agr_factory_assault_skirmish" ) then
 					return 1
 				else
 					return 0
 				end
 			elseif gulag.state == 1 then
 				if xr_gulag.getGulagPopulation( "agr_factory_defence" ) == 0 then
-					if actor:dont_has_info( "agr_help_stalkers_done" ) then
+					if not has_alife_info( "agr_help_stalkers_done" ) then
 						actor:give_info_portion( "agr_help_stalkers_done" )
 						actor:give_info_portion( "agr_help_stalkers_defence_dead" )	
 					end
 				end
 
-				if actor:has_info( "agr_krot_skirmish_start" ) and
-				   actor:has_info( "agr_help_stalkers_done" ) or
+				if has_alife_info( "agr_krot_skirmish_start" ) and
+				   has_alife_info( "agr_help_stalkers_done" ) or
 				   xr_conditions.gulag_empty(nil, nil, {"agr_factory_defence"})
 				then
 					--actor:give_info_portion( "agr_krot_skirmish_start" )	
@@ -517,7 +517,7 @@ function load_states( gname, type )
 --				end
 --				return 0
 
-				if actor:has_info( "agr_factory_assault_skirmish" ) then
+				if has_alife_info( "agr_factory_assault_skirmish" ) then
 					return 1
 				else
 					return 0
@@ -532,7 +532,7 @@ function load_states( gname, type )
 					return 2
 				end
 			else
-				if actor:has_info( "agr_krot_go_to_well" ) then
+				if has_alife_info( "agr_krot_go_to_well" ) then
 					return 3
 				else
 					return 2
@@ -549,9 +549,9 @@ function load_states( gname, type )
 			end
 
 			if gulag.state == 0 then
-				if actor:has_info( "agr_krot_dead" ) then
+				if has_alife_info( "agr_krot_dead" ) then
 					return 2
-				elseif actor:has_info( "agr_krot_skirmish_start" ) then
+				elseif has_alife_info( "agr_krot_skirmish_start" ) then
 					-- раздать всем хиты, чтоб не ходили спокойно
 					local h     = hit()
 					h.power     = 0.01
@@ -571,7 +571,7 @@ function load_states( gname, type )
 					return 0
 				end
 			elseif gulag.state == 1 then
-				if actor:has_info( "agr_krot_dead" ) then
+				if has_alife_info( "agr_krot_dead" ) then
 					return 2
 				else
 					return 1

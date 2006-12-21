@@ -503,7 +503,7 @@ function calculate_predicate(npc, tbl, settings)
 		
 		if tbl.article_info ~= nil then
 			for k,v in pairs(tbl.article_info) do
-				if db.actor:has_info(v) then
+				if has_alife_info(v) then
 					return false,0
 				end
 			end				

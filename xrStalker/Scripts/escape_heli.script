@@ -113,7 +113,7 @@ function update()
 			state_init = false
 		end
 
-		if actor:has_info( "tutorial_artefact_gain" ) then
+		if has_alife_info( "tutorial_artefact_gain" ) then
 			chst( state_wait_spawn )
 		end
 	end
@@ -264,7 +264,7 @@ function update()
 		end
 
 		if wounded_spawn_time < time_global() and
-		   actor:dont_has_info( "tutorial_wounded_must_spawn" )
+		   not has_alife_info( "tutorial_wounded_must_spawn" )
 		then
 			actor:give_info_portion( "tutorial_wounded_must_spawn" )
 		end
@@ -284,31 +284,15 @@ function update()
 
 	-- рождение раненого
 	if ( state ~= state_before and actor_dist < 50*50 ) and
-	   actor:dont_has_info( "tutorial_wounded_must_spawn" )
+	   not has_alife_info( "tutorial_wounded_must_spawn" )
 	then
 		actor:give_info_portion( "tutorial_wounded_must_spawn" )
 	end
-
---[[	if ( state == state_after or
-	   actor:has_info( "tutorial_wounded_must_spawn" ) ) and
-	   actor:dont_has_info( "tutorial_wounded_start" )
-	then
---		local sim = alife()
---		if sim then
---			sim:set_switch_online(  wounded_id, true  )
---			sim:set_switch_offline( wounded_id, false )
---		end
-
-		actor:give_info_portion( "tutorial_wounded_start" )
-	end]]
 end
 
 function main()
 	actor       = get_actor()
 	wounded_tip = get_zone( "esc_vagon_dummy" )
-
---	local snd = sound_object( [[characters_voice\human_01\scenario\helicopter\heli_attack]] )
---	snd:play_at_pos( actor, actor:position():add( vector():set( 80, 0, 0 ) ) )
 
 	heli_mgr = xr_heli.HeliManager()
 	heli_mgr:initialize( 14, nil, 30, 30 )
@@ -317,20 +301,9 @@ function main()
 		chst( state_before )
 	end
 
---	actor:give_info_portion( "tutorial_wounded_help" )
 	while true do
 		update()
 		heli_mgr:update()
 		wait()
-
---[[		if actor:has_info( "tutorial_artefact_gain" ) then
-			printf( "tutorial_artefact_gain" )
-		end
-		if actor:has_info( "tutorial_wounded_help" ) then
-			printf( "tutorial_wounded_help" )
-		end
-		if actor:has_info( "tutorial_volk_acquainted" ) then
-			printf( "tutorial_volk_acquainted" )
-		end]]
 	end
 end
