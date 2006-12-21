@@ -73,6 +73,7 @@ public:
 			void		SetClrLightAnim				(LPCSTR lanim, bool bCyclic, bool bOnlyAlpha, bool bTextColor, bool bTextureColor);
 			void		SetXformLightAnim			(LPCSTR lanim, bool bCyclic);
 			void		ResetClrAnimation			();
+			void		ResetXformAnimation			();
 			bool		IsClrAnimStoped				();
 			void		SetClrAnimDelay				(float delay);
 	virtual void		Init						(LPCSTR tex_name, float x, float y, float width, float height);	

@@ -7,6 +7,7 @@
 #include "level.h"
 #include "../xr_object.h"
 #include "object_broker.h"
+#include "ui/UITextureMaster.h"
 
 CMapSpot::CMapSpot(CMapLocation* ml)
 :m_map_location(ml)
@@ -110,44 +111,62 @@ void CMiniMapSpot::Load(CUIXml* xml, LPCSTR path)
 	base_rect.x2 = xml->ReadAttribFlt(path, 0, "width", 0);
 	base_rect.y2 = xml->ReadAttribFlt(path, 0, "height", 0);
 
+	Frect _stored_rect = m_UIStaticItem.GetOriginalRect();
+
 	strconcat(buf, path, ":texture_above");
 	n = xml->NavigateToNode(buf,0);
 	if(n){
 		LPCSTR texture  = xml->Read(buf, 0, NULL);
-		float x				= xml->ReadAttribFlt(buf, 0, "x", base_rect.x1);
-		float y				= xml->ReadAttribFlt(buf, 0, "y", base_rect.y1);
-		float width			= xml->ReadAttribFlt(buf, 0, "width", base_rect.width());
-		float height			= xml->ReadAttribFlt(buf, 0, "height", base_rect.height());
-		
-		m_icon_above.create("hud\\default",texture);
-		m_tex_rect_above.set(x,y,width,height);
+		CUITextureMaster::InitTexture	(texture, "hud\\default", &m_UIStaticItem);
+		if(strchr(texture,'\\'))
+		{
+			float x					= xml->ReadAttribFlt(buf, 0, "x", base_rect.x1);
+			float y					= xml->ReadAttribFlt(buf, 0, "y", base_rect.y1);
+			float width				= xml->ReadAttribFlt(buf, 0, "width", base_rect.width());
+			float height			= xml->ReadAttribFlt(buf, 0, "height", base_rect.height());
+			m_tex_rect_above.set	(x,y,x+width,y+height);
+		}else
+			m_tex_rect_above		= m_UIStaticItem.GetOriginalRect();
+
+		m_icon_above				= m_UIStaticItem.GetShader		();
 	}
 
 	strconcat(buf, path, ":texture_below");
 	n = xml->NavigateToNode(buf,0);
 	if(n){
 		LPCSTR texture  = xml->Read(buf, 0, NULL);
-		float x				= xml->ReadAttribFlt(buf, 0, "x", base_rect.x1);
-		float y				= xml->ReadAttribFlt(buf, 0, "y", base_rect.y1);
-		float width			= xml->ReadAttribFlt(buf, 0, "width", base_rect.width());
-		float height			= xml->ReadAttribFlt(buf, 0, "height", base_rect.height());
-		
-		m_icon_below.create("hud\\default",texture);
-		m_tex_rect_below.set(x,y,width,height);
+		CUITextureMaster::InitTexture	(texture, "hud\\default", &m_UIStaticItem);
+		if(strchr(texture,'\\'))
+		{
+			float x					= xml->ReadAttribFlt(buf, 0, "x", base_rect.x1);
+			float y					= xml->ReadAttribFlt(buf, 0, "y", base_rect.y1);
+			float width				= xml->ReadAttribFlt(buf, 0, "width", base_rect.width());
+			float height			= xml->ReadAttribFlt(buf, 0, "height", base_rect.height());
+			m_tex_rect_below.set	(x,y,x+width,y+height);
+		}else
+			m_tex_rect_below		= m_UIStaticItem.GetOriginalRect();
+
+		m_icon_below				= m_UIStaticItem.GetShader		();
 	}
 	strconcat(buf, path, ":texture");
 	n = xml->NavigateToNode(buf,0);
 	if(n){
 		LPCSTR texture  = xml->Read(buf, 0, NULL);
-		float x				= xml->ReadAttribFlt(buf, 0, "x", base_rect.x1);
-		float y				= xml->ReadAttribFlt(buf, 0, "y", base_rect.y1);
-		float width			= xml->ReadAttribFlt(buf, 0, "width", base_rect.width());
-		float height			= xml->ReadAttribFlt(buf, 0, "height", base_rect.height());
-		
-		m_icon_normal.create("hud\\default",texture);
-		m_tex_rect_normal.set(x,y,width,height);
+		CUITextureMaster::InitTexture	(texture, "hud\\default", &m_UIStaticItem);
+		if(strchr(texture,'\\'))
+		{
+			float x					= xml->ReadAttribFlt(buf, 0, "x", base_rect.x1);
+			float y					= xml->ReadAttribFlt(buf, 0, "y", base_rect.y1);
+			float width				= xml->ReadAttribFlt(buf, 0, "width", base_rect.width());
+			float height			= xml->ReadAttribFlt(buf, 0, "height", base_rect.height());
+			m_tex_rect_normal.set	(x,y,x+width,y+height);
+		}else
+			m_tex_rect_normal		= m_UIStaticItem.GetOriginalRect();
+
+		m_icon_normal				= m_UIStaticItem.GetShader		();
 	}
 
+	m_UIStaticItem.SetOriginalRect	(_stored_rect);
 }
 
 void CMiniMapSpot::Draw()

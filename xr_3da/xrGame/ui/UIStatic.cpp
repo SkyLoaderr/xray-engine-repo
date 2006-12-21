@@ -230,7 +230,7 @@ void CUIStatic::Update()
 	if(m_lanim_xform.m_lanim)
 	{
 		if(m_lanim_xform.m_lanim_start_time<0.0f){
-			m_lanim_xform.m_lanim_start_time = Device.dwTimeContinual/1000.0f;
+			ResetXformAnimation();
 		}
 		float t = Device.dwTimeContinual/1000.0f;
 
@@ -246,17 +246,19 @@ void CUIStatic::Update()
 
 			float _value		= (float)color_get_R(clr);
 			
-			float f_scale		= _value / 128.0f;
-
-//			float _w			= 
-				m_xxxRect.width();
-//			float _h			= 
-				m_xxxRect.height();
+			float f_scale		= _value / 64.0f;
 			Fvector2 _sz;
 			_sz.set				(m_xxxRect.width()*f_scale, m_xxxRect.height()*f_scale );
 			SetWndSize			(_sz);
+		}else{
+			SetWndSize			(Fvector2().set(m_xxxRect.width(),m_xxxRect.height()));
 		}
 	}
+}
+
+void CUIStatic::ResetXformAnimation()
+{
+	m_lanim_xform.m_lanim_start_time = Device.dwTimeContinual/1000.0f;
 }
 
 void CUIStatic::ResetClrAnimation()

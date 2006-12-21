@@ -16,8 +16,8 @@
 			<texture>ui\ui_hud_map_arrow</texture>
 		</compass>
 		
-		<center width="3" height="3" alignment="c"> 
-			<texture>ui\hud_map_point</texture>
+		<center width="4" height="4" alignment="c" stretch="1"> 
+			<texture >ui_minimap_point</texture>
 		</center>
 	
 	</minimap>

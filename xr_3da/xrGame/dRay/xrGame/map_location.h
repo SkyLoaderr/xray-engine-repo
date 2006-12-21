@@ -107,6 +107,7 @@ class CRelationMapLocation :public CMapLocation
 	u16						m_pInvOwnerEntityID;
 	u16						m_pInvOwnerActorID;
 	ALife::ERelationType	m_last_relation;
+	bool					m_b_was_visible_last_frame;
 protected:
 	bool					IsVisible							();
 public:

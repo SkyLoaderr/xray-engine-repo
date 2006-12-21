@@ -550,6 +550,7 @@ CRelationMapLocation::CRelationMapLocation			(const shared_str& type, u16 object
 	m_curr_spot_name	= type;
 	m_pInvOwnerEntityID	= pInvOwnerEntityID;
 	m_pInvOwnerActorID	= pInvOwnerActorID;
+	m_b_was_visible_last_frame = false;
 }
 
 CRelationMapLocation::~CRelationMapLocation			()
@@ -616,6 +617,12 @@ bool CRelationMapLocation::IsVisible	()
 		else
 			res = false;
 	}
+	if(m_b_was_visible_last_frame==false && res == true)
+	{
+		m_minimap_spot->ResetXformAnimation();
+	}
+
+	m_b_was_visible_last_frame = res;	
 	return res;
 }
 

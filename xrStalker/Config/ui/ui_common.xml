@@ -455,5 +455,7 @@
     <texture id="ui_sm_mapQuest_gold" x="749" y="1011" width="13" height="13" />
 
     <texture id="ui_highlight" x="723" y="627" width="128" height="128" />
+	
+    <texture id="ui_minimap_point" x="729" y="767" width="12" height="12"/>
 
 </ui_texture>
