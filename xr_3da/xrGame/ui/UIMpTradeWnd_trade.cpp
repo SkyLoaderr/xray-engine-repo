@@ -88,11 +88,13 @@ bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm, bool own_item, SBuyItemI
 	bool b_addon					= TryToAttachItemAsAddon(iinfo, itm_parent);
 	if(!b_addon)
 	{
-		CUIDragDropListEx*_new_owner = NULL;
-		_new_owner					= GetMatchedListForItem(buy_item_name);
-		_new_owner->SetItem			(cell_itm);
-		cell_itm->SetCustomDraw		(NULL);
-		cell_itm->SetAccelerator	(0);
+		CUIDragDropListEx*_new_owner	= NULL;
+		_new_owner						= GetMatchedListForItem(buy_item_name);
+		_new_owner->SetItem				(cell_itm);
+		cell_itm->SetCustomDraw			(NULL);
+		cell_itm->SetAccelerator		(0);
+		UpdateCorrespondingItemsForList	(_new_owner);
+
 	}else{
 		DestroyItem					(iinfo);
 	}

@@ -410,8 +410,10 @@ bool CUICellContainer::AddSimilar(CUICellItem* itm)
 
 	CUICellItem* i	= FindSimilar(itm);
 	VERIFY			(i!=itm);
-	if(i)	
-		i->PushChild	(itm);
+	if(i){	
+		i->PushChild			(itm);
+		itm->SetOwnerList		(m_pParentDragDropList);
+	}
 	
 	return (i!=NULL);
 }
@@ -450,6 +452,18 @@ void CUICellContainer::PlaceItemAtPos(CUICellItem* itm, Ivector2& cell_pos)
 
 CUICellItem* CUICellContainer::RemoveItem(CUICellItem* itm, bool force_root)
 {
+	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)
+	{
+		CUICellItem* i		= (CUICellItem*)(*it);
+		
+		if(i->HasChild(itm))
+		{
+			CUICellItem* iii	= i->PopChild();
+			iii->SetOwnerList	(NULL);
+			return				iii;
+		}
+	}
+
 	if(!force_root && itm->ChildsCount())
 	{
 		CUICellItem* iii	=	itm->PopChild();

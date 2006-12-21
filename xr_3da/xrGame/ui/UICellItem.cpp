@@ -109,6 +109,11 @@ CUICellItem* CUICellItem::PopChild()
 	return				itm;
 }
 
+bool CUICellItem::HasChild(CUICellItem* item)
+{
+	return (m_childs.end() != find(m_childs.begin(), m_childs.end(), item) );
+}
+
 void CUICellItem::UpdateItemText()
 {
 	string32			str;
