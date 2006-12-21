@@ -83,11 +83,6 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 		)
 		return				(false);
 
-#ifndef MASTER_GOLD
-	if ((entity_alive->CLS_ID == CLSID_OBJECT_ACTOR) && psAI_Flags.test(aiIgnoreActor))
-		return				(false);
-#endif // MASTER_GOLD
-
 	return					(m_useful_callback ? m_useful_callback(m_object->lua_game_object(),entity_alive->lua_game_object()) : true);
 }
 

@@ -73,6 +73,7 @@ private:
 	IC		void				update_sound_threshold	();
 	IC		u32					priority				(const CSoundObject &sound) const;
 			void				add						(const CSoundObject &sound_object, bool check_for_existance = false);
+			void				add						(const CObject *object, int sound_type, const Fvector &position, float sound_power);
 
 protected:
 	IC		void				priority				(const ESoundTypes &sound_type, u32 priority);
@@ -88,7 +89,6 @@ public:
 			void				remove_links			(CObject *object);
 
 public:
-			void				add						(const CObject *object, int sound_type, const Fvector &position, float sound_power);
 			void				enable					(const CObject *object, bool enable);
 
 public:

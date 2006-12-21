@@ -22,6 +22,10 @@
 #include "client_spawn_manager.h"
 #include "memory_manager.h"
 
+#ifndef MASTER_GOLD
+#	include "clsid_game.h"
+#endif // MASTER_GOLD
+
 struct CHitObjectPredicate {
 	const CObject *m_object;
 
@@ -84,6 +88,11 @@ void CHitMemoryManager::reload				(LPCSTR section)
 
 void CHitMemoryManager::add					(float amount, const Fvector &vLocalDir, const CObject *who, s16 element)
 {
+#ifndef MASTER_GOLD
+	if (who && (who->CLS_ID == CLSID_OBJECT_ACTOR) && psAI_Flags.test(aiIgnoreActor))
+		return;
+#endif // MASTER_GOLD
+
 	VERIFY						(m_hits);
 	if (!object().g_Alive())
 		return;
@@ -139,6 +148,11 @@ void CHitMemoryManager::add					(float amount, const Fvector &vLocalDir, const C
 
 void CHitMemoryManager::add					(const CHitObject &_hit_object)
 {
+#ifndef MASTER_GOLD
+	if (_hit_object.m_object && (_hit_object.m_object->CLS_ID == CLSID_OBJECT_ACTOR) && psAI_Flags.test(aiIgnoreActor))
+		return;
+#endif // MASTER_GOLD
+
 	VERIFY						(m_hits);
 	if (!object().g_Alive())
 		return;
