@@ -273,6 +273,10 @@ void CSE_ALifeTraderAbstract::add_offline	(const xr_vector<ALife::_OBJECT_ID> &s
 			continue;
 		}
 
+#ifdef DEBUG
+		if (!child->client_data.empty())
+			Msg							("CSE_ALifeTraderAbstract::add_offline: client_data is cleared for [%d][%s]",child->ID,child->name_replace());
+#endif // DEBUG
 		child->client_data.clear		();
 		object->alife().graph().add		(child,child->m_tGraphID,false);
 		object->alife().graph().attach	(*object,inventory_item,child->m_tGraphID,true);

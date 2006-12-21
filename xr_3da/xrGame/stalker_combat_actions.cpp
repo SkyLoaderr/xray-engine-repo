@@ -647,13 +647,10 @@ void CStalkerActionTakeCover::initialize		()
 
 #ifndef SILENT_COMBAT
 	if (object().memory().enemy().selected()->human_being()) {
-		if (object().agent_manager().member().can_cry_noninfo_phrase()) {
-			if (object().memory().visual().visible_now(object().memory().enemy().selected()) && object().agent_manager().member().group_behaviour())
-				object().sound().play			(eStalkerSoundBackup,0,0,6000,4000);
-
-//			else
-//				object().sound().play			(eStalkerSoundAttack,0,0,6000,4000);
-		}
+		if (object().agent_manager().member().can_cry_noninfo_phrase())
+			if (object().Position().distance_to_sqr(object().memory().enemy().selected()->Position()) < _sqr(10.f))
+				if (object().memory().visual().visible_now(object().memory().enemy().selected()) && object().agent_manager().member().group_behaviour())
+					object().sound().play		(eStalkerSoundBackup,0,0,6000,4000);
 	}
 #endif
 }

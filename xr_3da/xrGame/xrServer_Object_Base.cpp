@@ -202,8 +202,10 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 	//client object custom data serialization SAVE
 	u16 client_data_size		= (u16)client_data.size(); //не может быть больше 256 байт
 	tNetPacket.w_u16			(client_data_size);
-	if (client_data_size > 0)
+//	Msg							("SERVER:saving:save:%d bytes:%d:%s",client_data_size,ID,s_name_replace ? s_name_replace : "");
+	if (client_data_size > 0) {
 		tNetPacket.w			(&*client_data.begin(),client_data_size);
+	}
 
 	tNetPacket.w				(&m_tSpawnID,	sizeof(m_tSpawnID));
 //	tNetPacket.w_float			(m_spawn_probability);
@@ -269,6 +271,7 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 	if (m_wVersion > 70) {
 		u16 client_data_size	= (m_wVersion > 93) ? tNetPacket.r_u16() : tNetPacket.r_u8(); //не может быть больше 256 байт
 		if (client_data_size > 0) {
+//			Msg					("SERVER:loading:load:%d bytes:%d:%s",client_data_size,ID,s_name_replace ? s_name_replace : "");
 			client_data.resize	(client_data_size);
 			tNetPacket.r		(&*client_data.begin(),client_data_size);
 		}
@@ -313,11 +316,19 @@ void	CSE_Abstract::load			(NET_Packet	&tNetPacket)
 	CPureServerObject::load		(tNetPacket);
 	u16 client_data_size		= (m_wVersion > 93) ? tNetPacket.r_u16() : tNetPacket.r_u8(); //не может быть больше 256 байт
 	if (client_data_size > 0) {
+#ifdef DEBUG
+//		Msg						("SERVER:loading:load:%d bytes:%d:%s",client_data_size,ID,s_name_replace ? s_name_replace : "");
+#endif // DEBUG
 		client_data.resize		(client_data_size);
 		tNetPacket.r			(&*client_data.begin(),client_data_size);
 	}
-	else
+	else {
+#ifdef DEBUG
+		if (!client_data.empty())
+			Msg					("CSE_Abstract::load: client_data is cleared for [%d][%s]",ID,name_replace());
+#endif // DEBUG
         client_data.clear		();
+	}
 }
 
 CSE_Abstract *CSE_Abstract::base	()

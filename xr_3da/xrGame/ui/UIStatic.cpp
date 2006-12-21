@@ -244,12 +244,14 @@ void CUIStatic::Update()
 			float heading		= (PI_MUL_2/255.0f) * color_get_A(clr);
 			SetHeading			(heading);
 
-			float _value		= color_get_R(clr);
+			float _value		= (float)color_get_R(clr);
 			
 			float f_scale		= _value / 128.0f;
 
-			float _w			= m_xxxRect.width();
-			float _h			= m_xxxRect.height();
+//			float _w			= 
+				m_xxxRect.width();
+//			float _h			= 
+				m_xxxRect.height();
 			Fvector2 _sz;
 			_sz.set				(m_xxxRect.width()*f_scale, m_xxxRect.height()*f_scale );
 			SetWndSize			(_sz);
