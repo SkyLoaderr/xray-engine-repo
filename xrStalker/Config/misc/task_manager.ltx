@@ -222,6 +222,7 @@ reward_item = grenade_rgd5
 [tm_eliminate_camp_2]
 type = eliminate_lager
 community = actor
+condlist = {+garbage_meetstalker_done},{+garbage_meetstalker_die}
 text = tm_eliminate_camp_2_text
 description = tm_eliminate_camp_2_descr
 parent = trader
@@ -237,7 +238,7 @@ reward_item = grenade_rgd5
 type = eliminate_lager
 community = actor
 text = tm_eliminate_camp_3_text
-;-- condlist = {+garbage_meetstalker_done},{+garbage_meetstalker_die}
+condlist = {=actor_on_level(l03u_agr_underground)}
 init_condition = {=actor_on_level(l03u_agr_underground)}
 description = tm_eliminate_camp_3_descr
 parent = trader
@@ -412,6 +413,7 @@ reward_item = conserva
 [tm_find_item_1]
 type = find_item
 community = actor
+condlist = {+agroprom_military_case_done}
 text = tm_find_item_1_text
 description = tm_find_item_1_descr
 parent = trader
@@ -449,7 +451,7 @@ reward_rank = 5
 [tm_monster_part_2]
 type = monster_part
 community = actor
-condlist = {+esc_darklab_documents_read}
+;--- condlist = {+esc_darklab_documents_read}
 text = tm_monster_part_2_text
 description = tm_monster_part_2_descr
 parent = trader
