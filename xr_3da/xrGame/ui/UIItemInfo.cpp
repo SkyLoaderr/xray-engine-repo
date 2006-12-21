@@ -20,6 +20,13 @@ CUIItemInfo::CUIItemInfo()
 	UIItemImageSize.set			(0.0f,0.0f);
 	UICondProgresBar			= NULL;
 	UICondition					= NULL;
+	UICost						= NULL;
+	UIWeight					= NULL;
+	UIItemImage					= NULL;
+	UIDesc						= NULL;
+	UIWpnParams					= NULL;
+	UIArtefactParams			= NULL;
+	UIName						= NULL;
 	m_pInvItem					= NULL;
 	m_b_force_drawing			= false;
 }
@@ -31,16 +38,6 @@ CUIItemInfo::~CUIItemInfo()
 }
 
 void CUIItemInfo::Init(LPCSTR xml_name){
-
-	UIName				= xr_new<CUIStatic>();	 AttachChild(UIName);		UIName->SetAutoDelete(true);
-	UIWeight			= xr_new<CUIStatic>();	 AttachChild(UIWeight);		UIWeight->SetAutoDelete(true);
-	UICost				= xr_new<CUIStatic>();	 AttachChild(UICost);		UICost->SetAutoDelete(true);
-	UIItemImage			= xr_new<CUIStatic>();	 AttachChild(UIItemImage);	UIItemImage->SetAutoDelete(true);
-
-	UIWpnParams			= xr_new<CUIWpnParams>();
-	UIArtefactParams	= xr_new<CUIArtefactParams>();
-
-	UIDesc				= xr_new<CUIScrollView>(); AttachChild(UIDesc);		UIDesc->SetAutoDelete(true);
 
 	CUIXml						uiXml;
 	bool xml_result				= uiXml.Init(CONFIG_PATH, UI_PATH, xml_name);
@@ -60,12 +57,28 @@ void CUIItemInfo::Init(LPCSTR xml_name){
 		inherited::Init(wnd_rect.x1, wnd_rect.y1, wnd_rect.x2, wnd_rect.y2);
 	}
 
-	UIWpnParams->InitFromXml	(uiXml);
-	UIArtefactParams->InitFromXml(uiXml);
+	if(uiXml.NavigateToNode("static_name",0))
+	{
+		UIName						= xr_new<CUIStatic>();	 
+		AttachChild					(UIName);		
+		UIName->SetAutoDelete		(true);
+		xml_init.InitStatic			(uiXml, "static_name", 0,	UIName);
+	}
+	if(uiXml.NavigateToNode("static_weight",0))
+	{
+		UIWeight				= xr_new<CUIStatic>();	 
+		AttachChild				(UIWeight);		
+		UIWeight->SetAutoDelete(true);
+		xml_init.InitStatic		(uiXml, "static_weight", 0,			UIWeight);
+	}
 
-	xml_init.InitStatic			(uiXml, "static_name", 0,			UIName);
-	xml_init.InitStatic			(uiXml, "static_weight", 0,			UIWeight);
-	xml_init.InitStatic			(uiXml, "static_cost", 0,			UICost);
+	if(uiXml.NavigateToNode("static_cost",0))
+	{
+		UICost					= xr_new<CUIStatic>();	 
+		AttachChild				(UICost);
+		UICost->SetAutoDelete	(true);
+		xml_init.InitStatic		(uiXml, "static_cost", 0,			UICost);
+	}
 
 	if(uiXml.NavigateToNode("static_condition",0))
 	{
@@ -81,82 +94,110 @@ void CUIItemInfo::Init(LPCSTR xml_name){
 		xml_init.InitProgressBar	(uiXml, "condition_progress", 0, UICondProgresBar);
 	}
 
-	xml_init.InitScrollView			(uiXml, "descr_list", 0, UIDesc);
-	
-	xml_init.InitFont				(uiXml, "descr_list:font", 0, uDescClr, pDescFont);
+	if(uiXml.NavigateToNode("descr_list",0))
+	{
+		UIWpnParams						= xr_new<CUIWpnParams>();
+		UIArtefactParams				= xr_new<CUIArtefactParams>();
+		UIWpnParams->InitFromXml		(uiXml);
+		UIArtefactParams->InitFromXml	(uiXml);
+		UIDesc							= xr_new<CUIScrollView>(); 
+		AttachChild						(UIDesc);		
+		UIDesc->SetAutoDelete			(true);
+		xml_init.InitScrollView			(uiXml, "descr_list", 0, UIDesc);
+		xml_init.InitFont				(uiXml, "descr_list:font", 0, uDescClr, pDescFont);
+	}	
 
 	if (uiXml.NavigateToNode("image_static", 0))
 	{	
+		UIItemImage					= xr_new<CUIStatic>();	 
+		AttachChild					(UIItemImage);	
+		UIItemImage->SetAutoDelete	(true);
 		xml_init.InitStatic			(uiXml, "image_static", 0, UIItemImage);
 		UIItemImage->TextureAvailable(true);
+
+		UIItemImage->TextureOff			();
+		UIItemImage->ClipperOn			();
+		UIItemImageSize.set				(UIItemImage->GetWidth(),UIItemImage->GetHeight());
 	}
-	UIItemImage->TextureOff			();
-	UIItemImage->ClipperOn			();
-	UIItemImageSize.set				(UIItemImage->GetWidth(),UIItemImage->GetHeight());
 
 	xml_init.InitAutoStaticGroup	(uiXml, "auto", 0, this);
 }
 
 void CUIItemInfo::Init(float x, float y, float width, float height, LPCSTR xml_name)
 {
-	inherited::Init(x, y, width, height);
-    Init(xml_name);
+	inherited::Init	(x, y, width, height);
+    Init			(xml_name);
 }
 
 void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 {
-	m_pInvItem			= pInvItem;
-	if(!m_pInvItem)		return;
+	m_pInvItem				= pInvItem;
+	if(!m_pInvItem)			return;
 
-	string256			str;
-	UIName->SetText		(pInvItem->Name());
+	string256				str;
+	if(UIName)
+	{
+		UIName->SetText		(pInvItem->Name());
+	}
+	if(UIWeight)
+	{
+		sprintf				(str, "%3.2f kg", pInvItem->Weight());
+		UIWeight->SetText	(str);
+	}
+	if(UICost)
+	{
+		sprintf				(str, "%d RU", pInvItem->Cost());		// will be owerwritten in multiplayer
+		UICost->SetText		(str);
+	}
 
-	sprintf				(str, "%3.2f kg", pInvItem->Weight());
-	UIWeight->SetText	(str);
-
-	sprintf				(str, "%d RU", pInvItem->Cost());		// will be owerwritten in multiplayer
-	UICost->SetText		(str);
-	
-	float cond = pInvItem->GetConditionToShow();
-
-	if(UICondProgresBar){
+	if(UICondProgresBar)
+	{
+		float cond							= pInvItem->GetConditionToShow();
 		UICondProgresBar->Show				(true);
 		UICondProgresBar->SetProgressPos	( cond*100.0f+1.0f-EPS );
 	}
 
-	UIDesc->Clear						();
-	VERIFY								(0==UIDesc->GetSize());
-	TryAddWpnInfo						(pInvItem->object().cNameSect());
-	TryAddArtefactInfo					(pInvItem->object().cNameSect());
-	CUIStatic* pItem					= xr_new<CUIStatic>();
-	pItem->SetTextColor					(uDescClr);
-	pItem->SetFont						(pDescFont);
-	pItem->SetWidth						(UIDesc->GetDesiredChildWidth());
-	pItem->SetText						(*pInvItem->ItemDescription());
-	pItem->AdjustHeightToText			();
-	UIDesc->AddWindow					(pItem, true);
-	UIDesc->ScrollToBegin				();
+	if(UIDesc)
+	{
+		UIDesc->Clear						();
+		VERIFY								(0==UIDesc->GetSize());
+		TryAddWpnInfo						(pInvItem->object().cNameSect());
+		TryAddArtefactInfo					(pInvItem->object().cNameSect());
+		CUIStatic* pItem					= xr_new<CUIStatic>();
+		pItem->SetTextColor					(uDescClr);
+		pItem->SetFont						(pDescFont);
+		pItem->SetWidth						(UIDesc->GetDesiredChildWidth());
+		pItem->SetText						(*pInvItem->ItemDescription());
+		pItem->AdjustHeightToText			();
+		UIDesc->AddWindow					(pItem, true);
+		UIDesc->ScrollToBegin				();
+	}
+	if(UIItemImage)
+	{
+		// Загружаем картинку
+		UIItemImage->SetShader				(InventoryUtilities::GetEquipmentIconsShader());
 
-	// Загружаем картинку
-	UIItemImage->SetShader				(InventoryUtilities::GetEquipmentIconsShader());
+		int iGridWidth						= pInvItem->GetGridWidth();
+		int iGridHeight						= pInvItem->GetGridHeight();
+		int iXPos							= pInvItem->GetXPos();
+		int iYPos							= pInvItem->GetYPos();
 
-	int iGridWidth						= pInvItem->GetGridWidth();
-	int iGridHeight						= pInvItem->GetGridHeight();
-	int iXPos							= pInvItem->GetXPos();
-	int iYPos							= pInvItem->GetYPos();
+		UIItemImage->GetUIStaticItem().SetOriginalRect(	float(iXPos*INV_GRID_WIDTH), float(iYPos*INV_GRID_HEIGHT),
+														float(iGridWidth*INV_GRID_WIDTH),	float(iGridHeight*INV_GRID_HEIGHT));
+		UIItemImage->TextureOn				();
+		UIItemImage->ClipperOn				();
+		UIItemImage->SetStretchTexture		(true);
+		Frect v_r							= {	0.0f, 
+												0.0f, 
+												float(iGridWidth*INV_GRID_WIDTH),	
+												float(iGridHeight*INV_GRID_HEIGHT)};
+		if(UI()->is_16_9_mode())
+			v_r.x2 /= 1.328f;
 
-	UIItemImage->GetUIStaticItem().SetOriginalRect(	float(iXPos*INV_GRID_WIDTH), float(iYPos*INV_GRID_HEIGHT),
-													float(iGridWidth*INV_GRID_WIDTH),	float(iGridHeight*INV_GRID_HEIGHT));
-	UIItemImage->TextureOn	();
-	UIItemImage->ClipperOn	();
-	UIItemImage->SetStretchTexture(true);
-	Frect v_r				= {0.0f, 0.0f, float(iGridWidth*INV_GRID_WIDTH),	float(iGridHeight*INV_GRID_HEIGHT)};
-	if(UI()->is_16_9_mode())
-		v_r.x2 /= 1.328f;
-
-	UIItemImage->GetUIStaticItem().SetRect(v_r);
-	UIItemImage->SetWidth	(_min(v_r.width(),	UIItemImageSize.x));
-	UIItemImage->SetHeight	(_min(v_r.height(),	UIItemImageSize.y));
+		UIItemImage->GetUIStaticItem().SetRect	(v_r);
+		UIItemImage->SetWidth					(_min(v_r.width(),	UIItemImageSize.x));
+		UIItemImage->SetHeight					(_min(v_r.height(),	UIItemImageSize.y));
+	}
 }
 
 void CUIItemInfo::TryAddWpnInfo (const shared_str& wpn_section){
