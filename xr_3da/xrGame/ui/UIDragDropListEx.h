@@ -16,14 +16,14 @@ enum EListType{
 };
 
 struct CUICell{
-							CUICell					()						{Clear();}
+							CUICell					()						{m_item=NULL; Clear();}
 
 		CUICellItem*		m_item;
 		bool				m_bMainItem;
 		void				SetItem					(CUICellItem* itm, bool bMain)		{m_item = itm; VERIFY(m_item);m_bMainItem = bMain;}
 		bool				Empty					()						{return m_item == NULL;}
 		bool				MainItem				()						{return m_bMainItem;}
-		void				Clear					()						{m_item = NULL; m_bMainItem = false;}
+		void				Clear					();
 		bool				operator ==				(const CUICell& C)		{return (m_item == C.m_item);}
 };
 

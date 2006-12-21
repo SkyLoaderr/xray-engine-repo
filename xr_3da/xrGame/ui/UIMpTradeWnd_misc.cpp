@@ -5,6 +5,7 @@
 #include "UICellItem.h"
 #include "UITabControl.h"
 #include "UIDragDropListEx.h"
+#include "UIItemInfo.h"
 
 #include "../inventory_item.h"
 #include "../PhysicsShellHolder.h"
@@ -65,9 +66,9 @@ CInventoryItem* CUIMpTradeWnd::CurrentIItem()
 
 void CUIMpTradeWnd::SetCurrentItem(CUICellItem* itm)
 {
-	if(m_pCurrentCellItem == itm)	return;
-	m_pCurrentCellItem				= itm;
-
+	if(m_pCurrentCellItem == itm)		return;
+	m_pCurrentCellItem					= itm;
+	m_item_info->InitItem				(CurrentIItem());
 	if (m_pCurrentCellItem)
 	{
 		const shared_str& current_sect_name = CurrentIItem()->object().cNameSect();
@@ -129,7 +130,7 @@ bool CUIMpTradeWnd::OnItemDrop(CUICellItem* itm)
 
 	if(_owner_type==dd_shop)
 	{
-		bool res		= TryToBuyItem			(iinfo, false);
+		bool res		= TryToBuyItem			(iinfo, false, NULL);
 		VERIFY			(res);
 		return			true;
 	}
@@ -141,14 +142,19 @@ bool CUIMpTradeWnd::OnItemDrop(CUICellItem* itm)
 		return			true;
 	}
 	
+	if(_new_owner_type==dd_own_bag)
 	{
-		if(_new_owner_type==dd_own_bag)
+		CUICellItem* citm				= _owner_list->RemoveItem(itm, false);
+		_new_owner->SetItem				(citm);
+		UpdateCorrespondingItemsForList	(_owner_list);
+	}else
+	{
+		VERIFY(_new_owner_type==dd_own_slot);
+		if( _new_owner==GetMatchedListForItem(iinfo->m_name_sect) )
 		{
-			CUICellItem* citm			= _owner_list->RemoveItem(itm, false);
-			_new_owner->SetItem			(citm);
-		}else
-		{
-			VERIFY(_new_owner_type==dd_own_slot);
+			CUICellItem* citm				= _owner_list->RemoveItem(itm, false);
+			_new_owner->SetItem				(citm);
+			UpdateCorrespondingItemsForList	(_new_owner);
 		}
 	}	
 	return							true;
@@ -169,7 +175,7 @@ bool CUIMpTradeWnd::OnItemDbClick(CUICellItem* itm)
 	switch(_owner_type)
 	{
 		case dd_shop:
-			TryToBuyItem			(iinfo, false);
+			TryToBuyItem			(iinfo, false, NULL);
 			break;
 
 		case dd_own_bag:

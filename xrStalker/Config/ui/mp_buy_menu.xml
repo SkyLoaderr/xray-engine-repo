@@ -47,8 +47,8 @@
 	
 	<shop_wnd x="0" y="100" width="285" height="570"/>
 	
-    <lst_player_bag x="340" y="350" width="648" height="280"
-            cell_width = "52" cell_height="52" rows_num="5" cols_num="12"
+    <lst_player_bag x="440" y="350" width="548" height="280"
+            cell_width = "52" cell_height="52" rows_num="5" cols_num="10"
             unlimited="1" group_similar="1"/>
 
     <lst_shop x="32" y="70" width="253" height="480"

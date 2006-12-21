@@ -6,6 +6,13 @@
 
 CUIDragItem* CUIDragDropListEx::m_drag_item = NULL;
 
+void CUICell::Clear()
+{
+	m_bMainItem = false;
+	if(m_item)	m_item->SetOwnerList(NULL);
+	m_item		= NULL; 
+}
+
 CUIDragDropListEx::CUIDragDropListEx()
 {
 
@@ -444,17 +451,23 @@ void CUICellContainer::PlaceItemAtPos(CUICellItem* itm, Ivector2& cell_pos)
 CUICellItem* CUICellContainer::RemoveItem(CUICellItem* itm, bool force_root)
 {
 	if(!force_root && itm->ChildsCount())
-		return				itm->PopChild();
+	{
+		CUICellItem* iii	=	itm->PopChild();
+		iii->SetOwnerList	(NULL);
+		return				iii;
+	}
 
 	Ivector2 pos			= GetItemPos(itm);
 	Ivector2 cs				= itm->GetGridSize();
 
 	for(int x=0; x<cs.x;++x)
-		for(int y=0; y<cs.y;++y){
+		for(int y=0; y<cs.y;++y)
+		{
 			CUICell& C		= GetCellAt(Ivector2().set(x,y).add(pos));
 			C.Clear			();
 		}
 
+	itm->SetOwnerList		(NULL);
 	DetachChild				(itm);
 	return					itm;
 }
@@ -597,7 +610,7 @@ void CUICellContainer::ClearAll(bool bDestroy)
 		CUIWindow* w			= m_ChildWndList.back();
 		VERIFY					(!w->IsAutoDelete());
 		DetachChild				(w);	
-
+		
 		if(bDestroy)
 			delete_data			(w);
 	}

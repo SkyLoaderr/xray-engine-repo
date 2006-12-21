@@ -15,6 +15,7 @@ class CUITabControl;
 class CUICellItem;
 class CInventoryItem;
 class CItemMgr;
+class CUIItemInfo;
 
 struct SBuyItemInfo
 {
@@ -144,6 +145,7 @@ private:
 	CUI3tButton* 		m_btn_rifle_scope;
 	CUI3tButton* 		m_btn_rifle_glauncher;
 	CUI3tButton* 		m_btn_rifle_ammo2;
+	CUIItemInfo*		m_item_info;
 
 	CUITabControl*		m_root_tab_control;
 	CUIDragDropListEx*	m_list[e_total_lists];
@@ -156,7 +158,6 @@ private:
 	void	xr_stdcall	OnBtnShopBackClicked		(CUIWindow* w, void* d);
 	void	xr_stdcall	OnRootTabChanged			(CUIWindow* w, void* d);
 	void	xr_stdcall	OnSubLevelBtnClicked		(CUIWindow* w, void* d);
-
 	void	xr_stdcall	OnBtnPreset1Clicked			(CUIWindow* w, void* d);
 	void	xr_stdcall	OnBtnPreset2Clicked			(CUIWindow* w, void* d);
 	void	xr_stdcall	OnBtnPreset3Clicked			(CUIWindow* w, void* d);
@@ -164,8 +165,6 @@ private:
 	void	xr_stdcall	OnBtnSavePresetClicked		(CUIWindow* w, void* d);
 	void	xr_stdcall	OnBtnResetClicked			(CUIWindow* w, void* d);
 	void	xr_stdcall	OnBtnSellClicked			(CUIWindow* w, void* d);
-
-
 	void	xr_stdcall	OnBtnPistolAmmoClicked		(CUIWindow* w, void* d);
 	void	xr_stdcall	OnBtnPistolSilencerClicked	(CUIWindow* w, void* d);
 	void	xr_stdcall	OnBtnRifleAmmoClicked		(CUIWindow* w, void* d);
@@ -184,12 +183,12 @@ private:
 	void				FillUpSubLevelButtons		();
 	void				FillUpSubLevelItems			();
 
-	bool				TryToBuyItem				(SBuyItemInfo* itm, bool own_item);
+	bool				TryToBuyItem				(SBuyItemInfo* itm, bool own_item, SBuyItemInfo* itm_parent);
 	bool				TryToSellItem				(SBuyItemInfo* itm);
 	bool				CheckBuyPossibility			(const shared_str& sect_name);
 
 //---item addons---
-	bool				TryToAttachItemAsAddon		(SBuyItemInfo* buy_itm);
+	bool				TryToAttachItemAsAddon		(SBuyItemInfo* buy_itm, SBuyItemInfo* itm_parent);
 	void				SellItemAddons				(SBuyItemInfo* sell_itm, item_addon_type at);
 
 	bool				IsAddonAttached				(SBuyItemInfo* sell_itm, item_addon_type at);
@@ -197,6 +196,7 @@ private:
 	SBuyItemInfo*		DetachAddon					(SBuyItemInfo* sell_itm, item_addon_type at);
 	bool				AttachAddon					(SBuyItemInfo* sell_itm, item_addon_type at);
 	item_addon_type		GetItemType					(const shared_str& name_sect);
+	shared_str			GetAddonNameSect			(SBuyItemInfo* itm, item_addon_type at);
 //-----
 
 	void				SetCurrentItem				(CUICellItem* itm);
@@ -224,6 +224,7 @@ private:
 	void				DumpAllItems				(LPCSTR reason);
 	dd_list_type		GetListType					(CUIDragDropListEx* l);
 	CUIDragDropListEx*	GetMatchedListForItem		(const shared_str& sect_name);
+	void				UpdateCorrespondingItemsForList(CUIDragDropListEx* _list);
 	const u32			GetRank						() const;
 	void				SetInfoString				(LPCSTR str);
 };

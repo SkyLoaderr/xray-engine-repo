@@ -258,14 +258,14 @@
 	<sound_t>weapons\generic_close</sound_t>
 </btn_save_preset>
 
-<btn_sell x="780" y="630" width="117" height="29">
+<btn_sell x="780" y="630" width="117" height="29" hint="ui_inv_sell_items(X)"  accel="kX">
 	<window_name>btn_sell</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_sell_all</text>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_sell>
 
-<btn_reset x="900" y="630" width="117" height="29">
+<btn_reset x="900" y="630" width="117" height="29" hint="ui_inv_reset_items(C)" accel="kC">
 	<window_name>btn_reset</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_reset</text>
@@ -279,7 +279,7 @@
 	<texture>ui_beltbut_patrons</texture>
 </btn_pistol_ammo>
 
-<btn_pistol_silencer x="430" y="156" width="22" height="22" hint="ui_inv_silencer_pistol">
+<btn_pistol_silencer x="405" y="178" width="22" height="22" hint="ui_inv_silencer_pistol" accel="kA">
 	<window_name>btn_pistol_silencer</window_name>
 	<texture>ui_beltbut_silencer</texture>
 </btn_pistol_silencer>
@@ -290,22 +290,23 @@
 	<texture>ui_beltbut_patrons</texture>
 </btn_rifle_ammo>	
 
-<btn_rifle_silencer x="760" y="122" width="22" height="22" hint="ui_inv_silencer_rifle">
-	<window_name>btn_rifle_silencer</window_name>
-	<texture>ui_beltbut_silencer</texture>		
-</btn_rifle_silencer>
-
-<btn_rifle_scope x="760" y="144" width="22" height="22" hint="ui_inv_scope_rifle">
-	<window_name>btn_rifle_scope</window_name>
-	<texture>ui_beltbut_aim</texture>		
-</btn_rifle_scope>
-
-<btn_rifle_glauncher x="760" y="166" width="22" height="22" hint="ui_inv_granadelauncher_rifle">
-	<window_name>btn_rifle_glauncher</window_name>
-	<texture>ui_beltbut_granadeBig</texture>
-</btn_rifle_glauncher>
-
 <btn_rifle_ammo2 x="760" y="178" width="22" height="22" hint="ui_inv_granades_rifle" accel="kE">
 	<window_name>btn_rifle_ammo2</window_name>
 	<texture>ui_beltbut_granadeBig</texture>
 </btn_rifle_ammo2>	
+
+<btn_rifle_silencer x="735" y="178" width="22" height="22" hint="ui_inv_silencer_rifle" accel="kF">
+	<window_name>btn_rifle_silencer</window_name>
+	<texture>ui_beltbut_silencer</texture>		
+</btn_rifle_silencer>
+
+<btn_rifle_scope x="710" y="178" width="22" height="22" hint="ui_inv_scope_rifle" accel="kS">
+	<window_name>btn_rifle_scope</window_name>
+	<texture>ui_beltbut_aim</texture>		
+</btn_rifle_scope>
+
+<btn_rifle_glauncher x="684" y="178" width="22" height="22" hint="ui_inv_granadelauncher_rifle" accel="kD">
+	<window_name>btn_rifle_glauncher</window_name>
+	<texture>ui_beltbut_granadeBig</texture>
+</btn_rifle_glauncher>
+

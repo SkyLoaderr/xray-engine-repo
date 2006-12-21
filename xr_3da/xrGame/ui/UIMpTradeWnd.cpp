@@ -106,11 +106,6 @@ void CUIMpTradeWnd::OnBtnResetClicked(CUIWindow* w, void* d)
 	ApplyPreset				(_preset_idx_origin); //origin
 }
 
-void CUIMpTradeWnd::OnBtnSellClicked(CUIWindow* w, void* d)
-{
-	DumpAllItems("OnBtnSellClicked");
-}
-
 void CUIMpTradeWnd::OnRootTabChanged(CUIWindow* w, void* d)
 {
 	int curr							= m_root_tab_control->GetActiveIndex();

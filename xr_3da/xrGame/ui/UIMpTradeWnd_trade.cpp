@@ -18,9 +18,9 @@ bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm)
 	SetMoneyAmount						(GetMoneyAmount() + _item_cost);
 
 	CUICellItem* _itm					= NULL;
-
-	if(sell_itm->m_cell_item->OwnerList())
-		_itm = sell_itm->m_cell_item->OwnerList()->RemoveItem(sell_itm->m_cell_item, false );
+	CUIDragDropListEx* list_from		= sell_itm->m_cell_item->OwnerList();
+	if(list_from)
+		_itm = list_from->RemoveItem(sell_itm->m_cell_item, false );
 	else
 		_itm	= sell_itm->m_cell_item;
 
@@ -52,10 +52,12 @@ bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm)
 		sprintf								(buff,"+%d RU",_item_cost);
 		SetInfoString						(buff);
 	}
+
+	UpdateCorrespondingItemsForList			(list_from);
 	return true;
 }
 
-bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm, bool own_item)
+bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm, bool own_item, SBuyItemInfo* itm_parent)
 {
 	SBuyItemInfo* iinfo 			= buy_itm;
 	const shared_str& buy_item_name = iinfo->m_name_sect;
@@ -83,7 +85,7 @@ bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm, bool own_item)
 		cell_itm					= iinfo->m_cell_item;
 
 
-	bool b_addon					= TryToAttachItemAsAddon(iinfo);
+	bool b_addon					= TryToAttachItemAsAddon(iinfo, itm_parent);
 	if(!b_addon)
 	{
 		CUIDragDropListEx*_new_owner = NULL;
@@ -91,8 +93,9 @@ bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm, bool own_item)
 		_new_owner->SetItem			(cell_itm);
 		cell_itm->SetCustomDraw		(NULL);
 		cell_itm->SetAccelerator	(0);
-	}else
+	}else{
 		DestroyItem					(iinfo);
+	}
 
 	RenewShopItem					(buy_item_name, true);
 
@@ -177,13 +180,15 @@ void CUIMpTradeWnd::RenewShopItem(const shared_str& sect_name, bool b_just_bough
 	if(m_store_hierarchy->CurrentLevel().HasItem(sect_name) )
 	{
 		CUIDragDropListEx*	pList			= m_list[e_shop];
-
 		SBuyItemInfo* pitem					= CreateItem(sect_name, SBuyItemInfo::e_shop, true);
-		int accel_idx						= m_store_hierarchy->CurrentLevel().GetItemIdx(sect_name);
-		pitem->m_cell_item->SetAccelerator	( (accel_idx>9) ? 0 : DIK_1+accel_idx );
+		if(pitem->m_cell_item->OwnerList()!=pList)
+		{
+			int accel_idx						= m_store_hierarchy->CurrentLevel().GetItemIdx(sect_name);
+			pitem->m_cell_item->SetAccelerator	( (accel_idx>9) ? 0 : DIK_1+accel_idx );
 
-		pitem->m_cell_item->SetCustomDraw	(xr_new<CUICellItemAccelDraw>());
-		pList->SetItem						(pitem->m_cell_item);
+			pitem->m_cell_item->SetCustomDraw	(xr_new<CUICellItemAccelDraw>());
+			pList->SetItem						(pitem->m_cell_item);
+		}
 	}
 }
 

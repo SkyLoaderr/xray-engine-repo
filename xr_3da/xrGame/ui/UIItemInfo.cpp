@@ -31,6 +31,7 @@ CUIItemInfo::~CUIItemInfo()
 }
 
 void CUIItemInfo::Init(LPCSTR xml_name){
+
 	UIName				= xr_new<CUIStatic>();	 AttachChild(UIName);		UIName->SetAutoDelete(true);
 	UIWeight			= xr_new<CUIStatic>();	 AttachChild(UIWeight);		UIWeight->SetAutoDelete(true);
 	UICost				= xr_new<CUIStatic>();	 AttachChild(UICost);		UICost->SetAutoDelete(true);
@@ -46,6 +47,18 @@ void CUIItemInfo::Init(LPCSTR xml_name){
 	R_ASSERT2					(xml_result, "xml file not found");
 
 	CUIXmlInit					xml_init;
+
+	if(uiXml.NavigateToNode("main_frame",0))
+	{
+		Frect wnd_rect;
+		wnd_rect.x1		= uiXml.ReadAttribInt("main_frame", 0, "x", 0);
+		wnd_rect.y1		= uiXml.ReadAttribInt("main_frame", 0, "y", 0);
+
+		wnd_rect.x2		= uiXml.ReadAttribInt("main_frame", 0, "width", 0);
+		wnd_rect.y2		= uiXml.ReadAttribInt("main_frame", 0, "height", 0);
+		
+		inherited::Init(wnd_rect.x1, wnd_rect.y1, wnd_rect.x2, wnd_rect.y2);
+	}
 
 	UIWpnParams->InitFromXml	(uiXml);
 	UIArtefactParams->InitFromXml(uiXml);

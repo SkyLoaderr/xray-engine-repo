@@ -6,6 +6,7 @@
 #include "UITabControl.h"
 #include "UITabButtonMP.h"
 #include "UIDragDropListEx.h"
+#include "UIItemInfo.h"
 
 #include "../object_broker.h"
 
@@ -81,11 +82,11 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 	m_btn_sell							= xr_new<CUI3tButton>();AttachChild(m_btn_sell		);			m_btn_sell->SetAutoDelete		(true);
 
 	m_btn_pistol_ammo					= xr_new<CUI3tButton>();AttachChild(m_btn_pistol_ammo	);		m_btn_pistol_ammo->SetAutoDelete		(true);
-//.	m_btn_pistol_silencer				= xr_new<CUI3tButton>();AttachChild(m_btn_pistol_silencer);		m_btn_pistol_silencer->SetAutoDelete	(true);
+	m_btn_pistol_silencer				= xr_new<CUI3tButton>();AttachChild(m_btn_pistol_silencer);		m_btn_pistol_silencer->SetAutoDelete	(true);
 	m_btn_rifle_ammo					= xr_new<CUI3tButton>();AttachChild(m_btn_rifle_ammo	);		m_btn_rifle_ammo->SetAutoDelete			(true);
-//.	m_btn_rifle_silencer				= xr_new<CUI3tButton>();AttachChild(m_btn_rifle_silencer);		m_btn_rifle_silencer->SetAutoDelete		(true);
-//.	m_btn_rifle_scope					= xr_new<CUI3tButton>();AttachChild(m_btn_rifle_scope	);		m_btn_rifle_scope->SetAutoDelete		(true);
-//.	m_btn_rifle_glauncher				= xr_new<CUI3tButton>();AttachChild(m_btn_rifle_glauncher);		m_btn_rifle_glauncher->SetAutoDelete	(true);
+	m_btn_rifle_silencer				= xr_new<CUI3tButton>();AttachChild(m_btn_rifle_silencer);		m_btn_rifle_silencer->SetAutoDelete		(true);
+	m_btn_rifle_scope					= xr_new<CUI3tButton>();AttachChild(m_btn_rifle_scope	);		m_btn_rifle_scope->SetAutoDelete		(true);
+	m_btn_rifle_glauncher				= xr_new<CUI3tButton>();AttachChild(m_btn_rifle_glauncher);		m_btn_rifle_glauncher->SetAutoDelete	(true);
 	m_btn_rifle_ammo2					= xr_new<CUI3tButton>();AttachChild(m_btn_rifle_ammo2	);		m_btn_rifle_ammo2->SetAutoDelete		(true);
 
 
@@ -101,11 +102,11 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 	CUIXmlInit::Init3tButton			(xml_doc, "btn_sell",			0, m_btn_sell			);
 
 	CUIXmlInit::Init3tButton			(xml_doc, "btn_pistol_ammo",	0, m_btn_pistol_ammo	);
-//.	CUIXmlInit::Init3tButton			(xml_doc, "btn_pistol_silencer",0, m_btn_pistol_silencer);
+	CUIXmlInit::Init3tButton			(xml_doc, "btn_pistol_silencer",0, m_btn_pistol_silencer);
 	CUIXmlInit::Init3tButton			(xml_doc, "btn_rifle_ammo",		0, m_btn_rifle_ammo		);
-//.	CUIXmlInit::Init3tButton			(xml_doc, "btn_rifle_silencer",	0, m_btn_rifle_silencer	);
-//.	CUIXmlInit::Init3tButton			(xml_doc, "btn_rifle_scope",	0, m_btn_rifle_scope	);
-//.	CUIXmlInit::Init3tButton			(xml_doc, "btn_rifle_glauncher",0, m_btn_rifle_glauncher);
+	CUIXmlInit::Init3tButton			(xml_doc, "btn_rifle_silencer",	0, m_btn_rifle_silencer	);
+	CUIXmlInit::Init3tButton			(xml_doc, "btn_rifle_scope",	0, m_btn_rifle_scope	);
+	CUIXmlInit::Init3tButton			(xml_doc, "btn_rifle_glauncher",0, m_btn_rifle_glauncher);
 	CUIXmlInit::Init3tButton			(xml_doc, "btn_rifle_ammo2",	0, m_btn_rifle_ammo2	);
 
 
@@ -121,11 +122,11 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 	Register							(m_btn_reset		);
 	Register							(m_btn_sell			);
 	Register							(m_btn_pistol_ammo		);
-//.	Register							(m_btn_pistol_silencer	);
+	Register							(m_btn_pistol_silencer	);
 	Register							(m_btn_rifle_ammo		);
-//.	Register							(m_btn_rifle_silencer	);
-//.	Register							(m_btn_rifle_scope		);
-//.	Register							(m_btn_rifle_glauncher	);
+	Register							(m_btn_rifle_silencer	);
+	Register							(m_btn_rifle_scope		);
+	Register							(m_btn_rifle_glauncher	);
 	Register							(m_btn_rifle_ammo2		);
 
 
@@ -143,11 +144,11 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 	AddCallback							("btn_sell",		BUTTON_CLICKED,		CUIWndCallback::void_function	(this,	&CUIMpTradeWnd::OnBtnSellClicked		));
 
 	AddCallback							("btn_pistol_ammo",	BUTTON_CLICKED,		CUIWndCallback::void_function	(this,	&CUIMpTradeWnd::OnBtnPistolAmmoClicked		));
-//.	AddCallback							("btn_pistol_silencer",	BUTTON_CLICKED,	CUIWndCallback::void_function	(this,	&CUIMpTradeWnd::OnBtnPistolSilencerClicked	));
+	AddCallback							("btn_pistol_silencer",	BUTTON_CLICKED,	CUIWndCallback::void_function	(this,	&CUIMpTradeWnd::OnBtnPistolSilencerClicked	));
 	AddCallback							("btn_rifle_ammo",	BUTTON_CLICKED,		CUIWndCallback::void_function	(this,	&CUIMpTradeWnd::OnBtnRifleAmmoClicked		));
-//.	AddCallback							("btn_rifle_silencer",BUTTON_CLICKED,	CUIWndCallback::void_function	(this,	&CUIMpTradeWnd::OnBtnRifleSilencerClicked	));
-//.	AddCallback							("btn_rifle_scope",	BUTTON_CLICKED,		CUIWndCallback::void_function	(this,	&CUIMpTradeWnd::OnBtnRifleScopeClicked		));
-//.	AddCallback							("btn_rifle_glauncher",BUTTON_CLICKED,	CUIWndCallback::void_function	(this,	&CUIMpTradeWnd::OnBtnRifleGLClicked			));
+	AddCallback							("btn_rifle_silencer",BUTTON_CLICKED,	CUIWndCallback::void_function	(this,	&CUIMpTradeWnd::OnBtnRifleSilencerClicked	));
+	AddCallback							("btn_rifle_scope",	BUTTON_CLICKED,		CUIWndCallback::void_function	(this,	&CUIMpTradeWnd::OnBtnRifleScopeClicked		));
+	AddCallback							("btn_rifle_glauncher",BUTTON_CLICKED,	CUIWndCallback::void_function	(this,	&CUIMpTradeWnd::OnBtnRifleGLClicked			));
 	AddCallback							("btn_rifle_ammo2",	BUTTON_CLICKED,		CUIWndCallback::void_function	(this,	&CUIMpTradeWnd::OnBtnRifleAmmo2Clicked		));
 
 	for(int idx = e_first; idx<e_total_lists; ++idx)
@@ -174,6 +175,9 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 
 	m_static_information				= xr_new<CUIStatic>(); AttachChild(m_static_information); m_static_information->SetAutoDelete(true);
 	CUIXmlInit::InitStatic				(xml_doc, "static_info",					0, m_static_information);
+	m_item_info							= xr_new<CUIItemInfo>();
+	AttachChild							(m_item_info); m_item_info->SetAutoDelete(true);
+	m_item_info->Init					(0, 0, 100, 100, "buy_menu_item.xml");
 
 	m_item_mngr							= xr_new<CItemMgr>();
 	m_item_mngr->Load					(sectionPrice);
