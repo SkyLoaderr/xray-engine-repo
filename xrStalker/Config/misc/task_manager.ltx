@@ -740,11 +740,10 @@ reward_rank = 5
 [barmen_defend_camp_1]
 type = defend_lager
 community = actor
-text = barmen_defend_kamp_1_text
+text = barmen_defend_camp_1_text
+description = barmen_defend_camp_1_descr
 time = 50
-;---condlist = {=actor_on_level(l02_garbage)}
-init_condition = {+agroprom_military_case_done =actor_on_level(l02_garbage) =gulag_state(gar_smart_bandit_large_lager:1)}, {+agroprom_military_case_done =actor_on_level(l02_garbage) =gulag_state(gar_smart_garage:1)}
-description = barmen_defend_kamp_1_descr
+init_condition = {+agroprom_military_case_done =actor_on_level(l02_garbage) =gulag_state(gar_smart_bandit_large_lager:1)}
 parent = barman
 target = gar_smart_garage
 reward_money = 5000
@@ -755,10 +754,10 @@ reward_rank = 10
 [barmen_defend_camp_2]
 type = defend_lager
 community = actor
-text = barmen_defend_kamp_2_text
+text = barmen_defend_camp_2_text
+description = barmen_defend_camp_2_descr
 time = 50
 init_condition = {=actor_on_level(l03_agroprom) =gulag_state(agr2_bandit_st:1)}
-description = barmen_defend_kamp_2_descr
 parent = barman
 target = agr2_st_factory
 reward_money = 5000
