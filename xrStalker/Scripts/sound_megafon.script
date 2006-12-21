@@ -1,16 +1,5 @@
 function play_sound_object(obj_name,snd_name,looped)
-	local 	snd = sound_object(snd_name)
-	local	obj = get_level_object(obj_name)
-	while obj == nil do
-		obj = level.object(obj_name)
-		wait()
-	end
-	snd:play_at_pos(obj,obj:position(),looped)
 end
 
 function main()
-	sound_megafon.play_sound_object("actor","Blokpost\\nemedlenno",0)
-	while true do
-		wait()
-	end
 end
