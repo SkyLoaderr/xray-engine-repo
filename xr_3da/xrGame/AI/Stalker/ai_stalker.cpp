@@ -202,6 +202,8 @@ void CAI_Stalker::LoadSounds		(LPCSTR section)
 	sound().add						(pSettings->r_string(section,"sound_running_in_danger"),		100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskMovingInDanger),		eStalkerSoundRunningInDanger,		head_bone_name, xr_new<CStalkerSoundData>(this));
 //	sound().add						(pSettings->r_string(section,"sound_walking_in_danger"),		100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskMovingInDanger),		eStalkerSoundWalkingInDanger,		head_bone_name, xr_new<CStalkerSoundData>(this));
 	sound().add						(pSettings->r_string(section,"sound_kill_wounded"),				100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskKillWounded),			eStalkerSoundKillWounded,			head_bone_name, xr_new<CStalkerSoundData>(this));
+	sound().add						(pSettings->r_string(section,"sound_enemy_critically_wounded"),	100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskEnemyCriticallyWounded),eStalkerSoundEnemyCriticallyWounded,head_bone_name, xr_new<CStalkerSoundData>(this));
+	sound().add						(pSettings->r_string(section,"sound_enemy_killed_or_wounded"),	100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskEnemyKilledOrWounded),	eStalkerSoundEnemyKilledOrWounded,	head_bone_name, xr_new<CStalkerSoundData>(this));
 }
 
 void CAI_Stalker::reload			(LPCSTR section)
@@ -261,6 +263,8 @@ void CAI_Stalker::reload			(LPCSTR section)
 
 void CAI_Stalker::Die				(CObject* who)
 {
+	notify_on_wounded_or_killed		(who);
+
 	SelectAnimation					(XFORM().k,movement().detail().direction(),movement().speed());
 
 	sound().set_sound_mask			(0);

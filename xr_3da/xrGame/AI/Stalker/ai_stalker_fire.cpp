@@ -201,7 +201,9 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 	}
 
 	if (g_Alive()) {
-		if (!critically_wounded()) {
+		bool						already_critically_wounded = critically_wounded();
+
+		if (!already_critically_wounded) {
 			const CCoverPoint		*cover = agent_manager().member().member(this).cover();
 			if (cover && pHDS->initiator() && (pHDS->initiator()->ID() != ID()) && !fis_zero(pHDS->damage()) && brain().affect_cover())
 				agent_manager().location().add	(xr_new<CDangerCoverLocation>(cover,Device.dwTimeGlobal,DANGER_INTERVAL,DANGER_DISTANCE));
@@ -221,34 +223,44 @@ void			CAI_Stalker::Hit					(SHit* pHDS)
 
 		if	(
 				!wounded() &&
-				!critically_wounded() &&
-				!update_critical_wounded(HDS.boneID,HDS.power) &&
-				animation().script_animations().empty() &&
-				(pHDS->bone() != BI_NONE) &&
-//				(weapon_type != 5) && // exclude pistols
-//				(weapon_type != 7) && // exclude shotguns
-				(weapon_type != 9)	  // exclude rocket launchers (WARNING: this code should be revisited)
-			)
+				!already_critically_wounded)
 		{
-			Fvector					D;
-			float					yaw, pitch;
-			D.getHP					(yaw,pitch);
+			bool					became_critically_wounded = update_critical_wounded(HDS.boneID,HDS.power);
+			if	(
+				!became_critically_wounded &&
+				animation().script_animations().empty() &&
+				(pHDS->bone() != BI_NONE)
+			)
+			{
+				Fvector					D;
+				float					yaw, pitch;
+				D.getHP					(yaw,pitch);
 
-#pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
-			float					power_factor = m_power_fx_factor*pHDS->damage()/100.f;
-			clamp					(power_factor,0.f,1.f);
+	#pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
+				float					power_factor = m_power_fx_factor*pHDS->damage()/100.f;
+				clamp					(power_factor,0.f,1.f);
 
-			CKinematicsAnimated		*tpKinematics = smart_cast<CKinematicsAnimated*>(Visual());
-#ifdef DEBUG
-			tpKinematics->LL_GetBoneInstance	(pHDS->bone());
-			if (pHDS->bone() >= tpKinematics->LL_BoneCount()) {
-				Msg					("tpKinematics has no bone_id %d",pHDS->bone());
-				pHDS->_dump			();
+				CKinematicsAnimated		*tpKinematics = smart_cast<CKinematicsAnimated*>(Visual());
+	#ifdef DEBUG
+				tpKinematics->LL_GetBoneInstance	(pHDS->bone());
+				if (pHDS->bone() >= tpKinematics->LL_BoneCount()) {
+					Msg					("tpKinematics has no bone_id %d",pHDS->bone());
+					pHDS->_dump			();
+				}
+	#endif
+				int						fx_index = iFloor(tpKinematics->LL_GetBoneInstance(pHDS->bone()).get_param(1) + (angle_difference(movement().m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1));
+				if (fx_index != -1)
+					animation().play_fx	(power_factor,fx_index);
 			}
-#endif
-			int						fx_index = iFloor(tpKinematics->LL_GetBoneInstance(pHDS->bone()).get_param(1) + (angle_difference(movement().m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1));
-			if (fx_index != -1)
-				animation().play_fx	(power_factor,fx_index);
+			else {
+				if (!already_critically_wounded && became_critically_wounded) {
+					if (HDS.who) {
+						CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(HDS.who);
+						if (stalker)
+							stalker->on_critical_wound_initiator	(this);
+					}
+				}
+			}
 		}
 	}
 
@@ -707,10 +719,36 @@ void CAI_Stalker::on_weapon_hide			(CWeapon *weapon)
 {
 }
 
+void CAI_Stalker::notify_on_wounded_or_killed	(CObject *object)
+{
+	CAI_Stalker							*stalker = smart_cast<CAI_Stalker*>(object);
+	if (!stalker)
+		return;
+
+	stalker->on_enemy_wounded_or_killed	(this);
+}
+
+void CAI_Stalker::notify_on_wounded_or_killed	()
+{
+	ALife::_OBJECT_ID					last_hit_object_id = memory().hit().last_hit_object_id();
+	if (last_hit_object_id == ALife::_OBJECT_ID(-1))
+		return;
+
+	CObject								*object = Level().Objects.net_Find(last_hit_object_id);
+	if (!object)
+		return;
+
+
+	notify_on_wounded_or_killed			(object);
+}
+
 void CAI_Stalker::wounded					(bool value)
 {
 	if (m_wounded == value)
 		return;
+
+	if (value)
+		notify_on_wounded_or_killed	();
 
 	m_wounded				= value;
 
@@ -816,8 +854,17 @@ bool CAI_Stalker::critical_wound_external_conditions_suitable()
 		return						(false);
 
 	CWeapon							*active_weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
-	if (!active_weapon || (active_weapon->animation_slot() != 2))
+	if (!active_weapon)
 		return						(false);
+
+	switch (active_weapon->animation_slot()) {
+		case 1: // pistols
+		case 2: // automatic weapon
+		case 3: // rifles
+			break;
+		default:
+			return					(false);
+	}
 
 	if (!agent_manager().member().registered_in_combat(this))
 		return						(false);
@@ -825,8 +872,16 @@ bool CAI_Stalker::critical_wound_external_conditions_suitable()
 	return							(true);
 }
 
-void CAI_Stalker::critical_wounded_state_start()
+void CAI_Stalker::critical_wounded_state_start	()
 {
 	brain().CStalkerPlanner::m_storage.set_property(StalkerDecisionSpace::eWorldPropertyCriticallyWounded,true);
+
 }
 
+void CAI_Stalker::on_critical_wound_initiator	(const CAI_Stalker *critically_wounded)
+{
+}
+
+void CAI_Stalker::on_enemy_wounded_or_killed	(const CAI_Stalker *wounded_or_killed)
+{
+}
