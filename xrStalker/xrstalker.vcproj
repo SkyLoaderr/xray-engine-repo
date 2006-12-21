@@ -894,6 +894,9 @@
 							RelativePath=".\Config\text\rus\stable_treasure_manager.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\eng\stable_treasure_manager.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\rus\string_table_enc_equipment.xml">
 						</File>
 						<File
