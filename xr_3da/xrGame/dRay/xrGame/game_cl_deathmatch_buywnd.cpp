@@ -8,6 +8,7 @@
 #include "xr_level_controller.h"
 #include "eatable_item_object.h"
 #include "Missile.h"
+#include "clsid_game.h"
 
 static	u16 SlotsToCheck [] = {
 //		APPARATUS_SLOT	,		// 4
@@ -91,11 +92,12 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 	};
 
 	//-------------------------------------------------------------------------------
+*/
 	//принудительно добавляем нож
 	u8 SectID, ItemID;
 	pCurBuyMenu->GetWeaponIndexByName("mp_wpn_knife", SectID, ItemID);
 	pCurPresetItems->push_back(GetBuyMenuItemIndex(SectID, ItemID));
-*/
+
 	//-------------------------------------------------------------------------------
 //	for (i=0; i<AdditionalPresetItems.size(); i++)
 	{
@@ -165,7 +167,8 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 		{
 //			CheckItem((*ISlot).m_pIItem, &TmpPresetItems, OnlyPreset);
 			PIItem pItem = (*ISlot).m_pIItem;
-			if (!pItem || pItem->object().getDestroy() || pItem->GetDrop()) continue;
+			if (!pItem || pItem->object().getDestroy() || pItem->GetDrop() 
+				|| pItem->object().CLS_ID == CLSID_OBJECT_W_KNIFE) continue;
 			if(pSettings->line_exist(GetBaseCostSect(), pItem->object().cNameSect()))
 			{
 				u8 Addons = 0;
@@ -184,7 +187,8 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 		for ( ; IBelt != EBelt; ++IBelt) 
 		{
 			PIItem pItem = (*IBelt);
-			if (!pItem || pItem->object().getDestroy() || pItem->GetDrop()) continue;
+			if (!pItem || pItem->object().getDestroy() || pItem->GetDrop() 
+				|| pItem->object().CLS_ID == CLSID_OBJECT_W_KNIFE) continue;
 			if(pSettings->line_exist(GetBaseCostSect(), pItem->object().cNameSect()))
 				pCurBuyMenu->ItemToBelt(pItem->object().cNameSect());
 //			CheckItem((*IBelt), &TmpPresetItems, OnlyPreset);
@@ -197,7 +201,8 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 		for ( ; IRuck != ERuck; ++IRuck) 
 		{
 			PIItem pItem = *IRuck;
-			if (!pItem || pItem->object().getDestroy() || pItem->GetDrop()) continue;
+			if (!pItem || pItem->object().getDestroy() || pItem->GetDrop() 
+				|| pItem->object().CLS_ID == CLSID_OBJECT_W_KNIFE) continue;
 			if(pSettings->line_exist(GetBaseCostSect(), pItem->object().cNameSect()))
 			{
 				u8 Addons = 0;

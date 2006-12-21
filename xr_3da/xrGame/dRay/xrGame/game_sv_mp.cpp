@@ -838,7 +838,7 @@ void	game_sv_mp::SetPlayersDefItems		(game_PlayerState* ps)
 //			WeaponDataStruct* pWpnS = NULL;
 //			if (!GetTeamItem_ByID(&pWpnS, &(TeamList[ps->team].aWeapons), *pItemID)) continue;
 			if (m_strWeaponsData->GetItemsCount() <= *pItemID) continue;
-			shared_str WeaponName = m_strWeaponsData->GetItemName(*pItemID);
+			shared_str WeaponName = m_strWeaponsData->GetItemName((*pItemID) & 0x00FF);
 //			strconcat(ItemStr, "def_item_repl_", pWpnS->WeaponName.c_str());
 			strconcat(ItemStr, "def_item_repl_", *WeaponName);
 			if (!pSettings->line_exist(RankStr, ItemStr)) continue;
@@ -859,7 +859,7 @@ void	game_sv_mp::SetPlayersDefItems		(game_PlayerState* ps)
 //		if (!GetTeamItem_ByID(&pWpnS, &(TeamList[ps->team].aWeapons), *pItemID)) continue;
 		if (m_strWeaponsData->GetItemsCount() <= *pItemID) continue;
 		
-		shared_str WeaponName = m_strWeaponsData->GetItemName(*pItemID);
+		shared_str WeaponName = m_strWeaponsData->GetItemName((*pItemID) & 0x00FF);
 		u16 AmmoID = u16(-1);
 		if (pSettings->line_exist(WeaponName, "ammo_class"))
 		{

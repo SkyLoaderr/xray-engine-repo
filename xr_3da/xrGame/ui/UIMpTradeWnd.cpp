@@ -183,3 +183,23 @@ void CUIMpTradeWnd::FillUpSubLevelItems()
 	}
 }
 
+#include "../actor.h"
+void CUIMpTradeWnd::Show()
+{
+	m_pMouseCapturer		= NULL;
+	inherited::Show			();
+
+
+	CActor *pActor			= smart_cast<CActor*>(Level().CurrentEntity());
+	if(pActor) 
+		pActor->SetWeaponHideState(INV_STATE_BUY_MENU, true);
+}
+
+void CUIMpTradeWnd::Hide()
+{
+	inherited::Hide			();
+
+	CActor *pActor			= smart_cast<CActor*>(Level().CurrentEntity());
+	if(pActor)
+		pActor->SetWeaponHideState(INV_STATE_BUY_MENU, false);
+}

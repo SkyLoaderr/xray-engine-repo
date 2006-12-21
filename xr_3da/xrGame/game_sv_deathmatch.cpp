@@ -1051,9 +1051,9 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 //		SpawnWeapon4Actor(pA->ID, pWpnS->WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
 		//-------------------------------------------------------------------------------
 //		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, pWpnS->WeaponName.c_str());
-		SpawnWeapon4Actor(pA->ID, *m_strWeaponsData->GetItemName(ItemID), u8((ItemID & 0xFF00)>>0x08)/*u8(ItemID & 0x00FF)>>0x05*/);
+		SpawnWeapon4Actor(pA->ID, *m_strWeaponsData->GetItemName(ItemID& 0x00FF), u8((ItemID & 0xFF00)>>0x08)/*u8(ItemID & 0x00FF)>>0x05*/);
 		//-------------------------------------------------------------------------------
-		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, *m_strWeaponsData->GetItemName(ItemID));
+		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, *m_strWeaponsData->GetItemName(ItemID& 0x00FF));
 	};
 
 	if (!g_sv_dm_bDMIgnore_Money_OnBuy)

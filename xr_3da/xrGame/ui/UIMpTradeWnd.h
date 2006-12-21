@@ -109,6 +109,9 @@ public:
 	virtual void				SetupPlayerItemsEnd			();
 
 	virtual const preset_items&	GetPreset					(ETradePreset idx);
+	virtual void 	Show						();
+	virtual void 	Hide						();
+
 
 private:
 	//data
