@@ -174,25 +174,3 @@ function main()
 		end
 	end
 end
-
---[[
-function PsyAntenna:add_generator(generator)
-	self.generators[generator.object:id()] = generator;
-end
-
-function PsyAntenna:remove_generator(generator)
-	self.generators[generator.object:id()] = nil;
-end
-
-class "WindGenerator"		(object_binder)
-function WindGenerator:__init(obj) super(obj)
-	g_PsyAntenna:add_generator(self);
-end
-function WindGenerator:net_destroy()
-	g_PsyAntenna:remove_generator(self);
-end
-function init(obj)
-	if obj:spawn_ini():line_exist
-	obj:bind_object			(WindGenerator(obj))
-end
-]]--
