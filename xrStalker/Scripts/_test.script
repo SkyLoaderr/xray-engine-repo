@@ -71,7 +71,6 @@ function ___main()
 --    alife():create ("wpn_knife", db.actor:position (), db.actor:level_vertex_id (),db.actor:game_vertex_id (), db.actor:id())
 
 
---	snd_radar_stop:play(db.actor, 0, sound_object.s2d)
 --	level.add_complex_effector("effector_radar_stop", 12345)
 	
 --	db.actor:activate_slot(db.actor:active_slot()+1)

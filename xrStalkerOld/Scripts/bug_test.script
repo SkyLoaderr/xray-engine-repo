@@ -74,7 +74,6 @@ end
 function action_alive:execute()
 	action_base.execute					(self)
 	
-	self.object:play_sound				(2,60000,10000)
 
 	self.object:set_sight				(look.search,nil,0);
 
