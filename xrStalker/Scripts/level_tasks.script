@@ -11,12 +11,18 @@ local level_scripts = {
 }
 
 function proceed()
+	if db.actor == nil then
+		return
+	end
 	for k, v in pairs( level_scripts ) do
 		v.proceed()
 	end
 end
 
 function process_info_portion(info_id)
+	if db.actor == nil then
+		return
+	end
 	for k, v in pairs( level_scripts ) do
 		if v.process_info_portion(info_id) then
 			return
