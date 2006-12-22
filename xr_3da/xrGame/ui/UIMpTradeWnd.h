@@ -221,8 +221,8 @@ private:
 	u32					GetGroupCount				(const shared_str& name_group, SBuyItemInfo::EItmState state)const;
 
 	void				ResetToOrigin				();
-	void				ApplyPreset					(ETradePreset idx);
-	void				StorePreset					(ETradePreset idx);
+//	void				ApplyPreset					(ETradePreset idx);
+//	void				StorePreset					(ETradePreset idx);
 	void				DumpPreset					(ETradePreset idx);
 	void				DumpAllItems				(LPCSTR reason);
 	dd_list_type		GetListType					(CUIDragDropListEx* l);
@@ -230,6 +230,9 @@ private:
 	void				UpdateCorrespondingItemsForList(CUIDragDropListEx* _list);
 	const u32			GetRank						() const;
 	void				SetInfoString				(LPCSTR str);
+public:
+	virtual	void		ApplyPreset					(ETradePreset idx);
+	virtual	void		StorePreset					(ETradePreset idx);
 };
 
 u8		GetItemAddonsState_ext		(SBuyItemInfo* item);

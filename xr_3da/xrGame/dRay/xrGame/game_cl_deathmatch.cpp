@@ -351,6 +351,11 @@ bool game_cl_Deathmatch::CanBeReady				()
 	};
 
 	m_bMenuCalledFromReady = FALSE;
+	if (pCurBuyMenu) 
+	{
+		CUIMpTradeWnd* pTradeWnd = smart_cast<CUIMpTradeWnd*>(pCurBuyMenu);
+		if (pTradeWnd) pTradeWnd->StorePreset(_preset_idx_last);
+	}
 	OnBuyMenu_Ok();
 	return true;
 };
