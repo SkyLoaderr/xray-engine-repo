@@ -169,7 +169,7 @@ bool CUITabControl::OnKeyboard(int dik, EUIMessages keyboard_action)
 	{
 		for (u32 i = 0; i < m_TabsArr.size(); ++i)
 		{
-			if (m_TabsArr[i]->GetAccelerator() == dik)
+			if (m_TabsArr[i]->IsAccelerator(dik) )
 			{
 				SetNewActiveTab(i);
 				return true;

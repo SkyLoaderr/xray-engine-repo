@@ -29,6 +29,8 @@
 #include "UITextureMaster.h"
 #include "UIDragDropListEx.h"
 
+extern int keyname_to_dik(LPCSTR);
+
 //.#define HEADER_FONT_NAME		"header"
 #define ARIAL_FONT_NAME			"arial"
 
@@ -302,13 +304,17 @@ bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3
 	InitTextureOffset	(xml_doc, path, index, pWnd);
 	InitSound			(xml_doc, path, index, pWnd);
 
-//.	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
-
 	LPCSTR accel		= xml_doc.ReadAttrib(path, index, "accel", NULL);
 	if(accel)
 	{
 		int acc				= keyname_to_dik(accel);
-		pWnd->SetAccelerator(acc);
+		pWnd->SetAccelerator(acc, 0);
+	}
+	accel				= xml_doc.ReadAttrib(path, index, "accel_ext", NULL);
+	if(accel)
+	{
+		int acc				= keyname_to_dik(accel);
+		pWnd->SetAccelerator(acc, 1);
 	}
 
 	float shadowOffsetX	= xml_doc.ReadAttribFlt(path, index, "shadow_offset_x", 0);
@@ -361,8 +367,18 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 
 	InitStatic(xml_doc, path, index, pWnd);
 
-	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
-	pWnd->SetAccelerator(accel);
+	LPCSTR accel		= xml_doc.ReadAttrib(path, index, "accel", NULL);
+	if(accel)
+	{
+		int acc				= keyname_to_dik(accel);
+		pWnd->SetAccelerator(acc, 0);
+	}
+	accel				= xml_doc.ReadAttrib(path, index, "accel_ext", NULL);
+	if(accel)
+	{
+		int acc				= keyname_to_dik(accel);
+		pWnd->SetAccelerator(acc, 1);
+	}
 
 	
 	float shadowOffsetX		= xml_doc.ReadAttribFlt(path, index, "shadow_offset_x", 0);

@@ -187,7 +187,7 @@
 	</hint>
 </btn_bag_heavy>	
 
-<shop_back_btn x="200" y="130" width="85" height="32" accel="kBACK">
+<shop_back_btn x="200" y="130" width="85" height="32" accel="kBACK" accel_ext="kESCAPE">
 	<window_name>btn_shop_back</window_name>
 	<texture_offset x="-26" y="0"/>
 	<texture>ui\ui_btn_mp_back</texture>			

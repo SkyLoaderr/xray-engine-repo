@@ -24,7 +24,8 @@ CUIButton:: CUIButton()
 	m_PushOffset.set			(PUSH_OFFSET_RIGHT, PUSH_OFFSET_DOWN);
 
 	m_HighlightColor			= 0xFFFFFFFF;
-	m_uAccelerator				= 0;
+	m_uAccelerator[0]				= 0;
+	m_uAccelerator[1]				= 0;
 
 	m_bEnableTextHighlighting	= true;
 
@@ -261,7 +262,7 @@ bool CUIButton::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
 	if (WINDOW_KEY_PRESSED == keyboard_action)
 	{
-		if (GetAccelerator() == dik)
+		if(IsAccelerator(dik) )
 		{
 			OnClick		();
 			return		true;
