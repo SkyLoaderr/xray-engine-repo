@@ -15,7 +15,7 @@ const char * const	clDefault	= "default";
 #define LA_ONLYALPHA		(1<<1)
 #define LA_TEXTCOLOR		(1<<2)
 #define LA_TEXTURECOLOR		(1<<3)
-
+//(1<<4) registered !!!
 void lanim_cont::set_defaults()
 {
 	m_lanim					= NULL;	
@@ -240,7 +240,7 @@ void CUIStatic::Update()
 			int frame;
 			u32 clr				= m_lanim_xform.m_lanim->CalculateRGB(t-m_lanim_xform.m_lanim_start_time,frame);
 			
-			EnableHeading		(true);
+			EnableHeading_int	(true);
 			float heading		= (PI_MUL_2/255.0f) * color_get_A(clr);
 			SetHeading			(heading);
 
@@ -251,6 +251,7 @@ void CUIStatic::Update()
 			_sz.set				(m_xxxRect.width()*f_scale, m_xxxRect.height()*f_scale );
 			SetWndSize			(_sz);
 		}else{
+			EnableHeading		( !!m_lanim_xform.m_lanimFlags.test(1<<4) );
 			SetWndSize			(Fvector2().set(m_xxxRect.width(),m_xxxRect.height()));
 		}
 	}

@@ -27,6 +27,7 @@ private:
 	typedef CUIWindow inherited;
 	lanim_cont				m_lanim_clr;
 	lanim_cont				m_lanim_xform;
+	void					EnableHeading_int		(bool b)				{m_bHeading = b;}
 public:
 	using CUISimpleWindow::SetWndRect;
 
@@ -151,7 +152,7 @@ public:
 	void	SetHeading						(float f)				{m_fHeading = f;};
 	float	GetHeading						()						{return m_fHeading;}
 	bool	Heading							()						{return m_bHeading;}
-	void	EnableHeading					(bool b)				{m_bHeading = b;}
+	void	EnableHeading					(bool b)				{m_bHeading = b;m_lanim_xform.m_lanimFlags.set((1<<4),b);}
 
 	// will be need by CUI3tButton
 	// Don't change order!!!!!
