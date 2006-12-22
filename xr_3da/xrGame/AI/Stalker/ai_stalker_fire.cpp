@@ -47,6 +47,8 @@
 
 #include "../../stalker_animation_names.h"
 
+#include "../../agent_corpse_manager.h"
+
 using namespace StalkerSpace;
 
 const float DANGER_DISTANCE				= 3.f;
@@ -726,6 +728,14 @@ void CAI_Stalker::notify_on_wounded_or_killed	(CObject *object)
 		return;
 
 	stalker->on_enemy_wounded_or_killed	(this);
+
+	typedef CAgentCorpseManager::MEMBER_CORPSES	MEMBER_CORPSES;
+
+	const MEMBER_CORPSES				&corpses = agent_manager().corpse().corpses();
+	if (std::find(corpses.begin(),corpses.end(),this) != corpses.end())
+		return;
+
+	agent_manager().corpse().register_corpse(this);
 }
 
 void CAI_Stalker::notify_on_wounded_or_killed	()
@@ -737,7 +747,6 @@ void CAI_Stalker::notify_on_wounded_or_killed	()
 	CObject								*object = Level().Objects.net_Find(last_hit_object_id);
 	if (!object)
 		return;
-
 
 	notify_on_wounded_or_killed			(object);
 }
@@ -875,13 +884,57 @@ bool CAI_Stalker::critical_wound_external_conditions_suitable()
 void CAI_Stalker::critical_wounded_state_start	()
 {
 	brain().CStalkerPlanner::m_storage.set_property(StalkerDecisionSpace::eWorldPropertyCriticallyWounded,true);
+}
 
+bool CAI_Stalker::can_cry_enemy_is_wounded		() const
+{
+	if (brain().current_action_id() != StalkerDecisionSpace::eWorldOperatorCombatPlanner)
+		return						(false);
+
+	typedef CActionPlannerActionScript<CAI_Stalker>	planner_type;
+	planner_type					*planner = smart_cast<planner_type*>(&brain().current_action());
+	VERIFY							(planner);
+
+	switch (planner->current_action_id()) {
+		case StalkerDecisionSpace::eWorldOperatorGetReadyToKill:
+		case StalkerDecisionSpace::eWorldOperatorGetReadyToDetour:
+		case StalkerDecisionSpace::eWorldOperatorKillEnemy:
+		case StalkerDecisionSpace::eWorldOperatorTakeCover:
+		case StalkerDecisionSpace::eWorldOperatorLookOut:
+		case StalkerDecisionSpace::eWorldOperatorHoldPosition:
+		case StalkerDecisionSpace::eWorldOperatorDetourEnemy:
+		case StalkerDecisionSpace::eWorldOperatorSearchEnemy:
+		case StalkerDecisionSpace::eWorldOperatorKillEnemyIfNotVisible:
+		case StalkerDecisionSpace::eWorldOperatorKillEnemyIfCriticallyWounded:
+			return					(true);
+		case StalkerDecisionSpace::eWorldOperatorGetItemToKill:
+		case StalkerDecisionSpace::eWorldOperatorRetreatFromEnemy:
+		case StalkerDecisionSpace::eWorldOperatorPostCombatWait:
+		case StalkerDecisionSpace::eWorldOperatorHideFromGrenade:
+		case StalkerDecisionSpace::eWorldOperatorSuddenAttack:
+		case StalkerDecisionSpace::eWorldOperatorKillEnemyIfPlayerOnThePath:
+		case StalkerDecisionSpace::eWorldOperatorKillWoundedEnemy:
+		case StalkerDecisionSpace::eWorldOperatorCriticallyWounded:
+			return					(false);
+		default : NODEFAULT;
+	}
+#ifdef DEBUG
+	return							(false);
+#endif // DEBUG
 }
 
 void CAI_Stalker::on_critical_wound_initiator	(const CAI_Stalker *critically_wounded)
 {
+	if (!can_cry_enemy_is_wounded())
+		return;
+
+	sound().play					(eStalkerSoundEnemyCriticallyWounded);
 }
 
 void CAI_Stalker::on_enemy_wounded_or_killed	(const CAI_Stalker *wounded_or_killed)
 {
+	if (!can_cry_enemy_is_wounded())
+		return;
+
+	sound().play					(eStalkerSoundEnemyKilledOrWounded);
 }

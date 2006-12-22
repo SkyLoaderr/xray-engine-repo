@@ -525,10 +525,11 @@ public:
 	IC		const CRITICAL_WOUND_WEIGHTS&critical_wound_weights						() const;
 
 private:
+			bool						can_cry_enemy_is_wounded					() const;
 			void						on_critical_wound_initiator					(const CAI_Stalker *critically_wounded);
+			void						on_enemy_wounded_or_killed					(const CAI_Stalker *wounded_or_killed);
 			void						notify_on_wounded_or_killed					(CObject *object);
 			void						notify_on_wounded_or_killed					();
-			void						on_enemy_wounded_or_killed					(const CAI_Stalker *wounded_or_killed);
 //////////////////////////////////////////////////////////////////////////
 
 public:

@@ -201,9 +201,9 @@ void CAI_Stalker::LoadSounds		(LPCSTR section)
 	sound().add						(pSettings->r_string(section,"sound_need_backup"),				100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskNeedBackup),			eStalkerSoundNeedBackup,			head_bone_name, xr_new<CStalkerSoundData>(this));
 	sound().add						(pSettings->r_string(section,"sound_running_in_danger"),		100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskMovingInDanger),		eStalkerSoundRunningInDanger,		head_bone_name, xr_new<CStalkerSoundData>(this));
 //	sound().add						(pSettings->r_string(section,"sound_walking_in_danger"),		100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskMovingInDanger),		eStalkerSoundWalkingInDanger,		head_bone_name, xr_new<CStalkerSoundData>(this));
-	sound().add						(pSettings->r_string(section,"sound_kill_wounded"),				100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskKillWounded),			eStalkerSoundKillWounded,			head_bone_name, xr_new<CStalkerSoundData>(this));
-	sound().add						(pSettings->r_string(section,"sound_enemy_critically_wounded"),	100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskEnemyCriticallyWounded),eStalkerSoundEnemyCriticallyWounded,head_bone_name, xr_new<CStalkerSoundData>(this));
-	sound().add						(pSettings->r_string(section,"sound_enemy_killed_or_wounded"),	100, SOUND_TYPE_MONSTER_TALKING,	6, u32(eStalkerSoundMaskEnemyKilledOrWounded),	eStalkerSoundEnemyKilledOrWounded,	head_bone_name, xr_new<CStalkerSoundData>(this));
+	sound().add						(pSettings->r_string(section,"sound_kill_wounded"),				100, SOUND_TYPE_MONSTER_TALKING,	5, u32(eStalkerSoundMaskKillWounded),			eStalkerSoundKillWounded,			head_bone_name, xr_new<CStalkerSoundData>(this));
+	sound().add						(pSettings->r_string(section,"sound_enemy_critically_wounded"),	100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskEnemyCriticallyWounded),eStalkerSoundEnemyCriticallyWounded,head_bone_name, xr_new<CStalkerSoundData>(this));
+	sound().add						(pSettings->r_string(section,"sound_enemy_killed_or_wounded"),	100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eStalkerSoundMaskEnemyKilledOrWounded),	eStalkerSoundEnemyKilledOrWounded,	head_bone_name, xr_new<CStalkerSoundData>(this));
 }
 
 void CAI_Stalker::reload			(LPCSTR section)
@@ -273,8 +273,6 @@ void CAI_Stalker::Die				(CObject* who)
 	else
 		sound().play				(eStalkerSoundDie);
 	
-	agent_manager().corpse().register_corpse	(this);
-
 	m_hammer_is_clutched			= m_clutched_hammer_enabled && !CObjectHandler::planner().m_storage.property(ObjectHandlerSpace::eWorldPropertyStrapped) && !::Random.randI(0,2);
 
 	inherited::Die					(who);
