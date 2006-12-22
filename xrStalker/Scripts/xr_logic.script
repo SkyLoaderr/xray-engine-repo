@@ -574,10 +574,10 @@ function pick_section_from_condlist(actor, npc, condlist)
 		if infop_conditions_met then
 			-- Условия выполнены. Независимо от того, задана ли секция, нужно проставить требуемые
 			-- infoportions:
-			if db.actor == nil then
-				abort("TRYING TO SET INFOS THEN ACTOR IS NIL")
-			end
 			for inum, infop in pairs(cond.infop_set) do
+				if db.actor == nil then
+					abort("TRYING TO SET INFOS THEN ACTOR IS NIL")
+				end
 				if infop.func then
 					if not xr_effects[infop.func] then
 						abort("object '%s': pick_section_from_condlist: function '%s' is " ..

@@ -562,3 +562,17 @@ function estats()
 		end
 	end	
 end
+
+
+
+function create_ammo(section, position, lvi, gvi, pid, num)
+	local ini = system_ini()
+
+	local num_in_box = ini:r_u32(section, "box_size")
+
+	while num > num_in_box do
+		alife():create_ammo(section, position, lvi,	gvi, pid, num_in_box)
+		num = num - num_in_box
+	end
+	alife():create_ammo(section, position, lvi,	gvi, pid, num)
+end

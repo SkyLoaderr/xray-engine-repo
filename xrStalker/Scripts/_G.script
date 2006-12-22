@@ -1112,6 +1112,8 @@ end
 function abort(fmt, ...)
 	local reason = string.format(fmt, ...)
 	assert("ERROR: " .. reason)
+	printf("ERROR: " .. reason)
+	printf("%s")
 end
 
 function set_postprocess(name_ini_file)
