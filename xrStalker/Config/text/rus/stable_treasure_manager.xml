@@ -1,5 +1,492 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+<string id="val_secret_0000_name">
+		<text>Тайник под крестом</text>
+</string>
+<string id="val_secret_0000_description">
+		<text>Под крестом, возле горы, закопал хабара чуток</text>
+</string>
+<string id="val_secret_0001_name">
+		<text>Тайник в бревне</text>
+</string>
+<string id="val_secret_0001_description">
+		<text>Сунул добро в бревно, думаю не найдут</text>
+</string>
+<string id="val_secret_0002_name">
+		<text>Рюкзак под мостом</text>
+</string>
+<string id="val_secret_0002_description">
+		<text>Под мост засунул рюкзак, пусть полежит пока</text>
+</string>	
+<string id="val_secret_0003_name">
+		<text>Машина с тайником</text>
+</string>
+<string id="val_secret_0003_description">
+		<text>Положили ящик в машину возле болота</text>
+</string>	
+<string id="val_secret_0004_name">
+		<text>Тайник в пеньке</text>
+</string>
+<string id="val_secret_0004_description">
+		<text>В пеньке тайник, хорошее место</text>
+</string>
+<string id="val_secret_0005_name">
+		<text>Ящик c припасами</text>
+</string>
+<string id="val_secret_0005_description">
+		<text>На ферме нашел отличный ящик, буду пока там хранить припасы</text>
+</string>
+<string id="val_secret_0006_name">
+		<text>Тайник в трубе</text>
+</string>
+<string id="val_secret_0006_description">
+		<text>В трубу кинул шмотки, потом заберу</text>
+</string>
+<string id="val_secret_0007_name">
+		<text>Тайник под елкой</text>
+</string>
+<string id="val_secret_0007_description">
+		<text>Спрятал рюкзак под елкой, нормальное место</text>
+</string>
+<string id="val_secret_0008_name">
+		<text>Правительственный ящик</text>
+</string>
+<string id="val_secret_0008_description">
+		<text>Новенький стащил таки ящик у бандитов, положил его в Ниве перевернутой. Говорит по виду вроде правительственный ящик. Надо будет снарядить ребят, забрать его</text>
+</string>
+<string id="val_secret_0009_name">
+		<text>Правительственный ящик</text>
+</string>
+<string id="val_secret_0009_description">
+		<text>Шмотье спрятал в ящике, под досками</text>
+</string>
+<string id="val_secret_0010_name">
+		<text>Тайник в люке</text>
+</string>
+<string id="val_secret_0010_description">
+		<text>В люке схоронил вещи, когда-нибудь пригодятся</text>
+</string>
+<string id="val_secret_0011_name">
+		<text>Рюкзак сталкера</text>
+</string>
+<string id="val_secret_0011_description">
+		<text>Бросил рюкзак под дерево, иначе не ушел бы от бандитов</text>
+</string>
+<string id="val_secret_0012_name">
+		<text>Рюкзак сталкера</text>
+</string>
+<string id="val_secret_0012_description">
+		<text>Бросил рюкзак под дерево, иначе не ушел бы от бандитов</text>
+</string>
+<string id="val_secret_0013_name">
+		<text>Спрятаный сейф</text>
+</string>
+<string id="val_secret_0013_description">
+		<text>Все что спер у Борова, припрятал в сейфе, что под елкой. Теперь переждать надо, пока они на нервах все</text>
+</string>
+<string id="val_secret_0014_name">
+		<text>Склад в вагончике</text>
+</string>
+<string id="val_secret_0014_description">
+		<text>Все запасы прячем в вагончике, неплохое место</text>
+</string>
+<string id="val_secret_0015_name">
+		<text>Тайное место в трубе</text>
+</string>
+<string id="val_secret_0015_description">
+		<text>Еле залез в трубу, под дорогой, будет теперь где рюкзак прятать</text>
+</string>
+<string id="val_secret_0016_name">
+		<text>Ящик с добром</text>
+</string>
+<string id="val_secret_0016_description">
+		<text>В ящик закинул добро, потом заберу</text>
+</string>
+<string id="val_secret_0017_name">
+		<text>Тайник за трубой</text>
+</string>
+<string id="val_secret_0017_description">
+		<text>Прячу хабар за трубой. Сложно добираться, зато не стырят</text>
+</string>
+<string id="val_secret_0018_name">
+		<text>Тайник в электро-щитке</text>
+</string>
+<string id="val_secret_0018_description">
+		<text>Сныкал вещи за электро-щиток, не найдут</text>
+</string>
+<string id="val_secret_0019_name">
+		<text>Ящик-тайник</text>
+</string>
+<string id="val_secret_0019_description">
+		<text>Все что нашел закинул в ящик, потом заберу</text>
+</string>
+<string id="val_secret_0020_name">
+		<text>Брошенный рюкзак</text>
+</string>
+<string id="val_secret_0020_description">
+		<text>Скинул тут рюкзак, так полегче будет</text>
+</string>
+<string id="val_secret_0021_name">
+		<text>Ящик в вагончике</text>
+</string>
+<string id="val_secret_0021_description">
+		<text>В ящик закинул добро, потом заберу</text>
+</string>
+<string id="val_secret_0022_name">
+		<text>Сейф на бензоколонке</text>
+</string>
+<string id="val_secret_0022_description">
+		<text>Нашел сейф на бензоколонке, спрятал там добро, вроде редко кто здесь ходит</text>
+</string>
+<string id="val_secret_0023_name">
+		<text>Ящик</text>
+</string>
+<string id="val_secret_0023_description">
+		<text>Ящик затащили на цистерну</text>
+</string>
+<string id="val_secret_0024_name">
+		<text>Сейф на бензоколонке</text>
+</string>
+<string id="val_secret_0024_description">
+		<text>Спрятал припасы в сейф на бензоколонке</text>
+</string>
+<string id="val_secret_0025_name">
+		<text>Ящик в машине</text>
+</string>
+<string id="val_secret_0025_description">
+		<text>В лагере бандитов, в машине какой-то ящик лежит, надо незаметно пробраться, чую там есть чем разжиться</text>
+</string>
+<string id="val_secret_0026_name">
+		<text>Ящик в тайнике</text>
+</string>
+<string id="val_secret_0026_description">
+		<text>Поставил ящик в тайник, место надежное</text>
+</string>
+<string id="val_secret_0027_name">
+		<text>Оставленный рюкзак</text>
+</string>
+<string id="val_secret_0027_description">
+		<text>Оставил рюкзак в заброшенном здании, хорошо, никого рядом нет</text>
+</string>
+<string id="val_secret_0028_name">
+		<text>Тайник Борова</text>
+</string>
+<string id="val_secret_0028_description">
+		<text>Добро будем хранить в сейфе, в незаметном месте. Не сегодня завтра военные придут, всем тут фитиль вставят, ну да рыскать долго они не будут, так что самое ценное останется у меня</text>
+</string>
+<string id="val_secret_0029_name">
+		<text>Рюкзак в тайном месте</text>
+</string>
+<string id="val_secret_0029_description">
+		<text>Припрятал рюкзак возле зданя, хорошо, никого рядом нет</text>
+</string>
+<string id="val_secret_0030_name">
+		<text>Незаметный ящик</text>
+</string>
+<string id="val_secret_0030_description">
+		<text>Сунул хабар в незаметный ящик, потом заберу</text>
+</string>
+<string id="val_secret_0031_name">
+		<text>Спрятанный рюкзак</text>
+</string>
+<string id="val_secret_0031_description">
+		<text>Рюкзак спрятал под машиной, туда никто не сунется</text>
+</string>
+<string id="val_secret_0032_name">
+		<text>Тайник в машине</text>
+</string>
+<string id="val_secret_0032_description">
+		<text>Хабар спрятал в машине под боком у бандитов, времени не было искать что получше</text>
+</string>
+<string id="x18_secret_0000_name">
+		<text>Тайник Копченого</text>
+</string>
+<string id="x18_secret_0000_description">
+		<text>В подземной лаборатории, Копченый все сложил в сейфе. Место неплохое, ни у кого ключей от лаборатории нет. Одна напасть, камни вдруг ни с того ни с сего в воздухе летают, говорили кого-то пришибли</text>
+</string>
+<string id="x18_secret_0001_name">
+		<text>Спрятанный рюкзак</text>
+</string>
+<string id="x18_secret_0001_description">
+		<text>Припрятал рюкзак, пока изучал лабораторию. Потом заберу</text>
+</string>
+<string id="bar_secret_0000_name">
+		<text>Спрятанный рюкзак</text>
+</string>
+<string id="bar_secret_0000_description">
+		<text>Спрятал рюкзак возле базы долга. Потом заберу</text>
+</string>
+<string id="bar_secret_0001_name">
+		<text>Оставленный рюкзак</text>
+</string>
+<string id="bar_secret_0001_description">
+		<text>За мной погналась большая стая собак, если бы рюкзак не оставил, то до заставы не добежал бы</text>
+</string>
+<string id="bar_secret_0002_name">
+		<text>Тайник под крестом</text>
+</string>
+<string id="bar_secret_0002_description">
+		<text>Все что осталось закопали под крестом</text>
+</string>
+<string id="bar_secret_0003_name">
+		<text>Рюкзак</text>
+</string>
+<string id="bar_secret_0003_description">
+		<text>Скинул тут рюкзак, так полегче будет</text>
+</string>
+<string id="bar_secret_0004_name">
+		<text>Склад в бункере</text>
+</string>
+<string id="bar_secret_0004_description">
+		<text>Снаряга заставы Долга, хранится в бункере, но за ящиком никто не следит</text>
+</string>
+<string id="bar_secret_0005_name">
+		<text>Тайник</text>
+</string>
+<string id="bar_secret_0005_description">
+		<text>Видел как долговец что-то сунул в трубу, возле заставы</text>
+</string>
+<string id="bar_secret_0006_name">
+		<text>Тайник под крестом</text>
+</string>
+<string id="bar_secret_0006_description">
+		<text>Это все ему принадлежало, пусть пока тут и полежит</text>
+</string>
+<string id="bar_secret_0007_name">
+		<text>Рюкзак</text>
+</string>
+<string id="bar_secret_0007_description">
+		<text>Иду в бар, рюкзак оставил в ангаре</text>
+</string>
+<string id="bar_secret_0008_name">
+		<text>Электрощиток с тайником</text>
+</string>
+<string id="bar_secret_0008_description">
+		<text>Говорят на территории Долга, в электрощитке, что-то ценное лежит</text>
+</string>
+<string id="bar_secret_0009_name">
+		<text>Тайник на башне</text>
+</string>
+<string id="bar_secret_0009_description">
+		<text>Наверху башни возле Долга запихнул ящичек так, что никто не заметит</text>
+</string>
+<string id="bar_secret_0010_name">
+		<text>Тайник</text>
+</string>
+<string id="bar_secret_0010_description">
+		<text>Спрятал в трубе под лестницей</text>
+</string>
+<string id="bar_secret_0011_name">
+		<text>Тайник Арни</text>
+</string>
+<string id="bar_secret_0011_description">
+		<text>Недалеко от бара схоронил добро, за аномалиями, никто не подберется. Да и как открывать не знают, а все просто, там поддеть дверцу надо, сразу и откроется</text>
+</string>
+<string id="bar_secret_0012_name">
+		<text>Тайник</text>
+</string>
+<string id="bar_secret_0012_description">
+		<text>Недалеко от бара схоронил добро</text>
+</string>
+<string id="bar_secret_0013_name">
+		<text>Ящик</text>
+</string>
+<string id="bar_secret_0013_description">
+		<text>Возле бара в ящике</text>
+</string>
+<string id="bar_secret_0014_name">
+		<text>Ящичек</text>
+</string>
+<string id="bar_secret_0014_description">
+		<text>В закоулке, возле бара, припрятал ящичек</text>
+</string>
+<string id="bar_secret_0015_name">
+		<text>Тайник</text>
+</string>
+<string id="bar_secret_0015_description">
+		<text>Закопал под крестом, за елками</text>
+</string>
+<string id="bar_secret_0016_name">
+		<text>Тайник</text>
+</string>
+<string id="bar_secret_0016_description">
+		<text>Под крестом, недалеко от прохода к Дикой территории</text>
+</string>
+<string id="bar_secret_0017_name">
+		<text>Ящичек</text>
+</string>
+<string id="bar_secret_0017_description">
+		<text>В трубе, возле Арены, припрятал ящичек c антирадом</text>
+</string>
+<string id="bar_secret_0018_name">
+		<text>Тайник</text>
+</string>
+<string id="bar_secret_0018_description">
+		<text>Под башней спрятал шмотье в трубе</text>
+</string>
+<string id="bar_secret_0019_name">
+		<text>Тайник</text>
+</string>
+<string id="bar_secret_0019_description">
+		<text>Под крестом тайник</text>
+</string>
+<string id="ros_secret_0000_name">
+		<text>Спрятанный рюкзак</text>
+</string>
+<string id="ros_secret_0000_description">
+		<text>Припрятал рюкзак, за железным листом</text>
+</string>
+<string id="ros_secret_0001_name">
+		<text>Тайник под крестом</text>
+</string>
+<string id="ros_secret_0001_description">
+		<text>Приховал добро под крестом</text>
+</string>
+<string id="ros_secret_0002_name">
+		<text>Ящик под домиком</text>
+</string>
+<string id="ros_secret_0002_description">
+		<text>Спрятал кое-что в ящике, под домиком. Не забыть</text>
+</string>
+<string id="ros_secret_0003_name">
+		<text>Рюкзак сталкера</text>
+</string>
+<string id="ros_secret_0003_description">
+		<text>Сунул рюкзак под ступеньки, а там эти гады появились. Блин, как бы достать</text>
+</string>
+<string id="ros_secret_0004_name">
+		<text>Тайник за деревом</text>
+</string>
+<string id="ros_secret_0004_description">
+		<text>Тут в углу, за деревом сейф полузакопанный, вот тут мое барахлишко и побудет</text>
+</string>
+<string id="ros_secret_0005_name">
+		<text>Тайник в гараже</text>
+</string>
+<string id="ros_secret_0005_description">
+		<text>Все что зхватили во время рейда, спрятали в гараже в ящике</text>
+</string>
+<string id="ros_secret_0006_name">
+		<text>Спрятанный ящик</text>
+</string>
+<string id="ros_secret_0006_description">
+		<text>За будкой в ящике припрятал вещички</text>
+</string>
+<string id="ros_secret_0007_name">
+		<text>Рюкзак в тайнике</text>
+</string>
+<string id="ros_secret_0007_description">
+		<text>Сунул рюкзак в дырку, сверху вроде не заметно</text>
+</string>
+<string id="ros_secret_0008_name">
+		<text>Ящик в уромном месте</text>
+</string>
+<string id="ros_secret_0008_description">
+		<text>Ящичек припрятал в укромном месте</text>
+</string>
+<string id="ros_secret_0009_name">
+		<text>Тайник сталкера</text>
+</string>
+<string id="ros_secret_0009_description">
+		<text>Под крышей лежит мой рюкзак. Это на черный день</text>
+</string>
+<string id="ros_secret_0010_name">
+		<text>Сейф в доме</text>
+</string>
+<string id="ros_secret_0010_description">
+		<text>Говорят в этом домике сейф есть, а в нем что-то припрятано</text>
+</string>
+<string id="ros_secret_0011_name">
+		<text>Тайник в трубе</text>
+</string>
+<string id="ros_secret_0011_description">
+		<text>Спрятано в домике, в трубе. Осторожно там все фонит</text>
+</string>
+<string id="ros_secret_0012_name">
+		<text>Спятанный ящичек</text>
+</string>
+<string id="ros_secret_0012_description">
+		<text>О чем договорились, возьмешь в ящичке, туда обычно никто не заглядывает</text>
+</string>
+<string id="ros_secret_0013_name">
+		<text>Тайник под крестом</text>
+</string>
+<string id="ros_secret_0013_description">
+		<text>Под крестом спрятал, в закоулке</text>
+</string>
+<string id="ros_secret_0014_name">
+		<text>Тайник под бетоном</text>
+</string>
+<string id="ros_secret_0014_description">
+		<text>Лишние припасы спрятали на стройке, под бетоном</text>
+</string>
+<string id="ros_secret_0015_name">
+		<text>Тайник Счастливчика</text>
+</string>
+<string id="ros_secret_0015_description">
+		<text>Хабар будем складывать в ящике на стройке, на случай если ноги надо будет уносить</text>
+</string>
+<string id="ros_secret_0016_name">
+		<text>Нычка</text>
+</string>
+<string id="ros_secret_0016_description">
+		<text>На стройке спрятал, в закоулке</text>
+</string>
+<string id="ros_secret_0017_name">
+		<text>Тайник в трубе</text>
+</string>
+<string id="ros_secret_0017_description">
+		<text>Запихал все в какую-то трубу, потом заберем</text>
+</string>
+<string id="ros_secret_0018_name">
+		<text>Ящик возле стройки</text>
+</string>
+<string id="ros_secret_0018_description">
+		<text>Недалеко от стройки припрятал что было в ящик</text>
+</string>
+<string id="ros_secret_0019_name">
+		<text>Ящик на кране</text>
+</string>
+<string id="ros_secret_0019_description">
+		<text>Затащили ящик в кабину крана</text>
+</string>
+<string id="ros_secret_0020_name">
+		<text>Тайник в люке</text>
+</string>
+<string id="ros_secret_0020_description">
+		<text>В углу, за жд закрыл свое добро в люке</text>
+</string>
+<string id="ros_secret_0021_name">
+		<text>Брошенный рюкзак</text>
+</string>
+<string id="ros_secret_0021_description">
+		<text>Полез за артефактом и попал в аномалию, еле иду. Рюкзак скинул, в углу, за жд</text>
+</string>
+<string id="ros_secret_0022_name">
+		<text>Ящичек под крышей</text>
+</string>
+<string id="ros_secret_0022_description">
+		<text>Наверху, под крышей возле вышки запихнул ящичек, чтоб никто не заметил</text>
+</string>
+<string id="ros_secret_0023_name">
+		<text>Тайник в трубе</text>
+</string>
+<string id="ros_secret_0023_description">
+		<text>То, что нашли, спрятали в трубе, недалеко от стройки</text>
+</string>
+<string id="ros_secret_0024_name">
+		<text>Тайник</text>
+</string>
+<string id="ros_secret_0024_description">
+		<text>Сунул добро в бревно, думаю не найдут</text>
+</string>
+<string id="ros_secret_0025_name">
+		<text>Рюкзак</text>
+</string>
+<string id="ros_secret_0025_description">
+		<text>Нычканул рюкзак возле крана</text>
+</string>
+
 	<string id="mil_secret_0000_name">
 		<text>Тайник в бревне</text>
 	</string>
@@ -336,4 +823,5 @@
 	<string id="pri_secret_0004_description">
 		<text>Последнее что было известно о нем, это то, что выжил только он один после выжигателя. Запасы оставил в каком-то бывшем универмаге и двинул дальше. Все пошло не так, как планировалось, а ведь это был лучший лидер Свободы, за всю нашу историю.</text>
 	</string>
+	
 </string_table>
