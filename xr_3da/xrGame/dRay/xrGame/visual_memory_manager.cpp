@@ -30,6 +30,7 @@
 
 #ifndef MASTER_GOLD
 #	include "clsid_game.h"
+#	include "ai_debug.h"
 #endif // MASTER_GOLD
 
 struct SRemoveOfflinePredicate {
