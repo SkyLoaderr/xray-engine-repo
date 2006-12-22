@@ -1,5 +1,476 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="esc_secret_0000_name">
+		<text>Вагон над мостом</text>
+	</string>
+	<string id="esc_secret_0000_descr">
+		<text>Когда уходил от бандитов, спрятал добро в вагоне. Не забыть.</text>
+	</string>
+	<string id="esc_secret_0001_name">
+		<text>Вещи погибшего в аномалии</text>
+	</string>
+	<string id="esc_secret_0001_descr">
+		<text>Видел, как возле железнодорожного туннеля в лесу накрылся в аномалии какой-то сталкер, вроде шмотки неплохие были.</text>
+	</string>
+	<string id="esc_secret_0002_name">
+		<text>Крест у лагеря бандюков</text>
+	</string>
+	<string id="esc_secret_0002_descr">
+		<text>Спрятал хабар под крестом, возле лагеря бандитов.</text>
+	</string>
+	<string id="esc_secret_0003_name">
+		<text>Бандитский склад</text>
+	</string>
+	<string id="esc_secret_0003_descr">
+		<text>Перехваченный бандитами ящик обнаружен на чердаке центрального дома, надо подготовить отряд и отбить его.</text>
+	</string>
+	<string id="esc_secret_0004_name">
+		<text>Под крестом</text>
+	</string>
+	<string id="esc_secret_0004_descr">
+		<text>Тайник под крестом.</text>
+	</string>
+	<string id="esc_secret_0005_name">
+		<text>Убежище на чердаке</text>
+	</string>
+	<string id="esc_secret_0005_descr">
+		<text>Рюкзак сунул на чердак, на первое время сойдет.</text>
+	</string>
+	<string id="esc_secret_0006_name">
+		<text>Сейф на ферме</text>
+	</string>
+	<string id="esc_secret_0006_descr">
+		<text>На ферме нашел полузакопанный сейф, буду пока там хранить добро.</text>
+	</string>
+	<string id="esc_secret_0007_name">
+		<text>Контейнер в вагоне</text>
+	</string>
+	<string id="esc_secret_0007_descr">
+		<text>Говорят, в вагоне на мосту кто-то что-то прячет, надо заглянуть на обратном пути.</text>
+	</string>
+	<string id="esc_secret_0008_name">
+		<text>Товар сталкера</text>
+	</string>
+	<string id="esc_secret_0008_descr">
+		<text>Спрятал товар под самой крышей, в домике возле моста.</text>
+	</string>
+	<string id="esc_secret_0009_name">
+		<text>Вещи около моста</text>
+	</string>
+	<string id="esc_secret_0009_descr">
+		<text>Шмотье спрятал в одном из ящиков. Недалеко от моста.</text>
+	</string>
+	<string id="esc_secret_0010_name">
+		<text>Рюкзак возле деревни</text>
+	</string>
+	<string id="esc_secret_0010_descr">
+		<text>Недалеко от лагеря новичков сгинул какой-то сталкер, надо бы посмотреть его добро.</text>
+	</string>
+	<string id="esc_secret_0011_name">
+		<text>Чердак в деревне</text>
+	</string>
+	<string id="esc_secret_0011_descr">
+		<text>На чердаке тайник, узнал у Лихого.</text>
+	</string>
+	<string id="esc_secret_0012_name">
+		<text>Удобное место</text>
+	</string>
+	<string id="esc_secret_0012_descr">
+		<text>Нашел на чердаке тайник, подожду, пока кто-то туда что-то положит.</text>
+	</string>
+	<string id="esc_secret_0013_name">
+		<text>Тайник Ворпала</text>
+	</string>
+	<string id="esc_secret_0013_descr">
+		<text>На чердаке тайник, узнал от Ворпала.</text>
+	</string>
+	<string id="esc_secret_0014_name">
+		<text>Ценности командира</text>
+	</string>
+	<string id="esc_secret_0014_descr">
+		<text>Говорят у командира блокпоста есть хитрый ящик в кабинете, и там ценного добра навалом.</text>
+	</string>
+	<string id="esc_secret_0015_name">
+		<text>У сельской дороги</text>
+	</string>
+	<string id="esc_secret_0015_descr">
+		<text>Недалеко от лагеря новичков сгинул какой-то сталкер, надо бы посмотреть его добро.</text>
+	</string>
+	<string id="esc_secret_0016_name">
+		<text>Воровской чердак</text>
+	</string>
+	<string id="esc_secret_0016_descr">
+		<text>На чердаке у бандитов спрятал хабар, пока их не было. Теперь бы улучить момент и забрать.</text>
+	</string>
+	<string id="esc_secret_0017_name">
+		<text>Газовая труба</text>
+	</string>
+	<string id="esc_secret_0017_descr">
+		<text>Заныкал добро в трубе, недалеко от фермы.</text>
+	</string>
+	<string id="esc_secret_0018_name">
+		<text>Вещи в грузовике</text>
+	</string>
+	<string id="esc_secret_0018_descr">
+		<text>Скинул рюкзак возле трупов из перевернутого грузовика, надо поскорее забрать.</text>
+	</string>
+	<string id="esc_secret_0019_name">
+		<text>Вышка на КПП</text>
+	</string>
+	<string id="esc_secret_0019_descr">
+		<text>Нычканул ящик на вышке.</text>
+	</string>
+	
+	<string id="gar_secret_0000_name">
+		<text>Бандитский схрон</text>
+	</string>
+	<string id="gar_secret_0000_descr">
+		<text>Видел, как бандит прятал свое добро в ангаре в ящике. Как бы это тихо упереть?</text>
+	</string>																		
+	<string id="gar_secret_0001_name">
+		<text>Старый кран</text>
+	</string>
+	<string id="gar_secret_0001_descr">
+		<text>Тайник в трубе.</text>
+	</string>
+	<string id="gar_secret_0002_name">
+		<text>Вещи Гризли</text>
+	</string>
+	<string id="gar_secret_0002_descr">
+		<text>На Свалке в железнодорожном туннеле за дизелем со всем своим барахлом накрылся Гризли. Жаль парня.</text>
+	</string>
+	<string id="gar_secret_0003_name">
+		<text>Труба на Северной куче</text>
+	</string>
+	<string id="gar_secret_0003_descr">
+		<text>Хабар прятанул в трубе на свалке.</text>
+	</string>
+	<string id="gar_secret_0004_name">
+		<text>Заначка в металлоломе</text>
+	</string>
+	<string id="gar_secret_0004_descr">
+		<text>Вещи лежат на свалке, в одной трубе.</text>
+	</string>
+	<string id="gar_secret_0005_name">
+		<text>Чугунка возле цистерн</text>
+	</string>
+	<string id="gar_secret_0005_descr">
+		<text>Спрятал барахло в металлической трубе возле двух цистерн. Надо бы забрать, но некогда.</text>
+	</string>
+	<string id="gar_secret_0006_name">
+		<text>Труба на Восточной куче</text>
+	</string>
+	<string id="gar_secret_0006_descr">
+		<text>Среди радиоактивного мусора, где мало кто шастает, спрятаны кое-какие полезные вещи.</text>
+	</string>
+	<string id="gar_secret_0007_name">
+		<text>Ничейный рюкзак</text>
+	</string>
+	<string id="gar_secret_0007_descr">
+		<text>В низине валяется чей-то рюкзак, вокруг аномалии. Как бы до него добраться?</text>
+	</string>
+	<string id="gar_secret_0008_name">
+		<text>Вещи убитого</text>
+	</string>
+	<string id="gar_secret_0008_descr">
+		<text>Примочили братка на болоте, там мы его и прикопали. А хабарок его под крестом оставили, не до того было.</text>
+	</string>
+	<string id="gar_secret_0009_name">
+		<text>Трухлявый пень</text>
+	</string>
+	<string id="gar_secret_0009_descr">
+		<text>В пеньке тайник, хорошее место.</text>
+	</string>								
+	<string id="gar_secret_0010_name">
+		<text>Бревно в лесу</text>
+	</string>
+	<string id="gar_secret_0010_descr">
+		<text>Сунул добро в бревно, думаю не найдут.</text>
+	</string>	
+	<string id="gar_secret_0011_name">
+		<text>Склад группы Стрелка</text>
+	</string>
+	<string id="gar_secret_0011_descr">
+		<text>Петренко передал, что есть информация про тайник группы Стрелка на Свалке. Тут на равнине в низине должен быть люк, рассказал как его надо хитро открывать. Как успокоится все, надо туда смотаться.</text>
+	</string>	
+	<string id="gar_secret_0012_name">
+		<text>Тайник в машине</text>
+	</string>
+	<string id="gar_secret_0012_descr">
+		<text>Запрятал в машину, Длинный говорил, хорошее место.</text>
+	</string>
+	<string id="gar_secret_0013_name">
+		<text>Рюкзак сталкера в автобусе</text>
+	</string>
+	<string id="gar_secret_0013_descr">
+		<text>В автобусе положил рюкзак, вроде незаметно.</text>
+	</string>
+	<string id="gar_secret_0014_name">
+		<text>Сортирные запасы</text>
+	</string>
+	<string id="gar_secret_0014_descr">
+		<text>Запас сложил в ящике, в странном домике за углом. До сих пор не пойму, для чего та постройка.</text>
+	</string>
+	<string id="gar_secret_0015_name">
+		<text>Сейф на Южной куче</text>
+	</string>
+	<string id="gar_secret_0015_descr">
+		<text>На куче мусора полузакопанный сейф, там то оно все и лежит.</text>
+	</string>
+	<string id="gar_secret_0016_name">
+		<text>Схрон в металлоломе</text>
+	</string>
+	<string id="gar_secret_0016_descr">
+		<text>На куче мусора в трубе положил хабар.</text>
+	</string>
+	<string id="gar_secret_0017_name">
+		<text>Запас в ящике</text>
+	</string>
+	<string id="gar_secret_0017_descr">
+		<text>Набрел на ящик, скинул в него "лишний вес".</text>
+	</string>
+	<string id="gar_secret_0018_name">
+		<text>Труба у автобуса</text>
+	</string>
+	<string id="gar_secret_0018_descr">
+		<text>Хабар сунул в трубу на свалке.</text>
+	</string>
+	<string id="gar_secret_0019_name">
+		<text>Рюкзак в развалинах</text>
+	</string>
+	<string id="gar_secret_0019_descr">
+		<text>В развалинах хорошо запрятал рюкзак.</text>
+	</string>
+	<string id="gar_secret_0020_name">
+		<text>Ящик на блокпосте</text>
+	</string>
+	<string id="gar_secret_0020_descr">
+		<text>Пока долговцы стрелялись, припрятал хабар в вагончике. Надо как-то зайти, забрать.</text>
+	</string>
+	<string id="gar_secret_0021_name">
+		<text>Рюкзак Дохляка</text>
+	</string>
+	<string id="gar_secret_0021_descr">
+		<text>Говорят, Дохляк на Свалке скопытился, надо наведаться, хабар глянуть.</text>
+	</string>
+	<string id="gar_secret_0022_name">
+		<text>Авоська в люке</text>
+	</string>
+	<string id="gar_secret_0022_descr">
+		<text>В люке пока спрячу добро, авось не найдут пока.</text>
+	</string>
+	<string id="gar_secret_0023_name">
+		<text>Под ковшом</text>
+	</string>
+	<string id="gar_secret_0023_descr">
+		<text>Возле эскаватора кто-то сгинул в аномалии, рюкзак видно, а достать тяжело.</text>
+	</string>
+	<string id="gar_secret_0024_name">
+		<text>Заначка под бетонными блоками</text>
+	</string>
+	<string id="gar_secret_0024_descr">
+		<text>Еле пролез под балками, зато хорошо рюкзак спрятал, никто сюда не полезет.</text>
+	</string>
+				
+	<string id="agr_secret_0000_name">
+		<text>Тайник Серого</text>
+	</string>
+	<string id="agr_secret_0000_descr">
+		<text>Тайник наш пока в туннеле, все добро лежит в трубе. Там хорошо, мало кто про место знает, да и аномалии отобьют охоту лезть.</text>
+	</string>
+	<string id="agr_secret_0001_name">
+		<text>Дырявый пень</text>
+	</string>
+	<string id="agr_secret_0001_descr">
+		<text>В пеньке спрятал, возле туннеля. Дырка там удобная. </text>
+	</string>	
+	<string id="agr_secret_0002_name">
+		<text>Заначка под крестом</text>
+	</string>
+	<string id="agr_secret_0002_descr">
+		<text>Под крестом, возле куста, закопал хабара чуток.</text>
+	</string>
+	<string id="agr_secret_0003_name">
+		<text>Рюкзак под деревом</text>
+	</string>
+	<string id="agr_secret_0003_descr">
+		<text>Скинул рюкзак под поваленным деревом.</text>
+	</string>	
+	<string id="agr_secret_0004_name">
+		<text>Рюкзак трубочиста</text>
+	</string>
+	<string id="agr_secret_0004_descr">
+		<text>Рюкзак засунул в трубу, возле фабрики. Никто не найдет.</text>
+	</string>
+	<string id="agr_secret_0005_name">
+		<text>Ящик на крыше</text>
+	</string>
+	<string id="agr_secret_0005_descr">
+		<text>Ящик снычковал на крыше фабрики, там никто не увидит. Только под дождем заржавеет.</text>
+	</string>	
+	<string id="agr_secret_0006_name">
+		<text>Рюкзак пьяницы</text>
+	</string>
+	<string id="agr_secret_0006_descr">
+		<text>Стреляли, пришлось бросить рюкзак под вагоном, за колесом. Зато ушел. Потом вернусь, заберу.</text>
+	</string>	
+	<string id="agr_secret_0007_name">
+		<text>У трех цистерн</text>
+	</string>
+	<string id="agr_secret_0007_descr">
+		<text>Под крестом спрятал, за цистернами. Покопай немного, только не увлекайся.</text>
+	</string>	
+	<string id="agr_secret_0008_name">
+		<text>Рюкзак в иллюминаторе</text>
+	</string>
+	<string id="agr_secret_0008_descr">
+		<text>На фабрике положил рюкзак наверху, так что снизу не увидать. Только вот точно не помню, что в нем.</text>
+	</string>	
+	<string id="agr_secret_0009_name">
+		<text>Радиоактивный ящик</text>
+	</string>
+	<string id="agr_secret_0009_descr">
+		<text>Внутри фабрики, в ящике спрятал вещички.</text>
+	</string>	
+	<string id="agr_secret_0010_name">
+		<text>Ящик в пролете</text>
+	</string>
+	<string id="agr_secret_0010_descr">
+		<text>Тайник под лестницей, в ящике.</text>
+	</string>	
+	<string id="agr_secret_0011_name">
+		<text>Фабричный ящик</text>
+	</string>
+	<string id="agr_secret_0011_descr">
+		<text>В ящичке спрятал, все равно никто проверять не будет.</text>
+	</string>	
+	<string id="agr_secret_0012_name">
+		<text>Сумка на опоре</text>
+	</string>
+	<string id="agr_secret_0012_descr">
+		<text>Скинул сумку за окном.</text>
+	</string>	
+	<string id="agr_secret_0013_name">
+		<text>Ящик мусора</text>
+	</string>
+	<string id="agr_secret_0013_descr">
+		<text>Ящик положил в мусорном контейнере.</text>
+	</string>	
+	<string id="agr_secret_0014_name">
+		<text>Сейф под деревом</text>
+	</string>
+	<string id="agr_secret_0014_descr">
+		<text>Под поваленым деревом нашел сейф, пока буду тут все прятать.</text>
+	</string>	
+	<string id="agr_secret_0015_name">
+		<text>Вещи в трубе</text>
+	</string>
+	<string id="agr_secret_0015_descr">
+		<text>В трубу кинул шмотки, потом заберу. Только бы не намокли.</text>
+	</string>	
+	<string id="agr_secret_0016_name">
+		<text>Радиоактивная труба</text>
+	</string>
+	<string id="agr_secret_0016_descr">
+		<text>Добро в старой трубе, если интересует. Я туда не полезу.</text>
+	</string>	
+	<string id="agr_secret_0017_name">
+		<text>Завал</text>
+	</string>
+	<string id="agr_secret_0017_descr">
+		<text>Сбежал с базы, ну их в баню, лезть под пули сталкеров. Спрятал шмотки в трубу, в завале. Пересижу пока не улетят, потом заберу.</text>
+	</string>	
+	<string id="agr_secret_0018_name">
+		<text>Сейф под кустом</text>
+	</string>
+	<string id="agr_secret_0018_descr">
+		<text>Под кустом полузакопанный сейф, тут все прячу.</text>
+	</string>
+	<string id="agr_secret_0019_name">
+		<text>Архивный бокс</text>
+	</string>
+	<string id="agr_secret_0019_descr">
+		<text>Ящик обнаружили под опорой, кто-то его тащил аж с НИИ. Подождем вертолета, тогда заберем.</text>
+	</string>	
+	<string id="agr_secret_0020_name">
+		<text>Под люком</text>
+	</string>
+	<string id="agr_secret_0020_descr">
+		<text>В железной байдовине спрятал вещички.</text>
+	</string>	
+	<string id="agr_secret_0021_name">
+		<text>Под кустом у стены</text>
+	</string>
+	<string id="agr_secret_0021_descr">
+		<text>Под кустом полузакопанный сейф, тут все прячу.</text>
+	</string>	
+	<string id="agr_secret_0022_name">
+		<text>Институтский ящик</text>
+	</string>
+	<string id="agr_secret_0022_descr">
+		<text>Удобный ящик, чтоб лишнее барахло сбрасывать.</text>
+	</string>	
+	<string id="agr_secret_0023_name">
+		<text>Агросейф</text>
+	</string>
+	<string id="agr_secret_0023_descr">
+		<text>В сейфе спрятал, а пришли военные. Не достать теперь добро.</text>
+	</string>	
+	<string id="agr_secret_0024_name">
+		<text>Кузов грузовика</text>
+	</string>
+	<string id="agr_secret_0024_descr">
+		<text>В трубу кинул шмотки, потом заберу.</text>
+	</string>
+	<string id="agr_secret_0025_name">
+		<text>Гнилое бревно</text>
+	</string>
+	<string id="agr_secret_0025_descr">
+		<text>Сунул добро в бревно, думаю не найдут.</text>
+	</string>	
+	<string id="agr_secret_0026_name">
+		<text>Ящик завхоза</text>
+	</string>
+	<string id="agr_secret_0026_descr">
+		<text>Удобный ящик, чтоб лишнее барахло сбрасывать.</text>
+	</string>				
+	<string id="agr_secret_0027_name">
+		<text>Инвентарь слесаря</text>
+	</string>
+	<string id="agr_secret_0027_descr">
+		<text>Удобный ящик, чтоб лишнее барахло сбрасывать.</text>
+	</string>
+		
+	<string id="agr_u_secret_0000_name">
+		<text>Бандитский общак</text>
+	</string>
+	<string id="agr_u_secret_0000_descr">
+		<text>Бандиты что-то прячут под трубой, надо наведаться. Из разговора ясно, что там их запасы.</text>
+	</string>
+	<string id="agr_u_secret_0001_name">
+		<text>Рюкзак в закоулке</text>
+	</string>
+	<string id="agr_u_secret_0001_descr">
+		<text>Спрятал рюкзак за кусками бетона, пойду налегке. Лучше буду голодный, но живой.</text>
+	</string>
+	<string id="agr_u_secret_0002_name">
+		<text>Ящик кровососа</text>
+	</string>
+	<string id="agr_u_secret_0002_descr">
+		<text>Ящик за ржавой "бочкой", все там лежит. Я туда возвращаться не собираюсь, дудки! Каким чудом я того кровососа задавил, до сих пор не помню.</text>
+	</string>
+	<string id="agr_u_secret_0003_name">
+		<text>Хабар сталкера</text>
+	</string>
+	<string id="agr_u_secret_0003_descr">
+		<text>За стеной лежит хабар. Отвечаю за базар!</text>
+	</string>
+	<string id="agr_u_secret_0004_name">
+		<text>Нора крота</text>
+	</string>
+	<string id="agr_u_secret_0004_descr">
+		<text>Я тут нарыл кое-какие ценности. Хитрое местечко для моего тайника. На желтой бочке, фиг найдешь.</text>
+	</string>
 <string id="val_secret_0000_name">
 		<text>Тайник под крестом</text>
 </string>
@@ -823,5 +1294,4 @@
 	<string id="pri_secret_0004_description">
 		<text>Последнее что было известно о нем, это то, что выжил только он один после выжигателя. Запасы оставил в каком-то бывшем универмаге и двинул дальше. Все пошло не так, как планировалось, а ведь это был лучший лидер Свободы, за всю нашу историю.</text>
 	</string>
-	
 </string_table>
