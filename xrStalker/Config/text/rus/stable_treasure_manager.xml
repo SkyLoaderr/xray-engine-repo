@@ -1,3 +1,339 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="mil_secret_0000_name">
+		<text>Тайник в бревне</text>
+	</string>
+	<string id="mil_secret_0000_description">
+		<text>Сунул добро в бревно, думаю не найдут.</text>
+	</string>
+	<string id="mil_secret_0001_name">
+		<text>Тайник в печи</text>
+	</string>
+	<string id="mil_secret_0001_description">
+		<text>В печку припрятал барахлишко.</text>
+	</string>
+	<string id="mil_secret_0002_name">
+		<text>Тайник в КАМАЗе</text>
+	</string>
+	<string id="mil_secret_0002_description">
+		<text>В кабине КАМАЗа припрятал барахлишко.</text>
+	</string>
+	<string id="mil_secret_0003_name">
+		<text>Клад под крестом</text>
+	</string>
+	<string id="mil_secret_0003_description">
+		<text>Под крестом, возле деревни, закопал хабара чуток.</text>
+	</string>
+	<string id="mil_secret_0004_name">
+		<text>Тайник в трубе</text>
+	</string>
+	<string id="mil_secret_0004_description">
+		<text>В трубу кинул шмотки, потом заберу.</text>
+	</string>
+	<string id="mil_secret_0005_name">
+		<text>Клад в башне</text>
+	</string>
+	<string id="mil_secret_0005_description">
+		<text>Тайник в водонапорной башне, в ящике.</text>
+	</string>
+	<string id="mil_secret_0006_name">
+		<text>Печной тайник</text>
+	</string>
+	<string id="mil_secret_0006_description">
+		<text>В печку сунул рюкзак, в нем все что собрал по пути.</text>
+	</string>
+	<string id="mil_secret_0007_name">
+		<text>Авто-тайник</text>
+	</string>
+	<string id="mil_secret_0007_description">
+		<text>Хабар спрятал в машине, в деревне заброшенной.</text>
+	</string>
+	<string id="mil_secret_0008_name">
+		<text>Опасный секрет</text>
+	</string>
+	<string id="mil_secret_0008_description">
+		<text>В развалинах с радиацией оставил рюкзак. Побоятся сунуться.</text>
+	</string>
+	<string id="mil_secret_0009_name">
+		<text>Схрон сталкера</text>
+	</string>
+	<string id="mil_secret_0009_description">
+		<text>Закопал хабар под крестом, в укромном месте.</text>
+	</string>
+	<string id="mil_secret_0010_name">
+		<text>Рюкзак с хабаром</text>
+	</string>
+	<string id="mil_secret_0010_description">
+		<text>Припрятал рюкзачек в укромном месте.</text>
+	</string>
+	<string id="mil_secret_0011_name">
+		<text>Тайник на холме</text>
+	</string>
+	<string id="mil_secret_0011_description">
+		<text>Шмотье припрятал на холме в машине.</text>
+	</string>
+	<string id="mil_secret_0012_name">
+		<text>Ящик из вертолёта</text>
+	</string>
+	<string id="mil_secret_0012_description">
+		<text>Упал вертолет возле заброшенной военной базы, ящик лежит недалеко, прямо под вертолетом. Одна беда, аномалии и радиация кругом.</text>
+	</string>
+	<string id="mil_secret_0013_name">
+		<text>Секрет в могиле</text>
+	</string>
+	<string id="mil_secret_0013_description">
+		<text>На холме под крестом закопал хабар.</text>
+	</string>
+	<string id="mil_secret_0014_name">
+		<text>Тайный пень</text>
+	</string>
+	<string id="mil_secret_0014_description">
+		<text>В пеньке тайник, хорошее место</text>
+	</string>
+	<string id="mil_secret_0015_name">
+		<text>Тайник высотника</text>
+	</string>
+	<string id="mil_secret_0015_description">
+		<text>Оставил рюкзак в кабине крана, потом заберу.</text>
+	</string>
+	<string id="mil_secret_0016_name">
+		<text>Условленный тайник</text>
+	</string>
+	<string id="mil_secret_0016_description">
+		<text>Все сложил в ящик, в вагоне недалеко от базы. Так и договаривались, теперь осталось только ждать.</text>
+	</string>
+	<string id="mil_secret_0017_name">
+		<text>Клад в бревне</text>
+	</string>
+	<string id="mil_secret_0017_description">
+		<text>Сунул добро в бревно, думаю не найдут.</text>
+	</string>
+	<string id="mil_secret_0018_name">
+		<text>Труба с хабаром</text>
+	</string>
+	<string id="mil_secret_0018_description">
+		<text>Хабар сунул в трубу на берегу озера.</text>
+	</string>
+	<string id="mil_secret_0019_name">
+		<text>Тайник сталкера</text>
+	</string>
+	<string id="mil_secret_0019_description">
+		<text>В железной байдовине спрятал вещички.</text>
+	</string>
+	<string id="mil_secret_0020_name">
+		<text>Хабар в бревне</text>
+	</string>
+	<string id="mil_secret_0020_description">
+		<text>Сунул добро в бревно, думаю не найдут.</text>
+	</string>
+	<string id="mil_secret_0021_name">
+		<text>Удобный схрон</text>
+	</string>
+	<string id="mil_secret_0021_description">
+		<text>Удобный ящик, чтоб лишнее барахло сбрасывать.</text>
+	</string>
+	<string id="mil_secret_0022_name">
+		<text>Рюкзак в туннеле</text>
+	</string>
+	<string id="mil_secret_0022_description">
+		<text>В туннеле припрятал рюкзак с хабаром.</text>
+	</string>
+	<string id="mil_secret_0023_name">
+		<text>Ящик с добром</text>
+	</string>
+	<string id="mil_secret_0023_description">
+		<text>Удобный ящик, чтоб лишнее барахло сбрасывать.</text>
+	</string>
+	<string id="mil_secret_0024_name">
+		<text>Тайник в бревне</text>
+	</string>
+	<string id="mil_secret_0024_description">
+		<text>Сунул добро в бревно, думаю не найдут.</text>
+	</string>
+	<string id="mil_secret_0025_name">
+		<text>Временный тайник</text>
+	</string>
+	<string id="mil_secret_0025_description">
+		<text>В ящик закинул добро, потом заберу.</text>
+	</string>
+	<string id="mil_secret_0026_name">
+		<text>Стальной тайник</text>
+	</string>
+	<string id="mil_secret_0026_description">
+		<text>В люке схоронил вещи, когда-нибудь пригодятся.</text>
+	</string>
+	<string id="mil_secret_0027_name">
+		<text>Ящик с хабаром</text>
+	</string>
+	<string id="mil_secret_0027_description">
+		<text>В ящик закинул добро, потом заберу.</text>
+	</string>
+	<string id="mil_secret_0028_name">
+		<text>Тайник в машине</text>
+	</string>
+	<string id="mil_secret_0028_description">
+		<text>Хабар спрятал в машине под боком у Свободы, времени не было искать что получше.</text>
+	</string>
+	<string id="yan_secret_0000_name">
+		<text>Тайник под крестом</text>
+	</string>
+	<string id="yan_secret_0000_description">
+		<text>Крест на холме, а под ним тайник.</text>
+	</string>
+	<string id="yan_secret_0001_name">
+		<text>Старый сейф</text>
+	</string>
+	<string id="yan_secret_0001_description">
+		<text>Говорят на островке среди болота сейф есть, полузакопанный. Надо наведаться.</text>
+	</string>
+	<string id="yan_secret_0002_name">
+		<text>Труба с добром</text>
+	</string>
+	<string id="yan_secret_0002_description">
+		<text>В трубу засунул добро, возле лагеря.</text>
+	</string>
+	<string id="yan_secret_0003_name">
+		<text>Рюкзак за гаражами</text>
+	</string>
+	<string id="yan_secret_0003_description">
+		<text>За гаражами припрятал хабарок.</text>
+	</string>
+	<string id="yan_secret_0004_name">
+		<text>Рюкзак с добычей</text>
+	</string>
+	<string id="yan_secret_0004_description">
+		<text>Припрятал рюкзак в будке, прямо за железной хренью.</text>
+	</string>
+	<string id="yan_secret_0005_name">
+		<text>Тайник в автобусе</text>
+	</string>
+	<string id="yan_secret_0005_description">
+		<text>В автобусе положил ящичек, вроде незаметно.</text>
+	</string>
+	<string id="yan_secret_0006_name">
+		<text>Добыча в машине</text>
+	</string>
+	<string id="yan_secret_0006_description">
+		<text>Хабар спрятан в машине, недалеко от территории. Излучение не очень сильное.</text>
+	</string>
+	<string id="yan_secret_0007_name">
+		<text>Старый рюкзак</text>
+	</string>
+	<string id="yan_secret_0007_description">
+		<text>Говорят тут хабар чей-то есть, только под излучением не пробраться.</text>
+	</string>
+	<string id="yan_secret_0008_name">
+		<text>Тайник группировки</text>
+	</string>
+	<string id="yan_secret_0008_description">
+		<text>Говорят тут тайник какой-то группировки, как только они под излучением пробрались?</text>
+	</string>
+	<string id="yan_secret_0009_name">
+		<text>Рюкзак испытателя</text>
+	</string>
+	<string id="yan_secret_0009_description">
+		<text>Сгинул очередной сталкер-доброволец, очередной прототип не защитил от излучения. Смог дойти только до середины территории, там и остался. Сахаров хочет замеры более точные сделать, но я не пойду, а то и я там останусь, недалеко от территории.</text>
+	</string>
+	<string id="yan_secret_0010_name">
+		<text>Старый тайник</text>
+	</string>
+	<string id="yan_secret_0010_description">
+		<text>Говорят тут хабар чей-то есть, только под излучением не пробраться.</text>
+	</string>
+	<string id="yan_secret_0011_name">
+		<text>Тайник учёного</text>
+	</string>
+	<string id="yan_secret_0011_description">
+		<text>Надо валить. Сахаров и Круглов полные психи, требуют чтоб я отправился с каким-то сталкером в центр излучения. Ну их нафиг, как только соберу все запасы в люке, тут же свалю.</text>
+	</string>
+	<string id="yan_secret_0012_name">
+		<text>Клад в бревне</text>
+	</string>
+	<string id="yan_secret_0012_description">
+		<text>Сунул добро в бревно, думаю, не найдут.</text>
+	</string>
+	<string id="yan_secret_0013_name">
+		<text>Ящик с добром</text>
+	</string>
+	<string id="yan_secret_0013_description">
+		<text>Говорят тут схрон чей-то, только под излучением не пробраться.</text>
+	</string>
+	<string id="x16_secret_0000_name">
+		<text>Хабар в электрощитке</text>
+	</string>
+	<string id="x16_secret_0000_description">
+		<text>Слухи ходят что был сталкер, который в эту лабораторию проник и припрятал свой хабар в электрощиток в шахте лифта. А забрать его уже не смог.</text>
+	</string>
+	<string id="x16_secret_0001_name">
+		<text>Рюкзак разведчика</text>
+	</string>
+	<string id="x16_secret_0001_description">
+		<text>Слухи ходят что был сталкер, который в эту лабораторию проник, так он коньки отбросил в районе клеток с подопытными, со всем своим хабаром.</text>
+	</string>
+	<string id="rad_secret_0000_name">
+		<text>Клад Угрюмого</text>
+	</string>
+	<string id="rad_secret_0000_description">
+		<text>Крест по дороге к выжигателю, дальше не пошел, спрятал все под ним.</text>
+	</string>
+	<string id="rad_secret_0001_name">
+		<text>Хабар мёртвого сталкера</text>
+	</string>
+	<string id="rad_secret_0001_description">
+		<text>Тут погиб какой-то сталкер, хабар до сих пор валяется, никто подобрать не может.</text>
+	</string>
+	<string id="rad_secret_0002_name">
+		<text>Хабар в сейфе</text>
+	</string>
+	<string id="rad_secret_0002_description">
+		<text>Говорят в лесу полузакопанный сейф есть и там хабара полно.</text>
+	</string>
+	<string id="rad_secret_0003_name">
+		<text>Посылка Долгу</text>
+	</string>
+	<string id="rad_secret_0003_description">
+		<text>Говорил им не летать над выжигателем, вот и результат. В середине леса приземлились, вряд ли кто-то выжил. Где-то там и лежит то, что нам передали.</text>
+	</string>
+	<string id="rad_secret_0004_name">
+		<text>Запас группы отчаянных</text>
+	</string>
+	<string id="rad_secret_0004_description">
+		<text>Говорят там остался запас группы, которая пробивалась к центру Зоны, прямо под излучением Выжигателя. Никто из них не вернулся, а запас так и остался дожидаться того, кто его подберет.</text>
+	</string>
+	<string id="rad_secret_0005_name">
+		<text>Хабар лидера группировки</text>
+	</string>
+	<string id="rad_secret_0005_description">
+		<text>Говорят сгинул здесь лидер какой-то бывшей группировки, и хабар у него с собой богатый был.</text>
+	</string>
+	<string id="pri_secret_0000_name">
+		<text>Вещи мёртвого сталкера</text>
+	</string>
+	<string id="pri_secret_0000_description">
+		<text>Говорят сгинул здесь какой-то сталкер известный, добро его до сих пор никто не подобрал.</text>
+	</string>
+	<string id="pri_secret_0001_name">
+		<text>Клад в гараже</text>
+	</string>
+	<string id="pri_secret_0001_description">
+		<text>В гараже, говорят, ящик стоит, а в нем хабара мама не горюй.</text>
+	</string>
+	<string id="pri_secret_0002_name">
+		<text>Старый тайник</text>
+	</string>
+	<string id="pri_secret_0002_description">
+		<text>В детском саду, говорят, ящик стоит, а в нем хабара мама не горюй.</text>
+	</string>
+	<string id="pri_secret_0003_name">
+		<text>Хабар Клыка</text>
+	</string>
+	<string id="pri_secret_0003_description">
+		<text>Клыка похоронил на Припяти, под памятником. Весь его хабар оставил там же, нехорошо забирать у мертвого.</text>
+	</string>
+	<string id="pri_secret_0004_name">
+		<text>Запасы лидера Свободы</text>
+	</string>
+	<string id="pri_secret_0004_description">
+		<text>Последнее что было известно о нем, это то, что выжил только он один после выжигателя. Запасы оставил в каком-то бывшем универмаге и двинул дальше. Все пошло не так, как планировалось, а ведь это был лучший лидер Свободы, за всю нашу историю.</text>
+	</string>
 </string_table>
