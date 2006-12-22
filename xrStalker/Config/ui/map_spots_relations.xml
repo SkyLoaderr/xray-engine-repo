@@ -1,4 +1,3 @@
-<!--
 	<enemy_location hint="enemy" no_offline="1">
 		<mini_map  spot="enemy_mini_spot"/>
 	</enemy_location>
@@ -13,22 +12,6 @@
 
 	<deadbody_location hint="deadbody">
 		<mini_map  spot="deadbody_mini_spot"/>
-	</deadbody_location>
--->
-	<enemy_location hint="enemy" no_offline="1">
-		<mini_map spot="blue_mini_spot"		pointer="quest_pointer"/>
-	</enemy_location>
-
-	<neutral_location hint="neutral">
-		<mini_map  spot="neutral_mini_spot"/>
-	</neutral_location>
-
-	<friend_location hint="friend">
-		<mini_map  spot="friend_mini_spot"/>
-	</friend_location>
-
-	<deadbody_location hint="deadbody">
-		<mini_map spot="green_mini_spot"	pointer="quest_pointer"/>
 	</deadbody_location>
 
 	<enemy_mini_spot width="5" height="5" stretch="1" alignment="c" xform_anim="map_spot_rel_xform" xform_anim_cyclic="0">
