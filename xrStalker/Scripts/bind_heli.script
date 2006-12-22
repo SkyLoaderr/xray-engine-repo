@@ -56,8 +56,7 @@ function heli_binder:reinit()
 
 	self.flame_start_health   = utils.cfg_get_number( ltx, "helicopter", "flame_start_health", self.object, true )
 
-	local flame_start_snd     = utils.cfg_get_string( ltx, "helicopter", "explode_sound",      self.object, true, "" )
-	self.st.flame_start_snd   = sound_object( flame_start_snd )
+	self.st.flame_start_snd   = xr_sound.get_sound_object("heli_explosion", "random")
 
 	-- на случай загрузки
 	self.st.last_alt       = self.heliObject:GetRealAltitude()

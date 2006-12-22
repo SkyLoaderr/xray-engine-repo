@@ -34,8 +34,9 @@ function PsyAntenna:__init				()
 // sound
 // ----------------------------------------------------------------------------------------
 	self.sound_initialized				= false
-	self.sound_obj_left					= sound_object( [[characters_voice\scenario\yantar\psy_voices_1_l]] )
-	self.sound_obj_right				= sound_object( [[characters_voice\scenario\yantar\psy_voices_1_r]] )
+
+	self.sound_obj_right, self.sound_obj_left = xr_sound.get_sound_object("psy_voices", "random")
+
 	self.sound_obj_left.volume			= self.sound_intensity
 	self.sound_obj_right.volume			= self.sound_intensity
 	self.snd_volume						= level.get_snd_volume()

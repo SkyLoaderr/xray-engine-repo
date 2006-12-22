@@ -31,7 +31,7 @@ function action_particle:reset_scheme()
            end   
            local snd_obj = nil
            if sound_name ~= nil and sound_name ~= "" then
-              snd_obj = sound_object (self:get_sound_name (sound_name))
+              snd_obj = xr_sound.get_sound_object(sound_name, "random")
            end   
            self.particles[a] = {particle = particles_object (self.st.name),
                                 snd = snd_obj,
@@ -139,10 +139,6 @@ function action_particle:update_mode_2 ()
            end
         end         
     end    
-end
-------------------------
-function action_particle:get_sound_name (theme_name)
-    return sound_theme.ph_snd_themes[theme_name][math.random (1, table.getn (sound_theme.ph_snd_themes[theme_name]))]
 end
 ------------------------
 function action_particle:deactivate ()

@@ -53,7 +53,6 @@ function main________________()
 end
 
 
---snd_radar_stop	= sound_object([[ambient\cooling_stop]])
 function _main()
 	local radius = 30
 	local ang    = 45

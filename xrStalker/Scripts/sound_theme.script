@@ -8,7 +8,6 @@ nstl = 20
 snd_ini = ini_file("misc\\script_sound.ltx")
 
 theme = {}
-
 ph_snd_themes = {}           
 ph_snd_themes["music"] = {  "characters_voice\\scenario\\megafon\\megafon_music_1",
 	                        "characters_voice\\scenario\\megafon\\megafon_music_2",
@@ -115,13 +114,14 @@ ph_snd_themes["mon_monolith_damaged"]			= {[[characters_voice\scenario\sarcofag\
 ph_snd_themes["mon_monolith_heavy_damaged"]		= {[[characters_voice\scenario\sarcofag\monolith_heavy_damaged]]}
 ph_snd_themes["mon_monolith_alarm"]				= {[[characters_voice\scenario\sarcofag\monolith_alarm]]}
 ph_snd_themes["mon_monolith_recharged"]			= {[[characters_voice\scenario\sarcofag\monolith_recharged]]}
-ph_snd_themes["sar_monolith_call"]			= {[[characters_voice\scenario\sarcofag\monolith_call_1]],
-												[[characters_voice\scenario\sarcofag\monolith_call_2]],
-												[[characters_voice\scenario\sarcofag\monolith_call_3]],
-												[[characters_voice\scenario\sarcofag\monolith_call_4]],
-												[[characters_voice\scenario\sarcofag\monolith_call_5]],
-												[[characters_voice\scenario\sarcofag\monolith_call_6]],
-												[[characters_voice\scenario\sarcofag\monolith_call_7]]}
+
+ph_snd_themes["sar_monolith_call"]			= {{[[characters_voice\scenario\sarcofag\monolith_call_1]]}, --' Стереозвук
+												{[[characters_voice\scenario\sarcofag\monolith_call_2]]},
+												{[[characters_voice\scenario\sarcofag\monolith_call_3]]},
+												{[[characters_voice\scenario\sarcofag\monolith_call_4]]},
+												{[[characters_voice\scenario\sarcofag\monolith_call_5]]},
+												{[[characters_voice\scenario\sarcofag\monolith_call_6]]},
+												{[[characters_voice\scenario\sarcofag\monolith_call_7]]}}
 
 ph_snd_themes["gar_seryi_shooting"]	= {[[characters_voice\scenario\garbage\distance_shooting]]}
 ph_snd_themes["gar_seryi_shooting_2"]	= {[[characters_voice\scenario\bandits\bandit_replic_2]]}
@@ -136,9 +136,9 @@ ph_snd_themes["radar_drone"] = {"ambient\\radar_1"}
 ph_snd_themes["radar_thunder"] = {"ambient\\radar_2"}
 ph_snd_themes["radar_sparks"] = {"ambient\\radarsparks_1"}
 ph_snd_themes["aes_teleport"] = {"anomaly\\teleport_incoming"}
-ph_snd_themes["yan_antenna"] = {"characters_voice\\scenario\\yantar\\psy_voices_1",
-                                "characters_voice\\scenario\\yantar\\psy_voices_1",
-                                "characters_voice\\scenario\\yantar\\psy_voices_1"}
+
+ph_snd_themes["yan_antenna"] = {{"characters_voice\\scenario\\yantar\\psy_voices_1"}} --' Стерео
+
 ph_snd_themes["radar_meh_on"] = {"ambient\\cooling_run"}
 ph_snd_themes["radar_meh_off"] = {"ambient\\cooling_stop"}                               
 ph_snd_themes["system_message_1"]	= {[[characters_voice\scenario\yantar\system_message_1]]}
@@ -203,6 +203,26 @@ ph_snd_themes["x16_switch_1"] = {"ambient\\x16\\switch_1"}
 ph_snd_themes["x16_switch_2"] = {"ambient\\x16\\switch_2"}
 
 ph_snd_themes["x18_firedoor"] = {"anomaly\\fireball_idle"}
+
+ph_snd_themes["psy_voices"] = {{[[characters_voice\scenario\yantar\psy_voices_1]]}} --' Стерео
+
+ph_snd_themes["heli_explosion"] = {[[weapons\heli_explosion]]}
+
+ph_snd_themes["trader_door_open_start"]		= {[[device\door_start]]}
+ph_snd_themes["trader_door_close_start"]	= {[[device\door_closing]]}
+ph_snd_themes["trader_door_close_stop"]		= {[[device\door_stop]]}
+ph_snd_themes["trader_door_locked"]			= {[[device\door_locked]]}
+ph_snd_themes["trader_door_unlock"]			= {[[device\door_servomotor]]}
+ph_snd_themes["wood_small_open"]			= {[[device\wood_small_open]]}
+ph_snd_themes["wood_small_close_start"]		= {[[device\wood_small_close_start]]}
+ph_snd_themes["wood_small_close_stop"]		= {[[device\wood_small_close_stop]]}
+ph_snd_themes["wood_large_open"]			= {[[device\wood_large_open]]}
+ph_snd_themes["wood_large_close_start"]		= {[[device\wood_large_close_start]]}
+ph_snd_themes["wood_large_close_stop"]		= {[[device\wood_large_close_stop]]}
+ph_snd_themes["metal_small_open"]			= {[[device\metal_small_open]]}
+ph_snd_themes["metal_small_close_start"]	= {[[device\metal_small_close_start]]}
+ph_snd_themes["metal_small_close_stop"]		= {[[device\metal_small_close_stop]]}
+
 
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Theme  functions

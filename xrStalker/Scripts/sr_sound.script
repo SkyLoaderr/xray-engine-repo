@@ -263,10 +263,6 @@ function set_scheme( obj, ini, scheme, section, gulag_name )
 		local t = parse_names( ini:r_string( section, "type" ) )
 
 		for i, v in pairs(t) do
---			if v == "random" then
---				st.pos_type = pos_random
---			end
-
 			table_include( st.sound_names, sound_types[v] )
 		end
 	end
@@ -275,7 +271,6 @@ function set_scheme( obj, ini, scheme, section, gulag_name )
 		abort( "restrictor '%s': no sounds specified in section '%s'", obj:name(), section )
 	end
 
---	printf( table.concat( self.sound_names, "  " ) )
 	st.delay   = utils.cfg_get_number( ini, section, "delay",    obj, false, 0 )
 	st.idle    = utils.cfg_get_number( ini, section, "idle",     obj, false, 0 ) * 1000 -- секунды->мс
 	st.rnd     = utils.cfg_get_number( ini, section, "rnd",      obj, false, 100 )

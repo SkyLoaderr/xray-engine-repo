@@ -6,11 +6,11 @@
 function prefetch_sounds()
 	local k,v,kk,vv = 0,0,0,0
 		
-	for k,v in pairs(sound_theme.ph_snd_themes) do
-		for kk,vv in pairs(v) do
-			level.prefetch_sound(vv)
-		end
-	end
+--	for k,v in pairs(sound_theme.ph_snd_themes) do
+--		for kk,vv in pairs(v) do
+--			level.prefetch_sound(vv)
+--		end
+--	end
 
 	function prefetch_theme_sound(tbl)
 		for k,v in pairs(tbl) do

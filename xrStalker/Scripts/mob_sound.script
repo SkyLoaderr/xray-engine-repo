@@ -64,57 +64,6 @@ local snd = {
 		[[characters_voice\scenario\trader\trader_tutorial_go_help_tolik_2]]
 	},
 
-	trader_door_open_start = {
-		[[device\door_start]]
-	},
-
-	trader_door_close_start = {
-		[[device\door_closing]]
-	},
-
-	trader_door_close_stop = {
-		[[device\door_stop]]
-	},
-
-	trader_door_locked = {
-		[[device\door_locked]]
-	},
-
-	trader_door_unlock = {
-		[[device\door_servomotor]]
-	},
-
-
-	wood_small_open = {
-		[[device\wood_small_open]]
-	},
-	wood_small_close_start = {
-		[[device\wood_small_close_start]]
-	},
-	wood_small_close_stop = {
-		[[device\wood_small_close_stop]]
-	},
-
-	wood_large_open = {
-		[[device\wood_large_open]]
-	},
-	wood_large_close_start = {
-		[[device\wood_large_close_start]]
-	},
-	wood_large_close_stop = {
-		[[device\wood_large_close_stop]]
-	},
-
-	metal_small_open = {
-		[[device\metal_small_open]]
-	},
-	metal_small_close_start = {
-		[[device\metal_small_close_start]]
-	},
-	metal_small_close_stop = {
-		[[device\metal_small_close_stop]]
-	},
-
 
 	trader_hello_what_have_you_got = {
 		[[characters_voice\scenario\trader\trader_script1a_1]],

@@ -69,6 +69,7 @@ function actor_binder:net_destroy()
 		sr_psy_antenna.psy_antenna = false
 	end
 
+	xr_sound.stop_all_sound_object()
 
 	object_binder.net_destroy(self)
 end

@@ -1,5 +1,0 @@
-function play_sound_object(obj_name,snd_name,looped)
-end
-
-function main()
-end
