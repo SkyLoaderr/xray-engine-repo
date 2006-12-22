@@ -42,12 +42,12 @@
 		<level_map spot="blue_spot"			pointer="quest_pointer"/>
 		<mini_map spot="blue_mini_spot"		pointer="quest_pointer"/>
 	</blue_location>
-	<blue_spot  x="0" y="0" width="32" height="32" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
+	<blue_spot  x="0" y="0" width="32" height="32" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture x="525" y="872" width="32" height="32">ui\ui_common</texture>
 		<_texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_below>
 		<_texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_above>
 	</blue_spot>
-	<blue_mini_spot  x="0" y="0" width="11" height="11" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
+	<blue_mini_spot  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture x="493" y="1000" width="11" height="11">ui\ui_common</texture>
 		<_texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_below>
 		<_texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_above>		
@@ -57,12 +57,12 @@
 		<level_map spot="green_spot"		pointer="quest_pointer"/>
 		<mini_map spot="green_mini_spot"	pointer="quest_pointer"/>
 	</green_location>
-	<green_spot  x="0" y="0" width="32" height="32" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
+	<green_spot  x="0" y="0" width="32" height="32" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture x="525" y="904" width="32" height="32">ui\ui_common</texture>
 		<_texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_below>
 		<_texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_above>				
 	</green_spot>
-	<green_mini_spot  x="0" y="0" width="11" height="11" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
+	<green_mini_spot  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture x="515" y="1000" width="11" height="11">ui\ui_common</texture>
 		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
 		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
@@ -72,12 +72,12 @@
 		<level_map spot="red_spot"			pointer="quest_pointer"/>
 		<mini_map spot="red_mini_spot"		pointer="quest_pointer"/>
 	</red_location>
-	<red_spot  x="0" y="0" width="32" height="32" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
+	<red_spot  x="0" y="0" width="32" height="32" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture x="665" y="853" width="32" height="32">ui\ui_common</texture>
 		<_texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_below>
 		<_texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_above>		
 	</red_spot>
-	<red_mini_spot  x="0" y="0" width="11" height="11" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
+	<red_mini_spot  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture x="526" y="1000" width="11" height="11">ui\ui_common</texture>
 		<_texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_below>
 		<_texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_above>		
