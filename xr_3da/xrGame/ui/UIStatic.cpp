@@ -251,7 +251,7 @@ void CUIStatic::Update()
 			_sz.set				(m_xxxRect.width()*f_scale, m_xxxRect.height()*f_scale );
 			SetWndSize			(_sz);
 		}else{
-			EnableHeading		( !!m_lanim_xform.m_lanimFlags.test(1<<4) );
+			EnableHeading_int	( !!m_lanim_xform.m_lanimFlags.test(1<<4) );
 			SetWndSize			(Fvector2().set(m_xxxRect.width(),m_xxxRect.height()));
 		}
 	}
