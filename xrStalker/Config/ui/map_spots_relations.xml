@@ -14,19 +14,19 @@
 		<mini_map  spot="deadbody_mini_spot"/>
 	</deadbody_location>
 
-	<enemy_mini_spot width="5" height="5" stretch="1" alignment="c" xform_anim="map_spot_rel_xform" xform_anim_cyclic="0">
+	<enemy_mini_spot width="4" height="4" stretch="1" alignment="c" xform_anim="map_spot_rel_xform" xform_anim_cyclic="0">
 		<texture r="255" g="0" b="0">ui_minimap_point</texture>
 	</enemy_mini_spot>
 	
-	<neutral_mini_spot width="5" height="5" stretch="1" alignment="c" xform_anim="map_spot_rel_xform" xform_anim_cyclic="0"> 
+	<neutral_mini_spot width="4" height="4" stretch="1" alignment="c"> 
 		<texture r="255" g="200" b="0">ui_minimap_point</texture>
 	</neutral_mini_spot>
 
-	<friend_mini_spot width="5" height="5" stretch="1" alignment="c" xform_anim="map_spot_rel_xform" xform_anim_cyclic="0"> 
+	<friend_mini_spot width="4" height="4" stretch="1" alignment="c"> 
 		<texture r="50" g="255" b="0">ui_minimap_point</texture>
 	</friend_mini_spot>
 	
-	<deadbody_mini_spot width="5" height="5" stretch="1" alignment="c" xform_anim="map_spot_rel_xform" xform_anim_cyclic="0"> 
+	<deadbody_mini_spot width="4" height="4" stretch="1" alignment="c"> 
 		<texture r="168" g="168" b="168">ui_minimap_point</texture>
 	</deadbody_mini_spot>
 
