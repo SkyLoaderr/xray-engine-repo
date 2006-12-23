@@ -1,18 +1,18 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <w>
-	<main_frame x="300" y="350" width="230" height="300" />
+	<main_frame x="0" y="460" width="230" height="300" />
 	
-	<_static_name x="0" y="0" width="220" height="30">
+	<static_name x="0" y="0" width="220" height="30">
 		<text font="letterica18" r="238" g="155" b="23" complex_mode="1" align="l" vert_align="c"/>		
-	</_static_name>
+	</static_name>
 
-	<static_weight x="135" y="34" width="90" height="20">
+	<_static_weight x="135" y="34" width="90" height="20">
 		<text align="r" x="0" y="0" font="letterica18" r="135" g="128" b="122"/>
-	</static_weight>
+	</_static_weight>
 
-	<_static_cost x="215" y="50" width="110" height="30">
-		<text font="letterica18" r="238" g="155" b="23" align="c" vert_align="c"/>
-	</_static_cost>
+	<static_cost x="135" y="34" width="90" height="30">
+		<text align="r" font="letterica18" r="238" g="155" b="23"/>
+	</static_cost>
 
 	<_static_condition x="5" y="60" width="95" height="20">
 		<text font="letterica18" r="135" g="128" b="122">st_condition</text>

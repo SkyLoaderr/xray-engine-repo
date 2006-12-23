@@ -126,7 +126,6 @@ private:
 //controls
 	CUIWindow*			m_shop_wnd;
 	CUIStatic*			m_static_money;
-	CUIStatic*			m_static_current_item;
 	CUIStatic*			m_static_rank;
 	CUIStatic*			m_static_information;
 	CUI3tButton* 		m_btn_shop_back;

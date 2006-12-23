@@ -167,8 +167,6 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 	m_static_money						= xr_new<CUIStatic>(); AttachChild(m_static_money); m_static_money->SetAutoDelete(true);
 	CUIXmlInit::InitStatic				(xml_doc, "static_money",					0, m_static_money);
 
-	m_static_current_item				= xr_new<CUIStatic>(); AttachChild(m_static_current_item); m_static_current_item->SetAutoDelete(true);
-	CUIXmlInit::InitStatic				(xml_doc, "static_current_item",			0, m_static_current_item);
 
 	m_static_rank						= xr_new<CUIStatic>(); AttachChild(m_static_rank); m_static_rank->SetAutoDelete(true);
 	CUIXmlInit::InitStatic				(xml_doc, "static_rank",					0, m_static_rank);

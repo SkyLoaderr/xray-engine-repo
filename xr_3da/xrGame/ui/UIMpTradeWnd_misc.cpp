@@ -72,10 +72,16 @@ void CUIMpTradeWnd::SetCurrentItem(CUICellItem* itm)
 	if (m_pCurrentCellItem)
 	{
 		const shared_str& current_sect_name = CurrentIItem()->object().cNameSect();
-
+		/*
 		string256						str;
-		sprintf							(str, "%s [%d RU]", current_sect_name.c_str()/*CurrentIItem()->NameShort()*/, GetItemPrice(CurrentIItem()));
+		sprintf							(str, "%s [%d RU]", current_sect_name.c_str(), GetItemPrice(CurrentIItem()));
 		m_static_current_item->SetText	(str);
+		*/
+		string256						str;
+		sprintf							(str, "%d", GetItemPrice(CurrentIItem()));
+		m_item_info->UICost->SetText	(str);
+
+		m_item_info->UIName->SetText	(CurrentIItem()->NameShort());
 
 		string64						tex_name;
 		string64						team;
@@ -92,7 +98,7 @@ void CUIMpTradeWnd::SetCurrentItem(CUICellItem* itm)
 	}
 	else
 	{
-		m_static_current_item->SetText	("[no item selected]");
+//.		m_static_current_item->SetText	("[no item selected]");
 		m_static_rank->TextureOff		();
 	}
 }

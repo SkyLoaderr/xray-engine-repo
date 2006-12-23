@@ -39,7 +39,7 @@ void CStoreHierarchy::LoadLevel(CUIXml& xml, int index, item* _item, int depth_l
 	
 		XML_NODE* stored_root2		= xml.GetLocalRoot();
 		xml.SetLocalRoot			(xml.GetRoot());
-		CUIXmlInit::Init3tButton	(xml, _item->m_btn_xml_name.c_str(), 0, btn);
+		CUIXmlInit::InitTabButtonMP	(xml, _item->m_btn_xml_name.c_str(), 0, btn);
 		int horz					= xml.ReadAttribInt	(_item->m_btn_xml_name.c_str(), 0, "horz_al", 0);
 		btn->SetOrientation			(horz==1);
 		xml.SetLocalRoot			(stored_root2);
