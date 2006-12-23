@@ -888,6 +888,9 @@ void CAI_Stalker::critical_wounded_state_start	()
 
 bool CAI_Stalker::can_cry_enemy_is_wounded		() const
 {
+	if (!brain().initialized())
+		return						(false);
+
 	if (brain().current_action_id() != StalkerDecisionSpace::eWorldOperatorCombatPlanner)
 		return						(false);
 
