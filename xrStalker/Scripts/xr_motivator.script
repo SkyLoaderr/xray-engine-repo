@@ -82,6 +82,15 @@ function motivator_binder:net_spawn(sobject)
 
 	--self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
 
+    --' Загрузка историй для лагеря.
+	if self.loaded == false then
+		local char_ini = self.object:spawn_ini() or ini_file("scripts\\dummy.ltx")
+		xr_info.loadInfo(self.object, char_ini)
+	end
+
+	if not self.object:alive() then
+		return true
+	end
 
 	--' Для зомбированных чуваков говорим что аномалий не существует
 --	if self.object:character_community() == "zombied" then
@@ -98,11 +107,6 @@ function motivator_binder:net_spawn(sobject)
     xr_sound.load_sound(self.object)
     --memusage.collect_info(self.object, "after_soundmgr_netspawn_end")
 
-    --' Загрузка историй для лагеря.
-	if self.loaded == false then
-		local char_ini = self.object:spawn_ini() or ini_file("scripts\\dummy.ltx")
-		xr_info.loadInfo(self.object, char_ini)
-	end
 
 	return true
 end
@@ -120,6 +124,7 @@ function motivator_binder:net_destroy()
 	db.storage[self.object:id()] = nil
 
 	self:clear_callbacks()
+	self.object:set_callback(callback.use_object, nil)
 
 	object_binder.net_destroy(self)
 end
@@ -128,7 +133,6 @@ function motivator_binder:clear_callbacks()
 	self.object:set_patrol_extrapolate_callback(nil)
 	self.object:set_callback(callback.hit, nil)
 	self.object:set_callback(callback.death, nil)
-	self.object:set_callback(callback.use_object, nil)
 end
 
 function motivator_binder:hit_callback(obj, amount, local_direction, who, bone_index)
@@ -197,12 +201,13 @@ function motivator_binder:death_callback(victim, who)
 end
 
 function motivator_binder:use_callback(obj, who)
-	xr_use.notify_on_use(obj, who)
-
-	treasure_manager:get_treasure_manager():use(self.object)
-
-	if self.st.active_section then
-		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "use_callback", obj, who)
+	if self.object:alive() then
+		xr_use.notify_on_use(obj, who)
+		if self.st.active_section then
+			xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "use_callback", obj, who)
+		end
+	else
+		treasure_manager:get_treasure_manager():use(self.object)
 	end
 end
 
