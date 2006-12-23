@@ -393,12 +393,13 @@ void CUICarBodyWnd::ActivatePropertiesBox()
 		
 	m_pUIPropertiesBox->RemoveAll();
 	
-	CWeaponMagazined*		pWeapon			= smart_cast<CWeaponMagazined*>(CurrentIItem());
+//.	CWeaponMagazined*		pWeapon			= smart_cast<CWeaponMagazined*>(CurrentIItem());
 	CEatableItem*			pEatableItem	= smart_cast<CEatableItem*>(CurrentIItem());
 	CMedkit*				pMedkit			= smart_cast<CMedkit*>			(CurrentIItem());
 	CAntirad*				pAntirad		= smart_cast<CAntirad*>			(CurrentIItem());
 	CBottleItem*			pBottleItem		= smart_cast<CBottleItem*>		(CurrentIItem());
     bool					b_show			= false;
+/*
 	if(pWeapon)
 	{
 		bool b = 0!=pWeapon->GetAmmoElapsed();
@@ -422,7 +423,7 @@ void CUICarBodyWnd::ActivatePropertiesBox()
 			b_show			= true;
 		}
 	}
-	
+*/	
 	if(pMedkit || pAntirad)
 	{
 		m_pUIPropertiesBox->AddItem("st_use",  NULL, INVENTORY_EAT_ACTION);
