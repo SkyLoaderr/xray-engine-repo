@@ -319,6 +319,7 @@ function motivator_binder:load(reader)
 
 	printf("motivator_binder:load(): self.object:name()='%s'", self.object:name())
 	object_binder.load(self, reader)
+	printf("motivator_binder:object_binder.load(): self.object:name()='%s'", self.object:name())
 
 	self.treasure_processed = reader:r_bool()
 

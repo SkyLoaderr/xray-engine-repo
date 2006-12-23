@@ -322,6 +322,7 @@ end
 function actor_binder:load(reader)
 	printf("actor_binder:load(): self.object:name()='%s'", self.object:name())
 	object_binder.load(self, reader)
+	printf("actor_binder:object_binder.load(): self.object:name()='%s'", self.object:name())
 
 	local t = reader:r_u32()
 
