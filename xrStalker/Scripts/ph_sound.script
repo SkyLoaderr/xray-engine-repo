@@ -132,8 +132,5 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	if st.pause_max < st.pause_min then
 	   abort ("PH_SOUND - invalid time range !!!")
     end	    
-    if st.looped == true and st.random == true then
-       abort ("PH_SOUND - can't set looped sound with random play mode")
-    end    
 end
     
