@@ -20,6 +20,7 @@ function motivator_binder:__init (obj) super(obj)
 	----memusage.collect_info(self.object, "__init")
 
     self.first_update = false
+	self.treasure_processed = false
 end
 
 function motivator_binder:extrapolate_callback(cur_pt)
@@ -207,7 +208,10 @@ function motivator_binder:use_callback(obj, who)
 			xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "use_callback", obj, who)
 		end
 	else
-		treasure_manager:get_treasure_manager():use(self.object)
+		if self.treasure_processed == false then
+			treasure_manager:get_treasure_manager():use(self.object)
+			self.treasure_processed = true
+		end
 	end
 end
 
@@ -301,6 +305,8 @@ function motivator_binder:save(packet)
 	printf("motivator_binder:save(): self.object:name()='%s'", self.object:name())
 	object_binder.save(self, packet)
 
+	packet:w_bool(self.treasure_processed)
+
 	xr_logic.save_obj(self.object, packet)
 	dialog_manager.save(self.object, packet)
 	trade_manager.save(self.object, packet)
@@ -313,6 +319,8 @@ function motivator_binder:load(reader)
 
 	printf("motivator_binder:load(): self.object:name()='%s'", self.object:name())
 	object_binder.load(self, reader)
+
+	self.treasure_processed = reader:r_bool()
 
 	xr_logic.load_obj(self.object, reader)
 	dialog_manager.load(self.object, reader)
