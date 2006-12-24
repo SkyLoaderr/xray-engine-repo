@@ -193,13 +193,6 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 			UIPropertiesBox.AddItem("st_drop_all", (void*)33, INVENTORY_DROP_ACTION);
 	}
 
-	if (GameID() == GAME_ARTEFACTHUNT && Game().local_player && 
-		Game().local_player->testFlag(GAME_PLAYER_FLAG_ONBASE) && 
-		!Game().local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)
-		)
-	{
-		UIPropertiesBox.AddItem("st_sell_item",  NULL, INVENTORY_SELL_ITEM);	
-	}
 
 	UIPropertiesBox.AutoUpdateSize	();
 	UIPropertiesBox.BringAllToTop	();
@@ -220,9 +213,6 @@ void CUIInventoryWnd::ProcessPropertiesBoxClicked	()
 	{
 		switch(UIPropertiesBox.GetClickedItem()->GetID())
 		{
-		case INVENTORY_SELL_ITEM:
-			SellItem();
-			break;
 		case INVENTORY_TO_SLOT_ACTION:	
 			ToSlot(CurrentItem(), true);
 			break;

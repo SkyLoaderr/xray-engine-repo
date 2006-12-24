@@ -75,7 +75,6 @@ protected:
 	CUIStatic					UIDescrWnd;
 	CUIFrameWindow				UIPersonalWnd;
 
-	CUI3tButton*				UISellAll;
 	CUI3tButton*				UIExitButton;
 
 	CUIStatic					UIStaticBottom;
@@ -143,7 +142,6 @@ protected:
 	bool						ToSlot						(CUICellItem* itm, bool force_place);
 	bool						ToBag						(CUICellItem* itm, bool b_use_cursor_pos);
 	bool						ToBelt						(CUICellItem* itm, bool b_use_cursor_pos);
-	void						SellItem					();
 
 
 	void						AttachAddon					(PIItem item_to_upgrade);

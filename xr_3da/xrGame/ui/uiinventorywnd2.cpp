@@ -5,7 +5,6 @@
 #include "../actor.h"
 #include "../ActorCondition.h"
 #include "../hudmanager.h"
-#include "../game_cl_mp.h"
 #include "../inventory.h"
 #include "UIInventoryUtilities.h"
 
@@ -39,33 +38,12 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}else 
 	if (UIExitButton == pWnd && BUTTON_CLICKED == msg)
 	{
-		Game().StartStopMenu			(this,true);
-	}
-
-	if (UISellAll == pWnd && BUTTON_CLICKED == msg)
-	{
-		game_cl_mp* pGame_MP = smart_cast<game_cl_mp*> (Level().game);
-		if (pGame_MP) pGame_MP->OnSellItemsFromRuck();
+		GetHolder()->StartStopMenu			(this,true);
 	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
 
-void CUIInventoryWnd::SellItem()
-{
-
-	CActor *pActor				= smart_cast<CActor*>(Level().CurrentEntity());
-	if(!pActor)					return;
-
-	//-----------------------------------------------------------------------
-#pragma todo("SATAN -> MAD_MAX: i'm waiting for you (: ")
-	// change to sell item
-	SendEvent_Item_Sell(CurrentIItem());
-	//-----------------------------------------------------------------------
-	SetCurrentItem(NULL);
-
-	InventoryUtilities::UpdateWeight		(UIBagWnd, true);
-}
 
 void CUIInventoryWnd::InitInventory_delayed()
 {

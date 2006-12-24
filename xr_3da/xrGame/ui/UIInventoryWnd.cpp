@@ -45,10 +45,7 @@ CUIInventoryWnd*	g_pInvWnd = NULL;
 CUIInventoryWnd::CUIInventoryWnd()
 {
 	m_iCurrentActiveSlot				= NO_ACTIVE_SLOT;
-
-	UISellAll							= NULL;
 	UIRank								= NULL;
-
 	Init								();
 	SetCurrentItem						(NULL);
 
@@ -127,12 +124,6 @@ void CUIInventoryWnd::Init()
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic				(uiXml, "auto_static", this);
 
-
-	if(GameID() == GAME_ARTEFACTHUNT){
-		UISellAll = xr_new<CUI3tButton>	(); UISellAll->SetAutoDelete(true);
-		CUIXmlInit::Init3tButton		(uiXml, "btn_sell_all", 0, UISellAll);
-		AttachChild						(UISellAll);
-	}
 
 	if (GameID() != GAME_SINGLE){
 		UIRankFrame = xr_new<CUIStatic> (); UIRankFrame->SetAutoDelete(true);
