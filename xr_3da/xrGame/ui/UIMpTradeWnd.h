@@ -125,8 +125,8 @@ private:
 	preset_items		m_preset_storage[_preset_count];
 //controls
 	CUIWindow*			m_shop_wnd;
-	CUIStatic*			m_static_money;
-	CUIStatic*			m_static_rank;
+	CUIStatic*			m_static_player_money;
+	CUIStatic*			m_static_player_rank;
 	CUIStatic*			m_static_information;
 	CUI3tButton* 		m_btn_shop_back;
 	CUI3tButton* 		m_btn_ok;
@@ -148,6 +148,7 @@ private:
 	CUI3tButton* 		m_btn_rifle_glauncher;
 	CUI3tButton* 		m_btn_rifle_ammo2;
 	CUIItemInfo*		m_item_info;
+	CUIStatic*			m_static_item_rank;
 
 	CUITabControl*		m_root_tab_control;
 	CUIDragDropListEx*	m_list[e_total_lists];

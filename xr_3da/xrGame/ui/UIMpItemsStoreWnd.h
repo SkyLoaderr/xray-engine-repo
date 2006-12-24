@@ -30,12 +30,12 @@ public:
 private:
 	const item*				m_current_level;
 	item*					m_root;
-
+	int						m_team_idx;
 	void					LoadLevel			(CUIXml& xml, int index, item* _itm, int depth_level);
 public:
 							CStoreHierarchy		();
 							~CStoreHierarchy	();
-
+					
 	void					Init				(CUIXml& xml, LPCSTR path);
 	void					InitItemsInGroup	(const shared_str& sect, item* =NULL);
 	const item&				GetRoot				()								{VERIFY(m_root); return *m_root;};
@@ -45,4 +45,6 @@ public:
 	const item&				CurrentLevel		()								{VERIFY(m_current_level); return *m_current_level;};
 	bool					MoveUp				();
 	bool					MoveDown			(u32 idx);
+	item*					FindItem			(const shared_str& name_sect, item* recurse_from=NULL);
+	int						TeamIdx			() const	{return m_team_idx;}
 };

@@ -31,11 +31,12 @@
 		</auto_static>
 	</main>
 	
-	<static_money x="900" y="10" width="112" height="34">
+	<static_player_money x="900" y="10" width="112" height="34">
 		<text font="graffiti50" r="231" g="153" b="22" align="c" vert_align="c"/>
-	</static_money>
+	</static_player_money>
+	<static_player_rank x="830" y="10" width="55" height="55" stretch="1"/>
 
-	<static_rank x="230" y="460" width="44" height="44"/>
+	<static_item_rank x="230" y="460" width="44" height="44" stretch="1"/>
 
 	<static_info x="190" y="10" width="830" height="34" light_anim="buy_menu_info" la_cyclic="0" la_texture="0" la_alpha="1">
 		<text font="graffiti22" r="231" g="153" b="22" align="c" vert_align="c"/>

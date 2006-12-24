@@ -164,12 +164,15 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 		BindDragDropListEvents			(lst, true);
 	}
 
-	m_static_money						= xr_new<CUIStatic>(); AttachChild(m_static_money); m_static_money->SetAutoDelete(true);
-	CUIXmlInit::InitStatic				(xml_doc, "static_money",					0, m_static_money);
+	m_static_player_money				= xr_new<CUIStatic>(); AttachChild(m_static_player_money); m_static_player_money->SetAutoDelete(true);
+	CUIXmlInit::InitStatic				(xml_doc, "static_player_money",					0, m_static_player_money);
 
 
-	m_static_rank						= xr_new<CUIStatic>(); AttachChild(m_static_rank); m_static_rank->SetAutoDelete(true);
-	CUIXmlInit::InitStatic				(xml_doc, "static_rank",					0, m_static_rank);
+	m_static_player_rank				= xr_new<CUIStatic>(); AttachChild(m_static_player_rank); m_static_player_rank->SetAutoDelete(true);
+	CUIXmlInit::InitStatic				(xml_doc, "static_player_rank",					0, m_static_player_rank);
+
+	m_static_item_rank					= xr_new<CUIStatic>(); AttachChild(m_static_item_rank); m_static_item_rank->SetAutoDelete(true);
+	CUIXmlInit::InitStatic				(xml_doc, "static_item_rank",					0, m_static_item_rank);
 
 	m_static_information				= xr_new<CUIStatic>(); AttachChild(m_static_information); m_static_information->SetAutoDelete(true);
 	CUIXmlInit::InitStatic				(xml_doc, "static_info",					0, m_static_information);

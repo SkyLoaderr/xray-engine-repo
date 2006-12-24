@@ -90,5 +90,7 @@
     <texture id="ui_inv_icon_explosion_immunity" x="538" y="150" width="18" height="18" />
     <texture id="ui_inv_icon_fire_wound_immunity" x="538" y="170" width="18" height="18" />
 
+    <texture id="ui_mg_progress_efficiency_full" x="161" y="363" width="120" height="17" />
+    <texture id="ui_mg_progress_efficiency_empty" x="161" y="381" width="120" height="17" />
 
 </ui_texture>

@@ -10,10 +10,22 @@
 #include "../inventory_item.h"
 #include "../PhysicsShellHolder.h"
 #include "../object_broker.h"
-
+#include <dinput.h>
 
 bool CUIMpTradeWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
+#ifdef DEBUG
+	//for debug only
+	if(keyboard_action==WINDOW_KEY_PRESSED && dik==DIK_NUMPAD7)
+	{
+		SetRank( clampr(u32(GetRank()-1),u32(0),u32(4) ) );
+	}
+	if(keyboard_action==WINDOW_KEY_PRESSED && dik==DIK_NUMPAD8)
+	{
+		SetRank( clampr(u32(GetRank()+1),u32(0),u32(4) ) );
+	}
+#endif
+
 	if(!m_store_hierarchy->CurrentIsRoot())
 	{
 		if (m_shop_wnd->OnKeyboard(dik, keyboard_action) )
@@ -37,9 +49,9 @@ void CUIMpTradeWnd::Update()
 
 void CUIMpTradeWnd::UpdateMomeyIndicator()
 {
-	string128					buff;
-	sprintf						(buff, "%d", m_money);
-	m_static_money->SetText		(buff);
+	string128						buff;
+	sprintf							(buff, "%d", m_money);
+	m_static_player_money->SetText	(buff);
 }
 
 void CUIMpTradeWnd::SetInfoString(LPCSTR str)
@@ -63,7 +75,11 @@ CInventoryItem* CUIMpTradeWnd::CurrentIItem()
 {
 	return	(m_pCurrentCellItem)?(CInventoryItem*)m_pCurrentCellItem->m_pData : NULL;
 }
-
+LPCSTR _team_names[]=
+{
+"green",
+"blue"
+};
 void CUIMpTradeWnd::SetCurrentItem(CUICellItem* itm)
 {
 	if(m_pCurrentCellItem == itm)		return;
@@ -72,11 +88,6 @@ void CUIMpTradeWnd::SetCurrentItem(CUICellItem* itm)
 	if (m_pCurrentCellItem)
 	{
 		const shared_str& current_sect_name = CurrentIItem()->object().cNameSect();
-		/*
-		string256						str;
-		sprintf							(str, "%s [%d RU]", current_sect_name.c_str(), GetItemPrice(CurrentIItem()));
-		m_static_current_item->SetText	(str);
-		*/
 		string256						str;
 		sprintf							(str, "%d", GetItemPrice(CurrentIItem()));
 		m_item_info->UICost->SetText	(str);
@@ -86,20 +97,21 @@ void CUIMpTradeWnd::SetCurrentItem(CUICellItem* itm)
 		string64						tex_name;
 		string64						team;
 
-		if (true /*m_bag.IsBlueTeamItem(itm)*/ )
-			strcpy						(team, "blue");
-		else 
-			strcpy						(team, "green");
-
+		if (m_store_hierarchy->FindItem(current_sect_name) )
+		{// our team
+			strcpy						(team, _team_names[m_store_hierarchy->TeamIdx()]);
+		}else 
+		{
+			strcpy						(team, _team_names[m_store_hierarchy->TeamIdx()%1]);
+		}
 		sprintf							(tex_name, "ui_hud_status_%s_0%d", team, 1+get_rank(current_sect_name.c_str()) );
 				
-		m_static_rank->InitTexture		(tex_name);
-		m_static_rank->TextureOn		();
+		m_static_item_rank->InitTexture		(tex_name);
+		m_static_item_rank->TextureOn		();
 	}
 	else
 	{
-//.		m_static_current_item->SetText	("[no item selected]");
-		m_static_rank->TextureOff		();
+		m_static_item_rank->TextureOff		();
 	}
 }
 
@@ -304,6 +316,15 @@ void CUIMpTradeWnd::SetSkin(u8 SkinID)
 void CUIMpTradeWnd::SetRank(u32 rank)
 {
 	g_mp_restrictions.SetRank(rank);
+
+	string64			tex_name;
+	string64			team;
+
+	strcpy				(team, _team_names[m_store_hierarchy->TeamIdx()]);
+	sprintf				(tex_name, "ui_hud_status_%s_0%d", team, 1+rank );
+			
+	m_static_player_rank->InitTexture(tex_name);
+	m_static_player_rank->TextureOn();
 }
 
 

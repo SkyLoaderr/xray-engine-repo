@@ -103,8 +103,9 @@ void CUIItemInfo::Init(LPCSTR xml_name){
 		UIDesc							= xr_new<CUIScrollView>(); 
 		AttachChild						(UIDesc);		
 		UIDesc->SetAutoDelete			(true);
+		m_desc_info.bShowDescrText		= uiXml.ReadAttribInt("descr_list",0,"only_text_info", 1);
 		xml_init.InitScrollView			(uiXml, "descr_list", 0, UIDesc);
-		xml_init.InitFont				(uiXml, "descr_list:font", 0, uDescClr, pDescFont);
+		xml_init.InitFont				(uiXml, "descr_list:font", 0, m_desc_info.uDescClr, m_desc_info.pDescFont);
 	}	
 
 	if (uiXml.NavigateToNode("image_static", 0))
@@ -163,13 +164,16 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		VERIFY								(0==UIDesc->GetSize());
 		TryAddWpnInfo						(pInvItem->object().cNameSect());
 		TryAddArtefactInfo					(pInvItem->object().cNameSect());
-		CUIStatic* pItem					= xr_new<CUIStatic>();
-		pItem->SetTextColor					(uDescClr);
-		pItem->SetFont						(pDescFont);
-		pItem->SetWidth						(UIDesc->GetDesiredChildWidth());
-		pItem->SetText						(*pInvItem->ItemDescription());
-		pItem->AdjustHeightToText			();
-		UIDesc->AddWindow					(pItem, true);
+		if(m_desc_info.bShowDescrText)
+		{
+			CUIStatic* pItem					= xr_new<CUIStatic>();
+			pItem->SetTextColor					(m_desc_info.uDescClr);
+			pItem->SetFont						(m_desc_info.pDescFont);
+			pItem->SetWidth						(UIDesc->GetDesiredChildWidth());
+			pItem->SetText						(*pInvItem->ItemDescription());
+			pItem->AdjustHeightToText			();
+			UIDesc->AddWindow					(pItem, true);
+		}
 		UIDesc->ScrollToBegin				();
 	}
 	if(UIItemImage)

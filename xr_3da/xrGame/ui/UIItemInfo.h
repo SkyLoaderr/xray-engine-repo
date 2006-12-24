@@ -15,6 +15,13 @@ class CUIItemInfo: public CUIWindow
 {
 private:
 	typedef CUIWindow inherited;
+	struct _desc_info
+	{
+		CGameFont*			pDescFont;
+		u32					uDescClr;
+		bool				bShowDescrText;
+	};
+	_desc_info				m_desc_info;
 	CInventoryItem* m_pInvItem;
 public:
 						CUIItemInfo			();
@@ -36,9 +43,6 @@ public:
 	CUIProgressBar*		UICondProgresBar;
 	CUIWpnParams*		UIWpnParams;
 	CUIArtefactParams*	UIArtefactParams;
-
-	CGameFont*			pDescFont;
-	u32					uDescClr;
 
 	Fvector2			UIItemImageSize; 
 	CUIStatic*			UIItemImage;
