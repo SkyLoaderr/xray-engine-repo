@@ -69,6 +69,12 @@ public:
 		at_glauncher			=0x2,
 		at_silencer				=0x4,
 	};
+	enum _buy_flags{
+		bf_normal				= (1<<0),
+		bf_ignore_money			= (1<<1),
+		bf_ignore_restr			= (1<<2),
+		bf_own_item				= bf_ignore_money | bf_ignore_restr,
+	};
 public:
 								CUIMpTradeWnd				();
 	virtual						~CUIMpTradeWnd				();
@@ -186,9 +192,10 @@ private:
 	void				FillUpSubLevelButtons		();
 	void				FillUpSubLevelItems			();
 
-	bool				TryToBuyItem				(SBuyItemInfo* itm, bool own_item, SBuyItemInfo* itm_parent);
-	bool				TryToSellItem				(SBuyItemInfo* itm);
-	bool				CheckBuyPossibility			(const shared_str& sect_name);
+	bool				TryToBuyItem				(SBuyItemInfo* itm, u32 buy_flags, SBuyItemInfo* itm_parent);
+	bool				TryToSellItem				(SBuyItemInfo* itm, bool do_destroy);
+	bool				BuyItemAction				(SBuyItemInfo* itm);
+	bool				CheckBuyPossibility			(const shared_str& sect_name, u32 buy_flags);
 
 //---item addons---
 	bool				TryToAttachItemAsAddon		(SBuyItemInfo* buy_itm, SBuyItemInfo* itm_parent);
@@ -221,8 +228,6 @@ private:
 	u32					GetGroupCount				(const shared_str& name_group, SBuyItemInfo::EItmState state)const;
 
 	void				ResetToOrigin				();
-//	void				ApplyPreset					(ETradePreset idx);
-//	void				StorePreset					(ETradePreset idx);
 	void				DumpPreset					(ETradePreset idx);
 	void				DumpAllItems				(LPCSTR reason);
 	dd_list_type		GetListType					(CUIDragDropListEx* l);

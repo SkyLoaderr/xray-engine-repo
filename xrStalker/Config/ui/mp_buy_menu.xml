@@ -25,10 +25,6 @@
 		<auto_static x="0" y="0" width="1024" height="768" stretch="1">
 			<texture x="100" y="80" width="300" height="300">ui\ui_pda</texture>
 		</auto_static>
-		<auto_static x="40" y="100" width="290" height="570" stretch="1">
-			<text x="30" y="10" font="graffiti22" r="231" g="153" b="22" align="l">ui_inv_items_list</text>
-			<texture>ui_inventory_mp_shop</texture>
-		</auto_static>
 	</main>
 	
 	<static_player_money x="900" y="10" width="112" height="34">
@@ -36,16 +32,20 @@
 	</static_player_money>
 	<static_player_rank x="830" y="10" width="55" height="55" stretch="1"/>
 
-	<static_item_rank x="230" y="460" width="44" height="44" stretch="1"/>
+	<static_item_rank x="330" y="360" width="44" height="44" stretch="1"/>
 
 	<static_info x="190" y="10" width="830" height="34" light_anim="buy_menu_info" la_cyclic="0" la_texture="0" la_alpha="1">
 		<text font="graffiti22" r="231" g="153" b="22" align="c" vert_align="c"/>
 	</static_info>
 	
-	<shop_wnd x="0" y="100" width="285" height="570"/>
+	<shop_wnd x="0" y="160" width="290" height="570">
+		<auto_static x="0" y="0" width="290" height="570" stretch="1">
+			<texture>ui_inventory_mp_shop</texture>
+		</auto_static>
+	</shop_wnd>
 	
-    <lst_player_bag x="580" y="350" width="448" height="280"
-            cell_width = "52" cell_height="52" rows_num="5" cols_num="8"
+    <lst_player_bag x="580" y="450" width="448" height="280"
+            cell_width = "52" cell_height="52" rows_num="5" cols_num="6"
             unlimited="1" group_similar="1"/>
 
     <lst_shop x="32" y="70" width="253" height="480"
@@ -87,7 +87,7 @@
             group_similar="1"/>
 
 
-	<tab_control x="0" y="100" width="120" height="200">
+	<tab_control x="0" y="0" width="120" height="150">
 		<window_name>tab_control</window_name>
 	</tab_control>
 	

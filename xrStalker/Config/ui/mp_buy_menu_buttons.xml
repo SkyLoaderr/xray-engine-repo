@@ -8,7 +8,7 @@
 	<texture_d>ui\ui_btn_mp_d</texture_d>
 	<texture_h>ui\ui_btn_mp_h</texture_h>
 -->	
-	<hint x="0" y="0" width="29" height="29">
+	<hint x="0" y="3" width="29" height="29">
 		<text font="letterica25" x="0" y="-4" align="c">1</text>
 		<text_color>
 			<e a="255" r="255" g="255" b="0"/> <d a="255" r="87" g="87" b="72"/>  <h a="255" r="255" g="226" b="79"/> <t a="0" r="0" g="0" b="0"/>
@@ -37,7 +37,7 @@
 		</text_color>
 	</hint>
 -->
-	<hint x="0" y="0" width="29" height="29">
+	<hint x="0" y="3" width="29" height="29">
 		<text font="letterica25" x="0" y="-4" align="c">2</text>
 		<text_color>
 			<e a="255" r="255" g="255" b="0"/> <d a="255" r="87" g="87" b="72"/> <h a="255" r="255" g="226" b="79"/> <t a="0" r="0" g="0" b="0"/>
@@ -59,7 +59,7 @@
 	<texture_d>ui\ui_btn_mp_d</texture_d>
 	<texture_h>ui\ui_btn_mp_h</texture_h>
 -->
-	<hint x="0" y="0" width="29" height="29">
+	<hint x="0" y="3" width="29" height="29">
 		<text font="letterica25" x="0" y="-4" align="c">3</text>
 		<text_color>
 			<e a="255" r="255" g="255" b="0"/> <d a="255" r="87" g="87" b="72"/> <h a="255" r="255" g="226" b="79"/> <t a="0" r="0" g="0" b="0"/>
@@ -73,15 +73,15 @@
 </btn_tab_granades>
 <btn_tab_outfits x="0" y="90"  width="117" height="29" accel="k4" horz_al="1">
 	<texture>ui_button_ordinary</texture>
-	<idention push_y="-43"/>
 <!--
+	<idention push_y="-43"/>
 	<texture_offset x="-18" y="-62"/>
 	<texture_t>ui\ui_btn_suit_t</texture_t>
 	<texture_e>ui\ui_btn_mp_e</texture_e>
 	<texture_d>ui\ui_btn_mp_d</texture_d>
 	<texture_h>ui\ui_btn_mp_h</texture_h>
 -->
-	<hint x="0" y="0" width="29" height="29">
+	<hint x="0" y="3" width="29" height="29">
 		<text font="letterica25" x="0" y="-4" align="c">4</text>
 		<text_color>
 			<e a="255" r="255" g="255" b="0"/> <d a="255" r="87" g="87" b="72"/> <h a="255" r="255" g="226" b="79"/> <t a="0" r="0" g="0" b="0"/>
@@ -96,15 +96,15 @@
 
 <btn_tab_equipment x="0" y="120"  width="117" height="29" accel="k5" horz_al="1">
 	<texture>ui_button_ordinary</texture>
-	<idention push_y="-43"/>
 <!--
+	<idention push_y="-43"/>
 	<texture_offset x="-18" y="-62"/>
 	<texture_t>ui\ui_btn_equip_t</texture_t>
 	<texture_e>ui\ui_btn_mp_e</texture_e>
 	<texture_d>ui\ui_btn_mp_d</texture_d>
 	<texture_h>ui\ui_btn_mp_h</texture_h>
 -->
-	<hint x="0" y="0" width="29" height="29">
+	<hint x="0" y="3" width="29" height="29">
 		<text font="letterica25" x="0" y="-4" align="c">5</text>
 		<text_color>
 			<e a="255" r="255" g="255" b="0"/> <d a="255" r="87" g="87" b="72"/> <h a="255" r="255" g="226" b="79"/> <t a="0" r="0" g="0" b="0"/>
@@ -227,7 +227,7 @@
 </shop_back_btn>
 
 
-<btn_ok x="925" y="675" width="79" height="30" accel="kRETURN">		
+<btn_ok x="900" y="390" width="117" height="29" accel="kRETURN">		
 	<window_name>btn_ok</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_inv_ok</text>
@@ -237,7 +237,7 @@
 	</text_color>		
 </btn_ok>
 
-<btn_cancel x="925" y="730" width="79" height="30" accel="kESCAPE">
+<btn_cancel x="900" y="420" width="117" height="29" accel="kESCAPE">
 	<window_name>btn_cancel</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_inv_cancel</text>
@@ -285,7 +285,7 @@
 	<sound_t>weapons\generic_close</sound_t>
 </btn_save_preset>
 
-<btn_sell x="780" y="630" width="117" height="29" hint="ui_inv_sell_items(X)"  accel="kX">
+<btn_sell x="900" y="360" width="117" height="29" hint="ui_inv_sell_items(X)"  accel="kX">
 	<window_name>btn_sell</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_sell_all</text>

@@ -18,7 +18,8 @@ bool CUIMpTradeWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	//for debug only
 	if(keyboard_action==WINDOW_KEY_PRESSED && dik==DIK_NUMPAD7)
 	{
-		SetRank( clampr(u32(GetRank()-1),u32(0),u32(4) ) );
+		if(GetRank()>0)
+			SetRank( clampr(u32(GetRank()-1),u32(0),u32(4) ) );
 	}
 	if(keyboard_action==WINDOW_KEY_PRESSED && dik==DIK_NUMPAD8)
 	{
@@ -148,14 +149,14 @@ bool CUIMpTradeWnd::OnItemDrop(CUICellItem* itm)
 
 	if(_owner_type==dd_shop)
 	{
-		bool res		= TryToBuyItem			(iinfo, false, NULL);
-		VERIFY			(res);
+		bool res		= BuyItemAction			(iinfo);
+//.		VERIFY			(res);
 		return			true;
 	}
 
 	if(_new_owner_type==dd_shop)
 	{
-		bool res		= TryToSellItem			(iinfo);
+		bool res		= TryToSellItem			(iinfo, true);
 		VERIFY			(res);
 		return			true;
 	}
@@ -193,12 +194,13 @@ bool CUIMpTradeWnd::OnItemDbClick(CUICellItem* itm)
 	switch(_owner_type)
 	{
 		case dd_shop:
-			TryToBuyItem			(iinfo, false, NULL);
-			break;
+			{
+				BuyItemAction		(iinfo);
+			}break;
 
 		case dd_own_bag:
 		case dd_own_slot:
-			TryToSellItem			(iinfo);
+			TryToSellItem			(iinfo, true);
 			break;
 		default:					NODEFAULT;
 	};

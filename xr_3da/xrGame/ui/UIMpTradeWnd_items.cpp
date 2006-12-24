@@ -32,6 +32,12 @@ SBuyItemInfo::~SBuyItemInfo()
 
 void SBuyItemInfo::SetState	(const EItmState& s)
 {
+	if(s==e_undefined)
+	{
+		m_item_state	= s;
+		return;
+	}
+
 	switch(m_item_state)
 	{
 	case e_undefined:
@@ -152,7 +158,8 @@ SBuyItemInfo* CUIMpTradeWnd::FindItem(CUICellItem* item)
 		if(pitm->m_cell_item==item)
 			return pitm;
 	}
-	return	NULL;
+	R_ASSERT2		(0, "buy menu data corruption. cant find corresponding SBuyItemInfo* for CellItem");
+	return			NULL;
 }
 
 void CUIMpTradeWnd::UpdateCorrespondingItemsForList(CUIDragDropListEx* _list)
@@ -390,7 +397,7 @@ void CUIMpTradeWnd::ApplyPreset(ETradePreset idx)
 		{
 			SBuyItemInfo* pitem				= CreateItem(_one.sect_name, SBuyItemInfo::e_undefined, false);
 
-			bool b_res						= TryToBuyItem(pitem, (idx==_preset_idx_origin), NULL );
+			bool b_res						= TryToBuyItem(pitem, (idx==_preset_idx_origin)?bf_own_item:bf_normal, NULL );
 			if(!b_res)
 			{
 				DestroyItem					(pitem);
@@ -404,7 +411,7 @@ void CUIMpTradeWnd::ApplyPreset(ETradePreset idx)
 						shared_str addon_name	= GetAddonNameSect(pitem, at);
 						
 						SBuyItemInfo* addon_item = CreateItem(addon_name, SBuyItemInfo::e_undefined, false);
-						bool b_res_addon		 = TryToBuyItem(addon_item, (idx==_preset_idx_origin), pitem );
+						bool b_res_addon		 = TryToBuyItem(addon_item, (idx==_preset_idx_origin)?bf_own_item:bf_normal, pitem );
 						if(!b_res_addon)
 							DestroyItem			(addon_item);
 					}
@@ -427,7 +434,7 @@ void CUIMpTradeWnd::ResetToOrigin()
 	do{
 		iinfo			= FindItem(SBuyItemInfo::e_bought);
 		if(iinfo)
-			b_ok		= TryToSellItem(iinfo);
+			b_ok		= TryToSellItem(iinfo, true);
 
 		R_ASSERT		(b_ok);
 	}while(iinfo);
@@ -435,7 +442,7 @@ void CUIMpTradeWnd::ResetToOrigin()
 	do{
 		iinfo			= FindItem(SBuyItemInfo::e_sold);
 		if(iinfo)
-			b_ok		= TryToBuyItem(iinfo, false, NULL);
+			b_ok		= TryToBuyItem(iinfo, bf_normal, NULL);
 
 		R_ASSERT		(b_ok);
 	}while(iinfo);
@@ -479,7 +486,7 @@ void CUIMpTradeWnd::OnBtnSellClicked(CUIWindow* w, void* d)
 		CUICellItem* ci = pList->GetItemIdx(0);
 		iinfo			= FindItem(ci);
 		bool	b_ok	= true;
-		b_ok			= TryToSellItem(iinfo);
+		b_ok			= TryToSellItem(iinfo, true);
 		R_ASSERT		(b_ok);
 	}
 }

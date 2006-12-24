@@ -287,7 +287,8 @@ void CUICellItemAccelDraw::OnDraw(CUICellItem* cell)
 	int acc									= cell->GetAccelerator();
 	if(acc!=0)
 	{
-		if(acc==10)							acc = 0;
+		if(acc==11)							
+			acc = 1;
 		Fvector2							pos;
 		string64							buff;
 
