@@ -815,7 +815,7 @@ function parse_infop(rslt, str)
 			at = string.find(infop_name, "%(")
 			if at then
 				if string.sub(infop_name, -1) ~= ")" then
-					abort_syntax_error_in_cond(npc, section, field)
+					abort("wrong condlist %s", str)
 				end
 				if at < string.len(infop_name) - 1 then
 					params = parse_func_params(string.sub(infop_name, at + 1, -2))
