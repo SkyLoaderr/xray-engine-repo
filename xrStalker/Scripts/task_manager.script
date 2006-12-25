@@ -362,7 +362,8 @@ function CRandomTask:task_complete(p1, p2)
 	if p2 == 1 then
 		local sel_task = self.task_info[self.active_task_by_type[p1]]
 		if p1 == "eliminate_lager" then
-			if alife():object(sel_task.selected_target).gulag:get_population_comed() == 0 then
+			local oo = alife():object(sel_task.selected_target)
+			if oo and oo.gulag:get_population_comed() == 0 then
 				self.task_info[self.active_task_by_type[p1]].status = "completed"
 				return true
 			end
@@ -373,7 +374,8 @@ function CRandomTask:task_complete(p1, p2)
 				return true
 			end
 		elseif p1 == "kill_stalker" then
-			if alife():object(sel_task.selected_target):alive() == false then
+			local oo = alife():object(sel_task.selected_target)
+			if oo and oo:alive() == false then
 				self.task_info[self.active_task_by_type[p1]].status = "completed"
 				return true
 			end
