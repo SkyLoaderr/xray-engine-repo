@@ -998,7 +998,7 @@
 		<text>Печной тайник</text>
 	</string>
 	<string id="mil_secret_0006_description">
-		<text>В печку сунул рюкзак, в нем все что собрал по пути.</text>
+		<text>В печку сунул рюкзак, потом пригодится.</text>
 	</string>
 	<string id="mil_secret_0007_name">
 		<text>Авто-тайник</text>
@@ -1019,10 +1019,10 @@
 		<text>Закопал хабар под крестом, в укромном месте.</text>
 	</string>
 	<string id="mil_secret_0010_name">
-		<text>Рюкзак с хабаром</text>
+		<text>Рюкзак со снаряжением</text>
 	</string>
 	<string id="mil_secret_0010_description">
-		<text>Припрятал рюкзачек в укромном месте.</text>
+		<text>Припрятал рюкзачек со снарягой в укромном месте.</text>
 	</string>
 	<string id="mil_secret_0011_name">
 		<text>Тайник на холме</text>
@@ -1178,13 +1178,13 @@
 		<text>Старый рюкзак</text>
 	</string>
 	<string id="yan_secret_0007_description">
-		<text>Говорят тут хабар чей-то есть, только под излучением не пробраться.</text>
+		<text>Говорят, тут хабар чей-то есть, только под излучением не пробраться.</text>
 	</string>
 	<string id="yan_secret_0008_name">
 		<text>Тайник группировки</text>
 	</string>
 	<string id="yan_secret_0008_description">
-		<text>Говорят тут тайник какой-то группировки, как только они под излучением пробрались?</text>
+		<text>Говорят, тут тайник какой-то группировки, как только они под излучением пробрались?</text>
 	</string>
 	<string id="yan_secret_0009_name">
 		<text>Рюкзак испытателя</text>
