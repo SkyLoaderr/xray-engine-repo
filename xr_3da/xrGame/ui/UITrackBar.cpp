@@ -71,15 +71,17 @@ void CUITrackBar::SetCurrentValue()
 	UpdatePos			();
 }
 
-#include "../HUDmanager.h"
+//. #include "../HUDmanager.h"
 void CUITrackBar::Draw()
 {
 	CUIWindow::Draw();
+/*
 	Fvector2 p;
 	GetAbsolutePos(p);
 	string128 buff;
 	sprintf(buff,"[%.2f %.2f], %.2f",m_min,m_max,m_val);
 	UI()->Font()->pFontSmall->Out(p.x, p.y, buff);
+*/
 }
 
 void CUITrackBar::SaveValue()
