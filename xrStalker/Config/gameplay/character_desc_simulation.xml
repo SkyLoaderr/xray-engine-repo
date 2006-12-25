@@ -2590,6 +2590,8 @@
 		<rank>670</rank>
 		<reputation>19</reputation>
 
+		<critical_wound_weights>75,25,25</critical_wound_weights>
+
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>
 		<crouch_type>0</crouch_type>
@@ -2619,6 +2621,8 @@
 		
 		<rank>765</rank>
 		<reputation>23</reputation>
+
+		<critical_wound_weights>75,25,25</critical_wound_weights>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<snd_config>characters_voice\human_02\military\</snd_config>

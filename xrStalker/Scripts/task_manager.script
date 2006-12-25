@@ -283,11 +283,11 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 
 	if task_desc.type == "eliminate_lager" then
 		objective:set_map_hint(task_desc.text)
-		objective:set_map_location("green_location")
+		objective:set_map_location("eliminate_lager_location")
 		objective:set_object_id(task_desc.selected_target)
 	elseif task_desc.type == "defend_lager" then
 		objective:set_map_hint(task_desc.text)
-		objective:set_map_location("green_location")
+		objective:set_map_location("defend_lager_location")
 		objective:set_object_id(task_desc.selected_target)
 
 		local defend_object = alife():object(task_desc.selected_target)
@@ -295,11 +295,11 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 		self.task_info[self.task_id_by_yes_phrase_id[p2]].defend_target = utils.cfg_get_number(sm_ini, "random_task", "defend_target", nil, true)
 	elseif task_desc.type == "kill_stalker" then
 		objective:set_map_hint(task_desc.text)
-		objective:set_map_location("green_location")
+		objective:set_map_location("kill_stalker_location")
 		objective:set_object_id(task_desc.selected_target)
 	elseif task_desc.type == "find_item" then
 		objective:set_map_hint(task_desc.text)
-		objective:set_map_location("green_location")
+		objective:set_map_location("find_item_location")
 		objective:set_object_id(task_desc.selected_target)
 	end
 	objective:add_complete_func("task_manager.task_complete")
