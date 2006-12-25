@@ -234,22 +234,25 @@ ros_secret_0025
 target = 5000
 name = esc_secret_0000_name
 description = esc_secret_0000_descr
-items = ammo_12x76_zhekan, ammo_12x70_buck, 2
-condlist = true
+items = ammo_12x76_zhekan, 2, ammo_12x70_buck, 2
+condlist = {=npc_rank(experienced) =actor_on_level(l01_escape)} 20
+community = military
 
 [esc_secret_anomaly_dead]
 target = 5001
 name = esc_secret_0001_name
 description = esc_secret_0001_descr
 items = bandit_outfit
-condlist = true
+condlist = {=npc_rank(novice) =actor_on_level(l01_escape)} 5, {=npc_rank(novice) =actor_on_level(l02_garbage)} 10
+community = stalker, dolg, bandit, military
 
 [esc_secret_bandit_cross]
 target = 5002
 name = esc_secret_0002_name
 description = esc_secret_0002_descr
-items = harmonica_a, guitar_a
-condlist = true
+items = medkit_scientic, 2
+condlist = {=npc_rank(novice)} 10
+community = stalker, military
 
 [esc_secret_bandit_supply]
 target = 5003
@@ -257,118 +260,135 @@ name = esc_secret_0003_name
 description = esc_secret_0003_descr
 items = af_soul
 condlist = true
+community = stalker, dolg, bandit, military
 
 [esc_secret_under_cross]
 target = 5004
 name = esc_secret_0004_name
 description = esc_secret_0004_descr
 items = medkit_army, 2
-condlist = true
+condlist = {=npc_rank(novice)} 3
+community = bandit
 
 [esc_secret_refuge]
 target = 5005
 name = esc_secret_0005_name
 description = esc_secret_0005_descr
-items = medkit, 2, bandage, 2
-condlist = true
+items = medkit, 2, bandage, 2, conserva, 5
+condlist = {=npc_rank(experienced)} 5
+community = stalker
 
 [esc_secret_safe_farm]
 target = 5006
 name = esc_secret_0006_name
 description = esc_secret_0006_descr
-items = medkit, 3, bandage
-condlist = true
+items = medkit, 2, bandage
+condlist = {=actor_on_level(l01_escape) =npc_rank(novice)} 3
+community = stalker, dolg, bandit, military
 
 [esc_secret_vagon_container]
 target = 5007
 name = esc_secret_0007_name
 description = esc_secret_0007_descr
-items = ammo_9x18_pbp, 4
-condlist = true
+items = af_rusty_thorn
+condlist = {=npc_rank(novice)} 4
+community = bandit
 
 [esc_secret_stalker_things]
 target = 5008
 name = esc_secret_0008_name
 description = esc_secret_0008_descr
 items = af_rusty_sea-urchin
-condlist = true
+condlist = {=actor_on_level(l01_escape) npc_rank(novice)} 5, {=actor_on_level(l02_garbage) npc_rank(novice)} 10
+community = stalker, dolg, bandit, military
 
 [esc_secret_box_bridge]
 target = 5009
 name = esc_secret_0009_name
 description = esc_secret_0009_descr
-items = af_rusty_thorn
-condlist = true
+items = ammo_9x18_pbp, 4, wpn_fort
+condlist = {=actor_on_level(l01_escape) npc_rank(novice)} 10
+community = bandit
 
 [esc_secret_village_rucksack]
 target = 5010
 name = esc_secret_0010_name
 description = esc_secret_0010_descr
-items = wpn_mp5, ammo_9x19_fmj, 40 ; кол-во патронов идет без множителя
-condlist = true
+items = wpn_mp5, ammo_9x19_fmj, 40 
+condlist = {=actor_on_level(l01_escape) npc_rank(novice)} 5, {=actor_on_level(l02_garbage) npc_rank(novice)} 10
+community = stalker, dolg, bandit, military
 
 [esc_secret_village_roof]
 target = 5011
 name = esc_secret_0011_name
 description = esc_secret_0011_descr
 items = antirad, 3, vodka, 5
-condlist = true
+condlist = {=npc_rank(novice)} 3
+community = bandit
 
 [esc_secret_nice_place]
 target = 5012
 name = esc_secret_0012_name
 description = esc_secret_0012_descr
 items = medkit, 3
-condlist = true
+condlist = {=npc_rank(novice)} 3
+community = stalker, dolg, bandit, military
 
 [esc_secret_vorpal]
 target = 5013
 name = esc_secret_0013_name
 description = esc_secret_0013_descr
 items = ammo_9x18_pbp, 4, bandage, 5
-condlist = true
+condlist = {=actor_on_level(l01_escape) =npc_rank(novice)} 5
+community = military
 
 [esc_secret_commander_goods]
 target = 5014
 name = esc_secret_0014_name
 description = esc_secret_0014_descr
-items = medkit, 3, bandage
-condlist = true
+items = ammo_12x76_zhekan, 5, vodka
+condlist = {=actor_on_level(l01_escape) =npc_rank(novice)} 5, {=actor_on_level(l01_escape) =npc_rank(experienced)} 5, {=actor_on_level(l01_escape) =npc_rank(veteran)} 10
+community = military
 
 [esc_secret_road]
 target = 5015
 name = esc_secret_0015_name
 description = esc_secret_0015_descr
-items = medkit, 3, bandage
-condlist = true
+items = ammo_9x18_pbp, 4
+condlist = {=actor_on_level(l01_escape) =npc_rank(experienced)} 10
+community = military
 
 [esc_secret_thief]
 target = 5016
 name = esc_secret_0016_name
 description = esc_secret_0016_descr
-items = medkit, 3, bandage
-condlist = true
+items = medkit, bandage, 4, mutant_boar_leg
+condlist = {=actor_on_level(l01_escape) =npc_rank(experienced)} 10, {=actor_on_level(l01_escape) =npc_rank(novice)} 10
+community = stalker
 
 [esc_secret_gas_pipe]
 target = 5017
 name = esc_secret_0017_name
 description = esc_secret_0017_descr
-items = medkit, 3, bandage
-condlist = true
+items = bandit_outfit
+condlist = {=npc_rank(experienced)} 10
+community = military
 
 [esc_secret_truck_goods]
 target = 5018
 name = esc_secret_0018_name
 description = esc_secret_0018_descr
 items = medkit, 3, bandage
-condlist = true
+condlist = {=npc_rank(novice)} 5
+community = military
 
 [esc_secret_kpp_tower]
 target = 5019
 name = esc_secret_0019_name
 description = esc_secret_0000_descr
-items = medkit, 3, bandage
-condlist = true
+items = af_blood
+condlist = {=npc_rank(novice)} 3, {=npc_rank(experienced)} 5
+community = stalker, dolg, bandit, military
 
 
 ;----------------- Garbage -----------------
@@ -377,176 +397,197 @@ condlist = true
 target = 5030
 name = esc_secret_0030_name
 description = esc_secret_0030_descr
-items = medkit, 3, bandage
-condlist = true
+items = af_blood 
+condlist = {=npc_rank(novice)} 3
+community = stalker, dolg
 
 [gar_secret_old_kran]
 target = 5031
 name = esc_secret_0031_name
 description = esc_secret_0031_descr
-items = medkit, 3, bandage
-condlist = true
+items = bandage, 5, bandit_outfit, wpn_mp5
+condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 8
+community = bandit
 
 [gar_secret_grizly]
 target = 5032
 name = esc_secret_0032_name
 description = esc_secret_0032_descr
-items = medkit, 3, bandage
+items = killer_outfit
 condlist = true
 
 [gar_secret_north_tube]
 target = 5033
 name = esc_secret_0033_name
 description = esc_secret_0033_descr
-items = medkit, 3, bandage
-condlist = true
+items = grenade_f1, 4
+condlist = {=actor_on_level(l02_garbage) =npc_rank(novice)} 5
+community = bandit
 
 [gar_secret_metal_hiding]
 target = 5034
 name = esc_secret_0034_name
 description = esc_secret_0034_descr
 items = medkit, 3, bandage
-condlist = true
+condlist = {=actor_on_level(l02_garbage) =npc_rank(novice)} 4
+community = stalker, dolg
 
 [gar_secret_cistern_pipe]
 target = 5035
 name = esc_secret_0035_name
 description = esc_secret_0035_descr
-items = medkit, 3, bandage
-condlist = true
+items = medkit, 2, bandage, 2 mutant_dog_tail
+condlist = {=actor_on_level(l01_escape) =npc_rank(experienced)} 10, {=actor_on_level(l02_garbage) =npc_rank(experienced)} 5
+community = stalker, dolg
 
 [gar_secret_east_tube]
 target = 5036
 name = esc_secret_0036_name
 description = esc_secret_0036_descr
 items = medkit, 3, bandage
-condlist = true
+condlist = {=actor_on_level(l02_garbage) =npc_rank(novice)} 6, {=actor_on_level(l03_agroprom) =npc_rank(novice)} 6
+community = stalker, dolg
 
 [gar_secret_rucksack_noones]
 target = 5037
 name = esc_secret_0037_name
 description = esc_secret_0037_descr
-items = medkit, 3, bandage
-condlist = true
+items = novice_outfit, bandage, 2
+condlist = {=actor_on_level(l02_garbage) =npc_rank(novice)} 3
+community = stalker, dolg, bandit
 
 [gar_secret_murdered]
 target = 5038
 name = esc_secret_0038_name
 description = esc_secret_0038_descr
-items = medkit, 3, bandage
+items = ammo_9x19_pbp, 6, medkit, 3
 condlist = true
 
 [gar_secret_rotted_stump]
 target = 5039
 name = esc_secret_0039_name
 description = esc_secret_0039_descr
-items = medkit, 3, bandage
-condlist = true
+items = af_fireball, bandage
+condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 4, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 2
+community = stalker, dolg, bandit, military
 
 [gar_secret_forest_log]
 target = 5040
 name = esc_secret_0040_name
 description = esc_secret_0040_descr
-items = medkit, 3, bandage
-condlist = true
+items = grenade_rgd5, 3, grenade_f1, 3
+condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 10
+community = stalker, bandit
 
 [gar_secret_shooters_supply]
 target = 5041
 name = esc_secret_0041_name
 description = esc_secret_0041_descr
-items = medkit, 3, bandage
+items = wpn_ak74, ammo_5.45x39_ap, 4
 condlist = true
 
 [gar_secret_car_hiding]
 target = 5042
 name = esc_secret_0042_name
 description = esc_secret_0042_descr
-items = medkit, 3, bandage
-condlist = true
+items = wpn_walther, ammo_9x19_pbp, 3
+condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 5, {=actor_on_level(l03u_agr_underground) =npc_rank(experienced)} 1
+community = stalker, dolg, bandit, military
 
 [gar_secret_bus_rucksack]
 target = 5043
 name = esc_secret_0043_name
 description = esc_secret_0043_descr
 items = medkit, 3, bandage
-condlist = true
+condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 5, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 3
+community = stalker, dolg, bandit, military
 
 [gar_secret_toilet]
 target = 5044
 name = esc_secret_0044_name
 description = esc_secret_0044_descr
-items = medkit, 3, bandage
+items = af_electra_flash, af_rusty_thorn, medkit_army, 2
 condlist = true
 
 [gar_secret_south_safe]
 target = 5045
 name = esc_secret_0045_name
 description = esc_secret_0045_descr
-items = medkit, 3, bandage
-condlist = true
+items = ammo_5.45x39_ap, 3
+condlist = {=npc_rank(novice) =actor_on_level(l02_garbage)} 5
+community = stalker, dolg, military
 
 [gar_secret_metal_hiding2]
 target = 5046
 name = esc_secret_0046_name
 description = esc_secret_0046_descr
-items = medkit, 3, bandage
-condlist = true
+items = af_gravi
+condlist = {=actor_on_level(l02_garbage) =npc_rank(novice)} 5, {=actor_on_level(l03u_agr_underground) =npc_rank(novice)} 3
+community = stalker, military, bandit
 
 [gar_secret_box_supply]
 target = 5047
 name = esc_secret_0047_name
 description = esc_secret_0047_descr
-items = medkit, 3, bandage
-condlist = true
+items = af_mincer_meat, 2, conserva, 5
+condlist = {=actor_on_level(l01_escape) =npc_rank(experienced)} 5, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 20
+community = military
 
 [gar_secret_bus_tube]
 target = 5048
 name = esc_secret_0048_name
 description = esc_secret_0048_descr
-items = medkit, 3, bandage
-condlist = true
+items = conserva, 3, vodka, 1, antirad, 2
+condlist = {=actor_on_level(l02_garbage) =npc_rank(novice)} 5
+community = stalker, bandit, dolg
 
 [gar_secret_rucksack_ruins]
 target = 5049
 name = esc_secret_0049_name
 description = esc_secret_0049_descr
-items = medkit, 3, bandage
-condlist = true
+items = af_ameba_slug, mutant_dog_tail
+condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 8
+community = stalker, dolg
 
 [gar_secret_box_blockpost]
 target = 5050
 name = esc_secret_0050_name
 description = esc_secret_0050_descr
-items = medkit, 3, bandage
-condlist = true
+items = antirad, 8
+condlist = {=npc_rank(novice)} 8
+community = stalker, bandit
 
 [gar_secret_deadman]
 target = 5051
 name = esc_secret_0051_name
 description = esc_secret_0051_descr
-items = medkit, 3, bandage
-condlist = true
+items = ammo_12x76_zhekan, 5
+condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 5, {=actor_on_level(l01_escape) =npc_rank(novice)} 2
+community = bandit
 
 [gar_secret_avoska]
 target = 5052
 name = esc_secret_0052_name
 description = esc_secret_0052_descr
-items = medkit, 3, bandage
-condlist = true
+items = medkit_scientic, 3
+condlist = {=actor_on_level(l02_garbage) =npc_rank(novice)} 5
+community = stalker, bandit
 
 [gar_secret_escavator]
 target = 5053
 name = esc_secret_0053_name
 description = esc_secret_0053_descr
-items = medkit, 3, bandage
-condlist = true
+items = kolbasa, 8, vodka, 4, bread
+condlist = {=actor_on_level(l02_garbage) =npc_rank(novice)} 3, {=actor_on_level(l03_agroprom) =npc_rank(novice)} 1
+community = stalker, bandit, dolg
 
 [gar_secret_concrete_blocks]
 target = 5054
 name = esc_secret_0054_name
 description = esc_secret_0054_descr
-items = medkit, 3, bandage
-condlist = true
+items = af_cristall_flower, af_gravi
+condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 4, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 4
+community = stalker, bandit, dolg, military
 
 ;----------------- Agroprom -----------------
 
@@ -561,113 +602,129 @@ condlist = true
 target = 5066
 name = agr_secret_0001_name
 description = agr_secret_0001_descr
-items = medkit, 2, bandage
-condlist = true
+items = ammo_11.43x23_hydro, 3
+condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 3, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 5
+community = military, dolg
 
 [agr_secret_cross]
 target = 5067
 name = agr_secret_0002_name
 description = agr_secret_0002_descr
 items = af_ameba_slime, Conserva, 4
-condlist = true
+condlist = {=actor_on_level(l02_garbage) =npc_rank(novice)} 3, {=actor_on_level(l03_agroprom) =npc_rank(novice)} 5
+community = military, bandit
 
 [agr_secret_tree_rucksack]
 target = 5068
 name = agr_secret_0003_name
 description = agr_secret_0003_descr
 items = Conserva, 2, ammo_9x19_pbp, 2
-condlist = true
+condlist = {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 3, {=actor_on_level(l03u_agr_underground) =npc_rank(experienced)} 5
+community = stalker, military
 
 [agr_secret_pipe_rucksack]
 target = 5069
 name = agr_secret_0004_name
 description = agr_secret_0004_descr
 items = af_ameba_slime, bandage, 2
-condlist = true
+condlist = {=actor_on_level(l03_agroprom) =npc_rank(novice)} 5
+community = stalker
 
 [agr_secret_roof_box]
 target = 5070
 name = agr_secret_0005_name
 description = agr_secret_0005_descr
 items = ammo_5.45x39_ap, 2, wpn_addon_silencer
-condlist = true
+condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 2, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 4
+community = military, bandit
 
 [agr_secret_rucksack_blue]
 target = 5071
 name = agr_secret_0006_name
 description = agr_secret_0006_descr
 items = vodka, 10, bread
-condlist = true
+condlist = {=actor_on_level(l03_agroprom) =npc_rank(novice)} 5
+community = stalker
 
 [agr_secret_cisterne]
 target = 5072
 name = agr_secret_0007_name
 description = agr_secret_0007_descr
-items = medkit, 3, ammo_9x19_pbp, 5, wpn_walther, Antirad, 2
-condlist = true
+items = medkit, 3, ammo_9x19_pbp, 5, wpn_walther, Antirad, 2, wpn_addon_silencer
+condlist = {=actor_on_level(l03u_agr_underground) =npc_rank(experienced)} 2, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 6
+community = military, bandit, dolg
 
 [agr_secret_rucksack_window]
 target = 5073
 name = agr_secret_0008_name
 description = agr_secret_0008_descr
-items = mutant_psevdodog_tail
-condlist = true
+items = mutant_psevdodog_tail, medkit_scientic
+condlist = {=actor_on_level(l05_bar) =npc_rank(novice)} 1, {=actor_on_level(l03_agroprom) =npc_rank(novice)} 3
+community = military, bandit, dolg
 
 [agr_secret_box_radiation]
 target = 5074
 name = agr_secret_0009_name
 description = agr_secret_0009_descr
 items = Antirad, 5, medkit_scientic
-condlist = true
+condlist = {=actor_on_level(l02_garbage) =npc_rank(novice)} 1, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 4
+community = military, dolg, stalker
 
 [agr_secret_box_stairs]
 target = 5075
 name = agr_secret_0010_name
 description = agr_secret_0010_descr
 items = ammo_11.43x23_fmj, 4, wpn_colt1911
-condlist = true
+condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 1, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 4
+community = dolg, stalker
 
 [agr_secret_box_factory]
 target = 5076
 name = agr_secret_0011_name
 description = agr_secret_0011_descr
 items = killer_outfit
-condlist = true
+condlist = {=actor_on_level(l03u_agr_underground) =npc_rank(experienced)} 4, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 4
+community = military, bandit
 
 [agr_secret_bag_stand]
 target = 5077
 name = agr_secret_0012_name
 description = agr_secret_0012_descr
 items = grenade_rgd5, 5
-condlist = true
+condlist = {=actor_on_level(l03u_agr_underground) =npc_rank(experienced)} 2, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 3
+community = military, bandit
 
 [agr_secret_box_trash]
 target = 5078
 name = agr_secret_0013_name
 description = agr_secret_0013_descr
-items = ammo_12x76_zhekan, 2, ammo_12x76_dart, 2
-condlist = true
+items = ammo_12x76_zhekan, 4, ammo_12x76_dart, 4
+condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 3, {=actor_on_level(l04_darkvalley) =npc_rank(experienced)} 3
+community = bandit
 
 [agr_secret_safe_tree]
 target = 5079
 name = agr_secret_0014_name
 description = agr_secret_0014_descr
 items = medkit_scientic, medkit, 2
-condlist = true
+condlist = {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 3
+community = stalker, military
 
 [agr_secret_rucksack_laketube]
 target = 5080
 name = agr_secret_0015_name
 description = agr_secret_0015_descr
 items = mutant_flesh_eye, bandage, 3
-condlist = true
+condlist = {=actor_on_level(l03u_agr_underground) =npc_rank(experienced)} 2, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 3
+community = stalker, military
 
 [agr_secret_tube_radiactive]
 target = 5081
 name = agr_secret_0016_name
 description = agr_secret_0016_descr
 items = energy_drink, 3, vodka, 2, conserva, 3, kolbasa, 3
-condlist = true
+condlist = {=actor_on_level(l03_agroprom) =npc_rank(novice)} 3
+community = bandit, military
 
 [agr_secret_pipe_breakdown]
 target = 5082
@@ -681,7 +738,8 @@ target = 5083
 name = agr_secret_0018_name
 description = agr_secret_0018_descr
 items = wpn_addon_grenade_launcher, ammo_vog-25, 4
-condlist = true
+condlist = {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 4
+community = military, stalker
 
 [agr_secret_box_archive]
 target = 5084
@@ -695,35 +753,40 @@ target = 5085
 name = agr_secret_0020_name
 description = agr_secret_0020_descr
 items = ammo_7.62x54_ap, 3, bandage, 3
-condlist = true
+condlist = {=actor_on_level(l03u_agr_underground) =npc_rank(experienced)} 1, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 3
+community = stalker, military
 
 [agr_secret_safe_wall]
 target = 5086
 name = agr_secret_0021_name
 description = agr_secret_0021_descr
 items = af_gravi, vodka, bread
-condlist = true
+condlist = {=actor_on_level(l02_garbage) =npc_rank(novice)} 2, {=actor_on_level(l03_agroprom) =npc_rank(novice)} 3
+community = stalker, bandit
 
 [agr_secret_box_institute]
 target = 5087
 name = agr_secret_0022_name
 description = agr_secret_0022_descr
 items = medkit, 3
-condlist = true
+condlist = {=actor_on_level(l03_agroprom) =npc_rank(novice)} 3
+community = stalker, military
 
 [agr_secret_agrosafe]
 target = 5088
 name = agr_secret_0023_name
 description = agr_secret_0023_descr
 items = wpn_wincheaster1300, ammo_12x76_dart
-condlist = true
+condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 1, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 5
+community = stalker, bandit
 
 [agr_secret_truck]
 target = 5089
 name = agr_secret_0024_name
 description = agr_secret_0024_descr
 items = ammo_11.43x23_fmj, 3
-condlist = true
+condlist = {=actor_on_level(l03_agroprom) =npc_rank(novice)} 2
+community = stalker, military
 
 [agr_secret_rotted_log]
 target = 5090
@@ -731,20 +794,24 @@ name = agr_secret_0025_name
 description = agr_secret_0025_descr
 items = af_vyvert, af_rusty_thorn
 condlist = true
+condlist = {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 3
+community = stalker, military
 
 [agr_secret_box_zavhoz]
 target = 5091
 name = agr_secret_0026_name
 description = agr_secret_0026_descr
 items = ammo_vog-25, 3, grenade_f1, 5
-condlist = true
+condlist = {=actor_on_level(l03u_agr_underground) =npc_rank(experienced)} 1, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 4
+community = stalker, military
 
 [agr_secret_inventory_schlosser]
 target = 5092
 name = agr_secret_0027_name
 description = agr_secret_0027_descr
 items = wpn_addon_silencer, ammo_5.45x39_ap, 3
-condlist = true
+condlist = {=actor_on_level(l03u_agr_underground) =npc_rank(novice)} 1, {=actor_on_level(l03_agroprom) =npc_rank(novice)} 4
+community = stalker, military
 
 ;----------------- Agr_underground -----------------
 
@@ -753,28 +820,32 @@ target = 5100
 name = agr_u_secret_0000_name
 description = agr_u_secret_0000_descr
 items = wpn_ak74, ammo_5.45x39_ap, 2, bandage, 2
-condlist = true
+condlist = {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 10, {=actor_on_level(l03u_agr_underground) =npc_rank(experienced)} 10
+community = stalker, military
 
 [agru_secret_rucksack_corner]
 target = 5101
 name = agr_u_secret_0001_name
 description = agr_u_secret_0001_descr
 items = bread, 2, Kolbasa, 2, vodka, af_blood
-condlist = true
+condlist = {=actor_on_level(l03u_agr_underground) =npc_rank(experienced)} 3
+community = military, bandit
 
 [agru_secret_box_bloodsucker]
 target = 5102
 name = agr_u_secret_0002_name
 description = agr_u_secret_0002_descr
 items = mutant_krovosos_jaw, medkit, 2
-condlist = true
+condlist = {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 5
+community = military, stalker
 
 [agru_secret_box_habar]
 target = 5103
 name = agr_u_secret_0003_name
 description = agr_u_secret_0003_descr
 items = ammo_5.45x39_ap, 3, wpn_addon_scope
-condlist = true
+condlist = {=actor_on_level(l03u_agr_underground) =npc_rank(experienced)} 10, {=actor_on_level(l03u_agr_underground) =npc_rank(novice)} 10
+community = bandit
 
 [agru_secret_mole_cave]
 target = 5104
