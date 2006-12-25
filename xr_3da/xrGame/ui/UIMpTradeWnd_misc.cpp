@@ -149,7 +149,7 @@ bool CUIMpTradeWnd::OnItemDrop(CUICellItem* itm)
 
 	if(_owner_type==dd_shop)
 	{
-		bool res		= BuyItemAction			(iinfo);
+		BuyItemAction	(iinfo);
 //.		VERIFY			(res);
 		return			true;
 	}
