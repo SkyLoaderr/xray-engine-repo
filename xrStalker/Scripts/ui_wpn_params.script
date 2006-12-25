@@ -39,15 +39,15 @@ end
 function GetDamage(section)
 	local ltx = system_ini()
 	local val = ltx:r_float(section,"hit_power")
-	local ammo_list	= ltx:r_string(section,"ammo_class")
-	 
-	if val < 1.36 then
-		val = val*100-46
-	else
-		val = 90 + math.pow(val/2.3,2)*10
-	end
 	
-	return normalize(val)	
+
+--	if val < 1.36 then
+--		val = val*100-46
+--	else
+--		val = 90 + math.pow(val/2.3,2)*10
+--	end
+	
+	return normalize((100*val - 25) * (100/85) )	
 end
 
 function GetDamageMP(section)
