@@ -517,7 +517,7 @@
 		<text>Тайник под елкой</text>
 </string>
 <string id="val_secret_0007_description">
-		<text>Спрятал рюкзак под елкой, нормальное место</text>
+		<text>Спрятал рюкзак под елкой</text>
 </string>
 <string id="val_secret_0008_name">
 		<text>Правительственный ящик</text>
@@ -526,10 +526,10 @@
 		<text>Новенький стащил таки ящик у бандитов, положил его в Ниве перевернутой. Говорит по виду вроде правительственный ящик. Надо будет снарядить ребят, забрать его</text>
 </string>
 <string id="val_secret_0009_name">
-		<text>Правительственный ящик</text>
+		<text>Ящик</text>
 </string>
 <string id="val_secret_0009_description">
-		<text>Шмотье спрятал в ящике, под досками</text>
+		<text>Кругом одно ворье, уже у своих тырят, но мой ящичек не найдут</text>
 </string>
 <string id="val_secret_0010_name">
 		<text>Тайник в люке</text>
@@ -544,10 +544,10 @@
 		<text>Бросил рюкзак под дерево, иначе не ушел бы от бандитов</text>
 </string>
 <string id="val_secret_0012_name">
-		<text>Рюкзак сталкера</text>
+		<text>Тайник</text>
 </string>
 <string id="val_secret_0012_description">
-		<text>Бросил рюкзак под дерево, иначе не ушел бы от бандитов</text>
+		<text>Барахлишко положил в трубу, потом заберу</text>
 </string>
 <string id="val_secret_0013_name">
 		<text>Спрятаный сейф</text>
@@ -559,7 +559,7 @@
 		<text>Склад в вагончике</text>
 </string>
 <string id="val_secret_0014_description">
-		<text>Все запасы прячем в вагончике, неплохое место</text>
+		<text>Временный штаб в вагончике, ящик с припасами там же</text>
 </string>
 <string id="val_secret_0015_name">
 		<text>Тайное место в трубе</text>
@@ -571,7 +571,7 @@
 		<text>Ящик с добром</text>
 </string>
 <string id="val_secret_0016_description">
-		<text>В ящик закинул добро, потом заберу</text>
+		<text>В ящик закинул добро, потом заберем</text>
 </string>
 <string id="val_secret_0017_name">
 		<text>Тайник за трубой</text>
@@ -583,25 +583,25 @@
 		<text>Тайник в электро-щитке</text>
 </string>
 <string id="val_secret_0018_description">
-		<text>Сныкал вещи за электро-щиток, не найдут</text>
+		<text>Сныкал патроны в электро-щитке</text>
 </string>
 <string id="val_secret_0019_name">
 		<text>Ящик-тайник</text>
 </string>
 <string id="val_secret_0019_description">
-		<text>Все что нашел закинул в ящик, потом заберу</text>
+		<text>Все что нашли оставили в ящике, будем идти назад заберем</text>
 </string>
 <string id="val_secret_0020_name">
-		<text>Брошенный рюкзак</text>
+		<text>Спрятанный рюкзак</text>
 </string>
 <string id="val_secret_0020_description">
-		<text>Скинул тут рюкзак, так полегче будет</text>
+		<text>Заныкали рюкзак новенького, он так и не нашел</text>
 </string>
 <string id="val_secret_0021_name">
-		<text>Ящик в вагончике</text>
+		<text>Забытый ящик</text>
 </string>
 <string id="val_secret_0021_description">
-		<text>В ящик закинул добро, потом заберу</text>
+		<text>В фургоне остался ящик, надо забрать</text>
 </string>
 <string id="val_secret_0022_name">
 		<text>Сейф на бензоколонке</text>
@@ -649,7 +649,7 @@
 		<text>Рюкзак в тайном месте</text>
 </string>
 <string id="val_secret_0029_description">
-		<text>Припрятал рюкзак возле зданя, хорошо, никого рядом нет</text>
+		<text>Рюкзак заныкал возле здания</text>
 </string>
 <string id="val_secret_0030_name">
 		<text>Незаметный ящик</text>
@@ -676,10 +676,10 @@
 		<text>В подземной лаборатории, Копченый все сложил в сейфе. Место неплохое, ни у кого ключей от лаборатории нет. Одна напасть, камни вдруг ни с того ни с сего в воздухе летают, говорили кого-то пришибли</text>
 </string>
 <string id="x18_secret_0001_name">
-		<text>Спрятанный рюкзак</text>
+		<text>Брошенный рюкзак</text>
 </string>
 <string id="x18_secret_0001_description">
-		<text>Припрятал рюкзак, пока изучал лабораторию. Потом заберу</text>
+		<text>Рюкзак пришлось бросить</text>
 </string>
 <string id="bar_secret_0000_name">
 		<text>Спрятанный рюкзак</text>
@@ -910,10 +910,10 @@
 		<text>Запихал все в какую-то трубу, потом заберем</text>
 </string>
 <string id="ros_secret_0018_name">
-		<text>Ящик возле стройки</text>
+		<text>Ящик с медикаментами</text>
 </string>
 <string id="ros_secret_0018_description">
-		<text>Недалеко от стройки припрятал что было в ящик</text>
+		<text>Недалеко от стройки спрятал медикаменты в ящик</text>
 </string>
 <string id="ros_secret_0019_name">
 		<text>Ящик на кране</text>
