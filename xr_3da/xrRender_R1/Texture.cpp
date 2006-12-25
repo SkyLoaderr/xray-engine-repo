@@ -254,7 +254,7 @@ _DDS:
 		S						= FS.r_open	(fn);
 		msize					= S->length	();
 		R_ASSERT				(S);
-		R_CHK					(D3DXGetImageInfoFromFileInMemory	(S->pointer(),S->length(),&IMG));
+		R_CHK2					(D3DXGetImageInfoFromFileInMemory	(S->pointer(),S->length(),&IMG), fn);
 		if (IMG.ResourceType	== D3DRTYPE_CUBETEXTURE)			goto _DDS_CUBE;
 		else														goto _DDS_2D;
 
@@ -293,17 +293,18 @@ _DDS_2D:
 #endif
 			// Load   SYS-MEM-surface, bound to device restrictions
 			IDirect3DTexture9*		T_sysmem;
-			R_CHK(D3DXCreateTextureFromFileInMemoryEx(
-				HW.pDevice,S->pointer(),S->length(),
-				D3DX_DEFAULT,D3DX_DEFAULT,
-				IMG.MipLevels,0,
-				IMG.Format,
-				D3DPOOL_SYSTEMMEM,
-				D3DX_DEFAULT,
-				D3DX_DEFAULT,
-				0,&IMG,0,
-				&T_sysmem
-				));
+			R_CHK2(D3DXCreateTextureFromFileInMemoryEx
+					(
+						HW.pDevice,S->pointer(),S->length(),
+						D3DX_DEFAULT,D3DX_DEFAULT,
+						IMG.MipLevels,0,
+						IMG.Format,
+						D3DPOOL_SYSTEMMEM,
+						D3DX_DEFAULT,
+						D3DX_DEFAULT,
+						0,&IMG,0,
+						&T_sysmem
+					), fn);
 			FS.r_close				(S);
 
 			pTexture2D				= TW_LoadTextureFromTexture(T_sysmem,IMG.Format,psTextureLOD,dwWidth,dwHeight);
@@ -410,11 +411,11 @@ _BUMP_from_base:
 		S						= FS.r_open	(fn);
 		msize					= S->length	();
 		IDirect3DTexture9*		T_base;
-		R_CHK(D3DXCreateTextureFromFileInMemoryEx(
+		R_CHK2(D3DXCreateTextureFromFileInMemoryEx(
 			HW.pDevice,	S->pointer(),S->length(),
 			D3DX_DEFAULT,D3DX_DEFAULT,	D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,
 			D3DPOOL_SYSTEMMEM,			D3DX_DEFAULT,D3DX_DEFAULT,
-			0,&IMG,0,&T_base	));
+			0,&IMG,0,&T_base	), fn);
 		FS.r_close				(S);
 
 		// Create HW-surface

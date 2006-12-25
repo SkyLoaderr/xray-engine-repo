@@ -54,12 +54,15 @@
     <texture id="ui_slider_button_e" x="65" y="45" width="24" height="17" />
     <texture id="ui_slider_button_t" x="89" y="45" width="24" height="17" />
     <texture id="ui_slider_button_d" x="147" y="198" width="24" height="17" />
-    <texture id="ui_slider_e_b" x="41" y="65" width="24" height="17" />
-    <texture id="ui_slider_e_back" x="65" y="65" width="24" height="17" />
-    <texture id="ui_slider_e_e" x="89" y="65" width="24" height="17" />
-    <texture id="ui_slider_d_b" x="141" y="215" width="24" height="17" />
-    <texture id="ui_slider_d_back" x="165" y="215" width="24" height="17" />
-    <texture id="ui_slider_d_e" x="189" y="215" width="24" height="17" />
+    
+    <texture id="ui_slider_e_b"		x="41" y="65" width="24" height="17" />
+    <texture id="ui_slider_e_back"	x="65" y="65" width="24" height="17" />
+    <texture id="ui_slider_e_e"		x="89" y="65" width="24" height="17" />
+    
+    <texture id="ui_slider_d_b"		x="141" y="215" width="24" height="17" />
+    <texture id="ui_slider_d_back"	x="165" y="215" width="24" height="17" />
+    <texture id="ui_slider_d_e"		x="189" y="215" width="24" height="17" />
+    
     <texture id="ui_tablist_textbox_lt" x="117" y="45" width="32" height="32" />
     <texture id="ui_tablist_textbox_l" x="117" y="77" width="32" height="32" />
     <texture id="ui_tablist_textbox_lb" x="117" y="109" width="32" height="32" />

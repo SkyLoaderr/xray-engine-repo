@@ -16,20 +16,14 @@
 			<text font="normal" align="c">ui_mm_apply</text>
 			<texture>ui_button_main02</texture>
 			<text_color>
-				<e r="227" g="199" b="178"/>
-				<t r="180" g="153" b="155"/>
-				<d r="106" g="95" b="91"/>
-				<h r="0" g="0" b="0"/>
+				<e r="227" g="199" b="178"/> <t r="180" g="153" b="155"/> <d r="106" g="95" b="91"/> <h r="0" g="0" b="0"/>
 			</text_color>
 		</btn_accept>
 		<btn_cancel x="375" y="426" width="157" height="48">
 			<text font="normal" align="c">ui_mm_cancel</text>
 			<texture>ui_button_main03</texture>
 			<text_color>
-				<e r="227" g="199" b="178"/>				
-				<t r1="180" g="153" b="155"/>				
-				<d r="106" g="95" b="91"/>							
-				<h r="0" g="0" b="0"/>
+				<e r="227" g="199" b="178"/> <t r1="180" g="153" b="155"/> <d r="106" g="95" b="91"/> <h r="0" g="0" b="0"/>
 			</text_color>
 		</btn_cancel>
 		<tab x="55" y="48" width="461" height="26">
@@ -38,9 +32,7 @@
 				<texture>ui_button_tablist</texture>
 				<text font="normal" align="c">ui_mm_video</text>				
 				<text_color>
-					<e r="106" g="95" b="91"/>
-					<t r="227" g="199" b="178"/>
-					<h r="180" g="153" b="155"/>
+					<e r="106" g="95" b="91"/> <t r="227" g="199" b="178"/> <h r="180" g="153" b="155"/>
 				</text_color>
 			</button>
 			<button x="116" y="0" width="116" height="26">
@@ -48,9 +40,7 @@
 				<texture>ui_button_tablist</texture>
 				<text font="normal" align="c">ui_mm_sound</text>
 				<text_color>
-					<e r="106" g="95" b="91"/>
-					<t r="227" g="199" b="178"/>
-					<h r="180" g="153" b="155"/>
+					<e r="106" g="95" b="91"/> <t r="227" g="199" b="178"/> <h r="180" g="153" b="155"/>
 				</text_color>
 			</button>
 			<button x="232" y="0" width="116" height="26">
@@ -58,9 +48,7 @@
 				<texture>ui_button_tablist</texture>
 				<text font="normal" align="c">ui_mm_gameplay</text>
 				<text_color>
-					<e r="106" g="95" b="91"/>
-					<t r="227" g="199" b="178"/>
-					<h r="180" g="153" b="155"/>
+					<e r="106" g="95" b="91"/> <t r="227" g="199" b="178"/> <h r="180" g="153" b="155"/>
 				</text_color>
 			</button>
 			<button x="348" y="0" width="116" height="26">
@@ -68,9 +56,7 @@
 				<texture>ui_button_tablist</texture>
 				<text font="normal" align="c">ui_mm_controls</text>
 				<text_color>
-					<e r="106" g="95" b="91"/>
-					<t r="227" g="199" b="178"/>
-					<h r="180" g="153" b="155"/>
+					<e r="106" g="95" b="91"/> <t r="227" g="199" b="178"/> <h r="180" g="153" b="155"/>
 				</text_color>
 			</button>
 		</tab>
@@ -91,9 +77,6 @@
 		<cap_brightness x="20" y="120" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_brightness</text>
 		</cap_brightness>
-		<cap_detail_density x="20" y="235" width="143" height="21">
-			<text font="letterica16" r="215" g="195" b="170">ui_mm_detail_density</text>
-		</cap_detail_density>
 		
 		<check_fullscreen x="20" y="155" width="143" height="21">
 			<options_item entry="rs_fullscreen" group="mm_opt_video"/>	
@@ -147,16 +130,33 @@
 			<options_item entry="rs_c_brightness" group="mm_opt_video"/>
 		</track_brightness>
 		
-		<track_detail_density x="194" y="235" width="261" height="21">
-			<options_item entry="r__detail_density" group="mm_opt_video"/>
-		</track_detail_density>
-		
-		
 		<btn_default_set x="342" y="290" width="111" height="29">
 			<text align="c" font="letterica16" r="188" g="153" b="123">ui_mm_default</text>	
 			<texture>ui_button_ordinary</texture>			
 		</btn_default_set>
+		<btn_advanced x="231" y="290" width="111" height="29">
+			<text align="c" font="letterica16" r="188" g="153" b="123">ui_mm_advanced</text>	
+			<texture>ui_button_ordinary</texture>			
+		</btn_advanced>
 	</tab_video>
+
+	<video_adv>
+		<scroll_v	x="5" y="10" width="457" height="316" 
+					right_ident="0" left_ident="0" top_indent="0" bottom_indent="0" 
+					vert_interval="10" always_show_scroll="1"/>
+
+		<templ_item width="450" height="30"/>
+		
+		<cap_detail_density x="20" y="0" width="143" height="21">
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_detail_density</text>
+		</cap_detail_density>
+
+		<track_detail_density x="170" y="0" width="261" height="21" invert="1" step="0.02">
+			<options_item entry="r__detail_density" group="mm_opt_video_adv"/>
+		</track_detail_density>
+
+	</video_adv>
+
 	<tab_sound>
 		<cap_mastervolume x="20" y="20" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_master_volume</text>
@@ -202,15 +202,11 @@
 		</btn_default_set>
 	</tab_sound>
 	<tab_gameplay>
-		<!--cap_crosshair x="20" y="20" width="143" height="21">
-			<text font="letterica16" r="215" g="195" b="170">ui_mm_crosshair</text>
-		</cap_crosshair-->
+
 		<cap_difficulty x="20" y="20" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_difficulty</text>			
 		</cap_difficulty>
-		<track_crosshair x="194" y="20" width="261" height="21">			
-		</track_crosshair>
-		
+
 		<list_difficulty x="194" y="20" width="261" height="21">	
 			<options_item entry="g_game_difficulty" group="mm_opt_gameplay"/>
 			<text_color>
@@ -220,14 +216,30 @@
 			<list_font	 r="216" g="186" b="140" font="letterica16"/>
 		</list_difficulty>
 		
-		<check_tips x="20" y="55" width="143" height="21">
+		<check_tips x="20" y="180" width="143" height="21">
 			<options_item entry="hud_info" group="mm_opt_gameplay"/>
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_tips</text>
 		</check_tips>
-		<!--check_dist x="20" y="80" width="143" height="21">
+
+		<check_crosshair x="20" y="80" width="143" height="21">
+			<options_item entry="hud_crosshair" group="mm_opt_gameplay"/>
+			<text font="letterica16" r="115" g="114" b="112">ui_mm_show_crosshair</text>
+		</check_crosshair>
+
+		<check_dyn_crosshair x="20" y="105" width="143" height="21">
+			<options_item entry="cl_dynamiccrosshair" group="mm_opt_gameplay"/>
+			<text font="letterica16" r="115" g="114" b="112">ui_mm_dyn_crosshair</text>
+		</check_dyn_crosshair>
+
+		<check_show_weapon x="20" y="130" width="143" height="21">
+			<options_item entry="hud_weapon" group="mm_opt_gameplay"/>
+			<text font="letterica16" r="115" g="114" b="112">ui_mm_show_weapon</text>
+		</check_show_weapon>
+
+		<check_dist x="20" y="155" width="143" height="21">
 			<options_item entry="hud_crosshair_dist" group="mm_opt_gameplay"/>
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_crosshair_distance</text>
-		</check_dist-->
+		</check_dist>
 		<!--pic_crosshair x="-7" y="117" width="470" height="179">
 			<texture>ui_options_tv</texture>
 		</pic_crosshair-->
@@ -272,95 +284,14 @@
 			</list>
 		</key_binding>
 	</tab_controls>
-	<video_adv>
-		<cap_antialiasing x="20" y="20" width="143" height="21">
-			<text>ui_mm_antialiasing</text>
-		</cap_antialiasing>
-		<cap_texturequality x="20" y="45" width="143" height="21">
-			<text>ui_mm_texture_quality</text>
-		</cap_texturequality>
-		<cap_lightingquality x="20" y="70" width="143" height="21">
-			<text>ui_mm_light_quality</text>
-		</cap_lightingquality>
-		<cap_shadowsquality x="20" y="95" width="143" height="21">
-			<text>ui_mm_shadows_quality</text>
-		</cap_shadowsquality>
-		<cap_texturefilter x="20" y="120" width="143" height="21">
-			<text>ui_mm_texture_filter</text>
-		</cap_texturefilter>
-		<cap_anisotropicfilter x="20" y="145" width="143" height="21">
-			<text>ui_mm_anisotropic_filter</text>
-		</cap_anisotropicfilter>
-		<cap_depthofview x="20" y="170" width="143" height="21">
-			<text>ui_mm_view_distance</text>
-		</cap_depthofview>
-		<cap_grassdensity x="20" y="195" width="143" height="21">
-			<text>ui_mm_grass_density</text>
-		</cap_grassdensity>
-		<cap_grassradius x="20" y="220" width="143" height="21">
-			<text>ui_mm_grass_radius</text>
-		</cap_grassradius>
-		<cap_dinlight x="20" y="245" width="180" height="21">
-			<text>ui_mm_dinamic_light_source</text>
-		</cap_dinlight>
-		
-		<check_bump x="20" y="270" width="180" height="21">
-			<text>ui_mm_bump_mapping</text>
-		</check_bump>
-		
-		<cap_phisicqhality x="20" y="295" width="180" height="21">
-			<text>ui_mm_phisic_quality</text>
-		</cap_phisicqhality>
-		<cap_corpsetime x="20" y="320" width="180" height="21">
-			<text>ui_mm_corpse_time</text>
-		</cap_corpsetime>
-		
-		<check_particles x="20" y="345" width="180" height="21">
-			<text>ui_mm_particles</text>
-		</check_particles>
-		<cap_particlesamount x="20" y="370" width="180" height="21">
-			<text>ui_mm_particles_amount</text>
-		</cap_particlesamount>
-		
-		<list_antialiasing x="20" y="20" width="143" height="21">
-			<text>ui_mm_antialiasing</text>
-		</list_antialiasing>
-		<track_texturequality x="20" y="45" width="143" height="21">
-			<text>ui_mm_texture_quality</text>
-		</track_texturequality>
-		<track_lightingquality x="20" y="70" width="143" height="21">
-			<text>ui_mm_light_quality</text>
-		</track_lightingquality>
-		<track_shadowsquality x="20" y="95" width="143" height="21">
-			<text>ui_mm_shadows_quality</text>
-		</track_shadowsquality>
-		<track_texturefilter x="20" y="120" width="143" height="21">
-			<text>ui_mm_texture_filter</text>
-		</track_texturefilter>
-		<track_anisotropicfilter x="20" y="145" width="143" height="21">
-			<text>ui_mm_anisotropic_filter</text>
-		</track_anisotropicfilter>
-		<track_depthofview x="20" y="170" width="143" height="21">
-			<text>ui_mm_view_distance</text>
-		</track_depthofview>
-		<track_grassdensity x="20" y="195" width="143" height="21">
-			<text>ui_mm_grass_density</text>
-		</track_grassdensity>
-		<track_grassradius x="20" y="220" width="143" height="21">
-			<text>ui_mm_grass_radius</text>
-		</track_grassradius>
-		<track_dinlight x="20" y="245" width="180" height="21">
-			<text>ui_mm_dinamic_light_source</text>
-		</track_dinlight>
-	</video_adv>
 	
 	<frame x="0" y="0" width="470" height="330">
 		<texture>ui_tablist_textbox</texture>		
 	</frame>
-	<frame_gameplay x="0" y="0" width="470" height="121">
+	<frame_gameplay x="0" y="0" width="470" height="330">
 		<texture>ui_tablist_textbox</texture>		
 	</frame_gameplay>
-	<frame_videoadv x="0" y="0" width="470" height="450">
+	<frame_videoadv x="0" y="0" width="470" height="330">
 		<texture>ui_tablist_textbox</texture>		
 	</frame_videoadv>
 </window>

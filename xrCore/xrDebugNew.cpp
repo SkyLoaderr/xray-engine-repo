@@ -254,6 +254,11 @@ void xrDebug::error		(long hr, const char* expr, const char *file, int line, con
 	backend		(error2string(hr),expr,0,0,file,line,function,ignore_always);
 }
 
+void xrDebug::error		(long hr, const char* expr, const char* e2, const char *file, int line, const char *function, bool &ignore_always)
+{
+	backend		(error2string(hr),expr,e2,0,file,line,function,ignore_always);
+}
+
 void xrDebug::fail		(const char *e1, const char *file, int line, const char *function, bool &ignore_always)
 {
 	backend		("assertion failed",e1,0,0,file,line,function,ignore_always);

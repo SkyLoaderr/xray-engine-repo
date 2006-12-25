@@ -19,7 +19,7 @@ function opt_video:InitControls(x, y, xml, handler)
 	xml:InitStatic("tab_video:cap_gamma",			self)
 	xml:InitStatic("tab_video:cap_contrast",			self)
 	xml:InitStatic("tab_video:cap_brightness",		self)
-	xml:InitStatic("tab_video:cap_detail_density",	self)
+-- andy	xml:InitStatic("tab_video:cap_detail_density",	self)
 	
 	xml:InitCheck("tab_video:check_fullscreen",		self)
 	xml:InitCheck("tab_video:check_no_vsync",		self)
@@ -33,7 +33,7 @@ function opt_video:InitControls(x, y, xml, handler)
 	xml:InitTrackBar("tab_video:track_gamma",			self)
 	xml:InitTrackBar("tab_video:track_contrast",		self)
 	xml:InitTrackBar("tab_video:track_brightness",		self)
-	xml:InitTrackBar("tab_video:track_detail_density",	self)
+-- andy	xml:InitTrackBar("tab_video:track_detail_density",	self)
 	
 	
 	
@@ -43,4 +43,7 @@ function opt_video:InitControls(x, y, xml, handler)
 	
 	local btn = xml:Init3tButton("tab_video:btn_default_set",	self)	
 	handler:Register(btn, "btn_default_graphic")	
+
+	btn		= xml:Init3tButton	("tab_video:btn_advanced",	self)	
+	handler:Register			(btn, "btn_advanced_graphic")	
 end

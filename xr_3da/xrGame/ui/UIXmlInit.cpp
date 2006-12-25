@@ -24,6 +24,7 @@
 #include "uixmlinit.h"
 #include "UIListBox.h" //#include "UIScrollView.h"
 #include "UIComboBox.h"
+#include "UITrackBar.h"
 #include "../game_base_space.h"
 
 #include "UITextureMaster.h"
@@ -1275,6 +1276,18 @@ bool CUIXmlInit::InitListBox(CUIXml& xml_doc, const char* path, int index, CUILi
 
 
 	return true;
+}
+
+bool CUIXmlInit::InitTrackBar(CUIXml& xml_doc, const char* path, int index, CUITrackBar* pWnd)
+{
+	InitWindow			(xml_doc, path, 0, pWnd);
+	InitOptionsItem		(xml_doc, path, 0, pWnd);
+	int invert			= xml_doc.ReadAttribInt(path, index, "invert", 0);
+	pWnd->SetInvert		(!!invert);
+	float step			= xml_doc.ReadAttribFlt(path, index, "step", 0.1f);
+	pWnd->SetStep		(step);
+	
+	return				true;
 }
 
 bool CUIXmlInit::InitComboBox(CUIXml& xml_doc, const char* path, int index, CUIComboBox* pWnd){

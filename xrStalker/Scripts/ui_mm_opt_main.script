@@ -53,6 +53,11 @@ function options_dialog:InitControls()
 	self.dlg_controls:Show(false)
 	self.dialog:AttachChild(self.dlg_controls)
 
+	self.dlg_video_adv = ui_mm_opt_video_adv.opt_video_adv()
+	self.dlg_video_adv:InitControls(55,74, xml, self)
+	self.dlg_video_adv:Show(false)
+	self.dialog:AttachChild(self.dlg_video_adv)
+
 	local btn
 	btn = xml:Init3tButton("main_dialog:btn_accept", self.dialog)
 	self:Register(btn, "btn_accept")
@@ -63,10 +68,6 @@ function options_dialog:InitControls()
 	self.tab = xml:InitTab("main_dialog:tab", self.dialog)
 	self:Register(self.tab, "tab")
 	
-	self.dlg_video_adv = ui_mm_opt_video_adv.opt_video_adv()
-	self.dlg_video_adv:InitControls(55,40, xml, self)
-	self.dlg_video_adv:Show(false)
-	self.dialog:AttachChild(self.dlg_video_adv)
 	
 	self.message_box = CUIMessageBoxEx()
 end
@@ -74,6 +75,7 @@ end
 function options_dialog:UpdateControls()
 	local opt = COptionsManager()
 	opt:SetCurrentValues("mm_opt_video")
+	opt:SetCurrentValues("mm_opt_video_adv")
 	opt:SetCurrentValues("mm_opt_gameplay")
 	opt:SetCurrentValues("mm_opt_sound")
 	opt:SetCurrentValues("mm_opt_controls")
@@ -92,7 +94,7 @@ end
 
 function options_dialog:InitCallBacks()
 	self:AddCallback("tab",					ui_events.TAB_CHANGED,		self.OnTabChange,	self)
-	self:AddCallback("btn_advanced",		ui_events.BUTTON_CLICKED,	self.OnBtnAdvVideo,	self)
+	self:AddCallback("btn_advanced_graphic",ui_events.BUTTON_CLICKED,	self.OnBtnAdvGraphic,self)
 	self:AddCallback("btn_accept",			ui_events.BUTTON_CLICKED,	self.OnBtnAccept,	self)
 	self:AddCallback("btn_cancel",			ui_events.BUTTON_CLICKED,	self.OnBtnCancel,	self)
 	self:AddCallback("btn_default_graphic",	ui_events.BUTTON_CLICKED,	self.OnBtnDefGraph,	self)	
@@ -139,6 +141,7 @@ function options_dialog:OnBtnAccept()
 	
 	opt:SaveValues("key_binding")
 	opt:SaveValues("mm_opt_video")
+	opt:SaveValues("mm_opt_video_adv")
 	opt:SaveValues("mm_opt_gameplay")
 	opt:SaveValues("mm_opt_sound")	
 	opt:SaveValues("mm_opt_controls")
@@ -163,6 +166,7 @@ function options_dialog:OnTabChange()
 	self.dlg_sound:Show(false)
 	self.dlg_gameplay:Show(false)
 	self.dlg_controls:Show(false)
+	self.dlg_video_adv:Show(false)
 	
 	local i = self.tab:GetActiveIndex()
 	if i == 0 then
@@ -173,11 +177,14 @@ function options_dialog:OnTabChange()
 		self.dlg_gameplay:Show(true)
 	elseif i == 3 then
 		self.dlg_controls:Show(true)
+--	elseif i == 4 then
+--		self.dlg_video_adv:Show(true)
 	end
 end
 
-function options_dialog:OnBtnAdvVideo()
-	self.dlg_video_adv:Show(true)
+function options_dialog:OnBtnAdvGraphic()
+	self.dlg_video:Show		(false)
+	self.dlg_video_adv:Show	(true)
 end
 
 function options_dialog:OnKeyboard(dik, keyboard_action)
@@ -191,7 +198,8 @@ function options_dialog:OnKeyboard(dik, keyboard_action)
 		if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
 			if dik == DIK_keys.DIK_ESCAPE then
 				if self.dlg_video_adv:IsShown() then
-					self.dlg_video_adv:Show(false)
+					self.dlg_video_adv:Show	(false)
+					self.dlg_video:Show		(true)
 				else
 					self:GetHolder():start_stop_menu(self,true)
 					self.owner:Show(true)

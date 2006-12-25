@@ -14,16 +14,13 @@ function opt_gameplay:InitControls(x, y, xml, handler)
 	
 	self.bk = xml:InitFrame("frame_gameplay", self)
 	
---	local c
-
---	xml:InitLabel("tab_gameplay:cap_crosshair",		self)
 	xml:InitStatic("tab_gameplay:cap_difficulty",		self)
---	c = xml:InitTrackBar("tab_gameplay:track_crosshair",	self)
---	c:Enable(false)
 	
-	xml:InitCheck("tab_gameplay:check_tips",		self)
---	xml:InitCheck("tab_gameplay:check_dist",		self)
---	xml:InitStatic("tab_gameplay:pic_crosshair", 	self)
+	xml:InitCheck("tab_gameplay:check_tips",			self)
+	xml:InitCheck("tab_gameplay:check_crosshair",		self)
+	xml:InitCheck("tab_gameplay:check_dyn_crosshair", 	self)
+	xml:InitCheck("tab_gameplay:check_show_weapon", 	self)
+	xml:InitCheck("tab_gameplay:check_dist", 			self)
 	xml:InitComboBox("tab_gameplay:list_difficulty",	self)
 	
 end
