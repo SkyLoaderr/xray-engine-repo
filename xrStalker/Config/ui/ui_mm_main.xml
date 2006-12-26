@@ -10,8 +10,7 @@
 	</fire_movie>
 
 	<shniaga_wnd x="590" y="419" width="392" height="280">
-		<buttons_region	x="110" y="0" width="164" height="280" always_show_scroll="false">
-		</buttons_region>
+		<buttons_region	x="110" y="0" width="164" height="280" always_show_scroll="false"/>
 		
 		<shniaga x="9" y="0" width="392" height="73">
 			<texture>ui_menu_move</texture>			
@@ -41,6 +40,7 @@
 		<btn name="btn_multiplayer"	caption="ui_mm_multiplayer_n" />
 		<btn name="btn_options"		caption="ui_mm_options_n" />
 		<!--btn name="btn_bonus"		caption="Bonus" /-->
+		<btn name="btn_credits"		caption="ui_mm_credits" />
 		<btn name="btn_quit"		caption="ui_mm_quit2windows" />
 	</menu_main>
 	
@@ -58,6 +58,7 @@
 		<btn name="btn_load"		caption="ui_mm_load_game" />
 		<btn name="btn_save"		caption="ui_mm_save_game" />
 		<btn name="btn_options"		caption="ui_mm_options_n" />
+		<btn name="btn_credits"		caption="ui_mm_credits" />
 		<btn name="btn_quit_to_mm"	caption="ui_mm_quit_game" />
 		<btn name="btn_quit"		caption="ui_mm_quit2windows" />
 	</menu_main_single>
@@ -65,6 +66,7 @@
 	<menu_main_mm btn_height="30" font="graffiti22" a="255" r="0" g="0" b="0">
 		<btn name="btn_ret"			caption="ui_mm_return_game" />
 		<btn name="btn_options"		caption="ui_mm_options_n" />
+		<btn name="btn_credits"		caption="ui_mm_credits" />
 		<btn name="btn_quit_to_mm"	caption="ui_mm_disconnect" />
 		<btn name="btn_quit"		caption="ui_mm_quit2windows" />
 	</menu_main_mm>

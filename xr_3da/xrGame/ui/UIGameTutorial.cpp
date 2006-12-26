@@ -85,8 +85,8 @@ CUISequencer::CUISequencer()
 void CUISequencer::Start(LPCSTR tutor_name)
 {
 	VERIFY(m_items.size()==0);
-	Device.seqFrame.Add			(this,REG_PRIORITY_LOW-10000);
-	Device.seqRender.Add		(this,REG_PRIORITY_LOW-10000);
+	Device.seqFrame.Add			(this, REG_PRIORITY_LOW-10000);
+	Device.seqRender.Add		(this, 3);
 	
 	m_UIWindow					= xr_new<CUIWindow>();
 
@@ -199,51 +199,51 @@ bool CUISequencer::GrabInput()
 
 void CUISequencer::IR_OnMousePress		(int btn)
 {
-	if(!GrabInput())
+	if(!GrabInput()&&m_pStoredInputReceiver)
 		m_pStoredInputReceiver->IR_OnMousePress(btn);
 }
 
 void CUISequencer::IR_OnMouseRelease		(int btn)
 {
-	if(!GrabInput())
+	if(!GrabInput()&&m_pStoredInputReceiver)
 		m_pStoredInputReceiver->IR_OnMouseRelease(btn);
 }
 
 void CUISequencer::IR_OnMouseHold		(int btn)
 {
-	if(!GrabInput())
+	if(!GrabInput()&&m_pStoredInputReceiver)
 		m_pStoredInputReceiver->IR_OnMouseHold(btn);
 }
 
 void CUISequencer::IR_OnMouseMove		(int x, int y)
 {
-	if(!GrabInput())
+	if(!GrabInput()&&m_pStoredInputReceiver)
 		m_pStoredInputReceiver->IR_OnMouseMove(x, y);
 }
 
 void CUISequencer::IR_OnMouseStop		(int x, int y)
 {
-	if(!GrabInput())
+	if(!GrabInput()&&m_pStoredInputReceiver)
 		m_pStoredInputReceiver->IR_OnMouseStop(x, y);
 }
 
 void CUISequencer::IR_OnKeyboardRelease	(int dik)
 {
-	if(!GrabInput())
+	if(!GrabInput()&&m_pStoredInputReceiver)
 		m_pStoredInputReceiver->IR_OnKeyboardRelease(dik);
 }
 
 
 void CUISequencer::IR_OnKeyboardHold		(int dik)
 {
-	if(!GrabInput())
+	if(!GrabInput()&&m_pStoredInputReceiver)
 		m_pStoredInputReceiver->IR_OnKeyboardHold(dik);
 }
 
 
 void CUISequencer::IR_OnMouseWheel		(int direction)
 {
-	if(!GrabInput())
+	if(!GrabInput()&&m_pStoredInputReceiver)
 		m_pStoredInputReceiver->IR_OnMouseWheel(direction);
 }
 
@@ -259,7 +259,8 @@ void CUISequencer::IR_OnKeyboardPress	(int dik)
 		return;
 	}
 
-	if(b&&!GrabInput())	m_pStoredInputReceiver->IR_OnKeyboardPress	(dik);
+	if(b&&!GrabInput()&&m_pStoredInputReceiver)	
+		m_pStoredInputReceiver->IR_OnKeyboardPress	(dik);
 }
 
 void CUISequencer::IR_OnActivate()
