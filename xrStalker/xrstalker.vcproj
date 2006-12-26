@@ -236,6 +236,21 @@
 					RelativePath=".\config\gameplay\character_criticals_1.xml">
 				</File>
 				<File
+					RelativePath=".\config\gameplay\character_criticals_2.xml">
+				</File>
+				<File
+					RelativePath=".\config\gameplay\character_criticals_3.xml">
+				</File>
+				<File
+					RelativePath=".\config\gameplay\character_criticals_4.xml">
+				</File>
+				<File
+					RelativePath=".\config\gameplay\character_criticals_5.xml">
+				</File>
+				<File
+					RelativePath=".\config\gameplay\character_criticals_6.xml">
+				</File>
+				<File
 					RelativePath=".\Config\gameplay\character_drugs.xml">
 				</File>
 				<File
