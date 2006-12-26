@@ -1,8 +1,3 @@
-
-function on_tutor_stop()
-	local c = get_console()
-	c:execute("disconnect")
-end
 --[[
 function _main()
 	game_over_dlg = ui_game_over.dlg_game_over()

@@ -710,7 +710,7 @@
 			<length_sec>4</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key>jump</guard_key>
-			<function_on_stop>ui_game_over.on_tutor_stop</function_on_stop>
+			<function_on_stop>xr_effects.on_tutor_gameover_stop</function_on_stop>
 		
 			<sound/>
 			<cursor_pos/>
