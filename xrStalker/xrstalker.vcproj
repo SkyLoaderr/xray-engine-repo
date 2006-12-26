@@ -233,6 +233,9 @@
 				Name="gameplay"
 				Filter="">
 				<File
+					RelativePath=".\config\gameplay\character_criticals_1.xml">
+				</File>
+				<File
 					RelativePath=".\Config\gameplay\character_drugs.xml">
 				</File>
 				<File
