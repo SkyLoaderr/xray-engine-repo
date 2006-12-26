@@ -133,11 +133,15 @@ function add_lchanger_location()
 		if obj then
 			level.map_add_object_spot(obj.id, "level_changer", "to_garbage")
 		end
+		obj = sim:story_object(417)
+		if obj then
+			level.map_add_object_spot(obj.id, "level_changer", "to_escape")
+		end
 
 		-- rostok
-		obj = sim:story_object(591)
+		obj = sim:story_object(608)
 		if obj then
-			level.map_add_object_spot(obj.id, "level_changer", "to_bar")
+			level.map_add_object_spot(obj.id, "level_changer", "to_yantar")
 		end
 		
 		-- bar
@@ -151,13 +155,39 @@ function add_lchanger_location()
 		end
 		obj = sim:story_object(594)
 		if obj then
-			level.map_add_object_spot(obj.id, "level_changer", "to_rostok")
+			level.map_add_object_spot(obj.id, "level_changer", "bar_rostok")
 		end
 
 		-- military
 		obj = sim:story_object(771)
 		if obj then
 			level.map_add_object_spot(obj.id, "level_changer", "to_rostok")
+		end
+
+		-- yantar
+		obj = sim:story_object(925)
+		if obj then
+			level.map_add_object_spot(obj.id, "level_changer", "to_rostok")
+		end
+
+		-- radar
+		obj = sim:story_object(1007)
+		if obj then
+			level.map_add_object_spot(obj.id, "level_changer", "to_pripyat")
+		end
+		obj = sim:story_object(1008)
+		if obj then
+			level.map_add_object_spot(obj.id, "level_changer", "to_military")
+		end
+
+		-- pripyat
+		obj = sim:story_object(833)
+		if obj then
+			level.map_add_object_spot(obj.id, "level_changer", "to_radar")
+		end
+		obj = sim:story_object(832)
+		if obj then
+			level.map_add_object_spot(obj.id, "level_changer", "to_aes")
 		end
 
 

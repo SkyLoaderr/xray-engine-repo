@@ -40,6 +40,8 @@ local return_task_by_type = {
 	monster_part = "return_for_reward_bring",
 	find_item = "return_for_reward_bring"}
 
+
+
 class "CRandomTask"
 function CRandomTask:__init()
 
