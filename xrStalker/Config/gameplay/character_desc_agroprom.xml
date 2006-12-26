@@ -32,6 +32,8 @@
 			device_torch \n
 		#include "gameplay\character_food.xml"
 		</supplies>
+		
+#include "gameplay\character_criticals_4.xml"
 
 		<start_dialog>agr_krot_help</start_dialog>
 #include "gameplay\character_dialogs.xml"		
@@ -61,9 +63,11 @@
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
-#include "gameplay\character_drugs.xml"
+#include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"
 		</supplies>
+		
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 		<actor_dialog>agr_swamp_ratcatcher_talks</actor_dialog>
 	
@@ -95,8 +99,9 @@
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
-		</supplies>	
-					
+		</supplies>
+		
+#include "gameplay\character_criticals_5.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -133,7 +138,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_items.xml"
 		</supplies>
-				
+
+#include "gameplay\character_criticals_4.xml"				
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -165,7 +171,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_items.xml"
 		</supplies>
-				
+
+#include "gameplay\character_criticals_4.xml"				
 #include "gameplay\character_dialogs.xml"		
 </specific_character>
 
@@ -198,6 +205,7 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 </specific_character>
 
@@ -230,6 +238,7 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
@@ -262,6 +271,7 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 
@@ -294,6 +304,7 @@
 #include "gameplay\character_items.xml"
 		</supplies>
 
+#include "gameplay\character_criticals_4.xml"
 #include "gameplay\character_dialogs.xml"
 	</specific_character>
 	
@@ -326,7 +337,8 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>	
-					
+
+#include "gameplay\character_criticals_5.xml"					
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -358,7 +370,8 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>
-					
+
+#include "gameplay\character_criticals_5.xml"					
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -390,7 +403,8 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>
-					
+
+#include "gameplay\character_criticals_5.xml"					
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -422,7 +436,8 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>		
-					
+
+#include "gameplay\character_criticals_5.xml"					
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -454,7 +469,8 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>		
-					
+
+#include "gameplay\character_criticals_5.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -488,7 +504,8 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>		
-					
+
+#include "gameplay\character_criticals_6.xml"
 #include "gameplay\character_dialogs.xml"
 		
 	</specific_character>
@@ -520,7 +537,8 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>		
-					
+
+#include "gameplay\character_criticals_6.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -554,7 +572,8 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>	
-					
+
+#include "gameplay\character_criticals_5.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -586,7 +605,8 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>	
-					
+
+#include "gameplay\character_criticals_5.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -619,7 +639,8 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>		
-					
+
+#include "gameplay\character_criticals_5.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -651,7 +672,8 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>		
-					
+
+#include "gameplay\character_criticals_5.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -683,7 +705,8 @@
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
 		</supplies>		
-					
+
+#include "gameplay\character_criticals_5.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>	
@@ -718,7 +741,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_items.xml"			
 		</supplies>
-					
+		
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -751,7 +775,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_items.xml"			
 		</supplies>
-					
+
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>
@@ -784,7 +809,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_items.xml"			
 		</supplies>
-					
+
+#include "gameplay\character_criticals_3.xml"
 #include "gameplay\character_dialogs.xml"		
 		
 	</specific_character>

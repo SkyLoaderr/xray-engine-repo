@@ -25,6 +25,8 @@
             ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_food.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -52,6 +54,8 @@
             ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_food.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -79,6 +83,8 @@
 			ammo_9x39_ap = 1 \n
 #include "gameplay\character_food.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -106,6 +112,8 @@
 			ammo_9x39_ap \n
 #include "gameplay\character_food.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -133,6 +141,8 @@
 			ammo_9x39_ap \n
 #include "gameplay\character_food.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -164,6 +174,8 @@
 			ammo_9x39_ap \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -192,6 +204,8 @@
 			ammo_9x39_ap \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -220,6 +234,8 @@
 			ammo_9x39_ap \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -249,6 +265,8 @@
 			ammo_12x76_zhekan = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -277,6 +295,8 @@
 			ammo_12x76_zhekan = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -305,6 +325,8 @@
 			ammo_9x39_ap = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -333,6 +355,8 @@
             ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -361,6 +385,8 @@
             ammo_gauss = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -385,6 +411,8 @@
 			wpn_groza \n
 			ammo_9x39_ap \n	
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -409,6 +437,8 @@
 			wpn_groza \n
 			ammo_9x39_ap \n	
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -433,6 +463,8 @@
 			wpn_fn2000 \n
             ammo_5.56x45_ap = 1 \n
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -457,6 +489,8 @@
 			wpn_fn2000 \n
             ammo_5.56x45_ap = 1 \n
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -483,6 +517,8 @@
 			wpn_g36 \n
             ammo_5.56x45_ap = 1 \n
 		</supplies>
+		
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -507,6 +543,8 @@
 			wpn_gauss \n
 			ammo_gauss = 1 \n
 		</supplies>
+		
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>

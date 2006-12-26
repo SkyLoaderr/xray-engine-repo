@@ -28,6 +28,8 @@
             device_torch \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -57,6 +59,8 @@
             device_torch \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -86,6 +90,8 @@
             device_torch \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -115,6 +121,8 @@
             device_torch \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -145,6 +153,8 @@
             device_torch \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -174,6 +184,8 @@
 #include "gameplay\character_drugs.xml"
         </supplies>
 					
+#include "gameplay\character_criticals_1.xml"
+					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
 
@@ -202,6 +214,8 @@
             ammo_12x76_zhekan = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -230,6 +244,8 @@
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -258,6 +274,8 @@
             ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -286,6 +304,8 @@
             ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -316,6 +336,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -345,6 +367,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -375,6 +399,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -404,6 +430,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -434,6 +462,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
         </supplies>
+        
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
     </specific_character>
@@ -467,6 +497,8 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 		
+#include "gameplay\character_criticals_2.xml"
+		
 		<money min="5000" max="10000" infinitive="0"/>
 			
 #include "gameplay\character_dialogs.xml"
@@ -498,6 +530,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+#include "gameplay\character_criticals_2.xml"
 		
 		<money min="5000" max="10000" infinitive="0"/>
 			
@@ -531,6 +565,8 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 		
+#include "gameplay\character_criticals_2.xml"
+		
 		<money min="5000" max="10000" infinitive="0"/>
 			
 #include "gameplay\character_dialogs.xml"		
@@ -561,6 +597,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+#include "gameplay\character_criticals_2.xml"
 		
 		<money min="5000" max="10000" infinitive="0"/>
 			
@@ -593,6 +631,8 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 		
+#include "gameplay\character_criticals_2.xml"
+		
 		<money min="5000" max="10000" infinitive="0"/>
 			
 #include "gameplay\character_dialogs.xml"		
@@ -623,6 +663,8 @@
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+#include "gameplay\character_criticals_2.xml"
 		
 		<money min="5000" max="10000" infinitive="0"/>
 			
@@ -655,6 +697,8 @@
 #include "gameplay\character_drugs.xml"
 		</supplies>
 		
+#include "gameplay\character_criticals_2.xml"
+		
 		<money min="5000" max="10000" infinitive="0"/>
 			
 #include "gameplay\character_dialogs.xml"		
@@ -682,6 +726,8 @@
 			wpn_sig220 \n
 			ammo_11.43x23_hydro \n
 		</supplies>	
+		
+#include "gameplay\character_criticals_6.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
@@ -706,6 +752,8 @@
 			wpn_sig220 \n
 			ammo_11.43x23_hydro \n
 		</supplies>	
+		
+#include "gameplay\character_criticals_5.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
@@ -732,6 +780,8 @@
 			ammo_11.43x23_hydro \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+#include "gameplay\character_criticals_1.xml"
 			
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
@@ -759,6 +809,8 @@
 			ammo_5.56x45_ap = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+#include "gameplay\character_criticals_1.xml"
 			
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
@@ -787,6 +839,8 @@
 			ammo_5.45x39_ap = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+#include "gameplay\character_criticals_1.xml"
 			
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
@@ -812,6 +866,8 @@
 			ammo_12x76_dart = 1 \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
+		
+#include "gameplay\character_criticals_1.xml"
 			
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>

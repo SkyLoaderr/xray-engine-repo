@@ -29,6 +29,8 @@
 			wpn_rpg7 \n
 			ammo_og-7b = 1 \n
 		</supplies>
+
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -59,6 +61,8 @@
 	  wpn_sig550 = 1 \n
 	  ammo_5.56x45_ap = 1 \n
     </supplies>
+    
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -87,6 +91,8 @@
 	  wpn_usp  \n
 	  ammo_11.43x23_hydro = 1 \n
     </supplies>
+
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -117,6 +123,8 @@
       wpn_svd \n
       ammo_7.62x54_ap = 1 \n
     </supplies>
+
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -146,6 +154,8 @@
       wpn_gauss \n
       ammo_gauss = 1 \n
     </supplies>
+
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -178,6 +188,8 @@
       wpn_g36 \n
       ammo_5.56x45_ss190 = 1 \n
     </supplies>
+
+#include "gameplay\character_criticals_1.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -213,6 +225,8 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>	
+
+#include "gameplay\character_criticals_5.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -247,6 +261,8 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>		
+
+#include "gameplay\character_criticals_6.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -282,6 +298,8 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>		
+
+#include "gameplay\character_criticals_6.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
@@ -316,6 +334,8 @@
 			ammo_9x39_sp5 = 1 \n
 			device_torch \n
 		</supplies>		
+
+#include "gameplay\character_criticals_6.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
 	</specific_character>
@@ -349,6 +369,8 @@
 			device_torch \n
 #include "gameplay\character_items.xml"
 		</supplies>		
+
+#include "gameplay\character_criticals_6.xml"
 					
 		<start_dialog>hello_dialog</start_dialog>
 		
