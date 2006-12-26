@@ -9,7 +9,7 @@
 #include "xr_graph_merge.h"
 #include "game_spawn_constructor.h"
 #include "xrCrossTable.h"
-#include "path_test.h"
+//#include "path_test.h"
 #include "game_graph_builder.h"
 #include <mmsystem.h>
 
@@ -34,7 +34,7 @@ extern void	xrConvertMaps		();
 extern void	test_goap			();
 extern void	smart_cover			(LPCSTR name);
 extern void	verify_level_graph	(LPCSTR name, bool verbose);
-extern void connectivity_test	(LPCSTR);
+//extern void connectivity_test	(LPCSTR);
 extern void compare_graphs		(LPCSTR level_name);
 extern void test_levels			();
 

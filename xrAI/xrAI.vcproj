@@ -177,7 +177,7 @@
 		<Configuration
 			Name="Mixed|Win32"
 			OutputDirectory="x:\"
-			IntermediateDirectory="Mixed"
+			IntermediateDirectory=".\Mixed"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -202,7 +202,7 @@
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Release/xrAI.pch"
+				PrecompiledHeaderFile=".\Mixed/xrAI.pch"
 				AssemblerListingLocation="Mixed\"
 				ObjectFile="Mixed\"
 				ProgramDataBaseFileName="Mixed\"
@@ -570,6 +570,24 @@
 					Filter="">
 					<File
 						RelativePath=".\connectivity_test.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\path_test.cpp">
@@ -699,16 +717,6 @@
 								RelativePath=".\dijkstra_inline.h">
 							</File>
 						</Filter>
-						<Filter
-							Name="DijkstraBidirectional"
-							Filter="">
-							<File
-								RelativePath=".\dijkstra_bidirectional.h">
-							</File>
-							<File
-								RelativePath=".\dijkstra_bidirectional_inline.h">
-							</File>
-						</Filter>
 					</Filter>
 					<Filter
 						Name="data_storages"
@@ -720,16 +728,6 @@
 								Name="priority_queues"
 								Filter="">
 								<Filter
-									Name="general_priority_queue"
-									Filter="">
-									<File
-										RelativePath=".\data_storage_priority_queue.h">
-									</File>
-									<File
-										RelativePath=".\data_storage_priority_queue_inline.h">
-									</File>
-								</Filter>
-								<Filter
 									Name="binary_heap"
 									Filter="">
 									<File
@@ -737,26 +735,6 @@
 									</File>
 									<File
 										RelativePath=".\data_storage_binary_heap_inline.h">
-									</File>
-								</Filter>
-								<Filter
-									Name="binary_heap_list"
-									Filter="">
-									<File
-										RelativePath=".\data_storage_binary_heap_list.h">
-									</File>
-									<File
-										RelativePath=".\data_storage_binary_heap_list_inline.h">
-									</File>
-								</Filter>
-								<Filter
-									Name="multi_binary_heap"
-									Filter="">
-									<File
-										RelativePath=".\data_storage_multi_binary_heap.h">
-									</File>
-									<File
-										RelativePath=".\data_storage_multi_binary_heap_inline.h">
 									</File>
 								</Filter>
 							</Filter>
@@ -771,16 +749,6 @@
 									</File>
 									<File
 										RelativePath=".\data_storage_bucket_list_inline.h">
-									</File>
-								</Filter>
-								<Filter
-									Name="cheap_list"
-									Filter="">
-									<File
-										RelativePath=".\data_storage_cheap_list.h">
-									</File>
-									<File
-										RelativePath=".\data_storage_cheap_list_inline.h">
 									</File>
 								</Filter>
 								<Filter
@@ -869,16 +837,6 @@
 									RelativePath=".\vertex_allocator_fixed_inline.h">
 								</File>
 							</Filter>
-							<Filter
-								Name="generic"
-								Filter="">
-								<File
-									RelativePath=".\vertex_allocator_generic.h">
-								</File>
-								<File
-									RelativePath=".\vertex_allocator_generic_inline.h">
-								</File>
-							</Filter>
 						</Filter>
 						<Filter
 							Name="vertex_managers"
@@ -891,16 +849,6 @@
 								</File>
 								<File
 									RelativePath=".\vertex_manager_fixed_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="generic"
-								Filter="">
-								<File
-									RelativePath=".\vertex_manager_generic.h">
-								</File>
-								<File
-									RelativePath=".\vertex_manager_generic_inline.h">
 								</File>
 							</Filter>
 							<Filter
