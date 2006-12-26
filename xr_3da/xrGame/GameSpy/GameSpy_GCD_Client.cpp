@@ -27,7 +27,8 @@ void	CGameSpy_GCD_Client::LoadGameSpy()
 	if (0==hGameSpyDLL)	R_CHK			(GetLastError());
 	R_ASSERT2		(hGameSpyDLL,"GameSpy DLL raised exception during loading or there is no game DLL at all");
 
-	GAMESPY_LOAD_FN(xrGS_gcd_compute_response);
+	GAMESPY_LOAD_FN(xrGS_gcd_compute_response_newauth);
+	GAMESPY_LOAD_FN(xrGS_gcd_compute_response_reauth);
 }
 
 string64	gsCDKey = "xxxx-xxxx-xxxx-xxxx";
@@ -57,6 +58,6 @@ void CGameSpy_GCD_Client::CreateRespond	(char* RespondStr, char* ChallengeStr)
 	};
 	//--------------- Create Respond -------------------------------------
 */
-	string128 ResponseStr;	
-	xrGS_gcd_compute_response(gsCDKey, ChallengeStr, ResponseStr);
+//	string128 ResponseStr;	
+	xrGS_gcd_compute_response_newauth(gsCDKey, ChallengeStr, RespondStr);
 }

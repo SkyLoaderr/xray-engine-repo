@@ -13,7 +13,7 @@ void						CLevel::OnGameSpyChallenge			(NET_Packet* P)
 	P->r_stringZ(ChallengeStr);
 	
 	//--------------------------------------------------------------------
-	string128 ResponseStr;
+	string128 ResponseStr="";
 	CGameSpy_GCD_Client GCD;
 	GCD.CreateRespond(ResponseStr, ChallengeStr);
 	//--------- Send Respond ---------------------------------------------

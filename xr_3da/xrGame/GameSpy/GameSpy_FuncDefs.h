@@ -59,6 +59,7 @@ qr2_error_t_count
 //-----------------------------------------------------------------------------------------------
 typedef void (__cdecl* fnSBCallback)(void* sb, SBCallbackReason reason, void* server, void *instance);
 typedef void (__cdecl* fnAuthCallBackFn)(int gameid, int localid, int authenticated, char *errmsg, void *instance);
+typedef void (__cdecl* fnRefreshAuthCallBackFn)(int gameid, int localid, int hint, char *challenge, void *instance);
 
 typedef void (__cdecl* fnqr2_natnegcallback_t)(int cookie, void *userdata);	
 typedef void (__cdecl* fnqr2_clientmessagecallback_t)(char *data, int len, void *userdata);	

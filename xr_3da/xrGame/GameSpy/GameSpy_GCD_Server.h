@@ -23,7 +23,8 @@ private:
 	//--------------------- GCD_Server -------------------------------------------
 	GAMESPY_FN_VAR_DECL(int, gcd_init_qr2, (void* qrec));
 	GAMESPY_FN_VAR_DECL(void, gcd_shutdown, (void));
-	GAMESPY_FN_VAR_DECL(void, gcd_authenticate_user, (int localid, unsigned int userip, char *challenge, char *response, fnAuthCallBackFn authfn, void *instance));
+	GAMESPY_FN_VAR_DECL(void, gcd_authenticate_user, (int localid, unsigned int userip, char *challenge, char *response, 
+							fnAuthCallBackFn authfn, fnRefreshAuthCallBackFn refreshfn, void *instance));
 	GAMESPY_FN_VAR_DECL(void, gcd_disconnect_user, (int localid));
 	GAMESPY_FN_VAR_DECL(void, gcd_think, (void));
 };
