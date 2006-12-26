@@ -175,13 +175,13 @@
 		<text>Стандартный натовский патрон, широко известный под бельгийским индексом SS109. Используется в штурмовых винтовках L85, LR300, Sig550, G36, FN2000.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-7.62x54-7h1">
-		<text>Дешёвая в изготовлении модификация снайперского патрона для снайперских винтовок СВД, СВУ-АС и пулемета ПКМ.</text>
+		<text>Дешёвая в изготовлении модификация снайперского патрона для снайперских винтовок СВД, СВУ-АС.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-7.62x54-7h14">
 		<text>Снайперский патрон для снайперских винтовок СВД, СВУ-АС и пулемёта ПКМ. Обладает улучшенными характеристиками по точности и дальности.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-7.62x54-ap">
-		<text>Патрон с бронебойной пулей. Для снайперских винтовок СВД, СВУ-АС и пулемёта ПКМ.</text>
+		<text>Патрон с бронебойной пулей. Для снайперских винтовок СВД, СВУ-АС.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-fmj">
 		<text>Базовый патрон для пистолетов ПМ, ПБ, "Форт-12". Простой сердечник, оболочечная пуля. Слабое бронебойное действие.</text>
@@ -223,7 +223,7 @@
 		<text>Ручная оборонительная граната с большим радиусом поражения осколками. Бросать рекомендуется только из укрытия.</text>
 	</string>
 	<string id="enc_weapons1_grenade-gd05">
-		<text>Дымовая граната.</text>
+		<text>Ручная дымовая граната. Предназначена для установки дымового прикрытия. Время действия - 10 секунд.</text>
 	</string>
 	<string id="enc_weapons1_grenade-rgd5">
 		<text>Наступательная ручная граната с небольшим радиусом поражения осколками.</text>
@@ -415,10 +415,10 @@
 		<text>Пустынный орел</text>
 	</string>
 	<string id="wpn_hpsa">
-		<text>Browning HPSA</text>
+		<text>HPSA</text>
 	</string>
 	<string id="wpn_usp">
-		<text>HK USP Compact</text>
+		<text>USP</text>
 	</string>
 	<string id="wpn-abakan">
 		<text>АН-94 "Абакан"</text>
@@ -457,7 +457,7 @@
 		<text>АКС-74У спецназ</text>
 	</string>
 	<string id="wpn-beretta">
-		<text>Beretta 92FS</text>
+		<text>Beretta</text>
 	</string>
 	<string id="wpn-bm16">
 		<text>Обрез двустволки</text>
@@ -466,7 +466,7 @@
 		<text>Безшумный кольт</text>
 	</string>
 	<string id="wpn-colt1911">
-		<text>Colt 1911A1</text>
+		<text>Colt 1911</text>
 	</string>
 	<string id="wpn-eagle_m1">
 		<text>Большой Бэн</text>
@@ -475,13 +475,13 @@
 		<text>FN2000</text>
 	</string>
 	<string id="wpn-fort">
-		<text>"Форт-12"</text>
+		<text>Форт-12</text>
 	</string>
 	<string id="wpn-fort_m">
 		<text>Форт-15</text>
 	</string>
 	<string id="wpn-g36">
-		<text>HK G36</text>
+		<text>G36</text>
 	</string>
 	<string id="wpn-gauss">
 		<text>Гаусс-пушка</text>
@@ -493,22 +493,22 @@
 		<text>"Гроза" 5.45</text>
 	</string>
 	<string id="wpn-l85">
-		<text>Springfield L85A2</text>
+		<text>L85</text>
 	</string>
 	<string id="wpn-l85_m1">
-		<text>Л85 Баланс</text>
+		<text>L85 Баланс</text>
 	</string>
 	<string id="wpn-l85_m2">
 		<text>Облегченная Л85</text>
 	</string>
 	<string id="wpn-lr300">
-		<text>ZM LR300</text>
+		<text>LR300</text>
 	</string>
 	<string id="wpn-lr300_m1">
-		<text>ЛР300 снайперская</text>
+		<text>LR300 снайперская</text>
 	</string>
 	<string id="wpn-mp5">
-		<text>HK MP5А3</text>
+		<text>MP5</text>
 	</string>
 	<string id="wpn-mp5_m1">
 		<text>МП5 9х18</text>
@@ -517,10 +517,10 @@
 		<text>Безшумная МП5</text>
 	</string>
 	<string id="wpn-pb">
-		<text>Пистолет бесшумный (ПБ)</text>
+		<text>ПБ</text>
 	</string>
 	<string id="wpn-pm">
-		<text>Пистолет Макарова (ПМ)</text>
+		<text>ПМ</text>
 	</string>
 	<string id="wpn-rg-6">
 		<text>РГ-6</text>
@@ -529,7 +529,7 @@
 		<text>РГ-6 м209</text>
 	</string>
 	<string id="wpn-rpg7">
-		<text>РПГ-7В</text>
+		<text>РПГ-7</text>
 	</string>
 	<string id="wpn-sig_m1">
 		<text>Штурмовой СиГ</text>
@@ -538,13 +538,13 @@
 		<text>СиГ снайперский</text>
 	</string>
 	<string id="wpn-sig220">
-		<text>SigSauer P220</text>
+		<text>Sig P220</text>
 	</string>
 	<string id="wpn-sig550">
-		<text>SIG 550</text>
+		<text>Sig 500</text>
 	</string>
 	<string id="wpn-spas12">
-		<text>Franchi SPAS 12</text>
+		<text>SPAS 12</text>
 	</string>
 	<string id="wpn-spas12_m1">
 		<text>СПАС-12 нарезной</text>
