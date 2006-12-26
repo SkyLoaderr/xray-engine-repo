@@ -28,6 +28,18 @@ void	CGameSpy_Patching::LoadGameSpy()
 	GAMESPY_LOAD_FN(xrGS_ptCheckForPatch);
 }
 
+void __cdecl GS_ptPatchCallback ( PTBool available, PTBool mandatory, const char * versionName, int fileID, const char * downloadURL,  void * param )
+{
+	int x=0;
+	x=x;
+};
+
 void	CGameSpy_Patching::CheckForPatch()
 {
+	bool res = xrGS_ptCheckForPatch(GAMESPY_PATCHING_PRODUCT_ID, 
+		GAMESPY_PATCHING_VERSIONUNIQUE_ID, 
+		GAMESPY_PATCHING_DISTRIBUTION_ID,
+		GS_ptPatchCallback,
+		PTTrue,
+		this);
 };
