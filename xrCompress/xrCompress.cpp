@@ -16,6 +16,8 @@
 
 extern int				ProcessDifference();
 
+BOOL					bStoreFiles = FALSE;
+
 IWriter*				fs				= 0;
 CMemoryWriter			fs_desc;
 
@@ -77,6 +79,8 @@ BOOL	testSKIP		(LPCSTR path)
 
 BOOL	testVFS			(LPCSTR path)
 {
+	if(bStoreFiles)		return TRUE;
+
 	string256			p_name;
 	string256			p_ext;
 	_splitpath			(path, 0, 0, p_name, p_ext );
@@ -123,7 +127,8 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 {
 	filesTOTAL		++;
 
-	if (testSKIP(path))	{
+	if (testSKIP(path))	
+	{
 		filesSKIP	++;
 		printf		(" - a SKIP");
 		Msg			("%-80s   - SKIP",path);
@@ -132,7 +137,8 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 
 	string256		fn;				strconcat(fn,base,"\\",path);
 
-	if (::GetFileAttributes(fn)==u32(-1)){
+	if (::GetFileAttributes(fn)==u32(-1))
+	{
 		filesSKIP	++;
 		printf		(" - CAN'T OPEN");
 		Msg			("%-80s   - CAN'T OPEN",path);
@@ -140,7 +146,8 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 	}
 
 	IReader*		src				=	FS.r_open	(fn);
-	if (0==src){
+	if (0==src)
+	{
 		filesSKIP	++;
 		printf		(" - CAN'T OPEN");
 		Msg			("%-80s   - CAN'T OPEN",path);
@@ -165,8 +172,10 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 		c_ptr				= A->c_ptr;
 		c_size_real			= A->c_size_real;
 		c_size_compressed	= A->c_size_compressed;
-	} else {
-		if (testVFS(path))	{
+	} else 
+	{
+		if (testVFS(path))	
+		{
 			filesVFS			++;
 
 			// Write into BaseFS
@@ -176,11 +185,13 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 			fs->w				(src->pointer(),c_size_real);
 			printf				("VFS");
 			Msg					("%-80s   - VFS",path);
-		} else {
+		} else 
+		{
 			// Compress into BaseFS
 			c_ptr				=	fs->tell();
 			c_size_real			=	src->length();
-			if (0!=c_size_real){
+			if (0!=c_size_real)
+			{
 				u32 c_size_max		=	rtc_csize		(src->length());
 				u8*	c_data			=	xr_alloc<u8>	(c_size_max);
 				t_compress.Begin	();
@@ -203,7 +214,8 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 					fs->w				(src->pointer(),c_size_real);
 					printf				("VFS (R)");
 					Msg					("%-80s   - VFS (R)",path);
-				} else {
+				} else 
+				{
 					// Compressed OK - optimize
 					if (!bFast){
 						u8*		c_out	= xr_alloc<u8>	(c_size_real);
@@ -219,7 +231,8 @@ void	Compress			(LPCSTR path, LPCSTR base, BOOL bFast)
 
 				// cleanup
 				xr_free		(c_data);
-			}else{
+			}else
+			{
 				filesVFS				++;
 				c_size_compressed		= c_size_real;
 				//				fs->w					(src->pointer(),c_size_real);
@@ -514,13 +527,19 @@ int __cdecl main	(int argc, char* argv[])
 
 	LPCSTR params = GetCommandLine();
 
+	if(strstr(params,"-store"))
+	{
+		bStoreFiles = TRUE;
+	};
+
 	if(strstr(params,"-diff")){
 		ProcessDifference	();
 	}else{
 		if (argc<2)	{
 			printf("ERROR: u must pass folder name as parameter.\n");
 			printf("-diff /? option to get information about creating difference.\n");
-			printf("-fast - fast compression.\n");
+			printf("-fast	- fast compression.\n");
+			printf("-store	- store files. No compression.\n");
 			printf("-ltx <file_name.ltx> - pathes to compress.\n");
 			printf("\n");
 			printf("LTX format:\n");
