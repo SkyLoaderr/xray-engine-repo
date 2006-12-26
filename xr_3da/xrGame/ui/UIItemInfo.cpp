@@ -103,7 +103,7 @@ void CUIItemInfo::Init(LPCSTR xml_name){
 		UIDesc							= xr_new<CUIScrollView>(); 
 		AttachChild						(UIDesc);		
 		UIDesc->SetAutoDelete			(true);
-		m_desc_info.bShowDescrText		= uiXml.ReadAttribInt("descr_list",0,"only_text_info", 1);
+		m_desc_info.bShowDescrText		= !!uiXml.ReadAttribInt("descr_list",0,"only_text_info", 1);
 		xml_init.InitScrollView			(uiXml, "descr_list", 0, UIDesc);
 		xml_init.InitFont				(uiXml, "descr_list:font", 0, m_desc_info.uDescClr, m_desc_info.pDescFont);
 	}	
