@@ -182,7 +182,7 @@
 				BufferSecurityCheck="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Release/DXT.pch"
+				PrecompiledHeaderFile=".\Mixed/DXT.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName="$(IntDir)/"

@@ -200,7 +200,7 @@
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Release/ETools.pch"
+				PrecompiledHeaderFile=".\Mixed/ETools.pch"
 				AssemblerListingLocation="Mixed\"
 				ObjectFile="Mixed\"
 				ProgramDataBaseFileName="Mixed\"

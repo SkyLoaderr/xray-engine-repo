@@ -180,7 +180,7 @@
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Release/xrDO_Light.pch"
+				PrecompiledHeaderFile=".\Mixed/xrDO_Light.pch"
 				AssemblerListingLocation="Mixed\"
 				ObjectFile="Mixed\"
 				ProgramDataBaseFileName="Mixed\"

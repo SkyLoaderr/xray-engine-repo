@@ -310,8 +310,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-						PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"/>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="DebugNoExceptions|Win32">
@@ -325,21 +324,9 @@
 			</File>
 			<File
 				RelativePath=".\xrCompress.cpp">
-				<FileConfiguration
-					Name="Mixed|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\xrCompressDifference.cpp">
-				<FileConfiguration
-					Name="Mixed|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
