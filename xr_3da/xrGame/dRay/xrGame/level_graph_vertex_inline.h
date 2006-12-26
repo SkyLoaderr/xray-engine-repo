@@ -8,10 +8,6 @@
 
 #pragma once
 
-#ifdef AI_COMPILER
-	#include "profile.h"
-#endif
-
 IC float CLevelGraph::distance(const Fvector &position, const Fvector &point0, const Fvector &point1) const
 {
 	Fvector				c, V;
