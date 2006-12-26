@@ -163,6 +163,10 @@ function add_lchanger_location()
 		if obj then
 			level.map_add_object_spot(obj.id, "level_changer", "to_rostok")
 		end
+		obj = sim:story_object(773)
+		if obj then
+			level.map_add_object_spot(obj.id, "level_changer", "to_radar")
+		end
 
 		-- yantar
 		obj = sim:story_object(925)
