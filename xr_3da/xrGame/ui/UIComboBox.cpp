@@ -79,16 +79,6 @@ void CUIComboBox::Init(float x, float y, float width, float height)
 	this->Init		(x, y, width);
 }
 
-/*
-void CUIComboBox::AddItem(LPCSTR str, bool bSelected)
-{
-	R_ASSERT2			(m_bInited, "Can't add item to ComboBox before Initialization");
-	m_list.AddItem		(str);
-	if (bSelected)
-		m_text.SetText	(str);
-}
-*/
-
 #include "uilistboxitem.h"
 CUIListBoxItem* CUIComboBox::AddItem_(LPCSTR str, int _data)
 {
@@ -237,7 +227,11 @@ bool CUIComboBox::OnMouse(float x, float y, EUIMessages mouse_action){
 			}
 			break;
 		case LIST_FONDED:
-			break;
+			if(mouse_action==WINDOW_LBUTTON_DOWN)
+			{
+				OnBtnClicked();
+				return true;			
+			}break;
 		default:
 			break;
 	}	
