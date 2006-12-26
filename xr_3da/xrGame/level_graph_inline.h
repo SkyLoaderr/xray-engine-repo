@@ -8,10 +8,6 @@
 
 #pragma once
 
-#ifdef AI_COMPILER
-#	include "profile.h"
-#endif
-
 IC	CLevelGraph::const_vertex_iterator CLevelGraph::begin	() const
 {
 	return				(m_nodes);
