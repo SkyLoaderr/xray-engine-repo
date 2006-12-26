@@ -18,7 +18,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "xr_LuaAllocator.h"
+//#include "xr_LuaAllocator.h"
 
 /*
 #include "src\lua.h"
