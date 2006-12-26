@@ -13,19 +13,26 @@ IC	CGraphEngine::CGraphEngine		(u32 max_vertex_count)
 	m_algorithm			= xr_new<CAlgorithm>				(max_vertex_count);
 	m_algorithm->data_storage().set_min_bucket_value		(_dist_type(0));
 	m_algorithm->data_storage().set_max_bucket_value		(_dist_type(2000));
+
+#ifndef AI_COMPILER
 	m_solver_algorithm	= xr_new<CSolverAlgorithm>			(16*1024);
+#endif // AI_COMPILER
 }
 
 IC	CGraphEngine::~CGraphEngine			()
 {
 	xr_delete			(m_algorithm);
+#ifndef AI_COMPILER
 	xr_delete			(m_solver_algorithm);
+#endif // AI_COMPILER
 }
 
+#ifndef AI_COMPILER
 IC	const CGraphEngine::CSolverAlgorithm &CGraphEngine::solver_algorithm() const
 {
 	return				(*m_solver_algorithm);
 }
+#endif // AI_COMPILER
 
 template <
 	typename _Graph,
@@ -151,6 +158,7 @@ IC	bool CGraphEngine::search			(
 #endif
 }
 
+#ifndef AI_COMPILER
 template <
 	typename T1,
 	typename T2,
@@ -209,3 +217,4 @@ IC	bool CGraphEngine::search(
 	STOP_PROFILE
 #endif
 }
+#endif // AI_COMPILER
