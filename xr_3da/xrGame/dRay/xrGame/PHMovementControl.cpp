@@ -815,15 +815,14 @@ VERIFY_BOUNDARIES2(pos,phBoundaries,m_character->PhysicsRefObject(),"CPHMovement
 			Msg("CPHMovementControl::TryPosition %s (CPHMovementControl::vPosition) %f,%f,%f",PH_DBG_ObjectTrack(),vPosition.x,vPosition.y,vPosition.z);
 		}
 #endif
-		bool	ret=false;
-		if(m_character->b_exist)
-		{	
-			ret=	m_character->TryPosition(pos,b_exect_position)&&!bExernalImpulse;
+		if (m_character->b_exist) {	
+			bool					ret = m_character->TryPosition(pos,b_exect_position)&&!bExernalImpulse;
 			m_character->GetPosition(vPosition);
+			return					(ret);
 		}
-		else
-			vPosition.set(pos);
-		return	true;
+
+		vPosition.set	(pos);
+		return			(true);
 }
 
 
