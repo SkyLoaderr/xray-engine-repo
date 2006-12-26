@@ -131,51 +131,56 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 			//
 			//////////////////////////////////////////////////////////////////////////
 			
-			CEffectorCam* ce = Actor()->Cameras().GetCamEffector((ECamEffectorType)effFireHit);
+			CEffectorCam* ce = Actor()->Cameras().GetCamEffector((ECamEffectorType)effBigMonsterHit);
 			if(!ce)
 			{
-				int id						= -1;
-				Fvector						cam_pos,cam_dir,cam_norm;
-				Actor()->cam_Active()->Get	(cam_pos,cam_dir,cam_norm);
-				cam_dir.normalize_safe		();
-				dir.normalize_safe			();
+				const shared_str&	eff_sect = pSettings->r_string(cNameSect(), "actor_hit_effect");	
+				if(eff_sect.c_str())
+				{
+					int id						= -1;
+					Fvector						cam_pos,cam_dir,cam_norm;
+					Actor()->cam_Active()->Get	(cam_pos,cam_dir,cam_norm);
+					cam_dir.normalize_safe		();
+					dir.normalize_safe			();
 
-				float ang_diff				= angle_difference	(cam_dir.getH(), dir.getH());
-				Fvector						cp;
-				cp.crossproduct				(cam_dir,dir);
-				bool bUp					=(cp.y>0.0f);
+					float ang_diff				= angle_difference	(cam_dir.getH(), dir.getH());
+					Fvector						cp;
+					cp.crossproduct				(cam_dir,dir);
+					bool bUp					=(cp.y>0.0f);
 
-				Fvector cross;
-				cross.crossproduct			(cam_dir, dir);
-				VERIFY						(ang_diff>=0.0f && ang_diff<=PI);
+					Fvector cross;
+					cross.crossproduct			(cam_dir, dir);
+					VERIFY						(ang_diff>=0.0f && ang_diff<=PI);
 
-				float _s1 = PI_DIV_8;
-				float _s2 = _s1+PI_DIV_4;
-				float _s3 = _s2+PI_DIV_4;
-				float _s4 = _s3+PI_DIV_4;
+					float _s1 = PI_DIV_8;
+					float _s2 = _s1+PI_DIV_4;
+					float _s3 = _s2+PI_DIV_4;
+					float _s4 = _s3+PI_DIV_4;
 
-				if(ang_diff<=_s1){
-					id = 2;
-				}else {
-					if(ang_diff>_s1 && ang_diff<=_s2){
-						id = (bUp)?5:7;
-					}else
-						if(ang_diff>_s2 && ang_diff<=_s3){
-							id = (bUp)?3:1;
+					if(ang_diff<=_s1){
+						id = 2;
+					}else {
+						if(ang_diff>_s1 && ang_diff<=_s2){
+							id = (bUp)?5:7;
 						}else
-							if(ang_diff>_s3 && ang_diff<=_s4){
-								id = (bUp)?4:6;
+							if(ang_diff>_s2 && ang_diff<=_s3){
+								id = (bUp)?3:1;
 							}else
-								if(ang_diff>_s4){
-									id = 0;
-								}else{
-									VERIFY(0);
-								}
+								if(ang_diff>_s3 && ang_diff<=_s4){
+									id = (bUp)?4:6;
+								}else
+									if(ang_diff>_s4){
+										id = 0;
+									}else{
+										VERIFY(0);
+									}
+					}
+					
+					string64				sect_name;
+
+					sprintf					(sect_name,"%s_%d",eff_sect.c_str(), id);
+					AddEffector				(Actor(), effBigMonsterHit, sect_name, fDamage);
 				}
-				
-				string64 sect_name;
-				sprintf(sect_name,"effector_fire_hit_%d",id);
-				AddEffector(Actor(), effFireHit, sect_name, fDamage/100.0f);
 			}
 			//////////////////////////////////////////////////////////////////////////
 			
