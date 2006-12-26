@@ -234,7 +234,7 @@ bool CObjectHandler::weapon_unstrapped	() const
 {
 	CWeapon						*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
 	if (!weapon) {
-		VERIFY					(!planner().object().animation().setup_storage());
+		VERIFY					(planner().object().animation().setup_storage() != &planner().m_storage);
 		return					(true);
 	}
 
