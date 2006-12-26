@@ -71,10 +71,10 @@ void __cdecl ClientAuthorizeCallback(int productid, int localid, int authenticat
 
 void __cdecl ClientReAuthorizeCallback(int gameid, int localid, int hint, char *challenge, void *instance)
 {
-	xrGameSpyServer* pServer = (xrGameSpyServer*) (instance);
+//	xrGameSpyServer* pServer = (xrGameSpyServer*) (instance);
 //	if (pServer) pServer->OnCDKey_Validation(localid, authenticated, errmsg);
-	int x=0;
-	x=x;
+//	int x=0;
+//	x=x;
 };
 
 void	CGameSpy_GCD_Server::AuthUser(int localid, unsigned int userip, char *challenge, char *response, 
