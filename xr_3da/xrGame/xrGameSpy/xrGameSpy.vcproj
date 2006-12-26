@@ -283,6 +283,24 @@
 					RelativePath=".\GameSpy\common\gsCommon.h">
 				</File>
 				<File
+					RelativePath=".\GameSpy\common\gsCrypt.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsCrypt.h">
+				</File>
+				<File
 					RelativePath=".\GameSpy\common\gsDebug.c">
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -301,6 +319,24 @@
 				</File>
 				<File
 					RelativePath=".\GameSpy\common\gsDebug.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsLargeInt.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsLargeInt.h">
 				</File>
 				<File
 					RelativePath=".\GameSpy\common\gsMemory.c">
@@ -404,6 +440,60 @@
 					RelativePath=".\GameSpy\common\gsPlatformUtil.h">
 				</File>
 				<File
+					RelativePath=".\GameSpy\common\gsRC4.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsRC4.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsSHA1.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsSHA1.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsSSL.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsSSL.h">
+				</File>
+				<File
 					RelativePath=".\GameSpy\common\gsStringUtil.c">
 					<FileConfiguration
 						Name="Debug|Win32">
@@ -420,6 +510,24 @@
 				</File>
 				<File
 					RelativePath=".\GameSpy\common\gsStringUtil.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsXML.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\common\gsXML.h">
 				</File>
 				<Filter
 					Name="win32"
@@ -649,6 +757,182 @@
 					RelativePath=".\GameSpy\CDKey\gcdkeys.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="Patching"
+				Filter="">
+				<File
+					RelativePath=".\GameSpy\Patching\pt.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\Patching\ptMain.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="ghttp"
+				Filter="">
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttp.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpASCII.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpBuffer.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpBuffer.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpCallbacks.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpCallbacks.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpCommon.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpCommon.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpConnection.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpConnection.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpEncryption.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpEncryption.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpMain.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpMain.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpPost.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpPost.h">
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpProcess.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GameSpy\ghttp\ghttpProcess.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="xrGameSpy_ServerBrowser"
@@ -688,6 +972,16 @@
 			</File>
 			<File
 				RelativePath=".\xrGameSpy_CDKey.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="xrGameSpy_Patching"
+			Filter="">
+			<File
+				RelativePath=".\xrGameSpy_Patching.cpp">
+			</File>
+			<File
+				RelativePath=".\xrGameSpy_Patching.h">
 			</File>
 		</Filter>
 		<File

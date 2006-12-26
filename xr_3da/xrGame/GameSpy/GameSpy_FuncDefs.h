@@ -43,6 +43,7 @@ typedef enum
 } SBError;		
 
 typedef enum {SBFalse, SBTrue} SBBool;
+typedef enum {PTFalse, PTTrue} PTBool;
 
 typedef enum {key_server, key_player, key_team} qr2_key_type;
 
@@ -70,6 +71,8 @@ typedef void (__cdecl* fnqr2_playerteamkeycallback_t)(int keyid, int index, void
 typedef void (__cdecl* fnqr2_keylistcallback_t)(qr2_key_type keytype, void* keybuffer, void *userdata);	
 typedef int  (__cdecl* fnqr2_countcallback_t)(qr2_key_type keytype, void *userdata);	
 typedef void (__cdecl* fnqr2_adderrorcallback_t)(qr2_error_t error, char *errmsg, void *userdata);	
+
+typedef void (__cdecl* ptPatchCallback) ( PTBool available, PTBool mandatory, const char * versionName, int fileID, const char * downloadURL,  void * param );
 
 extern "C" {
 

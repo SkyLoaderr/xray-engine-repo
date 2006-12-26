@@ -8665,6 +8665,12 @@
 						RelativePath=".\GameSpy\GameSpy_Keys.h">
 					</File>
 					<File
+						RelativePath=".\GameSpy\GameSpy_Patching.cpp">
+					</File>
+					<File
+						RelativePath=".\GameSpy\GameSpy_Patching.h">
+					</File>
+					<File
 						RelativePath=".\GameSpy\GameSpy_QR2.cpp">
 					</File>
 					<File
