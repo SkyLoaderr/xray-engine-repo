@@ -57,6 +57,8 @@
 		<start_dialog>dm_hello_dialog</start_dialog>
 		<actor_dialog>dm_cool_info_dialog</actor_dialog>
 		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
+		<actor_dialog>tm_wolf_dialog</actor_dialog>
+		<actor_dialog>tm_wolf_reward</actor_dialog>
 	</specific_character>
 <!---------------------------------------esc_fanat----------------------------------------------------->	
 	<specific_character id="esc_fanat" team_default = "1">
@@ -146,7 +148,8 @@
 		<start_dialog>tutorial_wounded_give_medkit</start_dialog>
 		<start_dialog>dm_hello_dialog</start_dialog>
 		<actor_dialog>dm_cool_info_dialog</actor_dialog>
-		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>				
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
+				
 	</specific_character>
 <!---------------------------------------esc_shustryi----------------------------------------------------->	
 	<specific_character id="esc_shustryi" team_default = "1">
@@ -175,7 +178,9 @@
 		<start_dialog>escape_shustryi_start</start_dialog>
 		<start_dialog>dm_hello_dialog</start_dialog>
 		<actor_dialog>dm_cool_info_dialog</actor_dialog>
-		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>				
+		<actor_dialog>dm_help_wounded_medkit_dialog</actor_dialog>
+		<actor_dialog>tm_shustriy_dialog</actor_dialog>
+		<actor_dialog>tm_shustriy_reward</actor_dialog>						
 	</specific_character>
 <!---------------------------------------killer_specnaz----------------------------------------------------->		
 	<specific_character id="esc_killer_specnaz" team_default = "1">
