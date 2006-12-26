@@ -560,7 +560,7 @@
 			Name="ALife"
 			Filter="">
 			<Filter
-				Name="AStar"
+				Name="search"
 				Filter="">
 				<Filter
 					Name="path_managers"
