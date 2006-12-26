@@ -3,9 +3,6 @@
 	<string id="binoc_tutorial">
 		<text>To use the binoculars, select them ($$ACTION_wpn_5$$) and press "fire" to zoom in.</text>
 	</string>
-	<string id="binocular">
-		<text>Бинокль</text>
-	</string>
 	<string id="crouch">
 		<text>Приседания</text>
 	</string>
