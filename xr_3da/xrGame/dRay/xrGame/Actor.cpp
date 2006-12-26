@@ -706,7 +706,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 		tpKinematics->PlayFX(motion_ID,power_factor);
 	}
 }
-
+void start_tutorial(LPCSTR name);
 void CActor::Die	(CObject* who)
 {
 	inherited::Die(who);
@@ -809,7 +809,10 @@ void CActor::Die	(CObject* who)
 	}
 
 	if(IsGameTypeSingle())
-		HUD().GetUI()->UIGame()->AddCustomStatic("game_over", true);
+	{
+		start_tutorial		("game_over");
+	}
+//.		HUD().GetUI()->UIGame()->AddCustomStatic("game_over", true);
 
 	xr_delete				(m_sndShockEffector);
 }
@@ -818,12 +821,12 @@ void	CActor::SwitchOutBorder(bool new_border_state)
 {
 	if(new_border_state)
 	{
-		Msg("exit level border");
+//.		Msg("exit level border");
 		callback(GameObject::eExitLevelBorder)(lua_game_object());
 	}
 	else 
 	{
-		Msg("enter level border");
+//.		Msg("enter level border");
 		callback(GameObject::eEnterLevelBorder)(lua_game_object());
 	}
 	m_bOutBorder=new_border_state;

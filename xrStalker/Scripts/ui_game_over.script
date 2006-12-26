@@ -1,5 +1,10 @@
 
-function main()
+function on_tutor_stop()
+	local c = get_console()
+	c:execute("disconnect")
+end
+--[[
+function _main()
 	game_over_dlg = ui_game_over.dlg_game_over()
 	level.start_stop_menu(game_over_dlg,true)
 end
@@ -68,3 +73,4 @@ function dlg_game_over:OnKeyboard(dik, keyboard_action)
 	end
 	return true
 end
+]]
