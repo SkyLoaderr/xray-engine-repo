@@ -23,16 +23,16 @@ extern ECORE_API	float		ps_r__WallmarkSHIFT_V	;
 extern ECORE_API	float		ps_r__GLOD_ssa_start;
 extern ECORE_API	float		ps_r__GLOD_ssa_end	;
 extern ECORE_API	float		ps_r__LOD			;
-extern ECORE_API	float		ps_r__LOD_Power		;
+//.extern ECORE_API	float		ps_r__LOD_Power		;
 extern ECORE_API	float		ps_r__ssaDISCARD	;
 extern ECORE_API	float		ps_r__ssaDONTSORT	;
 extern ECORE_API	float		ps_r__ssaHZBvsTEX	;
+extern ECORE_API	int			ps_r__tf_Anisotropic;
 
 // R1
 extern ECORE_API	float		ps_r1_ssaLOD_A;
 extern ECORE_API	float		ps_r1_ssaLOD_B;
 extern ECORE_API	float		ps_r1_tf_Mipbias;
-extern ECORE_API	int			ps_r1_tf_Anisotropic;
 extern ECORE_API	float		ps_r1_lmodel_lerp;
 extern ECORE_API	float		ps_r1_dlights_clip;
 extern ECORE_API	float		ps_r1_pps_u;
@@ -50,7 +50,6 @@ enum
 extern ECORE_API	float		ps_r2_ssaLOD_A;
 extern ECORE_API	float		ps_r2_ssaLOD_B;
 extern ECORE_API	float		ps_r2_tf_Mipbias;
-extern ECORE_API	int			ps_r2_tf_Anisotropic;
 
 // R2-specific
 extern ECORE_API Flags32		ps_r2_ls_flags;				// r2-only

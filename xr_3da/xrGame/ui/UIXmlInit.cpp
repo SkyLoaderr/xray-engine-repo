@@ -1281,12 +1281,17 @@ bool CUIXmlInit::InitListBox(CUIXml& xml_doc, const char* path, int index, CUILi
 bool CUIXmlInit::InitTrackBar(CUIXml& xml_doc, const char* path, int index, CUITrackBar* pWnd)
 {
 	InitWindow			(xml_doc, path, 0, pWnd);
+	
+	int is_integer		= xml_doc.ReadAttribInt(path, index, "is_integer", 0);
+	pWnd->SetType		(!is_integer);
 	InitOptionsItem		(xml_doc, path, 0, pWnd);
+
 	int invert			= xml_doc.ReadAttribInt(path, index, "invert", 0);
 	pWnd->SetInvert		(!!invert);
 	float step			= xml_doc.ReadAttribFlt(path, index, "step", 0.1f);
 	pWnd->SetStep		(step);
 	
+
 	return				true;
 }
 

@@ -77,31 +77,24 @@
 		<cap_brightness x="20" y="120" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_brightness</text>
 		</cap_brightness>
-		
-		<check_fullscreen x="20" y="155" width="143" height="21">
-			<options_item entry="rs_fullscreen" group="mm_opt_video"/>	
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_fullscreen</text>
-		</check_fullscreen>
-		<check_no_vsync x="20" y="180" width="343" height="21">
-			<options_item entry="rs_no_v_sync" group="mm_opt_video"/>
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_no_vsync</text>
-		</check_no_vsync>
-		<check_dyn_lignt x="20" y="205" width="243" height="21">
-			<options_item entry="ai_use_torch_dynamic_lights" group="mm_opt_video"/>
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_switch_torch</text>
-		</check_dyn_lignt>
-		<check_render_2 x="220" y="155" width="243" height="21">
+<!--		
+		<check_render_2 x="20" y="155" width="243" height="21">
 			<options_item entry="r2" group="mm_opt_video"/>
 			<text font="letterica16" r="115" g="114" b="112">ui_mm_render_2</text>
 		</check_render_2>
-		<check_r2_sun x="220" y="180" width="243" height="21">
-			<options_item entry="r2_sun" group="mm_opt_video"/>
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_r2_sun</text>
-		</check_r2_sun>
-		<check_r2_sun_details x="220" y="205" width="243" height="21">
-			<options_item entry="r2_sun_details" group="mm_opt_video"/>
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_r2_sun_details</text>
-		</check_r2_sun_details>
+-->
+		<cap_r2 x="20" y="155" width="143" height="21">
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_render_quality</text>
+		</cap_r2>
+		<track_r2 x="194" y="155" width="261" height="21" step="1" is_integer="1">
+			<options_item entry="r2" group="mm_opt_video"/>
+		</track_r2>
+
+		<check_fullscreen x="20" y="180" width="143" height="21">
+			<options_item entry="rs_fullscreen" group="mm_opt_video"/>	
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_fullscreen</text>
+		</check_fullscreen>
+		
 		
 		<list_presets x="194" y="20" width="261" height="21">
 			<options_item entry="_preset" group="mm_opt_video"/>
@@ -141,20 +134,84 @@
 	</tab_video>
 
 	<video_adv>
-		<scroll_v	x="5" y="10" width="457" height="316" 
+		<scroll_v	x="5" y="10" width="457" height="313" 
 					right_ident="0" left_ident="0" top_indent="0" bottom_indent="0" 
-					vert_interval="10" always_show_scroll="1"/>
+					vert_interval="0" always_show_scroll="0"/>
 
 		<templ_item width="450" height="30"/>
 		
+		<check_no_vsync x="20" y="0" width="343" height="21">
+			<options_item entry="rs_no_v_sync" group="mm_opt_video_adv"/>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_no_vsync</text>
+		</check_no_vsync>
+
+		<check_60hz x="20" y="0" width="343" height="21">
+			<options_item entry="rs_refresh_60hz" group="mm_opt_video_adv"/>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_60_hz</text>
+		</check_60hz>
+
+		<check_npc_torch x="20" y="0" width="243" height="21">
+			<options_item entry="ai_use_torch_dynamic_lights" group="mm_opt_video_adv"/>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_npc_torch</text>
+		</check_npc_torch>
+
 		<cap_detail_density x="20" y="0" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_detail_density</text>
 		</cap_detail_density>
-
 		<track_detail_density x="170" y="0" width="261" height="21" invert="1" step="0.02">
 			<options_item entry="r__detail_density" group="mm_opt_video_adv"/>
 		</track_detail_density>
 
+		<cap_texture_lod x="20" y="0" width="143" height="21" >
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_texture_quality</text>
+		</cap_texture_lod>
+		
+		<track_texture_lod x="170" y="0" width="261" height="21" invert="1" step="1" is_integer="1">
+			<options_item entry="texture_lod" group="mm_opt_video_adv"/>
+		</track_texture_lod>
+
+		<cap_geometry_lod x="20" y="0" width="143" height="21">
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_geometry_lod</text>
+		</cap_geometry_lod>
+		<track_geometry_lod x="170" y="0" width="261" height="21" step="0.1">
+			<options_item entry="r__geometry_lod" group="mm_opt_video_adv"/>
+		</track_geometry_lod>
+
+		<check_r2_sun x="20" y="0" width="243" height="21">
+			<options_item entry="r2_sun" group="mm_opt_video"/>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_r2_sun</text>
+		</check_r2_sun>
+		
+		<check_r2_sun_details x="20" y="0" width="243" height="21">
+			<options_item entry="r2_sun_details" group="mm_opt_video"/>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_r2_sun_details</text>
+		</check_r2_sun_details>
+
+		<check_r2_aa x="20" y="0" width="243" height="21">
+			<options_item entry="r2_sun_details" group="mm_opt_video"/>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_r2_aa</text>
+		</check_r2_aa>
+
+		<cap_vis_dist x="20" y="0" width="143" height="21">
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_vis_distance</text>
+		</cap_vis_dist>
+		<track_vis_dist x="170" y="0" width="261" height="21" step="0.1">
+			<options_item entry="rs_vis_distance" group="mm_opt_video_adv"/>
+		</track_vis_dist>
+
+		<cap_aniso x="20" y="0" width="143" height="21">
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_anisotropic</text>
+		</cap_aniso>
+		<track_aniso x="170" y="0" width="261" height="21" step="1" is_integer="1">
+			<options_item entry="r__tf_aniso" group="mm_opt_video_adv"/>
+		</track_aniso>
+		
+		<cap_ssample x="20" y="0" width="143" height="21">
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_supersample</text>
+		</cap_ssample>
+		<track_ssample x="170" y="0" width="261" height="21" step="1" is_integer="1">
+			<options_item entry="r__supersample" group="mm_opt_video_adv"/>
+		</track_ssample>
 	</video_adv>
 
 	<tab_sound>
@@ -179,7 +236,7 @@
 		</check_reverse-->
 		<check_eax x="20" y="115" width="143" height="21">
 			<options_item entry="snd_efx" group="mm_opt_sound"/>
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_eax</text>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_eax</text>
 		</check_eax>
 		
 		<!--list_speakersetup x="194" y="20" width="261" height="21">			
@@ -218,27 +275,27 @@
 		
 		<check_tips x="20" y="180" width="143" height="21">
 			<options_item entry="hud_info" group="mm_opt_gameplay"/>
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_tips</text>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_tips</text>
 		</check_tips>
 
 		<check_crosshair x="20" y="80" width="143" height="21">
 			<options_item entry="hud_crosshair" group="mm_opt_gameplay"/>
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_show_crosshair</text>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_show_crosshair</text>
 		</check_crosshair>
 
 		<check_dyn_crosshair x="20" y="105" width="143" height="21">
 			<options_item entry="cl_dynamiccrosshair" group="mm_opt_gameplay"/>
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_dyn_crosshair</text>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_dyn_crosshair</text>
 		</check_dyn_crosshair>
 
 		<check_show_weapon x="20" y="130" width="143" height="21">
 			<options_item entry="hud_weapon" group="mm_opt_gameplay"/>
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_show_weapon</text>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_show_weapon</text>
 		</check_show_weapon>
 
 		<check_dist x="20" y="155" width="143" height="21">
 			<options_item entry="hud_crosshair_dist" group="mm_opt_gameplay"/>
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_crosshair_distance</text>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_crosshair_distance</text>
 		</check_dist>
 		<!--pic_crosshair x="-7" y="117" width="470" height="179">
 			<texture>ui_options_tv</texture>
@@ -258,7 +315,7 @@
 		</track_mousesens>
 		<check_mouseinvert x="20" y="55" width="143" height="21">
 			<options_item entry="mouse_invert" group="mm_opt_controls"/>
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_invert_mouse</text>
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_invert_mouse</text>
 		</check_mouseinvert>
 		<key_binding x="10" y="120" width="451" height="199">
 			<!-- headers -->

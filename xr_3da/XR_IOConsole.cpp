@@ -535,9 +535,18 @@ int CConsole::GetInteger(LPCSTR cmd, int& val, int& min, int& max)
 	if (I!=Commands.end()) {
 		IConsole_Command* C = I->second;
 		CCC_Integer* cf = dynamic_cast<CCC_Integer*>(C);
-		val = cf->GetValue();
-		min = cf->GetMin();
-		max = cf->GetMax();
+		if(cf)
+		{
+			val = cf->GetValue();
+			min = cf->GetMin();
+			max = cf->GetMax();
+		}else{
+			CCC_Mask* cm	= dynamic_cast<CCC_Mask*>(C);
+			R_ASSERT		(cm);
+			val = (0!=cm->GetValue())?1:0;
+			min = 0;
+			max = 1;
+		}
 		return val;
 	}
 	return val;

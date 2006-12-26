@@ -13,12 +13,13 @@
 #define SLIDER_TEXTURE			"ui_slider_button"
 
 CUITrackBar::CUITrackBar()
-	: m_min(0),
-	  m_max(1),
-	  m_val(0),
-	  m_back_up(0),
-	 m_b_invert(false),
-	 m_step(0.01f)
+	: m_f_min(0),
+	  m_f_max(1),
+	  m_f_val(0),
+	  m_f_back_up(0),
+	 m_f_step(0.01f),
+	m_b_is_float(true),
+	m_b_invert(false)
 {	
 	m_pFrameLine					= xr_new<CUIFrameLineWnd>();	
 	AttachChild						(m_pFrameLine);	
@@ -67,7 +68,11 @@ void CUITrackBar::Init(float x, float y, float width, float height){
 
 void CUITrackBar::SetCurrentValue()
 {
-	GetOptFloatValue	(m_val, m_min, m_max);
+	if(m_b_is_float)
+		GetOptFloatValue	(m_f_val, m_f_min, m_f_max);
+	else
+		GetOptIntegerValue		(m_i_val, m_i_min, m_i_max);
+
 	UpdatePos			();
 }
 
@@ -87,26 +92,52 @@ void CUITrackBar::Draw()
 void CUITrackBar::SaveValue()
 {
 	CUIOptionsItem::SaveValue	();
-	SaveOptFloatValue			(m_val);
+	if(m_b_is_float)
+		SaveOptFloatValue			(m_f_val);
+	else
+		SaveOptIntegerValue			(m_i_val);
 }
 
 bool CUITrackBar::IsChanged()
 {
-	float val,min,max;
-	GetOptFloatValue	(val, min, max);
-	return val != m_val;    
+	if(m_b_is_float)
+	{
+		float val, min, max;
+		GetOptFloatValue	(val, min, max);
+		return val != m_f_val;    
+	}else
+	{
+		int val, min, max;
+		GetOptIntegerValue	(val, min, max);
+		return val != m_i_val;    
+	}
+}
+
+void CUITrackBar::SetStep(float step)
+{
+	if(m_b_is_float)
+		m_f_step	= step;
+	else
+		m_i_step	= iFloor(step);
 }
 
 void CUITrackBar::SeveBackUpValue()
 {
-	m_back_up		= m_val;
+	if(m_b_is_float)
+		m_f_back_up		= m_f_val;
+	else
+		m_i_back_up		= m_i_val;
 }
 
 void CUITrackBar::Undo()
 {
-	m_val			= m_back_up;
-	SaveValue		();
-	SetCurrentValue	();
+	if(m_b_is_float)
+		m_f_val			= m_f_back_up;
+	else
+		m_i_val			= m_i_back_up;
+
+	SaveValue			();
+	SetCurrentValue		();
 }
 
 void CUITrackBar::Enable(bool status)
@@ -132,18 +163,31 @@ void CUITrackBar::UpdatePosRelativeToMouse()
 	if (fpos > window_width - btn_width/2)
 		fpos = window_width - btn_width/2;
 
-	m_val						= (m_max - m_min)*(fpos - btn_width/2)/(window_width - btn_width)+ m_min;
-	
-	float _d	= (m_val-m_min);
-	
-	float _v	= _d/m_step;
-	int _vi		= iFloor(_v);
-	float _vf	= m_step*_vi;
-	
-	if(_d-_vf>m_step/2.0f)	
-		_vf		+= m_step;
+	float __fval;
+	float __fmax	= (m_b_is_float)?m_f_max:(float)m_i_max;
+	float __fmin	= (m_b_is_float)?m_f_min:(float)m_i_min;
+	float __fstep	= (m_b_is_float)?m_f_step:(float)m_i_step;
 
-	m_val		= m_min+_vf;
+	__fval						= (__fmax - __fmin)*(fpos - btn_width/2)/(window_width - btn_width)+ __fmin;
+	
+	float _d	= (__fval-__fmin);
+	
+	float _v	= _d/__fstep;
+	int _vi		= iFloor(_v);
+	float _vf	= __fstep*_vi;
+	
+	if(_d-_vf>__fstep/2.0f)	
+		_vf		+= __fstep;
+
+	__fval		= __fmin+_vf;
+
+	if(m_b_is_float)
+		m_f_val	= __fval;
+	else
+		m_i_val	= iFloor(__fval);
+	
+	if(IsChanged())
+		GetMessageTarget()->SendMessage(this, BUTTON_CLICKED, NULL);
 
 	UpdatePos	();
 }
@@ -151,7 +195,12 @@ void CUITrackBar::UpdatePosRelativeToMouse()
 void CUITrackBar::UpdatePos()
 {
 #ifdef DEBUG
-	R_ASSERT2(m_val >= m_min && m_val <= m_max, "CUITrackBar::UpdatePos() - m_val >= m_min && m_val <= m_max" );
+	
+	if(m_b_is_float)
+		R_ASSERT2(m_f_val >= m_f_min && m_f_val <= m_f_max, "CUITrackBar::UpdatePos() - m_val >= m_min && m_val <= m_max" );
+	else
+		R_ASSERT2(m_i_val >= m_i_min && m_i_val <= m_i_max, "CUITrackBar::UpdatePos() - m_val >= m_min && m_val <= m_max" );
+
 #endif
 
 	float btn_width				= m_pSlider->GetWidth();
@@ -159,7 +208,12 @@ void CUITrackBar::UpdatePos()
 	float free_space			= window_width - btn_width;
 	Fvector2 pos				= m_pSlider->GetWndPos();
     
-	pos.x						= (m_val - m_min)*free_space/(m_max - m_min);
+	float __fval	= (m_b_is_float)?m_f_val:(float)m_i_val;
+	float __fmax	= (m_b_is_float)?m_f_max:(float)m_i_max;
+	float __fmin	= (m_b_is_float)?m_f_min:(float)m_i_min;
+
+
+	pos.x						= (__fval - __fmin)*free_space/(__fmax - __fmin);
 	if( GetInvert() )
 		pos.x					= free_space-pos.x;
 
@@ -171,11 +225,23 @@ void CUITrackBar::OnMessage(const char* message)
 {
 	if (0 == xr_strcmp(message,"set_default_value"))
 	{
-//.		if ("r__detail_density" == m_entry)
-//.			m_val = 0.3f;
-//.		else
-        m_val = m_min + (m_max - m_min)/2.0f;
+		if(m_b_is_float)
+			m_f_val = m_f_min + (m_f_max - m_f_min)/2.0f;
+		else
+			m_i_val = m_i_min + iFloor((m_i_max - m_i_min)/2.0f);
 
 		UpdatePos();
 	}
+}
+
+bool CUITrackBar::GetCheck()
+{
+	VERIFY(!m_b_is_float);
+	return m_i_val;
+}
+
+void CUITrackBar::SetCheck(bool b)
+{
+	VERIFY(!m_b_is_float);
+	m_i_val = (b)?m_i_max:m_i_min;
 }

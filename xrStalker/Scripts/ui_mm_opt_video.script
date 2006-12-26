@@ -12,38 +12,35 @@ function opt_video:InitControls(x, y, xml, handler)
 	self:Init(x,y, 738, 416)
 	self:SetAutoDelete(true)
 	
-	self.bk = xml:InitFrame("frame", self)
+	self.bk = xml:InitFrame			("frame", self)
 
-	xml:InitStatic("tab_video:cap_preset",			self)
-	xml:InitStatic("tab_video:cap_resolution",		self)
-	xml:InitStatic("tab_video:cap_gamma",			self)
-	xml:InitStatic("tab_video:cap_contrast",			self)
-	xml:InitStatic("tab_video:cap_brightness",		self)
--- andy	xml:InitStatic("tab_video:cap_detail_density",	self)
+	xml:InitStatic					("tab_video:cap_preset",			self)
+	xml:InitStatic					("tab_video:cap_resolution",		self)
+	xml:InitStatic					("tab_video:cap_gamma",				self)
+	xml:InitStatic					("tab_video:cap_contrast",			self)
+	xml:InitStatic					("tab_video:cap_brightness",		self)
 	
-	xml:InitCheck("tab_video:check_fullscreen",		self)
-	xml:InitCheck("tab_video:check_no_vsync",		self)
-	xml:InitCheck("tab_video:check_dyn_lignt",		self)
-	handler.ch_r2 = xml:InitCheck("tab_video:check_render_2",		self)
-	handler:Register(handler.ch_r2, "checkbtn_r2")
-	handler.ch_r2_sun = xml:InitCheck("tab_video:check_r2_sun",		self)
-	handler.ch_r2_sun_det = xml:InitCheck("tab_video:check_r2_sun_details",		self)
+	xml:InitCheck					("tab_video:check_fullscreen",		self)
+--	handler.ch_r2 = xml:InitCheck	("tab_video:check_render_2",		self)
+--	handler:Register				(handler.ch_r2, "checkbtn_r2")
 
-	
-	xml:InitTrackBar("tab_video:track_gamma",			self)
-	xml:InitTrackBar("tab_video:track_contrast",		self)
-	xml:InitTrackBar("tab_video:track_brightness",		self)
--- andy	xml:InitTrackBar("tab_video:track_detail_density",	self)
-	
-	
-	
-	xml:InitComboBox("tab_video:list_resolution",	self)
-	xml:InitComboBox("tab_video:list_presets",		self)
-	
-	
-	local btn = xml:Init3tButton("tab_video:btn_default_set",	self)	
-	handler:Register(btn, "btn_default_graphic")	
+	xml:InitStatic					("tab_video:cap_r2",				self)
+	handler.track_r2 = xml:InitTrackBar("tab_video:track_r2",			self)
+	handler:Register				(handler.track_r2, "track_r2")
 
-	btn		= xml:Init3tButton	("tab_video:btn_advanced",	self)	
-	handler:Register			(btn, "btn_advanced_graphic")	
+
+	xml:InitTrackBar				("tab_video:track_gamma",			self)
+	xml:InitTrackBar				("tab_video:track_contrast",		self)
+	xml:InitTrackBar				("tab_video:track_brightness",		self)
+	
+	
+	xml:InitComboBox				("tab_video:list_resolution",	self)
+	xml:InitComboBox				("tab_video:list_presets",		self)
+	
+	
+	local btn = xml:Init3tButton	("tab_video:btn_default_set",	self)	
+	handler:Register				(btn, "btn_default_graphic")	
+
+	btn		= xml:Init3tButton		("tab_video:btn_advanced",	self)	
+	handler:Register				(btn, "btn_advanced_graphic")	
 end

@@ -16,28 +16,42 @@ function opt_video_adv:InitControls(x, y, xml, handler)
 	self.scroll_v	= xml:InitScrollView		("video_adv:scroll_v", self)
 	
 	local _st		= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	xml:InitCheck								("video_adv:check_no_vsync",			_st)
+	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	xml:InitCheck								("video_adv:check_60hz",				_st)
+
+	_st											= xml:InitStatic						("video_adv:templ_item",				self.scroll_v)
+	xml:InitCheck								("video_adv:check_npc_torch",			_st)
+
+	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
 	xml:InitStatic								("video_adv:cap_detail_density",		_st)
 	xml:InitTrackBar							("video_adv:track_detail_density",		_st)
 
+	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	xml:InitStatic								("video_adv:cap_geometry_lod",			_st)
+	xml:InitTrackBar							("video_adv:track_geometry_lod",		_st)
 
---[[	
-	xml:InitStatic								("video_adv:cap_antialiasing",			self.scroll_v)
-	xml:InitStatic								("video_adv:cap_texturequality",		self.scroll_v)
-	xml:InitStatic								("video_adv:cap_lightingquality",		self.scroll_v)
-	xml:InitStatic								("video_adv:cap_shadowsquality",		self.scroll_v)
-	xml:InitStatic								("video_adv:cap_texturefilter",			self.scroll_v)
-	xml:InitStatic								("video_adv:cap_anisotropicfilter",		self.scroll_v)
-	xml:InitStatic								("video_adv:cap_depthofview",			self.scroll_v)
-	xml:InitStatic								("video_adv:cap_grassdensity",			self.scroll_v)
-	xml:InitStatic								("video_adv:cap_grassradius",			self.scroll_v)
-	xml:InitStatic								("video_adv:cap_dinlight",				self.scroll_v)
+	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	handler.ch_r2_sun = xml:InitCheck			("video_adv:check_r2_sun",				_st)
+	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	handler.ch_r2_sun_det = xml:InitCheck		("video_adv:check_r2_sun_details",		_st)
+
+	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	xml:InitCheck								("video_adv:check_r2_aa",				_st)
 	
-	xml:InitCheck								("video_adv:check_bump",				self.scroll_v)
-	xml:InitStatic								("video_adv:cap_phisicqhality",			self.scroll_v)
-	xml:InitStatic								("video_adv:cap_corpsetime",			self.scroll_v)
-	xml:InitCheck								("video_adv:check_particles",			self.scroll_v)
-	xml:InitStatic								("video_adv:cap_particlesamount",		self.scroll_v)
-	xml:InitSpinNum								("video_adv:list_antialiasing",			self.scroll_v)
-	xml:InitTrackBar							("tab_video:track_gamma",			self.scroll_v)
-]]
+	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	xml:InitStatic								("video_adv:cap_vis_dist",				_st)
+	xml:InitTrackBar							("video_adv:track_vis_dist",			_st)
+	
+	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	xml:InitStatic								("video_adv:cap_aniso",					_st)
+	xml:InitTrackBar							("video_adv:track_aniso",				_st)
+
+	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	xml:InitStatic								("video_adv:cap_texture_lod",			_st)
+	xml:InitTrackBar							("video_adv:track_texture_lod",			_st)
+
+	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	xml:InitStatic								("video_adv:cap_ssample",				_st)
+	xml:InitTrackBar							("video_adv:track_ssample",				_st)
 end

@@ -35,16 +35,17 @@ float		ps_r__WallmarkSHIFT_V		= 0.005f;
 float		ps_r__GLOD_ssa_start		= 256.f	;
 float		ps_r__GLOD_ssa_end			=  64.f	;
 float		ps_r__LOD					=  1.f	;
-float		ps_r__LOD_Power				=  1.5f	;
+//. float		ps_r__LOD_Power				=  1.5f	;
 float		ps_r__ssaDISCARD			=  3.5f	;					//RO
 float		ps_r__ssaDONTSORT			=  32.f	;					//RO
 float		ps_r__ssaHZBvsTEX			=  96.f	;					//RO
 
+int			ps_r__tf_Anisotropic		= 1		;
+
 // R1
 float		ps_r1_ssaLOD_A				= 64.f	;
 float		ps_r1_ssaLOD_B				= 48.f	;
-int			ps_r1_tf_Anisotropic		= 0		;
-float		ps_r1_tf_Mipbias			= -0.5f	;
+float		ps_r1_tf_Mipbias			= 0.0f	;
 Flags32		ps_r1_flags					= { R1FLAG_DLIGHTS };		// r1-only
 float		ps_r1_lmodel_lerp			= 0.1f	;
 float		ps_r1_dlights_clip			= 30.f	;
@@ -57,7 +58,6 @@ int			ps_r1_GlowsPerFrame			= 16	;					// r1-only
 // R2
 float		ps_r2_ssaLOD_A				= 48.f	;
 float		ps_r2_ssaLOD_B				= 32.f	;
-int			ps_r2_tf_Anisotropic		= 4		;
 float		ps_r2_tf_Mipbias			= 0.0f	;
 
 // R2-specific
@@ -254,8 +254,8 @@ void		xrRender_initconsole	()
 	
 	CMD4(CCC_Float,		"r__ssa_glod_start",	&ps_r__GLOD_ssa_start,		128,	512		);
 	CMD4(CCC_Float,		"r__ssa_glod_end",		&ps_r__GLOD_ssa_end,		16,		96		);
-	CMD4(CCC_Float,		"r__geometry_lod",		&ps_r__LOD,					0,		2		);
-	CMD4(CCC_Float,		"r__geometry_lod_pow",	&ps_r__LOD_Power,			0,		2		);
+	CMD4(CCC_Float,		"r__geometry_lod",		&ps_r__LOD,					0.1f,	1.2f		);
+//.	CMD4(CCC_Float,		"r__geometry_lod_pow",	&ps_r__LOD_Power,			0,		2		);
 
 //.	CMD4(CCC_Float,		"r__detail_density",	&ps_r__Detail_density,		.05f,	0.99f	);
 	CMD4(CCC_Float,		"r__detail_density",	&ps_r__Detail_density,		.2f,	0.6f	);
@@ -272,13 +272,13 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Vector3,	"r__d_tree_wave",		&ps_r__Tree_Wave,			tw_min, tw_max	);
 //.	CMD4(CCC_Float,		"r__d_tree_sbc",		&ps_r__Tree_SBC,			0.5f,	2.f		);	// fixed in code. Oles.
 //#endif
+	CMD2(CCC_tf_Aniso,	"r__tf_aniso",			&ps_r__tf_Anisotropic		); //	{1..16}
 
 	// R1
 	CMD4(CCC_Float,		"r1_ssa_lod_a",			&ps_r1_ssaLOD_A,			16,		96		);
 	CMD4(CCC_Float,		"r1_ssa_lod_b",			&ps_r1_ssaLOD_B,			16,		64		);
 	CMD4(CCC_Float,		"r1_lmodel_lerp",		&ps_r1_lmodel_lerp,			0,		0.333f	);
-	CMD2(CCC_tf_Aniso,	"r1_tf_aniso",			&ps_r1_tf_Anisotropic		);
-	CMD2(CCC_tf_MipBias,"r1_tf_mipbias",		&ps_r1_tf_Mipbias			);
+	CMD2(CCC_tf_MipBias,"r1_tf_mipbias",		&ps_r1_tf_Mipbias			);//	{-3 +3}
 	CMD3(CCC_Mask,		"r1_dlights",			&ps_r1_flags,				R1FLAG_DLIGHTS	);
 	CMD4(CCC_Float,		"r1_dlights_clip",		&ps_r1_dlights_clip,		10.f,	150.f	);
 	CMD4(CCC_Float,		"r1_pps_u",				&ps_r1_pps_u,				-1.f,	+1.f	);
@@ -291,7 +291,6 @@ void		xrRender_initconsole	()
 	// R2
 	CMD4(CCC_Float,		"r2_ssa_lod_a",			&ps_r2_ssaLOD_A,			16,		96		);
 	CMD4(CCC_Float,		"r2_ssa_lod_b",			&ps_r2_ssaLOD_B,			32,		64		);
-	CMD2(CCC_tf_Aniso,	"r2_tf_aniso",			&ps_r2_tf_Anisotropic		);
 	CMD2(CCC_tf_MipBias,"r2_tf_mipbias",		&ps_r2_tf_Mipbias			);
 
 	// R2-specific

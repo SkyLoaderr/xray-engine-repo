@@ -82,13 +82,14 @@ function options_dialog:UpdateControls()
 	opt:SetCurrentValues("key_binding")
 	
 	
-	if self.ch_r2:GetCheck() then
-		self.ch_r2_sun:Enable(true)
-		self.ch_r2_sun_det:Enable(true)
+	if self.track_r2:GetCheck() then
+		self.ch_r2_sun:Enable		(true)
+		self.ch_r2_sun_det:Enable	(true)
 	else
-		self.ch_r2_sun:Enable(false)
-		self.ch_r2_sun_det:Enable(false)
+		self.ch_r2_sun:Enable		(false)
+		self.ch_r2_sun_det:Enable	(false)
 	end
+	
 end
 
 
@@ -99,22 +100,22 @@ function options_dialog:InitCallBacks()
 	self:AddCallback("btn_cancel",			ui_events.BUTTON_CLICKED,	self.OnBtnCancel,	self)
 	self:AddCallback("btn_default_graphic",	ui_events.BUTTON_CLICKED,	self.OnBtnDefGraph,	self)	
 	self:AddCallback("btn_default_sound",	ui_events.BUTTON_CLICKED,	self.OnBtnDefSound,	self)	
-	self:AddCallback("checkbtn_r2",	ui_events.BUTTON_CLICKED,			self.OnBtnR2,		self)	
+	self:AddCallback("track_r2",			ui_events.BUTTON_CLICKED,	self.OnBtnR2,		self)	
 end
 
 function options_dialog:OnBtnR2()	
-	if self.ch_r2:GetCheck() then
+	if self.track_r2:GetCheck() then
 		if not xrRender_test_r2_hw() then
-			self.ch_r2_sun:Enable(false)
-			self.ch_r2_sun_det:Enable(false)
-			self.ch_r2:SetCheck(false)
+			self.ch_r2_sun:Enable		(false)
+			self.ch_r2_sun_det:Enable	(false)
+			self.track_r2:SetCheck		(false)
 			
-			self.message_box:Init("message_box_check_r2")
+			self.message_box:Init		("message_box_check_r2")
 			self:GetHolder():start_stop_menu(self.message_box,true)
 			return
 		end	
-		self.ch_r2_sun:Enable(true)
-		self.ch_r2_sun_det:Enable(true)
+		self.ch_r2_sun:Enable			(true)
+		self.ch_r2_sun_det:Enable		(true)
 	else
 		self.ch_r2_sun:Enable(false)
 		self.ch_r2_sun_det:Enable(false)

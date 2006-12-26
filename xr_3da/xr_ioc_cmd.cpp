@@ -458,7 +458,10 @@ class CCC_r2 : public CCC_Mask
 public:
 	CCC_r2(LPCSTR N, Flags32* V, u32 M) :inherited(N, V, M){};
 	virtual void	Save	(IWriter *F)	{
-		if (value->test(mask)) inherited::Save(F);
+		if( !strstr(Core.Params, "r2") )
+		{
+			inherited::Save(F);
+		}
 	}
 
 };
@@ -538,7 +541,7 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"rs_fullscreen",		&psDeviceFlags,		rsFullscreen			);
 	CMD3(CCC_Mask,		"rs_refresh_60hz",		&psDeviceFlags,		rsRefresh60hz			);
 	CMD3(CCC_Mask,		"rs_stats",				&psDeviceFlags,		rsStatistic				);
-	CMD4(CCC_Float,		"rs_vis_distance",		&psVisDistance,		0.01f,	1.0f			);
+	CMD4(CCC_Float,		"rs_vis_distance",		&psVisDistance,		0.1f,	1.0f			);
 	CMD3(CCC_Mask,		"rs_cam_pos",			&psDeviceFlags,		rsCameraPos				);
 
 	CMD3(CCC_Mask,		"rs_occ_draw",			&psDeviceFlags,		rsOcclusionDraw			);
