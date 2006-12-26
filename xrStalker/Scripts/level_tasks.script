@@ -103,7 +103,7 @@ function add_lchanger_location()
 		end
 		obj = sim:story_object(194)
 		if obj then
-			level.map_add_object_spot(obj.id, "level_changer", "to_rostok")
+			level.map_add_object_spot(obj.id, "level_changer", "to_bar")
 		end
 		obj = sim:story_object(195)
 		if obj then
@@ -161,7 +161,7 @@ function add_lchanger_location()
 		-- military
 		obj = sim:story_object(771)
 		if obj then
-			level.map_add_object_spot(obj.id, "level_changer", "to_rostok")
+			level.map_add_object_spot(obj.id, "level_changer", "to_bar")
 		end
 		obj = sim:story_object(773)
 		if obj then

@@ -48,17 +48,14 @@
 	<string id="st_codelock">
 		<text>Кодовый замок ($$ACTION_USE$$)</text>
 	</string>
-	<string id="test_mega_remark">
-		<text>Ну шо чувак, и как тебе эта новая модная система ремарков с переговорами по рации?</text>
-	</string>
 	<string id="to_agroprom">
-		<text>На "Агропром"</text>
+		<text>На Агропром</text>
 	</string>
 	<string id="to_agroprom_underground">
 		<text>В катакомбы</text>
 	</string>
 	<string id="to_bar">
-		<text>На бар</text>
+		<text>На Росток</text>
 	</string>
 	<string id="to_darkvalley">
 		<text>В темную долину</text>
@@ -73,6 +70,23 @@
 		<text>На склады</text>
 	</string>
 	<string id="to_rostok">
-		<text>На "Росток"</text>
+		<text>На дикую территорию</text>
 	</string>
+	<string id="to_yantar">
+		<text>На Янтарь</text>
+	</string>
+	<string id="to_pripyat">
+		<text>На Припять</text>
+	</string>
+	<string id="to_radar">
+		<text>К "Выжигателю мозгов"</text>
+	</string>
+	<string id="bar_rostok">
+		<text>Дикая территория - Росток</text>
+	</string>
+
+	<string id="to_aes">
+		<text>На ЧАЭС</text>
+	</string>
+
 </string_table>
