@@ -65,11 +65,7 @@ ph_snd_themes["bomb"] = {"detectors\\bomb_timer"}
 ph_snd_themes["detector"] = {"detectors\\da-2_beep1"}
 
 
-ph_snd_themes["radio_music"] = {"characters_voice\\scenario\\bar\\radio_music\\radio_music_4",
-	                        "characters_voice\\scenario\\bar\\radio_music\\radio_music_2",
-	                        "characters_voice\\scenario\\bar\\radio_music\\radio_music_3",
-	                        "characters_voice\\scenario\\bar\\radio_music\\radio_music_1"
-	                        }
+ph_snd_themes["radio_music"] = {"characters_voice\\scenario\\bar\\radio_music\\radio_music_1"}
 
 ph_snd_themes["dolg_speech"]		= {[[characters_voice\scenario\bar\barman_megafon\megaphone_barman_1]],
 									   [[characters_voice\scenario\bar\barman_megafon\megaphone_barman_2]],
