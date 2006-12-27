@@ -532,7 +532,9 @@ end
 function CRandomTask:actor_update()
 	for k,v in pairs(self.task_id_self_inited) do
 		if self.task_info[v].status == "normal" then
-			if xr_logic.pick_section_from_condlist(db.actor, db.actor, self.task_info[v].init_condition) ~= nil then
+			if xr_logic.pick_section_from_condlist(db.actor, db.actor, self.task_info[v].init_condition) ~= nil and
+			   self:check_task_props(v)
+			then
 				--' Нужно автоматически выдать квест
 				self:action_give_task(db.actor, nil, nil, self.task_info[v].yes_phrase_id)
 			end

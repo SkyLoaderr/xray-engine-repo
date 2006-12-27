@@ -67,6 +67,9 @@ function action_sound2d:get_sound_name ()
        name = self.st.snd_name
     else   
        name = sound_theme.ph_snd_themes[self.st.snd_theme][self:get_next_sound_index ()]
+		if type(name) == "table" then
+			name = name[1]
+		end
     end
         
     if self.st.stereo == false then
