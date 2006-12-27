@@ -77,12 +77,7 @@
 		<cap_brightness x="20" y="120" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_brightness</text>
 		</cap_brightness>
-<!--		
-		<check_render_2 x="20" y="155" width="243" height="21">
-			<options_item entry="r2" group="mm_opt_video"/>
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_render_2</text>
-		</check_render_2>
--->
+
 		<cap_r2 x="20" y="155" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_render_quality</text>
 		</cap_r2>
@@ -94,7 +89,6 @@
 			<options_item entry="rs_fullscreen" group="mm_opt_video"/>	
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_fullscreen</text>
 		</check_fullscreen>
-		
 		
 		<list_presets x="194" y="20" width="261" height="21">
 			<options_item entry="_preset" group="mm_opt_video"/>
@@ -122,12 +116,13 @@
 		<track_brightness x="194" y="120" width="261" height="21">
 			<options_item entry="rs_c_brightness" group="mm_opt_video"/>
 		</track_brightness>
-		
+<!--		
 		<btn_default_set x="342" y="290" width="111" height="29">
 			<text align="c" font="letterica16" r="188" g="153" b="123">ui_mm_default</text>	
 			<texture>ui_button_ordinary</texture>			
 		</btn_default_set>
-		<btn_advanced x="231" y="290" width="111" height="29">
+-->
+		<btn_advanced x="342" y="290" width="111" height="29">
 			<text align="c" font="letterica16" r="188" g="153" b="123">ui_mm_advanced</text>	
 			<texture>ui_button_ordinary</texture>			
 		</btn_advanced>
@@ -187,6 +182,13 @@
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_r2_sun_details</text>
 		</check_r2_sun_details>
 
+		<cap_r2_sun_static x="20" y="0" width="143" height="21">
+			<text font="letterica16" r="215" g="195" b="170">ui_mm_sun_quality</text>
+		</cap_r2_sun_static>
+		<track_r2_sun_static x="170" y="0" width="261" height="21" invert="1" step="1" is_integer="1">
+			<options_item entry="r2_sun_static" group="mm_opt_video_adv"/>
+		</track_r2_sun_static>
+
 		<check_r2_aa x="20" y="0" width="243" height="21">
 			<options_item entry="r2_sun_details" group="mm_opt_video"/>
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_r2_aa</text>
@@ -221,34 +223,21 @@
 		<cap_musicvolume x="20" y="45" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_music_volume</text>
 		</cap_musicvolume>
-		<!--cap_sfxvolume x="20" y="70" width="143" height="21">
-			<text font="letterica16" r="215" g="195" b="170">ui_mm_sfx_volume</text>
-		</cap_sfxvolume-->
-		<!--cap_voicevolume x="20" y="95" width="143" height="21">
-			<text font="letterica16" r="215" g="195" b="170">ui_mm_voice_volume</text>
-		</cap_voicevolume-->
 		<cap_soundquality x="20" y="70" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_sound_quality</text>
 		</cap_soundquality>
 		
-		<!--check_reverse x="20" y="155" width="143" height="21">
-			<text font="letterica16" r="115" g="114" b="112">ui_mm_reverse_speakers</text>
-		</check_reverse-->
 		<check_eax x="20" y="115" width="143" height="21">
 			<options_item entry="snd_efx" group="mm_opt_sound"/>
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_eax</text>
 		</check_eax>
 		
-		<!--list_speakersetup x="194" y="20" width="261" height="21">			
-		</list_speakersetup-->
 		<track_mastervolume x="194" y="20" width="261" height="21">
 			<options_item entry="snd_volume_eff" group="mm_opt_sound"/>
 		</track_mastervolume>
 		<track_musicvolume x="194" y="45" width="261" height="21">
 			<options_item entry="snd_volume_music" group="mm_opt_sound"/>
 		</track_musicvolume>		
-		<!--track_voice x="194" y="95" width="261" height="21">
-		</track_voice-->
 		<list_soundquality x="194" y="70" width="261" height="21">
 			<options_item entry="snd_freq" group="mm_opt_sound"/>
 		</list_soundquality>
@@ -297,9 +286,6 @@
 			<options_item entry="hud_crosshair_dist" group="mm_opt_gameplay"/>
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_crosshair_distance</text>
 		</check_dist>
-		<!--pic_crosshair x="-7" y="117" width="470" height="179">
-			<texture>ui_options_tv</texture>
-		</pic_crosshair-->
 	</tab_gameplay>
 	<tab_controls>
 		<cap_mousesens x="20" y="20" width="150" height="21">

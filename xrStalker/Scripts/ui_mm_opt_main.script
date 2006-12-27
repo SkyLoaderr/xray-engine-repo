@@ -85,9 +85,11 @@ function options_dialog:UpdateControls()
 	if self.track_r2:GetCheck() then
 		self.ch_r2_sun:Enable		(true)
 		self.ch_r2_sun_det:Enable	(true)
+		self.track_r2_sun_static:Enable	(true)
 	else
 		self.ch_r2_sun:Enable		(false)
 		self.ch_r2_sun_det:Enable	(false)
+		self.track_r2_sun_static:Enable	(false)
 	end
 	
 end
@@ -101,6 +103,12 @@ function options_dialog:InitCallBacks()
 	self:AddCallback("btn_default_graphic",	ui_events.BUTTON_CLICKED,	self.OnBtnDefGraph,	self)	
 	self:AddCallback("btn_default_sound",	ui_events.BUTTON_CLICKED,	self.OnBtnDefSound,	self)	
 	self:AddCallback("track_r2",			ui_events.BUTTON_CLICKED,	self.OnBtnR2,		self)	
+	self:AddCallback("track_sun_static",	ui_events.BUTTON_CLICKED,	self.OnR2sunstatic,	self)	
+end
+
+function options_dialog:OnR2sunstatic()	
+	self.message_box:Init					("message_box_restart_game")
+	self:GetHolder():start_stop_menu		(self.message_box,true)
 end
 
 function options_dialog:OnBtnR2()	
@@ -108,6 +116,7 @@ function options_dialog:OnBtnR2()
 		if not xrRender_test_r2_hw() then
 			self.ch_r2_sun:Enable		(false)
 			self.ch_r2_sun_det:Enable	(false)
+			self.track_r2_sun_static:Enable(false)
 			self.track_r2:SetCheck		(false)
 			
 			self.message_box:Init		("message_box_check_r2")
@@ -116,9 +125,11 @@ function options_dialog:OnBtnR2()
 		end	
 		self.ch_r2_sun:Enable			(true)
 		self.ch_r2_sun_det:Enable		(true)
+		self.track_r2_sun_static:Enable	(true)
 	else
-		self.ch_r2_sun:Enable(false)
-		self.ch_r2_sun_det:Enable(false)
+		self.ch_r2_sun:Enable			(false)
+		self.ch_r2_sun_det:Enable		(false)
+		self.track_r2_sun_static:Enable	(false)
 	end
 	
 	self.message_box:Init("message_box_restart_game")

@@ -31,6 +31,11 @@ function opt_video_adv:InitControls(x, y, xml, handler)
 	xml:InitStatic								("video_adv:cap_geometry_lod",			_st)
 	xml:InitTrackBar							("video_adv:track_geometry_lod",		_st)
 
+	_st						= xml:InitStatic	("video_adv:templ_item",				self.scroll_v)
+	xml:InitStatic								("video_adv:cap_r2_sun_static",			_st)
+	handler.track_r2_sun_static = xml:InitTrackBar	("video_adv:track_r2_sun_static",		_st)
+	handler:Register		(handler.track_r2_sun_static, "track_sun_static")
+	
 	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
 	handler.ch_r2_sun = xml:InitCheck			("video_adv:check_r2_sun",				_st)
 	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
