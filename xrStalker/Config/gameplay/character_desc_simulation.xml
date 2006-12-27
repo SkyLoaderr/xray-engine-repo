@@ -3155,7 +3155,7 @@
 
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
 		
-		<rank>938</rank>
+		<rank>908</rank>
 		<reputation>156</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
@@ -3351,7 +3351,7 @@
 
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
 		<crouch_type>0</crouch_type>		
-		<rank>974</rank>
+		<rank>912</rank>
 		<reputation>156</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
