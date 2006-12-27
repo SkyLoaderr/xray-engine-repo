@@ -164,9 +164,9 @@ function heli_binder:on_hit( power, impulse, hit_type, enemy_id )
 
 	-- если обидчик актёр или сталкер, то сделать его своим врагом
 	if enemy_cls_id == clsid.actor or enemy_cls_id == clsid.script_stalker then
-		if not self.st.combat.enemy_id then
-			self.st.combat.enemy_id = enemy_id
-		end
+--		if not self.st.combat.enemy_id then
+--			self.st.combat.enemy_id = enemy_id
+--		end
 
 		if self.st.hit then
 			xr_logic.issue_event( self.object, self.st.hit, "hit_callback", self.object, power, nil, enemy, nil )
