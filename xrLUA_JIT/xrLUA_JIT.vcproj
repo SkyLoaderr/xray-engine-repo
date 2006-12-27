@@ -17,7 +17,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="x:\"
-			IntermediateDirectory="Debug"
+			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
@@ -39,7 +39,7 @@
 				OutputFile="$(OutDir)/xrLUA.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/xrLUA_JIT.pdb"
+				ProgramDatabaseFile="$(OutDir)/xrLUA.pdb"
 				SubSystem="2"
 				ImportLibrary="$(OutDir)/xrLUA.lib"
 				TargetMachine="1"/>
@@ -67,7 +67,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="x:\"
-			IntermediateDirectory="Release"
+			IntermediateDirectory=".\Release"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="TRUE">
@@ -128,7 +128,7 @@
 		<Configuration
 			Name="Mixed|Win32"
 			OutputDirectory="x:\"
-			IntermediateDirectory="$(ConfigurationName)"
+			IntermediateDirectory=".\Mixed"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="FALSE">

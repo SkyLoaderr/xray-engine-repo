@@ -180,7 +180,7 @@
 		<Configuration
 			Name="Mixed|Win32"
 			OutputDirectory="x:\"
-			IntermediateDirectory="Mixed"
+			IntermediateDirectory=".\Mixed"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"

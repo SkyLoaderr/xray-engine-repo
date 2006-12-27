@@ -17,7 +17,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="x:\"
-			IntermediateDirectory="Debug"
+			IntermediateDirectory=".\Debug"
 			ConfigurationType="1"
 			UseOfMFC="1"
 			CharacterSet="2">
@@ -73,7 +73,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="x:\"
-			IntermediateDirectory="Release"
+			IntermediateDirectory=".\Release"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			CharacterSet="2">

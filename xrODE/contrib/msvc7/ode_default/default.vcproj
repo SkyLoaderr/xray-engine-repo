@@ -17,7 +17,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="x:\"
-			IntermediateDirectory="Debug"
+			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
 			UseOfATL="1"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -91,7 +91,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="x:\"
-			IntermediateDirectory="Release"
+			IntermediateDirectory=".\Release"
 			ConfigurationType="2"
 			UseOfATL="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -173,7 +173,7 @@
 		<Configuration
 			Name="Mixed|Win32"
 			OutputDirectory="x:\"
-			IntermediateDirectory="$(ConfigurationName)"
+			IntermediateDirectory=".\Mixed"
 			ConfigurationType="2"
 			UseOfATL="1"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
