@@ -231,6 +231,7 @@ void CUIWindow::script_register(lua_State *L)
 
 	// CUIListWnd
 				value("LIST_ITEM_CLICKED",				int(LIST_ITEM_CLICKED)),
+				value("LIST_ITEM_SELECT",				int(LIST_ITEM_SELECT)),
 	
 	// CUIInteractiveItem
 				value("INTERACTIVE_ITEM_CLICK",			int(INTERACTIVE_ITEM_CLICK)),

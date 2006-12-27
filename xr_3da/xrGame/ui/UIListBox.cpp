@@ -18,6 +18,7 @@ CUIListBox::CUIListBox()
 
 	m_bImmediateSelection	= false;
 
+	SetFixedScrollBar		(false);
 	Init					();
 }
 

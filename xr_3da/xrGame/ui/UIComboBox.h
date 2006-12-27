@@ -9,7 +9,7 @@
 
 #pragma once
 #include "UIEditBox.h"
-#include "UI3tButton.h"
+//.#include "UI3tButton.h"
 //#include "UIListWnd.h"
 #include "UIListBox.h"
 #include "UIInteractiveBackground.h"
@@ -47,6 +47,7 @@ public:
 	virtual void		SendMessage				(CUIWindow *pWnd, s16 msg, void* pData = 0);
 	virtual void		OnFocusLost				();
 	virtual void		OnFocusReceive			();
+			int			CurrentID				()	{return m_itoken_id;}
 protected:
 	virtual void		SetState				(UIState state);	
 	virtual bool		OnMouse					(float x, float y, EUIMessages mouse_action);
@@ -63,7 +64,7 @@ protected:
 
 	CUI_IB_FrameLineWnd	m_frameLine;
 	CUILabel			m_text;
-	CUI3tButton			m_btn;
+//.	CUI3tButton			m_btn;
 	CUIFrameWindow		m_frameWnd;
 
 	u32					m_textColor[2];

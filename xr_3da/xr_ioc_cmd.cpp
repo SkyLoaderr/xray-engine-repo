@@ -30,6 +30,11 @@ xr_token							snd_model_token							[ ]={
 
 extern xr_token*							vid_mode_token;
 
+xr_token							vid_quality_token							[ ]={
+	{ "renderer_r1",				0											},
+	{ "renderer_r2",				1											},
+	{ 0,							0											}
+};
 
 xr_token							vid_bpp_token							[ ]={
 	{ "16",							16											},
@@ -452,11 +457,19 @@ public:
 };
 #endif
 
-class CCC_r2 : public CCC_Mask
+class CCC_r2 : public CCC_Token
 {
-	typedef CCC_Mask inherited;
+	typedef CCC_Token inherited;
+	u32				_value;
 public:
-	CCC_r2(LPCSTR N, Flags32* V, u32 M) :inherited(N, V, M){};
+	CCC_r2(LPCSTR N) :inherited(N, &_value, vid_quality_token){_value=1;};
+	
+	virtual void	Execute	(LPCSTR args)
+	{
+		inherited::Execute	(args);
+		psDeviceFlags.set(rsR2, (_value==2) );
+	}
+
 	virtual void	Save	(IWriter *F)	{
 		if( !strstr(Core.Params, "r2") )
 		{
@@ -593,8 +606,8 @@ void CCC_Register()
 	CMD2(CCC_Float,		"cam_inert",			&psCamInert);
 	CMD2(CCC_Float,		"cam_slide_inert",		&psCamSlideInert);
 
-	CMD3(CCC_r2,		"r2",				&psDeviceFlags, rsR2);
-	//psSoundRolloff			= pSettings->r_float	("sound","rolloff");		clamp(psSoundRolloff,			EPS_S,	2.f);
+	CMD1(CCC_r2,		"renderer"					);
+	//psSoundRolloff	= pSettings->r_float	("sound","rolloff");		clamp(psSoundRolloff,			EPS_S,	2.f);
 	psSoundOcclusionScale	= pSettings->r_float	("sound","occlusion_scale");clamp(psSoundOcclusionScale,	0.1f,	.5f);
 
 #ifdef DEBUG

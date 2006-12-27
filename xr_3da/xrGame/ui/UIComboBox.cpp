@@ -19,7 +19,7 @@ CUIComboBox::CUIComboBox()
 	AttachChild			(&m_frameLine);
 	AttachChild			(&m_text);
 
-	AttachChild			(&m_btn);
+//.	AttachChild			(&m_btn);
 
 	AttachChild			(&m_frameWnd);
 	AttachChild			(&m_list);
@@ -44,30 +44,32 @@ void CUIComboBox::Init(float x, float y, float width){
 	if (0 == m_iListHeight)
 		m_iListHeight = 4;
 
+//.	width								-= BTN_SIZE;
+
 	CUIWindow::Init						(x, y, width, CB_HEIGHT);
 	// Frame Line
-	m_frameLine.Init					(0, 0, width /*- BTN_SIZE*/, CB_HEIGHT);
+	m_frameLine.Init					(0, 0, width, CB_HEIGHT);
 	m_frameLine.InitEnabledState		("ui_cb_linetext_e"); // horizontal by default
 	m_frameLine.InitHighlightedState	("ui_cb_linetext_h");
 
 
 	// Edit Box on left side of frame line
-	m_text.Init							(0, 0, width - BTN_SIZE, CB_HEIGHT); 
+	m_text.Init							(0, 0, width, CB_HEIGHT); 
 	m_text.SetTextColor					(m_textColor[0]);
 	m_text.Enable						(false);
 	// Button on right side of frame line
-	m_btn.Init							("ui_cb_button", width - BTN_SIZE, 0, BTN_SIZE, BTN_SIZE);
+//.	m_btn.Init							("ui_cb_button", width, 0, BTN_SIZE, BTN_SIZE);
 
 
 	// height of list equal to height of ONE element
 	float item_height					= CUITextureMaster::GetTextureHeight("ui_cb_listline_b");
-	m_list.Init							(0, CB_HEIGHT, width - BTN_SIZE, item_height*m_iListHeight);
+	m_list.Init							(0, CB_HEIGHT, width, item_height*m_iListHeight);
 	m_list.Init							();
 	m_list.SetTextColor					(m_textColor[0]);
 	m_list.SetSelectionTexture			("ui_cb_listline");
 	m_list.SetItemHeight				(CUITextureMaster::GetTextureHeight("ui_cb_listline_b"));
 	// frame(texture) for list
-	m_frameWnd.Init						(0,  CB_HEIGHT, width - BTN_SIZE, m_list.GetItemHeight()*m_iListHeight);
+	m_frameWnd.Init						(0,  CB_HEIGHT, width, m_list.GetItemHeight()*m_iListHeight);
 	m_frameWnd.InitTexture				("ui_cb_listbox");
 
 	m_list.Show							(false);
@@ -95,6 +97,11 @@ void CUIComboBox::OnListItemSelect()
 	CUIListBoxItem* itm		= m_list.GetSelectedItem();
 	m_itoken_id				= (int)(__int64)itm->GetData();
 	ShowList				(false);
+
+	if(IsChanged()){
+		GetMessageTarget()->SendMessage(this, LIST_ITEM_SELECT, NULL);
+		SaveValue		();
+	}
 }
 
 #include "../string_table.h"
@@ -250,10 +257,11 @@ void CUIComboBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	CUIWindow::SendMessage	(pWnd, msg, pData);
 
 	switch (msg){
-		case BUTTON_CLICKED:
+/*		case BUTTON_CLICKED:
 			if (pWnd == &m_btn || pWnd == &m_list)
 				OnBtnClicked();
 			break;
+*/
 		case LIST_ITEM_CLICKED:
 			if (pWnd == &m_list)
 				OnListItemSelect();	

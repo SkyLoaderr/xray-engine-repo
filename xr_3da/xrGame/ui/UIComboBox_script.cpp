@@ -25,6 +25,9 @@ void CUIComboBox::script_register(lua_State *L)
 		.def("Init",				(void (CUIComboBox::*)(float, float, float, float))   CUIComboBox::Init)		
 		.def("SetVertScroll",		&CUIComboBox::SetVertScroll)
 		.def("SetListLength",		&CUIComboBox::SetListLength)
+		.def("CurrentID",			&CUIComboBox::CurrentID)
+		.def("SetCurrentID",		&CUIComboBox::SetItem)
+		
 //		.def("AddItem",				(void (CUIComboBox::*)(LPCSTR, bool)) CUIComboBox::AddItem)
 //		.def("AddItem",				(void (CUIComboBox::*)(LPCSTR)) CUIComboBox::AddItem)
 	];
