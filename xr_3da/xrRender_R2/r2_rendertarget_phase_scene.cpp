@@ -13,7 +13,7 @@ void	CRenderTarget::phase_scene_begin	()
 {
 	// Enable ANISO
 	for (u32 i=0; i<HW.Caps.raster.dwStages; i++)
-		CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MAXANISOTROPY, ps_r2_tf_Anisotropic	));
+		CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MAXANISOTROPY, ps_r__tf_Anisotropic	));
 
 	// Targets, use accumulator for temporary storage
 	if (RImplementation.o.albedo_wo)	u_setrt		(rt_Position,	rt_Normal,	rt_Accumulator,	HW.pBaseZB);
