@@ -308,9 +308,6 @@ function actor_binder:save(packet)
 	printf("actor_binder:save(): self.object:name()='%s'", self.object:name())
 	object_binder.save(self, packet)
 
-	packet:w_u32( 12345 )
-	printf( "mark=12345" )
-
 	xr_logic.pstor_save_all(self.object, packet)
 	self.weather_manager:save(packet)
 
@@ -324,10 +321,8 @@ function actor_binder:load(reader)
 	object_binder.load(self, reader)
 	printf("actor_binder:object_binder.load(): self.object:name()='%s'", self.object:name())
 
-	local t = reader:r_u32()
-
-	if t ~= 12345 then
-		printf( "actor_binder:load() wrong mark=%d  expected=12345", t )
+	if reader:r_eof() then
+		abort("SAVE FILE IS CORRUPT")
 	end
 
 	xr_logic.pstor_load_all(self.object, reader)

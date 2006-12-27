@@ -157,6 +157,7 @@ function gulag:prepare_jobs()
 
 		job.path_name        = path_name
 		job.game_vertex_id   = ptrl:game_vertex_id( 0 )
+		job.level_id		 = game_graph():vertex(job.game_vertex_id):level_id()
 		job.position         = ptrl:point( 0 )
 
 		job_loaded           = self.JobLoaded[i] or empty_table
@@ -476,7 +477,8 @@ function gulag:can_obj_begin_job( obj_id, obj )
 		if obj == true then
 			return self.npc_info[obj_id].se_obj.m_game_vertex_id == job.game_vertex_id
 		else
-			return obj:position():distance_to( job.position ) < ( job.position_threshold or job_position_threshold )
+			return job.level_id == alife():level_id() and
+					obj:position():distance_to( job.position ) < ( job.position_threshold or job_position_threshold )
 		end
 	else
 		return false

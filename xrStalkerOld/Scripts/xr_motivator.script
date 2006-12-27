@@ -321,6 +321,11 @@ function motivator_binder:load(reader)
 	object_binder.load(self, reader)
 	printf("motivator_binder:object_binder.load(): self.object:name()='%s'", self.object:name())
 
+	if reader:r_eof() then
+		abort("SAVE FILE IS CORRUPT")
+	end
+
+
 	self.treasure_processed = reader:r_bool()
 
 	xr_logic.load_obj(self.object, reader)
