@@ -711,7 +711,9 @@ CUIDragDropListEx* CUIBuyWnd::GetSlotList(u32 slot_idx)
 		default:
 			NODEFAULT;
 	};
+#ifdef DEBUG
 	return NULL;
+#endif // DEBUG
 }
 
 EListType CUIBuyWnd::GetType(CUIDragDropListEx* l)
@@ -732,7 +734,9 @@ EListType CUIBuyWnd::GetType(CUIDragDropListEx* l)
 		return iwBag;
 
 	NODEFAULT;
+#ifdef DEBUG
 	return iwSlot;
+#endif // DEBUG
 }
 
 
