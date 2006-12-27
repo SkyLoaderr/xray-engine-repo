@@ -474,7 +474,7 @@
 		<name>pri_followers_bomber_name</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>pri_followers_common_bio</bio>
+		<bio>sim_stalker_master_bio</bio>
 
 		<class>pri_followers_bomber</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -508,7 +508,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>pri_followers_common_bio</bio>
+		<bio>sim_stalker_master_bio</bio>
 
 		<class>pri_followers_leader</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -542,7 +542,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>pri_followers_common_bio</bio>
+		<bio>sim_stalker_master_bio</bio>
 
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -576,7 +576,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>pri_followers_common_bio</bio>
+		<bio>sim_stalker_master_bio</bio>
 
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -609,7 +609,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>pri_followers_common_bio</bio>
+		<bio>sim_stalker_master_bio</bio>
 
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -642,7 +642,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>pri_followers_common_bio</bio>
+		<bio>sim_stalker_master_bio</bio>
 
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
@@ -675,7 +675,7 @@
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="20" y="8"></icon>
 		<map_icon x="1" y="0"></map_icon>
-		<bio>pri_followers_common_bio</bio>
+		<bio>sim_stalker_master_bio</bio>
 
 		<class>pri_followers</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
