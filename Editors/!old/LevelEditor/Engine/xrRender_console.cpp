@@ -217,7 +217,7 @@ public:
 			case 3:		strcpy(_cfg, "rspec_high");		break;
 			case 4:		strcpy(_cfg, "rspec_extreme");	break;
 		}
-		FS.update_path			(_cfg,"$game_data$",_cfg);
+		FS.update_path			(_cfg,"$game_config$",_cfg);
 		strconcat				(cmd,"cfg_load", " ", _cfg);
 		Console->Execute		(cmd);
 	}

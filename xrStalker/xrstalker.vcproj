@@ -120,6 +120,21 @@
 				RelativePath=".\Config\game_story_ids.ltx">
 			</File>
 			<File
+				RelativePath=".\Config\rspec_default.ltx">
+			</File>
+			<File
+				RelativePath=".\Config\rspec_high.ltx">
+			</File>
+			<File
+				RelativePath=".\Config\rspec_low.ltx">
+			</File>
+			<File
+				RelativePath=".\Config\rspec_maximum.ltx">
+			</File>
+			<File
+				RelativePath=".\Config\rspec_minimum.ltx">
+			</File>
+			<File
 				RelativePath=".\Config\script.ltx">
 			</File>
 			<File
