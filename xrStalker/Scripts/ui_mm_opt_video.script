@@ -20,6 +20,7 @@ function opt_video:InitControls(x, y, xml, handler)
 	xml:InitStatic					("tab_video:cap_contrast",			self)
 	xml:InitStatic					("tab_video:cap_brightness",		self)
 	
+	xml:InitStatic					("tab_video:cap_fullscreen",		self)
 	xml:InitCheck					("tab_video:check_fullscreen",		self)
 --	handler.ch_r2 = xml:InitCheck	("tab_video:check_render_2",		self)
 --	handler:Register				(handler.ch_r2, "checkbtn_r2")

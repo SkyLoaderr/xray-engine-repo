@@ -432,7 +432,8 @@ outloop:
 			Log("! Command disabled.");
 		}
 	}
-	else Log("! Unknown command: ",first_word);
+	else 
+		Log("! Unknown command: ",first_word);
 	editor[0]=0;
 }
 

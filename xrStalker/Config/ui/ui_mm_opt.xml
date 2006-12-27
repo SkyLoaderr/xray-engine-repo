@@ -12,14 +12,14 @@
 		<cap_options x="45" y="9" width="378" height="33">
 			<text font="graffiti22" r="215" g="195" b="170">ui_mm_options</text>
 		</cap_options>
-		<btn_accept x="219" y="426" width="157" height="48">
+		<btn_accept x="219" y="429" width="157" height="48">
 			<text font="normal" align="c">ui_mm_apply</text>
 			<texture>ui_button_main02</texture>
 			<text_color>
 				<e r="227" g="199" b="178"/> <t r="180" g="153" b="155"/> <d r="106" g="95" b="91"/> <h r="0" g="0" b="0"/>
 			</text_color>
 		</btn_accept>
-		<btn_cancel x="375" y="426" width="157" height="48">
+		<btn_cancel x="375" y="429" width="157" height="48">
 			<text font="normal" align="c">ui_mm_cancel</text>
 			<texture>ui_button_main03</texture>
 			<text_color>
@@ -85,9 +85,11 @@
 			<options_item entry="r2" group="mm_opt_video"/>
 		</track_r2>
 
-		<check_fullscreen x="20" y="180" width="143" height="21">
-			<options_item entry="rs_fullscreen" group="mm_opt_video"/>	
+		<cap_fullscreen x="20" y="180" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_fullscreen</text>
+		</cap_fullscreen>
+		<check_fullscreen x="194" y="180" width="30" height="21">
+			<options_item entry="rs_fullscreen" group="mm_opt_video"/>	
 		</check_fullscreen>
 		
 		<list_presets x="194" y="20" width="261" height="21">
@@ -116,13 +118,8 @@
 		<track_brightness x="194" y="120" width="261" height="21">
 			<options_item entry="rs_c_brightness" group="mm_opt_video"/>
 		</track_brightness>
-<!--		
-		<btn_default_set x="342" y="290" width="111" height="29">
-			<text align="c" font="letterica16" r="188" g="153" b="123">ui_mm_default</text>	
-			<texture>ui_button_ordinary</texture>			
-		</btn_default_set>
--->
-		<btn_advanced x="342" y="290" width="111" height="29">
+
+		<btn_advanced x="342" y="325" width="111" height="29">
 			<text align="c" font="letterica16" r="188" g="153" b="123">ui_mm_advanced</text>	
 			<texture>ui_button_ordinary</texture>			
 		</btn_advanced>
@@ -135,25 +132,31 @@
 
 		<templ_item width="450" height="30"/>
 		
-		<check_no_vsync x="20" y="0" width="343" height="21">
-			<options_item entry="rs_no_v_sync" group="mm_opt_video_adv"/>
+		<cap_no_vsync x="20" y="0" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_no_vsync</text>
+		</cap_no_vsync>
+		<check_no_vsync x="194" y="0" width="30" height="21">
+			<options_item entry="rs_no_v_sync" group="mm_opt_video_adv"/>
 		</check_no_vsync>
 
-		<check_60hz x="20" y="0" width="343" height="21">
-			<options_item entry="rs_refresh_60hz" group="mm_opt_video_adv"/>
+		<cap_60hz x="20" y="0" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_60_hz</text>
+		</cap_60hz>
+		<check_60hz x="194" y="0" width="30" height="21">
+			<options_item entry="rs_refresh_60hz" group="mm_opt_video_adv"/>
 		</check_60hz>
 
-		<check_npc_torch x="20" y="0" width="243" height="21">
-			<options_item entry="ai_use_torch_dynamic_lights" group="mm_opt_video_adv"/>
+		<cap_npc_torch x="20" y="0" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_npc_torch</text>
+		</cap_npc_torch>
+		<check_npc_torch x="194" y="0" width="243" height="21">
+			<options_item entry="ai_use_torch_dynamic_lights" group="mm_opt_video_adv"/>
 		</check_npc_torch>
 
 		<cap_detail_density x="20" y="0" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_detail_density</text>
 		</cap_detail_density>
-		<track_detail_density x="170" y="0" width="261" height="21" invert="1" step="0.02">
+		<track_detail_density x="194" y="0" width="245" height="21" invert="1" step="0.02">
 			<options_item entry="r__detail_density" group="mm_opt_video_adv"/>
 		</track_detail_density>
 
@@ -161,59 +164,70 @@
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_texture_quality</text>
 		</cap_texture_lod>
 		
-		<track_texture_lod x="170" y="0" width="261" height="21" invert="1" step="1" is_integer="1">
+		<track_texture_lod x="194" y="0" width="245" height="21" invert="1" step="1" is_integer="1">
 			<options_item entry="texture_lod" group="mm_opt_video_adv"/>
 		</track_texture_lod>
 
 		<cap_geometry_lod x="20" y="0" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_geometry_lod</text>
 		</cap_geometry_lod>
-		<track_geometry_lod x="170" y="0" width="261" height="21" step="0.1">
+		<track_geometry_lod x="194" y="0" width="245" height="21" step="0.1">
 			<options_item entry="r__geometry_lod" group="mm_opt_video_adv"/>
 		</track_geometry_lod>
 
-		<check_r2_sun x="20" y="0" width="243" height="21">
-			<options_item entry="r2_sun" group="mm_opt_video"/>
+		<cap_r2_sun x="20" y="0" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_r2_sun</text>
+		</cap_r2_sun>
+		<check_r2_sun x="194" y="0" width="30" height="21">
+			<options_item entry="r2_sun" group="mm_opt_video"/>
 		</check_r2_sun>
 		
-		<check_r2_sun_details x="20" y="0" width="243" height="21">
-			<options_item entry="r2_sun_details" group="mm_opt_video"/>
+		<cap_r2_sun_details x="20" y="0" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_r2_sun_details</text>
+		</cap_r2_sun_details>
+		<check_r2_sun_details x="194" y="0" width="30" height="21">
+			<options_item entry="r2_sun_details" group="mm_opt_video"/>
 		</check_r2_sun_details>
 
 		<cap_r2_sun_static x="20" y="0" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_sun_quality</text>
 		</cap_r2_sun_static>
-		<track_r2_sun_static x="170" y="0" width="261" height="21" invert="1" step="1" is_integer="1">
+		<track_r2_sun_static x="194" y="0" width="245" height="21" invert="1" step="1" is_integer="1">
 			<options_item entry="r2_sun_static" group="mm_opt_video_adv"/>
 		</track_r2_sun_static>
 
-		<check_r2_aa x="20" y="0" width="243" height="21">
-			<options_item entry="r2_sun_details" group="mm_opt_video"/>
+		<cap_r2_aa x="20" y="0" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_r2_aa</text>
+		</cap_r2_aa>
+		<check_r2_aa x="194" y="0" width="30" height="21">
+			<options_item entry="r2_sun_details" group="mm_opt_video"/>
 		</check_r2_aa>
 
 		<cap_vis_dist x="20" y="0" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_vis_distance</text>
 		</cap_vis_dist>
-		<track_vis_dist x="170" y="0" width="261" height="21" step="0.1">
+		<track_vis_dist x="194" y="0" width="245" height="21" step="0.1">
 			<options_item entry="rs_vis_distance" group="mm_opt_video_adv"/>
 		</track_vis_dist>
 
 		<cap_aniso x="20" y="0" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_anisotropic</text>
 		</cap_aniso>
-		<track_aniso x="170" y="0" width="261" height="21" step="1" is_integer="1">
+		<track_aniso x="194" y="0" width="245" height="21" step="1" is_integer="1">
 			<options_item entry="r__tf_aniso" group="mm_opt_video_adv"/>
 		</track_aniso>
 		
 		<cap_ssample x="20" y="0" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_supersample</text>
 		</cap_ssample>
-		<track_ssample x="170" y="0" width="261" height="21" step="1" is_integer="1">
+		<track_ssample x="194" y="0" width="245" height="21" step="1" is_integer="1">
 			<options_item entry="r__supersample" group="mm_opt_video_adv"/>
 		</track_ssample>
+
+		<btn_to_simply x="342" y="325" width="111" height="29">
+			<text align="c" font="letterica16" r="188" g="153" b="123">ui_mm_simply</text>	
+			<texture>ui_button_ordinary</texture>			
+		</btn_to_simply>
 	</video_adv>
 
 	<tab_sound>
@@ -232,17 +246,17 @@
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_eax</text>
 		</check_eax>
 		
-		<track_mastervolume x="194" y="20" width="261" height="21">
+		<track_mastervolume x="194" y="20" width="245" height="21">
 			<options_item entry="snd_volume_eff" group="mm_opt_sound"/>
 		</track_mastervolume>
-		<track_musicvolume x="194" y="45" width="261" height="21">
+		<track_musicvolume x="194" y="45" width="245" height="21">
 			<options_item entry="snd_volume_music" group="mm_opt_sound"/>
 		</track_musicvolume>		
-		<list_soundquality x="194" y="70" width="261" height="21">
+		<list_soundquality x="194" y="70" width="245" height="21">
 			<options_item entry="snd_freq" group="mm_opt_sound"/>
 		</list_soundquality>
 		
-		<btn_default_set x="342" y="290" width="111" height="29">
+		<btn_default_set x="342" y="325" width="111" height="29">
 			<text align="c" font="letterica16" r="188" g="153" b="123">ui_mm_default</text>	
 			<texture>ui_button_ordinary</texture>			
 		</btn_default_set>

@@ -16,11 +16,15 @@ function opt_video_adv:InitControls(x, y, xml, handler)
 	self.scroll_v	= xml:InitScrollView		("video_adv:scroll_v", self)
 	
 	local _st		= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	xml:InitStatic								("video_adv:cap_no_vsync",				_st)
 	xml:InitCheck								("video_adv:check_no_vsync",			_st)
+	
 	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	xml:InitStatic								("video_adv:cap_60hz",					_st)
 	xml:InitCheck								("video_adv:check_60hz",				_st)
 
 	_st											= xml:InitStatic						("video_adv:templ_item",				self.scroll_v)
+	xml:InitStatic								("video_adv:cap_npc_torch",				_st)
 	xml:InitCheck								("video_adv:check_npc_torch",			_st)
 
 	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
@@ -37,11 +41,15 @@ function opt_video_adv:InitControls(x, y, xml, handler)
 	handler:Register		(handler.track_r2_sun_static, "track_sun_static")
 	
 	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	xml:InitStatic								("video_adv:cap_r2_sun",				_st)
 	handler.ch_r2_sun = xml:InitCheck			("video_adv:check_r2_sun",				_st)
+	
 	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	xml:InitStatic								("video_adv:cap_r2_sun_details",		_st)
 	handler.ch_r2_sun_det = xml:InitCheck		("video_adv:check_r2_sun_details",		_st)
 
 	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
+	xml:InitStatic								("video_adv:cap_r2_aa",					_st)
 	xml:InitCheck								("video_adv:check_r2_aa",				_st)
 	
 	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
@@ -59,4 +67,7 @@ function opt_video_adv:InitControls(x, y, xml, handler)
 	_st				= xml:InitStatic			("video_adv:templ_item",				self.scroll_v)
 	xml:InitStatic								("video_adv:cap_ssample",				_st)
 	xml:InitTrackBar							("video_adv:track_ssample",				_st)
+
+	btn		= xml:Init3tButton					("video_adv:btn_to_simply",	self)	
+	handler:Register							(btn, "btn_simply_graphic")	
 end
