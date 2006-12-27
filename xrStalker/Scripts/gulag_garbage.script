@@ -171,10 +171,10 @@ function load_job(sj, gname, type, squad, groups)
 			idle = 0,
 			prior = 10, state = {0},
 			online = true,
-			in_rest = "", out_rest = "",
-			predicate = function(obj_info) 
-        		return obj_info.profile_name == "gar_bandit_leader"			           
-			end
+			in_rest = "", out_rest = ""
+--'			,predicate = function(obj_info) 
+--'        		return obj_info.profile_name == "gar_bandit_leader"			           
+--'			end
 		}
 		table.insert(sj, t)
 		t = { section = "logic@gar_bandit_agr_wait7",
