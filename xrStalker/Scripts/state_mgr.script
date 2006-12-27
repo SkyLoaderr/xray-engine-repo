@@ -490,6 +490,8 @@ function bind_manager(object)
   	action = manager:action(stalker_ids.action_danger_planner)
   	action:add_precondition(world_property(properties["state_mgr_idle_combat"],true))
 
+	action = manager:action(stalker_ids.action_gather_items)
+	action:add_precondition(world_property(properties["state_mgr_idle_alife"],true))
 	
 	return state_manager
 end
