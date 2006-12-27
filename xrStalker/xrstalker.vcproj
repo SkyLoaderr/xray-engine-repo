@@ -387,6 +387,9 @@
 						RelativePath=".\Config\gameplay\game_tasks.xml">
 					</File>
 					<File
+						RelativePath=".\config\gameplay\game_tasks_by_vendor.xml">
+					</File>
+					<File
 						RelativePath=".\config\gameplay\tasks_aes.xml">
 					</File>
 					<File
