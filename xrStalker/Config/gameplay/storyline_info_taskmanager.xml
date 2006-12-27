@@ -182,7 +182,7 @@
 
 ;------------Kill Stalker---------
 ;-------Trader--------
-<article id=">tm_kill_stalker_1_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
+<article id="tm_kill_stalker_1_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
         <text>tm_kill_stalker_1_descr</text>
 </article>
 <article id="tm_kill_stalker_2_descr" name="kill_stalker" group="kill_stalker/1" article_type="task">
