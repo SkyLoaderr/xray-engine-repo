@@ -265,6 +265,7 @@ reward_item = ammo_12x76_zhekan, 3
 [tm_eliminate_camp_5]
 type = eliminate_lager
 community = actor
+init_condition = {+agroprom_military_case_have}
 text = tm_eliminate_camp_5_text
 description = tm_eliminate_camp_5_descr
 parent = trader
@@ -327,6 +328,7 @@ reward_rank = 7
 [tm_find_artefact_4]
 type = artefact
 community = actor
+condlist = {+agroprom_military_case_have}
 text = tm_find_artefact_4_text
 description = tm_find_artefact_4_descr
 parent = trader
@@ -339,6 +341,7 @@ reward_item = medkit_scientic
 [tm_kill_stalker_1]
 type = kill_stalker
 community = actor
+;--init_condition = {=actor_on_level(L02_Garbage)}
 text = tm_kill_stalker_1_text
 description = tm_kill_stalker_1_descr
 parent = trader
@@ -352,6 +355,7 @@ reward_rank = 6
 [tm_kill_stalker_2]
 type = kill_stalker
 community = actor
+condlist = {+agroprom_military_case_have}
 text = tm_kill_stalker_2_text
 description = tm_kill_stalker_2_descr
 parent = trader
