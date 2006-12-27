@@ -237,7 +237,7 @@ void CUITrackBar::OnMessage(const char* message)
 bool CUITrackBar::GetCheck()
 {
 	VERIFY(!m_b_is_float);
-	return m_i_val;
+	return !!m_i_val;
 }
 
 void CUITrackBar::SetCheck(bool b)
