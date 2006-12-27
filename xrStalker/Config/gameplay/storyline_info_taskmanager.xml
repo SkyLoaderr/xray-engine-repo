@@ -340,6 +340,13 @@
 <article id="barmen_defend_camp_2_descr" name="defend_lager" group="defend_lager/1" article_type="task">
         <text>barmen_defend_camp_2_descr</text>
 </article>
+;------Freedom---------
+<article id="freedom_defend_lager_1_descr" name="defend_lager" group="defend_lager/1" article_type="task">
+        <text>freedom_defend_lager_1_descr</text>
+</article>
+<article id="freedom_defend_lager_2_descr" name="defend_lager" group="defend_lager/1" article_type="task">
+        <text>freedom_defend_lager_2_descr</text>
+</article>
 
 
 <!-- TREASURES -->
