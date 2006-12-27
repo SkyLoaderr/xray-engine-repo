@@ -570,9 +570,10 @@ void CExplosive::ExplodeParams(const Fvector& pos,
 								const Fvector& dir)
 {
 	//m_bReadyToExplode = true;
-	m_explosion_flags.set(flReadyToExplode,TRUE);
-	m_vExplodePos = pos;
-	m_vExplodeDir = dir;
+	m_explosion_flags.set	(flReadyToExplode,TRUE);
+	m_vExplodePos			= pos;
+	m_vExplodePos.y			+= 0.1f;// fake
+	m_vExplodeDir			= dir;
 }
 
 void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
@@ -587,8 +588,8 @@ void CExplosive::GenExplodeEvent (const Fvector& pos, const Fvector& normal)
 	NET_Packet		P;
 	cast_game_object()->u_EventGen		(P,GE_GRENADE_EXPLODE,cast_game_object()->ID());	
 	P.w_u16			(Initiator());
-	P.w_vec3		(const_cast<Fvector&>(pos));
-	P.w_vec3		(const_cast<Fvector&>(normal));
+	P.w_vec3		(pos);
+	P.w_vec3		(normal);
 	cast_game_object()->u_EventSend		(P);
 
 	//m_bExplodeEventSent = true;
@@ -605,11 +606,11 @@ void CExplosive::FindNormal(Fvector& normal)
 
 	BOOL result = Level().ObjectSpace.RayPick(pos, dir, cast_game_object()->Radius(), 
 											 collide::rqtBoth, RQ, NULL);
-	if(!result || RQ.O)
+	if(!result || RQ.O){
 		normal.set(0,1,0);
 	//если лежим на статике
 	//найти треугольник и вычислить нормаль по нему
-	else
+	}else
 	{
 		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
 		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris() + RQ.element;
