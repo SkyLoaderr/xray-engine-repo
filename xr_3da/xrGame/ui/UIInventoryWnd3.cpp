@@ -62,7 +62,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
     
 
 
-	if(CurrentIItem()->GetSlot()!=NO_ACTIVE_SLOT && !GetInventory()->m_slots[CurrentIItem()->GetSlot()].m_bPersistent && m_pInv->CanPutInSlot(CurrentIItem()))
+	if(!pOutfit && CurrentIItem()->GetSlot()!=NO_ACTIVE_SLOT && !m_pInv->m_slots[CurrentIItem()->GetSlot()].m_bPersistent && m_pInv->CanPutInSlot(CurrentIItem()))
 	{
 		UIPropertiesBox.AddItem("st_move_to_slot",  NULL, INVENTORY_TO_SLOT_ACTION);
 	}
@@ -70,7 +70,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	{
 		UIPropertiesBox.AddItem("st_move_on_belt",  NULL, INVENTORY_TO_BELT_ACTION);
 	}
-	if(CurrentIItem()->Ruck() && m_pInv->CanPutInRuck(CurrentIItem()))
+	if(CurrentIItem()->Ruck() && m_pInv->CanPutInRuck(CurrentIItem()) && !m_pInv->m_slots[CurrentIItem()->GetSlot()].m_bPersistent)
 	{
 		if(!pOutfit)
 			UIPropertiesBox.AddItem("st_move_to_bag",  NULL, INVENTORY_TO_BAG_ACTION);

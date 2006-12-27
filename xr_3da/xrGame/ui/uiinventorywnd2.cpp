@@ -88,6 +88,8 @@ void CUIInventoryWnd::InitInventory()
 		CUICellItem* itm			= create_cell_item(*it);
 		m_pUIBeltList->SetItem		(itm);
 	}
+
+
 	
 	ruck_list		= m_pInv->m_ruck;
 	std::sort		(ruck_list.begin(),ruck_list.end(),InventoryUtilities::GreaterRoomInRuck);
@@ -97,6 +99,13 @@ void CUIInventoryWnd::InitInventory()
 	{
 		CUICellItem* itm			= create_cell_item(*it);
 		m_pUIBagList->SetItem		(itm);
+	}
+	//fake
+	_itm								= m_pInv->m_slots[GRENADE_SLOT].m_pIItem;
+	if(_itm)
+	{
+		CUICellItem* itm				= create_cell_item(_itm);
+		m_pUIBagList->SetItem			(itm);
 	}
 
 	InventoryUtilities::UpdateWeight					(UIBagWnd, true);
@@ -145,6 +154,8 @@ bool CUIInventoryWnd::ToSlot(CUICellItem* itm, bool force_place)
 
 	if(GetInventory()->CanPutInSlot(iitem)){
 		CUIDragDropListEx* new_owner		= GetSlotList(_slot);
+		
+		if(_slot==GRENADE_SLOT && !new_owner )return true; //fake, sorry (((
 
 		bool result							= GetInventory()->Slot(iitem);
 		VERIFY								(result);
