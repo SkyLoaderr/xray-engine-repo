@@ -60,7 +60,7 @@ IPureServer::IPureServer	(CTimer* timer)
 	stats.dwSendTime		= TimeGlobal(device_timer);
 	SV_Client = NULL;
 
-	pSvNetLog = xr_new<INetLog>("logs\\net_sv_log.log", TimeGlobal(device_timer));
+	pSvNetLog = NULL;//xr_new<INetLog>("logs\\net_sv_log.log", TimeGlobal(device_timer));
 }
 
 IPureServer::~IPureServer	()
@@ -394,7 +394,10 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 				ClientID ID; ID.set(m_sender);
 				//---------------------------------------
 				if (psNET_Flags.test(NETFLAG_LOG_SV_PACKETS)) 
-					pSvNetLog->LogPacket(TimeGlobal(device_timer), &P, TRUE);
+				{
+					if (!pSvNetLog) pSvNetLog = xr_new<INetLog>("logs\\net_sv_log.log", TimeGlobal(device_timer));
+					if (pSvNetLog) pSvNetLog->LogPacket(TimeGlobal(device_timer), &P, TRUE);
+				}
 				//---------------------------------------
 				u32	result		= OnMessage(P,ID);
 				csMessage.Leave	();
@@ -423,8 +426,12 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 
 void	IPureServer::SendTo_LL(ClientID ID/*DPNID ID*/, void* data, u32 size, u32 dwFlags, u32 dwTimeout)
 {
-	if (psNET_Flags.test(NETFLAG_LOG_SV_PACKETS))
-		pSvNetLog->LogData(TimeGlobal(device_timer), data, size);
+//	if (psNET_Flags.test(NETFLAG_LOG_SV_PACKETS)) pSvNetLog->LogData(TimeGlobal(device_timer), data, size);
+	if (psNET_Flags.test(NETFLAG_LOG_SV_PACKETS)) 
+	{
+		if (!pSvNetLog) pSvNetLog = xr_new<INetLog>("logs\\net_sv_log.log", TimeGlobal(device_timer));
+		if (pSvNetLog) pSvNetLog->LogData(TimeGlobal(device_timer), data, size);
+	}
 	// send it
 	DPN_BUFFER_DESC		desc;
 	desc.dwBufferSize	= size;

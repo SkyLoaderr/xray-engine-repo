@@ -184,7 +184,7 @@ IPureClient::IPureClient	(CTimer* timer): net_Statistic(timer)
 	net_TimeDelta			= 0;
 	net_TimeDelta_Calculated = 0;
 
-	pClNetLog = xr_new<INetLog>("logs\\net_cl_log.log", timeServer());
+	pClNetLog = NULL;//xr_new<INetLog>("logs\\net_cl_log.log", timeServer());
 }
 
 IPureClient::~IPureClient	()
@@ -604,7 +604,11 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 			} else if (net_Connected)	{
 				// One of the messages - decompress it
 				//-------------------------------------------------------------------------------------------
-				if (psNET_Flags.test(NETFLAG_LOG_CL_PACKETS)) pClNetLog->LogData(timeServer(), m_data, m_size, TRUE);
+				if (psNET_Flags.test(NETFLAG_LOG_CL_PACKETS)) 
+				{
+					if (!pClNetLog) pClNetLog = xr_new<INetLog>("logs\\net_cl_log.log", timeServer());
+					if (pClNetLog) pClNetLog->LogData(timeServer(), m_data, m_size, TRUE);
+				}
 				//-------------------------------------------------------------------------------------------
 				OnMessage				(m_data,m_size);
 			}
@@ -704,7 +708,12 @@ void	IPureClient::Send(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
 	if (net_Disconnected)	return;
 
-	if (psNET_Flags.test(NETFLAG_LOG_CL_PACKETS)) pClNetLog->LogPacket(timeServer(), &P);
+//	if (psNET_Flags.test(NETFLAG_LOG_CL_PACKETS)) pClNetLog->LogPacket(timeServer(), &P);
+	if (psNET_Flags.test(NETFLAG_LOG_CL_PACKETS)) 
+	{
+		if (!pClNetLog) pClNetLog = xr_new<INetLog>("logs\\net_cl_log.log", timeServer());
+		if (pClNetLog) pClNetLog->LogPacket(timeServer(), &P);
+	}
 	// first - compress message and setup buffer
 	NET_Buffer	Compressed;
 	Compressed.count	= net_Compressor.Compress	(Compressed.data,P.B.data,P.B.count);
