@@ -117,7 +117,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, false, gulag_name)
 	st.team      = utils.cfg_get_string(ini, section, "team",      npc, false, gulag_name)
-	st.sound_idle= utils.cfg_get_string(ini, section, "sound_idle",npc, false, gulag_name)
+	st.sound_idle= utils.cfg_get_string(ini, section, "sound_idle",npc, false, "")
 
 	st.suggested_state = {}
 	st.suggested_state.standing = utils.cfg_get_string(ini, section, "def_state_standing", npc, false, "")
