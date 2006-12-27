@@ -208,7 +208,7 @@ function CKampManager:__init(path)
 						joke				= { directed = "play_joke", undirected = ""},
 						post_joke			= { directed = "", undirected = "reac_joke"}}
 	-- “аблица таймаутов по состо€нию. ≈сли состо€ние установилось, то некоторое врем€ оно не может быт изменено.						
-	self.timeout	 = {idle				= { min = 60000 },
+	self.timeout	 = {idle				= { min = 30000 },
 						pre_harmonica		= { min = 3000 },
 						harmonica			= { min = 5000, soundstart = true },
 						post_harmonica		= { min = 3000 },
@@ -227,13 +227,13 @@ function CKampManager:__init(path)
 						 story = false, post_story = false,
 						 pre_joke = true, joke = true, post_joke = true}
 	-- “аблица допустимых переходов между состо€ни€ми с веро€тност€ми.
-	self.trans_kamp = { idle			= { idle = 40, pre_harmonica = 15, pre_guitar = 15, story = 15, pre_joke = 15 }, 
+	self.trans_kamp = { idle			= { idle = 0, pre_harmonica = 30, pre_guitar = 30, story = 0, pre_joke = 40 }, 
 						pre_harmonica	= { harmonica = 100 }, 
 						harmonica		= { post_harmonica = 100 }, 
-						post_harmonica	= { idle = 60, harmonica = 40 },
+						post_harmonica	= { idle = 70, harmonica = 30 },
 						pre_guitar		= { guitar = 100 }, 
 						guitar			= { post_guitar = 100 }, 
-						post_guitar		= { idle = 60, guitar = 40 },
+						post_guitar		= { idle = 70, guitar = 30 },
 						story			= { post_story = 100 }, 
 						post_story		= { idle = 100 },
 						pre_joke		= { joke = 100 }, 
