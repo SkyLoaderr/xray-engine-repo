@@ -160,8 +160,14 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 	if(!CanMove()) 
 	{
-		if(mstate_wf&mcAnyMove) character_physics_support()->movement()->EnableCharacter();
-		return;
+		if(mstate_wf&mcAnyMove) 
+		{
+			StopAnyMove();
+			mstate_wf &= ~mcAnyMove;
+			mstate_wf &= ~mcJump;
+		}
+			//character_physics_support()->movement()->EnableCharacter();
+		//return;
 	}
 
 	// update player accel
