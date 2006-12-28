@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="st_helmet_countdown">
+		<text>Отключение защиты</text>
+	</string>
+	<string id="st_psy_danger">
+		<text>Критический уровень пси излучения. Немедленно покиньте опасную зону.</text>
+	</string>
+
+
 	<string id="car_character_use">
 		<text>Открыть дверь ($$ACTION_USE$$)</text>
 	</string>

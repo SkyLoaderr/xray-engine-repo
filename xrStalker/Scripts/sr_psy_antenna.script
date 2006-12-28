@@ -48,8 +48,21 @@ function PsyAntenna:destroy				()
 end
 function PsyAntenna:construct			()
 end
-function PsyAntenna:update_psy_hit		(dt)
-	if time_global()-self.hit_time > 1000 then --and self.power_factor.a>0.01 then
+function PsyAntenna:update_psy_hit(dt)
+	local hud = get_hud()
+	local custom_static = hud:GetCustomStatic("cs_psy_danger")
+	if self.hit_intensity > 0.5 then
+		if custom_static == nil then
+			hud:AddCustomStatic("cs_psy_danger", true)
+			hud:GetCustomStatic("cs_psy_danger"):wnd():SetTextST("st_psy_danger")
+		end
+	else
+		if custom_static ~= nil then
+			hud:RemoveCustomStatic("cs_psy_danger")
+		end
+	end
+
+	if time_global() - self.hit_time > 1000 then
 		self.hit_time					= time_global()
 
 		local power						= self.hit_amplitude*self.hit_intensity

@@ -1,4 +1,3 @@
-
 news = {
 	tips_esc_trader_about_pda		= sound_object([[characters_voice\scenario\trader\trader_tutorial_contacts_1]]),
 	tips_esc_trader_about_anomalies	= sound_object([[characters_voice\scenario\trader\trader_tutorial_anomalies_1]]),
