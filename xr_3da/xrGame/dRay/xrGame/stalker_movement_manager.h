@@ -41,7 +41,7 @@ public:
 	u32									m_last_turn_index;
 	float								m_danger_head_speed;
 
-protected:
+private:
 	IC		void	setup_head_speed				();
 	IC		void	add_velocity					(int mask, float linear, float compute_angular, float angular);
 	IC		void	add_velocity					(int mask, float linear, float compute_angular);
@@ -51,6 +51,7 @@ protected:
 			bool	script_control					();
 			void	setup_velocities				();
 			void	parse_velocity_mask				();
+			void	check_for_bad_path				();
 
 public:
 					CStalkerMovementManager			(CAI_Stalker *object);

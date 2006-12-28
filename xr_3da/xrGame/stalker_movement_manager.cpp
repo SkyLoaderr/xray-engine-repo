@@ -33,6 +33,9 @@ using namespace StalkerMovement;
 
 extern bool show_restrictions(CRestrictedObject *object);
 
+const float BAD_PATH_ANGLE			= PI_DIV_2;
+const float BAD_PATH_DISTANCE_CHECK	= 2.f;
+
 IC	void CStalkerMovementManager::setup_head_speed		()
 {
 	if (mental_state() == eMentalStateFree) {
@@ -504,6 +507,8 @@ void CStalkerMovementManager::update(u32 time_delta)
 		update_path				();
 
 	parse_velocity_mask			();
+
+	check_for_bad_path			();
 }
 
 void CStalkerMovementManager::on_travel_point_change	(const u32 &previous_travel_point_index)
@@ -640,4 +645,51 @@ void CStalkerMovementManager::update_object_on_the_way	(const CGameObject *objec
 void CStalkerMovementManager::force_update	(const bool &force_update)
 {
 	m_force_update						= force_update;
+}
+
+void CStalkerMovementManager::check_for_bad_path	()
+{
+	if (m_current.m_movement_type != eMovementTypeRun)
+		return;
+
+	if (m_current.m_mental_state != eMentalStateDanger)
+		return;
+
+	if (detail().completed(object().Position(),!detail().state_patrol_path()))
+		return;
+
+	typedef xr_vector<STravelPathPoint>	PATH;
+	const PATH							&path = detail().path();
+
+	u32									point_count = path.size();
+	u32									point_index = detail().curr_travel_point_index();
+	if (point_index + 2 >= point_count)
+		return;
+
+	float								distance = path[point_index + 1].position.distance_to(object().Position());
+	Fvector								current_direction = Fvector().sub(path[point_index + 1].position,path[point_index].position);
+	Fvector								next_direction;
+
+	PATH::const_iterator				E = path.end();
+	PATH::const_iterator				I = path.begin() + point_index + 1;
+	VERIFY								(I != E);
+	PATH::const_iterator				J = I + 1;
+	VERIFY								(J != E);
+	for ( ; J != E; ++I, ++J) {
+		next_direction					= Fvector().sub((*J).position,(*I).position);
+		distance						+= next_direction.magnitude();
+		next_direction.normalize		();
+		float							cos_angle = current_direction.dotproduct(next_direction);
+		float							angle = acosf(cos_angle);
+		if (angle > BAD_PATH_ANGLE) {
+#ifdef DEBUG
+			Msg							("bad path check changed movement type from RUN to WALK");
+#endif // DEBUG
+			m_current.m_movement_type	= eMovementTypeWalk;
+			return;
+		}
+
+		if (distance >= BAD_PATH_DISTANCE_CHECK)
+			return;
+	}
 }

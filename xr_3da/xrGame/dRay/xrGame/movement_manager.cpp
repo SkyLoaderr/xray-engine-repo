@@ -223,8 +223,10 @@ void CMovementManager::update_path				()
 		default :				NODEFAULT;
 	}
 
+#ifdef USE_FREE_IN_RESTRICTIONS
 	if (restrictions().accessible(object().Position()))
 		verify_detail_path		();
+#endif // USE_FREE_IN_RESTRICTIONS
 
 	m_build_at_once				= false;
 
@@ -301,6 +303,7 @@ bool CMovementManager::distance_to_destination_greater	(const float &distance_to
 	return					(false);
 }
 
+#ifdef USE_FREE_IN_RESTRICTIONS
 void CMovementManager::verify_detail_path		()
 {
 	if (detail().path().empty() || !detail().actual() || detail().completed(detail().dest_position()))
@@ -315,11 +318,13 @@ void CMovementManager::verify_detail_path		()
 			m_path_actuality	= false;
 			return;
 		}
+
 		distance	+= detail().path()[i].position.distance_to(detail().path()[i-1].position);
 		if (distance >= verify_distance)
 			break;
 	}
 }
+#endif // USE_FREE_IN_RESTRICTIONS
 
 void CMovementManager::on_restrictions_change	()
 {

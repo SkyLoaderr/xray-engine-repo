@@ -181,7 +181,9 @@ private:
 			void	process_game_path		();
 			void	process_level_path		();
 			void	process_patrol_path		();
+#ifdef USE_FREE_IN_RESTRICTIONS
 			void	verify_detail_path		();
+#endif // USE_FREE_IN_RESTRICTIONS
 			void	apply_collision_hit		(CPHMovementControl *movement_control);
 
 protected:
