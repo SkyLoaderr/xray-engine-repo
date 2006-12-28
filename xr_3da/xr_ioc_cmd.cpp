@@ -462,7 +462,7 @@ class CCC_r2 : public CCC_Token
 	typedef CCC_Token inherited;
 	u32				_value;
 public:
-	CCC_r2(LPCSTR N) :inherited(N, &_value, vid_quality_token){_value=1;};
+	CCC_r2(LPCSTR N) :inherited(N, &_value, vid_quality_token){_value=0;};
 	
 	virtual void	Execute	(LPCSTR args)
 	{
