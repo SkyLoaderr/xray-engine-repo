@@ -123,13 +123,13 @@
 				RelativePath=".\Config\rspec_default.ltx">
 			</File>
 			<File
+				RelativePath=".\Config\rspec_extreme.ltx">
+			</File>
+			<File
 				RelativePath=".\Config\rspec_high.ltx">
 			</File>
 			<File
 				RelativePath=".\Config\rspec_low.ltx">
-			</File>
-			<File
-				RelativePath=".\Config\rspec_maximum.ltx">
 			</File>
 			<File
 				RelativePath=".\Config\rspec_minimum.ltx">

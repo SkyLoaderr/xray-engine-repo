@@ -98,9 +98,10 @@ void CUIComboBox::OnListItemSelect()
 	m_itoken_id				= (int)(__int64)itm->GetData();
 	ShowList				(false);
 
-	if(IsChanged()){
-		GetMessageTarget()->SendMessage(this, LIST_ITEM_SELECT, NULL);
+	if(IsChanged())
+	{
 		SaveValue		();
+		GetMessageTarget()->SendMessage(this, LIST_ITEM_SELECT, NULL);
 	}
 }
 

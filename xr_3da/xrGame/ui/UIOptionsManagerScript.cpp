@@ -11,6 +11,10 @@ void CUIOptionsManagerScript::SetCurrentValues(const char* group){
 	CUIOptionsItem::GetOptionsManager()->SetCurrentValues(group);
 }
 
+void CUIOptionsManagerScript::SaveBackupValues(const char* group){
+	CUIOptionsItem::GetOptionsManager()->SeveBackupValues(group);
+}
+
 void CUIOptionsManagerScript::SaveValues(const char* group){
 	CUIOptionsItem::GetOptionsManager()->SaveValues(group);
 }
@@ -38,6 +42,7 @@ void CUIOptionsManagerScript::script_register(lua_State *L)
 		[
 			class_<CUIOptionsManagerScript>("COptionsManager")
 			.def(							constructor<>())
+			.def("SaveBackupValues",	CUIOptionsManagerScript::SaveBackupValues )
 			.def("SetCurrentValues",	CUIOptionsManagerScript::SetCurrentValues )
 			.def("SaveValues",			CUIOptionsManagerScript::SaveValues )
 			.def("IsGroupChanged",		CUIOptionsManagerScript::IsGroupChanged )

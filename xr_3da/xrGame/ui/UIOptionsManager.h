@@ -11,6 +11,7 @@ class CUIOptionsManager{
 public:	
 	CUIOptionsManager();
 
+	void SeveBackupValues(const char* group);
 	void SetCurrentValues(const char* group);
 	void SaveValues(const char* group);
 	bool IsGroupChanged(const char* group);

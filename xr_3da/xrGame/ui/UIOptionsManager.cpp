@@ -53,6 +53,17 @@ void CUIOptionsManager::SendMessage2Group(const char* group, const char* message
 		(*it).second[i]->OnMessage(message);
 }
 
+void CUIOptionsManager::SeveBackupValues(const char* group)
+{
+	groups_it it = m_groups.find(group);
+
+	R_ASSERT2(m_groups.end() != it, "invalid group name");
+
+	for (u32 i = 0; i < (*it).second.size(); i++){
+		(*it).second[i]->SeveBackUpValue();
+	}
+}
+
 void CUIOptionsManager::SetCurrentValues(const char* group){
 	groups_it it = m_groups.find(group);
 
@@ -60,7 +71,7 @@ void CUIOptionsManager::SetCurrentValues(const char* group){
 
 	for (u32 i = 0; i < (*it).second.size(); i++){
 		(*it).second[i]->SetCurrentValue();
-		(*it).second[i]->SeveBackUpValue();
+//.		(*it).second[i]->SeveBackUpValue();
 	}
 }
 

@@ -192,6 +192,7 @@ void CUITrackBar::UpdatePosRelativeToMouse()
 	else
 		m_i_val	= iFloor(__fval);
 	
+
 	if(IsChanged())
 		GetMessageTarget()->SendMessage(this, BUTTON_CLICKED, NULL);
 

@@ -78,7 +78,7 @@
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_quality_presets</text>			
 		</cap_preset>
 		<list_presets x="194" y="50" width="261" height="21" list_length="5">
-			<options_item entry="_preset" group="mm_opt_video"/>
+			<options_item entry="_preset" group="mm_opt_video_preset"/>
 			<text_color>
 				<e r="216" g="186" b="140"/>
 			</text_color>

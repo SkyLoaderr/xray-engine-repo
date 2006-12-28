@@ -4,6 +4,7 @@
 
 class CUIOptionsManagerScript {
 public:
+	void SaveBackupValues(const char* group);
 	void SetCurrentValues(const char* group);
 	void SaveValues(const char* group);
 	bool IsGroupChanged(const char* group);
