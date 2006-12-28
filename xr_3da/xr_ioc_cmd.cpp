@@ -467,7 +467,7 @@ public:
 	virtual void	Execute	(LPCSTR args)
 	{
 		inherited::Execute	(args);
-		psDeviceFlags.set(rsR2, (_value==2) );
+		psDeviceFlags.set(rsR2, (_value==1) );
 	}
 
 	virtual void	Save	(IWriter *F)	{

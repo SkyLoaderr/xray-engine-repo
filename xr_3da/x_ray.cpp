@@ -382,11 +382,11 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 			return 0;
 	};
 	
-	CCC_LoadCFG_custom*	pTmp = xr_new<CCC_LoadCFG_custom>("r2 ");
+	CCC_LoadCFG_custom*	pTmp = xr_new<CCC_LoadCFG_custom>("renderer ");
 	pTmp->Execute				(Console->ConfigFile);
 	xr_delete					(pTmp);
 
-	if(strstr(Core.Params,"-r2"))	Console->Execute			("r2 on");
+	if(strstr(Core.Params,"-r2"))	Console->Execute			("renderer renderer_r2");
 
 	Engine.External.Initialize	( );
 //	CheckPrivilegySlowdown		( );
