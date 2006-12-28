@@ -538,7 +538,7 @@ if(ph_dbg_draw_mask.test(phDbgCharacterControl))
 	else
 		hit_slowmo = 0.f;
 	//---------------------------------------------------------------
-	if (Level().CurrentViewEntity() == this && !g_pGamePersistent->bDedicatedServer)
+	if (Level().CurrentViewEntity() == this && !g_pGamePersistent->bDedicatedServer && HDS.hit_type == ALife::eHitTypeFireWound)
 	{
 		CObject* pLastHitter = Level().Objects.net_Find(m_iLastHitterID);
 		CObject* pLastHittingWeapon = Level().Objects.net_Find(m_iLastHittingWeaponID);

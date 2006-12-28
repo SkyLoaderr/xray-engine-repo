@@ -76,7 +76,8 @@ void CControllerAura::update_schedule()
 
 	float dist_to_actor		= Actor()->Position().distance_to(m_object->Position());
 
-	if ((dist_to_actor > aura_radius + FAKE_MIN_ADD_DIST) && (dist_to_actor < aura_radius + FAKE_MAX_ADD_DIST)) {
+	if ((dist_to_actor > aura_radius + FAKE_MIN_ADD_DIST) && (dist_to_actor < aura_radius + FAKE_MAX_ADD_DIST)) 
+	{
 		
 		// first time? 
 		if (m_time_fake_aura == 0) {
@@ -134,7 +135,11 @@ void CControllerAura::update_schedule()
 
 	if (active()) {
 		CEffectorCam* ce = Actor()->Cameras().GetCamEffector((ECamEffectorType)effControllerAura2);
-		if(!ce) AddEffector(Actor(), effControllerAura2, "effector_controller_aura2", 0.25f);
+		if(!ce) AddEffector(Actor(), effControllerAura2, "effector_controller_aura2", 0.18f);
+	}else{
+		CEffectorCam* ce = Actor()->Cameras().GetCamEffector((ECamEffectorType)effControllerAura2);
+		if(ce)
+			RemoveEffector(Actor(), effControllerAura2);
 	}
 }
 
