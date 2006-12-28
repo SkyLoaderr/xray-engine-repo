@@ -583,11 +583,11 @@ function CRandomTask:task_reward(npc, actor, p1, p2)
 		if task_desc.status == "completed" and task_desc.parent == parent then
 			--' Забираем у игрока квестовый предмет.
 			if v.type == "artefact" then
-				task_desc.relocate_item_section(npc, task_desc.selected_target, "out")
+				dialogs.relocate_item_section(npc, task_desc.selected_target, "out")
 			elseif v.type == "monster_part" then
-				task_desc.relocate_item_section(npc, task_desc.selected_target, "out")
+				dialogs.relocate_item_section(npc, task_desc.selected_target, "out")
 			elseif v.type == "find_item" then
-				task_desc.relocate_item_section(npc, task_desc.selected_target, "out")
+				dialogs.relocate_item_section(npc, task_desc.selected_target, "out")
 			end
 
 			self.task_info[v].status = "rewarded"
