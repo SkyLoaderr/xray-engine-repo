@@ -70,7 +70,7 @@ void CMMSound::music_Play(){
 
     m_music_l.play_at_pos(NULL, Fvector().set(-1.f, 0.f, 1.f), sm_2D);
     m_music_r.play_at_pos(NULL, Fvector().set(1.f, 0.f, 1.f), sm_2D);
-	Msg("CMMSound::music_Play");
+//	Msg("CMMSound::music_Play");
 }
 
 void CMMSound::music_Update(){
