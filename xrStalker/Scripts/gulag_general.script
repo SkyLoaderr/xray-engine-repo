@@ -41,7 +41,7 @@ function load_job(sj, gname, type, squad, groups, st)
 				t = { section = "logic@"..way_name,
 					idle = 0,
 					prior = 8-i, state = {0,1}, squad = squad, group = groups[1],
-					position_threshold = 20,
+					position_threshold = 50,
 					in_rest = "", out_rest = ""
 				}
 				table.insert(sj, t)
@@ -69,7 +69,7 @@ function load_job(sj, gname, type, squad, groups, st)
 			t = { section = "logic@"..way_name,
 				idle = 0,
 				prior = 4, state = {0,1}, squad = squad, group = groups[1],
-				position_threshold = 20,
+				position_threshold = 50,
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -96,7 +96,7 @@ function load_job(sj, gname, type, squad, groups, st)
 			t = { section = "logic@"..way_name,
 				idle = math.random(40,60)*60*1000, timeout = math.random(10,20)*60*1000,
 				prior = 5, state = {0,1}, squad = squad, group = groups[1],
-				position_threshold = 20,
+				position_threshold = 50,
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -127,7 +127,7 @@ function load_job(sj, gname, type, squad, groups, st)
 			t = { section = "logic@"..way_name,
 				idle = 0,
 				prior = 5, state = {0,1}, squad = squad, group = groups[1],
-				position_threshold = 20,
+				position_threshold = 50,
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -165,7 +165,7 @@ function load_job(sj, gname, type, squad, groups, st)
 				t = { section = "logic@"..way_name,
 					idle = math.random(60,120)*60*1000,
 					prior = 6, state = {0,1}, squad = squad, group = groups[1],
-					position_threshold = 20,
+					position_threshold = 50,
 					in_rest = "", out_rest = ""
 				}
 				table.insert(sj, t)
@@ -199,7 +199,7 @@ function load_job(sj, gname, type, squad, groups, st)
 			t = { section = "logic@"..way_name,
 				idle = 0,
 				prior = 7, state = {0,1}, squad = squad, group = groups[1],
-				position_threshold = 20,
+				position_threshold = 50,
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
@@ -230,7 +230,7 @@ function load_job(sj, gname, type, squad, groups, st)
 			t = { section = "logic@"..way_name,
 				idle = 0,
 				prior = 10, state = {0,1}, squad = squad, group = groups[1],
-				position_threshold = 20,
+				position_threshold = 50,
 				in_rest = "", out_rest = "",
 				predicate = function(npc_info)
 								return npc_info.is_sniper == true
@@ -269,7 +269,7 @@ function load_job(sj, gname, type, squad, groups, st)
 					idle = 0,
 					prior = 10, state = {1}, squad = squad, group = groups[1],
 					fill_idle = xr_gulag.idle_once,
-					position_threshold = 20,
+					position_threshold = 50,
 					in_rest = "", out_rest = ""
 				}
 				table.insert(sj, t)
