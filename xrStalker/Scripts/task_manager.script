@@ -44,9 +44,6 @@ local return_task_by_type = {
 
 class "CRandomTask"
 function CRandomTask:__init()
-
-	printf("^^^ INIT")
-
 	--' На конструкторе вычитываем LTX и создаем заготовки квестов.
 	self.task_ini = ini_file("misc\\task_manager.ltx")
 	self.task_phrase_id = 100
@@ -75,11 +72,14 @@ function CRandomTask:__init()
 		end
 
 		self.task_info[id].type			= self.task_ini:r_string(id, "type")			
+
 		self.task_info[id].name			= id
 		if self.task_ini:line_exist(id, "parent") then
 			self.task_info[id].parent		= self.task_ini:r_string(id, "parent")
+			self.task_info[id].complex_type = self.task_info[id].type .. "_" .. self.task_info[id].parent
 		else
 			self.task_info[id].parent		= "nil"
+			self.task_info[id].complex_type = self.task_info[id].type
 		end
 		if self.task_ini:line_exist(id, "target") then
 			self.task_info[id].target		= self.task_ini:r_string(id, "target")
@@ -271,7 +271,7 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 
 	local task_desc = self.task_info[self.task_id_by_yes_phrase_id[p2]]
 	
-	task:load(task_desc.type)
+	task:load(task_desc.complex_type)
 	task:set_title(task_desc.type)
 	
 	local objective = SGameTaskObjective(task,1)
@@ -325,9 +325,9 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 
 	--' дизаблим все остальные задания данного типа, так как игрок не может одновременно обладать двумя заданиями одного типа.
 	self.task_info[self.task_id_by_yes_phrase_id[p2]].status = "selected"
-	self.active_task_by_type[task_desc.type] = self.task_id_by_yes_phrase_id[p2]
+	self.active_task_by_type[task_desc.complex_type] = self.task_id_by_yes_phrase_id[p2]
 	for k,v in pairs(self.task_info) do
-		if v.type == task_desc.type then
+		if v.complex_type == task_desc.complex_type then
 			v.enabled = false
 		end
 	end
@@ -338,9 +338,9 @@ function CRandomTask:action_refuse_task(actor, npc, p1, p2)
 
 	--' Делаем доступными все задания данного типа
 	self.task_info[self.task_id_by_yes_phrase_id[p2]].status = "refused"
-	self.task_info[self.active_task_by_type[task_desc.type]].selected_target = nil
+	self.task_info[self.active_task_by_type[task_desc.complex_type]].selected_target = nil
 	for k,v in pairs(self.task_info) do
-		if v.type == task_desc.type then
+		if v.complex_type == task_desc.complex_type then
 			v.enabled = true
 		end
 	end
