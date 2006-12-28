@@ -11,6 +11,7 @@ public:
 					CUIListBox						();
 	CUIListBoxItem* AddItem							(LPCSTR text);
 	CUIListBoxItem* GetItemByID						(u32 uid);
+	CUIListBoxItem* GetItemByIDX					(u32 idx);
 	CUIListBoxItem* GetItemByText					(LPCSTR text);
 	CUIListBoxItem* GetSelectedItem					();
 
@@ -27,6 +28,7 @@ public:
 	float			GetLongestLength				();
 
 	virtual	void	SetSelected						(CUIWindow* w)	{CUIScrollView::SetSelected(w);};
+		void		SetSelectedIDX					(u32 idx);
 		void		SetSelected						(u32 uid);
 		void		SetSelected						(LPCSTR txt);
 		void		SetImmediateSelection			(bool f);

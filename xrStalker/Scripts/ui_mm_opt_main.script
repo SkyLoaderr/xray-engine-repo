@@ -175,6 +175,7 @@ end
 function options_dialog:OnBtnCancel()
 	local opt = COptionsManager()
 	opt:UndoGroup("mm_opt_video")
+	opt:UndoGroup("mm_opt_video_adv")
 	opt:UndoGroup("mm_opt_sound")
 	opt:OptionsPostAccept()
 	

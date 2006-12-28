@@ -134,12 +134,15 @@ void CUIComboBox::SaveValue()
 
 bool CUIComboBox::IsChanged()
 {
+	return				(m_backup_itoken_id != m_itoken_id);
+/*
 	xr_token* tok		= GetOptToken();
 	LPCSTR	cur_val		= get_token_name(tok, m_itoken_id);
 
 	bool bChanged		= (0 != xr_strcmp(GetOptTokenValue(), cur_val));
 
 	return				bChanged;
+*/
 }
 
 LPCSTR CUIComboBox::GetText()
@@ -147,9 +150,9 @@ LPCSTR CUIComboBox::GetText()
 	return m_text.GetText	();
 }
 
-void CUIComboBox::SetItem(int i)
+void CUIComboBox::SetItem(int idx)
 {
-	m_list.SetSelected		(i);
+	m_list.SetSelectedIDX	(idx);
 	CUIListBoxItem* itm		= m_list.GetSelectedItem();
 	m_itoken_id				= (int)(__int64)itm->GetData();
 
@@ -270,3 +273,16 @@ void CUIComboBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			break;
 	}
 }
+
+void CUIComboBox::SeveBackUpValue()
+{
+	m_backup_itoken_id = m_itoken_id;
+}
+
+void CUIComboBox::Undo()
+{
+	SetItem				(m_backup_itoken_id);
+	SaveValue			();
+	SetCurrentValue		();
+}
+

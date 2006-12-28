@@ -102,14 +102,20 @@ bool CUITrackBar::IsChanged()
 {
 	if(m_b_is_float)
 	{
+/*
 		float val, min, max;
 		GetOptFloatValue	(val, min, max);
 		return val != m_f_val;    
+*/
+		return !fsimilar(m_f_back_up, m_f_val); 
 	}else
 	{
+/*
 		int val, min, max;
 		GetOptIntegerValue	(val, min, max);
-		return val != m_i_val;    
+		return val != m_i_val; 
+*/
+		return (m_i_back_up != m_i_val);
 	}
 }
 

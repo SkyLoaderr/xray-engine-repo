@@ -271,6 +271,11 @@ void CUIListBox::SetSelected(CUIWindow* pWnd)
 	m_last_wnd = GetSelected();
 }
 */
+void CUIListBox::SetSelectedIDX(u32 idx)
+{
+	SetSelected(GetItemByIDX(idx));
+}
+
 void CUIListBox::SetSelected(u32 uid)
 {
 	SetSelected(GetItemByID(uid));
@@ -292,6 +297,22 @@ CUIListBoxItem* CUIListBox::GetItemByID(u32 uid)
 				return item;
 		}
 		
+	}
+	return NULL;
+}
+
+CUIListBoxItem* CUIListBox::GetItemByIDX(u32 idx)
+{
+	u32 _idx = 0;
+	for(WINDOW_LIST_it it = m_pad->GetChildWndList().begin(); m_pad->GetChildWndList().end()!=it; ++it)
+	{
+		CUIListBoxItem* item = smart_cast<CUIListBoxItem*>(*it);
+		if (item)
+		{
+			if(_idx == idx)
+				return item;
+			++_idx;
+		}
 	}
 	return NULL;
 }

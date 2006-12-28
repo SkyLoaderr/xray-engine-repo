@@ -35,6 +35,6 @@ function opt_sound:InitControls(x, y, xml, handler)
 --	c = xml:InitTrackBar("tab_sound:track_voice",	self)
 --	c:Enable(false)
 
-	btn = xml:Init3tButton("tab_sound:btn_default_set",	self)	
-	handler:Register(btn, "btn_default_sound")
+--	btn = xml:Init3tButton("tab_sound:btn_default_set",	self)	
+--	handler:Register(btn, "btn_default_sound")
 end

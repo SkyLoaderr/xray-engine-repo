@@ -31,6 +31,8 @@ public:
 	virtual void		SetCurrentValue			();
 	virtual void		SaveValue				();
 	virtual bool		IsChanged				();
+	virtual void 		SeveBackUpValue			();
+	virtual void 		Undo					();
 
 			LPCSTR		GetText					();
 
@@ -61,10 +63,10 @@ protected:
 	int					m_iListHeight;
 	int					m_itoken_id;
 	E_COMBO_STATE		m_eState;
+	int					m_backup_itoken_id;
 
 	CUI_IB_FrameLineWnd	m_frameLine;
 	CUILabel			m_text;
-//.	CUI3tButton			m_btn;
 	CUIFrameWindow		m_frameWnd;
 
 	u32					m_textColor[2];

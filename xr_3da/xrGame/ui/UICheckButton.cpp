@@ -40,7 +40,7 @@ void CUICheckButton::SaveValue(){
 }
 
 bool CUICheckButton::IsChanged(){
-	return GetOptBoolValue() != GetCheck();
+	return b_backup_val != GetCheck();
 }
 
 void CUICheckButton::Init(float x, float y, float width, float height){
@@ -54,4 +54,15 @@ void CUICheckButton::InitTexture()
 	CUI3tButton::InitTexture("ui_checker");
 	Frect r = m_background.GetE()->GetStaticItem()->GetOriginalRect();
 	CUI3tButton::SetTextX(r.width());	
+}
+
+void CUICheckButton::SeveBackUpValue()
+{
+	b_backup_val = GetCheck();
+}
+
+void CUICheckButton::Undo()
+{
+	SetCheck		(b_backup_val);
+	SaveValue		();
 }
