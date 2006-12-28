@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="st_found_new_treasure">
+		<text>Информация о схроне</text>
+	</string>
+
+
 	<string id="esc_secret_0000_name">
 		<text>Вагон над мостом</text>
 	</string>
