@@ -53,7 +53,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 	}
 	else
 	{
-		if (!strstr(*m_caServerOptions, "single"))
+		if (m_caServerOptions.size() == 0 || !strstr(*m_caServerOptions, "single"))
 		{
 			Demo_PrepareToStore();
 		}
