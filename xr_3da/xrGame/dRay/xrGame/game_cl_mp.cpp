@@ -726,7 +726,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					KMS.m_initiator.m_rect.y1 = pIItem->GetKillMsgYPos();
 					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + pIItem->GetKillMsgWidth();
 					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + pIItem->GetKillMsgHeight();
-					sprintf(sWeapon, "%s %s", st.translate("mp_from"), pIItem->NameShort());
+					sprintf(sWeapon, "%s %s", st.translate("mp_from").c_str(), pIItem->NameShort());
 				}
 				else
 				{
