@@ -73,12 +73,6 @@ function options_dialog:InitControls()
 	self.b_r2_restart_shown		= false
 --	self.b_r2_sunstatic_shown	= false
 	
-	
-	if not xrRender_test_r2_hw() then
-		self.combo_r2:SetCurrentID		(0)
-		self.combo_r2:Enable			(false)
-	end
-	
 end
 
 function options_dialog:UpdateControls()
