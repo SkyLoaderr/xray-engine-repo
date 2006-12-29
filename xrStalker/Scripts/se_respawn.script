@@ -339,7 +339,10 @@ function se_respawn:create(prob)
 				if smart_terrain_id ~= 65535 then		
 					table.insert(self.spawned_obj ,obj.id)
 					local pos = obj.position
-					printf("SPAWNING [%s] -> [%s], position [%s][%s][%s]", tostring(self:name()), spawn_section, pos.x, pos.y, pos.z)
+--					printf("SPAWNING [%s] -> [%s], position [%s][%s][%s]", tostring(self:name()), spawn_section, pos.x, pos.y, pos.z)
+					local sm_obj = alife():object(smart_terrain_id)
+					printf("SPAWNING for SMART [%s] -> [%s]", obj:name(), sm_obj:name())
+
 					return true
 				else
 					alife():release(obj, true)
