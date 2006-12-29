@@ -23,67 +23,67 @@
 	
 	<main x=0 y=0 width=1024 height=768>
 		<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-			<texture x="100" y="80" width="300" height="300">ui\ui_pda</texture>
+			<texture x="0" y="0" width="1024" height="768">ui\ui_buy_menu</texture>
 		</auto_static>
 	</main>
 	
-	<static_player_money x="900" y="10" width="112" height="34">
+	<static_player_money x="910" y="30" width="112" height="34">
 		<text font="graffiti50" r="231" g="153" b="22" align="c" vert_align="c"/>
 	</static_player_money>
-	<static_player_rank x="830" y="10" width="55" height="55" stretch="1"/>
+	<static_player_rank x="865" y="22" width="55" height="55" stretch="1"/>
 
-	<static_item_rank x="330" y="360" width="44" height="44" stretch="1"/>
+	<static_item_rank x="300" y="610" width="44" height="44" stretch="1"/>
 
-	<static_info x="190" y="10" width="830" height="34" light_anim="buy_menu_info" la_cyclic="0" la_texture="0" la_alpha="1">
-		<text font="graffiti22" r="231" g="153" b="22" align="c" vert_align="c"/>
+	<static_info x="0" y="730" width="755" height="34" light_anim="buy_menu_info" la_cyclic="0" la_texture="0" la_alpha="1">
+		<text font="letterica18" r="231" g="153" b="22" align="c" vert_align="c"/>
 	</static_info>
 	
-	<shop_wnd x="0" y="160" width="290" height="570">
-		<auto_static x="0" y="0" width="290" height="570" stretch="1">
+	<shop_wnd x="65" y="0" width="300" height="570">
+		<_auto_static x="0" y="0" width="290" height="570" stretch="1">
 			<texture>ui_inventory_mp_shop</texture>
-		</auto_static>
+		</_auto_static>
 	</shop_wnd>
 	
-    <lst_player_bag x="580" y="450" width="448" height="280"
-            cell_width = "52" cell_height="52" rows_num="5" cols_num="6"
+    <lst_player_bag x="390" y="360" width="450" height="170"
+            cell_width = "43" cell_height="43" rows_num="5" cols_num="9"
             unlimited="1" group_similar="1"/>
 
-    <lst_shop x="32" y="70" width="253" height="480"
-            cell_width = "40" cell_height="40" rows_num="10" cols_num="6"
+    <lst_shop x="5" y="40" width="278" height="516"
+            cell_width = "43" cell_height="43" rows_num="10" cols_num="6"
             unlimited="1" group_similar="1" custom_placement="0"/>
 
 
-    <lst_pistol x="400" y="100" width="156" height="104"
-            cell_width = "52" cell_height="52" rows_num="2" cols_num="3"
+    <lst_pistol x="390" y="45" width="126" height="86"
+            cell_width = "43" cell_height="43" rows_num="2" cols_num="3"
             custom_placement="0"/>
 
-    <lst_pistol_ammo x="400" y="210" width="156" height="52"
-            cell_width = "52" cell_height="52" rows_num="1" cols_num="4"
+    <lst_pistol_ammo x="390" y="140" width="130" height="43"
+            cell_width = "43" cell_height="43" rows_num="1" cols_num="4"
             custom_placement="0" group_similar="1"/>
 
 
-    <lst_rifle x="570" y="100" width="312" height="104"
-            cell_width = "52" cell_height="52" rows_num="2" cols_num="6"
+    <lst_rifle x="585" y="45" width="260" height="86"
+            cell_width = "43" cell_height="43" rows_num="2" cols_num="6"
             custom_placement="0"/>
 
-    <lst_rifle_ammo x="570" y="210" width="312" height="52"
-            cell_width = "52" cell_height="52" rows_num="1" cols_num="6"
+    <lst_rifle_ammo x="585" y="140" width="260" height="43"
+            cell_width = "43" cell_height="43" rows_num="1" cols_num="6"
             custom_placement="0" group_similar="1"/>
 	
-    <lst_outfit x="400" y="280" width="104" height="156"
-            cell_width = "52" cell_height="52" rows_num="3" cols_num="2"
+    <lst_outfit x="390" y="190" width="86" height="130"
+            cell_width = "43" cell_height="43" rows_num="3" cols_num="2"
             custom_placement="0"/>
 	
-    <lst_medkit x="510" y="280" width="104" height="52"
-            cell_width = "52" cell_height="52" rows_num="1" cols_num="2"
+    <lst_medkit x="490" y="190" width="86" height="43"
+            cell_width = "43" cell_height="43" rows_num="1" cols_num="2"
             custom_placement="0" group_similar="1"/>`
 	
-    <lst_granade x="510" y="335" width="104" height="104"
-            cell_width = "52" cell_height="52" rows_num="2" cols_num="2"
+    <lst_granade x="490" y="235" width="86" height="86"
+            cell_width = "43" cell_height="43" rows_num="2" cols_num="2"
             custom_placement="0" group_similar="1"/>
             
-    <lst_others x="620" y="280" width="260" height="156"
-            cell_width = "52" cell_height="52" rows_num="3" cols_num="5"
+    <lst_others x="590" y="190" width="215" height="130"
+            cell_width = "43" cell_height="43" rows_num="3" cols_num="5"
             group_similar="1"/>
 
 

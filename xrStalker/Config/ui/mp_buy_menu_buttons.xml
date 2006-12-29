@@ -1,13 +1,5 @@
 <btn_tab_pistols x="0" y="0" width="117" height="29" accel="k1" horz_al="0">
 	<texture>ui_button_ordinary</texture>
-<!--
-	<idention push_y="-43"/>
-	<texture_offset x="-18" y="-62"/>
-	<texture_t>ui\ui_btn_sec_t</texture_t>
-	<texture_e>ui\ui_btn_mp_e</texture_e>
-	<texture_d>ui\ui_btn_mp_d</texture_d>
-	<texture_h>ui\ui_btn_mp_h</texture_h>
--->	
 	<hint x="0" y="3" width="29" height="29">
 		<text font="letterica25" x="0" y="-4" align="c">1</text>
 		<text_color>
@@ -21,22 +13,9 @@
 	</text_color>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_tab_pistols>
-<btn_tab_primary x="0" y="30"  width="117" height="29" accel="k2" horz_al="1">
+
+<btn_tab_primary x="0" y="30" width="117" height="29" accel="k2" horz_al="1">
 	<texture>ui_button_ordinary</texture>
-<!--
-	<idention push_y="-43"/>
-	<texture_offset x="-18" y="-62"/>
-	<texture_t>ui\ui_btn_prim_t</texture_t>
-	<texture_e>ui\ui_btn_mp_e</texture_e>
-	<texture_d>ui\ui_btn_mp_d</texture_d>
-	<texture_h>ui\ui_btn_mp_h</texture_h>
-	<hint x="15" y="-26" width="29" height="29">
-		<text font="letterica25" x="0" y="-4" align="c">2</text>
-		<text_color>
-			<e a="255" r="255" g="255" b="0"/> <d a="255" r="87" g="87" b="72"/> <h a="255" r="255" g="226" b="79"/> <t a="0" r="0" g="0" b="0"/>
-		</text_color>
-	</hint>
--->
 	<hint x="0" y="3" width="29" height="29">
 		<text font="letterica25" x="0" y="-4" align="c">2</text>
 		<text_color>
@@ -51,14 +30,6 @@
 </btn_tab_primary>
 <btn_tab_granades x="0" y="60"  width="117" height="29" accel="k3" horz_al="1">
 	<texture>ui_button_ordinary</texture>
-<!--
-	<idention push_y="-43"/>
-	<texture_offset x="-18" y="-62"/>
-	<texture_t>ui\ui_btn_gren_t</texture_t>
-	<texture_e>ui\ui_btn_mp_e</texture_e>
-	<texture_d>ui\ui_btn_mp_d</texture_d>
-	<texture_h>ui\ui_btn_mp_h</texture_h>
--->
 	<hint x="0" y="3" width="29" height="29">
 		<text font="letterica25" x="0" y="-4" align="c">3</text>
 		<text_color>
@@ -73,14 +44,6 @@
 </btn_tab_granades>
 <btn_tab_outfits x="0" y="90"  width="117" height="29" accel="k4" horz_al="1">
 	<texture>ui_button_ordinary</texture>
-<!--
-	<idention push_y="-43"/>
-	<texture_offset x="-18" y="-62"/>
-	<texture_t>ui\ui_btn_suit_t</texture_t>
-	<texture_e>ui\ui_btn_mp_e</texture_e>
-	<texture_d>ui\ui_btn_mp_d</texture_d>
-	<texture_h>ui\ui_btn_mp_h</texture_h>
--->
 	<hint x="0" y="3" width="29" height="29">
 		<text font="letterica25" x="0" y="-4" align="c">4</text>
 		<text_color>
@@ -96,14 +59,6 @@
 
 <btn_tab_equipment x="0" y="120"  width="117" height="29" accel="k5" horz_al="1">
 	<texture>ui_button_ordinary</texture>
-<!--
-	<idention push_y="-43"/>
-	<texture_offset x="-18" y="-62"/>
-	<texture_t>ui\ui_btn_equip_t</texture_t>
-	<texture_e>ui\ui_btn_mp_e</texture_e>
-	<texture_d>ui\ui_btn_mp_d</texture_d>
-	<texture_h>ui\ui_btn_mp_h</texture_h>
--->
 	<hint x="0" y="3" width="29" height="29">
 		<text font="letterica25" x="0" y="-4" align="c">5</text>
 		<text_color>
@@ -219,7 +174,7 @@
 	</hint>
 </btn_bag_heavy>	
 
-<shop_back_btn x="200" y="130" width="85" height="32" accel="kBACK" accel_ext="kESCAPE">
+<shop_back_btn x="305" y="0" width="85" height="32" accel="kBACK" accel_ext="kESCAPE">
 	<window_name>btn_shop_back</window_name>
 	<texture_offset x="-26" y="0"/>
 	<texture>ui\ui_btn_mp_back</texture>			
@@ -227,7 +182,7 @@
 </shop_back_btn>
 
 
-<btn_ok x="900" y="390" width="117" height="29" accel="kRETURN">		
+<btn_ok x="870" y="580" width="117" height="29" accel="kRETURN">		
 	<window_name>btn_ok</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_inv_ok</text>
@@ -237,7 +192,7 @@
 	</text_color>		
 </btn_ok>
 
-<btn_cancel x="900" y="420" width="117" height="29" accel="kESCAPE">
+<btn_cancel x="870" y="630" width="117" height="29" accel="kESCAPE">
 	<window_name>btn_cancel</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_inv_cancel</text>
@@ -250,49 +205,49 @@
 
 
 
-<btn_preset_1 x="900" y="180" width="117" height="29">
+<btn_preset_1 x="870" y="165" width="117" height="29">
 	<window_name>btn_preset_1</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_preset1</text>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_preset_1>
 
-<btn_preset_2 x="900" y="210" width="117" height="29">
+<btn_preset_2 x="870" y="255" width="117" height="29">
 	<window_name>btn_preset_2</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_preset2</text>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_preset_2>
 
-<btn_preset_3 x="900" y="240" width="117" height="29">
+<btn_preset_3 x="870" y="345" width="117" height="29">
 	<window_name>btn_preset_3</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_preset3</text>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_preset_3>
 
-<btn_last_set x="900" y="270" width="117" height="29">
+<btn_last_set x="870" y="435" width="117" height="29">
 	<window_name>btn_last_set</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_last_set</text>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_last_set>
 
-<btn_save_preset x="900" y="300" width="117" height="29" check_mode="1">
+<btn_save_preset x="870" y="500" width="117" height="29" check_mode="1">
 	<window_name>btn_save_preset</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_save_preset</text>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_save_preset>
 
-<btn_sell x="900" y="360" width="117" height="29" hint="ui_inv_sell_items(X)"  accel="kX">
+<btn_sell x="700" y="530" width="117" height="29" hint="ui_inv_sell_items(X)"  accel="kX">
 	<window_name>btn_sell</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_sell_all</text>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_sell>
 
-<btn_reset x="900" y="330" width="117" height="29" hint="ui_inv_reset_items(C)" accel="kC">
+<btn_reset x="870" y="695" width="117" height="29" hint="ui_inv_reset_items(C)" accel="kC">
 	<window_name>btn_reset</window_name>
 	<texture>ui_button_ordinary</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_reset</text>
@@ -301,39 +256,38 @@
 
 <!-- quick buttons -->
 
-<btn_pistol_ammo x="530" y="178" width="22" height="22" hint="ui_inv_ammo_pistol" accel="kQ">
+<btn_pistol_ammo x="495" y="110" width="22" height="22" hint="ui_inv_ammo_pistol" accel="kQ">
 	<window_name>btn_pistol_ammo</window_name>
 	<texture>ui_beltbut_patrons</texture>
 </btn_pistol_ammo>
 
-<btn_pistol_silencer x="505" y="178" width="22" height="22" hint="ui_inv_silencer_pistol" accel="kA">
+<btn_pistol_silencer x="470" y="110" width="22" height="22" hint="ui_inv_silencer_pistol" accel="kA">
 	<window_name>btn_pistol_silencer</window_name>
 	<texture>ui_beltbut_silencer</texture>
 </btn_pistol_silencer>
 
 
-<btn_rifle_ammo x="860" y="156" width="22" height="22" hint="ui_inv_ammo_rifle" accel="kW">
+<btn_rifle_ammo x="815" y="90" width="22" height="22" hint="ui_inv_ammo_rifle" accel="kW">
 	<window_name>btn_rifle_ammo</window_name>
 	<texture>ui_beltbut_patrons</texture>
 </btn_rifle_ammo>	
 
-<btn_rifle_ammo2 x="860" y="178" width="22" height="22" hint="ui_inv_granades_rifle" accel="kE">
+<btn_rifle_ammo2 x="815" y="110" width="22" height="22" hint="ui_inv_granades_rifle" accel="kE">
 	<window_name>btn_rifle_ammo2</window_name>
 	<texture>ui_beltbut_granadeBig</texture>
 </btn_rifle_ammo2>	
 
-<btn_rifle_silencer x="835" y="178" width="22" height="22" hint="ui_inv_silencer_rifle" accel="kF">
+<btn_rifle_silencer x="790" y="110" width="22" height="22" hint="ui_inv_silencer_rifle" accel="kF">
 	<window_name>btn_rifle_silencer</window_name>
 	<texture>ui_beltbut_silencer</texture>		
 </btn_rifle_silencer>
 
-<btn_rifle_scope x="810" y="178" width="22" height="22" hint="ui_inv_scope_rifle" accel="kS">
+<btn_rifle_scope x="765" y="110" width="22" height="22" hint="ui_inv_scope_rifle" accel="kS">
 	<window_name>btn_rifle_scope</window_name>
 	<texture>ui_beltbut_aim</texture>		
 </btn_rifle_scope>
 
-<btn_rifle_glauncher x="784" y="178" width="22" height="22" hint="ui_inv_granadelauncher_rifle" accel="kD">
+<btn_rifle_glauncher x="740" y="110" width="22" height="22" hint="ui_inv_granadelauncher_rifle" accel="kD">
 	<window_name>btn_rifle_glauncher</window_name>
 	<texture>ui_beltbut_granadeBig</texture>
 </btn_rifle_glauncher>
-

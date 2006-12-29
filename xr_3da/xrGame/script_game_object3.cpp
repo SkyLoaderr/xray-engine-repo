@@ -157,18 +157,34 @@ CScriptGameObject *CScriptGameObject::GetCurrentOutfit() const
 {
 	CInventoryOwner		*inventoryOwner = smart_cast<CInventoryOwner*>(&object());
 	if (!inventoryOwner) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member GetCurrentWeapon!");
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member GetCurrentOutfit!");
 		return		(0);
 	}
 	CGameObject		*current_equipment = inventoryOwner->GetCurrentOutfit() ? &inventoryOwner->GetCurrentOutfit()->object() : 0;
 	return			(current_equipment ? current_equipment->lua_game_object() : 0);
 }
 
+#include "CustomOutfit.h"
+
+float CScriptGameObject::GetCurrentOutfitProtection(int hit_type)
+{
+	CInventoryOwner		*inventoryOwner = smart_cast<CInventoryOwner*>(&object());
+	if (!inventoryOwner) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member GetCurrentOutfitProtection!");
+		return		(0);
+	}
+	CGameObject		*current_equipment = &inventoryOwner->GetCurrentOutfit()->object();
+	CCustomOutfit* o = smart_cast<CCustomOutfit*>(current_equipment);
+	if(!o)				return 0.0f;
+
+	return		1.0f - o->GetDefHitTypeProtection(ALife::EHitType(hit_type));
+}
+
 CScriptGameObject *CScriptGameObject::GetFood() const
 {
 	CAI_Stalker		*l_tpStalker = smart_cast<CAI_Stalker*>(&object());
 	if (!l_tpStalker) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetFood!");
 		return		(0);
 	}
 	CGameObject		*food = l_tpStalker->GetFood() ? &l_tpStalker->GetFood()->object() : 0;

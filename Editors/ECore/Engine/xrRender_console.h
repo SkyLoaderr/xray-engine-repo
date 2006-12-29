@@ -109,7 +109,7 @@ enum
 	R2FLAG_ZFILL				= (1<<9),
 	R2FLAG_R1LIGHTS				= (1<<10),
 	R2FLAG_SUN_IGNORE_PORTALS	= (1<<11),
-	R2FLAG_SUN_STATIC			= (1<<12),
+//	R2FLAG_SUN_STATIC			= (1<<12),
 
 };
 

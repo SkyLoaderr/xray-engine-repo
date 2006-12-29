@@ -33,6 +33,7 @@ extern xr_token*							vid_mode_token;
 xr_token							vid_quality_token							[ ]={
 	{ "renderer_r1",				0											},
 	{ "renderer_r2",				1											},
+	{ "renderer_r2a",				2											},
 	{ 0,							0											}
 };
 
@@ -457,6 +458,9 @@ public:
 };
 #endif
 
+
+ENGINE_API BOOL r2_sun_static = TRUE;
+
 class CCC_r2 : public CCC_Token
 {
 	typedef CCC_Token inherited;
@@ -467,7 +471,9 @@ public:
 	virtual void	Execute	(LPCSTR args)
 	{
 		inherited::Execute	(args);
-		psDeviceFlags.set(rsR2, (_value==1) );
+		psDeviceFlags.set(rsR2, (_value>0) );
+
+		r2_sun_static	= (_value!=2);
 	}
 
 	virtual void	Save	(IWriter *F)	{
@@ -549,7 +555,7 @@ void CCC_Register()
 	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		4		);
 
 
-	CMD3(CCC_Mask,		"rs_no_v_sync",			&psDeviceFlags,		rsNoVSync				);
+	CMD3(CCC_Mask,		"rs_v_sync",			&psDeviceFlags,		rsVSync				);
 //	CMD3(CCC_Mask,		"rs_disable_objects_as_crows",&psDeviceFlags,	rsDisableObjectsAsCrows	);
 	CMD3(CCC_Mask,		"rs_fullscreen",		&psDeviceFlags,		rsFullscreen			);
 	CMD3(CCC_Mask,		"rs_refresh_60hz",		&psDeviceFlags,		rsRefresh60hz			);

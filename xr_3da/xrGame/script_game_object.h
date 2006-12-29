@@ -383,6 +383,7 @@ public:
 			CScriptMonsterHitInfo	GetMonsterHitInfo();
 			void					bind_object		(CScriptBinderObject *object);
 			CScriptGameObject		*GetCurrentOutfit() const;
+			float					GetCurrentOutfitProtection(int hit_type);
 			
 
 	//////////////////////////////////////////////////////////////////////////

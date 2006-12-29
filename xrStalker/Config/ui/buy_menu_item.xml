@@ -1,44 +1,47 @@
 <w>
-	<main_frame x="300" y="445" width="230" height="300" />
+	<main_frame x="0" y="573" width="850" height="155" />
 	
-	<static_name x="0" y="0" width="220" height="30">
-		<text font="letterica18" r="238" g="155" b="23" complex_mode="1" align="l" vert_align="c"/>		
+	<static_name x="30" y="8" width="330" height="30">
+		<text font="graffiti22" r="238" g="155" b="23" complex_mode="1" align="l" vert_align="c" />		
 	</static_name>
 
-	<static_cost x="135" y="34" width="90" height="30">
-		<text align="r" font="letterica18" r="238" g="155" b="23"/>
+	<static_cost x="725" y="8" width="120" height="30">
+		<text align="c" vert_align="c" font="graffiti22" r="238" g="153" b="26"/>
 	</static_cost>
 
-    <condition_progress x="5" y="40" width="120" height="8" horz="1" min="0" max="100" pos="100">
+	<static_weight x="420" y="13" width="80" height="18">
+		<text  align="l" x="0" y="0" font="letterica18" r="240" g="217" b="182"/>
+	</static_weight>
+
+	<image_static x="160" y="100" width="200" height="130" alignment="c"/>
+
+    <condition_progress x="595" y="17" width="110" height="8" horz="1" min="0" max="100" pos="100">
 		<min_color r="255" g="0" b="0"/>
 		<max_color r="0" g="255" b="0"/>
 		<progress>
 			<texture>ui_mg_progress_efficiency_full</texture>
 		</progress>        
-        <background>
-			<texture>ui_mg_progress_efficiency_empty</texture>
-		</background>
     </condition_progress>
 
-	<descr_list x="0" y="60" width="230" height="245" always_show_scroll="0" left_ident="16">
+	<descr_list x="360" y="40" width="482" height="115" always_show_scroll="0" left_ident="16">
 		<font font="letterica16" r="240" g="217" b="182"/>
 	</descr_list>
 
-    <wpn_params x="0" y="0" width="220" height="70">
-		<cap_accuracy x="0" y="8" width="90" height="8">
+    <wpn_params x="10" y="0" width="220" height="70">
+		<cap_accuracy x="15" y="8" width="120" height="8">
 			<text font="letterica16" r="124" g="119" b="115">ui_inv_accuracy</text>
 		</cap_accuracy>		
-		<cap_handling x="110" y="8" width="90" height="8">
+		<cap_handling x="210" y="8" width="120" height="8">
 			<text font="letterica16" r="124" g="119" b="115">ui_inv_handling</text>
 		</cap_handling>
-		<cap_damage x="0" y="39" width="90" height="8">
+		<cap_damage x="15" y="39" width="120" height="8">
 			<text font="letterica16" r="124" g="119" b="115">ui_inv_damage</text>
 		</cap_damage>
-		<cap_rpm x="110" y="39" width="90" height="8">
+		<cap_rpm x="210" y="39" width="120" height="8">
 			<text font="letterica16" r="124" g="119" b="115">ui_inv_rate_of_fire</text>
 		</cap_rpm>
 		
-		<progress_accuracy x="0" y="24" width="90" height="8" horz="1">
+		<progress_accuracy x="15" y="24" width="120" height="8" horz="1">
 			<progress>
 				<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</progress>
@@ -46,7 +49,7 @@
 				<texture a="100" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</background>
 		</progress_accuracy>		
-		<progress_handling x="100" y="24" width="90" height="8" horz="1">
+		<progress_handling x="200" y="24" width="120" height="8" horz="1">
 			<progress>
 				<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</progress>
@@ -54,7 +57,7 @@
 				<texture a="100" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</background>
 		</progress_handling>
-		<progress_damage x="0" y="55" width="90" height="8" horz="1">
+		<progress_damage x="15" y="55" width="120" height="8" horz="1">
 			<progress>
 				<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</progress>
@@ -62,7 +65,7 @@
 				<texture a="100" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</background>
 		</progress_damage>		
-		<progress_rpm x="100" y="55" width="90" height="8" horz="1">
+		<progress_rpm x="200" y="55" width="120" height="8" horz="1">
 			<progress>
 				<texture a="255" r="255" g="255" b="255">ui_buymenu_progBar</texture>
 			</progress>

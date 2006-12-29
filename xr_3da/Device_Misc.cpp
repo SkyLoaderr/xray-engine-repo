@@ -11,7 +11,7 @@ static struct _DF {
 } DF[] = {
 	{"rsFullscreen",	rsFullscreen	},
 	{"rsClearBB",		rsClearBB 		},
-	{"rsNoVSync",		rsNoVSync 		},
+	{"rsVSync",			rsVSync 		},
 	{"rsWireframe",		rsWireframe		},
     {NULL,0}
 };

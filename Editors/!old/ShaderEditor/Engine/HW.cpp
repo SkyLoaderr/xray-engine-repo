@@ -358,7 +358,8 @@ u32	CHW::selectPresentInterval	()
 	D3DCAPS9	caps;
 	pD3D->GetDeviceCaps(DevAdapter,DevT,&caps);
 
-	if (psDeviceFlags.is(rsNoVSync)) {
+	if (!psDeviceFlags.test(rsVSync)) 
+	{
 		if (caps.PresentationIntervals & D3DPRESENT_INTERVAL_IMMEDIATE)
 			return D3DPRESENT_INTERVAL_IMMEDIATE;
 		if (caps.PresentationIntervals & D3DPRESENT_INTERVAL_ONE)

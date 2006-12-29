@@ -186,6 +186,8 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 
 		// inventory owner
 		.def("get_current_outfit",			&CScriptGameObject::GetCurrentOutfit)
+		.def("get_current_outfit_protection",&CScriptGameObject::GetCurrentOutfitProtection)
+
 
 		// searchlight
 		.def("get_current_direction",		&CScriptGameObject::GetCurrentDirection)
