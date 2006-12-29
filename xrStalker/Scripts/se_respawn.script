@@ -341,7 +341,7 @@ function se_respawn:create(prob)
 					local pos = obj.position
 --					printf("SPAWNING [%s] -> [%s], position [%s][%s][%s]", tostring(self:name()), spawn_section, pos.x, pos.y, pos.z)
 					local sm_obj = alife():object(smart_terrain_id)
-					printf("SPAWNING for SMART [%s] -> [%s]", obj:name(), sm_obj:name())
+					printf("SPAWNING for SMART [%s] : [%s] -> [%s]", self:name(), obj:name(), sm_obj:name())
 
 					return true
 				else
