@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="bar_rostok">
+		<text>Дикая территория - Росток</text>
+	</string>
 	<string id="car_character_use">
 		<text>Open the door ($$ACTION_USE$$)</text>
 	</string>
@@ -43,13 +46,22 @@
 		<text>Task updated:</text>
 	</string>
 	<string id="physic_shell_use">
-		<text>Move object ()</text>
+		<text>Move object ($$ACTION_USE$$)</text>
 	</string>
 	<string id="st_codelock">
 		<text>Combination lock ($$ACTION_USE$$)</text>
 	</string>
-	<string id="test_mega_remark">
-		<text>Well, mate? How do you like this new flashy radio communication system?</text>
+	<string id="st_helmet_countdown">
+		<text>Отключение защиты</text>
+	</string>
+	<string id="st_psy_danger">
+		<text>Критический уровень пси излучения. Немедленно покиньте опасную зону.</text>
+	</string>
+	<string id="st_radiation_danger">
+		<text>Опасный уровень радиации. Необходима защита, чтобы пройти.</text>
+	</string>
+	<string id="to_aes">
+		<text>На ЧАЭС</text>
 	</string>
 	<string id="to_agroprom">
 		<text>To Agroprom</text>
@@ -72,7 +84,16 @@
 	<string id="to_military">
 		<text>To the warehouses</text>
 	</string>
+	<string id="to_pripyat">
+		<text>На Припять</text>
+	</string>
+	<string id="to_radar">
+		<text>К "Выжигателю мозгов"</text>
+	</string>
 	<string id="to_rostok">
 		<text>To Rostok</text>
+	</string>
+	<string id="to_yantar">
+		<text>На Янтарь</text>
 	</string>
 </string_table>

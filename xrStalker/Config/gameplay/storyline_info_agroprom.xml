@@ -1,5 +1,5 @@
 
-    <article id="storyline_gunslinger_flash_info" name="Gunslinger Flash" article_type="task" group="agroprom_find_stalker_phantom">
+    <article id="storyline_gunslinger_flash_info" name="Gunslinger Flash" article_type="task" group="agr_find_ghost/0">
         <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
         <text>storyline_gunslinger_flash_info</text>
     </article>

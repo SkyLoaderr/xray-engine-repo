@@ -3,6 +3,9 @@
 	<string id="binoc_tutorial">
 		<text>Для того, чтобы использовать бинокль выберите его ($$ACTION_wpn_5$$) и нажмите "огонь" для приближения.</text>
 	</string>
+	<string id="binocular">
+		<text>Бинокль</text>
+	</string>
 	<string id="crouch">
 		<text>Приседания</text>
 	</string>

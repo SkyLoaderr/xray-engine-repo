@@ -9,6 +9,9 @@
 	<string id="Boar">
 		<text>Boar</text>
 	</string>
+	<string id="Controller">
+		<text>контролер</text>
+	</string>
 	<string id="Crow">
 		<text>Crow</text>
 	</string>
@@ -20,6 +23,9 @@
 	</string>
 	<string id="enc_mutant_boar_general">
 		<text>A massive, mutated animal, reaching 1.5 meters at the shoulder. The Zone boar's aggressiveness and ability to survive surpass by far those of its relatives outside the contaminated area. Radiation and anomalies left their mark on the physical appearance of the animal as well: its fur is entirely gone in some places, and long and bristly in others. The hooves have evolved into sturdy, sharp claws, the pupils became colorless, and the boar's bald head is marred by pigmentation disorders and deep wrinkles. Zone boars are quite resistant to radiation and can stay in heavily contaminated areas for longer periods of time. They usually charge at their victims, trying to knock them over and then rip them to shreds.</text>
+	</string>
+	<string id="enc_mutant_controller_general">
+		<text>Редкий мутант, встречающийся близко к центру Зоны. Внешне напоминает гуманоида с непропорционально увеличенной головой. Обладает развитым восприятием, а также способностью контролировать поведение менее развитых живых существ. Матерые особи способны брать под контроль даже людей. Это опасный противник, встречи с которым бояться даже самые опытные сталкеры.</text>
 	</string>
 	<string id="enc_mutant_crow_general">
 		<text>The only bird species to have survived in the Zone, enduring increased radiation levels and effectively avoiding anomalies. While the army pilots need to rely on complex detectors to avoid gravitational disturbances, the crow seems to rely on its own senses for that - a mystery that drives ornithologists and biologists mad. Various theories attempting to explain the phenomenon exist, all of them pointing to a highly specialized development of the bird's brain.</text>

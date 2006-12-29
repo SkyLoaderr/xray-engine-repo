@@ -135,6 +135,15 @@
 	<string id="Sci2">
 		<text>Scientific EXP-4</text>
 	</string>
+	<string id="st_detector">
+		<text>Детектор аномалий</text>
+	</string>
+	<string id="st_detector_descr">
+		<text>Предназначен для обнаружения аномальных зон, а также очагов радиоактивного загрязнения.</text>
+	</string>
+	<string id="st_grenade_gd5">
+		<text>Дымовая граната</text>
+	</string>
 	<string id="Vodka">
 		<text>Cossack vodka</text>
 	</string>

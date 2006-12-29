@@ -48,18 +48,6 @@
 	<string id="device-torch">
 		<text>Фонарик</text>
 	</string>
-	<string id="binocular">
-		<text>Бинокль</text>
-	</string>
-	<string id="st_grenade_gd5">
-		<text>Дымовая граната</text>
-	</string>
-	<string id="st_detector">
-		<text>Детектор аномалий</text>
-	</string>
-	<string id="st_detector_descr">
-		<text>Предназначен для обнаружения аномальных зон, а также очагов радиоактивного загрязнения.</text>
-	</string>		
 	<string id="enc_equipment_armors_arm-heavy">
 		<text>Защитный костюм. Вес - 18 кг. Особенности: защищает тело от "студня", "жгучего пуха", большинства аномалий и механических повреждений. Грудная клетка и спина защищены встроенными биометаллическими пластинами. Оборудован герметичным металлопластиковым шлемом и двумя кислородными баллонами. Внимание: при продолжительном использовании приходит в негодность - повреждается и рвётся.</text>
 	</string>
@@ -146,6 +134,15 @@
 	</string>
 	<string id="Sci2">
 		<text>Научный EXP-4</text>
+	</string>
+	<string id="st_detector">
+		<text>Детектор аномалий</text>
+	</string>
+	<string id="st_detector_descr">
+		<text>Предназначен для обнаружения аномальных зон, а также очагов радиоактивного загрязнения.</text>
+	</string>
+	<string id="st_grenade_gd5">
+		<text>Дымовая граната</text>
 	</string>
 	<string id="Vodka">
 		<text>Водка "Казаки"</text>

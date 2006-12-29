@@ -15,6 +15,15 @@
 	<string id="ui_mm_default">
 		<text>По умолчанию</text>
 	</string>
+	<string id="ui_mm_detail_density">
+		<text>Плотность травы</text>
+	</string>
+	<string id="ui_mm_r2_sun">
+		<text>Тень от солнца</text>
+	</string>
+	<string id="ui_mm_r2_sun_details">
+		<text>Тень травы</text>
+	</string>
 	<string id="ui_mm_render_2">
 		<text>Рендер-2</text>
 	</string>
@@ -95,5 +104,8 @@
 	</string>
 	<string id="ui_st_your_items">
 		<text>Твои вещи</text>
+	</string>
+	<string id="ui_st_params">
+		<text>Параметры</text>
 	</string>
 </string_table>

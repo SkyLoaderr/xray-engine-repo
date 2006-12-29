@@ -1077,21 +1077,6 @@
 	<string id="tm_seek_new_job">
 		<text>Мне нужна работа. Есть что на примете?</text>
 	</string>
-	<string id="tm_trader_has_no_job">
-		<text>На данный момент ничего нет.</text>
-	</string>
-	<string id="tm_trader_job_ask">
-		<text>Насчёт какого задания ты хочешь поговорить?</text>
-	</string>
-	<string id="tm_trader_job_complete">
-		<text>Задание выполнено... а вот и гонорар!</text>
-	</string>
-	<string id="tm_trader_job_what">
-		<text>И что там с заданием?</text>
-	</string>
-	<string id="tm_trader_list_job">
-		<text>Есть кое-что:</text>
-	</string>
 	<string id="tm_shustriy_has_no_job">
 		<text>На данный момент ничего нет.</text>
 	</string>
@@ -1105,6 +1090,21 @@
 		<text>И что там с заданием?</text>
 	</string>
 	<string id="tm_shustriy_list_job">
+		<text>Есть кое-что:</text>
+	</string>
+	<string id="tm_trader_has_no_job">
+		<text>На данный момент ничего нет.</text>
+	</string>
+	<string id="tm_trader_job_ask">
+		<text>Насчёт какого задания ты хочешь поговорить?</text>
+	</string>
+	<string id="tm_trader_job_complete">
+		<text>Задание выполнено... а вот и гонорар!</text>
+	</string>
+	<string id="tm_trader_job_what">
+		<text>И что там с заданием?</text>
+	</string>
+	<string id="tm_trader_list_job">
 		<text>Есть кое-что:</text>
 	</string>
 	<string id="tm_wolf_has_no_job">

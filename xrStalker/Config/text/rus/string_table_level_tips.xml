@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-	<string id="st_helmet_countdown">
-		<text>Отключение защиты</text>
+	<string id="bar_rostok">
+		<text>Дикая территория - Росток</text>
 	</string>
-	<string id="st_psy_danger">
-		<text>Критический уровень пси излучения. Немедленно покиньте опасную зону.</text>
-	</string>
-	<string id="st_radiation_danger">
-		<text>Опасный уровень радиации. Необходима защита, чтобы пройти.</text>
-	</string>
-
-
 	<string id="car_character_use">
 		<text>Открыть дверь ($$ACTION_USE$$)</text>
 	</string>
@@ -54,10 +46,22 @@
 		<text>Задание обновлено:</text>
 	</string>
 	<string id="physic_shell_use">
-		<text>Двигать объект ()</text>
+		<text>Двигать объект ($$ACTION_USE$$)</text>
 	</string>
 	<string id="st_codelock">
 		<text>Кодовый замок ($$ACTION_USE$$)</text>
+	</string>
+	<string id="st_helmet_countdown">
+		<text>Отключение защиты</text>
+	</string>
+	<string id="st_psy_danger">
+		<text>Критический уровень пси излучения. Немедленно покиньте опасную зону.</text>
+	</string>
+	<string id="st_radiation_danger">
+		<text>Опасный уровень радиации. Необходима защита, чтобы пройти.</text>
+	</string>
+	<string id="to_aes">
+		<text>На ЧАЭС</text>
 	</string>
 	<string id="to_agroprom">
 		<text>На Агропром</text>
@@ -80,24 +84,16 @@
 	<string id="to_military">
 		<text>На склады</text>
 	</string>
-	<string id="to_rostok">
-		<text>На дикую территорию</text>
-	</string>
-	<string id="to_yantar">
-		<text>На Янтарь</text>
-	</string>
 	<string id="to_pripyat">
 		<text>На Припять</text>
 	</string>
 	<string id="to_radar">
 		<text>К "Выжигателю мозгов"</text>
 	</string>
-	<string id="bar_rostok">
-		<text>Дикая территория - Росток</text>
+	<string id="to_rostok">
+		<text>На дикую территорию</text>
 	</string>
-
-	<string id="to_aes">
-		<text>На ЧАЭС</text>
+	<string id="to_yantar">
+		<text>На Янтарь</text>
 	</string>
-
 </string_table>
