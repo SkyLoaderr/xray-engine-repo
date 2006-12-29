@@ -71,7 +71,7 @@ function options_dialog:InitControls()
 	self.message_box = CUIMessageBoxEx()
 	
 	self.b_r2_restart_shown		= false
-	self.b_r2_sunstatic_shown	= false
+--	self.b_r2_sunstatic_shown	= false
 	
 	
 	if not xrRender_test_r2_hw() then
@@ -106,11 +106,11 @@ function options_dialog:UpdateControls()
 	if self.combo_r2:CurrentID()==1 then
 		self.ch_r2_sun:Enable			(true)
 		self.ch_r2_sun_det:Enable		(true)
-		self.track_r2_sun_static:Enable	(true)
+--		self.track_r2_sun_static:Enable	(true)
 	else
 		self.ch_r2_sun:Enable			(false)
 		self.ch_r2_sun_det:Enable		(false)
-		self.track_r2_sun_static:Enable	(false)
+--		self.track_r2_sun_static:Enable	(false)
 	end
 end
 
@@ -124,10 +124,11 @@ function options_dialog:InitCallBacks()
 	self:AddCallback("btn_default_sound",	ui_events.BUTTON_CLICKED,	self.OnBtnDefSound,			self)	
 	self:AddCallback("combo_r2",			ui_events.LIST_ITEM_SELECT,	self.OnR2changed,			self)	
 	self:AddCallback("combo_preset",		ui_events.LIST_ITEM_SELECT,	self.OnPresetChanged,		self)	
-	self:AddCallback("track_sun_static",	ui_events.BUTTON_CLICKED,	self.OnR2sunstatic,			self)	
+--	self:AddCallback("track_sun_static",	ui_events.BUTTON_CLICKED,	self.OnR2sunstatic,			self)	
 	self:AddCallback("btn_simply_graphic",	ui_events.BUTTON_CLICKED,	self.OnSimplyGraphic,		self)	
 end
 
+--[[
 function options_dialog:OnR2sunstatic()	
 
 	if false==self.b_r2_sunstatic_shown then
@@ -137,6 +138,7 @@ function options_dialog:OnR2sunstatic()
 	end	
 
 end
+]]
 
 function options_dialog:OnPresetChanged()	
 	local opt					= COptionsManager()
@@ -149,11 +151,11 @@ function options_dialog:OnR2changed()
 	if self.combo_r2:CurrentID()==1 then
 		self.ch_r2_sun:Enable			(true)
 		self.ch_r2_sun_det:Enable		(true)
-		self.track_r2_sun_static:Enable	(true)
+--		self.track_r2_sun_static:Enable	(true)
 	else
 		self.ch_r2_sun:Enable			(false)
 		self.ch_r2_sun_det:Enable		(false)
-		self.track_r2_sun_static:Enable	(false)
+--		self.track_r2_sun_static:Enable	(false)
 	end
 
 	if false==self.b_r2_restart_shown then
