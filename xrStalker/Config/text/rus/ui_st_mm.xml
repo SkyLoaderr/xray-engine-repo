@@ -1,5 +1,205 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="ui_mm_credits">
+		<text>Титры</text>
+	</string>
+	<string id="ui_mm_advanced">
+		<text>расширенные</text>
+	</string>
+	<string id="ui_mm_simply">
+		<text>базовые</text>
+	</string>
+	<string id="ui_mm_60_hz">
+		<text>Частота 60гц</text>
+	</string>
+	<string id="ui_mm_no_vsync">
+		<text>Верт. синхронизация</text>
+	</string>
+	<string id="ui_mm_particles_distance">
+		<text>Дальность партиклов</text>
+	</string>
+	<string id="ui_mm_light_distance">
+		<text>Дальность освещения</text>
+	</string>
+	<string id="ui_mm_npc_torch">
+		<text>Cвет фонариков НПС</text>
+	</string>
+	<string id="ui_mm_r2_sun">
+		<text>Тень от солнца</text>
+	</string>
+	<string id="ui_mm_r2_sun_details">
+		<text>Тень травы</text>
+	</string>
+	<string id="ui_mm_sun_quality">
+		<text>Качество теней</text>
+	</string>
+	<string id="ui_mm_supersample">
+		<text>Cглаживание</text>
+	</string>
+	<string id="ui_mm_anisotropic">
+		<text>Фильтрация текстур</text>
+	</string>
+	<string id="ui_mm_texture_quality">
+		<text>Качество текстур</text>
+	</string>
+	<string id="ui_mm_detail_density">
+		<text>Плотность травы</text>
+	</string>
+	<string id="ui_mm_geometry_lod">
+		<text>Детализация объектов</text>
+	</string>
+	<string id="ui_mm_vis_distance">
+		<text>Дальность видимости</text>
+	</string>
+	<string id="ui_mm_renderer">
+		<text>Тип рендера</text>
+	</string>
+	<string id="renderer_r1">
+		<text>Статичное освещение</text>
+	</string>
+	<string id="renderer_r2a">
+		<text>Динамическое освещение объектов</text>
+	</string>
+	<string id="renderer_r2">
+		<text>Полное динамическое освещение</text>
+	</string>
+	<string id="gd_novice">
+		<text>новичок</text>
+	</string>
+	<string id="gd_stalker">
+		<text>опытный</text>
+	</string>
+	<string id="gd_veteran">
+		<text>ветеран</text>
+	</string>
+	<string id="gd_master">
+		<text>мастер</text>
+	</string>	
+	<string id="ui_mm_show_crosshair">
+		<text>Показывать прицел</text>
+	</string>
+	<string id="ui_mm_dyn_crosshair">
+		<text>Динамический прицел</text>
+	</string>
+	<string id="ui_mm_show_weapon">
+		<text>Показывать оружие</text>
+	</string>
+	<string id="ui_mm_crosshair_distance">
+		<text>Дистанция до цели</text>
+	</string>
+	<string id="ui_mm_tips">
+		<text>Распознавание НПС</text>
+	</string>
+	<string id="Minimum">
+		<text>минимальные</text>
+	</string>
+	<string id="Low">
+		<text>низкие</text>
+	</string>
+	<string id="Default">
+		<text>средние</text>
+	</string>
+	<string id="High">
+		<text>высокие</text>
+	</string>
+	<string id="Extreme">
+		<text>максимальные</text>
+	</string>
+	<string id="mm_mp_check_cdkey">
+		<text>проверять CD-Key</text>
+	</string>
+	<string id="Clear">
+		<text>ясная</text>
+	</string>
+	<string id="Cloudy">
+		<text>облачная</text>
+	</string>
+	<string id="Nigth">
+		<text>ночь</text>
+	</string>
+	<string id="Rain">
+		<text>дождливая</text>
+	</string>
+	<string id="st_deathmatch">
+		<text>Все против всех</text>
+	</string>
+	<string id="st_team_deathmatch">
+		<text>Команда против команды</text>
+	</string>
+	<string id="st_artefacthunt">
+		<text>Охота за артефактом</text>
+	</string>
+
+	<string id="mp_agroprom">
+		<text>Завод "Агропром"</text>
+	</string>
+	<string id="mp_atp">
+		<text>АТП</text>
+	</string>
+	<string id="mp_factory">
+		<text>Завод "Янтарь"</text>
+	</string>
+	<string id="mp_lost_village">
+		<text>Покинутая деревня</text>
+	</string>
+	<string id="mp_military_1">
+		<text>Военные склады</text>
+	</string>
+	<string id="mp_railroad">
+		<text>Железнодорожная станция</text>
+	</string>
+	<string id="mp_workshop">
+		<text>Брошенная фабрика</text>
+	</string>
+	<string id="mp_rostok">
+		<text>Завод "Росток"</text>
+	</string>
+	<string id="mp_pool">
+		<text>Бассейн</text>
+	</string>
+	<string id="mp_darkvalley">
+		<text>Темная долина</text>
+	</string>
+
+	<string id="ui_st_preset1">
+		<text>Набор 1</text>
+	</string>
+	<string id="ui_st_preset2">
+		<text>Набор 2</text>
+	</string>
+	<string id="ui_st_preset3">
+		<text>Набор 3</text>
+	</string>
+	<string id="ui_st_last_set">
+		<text>Посл. набор</text>
+	</string>
+	<string id="ui_st_reset">
+		<text>Сбросить</text>
+	</string>
+	<string id="ui_st_sell_all">
+		<text>Продать все</text>
+	</string>
+
+	<string id="ui_mm_need_restart">
+		<text>Изменения вступят в силу только после перезагрузки игры.</text>
+	</string>
+
+	<string id="st_rank_novice">
+		<text>новичок</text>
+	</string>
+	<string id="st_rank_experienced">
+		<text>опытный</text>
+	</string>
+	<string id="st_rank_professional">
+		<text>профессионал</text>
+	</string>
+	<string id="st_rank_veteran">
+		<text>ветеран</text>
+	</string>
+	<string id="st_rank_legend">
+		<text>легендарный сталкер</text>
+	</string>
+
 	<string id="ui_mm_action">
 		<text>действие</text>
 	</string>
@@ -64,7 +264,7 @@
 		<text>Загрузить</text>
 	</string>
 	<string id="ui_mm_load_game">
-		<text>Загрузка игры</text>
+		<text>Загрузить игру</text>
 	</string>
 	<string id="ui_mm_master">
 		<text>Мастер</text>
@@ -86,9 +286,6 @@
 	</string>
 	<string id="ui_mm_newgame">
 		<text>Новая игра</text>
-	</string>
-	<string id="ui_mm_no_vsync">
-		<text>Без вертикальной синхронизации</text>
 	</string>
 	<string id="ui_mm_novice">
 		<text>Новичок</text>
@@ -137,9 +334,6 @@
 	</string>
 	<string id="ui_mm_switch_torch">
 		<text>Использование фонариков AI</text>
-	</string>
-	<string id="ui_mm_tips">
-		<text>Подсказки</text>
 	</string>
 	<string id="ui_mm_veteran">
 		<text>Ветеран</text>

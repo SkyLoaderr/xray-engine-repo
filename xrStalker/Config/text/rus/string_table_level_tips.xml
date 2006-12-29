@@ -6,6 +6,9 @@
 	<string id="st_psy_danger">
 		<text>Критический уровень пси излучения. Немедленно покиньте опасную зону.</text>
 	</string>
+	<string id="st_radiation_danger">
+		<text>Опасный уровень радиации. Необходима защита, чтобы пройти.</text>
+	</string>
 
 
 	<string id="car_character_use">
