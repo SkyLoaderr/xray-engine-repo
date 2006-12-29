@@ -267,6 +267,7 @@ void CLevel::ClientReceive()
 			}break;
 		case M_PAUSE_GAME:
 			{
+				if (!net_IsSyncronised()) break;
 				u8 Pause = P->r_u8();
 				Device.Pause(!(Pause == 0));
 				Sound->pause_emitters(!!Device.Pause());

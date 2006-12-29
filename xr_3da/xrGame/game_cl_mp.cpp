@@ -921,12 +921,12 @@ void	game_cl_mp::LoadSndMessages				()
 void	game_cl_mp::OnRankChanged	(u8 OldRank)
 {
 	CStringTable st;
-#ifdef DEBUG
 	string256 tmp;
 	string1024 RankStr;
 	sprintf(tmp, "rank_%d",local_player->rank);
-	sprintf(RankStr, "%s : %s", *st.translate("mp_your_rank"), READ_IF_EXISTS(pSettings, r_string, tmp, "rank_name", ""));
+	sprintf(RankStr, "%s : %s", *st.translate("mp_your_rank"), *st.translate(READ_IF_EXISTS(pSettings, r_string, tmp, "rank_name", "")));
 	CommonMessageOut(RankStr);	
+#ifdef DEBUG
 	Msg("- %s", RankStr);
 #endif
 };
