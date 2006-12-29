@@ -130,34 +130,34 @@
 		<text>Охота за артефактом</text>
 	</string>
 
-	<string id="mp_agroprom">
+	<string id="testers_mp_agroprom">
 		<text>Завод "Агропром"</text>
 	</string>
-	<string id="mp_atp">
+	<string id="testers_mp_atp">
 		<text>АТП</text>
 	</string>
-	<string id="mp_factory">
+	<string id="testers_mp_factory">
 		<text>Завод "Янтарь"</text>
 	</string>
-	<string id="mp_lost_village">
+	<string id="testers_mp_lost_village">
 		<text>Покинутая деревня</text>
 	</string>
-	<string id="mp_military_1">
+	<string id="testers_mp_military_1">
 		<text>Военные склады</text>
 	</string>
-	<string id="mp_railroad">
+	<string id="testers_mp_railroad">
 		<text>Железнодорожная станция</text>
 	</string>
-	<string id="mp_workshop">
+	<string id="testers_mp_workshop">
 		<text>Брошенная фабрика</text>
 	</string>
-	<string id="mp_rostok">
+	<string id="testers_mp_rostok">
 		<text>Завод "Росток"</text>
 	</string>
-	<string id="mp_pool">
+	<string id="testers_mp_pool">
 		<text>Бассейн</text>
 	</string>
-	<string id="mp_darkvalley">
+	<string id="testers_mp_darkvalley">
 		<text>Темная долина</text>
 	</string>
 
