@@ -387,6 +387,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	xr_delete					(pTmp);
 
 	if(strstr(Core.Params,"-r2"))	Console->Execute			("renderer renderer_r2");
+	if(strstr(Core.Params,"-r2a"))	Console->Execute			("renderer renderer_r2a");
 
 	Engine.External.Initialize	( );
 //	CheckPrivilegySlowdown		( );

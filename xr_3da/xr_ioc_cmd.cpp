@@ -477,7 +477,7 @@ public:
 	}
 
 	virtual void	Save	(IWriter *F)	{
-		if( !strstr(Core.Params, "r2") )
+		if( !strstr(Core.Params, "-r2") )
 		{
 			inherited::Save(F);
 		}
