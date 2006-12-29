@@ -677,7 +677,12 @@ void CStalkerMovementManager::check_for_bad_path	()
 	VERIFY								(J != E);
 	for ( ; J != E; ++I, ++J) {
 		next_direction					= Fvector().sub((*J).position,(*I).position);
-		distance						+= next_direction.magnitude();
+		float							magnitude = next_direction.magnitude();
+		distance						+= magnitude;
+		//. how can it be?
+		if (magnitude < EPS_L)
+			continue;
+
 		next_direction.normalize		();
 		float							cos_angle = current_direction.dotproduct(next_direction);
 		float							angle = acosf(cos_angle);
