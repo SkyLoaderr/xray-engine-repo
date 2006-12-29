@@ -868,3 +868,60 @@
 	<string id="zombie_name">
 		<text>Зомбированный сталкер</text>
 	</string>
+
+	
+	
+	
+	
+	<string id="sim_stalker_veteran_gusarov_name">
+		<text>Олег "Демон" Гусаров</text>
+	</string>
+	<string id="sim_Svoboda_specnaz_leshii_name">
+		<text>Леший</text>
+	</string>
+	<string id="sim_stalker_master_chuchelo_name">
+		<text>Чучело</text>
+	</string>
+	<string id="sim_stalker_general_upir_name">
+		<text>Упырь</text>
+	</string>
+	<string id="sim_stalker_master_diador_name">
+		<text>Отец Диодор</text>
+	</string>
+	<string id="sim_ecolog_zob_name">
+		<text>Зоб</text>
+	</string>
+	<string id="sim_stalker_novice_neumeha_name">
+		<text>Неумеха</text>
+	</string>
+	<string id="sim_bandit_master_kocherga_name">
+		<text>Кочерга</text>
+	</string>
+	<string id="sim_dolg_veteran_barin_name">
+		<text>Барин</text>
+	</string>
+	<string id="sim_stalker_veteran_vorobey_name">
+		<text>Воробей</text>
+	</string>
+	<string id="sim_stalker_master_master_name">
+		<text>Мастер</text>
+	</string>
+	<string id="sim_dolg_veteran_prapor_name">
+		<text>Прапор</text>
+	</string>
+	<string id="sim_svoboda_specnaz_prut_name">
+		<text>Прут</text>
+	</string>
+	<string id="sim_stalker_veteran_umnik_name">
+		<text>Умник</text>
+	</string>
+	<string id="sim_bandit_master_fraer_name">
+		<text>Фраер</text>
+	</string>
+	<string id="sim_stalker_master_polkan_name">
+		<text>Полкан</text>
+	</string>
+	<string id="actor_name">
+		<text>Меченый</text>
+	</string>
+	

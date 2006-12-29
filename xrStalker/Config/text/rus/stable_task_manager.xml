@@ -705,13 +705,13 @@
 	<string id="lisiy_kill_stalker_text">
 		<text>Я недавно с одним сталкером за артефактами ходил, около самого выжигателя искали. Столько всего нашли, даже нашли пару артефактов, которых я вообще еще никогда не видел, даже на фотографиях. Так вот этот сукин сын меня подставил. На последней ночевке куда то слинял и заныкал самые дорогие артефакты. И еще мне втирал что типа они сами исчезли. А пару дней назад увидел один тот самый редкий артефакт у бармена. И такая злость меня взяла…. Вообщем сталкер, если сможешь найти его – передай ему от меня свинцовый привет. А может заодно узнаешь где у него тайники и найдешь второй артефакт. Он того стоит, поверь мне.</text>
 	</string>
-	<string id="Mercenary_kill_stalker">
+	<string id="mercenary_kill_stalker">
 		<text>Убить сталкера мастера.</text>
 	</string>
-	<string id="Mercenary_kill_stalker_descr">
+	<string id="mercenary_kill_stalker_descr">
 		<text>За убийство каждого мастера, наемник готов хорошо платить. Чем меньше мастеров, тем легче наемникам.</text>
 	</string>
-	<string id="Mercenary_kill_stalker_text">
+	<string id="mercenary_kill_stalker_text">
 		<text>Мы не заинтересованы в том, чтобы в Зоне бродили ходячие танки: вооруженные до зубов сталкеры в экзосклетах. Работа от этого становится только сложнее и опаснее. И чем их меньше – тем нам лучше. Убьеш одного такого – получить награду.</text>
 	</string>
 	<string id="monster_part">
@@ -1014,19 +1014,19 @@
 	<string id="tm_lisiy_list_job">
 		<text>Есть кое-что:</text>
 	</string>
-	<string id="tm_Mercenary_has_no_job">
+	<string id="tm_mercenary_has_no_job">
 		<text>На данный момент ничего нет.</text>
 	</string>
-	<string id="tm_Mercenary_job_ask">
+	<string id="tm_mercenary_job_ask">
 		<text>Насчёт какого задания ты хочешь поговорить?</text>
 	</string>
-	<string id="tm_Mercenary_job_complete">
+	<string id="tm_mercenary_job_complete">
 		<text>Задание выполнено... а вот и гонорар!</text>
 	</string>
-	<string id="tm_Mercenary_job_what">
+	<string id="tm_mercenary_job_what">
 		<text>И что там с заданием?</text>
 	</string>
-	<string id="tm_Mercenary_list_job">
+	<string id="tm_mercenary_list_job">
 		<text>Есть кое-что:</text>
 	</string>
 	<string id="tm_monster_part_1">
