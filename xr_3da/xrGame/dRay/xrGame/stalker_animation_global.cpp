@@ -47,7 +47,7 @@ MotionID CStalkerAnimationManager::assign_global_animation	()
 			return					(global().animation());
 		}
 
-		CWeapon						*weapon = smart_cast<CWeapon*>(object().best_weapon());
+		CWeapon						*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
 		VERIFY						(weapon);
 
 		u32							animation_slot = weapon->animation_slot();
