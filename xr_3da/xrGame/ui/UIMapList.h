@@ -18,8 +18,8 @@ class CUIXml;
 
 class CUIMapList : public CUIWindow {
 public:
-	CUIMapList();
-	virtual ~CUIMapList();
+					CUIMapList();
+	virtual			~CUIMapList();
 	virtual void	Init(float x, float y, float width, float height);
 	virtual void	Update();
 	virtual void	SendMessage(CUIWindow* pWnd, s16 msg, void* pData  = NULL);
@@ -38,6 +38,7 @@ public:
 		EGameTypes	GetCurGameType();
 			void	StartDedicatedServer();
 			bool	IsEmpty();
+	const shared_str& GetMapNameInt(EGameTypes _type, u32 idx);
 
 private:
 	const char*		GetCLGameModeName(); // CL - command line
@@ -67,16 +68,15 @@ private:
 	CUIStatic*			m_pMapPic;
 	CUIMapInfo*			m_pMapInfo;
 
-	EGameTypes			m_GameType;
+//.	EGameTypes			m_GameType;
 	
-	DEF_VECTOR(shared_str_vec, shared_str)
-	DEF_MAP(storage_map, EGameTypes, shared_str_vec)
-	storage_map				m_maps;
-//.	xr_vector<shared_str> m_Maps[GAME_END_LIST];
+	DEF_VECTOR			(shared_str_vec, shared_str)
+	DEF_MAP				(storage_map, EGameTypes, shared_str_vec)
+	storage_map			m_maps;
 
 	xr_map<shared_str,int> m_mapWeather;
-	xr_string	m_command;
-	xr_string	m_srv_params;
+	xr_string			m_command;
+	xr_string			m_srv_params;
 
-	int			m_item2del;
+	int					m_item2del;
 };
