@@ -78,8 +78,11 @@ void CRender::render_main	(Fmatrix&	m_ViewProjection, bool _fportals)
 				light*			L				= (light*)	(spatial->dcast_Light());
 				VERIFY							(L);
 				float	lod		= L->get_LOD	();
-				if (lod>EPS)	Lights.add_light(L);
-				continue						;
+				if (lod>EPS)	{
+					vis_data&		vis		= L->get_homdata	( );
+					if	(HOM.visible(vis))	Lights.add_light	(L);
+				}
+				continue					;
 			}
 
 			if	(PortalTraverser.i_marker != sector->r_marker)	continue;	// inactive (untouched) sector
