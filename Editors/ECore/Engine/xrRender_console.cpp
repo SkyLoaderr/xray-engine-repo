@@ -40,7 +40,7 @@ float		ps_r__ssaDISCARD			=  3.5f	;					//RO
 float		ps_r__ssaDONTSORT			=  32.f	;					//RO
 float		ps_r__ssaHZBvsTEX			=  96.f	;					//RO
 
-int			ps_r__tf_Anisotropic		= 1		;
+int			ps_r__tf_Anisotropic		= 4		;
 
 // R1
 float		ps_r1_ssaLOD_A				= 64.f	;
