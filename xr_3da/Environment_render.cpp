@@ -64,7 +64,7 @@ public:
 
 	virtual		void		Compile			(CBlender_Compile& C)
 	{
-		C.r_Pass			("sky2",		"sky2",		FALSE,	TRUE, FALSE);
+		C.r_Pass			("sky2",		"sky2",			FALSE,	TRUE, FALSE);
 		C.r_Sampler_clf		("s_sky0",		"$null"			);
 		C.r_Sampler_clf		("s_sky1",		"$null"			);
 		C.r_Sampler_rtf		("s_tonemap",	"$user$tonemap"	);	//. hack
@@ -113,8 +113,8 @@ void CEnvironment::RenderSky		()
 #ifndef _EDITOR
 	if (0==g_pGameLevel)		return	;
 #endif
-//	sh_2sky.create			(&b_skybox,"skybox_2t");
-//	clouds_sh.create		("clouds","null");
+	sh_2sky.create			(&b_skybox,"skybox_2t");
+	// clouds_sh.create		("clouds","null");
 	//. this is the bug-fix for the case when the sky is broken
 	//. for some unknown reason the geoms happen to be invalid sometimes
 	//. if vTune show this in profile, please add simple cache (move-to-forward last found) 

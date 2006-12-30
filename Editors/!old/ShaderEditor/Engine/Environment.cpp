@@ -319,7 +319,7 @@ void CEnvironment::OnFrame()
 
 	if (::Render->get_generation()==IRender_interface::GENERATION_R2){
 		//. very very ugly hack
-		if (HW.Caps.raster_major >= 3){
+		if (HW.Caps.raster_major >= 3 && HW.Caps.geometry.bVTF){
 			// tonemapping in VS
 			CurrentEnv.sky_r_textures.push_back		(mk_pair(u32(D3DVERTEXTEXTURESAMPLER0),tonemap));	//. hack
 			CurrentEnv.sky_r_textures_env.push_back	(mk_pair(u32(D3DVERTEXTEXTURESAMPLER0),tonemap));	//. hack
