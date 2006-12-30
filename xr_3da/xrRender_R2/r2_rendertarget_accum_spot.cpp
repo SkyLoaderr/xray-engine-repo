@@ -100,6 +100,7 @@ void CRenderTarget::accum_spot	(light* L)
 	// Common constants
 	Fvector		L_dir,L_clr,L_pos;	float L_spec;
 	L_clr.set					(L->color.r,L->color.g,L->color.b);
+	L_clr.mul					(L->get_LOD());
 	L_spec						= u_diffuse2s	(L_clr);
 	Device.mView.transform_tiny	(L_pos,L->position);
 	Device.mView.transform_dir	(L_dir,L->direction);

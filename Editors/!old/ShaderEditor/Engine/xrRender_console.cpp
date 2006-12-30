@@ -105,6 +105,7 @@ float		ps_r2_dhemi_scale			= 1.5f;				// 1.5f
 int			ps_r2_dhemi_count			= 5;				// 5
 
 float		ps_r2_lt_smooth				= 1.f;				// 1.f
+//float		ps_r2_dlights_clip			= 30.f;
 
 
 //- Mad Max

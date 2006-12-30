@@ -77,7 +77,8 @@ void CRender::render_main	(Fmatrix&	m_ViewProjection, bool _fportals)
 				// lightsource
 				light*			L				= (light*)	(spatial->dcast_Light());
 				VERIFY							(L);
-				Lights.add_light				(L);
+				float	lod		= L->get_LOD	();
+				if (lod>EPS)	Lights.add_light(L);
 				continue						;
 			}
 
