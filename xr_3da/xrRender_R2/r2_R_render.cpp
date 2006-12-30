@@ -25,7 +25,7 @@ void CRender::render_main	(Fmatrix&	m_ViewProjection, bool _fportals)
 			ViewBase,
 			Device.vCameraPosition,
 			m_ViewProjection,
-			CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA + 0
+			CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA + CPortalTraverser::VQ_FADE
 			//. disabled scissoring (HW.Caps.bScissor?CPortalTraverser::VQ_SCISSOR:0)	// generate scissoring info
 			);
 
