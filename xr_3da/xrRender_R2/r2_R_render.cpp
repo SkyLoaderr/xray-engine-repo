@@ -327,6 +327,7 @@ void CRender::Render		()
 	
 	// Sync-Point
 	Device.Statistic->RenderDUMP_Wait.Begin	();
+	if (1)
 	{
 		CTimer	T;							T.Start	();
 		BOOL	result						= FALSE;

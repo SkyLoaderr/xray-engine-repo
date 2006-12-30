@@ -65,6 +65,6 @@ void	light::vis_update			()
 	if (vis.visible)	{
 		vis.frame2test	=	frame	+ ::Random.randI(delay_large_min,delay_large_max);
 	} else {
-		vis.frame2test	=	frame	+ 1;
+		vis.frame2test	=	frame	+ 1; 
 	}
 }

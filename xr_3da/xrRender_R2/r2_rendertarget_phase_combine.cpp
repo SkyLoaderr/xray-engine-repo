@@ -31,9 +31,10 @@ void	CRenderTarget::phase_combine	()
 		//	u_stencil_optimize				(FALSE);
 		//	RCache.set_ColorWriteEnable		();
 		// }
-		CHK_DX(HW.pDevice->SetRenderState( D3DRS_ZENABLE,	FALSE				));
-		g_pGamePersistent->Environment.RenderSky			();
-		CHK_DX(HW.pDevice->SetRenderState( D3DRS_ZENABLE,	TRUE				));
+		RCache.set_ColorWriteEnable					();
+		CHK_DX(HW.pDevice->SetRenderState			( D3DRS_ZENABLE,	FALSE				));
+		g_pGamePersistent->Environment.RenderSky	();
+		CHK_DX(HW.pDevice->SetRenderState			( D3DRS_ZENABLE,	TRUE				));
 	}
 
 	// 
