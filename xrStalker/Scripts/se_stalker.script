@@ -25,6 +25,9 @@ function se_stalker:__init (section) super (section)
 
 	-- посещал ли сталкер хоть один smart_terrain
 	self.was_in_smart_terrain = false
+
+	--' Test for dima
+	self.dont_spawn_online = false
 end
 --------------------
 function se_stalker:get_ini()
@@ -55,6 +58,10 @@ function se_stalker:can_switch_offline ()
 end
 --------------------
 function se_stalker:can_switch_online ()
+	if self.dont_spawn_online == true then
+		return false
+	end
+
 	if self:get_job_online() ~= nil then
 		return self:get_job_online()
 	end

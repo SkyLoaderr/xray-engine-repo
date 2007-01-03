@@ -72,6 +72,11 @@ function motivator_binder:net_spawn(sobject)
 		return false
 	end
 
+	if self.object:spawn_ini():section_exist("dont_spawn_online") then
+		printf("!!!OFFLINE")
+		alife():object(self.object:id()).dont_spawn_online = true
+	end
+
 	db.add_obj(self.object)
 
 	-- Все CALLBACK-и ставить здесь:
@@ -272,7 +277,16 @@ function motivator_binder:update(delta)
 	end
 	self.object:info_add('name -- ' .. self.object:name())
 
-
+	--' Проверка потери жизни
+--[[
+	if lasttime == nil or
+	   game.get_game_time():diffSec(lasttime) > 1
+	then
+		printf("%f * %f", self.object.health, self.object.health - lasthealth)
+		lasthealth = self.object.health
+		lasttime = game.get_game_time()
+	end
+]]
 --[[	if not self.debug_smrt then
 		for k, v in pairs( db.smart_terrain_by_id ) do
 			self.debug_smrt = true

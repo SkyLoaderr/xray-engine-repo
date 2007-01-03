@@ -780,6 +780,10 @@ function gulag:print()
 	printf("***  %s -- State: %d -- Total population: %d/%d -- Non exclusive population: %d/%d",
 	         self.name, self.state, self:get_population(), self.capacity, self:get_non_exclusive_population(), self.capacity_non_exclusive)
 
+	if true then
+		return
+	end
+
 	printf("Resources:")
 	for k,v in pairs( self.Object ) do
 		printf("id: %d name: %s", k, self.npc_info[k].name)
