@@ -329,6 +329,12 @@ u32 	IReader::find_chunk		(u32 ID, BOOL* bCompressed)
 		dwType = r_u32();
 		dwSize = r_u32();
 		if ((dwType&(~CFS_CompressMark)) == ID) {
+			
+			VERIFY	((u32)Pos + dwSize <= (u32)Size);
+			static bool oops = false;
+			if (oops)
+				Msg		("Pos[%d],dwSize[%d],Size[%d],Compressed[%s]",Pos,dwSize,Size,bCompressed ? "TRUE" : "FALSE");
+
 			if (bCompressed) *bCompressed = dwType&CFS_CompressMark;
 			return dwSize;
 		}

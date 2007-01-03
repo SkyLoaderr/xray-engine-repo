@@ -232,7 +232,14 @@ void CSoundRender_Core::set_geometry_env(IReader* I)
 	names->close		();
 
 	// Load geometry
-	IReader*			geom	= I->open_chunk(1);
+	IReader*			geom_ch	= I->open_chunk(1);
+	
+	u8*	_data			= (u8*)xr_malloc(geom_ch->length());
+	
+	Memory.mem_copy		(_data, geom_ch->pointer(), geom_ch->length() );
+
+	IReader* geom		= xr_new<IReader>(_data, geom_ch->length(), 0);
+	
 	hdrCFORM			H;
 	geom->r				(&H,sizeof(hdrCFORM));
 	Fvector*	verts	= (Fvector*)geom->pointer();
@@ -253,7 +260,9 @@ void CSoundRender_Core::set_geometry_env(IReader* I)
 	geom_ENV			= xr_new<CDB::MODEL> ();
 	geom_ENV->build		(verts, H.vertcount, tris, H.facecount);
 #endif
-	geom->close			();
+	geom_ch->close			();
+	geom->close				();
+	xr_free					(_data);
 }
 
 void	CSoundRender_Core::verify_refsound		( ref_sound& S)
