@@ -219,7 +219,7 @@
 	<string id="ui_mm_newgame">
 		<text>New game</text>
 	</string>
-	<string id="ui_mm_no_vsync">
+	<string id="ui_mm_vsync">
 		<text>Верт. синхронизация</text>
 	</string>
 	<string id="ui_mm_novice">
