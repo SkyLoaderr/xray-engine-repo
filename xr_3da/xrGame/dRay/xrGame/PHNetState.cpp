@@ -190,6 +190,7 @@ void SPHNetState::net_Save(NET_Packet &P,const Fvector& min,const Fvector& max)
 template<typename src>
 void SPHNetState::read(src &P,const Fvector& min,const Fvector& max)
 {
+VERIFY( !(fsimilar(min.x,max.x)&&fsimilar(min.y,max.y)&&fsimilar(min.z,max.z)) );
 	linear_vel.set(0.f,0.f,0.f);
 	angular_vel.set(0.f,0.f,0.f);
 	force.set(0.f,0.f,0.f);
@@ -204,31 +205,37 @@ void SPHNetState::read(src &P,const Fvector& min,const Fvector& max)
 
 void SPHNetState::net_Load(NET_Packet &P,const Fvector& min,const Fvector& max)
 {
+VERIFY( !(fsimilar(min.x,max.x)&&fsimilar(min.y,max.y)&&fsimilar(min.z,max.z)) );
 	read(P,min,max);
 }
 void SPHNetState::net_Load(IReader &P,const Fvector& min,const Fvector& max)
 {
+VERIFY( !(fsimilar(min.x,max.x)&&fsimilar(min.y,max.y)&&fsimilar(min.z,max.z)) );
 	read(P,min,max);
 }
 SPHBonesData::SPHBonesData()
 {
 	bones_mask					=u64(-1);
 	root_bone					=0;
-	min.set(-100.f,-100.f,-100.f);
-	max.set(100.f,100.f,100.f);
+
+	Fvector						_mn, _mx;
+
+	_mn.set						(-100.f,-100.f,-100.f);
+	_mx.set						(100.f,100.f,100.f);
+	set_min_max					(_mn, _mx);
 }
 void SPHBonesData::net_Save(NET_Packet &P)
 {
 	P.w_u64			(bones_mask);
 	P.w_u16			(root_bone);
 	
-	P.w_vec3		(min);
-	P.w_vec3		(max);
+	P.w_vec3		(get_min());
+	P.w_vec3		(get_max());
 	P.w_u16			((u16)bones.size());//bones number;
 	PHNETSTATE_I	i=bones.begin(),e=bones.end();
 	for(;e!=i;i++)
 	{
-		(*i).net_Save(P,min,max);
+		(*i).net_Save(P,get_min(),get_max());
 	}
 	//	this comment is added by Dima (correct me if this is wrong)
 	//  if we call 2 times in a row StateWrite then we get different results
@@ -241,13 +248,23 @@ void SPHBonesData::net_Load(NET_Packet &P)
 	bones.clear					();
 	bones_mask					=P.r_u64();
 	root_bone					=P.r_u16();
-	P.r_vec3					(min);
-	P.r_vec3					(max);
+	Fvector						_mn, _mx;
+	P.r_vec3					(_mn);
+	P.r_vec3					(_mx);
+	set_min_max					(_mn, _mx);
+
 	u16 bones_number			=P.r_u16();//bones number /**/
 	for(int i=0;i<bones_number;i++)
 	{
 		SPHNetState	S;
-		S.net_Load(P,min,max);
+		S.net_Load(P,get_min(),get_max());
 		bones.push_back(S);
 	}
+}
+
+void SPHBonesData::set_min_max(const Fvector& _min, const Fvector& _max)
+{
+VERIFY( !(fsimilar(_min.x,_max.x)&&fsimilar(_min.y,_max.y)&&fsimilar(_min.z,_max.z)) );
+	m_min = _min;
+	m_max = _max;
 }
