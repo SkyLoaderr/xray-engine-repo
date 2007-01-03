@@ -81,7 +81,7 @@ BOOL CLevel::Load_GameSpecific_After()
 	m_level_sound_manager->Load			();
 
 	// loading sound environment
-	if (false && FS.exist(fn_game, "$level$", "level.snd_env")) {
+	if ( FS.exist(fn_game, "$level$", "level.snd_env")) {
 		IReader *F				= FS.r_open	(fn_game);
 		::Sound->set_geometry_env(F);
 		FS.r_close				(F);
