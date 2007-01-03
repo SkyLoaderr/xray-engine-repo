@@ -532,8 +532,9 @@ end
 function CRandomTask:actor_update()
 	for k,v in pairs(self.task_id_self_inited) do
 		if self.task_info[v].status == "normal" then
-			if xr_logic.pick_section_from_condlist(db.actor, db.actor, self.task_info[v].init_condition) ~= nil and
-			   self:check_task_props(v)
+			self:check_task_props(v)
+			if self.task_info[v].enabled_props == true and
+			   xr_logic.pick_section_from_condlist(db.actor, db.actor, self.task_info[v].init_condition) ~= nil
 			then
 				--' Нужно автоматически выдать квест
 				self:action_give_task(db.actor, nil, nil, self.task_info[v].yes_phrase_id)
@@ -719,6 +720,15 @@ function CRandomTask:register_target(obj)
 				end
 				table.insert(self.task_info[v].target_objects, obj.id)
 			end				
+		end
+	end
+end
+function CRandomTask:stats(obj)
+	printf("### TASK STATISTIC ###")
+	for k,v in pairs(self.task_info) do
+		if v.init_condition ~= nil then
+			printf("[%s] %s : %s", v.status, k, tostring(v.enabled_props))
+			print_table(v.init_condition)
 		end
 	end
 end
