@@ -167,7 +167,7 @@ public		:
 	virtual void	Execute	(LPCSTR args)
 	{
 		float v = float(atof(args));
-		if (v<min || v>max) InvalidSyntax();
+		if (v<(min-EPS) || v>(max+EPS) ) InvalidSyntax();
 		else	*value = v;
 	}
 	virtual void	Status	(TStatus& S)
