@@ -930,7 +930,8 @@ public:
 			Msg("for single-mode only");
 			return;
 		}
-		if(!Actor()->g_Alive()){
+		if(!g_actor || !Actor()->g_Alive())
+		{
 			Msg("cannot make saved game because actor is dead :(");
 			return;
 		}

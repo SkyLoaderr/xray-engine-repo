@@ -322,8 +322,10 @@ void CPhysicsShellHolder::PHSaveState(NET_Packet &P)
 		if(p.z>max.z)max.z=p.z;
 	}
 
-	///min.sub(2.f*EPS_S);
-	//max.add(2.f*EPS_S);
+	min.sub(2.f*EPS_L);
+	max.add(2.f*EPS_L);
+
+	VERIFY(!min.similar(max));
 	P.w_vec3(min);
 	P.w_vec3(max);
 
@@ -351,6 +353,9 @@ CPhysicsShellHolder::PHLoadState(IReader &P)
 
 	Fvector min=P.r_vec3();
 	Fvector max=P.r_vec3();
+	
+	VERIFY(!min.similar(max));
+
 	u16 bones_number=P.r_u16();
 	for(u16 i=0;i<bones_number;i++)
 	{

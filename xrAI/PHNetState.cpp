@@ -246,6 +246,7 @@ void SPHBonesData::net_Save(NET_Packet &P)
 void SPHBonesData::net_Load(NET_Packet &P)
 {
 	bones.clear					();
+
 	bones_mask					=P.r_u64();
 	root_bone					=P.r_u16();
 	Fvector						_mn, _mx;
@@ -264,7 +265,7 @@ void SPHBonesData::net_Load(NET_Packet &P)
 
 void SPHBonesData::set_min_max(const Fvector& _min, const Fvector& _max)
 {
-VERIFY( !(fsimilar(_min.x,_max.x)&&fsimilar(_min.y,_max.y)&&fsimilar(_min.z,_max.z)) );
+	VERIFY( !_min.similar(_max) );
 	m_min = _min;
 	m_max = _max;
 }
