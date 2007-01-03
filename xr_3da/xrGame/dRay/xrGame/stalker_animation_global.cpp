@@ -26,11 +26,11 @@ void CStalkerAnimationManager::global_play_callback(CBlend *blend)
 	CStalkerAnimationManager		&animation = object->animation();
 	CPropertyStorage				*setup_storage = animation.setup_storage();
 	if (setup_storage) {
+//		Msg							("%6d global set property id %d with value %s",Device.dwTimeGlobal,animation.property_id(),animation.property_value() ? "true" : "false");
 		setup_storage->set_property	(animation.property_id(),animation.property_value());
 #ifdef CLEAR_STORAGE_ON_CALLBACK
 		animation.setup_storage		(0);
 #endif
-		return;
 	}
 
 	animation.global().make_inactual();

@@ -30,7 +30,7 @@ void CStalkerAnimationManager::torso_play_callback	(CBlend *blend)
 
 	CPropertyStorage				*setup_storage = animation.setup_storage();
 	if (setup_storage) {
-//		Msg							("torso set property id %d with value %s",animation.property_id(),animation.property_value() ? "true" : "false");
+//		Msg							("%6d torso set property id %d with value %s",Device.dwTimeGlobal,animation.property_id(),animation.property_value() ? "true" : "false");
 		setup_storage->set_property	(animation.property_id(),animation.property_value());
 #ifdef CLEAR_STORAGE_ON_CALLBACK
 		animation.setup_storage		(0);

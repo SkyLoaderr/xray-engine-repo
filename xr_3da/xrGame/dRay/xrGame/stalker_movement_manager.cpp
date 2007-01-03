@@ -46,9 +46,16 @@ IC	void CStalkerMovementManager::setup_head_speed		()
 		m_head.speed			= m_danger_head_speed;
 }
 
-IC	void CStalkerMovementManager::add_velocity		(int mask, float linear, float compute_angular, float angular)
+IC	void CStalkerMovementManager::add_velocity			(int mask, float linear, float compute_angular, float angular)
 {
-	detail().add_velocity(mask,CDetailPathManager::STravelParams(linear,compute_angular,angular));
+	detail().add_velocity		(
+		mask,
+		CDetailPathManager::STravelParams(
+			linear,
+			compute_angular,
+			angular
+		)
+	);
 }
 
 IC	float CStalkerMovementManager::path_direction_angle	()

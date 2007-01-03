@@ -878,12 +878,16 @@ bool CAI_Stalker::critical_wound_external_conditions_suitable()
 	if (!agent_manager().member().registered_in_combat(this))
 		return						(false);
 
+//	Msg								("%6d executing critical hit",Device.dwTimeGlobal);
 	return							(true);
 }
 
 void CAI_Stalker::critical_wounded_state_start	()
 {
 	brain().CStalkerPlanner::m_storage.set_property(StalkerDecisionSpace::eWorldPropertyCriticallyWounded,true);
+	animation().setup_storage		(&brain().CStalkerPlanner::m_storage);
+	animation().property_id			(StalkerDecisionSpace::eWorldPropertyCriticallyWounded);
+	animation().property_value		(false);
 }
 
 bool CAI_Stalker::can_cry_enemy_is_wounded		() const

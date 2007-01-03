@@ -1467,9 +1467,6 @@ void CStalkerActionCriticalHit::initialize					()
 	object().CObjectHandler::set_goal		(eObjectActionIdle,object().best_weapon(),min_queue_size, max_queue_size, min_queue_interval, max_queue_interval);
 
 	object().sight().setup					(CSightAction(SightManager::eSightTypeCurrentDirection,true,true));
-	object().animation().setup_storage		(&object().brain().CStalkerPlanner::m_storage);
-	object().animation().property_id		(eWorldPropertyCriticallyWounded);
-	object().animation().property_value		(false);
 	object().sound().play					(eStalkerSoundInjuring);
 }
 
@@ -1477,8 +1474,11 @@ void CStalkerActionCriticalHit::finalize					()
 {
 	inherited::finalize						();
 
-	if (&object().brain().CStalkerPlanner::m_storage == object().animation().setup_storage())
+	if (&object().brain().CStalkerPlanner::m_storage == object().animation().setup_storage()) {
+		VERIFY								(!object().g_Alive() || !object().brain().CStalkerPlanner::m_storage.property(eWorldPropertyCriticallyWounded));
+//		Msg									("%6d finalizing critical hit state",Device.dwTimeGlobal);
 		object().animation().setup_storage	(0);
+	}
 
 	m_storage->set_property					(eWorldPropertyCriticallyWounded,false);
 }
