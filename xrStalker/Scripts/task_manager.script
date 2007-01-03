@@ -363,35 +363,35 @@ function CRandomTask:task_complete(p1, p2)
 
 	if p2 == 1 then
 		local sel_task = self.task_info[self.active_task_by_type[p1]]
-		if string.gfind(p1, "eliminate_lager") then
+		if string.find(p1, "eliminate_lager") ~= nil then
 			local oo = alife():object(sel_task.selected_target)
 			if oo and oo.gulag:get_population_comed() == 0 then
 				self.task_info[self.active_task_by_type[p1]].status = "completed"
 				return true
 			end
-		elseif string.gfind(p1, "defend_lager") then
+		elseif string.find(p1, "defend_lager") ~= nil then
 			--'  вест выполнен потому что рейд прекратилс€
 			if xr_gulag.getGulagState(sel_task.defend_target) == 0 then
 				self.task_info[self.active_task_by_type[p1]].status = "completed"
 				return true
 			end
-		elseif string.gfind(p1, "kill_stalker") then
+		elseif string.find(p1, "kill_stalker") ~= nil then
 			local oo = alife():object(sel_task.selected_target)
 			if oo and oo:alive() == false then
 				self.task_info[self.active_task_by_type[p1]].status = "completed"
 				return true
 			end
-		elseif string.gfind(p1, "artefact") then			
+		elseif string.find(p1, "artefact") ~= nil then
 			if db.actor:object(sel_task.target) ~= nil then
 				self.task_info[self.active_task_by_type[p1]].status = "completed"
 				return true
 			end
-		elseif string.gfind(p1, "monster_part") then			
+		elseif string.find(p1, "monster_part") ~= nil then
 			if db.actor:object(sel_task.target) ~= nil then
 				self.task_info[self.active_task_by_type[p1]].status = "completed"
 				return true
 			end
-		elseif string.gfind(p1, "find_item") then
+		elseif string.find(p1, "find_item") ~= nil then
 			if db.actor:object(sel_task.target) ~= nil then
 				self.task_info[self.active_task_by_type[p1]].status = "completed"
 				return true
