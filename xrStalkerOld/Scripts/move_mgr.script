@@ -597,7 +597,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		self:update()
 	else
 		abort("object '%s': path_walk '%s', index %d: cannot find corresponding point(s) on path_look '%s'",
-			self.object:name(), self.path_walk, index, self.path_look)
+			self.object:name(), tostring(self.path_walk), tostring(index), tostring(self.path_look))
 	end
 end
 
