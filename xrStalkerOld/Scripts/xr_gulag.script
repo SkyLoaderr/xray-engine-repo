@@ -477,7 +477,7 @@ function gulag:can_obj_begin_job( obj_id, obj )
 --'		if obj == true then
 --'			return self.npc_info[obj_id].se_obj.m_game_vertex_id == job.game_vertex_id
 --'		else
-			return self:distance_to_job_location(obj_id, job)
+			return self:distance_to_job_location(obj_id, job) < (job.position_threshold or job_position_threshold)
 --'job.level_id == alife():level_id() and
 --'obj:position():distance_to( job.position ) < ( job.position_threshold or job_position_threshold )
 --'		end
