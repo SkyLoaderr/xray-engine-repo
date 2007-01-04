@@ -131,7 +131,7 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 	// if object is actor and he/she sees us
 	if (actor) {
 		if (smart_cast<const CActor*>(object)->memory().visual().visible_now(m_object))
-			penalty			-= 900.f;
+			penalty			-= 1900.f;
 	}
 	else {
 		// if object is npc and it sees us
