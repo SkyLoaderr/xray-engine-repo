@@ -36,26 +36,25 @@ bool CPHAICharacter::TryPosition(Fvector pos,bool exact_state){
 	Fvector	displace;displace.sub(pos,current_pos);
 	float	disp_mag=displace.magnitude();
 	
-	if(fis_zero(disp_mag)||fis_zero(Device.fTimeDelta))return true;
-	const	u32		max_steps=15;
-	const	float	fmax_steps=float(max_steps);
-	float	fsteps_num=1.f;
-	u32		steps_num=1;
-	float	disp_pstep=FootRadius();
-	if(disp_pstep<disp_mag)
+	if( fis_zero( disp_mag ) || fis_zero( Device.fTimeDelta ) ) 
+														return true ;
+	const	u32		max_steps = 15 ;
+	const	float	fmax_steps = float ( max_steps ) ;
+	float	fsteps_num = 1.f ;
+	u32		steps_num = 1 ;
+	float	disp_pstep = FootRadius ( );
+	float	rest = 0.f;
+
+	float	parts = disp_mag / disp_pstep ;
+	fsteps_num = floor ( parts );
+	steps_num = iFloor ( parts );
+	if( steps_num > max_steps )
 	{
-		float	parts	=disp_mag/disp_pstep;
-		fsteps_num=ceil(parts);
-		steps_num=iCeil(parts);
-		if(steps_num>max_steps)
-		{
-			steps_num	=max_steps	;
-			fsteps_num	=fmax_steps	;
-			disp_pstep	=disp_mag/fsteps_num;
-		}
-	}else{
-		disp_pstep=disp_mag;
+		steps_num	= max_steps	;
+		fsteps_num	= fmax_steps	;
+		disp_pstep	= disp_mag / fsteps_num ;
 	}
+	rest = disp_mag - fsteps_num * disp_pstep ;
 
 	Fvector	vel;vel.mul(displace,disp_pstep/fixed_step/disp_mag);
 	bool	ret=true;
@@ -72,23 +71,34 @@ bool CPHAICharacter::TryPosition(Fvector pos,bool exact_state){
 			break;
 		}
 	}
+	
+	vel.mul(displace,rest/fixed_step/disp_mag);
+	SetVelocity(vel);
+	Enable();
+	ret = step_single(fixed_step);
+
+
 	dBodySetGravityMode(m_body,save_gm);
 	SetVelocity(cur_vel);
 	Fvector	pos_new;GetPosition(pos_new);
+
+#ifdef DEBUG
+	Fvector	dif;dif .sub( pos, pos_new );
+	float	dif_m = dif.magnitude();
+	if(ret&&dif_m>EPS_L)
+	{
+		Msg("dif vec %f,%f,%f \n",dif.x,dif.y,dif.z);
+		Msg("dif mag %f \n",dif_m);
+	}
+#endif
+
 	SetPosition(pos_new);
 	m_last_move.sub(pos_new,current_pos).mul(1.f/Device.fTimeDelta);
 	m_body_interpolation.UpdatePositions();
 	m_body_interpolation.UpdatePositions();
 	if(ret)
 		Disable();
-	/*
-	dVectorSub(cast_fp(m_last_move),cast_fp(pos),dBodyGetPosition(m_body));
-	m_last_move.mul(1.f/Device.fTimeDelta);
-	SetPosition(pos);
-	m_body_interpolation.UpdatePositions();
-	m_body_interpolation.UpdatePositions();
-	Disable();
-	*/
+
 	return ret;
 }
 

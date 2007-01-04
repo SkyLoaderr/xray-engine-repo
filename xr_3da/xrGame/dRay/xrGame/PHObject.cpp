@@ -149,13 +149,13 @@ bool	CPHObject::step_single(dReal	step)
 	bool ret=!m_island.IsObjGroun	();
 	if(ret)
 	{
-		PhTune							(step);
+		//PhTune							(step);
 		IslandStep						(step);
-		ret		=!m_island.IsObjGroun	();
 		reinit_single					();
-		PhDataUpdate					(step);
+		//PhDataUpdate					(step);
 		spatial_move					();
 		CollideDynamics					();
+		ret		=!m_island.IsObjGroun	();
 	}	
 	reinit_single						();
 	return	ret							;
