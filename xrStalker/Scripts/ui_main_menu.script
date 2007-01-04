@@ -140,25 +140,25 @@ end
 
 function main_menu:OnButton_new_novice_game()
 	local console = get_console()
-	console:execute("g_game_difficulty novice")
+	console:execute("g_game_difficulty gd_novice")
 	self:StartGame()	
 end
 
 function main_menu:OnButton_new_stalker_game()
 	local console = get_console()
-	console:execute("g_game_difficulty stalker")
+	console:execute("g_game_difficulty gd_stalker")
 	self:StartGame()
 end
 
 function main_menu:OnButton_new_veteran_game()
 	local console = get_console()
-	console:execute("g_game_difficulty veteran")
+	console:execute("g_game_difficulty gd_veteran")
 	self:StartGame()
 end
 
 function main_menu:OnButton_new_master_game()
 	local console = get_console()
-	console:execute("g_game_difficulty master")
+	console:execute("g_game_difficulty gd_master")
 	self:StartGame()
 end
 
