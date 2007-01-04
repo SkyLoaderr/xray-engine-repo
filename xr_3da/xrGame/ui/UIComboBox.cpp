@@ -231,7 +231,7 @@ bool CUIComboBox::OnMouse(float x, float y, EUIMessages mouse_action){
 	switch (m_eState){
 		case LIST_EXPANDED:			
 
-			if ((!bCursorOverWindow) && mouse_action == WINDOW_LBUTTON_DOWN)
+			if ( /* (!bCursorOverWindow) && */ mouse_action == WINDOW_LBUTTON_DOWN)
 			{
                 ShowList(false);
 				return true;
