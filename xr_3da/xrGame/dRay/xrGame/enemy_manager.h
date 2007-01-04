@@ -36,6 +36,7 @@ private:
 	u32							m_last_enemy_change;
 
 private:
+	IC		bool				enemy_inertia		(const CEntityAlive *previous_enemy) const;
 			bool				need_update			(const bool &only_wounded) const;
 			void				process_wounded		(bool &only_wounded);
 			bool				change_from_wounded	(const CEntityAlive *current, const CEntityAlive *previous) const;

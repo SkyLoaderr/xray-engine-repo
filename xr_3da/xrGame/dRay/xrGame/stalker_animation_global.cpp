@@ -34,10 +34,8 @@ MotionID CStalkerAnimationManager::global_critical_hit		()
 	if (!object().critically_wounded())
 		return				(MotionID());
 
-	if (!object().best_weapon()) {
-		VERIFY				(global().animation());
+	if (global().animation())
 		return				(global().animation());
-	}
 
 	CWeapon					*weapon = smart_cast<CWeapon*>(object().inventory().ActiveItem());
 	VERIFY2					(

@@ -878,6 +878,7 @@ bool CAI_Stalker::critical_wound_external_conditions_suitable()
 		return						(false);
 
 //	Msg								("%6d executing critical hit",Device.dwTimeGlobal);
+	animation().global().make_inactual	();
 	return							(true);
 }
 

@@ -34,7 +34,9 @@
 #	include "ai_debug.h"
 #endif // MASTER_GOLD
 
-static const u32 ENEMY_INERTIA_TIME	= 2000;
+static const u32 ENEMY_INERTIA_TIME_TO_SOMEBODY	= 3000;
+static const u32 ENEMY_INERTIA_TIME_TO_ACTOR	= 0;
+static const u32 ENEMY_INERTIA_TIME_FROM_ACTOR	= 6000;
 
 #ifdef _DEBUG
 bool g_enemy_manager_second_update	 = false;
@@ -264,6 +266,17 @@ bool CEnemyManager::change_from_wounded					(const CEntityAlive *current, const 
 	return						(true);
 }
 
+IC	bool CEnemyManager::enemy_inertia					(const CEntityAlive *previous_enemy) const
+{
+	if (m_selected->CLS_ID == CLSID_OBJECT_ACTOR)
+		return					(Device.dwTimeGlobal <= (m_last_enemy_change + ENEMY_INERTIA_TIME_TO_ACTOR));
+
+	if (previous_enemy && previous_enemy->CLS_ID == CLSID_OBJECT_ACTOR)
+		return					(Device.dwTimeGlobal <= (m_last_enemy_change + ENEMY_INERTIA_TIME_FROM_ACTOR));
+
+	return						(Device.dwTimeGlobal <= (m_last_enemy_change + ENEMY_INERTIA_TIME_TO_SOMEBODY));
+}
+
 void CEnemyManager::on_enemy_change						(const CEntityAlive *previous_enemy)
 {
 	VERIFY						(previous_enemy);
@@ -283,8 +296,8 @@ void CEnemyManager::on_enemy_change						(const CEntityAlive *previous_enemy)
 		m_last_enemy_change		= Device.dwTimeGlobal;
 		return;
 	}
-	
-	if (Device.dwTimeGlobal <= (m_last_enemy_change + ENEMY_INERTIA_TIME)) {
+
+	if (enemy_inertia(previous_enemy)) {
 		m_selected				= previous_enemy;
 		return;
 	}
