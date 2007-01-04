@@ -1,40 +1,17 @@
 phrase = {
 	intro = {},
-	trade_info = {},
-	action_info = {},
 	cool_info = {},
 	help_thanks = {}
 	}
 
 local phrase_ini = ini_file("misc\\dialog_manager.ltx")
 
-local intro_id = 0
-local cool_info_id = 0
-local action_info_id = 0
-local trade_info_id = 0
-local trade_info_price = {}
-local help_thanks_id = 0
+local intro_id = 100
 local phrase_table_filled = false
 
-function get_id(type)
-	if type == "intro" then
-		intro_id = intro_id + 1
-		return intro_id
-	elseif type == "cool_info" then
-		cool_info_id = cool_info_id + 1
-		return cool_info_id
-	elseif type == "action_info" then
-		action_info_id = action_info_id + 1
-		return action_info_id
-	elseif type == "trade_info" then
-		trade_info_id = trade_info_id + 1
-		return trade_info_id
-	elseif type == "help_thanks" then
-		help_thanks_id = help_thanks_id + 1
-		return help_thanks_id
-	else
-		abort("Dialog manager error: unknown GET_ID() type")
-	end
+function get_id()
+	intro_id = intro_id + 1
+	return intro_id
 end
 
 -- Необходимо сформировать набор предикатов  table[string_id] = predicate()
@@ -87,6 +64,9 @@ function fill_phrase_table()
 		if phrase_ini:line_exist(id, "article_info") then
 			tt.article_info = parse_names(phrase_ini:r_string(id, "article_info"))
 		end					
+		if phrase_ini:line_exist(id, "treasure") then
+			tt.treasure = phrase_ini:r_string(id, "treasure")
+		end					
 		if phrase_ini:line_exist(id, "wounded") then
 			tt.wounded = phrase_ini:r_string(id, "wounded")
 		else
@@ -94,9 +74,6 @@ function fill_phrase_table()
 		end
 		table.insert(phrase[category], tt)
 	end
-	
-	-- Надо отсортировать phrase.trade_info по уменьшению стоимости.
-	table.sort(phrase.trade_info, function(a,b) return a.price > b.price end)
 end
 
 -- Необходимо создать стартовый диалог, с разветвлением на третьем уровне, где каждая фраза будет иметь
@@ -108,11 +85,11 @@ function init_intro_dialog(dlg)
 	end
 
 	local phr = dlg:AddPhrase("",0,-1,-10000)
-		phr = dlg:AddPhrase("",get_id("intro"),0,-10000)
+		phr = dlg:AddPhrase("",1,0,-10000)
 
 	local k,v = 0,0
 	for k,v in pairs(phrase.intro) do
-		v.phr_id = get_id("intro")
+		v.phr_id = get_id()
 		phr = dlg:AddPhrase(v.name, v.phr_id, 1, -10000)
 		
 		if phr then
@@ -125,40 +102,34 @@ function init_intro_dialog(dlg)
 			end
 		end
 	end
---	phrase_script:AddPrecondition("zzz")
---	phrase_script:AddHasInfo("zzz")
---	phrase_script:AddDontHasInfo("zzz")
---	phrase_script:AddGiveInfo("zzz")
---	phrase_script:AddDisableInfo("zzz")
---	phrase_script:AddAction("zzz")
 end
 
 -- Необходимо создать диалог актера, с разветвлением на втором уровне, где каждая фраза будет иметь
 -- одну и ту же функцию в прекондишне.
 function init_cool_info_dialog(dlg)
-	if phrase_table_filled == false then
+	if phrase_table_filled == false  then
 		fill_phrase_table()
 		phrase_table_filled = true
 	end
 
 	local phr = dlg:AddPhrase("dm_general_cool_info",0,-1,-10000)
 	
-	local phr_def = dlg:AddPhrase("dm_general_cool_info_no_more",get_id("cool_info"),0,-10000)
+	local phr_def = dlg:AddPhrase("dm_general_cool_info_no_more",1,0,-10000)
 	local phrase_script = phr_def:GetPhraseScript()
 	phrase_script:AddPrecondition("dialog_manager.precondition_cool_info_no_more")
 
 	local k,v,kk,vv = 0,0,0,0
 	for k,v in pairs(phrase.cool_info) do
-		local last_id = get_id("cool_info")
-		v.phr_id = last_id
-		phr = dlg:AddPhrase(v.name,last_id,0,-10000)
+		v.phr_id = get_id()
+		phr = dlg:AddPhrase(v.name,v.phr_id,0,-10000)
 		if phr then
 			local phrase_script = phr:GetPhraseScript()
 			phrase_script:AddPrecondition("dialog_manager.precondition_cool_info")
+			phrase_script:AddAction("dialog_manager.cool_info_treasure")
 			phrase_script:AddAction("dialog_manager.phrase_action_cool_info")
 			
 			if v.article_info ~= nil then
-				phr = dlg:AddPhrase("",get_id("cool_info"),last_id,-10000)		
+				phr = dlg:AddPhrase("",get_id(),v.phr_id,-10000)		
 				phrase_script = phr:GetPhraseScript()
 								
 				for kk,vv in pairs(v.article_info) do
@@ -167,82 +138,6 @@ function init_cool_info_dialog(dlg)
 			end
 		end
 	end
-end
-
--- Необходимо создать диалог актера, с разветвлением на втором уровне, где каждая фраза будет иметь
--- одну и ту же функцию в прекондишне.
-function init_action_info_dialog(dlg)
-	if phrase_table_filled == false then
-		fill_phrase_table()
-		phrase_table_filled = true
-	end
-
-	local phr = dlg:AddPhrase("dm_general_action_info",0,-1,-10000)
-	
-	local k,v,kk,vv = 0,0,0,0
-	for k,v in pairs(phrase.action_info) do
-		local last_id = get_id("action_info")
-		v.phr_id = last_id
-		phr = dlg:AddPhrase(v.name,last_id,0,-10000)		
-		if phr then
-			local phrase_script = phr:GetPhraseScript()
-			phrase_script:AddPrecondition("dialog_manager.precondition_action_info")
-			phrase_script:AddAction("dialog_manager.phrase_action_action_info")
-			
-			if v.article_info ~= nil then
-				phr = dlg:AddPhrase("",get_id("action_info"),last_id,-10000)		
-				phrase_script = phr:GetPhraseScript()
-				
-				local article_info = parse_names(v.article_info)
-				for kk,vv in pairs(article_info) do
-					phrase_script:AddGiveInfo(vv)
-				end
-			end
-		end
-	end
-end
-
--- Необходимо создать диалог актера, с разветвлением на втором уровне, где каждая фраза будет иметь
--- одну и ту же функцию в прекондишне.
-function init_trade_info_dialog(dlg)
-	if phrase_table_filled == false then
-		fill_phrase_table()
-		phrase_table_filled = true
-	end
-
-	local phr = dlg:AddPhrase("dm_general_trade_info",0,-1,-10000)
-	local phrase_script = phr:GetPhraseScript()
-	phrase_script:AddAction("dialog_manager.action_trade_info_init")
-
-	phr = dlg:AddPhrase("dm_general_trade_info_caption",get_id("trade_info"),0,-10000)
-	phrase_script = phr:GetPhraseScript()
-	phrase_script:AddAction("dialog_manager.action_trade_info_show")
-	phrase_script:AddPrecondition("dialog_manager.precondition_can_trade_info")
-		
-	phr = dlg:AddPhrase("dm_general_trade_info_hasno",get_id("trade_info"),0,-10000)
-	phrase_script = phr:GetPhraseScript()
-	phrase_script:AddPrecondition("dialog_manager.precondition_cannot_trade_info")
-	
-	-- Изначально считаем что каждый сталкер знает ВСЮ информацию. Не забыть потом
-	-- вставить инфопоршн, что сталкер сам знает информацию
-	local k,v,kk,vv = 0,0,0,0
-	for k,v in pairs(phrase.trade_info) do
-		local phrase_id = get_id("trade_info")
-		phr = dlg:AddPhrase(v.name,phrase_id,1,-10000)		
-		if phr then
-			phrase_script = phr:GetPhraseScript()
-			phrase_script:AddPrecondition("dialog_manager.precondition_trade_info")
-			phrase_script:AddAction("dialog_manager.action_transfer_money")
-			trade_info_price[phrase_id] = v.price
-			
-			if v.article_info ~= nil then
-				for kk,vv in pairs(v.article_info) do
-					phrase_script:AddGiveInfo(vv)
-				end
-			end
-		end
-	end
-	dlg:AddPhrase("dm_general_trade_info_nothing",get_id("trade_info"),1,-10000)
 end
 
 -- Диалоги помощи раненным
@@ -258,7 +153,7 @@ function init_help_wounded_medkit_dialog(dlg)
 	
 	local k,v = 0,0
 	for k,v in pairs(phrase.help_thanks) do
-		phr = dlg:AddPhrase(v.name,get_id("help_thanks"),0,-10000)		
+		phr = dlg:AddPhrase(v.name,get_id(),0,-10000)		
 		if phr then
 			phrase_script = phr:GetPhraseScript()
 			phrase_script:AddPrecondition("dialog_manager.precondition_help_thanks")
@@ -269,56 +164,6 @@ end
 local call_count, max_count = 0,0
 local tmp_tbl = {}
 local show_tbl = {}
-function action_trade_info_init(npc, actor)
-	local value, number, max_number = 0,0,0
-	local k,v = 0,0
-	max_count = 0
-	show_tbl = {}
-	for k,v in pairs(phrase.trade_info) do	
-		value, number = calculate_predicate(npc, v)
-		max_count = max_count + 1
-		if value == true then
-			table.insert(show_tbl, k)
-			-- отмечаем что игрок может купить данный товар
-			tmp_tbl[max_count] = true
-		elseif calculate_predicate(npc, v, {no_price = true}) == true then
-			table.insert(show_tbl, k)
-		end		
-	end
-	--printf("TRADE INIT [%s] [%s]", tostring(call_count), tostring(max_count))
-end
-function action_trade_info_show(npc, actor)
-	local k,v = 0,0
-	for k,v in pairs(show_tbl) do
-		db.actor:give_talk_message(game.translate_string(phrase.trade_info[v].name), "ui\\ui_icons_task", Frect():set(350,150,50,50),"iconed_trade_info")
-	end
-end
-function precondition_trade_info(actor, npc)
-	call_count = call_count + 1
-	--printf("TRADE Prec [%s] [%s]", tostring(call_count), tostring(max_count))
-	if call_count < max_count then
-		-- При повторном вызове прекондишна (счетчик вызовов не равен количеству сработанных предикатов) 
-		-- всегда возвращаем FALSE, кроме случая, что счетчик равен ранее запомненному порядковому номеру вызова.
-		return tmp_tbl[call_count] == true
-	elseif call_count >= max_count then
-		-- Как только счетчик дошел до конца - обнуляем все счетчики. Выбор произведен.
-		local return_value = tmp_tbl[call_count] == true
-		tmp_tbl = {}
-		call_count, max_count = 0,0
-		return return_value
-	end
-	abort("Dialog manager error: unexpected programm point. Trade Info")
-end
-function precondition_can_trade_info(npc, actor)
-	return table.getn(show_tbl) > 0
-end
-function precondition_cannot_trade_info(npc, actor)
-	return table.getn(show_tbl) == 0
-end
-function action_transfer_money(actor, npc, p1, p2)
-	printf("TRADE TRANSFER MONEY [%s] [%s] [%s] [%s]", actor:name(), npc:name(), tostring(p1), tostring(p2))
-	dialogs.relocate_money(npc, trade_info_price[p2], "out")
-end
 
 selected_phrase_by_id = {
 	intro = {},
@@ -332,8 +177,15 @@ end
 function phrase_action_cool_info(npc, actor, p1, p2)
 	phrase_action(npc, actor, selected_phrase_by_id.cool_info, p2, true)
 end
-function phrase_action_action_info(npc, actor, p1, p2)	
-	phrase_action(npc, actor, selected_phrase_by_id.action_info, p2)
+function cool_info_treasure(npc, actor, p1, p2)
+	for k,v in pairs(phrase.cool_info) do
+		if v.phr_id == p2 then
+			if v.treasure == nil then
+				return
+			end
+			treasure_manager.get_treasure_manager():give_treasure(v.treasure)
+		end
+	end
 end
 
 function phrase_action(npc, actor, sel_tbl, p2, one_time)
@@ -364,9 +216,6 @@ function precondition_cool_info_no_more(npc, actor)
 		return true
 	end 
 	return false
-end
-function precondition_action_info(npc, actor)
-	return precondition(npc, actor, phrase.action_info, selected_phrase_by_id.action_info)
 end
 function precondition_help_thanks(npc, actor)
 	return precondition(npc, actor, phrase.help_thanks)
@@ -538,11 +387,6 @@ function save(npc, p)
 	else
 		p:w_s16(selected_phrase_by_id.cool_info[npc:id()].phrase)
 	end
-	if selected_phrase_by_id.action_info[npc:id()] == nil then
-		p:w_s16(-1)
-	else
-		p:w_s16(selected_phrase_by_id.action_info[npc:id()].phrase)
-	end	
 end
 function load(npc, reader)
 	if selected_phrase_by_id == nil then
@@ -563,12 +407,6 @@ function load(npc, reader)
 		selected_phrase_by_id.cool_info[npc:id()] = {phrase = flag, count = 0}
 	else
 		selected_phrase_by_id.cool_info[npc:id()] = nil
-	end
-	flag = reader:r_s16()
-	if flag ~= -1 then
-		selected_phrase_by_id.action_info[npc:id()] = {phrase = flag, count = 0}
-	else
-		selected_phrase_by_id.action_info[npc:id()] = nil
 	end
 end
 
