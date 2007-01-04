@@ -33,7 +33,7 @@ using namespace StalkerMovement;
 
 extern bool show_restrictions(CRestrictedObject *object);
 
-const float BAD_PATH_ANGLE			= PI_DIV_2;
+const float BAD_PATH_ANGLE			= PI_DIV_2 - PI_DIV_8;
 const float BAD_PATH_DISTANCE_CHECK	= 2.f;
 
 IC	void CStalkerMovementManager::setup_head_speed		()
