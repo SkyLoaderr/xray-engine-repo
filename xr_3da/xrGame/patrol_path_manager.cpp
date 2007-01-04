@@ -30,7 +30,7 @@ static void show_restrictions	(LPCSTR restrictions)
 		Msg				("     %s",_GetItem(restrictions,i,temp));
 }
 
-bool show_restrictions(CRestrictedObject *object)
+bool show_restrictions			(CRestrictedObject *object)
 {
 	Msg					("DEFAULT OUT RESTRICTIONS :");
 	show_restrictions	(*Level().space_restriction_manager().default_out_restrictions() ? *Level().space_restriction_manager().default_out_restrictions() : "");
