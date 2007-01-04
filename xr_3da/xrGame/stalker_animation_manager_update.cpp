@@ -20,7 +20,7 @@ IC	void CStalkerAnimationManager::play_delayed_callbacks	()
 		return;
 
 	m_call_script_callback	= false;
-	object().callback(GameObject::eScriptAnimation)	();
+	object().callback		(GameObject::eScriptAnimation)	();
 }
 
 IC	bool CStalkerAnimationManager::script_callback			() const
@@ -31,17 +31,17 @@ IC	bool CStalkerAnimationManager::script_callback			() const
 	return					(object().callback(GameObject::eScriptAnimation));
 }
 
-IC	bool CStalkerAnimationManager::need_update_tracks		() const
+IC	bool CStalkerAnimationManager::need_update				() const
 {
 	if (script_callback())
 		return				(true);
 
-	return					(!!object().animation().setup_storage());
+	return					(non_script_need_update());
 }
 
 IC	void CStalkerAnimationManager::update_tracks			()
 {
-	if (!need_update_tracks())
+	if (!need_update())
 		return;
 
 	m_skeleton_animated->UpdateTracks	();

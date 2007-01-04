@@ -221,7 +221,7 @@ void add_animation_stats	(const shared_str &animation_id, const shared_str &anim
 	add_blend					(animation_id,animation_set_id,visual_id,blend_id);
 }
 
-void CStalkerAnimationManager::add_animation_stats	(const std::pair<LPCSTR,LPCSTR> &animation_id, const std::pair<LPCSTR,LPCSTR> *blend_id, bool just_started)
+void CStalkerAnimationManager::add_animation_stats	(const ANIMATION_ID &animation_id, const BLEND_ID *blend_id, bool just_started)
 {
 	::add_animation_stats		(animation_id.first,animation_id.second,*object().Visual()->dbg_name,blend_id,just_started);
 }

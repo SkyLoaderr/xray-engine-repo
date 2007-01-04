@@ -530,6 +530,7 @@ private:
 			void						on_enemy_wounded_or_killed					(const CAI_Stalker *wounded_or_killed);
 			void						notify_on_wounded_or_killed					(CObject *object);
 			void						notify_on_wounded_or_killed					();
+			void	xr_stdcall			remove_critical_hit							();
 //////////////////////////////////////////////////////////////////////////
 
 public:

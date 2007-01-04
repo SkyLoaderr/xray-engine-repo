@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "CharacterPhysicsSupport.h"
+
 IC	CStalkerAnimationManager::EBodyState CStalkerAnimationManager::body_state	() const
 {
 	return					(object().movement().body_state());

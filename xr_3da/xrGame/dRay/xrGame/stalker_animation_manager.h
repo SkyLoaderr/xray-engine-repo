@@ -12,8 +12,6 @@
 #include "stalker_animation_script.h"
 #include "ai_monster_space.h"
 #include "graph_engine_space.h"
-#include "CharacterPhysicsSupport.h"
-#define CLEAR_STORAGE_ON_CALLBACK
 
 class CMotionDef;
 class CBlend;
@@ -30,6 +28,8 @@ public:
 	typedef MonsterSpace::EBodyState							EBodyState;
 	typedef GraphEngineSpace::_solver_value_type				_value_type;
 	typedef GraphEngineSpace::_solver_condition_type			_condition_type;
+	typedef CStalkerAnimationPair::BLEND_ID						BLEND_ID;
+	typedef BLEND_ID											ANIMATION_ID;
 
 private:
 	const CStalkerAnimationData		*m_data_storage;
@@ -67,11 +67,6 @@ private:
 	CMissile						*m_missile;
 
 private:
-	CPropertyStorage				*m_storage;
-	_condition_type					m_property_id;
-	_value_type						m_property_value;
-
-private:
 	bool							m_call_script_callback;
 
 #ifdef USE_HEAD_BONE_PART_FAKE
@@ -107,6 +102,9 @@ private:
 			MotionID				legs_no_move_animation	();
 
 private:
+			MotionID				global_critical_hit		();
+
+private:
 			void					assign_bone_callbacks	();
 			MotionID				assign_global_animation	();
 			MotionID				assign_head_animation	();
@@ -114,9 +112,12 @@ private:
 			MotionID				assign_legs_animation	();
 			MotionID				assign_script_animation	();
 
+public:
+	IC		bool					non_script_need_update	() const;
+
 private:
 	IC		bool 					script_callback			() const;
-	IC		bool					need_update_tracks		() const;
+	IC		bool					need_update				() const;
 	IC		void 					update_tracks			();
 
 private:
@@ -161,17 +162,9 @@ public:
 	IC		CStalkerAnimationPair	&script					();
 	IC		CAI_Stalker				&object					() const;
 
-public:
-	IC		void					setup_storage			(CPropertyStorage *storage);
-	IC		CPropertyStorage		*setup_storage			() const;
-	IC		_condition_type			property_id				() const;
-	IC		void					property_id				(_condition_type value);
-	IC		_value_type				property_value			() const;
-	IC		void					property_value			(_value_type value);
-
 #ifdef DEBUG
 private:
-			void					add_animation_stats		(const std::pair<LPCSTR,LPCSTR> &animation_id, const std::pair<LPCSTR,LPCSTR> *blend_id, bool just_started);
+			void					add_animation_stats		(const ANIMATION_ID &animation_id, const BLEND_ID *blend_id, bool just_started);
 public:
 			void					add_animation_stats		();
 #endif // DEBUG

@@ -41,13 +41,11 @@
 #include "../../RadioactiveZone.h"
 #include "../../restricted_object.h"
 #include "../../ai_object_location.h"
-
 #include "../../missile.h"
 #include "../../phworld.h"
-
 #include "../../stalker_animation_names.h"
-
 #include "../../agent_corpse_manager.h"
+#include "../../CharacterPhysicsSupport.h"
 
 using namespace StalkerSpace;
 
@@ -860,7 +858,7 @@ bool CAI_Stalker::critical_wound_external_conditions_suitable()
 	if (movement().body_state() != eBodyStateStand)
 		return						(false);
 
-	if (animation().setup_storage())
+	if (animation().non_script_need_update())
 		return						(false);
 
 	CWeapon							*active_weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
@@ -883,12 +881,34 @@ bool CAI_Stalker::critical_wound_external_conditions_suitable()
 	return							(true);
 }
 
+void CAI_Stalker::remove_critical_hit			()
+{
+	brain().CStalkerPlanner::m_storage.set_property	(
+		StalkerDecisionSpace::eWorldPropertyCriticallyWounded,
+		false
+	);
+
+	animation().global().remove_callback(
+		CStalkerAnimationPair::CALLBACK_ID(
+			this,
+			&CAI_Stalker::remove_critical_hit
+		)
+	);
+}
+
 void CAI_Stalker::critical_wounded_state_start	()
 {
-	brain().CStalkerPlanner::m_storage.set_property(StalkerDecisionSpace::eWorldPropertyCriticallyWounded,true);
-	animation().setup_storage		(&brain().CStalkerPlanner::m_storage);
-	animation().property_id			(StalkerDecisionSpace::eWorldPropertyCriticallyWounded);
-	animation().property_value		(false);
+	brain().CStalkerPlanner::m_storage.set_property(
+		StalkerDecisionSpace::eWorldPropertyCriticallyWounded,
+		true
+	);
+
+	animation().global().add_callback	(
+		CStalkerAnimationPair::CALLBACK_ID(
+			this,
+			&CAI_Stalker::remove_critical_hit
+		)
+	);
 }
 
 bool CAI_Stalker::can_cry_enemy_is_wounded		() const

@@ -24,26 +24,17 @@ const u32	need_look_back_time_interval= 2000;
 
 void CStalkerAnimationManager::torso_play_callback	(CBlend *blend)
 {
-	VERIFY							(blend->CallbackParam);
-	CAI_Stalker						*stalker = (CAI_Stalker*)blend->CallbackParam;
-	CStalkerAnimationManager		&animation = stalker->animation();
+	CAI_Stalker						*object = (CAI_Stalker*)blend->CallbackParam;
+	VERIFY							(object);
 
-	CPropertyStorage				*setup_storage = animation.setup_storage();
-	if (setup_storage) {
-//		Msg							("%6d torso set property id %d with value %s",Device.dwTimeGlobal,animation.property_id(),animation.property_value() ? "true" : "false");
-		setup_storage->set_property	(animation.property_id(),animation.property_value());
-#ifdef CLEAR_STORAGE_ON_CALLBACK
-		animation.setup_storage		(0);
-#endif
-		return;
-	}
+	CStalkerAnimationManager		&animation = object->animation();
+	CStalkerAnimationPair			&pair = animation.torso();
+	pair.on_animation_end			();
 
 	if (animation.m_looking_back) {
 		animation.m_change_direction_time	= Device.dwTimeGlobal + need_look_back_time_interval;
-		animation.m_looking_back			= 0;
+		animation.m_looking_back	= 0;
 	}
-
-	animation.torso().make_inactual	();
 }
 
 MotionID CStalkerAnimationManager::no_object_animation(const EBodyState &body_state) const

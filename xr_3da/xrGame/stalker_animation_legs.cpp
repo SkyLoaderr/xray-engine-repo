@@ -31,10 +31,11 @@ const float direction_angles[]			= {
 
 void CStalkerAnimationManager::legs_play_callback			(CBlend *blend)
 {
-	CAI_Stalker				*object = (CAI_Stalker*)blend->CallbackParam;
-	VERIFY					(object);
-	object->animation().legs().make_inactual();
-//	Msg						("%6d legs_play_callback calls legs().make_inactual()",Device.dwTimeGlobal);
+	CAI_Stalker					*object = (CAI_Stalker*)blend->CallbackParam;
+	VERIFY						(object);
+
+	CStalkerAnimationPair		&pair = object->animation().legs();
+	pair.on_animation_end		();
 }
 
 IC	float CStalkerAnimationManager::legs_switch_factor		() const

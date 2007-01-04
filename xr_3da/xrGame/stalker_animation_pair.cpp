@@ -13,6 +13,11 @@
 #include "ai/stalker/ai_stalker.h"
 #include "ai/ai_monsters_anims.h"
 
+#pragma warning(push)
+#pragma warning(disable:4995)
+#include <malloc.h>
+#pragma warning(pop)
+
 void CStalkerAnimationPair::synchronize		(CKinematicsAnimated *skeleton_animated, const CStalkerAnimationPair &stalker_animation) const
 {
 	if (!blend())
@@ -202,4 +207,27 @@ MotionID CStalkerAnimationPair::select	(const ANIM_VECTOR &array, const ANIMATIO
 	m_array					= &array;
 	select_animation		(array,weights);
 	return					(m_array_animation);
+}
+
+
+void CStalkerAnimationPair::on_animation_end	()
+{
+	make_inactual			();
+
+	if (m_callbacks.empty())
+		return;
+
+	u32						callback_count = m_callbacks.size();
+	CALLBACK_ID				*callbacks = (CALLBACK_ID*)_alloca(callback_count*sizeof(CALLBACK_ID));
+	CALLBACK_ID				*I = callbacks;
+	CALLBACK_ID				*E = callbacks + callback_count;
+	CALLBACKS::iterator		i = m_callbacks.begin();
+	for ( ; I != E; ++I, ++i)
+		new (I) CALLBACK_ID	(*i);
+
+	for (I = callbacks; I != E; ++I)
+		(*I)				();
+
+	for (I = callbacks; I != E; ++I)
+		I->~CALLBACK_ID		();
 }

@@ -16,11 +16,12 @@
 
 void CStalkerAnimationManager::script_play_callback(CBlend *blend)
 {
-	CAI_Stalker						*object = (CAI_Stalker*)blend->CallbackParam;
-	VERIFY							(object);
-	CStalkerAnimationManager		&animation_manager = object->animation();
-	const SCRIPT_ANIMATIONS			&animations = animation_manager.script_animations();
-	const CStalkerAnimationPair		&script = animation_manager.script();
+	CAI_Stalker					*object = (CAI_Stalker*)blend->CallbackParam;
+	VERIFY						(object);
+	
+	CStalkerAnimationManager	&animation_manager = object->animation();
+	CStalkerAnimationPair		&pair = animation_manager.script();
+	const SCRIPT_ANIMATIONS		&animations = animation_manager.script_animations();
 
 #if 0
 	Msg							(
@@ -35,16 +36,15 @@ void CStalkerAnimationManager::script_play_callback(CBlend *blend)
 #endif
 
 	if	(
-			script.animation() && 
+			pair.animation() && 
 			!animations.empty() && 
-			(
-				animation_manager.script().animation() == 
-				animations.front().animation()
-			)
+			(pair.animation() == animations.front().animation())
 		)
 		animation_manager.pop_script_animation();
 
 	animation_manager.m_call_script_callback	= true;
+
+	pair.on_animation_end		();
 }
 
 void CStalkerAnimationManager::add_script_animation	(LPCSTR animation, bool hand_usage)

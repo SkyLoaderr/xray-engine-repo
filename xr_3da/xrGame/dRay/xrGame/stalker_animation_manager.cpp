@@ -13,6 +13,15 @@
 #include "stalker_animation_data.h"
 #include "stalker_movement_manager.h"
 
+// TODO:
+// stalker animation manager consists of 5 independent managers,
+// they should be represented with the different classes:
+//    * head
+//    * torso
+//    * legs
+//    * globals
+//    * script
+
 void CStalkerAnimationManager::reinit				()
 {
 	m_direction_start			= 0;
@@ -39,8 +48,6 @@ void CStalkerAnimationManager::reinit				()
 	m_global.global_animation	(true);
 	m_script.global_animation	(true);
 	
-	m_storage					= 0;
-
 	m_call_script_callback		= false;
 
 	m_previous_speed			= 0.f;

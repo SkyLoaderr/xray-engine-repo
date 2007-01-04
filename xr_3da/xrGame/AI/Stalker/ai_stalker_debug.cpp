@@ -48,6 +48,7 @@
 #include "../../weaponmagazined.h"
 #include "../../object_handler_space.h"
 #include "../../debug_renderer.h"
+#include "../../CharacterPhysicsSupport.h"
 
 CActor *g_debug_actor = 0;
 
@@ -290,6 +291,10 @@ void CAI_Stalker::OnHUDDraw				(CCustomHUD *hud)
 		// hit
 		HUD().Font().pFontSmall->OutNext	("%shit",indent);
 		HUD().Font().pFontSmall->OutNext	("%s%sobjects     : %d",indent,indent,memory().hit().objects().size());
+		ALife::_OBJECT_ID					object_id = memory().hit().last_hit_object_id();
+		HUD().Font().pFontSmall->OutNext	("%s%slast hit object id   : %d",indent,indent,object_id);
+		CObject								*object = (object_id == ALife::_OBJECT_ID(-1)) ? 0 : Level().Objects.net_Find(object_id);
+		HUD().Font().pFontSmall->OutNext	("%s%slast hit object name : %s",indent,indent,object ? *object->cName() : "");
 #ifdef USE_SELECTED_HIT
 		if (memory().hit().hit()) {
 			HUD().Font().pFontSmall->OutNext	("%s%sselected",indent,indent);

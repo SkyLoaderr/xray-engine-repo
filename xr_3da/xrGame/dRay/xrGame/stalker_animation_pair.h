@@ -22,10 +22,15 @@ public:
 	enum {
 		all_bone_parts = u16(0xf),
 	};
-#endif
+#endif // USE_HEAD_BONE_PART_FAKE
 
 public:
-	typedef xr_vector<float>	ANIMATION_WEIGHTS;
+	typedef xr_vector<float>						ANIMATION_WEIGHTS;
+	typedef std::pair<LPCSTR,LPCSTR>				BLEND_ID;
+
+public:
+	typedef fastdelegate::FastDelegate0<>			CALLBACK_ID;
+	typedef xr_vector<CALLBACK_ID>					CALLBACKS;
 
 private:
 	MotionID				m_animation;
@@ -35,6 +40,7 @@ private:
 	bool					m_global_animation;
 	const ANIM_VECTOR		*m_array;
 	MotionID				m_array_animation;
+	CALLBACKS				m_callbacks;
 
 #ifdef DEBUG
 private:
@@ -49,9 +55,9 @@ private:
 			void			select_animation		(const ANIM_VECTOR &array, const ANIMATION_WEIGHTS *weights);
 #ifndef USE_HEAD_BONE_PART_FAKE
 			void			play_global_animation	(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object);
-#else
+#else // USE_HEAD_BONE_PART_FAKE
 			void			play_global_animation	(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, const u32 &bone_part);
-#endif
+#endif // USE_HEAD_BONE_PART_FAKE
 
 public:
 	IC						CStalkerAnimationPair	();
@@ -71,15 +77,22 @@ public:
 public:
 #ifndef USE_HEAD_BONE_PART_FAKE
 			void			play					(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, bool continue_interrupted_animation = true);
-#else
+#else // USE_HEAD_BONE_PART_FAKE
 			void			play					(CKinematicsAnimated *skeleton_animated, PlayCallback callback, CAI_Stalker *object, bool continue_interrupted_animation = true, const u32 &bone_part = all_bone_parts);
-#endif
+#endif // USE_HEAD_BONE_PART_FAKE
+
+#ifdef DEBUG
+public:
+	IC		void			set_dbg_info			(LPCSTR object_name, LPCSTR animation_type_name);
+			BLEND_ID		*blend_id				(CKinematicsAnimated *skeleton_animated, BLEND_ID &result) const;
+#endif // DEBUG
 
 public:
-#ifdef DEBUG
-	IC		void				set_dbg_info		(LPCSTR object_name, LPCSTR animation_type_name);
-	std::pair<LPCSTR,LPCSTR>	*blend_id			(CKinematicsAnimated *skeleton_animated, std::pair<LPCSTR,LPCSTR> &result) const;
-#endif
+	IC	const CALLBACK_ID	*callback				(const CALLBACK_ID &callback) const;
+	IC		void			add_callback			(const CALLBACK_ID &callback);
+	IC		void			remove_callback			(const CALLBACK_ID &callback);
+			void			on_animation_end		();
+	IC		bool			need_update				() const;
 };
 
 #include "stalker_animation_pair_inline.h"
