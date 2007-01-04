@@ -23,13 +23,28 @@
 #ifdef DEBUG
 #	include "space_restriction_manager.h"
 
+static void show_restrictions	(LPCSTR restrictions)
+{
+	string256			temp;
+	for (int i=0, n=_GetItemCount(restrictions); i<n; ++i)
+		Msg				("     %s",_GetItem(restrictions,i,temp));
+}
+
 bool show_restrictions(CRestrictedObject *object)
 {
-	Msg		("DEFAULT OUT RESTRICTIONS : %s",*Level().space_restriction_manager().default_out_restrictions() ? *Level().space_restriction_manager().default_out_restrictions() : "");
-	Msg		("DEFAULT IN RESTRICTIONS  : %s",*Level().space_restriction_manager().default_in_restrictions()  ? *Level().space_restriction_manager().default_in_restrictions()  : "");
-	Msg		("OUT RESTRICTIONS         : %s",*object->out_restrictions() ? *object->out_restrictions() : "");
-	Msg		("IN RESTRICTIONS          : %s",*object->in_restrictions()  ? *object->in_restrictions()  : "");
-	return	(false);
+	Msg					("DEFAULT OUT RESTRICTIONS :");
+	show_restrictions	(*Level().space_restriction_manager().default_out_restrictions() ? *Level().space_restriction_manager().default_out_restrictions() : "");
+
+	Msg					("DEFAULT IN RESTRICTIONS  :");
+	show_restrictions	(*Level().space_restriction_manager().default_in_restrictions()  ? *Level().space_restriction_manager().default_in_restrictions()  : "");
+
+	Msg					("OUT RESTRICTIONS         :");
+	show_restrictions	(*object->out_restrictions() ? *object->out_restrictions() : "");
+
+	Msg					("IN RESTRICTIONS          :");
+	show_restrictions	(*object->in_restrictions()  ? *object->in_restrictions()  : "");
+
+	return				(false);
 }
 #endif
 
