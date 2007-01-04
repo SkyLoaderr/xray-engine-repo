@@ -351,8 +351,12 @@ function CRandomTask:task_complete(p1, p2)
 		return false
 	end
 
+	local sel_task = self.task_info[self.active_task_by_type[p1]]
+	if self_task == nil then
+		abort("WRONG RANDOM TASK %s %s", tostring(p1), tostring(p2))
+	end
+
 	if p2 == 0 then
-		local self_task = self.task_info[self.active_task_by_type[p1]]
 		if not self_task.need_return and self_task.status == "completed" then
 			return true
 		end
@@ -362,7 +366,6 @@ function CRandomTask:task_complete(p1, p2)
 	end
 
 	if p2 == 1 then
-		local sel_task = self.task_info[self.active_task_by_type[p1]]
 		if string.find(p1, "eliminate_lager") ~= nil then
 			local oo = alife():object(sel_task.selected_target)
 			if oo and oo.gulag:get_population_comed() == 0 then
@@ -404,8 +407,13 @@ end
 --' Проверяем, не профейлен ли таск
 function CRandomTask:task_fail(p1, p2)
 	if p2 == 0 then
-		local self_task = self.task_info[self.active_task_by_type[p1]]	
-		if p1 == "defend_lager" then
+		local self_task = self.task_info[self.active_task_by_type[p1]]
+		
+		if self_task == nil then
+			abort("WRONG RANDOM TASK %s %s", tostring(p1), tostring(p2))
+		end
+
+		if string.find(p1, "defend_lager") ~= nil then
 			if alife():object(self_task.selected_target).gulag:get_population_comed() == 0 then
 				self.task_info[self.active_task_by_type[p1]].status = "failed"
 				return true
