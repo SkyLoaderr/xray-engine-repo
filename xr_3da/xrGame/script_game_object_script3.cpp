@@ -236,7 +236,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("set_const_force",				&CScriptGameObject::set_const_force)
 		.def("info_add",					&CScriptGameObject::info_add)
 		.def("info_clear",					&CScriptGameObject::info_clear)
-
+		.def("is_inv_box_empty",			&CScriptGameObject::IsInvBoxEmpty)
 		// monster jumper
 		.def("jump",						&CScriptGameObject::jump)
 

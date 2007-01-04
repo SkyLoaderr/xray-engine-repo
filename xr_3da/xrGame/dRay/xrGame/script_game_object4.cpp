@@ -18,7 +18,7 @@
 #include "sight_manager_space.h"
 #include "sight_control_action.h"
 #include "sight_manager.h"
-
+#include "inventoryBox.h"
 class CWeapon;
 
 //////////////////////////////////////////////////////////////////////////
@@ -205,4 +205,13 @@ bool CScriptGameObject::critically_wounded		()
 	}
 
 	return								(custom_monster->critically_wounded());
+}
+
+bool CScriptGameObject::IsInvBoxEmpty()
+{
+	CInventoryBox* ib = smart_cast<CInventoryBox*>(&object());
+	if(!ib) 
+		return			(false);
+	else
+		return			ib->IsEmpty		();
 }

@@ -11,4 +11,5 @@ public:
 	virtual		BOOL	net_Spawn						(CSE_Abstract* DC);
 	virtual		void	net_Relcase						(CObject* O	);
 				void	AddAvailableItems				(TIItemContainer& items_container) const;
+				bool	IsEmpty							() {return m_items.size()==0;}
 };

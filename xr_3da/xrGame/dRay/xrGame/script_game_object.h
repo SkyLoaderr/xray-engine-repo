@@ -244,7 +244,7 @@ public:
 
 	// CProjector
 			Fvector				GetCurrentDirection		();
-
+			bool				IsInvBoxEmpty			();
 	//передача порции информации InventoryOwner
 			bool				GiveInfoPortion		(LPCSTR info_id);
 			bool				DisableInfoPortion	(LPCSTR info_id);
