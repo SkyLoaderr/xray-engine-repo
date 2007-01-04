@@ -102,19 +102,9 @@ bool CUITrackBar::IsChanged()
 {
 	if(m_b_is_float)
 	{
-/*
-		float val, min, max;
-		GetOptFloatValue	(val, min, max);
-		return val != m_f_val;    
-*/
 		return !fsimilar(m_f_back_up, m_f_val); 
 	}else
 	{
-/*
-		int val, min, max;
-		GetOptIntegerValue	(val, min, max);
-		return val != m_i_val; 
-*/
 		return (m_i_back_up != m_i_val);
 	}
 }
@@ -156,6 +146,17 @@ void CUITrackBar::Enable(bool status)
 
 void CUITrackBar::UpdatePosRelativeToMouse()
 {
+	float _bkf		= 0.0f;
+	int _bki		= 0;
+	if(m_b_is_float)
+	{
+		_bkf = m_f_val; 
+	}else
+	{
+		_bki = m_i_val; 
+	}
+
+
 	float btn_width				= m_pSlider->GetWidth();
 	float window_width			= GetWidth();		
 	float fpos					= cursor_pos.x;
@@ -193,7 +194,16 @@ void CUITrackBar::UpdatePosRelativeToMouse()
 		m_i_val	= iFloor(__fval);
 	
 
-	if(IsChanged())
+	bool b_ch = false;
+	if(m_b_is_float)
+	{
+		b_ch  = !fsimilar(_bkf, m_f_val); 
+	}else
+	{
+		b_ch  =  (_bki != m_i_val);
+	}
+
+	if(b_ch)
 		GetMessageTarget()->SendMessage(this, BUTTON_CLICKED, NULL);
 
 	UpdatePos	();
