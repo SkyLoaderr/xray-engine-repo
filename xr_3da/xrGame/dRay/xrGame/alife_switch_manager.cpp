@@ -17,6 +17,10 @@
 #include "ai_space.h"
 #include "level_graph.h"
 
+#ifdef DEBUG
+#	include "level.h"
+#endif // DEBUG
+
 using namespace ALife;
 
 struct remove_non_savable_predicate {
@@ -168,6 +172,16 @@ void CALifeSwitchManager::try_switch_online	(CSE_ALifeDynamicObject	*I)
 #endif
 		return;
 	}
+
+	VERIFY2						(
+		(
+			ai().game_graph().vertex(I->m_tGraphID)->level_id()
+			!=
+			ai().level_graph().level_id()
+		) ||
+		!Level().Objects.net_Find(I->ID),
+		make_string("object [%s] with id [%d] is offline, but is on the level",I->name_replace(),I->ID)
+	);
 
 	I->try_switch_online		();
 	STOP_PROFILE
