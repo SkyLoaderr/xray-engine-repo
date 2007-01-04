@@ -86,6 +86,8 @@ void CWeaponRPG7::FireStart()
 	inherited::FireStart();
 }
 
+#include "inventory.h"
+#include "inventoryOwner.h"
 void CWeaponRPG7::switch2_Fire	()
 {
 	m_iShotNum = 0;
@@ -99,7 +101,18 @@ void CWeaponRPG7::switch2_Fire	()
 		d.set								(get_LastFD());
 
 		CEntity* E = smart_cast<CEntity*>	(H_Parent());
-		if (E) E->g_fireParams				(this, p1,d);
+		if (E){
+			CInventoryOwner* io		= smart_cast<CInventoryOwner*>(H_Parent());
+			if(NULL == io->inventory().ActiveItem())
+			{
+			Log("current_state", GetState() );
+			Log("next_state", GetNextState());
+			Log("state_time", m_dwStateTime);
+			Log("item_sect", cNameSect().c_str());
+			Log("H_Parent", H_Parent()->cNameSect().c_str());
+			}
+			E->g_fireParams				(this, p1,d);
+		}
 
 		Fmatrix								launch_matrix;
 		launch_matrix.identity				();

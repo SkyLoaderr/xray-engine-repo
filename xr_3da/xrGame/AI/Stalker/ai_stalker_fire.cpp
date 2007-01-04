@@ -607,6 +607,7 @@ void CAI_Stalker::update_can_kill_info	()
 	m_can_kill_enemy		= false;
 
 	Fvector					position, direction;
+	VERIFY					(inventory().ActiveItem());
 	g_fireParams			(0,position,direction);
 	can_kill_entity_from	(position,direction,start_pick_distance());
 }

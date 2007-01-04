@@ -224,7 +224,7 @@ void CUIMpTradeWnd::RenewShopItem(const shared_str& sect_name, bool b_just_bough
 
 void CUIMpTradeWnd::ItemToBelt(const shared_str& sectionName)
 {
-	VERIFY(m_item_mngr->GetItemIdx(sectionName)!=u32(-1) );
+	R_ASSERT2(m_item_mngr->GetItemIdx(sectionName)!=u32(-1), sectionName.c_str() );
 
 	CUIDragDropListEx*	pList			= GetMatchedListForItem(sectionName);
 
@@ -234,7 +234,7 @@ void CUIMpTradeWnd::ItemToBelt(const shared_str& sectionName)
 
 void CUIMpTradeWnd::ItemToRuck(const shared_str& sectionName, u8 addons)
 {
-	VERIFY(m_item_mngr->GetItemIdx(sectionName)!=u32(-1) );
+	R_ASSERT2(m_item_mngr->GetItemIdx(sectionName)!=u32(-1), sectionName.c_str() );
 
 	CUIDragDropListEx*	pList			= GetMatchedListForItem(sectionName);
 
@@ -246,7 +246,7 @@ void CUIMpTradeWnd::ItemToRuck(const shared_str& sectionName, u8 addons)
 
 void CUIMpTradeWnd::ItemToSlot(const shared_str& sectionName, u8 addons)
 {
-	VERIFY(m_item_mngr->GetItemIdx(sectionName)!=u32(-1) );
+	R_ASSERT2(m_item_mngr->GetItemIdx(sectionName)!=u32(-1), sectionName.c_str() );
 
 	CUIDragDropListEx*	pList			= GetMatchedListForItem(sectionName);
 

@@ -148,7 +148,8 @@ void CUIMpTradeWnd::OnBtnRifleAmmo2Clicked(CUIWindow* w, void* d)
 
 	CInventoryItem* ii			= (CInventoryItem*)ci->m_pData;
 	CWeaponMagazinedWGrenade* wpn = smart_cast<CWeaponMagazinedWGrenade*>(ii);
-	R_ASSERT					(wpn);
+	if(!wpn)		
+		return;
 
 	u32 ammo_idx				= 0;
 	

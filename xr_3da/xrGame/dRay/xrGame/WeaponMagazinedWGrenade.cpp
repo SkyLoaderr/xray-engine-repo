@@ -254,6 +254,8 @@ bool CWeaponMagazinedWGrenade::Action(s32 cmd, u32 flags)
 	return false;
 }
 
+#include "inventory.h"
+#include "inventoryOwner.h"
 void CWeaponMagazinedWGrenade::state_Fire(float dt) 
 {
 	VERIFY(fTimeToFire>0.f);
@@ -266,9 +268,20 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 		p1.set	(get_LastFP2()); 
 		d.set	(get_LastFD());
 		
-		if(H_Parent()) 
+		if(H_Parent())
+		{ 
+			CInventoryOwner* io		= smart_cast<CInventoryOwner*>(H_Parent());
+			if(NULL == io->inventory().ActiveItem())
+			{
+			Log("current_state", GetState() );
+			Log("next_state", GetNextState());
+			Log("state_time", m_dwStateTime);
+			Log("item_sect", cNameSect().c_str());
+			Log("H_Parent", H_Parent()->cNameSect().c_str());
+			}
+
 			smart_cast<CEntity*>	(H_Parent())->g_fireParams	(this, p1,d);
-		else 
+		}else 
 			return;
 		
 		while (fTime<=0 && (iAmmoElapsed>0) && (IsWorking() || m_bFireSingleShot))
@@ -310,7 +323,19 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 		p1.set						(get_LastFP2());
 		d.set						(get_LastFD());
 		CEntity*					E = smart_cast<CEntity*>(H_Parent());
-		if (E)						E->g_fireParams		(this, p1,d);
+
+		if (E){
+			CInventoryOwner* io		= smart_cast<CInventoryOwner*>(H_Parent());
+			if(NULL == io->inventory().ActiveItem())
+			{
+			Log("current_state", GetState() );
+			Log("next_state", GetNextState());
+			Log("state_time", m_dwStateTime);
+			Log("item_sect", cNameSect().c_str());
+			Log("H_Parent", H_Parent()->cNameSect().c_str());
+			}
+			E->g_fireParams		(this, p1,d);
+		}
 		p1.set						(get_LastFP2());
 		
 		Fmatrix launch_matrix;

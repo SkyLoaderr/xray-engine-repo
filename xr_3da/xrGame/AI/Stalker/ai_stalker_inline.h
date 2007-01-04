@@ -61,9 +61,10 @@ IC	bool CAI_Stalker::can_kill_member							()
 	update_can_kill_info	();
 	return					(m_can_kill_member);
 }
-
+#include "../../inventory.h"
 IC	bool CAI_Stalker::can_kill_enemy							()
 {
+	VERIFY					(inventory().ActiveItem());
 	update_can_kill_info	();
 	return					(m_can_kill_enemy);
 }
