@@ -457,6 +457,11 @@ end
 function gulag:update_beginning_jobs()
 	for obj_id, obj in pairs( self.Object ) do
 		if self:can_obj_begin_job( obj_id, obj ) then
+
+			local job = self.Job[self.ObjectJob[obj_id]]
+			local jl = self:distance_to_job_location(obj_id, job)
+			printf("### [%s] %s < %s", alife():object(obj_id):name(), tostring(jl), tostring(job.position_threshold or job_position_threshold))
+
 			self:beginJob( obj_id )
 		end
 	end
@@ -474,13 +479,7 @@ function gulag:can_obj_begin_job( obj_id, obj )
 	if jobN and not self.Object_begin_job[obj_id] then
 		local job = self.Job[jobN]
 
---'		if obj == true then
---'			return self.npc_info[obj_id].se_obj.m_game_vertex_id == job.game_vertex_id
---'		else
-			return self:distance_to_job_location(obj_id, job) < (job.position_threshold or job_position_threshold)
---'job.level_id == alife():level_id() and
---'obj:position():distance_to( job.position ) < ( job.position_threshold or job_position_threshold )
---'		end
+		return self:distance_to_job_location(obj_id, job) < (job.position_threshold or job_position_threshold)
 	else
 		return false
 	end
