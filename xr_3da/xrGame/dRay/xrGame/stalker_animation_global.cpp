@@ -48,7 +48,7 @@ MotionID CStalkerAnimationManager::assign_global_animation	()
 		}
 
 		CWeapon						*weapon = smart_cast<CWeapon*>(object().inventory().ActiveItem());
-		VERIFY2						(weapon,make_string("current active item: %s",object().inventory().ActiveItem() ? *object().inventory().ActiveItem().cName() : "no active item"));
+		VERIFY2						(weapon,make_string("current active item: %s",object().inventory().ActiveItem() ? *object().inventory().ActiveItem()->cName() : "no active item"));
 
 		u32							animation_slot = weapon->animation_slot();
 		VERIFY						(animation_slot >= 1);
