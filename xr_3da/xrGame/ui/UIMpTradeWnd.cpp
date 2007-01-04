@@ -39,13 +39,7 @@ void CUIMpTradeWnd::OnBtnPreset1Clicked(CUIWindow* w, void* d)
 		return;
 	}
 
-	bool b = m_btn_save_preset->GetCheck();
-	if(b)
-	{
-		m_btn_save_preset->SetCheck	(false);
-		StorePreset					(_preset_idx_1);
-	}else
-		ApplyPreset					(_preset_idx_1);
+	ApplyPreset					(_preset_idx_1);
 }
 
 void CUIMpTradeWnd::OnBtnPreset2Clicked(CUIWindow* w, void* d)
@@ -55,13 +49,7 @@ void CUIMpTradeWnd::OnBtnPreset2Clicked(CUIWindow* w, void* d)
 		DumpPreset					(_preset_idx_2);
 		return;
 	};
-	bool b = m_btn_save_preset->GetCheck();
-	if(b)
-	{
-		m_btn_save_preset->SetCheck	(false);
-		StorePreset					(_preset_idx_2);
-	}else
-		ApplyPreset					(_preset_idx_2);
+	ApplyPreset					(_preset_idx_2);
 }
 
 void CUIMpTradeWnd::OnBtnPreset3Clicked(CUIWindow* w, void* d)
@@ -72,13 +60,7 @@ void CUIMpTradeWnd::OnBtnPreset3Clicked(CUIWindow* w, void* d)
 		return;
 	};
 
-	bool b = m_btn_save_preset->GetCheck();
-	if(b)
-	{
-		m_btn_save_preset->SetCheck	(false);
-		StorePreset					(_preset_idx_3);
-	}else
-		ApplyPreset					(_preset_idx_3);
+	ApplyPreset					(_preset_idx_3);
 }
 
 void CUIMpTradeWnd::OnBtnLastSetClicked(CUIWindow* w, void* d)
@@ -91,14 +73,19 @@ void CUIMpTradeWnd::OnBtnLastSetClicked(CUIWindow* w, void* d)
 		ApplyPreset					(_preset_idx_last);
 }
 
-void CUIMpTradeWnd::OnBtnSavePresetClicked(CUIWindow* w, void* d)
+void CUIMpTradeWnd::OnBtnSave1PresetClicked(CUIWindow* w, void* d)
 {
-	bool b = m_btn_save_preset->GetCheck();
+	StorePreset					(_preset_idx_1);
+}
 
-	if(b)
-		SetInfoString			("ui_st_select_preset_to_store_to");
-	else
-		SetInfoString			("ui_st_store_preset_canceled");
+void CUIMpTradeWnd::OnBtnSave2PresetClicked(CUIWindow* w, void* d)
+{
+	StorePreset					(_preset_idx_2);
+}
+
+void CUIMpTradeWnd::OnBtnSave3PresetClicked(CUIWindow* w, void* d)
+{
+	StorePreset					(_preset_idx_3);
 }
 
 void CUIMpTradeWnd::OnBtnResetClicked(CUIWindow* w, void* d)

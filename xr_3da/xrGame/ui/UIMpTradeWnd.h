@@ -115,6 +115,7 @@ public:
 	virtual void				SetupPlayerItemsEnd			();
 
 	virtual const preset_items&	GetPreset					(ETradePreset idx);
+	u32							GetPresetCost				(ETradePreset idx);
 	virtual void 	Show						();
 	virtual void 	Hide						();
 
@@ -132,6 +133,7 @@ private:
 //controls
 	CUIWindow*			m_shop_wnd;
 	CUIStatic*			m_static_player_money;
+	CUIStatic*			m_static_preset_money[4];
 	CUIStatic*			m_static_player_rank;
 	CUIStatic*			m_static_information;
 	CUI3tButton* 		m_btn_shop_back;
@@ -142,7 +144,7 @@ private:
 	CUI3tButton* 		m_btn_preset_2;
 	CUI3tButton* 		m_btn_preset_3;
 	CUI3tButton* 		m_btn_last_set;
-	CUI3tButton* 		m_btn_save_preset;
+	CUI3tButton* 		m_btns_save_preset[3];
 	CUI3tButton* 		m_btn_reset;
 	CUI3tButton* 		m_btn_sell;
 
@@ -171,7 +173,9 @@ private:
 	void	xr_stdcall	OnBtnPreset2Clicked			(CUIWindow* w, void* d);
 	void	xr_stdcall	OnBtnPreset3Clicked			(CUIWindow* w, void* d);
 	void	xr_stdcall	OnBtnLastSetClicked			(CUIWindow* w, void* d);
-	void	xr_stdcall	OnBtnSavePresetClicked		(CUIWindow* w, void* d);
+	void	xr_stdcall	OnBtnSave1PresetClicked		(CUIWindow* w, void* d);
+	void	xr_stdcall	OnBtnSave2PresetClicked		(CUIWindow* w, void* d);
+	void	xr_stdcall	OnBtnSave3PresetClicked		(CUIWindow* w, void* d);
 	void	xr_stdcall	OnBtnResetClicked			(CUIWindow* w, void* d);
 	void	xr_stdcall	OnBtnSellClicked			(CUIWindow* w, void* d);
 	void	xr_stdcall	OnBtnPistolAmmoClicked		(CUIWindow* w, void* d);

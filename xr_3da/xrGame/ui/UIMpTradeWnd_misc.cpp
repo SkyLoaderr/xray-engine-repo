@@ -53,6 +53,17 @@ void CUIMpTradeWnd::UpdateMomeyIndicator()
 	string128						buff;
 	sprintf							(buff, "%d", m_money);
 	m_static_player_money->SetText	(buff);
+	//update preset money
+	
+	for(u32 i=_preset_idx_last; i<=_preset_idx_3; ++i)
+	{
+		CUIStatic* st		= m_static_preset_money[i];
+		u32	_cost			= GetPresetCost((ETradePreset)i);
+		sprintf				(buff, "%d", _cost);
+		st->SetText			(buff);
+		u32 clr				= (_cost<=GetMoneyAmount())?color_rgba(231,153,22,255):color_rgba(255,0,0,255);
+		st->SetTextColor	(clr);
+	}
 }
 
 void CUIMpTradeWnd::SetInfoString(LPCSTR str)
@@ -310,6 +321,11 @@ void CUIMpTradeWnd::IgnoreMoney(bool ignore)
 u32 CUIMpTradeWnd::GetMoneyAmount() const
 {
 	return			m_money;
+}
+
+u32 CUIMpTradeWnd::GetPresetCost(ETradePreset idx)
+{
+	return idx*1000;
 }
 
 void CUIMpTradeWnd::SetSkin(u8 SkinID)

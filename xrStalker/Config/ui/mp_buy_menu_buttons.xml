@@ -1,74 +1,74 @@
-<btn_tab_pistols x="0" y="0" width="117" height="29" accel="k1" horz_al="0">
-	<texture>ui_button_ordinary</texture>
-	<hint x="0" y="3" width="29" height="29">
-		<text font="letterica25" x="0" y="-4" align="c">1</text>
+<btn_tab_pistols x="0" y="43" width="64" height="90" accel="k1" horz_al="0">
+	<_texture>ui_button_ordinary</_texture>
+	<hint x="44" y="10" width="29" height="29">
+		<text font="letterica25" align="c">1</text>
 		<text_color>
 			<e a="255" r="255" g="255" b="0"/> <d a="255" r="87" g="87" b="72"/>  <h a="255" r="255" g="226" b="79"/> <t a="0" r="0" g="0" b="0"/>
 		</text_color>
 	</hint>
 	
-	<text font="normal" align="c">ui_inv_pistols</text>
-	<text_color>
+	<_text font="normal" align="c">ui_inv_pistols</_text>
+	<_text_color>
 		<e r="181" g="170" b="148"/> <d r="181" g="170" b="148"/> <t r="181" g="170" b="148"/> <h r="231" g="153" b="22"/>
-	</text_color>
+	</_text_color>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_tab_pistols>
 
-<btn_tab_primary x="0" y="30" width="117" height="29" accel="k2" horz_al="1">
-	<texture>ui_button_ordinary</texture>
-	<hint x="0" y="3" width="29" height="29">
-		<text font="letterica25" x="0" y="-4" align="c">2</text>
+<btn_tab_primary x="0" y="148" width="64" height="90" accel="k2" horz_al="1">
+	<_texture>ui_button_ordinary</_texture>
+	<hint x="44" y="10" width="29" height="29">
+		<text font="letterica25" align="c">2</text>
 		<text_color>
 			<e a="255" r="255" g="255" b="0"/> <d a="255" r="87" g="87" b="72"/> <h a="255" r="255" g="226" b="79"/> <t a="0" r="0" g="0" b="0"/>
 		</text_color>
 	</hint>
-	<text font="normal" align="c">ui_inv_primary_weapons</text>
-	<text_color>
+	<_text font="normal" align="c">ui_inv_primary_weapons</_text>
+	<_text_color>
 		<e r="181" g="170" b="148"/> <d r="181" g="170" b="148"/> <t r="181" g="170" b="148"/> <h r="255" g="187" b="51"/>
-	</text_color>
+	</_text_color>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_tab_primary>
-<btn_tab_granades x="0" y="60"  width="117" height="29" accel="k3" horz_al="1">
-	<texture>ui_button_ordinary</texture>
-	<hint x="0" y="3" width="29" height="29">
-		<text font="letterica25" x="0" y="-4" align="c">3</text>
+<btn_tab_granades x="0" y="256"  width="64" height="90" accel="k3" horz_al="1">
+	<_texture>ui_button_ordinary</_texture>
+	<hint x="44" y="10" width="29" height="29">
+		<text font="letterica25" align="c">3</text>
 		<text_color>
 			<e a="255" r="255" g="255" b="0"/> <d a="255" r="87" g="87" b="72"/> <h a="255" r="255" g="226" b="79"/> <t a="0" r="0" g="0" b="0"/>
 		</text_color>
 	</hint>
-	<text font="normal" align="c">ui_inv_granades</text>
-	<text_color>
+	<_text font="normal" align="c">ui_inv_granades</_text>
+	<_text_color>
 		<e r="181" g="170" b="148"/> <d r="181" g="170" b="148"/> <t r="181" g="170" b="148"/> <h r="255" g="187" b="51"/> 
-	</text_color>
+	</_text_color>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_tab_granades>
-<btn_tab_outfits x="0" y="90"  width="117" height="29" accel="k4" horz_al="1">
-	<texture>ui_button_ordinary</texture>
-	<hint x="0" y="3" width="29" height="29">
-		<text font="letterica25" x="0" y="-4" align="c">4</text>
+<btn_tab_outfits x="0" y="360"  width="64" height="90" accel="k4" horz_al="1">
+	<_texture>ui_button_ordinary</_texture>
+	<hint x="44" y="7" width="29" height="29">
+		<text font="letterica25" align="c">4</text>
 		<text_color>
 			<e a="255" r="255" g="255" b="0"/> <d a="255" r="87" g="87" b="72"/> <h a="255" r="255" g="226" b="79"/> <t a="0" r="0" g="0" b="0"/>
 		</text_color>
 	</hint>
-	<text font="normal" align="c">ui_inv_outfits</text>
-	<text_color>
+	<_text font="normal" align="c">ui_inv_outfits</_text>
+	<_text_color>
 		<e r="181" g="170" b="148"/> <d r="181" g="170" b="148"/> <t r="181" g="170" b="148"/> <h r="255" g="187" b="51"/>
-	</text_color>
+	</_text_color>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_tab_outfits>
 
-<btn_tab_equipment x="0" y="120"  width="117" height="29" accel="k5" horz_al="1">
-	<texture>ui_button_ordinary</texture>
-	<hint x="0" y="3" width="29" height="29">
-		<text font="letterica25" x="0" y="-4" align="c">5</text>
+<btn_tab_equipment x="0" y="468"  width="64" height="90" accel="k5" horz_al="1">
+	<_texture>ui_button_ordinary</_texture>
+	<hint x="44" y="10" width="29" height="29">
+		<text font="letterica25" align="c">5</text>
 		<text_color>
 			<e a="255" r="255" g="255" b="0"/> <d a="255" r="87" g="87" b="72"/> <h a="255" r="255" g="226" b="79"/> <t a="0" r="0" g="0" b="0"/>
 		</text_color>
 	</hint>
-	<text font="normal" align="c">ui_inv_equipment</text>
-	<text_color>
+	<_text font="normal" align="c">ui_inv_equipment</_text>
+	<_text_color>
 		<e r="181" g="170" b="148"/> <d r="181" g="170" b="148"/> <t r="181" g="170" b="148"/> <h r="255" g="187" b="51"/>
-	</text_color>
+	</_text_color>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_tab_equipment>
 
@@ -233,12 +233,26 @@
 	<sound_t>weapons\generic_close</sound_t>
 </btn_last_set>
 
-<btn_save_preset x="870" y="500" width="117" height="29" check_mode="1">
-	<window_name>btn_save_preset</window_name>
-	<texture>ui_button_ordinary</texture>
-	<text font="graffiti22" r="238" g="153" b="26">ui_st_save_preset</text>
+
+<!------------- -->
+<btn_save_preset_1 x="970" y="207" width="33" height="26" check_mode="1">
+	<window_name>btn_save_preset_1</window_name>
+	<_texture>ui_button_ordinary</_texture>
 	<sound_t>weapons\generic_close</sound_t>
-</btn_save_preset>
+</btn_save_preset_1>
+
+<btn_save_preset_2 x="970" y="296" width="33" height="26" check_mode="1">
+	<window_name>btn_save_preset_2</window_name>
+	<_texture>ui_button_ordinary</_texture>
+	<sound_t>weapons\generic_close</sound_t>
+</btn_save_preset_2>
+
+<btn_save_preset_3 x="970" y="387" width="33" height="26" check_mode="1">
+	<window_name>btn_save_preset_3</window_name>
+	<_texture>ui_button_ordinary</_texture>
+	<sound_t>weapons\generic_close</sound_t>
+</btn_save_preset_3>
+<!------------- -->
 
 <btn_sell x="700" y="530" width="117" height="29" hint="ui_inv_sell_items(X)"  accel="kX">
 	<window_name>btn_sell</window_name>
@@ -256,12 +270,12 @@
 
 <!-- quick buttons -->
 
-<btn_pistol_ammo x="495" y="110" width="22" height="22" hint="ui_inv_ammo_pistol" accel="kQ">
+<btn_pistol_ammo x="520" y="110" width="22" height="22" hint="ui_inv_ammo_pistol" accel="kQ">
 	<window_name>btn_pistol_ammo</window_name>
 	<texture>ui_beltbut_patrons</texture>
 </btn_pistol_ammo>
 
-<btn_pistol_silencer x="470" y="110" width="22" height="22" hint="ui_inv_silencer_pistol" accel="kA">
+<btn_pistol_silencer x="495" y="110" width="22" height="22" hint="ui_inv_silencer_pistol" accel="kA">
 	<window_name>btn_pistol_silencer</window_name>
 	<texture>ui_beltbut_silencer</texture>
 </btn_pistol_silencer>
