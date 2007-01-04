@@ -233,10 +233,8 @@ bool CObjectHandler::weapon_strapped	(CWeapon *weapon) const
 bool CObjectHandler::weapon_unstrapped	() const
 {
 	CWeapon						*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
-	if (!weapon) {
-		VERIFY					(planner().object().animation().setup_storage() != &planner().m_storage);
+	if (!weapon)
 		return					(true);
-	}
 
 	return						(weapon_unstrapped(weapon));
 }
@@ -245,19 +243,15 @@ bool CObjectHandler::weapon_unstrapped	(CWeapon *weapon) const
 {
 	VERIFY						(weapon);
 
-	if (!weapon->can_be_strapped()) {
-		VERIFY					(planner().object().animation().setup_storage() != &planner().m_storage);
+	if (!weapon->can_be_strapped())
 		return					(true);
-	}
 
-	if	(
-			(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping2Idle) ||
-			(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping) ||
-			(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle) ||
-			(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping)
-		)
-	{
-		return					(false);
+	switch (planner().current_action_state_id()) {
+		case ObjectHandlerSpace::eWorldOperatorStrapping2Idle:
+		case ObjectHandlerSpace::eWorldOperatorStrapping:
+		case ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle:
+		case ObjectHandlerSpace::eWorldOperatorUnstrapping:
+			return				(false);
 	}
 
 	actualize_strap_mode		(weapon);
@@ -267,7 +261,6 @@ bool CObjectHandler::weapon_unstrapped	(CWeapon *weapon) const
 		weapon->strapped_mode()
 	);
 
-	VERIFY						(weapon->strapped_mode() || (planner().object().animation().setup_storage() != &planner().m_storage));
 	return						(!weapon->strapped_mode());
 }
 
@@ -287,12 +280,6 @@ void CObjectHandler::attach				(CInventoryItem *inventory_item)
 void CObjectHandler::detach				(CInventoryItem *inventory_item)
 {
 	switch_torch				(inventory_item,false);
-	if	(
-			planner().initialized() &&
-			(inventory_item->object().ID() == planner().current_action_object_id()) && 
-			planner().object().animation().setup_storage()
-		)
-			planner().object().animation().setup_storage(0);
 	inherited::detach			(inventory_item);
 }
 

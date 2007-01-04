@@ -147,6 +147,9 @@ class CObjectActionStrapping : public CObjectActionBase<CInventoryItem> {
 protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
+private:
+		void xr_stdcall	on_animation_end		();
+
 public:
 						CObjectActionStrapping	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
 	virtual void		initialize				();
@@ -161,6 +164,9 @@ public:
 class CObjectActionStrappingToIdle : public CObjectActionBase<CInventoryItem> {
 protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
+
+private:
+		void xr_stdcall	on_animation_end		();
 
 public:
 						CObjectActionStrappingToIdle(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
@@ -177,6 +183,9 @@ class CObjectActionUnstrapping : public CObjectActionBase<CInventoryItem> {
 protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
+private:
+		void xr_stdcall	on_animation_end		();
+
 public:
 						CObjectActionUnstrapping(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
 	virtual void		initialize				();
@@ -191,6 +200,9 @@ public:
 class CObjectActionUnstrappingToIdle : public CObjectActionBase<CInventoryItem> {
 protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
+
+private:
+		void xr_stdcall	on_animation_end		();
 
 public:
 						CObjectActionUnstrappingToIdle	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");

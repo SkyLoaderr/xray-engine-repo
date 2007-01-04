@@ -121,8 +121,12 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 	float					penalty = 10000.f;
 
 	// if we are hit
-	if (object->ID() == m_object->memory().hit().last_hit_object_id())
-		penalty				-= 500.f;
+	if (object->ID() == m_object->memory().hit().last_hit_object_id()) {
+		if (actor)
+			penalty			-= 1500.f;
+		else
+			penalty			-= 500.f;
+	}
 
 	// if we see object
 	if (m_object->memory().visual().visible_now(object))
@@ -131,7 +135,7 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 	// if object is actor and he/she sees us
 	if (actor) {
 		if (smart_cast<const CActor*>(object)->memory().visual().visible_now(m_object))
-			penalty			-= 1900.f;
+			penalty			-= 900.f;
 	}
 	else {
 		// if object is npc and it sees us

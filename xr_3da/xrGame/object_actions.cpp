@@ -194,7 +194,19 @@ CObjectActionStrapping::CObjectActionStrapping	(CInventoryItem *item, CAI_Stalke
 {
 }
 
-void CObjectActionStrapping::initialize		()
+void CObjectActionStrapping::on_animation_end	()
+{
+	m_storage->set_property		(ObjectHandlerSpace::eWorldPropertyStrapped,true);
+
+	object().animation().torso().remove_callback(
+		CStalkerAnimationPair::CALLBACK_ID(
+			this,
+			&CObjectActionStrapping::on_animation_end
+		)
+	);
+}
+
+void CObjectActionStrapping::initialize			()
 {
 	inherited::initialize				();
 
@@ -202,10 +214,14 @@ void CObjectActionStrapping::initialize		()
 	VERIFY						(object().inventory().ActiveItem());
 	VERIFY						(object().inventory().ActiveItem()->object().ID() == m_item->object().ID());
 
-	m_storage->set_property(ObjectHandlerSpace::eWorldPropertyStrapped2Idle,true);
-	object().animation().setup_storage(m_storage);
-	object().animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped);
-	object().animation().property_value(true);
+	m_storage->set_property		(ObjectHandlerSpace::eWorldPropertyStrapped2Idle,true);
+	
+	object().animation().torso().add_callback	(
+		CStalkerAnimationPair::CALLBACK_ID(
+			this,
+			&CObjectActionStrapping::on_animation_end
+		)
+	);
 }
 
 void CObjectActionStrapping::execute			()
@@ -221,9 +237,11 @@ void CObjectActionStrapping::finalize		()
 {
 	inherited::finalize					();
 #ifdef ALLOW_STRANGE_BEHAVIOUR
-	object().animation().setup_storage	(0);
-#endif
-	VERIFY								(m_storage != object().animation().setup_storage());
+	CStalkerAnimationPair::CALLBACK_ID	callback(this,&CObjectActionStrapping::on_animation_end);
+
+	if (object().animation().torso().callback(callback))
+		object().animation().torso().remove_callback(callback);
+#endif // ALLOW_STRANGE_BEHAVIOUR
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -235,6 +253,18 @@ CObjectActionStrappingToIdle::CObjectActionStrappingToIdle	(CInventoryItem *item
 {
 }
 
+void CObjectActionStrappingToIdle::on_animation_end	()
+{
+	m_storage->set_property		(ObjectHandlerSpace::eWorldPropertyStrapped2Idle,false);
+
+	object().animation().torso().remove_callback(
+		CStalkerAnimationPair::CALLBACK_ID(
+			this,
+			&CObjectActionStrappingToIdle::on_animation_end
+		)
+	);
+}
+
 void CObjectActionStrappingToIdle::initialize		()
 {
 	inherited::initialize				();
@@ -243,9 +273,12 @@ void CObjectActionStrappingToIdle::initialize		()
 	VERIFY						(object().inventory().ActiveItem());
 	VERIFY						(object().inventory().ActiveItem()->object().ID() == m_item->object().ID());
 
-	object().animation().setup_storage(m_storage);
-	object().animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped2Idle);
-	object().animation().property_value(false);
+	object().animation().torso().add_callback	(
+		CStalkerAnimationPair::CALLBACK_ID(
+			this,
+			&CObjectActionStrappingToIdle::on_animation_end
+		)
+	);
 }
 
 void CObjectActionStrappingToIdle::execute			()
@@ -261,9 +294,11 @@ void CObjectActionStrappingToIdle::finalize		()
 {
 	inherited::finalize					();
 #ifdef ALLOW_STRANGE_BEHAVIOUR
-	object().animation().setup_storage	(0);
-#endif
-	VERIFY								(m_storage != object().animation().setup_storage());
+	CStalkerAnimationPair::CALLBACK_ID	callback(this,&CObjectActionStrappingToIdle::on_animation_end);
+
+	if (object().animation().torso().callback(callback))
+		object().animation().torso().remove_callback(callback);
+#endif // ALLOW_STRANGE_BEHAVIOUR
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -275,6 +310,18 @@ CObjectActionUnstrapping::CObjectActionUnstrapping	(CInventoryItem *item, CAI_St
 {
 }
 
+void CObjectActionUnstrapping::on_animation_end	()
+{
+	m_storage->set_property		(ObjectHandlerSpace::eWorldPropertyStrapped,false);
+
+	object().animation().torso().remove_callback(
+		CStalkerAnimationPair::CALLBACK_ID(
+			this,
+			&CObjectActionUnstrapping::on_animation_end
+		)
+	);
+}
+
 void CObjectActionUnstrapping::initialize		()
 {
 	inherited::initialize();
@@ -284,9 +331,13 @@ void CObjectActionUnstrapping::initialize		()
 	VERIFY						(object().inventory().ActiveItem()->object().ID() == m_item->object().ID());
 
 	m_storage->set_property(ObjectHandlerSpace::eWorldPropertyStrapped2Idle,true);
-	object().animation().setup_storage(m_storage);
-	object().animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped);
-	object().animation().property_value(false);
+
+	object().animation().torso().add_callback	(
+		CStalkerAnimationPair::CALLBACK_ID(
+			this,
+			&CObjectActionUnstrapping::on_animation_end
+		)
+	);
 }
 
 void CObjectActionUnstrapping::execute			()
@@ -302,9 +353,11 @@ void CObjectActionUnstrapping::finalize		()
 {
 	inherited::finalize					();
 #ifdef ALLOW_STRANGE_BEHAVIOUR
-	object().animation().setup_storage	(0);
-#endif
-	VERIFY								(m_storage != object().animation().setup_storage());
+	CStalkerAnimationPair::CALLBACK_ID	callback(this,&CObjectActionUnstrapping::on_animation_end);
+
+	if (object().animation().torso().callback(callback))
+		object().animation().torso().remove_callback(callback);
+#endif // ALLOW_STRANGE_BEHAVIOUR
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -316,6 +369,18 @@ CObjectActionUnstrappingToIdle::CObjectActionUnstrappingToIdle	(CInventoryItem *
 {
 }
 
+void CObjectActionUnstrappingToIdle::on_animation_end	()
+{
+	m_storage->set_property		(ObjectHandlerSpace::eWorldPropertyStrapped2Idle,false);
+
+	object().animation().torso().remove_callback(
+		CStalkerAnimationPair::CALLBACK_ID(
+			this,
+			&CObjectActionUnstrappingToIdle::on_animation_end
+		)
+	);
+}
+
 void CObjectActionUnstrappingToIdle::initialize		()
 {
 	inherited::initialize				();
@@ -324,9 +389,12 @@ void CObjectActionUnstrappingToIdle::initialize		()
 	VERIFY						(object().inventory().ActiveItem());
 	VERIFY						(object().inventory().ActiveItem()->object().ID() == m_item->object().ID());
 
-	object().animation().setup_storage(m_storage);
-	object().animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped2Idle);
-	object().animation().property_value(false);
+	object().animation().torso().add_callback	(
+		CStalkerAnimationPair::CALLBACK_ID(
+			this,
+			&CObjectActionUnstrappingToIdle::on_animation_end
+		)
+	);
 }
 
 void CObjectActionUnstrappingToIdle::execute			()
@@ -342,9 +410,11 @@ void CObjectActionUnstrappingToIdle::finalize		()
 {
 	inherited::finalize					();
 #ifdef ALLOW_STRANGE_BEHAVIOUR
-	object().animation().setup_storage	(0);
-#endif
-	VERIFY								(!object().animation().setup_storage());
+	CStalkerAnimationPair::CALLBACK_ID	callback(this,&CObjectActionUnstrappingToIdle::on_animation_end);
+
+	if (object().animation().torso().callback(callback))
+		object().animation().torso().remove_callback(callback);
+#endif // ALLOW_STRANGE_BEHAVIOUR
 }
 
 //////////////////////////////////////////////////////////////////////////
