@@ -629,6 +629,8 @@ void CMissile::setup_physic_shell	()
 	VERIFY(!m_pPhysicsShell);
 	create_physic_shell();
 	m_pPhysicsShell->Activate	(XFORM(),0,XFORM(),true);
+	CKinematics					*kinematics = smart_cast<CKinematics*>(Visual());
+	VERIFY						(kinematics);
 	kinematics->CalculateBones_Invalidate();
 	kinematics->CalculateBones			();
 }
