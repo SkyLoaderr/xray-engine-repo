@@ -72,10 +72,10 @@ function motivator_binder:net_spawn(sobject)
 		return false
 	end
 
-	if self.object:spawn_ini():section_exist("dont_spawn_online") then
-		printf("!!!OFFLINE")
-		alife():object(self.object:id()).dont_spawn_online = true
-	end
+--	if self.object:spawn_ini():section_exist("dont_spawn_online") then
+--		printf("!!!OFFLINE")
+--		alife():object(self.object:id()).dont_spawn_online = true
+--	end
 
 	db.add_obj(self.object)
 
