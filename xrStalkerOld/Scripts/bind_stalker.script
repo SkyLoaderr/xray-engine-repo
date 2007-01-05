@@ -104,6 +104,8 @@ function actor_binder:take_item_from_box(box, item)
 	if story_id == nil then
 		return
 	end
+
+	treasure_manager.take_item_from_box(box, story_id)
 	
 	local respawner = se_respawn.get_respawner_by_parent(story_id)
 	if respawner == nil then
@@ -113,7 +115,6 @@ function actor_binder:take_item_from_box(box, item)
 	--' Необходимо уменьшить счетчик в респавнере
 	respawner:remove_spawned(item:id())
 
-
 	local smart_terrain = db.strn_by_respawn[respawner:name()]
 	if smart_terrain == nil then
 		return
@@ -122,7 +123,7 @@ function actor_binder:take_item_from_box(box, item)
 	local npc = smart_terrain.gulag:get_nearest_online_obj(db.actor:position())
     if npc ~= nil then
 	    xr_sound.set_sound_play(npc, "reac_box")
-	    xr_gulag.setGulagEnemy(smart_terrain:name() , db.actor)
+	    xr_gulag.setGulagEnemy(smart_terrain:name() , db.actor)		
     end
 end
 ----------------------------------------------------------------------------------------------------------------------
