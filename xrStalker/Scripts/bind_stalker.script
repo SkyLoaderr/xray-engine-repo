@@ -106,7 +106,7 @@ function actor_binder:take_item_from_box(box, item)
 	end
 
 	treasure_manager.take_item_from_box(box, story_id)
-	
+--[[	
 	local respawner = se_respawn.get_respawner_by_parent(story_id)
 	if respawner == nil then
 		return
@@ -125,6 +125,7 @@ function actor_binder:take_item_from_box(box, item)
 	    xr_sound.set_sound_play(npc, "reac_box")
 	    xr_gulag.setGulagEnemy(smart_terrain:name() , db.actor)		
     end
+]]
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:level_border_enter(npc, info_id)
