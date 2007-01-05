@@ -33,6 +33,7 @@ void move_item (u16 from_id, u16 to_id, u16 what_id);
 
 CUICarBodyWnd::CUICarBodyWnd()
 {
+	m_pInventoryBox		= NULL;
 	Init				();
 	Hide				();
 	m_b_need_update		= false;
@@ -137,6 +138,7 @@ void CUICarBodyWnd::InitCarBody(CInventoryOwner* pOur, CInventoryBox* pInvBox)
     m_pOurObject									= pOur;
 	m_pOthersObject									= NULL;
 	m_pInventoryBox									= pInvBox;
+	m_pInventoryBox->m_in_use						= true;
 
 	u16 our_id										= smart_cast<CGameObject*>(m_pOurObject)->ID();
 	m_pUICharacterInfoLeft->InitCharacter			(our_id);
@@ -207,6 +209,8 @@ void CUICarBodyWnd::Hide()
 	m_pUIOurBagList->ClearAll					(true);
 	m_pUIOthersBagList->ClearAll				(true);
 	inherited::Hide								();
+	if(m_pInventoryBox)
+		m_pInventoryBox->m_in_use				= false;
 }
 
 void CUICarBodyWnd::UpdateLists()
@@ -355,7 +359,7 @@ void CUICarBodyWnd::TakeAll()
 				TransferItem	(_itm, m_pOthersObject, m_pOurObject, false);
 			else{
 				move_item		(m_pInventoryBox->ID(), tmp_id, _itm->object().ID());
-				Actor()->callback(GameObject::eInvBoxItemTake)( m_pInventoryBox->lua_game_object(), _itm->object().lua_game_object() );
+//.				Actor()->callback(GameObject::eInvBoxItemTake)( m_pInventoryBox->lua_game_object(), _itm->object().lua_game_object() );
 			}
 		
 		}
@@ -364,7 +368,7 @@ void CUICarBodyWnd::TakeAll()
 			TransferItem	(itm, m_pOthersObject, m_pOurObject, false);
 		else{
 			move_item		(m_pInventoryBox->ID(), tmp_id, itm->object().ID());
-			Actor()->callback(GameObject::eInvBoxItemTake)(m_pInventoryBox->lua_game_object(), itm->object().lua_game_object() );
+//.			Actor()->callback(GameObject::eInvBoxItemTake)(m_pInventoryBox->lua_game_object(), itm->object().lua_game_object() );
 		}
 
 	}
@@ -510,7 +514,7 @@ bool CUICarBodyWnd::OnItemDrop(CUICellItem* itm)
 								CurrentIItem()->object().ID());
 
 
-		Actor()->callback		(GameObject::eInvBoxItemTake)(m_pInventoryBox->lua_game_object(), CurrentIItem()->object().lua_game_object() );
+//		Actor()->callback		(GameObject::eInvBoxItemTake)(m_pInventoryBox->lua_game_object(), CurrentIItem()->object().lua_game_object() );
 
 		CUICellItem* ci			= old_owner->RemoveItem(CurrentItem(), false);
 		new_owner->SetItem		(ci);
@@ -552,7 +556,7 @@ bool CUICarBodyWnd::OnItemDbClick(CUICellItem* itm)
 								bMoveDirection?m_pInventoryBox->ID():tmp_id,
 								bMoveDirection?tmp_id:m_pInventoryBox->ID(),
 								CurrentIItem()->object().ID());
-		Actor()->callback		(GameObject::eInvBoxItemTake)(m_pInventoryBox->lua_game_object(), CurrentIItem()->object().lua_game_object() );
+//.		Actor()->callback		(GameObject::eInvBoxItemTake)(m_pInventoryBox->lua_game_object(), CurrentIItem()->object().lua_game_object() );
 
 	}
 	SetCurrentItem				(NULL);

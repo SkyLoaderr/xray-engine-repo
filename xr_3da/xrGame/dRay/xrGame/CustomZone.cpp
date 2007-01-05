@@ -18,7 +18,7 @@
 #include "breakableobject.h"
 
 //////////////////////////////////////////////////////////////////////////
-#define PREFETCHED_ARTEFACTS_NUM 4	//количество предварительно проспавненых артефактов
+#define PREFETCHED_ARTEFACTS_NUM 1	//количество предварительно проспавненых артефактов
 #define WIND_RADIUS (4*Radius())	//расстояние до актера, когда появляется ветер 
 #define FASTMODE_DISTANCE (50.f)	//distance to camera from sphere, when zone switches to fast update sequence
 
@@ -361,7 +361,7 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 	m_vPrevPos.set				(Position());
 
 
-	PrefetchArtefacts			();
+//.	PrefetchArtefacts			();
 
 	m_fDistanceToCurEntity		= flt_max;
 	m_bBlowoutWindActive		= false;
@@ -1230,8 +1230,9 @@ void CCustomZone::BornArtefact()
 
 	if(::Random.randF(0.f, 1.f)> m_fArtefactSpawnProbability) return;
 
-	CArtefact* pArtefact = m_SpawnedArtefacts.back(); VERIFY(pArtefact);
-	m_SpawnedArtefacts.pop_back			();
+	PrefetchArtefacts						();
+	CArtefact* pArtefact					= m_SpawnedArtefacts.back(); VERIFY(pArtefact);
+	m_SpawnedArtefacts.pop_back				();
 
 	if (Local())	{
 		if (pArtefact->H_Parent() && (pArtefact->H_Parent()->ID() == this->ID())  )	//. todo: need to remove on actual message parsing
@@ -1243,7 +1244,6 @@ void CCustomZone::BornArtefact()
 		}
 	}
 
-	PrefetchArtefacts ();
 }
 
 void CCustomZone::ThrowOutArtefact(CArtefact* pArtefact)

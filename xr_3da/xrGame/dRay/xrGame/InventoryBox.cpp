@@ -1,6 +1,16 @@
 #include "stdafx.h"
 #include "InventoryBox.h"
 #include "level.h"
+#include "actor.h"
+#include "game_object_space.h"
+
+#include "script_callback_ex.h"
+#include "script_game_object.h"
+
+CInventoryBox::CInventoryBox()
+{
+	m_in_use = false;
+}
 
 void CInventoryBox::OnEvent(NET_Packet& P, u16 type)
 {
@@ -27,6 +37,12 @@ void CInventoryBox::OnEvent(NET_Packet& P, u16 type)
 			it = std::find(m_items.begin(),m_items.end(),id); VERIFY(it!=m_items.end());
 			m_items.erase		(it);
 			itm->H_SetParent	(NULL,!P.r_eof() && P.r_u8());
+
+			if( m_in_use )
+			{
+				CGameObject* GO		= smart_cast<CGameObject*>(itm);
+				Actor()->callback(GameObject::eInvBoxItemTake)( this->lua_game_object(), GO->lua_game_object() );
+			}
 		}break;
 	};
 }
