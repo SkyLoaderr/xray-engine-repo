@@ -84,7 +84,7 @@ void	CObjectList::o_sleep		( CObject*		O		)
 
 void	CObjectList::SingleUpdate	(CObject* O)
 {
-	if (O->processing_enabled() &&	(Device.dwFrame != O->dwFrame_UpdateCL))
+	if (O->processing_enabled() && (Device.dwFrame != O->dwFrame_UpdateCL))
 	{
 		if (O->H_Parent())		SingleUpdate(O->H_Parent());
 		Device.Statistic->UpdateClient_updated	++;
@@ -92,13 +92,23 @@ void	CObjectList::SingleUpdate	(CObject* O)
 		O->IAmNotACrowAnyMore	()				;
 		O->UpdateCL				()				;
 		VERIFY3					(O->dbg_update_cl == Device.dwFrame, "Broken sequence of calls to 'UpdateCL'",*O->cName());
-		if (O->getDestroy())	destroy_queue.push_back(O);
-		else if (O->H_Parent() && (O->H_Parent()->getDestroy() || O->H_Root()->getDestroy()) )	{
+		if (O->getDestroy())
+		{
+			destroy_queue.push_back(O);
+			Msg				("- destroy_queue.push_back %s[%d] frame [%d]",O->cName().c_str(), O->ID(), Device.dwFrame);
+		}
+		else if (O->H_Parent() && (O->H_Parent()->getDestroy() || O->H_Root()->getDestroy()) )	
+		{
 			// Push to destroy-queue if it isn't here already
 			Msg	("! ERROR: incorrect destroy sequence for object[%d:%s], section[%s], parent[%d:%s]",O->ID(),*O->cName(),*O->cNameSect(),O->H_Parent()->ID(),*O->H_Parent()->cName());
 			if (std::find(destroy_queue.begin(),destroy_queue.end(),O)==destroy_queue.end())
 				destroy_queue.push_back	(O);
 		}
+	}
+	if (O->getDestroy())
+	{
+		destroy_queue.push_back(O);
+		Msg				("- !!!processing_enabled ->destroy_queue.push_back %s[%d] frame [%d]",O->cName().c_str(), O->ID(), Device.dwFrame);
 	}
 }
 
@@ -128,13 +138,15 @@ void CObjectList::Update		(bool bForce)
 	}
 
 	// Clients
-	if (Device.fTimeDelta>EPS_S || bForce)			{
+	if (Device.fTimeDelta>EPS_S || bForce)			
+	{
 		Device.Statistic->UpdateClient.Begin		();
-		Device.Statistic->UpdateClient_active	= objects_active.size	();
+		Device.Statistic->UpdateClient_active		= objects_active.size	();
 		Device.Statistic->UpdateClient_total		= objects_active.size	() + objects_sleeping.size();
 
 		u32 objects_count	= workload->size();
-		if (objects_count > objects_dup_memsz)	{
+		if (objects_count > objects_dup_memsz)	
+		{
 			// realloc
 			while (objects_count > objects_dup_memsz)	objects_dup_memsz	+= 32;
 			objects_dup	= (CObject**)xr_realloc(objects_dup,objects_dup_memsz*sizeof(CObject*));
@@ -173,9 +185,7 @@ void CObjectList::Update		(bool bForce)
 		for (int it = destroy_queue.size()-1; it>=0; it--)
 		{
 			CObject*		O	= destroy_queue[it];
-#ifdef DEBUG
-			Msg				("Destroying object [%d][%s]",O->ID(),*O->cName());
-#endif
+			Msg				("Destroying object [%d][%s] frame[%d]",O->ID(),*O->cName(), Device.dwFrame);
 			O->net_Destroy	( );
 			Destroy			(O);
 		}
