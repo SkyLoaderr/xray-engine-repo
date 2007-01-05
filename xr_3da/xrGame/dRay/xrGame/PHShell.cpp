@@ -64,6 +64,7 @@ CPHShell::CPHShell()
 	m_pKinematics=NULL;
 	m_spliter_holder=NULL;
 	m_object_in_root.identity();
+	m_active_count=0;
 }
 
 void CPHShell::EnableObject(CPHObject* obj)
@@ -73,7 +74,7 @@ void CPHShell::EnableObject(CPHObject* obj)
 }
 void CPHShell::DisableObject()
 {
-	InterpolateGlobalTransform(&mXFORM);
+	//InterpolateGlobalTransform(&mXFORM);
 	CPHObject::deactivate();
 	if(m_spliter_holder)m_spliter_holder->Deactivate();
 	if(m_flags.test(flRemoveCharacterCollisionAfterDisable))
@@ -111,14 +112,24 @@ void CPHShell::ReanableObject()
 
 void CPHShell::vis_update_activate()
 {
+	++m_active_count;
 	CPhysicsShellHolder* ref_object=(*elements.begin())->PhysicsRefObject();
-	if(ref_object)ref_object->processing_activate();
+	if(ref_object&&m_active_count>0)
+	{
+		m_active_count=0;
+		ref_object->processing_activate();
+	}
 }
 
 void CPHShell::vis_update_deactivate()
 {
-		CPhysicsShellHolder* ref_object=(*elements.begin())->PhysicsRefObject();
-		if(ref_object)ref_object->processing_deactivate();
+	--m_active_count;
+		//CPhysicsShellHolder* ref_object=(*elements.begin())->PhysicsRefObject();
+		//if(ref_object&&!m_flags.test(flProcessigDeactivated))
+		//{
+		//	//ref_object->processing_deactivate();
+		//	m_flags.set(flProcessigDeactivate,TRUE);
+		//}
 }
 void CPHShell::setDensity(float M)
 {
@@ -1155,7 +1166,7 @@ void CPHShell::UpdateRoot()
 void CPHShell::InterpolateGlobalTransform(Fmatrix* m)
 {
 	
-	if(!CPHObject::is_active()&&!CPHObject::NetInterpolation()) return;
+	//if(!CPHObject::is_active()&&!CPHObject::NetInterpolation()) return;
 
 	ELEMENT_I i,e;
 	i=elements.begin(); e=elements.end();
@@ -1165,6 +1176,12 @@ void CPHShell::InterpolateGlobalTransform(Fmatrix* m)
 	m->mulB_43	(m_object_in_root);
 	mXFORM.set(*m);
 	VERIFY2(_valid(*m),"not valide transform");
+	CPhysicsShellHolder* ref_object=(*elements.begin())->PhysicsRefObject();
+	if(ref_object&&m_active_count<0)
+	{
+		ref_object->processing_deactivate();
+		m_active_count=0;
+	}
 }
 
 void CPHShell::GetGlobalTransformDynamic(Fmatrix* m)

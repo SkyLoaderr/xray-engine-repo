@@ -17,9 +17,9 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	{
 		flActive									=	1<<0,
 		flActivating								=	1<<1,
-		flRemoveCharacterCollisionAfterDisable		=	1<<2
-		//flEnableCallback		=	1<<3
+		flRemoveCharacterCollisionAfterDisable		=	1<<2,
 	};
+	s16						m_active_count;
 	Flags8					m_flags;					
 	ELEMENT_STORAGE			elements;
 	JOINT_STORAGE			joints;
