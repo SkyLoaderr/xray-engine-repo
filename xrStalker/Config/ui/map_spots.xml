@@ -241,8 +241,6 @@
 	</treasure_spot>
 	<treasure_spot_mini  x="0" y="0" width="15" height="15" alignment="c" stretch="1" scale="1">
 		<texture>ui_sm_mapQuest_gold</texture>
-		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
-		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
 	</treasure_spot_mini>
 
 
