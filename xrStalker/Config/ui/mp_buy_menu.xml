@@ -64,7 +64,7 @@
             cell_width = "43" cell_height="43" rows_num="5" cols_num="10"
             unlimited="1" group_similar="1"/>
 
-    <lst_shop x="5" y="40" width="278" height="516"
+    <lst_shop x="5" y="40" width="278" height="518"
             cell_width = "43" cell_height="43" rows_num="10" cols_num="6"
             unlimited="1" group_similar="1" custom_placement="0"/>
 

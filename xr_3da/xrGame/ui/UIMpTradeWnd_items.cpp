@@ -376,6 +376,15 @@ void CUIMpTradeWnd::StorePreset(ETradePreset idx)
 		_one.sect_name				= iinfo->m_name_sect;
 		_one.count					= cnt;
 		_one.addon_state			= addon_state;
+
+		if(addon_state&at_scope)
+			_one.addon_names[0]			= GetAddonNameSect(iinfo, at_scope);
+
+		if(addon_state&at_glauncher)
+			_one.addon_names[1]			= GetAddonNameSect(iinfo, at_glauncher);
+
+		if(addon_state&at_silencer)
+			_one.addon_names[2]			= GetAddonNameSect(iinfo, at_silencer);
 	}
 
 	std::sort						(v.begin(), v.end(), preset_sorter(m_item_mngr));
@@ -408,6 +417,10 @@ void CUIMpTradeWnd::ApplyPreset(ETradePreset idx)
 					for(u32 i=0; i<3; ++i)
 					{
 						item_addon_type at		= (i==0)?at_scope : ((i==1)?at_glauncher : at_silencer);
+						
+						if(!(_one.addon_state&at) )	
+							continue;
+
 						shared_str addon_name	= GetAddonNameSect(pitem, at);
 						
 						SBuyItemInfo* addon_item = CreateItem(addon_name, SBuyItemInfo::e_undefined, false);
@@ -546,6 +559,13 @@ void CUIMpTradeWnd::DumpPreset(ETradePreset idx)
 		const _preset_item& _one		= *it;
 
 		Msg("[%s]-[%d]", _one.sect_name.c_str(), _one.count);
+
+		if(_one.addon_names[0].c_str())
+			Msg("	[%s]",_one.addon_names[0].c_str());
+		if(_one.addon_names[1].c_str())
+			Msg("	[%s]",_one.addon_names[1].c_str());
+		if(_one.addon_names[2].c_str())
+			Msg("	[%s]",_one.addon_names[2].c_str());
 	}
 }
 

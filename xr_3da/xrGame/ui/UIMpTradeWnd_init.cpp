@@ -73,10 +73,10 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 	m_btn_ok							= xr_new<CUI3tButton>();AttachChild(m_btn_ok);					m_btn_ok->SetAutoDelete			(true);
 	m_btn_cancel						= xr_new<CUI3tButton>();AttachChild(m_btn_cancel);				m_btn_cancel->SetAutoDelete		(true);
 	m_btn_shop_back						= xr_new<CUI3tButton>();AttachChild(m_btn_shop_back);			m_btn_shop_back->SetAutoDelete	(true);
-	m_btn_preset_1						= xr_new<CUI3tButton>();AttachChild(m_btn_preset_1	);			m_btn_preset_1->SetAutoDelete	(true);
-	m_btn_preset_2						= xr_new<CUI3tButton>();AttachChild(m_btn_preset_2	);			m_btn_preset_2->SetAutoDelete	(true);
-	m_btn_preset_3						= xr_new<CUI3tButton>();AttachChild(m_btn_preset_3	);			m_btn_preset_3->SetAutoDelete	(true);
-	m_btn_last_set						= xr_new<CUI3tButton>();AttachChild(m_btn_last_set	);			m_btn_last_set->SetAutoDelete	(true);
+	m_btns_preset[0]					= xr_new<CUI3tButton>();AttachChild(m_btns_preset[0]	);		m_btns_preset[0]->SetAutoDelete	(true);
+	m_btns_preset[1]					= xr_new<CUI3tButton>();AttachChild(m_btns_preset[1]	);		m_btns_preset[1]->SetAutoDelete	(true);
+	m_btns_preset[2]					= xr_new<CUI3tButton>();AttachChild(m_btns_preset[2]	);		m_btns_preset[2]->SetAutoDelete	(true);
+	m_btns_preset[3]					= xr_new<CUI3tButton>();AttachChild(m_btns_preset[3]	);		m_btns_preset[3]->SetAutoDelete	(true);
 	m_btns_save_preset[0]				= xr_new<CUI3tButton>();AttachChild(m_btns_save_preset[0]);		m_btns_save_preset[0]->SetAutoDelete(true);
 	m_btns_save_preset[1]				= xr_new<CUI3tButton>();AttachChild(m_btns_save_preset[1]);		m_btns_save_preset[1]->SetAutoDelete(true);
 	m_btns_save_preset[2]				= xr_new<CUI3tButton>();AttachChild(m_btns_save_preset[2]);		m_btns_save_preset[2]->SetAutoDelete(true);
@@ -95,10 +95,10 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 	CUIXmlInit::Init3tButton			(xml_doc, "btn_ok",				0, m_btn_ok				);
 	CUIXmlInit::Init3tButton			(xml_doc, "btn_cancel",			0, m_btn_cancel			);
 	CUIXmlInit::Init3tButton			(xml_doc, "shop_back_btn",		0, m_btn_shop_back		);
-	CUIXmlInit::Init3tButton			(xml_doc, "btn_preset_1",		0, m_btn_preset_1		);
-	CUIXmlInit::Init3tButton			(xml_doc, "btn_preset_2",		0, m_btn_preset_2		);
-	CUIXmlInit::Init3tButton			(xml_doc, "btn_preset_3",		0, m_btn_preset_3		);
-	CUIXmlInit::Init3tButton			(xml_doc, "btn_last_set",		0, m_btn_last_set		);
+	CUIXmlInit::Init3tButton			(xml_doc, "btn_preset_1",		0, m_btns_preset[1]		);
+	CUIXmlInit::Init3tButton			(xml_doc, "btn_preset_2",		0, m_btns_preset[2]		);
+	CUIXmlInit::Init3tButton			(xml_doc, "btn_preset_3",		0, m_btns_preset[3]		);
+	CUIXmlInit::Init3tButton			(xml_doc, "btn_last_set",		0, m_btns_preset[0]		);
 	CUIXmlInit::Init3tButton			(xml_doc, "btn_save_preset_1",	0, m_btns_save_preset[0]);
 	CUIXmlInit::Init3tButton			(xml_doc, "btn_save_preset_2",	0, m_btns_save_preset[1]);
 	CUIXmlInit::Init3tButton			(xml_doc, "btn_save_preset_3",	0, m_btns_save_preset[2]);
@@ -115,18 +115,18 @@ void CUIMpTradeWnd::Init(const shared_str& sectionName, const shared_str& sectio
 
 
 
-	Register							(m_btn_ok);
-	Register							(m_btn_cancel);
-	Register							(m_btn_shop_back);
-	Register							(m_btn_preset_1		);
-	Register							(m_btn_preset_2		);
-	Register							(m_btn_preset_3		);
-	Register							(m_btn_last_set		);
-	Register							(m_btns_save_preset[0]);
-	Register							(m_btns_save_preset[1]);
-	Register							(m_btns_save_preset[2]);
-	Register							(m_btn_reset		);
-	Register							(m_btn_sell			);
+	Register							(m_btn_ok				);
+	Register							(m_btn_cancel			);
+	Register							(m_btn_shop_back		);
+	Register							(m_btns_preset[0]		);
+	Register							(m_btns_preset[1]		);
+	Register							(m_btns_preset[2]		);
+	Register							(m_btns_preset[3]		);
+	Register							(m_btns_save_preset[0]	);
+	Register							(m_btns_save_preset[1]	);
+	Register							(m_btns_save_preset[2]	);
+	Register							(m_btn_reset			);
+	Register							(m_btn_sell				);
 	Register							(m_btn_pistol_ammo		);
 	Register							(m_btn_pistol_silencer	);
 	Register							(m_btn_rifle_ammo		);

@@ -6,6 +6,7 @@
 #include "UITabControl.h"
 #include "UIDragDropListEx.h"
 #include "UIItemInfo.h"
+#include "UI3tButton.h"
 
 #include "../inventory_item.h"
 #include "../PhysicsShellHolder.h"
@@ -57,12 +58,15 @@ void CUIMpTradeWnd::UpdateMomeyIndicator()
 	
 	for(u32 i=_preset_idx_last; i<=_preset_idx_3; ++i)
 	{
-		CUIStatic* st		= m_static_preset_money[i];
-		u32	_cost			= GetPresetCost((ETradePreset)i);
-		sprintf				(buff, "%d", _cost);
-		st->SetText			(buff);
-		u32 clr				= (_cost<=GetMoneyAmount())?color_rgba(231,153,22,255):color_rgba(255,0,0,255);
-		st->SetTextColor	(clr);
+		CUIStatic* st				= m_static_preset_money[i];
+		u32	_cost					= GetPresetCost((ETradePreset)i);
+		sprintf						(buff, "%d", _cost);
+		st->SetText					(buff);
+		bool b_has_enought_money	= _cost<=GetMoneyAmount();
+		u32 clr						= (b_has_enought_money)?color_rgba(231,153,22,255):color_rgba(255,0,0,255);
+		st->SetTextColor			(clr);
+		const preset_items&		v	=  GetPreset(idx);
+		m_btns_preset[i]->Enable	(b_has_enought_money && v.size()!=0);
 	}
 }
 
@@ -325,7 +329,31 @@ u32 CUIMpTradeWnd::GetMoneyAmount() const
 
 u32 CUIMpTradeWnd::GetPresetCost(ETradePreset idx)
 {
-	return idx*1000;
+	const preset_items&		v			=  GetPreset(idx);
+	preset_items::const_iterator it		= v.begin();
+	preset_items::const_iterator it_e	= v.end();
+
+	u32 result							= 0;
+	for(;it!=it_e;++it)
+	{
+		const _preset_item& _one		= *it;
+
+		u32 _item_cost					= m_item_mngr->GetItemCost(_one.sect_name, GetRank() );
+
+		if(_one.addon_names[0].c_str())
+			_item_cost					+= m_item_mngr->GetItemCost(_one.addon_names[0], GetRank() );
+		
+		if(_one.addon_names[1].c_str())
+			_item_cost					+= m_item_mngr->GetItemCost(_one.addon_names[1], GetRank() );
+
+		if(_one.addon_names[2].c_str())
+			_item_cost					+= m_item_mngr->GetItemCost(_one.addon_names[2], GetRank() );
+
+		_item_cost						*= _one.count;
+
+		result							+= _item_cost;
+	}
+	return result;
 }
 
 void CUIMpTradeWnd::SetSkin(u8 SkinID)

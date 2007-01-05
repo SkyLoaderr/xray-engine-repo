@@ -17,6 +17,7 @@ struct _preset_item
 	shared_str			sect_name;
 	u32					count;
 	u8					addon_state;
+	shared_str			addon_names[3];
 	bool operator ==	(const shared_str& what)
 	{
 		return (sect_name==what);

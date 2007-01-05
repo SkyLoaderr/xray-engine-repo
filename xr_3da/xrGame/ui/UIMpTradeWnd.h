@@ -140,11 +140,8 @@ private:
 	CUI3tButton* 		m_btn_ok;
 	CUI3tButton* 		m_btn_cancel;
 
-	CUI3tButton* 		m_btn_preset_1;
-	CUI3tButton* 		m_btn_preset_2;
-	CUI3tButton* 		m_btn_preset_3;
-	CUI3tButton* 		m_btn_last_set;
-	CUI3tButton* 		m_btns_save_preset[3];
+	CUI3tButton* 		m_btns_preset		[4];
+	CUI3tButton* 		m_btns_save_preset	[3];
 	CUI3tButton* 		m_btn_reset;
 	CUI3tButton* 		m_btn_sell;
 
