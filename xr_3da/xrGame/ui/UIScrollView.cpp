@@ -83,7 +83,9 @@ void CUIScrollView::Clear				()
 {
 	m_pad->DetachAll	();
 	m_flags.set			(eNeedRecalc,TRUE);
-	RecalcSize			();
+	
+	m_flags.set			(eNeedRecalc,TRUE);
+	ScrollToBegin		();
 }
 
 void CUIScrollView::Update				()
