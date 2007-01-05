@@ -245,7 +245,9 @@ end
 function CRandomTask:active_parent_task(actor, npc)
 	local parent = self:get_parent(npc)
 	for k,v in pairs(self.active_task_by_type) do
-		if self.task_info[v].parent == parent then
+		if self.task_info[v].parent == parent and
+		   self.task_info[v].status ~= "rewarded"
+		then
 			return true
 		end				
 	end
