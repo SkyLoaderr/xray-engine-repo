@@ -72,6 +72,7 @@ public:
 		if (_it<objects_active.size())	return objects_active	[_it];
 		else							return objects_sleeping	[_it-objects_active.size()];
 	}
+	bool						dump_all_objects	();
 };
 
 #endif //__XR_OBJECT_LIST_H__

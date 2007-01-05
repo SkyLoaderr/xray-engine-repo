@@ -65,7 +65,7 @@ void CUIMpTradeWnd::UpdateMomeyIndicator()
 		bool b_has_enought_money	= _cost<=GetMoneyAmount();
 		u32 clr						= (b_has_enought_money)?color_rgba(231,153,22,255):color_rgba(255,0,0,255);
 		st->SetTextColor			(clr);
-		const preset_items&		v	=  GetPreset(idx);
+		const preset_items&		v	=  GetPreset((ETradePreset)i);
 		m_btns_preset[i]->Enable	(b_has_enought_money && v.size()!=0);
 	}
 }

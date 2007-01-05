@@ -368,3 +368,23 @@ void CObjectList::relcase_unregister	(int* ID)
 	*m_relcase_callbacks.back().m_ID= *ID;
 	m_relcase_callbacks.pop_back	();
 }
+
+void dump_list(xr_vector<CObject*>& v, LPCSTR reason)
+{
+	xr_vector<CObject*>::iterator it = v.begin();
+	xr_vector<CObject*>::iterator it_e = v.end();
+	Msg("----------------dump_list [%s]",dump_list);
+	for(;it!=it_e;++it)
+		Msg("name [%s] ID[%d] getDestroy()=[%s]", (*it)->cName().c_str(), (*it)->ID(), ((*it)->getDestroy())?"yes":"no" );
+}
+
+bool CObjectList::dump_all_objects()
+{
+	dump_list(destroy_queue,"destroy_queue");
+	dump_list(objects_active,"objects_active");
+	dump_list(objects_sleeping,"objects_sleeping");
+
+	dump_list(crows_0,"crows_0");
+	dump_list(crows_1,"crows_1");
+	return false;
+}
