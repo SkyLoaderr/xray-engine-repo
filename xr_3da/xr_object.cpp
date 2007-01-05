@@ -163,7 +163,7 @@ BOOL CObject::net_Spawn			(CSE_Abstract* data)
 	shedule_register			();
 
 	// reinitialize flags
-	Props.bActiveCounter		= 0;	
+//.	Props.bActiveCounter		= 0;	
 	processing_activate			();
 	setDestroy					(false);
 
