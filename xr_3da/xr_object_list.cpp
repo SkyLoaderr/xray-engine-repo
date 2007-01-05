@@ -65,6 +65,7 @@ void	CObjectList::o_remove		( xr_vector<CObject*>&	v,  CObject* O)
 	xr_vector<CObject*>::iterator _i	= std::find(v.begin(),v.end(),O);
 	VERIFY					(_i!=v.end());
 	v.erase					(_i);
+//.	Msg("---o_remove[%s][%d]", O->cName().c_str(), O->ID() );
 }
 
 void	CObjectList::o_activate		( CObject*		O		)

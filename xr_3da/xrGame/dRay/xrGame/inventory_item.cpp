@@ -515,7 +515,7 @@ void CInventoryItem::load(IReader &packet)
 	
 	if(!object().PPhysicsShell())
 	{
-		object().processing_activate();
+//.		object().processing_activate();
 		object().setup_physic_shell	();
 		object().PPhysicsShell()->Disable();
 	}
