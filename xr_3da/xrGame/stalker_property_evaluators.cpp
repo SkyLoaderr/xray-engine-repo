@@ -321,10 +321,7 @@ _value_type CStalkerPropertyEvaluatorEnemyReached::evaluate	()
 	if (!enemy)
 		return					(false);
 
-	return						(
-		(object().Position().distance_to_sqr(enemy->Position()) <= _sqr(2.f)) &&
-		object().memory().visual().visible_now(enemy)
-	);
+	return						((object().Position().distance_to_sqr(enemy->Position()) <= _sqr(3.f)));
 }
 
 //////////////////////////////////////////////////////////////////////////

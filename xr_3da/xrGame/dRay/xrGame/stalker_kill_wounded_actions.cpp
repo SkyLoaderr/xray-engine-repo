@@ -164,6 +164,9 @@ void CStalkerActionAimWounded::initialize				()
 	object().sight().setup						(CSightAction(enemy,true));
 	object().agent_manager().enemy().wounded_processed(enemy,true);
 
+	if (!object().memory().visual().visible_now(enemy))
+		object().movement().set_movement_type	(eMovementTypeWalk);
+
 //	m_speed									= object().movement().m_head.speed;
 //	object().movement().danger_head_speed	(PI_DIV_4);
 }
@@ -186,6 +189,9 @@ void CStalkerActionAimWounded::execute					()
 		return;
 
 	if (!fsimilar(head.current.pitch,head.target.pitch))
+		return;
+
+	if (!object().memory().visual().visible_now(object().memory().enemy().selected()))
 		return;
 
 	m_storage->set_property	(eWorldPropertyWoundedEnemyAimed,true);
