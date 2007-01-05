@@ -352,15 +352,19 @@ function CRandomTask:task_complete(p1, p2)
 	end
 
 	local sel_task = self.task_info[self.active_task_by_type[p1]]
-	if self_task == nil then
+	if sel_task == nil then
+		printf("!!!")
+		print_table(self.active_task_by_type)
+		printf("!!!")
+		print_table(self.task_info)
 		abort("WRONG RANDOM TASK %s %s", tostring(p1), tostring(p2))
 	end
 
 	if p2 == 0 then
-		if not self_task.need_return and self_task.status == "completed" then
+		if not sel_task.need_return and sel_task.status == "completed" then
 			return true
 		end
-		if self_task.status == "rewarded" then
+		if sel_task.status == "rewarded" then
 			return true
 		end
 	end
@@ -407,19 +411,19 @@ end
 --' Проверяем, не профейлен ли таск
 function CRandomTask:task_fail(p1, p2)
 	if p2 == 0 then
-		local self_task = self.task_info[self.active_task_by_type[p1]]
+		local sel_task = self.task_info[self.active_task_by_type[p1]]
 		
-		if self_task == nil then
+		if sel_task == nil then
 			abort("WRONG RANDOM TASK %s %s", tostring(p1), tostring(p2))
 		end
 
 		if string.find(p1, "defend_lager") ~= nil then
-			if alife():object(self_task.selected_target).gulag:get_population_comed() == 0 then
+			if alife():object(sel_task.selected_target).gulag:get_population_comed() == 0 then
 				self.task_info[self.active_task_by_type[p1]].status = "failed"
 				return true
 			end
 		end
-		if self_task.status == "refused" or self_task.status == "failed" then
+		if sel_task.status == "refused" or sel_task.status == "failed" then
 			return true
 		end
 	end
