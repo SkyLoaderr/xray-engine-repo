@@ -676,6 +676,10 @@ void CStalkerMovementManager::check_for_bad_path	()
 	float								distance = path[point_index + 1].position.distance_to(object().Position());
 	Fvector								current_direction = Fvector().sub(path[point_index + 1].position,path[point_index].position);
 	Fvector								next_direction;
+	if (current_direction.magnitude() >= EPS_L)
+		current_direction.normalize		();
+	else
+		current_direction.set			(0.f,0.f,1.f);
 
 	PATH::const_iterator				E = path.end();
 	PATH::const_iterator				I = path.begin() + point_index + 1;
@@ -695,7 +699,7 @@ void CStalkerMovementManager::check_for_bad_path	()
 		float							angle = acosf(cos_angle);
 		if (angle > BAD_PATH_ANGLE) {
 #ifdef DEBUG
-//.			Msg							("bad path check changed movement type from RUN to WALK");
+			Msg							("bad path check changed movement type from RUN to WALK");
 #endif // DEBUG
 			m_current.m_movement_type	= eMovementTypeWalk;
 			return;
