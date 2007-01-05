@@ -436,7 +436,7 @@ void CCustomMonster::UpdateCL	()
 			u32	d1					= dwTime-A.dwTimeStamp;
 			u32	d2					= B.dwTimeStamp - A.dwTimeStamp;
 //			VERIFY					(d2);
-			factor					= d2 ? (float(d1)/float(d2)) : 1.f;
+			float					factor = d2 ? (float(d1)/float(d2)) : 1.f;
 			Fvector					l_tOldPosition = Position();
 			NET_Last.lerp			(A,B,factor);
 			if (Local()) {
