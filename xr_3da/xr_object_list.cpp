@@ -95,7 +95,7 @@ void	CObjectList::SingleUpdate	(CObject* O)
 		if (O->getDestroy())
 		{
 			destroy_queue.push_back(O);
-			Msg				("- destroy_queue.push_back %s[%d] frame [%d]",O->cName().c_str(), O->ID(), Device.dwFrame);
+//.			Msg				("- destroy_queue.push_back %s[%d] frame [%d]",O->cName().c_str(), O->ID(), Device.dwFrame);
 		}
 		else if (O->H_Parent() && (O->H_Parent()->getDestroy() || O->H_Root()->getDestroy()) )	
 		{
