@@ -2,16 +2,16 @@
 		<text>Capture the gate</text>
 	</string>
 	<string id="aes_military_task_10">
-		<text>Falcon group</text>
+		<text>Sokol group</text>
 	</string>
 	<string id="aes_military_task_11">
-		<text>Gryphon group</text>
+		<text>Grif group</text>
 	</string>
 	<string id="aes_military_task_12">
-		<text>Owl group</text>
+		<text>Sova group</text>
 	</string>
 	<string id="aes_military_task_13">
-		<text>Harrier group</text>
+		<text>Lun group</text>
 	</string>
 	<string id="aes_military_task_2">
 		<text>Hold position</text>
@@ -26,14 +26,14 @@
 		<text>Destroy the Monolith 2 fortifications</text>
 	</string>
 	<string id="aes_military_task_6">
-		<text>Peregrine group</text>
+		<text>Sapsan group</text>
 	</string>
 	<string id="aes_military_task_7">
-		<text>Kite group</text>
+		<text>Korshun group</text>
 	</string>
 	<string id="aes_military_task_8">
-		<text>Goshawk group</text>
+		<text>Yastreb group</text>
 	</string>
 	<string id="aes_military_task_9">
-		<text>Kestrel group</text>
+		<text>Pustelga group</text>
 	</string>

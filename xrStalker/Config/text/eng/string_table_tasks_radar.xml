@@ -12,11 +12,11 @@
 	</string>
 	
 	 <string id="pripyat_task_title">
-          <text>Встретиться с группой сталкеров</text>
+          <text>Meet with the stalkers</text>
      </string>
      <string id="pripyat_task_objective_1">
-          <text>Следовать за группой сталкеров</text>
+          <text>Follow the stalkers</text>
      </string>
      <string id="pripyat_task_objective_2">
-          <text>Найти выход на ЧАЭС</text>
+          <text>Reach Chernobyl NPP</text>
      </string>

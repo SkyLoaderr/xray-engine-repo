@@ -53,7 +53,7 @@
 		<text>Talk to Wolf</text>
 	</string>
 	<string id="esc_help_wounded_from_raid">
-		<text>Learn something about Hawkeye from Fox</text>
+		<text>Learn something about Strelok from Fox</text>
 	</string>
 	<string id="esc_help_wounded_from_raid_0">
 		<text>Help the wounded stalker</text>
@@ -62,7 +62,7 @@
 		<text>Help Fox</text>
 	</string>
 	<string id="esc_help_wounded_from_raid_2">
-		<text>Get information about Hawkeye</text>
+		<text>Get information about Strelok</text>
 	</string>
 	<string id="esc_wounded_to_trader_gift">
 		<text>Deliver package to the trader.</text>
@@ -74,7 +74,7 @@
 		<text>Meet with Gray.</text>
 	</string>
 	<string id="garbage_meet_stalker_0">
-		<text>Meet with Gray at the Dump.</text>
+		<text>Meet with Gray at the Garbage.</text>
 	</string>
 	<string id="meet_with_doctor">
 		<text>Meet with Doctor.</text>
@@ -83,13 +83,13 @@
 		<text>Meet with Doctor.</text>
 	</string>
 	<string id="meet_with_doctor_2">
-		<text>Meet with Doctor at Hawkeye's hiding place</text>
+		<text>Meet with Doctor at Strelok's hiding place</text>
 	</string>
 	<string id="storyline_escape_eliminate_gunslinger">
-		<text>Kill Hawkeye</text>
+		<text>Kill Strelok</text>
 	</string>
 	<string id="storyline_escape_find_gunslinger">
-		<text>Find Hawkeye</text>
+		<text>Find Strelok</text>
 	</string>
 	<string id="tutorial_find_artefact">
 		<text>Find an artifact</text>

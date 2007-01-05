@@ -49,22 +49,22 @@
 		<text>This old hamlet is a sinister place and a death-trap. But if you've come this far despite all the risks, be prepared to die a sudden death.</text>
 	</string>
 	<string id="ui_map_desc_mp_prypiat_large">
-		<text>Город Припять, бывшее место проживания работников АЭС, вернее, то, что от него осталось. Руины этого индустриального скелета таят в себе вполне реальную опасность. Здесь следует по-настоящему беречь свою жизнь.</text>
+		<text>The city of Pripyat, place of former residence of the workers of AES, or what's left of it. The ruins of this industrial skeleton contain quite an immediate danger. Here you truly need to guard your life.</text>
 	</string>
 	<string id="ui_map_desc_mp_prypiat_short">
-		<text>Город Припять неподалеку от АЭС - наследие чернобыльской катастрофы.</text>
+		<text>The city of Pripyat isn't far from AES - the heirloom of the Chernobyl catastrophe.</text>
 	</string>
 	<string id="ui_map_desc_mp_railraod_short">
-		<text>Trains and tracks as far as the eye can see… Even the station building is still standing. Only the sounds are missing in this idyllic scenery. Everything is dead, except for the plants, which are quickly taking over.</text>
+		<text>A smallish railroad station at the factory Rostok.</text>
 	</string>
 	<string id="ui_map_desc_mp_railroad_large">
-		<text>Поезда есть, рельсы со шпалами на месте…Даже станция есть…Только вот звуков не хватает, вымерло тут все и травой поросло…Не едут сюда давно поезда и электрички, зато охотники за артефактами тут частые гости. Береги голову от шальной снайперской пули.</text>
+		<text>A smallish railroad station at the factory Rostok. The rusted train cars and diesel locomotives now stand at an eternal fork in the road. The many artifacts found here lure in desperate stalkers from all over the Zone.</text>
 	</string>
 	<string id="ui_map_desc_mp_rostok_large">
-		<text>Этот завод под грудами металла и за стенами бетона хранит какое-то особенное молчание. В прошлом веке здесь кипел рабочий процесс, трудящиеся спешили на смену под лозунги громкоговорителей... Но теперь завод отработал своё.</text>
+		<text>Under heaps of metal and behind walls of concrete this factory holds a special kind of silence. Last century it simmered with the bustling of activity, the workers hurrying to their shift with slogans booming from the loudspeakers…But now the factory has done its share of work.</text>
 	</string>
 	<string id="ui_map_desc_mp_rostok_short">
-		<text>Заброшенный старый завод под грудами металла и за стенами бетона хранит глубокое молчание.</text>
+		<text>The abandoned factory holds a deep silence under heaps of metal and behind walls of concrete.</text>
 	</string>
 	<string id="ui_map_desc_mp_workshop_large">
 		<text>The outskirts of the Rostok factory before Duty's arrival. This dilapidated area is nonetheless very rich in artifacts. The empty hangars and warehouses teem with a hundred dangers every step of the way. Be extremely careful and keep a close watch on the white tower.</text>

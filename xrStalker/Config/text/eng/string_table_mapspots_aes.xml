@@ -8,32 +8,32 @@
 		<text>Armadillo 3</text>
 	</string>
 	<string id="aes_grif">
-		<text>Gryphon</text>
+		<text>Grif</text>
 	</string>
 	<string id="aes_korshun">
-		<text>Kite</text>
+		<text>Korshun</text>
 	</string>
 	<string id="aes_kvartet">
-		<text>Quartet</text>
+		<text>Kvartet</text>
 	</string>
 	<string id="aes_lun">
-		<text>Harrier</text>
+		<text>Lun</text>
 	</string>
 	<string id="aes_pustelga">
-		<text>Kestrel</text>
+		<text>Pustelga</text>
 	</string>
 	<string id="aes_sapsan">
-		<text>Peregrine</text>
+		<text>Sapsan</text>
 	</string>
 	<string id="aes_sarcofag_hint">
 		<text>Sarcophagus entrance</text>
 	</string>
 	<string id="aes_sokol">
-		<text>Falcon</text>
+		<text>Sokol</text>
 	</string>
 	<string id="aes_sova">
-		<text>Owl</text>
+		<text>Sova</text>
 	</string>
 	<string id="aes_yastreb">
-		<text>Hawk</text>
+		<text>Yastreb</text>
 	</string>

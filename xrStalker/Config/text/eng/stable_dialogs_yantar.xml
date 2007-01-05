@@ -4,7 +4,7 @@
 		<text>Thank you... err... Marked One, right? You helped save our associate Kruglov and in order to show my sincere appreciation I would like to present you with one of our working suits. It comes in very handy, you should know that... Could I be of additional help to you?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_1011">
-		<text>I'm looking for Lab X16. The Barman told me you might have info about its location.</text>
+		<text>I'm looking for Lab X16. The Barkeep told me you might have info about its location.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_1012">
 		<text>We've long had an interest in Lab X16...or, rather, in the mechanism inside it that generates emissions which directly affects people's consciousness. I'm afraid I have to disappoint you: the place is impossible to penetrate without special psi-armor. The outcome is known in advance - even if you could evade the swarms of zombies that infest the laboratory entrance, you run the risk of becoming one of them. This is all very serious. However, we've designed a screening device to help shield the emission, but to fine-tune it we have to obtain additional measurements. If you help us with this task, we could probably provide you with a fully calibrated prototype for field testing.</text>
@@ -43,16 +43,16 @@
 		<text>Yes, Sir? What might you be looking for?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_111">
-		<text>I'm looking for Lab X16. The Barman told me you might have info about its location.</text>
+		<text>I'm looking for Lab X16. The Barkeep told me you might have info about its location.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_12">
 		<text>Thank you, Marked One, for rescuing Kruglov. Take this pressurized suit as a reward for your troubles. Also, I suspect you didn't come here for a simple reward, am I right?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_121">
-		<text>I'm looking for Lab X16. The Barman told me that you might have info about its location.</text>
+		<text>I'm looking for Lab X16. The Barkeep told me that you might have info about its location.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_1211">
-		<text>We have been studying the emission in Lab X16, but you won't get in there without special equipment. We've developed a psi-protection device that can help shield you from the emission, but needs some fine-tuning. If you could help us with that, I could give you a working prototype that you can use to get inside the laboratory. </text>
+		<text>We have been studying the emission in Lab X16 for a long time, but you won't get in there without special equipment. We've developed a psi-protection device that can help shield you from the emission, but needs some fine-tuning. If you could help us with that, I could give you a working prototype that you can use to get inside the laboratory. </text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_12111">
 		<text>OK.</text>
@@ -130,7 +130,7 @@
 		<text>Yes, Marked One? What are you looking for?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_31">
-		<text>You managed superbly! Listen, if the results you obtained are correct, the prototype can actually provide effective protection for you against the emission from Õ16!</text>
+		<text>You did an excellent job. If the measurements are correct, the prototype should provide you with maximum protection from emission. </text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_311">
 		<text>Glad to hear that.</text>
@@ -142,7 +142,7 @@
 		<text>How exactly does one get inside Lab X16? Where is the entrance?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_311111">
-		<text>The X16 problem was being studied by Vasiliev... About a week ago, together with a colleague of yours - his name, I think, was Ghost - he attempted to get inside the laboratory. After some time an anomalous blowout occurred. We felt a bad shake and the signal vanished. An hour later we registered it again - it was coming from the direction of the swamp, but then died out... it seems that Vasiliev's life ended at the same time. If only we could find the body! Vasiliev had dependable recording equipment that must have registered accurate data on X16. And they could have found important information. Perhaps that would explain how to turn off the emission. I have already written down for you all the co-ordinates that I'm aware of..</text>
+		<text>Vasiliev was working on the lab issue. About a week ago he and a stalker called Ghost tried to get inside. A couple of hours later we felt a major tremor, and after another hour we picked up a signal from Vasiliev coming from the swamp, but it died away. And Vasiliev died away with it, it would seem. Try to find his corpse. He had the exact information on the lab and the way to get into it. There may even be info on deactivating that source of the emission. I've uploaded you all the data we have. </text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_311112">
 		<text>Ahem...It would be very interesting to take a look at these documents. So, you think Vasiliev has them?</text>
@@ -154,25 +154,25 @@
 		<text>OK, I'll try.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_41">
-		<text>Why did he die? Weren't you supposed to protect him?!</text>
+		<text>Why did he die? You were supposed to protect him!</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_411">
 		<text>Kruglov got killed by the zombies… I couldn't help it, there were too many of them.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_4111">
-		<text>But how, how could it happen?! Damn it, hell, everything is going haywire! I'll have to write up another report on the circumstances of his death, then request new staff… when will this stop!?</text>
+		<text>Oh, man…how could this happen? How could this happen??! Damn it, everything is going wrong again. Now we'll have to call for more people… We've got enough problems as it is… Damn…</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_41111">
 		<text>Listen... Kruglov is gone, but I'm alive. Give me the prototype. I will fight my way inside X16.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_411111">
-		<text>OK. Let's try to save the situation. Here is the prototype, but be careful, it's not calibrated properly... well, you already know why. So, stalker, even before you come to the emission's source, you must hurry.</text>
+		<text>Here is a prototype, be careful with it. It's not calibrated properly, but that's your fault - you failed to save our colleague. The device won't provide maximum protection, but at least it will lower the emission's intensity. So, stalker, you'll have to move fast on your way to the source.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_4111111">
 		<text>How does one get inside Lab X16? Where exactly is the entrance?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_41111111">
-		<text>The X16 problem was being studied by Vasiliev... About a week ago, together with a colleague of yours - his name, I think, was Ghost - he attempted to get inside the laboratory. After some time an anomalous blowout occurred. We felt a bad shake and the signal vanished. An hour later we registered it again - it was coming from the direction of the swamp, but then died out... it seems that Vasiliev's life ended at the same time. If only we could find the body! Vasiliev had dependable recording equipment that must have registered accurate data on X16. And they could have found important information. Perhaps that would explain how to turn off the emission. I have already written down for you all the co-ordinates that I'm aware of..</text>
+		<text>Vasiliev was working on the lab issue. About a week ago he and a stalker called Ghost tried to get inside. A couple of hours later we felt a major tremor, and after another hour we picked up a signal from Vasiliev coming from the swamp, but it died away. And Vasiliev died away with it, it would seem. Try to find his corpse. He had the exact information on the lab and the way to get into it. There may even be info on deactivating that source of the emission. I've uploaded you all the data we have. </text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_41112">
 		<text>Anything else?</text>
@@ -190,19 +190,19 @@
 		<text>Semenov got shot by the zombies… I couldn't help it, there were too many of them.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_5111">
-		<text>But how, how could it happen?! Damn it, hell, everything is going haywire! I'll have to write up another report on the circumstances of his death, then request new staff… when will this stop!?</text>
+		<text>Oh, man…how could this happen? How could this happen??! Damn it, everything is going wrong again. Now we'll have to call for more people… We've got enough problems as it is… Damn…</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_51111">
 		<text>Listen... Semenov is gone, but I'm alive. Give me the prototype. I will fight my way inside X16.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_511111">
-		<text>OK. Let's try to save the situation. Here is the prototype, but be careful, it's not calibrated properly... well, you already know why. So, stalker, even before you come to the emission's source, you must hurry.</text>
+		<text>Here is a prototype, be careful with it. It's not calibrated properly, but that's your fault - you failed to save our colleague. The device won't provide maximum protection, but at least it will lower the emission's intensity. So, stalker, you'll have to move fast on your way to the source.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_5111111">
 		<text>How does one get inside Lab X16? Where exactly is the entrance?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_511111111">
-		<text>The X16 problem was being studied by Vasiliev... About a week ago, together with a colleague of yours - his name, I think, was Ghost - he attempted to get inside the laboratory. After some time an anomalous blowout occurred. We felt a bad shake and the signal vanished. An hour later we registered it again - it was coming from the direction of the swamp, but then died out... it seems that Vasiliev's life ended at the same time. If only we could find the body! Vasiliev had dependable recording equipment that must have registered accurate data on X16. And they could have found important information. Perhaps that would explain how to turn off the emission. I have already written down for you all the co-ordinates that I'm aware of..</text>
+		<text>Vasiliev was working on the lab issue. About a week ago he and a stalker called Ghost tried to get inside. A couple of hours later we felt a major tremor, and after another hour we picked up a signal from Vasiliev coming from the swamp, but it died away. And Vasiliev died away with it, it would seem. Try to find his corpse. He had the exact information on the lab and the way to get into it. There may even be info on deactivating that source of the emission. I've uploaded you all the data we have. </text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_51112">
 		<text>Ahem...It would be very interesting to take a look at these documents. So, you think Vasiliev has them?</text>
@@ -244,13 +244,13 @@
 		<text>Can you be a little clearer?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_9111">
-		<text>Now you can safely move around the laboratory. But remember: in case the emitter isn't neutralised soon enough, the power of the psi-protection can fall below the critical point. Our calculations produced an estimated location of the emitter, and we also know it's under ground. I've already marked it on your map.</text>
+		<text>Stalker, now you will be able to break through to the laboratory, but unless you turn off the emitter, you won't last long even with the psi-protection on. We've estimated an approximate location of the emitter; it is located in an underground facility. I have marked the spot on your map. </text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_9112">
 		<text>How do I get inside X16? Where exactly is the entrance?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_9113">
-		<text>The X16 problem was being studied by Vasiliev... About a week ago, together with a colleague of yours - his name, I think, was Ghost - he attempted to get inside the laboratory. After some time an anomalous blowout occurred. We felt a bad shake and the signal vanished. An hour later we registered it again - it was coming from the direction of the swamp, but then died out... it seems that Vasiliev's life ended at the same time. If only we could find the body! Vasiliev had dependable recording equipment that must have registered accurate data on X16. And they could have found important information. Perhaps that would explain how to turn off the emission. I have already written down for you all the co-ordinates that I'm aware of..</text>
+		<text>Vasiliev was working on the lab issue. About a week ago he and a stalker called Ghost tried to get inside. A couple of hours later we felt a major tremor, and after another hour we picked up a signal from Vasiliev coming from the swamp, but it died away. And Vasiliev died away with it, it would seem. Try to find his corpse. He had the exact information on the lab and the way to get into it. There may even be info on deactivating that source of the emission. I've uploaded you all the data we have. </text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_9114">
 		<text>Ahem...It would be very interesting to take a look at these documents. So, you think Vasiliev has them?</text>

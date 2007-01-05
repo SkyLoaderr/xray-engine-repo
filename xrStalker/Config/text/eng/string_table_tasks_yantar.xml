@@ -14,7 +14,7 @@
 		<text>Take radiation measurements</text>
 	</string>
 	<string id="yan_find_vasilyev">
-		<text>Break through to Vasiliev's dead body</text>
+		<text>Search Valiliev's corpse</text>
 	</string>
 	<string id="yan_kill_brain">
 		<text>Turn off psi-emission</text>
@@ -26,10 +26,10 @@
 		<text>Get out of the lab</text>
 	</string>
 	<string id="yan_provodnik_about_doctor">
-		<text>Talk to Pathfinder</text>
+		<text>Talk to Guide</text>
 	</string>
 	<string id="yan_provodnik_task">
-		<text>Meet the Pathfinder</text>
+		<text>Meet the Guide</text>
 	</string>
 	<string id="yan_psi_zone_find">
 		<text>Escort Kruglov to the measurement site</text>

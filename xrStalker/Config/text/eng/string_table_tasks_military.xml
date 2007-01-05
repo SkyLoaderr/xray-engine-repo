@@ -26,7 +26,7 @@
 		<text>Crazy stalker.</text>
 	</string>
 	<string id="mil_dolg">
-		<text>Group of Duty members.</text>
+		<text>Duty faction</text>
 	</string>
 	<string id="mil_dolg_assault_freedom">
 		<text>Help the Duty faction eliminate Lukash</text>
@@ -56,7 +56,7 @@
 		<text>Find the cook in the Freedom base</text>
 	</string>
 	<string id="mil_freedom_rg6_task">
-		<text>Obtain an RG-6 from Freedom</text>
+		<text>Obtain an Bulldog 6 from Freedom</text>
 	</string>
 	<string id="mil_go_max">
 		<text>Report to Max.</text>
@@ -110,10 +110,10 @@
 		<text>Report to Murk about the mission</text>
 	</string>
 	<string id="mil_return_to_voronin">
-		<text>Bring the RG-6 to General Voronin</text>
+		<text>Bring the Bulldog 6 to General Voronin</text>
 	</string>
 	<string id="mil_rg6">
-		<text>RG-6</text>
+		<text>Find Bulldog 6</text>
 	</string>
 	<string id="mil_secret">
 		<text>Bandit cache.</text>
@@ -137,7 +137,7 @@
 		<text>Enter restrictor 2</text>
 	</string>
 	<string id="mil_test_task_phase3">
-		<text>Lift the RG-6 in the air if mission is complete, the LR3000 in case of failure</text>
+		<text>Lift the Bulldog 6 in the air if mission is complete, the TRs 3010 in case of failure</text>
 	</string>
 	<string id="mil_test_task_title">
 		<text>Test mission</text>

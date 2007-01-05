@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="id_mp_money">
-		<text>Деньги</text>
+		<text>Money</text>
 	</string>
 	<string id="mm_mp_pda_hunt">
-		<text>Бонус за ПДА</text>
+		<text>PDA bonus</text>
 	</string>
 	<string id="st_drink">
-		<text>выпить</text>
+		<text>drink</text>
 	</string>
 	<string id="st_mp_direct_ip">
-		<text>Прямой IP</text>
+		<text>Direct IP</text>
 	</string>
 	<string id="ui_mm_default">
-		<text>По умолчанию</text>
+		<text>Default</text>
 	</string>
 	<string id="ui_mm_detail_density">
-		<text>Плотность травы</text>
+		<text>Grass density</text>
 	</string>
 	<string id="ui_mm_r2_sun">
-		<text>Тень от солнца</text>
+		<text>Sun shadow</text>
 	</string>
 	<string id="ui_mm_r2_sun_details">
-		<text>Тень травы</text>
+		<text>Grass shadow</text>
 	</string>
 	<string id="ui_mm_render_2">
-		<text>Рендер-2</text>
+		<text>Render 2</text>
 	</string>
 	<string id="ui_pda_details">
-		<text># /детали</text>
+		<text># /details</text>
 	</string>
 	<string id="ui_st_btn_cancel">
-		<text>Отмена</text>
+		<text>Cancel</text>
 	</string>
 	<string id="ui_st_btn_no">
-		<text>Нет</text>
+		<text>No</text>
 	</string>
 	<string id="ui_st_btn_ok">
-		<text>ОК</text>
+		<text>OK</text>
 	</string>
 	<string id="ui_st_btn_yes">
-		<text>Да</text>
+		<text>Yes</text>
 	</string>
 	<string id="ui_st_cant_run_r2">
-		<text>Вы не можете R2 на вашей системе</text>
+		<text>You can't run Render 2 on your PC</text>
 	</string>
 	<string id="ui_st_conn_invalid_host">
 		<text>Connection error: Invalid host</text>
@@ -58,7 +58,7 @@
 		<text>Connection error: session is full</text>
 	</string>
 	<string id="ui_st_days">
-		<text>дн.</text>
+		<text>Days</text>
 	</string>
 	<string id="ui_st_error">
 		<text>Error</text>
@@ -70,40 +70,40 @@
 		<text>The file name is empty</text>
 	</string>
 	<string id="ui_st_hours">
-		<text>час.</text>
+		<text>hrs</text>
 	</string>
 	<string id="ui_st_leave">
-		<text>Уйти</text>
+		<text>Leave</text>
 	</string>
 	<string id="ui_st_mins">
-		<text>мин.</text>
+		<text>mins</text>
 	</string>
 	<string id="ui_st_months">
-		<text>мес.</text>
+		<text>months</text>
 	</string>
 	<string id="ui_st_secs">
-		<text>сек.</text>
+		<text>secs</text>
 	</string>
 	<string id="ui_st_select_one_map">
 		<text>Please select at least one map</text>
 	</string>
 	<string id="ui_st_take_all">
-		<text>Взять все</text>
+		<text>Take all</text>
 	</string>
 	<string id="ui_st_time_remains">
-		<text>Осталось</text>
+		<text>Remaining</text>
 	</string>
 	<string id="ui_st_trade">
-		<text>Торговать</text>
+		<text>Trade</text>
 	</string>
 	<string id="ui_st_voting_disabled">
 		<text>Voting is disabled</text>
 	</string>
 	<string id="ui_st_want_to_leave_game_q">
-		<text>Do you really want to leave the Game?</text>
+		<text>Do you really want to leave the game?</text>
 	</string>
 	<string id="ui_st_your_items">
-		<text>Твои вещи</text>
+		<text>Your items</text>
 	</string>
 	<string id="ui_st_params">
 		<text>Parameters</text>

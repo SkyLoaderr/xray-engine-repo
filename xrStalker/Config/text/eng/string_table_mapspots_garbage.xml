@@ -32,7 +32,7 @@
 		<text>The rookie's secret stash.</text>
 	</string>
 	<string id="gar_seriy">
-		<text>Gray's group.</text>
+		<text>Seriy's group.</text>
 	</string>
 	<string id="gar_swamp">
 		<text>The Grimpen Mire.</text>
@@ -41,7 +41,7 @@
 		<text>Piles of rubbish with anomalies and artifacts.</text>
 	</string>
 	<string id="gar_tunnel">
-		<text>Rail tunnel.</text>
+		<text>Railroad tunnel.</text>
 	</string>
 	<string id="gar_wounded_help">
 		<text>SOS signal. Probably a wounded stalker.</text>

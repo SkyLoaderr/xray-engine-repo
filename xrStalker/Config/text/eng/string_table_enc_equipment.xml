@@ -34,7 +34,7 @@
 		<text>Doctor's key</text>
 	</string>
 	<string id="Conserva">
-		<text>Can of Tourist's Delight</text>
+		<text>Tourist's Delight</text>
 	</string>
 	<string id="Detect1">
 		<text>Anomaly detector (DA-2)</text>
@@ -49,16 +49,16 @@
 		<text>Flashlight</text>
 	</string>
 	<string id="enc_equipment_armors_arm-heavy">
-		<text>Protective suit. Weight: 18kg. Details: Protects the body from Jelly, Burning Fluff, most anomalies and physical damage. The torso and back are protected by built-in bio-metallic plates. The suit is equipped with an airtight, reinforced plastic helmet and two oxygen bottles. Note: During extended periods of use the suit tears through and gradually deteriorates beyond use.</text>
+		<text>Protective suit. Weight: 18kg. Details: Protects the body from Jelly, Burnt Fuzz, most anomalies and physical damage. The torso and back are protected by built-in bio-metallic plates. The suit is equipped with an airtight, reinforced plastic helmet and two oxygen bottles. Note: During extended periods of use the suit tears through and gradually deteriorates beyond use.</text>
 	</string>
 	<string id="enc_equipment_armors_arm-light">
 		<text>Protective suit. Weight: 8 kg. Details: Protects the body from weak anomalies and physical damage. Equipped with an oxygen mask. Note: During extended periods of use the suit tears through and gradually deteriorates beyond use.</text>
 	</string>
 	<string id="enc_equipment_armors_arm-medium">
-		<text>Protective suit. Weight: 12 kg. Details: Protects the user from Jelly, Burning Fluff, many anomalies and physical damage. Equipped with an airtight helmet and an oxygen bottle. Note: During extended periods of use the suit tears through and gradually deteriorates beyond use.</text>
+		<text>Protective suit. Weight: 12 kg. Details: Protects the user from Jelly, Burnt Fuzz, many anomalies and physical damage. Equipped with an airtight helmet and an oxygen bottle. Note: During extended periods of use the suit tears through and gradually deteriorates beyond use.</text>
 	</string>
 	<string id="enc_equipment_armors_sci2">
-		<text>A red S.C.A.P.E suit with an airtight helmet. Weight: 11kg. Description: Protects the body from fire, acid, toxic gas, various anomalies, Burning Fluff and physical damage. Equipped with two oxygen bottles. Note: During extended periods of use the suit tears through and gradually deteriorates beyond use.</text>
+		<text>A red S.C.A.P.E suit with an airtight helmet. Weight: 11kg. Description: Protects the body from fire, acid, toxic gas, various anomalies, Burnt Fuzz and physical damage. Equipped with two oxygen bottles. Note: During extended periods of use the suit tears through and gradually deteriorates beyond use.</text>
 	</string>
 	<string id="enc_equipment_devic_binocul1">
 		<text>Military field binoculars</text>
@@ -100,10 +100,10 @@
 		<text>An all-purpose medkit. Used to treat injuries of various types and severities - wounds, burns, poisonings, etc.</text>
 	</string>
 	<string id="enc_equipment_medi_medkit2">
-		<text>Специализированный медицинский набор для борьбы с физическими повреждениями и кровотечением. В него входят компоненты для ускорения свертывания крови, обезбаливающие, антибиотики и имунные стимуляторы.</text>
+		<text>A specialized medical set to fight against physical damage and blood loss. In it is included a component for blood coagulation, antibiotics, immunal stimulators, and painkillers. </text>
 	</string>
 	<string id="enc_equipment_medi_medkit3">
-		<text>Медицинский набор, разработанный специально для работы в условиях Зоны. Состав набора подобран как для борьбы с ранениямы, так и для вывода радионуклидов из организма. Препятствует развитию лучевой болезни а также снижает дозу накопленной радиации.</text>
+		<text>Medical set, designed especially for work in the Zone. The set includes means of healing wounds as well as means of eliminating radionucleodes from the body. Prevents the development of radiowave sickness and lowers the dose of accumulated radiation. </text>
 	</string>
 	<string id="energy_drink_name">
 		<text>Non-Stop energy drink</text>
@@ -127,24 +127,24 @@
 		<text>Medkit</text>
 	</string>
 	<string id="Medkit_army">
-		<text>Армейская аптечка</text>
+		<text>Army first aid kit</text>
 	</string>
 	<string id="Medkit_scientific">
-		<text>Научная аптечка</text>
+		<text>Scientific first aid kit</text>
 	</string>
 	<string id="Sci2">
 		<text>Scientific EXP-4</text>
 	</string>
-	<string id="st_detector">
-		<text>Детектор аномалий</text>
-	</string>
-	<string id="st_detector_descr">
-		<text>Предназначен для обнаружения аномальных зон, а также очагов радиоактивного загрязнения.</text>
-	</string>
-	<string id="st_grenade_gd5">
-		<text>Дымовая граната</text>
-	</string>
 	<string id="Vodka">
 		<text>Cossack vodka</text>
+	</string>
+	<string id="st_detector">
+		<text>Anomaly detector</text>
+	</string>
+	<string id="st_detector_descr">
+		<text>Intended for the detection of anomalous zones as well as hotbeds of radioactive pollution.</text>
+	</string>
+	<string id="st_grenade_gd5">
+		<text>Smoke granade</text>
 	</string>
 </string_table>

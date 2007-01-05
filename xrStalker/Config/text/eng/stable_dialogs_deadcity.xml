@@ -19,7 +19,7 @@
 		<text>How can I get out of here?</text>
 	</string>
 	<string id="cit_doctor_escape_dialog_121">
-		<text>When they were leading me around I noticed a sewer grate under the stairs on the ground floor…\nIf you managed to open the cell it would be possible to get out of here using that sewer… \nIt's best to go West and then you can use the tunnel to get to Freedom.</text>
+		<text>When they were leading me around I noticed a sewer grate under the stairs on the first floor… If you managed to open the cell it would be possible to get out of here using that sewer…  It's best to go West and then you can use the tunnel to get to Freedom.</text>
 	</string>
 	<string id="cit_doctor_escape_dialog_1211">
 		<text>Thanks for the information.</text>
@@ -61,22 +61,22 @@
 		<text>Nope, nothing.</text>
 	</string>
 	<string id="cit_doctor_hello_dialog_11">
-		<text>Hawkeye! Where the hell have you been??? I haven't seen you or the guys since the last raid! I was getting worried!</text>
+		<text>Strelok! Where the hell have you been??? I haven't seen you or the guys since the last raid! I was getting worried!</text>
 	</string>
 	<string id="cit_doctor_hello_dialog_21">
 		<text>So, you feeling better? You thinking clearly?</text>
 	</string>
 	<string id="cit_doctor_main_dialog_0">
-		<text>Hawkeye???</text>
+		<text>Strelok???</text>
 	</string>
 	<string id="cit_doctor_main_dialog_1">
-		<text>Yeah, you're Hawkeye, who else? I'm Doctor, don't you recognise me? What happened to you, friend, you don't look well. We went into the Zone together for 2 years. You really don't remember me?</text>
+		<text>Yeah, you're Strelok, who else? I'm Doc, don't you recognise me? What happened to you, friend, you don't look well. We went into the Zone together for 2 years. You really don't remember me?</text>
 	</string>
 	<string id="cit_doctor_main_dialog_11">
 		<text>No, I don't.</text>
 	</string>
 	<string id="cit_doctor_main_dialog_2">
-		<text>You don't??? Hawkeye, what the…? You're not taking the piss, are you? Man… What about the guys, our guys? Fang, Ghost? You remember them, don't you?</text>
+		<text>You don't??? Strelok, what the…? You're not taking the piss, are you? Man… What about the guys, our guys? Fang, Ghost? You remember them, don't you?</text>
 	</string>
 	<string id="cit_doctor_main_dialog_21">
 		<text>I don't remember Fang and Ghost is dead - I found his body in Yantar.</text>
@@ -88,7 +88,7 @@
 		<text>I don't know what happened, I don't remember.</text>
 	</string>
 	<string id="cit_doctor_main_dialog_4">
-		<text>Wait, let me just calm down. That's some shitty news man. I think it's all linked with your last venture into the Zone. .</text>
+		<text>Wait, let me just calm down. That's some shitty news man. I think it's all linked with your last venture into the Zone. When we saw each other the last time, you left me the key from the stash at Pripyat and the map of how to find it. I've managed to keep it - hid it from the mercs. Here, take, hide it well. Perhaps you'll find somthing there. Also you were saying that there's some trick with the Monolith. But I don't understand what was it about, and even you didn't.</text>
 	</string>
 	<string id="cit_doctor_main_dialog_41">
 		<text>I see. Where are we? I don't remember how I got here.</text>
@@ -115,7 +115,7 @@
 		<text>Deal. Here.</text>
 	</string>
 	<string id="quest_cit_reward_11111">
-		<text>Great! Here's your reward.\nSoon stalkers will argue about whether the Mercs ever existed at all!</text>
+		<text>Great! Here's your reward. Soon stalkers will argue about whether the Mercs ever existed at all!</text>
 	</string>
 	<string id="quest_cit_reward_1112">
 		<text>Not, that's not enough.</text>

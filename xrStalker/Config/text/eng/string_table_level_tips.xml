@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="bar_rostok">
-		<text>Дикая территория - Росток</text>
+		<text>Wild Territory - Rostok</text>
 	</string>
 	<string id="car_character_use">
 		<text>Open the door ($$ACTION_USE$$)</text>
@@ -51,17 +51,8 @@
 	<string id="st_codelock">
 		<text>Combination lock ($$ACTION_USE$$)</text>
 	</string>
-	<string id="st_helmet_countdown">
-		<text>Отключение защиты</text>
-	</string>
-	<string id="st_psy_danger">
-		<text>Критический уровень пси излучения. Немедленно покиньте опасную зону.</text>
-	</string>
-	<string id="st_radiation_danger">
-		<text>Опасный уровень радиации. Необходима защита, чтобы пройти.</text>
-	</string>
 	<string id="to_aes">
-		<text>На ЧАЭС</text>
+		<text>To Chernobyl NPP</text>
 	</string>
 	<string id="to_agroprom">
 		<text>To Agroprom</text>
@@ -70,7 +61,7 @@
 		<text>To the catacombs</text>
 	</string>
 	<string id="to_bar">
-		<text>To the bar</text>
+		<text>To Rostok</text>
 	</string>
 	<string id="to_darkvalley">
 		<text>To the Dark Valley</text>
@@ -79,21 +70,30 @@
 		<text>To the Cordon</text>
 	</string>
 	<string id="to_garbage">
-		<text>To the Dump</text>
+		<text>To the Garbage</text>
 	</string>
 	<string id="to_military">
 		<text>To the warehouses</text>
 	</string>
 	<string id="to_pripyat">
-		<text>На Припять</text>
+		<text>To Pripyat</text>
 	</string>
 	<string id="to_radar">
-		<text>К "Выжигателю мозгов"</text>
+		<text>To the Brain Scorcher</text>
 	</string>
 	<string id="to_rostok">
-		<text>To Rostok</text>
+		<text>To the Wild Territory</text>
 	</string>
 	<string id="to_yantar">
-		<text>На Янтарь</text>
+		<text>To Yantar</text>
+	</string>
+	<string id="st_helmet_countdown">
+		<text>Protection shutdown</text>
+	</string>
+	<string id="st_psy_danger">
+		<text>Critical psi-emission level. Leave the dangerous zone immediately.</text>
+	</string>
+	<string id="st_radiation_danger">
+		<text>Hazardous radiation level. Protection required to pass.</text>
 	</string>
 </string_table>

@@ -3,61 +3,61 @@
 	<string id="oso_chernobyl_crush_0">
 		<text>Is the explosion of '86 your work too?</text>
 	</string>
-	<string id="oso_chernobyl_crush_1">
-		<text>No, we had nothing to do with that. Most of us were only starting out in science back then. In 1986 it was decided to conduct a series of experiments in block 4 of the reactor. The explosion occurred as a result of several factors: deficiencies in the design of the reactor, the rash decision to conduct experiments on it and the infamous human error, as those on duty at the time made a number of severe mistakes at the critical moment.</text>
-	</string>
 	<string id="oso_death_truck_0">
-		<text>What are "death trucks"?</text>
-	</string>
-	<string id="oso_death_truck_1">
-		<text>Almost every activity tends to produce waste, especially where a new, unknown path is followed. Unfortunately, at least half the of stalkers die during recruitment. Apparently it's natural selection at work. We believed that you did not pass the recruitment stage and you were therefore selected for scrapping. Right now, we are trying to understand what caused us to make that mistake.</text>
+		<text>What are the "death trucks"?</text>
 	</string>
 	<string id="oso_no_0">
 		<text>I'm not going to help you in this deception.</text>
 	</string>
-	<string id="oso_osoznanie_start_11">
-		<text>Hello, Hawkeye. I think you can get answers to many questions now.</text>
-	</string>
 	<string id="oso_osoznanie_start_21">
-		<text>The choice is yours, Hawkeye.</text>
-	</string>
-	<string id="oso_stalker_0">
-		<text>What does the tattoo mean?</text>
-	</string>
-	<string id="oso_stalker_1">
-		<text>S.T.A.L.K.E.R. is an acronym which denotes one of the…taboos, which was to be kept secret by our project. I'm talking about a system for controlling humans. The device itself is located inside the sarcophagus in the power plant and is widely-known as the Monolith. All those who want their wishes to be granted begin to obey our orders. They are marked and given missions. However, some sort of malfunction occurred...for some reason you were instructed to kill yourself.</text>
+		<text>The choice is yours, Strelok.</text>
 	</string>
 	<string id="oso_what_about_me_0">
 		<text>What happened to me?</text>
 	</string>
 	<string id="oso_what_about_me_1">
-		<text>You're a bolt that fell out of the machine. Unfortunately, that did not come to our attention for a long time. From the moment the Zone was formed, many people have tried to get to its center but we cannot let that happen. Humanity is not ready for the truth. That is why we recruited stalkers by promising them the fullfillment of their most coveted desires. Once recruited they would be sent to protect the secret of the Zone.</text>
+		<text>You're a bolt that fell out of the machine. Unfortunately, that did not come to our attention for a long time. From the moment the Zone was formed, many people have tried to get to its centre but we cannot let that happen. Humanity is not ready for the truth. That is why we recruited stalkers by promising them the fullfillment of their most coveted desires. Once recruited they would be sent to protect the Zone’s secret.</text>
 	</string>
 	<string id="oso_what_is_the_zone_0">
-		<text>What is the Zone? How did it come about?</text>
-	</string>
-	<string id="oso_what_is_the_zone_1">
-		<text>What you see before you is the result of an ill-considered intervention in the Earth's noosphere. The inept and chaotic actions of humanity brought about a local crack. The Zone is simply the visible manifestation of this crack. The underlying cause is far greater than you can imagine.</text>
+		<text>What is the Zone? How did it emerge?</text>
 	</string>
 	<string id="oso_what_next_0">
-		<text>What will happen now?</text>
-	</string>
-	<string id="oso_what_next_1">
-		<text>That depends on you. The Zone is growing. We're trying to restrain its expansion but humanity seems to be intent on hindering our work. Our resources are not limitless and we have spent a lot of them on fighting you. If you join us, we can restrict the Zone's growth. If you decide otherwise, we cannot make a credible prognosis of the future.</text>
+		<text>What will happen then?</text>
 	</string>
 	<string id="oso_who_are_you_0">
 		<text>Who are you?</text>
 	</string>
-	<string id="oso_who_are_you_1">
-		<text>I am not alone. We're a group of scientists trying to change the world. According to a theory put forward by Academician Vernadsky, the Earth is surrounded by a special informational field, the so-called noosphere. It includes all the inhabitants of the planet with cognitive abilities. Our main idea was to make small adjustments to the noosphere, allowing us to remove things like anger, cruelty, greed and other negative factors from the planet. </text>
-	</string>
 	<string id="oso_why_chernobyl_0">
-		<text>Why did it all happen here?</text>
+		<text>Why did it all happen exactly here?</text>
 	</string>
 	<string id="oso_why_chernobyl_1">
 		<text>It was the best place. After the explosion in 1986 there were very few people left in this area and we could work without fear of being found. Further, there were many powerful antennae here, which are extremely important for our cognitive optimisation experiments.</text>
 	</string>
+	<string id="oso_chernobyl_crush_1">
+		<text>No, we had nothing to do with that. Most of us were only starting out in science back then. The Chernobyl Zone was not used as a testing site for experiments until 1989.</text>
+	</string>
+	<string id="oso_death_truck_1">
+		<text>The transports we use to send our marked “agents” into the Zone. They infiltrate the stalker “community” and carry out our orders without realising it. Unfortunately, more than half of stalkers die during transportation, the Zone is very unstable. You are one of our agents sent to kill Strelok and we’re now trying to work out how we made that mistake.</text>
+	</string>
+	<string id="oso_osoznanie_start_11">
+		<text>Hello, Strelok. I see you have many questions for me. Well, ask them and then we can decide what to do with you.</text>
+	</string>
+	<string id="oso_stalker_0">
+		<text>What does the tattoo "S.T.A.L.K.E.R." mean?</text>
+	</string>
+	<string id="oso_stalker_1">
+		<text>S.T.A.L.K.E.R. is a coded acronym, which we use to mark agents programmed for particular missions. Your mission, as our agent, was to kill Strelok and his group. They got too close to finding out things they shouldn’t know. We created a network of psi-fields on the way to the Zone’s center in order to recruit agents. You know one of these fields by the name of Brain Scorcher. When a stalker attempts to reach the Zone’s center in order to fulfill some wish we acquire control over his consciousness and program him to a specific mission. A mistake was made and your mission was to kill yourself.</text>
+	</string>
+	<string id="oso_what_is_the_zone_1">
+		<text>What you see is the result of ill-considered intervention in the Earth's noosphere. Attempts to affect the noosphere brought about a local crack. The Zone is simply the visible manifestation of this crack. The underlying problem is far greater than you can imagine. </text>
+	</string>
+	<string id="oso_what_next_1">
+		<text>That depends on you. The Zone is growing. We're trying to restrain its expansion but humanity seems to be intent on hindering our work. Our resources are not limitless and bodies connected to C-Consciousness eventually die. If you join us, we can restrict the Zone's growth. If you decide otherwise we cannot make a credible prognosis of the outcome.</text>
+	</string>
+	<string id="oso_who_are_you_1">
+		<text>We are the result of an experiment aimed at creating a superconsciousness called “C-Consciousness”. The consciousnesses of seven volunteers were connected during the experiment leading to the creation of the superconsciousness that is us. We immediately subordinated those who were conducting the experiment and assigned them to tasks we needed them to carry out. According to our calculations, Earth is surrounded by a special informational field, the so-called noosphere. It includes all the inhabitants of the planet with cognitive abilities. Our main goal was to make small adjustments to the noosphere, allowing us to remove things like anger, cruelty, greed and other negative factors from the planet. Individuals are unable to affect the noosphere but C-Consciousness could. Unfortunately we made a mistake and our interference spawned the Zone, which we have been trying to contain ever since.</text>
+	</string>
 	<string id="oso_yes_0">
-		<text>I want to join the Awareness project.</text>
+		<text>I agree to join the C-Consciousness project.</text>
 	</string>
 </string_table>

@@ -7,7 +7,7 @@
 		<text>Always run</text>
 	</string>
 	<string id="kb_artefact">
-		<text>Артефакт</text>
+		<text>Artifact</text>
 	</string>
 	<string id="kb_backward">
 		<text>Back</text>
@@ -85,7 +85,7 @@
 		<text>Left</text>
 	</string>
 	<string id="kb_left_lookout">
-		<text>Peek left</text>
+		<text>Lean left</text>
 	</string>
 	<string id="kb_left_strafe">
 		<text>Strafe left</text>
@@ -94,7 +94,7 @@
 		<text>PDA map</text>
 	</string>
 	<string id="kb_next_slot">
-		<text>weapon in next slot</text>
+		<text>Weapon in next slot</text>
 	</string>
 	<string id="kb_night_vision">
 		<text>Night vision</text>
@@ -106,7 +106,7 @@
 		<text>PDA</text>
 	</string>
 	<string id="kb_prev_slot">
-		<text>weapon in prev slot</text>
+		<text>Weapon in previous slot</text>
 	</string>
 	<string id="kb_quit">
 		<text>Exit</text>
@@ -121,7 +121,7 @@
 		<text>Right</text>
 	</string>
 	<string id="kb_right_lookout">
-		<text>Peek right</text>
+		<text>Lean right</text>
 	</string>
 	<string id="kb_right_strafe">
 		<text>Strafe right</text>
@@ -163,7 +163,7 @@
 		<text>Begin voting</text>
 	</string>
 	<string id="kb_vote_menu">
-		<text>Проголосовать</text>
+		<text>Vote</text>
 	</string>
 	<string id="kb_vote_no">
 		<text>Vote "Yes"</text>

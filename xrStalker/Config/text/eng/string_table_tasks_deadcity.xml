@@ -1,15 +1,15 @@
 	<string id="cit_doctor_task">
-		<text>Тайник на Припяти.</text>
+		<text>Secret stash at Pripyat</text>
 	</string>
 	<string id="cit_doctor_task_0">
-		<text>Найти тайник Стрелка в Припяти.</text>
+		<text>Find the secret stash of the Shooter at Pripyat</text>
 	</string>
 	<string id="cit_doctor_task_1">
-		<text>Добраться до гостинницы.</text>
+		<text>Get to the hotel.</text>
 	</string>
 	<string id="cit_doctor_task_2">
-		<text>Найти комнату с тайником.</text>
+		<text>Find the room with the secret stash</text>
 	</string>
 	<string id="cit_doctor_task_3">
-		<text>Обследовать тайник.</text>
+		<text>Look the secret stash over</text>
 	</string>

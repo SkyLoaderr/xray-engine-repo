@@ -2,22 +2,22 @@
 		<text>Return the hunter's family rifle</text>
 	</string>
 	<string id="bar_bring_pda_lucky">
-		<text>Bring the leader's PDA to the Barman</text>
+		<text>Bring the leader's PDA to the Barkeep</text>
 	</string>
 	<string id="bar_crazy_veterans_quest">
 		<text>Kill the mad veterans</text>
 	</string>
 	<string id="bar_dolg_base_rules">
-		<text>Talk to the Duty guard commander</text>
+		<text>Register at the Duty guard commander</text>
 	</string>
 	<string id="bar_dolg_base_rules_fin">
-		<text>Return to the Barman</text>
+		<text>Return to the Barkeep</text>
 	</string>
 	<string id="bar_dolg_base_rules_talk">
-		<text>Find the Duty guard commander and talk to him</text>
+		<text>Find the Duty guard commander and register yourself</text>
 	</string>
 	<string id="bar_dolg_bring_rg6">
-		<text>Get an RG-6 for General Voronin</text>
+		<text>Get an Bulldog 6 for General Voronin</text>
 	</string>
 	<string id="bar_dolg_community_quest">
 		<text>Join the Duty faction</text>
@@ -32,34 +32,34 @@
 		<text>Prove your loyalty to Duty</text>
 	</string>
 	<string id="bar_dolg_find_cook">
-		<text>Earn the Freedom cook's trust and find out where the RG-6s are stored</text>
+		<text>Earn the Freedom cook's trust and find out where the Bulldog 6s is stored</text>
 	</string>
 	<string id="bar_dolg_find_rg6">
-		<text>Infiltrate the Freedom base, find and steal an RG-6</text>
+		<text>Infiltrate the Freedom base, find and steal an Bulldog 6</text>
 	</string>
 	<string id="bar_dolg_info_gain">
 		<text>Find the intercepted information about Lab X18</text>
 	</string>
 	<string id="bar_dolg_kill_tiran">
-		<text>Kill Tyrant, the leader of the group</text>
+		<text>Kill Tyran, the leader of the squad</text>
 	</string>
 	<string id="bar_dolg_return_info">
 		<text>Return information about Lab X18 to General Voronin</text>
 	</string>
 	<string id="bar_dolg_return_rg6">
-		<text>Bring the RG-6 to General Voronin</text>
+		<text>Bring the Bulldog 6 to General Voronin</text>
 	</string>
 	<string id="bar_dolg_rg6_quest">
 		<text>Mission required to join Duty</text>
 	</string>
 	<string id="bar_dolg_svoboda_ambush_quest">
-		<text>Kill the Mercs</text>
+		<text>Eliminate the Mercs</text>
 	</string>
 	<string id="bar_dolg_svoboda_ambush_return">
 		<text>Give the stripes to General Voronin</text>
 	</string>
 	<string id="bar_dolg_tiran_pda">
-		<text>Take Tyrant's PDA</text>
+		<text>Take Tyran's PDA</text>
 	</string>
 	<string id="bar_hunter_find_rifle">
 		<text>Find the family rifle</text>
@@ -95,21 +95,21 @@
 		<text>Talk to Kruglov</text>
 	</string>
 	<string id="bar_resque_scientific_information_get">
-		<text>Get through to Kruglov via the Wild Area</text>
+		<text>Get through to Kruglov</text>
 	</string>
 	<string id="bar_resque_scientific_information_get_2">
 		<text>Talk to professor Kruglov</text>
 	</string>
 	<string id="bring_x16_documents">
-		<text>Bring the documents to the Barman</text>
+		<text>Bring the documents to the Barkeep</text>
 	</string>
-	<string id="deactivate_radar_now">
+	<string id="deactivate_Red Forest_now">
 		<text>Deactivate the machine</text>
 	</string>
-	<string id="descr_deactivate_radar">
-		<text>Deactivate the Brain Burner</text>
+	<string id="descr_deactivate_Red Forest">
+		<text>Deactivate the Brain Scorcher</text>
 	</string>
-	<string id="find_and_deactivate_radar">
+	<string id="find_and_deactivate_Red Forest">
 		<text>Find the entrance to the control bunker</text>
 	</string>
 	<string id="get_to_antennas">
@@ -122,7 +122,7 @@
 		<text>Find the X16 documents</text>
 	</string>
 	<string id="wpn-winchester_m1">
-		<text>Боевой винчестер</text>
+		<text>Combat Winchester</text>
 	</string>
 	<string id="x16_documents">
 		<text>Find the documents in Lab X16</text>

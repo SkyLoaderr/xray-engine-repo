@@ -72,12 +72,6 @@
 	<string id="ui_inv_accuracy">
 		<text>Accuracy</text>
 	</string>
-	<string id="ui_inv_ammo_pistol">
-		<text>Wants to buy basic ammo for pistol (Q)</text>
-	</string>
-	<string id="ui_inv_ammo_rifle">
-		<text>Buy ammo for rifle (W)</text>
-	</string>
 	<string id="ui_inv_bag">
 		<text>Backpack</text>
 	</string>
@@ -104,12 +98,6 @@
 	</string>
 	<string id="ui_inv_exit">
 		<text>Exit</text>
-	</string>
-	<string id="ui_inv_granadelauncher_rifle">
-		<text>Buy grenade launcher for rifle (D)</text>
-	</string>
-	<string id="ui_inv_granades">
-		<text>Grenades</text>
 	</string>
 	<string id="ui_inv_granades_rifle">
 		<text>Buy grenades for launcher (E)</text>
@@ -145,7 +133,7 @@
 		<text>Parameters</text>
 	</string>
 	<string id="ui_inv_outfit_radiation_protection">
-		<text>Радиация</text>
+		<text>Radiation</text>
 	</string>
 	<string id="ui_inv_outfit_shock_protection">
 		<text>Electric shock</text>
@@ -154,10 +142,10 @@
 		<text>Impact</text>
 	</string>
 	<string id="ui_inv_outfit_telepatic_protection">
-		<text>Телепат.</text>
+		<text>Telepathy</text>
 	</string>
 	<string id="ui_inv_outfit_wound_protection">
-		<text>Разрыв</text>
+		<text>Rupture</text>
 	</string>
 	<string id="ui_inv_outfits">
 		<text>Suits</text>
@@ -180,20 +168,11 @@
 	<string id="ui_inv_rifles">
 		<text>Assault rifles</text>
 	</string>
-	<string id="ui_inv_scope_rifle">
-		<text>Buy optic scope for rifle (S)</text>
-	</string>
 	<string id="ui_inv_shop">
 		<text>Shop</text>
 	</string>
 	<string id="ui_inv_shotguns">
 		<text>Shotguns</text>
-	</string>
-	<string id="ui_inv_silencer_pistol">
-		<text>Wants to buy silencer for pistol (A)</text>
-	</string>
-	<string id="ui_inv_silencer_rifle">
-		<text>Buy silencer for pistol (F)</text>
 	</string>
 	<string id="ui_inv_sniper_rifles">
 		<text>Sniper</text>
@@ -206,5 +185,26 @@
 	</string>
 	<string id="ui_inv_weight">
 		<text>Weight</text>
+	</string>
+	<string id="ui_inv_ammo_pistol">
+		<text>Buy basic ammo for pistol (Q)</text>
+	</string>
+	<string id="ui_inv_ammo_rifle">
+		<text>Buy ammo for rifle (W)</text>
+	</string>
+	<string id="ui_inv_granadelauncher_rifle">
+		<text>Buy grenade launcher for rifle (D)</text>
+	</string>
+	<string id="ui_inv_granades">
+		<text>Grenades</text>
+	</string>
+	<string id="ui_inv_scope_rifle">
+		<text>Buy optic scope for rifle (S)</text>
+	</string>
+	<string id="ui_inv_silencer_pistol">
+		<text>Buy silencer for pistol (A)</text>
+	</string>
+	<string id="ui_inv_silencer_rifle">
+		<text>Buy silencer for rifle (F)</text>
 	</string>
 </string_table>

@@ -31,7 +31,7 @@
 		<text>What do you know about Pripyat?</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_2_10">
-		<text>It's an old abandoned city from the communist era! From history! \nI reckon it's full of monsters and hordes of Monolith fighters now! No one who has gone there before ever returned! \n</text>
+		<text>It's an old abandoned city from the communist era! From history!  I reckon it's full of monsters and hordes of Monolith fighters now! No one who has gone there before ever returned!  </text>
 	</string>
 	<string id="rad_find_stalkers_dialog_2_100">
 		<text>You think it's dangerous?</text>
@@ -49,10 +49,10 @@
 		<text>What about military stalkers?</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_3_20">
-		<text>Rumour has it that they showed up right by the Radar, by the antennae! When they were turned off many people went to the Radar and further into Pripyat! We've been here for a day and we haven't seen anyone. Someone probably blocked the road here.</text>
+		<text>Rumour has it that they showed up right by the Red Forest, by the antennae! When they were turned off many people went to the Red Forest and further into Pripyat! We've been here for a day and we haven't seen anyone. Someone probably blocked the road here.</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_3_200">
-		<text>You think the military blocked the road to the Radar?</text>
+		<text>You think the military blocked the road to the Red Forest?</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_3_30">
 		<text>I don't think it was the military, I haven't seen any for a long time but military stalkers could have done it! They don't waste any time. They're the no-nonsense types, they work quickly and efficiently in their teams or solo… it's weird that they didn't block the road here earlier.</text>
@@ -79,7 +79,7 @@
 		<text>I understand. I'm afraid myself… would prefer to spend some money instead of sending my guys or going myself.</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_4_20">
-		<text>Good! \nThe job is to find my scouts, Crowbar and Log! They went to Pripyat since I decided not to rush in and sent my best guys instead! \nFind them alive and bring them here. If they're dead bring me their weapons! \nDo this for me and you'll get 2000!!!</text>
+		<text>Good!  The job is to find my scouts, Crowbar and Log! They went to Pripyat since I decided not to rush in and sent my best guys instead!  Find them alive and bring them here. If they're dead bring me their weapons!  Do this for me and you'll get 2000!!!</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_4_200">
 		<text>OK, deal!</text>

@@ -16,16 +16,13 @@
 		<text>Those are the rules.</text>
 	</string>
 	<string id="gar_dolg_blokpost_11112">
-		<text>I need to pass, I have some business with the Barman.</text>
-	</string>
-	<string id="gar_dolg_blokpost_111121">
-		<text>ƒа, Ѕармен сообщил нам о тебе, ты можешь пройти.</text>
+		<text>I need to pass, I have some business with the Barkeep.</text>
 	</string>
 	<string id="gar_dolg_blokpost_1111211">
 		<text>I'd rather pay. Here.</text>
 	</string>
 	<string id="gar_dolg_blokpost_11112111">
-		<text>Good! You can go, but you better have some really important business with the Barman, you hear? And be careful - there's lots of anomalies ahead.</text>
+		<text>Good! You can go, but you better have some really important business with the Barkeep, you hear? And be careful - there's lots of anomalies ahead.</text>
 	</string>
 	<string id="gar_dolg_blokpost_1111212">
 		<text>What's the favor?</text>
@@ -51,12 +48,6 @@
 	<string id="gar_dolg_blokpost_111123">
 		<text>Well, you can't go through to the bar then.</text>
 	</string>
-	<string id="gar_dolg_blokpost_1231">
-		<text>—пасибо тебе, что помог нам отбитьс€ от кабанов, за услугу возьми заслуженную награду.</text>
-	</string>
-	<string id="gar_dolg_blokpost_12311">
-		<text>—пасибо!</text>
-	</string>
 	<string id="gar_dolg_blokpost_22">
 		<text>So, you killed those boars yet?</text>
 	</string>
@@ -70,10 +61,10 @@
 		<text>Yeah, I killed them all.</text>
 	</string>
 	<string id="gar_dolg_blokpost_2221">
-		<text>OK, go on. And say "hi" to the Barman from me, will you?</text>
+		<text>OK, go on. And say "hi" to the Barkeep from me, will you?</text>
 	</string>
 	<string id="gar_dolg_blokpost_33">
-		<text>Say "hi" to the Barman from me when you see him. Oh, and don't forget - there are lots of anomalies on the way, so be careful.</text>
+		<text>Say "hi" to the Barkeep from me when you see him. Oh, and don't forget - there are lots of anomalies on the way, so be careful.</text>
 	</string>
 	<string id="gar_dramm_novice_start_0">
 		<text>Thanks mate - you really helped me out. I won't forget it.</text>
@@ -115,7 +106,7 @@
 		<text>Go on.</text>
 	</string>
 	<string id="gar_hellcar_start_1111">
-		<text>We've set up an ambush for them here. They'll be coming from the West, from the Agroprom R&D Institute. Help us destroy their reinforcements and you won't regret it!</text>
+		<text>We've set up an ambush for them here. They'll be coming from the West, from the Agroprom Research Institute. Help us destroy their reinforcements and you won't regret it!</text>
 	</string>
 	<string id="gar_hellcar_start_11111">
 		<text>OK, I'll help you.</text>
@@ -154,7 +145,7 @@
 		<text>Tell me about yourself.</text>
 	</string>
 	<string id="gar_hellcar_start_311131">
-		<text>Demon's my name. I came to these parts three years ago. Like many of the guys in the Zone I'm a fugitive, wanted for two murders and GBH. A few years ago a mate of mine got battered pretty bad - they had to literally stitch him back together at the hospital. So I paid the bastards who did it a little "visit". When the coppers showed up I had to shoot one of them and jump out of a second-floor window - I've been here since. I've done well in this place but the list of my crimes has got a little longer too. I try to fight the lawless just as I did on the outside. I train up rookies and teach them to survive in the Zone.</text>
+		<text>Bes's my name. I came to these parts three years ago. Like many of the guys in the Zone I'm a fugitive, wanted for two murders and GBH. A few years ago a mate of mine got battered pretty bad - they had to literally stitch him back together at the hospital. So I paid the bastards who did it a little "visit". When the coppers showed up I had to shoot one of them and jump out of a third-floor window - I've been here since. I've done well in this place but the list of my crimes has got a little longer too. I try to fight the lawless just as I did on the outside. I train up rookies and teach them to survive in the Zone.</text>
 	</string>
 	<string id="gar_hellcar_start_3111311">
 		<text>So why don't you join Duty if you feel that way?</text>
@@ -169,7 +160,7 @@
 		<text>What's this place?</text>
 	</string>
 	<string id="gar_hellcar_start_311141">
-		<text>The Dump. We are right at home here. You see the heaps of crap? You don't want to go there, trust me. So full of radioactive waste, the Geiger counters go off the scale. This is the only decent way into the Zone and bandits have been increasingly active here lately. They're shit scared of going deeper into the Zone, into Duty territory, like experienced stalkers. \nBut those hyenas just love robbing the rookies here. So, if nobody else cares, we have to stand our ground and fight ourselves.</text>
+		<text>The Dump. We are right at home here. You see the heaps of crap? You don't want to go there, trust me. So full of radioactive waste, the Geiger counters go off the scale. This is the only decent way into the Zone and bandits have been increasingly active here lately. They're shit scared of going deeper into the Zone, into Duty territory, like experienced stalkers.  But those hyenas just love robbing the rookies here. So, if nobody else cares, we have to stand our ground and fight ourselves.</text>
 	</string>
 	<string id="gar_hellcar_start_3111411">
 		<text>Go on.</text>
@@ -179,9 +170,6 @@
 	</string>
 	<string id="gar_hellcar_start_311141112">
 		<text>Are there any large buildings in the Dump?</text>
-	</string>
-	<string id="gar_hellcar_start_3111411121">
-		<text>ѕо центру стоит большой заброшенный ангар, там в принципе достаточно тихо. ¬ крайнем случае можно и переночевать. ≈сли пойти на запад, в сторону агропрома - там лагерь бандитов, именно оттуда и шли эти отморозки, которых мы недавно пострел€ли, но € чувствую, что это далеко не все.</text>
 	</string>
 	<string id="gar_hellcar_start_31114111211">
 		<text>Thank you.</text>
@@ -205,19 +193,19 @@
 		<text>Thanks for the help, things got pretty hairy. What are you doing here anyway?</text>
 	</string>
 	<string id="gar_seriy_start_221">
-		<text>I am looking for information about Hawkeye. Fox told me about you, so I came for a chat.</text>
+		<text>I am looking for information about Strelok. Fox told me about you, so I came for a chat.</text>
 	</string>
 	<string id="gar_seriy_start_2211">
-		<text>OK, you helped me out for free so I'll tell you. One of the guys, a former "digger" called Mole is waiting for me. He dug up Hawkeye's stash but I don't know if he found anything there. Here are the co-ordinates of our meeting place. Tell him I sent you. They'll be looking for me now, so I am going to disappear for a while. Here's some cash for your help too.</text>
+		<text>OK, you helped me out for free so I'll tell you. One of the guys, a former "digger" called Mole is waiting for me. He dug up Strelok's stash but I don't know if he found anything there. Here are the co-ordinates of our meeting place. Tell him I sent you. They'll be looking for me now, so I am going to disappear for a while. Here's some cash for your help too.</text>
 	</string>
 	<string id="gar_seriy_start_2212">
 		<text>Thanks for the information.</text>
 	</string>
 	<string id="gar_seriy_start_222">
-		<text>I am looking for information about Hawkeye, maybe you know something?</text>
+		<text>I am looking for information about Strelok, maybe you know something?</text>
 	</string>
 	<string id="gar_seriy_start_2221">
-		<text>OK, you helped me out for free, so I'll tell you. One of the guys, a former "digger" called Mole, is waiting for me. He dug up Hawkeye's stash and found documents that explain a few things. He had some bandits on his tail so he had to leave the documents but he remembered the place. They'll be looking for me now so I am gonna disappear for a while. Here are the co-ordinates of the meeting place with Mole. Tell him I sent you. I'll upload some info to your PDA. Here's some cash for your help too.</text>
+		<text>OK, you helped me out for free, so I'll tell you. One of the guys, a former "digger" called Mole, is waiting for me. He dug up Strelok's stash and found documents that explain a few things. He had some bandits on his tail so he had to leave the documents but he remembered the place. They'll be looking for me now so I am gonna disappear for a while. Here are the co-ordinates of the meeting place with Mole. Tell him I sent you. I'll upload some info to your PDA. Here's some cash for your help too.</text>
 	</string>
 	<string id="gar_seriy_start_2222">
 		<text>Thanks for the information.</text>
@@ -250,6 +238,15 @@
 		<text>Can you tell me anything about this place?</text>
 	</string>
 	<string id="gar_stalker_about_level_1">
-		<text>Well, listen. Everywhere you look it's a big stinking dump. After the accident in 1986 they brought radioactive waste, cranes and all the destroyed machinery here. Basically, it's full of useless crap and a few anomalies here and there. You can even find some artifacts, but they're not spectacular so that's why you'll mostly find rookies in this place. Lots of rookies means lots of bandits, so it's best not to hang around too long. Further to the East there are loads of radiation pockets; you can't go there without protection. Going South you'll reach the border of the Zone. Go North and you'll eventually reach Rostok factory and the stalker bar. To the East is the Dark Valley, a gloomy, misty place. To the West is the Agroprom R&D Institute. I'll mark safe pathways on your map.</text>
+		<text>Well, listen. Everywhere you look it's a big stinking dump. After the accident in 1986 they brought radioactive waste, cranes and all the destroyed machinery here. Basically, it's full of useless crap and a few anomalies here and there. You can even find some artifacts, but they're not spectacular so that's why you'll mostly find rookies in this place. Lots of rookies means lots of bandits, so it's best not to hang around too long. Further to the East there are loads of radiation pockets; you can't go there without protection. Going South you'll reach the border of the Zone. Go North and you'll eventually reach Rostok factory and the stalker bar. To the East is the Dark Valley, a gloomy, misty place. To the West is the Agroprom Research Institute. I'll mark safe pathways on your map.</text>
+	</string>
+	<string id="gar_dolg_blokpost_111121">
+		<text>Yes, Barkeep told us about you. You can pass.</text>
+	</string>
+	<string id="gar_dolg_blokpost_1231">
+		<text>Thank you for helping us fight off the boars. For the favor take the deserved reward.</text>
+	</string>
+	<string id="gar_dolg_blokpost_12311">
+		<text>Thank you!</text>
 	</string>
 </string_table>

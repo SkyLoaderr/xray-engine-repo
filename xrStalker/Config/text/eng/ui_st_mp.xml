@@ -37,7 +37,7 @@
 		<text>Chat</text>
 	</string>
 	<string id="mp_connected">
-		<text>has connected</text>
+		<text>connected</text>
 	</string>
 	<string id="mp_deaths">
 		<text>deaths</text>
@@ -46,7 +46,7 @@
 		<text>Description</text>
 	</string>
 	<string id="mp_disconnected">
-		<text>has disconnected</text>
+		<text>disconnected</text>
 	</string>
 	<string id="mp_enter_text">
 		<text>Enter text for the vote</text>
@@ -64,7 +64,7 @@
 		<text>Frags</text>
 	</string>
 	<string id="mp_free_fly">
-		<text>(Freefly)</text>
+		<text>(Free-camera)</text>
 	</string>
 	<string id="mp_free_look">
 		<text>(Third person view)</text>
@@ -88,7 +88,7 @@
 		<text>is now</text>
 	</string>
 	<string id="mp_joined">
-		<text>has joined</text>
+		<text>joined</text>
 	</string>
 	<string id="mp_kick">
 		<text>Drop</text>
@@ -217,7 +217,7 @@
 		<text>Yes</text>
 	</string>
 	<string id="mp_voted">
-		<text>проголосовал</text>
+		<text>voted</text>
 	</string>
 	<string id="mp_voted_no">
 		<text>No</text>
@@ -256,12 +256,12 @@
 		<text>Your rank is now</text>
 	</string>
 	<string id="ui_st_description">
-		<text>Описание</text>
+		<text>Description</text>
 	</string>
 	<string id="ui_st_team1_name">
-		<text>Свобода</text>
+		<text>Freedom</text>
 	</string>
 	<string id="ui_st_team2_name">
-		<text>Наемники</text>
+		<text>Mercs</text>
 	</string>
 </string_table>

@@ -14,7 +14,7 @@
 		<text>Marked One, the way to the camp is now open to you. Come over and we'll talk.</text>
 	</string>
 	<string id="escape_fox_quest">
-		<text>A word about Hawkeye, Marked One. A stalker just came back from a long raid. Fox he's called. Looks like he had a pretty rough time and he's asking for help. Some weird beasts followed him all the way back, he says he won't hold out much longer. I reckon the fella will know a bit about Hawkeye. Here are the coordinates. You might wanna hurry up though.</text>
+		<text>A word about Strelok, Marked One. A stalker just came back from a long raid. Fox he's called. Looks like he had a pretty rough time and he's asking for help. Some weird beasts followed him all the way back, he says he won't hold out much longer. I reckon the fella will know a bit about Strelok. Here are the coordinates. You might wanna hurry up though.</text>
 	</string>
 	<string id="escape_stalker_death">
 		<text>Poor show, Marked One. The boys are dead, although that ain't exactly your fault. These things happen in the Zone. Anyway, you passed the test so get back here and we'll talk business.</text>
@@ -26,7 +26,7 @@
 		<text>That wasn't very smart, Marked One. You passed the test but you're gonna have to deal with Wolf and his goons on your own now. Anyway, I'm waiting for you. We got more work to talk about.</text>
 	</string>
 	<string id="info_esc_give_agroprom_task">
-		<text>Marked One, the military dug up some interesting stuff at the Agroprom R&D Institute. I'd like to get my hands on it and you probably would too. Get the info and take it to the barman at the stalkers' bar. Now get moving!</text>
+		<text>Marked One, the military dug up some interesting stuff at the Agroprom Research Institute. I'd like to get my hands on it and you probably would too. Get the info and take it to the barman at the stalkers' bar. Now get moving!</text>
 	</string>
 	<string id="tips_esc_trader_about_anomalies">
 		<text>Watch out! You're right next to the anomalies. Use your bolts to work out their exact location and shape.</text>

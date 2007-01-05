@@ -53,7 +53,7 @@
 		<text>Bedbug</text>
 	</string>
 	<string id="lname_bandit_114">
-		<text>Nark</text>
+		<text>Pig</text>
 	</string>
 	<string id="lname_bandit_115">
 		<text>Moose</text>
@@ -539,7 +539,7 @@
 		<text>Killer</text>
 	</string>
 	<string id="lname_bandit_98">
-		<text>Faggot</text>
+		<text>Flamen</text>
 	</string>
 	<string id="lname_bandit_99">
 		<text>Chemist</text>
@@ -809,7 +809,7 @@
 		<text>Rychagirsky</text>
 	</string>
 	<string id="lname_captain_178">
-		<text>Savchenko</text>
+		<text>Sabchenko</text>
 	</string>
 	<string id="lname_captain_179">
 		<text>Savchuk</text>
@@ -1409,7 +1409,7 @@
 		<text>Rychagirsky</text>
 	</string>
 	<string id="lname_lieutenant_178">
-		<text>Savchenko</text>
+		<text>Sabchenko</text>
 	</string>
 	<string id="lname_lieutenant_179">
 		<text>Savchuk</text>
@@ -3134,7 +3134,7 @@
 		<text>Cynic</text>
 	</string>
 	<string id="lname_stalker_129">
-		<text>Mate</text>
+		<text>Buddy</text>
 	</string>
 	<string id="lname_stalker_13">
 		<text>Blessed </text>
@@ -3143,7 +3143,7 @@
 		<text>Cranky</text>
 	</string>
 	<string id="lname_stalker_131">
-		<text>Nimble</text>
+		<text>Dexter</text>
 	</string>
 	<string id="lname_stalker_132">
 		<text>Aesthete</text>
@@ -3341,7 +3341,7 @@
 		<text>Legalist</text>
 	</string>
 	<string id="lname_stalker_191">
-		<text>Antiaircrafter</text>
+		<text>AA-Gun</text>
 	</string>
 	<string id="lname_stalker_192">
 		<text>Quack</text>
@@ -3452,7 +3452,7 @@
 		<text>Butcher</text>
 	</string>
 	<string id="lname_stalker_224">
-		<text>Merc</text>
+		<text>Hireling</text>
 	</string>
 	<string id="lname_stalker_225">
 		<text>Tuner</text>
@@ -3689,7 +3689,7 @@
 		<text>Killer</text>
 	</string>
 	<string id="lname_stalker_296">
-		<text>Faggot</text>
+		<text>Flamen</text>
 	</string>
 	<string id="lname_stalker_297">
 		<text>Footballer</text>
@@ -3764,7 +3764,7 @@
 		<text>Buffalo</text>
 	</string>
 	<string id="lname_stalker_318">
-		<text>Beaver</text>
+		<text>Lemming</text>
 	</string>
 	<string id="lname_stalker_319">
 		<text>Pietist</text>
@@ -3806,7 +3806,7 @@
 		<text>Bitter</text>
 	</string>
 	<string id="lname_stalker_330">
-		<text>Gryphon</text>
+		<text>Vulture</text>
 	</string>
 	<string id="lname_stalker_331">
 		<text>Goose</text>
@@ -3971,7 +3971,7 @@
 		<text>Dead</text>
 	</string>
 	<string id="lname_stalker_380">
-		<text>Absolut</text>
+		<text>Absolute</text>
 	</string>
 	<string id="lname_stalker_381">
 		<text>Anomaly</text>
@@ -4148,7 +4148,7 @@
 		<text>Hook</text>
 	</string>
 	<string id="lname_stalker_433">
-		<text>Rooster</text>
+		<text>Trigger</text>
 	</string>
 	<string id="lname_stalker_434">
 		<text>Drip</text>
@@ -4517,7 +4517,7 @@
 		<text>Accordion</text>
 	</string>
 	<string id="lname_stalker_544">
-		<text>Mate</text>
+		<text>Buddy</text>
 	</string>
 	<string id="lname_stalker_545">
 		<text>Bulkin</text>
@@ -4691,7 +4691,7 @@
 		<text>Ghoul</text>
 	</string>
 	<string id="lname_stalker_597">
-		<text>Faggot</text>
+		<text>Flamen</text>
 	</string>
 	<string id="lname_stalker_598">
 		<text>Phantom</text>
@@ -4832,5 +4832,5 @@
 		<text>Sharp</text>
 	</string>
 	<string id="Osoznanie">
-		<text>Awareness representative</text>
+		<text>C-Consciousness representative</text>
 	</string>

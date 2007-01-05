@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="val_escort_captive_dialog_11">
-		<text>Bandits... the sons of bitches were taking me to the old factory. I don't know what they were planning to do with me there, but before that they took another guy in there and I never saw him after that.\nThey've got another one of ours, Serega. They keep him in the basement... in that big building there... it's a huge unfinished one. Help him, would you? Otherwise they'll... you know...</text>
+		<text>Bandits... the sons of bitches were taking me to the old factory. I don't know what they were planning to do with me there, but before that they took another guy in there and I never saw him after that. They've got another one of ours, Serega. They keep him in the basement... in that big building there... it's a huge unfinished one. Help him, would you? Otherwise they'll... you know...</text>
 	</string>
 	<string id="val_escort_captive_dialog_2">
 		<text>Do you know what they've got there at the factory?</text>
 	</string>
 	<string id="val_escort_captive_dialog_21">
-		<text>I haven't heard much. All I know is that Borov, their boss, has got a part of the key to the caves there. There used to be a lab or something... They were chatting among themselves saying that, like, Borov had been eager to get inside, but no bloody luck without the second half of the key.\nUmm... if you're thinking of trying to get inside, think twice before you do. It's full of thugs.</text>
+		<text>I haven't heard much. All I know is that Borov, their boss, has got a part of the key to the caves there. There used to be a lab or something... They were chatting among themselves saying that, like, Borov had been eager to get inside, but no bloody luck without the second half of the key. Umm... if you're thinking of trying to get inside, think twice before you do. It's full of thugs.</text>
 	</string>
 	<string id="val_escort_captive_dialog_211">
 		<text>Gotcha. Thanks, I'll keep it in mind.</text>
@@ -92,21 +92,6 @@
 	</string>
 	<string id="val_escort_nap1_dialog_41">
 		<text>Thanks for your help! What else did you want to know about?</text>
-	</string>
-	<string id="val_escort_nap1_dialog_4111">
-		<text>Я твой должник, а долги я возвращаю. Идем.</text>
-	</string>
-	<string id="val_escort_nap1_dialog_41111">
-		<text>Отлично. Теперь мы всех порвем.</text>
-	</string>
-	<string id="val_escort_nap1_dialog_4112">
-		<text>Извини, у меня другие планы.</text>
-	</string>
-	<string id="val_escort_nap1_dialog_41121">
-		<text>Что ж, тогда удачи тебе.</text>
-	</string>
-	<string id="val_escort_nap1_dialog_412">
-		<text>Пока.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_61">
 		<text>You refused to help when I asked you. We have nothing to discuss, so get lost.</text>

@@ -8,10 +8,10 @@
 		<text>Factory</text>
 	</string>
 	<string id="agr_find_gunslinger_cache_hint">
-		<text>Find Hawkeye's secret stash in the catacombs</text>
+		<text>Find Strelok's secret stash in the catacombs</text>
 	</string>
 	<string id="agr_give_case_to_barman_hint">
-		<text>Give the documents to the Barman</text>
+		<text>Give the documents to the Barkeep</text>
 	</string>
 	<string id="agr_help_krot_hint">
 		<text>Save Mole</text>
@@ -23,7 +23,7 @@
 		<text>Meet Mole</text>
 	</string>
 	<string id="agr_nii_hint">
-		<text>Agroprom R&D Institute. Military base</text>
+		<text>Agroprom Research Institute. Military base</text>
 	</string>
 	<string id="agr_swamp_hint">
 		<text>Safe place</text>
@@ -35,5 +35,5 @@
 		<text>Get information about the stash from Mole</text>
 	</string>
 	<string id="agr_zaz_hint">
-		<text>Запорожец</text>
+		<text>Zaporozhets</text>
 	</string>

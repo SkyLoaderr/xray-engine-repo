@@ -1,14 +1,14 @@
 	<string id="sar_monolith">
-		<text>Wish-granting machine.</text>
+		<text>Grant wishes</text>
 	</string>
 	<string id="sar_monolith_0">
-		<text>Get to the Monolith.</text>
+		<text>Get to Monolith</text>
 	</string>
 	<string id="sar_monolith_1">
-		<text>Find the Monolith.</text>
+		<text>Sneak in to the sarcophagus</text>
 	</string>
 	<string id="sar_monolith_2">
-		<text>Get to the Monolith.</text>
+		<text>Find the Wish Granter</text>
 	</string>
 	<string id="sar_monolith_destroy">
 		<text>The Monolith's secret.</text>

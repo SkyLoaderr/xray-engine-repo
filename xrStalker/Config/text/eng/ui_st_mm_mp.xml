@@ -220,7 +220,7 @@
 		<text>Use password</text>
 	</string>
 	<string id="mp_vote_hint">
-		<text>Голосовать ЗА-[$$ACTION_VOTE_YES$$]\nГолосовать ПРОТИВ-[$$ACTION_VOTE_NO$$]\nРезультаты-[$$ACTION_VOTE$$]</text>
+		<text>Vote FOR-[$$ACTION_VOTE_YES$$]\nVote against-[$$ACTION_VOTE_NO$$]\nResults-[$$ACTION_VOTE$$]</text>
 	</string>
 	<string id="ping">
 		<text>PING</text>

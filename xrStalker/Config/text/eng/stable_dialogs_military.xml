@@ -13,7 +13,7 @@
 		<text>I came across a group of Duty members not far from your base.</text>
 	</string>
 	<string id="mil_bodyguard_dialog_6">
-		<text>Uh-oh… Looks like Duty is trying to equalize again… \nOk, you can enter, but make sure to put that piece away. Don't even think of making a mess in here, or you'll be leaving soon with your feet foremost.</text>
+		<text>Uh-oh… Looks like Duty is trying to equalize again…  Ok, you can enter, but make sure to put that piece away. Don't even think of making a mess in here, or you'll be leaving soon with your feet foremost.</text>
 	</string>
 	<string id="mil_bodyguard_dialog_7">
 		<text>OK.</text>
@@ -70,7 +70,7 @@
 		<text>And what if you cut to the chase?</text>
 	</string>
 	<string id="mil_cook_common2_205">
-		<text>Hey, relax! Hold on… well… it's just a normal place! A quiet one. All good, all around. Yeah…you\nrelax, alight? Don't get all worked up…</text>
+		<text>Hey, relax! Hold on… well… it's just a normal place! A quiet one. All good, all around. Yeah…you relax, alight? Don't get all worked up…</text>
 	</string>
 	<string id="mil_cook_common3_0">
 		<text>And who might you be?</text>
@@ -202,7 +202,7 @@
 		<text>You, umm... Go ahead, drink. I haven't had much practice lately.</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_2_3">
-		<text>To our victory! Yeaaahh…\n Ahhh, good times, good times!</text>
+		<text>To our victory! Yeaaahh…  Ahhh, good times, good times!</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_2_4">
 		<text>Yes… to our victory!</text>
@@ -283,13 +283,13 @@
 		<text>I'm up for it.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_102">
-		<text>Excellent. There behind that hill is the main breeding ground of those bastards - the "Free" ones - and me and my boys are going to stir it up properly.\nThere's just one little problem. The base has only one entrance and it is well guarded. We thought of busting a hole in the fence, but their sniper in the tower won't let us. I don't want to send my guys to catch his bullets... but you - he'll let you come close and definitely won't shoot on sight. If you take him out, we'll owe you. Plus, if it goes as planned, you'll be able to take any equipment at the base, whatever you want.</text>
+		<text>Excellent. There behind that hill is the main breeding ground of those bastards - the "Free" ones - and me and my boys are going to stir it up properly. There's just one little problem. The base has only one entrance and it is well guarded. We thought of busting a hole in the fence, but their sniper in the tower won't let us. I don't want to send my guys to catch his bullets... but you - he'll let you come close and definitely won't shoot on sight. If you take him out, we'll owe you. Plus, if it goes as planned, you'll be able to take any equipment at the base, whatever you want.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_103">
 		<text>Go on.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_104">
-		<text>I've already told you: all you need to do is knock off the sniper at that tower above the fence.\nSo, what do you say?</text>
+		<text>I've already told you: all you need to do is knock off the sniper at that tower above the fence. So, what do you say?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_1041">
 		<text>No, I'm not ready yet.</text>
@@ -535,13 +535,13 @@
 		<text>What's this place?</text>
 	</string>
 	<string id="mil_freedom_commander_common2_1">
-		<text>We call it the Barrier… that's what it basiñally is. It's about the last normal outpost this side of the Zone's center. It's a sort of buffer, you know, between the people and the Wild Area.</text>
+		<text>We call it the Barrier… that's what it basiñally is. It's about the last normal outpost this side of the Zone's center. It's a sort of buffer, you know, between the people and the Wild Territory.</text>
 	</string>
 	<string id="mil_freedom_commander_common2_2">
 		<text>What is there beyond it?</text>
 	</string>
 	<string id="mil_freedom_commander_common2_3">
-		<text>Only death… or serving Monolith. "Our Monolith! In your name we..." Damn! \nIn short, no one needs to go there. That's why we're based here, trying to prevent the muck from infesting the Zone. Like some kind of Jedis, hehe. We also detain the really stupid ones - or at least try not to let them creep into the center.</text>
+		<text>Only death… or serving Monolith. "Our Monolith! In your name we..." Damn!  In short, no one needs to go there. That's why we're based here, trying to prevent the muck from infesting the Zone. Like some kind of Jedis, hehe. We also detain the really stupid ones - or at least try not to let them creep into the center.</text>
 	</string>
 	<string id="mil_freedom_commander_common2_4">
 		<text>Why do you do that?</text>
@@ -820,7 +820,7 @@
 		<text>What exactly?</text>
 	</string>
 	<string id="mil_leader_start_dialog_5003">
-		<text>If you feel up to it, go to the outpost near the Radar exit. We've had reports claiming that either mutants or Monolith are planning a new attempt to break through there. The guys need help.</text>
+		<text>If you feel up to it, go to the outpost near the Red Forest exit. We've had reports claiming that either mutants or Monolith are planning a new attempt to break through there. The guys need help.</text>
 	</string>
 	<string id="mil_leader_start_dialog_5004">
 		<text>Well, you did help the guys at the Barrier, so - relax.</text>
@@ -835,7 +835,7 @@
 		<text>What chance?</text>
 	</string>
 	<string id="mil_leader_start_dialog_7003">
-		<text>Certain things point to the fact that very soon Monolith is gonna try to break through from the Radar side. You gotta go see Cap - he's the commander at the Barrier - and see if he needs any help. Well, it's pretty obvious he does, really…</text>
+		<text>Certain things point to the fact that very soon Monolith is gonna try to break through from the Red Forest side. You gotta go see Cap - he's the commander at the Barrier - and see if he needs any help. Well, it's pretty obvious he does, really…</text>
 	</string>
 	<string id="mil_leader_start_dialog_7004">
 		<text>OK, I'll do it.</text>
@@ -898,7 +898,7 @@
 		<text>Got any questions?</text>
 	</string>
 	<string id="mil_max_dialog_3002">
-		<text>Yes. Lukash told me to intercept the Duty courier on the way from Radar to the Dead City. Could you tell me the best place to do that?</text>
+		<text>Yes. Lukash told me to intercept the Duty courier on the way from Red Forest to the Dead City. Could you tell me the best place to do that?</text>
 	</string>
 	<string id="mil_max_dialog_3003">
 		<text>Hmm. Best thing would be to catch him before he reaches the farmstead near the passage to Dead City. Reinforcements are sure to be waiting for him there, so you'd have trouble dealing with them all. Plus, that way you'd have to pass through the village, which is a bad thing. Better go East of the village, and fast.</text>
@@ -916,7 +916,7 @@
 		<text>Yes.</text>
 	</string>
 	<string id="mil_max_dialog_4003">
-		<text>I see you're the right kind of guy! Would you mind doing another small job for me? Get it done and I'll give you my Desert Eagle. A great piece, and the punch it packs!</text>
+		<text>I see you're the right kind of guy! Would you mind doing another small job for me? Get it done and I'll give you my Black Kite. A great piece, and the punch it packs!</text>
 	</string>
 	<string id="mil_max_dialog_4004">
 		<text>But what am I supposed to do?</text>
@@ -1264,13 +1264,13 @@
 		<text>Got it. Thanks.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_10">
-		<text>Same to you. What brings you here?\n</text>
+		<text>Same to you. What brings you here? </text>
 	</string>
 	<string id="mil_zoneguard_dialog_100">
 		<text>Who's the boss around here? I've got business to discuss with him.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_1000">
-		<text>Lukash is our leader, you can find him in the main building. But as you enter, make sure to put your piece away - unless you wanna get shot for nothing.\n</text>
+		<text>Lukash is our leader, you can find him in the main building. But as you enter, make sure to put your piece away - unless you wanna get shot for nothing. </text>
 	</string>
 	<string id="mil_zoneguard_dialog_10000">
 		<text>What for?</text>
@@ -1321,7 +1321,7 @@
 		<text>Listen, where can I stock up on some ammo? Rostok is kind of a long walk from here, I don't feel like going there.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_51">
-		<text>Go to the main building and you'll find it on the ground floor.</text>
+		<text>Go to the main building and you'll find it on the first floor.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6">
 		<text>Whasssup, rambling man? Looking to drop in at our place, huh?</text>
