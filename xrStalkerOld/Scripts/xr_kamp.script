@@ -579,19 +579,19 @@ function CKampManager:checkNpcAbility(npc)
 			self.npc[npc_id].states["eat_bread"] = false
 		end
 		-- играть на гармошке
-		if npc:object("harmonica_a") then
-			self.npc[npc_id].states["play_harmonica"] = true
-			self.npc[npc_id].states["wait_harmonica"] = true
-			self.kamp_states["pre_harmonica"] = true
-			self.kamp_states["harmonica"] = true
-			self.kamp_states["post_harmonica"] = true
-		else
+--		if npc:object("harmonica_a") then
+--			self.npc[npc_id].states["play_harmonica"] = true
+--			self.npc[npc_id].states["wait_harmonica"] = true
+--			self.kamp_states["pre_harmonica"] = true
+--			self.kamp_states["harmonica"] = true
+--			self.kamp_states["post_harmonica"] = true
+--		else
 			self.npc[npc_id].states["play_harmonica"] = false
 			self.npc[npc_id].states["wait_harmonica"] = false
 			self.kamp_states["pre_harmonica"] = false
 			self.kamp_states["harmonica"] = false
 			self.kamp_states["post_harmonica"] = false
-		end
+--		end
 		-- играть на гитаре
 		if npc:object("guitar_a") then
 			self.npc[npc_id].states["play_guitar"] = true
