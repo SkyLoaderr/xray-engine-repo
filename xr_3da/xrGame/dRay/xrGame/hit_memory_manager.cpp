@@ -101,7 +101,7 @@ void CHitMemoryManager::add					(float amount, const Fvector &vLocalDir, const C
 	if (who && (m_object->ID() == who->ID()))
 		return;
 
-	if (who)
+	if (who && !fis_zero(amount))
 		m_last_hit_object_id	= who->ID();
 
 	object().callback(GameObject::eHit)(
