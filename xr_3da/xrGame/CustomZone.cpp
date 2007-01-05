@@ -1108,6 +1108,11 @@ void	CCustomZone::OnEvent (NET_Packet& P, u16 type)
 };
 void CCustomZone::OnOwnershipTake(u16 id)
 {
+	CGameObject* GO  = smart_cast<CGameObject*>(Level().Objects.net_Find(id));  VERIFY(GO);
+	if(!smart_cast<CArtefact*>(GO))
+	{
+		Msg("zone_name[%s] object_name[%s]",cName().c_str(), GO->cName().c_str() );
+	}
 	CArtefact *artefact = smart_cast<CArtefact*>(Level().Objects.net_Find(id));  VERIFY(artefact);
 	artefact->H_SetParent(this);
 	
