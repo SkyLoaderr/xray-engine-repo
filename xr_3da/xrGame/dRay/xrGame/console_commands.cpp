@@ -2434,6 +2434,15 @@ public:
 
 #endif // DEBUG
 
+class CCC_DumpObjects : public IConsole_Command {
+public:
+	CCC_DumpObjects(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR)
+	{
+		Level().Objects.dump_all_objects();
+	}
+};
+
 void CCC_RegisterCommands()
 {
 	// options
@@ -2824,5 +2833,5 @@ void CCC_RegisterCommands()
 	extern	u32	g_dwDemoDeltaFrame;
 	CMD4(CCC_SV_Integer,"demo_delta_frame"	,	(int*)&g_dwDemoDeltaFrame	,	0,100);
 #endif // DEBUG
-
+	CMD1(CCC_DumpObjects,							"dump_all_objects");
 }

@@ -197,7 +197,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 		break;
 	case GE_DESTROY:
 		{
-			Msg				("- CL_destroy %s[%d] frame [%d]",cName().c_str(), ID(), Device.dwFrame);
+//.			Msg				("- CL_destroy %s[%d] frame [%d]",cName().c_str(), ID(), Device.dwFrame);
 			setDestroy		(TRUE);
 			MakeMeCrow		();
 		}

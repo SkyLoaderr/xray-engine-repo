@@ -105,7 +105,7 @@ void	CObjectList::SingleUpdate	(CObject* O)
 				destroy_queue.push_back	(O);
 		}
 	}
-	if (O->getDestroy())
+	if (O->getDestroy() && (Device.dwFrame != O->dwFrame_UpdateCL))
 	{
 		destroy_queue.push_back(O);
 		Msg				("- !!!processing_enabled ->destroy_queue.push_back %s[%d] frame [%d]",O->cName().c_str(), O->ID(), Device.dwFrame);
@@ -122,24 +122,24 @@ void CObjectList::Update		(bool bForce)
 {
 	if (Device.Pause() && !bForce)		return		;
 
-	// Select Crow-Mode
-	Device.Statistic->UpdateClient_updated	= 0;
-	Device.Statistic->UpdateClient_crows	= crows->size	();
-	xr_vector<CObject*>*		workload	= 0;
-	if (!psDeviceFlags.test(rsDisableObjectsAsCrows))	{
-		workload = crows			;
-		if (crows==&crows_0)		crows=&crows_1;
-		else						crows=&crows_0;
-		clear_crow_vec				(*crows);
-	} else {
-		workload	= &objects_active;
-		clear_crow_vec				(crows_0);
-		clear_crow_vec				(crows_1);
-	}
-
 	// Clients
 	if (Device.fTimeDelta>EPS_S || bForce)			
 	{
+		// Select Crow-Mode
+		Device.Statistic->UpdateClient_updated	= 0;
+		Device.Statistic->UpdateClient_crows	= crows->size	();
+		xr_vector<CObject*>*		workload	= 0;
+		if (!psDeviceFlags.test(rsDisableObjectsAsCrows))	{
+			workload = crows			;
+			if (crows==&crows_0)		crows=&crows_1;
+			else						crows=&crows_0;
+			clear_crow_vec				(*crows);
+		} else {
+			workload	= &objects_active;
+			clear_crow_vec				(crows_0);
+			clear_crow_vec				(crows_1);
+		}
+
 		Device.Statistic->UpdateClient.Begin		();
 		Device.Statistic->UpdateClient_active		= objects_active.size	();
 		Device.Statistic->UpdateClient_total		= objects_active.size	() + objects_sleeping.size();
@@ -157,7 +157,6 @@ void CObjectList::Update		(bool bForce)
 
 		Device.Statistic->UpdateClient.End		();
 	}
-
 	// Destroy
 	if (!destroy_queue.empty()) 
 	{
@@ -373,9 +372,13 @@ void dump_list(xr_vector<CObject*>& v, LPCSTR reason)
 {
 	xr_vector<CObject*>::iterator it = v.begin();
 	xr_vector<CObject*>::iterator it_e = v.end();
-	Msg("----------------dump_list [%s]",dump_list);
+	Msg("----------------dump_list [%s]",reason);
 	for(;it!=it_e;++it)
-		Msg("name [%s] ID[%d] getDestroy()=[%s]", (*it)->cName().c_str(), (*it)->ID(), ((*it)->getDestroy())?"yes":"no" );
+		Msg("name [%s] ID[%d] parent[%s] getDestroy()=[%s]", 
+			(*it)->cName().c_str(), 
+			(*it)->ID(), 
+			((*it)->H_Parent())?(*it)->H_Parent()->cName().c_str():"", 
+			((*it)->getDestroy())?"yes":"no" );
 }
 
 bool CObjectList::dump_all_objects()
