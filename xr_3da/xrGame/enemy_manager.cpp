@@ -104,20 +104,11 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 	const CAI_Stalker		*stalker = smart_cast<const CAI_Stalker*>(object);
 	bool					wounded = stalker ? stalker->wounded(&m_object->movement().restrictions()) : false;
 	if (wounded) {
-//		float				penalty = 0.f;
-//		const CAI_Stalker	*object = smart_cast<const CAI_Stalker*>(m_object);
-//		if (object) {
-//			ALife::_OBJECT_ID	processor_id = object->agent_manager().enemy().wounded_processor(stalker);
-//			if ((processor_id != ALife::_OBJECT_ID(-1)) && (processor_id != object->ID()))
-//				penalty		= 10000.f;
-//		}
 		if (m_stalker && m_stalker->agent_manager().enemy().assigned_wounded(object,m_stalker))
 			return			(0.f);
 
 		float				distance = m_object->Position().distance_to_sqr(object->Position());
 		return				(distance);
-//		distance			= !fis_zero(distance) ? distance : EPS_L;
-//		return				(penalty + 10000.f + 1.f/distance);
 	}
 
 	float					penalty = 10000.f;
@@ -135,16 +126,16 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 		penalty				-= 1000.f;
 
 	// if object is actor and he/she sees us
-	if (actor) {
-		if (smart_cast<const CActor*>(object)->memory().visual().visible_now(m_object))
-			penalty			-= 900.f;
-	}
-	else {
-		// if object is npc and it sees us
-		const CCustomMonster	*monster = smart_cast<const CCustomMonster*>(object);
-		if (monster && monster->memory().visual().visible_now(m_object))
-			penalty			-= 300.f;
-	}
+//	if (actor) {
+//		if (smart_cast<const CActor*>(object)->memory().visual().visible_now(m_object))
+//			penalty			-= 900.f;
+//	}
+//	else {
+//		// if object is npc and it sees us
+//		const CCustomMonster	*monster = smart_cast<const CCustomMonster*>(object);
+//		if (monster && monster->memory().visual().visible_now(m_object))
+//			penalty			-= 300.f;
+//	}
 
 #ifdef USE_EVALUATOR
 	ai().ef_storage().non_alife().member_item()	= 0;
