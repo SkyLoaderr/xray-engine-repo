@@ -94,6 +94,7 @@ public:
 class XRNETSERVER_API IPureServer
 {
 protected:
+	shared_str				connect_options;
 	IDirectPlay8Server*		NET;
 	IDirectPlay8Address*	net_Address_device;
 	
@@ -183,5 +184,5 @@ public:
 	virtual void			BanAddress			(char* Address, u32 BanTime);
 	IClient*				GetServerClient		()			{ return SV_Client; };
 
-
+	const shared_str&		GetConnectOptions	() const {return connect_options;}
 };
