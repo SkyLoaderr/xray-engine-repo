@@ -105,7 +105,7 @@ float		ps_r2_dhemi_scale			= 1.5f;				// 1.5f
 int			ps_r2_dhemi_count			= 5;				// 5
 
 float		ps_r2_lt_smooth				= 1.f;				// 1.f
-//float		ps_r2_dlights_clip			= 30.f;
+float		ps_r2_slight_fade			= 1.f;				// 1.f
 
 
 //- Mad Max
@@ -357,6 +357,8 @@ void		xrRender_initconsole	()
 
 	CMD4(CCC_Float,		"r2_parallax_h",		&ps_r2_df_parallax_h,		.0f,	.5f		);
 //	CMD4(CCC_Float,		"r2_parallax_range",	&ps_r2_df_parallax_range,	5.0f,	175.0f	);
+
+	CMD4(CCC_Float,		"r2_slight_fade",		&ps_r2_slight_fade,			.333f,	2.f		);
 
 	tw_min.set			(0,0,0);	tw_max.set	(1,1,1);
 	CMD4(CCC_Vector3,	"r2_aa_break",			&ps_r2_aa_barier,			tw_min, tw_max	);
