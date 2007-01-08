@@ -416,6 +416,10 @@ function CRandomTask:task_fail(p1, p2)
 		local sel_task = self.task_info[self.active_task_by_type[p1]]
 		
 		if sel_task == nil then
+			printf("!!!")
+			print_table(self.active_task_by_type)
+			printf("!!!")
+			print_table(self.task_info)
 			abort("WRONG RANDOM TASK %s %s", tostring(p1), tostring(p2))
 		end
 
@@ -548,6 +552,7 @@ function CRandomTask:actor_update()
 		if self.task_info[v].status == "normal" then
 			self:check_task_props(v)
 			if self.task_info[v].enabled_props == true and
+			   self.task_info[v].enabled == true and
 			   xr_logic.pick_section_from_condlist(db.actor, db.actor, self.task_info[v].init_condition) ~= nil
 			then
 				--' Нужно автоматически выдать квест
