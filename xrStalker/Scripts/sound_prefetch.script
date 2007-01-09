@@ -12,17 +12,17 @@ function prefetch_sounds()
 --		end
 --	end
 
-	function prefetch_theme_sound(tbl)
-		for k,v in pairs(tbl) do
-			if v.types == nil then
-				prefetch_section(sound_theme.snd_ini, k)
-			else
-				prefetch_theme_sound(v.types)
-			end
-		end
-	end
+--	function prefetch_theme_sound(tbl)
+--		for k,v in pairs(tbl) do
+--			if v.types == nil then
+--				prefetch_section(sound_theme.snd_ini, k)
+--			else
+--				prefetch_theme_sound(v.types)
+--			end
+--		end
+--	end
 
-	prefetch_theme_sound(sound_theme.theme)
+--	prefetch_theme_sound(sound_theme.theme)
 end
 
 
