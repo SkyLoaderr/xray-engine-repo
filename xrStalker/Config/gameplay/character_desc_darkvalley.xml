@@ -973,7 +973,7 @@
 		<rank>625</rank>
 		<reputation>1</reputation>
 
-		<visual>actors\militari\stalker_militari_1</visual>
+		<visual>actors\soldier\soldier_spetsnaz</visual>
 		<snd_config>characters_voice\human_03\military\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
@@ -1004,7 +1004,7 @@
 		<rank>786</rank>
 		<reputation>-2</reputation>
 
-		<visual>actors\militari\stalker_militari_2</visual>
+		<visual>actors\soldier\soldier_spetsnaz</visual>
 		<snd_config>characters_voice\human_03\military\</snd_config>
 		<crouch_type>0</crouch_type>
 		<supplies>
