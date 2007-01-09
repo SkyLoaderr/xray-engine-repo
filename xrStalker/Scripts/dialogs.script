@@ -93,11 +93,15 @@ end
 function relocate_item_section(victim, section, type)
 	if db.actor and victim then
 		if type == "in" then
-		    alife():create(section,	
-				    db.actor:position(),
-				    db.actor:level_vertex_id(),	
-				    db.actor:game_vertex_id(),
-				    db.actor:id())
+			if victim:object(section) ~= nil then
+				victim:transfer_item(victim:object(section), db.actor)
+			else
+				alife():create(section,	
+					    db.actor:position(),
+						db.actor:level_vertex_id(),	
+						db.actor:game_vertex_id(),
+						db.actor:id())
+			end
 		elseif type == "out" then
 			db.actor:transfer_item(db.actor:object(section), victim)
 		end
