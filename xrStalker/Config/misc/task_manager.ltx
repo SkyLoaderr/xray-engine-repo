@@ -267,7 +267,7 @@ time = 86400
 [tm_eliminate_camp_5]
 type = eliminate_lager
 community = actor
-init_condition = {+agroprom_military_case_have}
+condlist = {+agroprom_military_case_have}
 text = tm_eliminate_camp_5_text
 description = tm_eliminate_camp_5_descr
 parent = trader
@@ -349,7 +349,7 @@ time = 86400
 [tm_kill_stalker_1]
 type = kill_stalker
 community = actor
-condlist = {=actor_on_level(l02_garbage)}
+;--condlist = {=actor_on_level(l02_garbage)}
 init_condition = {=actor_on_level(l02_garbage)}
 text = tm_kill_stalker_1_text
 description = tm_kill_stalker_1_descr
