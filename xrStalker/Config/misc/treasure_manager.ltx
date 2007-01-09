@@ -234,7 +234,7 @@ ros_secret_0025
 target = 5000
 name = esc_secret_0000_name
 description = esc_secret_0000_descr
-items = ammo_12x76_zhekan, 2, ammo_12x70_buck, 2
+items = ammo_12x76_zhekan, 12, ammo_12x70_buck, 12
 condlist = {=npc_rank(experienced) =actor_on_level(l01_escape)} 10
 community = military
 
@@ -306,7 +306,7 @@ community = bandit
 target = 5009
 name = esc_secret_0009_name
 description = esc_secret_0009_descr
-items = ammo_9x18_pmm, 4, wpn_fort
+items = ammo_9x18_pmm, 40, wpn_fort
 condlist = {=actor_on_level(l01_escape) npc_rank(novice)} 5
 community = bandit
 
@@ -338,7 +338,7 @@ community = stalker, dolg, bandit, military
 target = 5013
 name = esc_secret_0013_name
 description = esc_secret_0013_descr
-items = ammo_9x18_pmm, 4, bandage, 5
+items = ammo_9x18_pmm, 30, bandage, 5
 condlist = {=actor_on_level(l01_escape) =npc_rank(novice)} 3
 community = military
 
@@ -346,7 +346,7 @@ community = military
 target = 5014
 name = esc_secret_0014_name
 description = esc_secret_0014_descr
-items = ammo_12x76_zhekan, 5, vodka
+items = ammo_12x76_zhekan, 15, vodka
 condlist = {=actor_on_level(l01_escape) =npc_rank(novice)} 3, {=actor_on_level(l01_escape) =npc_rank(experienced)} 3, {=actor_on_level(l01_escape) =npc_rank(veteran)} 5
 community = military
 
@@ -354,7 +354,7 @@ community = military
 target = 5015
 name = esc_secret_0015_name
 description = esc_secret_0015_descr
-items = ammo_9x18_pmm, 4
+items = ammo_9x18_pmm, 50
 condlist = {=actor_on_level(l01_escape) =npc_rank(experienced)} 5
 community = military
 
@@ -460,7 +460,7 @@ community = stalker, dolg, bandit
 target = 5038
 name = gar_secret_0008_name
 description = gar_secret_0008_descr
-items = ammo_9x19_pbp, 6, medkit, 3
+items = ammo_9x19_pbp, 40, medkit, 2
 condlist = 5
 
 [gar_secret_rotted_stump]
@@ -475,7 +475,7 @@ community = stalker, dolg, bandit, military
 target = 5040
 name = gar_secret_0010_name
 description = gar_secret_0010_descr
-items = grenade_rgd5, 3, grenade_f1, 3
+items = grenade_rgd5, 2, grenade_f1, 2
 condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 5
 community = stalker, bandit
 
@@ -483,14 +483,14 @@ community = stalker, bandit
 target = 5041
 name = gar_secret_0011_name
 description = gar_secret_0011_descr
-items = wpn_ak74, ammo_5.45x39_ap, 4
+items = wpn_ak74, ammo_5.45x39_ap, 90, wpn_addon_scope
 condlist = 5
 
 [gar_secret_car_hiding]
 target = 5042
 name = gar_secret_0012_name
 description = gar_secret_0012_descr
-items = wpn_walther, ammo_9x19_pbp, 3
+items = wpn_walther, ammo_9x19_pbp, 30
 condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 5, {=actor_on_level(l03u_agr_underground) =npc_rank(experienced)} 1
 community = stalker, dolg, bandit, military
 
@@ -498,7 +498,7 @@ community = stalker, dolg, bandit, military
 target = 5043
 name = gar_secret_0013_name
 description = gar_secret_0013_descr
-items = medkit, 3, bandage
+items = medkit, bandage, antirad
 condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 5, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 3
 community = stalker, dolg, bandit, military
 
@@ -513,7 +513,7 @@ condlist = 5
 target = 5045
 name = gar_secret_0015_name
 description = gar_secret_0015_descr
-items = ammo_5.45x39_ap, 3
+items = ammo_5.45x39_ap, 90
 condlist = {=npc_rank(novice) =actor_on_level(l02_garbage)} 5
 community = stalker, dolg, military
 
@@ -554,14 +554,14 @@ target = 5050
 name = gar_secret_0020_name
 description = gar_secret_0020_descr
 items = antirad, 8
-condlist = {=npc_rank(novice)} 5
+condlist = {=npc_rank(novice)} 3
 community = stalker, bandit
 
 [gar_secret_deadman]
 target = 5051
 name = gar_secret_0021_name
 description = gar_secret_0021_descr
-items = ammo_12x76_zhekan, 5
+items = ammo_12x76_zhekan, 30
 condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 5, {=actor_on_level(l01_escape) =npc_rank(novice)} 2
 community = bandit
 
@@ -577,8 +577,8 @@ community = stalker, bandit
 target = 5053
 name = gar_secret_0023_name
 description = gar_secret_0023_descr
-items = kolbasa, 8, vodka, 4, bread
-condlist = {=actor_on_level(l02_garbage) =npc_rank(novice)} 3, {=actor_on_level(l03_agroprom) =npc_rank(novice)} 1
+items = wpn_addon_grenade_launcher, ammo_og-7b, 3
+condlist = {=actor_on_level(l02_garbage) =npc_rank(novice)} 5, {=actor_on_level(l03_agroprom) =npc_rank(novice)} 1
 community = stalker, bandit, dolg
 
 [gar_secret_concrete_blocks]
@@ -602,7 +602,7 @@ condlist = 5
 target = 5066
 name = agr_secret_0001_name
 description = agr_secret_0001_descr
-items = ammo_11.43x23_hydro, 3
+items = ammo_11.43x23_hydro, 30
 condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 3, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 5
 community = military, dolg
 
@@ -618,7 +618,7 @@ community = military, bandit
 target = 5068
 name = agr_secret_0003_name
 description = agr_secret_0003_descr
-items = Conserva, 2, ammo_9x19_pbp, 2
+items = Conserva, 2, ammo_9x19_pbp, 50
 condlist = {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 3, {=actor_on_level(l03u_agr_underground) =npc_rank(experienced)} 5
 community = stalker, military
 
@@ -634,7 +634,7 @@ community = stalker
 target = 5070
 name = agr_secret_0005_name
 description = agr_secret_0005_descr
-items = ammo_5.45x39_ap, 2, wpn_addon_silencer
+items = ammo_5.45x39_ap, 60, wpn_addon_silencer
 condlist = {=actor_on_level(l02_garbage) =npc_rank(experienced)} 2, {=actor_on_level(l03_agroprom) =npc_rank(experienced)} 4
 community = military, bandit
 
@@ -642,7 +642,7 @@ community = military, bandit
 target = 5071
 name = agr_secret_0006_name
 description = agr_secret_0006_descr
-items = vodka, 10, bread
+items = vodka, 10, bread, af_ameba_slug
 condlist = {=actor_on_level(l03_agroprom) =npc_rank(novice)} 5
 community = stalker
 
