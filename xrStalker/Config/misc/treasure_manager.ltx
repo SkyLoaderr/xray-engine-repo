@@ -306,7 +306,7 @@ community = bandit
 target = 5009
 name = esc_secret_0009_name
 description = esc_secret_0009_descr
-items = ammo_9x18_pbp, 4, wpn_fort
+items = ammo_9x18_pmm, 4, wpn_fort
 condlist = {=actor_on_level(l01_escape) npc_rank(novice)} 5
 community = bandit
 
@@ -338,7 +338,7 @@ community = stalker, dolg, bandit, military
 target = 5013
 name = esc_secret_0013_name
 description = esc_secret_0013_descr
-items = ammo_9x18_pbp, 4, bandage, 5
+items = ammo_9x18_pmm, 4, bandage, 5
 condlist = {=actor_on_level(l01_escape) =npc_rank(novice)} 3
 community = military
 
@@ -354,7 +354,7 @@ community = military
 target = 5015
 name = esc_secret_0015_name
 description = esc_secret_0015_descr
-items = ammo_9x18_pbp, 4
+items = ammo_9x18_pmm, 4
 condlist = {=actor_on_level(l01_escape) =npc_rank(experienced)} 5
 community = military
 
@@ -945,7 +945,7 @@ community = stalker
 target = 5411
 name = val_secret_0011_name
 description = val_secret_0011_description
-items = ammo_9x18_pbp, 60, af_blood, 2, conserva, 5
+items = ammo_9x18_pmm, 60, af_blood, 2, conserva, 5
 condlist = {=npc_rank(experienced)} 5
 community = stalker
 
@@ -977,7 +977,7 @@ community = military
 target = 5415
 name = val_secret_0015_name
 description = val_secret_0015_description
-items = ammo_9x18_pbp, 60, bread, 3, kolbasa, 2, mutant_psevdodog_tail
+items = ammo_9x18_pmm, 60, bread, 3, kolbasa, 2, mutant_psevdodog_tail
 condlist = {=npc_rank(experienced)} 5
 community = stalker
 
@@ -1017,7 +1017,7 @@ community = dolg
 target = 5420
 name = val_secret_0020_name
 description = val_secret_0020_description
-items = ammo_9x18_pbp, 40, bread, 2, kolbasa, af_ameba_slime 
+items = ammo_9x18_pmm, 40, bread, 2, kolbasa, af_ameba_slime 
 condlist = {=npc_rank(experienced)} 5
 community = bandit
 
@@ -1025,7 +1025,7 @@ community = bandit
 target = 5421
 name = val_secret_0021_name
 description = val_secret_0021_description
-items = wpn_ak74, medkit, 5, bandage, 10, ammo_5.45x39_ap, 5, ammo_9x18_pbp, 20, af_ameba_slime, af_vyvert
+items = wpn_ak74, medkit, 5, bandage, 10, ammo_5.45x39_ap, 5, ammo_9x18_pmm, 20, af_ameba_slime, af_vyvert
 condlist = {=npc_rank(veteran)} 5
 community = stalker
 
@@ -1049,7 +1049,7 @@ community = stalker
 target = 5424
 name = val_secret_0024_name
 description = val_secret_0024_description
-items = ammo_5.45x39_ap, 5, ammo_5.45x39_fmj, 5, grenade_rgd5, 5, ammo_9x18_pbp, 100
+items = ammo_5.45x39_ap, 5, ammo_5.45x39_fmj, 5, grenade_rgd5, 5, ammo_9x18_pmm, 100
 condlist = {=npc_rank(veteran)} 5
 community = stalker
 
@@ -1503,7 +1503,7 @@ community = stalker
 target = 5200
 name = mil_secret_0000_name
 description = mil_secret_0000_description
-items = medkit, 2, ammo_5.56x45_ss190, 10
+items = medkit, 2, ammo_5.56x45_ap, 45
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 community = stalker, freedom, dolg
 
@@ -1511,7 +1511,7 @@ community = stalker, freedom, dolg
 target = 5201
 name = mil_secret_0001_name
 description = mil_secret_0001_description
-items = ammo_11.43x23_fmj, 10, ammo_9x39_pab9, 10, medkit, 1
+items = ammo_11.43x23_hydro, 20, ammo_9x39_ap, 30, medkit, 1
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 community = stalker, freedom, killer
 
@@ -1519,7 +1519,7 @@ community = stalker, freedom, killer
 target = 5202
 name = mil_secret_0002_name
 description = mil_secret_0002_description
-items = ammo_5.56x45_ss190, 30
+items = ammo_5.56x45_ap, 60
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 community = stalker, freedom, dolg
 
@@ -1535,7 +1535,7 @@ community = stalker, freedom, dolg
 target = 5204
 name = mil_secret_0004_name
 description = mil_secret_0004_description
-items = ammo_9x39_pab9, 20, medkit, 1
+items = ammo_9x39_ap, 50, medkit, 1
 condlist = {+mil_miser_task_complete =npc_rank(veteran)} 5, {+mil_miser_task_complete =npc_rank(master)} 5, {+mil_miser_task_failed =npc_rank(veteran)}, {+mil_miser_task_failed =npc_rank(master)} 5
 community = stalker, freedom, killer
 
@@ -1551,7 +1551,7 @@ community = stalker, freedom, killer
 target = 5206
 name = mil_secret_0006_name
 description = mil_secret_0006_description
-items = medkit, 1, ammo_11.43x23_fmj, 10, ammo_9x39_pab9, 10, af_cristall_flower, 1
+items = medkit, 1, ammo_11.43x23_hydro, 10, ammo_9x39_ap, 20, af_cristall_flower, 1
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 community = stalker, freedom, killer
 
@@ -1583,7 +1583,7 @@ community = stalker, freedom
 target = 5210
 name = mil_secret_0010_name
 description = mil_secret_0010_description
-items = medkit, 2, ammo_5.56x45_ss190, 20
+items = medkit, 2, ammo_5.56x45_ap, 50
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 community = stalker, freedom, dolg
 
@@ -1591,7 +1591,7 @@ community = stalker, freedom, dolg
 target = 5211
 name = mil_secret_0011_name
 description = mil_secret_0011_description
-items = ammo_11.43x23_fmj, 30, ammo_5.56x45_ss190, 20, bandage, 3
+items = ammo_11.43x23_hydro, 30, ammo_5.56x45_ap, 20, bandage, 3
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 community = stalker, freedom, dolg
 
@@ -1622,7 +1622,7 @@ community = stalker, freedom
 target = 5215
 name = mil_secret_0015_name
 description = mil_secret_0015_description
-items = conserva, 3, vodka, 1, antirad, 2
+items = conserva, 9, vodka, 3, antirad, 3
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 community = stalker, freedom
 
@@ -1630,7 +1630,7 @@ community = stalker, freedom
 target = 5216
 name = mil_secret_0016_name
 description = mil_secret_0016_description
-items = wpn_g36, 1, ammo_5.56x45_ss190, 30
+items = wpn_g36, 1, ammo_5.56x45_ap, 40
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 
 [mil_secret_0017]
@@ -1653,7 +1653,7 @@ community = stalker, freedom
 target = 5219
 name = mil_secret_0019_name
 description = mil_secret_0019_description
-items = bandage, 4, medkit, 1, medkit_scientic, 1
+items = bandage, 4, medkit, 2, medkit_scientic, 1
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 community = freedom
 
@@ -1685,7 +1685,7 @@ community = freedom
 target = 5223
 name = mil_secret_0023_name
 description = mil_secret_0023_description
-items = wpn_groza, 1, ammo_9x39_sp5, 10
+items = wpn_groza, 1, ammo_9x39_ap, 30
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 community = freedom
 
@@ -1693,7 +1693,7 @@ community = freedom
 target = 5224
 name = mil_secret_0024_name
 description = mil_secret_0024_description
-items = medkit, 1, wpn_walther, 1, ammo_9x19_pbp, 15
+items = medkit, 1, wpn_walther, 1, ammo_9x19_pbp, 40
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 community = freedom
 
@@ -1701,7 +1701,7 @@ community = freedom
 target = 5225
 name = mil_secret_0025_name
 description = mil_secret_0025_description
-items = ammo_9x19_pbp, 20, ammo_12x76_zhekan, 20
+items = ammo_9x19_pbp, 35, ammo_12x76_zhekan, 20
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 community = freedom
 
@@ -1709,7 +1709,7 @@ community = freedom
 target = 5226
 name = mil_secret_0026_name
 description = mil_secret_0026_description
-items = medkit_army, 2, vodka, 1, bandage, 3
+items = medkit_army, 2, vodka, 1, bandage, 10
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 community = freedom
 
@@ -1733,7 +1733,7 @@ community = stalker, dolg
 target = 5229
 name = yan_secret_0000_name
 description = yan_secret_0000_description
-items = ammo_5.56x45_ss190, 20, ammo_11.43x23_fmj, 10
+items = ammo_5.56x45_ap, 45, ammo_11.43x23_hydro, 30
 condlist = {=npc_rank(veteran) +yan_kill_brain_done} 5, {=npc_rank(master) +yan_kill_brain_done} 5
 community = ecolog, stalker, bandit, dolg, freedom
 
@@ -1773,7 +1773,7 @@ community = stalker, bandit, dolg, freedom
 target = 5234
 name = yan_secret_0005_name
 description = yan_secret_0005_description
-items = conserva, 2, ammo_9x39_pab9, 20
+items = conserva, 2, ammo_9x39_pab9, 50
 condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 5
 community = stalker, bandit, dolg, freedom
 
