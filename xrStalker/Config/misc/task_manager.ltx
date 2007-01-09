@@ -208,8 +208,8 @@ sar_monolith
 [tm_eliminate_camp_1]
 type = eliminate_lager
 community = actor
-condlist = {+gar_hellcar_help},{+gar_hellcar_reject}
-init_condition = {+gar_bandits_killed +gar_hellcar_death},{+gar_bandits_killed +gar_hellcar_dialog_end}
+condlist = {+gar_hellcar_help}, {+gar_hellcar_reject}
+init_condition = {+gar_bandits_killed +gar_hellcar_death}, {+gar_bandits_killed +gar_hellcar_dialog_end}
 text = tm_eliminate_camp_1_text
 description = tm_eliminate_camp_1_descr
 parent = trader
@@ -240,7 +240,7 @@ time = 86400
 type = eliminate_lager
 community = actor
 text = tm_eliminate_camp_3_text
-condlist = {+garbage_meetstalker_done},{+garbage_meetstalker_die}
+condlist = {+garbage_meetstalker_done}, {+garbage_meetstalker_die}
 init_condition = {=actor_on_level(l03u_agr_underground)}
 description = tm_eliminate_camp_3_descr
 parent = trader
@@ -305,7 +305,7 @@ reward_money = 1500
 reward_reputation = +5
 reward_rank = 1
 reward_item = energy_drink
-time = 86400
+time = 259200
 
 [tm_find_artefact_2]
 type = artefact
@@ -318,7 +318,7 @@ reward_money = 3000
 reward_reputation = +20
 reward_rank = 3
 reward_item = vodka
-time = 86400
+time = 259200
 
 [tm_find_artefact_3]
 type = artefact
@@ -331,7 +331,7 @@ target = af_night_star
 reward_money = 12000
 reward_reputation = +40
 reward_rank = 7
-time = 86400
+time = 604800
 
 [tm_find_artefact_4]
 type = artefact
@@ -345,7 +345,7 @@ reward_money = 3000
 reward_reputation = +20
 reward_rank = 3
 reward_item = medkit_scientic
-time = 86400
+time = 259200
 
 [tm_kill_stalker_1]
 type = kill_stalker
@@ -375,7 +375,7 @@ reward_money = 2500
 reward_reputation = -15
 reward_item = medkit_scientic
 reward_rank = 5
-time = 86400
+time = 259200
 
 [tm_kill_stalker_3]
 type = kill_stalker
@@ -402,7 +402,7 @@ reward_money = 3500
 reward_reputation = -25
 reward_rank = 4
 reward_item = wpn_walther_m1
-time = 86400
+time = 259200
 
 [tm_kill_stalker_5]
 type = kill_stalker
@@ -415,7 +415,7 @@ target = sim_stalker_master_diador
 reward_reputation = -60
 reward_rank = 7
 reward_item = af_fuzz_kolobok
-time = 86400
+time = 604800
 
 [tm_kill_stalker_6]
 type = kill_stalker
