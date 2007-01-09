@@ -45,7 +45,6 @@ function is_opp_wounded(first_speaker, second_speaker, dialog_id)
     then
         return false
     end
-
 	return	xr_wounded.is_wounded(second_speaker)
 end
 function is_not_wounded(first_speaker, second_speaker)
@@ -60,7 +59,14 @@ function actor_have_bandage(first_speaker, second_speaker)
 	return first_speaker:object("bandage") ~= nil
 end
 function transfer_medkit(first_speaker, second_speaker)
-	dialogs.relocate_item_section(second_speaker, "medkit", "out")
+	if first_speaker:object("medkit") ~= nil then
+		dialogs.relocate_item_section(second_speaker, "medkit", "out")
+	elseif first_speaker:object("medkit_army") ~= nil then
+		dialogs.relocate_item_section(second_speaker, "medkit_army", "out")
+	else
+		dialogs.relocate_item_section(second_speaker, "medkit_scientic", "out")
+	end
+
 	--' Тут надо анлочить аптечку для использования.
 	xr_wounded.unlock_medkit(second_speaker)
 		
@@ -158,10 +164,8 @@ function allow_wounded_dialog(object, victim, id)
 		return false
 	end	
 	if db.storage[victim:id()].wounded.help_dialog == id then
---		printf( "*DIALOGS*: allow_wounded_dialog id=%s TRUE", id )
 		return true
 	end
---	printf( "*DIALOGS*: allow_wounded_dialog id=%s FALSE", id )
 	return false	
 end
 
