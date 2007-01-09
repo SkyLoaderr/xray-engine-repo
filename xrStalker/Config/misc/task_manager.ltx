@@ -238,7 +238,7 @@ time = 86400
 type = eliminate_lager
 community = actor
 text = tm_eliminate_camp_3_text
-condlist = {=actor_on_level(l03u_agr_underground)}
+condlist = {+garbage_meetstalker_done},{+garbage_meetstalker_die}
 init_condition = {=actor_on_level(l03u_agr_underground)}
 description = tm_eliminate_camp_3_descr
 parent = trader
