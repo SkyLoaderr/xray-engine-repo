@@ -226,6 +226,7 @@ type = eliminate_lager
 community = actor
 condlist = {+agroprom_military_case_have}
 init_condition = {=actor_on_level(L01_Escape) +agroprom_military_case_have}
+text = tm_eliminate_camp_2_text
 description = tm_eliminate_camp_2_descr
 parent = trader
 target = esc2_st_fabric
@@ -239,9 +240,9 @@ time = 86400
 [tm_eliminate_camp_3]
 type = eliminate_lager
 community = actor
-text = tm_eliminate_camp_3_text
 condlist = {+garbage_meetstalker_done}, {+garbage_meetstalker_die}
 init_condition = {=actor_on_level(l03u_agr_underground)}
+text = tm_eliminate_camp_3_text
 description = tm_eliminate_camp_3_descr
 parent = trader
 target = agr_u_bandits
@@ -283,8 +284,8 @@ time = 86400
 [tm_eliminate_camp_6]
 type = eliminate_lager
 community = actor
-text = tm_eliminate_camp_6_text
 init_condition = {=actor_on_level(l04_darkvalley)}
+text = tm_eliminate_camp_6_text
 description = tm_eliminate_camp_6_descr
 parent = trader
 target = val_smart_monster_lair_3
@@ -446,8 +447,8 @@ time = 86400
 [tm_defend_camp_1]
 type = defend_lager
 community = actor
-text = tm_defend_camp_1_text
 init_condition = {=actor_on_level(l04_darkvalley) =gulag_state(val_smart_bandit_2:1)}
+text = tm_defend_camp_1_text
 description = tm_defend_camp_1_descr
 parent = trader
 target = val_smart_bandit_3
