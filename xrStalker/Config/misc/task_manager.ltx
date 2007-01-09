@@ -208,6 +208,8 @@ sar_monolith
 [tm_eliminate_camp_1]
 type = eliminate_lager
 community = actor
+condlist = {+gar_hellcar_help},{+gar_hellcar_reject}
+init_condition = {+gar_bandits_killed +gar_hellcar_death},{+gar_bandits_killed +gar_hellcar_dialog_end}
 text = tm_eliminate_camp_1_text
 description = tm_eliminate_camp_1_descr
 parent = trader
@@ -222,8 +224,7 @@ time = 86400
 [tm_eliminate_camp_2]
 type = eliminate_lager
 community = actor
-condlist = {+garbage_meetstalker_done},{+garbage_meetstalker_die}
-text = tm_eliminate_camp_2_text
+init_condition = {=actor_on_level(L01_Escape) +agroprom_military_case_have}
 description = tm_eliminate_camp_2_descr
 parent = trader
 target = esc2_st_fabric
@@ -267,7 +268,7 @@ time = 86400
 [tm_eliminate_camp_5]
 type = eliminate_lager
 community = actor
-condlist = {+agroprom_military_case_have}
+init_condition = {=actor_on_level(l02_garbage) +agroprom_military_case_have}
 text = tm_eliminate_camp_5_text
 description = tm_eliminate_camp_5_descr
 parent = trader
@@ -283,7 +284,7 @@ time = 86400
 type = eliminate_lager
 community = actor
 text = tm_eliminate_camp_6_text
-;----------condlist = {+val_chase_start}
+init_condition = {=actor_on_level(l04_darkvalley)}
 description = tm_eliminate_camp_6_descr
 parent = trader
 target = val_smart_monster_lair_3
