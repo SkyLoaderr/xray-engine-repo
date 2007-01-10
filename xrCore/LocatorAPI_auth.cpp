@@ -58,7 +58,7 @@ void	CLocatorAPI::auth_runtime		(void*	params)
 					break;
 				}
 				u32 crc			= crc32		(r->pointer(),r->length());
-				r->close		();
+				FS.r_close		(r);
 				m_auth_code	^=	u64(crc);
 			}
 		}

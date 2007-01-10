@@ -83,6 +83,7 @@ void clean_game_globals()
 	CSpecificCharacter::DeleteSharedData			();
 	CSpecificCharacter::DeleteIdToIndexData			();
 	
+
 	CHARACTER_COMMUNITY::DeleteIdToIndexData		();
 	CHARACTER_RANK::DeleteIdToIndexData				();
 	CHARACTER_REPUTATION::DeleteIdToIndexData		();

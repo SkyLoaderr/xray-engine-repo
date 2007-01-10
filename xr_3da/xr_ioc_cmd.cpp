@@ -203,6 +203,17 @@ public:
 		Device.Resources->Dump();
 	}
 };
+
+XRCORE_API void _dump_open_files();
+class CCC_DumpOpenFiles : public IConsole_Command
+{
+public:
+	CCC_DumpOpenFiles(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) {
+		_dump_open_files	();
+	}
+};
+
 //-----------------------------------------------------------------------
 class CCC_SaveCFG : public IConsole_Command
 {
@@ -632,6 +643,6 @@ void CCC_Register()
 #endif
 
 	CMD1(CCC_DumpResources,		"dump_resources");
-	
+	CMD1(CCC_DumpOpenFiles,		"dump_open_files");
 };
  

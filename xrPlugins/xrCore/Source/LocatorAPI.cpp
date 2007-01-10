@@ -22,6 +22,116 @@ CLocatorAPI*	xr_FS	= NULL;
 #define FSLTX	"fsgame.ltx"
 #endif
 
+struct _open_file
+{
+	IReader*		_reader;
+	shared_str		_fn;
+	u32				_used;
+};
+
+struct eq_pointer{
+	IReader* _val;
+	eq_pointer(IReader* p):_val(p){}
+	bool operator () (_open_file& itm){
+		return ( _val==itm._reader );
+	}
+};
+struct eq_fname_free{
+	shared_str _val;
+	eq_fname_free(shared_str s){_val = s;}
+	bool operator () (_open_file& itm){
+		return ( _val==itm._fn && itm._reader==NULL);
+	}
+};
+struct eq_fname_check{
+	shared_str _val;
+	eq_fname_check(shared_str s){_val = s;}
+	bool operator () (_open_file& itm){
+		return ( _val==itm._fn && itm._reader!=NULL);
+	}
+};
+
+
+
+XRCORE_API xr_vector<_open_file>	g_open_files;
+
+void _check_open_file(const shared_str& _fname)
+{
+	xr_vector<_open_file>::iterator it	= find_if(g_open_files.begin(), g_open_files.end(), eq_fname_check(_fname) );
+	if(it!=g_open_files.end())
+		Log("file opened at least twice", _fname.c_str());
+}
+
+_open_file& find_free_item(const shared_str& _fname)
+{
+	xr_vector<_open_file>::iterator it	= find_if(g_open_files.begin(), g_open_files.end(), eq_fname_free(_fname) );
+	if(it==g_open_files.end())
+	{
+		g_open_files.resize		(g_open_files.size()+1);
+		_open_file& _of			= g_open_files.back();
+		_of._fn					= _fname;
+		_of._used				= 0;
+		return					_of;
+	}
+	return *it;
+}
+
+void _register_open_file(IReader* _r, LPCSTR _fname)
+{
+	xrCriticalSection		_lock;
+	_lock.Enter				();
+
+	shared_str f			= _fname;
+	_check_open_file		(f);
+	
+	_open_file& _of			= find_free_item(_fname);
+	_of._reader				= _r;
+	_of._used				+= 1;
+
+	_lock.Leave				();
+}
+
+void _unregister_open_file(IReader* _r)
+{
+	xrCriticalSection		_lock;
+	_lock.Enter				();
+
+	xr_vector<_open_file>::iterator it	= find_if(g_open_files.begin(), g_open_files.end(), eq_pointer(_r) );
+	VERIFY								(it!=g_open_files.end());
+	_open_file&	_of						= *it;
+	_of._reader							= NULL;
+	static BOOL bb						= FALSE;
+	if(bb)
+	{
+		Log("fn:",_of._fn.c_str());
+		Log("ct:",_of._used);
+	}
+
+	_lock.Leave				();
+}
+
+XRCORE_API void _dump_open_files()
+{
+	xr_vector<_open_file>::iterator it		= g_open_files.begin();
+	xr_vector<_open_file>::iterator it_e	= g_open_files.end();
+
+	Log("----used");
+	for(; it!=it_e; ++it)
+	{
+		_open_file& _of = *it;
+		if(_of._reader!=NULL)
+			Msg("[%d] fname:%s", _of._used ,_of._fn.c_str());
+	}
+
+	Log("----un-used");
+	for(it = g_open_files.begin(); it!=it_e; ++it)
+	{
+		_open_file& _of = *it;
+		if(_of._reader==NULL)
+			Msg("[%d] fname:%s", _of._used ,_of._fn.c_str());
+	}
+	Log("----total count=",g_open_files.size());
+}
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -42,6 +152,10 @@ CLocatorAPI::CLocatorAPI()
 CLocatorAPI::~CLocatorAPI()
 {
 	VERIFY				(0==m_iLockRescan);
+	if(0!=g_open_files.size())
+		_dump_open_files();
+
+	VERIFY				(0==g_open_files.size());
 }
 
 void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 crc, u32 ptr, u32 size_real, u32 size_compressed, u32 modif)
@@ -715,11 +829,17 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 		}
 	}
 #endif
+	if( m_Flags.test(flDumpFileActivity) )
+		_register_open_file(R, fname);
+
 	return R;
 }
 
 void	CLocatorAPI::r_close	(IReader* &fs)
 {
+	if( m_Flags.test(flDumpFileActivity) )
+		_unregister_open_file		(fs);
+
 	xr_delete	(fs);
 }
 

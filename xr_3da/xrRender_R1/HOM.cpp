@@ -60,15 +60,15 @@ void CHOM::Load			()
 	}
 	Msg	("* Loading HOM: %s",fName);
 	
-	destructor<IReader> fs	(FS.r_open(fName));
-	destructor<IReader>	S	(fs().open_chunk(1));
+	IReader* fs				= FS.r_open(fName);
+	IReader* S				= fs->open_chunk(1);
 
 	// Load tris and merge them
 	CDB::Collector		CL;
-	while (!S().eof())
+	while (!S->eof())
 	{
 		HOM_poly				P;
-		S().r					(&P,sizeof(P));
+		S->r					(&P,sizeof(P));
 		CL.add_face_packed_D	(P.v1,P.v2,P.v3,P.flags,0.01f);
 	}
 	
@@ -102,6 +102,8 @@ void CHOM::Load			()
 	m_pModel			= xr_new<CDB::MODEL> ();
 	m_pModel->build		(CL.getV(),int(CL.getVS()),CL.getT(),int(CL.getTS()));
 	bEnabled			= TRUE;
+	S->close			();
+	FS.r_close			(fs);
 }
 
 void CHOM::Unload		()

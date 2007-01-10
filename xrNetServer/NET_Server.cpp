@@ -58,9 +58,10 @@ IPureServer::IPureServer	(CTimer* timer)
 	device_timer			= timer;
 	stats.clear				();
 	stats.dwSendTime		= TimeGlobal(device_timer);
-	SV_Client = NULL;
-
-	pSvNetLog = NULL;//xr_new<INetLog>("logs\\net_sv_log.log", TimeGlobal(device_timer));
+	SV_Client				= NULL;
+	NET						= NULL;
+	net_Address_device		= NULL;
+	pSvNetLog				= NULL;//xr_new<INetLog>("logs\\net_sv_log.log", TimeGlobal(device_timer));
 }
 
 IPureServer::~IPureServer	()
@@ -155,6 +156,27 @@ void IPureServer::Reparse	()
 
 BOOL IPureServer::Connect(LPCSTR options)
 {
+	connect_options			= options;
+
+	if(strstr(options, "/single") && !strstr(Core.Params, "-no_direct_connect" ))
+		psNET_direct_connect	=	TRUE;
+	else{
+#pragma todo("container is created in stack!")
+		xr_vector<xr_string>	ignore, test	;
+		ignore.push_back		(xr_string("user"));
+		ignore.push_back		(xr_string("Stalker_net.exe"));
+		ignore.push_back		(xr_string("map_list.ltx"));
+		ignore.push_back		(xr_string("banned.ltx"));
+		ignore.push_back		(xr_string("maprot_list.ltx"));
+
+
+		test.push_back			(xr_string(".ltx"));
+		test.push_back			(xr_string(".script"));
+		test.push_back			(xr_string(".exe"));
+		test.push_back			(xr_string(".dll"));
+		FS.auth_generate		(ignore,test)	;
+	}
+
 	// Parse options
 	string4096				session_name;
 	string4096				session_options = "";
@@ -184,6 +206,8 @@ BOOL IPureServer::Connect(LPCSTR options)
 	}
 	Msg("MaxPlayers = %d", dwMaxPlayers);
 
+if(!psNET_direct_connect)
+{
 	//---------------------------
 #ifdef DEBUG
 	string1024 tmp;
@@ -286,7 +310,9 @@ BOOL IPureServer::Connect(LPCSTR options)
 	};
 	
 	CHK_DX(HostSuccess);
-	
+
+}	//psNET_direct_connect
+
 	config_Load		();
 
 	BannedList_Load	();
@@ -538,6 +564,12 @@ BOOL IPureServer::HasBandwidth			(IClient* C)
 {
 	u32	dwTime			= TimeGlobal(device_timer);
 	u32	dwInterval		= 0;
+
+	if(psNET_direct_connect)
+	{
+		C->dwTime_LastUpdate	= dwTime;
+		return					TRUE;
+	}
 	
 	if (psNET_ServerUpdate != 0) dwInterval = 1000/psNET_ServerUpdate; 
 	if	(psNET_Flags.test(NETFLAG_MINIMIZEUPDATES))	dwInterval	= 1000;	// approx 2 times per second

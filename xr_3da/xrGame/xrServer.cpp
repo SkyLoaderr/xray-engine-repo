@@ -92,9 +92,9 @@ void		xrServer::client_Replicate	()
 
 IClient*	xrServer::client_Find_Get			(ClientID ID)
 {
-	char	cAddress[4];
-	DWORD	dwPort;
-	if (GetClientAddress(ID, cAddress, &dwPort))
+	char	cAddress[4] = {'a','b','c','d'};
+	DWORD	dwPort		= 0;
+	if (!psNET_direct_connect && GetClientAddress(ID, cAddress, &dwPort))
 	{		
 		for (u32 i=0; i<net_Players_disconnected.size(); i++)
 		{
@@ -117,8 +117,11 @@ IClient*	xrServer::client_Find_Get			(ClientID ID)
 	};
 
 	IClient* res = client_Create();
-	*((DWORD*)res->m_cAddress) = *((DWORD*)cAddress);	
-	res->m_dwPort = dwPort;
+	if(!psNET_direct_connect)
+	{
+		*((DWORD*)res->m_cAddress) = *((DWORD*)cAddress);	
+		res->m_dwPort = dwPort;
+	}
 	Msg("Player not found");
 	return res;
 };
@@ -687,4 +690,11 @@ void xrServer::verify_entity				(const CSE_Abstract *entity) const
 shared_str xrServer::level_name				(const shared_str &server_options) const
 {
 	return								(game->level_name(server_options));
+}
+
+void xrServer::create_direct_client()
+{
+	ClientID	_clid;
+	_clid.set	(1);
+	new_client	(_clid, "single_player", true);
 }

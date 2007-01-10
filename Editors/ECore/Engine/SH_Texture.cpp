@@ -225,30 +225,33 @@ void CTexture::Load		()
 
 		}
 	} else
-    if (FS.exist(fn,"$game_textures$",*cName,".seq")){
+    if (FS.exist(fn,"$game_textures$",*cName,".seq"))
+	{
 		// Sequence
 		string256 buffer;
-		destructor<IReader>	fs(FS.r_open(fn));
+		IReader* _fs		= FS.r_open(fn);
 
 		flags.seqCycles	= FALSE;
-		fs().r_string	(buffer,sizeof(buffer));
+		_fs->r_string	(buffer,sizeof(buffer));
 		if (0==stricmp	(buffer,"cycled"))
 		{
 			flags.seqCycles	= TRUE;
-			fs().r_string	(buffer,sizeof(buffer));
+			_fs->r_string	(buffer,sizeof(buffer));
 		}
 		u32 fps	= atoi(buffer);
 		seqMSPF		= 1000/fps;
 
-		while (!fs().eof())
+		while (!_fs->eof())
 		{
-			fs().r_string(buffer,sizeof(buffer));
+			_fs->r_string(buffer,sizeof(buffer));
 			_Trim		(buffer);
-			if (buffer[0])	{
+			if (buffer[0])	
+			{
 				// Load another texture
 				u32	mem  = 0;
 				pSurface = ::Render->texture_load	(buffer,mem);
-				if (pSurface)	{
+				if (pSurface)	
+				{
 					// pSurface->SetPriority	(PRIORITY_LOW);
 					seqDATA.push_back		(pSurface);
 					flags.MemoryUsage		+= mem;
@@ -256,6 +259,7 @@ void CTexture::Load		()
 			}
 		}
 		pSurface	= 0;
+		FS.r_close	(_fs);
 	} else
 	{
 		// Normal texture

@@ -168,6 +168,8 @@ public:
 	void					SLS_Load			(IReader&	fs);	
 			shared_str		level_name			(const shared_str &server_options) const;
 
+	void					create_direct_client();
+
 public:
 #ifdef DEBUG
 			bool			verify_entities		() const;

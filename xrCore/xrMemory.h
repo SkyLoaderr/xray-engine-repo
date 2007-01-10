@@ -2,6 +2,8 @@
 #define xrMemoryH
 #pragma once
 
+#define DEBUG_MEMORY_MANAGER
+
 #ifndef M_BORLAND
 #	if 0//def DEBUG
 #		define DEBUG_MEMORY_MANAGER

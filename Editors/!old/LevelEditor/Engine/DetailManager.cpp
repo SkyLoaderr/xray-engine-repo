@@ -170,11 +170,11 @@ void CDetailManager::Unload		()
 		(*it)->Unload();
 		xr_delete		(*it);
     }
-	objects.clear	();
-	visible[0].clear();
-	visible[1].clear();
-	visible[2].clear();
-	xr_delete			(dtFS);
+	objects.clear		();
+	visible[0].clear	();
+	visible[1].clear	();
+	visible[2].clear	();
+	FS.r_close			(dtFS);
 }
 
 extern ECORE_API float r_ssaDISCARD;

@@ -179,6 +179,9 @@ IPureClient::IPureClient	(CTimer* timer): net_Statistic(timer)
 	,net_csEnumeration(MUTEX_PROFILE_ID(IPureClient::net_csEnumeration))
 #endif // PROFILE_CRITICAL_SECTIONS
 {
+	NET						= NULL;
+	net_Address_server		= NULL;
+	net_Address_device		= NULL;
 	device_timer			= timer;
 	net_TimeDelta_User		= 0;
 	net_Time_LastUpdate		= 0;
@@ -196,7 +199,28 @@ IPureClient::~IPureClient	()
 BOOL IPureClient::Connect	(LPCSTR options)
 {
 	R_ASSERT						(options);
+	net_Disconnected				= FALSE;
 
+	if(!psNET_direct_connect && !strstr(options,"localhost") )
+	{
+		#pragma todo("check if i'm server")
+		xr_vector<xr_string>	ignore, test	;
+		ignore.push_back		(xr_string("user"));
+		ignore.push_back		(xr_string("Stalker_net.exe"));
+		ignore.push_back		(xr_string("map_list.ltx"));
+		ignore.push_back		(xr_string("banned.ltx"));
+		ignore.push_back		(xr_string("maprot_list.ltx"));
+
+
+		test.push_back			(xr_string(".ltx"));
+		test.push_back			(xr_string(".script"));
+		test.push_back			(xr_string(".exe"));
+		test.push_back			(xr_string(".dll"));
+		FS.auth_generate		(ignore,test)	;
+	}
+
+if(!psNET_direct_connect)
+{
 	//
 	string64						server_name;
 	strcpy							(server_name,options);
@@ -480,7 +504,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 	R_CHK			(NET->SetSPCaps(&sp_guid,&sp_caps,0));
 	R_CHK			(NET->GetSPCaps(&sp_guid,&sp_caps,0));
 	*/
-
+} //psNET_direct_connect
 	// Sync
 	net_TimeDelta	= 0;	
 	return			TRUE;
@@ -488,7 +512,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 
 void IPureClient::Disconnect()
 {
-    if( NET )	NET->Close(0);
+	if( NET )	NET->Close(0);
 
     // Clean up Host _list_
 	net_csEnumeration.Enter			();

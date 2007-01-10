@@ -80,7 +80,7 @@ void CLevel::ClientSend	()
 {
 	if (GameID() == GAME_SINGLE || OnClient())
 	{
-		if (!net_HasBandwidth()) return;
+		if (!psNET_direct_connect && !net_HasBandwidth()) return;
 	};
 	if (g_bCalculatePing) SendPingMessage();
 
@@ -183,9 +183,16 @@ void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
 	if (IsDemoPlay() && m_bDemoStarted) return;
 	// optimize the case when server located in our memory
-	if (Server && game_configured && OnServer()){
+	if(psNET_direct_connect){
+		ClientID	_clid;
+		_clid.set	(1);
+		Server->OnMessage	(P,	_clid );
+	}else
+	if (Server && game_configured && OnServer() )
+	{
 		Server->OnMessage	(P,Game().local_svdpnid	);
-	}else											IPureClient::Send	(P,dwFlags,dwTimeout	);
+	}else											
+		IPureClient::Send	(P,dwFlags,dwTimeout	);
 
 	if (g_pGameLevel && Level().game && GameID() != GAME_SINGLE && !g_SV_Disable_Auth_Check)		{
 		// anti-cheat
@@ -227,6 +234,7 @@ BOOL			CLevel::Connect2Server				(LPCSTR options)
 	m_bConnectResult			= true	;
 	if (!Connect(options))		return	FALSE;
 	//---------------------------------------------------------------------------
+	if(psNET_direct_connect) m_bConnectResultReceived = true;
 	while	(!m_bConnectResultReceived)		{ 
 		ClientReceive	();
 		Sleep			(5); 
@@ -241,7 +249,11 @@ BOOL			CLevel::Connect2Server				(LPCSTR options)
 		return FALSE		;
 	};
 
-	net_Syncronize	();
+	
+	if(psNET_direct_connect)
+		net_Syncronised = TRUE;
+	else
+		net_Syncronize	();
 
 	while (!net_IsSyncronised()) {
 	};

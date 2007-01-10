@@ -63,7 +63,10 @@ void xrServer::AttachNewClient			(IClient* CL)
 	csPlayers.Enter			();
 	net_Players.push_back	(CL);
 	csPlayers.Leave			();
-	
+
+	if(psNET_direct_connect)
+		SV_Client			= CL;
+
 	// config client
 	SendTo_LL				(CL->ID,&msgConfig,sizeof(msgConfig));
 	Server_Client_Check		(CL); 

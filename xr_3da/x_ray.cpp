@@ -342,7 +342,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 //	DUMP_PHASE;
 	
 	FPU::m24r				();
-
+/*
+	// moved to xrNetServer
 	// auth
 	{
 #pragma todo("container is created in stack!")
@@ -361,7 +362,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		FS.auth_generate		(ignore,test)	;
 	}
 	// auth end 
-
+*/
 //#ifdef DEBUG
 //	testbed	();
 //#endif
