@@ -208,7 +208,6 @@ sar_monolith
 [tm_eliminate_camp_1]
 type = eliminate_lager
 community = actor
-condlist = {+gar_hellcar_help}, {+gar_hellcar_reject}
 init_condition = {+gar_bandits_killed +gar_hellcar_death}, {+gar_bandits_killed +gar_hellcar_dialog_end}
 text = tm_eliminate_camp_1_text
 description = tm_eliminate_camp_1_descr
@@ -224,7 +223,6 @@ time = 86400
 [tm_eliminate_camp_2]
 type = eliminate_lager
 community = actor
-condlist = {+agroprom_military_case_have}
 init_condition = {=actor_on_level(L01_Escape) +agroprom_military_case_have}
 text = tm_eliminate_camp_2_text
 description = tm_eliminate_camp_2_descr
@@ -240,7 +238,6 @@ time = 86400
 [tm_eliminate_camp_3]
 type = eliminate_lager
 community = actor
-condlist = {+garbage_meetstalker_done}, {+garbage_meetstalker_die}
 init_condition = {=actor_on_level(l03u_agr_underground)}
 text = tm_eliminate_camp_3_text
 description = tm_eliminate_camp_3_descr
@@ -293,7 +290,7 @@ reward_money = 3000
 reward_reputation = +15
 reward_relation = dolg, 5
 reward_rank = 5
-time = 86400
+time = 259200
 
 [tm_find_artefact_1]
 type = artefact
@@ -351,7 +348,6 @@ time = 259200
 [tm_kill_stalker_1]
 type = kill_stalker
 community = actor
-condlist = {=actor_on_level(l02_garbage)}
 init_condition = {=actor_on_level(l02_garbage)}
 text = tm_kill_stalker_1_text
 description = tm_kill_stalker_1_descr
@@ -475,7 +471,6 @@ time = 86400
 [tm_monster_part_2]
 type = monster_part
 community = actor
-;--- condlist = {+esc_darklab_documents_read}
 text = tm_monster_part_2_text
 description = tm_monster_part_2_descr
 parent = trader
@@ -782,22 +777,20 @@ type = defend_lager
 community = actor
 text = barmen_defend_camp_1_text
 description = barmen_defend_camp_1_descr
-time = 50
-init_condition = {+agroprom_military_case_done =actor_on_level(l02_garbage) =gulag_state(gar_smart_bandit_large_lager:1)}
+init_condition = {+agroprom_military_case_done =actor_on_level(l02_garbage) =gulag_state(_large_lager:1)}
 parent = barman
 target = gar_smart_garage
 reward_money = 5000
 reward_reputation = +45
 reward_relation = dolg, 30
 reward_rank = 10
-time = 86400
+time = 21600
 
 [barmen_defend_camp_2]
 type = defend_lager
 community = actor
 text = barmen_defend_camp_2_text
 description = barmen_defend_camp_2_descr
-time = 50
 init_condition = {=actor_on_level(l03_agroprom) =gulag_state(agr2_bandit_st:1)}
 parent = barman
 target = agr2_st_factory
@@ -806,7 +799,7 @@ reward_reputation = +35
 reward_relation = dolg, 50
 reward_rank = 8
 reward_item = specops_outfit
-time = 86400
+time = 10800
 
 
 ;--------------------Ecolog-----------------------------
@@ -814,7 +807,7 @@ time = 86400
 [ecolog_eliminate_lager_1]
 type = eliminate_lager
 community = actor
-;--init_condition = {=actor_on_level(l08_yantar)}
+init_condition = {=actor_on_level(l08_yantar) +yan_kill_brain_done}
 text = ecolog_eliminate_lager_1_text
 description = ecolog_eliminate_lager_1_descr
 parent = ecolog
@@ -828,6 +821,7 @@ time = 86400
 [ecolog_eliminate_lager_2]
 type = eliminate_lager
 community = actor
+init_condition = {=actor_on_level(L06_rostok) +yan_kill_brain_done}
 text = ecolog_eliminate_lager_2_text
 description = ecolog_eliminate_lager_2_descr
 parent = ecolog
@@ -849,7 +843,7 @@ reward_money = 9000
 reward_reputation = +30
 reward_relation = ecolog, +30
 reward_rank = 8
-time = 86400
+time = 604800
 
 [ecolog_monster_part_1]
 type = monster_part
@@ -862,7 +856,7 @@ reward_money = 3000
 reward_reputation = +10
 reward_relation = ecolog, +15
 reward_rank = 2
-time = 86400
+time = 259200
 
 [ecolog_monster_part_2]
 type = monster_part
@@ -875,7 +869,7 @@ reward_money = 4000
 reward_reputation = +10
 reward_relation = ecolog, +15
 reward_rank = 2
-time = 86400
+time = 259200
 
 [ecolog_monster_part_3]
 type = monster_part
@@ -888,7 +882,7 @@ reward_money = 4000
 reward_reputation = +20
 reward_relation = ecolog, +20
 reward_rank = 4
-time = 86400
+time = 259200
 
 [ecolog_monster_part_4]
 type = monster_part
@@ -901,7 +895,7 @@ reward_money = 4000
 reward_reputation = +10
 reward_relation = ecolog, +15
 reward_rank = 2
-time = 86400
+time = 259200
 
 [ecolog_monster_part_5]
 type = monster_part
@@ -914,7 +908,7 @@ reward_money = 8000
 reward_reputation = +25
 reward_relation = ecolog, +15
 reward_rank = 8
-time = 86400
+time = 259200
 
 
 ;------Artefact---------------
@@ -968,7 +962,7 @@ reward_money = 12000
 reward_reputation = +20
 reward_relation = ecolog, +40
 reward_rank = 10
-time = 86400
+time = 604800
 
 [ecolog_find_artefact_5]
 type = artefact
@@ -981,7 +975,7 @@ reward_money = 12000
 reward_reputation = +20
 reward_relation = ecolog, +40
 reward_rank = 10
-time = 86400
+time = 604800
 
 
 
@@ -1001,13 +995,13 @@ reward_money = 5000
 reward_reputation = +40
 reward_relation = dolg, +150
 reward_rank = 6
-time = 86400
+time = 10800
 
 
 [dolg_eliminate_lager_1]
 type = eliminate_lager
 community = actor
-init_condition = {=actor_on_level(l08_yantar)}
+init_condition = {=actor_on_level(l08_yantar) +bar_svoboda_rg6_done}
 text = dolg_eliminate_lager_1_text
 description = dolg_eliminate_lager_1_descr
 parent = dolg
@@ -1022,6 +1016,7 @@ time = 86400
 [dolg_eliminate_lager_2]
 type = eliminate_lager
 community = actor
+init_condition = {=actor_on_level(L02_Garbage) +agroprom_military_case_done +bar_svoboda_rg6_done}
 text = dolg_eliminate_lager_2_text
 description = dolg_eliminate_lager_2_descr
 parent = dolg
@@ -1049,6 +1044,7 @@ time = 86400
 [dolg_eliminate_lager_4]
 type = eliminate_lager
 community = actor
+init_condition = {=actor_on_level(l07_military) +mil_svoboda_rg6_gain}
 text = dolg_eliminate_lager_4_text
 description = dolg_eliminate_lager_4_descr
 parent = dolg
@@ -1096,7 +1092,7 @@ reward_money = 7000
 reward_reputation = +60
 reward_relation = dolg, +200
 reward_rank = 8
-time = 86400
+time = 172800
 
 [dolg_eliminate_lager_8]
 type = eliminate_lager
@@ -1109,7 +1105,7 @@ reward_reputation = -10
 reward_relation = dolg, +225, freedom, -250
 reward_rank = 8
 reward_item = wpn_vintorez_coll
-time = 86400
+time = 172800
 
 [dolg_eliminate_lager_9]
 type = eliminate_lager
@@ -1117,12 +1113,12 @@ community = actor
 text = dolg_eliminate_lager_9_text
 description = dolg_eliminate_lager_9_descr
 parent = dolg
-target = gar_smart_bandit2
+target = gar_bandit_post
 reward_money = 4000
 reward_reputation = +50
 reward_relation = dolg, +150
 reward_rank = 5
-time = 86400
+time = 172800
 
 [dolg_eliminate_lager_10]
 type = eliminate_lager
@@ -1135,8 +1131,7 @@ reward_money = 4000
 reward_reputation = +15
 reward_relation = dolg, +60
 reward_rank = 4
-reward_item = bread
-time = 86400
+time = 172800
 
 [dolg_eliminate_lager_11]
 type = eliminate_lager
@@ -1387,7 +1382,7 @@ reward_money = 5000
 reward_reputation = +30
 reward_relation = freedom, +100
 reward_rank = 5
-time = 86400
+time = 10800
 
 [freedom_defend_lager_2]
 type = defend_lager
@@ -1401,7 +1396,7 @@ reward_money = 8000
 reward_reputation = 150
 reward_relation = freedom, +150
 reward_rank = 8
-time = 86400
+time = 10800
 
 
 
