@@ -81,6 +81,16 @@ void _register_open_file(IReader* _r, LPCSTR _fname)
 	xrCriticalSection		_lock;
 	_lock.Enter				();
 
+	static BOOL bb						= FALSE;
+	if(bb)
+	{
+		static string32	_g_str_open;
+		if(strstr(_fname,_g_str_open))
+		{
+			Log("ahtung");
+		}
+	}
+
 	shared_str f			= _fname;
 	_check_open_file		(f);
 	
@@ -103,8 +113,11 @@ void _unregister_open_file(IReader* _r)
 	static BOOL bb						= FALSE;
 	if(bb)
 	{
-		Log("fn:",_of._fn.c_str());
-		Log("ct:",_of._used);
+		static string32	_g_str_close;
+		if(strstr(_of._fn.c_str(),_g_str_close))
+		{
+			Log("ahtung");
+		}
 	}
 
 	_lock.Leave				();
