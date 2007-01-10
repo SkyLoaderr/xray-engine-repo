@@ -153,7 +153,7 @@
 		<Configuration
 			Name="Mixed|Win32"
 			OutputDirectory="x:\"
-			IntermediateDirectory=".Mixed"
+			IntermediateDirectory=".\Mixed"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="FALSE">
