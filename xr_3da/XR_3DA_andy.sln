@@ -291,8 +291,8 @@ Global
 		Release_Dedicated = Release_Dedicated
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.ActiveCfg = Debug|Win32
-		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.Build.0 = Debug|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.ActiveCfg = Mixed|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.Build.0 = Mixed|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug_Dedicated.ActiveCfg = Debug_Dedicated|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.DebugNoExceptions.ActiveCfg = DebugNoExceptions|Win32
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.DebugNoExceptions.Build.0 = DebugNoExceptions|Win32
@@ -620,8 +620,8 @@ Global
 		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Release.ActiveCfg = Release|Win32
 		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Release.Build.0 = Release|Win32
 		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Release_Dedicated.ActiveCfg = Release|Win32
-		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Debug.ActiveCfg = Debug|Win32
-		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Debug.Build.0 = Debug|Win32
+		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Debug.ActiveCfg = Mixed|Win32
+		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Debug.Build.0 = Mixed|Win32
 		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.Debug_Dedicated.ActiveCfg = Debug|Win32
 		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.DebugNoExceptions.ActiveCfg = Debug|Win32
 		{EBF9B543-0830-4866-9B48-DC0740E87E8A}.DebugNoExceptions.Build.0 = Debug|Win32

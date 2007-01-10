@@ -140,8 +140,8 @@ void CSXML_IdToIndex::DeleteIdToIndexData	()
 	xr_vector<CUIXml*>			_tmp;	
 	for(;it!=it_e;++it)
 	{
-		xr_vector<CUIXml*>::iterator it = find(_tmp.begin(), _tmp.end(), (*it)._xml);
-		if(it==_tmp.end())
+		xr_vector<CUIXml*>::iterator it_f = find(_tmp.begin(), _tmp.end(), (*it)._xml);
+		if(it_f==_tmp.end())
 			_tmp.push_back	((*it)._xml);
 	}
 	delete_data	(_tmp);
