@@ -351,7 +351,7 @@ time = 259200
 [tm_kill_stalker_1]
 type = kill_stalker
 community = actor
-;--condlist = {=actor_on_level(l02_garbage)}
+condlist = {=actor_on_level(l02_garbage)}
 init_condition = {=actor_on_level(l02_garbage)}
 text = tm_kill_stalker_1_text
 description = tm_kill_stalker_1_descr
@@ -814,6 +814,7 @@ time = 86400
 [ecolog_eliminate_lager_1]
 type = eliminate_lager
 community = actor
+;--init_condition = {=actor_on_level(l08_yantar)}
 text = ecolog_eliminate_lager_1_text
 description = ecolog_eliminate_lager_1_descr
 parent = ecolog
@@ -1006,6 +1007,7 @@ time = 86400
 [dolg_eliminate_lager_1]
 type = eliminate_lager
 community = actor
+init_condition = {=actor_on_level(l08_yantar)}
 text = dolg_eliminate_lager_1_text
 description = dolg_eliminate_lager_1_descr
 parent = dolg
