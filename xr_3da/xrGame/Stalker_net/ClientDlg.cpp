@@ -140,7 +140,7 @@ BOOL CClientDlg::OnInitDialog()
 
 
 	GSIACResult result;
-	GSIStartAvailableCheck(GAME_NAME);
+	GSIStartAvailableCheck(GAMESPY_GAMENAME);
 	while((result = GSIAvailableCheckThink()) == GSIACWaiting)
 		msleep(5);
 	if(result != GSIACAvailable)
