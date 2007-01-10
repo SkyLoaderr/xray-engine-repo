@@ -26,7 +26,6 @@ using namespace luabind;
 
 typedef xr_vector<std::pair<shared_str,int> >	STORY_PAIRS;
 typedef STORY_PAIRS								SPAWN_STORY_PAIRS;
-extern											LPCSTR GAME_CONFIG;
 LPCSTR											_INVALID_STORY_ID		= "INVALID_STORY_ID";
 LPCSTR											_INVALID_SPAWN_STORY_ID	= "INVALID_SPAWN_STORY_ID";
 STORY_PAIRS										story_ids;
@@ -87,11 +86,7 @@ void generate_story_ids		(
 {
 	result.clear			();
 
-    CInifile				*Ini = 0;
-    string_path				game_ltx;
-    FS.update_path			(game_ltx,"$game_config$",GAME_CONFIG);
-    R_ASSERT3				(FS.exist(game_ltx),"Couldn't find file",game_ltx);
-    Ini						= xr_new<CInifile>(game_ltx);
+    CInifile				*Ini = pGameIni;
     
     LPCSTR					N,V;
 	u32 					k;
@@ -115,7 +110,6 @@ void generate_story_ids		(
 
 	result.push_back		(std::make_pair(INVALID_ID_STRING,INVALID_ID));
 
-    xr_delete				(Ini);
 }
 
 void kill_entity0			(CALifeSimulator *alife, CSE_ALifeMonsterAbstract *monster, const GameGraph::_GRAPH_ID &game_vertex_id)
