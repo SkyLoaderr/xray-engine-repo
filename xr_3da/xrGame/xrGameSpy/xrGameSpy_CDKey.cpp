@@ -7,7 +7,16 @@
 #include "GameSpy/CDKey/gcdkeyc.h"
 #include "GameSpy/CDKey/gcdkeys.h"
 
-#define GAMESPY_PRODUCTID			0
+#ifdef DEMO_BUILD
+	#define	GAMESPY_GAMENAME		"stalkerscd"
+	#define GAMESPY_GAMEID			1567
+	#define GAMESPY_PRODUCTID		10954
+#else
+	#define	GAMESPY_GAMENAME		"stalkersc"
+	#define GAMESPY_GAMEID			1067
+	#define GAMESPY_PRODUCTID		10953
+#endif
+
 
 XRGAMESPY_API void xrGS_gcd_compute_response_newauth(char *cdkey, char *challenge,char* response)
 {

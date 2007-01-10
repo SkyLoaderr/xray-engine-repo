@@ -1,16 +1,25 @@
 //#define TESTERS
 
 //#define	GAME_NAME		"gmtest"//stalkersc"
-#define	GAME_NAME		"stalkersc"
-//#define	SECRET_KEY		"HA6zkS"//t9Fj3Mx"
+
+#ifdef DEMO_BUILD
+	#define	GAMESPY_GAMENAME		"stalkerscd"
+	#define GAMESPY_GAMEID			1567
+	#define GAMESPY_PRODUCTID		10954
+#else
+	#define	GAMESPY_GAMENAME		"stalkersc"
+	#define GAMESPY_GAMEID			1067
+	#define GAMESPY_PRODUCTID		10953
+#endif
+
 #define	SECRET_KEY		"t9Fj3Mx"
-#define MAX_UPDATES		10
+#define MAX_UPDATES		20
 //SB - timer ID and frequency
 #define TIMER_ID         100
 #define TIMER_FREQUENCY  10
 //SB - starting and ending port for LAN game searches
 #define START_PORT       5445
-#define END_PORT         65535//(START_PORT + 200) //GameSpy only process 500 ports
+#define END_PORT		START_PORT + 100 //GameSpy only process 500 ports
 
 #define MAX_PLAYERNAME_LEN		17
 #define MAX_SERVERNAME_LEN		24

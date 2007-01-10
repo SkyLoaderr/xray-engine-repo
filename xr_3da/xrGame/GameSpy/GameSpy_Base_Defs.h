@@ -2,16 +2,25 @@
 
 #include "GameSpy_Keys.h"
 
-#define GAMESPY_GAMENAME			"stalkersc"
-#define GAMESPY_MAX_UPDATES			10
+#ifdef DEMO_BUILD
+	#define	GAMESPY_GAMENAME		"stalkerscd"
+	#define GAMESPY_GAMEID			1567
+	#define GAMESPY_PRODUCTID		10954
+#else
+	#define	GAMESPY_GAMENAME		"stalkersc"
+	#define GAMESPY_GAMEID			1067
+	#define GAMESPY_PRODUCTID		10953
+#endif
 
-#define GAMESPY_PATCHING_PRODUCT_ID			0
+#define GAMESPY_MAX_UPDATES			20
+
+
 #define GAMESPY_PATCHING_VERSIONUNIQUE_ID	"0.1"
 #define GAMESPY_PATCHING_DISTRIBUTION_ID	0
 
 #define	GAMESPY_BASEPORT			5447
 #define START_PORT					5445
-#define END_PORT					65535//(START_PORT + 200) //GameSpy only process 500 ports
+#define END_PORT					START_PORT + 100//GameSpy only process 500 ports
 
 static unsigned char Fields_Of_Interest[] = 
 { 

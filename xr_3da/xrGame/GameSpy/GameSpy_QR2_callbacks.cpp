@@ -241,8 +241,10 @@ int __cdecl callback_count(qr2_key_type keytype, void *userdata)
 
 void __cdecl callback_adderror(qr2_error_t error, char *errmsg, void *userdata)
 {
-	int x=0;
-	x=x;
+	Msg("! Error while adding this server to master list ->%s.", errmsg);
+	xrGameSpyServer* pServer = (xrGameSpyServer*) userdata;
+	if (pServer) pServer->OnError_Add(error);
+	
 };
 
 void __cdecl callback_nn(int cookie, void *userdata)

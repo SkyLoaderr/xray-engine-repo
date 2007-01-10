@@ -84,6 +84,7 @@ public:
 	bool			Init(CServerList* pServerList);
 	void			RefreshList_Full(bool Local);
 	void			RefreshQuick(int Index);
+	bool			CheckDirectConnection(int Index);
 	
 	void CallBack_OnUpdateCompleted		();
 
@@ -131,6 +132,10 @@ private:
 
 	GAMESPY_FN_VAR_DECL(void, ServerBrowserRemoveIP, (void* sb, const char *ip, unsigned short port));
 	GAMESPY_FN_VAR_DECL(void, ServerBrowserRemoveServer, (void* sb, void* server));
+
+	GAMESPY_FN_VAR_DECL(SBBool, SBServerGetConnectionInfo, (void* sb, void* server, int PortToConnectTo, char *ipstring));
+	GAMESPY_FN_VAR_DECL(SBBool, SBServerDirectConnect, (void* server));
+
 
 };
 

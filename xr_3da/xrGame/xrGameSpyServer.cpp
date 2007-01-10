@@ -73,7 +73,11 @@ BOOL xrGameSpyServer::Connect(shared_str &session_name)
 	{
 		//----- Check for Backend Services ---
 		CGameSpy_Available GSA;
-		if (!GSA.CheckAvailableServices()) return FALSE;
+		shared_str result_string;
+		if (!GSA.CheckAvailableServices(result_string))
+		{
+			Msg(*result_string);
+		};
 
 		//------ Init of QR2 SDK -------------
 		QR2_Init();
@@ -145,7 +149,7 @@ void			xrGameSpyServer::OnCL_Disconnected	(IClient* _CL)
 
 	if (m_bCDKey_Initialized)
 	{
-		Msg("GameSpy::CDKey::Server : Disconnecting Client");
+		Msg("xrGS::CDKey::Server : Disconnecting Client");
 		m_GCDServer.DisconnectUser(int(_CL->ID.value()));
 	};
 
@@ -166,7 +170,7 @@ u32				xrGameSpyServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero 
 			string128 ResponseStr;
 			P.r_stringZ(ResponseStr);
 
-			Msg("GameSpy::CDKey::Server : Respond accepted, authenticate client.");
+			Msg("xrGS::CDKey::Server : Respond accepted, authenticate client.");
 
 			m_GCDServer.AuthUser(int(CL->ID.value()), 0, CL->m_pChallengeString, ResponseStr, this);
 			return (0);

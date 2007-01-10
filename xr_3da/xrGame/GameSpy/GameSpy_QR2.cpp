@@ -113,12 +113,12 @@ bool	CGameSpy_QR2::Init		(int Public, void* instance)
 {	
 	//--------- QR2 Init -------------------------/
 	//call qr_init with the query port number and gamename, default IP address, and no user data
-	if (xrGS_qr2_init(NULL,NULL,GAMESPY_BASEPORT, GAMESPY_GAMENAME, m_SecretKey, Public, 1,
+	if (xrGS_qr2_init(NULL,NULL,GAMESPY_BASEPORT, GAMESPY_GAMENAME, m_SecretKey, Public, 0,
 		callback_serverkey, callback_playerkey, callback_teamkey,
 		callback_keylist, callback_count, callback_adderror, instance) != e_qrnoerror)
 	{
 		//		_tprintf(_T("Error starting query sockets\n"));
-		Msg("GameSpy::QR2 : Failes to Initialize!");
+		Msg("xrGS::QR2 : Failes to Initialize!");
 		return false;
 	}
 	RegisterAdditionalKeys();
@@ -129,7 +129,7 @@ bool	CGameSpy_QR2::Init		(int Public, void* instance)
 	// Set a function to be called when we receive a nat negotiation request
 	xrGS_qr2_register_natneg_callback(NULL, callback_nn);
 
-	Msg("GameSpy::QR2 : Initialized");
+	Msg("xrGS::QR2 : Initialized");
 	return true;
 };
 

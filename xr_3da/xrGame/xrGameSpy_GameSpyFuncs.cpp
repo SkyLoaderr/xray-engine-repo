@@ -52,12 +52,12 @@ void			xrGameSpyServer::OnCDKey_Validation				(int LocalID, int res, char* error
 	xrGameSpyClientData* CL = (xrGameSpyClientData*)  ID_to_client(ID);
 	if (0 != res)
 	{
-		Msg("GameSpy::CDKey: Validation successful - <%s>", errormsg);
+		Msg("xrGS::CDKey: Validation successful - <%s>", errormsg);
 		Check_GameSpy_CDKey_Success(CL);
 	}
 	else
 	{
-		Msg						("GameSpy::CDKey: Validation failed - <%s>", errormsg);
+		Msg						("xrGS::CDKey: Validation failed - <%s>", errormsg);
 		SendConnectResult		(CL, u8(res), errormsg);
 	}
 };

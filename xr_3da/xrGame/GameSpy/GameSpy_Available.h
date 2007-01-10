@@ -12,7 +12,7 @@ public:
 	CGameSpy_Available();
 	~CGameSpy_Available();
 
-	bool	CheckAvailableServices	();
+	bool	CheckAvailableServices	(shared_str& resultstr);
 private:
 	//------------------------------- GameSpy_Available ---------------------------
 	GAMESPY_FN_VAR_DECL(void,	GSIStartAvailableCheck, (const char * gamename));

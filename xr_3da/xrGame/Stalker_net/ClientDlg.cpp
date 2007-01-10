@@ -149,7 +149,7 @@ BOOL CClientDlg::OnInitDialog()
 		return TRUE;
 	}
 
-	m_serverBrowser = ServerBrowserNew(GAME_NAME, GAME_NAME, SECRET_KEY, 0, MAX_UPDATES, QVERSION_QR2, SBFalse, SBCallback, this);
+	m_serverBrowser = ServerBrowserNew(GAMESPY_GAMENAME, GAMESPY_GAMENAME, SECRET_KEY, 0, MAX_UPDATES, QVERSION_QR2, SBFalse, SBCallback, this);
 	if(!m_serverBrowser)
 	{
 		MessageBox("Unable to create the server browser object");

@@ -7,7 +7,7 @@
 
 void						CLevel::OnGameSpyChallenge			(NET_Packet* P)
 {
-	Msg("GameSpy::CDKey::Level : Responding on Challenge");
+	Msg("xrGS::CDKey::Level : Responding on Challenge");
 
 	string64 ChallengeStr;
 	P->r_stringZ(ChallengeStr);

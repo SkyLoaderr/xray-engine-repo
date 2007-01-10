@@ -410,6 +410,11 @@ void CServerList::ConnectToSelected(){
 		return;
 
 	CUIListItemServer* item = smart_cast<CUIListItemServer*>(m_list[LST_SERVER].GetItem(sel));
+	if (!m_GSBrowser.CheckDirectConnection(item->GetInfo()->info.Index))
+	{
+		Msg("! Direct connection to this server is not available -> its behind firewall");
+		return;
+	}
 
 //	params.info.icons.pass
 

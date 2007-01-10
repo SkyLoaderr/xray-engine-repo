@@ -41,4 +41,7 @@ extern "C"
 
 	EXPORT_FN_DECL(void, ServerBrowserRemoveIP, (ServerBrowser sb, const gsi_char *ip, unsigned short port));
 	EXPORT_FN_DECL(void, ServerBrowserRemoveServer, (ServerBrowser sb, SBServer server));
+
+	EXPORT_FN_DECL(SBBool, SBServerGetConnectionInfo, (ServerBrowser sb, SBServer server, gsi_u16 PortToConnectTo, char *ipstring));
+	EXPORT_FN_DECL(SBBool, SBServerDirectConnect, (SBServer server));
 }

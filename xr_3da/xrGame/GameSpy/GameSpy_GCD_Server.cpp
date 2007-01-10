@@ -40,10 +40,10 @@ bool	CGameSpy_GCD_Server::Init()
 	int res = xrGS_gcd_init_qr2(NULL);
 	if (res == -1)
 	{
-		Msg("! GameSpy::CDKey : Failes to Initialize!");
+		Msg("! xrGS::CDKey : Failes to Initialize!");
 		return false;
 	};
-	Msg("- GameSpy::CDKey : Initialized");
+	Msg("- xrGS::CDKey : Initialized");
 	return true;
 };
 

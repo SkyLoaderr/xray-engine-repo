@@ -88,6 +88,9 @@ void	CGameSpy_Browser::LoadGameSpy()
 	GAMESPY_LOAD_FN(xrGS_ServerBrowserRemoveIP);
 	GAMESPY_LOAD_FN(xrGS_ServerBrowserRemoveServer);
 
+	GAMESPY_LOAD_FN(xrGS_SBServerGetConnectionInfo);
+	GAMESPY_LOAD_FN(xrGS_SBServerDirectConnect);
+
 }
 
 static services_checked = false;
@@ -98,8 +101,11 @@ bool	CGameSpy_Browser::Init(CServerList* pServerList)
 	CGameSpy_Available GSA;
 	if (!services_checked)
 	{
-        if (!GSA.CheckAvailableServices()) 
-			return false;
+		shared_str result_string;
+        if (!GSA.CheckAvailableServices(result_string)) 
+		{
+			Msg(*result_string);
+		}
 		else
 			services_checked = true;
 	}
@@ -109,10 +115,10 @@ bool	CGameSpy_Browser::Init(CServerList* pServerList)
 	m_pGSBrowser = xrGS_ServerBrowserNew(GAMESPY_GAMENAME, GAMESPY_GAMENAME, m_SecretKey, 0, GAMESPY_MAX_UPDATES, GSA.xrGS_GetQueryVersion(), SBFalse, SBCallback, this);
 	if (!m_pGSBrowser)
 	{
-		Msg("! Unable to init GameSpy Server Browser!");
+		Msg("! Unable to init Server Browser!");
 	}
-	else
-		Msg("- GameSpy Server Browser Inited!");
+//	else
+//		Msg("- GS Server Browser Inited!");
 
 	m_pServerList = pServerList;
 
@@ -125,7 +131,7 @@ void			CGameSpy_Browser::RefreshList_Full(bool Local)
 	if((state != sb_connected) && (state != sb_disconnected))
 	{
 		xrGS_ServerBrowserHalt(m_pGSBrowser);
-		Msg("GameSpy Refresh Stopped\n");		
+		Msg("xrGSB Refresh Stopped\n");		
 	};
 	xrGS_ServerBrowserClear(m_pGSBrowser);
 
@@ -141,7 +147,7 @@ void			CGameSpy_Browser::RefreshList_Full(bool Local)
 
 	if (error != sbe_noerror)
 	{
-		Msg("! GameSpy Update Error!");	
+		Msg("! xrGSB Update Error!");	
 	}
 };
 
@@ -392,7 +398,14 @@ void			CGameSpy_Browser::RefreshQuick(int Index)
 	ServerInfo xServerInfo;
 	ReadServerInfo(&xServerInfo, pServer);
 	xrGS_ServerBrowserAuxUpdateServer(m_pGSBrowser, pServer, SBFalse, SBTrue);
-//	xrGS_ServerBrowserAuxUpdateIP(m_pGSBrowser, xServerInfo.m_HostName, xServerInfo.m_Port, SBFalse, SBFalse, SBTrue);
+};
+
+bool			CGameSpy_Browser::CheckDirectConnection(int Index)
+{
+	void* pServer = xrGS_ServerBrowserGetServer(m_pGSBrowser, Index);
+	if (!pServer) return false;
+	SBBool res = xrGS_SBServerDirectConnect(pServer);
+	return res == SBTrue;
 };
 
 void			CGameSpy_Browser::OnUpdateFailed		(void* server)

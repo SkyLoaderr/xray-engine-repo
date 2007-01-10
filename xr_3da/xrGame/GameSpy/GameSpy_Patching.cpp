@@ -37,7 +37,7 @@ void __cdecl GS_ptPatchCallback ( PTBool available, PTBool mandatory, const char
 void	CGameSpy_Patching::CheckForPatch()
 {
 //	bool res = 
-	xrGS_ptCheckForPatch(GAMESPY_PATCHING_PRODUCT_ID, 
+	xrGS_ptCheckForPatch(GAMESPY_PRODUCTID, 
 		GAMESPY_PATCHING_VERSIONUNIQUE_ID, 
 		GAMESPY_PATCHING_DISTRIBUTION_ID,
 		GS_ptPatchCallback,

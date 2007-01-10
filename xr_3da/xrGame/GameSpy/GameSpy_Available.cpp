@@ -32,7 +32,7 @@ void	CGameSpy_Available::LoadGameSpy()
 	GAMESPY_LOAD_FN(xrGS_GetQueryVersion);
 }
 
-bool	CGameSpy_Available::CheckAvailableServices		()
+bool	CGameSpy_Available::CheckAvailableServices		(shared_str& resultstr)
 {
 	GSIACResult result;
 	xrGS_GSIStartAvailableCheck(GAMESPY_GAMENAME);
@@ -42,12 +42,24 @@ bool	CGameSpy_Available::CheckAvailableServices		()
 
 	if(result != GSIACAvailable)
 	{
-		Msg("! The GameSpy backend is not available");
+		switch (result)
+		{
+		case GSIACUnavailable:
+			{
+				resultstr = "! Online Services for STALKER are no longer available.";
+			}break;
+		case GSIACTemporarilyUnavailable:
+			{
+				resultstr = "! Online Services for STALKER are temporarily down for maintenance.";
+			}break;
+		}
+//		Msg("! The GameSpy backend is not available");
 		return false;
 	}
 	else
 	{
-		Msg("- The GameSpy backend is available");
+		resultstr = "Success";
+//		Msg("- The GameSpy backend is available");
 	};
 	return true;
 };

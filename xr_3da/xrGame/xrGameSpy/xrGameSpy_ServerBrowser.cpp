@@ -137,3 +137,13 @@ XRGAMESPY_API void xrGS_ServerBrowserRemoveServer(ServerBrowser sb, SBServer ser
 {
 	ServerBrowserRemoveServer(sb, server);
 }
+
+XRGAMESPY_API SBBool  xrGS_SBServerGetConnectionInfo(ServerBrowser sb, SBServer server, gsi_u16 PortToConnectTo, char *ipstring)
+{
+	return SBServerGetConnectionInfo( sb, server, PortToConnectTo, ipstring);
+};
+
+XRGAMESPY_API SBBool xrGS_SBServerDirectConnect (SBServer server)
+{
+	return SBServerDirectConnect (server);
+};
