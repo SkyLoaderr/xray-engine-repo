@@ -192,10 +192,13 @@ void CObjectActionFire::finalize		()
 CObjectActionStrapping::CObjectActionStrapping	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name)
 {
+	m_callback_removed			= false;
 }
 
 void CObjectActionStrapping::on_animation_end	()
 {
+	VERIFY						(!m_callback_removed);
+
 	m_storage->set_property		(ObjectHandlerSpace::eWorldPropertyStrapped,true);
 
 	object().animation().torso().remove_callback(
@@ -204,6 +207,8 @@ void CObjectActionStrapping::on_animation_end	()
 			&CObjectActionStrapping::on_animation_end
 		)
 	);
+
+	m_callback_removed			= true;
 }
 
 void CObjectActionStrapping::initialize			()
@@ -236,12 +241,15 @@ void CObjectActionStrapping::execute			()
 void CObjectActionStrapping::finalize		()
 {
 	inherited::finalize					();
-#ifdef ALLOW_STRANGE_BEHAVIOUR
-	CStalkerAnimationPair::CALLBACK_ID	callback(this,&CObjectActionStrapping::on_animation_end);
 
-	if (object().animation().torso().callback(callback))
-		object().animation().torso().remove_callback(callback);
-#endif // ALLOW_STRANGE_BEHAVIOUR
+	if (!m_callback_removed) {
+		object().animation().torso().remove_callback	(
+			CStalkerAnimationPair::CALLBACK_ID(
+				this,
+				&CObjectActionStrapping::on_animation_end
+			)
+		);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -251,6 +259,7 @@ void CObjectActionStrapping::finalize		()
 CObjectActionStrappingToIdle::CObjectActionStrappingToIdle	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name)
 {
+	m_callback_removed			= false;
 }
 
 void CObjectActionStrappingToIdle::on_animation_end	()
@@ -263,6 +272,8 @@ void CObjectActionStrappingToIdle::on_animation_end	()
 			&CObjectActionStrappingToIdle::on_animation_end
 		)
 	);
+
+	m_callback_removed			= true;
 }
 
 void CObjectActionStrappingToIdle::initialize		()
@@ -293,12 +304,15 @@ void CObjectActionStrappingToIdle::execute			()
 void CObjectActionStrappingToIdle::finalize		()
 {
 	inherited::finalize					();
-#ifdef ALLOW_STRANGE_BEHAVIOUR
-	CStalkerAnimationPair::CALLBACK_ID	callback(this,&CObjectActionStrappingToIdle::on_animation_end);
 
-	if (object().animation().torso().callback(callback))
-		object().animation().torso().remove_callback(callback);
-#endif // ALLOW_STRANGE_BEHAVIOUR
+	if (!m_callback_removed) {
+		object().animation().torso().remove_callback	(
+			CStalkerAnimationPair::CALLBACK_ID(
+				this,
+				&CObjectActionStrappingToIdle::on_animation_end
+			)
+		);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -308,6 +322,7 @@ void CObjectActionStrappingToIdle::finalize		()
 CObjectActionUnstrapping::CObjectActionUnstrapping	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name)
 {
+	m_callback_removed			= false;
 }
 
 void CObjectActionUnstrapping::on_animation_end	()
@@ -320,6 +335,8 @@ void CObjectActionUnstrapping::on_animation_end	()
 			&CObjectActionUnstrapping::on_animation_end
 		)
 	);
+
+	m_callback_removed			= true;
 }
 
 void CObjectActionUnstrapping::initialize		()
@@ -352,12 +369,15 @@ void CObjectActionUnstrapping::execute			()
 void CObjectActionUnstrapping::finalize		()
 {
 	inherited::finalize					();
-#ifdef ALLOW_STRANGE_BEHAVIOUR
-	CStalkerAnimationPair::CALLBACK_ID	callback(this,&CObjectActionUnstrapping::on_animation_end);
 
-	if (object().animation().torso().callback(callback))
-		object().animation().torso().remove_callback(callback);
-#endif // ALLOW_STRANGE_BEHAVIOUR
+	if (!m_callback_removed) {
+		object().animation().torso().remove_callback	(
+			CStalkerAnimationPair::CALLBACK_ID(
+				this,
+				&CObjectActionUnstrapping::on_animation_end
+			)
+		);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -367,6 +387,7 @@ void CObjectActionUnstrapping::finalize		()
 CObjectActionUnstrappingToIdle::CObjectActionUnstrappingToIdle	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name)
 {
+	m_callback_removed			= false;
 }
 
 void CObjectActionUnstrappingToIdle::on_animation_end	()
@@ -379,6 +400,8 @@ void CObjectActionUnstrappingToIdle::on_animation_end	()
 			&CObjectActionUnstrappingToIdle::on_animation_end
 		)
 	);
+
+	m_callback_removed			= true;
 }
 
 void CObjectActionUnstrappingToIdle::initialize		()
@@ -409,12 +432,15 @@ void CObjectActionUnstrappingToIdle::execute			()
 void CObjectActionUnstrappingToIdle::finalize		()
 {
 	inherited::finalize					();
-#ifdef ALLOW_STRANGE_BEHAVIOUR
-	CStalkerAnimationPair::CALLBACK_ID	callback(this,&CObjectActionUnstrappingToIdle::on_animation_end);
 
-	if (object().animation().torso().callback(callback))
-		object().animation().torso().remove_callback(callback);
-#endif // ALLOW_STRANGE_BEHAVIOUR
+	if (!m_callback_removed) {
+		object().animation().torso().remove_callback	(
+			CStalkerAnimationPair::CALLBACK_ID(
+				this,
+				&CObjectActionUnstrappingToIdle::on_animation_end
+			)
+		);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

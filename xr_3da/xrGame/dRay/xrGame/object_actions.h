@@ -148,6 +148,9 @@ protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
 private:
+	bool				m_callback_removed;
+
+private:
 		void xr_stdcall	on_animation_end		();
 
 public:
@@ -164,6 +167,9 @@ public:
 class CObjectActionStrappingToIdle : public CObjectActionBase<CInventoryItem> {
 protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
+
+private:
+	bool				m_callback_removed;
 
 private:
 		void xr_stdcall	on_animation_end		();
@@ -184,6 +190,9 @@ protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
 private:
+	bool				m_callback_removed;
+
+private:
 		void xr_stdcall	on_animation_end		();
 
 public:
@@ -200,6 +209,9 @@ public:
 class CObjectActionUnstrappingToIdle : public CObjectActionBase<CInventoryItem> {
 protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
+
+private:
+	bool				m_callback_removed;
 
 private:
 		void xr_stdcall	on_animation_end		();

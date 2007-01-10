@@ -65,7 +65,7 @@
 #	include "../../level.h"
 #	include "../../map_location.h"
 #	include "../../map_manager.h"
-#endif
+#endif // DEBUG
 
 using namespace StalkerSpace;
 
@@ -85,7 +85,7 @@ CAI_Stalker::CAI_Stalker			()
 	m_wounded						= false;
 #ifdef DEBUG
 	m_debug_planner					= 0;
-#endif
+#endif // DEBUG
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -108,12 +108,15 @@ void CAI_Stalker::reinit			()
 
 	//загрузка спецевической звуковой схемы для сталкера согласно m_SpecificCharacter
 	sound().sound_prefix			(SpecificCharacter().sound_voice_prefix());
+
 #ifdef DEBUG_MEMORY_MANAGER
 	u32									start = 0;
 	if (g_bMEMO)
 		start							= Memory.mem_usage();
 #endif // DEBUG_MEMORY_MANAGER
+
 	LoadSounds						(*cNameSect());
+
 #ifdef DEBUG_MEMORY_MANAGER
 	if (g_bMEMO)
 		Msg					("CAI_Stalker::LoadSounds() : %d",Memory.mem_usage() - start);
@@ -213,7 +216,9 @@ void CAI_Stalker::reload			(LPCSTR section)
 	if (g_bMEMO)
 		start							= Memory.mem_usage();
 #endif // DEBUG_MEMORY_MANAGER
+
 	brain().setup					(this);
+
 #ifdef DEBUG_MEMORY_MANAGER
 	if (g_bMEMO)
 		Msg					("brain().setup() : %d",Memory.mem_usage() - start);
@@ -323,6 +328,7 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	if (g_bMEMO)
 		start							= Memory.mem_usage();
 #endif // DEBUG_MEMORY_MANAGER
+
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeHumanStalker			*tpHuman = smart_cast<CSE_ALifeHumanStalker*>(e);
 	R_ASSERT						(tpHuman);
@@ -338,7 +344,9 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	if (g_bMEMO)
 		_start							= Memory.mem_usage();
 #endif // DEBUG_MEMORY_MANAGER
+
 	animation().reload				(this);
+
 #ifdef DEBUG_MEMORY_MANAGER
 	if (g_bMEMO)
 		Msg					("CStalkerAnimationManager::reload() : %d",Memory.mem_usage() - _start);
@@ -420,7 +428,7 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 
 		map_location->SetHint		(cName());
 	}
-#endif
+#endif // _DEBUG
 
 #ifdef DEBUG_MEMORY_MANAGER
 	if (g_bMEMO) {
@@ -456,18 +464,17 @@ void CAI_Stalker::net_Destroy()
 	xr_vector<fastdelegate::FastDelegate0<> >::const_iterator	I;
 	I	= std::find(Device.seqParallel.begin(),Device.seqParallel.end(),f);
 	VERIFY							(I == Device.seqParallel.end());
-#endif
+#endif // DEBUG
 
-	xr_delete							(m_ce_close);
-	xr_delete							(m_ce_far);
-	xr_delete							(m_ce_best);
-	xr_delete							(m_ce_angle);
-	xr_delete							(m_ce_safe);
-	xr_delete							(m_ce_random_game);
-	xr_delete							(m_ce_ambush);
-	xr_delete							(m_ce_best_by_time);
-	xr_delete							(m_boneHitProtection);
-
+	xr_delete						(m_ce_close);
+	xr_delete						(m_ce_far);
+	xr_delete						(m_ce_best);
+	xr_delete						(m_ce_angle);
+	xr_delete						(m_ce_safe);
+	xr_delete						(m_ce_random_game);
+	xr_delete						(m_ce_ambush);
+	xr_delete						(m_ce_best_by_time);
+	xr_delete						(m_boneHitProtection);
 }
 
 void CAI_Stalker::net_Save			(NET_Packet& P)
