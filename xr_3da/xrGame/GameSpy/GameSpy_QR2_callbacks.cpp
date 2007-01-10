@@ -26,6 +26,7 @@ void __cdecl callback_serverkey(int keyid, void* outbuf, void *userdata)
 	case NUMPLAYERS_KEY: pQR2->BufferAdd_Int(outbuf, pServer->GetPlayersCount()); break;
 	case MAXPLAYERS_KEY: pQR2->BufferAdd_Int(outbuf, pServer->m_iMaxPlayers); break;
 	case GAMETYPE_KEY:	pQR2->BufferAdd_Int(outbuf, pServer->game->Type());		break;
+	case GAMEMODE_KEY:	pQR2->BufferAdd(outbuf, "openplaying"); break;
 	case PASSWORD_KEY:
 		{
 			if ( 0 == *(pServer->Password))
@@ -94,12 +95,13 @@ void __cdecl callback_playerkey(int keyid, int index, void* outbuf, void *userda
 
 	switch (keyid)
 	{
-	case PLAYER__KEY: pQR2->BufferAdd(outbuf, pCD->ps->getName()); break;
-	case P_NAME__KEY: pQR2->BufferAdd(outbuf, pCD->ps->getName()); break;
-	case P_FRAGS__KEY: pQR2->BufferAdd_Int(outbuf, pCD->ps->kills); break;
-	case P_DEATH__KEY: pQR2->BufferAdd_Int(outbuf, pCD->ps->deaths); break;
-	case P_RANK__KEY: pQR2->BufferAdd_Int(outbuf, pCD->ps->rank); break;
-	case P_TEAM__KEY: pQR2->BufferAdd_Int(outbuf, pCD->ps->team); break;
+	case PLAYER__KEY:	pQR2->BufferAdd(outbuf, pCD->ps->getName()); break;
+	case PING__KEY:		pQR2->BufferAdd_Int(outbuf, pCD->ps->ping); break;
+	case P_NAME__KEY:	pQR2->BufferAdd(outbuf, pCD->ps->getName()); break;
+	case P_FRAGS__KEY:	pQR2->BufferAdd_Int(outbuf, pCD->ps->kills); break;
+	case P_DEATH__KEY:	pQR2->BufferAdd_Int(outbuf, pCD->ps->deaths); break;
+	case P_RANK__KEY:	pQR2->BufferAdd_Int(outbuf, pCD->ps->rank); break;
+	case P_TEAM__KEY:	pQR2->BufferAdd_Int(outbuf, pCD->ps->team); break;
 	case P_SPECTATOR__KEY: pQR2->BufferAdd_Int(outbuf, pCD->ps->testFlag(GAME_PLAYER_FLAG_SPECTATOR)); break;
 	case P_ARTEFACTS__KEY: 
 		if (pServer->game->Type() == GAME_ARTEFACTHUNT) 
