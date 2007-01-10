@@ -180,9 +180,8 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	m_hint->SetAutoDelete				(false);
 
 // Load maps
-	string256								gameLtxPath;
-	FS.update_path							(gameLtxPath, CONFIG_PATH, "game.ltx");
-	CInifile gameLtx						(gameLtxPath);
+
+	CInifile& gameLtx						= *pGameIni;
 
 	m_GlobalMap								= xr_new<CUIGlobalMap>(this);
 	m_GlobalMap->SetAutoDelete				(true);

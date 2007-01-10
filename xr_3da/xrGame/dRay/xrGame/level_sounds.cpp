@@ -127,9 +127,9 @@ void CLevelSoundManager::Load()
 
 	// music
 	m_CurrentTrack		= -1;
-	string_path			gameLtxPath;
-	FS.update_path		(gameLtxPath, "$game_config$", "game.ltx");
-	CInifile gameLtx	(gameLtxPath);
+
+	CInifile& gameLtx	= *pGameIni;
+
 	if (gameLtx.section_exist(Level().name())){
 		if (gameLtx.line_exist(Level().name(),"music_tracks")){
 			LPCSTR music_sect		= gameLtx.r_string(Level().name(),"music_tracks");

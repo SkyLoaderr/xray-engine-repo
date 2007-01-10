@@ -26,7 +26,7 @@
 #	include "..\render.h"
 #endif
 
-LPCSTR GAME_CONFIG = "game.ltx";
+//.LPCSTR GAME_CONFIG = "game.ltx";
 
 bool SortStringsByAlphabetPred (const shared_str& s1, const shared_str& s2)
 {
@@ -67,11 +67,8 @@ struct SFillPropData{
     void		load			()
     {
         // create ini
-        CInifile				*Ini = 0;
-        string_path				gm_name;
-        FS.update_path			(gm_name,"$game_config$",GAME_CONFIG);
-        R_ASSERT3				(FS.exist(gm_name),"Couldn't find file",gm_name);
-        Ini						= xr_new<CInifile>(gm_name);
+        CInifile				*Ini = 	pGameIni;
+
         // location type
         LPCSTR					N,V;
         u32 					k;
@@ -125,7 +122,7 @@ struct SFillPropData{
 #endif
 		
         // destroy ini
-        xr_delete				(Ini);
+//.        xr_delete				(Ini);
     }
     void		unload			()
     {

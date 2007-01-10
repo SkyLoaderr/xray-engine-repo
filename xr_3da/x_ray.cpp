@@ -21,6 +21,7 @@
 #include "Text_Console.h"
 #include <process.h>
 //---------------------------------------------------------------------
+ENGINE_API CInifile* pGameIni		= NULL;
 BOOL	g_bIntroFinished			= FALSE;
 extern	void	Intro				( void* fn );
 extern	void	Intro_DSHOW			( void* fn );
@@ -67,6 +68,9 @@ void InitSettings	()
 	string_path					fname; 
 	FS.update_path				(fname,"$game_config$","system.ltx");
 	pSettings					= xr_new<CInifile>	(fname,TRUE);
+
+	FS.update_path				(fname,"$game_config$","game.ltx");
+	pGameIni					= xr_new<CInifile>	(fname,TRUE);
 }
 void InitConsole	()
 {
@@ -117,6 +121,7 @@ void destroySound	()
 void destroySettings()
 {
 	xr_delete					( pSettings		);
+	xr_delete					( pGameIni		);
 }
 void destroyConsole	()
 {

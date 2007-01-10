@@ -50,6 +50,8 @@
 
 #include "sound.h"
 
+extern ENGINE_API CInifile *pGameIni;
+
 // TODO: reference additional headers your program requires here
 #pragma comment( lib, "x:\\xrCore.lib"	)
 #pragma comment( lib, "x:\\xrCDB.lib"	)

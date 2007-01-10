@@ -29,10 +29,7 @@ CUIZoneMap::~CUIZoneMap()
 
 void CUIZoneMap::Init()
 {
-	string256			gameLtxPath;
-	FS.update_path		(gameLtxPath, CONFIG_PATH, "game.ltx");
-	CInifile			gameLtx		(gameLtxPath);
-
+	CInifile& gameLtx	= *pGameIni;
 
 	CUIXml uiXml;
 	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH, "zone_map.xml");

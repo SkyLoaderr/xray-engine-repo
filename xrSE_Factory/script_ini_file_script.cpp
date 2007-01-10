@@ -19,6 +19,11 @@ CScriptIniFile *get_system_ini()
 	return	((CScriptIniFile*)pSettings);
 }
 
+CScriptIniFile *get_game_ini()
+{
+	return	((CScriptIniFile*)pGameIni);
+}
+
 bool r_line(CScriptIniFile *self, LPCSTR S, int L,	xr_string &N, xr_string &V)
 {
 	THROW3			(self->section_exist(S),"Cannot find section",S);
@@ -77,6 +82,7 @@ void CScriptIniFile::script_register(lua_State *L)
 			.def("r_line",			&::r_line, out_value(_4) + out_value(_5)),
 
 		def("system_ini",			&get_system_ini),
+		def("game_ini",				&get_game_ini),
 		def("create_ini_file",		&create_ini_file,	adopt(result))
 	];
 }
