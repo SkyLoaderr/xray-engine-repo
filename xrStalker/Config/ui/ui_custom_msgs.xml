@@ -53,7 +53,7 @@
 	<cs_psy_danger  x="200" y="120" width="600" height="60">
 		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c"/>
 	</cs_psy_danger>
-	<cs_radiation_danger  x="200" y="120" width="600" height="60">
+	<cs_radiation_danger  x="200" y="160" width="600" height="60">
 		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c"/>
 	</cs_radiation_danger>
 	
