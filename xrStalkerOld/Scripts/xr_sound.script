@@ -63,6 +63,10 @@ end
 function set_sound(npc, sound, now, into_timeout)
 	--printf("*SND* [%s] try to change SND to [%s]", npc:name(), tostring(sound))
 
+	if sound == nil then
+		sound = "state"
+	end
+
 	local npc_id = npc:id()
 	if (db.sound[npc_id] == nil or
 	   db.sound[npc_id].theme ~= sound) or
@@ -122,15 +126,17 @@ function update(npc)
 	if npc:active_sound_count() ~= 0 then return end
 	local key = get_key(npc)
 	local npc_id = npc:id()
-	--printf("npc_id[%s] key[%s]", npc_id, key)
-	if db.sound[npc_id] ~= nil and db.sound[npc_id].snd == nil then return end
 	
-	local group_table = xr_sound.group_idle[key]	
+	--' Если задана тема, то нужно играть ее.
+	--' Если не задана, то нужно играть idle, при условии что у нас нет врагов и денжеров.
+	if db.sound[npc_id] ~= nil and db.sound[npc_id].snd == nil then
+		return 
+	end	
 	
+	local group_table = xr_sound.group_idle[key]		
 	if group_table == nil then
 		return
 	end
---	printf("busy[%s]", tostring(group_table.busy))
 	
 	if group_table.busy == true then
 		if group_table.last_npc ~= npc_id then
