@@ -89,7 +89,7 @@
 		<cap_resolution x="20" y="80" width="143" height="21">
 			<text font="letterica16" r="215" g="195" b="170">ui_mm_resolution</text>
 		</cap_resolution>
-		<list_resolution x="194" y="80" width="261" height="21">
+		<list_resolution x="194" y="80" width="261" height="21" always_show_scroll="1">
 			<options_item entry="vid_mode" group="mm_opt_video"/>
 			<text_color>
 				<e r="216" g="186" b="140"/>
