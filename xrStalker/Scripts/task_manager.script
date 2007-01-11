@@ -245,9 +245,9 @@ end
 function CRandomTask:active_parent_task(actor, npc)
 	local parent = self:get_parent(npc)
 	for k,v in pairs(self.active_task_by_type) do
-		printf("active_parent_task: %s", tostring(v))
-		printf("active_parent_task: parent = %s", tostring(self.task_info[v].parent))
-		printf("active_parent_task: status = %s", tostring(self.task_info[v].status))
+--		printf("active_parent_task: %s", tostring(v))
+--		printf("active_parent_task: parent = %s", tostring(self.task_info[v].parent))
+--		printf("active_parent_task: status = %s", tostring(self.task_info[v].status))
 
 		if self.task_info[v].parent == parent and
 		   self.task_info[v].status == "selected"
@@ -262,9 +262,9 @@ function CRandomTask:have_completed_job(actor, npc)
 	print_table(self.active_task_by_type)
 	local parent = self:get_parent(npc)
 	for k,v in pairs(self.active_task_by_type) do
-		printf("have_completed_job: %s", tostring(v))
-		printf("have_completed_job: parent = %s", tostring(self.task_info[v].parent))
-		printf("have_completed_job: status = %s", tostring(self.task_info[v].status))
+--		printf("have_completed_job: %s", tostring(v))
+--		printf("have_completed_job: parent = %s", tostring(self.task_info[v].parent))
+--		printf("have_completed_job: status = %s", tostring(self.task_info[v].status))
 
 		if self.task_info[v].parent == parent and
 		   self.task_info[v].status == "completed"
