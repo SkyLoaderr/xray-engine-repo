@@ -128,9 +128,10 @@
 		
 
 		<btn_advanced x="342" y="325" width="111" height="29">
-			<text align="c" font="letterica16" r="188" g="153" b="123">ui_mm_advanced</text>	
+			<text align="c" font="letterica16" r="227" g="199" b="178">ui_mm_advanced</text>	
 			<texture>ui_button_ordinary</texture>			
 		</btn_advanced>
+		
 	</tab_video>
 
 	<video_adv>
@@ -250,7 +251,7 @@
 
 
 		<btn_to_simply x="342" y="325" width="111" height="29">
-			<text align="c" font="letterica16" r="188" g="153" b="123">ui_mm_simply</text>	
+			<text align="c" font="letterica16" r="227" g="199" b="178">ui_mm_simply</text>	
 			<texture>ui_button_ordinary</texture>			
 		</btn_to_simply>
 	</video_adv>
