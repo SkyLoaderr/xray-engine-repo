@@ -29,8 +29,8 @@
 	</list>
 	
 	<!-- BUTTON -->
-	<button x="100" y="340" width="138" height="30">
-		<texture>ui\ui_button_04</texture>
+	<button x="100" y="340" width="157" height="47">
+		<texture>ui_button_main03</texture>
 		<text>JOIN</text>
 	</button>
 	

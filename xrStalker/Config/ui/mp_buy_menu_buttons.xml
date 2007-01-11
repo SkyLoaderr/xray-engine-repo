@@ -192,7 +192,7 @@
 	</text_color>		
 </btn_ok>
 
-<btn_cancel x="870" y="630" width="157" height="48" accel="kESCAPE">
+<btn_cancel x="870" y="630" width="157" height="48" accel="kESCAPE" accel_ext="kSPACE">
 	<window_name>btn_cancel</window_name>
 	<texture>ui_button_main01</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_inv_cancel</text>
