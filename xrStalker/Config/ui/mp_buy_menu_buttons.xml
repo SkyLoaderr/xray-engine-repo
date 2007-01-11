@@ -205,28 +205,28 @@
 
 
 
-<btn_preset_1 x="870" y="155" width="157" height="48">
+<btn_preset_1 x="870" y="155" width="157" height="48" accel="kF1">
 	<window_name>btn_preset_1</window_name>
 	<texture>ui_button_main01</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_preset1</text>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_preset_1>
 
-<btn_preset_2 x="870" y="245" width="157" height="48">
+<btn_preset_2 x="870" y="245" width="157" height="48" accel="kF2">
 	<window_name>btn_preset_2</window_name>
 	<texture>ui_button_main01</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_preset2</text>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_preset_2>
 
-<btn_preset_3 x="870" y="335" width="157" height="48">
+<btn_preset_3 x="870" y="335" width="157" height="48" accel="kF3">
 	<window_name>btn_preset_3</window_name>
 	<texture>ui_button_main01</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_preset3</text>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_preset_3>
 
-<btn_last_set x="870" y="425" width="157" height="48">
+<btn_last_set x="870" y="425" width="157" height="48" accel="kF4">
 	<window_name>btn_last_set</window_name>
 	<texture>ui_button_main01</texture>
 	<text font="graffiti22" r="238" g="153" b="26">ui_st_last_set</text>
