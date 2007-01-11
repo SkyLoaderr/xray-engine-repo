@@ -180,4 +180,8 @@
 	<string id="ui_st_opponent_items">
 		<text>Opponent's backpack</text>
 	</string>
+
+	<string id="st_search_treasure">
+		<text>Обыскать тайник ($$ACTION_USE$$)</text>
+	</string>
 </string_table>
