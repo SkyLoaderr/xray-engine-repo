@@ -180,4 +180,8 @@
 	<string id="zombied">
 		<text>Зомбированный</text>
 	</string>
+
+	<string id="st_search_treasure">
+		<text>Обыскать тайник ($$ACTION_USE$$)</text>
+	</string>
 </string_table>
