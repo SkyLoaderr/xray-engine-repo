@@ -461,4 +461,9 @@
 	
     <texture id="ui_minimap_point" x="729" y="767" width="12" height="12"/>
 
+    <texture id="ui_button_save_preset_d" x="764" y="909" width="39" height="28" />
+    <texture id="ui_button_save_preset_e" x="764" y="938" width="39" height="28" />
+    <texture id="ui_button_save_preset_h" x="764" y="967" width="39" height="28" />
+    <texture id="ui_button_save_preset_t" x="764" y="996" width="39" height="28" />
+
 </ui_texture>
