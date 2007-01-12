@@ -106,7 +106,7 @@
 	<string id="deactivate_radar_now">
 		<text>Отключить установку</text>
 	</string>
-	<string id="descr_deactivate_radar">
+	<string id="bar_radar_deactivate">
 		<text>Отключить Выжигатель Мозгов</text>
 	</string>
 	<string id="find_and_deactivate_radar">
@@ -124,7 +124,7 @@
 	<string id="wpn-winchester_m1">
 		<text>Боевой винчестер</text>
 	</string>
-	<string id="x16_documents">
+	<string id="bar_x16_documents">
 		<text>Найти документы в лаборатории X16</text>
 	</string>
 	<string id="x16_yantar">

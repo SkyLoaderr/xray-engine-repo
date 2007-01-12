@@ -86,6 +86,9 @@
 		<text>Убить кровососов</text>
 	</string>
 	<string id="mil_kill_dolg">
+		<text>Уничтожить группу</text>
+	</string>
+	<string id="mil_lukash_job">
 		<text>Уничтожить группу Долга</text>
 	</string>
 	<string id="mil_lukash">

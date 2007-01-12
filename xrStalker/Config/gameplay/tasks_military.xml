@@ -120,7 +120,7 @@
 	</game_task>
 	
 	<game_task id="mil_lukash_job" prio="295">
-		<title>mil_kill_dolg</title>
+		<title>mil_lukash_job</title>
 		<objective>
 			<text>mil_kill_dolg</text>
 			<icon>ui_iconsTotal_mil_lukash_job</icon>

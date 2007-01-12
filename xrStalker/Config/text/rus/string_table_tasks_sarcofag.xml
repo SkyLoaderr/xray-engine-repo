@@ -43,6 +43,6 @@
 	<string id="sar_secret_lab_3">
 		<text>Разведать, что находится за дверью</text>
 	</string>
-	<string id="sar_secret_lab_find">
+	<string id="sar_secret_lab">
 		<text>Секретная лаборатория</text>
 	</string>
