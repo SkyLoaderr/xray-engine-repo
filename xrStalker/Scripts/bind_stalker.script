@@ -278,7 +278,7 @@ function actor_binder:update(delta)
 	end
 
 	--' Вывод сообщения о большой радиации
-	if self.object.radiation >= 0.9 then
+	if self.object.radiation >= 0.7 then
 		local hud = get_hud()
 		local custom_static = hud:GetCustomStatic("cs_radiation_danger")
 		if custom_static == nil then
