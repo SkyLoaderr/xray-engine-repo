@@ -61,13 +61,13 @@
 	</specific_character>
 	
 	
-	<specific_character id="ds_stalker_n_1" team_default = "1">
+	<specific_character id="ds_stalker_n" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
 		<icon x="16" y="6"></icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
-		<class>ds_stalker_n_1</class>
+		<class>ds_stalker_n</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>482</rank>
