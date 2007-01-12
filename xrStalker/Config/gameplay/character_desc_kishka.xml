@@ -14,7 +14,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>		
+		<visual>actors\bandit\stalker_bandit_3</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -38,12 +38,12 @@
 		<bio>ds_sergant_regular_bio</bio>
 
 		<class>ds_Soldier_regular</class>
-		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_5</visual>		
+		<visual>actors\bandit\stalker_bandit_4</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -67,12 +67,12 @@
 		<bio>ds_sergant_regular_bio</bio>
 
 		<class>ds_Soldier_regular1</class>
-		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_5</visual>		
+		<visual>actors\bandit\stalker_bandit_5</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -96,12 +96,12 @@
 		<bio>ds_sergant_regular_bio</bio>
 
 		<class>ds_Soldier_regular2</class>
-		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_5</visual>		
+		<visual>actors\bandit\stalker_bandit_8</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -125,12 +125,12 @@
 		<bio>ds_sergant_regular_bio</bio>
 
 		<class>ds_Soldier_regular3</class>
-		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_5</visual>		
+		<visual>actors\bandit\stalker_bandit_master</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -155,12 +155,12 @@
 		<bio>ds_sergant_regular_bio</bio>
 
 		<class>ds_Soldier_regular4</class>
-		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_5</visual>		
+		<visual>actors\bandit\stalker_bandit_veteran</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -184,7 +184,7 @@
 		<bio>ds_sergant_regular_bio</bio>
 
 		<class>ds_Soldier_regular5</class>
-		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>300</rank>
 		<reputation>0</reputation>
@@ -213,7 +213,7 @@
 		<bio>ds_sergant_regular_bio</bio>
 
 		<class>ds_Soldier_regular6</class>
-		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>300</rank>
 		<reputation>0</reputation>
@@ -242,7 +242,7 @@
 		<bio>ds_sergant_regular_bio</bio>
 
 		<class>ds_Soldier_regular7</class>
-		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>300</rank>
 		<reputation>0</reputation>
@@ -271,7 +271,7 @@
 		<bio>ds_sergant_regular_bio</bio>
 
 		<class>ds_Soldier_regular8</class>
-		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>300</rank>
 		<reputation>0</reputation>
