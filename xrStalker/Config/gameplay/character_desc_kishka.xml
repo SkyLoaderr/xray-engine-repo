@@ -9,12 +9,12 @@
 		<bio>ds_soldier_regular_bio</bio>
 
 		<class>ds_Soldier_novice</class>
-		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
+		<community>stalker</community> <terrain_sect>stalker_military_terrain</terrain_sect>
 		
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana</visual>		
+		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
 		<supplies>
 			[spawn] \n
