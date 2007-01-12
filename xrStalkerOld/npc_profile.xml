@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 
 <xml>
 	<!-- НОВЫЕ ПРОФИЛЯ -->
@@ -245,6 +245,30 @@
 <!-- Darkscape -->
     <character id="ds_soldier_regular">
 		<class>ds_soldier_regular</class>
+	</character>
+	<character id="ds_soldier_regular1">
+		<class>ds_soldier_regular1</class>
+	</character>
+	<character id="ds_soldier_regular2">
+		<class>ds_soldier_regular2</class>
+	</character>
+	<character id="ds_soldier_regular3">
+		<class>ds_soldier_regular3</class>
+	</character>
+	<character id="ds_soldier_regular4">
+		<class>ds_soldier_regular4</class>
+	</character>
+	<character id="ds_soldier_regular5">
+		<class>ds_soldier_regular5</class>
+	</character>
+	<character id="ds_soldier_regular6">
+		<class>ds_soldier_regular6</class>
+	</character>
+	<character id="ds_soldier_regular7">
+		<class>ds_soldier_regular7</class>
+	</character>
+	<character id="ds_soldier_regular8">
+		<class>ds_soldier_regular8</class>
 	</character>
 	<character id="ds_soldier_novice">
 		<class>ds_soldier_novice</class>
