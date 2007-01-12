@@ -61,7 +61,7 @@ end
 --	Установка и распарсивание тем в файлы.
 -----------------------------------------------------------------------------------------------------------------------------------
 function set_sound(npc, sound, now, into_timeout)
-	printf("*SND* [%s] try to change SND to [%s]", npc:name(), tostring(sound))
+--	printf("*SND* [%s] try to change SND to [%s]", npc:name(), tostring(sound))
 
 	if sound == nil then
 		sound = "state"
@@ -72,7 +72,11 @@ function set_sound(npc, sound, now, into_timeout)
 	   db.sound[npc_id].theme ~= sound) or
 	   now == true
 	then
-		---printf("*SND* change SND to [%s] for [%s]", utils.to_str(sound), npc:name())
+--		if db.sound[npc_id] == nil then
+--			printf("*SND* change SND [_] to [%s] for [%s]", tostring(sound), npc:name())
+--		else
+--			printf("*SND* change SND [%s] to [%s] for [%s]", tostring(db.sound[npc_id].theme), tostring(sound), npc:name())
+--		end
 		-- Туточки надобно распарсить имена тем в их id
 		if sound == nil then sound = "" end
 		if db.sound[npc_id] == nil then db.sound[npc_id] = {} end
@@ -112,7 +116,7 @@ function set_sound(npc, sound, now, into_timeout)
 end
 
 function set_sound_play(npc, sound, timeout)
-	printf("*SND* play SND to [%s] for [%s]", utils.to_str(sound), npc:name())
+--	printf("*SND* play SND to [%s] for [%s]", utils.to_str(sound), npc:name())
 	local npc_id = npc:id()
 	if db.sound[npc_id] == nil then db.sound[npc_id] = {} end
 	if db.sound[npc_id].last_snd == nil then
@@ -156,11 +160,14 @@ function update(npc)
 		return
 	end
 	
-	printf("EE: begin = %s idle = %s", tostring(group_table.begin), tostring(group_table.idle))
+--	printf("EE: group = %s begin = %s idle = %s", tostring(key), tostring(group_table.begin), tostring(group_table.idle))
 	if group_table.begin == nil or
 	   time_global() - group_table.begin >= group_table.idle
 	then
 		this.play_sound(npc, db.sound[npc_id].snd)
+		if group_table.idle == nil then
+			group_table.idle = 0
+		end
 		group_table.busy = true
 		group_table.begin = time_global()
 		group_table.last_npc = npc_id
