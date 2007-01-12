@@ -51,11 +51,6 @@
     </money_static>
 
    
-    <btn_sell_all x="370" y="672" width="157" height="48">
-		<texture>ui_button_main01</texture>
-		<text font="graffiti19" r="238" g="153" b="26">Sell All</text>
-    </btn_sell_all>
-
     <descr_static x="370" y="253" width="330" height="475" stretch="1">
         <text x="19" y="0" font="graffiti19" r="238" g="155" b="23">ui_inv_description</text>
     </descr_static>
