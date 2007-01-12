@@ -61,7 +61,7 @@ end
 --	Установка и распарсивание тем в файлы.
 -----------------------------------------------------------------------------------------------------------------------------------
 function set_sound(npc, sound, now, into_timeout)
-	--printf("*SND* [%s] try to change SND to [%s]", npc:name(), tostring(sound))
+	printf("*SND* [%s] try to change SND to [%s]", npc:name(), tostring(sound))
 
 	if sound == nil then
 		sound = "state"
@@ -156,6 +156,7 @@ function update(npc)
 		return
 	end
 	
+	prinf("EE: begin = %s idle = %s", tostring(group_table.begin), tostring(group_table.idle))
 	if group_table.begin == nil or
 	   time_global() - group_table.begin >= group_table.idle
 	then
@@ -211,7 +212,7 @@ function play_sound(npc, themes, timeout)
 			-- играем входные
 			if db.sound[npc_id].last_snd[snd.into_id] == nil then db.sound[npc_id].last_snd[snd.into_id] = -1 end
 			
-			printf("*SND* play seq [%s] for [%s]", db.sound[npc_id].last_snd[snd.into_id]+1, npc:name())
+			--printf("*SND* play seq [%s] for [%s]", db.sound[npc_id].last_snd[snd.into_id]+1, npc:name())
 			process_tutor_on_sound(snd.theme)
 			npc:play_sound(snd.into_id, 1, 0, 1, 0, db.sound[npc_id].last_snd[snd.into_id]+1)
 			db.sound[npc_id].last_snd[snd.into_id] = db.sound[npc_id].last_snd[snd.into_id] + 1
@@ -240,7 +241,7 @@ function play_sound(npc, themes, timeout)
 			if timeout == nil then
 				timeout = 0
 			end							
-			printf("*SND* play rnd [%s] for [%s]", s, npc:name())
+			--printf("*SND* play rnd [%s] for [%s]", s, npc:name())
 			process_tutor_on_sound(snd.theme)
 			npc:play_sound(snd.rnd_id, timeout+1, timeout, 1, 0, s)
 			--db.sound[npc_id].last_snd[snd.rnd_id] = s
