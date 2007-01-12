@@ -67,7 +67,7 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
-		<class>agr_Stalker_general</class>
+		<class>ds_stalker_n_1</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>482</rank>
@@ -100,7 +100,7 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
-		<class>agr_Stalker_general</class>
+		<class>agr_stalker_n_2</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>482</rank>
@@ -133,7 +133,7 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
-		<class>agr_Stalker_general</class>
+		<class>ds_Stalker_n_3</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>482</rank>
@@ -165,7 +165,7 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
-		<class>agr_Stalker_general</class>
+		<class>ds_Stalker_n_4</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>482</rank>
@@ -197,7 +197,7 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
-		<class>agr_Stalker_general</class>
+		<class>ds_Stalker_n_5</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>482</rank>
@@ -230,7 +230,7 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
-		<class>agr_Stalker_general</class>
+		<class>ds_stalker_n_6</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>482</rank>
@@ -263,7 +263,7 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
-		<class>agr_Stalker_general</class>
+		<class>ds_stalker_n_7</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>482</rank>
@@ -297,7 +297,7 @@
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_general_bio</bio>
 
-		<class>agr_Stalker_general</class>
+		<class>ds_stalker_n_8</class>
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>482</rank>
@@ -330,7 +330,7 @@
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_general_bio</bio>
 		
-		<class>val_bandit_general</class>
+		<class>ds_bandit_1</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
 		<rank>431</rank>
