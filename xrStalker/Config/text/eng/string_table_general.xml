@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="Btn_Cancel">
+		<text>Cancel</text>
+	</string>
+	<string id="Btn_No">
+		<text>No</text>
+	</string>
+	<string id="Btn_OK">
+		<text>OK</text>
+	</string>
+	<string id="Btn_Yes">
+		<text>Yes</text>
+	</string>
+	<string id="Found_PDA">
+		<text>Found PDA</text>
+	</string>
 	<string id="actor">
 		<text>Loner</text>
 	</string>
@@ -36,14 +51,14 @@
 	<string id="experienced">
 		<text>experienced</text>
 	</string>
-	<string id="Found_PDA">
-		<text>Found PDA</text>
-	</string>
 	<string id="freedom">
 		<text>Freedom</text>
 	</string>
 	<string id="friendly">
 		<text>friend</text>
+	</string>
+	<string id="global_map">
+		<text>Map of the Zone</text>
 	</string>
 	<string id="good">
 		<text>good</text>
@@ -105,8 +120,26 @@
 	<string id="novice">
 		<text>rookie</text>
 	</string>
+	<string id="st_autosave">
+		<text>Autosave</text>
+	</string>
+	<string id="st_game_over">
+		<text>Game over.</text>
+	</string>
+	<string id="st_item_used">
+		<text>Used</text>
+	</string>
 	<string id="st_no_active_task">
 		<text>No active task</text>
+	</string>
+	<string id="st_not_enough_money">
+		<text>Not enough money</text>
+	</string>
+	<string id="st_not_enough_money_npc">
+		<text>the NPC does not have enough money</text>
+	</string>
+	<string id="st_search_treasure">
+		<text>Обыскать тайник ($$ACTION_USE$$)</text>
 	</string>
 	<string id="st_time_till_surge">
 		<text>Time until blowout</text>
@@ -122,6 +155,9 @@
 	</string>
 	<string id="ui_st_community">
 		<text>grouping</text>
+	</string>
+	<string id="ui_st_opponent_items">
+		<text>Opponent's backpack</text>
 	</string>
 	<string id="ui_st_price">
 		<text>Price</text>
@@ -146,42 +182,5 @@
 	</string>
 	<string id="zombied">
 		<text>Zombified</text>
-	</string>
-	<string id="Btn_Cancel">
-		<text>Cancel</text>
-	</string>
-	<string id="Btn_No">
-		<text>No</text>
-	</string>
-	<string id="Btn_OK">
-		<text>OK</text>
-	</string>
-	<string id="Btn_Yes">
-		<text>Yes</text>
-	</string>
-	<string id="global_map">
-		<text>Map of the Zone</text>
-	</string>
-	<string id="st_autosave">
-		<text>Autosave</text>
-	</string>
-	<string id="st_game_over">
-		<text>Game over.</text>
-	</string>
-	<string id="st_item_used">
-		<text>Used</text>
-	</string>
-	<string id="st_not_enough_money">
-		<text>Not enough money</text>
-	</string>
-	<string id="st_not_enough_money_npc">
-		<text>the NPC does not have enough money</text>
-	</string>
-	<string id="ui_st_opponent_items">
-		<text>Opponent's backpack</text>
-	</string>
-
-	<string id="st_search_treasure">
-		<text>Обыскать тайник ($$ACTION_USE$$)</text>
 	</string>
 </string_table>

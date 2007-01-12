@@ -1,5 +1,98 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
+	<string id="Agroprom">
+		<text>Agroprom</text>
+	</string>
+	<string id="Ameba">
+		<text>Witches' Jelly</text>
+	</string>
+	<string id="Anomalies">
+		<text>Anomalies</text>
+	</string>
+	<string id="Artifacts">
+		<text>Artifacts</text>
+	</string>
+	<string id="Bald">
+		<text>Springboard</text>
+	</string>
+	<string id="Bar">
+		<text>Bar</text>
+	</string>
+	<string id="Darkdolina">
+		<text>Dark Valley</text>
+	</string>
+	<string id="Deadcity">
+		<text>Erased</text>
+	</string>
+	<string id="Electra">
+		<text>"Электра"</text>
+	</string>
+	<string id="Escape">
+		<text>Outpost</text>
+	</string>
+	<string id="Fuzz">
+		<text>Burnt Fuzz</text>
+	</string>
+	<string id="Garbage">
+		<text>Garbage</text>
+	</string>
+	<string id="Gravi">
+		<text>Vortex</text>
+	</string>
+	<string id="Lift">
+		<text>Elevator</text>
+	</string>
+	<string id="Locations">
+		<text>Locations</text>
+	</string>
+	<string id="Meat">
+		<text>Whirligig</text>
+	</string>
+	<string id="Military-loc">
+		<text>Army base</text>
+	</string>
+	<string id="Pripiat">
+		<text>Pripyat</text>
+	</string>
+	<string id="Radar">
+		<text>Выжигатель</text>
+	</string>
+	<string id="Radioactive">
+		<text>Source of radioactivity</text>
+	</string>
+	<string id="Rostok">
+		<text>Wild Territory</text>
+	</string>
+	<string id="Stancia">
+		<text>Chernobyl NPP</text>
+	</string>
+	<string id="Story-2006">
+		<text>2008, April 12, 14:33</text>
+	</string>
+	<string id="Story-2008">
+		<text>Year 2010</text>
+	</string>
+	<string id="Story-2010">
+		<text>Year 2011</text>
+	</string>
+	<string id="Story-raid">
+		<text>Army raid into the Zone. 2011</text>
+	</string>
+	<string id="Time_machine">
+		<text>Time Machine</text>
+	</string>
+	<string id="Yantar">
+		<text>Yantar</text>
+	</string>
+	<string id="Zharka">
+		<text>Burner</text>
+	</string>
+	<string id="Zone">
+		<text>The Zone</text>
+	</string>
+	<string id="Zone-story">
+		<text>History of the Zone</text>
+	</string>
 	<string id="af-ameba-mica">
 		<text>Mica</text>
 	</string>
@@ -81,35 +174,8 @@
 	<string id="af-vyvert">
 		<text>Wrenched</text>
 	</string>
-	<string id="Agroprom">
-		<text>Agroprom</text>
-	</string>
-	<string id="Ameba">
-		<text>Witches' Jelly</text>
-	</string>
-	<string id="Anomalies">
-		<text>Anomalies</text>
-	</string>
-	<string id="Artifacts">
-		<text>Artifacts </text>
-	</string>
-	<string id="Bald">
-		<text>Springboard</text>
-	</string>
-	<string id="Bar">
-		<text>Bar</text>
-	</string>
-	<string id="Darkdolina">
-		<text>Dark Valley</text>
-	</string>
-	<string id="Deadcity">
-		<text>Erased</text>
-	</string>
-	<string id="Electro">
-		<text>Electro</text>
-	</string>
 	<string id="enc_weapons1_wpn-winchester_m1">
-		<text>Variation of the Winchester. A small fragment of the artifact "Gravi" was built into the barrell, positioned in such a way as to increase the speed of the bullet's flight. </text>
+		<text>Variation of the Winchester. A small fragment of the artifact "Gravi" was built into the barrell, positioned in such a way as to increase the speed of the bullet's flight.</text>
 	</string>
 	<string id="enc_zone_anomalies_ameba">
 		<text>An anomaly of unknown nature. On contact inflicts injuries similar to the effects of a strong acid. Forms three types of artifacts: Slime, Slug, and Mica.</text>
@@ -124,7 +190,7 @@
 		<text>One of the Zone's examples of mutated vegetation. Reacts to rapidly approaching living beings by discharging a cloud of projectiles severely injuring uncovered or lightly protected skin upon contact. Does not react to slowly moving targets. Forms three types of artifacts (possibly its seeds): Thorn, Crystal Thorn and Urchin.</text>
 	</string>
 	<string id="enc_zone_anomalies_gravi">
-		<text>An anomaly of presumably gravitational nature. When triggered, the tremendous power of the Vortex drags everything within the radius of 10-15 meters towards center. Victims drawn into the core have no chance of survival: their bodies are quickly constricted into a tight lump, only to be blown up in a powerful discharge of energy a moment later. The anomaly remains stationary throughout its lifetime (a week on average). Easily recognizable in daylight by the air fluctuation above, dancing leaves, fragments of dismembered corpses lying around and a distinctive dark stain in the center. Highly dangerous at night since it can be revealed only by means of a detector or by throwing metal objects into it. Forms three types of artifacts: Wrenched, Gravi and Goldfish. </text>
+		<text>An anomaly of presumably gravitational nature. When triggered, the tremendous power of the Vortex drags everything within the radius of 10-15 meters towards center. Victims drawn into the core have no chance of survival: their bodies are quickly constricted into a tight lump, only to be blown up in a powerful discharge of energy a moment later. The anomaly remains stationary throughout its lifetime (a week on average). Easily recognizable in daylight by the air fluctuation above, dancing leaves, fragments of dismembered corpses lying around and a distinctive dark stain in the center. Highly dangerous at night since it can be revealed only by means of a detector or by throwing metal objects into it. Forms three types of artifacts: Wrenched, Gravi and Goldfish.</text>
 	</string>
 	<string id="enc_zone_anomalies_lift">
 		<text>A harmless anomaly, temporarily negating normal gravity. Manifests itself as an area - usually several meters in diameter - where Earth's gravitational pull is greatly reduced. Forms the Pellicle artifact.</text>
@@ -142,9 +208,7 @@
 		<text>While inactive, the anomaly manifests itself as a barely visible cloud of hot air. When triggered by an object or a living being it instantly heats up to lethal temperatures approaching 1500K. At nighttime, it can be revealed by powerful detectors or by throwing metal objects into the trigger area. Forms three types of artifacts: Droplets, Fireball and Crystal.</text>
 	</string>
 	<string id="enc_zone_artifact_af-ameba-mica">
-		<text>
-Anomaly “Stew” is able to create such an artifact at the rarest, most extreme collection of physical conditions. The result is a semi-transparent, hard object. A rare and expensive artifact.
-</text>
+		<text>Anomaly “Stew” is able to create such an artifact at the rarest, most extreme collection of physical conditions. The result is a semi-transparent, hard object. A rare and expensive artifact.</text>
 	</string>
 	<string id="enc_zone_artifact_af-ameba-slime">
 		<text>It is certain that this artifact is created by the anomaly called Stew. When carried on the best, the wounds bleed less, although the body of its owner becomes more vulnerable to various burns.</text>
@@ -159,15 +223,13 @@ Anomaly “Stew” is able to create such an artifact at the rarest, most extreme co
 		<text>Is created when heavy metals fall into the Stirfry anomaly. This artifact eliminates radiation wonderfully. It is highly valued by stalkers and hard to find.</text>
 	</string>
 	<string id="enc_zone_artifact_af-cristall-flower">
-		<text>Born in the Springboard anomaly. This artifact is found in only a few areas of the Zone. The bits of metallic compounds create a beautiful light play. It is very calming to study this artifact at night by the fire. </text>
+		<text>Born in the Springboard anomaly. This artifact is found in only a few areas of the Zone. The bits of metallic compounds create a beautiful light play. It is very calming to study this artifact at night by the fire.</text>
 	</string>
 	<string id="enc_zone_artifact_af-drops">
 		<text>Formed in the anomaly “Stirfry” at high temperatures. From the exterior looks like a tear-like shade compound with a glossy surface, covered in cracks.</text>
 	</string>
 	<string id="enc_zone_artifact_af-dummy-battery">
-		<text>
-The origin of this object is shrouded in scientific mystery. It’s clear that it’s made in part by di-electric elements, but science does not know the physical conditions in which it is formed.
-</text>
+		<text>The origin of this object is shrouded in scientific mystery. It’s clear that it’s made in part by di-electric elements, but science does not know the physical conditions in which it is formed.</text>
 	</string>
 	<string id="enc_zone_artifact_af-dummy-dummy">
 		<text>When wearing this artifact the denaturalization of proteins happens slower. In other words, the flesh is able to endure higher temperatures and burns less. In itself it is an expensive and rare thing.</text>
@@ -215,7 +277,7 @@ The origin of this object is shrouded in scientific mystery. It’s clear that it’
 		<text>Crystallizes in the anomaly Burnt Fuzz. Naturally takes out the radiation from the organism. That is, through the ears along with some amount of blood. Blood loss is possible also through over openings. Widespread and quite effective, which is the cause for the stable pricein the artifact market.</text>
 	</string>
 	<string id="enc_zone_artifact_af-rusty-sea-urchin">
-		<text>The anomaly Burnt Fuzz very rarely gives rise to this artifact. Blood pressure rises, the body gets rid of a large amount of red blood cells. But along with them the stored radiation leaves the body as well. In his fundamental work titled "Ionization and polarization of the components of rare artifacts", Saharov noted that the content of this formation has a critical stability, and it's not realistic to create such an artifact  in lab conditions in the next ten years.</text>
+		<text>The anomaly Burnt Fuzz very rarely gives rise to this artifact. Blood pressure rises, the body gets rid of a large amount of red blood cells. But along with them the stored radiation leaves the body as well. In his fundamental work titled "Ionization and polarization of the components of rare artifacts", Saharov noted that the content of this formation has a critical stability, and it's not realistic to create such an artifact in lab conditions in the next ten years.</text>
 	</string>
 	<string id="enc_zone_artifact_af-rusty-thorn">
 		<text>The result of the interaction between the anomaly Burnt Fuzz and the body of a careless stalker. The Spiker artifact pokes the body of its owner, no matter what. But it also helps clean the body of radionucliodes. Quite widespread and cheap.</text>
@@ -242,19 +304,19 @@ The origin of this object is shrouded in scientific mystery. It’s clear that it’
 		<text>A vast machinery graveyard. Right after the first accident whole heaps of radioactive waste were dumped there. Mostly ruins of old buildings infested with mutants. Much like the outskirts of the Zone, the place swarms with rookie stalkers, with an occasional bandit loitering around, always on the lookout for freebies. Some artifacts to be found here, but most of them are just not worth the effort. You'll be better off elsewhere. Going North, you will get to the Wild Territory, West lays the entrance to the Dark Valley, with the road to the Agroprom Research Institute to the East.</text>
 	</string>
 	<string id="enc_zone_locations_military-loc">
-		<text>A deserted army base next to a dilapidated hamlet and a small marsh. The village is an eerie place literally swarming with mutants - the bloodsuckers alone are legion. Stalkers do their best to keep away from it, even if it means going extra kilometers around it. The anarchists from the Freedom faction have settled down in the army base. The road connecting the base to the Zone is guarded by the Brain Scorcher, which blocks the way to Pripyat and the Chernobyl NPP. </text>
+		<text>A deserted army base next to a dilapidated hamlet and a small marsh. The village is an eerie place literally swarming with mutants - the bloodsuckers alone are legion. Stalkers do their best to keep away from it, even if it means going extra kilometers around it. The anarchists from the Freedom faction have settled down in the army base. The road connecting the base to the Zone is guarded by the Brain Scorcher, which blocks the way to Pripyat and the Chernobyl NPP.</text>
 	</string>
 	<string id="enc_zone_locations_pripiat">
-		<text>This used to be a town built for engineers working at the Chernobyl NPP. Quite a big place once, it is a ghost town now with mutants and zombies as the only residents. There seems to be no way to get in there: the Brain Scorcher is blocking the way. </text>
+		<text>This used to be a town built for engineers working at the Chernobyl NPP. Quite a big place once, it is a ghost town now with mutants and zombies as the only residents. There seems to be no way to get in there: the Brain Scorcher is blocking the way.</text>
 	</string>
-	<string id="enc_zone_locations_Red Forest">
-		<text>A dreadful place. Easy to vanish without a trace there, no matter how lucky you have been in life so far. Whoever gets close to the Brain Scorcher immediately goes insane, turns into a zombie and starts stalking the Zone restlessly. A human shell is all that’s left. No-one has ever returned with a sound mind. </text>
+	<string id="enc_zone_locations_radar">
+		<text>Страшное место. Тут ни за здорово живёшь сгинуть можно, даже если перед этим всю жизнь везунчиком был. Любой, кто к Выжигателю мозгов близко подойдёт, с ума сходит, в зомби превращается и бродит потом по Зоне, неприкаянный. Одни оболочки от людей остаются, и никто оттуда никто с своём уме не возвращался.</text>
 	</string>
 	<string id="enc_zone_locations_rostok">
-		<text>The Wild Territory used to be the site of a rather large manufacturing plant, currently in ruins. Many stalkers met their death there: the place is swarming with all sorts of monsters. The beasts are literally streaming over there from the entire Zone. It is said that something of great importance is hidden at this site, so there are always plenty of daredevils willing to try their luck. </text>
+		<text>The Wild Territory used to be the site of a rather large manufacturing plant, currently in ruins. Many stalkers met their death there: the place is swarming with all sorts of monsters. The beasts are literally streaming over there from the entire Zone. It is said that something of great importance is hidden at this site, so there are always plenty of daredevils willing to try their luck.</text>
 	</string>
 	<string id="enc_zone_locations_stancia">
-		<text>The site of the world-famous nuclear power plant. This is the heart of the Zone. If you believe the legends, this is also the site of the Monolith - a mysterious thing capable of granting any wish. </text>
+		<text>The site of the world-famous nuclear power plant. This is the heart of the Zone. If you believe the legends, this is also the site of the Monolith - a mysterious thing capable of granting any wish.</text>
 	</string>
 	<string id="enc_zone_locations_yantar">
 		<text>The legendary lake in the sector of the same name dried up a long ago, leaving a shallow swamp in its place. The place is morbid and sodden with death. Great dangers await any adventurous soul foolish enough to get near it. Anyone who dares to go too far goes insane. Zombie drones are rambling around the whole sector, waiting for new victims. If you walk around the lake and past the zombies, you’ll end up at the scientists' camp, where the eggheads brought there by choppers are doing some research. You can have a chat with them; they buy artifacts and could even send you on a mission.</text>
@@ -270,71 +332,5 @@ The origin of this object is shrouded in scientific mystery. It’s clear that it’
 	</string>
 	<string id="enc_zone_zone-story_story-raid">
 		<text>The army, including special forces headed by paramilitary stalker detachments, launched a massive raid deep into the Zone. Their objective was to break through to the Chernobyl NPP and wipe out the cause of anomalous fields or at least obtain first-hand information on the current state of affairs. This endeavor, involving over a thousand people and heavy machinery, was a complete failure. Isolated groups of survivors were forced to settle within the Zone with slender hopes of rescue.</text>
-	</string>
-	<string id="Escape">
-		<text>Outpost</text>
-	</string>
-	<string id="Fuzz">
-		<text>Burnt Fuzz</text>
-	</string>
-	<string id="Garbage">
-		<text>Garbage</text>
-	</string>
-	<string id="Gravi">
-		<text>Vortex</text>
-	</string>
-	<string id="Lift">
-		<text>Elevator</text>
-	</string>
-	<string id="Locations">
-		<text>Locations</text>
-	</string>
-	<string id="Meat">
-		<text>Whirligig</text>
-	</string>
-	<string id="Military-loc">
-		<text>Army base</text>
-	</string>
-	<string id="Pripiat">
-		<text>Pripyat</text>
-	</string>
-	<string id="Red Forest">
-		<text>Brain Scorcher</text>
-	</string>
-	<string id="Radioactive">
-		<text>Source of radioactivity</text>
-	</string>
-	<string id="Rostok">
-		<text>Wild Territory</text>
-	</string>
-	<string id="Stancia">
-		<text>Chernobyl NPP</text>
-	</string>
-	<string id="Story-2006">
-		<text>2008, April 12, 14:33</text>
-	</string>
-	<string id="Story-2008">
-		<text>Year 2010</text>
-	</string>
-	<string id="Story-2010">
-		<text>Year 2011</text>
-	</string>
-	<string id="Story-raid">
-		<text>Army raid into the Zone. 2011</text>
-	</string>
-	<string id="Time_machine">
-		<text>Time Machine</text>
-	</string>
-	<string id="Yantar">
-		<text>Yantar</text>
-	</string>
-	<string id="Zharka">
-		<text>Burner</text>
-	</string>
-	<string id="Zone">
-		<text>The Zone</text>
-	</string>
-	<string id="Zone-story">
-		<text>History of the Zone</text>
 	</string>
 </string_table>

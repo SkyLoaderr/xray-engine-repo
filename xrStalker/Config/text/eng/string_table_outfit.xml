@@ -25,7 +25,7 @@
 		<text>Hunter PSZ-9d</text>
 	</string>
 	<string id="dolg_scientific_outfit_description">
-		<text>A wonderful protective suit for the Zone. Stalkers appreciate it because it combines excellent anomaly-proof and bullet-proof qualities. It includes the PSZ-9d suit, a closed cycle breathing system and an integrated system of anomalous field suppression. It provides quality bullet and splinter protection. </text>
+		<text>A wonderful protective suit for the Zone. Stalkers appreciate it because it combines excellent anomaly-proof and bullet-proof qualities. It includes the PSZ-9d suit, a closed cycle breathing system and an integrated system of anomalous field suppression. It provides quality bullet and splinter protection.</text>
 	</string>
 	<string id="dolg_scientific_outfit_name">
 		<text>PSZ-9Md Universal Protection</text>
@@ -61,13 +61,31 @@
 		<text>This Skat-9M bulletproof military suit is designed for assault operations in areas of anomalous activity. It includes a PSZ-12p heavy military bulletproof suit, an integrated compensation suit and a Sphere-12M helmet. It provides perfect protection from bullets and splinters and it doesn’t decrease the soldier’s mobility. It has a balanced system of anomaly protection.</text>
 	</string>
 	<string id="military_outfit_name">
-		<text>Military armored suit </text>
+		<text>Military armored suit</text>
 	</string>
 	<string id="monolit_outfit_description">
 		<text>Stalker suit from the Monolith faction. The producer is unknown. Its protective properties are slightly worse then those of the PSZ-9a military bulletproof vest. Its structure is similar to the suit popular with neutral stalkers which combines a bulletproof vest and a radiation protection suit. It provides good protection from gunfire. Its level of anomaly protection is low due to the absence of an air filtering system.</text>
 	</string>
 	<string id="monolit_outfit_name">
 		<text>Monolith suit</text>
+	</string>
+	<string id="mp_exo_outfit_description">
+		<text>The exoskeleton protects marvelously from bullet and splinter fire, however it lowers mobility. It is vulnerable to armor bullets.</text>
+	</string>
+	<string id="mp_exo_outfit_name">
+		<text>Exoskeleton PNB-4UZ</text>
+	</string>
+	<string id="mp_military_outfit_description">
+		<text>Army bulletproof suit is created for carrying out storming operations. Provides an excellent source of protection from bullet and splinter fire without lowering the mobility of the soldier. Vulnerable to armor bullets.</text>
+	</string>
+	<string id="mp_military_outfit_name">
+		<text>Army bulletproof suit.</text>
+	</string>
+	<string id="mp_scientific_outfit_description">
+		<text>This particular bodysuit is designed for carrying out research in the Zone. It has a breathing system with a closed cycle, as well as a built-in system for nullifying the activity of anomalous fields, thanks to which it protects marvelously from anomalies. Very vulnerable due to the weak protection. Has a built-in container for transporting artifacts.</text>
+	</string>
+	<string id="mp_scientific_outfit_name">
+		<text>Scientific bodysuit</text>
 	</string>
 	<string id="novice_outfit_description_m">
 		<text>They took this coat off of the body of one of the stalkers who died in the anomaly "fruit punch". Having laid a long time in the anomaly, the coat obtained the ability to speed up metabolism.</text>
@@ -94,7 +112,7 @@
 		<text>SEVA suit</text>
 	</string>
 	<string id="specnaz_outfit_description_m1">
-		<text>The fabric of the suit is saturated with  a streptozoidal lotion, which speeds up the healing of wounds.</text>
+		<text>The fabric of the suit is saturated with a streptozoidal lotion, which speeds up the healing of wounds.</text>
 	</string>
 	<string id="specnaz_outfit_name_m1">
 		<text>Healing Beril</text>
@@ -134,23 +152,5 @@
 	</string>
 	<string id="svoboda_light_outfit_name">
 		<text>Wind of Freedom suit</text>
-	</string>
-	<string id="mp_exo_outfit_description">
-		<text>The exoskeleton protects marvelously from bullet and splinter fire, however it lowers mobility. It is vulnerable to armor bullets.</text>
-	</string>
-	<string id="mp_exo_outfit_name">
-		<text>Exoskeleton PNB-4UZ</text>
-	</string>
-	<string id="mp_military_outfit_description">
-		<text>Army bulletproof suit is created for carrying out storming operations. Provides an excellent source of protection from bullet and splinter fire without lowering the mobility of the soldier. Vulnerable to armor bullets.</text>
-	</string>
-	<string id="mp_military_outfit_name">
-		<text>Army bulletproof suit.</text>
-	</string>
-	<string id="mp_scientific_outfit_description">
-		<text>This particular bodysuit is designed for carrying out research in the Zone. It has a breathing system with a closed cycle, as well as a built-in system for nullifying the activity of anomalous fields, thanks to which it protects marvelously from anomalies. Very vulnerable due to the weak protection. Has a built-in container for transporting artifacts.</text>
-	</string>
-	<string id="mp_scientific_outfit_name">
-		<text>Scientific bodysuit</text>
 	</string>
 </string_table>

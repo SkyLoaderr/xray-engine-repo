@@ -1,11 +1,11 @@
 	<string id="mil_actor_main_quest_descr">
 		<text>According to General Voronin, only Freedom has one of these guns. How I get it is my own business. I was told that one way would be to hang out with the Freedom stalker called Chef. The General says he likes his drink more than he should. I should stock up on vodka just in case I can use it.</text>
 	</string>
-	<string id="mil_blockpost_job_descr">
-		<text>It's imperative to protect the barrier from attack from the direction of the Brain Scorcher.</text>
-	</string>
 	<string id="mil_blockpost_job2_descr">
 		<text>Lukash: "If you have it in you, you can go to the security checkpoint by the exit to Radar - based on some indications they're expecting another attempt at a break in from the mutants or Monolith</text>
+	</string>
+	<string id="mil_blockpost_job_descr">
+		<text>It's imperative to protect the barrier from attack from the direction of the Brain Scorcher.</text>
 	</string>
 	<string id="mil_courier_doc_descr">
 		<text>Freedom has acquired Bulldog 6 grenade launchers. Two of them. One is in the arsenal, the other somewhere in the village.\n\n</text>

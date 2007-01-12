@@ -3,6 +3,9 @@
 	<string id="Ammo">
 		<text>Ammunition</text>
 	</string>
+	<string id="Weapons1">
+		<text>Weapon</text>
+	</string>
 	<string id="ammo-11.43x23-fmj">
 		<text>.45ACP rounds</text>
 	</string>
@@ -25,7 +28,7 @@
 		<text>12x76 dart rounds</text>
 	</string>
 	<string id="ammo-12x76-dart_s">
-		<text>12x76 dart </text>
+		<text>12x76 dart</text>
 	</string>
 	<string id="ammo-12x76-zhekan">
 		<text>12x76 slug rounds</text>
@@ -60,14 +63,14 @@
 	<string id="ammo-7.62x54-7h1">
 		<text>7.62x54 mm 7N1 rounds</text>
 	</string>
-	<string id="ammo-7.62x54-7h1_s">
-		<text>7,62 7H1</text>
-	</string>
 	<string id="ammo-7.62x54-7h14">
 		<text>7.62x54R 7N14 rounds</text>
 	</string>
 	<string id="ammo-7.62x54-7h14_s">
 		<text>7.62 7N14</text>
+	</string>
+	<string id="ammo-7.62x54-7h1_s">
+		<text>7,62 7H1</text>
 	</string>
 	<string id="ammo-7.62x54-ap">
 		<text>7.62x54 mm BP rounds</text>
@@ -121,7 +124,7 @@
 		<text>Gauss round</text>
 	</string>
 	<string id="ammo-gauss_s">
-		<text>Gauss </text>
+		<text>Gauss</text>
 	</string>
 	<string id="ammo-m209">
 		<text>M209 grenade</text>
@@ -151,19 +154,19 @@
 		<text>A standard round for the Kora-919 and the SIP-t M200 pistols. It has a standard core and a full-jacketed bullet.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-11.43x23-hydro">
-		<text>An Hydro-Shock round with improved characteristics for the Kora-919 and the SIP-t M200 pistols. It has a hollow-point bullet with a good stopping effect. </text>
+		<text>An Hydro-Shock round with improved characteristics for the Kora-919 and the SIP-t M200 pistols. It has a hollow-point bullet with a good stopping effect.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-12x70-buck">
-		<text>A standard 12 calibre round filled with 6 mm shot. It has an enormous killing power at a close range. It is designed for the TOS 34, the BM 17, the Chaser 13 and the SPSA14 shotguns. It is most effective at ranges under 30 meters. </text>
+		<text>A standard 12 calibre round filled with 6 mm shot. It has an enormous killing power at a close range. It is designed for the TOS 34, the BM 17, the Chaser 13 and the SPSA14 shotguns. It is most effective at ranges under 30 meters.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-12x76-dart">
 		<text>A finned bullet. It can stabilize in flight, which increases its accuracy. It is designed for the TOS 34, the BM 17, Chaser 13 and the SPSA14 shotguns. It has an armor-piercing effect and an increased range. It is effective at a range of up to 150 meters.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-12x76-zhekan">
-		<text>A round with a heavy naked bullet. It is usually used for big game hunting, but can be used for other purposes. Its heavy bullet does not pierce but actually forces itself through bulletproof vests. It is designed for the TOS 34, the BM 17, the Chaser 13 and the SPSA14 shotguns. It is effective at a range of up to 100 meters. </text>
+		<text>A round with a heavy naked bullet. It is usually used for big game hunting, but can be used for other purposes. Its heavy bullet does not pierce but actually forces itself through bulletproof vests. It is designed for the TOS 34, the BM 17, the Chaser 13 and the SPSA14 shotguns. It is effective at a range of up to 100 meters.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-5.45x39-ap">
-		<text>An armor-piercing round for the AKS-74, the AKS-74U and the AN-94 assault rifles. It has an improved armor-piercing effect, but a decreased stopping effect. </text>
+		<text>An armor-piercing round for the AKS-74, the AKS-74U and the AN-94 assault rifles. It has an improved armor-piercing effect, but a decreased stopping effect.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-5.45x39-fmj">
 		<text>A standard round for the Akm 74/2, the Akm 74/2U and the Obokan assault rifles. It has a standard core and a full-jacketed bullet.</text>
@@ -262,7 +265,7 @@
 		<text>The weight and size of the AKS-74U are similar to those of a submachine gun, but its operation mode and the ammunition it uses place it into the class of the assault rifles. Its advantages are its small dimensions very useful when fighting inside a building or in a thick forest and a relatively high piercing capabilities. Its main disadvantages are a limited accuracy range and quick overheating when firing bursts.\n Ammunition:\n standard 5.45x39 mm,\n armor-piercing 5.45x39 mm BP.</text>
 	</string>
 	<string id="enc_weapons1_wpn-ak74u_m1">
-		<text>Enhanced machine gun. Comes with a non-replaceable muffler. </text>
+		<text>Enhanced machine gun. Comes with a non-replaceable muffler.</text>
 	</string>
 	<string id="enc_weapons1_wpn-beretta">
 		<text>Adopted by the American army and police, as well as many military and police units all over the world. It is also very popular among the criminals for its high-powered round and its high-capacity magazine.\n Ammunition:\n standard 9x19 mm Parabellum,\n improved 9x19 mm PB1sP.</text>
@@ -270,11 +273,11 @@
 	<string id="enc_weapons1_wpn-bm16">
 		<text>A sawn-off BM-16 rifle. It is lighter and more compact then the original two-barrel rifle, but it is effective only at a close range. One of the weapons most commonly used by beginners.\n Ammunition:\n 12x70 shot,\n 12x76 slug,\n 12x76 dart.</text>
 	</string>
-	<string id="enc_weapons1_wpn-colt_m1">
-		<text>Weapon of hired assassins. Good old reliable colt, comes with a non-replaceable muffler. </text>
-	</string>
 	<string id="enc_weapons1_wpn-colt1911">
 		<text>A classical automatic Colt which present in all the conflicts of the 20th century with honor and entered the new century with confidence. Its small-size magazine is partially compensated by the use of a high-powered round.\n Ammunition:\n standard .45 ACP,\n improved .45 ACP Hydro-Shock.</text>
+	</string>
+	<string id="enc_weapons1_wpn-colt_m1">
+		<text>Weapon of hired assassins. Good old reliable colt, comes with a non-replaceable muffler.</text>
 	</string>
 	<string id="enc_weapons1_wpn-desert-eagle">
 		<text>A real gun for real heroes. It is big, heavy and very destructive. It is not very popular in the Zone due to its price and size. After all, you don't go hunting for elephants every day!\n Ammunition:\n standard .45 ACP,\n improved .45 ACP Hydro-Shock.</text>
@@ -282,8 +285,8 @@
 	<string id="enc_weapons1_wpn-eagle_m1">
 		<text>A gun that is already powerful, reworked to fit rifle bullets. Truly a killing machine for close-range combat.</text>
 	</string>
-	<string id="enc_weapons1_wpn-FT 200M">
-		<text>An assault rifle combined with a grenade launcher. It is equipped with an electronic fire control module and a 40-mm grenade launcher.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm АР.</text>
+	<string id="enc_weapons1_wpn-fn2000">
+		<text>Автоматно-гранатометный комплекс с компьютеризованным прицелом-модулем управления огнем и 40-миллиметровым гранатомётом.\n Боеприпасы:\n обычный 5,56x45 мм SS109,\n бронебойный 5,56x45 мм АР.</text>
 	</string>
 	<string id="enc_weapons1_wpn-fort">
 		<text>A police pistol of Ukrainian production, replaced the PMm. In comparison with the Makarov pistol, it has improved accuracy, ergonomics and a larger magazine, but it is less reliable.\n Ammunition:\n standard 9x18 mm,\n improved 9x18 mm +P+.</text>
@@ -291,8 +294,8 @@
 	<string id="enc_weapons1_wpn-fort_m1">
 		<text>Experimental prototype of the Fort gun</text>
 	</string>
-	<string id="enc_weapons1_wpn-GP 37">
-		<text>A German assault rifle. It is a first-grade specimen of the modern weaponry: it is light, reliable, and ergonomic.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm АР.</text>
+	<string id="enc_weapons1_wpn-g36">
+		<text>Штурмовая винтовка немецкого производства, представляющая собой первоклассный образец современного оружия - лёгкого, надёжного и эргономичного.\n Боеприпасы:\n обычный 5,56x45 мм SS109,\n бронебойный 5,56x45 мм АР.</text>
 	</string>
 	<string id="enc_weapons1_wpn-gauss">
 		<text>A super-accurate weapon made by the scientists in the Zone. It is almost noiseless, because instead of gunpowder, it uses the artifact's energy for firing rather than steam gases. In spite of the Gauss gun’s tremendous firepower, the recoil is insignificant. The accuracy and the killing power of this gun exceed those of all other small arms.\n Ammunition: 2-mm Gauss rounds.</text>
@@ -309,8 +312,8 @@
 	<string id="enc_weapons1_wpn-knife">
 		<text>Hunting knife</text>
 	</string>
-	<string id="enc_weapons1_wpn-IL 86">
-		<text>After the British army replaced this rifle with the German-made GP 37, it appeared in large quantities first on the black market and then in the Zone. The IL 86A2’s main advantages are a standard 4-x scope and the high accuracy of the first shot. In burst mode, its accuracy decreases greatly, and the main mechanisms of the rifle are not reliable enough.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm АР.</text>
+	<string id="enc_weapons1_wpn-l85">
+		<text>После того, как эта винтовка была заменена армией Великобритании на немецкую G36, она в большом количестве всплыла на чёрном рынке, а затем и в Зоне. Главным достоинством L85A2 являются штатный 4-кратный прицел и высокая точность первого выстрела. При стрельбе очередями точность боя резко падает, а надёжность основных механизмов винтовки недостаточно высока.\n Боеприпасы:\n обычный 5,56x45 мм SS109,\n бронебойный 5,56x45 мм АР.</text>
 	</string>
 	<string id="enc_weapons1_wpn-l85_m1">
 		<text>With a few modifications the effect of the throwing up of the barrell was diminished</text>
@@ -318,8 +321,8 @@
 	<string id="enc_weapons1_wpn-l85_m2">
 		<text>Weapon comes with an integrated muffler. Many parts are replaced with lighter analogues, which makes the weapon significantly lighter.</text>
 	</string>
-	<string id="enc_weapons1_wpn-TRs 301">
-		<text>A new stage of development of the famous M-16, a light rifle with an effective fire range of up to 300 meters. Due its to exceptionally easy triggering, high ergonomics and low weight, the weapon is highly accurate, though it is too sensitive to dirt and is not always suitable for use under difficult field conditions.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm АР.</text>
+	<string id="enc_weapons1_wpn-lr300">
+		<text>Новая ступень в развитии семейства знаменитой М-16. Название буквально означает "лёгкая винтовка с дальностью эффективного огня до 300 метров". Благодаря исключительно ровному спуску, высокой эргономике и небольшому весу данное оружие отличается высокой точностью боя, хотя высокая чувствительность к загрязнению делает её не всегда пригодной для использования в сложных полевых условиях.\n Боеприпасы:\n обычный 5,56x45 мм SS109,\n бронебойный 5,56x45 мм АР.</text>
 	</string>
 	<string id="enc_weapons1_wpn-lr300_m1">
 		<text>Modification of storming weaponry for firing single shots. It was assumed that it was going to be used as a cheap analog to the sniper rifle.</text>
@@ -328,7 +331,7 @@
 		<text>One of the best weapons in the submachine gun class. During the last decades of the 20th century it was adopted by the army and police special forces units in many countries. When it was gradually replaced with more up-to-date models, it appeared on the black market, and then in the Zone.\n Ammunition:\n standard 9x19 mm Parabellum,\n improved 9x19 mm PB1sP.</text>
 	</string>
 	<string id="enc_weapons1_wpn-mp5_m1">
-		<text>Light, compact, and now redone to fit a more wide-spread caliber, this machine gun is a true find for beginning shooters. </text>
+		<text>Light, compact, and now redone to fit a more wide-spread caliber, this machine gun is a true find for beginning shooters.</text>
 	</string>
 	<string id="enc_weapons1_wpn-mp5_m2">
 		<text>A variation on a basic model. A non-replaceable muffler is added.</text>
@@ -339,8 +342,8 @@
 	<string id="enc_weapons1_wpn-pm">
 		<text>The most widespread pistol in the Zone. It is a legacy of the Soviet era. It is relatively reliable and cheap, has low magazine capacity, low power and an unsatisfactory grouping of shots. It is the main weapon of a beginning stalker.\n Ammunition:\n standard 9x18 mm,\n improved 9x18 mm +P+.</text>
 	</string>
-	<string id="enc_weapons1_wpn-Bulldog 6">
-		<text>A revolver-type grenade launcher. Sometimes, it is just indispensable, particularly when targeting large numbers of mutants, attacking well-guarded stationary objects or fighting especially tough creatures.\n Ammunition: VOG-25 grenade,\n and VOG-25R grenade.</text>
+	<string id="enc_weapons1_wpn-rg-6">
+		<text>Гранатомет револьверного типа. Иногда просто незаменим, в частности при очистке больших площадей от мутантов, нападении на охраняемые стационарные объекты, в бою с особо живучими тварями.\n Боеприпасы - граната ВОГ-25,\n и граната ВОГ-25P.</text>
 	</string>
 	<string id="enc_weapons1_wpn-rg6_m1">
 		<text>A variation of the revolving granade launcher. The given model is made especially for use of granades of the western model.</text>
@@ -348,17 +351,17 @@
 	<string id="enc_weapons1_wpn-rpg7">
 		<text>A grenade launcher developed in the 1960s. Such grenade launchers are stored in large quantities in army depots, from where they are transferred to the Zone. Such weapon is rare for stalkers: its huge dimensions and heavy weight make it unpopular, though it is indispensable for some missions.\n Ammunition: OG-7V.</text>
 	</string>
+	<string id="enc_weapons1_wpn-sig220">
+		<text>A model developed back in 1975 but still popular all around the world. Its magazine is low capacity, but its mechanism is absolutely reliable. Its second advantage is the use of the high-powered Colt round.\n Ammunition:\n standard .45 ACP,\n improved .45 ACP Hydro-Shock.</text>
+	</string>
+	<string id="enc_weapons1_wpn-sig550">
+		<text>Одна из относительно новых швейцарских штурмовых винтовок под патрон 5,56x45 мм SS109. Точность, мягкая отдача и высокая надёжность данного оружия быстро завоевали ему самую широкую популярность.\n Боеприпасы:\n обычный 5,56x45 мм SS109,\n бронебойный 5,56x45 мм АР.</text>
+	</string>
 	<string id="enc_weapons1_wpn-sig_m1">
 		<text>The weapon was made for warfare in the city. To lessen the weight, some parts were removed or replaced. As a result, there is no way to attach neither a sight nor a granade launcher under the barrell. But at least it weighs almost half of what it did before.</text>
 	</string>
 	<string id="enc_weapons1_wpn-sig_m2">
 		<text>Modified for sniper fire. Furnished with a non-removeable optical sight of heightened focus.</text>
-	</string>
-	<string id="enc_weapons1_wpn-sig220">
-		<text>A model developed back in 1975 but still popular all around the world. Its magazine is low capacity, but its mechanism is absolutely reliable. Its second advantage is the use of the high-powered Colt round.\n Ammunition:\n standard .45 ACP,\n improved .45 ACP Hydro-Shock.</text>
-	</string>
-	<string id="enc_weapons1_wpn-SGI 5k">
-		<text>A relatively new Swiss assault rifle for the 5.56x45 mm SS109 round. This weapon is very popular due to its accuracy, soft recoil, and high reliability.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm АР.</text>
 	</string>
 	<string id="enc_weapons1_wpn-spas12">
 		<text>The SPSA14 smooth-bore rifle was developed in the late 1970th as an universal combat weapon for the police and the army assault units. This weapon is very reliable and flexibly used. It is however relatively big, expensive and its mechanism is too complex. Probably, this is the best close range gun in the Zone.\n Ammunition:\n 12x70 shot,\n 12x76 slug,\n 12x76 dart.</text>
@@ -408,17 +411,8 @@
 	<string id="grenade-rgd5">
 		<text>RGD-5 grenade</text>
 	</string>
-	<string id="Weapons1">
-		<text>Weapon</text>
-	</string>
 	<string id="wp_desert_eagle">
 		<text>Black kite</text>
-	</string>
-	<string id="wpn_hpsa">
-		<text>HPSS-1m</text>
-	</string>
-	<string id="wpn_usp">
-		<text>UDP Compact</text>
 	</string>
 	<string id="wpn-abakan">
 		<text>Obokan</text>
@@ -462,17 +456,17 @@
 	<string id="wpn-bm16">
 		<text>Sawn-off dbl-barrel</text>
 	</string>
-	<string id="wpn-colt_m1">
-		<text>Noiseless colt</text>
-	</string>
 	<string id="wpn-colt1911">
 		<text>Kora-919</text>
+	</string>
+	<string id="wpn-colt_m1">
+		<text>Noiseless colt</text>
 	</string>
 	<string id="wpn-eagle_m1">
 		<text>Big Ben</text>
 	</string>
-	<string id="wpn-FT 200M">
-		<text>FT 200M</text>
+	<string id="wpn-fn2000">
+		<text>FN2000</text>
 	</string>
 	<string id="wpn-fort">
 		<text>Fort-12Mк2</text>
@@ -480,8 +474,8 @@
 	<string id="wpn-fort_m">
 		<text>Fort-15</text>
 	</string>
-	<string id="wpn-GP 37">
-		<text>GP 37</text>
+	<string id="wpn-g36">
+		<text>G36</text>
 	</string>
 	<string id="wpn-gauss">
 		<text>Gauss gun</text>
@@ -492,8 +486,8 @@
 	<string id="wpn-groza_m1">
 		<text>"Storm" 5.45</text>
 	</string>
-	<string id="wpn-IL 86">
-		<text>IL 86</text>
+	<string id="wpn-l85">
+		<text>L85</text>
 	</string>
 	<string id="wpn-l85_m1">
 		<text>Balance L85</text>
@@ -501,8 +495,8 @@
 	<string id="wpn-l85_m2">
 		<text>Lightened L85</text>
 	</string>
-	<string id="wpn-TRs 301">
-		<text>TRs 301</text>
+	<string id="wpn-lr300">
+		<text>LR300</text>
 	</string>
 	<string id="wpn-lr300_m1">
 		<text>Sniper LP300</text>
@@ -522,8 +516,8 @@
 	<string id="wpn-pm">
 		<text>PMm</text>
 	</string>
-	<string id="wpn-Bulldog 6">
-		<text>Bulldog 6</text>
+	<string id="wpn-rg-6">
+		<text>РГ-6</text>
 	</string>
 	<string id="wpn-rg6_m1">
 		<text>PG-6 m209</text>
@@ -531,23 +525,23 @@
 	<string id="wpn-rpg7">
 		<text>RPG-7u</text>
 	</string>
+	<string id="wpn-sig220">
+		<text>SIP-t M200</text>
+	</string>
+	<string id="wpn-sig550">
+		<text>Sig 500</text>
+	</string>
 	<string id="wpn-sig_m1">
 		<text>Storming SiG</text>
 	</string>
 	<string id="wpn-sig_m2">
 		<text>Sniper SiG</text>
 	</string>
-	<string id="wpn-sig220">
-		<text>SIP-t M200</text>
-	</string>
-	<string id="wpn-SGI 5k">
-		<text>SGI 5k</text>
-	</string>
 	<string id="wpn-spas12">
 		<text>Franchi SPSA14</text>
 	</string>
 	<string id="wpn-spas12_m1">
-		<text>Threaded SPAS-12 </text>
+		<text>Threaded SPAS-12</text>
 	</string>
 	<string id="wpn-svd">
 		<text>Dragunov sniper rifle (SVD)</text>
@@ -578,5 +572,11 @@
 	</string>
 	<string id="wpn-wincheaster1300">
 		<text>Chaser 13</text>
+	</string>
+	<string id="wpn_hpsa">
+		<text>HPSS-1m</text>
+	</string>
+	<string id="wpn_usp">
+		<text>UDP Compact</text>
 	</string>
 </string_table>

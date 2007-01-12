@@ -91,6 +91,9 @@
 	<string id="mil_lukash">
 		<text>Lukash.</text>
 	</string>
+	<string id="mil_lukash_job">
+		<text>Уничтожить группу Долга</text>
+	</string>
 	<string id="mil_max">
 		<text>Max.</text>
 	</string>

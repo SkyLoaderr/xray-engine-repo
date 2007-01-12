@@ -1,3 +1,6 @@
+	<string id="Osoznanie">
+		<text>C-Consciousness representative</text>
+	</string>
 	<string id="lname_bandit_0">
 		<text>Gray</text>
 	</string>
@@ -194,7 +197,7 @@
 		<text>Chapay</text>
 	</string>
 	<string id="lname_bandit_157">
-		<text>Genghis </text>
+		<text>Genghis</text>
 	</string>
 	<string id="lname_bandit_158">
 		<text>Banana</text>
@@ -3137,7 +3140,7 @@
 		<text>Buddy</text>
 	</string>
 	<string id="lname_stalker_13">
-		<text>Blessed </text>
+		<text>Blessed</text>
 	</string>
 	<string id="lname_stalker_130">
 		<text>Cranky</text>
@@ -3575,7 +3578,7 @@
 		<text>Rabbi</text>
 	</string>
 	<string id="lname_stalker_261">
-		<text>Telegraphist </text>
+		<text>Telegraphist</text>
 	</string>
 	<string id="lname_stalker_262">
 		<text>Brigand</text>
@@ -3950,7 +3953,7 @@
 		<text>Tarantula</text>
 	</string>
 	<string id="lname_stalker_374">
-		<text>Jerboa </text>
+		<text>Jerboa</text>
 	</string>
 	<string id="lname_stalker_375">
 		<text>Boa</text>
@@ -4400,7 +4403,7 @@
 		<text>Formidable</text>
 	</string>
 	<string id="lname_stalker_509">
-		<text>Gioconda </text>
+		<text>Gioconda</text>
 	</string>
 	<string id="lname_stalker_51">
 		<text>Zmur</text>
@@ -4493,7 +4496,7 @@
 		<text>Chingachuk</text>
 	</string>
 	<string id="lname_stalker_537">
-		<text>Genghis </text>
+		<text>Genghis</text>
 	</string>
 	<string id="lname_stalker_538">
 		<text>Shtirlits</text>
@@ -4736,7 +4739,7 @@
 		<text>Siniy</text>
 	</string>
 	<string id="lname_stalker_70">
-		<text>Favorite </text>
+		<text>Favorite</text>
 	</string>
 	<string id="lname_stalker_71">
 		<text>Fierce</text>
@@ -4830,7 +4833,4 @@
 	</string>
 	<string id="lname_stalker_99">
 		<text>Sharp</text>
-	</string>
-	<string id="Osoznanie">
-		<text>C-Consciousness representative</text>
 	</string>

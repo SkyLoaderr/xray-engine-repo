@@ -13,7 +13,7 @@
 		<text>I came across a group of Duty members not far from your base.</text>
 	</string>
 	<string id="mil_bodyguard_dialog_6">
-		<text>Uh-oh… Looks like Duty is trying to equalize again…  Ok, you can enter, but make sure to put that piece away. Don't even think of making a mess in here, or you'll be leaving soon with your feet foremost.</text>
+		<text>Uh-oh… Looks like Duty is trying to equalize again… Ok, you can enter, but make sure to put that piece away. Don't even think of making a mess in here, or you'll be leaving soon with your feet foremost.</text>
 	</string>
 	<string id="mil_bodyguard_dialog_7">
 		<text>OK.</text>
@@ -202,7 +202,7 @@
 		<text>You, umm... Go ahead, drink. I haven't had much practice lately.</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_2_3">
-		<text>To our victory! Yeaaahh…  Ahhh, good times, good times!</text>
+		<text>To our victory! Yeaaahh… Ahhh, good times, good times!</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_2_4">
 		<text>Yes… to our victory!</text>
@@ -358,7 +358,7 @@
 		<text>OK.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_411">
-		<text>Some other time. </text>
+		<text>Some other time.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_412">
 		<text>Do as you will.</text>
@@ -397,7 +397,7 @@
 		<text>Have a chat with the other snipers while we deal with these bastards. I can see you're good at that kind of thing.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_5070">
-		<text>Some other time. </text>
+		<text>Some other time.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_5071">
 		<text>Well, judge for yourself. I won't make you.</text>
@@ -541,7 +541,7 @@
 		<text>What is there beyond it?</text>
 	</string>
 	<string id="mil_freedom_commander_common2_3">
-		<text>Only death… or serving Monolith. "Our Monolith! In your name we..." Damn!  In short, no one needs to go there. That's why we're based here, trying to prevent the muck from infesting the Zone. Like some kind of Jedis, hehe. We also detain the really stupid ones - or at least try not to let them creep into the center.</text>
+		<text>Only death… or serving Monolith. "Our Monolith! In your name we..." Damn! In short, no one needs to go there. That's why we're based here, trying to prevent the muck from infesting the Zone. Like some kind of Jedis, hehe. We also detain the really stupid ones - or at least try not to let them creep into the center.</text>
 	</string>
 	<string id="mil_freedom_commander_common2_4">
 		<text>Why do you do that?</text>
@@ -814,7 +814,7 @@
 		<text>You're still here?</text>
 	</string>
 	<string id="mil_leader_start_dialog_5001">
-		<text>Great job, Marked One! Here, take this… your payment for taking care of the snitch. You're welcome to rest on our territory whenever you want and you can also count on our help. Only, there's one more business I'd like you to do for me. Are you not too tired? </text>
+		<text>Great job, Marked One! Here, take this… your payment for taking care of the snitch. You're welcome to rest on our territory whenever you want and you can also count on our help. Only, there's one more business I'd like you to do for me. Are you not too tired?</text>
 	</string>
 	<string id="mil_leader_start_dialog_5002">
 		<text>What exactly?</text>
@@ -994,7 +994,7 @@
 		<text>Good man! Dismissed.</text>
 	</string>
 	<string id="mil_patrol_dialog2_0">
-		<text>Ah, a rookie… Come over a sec. </text>
+		<text>Ah, a rookie… Come over a sec.</text>
 	</string>
 	<string id="mil_patrol_dialog2_1">
 		<text>I don't get it.</text>
@@ -1051,7 +1051,7 @@
 		<text>How's it going?</text>
 	</string>
 	<string id="mil_screw_dialog_1006">
-		<text>Pfft! Nothing but rubbish. I'm totally beat. Listen, you got any vodka on you? I'd, umm… you… want a nice scope? The best optics there is! </text>
+		<text>Pfft! Nothing but rubbish. I'm totally beat. Listen, you got any vodka on you? I'd, umm… you… want a nice scope? The best optics there is!</text>
 	</string>
 	<string id="mil_screw_dialog_1100">
 		<text>No.</text>
@@ -1264,13 +1264,13 @@
 		<text>Got it. Thanks.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_10">
-		<text>Same to you. What brings you here? </text>
+		<text>Same to you. What brings you here?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_100">
 		<text>Who's the boss around here? I've got business to discuss with him.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_1000">
-		<text>Lukash is our leader, you can find him in the main building. But as you enter, make sure to put your piece away - unless you wanna get shot for nothing. </text>
+		<text>Lukash is our leader, you can find him in the main building. But as you enter, make sure to put your piece away - unless you wanna get shot for nothing.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_10000">
 		<text>What for?</text>

@@ -9,6 +9,9 @@
 	<string id="st_drink">
 		<text>drink</text>
 	</string>
+	<string id="st_game_over_press_jump">
+		<text>нажмите ($$ACTION_JUMP$$) для выхода в главное меню</text>
+	</string>
 	<string id="st_mp_direct_ip">
 		<text>Direct IP</text>
 	</string>
@@ -81,6 +84,9 @@
 	<string id="ui_st_months">
 		<text>months</text>
 	</string>
+	<string id="ui_st_params">
+		<text>Parameters</text>
+	</string>
 	<string id="ui_st_secs">
 		<text>secs</text>
 	</string>
@@ -104,8 +110,5 @@
 	</string>
 	<string id="ui_st_your_items">
 		<text>Your items</text>
-	</string>
-	<string id="ui_st_params">
-		<text>Parameters</text>
 	</string>
 </string_table>

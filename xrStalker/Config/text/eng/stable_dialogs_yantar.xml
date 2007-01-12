@@ -52,7 +52,7 @@
 		<text>I'm looking for Lab X16. The Barkeep told me that you might have info about its location.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_1211">
-		<text>We have been studying the emission in Lab X16 for a long time, but you won't get in there without special equipment. We've developed a psi-protection device that can help shield you from the emission, but needs some fine-tuning. If you could help us with that, I could give you a working prototype that you can use to get inside the laboratory. </text>
+		<text>We have been studying the emission in Lab X16 for a long time, but you won't get in there without special equipment. We've developed a psi-protection device that can help shield you from the emission, but needs some fine-tuning. If you could help us with that, I could give you a working prototype that you can use to get inside the laboratory.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_12111">
 		<text>OK.</text>
@@ -130,7 +130,7 @@
 		<text>Yes, Marked One? What are you looking for?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_31">
-		<text>You did an excellent job. If the measurements are correct, the prototype should provide you with maximum protection from emission. </text>
+		<text>You did an excellent job. If the measurements are correct, the prototype should provide you with maximum protection from emission.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_311">
 		<text>Glad to hear that.</text>
@@ -142,7 +142,7 @@
 		<text>How exactly does one get inside Lab X16? Where is the entrance?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_311111">
-		<text>Vasiliev was working on the lab issue. About a week ago he and a stalker called Ghost tried to get inside. A couple of hours later we felt a major tremor, and after another hour we picked up a signal from Vasiliev coming from the swamp, but it died away. And Vasiliev died away with it, it would seem. Try to find his corpse. He had the exact information on the lab and the way to get into it. There may even be info on deactivating that source of the emission. I've uploaded you all the data we have. </text>
+		<text>Vasiliev was working on the lab issue. About a week ago he and a stalker called Ghost tried to get inside. A couple of hours later we felt a major tremor, and after another hour we picked up a signal from Vasiliev coming from the swamp, but it died away. And Vasiliev died away with it, it would seem. Try to find his corpse. He had the exact information on the lab and the way to get into it. There may even be info on deactivating that source of the emission. I've uploaded you all the data we have.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_311112">
 		<text>Ahem...It would be very interesting to take a look at these documents. So, you think Vasiliev has them?</text>
@@ -172,7 +172,7 @@
 		<text>How does one get inside Lab X16? Where exactly is the entrance?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_41111111">
-		<text>Vasiliev was working on the lab issue. About a week ago he and a stalker called Ghost tried to get inside. A couple of hours later we felt a major tremor, and after another hour we picked up a signal from Vasiliev coming from the swamp, but it died away. And Vasiliev died away with it, it would seem. Try to find his corpse. He had the exact information on the lab and the way to get into it. There may even be info on deactivating that source of the emission. I've uploaded you all the data we have. </text>
+		<text>Vasiliev was working on the lab issue. About a week ago he and a stalker called Ghost tried to get inside. A couple of hours later we felt a major tremor, and after another hour we picked up a signal from Vasiliev coming from the swamp, but it died away. And Vasiliev died away with it, it would seem. Try to find his corpse. He had the exact information on the lab and the way to get into it. There may even be info on deactivating that source of the emission. I've uploaded you all the data we have.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_41112">
 		<text>Anything else?</text>
@@ -202,7 +202,7 @@
 		<text>How does one get inside Lab X16? Where exactly is the entrance?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_511111111">
-		<text>Vasiliev was working on the lab issue. About a week ago he and a stalker called Ghost tried to get inside. A couple of hours later we felt a major tremor, and after another hour we picked up a signal from Vasiliev coming from the swamp, but it died away. And Vasiliev died away with it, it would seem. Try to find his corpse. He had the exact information on the lab and the way to get into it. There may even be info on deactivating that source of the emission. I've uploaded you all the data we have. </text>
+		<text>Vasiliev was working on the lab issue. About a week ago he and a stalker called Ghost tried to get inside. A couple of hours later we felt a major tremor, and after another hour we picked up a signal from Vasiliev coming from the swamp, but it died away. And Vasiliev died away with it, it would seem. Try to find his corpse. He had the exact information on the lab and the way to get into it. There may even be info on deactivating that source of the emission. I've uploaded you all the data we have.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_51112">
 		<text>Ahem...It would be very interesting to take a look at these documents. So, you think Vasiliev has them?</text>
@@ -244,13 +244,13 @@
 		<text>Can you be a little clearer?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_9111">
-		<text>Stalker, now you will be able to break through to the laboratory, but unless you turn off the emitter, you won't last long even with the psi-protection on. We've estimated an approximate location of the emitter; it is located in an underground facility. I have marked the spot on your map. </text>
+		<text>Stalker, now you will be able to break through to the laboratory, but unless you turn off the emitter, you won't last long even with the psi-protection on. We've estimated an approximate location of the emitter; it is located in an underground facility. I have marked the spot on your map.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_9112">
 		<text>How do I get inside X16? Where exactly is the entrance?</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_9113">
-		<text>Vasiliev was working on the lab issue. About a week ago he and a stalker called Ghost tried to get inside. A couple of hours later we felt a major tremor, and after another hour we picked up a signal from Vasiliev coming from the swamp, but it died away. And Vasiliev died away with it, it would seem. Try to find his corpse. He had the exact information on the lab and the way to get into it. There may even be info on deactivating that source of the emission. I've uploaded you all the data we have. </text>
+		<text>Vasiliev was working on the lab issue. About a week ago he and a stalker called Ghost tried to get inside. A couple of hours later we felt a major tremor, and after another hour we picked up a signal from Vasiliev coming from the swamp, but it died away. And Vasiliev died away with it, it would seem. Try to find his corpse. He had the exact information on the lab and the way to get into it. There may even be info on deactivating that source of the emission. I've uploaded you all the data we have.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_9114">
 		<text>Ahem...It would be very interesting to take a look at these documents. So, you think Vasiliev has them?</text>

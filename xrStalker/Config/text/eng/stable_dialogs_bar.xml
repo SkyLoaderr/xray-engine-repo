@@ -327,8 +327,14 @@
 	<string id="bar_bar_barmen_start_1313">
 		<text>Go on.</text>
 	</string>
+	<string id="bar_bar_barmen_start_1314">
+		<text>All we need to do is get to the antennas and disable them. Got it?</text>
+	</string>
 	<string id="bar_bar_barmen_start_1315">
 		<text>Got it.</text>
+	</string>
+	<string id="bar_bar_barmen_start_1316">
+		<text>Oh yeah, one last thing! The leader of Duty, I marked him on the map, needs a volunteer to carry out some sort of assignment at the military warehouses. If you're interested, you can drop by. I'll talk with the guards, they'll let you in.</text>
 	</string>
 	<string id="bar_bar_barmen_start_132">
 		<text>No, I'm not ready yet.</text>
@@ -337,7 +343,7 @@
 		<text>Get ready, Marked One! This task can't wait!</text>
 	</string>
 	<string id="bar_bar_barmen_start_151">
-		<text>OK, the documents you brought from the Institute make some things a little clearer but we’re still missing the info we need to get a full picture. A lab designated X18 is mentioned and its description matches the abandoned underground vaults in the Dark Valley. Looks like you’ll have to go there and get the info we need. The lab is closed and you’ll need two electronic keys to get inside. I’ll give you one but you’ll have to get the other one from Boar in the Dark Valley. </text>
+		<text>OK, the documents you brought from the Institute make some things a little clearer but we’re still missing the info we need to get a full picture. A lab designated X18 is mentioned and its description matches the abandoned underground vaults in the Dark Valley. Looks like you’ll have to go there and get the info we need. The lab is closed and you’ll need two electronic keys to get inside. I’ll give you one but you’ll have to get the other one from Boar in the Dark Valley.</text>
 	</string>
 	<string id="bar_bar_barmen_start_1511">
 		<text>Go on.</text>
@@ -370,7 +376,7 @@
 		<text>Yeah. Here.</text>
 	</string>
 	<string id="bar_bar_barmen_start_1721">
-		<text>Good, the situation is becoming clearer. As I expected this Brain Scorcher is man-made. It’s a Kaymanov experimental emitter and its components were made exactly in X18.  These documents refer to lab X16 where they sent some components. According to this, X16 is located in the production complex area by Lake Yantar. The scientists have set up a mobile lab around there so maybe they can help.</text>
+		<text>Good, the situation is becoming clearer. As I expected this Brain Scorcher is man-made. It’s a Kaymanov experimental emitter and its components were made exactly in X18. These documents refer to lab X16 where they sent some components. According to this, X16 is located in the production complex area by Lake Yantar. The scientists have set up a mobile lab around there so maybe they can help.</text>
 	</string>
 	<string id="bar_bar_barmen_start_17211">
 		<text>Go on.</text>
@@ -417,8 +423,14 @@
 	<string id="bar_bar_barmen_start_22">
 		<text>Here are the documents from the Institute.</text>
 	</string>
+	<string id="bar_bar_barmen_start_221">
+		<text>Excellent work, Marked One. Finally the documents are with us. Now I have to take a look at them, maybe I'll figure out how to get to the North. By the way, if you're tight on money, you can go fight in the arena. The name of the owner is Arny, I forwarded his contact info to you.</text>
+	</string>
 	<string id="bar_bar_barmen_start_2211">
 		<text>OK.</text>
+	</string>
+	<string id="bar_bar_barmen_start_22111">
+		<text>Now listen!</text>
 	</string>
 	<string id="bar_bar_barmen_start_3">
 		<text>What do you want, Marked One?</text>
@@ -449,6 +461,9 @@
 	</string>
 	<string id="bar_bar_barmen_talk_info_51">
 		<text>He's an old stalker in retirement. He lives in the marshes, I'll mark it on the map for you. He used to be in Strelok's group in his day.</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_6">
+		<text>What do you know about a stalker called Fang?</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_61">
 		<text>There was a man that went by that name, spoke with a lisp… He was a bit weird, that's for sure - talked to himself and stuff…but he was OK. I haven't seen him at the Bar for ages.</text>
@@ -502,7 +517,7 @@
 		<text>I feel for you.</text>
 	</string>
 	<string id="bar_bar_drunk_dolg_start_21">
-		<text>What's up? Any news? You haven't whacked the little piece of shit, I can see it in your eyes. Life sucks… Listen, at least have a drink with me, will you, friend? </text>
+		<text>What's up? Any news? You haven't whacked the little piece of shit, I can see it in your eyes. Life sucks… Listen, at least have a drink with me, will you, friend?</text>
 	</string>
 	<string id="bar_bar_drunk_dolg_start_31">
 		<text>Maaan…hic…you… you… you helped me! Let's drink to Duty… I guess! And…Oh!</text>
@@ -627,6 +642,9 @@
 	<string id="bar_bar_osvedomitel_trade_info_41">
 		<text>I've got some information about the secret of Lake Yantar. The price is just completely symbolic - 4500 roubles!</text>
 	</string>
+	<string id="bar_bar_osvedomitel_trade_info_411">
+		<text>Okay, I buy. Take 4500.</text>
+	</string>
 	<string id="bar_bar_osvedomitel_trade_info_4111">
 		<text>The secret of Lake Yantar is similar to the secret of the Brain Scorcher and their effects are similar in many ways. Some kind of emission zombifies all who come in contact with it. The zombified stalkers move around the center of some emitter, attacking everyone. There is information to suggest that the solution to the riddle of Lake Yantar is below ground. Here are the co-ordinates of the emitter at Lake Yantar and those of the Brain Scorcher.</text>
 	</string>
@@ -636,53 +654,8 @@
 	<string id="bar_bar_osvedomitel_trade_info_4121">
 		<text>Up to you. Come to the bar when you decide otherwise - I'm always here.</text>
 	</string>
-	<string id="bar_bar_visitors_1_start_11">
-		<text>…it's about time someone whacked Borov! If I knew who it was, I'd buy him a drink.</text>
-	</string>
-	<string id="bar_bar_visitors_1_start_111">
-		<text>Yeah, it was about time.</text>
-	</string>
-	<string id="bar_bar_visitors_1_start_21">
-		<text>…someone really pissed off Freedom: I heard one of their groups was destroyed in the Wild Territory…I wonder who did it?</text>
-	</string>
-	<string id="bar_bar_visitors_1_start_211">
-		<text>Yeah, I wish I knew…</text>
-	</string>
-	<string id="bar_bar_visitors_1_start_31">
-		<text>…at long last someone had the balls to clear out the bloodsuckers in the Wild Territory… What was Duty doing all this time?</text>
-	</string>
-	<string id="bar_bar_visitors_1_start_311">
-		<text>What was Duty doing? They were doing Freedom, what else? </text>
-	</string>
-	<string id="bar_bar_visitors_1_start_41">
-		<text>…I heard someone whacked the leader of Freedom. They're in for some tough times methinks. Duty is gonna really put a squeeze on 'em…</text>
-	</string>
-	<string id="bar_bar_visitors_1_start_411">
-		<text>Let's hope so.</text>
-	</string>
-	<string id="bar_bar_visitors_1_start_51">
-		<text>So you wiped out those veterans? Well done, friend! About six stalkers went missing in that area recently...we all suspected those mad veterans. It's a good thing that they've been dealt with.</text>
-	</string>
-	<string id="bar_bar_visitors_1_start_511">
-		<text>Yeah, many people wanted those veterans to "leave".</text>
-	</string>
-	<string id="bar_bar_visitors_1_start_61">
-		<text>You turned off the emissions in Yantar? Wow...you're a lucky nut, damn it, I'm glad that someone finally managed to deal with that thing! You can't imagine how many of our boys died there... but now the scientists will work out what it was. We might even be able to deal with the Scorcher now...</text>
-	</string>
-	<string id="bar_bar_visitors_1_start_611">
-		<text>I want to believe that the Scorcher can be switched off. </text>
-	</string>
-	<string id="bar_bar_visitors_1_start_71">
-		<text>What do you want? Don't you see, I'm trying to relax here…</text>
-	</string>
-	<string id="bar_bar_visitors_1_start_711">
-		<text>What's new?</text>
-	</string>
-	<string id="bar_bar_visitors_1_start_7111">
-		<text>I hear Strelok came back. He's got all the equipment you need to get to the Machine... He's hiding now though 'cause a lot of people are after him. Some are open about it while others are trying to keep their interest a in secret. Rumour has it even Duty and Freedom have joined the hunt... each with their own agenda.</text>
-	</string>
-	<string id="bar_bar_visitors_1_start_71111">
-		<text>Looks like Strelok is right to hide.</text>
+	<string id="bar_bar_osvedomitel_trade_info_999">
+		<text>I don't have any new information at the moment.</text>
 	</string>
 	<string id="bar_bar_visitors_10_start_71">
 		<text>What do you want?</text>
@@ -739,10 +712,7 @@
 		<text>Suppose I am. What do you want?</text>
 	</string>
 	<string id="bar_bar_visitors_14_start_84">
-		<text>Spotty got saved from the Red Forest, but Hunchback is dead. </text>
-	</string>
-	<string id="bar_arena_man_start_61">
-		<text>Hello, meat! If you haven't fought in the Arena you're meat and that's what you'll remain! Remember: you're a piece of meat, mate! The good thing is that this problem ain't hard to solve. Fight and prove that you're a real man! The rules are as simple as it gets. Two pieces of meat... sometimes more... enter the Arena and try to beat their opponent by any means available. Whoever is standing at the end - wins. The loser is fed to the blind dogs. A weapon is chosen for every round but the fighters only find out what it is right before the fight. Don't worry tho', we don't send anyone into the Arena without some firepower. Your things will fit perfectly in this box, the one next to me...So whaddaya say, meat?</text>
+		<text>Spotty got saved from the Red Forest, but Hunchback is dead.</text>
 	</string>
 	<string id="bar_bar_visitors_14_start_85">
 		<text>Goddammit!</text>
@@ -764,6 +734,54 @@
 	</string>
 	<string id="bar_bar_visitors_14_start_91">
 		<text>Sorry, bro'. I'm not in the mood for talking… I'd rather just have another drink.</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_11">
+		<text>…it's about time someone whacked Borov! If I knew who it was, I'd buy him a drink.</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_111">
+		<text>Yeah, it was about time.</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_21">
+		<text>…someone really pissed off Freedom: I heard one of their groups was destroyed in the Wild Territory…I wonder who did it?</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_211">
+		<text>Yeah, I wish I knew…</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_31">
+		<text>…at long last someone had the balls to clear out the bloodsuckers in the Wild Territory… What was Duty doing all this time?</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_311">
+		<text>What was Duty doing? They were doing Freedom, what else?</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_41">
+		<text>…I heard someone whacked the leader of Freedom. They're in for some tough times methinks. Duty is gonna really put a squeeze on 'em…</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_411">
+		<text>Let's hope so.</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_51">
+		<text>So you wiped out those veterans? Well done, friend! About six stalkers went missing in that area recently...we all suspected those mad veterans. It's a good thing that they've been dealt with.</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_511">
+		<text>Yeah, many people wanted those veterans to "leave".</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_61">
+		<text>You turned off the emissions in Yantar? Wow...you're a lucky nut, damn it, I'm glad that someone finally managed to deal with that thing! You can't imagine how many of our boys died there... but now the scientists will work out what it was. We might even be able to deal with the Scorcher now...</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_611">
+		<text>I want to believe that the Scorcher can be switched off.</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_71">
+		<text>What do you want? Don't you see, I'm trying to relax here…</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_711">
+		<text>What's new?</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_7111">
+		<text>I hear Strelok came back. He's got all the equipment you need to get to the Machine... He's hiding now though 'cause a lot of people are after him. Some are open about it while others are trying to keep their interest a in secret. Rumour has it even Duty and Freedom have joined the hunt... each with their own agenda.</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_71111">
+		<text>Looks like Strelok is right to hide.</text>
 	</string>
 	<string id="bar_bar_visitors_2_start_71">
 		<text>What do you want?</text>
@@ -897,6 +915,18 @@
 	<string id="bar_dolg_base_guard_acces_3121">
 		<text>Your choice, man. See you.</text>
 	</string>
+	<string id="bar_dolg_base_guard_rules_0">
+		<text>Barkeep told me that your leadership has some sort of assignment for me.</text>
+	</string>
+	<string id="bar_dolg_base_guard_rules_1">
+		<text>Yes, he let us know about you, but before we let you in I want to brief you on our rules. So listen, our rules are simple. First rule - it's forbidden to shoot on our territory. If you break the rule twice, our patrol will open fire on you. Even if you make a run for it, you won't appear on our territory again - our guards will make sure of that. If you act calmly, you won't have any problems.</text>
+	</string>
+	<string id="bar_dolg_base_guard_rules_2">
+		<text>Got it. Is that all?</text>
+	</string>
+	<string id="bar_dolg_base_guard_rules_3">
+		<text>Yes, that's enough. You can pass.</text>
+	</string>
 	<string id="bar_dolg_base_guard_rules_4">
 		<text>That's clear. Anything else?</text>
 	</string>
@@ -947,6 +977,12 @@
 	</string>
 	<string id="bar_dolg_leader_job_1">
 		<text>That's a good question, Marked One and there's an equally good answer to it - kill Freedom anarchists. You'll get a reward for every PDA of theirs you bring and you might get promoted too. Take all the PDAs you get to Petrenko - he gives out the rewards.</text>
+	</string>
+	<string id="bar_dolg_leader_join_0">
+		<text>Barkeep told me that you have some assignment for me at the military warehouses…</text>
+	</string>
+	<string id="bar_dolg_leader_join_1">
+		<text>I want to ask you to do one thing, personally for me, you see? We're in the midst of territorial warefare with the Freedom faction and we need some weapons more powerful than what we have. Freedom has some excellent PG-6 granade launchers. If you could penetrate into their territory and steal at least one such granade launcher, I would generously reward you. Since you aren't in our faction, you can quickly gain the trust of Freedom and, if you're lucky, get a hold of the PG-6.</text>
 	</string>
 	<string id="bar_dolg_leader_join_11">
 		<text>Go on.</text>
@@ -999,6 +1035,9 @@
 	<string id="bar_dolg_leader_quest_rg6_finish_0">
 		<text>I completed the mission. I brought the RG-6.</text>
 	</string>
+	<string id="bar_dolg_leader_quest_rg6_finish_1">
+		<text>Good work, stalker. This is exactly what we need. Well, Marked One, you carried out my request, and in return you can take this suit. I think you'll like it.</text>
+	</string>
 	<string id="bar_dolg_leader_start_11">
 		<text>I'm listening.</text>
 	</string>
@@ -1011,6 +1050,12 @@
 	<string id="bar_dolg_leader_start_311">
 		<text>Yes, here is the RG-6.</text>
 	</string>
+	<string id="bar_dolg_leader_start_3111">
+		<text>Good work, stalker. This is exactly what we need. Well, Marked One, you carried out my request, and in return you can take this suit. I think you'll like it.</text>
+	</string>
+	<string id="bar_dolg_leader_start_41">
+		<text>What brought you to me, brother?</text>
+	</string>
 	<string id="bar_dolg_leader_start_51">
 		<text>The war with Freedom is coming to an end, Marked One. You played your part in fighting for the cause and now I want to finish this war. I want you to kill the Freedom leader.</text>
 	</string>
@@ -1021,7 +1066,7 @@
 		<text>Hello, stalker. Join Duty? We need good fighters! I only joined recently and look at the cool uniform they gave me!</text>
 	</string>
 	<string id="bar_dolg_newbie_start_21">
-		<text>Hello, Marked One. I'm glad you're with us. Duty is really going to need good fighters soon. </text>
+		<text>Hello, Marked One. I'm glad you're with us. Duty is really going to need good fighters soon.</text>
 	</string>
 	<string id="bar_dolg_novice_start_2">
 		<text>Hey, fellow stalker.</text>
@@ -1091,9 +1136,6 @@
 	</string>
 	<string id="bar_dolg_zastava_talk_21111">
 		<text>Thanks for the information.</text>
-	</string>
-	<string id="bar_bar_barmen_talk_info_6">
-		<text>What do you know about a stalker called Fang?</text>
 	</string>
 	<string id="bar_dolg_zastava_talk_212">
 		<text>You said the Duty base is here. How do I get there?</text>
@@ -1286,50 +1328,5 @@
 	</string>
 	<string id="bar_ecolog_dialog_21">
 		<text>It's over. They killed Kruglov!</text>
-	</string>
-	<string id="bar_bar_osvedomitel_trade_info_411">
-		<text>Okay, I buy. Take 4500.</text>
-	</string>
-	<string id="bar_bar_osvedomitel_trade_info_999">
-		<text>I don't have any new information at the moment.</text>
-	</string>
-	<string id="bar_bar_barmen_start_1314">
-		<text>All we need to do is get to the antennas and disable them. Got it?</text>
-	</string>
-	<string id="bar_bar_barmen_start_221">
-		<text>Excellent work, Marked One. Finally the documents are with us. Now I have to take a look at them, maybe I'll figure out how to get to the North. By the way, if you're tight on money, you can go fight in the arena. The name of the owner is Arny, I forwarded his contact info to you. </text>
-	</string>
-	<string id="bar_bar_barmen_start_1316">
-		<text>Oh yeah, one last thing! The leader of Duty, I marked him on the map, needs a volunteer to carry out some sort of assignment at the military warehouses. If you're interested, you can drop by. I'll talk with the guards, they'll let you in.</text>
-	</string>
-	<string id="bar_bar_barmen_start_22111">
-		<text>Now listen!</text>
-	</string>
-	<string id="bar_dolg_base_guard_rules_0">
-		<text>Barkeep told me that your leadership has some sort of assignment for me.</text>
-	</string>
-	<string id="bar_dolg_base_guard_rules_1">
-		<text>Yes, he let us know about you, but before we let you in I want to brief you on our rules. So listen, our rules are simple. First rule - it's forbidden to shoot on our territory. If you break the rule twice, our patrol will open fire on you. Even if you make a run for it, you won't appear on our territory again - our guards will make sure of that. If you act calmly, you won't have any problems. </text>
-	</string>
-	<string id="bar_dolg_base_guard_rules_2">
-		<text>Got it. Is that all?</text>
-	</string>
-	<string id="bar_dolg_base_guard_rules_3">
-		<text>Yes, that's enough. You can pass.</text>
-	</string>
-	<string id="bar_dolg_leader_join_0">
-		<text>Barkeep told me that you have some assignment for me at the military warehouses…</text>
-	</string>
-	<string id="bar_dolg_leader_join_1">
-		<text>I want to ask you to do one thing, personally for me, you see? We're in the midst of territorial warefare with the Freedom faction and we need some weapons more powerful than what we have. Freedom has some excellent PG-6 granade launchers. If you could penetrate into their territory and steal at least one such granade launcher, I would generously reward you. Since you aren't in our faction, you can quickly gain the trust of Freedom and, if you're lucky, get a hold of the PG-6.</text>
-	</string>
-	<string id="bar_dolg_leader_quest_rg6_finish_1">
-		<text>Good work, stalker. This is exactly what we need. Well, Marked One, you carried out my request, and in return you can take this suit. I think you'll like it.</text>
-	</string>
-	<string id="bar_dolg_leader_start_3111">
-		<text>Good work, stalker. This is exactly what we need. Well, Marked One, you carried out my request, and in return you can take this suit. I think you'll like it.</text>
-	</string>
-	<string id="bar_dolg_leader_start_41">
-		<text>What brought you to me, brother?</text>
 	</string>
 </string_table>

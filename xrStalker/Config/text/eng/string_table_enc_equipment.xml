@@ -12,14 +12,50 @@
 	<string id="Arm-medium">
 		<text>Medium stalker gear</text>
 	</string>
-	<string id="bandage">
-		<text>Bandages</text>
-	</string>
 	<string id="Binocul">
 		<text>Binoculars</text>
 	</string>
 	<string id="Bread">
 		<text>Bread</text>
+	</string>
+	<string id="Conserva">
+		<text>Tourist's Delight</text>
+	</string>
+	<string id="Detect1">
+		<text>Anomaly detector (DA-2)</text>
+	</string>
+	<string id="Devic">
+		<text>Instruments and devices</text>
+	</string>
+	<string id="Equipment">
+		<text>Gear and food</text>
+	</string>
+	<string id="Food">
+		<text>Food</text>
+	</string>
+	<string id="Kolbasa">
+		<text>Diet sausage</text>
+	</string>
+	<string id="Medi">
+		<text>Medicaments</text>
+	</string>
+	<string id="Medkit">
+		<text>Medkit</text>
+	</string>
+	<string id="Medkit_army">
+		<text>Army first aid kit</text>
+	</string>
+	<string id="Medkit_scientific">
+		<text>Scientific first aid kit</text>
+	</string>
+	<string id="Sci2">
+		<text>Scientific EXP-4</text>
+	</string>
+	<string id="Vodka">
+		<text>Cossack vodka</text>
+	</string>
+	<string id="bandage">
+		<text>Bandages</text>
 	</string>
 	<string id="cit_deadcity_maps_desc">
 		<text>A detailed map of the Dead City including Merc positions</text>
@@ -32,15 +68,6 @@
 	</string>
 	<string id="cit_doctors_key_short_desc">
 		<text>Doctor's key</text>
-	</string>
-	<string id="Conserva">
-		<text>Tourist's Delight</text>
-	</string>
-	<string id="Detect1">
-		<text>Anomaly detector (DA-2)</text>
-	</string>
-	<string id="Devic">
-		<text>Instruments and devices</text>
 	</string>
 	<string id="device-pda">
 		<text>PDA</text>
@@ -100,43 +127,16 @@
 		<text>An all-purpose medkit. Used to treat injuries of various types and severities - wounds, burns, poisonings, etc.</text>
 	</string>
 	<string id="enc_equipment_medi_medkit2">
-		<text>A specialized medical set to fight against physical damage and blood loss. In it is included a component for blood coagulation, antibiotics, immunal stimulators, and painkillers. </text>
+		<text>A specialized medical set to fight against physical damage and blood loss. In it is included a component for blood coagulation, antibiotics, immunal stimulators, and painkillers.</text>
 	</string>
 	<string id="enc_equipment_medi_medkit3">
-		<text>Medical set, designed especially for work in the Zone. The set includes means of healing wounds as well as means of eliminating radionucleodes from the body. Prevents the development of radiowave sickness and lowers the dose of accumulated radiation. </text>
+		<text>Medical set, designed especially for work in the Zone. The set includes means of healing wounds as well as means of eliminating radionucleodes from the body. Prevents the development of radiowave sickness and lowers the dose of accumulated radiation.</text>
 	</string>
 	<string id="energy_drink_name">
 		<text>Non-Stop energy drink</text>
 	</string>
 	<string id="energy_drink_short_name">
 		<text>Non-Stop energy drink</text>
-	</string>
-	<string id="Equipment">
-		<text>Gear and food</text>
-	</string>
-	<string id="Food">
-		<text>Food</text>
-	</string>
-	<string id="Kolbasa">
-		<text>Diet sausage</text>
-	</string>
-	<string id="Medi">
-		<text>Medicaments</text>
-	</string>
-	<string id="Medkit">
-		<text>Medkit</text>
-	</string>
-	<string id="Medkit_army">
-		<text>Army first aid kit</text>
-	</string>
-	<string id="Medkit_scientific">
-		<text>Scientific first aid kit</text>
-	</string>
-	<string id="Sci2">
-		<text>Scientific EXP-4</text>
-	</string>
-	<string id="Vodka">
-		<text>Cossack vodka</text>
 	</string>
 	<string id="st_detector">
 		<text>Anomaly detector</text>

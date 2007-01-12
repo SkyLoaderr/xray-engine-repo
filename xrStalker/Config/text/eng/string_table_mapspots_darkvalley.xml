@@ -1,3 +1,9 @@
+	<string id="bar_darklab_documents2_1_hint">
+		<text>Documents from the Lab</text>
+	</string>
+	<string id="bar_darklab_documents2_2_hint">
+		<text>Barkeep</text>
+	</string>
 	<string id="bar_darklab_documents_1_hint">
 		<text>Borov</text>
 	</string>
@@ -9,12 +15,6 @@
 	</string>
 	<string id="bar_darklab_documents_4_hint">
 		<text>Pipe</text>
-	</string>
-	<string id="bar_darklab_documents2_1_hint">
-		<text>Documents from the Lab</text>
-	</string>
-	<string id="bar_darklab_documents2_2_hint">
-		<text>Barkeep</text>
 	</string>
 	<string id="val_captive_help_1_hint">
 		<text>Bullet</text>

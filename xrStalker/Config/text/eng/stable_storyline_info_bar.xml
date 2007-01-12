@@ -19,8 +19,8 @@
 	<string id="descr_bar_kill_professor">
 		<text>Wolfhound: "We've got a little hunt going on here. We pinned the scientists in over there behind the chopper. My boys are putting some fire down on them from time to time to make sure they don't escape. Join in, we're about to go in and finish 'em off. If you help us I'll give you the scientists' suit... we found it in the chopper we took down. Your target is professor Kruglov. Kill him or he'll run away during the shootout, I know his type. If you kill him, the suit is yours, if you don't, you don't get jack."</text>
 	</string>
-	<string id="descr_bar_Red Forest_deactivate">
-		<text>Barkeep: "You have the protective prototype to cover yourself against the Brain Scorcher, I know the coordinates of a bunker. Don't forget that the prototype can't protect against the emission forever, so you must get to the bunker under the antennae and shut down the Scorcher. All you have to do is to get to the antennae, and switch them off."</text>
+	<string id="descr_bar_radar_deactivate">
+		<text>Бармен: "Защитный прототип у тебя есть, чтобы от "выжигателя" прикрыться, координаты бункера я знаю. Не забудь, что прототип не сможет бесконечно защищать тебя от излучения, поэтому ты должен как можно быстрее пробиться в бункер под антенами и отключить "выжигатель". Все что нам надо это пробраться к антеннам, и отключить их."</text>
 	</string>
 	<string id="descr_bar_resque_information">
 		<text>Kruglov: "Stalker, help! We were attacked by the Mercs and half of our team is dead. Help us and you won't regret it"\n \n "...be careful, there are about fifteen of them, but we don't know for sure"</text>
@@ -43,8 +43,8 @@
 	<string id="journal_before_darklab_documents">
 		<text>I met with the Barkeep. Having looked through the documents from the Institute he thinks that this X18 is in the so called Dark Valley and asked me to go there to look for information and documents. He says he sent Duty scouts to get into the underground vaults there but they disappeared. The Barkeep thinks they were captured by bandits who have a base nearby. If that's true, everything those Duty guys found will be in the hands of Borov, the leader of the bandits. The Barkeep told me to be careful and... clearly didn't tell me everything about these underground vaults. Oh well, time to get to work: first of all I need to go pay Borov a visit and if the "conversation" goes well, I'll explore the underground.</text>
 	</string>
-	<string id="journal_before_Red Forest_task">
-		<text>Well, I am ready to go to the Burner. I found out from Crazy the times when the emission levels decrease. He also told me about a safe place where I can wait for these periods. My psi-protection won't work at other times anyway. I'll have to find a way into the underground bunker of Lab X19. Inside I should find the controls for the Brain Scorcher antennae.</text>
+	<string id="journal_before_radar_task">
+		<text>Ну что-ж я готов идти на Выжигатель. От Психа я узнал время понижения мощности излучения и о безопасном месте, где я смогу дождаться этого времени. В другое время моя пси-защита все равно не поможет. Мне придется найти вход в подземный бункер лаборатории Х19, а внутри, путь к управлению Антеннами Выжигателя Мозгов.</text>
 	</string>
 	<string id="st_gordon_diary">
 		<text>Gordon's PDA</text>

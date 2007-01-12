@@ -51,6 +51,15 @@
 	<string id="st_codelock">
 		<text>Combination lock ($$ACTION_USE$$)</text>
 	</string>
+	<string id="st_helmet_countdown">
+		<text>Protection shutdown</text>
+	</string>
+	<string id="st_psy_danger">
+		<text>Critical psi-emission level. Leave the dangerous zone immediately.</text>
+	</string>
+	<string id="st_radiation_danger">
+		<text>Hazardous radiation level. Protection required to pass.</text>
+	</string>
 	<string id="to_aes">
 		<text>To Chernobyl NPP</text>
 	</string>
@@ -86,14 +95,5 @@
 	</string>
 	<string id="to_yantar">
 		<text>To Yantar</text>
-	</string>
-	<string id="st_helmet_countdown">
-		<text>Protection shutdown</text>
-	</string>
-	<string id="st_psy_danger">
-		<text>Critical psi-emission level. Leave the dangerous zone immediately.</text>
-	</string>
-	<string id="st_radiation_danger">
-		<text>Hazardous radiation level. Protection required to pass.</text>
 	</string>
 </string_table>

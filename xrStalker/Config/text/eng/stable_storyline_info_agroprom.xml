@@ -32,13 +32,13 @@
 		<text>Trader: "As soon as you steal the briefcase from the Institute take it to the Barkeep. He runs the 100 Rads - the stalker bar. It's located on the site of the former Rostok factory."</text>
 	</string>
 	<string id="article_agr_krot_sos">
-		<text>SOS, the army is killing a fellow stalker! Guys, if you can hear me - help! </text>
-	</string>
-	<string id="article_agr_krot_sos_name">
-		<text>Meeting Mole</text>
+		<text>SOS, the army is killing a fellow stalker! Guys, if you can hear me - help!</text>
 	</string>
 	<string id="article_agr_krot_sos1">
 		<text>Mole: "Help me, I'm gonna get killed!"</text>
+	</string>
+	<string id="article_agr_krot_sos_name">
+		<text>Meeting Mole</text>
 	</string>
 	<string id="st_operation_agroprom">
 		<text>The Agroprom operation</text>
