@@ -155,7 +155,10 @@
 		</master_part>
 
 		<detail_part_def x="0" y="0" width="390" height="25">
-			<text_1 x="0" y="0" width="300" height="20">
+			<text_0 x="0" y="0" width="20" height="20">
+				<text align="l" x="0" y="0" font="letterica18" a="200"/>
+			</text_0>
+			<text_1 x="30" y="0" width="270" height="20">
 				<text align="l" x="0" y="0" font="letterica18" a="200"/>
 			</text_1>
 			<text_2 x="290" y="0" width="30" height="20">
@@ -165,7 +168,7 @@
 				<text align="r" x="0" y="0" font="letterica18" a="200"/>
 			</text_3>
 			<auto>
-				<auto_static x="0" y="20" width="390" height="3" stretch="1">
+				<auto_static x="0" y="0" width="390" height="3" stretch="1">
 					<texture>ui\ui_pda_horizontal_line</texture>
 				</auto_static>
 			</auto>
