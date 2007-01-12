@@ -55,6 +55,9 @@
 	<string id="agroprom_find_gunslinger_cache_2">
 		<text>Найти в тайнике информацию о Стрелке</text>
 	</string>
+	<string id="agroprom_find_gunslinger_cache_3">
+		<text>Выбраться из подземелья</text>
+	</string>
 	<string id="agroprom_find_stalker_phantom">
 		<text>Найти Призрака</text>
 	</string>
