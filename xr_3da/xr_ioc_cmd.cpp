@@ -204,13 +204,14 @@ public:
 	}
 };
 
-XRCORE_API void _dump_open_files();
+XRCORE_API void _dump_open_files(int mode);
 class CCC_DumpOpenFiles : public IConsole_Command
 {
 public:
-	CCC_DumpOpenFiles(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
+	CCC_DumpOpenFiles(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = FALSE; };
 	virtual void Execute(LPCSTR args) {
-		_dump_open_files	();
+		int _mode			= atoi(args);
+		_dump_open_files	(_mode);
 	}
 };
 

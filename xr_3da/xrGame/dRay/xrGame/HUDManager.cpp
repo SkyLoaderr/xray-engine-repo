@@ -141,7 +141,8 @@ CHUDManager::~CHUDManager()
 
 void CHUDManager::Load()
 {
-	xr_delete			(pUI);
+//.	xr_delete			(pUI);
+	if(pUI)				return;
 	pUI					= xr_new<CUI> (this);
 	pUI->Load			();
 }

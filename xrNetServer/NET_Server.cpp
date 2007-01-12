@@ -113,9 +113,9 @@ void IPureServer::config_Load()
 
 	IReader*		F	= FS.r_open(pth);
 	if (F && F->length()) {
-		F->r	(&traffic_in,sizeof(traffic_in));
-		F->r	(&traffic_out,sizeof(traffic_out));
-		F->close();
+		F->r					(&traffic_in,sizeof(traffic_in));
+		F->r					(&traffic_out,sizeof(traffic_out));
+		FS.r_close				(F);
 		traffic_in.Normalize	();
 		traffic_out.Normalize	();
 	} else {

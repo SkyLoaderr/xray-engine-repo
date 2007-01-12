@@ -26,7 +26,7 @@ IGame_Level::IGame_Level	()
 IGame_Level::~IGame_Level	()
 {
 	// 
-	DEL_INSTANCE				( pHUD			);
+//.	DEL_INSTANCE				( pHUD			);
 	xr_delete					( pLevel		);
 
 	// Render-level unload
@@ -75,7 +75,11 @@ BOOL IGame_Level::Load			(u32 dwNum)
 
 
 	// HUD + Environment
-	pHUD						= (CCustomHUD*)NEW_INSTANCE	(CLSID_HUDMANAGER);
+//.	pHUD						= (CCustomHUD*)NEW_INSTANCE	(CLSID_HUDMANAGER);
+	if(g_hud)
+		pHUD					= g_hud;
+	else
+		pHUD					= (CCustomHUD*)NEW_INSTANCE	(CLSID_HUDMANAGER);
 
 	// Render-level Load
 	Render->level_Load			(LL_Stream);

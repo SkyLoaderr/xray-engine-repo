@@ -194,7 +194,7 @@ private:
 	void				FillUpSubLevelItems			();
 
 	bool				TryToBuyItem				(SBuyItemInfo* itm, u32 buy_flags, SBuyItemInfo* itm_parent);
-	bool				TryToSellItem				(SBuyItemInfo* itm, bool do_destroy);
+	bool				TryToSellItem				(SBuyItemInfo* itm, bool do_destroy, SBuyItemInfo*& itm_res);
 	bool				BuyItemAction				(SBuyItemInfo* itm);
 	bool				CheckBuyPossibility			(const shared_str& sect_name, u32 buy_flags);
 
@@ -228,7 +228,7 @@ private:
 	u32					GetItemCount				(const shared_str& name_sect, SBuyItemInfo::EItmState state, u8 addon) const;
 	u32					GetGroupCount				(const shared_str& name_group, SBuyItemInfo::EItmState state)const;
 
-	void				ResetToOrigin				();
+	void				ResetToOrigin				(bool bDestroyOwn);
 	void				DumpPreset					(ETradePreset idx);
 	void				DumpAllItems				(LPCSTR reason);
 	dd_list_type		GetListType					(CUIDragDropListEx* l);

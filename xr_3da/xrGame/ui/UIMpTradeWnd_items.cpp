@@ -175,12 +175,14 @@ void CUIMpTradeWnd::UpdateCorrespondingItemsForList(CUIDragDropListEx* _list)
 
 	if(!dependent_list)	return;
 
-
+	xr_list<SBuyItemInfo*>	_tmp_list;
 	while(dependent_list->ItemsCount()!=0)
 	{
 		CUICellItem* ci			= dependent_list->GetItemIdx(0);
 		CUICellItem* ci2		= dependent_list->RemoveItem(ci, false);
-		bag_list->SetItem		(ci2);
+		SBuyItemInfo* bi		= FindItem(ci2);		
+		_tmp_list.push_back		( bi );
+		bag_list->SetItem		( ci2 );
 	};
 
 	if(_list->ItemsCount()!=0)
@@ -207,6 +209,45 @@ void CUIMpTradeWnd::UpdateCorrespondingItemsForList(CUIDragDropListEx* _list)
 			break;
 			_l1:
 			;
+		}
+	}
+
+	while( !_tmp_list.empty() )
+	{
+		xr_list<SBuyItemInfo*>::iterator _curr = _tmp_list.begin();
+		SBuyItemInfo* bi	= *(_curr);
+
+		CUIDragDropListEx*	_owner_list		= bi->m_cell_item->OwnerList();
+		if(_owner_list!=bag_list){
+			_tmp_list.erase	( _curr );
+			continue;
+		}
+
+		u32 _bag_cnt = bag_list->ItemsCount();
+
+		bool bNecessary = false;
+
+		for(u32 _i=0; _i<_bag_cnt; ++_i)
+		{
+			CUICellItem*	_ci					= bag_list->GetItemIdx(_i);
+			CInventoryItem* _ii					= (CInventoryItem*)_ci->m_pData;
+			
+			bNecessary							= _ii->IsNecessaryItem(bi->m_name_sect);
+
+			if(bNecessary)
+			{
+				_tmp_list.erase	( _curr );
+				break;
+			}
+		}
+		if(!bNecessary)
+		{
+			//sell 
+			SBuyItemInfo*			res_info	= NULL;
+			TryToSellItem			(bi, true, res_info);
+			xr_list<SBuyItemInfo*>::iterator tmp_it = find(_tmp_list.begin(), _tmp_list.end(), res_info);
+			VERIFY					(tmp_it!=_tmp_list.end());
+			_tmp_list.erase			( tmp_it );
 		}
 	}
 }
@@ -392,7 +433,7 @@ void CUIMpTradeWnd::StorePreset(ETradePreset idx)
 
 void CUIMpTradeWnd::ApplyPreset(ETradePreset idx)
 {
-	ResetToOrigin						();
+	ResetToOrigin						(false);
 
 	const preset_items&		v			=  GetPreset(idx);
 	preset_items::const_iterator it		= v.begin();
@@ -434,20 +475,21 @@ void CUIMpTradeWnd::ApplyPreset(ETradePreset idx)
 	}
 }
 
-void CUIMpTradeWnd::ResetToOrigin()
+void CUIMpTradeWnd::ResetToOrigin(bool bDestroyOwn)
 {
 	// 1-sell all bought items
 	// 2-buy all sold items
 	
 	ITEMS_vec_cit it;
 
-	SBuyItemInfo*	iinfo	= NULL;
-	bool			b_ok	= true;
+	SBuyItemInfo*	iinfo		= NULL;
+	SBuyItemInfo*	tmp_iinfo	= NULL;
+	bool			b_ok		= true;
 
 	do{
 		iinfo			= FindItem(SBuyItemInfo::e_bought);
 		if(iinfo)
-			b_ok		= TryToSellItem(iinfo, true);
+			b_ok		= TryToSellItem(iinfo, true, tmp_iinfo);
 
 		R_ASSERT		(b_ok);
 	}while(iinfo);
@@ -460,33 +502,36 @@ void CUIMpTradeWnd::ResetToOrigin()
 		R_ASSERT		(b_ok);
 	}while(iinfo);
 
-	do{
-		iinfo						= FindItem(SBuyItemInfo::e_own);
-		if(iinfo)
-		{
-			VERIFY					(iinfo->m_cell_item->OwnerList());
-			CUICellItem* citem		= iinfo->m_cell_item->OwnerList()->RemoveItem(iinfo->m_cell_item, false );
-			SBuyItemInfo* iinfo_int = FindItem(citem);
-			
-			if(IsAddonAttached(iinfo_int, at_scope))
+	if(bDestroyOwn)
+	{
+		do{
+			iinfo						= FindItem(SBuyItemInfo::e_own);
+			if(iinfo)
 			{
-				SBuyItemInfo* detached_addon	= DetachAddon(iinfo_int, at_scope);
-				DestroyItem						(detached_addon);
-			}
-			if(IsAddonAttached(iinfo_int, at_glauncher))
-			{
-				SBuyItemInfo* detached_addon	= DetachAddon(iinfo_int, at_glauncher);
-				DestroyItem						(detached_addon);
-			}
-			if(IsAddonAttached(iinfo_int, at_silencer))
-			{
-				SBuyItemInfo* detached_addon	= DetachAddon(iinfo_int, at_silencer);
-				DestroyItem						(detached_addon);
-			}
+				VERIFY					(iinfo->m_cell_item->OwnerList());
+				CUICellItem* citem		= iinfo->m_cell_item->OwnerList()->RemoveItem(iinfo->m_cell_item, false );
+				SBuyItemInfo* iinfo_int = FindItem(citem);
+				
+				if(IsAddonAttached(iinfo_int, at_scope))
+				{
+					SBuyItemInfo* detached_addon	= DetachAddon(iinfo_int, at_scope);
+					DestroyItem						(detached_addon);
+				}
+				if(IsAddonAttached(iinfo_int, at_glauncher))
+				{
+					SBuyItemInfo* detached_addon	= DetachAddon(iinfo_int, at_glauncher);
+					DestroyItem						(detached_addon);
+				}
+				if(IsAddonAttached(iinfo_int, at_silencer))
+				{
+					SBuyItemInfo* detached_addon	= DetachAddon(iinfo_int, at_silencer);
+					DestroyItem						(detached_addon);
+				}
 
-			DestroyItem				(iinfo_int);
-		}
-	}while(iinfo);
+				DestroyItem				(iinfo_int);
+			}
+		}while(iinfo);
+	}
 }
 
 void CUIMpTradeWnd::OnBtnSellClicked(CUIWindow* w, void* d)
@@ -499,7 +544,8 @@ void CUIMpTradeWnd::OnBtnSellClicked(CUIWindow* w, void* d)
 		CUICellItem* ci = pList->GetItemIdx(0);
 		iinfo			= FindItem(ci);
 		bool	b_ok	= true;
-		b_ok			= TryToSellItem(iinfo, true);
+		SBuyItemInfo*	tmp_iinfo	= NULL;
+		b_ok			= TryToSellItem(iinfo, true, tmp_iinfo);
 		R_ASSERT		(b_ok);
 	}
 }

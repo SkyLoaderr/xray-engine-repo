@@ -542,11 +542,15 @@ void CKinematicsAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 #endif
                 }
             }
-            IReader* MS						= FS.r_open(fn);
             // Check compatibility
             m_Motions.push_back				(SMotionsSlot());
-            m_Motions.back().motions.create	(nm,MS,bones);
-            FS.r_close						(MS);
+            if( !g_pMotionsContainer->has(nm) ) //optimize fs operations
+			{
+				IReader* MS						= FS.r_open(fn);
+				m_Motions.back().motions.create	(nm,MS,bones);
+				FS.r_close						(MS);
+			}
+			m_Motions.back().motions.create	(nm,NULL,bones);
     	}
     }else{
 		string_path	nm;

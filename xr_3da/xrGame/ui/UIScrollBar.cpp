@@ -232,11 +232,13 @@ int CUIScrollBar::PosViewFromScroll(int view_size, int view_offs)
 void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == m_DecButton){
-		if(msg == BUTTON_CLICKED){
+		if(msg == BUTTON_CLICKED || msg == BUTTON_DOWN)
+		{
 			TryScrollDec();
 		}
 	}else if(pWnd == m_IncButton){
-		if(msg == BUTTON_CLICKED){
+		if(msg == BUTTON_CLICKED || msg == BUTTON_DOWN)
+		{
 			TryScrollInc();
 		}
 	}else if(pWnd == m_ScrollBox){

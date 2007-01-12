@@ -7,7 +7,7 @@
 #include "UICellCustomItems.h"
 #include <dinput.h>
 
-bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm, bool do_destroy)
+bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm, bool do_destroy, SBuyItemInfo*& itm_res)
 {
 	SellItemAddons						(sell_itm, at_scope);
 	SellItemAddons						(sell_itm, at_silencer);
@@ -25,6 +25,7 @@ bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm, bool do_destroy)
 		_itm	= sell_itm->m_cell_item;
 
 	SBuyItemInfo* iinfo					= FindItem(_itm); //just detached
+	itm_res								= iinfo;
 
 	u32 cnt_in_shop						= GetItemCount(sell_itm->m_name_sect, SBuyItemInfo::e_shop);
 
@@ -79,7 +80,8 @@ bool CUIMpTradeWnd::BuyItemAction(SBuyItemInfo* itm)
 			SBuyItemInfo* to_sell	= FindItem(ci); 
 			SBuyItemInfo::EItmState	_stored_state = to_sell->GetState();
 
-			TryToSellItem			(to_sell, false);
+			SBuyItemInfo*			tmp_iinfo	= NULL;
+			TryToSellItem			(to_sell, false, tmp_iinfo);
 
 			bool b_res				= TryToBuyItem(itm, bf_normal, NULL);
 

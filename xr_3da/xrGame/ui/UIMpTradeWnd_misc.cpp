@@ -171,7 +171,8 @@ bool CUIMpTradeWnd::OnItemDrop(CUICellItem* itm)
 
 	if(_new_owner_type==dd_shop)
 	{
-		bool res		= TryToSellItem			(iinfo, true);
+		SBuyItemInfo*	tmp_iinfo = NULL;
+		bool res		= TryToSellItem			(iinfo, true, tmp_iinfo);
 		VERIFY			(res);
 		return			true;
 	}
@@ -215,8 +216,10 @@ bool CUIMpTradeWnd::OnItemDbClick(CUICellItem* itm)
 
 		case dd_own_bag:
 		case dd_own_slot:
-			TryToSellItem			(iinfo, true);
-			break;
+			{
+				SBuyItemInfo*			tmp_iinfo	= NULL;
+				TryToSellItem			(iinfo, true, tmp_iinfo);
+			}break;
 		default:					NODEFAULT;
 	};
 
@@ -382,7 +385,7 @@ void CUIMpTradeWnd::SetMoneyAmount(u32 money)
 
 void CUIMpTradeWnd::ResetItems()
 {
-	ResetToOrigin						();
+	ResetToOrigin						(true);
 	m_store_hierarchy->Reset			();
 	UpdateShop							();
 	SetCurrentItem						(NULL);

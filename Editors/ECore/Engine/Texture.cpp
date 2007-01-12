@@ -252,6 +252,7 @@ _DDS:
 		// Load and get header
 		D3DXIMAGE_INFO			IMG;
 		S						= FS.r_open	(fn);
+		Msg						("* Loaded: %s",fn);
 		msize					= S->length	();
 		R_ASSERT				(S);
 		R_CHK2					(D3DXGetImageInfoFromFileInMemory	(S->pointer(),S->length(),&IMG), fn);

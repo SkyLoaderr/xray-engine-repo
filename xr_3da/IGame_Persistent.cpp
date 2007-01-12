@@ -10,6 +10,7 @@
 #	include "resourcemanager.h"
 #	include "Render.h"
 #	include "ps_instance.h"
+#	include "CustomHUD.h"
 #endif
 
 ENGINE_API	IGame_Persistent*		g_pGamePersistent	= NULL;
@@ -58,6 +59,8 @@ void IGame_Persistent::OnAppEnd		()
 {
 	Environment.unload				();
 	OnGameEnd						();
+
+	DEL_INSTANCE					(g_hud);
 }
 
 void IGame_Persistent::PreStart		(LPCSTR op)
@@ -81,6 +84,8 @@ void IGame_Persistent::Start		(LPCSTR op)
 	if ( *m_game_params.m_game_type && (0!=xr_strcmp(prev_type,m_game_params.m_game_type))) {
 //		OnGameEnd					();
 		OnGameStart					();
+		if(g_hud)
+			DEL_INSTANCE			(g_hud);
 	}
 }
 

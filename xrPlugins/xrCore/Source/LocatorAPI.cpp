@@ -123,25 +123,29 @@ void _unregister_open_file(IReader* _r)
 	_lock.Leave				();
 }
 
-XRCORE_API void _dump_open_files()
+XRCORE_API void _dump_open_files(int mode)
 {
 	xr_vector<_open_file>::iterator it		= g_open_files.begin();
 	xr_vector<_open_file>::iterator it_e	= g_open_files.end();
 
-	Log("----used");
-	for(; it!=it_e; ++it)
+	if(mode==1)
 	{
-		_open_file& _of = *it;
-		if(_of._reader!=NULL)
-			Msg("[%d] fname:%s", _of._used ,_of._fn.c_str());
-	}
-
-	Log("----un-used");
-	for(it = g_open_files.begin(); it!=it_e; ++it)
+		Log("----used");
+		for(; it!=it_e; ++it)
+		{
+			_open_file& _of = *it;
+			if(_of._reader!=NULL)
+				Msg("[%d] fname:%s", _of._used ,_of._fn.c_str());
+		}
+	}else
 	{
-		_open_file& _of = *it;
-		if(_of._reader==NULL)
-			Msg("[%d] fname:%s", _of._used ,_of._fn.c_str());
+		Log("----un-used");
+		for(it = g_open_files.begin(); it!=it_e; ++it)
+		{
+			_open_file& _of = *it;
+			if(_of._reader==NULL)
+				Msg("[%d] fname:%s", _of._used ,_of._fn.c_str());
+		}
 	}
 	Log("----total count=",g_open_files.size());
 }
@@ -166,7 +170,7 @@ CLocatorAPI::~CLocatorAPI()
 {
 	VERIFY				(0==m_iLockRescan);
 	if(0!=g_open_files.size())
-		_dump_open_files();
+		_dump_open_files(2);
 
 	VERIFY				(0==g_open_files.size());
 }

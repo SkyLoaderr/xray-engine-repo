@@ -244,7 +244,7 @@ CLevel::~CLevel()
 	pActors4CrPr.clear();
 
 	ai().unload					();
-
+/*
 #ifdef DEBUG
 	CInifile					*old_settings = pSettings, *new_settings;
 	string256					file_name;
@@ -253,7 +253,7 @@ CLevel::~CLevel()
 	pSettings					= new_settings;
 	xr_delete					(old_settings);
 #endif
-
+*/
 	//-----------------------------------------------------------	
 #ifdef DEBUG	
 	xr_delete					(m_level_debug);

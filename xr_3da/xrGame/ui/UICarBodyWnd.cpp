@@ -18,7 +18,7 @@
 #include "../Actor.h"
 #include "../eatable_item.h"
 #include "../alife_registry_wrappers.h"
-#include "UIButton.h"
+#include "UI3tButton.h"
 #include "UIListBoxItem.h"
 #include "../InventoryBox.h"
 #include "../game_object_space.h"
@@ -123,9 +123,9 @@ void CUICarBodyWnd::Init()
 	SetCurrentItem					(NULL);
 	m_pUIStaticDesc->SetText		(NULL);
 
-	m_pUITakeAll					= xr_new<CUIButton>(); m_pUITakeAll->SetAutoDelete(true);
+	m_pUITakeAll					= xr_new<CUI3tButton>(); m_pUITakeAll->SetAutoDelete(true);
 	AttachChild						(m_pUITakeAll);
-	xml_init.InitButton				(uiXml, "take_all_btn", 0, m_pUITakeAll);
+	xml_init.Init3tButton				(uiXml, "take_all_btn", 0, m_pUITakeAll);
 
 	BindDragDropListEnents			(m_pUIOurBagList);
 	BindDragDropListEnents			(m_pUIOthersBagList);

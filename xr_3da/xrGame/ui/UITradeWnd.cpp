@@ -18,7 +18,7 @@
 #include "../string_table.h"
 #include "../character_info.h"
 #include "UIMultiTextStatic.h"
-#include "UIButton.h"
+#include "UI3tButton.h"
 #include "UIItemInfo.h"
 
 #include "UICharacterInfo.h"
@@ -51,8 +51,8 @@ struct CUITradeInternal{
 	CUIDragDropListEx	UIOthersTradeList;
 
 	//кнопки
-	CUIButton			UIPerformTradeButton;
-	CUIButton			UIToTalkButton;
+	CUI3tButton			UIPerformTradeButton;
+	CUI3tButton			UIToTalkButton;
 
 	//информация о персонажах 
 	CUIStatic			UIOurIcon;
@@ -163,10 +163,10 @@ void CUITradeWnd::Init()
 
 
 	AttachChild							(&m_uidata->UIPerformTradeButton);
-	xml_init.InitButton					(uiXml, "button", 0, &m_uidata->UIPerformTradeButton);
+	xml_init.Init3tButton					(uiXml, "button", 0, &m_uidata->UIPerformTradeButton);
 
 	AttachChild							(&m_uidata->UIToTalkButton);
-	xml_init.InitButton					(uiXml, "button", 1, &m_uidata->UIToTalkButton);
+	xml_init.Init3tButton					(uiXml, "button", 1, &m_uidata->UIToTalkButton);
 
 	m_uidata->UIDealMsg					= NULL;
 

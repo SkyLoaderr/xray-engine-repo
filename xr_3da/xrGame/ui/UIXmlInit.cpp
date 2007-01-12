@@ -1304,6 +1304,10 @@ bool CUIXmlInit::InitComboBox(CUIXml& xml_doc, const char* path, int index, CUIC
 	InitWindow					(xml_doc, path, index, pWnd);
 	InitOptionsItem				(xml_doc, path, index, pWnd);
 
+	bool b = (1==xml_doc.ReadAttribInt(path, index, "always_show_scroll",1));
+
+	pWnd->m_list.SetFixedScrollBar(b);
+
 	string512					_path;
 	strconcat					(_path, path, ":list_font");
 	InitFont					(xml_doc, _path, index, color, pFont);

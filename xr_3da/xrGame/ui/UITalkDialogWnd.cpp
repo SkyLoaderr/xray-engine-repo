@@ -76,7 +76,7 @@ void CUITalkDialogWnd::Init(float x, float y, float width, float height)
 
 	//кнопка перехода в режим торговли
 	AttachChild(&UIToTradeButton);
-	xml_init.InitButton(*m_uiXml, "button", 0, &UIToTradeButton);
+	xml_init.Init3tButton(*m_uiXml, "button", 0, &UIToTradeButton);
 	UIToTradeButton.SetWindowName("trade_btn");
 
 	//Элементы автоматического добавления

@@ -7,7 +7,7 @@
 
 
 #include "UIStatic.h"
-#include "UIButton.h"
+#include "UI3tButton.h"
 #include "UIFrameWindow.h"
 
 #include "../InfoPortion.h"
@@ -53,7 +53,7 @@ public:
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;
 
-	CUIButton			UIToTradeButton;
+	CUI3tButton			UIToTradeButton;
 
 	//информация о персонажах 
 	CUIStatic			UIOurIcon;
