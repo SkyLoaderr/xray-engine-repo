@@ -404,10 +404,8 @@ sound_anomaly_death				= fight\death\anomaly_
 sound_hit						= fight\hit\hit_
 sound_humming					= states\idle\idle_
 sound_alarm						= fight\enemy\enemy_
-sound_attack					= fight\attack\attack_
 sound_backup					= fight\backup\backup_
 sound_detour					= fight\detour\detour_
-sound_search					= fight\searching_enemy\search_
 sound_friendly_fire				= fight\friendly_fire\friendly_fire_
 sound_panic_human				= states\panic_human\panic_
 sound_panic_monster				= states\panic_monster\panic_
@@ -420,6 +418,15 @@ sound_walking_in_danger			= states\breath\breath_2
 sound_kill_wounded				= help\wounded\kill_wounded_
 sound_enemy_critically_wounded	= help\wounded\kill_wounded_
 sound_enemy_killed_or_wounded	= help\wounded\kill_wounded_
+; obsolete after next update
+sound_attack					= fight\attack\attack_
+sound_search					= fight\searching_enemy\search_
+; new after next update
+sound_attack_no_allies				= fight\fire\fire_,fight\threat\threat_distant_
+sound_attack_allies_single_enemy	= fight\attack\attack_,fight\attack\attack_many_,fight\fire\fire_
+sound_attack_allies_several_enemies	= fight\attack\attack_,fight\attack\attack_one_,fight\fire\fire_
+sound_search_no_allies				= fight\threat\threat_distant_
+sound_search_with_allies			= fight\searching_enemy\search_
 
 ;---STEP MANAGER------------------------------------------------------
 LegsCount						= 2
