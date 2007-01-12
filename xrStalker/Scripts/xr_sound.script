@@ -156,7 +156,7 @@ function update(npc)
 		return
 	end
 	
-	prinf("EE: begin = %s idle = %s", tostring(group_table.begin), tostring(group_table.idle))
+	printf("EE: begin = %s idle = %s", tostring(group_table.begin), tostring(group_table.idle))
 	if group_table.begin == nil or
 	   time_global() - group_table.begin >= group_table.idle
 	then
