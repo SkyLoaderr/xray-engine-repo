@@ -18,7 +18,7 @@
 		<snd_config>characters_voice\human_01\military\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_groza \n
+			wpn_val \n
 			ammo_9x39_ap \n	
 			device_torch \n
 #include "gameplay\character_drugs.xml"
