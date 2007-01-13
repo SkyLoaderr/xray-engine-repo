@@ -50,7 +50,7 @@
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_pmm = 1 \n
 			device_torch \n
 			wpn_bm16 \n
@@ -81,7 +81,7 @@
 		<visual>actors\bandit\stalker_bandit_5</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_pmm = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"	\n
@@ -143,7 +143,7 @@
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_fmj \n
 			wpn_ak74u = 1, 0, 1, 0 \n
 			ammo_5.45x39_ap = 1 \n
@@ -203,7 +203,7 @@
 		<crouch_type>1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_fmj \n
 			wpn_mp5 \n
 			ammo_9x19_pbp = 1 \n
@@ -457,7 +457,7 @@
 		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml" \n
@@ -485,7 +485,7 @@
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
+			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_food.xml"
@@ -540,7 +540,7 @@
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml" \n
@@ -628,7 +628,7 @@
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml" \n
@@ -2658,7 +2658,7 @@
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_fmj \n
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
@@ -2690,7 +2690,7 @@
 		<crouch_type>0</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_fmj \n
 			wpn_ak74u \n
 			ammo_5.45x39_fmj = 1 \n
