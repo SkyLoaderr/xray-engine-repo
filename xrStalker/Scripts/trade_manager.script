@@ -51,12 +51,14 @@ function update(npc)
 	
 	local str = xr_logic.pick_section_from_condlist(db.actor, npc, tt.buy_condition)
 	if tt.current_buy_condition ~= str then
+		printf("TRADE %s: buy condition = %s", npc:name(), str)
 		npc:buy_condition(tt.config, str)
 		tt.current_buy_condition = str
 	end
 
 	str = xr_logic.pick_section_from_condlist(db.actor, npc, tt.sell_condition)
 	if tt.current_sell_condition ~= str then
+		printf("TRADE %s: sell condition = %s", npc:name(), str)
 		npc:sell_condition(tt.config, str)
 		tt.current_sell_condition = str
 	end
@@ -70,6 +72,7 @@ function update(npc)
 		if tt.resuply_time ~= nil and tt.resuply_time < time_global() then
 			return
 		end
+		printf("TRADE %s: buy_supplies = %s", npc:name(), str)
 		npc:buy_supplies(tt.config, str)
 		tt.current_buy_supplies = str
 		tt.resuply_time = time_global() + 24*3600000
