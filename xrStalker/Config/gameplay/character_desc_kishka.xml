@@ -14,14 +14,10 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\dolg\stalker_do_antigas</visual>		
+		<visual>actors\ecolog\stalker_ecolog</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_fort \n
-			ammo_9x18_fmj = 1 \n
-			wpn_abakan \n
-			ammo_5.45x39_fmj \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -43,14 +39,12 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\dolg\stalker_do_balon_8</visual>		
+		<visual>actors\ecolog\stalker_ecolog_military</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_ak74 \n
-			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
