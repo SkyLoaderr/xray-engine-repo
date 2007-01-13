@@ -148,15 +148,23 @@ function se_stalker:on_register()
 	if self:alive() and self:smart_terrain_id() == 65535 then
 		self:brain():update()
 	end
-	
-	-- Регистрация мапспота для демонстрации
-	sim_statistic.register_stalker(self)
+
+
+	--' Нарисовать мапспот с собой
+	if sim_statistic.show_stalker_spot == true then
+		local community, rank = sim_statistic.getNpcType(self)
+		level.map_add_object_spot(self.id, "alife_presentation_"..community, self:name().."\n"..community)
+	end
 end
 --------------------
 function se_stalker:on_unregister()
 	cse_alife_human_stalker.on_unregister(self)
-	-- Регистрация мапспота для демонстрации
-	sim_statistic.unregister_stalker(self)
+
+	--' Убрать мапспот с собой
+	if sim_statistic.show_stalker_spot == true then
+		local community, rank = sim_statistic.getNpcType(self)
+		level.map_remove_object_spot(self.id, "alife_presentation_"..community)
+	end
 
 	smart_terrain.unregister_npc(self)
 	

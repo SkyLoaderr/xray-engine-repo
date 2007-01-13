@@ -113,196 +113,26 @@ end
 
 
 --' Отметка всех сталкеров мапспотами. Дебаговая фича!!!
-local reg_objects_stalker = {}
 local show_stalker_spot = false
-function register_stalker(npc)
-	if true then
-		return
-	end
-	if npc:alive() then
-		local community, rank = getNpcType(npc)
-		reg_objects_stalker[npc.id] = {community = community, name = community}
-		
-		--' Отметка мапспотами (только для презентации)
-		if show_stalker_spot then
-			reg_objects_stalker[npc.id].exist = true
-			level.map_add_object_spot(npc.id, "alife_presentation_"..reg_objects_stalker[npc.id].community, reg_objects_stalker[npc.id].name)
-		end
-	end
-end
-function unregister_stalker(npc)
-	if true then
-		return
-	end
-
-	if reg_objects_stalker[npc.id] and reg_objects_stalker[npc.id].exist == true then
-		level.map_remove_object_spot(npc.id, "alife_presentation_"..reg_objects_stalker[npc.id].community)
-	end
-	reg_objects_stalker[npc.id] = nil
-end
 function unmark_all_stalkers()
-	if true then
-		return
-	end
-
 	show_stalker_spot = false
-	for k,v in pairs(reg_objects_stalker) do
-		if reg_objects_stalker[k].exist == true then
-			reg_objects_stalker[k].exist = nil
-			level.map_remove_object_spot(k, "alife_presentation_"..v.community)
-		end
-	end
 end
 function mark_all_stalkers()
-	if true then
-		return
-	end
-
-	if show_stalker_spot == true then
-		unmark_all_stalkers()
-		return
-	end
 	show_stalker_spot = true
-
-	for k,v in pairs(reg_objects_stalker) do
-		reg_objects_stalker[k].exist = true
-		level.map_add_object_spot(k, "alife_presentation_"..v.community, v.name)
-	end
-end
-function release_all_stalkers()
-	if true then
-		return
-	end
-
-	for k,v in pairs(reg_objects_stalker) do
-		if v.exist == true then
-			level.map_remove_object_spot(k, "alife_presentation_"..v.community)
-		end
-		local obj = alife():object(k)
-		alife():release(obj,true)
-		reg_objects_stalker[k] = nil
-	end
 end
 
 --' Отметка всех монстров мапспотами. Дебаговая фича!!!
-local reg_objects_monster = {}
-local show_stalker_spot = false
-function register_monster(npc)
-	if true then
-		return
-	end
-
-	if npc:alive() then
-		local community, rank = getNpcType(npc)
-		reg_objects_monster[npc.id] = {community = community, name = community}
-		
-		--' Отметка мапспотами (только для презентации)
-		if show_monster_spot then
-			reg_objects_monster[npc.id].exist = true
-			level.map_add_object_spot(npc.id, "alife_presentation_monstr", reg_objects_monster[npc.id].name)
-		end
-	end
-end
-function unregister_monster(npc)
-	if true then
-		return
-	end
-
-	if reg_objects_monster[npc.id] and reg_objects_monster[npc.id].exist == true then
-		level.map_remove_object_spot(npc.id, "alife_presentation_monstr")
-	end
-	reg_objects_monster[npc.id] = nil
-end
+local show_monster_spot = false
 function unmark_all_monsters()
-	if true then
-		return
-	end
-
 	show_monster_spot = false
-	for k,v in pairs(reg_objects_monster) do
-		if reg_objects_monster[k].exist == true then
-			reg_objects_monster[k].exist = nil
-			level.map_remove_object_spot(k, "alife_presentation_monstr")
-		end
-	end
 end
 function mark_all_monsters()
-	if true then
-		return
-	end
-
 	if show_monster_spot == true then
 		unmark_all_monsters()
 		return
 	end
-	show_monster_spot = true
-	for k,v in pairs(reg_objects_monster) do
-		reg_objects_monster[k].exist = true
-		level.map_add_object_spot(k, "alife_presentation_monstr", v.name)
-	end
-end
-function release_all_monsters()
-	if true then
-		return
-	end
-
-	for k,v in pairs(reg_objects_monster) do
-		if v.exist == true then
-			level.map_remove_object_spot(k, "alife_presentation_monstr")
-		end
-		local obj = alife():object(k)
-		alife():release(obj,true)
-		reg_objects_monster[k] = nil
-	end
 end
 
---' Обнуление всех на текущем уровне
-function release_current_level()
-	local local_level = level.name()
-	for k,v in pairs(reg_objects_stalker) do
-		local obj = alife():object(k)
-		if alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id()) == local_level then
-			if v.exist == true then
-				level.map_remove_object_spot(k, "alife_presentation_"..v.community)
-				reg_objects_stalker[k].exist = nil
-			end
-			alife():release(obj,true)
-			reg_objects_stalker[k] = nil
-		end
-	end
-	for k,v in pairs(reg_objects_monster) do
-		local obj = alife():object(k)
-		if alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id()) == local_level then
-			if v.exist == true then
-				level.map_remove_object_spot(k, "alife_presentation_monstr")
-				reg_objects_monster[k].exist = nil
-			end
-			alife():release(obj,true)
-			reg_objects_monster[k] = nil
-		end
-	end
-end
---' Обнуление всех на текущем уровне
-function release_all()
-	for k,v in pairs(reg_objects_stalker) do
-		local obj = alife():object(k)
-		if v.exist == true then
-			level.map_remove_object_spot(k, "alife_presentation_"..v.community)
-			reg_objects_stalker[k].exist = nil
-		end
-		alife():release(obj,true)
-		reg_objects_stalker[k] = nil
-	end
-	for k,v in pairs(reg_objects_monster) do
-		local obj = alife():object(k)
-		if v.exist == true then
-			level.map_remove_object_spot(k, "alife_presentation_monstr")
-			reg_objects_monster[k].exist = nil
-		end
-		alife():release(obj,true)
-		reg_objects_monster[k] = nil
-	end
-end
 
 
 --' Статистика респавнеров

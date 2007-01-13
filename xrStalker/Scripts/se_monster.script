@@ -177,15 +177,21 @@ function se_monster:on_register()
 
 	--'self:fill_exclusives()
 
-	-- Регистрация мапспота для демонстрации
-	sim_statistic.register_monster(self)
+	--' Нарисовать мапспот с собой
+	if sim_statistic.show_monster_spot == true then
+		local community, rank = sim_statistic.getNpcType(self)
+		level.map_add_object_spot(self.id, "alife_presentation_monstr", self:name().."\n"..community)
+	end
 end
 --------------------
 function se_monster:on_unregister()
 	cse_alife_monster_base.on_unregister( self )
 
-	-- Регистрация мапспота для демонстрации
-	sim_statistic.unregister_monster(self)
+	--' Убрать мапспот с собой
+	if sim_statistic.show_monster_spot == true then
+		local community, rank = sim_statistic.getNpcType(self)
+		level.map_remove_object_spot(self.id, "alife_presentation_monstr")
+	end
 
 	smart_terrain.unregister_npc(self)
 end
