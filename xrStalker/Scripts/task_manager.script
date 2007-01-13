@@ -250,7 +250,8 @@ function CRandomTask:active_parent_task(actor, npc)
 --		printf("active_parent_task: status = %s", tostring(self.task_info[v].status))
 
 		if self.task_info[v].parent == parent and
-		   self.task_info[v].status == "selected"
+		  (self.task_info[v].status == "selected" or
+		   self.task_info[v].status == "completed")
 		then
 			return true
 		end				
