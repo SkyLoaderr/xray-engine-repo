@@ -198,9 +198,6 @@ end
 --------------------
 function se_monster:on_death(killer)
 	cse_alife_monster_base.on_death(self, killer)
-
-	-- Регистрация мапспота для демонстрации
-	sim_statistic.unregister_monster(self)
 end
 --------------------
 function se_monster:fill_exclusives()
