@@ -72,8 +72,8 @@
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_lr300 = 1, 1, 1, 0 \n
-			ammo_5.56x45_ap = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -101,8 +101,8 @@
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_lr300 = 1, 1, 1, 0 \n
-			ammo_5.56x45_ap = 1 \n
+			wpn_walther \n
+			ammo_9x19_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
