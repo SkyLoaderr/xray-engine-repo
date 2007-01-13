@@ -18,8 +18,7 @@
 		<snd_config>characters_voice\human_01\military\</snd_config>
 		<supplies>
 			[spawn] \n
-			wpn_l85 \n
-			ammo_5.56x45_ss190 = 1 \n
+			
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
