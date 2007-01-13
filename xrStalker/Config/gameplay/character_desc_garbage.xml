@@ -269,7 +269,7 @@
 		<class>gar_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>450</rank>
+		<rank>125</rank>
 		<reputation>-126</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -301,7 +301,7 @@
 		<class>gar_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>381</rank>
+		<rank>124</rank>
 		<reputation>-73</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
@@ -333,7 +333,7 @@
 		<class>gar_bandit_general</class>
 		<community>bandit</community> <terrain_sect>stalker_bandit_terrain</terrain_sect>
 		
-		<rank>442</rank>
+		<rank>133</rank>
 		<reputation>-100</reputation>
 		
 		<snd_config>characters_voice\human_02\bandit\</snd_config>
