@@ -14,10 +14,12 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\killer\stalker_ki_antigas</visual>		
+		<visual>actors\militari\stalker_militari_1</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
 		<supplies>
 			[spawn] \n
+			wpn_groza \n
+			ammo_9x39_ap \n	
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -39,14 +41,14 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\killer\stalker_ki_exoskeleton</visual>		
+		<visual>actors\militari\stalker_militari_2</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_sig550 \n
-			ammo_5.56x45_ap = 1 \n
+			wpn_svd \n
+			ammo_7.62x54_7h14 = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -68,12 +70,14 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\killer\stalker_ki_head_1</visual>		
+		<visual>actors\militari\stalker_militari_antigas_1</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
 			ammo_9x19_fmj = 1 \n
+			wpn_ak74 \n
+			ammo_5.45x39_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -95,14 +99,14 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\killer\stalker_ki_mask</visual>		
+		<visual>actors\militari\stalker_militari_antigas_2</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_walther \n
-			ammo_9x19_fmj = 1 \n
+			wpn_ak74 \n
+			ammo_5.45x39_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -124,14 +128,14 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\killer\stalker_ki_nauchniy</visual>		
+		<visual>actors\soldier\soldier_antigas</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_sig550 \n
-			ammo_5.56x45_ap = 1 \n
+			wpn_ak74 \n
+			ammo_5.45x39_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -154,14 +158,14 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\dolg\stalker_do_nauchniy</visual>		
+		<visual>actors\soldier\soldier_bandana</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_val \n
-			ammo_9x39_sp5 = 1 \n
+			wpn_ak74 \n
+			ammo_5.45x39_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -212,7 +216,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_5</visual>		
+		<visual>actors\soldier\soldier_mask</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -241,7 +245,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_5</visual>		
+		<visual>actors\soldier\soldier_obichniy</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -270,14 +274,14 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_bandana_5</visual>		
+		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_ak74 \n
-			ammo_5.45x39_fmj = 1 \n
+			wpn_val \n
+			ammo_9x39_sp5 = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
