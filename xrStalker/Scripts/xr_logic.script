@@ -1180,7 +1180,8 @@ function pstor_retrieve(obj, varname, defval)
 	if defval ~= nil then
 		return defval
 	end
-	abort("xr_logic: pstor_retrieve: variable '%s' does not exist", varname)
+	return nil
+--'	abort("xr_logic: pstor_retrieve: variable '%s' does not exist", varname)
 end
 
 function pstor_save_all(obj, packet)

@@ -14,7 +14,7 @@ end
 function evaluator_wound:evaluate ()
 	if self.a.wounded_set ~= true then return false end
 	
-	self.a.wound_manager:update()
+--'	self.a.wound_manager:update()
 	if self.mgr == nil then
 		self.mgr = self.object:motivation_action_manager()
 	end
@@ -22,11 +22,11 @@ function evaluator_wound:evaluate ()
 		return false
 	end
 	if self.mgr:evaluator(stalker_ids.property_enemy):evaluate() and
-	   self.a.wound_manager.fight == "true"
+	   xr_logic.pstor_retrieve(self.object, "wounded_fight") == "true"
 	then
 		return false
 	end
-	return self.a.wound_manager.state ~= "nil"
+	return tostring(xr_logic.pstor_retrieve(self.object, "wounded_state")) ~= "nil"
 end    
 
 class "evaluator_can_fight" (property_evaluator) 
@@ -38,7 +38,7 @@ function evaluator_can_fight:evaluate ()
 		return true
 	end
 
-    return self.a.wound_manager.fight ~= "false"
+    return xr_logic.pstor_retrieve(self.object, "wounded_fight") ~= "false"
 end    
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -64,10 +64,12 @@ function action_wounded:execute ()
     action_base.execute (self)
 	wound_manager = self.a.wound_manager
 	
+	wound_manager_victim = xr_logic.pstor_retrieve(self.object, "wounded_victim")
+
 	local victim = nil	
-	if wound_manager.victim == "actor" then
+	if wound_manager_victim == "actor" then
 		victim = db.actor
-	elseif wound_manager.victim == "nil" then
+	elseif tostring(wound_manager_victim) == "nil" then
 		victim = nil
 	else
 		local sim = alife()
@@ -84,9 +86,11 @@ function action_wounded:execute ()
 	end
     
     
-    
+    wound_manager_state = xr_logic.pstor_retrieve(self.object, "wounded_state")
+	wound_manager_sound = xr_logic.pstor_retrieve(self.object, "wounded_sound")
+
 	local synsound = nil
-	if wound_manager.state == "true" then
+	if wound_manager_state == "true" then
 		local h = hit()
 		h.power = 0
 		h.direction = self.object:direction()
@@ -98,10 +102,10 @@ function action_wounded:execute ()
 	else
 		-- является ли текущий звук синхронным для текущего стейта
 		for k,v in pairs(self.a.syndata) do
-			if v.state == wound_manager.state and
-			   v.sound == wound_manager.sound
+			if v.state == wound_manager_state and
+			   v.sound == wound_manager_sound
 			then
-				synsound = wound_manager.sound
+				synsound = wound_manager_sound
 			end
 		end	
 		--' жрание аптечек и прочей срани.
@@ -111,20 +115,20 @@ function action_wounded:execute ()
 		end
 		
 		local emerg = nil
-		if wound_manager.state == "psy_shoot" then
+		if wound_manager_state == "psy_shoot" then
 			emerg = {animation_nout = true}
 		end
-		state_mgr.set_state(self.object, wound_manager.state, nil, nil, {look_object = victim}, emerg, synsound)
+		state_mgr.set_state(self.object, wound_manager_state, nil, nil, {look_object = victim}, emerg, synsound)
 	end
 
 	if synsound == nil then
 		-- нужно отыграть фоновый
-		if self.sound ~= wound_manager.sound then
-			self.sound = wound_manager.sound
+		if self.sound ~= wound_manager_sound then
+			self.sound = wound_manager_sound
 			if self.sound == "nil" then
 				xr_sound.set_sound(self.object, nil)
 			else
-				xr_sound.set_sound(self.object, wound_manager.sound)
+				xr_sound.set_sound(self.object, wound_manager_sound)
 			end
 		end
 	else
@@ -183,6 +187,11 @@ function Cwound_manager:update()
 	end	
 --	printf("f[%s]c[%s]v[%s]", utils.to_str(self.fight), utils.to_str(self.cover), utils.to_str(self.victim))
 --	printf("st[%s]so[%s]", utils.to_str(self.state), utils.to_str(self.sound))
+	
+	xr_logic.pstor_store(self.npc, "wounded_state", self.state)
+	xr_logic.pstor_store(self.npc, "wounded_sound", self.sound)
+	xr_logic.pstor_store(self.npc, "wounded_fight", self.fight)	
+	xr_logic.pstor_store(self.npc, "wounded_victim", self.victim)
 end
 function Cwound_manager:unlock_medkit()
 	self.can_use_medkit = true
@@ -198,6 +207,7 @@ function Cwound_manager:eat_medkit()
 		end
 	end
 	self.can_use_medkit = false
+	self:hit_callback()
 end
 function Cwound_manager:process_fight(hp)
 	local key
@@ -269,6 +279,13 @@ function Cwound_manager:get_key_from_distance(t, hp)
 	end
 	return key
 end
+function Cwound_manager:hit_callback()
+	if self.npc:critically_wounded() == true then
+		return
+	end
+
+	self:update()
+end    
 
 ----------------------------------------------------------------------------------------------------------------------
 -- binder
@@ -327,6 +344,7 @@ function reset_wounded(npc, scheme, st, section)
 		wounded_section = utils.cfg_get_string(st.ini, section, "wounded", npc, false, "")
 	end
 	init_wounded(npc, st.ini, wounded_section, st.wounded, scheme)
+	st.wounded.wound_manager:hit_callback()
 end
 -- Функция чтения настроек. В нее передается секция, откуда их нужно читать.
 local wounded_by_state = {
@@ -437,6 +455,13 @@ function is_wounded(npc)
 	end
 	return false
 end
+
+function hit_callback(npc_id)
+	if db.storage[npc_id].wounded ~= nil then
+		db.storage[npc_id].wounded.wound_manager:hit_callback()
+	end
+end
+
 
 function is_heavy_wounded_by_id(npc_id)
 	if db.storage[npc_id].wounded ~= nil then
