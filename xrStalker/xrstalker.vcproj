@@ -1661,6 +1661,9 @@
 					Name="textures_desc"
 					Filter="">
 					<File
+						RelativePath=".\Config\ui\ui_buy_menu.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\ui_common.xml">
 					</File>
 					<File
