@@ -1,0 +1,6 @@
+<ui_texture>
+    <file_name>ui\ui_icons_npc</file_name>
+
+    <texture id="ui_npc_monster_dog" x="0" y="0" width="165" height="108" />
+   
+</ui_texture>

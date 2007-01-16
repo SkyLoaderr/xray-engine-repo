@@ -1670,6 +1670,9 @@
 						RelativePath=".\Config\ui\ui_icons_map.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\ui_icons_npc.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\ui_iconsTotal.xml">
 					</File>
 					<File

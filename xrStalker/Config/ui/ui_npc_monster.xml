@@ -1,5 +1,5 @@
 <ui_texture>
-    <file_name>ui\ui_iconsTotal</file_name>
+    <file_name>ui\ui_npc_monster</file_name>
 
     <texture id="ui_npc_monster_dog" x="0" y="0" width="165" height="108" />
     <texture id="ui_npc_monster_dog_red" x="165" y="0" width="165" height="108" />
