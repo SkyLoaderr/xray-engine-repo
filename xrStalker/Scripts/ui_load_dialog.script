@@ -172,6 +172,13 @@ function load_dialog:OnListItemClicked()
 	local itm_index = list_box:GetSelectedItem()
 	
 	local item = list_box:GetItem(itm_index)
+
+	if item == nil then
+		self.file_caption:SetText("")
+		self.file_data:SetText("")
+		picture:InitTexture("ui\\ui_noise")
+		return
+	end
 	
 	local item_text = item:GetText()
 	self.file_caption:SetText(item_text)

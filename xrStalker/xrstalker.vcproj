@@ -1697,6 +1697,12 @@
 						RelativePath=".\Config\ui\ui_mp_main.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\ui_npc_monster.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_npc_unique.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\ui_numpad.xml">
 					</File>
 					<File
