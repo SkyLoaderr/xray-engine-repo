@@ -280,6 +280,10 @@ function Cwound_manager:get_key_from_distance(t, hp)
 	return key
 end
 function Cwound_manager:hit_callback()
+	if self.npc:alive() == false then
+		return
+	end
+
 	if self.npc:critically_wounded() == true then
 		return
 	end
