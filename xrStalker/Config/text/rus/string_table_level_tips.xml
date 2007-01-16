@@ -96,4 +96,9 @@
 	<string id="to_yantar">
 		<text>На Янтарь</text>
 	</string>
+
+	<string id="st_found_new_pda">
+		<text>Найдена информация:</text>
+	</string>
+
 </string_table>
