@@ -14,14 +14,13 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>		
+		<visual>actors\novice\green_stalker_2</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
 		<supplies>
 			[spawn] \n
     		wpn_beretta \n
 			ammo_9x19_fmj = 1 \n
-			wpn_abakan \n
-			ammo_5.45x39_fmj \n
+	
 
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -43,7 +42,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_balon_8</visual>		
+		<visual>actors\novice\green_stalker_3</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -71,14 +70,12 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>		
+		<visual>actors\novice\green_stalker_4</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_walther \n
 			ammo_9x19_fmj = 1 \n
-			wpn_g36 \n
-			ammo_5.56x45_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -100,14 +97,14 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_hood_2</visual>		
+		<visual>actors\novice\green_stalker_5</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_spas12 \n
-			ammo_12x70_buck = 1 \n
+		    wpn_bm16 \n
+            ammo_12x70_buck \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -129,14 +126,12 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_hood_8</visual>		
+		<visual>actors\novice\green_stalker_6</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_svu \n
-			ammo_7.62x54_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -159,14 +154,12 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_hood_9</visual>		
+		<visual>actors\novice\green_stalker_10</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_ak74 \n
-			ammo_5.45x39_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -188,14 +181,12 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_nauchniy</visual>		
+		<visual>actors\novice\green_stalker_antigas</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
 			wpn_fort \n
 			ammo_9x18_fmj = 1 \n
-			wpn_lr300 = 1, 1, 1, 0 \n
-			ammo_5.56x45_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
