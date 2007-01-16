@@ -5,7 +5,7 @@
 <!---------------------------- BOROV ------------------------>
 	<specific_character id="val_bandit_borov" team_default = "1">
 		<name>val_borov_name</name>
-		<icon x="30" y="12"></icon>
+		<icon>ui_npc_u_stalker_bandit_borov</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>val_borov_bio</bio>
 
@@ -38,7 +38,7 @@
 <!---------------------------- BODYGUARD ------------------------>
 	<specific_character id="val_bandit_bodyguard" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="24" y="6"></icon>
+		<icon>ui_npc_u_stalker_bandit_8</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_bodyguard_bio</bio>
 				
@@ -66,7 +66,7 @@
 <!--------------------------- BANDIT NOVICE ----------------------->
 	<specific_character id="val_bandit_novice_default1" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="14" y="4"></icon>
+		<icon>ui_npc_u_stalker_bandit_3</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_novice_bio</bio>
 
@@ -97,7 +97,7 @@
 
 	<specific_character id="val_bandit_novice_default2" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="28" y="2"></icon>
+		<icon>ui_npc_u_stalker_bandit_4</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_novice_bio</bio>
 		
@@ -129,7 +129,7 @@
 
 	<specific_character id="val_bandit_novice_default3" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="28" y="2"></icon>
+		<icon>ui_npc_u_stalker_bandit_5</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_novice_bio</bio>
 		
@@ -160,7 +160,7 @@
 
 	<specific_character id="val_bandit_novice_default4" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="24" y="6"></icon>
+		<icon>ui_npc_u_stalker_bandit_8</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_novice_bio</bio>
 		
@@ -190,7 +190,7 @@
 <!----------------------------- HALFDEAD ------------------------>
 	<specific_character id="val_escort_halfdead" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="28" y="2"></icon>
+		<icon>ui_npc_u_stalker_bandit_4</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_novice_bio</bio>
 		
@@ -213,7 +213,7 @@
 <!---------------------------BANDIT GENERAL---------------------->
 	<specific_character id="val_bandit_general_defaul1t" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="14" y="4"></icon>
+		<icon>ui_npc_u_stalker_bandit_3</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_general_bio</bio>
 		
@@ -245,7 +245,7 @@
 
 	<specific_character id="val_bandit_general_default2" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="28" y="2"></icon>
+		<icon>ui_npc_u_stalker_bandit_4</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_general_bio</bio>
 		
@@ -276,7 +276,7 @@
 
 	<specific_character id="val_bandit_general_default3" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="28" y="2"></icon>
+		<icon>ui_npc_u_stalker_bandit_5</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_general_bio</bio>
 		
@@ -307,7 +307,7 @@
 
 	<specific_character id="val_bandit_general_default4" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="24" y="6"></icon>
+		<icon>ui_npc_u_stalker_bandit_8</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_general_bio</bio>
 				
@@ -339,7 +339,7 @@
 <!---------------------------BANDIT VETERAN---------------------->
 	<specific_character id="val_bandit_veteran_default1" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="22" y="14"></icon>
+		<icon>ui_npc_u_stalker_bandit_master</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_veteran_bio</bio>
 		
@@ -371,7 +371,7 @@
 
 	<specific_character id="val_bandit_veteran_default2" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="24" y="14"></icon>
+		<icon>ui_npc_u_stalker_bandit_veteran</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_veteran_bio</bio>
 		
@@ -402,7 +402,7 @@
 
 	<specific_character id="val_bandit_veteran_default3" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="24" y="14"></icon>
+		<icon>ui_npc_u_stalker_bandit_veteran</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_veteran_bio</bio>
 
@@ -434,7 +434,7 @@
 <!-------------------------- WATCHTOWER BANDIT ----------------------->
 	<specific_character id="val_watchtower_bandit_guard1" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="24" y="14"></icon>
+		<icon>ui_npc_u_stalker_bandit_veteran</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_veteran_bio</bio>
 		
@@ -465,7 +465,7 @@
 
 	<specific_character id="val_watchtower_bandit_sniper1" team_default = "1">
 		<name>GENERATE_NAME_bandit</name>
-		<icon x="24" y="14"></icon>
+		<icon>ui_npc_u_stalker_bandit_veteran</icon>
 		<map_icon x="3" y="2"></map_icon>
 		<bio>val_bandit_veteran_bio</bio>
 
@@ -498,7 +498,7 @@
 <!-------------------------- REGULAR ----------------------->
 	<specific_character id="val_dolg_regular_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="8" y="2"></icon>
+		<icon>ui_npc_u_stalker_do_antigas</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>val_dolg_common_bio</bio>
 
@@ -536,7 +536,7 @@
 
 	<specific_character id="val_dolg_regular_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="4"></icon>
+		<icon>ui_npc_u_stalker_do_balon_8</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>val_dolg_common_bio</bio>
 
@@ -573,7 +573,7 @@
 
 	<specific_character id="val_dolg_regular_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="16" y="8"></icon>
+		<icon>ui_npc_u_stalker_do_mask_1</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>val_dolg_common_bio</bio>
 
@@ -611,7 +611,7 @@
 <!------------------------- PRISONER ----------------------->
 	<specific_character id="val_dolg_prisoner" team_default = "1">
 		<name>val_prisoner_name</name>
-		<icon x="8" y="2"></icon>
+		<icon>ui_npc_u_stalker_do_mask_1</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>val_prisoner_bio</bio>
 
@@ -643,7 +643,7 @@
 <!--------------------------- NAP1 ------------------------->
 	<specific_character id="val_escort_nap1" team_default = "1">
 		<name>val_pulia_name</name>
-		<icon x="16" y="8"></icon>
+		<icon>ui_npc_u_stalker_do_balon_6</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>val_pulia_bio</bio>
 
@@ -680,7 +680,7 @@
 <!---------------------------- CAPTIVE -------------------------->
 	<specific_character id="val_escort_captive" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="16" y="8"></icon>
+		<icon>ui_npc_u_stalker_do_balon_7</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>val_dolg_common_bio</bio>
 
@@ -713,7 +713,7 @@
 <!-------------------------- REGULAR ----------------------->
     <specific_character id="val_monolith_regular_default1" team_default = "3">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="6" y="2"></icon>
+        <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>val_monolith_common_bio</bio>
 
@@ -743,7 +743,7 @@
 
     <specific_character id="val_monolith_regular_default2" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="24" y="10"></icon>
+        <icon>ui_npc_u_stalker_mo_head_1</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>val_monolith_common_bio</bio>
 
@@ -775,7 +775,7 @@
 <!-------------------------- REGULAR ----------------------->
 	<specific_character id="val_soldier_regular_default1" team_default = "1">
 		<name>GENERATE_NAME_sergeant</name>
-		<icon x="12" y="2"></icon>
+		<icon>ui_npc_u_soldier_bandana</icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>val_soldier_regular_bio</bio>
 
@@ -806,7 +806,7 @@
 
 	<specific_character id="val_soldier_regular_default2" team_default = "1">
 		<name>GENERATE_NAME_sergeant</name>
-		<icon x="12" y="2"></icon>
+		<icon>ui_npc_u_soldier_bandana_5</icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>val_soldier_regular_bio</bio>
 
@@ -837,7 +837,7 @@
 
 	<specific_character id="val_soldier_regular_default3" team_default = "1">
 		<name>GENERATE_NAME_sergeant</name>
-		<icon x="18" y="14"></icon>
+		<icon>ui_npc_u_soldier_mask</icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>val_soldier_regular_bio</bio>
 
@@ -868,7 +868,7 @@
 
 	<specific_character id="val_soldier_regular_default4" team_default = "1">
 		<name>GENERATE_NAME_sergeant</name>
-		<icon x="12" y="2"></icon>
+		<icon>ui_npc_u_soldier_obichniy</icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>val_soldier_regular_bio.</bio>
 
@@ -900,7 +900,7 @@
 <!------------------------- SPECNAZ ------------------------>
 	<specific_character id="val_soldier_specnaz_default1" team_default = "1">
 		<name>GENERATE_NAME_lieutenant</name>
-		<icon x="14" y="2"></icon>
+		<icon>ui_npc_u_soldier_spetsnaz</icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>val_soldier_specnaz_bio</bio>
 
@@ -932,7 +932,7 @@
 
 	<specific_character id="val_soldier_specnaz_default2" team_default = "1">
 		<name>GENERATE_NAME_lieutenant</name>
-		<icon x="14" y="2"></icon>
+		<icon>ui_npc_u_soldier_spetsnaz</icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>val_soldier_specnaz_bio</bio>
 
@@ -963,7 +963,7 @@
 	
     <specific_character id="val_soldier_specnaz_default3" team_default = "1">
 		<name>GENERATE_NAME_lieutenant</name>
-		<icon x="6" y="4"></icon>
+		<icon>ui_npc_u_soldier_spetsnaz</icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>val_soldier_specnaz_bio</bio>
 
@@ -994,7 +994,7 @@
 
     <specific_character id="val_soldier_specnaz_default4" team_default = "1">
 		<name>GENERATE_NAME_lieutenant</name>
-		<icon x="6" y="4"></icon>
+		<icon>ui_npc_u_soldier_spetsnaz</icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>val_soldier_specnaz_bio</bio>
 
@@ -1027,7 +1027,7 @@
 <!-------------------------- NOVICE ------------------------>
 	<specific_character id="val_stalker_novice_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="0" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_2</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>val_stalker_novice_bio</bio>
 
@@ -1059,7 +1059,7 @@
 
 	<specific_character id="val_stalker_novice_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="0" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_3</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>val_stalker_novice_bio</bio>
 
@@ -1093,7 +1093,7 @@
 
 	<specific_character id="val_stalker_novice_default4" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="0" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_4</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>val_stalker_novice_bio</bio>
 
@@ -1124,7 +1124,7 @@
 
 	<specific_character id="val_stalker_novice_default5" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="10"></icon>
+		<icon>ui_npc_u_green_stalker_5</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>val_stalker_novice_bio</bio>
 
@@ -1155,7 +1155,7 @@
 
 	<specific_character id="val_stalker_novice_default6" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="0" y="2"></icon>
+		<icon>ui_npc_u_green_stalker_6</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>val_stalker_novice_bio</bio>
 
@@ -1188,7 +1188,7 @@
 
 	<specific_character id="val_stalker_novice_default10" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="10"></icon>
+		<icon>ui_npc_u_green_stalker_10</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>val_stalker_novice_bio</bio>
 
@@ -1220,7 +1220,7 @@
 <!-------------------------- GENERAL ----------------------->
 	<specific_character id="val_stalker_general_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="2" y="2"></icon>
+		<icon>ui_npc_u_stalker_neytral_hood_9</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>val_stalker_general_bio</bio>
 
@@ -1254,7 +1254,7 @@
 
     <specific_character id="val_stalker_general_default2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="16" y="6"></icon>
+		<icon>ui_npc_u_stalker_neytral_balon_8</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>val_stalker_general_bio</bio>
 
@@ -1288,7 +1288,7 @@
 
     <specific_character id="val_stalker_general_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="16" y="6"></icon>
+		<icon>ui_npc_u_stalker_neytral_rukzak_2</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>val_stalker_general_bio</bio>
 
@@ -1321,7 +1321,7 @@
 
 	<specific_character id="val_stalker_general_default4" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="4"></icon>
+		<icon>ui_npc_u_stalker_neytral_hood_2</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>val_stalker_general_bio</bio>
 
@@ -1354,7 +1354,7 @@
 	
 	<specific_character id="val_stalker_general_default5" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="26" y="12"></icon>
+		<icon>ui_npc_u_stalker_neytral_hood_8</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>val_stalker_general_bio</bio>
 
@@ -1388,7 +1388,7 @@
 <!-- X18 -->
 	<specific_character id="dar_stalker_explorer" team_default = "1">
 		<name>dar_explorer_name</name>
-		<icon x="30" y="8"></icon>
+		<icon>ui_npc_u_stalker_neytral_rukzak_2</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>dar_explorer_bio</bio>
 
@@ -1400,7 +1400,7 @@
 		
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
  
-		<visual>actors\neytral\stalker_neytral_rukzak_5</visual>
+		<visual>neytral\stalker_neytral_rukzak_2</visual>
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -1417,7 +1417,7 @@
 	
 	<specific_character id="dar_corpse_default1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="8" y="0"></icon>
+		<icon>ui_npc_u_stalker_neytral_hood_8</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>dar_corpse_bio</bio>
 
@@ -1440,7 +1440,7 @@
 	
 	<specific_character id="dar_corpse_default3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="8" y="0"></icon>
+		<icon>ui_npc_u_green_stalker_2</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>dar_corpse_bio</bio>
 
@@ -1450,7 +1450,7 @@
 		<rank>900</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\hero\stalker_novice</visual>
+		<visual>novice\green_stalker_2</visual>
 		<supplies>
 			[spawn] \n
 		</supplies>
@@ -1462,7 +1462,7 @@
 	
 	<specific_character id="dar_corpse_default4" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="8" y="0"></icon>
+		<icon>ui_npc_u_stalker_zombie5</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>dar_corpse_bio</bio>
 
@@ -1484,7 +1484,7 @@
 
 	<specific_character id="dar_corpse_kalugin1" team_default = "1">
 		<name>dar_kalugin_name</name>
-		<icon x="8" y="0"></icon>
+		<icon>ui_npc_u_stalker_ecolog</icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>dar_corpse_bio</bio>
 
@@ -1494,7 +1494,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\ucheniy\ucheniy_3</visual>
+		<visual>ecolog\stalker_ecolog</visual>
 		<supplies>
 			[spawn] \n
 		</supplies>
@@ -1507,7 +1507,7 @@
 
 	<specific_character id="dar_military_scout1" team_default = "1">
 		<name>GENERATE_NAME_lieutenant</name>
-		<icon x="14" y="2"></icon>
+		<icon>ui_npc_u_soldier_spetsnaz</icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>sim_soldier_specnaz_bio</bio>
 

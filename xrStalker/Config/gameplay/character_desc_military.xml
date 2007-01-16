@@ -6,7 +6,7 @@
 <!---------------------------SVOBODA SPECNAZ----------------------->
 	<specific_character id="mil_Svoboda_specnaz" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="26" y="14"></icon>
+		<icon>ui_npc_u_stalker_sv_hood_9</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>mil_Svoboda_specnaz_bio</bio>
 
@@ -40,7 +40,7 @@
 <!---------------------------SVOBODA ENGINEER----------------------->
 	<specific_character id="mil_Svoboda_engineer" team_default = "1">
 		<name>mil_Svoboda_engineer_name</name>
-		<icon x="22" y="8"></icon>
+		<icon>ui_npc_u_stalker_sv_rukzak_3</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>mil_Svoboda_engineer_bio</bio>
 
@@ -77,7 +77,7 @@
 <!---------------------------SVOBODA REGULAR----------------------->
 	<specific_character id="mil_Svoboda_regular" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="12"></icon>
+		<icon>ui_npc_u_stalker_sv_rukzak_1_1</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>mil_Svoboda_regular_bio</bio>
 
@@ -111,7 +111,7 @@
 <!---------------------------SVOBODA SNIPER---------------------->
 	<specific_character id="mil_Svoboda_sniper" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="0"></icon>
+		<icon>ui_npc_u_stalker_sv_rukzak_3_1</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>mil_Svoboda_sniper_bio</bio>
 
@@ -144,7 +144,7 @@
 <!---------------------------SVOBODA SPECNAZ STUKACH---------------------->
 	<specific_character id="mil_Svoboda_stukach" team_default = "1">
 		<name>mil_Svoboda_stukach_name</name>
-		<icon x="30" y="10"></icon>
+		<icon>ui_npc_u_stalker_sv_rukzak_1</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>mil_Svoboda_stukach_bio</bio>
 
@@ -178,7 +178,7 @@
 <!---------------------------SVOBODA ZONEGUARD---------------------->
 	<specific_character id="mil_Svoboda_zoneguard" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="8"></icon>
+		<icon>ui_npc_u_stalker_sv_exoskeleton</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>mil_Svoboda_zoneguard_bio</bio>
 
@@ -215,7 +215,7 @@
 <!---------------------------SVOBODA BODYGUARD---------------------->
 	<specific_character id="mil_Svoboda_bodyguard" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="8"></icon>
+		<icon>ui_npc_u_stalker_sv_exoskeleton</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>mil_Svoboda_bodyguard_bio</bio>
 
@@ -250,7 +250,7 @@
 <!---------------------------SVOBODA LEADER---------------------->
 	<specific_character id="mil_Svoboda_leader" team_default = "1">
 		<name>mil_Svoboda_leader_name</name>
-		<icon x="18" y="10"></icon>
+		<icon>ui_npc_u_stalker_sv_leader</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>mil_Svoboda_leader_bio</bio>
 
@@ -286,7 +286,7 @@
 <!---------------------------SVOBODA TRADER----------------------->
 	<specific_character id="mil_Svoboda_trader" team_default = "1">
 		<name>mil_Svoboda_trader_name</name>
-		<icon x="22" y="6"></icon>
+		<icon>ui_npc_u_stalker_sv_balon_1</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>mil_Svoboda_trader_bio</bio>
 
@@ -318,7 +318,7 @@
 <!---------------------------SVOBODA MASTER MAX----------------------->
 	<specific_character id="mil_Svoboda_master_Max" team_default = "1">
 		<name>mil_Svoboda_master_Max_name</name>
-		<icon x="20" y="6"></icon>
+		<icon>ui_npc_u_stalker_sv_max</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>mil_Svoboda_master_Max_bio</bio>
 
@@ -354,7 +354,7 @@
 <!---------------------------SVOBODA MASTER----------------------->
 	<specific_character id="mil_Svoboda_master" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="24" y="8"></icon>
+		<icon>ui_npc_u_stalker_sv_rukzak_1_1</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>mil_Svoboda_master_bio</bio>
 
@@ -387,7 +387,7 @@
 <!---------------------------SVOBODA COOK----------------------->
 	<specific_character id="mil_Svoboda_cook" team_default = "1">
 		<name>mil_Svoboda_cook_name</name>		
-		<icon x="22" y="12"></icon>
+		<icon>ui_npc_u_stalker_sv_cook</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>mil_Svoboda_cook_bio</bio>
 		
@@ -434,7 +434,7 @@
 <!---------------------------SVOBODA BLOCKPOST LEADER---------------------->
 	<specific_character id="mil_Svoboda_blockpost_leader" team_default = "1">
 		<name>mil_Svoboda_blockpost_leader_name</name>
-		<icon x="30" y="14"></icon>
+		<icon>ui_npc_u_stalker_sv_balon_10</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>mil_Svoboda_blockpost_leader_bio</bio>
 
@@ -469,7 +469,7 @@
 <!---------------------------SVOBODA MASTER UGRUMIY----------------------->
 	<specific_character id="mil_Svoboda_master_Ugrumiy" team_default = "1">
 		<name>mil_Svoboda_master_Ugrumiy_name</name>		
-		<icon x="12" y="0"></icon>
+		<icon>ui_npc_u_stalker_sv_nauchniy</icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>mil_Svoboda_master_Ugrumiy_bio</bio>
 
@@ -508,7 +508,7 @@
 <!---------------------------DOLG SPECNAZ---------------------->
 	<specific_character id="mil_Dolg_specnaz" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="8" y="2"></icon>
+		<icon>ui_npc_u_stalker_do_antigas</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>mil_Dolg_specnaz_bio</bio>
 
@@ -541,7 +541,7 @@
 <!---------------------------DOLG SPECNAZ SILENCE---------------------->
 	<specific_character id="mil_Dolg_specnaz_silence" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="8" y="2"></icon>
+		<icon>ui_npc_u_stalker_do_exoskeleton</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>mil_Dolg_specnaz_silence_bio</bio>
 
@@ -574,7 +574,7 @@
 <!---------------------------DOLG SPECNAZ CHEREP---------------------->
 	<specific_character id="mil_Dolg_specnaz_cherep" team_default = "1">
 		<name>mil_Dolg_specnaz_cherep_name</name>
-		<icon x="30" y="4"></icon>
+		<icon>ui_npc_u_stalker_do_exoskeleton</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>mil_Dolg_specnaz_cherep_bio</bio>
 
@@ -612,7 +612,7 @@
 <!---------------------------KILLER IHFORMATOR---------------------->
 	<specific_character id="mil_Killer_informator" team_default = "1">
 		<name>mil_Killer_informator_name</name>
-		<icon x="28" y="14"></icon>
+		<icon>ui_npc_u_stalker_ki_informator</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>mil_Killer_informator_bio</bio>
 
@@ -646,7 +646,7 @@
 <!---------------------------KILLER SPECNAZ---------------------->
 	<specific_character id="mil_Killer_specnaz" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="4" y="2"></icon>
+		<icon>ui_npc_u_stalker_ki_antigas</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>mil_Killer_specnaz_bio</bio>
 
@@ -679,7 +679,7 @@
 <!---------------------------KILLER SNIPER---------------------->
 	<specific_character id="mil_killer_sniper" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="28" y="6"></icon>
+		<icon>ui_npc_u_stalker_ki_mask</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>mil_killer_sniper_bio</bio>
 
@@ -713,7 +713,7 @@
 <!---------------------------KILLER MASTER----------------------->
 	<specific_character id="mil_killer_master" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="30" y="6"></icon>
+		<icon>ui_npc_u_stalker_ki_exoskeleton</icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>mil_killer_master_bio</bio>
 
@@ -753,7 +753,7 @@
 <!---------------------------STALKER MASTER----------------------->
 	<specific_character id="mil_Stalker_master" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="20" y="8"></icon>
+		<icon>ui_npc_u_stalker_neytral_exoskeleton</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>mil_Stalker_master_bio</bio>
 
@@ -785,7 +785,7 @@
 <!---------------------------STALKER VETERAN---------------------->
 	<specific_character id="mil_Stalker_veteran" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="10" y="0"></icon>
+		<icon>ui_npc_u_stalker_neytral_nauchniy</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>mil_Stalker_veteran_bio</bio>
 
@@ -819,7 +819,7 @@
 <!---------------------------SVOBODA CRAZY STALKER----------------------->
         <specific_character id="mil_Svoboda_zombi_stalker" team_default = "1">
                 <name>mil_Svoboda_zombi_stalker_name</name>
-                <icon x="8" y="0"></icon>
+                <icon>ui_npc_u_stalker_zombie5</icon>
                 <map_icon x="5" y="0"></map_icon>
                 <bio>mil_Svoboda_zombi_stalker_bio</bio>
 
@@ -848,7 +848,7 @@
 <!---------------------------MONOLIT REGULAR----------------------->
   <specific_character id="mil_Monolit_regular" team_default = "1">
     <name>GENERATE_NAME_stalker</name>
-    <icon x="6" y="2"></icon>
+    <icon>ui_npc_u_stalker_mo_hood_9</icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>mil_Monolit_regular_bio</bio>
 
@@ -881,7 +881,7 @@
 <!---------------------------MONOLIT MASTER----------------------->
   <specific_character id="mil_Monolit_master" team_default = "1">
     <name>GENERATE_NAME_stalker</name>
-    <icon x="28" y="8"></icon>
+    <icon>ui_npc_u_stalker_mo_exo</icon>
     <map_icon x="3" y="0"></map_icon>
     <bio>mil_Monolit_master_bio</bio>
 

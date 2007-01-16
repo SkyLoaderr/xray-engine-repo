@@ -5,7 +5,7 @@
 <!-------------------------- AMBUSH ------------------------>
     <specific_character id="pri_monolith_ambush_default1" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="24" y="10"></icon>
+        <icon>ui_npc_u_stalker_mo_head_1</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_common_bio</bio>
 
@@ -36,7 +36,7 @@
 
     <specific_character id="pri_monolith_ambush_default2" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="22" y="10"></icon>
+        <icon>ui_npc_u_stalker_mo_mask</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_common_bio</bio>
 
@@ -68,7 +68,7 @@
 <!---------------------- AMBUSH SPECNAZ -------------------->
     <specific_character id="pri_monolith_ambush_specnaz_default1" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="24" y="10"></icon>
+        <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_common_bio</bio>
 
@@ -98,7 +98,7 @@
 
     <specific_character id="pri_monolith_ambush_specnaz_default2" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="22" y="10"></icon>
+        <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_common_bio</bio>
 
@@ -130,7 +130,7 @@
 <!------------------------ AMBUSH EXO ---------------------->
     <specific_character id="pri_monolith_ambush_exo_default1" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="24" y="10"></icon>
+        <icon>ui_npc_u_stalker_mo_exo</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_common_bio</bio>
 
@@ -161,7 +161,7 @@
 
     <specific_character id="pri_monolith_ambush_exo_default2" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="22" y="10"></icon>
+        <icon>ui_npc_u_stalker_mo_exo</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_common_bio</bio>
 
@@ -192,7 +192,7 @@
 <!-------------------------- REGULAR ----------------------->
     <specific_character id="pri_monolith_regular_default1" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="24" y="10"></icon>
+        <icon>ui_npc_u_stalker_mo_head_1</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_regular_bio</bio>
 
@@ -222,7 +222,7 @@
 
     <specific_character id="pri_monolith_regular_default2" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="22" y="10"></icon>
+        <icon>ui_npc_u_stalker_mo_mask</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_regular_bio</bio>
 
@@ -252,7 +252,7 @@
 
     <specific_character id="pri_monolith_regular_default3" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="24" y="10"></icon>
+        <icon>ui_npc_u_stalker_mo_head_1</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_regular_bio</bio>
 
@@ -282,7 +282,7 @@
 
     <specific_character id="pri_monolith_regular_default4" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="22" y="10"></icon>
+        <icon>ui_npc_u_stalker_mo_mask</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_regular_bio</bio>
 
@@ -313,7 +313,7 @@
 <!-------------------------- SPECNAZ ----------------------->
     <specific_character id="pri_monolith_specnaz_default1" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="6" y="2"></icon>
+        <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_specnaz_bio</bio>
 
@@ -344,7 +344,7 @@
 
     <specific_character id="pri_monolith_specnaz_default2" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="0" y="4"></icon>
+        <icon>ui_npc_u_stalker_mo_nauchniy</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_specnaz_bio</bio>
 
@@ -376,7 +376,7 @@
 <!---------------------------- EXO ------------------------->
     <specific_character id="pri_monolith_exo_default1" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="28" y="8"></icon>
+        <icon>ui_npc_u_stalker_mo_exo</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_exo_bio</bio>
 
@@ -407,7 +407,7 @@
 
     <specific_character id="pri_monolith_exo_default2" team_default = "1">
         <name>GENERATE_NAME_stalker</name>
-        <icon x="28" y="8"></icon>
+        <icon>ui_npc_u_stalker_mo_exo</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_exo_bio</bio>
 
@@ -439,7 +439,7 @@
 <!-------------------------- LEADER ------------------------>
     <specific_character id="pri_monolith_leader" team_default = "1">
         <name>pri_monolith_leader_name</name>
-        <icon x="28" y="8"></icon>
+        <icon>ui_npc_u_stalker_mo_exo</icon>
         <map_icon x="3" y="0"></map_icon>
         <bio>pri_monolith_leader_bio</bio>
 
@@ -472,7 +472,7 @@
 <!------------------------- FOLLOWERS ---------------------->
 	<specific_character id="pri_followers_bomber" team_default = "1">
 		<name>pri_followers_bomber_name</name>
-		<icon x="20" y="8"></icon>
+		<icon>ui_npc_u_stalker_neytral_exoskeleton</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_master_bio</bio>
 
@@ -506,7 +506,7 @@
 
 	<specific_character id="pri_followers_leader" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="20" y="8"></icon>
+		<icon>ui_npc_u_stalker_neytral_exoskeleton</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_master_bio</bio>
 
@@ -540,7 +540,7 @@
 
 	<specific_character id="pri_followers_stalker1" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="20" y="8"></icon>
+		<icon>ui_npc_u_stalker_neytral_exoskeleton</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_master_bio</bio>
 
@@ -574,7 +574,7 @@
 
 	<specific_character id="pri_followers_stalker2" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="20" y="8"></icon>
+		<icon>ui_npc_u_stalker_neytral_exoskeleton</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_master_bio</bio>
 
@@ -607,7 +607,7 @@
 
 	<specific_character id="pri_followers_stalker3" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="20" y="8"></icon>
+		<icon>ui_npc_u_stalker_neytral_exoskeleton</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_master_bio</bio>
 
@@ -640,7 +640,7 @@
 
 	<specific_character id="pri_followers_stalker4" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="20" y="8"></icon>
+		<icon>ui_npc_u_stalker_neytral_exoskeleton</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_master_bio</bio>
 
@@ -673,7 +673,7 @@
 
 	<specific_character id="pri_followers_stalker5" team_default = "1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon x="20" y="8"></icon>
+		<icon>ui_npc_u_stalker_neytral_exoskeleton</icon>
 		<map_icon x="1" y="0"></map_icon>
 		<bio>sim_stalker_master_bio</bio>
 
@@ -708,7 +708,7 @@
 <!-------------------------- SUICIDE ----------------------->
 	<specific_character id="pri_soldier_suicide_default1" team_default = "1">
 		<name>pri_zombied_soldier_name</name>
-		<icon x="14" y="2"></icon>
+		<icon>ui_npc_u_soldier_spetsnaz</icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>pri_zombied_soldier_bio</bio>
 
@@ -734,7 +734,7 @@
 
 	<specific_character id="pri_soldier_suicide_default2" team_default = "1">
 		<name>pri_zombied_soldier_name</name>
-		<icon x="14" y="2"></icon>
+		<icon>ui_npc_u_soldier_bandana</icon>
 		<map_icon x="1" y="2"></map_icon>
 		<bio>pri_zombied_soldier_bio</bio>
 
@@ -761,7 +761,7 @@
 <!---------------------- ZOMBIED ----------------------------->
 	<specific_character id="pri_zombied_suicide_default1" team_default = "1">
 		<name>pri_zombied_stalker_name</name>
-		<icon x="20" y="10"></icon>
+		<icon>ui_npc_u_stalker_zombie_specnaz</icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>pri_zombied_stalker_bio</bio>
 
@@ -788,7 +788,7 @@
 
 	<specific_character id="pri_zombied_default1" team_default = "1">
 		<name>pri_zombied_stalker_name</name>
-		<icon x="8" y="0"></icon>
+		<icon>ui_npc_u_stalker_zombie_specnaz</icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>pri_zombied_stalker_bio</bio>
 
@@ -818,7 +818,7 @@
 <!--------------------------- VETERANS----------------------->
 	<specific_character id="pri_zombied_veteran_default1" team_default = "1">
 		<name>pri_zombied_stalker_name</name>
-		<icon x="8" y="0"></icon>
+		<icon>ui_npc_u_stalker_zombie_specnaz</icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>pri_zombied_stalker_bio</bio>
 
@@ -847,7 +847,7 @@
 
 	<specific_character id="pri_zombied_veteran_default2" team_default = "1">
 		<name>pri_zombied_stalker_name</name>
-		<icon x="8" y="0"></icon>
+		<icon>ui_npc_u_stalker_zombie_specnaz</icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>pri_zombied_stalker_bio</bio>
 
