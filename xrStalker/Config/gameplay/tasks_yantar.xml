@@ -190,3 +190,14 @@
 			<infoportion_complete>esc_find_doctor_start</infoportion_complete>
 		</objective>
 </game_task>
+
+
+	<game_task id="yan_scientist_job">
+		<title>yan_scientist_job</title>
+		<objective>
+			<icon>ui_iconsTotal_esc_blockpost_case_to_trader</icon>
+		</objective>
+		<objective>
+			<text>yan_scientist_job_text</text>
+		</objective>
+	</game_task>
