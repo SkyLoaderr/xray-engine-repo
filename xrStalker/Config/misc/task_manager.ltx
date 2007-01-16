@@ -208,7 +208,7 @@ sar_monolith
 [tm_eliminate_camp_1]
 type = eliminate_lager
 community = actor
-init_condition = {+gar_bandits_killed +gar_hellcar_death}, {+gar_bandits_killed +gar_hellcar_dialog_end}
+init_condition = {=actor_on_level(l02_garbage)}
 text = tm_eliminate_camp_1_text
 description = tm_eliminate_camp_1_descr
 parent = trader
@@ -267,6 +267,7 @@ time = 86400
 [tm_eliminate_camp_5]
 type = eliminate_lager
 community = actor
+init_condition = {=actor_on_level(l02_garbage) +agroprom_military_case_have}
 text = tm_eliminate_camp_5_text
 description = tm_eliminate_camp_5_descr
 parent = trader
@@ -348,15 +349,15 @@ time = 259200
 [tm_kill_stalker_1]
 type = kill_stalker
 community = actor
-init_condition = {=actor_on_level(l02_garbage)}
+;init_condition = {=actor_on_level(l02_garbage)}
 text = tm_kill_stalker_1_text
 description = tm_kill_stalker_1_descr
 parent = trader
-target = gar_bandit_leader
-;--reward_money = 6500
+target = sim_bandit_veteran
+reward_money = 6500
 reward_reputation = +15
 reward_relation = dolg, 5
-reward_item = stalker_outfit
+;--reward_item = stalker_outfit
 reward_rank = 6
 time = 86400
 
@@ -367,7 +368,7 @@ condlist = {+agroprom_military_case_have}
 text = tm_kill_stalker_2_text
 description = tm_kill_stalker_2_descr
 parent = trader
-target = sim_stalker_vgeneral
+target = sim_stalker_general
 reward_money = 2500
 reward_reputation = -15
 reward_item = medkit_scientic
