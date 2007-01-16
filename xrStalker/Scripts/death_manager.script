@@ -166,6 +166,8 @@ function keep_item(npc, item)
        item_in_slot:id() == item_id
     then
         item:unload_magazine()
+		--' Тут надо уменьшить кондишн оружия
+		item:set_condition((math.random(30)+60)/100)
         return
     end
     item_in_slot = npc:item_in_slot(2)
@@ -173,6 +175,8 @@ function keep_item(npc, item)
        item_in_slot:id() == item_id
     then
         item:unload_magazine()
+		--' Тут надо уменьшить кондишн оружия
+		item:set_condition((math.random(30)+60)/100)
         return
     end
     npc:mark_item_dropped(item)
