@@ -118,3 +118,23 @@
 	<string id="tutorial_help_wounded_3">
 		<text>Принести флешку торговцу</text>
 	</string>
+
+
+	<string id="esc_trader_job">
+		<text>Работа на торговца</text>
+	</string>
+	<string id="esc_trader_job_text">
+		<text>Получить спецзадание у торговца</text>
+	</string>
+	<string id="bar_barman_job">
+		<text>Работа на бармена</text>
+	</string>
+	<string id="bar_barman_job_text">
+		<text>Обратиться к бармену за работой</text>
+	</string>
+	<string id="yan_scientist_job">
+		<text>Помощь ученным</text>
+	</string>
+	<string id="yan_scientist_job_text">
+		<text>Предложить свою помощь ученным</text>
+	</string>
