@@ -243,36 +243,306 @@
 	</character>
 	
 <!-- Darkscape -->
-    <character id="ds_soldier_regular">
-		<class>ds_soldier_regular</class>
+    <character id="ds_bandit_1">
+		<class>ds_bandit_1</class>
 	</character>
-	<character id="ds_soldier_regular1">
-		<class>ds_soldier_regular1</class>
+	<character id="ds_bandit_2">
+		<class>ds_bandit_2</class>
 	</character>
-	<character id="ds_soldier_regular2">
-		<class>ds_soldier_regular2</class>
+	<character id="ds_bandit_3">
+		<class>ds_bandit_3</class>
 	</character>
-	<character id="ds_soldier_regular3">
-		<class>ds_soldier_regular3</class>
+	<character id="ds_bandit_4">
+		<class>ds_bandit_4</class>
 	</character>
-	<character id="ds_soldier_regular4">
-		<class>ds_soldier_regular4</class>
+	<character id="ds_bandit_5">
+		<class>ds_bandit_5</class>
 	</character>
-	<character id="ds_soldier_regular5">
-		<class>ds_soldier_regular5</class>
+	<character id="ds_bandit_6">
+		<class>ds_bandit_6</class>
 	</character>
-	<character id="ds_soldier_regular6">
-		<class>ds_soldier_regular6</class>
+	<character id="ds_dolg_1">
+		<class>ds_dolg_1</class>
 	</character>
-	<character id="ds_soldier_regular7">
-		<class>ds_soldier_regular7</class>
+	<character id="ds_dolg_2">
+		<class>ds_dolg_2</class>
 	</character>
-	<character id="ds_soldier_regular8">
-		<class>ds_soldier_regular8</class>
+	<character id="ds_dolg_3">
+		<class>ds_dolg_3</class>
 	</character>
-	<character id="ds_soldier_novice">
-		<class>ds_soldier_novice</class>
+	<character id="ds_dolg_4">
+		<class>ds_dolg_4</class>
 	</character>
+	
+	<character id="ds_dolg_5">
+		<class>ds_dolg_5</class>
+	</character>
+	
+	<character id="ds_dolg_6">
+		<class>ds_dolg_6</class>
+	</character>
+	
+	<character id="ds_nauch_1">
+		<class>ds_nauch_1</class>
+	</character>
+	
+	<character id="ds_nauch_2">
+		<class>ds_nauch_2</class>
+	</character>
+	
+	<character id="ds_kill_1">
+		<class>ds_kill_1</class>
+	</character>
+	
+	<character id="ds_kill_2">
+		<class>ds_kill_2</class>
+	</character>
+	
+	<character id="ds_kill_3">
+		<class>ds_kill_3</class>
+	</character>
+	
+	<character id="ds_kill_4">
+		<class>ds_kill_4</class>
+	</character>
+	
+	<character id="ds_kill_5">
+		<class>ds_kill_5</class>
+	</character>
+	
+	
+	<character id="ds_mil_1">
+		<class>ds_mil_1</class>
+	</character>
+	
+	
+	<character id="ds_mil_2">
+		<class>ds_mil_2</class>
+	</character>
+	
+	<character id="ds_mil_3">
+		<class>ds_mil_3</class>
+	</character>
+	
+	<character id="ds_mil_4">
+		<class>ds_mil_4</class>
+	</character>
+	
+	<character id="ds_mil_5">
+		<class>ds_mil_5</class>
+	</character>
+	
+	<character id="ds_mil_6">
+		<class>ds_mil_6</class>
+	</character>
+	
+	<character id="ds_mil_7">
+		<class>ds_mil_7</class>
+	</character>
+	
+	<character id="ds_mil_8">
+		<class>ds_mil_8</class>
+	</character>
+	
+	<character id="ds_mil_9">
+		<class>ds_mil_9</class>
+	</character>
+	
+	<character id="ds_mil_10">
+		<class>ds_mil_10</class>
+	</character>
+	
+	<character id="ds_mon_1">
+		<class>ds_mon_1</class>
+	</character>
+	
+	<character id="ds_mon_2">
+		<class>ds_mon_2</class>
+	</character>
+	
+	<character id="ds_mon_3">
+		<class>ds_mon_3</class>
+	</character>
+	
+	<character id="ds_mon_4">
+		<class>ds_mon_4</class>
+	</character>
+	
+	<character id="ds_mon_5">
+		<class>ds_mon_5</class>
+	</character>
+	
+	<character id="ds_stalk_1">
+		<class>ds_stalk_1</class>
+	</character>
+	
+	<character id="ds_stalk_2">
+		<class>ds_stalk_2</class>
+	</character>
+	
+	<character id="ds_stalk_3">
+		<class>ds_stalk_3</class>
+	</character>
+	
+	<character id="ds_stalk_4">
+		<class>dds_stalk_4</class>
+	</character>
+	
+	<character id="ds_stalk_5">
+		<class>ds_stalk_5</class>
+	</character>
+	
+	<character id="ds_stalk_6">
+		<class>ds_stalk_6</class>
+	</character>
+	
+	<character id="ds_stalk_7">
+		<class>ds_stalk_7</class>
+	</character>
+	
+	<character id="ds_stalk_8">
+		<class>ds_stalk_8</class>
+	</character>
+	
+	<character id="ds_novice_1">
+		<class>ds_novice_1</class>
+	</character>
+	
+	<character id="ds_novice_2">
+		<class>ds_novice_2</class>
+	</character>
+	
+	<character id="ds_novice_3">
+		<class>ds_novice_3</class>
+	</character>
+	
+	<character id="ds_novice_4">
+		<class>ds_novice_4</class>
+	</character>
+	
+	<character id="ds_novice_5">
+		<class>ds_novice_5</class>
+	</character>
+	
+	<character id="ds_novice_6">
+		<class>ds_novice_6</class>
+	</character>
+	
+	<character id="ds_novice_7">
+		<class>ds_novice_7</class>
+	</character>
+	
+	<character id="ds_zomb_1">
+		<class>ds_zomb_1</class>
+	</character>
+	
+	<character id="ds_zomb_2">
+		<class>ds_zomb_2</class>
+	</character>
+	
+	<character id="ds_zomb_3">
+		<class>ds_zomb_3</class>
+	</character>
+	
+	<character id="ds_zomb_4">
+		<class>ds_zomb_4</class>
+	</character>
+	
+	<character id="ds_zomb_5">
+		<class>ds_zomb_5</class>
+	</character>
+	
+	<character id="ds_zomb_6">
+		<class>ds_zomb_6</class>
+	</character>
+	
+	<character id="ds_zomb_7">
+		<class>ds_zomb_7</class>
+	</character>
+	
+	<character id="ds_zomb_8">
+		<class>ds_zomb_8</class>
+	</character>
+	
+	<character id="ds_zomb_9">
+		<class>ds_zomb_9</class>
+	</character>
+	
+	<character id="ds_zomb_10">
+		<class>ds_zomb_10</class>
+	</character>
+	
+	<character id="ds_zomb_11">
+		<class>ds_zomb_11</class>
+	</character>
+	
+	<character id="ds_zomb_12">
+		<class>ds_zomb_12</class>
+	</character>
+	
+	<character id="ds_free_1">
+		<class>ds_free_1</class>
+	</character>
+	
+	<character id="ds_free_2">
+		<class>ds_free_2</class>
+	</character>
+	
+	<character id="ds_free_3">
+		<class>ds_free_3</class>
+	</character>
+	
+	<character id="ds_free_4">
+		<class>ds_free_4</class>
+	</character>
+	
+	<character id="ds_free_5">
+		<class>ds_free_5</class>
+	</character>
+	
+	<character id="ds_free_6">
+		<class>ds_free_6</class>
+	</character>
+	
+	<character id="ds_free_7">
+		<class>ds_free_7</class>
+	</character>
+	
+	<character id="ds_free_8">
+		<class>ds_free_8</class>
+	</character>
+	
+	<character id="ds_borov">
+		<class>ds_borov</class>
+	</character>
+	
+	<character id="ds_volkodav">
+		<class>ds_volkodav</class>
+	</character>
+	
+	<character id="ds_mil_agr_boss">
+		<class>ds_mil_agr_boss</class>
+	</character>
+	
+	<character id="ds_ara">
+		<class>ds_ara</class>
+	</character>
+	
+	<character id="ds_mil_boss_nii">
+		<class>ds_mil_boss_nii</class>
+	</character>
+	
+	
+    <character id="ds_boss_aes">
+		<class>ds_boss_aes</class>
+	</character>
+	
+	<character id="ds_cook">
+		<class>ds_cook</class>
+	</character>
+	
+	
+	
 
 <!-- X18 -->
 	<character id="dar_stalker_explorer">
