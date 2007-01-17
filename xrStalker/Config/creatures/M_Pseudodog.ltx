@@ -328,6 +328,7 @@ bip01_head 			= 2.0, -1, 0.3
 [pseudodog_weak]:m_pseudodog_e
 $spawn				= "monsters\pseudodogs\pseudodog_01_weak"
 visual				= monsters\pseudodog\pseudodog
+icon				= ui_npc_monster_pseudodog
 panic_threshold		= 0.5
 rank				= 0
 immunities_sect		= pseudodog_immunities_weak
@@ -362,6 +363,7 @@ run_jamp_1		=		0.55,		0.15,		    220,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1
 [pseudodog_normal]:m_pseudodog_e
 $spawn				= "monsters\pseudodogs\pseudodog_02_normal"
 visual				= monsters\pseudodog\pseudodog
+icon				= ui_npc_monster_pseudodog
 panic_threshold		= 0.2
 rank				= 255
 immunities_sect		= pseudodog_immunities_normal
@@ -397,6 +399,7 @@ run_jamp_1		=		0.55,		0.25,		    320,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1
 [pseudodog_strong]:m_pseudodog_e
 $spawn				= "monsters\pseudodogs\pseudodog_03_strong"
 visual				= monsters\pseudodog\pseudodog_grey
+icon				= ui_npc_monster_pseudodog_grey
 panic_threshold		= 0.05	
 rank				= 255
 immunities_sect		= pseudodog_immunities_strong
@@ -436,6 +439,7 @@ run_jamp_1		=		0.55,		0.35,		    420,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1
 [pseudodog_arena]:pseudodog_strong
 $spawn				= "monsters\arena\pseudodog_arena"
 visual				= monsters\pseudodog\pseudodog_grey
+icon				= ui_npc_monster_pseudodog_grey
 panic_threshold		= 0.05
 species				= arena_monstr
 
@@ -459,6 +463,7 @@ color_add		= 0.00,0.00,0.015
 [psy_dog]:pseudodog_strong
 $spawn				= "monsters\psy_dog\psy_dog"
 visual				= monsters\pseudodog\pseudodog_grey
+icon				= ui_npc_monster_pseudodog_grey
 class               = SM_DOG_P	
 
 aura_effector		= psy_dog_aura_effector
@@ -501,6 +506,7 @@ ce_power			= 0.3 ;0.7
 [psy_dog_phantom]:pseudodog_weak
 $spawn				= "monsters\psy_dog\psy_dog_phantom"
 visual				= monsters\pseudodog\pseudodog_grey
+icon				= ui_npc_monster_pseudodog_grey
 class               = SM_DOG_F
 
 ;jump_delay					= 3000 ;3000
