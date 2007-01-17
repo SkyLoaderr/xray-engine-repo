@@ -480,7 +480,7 @@
 		<rank>65</rank>
 		<reputation>18</reputation>
 		
-		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>				
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
@@ -507,7 +507,7 @@
 		<rank>112</rank>
 		<reputation>-15</reputation>
 		
-		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
@@ -535,7 +535,7 @@
 		<rank>98</rank>
 		<reputation>19</reputation>
 		
-		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		<snd_config>characters_voice\human_02\newbie\</snd_config>
 		<crouch_type>-1</crouch_type>
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
@@ -563,7 +563,7 @@
 		<rank>12</rank>
 		<reputation>20</reputation>
 		
-		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		<snd_config>characters_voice\human_02\newbie\</snd_config>
 		<crouch_type>-1</crouch_type>		
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
@@ -594,7 +594,7 @@
 		<rank>135</rank>
 		<reputation>-20</reputation>
 		
-		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		<snd_config>characters_voice\human_02\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>		
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
@@ -623,7 +623,7 @@
 		<rank>78</rank>
 		<reputation>6</reputation>
 		
-		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		<snd_config>characters_voice\human_02\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>		
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
