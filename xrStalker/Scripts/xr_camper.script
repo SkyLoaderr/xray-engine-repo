@@ -186,15 +186,15 @@ function action_patrol:execute()
 			--printf("cp: [%s] see [%s]", self.object:name(), self.enemy:name())
 			if self.a.sniper == true then
 				if self.a.suggested_state.campering_fire then
-					state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy}, {animation = true}, nil, {yaw_delta = 0.2})
+					state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy, look_position = self.enemy:position()}, {animation = true}, nil, {yaw_delta = 0.2})
 				else
-					state_mgr.set_state(self.object, "hide_sniper_fire", nil, nil, {look_object = self.enemy}, {animation = true}, nil, {yaw_delta = 0.2})
+					state_mgr.set_state(self.object, "hide_sniper_fire", nil, nil, {look_object = self.enemy, look_position = self.enemy:position()}, {animation = true}, nil, {yaw_delta = 0.2})
 				end
 			else
 				if self.a.suggested_state.campering_fire then
-					state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy}, {animation = true}, nil, {yaw_delta = 0.2})
+					state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy, look_position = self.enemy:position()}, {animation = true}, nil, {yaw_delta = 0.2})
 				else
-					state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy}, {animation = true}, nil, {yaw_delta = 0.2})
+					state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy, look_position = self.enemy:position()}, {animation = true}, nil, {yaw_delta = 0.2})
 				end
 			end
 			printf("attack sound [%s]", tostring(self.a.attack_sound))
