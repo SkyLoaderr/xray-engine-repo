@@ -293,6 +293,8 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 	--' Выбираем текущую цель квеста
 	if task_desc.target_objects ~= nil then
 		self.task_info[self.task_id_by_yes_phrase_id[p2]].selected_target = task_desc.target_objects[math.random(table.getn(task_desc.target_objects))]
+		printf("TARGET DEBUG INFO")
+		print_table(task_desc.target_objects)
 	end
 
 	if task_desc.type == "eliminate_lager" then
