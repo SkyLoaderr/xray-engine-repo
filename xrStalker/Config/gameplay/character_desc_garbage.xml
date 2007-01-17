@@ -89,9 +89,9 @@
 		<visual>actors\neytral\stalker_neytral_balon_5</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
+			wpn_pb \n
 			ammo_9x18_fmj = 1 \n
-			wpn_ak74u \n
+			wpn_ak74u_m1 \n
 			ammo_5.45x39_fmj \n
 			device_torch \n
 			hand_radio \n
