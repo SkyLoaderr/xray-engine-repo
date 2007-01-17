@@ -48,7 +48,7 @@
 		<reputation>19</reputation>
 		<money min="200" max="600" infinitive="0"/>
 		
-		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		<snd_config>characters_voice\human_02\newbie\</snd_config>
 		<crouch_type>-1</crouch_type>
 
 		<visual>actors\novice\green_stalker_11</visual>
