@@ -156,6 +156,7 @@
 			wpn_pm \n
 			ammo_9x18_fmj \n
 			wpn_mp5_m1 \n
+			ammo_9x18_fmj \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 		</supplies>
