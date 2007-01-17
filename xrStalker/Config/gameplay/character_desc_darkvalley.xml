@@ -1038,7 +1038,7 @@
 		<reputation>9</reputation>
 
 		<visual>actors\novice\green_stalker_2</visual>
-		<snd_config>characters_voice\human_02\newbie\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -1070,7 +1070,7 @@
 		<reputation>3</reputation>
 
 		<visual>actors\novice\green_stalker_3</visual>
-		<snd_config>characters_voice\human_02\newbie\</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -1135,7 +1135,7 @@
 		<reputation>-3</reputation>
 
 		<visual>actors\novice\green_stalker_5</visual>
-		<snd_config>characters_voice\human_02\newbie\</snd_config>
+		<snd_config>characters_voice\human_02\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -1166,7 +1166,7 @@
 		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_6</visual>
-		<snd_config>characters_voice\human_02\newbie\</snd_config>
+		<snd_config>characters_voice\human_02\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -1199,7 +1199,7 @@
 		<reputation>5</reputation>
 
 		<visual>actors\novice\green_stalker_10</visual>
-		<snd_config>characters_voice\human_02\newbie\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
