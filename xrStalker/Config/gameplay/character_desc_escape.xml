@@ -171,7 +171,7 @@
 		<reputation>6</reputation>
 		<money min="200" max="600" infinitive="0"/>
 		
-		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		<snd_config>characters_voice\human_02\newbie\</snd_config>
 		<crouch_type>-1</crouch_type>
 
 		<visual>actors\novice\green_stalker_1</visual>
@@ -364,7 +364,7 @@
 		<reputation>-8</reputation>
 		<money min="200" max="600" infinitive="0"/>
 		
-		<snd_config>characters_voice\human_02\newbie\</snd_config>
+		<snd_config>characters_voice\human_01\newbie\</snd_config>
 		<crouch_type>-1</crouch_type>
 		
 		<visual>actors\novice\green_stalker_2</visual>
@@ -395,7 +395,7 @@
 		<reputation>9</reputation>
 		<money min="200" max="600" infinitive="0"/>
 		
-		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 		
 		<visual>actors\novice\green_stalker_3</visual>
@@ -425,7 +425,7 @@
 		<reputation>8</reputation>
 		<money min="200" max="600" infinitive="0"/>
 		
-		<snd_config>characters_voice\human_02\newbie\</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 
 		<visual>actors\novice\green_stalker_3</visual>
@@ -455,7 +455,7 @@
 		<reputation>-10</reputation>
 		<money min="200" max="600" infinitive="0"/>
 		
-		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		<snd_config>characters_voice\human_02\newbie\</snd_config>
 		<crouch_type>-1</crouch_type>
 		
 		<visual>actors\novice\green_stalker_4</visual>
@@ -517,7 +517,7 @@
 		<reputation>18</reputation>
 		<money min="200" max="600" infinitive="0"/>
 		
-		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		<snd_config>characters_voice\human_02\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 		
 		<visual>actors\novice\green_stalker_5</visual>
@@ -548,7 +548,7 @@
 		<reputation>-2</reputation>
 		<money min="200" max="600" infinitive="0"/>
 		
-		<snd_config>characters_voice\human_02\newbie\</snd_config>
+		<snd_config>characters_voice\human_02\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 		
 		<visual>actors\novice\green_stalker_5</visual>
@@ -581,7 +581,7 @@
 		<reputation>16</reputation>
 		<money min="200" max="600" infinitive="0"/>
 		
-		<snd_config>characters_voice\human_01\newbie\</snd_config>
+		<snd_config>characters_voice\human_01\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 		
 		<visual>actors\novice\green_stalker_8</visual>
