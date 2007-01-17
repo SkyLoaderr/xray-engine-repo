@@ -26,7 +26,6 @@
 		<command id="kb_weapon5"					exe="wpn_5"/>
 		<command id="kb_weapon6"					exe="wpn_6"/>
 		<command id="kb_wpn_next"					exe="wpn_next"/>
-		<_command id="kb_wpn_prev"					exe="wpn_prev"/>
 		<command id="kb_next_slot"					exe="next_slot"/>
 		<command id="kb_prev_slot"					exe="prev_slot"/>
 		<command id="kb_fire"						exe="wpn_fire"/>
@@ -38,7 +37,6 @@
 	</group>
 	<group name="kb_grp_inventory">
 		<command id="kb_inventory"					exe="inventory"/>
-		<command id="kb_pda"						exe="pda"/>
 		<command id="kb_active_jobs"				exe="active_jobs"/>
 		<command id="kb_map"						exe="map"/>
 		<command id="kb_contacts"					exe="contacts"/>
@@ -54,7 +52,6 @@
 		<command id="kb_screenshot"					exe="screenshot"/>
 		<command id="kb_quit"						exe="quit"/>
 		<command id="kb_console"					exe="console"/>
-		<_command id="kb_turn_engine"				exe="turn_engine"/>
 	</group>
 	<group name="kb_grp_multiplayer">
 		<command id="kb_artefact"					exe="artefact"/>

@@ -36,6 +36,10 @@
 		
 	</main>
 	
+	<item_color_restr_rank	r="128" g="0" b="0" a="128"/>
+	<item_color_restr_money r="255" g="255" b="0" a="128"/>
+	<item_color_normal		r="255" g="255" b="255" a="255"/>
+	
 	<static_player_money x="914" y="31" width="112" height="34">
 		<text font="graffiti32" r="231" g="153" b="22" align="c" vert_align="c"/>
 	</static_player_money>
@@ -43,10 +47,11 @@
 	<static_diff_money x="914" y="71" width="112" height="34">
 		<text font="graffiti32" color="green" align="c" vert_align="c"/>
 	</static_diff_money>
-	
+
 	<static_preset_money_last x="880" y="476" width="73" height="27">
 		<text font="graffiti22" color="ui_clr_3" align="c" vert_align="c"/>
 	</static_preset_money_last>
+
 	<static_preset_money_1 x="880" y="207" width="73" height="27">
 		<text font="graffiti22" color="ui_clr_3" align="c" vert_align="c"/>
 	</static_preset_money_1>

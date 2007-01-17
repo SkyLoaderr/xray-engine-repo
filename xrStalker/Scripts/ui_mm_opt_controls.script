@@ -20,4 +20,10 @@ function opt_controls:InitControls(x, y, xml, handler)
 	xml:InitTrackBar	("tab_controls:track_mousesens",	self)
 	xml:InitCheck		("tab_controls:check_mouseinvert",	self)	
 	xml:InitKeyBinding	("tab_controls:key_binding",		self)
+
+	local btn
+	btn = xml:Init3tButton("tab_controls:btn_default", self)
+	handler:Register(btn, "btn_keyb_default")
+
+
 end
