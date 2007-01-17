@@ -522,6 +522,7 @@ function add_to_binder(object, ini, scheme, section, storage)
 		action = manager:action (stalker_ids.action_combat_planner)
 		action:add_precondition (world_property(properties["close_combat"],	true))
 		action:add_effect (world_property(properties["close_combat"],	false))
+		action:add_effect (world_property(properties["end"],				true))
 end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)

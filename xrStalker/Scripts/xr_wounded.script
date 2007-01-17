@@ -301,7 +301,7 @@ function add_to_binder (object, ini, scheme, section, st)
     
     properties["wounded"]		=   xr_evaluators_id.sidor_wounded_base
     properties["can_fight"]     =   xr_evaluators_id.sidor_wounded_base + 1
-    
+
     operators["wounded"]        =   xr_actions_id.sidor_act_wounded_base + 0
     
     

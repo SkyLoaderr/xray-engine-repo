@@ -699,6 +699,8 @@ function add_to_binder(object, ini, scheme, section, storage)
 	manager:add_evaluator (properties["kamp_end"], 		this.evaluator_kamp_end		("kamp_end", storage, "kamp_end"))
 	manager:add_evaluator (properties["on_position"],	this.evaluator_on_position	("kamp_on_position", storage, "kamp_on_position"))
 
+	printf("PRP %s", stalker_ids.property_script)
+
 	-- Actions
 	local action = this.action_wait (object:name(),"action_kamp_wait", storage)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
