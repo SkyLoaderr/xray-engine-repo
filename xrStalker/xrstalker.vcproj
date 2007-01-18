@@ -1802,6 +1802,9 @@
 						RelativePath=".\Config\ui\inventory_character.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\pda_character.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\pda_dialog_character.xml">
 					</File>
 					<File
@@ -1907,9 +1910,6 @@
 					</File>
 					<File
 						RelativePath=".\Config\ui\pda.xml">
-					</File>
-					<File
-						RelativePath=".\Config\ui\pda_character.xml">
 					</File>
 					<File
 						RelativePath=".\Config\ui\pda_contacts_new.xml">
