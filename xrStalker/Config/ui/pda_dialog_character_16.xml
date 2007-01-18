@@ -2,7 +2,7 @@
 <window>
 	
 	<!-- ICON -->
-	<icon_static x="0" y="0" width="78" height="120"/>
+	<icon_static x="0" y="0" width="124" height="108"/>
 
 	<!-- RANK -->
 	<rank_caption x="121" y="0" width="100" height="15">
