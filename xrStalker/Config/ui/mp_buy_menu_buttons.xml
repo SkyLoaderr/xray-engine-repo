@@ -130,14 +130,14 @@
 </shop_back_btn>
 
 
-<btn_ok x="870" y="580" width="157" height="48" accel="kRETURN">		
+<btn_ok x="870" y="580" width="157" height="48" accel="kRETURN" accel_ext="kSPACE">		
 	<window_name>btn_ok</window_name>
 	<texture>ui_button_main01</texture>
 	<text font="graffiti22" color="ui_clr_2">ui_inv_ok</text>
 	<sound_t>weapons\generic_close</sound_t>
 </btn_ok>
 
-<btn_cancel x="870" y="630" width="157" height="48" accel="kESCAPE" accel_ext="kSPACE">
+<btn_cancel x="870" y="630" width="157" height="48" accel="kESCAPE">
 	<window_name>btn_cancel</window_name>
 	<texture>ui_button_main01</texture>
 	<text font="graffiti22" color="ui_clr_2">ui_inv_cancel</text>
