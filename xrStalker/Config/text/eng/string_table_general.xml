@@ -195,7 +195,7 @@
 	</string>
 
 	<string id="ui_inv_health">
-		<text>Регенерация</text>
+		<text>Здоровье</text>
 	</string>
 	<string id="ui_inv_radiation">
 		<text>Радиация</text>
