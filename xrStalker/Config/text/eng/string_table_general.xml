@@ -183,4 +183,49 @@
 	<string id="zombied">
 		<text>Zombified</text>
 	</string>
+
+	<string id="inventory_item_use">
+		<text>Поднять предмет ($$ACTION_USE$$)</text>
+	</string>
+	<string id="ui_mm_check_updates">
+		<text>Проверить обновления</text>
+	</string>
+	<string id="ui_mm_alternative">
+		<text>Альтернатива</text>
+	</string>
+
+	<string id="ui_inv_health">
+		<text>Регенерация</text>
+	</string>
+	<string id="ui_inv_radiation">
+		<text>Радиация</text>
+	</string>
+	<string id="ui_inv_satiety">
+		<text>Сытость</text>
+	</string>
+	<string id="ui_inv_power">
+		<text>Выносливость</text>
+	</string>
+	<string id="ui_inv_bleeding">
+		<text>Кровотечение</text>
+	</string>
+
+	<string id="st_mp_say_to_all">
+		<text>To all</text>
+	</string>
+	<string id="st_mp_say_to_team">
+		<text>To team</text>
+	</string>
+	<string id="st_knife">
+		<text>нож</text>
+	</string>
+	<string id="st_mp_disabled_voting">
+		<text>Голосование недоступно на этом сервере.</text>
+	</string>
+	<string id="st_mp_no_current_voting">
+		<text>Сейчас нет активных голосований.</text>
+	</string>
+	<string id="st_mp_ready">
+		<text>готов</text>
+	</string>
 </string_table>
