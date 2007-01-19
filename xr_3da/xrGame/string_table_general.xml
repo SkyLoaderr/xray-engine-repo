@@ -184,4 +184,53 @@
 	<string id="st_search_treasure">
 		<text>Обыскать тайник ($$ACTION_USE$$)</text>
 	</string>
+
+
+	<string id="inventory_item_use">
+		<text>Поднять предмет ($$ACTION_USE$$)</text>
+	</string>
+	<string id="ui_mm_check_updates">
+		<text>Проверить обновления</text>
+	</string>
+	<string id="ui_mm_alternative">
+		<text>Альтернатива</text>
+	</string>
+
+	<string id="ui_inv_health">
+		<text>Здоровье</text>
+	</string>
+	<string id="ui_inv_radiation">
+		<text>Радиация</text>
+	</string>
+	<string id="ui_inv_satiety">
+		<text>Сытость</text>
+	</string>
+	<string id="ui_inv_power">
+		<text>Выносливость</text>
+	</string>
+	<string id="ui_inv_bleeding">
+		<text>Кровотечение</text>
+	</string>
+
+	<string id="st_mp_say_to_all">
+		<text>Всем</text>
+	</string>
+	<string id="st_mp_say_to_team">
+		<text>Команде</text>
+	</string>
+	<string id="st_knife">
+		<text>Нож</text>
+	</string>
+	<string id="st_mp_disabled_voting">
+		<text>Голосование недоступно на этом сервере.</text>
+	</string>
+	<string id="st_mp_no_current_voting">
+		<text>Сейчас нет активных голосований.</text>
+	</string>
+	<string id="st_mp_ready">
+		<text>готов</text>
+	</string>
+
+
+
 </string_table>
