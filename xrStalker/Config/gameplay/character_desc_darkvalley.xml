@@ -1494,7 +1494,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
  
-		<visual>ecolog\stalker_ecolog</visual>
+		<visual>actors\ecolog\stalker_ecolog</visual>
 		<supplies>
 			[spawn] \n
 		</supplies>
