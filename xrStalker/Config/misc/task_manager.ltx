@@ -33,6 +33,10 @@ tm_monster_part_2
 barmen_eliminate_camp_1
 barmen_eliminate_camp_2
 ;--barmen_eliminate_camp_3
+barmen_eliminate_camp_4
+barmen_eliminate_camp_5
+barmen_eliminate_camp_6
+barmen_eliminate_camp_7
 ;-----------Artefact------------
 barmen_find_artefact_1
 barmen_find_artefact_2
@@ -488,17 +492,18 @@ community = actor
 text = barmen_eliminate_camp_1_text
 description = barmen_eliminate_camp_1_descr
 parent = barman
-target = gar_smart_bandit
+target = gar_smart_bandit_2
 reward_money = 5000
 reward_reputation = +25
 reward_relation = dolg, 10
 reward_rank = 4
-reward_item = grenade_f1
+reward_item = grenade_f1,vodka
 time = 86400
 
 [barmen_eliminate_camp_2]
 type = eliminate_lager
 community = actor
+init_condition = {=actor_on_level(L06_rostok)}
 text = barmen_eliminate_camp_2_text
 description = barmen_eliminate_camp_2_descr
 parent = barman
@@ -538,7 +543,7 @@ time = 86400
 [barmen_eliminate_camp_5]
 type = eliminate_lager
 community = actor
-condlist = {+bar_darklab_document_done}
+init_condition = {=actor_on_level(L06_rostok)}
 text = barmen_eliminate_camp_5_text
 description = barmen_eliminate_camp_5_descr
 parent = barman
