@@ -341,7 +341,7 @@ function activate_by_section(npc, ini, section, loading)
 		reset_generic_schemes_on_scheme_switch(npc, "nil", "nil")
 		db.storage[npc_id].active_section = nil
 		db.storage[npc_id].active_scheme = nil
-		db.storage[npc_id].pstor = nil
+--'		db.storage[npc_id].pstor = nil
 		return
 	end
 
@@ -372,9 +372,9 @@ function activate_by_section(npc, ini, section, loading)
 		--printf("DEBUG: activate_by_section: scheme '%s' activated from section '%s'", scheme, section)
 		db.storage[npc_id].active_section = section
 		db.storage[npc_id].active_scheme = scheme
-		if not loading then
-			db.storage[npc_id].pstor = nil
-		end
+--'		if not loading then
+--'			db.storage[npc_id].pstor = nil
+--'		end
 
 		if db.storage[npc_id].stype == modules.stype_stalker then
 			-- чтобы избежать дальнейшего движения по пути при установке рестрикторов
@@ -1156,23 +1156,22 @@ end
 
 function pstor_store(obj, varname, val)
 	local npc_id = obj:id()
-	local pstor = db.storage[npc_id].pstor
-	if not pstor then
-		pstor = {}
-		db.storage[npc_id].pstor = pstor
+	
+	if db.storage[npc_id].pstor == nil then
+		db.storage[npc_id].pstor = {}
 	end
 	local tv = type(val)
 	if not pstor_is_registered_type(tv) then
 		abort("xr_logic: pstor_store: not registered type '%s' encountered", tv)
 	end
-	pstor[varname] = val
+	db.storage[npc_id].pstor[varname] = val
 end
 
 function pstor_retrieve(obj, varname, defval)
 	local npc_id = obj:id()
-	local pstor = db.storage[npc_id].pstor
-	if pstor then
-		local val = pstor[varname]
+	
+	if db.storage[npc_id].pstor ~= nil then
+		local val = db.storage[npc_id].pstor[varname]
 		if val ~= nil then
 			return val
 		end
