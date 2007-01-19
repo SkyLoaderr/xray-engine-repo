@@ -167,7 +167,7 @@ function keep_item(npc, item)
     then
         item:unload_magazine()
 		--' Тут надо уменьшить кондишн оружия
-		item:set_condition((math.random(30)+65)/100)
+		item:set_condition((math.random(15)+75)/100)
         return
     end
     item_in_slot = npc:item_in_slot(2)
@@ -176,7 +176,7 @@ function keep_item(npc, item)
     then
         item:unload_magazine()
 		--' Тут надо уменьшить кондишн оружия
-		item:set_condition((math.random(25)+70)/100)
+		item:set_condition((math.random(15)+75)/100)
         return
     end
     npc:mark_item_dropped(item)
