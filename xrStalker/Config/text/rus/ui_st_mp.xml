@@ -46,7 +46,7 @@
 		<text>Описание</text>
 	</string>
 	<string id="mp_disconnected">
-		<text>осоеденился</text>
+		<text>отсоединился</text>
 	</string>
 	<string id="mp_enter_text">
 		<text>Введите текст для голосования</text>
@@ -263,5 +263,20 @@
 	</string>
 	<string id="ui_st_team2_name">
 		<text>Наемники</text>
+	</string>
+	<string id="af_neutral">
+		<text>Артефакт</text>
+	</string>
+	<string id="self">
+		<text>Это Вы</text>
+	</string>
+	<string id="friend">
+		<text>Союзник</text>
+	</string>
+	<string id="team_base_1">
+		<text>База Свободы</text>
+	</string>
+	<string id="team_base_2">
+		<text>База Наемников</text>
 	</string>
 </string_table>

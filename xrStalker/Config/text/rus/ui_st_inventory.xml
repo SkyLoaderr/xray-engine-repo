@@ -207,4 +207,13 @@
 	<string id="ui_inv_weight">
 		<text>Вес</text>
 	</string>
+	<string id="ui_inv_last_buy">
+		<text>Купить последний приобретённый набор</text>
+	</string>
+	<string id="ui_inv_sell_items">
+		<text>Продать все вещи из рюкзака</text>
+	</string>
+	<string id="ui_st_preset_stored_to">
+		<text>Приобретённый набор сохранён как</text>
+	</string>
 </string_table>

@@ -207,4 +207,13 @@
 	<string id="ui_inv_weight">
 		<text>Weight</text>
 	</string>
+	<string id="ui_inv_last_buy">
+		<text>Buy last purchased set</text>
+	</string>
+	<string id="ui_inv_sell_items">
+		<text>Sell all items from backpack</text>
+	</string>
+	<string id="ui_st_preset_stored_to">
+		<text>Purchased set saved as</text>
+	</string>
 </string_table>

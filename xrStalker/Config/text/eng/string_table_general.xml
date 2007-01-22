@@ -225,6 +225,12 @@
 	<string id="st_mp_no_current_voting">
 		<text>—ейчас нет активных голосований.</text>
 	</string>
+	<string id="st_mp_voting_succeed">
+		<text>Voting succeed!</text>
+	</string>
+	<string id="st_mp_voting_failed">
+		<text>Voting failed!</text>
+	</string>
 	<string id="st_mp_ready">
 		<text>готов</text>
 	</string>

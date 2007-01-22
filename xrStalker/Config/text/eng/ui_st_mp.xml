@@ -264,4 +264,19 @@
 	<string id="ui_st_team2_name">
 		<text>Mercs</text>
 	</string>
+	<string id="af_neutral">
+		<text>Artifact</text>
+	</string>
+	<string id="self">
+		<text>It's you</text>
+	</string>
+	<string id="friend">
+		<text>Ally</text>
+	</string>
+	<string id="team_base_1">
+		<text>Base of Freedom</text>
+	</string>
+	<string id="team_base_2">
+		<text>Base of Mercs</text>
+	</string>
 </string_table>
