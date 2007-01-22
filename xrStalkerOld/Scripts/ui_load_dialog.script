@@ -159,7 +159,7 @@ function file_data(fname)
 		--string.format("[%d:%d:%d %d]",m,d,h,min,y)
 		local health = string.format("\\n%s %d%s", game.translate_string("ui_inv_health"),sg:actor_health()*100,"%")
 		
-		return "level: " .. game.translate_string(sg:level_name()) .. "\\ntime: " .. date_time .. health
+		return game.translate_string("st_level") .. ": " .. game.translate_string(sg:level_name()) .. "\\n" .. game.translate_string("ui_inv_time")..": " .. date_time .. health
 	else
 		return "no file data"
 	end	
