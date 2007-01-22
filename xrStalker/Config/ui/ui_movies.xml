@@ -11,6 +11,9 @@
 			<delay>1</delay>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture>intro\intro_thq</texture>
+				<_texture>test\outro 50keys</_texture>
+				<_texture>test\1st_ki8</_texture>
+				<_texture>test\1st</_texture>
 			</video_wnd>
 		</item>
 		<item type="video">
