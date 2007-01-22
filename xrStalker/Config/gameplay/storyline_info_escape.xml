@@ -59,6 +59,10 @@
     <article id="esc_doctor_meet" name="doctor_meet" article_type="task" group="doctor_meet/0">
         <text>doctor_meet_quest_text</text>
     </article>
+
+    <article id="find_railroad_passage_descr" name="find_railroad_passage" article_type="task" group="find_railroad_passage/0">
+        <text>find_railroad_passage_text</text>
+    </article>
     
     <article id="about_enciclopedia" name="about_pda" article_type="encyclopedia" group="about_pda">
         <text>about_enciclopedia</text>

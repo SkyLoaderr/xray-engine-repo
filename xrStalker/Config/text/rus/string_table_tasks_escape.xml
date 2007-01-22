@@ -138,3 +138,17 @@
 	<string id="yan_scientist_job_text">
 		<text>Предложить свою помощь ученным</text>
 	</string>
+
+
+	<string id="find_railroad_passage">
+		<text>Пробраться за железнодорожную насыпь</text>
+	</string>
+	<string id="find_railroad_passage_1">
+		<text>Встретиться с провожатым</text>
+	</string>
+	<string id="find_railroad_passage_2">
+		<text>Пересечь железнодорожную насыпь</text>
+	</string>
+	<string id="find_railroad_passage_text">
+		<text>Прежде чем углубиться в Зону, необходимо пересечь старую железнодорожную насыпь. Единственный безопасный проход в ней охраняется военным. Однако есть небольшой туннель слева, новички обычно ходят через него. Там тебя будет ждать один из моих должников.</text>
+	</string>

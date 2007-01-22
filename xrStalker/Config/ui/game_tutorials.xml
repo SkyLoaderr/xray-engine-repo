@@ -592,6 +592,28 @@
 			</main_wnd>
 		</item>
 	</part_15_hide_weapon>
+
+	<part_pda_diary><!--делаю новый туториал-->
+		<global_wnd/>
+		
+		<item><!-- спрятать/достать оружие -->
+			<length_sec>15</length_sec>
+			<pause_state>off</pause_state>
+			<guard_key/>
+			<sound/>
+			<cursor_pos/>
+			<pda_section/>
+			<grab_input>0</grab_input>
+			<main_wnd>
+				<auto_static start_time="0" length_sec="10000" x="500" y="600" width="600" height="150" alignment="c" stretch="1"
+							light_anim="" la_cyclic="1" la_texture="1" la_alpha="1">
+					<window_name>w1</window_name>
+					<text font="graffiti22" r="225" g="225" b="250" a="255">pda_diary_tutorial</text>
+				</auto_static>
+			</main_wnd>
+		</item>
+	</part_pda_diary>
+
 	
 	<!-- !!!tutorials for presentation!!! -->
 	

@@ -111,5 +111,8 @@
 	<string id="st_game_over_press_jump">
 		<text>нажмите ($$ACTION_JUMP$$) для выхода в главное меню</text>
 	</string>
+	<string id="st_level">
+		<text>Уровень</text>
+	</string>
 
 </string_table>

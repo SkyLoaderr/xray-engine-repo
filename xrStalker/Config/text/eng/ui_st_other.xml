@@ -111,4 +111,8 @@
 	<string id="ui_st_your_items">
 		<text>Your items</text>
 	</string>
+	<string id="st_level">
+		<text>Level</text>
+	</string>
+
 </string_table>

@@ -81,4 +81,7 @@
 	<string id="wound_tutorial">
 		<text>When the character is hit, he may start to bleed. Bleeding causes the character to constantly lose health. The more serious the bleeding (a green icon means slight bleeding, a red icon indicates a serious hemorrhage), the faster the rate at which he loses health. Bleeding will eventually stop with time, but even serious hemorrhages can be stopped immediately using bandages.</text>
 	</string>
+	<string id="pda_diary_tutorial">
+		<text>Иногда Вы можете находить важную информацию в трупах сталкеров. Эта информация автоматически закачивается в ваш ПДА. Вы ее найдете в разделе "Дневник".</text>
+	</string>
 </string_table>
