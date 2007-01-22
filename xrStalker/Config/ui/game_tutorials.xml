@@ -17,7 +17,7 @@
 					которая будет помогать тебе не сдохнуть в Зоне. Ну а если и сдохнешь, то хоть
 					другие знать будут как и где. Хе-хе. Шучу. Давай напомню кратко, как
 					пользоваться…-->
-			<length_sec>15</length_sec>
+			<length_sec>16</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			
@@ -30,7 +30,7 @@
 		</item>
 
 		<item><!--Твои Задания расположены в первом разделе ПДА.-->
-			<length_sec>4</length_sec>
+			<length_sec>3</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<cursor_pos/>
@@ -112,7 +112,7 @@
 		</item>
 
 		<item><!--…э-эээ… плюс отцентрировать карту по твоему месторасположению…что еще?-->
-			<length_sec>8</length_sec>
+			<length_sec>5</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_7</sound>
@@ -150,7 +150,7 @@
 		</delme_item>
 
 		<item><!--вобщем разберешься…там не сложно…В ПДА есть раздел Контакты -->
-			<length_sec>6</length_sec>
+			<length_sec>7</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_9</sound>
@@ -164,7 +164,7 @@
 					Плюс их короткое описание, ранг, группировка и вероятное отношение к тебе. 
 					Запомни, пока ты - нейтрал, и только от тебя зависит, как к тебе будут относится потом. 
 					Если поможешь кому, то обрати внимание, как изменится его отношение к тебе...  -->
-			<length_sec>23</length_sec>
+			<length_sec>27</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_11</sound>
@@ -187,7 +187,7 @@
 		<item><!--…Будь осторожен, если рядом враги, на визоре они отмечаются красным, 
 					друзья отмечены зеленым, нейтралы - желтым. А..ну и ПДА мертвых сталкеров подсвечиваются серым. 
 					В мародерстве помогает. гы-ыы…Что еще?...ах да есть Дневник…-->
-			<length_sec>20</length_sec>
+			<length_sec>21</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<function_on_start>mob_trader.on_start_tutorial_item_1</function_on_start>
@@ -207,7 +207,7 @@
 		<item><!--.. ну тут и говорить нечего - там записывается вся информация, которая тебе нужна, 
 					плюс новости…даже то, что я тебе сейчас втолковываю, ты там найдешь…Потом…В разделе ПДА 
 					под названием Рейтинг…кх-хх-->
-			<length_sec>19</length_sec>
+			<length_sec>16</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_13</sound>
@@ -241,7 +241,7 @@
 		</item>
 		
 		<item><!--ну там все просто..э-эээ...Далее....Энциклопедия..К-хе-->
-			<length_sec>6</length_sec>
+			<length_sec>5</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_14_1</sound>
@@ -258,7 +258,7 @@
 
 		<item><!--В нее заносится информация о Зоне и советы по выживанию, которые ты найдешь или получишь 
 					от сталкеров.... В принципе все.. -->
-			<length_sec>11</length_sec>
+			<length_sec>10</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound>characters_voice\scenario\trader\trader_tutorial_pda_15</sound>
