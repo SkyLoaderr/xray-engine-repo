@@ -58,9 +58,9 @@ function base_dialog:InitControls(caption)
 	self.btn_rect.x = (self.main_rect.width - self.btn_rect.width)/2
 	
 	self.btn = {}
-	self.btn.texture_left   = "ui\\ui_btn_triple_left"
-	self.btn.texture_center = "ui\\ui_btn_triple_center"
-	self.btn.texture_right  = "ui\\ui_btn_triple_right"
+	self.btn.texture_left   = "ui_button_main01"
+	self.btn.texture_center = "ui_button_main01"
+	self.btn.texture_right  = "ui_button_main01"
 	
 	self.texture_list_frame = "ui_frame_01"
 	--------------------------------------------------
@@ -81,21 +81,21 @@ function base_dialog:InitControls(caption)
 	self.btn_left.height = self.btn_rect.height
 	self.btn_left.x = self.indent*2
 	self.btn_left.y = self.main_rect.height - self.btn_left.height/2
-	self.btn_left.texture = "ui\\ui_btn_triple_left"
+	self.btn_left.texture = "ui_button_main01"
 	
 	self.btn_center = {}
 	self.btn_center.width = self.btn_rect.width
 	self.btn_center.height = self.btn_rect.height
 	self.btn_center.x = (self.main_rect.width - self.btn_center.width)/2
 	self.btn_center.y = self.main_rect.height - self.btn_center.height/2
-	self.btn_center.texture = "ui\\ui_btn_triple_center"
+	self.btn_center.texture = "ui_button_main01"
 	
 	self.btn_right = {}
 	self.btn_right.width = self.btn_rect.width
 	self.btn_right.height = self.btn_rect.height
 	self.btn_right.x = self.right_align_x - self.btn_right.width
 	self.btn_right.y = self.main_rect.height - self.btn_right.height/2
-	self.btn_right.texture = "ui\\ui_btn_triple_right"
+	self.btn_right.texture = "ui_button_main01"
 	
 	-- Left Top Frame
 	self.lt_frame_indent = {x = 20, y = 45}

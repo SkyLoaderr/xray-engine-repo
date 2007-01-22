@@ -42,8 +42,8 @@
 			<font font="letterica16" r="216" g="186" b="140" />
 		</list>
 				
-		<btn_load x="36" y="408" width="147" height="60">
-			<texture>ui\ui_btn_triple_left</texture>
+		<btn_load x="36" y="408" width="157" height="48">
+			<texture>ui_button_main01</texture>
 			<text font="letterica18">ui_mm_load</text>
 			<text_color>
 				<e r="216" g="186" b="140"/>
@@ -52,8 +52,8 @@
 			</text_color>
 		</btn_load>
 		
-		<btn_delete x="187" y="408" width="147" height="60">
-			<texture>ui\ui_btn_triple_center</texture>
+		<btn_delete x="192" y="408" width="157" height="48">
+			<texture>ui_button_main01</texture>
 			<text font="letterica18">ui_mm_delete</text>
 			<text_color>
 				<e r="216" g="186" b="140"/>
@@ -62,8 +62,8 @@
 			</text_color>
 		</btn_delete>
 		
-		<btn_cancel x="338" y="408" width="147" height="60">
-			<texture>ui\ui_btn_triple_right</texture>			
+		<btn_cancel x="348" y="408" width="157" height="48">
+			<texture>ui_button_main01</texture>			
 			<text font="letterica18">ui_mm_cancel</text>
 			<text_color>
 				<e r="216" g="186" b="140"/>
