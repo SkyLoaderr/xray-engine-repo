@@ -459,12 +459,24 @@ function CRandomTask:task_callback(p1, p2, state)
 
 	if state == task.completed then
 		self.task_info[self.active_task_by_type[p1]].status = "normal"
+		--' восстановление других заданий данного типа
+		for k,v in pairs(self.task_info) do
+			if v.complex_type == self.task_info[self.active_task_by_type[p1]].complex_type then
+				v.enabled = true
+			end
+		end
 		self.active_task_by_type[p1] = nil	
 
 	elseif state == task.fail then
 		self.task_info[self.active_task_by_type[p1]].status = "normal"
-		self.active_task_by_type[p1] = nil	
 
+		--' восстановление других заданий данного типа
+		for k,v in pairs(self.task_info) do
+			if v.complex_type == self.task_info[self.active_task_by_type[p1]].complex_type then
+				v.enabled = true
+			end
+		end
+		self.active_task_by_type[p1] = nil	
 	end
 end
 --' Выводит список доступных квестов
@@ -480,6 +492,9 @@ end
 --' Проверка доступен ли текущий таск для выдачи
 function CRandomTask:task_avail(actor, npc, p1, p2, p3)
 	self:check_task_props(self.task_id_by_init_phrase_id[p3])
+	printf("@@@avail %s", tostring(self.task_id_by_init_phrase_id[p3]))
+	printf("@@@enabled %s", tostring(self.task_info[self.task_id_by_init_phrase_id[p3]].enabled))
+	printf("@@@enabled_props %s", tostring(self.task_info[self.task_id_by_init_phrase_id[p3]].enabled_props))
 
 	return self.task_info[self.task_id_by_init_phrase_id[p3]].enabled and 
 		   self.task_info[self.task_id_by_init_phrase_id[p3]].enabled_props and
