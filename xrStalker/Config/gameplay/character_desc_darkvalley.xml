@@ -1356,7 +1356,7 @@
 		
 		<snd_config>characters_voice\human_02\stalker\</snd_config>
  
-		<visual>neytral\stalker_neytral_rukzak_2</visual>
+		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
