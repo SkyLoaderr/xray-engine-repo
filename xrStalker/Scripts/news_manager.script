@@ -9,6 +9,7 @@ news = {
 	escape_fox_quest				= sound_object([[characters_voice\scenario\trader\trader_pda_fox]]),
 	esc_fox_info					= sound_object([[characters_voice\scenario\trader\trader_pda_fox]]),
 	gar_seryi_info					= sound_object([[characters_voice\scenario\trader\trader_pda_fox]]),
+	tip_petruha_report				= sound_object([[characters_voice\scenario\escape\petruha_raport_p]]),
 
 
 	tips_agr_krot_sos				= sound_object([[characters_voice\scenario\agroprom\krot_help_pda_1]]),
