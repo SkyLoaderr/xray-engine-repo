@@ -1164,4 +1164,7 @@
 	<string id="zastava_commander_eliminate_lager_text">
 		<text>Despite our efforts, some monsters still manage to break through from the Dump. Well you yourself probably saw a pack of dogs to the south of us. If you kill them you'll get a reward.</text>
 	</string>
+	<string id="defend_lager">
+		<text>Защита лагеря</text>
+	</string>
 </string_table>
