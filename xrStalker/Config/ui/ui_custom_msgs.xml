@@ -46,30 +46,30 @@
 		<texture>controller\controller_blood_01</texture>
 	</monster_claws>
 	
-	<main_task  x="200" y="60" width="600" height="60">
+	<main_task  x="200" y="140" width="600" height="60">
 		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c"/>
 	</main_task>
 
-	<cs_psy_danger  x="200" y="120" width="600" height="60">
+	<cs_psy_danger  x="200" y="10" width="600" height="60">
 		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c"/>
 	</cs_psy_danger>
-	<cs_radiation_danger  x="200" y="160" width="600" height="60">
+	<cs_radiation_danger  x="200" y="70" width="600" height="60">
 		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c"/>
 	</cs_radiation_danger>
 	
-	<game_saved  x="100" y="660" width="800" height="60">
-		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c"/>
+	<game_saved  x="100" y="730" width="800" height="30">
+		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
 	</game_saved>
 
-	<autosave  x="100" y="720" width="800" height="60">
+	<autosave  x="100" y="700" width="800" height="30">
 		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">st_autosave</text>
 	</autosave>
 	
-	<item_used  x="100" y="660" width="800" height="60">
-		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c"/>
+	<item_used  x="100" y="730" width="800" height="30">
+		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
 	</item_used>
 
-	<!-- remove on next update -->
+	<!-- remove on next update	
 	<not_enough_money  x="100" y="100" width="800" height="60">
 		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">st_not_enough_money</text>
 	</not_enough_money>
@@ -81,5 +81,5 @@
 	<not_enough_money_other  x="100" y="100" width="800" height="60">
 		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">st_not_enough_money_npc</text>
 	</not_enough_money_other>
-	
+	-->
 </header>
