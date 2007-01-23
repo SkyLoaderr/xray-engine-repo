@@ -2598,6 +2598,9 @@
 					<File
 						RelativePath=".\Config\scripts\esc_novice_attacker3.ltx">
 					</File>
+					<File
+						RelativePath=".\Config\scripts\esc_tutorial.ltx">
+					</File>
 				</Filter>
 				<Filter
 					Name="DarkScape"

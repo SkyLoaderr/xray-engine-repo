@@ -1,0 +1,57 @@
+[logic]
+active = sr_idle@tutorial
+
+[sr_idle@tutorial]
+on_actor_inside = {+esc_trader_newbie} sr_idle %=run_tutorial(part_2_binocular)%
+
+
+;-------------------------
+
+[sr_idle]
+on_timer = 50000 |{=actor_has_weapon} nil %+encyclopedy_tutorial_hide_weapon =run_tutorial(part_15_hide_weapon)%
+
+
+
+;-------------------------
+[sr_idle]
+on_actor_inside = sr_idle@1
+
+[sr_idle@1]
+
+on_timer = 50000 | %+encyclopedy_tutorial_binocular =run_tutorial(part_2_binocular)% nil
+
+
+
+;-------------------------
+[sr_idle]
+on_actor_inside = sr_idle@timer1
+
+[sr_idle@timer1]
+on_timer = 100000 | %+encyclopedy_tutorial_crouch =run_tutorial(part_4_crouch)%  nil
+
+
+;-------------------------
+[sr_idle]
+on_actor_inside = sr_idle@timer1
+
+[sr_idle@timer1]
+
+on_timer = 150000 | %+encyclopedy_tutorial_jump =run_tutorial(part_3_jump)%  nil
+
+
+
+;-------------------------
+[sr_idle]
+on_actor_inside = sr_idle@timer1
+
+[sr_idle@timer1]
+
+on_timer = 200000 | %+encyclopedy_tutorial_sprint =run_tutorial(part_10_sprint)%  nil
+
+
+;-------------------------
+[sr_idle]
+on_actor_inside = sr_idle@1
+
+[sr_idle@1]
+on_timer = 250000 | %+encyclopedy_tutorial_relation =run_tutorial(part_12_relations)%   nil
