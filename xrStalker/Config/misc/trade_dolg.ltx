@@ -1,6 +1,6 @@
 [trader]
 buy_condition = dolg_generic_buy
-sell_condition = dolg_sell_start, {+bar_svoboda_rg6_done} dolg_sell_after_rg6
+sell_condition = {+bar_svoboda_rg6_done} dolg_after_rg6_sell, dolg_start_sell
 buy_supplies = supplies_start, {+bar_svoboda_rg6_done} supplies_after_rg6
 
 
@@ -284,7 +284,7 @@ energy_drink			= 10,	0.3
 
 
 
-[dolg_sell_start]
+[dolg_start_sell]
 ;Артефакты
 af_medusa				;NO TRADE
 af_cristall_flower		;NO TRADE
@@ -498,7 +498,7 @@ wpn_fn2000_arena		;NO TRADE
 wpn_g36_arena			;NO TRADE
 
 
-[dolg_sell_after_rg6]
+[dolg_after_rg6_sell]
 ;Артефакты
 af_medusa				;NO TRADE
 af_cristall_flower		;NO TRADE
