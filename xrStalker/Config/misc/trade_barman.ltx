@@ -1,6 +1,6 @@
 [trader]
 buy_condition = barman_generic_buy
-sell_condition = barman_sell_start, {+yan_kill_brain_done} barman_sell_after_brain, {+bar_darklab_document_done} barman_sell_after_darkvalley
+sell_condition = {+yan_kill_brain_done} barman_after_brain_sell, {+bar_darklab_document_done} barman_after_darkvalley_sell, barman_start_sell
 buy_supplies = supplies_start, {+yan_kill_brain_done} supplies_after_brain, {+bar_darklab_document_done} supplies_after_darkvalley
 
 
@@ -335,7 +335,7 @@ energy_drink			= 10,	0.3
 
 
 
-[barman_sell_start]
+[barman_start_sell]
 ;Артефакты
 af_medusa				;NO TRADE
 af_cristall_flower		;NO TRADE
@@ -550,7 +550,7 @@ wpn_fn2000_arena		;NO TRADE
 wpn_g36_arena			;NO TRADE
 
 
-[barman_sell_after_darkvalley]
+[barman_after_darkvalley_sell]
 ;Артефакты
 af_medusa				;NO TRADE
 af_cristall_flower		;NO TRADE
@@ -764,7 +764,7 @@ wpn_fn2000_arena		;NO TRADE
 wpn_g36_arena			;NO TRADE
 
 
-[barman_sell_after_brain]
+[barman_after_brain_sell]
 ;Артефакты
 af_medusa				;NO TRADE
 af_cristall_flower		;NO TRADE
