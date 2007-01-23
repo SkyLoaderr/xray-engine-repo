@@ -37,6 +37,11 @@ local simMaxCount = {
 	bloodsucker_weak = 7, bloodsucker_normal = 40, bloodsucker_strong = 15	
 }
 
+local idle_spawn_preset = {
+	seldom = 43200, 
+	medium = 1800, 
+	often = 3600
+}
 
 -- —писок респавнеров, дл€ сбора статистики
 local respawners = {}
@@ -71,7 +76,7 @@ end
 function r_2nums( spawn_ini, section, line, def1, def2 )
 	if spawn_ini:line_exist( section, line ) then
 		-- если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
-		local t = parse_nums( spawn_ini:r_string( section, line ) )
+		local t = parse_names( spawn_ini:r_string( section, line ) )
 		local n = table.getn( t )
 
 		if n == 0 then
@@ -233,6 +238,19 @@ function se_respawn:on_register()
 	if self.idle_spawn_max == nil then
 		self.idle_spawn_max = self.idle_spawn_min
 	end
+
+	--' ¬ычитка пресетов
+	if idle_spawn_preset[self.idle_spawn_min] ~= nil then
+		self.idle_spawn_min = idle_spawn_preset[self.idle_spawn_min]
+	else
+		self.idle_spawn_min = tonumber(self.idle_spawn_min)
+	end
+	if idle_spawn_preset[self.idle_spawn_max] ~= nil then
+		self.idle_spawn_max = idle_spawn_preset[self.idle_spawn_max]
+	else
+		self.idle_spawn_max = tonumber(self.idle_spawn_max)
+	end
+
 	self.str_conditions = r_str(ini, section_name, "conditions", 100) 
 	self.conditions = xr_logic.parse_condlist(self, section_name, "conditions", self.str_conditions)
 	self.respawn_radius = r_num(ini, section_name, "respawn_radius", -1)
