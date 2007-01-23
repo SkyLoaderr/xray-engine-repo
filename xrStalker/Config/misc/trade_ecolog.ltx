@@ -1,6 +1,6 @@
 [trader]
 buy_condition = ecolog_generic_buy
-sell_condition = {+yan_kill_brain_done} ecolog_sell_after_brain, ecolog_sell_start
+sell_condition = {+yan_kill_brain_done} ecolog_after_brain_sell, ecolog_start_sell
 buy_supplies = {+yan_kill_brain_done} supplies_after_brain, supplies_start
 
 
@@ -281,7 +281,7 @@ vodka					= 10,	0.3
 energy_drink			= 10,	0.3
 
 
-[ecolog_sell_start]
+[ecolog_start_sell]
 ;Артефакты
 af_medusa				;NO TRADE
 af_cristall_flower		;NO TRADE
@@ -495,7 +495,7 @@ wpn_fn2000_arena		;NO TRADE
 wpn_g36_arena			;NO TRADE
 
 
-[ecolog_sell_after_brain]
+[ecolog_after_brain_sell]
 ;Артефакты
 af_medusa				;NO TRADE
 af_cristall_flower		;NO TRADE
