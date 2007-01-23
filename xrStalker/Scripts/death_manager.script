@@ -19,7 +19,7 @@ local death_ini = ini_file("misc\\death_generic.ltx")
 
 
 function init_drop_settings()
-	local community_list = { "stalker", "dolg", "freedom", "bandit", "military", "zombied", "ecolog", "killer", "monolith", "arena_enemy" }	
+	local community_list = { "stalker", "dolg", "freedom", "bandit", "military", "zombied", "ecolog", "killer", "monolith", "arena_enemy", "actor_dolg" }	
 
     for k,v in pairs(community_list) do
         --' Необходимо заполнить таблицу
