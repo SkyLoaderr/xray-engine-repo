@@ -42,7 +42,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\bandit\stalker_bandit_4</visual>		
+		<visual>actors\ucheniy\ucheniy_1_strong</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -562,7 +562,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\militari\stalker_militari_1</visual>		
+		<visual>actors\soldier\soldier_bandana_1</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -593,7 +593,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\militari\stalker_militari_2</visual>		
+		<visual>actors\soldier\soldier_bandana_2</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -624,7 +624,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\militari\stalker_militari_antigas_1</visual>		
+		<visual>actors\soldier\soldier_bandana_3</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -656,7 +656,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\militari\stalker_militari_antigas_2</visual>		
+		<visual>actors\soldier\soldier_bandana_4</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
