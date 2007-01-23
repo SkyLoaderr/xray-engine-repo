@@ -2,56 +2,54 @@
 active = sr_idle@tutorial
 
 [sr_idle@tutorial]
-on_actor_inside = {+esc_trader_newbie} sr_idle %=run_tutorial(part_2_binocular)%
+on_info = {+esc_tutorial_start} sr_idle@tutorial_jump
 
+[sr_idle@tutorial_jump]
+on_info = {=actor_has_weapon -encyclopedy_tutorial_hide_weapon} sr_idle@wait_weap_tutor, {+esc_find_railroad_passage_find_stalker -encyclopedy_tutorial_diary} sr_idle@wait_diary_tutor
+on_info2 = {+encyclopedy_tutorial_jump} sr_idle@tutorial_crouch
+on_timer = 1000 | sr_idle@wait_jump_tutor
 
-;-------------------------
+[sr_idle@tutorial_crouch]
+on_info = {=actor_has_weapon -encyclopedy_tutorial_hide_weapon} sr_idle@wait_weap_tutor, {+esc_find_railroad_passage_find_stalker -encyclopedy_tutorial_diary} sr_idle@wait_diary_tutor
+on_info2 = {+encyclopedy_tutorial_crouch} sr_idle@tutorial_sprint
+on_timer = 7000 | sr_idle@wait_crouch_tutor
 
-[sr_idle]
-on_timer = 50000 |{=actor_has_weapon} nil %+encyclopedy_tutorial_hide_weapon =run_tutorial(part_15_hide_weapon)%
+[sr_idle@tutorial_sprint]
+on_info = {=actor_has_weapon -encyclopedy_tutorial_hide_weapon} sr_idle@wait_weap_tutor, {+esc_find_railroad_passage_find_stalker -encyclopedy_tutorial_diary} sr_idle@wait_diary_tutor
+on_info2 = {+encyclopedy_tutorial_sprint} sr_idle@tutorial_binoc
+on_timer = 7000 | sr_idle@wait_sprint_tutor
 
+[sr_idle@tutorial_binoc]
+on_info = {=actor_has_weapon -encyclopedy_tutorial_hide_weapon} sr_idle@wait_weap_tutor, {+esc_find_railroad_passage_find_stalker -encyclopedy_tutorial_diary} sr_idle@wait_diary_tutor
+on_info2 = {+encyclopedy_tutorial_binocular} sr_idle@tutorial_relat
+on_timer = 20000 | sr_idle@wait_binoc_tutor
 
-
-;-------------------------
-[sr_idle]
-on_actor_inside = sr_idle@1
-
-[sr_idle@1]
-
-on_timer = 50000 | %+encyclopedy_tutorial_binocular =run_tutorial(part_2_binocular)% nil
-
-
-
-;-------------------------
-[sr_idle]
-on_actor_inside = sr_idle@timer1
-
-[sr_idle@timer1]
-on_timer = 100000 | %+encyclopedy_tutorial_crouch =run_tutorial(part_4_crouch)%  nil
-
-
-;-------------------------
-[sr_idle]
-on_actor_inside = sr_idle@timer1
-
-[sr_idle@timer1]
-
-on_timer = 150000 | %+encyclopedy_tutorial_jump =run_tutorial(part_3_jump)%  nil
+[sr_idle@tutorial_relat]
+on_info = {=actor_has_weapon -encyclopedy_tutorial_hide_weapon} sr_idle@wait_weap_tutor, {+esc_find_railroad_passage_find_stalker -encyclopedy_tutorial_diary} sr_idle@wait_diary_tutor
+on_info2 = {+encyclopedy_tutorial_relation +encyclopedy_tutorial_hide_weapon} nil
+on_timer = 20000 | sr_idle@wait_relat_tutor
 
 
 
-;-------------------------
-[sr_idle]
-on_actor_inside = sr_idle@timer1
 
-[sr_idle@timer1]
+;Отыгрыш туториалов
+[sr_idle@wait_weap_tutor]
+on_info = {=can_send_tutorial} sr_idle@tutorial %+encyclopedy_tutorial_hide_weapon =run_tutorial(part_15_hide_weapon)%
 
-on_timer = 200000 | %+encyclopedy_tutorial_sprint =run_tutorial(part_10_sprint)%  nil
+[sr_idle@wait_diary_tutor]
+on_info = {=can_send_tutorial} sr_idle@tutorial %+encyclopedy_tutorial_diary =run_tutorial(part_15_hide_weapon)%
 
+[sr_idle@wait_jump_tutor]
+on_info = {=can_send_tutorial} sr_idle@tutorial_crouch %+encyclopedy_tutorial_jump =run_tutorial(part_3_jump)%
 
-;-------------------------
-[sr_idle]
-on_actor_inside = sr_idle@1
+[sr_idle@wait_crouch_tutor]
+on_info = {=can_send_tutorial} sr_idle@tutorial_sprint %+encyclopedy_tutorial_crouch =run_tutorial(part_4_crouch)%
 
-[sr_idle@1]
-on_timer = 250000 | %+encyclopedy_tutorial_relation =run_tutorial(part_12_relations)%   nil
+[sr_idle@wait_sprint_tutor]
+on_info = {=can_send_tutorial} sr_idle@tutorial_binoc %+encyclopedy_tutorial_sprint =run_tutorial(part_10_sprint)%
+
+[sr_idle@wait_binoc_tutor]
+on_info = {=can_send_tutorial} sr_idle@tutorial_relat %+encyclopedy_tutorial_binocular =run_tutorial(part_2_binocular)%
+
+[sr_idle@wait_relat_tutor]
+on_info = {=can_send_tutorial} nil %+encyclopedy_tutorial_relation =run_tutorial(part_12_relations)%

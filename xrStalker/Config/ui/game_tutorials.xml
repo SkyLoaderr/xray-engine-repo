@@ -408,7 +408,7 @@
 		<global_wnd/>
 		
 		<item><!-- Радиация -->
-			<length_sec>15</length_sec>
+			<length_sec>10</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
@@ -429,7 +429,7 @@
 		<global_wnd/>
 		
 		<item><!-- Радиация -->
-			<length_sec>15</length_sec>
+			<length_sec>10</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
@@ -450,7 +450,7 @@
 		<global_wnd/>
 		
 		<item><!-- Кровотечения -->
-			<length_sec>15</length_sec>
+			<length_sec>10</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
@@ -471,7 +471,7 @@
 		<global_wnd/>
 		
 		<item><!-- Поломка оружия -->
-			<length_sec>15</length_sec>
+			<length_sec>10</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
@@ -492,7 +492,7 @@
 		<global_wnd/>
 		
 		<item><!-- Бег в спринте -->
-			<length_sec>15</length_sec>
+			<length_sec>10</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
@@ -513,7 +513,7 @@
 		<global_wnd/>
 		
 		<item><!-- Усталость -->
-			<length_sec>15</length_sec>
+			<length_sec>10</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
@@ -534,7 +534,7 @@
 		<global_wnd/>
 		
 		<item><!-- отношение персонажей -->
-			<length_sec>15</length_sec>
+			<length_sec>10</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
@@ -555,7 +555,7 @@
 		<global_wnd/>
 		
 		<item><!-- перегрузка -->
-			<length_sec>15</length_sec>
+			<length_sec>10</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
@@ -576,7 +576,7 @@
 		<global_wnd/>
 		
 		<item><!-- спрятать/достать оружие -->
-			<length_sec>15</length_sec>
+			<length_sec>10</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
@@ -597,7 +597,7 @@
 		<global_wnd/>
 		
 		<item><!-- спрятать/достать оружие -->
-			<length_sec>15</length_sec>
+			<length_sec>10</length_sec>
 			<pause_state>off</pause_state>
 			<guard_key/>
 			<sound/>
