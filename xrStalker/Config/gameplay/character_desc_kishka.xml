@@ -14,7 +14,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\bandit\stalker_bandit_3</visual>		
+		<visual>actors\hero\stalker_novice</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
 		<supplies>
 			[spawn] \n
