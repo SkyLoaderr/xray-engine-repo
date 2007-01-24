@@ -3024,9 +3024,9 @@
 		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
-			wpn_sig220 \n
-			ammo_11.43x23_hydro \n	
-			wpn_ak74 = 1, scope \n
+			wpn_walther_m1 \n
+			ammo_9x18_fmj \n	
+			wpn_abakan_m1 = 1 \n
 			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"\n
