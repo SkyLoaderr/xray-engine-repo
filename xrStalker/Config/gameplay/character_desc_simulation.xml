@@ -5883,7 +5883,7 @@
 	
 	<specific_character id="sim_test_110" team_default = "1">
 		<class>sim_test_110</class>
-		<visual>barman\barman</visual>
+		<visual>actors\barman\barman</visual>
 		<icon>ui_npc_u_barman</icon>
 		
 		<name>Test</name>
