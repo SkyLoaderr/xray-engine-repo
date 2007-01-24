@@ -441,7 +441,7 @@ end
 
 --' Убирание мертвого чувака. Вызывается из смарттеррейна
 function gulag:clear_dead(obj_id)
---'	printf( "[smart_terrain %s] gulag: Clear_dead: obj=%s", self.name, self.npc_info[obj_id].name)
+	printf( "[smart_terrain %s] gulag: Clear_dead: obj=%s", self.name, self.npc_info[obj_id].name)
 
 	self:changeCasualities( 1 )
 
