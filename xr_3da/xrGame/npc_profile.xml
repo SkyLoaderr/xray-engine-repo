@@ -18,7 +18,7 @@
 	
 	<character id="esc_wolf">
 		<class>esc_wolf</class>
-	</character>	
+	</character>
 
 	<character id="esc_ranger">
 		<class>esc_ranger</class>
@@ -26,7 +26,7 @@
 
 	<character id="esc_fanat">
 		<class>esc_fanat</class>
-	</character>	
+	</character>
 	
 	<character id="esc_fox">
 		<class>esc_fox</class>
@@ -54,7 +54,7 @@
 	
 	<character id="esc_stalker_novice">
 		<class>esc_stalker_novice</class>
-	</character>	
+	</character>
 	
 	<character id="esc_soldier_commander">
 		<class>esc_soldier_commander</class>
@@ -66,7 +66,7 @@
 
 	<character id="esc_soldier_regular">
 		<class>esc_soldier_regular</class>
-	</character>	
+	</character>
 	
 	<character id="esc_soldier_blokpost">
 		<class>esc_soldier_blokpost</class>
@@ -91,7 +91,7 @@
 
 	<character id="gar_dram_novice">
 		<class>gar_dram_novice</class>
-	</character>	
+	</character>
 	
 	<character id="gar_newbie_in_tonnel">
 		<class>gar_newbie_in_tonnel</class>
@@ -144,10 +144,10 @@
 <!-- Agroprom + undeground-->
 	<character id="agr_krot">
 		<class>agr_krot</class>
-	</character>	
+	</character>
 	<character id="agr_ratcatcher">
 		<class>agr_ratcatcher</class>
-	</character>	
+	</character>
 	<!-- stalkers -->
 	
 	<character id="agr_stalker_general">
@@ -163,7 +163,7 @@
 	</character>
 	<character id="agr_soldier_commander">
 		<class>agr_Soldier_commander</class>
-	</character>	
+	</character>
 	<character id="agr_soldier_sniper">
 		<class>agr_Soldier_sniper</class>
 	</character>
@@ -612,7 +612,7 @@
 	<character id="bar_barman">
 		<class>bar_barman</class>
 		<specific_character>bar_barman</specific_character>
-	</character>	
+	</character>
 	<character id="bar_white_novice">
 		<class>bar_stalker_white_novice</class>
 	</character>
@@ -734,7 +734,7 @@
 	</character>
 	<character id="bar_Killer_sniper_on_enter">
 		<class>bar_Killer_sniper_on_enter</class>
-	</character>	
+	</character>
 	<character id="bar_Killer_specnaz">
 		<class>bar_Killer_specnaz</class>
 	</character>
@@ -903,11 +903,11 @@
 	<!-- S.W.A.T. -->
 	<character id="rad_soldier_specnaz">
 		<class>rad_soldier_specnaz</class>
-	</character>	
+	</character>
 	<!-- Dolg -->
 	<character id="rad_Dolg_master">
 		<class>rad_Dolg_master</class>
-	</character>	
+	</character>
 	<!-- Svoboda -->
 	<character id="rad_Svoboda_master">
 		<class>rad_Svoboda_master</class>
@@ -1214,7 +1214,7 @@
 	
 	<character id="sim_bandit_master_kocherga">
 		<class>sim_bandit_master_kocherga</class>
-	</character>	
+	</character>
 	
     <character id="sim_dolg_veteran_barin">
 		<class>sim_dolg_veteran_barin</class>
@@ -1297,35 +1297,35 @@
 	
 	<character id="bar_arena_stalker_6_1">
 		<class>bar_arena_stalker_6_1</class>
-	</character>	
+	</character>
 		
 	<character id="bar_arena_stalker_6_2">
 		<class>bar_arena_stalker_6_2</class>
-	</character>	
+	</character>
 	
 	<character id="bar_arena_stalker_6_3">
 		<class>bar_arena_stalker_6_3</class>
-	</character>		
+	</character>	
 	
 	<character id="bar_arena_stalker_6_4">
 		<class>bar_arena_stalker_6_4</class>
-	</character>		
+	</character>	
 	
 	<character id="bar_arena_stalker_6_5">
 		<class>bar_arena_stalker_6_5</class>
-	</character>		
+	</character>	
 	
 	<character id="bar_arena_stalker_6_6">
 		<class>bar_arena_stalker_6_6</class>
-	</character>		
+	</character>	
 			
 	<character id="bar_arena_stalker_7">
 		<class>bar_arena_stalker_7</class>
-	</character>	
+	</character>
 	
 	<character id="bar_arena_stalker_8_1">
 		<class>bar_arena_stalker_8_1</class>
-	</character>	
+	</character>
 	
 	<character id="bar_arena_stalker_8_2">
 		<class>bar_arena_stalker_8_2</class>
@@ -1343,5 +1343,461 @@
 		<class>bar_arena_respawner</class>
 	</character>
 
-		
+		;-----Test NPCs for level selo_face---------
+
+	<character id="sim_test_000">
+		<class>sim_test_000</class>
+	</character>
+
+	<character id="sim_test_001">
+		<class>sim_test_001</class>
+	</character>
+	
+	<character id="sim_test_002">
+		<class>sim_test_002</class>
+	</character>
+	
+	<character id="sim_test_003">
+		<class>sim_test_003</class>
+	</character>
+	
+	<character id="sim_test_004">
+		<class>sim_test_004</class>
+	</character>
+	
+	<character id="sim_test_005">
+		<class>sim_test_005</class>
+	</character>
+	
+	<character id="sim_test_006">
+		<class>sim_test_006</class>
+	</character>
+	
+	<character id="sim_test_007">
+		<class>sim_test_007</class>
+	</character>
+	
+	<character id="sim_test_008">
+		<class>sim_test_008</class>
+	</character>
+	
+	<character id="sim_test_009">
+		<class>sim_test_009</class>
+	</character>
+	
+	<character id="sim_test_010">
+		<class>sim_test_010</class>
+	</character>
+	
+	<character id="sim_test_011">
+		<class>sim_test_011</class>
+	</character>
+	
+	<character id="sim_test_012">
+		<class>sim_test_012</class>
+	</character>
+	
+	<character id="sim_test_013">
+		<class>sim_test_013</class>
+	</character>
+	
+	<character id="sim_test_014">
+		<class>sim_test_014</class>
+	</character>
+	
+	<character id="sim_test_015">
+		<class>sim_test_015</class>
+	</character>
+	
+	<character id="sim_test_016">
+		<class>sim_test_016</class>
+	</character>
+	
+	<character id="sim_test_017">
+		<class>sim_test_017</class>
+	</character>
+	
+	<character id="sim_test_018">
+		<class>sim_test_018</class>
+	</character>
+	
+	<character id="sim_test_019">
+		<class>sim_test_019</class>
+	</character>
+	
+	<character id="sim_test_020">
+		<class>sim_test_020</class>
+	</character>
+	
+	<character id="sim_test_021">
+		<class>sim_test_021</class>
+	</character>
+	
+	<character id="sim_test_022">
+		<class>sim_test_022</class>
+	</character>
+	
+	<character id="sim_test_023">
+		<class>sim_test_023</class>
+	</character>
+	
+	<character id="sim_test_024">
+		<class>sim_test_024</class>
+	</character>
+	
+	<character id="sim_test_025">
+		<class>sim_test_025</class>
+	</character>
+	
+	<character id="sim_test_026">
+		<class>sim_test_026</class>
+	</character>
+	
+	<character id="sim_test_027">
+		<class>sim_test_027</class>
+	</character>
+	
+	<character id="sim_test_028">
+		<class>sim_test_028</class>
+	</character>
+	
+	<character id="sim_test_029">
+		<class>sim_test_029</class>
+	</character>
+	
+	<character id="sim_test_030">
+		<class>sim_test_030</class>
+	</character>
+	
+	<character id="sim_test_031">
+		<class>sim_test_031</class>
+	</character>
+	
+	<character id="sim_test_032">
+		<class>sim_test_032</class>
+	</character>
+	
+	<character id="sim_test_033">
+		<class>sim_test_033</class>
+	</character>
+	
+	<character id="sim_test_034">
+		<class>sim_test_034</class>
+	</character>
+	
+	<character id="sim_test_035">
+		<class>sim_test_035</class>
+	</character>
+	
+	<character id="sim_test_036">
+		<class>sim_test_036</class>
+	</character>
+	
+	<character id="sim_test_037">
+		<class>sim_test_037</class>
+	</character>
+	
+	<character id="sim_test_038">
+		<class>sim_test_038</class>
+	</character>
+	
+	<character id="sim_test_039">
+		<class>sim_test_039</class>
+	</character>
+	
+	<character id="sim_test_040">
+		<class>sim_test_040</class>
+	</character>
+	
+	<character id="sim_test_041">
+		<class>sim_test_041</class>
+	</character>
+	
+	<character id="sim_test_042">
+		<class>sim_test_042</class>
+	</character>
+	
+	<character id="sim_test_043">
+		<class>sim_test_043</class>
+	</character>
+	
+	<character id="sim_test_044">
+		<class>sim_test_044</class>
+	</character>
+	
+	<character id="sim_test_045">
+		<class>sim_test_045</class>
+	</character>
+	
+	<character id="sim_test_046">
+		<class>sim_test_046</class>
+	</character>
+	
+	<character id="sim_test_047">
+		<class>sim_test_047</class>
+	</character>
+	
+	<character id="sim_test_048">
+		<class>sim_test_048</class>
+	</character>
+	
+	<character id="sim_test_049">
+		<class>sim_test_049</class>
+	</character>
+	
+	<character id="sim_test_050">
+		<class>sim_test_050</class>
+	</character>
+	
+	<character id="sim_test_051">
+		<class>sim_test_051</class>
+	</character>
+	
+	<character id="sim_test_052">
+		<class>sim_test_052</class>
+	</character>
+	
+	<character id="sim_test_053">
+		<class>sim_test_053</class>
+	</character>
+	
+	<character id="sim_test_054">
+		<class>sim_test_054</class>
+	</character>
+	
+	<character id="sim_test_055">
+		<class>sim_test_055</class>
+	</character>
+	
+	<character id="sim_test_056">
+		<class>sim_test_056</class>
+	</character>
+	
+	<character id="sim_test_057">
+		<class>sim_test_057</class>
+	</character>
+	
+	<character id="sim_test_058">
+		<class>sim_test_058</class>
+	</character>
+	
+	<character id="sim_test_059">
+		<class>sim_test_059</class>
+	</character>
+	
+	<character id="sim_test_060">
+		<class>sim_test_060</class>
+	</character>
+	
+	<character id="sim_test_061">
+		<class>sim_test_061</class>
+	</character>
+	
+	<character id="sim_test_062">
+		<class>sim_test_062</class>
+	</character>
+	
+	<character id="sim_test_063">
+		<class>sim_test_063</class>
+	</character>
+	
+	<character id="sim_test_064">
+		<class>sim_test_064</class>
+	</character>
+	
+	<character id="sim_test_065">
+		<class>sim_test_065</class>
+	</character>
+	
+	<character id="sim_test_066">
+		<class>sim_test_066</class>
+	</character>
+	
+	<character id="sim_test_067">
+		<class>sim_test_067</class>
+	</character>
+	
+	<character id="sim_test_068">
+		<class>sim_test_068</class>
+	</character>
+	
+	<character id="sim_test_069">
+		<class>sim_test_069</class>
+	</character>
+	
+	<character id="sim_test_070">
+		<class>sim_test_070</class>
+	</character>
+	
+	<character id="sim_test_071">
+		<class>sim_test_071</class>
+	</character>
+	
+	<character id="sim_test_072">
+		<class>sim_test_072</class>
+	</character>
+	
+	<character id="sim_test_073">
+		<class>sim_test_073</class>
+	</character>
+	
+	<character id="sim_test_074">
+		<class>sim_test_074</class>
+	</character>
+	
+	<character id="sim_test_075">
+		<class>sim_test_075</class>
+	</character>
+	
+	<character id="sim_test_076">
+		<class>sim_test_076</class>
+	</character>
+	
+	<character id="sim_test_077">
+		<class>sim_test_077</class>
+	</character>
+	
+	<character id="sim_test_078">
+		<class>sim_test_078</class>
+	</character>
+	
+	<character id="sim_test_079">
+		<class>sim_test_079</class>
+	</character>
+	
+	<character id="sim_test_080">
+		<class>sim_test_080</class>
+	</character>
+	
+	<character id="sim_test_081">
+		<class>sim_test_081</class>
+	</character>
+	
+	<character id="sim_test_082">
+		<class>sim_test_082</class>
+	</character>
+	
+	<character id="sim_test_083">
+		<class>sim_test_083</class>
+	</character>
+	
+	<character id="sim_test_084">
+		<class>sim_test_084</class>
+	</character>
+	
+	<character id="sim_test_085">
+		<class>sim_test_085</class>
+	</character>
+	
+	<character id="sim_test_086">
+		<class>sim_test_086</class>
+	</character>
+	
+	<character id="sim_test_087">
+		<class>sim_test_087</class>
+	</character>
+	
+	<character id="sim_test_088">
+		<class>sim_test_088</class>
+	</character>
+	
+	<character id="sim_test_089">
+		<class>sim_test_089</class>
+	</character>
+	
+	<character id="sim_test_090">
+		<class>sim_test_090</class>
+	</character>
+	
+	<character id="sim_test_091">
+		<class>sim_test_091</class>
+	</character>
+	
+	<character id="sim_test_092">
+		<class>sim_test_092</class>
+	</character>
+	
+	<character id="sim_test_093">
+		<class>sim_test_093</class>
+	</character>
+	
+	<character id="sim_test_094">
+		<class>sim_test_094</class>
+	</character>
+	
+	<character id="sim_test_095">
+		<class>sim_test_095</class>
+	</character>
+	
+	<character id="sim_test_096">
+		<class>sim_test_096</class>
+	</character>
+	
+	<character id="sim_test_097">
+		<class>sim_test_097</class>
+	</character>
+	
+	<character id="sim_test_098">
+		<class>sim_test_098</class>
+	</character>
+	
+	<character id="sim_test_099">
+		<class>sim_test_099</class>
+	</character>
+	
+	<character id="sim_test_100">
+		<class>sim_test_100</class>
+	</character>
+	
+	<character id="sim_test_101">
+		<class>sim_test_101</class>
+	</character>
+	
+	<character id="sim_test_102">
+		<class>sim_test_102</class>
+	</character>
+	
+	<character id="sim_test_103">
+		<class>sim_test_103</class>
+	</character>
+	
+	<character id="sim_test_104">
+		<class>sim_test_104</class>
+	</character>
+	
+	<character id="sim_test_105">
+		<class>sim_test_105</class>
+	</character>
+	
+	<character id="sim_test_106">
+		<class>sim_test_106</class>
+	</character>
+	
+	<character id="sim_test_107">
+		<class>sim_test_107</class>
+	</character>
+	
+	<character id="sim_test_108">
+		<class>sim_test_108</class>
+	</character>
+	
+	<character id="sim_test_109">
+		<class>sim_test_109</class>
+	</character>
+	
+	<character id="sim_test_110">
+		<class>sim_test_110</class>
+	</character>
+	
+	<character id="sim_test_111">
+		<class>sim_test_111</class>
+	</character>
+	
+	<character id="sim_test_112">
+		<class>sim_test_112</class>
+	</character>
+	
+	<character id="sim_test_113">
+		<class>sim_test_113</class>
+	</character>
 </xml>
