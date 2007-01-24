@@ -163,13 +163,13 @@ function HeliManager:update()
 
 	health = self.heliObject:GetfHealth()
 
-	if self.b_prepared_to_die == false and state ~= CHelicopter.eDead and health < 30.0 then
+	if self.b_prepared_to_die == false and state ~= CHelicopter.eDead and health < 0.3 then
 		self.b_prepared_to_die = true
 		self.heliObject:PrepareDie()
 		printf( "[heli] prepare to die" )
 	end
 
-	if state ~= CHelicopter.eDead and health <= 0.5 and not self.not_die then
+	if state ~= CHelicopter.eDead and health <= 0.05 and not self.not_die then
 		printf( "[heli] DIE" )
 		self.heliObject:Die()
 
