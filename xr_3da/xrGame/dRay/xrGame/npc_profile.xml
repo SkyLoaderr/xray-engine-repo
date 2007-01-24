@@ -752,6 +752,9 @@
 	<character id="yan_zombied_master">
 		<class>yan_Zombied_master</class>
 	</character>
+	<character id="yan_zombied_dolg">
+		<class>yan_zombied_dolg</class>
+	</character>
 	<character id="yan_Zombied_ambush">
 		<class>yan_Zombied_ambush</class>
 	</character>
