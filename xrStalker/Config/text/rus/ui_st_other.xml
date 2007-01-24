@@ -115,4 +115,62 @@
 		<text>Уровень</text>
 	</string>
 
+	<string id="st_opening_stream">
+		<text>Открытие потока</text>
+	</string>
+	<string id="st_loading_cform">
+		<text>Загрузка формы объектов</text>
+	</string>
+	<string id="st_prefetching_objects">
+		<text>Кеширование объектов</text>
+	</string>
+	<string id="st_creating_new_game">
+		<text>Создание новой игры</text>
+	</string>
+	<string id="st_loading_alife_simulator">
+		<text>Сервер: Загрузка симуляции жизни</text>
+	</string>
+	<string id="st_server_connecting">
+		<text>Сервер: Соединяемся</text>
+	</string>
+	<string id="st_loading_saved_game">
+		<text>Загрузка сохраненной игры</text>
+	</string>
+	<string id="st_validating_cdkey">
+		<text>Проверка ключа</text>
+	</string>
+	<string id="st_loading_ai_objects">
+		<text>Загрузка ИИ объектов</text>
+	</string>
+	<string id="st_client_connecting_to">
+		<text>Клиент: Соединение с</text>
+	</string>
+	<string id="st_client_spawning">
+		<text>Клиент: Создание</text>
+	</string>
+	<string id="st_loading_textures">
+		<text>Загрузка текстур</text>
+	</string>
+	<string id="st_client_synchronising">
+		<text>Клиент: Синхронизация</text>
+	</string>
+	<string id="st_server_starting">
+		<text>Сервер: Старт</text>
+	</string>
+	<string id="st_loading_shaders">
+		<text>Загрузка шейдеров</text>
+	</string>
+	<string id="st_loading_geometry">
+		<text>Загрузка геометрии</text>
+	</string>
+	<string id="st_loading_spatial_db">
+		<text>Загрузка базы пространств</text>
+	</string>
+	<string id="st_loading_details">
+		<text>Загрузка детальных объектов</text>
+	</string>
+	<string id="st_loading_sectors_portals">
+		<text>Загрузка секторов и порталов</text>
+	</string>
+
 </string_table>
