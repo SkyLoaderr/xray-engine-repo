@@ -32,6 +32,10 @@ function actor_binder:net_spawn(data)
 
 	db.add_actor(self.object)
 	
+	if self.st.disable_input_time == nil then
+		level.enable_input()
+	end
+
 	self.weather_manager:reset()
 --	game_stats.initialize ()
 
@@ -328,6 +332,14 @@ function actor_binder:save(packet)
 	printf("actor_binder:save(): self.object:name()='%s'", self.object:name())
 	object_binder.save(self, packet)
 
+	--' Сохраняем данные об отключенном вводе
+	if self.st.disable_input_time == nil then
+		packet:w_bool(false)
+	else
+		packer:w_bool(true)
+		utils.w_CTime(packet, self.st.disable_input_time)
+	end
+
 	xr_logic.pstor_save_all(self.object, packet)
 	self.weather_manager:save(packet)
 
@@ -343,6 +355,11 @@ function actor_binder:load(reader)
 
 	if reader:r_eof() then
 		abort("SAVE FILE IS CORRUPT")
+	end
+
+	local stored_input_time = reader:r_u8()
+	if stored_input_time == true then
+		self.st.disable_input_time = utils.r_CTime(reader)
 	end
 
 	xr_logic.pstor_load_all(self.object, reader)
