@@ -5899,7 +5899,7 @@
 	
 	<specific_character id="sim_test_111" team_default = "1">
 		<class>sim_test_111</class>
-		<visual>ucheniy\ucheniy_2</visual>
+		<visual>actors\ucheniy\ucheniy_2</visual>
 		<icon>ui_npc_u_ucheniy_2</icon>
 		
 		<name>Test</name>
