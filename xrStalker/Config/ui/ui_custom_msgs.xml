@@ -69,17 +69,15 @@
 		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
 	</item_used>
 
-	<!-- remove on next update	
-	<not_enough_money  x="100" y="100" width="800" height="60">
-		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">st_not_enough_money</text>
-	</not_enough_money>
-
-	<not_enough_money_mine  x="100" y="100" width="800" height="60">
-		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">st_not_enough_money</text>
-	</not_enough_money_mine>
-
-	<not_enough_money_other  x="100" y="100" width="800" height="60">
-		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">st_not_enough_money_npc</text>
-	</not_enough_money_other>
-	-->
+	<gun_jammed x="200" y="10" width="600" height="60" ttl="3">
+		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">gun_jammed</text>
+	</gun_jammed>
+	
+	<cant_walk x="200" y="10" width="600" height="60" ttl="3">
+		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">cant_walk</text>
+	</cant_walk>
+	
+	<cant_walk_weight x="200" y="10" width="600" height="60" ttl="3">
+		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">cant_walk_weight</text>
+	</cant_walk_weight>
 </header>
