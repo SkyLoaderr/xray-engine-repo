@@ -1767,7 +1767,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\stalker_zombi\stalker_fresh_0</visual>		
+		<visual>actors\stalker_zombi\zombie_fresh_0</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
