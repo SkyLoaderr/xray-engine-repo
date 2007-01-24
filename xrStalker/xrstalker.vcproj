@@ -1189,6 +1189,12 @@
 				<Filter
 					Name="eng"
 					Filter="">
+					<File
+						RelativePath=".\Config\text\eng\string_table_tasks_agroprom">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_tasks_pripyat">
+					</File>
 					<Filter
 						Name="UI"
 						Filter="">
