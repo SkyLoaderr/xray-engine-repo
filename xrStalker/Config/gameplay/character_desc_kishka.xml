@@ -14,7 +14,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\hero\stalker_novice</visual>		
+		<visual>actors\novice\green_stalker_7</visual>		
 		<snd_config>characters_voice\human_01\military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1248,7 +1248,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>		
+		<visual>actors\neytral\stalker_neytral_rukzak_1</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
@@ -1831,7 +1831,7 @@
 		<rank>300</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>		
+		<visual>actors\stalker_zombi\stalker_zombie_8</visual>		
 		<snd_config>characters_voice\human_01\ military\</snd_config>
 		<supplies>
 			[spawn] \n
