@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-	<string id="Contacts">
-		<text>Contacts</text>
-	</string>
-	<string id="Encyclopedia">
-		<text>Encyclopaedia</text>
-	</string>
-	<string id="Name">
-		<text>Name</text>
-	</string>
-	<string id="Rank">
-		<text>Rank</text>
-	</string>
-	<string id="Tasks">
-		<text>Tasks</text>
-	</string>
-	<string id="Time">
-		<text>Time</text>
-	</string>
 	<string id="actor_btn_hint">
 		<text>Center on actor</text>
 	</string>
 	<string id="add_spot_btn_hint">
 		<text>Add new marker</text>
 	</string>
+	<string id="Contacts">
+		<text>Contacts</text>
+	</string>
+	<string id="Encyclopedia">
+		<text>Encyclopaedia</text>
+	</string>
 	<string id="global_map_btn_hint">
 		<text>To map of the Zone</text>
 	</string>
 	<string id="level_changer_invitation">
 		<text>Move to next level?</text>
+	</string>
+	<string id="Name">
+		<text>Name</text>
 	</string>
 	<string id="pda_btn_accomplished">
 		<text>Completed</text>
@@ -135,6 +126,9 @@
 	<string id="pda_switch_description_btn_hint">
 		<text>Toggle map/text</text>
 	</string>
+	<string id="Rank">
+		<text>Rank</text>
+	</string>
 	<string id="remove_spot_btn_hint">
 		<text>Delete marker</text>
 	</string>
@@ -197,6 +191,12 @@
 	</string>
 	<string id="svoboda_outfit_description_m1">
 		<text>There is a metal wire mesh integrated into the suit which protects from electric and magnetic fields. The set also includes an instrument for night vision.</text>
+	</string>
+	<string id="Tasks">
+		<text>Tasks</text>
+	</string>
+	<string id="Time">
+		<text>Time</text>
 	</string>
 	<string id="zoom_in_btn_hint">
 		<text>zoom in</text>

@@ -11,7 +11,7 @@
 		<text>Vasiliev's audio recording.</text>
 	</string>
 	<string id="tips_labx16switcher_press">
-		<text>To turn the miracle machine, off press ($$ACTION_USE$$)</text>
+		<text>To turn the miracle machine off press ($$ACTION_USE$$)</text>
 	</string>
 	<string id="yan_saharov_message">
 		<text>Good man, Marked One, you made it after all. It's extremely important that we study the machine in the lab. Try turning it off so that we can have a look at it.</text>

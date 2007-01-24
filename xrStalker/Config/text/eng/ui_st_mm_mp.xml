@@ -19,7 +19,7 @@
 		<text>Artifact capture</text>
 	</string>
 	<string id="mm_mp_artefdelay">
-		<text>Artifact delay</text>
+		<text>Artifact delay (sec)</text>
 	</string>
 	<string id="mm_mp_artefnum">
 		<text>Number of artifacts</text>
@@ -28,10 +28,10 @@
 		<text>Artifact life (min)</text>
 	</string>
 	<string id="mm_mp_autoteambalance">
-		<text>Auto team balancing</text>
+		<text>Auto team-balancing</text>
 	</string>
 	<string id="mm_mp_autoteamswap">
-		<text>Auto team swap</text>
+		<text>Auto team-swap</text>
 	</string>
 	<string id="mm_mp_avail_maps">
 		<text>AVAILABLE MAPS</text>
@@ -49,10 +49,10 @@
 		<text>Create</text>
 	</string>
 	<string id="mm_mp_damageblock">
-		<text>Invincibility</text>
+		<text>Invulnerability</text>
 	</string>
 	<string id="mm_mp_damageblockindicator">
-		<text>Invincibility indicator</text>
+		<text>Invulnerability indicator</text>
 	</string>
 	<string id="mm_mp_deaths">
 		<text>Deaths</text>
@@ -67,7 +67,7 @@
 		<text>Filters</text>
 	</string>
 	<string id="mm_mp_forcerespawn">
-		<text>Force respawn</text>
+		<text>Forced respawn (sec)</text>
 	</string>
 	<string id="mm_mp_fraglimit">
 		<text>Frag limit</text>
@@ -79,7 +79,7 @@
 		<text>Freeze time</text>
 	</string>
 	<string id="mm_mp_friendlyfire">
-		<text>Friendly fire</text>
+		<text>Friendly damage</text>
 	</string>
 	<string id="mm_mp_friendlyindicators">
 		<text>Friendly indicators</text>
@@ -139,13 +139,13 @@
 		<text>Quick refresh</text>
 	</string>
 	<string id="mm_mp_rateofchange">
-		<text>Rate of change</text>
+		<text>Change coefficient</text>
 	</string>
 	<string id="mm_mp_refresh">
 		<text>Refresh all</text>
 	</string>
 	<string id="mm_mp_reinforcement">
-		<text>Reinforcements</text>
+		<text>Reinforcements (sec)</text>
 	</string>
 	<string id="mm_mp_respawnoptions">
 		<text>Respawn options</text>
@@ -181,10 +181,10 @@
 		<text>First person</text>
 	</string>
 	<string id="mm_mp_spectator_freefly">
-		<text>Freefly</text>
+		<text>Free camera</text>
 	</string>
 	<string id="mm_mp_spectator_freelook">
-		<text>Freelook</text>
+		<text>Free-locked</text>
 	</string>
 	<string id="mm_mp_spectator_lookat">
 		<text>Third person</text>
@@ -199,10 +199,10 @@
 		<text>Starting weather</text>
 	</string>
 	<string id="mm_mp_timelimit">
-		<text>Time limit</text>
+		<text>Time limit (min)</text>
 	</string>
 	<string id="mm_mp_warmuptime">
-		<text>Warm up time (sec)</text>
+		<text>Warmup (sec)</text>
 	</string>
 	<string id="mm_mp_weatheroptions">
 		<text>Weather options</text>
@@ -214,7 +214,7 @@
 		<text>No password</text>
 	</string>
 	<string id="mm_mp_withoutpunkbuster">
-		<text>No Punk Buster</text>
+		<text>No PunkBuster</text>
 	</string>
 	<string id="mm_mp_withpassword">
 		<text>Use password</text>

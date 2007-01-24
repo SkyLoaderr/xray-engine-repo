@@ -73,7 +73,7 @@
 		<text>State of the weapon</text>
 	</string>
 	<string id="weapon_tutorial">
-		<text>All weapons have a durability parameter. The lower a weapon's durability, the more often it will jam. To unjam, reload the weapon by pressing $$ACTION_wpn_reload$$. The weapon's durability decreases with use. A weapon may become completely useless if struck by bullets.</text>
+		<text>All weapons have a durability parameter. The lower a weapon's durability, the more often it jams. To unjam, reload the weapon by pressing $$ACTION_wpn_reload$$. The weapon's durability decreases with use. A weapon may become completely useless if struck by bullets.</text>
 	</string>
 	<string id="wound">
 		<text>Open wounds</text>
@@ -82,6 +82,6 @@
 		<text>When the character is hit, he may start to bleed. Bleeding causes the character to constantly lose health. The more serious the bleeding (a green icon means slight bleeding, a red icon indicates a serious hemorrhage), the faster the rate at which he loses health. Bleeding will eventually stop with time, but even serious hemorrhages can be stopped immediately using bandages.</text>
 	</string>
 	<string id="pda_diary_tutorial">
-		<text>В ПДА погибшего сталкера Вы нашли его наблюдения за аномалиями в туннеле. Оказывается, он обнаружил закономерность в их работе. Вы можете прочитать эту информацию в своем ПДА в разделе "Дневник".</text>
+		<text>In PDA of the deceased stalker, you found his observations after anomalies in tunnels. It turns out to be that he discovered the regularity of their work. You can read this information in your PDA in "Diary" section.</text>
 	</string>
 </string_table>

@@ -52,7 +52,7 @@
 		<text>Enter text for the vote</text>
 	</string>
 	<string id="mp_entered_game">
-		<text>has joined the game</text>
+		<text>has entered the game</text>
 	</string>
 	<string id="mp_first_eye">
 		<text>(First person view)</text>
@@ -70,7 +70,7 @@
 		<text>(Third person view)</text>
 	</string>
 	<string id="mp_from">
-		<text>from</text>
+		<text>with</text>
 	</string>
 	<string id="mp_go">
 		<text>GO!</text>
@@ -88,13 +88,13 @@
 		<text>is now</text>
 	</string>
 	<string id="mp_joined">
-		<text>joined</text>
+		<text>has joined</text>
 	</string>
 	<string id="mp_kick">
 		<text>Drop</text>
 	</string>
 	<string id="mp_look_at">
-		<text>(Freelook)</text>
+		<text>(Free-locked)</text>
 	</string>
 	<string id="mp_map_desc">
 		<text>Map description</text>
@@ -142,7 +142,7 @@
 		<text>Press Jump to start</text>
 	</string>
 	<string id="mp_press_to_buy">
-		<text>Press ($$ACTION_BUY_MENU$$) to access the Trade menu</text>
+		<text>Press ($$ACTION_BUY_MENU$$) to access the buy menu</text>
 	</string>
 	<string id="mp_press_yes2pay">
 		<text>You have %d$. You can respawn for %d$. Click Yes to pay.</text>
@@ -157,7 +157,7 @@
 		<text>Quick restart</text>
 	</string>
 	<string id="mp_scores">
-		<text>scored points</text>
+		<text>scored a point</text>
 	</string>
 	<string id="mp_select_ban">
 		<text>Select player to ban by voting</text>
@@ -172,7 +172,7 @@
 		<text>Select player to kick out by voting</text>
 	</string>
 	<string id="mp_select_map">
-		<text>Select map to vote on</text>
+		<text>Select map to vote for</text>
 	</string>
 	<string id="mp_skin_selection">
 		<text>Skin selection</text>
@@ -187,7 +187,7 @@
 		<text>status</text>
 	</string>
 	<string id="mp_switched_to">
-		<text>switched to</text>
+		<text>has switched to</text>
 	</string>
 	<string id="mp_team_free_stalkers">
 		<text>Freedom</text>
@@ -220,16 +220,16 @@
 		<text>voted</text>
 	</string>
 	<string id="mp_voted_no">
-		<text>No</text>
+		<text>against</text>
 	</string>
 	<string id="mp_voted_yes">
-		<text>Yes</text>
+		<text>for</text>
 	</string>
 	<string id="mp_voting_broken">
 		<text>Voting cancelled by the server!</text>
 	</string>
 	<string id="mp_voting_started">
-		<text>Voting '%s' was started on %s.</text>
+		<text>Voting '%s' was started by %s.</text>
 	</string>
 	<string id="mp_voting_started_msg">
 		<text>Voting has started!</text>
@@ -274,9 +274,9 @@
 		<text>Ally</text>
 	</string>
 	<string id="team_base_1">
-		<text>Base of Freedom</text>
+		<text>Freedom's base</text>
 	</string>
 	<string id="team_base_2">
-		<text>Base of Mercs</text>
+		<text>Mercs' base</text>
 	</string>
 </string_table>

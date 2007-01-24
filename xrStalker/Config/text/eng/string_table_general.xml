@@ -1,20 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-	<string id="Btn_Cancel">
-		<text>Cancel</text>
-	</string>
-	<string id="Btn_No">
-		<text>No</text>
-	</string>
-	<string id="Btn_OK">
-		<text>OK</text>
-	</string>
-	<string id="Btn_Yes">
-		<text>Yes</text>
-	</string>
-	<string id="Found_PDA">
-		<text>Found PDA</text>
-	</string>
 	<string id="actor">
 		<text>Loner</text>
 	</string>
@@ -51,14 +36,14 @@
 	<string id="experienced">
 		<text>experienced</text>
 	</string>
+	<string id="Found_PDA">
+		<text>Found PDA</text>
+	</string>
 	<string id="freedom">
 		<text>Freedom</text>
 	</string>
 	<string id="friendly">
 		<text>friend</text>
-	</string>
-	<string id="global_map">
-		<text>Map of the Zone</text>
 	</string>
 	<string id="good">
 		<text>good</text>
@@ -120,26 +105,8 @@
 	<string id="novice">
 		<text>rookie</text>
 	</string>
-	<string id="st_autosave">
-		<text>Autosave</text>
-	</string>
-	<string id="st_game_over">
-		<text>Game over.</text>
-	</string>
-	<string id="st_item_used">
-		<text>Used</text>
-	</string>
 	<string id="st_no_active_task">
 		<text>No active task</text>
-	</string>
-	<string id="st_not_enough_money">
-		<text>Not enough money</text>
-	</string>
-	<string id="st_not_enough_money_npc">
-		<text>the NPC does not have enough money</text>
-	</string>
-	<string id="st_search_treasure">
-		<text>Обыскать тайник ($$ACTION_USE$$)</text>
 	</string>
 	<string id="st_time_till_surge">
 		<text>Time until blowout</text>
@@ -155,9 +122,6 @@
 	</string>
 	<string id="ui_st_community">
 		<text>grouping</text>
-	</string>
-	<string id="ui_st_opponent_items">
-		<text>Opponent's backpack</text>
 	</string>
 	<string id="ui_st_price">
 		<text>Price</text>
@@ -183,33 +147,66 @@
 	<string id="zombied">
 		<text>Zombified</text>
 	</string>
-
+	<string id="Btn_Cancel">
+		<text>Cancel</text>
+	</string>
+	<string id="Btn_No">
+		<text>No</text>
+	</string>
+	<string id="Btn_OK">
+		<text>OK</text>
+	</string>
+	<string id="Btn_Yes">
+		<text>Yes</text>
+	</string>
+	<string id="global_map">
+		<text>Map of the Zone</text>
+	</string>
+	<string id="st_autosave">
+		<text>Autosave</text>
+	</string>
+	<string id="st_game_over">
+		<text>Game over.</text>
+	</string>
+	<string id="st_item_used">
+		<text>Used</text>
+	</string>
+	<string id="st_not_enough_money">
+		<text>Not enough money</text>
+	</string>
+	<string id="st_not_enough_money_npc">
+		<text>the NPC does not have enough money</text>
+	</string>
+	<string id="ui_st_opponent_items">
+		<text>Opponent's backpack</text>
+	</string>
+	<string id="st_search_treasure">
+		<text>Search the stash ($$ACTION_USE$$)</text>
+	</string>
 	<string id="inventory_item_use">
-		<text>Поднять предмет ($$ACTION_USE$$)</text>
+		<text>Pick up item ($$ACTION_USE$$)</text>
 	</string>
 	<string id="ui_mm_check_updates">
-		<text>Проверить обновления</text>
+		<text>Check for updates</text>
 	</string>
 	<string id="ui_mm_alternative">
-		<text>Альтернатива</text>
+		<text>Alternative</text>
 	</string>
-
 	<string id="ui_inv_health">
-		<text>Здоровье</text>
+		<text>Health</text>
 	</string>
 	<string id="ui_inv_radiation">
-		<text>Радиация</text>
+		<text>Radiation</text>
 	</string>
 	<string id="ui_inv_satiety">
-		<text>Сытость</text>
+		<text>Hunger</text>
 	</string>
 	<string id="ui_inv_power">
-		<text>Выносливость</text>
+		<text>Endurance</text>
 	</string>
 	<string id="ui_inv_bleeding">
-		<text>Кровотечение</text>
+		<text>Bleeding</text>
 	</string>
-
 	<string id="st_mp_say_to_all">
 		<text>To all</text>
 	</string>
@@ -217,21 +214,21 @@
 		<text>To team</text>
 	</string>
 	<string id="st_knife">
-		<text>нож</text>
+		<text>Knife</text>
 	</string>
 	<string id="st_mp_disabled_voting">
-		<text>Голосование недоступно на этом сервере.</text>
+		<text>Voting is not available on this server.</text>
 	</string>
 	<string id="st_mp_no_current_voting">
-		<text>Сейчас нет активных голосований.</text>
+		<text>No active votings.</text>
+	</string>
+	<string id="st_mp_ready">
+		<text>ready</text>
 	</string>
 	<string id="st_mp_voting_succeed">
-		<text>Voting succeed!</text>
+		<text>Voting succeeded!</text>
 	</string>
 	<string id="st_mp_voting_failed">
 		<text>Voting failed!</text>
-	</string>
-	<string id="st_mp_ready">
-		<text>готов</text>
 	</string>
 </string_table>

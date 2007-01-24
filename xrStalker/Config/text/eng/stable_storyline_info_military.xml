@@ -1,11 +1,11 @@
 	<string id="mil_actor_main_quest_descr">
 		<text>According to General Voronin, only Freedom has one of these guns. How I get it is my own business. I was told that one way would be to hang out with the Freedom stalker called Chef. The General says he likes his drink more than he should. I should stock up on vodka just in case I can use it.</text>
 	</string>
-	<string id="mil_blockpost_job2_descr">
-		<text>Lukash: "If you have it in you, you can go to the security checkpoint by the exit to Radar - based on some indications they're expecting another attempt at a break in from the mutants or Monolith</text>
-	</string>
 	<string id="mil_blockpost_job_descr">
 		<text>It's imperative to protect the barrier from attack from the direction of the Brain Scorcher.</text>
+	</string>
+	<string id="mil_blockpost_job2_descr">
+		<text>Lukash: "If you have it in you, you can go to the security checkpoint by the exit to Red Forest - based on some indications they're expecting another attempt at a break in from the mutants or Monolith</text>
 	</string>
 	<string id="mil_courier_doc_descr">
 		<text>Freedom has acquired Bulldog 6 grenade launchers. Two of them. One is in the arsenal, the other somewhere in the village.\n\n</text>
@@ -14,7 +14,7 @@
 		<text>Lukash: "Sad but true - we have a snitch among us…His name is Pavlik. He's sending information to the other side, and we need to stop it. Your job is to follow him to the farmstead and find out who he's reporting the information to. He left a while ago, so you'll have to catch up. Remember this: You can and need to finish him off, but not before he reveals the one he's giving the information to. You'll have to eliminate the second dude too."</text>
 	</string>
 	<string id="mil_crazy_flash_info">
-		<text>... today we went to the village again on a hunt. Everything same as always. \n\n 2: Where did that beast come from? Must have sneaked through near Red Forest. All the guys are down, I'm the only one standing… I'll try to sneak out at night… \n\n 3: I don't remember how I got out. It was pure hell... My head is splitting open - pictures, sounds, I don't know where they are coming from. Goddamn radiation. On top of that, the bloody detector is kaputt. I must rest and I'll feel better.</text>
+		<text>... today we went to the village again on a hunt. Everything same as always. \n\n Where did that beast come from? Must have sneaked through near Red Forest. All the guys are down, I'm the only one standing… I'll try to sneak out at night… \n\n I don't remember how I got out. It was pure hell... My head is splitting open - pictures, sounds, I don't know where they are coming from. Goddamn radiation. On top of that, the bloody detector is kaputt. I must rest and I'll feel better.</text>
 	</string>
 	<string id="mil_dolg_kill_lukash_descr">
 		<text>Enter the base with Duty members.\nEliminate three snipers. \nKill Lukash.</text>

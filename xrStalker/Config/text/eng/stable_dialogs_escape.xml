@@ -40,7 +40,7 @@
 		<text>Hello, brother.</text>
 	</string>
 	<string id="esc_provodnik_start_12">
-		<text>Pathfinder, I need to see Doctor.</text>
+		<text>Guide, I need to see Doctor.</text>
 	</string>
 	<string id="esc_provodnik_start_13">
 		<text>Well, look at that. How do you know about Doctor?</text>
@@ -73,7 +73,7 @@
 		<text>What's further up North, beyond the army outpost?</text>
 	</string>
 	<string id="esc_stalker_talk_level_21">
-		<text>The Dump, thatТs what. Now there's a depressing place. So much contaminated shit in some spots that swimming would be easier than walking.</text>
+		<text>The Garbage, thatТs what. Now there's a depressing place. So much contaminated shit in some spots that swimming would be easier than walking.</text>
 	</string>
 	<string id="escape_factory_assault_start_31">
 		<text>Hello, mate. Wolf has already sent word of you. You got any more questions?</text>
@@ -118,7 +118,7 @@
 		<text>What can you tell me about the Zone?</text>
 	</string>
 	<string id="escape_fox_hello_dialog_21111">
-		<text>That's all you wanna know? Take a week off and then come back to see me. Look, my time ain't cheap and I'm kinda busy right now. Here are the basics and then you're on your own.\nAbout three kilometers North of here, you'll find the Dump. That's the place they used to dump all the radioactive waste from the station. High radiation levels, anomalies all over the place, so there are loads of artifacts to be found there... but not very valuable. Just beware of the gangs and don't cross the Duty patrols. West of the Dump is the former Agroprom Research Institute. Little in terms of artifacts there, so you can skip it. And to the East, there's the Dark Valley. Who knows... That's a pretty weird place. It seems quiet enough, apart from a bunch of gangsters roaming around. But I got a feeling there's more to it than meets the eye. Oh, and there's the Rostok factory, right beyond the Dump. That's stalker territory. You'll find lots of clued-up folks there, they'll tell you the rest.</text>
+		<text>That's all you wanna know? Take a week off and then come back to see me. Look, my time ain't cheap and I'm kinda busy right now. Here are the basics and then you're on your own.\nAbout three kilometers North of here, you'll find the Garbage. That's the place they used to dump all the radioactive waste from the station. High radiation levels, anomalies all over the place, so there are loads of artifacts to be found there... but not very valuable. Just beware of the gangs and don't cross the Duty patrols. West of the Garbage is the former Agroprom Research Institute. Little in terms of artifacts there, so you can skip it. And to the East, there's the Dark Valley. Who knows... That's a pretty weird place. It seems quiet enough, apart from a bunch of gangsters roaming around. But I got a feeling there's more to it than meets the eye. Oh, and there's the Rostok factory, right beyond the Garbage. That's stalker territory. You'll find lots of clued-up folks there, they'll tell you the rest.</text>
 	</string>
 	<string id="escape_fox_hello_dialog_2113">
 		<text>I've changed my mind. Thanks.</text>
@@ -130,7 +130,7 @@
 		<text>Trader told me you might know something about Strelok.</text>
 	</string>
 	<string id="escape_fox_hello_dialog_311">
-		<text>Why is everyone taking such a keen interest in him lately? OK, I can't say I've known him personally. We did "communicate" though: my guys took some shots at him once. No one got hurt - it was clear his party had been waiting for someone else, so we parted in peace. Cussed each other out across a ravine and went on our separate ways. Seriy, my brother, is now in the hangar at the Dump - I'll dish you his co-ordinates so you two can have a chat. He knows more about Strelok. Be careful at the exit Ц a small gang has settled down in those parts. By the way, I got a few monsters chasing me and it doesn't look like they've given up yet. You mind helping me deal with them? Walk in the park, really.</text>
+		<text>Why is everyone taking such a keen interest in him lately? OK, I can't say I've known him personally. We did "communicate" though: my guys took some shots at him once. No one got hurt - it was clear his party had been waiting for someone else, so we parted in peace. Cussed each other out across a ravine and went on our separate ways. Seriy, my brother, is now in the hangar at the Garbage - I'll dish you his co-ordinates so you two can have a chat. He knows more about Strelok. Be careful at the exit Ц a small gang has settled down in those parts. By the way, I got a few monsters chasing me and it doesn't look like they've given up yet. You mind helping me deal with them? Walk in the park, really.</text>
 	</string>
 	<string id="escape_fox_hello_dialog_3111">
 		<text>Thanks for the info, I appreciate it.</text>
@@ -370,7 +370,7 @@
 		<text>Thanks, brother! You did us a great service! I don't even know how to thank you...</text>
 	</string>
 	<string id="escape_shustryi_start_111">
-		<text>Listen, I need that flash drive you were taking to the Trader. Do you have it?</text>
+		<text>Listen, I need that flash drive you were taking to the trader. Do you have it?</text>
 	</string>
 	<string id="escape_shustryi_start_1111">
 		<text>Yeah, I got it... Those morons can't even do a proper search. Well, what the heck, take it! After all, you saved my life. It was well hidden, but these thugs can't frisk for shit.</text>
@@ -520,7 +520,7 @@
 		<text>Greetings, Marked One! Did you manage?</text>
 	</string>
 	<string id="escape_trader_start_dialog_51">
-		<text>I did. Here's the artifact.</text>
+		<text>«адание выполнил. ¬от артефакт.</text>
 	</string>
 	<string id="escape_trader_start_dialog_511">
 		<text>Great, Marked One. One more little favor and we're even.</text>

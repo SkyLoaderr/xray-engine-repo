@@ -9,38 +9,8 @@
 	<string id="Boar">
 		<text>Boar</text>
 	</string>
-	<string id="Controller">
-		<text>controller</text>
-	</string>
 	<string id="Crow">
 		<text>Crow</text>
-	</string>
-	<string id="Flesh">
-		<text>Flesh</text>
-	</string>
-	<string id="General">
-		<text>General information</text>
-	</string>
-	<string id="Mutants">
-		<text>Animals and mutants</text>
-	</string>
-	<string id="Poltergeist">
-		<text>Poltergeist</text>
-	</string>
-	<string id="Pseudodog">
-		<text>Pseudodog</text>
-	</string>
-	<string id="Pseudogiant">
-		<text>Pseudogiant</text>
-	</string>
-	<string id="Snork">
-		<text>Snork</text>
-	</string>
-	<string id="Tushkano">
-		<text>Rodent</text>
-	</string>
-	<string id="Zombie">
-		<text>Zombie</text>
 	</string>
 	<string id="enc_mutant_blind_general">
 		<text>Several generations of the dog species have lived and died since the catastrophe. Each was more affected by the Zone than the previous one. Rapid mutation lead to a vast improvement in previously peripheral abilities, frequently at the expense of primary ones. The most notable biological change was the loss of sight, paired with an uncanny development of smell. As it turned out, blind cubs survived in the Zone as well as normal ones, if not better. As a result, the common dog quickly became extinct in the Zone, giving way to a new breed - that of blind dogs. The animals instinctively identify and avoid anomalies, radiation, and other invisible dangers that plague the Zone. Like their wild ancestors - the wolves - blind dogs hunt in packs. An encounter with a large group of these animals can be dangerous even to an experiences and well-armed stalker.</text>
@@ -50,9 +20,6 @@
 	</string>
 	<string id="enc_mutant_boar_general">
 		<text>A massive, mutated animal, reaching 1.5 meters at the shoulder. The Zone boar's aggressiveness and ability to survive surpass by far those of its relatives outside the contaminated area. Radiation and anomalies left their mark on the physical appearance of the animal as well: its fur is entirely gone in some places, and long and bristly in others. The hooves have evolved into sturdy, sharp claws, the pupils became colorless, and the boar's bald head is marred by pigmentation disorders and deep wrinkles. Zone boars are quite resistant to radiation and can stay in heavily contaminated areas for longer periods of time. They usually charge at their victims, trying to knock them over and then rip them to shreds.</text>
-	</string>
-	<string id="enc_mutant_controller_general">
-		<text>A rare mutant seen near to the center of the Zone. Bears a superficial resemblance of a humanoid with disproportionately big head. Possesses a good perception, and an ability to control the behavior of less developed creatures. Mature specimen are capable of taking control over human's head. This is a ferocious enemy, and even the most experienced stalkers are afraid of meeting it.</text>
 	</string>
 	<string id="enc_mutant_crow_general">
 		<text>The only bird species to have survived in the Zone, enduring increased radiation levels and effectively avoiding anomalies. While the army pilots need to rely on complex detectors to avoid gravitational disturbances, the crow seems to rely on its own senses for that - a mystery that drives ornithologists and biologists mad. Various theories attempting to explain the phenomenon exist, all of them pointing to a highly specialized development of the bird's brain.</text>
@@ -77,6 +44,12 @@
 	</string>
 	<string id="enc_mutant_zombie_general">
 		<text>The Brain Scorcher strips its victim of mind and reason, leaving only an empty, mindless shell. The brainless bodies then turn into zombies, following only the most basic instincts, wandering aimlessly around the Zone without weapons or clothing. Zombies are little more than sluggish walking corpses, caring only about food and sleep. They eat and drink just about anything they can get their claws on, hence they are virtually soaked in radiation and toxic waste. Usually they roam the Zone without any apparent purpose or just lie corpse-like in abandoned buildings. However, as soon as they sense the presence of a human being, they attack immediately. Experienced stalkers have learned to avoid them if they can.</text>
+	</string>
+	<string id="Flesh">
+		<text>Flesh</text>
+	</string>
+	<string id="General">
+		<text>General information</text>
 	</string>
 	<string id="mutant_boar_leg">
 		<text>Boar's hoof</text>
@@ -113,5 +86,32 @@
 	</string>
 	<string id="mutant_snork_leg_description">
 		<text>Snork feet contain a huge number of highly elastic tendons. This explains the beast's ability to make those unbelievably long jumps.</text>
+	</string>
+	<string id="Mutants">
+		<text>Animals and mutants</text>
+	</string>
+	<string id="Poltergeist">
+		<text>Poltergeist</text>
+	</string>
+	<string id="Pseudodog">
+		<text>Pseudodog</text>
+	</string>
+	<string id="Pseudogiant">
+		<text>Pseudogiant</text>
+	</string>
+	<string id="Snork">
+		<text>Snork</text>
+	</string>
+	<string id="Tushkano">
+		<text>Rodent</text>
+	</string>
+	<string id="Zombie">
+		<text>Zombie</text>
+	</string>
+	<string id="Controller">
+		<text>controller</text>
+	</string>
+	<string id="enc_mutant_controller_general">
+		<text>A rare mutant seen near to the center of the Zone. Bears a superficial resemblance of a humanoid with disproportionately big head. Possesses a good perception, and an ability to control the behavior of less developed creatures. Mature specimen are capable of taking control over human's head. This is a ferocious enemy, and even the most experienced stalkers are afraid of meeting it.</text>
 	</string>
 </string_table>

@@ -1,6 +1,3 @@
-	<string id="ghost_tips">
-		<text>Strelok I have sad news. Fang died. Couldn't meet you. Too bad you went to the center on your own. Though it was your choice. I know where to search for you, and whom to ask. Ghost.</text>
-	</string>
 	<string id="tips_agr_krot_sos">
 		<text>Help! If anyone can hear me! The military got us pinned at the factory!</text>
 	</string>
@@ -21,4 +18,7 @@
 	</string>
 	<string id="tips_captain_name">
 		<text>Captain Maximenko</text>
+	</string>
+	<string id="ghost_tips">
+		<text>Strelok, I have sad news. Fang died. Couldn't meet you. Too bad you went to the center on your own. Though it was your choice. I know where to search for you, and whom to ask. Ghost.</text>
 	</string>

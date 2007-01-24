@@ -7,7 +7,7 @@
 		<text>Are you alright?</text>
 	</string>
 	<string id="actor_help_wounded_1">
-		<text>I'm hurt goddammit, can't you see that yourself? I need a medkit or at least a bandage.</text>
+		<text>I'm hurt damn it, don't you see that? I need a medkit or at least a bandage.</text>
 	</string>
 	<string id="actor_help_wounded_11">
 		<text>Here, take this medkit.</text>
@@ -22,18 +22,18 @@
 		<text>Sorry, I don't have any.</text>
 	</string>
 	<string id="actor_help_wounded_131">
-		<text>So how do you go around the Zone then? What if you're wounded? You won't even be able to heal yourself!</text>
+		<text>So how do you go around the Zone then? What if you're infected or something? You won't even be able to cure yourself!</text>
 	</string>
 	<string id="actor_help_wounded_14">
 		<text>Heh, bad luck, man. Sorry but if I give you mine I won't have any left for myself.</text>
 	</string>
 	<string id="actor_help_wounded_141">
-		<text>It's your business, mate, but it doesn't do you any credit.</text>
+		<text>It's your business, dude, but it doesn't do you any credit.</text>
 	</string>
 	<string id="hello_dialog_2">
 		<text>Hey!</text>
 	</string>
 	<string id="hello_dialog_3">
-		<text>Help me out mate, would you?</text>
+		<text>Help me out dude, would you?</text>
 	</string>
 </string_table>

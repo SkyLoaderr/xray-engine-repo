@@ -76,7 +76,7 @@
 		<text>Go on.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_21111">
-		<text>If you, together with our associate, take all the necessary measurements, I will prepare a fully workable prototype of the armor and will give it to you. It will most likely let you get inside the laboratory.</text>
+		<text>We have been studying the emission in Lab X16 for a long time, but you won't get in there without special equipment. We've developed a psi-protection device that can help shield you from the emission, but needs some fine-tuning. If you could help us with that, I could give you a working prototype that you can use to get inside the laboratory.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_21112">
 		<text>OK, I agree.</text>
@@ -238,7 +238,7 @@
 		<text>Then get them, and quick! I cannot calibrate the prototype properly without them.</text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_91">
-		<text>Here is the prototype. If the measurements are correct, it will provide effective protection for you against the radiation.</text>
+		<text>You did an excellent job. If the measurements are correct, the prototype should provide you with maximum protection from emission. </text>
 	</string>
 	<string id="yantar_general_ucheniy_talk_start_911">
 		<text>Can you be a little clearer?</text>
@@ -277,7 +277,7 @@
 		<text>Yeah.</text>
 	</string>
 	<string id="yantar_help_scientist_111111">
-		<text>You know what... Why don't you go first. You've got a whole lot of experience, unlike me. And those corpses are starting to move again…</text>
+		<text>You know what... Why don't you go first. You've got a whole lot of experience, unlike me. And those cadavers are starting to move again…</text>
 	</string>
 	<string id="yantar_help_scientist_1111111">
 		<text>OK.</text>

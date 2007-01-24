@@ -1,15 +1,6 @@
 	<string id="bar_darklab_documents">
 		<text>Find the documents in the underground lab</text>
 	</string>
-	<string id="bar_darklab_documents2">
-		<text>Find the documents in X18</text>
-	</string>
-	<string id="bar_darklab_documents2_1">
-		<text>Find the documents</text>
-	</string>
-	<string id="bar_darklab_documents2_2">
-		<text>Bring the documents to the Barkeep</text>
-	</string>
 	<string id="bar_darklab_documents_1">
 		<text>Take the key to the lab from Borov</text>
 	</string>
@@ -21,6 +12,15 @@
 	</string>
 	<string id="bar_darklab_documents_4">
 		<text>Sneak into the base</text>
+	</string>
+	<string id="bar_darklab_documents2">
+		<text>Find the documents in X18</text>
+	</string>
+	<string id="bar_darklab_documents2_1">
+		<text>Find the documents</text>
+	</string>
+	<string id="bar_darklab_documents2_2">
+		<text>Bring the documents to the Barkeep</text>
 	</string>
 	<string id="dar_codedoor_1">
 		<text>Find the codelocked door</text>

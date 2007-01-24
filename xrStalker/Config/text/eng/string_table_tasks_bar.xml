@@ -1,6 +1,3 @@
-	<string id="Kruglov_research">
-		<text>Kruglov's research</text>
-	</string>
 	<string id="bar_bring_hunter_rifle">
 		<text>Return the hunter's family rifle</text>
 	</string>
@@ -83,7 +80,7 @@
 		<text>Destroy the mad veterans' camp</text>
 	</string>
 	<string id="bar_radar_deactivate">
-		<text>Отключить Выжигатель Мозгов</text>
+		<text>Turn off the Brain Scorcher</text>
 	</string>
 	<string id="bar_resque_information">
 		<text>Meet Kruglov</text>
@@ -107,25 +104,28 @@
 		<text>Talk to professor Kruglov</text>
 	</string>
 	<string id="bar_x16_documents">
-		<text>Найти документы в лаборатории X16</text>
+		<text>Find the documents in X16 lab</text>
 	</string>
 	<string id="bring_x16_documents">
 		<text>Bring the documents to the Barkeep</text>
 	</string>
 	<string id="deactivate_radar_now">
-		<text>Отключить установку</text>
+		<text>Deactivate the machine</text>
 	</string>
 	<string id="find_and_deactivate_radar">
-		<text>Найти вход в бункер управления</text>
+		<text>Find the entrance to the control bunker</text>
 	</string>
 	<string id="get_to_antennas">
 		<text>Reach the antennae</text>
+	</string>
+	<string id="Kruglov_research">
+		<text>Kruglov's research</text>
 	</string>
 	<string id="look_for_x16_lab">
 		<text>Find the X16 documents</text>
 	</string>
 	<string id="wpn-winchester_m1">
-		<text>Combat Winchester</text>
+		<text>Combat Chaser</text>
 	</string>
 	<string id="x16_yantar">
 		<text>Talk to the scientists</text>

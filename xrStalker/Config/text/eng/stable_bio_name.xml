@@ -1,6 +1,3 @@
-	<string id="actor_name">
-		<text>Marked One</text>
-	</string>
 	<string id="aes_Monolit_master_bio">
 		<text>Sentinel of the Monolith grouping. Better stay away from him. No details available.</text>
 	</string>
@@ -49,17 +46,17 @@
 	<string id="bar_arny_name">
 		<text>Arnie</text>
 	</string>
-	<string id="bar_bar_guard2_bio">
-		<text>Garik's twin brother. Bouncer at the bar. As close-mouthed as his brother.</text>
-	</string>
-	<string id="bar_bar_guard2_name">
-		<text>Zhorik</text>
-	</string>
 	<string id="bar_bar_guard_bio">
 		<text>Bouncer at the bar. Or the Barkeep's bodyguard if you wish. Nothing is known about his present or his past.</text>
 	</string>
 	<string id="bar_bar_guard_name">
 		<text>Garik</text>
+	</string>
+	<string id="bar_bar_guard2_bio">
+		<text>Garik's twin brother. Bouncer at the bar. As close-mouthed as his brother.</text>
+	</string>
+	<string id="bar_bar_guard2_name">
+		<text>Zhorik</text>
 	</string>
 	<string id="bar_barmen_bio">
 		<text>Neither a saint, nor a scoundrel. The Barkeep knows his worth and is respected by all stalkers. Rumor has it he is hiding in the Zone from some dark events in his past. After an encounter with the anomaly, he started limping slightly and decided to change jobs. He set up a bar by the Duty faction, and the place gradually turned into the meeting point for all the Zone's veterans. The Barkeep has numerous connections both in the Zone and in the outside world.</text>
@@ -218,7 +215,7 @@
 		<text>A living legend of sorts. They say he can take you to absolutely any place in the Zone. His services are costly and not available to just anyone. If he doesn't like you, he won't take you for all the money in the world. A veteran, has been through the length and breadth of the Zone.</text>
 	</string>
 	<string id="esc_provodnik_name">
-		<text>Pathfinder</text>
+		<text>Guide</text>
 	</string>
 	<string id="esc_sergant_regular_bio">
 		<text>Regular sergeant in the Ukrainian Army. No details available.</text>
@@ -322,6 +319,12 @@
 	<string id="mil_Killer_informator_name">
 		<text>Ara</text>
 	</string>
+	<string id="mil_killer_master_bio">
+		<text>Unknown mercenary. Well armed and highly dangerous. No details available.</text>
+	</string>
+	<string id="mil_killer_sniper_bio">
+		<text>Unknown mercenary. Apparently new to the Zone. No details available.</text>
+	</string>
 	<string id="mil_Killer_specnaz_bio">
 		<text>Unknown mercenary. Possibly well armed. No details available.</text>
 	</string>
@@ -364,6 +367,9 @@
 	<string id="mil_Svoboda_leader_name">
 		<text>Lukash</text>
 	</string>
+	<string id="mil_Svoboda_master_bio">
+		<text>Commander of the Freedom faction. No details available.</text>
+	</string>
 	<string id="mil_Svoboda_master_Max_bio">
 		<text>Guard from the Freedom faction. A fanatic. Very well equipped and highly dangerous. No details available.</text>
 	</string>
@@ -375,9 +381,6 @@
 	</string>
 	<string id="mil_Svoboda_master_Ugrumiy_name">
 		<text>Murk</text>
-	</string>
-	<string id="mil_Svoboda_master_bio">
-		<text>Commander of the Freedom faction. No details available.</text>
 	</string>
 	<string id="mil_Svoboda_regular_bio">
 		<text>Stalker from the Freedom faction. No details available.</text>
@@ -408,12 +411,6 @@
 	</string>
 	<string id="mil_Svoboda_zoneguard_bio">
 		<text>Militant from the Freedom faction. Usually well equipped. No details available.</text>
-	</string>
-	<string id="mil_killer_master_bio">
-		<text>Unknown mercenary. Well armed and highly dangerous. No details available.</text>
-	</string>
-	<string id="mil_killer_sniper_bio">
-		<text>Unknown mercenary. Apparently new to the Zone. No details available.</text>
 	</string>
 	<string id="pri_followers_bomber_name">
 		<text>Sasha Bely</text>
@@ -520,6 +517,12 @@
 	<string id="ros_volkodav_name">
 		<text>Wolfhound</text>
 	</string>
+	<string id="sar_monolith_bio">
+		<text>Stalker from the Monolith grouping. No details available.</text>
+	</string>
+	<string id="sar_monolith_cristall_bio">
+		<text>Stalker from the Monolith's special group "Crystal", responsible for the safety of the Monolith itself.</text>
+	</string>
 	<string id="sar2_arena_manager_name">
 		<text>Arnie</text>
 	</string>
@@ -569,7 +572,7 @@
 		<text>Charon</text>
 	</string>
 	<string id="sar2_hellcar_name">
-		<text>Beast</text>
+		<text>Bes</text>
 	</string>
 	<string id="sar2_informator_name">
 		<text>Ara</text>
@@ -646,33 +649,6 @@
 	<string id="sar2_wolf_name">
 		<text>"Wolf"</text>
 	</string>
-	<string id="sar_monolith_bio">
-		<text>Stalker from the Monolith grouping. No details available.</text>
-	</string>
-	<string id="sar_monolith_cristall_bio">
-		<text>Stalker from the Monolith's special group "Crystal", responsible for the safety of the Monolith itself.</text>
-	</string>
-	<string id="sim_Soldier_master_bio">
-		<text>Military stalker. Well armed and highly dangerous. No details available.</text>
-	</string>
-	<string id="sim_Svoboda_master_bio">
-		<text>Master of the Freedom faction. No details available.</text>
-	</string>
-	<string id="sim_Svoboda_regular_bio">
-		<text>Stalker from the Freedom faction. No details available.</text>
-	</string>
-	<string id="sim_Svoboda_sniper_bio">
-		<text>Stalker from the Freedom faction. No details available.</text>
-	</string>
-	<string id="sim_Svoboda_specnaz_bio">
-		<text>Militant from the Freedom faction. Usually well equipped. No details available.</text>
-	</string>
-	<string id="sim_Svoboda_specnaz_leshii_bio">
-		<text>Goblin, as his brother calls him, came to the Zone a young idealist, but a few years of living a hair’s breadth away from death turned him into a cynical realist. Considers the Zone his home, and those who failed, unworthy to walk the face of the Earth.</text>
-	</string>
-	<string id="sim_Svoboda_specnaz_leshii_name">
-		<text>Leshiy</text>
-	</string>
 	<string id="sim_bandit_general_bio">
 		<text>Unknown stalker. Unsavory reputation. No details available.</text>
 	</string>
@@ -680,16 +656,10 @@
 		<text>Unknown stalker. Unsavory reputation. No details available.</text>
 	</string>
 	<string id="sim_bandit_master_fraer_bio">
-		<text>Came to the Zone looking for adventure. Imitates the characters from popular comics of the 60s. Uses different names: Batman, Macho, the Black Coat, Banderas. Even though he has survived in the Zone for two whole years, no one really takes him seriously, which constantly drives him mad.</text>
-	</string>
-	<string id="sim_bandit_master_fraer_name">
-		<text>Friar</text>
+		<text>Came to the Zone looking for adventure. Imitates the characters from popular comics of the 60s. Uses different names: Badman, Macho, the Black Coat, Banderos. Even though he has survived in the Zone for two whole years, no one really takes him seriously, which constantly drives him mad.</text>
 	</string>
 	<string id="sim_bandit_master_kocherga_bio">
 		<text>Fierce, wicked, crude, selfish, cruel, insensitive, cold. Nobody knows when and how he got to the Zone. Everyone fears him and he has no friends. He simply lives in the Zone, with no future and no past. After one of his numerous forays into the Zone, he lost his memory, forgotting nearly everything. He doesn’t remember where he comes from, doesn’t remember his real name, suffers from frequent lapses of memory. Known to completely forget his new acquaintance within an hour, take him for an enemy and kill him.</text>
-	</string>
-	<string id="sim_bandit_master_kocherga_name">
-		<text>Poker</text>
 	</string>
 	<string id="sim_bandit_novice_bio">
 		<text>Unknown stalker. Unsavory reputation. No details available.</text>
@@ -709,23 +679,14 @@
 	<string id="sim_dolg_veteran_barin_bio">
 		<text>Cad, a bootlicker, a hypocrite and a coward. Barin’s motto could well be "After us, the Deluge". Takes advantage of any situation. Extremely ambitious and touchy. He came to the Zone, unsurprisingy, for money. For two years now has been procuring material assets by all possible means.</text>
 	</string>
-	<string id="sim_dolg_veteran_barin_name">
-		<text>Barin</text>
-	</string>
 	<string id="sim_dolg_veteran_bio">
 		<text>Militant from the Duty faction. Usually well equipped. No details available.</text>
 	</string>
 	<string id="sim_dolg_veteran_prapor_bio">
 		<text>Official recruiter for the Ukrainian Security Service. A frequent visitor of the bar. Everyone knows who he is, as well as the fact that he is the man to turn to when you fall on hard times. However, once you make cross this line, there is no way back in the ranks of the honest stalkers.</text>
 	</string>
-	<string id="sim_dolg_veteran_prapor_name">
-		<text>Warrant officer</text>
-	</string>
 	<string id="sim_ecolog_zob_bio">
 		<text>In everyday life a phlegmatic who keeps his emotions to himself and always stays cool. However, when under stress, he gets peppery and aggressive. Highly intellectual. A materialist regretting he had come to the Zone in the first place. After graduating from the medical university, was sent into the Zone where the scientists’ camp needed a neurosurgeon assistant. Dissects mutant brains and researches their psychokinetic properties. Looking forward to his retirement when he can move back to the capital, as far as possible from this rotten place.</text>
-	</string>
-	<string id="sim_ecolog_zob_name">
-		<text>Crop</text>
 	</string>
 	<string id="sim_fresh_Zombied_bio">
 		<text>One of the stalkers who ran out of luck.</text>
@@ -757,6 +718,9 @@
 	<string id="sim_soldier_commander_bio">
 		<text>No details available.</text>
 	</string>
+	<string id="sim_Soldier_master_bio">
+		<text>Military stalker. Well armed and highly dangerous. No details available.</text>
+	</string>
 	<string id="sim_soldier_regular_bio">
 		<text>Regular soldier. No details available.</text>
 	</string>
@@ -772,44 +736,26 @@
 	<string id="sim_stalker_general_upir_bio">
 		<text>Stalker born under a lucky star. Many times, the teams he was with would end up in tight spots, every time he was the only survivor. Most stalkers stay away from him, on account of the bad luck he is said to bring. Has been roaming the Zone on his own for quite some time now.</text>
 	</string>
-	<string id="sim_stalker_general_upir_name">
-		<text>Vampire</text>
-	</string>
 	<string id="sim_stalker_master_bio">
 		<text>One of the veterans. Knows the Zone like the back of his hand. Usually well equipped and highly dangerous. No details available.</text>
 	</string>
 	<string id="sim_stalker_master_chuchelo_bio">
 		<text>Experienced smuggler. For a long time, plied his trade in Africa and South America. The news of the Chernobyl disaster brought him to Ukraine. In a short while, he managed to smuggle hundreds of stuffed mutants out of the restricted area and earned the nickname "Taxidermist". When not "working" in the Zone, he is a successful trader. Loves Armani suits and Versace ties, but prefers Soviet guns.</text>
 	</string>
-	<string id="sim_stalker_master_chuchelo_name">
-		<text>Scarecriw</text>
-	</string>
 	<string id="sim_stalker_master_diador_bio">
 		<text>Took part in the war in Afghanistan. Formerly an atheist, after surviving a Mujahideen ambush he emerged a religious man. After the war in Afghanistan he emigrated to Poland where he enrolled into a theological seminary. Having graduated from the seminary, for a while preached at the Catholic church in Lvov. After the explosion at the Chernobyl NPP volunteered to help the victims. In the last few years has been preaching in the Zone.</text>
-	</string>
-	<string id="sim_stalker_master_diador_name">
-		<text>Father Diodor</text>
 	</string>
 	<string id="sim_stalker_master_master_bio">
 		<text>Formerly a mechanic at the "KholodMach" plant. After his wife left him, decided to take his own life. However, being deeply religious, he chose the Zone as an unconventional suicide method. Contrary to his expectations he survived, gained invaluable experience and has won the respect of other stalkers thanks to his professional skills. Master is probably the most qualified mechanic in the Zone. Repairing equipment and vehicles, installing security systems in gang bunkers is what he does best. He is welcome everywhere he goes. A simple, stern man, a bit rough at times.</text>
 	</string>
-	<string id="sim_stalker_master_master_name">
-		<text>Master</text>
-	</string>
 	<string id="sim_stalker_master_polkan_bio">
 		<text>Former military stalker, lieutenant colonel in the Ministry of Interior troops. The only soldier to return from a disastrous operation deep in the Zone, later discovered that the mission was pointless and suicidal to begin with. That’s when he decided not to come back, staged his own death and joined the stalkers. Quiet, cynical, firm of purpose.</text>
-	</string>
-	<string id="sim_stalker_master_polkan_name">
-		<text>Polkan</text>
 	</string>
 	<string id="sim_stalker_novice_bio">
 		<text>Rookie. New to the Zone. No details available.</text>
 	</string>
 	<string id="sim_stalker_novice_neumeha_bio">
 		<text>Klutz is 20 years old. He lost everything and everyone in the Big Land before deciding to come here. He barely makes a living in the Zone, but he simply has no other place to go to. Owes money to many stalkers. Frequents the Zone, but never goes there alone, always trying to hang on to a group of experienced stalkers. Not a popular companion, as more often than not, he's plain useless. Hardly makes any money. Lives on doles from other stalkers and is deep in debt.</text>
-	</string>
-	<string id="sim_stalker_novice_neumeha_name">
-		<text>Clumsy</text>
 	</string>
 	<string id="sim_stalker_sniper_bio">
 		<text>Veteran stalker. Possibly well equipped. No details available.</text>
@@ -820,26 +766,29 @@
 	<string id="sim_stalker_veteran_gusarov_bio">
 		<text>Oleg "the Fiend" Gusarov. A former "black beret", served in the Belotserkovskaya Spetsnaz brigade. Served multiple tours, became a master sergeant. A sniper and a bomb technician. A loner at heart, never ventures into the Zone in a group, preferring to act alone. Offered the possibility to join one of the clans numerous times, but always refused for this very reason.</text>
 	</string>
-	<string id="sim_stalker_veteran_gusarov_name">
-		<text>Oleg "Fiend" Gusarov</text>
-	</string>
 	<string id="sim_stalker_veteran_umnik_bio">
 		<text>A student from the department of physics who dropped out in his senior year and made for the Zone in search of easy money. Likes to show off his "scientific" knowledge and discourse on abstract philosophical issues. That's reason enough for other stalkers not to like him. Overall, apretty decent fellow. A kind of idealist.</text>
-	</string>
-	<string id="sim_stalker_veteran_umnik_name">
-		<text>Smartass</text>
 	</string>
 	<string id="sim_stalker_veteran_vorobey_bio">
 		<text>Sparrow is 27 years old, cunning, and farseeing, but also capable of the worst blunders. Can be mean. A rather dubious persona all in all. A scrawny and pallid type. Came to the Zone out of curiosity, promising himself he would return home after two months. He never did. On his very first sally into the Zone Sparrow managed to cross a field strewn with anomalies barehanded and without a clue about the danger he was in. As soon as he found out what he had done, he passed out. Since then celebrates that date (October 9) as his second birthday.</text>
 	</string>
-	<string id="sim_stalker_veteran_vorobey_name">
-		<text>Sparrow</text>
+	<string id="sim_Svoboda_master_bio">
+		<text>Master of the Freedom faction. No details available.</text>
+	</string>
+	<string id="sim_Svoboda_regular_bio">
+		<text>Stalker from the Freedom faction. No details available.</text>
+	</string>
+	<string id="sim_Svoboda_sniper_bio">
+		<text>Stalker from the Freedom faction. No details available.</text>
+	</string>
+	<string id="sim_Svoboda_specnaz_bio">
+		<text>Militant from the Freedom faction. Usually well equipped. No details available.</text>
+	</string>
+	<string id="sim_Svoboda_specnaz_leshii_bio">
+		<text>Leshiy, as his brother calls him, came to the Zone a young idealist, but a few years of living a hair’s breadth away from death turned him into a cynical realist. Considers the Zone his home, and those who failed, unworthy to walk the face of the Earth.</text>
 	</string>
 	<string id="sim_svoboda_specnaz_prut_bio">
 		<text>Writes sketches and stories about the Zone under the name of Arkady. Former journalist. Meticulous and harsh, but fair. Widely respected by the stalkers.</text>
-	</string>
-	<string id="sim_svoboda_specnaz_prut_name">
-		<text>Twig</text>
 	</string>
 	<string id="sim_zombied_master_bio">
 		<text>One of the stalkers who ran out of luck.</text>
@@ -918,4 +867,55 @@
 	</string>
 	<string id="zombie_name">
 		<text>Zombified stalker</text>
+	</string>
+	<string id="actor_name">
+		<text>Marked One</text>
+	</string>
+	<string id="sim_bandit_master_fraer_name">
+		<text>Friar</text>
+	</string>
+	<string id="sim_bandit_master_kocherga_name">
+		<text>Poker</text>
+	</string>
+	<string id="sim_dolg_veteran_barin_name">
+		<text>Barin</text>
+	</string>
+	<string id="sim_dolg_veteran_prapor_name">
+		<text>Warrant officer</text>
+	</string>
+	<string id="sim_ecolog_zob_name">
+		<text>Crop</text>
+	</string>
+	<string id="sim_stalker_general_upir_name">
+		<text>Vampire</text>
+	</string>
+	<string id="sim_stalker_master_chuchelo_name">
+		<text>Scarecrow</text>
+	</string>
+	<string id="sim_stalker_master_diador_name">
+		<text>Father Diodor</text>
+	</string>
+	<string id="sim_stalker_master_master_name">
+		<text>Master</text>
+	</string>
+	<string id="sim_stalker_master_polkan_name">
+		<text>Polkan</text>
+	</string>
+	<string id="sim_stalker_novice_neumeha_name">
+		<text>Clumsy</text>
+	</string>
+	<string id="sim_stalker_veteran_gusarov_name">
+		<text>Oleg "Fiend" Gusarov</text>
+	</string>
+	<string id="sim_stalker_veteran_umnik_name">
+		<text>Smartass</text>
+	</string>
+	<string id="sim_stalker_veteran_vorobey_name">
+		<text>Sparrow</text>
+	</string>
+	<string id="sim_Svoboda_specnaz_leshii_name">
+		<text>Leshiy</text>
+	</string>
+	<string id="sim_svoboda_specnaz_prut_name">
+		<text>Twig</text>
 	</string>

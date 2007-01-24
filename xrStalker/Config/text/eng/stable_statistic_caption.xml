@@ -11,10 +11,10 @@
 		<text>bandit, master</text>
 	</string>
 	<string id="bloodsucker_normal">
-		<text>underground bloodsucker</text>
+		<text>sub bloodsucker</text>
 	</string>
 	<string id="bloodsucker_strong">
-		<text>black bloodsucker</text>
+		<text>dark bloodsucker</text>
 	</string>
 	<string id="bloodsucker_weak">
 		<text>bloodsucker</text>

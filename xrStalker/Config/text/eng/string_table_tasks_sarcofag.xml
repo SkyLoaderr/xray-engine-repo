@@ -1,5 +1,5 @@
 	<string id="sar_monolith">
-		<text>Grant wishes</text>
+		<text>Wish granter</text>
 	</string>
 	<string id="sar_monolith_0">
 		<text>Get to Monolith</text>
@@ -32,7 +32,7 @@
 		<text>Find the secret lab and meet the "puppeteers".</text>
 	</string>
 	<string id="sar_secret_lab">
-		<text>Секретная лаборатория</text>
+		<text>Secret lab</text>
 	</string>
 	<string id="sar_secret_lab_0">
 		<text>Enter the secret bunker.</text>

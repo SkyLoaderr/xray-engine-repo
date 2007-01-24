@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-	<string id="Global Map">
-		<text>Global map</text>
-	</string>
-	<string id="Local Map">
-		<text>Local map</text>
-	</string>
 	<string id="cant_walk">
 		<text>You're too exhausted to walk</text>
 	</string>
@@ -15,11 +9,17 @@
 	<string id="dar_poltergeist_hold_the_door">
 		<text>Someone is holding the door.</text>
 	</string>
+	<string id="Global Map">
+		<text>Global map</text>
+	</string>
 	<string id="gun_jammed">
 		<text>The weapon has jammed.You need to reload.</text>
 	</string>
 	<string id="inventory_box_use">
 		<text>Search the box ($$ACTION_USE$$)</text>
+	</string>
+	<string id="Local Map">
+		<text>Local map</text>
 	</string>
 	<string id="st_game_saved">
 		<text>game saved</text>

@@ -72,12 +72,6 @@
 	<string id="ui_inv_accuracy">
 		<text>Accuracy</text>
 	</string>
-	<string id="ui_inv_ammo_pistol">
-		<text>Buy basic ammo for pistol (Q)</text>
-	</string>
-	<string id="ui_inv_ammo_rifle">
-		<text>Buy ammo for rifle (W)</text>
-	</string>
 	<string id="ui_inv_bag">
 		<text>Backpack</text>
 	</string>
@@ -105,14 +99,8 @@
 	<string id="ui_inv_exit">
 		<text>Exit</text>
 	</string>
-	<string id="ui_inv_granadelauncher_rifle">
-		<text>Buy grenade launcher for rifle (D)</text>
-	</string>
-	<string id="ui_inv_granades">
-		<text>Grenades</text>
-	</string>
 	<string id="ui_inv_granades_rifle">
-		<text>Buy grenades for launcher (E)</text>
+		<text>Buy grenades for the launcher (E)</text>
 	</string>
 	<string id="ui_inv_handling">
 		<text>Handling</text>
@@ -133,13 +121,13 @@
 		<text>Burn</text>
 	</string>
 	<string id="ui_inv_outfit_chemical_burn_protection">
-		<text>Chem. burn</text>
+		<text>Chemical burn</text>
 	</string>
 	<string id="ui_inv_outfit_explosion_protection">
 		<text>Explosion</text>
 	</string>
 	<string id="ui_inv_outfit_fire_wound_protection">
-		<text>Bulletproof capacity</text>
+		<text>Bulletproof cap</text>
 	</string>
 	<string id="ui_inv_outfit_params">
 		<text>Parameters</text>
@@ -180,20 +168,11 @@
 	<string id="ui_inv_rifles">
 		<text>Assault rifles</text>
 	</string>
-	<string id="ui_inv_scope_rifle">
-		<text>Buy optic scope for rifle (S)</text>
-	</string>
 	<string id="ui_inv_shop">
 		<text>Shop</text>
 	</string>
 	<string id="ui_inv_shotguns">
 		<text>Shotguns</text>
-	</string>
-	<string id="ui_inv_silencer_pistol">
-		<text>Buy silencer for pistol (A)</text>
-	</string>
-	<string id="ui_inv_silencer_rifle">
-		<text>Buy silencer for rifle (F)</text>
 	</string>
 	<string id="ui_inv_sniper_rifles">
 		<text>Sniper</text>
@@ -207,8 +186,29 @@
 	<string id="ui_inv_weight">
 		<text>Weight</text>
 	</string>
+	<string id="ui_inv_ammo_pistol">
+		<text>Buy basic ammo for pistol (Q)</text>
+	</string>
+	<string id="ui_inv_ammo_rifle">
+		<text>Buy ammo for rifle (W)</text>
+	</string>
+	<string id="ui_inv_granadelauncher_rifle">
+		<text>Buy grenade launcher for rifle (D)</text>
+	</string>
+	<string id="ui_inv_granades">
+		<text>Grenades</text>
+	</string>
+	<string id="ui_inv_scope_rifle">
+		<text>Buy optic scope for rifle (S)</text>
+	</string>
+	<string id="ui_inv_silencer_pistol">
+		<text>Buy silencer for pistol (A)</text>
+	</string>
+	<string id="ui_inv_silencer_rifle">
+		<text>Buy silencer for rifle (F)</text>
+	</string>
 	<string id="ui_inv_last_buy">
-		<text>Buy last purchased set</text>
+		<text>Buy previous set</text>
 	</string>
 	<string id="ui_inv_sell_items">
 		<text>Sell all items from backpack</text>

@@ -4,7 +4,7 @@
 		<text>Active tasks in PDA</text>
 	</string>
 	<string id="kb_always_run">
-		<text>Always run</text>
+		<text>Low crouch</text>
 	</string>
 	<string id="kb_artefact">
 		<text>Artifact</text>
@@ -40,16 +40,16 @@
 		<text>Down</text>
 	</string>
 	<string id="kb_drop">
-		<text>Take out</text>
+		<text>Drop</text>
 	</string>
 	<string id="kb_fire">
 		<text>Fire</text>
 	</string>
 	<string id="kb_firemode_next">
-		<text>Next fire mode</text>
+		<text>Next firing mode</text>
 	</string>
 	<string id="kb_firemode_prev">
-		<text>Previous fire mode</text>
+		<text>Previous firing mode</text>
 	</string>
 	<string id="kb_forward">
 		<text>Forward</text>

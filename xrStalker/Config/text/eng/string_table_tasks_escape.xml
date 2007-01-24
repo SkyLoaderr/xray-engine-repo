@@ -118,35 +118,33 @@
 	<string id="tutorial_help_wounded_3">
 		<text>Take the flash drive to the trader</text>
 	</string>
-
 	<string id="esc_trader_job">
-		<text>Работа на торговца</text>
+		<text>Work for the trader</text>
 	</string>
 	<string id="esc_trader_job_text">
-		<text>Получить спецзадание у торговца</text>
+		<text>Get the special task from the trader</text>
 	</string>
 	<string id="bar_barman_job">
-		<text>Работа на бармена</text>
+		<text>Work for Barkeep</text>
 	</string>
 	<string id="bar_barman_job_text">
-		<text>Обратиться к бармену за работой</text>
+		<text>Ask Barkeep for a job</text>
 	</string>
 	<string id="yan_scientist_job">
-		<text>Помощь ученным</text>
+		<text>Help for the scientists</text>
 	</string>
 	<string id="yan_scientist_job_text">
-		<text>Предложить свою помощь ученным</text>
+		<text>Offer help to the scientists</text>
 	</string>
-
 	<string id="find_railroad_passage">
-		<text>Пробраться за железнодорожную насыпь</text>
+		<text>Get to the railroad embankment</text>
 	</string>
 	<string id="find_railroad_passage_1">
-		<text>Встретиться с провожатым</text>
+		<text>Meet the journeyman</text>
 	</string>
 	<string id="find_railroad_passage_2">
-		<text>Пересечь железнодорожную насыпь</text>
+		<text>Traverse the railroad embankment</text>
 	</string>
 	<string id="find_railroad_passage_text">
-		<text>Прежде чем углубиться в Зону, необходимо пересечь старую железнодорожную насыпь. Единственный безопасный проход в ней охраняется военным. Однако есть небольшой туннель слева, новички обычно ходят через него. Там тебя будет ждать один из моих должников.</text>
+		<text>Before deepening into the Zone, it's necessary to traverse the old railroad embankment. The only safe passage there is guarded by the militaries. However, there's a small tunnel to the left, rookies usually go through it. There you'll be awaited by one of my debtors.</text>
 	</string>

@@ -4,7 +4,7 @@
 		<text>This is an ITEM test string</text>
 	</string>
 	<string id="item test2">
-		<text>This is a another ITEM test string</text>
+		<text>This is another ITEM test string</text>
 	</string>
 	<string id="item_case_esc_desc">
 		<text>Fireproof briefcase with documents.</text>

@@ -1,17 +1,8 @@
-	<string id="LabX18 first key">
-		<text>2nd level access code</text>
-	</string>
-	<string id="LabX18 second key">
-		<text>1st level access code</text>
-	</string>
-	<string id="LabX18_information">
-		<text>Information from X18</text>
+	<string id="bar_darklab_documents_txt">
+		<text>Barkeep: "According to the documents you brought from Agroprom, things are starting to clear up, but some data is missing. There is evidence to suggest the presence of a Brain Scorcher which blocks the road to the North, but no one knows exactly what it is. Also, there is mention of Lab X18 whose description matches that of abandoned underground structures in the Dark Valley. Its present activity is unknown and besides, bandits have now set up their base in the Dark Valley.\n Several Duty scouts went there very recently, but so far there is no news from them.\n To get inside the lab, you will need two electronic keys; I will give you one, but the second one you will have to take from Borov, the bandit leader. \n\n So, you need to take the second key to the lab from Borov, then sneak inside the lab and get the documents.</text>
 	</string>
 	<string id="bar_darklab_documents2_txt">
 		<text>It's necessary to find the documents about the researches previously done in lab x-18. They can shed some light on the "Brain Scorcher".</text>
-	</string>
-	<string id="bar_darklab_documents_txt">
-		<text>Barkeep: "According to the documents you brought from Agroprom, things are starting to clear up, but some data is missing. There is evidence to suggest the presence of a Brain Scorcher which blocks the road to the North, but no one knows exactly what it is. Also, there is mention of Lab X18 whose description matches that of abandoned underground structures in the Dark Valley. Its present activity is unknown and besides, bandits have now set up their base in the Dark Valley.\n Several Duty scouts went there very recently, but so far there is no news from them.\n To get inside the lab, you will need two electronic keys; I will give you one, but the second one you will have to take from Borov, the bandit leader. \n\n So, you need to take the second key to the lab from Borov, then sneak inside the lab and get the documents.</text>
 	</string>
 	<string id="dar_codedoor_1_txt">
 		<text>A combination lock is blocking the way into the depths of the lab. You must find someone who knows the combination.</text>
@@ -48,6 +39,15 @@
 	</string>
 	<string id="documents_5">
 		<text>Yesterday we delivered a new modulation of psi-emissions to the test subjects. It appeared as though their brains simply got roasted. I can hardly imagine how this emission would affect humans. We have tested every type of emission and the results match those obtained in other laboratories. The experiment can now be considered complete. Presumably, in one week's time, we will be ready to conduct the experiment on larger creatures.</text>
+	</string>
+	<string id="LabX18 first key">
+		<text>2nd level access code</text>
+	</string>
+	<string id="LabX18 second key">
+		<text>1st level access code</text>
+	</string>
+	<string id="LabX18_information">
+		<text>Information from X18</text>
 	</string>
 	<string id="pass_to_1st_door">
 		<text>Excellent, Colleague. I'm glad that you've received 2nd level access. At last you will find out what goes on in our laboratory. Your access code is 1243. Chief of Laboratory Õ-18, Piotr Ilyitch Kalugin.</text>

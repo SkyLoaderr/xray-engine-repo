@@ -9,9 +9,6 @@
 	<string id="st_drink">
 		<text>drink</text>
 	</string>
-	<string id="st_game_over_press_jump">
-		<text>нажмите ($$ACTION_JUMP$$) для выхода в главное меню</text>
-	</string>
 	<string id="st_mp_direct_ip">
 		<text>Direct IP</text>
 	</string>
@@ -73,7 +70,7 @@
 		<text>The file name is empty</text>
 	</string>
 	<string id="ui_st_hours">
-		<text>hrs</text>
+		<text>hr.</text>
 	</string>
 	<string id="ui_st_leave">
 		<text>Leave</text>
@@ -88,7 +85,7 @@
 		<text>Parameters</text>
 	</string>
 	<string id="ui_st_secs">
-		<text>secs</text>
+		<text>sec.</text>
 	</string>
 	<string id="ui_st_select_one_map">
 		<text>Please select at least one map</text>
@@ -111,8 +108,10 @@
 	<string id="ui_st_your_items">
 		<text>Your items</text>
 	</string>
+	<string id="st_game_over_press_jump">
+		<text>press ($$ACTION_JUMP$$) to exit to main menu</text>
+	</string>
 	<string id="st_level">
 		<text>Level</text>
 	</string>
-
 </string_table>

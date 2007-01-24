@@ -12,6 +12,18 @@
 	<string id="Extreme">
 		<text>maximum</text>
 	</string>
+	<string id="gd_master">
+		<text>master</text>
+	</string>
+	<string id="gd_novice">
+		<text>novice</text>
+	</string>
+	<string id="gd_stalker">
+		<text>stalker</text>
+	</string>
+	<string id="gd_veteran">
+		<text>veteran</text>
+	</string>
 	<string id="High">
 		<text>high</text>
 	</string>
@@ -21,26 +33,14 @@
 	<string id="Minimum">
 		<text>minimum</text>
 	</string>
+	<string id="mm_mp_check_cdkey">
+		<text>check CD-key</text>
+	</string>
 	<string id="Nigth">
 		<text>night</text>
 	</string>
 	<string id="Rain">
 		<text>rainy</text>
-	</string>
-	<string id="gd_master">
-		<text>master</text>
-	</string>
-	<string id="gd_novice">
-		<text>novice</text>
-	</string>
-	<string id="gd_stalker">
-		<text>expert</text>
-	</string>
-	<string id="gd_veteran">
-		<text>veteran</text>
-	</string>
-	<string id="mm_mp_check_cdkey">
-		<text>check CD-key</text>
 	</string>
 	<string id="renderer_r1">
 		<text>Static lighting</text>
@@ -79,7 +79,7 @@
 		<text>"Agroprom" factory</text>
 	</string>
 	<string id="testers_mp_atp">
-		<text>Bus station</text>
+		<text>Vehicle station</text>
 	</string>
 	<string id="testers_mp_darkvalley">
 		<text>Dark Valley</text>
@@ -112,7 +112,7 @@
 		<text>action</text>
 	</string>
 	<string id="ui_mm_advanced">
-		<text>advanced</text>
+		<text>Advanced</text>
 	</string>
 	<string id="ui_mm_anisotropic">
 		<text>Anisotropic filtering</text>
@@ -237,9 +237,6 @@
 	<string id="ui_mm_quality_presets">
 		<text>Quality settings</text>
 	</string>
-	<string id="ui_mm_quit2windows">
-		<text>Exit to Windows</text>
-	</string>
 	<string id="ui_mm_quit_game">
 		<text>Quit game</text>
 	</string>
@@ -248,6 +245,9 @@
 	</string>
 	<string id="ui_mm_quit_windows_message">
 		<text>Are you sure you want to exit to Windows?</text>
+	</string>
+	<string id="ui_mm_quit2windows">
+		<text>Exit to Windows</text>
 	</string>
 	<string id="ui_mm_renderer">
 		<text>Render</text>
@@ -271,7 +271,7 @@
 		<text>Show weapon</text>
 	</string>
 	<string id="ui_mm_simply">
-		<text>basic</text>
+		<text>Basic</text>
 	</string>
 	<string id="ui_mm_sound">
 		<text>Sound</text>
@@ -286,7 +286,7 @@
 		<text>Shadows quality</text>
 	</string>
 	<string id="ui_mm_supersample">
-		<text>Smoothing</text>
+		<text>Antialiasing</text>
 	</string>
 	<string id="ui_mm_switch_torch">
 		<text>AI uses flashlights</text>

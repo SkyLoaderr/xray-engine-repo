@@ -1,6 +1,3 @@
-	<string id="Osoznanie">
-		<text>C-Consciousness representative</text>
-	</string>
 	<string id="lname_bandit_0">
 		<text>Gray</text>
 	</string>
@@ -251,7 +248,7 @@
 		<text>Drip</text>
 	</string>
 	<string id="lname_bandit_173">
-		<text>Goblin</text>
+		<text>Leshiy</text>
 	</string>
 	<string id="lname_bandit_174">
 		<text>Moor</text>
@@ -4610,7 +4607,7 @@
 		<text>Ice</text>
 	</string>
 	<string id="lname_stalker_571">
-		<text>Goblin</text>
+		<text>Leshiy</text>
 	</string>
 	<string id="lname_stalker_572">
 		<text>Moor</text>
@@ -4833,4 +4830,7 @@
 	</string>
 	<string id="lname_stalker_99">
 		<text>Sharp</text>
+	</string>
+	<string id="Osoznanie">
+		<text>C-Consciousness representative</text>
 	</string>

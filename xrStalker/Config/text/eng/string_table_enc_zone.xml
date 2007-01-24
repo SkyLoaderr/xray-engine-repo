@@ -1,98 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-	<string id="Agroprom">
-		<text>Agroprom</text>
-	</string>
-	<string id="Ameba">
-		<text>Witches' Jelly</text>
-	</string>
-	<string id="Anomalies">
-		<text>Anomalies</text>
-	</string>
-	<string id="Artifacts">
-		<text>Artifacts</text>
-	</string>
-	<string id="Bald">
-		<text>Springboard</text>
-	</string>
-	<string id="Bar">
-		<text>Bar</text>
-	</string>
-	<string id="Darkdolina">
-		<text>Dark Valley</text>
-	</string>
-	<string id="Deadcity">
-		<text>Erased</text>
-	</string>
-	<string id="Electra">
-		<text>"Электра"</text>
-	</string>
-	<string id="Escape">
-		<text>Outpost</text>
-	</string>
-	<string id="Fuzz">
-		<text>Burnt Fuzz</text>
-	</string>
-	<string id="Garbage">
-		<text>Garbage</text>
-	</string>
-	<string id="Gravi">
-		<text>Vortex</text>
-	</string>
-	<string id="Lift">
-		<text>Elevator</text>
-	</string>
-	<string id="Locations">
-		<text>Locations</text>
-	</string>
-	<string id="Meat">
-		<text>Whirligig</text>
-	</string>
-	<string id="Military-loc">
-		<text>Army base</text>
-	</string>
-	<string id="Pripiat">
-		<text>Pripyat</text>
-	</string>
-	<string id="Radar">
-		<text>Выжигатель</text>
-	</string>
-	<string id="Radioactive">
-		<text>Source of radioactivity</text>
-	</string>
-	<string id="Rostok">
-		<text>Wild Territory</text>
-	</string>
-	<string id="Stancia">
-		<text>Chernobyl NPP</text>
-	</string>
-	<string id="Story-2006">
-		<text>2008, April 12, 14:33</text>
-	</string>
-	<string id="Story-2008">
-		<text>Year 2010</text>
-	</string>
-	<string id="Story-2010">
-		<text>Year 2011</text>
-	</string>
-	<string id="Story-raid">
-		<text>Army raid into the Zone. 2011</text>
-	</string>
-	<string id="Time_machine">
-		<text>Time Machine</text>
-	</string>
-	<string id="Yantar">
-		<text>Yantar</text>
-	</string>
-	<string id="Zharka">
-		<text>Burner</text>
-	</string>
-	<string id="Zone">
-		<text>The Zone</text>
-	</string>
-	<string id="Zone-story">
-		<text>History of the Zone</text>
-	</string>
 	<string id="af-ameba-mica">
 		<text>Mica</text>
 	</string>
@@ -154,7 +61,7 @@
 		<text>Jellyfish</text>
 	</string>
 	<string id="af-mincer-meat">
-		<text>Mean chunk</text>
+		<text>Meat chunk</text>
 	</string>
 	<string id="af-night-star">
 		<text>Night Star</text>
@@ -174,8 +81,35 @@
 	<string id="af-vyvert">
 		<text>Wrenched</text>
 	</string>
+	<string id="Agroprom">
+		<text>Agroprom</text>
+	</string>
+	<string id="Ameba">
+		<text>Fruit punch</text>
+	</string>
+	<string id="Anomalies">
+		<text>Anomalies</text>
+	</string>
+	<string id="Artifacts">
+		<text>Artifacts</text>
+	</string>
+	<string id="Bald">
+		<text>Springboard</text>
+	</string>
+	<string id="Bar">
+		<text>Bar</text>
+	</string>
+	<string id="Darkdolina">
+		<text>Dark Valley</text>
+	</string>
+	<string id="Deadcity">
+		<text>Erased</text>
+	</string>
+	<string id="Electra">
+		<text>Electro</text>
+	</string>
 	<string id="enc_weapons1_wpn-winchester_m1">
-		<text>Variation of the Winchester. A small fragment of the artifact "Gravi" was built into the barrell, positioned in such a way as to increase the speed of the bullet's flight.</text>
+		<text>Variation of the Chaser. A small fragment of the artifact "Gravi" was built into the barrell, positioned in such a way as to increase the speed of the bullet's flight.</text>
 	</string>
 	<string id="enc_zone_anomalies_ameba">
 		<text>An anomaly of unknown nature. On contact inflicts injuries similar to the effects of a strong acid. Forms three types of artifacts: Slime, Slug, and Mica.</text>
@@ -208,25 +142,25 @@
 		<text>While inactive, the anomaly manifests itself as a barely visible cloud of hot air. When triggered by an object or a living being it instantly heats up to lethal temperatures approaching 1500K. At nighttime, it can be revealed by powerful detectors or by throwing metal objects into the trigger area. Forms three types of artifacts: Droplets, Fireball and Crystal.</text>
 	</string>
 	<string id="enc_zone_artifact_af-ameba-mica">
-		<text>Anomaly “Stew” is able to create such an artifact at the rarest, most extreme collection of physical conditions. The result is a semi-transparent, hard object. A rare and expensive artifact.</text>
+		<text>Anomaly “Fruit punch” is able to create such an artifact at the rarest, most extreme collection of physical conditions. The result is a semi-transparent, hard object. A rare and expensive artifact.</text>
 	</string>
 	<string id="enc_zone_artifact_af-ameba-slime">
-		<text>It is certain that this artifact is created by the anomaly called Stew. When carried on the best, the wounds bleed less, although the body of its owner becomes more vulnerable to various burns.</text>
+		<text>It is certain that this artifact is created by the anomaly called "Fruit punch". When carried on the best, the wounds bleed less, although the body of its owner becomes more vulnerable to various burns.</text>
 	</string>
 	<string id="enc_zone_artifact_af-ameba-slug">
-		<text>Formed by the Stew anomaly. The negative qualities of this artifact are compensated by the fact that it heightens the coagulation quality of blood. It’s not often that one runs into such an artifact, and they pay well for it too.</text>
+		<text>Formed by the "Fruit punch" anomaly. The negative qualities of this artifact are compensated by the fact that it heightens the coagulation quality of blood. It’s not often that one runs into such an artifact, and they pay well for it too.</text>
 	</string>
 	<string id="enc_zone_artifact_af-blood">
-		<text>You can find this artifact near the anomaly “Merry-go-Round”. It is quite an ugly reddish object made out of pressed together and curiously bent polymerized remnants of plants, soil, and bones. Quite widespread and not very effective.</text>
+		<text>You can find this artifact near the anomaly “Whirligig”. It is quite an ugly reddish object made out of pressed together and curiously bent polymerized remnants of plants, soil, and bones. Quite widespread and not very effective.</text>
 	</string>
 	<string id="enc_zone_artifact_af-cristall">
-		<text>Is created when heavy metals fall into the Stirfry anomaly. This artifact eliminates radiation wonderfully. It is highly valued by stalkers and hard to find.</text>
+		<text>Is created when heavy metals fall into the Burner anomaly. This artifact eliminates radiation wonderfully. It is highly valued by stalkers and hard to find.</text>
 	</string>
 	<string id="enc_zone_artifact_af-cristall-flower">
 		<text>Born in the Springboard anomaly. This artifact is found in only a few areas of the Zone. The bits of metallic compounds create a beautiful light play. It is very calming to study this artifact at night by the fire.</text>
 	</string>
 	<string id="enc_zone_artifact_af-drops">
-		<text>Formed in the anomaly “Stirfry” at high temperatures. From the exterior looks like a tear-like shade compound with a glossy surface, covered in cracks.</text>
+		<text>Formed in the anomaly “Burner” at high temperatures. From the exterior looks like a tear-like shade compound with a glossy surface, covered in cracks.</text>
 	</string>
 	<string id="enc_zone_artifact_af-dummy-battery">
 		<text>The origin of this object is shrouded in scientific mystery. It’s clear that it’s made in part by di-electric elements, but science does not know the physical conditions in which it is formed.</text>
@@ -241,19 +175,19 @@
 		<text>This artifact is so rare that many researchers can't even imagine that such a substance can exist in a natural setting. Emmits acidic chemical components.</text>
 	</string>
 	<string id="enc_zone_artifact_af-dummy-spring">
-		<text>According to the opinion of some researchers-theorists, this artifact is a hybrid between Batteries and Pacifiers.</text>
+		<text>According to the opinion of some researchers-theorists, this artifact is a hybrid between Batteries and Shell.</text>
 	</string>
 	<string id="enc_zone_artifact_af-electra-flash">
-		<text>"Electra" sometimes births this artifact. Stalkers readily use it because of its good qualities. Not a bad price and a good external look make this artifact appealing to collectors.</text>
+		<text>"Electro" sometimes births this artifact. Stalkers readily use it because of its good qualities. Not a bad price and a good external look make this artifact appealing to collectors.</text>
 	</string>
 	<string id="enc_zone_artifact_af-electra-moonlight">
-		<text>Degenerate case of the activity of the Electra anomaly. It seems that such a wonderful round form is created when the anomaly is subjected to thermal influences. Expensive artifact.</text>
+		<text>Degenerate case of the activity of the Electro anomaly. It seems that such a wonderful round form is created when the anomaly is subjected to thermal influences. Expensive artifact.</text>
 	</string>
 	<string id="enc_zone_artifact_af-electra-sparkler">
-		<text>Found near the Electra type of anomaly. Quite widespread and inexpensive artifact. But still it is valued among the researchers in the Zone for its qualities.</text>
+		<text>Found near the Electro type of anomaly. Quite widespread and inexpensive artifact. But still it is valued among the researchers in the Zone for its qualities.</text>
 	</string>
 	<string id="enc_zone_artifact_af-fireball">
-		<text>Crystallizes in the anomaly Scorcher. Fights well with radioactivity, though the heightened rate of energy exchange wears out the muscles of the moving apparatus. Won't be able to run for long. Artifact emmits heat.</text>
+		<text>Crystallizes in the anomaly Burner. Fights well with radioactivity, though the heightened rate of energy exchange wears out the muscles of the moving apparatus. Won't be able to run for long. Artifact emmits heat.</text>
 	</string>
 	<string id="enc_zone_artifact_af-fuzz-kolobok">
 		<text>When you hold this mystery of the Zone in your hands, you feel how your skin becomes tougher and less sensitive. You can still shoot through it with a bullet, but it's much more difficult to cut through.</text>
@@ -268,7 +202,7 @@
 		<text>Is formed in the Trampolineanomaly. Forms a weak protective field whose side effect is a slight radiation. The artifact is widespread and notvery valuable.</text>
 	</string>
 	<string id="enc_zone_artifact_af-mincer-meat">
-		<text>Manufactured by the Merry-go-Round anomaly. Causes increased cell growth. On the other hand, the newly formed cells are much more receptive to the effects of physical uranium. The artifact doesn't show up very often, but it's hard to call it rare.</text>
+		<text>Manufactured by the Whirligig anomaly. Causes increased cell growth. On the other hand, the newly formed cells are much more receptive to the effects of physical uranium. The artifact doesn't show up very often, but it's hard to call it rare.</text>
 	</string>
 	<string id="enc_zone_artifact_af-night-star">
 		<text>This wonderful artifact is formed by the anomaly Trampoline. The use of the artifact demands the neutralization of deadly radiation. Expensive and rare, this artifact is extremely interesting for scientific expeditions and other research activity in the Zone.</text>
@@ -280,10 +214,10 @@
 		<text>The anomaly Burnt Fuzz very rarely gives rise to this artifact. Blood pressure rises, the body gets rid of a large amount of red blood cells. But along with them the stored radiation leaves the body as well. In his fundamental work titled "Ionization and polarization of the components of rare artifacts", Saharov noted that the content of this formation has a critical stability, and it's not realistic to create such an artifact in lab conditions in the next ten years.</text>
 	</string>
 	<string id="enc_zone_artifact_af-rusty-thorn">
-		<text>The result of the interaction between the anomaly Burnt Fuzz and the body of a careless stalker. The Spiker artifact pokes the body of its owner, no matter what. But it also helps clean the body of radionucliodes. Quite widespread and cheap.</text>
+		<text>The result of the interaction between the anomaly Burnt Fuzz and the body of a careless stalker. The Thorn artifact pokes the body of its owner, no matter what. But it also helps clean the body of radionucliodes. Quite widespread and cheap.</text>
 	</string>
 	<string id="enc_zone_artifact_af-soul">
-		<text>Very rarely found artifact, located near the Merry-go-Round anomaly. Only a very few manage to find this artifact, and few have even seen it. It has a nice shape and an equally nice price.</text>
+		<text>Very rarely found artifact, located near the Whirligig anomaly. Only a very few manage to find this artifact, and few have even seen it. It has a nice shape and an equally nice price.</text>
 	</string>
 	<string id="enc_zone_artifact_af-vyvert">
 		<text>Located in the anomaly called "Vortex". When it touches the body it disseminates the directed of the radiation, protecting from scratches or wounds made by weapons. This artifact isn't hard to find, that's why they don't pay much for it.</text>
@@ -310,7 +244,7 @@
 		<text>This used to be a town built for engineers working at the Chernobyl NPP. Quite a big place once, it is a ghost town now with mutants and zombies as the only residents. There seems to be no way to get in there: the Brain Scorcher is blocking the way.</text>
 	</string>
 	<string id="enc_zone_locations_radar">
-		<text>Страшное место. Тут ни за здорово живёшь сгинуть можно, даже если перед этим всю жизнь везунчиком был. Любой, кто к Выжигателю мозгов близко подойдёт, с ума сходит, в зомби превращается и бродит потом по Зоне, неприкаянный. Одни оболочки от людей остаются, и никто оттуда никто с своём уме не возвращался.</text>
+		<text>A dreadful place. Easy to vanish without a trace there, no matter how lucky you have been in life so far. Whoever gets close to the Brain Scorcher immediately goes insane, turns into a zombie and starts stalking the Zone restlessly. A human shell is all that’s left. No-one has ever returned with a sound mind.</text>
 	</string>
 	<string id="enc_zone_locations_rostok">
 		<text>The Wild Territory used to be the site of a rather large manufacturing plant, currently in ruins. Many stalkers met their death there: the place is swarming with all sorts of monsters. The beasts are literally streaming over there from the entire Zone. It is said that something of great importance is hidden at this site, so there are always plenty of daredevils willing to try their luck.</text>
@@ -332,5 +266,71 @@
 	</string>
 	<string id="enc_zone_zone-story_story-raid">
 		<text>The army, including special forces headed by paramilitary stalker detachments, launched a massive raid deep into the Zone. Their objective was to break through to the Chernobyl NPP and wipe out the cause of anomalous fields or at least obtain first-hand information on the current state of affairs. This endeavor, involving over a thousand people and heavy machinery, was a complete failure. Isolated groups of survivors were forced to settle within the Zone with slender hopes of rescue.</text>
+	</string>
+	<string id="Escape">
+		<text>Outpost</text>
+	</string>
+	<string id="Fuzz">
+		<text>Burnt Fuzz</text>
+	</string>
+	<string id="Garbage">
+		<text>Garbage</text>
+	</string>
+	<string id="Gravi">
+		<text>Vortex</text>
+	</string>
+	<string id="Lift">
+		<text>Elevator</text>
+	</string>
+	<string id="Locations">
+		<text>Locations</text>
+	</string>
+	<string id="Meat">
+		<text>Whirligig</text>
+	</string>
+	<string id="Military-loc">
+		<text>Army base</text>
+	</string>
+	<string id="Pripiat">
+		<text>Pripyat</text>
+	</string>
+	<string id="Radar">
+		<text>Scorcher</text>
+	</string>
+	<string id="Radioactive">
+		<text>Source of radioactivity</text>
+	</string>
+	<string id="Rostok">
+		<text>Wild Territory</text>
+	</string>
+	<string id="Stancia">
+		<text>Chernobyl NPP</text>
+	</string>
+	<string id="Story-2006">
+		<text>2008, April 12, 14:33</text>
+	</string>
+	<string id="Story-2008">
+		<text>Year 2010</text>
+	</string>
+	<string id="Story-2010">
+		<text>Year 2011</text>
+	</string>
+	<string id="Story-raid">
+		<text>Army raid into the Zone. 2011</text>
+	</string>
+	<string id="Time_machine">
+		<text>Time Machine</text>
+	</string>
+	<string id="Yantar">
+		<text>Yantar</text>
+	</string>
+	<string id="Zharka">
+		<text>Burner</text>
+	</string>
+	<string id="Zone">
+		<text>The Zone</text>
+	</string>
+	<string id="Zone-story">
+		<text>History of the Zone</text>
 	</string>
 </string_table>
