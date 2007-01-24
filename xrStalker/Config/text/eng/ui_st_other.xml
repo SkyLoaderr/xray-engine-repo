@@ -114,4 +114,63 @@
 	<string id="st_level">
 		<text>Level</text>
 	</string>
+
+	<string id="st_opening_stream">
+		<text>Opening stream</text>
+	</string>
+	<string id="st_loading_cform">
+		<text>Loading CFORM</text>
+	</string>
+	<string id="st_prefetching_objects">
+		<text>Prefetching objects</text>
+	</string>
+	<string id="st_creating_new_game">
+		<text>Creating new game</text>
+	</string>
+	<string id="st_loading_alife_simulator">
+		<text>SERVER: Loading alife simulator</text>
+	</string>
+	<string id="st_server_connecting">
+		<text>SERVER: Connecting</text>
+	</string>
+	<string id="st_loading_saved_game">
+		<text>Loading saved game</text>
+	</string>
+	<string id="st_validating_cdkey">
+		<text>Validating CD Key</text>
+	</string>
+	<string id="st_loading_ai_objects">
+		<text>Loading AI objects</text>
+	</string>
+	<string id="st_client_connecting_to">
+		<text>CLIENT: Connecting to</text>
+	</string>
+	<string id="st_client_spawning">
+		<text>CLIENT: Spawning</text>
+	</string>
+	<string id="st_loading_textures">
+		<text>Loading textures</text>
+	</string>
+	<string id="st_client_synchronising">
+		<text>CLIENT: Synchronising</text>
+	</string>
+	<string id="st_server_starting">
+		<text>SERVER: Starting</text>
+	</string>
+	<string id="st_loading_shaders">
+		<text>Loading shaders</text>
+	</string>
+	<string id="st_loading_geometry">
+		<text>Loading geometry</text>
+	</string>
+	<string id="st_loading_spatial_db">
+		<text>Loading spatial-DB</text>
+	</string>
+	<string id="st_loading_details">
+		<text>Loading details</text>
+	</string>
+	<string id="st_loading_sectors_portals">
+		<text>Loading sectors & portals</text>
+	</string>
+
 </string_table>
