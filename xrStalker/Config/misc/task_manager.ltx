@@ -863,6 +863,7 @@ reward_money = 2500
 reward_reputation = +20
 reward_relation = ecolog, +15
 reward_rank = 2
+reward_item = medkit_scientic
 time = 259200
 
 [ecolog_monster_part_2]
@@ -889,6 +890,7 @@ reward_money = 2000
 reward_reputation = +10
 reward_relation = ecolog, +20
 reward_rank = 4
+reward_item = medkit_scientic
 time = 259200
 
 [ecolog_monster_part_4]
@@ -902,6 +904,7 @@ reward_money = 3000
 reward_reputation = +10
 reward_relation = ecolog, +15
 reward_rank = 2
+reward_item = medkit_scientic
 time = 259200
 
 [ecolog_monster_part_5]
@@ -915,6 +918,7 @@ reward_money = 6000
 reward_reputation = +25
 reward_relation = ecolog, +15
 reward_rank = 8
+reward_item = medkit_scientic
 time = 259200
 
 
@@ -939,11 +943,11 @@ text = ecolog_find_artefact_2_text
 description = ecolog_find_artefact_2_descr
 parent = ecolog
 target = af_gravi
-reward_money = 4500
+reward_money = 5000
 reward_reputation = +10
 reward_relation = ecolog, +25
 reward_rank = 5
-reward_item = medkit_scientic,medkit_scientic
+reward_item = medkit_scientic
 time = 86400
 
 [ecolog_find_artefact_3]
@@ -953,10 +957,11 @@ text = ecolog_find_artefact_3_text
 description = ecolog_find_artefact_3_descr
 parent = ecolog
 target = af_medusa
-reward_money = 10000
+reward_money = 2500
 reward_reputation = +10
 reward_relation = ecolog, +25
 reward_rank = 5
+reward_item = medkit_scientic
 time = 86400
 
 [ecolog_find_artefact_4]
@@ -970,6 +975,7 @@ reward_money = 12000
 reward_reputation = +20
 reward_relation = ecolog, +40
 reward_rank = 10
+reward_item = medkit_scientic,medkit_scientic,medkit_scientic
 time = 604800
 
 [ecolog_find_artefact_5]
@@ -983,6 +989,7 @@ reward_money = 12000
 reward_reputation = +20
 reward_relation = ecolog, +40
 reward_rank = 10
+reward_item = medkit_scientic,medkit_scientic,medkit_scientic
 time = 604800
 
 
@@ -999,7 +1006,7 @@ text = dolg_defend_lager_1_text
 description = dolg_defend_lager_1_descr
 parent = dolg
 target = gar_dolg_blockpost
-reward_money = 5000
+reward_money = 1000
 reward_reputation = +40
 reward_relation = dolg, +150
 reward_rank = 6
@@ -1009,11 +1016,11 @@ time = 10800
 [dolg_eliminate_lager_1]
 type = eliminate_lager
 community = actor
-init_condition = {=actor_on_level(l08_yantar) +bar_svoboda_rg6_done}
+init_condition = {=actor_on_level(l08_yantar) +yantar_tunnel_finish}
 text = dolg_eliminate_lager_1_text
 description = dolg_eliminate_lager_1_descr
 parent = dolg
-target = yan_st_zombie2
+target = yan_st_stalker1
 reward_money = 5000
 reward_reputation = +40
 reward_relation = dolg, +150
