@@ -70,14 +70,14 @@
 	</item_used>
 
 	<gun_jammed x="200" y="10" width="600" height="60" ttl="3">
-		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">gun_jammed</text>
+		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">gun_jammed</text>
 	</gun_jammed>
 	
 	<cant_walk x="200" y="10" width="600" height="60" ttl="3">
-		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">cant_walk</text>
+		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">cant_walk</text>
 	</cant_walk>
 	
 	<cant_walk_weight x="200" y="10" width="600" height="60" ttl="3">
-		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">cant_walk_weight</text>
+		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">cant_walk_weight</text>
 	</cant_walk_weight>
 </header>
