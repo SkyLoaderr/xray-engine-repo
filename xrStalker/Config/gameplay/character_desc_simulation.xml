@@ -4116,5 +4116,1832 @@
 		
 #include "gameplay\character_criticals_2.xml"
 	</specific_character>
+	<!---------------------------Test profiles for level selo_face----------------------->
 
+	<specific_character id="sim_test_000" team_default = "1">
+		<class>sim_test_000</class>
+		<visual>actors\bandit\stalker_bandit_3</visual>
+		<icon>ui_npc_u_stalker_bandit_3</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_001" team_default = "1">
+		<class>sim_test_001</class>
+		<visual>actors\bandit\stalker_bandit_4</visual>
+		<icon>ui_npc_u_stalker_bandit_4</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_002" team_default = "1">
+		<class>sim_test_002</class>
+		<visual>actors\bandit\stalker_bandit_5</visual>
+		<icon>ui_npc_u_stalker_bandit_5</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_003" team_default = "1">
+		<class>sim_test_003</class>
+		<visual>actors\bandit\stalker_bandit_8</visual>
+		<icon>ui_npc_u_stalker_bandit_8</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_004" team_default = "1">
+		<class>sim_test_004</class>
+		<visual>actors\bandit\stalker_bandit_master</visual>
+		<icon>ui_npc_u_stalker_bandit_master</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_005" team_default = "1">
+		<class>sim_test_005</class>
+		<visual>actors\bandit\stalker_bandit_veteran</visual>
+		<icon>ui_npc_u_stalker_bandit_veteran</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_006" team_default = "1">
+		<class>sim_test_006</class>
+		<visual>actors\dolg\stalker_do_antigas</visual>
+		<icon>ui_npc_u_stalker_do_antigas</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_007" team_default = "1">
+		<class>sim_test_007</class>
+		<visual>actors\dolg\stalker_do_balon_8</visual>
+		<icon>ui_npc_u_stalker_do_balon_8</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_008" team_default = "1">
+		<class>sim_test_008</class>
+		<visual>actors\dolg\stalker_do_mask_1</visual>
+		<icon>ui_npc_u_stalker_do_mask_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_009" team_default = "1">
+		<class>sim_test_009</class>
+		<visual>actors\dolg\stalker_do_exoskeleton</visual>
+		<icon>ui_npc_u_stalker_do_exoskeleton</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_010" team_default = "1">
+		<class>sim_test_010</class>
+		<visual>actors\dolg\stalker_do_mask</visual>
+		<icon>ui_npc_u_stalker_do_mask</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_011" team_default = "1">
+		<class>sim_test_011</class>
+		<visual>actors\dolg\stalker_do_nauchniy</visual>
+		<icon>ui_npc_u_stalker_do_nauchniy</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_012" team_default = "1">
+		<class>sim_test_012</class>
+		<visual>actors\ecolog\stalker_ecolog</visual>
+		<icon>ui_npc_u_stalker_ecolog</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_013" team_default = "1">
+		<class>sim_test_013</class>
+		<visual>actors\ecolog\stalker_ecolog_military</visual>
+		<icon>ui_npc_u_stalker_ecolog_military</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_014" team_default = "1">
+		<class>sim_test_014</class>
+		<visual>actors\killer\stalker_ki_antigas</visual>
+		<icon>ui_npc_u_stalker_ki_antigas</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_015" team_default = "1">
+		<class>sim_test_015</class>
+		<visual>actors\killer\stalker_ki_exoskeleton</visual>
+		<icon>ui_npc_u_stalker_ki_exoskeleton</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_016" team_default = "1">
+		<class>sim_test_016</class>
+		<visual>actors\killer\stalker_ki_head_1</visual>
+		<icon>ui_npc_u_stalker_ki_head_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_017" team_default = "1">
+		<class>sim_test_017</class>
+		<visual>actors\killer\stalker_ki_mask</visual>
+		<icon>ui_npc_u_stalker_ki_mask</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_018" team_default = "1">
+		<class>sim_test_018</class>
+		<visual>actors\killer\stalker_ki_nauchniy</visual>
+		<icon>ui_npc_u_stalker_ki_nauchniy</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_019" team_default = "1">
+		<class>sim_test_019</class>
+		<visual>actors\militari\stalker_militari_1</visual>
+		<icon>ui_npc_u_stalker_militari_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_020" team_default = "1">
+		<class>sim_test_020</class>
+		<visual>actors\militari\stalker_militari_2</visual>
+		<icon>ui_npc_u_stalker_militari_2</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_021" team_default = "1">
+		<class>sim_test_021</class>
+		<visual>actors\militari\stalker_militari_antigas_1</visual>
+		<icon>ui_npc_u_stalker_militari_antigas_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_022" team_default = "1">
+		<class>sim_test_022</class>
+		<visual>actors\militari\stalker_militari_antigas_2</visual>
+		<icon>ui_npc_u_stalker_militari_antigas_2</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_023" team_default = "1">
+		<class>sim_test_023</class>
+		<visual>actors\soldier\soldier_antigas</visual>
+		<icon>ui_npc_u_soldier_antigas</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_024" team_default = "1">
+		<class>sim_test_024</class>
+		<visual>actors\soldier\soldier_bandana</visual>
+		<icon>ui_npc_u_soldier_bandana</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_025" team_default = "1">
+		<class>sim_test_025</class>
+		<visual>actors\soldier\soldier_bandana_5</visual>
+		<icon>ui_npc_u_soldier_bandana_5</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_026" team_default = "1">
+		<class>sim_test_026</class>
+		<visual>actors\soldier\soldier_mask</visual>
+		<icon>ui_npc_u_soldier_mask</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_027" team_default = "1">
+		<class>sim_test_027</class>
+		<visual>actors\soldier\soldier_obichniy</visual>
+		<icon>ui_npc_u_soldier_obichniy</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_028" team_default = "1">
+		<class>sim_test_028</class>
+		<visual>actors\soldier\soldier_spetsnaz</visual>
+		<icon>ui_npc_u_soldier_spetsnaz</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_029" team_default = "1">
+		<class>sim_test_029</class>
+		<visual>actors\soldier\soldier_bandana_1</visual>
+		<icon>ui_npc_u_trader</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_030" team_default = "1">
+		<class>sim_test_030</class>
+		<visual>actors\soldier\soldier_bandana_2</visual>
+		<icon>ui_npc_u_trader</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_031" team_default = "1">
+		<class>sim_test_031</class>
+		<visual>actors\soldier\soldier_bandana_3</visual>
+		<icon>ui_npc_u_trader</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_032" team_default = "1">
+		<class>sim_test_032</class>
+		<visual>actors\soldier\soldier_bandana_4</visual>
+		<icon>ui_npc_u_trader</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_033" team_default = "1">
+		<class>sim_test_033</class>
+		<visual>actors\monolit\stalker_mo_exo</visual>
+		<icon>ui_npc_u_stalker_mo_exo</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_034" team_default = "1">
+		<class>sim_test_034</class>
+		<visual>actors\monolit\stalker_mo_head_1</visual>
+		<icon>ui_npc_u_stalker_mo_head_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_035" team_default = "1">
+		<class>sim_test_035</class>
+		<visual>actors\monolit\stalker_mo_hood_9</visual>
+		<icon>ui_npc_u_stalker_mo_hood_9</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_036" team_default = "1">
+		<class>sim_test_036</class>
+		<visual>actors\monolit\stalker_mo_mask</visual>
+		<icon>ui_npc_u_stalker_mo_mask</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_037" team_default = "1">
+		<class>sim_test_037</class>
+		<visual>actors\monolit\stalker_mo_nauchniy</visual>
+		<icon>ui_npc_u_stalker_mo_nauchniy</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_038" team_default = "1">
+		<class>sim_test_038</class>
+		<visual>actors\neytral\stalker_bar_security</visual>
+		<icon>ui_npc_u_stalker_bar_security</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_039" team_default = "1">
+		<class>sim_test_039</class>
+		<visual>actors\neytral\stalker_neytral_hood_uzor</visual>
+		<icon>ui_npc_u_stalker_neytral_hood_uzor</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_040" team_default = "1">
+		<class>sim_test_040</class>
+		<visual>actors\neytral\stalker_neytral_balon_8</visual>
+		<icon>ui_npc_u_stalker_neytral_balon_8</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_041" team_default = "1">
+		<class>sim_test_041</class>
+		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
+		<icon>ui_npc_u_stalker_neytral_exoskeleton</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_042" team_default = "1">
+		<class>sim_test_042</class>
+		<visual>actors\neytral\stalker_neytral_hood_2</visual>
+		<icon>ui_npc_u_stalker_neytral_hood_2</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_043" team_default = "1">
+		<class>sim_test_043</class>
+		<visual>actors\neytral\stalker_neytral_hood_8</visual>
+		<icon>ui_npc_u_stalker_neytral_hood_8</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_044" team_default = "1">
+		<class>sim_test_044</class>
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+		<icon>ui_npc_u_stalker_neytral_hood_9</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_045" team_default = "1">
+		<class>sim_test_045</class>
+		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
+		<icon>ui_npc_u_stalker_neytral_nauchniy</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_046" team_default = "1">
+		<class>sim_test_046</class>
+		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
+		<icon>ui_npc_u_stalker_neytral_rukzak_2</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_047" team_default = "1">
+		<class>sim_test_047</class>
+		<visual>actors\novice\green_stalker_2</visual>
+		<icon>ui_npc_u_green_stalker_2</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_048" team_default = "1">
+		<class>sim_test_048</class>
+		<visual>actors\novice\green_stalker_3</visual>
+		<icon>ui_npc_u_green_stalker_3</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_049" team_default = "1">
+		<class>sim_test_049</class>
+		<visual>actors\novice\green_stalker_4</visual>
+		<icon>ui_npc_u_green_stalker_4</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_050" team_default = "1">
+		<class>sim_test_050</class>
+		<visual>actors\novice\green_stalker_5</visual>
+		<icon>ui_npc_u_green_stalker_5</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_051" team_default = "1">
+		<class>sim_test_051</class>
+		<visual>actors\novice\green_stalker_6</visual>
+		<icon>ui_npc_u_green_stalker_6</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_052" team_default = "1">
+		<class>sim_test_052</class>
+		<visual>actors\novice\green_stalker_10</visual>
+		<icon>ui_npc_u_green_stalker_10</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_053" team_default = "1">
+		<class>sim_test_053</class>
+		<visual>actors\novice\green_stalker_antigas</visual>
+		<icon>ui_npc_u_green_stalker_antigas</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_054" team_default = "1">
+		<class>sim_test_054</class>
+		<visual>actors\stalker_zombi\stalker_zombie1</visual>
+		<icon>ui_npc_u_stalker_zombie1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_055" team_default = "1">
+		<class>sim_test_055</class>
+		<visual>actors\stalker_zombi\stalker_zombie2</visual>
+		<icon>ui_npc_u_stalker_zombie2</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_056" team_default = "1">
+		<class>sim_test_056</class>
+		<visual>actors\stalker_zombi\stalker_zombie3</visual>
+		<icon>ui_npc_u_stalker_zombie3</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_057" team_default = "1">
+		<class>sim_test_057</class>
+		<visual>actors\stalker_zombi\stalker_zombie4</visual>
+		<icon>ui_npc_u_stalker_zombie4</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_058" team_default = "1">
+		<class>sim_test_058</class>
+		<visual>actors\stalker_zombi\stalker_zombie5</visual>
+		<icon>ui_npc_u_stalker_zombie5</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_059" team_default = "1">
+		<class>sim_test_059</class>
+		<visual>actors\stalker_zombi\stalker_zombie6</visual>
+		<icon>ui_npc_u_stalker_zombie6</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_060" team_default = "1">
+		<class>sim_test_060</class>
+		<visual>actors\stalker_zombi\stalker_zombie7</visual>
+		<icon>ui_npc_u_stalker_zombie7</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_061" team_default = "1">
+		<class>sim_test_061</class>
+		<visual>actors\stalker_zombi\stalker_zombie8</visual>
+		<icon>ui_npc_u_stalker_zombie8</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_062" team_default = "1">
+		<class>sim_test_062</class>
+		<visual>actors\stalker_zombi\zombie_exoskeleton</visual>
+		<icon>ui_npc_u_zombie_exoskeleton</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_063" team_default = "1">
+		<class>sim_test_063</class>
+		<visual>actors\stalker_zombi\stalker_fresh_0</visual>
+		<icon>ui_npc_u_stalker_fresh_0</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_064" team_default = "1">
+		<class>sim_test_064</class>
+		<visual>actors\stalker_zombi\stalker_fresh_2</visual>
+		<icon>ui_npc_u_stalker_fresh_2</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_065" team_default = "1">
+		<class>sim_test_065</class>
+		<visual>actors\stalker_zombi\stalker_zombie_specnaz</visual>
+		<icon>ui_npc_u_stalker_zombie_specnaz</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_066" team_default = "1">
+		<class>sim_test_066</class>
+		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
+		<icon>ui_npc_u_stalker_sv_exoskeleton</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_067" team_default = "1">
+		<class>sim_test_067</class>
+		<visual>actors\svoboda\stalker_sv_hood_9</visual>
+		<icon>ui_npc_u_stalker_sv_hood_9</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_068" team_default = "1">
+		<class>sim_test_068</class>
+		<visual>actors\svoboda\stalker_sv_hood_91</visual>
+		<icon>ui_npc_u_stalker_sv_hood_91</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_069" team_default = "1">
+		<class>sim_test_069</class>
+		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
+		<icon>ui_npc_u_stalker_sv_nauchniy</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_070" team_default = "1">
+		<class>sim_test_070</class>
+		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
+		<icon>ui_npc_u_stalker_sv_rukzak_1_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_071" team_default = "1">
+		<class>sim_test_071</class>
+		<visual>actors\svoboda\stalker_sv_rukzak_2</visual>
+		<icon>ui_npc_u_stalker_sv_rukzak_2</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_072" team_default = "1">
+		<class>sim_test_072</class>
+		<visual>actors\svoboda\stalker_sv_rukzak_3</visual>
+		<icon>ui_npc_u_stalker_sv_rukzak_3</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_073" team_default = "1">
+		<class>sim_test_073</class>
+		<visual>actors\svoboda\stalker_sv_rukzak_3_1</visual>
+		<icon>ui_npc_u_stalker_sv_rukzak_3_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	
+	
+	
+	<specific_character id="sim_test_074" team_default = "1">
+		<class>sim_test_074</class>
+		<visual>actors\bandit\stalker_bandit_borov</visual>
+		<icon>ui_npc_u_stalker_bandit_borov</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_075" team_default = "1">
+		<class>sim_test_075</class>
+		<visual>actors\dolg\stalker_do_balon_1</visual>
+		<icon>ui_npc_u_stalker_do_balon_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_076" team_default = "1">
+		<class>sim_test_076</class>
+		<visual>actors\dolg\stalker_do_komandir</visual>
+		<icon>ui_npc_u_stalker_do_komandir</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_077" team_default = "1">
+		<class>sim_test_077</class>
+		<visual>actors\dolg\stalker_do_balon_4</visual>
+		<icon>ui_npc_u_stalker_do_balon_4</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_078" team_default = "1">
+		<class>sim_test_078</class>
+		<visual>actors\dolg\stalker_do_balon_3</visual>
+		<icon>ui_npc_u_stalker_do_balon_3</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_079" team_default = "1">
+		<class>sim_test_079</class>
+		<visual>actors\dolg\stalker_do_balon_5</visual>
+		<icon>ui_npc_u_stalker_do_balon_5</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_080" team_default = "1">
+		<class>sim_test_080</class>
+		<visual>actors\dolg\stalker_do_balon_6</visual>
+		<icon>ui_npc_u_stalker_do_balon_6</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_081" team_default = "1">
+		<class>sim_test_081</class>
+		<visual>actors\dolg\stalker_do_balon_7</visual>
+		<icon>ui_npc_u_stalker_do_balon_7</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_082" team_default = "1">
+		<class>sim_test_082</class>
+		<visual>actors\killer\stalker_ki_head_5</visual>
+		<icon>ui_npc_u_stalker_ki_head_5</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_083" team_default = "1">
+		<class>sim_test_083</class>
+		<visual>actors\killer\stalker_ki_informator</visual>
+		<icon>ui_npc_u_stalker_ki_informator</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_084" team_default = "1">
+		<class>sim_test_084</class>
+		<visual>actors\soldier\soldier_bandana_6</visual>
+		<icon>ui_npc_u_soldier_bandana_6</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_085" team_default = "1">
+		<class>sim_test_085</class>
+		<visual>actors\soldier\soldier_beret</visual>
+		<icon>ui_npc_u_soldier_beret</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_086" team_default = "1">
+		<class>sim_test_086</class>
+		<visual>actors\soldier\soldier_beret_1</visual>
+		<icon>ui_npc_u_soldier_beret_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_087" team_default = "1">
+		<class>sim_test_087</class>
+		<visual>actors\soldier\soldier_beret_2</visual>
+		<icon>ui_npc_u_soldier_beret_2</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_088" team_default = "1">
+		<class>sim_test_088</class>
+		<visual>actors\soldier\soldier_beret_3</visual>
+		<icon>ui_npc_u_soldier_beret_3</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_089" team_default = "1">
+		<class>sim_test_089</class>
+		<visual>actors\soldier\soldier_beret_5</visual>
+		<icon>ui_npc_u_soldier_beret_5</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_090" team_default = "1">
+		<class>sim_test_090</class>
+		<visual>actors\neytral\stalker_neytral_balon_1</visual>
+		<icon>ui_npc_u_stalker_neytral_balon_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_091" team_default = "1">
+		<class>sim_test_091</class>
+		<visual>actors\neytral\stalker_neytral_balon_4</visual>
+		<icon>ui_npc_u_stalker_neytral_balon_4</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_092" team_default = "1">
+		<class>sim_test_092</class>
+		<visual>actors\neytral\stalker_neytral_balon_5</visual>
+		<icon>ui_npc_u_stalker_neytral_balon_5</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_093" team_default = "1">
+		<class>sim_test_093</class>
+		<visual>actors\neytral\stalker_neytral_balon_6</visual>
+		<icon>ui_npc_u_stalker_neytral_balon_6</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_094" team_default = "1">
+		<class>sim_test_094</class>
+		<visual>actors\neytral\stalker_neytral_hood_4</visual>
+		<icon>ui_npc_u_stalker_neytral_hood_4</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_095" team_default = "1">
+		<class>sim_test_095</class>
+		<visual>actors\neytral\stalker_neytral_rukzak_1</visual>
+		<icon>ui_npc_u_stalker_neytral_rukzak_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_096" team_default = "1">
+		<class>sim_test_096</class>
+		<visual>actors\neytral\stalker_neytral_rukzak_3</visual>
+		<icon>ui_npc_u_stalker_neytral_rukzak_3</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_097" team_default = "1">
+		<class>sim_test_097</class>
+		<visual>actors\neytral\stalker_neytral_rukzak_4</visual>
+		<icon>ui_npc_u_stalker_neytral_rukzak_4</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_098" team_default = "1">
+		<class>sim_test_098</class>
+		<visual>actors\neytral\stalker_prizrak</visual>
+		<icon>ui_npc_u_stalker_prizrak</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_099" team_default = "1">
+		<class>sim_test_099</class>
+		<visual>actors\novice\green_stalker_1</visual>
+		<icon>ui_npc_u_green_stalker_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_100" team_default = "1">
+		<class>sim_test_100</class>
+		<visual>actors\novice\green_stalker_7</visual>
+		<icon>ui_npc_u_green_stalker_7</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_101" team_default = "1">
+		<class>sim_test_101</class>
+		<visual>actors\novice\green_stalker_8</visual>
+		<icon>ui_npc_u_green_stalker_8</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_102" team_default = "1">
+		<class>sim_test_102</class>
+		<visual>actors\novice\green_stalker_11</visual>
+		<icon>ui_npc_u_green_stalker_11</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_103" team_default = "1">
+		<class>sim_test_103</class>
+		<visual>actors\svoboda\stalker_sv_balon_1</visual>
+		<icon>ui_npc_u_stalker_sv_balon_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_104" team_default = "1">
+		<class>sim_test_104</class>
+		<visual>actors\svoboda\stalker_sv_balon_10</visual>
+		<icon>ui_npc_u_stalker_sv_balon_10</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_105" team_default = "1">
+		<class>sim_test_105</class>
+		<visual>actors\svoboda\stalker_sv_cook</visual>
+		<icon>ui_npc_u_stalker_sv_cook</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_106" team_default = "1">
+		<class>sim_test_106</class>
+		<visual>actors\svoboda\stalker_sv_leader</visual>
+		<icon>ui_npc_u_stalker_sv_leader</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_107" team_default = "1">
+		<class>sim_test_107</class>
+		<visual>actors\svoboda\stalker_sv_rukzak_1</visual>
+		<icon>ui_npc_u_stalker_sv_rukzak_1</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_108" team_default = "1">
+		<class>sim_test_108</class>
+		<visual>actors\svoboda\stalker_sv_max</visual>
+		<icon>ui_npc_u_stalker_sv_max</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_109" team_default = "1">
+		<class>sim_test_109</class>
+		<visual>actors\trader\trader</visual>
+		<icon>ui_npc_u_trader</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_110" team_default = "1">
+		<class>sim_test_110</class>
+		<visual>barman\barman</visual>
+		<icon>ui_npc_u_barman</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_111" team_default = "1">
+		<class>sim_test_111</class>
+		<visual>ucheniy\ucheniy_2</visual>
+		<icon>ui_npc_u_ucheniy_2</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_112" team_default = "1">
+		<class>sim_test_112</class>
+		<visual>actors\hero\stalker_novice</visual>
+		<icon>ui_npc_u_trader</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_113" team_default = "1">
+		<class>sim_test_113</class>
+		<visual>actors\ucheniy\ucheniy_1_strong</visual>
+		<icon>ui_npc_u_trader</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
 </xml>
