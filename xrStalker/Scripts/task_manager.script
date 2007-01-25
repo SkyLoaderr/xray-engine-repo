@@ -294,10 +294,8 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 	if task_desc.target_objects ~= nil then
 		self.task_info[self.task_id_by_yes_phrase_id[p2]].selected_target = task_desc.target_objects[math.random(table.getn(task_desc.target_objects))]
 		printf("TARGET DEBUG INFO")
-		printf("size = %s, random = %s", table.getn(task_desc.target_objects), math.random(table.getn(task_desc.target_objects)))
+		printf("selected = %s", tostring(self.task_info[self.task_id_by_yes_phrase_id[p2]].selected_target))
 		print_table(task_desc.target_objects)
-	else
-		abort("TASK_MANAGER: there is no target objects for task [%s]", tostring(self.task_id_by_yes_phrase_id[p2]))
 	end
 
 	if task_desc.type == "eliminate_lager" then
@@ -404,6 +402,7 @@ function CRandomTask:task_complete(p1, p2)
 
 			--' Проверка бага
 			if oo == nil then
+				printf("selected_target = %s", tostring(sel_task.selected_target))
 				abort("OBJ = nil for task %s", tostring(self.active_task_by_type[p1]))
 			elseif oo.alive == nil then	
 				printf("OBJ.ALIVE = nil for task %s", tostring(self.active_task_by_type[p1]))
