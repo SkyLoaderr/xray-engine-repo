@@ -96,7 +96,7 @@ dolg_eliminate_lager_9
 dolg_eliminate_lager_10
 dolg_eliminate_lager_11
 dolg_eliminate_lager_12
-dolg_eliminate_lager_13
+;dolg_eliminate_lager_13
 dolg_eliminate_lager_14
 ;----------Kill Staker-------
 dolg_kill_stalker_1
@@ -490,8 +490,8 @@ community = actor
 text = barmen_eliminate_camp_1_text
 description = barmen_eliminate_camp_1_descr
 parent = barman
-target = gar_smart_bandit_2
-reward_money = 2500
+target = gar_smart_bandit
+reward_money = 3000
 reward_reputation = +25
 reward_relation = dolg, 10
 reward_rank = 4
@@ -1021,10 +1021,11 @@ text = dolg_eliminate_lager_1_text
 description = dolg_eliminate_lager_1_descr
 parent = dolg
 target = yan_st_stalker1
-reward_money = 5000
+;reward_money = 5000
 reward_reputation = +40
 reward_relation = dolg, +150
 reward_rank = 6
+reward_item = af_dummy_battery
 time = 86400
 
 
@@ -1036,11 +1037,11 @@ text = dolg_eliminate_lager_2_text
 description = dolg_eliminate_lager_2_descr
 parent = dolg
 target = gar_nest_flesh
-reward_money = 5000
+reward_money = 2000
 reward_reputation = +25
 reward_relation = dolg, +70
 reward_rank = 5
-reward_item = vodka
+reward_item = vodka,ammo_5.45x39_fmj,ammo_5.45x39_fmj,ammo_5.45x39_fmj
 time = 86400
 
 [dolg_eliminate_lager_3]
@@ -1050,10 +1051,11 @@ text = dolg_eliminate_lager_3_text
 description = dolg_eliminate_lager_3_descr
 parent = dolg
 target = mil_lair2
-reward_money = 5000
+reward_money = 2000
 reward_reputation = +25
 reward_relation = dolg, +70
 reward_rank = 5
+reward_item = ammo_5.45x39_fmj,ammo_5.45x39_fmj,ammo_5.45x39_fmj
 time = 86400
 
 [dolg_eliminate_lager_4]
@@ -1064,10 +1066,11 @@ text = dolg_eliminate_lager_4_text
 description = dolg_eliminate_lager_4_descr
 parent = dolg
 target = mil_mercs
-reward_money = 4000
+reward_money = 5000
 reward_reputation = +40
 reward_relation = dolg, +100
 reward_rank = 7
+reward_item = ammo_vog-25,ammo_vog-25,ammo_vog-25
 time = 86400
 
 [dolg_eliminate_lager_5]
@@ -1076,11 +1079,12 @@ community = actor
 text = dolg_eliminate_lager_5_text
 description = dolg_eliminate_lager_5_descr
 parent = dolg
-target = ros_smart_killers1
-reward_money = 7000
+target = ros_smart_stalker_killers1
+reward_money = 5000
 reward_reputation = +50
 reward_relation = dolg, +200
 reward_rank = 8
+reward_item = ammo_vog-25,ammo_vog-25,ammo_vog-25
 time = 86400
 
 [dolg_eliminate_lager_6]
@@ -1094,6 +1098,7 @@ reward_money = 5000
 reward_reputation = +50
 reward_relation = dolg, +100
 reward_rank = 8
+reward_item = ammo_vog-25,ammo_vog-25
 time = 86400
 
 [dolg_eliminate_lager_7]
@@ -1103,10 +1108,11 @@ text = dolg_eliminate_lager_7_text
 description = dolg_eliminate_lager_7_descr
 parent = dolg
 target = yan_smart_controler1
-reward_money = 7000
+reward_money = 5000
 reward_reputation = +60
 reward_relation = dolg, +200
 reward_rank = 8
+reward_item = grenade_f1,grenade_f1
 time = 172800
 
 [dolg_eliminate_lager_8]
@@ -1119,7 +1125,7 @@ target = mil_village
 reward_reputation = -10
 reward_relation = dolg, +225, freedom, -250
 reward_rank = 8
-reward_item = wpn_vintorez_coll
+reward_item = wpn_val_m1,wpn_addon_scope,ammo_9x39_sp5,ammo_9x39_sp5,ammo_9x39_sp5
 time = 172800
 
 [dolg_eliminate_lager_9]
@@ -1128,11 +1134,12 @@ community = actor
 text = dolg_eliminate_lager_9_text
 description = dolg_eliminate_lager_9_descr
 parent = dolg
-target = gar_bandit_post
-reward_money = 4000
+target = gar_smart_bandit_large_lager
+reward_money = 5000
 reward_reputation = +50
 reward_relation = dolg, +150
 reward_rank = 5
+reward_item = ammo_vog-25,ammo_vog-25
 time = 172800
 
 [dolg_eliminate_lager_10]
@@ -1142,10 +1149,11 @@ text = dolg_eliminate_lager_10_text
 description = dolg_eliminate_lager_10_descr
 parent = dolg
 target = gar_smart_monster_lair2
-reward_money = 4000
+reward_money = 2000
 reward_reputation = +15
 reward_relation = dolg, +60
 reward_rank = 4
+reward_item = ammo_5.45x39_fmj,ammo_5.45x39_fmj,ammo_5.45x39_fmj
 time = 172800
 
 [dolg_eliminate_lager_11]
@@ -1155,11 +1163,11 @@ text = dolg_eliminate_lager_11_text
 description = dolg_eliminate_lager_11_descr
 parent = dolg
 target = agr2_st_factory
-reward_money = 7000
+reward_money = 5000
 reward_reputation = -35
 reward_relation = dolg, +170
 reward_rank = 7
-reward_item = medkit,bandage
+reward_item = grenade_f1,grenade_f1
 time = 86400
 
 [dolg_eliminate_lager_12]
@@ -1169,10 +1177,11 @@ text = dolg_eliminate_lager_12_text
 description = dolg_eliminate_lager_12_descr
 parent = dolg
 target = ros_smart_stalker_killers1
-reward_money = 6000
+reward_money = 5000
 reward_reputation = +20
 reward_relation = dolg, +100
 reward_rank = 6
+reward_item = ammo_vog-25,ammo_vog-25,ammo_vog-25
 time = 86400
 
 [dolg_eliminate_lager_13]
@@ -1195,10 +1204,11 @@ text = dolg_eliminate_lager_14_text
 description = dolg_eliminate_lager_14_descr
 parent = dolg
 target = yan_tonnel_snorks
-reward_money = 6000
+reward_money = 5000
 reward_reputation = +40
 reward_relation = dolg, +100
 reward_rank = 6
+reward_item = ammo_vog-25,ammo_vog-25,ammo_vog-25
 time = 86400
 
 [dolg_kill_stalker_1]
@@ -1263,7 +1273,7 @@ community = actor
 text = freedom_eliminate_camp_3_text
 description = freedom_eliminate_camp_3_descr
 parent = freedom
-target = ros_smart_stalker2
+target = ros_smart_stalker1
 reward_money = 6000
 reward_reputation = +5
 reward_relation = freedom, +90, dolg, -150
@@ -1315,9 +1325,10 @@ text = freedom_eliminate_camp_7_text
 description = freedom_eliminate_camp_7_descr
 parent = freedom
 target = ros_smart_monster5
-reward_money = 4000
+reward_money = 5000
 reward_reputation = +25
 reward_rank = 4
+reward_item = ammo_m209,ammo_m209,ammo_m209
 time = 86400
 
 [freedom_kill_stalker_4]
