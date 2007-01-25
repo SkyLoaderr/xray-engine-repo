@@ -561,6 +561,7 @@ function CRandomTask:check_task_props(task_id)
 			--' Проверка бага
 			if obj ~= nil and obj.alive == nil then	
 				printf("OBJ.ALIVE = nil for task %s", task_id)
+				print_table(self.task_info[task_id].target_objects)
 				abort("OBJ.NAME = %s", obj:name())				
 			end			
 
@@ -751,7 +752,7 @@ function CRandomTask:register_target(obj)
 				if self.task_info[v].target_objects == nil then
 					self.task_info[v].target_objects = {}
 				end
-				printf("@@@register new target %s for task %s", obj.id, v)
+				printf("@@@register new target %s[%s] for task %s", obj:name(), obj.id, v)
 				table.insert(self.task_info[v].target_objects, obj.id)
 			end
 		end
@@ -788,6 +789,33 @@ function CRandomTask:register_target(obj)
 				end
 				table.insert(self.task_info[v].target_objects, obj.id)
 			end				
+		end
+	end
+end
+--' ОТРегистрация целей для квестов.
+function CRandomTask:unregister_target(obj)
+	if IsStalker(obj) then
+		--' Возможно регистрируется цель для квеста "убить сталкера"
+		for k,v in pairs(self.task_id_by_type["kill_stalker"]) do	
+			if self.task_info[v].target_objects ~= nil then
+				for kk,vv in pairs(self.task_info[v].target_objects) do
+					if vv == obj.id then
+						table.remove(self.task_info[v].target_objects, vv)
+					end
+				end			
+			end
+		end
+	elseif obj:clsid() == clsid.smart_terrain then
+	else
+		--' Возможно регистрируется цель для квеста "найти предмет"
+		for k,v in pairs(self.task_id_by_type["find_item"]) do
+			if self.task_info[v].target_objects ~= nil then
+				for kk,vv in pairs(self.task_info[v].target_objects) do
+					if vv == obj.id then
+						table.remove(self.task_info[v].target_objects, vv)
+					end
+				end			
+			end
 		end
 	end
 end
