@@ -46,14 +46,14 @@
 		<texture>controller\controller_blood_01</texture>
 	</monster_claws>
 	
-	<main_task  x="200" y="10" width="600" height="60">
+	<main_task  x="200" y="120" width="600" height="60">
 		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c"/>
 	</main_task>
 
-	<cs_psy_danger  x="200" y="70" width="600" height="50">
+	<cs_psy_danger  x="200" y="10" width="600" height="50">
 		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
 	</cs_psy_danger>
-	<cs_radiation_danger  x="200" y="120" width="600" height="50">
+	<cs_radiation_danger  x="200" y="60" width="600" height="50">
 		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
 	</cs_radiation_danger>
 	
@@ -69,15 +69,15 @@
 		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
 	</item_used>
 
-	<gun_jammed x="200" y="10" width="600" height="60" ttl="3">
-		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">gun_jammed</text>
+	<gun_jammed x="200" y="10" width="600" height="50" ttl="3">
+		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">gun_jammed</text>
 	</gun_jammed>
 	
-	<cant_walk x="200" y="10" width="600" height="60" ttl="3">
-		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">cant_walk</text>
+	<cant_walk x="200" y="650" width="600" height="30" ttl="3">
+		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">cant_walk</text>
 	</cant_walk>
 	
-	<cant_walk_weight x="200" y="10" width="600" height="60" ttl="3">
-		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">cant_walk_weight</text>
+	<cant_walk_weight x="650" y="10" width="600" height="30" ttl="3">
+		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">cant_walk_weight</text>
 	</cant_walk_weight>
 </header>

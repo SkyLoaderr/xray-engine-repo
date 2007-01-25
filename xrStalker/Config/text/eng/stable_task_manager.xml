@@ -85,13 +85,13 @@
 		<text>YeahЕIt seems that the ones who say that the zone is expanding are right. They spotted a few snorks in the Dark Valley, but before they never saw them there. And here some started to panic. The Dutiers promised to destroy the snorks, but they can't seem to get around to doing it. Will you take it on?</text>
 	</string>
 	<string id="barmen_find_artefact_1">
-		<text>Find the Mean chunk artifact</text>
+		<text>Find the Meat chunk artifact</text>
 	</string>
 	<string id="barmen_find_artefact_1_descr">
-		<text>Find the Mean chunk artifact that heals ailments and injuries.</text>
+		<text>Find the Meat chunk artifact that heals ailments and injuries.</text>
 	</string>
 	<string id="barmen_find_artefact_1_text">
-		<text>Some padres have stopped by, left an order for a Mean chunk. You know, they have a certain interest in this healing artifactЕ those rotten miracle-workers! AnywayЕ You gonna do it? ItТs up to you.</text>
+		<text>Some padres have stopped by, left an order for a Meat chunk. You know, they have a certain interest in this healing artifactЕ those rotten miracle-workers! AnywayЕ You gonna do it? ItТs up to you.</text>
 	</string>
 	<string id="barmen_find_artefact_2">
 		<text>Find the Crystal Thorn artifact</text>
@@ -130,7 +130,7 @@
 		<text>Marked One, you know the story about the fairytale about the Goldfish? Yeah, yeah, that's the one. There are a bunch of jokes about it too. So anyway, there's this old man who keeps on wanting to catch it. Bottom line, I need the one-of-a-kind artifact called Goldfish, the client is from the outside, respectable. Will you help out?</text>
 	</string>
 	<string id="barmen_find_item_1">
-		<text>Ќайти пси-костюм</text>
+		<text>Find psi-suit</text>
 	</string>
 	<string id="barmen_find_item_1_descr">
 		<text>Find the suit that provides efficient protection against psi-emissions. The place to look for it is the deserted labs in the Dark Valley.</text>
@@ -358,7 +358,7 @@
 		<text>Find the enhanced rifle</text>
 	</string>
 	<string id="dolg_find_item_1_descr">
-		<text>Find the sample of enhanced LRs 300 near the military warehouses.</text>
+		<text>Find the sample of enhanced TRs 301 near the military warehouses.</text>
 	</string>
 	<string id="dolg_find_item_1_text">
 		<text>Someone helps the mercs. Quite recently they got equipped with machine-guns, enhanced for sniper fire. You understand that it's a dangerous toy? Well, I'm interested in such a gun. My gratitude will be pertinent, be sure.</text>
@@ -709,10 +709,10 @@
 		<text>Kill master stalker.</text>
 	</string>
 	<string id="mercenary_kill_stalker_descr">
-		<text>«а убийство каждого мастера, наемник готов хорошо платить. „ем меньше мастеров, тем легче наемникам.</text>
+		<text>The merc should pay for the assassination of each master. The fewer masters there are, the easier it is for the mercs.</text>
 	</string>
 	<string id="mercenary_kill_stalker_text">
-		<text>ћы не заинтересованы в том, чтобы в «оне бродили ход€чие танки: вооруженные до зубов сталкеры в экзосклетах. –абота от этого становитс€ только сложнее и опаснее. » чем их меньше Ц тем нам лучше. ”бьеш одного такого Ц получить награду.</text>
+		<text>We're not interested in the fact that walking dreadnoughts might wander across the Zone: stalkers in exo-skeletons armed to the teeth. The work becomes even more dangerous and harder over this. The fewer of them there are Ц the better it is for us. Kill one of them Ц and receive your reward.</text>
 	</string>
 	<string id="monster_part">
 		<text>Get a part of a monster body.</text>

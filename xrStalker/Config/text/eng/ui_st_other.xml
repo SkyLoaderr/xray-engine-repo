@@ -114,7 +114,6 @@
 	<string id="st_level">
 		<text>Level</text>
 	</string>
-
 	<string id="st_opening_stream">
 		<text>Opening stream</text>
 	</string>
@@ -172,5 +171,4 @@
 	<string id="st_loading_sectors_portals">
 		<text>Loading sectors & portals</text>
 	</string>
-
 </string_table>

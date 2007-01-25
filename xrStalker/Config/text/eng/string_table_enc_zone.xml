@@ -130,7 +130,7 @@
 		<text>A harmless anomaly, temporarily negating normal gravity. Manifests itself as an area - usually several meters in diameter - where Earth's gravitational pull is greatly reduced. Forms the Pellicle artifact.</text>
 	</string>
 	<string id="enc_zone_anomalies_meat">
-		<text>The anomaly snatches its victims up in the air and spins them at a breakneck speed. The exact nature of the Whirligig remains unknown. The anomaly can be recognized by a light whirlwind of dust above and by body fragments scattered in the vicinity. Victims caught on its outer rim - far enough from the maximum effect zone at the center - can escape the Whirligig with relatively minor injuries. Forms three types of artifacts: Stone Blood, Mean chunk and Soul.</text>
+		<text>The anomaly snatches its victims up in the air and spins them at a breakneck speed. The exact nature of the Whirligig remains unknown. The anomaly can be recognized by a light whirlwind of dust above and by body fragments scattered in the vicinity. Victims caught on its outer rim - far enough from the maximum effect zone at the center - can escape the Whirligig with relatively minor injuries. Forms three types of artifacts: Stone Blood, Meat chunk and Soul.</text>
 	</string>
 	<string id="enc_zone_anomalies_radioactive">
 		<text>An area of increased radiation - over 50 mR/h. Staying in a radiation zone for longer periods of time is strongly discouraged.</text>
@@ -199,13 +199,13 @@
 		<text>Can spot it near anomalies such as "Vortex" or in the hands of another stalker. While wearing it a certain amount of radiation is stored in the body while the rest of it is scattered in the radial direction away from the body. A good price.</text>
 	</string>
 	<string id="enc_zone_artifact_af-medusa">
-		<text>Is formed in the Trampolineanomaly. Forms a weak protective field whose side effect is a slight radiation. The artifact is widespread and notvery valuable.</text>
+		<text>Is formed in the Springboard. Forms a weak protective field whose side effect is a slight radiation. The artifact is widespread and notvery valuable.</text>
 	</string>
 	<string id="enc_zone_artifact_af-mincer-meat">
 		<text>Manufactured by the Whirligig anomaly. Causes increased cell growth. On the other hand, the newly formed cells are much more receptive to the effects of physical uranium. The artifact doesn't show up very often, but it's hard to call it rare.</text>
 	</string>
 	<string id="enc_zone_artifact_af-night-star">
-		<text>This wonderful artifact is formed by the anomaly Trampoline. The use of the artifact demands the neutralization of deadly radiation. Expensive and rare, this artifact is extremely interesting for scientific expeditions and other research activity in the Zone.</text>
+		<text>This wonderful artifact is formed by the anomaly Springboard. The use of the artifact demands the neutralization of deadly radiation. Expensive and rare, this artifact is extremely interesting for scientific expeditions and other research activity in the Zone.</text>
 	</string>
 	<string id="enc_zone_artifact_af-rusty-kristall">
 		<text>Crystallizes in the anomaly Burnt Fuzz. Naturally takes out the radiation from the organism. That is, through the ears along with some amount of blood. Blood loss is possible also through over openings. Widespread and quite effective, which is the cause for the stable pricein the artifact market.</text>
