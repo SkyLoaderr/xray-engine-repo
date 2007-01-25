@@ -443,11 +443,9 @@ end
 function gulag:clear_dead(obj_id)
 	printf( "[smart_terrain %s] gulag: Clear_dead: obj=%s", self.name, self.npc_info[obj_id].name)
 
-	self:changeCasualities( 1 )
-
 	if self.ObjectJob[obj_id] then
+		self:changeCasualities( 1 )
 		local job = self.Job[self.ObjectJob[obj_id]]
-
 		job.idle_after_death_end = game.time() + ( job.idle_after_death or job_idle_after_death ) * 1000
 	end
 
@@ -861,7 +859,8 @@ function gulag:setup_squad_and_group( obj_id, job )
 
 		local squad = level_groups[level.name()]
 		if not obj:alive() then
-			abort("CHANGE TEAM [%s] to [%s][%s][%s]", obj:name(), npc_info.team, squad or npc_info.o_squad, job.group or npc_info.o_group)
+			printf("CHANGE TEAM [%s] to [%s][%s][%s]. Object is DEAD, clearing", obj:name(), npc_info.team, squad or npc_info.o_squad, job.group or npc_info.o_group)
+			self:clear_dead(obj_id) --'Затычка против вылета.
 		end
 
 		printf("CHANGE TEAM [%s] to [%s][%s][%s]", obj:name(), npc_info.team, squad or npc_info.o_squad, job.group or npc_info.o_group )

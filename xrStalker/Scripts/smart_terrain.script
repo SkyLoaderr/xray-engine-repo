@@ -686,7 +686,8 @@ end
 function se_smart_terrain:task( obj )
 	local path_name = self.gulag:get_obj_job_path_name( obj.id )
 	if not path_name then
-		abort( "[smart_terrain %s] task: obj=%s job_path=nil", self:name(), obj:name() )
+		printf("[smart_terrain %s] task: obj=%s job_path=nil, CLEARING", self:name(), obj:name() )
+		self:unregister_npc(obj) --'Затычка против вылета.
 	end
 
 	printf("SEETING TASK PATH %s = %s", obj:name(), path_name)
