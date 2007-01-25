@@ -560,7 +560,7 @@ function CRandomTask:check_task_props(task_id)
 		
 			--' Проверка бага
 			if obj ~= nil and obj.alive == nil then	
-				printf("OBJ.ALIVE = nil for task %s", k)
+				printf("OBJ.ALIVE = nil for task %s", task_id)
 				abort("OBJ.NAME = %s", obj:name())				
 			end			
 
@@ -751,6 +751,7 @@ function CRandomTask:register_target(obj)
 				if self.task_info[v].target_objects == nil then
 					self.task_info[v].target_objects = {}
 				end
+				printf("@@@register new target %s for task %s", obj.id, v)
 				table.insert(self.task_info[v].target_objects, obj.id)
 			end
 		end
