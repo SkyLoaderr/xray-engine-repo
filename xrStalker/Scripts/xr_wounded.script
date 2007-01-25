@@ -372,8 +372,8 @@ function init_wounded(npc, ini, section, st, scheme)
 	local npc_community = npc:character_community()
 	if npc_community == "monolith" then
 		local state = wounded_by_state[math.mod(npc:id(), 3)]
-		def.hp_state			= "10|"..state.."@help_heavy"
-		def.hp_state_see		= "10|"..state.."@help_heavy"
+		def.hp_state			= "10|"..state.."@nil"
+		def.hp_state_see		= "10|"..state.."@nil"
 		def.psy_state			= ""
 		def.hp_victim			= "10|nil"
 		def.hp_cover			= "10|false"
@@ -384,8 +384,8 @@ function init_wounded(npc, ini, section, st, scheme)
 		def.use_medkit			= false
 		
 	elseif npc_community == "zombied" then
-		def.hp_state			= "40|wounded_zombie@help_heavy"
-		def.hp_state_see		= "40|wounded_zombie@help_heavy"
+		def.hp_state			= "40|wounded_zombie@nil"
+		def.hp_state_see		= "40|wounded_zombie@nil"
 		def.psy_state			= ""
 		def.hp_victim			= "40|nil"
 		def.hp_cover			= "40|false"
