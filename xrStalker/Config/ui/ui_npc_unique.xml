@@ -18,8 +18,8 @@
     <texture id="ui_npc_u_stalker_do_balon_6" x="339" y="216" width="165" height="108" />
     <texture id="ui_npc_u_stalker_neytral_balon_4" x="495" y="216" width="165" height="108" />
     <texture id="ui_npc_u_soldier_beret_1" x="660" y="216" width="165" height="108" />
-    <texture id="ui_npc_u_green_stalker_1" x="825" y="216" width="165" height="108" />
-    <texture id="ui_npc_u_green_stalker_8" x="0" y="324" width="165" height="108" />
+    <texture id="ui_npc_u_green_stalker_8" x="825" y="216" width="165" height="108" />
+    <texture id="ui_npc_u_green_stalker_1" x="0" y="324" width="165" height="108" />
     <texture id="ui_npc_u_trader" x="165" y="324" width="165" height="108" />
     <texture id="ui_npc_u_stalker_neytral_balon_1" x="330" y="324" width="165" height="108" />
     <texture id="ui_npc_u_stalker_neytral_balon_5" x="495" y="324" width="165" height="108" />
@@ -98,8 +98,8 @@
     <texture id="ui_npc_u_stalker_zombie7" x="165" y="1512" width="165" height="108" />
     <texture id="ui_npc_u_stalker_zombie8" x="330" y="1512" width="165" height="108" />
     <texture id="ui_npc_u_zombie_exoskeleton" x="495" y="1512" width="165" height="108" />
-    <texture id="ui_npc_u_stalker_fresh_0" x="660" y="1512" width="165" height="108" />
-    <texture id="ui_npc_u_stalker_fresh_2" x="825" y="1512" width="165" height="108" />
+    <texture id="ui_npc_u_zombie_fresh_0" x="660" y="1512" width="165" height="108" />
+    <texture id="ui_npc_u_zombie_fresh_2" x="825" y="1512" width="165" height="108" />
     <texture id="ui_npc_u_stalker_zombie_specnaz" x="0" y="1620" width="165" height="108" />
 
     <texture id="ui_npc_u_stalker_sv_exoskeleton" x="165" y="1620" width="165" height="108" />

@@ -19,7 +19,6 @@
     <texture id="ui_npc_monster_kontroler_3" x="495" y="216" width="165" height="108" />
     <texture id="ui_npc_monster_kontroler_4" x="660" y="216" width="165" height="108" />
     <texture id="ui_npc_monster_psevdogigant" x="825" y="216" width="165" height="108" />
-    <texture id="ui_npc_monster_poltergeist" x="0" y="324" width="165" height="108" />
 
    
 </ui_texture>
