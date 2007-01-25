@@ -47,7 +47,9 @@ function generic_object_binder:update(delta)
 --		self.object:name(), time_global())
 
 	-- Апдейт торговли
-	trade_manager.update(self.object)
+	if self.object:clsid() == clsid.trader then
+		trade_manager.update(self.object)
+	end
 
 	if self.object:alive() then
 		if self.object:is_talk_enabled() then
@@ -163,7 +165,9 @@ function generic_object_binder:save(packet)
 	object_binder.save(self, packet)
 
 	xr_logic.save_obj(self.object, packet)
-	trade_manager.save(self.object, packet)
+	if self.object:clsid() == clsid.trader then
+		trade_manager.save(self.object, packet)
+	end
 end
 
 function generic_object_binder:load(reader)
@@ -177,5 +181,7 @@ function generic_object_binder:load(reader)
 	end
 
 	xr_logic.load_obj(self.object, reader)
-	trade_manager.load(self.object, reader)
+	if self.object:clsid() == clsid.trader then
+		trade_manager.load(self.object, reader)
+	end
 end
