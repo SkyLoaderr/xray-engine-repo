@@ -69,7 +69,7 @@
 		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
 	</item_used>
 
-	<gun_jammed x="200" y="210" width="600" height="50" ttl="3">
+	<gun_jammed x="200" y="70" width="600" height="50" ttl="3">
 		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">gun_jammed</text>
 	</gun_jammed>
 	
@@ -77,7 +77,7 @@
 		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">cant_walk</text>
 	</cant_walk>
 	
-	<cant_walk_weight x="650" y="10" width="600" height="30" ttl="3">
+	<cant_walk_weight x="20" y="650" width="600" height="30" ttl="3">
 		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">cant_walk_weight</text>
 	</cant_walk_weight>
 </header>
