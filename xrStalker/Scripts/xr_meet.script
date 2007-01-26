@@ -306,6 +306,7 @@ function Cmeet_manager:get_key_from_zone(t)
 end
 function Cmeet_manager:process_use()
 	local is_talking = self.npc:is_talking()
+--	printf("MM1 %s %s", self.npc:name(), tostring(is_talking))
 	-- запрещаем юзать спящих
 	if xr_sleeper.is_npc_asleep(self.npc) then
 		self.npc:disable_talk()
@@ -326,10 +327,12 @@ function Cmeet_manager:process_use()
 		t = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.use)
 		self.disable_talk_weapon = false
 	end	
-	-- проверка по дистанции	
+	-- проверка по дистанции
+--	printf("MM2 %s %s", self.npc:name(), tostring(t))
 	if (is_talking and self.npc:position():distance_to_sqr(db.actor:position()) > 9) and
 		t ~= "self"
 	then
+--		printf("MM3 %s stop talk", self.npc:name())
 		self.npc:stop_talk()
 	end
 
@@ -342,6 +345,7 @@ function Cmeet_manager:process_use()
 		end
 	elseif t == "self" then
 		if not is_talking then
+--			printf("MM3 %s start talk", self.npc:name())
 			db.actor:run_talk_dialog(self.npc)
 		end
 	end
