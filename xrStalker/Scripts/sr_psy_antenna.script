@@ -72,7 +72,7 @@ function PsyAntenna:update_psy_hit(dt)
 			psy_hit.direction 			= vector():set( 0, 0, 0 )
 			psy_hit.impulse 			= 0
 			psy_hit.draftsman 			= db.actor
-			psy_hit.type 				= hit.telepatic
+			psy_hit.type 				= hit.wound
 			db.actor:hit				(psy_hit)
 
 			if db.actor.health < 0.01 and db.actor:alive() then
