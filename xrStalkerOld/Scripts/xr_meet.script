@@ -128,6 +128,14 @@ function action_meet_wait:execute ()
 		end
 	end
 
+	--' Туториал на спрятать оружие
+	if meet_manager.disable_talk_weapon == true and 
+       not has_alife_info("tutorial_part_15_hide_weapon") 
+	then
+		game.start_tutorial("part_15_hide_weapon")
+		db.actor:give_info_portion("tutorial_part_15_hide_weapon")		
+	end
+
 	local tt = db.storage[self.object:id()]
 	if tt.active_scheme then
 		if db.actor then
@@ -306,14 +314,19 @@ function Cmeet_manager:process_use()
 	-- запрещаем юзать спящих
 	if xr_sleeper.is_npc_asleep(self.npc) then
 		self.npc:disable_talk()
+		self.disable_talk_weapon = false
 		return
 	end
 	
 	local t
 	if isWeapon(db.actor:active_item())	then
 		t = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.use_wpn)
+		if t == "false" then
+			self.disable_talk_weapon = true
+		end
 	else
 		t = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.use)
+		self.disable_talk_weapon = false
 	end	
 	if t == "true" then
 		self.npc:enable_talk()
