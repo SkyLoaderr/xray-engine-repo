@@ -259,17 +259,17 @@ theme = {
 						 weather_good	= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}} }},
 
 	-- состояния тела
-	state = {	exec = sound_theme.combat_class, 
-				types = {state	= {min_snd = 10, max_snd = 15, rnd = 75, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}}} },
+	state = {	exec = sound_theme.comat_class, 
+				types = {state	= {min_snd = 30, max_snd = 60, rnd = 50, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}}} },
 	
 
 	sleep				= {min_snd = 10, max_snd = 15, rnd = 75, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 
 	-- просьба о помощи
 	help				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
-	help_see			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	help_see			= {min_snd = 10, max_snd = 30, rnd = 50, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	help_see_tutor		= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
-	help_heavy			= {min_snd = 2, max_snd = 3, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	help_heavy			= {min_snd = 10, max_snd = 30, rnd = 50, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	help_thanx			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	wounded_psy			= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	wounded_psy_shoot	= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
