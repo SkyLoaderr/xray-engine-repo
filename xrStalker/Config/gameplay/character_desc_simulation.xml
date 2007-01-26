@@ -902,7 +902,7 @@
 		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
 		
 		<rank>698</rank>
-		<reputation>-56</reputation>
+		<reputation>123</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
 		<snd_config>characters_voice\human_03\stalker\</snd_config>
