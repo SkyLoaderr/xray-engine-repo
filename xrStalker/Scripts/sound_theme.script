@@ -259,7 +259,7 @@ theme = {
 						 weather_good	= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}} }},
 
 	-- состояния тела
-	state = {	exec = sound_theme.comat_class, 
+	state = {	exec = sound_theme.combat_class, 
 				types = {state	= {min_snd = 30, max_snd = 60, rnd = 50, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}}} },
 	
 
