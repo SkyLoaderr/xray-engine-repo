@@ -443,8 +443,8 @@ local infos_table = {"esc_kill_gunslinger",
 "esc_find_doctor_done",
 "cit_fail_first_task",
 "gar_after_battle",
-"agr_krot_band_start"
-"esc_find_railroad_passage_find_stalker"
+"agr_krot_band_start",
+"esc_find_railroad_passage_find_stalker",
 "esc_find_railroad_passage_done"
 }
 local actor = db.actor
