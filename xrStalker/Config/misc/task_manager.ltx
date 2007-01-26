@@ -1256,7 +1256,7 @@ reward_money = 5000
 reward_reputation = +40
 reward_relation = dolg, -50, freedom, +100
 reward_rank = 7
-reward_item = ammo_m209,ammo_m209,ammo_m209
+reward_item = ammo_m209,ammo_m209
 time = 259200
 
 [freedom_eliminate_camp_2]
@@ -1270,6 +1270,7 @@ reward_money = 5000
 reward_reputation = +30
 reward_relation = freedom, +80
 reward_rank = 5
+reward_item = grenade_f1,grenade_f1
 time = 86400
 
 [freedom_eliminate_camp_3]
@@ -1279,10 +1280,11 @@ text = freedom_eliminate_camp_3_text
 description = freedom_eliminate_camp_3_descr
 parent = freedom
 target = ros_smart_stalker1
-reward_money = 6000
+reward_money = 5000
 reward_reputation = +5
 reward_relation = freedom, +90, dolg, -150
 reward_rank = 6
+reward_item = grenade_f1,grenade_f1
 time = 86400
 
 [freedom_eliminate_camp_4]
@@ -1296,6 +1298,7 @@ reward_money = 5000
 reward_reputation = +35
 reward_relation = freedom, +60, dolg, -70
 reward_rank = 5
+reward_item = grenade_f1,grenade_f1
 time = 86400
 
 [freedom_eliminate_camp_5]
@@ -1305,10 +1308,11 @@ text = freedom_eliminate_camp_5_text
 description = freedom_eliminate_camp_5_descr
 parent = freedom
 target = mil_village_lair
-reward_money = 7000
+;reward_money = 5000
 reward_reputation = +35
 reward_relation = freedom, +120, dolg, -30
 reward_rank = 7
+reward_item = wpn_winchester_m1,ammo_12x76_zhekan,ammo_12x76_zhekan,ammo_12x76_zhekan,ammo_12x76_zhekan,ammo_12x76_zhekan
 time = 86400
 
 [freedom_eliminate_camp_6]
@@ -1318,9 +1322,10 @@ text = freedom_eliminate_camp_6_text
 description = freedom_eliminate_camp_6_descr
 parent = freedom
 target = mil_lair3
-reward_money = 2000
+reward_money = 5000
 reward_reputation = +5
 reward_rank = 2
+reward_item = ammo_m209,ammo_m209
 time = 86400
 
 [freedom_eliminate_camp_7]
@@ -1333,7 +1338,7 @@ target = ros_smart_monster5
 reward_money = 5000
 reward_reputation = +25
 reward_rank = 4
-reward_item = ammo_m209,ammo_m209,ammo_m209
+reward_item = ammo_m209,ammo_m209
 time = 86400
 
 [freedom_kill_stalker_4]
@@ -1343,10 +1348,11 @@ text = freedom_kill_stalker_4_text
 description = freedom_kill_stalker_4_descr
 parent = freedom
 target = sim_stalker_veteran
-reward_money = 5000
+;reward_money = 5000
 reward_reputation = +30
 reward_relation = freedom, +80
 reward_rank = 5
+reward_item = af_night_star
 time = 259200
 
 [freedom_kill_stalker_5]
@@ -1356,10 +1362,11 @@ text = freedom_kill_stalker_5_text
 description = freedom_kill_stalker_5_descr
 parent = freedom
 target = sim_dolg_master
-reward_money = 8000
+;reward_money = 8000
 reward_reputation = 0
 reward_relation = freedom, +150, dolg, -150
 reward_rank = 8
+reward_item = af_gold_fish
 time = 259200
 
 [freedom_kill_stalker_6]
@@ -1369,7 +1376,7 @@ text = freedom_kill_stalker_6_text
 description = freedom_kill_stalker_6_descr
 parent = freedom
 target = sim_stalker_master_chuchelo
-reward_item = wpn_sig_m2
+reward_item = af_dummy_spring
 reward_reputation = +67
 reward_relation = freedom, +150
 reward_rank = 7
@@ -1382,7 +1389,7 @@ text = freedom_find_item_3_text
 description = freedom_find_item_3_descr
 parent = freedom
 target = outfit_specnaz_m1
-reward_item = outfit_svoboda_m1
+reward_item = svoboda_heavy_outfit
 reward_reputation = +40
 reward_rank = 7
 reward_relation = dolg, -100, freedom +150
@@ -1395,10 +1402,11 @@ text = freedom_monster_part_1_text
 description = freedom_monster_part_1_descr
 parent = freedom
 target = mutant_boar_leg
-reward_money = 4000
+reward_money = 2000
 reward_reputation = +15
 reward_rank = 4
 reward_relation = dolg, -50, freedom +50
+reward_item = vodka
 time = 86400
 
 [freedom_defend_lager_1]
@@ -1423,7 +1431,7 @@ description = freedom_defend_lager_2_descr
 parent = freedom
 target = mil_fblockpost
 init_condition = {+mil_fblockpost_quest_complete =actor_on_level(l07_military) =gulag_state(mil_monster:1)}, {+mil_fblockpost_quest_fail =actor_on_level(l07_military) =gulag_state(mil_monster:1)}
-reward_money = 8000
+reward_money = 5000
 reward_reputation = 150
 reward_relation = freedom, +150
 reward_rank = 8
