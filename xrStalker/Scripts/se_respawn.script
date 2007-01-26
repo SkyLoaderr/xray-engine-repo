@@ -283,37 +283,37 @@ function se_respawn:create(prob)
 		-- Производим рандомную взвешенную выборку
 		-- с учетом уже заспавленного количества человек.
 		for k,v in pairs(self.respawn_section) do
-			local tt = self.sectSpawnProps[v.section]
-			local community_rank = tt.community.."_"..tt.rank
-			local s_count = simMaxCount[community_rank]
-			if s_count == nil then
-				s_count = 0
-			end
-			if tt.check == false or
-			   self.item_spawn == true or
-			   sim_statistic.simNpcCount(tt.community, tt.rank) < s_count
-			then	
+--'			local tt = self.sectSpawnProps[v.section]
+--'			local community_rank = tt.community.."_"..tt.rank
+--'			local s_count = simMaxCount[community_rank]
+--'			if s_count == nil then
+--'				s_count = 0
+--'			end
+--'			if tt.check == false or
+--'			   self.item_spawn == true or
+--'			   sim_statistic.simNpcCount(tt.community, tt.rank) < s_count
+--'			then	
 				sum = sum + v.prob
-			end
+--'			end
 		end
 		sum = math.random(0, sum)
 		for k,v in pairs(self.respawn_section) do
-			local tt = self.sectSpawnProps[v.section]
-			local community_rank = tt.community.."_"..tt.rank
-			local s_count = simMaxCount[community_rank]
-			if s_count == nil then
-				s_count = 0
-			end			
-			if tt.check == false or
-			   self.item_spawn == true or
-			   sim_statistic.simNpcCount(tt.community, tt.rank) < s_count 
-			then	
+--'			local tt = self.sectSpawnProps[v.section]
+--'			local community_rank = tt.community.."_"..tt.rank
+--'			local s_count = simMaxCount[community_rank]
+--'			if s_count == nil then
+--'				s_count = 0
+--'			end			
+--'			if tt.check == false or
+--'			   self.item_spawn == true or
+--'			   sim_statistic.simNpcCount(tt.community, tt.rank) < s_count 
+--'			then	
 				sum = sum - v.prob			
 				if sum <= 0 then
 					spawn_section = v.section
 					break
 				end
-			end
+--'			end
 		end
 		
 		if spawn_section == "" then
