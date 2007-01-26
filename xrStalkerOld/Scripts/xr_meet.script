@@ -305,16 +305,14 @@ function Cmeet_manager:get_key_from_zone(t)
 	return nil
 end
 function Cmeet_manager:process_use()
-	-- проверка по дистанции
 	local is_talking = self.npc:is_talking()
-	if is_talking and self.npc:position():distance_to_sqr(db.actor:position()) > 9 then
-		self.npc:stop_talk()
-	end
-
 	-- запрещаем юзать спящих
 	if xr_sleeper.is_npc_asleep(self.npc) then
 		self.npc:disable_talk()
 		self.disable_talk_weapon = false
+		if is_talking then
+			self.npc:stop_talk()
+		end
 		return
 	end
 	
@@ -328,6 +326,13 @@ function Cmeet_manager:process_use()
 		t = xr_logic.pick_section_from_condlist(db.actor, self.npc, self.a.use)
 		self.disable_talk_weapon = false
 	end	
+	-- проверка по дистанции	
+	if (is_talking and self.npc:position():distance_to_sqr(db.actor:position()) > 9) and
+		t ~= "self"
+	then
+		self.npc:stop_talk()
+	end
+
 	if t == "true" then
 		self.npc:enable_talk()
 	elseif t == "false" then
