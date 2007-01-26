@@ -195,7 +195,7 @@
 	<game_task id="yan_scientist_job" prio="0">
 		<title>yan_scientist_job</title>
 		<objective>
-			<icon>ui_iconsTotal_esc_blockpost_case_to_trader</icon>
+			<icon>ui_iconsTotal_yan_scientist_job</icon>
 		</objective>
 		<objective>
 			<text>yan_scientist_job_text</text>
