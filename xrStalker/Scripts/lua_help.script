@@ -417,6 +417,7 @@ C++ class story_ids {
     const ds_falling_barrel_9 = 1509;
     const ds_table = 1515;
     const esc_bandits_factory = 17;
+    const esc_dead_tunel_novice = 33;
     const esc_exit_to_garbage_01 = 91;
     const esc_helicopter = 14;
     const esc_kuznetsov = 32;
@@ -679,6 +680,7 @@ C++ class story_ids {
     const sar_generator_1 = 1301;
     const sar_generator_2 = 1302;
     const sar_monolith = 1300;
+    const sar_monolith_find = 1306;
     const sar_secret_door = 1303;
     const soldiers_bridge = 31;
     const test_searchlight1 = 20002;
@@ -857,6 +859,53 @@ C++ class callback {
 
 };
 
+C++ class key_bindings {
+    const kACCEL = 6;
+    const kBACK = 9;
+    const kBUY = 49;
+    const kCAM_1 = 15;
+    const kCAM_2 = 16;
+    const kCAM_3 = 17;
+    const kCAM_4 = 18;
+    const kCAM_ZOOM_IN = 19;
+    const kCAM_ZOOM_OUT = 20;
+    const kCHAT = 43;
+    const kCONSOLE = 47;
+    const kCROUCH = 5;
+    const kDOWN = 3;
+    const kDROP = 40;
+    const kFWD = 8;
+    const kINVENTORY = 48;
+    const kJUMP = 4;
+    const kLEFT = 0;
+    const kL_LOOKOUT = 12;
+    const kL_STRAFE = 10;
+    const kNIGHT_VISION = 22;
+    const kQUIT = 46;
+    const kRIGHT = 1;
+    const kR_LOOKOUT = 13;
+    const kR_STRAFE = 11;
+    const kSCORES = 42;
+    const kSCREENSHOT = 45;
+    const kSKIN = 50;
+    const kTEAM = 51;
+    const kTORCH = 21;
+    const kUP = 2;
+    const kUSE = 41;
+    const kWPN_1 = 23;
+    const kWPN_2 = 24;
+    const kWPN_3 = 25;
+    const kWPN_4 = 26;
+    const kWPN_5 = 27;
+    const kWPN_6 = 28;
+    const kWPN_FIRE = 31;
+    const kWPN_FUNC = 36;
+    const kWPN_NEXT = 30;
+    const kWPN_RELOAD = 35;
+    const kWPN_ZOOM = 32;
+
+};
+
 C++ class game_messages {
     const GAME_EVENT_ARTEFACT_DESTROYED = 15;
     const GAME_EVENT_ARTEFACT_DROPPED = 17;
@@ -908,68 +957,6 @@ C++ class GAME_TYPE {
     const GAME_DEATHMATCH = 2;
     const GAME_TEAMDEATHMATCH = 6;
     const GAME_UNKNOWN = 0;
-
-};
-
-C++ class key_bindings {
-    const kACCEL = 12;
-    const kBACK = 2;
-    const kBUY = 50;
-    const kCAM_1 = 16;
-    const kCAM_2 = 17;
-    const kCAM_3 = 18;
-    const kCAM_4 = 19;
-    const kCAM_ZOOM_IN = 20;
-    const kCAM_ZOOM_OUT = 21;
-    const kCHAT = 44;
-    const kCONSOLE = 48;
-    const kCROUCH = 10;
-    const kDOWN = 8;
-    const kDROP = 42;
-    const kEXT_1 = 57;
-    const kEXT_10 = 66;
-    const kEXT_11 = 67;
-    const kEXT_12 = 68;
-    const kEXT_13 = 69;
-    const kEXT_14 = 70;
-    const kEXT_15 = 71;
-    const kEXT_2 = 58;
-    const kEXT_3 = 59;
-    const kEXT_4 = 60;
-    const kEXT_5 = 61;
-    const kEXT_6 = 62;
-    const kEXT_7 = 63;
-    const kEXT_8 = 64;
-    const kEXT_9 = 65;
-    const kFWD = 1;
-    const kINVENTORY = 49;
-    const kJUMP = 9;
-    const kLEFT = 5;
-    const kL_LOOKOUT = 13;
-    const kL_STRAFE = 3;
-    const kNIGHT_VISION = 23;
-    const kQUIT = 47;
-    const kRIGHT = 6;
-    const kR_LOOKOUT = 14;
-    const kR_STRAFE = 4;
-    const kSCORES = 43;
-    const kSCREENSHOT = 46;
-    const kSKIN = 51;
-    const kTEAM = 52;
-    const kTORCH = 22;
-    const kUP = 7;
-    const kUSE = 40;
-    const kWPN_1 = 24;
-    const kWPN_2 = 25;
-    const kWPN_3 = 26;
-    const kWPN_4 = 27;
-    const kWPN_5 = 28;
-    const kWPN_6 = 29;
-    const kWPN_FIRE = 32;
-    const kWPN_FUNC = 37;
-    const kWPN_NEXT = 31;
-    const kWPN_RELOAD = 33;
-    const kWPN_ZOOM = 34;
 
 };
 
@@ -5800,26 +5787,29 @@ C++ class stalker_ids {
     const property_use_crouch_to_look_out = 24;
     const property_use_suddenness = 22;
     const sound_alarm = 4;
-    const sound_attack = 5;
-    const sound_backup = 6;
-    const sound_detour = 7;
+    const sound_attack_allies_several_enemies = 7;
+    const sound_attack_allies_single_enemy = 6;
+    const sound_attack_no_allies = 5;
+    const sound_backup = 8;
+    const sound_detour = 9;
     const sound_die = 0;
     const sound_die_in_anomaly = 1;
-    const sound_enemy_critically_wounded = 18;
-    const sound_enemy_killed_or_wounded = -805305856;
-    const sound_friendly_grenade_alarm = 14;
-    const sound_grenade_alarm = 13;
+    const sound_enemy_critically_wounded = 21;
+    const sound_enemy_killed_or_wounded = -805302272;
+    const sound_friendly_grenade_alarm = 17;
+    const sound_grenade_alarm = 16;
     const sound_humming = 3;
     const sound_injuring = 2;
-    const sound_injuring_by_friend = 9;
-    const sound_kill_wounded = 17;
-    const sound_need_backup = 15;
-    const sound_panic_human = 10;
-    const sound_panic_monster = 11;
-    const sound_running_in_danger = 16;
-    const sound_script = 20;
-    const sound_search = 8;
-    const sound_tolls = 12;
+    const sound_injuring_by_friend = 12;
+    const sound_kill_wounded = 20;
+    const sound_need_backup = 18;
+    const sound_panic_human = 13;
+    const sound_panic_monster = 14;
+    const sound_running_in_danger = 19;
+    const sound_script = 23;
+    const sound_search1_no_allies = 11;
+    const sound_search1_with_allies = 10;
+    const sound_tolls = 15;
 
 };
 
@@ -7968,11 +7958,11 @@ List of the namespaces exported to LUA
 
 
 namespace  {
+    function game_ini();
     function bit_and(number, number);
     function alife();
     function GetFontGraffiti32Russian();
     function device();
-    function GetTextureInfo(string, string);
     function cast_alife_object_to_trader_abstract(cse_alife_object*);
     function bit_not(number);
     function game_graph();
@@ -7995,19 +7985,19 @@ namespace  {
     function app_ready();
     function GetTextureName(string);
     function bit_or(number, number);
+    function GetFontDI();
     function GetFontLetterica16Russian();
     function log(string);
     function system_ini();
     function show_condition(ini_file*, string);
     function cast_planner_to_action(action_planner*);
     function GetFontLetterica25();
+    function editor();
     function GetFontMedium();
-    function cast_action_to_planner(action_base*);
-    function GetFontDI();
+    function GetTextureInfo(string, string);
     function flush();
     function GetFontGraffiti22Russian();
-    function editor();
-    function time_global();
+    function cast_action_to_planner(action_base*);
     function verify_if_thread_is_running();
     function prefetch(string);
     function GetTextureRect(string);
@@ -8016,13 +8006,21 @@ namespace  {
     function xrRender_test_r2_hw();
     function user_name();
     function GetARGB(number, number, number, number);
+    function time_global();
     function script_server_object_version();
 
     namespace game {
+        function translate_string(string);
         function time();
         function get_game_time();
-        function translate_string(string);
+        function has_active_tutorial();
         function start_tutorial(string);
+    };
+
+    namespace relation_registry {
+        function community_goodwill(string, number);
+        function change_community_goodwill(string, number, number);
+        function set_community_goodwill(string, number, number);
     };
 
     namespace level {
@@ -8088,12 +8086,6 @@ namespace  {
         function get_game_difficulty();
         function show_indicators();
         function debug_actor();
-    };
-
-    namespace relation_registry {
-        function community_goodwill(string, number);
-        function change_community_goodwill(string, number, number);
-        function set_community_goodwill(string, number, number);
     };
 
     namespace actor_stats {
