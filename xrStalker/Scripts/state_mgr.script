@@ -330,9 +330,6 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 	--сперва устанавливаем цели
 	if target ~= nil then
 		self.look_position = target.look_position
-		if target.look_position == nil then
-			abort("STATE_MGR: look_position must be not nil.")
-		end
 		if target.look_object ~= nil then 
 			self.look_object = target.look_object:id()
 		else

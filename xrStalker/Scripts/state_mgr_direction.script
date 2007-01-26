@@ -112,7 +112,7 @@ function act_state_mgr_direction_turn:turn()
 	   level.object_by_id(self.st.look_object) ~= nil 
 	then		
 		look_at_object(self.object, self.st)
-	else
+	elseif self.st.look_position ~= nil then
 		local dir = vector():sub(self.st.look_position, self.object:position())
 		if self.st.point_obj_dir == true then
 			dir.y = 0
