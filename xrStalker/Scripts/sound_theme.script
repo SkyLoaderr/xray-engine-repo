@@ -199,6 +199,7 @@ ph_snd_themes["x16_switch_1"] = {"ambient\\x16\\switch_1"}
 ph_snd_themes["x16_switch_2"] = {"ambient\\x16\\switch_2"}
 
 ph_snd_themes["x18_firedoor"] = {"anomaly\\fireball_idle"}
+ph_snd_themes["mon_poltergeist"] = {"anomaly\\anomaly_gravy_hit1"}
 
 ph_snd_themes["psy_voices"] = {{[[characters_voice\scenario\yantar\psy_voices_1]]}} --' Стерео
 
