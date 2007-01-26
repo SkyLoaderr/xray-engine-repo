@@ -69,8 +69,9 @@ cam_max_angle_horz			= 20.0		;(degree) maximum shot horizontal degree
 cam_step_angle_horz			= 1.0		;(degree) size of step camera moved in horizontal position while shooting
 
 fire_dispersion_condition_factor 	= 5	    	;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability 		= 0.0050	;вероятность осечки при максимальном износе 
-condition_shot_dec 			= 0.00015	;увеличение износа при каждом выстреле
+misfire_probability 		= 0.003	;вероятность осечки при максимальном износе 
+misfire_condition_k			= 0.05
+condition_shot_dec 			= 0.0002	;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 ;parent dispersion modifiers
 PDM_disp_base 				= 1.0
@@ -139,7 +140,7 @@ ph_mass						= 5
 ;addons
 scope_status				= 1
 silencer_status				= 0;2
-grenade_launcher_status		= 2
+grenade_launcher_status		= 0;2
 
 zoom_enabled				= true
 scope_zoom_factor			= 30		;SUSAT 2X
