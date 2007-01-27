@@ -408,7 +408,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>sar2_bio</bio>
+        <bio>sar_monolith_bio</bio>
 
         <class>sar2_monolith_regular</class>
         <community>monolith</community>
@@ -435,7 +435,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>sar2_bio</bio>
+        <bio>sar_monolith_bio</bio>
 
         <class>sar2_monolith_regular2</class>
         <community>monolith</community>
@@ -462,7 +462,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>sar2_bio</bio>
+        <bio>sar_monolith_bio</bio>
 
         <class>sar2_monolith_specnaz</class>
         <community>monolith</community>
@@ -489,7 +489,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>sar2_bio</bio>
+        <bio>sar_monolith_bio</bio>
 
         <class>sar2_monolith_specnaz2</class>
         <community>monolith</community>
@@ -518,7 +518,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon>ui_npc_u_stalker_mo_exo</icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>sar2_bio</bio>
+        <bio>sar_monolith_bio</bio>
 
         <class>sar2_monolith_exo</class>
         <community>monolith</community>
@@ -545,7 +545,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon>ui_npc_u_stalker_mo_exo</icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>sar2_bio</bio>
+        <bio>sar_monolith_bio</bio>
 
         <class>sar2_monolith_exo2</class>
         <community>monolith</community>
