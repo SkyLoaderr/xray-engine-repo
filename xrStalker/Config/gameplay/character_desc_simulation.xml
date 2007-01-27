@@ -5932,7 +5932,23 @@
 	<specific_character id="sim_test_113" team_default = "1">
 		<class>sim_test_113</class>
 		<visual>actors\ucheniy\ucheniy_1_strong</visual>
-		<icon>ui_npc_u_ucheniy_1_strong</icon>
+		<icon>ui_npc_u_barman</icon>
+		
+		<name>Test</name>
+		<map_icon x="1" y="0"></map_icon>
+		<bio></bio>
+		<community>stalker</community> <terrain_sect>stalker_terrain</terrain_sect>
+		<rank>900</rank>
+		<reputation>0</reputation>
+		<snd_config>characters_voice\human_01\</snd_config>
+		<supplies>
+		</supplies>
+	</specific_character>
+	
+	<specific_character id="sim_test_114" team_default = "1">
+		<class>sim_test_114</class>
+		<visual>actors\izgoy\izgoy</visual>
+		<icon>ui_npc_u_izgoy</icon>
 		
 		<name>Test</name>
 		<map_icon x="1" y="0"></map_icon>

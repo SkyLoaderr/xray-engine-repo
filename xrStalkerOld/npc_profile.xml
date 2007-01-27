@@ -1803,4 +1803,8 @@
 	<character id="sim_test_113">
 		<class>sim_test_113</class>
 	</character>
+
+	<character id="sim_test_114">
+		<class>sim_test_114</class>
+	</character>
 </xml>

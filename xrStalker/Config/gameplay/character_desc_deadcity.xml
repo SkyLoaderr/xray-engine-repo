@@ -5,7 +5,7 @@
 <!-------------------------- DOCTOR ------------------------>
     <specific_character id="cit_doctor" team_default = "1">
         <name>cit_doctor_name</name>
-        <icon x="6" y="0"></icon>
+        <icon>ui_npc_u_izgoy</icon>
         <map_icon x="6" y="0"></map_icon>
         <bio>cit_doctor_bio</bio>
 
