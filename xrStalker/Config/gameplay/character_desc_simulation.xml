@@ -1868,7 +1868,7 @@
         <reputation>-245</reputation>
 
         <visual>actors\monolit\stalker_mo_mask</visual>
-        <snd_config>characters_voice\human_02\monolith\</snd_config>
+        <snd_config>characters_voice\human_01\monolith\</snd_config>
 		<crouch_type>-1</crouch_type>
         <supplies>
             [spawn] \n
@@ -1926,7 +1926,7 @@
         <reputation>-378</reputation>
 
         <visual>actors\monolit\stalker_mo_mask</visual>
-        <snd_config>characters_voice\human_02\monolith\</snd_config>
+        <snd_config>characters_voice\human_01\monolith\</snd_config>
 		<crouch_type>-1</crouch_type>
         <supplies>
             [spawn] \n
@@ -2079,7 +2079,7 @@
         <reputation>-542</reputation>
 
         <visual>actors\monolit\stalker_mo_mask</visual>
-        <snd_config>characters_voice\human_02\monolith\</snd_config>
+        <snd_config>characters_voice\human_01\monolith\</snd_config>
 		<crouch_type>-1</crouch_type>
         <supplies>
             [spawn] \n
