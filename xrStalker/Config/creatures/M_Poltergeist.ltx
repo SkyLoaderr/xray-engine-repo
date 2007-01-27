@@ -447,3 +447,19 @@ time_attack			= 0.3		; fade in
 time_release		= 0.85		; fade out
 
 
+[m_poltergeist_strong_flame]:m_poltergeist_normal_flame
+$spawn               = "monsters\poltergeists\poltergeist_strong_flame"
+
+immunities_sect		= poltergeist_immunities_strong
+flame_hit_value			= 0.7
+
+[poltergeist_immunities_strong]
+burn_immunity 		= 0.3					;коэффициенты иммунитета 
+strike_immunity 	= 0.7
+shock_immunity 		= 0.5
+wound_immunity 		= 0.3
+radiation_immunity 	= 0.0
+telepatic_immunity 	= 1.0
+chemical_burn_immunity 	= 1.0
+explosion_immunity 	= 0.3
+fire_wound_immunity = 0.3
