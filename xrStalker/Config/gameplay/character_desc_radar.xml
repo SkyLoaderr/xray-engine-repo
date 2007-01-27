@@ -16,7 +16,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -80,7 +80,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
-		<snd_config>characters_voice\human_02\monolith\</snd_config>
+		<snd_config>characters_voice\human_01\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -144,7 +144,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -176,7 +176,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -272,7 +272,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -338,7 +338,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
-		<snd_config>characters_voice\human_02\monolith\</snd_config>
+		<snd_config>characters_voice\human_01\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -404,7 +404,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -470,7 +470,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -503,7 +503,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -538,7 +538,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -602,7 +602,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
-		<snd_config>characters_voice\human_03\monolith\</snd_config>
+		<snd_config>characters_voice\human_01\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -666,7 +666,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -698,7 +698,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -762,7 +762,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -796,7 +796,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
-		<snd_config>characters_voice\human_02\monolith\</snd_config>
+		<snd_config>characters_voice\human_01\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -827,7 +827,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_head_1</visual>
-		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -1024,7 +1024,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_head1</visual>
-		<snd_config>characters_voice\human_01\monolith\</snd_config>
+		<snd_config>characters_voice\human_02\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
@@ -1055,7 +1055,7 @@
 		<money min="600" max="2000" infinitive="0"/>
 
 		<visual>actors\monolit\stalker_mo_mask</visual>
-		<snd_config>characters_voice\human_02\monolith\</snd_config>
+		<snd_config>characters_voice\human_01\monolith\</snd_config>
   		<crouch_type>-1</crouch_type>
 		<supplies>
 			[spawn] \n
