@@ -1185,7 +1185,7 @@ reward_money = 5000
 reward_reputation = +20
 reward_relation = dolg, +100
 reward_rank = 6
-reward_item = ammo_vog-25,ammo_vog-25,ammo_vog-25
+reward_item = ammo_vog-25,ammo_vog-25
 time = 86400
 
 [dolg_eliminate_lager_13]
@@ -1212,7 +1212,7 @@ reward_money = 5000
 reward_reputation = +40
 reward_relation = dolg, +100
 reward_rank = 6
-reward_item = ammo_vog-25,ammo_vog-25,ammo_vog-25
+reward_item = ammo_vog-25,ammo_vog-25
 time = 86400
 
 [dolg_kill_stalker_1]
@@ -1222,10 +1222,11 @@ text = dolg_kill_stalker_1_text
 description = dolg_kill_stalker_1_descr
 parent = dolg
 target = sim_bandit_master_kocherga
-reward_money = 7000
+;reward_money = 7000
 reward_reputation = +120
 reward_relation = dolg, 125
 reward_rank = 7
+reward_item = af_gold_fish
 time = 86400
 
 [dolg_find_item_1]
@@ -1235,10 +1236,11 @@ text = dolg_find_item_1_text
 description = dolg_find_item_1_descr
 parent = dolg
 target = wpn_lr300_m1
-reward_money = 6000
+;reward_money = 5000
 reward_reputation = +50
 reward_rank = 6
 reward_relation = dolg, 100
+reward_item = wpn_vintorez,ammo_9x39_sp5,ammo_9x39_sp5
 time = 86400
 
 
@@ -1716,10 +1718,10 @@ description = zastava_commander_eliminate_lager_descr
 ;condlist = {+esc_serious_talk}
 parent = zastava_commander
 target = bar_zastava_dogs_lair
-reward_money = 4000
+;reward_money = 4000
 reward_reputation = +40
 reward_rank = 8
-reward_item = medkit,bandage
+reward_item = af_electra_flash
 time = 86400
 
 ;tasks for wolf  
@@ -1731,10 +1733,10 @@ description = wolf_eliminate_lager_1_descr
 ;condlist = {+esc_serious_talk}
 parent = wolf
 target = esc_bridge_boar
-reward_money = 1500
+;reward_money = 1500
 reward_reputation = +20
 reward_rank = 3
-reward_item = medkit,bandage
+reward_item = af_vyvert
 time = 86400
 
 
@@ -1746,10 +1748,10 @@ description = wolf_eliminate_lager_2_descr
 ;condlist = {+esc_serious_talk}
 parent = wolf
 target = esc_flesh_2
-reward_money = 2500
+;reward_money = 2500
 reward_reputation = +30
 reward_rank = 4
-reward_item = medkit
+reward_item = af_blood
 time = 86400
 
 ;tasks for petrenko 
@@ -1760,10 +1762,10 @@ text = petrenko_kill_stalker_text
 description = petrenko_kill_stalker_descr
 parent = petrenko
 target = sim_svoboda_specnaz_prut
-reward_money = 5000
+;reward_money = 5000
 reward_reputation = +3
 reward_rank = 9
-reward_item = medkit,bandage
+reward_item = wpn_val_m1,ammo_9x39_ap,ammo_9x39_ap,ammo_9x39_ap
 time = 86400
 
 
@@ -1776,10 +1778,10 @@ description = hunter_eliminate_lager_descr
 ;condlist = {+esc_serious_talk}
 parent = hunter
 target = mil_hunters_bloodsucker
-reward_money = 1500
+;reward_money = 1500
 reward_reputation = +20
 reward_rank = 3
-reward_item = medkit,bandage
+reward_item = af_ameba_mica
 time = 86400
 
 ;tasks for lisiy	
@@ -1790,10 +1792,10 @@ text = lisiy_kill_stalker_text
 description = lisiy_kill_stalker_descr
 parent = lisiy
 target = sim_stalker_veteran_umnik
-reward_money = 5000
+;reward_money = 5000
 reward_reputation = +3
 reward_rank = 9
-reward_item = medkit,bandage
+reward_item = af_electra_flash,af_vyvert
 time = 86400
 
 
@@ -1805,9 +1807,10 @@ text = drunk_dolg_find_item_text
 description = drunk_dolg_find_item_descr
 parent = drunk_dolg
 target = wpn_abakan_m2
-reward_money = 8000
+;reward_money = 8000
 reward_reputation = 10
-reward_rank = 4	
+reward_rank = 4
+reward_item = af_ameba_slug	
 time = 86400
 
 
@@ -1820,9 +1823,10 @@ text = shustriy_find_item_text
 description = shustriy_find_item_descr
 parent = shustriy
 target = outfit_bandit_m1
-reward_money = 4000
+;reward_money = 4000
 reward_reputation = 10
 reward_rank = 4
+reward_item = af_cristall_flower
 time = 86400
 
 ;tasks for Mercenary
@@ -1837,5 +1841,5 @@ target = sim_stalker_master_master
 reward_money = 5000
 reward_reputation = +3
 reward_rank = 9
-reward_item = medkit,bandage
+;reward_item = medkit,bandage
 time = 86400
