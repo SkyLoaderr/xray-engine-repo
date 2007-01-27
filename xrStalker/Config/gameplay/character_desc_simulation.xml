@@ -2496,7 +2496,7 @@
 <!---------------------------FRESH ZOMBIED STALKERS----------------------->
 	<specific_character id="sim_fresh_Zombied_stalker_1" team_default = "1">
 		<name>zombie_name</name>
-		<icon>ui_npc_u_stalker_fresh_0</icon>
+		<icon>ui_npc_u_zombie_fresh_0</icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>sim_fresh_Zombied_bio</bio>
 
@@ -2522,7 +2522,7 @@
 
 	<specific_character id="sim_fresh_Zombied_stalker_2" team_default = "1">
 		<name>zombie_name</name>
-		<icon>ui_npc_u_stalker_fresh_0</icon>
+		<icon>ui_npc_u_zombie_fresh_0</icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>sim_fresh_Zombied_bio</bio>
 
@@ -2548,7 +2548,7 @@
 
 	<specific_character id="sim_fresh_Zombied_stalker_3" team_default = "1">
 		<name>zombie_name</name>
-		<icon>ui_npc_u_stalker_fresh_2</icon>
+		<icon>ui_npc_u_zombie_fresh_2</icon>
 		<map_icon x="7" y="0"></map_icon>
 		<bio>sim_fresh_Zombied_bio</bio>
 
@@ -5129,7 +5129,7 @@
 	<specific_character id="sim_test_063" team_default = "1">
 		<class>sim_test_063</class>
 		<visual>actors\stalker_zombi\zombie_fresh_0</visual>
-		<icon>ui_npc_u_stalker_fresh_0</icon>
+		<icon>ui_npc_u_zombie_fresh_0</icon>
 		
 		<name>Test</name>
 		<map_icon x="1" y="0"></map_icon>
@@ -5145,7 +5145,7 @@
 	<specific_character id="sim_test_064" team_default = "1">
 		<class>sim_test_064</class>
 		<visual>actors\stalker_zombi\zombie_fresh_2</visual>
-		<icon>ui_npc_u_stalker_fresh_2</icon>
+		<icon>ui_npc_u_zombie_fresh_2</icon>
 		
 		<name>Test</name>
 		<map_icon x="1" y="0"></map_icon>
