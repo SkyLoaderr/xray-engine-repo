@@ -128,7 +128,7 @@
 	<texture id="ui_iconsNpc_stalker_sv_rukzak_1" x="415" y="799" width="83" height="47"/>
 	
 	<texture id="ui_npc_u_soldier_bandana_1" x="859" y="0" width="165" height="108"/>
-	<texture id="ui_npc_u_soldier_bandana_2" x="694" y="0" width="165" height="108"/>
-	<texture id="ui_npc_u_soldier_bandana_3" x="859" y="108" width="165" height="108"/>
+	<texture id="ui_npc_u_soldier_bandana_3" x="694" y="0" width="165" height="108"/>
+	<texture id="ui_npc_u_soldier_bandana_2" x="859" y="108" width="165" height="108"/>
 	<texture id="ui_npc_u_soldier_bandana_4" x="694" y="108" width="165" height="108"/>
 </ui_texture>
