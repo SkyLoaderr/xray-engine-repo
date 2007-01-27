@@ -25,7 +25,7 @@
 
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_walther_m1 \n
 			ammo_9x18_pmm = 2 \n
 			wpn_ak74 = 1\n
 			ammo_5.45x39_ap \n
