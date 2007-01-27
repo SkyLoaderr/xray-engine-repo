@@ -1811,7 +1811,7 @@
 			[spawn] \n
 			wpn_walther \n
 			ammo_9x19_fmj = 1 \n
-			wpn_lr300_m1 \n
+			wpn_lr300 = 1,scope\n
 			ammo_5.56x45_ss190 = 1 \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
