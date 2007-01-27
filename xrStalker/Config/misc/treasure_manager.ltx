@@ -234,7 +234,7 @@ ros_secret_0025
 target = 5000
 name = esc_secret_0000_name
 description = esc_secret_0000_descr
-items = ammo_12x76_zhekan, 20
+items = ammo_5.45x39_ap,2,medkit_army,2
 condlist = {=npc_rank(experienced) =actor_on_level(l01_escape)} 10
 community = military
 
@@ -243,23 +243,23 @@ target = 5001
 name = esc_secret_0001_name
 description = esc_secret_0001_descr
 items = bandit_outfit
-condlist = {=npc_rank(novice) =actor_on_level(l01_escape)} 2, {=npc_rank(novice) =actor_on_level(l02_garbage)} 5
-community = stalker, dolg, bandit, military
+condlist = {=npc_rank(novice) =actor_on_level(l01_escape)} 2, {=npc_rank(novice) =actor_on_level(l02_garbage)} 2
+community = stalker, bandit
 
 [esc_secret_bandit_cross]
 target = 5002
 name = esc_secret_0002_name
 description = esc_secret_0002_descr
-items = medkit, 5
+items = af_medusa
 condlist = {=npc_rank(novice)} 5
-community = stalker, military
+community = stalker
 
 [esc_secret_bandit_supply]
 target = 5003
 name = esc_secret_0003_name
 description = esc_secret_0003_descr
-items = af_soul
-condlist = 0.1
+items = af_mincer_meat
+condlist = 1
 community = military
 
 [esc_secret_under_cross]
