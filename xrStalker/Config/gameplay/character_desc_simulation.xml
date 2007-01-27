@@ -5916,7 +5916,7 @@
 	<specific_character id="sim_test_112" team_default = "1">
 		<class>sim_test_112</class>
 		<visual>actors\hero\stalker_novice</visual>
-		<icon>ui_npc_u_trader</icon>
+		<icon>ui_npc_u_actor</icon>
 		
 		<name>Test</name>
 		<map_icon x="1" y="0"></map_icon>
@@ -5932,7 +5932,7 @@
 	<specific_character id="sim_test_113" team_default = "1">
 		<class>sim_test_113</class>
 		<visual>actors\ucheniy\ucheniy_1_strong</visual>
-		<icon>ui_npc_u_trader</icon>
+		<icon>ui_npc_u_ucheniy_1_strong</icon>
 		
 		<name>Test</name>
 		<map_icon x="1" y="0"></map_icon>

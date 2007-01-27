@@ -131,4 +131,7 @@
 	<texture id="ui_npc_u_soldier_bandana_3" x="694" y="0" width="165" height="108"/>
 	<texture id="ui_npc_u_soldier_bandana_2" x="859" y="108" width="165" height="108"/>
 	<texture id="ui_npc_u_soldier_bandana_4" x="694" y="108" width="165" height="108"/>
+	
+	<texture id="ui_npc_u_actor" x="694" y="216" width="165" height="108"/>
+	<texture id="ui_npc_u_ucheniy_1_strong" x="859" y="216" width="165" height="108"/>
 </ui_texture>
