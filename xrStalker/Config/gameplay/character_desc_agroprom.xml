@@ -446,7 +446,7 @@
 		<name>GENERATE_NAME_sergeant</name>
 		<icon>ui_npc_u_soldier_obichniy</icon>
 		<map_icon x="1" y="2"></map_icon>
-		<bio>sim_soldier_specnaz_bio</bio>
+		<bio>sim_soldier_regular_bio</bio>
 
 		<class>agr_Soldier_regular</class>
 		<community>military</community> <terrain_sect>stalker_military_terrain</terrain_sect>
