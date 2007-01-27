@@ -667,7 +667,7 @@
 <!-------------------------------------soldier_regular----------------------------------------------------->
 	<specific_character id="esc_soldier_regular_default2" team_default = "1">
 		<name>GENERATE_NAME_sergeant</name>
-		<icon x="12" y="2"></icon>
+		<icon>ui_npc_u_soldier_bandana_1</icon>
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
@@ -698,7 +698,7 @@
 <!-------------------------------------soldier_regular----------------------------------------------------->
 	<specific_character id="esc_soldier_regular_default3" team_default = "1">
 		<name>GENERATE_NAME_private</name>
-		<icon x="12" y="2"></icon>
+		<icon>ui_npc_u_soldier_bandana_2</icon>
 		<bio>esc_soldier_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
@@ -728,7 +728,7 @@
 <!-------------------------------------soldier_regular----------------------------------------------------->
 	<specific_character id="esc_soldier_regular_default4" team_default = "1">
 		<name>GENERATE_NAME_private</name>
-		<icon x="12" y="2"></icon>
+		<icon>ui_npc_u_soldier_bandana_3</icon>
 		<bio>esc_sergant_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>
@@ -760,7 +760,7 @@
 <!-------------------------------------soldier_regular----------------------------------------------------->
 	<specific_character id="esc_soldier_regular_default5" team_default = "1">
 		<name>GENERATE_NAME_sergeant</name>
-		<icon x="12" y="2"></icon>
+		<icon>ui_npc_u_soldier_bandana_4</icon>
 		<bio>esc_sergant_regular_bio</bio>
 
 		<class>esc_soldier_regular</class>

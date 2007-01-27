@@ -4585,7 +4585,7 @@
 	<specific_character id="sim_test_029" team_default = "1">
 		<class>sim_test_029</class>
 		<visual>actors\soldier\soldier_bandana_1</visual>
-		<icon>ui_npc_u_trader</icon>
+		<icon>ui_npc_u_soldier_bandana_1</icon>
 		
 		<name>Test</name>
 		<map_icon x="1" y="0"></map_icon>
@@ -4601,7 +4601,7 @@
 	<specific_character id="sim_test_030" team_default = "1">
 		<class>sim_test_030</class>
 		<visual>actors\soldier\soldier_bandana_2</visual>
-		<icon>ui_npc_u_trader</icon>
+		<icon>ui_npc_u_soldier_bandana_2</icon>
 		
 		<name>Test</name>
 		<map_icon x="1" y="0"></map_icon>
@@ -4617,7 +4617,7 @@
 	<specific_character id="sim_test_031" team_default = "1">
 		<class>sim_test_031</class>
 		<visual>actors\soldier\soldier_bandana_3</visual>
-		<icon>ui_npc_u_trader</icon>
+		<icon>ui_npc_u_soldier_bandana_3</icon>
 		
 		<name>Test</name>
 		<map_icon x="1" y="0"></map_icon>
@@ -4633,7 +4633,7 @@
 	<specific_character id="sim_test_032" team_default = "1">
 		<class>sim_test_032</class>
 		<visual>actors\soldier\soldier_bandana_4</visual>
-		<icon>ui_npc_u_trader</icon>
+		<icon>ui_npc_u_soldier_bandana_4</icon>
 		
 		<name>Test</name>
 		<map_icon x="1" y="0"></map_icon>
