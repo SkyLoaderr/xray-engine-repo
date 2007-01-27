@@ -3323,8 +3323,8 @@
 			[spawn] \n
 			wpn_colt_m1 \n
 			ammo_11.43x23_hydro \n
-			wpn_l85_m2 \n
-			ammo_5.56x45_ap = 1 \n
+			wpn_abakan \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"\n
 #include "gameplay\character_food.xml" \n
@@ -3356,7 +3356,7 @@
 			[spawn] \n
 			wpn_walther \n
 			ammo_9x19_fmj \n
-			wpn_lr300 \n
+			wpn_l85_m2 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"\n
