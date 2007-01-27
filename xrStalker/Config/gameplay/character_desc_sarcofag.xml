@@ -6,7 +6,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>sar_monolith_bio</bio>
+        <bio>rad_monolith_specnaz_bio</bio>
 
         <class>sar_monolith_specnaz</class>
         <community>monolith</community>
@@ -36,7 +36,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>sar_monolith_bio</bio>
+        <bio>rad_monolith_specnaz_bio</bio>
 
         <class>sar_monolith_specnaz</class>
         <community>monolith</community>
@@ -66,7 +66,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>sar_monolith_bio</bio>
+        <bio>rad_monolith_specnaz_bio</bio>
 
         <class>sar_monolith_specnaz</class>
         <community>monolith</community>
@@ -96,7 +96,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>sar_monolith_bio</bio>
+        <bio>rad_monolith_specnaz_bio</bio>
 
         <class>sar_monolith_specnaz</class>
         <community>monolith</community>
@@ -126,7 +126,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>sar_monolith_bio</bio>
+        <bio>rad_monolith_specnaz_bio</bio>
 
         <class>sar_monolith_specnaz</class>
         <community>monolith</community>
@@ -462,7 +462,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>sar_monolith_bio</bio>
+        <bio>rad_monolith_specnaz_bio</bio>
 
         <class>sar2_monolith_specnaz</class>
         <community>monolith</community>
@@ -489,7 +489,7 @@
         <name>GENERATE_NAME_stalker</name>
         <icon>ui_npc_u_stalker_mo_hood_9</icon>
         <map_icon x="3" y="0"></map_icon>
-        <bio>sar_monolith_bio</bio>
+        <bio>rad_monolith_specnaz_bio</bio>
 
         <class>sar2_monolith_specnaz2</class>
         <community>monolith</community>
