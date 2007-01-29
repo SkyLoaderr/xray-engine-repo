@@ -260,7 +260,7 @@ theme = {
 
 	-- состояния тела
 	state = {	exec = sound_theme.combat_class, 
-				types = {state	= {min_snd = 45, max_snd = 60, rnd = 25, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}}} },
+				types = {state	= {min_snd = 60, max_snd = 90, rnd = 25, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}}} },
 	
 
 	sleep				= {min_snd = 10, max_snd = 15, rnd = 75, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
@@ -339,8 +339,8 @@ theme = {
 	guitar					= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 	
 	-- шутки, прибаутки
-	intro_joke				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
-	joke					= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	intro_joke				= {min_snd = 3, max_snd = 5, rnd = 25, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
+	joke					= {min_snd = 3, max_snd = 5, rnd = 25, prior = 5, rnd_id = id(), into_id = id(), max_ids = {}},
 
 	-- Истории
 	story_01				= {min_snd = 3, max_snd = 5, rnd = 100, prior = 5, rnd_id = id(), into_id = id(), max_ids = {},
