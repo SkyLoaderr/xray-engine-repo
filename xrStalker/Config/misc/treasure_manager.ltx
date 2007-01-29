@@ -1904,7 +1904,7 @@ condlist = {=npc_rank(veteran)} 5, {=npc_rank(master)} 3
 target = 5250
 name = rad_secret_0005_name
 description = rad_secret_0005_description
-items =  = outfit_exo_m1, ammo_m209, 5
+items =  = af_fuzz_kolobok, ammo_m209, 5
 condlist = {=npc_rank(veteran)} 3, {=npc_rank(master)} 5
 community = stalker, bandit, dolg, freedom, zombied
   
@@ -1936,8 +1936,9 @@ community = stalker, bandit, dolg, freedom, zombied
 target = 5254
 name = pri_secret_0003_name
 description = pri_secret_0003_description
-items = af_dummy_glassbeads
-condlist = {=npc_rank(master)} 1
+items = outfit_exo_m1, af_dummy_glassbeads
+condlist = {=actor_on_level(l08_yantar)} 5
+community = stalker
 
 [pri_secret_0004]
 target = 5255
