@@ -287,6 +287,7 @@ function precondition(npc, actor, tbl, sel_tbl)
 		call_count, max_count = 0,0
 		return return_value
 	end
+	printf("max_count = %s, call_count = %s", tostring(max_count), tostring(call_count))
 	abort("Dialog manager error: unexpected programm point")
 end
 

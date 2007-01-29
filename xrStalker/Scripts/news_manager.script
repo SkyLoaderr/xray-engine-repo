@@ -7,8 +7,6 @@ news = {
 	gar_dolg_warning				= xr_sound.get_safe_sound_object([[characters_voice\scenario\duty\duty_warning1]]),
 	esc_return_dv					= xr_sound.get_safe_sound_object([[characters_voice\scenario\trader\return_from_dv]]),
 	escape_fox_quest				= xr_sound.get_safe_sound_object([[characters_voice\scenario\trader\trader_pda_fox]]),
-	esc_fox_info					= xr_sound.get_safe_sound_object([[characters_voice\scenario\trader\trader_pda_fox]]),
-	gar_seryi_info					= xr_sound.get_safe_sound_object([[characters_voice\scenario\trader\trader_pda_fox]]),
 	tip_petruha_report				= xr_sound.get_safe_sound_object([[characters_voice\scenario\escape\petruha_raport_p]]),
 
 
@@ -150,6 +148,7 @@ end
 
 function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 	if news_id == nil then return false end
+
 	printf("try to send tips for [%s]", tostring(sender_id))
 	if sender_id ~= nil then
 		local sim = alife()
