@@ -146,7 +146,7 @@
 			wpn_pm \n
 			ammo_9x18_fmj \n
 			wpn_ak74u = 1, 0, 1, 0 \n
-			ammo_5.45x39_ap = 1 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -176,7 +176,7 @@
 			wpn_pm \n
 			ammo_9x18_fmj \n
 			wpn_ak74u = 1, 0, 1, 0 \n
-			ammo_5.45x39_ap = 1 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -237,7 +237,7 @@
 			wpn_walther \n
 			ammo_9x19_fmj \n
 			wpn_ak74 \n
-			ammo_5.45x39_ap = 1 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"
 #include "gameplay\character_food.xml"
@@ -271,7 +271,7 @@
 			wpn_walther \n
 			ammo_9x19_fmj \n
 			wpn_ak74 \n
-			ammo_5.45x39_ap = 1 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_food.xml"
 #include "gameplay\character_drugs.xml"
@@ -334,7 +334,7 @@
 			wpn_walther \n
 			ammo_9x19_fmj \n		
 			wpn_ak74 = 1, 1, 1, 0 \n
-			ammo_5.45x39_ap = 1 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_items.xml"			
 		</supplies>
@@ -756,7 +756,7 @@
 			wpn_pm \n
 			ammo_9x18_fmj \n
 			wpn_ak74u \n
-			ammo_5.45x39_ap = 1 \n
+			ammo_5.45x39_fmj = 1 \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
@@ -818,7 +818,7 @@
 			wpn_pm \n
 			ammo_9x18_fmj \n
 			wpn_ak74u \n
-			ammo_5.45x39_ap \n
+			ammo_5.45x39_fmj \n
 			device_torch \n
 #include "gameplay\character_drugs.xml"
 #include "gameplay\character_food.xml"
