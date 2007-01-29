@@ -79,10 +79,10 @@ end
 -- Необходимо создать стартовый диалог, с разветвлением на третьем уровне, где каждая фраза будет иметь
 -- одну и ту же функцию в прекондишне
 function init_intro_dialog(dlg)
-	if phrase_table_filled == false then
-		fill_phrase_table()
-		phrase_table_filled = true
-	end
+--'	if phrase_table_filled == false then
+--'		fill_phrase_table()
+--'		phrase_table_filled = true
+--'	end
 
 	local phr = dlg:AddPhrase("",0,-1,-10000)
 		phr = dlg:AddPhrase("",1,0,-10000)
@@ -107,10 +107,10 @@ end
 -- Необходимо создать диалог актера, с разветвлением на втором уровне, где каждая фраза будет иметь
 -- одну и ту же функцию в прекондишне.
 function init_cool_info_dialog(dlg)
-	if phrase_table_filled == false  then
-		fill_phrase_table()
-		phrase_table_filled = true
-	end
+--'	if phrase_table_filled == false  then
+--'		fill_phrase_table()
+--'		phrase_table_filled = true
+--'	end
 
 	local phr = dlg:AddPhrase("dm_general_cool_info",0,-1,-10000)
 	
@@ -142,10 +142,10 @@ end
 
 -- Диалоги помощи раненным
 function init_help_wounded_medkit_dialog(dlg)
-	if phrase_table_filled == false then
-		fill_phrase_table()
-		phrase_table_filled = true
-	end
+--'	if phrase_table_filled == false then
+--'		fill_phrase_table()
+--'		phrase_table_filled = true
+--'	end
 
 	local phr = dlg:AddPhrase("dm_general_help_medkit",0,-1,-10000)
 	local phrase_script = phr:GetPhraseScript()
@@ -202,13 +202,13 @@ function phrase_action(npc, actor, sel_tbl, p2, one_time)
 end
 
 
-function precondition_intro(npc, actor)
-	return precondition(npc, actor, phrase.intro, selected_phrase_by_id.intro)
+function precondition_intro(npc, actor, p1, p2)
+	return precondition(npc, actor, phrase.intro, selected_phrase_by_id.intro, p1, p2)
 end
-function precondition_cool_info(npc, actor)
-	return precondition(npc, actor, phrase.cool_info, selected_phrase_by_id.cool_info)
+function precondition_cool_info(npc, actor, p1, p2)
+	return precondition(npc, actor, phrase.cool_info, selected_phrase_by_id.cool_info, p1, p2)
 end
-function precondition_cool_info_no_more(npc, actor)
+function precondition_cool_info_no_more(npc, actor, p1, p2)
 	if selected_phrase_by_id.cool_info == nil or selected_phrase_by_id.cool_info[npc:id()] == nil then
 		return false
 	end
@@ -217,11 +217,11 @@ function precondition_cool_info_no_more(npc, actor)
 	end 
 	return false
 end
-function precondition_help_thanks(npc, actor)
-	return precondition(npc, actor, phrase.help_thanks)
+function precondition_help_thanks(npc, actor, p1, p2)
+	return precondition(npc, actor, phrase.help_thanks, p1, p2)
 end
 
-function precondition(npc, actor, tbl, sel_tbl)
+function precondition(npc, actor, tbl, sel_tbl, p1, p2)
 	local k,v = 0,0
 	--' При первом вызове прекондишна пробегаемся по таблице предикатов и определяем количество предикатов,
 	--' которые возвращают TRUE. Определяется из них фраза, охватывающая самую узкую ситуацию (по количеству
@@ -276,7 +276,7 @@ function precondition(npc, actor, tbl, sel_tbl)
 	call_count = call_count + 1
 	return_value = tmp_tbl[call_count] == true
 	
---	printf("  callcount = %s value = %s", call_count, tostring(return_value))
+	printf("  callcount = %s value = %s", call_count, tostring(return_value))
 	if call_count < max_count then
 		--' При повторном вызове прекондишна (счетчик вызовов не равен количеству сработанных предикатов) 
 		--' всегда возвращаем FALSE, кроме случая, что счетчик равен ранее запомненному порядковому номеру вызова.
@@ -288,6 +288,8 @@ function precondition(npc, actor, tbl, sel_tbl)
 		return return_value
 	end
 	printf("max_count = %s, call_count = %s", tostring(max_count), tostring(call_count))
+	print_table(tbl)
+	printf("p1 = %s, p2 = %s", tostring(p1), tostring(p2))
 	abort("Dialog manager error: unexpected programm point")
 end
 

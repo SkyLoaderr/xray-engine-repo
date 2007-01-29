@@ -1227,11 +1227,12 @@ function get_texture_info(id_name, id_default)
 	return task_info:get_file_name(), r
 end
 
-function start_game_callback	()
+function start_game_callback()
 	printf	("start_game_callback called")
 	task_manager.clear_task_manager()
 	treasure_manager.clear_treasure_manager()
 	xr_sound.clear_all_sound_object()
+	dialog_manager.fill_phrase_table()	
 end
 
 ammo_section = {}
