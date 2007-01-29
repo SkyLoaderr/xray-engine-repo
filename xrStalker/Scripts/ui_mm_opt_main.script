@@ -8,9 +8,11 @@ class "options_dialog" (CUIScriptWnd)
 
 function options_dialog:__init() super()
    self:SetFont(GetFontMedium()) --set base font for dialog.
+
+	self.m_preconditions	= {}
    
-   self:InitControls()
-   self:InitCallBacks()
+    self:InitControls()
+    self:InitCallBacks()
 end
 
 function options_dialog:__finalize()
@@ -71,8 +73,6 @@ function options_dialog:InitControls()
 	self.message_box = CUIMessageBoxEx()
 	
 	self.b_r2_restart_shown		= false
---	self.b_r2_sunstatic_shown	= false
-	
 end
 
 function options_dialog:UpdateControls()
@@ -102,17 +102,26 @@ function options_dialog:UpdateControls()
 		self.combo_r2:Enable			(false)
 	end
 	
+	self:UpdateDependControls()
+end
+
+function options_dialog:UpdateDependControls()
+	
+	local _current_id	= self.combo_r2:CurrentID()
+
+	for i,j in pairs(self.m_preconditions) do
+		j				(i, _current_id)
+	end
+--[[	
 	if self.combo_r2:CurrentID()==1 then
 		self.ch_r2_sun:Enable			(true)
 		self.ch_r2_sun_det:Enable		(true)
---		self.track_r2_sun_static:Enable	(true)
 	else
 		self.ch_r2_sun:Enable			(false)
 		self.ch_r2_sun_det:Enable		(false)
---		self.track_r2_sun_static:Enable	(false)
 	end
+]]
 end
-
 
 function options_dialog:InitCallBacks()
 	self:AddCallback("tab",					ui_events.TAB_CHANGED,		self.OnTabChange,			self)
@@ -123,7 +132,6 @@ function options_dialog:InitCallBacks()
 	self:AddCallback("btn_default_sound",	ui_events.BUTTON_CLICKED,	self.OnBtnDefSound,			self)	
 	self:AddCallback("combo_r2",			ui_events.LIST_ITEM_SELECT,	self.OnR2changed,			self)	
 	self:AddCallback("combo_preset",		ui_events.LIST_ITEM_SELECT,	self.OnPresetChanged,		self)	
---	self:AddCallback("track_sun_static",	ui_events.BUTTON_CLICKED,	self.OnR2sunstatic,			self)	
 	self:AddCallback("btn_simply_graphic",	ui_events.BUTTON_CLICKED,	self.OnSimplyGraphic,		self)	
 	self:AddCallback("btn_keyb_default",	ui_events.BUTTON_CLICKED,	self.OnBtnDefault,			self)
 	self:AddCallback("btn_check_updates",	ui_events.BUTTON_CLICKED,	self.OnBtnCheckUpdates,		self)
@@ -144,18 +152,6 @@ function options_dialog:OnBtnDefault()
 	opt:SetCurrentValues	("key_binding")
 end
 
---[[
-function options_dialog:OnR2sunstatic()	
-
-	if false==self.b_r2_sunstatic_shown then
-		self.b_r2_sunstatic_shown				= true
-		self.message_box:Init					("message_box_restart_game")
-		self:GetHolder():start_stop_menu		(self.message_box,true)
-	end	
-
-end
-]]
-
 function options_dialog:OnPresetChanged()	
 	local opt					= COptionsManager()
 	opt:SetCurrentValues		("mm_opt_video")
@@ -164,16 +160,8 @@ end
 
 function options_dialog:OnR2changed()	
 
-	if self.combo_r2:CurrentID()==1 then
-		self.ch_r2_sun:Enable			(true)
-		self.ch_r2_sun_det:Enable		(true)
---		self.track_r2_sun_static:Enable	(true)
-	else
-		self.ch_r2_sun:Enable			(false)
-		self.ch_r2_sun_det:Enable		(false)
---		self.track_r2_sun_static:Enable	(false)
-	end
-
+	self:UpdateDependControls				()
+	
 	if false==self.b_r2_restart_shown then
 		self.b_r2_restart_shown			 = true
 		self.message_box:Init			("message_box_restart_game")
