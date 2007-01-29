@@ -2,41 +2,41 @@
 -- Чугай
 
 snd_see_enemy = {
-	sound_object( [[helicopter\see_enemy_1]] ),
-	sound_object( [[helicopter\see_enemy_2]] ),
-	sound_object( [[helicopter\see_enemy_3]] ),
-	sound_object( [[helicopter\see_enemy_4]] ),
-	sound_object( [[helicopter\see_enemy_5]] ),
-	sound_object( [[helicopter\see_enemy_6]] ),
-	sound_object( [[helicopter\see_enemy_7]] )
+	xr_sound.get_safe_sound_object( [[helicopter\see_enemy_1]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\see_enemy_2]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\see_enemy_3]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\see_enemy_4]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\see_enemy_5]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\see_enemy_6]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\see_enemy_7]] )
 }
 
 snd_hit = {
-	sound_object( [[helicopter\hit_1]] ),
-	sound_object( [[helicopter\hit_2]] ),
-	sound_object( [[helicopter\hit_3]] ),
-	sound_object( [[helicopter\hit_4]] ),
-	sound_object( [[helicopter\hit_5]] ),
-	sound_object( [[helicopter\hit_6]] ),
-	sound_object( [[helicopter\hit_7]] ),
-	sound_object( [[helicopter\hit_8]] ),
-	sound_object( [[helicopter\hit_9]] )
+	xr_sound.get_safe_sound_object( [[helicopter\hit_1]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\hit_2]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\hit_3]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\hit_4]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\hit_5]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\hit_6]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\hit_7]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\hit_8]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\hit_9]] )
 }
 
 snd_damaged = {
-	sound_object( [[helicopter\damage_1]] ),
-	sound_object( [[helicopter\damage_2]] ),
-	sound_object( [[helicopter\damage_3]] ),
-	sound_object( [[helicopter\damage_4]] )
+	xr_sound.get_safe_sound_object( [[helicopter\damage_1]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\damage_2]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\damage_3]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\damage_4]] )
 }
 
 snd_down = {
-	sound_object( [[helicopter\death_1]] ),
-	sound_object( [[helicopter\death_2]] ),
-	sound_object( [[helicopter\death_3]] ),
-	sound_object( [[helicopter\death_4]] ),
-	sound_object( [[helicopter\death_5]] ),
-	sound_object( [[helicopter\death_6]] )
+	xr_sound.get_safe_sound_object( [[helicopter\death_1]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\death_2]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\death_3]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\death_4]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\death_5]] ),
+	xr_sound.get_safe_sound_object( [[helicopter\death_6]] )
 }
 
 --------------------------------------------------------------------------------

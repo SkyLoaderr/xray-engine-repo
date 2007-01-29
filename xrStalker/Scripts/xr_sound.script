@@ -376,10 +376,10 @@ function get_sound_object(theme, t_type)
 	--' Проверяем создан ли у нас соответствующий саунд обжект или его надо создать
 	if sound_object_by_theme[theme][play_id] == nil then
 		if type(sound_theme.ph_snd_themes[theme][play_id]) == "table" then
-			sound_object_by_theme[theme][play_id.."_r"] = sound_object(sound_theme.ph_snd_themes[theme][play_id][1].."_r")
-			sound_object_by_theme[theme][play_id.."_l"] = sound_object(sound_theme.ph_snd_themes[theme][play_id][1].."_l")
+			sound_object_by_theme[theme][play_id.."_r"] = get_safe_sound_object(sound_theme.ph_snd_themes[theme][play_id][1].."_r")
+			sound_object_by_theme[theme][play_id.."_l"] = get_safe_sound_object(sound_theme.ph_snd_themes[theme][play_id][1].."_l")
 		else
-			sound_object_by_theme[theme][play_id] = sound_object(sound_theme.ph_snd_themes[theme][play_id])
+			sound_object_by_theme[theme][play_id] = get_safe_sound_object(sound_theme.ph_snd_themes[theme][play_id])
 		end
 	end
 
@@ -393,14 +393,19 @@ function get_sound_object(theme, t_type)
 	end
 end
 
+local sound_object_by_path = {}
+--' Обертка вокруг функции, возвращающий звуковой объект.
+function get_safe_sound_object(path)
+	if sound_object_by_path[path] == nil then
+		sound_object_by_path[path] = sound_object(path)
+	end
+	return sound_object_by_path[path]
+end
+
 function stop_all_sound_object()
-	for k,v in pairs(sound_object_by_theme) do
-		for kk,vv in pairs(v) do
-			if kk ~= "last_id" then
-				if vv:playing() then
-					vv:stop()
-				end
-			end
+	for k,v in pairs(sound_object_by_path) do
+		if v:playing() then
+			v:stop()
 		end
 	end
 end

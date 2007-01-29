@@ -16,7 +16,7 @@ end
 function fx_snd:reset_scheme()
 	printf("Fx Sound :: Reset Scheme")
 	self.cur_point	= 0
-	self.snd_obj	= sound_object(self.st.snd)
+	self.snd_obj	= xr_sound.get_safe_sound_object(self.st.snd)
 	
 	self:set_positions()
 	

@@ -63,7 +63,7 @@ function main()
 
 	local dlg = test_avi_dlg()
 	
-	local snd = sound_object(
+	local snd = xr_sound.get_safe_sound_object(
 		"characters_voice\\human_01\\scenario\\gunslinger\\start_dream_l",
 		sound_object.s2d
 	)

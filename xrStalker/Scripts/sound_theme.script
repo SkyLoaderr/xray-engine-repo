@@ -675,15 +675,15 @@ theme = {
 --' В темах для игрока интервал задается в миллисекундах!!!
 actor_theme = {
 	level_border_detector = {min_snd = 10, max_snd = 100,
-							 sounds = {sound_object([[detectors\geiger_1]]),
-									   sound_object([[detectors\geiger_1]]),
-									   sound_object([[detectors\geiger_1]]),
-									   sound_object([[detectors\geiger_1]]),
-									   sound_object([[detectors\geiger_2]]),
-									   sound_object([[detectors\geiger_2]]),
-									   sound_object([[detectors\geiger_4]]),
-									   sound_object([[detectors\geiger_5]]),
-									   sound_object([[detectors\geiger_6]]) }}
+							 sounds = {xr_sound.get_safe_sound_object([[detectors\geiger_1]]),
+									   xr_sound.get_safe_sound_object([[detectors\geiger_1]]),
+									   xr_sound.get_safe_sound_object([[detectors\geiger_1]]),
+									   xr_sound.get_safe_sound_object([[detectors\geiger_1]]),
+									   xr_sound.get_safe_sound_object([[detectors\geiger_2]]),
+									   xr_sound.get_safe_sound_object([[detectors\geiger_2]]),
+									   xr_sound.get_safe_sound_object([[detectors\geiger_4]]),
+									   xr_sound.get_safe_sound_object([[detectors\geiger_5]]),
+									   xr_sound.get_safe_sound_object([[detectors\geiger_6]]) }}
 }
    										
 function select_sound_from_ltx(obj, section, ltx)
