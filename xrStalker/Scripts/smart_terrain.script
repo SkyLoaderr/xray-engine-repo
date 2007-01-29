@@ -512,9 +512,10 @@ end
 -- может ли объект быть добавлен в smart terrain?
 -- вызывается симулятором при поиске задания для объекта/группы.
 -- если объект - группа, то вернёт true только если все объекты в группе вернут true
-function se_smart_terrain:enabled( obj )
+function se_smart_terrain:enabled(obj)
 	-- DEBUG
 	if self.disabled then
+		printf("[smart_terrain %s] DISABLED obj=%s (self.disabled)", self:name(), obj:name())
 		return false
 	end
 	--------
@@ -524,11 +525,11 @@ function se_smart_terrain:enabled( obj )
 	if self:is_gulag_available() and not self.population_locked then
 		local b = self:obj_accepts_smart_terrain( obj )
 		local a = self:smart_terrain_accepts_obj( obj, b )
---[[		if a == true then
-			printf("[smart_terrain %s] enabled called obj=%s exclusive=%s", self:name(), obj:name(), tostring(b))
---		else
---			printf("[smart_terrain %s] disabled obj=%s  accept_obj = %s", self:name(), obj:name(), tostring(b))
-		end]]
+		if a == true then
+			printf("[smart_terrain %s] ENABLED obj=%s exclusive=%s", self:name(), obj:name(), tostring(b))
+		else
+			printf("[smart_terrain %s] DISABLED obj=%s  accept_obj = %s", self:name(), obj:name(), tostring(b))
+		end
 		return a
 	else
 		return false
