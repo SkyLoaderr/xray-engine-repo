@@ -72,6 +72,8 @@ function fill_phrase_table()
 		else
 			tt.wounded = "false"
 		end
+		tt.phr_id = get_id()
+		tt.phr_id2 = get_id()
 		table.insert(phrase[category], tt)
 	end
 end
@@ -89,7 +91,6 @@ function init_intro_dialog(dlg)
 
 	local k,v = 0,0
 	for k,v in pairs(phrase.intro) do
-		v.phr_id = get_id()
 		phr = dlg:AddPhrase(v.name, v.phr_id, 1, -10000)
 		
 		if phr then
@@ -120,7 +121,6 @@ function init_cool_info_dialog(dlg)
 
 	local k,v,kk,vv = 0,0,0,0
 	for k,v in pairs(phrase.cool_info) do
-		v.phr_id = get_id()
 		phr = dlg:AddPhrase(v.name,v.phr_id,0,-10000)
 		if phr then
 			local phrase_script = phr:GetPhraseScript()
@@ -129,7 +129,7 @@ function init_cool_info_dialog(dlg)
 			phrase_script:AddAction("dialog_manager.phrase_action_cool_info")
 			
 			if v.article_info ~= nil then
-				phr = dlg:AddPhrase("",get_id(),v.phr_id,-10000)		
+				phr = dlg:AddPhrase("",v.phr_id2,v.phr_id,-10000)		
 				phrase_script = phr:GetPhraseScript()
 								
 				for kk,vv in pairs(v.article_info) do
@@ -153,7 +153,7 @@ function init_help_wounded_medkit_dialog(dlg)
 	
 	local k,v = 0,0
 	for k,v in pairs(phrase.help_thanks) do
-		phr = dlg:AddPhrase(v.name,get_id(),0,-10000)		
+		phr = dlg:AddPhrase(v.name,v.phr_id,0,-10000)		
 		if phr then
 			phrase_script = phr:GetPhraseScript()
 			phrase_script:AddPrecondition("dialog_manager.precondition_help_thanks")
@@ -236,7 +236,7 @@ function precondition(npc, actor, tbl, sel_tbl, p1, p2)
 					value, number = calculate_predicate(npc, v)	
 					--' Если запомненная фраза недоступна - необходимо забыть ее
 					if value == false then
---						printf("*** restore memory phrase")
+						printf("*** restore memory phrase")
 						sel_tbl[npc:id()] = nil
 						break
 					end
@@ -247,13 +247,13 @@ function precondition(npc, actor, tbl, sel_tbl, p1, p2)
 		for k,v in pairs(tbl) do
 			value, number = calculate_predicate(npc, v)			
 			max_count = max_count + 1
---			printf("*** count = %s value = %s number = %s phr_id = %s", max_count, tostring(value), number, v.name)
+			printf("*** count = %s value = %s number = %s phr_id = %s", max_count, tostring(value), number, v.name)
 
 			--' Проверка на повторяемость фраз.
 			if sel_tbl ~= nil and sel_tbl[npc:id()] ~= nil then
 				--' Если проверяется запомненная фраза
 				if sel_tbl[npc:id()].phrase ~= v.phr_id then
---					printf("*** not memory phrase [%s] ~= [%s]", sel_tbl[npc:id()].phrase, v.phr_id)
+					printf("*** not memory phrase [%s] ~= [%s]", sel_tbl[npc:id()].phrase, v.phr_id)
 					value = false
 				end
 				if sel_tbl[npc:id()].count >= 1 then
