@@ -24,10 +24,10 @@ local killCountProps = {
 }
 
 local sect_alias = {	
-	tushkano_normal = tushkano_weak, tushkano_strong = tushkano_weak,
-	poltergeist_normal = poltergeist_weak,poltergeist_strong = poltergeist_weak,
-	pseudo_gigant_normal = pseudo_gigant_weak, pseudo_gigant_strong = pseudo_gigant_weak,
-	controller_normal = controller_weak, controller_strong = controller_weak
+	tushkano_normal = "tushkano_weak", tushkano_strong = "tushkano_weak",
+	poltergeist_normal = "poltergeist_weak", poltergeist_strong = "poltergeist_weak",
+	pseudo_gigant_normal = "pseudo_gigant_weak", pseudo_gigant_strong = "pseudo_gigant_weak",
+	controller_normal = "controller_weak", controller_strong = "controller_weak"
 }
 
 monster_classes = {
