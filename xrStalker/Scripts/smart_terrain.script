@@ -689,6 +689,7 @@ function se_smart_terrain:task( obj )
 	if not path_name then
 		printf("[smart_terrain %s] task: obj=%s job_path=nil, CLEARING", self:name(), obj:name() )
 		self:unregister_npc(obj) --'Затычка против вылета.
+		return CALifeSmartTerrainTask("simulation_default_path")
 	end
 
 	printf("SEETING TASK PATH %s = %s", obj:name(), path_name)
