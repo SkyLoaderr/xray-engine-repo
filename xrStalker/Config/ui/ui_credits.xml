@@ -267,7 +267,6 @@
 				
 				
 				<!-- next frame -->	
-				</auto_static>
 				<auto_static start_time="47" length_sec="5" x="185" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="c" font="letterica25" color="white">Additional programming</text>
 				</auto_static>
@@ -325,14 +324,12 @@
 				
 
 				<!-- next frame -->	
-				</auto_static>
 				<auto_static start_time="57" length_sec="5" x="185" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="c" font="letterica25" color="white">Sound Producer</text>
 				</auto_static>
 				<auto_static start_time="57" length_sec="5" x="140" y="160" width="300" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="r" font="graffiti32" color="ui_clr_1">Dmitry Kuzmenko</text>	
-				</auto_static>
-				
+				</auto_static>			
 				<auto_static start_time="57" length_sec="5" x="185" y="260" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="c" font="letterica25" color="white">Original Music</text>
 				</auto_static>
@@ -348,7 +345,6 @@
 				
 				
 				<!-- next frame -->	
-				</auto_static>
 				<auto_static start_time="62" length_sec="5" x="185" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="c" font="letterica25" color="white">Localization department</text>
 				</auto_static>
@@ -361,7 +357,6 @@
 						
 
 				<!-- next frame -->	
-				</auto_static>
 				<auto_static start_time="67" length_sec="5" x="185" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="c" font="letterica25" color="white">Q&A Department</text>
 				</auto_static>
@@ -383,7 +378,6 @@
 
 
 				<!-- next frame -->	
-				</auto_static>
 				<auto_static start_time="67" length_sec="5" x="185" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="c" font="letterica25" color="white">PR Department</text>
 				</auto_static>
@@ -405,7 +399,6 @@
 
 
 				<!-- next frame -->	
-				</auto_static>
 				<auto_static start_time="72" length_sec="5" x="185" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="c" font="letterica25" color="white">Sales Department</text>
 				</auto_static>
@@ -418,7 +411,6 @@
 
 
 				<!-- next frame -->	
-				</auto_static>
 				<auto_static start_time="77" length_sec="45" x="185" y="100" width="330" height="40" light_anim="credits_vis" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="c" font="letterica25" color="white">Special thanks:</text>
 				</auto_static>
@@ -428,42 +420,42 @@
 				
 				<!-- next frame -->	
 				<auto_static start_time="82" length_sec="5" x="140" y="200" width="300" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
-					<text align="r" font="graffiti32" color="ui_clr_1">-= Alexander Novikov, Igor Gramotkin and the rest of Chernobyl Power Plant staff and administration for their support =- </text>	
+					<text align="r" font="graffiti32" color="ui_clr_1">Alexander Novikov, Igor Gramotkin and the rest of Chernobyl Power Plant staff and administration for their support</text>	
 				</auto_static>	
 						
 				<!-- next frame -->	
 				<auto_static start_time="87" length_sec="5" x="140" y="200" width="300" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
-					<text align="r" font="graffiti32" color="ui_clr_1">-= Chernobyl Exclusion Zone Administration for allowing us to do our crazy explorations =- </text>	
+					<text align="r" font="graffiti32" color="ui_clr_1">Chernobyl Exclusion Zone Administration for allowing us to do our crazy explorations</text>	
 				</auto_static>							
 
 				<!-- next frame -->	
 				<auto_static start_time="92" length_sec="5" x="140" y="200" width="300" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
-					<text align="r" font="graffiti32" color="ui_clr_1">-= Rimma Kiselitsa, Marina Polyakova and the rest of Chernobylinterinform agency staff for taking good care of us and feeding us with ample info and nourishing lunches =-</text>	
+					<text align="r" font="graffiti32" color="ui_clr_1">Rimma Kiselitsa, Marina Polyakova and the rest of Chernobylinterinform agency staff for taking good care of us and feeding us with ample info and nourishing lunches</text>	
 				</auto_static>					
 
 				<!-- next frame -->	
 				<auto_static start_time="97" length_sec="5" x="140" y="200" width="300" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
-					<text align="r" font="graffiti32" color="ui_clr_1">-= Alexander Naumov for his great informational input and his noble mission =- </text>	
+					<text align="r" font="graffiti32" color="ui_clr_1">Alexander Naumov for his great informational input and his noble mission =- </text>	
 				</auto_static>	
 
 				<!-- next frame -->	
 				<auto_static start_time="102" length_sec="5" x="140" y="200" width="300" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
-					<text align="r" font="graffiti32" color="ui_clr_1">-= Thomas Boecker, Markus Holler and the rest of Merregnon® Studios (http://merregnon-studios.com/) for their efforts on creating some great orchestral music for us. </text>	
+					<text align="r" font="graffiti32" color="ui_clr_1">Thomas Boecker, Markus Holler and the rest of Merregnon® Studios (http://merregnon-studios.com/) for their efforts on creating some great orchestral music for us.</text>	
 				</auto_static>	
 
 				<!-- next frame -->	
 				<auto_static start_time="107" length_sec="5" x="140" y="200" width="300" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
-					<text align="r" font="graffiti32" color="ui_clr_1">-= FIRELAKE band (www.firelake.kiev.ua) and their friends Gurza Dreaming for the rocking sound-tracks =- </text>	
+					<text align="r" font="graffiti32" color="ui_clr_1">FIRELAKE band (www.firelake.kiev.ua) and their friends Gurza Dreaming for the rocking sound-tracks</text>	
 				</auto_static>	
 
 				<!-- next frame -->	
 				<auto_static start_time="112" length_sec="10" x="140" y="200" width="300" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
-					<text align="r" font="graffiti32" color="ui_clr_1">-= FAN-BASE!  We thank heartily Waquar “HeadHunter” Tariq, Alexey “Don Reba” Badalov, Emile aka Redrick, Peter Sj?berg, Pixel, Michi, nasa800, LPKorn3324, Leks, Cpcat, Rad-X, Sosed, Amoki, Claws, Siro/Dennis, Nicklas Ridewing, Otto Bahmann & Mike Bretschneider, cractus01, Marcel Kleffmann, Nikolay Dashevsky, Abe, Anton Brovko, Mario, fen1x, Alan Nogueira da Gama and so many more of you around the globe who passionately supported S.T.A.L.K.E.R. through all these years =-  </text>	
+					<text align="r" font="graffiti32" color="ui_clr_1">FAN-BASE!  We thank heartily Waquar “HeadHunter” Tariq, Alexey “Don Reba” Badalov, Emile aka Redrick, Peter Sj?berg, Pixel, Michi, nasa800, LPKorn3324, Leks, Cpcat, Rad-X, Sosed, Amoki, Claws, Siro/Dennis, Nicklas Ridewing, Otto Bahmann & Mike Bretschneider, cractus01, Marcel Kleffmann, Nikolay Dashevsky, Abe, Anton Brovko, Mario, fen1x, Alan Nogueira da Gama and so many more of you around the globe who passionately supported S.T.A.L.K.E.R. through all these years</text>	
 				</auto_static>
 
 				<!-- next frame -->	
 				<auto_static start_time="122" length_sec="5" x="140" y="200" width="300" height="40" light_anim="credits_vis_sub" la_cyclic="0" la_texture="0" la_alpha="1">
-					<text align="r" font="graffiti32" color="ui_clr_1">From the entire team THANKS to all of you who ever helped us make S.T.A.L.K.E.R. happen and encouraged us no matter what! Your good efforts will not be forgotten!</text>	
+					<text align="r" font="graffiti32" color="ui_clr_1">From the entire team THANKS to all of you who ever helped us make S.T.A.L.K.E.R. happen and encouraged us no matter what! Your good efforts will not be forgotten!</text>
 				</auto_static>	
 				
 			</main_wnd>
