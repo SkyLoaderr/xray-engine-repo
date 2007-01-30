@@ -99,7 +99,11 @@ end
 function relocate_item_section(victim, section, type)
 	if db.actor and victim then
 		if type == "in" then
-			if victim:object(section) ~= nil then
+
+			--' Трансферить нужно только квестовые предметы.
+			if quest_section[section] == true and
+			   victim:object(section) ~= nil 
+			then
 				victim:transfer_item(victim:object(section), db.actor)
 			else
 				alife():create(section,	
