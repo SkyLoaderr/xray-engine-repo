@@ -260,12 +260,12 @@ function PatrolManager:add_npc (npc, leader)
     self:reset_positions ()
 end
 -----------------------
-function PatrolManager:remove_npc (npc)
+function PatrolManager:remove_npc(npc)
     if npc == nil then return end
     if self.npc_list[npc:id()] == nil then
 		return
 	end
-    printf ("[XR_PATROL] NPC %s removed from patrol manager %s", npc:name (), self.path_name) 
+    printf ("[XR_PATROL] NPC %s removed from patrol manager %s", npc:name(), self.path_name) 
     self.npc_list[npc:id ()] = nil
     self.npc_count = self.npc_count - 1
     
@@ -300,15 +300,6 @@ function PatrolManager:reset_positions ()
            index = index + 1
         end   
     end    
-end
------------------------
-function PatrolManager:get_capacity ()
-    local size = table.getn (npc_list)
-    -- if size is not zero then return size
-    if size ~= 0 then return size end
-    -- else - remove patrol manager
-    patrols[self.path_name] = nil
-    return 0    
 end
 -----------------------
 function PatrolManager:set_formation (formation)
@@ -531,16 +522,16 @@ function action_commander:finalize ()
     action_base.finalize(self)
 end
 ----------------------
-function action_commander:deactivate ()
-	patrols[self.st.path_name]:remove_npc (self.object)
+function action_commander:deactivate(npc)
+	patrols[self.st.path_name]:remove_npc(npc)
 end
 ----------------------
-function action_commander:death_callback()
-	patrols[self.st.path_name]:remove_npc (self.object)
+function action_commander:death_callback(npc)
+	patrols[self.st.path_name]:remove_npc(npc)
 end
 ----------------------
-function action_commander:net_destroy ()
-    self:deactivate ()
+function action_commander:net_destroy(npc)
+    self:deactivate(npc)
 end
 ----------------------
 function action_commander:callback (mode, number, index)
@@ -648,16 +639,16 @@ function action_patrol:finalize ()
 	action_base.finalize (self)
 end
 ----------------------
-function action_patrol:death_callback()
-	patrols[self.st.path_name]:remove_npc (self.object)
+function action_patrol:death_callback(npc)
+	patrols[self.st.path_name]:remove_npc(npc)
 end
 ----------------------
-function action_patrol:deactivate ()
-    patrols[self.st.path_name]:remove_npc (self.object)    
+function action_patrol:deactivate(npc)
+    patrols[self.st.path_name]:remove_npc(npc)
 end
 ----------------------
-function action_patrol:net_destroy ()
-    self:deactivate ()
+function action_patrol:net_destroy(npc)
+    self:deactivate (npc)
 end
 ----------------------
 

@@ -912,6 +912,9 @@
 							RelativePath=".\Config\text\rus\stable_dialogs_test.xml">
 						</File>
 						<File
+							RelativePath=".\Config\text\rus\stable_game_credits.xml">
+						</File>
+						<File
 							RelativePath=".\Config\text\rus\stable_generate_fnames.xml">
 						</File>
 						<File
@@ -927,10 +930,10 @@
 							RelativePath=".\Config\text\rus\stable_task_manager.xml">
 						</File>
 						<File
-							RelativePath=".\Config\text\rus\stable_treasure_manager.xml">
+							RelativePath=".\Config\text\eng\stable_treasure_manager.xml">
 						</File>
 						<File
-							RelativePath=".\Config\text\eng\stable_treasure_manager.xml">
+							RelativePath=".\Config\text\rus\stable_treasure_manager.xml">
 						</File>
 						<File
 							RelativePath=".\Config\text\rus\string_table_enc_equipment.xml">
@@ -1189,6 +1192,9 @@
 				<Filter
 					Name="eng"
 					Filter="">
+					<File
+						RelativePath=".\Config\text\eng\stable_game_credits.xml">
+					</File>
 					<File
 						RelativePath=".\Config\text\eng\string_table_tasks_agroprom">
 					</File>
