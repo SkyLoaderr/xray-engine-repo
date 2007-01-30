@@ -113,14 +113,14 @@ function action_wait:finalize()
 	kamps[self.a.center_point]:decreasePops(self.object)
 	action_base.finalize (self)
 end
-function action_wait:deactivate()
-	kamps[self.a.center_point]:removeNpc(self.object)
+function action_wait:deactivate(npc)
+	kamps[self.a.center_point]:removeNpc(npc)
 end
-function action_wait:death_callback()
-	kamps[self.a.center_point]:removeNpc(self.object)
+function action_wait:death_callback(npc)
+	kamps[self.a.center_point]:removeNpc(npc)
 end
-function action_wait:net_destroy()
-	kamps[self.a.center_point]:removeNpc(self.object)
+function action_wait:net_destroy(npc)
+	kamps[self.a.center_point]:removeNpc(npc)
 end
 
 
