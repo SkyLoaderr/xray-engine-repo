@@ -341,6 +341,7 @@
 			ammo_11.43x23_hydro = 1 \n
 			wpn_svu \n
 			ammo_7.62x54_7h14 = 1 \n
+			wpn_walther \n
 #include "gameplay\character_items.xml" \n
 #include "gameplay\character_drugs.xml" \n
 #include "gameplay\character_food.xml"			
