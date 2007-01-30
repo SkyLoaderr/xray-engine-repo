@@ -695,39 +695,54 @@ function CRandomTask:task_reward(npc, actor, p1, p2)
 		local task_desc = self.task_info[v]
 		if task_desc.status == "completed" and task_desc.parent == parent then
 			--' Забираем у игрока квестовый предмет.
+			local can_finish = true
 			if task_desc.type == "artefact" then
-				dialogs.relocate_item_section(npc, task_desc.target, "out")
+				if db.actor:object(task_desc.target) == nil then
+					can_finish = false
+				else
+					dialogs.relocate_item_section(npc, task_desc.target, "out")
+				end
 			elseif task_desc.type == "monster_part" then
-				dialogs.relocate_item_section(npc, task_desc.target, "out")
+				if db.actor:object(task_desc.target) == nil then
+					can_finish = false
+				else
+					dialogs.relocate_item_section(npc, task_desc.target, "out")
+				end
 			elseif task_desc.type == "find_item" then
-				dialogs.relocate_item_section(npc, task_desc.target, "out")
-			end
-
-			self.task_info[v].status = "rewarded"
-			
-			if task_desc.reward_money ~= nil then
-				dialogs.relocate_money(npc, task_desc.reward_money, "in")
-			end
-			
-			if task_desc.reward_item ~= nil then
-				for kk,vv in pairs(task_desc.reward_item) do
-					dialogs.relocate_item_section(npc, vv, "in")
+				if db.actor:object(task_desc.target) == nil then
+					can_finish = false
+				else
+					dialogs.relocate_item_section(npc, task_desc.target, "out")
 				end
 			end
-
-			if task_desc.reward_reputation ~= nil then
-				db.actor:change_character_reputation(db.actor:character_reputation() + task_desc.reward_reputation)
-			end
-
-			if task_desc.reward_relation ~= nil then
-				for kk,vv in pairs(task_desc.reward_relation) do
-					relation_registry.change_community_goodwill (kk, db.actor:id(), tonumber(vv))
+	
+			if can_finish == true then
+				self.task_info[v].status = "rewarded"
+				
+				if task_desc.reward_money ~= nil then
+					dialogs.relocate_money(npc, task_desc.reward_money, "in")
 				end
-			end
+				
+				if task_desc.reward_item ~= nil then
+					for kk,vv in pairs(task_desc.reward_item) do
+						dialogs.relocate_item_section(npc, vv, "in")
+					end
+				end
 
-			if task_desc.reward_rank ~= nil then
-				actor_stats.add_points("quests", task_desc.name, 1, task_desc.reward_rank)
-				db.actor:set_character_rank(db.actor:character_rank() + task_desc.reward_rank)
+				if task_desc.reward_reputation ~= nil then
+					db.actor:change_character_reputation(db.actor:character_reputation() + task_desc.reward_reputation)
+				end
+
+				if task_desc.reward_relation ~= nil then
+					for kk,vv in pairs(task_desc.reward_relation) do
+						relation_registry.change_community_goodwill (kk, db.actor:id(), tonumber(vv))
+					end
+				end
+
+				if task_desc.reward_rank ~= nil then
+					actor_stats.add_points("quests", task_desc.name, 1, task_desc.reward_rank)
+					db.actor:set_character_rank(db.actor:character_rank() + task_desc.reward_rank)
+				end
 			end
 		end	
 	end
