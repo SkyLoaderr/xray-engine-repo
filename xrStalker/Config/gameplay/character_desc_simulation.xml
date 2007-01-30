@@ -5403,7 +5403,7 @@
 	<specific_character id="sim_test_080" team_default = "1">
 		<class>sim_test_080</class>
 		<visual>actors\dolg\stalker_do_balon_6</visual>
-		<icon>ui_npc_u_stalker_do_balon_6</icon>
+		<icon>ui_npc_u_stalker_do_mask_1</icon>
 		
 		<name>Test</name>
 		<map_icon x="1" y="0"></map_icon>
@@ -5419,7 +5419,7 @@
 	<specific_character id="sim_test_081" team_default = "1">
 		<class>sim_test_081</class>
 		<visual>actors\dolg\stalker_do_balon_7</visual>
-		<icon>ui_npc_u_stalker_do_balon_7</icon>
+		<icon>ui_npc_u_stalker_do_mask_1</icon>
 		
 		<name>Test</name>
 		<map_icon x="1" y="0"></map_icon>

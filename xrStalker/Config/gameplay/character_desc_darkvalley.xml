@@ -622,7 +622,7 @@
 	<!--------------------------- NAP1 ------------------------->
 	<specific_character id="val_escort_nap1" team_default="1">
 		<name>val_pulia_name</name>
-		<icon>ui_npc_u_stalker_do_balon_6</icon>
+		<icon>ui_npc_u_stalker_do_mask_1</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>val_pulia_bio</bio>
 
@@ -658,7 +658,7 @@
 	<!---------------------------- CAPTIVE -------------------------->
 	<specific_character id="val_escort_captive" team_default="1">
 		<name>GENERATE_NAME_stalker</name>
-		<icon>ui_npc_u_stalker_do_balon_7</icon>
+		<icon>ui_npc_u_stalker_do_mask_1</icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>val_dolg_common_bio</bio>
 
