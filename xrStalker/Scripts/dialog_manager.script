@@ -1,22 +1,21 @@
+local phrase_ini = ini_file("misc\\dialog_manager.ltx")
+
+local intro_id = 100
+
 phrase = {
 	intro = {},
 	cool_info = {},
 	help_thanks = {}
 	}
 
-local phrase_ini = ini_file("misc\\dialog_manager.ltx")
-
-local intro_id = 100
-local phrase_table_filled = false
-
 function get_id()
 	intro_id = intro_id + 1
 	return intro_id
 end
 
--- Необходимо сформировать набор предикатов  table[string_id] = predicate()
+--' Необходимо сформировать набор предикатов  table[string_id] = predicate()
 function fill_phrase_table()
-	-- Итерируемся по всем настройкам фраз
+	--' Итерируемся по всем настройкам фраз
 	if not phrase_ini:section_exist("list") then
 		abort("There is no section [list] in dialog_manager.ltx")
 	end
@@ -30,7 +29,7 @@ function fill_phrase_table()
 		if not phrase_ini:section_exist(id) then
 			abort("There is no section [%s] in dialog_manager.ltx", id)
 		end		
-		-- 2. Необходимо сформировать набор предикатов  table[string_id] = predicate()
+		--' 2. Необходимо сформировать набор предикатов  table[string_id] = predicate()
 		if not phrase_ini:line_exist(id, "category") then
 			abort("Dialog manager error: not categoried section [%s]", id)
 		end
@@ -74,18 +73,13 @@ function fill_phrase_table()
 		end
 		tt.phr_id = get_id()
 		tt.phr_id2 = get_id()
-		table.insert(phrase[category], tt)
+		phrase[category][tt.phr_id] = tt
 	end
 end
 
 -- Необходимо создать стартовый диалог, с разветвлением на третьем уровне, где каждая фраза будет иметь
 -- одну и ту же функцию в прекондишне
 function init_intro_dialog(dlg)
---'	if phrase_table_filled == false then
---'		fill_phrase_table()
---'		phrase_table_filled = true
---'	end
-
 	local phr = dlg:AddPhrase("",0,-1,-10000)
 		phr = dlg:AddPhrase("",1,0,-10000)
 
@@ -108,11 +102,6 @@ end
 -- Необходимо создать диалог актера, с разветвлением на втором уровне, где каждая фраза будет иметь
 -- одну и ту же функцию в прекондишне.
 function init_cool_info_dialog(dlg)
---'	if phrase_table_filled == false  then
---'		fill_phrase_table()
---'		phrase_table_filled = true
---'	end
-
 	local phr = dlg:AddPhrase("dm_general_cool_info",0,-1,-10000)
 	
 	local phr_def = dlg:AddPhrase("dm_general_cool_info_no_more",1,0,-10000)
@@ -142,11 +131,6 @@ end
 
 -- Диалоги помощи раненным
 function init_help_wounded_medkit_dialog(dlg)
---'	if phrase_table_filled == false then
---'		fill_phrase_table()
---'		phrase_table_filled = true
---'	end
-
 	local phr = dlg:AddPhrase("dm_general_help_medkit",0,-1,-10000)
 	local phrase_script = phr:GetPhraseScript()
 	phrase_script:AddAction("dialogs.transfer_medkit")
@@ -202,13 +186,13 @@ function phrase_action(npc, actor, sel_tbl, p2, one_time)
 end
 
 
-function precondition_intro(npc, actor, p1, p2)
-	return precondition(npc, actor, phrase.intro, selected_phrase_by_id.intro, p1, p2)
+function precondition_intro(npc, actor, p1, p2, p3)
+	return precondition(npc, actor, phrase.intro, selected_phrase_by_id.intro, p1, p2, p3)
 end
-function precondition_cool_info(npc, actor, p1, p2)
-	return precondition(npc, actor, phrase.cool_info, selected_phrase_by_id.cool_info, p1, p2)
+function precondition_cool_info(npc, actor, p1, p2, p3)
+	return precondition(npc, actor, phrase.cool_info, selected_phrase_by_id.cool_info, p1, p2, p3)
 end
-function precondition_cool_info_no_more(npc, actor, p1, p2)
+function precondition_cool_info_no_more(npc, actor, p1, p2, p3)
 	if selected_phrase_by_id.cool_info == nil or selected_phrase_by_id.cool_info[npc:id()] == nil then
 		return false
 	end
@@ -217,80 +201,39 @@ function precondition_cool_info_no_more(npc, actor, p1, p2)
 	end 
 	return false
 end
-function precondition_help_thanks(npc, actor, p1, p2)
-	return precondition(npc, actor, phrase.help_thanks, p1, p2)
+function precondition_help_thanks(npc, actor, p1, p2, p3)
+	return precondition(npc, actor, phrase.help_thanks, nil, p1, p2, p3)
 end
 
-function precondition(npc, actor, tbl, sel_tbl, p1, p2)
-	local k,v = 0,0
-	--' При первом вызове прекондишна пробегаемся по таблице предикатов и определяем количество предикатов,
-	--' которые возвращают TRUE. Определяется из них фраза, охватывающая самую узкую ситуацию (по количеству
-	--' проверяемых функций в условии. Ее порядковый номер запоминается.
-	if call_count == 0 then
-		local value, number, max_number = 0,0,0
-		
-		--' Надо проверить доступна ли запомненная фраза
-		if sel_tbl ~= nil and sel_tbl[npc:id()] ~= nil then
-			for k,v in pairs(tbl) do
-				if sel_tbl[npc:id()].phrase == v.phr_id then
-					value, number = calculate_predicate(npc, v)	
-					--' Если запомненная фраза недоступна - необходимо забыть ее
-					if value == false then
-						printf("*** restore memory phrase")
-						sel_tbl[npc:id()] = nil
-						break
-					end
-				end
-			end		
-		end	
-	
-		for k,v in pairs(tbl) do
-			value, number = calculate_predicate(npc, v)			
-			max_count = max_count + 1
-			printf("*** count = %s value = %s number = %s phr_id = %s", max_count, tostring(value), number, v.name)
+function precondition(npc, actor, tbl, sel_tbl, p1, p2, p3)
+	--' Получить фразу по номеру:
+	local phrase = tbl[p3]
 
-			--' Проверка на повторяемость фраз.
-			if sel_tbl ~= nil and sel_tbl[npc:id()] ~= nil then
-				--' Если проверяется запомненная фраза
-				if sel_tbl[npc:id()].phrase ~= v.phr_id then
-					printf("*** not memory phrase [%s] ~= [%s]", sel_tbl[npc:id()].phrase, v.phr_id)
-					value = false
-				end
-				if sel_tbl[npc:id()].count >= 1 then
-					value = false
-				end
-			end	
-
-			if value == true then
-				if number > max_number then
-					max_number = number
-					tmp_tbl = {}
-				end
-				if number == max_number then
-					tmp_tbl[max_count] = true
-				end								
-			end
+	--' Надо проверить доступна ли запомненная фраза
+	if sel_tbl ~= nil and sel_tbl[npc:id()] ~= nil then
+		local value, number = calculate_predicate(npc, tbl[sel_tbl[npc:id()].phrase])
+		--' Если запомненная фраза недоступна - необходимо забыть ее
+		if value == false then
+			printf("*** restore memory phrase")
+			sel_tbl[npc:id()] = nil
 		end
-	end
-	
-	call_count = call_count + 1
-	return_value = tmp_tbl[call_count] == true
-	
-	printf("  callcount = %s value = %s", call_count, tostring(return_value))
-	if call_count < max_count then
-		--' При повторном вызове прекондишна (счетчик вызовов не равен количеству сработанных предикатов) 
-		--' всегда возвращаем FALSE, кроме случая, что счетчик равен ранее запомненному порядковому номеру вызова.
-		return return_value
-	elseif call_count == max_count then
-		--' Как только счетчик дошел до конца - обнуляем все счетчики. Выбор произведен.
-		tmp_tbl = {}
-		call_count, max_count = 0,0
-		return return_value
-	end
-	printf("max_count = %s, call_count = %s", tostring(max_count), tostring(call_count))
-	print_table(tbl)
-	printf("p1 = %s, p2 = %s", tostring(p1), tostring(p2))
-	abort("Dialog manager error: unexpected programm point")
+	end	
+
+	--' Проверка на повторяемость фраз.
+	if sel_tbl ~= nil and sel_tbl[npc:id()] ~= nil then
+		--' Если проверяется не запомненная фраза
+		if sel_tbl[npc:id()].phrase ~= phrase.phr_id then
+			printf("*** not memory phrase [%s] ~= [%s]", sel_tbl[npc:id()].phrase, phrase.phr_id)
+			return false
+		end
+		if sel_tbl[npc:id()].count >= 1 then
+			return false
+		end
+	end	
+
+	--' Определяем доступна ли эта фраза:
+	local value, number = calculate_predicate(npc, phrase)
+	return value
 end
 
 function calculate_predicate(npc, tbl, settings)
@@ -364,8 +307,9 @@ function calculate_predicate(npc, tbl, settings)
 	
 	return true, property_num
 end
-		
 
+		
+--' Прекондишн, можно ли разрешать диалоги с болтовней ("расскажи мне о" например)
 function precondition_info_global(actor, npc)
 	if xr_wounded.is_wounded(npc) or
 	   xr_wounded.is_heavy_wounded_by_id(npc:id()) or
@@ -375,7 +319,6 @@ function precondition_info_global(actor, npc)
 	end
 	return true
 end
-
 
 	
 --' Сохранение информации о выбранных фразах
@@ -411,11 +354,4 @@ function load(npc, reader)
 	else
 		selected_phrase_by_id.cool_info[npc:id()] = nil
 	end
-end
-
-
-
--- Функция рандомной загрузки информации на продажу.
--- Загружает в чувака на выбор 3-5 различных информаций из доступных ему.
-function load_trade_info(npc)
 end
