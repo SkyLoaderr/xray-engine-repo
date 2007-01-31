@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window>
-	<!-- ICONS OF TRADING CHARACTERS -->	
-	<static_icon x="27" y="22" width="143" height="199">
+
+	<static_icon x="27" y="22" width="200" height="218">
 		<texture>ui_charinfo_left</texture>
 		<texture_offset x="-11" y="0"/>
 	</static_icon>
-	<static_icon x="800" y="22" width="143" height="199">
+	<static_icon x="800" y="22" width="200" height="218">
 		<texture>ui_charinfo_right</texture>
 	</static_icon>
 
