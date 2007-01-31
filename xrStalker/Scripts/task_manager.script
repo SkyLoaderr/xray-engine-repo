@@ -238,13 +238,14 @@ end
 --' Может ли вендор выдать квест
 function CRandomTask:parent_can_task(actor, npc, p1, p2, p3)
 	local parent = self:get_parent(npc)
+	local avail = false
+	self:task_avail(actor, npc, nil, nil, nil, "reset")
 	for k,v in pairs(self.task_id_by_parent[parent]) do
-
-		if self:task_avail(actor, npc, nil, nil, self.task_info[v].init_phrase_id, "reset") then
-			return true
+		if self:task_avail(actor, npc, nil, nil, self.task_info[v].init_phrase_id, true) then
+			avail = true
 		end
 	end
-	return false
+	return avail
 end
 --' Есть ли у игрока хоть одно задание от данного вендора
 function CRandomTask:active_parent_task(actor, npc)
@@ -503,7 +504,7 @@ end
 function CRandomTask:action_task_show(npc, actor)
 	local parent = self:get_parent(npc)	
 	for k,v in pairs(self.task_id_by_parent[parent]) do		
-		if self:task_avail(actor, npc, nil, nil, self.task_info[v].init_phrase_id, true) then
+		if self:task_avail(actor, npc, nil, nil, self.task_info[v].init_phrase_id, false) then
 			local task_texture, task_rect = get_texture_info("ui_icons_task_"..self.task_info[v].type, "ui_iconsTotal_locations")
 			db.actor:give_talk_message(game.translate_string(self.task_info[v].name), task_texture, task_rect,"iconed_trade_info")
 		end
@@ -515,7 +516,7 @@ function CRandomTask:task_avail(actor, npc, p1, p2, p3, calculate)
 	--' Если calculate == true то нужно проверять check_task_props, инача просто вернуть значения.
 	if calculate == "reset" then		
 		self.current_parent_type_prior = {}
-		self:check_task_props(self.task_id_by_init_phrase_id[p3])
+		return
 	elseif calculate == true then
 		self:check_task_props(self.task_id_by_init_phrase_id[p3])
 

@@ -56,9 +56,6 @@ news = {
 	rostok_kruglov_follow_2			= xr_sound.get_safe_sound_object([[characters_voice\scenario\Rostok\pda_kruglov_stop_enemy_2]]),
 	rostok_kruglov_follow_3			= xr_sound.get_safe_sound_object([[characters_voice\scenario\Rostok\pda_kruglov_help_5]]),
 		
-
-	bar_psih_come					= xr_sound.get_safe_sound_object([[characters_voice\scenario\bar\barman\barman_pda_psycho]]),
-
 	bar_territory_dolg_1_hit		= xr_sound.get_safe_sound_object([[characters_voice\scenario\bar\pda\voronin_gunfire_pda_1]]),
 	bar_territory_dolg_2_hit		= xr_sound.get_safe_sound_object([[characters_voice\scenario\bar\pda\voronin_gunfire_pda_2]]),
 	bar_territory_dolg_3_hit		= xr_sound.get_safe_sound_object([[characters_voice\scenario\bar\pda\voronin_gunfire_pda_3]]),
