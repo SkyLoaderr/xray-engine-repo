@@ -466,4 +466,7 @@
     <texture id="ui_button_save_preset_h" x="764" y="967" width="39" height="28" />
     <texture id="ui_button_save_preset_t" x="764" y="996" width="39" height="28" />
 
+    <texture id="ui_cur_task" x="670" y="974" width="19" height="19"/>
+    <texture id="ui_pda_m_noupdate" x="670" y="995" width="9" height="11"/>
+    <texture id="ui_pda_m_update" x="680" y="995" width="9" height="11"/>
 </ui_texture>
