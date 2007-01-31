@@ -37,8 +37,8 @@
 			</text_colors>
 		</description>
 		
-		<active_objecttive_image x="249" y="4" width="18" height="18" stretch="1" light_anim="ui_too_slow_blinking" la_cyclic="1" la_texture="1" la_text="0" la_alpha="1">
-			<texture x="0" y="0" width="10" height="10">ui\ui_pda_contacts_online</texture>
+		<active_objecttive_image x="249" y="4" width="19" height="19" stretch="1" light_anim="ui_too_slow_blinking" la_cyclic="1" la_texture="1" la_text="0" la_alpha="1">
+			<texture>ui_cur_task</texture>
 		</active_objecttive_image>
 		
 		<show_pointer_btn x="249" y="4" width="18" height="18" check_mode="1" hint="pda_show_pointer_btn_hint">

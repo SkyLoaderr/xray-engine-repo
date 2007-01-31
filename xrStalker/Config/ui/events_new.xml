@@ -22,14 +22,14 @@
 				</anim_static>
 								
 				<filter_tab x="0" y="6" width = "252" height="12">
-					<button x="155" y="0" width="70" height="12"  hint="pda_btn_journal_hint">
+					<button x="10" y="0" width="70" height="12"  hint="pda_btn_journal_hint">
 						<text  align="l" x="0" y="0" font="letterica18" r="255" g="255" b="255" complex_mode="0">pda_btn_journal</text>
 						<text_color>
 							<t r="231" g="168" b="12"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
 						</text_color>			
 					</button>								
 
-					<button x="15" y="0" width="120" height="12" hint="pda_btn_news_hint">
+					<button x="90" y="0" width="120" height="12" hint="pda_btn_news_hint">
 						<text  align="l" x="0" y="0" font="letterica18" r="255" g="255" b="255" complex_mode="0">pda_btn_news</text>
 						<text_color>
 							<t r="231" g="168" b="12"/> <d r="181" g="170" b="148"/> <e r="127" g="127" b="127"/> <h r="255" g="255" b="255"/>
@@ -76,8 +76,12 @@
 	
 	</main_wnd>
 
-	<updated_section_static alignment="c" x="0" y="0" width="16" height="8" stretch="0" light_anim="ui_too_slow_blinking" la_cyclic="1" la_texture="1" la_text="0" la_alpha="1">
-		<texture x="0" y="0" width="16" height="8">ui\ui_pda_contacts_offline</texture>
+	<updated_section_static x="0" y="0" width="9" height="11" stretch="1">
+		<texture>ui_pda_m_noupdate</texture>
 	</updated_section_static>
+	
+	<old_section_static x="0" y="0" width="9" height="11" stretch="1">
+		<texture>ui_pda_m_update</texture>
+	</old_section_static>
 </window>
 

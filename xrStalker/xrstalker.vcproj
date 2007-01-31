@@ -2714,6 +2714,9 @@
 					RelativePath=".\Config\ui\trade_16.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\ui_asus_intro.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\ui_credits.xml">
 				</File>
 				<File
