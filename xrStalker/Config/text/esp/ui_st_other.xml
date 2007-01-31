@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="id_mp_money">
+		<text>Dinero</text>
+	</string>
+	<string id="mm_mp_pda_hunt">
+		<text>Bonificaci n de la PDA</text>
+	</string>
+	<string id="st_drink">
+		<text>beber</text>
+	</string>
+	<string id="st_mp_direct_ip">
+		<text>IP directa</text>
+	</string>
+	<string id="ui_mm_default">
+		<text>Predeterminada</text>
+	</string>
+	<string id="ui_mm_detail_density">
+		<text>Densidad de la hierba</text>
+	</string>
+	<string id="ui_mm_r2_sun">
+		<text>Sombras solares</text>
+	</string>
+	<string id="ui_mm_r2_sun_details">
+		<text>Sombras de la hierba</text>
+	</string>
+	<string id="ui_mm_render_2">
+		<text>Render 2</text>
+	</string>
+	<string id="ui_pda_details">
+		<text># /details</text>
+	</string>
+	<string id="ui_st_btn_cancel">
+		<text>Cancelar</text>
+	</string>
+	<string id="ui_st_btn_no">
+		<text>No</text>
+	</string>
+	<string id="ui_st_btn_ok">
+		<text>Aceptar</text>
+	</string>
+	<string id="ui_st_btn_yes">
+		<text>S </text>
+	</string>
+	<string id="ui_st_cant_run_r2">
+		<text>No es posible ejecutar Render 2 en el PC</text>
+	</string>
+	<string id="ui_st_conn_invalid_host">
+		<text>Error de conexi n: alojamiento no v lido</text>
+	</string>
+	<string id="ui_st_conn_invalid_pass">
+		<text>Error de conexi n: contrase a no v lida</text>
+	</string>
+	<string id="ui_st_conn_rejected_server">
+		<text>Error de conexi n: conexi n rechazada por el servidor</text>
+	</string>
+	<string id="ui_st_conn_sess_full">
+		<text>Error de conexi n: la sesi n est  completa</text>
+	</string>
+	<string id="ui_st_days">
+		<text>D as</text>
+	</string>
+	<string id="ui_st_error">
+		<text>Error</text>
+	</string>
+	<string id="ui_st_file_exist_owerwrite_q">
+		<text>Ya existe un archivo con este nombre.  Quieres sobrescribirlo?</text>
+	</string>
+	<string id="ui_st_file_name_is_empty">
+		<text>El archivo no tiene nombre</text>
+	</string>
+	<string id="ui_st_hours">
+		<text>horas</text>
+	</string>
+	<string id="ui_st_leave">
+		<text>Salir</text>
+	</string>
+	<string id="ui_st_mins">
+		<text>minutos</text>
+	</string>
+	<string id="ui_st_months">
+		<text>meses</text>
+	</string>
+	<string id="ui_st_params">
+		<text>Par metros</text>
+	</string>
+	<string id="ui_st_secs">
+		<text>segundos</text>
+	</string>
+	<string id="ui_st_select_one_map">
+		<text>Selecciona al menos un mapa</text>
+	</string>
+	<string id="ui_st_take_all">
+		<text>Coger todo</text>
+	</string>
+	<string id="ui_st_time_remains">
+		<text>Restante</text>
+	</string>
+	<string id="ui_st_trade">
+		<text>Negocio</text>
+	</string>
+	<string id="ui_st_voting_disabled">
+		<text>Votaci n deshabilitada</text>
+	</string>
+	<string id="ui_st_want_to_leave_game_q">
+		<text> Seguro que quieres salir del juego?</text>
+	</string>
+	<string id="ui_st_your_items">
+		<text>Tus objetos</text>
+	</string>
+	<string id="st_game_over_press_jump">
+		<text>Presiona ($$ACTION_JUMP$$) para volver al men  principal</text>
+	</string>
+	<string id="st_level">
+		<text>Nivel</text>
+	</string>
+	<string id="st_opening_stream">
+		<text>Abriendo secuencia</text>
+	</string>
+	<string id="st_loading_cform">
+		<text>Cargando CFORM</text>
+	</string>
+	<string id="st_prefetching_objects">
+		<text>Buscando objetos con antelaci n</text>
+	</string>
+	<string id="st_creating_new_game">
+		<text>Creando juego nuevo</text>
+	</string>
+	<string id="st_loading_alife_simulator">
+		<text>SERVIDOR: cargando simulador activo</text>
+	</string>
+	<string id="st_server_connecting">
+		<text>SERVIDOR: conectando</text>
+	</string>
+	<string id="st_loading_saved_game">
+		<text>Cargando juego guardado</text>
+	</string>
+	<string id="st_validating_cdkey">
+		<text>Validando clave de CD</text>
+	</string>
+	<string id="st_loading_ai_objects">
+		<text>Cargando objetos IA</text>
+	</string>
+	<string id="st_client_connecting_to">
+		<text>CLIENTE: conectando a</text>
+	</string>
+	<string id="st_client_spawning">
+		<text>CLIENTE: generando</text>
+	</string>
+	<string id="st_loading_textures">
+		<text>Cargando texturas</text>
+	</string>
+	<string id="st_client_synchronising">
+		<text>CLIENTE: sincronizando</text>
+	</string>
+	<string id="st_server_starting">
+		<text>SERVIDOR: iniciando</text>
+	</string>
+	<string id="st_loading_shaders">
+		<text>Cargando tonos</text>
+	</string>
+	<string id="st_loading_geometry">
+		<text>Cargando geometr a</text>
+	</string>
+	<string id="st_loading_spatial_db">
+		<text>Cargando base de datos espacial</text>
+	</string>
+	<string id="st_loading_details">
+		<text>Cargando detalles</text>
+	</string>
+	<string id="st_loading_sectors_portals">
+		<text>Cargando sectores y portales</text>
+	</string>
+</string_table>

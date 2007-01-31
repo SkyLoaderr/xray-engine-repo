@@ -112,7 +112,7 @@
 		<text>действие</text>
 	</string>
 	<string id="ui_mm_advanced">
-		<text>расширенные</text>
+		<text>Расширенные</text>
 	</string>
 	<string id="ui_mm_anisotropic">
 		<text>Фильтрация текстур</text>
@@ -219,9 +219,6 @@
 	<string id="ui_mm_newgame">
 		<text>Новая игра</text>
 	</string>
-	<string id="ui_mm_vsync">
-		<text>Верт. синхронизация</text>
-	</string>
 	<string id="ui_mm_novice">
 		<text>Новичок</text>
 	</string>
@@ -274,7 +271,7 @@
 		<text>Показывать оружие</text>
 	</string>
 	<string id="ui_mm_simply">
-		<text>базовые</text>
+		<text>Базовые</text>
 	</string>
 	<string id="ui_mm_sound">
 		<text>Звук</text>
@@ -308,6 +305,9 @@
 	</string>
 	<string id="ui_mm_vis_distance">
 		<text>Дальность видимости</text>
+	</string>
+	<string id="ui_mm_vsync">
+		<text>Верт. синхронизация</text>
 	</string>
 	<string id="ui_st_last_set">
 		<text>Посл. набор</text>

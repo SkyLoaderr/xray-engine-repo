@@ -19,13 +19,13 @@
 		<text>Weapon select</text>
 	</string>
 	<string id="hide_weapon_tutorial">
-		<text>Some stalkers won't want to talk if you stick your weapon in their faces. To hide your weapon you only need to select a bolt. ($$ACTION_wpn_6$$).</text>
+		<text>Some stalkers won't want to talk if you stick your weapon in their face. To hide your weapon you only need to select a bolt. ($$ACTION_wpn_6$$).</text>
 	</string>
 	<string id="jump">
 		<text>Jumping</text>
 	</string>
 	<string id="jump_tutorial">
-		<text>The jumps will help you climb on top of not very large barriers. To jump, press ($$ACTION_jump$$)</text>
+		<text>The jumps will help you climb on top of medium barriers. To jump, press ($$ACTION_jump$$)</text>
 	</string>
 	<string id="move_tutorial">
 		<text>Movement types.</text>

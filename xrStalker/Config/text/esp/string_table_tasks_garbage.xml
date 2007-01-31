@@ -1,0 +1,48 @@
+	<string id="gar_car_graveyard_quest">
+		<text>Responde a la llamada de socorro.</text>
+	</string>
+	<string id="gar_defend_garbage">
+		<text>Rechaza la incursi n bandida.</text>
+	</string>
+	<string id="gar_dialog_hellcar">
+		<text>Ofrece tu ayuda al l der del pelot n neutral.</text>
+	</string>
+	<string id="gar_dialog_hellcar_1">
+		<text>Ofrece tu ayuda a Bes.</text>
+	</string>
+	<string id="gar_hellcar_alive">
+		<text>Habla con Bes.</text>
+	</string>
+	<string id="gar_help_dymon">
+		<text>Rechaza la incursi n bandida.</text>
+	</string>
+	<string id="gar_help_tunnel_newbie">
+		<text>Ayuda al novato del vertedero.</text>
+	</string>
+	<string id="gar_kill_bandits">
+		<text>Acaba con la incursi n bandida.</text>
+	</string>
+	<string id="gar_kill_boars">
+		<text>Ayuda al punto de control de Deber.</text>
+	</string>
+	<string id="gar_kill_boars_1">
+		<text>Mata a los jabal s.</text>
+	</string>
+	<string id="gar_kill_boars_2">
+		<text>Habla con el comandante de Deber.</text>
+	</string>
+	<string id="gar_kill_boars_descr">
+		<text>Deber: "Hola, al habla la facci n Deber desde el vertedero. Un grupo de mutantes procedentes del Valle Oscuro se dirigen al bar. Agradeceremos a cualquiera que nos ayude a acabar con esa escoria. Palabra de Deber."</text>
+	</string>
+	<string id="gar_kill_boars_main">
+		<text>La empresa de llegar hasta el bar.</text>
+	</string>
+	<string id="garbage_meet_stalker_1">
+		<text>Obt n de Gris informaci n sobre Strelok.</text>
+	</string>
+	<string id="graveyard_raid_text">
+		<text>Bes: "Los malditos bandidos intentan tomar el control del vertedero. Ha habido un combate aqu  hace media hora. Hemos matado a tres. El resto se han retirado, pero presiento que volver n de un momento a otro con refuerzos. Somos muy pocos y nos ir a bien un ca  n extra. Si nos ayudas a acabar con sus refuerzos, m s tarde te devolver  el favor."</text>
+	</string>
+	<string id="help_for_neitrals_text">
+		<text>Ha habido un tiroteo en el cementerio de coches entre fuerzas neutrales y bandidos. Los neutrales han conseguido vencer a los bandidos, pero est n pidiendo ayuda.</text>
+	</string>

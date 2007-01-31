@@ -118,8 +118,6 @@
 	<string id="tutorial_help_wounded_3">
 		<text>Принести флешку торговцу</text>
 	</string>
-
-
 	<string id="esc_trader_job">
 		<text>Работа на торговца</text>
 	</string>
@@ -138,8 +136,6 @@
 	<string id="yan_scientist_job_text">
 		<text>Предложить свою помощь ученным</text>
 	</string>
-
-
 	<string id="find_railroad_passage">
 		<text>Пробраться за железнодорожную насыпь</text>
 	</string>

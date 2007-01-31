@@ -86,16 +86,16 @@
 		<text>Merc, old hand</text>
 	</string>
 	<string id="military_experienced">
-		<text>soldier, sergeant</text>
+		<text>soldier, Sergeant</text>
 	</string>
 	<string id="military_master">
-		<text>soldier, captain</text>
+		<text>soldier, Captain</text>
 	</string>
 	<string id="military_novice">
-		<text>soldier, private</text>
+		<text>soldier, Private</text>
 	</string>
 	<string id="military_veteran">
-		<text>soldier, lieutenant</text>
+		<text>soldier, Lieutenant</text>
 	</string>
 	<string id="monolith_experienced">
 		<text>Monolithian, experienced</text>

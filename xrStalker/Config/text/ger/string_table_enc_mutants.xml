@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="Blind">
+		<text>Schattenhund</text>
+	</string>
+	<string id="Bloodsucker">
+		<text>Blutsauger</text>
+	</string>
+	<string id="Boar">
+		<text>Wildschwein</text>
+	</string>
+	<string id="Crow">
+		<text>Kr he</text>
+	</string>
+	<string id="enc_mutant_blind_general">
+		<text>Seit der Katastrophe hat es mehrere Generationen von Hunden gegeben. Jede war von der Zone mehr beeinflusst als die vorherige. Die schnelle Mutation f hrte zu einer gewaltigen Verbesserung vorher schwach ausgepr gter F higkeiten, oft auf Kosten der Prim rf higkeiten. Am auff lligsten war der Verlust der Sicht, der mit einer drastischen Verbesserung des Geruchssinns einherging. Blinde Welpen  berlebten in der Zone genauso gut, wenn nicht besser, als normale. Der gemeine Hund starb in der Zone rasch aus, und  brig blieben die blinden Schattenhunde. Die Tiere erkennen und vermeiden instinktiv Anomalien, Strahlung und andere Gefahren der Zone. Wie ihre wilden Vorfahren, die W lfe, jagen Schattenhunde im Rudel. Eine Begegnung mit einer gro en Gruppe dieser Tiere kann selbst f r einen erfahrenen und gut bewaffneten Stalker gef hrlich werden.</text>
+	</string>
+	<string id="enc_mutant_bloodsucker_general">
+		<text>Erfahrene Stalker beschreiben dieses halb-legend re Biest als einen gro en buckligen Humanoiden mit einer Masse Tentakel statt eines Munds. Den Berichten  berlebender zufolge benutzt die Kreatur ihre Tentakel, um sich an den Hals des Opfers zu klammern, es zu l hmen und sein Blut auszusaugen. Eine trockene mumifizierte H lle ist alles, was von einem Menschen bleibt. Die erstaunlichste Eigenschaft des Blutsaugers ist jedoch seine Unsichtbarkeit. Unz hlige tote oder verschwundene Stalker sollen im W rgegriff eines Blutsaugers zu Grunde gegangen sein. Die wenigen gl cklichen  berlebenden erz hlen schreckliche Geschichten von S mpfen und unterirdischen Gebieten, wo unter der Erde der Graf Dracula der Zone herrscht.</text>
+	</string>
+	<string id="enc_mutant_boar_general">
+		<text>Ein gewaltiges mutiertes Tier mit einer Schulterh he von 1,5 Metern. Das Zonen-Wildschwein ist seinen nicht-kontaminierten Verwandten an Aggressivit t und Z higkeit weit  berlegen. Strahlung und Anomalien haben das  u ere des Tiers ver ndert: Sein Fell fehlt an manchen Stellen, an anderen ist es lang und borstig. Aus den Hufen wurden starke, scharfe Klauen, die Pupillen sind farblos und den kahlen Kopf des Wildschweins bedecken Pigmentst rungen und tiefe Runzeln. Zonen-Wildschweine sind gegen Strahlung resistent und k nnen sich lange Zeit in stark kontaminierten Gebieten aufhalten. Sie rasen gew hnlich auf ihr Opfer zu, werfen es um und rei en es in St cke.</text>
+	</string>
+	<string id="enc_mutant_crow_general">
+		<text>Die einzige Vogelart, die jemals in der Zone  berlebt hat, erh hte Strahlung aush lt und Anomalien vermeiden kann. W hrend Armee-Piloten komplexe Detektoren brauchen, um St rungen der Schwerkraft zu bemerken, scheint die Kr he einen eigenen Sinn daf r zu besitzen - ein R tsel, das Ornithologen und Biologen in den Wahnsinn treibt. Es gibt verschiedene Theorien, um das Ph nomen zu erkl ren, alle beruhen auf einer hochentwickelten Spezialisierung des Vogelhirns.</text>
+	</string>
+	<string id="enc_mutant_flesh_general">
+		<text>Wie die meisten anderen Lebewesen in der Zone hat das Hausschwein ebenfalls seit dem Tag der Katastrophe ernsthafte biologische Ver nderungen erfahren. Offenbar waren haupts chlich die f r den Stoffwechsel verantwortlichen Gene betroffen. Mutantenschweine, unter Stalkern als "Fleisch" bekannt, geh ren zu den drastischsten Perversionen der Natur in der Zone. Mutantenschweine haben eine sch tzende Schuppenschicht und  u ere Knochenplatten. Ihr Regenerationspotential ist um ein Mehrfaches gestiegen, ebenso die Komplexit t ihres Nervensystems. Wie normale Schweine sind sie Allesfresser und greifen, wenn hungrig, auch Stalker an.</text>
+	</string>
+	<string id="enc_mutant_poltergeist_general">
+		<text>Unsichtbare, f r manche Leute  bernat rliche Wesen, die tief in der Zone, meistens in alten verlassenen Geb uden leben. Ihr Ursprung ist unbekannt, aber es gibt Ger chte dar ber, dass es sich um die Geister von Stalkern handelt, die von einer massiven Strahlungswelle getroffen wurden. Ihr mysteri ses Auftauchen und Verschwinden entspricht den Poltergeistlegenden, daher der Name. Bekannte Begegnungen mit Poltergeistern sind sehr unterschiedlich verlaufen: irres Gekicher, gespenstisches Heulen, t dliche Feuerb lle aus dem Nichts. Leider stammen alle Informationen  ber das Poltergeistph nomen aus unklaren und widerspr chlichen Erz hlungen fragw rdiger G te.</text>
+	</string>
+	<string id="enc_mutant_pseudodog_general">
+		<text>Trotz ihres Namens haben sich die Pseudohunde direkt aus W lfen entwickelt. Aus den zum Zeitpunkt der Katastrophe im Wald lebenden Tieren ging eine der gef hrlichsten Mutantenspezies der Zone hervor. Pseudohunde unterscheiden sich von Mutantenhunden wie W lfe von Pudeln. Die Kreaturen markieren und bewachen ihr Gebiet sorgsam, und greifen sofort jeden an, der dumm genug ist, es zu betreten. Blitzartige Reflexe, unheimliches Geschick und messerscharfe Z hne machen den Pseudohund zu einem ernsthaften Gegner f r gro e Mutanten und gut bewaffnete Stalker.</text>
+	</string>
+	<string id="enc_mutant_pseudogiant_general">
+		<text>Der Pseudoriese  hnelt einem gewaltigen, tropfenf rmigen Bauch mit einem Paar unverh ltnism  ig gro en Gliedma en. Die Glieder sind gleichzeitig Arme und Beine. Die Kreatur bewegt sich darauf und greift damit ihre Opfer. Ein erwachsener Pseudoriese kann bis zu zwei Tonnen wiegen und zwei Meter gro  sein. Ihr ungeschicktes Aussehen t uscht, da sie bei Bedarf sehr schnell sein k nnen. Ihre Muskeln sind sehr stark und ihr Skelett hart wie Stahl. Das Hirn der Kreatur wird von einem dicken (zehn Zentimeter) Sch del gesch tzt, viele h here Funktionen hat das R ckenmark  bernommen. Eine weitere erstaunliche Eigenschaft der Bestie ist ihre F higkeit zur Erzeugung  rtlicher Schockwellen, die alle Lebewesen in Reichweite sch digen.</text>
+	</string>
+	<string id="enc_mutant_snork_general">
+		<text>Anscheinend waren diese Kreaturen einmal menschlich, aber man kann nur schwer ahnen, welche Bedingungen ein menschliches Wesen in derart widerliches Getier verwandeln. Schnorks sind irre Kreaturen, Tiere, die sich nicht viel von anderen Fleischfressern der Zone unterscheiden. Sie bewegen sich springend auf allen Vieren fort und schn ffeln dabei st ndig am Boden nach Beute. Sie jagen sorgf ltig und  berlegt und legen oft Hinterhalte. Dank ihrer schnellen Reflexe und starker Muskeln kann ein Schnork sich anpirschen, sein Opfer mit einem einzigen langen Satz zu Boden rei en und innerhalb von Sekunden zerrei en. Man findet manchmal Uniformfetzen und andere Kleidung an ihnen. Vermutlich handelt es sich um die  berreste vermisster Armeestalker.</text>
+	</string>
+	<string id="enc_mutant_tushkano">
+		<text>Diese Tiere haben nichts mit W stenspringm usen zu tun, obwohl sie ihnen  hnlich sehen. Versuche, die exakte Ursprungsspezies der Nager zu bestimmen, sind bisher gescheitert, obwohl der Vorfahre ein geselliges Nagetier gewesen sein muss. Das Tier erreicht eine Schulterh he von 40 Zentimetern und ist geschickter, aggressiver und blutr nstiger als sein w stenlebender Verwandter. Nager leben oft im Keller zerst rter Geb ude und fressen alles, was sie kriegen k nnen, von Pflanzen bis zu unvorsichtigen Stalkern. Gelegentlich greift ein Rudel erfolgreich gr  ere Tiere und Mutanten an und rei t sie in St cke, ehe sie fliehen k nnen.</text>
+	</string>
+	<string id="enc_mutant_zombie_general">
+		<text>Der Hirnschmelzer raubt seinem Opfer Sinn und Verstand und l sst nur eine leere, dumpfe H lle zur ck. Die hirnlosen K rper werden zu Zombies, folgen nur den Grundinstinkten und wandern ohne Waffen oder Kleidung ziellos durch die Zone. Zombies sind wenig mehr als tr ge wandelnde Leichen, die nur an Nahrung und Schlaf denken. Sie essen und trinken alles, was sie finden, daher triefen sie nur so vor Strahlung und Giftm ll.  blicherweise wandeln sie ohne Ziel durch die Zone oder liegen wie Leichen in verlassenen Geb uden herum. Sobald sie jedoch die Gegenwart eines Menschen sp ren, greifen sie sofort an. Erfahrene Stalker haben gelernt, sie wenn m glich zu vermeiden.</text>
+	</string>
+	<string id="Flesh">
+		<text>Fleisch</text>
+	</string>
+	<string id="General">
+		<text>Allgemeine Informationen</text>
+	</string>
+	<string id="mutant_boar_leg">
+		<text>Wildschweinklauen</text>
+	</string>
+	<string id="mutant_boar_leg_description">
+		<text>Wildschweinklauen k nnen zur Herstellung verschiedenster Medikamente verwendet werden, z.B. eines Strahlenschutzserums.</text>
+	</string>
+	<string id="mutant_dog_tail">
+		<text>Hundeschwanz</text>
+	</string>
+	<string id="mutant_dog_tail_description">
+		<text>Die Widerstandsf higkeit der Haut von mutierten Hunden gegen ber Elektrizit t und chemischen Stoffen ist schon lange Gegenstand wissenschaftlichen Interesses. Der Hundeschwanz ist fast vollkommen frei von Fettgewebe und daher besonders gut f r Forschungszwecke geeignet.</text>
+	</string>
+	<string id="mutant_flesh_eye">
+		<text>Fleisch-Auge</text>
+	</string>
+	<string id="mutant_flesh_eye_description">
+		<text>Die mutierten, geschwollenen Augen der Fleisch-Mutanten habe einige ungew hnliche Eigenschaften erworben. Die n tzlichste davon ist die F higkeit, die Linse zu regenerieren. Die genauen Abl ufe dieses Regenrationsprozesses sind bislang unbekannt, aber ihre Aufdeckung w rde die moderne Medizin sicher revolutionieren. Man kann dem wissenschaftlichen Fortschritt unter die Arme greifen, indem man Fleisch-Augen an Wissenschaftler verkauft.</text>
+	</string>
+	<string id="mutant_krovosos_jaw">
+		<text>Blutsauger-Tentakel</text>
+	</string>
+	<string id="mutant_krovosos_jaw_description">
+		<text>Die Tentakel eines Blutsaugers besitzen eine spezielle Dr se, die ein Enzym produziert, welches Haut aufl sen kann und gleichzeitig die Gerinnung des Blutes verhindert. Die Entschl sselung der Zusammensetzung dieses Enzyms k nnte ein Meilenstein in der medizinischen Entwicklung sein.</text>
+	</string>
+	<string id="mutant_psevdodog_tail">
+		<text>Pseudohundeschwanz</text>
+	</string>
+	<string id="mutant_psevdodog_tail_description">
+		<text>Die Widerstandsf higkeit der Haut von mutierten Hunden gegen ber Elektrizit t und chemischen Stoffen ist schon lange Gegenstand wissenschaftlichen Interesses. Der Hundeschwanz ist fast vollkommen frei von Fettgewebe und daher besonders gut f r Forschungszwecke geeignet.</text>
+	</string>
+	<string id="mutant_snork_leg">
+		<text>Schnork-Fu </text>
+	</string>
+	<string id="mutant_snork_leg_description">
+		<text>Schnork-F  e enthalten eine Vielzahl hochelastischer Sehnen. Dies erkl rt die unglaubliche Sprungkraft dieser Bestie.</text>
+	</string>
+	<string id="Mutants">
+		<text>Tiere und Mutanten</text>
+	</string>
+	<string id="Poltergeist">
+		<text>Poltergeist</text>
+	</string>
+	<string id="Pseudodog">
+		<text>Pseudohund</text>
+	</string>
+	<string id="Pseudogiant">
+		<text>Pseudoriese</text>
+	</string>
+	<string id="Snork">
+		<text>Schnork</text>
+	</string>
+	<string id="Tushkano">
+		<text>Nager</text>
+	</string>
+	<string id="Zombie">
+		<text>Zombie</text>
+	</string>
+	<string id="Controller">
+		<text>Telepath</text>
+	</string>
+	<string id="enc_mutant_controller_general">
+		<text>Ein seltener Mutant, der in der N he des Zentrums der Zone gesehen wurde.  hnelt entfernt einem Humanoiden mit  bergro em Kopf. Hat eine hohe Wahrnehmungsf higkeit und kann das Verhalten von weniger hoch entwickelten Wesen beeinflussen. Erwachsene Exemplare k nnen Menschen kontrollieren. Dies ist ein grausamer Gegner, den selbst die erfahrensten Stalker f rchten.</text>
+	</string>
+</string_table>

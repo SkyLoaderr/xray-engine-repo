@@ -16,13 +16,13 @@
 		<text>Thanks for the information.</text>
 	</string>
 	<string id="agr_factory_krot_start_1501">
-		<text>Yes, I heard about that. They even say he used to "work" in these parts and Strelok's stash is in the local basements. Rumour has it that his group's base was here too.</text>
+		<text>Yes, I heard about that. They even say he used to "work" in these parts and Strelok's stash is in the local basements. Rumor has it that his group's base was here too.</text>
 	</string>
 	<string id="agr_factory_krot_start_1502">
 		<text>This is one of the many exits which will lead you into the interconnected basements. Once you're in there, you're on your own - I don't have a map and the basement network is huge and confusing.</text>
 	</string>
 	<string id="agr_factory_krot_start_2">
-		<text>I'm looking for info on Strelok, Seriy told me you know something about him.</text>
+		<text>I'm looking for info on Strelok. Seriy told me you know something about him.</text>
 	</string>
 	<string id="agr_factory_krot_start_30001">
 		<text>Thank you.</text>
@@ -34,7 +34,7 @@
 		<text>What's going on here?</text>
 	</string>
 	<string id="agr_factory_stalker_about_1">
-		<text>We're fighting or, more specifically, camping here like sitting ducks. Talk to Mole if you want to know more - he's the leader here.</text>
+		<text>We're fighting, or more specifically, camping out like sitting ducks. Talk to Mole if you want to know more - he's the leader.</text>
 	</string>
 	<string id="agr_factory_stalker_start_0">
 		<text>Man, that was a fight and a half - you wouldn't wish something like that on your worst enemy. Those army boys are getting pretty cocky!</text>
@@ -43,10 +43,10 @@
 		<text>Where is the Agroprom Research Institute?</text>
 	</string>
 	<string id="agr_krot_about_agroprom_10">
-		<text>Not far from here. Follow the road to the West and you'll come to the Institute gates.</text>
+		<text>Not far from here. Follow the road to the West and you'll come to the Institute's gates.</text>
 	</string>
 	<string id="agr_krot_about_agroprom_100">
-		<text>I hear the military have set up a base there?</text>
+		<text>I hear the military have set up a base there, right?</text>
 	</string>
 	<string id="agr_krot_about_agroprom_120">
 		<text>Thanks for the information.</text>
@@ -85,7 +85,7 @@
 		<text>What else do you know?</text>
 	</string>
 	<string id="agr_krot_actor_met_seriy_250">
-		<text>I don't know anything else, I told you everything I knew and now you have to work it out on your own. Good luck to you, mate.</text>
+		<text>I don't know anything else. I told you everything I knew and now you have to work it out on your own. Good luck to you.</text>
 	</string>
 	<string id="agr_krot_help_0">
 		<text>Help me, stalker!!!</text>
@@ -100,7 +100,7 @@
 		<text>What are you doing?</text>
 	</string>
 	<string id="agr_stalker_esc_20">
-		<text>I'm coming back from the factory which is a bit further down the road. I don't know how but the army found out about our group. I didn't wait for them to make an appearance and buggered off as quickly as I could. I hope our boys got out of there 'cause otherwise they won't be alive for much longer - you saw the choppers yourself.</text>
+		<text>I'm coming back from the factory which is a bit further down the road. I don't know how but the army found out about our group. I didn't wait for them to show up and took off as quickly as I could. I hope our boys got out of there 'cause otherwise they won't be alive for much longer - you saw the choppers yourself.</text>
 	</string>
 	<string id="agr_stalker_esc_300">
 		<text>I see, thanks.</text>
@@ -139,7 +139,7 @@
 		<text>Thirty, deal?</text>
 	</string>
 	<string id="agr_stalker_talk_about_ratcatcher_40">
-		<text>The exit from the railway tunnel is nearby. It's fairly safe in the dead end there. At least nobody has been eaten while sleeping...yet. Also, to the Northwest of the factory you'll find a marsh with a wagon in it. You can get your head down inside it without worry too. The only thing is there's a shitload of radiation around it, so it's best to approach it from the western side. Oh, and one more thing: a soldier has been spotted there. He's likely to be from the military base at the Institute. The poor bastard is probably crazy - he's been there for a couple of days and I doubt he'll survive much longer on his own.</text>
+		<text>The exit from the railway tunnel is nearby. It's fairly safe in the dead end. At least nobody has been eaten while sleeping...yet.  Also, to the Northwest of the factory you'll find a marsh with a wagon in it.  But be careful, there's a shitload of radiation around it, so it's best to approach it from the western side. Oh, and one more thing: a soldier has been spotted there. He's likely to be from the military base at the Institute. The poor bastard is probably crazy - he's been there for a couple of days and I doubt he'll survive much longer on his own.</text>
 	</string>
 	<string id="agr_stalker_talk_about_ratcatcher_9999">
 		<text>Bye!</text>
@@ -154,7 +154,7 @@
 		<text>Deal.</text>
 	</string>
 	<string id="agr_stalker_talk_about_ratcatcher1_111">
-		<text>We have a local hero around here called Ratcatcher. He lives in the marshes. The man bred so many rats in the collectors that they'll eat soon those army bastards.</text>
+		<text>We have a local hero around here called Ratcatcher. He lives in the marshes. The man bred so many rats in the collectors that they'll soon eat those army bastards.</text>
 	</string>
 	<string id="agr_stalker_talk_about_ratcatcher1_1111">
 		<text>Great. Thanks.</text>
@@ -163,7 +163,7 @@
 		<text>Tell me more about the collectors.</text>
 	</string>
 	<string id="agr_stalker_talk_about_ratcatcher1_11121">
-		<text>Collectors are basically a standard shit-stinking sewer that takes waste from the Institute to the nearest water reservoir.</text>
+		<text>Collectors are your standard shit-stinking sewers that take waste from the Institute and dumps it in the nearest water reservoir. </text>
 	</string>
 	<string id="agr_stalker_talk_about_ratcatcher1_111211">
 		<text>Great. See you and take care of yourself.</text>
@@ -232,16 +232,16 @@
 		<text>What are you going to do now?</text>
 	</string>
 	<string id="agr_swamp_ratcatcher_talks_20">
-		<text>I am from the recon unit. They sent us into the catacombs to see what's going on below the base. It's hell down there, man, I'm telling you. I was the only one to get out of there...everyone else is probably dead meat by now. I don't want to go back to the base - those bastards are always using us to plug all the holes in this damn Zone.</text>
+		<text>I am from the recon unit. They sent us into the catacombs to see what's going on below the base. It's hell down there, I'm telling you. I was the only one to get out of there... everyone else is probably dead by now. I don't want to go back to the base - those bastards are always using us to plug up all the holes in this damn Zone.</text>
 	</string>
 	<string id="agr_swamp_ratcatcher_talks_30">
 		<text>Underground tunnels. They go from the Institute to the area around it - I'll show you the entrances. I don't have maps of the catacombs themselves.</text>
 	</string>
 	<string id="agr_swamp_ratcatcher_talks_40">
-		<text>At the HQ. It's on the third floor of the Institute. That's where they keep those damn papers. But it's a mission getting there.By day, the area is teeming with patrols but less so at night. I'll tell you this for free: if you wanna get inside you'll have to go through the catacombs - you stand no chance at the gate.</text>
+		<text>At the HQ. It's on the third floor of the Institute. That's where they keep those damn papers. But it's a mission getting there. By day, the area is teaming with patrols but not as much at night. I'll tell you this for free: if you wanna get inside you'll have to go through the catacombs - you stand no chance at the gate.</text>
 	</string>
 	<string id="agr_swamp_ratcatcher_talks_50">
-		<text>Hmm. I don't know. I am a deserter according to the military code and I need to get out of the Zone somehow. When we first got here there was a Zaporozhets in the garage that was almost working. I brought it back to life in half an hour but that damn captain took it for himself claiming he should have it according to the code. He drove it around along a road around here and dumped it in the rain by the gate. If only I could get that car - making a run for it is much safer on wheels!</text>
+		<text>Hmm. I don't know. I am a deserter according to the military code and I need to get out of the Zone somehow. When we first got here there was a Zaporozhets in the garage that was almost working. I brought it back to life in half an hour but that damn captain took it for himself claiming he should have it according to the code. He drove it along this road and dumped it in the rain by the gate. If only I could get that car - making a run for it is much safer on wheels!</text>
 	</string>
 	<string id="agr_swamp_ratcatcher_talks1_0">
 		<text>Hello.</text>
@@ -253,7 +253,7 @@
 		<text>Tell me about the collector. How do I get inside? Where are the exits and entrances?</text>
 	</string>
 	<string id="agr_swamp_ratcatcher_talks1_0111">
-		<text>It's dangerous inside the collector. There are six entrances and two of them are in the area around the Institute where the military have set up a base. That area is patrolled and the captain keeps the patrol rota in his armory.</text>
+		<text>It's dangerous inside the collector. There are six entrances and two of them are in the area around the Institute where the military have set up a base. That area is patrolled and the captain keeps the patrol schedule in his armory.</text>
 	</string>
 	<string id="agr_swamp_ratcatcher_talks1_01111">
 		<text>How do you know all that?</text>

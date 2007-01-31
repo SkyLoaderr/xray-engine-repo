@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="item test1">
+		<text>C'est une ligne test OBJET</text>
+	</string>
+	<string id="item test2">
+		<text>C'est une autre ligne test OBJET</text>
+	</string>
+	<string id="item_case_esc_desc">
+		<text>Mallette r sistant au feu contenant des documents.</text>
+	</string>
+	<string id="item_decoder_desc">
+		<text>Un puissant crochet  lectronique. Contrairement   ce qu'on pourrait croire, ce n'est pas un outil de voleur. Il semble avoir  t  cr   pour un certain type de verrou et ne sert que pour celui-ci.</text>
+	</string>
+	<string id="item_decoder_name">
+		<text>D codeur</text>
+	</string>
+	<string id="item_detector_yantar_desc">
+		<text>D tecteur d' missions psi</text>
+	</string>
+	<string id="item_detector_yantar_name">
+		<text>D tecteur PP-4a</text>
+	</string>
+	<string id="item_doc_x16_desc">
+		<text>Dossier en plastique. Il faut avoir un dipl me en biologie pour comprendre un mot de ce qu'il contient.</text>
+	</string>
+	<string id="item_doc_x16_name">
+		<text>Docs du labo X16</text>
+	</string>
+	<string id="item_doc_x18_desc">
+		<text>Une pile  paisse de documents scientifiques. Termes, formules et nombreux diagrammes.</text>
+	</string>
+	<string id="item_doc_x18p1_name">
+		<text>Docs du labo X18 p.1</text>
+	</string>
+	<string id="item_doc_x18p2_name">
+		<text>Docs du labo X18 p.2</text>
+	</string>
+	<string id="item_doc_x18p3_name">
+		<text>Docs du labo X18 p.3</text>
+	</string>
+	<string id="item_doc_x18p4_name">
+		<text>Docs du labo X18 p.4</text>
+	</string>
+	<string id="item_doc_x18p5_name">
+		<text>Docs du labo X18 p.5</text>
+	</string>
+	<string id="item_docs_hiden_pri_desc">
+		<text>Ancien manuscrit avec une reliure en cuir.  crit par Strelok lui-m me.   en juger par la premi re page, il pourrait expliquer certains secrets de la Zone.</text>
+	</string>
+	<string id="item_docs_hiden_pri_name">
+		<text>Documents de la planque secr te de Pripyat</text>
+	</string>
+	<string id="item_dynamite_esc_desc">
+		<text>Une lourde caisse en bois comportant l'inscription "Explosifs" en plusieurs langues.</text>
+	</string>
+	<string id="item_dynamite_esc_name">
+		<text>Caisse d'explosifs</text>
+	</string>
+	<string id="item_flash_crazy_mil_desc">
+		<text>Cl  USB : moyen pratique de conserver et de transf rer des informations.</text>
+	</string>
+	<string id="item_flash_crazy_mil_name">
+		<text>Cl  USB du Stalker fou</text>
+	</string>
+	<string id="item_flash_eco_rost_desc">
+		<text>Cl  USB : moyen pratique de conserver et de transf rer des informations.</text>
+	</string>
+	<string id="item_flash_eco_rost_name">
+		<text>Cl  USB du Pr. Kruglov</text>
+	</string>
+	<string id="item_flash_esc_desc">
+		<text>Cl  USB : moyen pratique de conserver et de transf rer des informations.</text>
+	</string>
+	<string id="item_flash_esc_name">
+		<text>Cl  USB du Stalker captif</text>
+	</string>
+	<string id="item_flash_gslinger_agro_desc">
+		<text>Cl  USB : moyen pratique de conserver et de transf rer des informations.</text>
+	</string>
+	<string id="item_flash_gslinger_agro_name">
+		<text>Cl  USB de Strelok</text>
+	</string>
+	<string id="item_key_x18_desc">
+		<text>Cl   lectronique donnant acc s au labo X18 souterrain.</text>
+	</string>
+	<string id="item_key_x18_name">
+		<text>Code de Borov</text>
+	</string>
+	<string id="item_krot_flash">
+		<text>Cl  USB de la Taupe</text>
+	</string>
+	<string id="item_pda_lucky_desc">
+		<text>Assistant digital personnel. Indispensable dans la Zone.</text>
+	</string>
+	<string id="item_pda_lucky_name">
+		<text>PDA du Chanceux</text>
+	</string>
+	<string id="item_pda_tiran_desc">
+		<text>Assistant digital personnel. Indispensable dans la Zone.</text>
+	</string>
+	<string id="item_pda_tiran_name">
+		<text>PDA de Tyran</text>
+	</string>
+	<string id="item_quest_case_02_desc">
+		<text>Une mallette r sistant au feu contenant des documents.</text>
+	</string>
+	<string id="item_quest_case_02_name">
+		<text>Documents militaires de l'Institut Agroprom</text>
+	</string>
+	<string id="item_сase_esc_name">
+		<text>Documents de l'avant-poste</text>
+	</string>
+	<string id="yan_bad_psy_helmet_desc">
+		<text>Prototype d velopp  par les scientifiques pour prot ger les gens des  missions psi. Mal r gl .</text>
+	</string>
+	<string id="yan_bad_psy_helmet_name">
+		<text>Casque psi mal r gl </text>
+	</string>
+	<string id="yan_good_psy_helmet_desc">
+		<text>Prototype fonctionnel d velopp  par les scientifiques pour prot ger les gens des  missions psi.</text>
+	</string>
+	<string id="yan_good_psy_helmet_name">
+		<text>Casque psi pratique</text>
+	</string>
+</string_table>

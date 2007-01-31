@@ -1,3 +1,6 @@
+	<string id="gar_car_graveyard_quest">
+		<text>Ответить на призыв о помощи</text>
+	</string>
 	<string id="gar_defend_garbage">
 		<text>Уничтожить рейд бандитов</text>
 	</string>
@@ -12,9 +15,6 @@
 	</string>
 	<string id="gar_help_dymon">
 		<text>Отбить рейд бандитов</text>
-	</string>
-	<string id="gar_car_graveyard_quest">
-		<text>Ответить на призыв о помощи</text>
 	</string>
 	<string id="gar_help_tunnel_newbie">
 		<text>Помочь новичку со свалки</text>

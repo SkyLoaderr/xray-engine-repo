@@ -1,0 +1,48 @@
+	<string id="descr_yan_find_ghost_task">
+		<text>Vasiliev: "... Estas son las coordenadas de la entrada del laboratorio X16. El acceso se encuentra en el s tano del edificio central; el prop sito del edificio se desconoce. Creo que se utiliza para el servicio t cnico de los emisores subterr neos: seg n los documentos de N***, el objetivo de este proyecto es el desarrollo a gran escala de armas psicotr nicas de largo alcance...\n\n … Tenemos en nuestro poder todos los documentos necesarios, y sabemos c mo desactivar el emisor. Procedemos a entrar en el laboratorio con Ghost. Hay zombis por todas partes...\n\n … Todo est  saliendo mal; Ghost se ha vuelto completamente loco y est  delirando. Parece que ha sucumbido a la emisi n. He abandonado todo y estoy regresando por los t neles…\n\n ... Estoy en los pantanos;  d nde est  el b nker?    Maldita sea!!!  No puedo precisar mi localizaci n!    El cobarde de Sakharov no contesta!!!    Qu  est  pasando??? … Hay zombis por todas partes y me estoy quedando sin munici n..."</text>
+	</string>
+	<string id="descr_yan_find_lab">
+		<text>Sakharov: "Lo  nico que tienes que hacer es encontrar el cuerpo de Vasiliev y obtener la informaci n precisa sobre la ubicaci n del laboratorio. Luego, entra en el laboratorio y encuentra a Ghost. Ghost sab a c mo desactivar la emisi n y c mo salir de all  despu s."</text>
+	</string>
+	<string id="descr_yan_find_scientist">
+		<text>Sakharov: "Si acompa as a nuestro socio y tomas las mediciones necesarias, te dar  un prototipo calibrado que te permitir  acceder al laboratorio."</text>
+	</string>
+	<string id="descr_yan_find_scientist_semenov">
+		<text>Sakharov: "Si acompa as a nuestro socio y tomas las mediciones necesarias, te dar  un prototipo calibrado que te permitir  acceder al laboratorio."</text>
+	</string>
+	<string id="descr_yan_kill_brain">
+		<text>Sakharov: "Buen trabajo, Marcado; por fin has conseguido llegar al laboratorio. Es muy importante que estudiemos el mecanismo que hay ah . Trata de desactivarlo para que podamos investigarlo.\n\n … Escucha, el prototipo no podr  protegerte de las radiaciones m s fuertes. Ya hab a pensado en ello, as  que hay un temporizador en el blindaje que se pondr  en marcha cuando est s sometido a una exposici n fuerte. Cuando el tiempo se acabe, el prototipo ya no te proteger . Ten mucho cuidado y no te olvides del temporizador."</text>
+	</string>
+	<string id="descr_yan_kill_brain_2">
+		<text>El dispositivo est  desactivado. S lo tienes que preocuparte de salir de ah  vivo.</text>
+	</string>
+	<string id="descr_yan_provodnik_task">
+		<text>Ghost: "Entrada #257\n >>Gu a, uno de mis hombres va hacia all ; tenemos informaci n importante para Doc; ay dale a salir." \n\n >>Gu a: "Perfecto. Pero Ghost, que no se repita lo de la  ltima vez. Ser s t  quien haga el viaje; llevo tiempo queriendo hablar contigo. Te esperar  en el sitio habitual, en el campamento junto al puente. No te pierdas y procura que no te cojan las patrullas del ej rcito."</text>
+	</string>
+	<string id="descr_yan_scientist_return_task">
+		<text>Sakharov: "   Qu  ha pasado???    Est  muerto???    Haz las mediciones y vuelve inmediatamente!!!"</text>
+	</string>
+	<string id="journal_after_find_ghost">
+		<text> No entiendo nada! Ghost es el de la foto del archivo adjunto a la misi n que ordena matar a Strelok. Estoy totalmente confundido. Aqu  hay un error.  Pero qui n lo ha cometido? A n no hay respuesta. Por los registros de Ghost, me he enterado del nombre del "amigo com n", el cuarto hombre del grupo de Strelok: Doc. Lleva mucho tiempo ayudando al grupo haciendo las veces de "cuartel general." Se le puede encontrar a trav s de un stalker llamado Gu a que frecuenta el Cord n. De acuerdo, Gu a, no te mueras hasta que… nos conozcamos. En el cad ver de Ghost tambi n encontr  documentos relacionados con el mecanismo del "Psico-cerebro". Toda la gente de los alrededores estaba bajo la influencia de esa cosa; convert a en zombi a cualquiera que entrara dentro de su radio de acci n. Me he enterado de que hay otro mecanismo en el laboratorio X18, y puede que sea el Cauterizador cerebral. Tambi n me he enterado de que estos mecanismos no siempre funcionan al m ximo rendimiento. Hay periodos en los que se reduce la potencia para refrigerar el aparato.</text>
+	</string>
+	<string id="journal_after_find_ghost_name">
+		<text>Un rompecabezas m s</text>
+	</string>
+	<string id="journal_after_kill_brain">
+		<text>Tras desactivar aquel "cerebro de laboratorio" tan horrible, ca  inconsciente. La presi n de los  ltimos d as me hab a pasado factura. Mientras estaba inconsciente, tuve un sue o… Una fotograf a. Un hombre con el pelo gris la tiene en la mano y hay un perro enorme a sus pies. El hombre mira al infinito, y a su alrededor se ve un pantano. El paisaje no se parece en nada a lo que hay en la foto. En la niebla puedo ver la silueta de alguien andando. El hombre est  hablando solo: "Si es tan importante,  por qu  no me dijiste qu  es este lugar y d nde conseguiste la foto?" Entonces… al lado veo a un joven sonriente, en el umbral de la caba a, que dice alegremente: " Si supieras d nde he estado y lo que he visto!" Extiende el brazo mostrando un portentoso dispositivo que ilumina toda la caba a. El perro empieza a gru ir y se acurruca en un rinc n. El hombre de pelo gris murmura: "Alg n d a, estos juegos te meter n en un gran l o". …Un rel mpago… Aparece el mismo joven con la cara cubierta de sangre, entra dando tumbos en la caba a y se cae… Rel mpagos, llueve con fuerza... Otro rel mpago... Aparece la cama de la caba a con el joven cubierto de vendas. Est  inconsciente. El hombre de pelo gris murmura: "Aguanta, hijo". Hay objetos personales en un rinc n y, entre ellos, una foto extra a... Otro rel mpago... La foto est  en las manos del hombre de pelo gris. El joven, ahora con la cara llena de cicatrices, se dispone a marcharse. El hombre de pelo gris le pregunta: " A d nde vas?" Responde apesadumbrado: "Al Norte..." Otro rel mpago… Y entonces me despert .</text>
+	</string>
+	<string id="journal_after_kill_brain_name">
+		<text>El segundo sue o</text>
+	</string>
+	<string id="journal_before_vasilyev_pda">
+		<text>Aqu  estoy, a tan solo un paso de uno de los hombres de Strelok. Ghost se fue al laboratorio subterr neo X16 con uno de los cient ficos. Solo hay un "pero": no creo que lo encuentre con vida. Mataron al cient fico cuando regresaba solo, muy cerca del campamento. Los cient ficos me han dado una especie de dispositivo para defenderme de esas emisiones. Espero que funcione. Quieren que me meta dentro y desactive el emisor; as  podr n investigarlo in situ. Que Dios me ayude.</text>
+	</string>
+	<string id="journal_before_vasilyev_pda_name">
+		<text>A un paso de Ghost</text>
+	</string>
+	<string id="storyline_ghost_info">
+		<text>Entrada #257\n >>Gu a, te mando a alguien para que se re na contigo. Tenemos informaci n importante para Doc que le ser  de gran ayuda.\n >>> Bien. Pero, Ghost, que no se repita lo de la  ltima vez. Vente para ac , me gustar a hablar contigo un poco. Te esperar  donde siempre, en el campamento cerca del puente. No te pierdas y que no te pillen las patrullas del ej rcito."\n\n Entrada #384\n …En el  ltimo momento, Vasiliev se achant  y, en vez de desenchufar la consola inferior, sali  corriendo cuando se abri  la puerta. No deb  confiar en  l. Strelok ten a raz n cuando dec a que no deb a confiar en estos perros embusteros. Mi  nica esperanza es llegar a la puerta antes que el controlador...</text>
+	</string>
+	<string id="storyline_vasilyev_info">
+		<text>… Estas son las coordenadas de la entrada del laboratorio X16. La entrada est  situada en el s tano del edificio central. El prop sito del edificio se desconoce. Supongo que se utiliza para prestar servicio t cnico a los emisores subterr neos: seg n la documentaci n de N***, el objetivo de este proyecto es el desarrollo a gran escala de armas psicotr nicas de largo alcance…\n\n … Tenemos todos los documentos necesarios y sabemos c mo desactivar el emisor. Vamos a entrar en el laboratorio con Ghost. Salen zombis de todos sitios…\n\n … Todo se est  yendo al garete. Ghost se ha vuelto completamente loco y est  delirando. Parece que ha sucumbido a la emisi n. He abandonado todo y he empezado a retroceder por los t neles…\n\n … Estoy en los pantanos,  d nde est  el b nker?   Mierda, mierda y mierda!!  No puedo identificar mi ubicaci n!    Ese cobarde de Sakharov no responde!!!   Qu  est  pasando?? … Hay zombis por todas partes y me estoy quedando sin munici n...</text>
+	</string>

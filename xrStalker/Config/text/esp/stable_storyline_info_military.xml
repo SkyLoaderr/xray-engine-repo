@@ -1,0 +1,51 @@
+	<string id="mil_actor_main_quest_descr">
+		<text>Seg n el general Voronin, solo los de Libertad tienen una de estas pistolas. C mo la consiga es asunto m o. Una de las formas ser a entablar conversaci n con un stalker de Libertad llamado Cocinero. El general dice que le gusta empinar el codo. Deber a conseguir algo de vodka por si acaso.</text>
+	</string>
+	<string id="mil_blockpost_job_descr">
+		<text>Es necesario proteger la Barrera de los ataques procedentes del sector del Cauterizador cerebral.</text>
+	</string>
+	<string id="mil_blockpost_job2_descr">
+		<text>Lukash: "Si te atreves, puedes ir al punto de control que hay junto al Bosque Rojo; al parecer est n esperando otro ataque de los mutantes o de Monolith."</text>
+	</string>
+	<string id="mil_courier_doc_descr">
+		<text>Libertad ha adquirido unos lanzagranadas Bulldog 6. Tienen dos. Uno est  en el arsenal y el otro en alg n lugar del pueblo.\n\n</text>
+	</string>
+	<string id="mil_courier_job_descr">
+		<text>Lukash: "Triste pero cierto, tenemos un topo entre nosotros... Su nombre es Pavlik. Est  enviando informaci n al otro bando y debemos detenerlo. Tu trabajo es seguirlo hasta la granja y descubrir a qui n est  pasando la informaci n. Se march  hace un rato, as  que tendr s que alcanzarlo. Recuerda: puedes y debes liquidarlo, pero no antes de que te confiese a qui n est  informando. Tambi n tendr s que matar al otro tipo."</text>
+	</string>
+	<string id="mil_crazy_flash_info">
+		<text>... Hoy hemos ido otra vez de caza al pueblo. Todo parece estar como siempre. \n\n  De d nde ha salido esa bestia? Se habr  colado por la zona del Bosque Rojo. Todos los dem s han ca do, soy el  nico superviviente... Tratar  de escapar por la noche… \n\n No recuerdo c mo consegu  escapar. Ha sido una pesadilla... Me han dado un golpe en la cabeza: im genes, sonidos, y no s  de d nde vienen. Condenada radiaci n. Encima el maldito detector est  K.O. Tengo que descansar; luego me encontrar  mejor.</text>
+	</string>
+	<string id="mil_dolg_kill_lukash_descr">
+		<text>Entra en la base con los miembros de Deber.\nElimina a tres francotiradores. \nMata a Lukash.</text>
+	</string>
+	<string id="mil_dolg_kill_sniper_descr">
+		<text>Mata al francotirador de la torre. Procura que no te metan una bala entre ceja y ceja.</text>
+	</string>
+	<string id="mil_flash_bandit_descr">
+		<text>Mierda, esos cabrones de Deber nos han sacado a patadas de all . Se han establecido cerca de nuestra granja. Ni siquiera tuvimos tiempo de coger nuestras cosas del desv n. Aunque no es para tanto: la base de Libertad est  cerca, as  que no aguantar n mucho.</text>
+	</string>
+	<string id="mil_flash_max_descr">
+		<text>Hoy asaltamos a unos soldados que iban hacia el Bosque Rojo: conseguimos unos Bulldog 6. Son alucinantes. Lukash cogi  uno y Sombr o escondi  el otro en el pueblo, en un s tano.</text>
+	</string>
+	<string id="mil_flash_ugrumy_descr">
+		<text>1. Maldita la hora en que fui al Bosque Rojo. Casi no lo cuento: un poco m s y habr a servido para una exposici n de cerebros licuados.\n\n 2. Me rodearon cuatro matones como si fuera un ni o de tres a os. Me lo busqu : no vi su trampa. Solo me salv  su avaricia y su charlataner a. En lugar de llenarme de plomo, se pusieron a quitarme el traje. Fue su  ltimo error; aun as  uno de ellos me acert  con una bala... Me estoy haciendo viejo...\n\n 3. Cuando llegu , el mensajero de Strelok ya no respiraba. Tres chupasangres acaban con cualquiera, pero este tipo elimin  a cuatro, y hab a otros rastros de sangre en varias direcciones. La  nica informaci n que ten a encima es el c digo de una puerta (19840519), pero no se puede identificar de qu  puerta se trata.\n\n 4. Interceptamos a varios militares que se dirig an al Bosque Rojo. No llevaban documentos ni  rdenes, pero iban bien equipados. Creo que dejar  el Bulldog 6 en el s tano hasta que lo necesite.</text>
+	</string>
+	<string id="mil_freedom_rg6_task_descr">
+		<text>Voronin: "Los Libertad tienen unos lanzagranadas Bulldog 6 fabulosos. Si pudieras colarte en su territorio y robar al menos uno de ellos, te recompensar a generosamente. Como no eres de nuestra facci n, puedes entablar relaci n con ellos f cilmente y, con suerte, robar el Bulldog 6. Te enviar  informaci n sobre la ubicaci n de los Libertad. Una vez all  tienes que buscar a un tal Cocinero, un miembro del grupo Libertad;  l sabe d nde est n guardados exactamente los Bulldog 6. Tiene debilidad por la bebida, as  que trata de emborracharle. Ser  mejor que te lleves una buena cantidad de vodka."</text>
+	</string>
+	<string id="mil_go_to_miser_descr">
+		<text>Humm... Recibir  mi recompensa en la base de los Libertad, me la dar  un tal Ro oso... Bonito nombre. A lo mejor me da una lata de carne caducada desde hace un a o.</text>
+	</string>
+	<string id="mil_hunters_task_descr">
+		<text>Elimina a los chupasangres del pueblo. Si no tengo cuidado me chupar n toda la sangre y ser  mi fin.</text>
+	</string>
+	<string id="mil_hunters_task_descr2">
+		<text>Elimina a los chupasangres del pueblo. Si no tengo cuidado me chupar n toda la sangre y ser  mi fin.</text>
+	</string>
+	<string id="mil_lukash_job_descr">
+		<text>Lukash ha decidido contraatacar el destacamento de Deber, en la granja. Max, uno de los veteranos de los Libertad, dirigir  la operaci n. Mi trabajo es ayudarles.</text>
+	</string>
+	<string id="mil_mad_flash_job_descr">
+		<text>Me pregunto qu  puede saber el tipo loco del pantano. Lo averiguar . Lo importante es esquivar todas esas minas viejas. Deben de estar lo bastante oxidadas como para explotar a la m nima de cambio.</text>
+	</string>

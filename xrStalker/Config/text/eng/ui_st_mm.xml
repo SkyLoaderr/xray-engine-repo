@@ -34,7 +34,7 @@
 		<text>minimum</text>
 	</string>
 	<string id="mm_mp_check_cdkey">
-		<text>check CD-key</text>
+		<text>check CD-Key</text>
 	</string>
 	<string id="Nigth">
 		<text>night</text>
@@ -214,7 +214,7 @@
 		<text>Music volume</text>
 	</string>
 	<string id="ui_mm_need_restart">
-		<text>Changed will take effect only after game restart</text>
+		<text>Changes will take effect only after game restart</text>
 	</string>
 	<string id="ui_mm_newgame">
 		<text>New game</text>

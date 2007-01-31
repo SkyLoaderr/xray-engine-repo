@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="mp_art_destroyed">
+		<text>Il reperto   stato distrutto.</text>
+	</string>
+	<string id="mp_art_spowned">
+		<text>Reperto generato. Portalo alla base per segnare un punto.</text>
+	</string>
+	<string id="mp_artefacts">
+		<text>Reperti</text>
+	</string>
+	<string id="mp_artefacts_upcase">
+		<text>Reperti</text>
+	</string>
+	<string id="mp_auto_select">
+		<text>Selezione automatica</text>
+	</string>
+	<string id="mp_back">
+		<text>Indietro</text>
+	</string>
+	<string id="mp_ban">
+		<text>Escludi</text>
+	</string>
+	<string id="mp_by_anomaly">
+		<text>tramite anomalia</text>
+	</string>
+	<string id="mp_cancel">
+		<text>Annulla</text>
+	</string>
+	<string id="mp_change_map">
+		<text>Cambia mappa</text>
+	</string>
+	<string id="mp_change_weather">
+		<text>Variazione condizioni climatiche</text>
+	</string>
+	<string id="mp_chat">
+		<text>Chat</text>
+	</string>
+	<string id="mp_connected">
+		<text>connesso</text>
+	</string>
+	<string id="mp_deaths">
+		<text>morti</text>
+	</string>
+	<string id="mp_description">
+		<text>Descrizione</text>
+	</string>
+	<string id="mp_disconnected">
+		<text>disconnesso</text>
+	</string>
+	<string id="mp_enter_text">
+		<text>Inserisci testo per il voto</text>
+	</string>
+	<string id="mp_entered_game">
+		<text>si   unito alla partita</text>
+	</string>
+	<string id="mp_first_eye">
+		<text>(Visione in prima persona)</text>
+	</string>
+	<string id="mp_frags">
+		<text>uccisioni</text>
+	</string>
+	<string id="mp_frags_upcase">
+		<text>Uccisioni</text>
+	</string>
+	<string id="mp_free_fly">
+		<text>(Visione libera)</text>
+	</string>
+	<string id="mp_free_look">
+		<text>(Visione in terza persona)</text>
+	</string>
+	<string id="mp_from">
+		<text>con</text>
+	</string>
+	<string id="mp_go">
+		<text>VIA!</text>
+	</string>
+	<string id="mp_has_drop_art">
+		<text>ha lasciato reperto/i %s</text>
+	</string>
+	<string id="mp_has_tak_art">
+		<text>ha preso reperto/i %s</text>
+	</string>
+	<string id="mp_headhuntrs">
+		<text>Mercenari</text>
+	</string>
+	<string id="mp_is_now">
+		<text>ora  </text>
+	</string>
+	<string id="mp_joined">
+		<text>si   unito ai</text>
+	</string>
+	<string id="mp_kick">
+		<text>Lascia</text>
+	</string>
+	<string id="mp_look_at">
+		<text>(Rotazione terza persona)</text>
+	</string>
+	<string id="mp_map_desc">
+		<text>Descrizione mappa</text>
+	</string>
+	<string id="mp_match_started">
+		<text>Partita iniziata!</text>
+	</string>
+	<string id="mp_modes">
+		<text>Modalit </text>
+	</string>
+	<string id="mp_name">
+		<text>nome</text>
+	</string>
+	<string id="mp_next">
+		<text>Avanti</text>
+	</string>
+	<string id="mp_no_voted">
+		<text>Non hanno votato</text>
+	</string>
+	<string id="mp_ping">
+		<text>ping</text>
+	</string>
+	<string id="mp_player_wins">
+		<text>Il giocatore %s   il vincitore!</text>
+	</string>
+	<string id="mp_players">
+		<text>Giocatori</text>
+	</string>
+	<string id="mp_press_fire2spectator">
+		<text>Premi Spara per passare alla modallit  Spettatore</text>
+	</string>
+	<string id="mp_press_jump2pay_spaw">
+		<text>Premi Salto per comprare una rigenerazione istantanea</text>
+	</string>
+	<string id="mp_press_jump2select_skin">
+		<text>Premi Salto per selezionare un'interfaccia</text>
+	</string>
+	<string id="mp_press_jump2select_team">
+		<text>Premi Salto per selezionare le squadre</text>
+	</string>
+	<string id="mp_press_jump2spawn">
+		<text>Premi Salto per rigenerare</text>
+	</string>
+	<string id="mp_press_jump2start">
+		<text>Premi Salvo per avviare</text>
+	</string>
+	<string id="mp_press_to_buy">
+		<text>Premi ($$ACTION_BUY_MENU$$) per accedere a menu Compravendita</text>
+	</string>
+	<string id="mp_press_yes2pay">
+		<text>Hai %d$. Puoi essere rigenerato con %d$. Fai clic su S  per pagare.</text>
+	</string>
+	<string id="mp_ready">
+		<text>Pronto…</text>
+	</string>
+	<string id="mp_restart">
+		<text>Riavvia</text>
+	</string>
+	<string id="mp_restart_fast">
+		<text>Riavvio rapido</text>
+	</string>
+	<string id="mp_scores">
+		<text>punti totalizzati</text>
+	</string>
+	<string id="mp_select_ban">
+		<text>Seleziona il giocatore da escludere tramite votazione</text>
+	</string>
+	<string id="mp_select_category">
+		<text>Seleziona categoria di voto</text>
+	</string>
+	<string id="mp_select_kick">
+		<text>Seleziona il giocatore da espellere tramite votazione</text>
+	</string>
+	<string id="mp_select_kick_player">
+		<text>Seleziona il giocatore da espellere tramite votazione</text>
+	</string>
+	<string id="mp_select_map">
+		<text>Seleziona la mappa su cui votare</text>
+	</string>
+	<string id="mp_skin_selection">
+		<text>Selezione interfaccia</text>
+	</string>
+	<string id="mp_spectator">
+		<text>Spettatore</text>
+	</string>
+	<string id="mp_spectators">
+		<text>SPETTATORI</text>
+	</string>
+	<string id="mp_status">
+		<text>stato</text>
+	</string>
+	<string id="mp_switched_to">
+		<text>impostato su</text>
+	</string>
+	<string id="mp_team_free_stalkers">
+		<text>Freedom</text>
+	</string>
+	<string id="mp_team_selection">
+		<text>Selezione squadra</text>
+	</string>
+	<string id="mp_team_wins">
+		<text>La squadra %s HA VINTO!</text>
+	</string>
+	<string id="mp_text">
+		<text>Testo</text>
+	</string>
+	<string id="mp_time2respawn">
+		<text>Rigenerazione tra:</text>
+	</string>
+	<string id="mp_time2start">
+		<text>Avvio tra:</text>
+	</string>
+	<string id="mp_timeleft">
+		<text>Tempo rimanente: %d:%d; Favorevoli %.2f%</text>
+	</string>
+	<string id="mp_vote_no">
+		<text>No</text>
+	</string>
+	<string id="mp_vote_yes">
+		<text>S </text>
+	</string>
+	<string id="mp_voted">
+		<text>ha votato</text>
+	</string>
+	<string id="mp_voted_no">
+		<text>contro</text>
+	</string>
+	<string id="mp_voted_yes">
+		<text>per</text>
+	</string>
+	<string id="mp_voting_broken">
+		<text>Votazione annullata dal server!</text>
+	</string>
+	<string id="mp_voting_started">
+		<text>Votazione su '%s' iniziata da %s.</text>
+	</string>
+	<string id="mp_voting_started_msg">
+		<text>Votazione iniziata!</text>
+	</string>
+	<string id="mp_weather_clear">
+		<text>Sereno</text>
+	</string>
+	<string id="mp_weather_cloudy">
+		<text>Nuvoloso</text>
+	</string>
+	<string id="mp_weather_night">
+		<text>Notte</text>
+	</string>
+	<string id="mp_weather_rain">
+		<text>Pioggia</text>
+	</string>
+	<string id="mp_with_backstab">
+		<text>Pugnalato alla schiena!!!</text>
+	</string>
+	<string id="mp_with_headshot">
+		<text>Colpito alla testa!!!</text>
+	</string>
+	<string id="mp_your_rank">
+		<text>Ora il tuo livello  </text>
+	</string>
+	<string id="ui_st_description">
+		<text>Descrizione</text>
+	</string>
+	<string id="ui_st_team1_name">
+		<text>Freedom</text>
+	</string>
+	<string id="ui_st_team2_name">
+		<text>Mercenari</text>
+	</string>
+	<string id="af_neutral">
+		<text>Reperto</text>
+	</string>
+	<string id="self">
+		<text>Sei tu</text>
+	</string>
+	<string id="friend">
+		<text>Alleati</text>
+	</string>
+	<string id="team_base_1">
+		<text>Base di Freedom</text>
+	</string>
+	<string id="team_base_2">
+		<text>Base dei mercenari</text>
+	</string>
+</string_table>

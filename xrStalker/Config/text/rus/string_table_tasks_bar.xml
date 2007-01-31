@@ -79,6 +79,9 @@
 	<string id="bar_kill_veterans">
 		<text>Уничтожить лагерь сумасшедших ветеранов</text>
 	</string>
+	<string id="bar_radar_deactivate">
+		<text>Отключить Выжигатель Мозгов</text>
+	</string>
 	<string id="bar_resque_information">
 		<text>Встретиться с Кругловым</text>
 	</string>
@@ -100,14 +103,14 @@
 	<string id="bar_resque_scientific_information_get_2">
 		<text>Поговорить с профессором Кругловым</text>
 	</string>
+	<string id="bar_x16_documents">
+		<text>Найти документы в лаборатории X16</text>
+	</string>
 	<string id="bring_x16_documents">
 		<text>Принести документы бармену</text>
 	</string>
 	<string id="deactivate_radar_now">
 		<text>Отключить установку</text>
-	</string>
-	<string id="bar_radar_deactivate">
-		<text>Отключить Выжигатель Мозгов</text>
 	</string>
 	<string id="find_and_deactivate_radar">
 		<text>Найти вход в бункер управления</text>
@@ -123,9 +126,6 @@
 	</string>
 	<string id="wpn-winchester_m1">
 		<text>Боевой винчестер</text>
-	</string>
-	<string id="bar_x16_documents">
-		<text>Найти документы в лаборатории X16</text>
 	</string>
 	<string id="x16_yantar">
 		<text>Поговорить с учеными</text>

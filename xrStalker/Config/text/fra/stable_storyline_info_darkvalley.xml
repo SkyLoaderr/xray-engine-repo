@@ -1,0 +1,75 @@
+	<string id="bar_darklab_documents_txt">
+		<text>Barman: "D'apr s les documents que tu as rapport s d'Agroprom, les choses sont plus claires, mais il manque encore des donn es. Il y aurait un lobotomisateur qui bloquerait la route menant au nord, mais on n'en sait pas plus. Il y est aussi question d'un Labo X18 dont la description correspond aux structures souterraines abandonn es de la Vall e obscure. Rien sur les activit s qui s'y d roulent et en plus, des bandits viennent d'installer leur base dans la Vall e obscure.\n Plusieurs  claireur du Devoir y sont all s r cemment, mais pas de nouvelles pour le moment.\n Pour t'introduire dans le labo, il va te falloir deux cl s  lectroniques ; je t'en donnerai une. Quant   la deuxi me, tu devras la d rober   Borov, le chef des bandits. \n\n Apr s t' tre procur  cette deuxi me cl , introduis-toi dans le labo et r cup re les documents.</text>
+	</string>
+	<string id="bar_darklab_documents2_txt">
+		<text>Il faut   tout prix trouver les documents relatifs aux recherches pr c demment men es dans le Labo X-18. Elles nous en diront plus sur le "lobotomisateur".</text>
+	</string>
+	<string id="dar_codedoor_1_txt">
+		<text>Une serrure   combinaisons bloque l'entr e aux profondeurs du laboratoire. Tu dois trouver quelqu'un qui conna t la bonne combinaison.</text>
+	</string>
+	<string id="dar_codedoor_2_txt">
+		<text>Il y a une autre porte qui doit certainement cacher quelque chose. Tu dois d couvrir le code qui ouvre cette porte.</text>
+	</string>
+	<string id="dar_document1">
+		<text>Le d but de l'exp rience</text>
+	</string>
+	<string id="dar_document2">
+		<text>La seconde phase de l'exp rience</text>
+	</string>
+	<string id="dar_document3">
+		<text>Rapport de s curit </text>
+	</string>
+	<string id="dar_document4">
+		<text>Attaque du personnel</text>
+	</string>
+	<string id="dar_document5">
+		<text>La derni re phase de l'exp rience</text>
+	</string>
+	<string id="documents_1">
+		<text>Voil  une semaine, il a  t  d cid  d'augmenter l'intensit  des radiations sur les cobayes. Aucun changement n'a  t  d tect  lors des premiers jours. Apr s plusieurs jours, d' tranges m tamorphoses ont commenc    se manifester : perte de cheveux, acc s d'agressivit . Plusieurs cobayes ont  t  litt ralement pi tin s par leurs pairs.</text>
+	</string>
+	<string id="documents_2">
+		<text>L' tat des cobayes s'est stabilis . Leurs cheveux ont repouss  de 10 %. Leurs grilles et leurs dents ont consid rablement pouss . Des acc s d'activit  ont mis en  vidence un comportement al atoire. L'expert du laboratoire, A.N. Burnov, pense qu'il peut s'agir d'une am lioration de l'intellect des cobayes. Il a  t  d cid  de tester la nouvelle modulation d' missions psi sur les cobayes.</text>
+	</string>
+	<string id="documents_3">
+		<text>Chef de la s curit  : Hier, le garde G.P. a lanc , pour s'amuser, un morceau de viande aux cobayes. Ces derniers l'ont d chir  et d vor  en quelques secondes   peine. Ensuite, plusieurs individus ont tent  de s' chapper de leurs cellules. Dans un tel contexte, les techniciens du laboratoire n'ont pas pu pr lever les  chantillons n cessaires. Malgr  le geste peu r fl chi de G.P. Glebov, je propose que le personnel de maintenant soit  quip  des syst mes de protection qui s'imposent en cas d'urgences.</text>
+	</string>
+	<string id="documents_4">
+		<text>Chef de la s curit  : L'exp rience d'hier s'est r v l e catastrophique. Plus d'une vingtaine de cobayes se sont  chapp s et ont saccag  deux salles du laboratoire. Heureusement, les chercheurs ont r ussi   s'enfermer   l' tage. On nous a ordonn s de nettoyer la salle principale du laboratoire. Au cours de l'op ration, trois gardes ont  t  victimes de morsures. J'esp re qu'ils vont se remettre et j'ai h te que cette exp rience se termine.</text>
+	</string>
+	<string id="documents_5">
+		<text>Hier, nous avons administr  aux cobayes une nouvelle modulation d' missions psi.  a leur a grill  le cerveau. Je n'ose m me pas imaginer les cons quences que cela pourrait avoir sur des humains. Nous avons test  chaque type d' missions et les r sultats correspondent   ceux des autres laboratoires. L'exp rience peut   pr sent  tre consid r e comme termin e. De toute  vidence, d'ici une semaine, nous devrions  tre en mesure de mener cette exp rience sur de plus grosses cr atures.</text>
+	</string>
+	<string id="LabX18 first key">
+		<text>Code d'acc s au 2e  tage</text>
+	</string>
+	<string id="LabX18 second key">
+		<text>Code d'acc s au 1er  tage</text>
+	</string>
+	<string id="LabX18_information">
+		<text>Informations issues du X18</text>
+	</string>
+	<string id="pass_to_1st_door">
+		<text>Parfait, cher coll gue. Je suis ravi que vous ayez obtenu l'acc s au 2e  tage. Vous allez enfin savoir ce qui se passe dans notre laboratoire. Votre code d'acc s est le 1243. Responsable du Laboratoire Õ-18, Piotr Ilyitch Kalugin.</text>
+	</string>
+	<string id="pass_to_2nd_door">
+		<text>Cher coll gue, Puis-je vous rappeler qu'  partir de demain, vous vous occuperez du conteneur situ  dans la salle du laboratoire central. Vous devrez l'inspecter toutes les deux heures et me tenir inform  de la situation. Le code d'acc s   la salle du laboratoire central est le 9524. Responsable du Laboratoire X18, Piotr Ilyitch Kalugin.</text>
+	</string>
+	<string id="sl_x18_dream_name">
+		<text>Un r ve bizarre</text>
+	</string>
+	<string id="sl_x18_dream_text">
+		<text>J'ai fait un r ve bizarre. La centrale nucl aire de Tchernobyl  merge dans le cr puscule. Tout est paisible. Un homme appara t. Je le vois de dos, devant la centrale. Le vent se l ve. Soudain, des hordes de rats surgissent de la centrale en courant dans toutes les directions. L'homme, toujours de dos, tire sur les rats. Puis, on entend un cri : "Strelok !". L'homme tressaille, s'immobilise un moment, puis se retourne lentement dans ma direction, mais… juste au moment o  j'allais voir son visage, je me suis r veill . Quelle est la signification de ce r ve ? Je l'ignore, mais je pense que j'ai d j  v cu cette sc ne.</text>
+	</string>
+	<string id="val_captive_help_txt">
+		<text>Cartouche, un membre du Devoir, veut que je lib re son partenaire captur  par les bandits. Il va bient t  tre escort  jusqu'  l'usine d saffect e.</text>
+	</string>
+	<string id="val_prisoner_help_art_txt">
+		<text>Membre du Devoir : "Ils ont encore captur  un des n tres : Serega. Ils l'ont enferm  dans une cellule… Il y a un grand b timent… pas fini… Va l'aider, OK ? Ou ils vont le tuer, lui aussi…"</text>
+	</string>
+	<string id="val_x18_conclusion">
+		<text>Labo X18</text>
+	</string>
+	<string id="val_x18_conclusion_txt">
+		<text>Bon sang... Quelle gal re, ce labo X18 !... Sans compter ses occupants... Comment  a peut exister des choses pareilles ? J'ai trouv  des documents... Je n'y ai pas compris grand-chose, sauf qu'ils contenaient les sp cifications techniques de composants d' metteurs de Kaymanov. L'important, c'est que ces pi ces  taient destin es   un autre labo portant le nom de code X16, encore un labo secret, j'imagine.</text>
+	</string>

@@ -1,0 +1,48 @@
+	<string id="agr_find_ghost_descr">
+		<text>… Hemos averiguado que uno de los hombres de Strelok se llama Ghost. Por fin una pista. Si encuentro a Ghost, dar  tambi n con Strelok.</text>
+	</string>
+	<string id="agr_journal_cache">
+		<text>Bueno, parece que el escondite me ha dado una nueva direcci n que seguir. He encontrado una unidad de informaci n con lo que parece ser un diario utilizado por el grupo de Strelok. Hab a pocas entradas, pero he averiguado que el grupo ten a otros dos miembros: Ghost y Fang. El diario mencionaba tambi n a un "amigo en com n", pero no s  si pertenec a al grupo. Lo que es seguro es que les ayud . Seg n la entrada de Ghost, Fang muri  en una emboscada que les tendieron. Al fin tengo algo claro: Ghost, el nombre de alguien que conoce a Strelok. En cuanto a Strelok, podr a estar en alg n lugar al norte de la Zona.</text>
+	</string>
+	<string id="agr_journal_krot">
+		<text>Bueno, vali  la pena reunirse con Mole. Parece que el escondite del grupo existe de verdad, y est  en las catacumbas, debajo del Instituto. Tendr  que ir all . No s  qu  me voy a encontrar, pero espero que me ayude a solucionar mi propio misterio…</text>
+	</string>
+	<string id="agr_krot_secret_info">
+		<text>... Baja por la escalera de caracol hasta la habitaci n de las columnas. Dir gete hacia la salida y entra en la habitaci n grande con tuber as en el techo. Baja hacia la segunda salida, entra en el t nel y tuerce a la izquierda. Al final, gira a la derecha. Ve a directamente a la salida desde la habitaci n peque a y tuerce a la derecha. Busca un agujero en la pared de la izquierda al lado de las palabras: "No entrar: peligro de muerte." Esa es la entrada del escondite de Strelok.</text>
+	</string>
+	<string id="agr_krot_secret_info_name">
+		<text>Escondite de Strelok</text>
+	</string>
+	<string id="agr_military_case">
+		<text>\nInforme de la investigaci n.\n Solo para uso oficial.\n Para el coronel de la USS, V. M. Kruchelnikov, jefe del proyecto "TRUTH".\n Del capit n D. F. Maksimenko,\ncomandante del grupo "Search-2".\n\n  Memorandum.\n Nuestro grupo, compuesto de 3 investigadores y un pelot n de las Fuerzas Especiales de la USS, realiz  investigaciones en Agroprom, el antiguo Instituto de Investigaci n agr cola sobre suelo afectado por la radiaci n, desde el 12-05-2012 hasta el 25-05-2012. Faltaba la mayor parte del equipamiento y de la documentaci n, pero lo poco que pudimos encontrar nos permiti  llegar a la siguiente conclusi n: en el periodo de 2005 a 2008, el Instituto no llev  a cabo ninguna investigaci n sobre sus campos de estudio oficiales. Los resultados de los "trabajos" que se enviaron al Ministerio de Agricultura hab an sido falsificados. Al mismo tiempo, la Administraci n del Instituto –en concreto, Petr Danilovich Strizh– sigui  recibiendo financiaci n del Gobierno, as  como equipamiento y bienes consumibles que se enviaban a un laboratorio denominado X18 utilizando albaranes falsos, lo cual proporcionaba cobertura para la operaci n, al indicar que los materiales eran para un centro auxiliar donde se realizaban experimentos. Parece que X18 es un nombre cifrado adoptado por el grupo de personas implicadas en este asunto; nuestra base de datos no tiene constancia de este laboratorio. A juzgar por los an lisis de los documentos que hemos encontrado, este laboratorio est  situado como m ximo a una hora de camino del Instituto. Parece probable que sea un centro clandestino, por lo que solicito la implicaci n de nuestro departamento de anal tica. El campo de investigaci n del laboratorio no est  claro, y los documentos de que disponemos no contienen informaci n en este sentido, aunque hacen referencia al profesor Chubko, de todos conocido, as  como a cierto "Grupo". Creo que hemos llegado al final de esta l nea de investigaci n y que ahora el departamento de anal tica tiene mucho trabajo que hacer.\n\n  Este documento tiene dos anexos: un archivo con los albaranes falsificados de materiales y equipamiento enviados a un centro auxiliar, y un extracto de la correspondencia entre Strizh y Chubko.\n\n  Capit n D. F. Maksimenko 26-05-2012\n Para el profesor V. M. Chubko. De P. D. Strizh, jefe del Instituto Agropom, doctor en Ciencias de la Agricultura. Estimado Vadim Mikhailovich, tal y como acordamos, env o el siguiente lote de materiales y equipamiento a nuestro centro de experimentaci n para apoyar tu investigaci n, tan importante para nuestra agricultura. Para conseguir la financiaci n habl  de experimentos piloto en materias propias del Instituto, por lo que no habr  ning n tipo de problema con el Ministerio.  C mo van los experimentos? A n sigo impresionado con lo que me ense aste la  ltima vez. Un abrazo, P. D. Strizh DAS Para P. D. Strizh. Muchas gracias por todo, Petr Danilovich, hemos recibido el env o. Mi equipo est  muy impresionado con el espectr metro l ser. Si no hubiera sido por ti, me habr a llevado siglos adquirir este modelo a trav s de mis contactos. No hay duda de que el Ministerio de Agricultura se alegrar  de recibir NUESTROS resultados.  Ha sido una jugada estupenda! Los experimentos siguen como de costumbre y lo que viste la  ltima vez no es nada en comparaci n con los  ltimos logros. Deber as visitarnos m s a menudo. Me es grato verte y solo se tarda una hora en llegar a nuestro "centro de experimentaci n", como t  lo llamas. Casi me olvido, tengo noticias frescas: el pr ximo lunes debatiremos tu candidatura para el Grupo. Creo que todo el mundo me apoyar . Un abrazo, profesor V. M. Chubko. Para el profesor V. M. Chubko de P. D. Strizh, jefe del Instituto Agroprom, doctor en Ciencias de la Agricultura. Estimado Vadim Mikhailovich, gracias por tu confianza. Har  lo que est  en mi mano para demostrar que tienes raz n. Creo que el sue o de todo cient fico es participar en un experimento de estas caracter sticas, y estar  encantado de que el Grupo me acepte. Un abrazo, P. D. Strizh.</text>
+	</string>
+	<string id="agr_military_case_name">
+		<text>Informe de la investigaci n</text>
+	</string>
+	<string id="agr_nii_security_plan">
+		<text>El mapa detalla las patrullas, los centinelas y las torres de vigilancia. El cuartel general est  en la tercera planta del Instituto. All  es donde est n los documentos. De d a, la zona est  infestada de patrullas. Por la noche hay menos, y los guardias terminan su turno a las 11 p.m. Hay muy poca gente en el edificio principal en ese momento. Si quieres entrar en la base, ve por las catacumbas. La puerta no es buena opci n.</text>
+	</string>
+	<string id="agr_nii_security_plan_name">
+		<text>Mapa de guardia del Instituto Agropom</text>
+	</string>
+	<string id="agr_rats_n_soldiers_text">
+		<text>De los colectores salen ratas que causan muchas molestias al ej rcito. A los soldados se les castiga mand ndolos a los colectores.</text>
+	</string>
+	<string id="agr_task_case">
+		<text>Comerciante: "En cuanto robes el malet n del Instituto, ll vaselo al tabernero. Es el propietario de Los 100 rads, el bar de los stalkers. Est  en la antigua f brica de Rostok."</text>
+	</string>
+	<string id="article_agr_krot_sos">
+		<text> SOS, el ej rcito est  matando a un colega stalker! Si pod is o rme,  socorro! </text>
+	</string>
+	<string id="article_agr_krot_sos_name">
+		<text>Encuentro con Mole</text>
+	</string>
+	<string id="article_agr_krot_sos1">
+		<text>Mole: " Ayudadme, me van a matar!"</text>
+	</string>
+	<string id="st_operation_agroprom">
+		<text>La operaci n Agroprom</text>
+	</string>
+	<string id="storyline_gunslinger_flash_info">
+		<text>Recibido de Ghost: \n \n Strelok, tengo muy malas noticias. Fang ha muerto. Nos estaban esperando en el pueblo, cerca de los almacenes, y creo que llevaban all  mucho rato. Eran tres. Parec a que eran neutrales. Fang los detect  de alg n modo. Sabes que ten a ese sentido muy desarrollado. Cazamos a dos, claramente bandidos, pero el tercero parec a m s listo que sus compa eros. Ten a una Vintar BC y estaba a unos 100 metros de distancia. En fin, Fang ya es historia. As  que la pr xima vez que vayamos al centro juntos, seremos solo nosotros dos. Y otra cosa m s: esos dos ten an una descripci n de nosotros. No me puedo imaginar qui n querr a vernos muertos, aunque es cierto que hay gente que tiene algo en contra nuestra. Dej  escapar al tercero. Creo que era un mercenario. Ten a una cicatriz grande en la cara. Ojos marrones. Intentar  encontrarlo. \n As  que esto es lo que hay.  ndate con ojo y buena suerte. \n Ghost \n \n Para Ghost \n\n "Hola, colega. \n Voy a darte algo de informaci n; no me conecto porque he notado que alguien me sigue. \n Fui al Norte..., ya sabes... Intentar  hacerlo yo solo... Lo siento, pero no ten a tiempo de esperarte... Te lo explicar  m s tarde. \n Y el tipo que mat  a Fang se arrepentir  de haber nacido... Lo har  picadillo... T  averigua qui n es, yo volver  pronto... Tenemos un asunto pendiente con  l. \n Nos reuniremos en el sitio de nuestro amigo com n, ya sabes d nde y con qui n :) \n Buena suerte.” \n Strelok \n \n Para Strelok \n \n "Hola, he venido, pero no estabas. No deber as haber ido al centro solo. Pero no hay problema. S  d nde y con qui n encontrarte :) \n Ghost"</text>
+	</string>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="bandit_outfit_description">
+		<text>Panoplie traditionnelle du bandit, veste en cuir avec  l ments en fibres aramides. Offre une protection tr s insuffisante face aux terribles conditions de la zone.</text>
+	</string>
+	<string id="bandit_outfit_description_m">
+		<text>Armure courante de bandit avec cottes de mailles cousues sur le dos. Presque tout le monde peut la fabriquer, mais rares sont ceux qui en ont la patience.</text>
+	</string>
+	<string id="bandit_outfit_name">
+		<text>Veste de bandit</text>
+	</string>
+	<string id="bandit_outfit_name_m">
+		<text>Cotte de mailles</text>
+	</string>
+	<string id="dolg_outfit_description">
+		<text>Produit par un des instituts de recherche de Kiev et mis au service de la faction du Devoir. Il est aussi simple et fiable que le mod le standard PSZ-9, mais gr ce   de nouveaux mat riaux, il prot ge contre divers impacts, y compris les impacts dus aux armes   feu. Ce gilet doit encore  tre am lior  car il ne b n ficie d'aucun syst me de protection respiratoire.</text>
+	</string>
+	<string id="dolg_outfit_description_m1">
+		<text>Combinaison blind e du Devoir dot e de qualit s de protection am lior es contre les morsures et les coupures.</text>
+	</string>
+	<string id="dolg_outfit_name">
+		<text>Armu. Devoir PSZ-9d</text>
+	</string>
+	<string id="dolg_outfit_name_m1">
+		<text>PSZ-9d de chasseur</text>
+	</string>
+	<string id="dolg_scientific_outfit_description">
+		<text>Combinaison de protection particuli rement adapt e   la Zone. Les Stalkers l'appr cient car elle les prot ge contre les anomalies et les balles. Elle est dot e d'une armure PSZ-9d, d'un syst me de respiration en circuit ferm    cycle ferm  et un syst me int gr  de neutralisation des champs anormaux. Elle prot ge contre les balles et les  clats. </text>
+	</string>
+	<string id="dolg_scientific_outfit_name">
+		<text>PSZ-9Md Universal Protection</text>
+	</string>
+	<string id="ecolog_outfit_description">
+		<text>Combinaison de protection chimique SSP-99 sp cialement con ue pour les conditions de la Zone. Elle est utilis e par les scientifiques et les  co-Stalkers qui les accompagnent lors de leurs exp ditions. Elle est dot e d'un syst me de filtrage de l'air et de climatisation. Elle r siste   la chaleur,   l' lectricit  et prot ge contre les radiations et anomalies biologiques. Elle r siste aux environnements chimiquement agressifs. Elle n'est pas con ue pour le combat et ne prot ge donc pas des balles et des  clats.</text>
+	</string>
+	<string id="ecolog_outfit_name">
+		<text> cologiste SSP-99</text>
+	</string>
+	<string id="exo_outfit_description">
+		<text>Prototype d'exosquelette militaire. Il n'a jamais  t  produit en s rie en raison de son co t exorbitant et de d fauts de conception. Mais il a  t  produit en petits lots dans de petites usines ill gales situ es hors de l'Ukraine. Il s'agit d'un exosquelette de troisi me g n ration. Les d fauts de conception qui limitaient sa mobilit  ont  t  corrig s et son armure renforc e. Il offre une excellente protection contre les balles et les  clats, mais peine face aux anomalies.</text>
+	</string>
+	<string id="exo_outfit_description_m1">
+		<text>Le dispositif de vision nocturne de base est remplac  par un mod le plus moderne dot  d'un filtrage num rique du signal.</text>
+	</string>
+	<string id="exo_outfit_name">
+		<text>Exosquelette</text>
+	</string>
+	<string id="killer_outfit_description">
+		<text>Combinaison de Stalker de la faction des Mercenaires. Sa conception repose sur la combinaison utilis e par les forces sp ciales des arm es occidentales. Gr ce   un traitement sp cial, son blindage est dot  une stabilit  renforc e lors des d placements. Ses propri t s protectrices sont l g rement sup rieures   celles des combinaisons pare-balles PSZ-7.</text>
+	</string>
+	<string id="killer_outfit_description_m1">
+		<text>La doublure de ce manteau est en cotte de mailles pour une meilleure protection contre les attaques par armes   feu et les morsures de monstres. Elle est dot e un viseur nocturne portable.</text>
+	</string>
+	<string id="killer_outfit_name">
+		<text>Combi de Mercenaire</text>
+	</string>
+	<string id="killer_outfit_name_m1">
+		<text>Combi renforc e</text>
+	</string>
+	<string id="military_outfit_description">
+		<text>La combinaison pare-balles Skat-9M est con ue pour les op rations d'assaut se d roulant dans des zones aux activit s anormales. Elle comprend une combinaison pare-balles lourde PSZ-12p, une combinaison de compensation int gr e et un casque Sphere-12M. Elle prot ge contre les balles et les  clats sans limiter la mobilit  du soldat. Elle est dot e d'un syst me  quilibr  de protection contre les anomalies.</text>
+	</string>
+	<string id="military_outfit_name">
+		<text>Combi. blind e</text>
+	</string>
+	<string id="monolit_outfit_description">
+		<text>Combinaison de Stalker de la faction du Monolithe. On n'en conna t pas le cr ateur. Ses propri t s protectrices sont l g rement moins bonnes que celles du gilet pare-balles PSZ-9a. Sa structure ressemble celle de la combinaison des Stalkers neutres et combine un gilet pare-balles ainsi qu'une combinaison antiradiation. Elle prot ge contre les fusillades. Son niveau de protection contre les anomalies demeure faible en l'absence de syst me de filtrage de l'air.</text>
+	</string>
+	<string id="monolit_outfit_name">
+		<text>Combi Monolithe</text>
+	</string>
+	<string id="novice_outfit_description_m">
+		<text>Ils ont pris ce manteau   un Stalker mort dans l'anomalie "champignon visqueux". Apr s avoir pass  un long moment dans l'anomalie, ce manteau est capable d'acc l rer le m tabolisme.</text>
+	</string>
+	<string id="novice_outfit_name_m">
+		<text>Anomalie peaussier</text>
+	</string>
+	<string id="outfit_soldier_description">
+		<text>Veste  paisse classique, une parmi tant d'autres. Elle prot ge l g rement mieux contre les balles et les  clats mais ne peut rien contre les anomalies et autres effets.</text>
+	</string>
+	<string id="outfit_soldier_name">
+		<text>Veste en cuir</text>
+	</string>
+	<string id="protection_outfit_description">
+		<text>Combinaison SSP-99 d'excellente qualit  ayant  t  modifi e pour mieux prot ger le corps des balles et des  clats. Elle a  t  con ue pour les gardes qui escortent les scientifiques lors des exp ditions. Elle offre une bonne protection contre les radiations et les anomalies biologiques. Elle r siste aux environnements chimiquement agressifs et autres effets dangereux pour l'organisme.</text>
+	</string>
+	<string id="protection_outfit_name">
+		<text>Combinaison SSP-99M</text>
+	</string>
+	<string id="scientific_outfit_description">
+		<text>Cette combinaison, produite par un institut de recherche de Kiev, constitue une excellente alternative aux combinaisons pour Stalkers faites   la main. Elle comprend un gilet pare-balles, un syst me de respiration en circuit ferm  et un syst me int gr  de neutralisation des champs anormaux. Les excellents mat riaux qui la composent en font un mod le tr s int ressant. Son seul d faut est son prix.</text>
+	</string>
+	<string id="scientific_outfit_name">
+		<text>Combinaison SEVA</text>
+	</string>
+	<string id="specnaz_outfit_description_m1">
+		<text>Le tissu de cette combinaison est imbib  de lotion streptozo dale qui acc l re la gu rison des blessures.</text>
+	</string>
+	<string id="specnaz_outfit_name_m1">
+		<text>Berill de gu rison</text>
+	</string>
+	<string id="specops_outfit_description">
+		<text>Combinaison Berill-5M destin e aux forces sp ciales et adapt e   l'environnement de la Zone. Elle comprend un gilet pare-balles militaire PSZ-9a recouvert d'un rev tement en b ryllium et un casque Sphere-08. Elle a  t  con ue pour les op rations d'assaut dans les environnements hautement radioactifs. Son niveau de protection contre les anomalies est faible.</text>
+	</string>
+	<string id="specops_outfit_name">
+		<text>Combi. Berill-5M</text>
+	</string>
+	<string id="stalker_outfit_description">
+		<text>Combinaison de Stalker fabriqu e par les "artisans du peuple". Cette combinaison efficace comprend un gilet pare-balles militaire l ger. D'autre part, le tissu qui la compose est caoutchout . Renforc e gr ce   des plaques de fibres aramides, elle offre une bonne protection contre les tirs d'armes peu puissantes. Elle se r v le tr s inefficace pour les raids lointains et les op rations s rieuses au c ur de la Zone.</text>
+	</string>
+	<string id="stalker_outfit_description_m1">
+		<text>Selon la rumeur, le Stalker que l'on appelle Spectre ne porte jamais de kit de premiers secours sur lui. Ses blessures gu rissent d'elles-m mes. On dit qu'il porte une dr le de combinaison qu'il se serait procur  sur une anomalie.</text>
+	</string>
+	<string id="stalker_outfit_description_m2">
+		<text>Son ancien propri taire  tait un touriste qui, apparemment, se lan ait souvent dans des randonn es tr s difficiles,   la limite de l'endurance humaine. Il savait r partir au mieux la charge qu'il transportait et choisir ce dont il avait r ellement besoin. Les poches du v tement et le choix  clair  du sac   dos permettent   son utilisateur de transporter une lourde charge.</text>
+	</string>
+	<string id="stalker_outfit_name">
+		<text>Combi. de Stalker</text>
+	</string>
+	<string id="stalker_outfit_name_m1">
+		<text>Combi. de Spectre</text>
+	</string>
+	<string id="stalker_outfit_name_m2">
+		<text>Combi. du Touriste</text>
+	</string>
+	<string id="svoboda_heavy_outfit_description">
+		<text>Combinaison de Stalker renforc e produite par les armuriers de la faction de la Libert . Elle est compos e d'un gilet pare-balles militaire interm diaire recouvert de zirconium renforc , ce qui assure une bonne protection contre les balles de fusils et les  clats de munitions   longue et moyenne port e. Cette combinaison est compos e de deux couches de tissus : un cuir sp cialement trait  et un tissu en fil  d'amiante. Elle offre une bonne protection contre les radiations et les anomalies les plus faibles.</text>
+	</string>
+	<string id="svoboda_heavy_outfit_name">
+		<text>Combi. de la Libert </text>
+	</string>
+	<string id="svoboda_light_outfit_description">
+		<text>Combinaison de Stalker l g re produite par les armuriers de la faction de la Libert . Elle est compos e d'un gilet pare-balles militaire l ger renforc  par des plaques de fibres aramides. Elle prot ge des armes peu puissantes. Le tissu est trait  avec un m lange sp cial qui renforce sa r sistance aux anomalies.</text>
+	</string>
+	<string id="svoboda_light_outfit_name">
+		<text>Combi. Vent de lib.</text>
+	</string>
+	<string id="mp_exo_outfit_description">
+		<text>L'exosquelette prot ge extr mement bien des balles et des  clats, mais r duit la mobilit . Il est vuln rable aux balles des armures.</text>
+	</string>
+	<string id="mp_exo_outfit_name">
+		<text>Exosquelette PNB-4UZ</text>
+	</string>
+	<string id="mp_military_outfit_description">
+		<text>La combinaison pare-balles militaire a  t  con ue pour les op rations d'assaut. Elle offre une excellente protection contre les balles et les  clats sans r duire la mobilit  du soldat. Elle est vuln rable aux balles des armures.</text>
+	</string>
+	<string id="mp_military_outfit_name">
+		<text>Combinaison pare-balles militaire.</text>
+	</string>
+	<string id="mp_scientific_outfit_description">
+		<text>Cette combinaison a  t  con ue pour les travaux de recherche dans la Zone. Elle est  quip e d'un syst me de respiration en circuit ferm  ainsi que d'un syst me int gr  qui neutralise l'activit  des champs anormaux et prot ge parfaitement des anomalies. Sa faible protection la rend tr s vuln rable. Elle est dot e d'une poche int gr e permettant de transporter des artefacts.</text>
+	</string>
+	<string id="mp_scientific_outfit_name">
+		<text>Combinaison scientifique</text>
+	</string>
+</string_table>

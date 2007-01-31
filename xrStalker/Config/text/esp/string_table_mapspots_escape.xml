@@ -1,0 +1,48 @@
+	<string id="blokpost_case">
+		<text>Malet n documentos</text>
+	</string>
+	<string id="esc_fox">
+		<text>Fox herido</text>
+	</string>
+	<string id="esc_mill">
+		<text>F brica abandonada. Aqu  vieron al hermano herido por  ltima vez.</text>
+	</string>
+	<string id="escape_trader">
+		<text>Comerciante</text>
+	</string>
+	<string id="factory_bandits">
+		<text>Bandidos de la f brica</text>
+	</string>
+	<string id="killers_team">
+		<text>Grupo de mercenarios desconocido</text>
+	</string>
+	<string id="novice_leader">
+		<text>L der del campamento de los novatos</text>
+	</string>
+	<string id="soldiers_bridge">
+		<text>Punto de control del ej rcito en el puente destruido. Se sabe que los soldados aceptan sobornos por dejar pasar.</text>
+	</string>
+	<string id="tutorial_artefact">
+		<text>Artefacto</text>
+	</string>
+	<string id="tutorial_bandits">
+		<text>Bandidos que han detenido a nuestro explorador</text>
+	</string>
+	<string id="tutorial_secret">
+		<text>Escondite del stalker muerto</text>
+	</string>
+	<string id="tutorial_secret_place1">
+		<text>Escondite del stalker muerto</text>
+	</string>
+	<string id="tutorial_secret_shustryi">
+		<text>Escondite de Nimble</text>
+	</string>
+	<string id="tutorial_wounded">
+		<text>Nimble, un prisionero.</text>
+	</string>
+	<string id="volk">
+		<text>Wolf, l der del campamento de los novatos.</text>
+	</string>
+	<string id="wolfs_rangers">
+		<text>Exploradores de Wolf.</text>
+	</string>

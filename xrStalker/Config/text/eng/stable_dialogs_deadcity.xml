@@ -28,7 +28,7 @@
 		<text>Who captured us?</text>
 	</string>
 	<string id="cit_doctor_escape_dialog_141">
-		<text>We're being held by the Mercs. Nobody really knows who they are but there are rumours that they work together with foreign intelligence services. The location of this base is top secret - no one knows how to get into the Dead City. Many people are very interested in this information, especially Freedom and Duty.</text>
+		<text>We're being held by the Mercs. Nobody really knows who they are but there are rumors that they work together with foreign intelligence services. The location of this base is top secret - no one knows how to get into the Dead City. Many people are very interested in this information, especially Freedom and Duty.</text>
 	</string>
 	<string id="cit_doctor_escape_dialog_1411">
 		<text>Go on.</text>
@@ -43,7 +43,7 @@
 		<text>What do you know about this place?</text>
 	</string>
 	<string id="cit_doctor_escape_dialog_151">
-		<text>The city is split into two sections. We're on the Merc side. To the South, beyond the square is where the bandits are. They have holed up in the school building in the Southwest of the city. In between the bases, there is ruined five-floor building and a few relatively intact ones. If the shit hits the fan, you can sit it out there. There are also some garages and a couple of small houses around there. There are a couple of five-floor buildings and a dozen garages on the bandits' side too. The former city council building is on the other side of the square.</text>
+		<text>The city is split into two sections. We're on the Merc side. To the South beyond the square is where the bandits are. They're holed up in the school building Southwest of the city. In between the bases, there is a run down five-floor building and a few relatively intact ones. If the shit hits the fan, you can sit it out there. There are also some garages and a couple of small houses around that area. There are a couple of five-floor buildings and a dozen garages on the bandits' side too. The former city council building is on the other side of the square.</text>
 	</string>
 	<string id="cit_doctor_escape_dialog_1511">
 		<text>Thanks for the information.</text>
@@ -52,7 +52,7 @@
 		<text>Who's in charge here?</text>
 	</string>
 	<string id="cit_doctor_escape_dialog_161">
-		<text>A truly nasty character called Dushman. I've seen him carrying around a folder with some documents a couple of times. I reckon there's something interesting inside.</text>
+		<text>A truly nasty guy named Dushman. I've seen him carrying around a folder with some documents a couple of times. I reckon there's something interesting inside.</text>
 	</string>
 	<string id="cit_doctor_escape_dialog_1611">
 		<text>Thanks for the information.</text>
@@ -70,34 +70,34 @@
 		<text>Strelok???</text>
 	</string>
 	<string id="cit_doctor_main_dialog_1">
-		<text>Yeah, you're Strelok, who else? I'm Doc, don't you recognise me? What happened to you, friend, you don't look well. We went into the Zone together for 2 years. You really don't remember me?</text>
+		<text>Yeah, you're Strelok! Who else would you be? I'm Doc, don't you recognize me? What happened to you, friend? You don't look well. We went into the Zone together for 2 years. You really don't remember me?</text>
 	</string>
 	<string id="cit_doctor_main_dialog_11">
 		<text>No, I don't.</text>
 	</string>
 	<string id="cit_doctor_main_dialog_2">
-		<text>You don't??? Strelok, what the…? You're not taking the piss, are you? Man… What about the guys, our guys? Fang, Ghost? You remember them, don't you?</text>
+		<text>You don't??? Strelok, what the…? You're not joking around, are you? Man… What about the guys, our guys? Fang, Ghost? You remember them, don't you?</text>
 	</string>
 	<string id="cit_doctor_main_dialog_21">
-		<text>I don't remember Fang and Ghost is dead - I found his body in Yantar.</text>
+		<text>I don't remember Fang, and Ghost is dead - I found his body in Yantar.</text>
 	</string>
 	<string id="cit_doctor_main_dialog_3">
-		<text>Ghost!!?!?! Dead??!!! Goddam it, how could that happen?! They… they were the best. What happened to you?</text>
+		<text>Ghost!!?!?! Dead??!!! Dammit, how could that happen?! They… they were the best. What happened to you?</text>
 	</string>
 	<string id="cit_doctor_main_dialog_31">
 		<text>I don't know what happened, I don't remember.</text>
 	</string>
 	<string id="cit_doctor_main_dialog_4">
-		<text>Wait, let me just calm down. That's some shitty news man. I think it's all linked with your last venture into the Zone. When we saw each other the last time, you left me the key from the stash at Pripyat and the map of how to find it. I've managed to keep it - hid it from the mercs. Here, take, hide it well. Perhaps you'll find somthing there. Also you were saying that there's some trick with the Monolith. But I don't understand what was it about, and even you didn't.</text>
+		<text>Wait, I need to calm down. That's some shitty news man. I think it's all linked with your last trip into the Zone. When we saw each other the last time, you left me the key from the stash at Pripyat and the map of how to find it. I've managed to keep it - hid it from the Mercs. Here, take it, hide it well. Perhaps you'll find somthing there. You were saying that there's some trick with the Monolith. But I don't understand what it was about, and you didn't either.</text>
 	</string>
 	<string id="cit_doctor_main_dialog_41">
 		<text>I see. Where are we? I don't remember how I got here.</text>
 	</string>
 	<string id="cit_doctor_main_dialog_5">
-		<text>We're in the Dead City! In the Merc camp.</text>
+		<text>We're in Dead City! In the Merc camp.</text>
 	</string>
 	<string id="cit_doctor_main_dialog_6">
-		<text>We're in the Dead City! In the Merc camp...</text>
+		<text>We're in Dead City!.. In the Merc camp...</text>
 	</string>
 	<string id="quest_cit_reward_0">
 		<text>By the way, I have information about the Mercs. Interested?</text>
@@ -115,7 +115,7 @@
 		<text>Deal. Here.</text>
 	</string>
 	<string id="quest_cit_reward_11111">
-		<text>Great! Here's your reward. Soon stalkers will argue about whether the Mercs ever existed at all!</text>
+		<text>Great! Here's your reward. Soon stalkers will argue about whether the Mercs even existed at all!</text>
 	</string>
 	<string id="quest_cit_reward_1112">
 		<text>Not, that's not enough.</text>
@@ -127,6 +127,6 @@
 		<text>Nothing worthwhile. Just the usual gossip. Sorry.</text>
 	</string>
 	<string id="quest_cit_reward_131">
-		<text>If you find out something more specific - come back. I'll pay.</text>
+		<text>If you find out something more specific come back. I'll pay you.</text>
 	</string>
 </string_table>

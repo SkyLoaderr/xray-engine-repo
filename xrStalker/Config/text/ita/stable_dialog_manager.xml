@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="dm_action_info_0">
+		<text>Come fanno a esserci delle novit , qui?   come la scuola elementare, o l'asilo. Se non ti fermi un po', stai sicuro che nella Zona non duri cinque minuti. I furbi restano qui qualche tempo, poi vanno dove diavolo gli pare. E poi da queste parti finch  hai armi e munizioni te la cavi di sicuro. Ci riescono tutti.</text>
+	</string>
+	<string id="dm_action_info_1">
+		<text>Devo solo aspettare che quei bambocci in uniforme escano a pranzo...   inutile restare qui, devo raggiungere la Grande Terra, ma non mi lasciano, non c'  verso. Non sono neanche l'unico che cerca di andarsene, ma non siamo ancora riusciti a passare.</text>
+	</string>
+	<string id="dm_action_info_10">
+		<text>Non lontano da qui, i soldati avevano bisogno di qualcosa. Qui non ci vengono, perch  gi  quando sono arrivato non era rimasto nemmeno uno spillo. Ora sembra che abbiano trovato qualcosa... Non sono neppure riuscito ad avvicinarmi all'edificio: mi hanno visto subito e hanno aperto il fuoco. Per fortuna sono riuscito a scappare senza finire sforacchiato.</text>
+	</string>
+	<string id="dm_action_info_100">
+		<text>Nulla. Sto solo cercando di sopravvivere, ecco tutto.</text>
+	</string>
+	<string id="dm_action_info_11">
+		<text>Stiamo mettendo insieme una squadra di gente che ama scendere sottoterra nella Zona. C'  una vecchia fabbrica sotto la quale corrono molte linee dell'alta tensione. Dicono che l  ci sono tante belle cosine e che si trova sempre qualcosa di nuovo. Molto interessante...</text>
+	</string>
+	<string id="dm_action_info_12">
+		<text>Non quella nuova... quella vecchia! Dicono che la vecchia base di Strelok si trovava qui. Chiss  quali testimonianze di quel periodo si potrebbero trovare, guardando con molta attenzione!</text>
+	</string>
+	<string id="dm_action_info_13">
+		<text>Roba da non crederci... un'ora fa sono quasi finito nei guai! Sei mesi fa il posto era tranquillo, ora ci sono teste rapate in uniforme nascoste in ogni cespuglio!   assurdo...</text>
+	</string>
+	<string id="dm_action_info_14">
+		<text>Stalker, sei fortunato che i banditi non ti abbiano preso: hanno una base molto vicina. Se avessi potuto l'avrei distrutta molto volentieri... ma per ora ce ne stiamo a guardare. Qui c'  la loro base di supporto, mentre il quartier generale   pi  vicino al centro della Zona.</text>
+	</string>
+	<string id="dm_action_info_15">
+		<text>Dicono che qui c'era un gran bel laboratorio, tutto camuffato. Da una parte sarebbe bello trovare l'ingresso... scommetto che dentro ci sono tante cose interessanti. Dall'altra parte, l'idea mi fa venire i brividi...</text>
+	</string>
+	<string id="dm_action_info_16">
+		<text>Sai che in quella che ora chiamiamo Valle Oscura prima della catastrofe c'era un complesso sotterraneo di ricerca? Non so che scopo aveva, ma scommetto che non era nulla di positivo. Ne hanno detto tante cose, quasi tutte spiacevoli. Gran brutto affare.</text>
+	</string>
+	<string id="dm_action_info_17">
+		<text>E allora? Cosa vuoi sentirti dire? Io dico solo questo: i Duty sono un po' i poliziotti locali, e puoi star certo che sanno mantenere l'ordine. Per  nel complesso non mi piacciono un gran che. Si divertono tanto a fare i padroni: non prendere questo, non portare via quell'altro... E poi hanno gi  deciso cosa   permesso dire nella Grande Terra e su cosa bisogna tenere acqua in bocca! Parlano tanto di smantellare la Zona e vogliono farlo davvero, un pezzettino per volta. Beh, non mi sorprende affatto, sono ex soldati... tutti sognatori. Ma la cosa peggiore   che sono appoggiati dall'alto.</text>
+	</string>
+	<string id="dm_action_info_18">
+		<text>Ora questo territorio   controllato dai Duty, e sono le loro regole quelle che contano. Noi controlliamo i confini della zona e diamo una regolata alle teste calde: i sognatori e i dilettanti che arrivano qui a frotte, come tanti illusi... e muoiono in massa gi  dal primo giorno.</text>
+	</string>
+	<string id="dm_action_info_19">
+		<text>Eri al nostro accampamento a met  strada? Beh, tutto nostro non  , perch  ci puoi trovare gente di ogni sorta. Ma soprattutto   un bel posto, non ci sono schifezze e ci arrivano tutte le ultime novit  sulla Zona. Puoi sempre sentire in giro qualcosa di utile, o almeno chiacchierare del pi  e del meno con la gente. Peccato che Boccia e il suo gruppo siano partiti l'altro ieri - non sono riuscito neanche a vederlo.</text>
+	</string>
+	<string id="dm_action_info_2">
+		<text>Andiamo all'accampamento, potrai sentire tutte le voci di corridoio. Quelli che sono alle prime armi, i novellini come te, di solito vanno l  per scoprire qualche dritta o per riposarsi un po'. Nei paraggi ci sono dei soldati: non avere troppa paura di loro, ma non andare neanche a dargli fastidio, perch  sono capaci di sparare senza pensarci due volte... Vicino al trafficante - ehm, al fornitore locale di merci - c'  un posto tranquillo dove ti puoi accampare.</text>
+	</string>
+	<string id="dm_action_info_20">
+		<text>Per ora, stalker, questo   un posto sicuro e stiamo cercando di conservarlo cos . Qui c'  molta gente: quelli che hanno deciso di stabilirsi e non si allontanano pi  di tanto, e quelli che hanno sempre qualche incursione in programma. Peccato che Irokez non sia pi  tornato. Gli piaceva molto indirizzare sulla retta via i novellini come te.</text>
+	</string>
+	<string id="dm_action_info_21">
+		<text>Hai sentito che i Duty stanno reclutando nuovi membri? Io ci ho pensato su un po', ma poi ho deciso che possono andarsene al diavolo. Prima o poi mi prenderanno... ma non ho nessun bisogno di disciplina. Ho gi  fatto due anni da militare e mi sono bastati...</text>
+	</string>
+	<string id="dm_action_info_22">
+		<text>Se non l'hai gi  saputo, ti informo che stiamo reclutando nuovi membri. Se hai qualche esperienza, vieni e non te ne pentirai. Chiedi di Petrenko alla base.</text>
+	</string>
+	<string id="dm_action_info_23">
+		<text>Sei qui anche per vedere gli incontri? Vuoi piazzare una scommessa? Beh, ti dico una cosa. Da queste parti c'  un'arena, e tu sei uno zero totale! Quindi ascolta: i Duty catturano mutanti, giusto? Dopo le ricerche, se le bestie sono ancora vive, le mandano all'arena. Ce ne sono di ogni forma e dimensione. Alcune le guardi e ti fanno morire dalle risate, altre ti fanno morire e basta.</text>
+	</string>
+	<string id="dm_action_info_24">
+		<text>Hanno appena inviato all'arena nuova carne da macello. Cos  la gente si diverte e noi intaschiamo una quota delle scommesse. Dimostreremo agli stalker che i Duty non sono bravi solo a parlare, ma anche a fare sul serio.</text>
+	</string>
+	<string id="dm_action_info_25">
+		<text>Ehi ascolta, sei stato al Rostok? Una volta era tranquillo, ma ora   rischioso andarci da soli.   diventata una zona selvaggia e ci sono troppi mutanti. Andiamo insieme, che ne dici? Per ... io non ti conosco mica, e tu non conosci me. Allora... No, mi dispiace. Ognuno per s .</text>
+	</string>
+	<string id="dm_action_info_26">
+		<text>Siamo appena tornati da Rostok. Non ti conviene farti vedere da quelle parti, soprattutto se sei solo. Vuoi restare vivo? Allora non andarci.</text>
+	</string>
+	<string id="dm_action_info_27">
+		<text>Beh, stavo pensando di andare a Yantar, ma poi mi sono detto: al diavolo! I cervelloni hanno creato laggi  un'enorme base scientifica nella Zona. Loro scavano dappertutto per trovare chiss  cosa, mentre fuori   pieno di zombie. Proprio un posticino da sogno.</text>
+	</string>
+	<string id="dm_action_info_28">
+		<text>Di recente hanno bonificato la zona di Yantar... S , l'hanno ripulita proprio bene! Laggi  ci sono dei laboratori di ricerca, ma anche troppi zombie in giro. Cos  dobbiamo regolarmente fare un salto da quelle parti per aiutare gli scienziati.</text>
+	</string>
+	<string id="dm_action_info_29">
+		<text>Sai, presso i vecchi magazzini... la base dei Freedom. Sono gente allegra, hanno buon cuore.   un piacere chiacchierare con loro davanti a una bottiglia di vino. E non ci sono Duty sempre fra i piedi come al bar.</text>
+	</string>
+	<string id="dm_action_info_3">
+		<text>Nei paraggi c'  una vecchia fabbrica. Noi continuiamo a liberarla dai banditi, e ogni volta quelli tornano l ! Non   passato neanche un mese dall'ultima volta e sono gi  tornati. Farai meglio a stare attento, laggi ...</text>
+	</string>
+	<string id="dm_action_info_30">
+		<text>I Freedom si nascondono dietro i vecchi magazzini... Distruggili tutti, quei pazzoidi...</text>
+	</string>
+	<string id="dm_action_info_31">
+		<text>Vattene prima che sia buio! Durante il giorno non ci sono grandi problemi, ma dopo il tramonto...</text>
+	</string>
+	<string id="dm_action_info_32">
+		<text>Vattene, stalker! Presto passeremo all'attacco... Per ora lo teniamo solo durante la giornata, ma di notte ce ne andiamo. Questo posto diventa troppo spettrale.</text>
+	</string>
+	<string id="dm_action_info_33">
+		<text>Vedi, durante la notte devi restare nascosto, meglio se dietro una robusta porta. Finch    buio siamo praticamente sotto assedio.</text>
+	</string>
+	<string id="dm_action_info_34">
+		<text>Beh, amico, non mi sembri molto aggiornato. Per riposare durante la notte ti conviene andare molto lontano. Qui quando   buio a volte non bastano neppure i lanciagranate.</text>
+	</string>
+	<string id="dm_action_info_35">
+		<text>Sai cosa ti dico? Per me i Duty, i Freedom e i banditi possono anche ammazzarsi per decidere di chi   questa parte. A me che me ne frega? All'inferno tutto quanto...</text>
+	</string>
+	<string id="dm_action_info_36">
+		<text>Stalker, stiamo lavorando. Non solo qui c'  una zona di riproduzione di quei miserabili, ma abbiamo fra i piedi anche quegli stronzi dei mercenari e quei ritardati dei Freedom...</text>
+	</string>
+	<string id="dm_action_info_37">
+		<text>Devo avvertirti che stare qui non   molto sicuro neppure durante il giorno. Ogni tanto c'  qualche sparatoria e, per quanto ho capito, le fazioni locali di banditi hanno sempre qualche vecchio conto da regolare.</text>
+	</string>
+	<string id="dm_action_info_38">
+		<text>Senti, dimmi una cosa... questo   il nostro territorio, vero? Per noi   pi  facile tenere a bada i miserabili che provengono dal centro della Zona, vero? I cervelloni possono anche sforzarsi di capire perch  sono agitati, ma intanto i Duty e i banditi dovrebbero proprio levarsi dalle palle.</text>
+	</string>
+	<string id="dm_action_info_39">
+		<text>E sai una cosa? Hanno seguito un nuovo percorso per superare la pattuglia dei Duty fino al perimetro, con tutta la merce. Basta arrivare qui da Yantar, poi raggiungere l'Agroprom usando le vie laterali - e il gioco   fatto!</text>
+	</string>
+	<string id="dm_action_info_4">
+		<text>Niente. Io non so un accidente. Mi procuro qualcosa qua e l , appena ci  che basta per mangiare.   troppo spaventoso entrare nella Zona... al diavolo! E a casa non c'  lavoro, e devo mantenere mia moglie... dobbiamo pur vivere. Qui alla Discarica, se cerchi bene per tutto il giorno qualche reperto lo trovi. E il pane lo porti a casa.</text>
+	</string>
+	<string id="dm_action_info_40">
+		<text>E perch  sei qui? Hai intenzione di andare a Yantar o stai cercando di trafugare reperti alle spalle di un fratello?</text>
+	</string>
+	<string id="dm_action_info_41">
+		<text>Non voglio nascondere che qui i tuoi colleghi stalker ogni tanto ci offrono delle formazioni anomale piuttosto interessanti... quelle che comunemente si chiamano reperti. A causa della loro... come dire... difficile controllabilit ... questi luoghi costituiscono un territorio di contrabbando piuttosto efficace.</text>
+	</string>
+	<string id="dm_action_info_42">
+		<text>Ehi, che problemi ci sono? Abbiamo creato un percorso solo per evitare di incontrare i Duty quando vogliamo raggiungere la Grande Terra per qualche motivo. Anche se ogni tanto i Duty capitano da queste parti, per ora non sanno nulla e si possono aggirare.</text>
+	</string>
+	<string id="dm_action_info_43">
+		<text>Sono appena tornato da Yantar. Pensavo di passare qualcosa agli scienziati come al solito, ma ormai restano sempre chiusi nei loro bunker e non escono neanche di giorno, se non per raggiungere gli elicotteri. Se hai intenzione di andare da quelle parti, ti conviene cambiar meta...</text>
+	</string>
+	<string id="dm_action_info_44">
+		<text>Nella zona di Yantar c'  una ricerca in corso, ma di recente il numero di zombie da quelle parti   aumentato. Cos  difendiamo gli accessi.</text>
+	</string>
+	<string id="dm_action_info_45">
+		<text>Non so proprio cosa dirti. Volevo tornare nel nostro complesso... come forse saprai si chiama Yantar. Ebbene, mentre prima dicevano che attraversare quella zona era "soltanto" pericoloso, ora   proprio impossibile. Non   che stanno esagerando?</text>
+	</string>
+	<string id="dm_action_info_46">
+		<text>Sono stato a Yantar e la ricerca   completamente ferma: gli scienziati sfuggono e si nascondono... Sopravvivono solo grazie alle provviste sganciate dagli elicotteri. D'altra parte laggi  ormai   pieno di zombie. Dopo una settimana in mezzo a loro, anche a te verrebbe voglia di nasconderti. Ecco che posto  : tutt'altro che simpatico.</text>
+	</string>
+	<string id="dm_action_info_47">
+		<text>Se ne vada in pasto ai cani! Chi crede di essere a frequentare gli zombie?! In quello stupido complesso ce n'  una valanga e continuano a venire. E ce ne sono ancora tanti altri.</text>
+	</string>
+	<string id="dm_action_info_48">
+		<text>Stiamo cercando di fermare i movimenti degli zombie dal complesso di laboratori. A dir la verit  non mi spiacerebbe affatto se ti unissi a noi. Siamo a corto di uomini...</text>
+	</string>
+	<string id="dm_action_info_49">
+		<text>Sai, stiamo anche raccogliendo vari dati. Per esempio, io sto facendo ricerche sui modi in cui si diffondono i quasi-vivi, che nella tua terminologia si chiamano zombie. Ti andrebbe di rivelare ci  che hai scoperto?</text>
+	</string>
+	<string id="dm_action_info_5">
+		<text>S ,   cos ... Alcuni sopravvivono grazie alla Discarica, raccogliendo rottami vari, altri si addentrano nella Zona, dove si possono trovare oggetti molto migliori, ma non tutti se la sentono. Non   un posto da novellini e se non hai munizioni devi proprio toglierti l'idea dalla testa.   una causa persa.</text>
+	</string>
+	<string id="dm_action_info_50">
+		<text>Ti   capitato di sparare agli zombie che escono dalle finestre del laboratorio? Beh, ti conviene fare attenzione: non hanno paura di niente e non sentono dolore. In altre parole, sono dei miserabili senza cervello.</text>
+	</string>
+	<string id="dm_action_info_51">
+		<text>Voglio farmi assumere nel laboratorio! Ehi, rilassati... stavo scherzando! Sai bene che chi passa da quelle parti   spacciato. Se proprio gli va di lusso diventa uno zombie.</text>
+	</string>
+	<string id="dm_action_info_52">
+		<text>Ti avverto: non entrare nel laboratorio. Se proprio hai deciso di entrarci non sar  io a trattenerti, ma sappi che da l  non si esce vivi.</text>
+	</string>
+	<string id="dm_action_info_53">
+		<text>Vorrei darti un avvertimento: non ti conviene entrare nel laboratorio. Non   un posto salutare per nessuno. Pare che provochi sostanziali alterazioni della psiche e del metabolismo, e temo che tali cambiamenti siano irreversibili.</text>
+	</string>
+	<string id="dm_action_info_54">
+		<text>Ecco! Ora ti far  vedere la luce... ti illuminer ... salver  la pecorella smarrita! In sostanza: non puntare gli sci verso il complesso di laboratori.   un posto molto ma molto sinistro. Laggi  la gente sparisce, e quando torna lo fa solo per tormentarti di notte. Purtroppo non   una storia dell'orrore:   la verit  sugli zombie. Le cose stanno cos .</text>
+	</string>
+	<string id="dm_action_info_55">
+		<text>Hai visto i nostri geniacci delle stramaledette Nazioni Unite? Ultimamente hanno paura della loro ombra. Solo per fare qualche passo fuori dalla base devono chiamare l'intero reggimento insieme all'aeronautica per proteggersi.</text>
+	</string>
+	<string id="dm_action_info_56">
+		<text>A te cosa te ne importa? Non tormentarli con domande stupide e anche loro ti lasceranno in pace.</text>
+	</string>
+	<string id="dm_action_info_57">
+		<text>Vedi, di solito non lasciamo il bunker senza le necessarie protezioni: le condizioni del territorio circostante non lo permettono. Io faccio un po' eccezione: non mi piacciono le grosse spedizioni, il casino attuale e i soldati... Comunque, per il momento temo di non poterti dire nulla di utile.</text>
+	</string>
+	<string id="dm_action_info_58">
+		<text>I nostri allegri scienziati mi fanno spanciare! Mi diverto un casino! Sai, di solito non osano mettere il naso fuori dal bunker. Ma se per caso escono, come l'altro giorno... apriti cielo! Soldati, elicotteri e mezzi corazzati dappertutto! Gi  che ci sono potrebbero portare qui una nave da guerra, o almeno un treno blindato.</text>
+	</string>
+	<string id="dm_action_info_59">
+		<text>Sono gi  tre giorni che sto qui a osservare. C'  un laboratorio, vero? Fin dall'inizio non   mai entrato nessuno, i Duty eliminavano gli zombie solo ogni tanto e ora hanno smesso, giusto? Ma gli scienziati dovevano entrare. Cos  hanno trovato un modo per proteggersi, solo il diavolo sa da cosa. Allora mi sono chiesto: perch  non dare un'occhiata in giro e scoprirlo? Scommetto che ci sono tante belle cosine da raccogliere a man bassa.</text>
+	</string>
+	<string id="dm_action_info_6">
+		<text>Negli ultimi giorni dalla Valle Oscura sono usciti interi branchi di animali. Non so cosa li costringa ad andarsene, ma scappano come se ci fosse un incendio. E poi, nel settore est i mutanti si riproducono come conigli. Possiamo solo continuare a sparargli addosso. Ecco le ultime novit .</text>
+	</string>
+	<string id="dm_action_info_60">
+		<text>E cosa stai cercando qui? Vuoi entrare nel laboratorio? Magari hai sentito qualche favola che parla di strumenti magici e di reperti a volont ? Cazzo... quando impareranno gli idioti come te?</text>
+	</string>
+	<string id="dm_action_info_61">
+		<text>Giovanotto, io qui ci lavoro. Lavoro e basta, adempiendo ai miei doveri verso la scienza e l'umanit . Se vuoi scoprire qualcosa sul laboratorio, soprattutto quella cosa che tutti gli altri stalker pensano che io sappia, ti rispondo che non ne so nulla e non ne voglio sapere niente. L'argomento non m'interessa e non mi ha mai interessato. Sono stato chiaro?!</text>
+	</string>
+	<string id="dm_action_info_62">
+		<text>Forse i cervelloni hanno davvero creato un qualche strumento? Chiss  cosa c'  nascosto nel dannato laboratorio. Anche se non ci fosse niente da prendere, sarebbe interessante lo stesso.</text>
+	</string>
+	<string id="dm_action_info_63">
+		<text>Stavo pensando... se mi unissi ai Freedom? La loro base   l , nei vecchi magazzini dell'esercito. E perch  no? Mi sembrano piuttosto in gamba, e chi se ne frega se sono un po' disorganizzati. Anzi,   meglio: non ho bisogno di disciplina e so quello che faccio. Non sono mica arrivato ieri.</text>
+	</string>
+	<string id="dm_action_info_64">
+		<text>Tu non ami troppo i Freedom, vero? Calma, calma, non t'arrabbiare. Credo che presto li butteremo fuori dai magazzini. Non sono organizzati e non hanno disciplina: sono come un branco di animali. Eppure quei poppanti della NATO osano resisterci!</text>
+	</string>
+	<string id="dm_action_info_65">
+		<text>Quando c'  qualche tregua incontro un membro dei Duty per scambiare informazioni.   un tipo intelligente, ma cazzo, ha due paraocchi grossi cos ! Vedi, la nostra filosofia   completamente diversa dalla loro: la Zona si pu  domare e assimilare, ma non distruggere, e per riuscirci abbiamo bisogno di accedere liberamente alle informazioni. Cos , prima o poi qualcuno escogiter  qualcosa. Loro invece vogliono lucchetti, segreti e silenzio su tutto... sono dei ritardati mentali. D'altra parte il loro comportamento ha un senso: quando hai tutta una macchina politica alle spalle, non   bene pensare in modo indipendente.</text>
+	</string>
+	<string id="dm_action_info_66">
+		<text>Qui c'  una villetta. Una volta era un posto tranquillo, ma ora   terreno di riproduzione di brutte creature. Ti conviene stare lontano, ovvero ci  che sto facendo anch'io... Ehi, io ti ho avvertito!</text>
+	</string>
+	<string id="dm_action_info_67">
+		<text>Stalker, ti devo avvertire in anticipo: da molto tempo nel villaggio c'  un nido di succhiasangue, se non qualcosa di peggio. Fai attenzione.</text>
+	</string>
+	<string id="dm_action_info_68">
+		<text>Non c'  niente di nuovo. Qui non ci sono pi  reperti, e tutti i succhiasangue che vivevano nelle villette li abbiamo impallinati meglio che potevamo. Prima volevo andare, ma non ho avuto la forza. Non sono proprio riuscito a costringermi. Laggi  c'  la morte...</text>
+	</string>
+	<string id="dm_action_info_69">
+		<text>Io me la squaglio! Sono rimasto vicino al confine per quattro settimane e ne ho passate di tutti i colori! Dalla direzione del Bruciacervella arrivano invasati a getto continuo, e ogni giorno ce ne sono sempre di pi ...</text>
+	</string>
+	<string id="dm_action_info_7">
+		<text>Ormai molti sono diventati "spazzini". Prima i rifiuti non li guardavano neanche: erano cos  radioattivi che ci potevi cuocere sopra un uovo. Ma ora che   diventato pi  difficile trovare qualcosa, c'  gente che si copre di protezioni, prende qualche farmaco e si intrufola a cercare. Si pu  trovare ogni sorta di cose, anche se di solito sono banalit .</text>
+	</string>
+	<string id="dm_action_info_70">
+		<text>Se sei venuto per partecipare allo sbarramento, hai il mio rispetto. Altrimenti, sparisci dalla mia vista! Abbiamo bisogno di veri uomini, non di donnicciole. Di quelle ce ne sono gi  fin troppe...</text>
+	</string>
+	<string id="dm_action_info_71">
+		<text>Sei qui per lo sbarramento? Meglio, avremo una persona sana di mente in pi . Questa cosa l'abbiamo organizzata noi e l'abbiamo tenuta in piedi piuttosto bene... ma poi tutte le bestie si sono buttate addosso a noi! Ora   tutto difficile e ogni arma conta.</text>
+	</string>
+	<string id="dm_action_info_72">
+		<text>Ma non sei aggiornato? La strada verso il centro della Zona   stata aperta! O si   aperta da sola, oppure qualcuno si   fatto il mazzo per aprirla, e in tal caso lo ringrazio di cuore. Non resta altro che andare a prendere i pezzi migliori!</text>
+	</string>
+	<string id="dm_action_info_73">
+		<text>Potevi aspettare, stalker. Non bisogna partire sempre alla carica. Dimmi un po': sai cosa c'  laggi ? Esatto, non lo sai. Non sai se c'  davvero qualcosa oppure no. Non sai neppure che trappole ti aspettano. Allora, perch  diavolo ti stai precipitando laggi  come un bufalo infuriato?</text>
+	</string>
+	<string id="dm_action_info_74">
+		<text>La strada per il centro   libera, capito? Ora c'  un percorso che arriva dritto al centro! Tutti potranno andare laggi . La cosa importante   essere fra i primi, per prendere le cose migliori!</text>
+	</string>
+	<string id="dm_action_info_75">
+		<text>Continua sempre dritto... vedrai tutto con i tuoi occhi! Vuoi vedere con i tuoi occhi cosa succede pi  avanti? Beh, allora sei proprio... fortunato. Potrebbero esserci tante belle cose! Per esempio, hai gi  sentito parlare dell'Esauditore di desideri, s ?</text>
+	</string>
+	<string id="dm_action_info_76">
+		<text>Santi numi, sembrano bambini! "Esauditore di desideri", "Eldorado di reperti"... Non posso credere alle mie orecchie!</text>
+	</string>
+	<string id="dm_action_info_77">
+		<text>Voglio scoprire cosa c'  oltre l'orizzonte! Ti piacerebbe se riuscissimo a scoprire, in un colpo solo, tutte le spiegazioni sul perch  la Zona   cos ?</text>
+	</string>
+	<string id="dm_action_info_78">
+		<text>Hai visto i grattacieli? Quella   gi  Pripjat. La centrale   subito dopo. Ah, quanto vorrei raggiungerla... Purtroppo ultimamente   difficile sapere cosa c'  in giro da quelle parti.</text>
+	</string>
+	<string id="dm_action_info_79">
+		<text>Ora ti spiego. L  c'  Pripjat. Dietro si trova la centrale di Chernobyl. Cosa succeda laggi  e chi vive da quelle parti non si sa. Questo   il posto che fa al caso nostro. Troveremo qualcosa, come sempre.</text>
+	</string>
+	<string id="dm_action_info_8">
+		<text>Non aggiornato! E sto solo andando al bar per parlare con gli altri. Cosa, non ci sei mai stato? Santo cielo! Allora ascolta: cos  come sei, continua ad andare verso nord. Il bar   proprio dietro l'angolo. Farci un salto   sempre utile e ai novellini come te lo dovrebbe prescrivere il dottore. Ci sono uomini esperti che potrebbero anche aiutarti, dirti qualcosa, cosa fare e come. Un avvertimento: lungo la strada incontrerai i nostri ragazzi Duty... e l  dipende. Se avrai fortuna gli andrai a genio, altrimenti, beh, non gli andrai a genio.</text>
+	</string>
+	<string id="dm_action_info_80">
+		<text>Pripjat! Dammi un pizzicotto! Finalmente la centrale   vicina. Purtroppo   difficile sapere che incontri si possono fare da queste parti, quale bestiaccia dai denti acuminati ti sta aspettando.</text>
+	</string>
+	<string id="dm_action_info_81">
+		<text>Ehi, amico… Senti anche tu una voce in testa oppure ho le allucinazioni? Continua a ripetere sempre la stessa cosa...</text>
+	</string>
+	<string id="dm_action_info_82">
+		<text>Maledizione, un altro... Beh, cercher  per la milionesima volta di spiegare gli effetti telepatici percepiti dalla gente del posto. Le voci non vengono sentite all'esterno e chiamano continuamente la gente verso il centro della Zona, promettendo di esaudire tutti i desideri di chi colui che riuscir  a toccare il... come si chiama?... ah s , il monolite, una roba cos .</text>
+	</string>
+	<string id="dm_action_info_83">
+		<text>Senti anche tu una voce?   come avere uno stereo in testa. Purtroppo suona sempre lo stesso brano: vieni da me e troverai una grande felicit . Sono due ore che va avanti cos .</text>
+	</string>
+	<string id="dm_action_info_84">
+		<text>E non riesci a capire cos' ? Anche tu stai cercando di arrivare alla centrale! Beh, eccoci qua... che altro c'  da dire? Dobbiamo solo spazzar via dalla strada quei ritardati...</text>
+	</string>
+	<string id="dm_action_info_85">
+		<text>La zona della centrale   molto vicina! Per ora non riusciamo ancora a contrastare la resistenza dei Monolith!</text>
+	</string>
+	<string id="dm_action_info_86">
+		<text>Ecco laggi  la centrale di Chernobyl a un tiro di schioppo. Ormai quei dannati bastardi sono rimasti in pochi, ma hanno la testa dura e non ci lasciano entrare! Pazienza, li liquideremo in fretta!</text>
+	</string>
+	<string id="dm_action_info_9">
+		<text>Senti un po', sai niente sulla Agroprom? Io volevo andarci, ma gli altri hanno cominciato a prendermi in giro. Mi hanno detto che non c'  pi  niente di buono l , che hanno ripulito tutto e ora ci sono rimaste soltanto delle anomalie... Secondo te dicono sul serio o lo fanno solo per sfottermi? Sono arrivato da poco, e d  sempre retta a quello che mi dice la gente del posto... Ma forse sono tutti d'accordo. Questi stronzi non perdono occasione per ridere alle nostre spalle!</text>
+	</string>
+	<string id="dm_action_info_94">
+		<text>Aspetta! Procedi spedito, ma non correre troppo.   pieno di adoratori del Monolite, qui intorno. Conoscono la citt  come le loro tasche e hanno piazzato un sacco di trappole. Bisogna stare attenti. </text>
+	</string>
+	<string id="dm_action_info_95">
+		<text>Ti avviso: per il momento gran parte della citt    sotto il controllo della fazione dei Monolith. Hanno piazzato una quantit  di trappole... Quelli conoscono la citt  come il palmo della loro mano! Tieni sempre gli occhi bene aperti e le armi pronte.</text>
+	</string>
+	<string id="dm_action_info_96">
+		<text>Oh, lo sai cosa mi piacerebbe fare? Bombardare a tappeto questa citt ! Quei porci... l'unico posto in cui puoi star sicuro che non si nascondano sono i vasi da fiori. Quanta gente   gi  morta per colpa di quei vermi!</text>
+	</string>
+	<string id="dm_action_info_97">
+		<text>Ascolta, magari questo Esauditore… magari non   eterno, e se cos  fosse non ci sarebbero abbastanza desideri per tutti, no? E poi, cosa dovremmo fare? Mollare tutto e arrenderci? Quanto a te, bello, ti prometto una cosa: se ci arriviamo, dovrai aspettare il tuo turno…</text>
+	</string>
+	<string id="dm_action_info_98">
+		<text>I Duty devono riuscire ad arrivare fino al centro, se non per primi almeno tra i primi! Te l'immagini, stalker, se uno di voi psicopatici... e qui siete tutti psicopatici, o paranoici o oligofrenici... Te l'immagini se uno di voi arrivasse all'Esauditore? E poi, cosa succederebbe?</text>
+	</string>
+	<string id="dm_action_info_99">
+		<text>La notizia del secolo   che tutti quelli che sono in grado di camminare e di impugnare un'arma si sono riversati su questo posto! Qui ti pu  succedere di tutto! Capisci? Puoi avere tutto quello che desideri! E se poi un bel giorno qualcuno arriva e dice "Desidero che la Zona scompaia per sempre", uh? Ti rendi conto di che razza di tragedia sarebbe? Svaniremmo nel nulla, tutti quanti!</text>
+	</string>
+	<string id="dm_cool_info_0">
+		<text>Qualcosa di nuovo? Al diavolo le novit , qui c'  tanta di quella merda vecchia che non basterebbe un mestolo per spalarla. Quei porci dei banditi sono fuori di testa! Noi rischiamo la vita in mezzo alle anomalie per procurarci i reperti, e quelli se ne vanno in giro a rapinare la gente... Bastardi! Sta' in guardia e tieniti alla larga dalla Discarica. Quello   il proprio il tipo di posto che piace a quella gentaglia.</text>
+	</string>
+	<string id="dm_cool_info_1">
+		<text>Sono bloccato qui, capito? Bloccato. Voglio andare a casa, ma non me lo permettono. Tutte qui, le novit . Quelli che si addentrano nel cuore della Zona, quelli che hanno girato, ne raccontano di tutti i colori. E a volte quando tornano portano tanta di quella roba che moriresti di invidia, a vederli. Dicono che ci sono posti che sono come giacimenti d'oro, dove basta allungare la mano e prendersi quello che c' . Certo, non sono tanti quelli che riescono ad arrivarci, e ancora meno quelli che riescono a tornare indietro con gli oggetti che hanno trovato.</text>
+	</string>
+	<string id="dm_cool_info_10">
+		<text>Una settimana fa la Lontra si   fulminata sul Bruciacervella. Capirei se si fosse trattato di un pivello con la bocca ancora sporca di latte, ma lui era uno stalker esperto. Dicono persino che facesse parte del team di Strelok. E poi, all'improvviso…</text>
+	</string>
+	<string id="dm_cool_info_100">
+		<text>Beh, a dire il vero non sono al corrente delle ultime novit .</text>
+	</string>
+	<string id="dm_cool_info_11">
+		<text>Dimmi una cosa, stalker: perch  i cani sciolti come te qualche volta perdono la bussola? Cos' , mancanza di disciplina? La settimana scorsa uno di voi ha deciso di andare oltre il Bruciacervella. E pare che fosse uno esperto, per giunta... Ma dico, se proprio ci tieni a farti saltare il cervello, tanto vale che ti ficchi la canna della pistola in bocca, premi il grilletto e via!</text>
+	</string>
+	<string id="dm_cool_info_12">
+		<text>Questi mercenari sono delle sanguisughe. Prima hanno dissanguato noi, e adesso si sono attaccati alle teste d'uovo. E perch  hanno ceduto, poi? In cambio di un riscatto? O magari vogliono un premio Nobel pure loro?</text>
+	</string>
+	<string id="dm_cool_info_13">
+		<text>Ultimamente i mercenari sono diventati molto pi  attivi. Noi li chiamiamo anche predoni. Ci sono anche altre canaglie qui, non so se ne hai sentito parlare; sono un po' come i banditi, tranne per il fatto che sono esperti nelle tecniche di guerra. La cosa strana   che una volta preferivano attaccare gli stalker, ma ora hanno cominciato a interessarsi di pi  agli scienziati. Ma in ogni caso tu sta' in guardia, quelli sono capacissimi di far saltare la testa anche a te.</text>
+	</string>
+	<string id="dm_cool_info_14">
+		<text>Gira voce che le teste d'uovo abbiano trovato qualcosa di incredibile. E all'improvviso sono impazziti tutti quanti: i soldati, i mercenari, e persino a quei tizi di Duty non manca tanto...</text>
+	</string>
+	<string id="dm_cool_info_15">
+		<text>Se vuoi sapere la stessa cosa per cui tutti quanti mi hanno rotto le scatole negli ultimi due giorni, gira al largo! Se l'avessi saputo, e non mi avessero proibito di parlarne, l'avrei detto. Ma la verit    che non so niente di niente! Cos'hanno trovato quegli scienziati? Che fine hanno fatto i nostri capi? E che c'entro io con tutto questo?! Se ne saranno andati in vacanza... Non sono mica tenuti a darci spiegazioni, quelli!</text>
+	</string>
+	<string id="dm_cool_info_16">
+		<text>Ah, qui sono diventati tutti matti! Il Confederato e il suo gruppo sono tornati da una razzia portandosi dietro un bel mucchio di reperti. Mamma mia! Naturalmente il Confederato ha le labbra cucite, come al solito, mentre i suoi se ne vanno in giro a pavoneggiarsi come se fossero andati nello Yukon e avessero trovato un filone d'oro... Che porci!</text>
+	</string>
+	<string id="dm_cool_info_17">
+		<text>Negli ultimi giorni dal Bruciacervella sono venute fuori un sacco di bestie. La gente che sta vicino ai vecchi magazzini ha costruito una barriera; per ora sembra che regga... Ma se si indebolisce, dovranno chiedere rinforzi, non c'  nient'altro da fare.</text>
+	</string>
+	<string id="dm_cool_info_18">
+		<text>Hai sentito? Gira voce che la Zona si stia espandendo... e io penso che sia vero: ho visto uno spaventoso umanoide proprio vicino al perimetro, uno di quei mostri che prima potevi vedere solo se ti avvicinavi al centro della Zona. Le cose si mettono male, non credi?</text>
+	</string>
+	<string id="dm_cool_info_19">
+		<text>  possibilissimo che la storia dei succhiasangue avvistati vicino ai confini della Zona sia vera. Ma che c'entra questo con l'espansione della Zona? Diciamo pure che un gruppo di quelle bestie sia arrivato fino al confine, e l'abbia attraversato... E con questo? A volte siamo di pattuglia per giorni interi! E lavoriamo tranquilli, perch  dall'altra parte del perimetro non c'  nessuno che grida "Aiuto, i mutanti ci hanno circondato!".</text>
+	</string>
+	<string id="dm_cool_info_2">
+		<text>  triste, eh? L'altro giorno la Lontra   morta, e per cosa? Per niente, ti dico. Non riesco a crederci... Ma tu non hai mai sentito parlare della Lontra, vero? Beh, era praticamente un professorone...   stato qui dal primo anno, conosceva la Zona come il palmo della sua mano... e poi, all'improvviso, finire cos ! L  fuori ci sono degli stalker con anni di esperienza sulle spalle, ma la Zona se li piglia lo stesso. Altri, invece, finiscono per tornarsene nella Grande Terra. </text>
+	</string>
+	<string id="dm_cool_info_20">
+		<text>Secondo te il barista lo sa cos'hanno trovato gli scienziati? Chiss , magari   pure ammanigliato con quella gente... Pare che ultimamente trovi gli stalker pi  esperti e affidi loro delle strane missioni. Non gli spiega nulla, gli dice solo dove devono andare.... e si tratta sempre di posti pericolosi, dove non c'  un reperto a pagarlo oro. Che diamine star  cercando, l ?</text>
+	</string>
+	<string id="dm_cool_info_21">
+		<text>Sta succedendo qualcosa di strano. Gli zombie che prima avevano paura di avvicinarsi alla luce ora scorrazzano da una parte all'altra come se niente fosse. Che diavolo significa?!</text>
+	</string>
+	<string id="dm_cool_info_22">
+		<text>Qualcosa ha reso gli zombie pi  attivi ed aggressivi. Prima li eliminavamo direttamente nel complesso, ma ora riusciamo a malapena a difendere le strade di accesso. Ma io non ti ho detto nulla, siamo intesi?</text>
+	</string>
+	<string id="dm_cool_info_23">
+		<text>Sta' attento, perch  quei cadaveri ambulanti hanno invaso tutto il territorio. Sono stupidi e aggressivi. Siamo costantemente sotto assedio, giorno e notte. Questo   un posto pericoloso, giovanotto.</text>
+	</string>
+	<string id="dm_cool_info_24">
+		<text>Oooh, scommetto che le teste d'uovo hanno combinato qualche casino in quel loro laboratorio. Prima era raro imbattersi in uno zombie, ma adesso dal complesso ne escono a fiotti. E la cosa pi  importante   che se ne vanno in giro come se avessero perso qualcosa e la stessero cercando.</text>
+	</string>
+	<string id="dm_cool_info_25">
+		<text>Gira voce che gli scienziati abbiano assoldato uno dei nostri per entrare nel laboratorio. Gli hanno dato qualcosa... dell'equipaggiamento protettivo... e basta. Nessuna informazione, niente di niente.</text>
+	</string>
+	<string id="dm_cool_info_26">
+		<text>Girano un sacco di voci strane. Dicono persino che qualche pazzo ha accettato di andare gi  al laboratorio per occuparsi di qualche ignota faccenda per conto di uno scienziato. Che fesseria!</text>
+	</string>
+	<string id="dm_cool_info_27">
+		<text>E questo   il pi  bello scherzo della settimana: gli scienziati hanno pagato lautamente un tuo collega perch  si arrampicasse dentro il laboratorio con uno dei loro strumenti. Un'altra vittima, maledizione!</text>
+	</string>
+	<string id="dm_cool_info_28">
+		<text>Penso che stia di nuovo per succedere qualcosa. Gli scienziati hanno scoperto qualcosa che ha fatto drizzare le orecchie a tutti quanti, il che vuol dire che non ci sar  pi  pace neanche per quelli come me e te. </text>
+	</string>
+	<string id="dm_cool_info_29">
+		<text>Lo sa il diavolo. Io so solo che ci stanno facendo lavorare il doppio di prima, sballottandoci da una parte all'altra: una volta   un posto di blocco, un'altra un'operazione di pulizia... E anche il numero di militari nella Zona   aumentato in maniera significativa.</text>
+	</string>
+	<string id="dm_cool_info_3">
+		<text>L'unica cosa che so,   che la situazione   triste. C'  sempre stata un sacco di gente alla periferia, ma met  di loro non si   mai addentrata nella Zona e i reperti non bastano per tutti. Hanno persino portato via tutto quello che hanno potuto dalle fabbriche e dai laboratori. Presto qui non rimarr  nient'altro da fare se non aprire un ristorante... cucina esotica e vista sulla Zona.</text>
+	</string>
+	<string id="dm_cool_info_30">
+		<text>Non so proprio che dirti... Qui succede sempre qualcosa, ma sempre entro i limiti del ragionevole. Nella Grande Terra la pensano diversamente, ma io e te ci troviamo in una zona anomala, per cos  dire.</text>
+	</string>
+	<string id="dm_cool_info_31">
+		<text>Le teste d'uovo hanno fiutato qualcosa. Che razza di segreto abbiano scovato lo sa solo il diavolo, ma una cosa   certa: i militari ormai fanno quello che vogliono gli scienziati. E stanno perlustrando la Agroprom e la Valle Oscura, alla ricerca di non si sa cosa...</text>
+	</string>
+	<string id="dm_cool_info_32">
+		<text>Non passa giorno che dal Bruciacervella non esca qualche altra schifezza, e i membri di Duty e Freedom hanno scelto proprio questo momento per riprendere le ostilit . Va a finire che si ammazzeranno gli uni con gli altri, e poi? Per quanto tempo potremo difendere il confine da soli?</text>
+	</string>
+	<string id="dm_cool_info_33">
+		<text>Gli sforzi dei mutanti per abbattere la barriera si sono fatti sempre pi  insistenti. La situazione   difficile. Se certa gente avesse smesso di comportartsi da deficiente, le cose sarebbero andate molto meglio!</text>
+	</string>
+	<string id="dm_cool_info_34">
+		<text>I Duty continuano a vantarsi delle loro gesta sovrumane sulla barriera. Peccato che non ci creda nessuno... Siamo stati noi a dare il via a tutto, e siamo noi quelli che mandano avanti la baracca, e anche molti solitari come te sono rimasti indietro di loro iniziativa. Ma quei tizi di Duty... quei vermi... che se ne vadano al diavolo!</text>
+	</string>
+	<string id="dm_cool_info_35">
+		<text>Ho sentito dire che i Duty si sono venduti. Continuano a dire di essere semplici volontari che vogliono riportare l'ordine e la sicurezza nella Zona... Volontari un piffero! Qualche ignoto benefattore li ha equipaggiati con tante di quelle munizioni e barili che se li vedessi moriresti dall'invidia. E cos  quelli si sono venduti.</text>
+	</string>
+	<string id="dm_cool_info_36">
+		<text>Che voci girano? Una cosa posso dirtela, e non   una voce: riporteremo l'ordine al pi  presto. Ripuliremo la Zona da ogni tipo di bestia, compresi certi viscidi individui…</text>
+	</string>
+	<string id="dm_cool_info_37">
+		<text>Hai sentito cosa minacciano di farci quelli di Duty? La cosa pi  gentile che dicono   che vogliono "ridurci in polvere". Questa faccenda mi preoccupa... soprattutto dal momento che pare siano armati ed equipaggiati di tutto punto.</text>
+	</string>
+	<string id="dm_cool_info_38">
+		<text>Ma quali novit ? Ce ne stiamo seduti qui, gli animali ci attaccano, noi gli spariamo e quelli ci attaccano un'altra volta, peggio di prima. Di tanto in tanto passano degli elicotteri dell'esercito, e alcuni si avventurano persino al di l  del Bruciacervella.</text>
+	</string>
+	<string id="dm_cool_info_39">
+		<text>Che novit  vuoi che ci siano? Qui   sempre la solita solfa: mutanti, Freedom... ma di recente i soldati hanno cominciato a sorvolarci in elicottero. Potevano almeno degnarsi di sparare a qualche bestia, gi  che c'erano... E invece, niente!</text>
+	</string>
+	<string id="dm_cool_info_4">
+		<text>Novit ? Ma chi se ne importa delle voci che girano! Non puoi credere a quello che dice la gente. Ad esempio, raccontano che uno stalker esperto   tornato dall'interno della Zona portando con s  qualcosa che nessuno aveva mai visto prima, e che ha fatto strage di cuori... Beh, di storie cos  potrei inventarmene anch'io a centinaia!</text>
+	</string>
+	<string id="dm_cool_info_40">
+		<text>Ho visto degli elicotteri dell'esercito. Immagina, ci hanno sorvolati e poi si sono diretti oltre il Bruciacervella! Mi aspettavo che precipitassero da un momento all'altro, invece niente, hanno continuato a volare. Sono rimasti l  fermi per un po', poi hanno invertito la rotta e sono tornati indietro. Tipico, no?</text>
+	</string>
+	<string id="dm_cool_info_41">
+		<text>Oh, ora che c'  una strada per raggiungere il centro... Chiss  quanti tesori devono esserci laggi , proprio sotto i tuoi piedi!</text>
+	</string>
+	<string id="dm_cool_info_42">
+		<text>Ora che ci sono modi relativamente sicuri per raggiungere il centro, gli stalker sono attirati dalla Zona come le mosche dal miele. Gi ... l'avidit  non   certo la miglior qualit  degli esseri umani.</text>
+	</string>
+	<string id="dm_cool_info_43">
+		<text>Questa s  che   vita! Mentre quelli che vengono dal bar e dal perimetro continuano a cercare il modo di arrivare fin qui, noi andiamo e ci prendiamo il meglio! Gli altri dovranno accontentarsi dei nostri avanzi!</text>
+	</string>
+	<string id="dm_cool_info_44">
+		<text>Beh, si dice che esista davvero, l'Esauditore. Qualcuno   persino riuscito a raggiungerlo gi , e ha espresso tantissimi desideri...</text>
+	</string>
+	<string id="dm_cool_info_45">
+		<text>Ascolta amico, io lo so che nella Zona pu  succedere di tutto. L'ho visto con i miei occhi. Ma questa storia di quei tizi che hanno desiderato un hotel privato ai Caraibi, e hanno visto il loro sogno realizzarsi... Beh, secondo me   una grande stronzata. </text>
+	</string>
+	<string id="dm_cool_info_46">
+		<text>Non lo sai? Due dei nostri, tra i primi a raggiungere il centro, sono riusciti ad arrivare fino all'Esauditore e hanno espresso un desiderio! Per tutta la vita avevano sognato isole e mari caldi, e adesso stanno prendendo il sole ai tropici!</text>
+	</string>
+	<string id="dm_cool_info_47">
+		<text>Abbiamo trovato un eroe, il capo dei Freedom. Tutti pensavano che fosse tornato nella Grande Terra, e invece lui ha radunato una piccola squadra ed   riuscito in qualche modo a superare il Bruciacervella. Quello s  che   un uomo!</text>
+	</string>
+	<string id="dm_cool_info_48">
+		<text>Una pattuglia di Freedom   stata ritrovata in un settore della Zona un tempo inaccessibile. Come avranno fatto ad arrivare fin l  illesi a poi a sopravvivere alcune settimane? Non riesco nemmeno a immaginarlo. Mi sa che li avevamo sottovalutati, quei ragazzi.</text>
+	</string>
+	<string id="dm_cool_info_49">
+		<text>Pensa un po', hanno trovato il nostro Mikluha! E anche i ragazzi che erano con lui sono sopravvissuti. Sono riusciti a passare oltre il Bruciacervella, ma una volta l  non riuscivano pi  a uscirne, e sono rimasti per un mese intero a girarsi i pollici.</text>
+	</string>
+	<string id="dm_cool_info_5">
+		<text>Qui si sta preparando qualche impiccio. Gira voce che il leader di Duty, il pezzo grosso, non se ne sia semplicemente andato dalla Zona per affari, ma abbia stretto un accordo con i Freedom. Beh, la situazione   cos  ingarbugliata adesso che avrebbero potuto benissimo accordarsi alla luce del sole. Tira una brutta aria. D'altro canto, c'  gente pi  esperta di me che dice che, all'epoca, le ostilit  tra le due fazioni siano cominciate senza nessun motivo. Spero solo che i generali da salotto della Grande Terra non ci trascinino in un altro massacro.</text>
+	</string>
+	<string id="dm_cool_info_50">
+		<text>Hai saputo?! I militari verranno qui per arraffare tutto il possibile. Arriveranno presto! Dopo aver scoperto che il Bruciacervella si   rotto, hanno deciso di venire a prendersi tutti i reperti!</text>
+	</string>
+	<string id="dm_cool_info_51">
+		<text>C'  una notizia fresca fresca: ci sar  un massiccio sbarco di truppe dell'esercito alla stazione. Ti d  un consiglio: se vuoi accaparrarti almeno qualcosina, ti conviene sbigarti!</text>
+	</string>
+	<string id="dm_cool_info_52">
+		<text>  un caos totale, ecco cos' ! Ma tu guarda, hanno aperto il passaggio, hanno liberato la stazione da ogni tipo di schifezza, e adesso arrivano i militari e approfittano della situazione! Quella   gente senza vergogna e senza coscienza. </text>
+	</string>
+	<string id="dm_cool_info_53">
+		<text>C'  una cosa che proprio non capisco: come hanno fatto i Freedom a resistere l  per un mese? Avevano dei congegni che li rendono invisibili o roba del genere? Non   assolutamente possibile!</text>
+	</string>
+	<string id="dm_cool_info_54">
+		<text>Ma hai capito cosa sta succedendo? Beh, tanto di cappello a Mikluha! Pensa un po', sopravvivere quattro settimane in mezzo a questa merda senza perdere nessuno dei suoi uomini!</text>
+	</string>
+	<string id="dm_cool_info_55">
+		<text>Qualcuno di loro   impazzito, qui. E pensare che erano tutti tipi tosti! Ora invece sbavano e farfugliano come mentecatti.   spaventoso. </text>
+	</string>
+	<string id="dm_cool_info_56">
+		<text>Pi  ti avvicini alla stazione, pi  forte diventa quella misteriosa forza telepatica. Alcuni hanno iniziato a dare di matto, altri sono rimasti traumatizzati e ora soffrono di allucinazioni. Forse   arrivato il momento di ritirarsi un po'...</text>
+	</string>
+	<string id="dm_cool_info_57">
+		<text>Ascolta, qui la gente sta letteralmente impazzendo. Uno vede una pietra e comincia a gridare che il reperto   suo, che l'ha visto lui per primo, e che tutti gli altri devono levarsi dai piedi. Un altro vede Dja su una nuvola, abbracciato ai compagni scomparsi anni fa... No, guarda, questa storia puzza, e parecchio pure.</text>
+	</string>
+	<string id="dm_cool_info_6">
+		<text>Le truppe si stanno dando un gran daffare: cercano, scavano... Prima gli elicotteri volavano solo fino a Yantar, per proteggere gli scienziati e trasportare provviste e macchinari. Adesso praticamente   un'invasione: i militari partono per strane spedizioni, se ne vanno in giro sulle autoblindo... Li ho gi  visti alla Agroprom e nella Valle Oscura. Non capisco proprio.</text>
+	</string>
+	<string id="dm_cool_info_7">
+		<text>Dicono che qualcuno ha provato di nuovo ad attraversare il Bruciacervella. Beh, ovviamente non   mai tornato indietro... Non hai mai sentito parlare del Bruciacervella? Ma dove vivi, amico?!   il pericolo pi  temuto da queste parti! L'unico problema   che tutte le cose orribili che raccontano sul suo conto sono perlopi  vere...</text>
+	</string>
+	<string id="dm_cool_info_8">
+		<text>Adesso, oltre ai banditi, anche i soldati hanno cominciato ad andarsene in giro. Prima capitava di vedere un elicottero una volta ogni morte di papa, ma ora praticamente non fanno altro che volare da una parte all'altra della Zona. Hanno perso qualcosa, per caso?</text>
+	</string>
+	<string id="dm_cool_info_9">
+		<text>Ti avviso, stalker: ultimamente i soldati sembrano impazziti. Prima se ne stavano buoni buoni, limitandosi a proteggere gli scienziati senza dare troppo nell'occhio, ma adesso   come se gli avessero preso fuoco le chiappe: sono sempre di corsa, sempre affaccendati... E non sono proprio di umore pacifico: hanno sparato pi  di una volta su quelli come te, e questa settimana hanno ferito anche un paio dei nostri uomini.</text>
+	</string>
+	<string id="dm_help_thanks_1">
+		<text>Grazie mille.</text>
+	</string>
+	<string id="dm_intro_0">
+		<text>Com'  che te ne vai in giro senza nessuna protezione? Ti sei stufato di vivere, per caso? C'  un'anomalia dietro ogni cespuglio: se ci finisci dentro, sei spacciato! Qui, se non vuoi assorbire una bella dose di radiazione, non devi andare neanche a pisciare senza una protezione.</text>
+	</string>
+	<string id="dm_intro_1">
+		<text>Mi sembra che tu non sia ancora pratico di questi dintorni... Lascia che ti dia un consiglio da amico: non immischiarti con i militari. Se ne vedi uno, gira subito al largo perch  con quelli non si ragiona. Prima ti piazzano in corpo una pallottola, o magari una decina, e poi ti guardano i documenti per vedere come ti chiami...</text>
+	</string>
+	<string id="dm_intro_10">
+		<text>Qui comandano i Duty, i nostri amati tutori dell'ordine... o presunti tali. Tienilo bene a mente se non vuoi cacciarti nei guai. </text>
+	</string>
+	<string id="dm_intro_100">
+		<text>Buongiorno.</text>
+	</string>
+	<string id="dm_intro_101">
+		<text>Buona giornata.</text>
+	</string>
+	<string id="dm_intro_102">
+		<text>Stammi bene.</text>
+	</string>
+	<string id="dm_intro_103">
+		<text>Ehi, amico!</text>
+	</string>
+	<string id="dm_intro_104">
+		<text>Ehi.</text>
+	</string>
+	<string id="dm_intro_105">
+		<text>Oh, ehi!</text>
+	</string>
+	<string id="dm_intro_106">
+		<text>Ehil !</text>
+	</string>
+	<string id="dm_intro_107">
+		<text>Salve!</text>
+	</string>
+	<string id="dm_intro_108">
+		<text>Salve, stalker.</text>
+	</string>
+	<string id="dm_intro_109">
+		<text>Saluti, stalker.</text>
+	</string>
+	<string id="dm_intro_11">
+		<text>Ti trovi in un'area in cui l'ordine   mantenuto dai Duty. Ogni richiesta della pattuglia deve essere prontamente soddisfatta senza opporre alcuna resistenza; in caso di bisogno, riceverai le necessarie spiegazioni. Tuttavia, il codice di comportamento che vige in quest'area   semplice: tratta tutti con cortesia e non avrai problemi.</text>
+	</string>
+	<string id="dm_intro_110">
+		<text>Ehi tu, stalker!</text>
+	</string>
+	<string id="dm_intro_111">
+		<text>Ehil !</text>
+	</string>
+	<string id="dm_intro_112">
+		<text>Beh, e chi abbiamo qui?!</text>
+	</string>
+	<string id="dm_intro_113">
+		<text>E questo qui, chi  ?</text>
+	</string>
+	<string id="dm_intro_114">
+		<text>Salve, amico.</text>
+	</string>
+	<string id="dm_intro_12">
+		<text>Se vuoi sapere qualcosa, va' al bar invece di tormentare me. L  ti spiegheranno tutto e risponderanno a tutte le tue domande, se tu risponderai alle loro. Io non ho tempo da perdere.</text>
+	</string>
+	<string id="dm_intro_13">
+		<text>  la prima volta che vieni da queste parti? Allora ti suggerisco di andare al bar: i tuoi colleghi ti racconteranno tutte le ultime novit .</text>
+	</string>
+	<string id="dm_intro_14">
+		<text>Non avvicinarti troppo agli zombie e gira al largo dal laboratorio, intesi?</text>
+	</string>
+	<string id="dm_intro_15">
+		<text>Non ti consiglio di avvicinarti al laboratorio: troppi zombie.</text>
+	</string>
+	<string id="dm_intro_16">
+		<text>Sai, ti consiglio di tenerti alla larga dal complesso che ospita il laboratorio.</text>
+	</string>
+	<string id="dm_intro_17">
+		<text>Sta' attento agli zombie: sono stupidi ma non hanno paura di niente. E farai meglio a non entrare nel laboratorio: quello   il loro terreno di coltura, o roba del genere...</text>
+	</string>
+	<string id="dm_intro_18">
+		<text>Non dimenticare che siamo vicini al Bruciacervella   vicino. Che non ti venisse mai in mente di andare verso nord!</text>
+	</string>
+	<string id="dm_intro_19">
+		<text>Attento: se non vuoi rimetterci il cervello, non proseguire verso nord.</text>
+	</string>
+	<string id="dm_intro_2">
+		<text>Sii prudente quando attraversi il ponte, intesi? L    pieno di cani randagi. Se non stai attento, quelli ti sbranano in quattro e quattr'otto.</text>
+	</string>
+	<string id="dm_intro_20">
+		<text>Sii prudente! Siamo molto vicini al Bruciacervella, lo sai; se vai verso nord, sarai l'ennesimo mentecatto morto.</text>
+	</string>
+	<string id="dm_intro_21">
+		<text>  come camminare in un campo minato, tranne che qui   peggio. Il diavolo solo sa cosa succede qui... Non puoi abbassare la guardia neanche per un secondo.</text>
+	</string>
+	<string id="dm_intro_22">
+		<text>Acuisci tutti i tuoi sensi, e una volta che li avrai acuiti, resta all'erta e non abbassare mai la guardia. Appena ti rilassi, sei finito: i morti ti saranno addosso in un baleno.</text>
+	</string>
+	<string id="dm_intro_23">
+		<text>Devi stare sempre sul chi vive! Dormi con un occhio aperto: qui pu  scoppiare un casino da un momento all'altro.</text>
+	</string>
+	<string id="dm_intro_24">
+		<text>Sta' attento con queigli stronzi! Sono come gli scarafaggi, ce ne sono a tonnellate qui!</text>
+	</string>
+	<string id="dm_intro_25">
+		<text>Elimina i cosiddetti "adoratori del Monolite" non appena li vedi. Sono molto pericolosi, dei veri fanatici!</text>
+	</string>
+	<string id="dm_intro_26">
+		<text>Qui in giro ci sono dei mentecatti che si definiscono "adoratori del Monolite"... o forse   stato qualcun altro a cominciare a chiamarli cos , non so... Beh, non importa. Comunque, quei tizi praticamente non temono il dolore. Se restano a corto di munizioni ti saltano addosso e cercano letteralmente di strapparti la giugulare con i denti. Se ne vedi uno, sparagli senza pensarci due volte.</text>
+	</string>
+	<string id="dm_intro_3">
+		<text>Ascoltami bene: se vedi una galleria, non entrarci. Te lo dico chiaro e tondo, perch  non tutti hanno abbastanza cervello da non cacciarsi nei guai. Se finisci l  dentro non riusciranno neanche a tirare fuori il tuo cadavere: ti ritroveranno spalmato sulle pareti... Qui siamo gi  nella Zona, capisci?</text>
+	</string>
+	<string id="dm_intro_4">
+		<text>Perch  sei a mani vuote? Ti sei imbattuto anche tu in quegli schifosi che stanno sotto il ponte? Quegli stronzi! C'  mancato poco che mi uccidessero. Gli ho dovuto dare praticamente tutto quello che avevo! Sono sempre l  in giro a pattugliare; che siano banditi, o i militari del checkpoint, non fa nessuna differenza.</text>
+	</string>
+	<string id="dm_intro_5">
+		<text>Perch  te ne vai in giro tutto solo? Qui ci sono un sacco di teste rapate, e possono catturarti in qualsiasi momento! Ho sentito che ultimamente sono diventati ancora pi  selvaggi, e che adesso attaccano persino i checkpoint!</text>
+	</string>
+	<string id="dm_intro_6">
+		<text>Se non lo sai, te lo dico io: di recente i banditi hanno preso ad aggirarsi da queste parti. Questa   gi  la seconda sparatoria che li vede coinvolti in appena una settimana. Sta' attento e tieni gli occhi bene aperti: hanno gi  mandato all'altro mondo sei stalker che se ne andavano in giro da soli come te.</text>
+	</string>
+	<string id="dm_intro_7">
+		<text>Non   che per caso sai cosa stavano cercando i militari nell'ala che ospita l'Istituto di ricerca?</text>
+	</string>
+	<string id="dm_intro_8">
+		<text>Devi stare pi  attento qui. I mostri sono nascosti nell'edificio principale. Per dirla in breve, sono sciacalli spietati, senza un briciolo di coscienza... Se avessero potuto, avrebbero ammazzato tutti quanti.</text>
+	</string>
+	<string id="dm_intro_9">
+		<text>Non dovresti andare nella Valle Oscura da solo. C'  un covo di banditi asserragliato in uno degli edifici, e non riusciamo a stanarli. Sta' attento a non imbatterti in loro.</text>
+	</string>
+	<string id="dm_intro_help_1">
+		<text>Aiutami, fratello!</text>
+	</string>
+	<string id="dm_intro_help_10">
+		<text>Qualcuno mi aiuti!</text>
+	</string>
+	<string id="dm_intro_help_11">
+		<text>Guardie! Sono ferito! Vieni qui!</text>
+	</string>
+	<string id="dm_intro_help_12">
+		<text>Aiuto! Sto morendo!</text>
+	</string>
+	<string id="dm_intro_help_2">
+		<text>Ragazzi, portate il kit di pronto soccorso!</text>
+	</string>
+	<string id="dm_intro_help_3">
+		<text>Portate il kit di pronto soccorso!</text>
+	</string>
+	<string id="dm_intro_help_4">
+		<text>Anti-shock, ragazzi! Presto!</text>
+	</string>
+	<string id="dm_intro_help_5">
+		<text>Il kit di pronto soccorso, ragazzi!</text>
+	</string>
+	<string id="dm_intro_help_6">
+		<text>Qualcuno mi dia il kit di pronto soccorso!</text>
+	</string>
+	<string id="dm_intro_help_7">
+		<text>Il kit di pronto soccorso, amico... il kit!</text>
+	</string>
+	<string id="dm_intro_help_8">
+		<text>Aiutami, amico!</text>
+	</string>
+	<string id="dm_intro_help_9">
+		<text>Ehi amico, mi presteresti il tuo kit di pronto soccorso?</text>
+	</string>
+</string_table>

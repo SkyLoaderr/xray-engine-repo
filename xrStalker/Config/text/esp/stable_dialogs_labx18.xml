@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="dar_explorer_dialog_1">
+		<text>Estoy en una misi n.</text>
+	</string>
+	<string id="dar_explorer_dialog_11">
+		<text>Mmm...  Qu  clase de misi n?  Est s buscando algo?  O acaso ya lo has encontrado? He o do que hay muchas cosas valiosas por aqu ...</text>
+	</string>
+	<string id="dar_explorer_dialog_111">
+		<text>Lo siento, no te lo puedo decir y tampoco tengo tiempo.</text>
+	</string>
+	<string id="dar_explorer_dialog_1111">
+		<text>Espera, no huyas a n. Ya tendr s suficientes oportunidades para hacerlo...  Qu  has encontrado? Yo, en mi caso, no estoy aqu  por nada, ya sabes.</text>
+	</string>
+	<string id="dar_explorer_dialog_11111">
+		<text>Lo que haya encontrado es asunto m o.</text>
+	</string>
+	<string id="dar_explorer_dialog_11112">
+		<text>He encontrado algunos documentos del X18. El tabernero me prometi  una buena recompensa a cambio de ellos.</text>
+	</string>
+	<string id="dar_explorer_dialog_112">
+		<text>No, no he encontrado nada.</text>
+	</string>
+	<string id="dar_explorer_dialog_2">
+		<text>Ni siquiera s  c mo he acabado aqu . Me gustar a marcharme lo antes posible.</text>
+	</string>
+	<string id="dar_explorer_dialog_21">
+		<text>No has encontrado nada de valor por aqu ,  verdad? Dicen que hay informaci n sobre experimentos cient ficos. Y que vale su peso en oro.</text>
+	</string>
+	<string id="dar_explorer_dialog_211">
+		<text>No, no he encontrado nada.</text>
+	</string>
+	<string id="dar_explorer_dialog_2111">
+		<text> En serio?  Qu  te parece si te lo piensas mejor?  Me est s ocultando algo?</text>
+	</string>
+	<string id="dar_explorer_dialog_21111">
+		<text>No.</text>
+	</string>
+	<string id="dar_explorer_dialog_21112">
+		<text> Qu  pregunta es  sa?</text>
+	</string>
+	<string id="dar_explorer_dialog_21113">
+		<text> Me est s amenazando?</text>
+	</string>
+	<string id="dar_explorer_dialog_212">
+		<text>Al diablo con toda esa informaci n. Apenas consigo mantenerme vivo aqu .</text>
+	</string>
+	<string id="dar_explorer_dialog_2121">
+		<text>De acuerdo, puedes marcharte. Si encuentras algo, estar  por aqu ...</text>
+	</string>
+	<string id="dar_explorer_dialog_25">
+		<text>Escucha, amigo, he conseguido sobrevivir a anomal as, al fuego y a monstruos en esta apestosa Zona y, como puedes comprobar, sigo con vida. As  que no me digas lo que puedo o no puedo decir. He venido a por los documentos y no me ir  hasta que los tenga.  Si los tienes t , te aconsejo que me los entregues o morir s en este agujero!  Entendido?</text>
+	</string>
+	<string id="dar_explorer_dialog_251">
+		<text>Entendido.</text>
+	</string>
+	<string id="dar_explorer_dialog_2511">
+		<text>Si me est s mintiendo, te vas a enterar. Si est s pensando en fastidiarme la vida, te vas a enterar y si intentas jug rmela, te vas a enterar.  De hecho, est s de mierda hasta el cuello y tendr s que nadar lo que no est  escrito para mantenerte a flote! Ahora, d jame que lo intente una vez m s por si eres duro de mollera:  has encontrado los documentos?</text>
+	</string>
+	<string id="dar_explorer_dialog_2521">
+		<text>De acuerdo, y la pr xima vez, cuida tu lenguaje. Te puedes marchar. Si encuentras algo, estar  por aqu ...</text>
+	</string>
+	<string id="dar_explorer_dialog_253">
+		<text>Se acab  la conversaci n. Fuera de mi vista.</text>
+	</string>
+	<string id="dar_explorer_dialog_26">
+		<text>No tengo ning n documento.</text>
+	</string>
+	<string id="dar_explorer_dialog_271">
+		<text>Esto est  mucho mejor, colega. Ahora, dame toda la informaci n que tengas, toda, hasta el  ltimo trozo de papel. Y no se te ocurra hacerte el gracioso porque ser a el  ltimo chiste que contaras...</text>
+	</string>
+	<string id="dar_explorer_dialog_51">
+		<text>Vale ya, te lo advierto. No ando vagando por esta cloaca para nada. Deja de hacer el idiota y dime qu  has encontrado. Podr amos repart rnoslo...</text>
+	</string>
+	<string id="dar_explorer_dialog_511">
+		<text>No voy a compartir nada.</text>
+	</string>
+	<string id="dar_explorer_dialog_5111">
+		<text>Ah, vete por ah ... Un  ltimo consejo: anda con cuidado, stalker, lo necesitar s.</text>
+	</string>
+	<string id="dar_explorer_dialog_512">
+		<text> Me est s amenazando?</text>
+	</string>
+	<string id="dar_explorer_dialog_5121">
+		<text>Vale, vale, tranquilo...  En cuanto me pongo curioso coges la pistola! No hay m s preguntas. Simplemente ten cuidado, eso es todo.</text>
+	</string>
+	<string id="dar_explorer_dialog_61">
+		<text>Documentos, eh... Solo para que lo sepas, es lo que he venido a buscar. Y ahora me los dar s y seguir s tu camino.  Entendido?</text>
+	</string>
+	<string id="dar_explorer_dialog_6111">
+		<text>Tengo algo que ofrecerte.</text>
+	</string>
+	<string id="dar_explorer_dialog_6121">
+		<text>Mira colega, deja de calentarme la cabeza. Hagamos un trato. Te dar  una pasta gansa, no te arrepentir s.</text>
+	</string>
+	<string id="dar_explorer_dialog_6131">
+		<text>Mira, mi vida depende de estos documentos. Veamos qu  es lo que tienes; creo que podremos llegar a un acuerdo...</text>
+	</string>
+	<string id="dar_explorer_dialog_8011">
+		<text>Est  tan oscuro que no puedo ver nada. Fuegos por todas partes...  Por qu  me comprometer a a hacer esto?  Y t , c mo has acabado aqu ?</text>
+	</string>
+	<string id="dar_explorer_dialog_8021">
+		<text>Sigue andando, stalker.</text>
+	</string>
+	<string id="dar_explorer_dialog_8031">
+		<text>Odio que me interrumpan cuando hablo. En fin, he venido en busca de unos importantes documentos. Si has encontrado algo, m s vale que lo compartas o tendr s problemas. Si no has encontrado nada, l rgate y no me hagas perder el tiempo.</text>
+	</string>
+	<string id="dar_explorer_dialog_8041">
+		<text>Odio que me interrumpan cuando hablo. Dame esos documentos si no quieres perder la vida.</text>
+	</string>
+	<string id="dar_explorer_dialog_9">
+		<text>Lo recordar .</text>
+	</string>
+</string_table>

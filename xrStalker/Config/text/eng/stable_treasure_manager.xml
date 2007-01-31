@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="agr_secret_0000_descr">
-		<text>For now out secret stash is in the tunnel. That's a good place - few know about it, and the anomalies will keep others from getting in.</text>
+		<text>For now our secret stash is in the tunnel. That's a good place - few know about it, and the anomalies will keep others from getting in.</text>
 	</string>
 	<string id="agr_secret_0000_name">
 		<text>Grey's secret stash</text>
@@ -19,7 +19,7 @@
 		<text>The mark is under the cross</text>
 	</string>
 	<string id="agr_secret_0003_descr">
-		<text>Dropped the backpack under the felled tree.</text>
+		<text>Dropped the backpack under the fallen tree.</text>
 	</string>
 	<string id="agr_secret_0003_name">
 		<text>Backpack under tree</text>
@@ -28,7 +28,7 @@
 		<text>Stuck the backpack into the pipe by the factory. Nobody will find it.</text>
 	</string>
 	<string id="agr_secret_0004_name">
-		<text>Backpack of a chimney sweep</text>
+		<text>Backpack of a chimney sweeper</text>
 	</string>
 	<string id="agr_secret_0005_descr">
 		<text>Stashed the chest on the roof of the factory - that way nobody will find it. Problem is, it will rust under the rain.</text>
@@ -37,7 +37,7 @@
 		<text>Chest on the roof</text>
 	</string>
 	<string id="agr_secret_0006_descr">
-		<text>They were shooting, had to drop the backpack under the train car, behind the seat. At least I got away. Then I'll come back and take it.</text>
+		<text>They were shooting. Had to drop the backpack under the train car behind the seat. At least I got away. I'll go back and get it.</text>
 	</string>
 	<string id="agr_secret_0006_name">
 		<text>Drunkard's backpack</text>
@@ -76,16 +76,16 @@
 		<text>Dropped the bag out the window. Will pick it up later.</text>
 	</string>
 	<string id="agr_secret_0012_name">
-		<text>The bag is on the support</text>
+		<text>The bag is on the support beam</text>
 	</string>
 	<string id="agr_secret_0013_descr">
-		<text>Kolyan and I had a nice walk at the Agroprom, found a bunch of junk, but managed to hide a few things. We put the chest into the trash bin.</text>
+		<text>Kolyan and I had a nice walk at the Agroprom. We found a bunch of junk, but managed to hide a few things. We put the chest in the trash bin.</text>
 	</string>
 	<string id="agr_secret_0013_name">
-		<text>Trash chest</text>
+		<text>Trash bin</text>
 	</string>
 	<string id="agr_secret_0014_descr">
-		<text>I found a safe under a felled tree. Going to hide everything there for now.</text>
+		<text>I found a safe under a fallen tree. Going to hide everything there for now.</text>
 	</string>
 	<string id="agr_secret_0014_name">
 		<text>Safe under the tree</text>
@@ -103,19 +103,19 @@
 		<text>Radioactive pipe</text>
 	</string>
 	<string id="agr_secret_0017_descr">
-		<text>Ran away from the base, to hell with them, climbing under the stalkers' fire. Hid my stuff in a pipe, in the pile. I'll hang out here until they leave, then I'll pick it up.</text>
+		<text>Ran away from the base, to hell with them! Dodged the stalkers' fire. Hid my stuff in a pile in a pipe.  I'll hang out here until they leave, then I'll pick it up.</text>
 	</string>
 	<string id="agr_secret_0017_name">
 		<text>The pile</text>
 	</string>
 	<string id="agr_secret_0018_descr">
-		<text>There is a half-buried safe under the bush - that's where I hide everything.</text>
+		<text>There is a half buried safe under the bush - that's where I hide everything.</text>
 	</string>
 	<string id="agr_secret_0018_name">
 		<text>Safe under the bush</text>
 	</string>
 	<string id="agr_secret_0019_descr">
-		<text>They discovered the chest under the support. Someone was dragging it along all the way from Scientific Research Institute. Let's wait for the windflier and then pick it up.</text>
+		<text>They discovered the chest under the support beam. Someone was dragging it along all the way from Scientific Research Institute. Let's wait for the windflier and then pick it up.</text>
 	</string>
 	<string id="agr_secret_0019_name">
 		<text>Archive box</text>
@@ -127,7 +127,7 @@
 		<text>Under the trap door</text>
 	</string>
 	<string id="agr_secret_0021_descr">
-		<text>There is a half-buried safe under the bush - that's where I hide everything.</text>
+		<text>There is a half buried safe under the bush - that's where I hide everything.</text>
 	</string>
 	<string id="agr_secret_0021_name">
 		<text>Under the bush by the wall</text>
@@ -157,7 +157,7 @@
 		<text>Rotted log</text>
 	</string>
 	<string id="agr_secret_0026_descr">
-		<text>Good chest for collecting extra junk. Once the institute's equipment inventory was there.</text>
+		<text>Good chest for collecting extra junk. The institute's equipment inventory was once there.</text>
 	</string>
 	<string id="agr_secret_0026_name">
 		<text>Zavhoz chest</text>
@@ -175,10 +175,10 @@
 		<text>Bandits' communal "fund"</text>
 	</string>
 	<string id="agr_u_secret_0001_descr">
-		<text>Hid the backpack behind slabs of concrete, packing light. Better be hungry but at least alive.</text>
+		<text>Hid the backpack behind slabs of concrete, packing light. I'll be hungry but at least alive.</text>
 	</string>
 	<string id="agr_u_secret_0001_name">
-		<text>Backpack is in a side street</text>
+		<text>Backpack is in a side-street</text>
 	</string>
 	<string id="agr_u_secret_0002_descr">
 		<text>Chest is behind a rusted "barrel" in the underground, everything is in it. There's no way I'm going back there. It's a miracle that I busted the bloodsucker. Still don't remember how.</text>
@@ -259,7 +259,7 @@
 		<text>Secret stash on the tower</text>
 	</string>
 	<string id="bar_secret_0010_description">
-		<text>Hid in the pipe under the stairs</text>
+		<text>Hid it in the pipe under the stairs</text>
 	</string>
 	<string id="bar_secret_0010_name">
 		<text>Secret stash</text>
@@ -325,7 +325,7 @@
 		<text>Train car above the bridge</text>
 	</string>
 	<string id="esc_secret_0001_descr">
-		<text>I saw how a stalker went down under an anomaly by the train tunnel in the woods, seemed like he had some pretty good stuff.</text>
+		<text>I saw a stalker go down under an anomaly by the train tunnel in the woods. Seemed like he had some pretty good stuff.</text>
 	</string>
 	<string id="esc_secret_0001_name">
 		<text>Things belonging to the one who perished in the anomaly</text>
@@ -337,25 +337,25 @@
 		<text>The cross by the bandits' camp</text>
 	</string>
 	<string id="esc_secret_0003_descr">
-		<text>The chest stolen by the bandits has been found in the cellar of the central building, need to prepare a detachment and get it.</text>
+		<text>The chest stolen by the bandits has been found in the cellar of the central building. Need to prepare a detachment and get it.</text>
 	</string>
 	<string id="esc_secret_0003_name">
 		<text>Bandits' warehouse</text>
 	</string>
 	<string id="esc_secret_0004_descr">
-		<text>When my homies and I were fighting off the dogs in uniform, I buried some goods under the bridge. Let them stay there for now.</text>
+		<text>When my comrades and I were fighting off the dogs in uniform, I buried some goods under the bridge. Let them stay there for now.</text>
 	</string>
 	<string id="esc_secret_0004_name">
 		<text>Under the cross</text>
 	</string>
 	<string id="esc_secret_0005_descr">
-		<text>I stuck the backpack in the cellar. I'll be back later - can't right now.</text>
+		<text>I stuck the backpack in the cellar. I'll be back later - can't get to it right now.</text>
 	</string>
 	<string id="esc_secret_0005_name">
 		<text>Shelter in the cellar</text>
 	</string>
 	<string id="esc_secret_0006_descr">
-		<text>I found a shalf-buried safe on the farm. I'll keep the goods there for now.</text>
+		<text>I found a half-buried safe on the farm. I'll keep the goods there for now.</text>
 	</string>
 	<string id="esc_secret_0006_name">
 		<text>Safe on the farm</text>
@@ -367,25 +367,25 @@
 		<text>Container in the train car</text>
 	</string>
 	<string id="esc_secret_0008_descr">
-		<text>Hid the goods up right under the roof of the little house by the bridge.</text>
+		<text>Hid the goods right under the roof of the little house by the bridge.</text>
 	</string>
 	<string id="esc_secret_0008_name">
 		<text>Goods of the shooter</text>
 	</string>
 	<string id="esc_secret_0009_descr">
-		<text>Hid my crap in one of the chests not far from the bridge. That's it, I'm calling it quits, leaving the Zone, farewell, brothers! Will never forget the motherland.</text>
+		<text>Hid my crap in one of the chests not far from the bridge. That's it, I'm calling it quits and leaving the Zone. Farewell, brothers! I'll never forget the motherland.</text>
 	</string>
 	<string id="esc_secret_0009_name">
 		<text>Things by the bridge</text>
 	</string>
 	<string id="esc_secret_0010_descr">
-		<text>One of the stalkers chocked by the newbies' camp, should check out his goods.</text>
+		<text>One of the stalkers choked by the newbies' camp. Check out his goods.</text>
 	</string>
 	<string id="esc_secret_0010_name">
 		<text>The backpack is near the village</text>
 	</string>
 	<string id="esc_secret_0011_descr">
-		<text>Found out from Lihoi that the secret stash is in the cellar. He was yacking too much so we shut him up for good.</text>
+		<text>Found out from Lihoi that the secret stash is in the cellar. He was talking too much so we shut him up for good.</text>
 	</string>
 	<string id="esc_secret_0011_name">
 		<text>Cellar in the village</text>
@@ -397,7 +397,7 @@
 		<text>A good place</text>
 	</string>
 	<string id="esc_secret_0013_descr">
-		<text>Found out from Vorpal that there's a secret stash in the cellar. Our men were carrying out a scouting expedition of the area. Let's check it out.</text>
+		<text>Found out from Vorpal that there's a secret stash in the cellar. Our men were carrying out a scouting expedition in the area. Let's check it out.</text>
 	</string>
 	<string id="esc_secret_0013_name">
 		<text>Vorpal's secret stash</text>
@@ -415,7 +415,7 @@
 		<text>By a country road</text>
 	</string>
 	<string id="esc_secret_0016_descr">
-		<text>The goodies are hidden in the cellar of the bandits. Until now they weren't there. Now it'd be good to find a good moment and take them all.</text>
+		<text>The goodies are hidden in the bandits' cellar. They weren't there before so let's wait for the right time to take them all. </text>
 	</string>
 	<string id="esc_secret_0016_name">
 		<text>The robbers' cellar</text>
@@ -439,7 +439,7 @@
 		<text>Tower at the check-point</text>
 	</string>
 	<string id="gar_secret_0000_descr">
-		<text>I saw how a bandit hid his goods in a chest in the hangar. How could I quietly steal it?</text>
+		<text>I saw how a bandit hid his goods in a chest in the hangar. How can I quietly steal it?</text>
 	</string>
 	<string id="gar_secret_0000_name">
 		<text>Bandits' storage</text>
@@ -457,13 +457,13 @@
 		<text>Grizzly's things</text>
 	</string>
 	<string id="gar_secret_0003_descr">
-		<text>Stowed the goodies away in a pipe at the dump.</text>
+		<text>Stowed the goodies away in a pipe at the garbage.</text>
 	</string>
 	<string id="gar_secret_0003_name">
 		<text>Pipe on the North pile</text>
 	</string>
 	<string id="gar_secret_0004_descr">
-		<text>The things are in the dump, in one of the pipes. If you don't know exactly where they are, you won't find them.</text>
+		<text>The things are in the garbage, in one of the pipes. If you don't know exactly where they are, you won't find them.</text>
 	</string>
 	<string id="gar_secret_0004_name">
 		<text>Extra cash in the scrap metal</text>
@@ -487,13 +487,13 @@
 		<text>Nobody's backpack</text>
 	</string>
 	<string id="gar_secret_0008_descr">
-		<text>Finished off the traitor in the swamp, where we buried him too. And just left his goodies under the cross - had more important things to worry about.</text>
+		<text>Finished off the traitor in the swamp… we buried him there too and left his goodies under the cross. Had more important things to worry about.</text>
 	</string>
 	<string id="gar_secret_0008_name">
 		<text>The belongings of the murdered one</text>
 	</string>
 	<string id="gar_secret_0009_descr">
-		<text>There's a secret stash in the shadows - a good place</text>
+		<text>There's a secret stash in the shadows - a good place to hide it.</text>
 	</string>
 	<string id="gar_secret_0009_name">
 		<text>Rotted stump</text>
@@ -520,7 +520,7 @@
 		<text>Put the backpack in the bus - seems unnoticeable</text>
 	</string>
 	<string id="gar_secret_0013_name">
-		<text>Backpack of the stalker in the bus</text>
+		<text>Stalker's backpack in the bus</text>
 	</string>
 	<string id="gar_secret_0014_descr">
 		<text>I put the supplies in the chest, and the chest into the old house around the corner. Still can't understand what that structure is for.</text>
@@ -529,25 +529,25 @@
 		<text>Assorted supplies</text>
 	</string>
 	<string id="gar_secret_0015_descr">
-		<text>There is a safe half-buried in a pile of trash. Everything's there in it. Better not forget what it is.</text>
+		<text>There is a safe partially buried in a pile of trash. Everything's in the safe. Better not forget what was in it.</text>
 	</string>
 	<string id="gar_secret_0015_name">
-		<text>Safe on the South pile</text>
+		<text>Safe in the South pile.</text>
 	</string>
 	<string id="gar_secret_0016_descr">
 		<text>Put the goodies on the pile of trash in the pipe</text>
 	</string>
 	<string id="gar_secret_0016_name">
-		<text>Storae in the scrap metal</text>
+		<text>Storage in the scrap metal yard.</text>
 	</string>
 	<string id="gar_secret_0017_descr">
-		<text>The head of radio communications passed on to us: retreat. I found a chest, threw all the extra weight into it, and retreated empty-handed.</text>
+		<text>The head of radio communications passed along a message to us: retreat. I found a chest, threw in what I had on me, and retreated empty-handed.</text>
 	</string>
 	<string id="gar_secret_0017_name">
-		<text>Supply in the chest</text>
+		<text>Supplies in the chest</text>
 	</string>
 	<string id="gar_secret_0018_descr">
-		<text>I stuck the habar into the pipe at the dump. It won't stay there for long.</text>
+		<text>I stuck the habar into the pipe at the garbage. It won't stay there for long.</text>
 	</string>
 	<string id="gar_secret_0018_name">
 		<text>Pipe by the bus</text>
@@ -565,7 +565,7 @@
 		<text>Chest at the heavily armed military checkpoint</text>
 	</string>
 	<string id="gar_secret_0021_descr">
-		<text>They say that Weakling choked at the Garbage - need to drop by to check out the habar. Otherwise there'll be many interested parties coming in.</text>
+		<text>They say that Weakling choked at the Garbage - need to drop by to check out the goods. Otherwise there'll be many interested parties coming in.</text>
 	</string>
 	<string id="gar_secret_0021_name">
 		<text>Backpack of Weakling</text>
@@ -577,7 +577,7 @@
 		<text>String bag in the pothole</text>
 	</string>
 	<string id="gar_secret_0023_descr">
-		<text>An anomaly got someone by th escalator - the backpack is in view, but hard to get to.</text>
+		<text>An anomaly got someone by the escalator - the backpack is in view, but hard to get to.</text>
 	</string>
 	<string id="gar_secret_0023_name">
 		<text>Under the dipper</text>
@@ -643,7 +643,7 @@
 		<text>Dangerous secret</text>
 	</string>
 	<string id="mil_secret_0009_description">
-		<text>Buried the goodies under the cross, in a hidden place.</text>
+		<text>Buried the goodies under the cross in a hidden place.</text>
 	</string>
 	<string id="mil_secret_0009_name">
 		<text>Stalker's stash</text>
@@ -781,7 +781,7 @@
 		<text>Old secret stash</text>
 	</string>
 	<string id="pri_secret_0003_description">
-		<text>They buried Fang in Pripyat, under a monument. All of his goodies they left with him - it's not right to take away from the dead.</text>
+		<text>They buried Fang in Pripyat under a monument. They left all of his goodies with him - it's not right to take away from the dead.</text>
 	</string>
 	<string id="pri_secret_0003_name">
 		<text>Fang's goodies</text>
@@ -811,13 +811,13 @@
 		<text>Goodies in the safe</text>
 	</string>
 	<string id="rad_secret_0003_description">
-		<text>They told them not to fly over the scorcher, and there you have it. They landed in the middle of the forest, and it's unlikely that anyone survived. And along with them is all the stuff that we were supposed to get.</text>
+		<text>They told them not to fly over the Scorcher, and look what happend. They landed in the middle of the forest, and it's unlikely that anyone survived. We were supposed to get the stuff that was with them.</text>
 	</string>
 	<string id="rad_secret_0003_name">
 		<text>Package for Duty</text>
 	</string>
 	<string id="rad_secret_0004_description">
-		<text>They say that the supplies of the faction which was trying to get to the center of the Zone are still there, right under the radiation of the Scorcher. None of them returned, and the supplies remained there, waiting for someone to pick them up</text>
+		<text>They say that the supplies of the faction, who were trying to get to the center of the Zone, are still under the radiation of the Scorcher. None of them returned, and the supplies remained there waiting for someone to pick them up.</text>
 	</string>
 	<string id="rad_secret_0004_name">
 		<text>Supplies of the reckless group</text>
@@ -841,25 +841,25 @@
 		<text>Secret stash under the cross</text>
 	</string>
 	<string id="ros_secret_0002_description">
-		<text>Hid a little something something in the chest, under the little house. Shouldn't forget</text>
+		<text>Hid a little something in the chest under the little house. Shouldn't forget about it.</text>
 	</string>
 	<string id="ros_secret_0002_name">
 		<text>Chest under the small house</text>
 	</string>
 	<string id="ros_secret_0003_description">
-		<text>Stuck the backpack under the steps, and then those jerks appeared. Man, how will I get it back?</text>
+		<text>I was about to stick the backpack under the steps, when those jerks appeared. Man, how will I get it back?</text>
 	</string>
 	<string id="ros_secret_0003_name">
 		<text>Stalker's backpack</text>
 	</string>
 	<string id="ros_secret_0004_description">
-		<text>There's a half-buried safe in the corner behind the tree. That's where all my junk will be for now.</text>
+		<text>There's a half buried safe in the corner behind the tree. That's where all my junk will be for now.</text>
 	</string>
 	<string id="ros_secret_0004_name">
 		<text>Secret stash behind the tree</text>
 	</string>
 	<string id="ros_secret_0005_description">
-		<text>They hid everything that they took over during the rain in a chest in the garage</text>
+		<text>They hid everything in a chest in the garage that they took over during the rain.</text>
 	</string>
 	<string id="ros_secret_0005_name">
 		<text>Secret stash in the garage</text>
@@ -871,7 +871,7 @@
 		<text>Hidden chest</text>
 	</string>
 	<string id="ros_secret_0007_description">
-		<text>Stuck the backpack in a hole, it seems like you can't notice from above</text>
+		<text>Stuck the backpack in a hole. Seems unnoticeable from above.</text>
 	</string>
 	<string id="ros_secret_0007_name">
 		<text>Backpack in the secret stash</text>
@@ -886,28 +886,28 @@
 		<text>My backpack is up right under the roof. It's there for a rainy day.</text>
 	</string>
 	<string id="ros_secret_0009_name">
-		<text>Secret stash of the strelok</text>
+		<text>Secret stash of the stalker</text>
 	</string>
 	<string id="ros_secret_0010_description">
-		<text>They say there's a safe in that little house, and that there's something hidden in it</text>
+		<text>They say there's a safe in that little house, and that there's something in it</text>
 	</string>
 	<string id="ros_secret_0010_name">
 		<text>Safe in the house</text>
 	</string>
 	<string id="ros_secret_0011_description">
-		<text>Hid it in the house, in a pipe. Careful, everything's out of whack there</text>
+		<text>Hid it in the house in a pipe. Careful, everything's out of whack there</text>
 	</string>
 	<string id="ros_secret_0011_name">
 		<text>Secret stash in the pipe</text>
 	</string>
 	<string id="ros_secret_0012_description">
-		<text>Take what we talked about from the chest, usually nobody looks in there</text>
+		<text>Take what we talked about from the chest. Usually nobody looks in there</text>
 	</string>
 	<string id="ros_secret_0012_name">
 		<text>Hidden chest</text>
 	</string>
 	<string id="ros_secret_0013_description">
-		<text>Hid it under the cross in a side street</text>
+		<text>Hid it under the cross on a side street</text>
 	</string>
 	<string id="ros_secret_0013_name">
 		<text>Secret stash under the cross</text>
@@ -919,7 +919,7 @@
 		<text>Secret stash under the concrete</text>
 	</string>
 	<string id="ros_secret_0015_description">
-		<text>We'll put the habar into the chest at the construction site in case we'll need to take off quickly</text>
+		<text>In case we need to take off quickly, we'll put the habar into the chest at the construction site.</text>
 	</string>
 	<string id="ros_secret_0015_name">
 		<text>Secret stash of the Lucky One</text>
@@ -937,7 +937,7 @@
 		<text>Secret stash in the pipe</text>
 	</string>
 	<string id="ros_secret_0018_description">
-		<text>Hid the medicine in a chest no far from the construction site</text>
+		<text>Hid the medicine in a chest not far from the construction site</text>
 	</string>
 	<string id="ros_secret_0018_name">
 		<text>Chest with medicine</text>
@@ -946,34 +946,34 @@
 		<text>Dragged the chest into the cabin of the crane</text>
 	</string>
 	<string id="ros_secret_0019_name">
-		<text>Chest on the crane</text>
+		<text>Chest in the crane</text>
 	</string>
 	<string id="ros_secret_0020_description">
-		<text>In the corner, hid my goods in a manhole</text>
+		<text>Hid my goods in a manhole in the corner.</text>
 	</string>
 	<string id="ros_secret_0020_name">
 		<text>Secret stash in the manhole</text>
 	</string>
 	<string id="ros_secret_0021_description">
-		<text>Went after the artifact and got into an anomaly, barely walking , dropped the backpack in the corner</text>
+		<text>Went after the artifact and got into an anomaly. I was barely able to walk and dropped the backpack in the corner.</text>
 	</string>
 	<string id="ros_secret_0021_name">
 		<text>The dropped backpack</text>
 	</string>
 	<string id="ros_secret_0022_description">
-		<text>Stuck the chest right up under the roof by the tower, so that nobody would notice</text>
+		<text>Stuck the chest right under the roof by the tower so that nobody would notice.</text>
 	</string>
 	<string id="ros_secret_0022_name">
 		<text>Small chest under the roof</text>
 	</string>
 	<string id="ros_secret_0023_description">
-		<text>What we found, we hid in the pipe not far from the construction site</text>
+		<text>We hid what we found in the pipe not far from the construction site.</text>
 	</string>
 	<string id="ros_secret_0023_name">
 		<text>Secret stash in the pipe</text>
 	</string>
 	<string id="ros_secret_0024_description">
-		<text>Stuck all the goods into the log, don't think they'll find it</text>
+		<text>Stuck all the goods into the log. Don't think they'll find it.</text>
 	</string>
 	<string id="ros_secret_0024_name">
 		<text>Secret stash</text>
@@ -991,13 +991,13 @@
 		<text>Secret stash under the cross</text>
 	</string>
 	<string id="val_secret_0001_description">
-		<text>Stuck the goods in a log, don't think they'll find it.</text>
+		<text>Stuck the goods into the log. Don't think they'll find it.</text>
 	</string>
 	<string id="val_secret_0001_name">
 		<text>Secret stash in the log</text>
 	</string>
 	<string id="val_secret_0002_description">
-		<text>Stuck the backpack under the bridge, let it lay there for now</text>
+		<text>Stuck the backpack under the bridge. Let it stay there for now.</text>
 	</string>
 	<string id="val_secret_0002_name">
 		<text>Backpack under the bridge</text>
@@ -1009,19 +1009,19 @@
 		<text>Car with the secret stash</text>
 	</string>
 	<string id="val_secret_0004_description">
-		<text>There's a secret stash in a stump - a good place for it</text>
+		<text>There's a secret stash in a stump - good place for it</text>
 	</string>
 	<string id="val_secret_0004_name">
 		<text>Secret stash in a stump</text>
 	</string>
 	<string id="val_secret_0005_description">
-		<text>Found a great chest on the farm, I'll keep the supplies there for now</text>
+		<text>Found a great chest on the farm. I'll keep the supplies there for now.</text>
 	</string>
 	<string id="val_secret_0005_name">
 		<text>Chest with supplies</text>
 	</string>
 	<string id="val_secret_0006_description">
-		<text>Threw my things into the pipe, will pick them up later.</text>
+		<text>Threw my things into the pipe. Will pick them up later.</text>
 	</string>
 	<string id="val_secret_0006_name">
 		<text>Secret stash in the pipe</text>
@@ -1033,25 +1033,25 @@
 		<text>Secret stash under the pine tree</text>
 	</string>
 	<string id="val_secret_0008_description">
-		<text>The newbie ended up stealing the chest from the bandits, put it into the Niva, turned up side down. He says that by the looks of it, it's a government chest. We'll have to arm our guys and take it.</text>
+		<text>The newbie ended up stealing the chest from the bandits. He put it into the Niva which turned up side down. He says that by the looks of it, it's a government chest. We'll have to arm our guys and take it.</text>
 	</string>
 	<string id="val_secret_0008_name">
 		<text>Government chest</text>
 	</string>
 	<string id="val_secret_0009_description">
-		<text>There's robbery everywhere. Now they're stealing even from their own, but they'll never find my chest</text>
+		<text>There are robberies everywhere. They're even stealing even from their own… but they'll never find my chest</text>
 	</string>
 	<string id="val_secret_0009_name">
 		<text>Chest</text>
 	</string>
 	<string id="val_secret_0010_description">
-		<text>Hid my things in the manhole, maybe they'll come in handy some day</text>
+		<text>Hid my things in the manhole. Maybe they'll come in handy some day.</text>
 	</string>
 	<string id="val_secret_0010_name">
 		<text>Secret stash in the manhole</text>
 	</string>
 	<string id="val_secret_0011_description">
-		<text>Threw the backpack under a tree, otherwise I wouldn't have made it from the bandits</text>
+		<text>Threw the backpack under a tree. Otherwise, I wouldn't have escaped the bandits.</text>
 	</string>
 	<string id="val_secret_0011_name">
 		<text>Stalker's backpack</text>
@@ -1063,7 +1063,7 @@
 		<text>Secret stash</text>
 	</string>
 	<string id="val_secret_0013_description">
-		<text>Everything that I stole from Borov, hid away in a safe under the pine tree. Now I have to wait it out while they're all freaked out</text>
+		<text>Everything I stole from Borov I hid away in a safe under the pine tree. Now I have to wait it out while they finish freaking out.</text>
 	</string>
 	<string id="val_secret_0013_name">
 		<text>Hidden safe</text>
@@ -1117,7 +1117,7 @@
 		<text>Forgotten chest</text>
 	</string>
 	<string id="val_secret_0022_description">
-		<text>Found a safe at the gas station, hid my goods there. Seems like nobody ever comes here</text>
+		<text>Found a safe at the gas station and hid my goods in it. Seems like nobody ever goes there.</text>
 	</string>
 	<string id="val_secret_0022_name">
 		<text>Safe at the gas station</text>
@@ -1129,31 +1129,31 @@
 		<text>Chest</text>
 	</string>
 	<string id="val_secret_0024_description">
-		<text>Hid the supplies into the safe at the gas station</text>
+		<text>Hid the supplies in the safe at the gas station.</text>
 	</string>
 	<string id="val_secret_0024_name">
 		<text>Safe at the gas station</text>
 	</string>
 	<string id="val_secret_0025_description">
-		<text>There's some chest in the car at the bandits' camp. We need to sneak into the car and check it out - I feel there's something there</text>
+		<text>There's some chest in the car at the bandits' camp. We need to sneak into the car and check it out - I feel there's something in there</text>
 	</string>
 	<string id="val_secret_0025_name">
 		<text>Chest in the car</text>
 	</string>
 	<string id="val_secret_0026_description">
-		<text>Put the chest into the secret stash - reliable place</text>
+		<text>Put the chest into the secret stash - it's a reliable place</text>
 	</string>
 	<string id="val_secret_0026_name">
 		<text>Chest in the secret stash</text>
 	</string>
 	<string id="val_secret_0027_description">
-		<text>Left the backpack in an abandoned building, good, nobody's around</text>
+		<text>Left the backpack in an abandoned building. Good, nobody's around.</text>
 	</string>
 	<string id="val_secret_0027_name">
 		<text>The left-behind backpack</text>
 	</string>
 	<string id="val_secret_0028_description">
-		<text>We'll store the goods in the safe, in an unremarkable place. If not today, then tomorrow the soldiers will come, get everyone on their feet, but won't look around for long, so the most valuable stuff will be left for me</text>
+		<text>We'll store the goods in a safe in a nondescript place. If the soldiers don't come today, then they'll come tomorrow. They won't look around for very long so the most valuable stuff will be left for me.</text>
 	</string>
 	<string id="val_secret_0028_name">
 		<text>Borov's secret stash</text>
@@ -1165,10 +1165,10 @@
 		<text>Backpack in a secret place</text>
 	</string>
 	<string id="val_secret_0030_description">
-		<text>Stuck the goodies in a indescript chest, will get them later</text>
+		<text>Stuck the goodies in a nondescript chest. Will get them later</text>
 	</string>
 	<string id="val_secret_0030_name">
-		<text>Indescript chest</text>
+		<text>Nondescript chest</text>
 	</string>
 	<string id="val_secret_0031_description">
 		<text>Hid the backpack under the car, nobody will bother looking there</text>
@@ -1183,7 +1183,7 @@
 		<text>Secret stash in the car</text>
 	</string>
 	<string id="x16_secret_0000_description">
-		<text>Rumor has is that there was a stalker who penetrated into the lab and hid his goodies in the electrical outlets in the elevator shaft. And when it came time to pick it up, he couldn't anymore.</text>
+		<text>Rumor has is that there was a stalker who got into the lab and hid his goodies in the electrical outlets in the elevator shaft. When it came time to pick it up, he couldn't.</text>
 	</string>
 	<string id="x16_secret_0000_name">
 		<text>Goodies in the electrical outlets</text>
@@ -1237,7 +1237,7 @@
 		<text>Backpack with the loot</text>
 	</string>
 	<string id="yan_secret_0005_description">
-		<text>Put the chest into the bus - seems not to be noticeable</text>
+		<text>Put the chest into the bus - seems to be unnoticeable</text>
 	</string>
 	<string id="yan_secret_0005_name">
 		<text>Secret stash in the bus</text>
@@ -1249,7 +1249,7 @@
 		<text>The loot is in the car</text>
 	</string>
 	<string id="yan_secret_0007_description">
-		<text>They say that there's somebody's goodies, but can't get to it because of the radiation.</text>
+		<text>They say there's somebody's goodies there, but they can't get to it because of the radiation.</text>
 	</string>
 	<string id="yan_secret_0007_name">
 		<text>Old backpack</text>

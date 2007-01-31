@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="st_activate_artefact">
+		<text>Artefakt aktivieren</text>
+	</string>
+	<string id="st_attach_gl_to_rifle">
+		<text>Granatwerfer auf Gewehr montieren</text>
+	</string>
+	<string id="st_attach_scope_to_pistol">
+		<text>Zielfernrohr auf Pistole montieren</text>
+	</string>
+	<string id="st_attach_scope_to_rifle">
+		<text>Zielfernrohr auf Gewehr montieren</text>
+	</string>
+	<string id="st_attach_silencer_to_pistol">
+		<text>Schalld mpfer auf Pistole montieren</text>
+	</string>
+	<string id="st_attach_silencer_to_rifle">
+		<text>Schalld mpfer auf Gewehr montieren</text>
+	</string>
+	<string id="st_base_cost">
+		<text>Preis</text>
+	</string>
+	<string id="st_condition">
+		<text>Zustand</text>
+	</string>
+	<string id="st_detach_gl">
+		<text>Granatwerfer abmontieren</text>
+	</string>
+	<string id="st_detach_scope">
+		<text>Zielfernrohr abmontieren</text>
+	</string>
+	<string id="st_detach_silencer">
+		<text>Schalld mpfer abmontieren</text>
+	</string>
+	<string id="st_dress_outfit">
+		<text>Anzug anlegen</text>
+	</string>
+	<string id="st_drop">
+		<text>fallen lassen</text>
+	</string>
+	<string id="st_drop_all">
+		<text>alles fallen lassen</text>
+	</string>
+	<string id="st_eat">
+		<text>essen</text>
+	</string>
+	<string id="st_move_on_belt">
+		<text>am G rtel anbringen</text>
+	</string>
+	<string id="st_move_to_bag">
+		<text>in Rucksack stecken</text>
+	</string>
+	<string id="st_move_to_slot">
+		<text>in Slot stecken</text>
+	</string>
+	<string id="st_sell_item">
+		<text>Gegenstand verkaufen</text>
+	</string>
+	<string id="st_undress_outfit">
+		<text>Anzug ablegen</text>
+	</string>
+	<string id="st_unload_magazine">
+		<text>entladen</text>
+	</string>
+	<string id="st_use">
+		<text>benutzen</text>
+	</string>
+	<string id="st_weight">
+		<text>Gewicht</text>
+	</string>
+	<string id="ui_inv_accuracy">
+		<text>Genauigkeit</text>
+	</string>
+	<string id="ui_inv_bag">
+		<text>Rucksack</text>
+	</string>
+	<string id="ui_inv_belt">
+		<text>G rtel</text>
+	</string>
+	<string id="ui_inv_cancel">
+		<text>Abbruch</text>
+	</string>
+	<string id="ui_inv_clear">
+		<text>Zur cksetzen</text>
+	</string>
+	<string id="ui_inv_damage">
+		<text>Schaden</text>
+	</string>
+	<string id="ui_inv_description">
+		<text>Beschreibung</text>
+	</string>
+	<string id="ui_inv_drop">
+		<text>Herausnehmen</text>
+	</string>
+	<string id="ui_inv_equipment">
+		<text>Ausr stung</text>
+	</string>
+	<string id="ui_inv_exit">
+		<text>Verlassen</text>
+	</string>
+	<string id="ui_inv_granades_rifle">
+		<text>Granaten f r Werfer (E) kaufen</text>
+	</string>
+	<string id="ui_inv_handling">
+		<text>Handhabung</text>
+	</string>
+	<string id="ui_inv_heavy_weapons">
+		<text>Schwer</text>
+	</string>
+	<string id="ui_inv_items_list">
+		<text>Gegenstandsliste</text>
+	</string>
+	<string id="ui_inv_money">
+		<text>Geld</text>
+	</string>
+	<string id="ui_inv_ok">
+		<text>OK</text>
+	</string>
+	<string id="ui_inv_outfit_burn_protection">
+		<text>Verbrennung</text>
+	</string>
+	<string id="ui_inv_outfit_chemical_burn_protection">
+		<text>Ver tzung</text>
+	</string>
+	<string id="ui_inv_outfit_explosion_protection">
+		<text>Explosion</text>
+	</string>
+	<string id="ui_inv_outfit_fire_wound_protection">
+		<text>Panzerkappe</text>
+	</string>
+	<string id="ui_inv_outfit_params">
+		<text>Parameter</text>
+	</string>
+	<string id="ui_inv_outfit_radiation_protection">
+		<text>Strahlung</text>
+	</string>
+	<string id="ui_inv_outfit_shock_protection">
+		<text>Elektroschock</text>
+	</string>
+	<string id="ui_inv_outfit_strike_protection">
+		<text>Aufprall</text>
+	</string>
+	<string id="ui_inv_outfit_telepatic_protection">
+		<text>Telepathie</text>
+	</string>
+	<string id="ui_inv_outfit_wound_protection">
+		<text>Rei er</text>
+	</string>
+	<string id="ui_inv_outfits">
+		<text>Anz ge</text>
+	</string>
+	<string id="ui_inv_personal">
+		<text>Anzug</text>
+	</string>
+	<string id="ui_inv_pistols">
+		<text>Pistolen</text>
+	</string>
+	<string id="ui_inv_primary_weapons">
+		<text>Prim r</text>
+	</string>
+	<string id="ui_inv_rate_of_fire">
+		<text>Feuerrate</text>
+	</string>
+	<string id="ui_inv_rest">
+		<text>Ausruhen</text>
+	</string>
+	<string id="ui_inv_rifles">
+		<text>Sturmgewehre</text>
+	</string>
+	<string id="ui_inv_shop">
+		<text>Laden</text>
+	</string>
+	<string id="ui_inv_shotguns">
+		<text>Schrotflinten</text>
+	</string>
+	<string id="ui_inv_sniper_rifles">
+		<text>Scharfsch tzengewehre</text>
+	</string>
+	<string id="ui_inv_time">
+		<text>Zeit</text>
+	</string>
+	<string id="ui_inv_total_money">
+		<text>Gesamtes Geld</text>
+	</string>
+	<string id="ui_inv_weight">
+		<text>Gewicht</text>
+	</string>
+	<string id="ui_inv_ammo_pistol">
+		<text>Munition f r Pistole kaufen (Q)</text>
+	</string>
+	<string id="ui_inv_ammo_rifle">
+		<text>Munition f r Gewehr kaufen (W)</text>
+	</string>
+	<string id="ui_inv_granadelauncher_rifle">
+		<text>Granatenwerfer f r Gewehr kaufen (D)</text>
+	</string>
+	<string id="ui_inv_granades">
+		<text>Granaten</text>
+	</string>
+	<string id="ui_inv_scope_rifle">
+		<text>Zielfernrohr f r Gewehr kaufen (S)</text>
+	</string>
+	<string id="ui_inv_silencer_pistol">
+		<text>Schalld mpfer f r Pistole kaufen (A)</text>
+	</string>
+	<string id="ui_inv_silencer_rifle">
+		<text>Schalld mpfer f r Gewehr kaufen (F)</text>
+	</string>
+	<string id="ui_inv_last_buy">
+		<text>Vorheriges Set kaufen</text>
+	</string>
+	<string id="ui_inv_sell_items">
+		<text>Alle Gegenst nde im Rucksack verkaufen</text>
+	</string>
+	<string id="ui_st_preset_stored_to">
+		<text>Gekauftes Set speichern unter</text>
+	</string>
+</string_table>

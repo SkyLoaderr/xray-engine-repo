@@ -16,7 +16,7 @@
 		<text>Binoculars</text>
 	</string>
 	<string id="kb_buy_menu">
-		<text>Trade menu</text>
+		<text>Buy menu</text>
 	</string>
 	<string id="kb_chat">
 		<text>Chat</text>
@@ -133,13 +133,13 @@
 		<text>Screenshot</text>
 	</string>
 	<string id="kb_skin_menu">
-		<text>Skin menu</text>
+		<text>Skin Menu</text>
 	</string>
 	<string id="kb_sprint">
 		<text>Sprint</text>
 	</string>
 	<string id="kb_team_menu">
-		<text>Team menu</text>
+		<text>Team Menu</text>
 	</string>
 	<string id="kb_torch">
 		<text>Flashlight</text>

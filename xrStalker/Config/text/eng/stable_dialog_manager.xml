@@ -82,7 +82,7 @@
 		<text>Leave before it gets dark! During the day it's more or less okay, but once the sun sets…</text>
 	</string>
 	<string id="dm_action_info_32">
-		<text>Stalker, leave! We're going to take down the … For now we keep it up only during the day, and leave for the night - it's too creepy here at night.</text>
+		<text>Stalker, leave! We're going to take down the cordoning off. For now we keep it up only during the day, and leave for the night - it's too creepy here at night.</text>
 	</string>
 	<string id="dm_action_info_33">
 		<text>You see, during the night you need to keep yourself hidden, and preferable behind a good set of doors. During the dark part of the day we find ourselves basically under seige.</text>
@@ -169,7 +169,7 @@
 		<text>I get a kick out of our happy science! I just totally dig it, man. It usually doesn't show its face out of the bunker. And even if it does show its face, like it did the other day - my goodness! Troops everywhere, propellers, armor technology! They might as well haul a battleship here, or at least an armored train.</text>
 	</string>
 	<string id="dm_action_info_59">
-		<text>It's already the third day that I'm hanging out here, observing. There's a laboratory here, right? Nobody's gone in it from the very beginning, the debtors of the zombies used to only clean out on top, and now stopped completely, right? But science had to go in there. That means they found a way to protect themselves, the devil knows from what. So I'm thinking, why not snoop around, find out - I bet there are so many goodies there that you may as well rake them in with a shovel.</text>
+		<text>It's already the third day that I'm hanging out here, observing. There's a laboratory here, right? Nobody's gone in it from the very beginning, the Dutiers used to purge zombies only on top, and now stopped completely, right? But science had to go in there. That means they found a way to protect themselves, the devil knows from what. So I'm thinking, why not snoop around, find out - I bet there are so many goodies there that you may as well rake them in with a shovel.</text>
 	</string>
 	<string id="dm_action_info_6">
 		<text>In the last few days whole packs of animals are coming out of the Dark Valley. What's forcing them out of there is unclear, but they're really pushing out of there, as if from a fire. And in the eastern sector the mutants are breeding like flies. All we can do is keep shooting them down. So that's the news.</text>
@@ -256,7 +256,7 @@
 		<text>And you can't guess what it is? You're trying to break through to the station yourself too! Well and so are we - what else is new?! Just as long as we can get these retards off the road…</text>
 	</string>
 	<string id="dm_action_info_85">
-		<text>The territory of the station is very close! For now we still can't deal with the resistance of the monolithoves!</text>
+		<text>The territory of the station is very close! For now we still can't deal with the resistance of the monolithians!</text>
 	</string>
 	<string id="dm_action_info_86">
 		<text>There it is, Chernobyl NPP, within arms' reach. Just a bit left, but these damned bitches are so stubborn, won't let us through! No big deal, we'll clear them out in no time!</text>
@@ -553,13 +553,13 @@
 		<text>It's as if we’re walking through a mine field, only worse. The devil knows what goes on in here - can't relax even for a second.</text>
 	</string>
 	<string id="dm_intro_22">
-		<text>I suggest you heighten your attention, and once you heighten it, keep it alert and don't relax. The minute you relax, you're a gonner - the krants will get you on the spot.</text>
+		<text>I suggest you heighten your attention, and once you heighten it, keep it alert and don't relax. The minute you relax, you're a gonner - the death will get you on the spot.</text>
 	</string>
 	<string id="dm_intro_23">
 		<text>Here you have to be on your toes all the time! Sleep with one eye open! Shit can happen to you any minute here.</text>
 	</string>
 	<string id="dm_intro_24">
-		<text>Be careful with the brats! They're like cockroaches here, tons of them!</text>
+		<text>Be careful with the dickheads! They're like cockroaches here, tons of them!</text>
 	</string>
 	<string id="dm_intro_25">
 		<text>Destroy the so-called monolithians as soon as you see them. They're very dangerous - real fanatics!</text>
@@ -580,7 +580,7 @@
 		<text>I'm warning you if you're not up-to-date: lately the bandits have been moving around in here. This is already the second shoot-out with them in just a week. Be careful and watch out - they've already sent six loners to the other side.</text>
 	</string>
 	<string id="dm_intro_7">
-		<text>You didn't hear by any chance what the troops needed in the Research Institute wing?</text>
+		<text>Did you by any chance hear what the troops needed in the Research Institute wing? Why have they become so active?</text>
 	</string>
 	<string id="dm_intro_8">
 		<text>You be more careful here. The limitless are hiding out in the main building. In one word, they're jackals - no conscience, no mercy…they would have killed everyone off.</text>
@@ -589,7 +589,7 @@
 		<text>You shouldn't go into the Dark Valley alone. There's a nice tight bandit nest here in one of the buildings - still can't smoke them out of there. Be careful not to run into them, man.</text>
 	</string>
 	<string id="dm_intro_help_1">
-		<text>Help bro!</text>
+		<text>Help friend!</text>
 	</string>
 	<string id="dm_intro_help_10">
 		<text>Somebody help!</text>

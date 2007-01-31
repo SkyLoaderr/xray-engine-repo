@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="oso_chernobyl_crush_0">
+		<text>C'est   vous aussi qu'on doit l'explosion de 86 ?</text>
+	</string>
+	<string id="oso_chernobyl_crush_1">
+		<text>Non, on a rien   voir avec  a. La plupart d'entre nous d butaient   peine en science   l' poque. La zone de Tchernobyl a  t  utilis e pour les exp rimentations seulement   partir de 1989.</text>
+	</string>
+	<string id="oso_death_truck_0">
+		<text>C'est quoi les "corbillards" ?</text>
+	</string>
+	<string id="oso_death_truck_1">
+		<text>Ce sont les v hicules utilis s pour transporter nos "agents" marqu s dans la Zone. Ils infiltrent la "communaut " des Stalkers et ex cutent nos ordres sans le savoir. Malheureusement, plus de la moiti  des Stalkers meurt pendant le transport ; la Zone est tr s instable. Tu es un de nos agents charg  de tuer Strelok et on essaie de comprendre comment on a pu commettre cette erreur.</text>
+	</string>
+	<string id="oso_no_0">
+		<text>Non, je participerai pas   cette supercherie.</text>
+	</string>
+	<string id="oso_osoznanie_start_11">
+		<text>Bonjour, Strelok. Tu te poses plein de questions et je peux te donner les r ponses. Apr s on d cidera quoi faire de toi.</text>
+	</string>
+	<string id="oso_osoznanie_start_21">
+		<text>C'est   toi de choisir, Strelok.</text>
+	</string>
+	<string id="oso_stalker_0">
+		<text>Qu'est-ce que le tatouage "S.T.A.L.K.E.R." veut dire ?</text>
+	</string>
+	<string id="oso_stalker_1">
+		<text>S.T.A.L.K.E.R. est un acronyme cod  qu'on utilise pour marquer des agents programm s pour des missions sp ciales. Ta mission comme tu es notre agent  tait de tuer Strelok et son groupe. Ils se rapprochent trop de la v rit  qu'ils doivent continuer   ignorer. On a cr   un r seau de dispositifs psi sur le chemin menant au centre de la Zone pour recruter des agents. Tu connais un de ces appareils sous le nom de lobotomisateur. Quand un Stalker tente d'atteindre le centre de la Zone afin de r aliser un v u, on prend le contr le de sa conscience et on le programme pour une mission particuli re. Une erreur s'est produite et la mission qu'on t'a assign e est de te tuer toi-m me.</text>
+	</string>
+	<string id="oso_what_about_me_0">
+		<text>Qu'est-ce qui m'est arriv  ?</text>
+	</string>
+	<string id="oso_what_about_me_1">
+		<text>Tu es un grain de sable dans l'engrenage. Malheureusement, on ne s'en est pas rendu compte plus t t.   ce moment-l , la Zone  tait n e, plusieurs personnes ont essay  d'arriver au centre, mais on ne peut pas autoriser  a. L'humanit  n'est pas pr te   conna tre la v rit . C'est pour  a qu'on recrute des Stalkers en leur promettant d'accomplir leur v u le plus cher. Une fois sous nos ordres, on les envoie prot ger le secret de la Zone.</text>
+	</string>
+	<string id="oso_what_is_the_zone_0">
+		<text>C'est quoi cette Zone ? Comment elle est apparue ?</text>
+	</string>
+	<string id="oso_what_is_the_zone_1">
+		<text>Ce que tu vois, c'est le r sultat d'une intervention irr fl chie dans la noosph re de la Terre. Les tentatives d'alt rer la noosph re ont provoqu  l'apparition d'une faille. La Zone n'est que la partie visible de cette faille. Le probl me sous-jacent est bien plus important que ce que tu imagines.</text>
+	</string>
+	<string id="oso_what_next_0">
+		<text>Qu'est-ce qui va se passer ensuite ?</text>
+	</string>
+	<string id="oso_what_next_1">
+		<text> a d pend de toi. La Zone prend de l'ampleur. On essaie d'emp cher  a, mais l'humanit  semble  tre d cid e   nous mettre des b tons dans les roues. Nos ressources ne sont pas infinies et les corps connect s   la Conscience C finiront par mourir. Si tu te joins   nous, on pourra  viter l'expansion de la Zone. Sinon, qui saura ce qu'il adviendra...</text>
+	</string>
+	<string id="oso_who_are_you_0">
+		<text>Qui  tes-vous ?</text>
+	</string>
+	<string id="oso_who_are_you_1">
+		<text>On est le r sultat d'une exp rience dont le but  tait de cr er une Conscience Collective. Sept volontaires ont accept  de connecter leur conscience, ce qui a abouti   la cr ation de cette Conscience C, c'est- -dire nous. On a tout de suite assign  ceux qui avaient men  cette exp rience   des missions qu'ils devaient   tout prix r ussir. D'apr s nos calculs, la Terre est envelopp e d'un champ sp cial d'informations, la noosph re. Elle comprend tous les habitants de la plan te avec leurs capacit s cognitives. Notre objectif principal  tait de modifier un peu la noosph re pour nous permettre de supprimer des facteurs n gatifs sur la plan te comme la col re, la cruaut  ou l'avidit . Les hommes sont incapables d'affecter la noosph re,   la diff rence de la Conscience C. Malheureusement, on a commis une erreur et notre intervention a engendr  la Zone que nous essayons de limiter depuis.</text>
+	</string>
+	<string id="oso_why_chernobyl_0">
+		<text>Pourquoi tout est arriv  ici-m me ?</text>
+	</string>
+	<string id="oso_why_chernobyl_1">
+		<text>C' tait le meilleur endroit. Apr s l'explosion de 1986, cette zone  tait presque d serte et on pouvait travailler sans craindre d' tre d couverts. Par la suite, plusieurs puissantes antennes ont  t  install es. Elles sont d'une importance vitale pour nos exp rimentations sur l'optimisation cognitive.</text>
+	</string>
+	<string id="oso_yes_0">
+		<text>J'accepte de participer au projet de la Conscience C.</text>
+	</string>
+</string_table>

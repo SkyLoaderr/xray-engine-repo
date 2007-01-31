@@ -1,0 +1,12 @@
+	<string id="rad_barman_spam">
+		<text>Le Tatou  !? Tu es vivant !? Super ! Alors, tu as r ussi   neutraliser le lobotomisateur, hein ? Tout le monde essaie d'acc der au centre de la Zone par Pripyat. Personne ne sait ce qu'il y a l -bas... Peut- tre un tr sor d'artefacts ou bien un truc qui exauce tous les v ux.\n Un groupe de v t rans se pr pare   aller sur place. Si tu te d p ches, tu les rejoindras peut- tre   temps. Je les pr viens que tu arrives pour qu'ils t'attendent.</text>
+	</string>
+	<string id="tips_bun_komand">
+		<text> quipe un et deux, v rifiez le rez-de-chauss e,  quipe trois, le couloir principal,  quipe quatre et cinq, le premier  tage.</text>
+	</string>
+	<string id="tips_rad_sos_suicide">
+		<text>… Au secours, je vais mourir…</text>
+	</string>
+	<string id="tips_rad_switcher_press">
+		<text>Pour  teindre la machine, appuyez sur ($$ACTION_USE$$)</text>
+	</string>

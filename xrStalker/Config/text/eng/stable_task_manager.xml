@@ -490,10 +490,10 @@
 		<text>Welcome, eh... traveler! I'm so glad you dropped by: we are in need of a man to take part in a highly important experiment. My colleague Brenter wants to try and cook a meal using local fauna for a practical experiment to study the influence of mutated protein on human body. For a start, we decided to try the boars. We need ham. A boar's leg, do you undestand? And if you agree to do it, please select the healthiest specimen.</text>
 	</string>
 	<string id="ecolog_monster_part_5">
-		<text>Bring the foot of a snork'</text>
+		<text>Bring the bloodsucker's jaw</text>
 	</string>
 	<string id="ecolog_monster_part_5_descr">
-		<text>Heal the snorks… speaking of queer eggheads! Alright, at least that will stop these monsters from jumping around.</text>
+		<text>What they are going to do with bloodsucker's jaw, I don't care. I care about how much they will give me for this rarity.</text>
 	</string>
 	<string id="ecolog_monster_part_5_text">
 		<text>Good news, dear stalker! We've been racking our brain over this one question: what makes snorks literally drift above the ground, crawl up the walls, jump amazing distances... And the solution turned out very simple, young man! Snorks panic at the sight of the ground! They suffer from geophobia! The receptors that developed at the tips of their extremities send a signal of the greatest irritation when in contact with the ground or any more or less horizontal surface. We need a sample of the snork's paw: we'll try to inject a vaccine that may relieve these poor creatures of this unusual disease.</text>
@@ -1144,7 +1144,7 @@
 		<text>The boars made a lair next to the place where Wolf and his friend made a storage. Wolf asks to purge the lair, and promised to handsomely reward you.</text>
 	</string>
 	<string id="wolf_eliminate_lager_1_text">
-		<text>My friend and I had a storage here not far from the bus depot, where the forest is more dense. Basically, just what you need. But recently the boars made a lair there, and now we can't get to the storage. Help - kill the boars, and I'll thank you, for myself and for my friend.</text>
+		<text>My friend and I had a storage here not far from the car park, where the forest is more dense. Basically, just what you need. But recently the boars made a lair there, and now we can't get to the storage. Help - kill the boars, and I'll thank you, for myself and for my friend.</text>
 	</string>
 	<string id="wolf_eliminate_lager_2">
 		<text>Destroy the mutants at the farm</text>
@@ -1165,6 +1165,6 @@
 		<text>Despite our efforts, some monsters still manage to break through from the Garbage. Well you yourself probably saw a pack of dogs to the south of us. If you kill them you'll get a reward.</text>
 	</string>
 	<string id="defend_lager">
-		<text>Camp defense.</text>
+		<text>Camp defense</text>
 	</string>
 </string_table>

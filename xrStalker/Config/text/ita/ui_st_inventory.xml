@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="st_activate_artefact">
+		<text>attiva il reperto</text>
+	</string>
+	<string id="st_attach_gl_to_rifle">
+		<text>applica lanciagranate al fucile</text>
+	</string>
+	<string id="st_attach_scope_to_pistol">
+		<text>applica mirino alla pistola</text>
+	</string>
+	<string id="st_attach_scope_to_rifle">
+		<text>applica mirino al fucile</text>
+	</string>
+	<string id="st_attach_silencer_to_pistol">
+		<text>applica silenziatore alla pistola</text>
+	</string>
+	<string id="st_attach_silencer_to_rifle">
+		<text>applica silenziatore al fucile</text>
+	</string>
+	<string id="st_base_cost">
+		<text>prezzo</text>
+	</string>
+	<string id="st_condition">
+		<text>stato</text>
+	</string>
+	<string id="st_detach_gl">
+		<text>smonta lanciagranate</text>
+	</string>
+	<string id="st_detach_scope">
+		<text>smonta mirino</text>
+	</string>
+	<string id="st_detach_silencer">
+		<text>smonta silenziatore</text>
+	</string>
+	<string id="st_dress_outfit">
+		<text>indossa tuta</text>
+	</string>
+	<string id="st_drop">
+		<text>lascia</text>
+	</string>
+	<string id="st_drop_all">
+		<text>lascia tutto</text>
+	</string>
+	<string id="st_eat">
+		<text>mangia</text>
+	</string>
+	<string id="st_move_on_belt">
+		<text>attacca alla cintura</text>
+	</string>
+	<string id="st_move_to_bag">
+		<text>sposta nello zaino</text>
+	</string>
+	<string id="st_move_to_slot">
+		<text>sposta nello scomparto</text>
+	</string>
+	<string id="st_sell_item">
+		<text>vendi oggetto</text>
+	</string>
+	<string id="st_undress_outfit">
+		<text>togliti la tuta</text>
+	</string>
+	<string id="st_unload_magazine">
+		<text>scarica</text>
+	</string>
+	<string id="st_use">
+		<text>usa</text>
+	</string>
+	<string id="st_weight">
+		<text>peso</text>
+	</string>
+	<string id="ui_inv_accuracy">
+		<text>Precisione</text>
+	</string>
+	<string id="ui_inv_bag">
+		<text>Zaino</text>
+	</string>
+	<string id="ui_inv_belt">
+		<text>Cintura</text>
+	</string>
+	<string id="ui_inv_cancel">
+		<text>Annulla</text>
+	</string>
+	<string id="ui_inv_clear">
+		<text>Cancella</text>
+	</string>
+	<string id="ui_inv_damage">
+		<text>Danno</text>
+	</string>
+	<string id="ui_inv_description">
+		<text>Descrizione</text>
+	</string>
+	<string id="ui_inv_drop">
+		<text>Lascia</text>
+	</string>
+	<string id="ui_inv_equipment">
+		<text>Equipaggiamento</text>
+	</string>
+	<string id="ui_inv_exit">
+		<text>Esci</text>
+	</string>
+	<string id="ui_inv_granades_rifle">
+		<text>Compra granate per lanciagranate (E)</text>
+	</string>
+	<string id="ui_inv_handling">
+		<text>Maneggevolezza</text>
+	</string>
+	<string id="ui_inv_heavy_weapons">
+		<text>Armi pesanti</text>
+	</string>
+	<string id="ui_inv_items_list">
+		<text>Elenco oggetti</text>
+	</string>
+	<string id="ui_inv_money">
+		<text>Denaro</text>
+	</string>
+	<string id="ui_inv_ok">
+		<text>OK</text>
+	</string>
+	<string id="ui_inv_outfit_burn_protection">
+		<text>Ustione</text>
+	</string>
+	<string id="ui_inv_outfit_chemical_burn_protection">
+		<text>Ustione chimica</text>
+	</string>
+	<string id="ui_inv_outfit_explosion_protection">
+		<text>Esplosione</text>
+	</string>
+	<string id="ui_inv_outfit_fire_wound_protection">
+		<text>Casco antipr.</text>
+	</string>
+	<string id="ui_inv_outfit_params">
+		<text>Parametri</text>
+	</string>
+	<string id="ui_inv_outfit_radiation_protection">
+		<text>Radiazione</text>
+	</string>
+	<string id="ui_inv_outfit_shock_protection">
+		<text>Folgorazione</text>
+	</string>
+	<string id="ui_inv_outfit_strike_protection">
+		<text>Impatto</text>
+	</string>
+	<string id="ui_inv_outfit_telepatic_protection">
+		<text>Telepatia</text>
+	</string>
+	<string id="ui_inv_outfit_wound_protection">
+		<text>Rottura</text>
+	</string>
+	<string id="ui_inv_outfits">
+		<text>Tute</text>
+	</string>
+	<string id="ui_inv_personal">
+		<text>Tuta</text>
+	</string>
+	<string id="ui_inv_pistols">
+		<text>Pistole</text>
+	</string>
+	<string id="ui_inv_primary_weapons">
+		<text>Arma principale</text>
+	</string>
+	<string id="ui_inv_rate_of_fire">
+		<text>Rapidit  di fuoco</text>
+	</string>
+	<string id="ui_inv_rest">
+		<text>Riposa</text>
+	</string>
+	<string id="ui_inv_rifles">
+		<text>Fucili d'assalto</text>
+	</string>
+	<string id="ui_inv_shop">
+		<text>Negozio</text>
+	</string>
+	<string id="ui_inv_shotguns">
+		<text>Doppiette</text>
+	</string>
+	<string id="ui_inv_sniper_rifles">
+		<text>Fucili da cecchino</text>
+	</string>
+	<string id="ui_inv_time">
+		<text>Tempo</text>
+	</string>
+	<string id="ui_inv_total_money">
+		<text>Denaro totale</text>
+	</string>
+	<string id="ui_inv_weight">
+		<text>Peso</text>
+	</string>
+	<string id="ui_inv_ammo_pistol">
+		<text>Compra munizioni standard per pistola (Q)</text>
+	</string>
+	<string id="ui_inv_ammo_rifle">
+		<text>Compra munizioni per fucile (W)</text>
+	</string>
+	<string id="ui_inv_granadelauncher_rifle">
+		<text>Compra lanciagranate per fucile (D)</text>
+	</string>
+	<string id="ui_inv_granades">
+		<text>Granate</text>
+	</string>
+	<string id="ui_inv_scope_rifle">
+		<text>Compra mirino ottimo per fucile (S)</text>
+	</string>
+	<string id="ui_inv_silencer_pistol">
+		<text>Compra silenziatore per pistola (A)</text>
+	</string>
+	<string id="ui_inv_silencer_rifle">
+		<text>Compra silenziatore per fucile (F)</text>
+	</string>
+	<string id="ui_inv_last_buy">
+		<text>Acquista set precedente.</text>
+	</string>
+	<string id="ui_inv_sell_items">
+		<text>Vendi tutti gli oggetti nello zaino</text>
+	</string>
+	<string id="ui_st_preset_stored_to">
+		<text>Acquista set salvato come</text>
+	</string>
+</string_table>

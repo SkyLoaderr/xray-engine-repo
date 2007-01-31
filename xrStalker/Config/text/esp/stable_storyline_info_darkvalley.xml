@@ -1,0 +1,75 @@
+	<string id="bar_darklab_documents_txt">
+		<text>Tabernero: "Seg n los documentos que trajiste de Agroprom, parece que las cosas empiezan a aclararse, pero faltan algunos datos. Las pruebas indican la presencia de un Cauterizador cerebral bloqueando la carretera del norte, pero nadie sabe exactamente qu  es. Tambi n se menciona el laboratorio X18, cuya descripci n coincide con la de unas estructuras subterr neas abandonadas del Valle Oscuro. Su actividad actual se desconoce, y adem s, los bandidos han establecido su base en el Valle Oscuro.\n Varios exploradores de Deber fueron all  hace poco, pero hasta el momento no hay noticias de ellos.\n Para entrar en el laboratorio, necesitar s dos c digos electr nicos. Te dar  uno, pero el segundo tendr s que obtenerlo de Borov, el l der de los bandidos. \n\n As  que tienes que conseguir de Borov el segundo c digo del laboratorio, y luego, entrar sigilosamente y hacerte con los documentos.</text>
+	</string>
+	<string id="bar_darklab_documents2_txt">
+		<text>Hay que encontrar los documentos sobre las investigaciones que se han realizado en el laboratorio X18. Pueden aportar pistas sobre el "Cauterizador cerebral".</text>
+	</string>
+	<string id="dar_codedoor_1_txt">
+		<text>El camino a las profundidades del laboratorio est  protegido con una combinaci n. Tienes que encontrar a alguien que conozca la combinaci n.</text>
+	</string>
+	<string id="dar_codedoor_2_txt">
+		<text>Hay otra puerta y debe de haber algo detr s. Tienes que averiguar el c digo que abre la puerta.</text>
+	</string>
+	<string id="dar_document1">
+		<text>Fase inicial del experimento</text>
+	</string>
+	<string id="dar_document2">
+		<text>Segunda fase del experimento</text>
+	</string>
+	<string id="dar_document3">
+		<text>Informe de seguridad</text>
+	</string>
+	<string id="dar_document4">
+		<text>Ataque al personal</text>
+	</string>
+	<string id="dar_document5">
+		<text> ltima fase del experimento</text>
+	</string>
+	<string id="documents_1">
+		<text>Hace una semana decidimos incrementar la intensidad de la radiaci n en los sujetos de prueba. Durante los primeros d as no se detectaron cambios. En los d as siguientes, comenz  una extra a metamorfosis: p rdida de pelo, gran agresividad. Algunos sujetos fueron literalmente pisoteados por sus compa eros.</text>
+	</string>
+	<string id="documents_2">
+		<text>El estado de los sujetos se ha estabilizado. La cantidad de pelo actual es un 10% de la original. Las mand bulas y los dientes han crecido considerablemente. Los arranques repentinos de actividad parecen aleatorios y no van dirigidos a los compa eros. A. N. Burnov, el t cnico superior de laboratorio, indic  que esto pod a deberse a un incremento de la capacidad intelectual del sujeto. Se decidi  probar la nueva modulaci n de emisiones ps quicas en los sujetos.</text>
+	</string>
+	<string id="documents_3">
+		<text>Jefe de seguridad: Ayer, el guarda de seguridad G. P. Glebov lanz  un trozo de carne a los sujetos para divertirse. En unos segundos desgarraron la carne y la devoraron. Despu s, varios individuos trataron de salir de sus celdas. Por este motivo, los t cnicos del laboratorio no pudieron obtener las muestras necesarias. Aunque G. P. Glebov actu  indebidamente, propongo que el personal de mantenimiento vaya equipado con pistolas de aire para su protecci n en caso de emergencia.</text>
+	</string>
+	<string id="documents_4">
+		<text>Jefe de seguridad: Ayer, el experiment  casi se nos fue de las manos. Dos decenas de los sujetos sometidos a prueba se escaparon y sembraron el p nico en dos salas del laboratorio. Por suerte, el personal de investigaci n pudo encerrarse en la planta de arriba. Nos ordenaron despejar la sala principal del laboratorio. Durante la operaci n, tres guardias sufrieron mordeduras. Esperemos que pronto est n bien. Ojal  el experimento acabe pronto.</text>
+	</string>
+	<string id="documents_5">
+		<text>Ayer aplicamos a los sujetos sometidos a prueba una modulaci n nueva de emisiones ps quicas. Parec a como si sus cerebros se hubieran calcinado literalmente. Me resulta dif cil imaginar c mo puede afectar a los humanos esta emisi n. Hemos probado todas y cada una de las emisiones y los resultados coinciden con los obtenidos en otros laboratorios. El experimento se puede dar por finalizado. En teor a, en una semana estaremos listos para probarlo en criaturas m s grandes.</text>
+	</string>
+	<string id="LabX18 first key">
+		<text>C digo de acceso al segundo nivel</text>
+	</string>
+	<string id="LabX18 second key">
+		<text>C digo de acceso al primer nivel</text>
+	</string>
+	<string id="LabX18_information">
+		<text>Informaci n sobre X18</text>
+	</string>
+	<string id="pass_to_1st_door">
+		<text>Excelente, colega. Me complace saber que has conseguido acceder al nivel 2. Por fin descubrir s lo que pasa en nuestro laboratorio. Tu c digo de acceso es 1243. El jefe del laboratorio Õ-18 es Piotr Ilyitch Kalugin.</text>
+	</string>
+	<string id="pass_to_2nd_door">
+		<text>Estimado colega, te recuerdo que ma ana temprano debes ir al contenedor de la sala central del laboratorio. Hay que revisar los contenedores cada 2 horas. Mantenme informado de todo. El c digo de acceso a la sala central del laboratorio es 9524. El jefe del laboratorio X18 es Piotr Ilyitch Kalugin.</text>
+	</string>
+	<string id="sl_x18_dream_name">
+		<text>Un sue o extra o</text>
+	</string>
+	<string id="sl_x18_dream_text">
+		<text>He tenido un sue o muy extra o. La colosal central de Chern bil al ocaso. Todo est  tranquilo. Aparece un hombre solo. Lo veo de espaldas con la central de fondo. El viento empieza a soplar. De repente, cientos de ratas salen de la central corriendo en todas direcciones. El hombre, a n de espaldas a m , dispara a las ratas. Se oye un grito repentino: " Strelok!" El hombre se estremece, se queda quieto un momento y empieza a darse la vuelta, pero… justo un instante antes de verle la cara, me despierto.  Qu  significa este sue o? No s , pero creo que es algo que ya he visto antes.</text>
+	</string>
+	<string id="val_captive_help_txt">
+		<text>Bullet, un miembro de Deber, quiere que rescate a su compa ero, capturado por los bandidos. Pronto van a escoltarlo a la f brica desierta.</text>
+	</string>
+	<string id="val_prisoner_help_art_txt">
+		<text>Miembro de Deber: "Tienen a otro de los nuestros: Serega. Lo han metido en el s tano... Hay un edificio grande... a medio construir... Ay dale a escapar,  vale? O tambi n se deshar n de  l..."</text>
+	</string>
+	<string id="val_x18_conclusion">
+		<text>Laboratorio X18</text>
+	</string>
+	<string id="val_x18_conclusion_txt">
+		<text>Dios... El laboratorio X18 no es un sitio agradable... Y sus residentes actuales... Nunca pens  que existieran seres como esos. Encontr  unos documentos... No entiendo ni la mitad de lo que pone; solo s  que contienen especificaciones t cnicas de algunos componentes de los emisores Kaimanov. Lo interesante es que esas piezas estaban destinadas a otro laboratorio, llamado X16, que probablemente tambi n sea secreto.</text>
+	</string>

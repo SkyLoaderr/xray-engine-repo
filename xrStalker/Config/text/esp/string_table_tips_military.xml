@@ -1,0 +1,36 @@
+	<string id="mil_actor_blockpost">
+		<text>Te est s acercando a la Barrera. Ni se te ocurra hacer el tonto. Y estar amos encantados de aceptar cualquier ayuda. </text>
+	</string>
+	<string id="mil_after_sniper_dead">
+		<text>Marcado, ven a por tu parte y a por m s instrucciones.</text>
+	</string>
+	<string id="mil_fblockpost_warning">
+		<text>Marcado, vuelve a tu posici n.</text>
+	</string>
+	<string id="mil_info_freedom_radio">
+		<text>Si has pasado toda la noche en la torre del pueblo, te GARANTIZO que algo va a ocurrir…</text>
+	</string>
+	<string id="mil_info_max_mines">
+		<text> Cuidado con las minas! Un error y est s perdido...</text>
+	</string>
+	<string id="mil_info_max_village">
+		<text>Cuidado, Marcado. Parece que hay una nueva anomal a en el pueblo.  Es r pida e invisible!</text>
+	</string>
+	<string id="mil_info_to_all">
+		<text>Atenci n a todos los que quieran que les licuen el cerebro: el camino hasta el Bosque Rojo est  protegido por una unidad de Monolith y, como seguramente sabr is, esos chicos disparan a la primera, ni siquiera preguntan. Buena suerte.</text>
+	</string>
+	<string id="mil_max_attack_signal">
+		<text> Al ataque!  Hay que acabar con esos desgraciados!</text>
+	</string>
+	<string id="mil_mission_complete">
+		<text>Nuestro trabajo termina aqu . Retirada a la granja. All  solucionaremos lo del pago.</text>
+	</string>
+	<string id="mil_scull_attack_signal">
+		<text> Adelante, chicos!  El camino est  despejado!</text>
+	</string>
+	<string id="mil_scull_info">
+		<text> Marcado, acaba con esos francotiradores!</text>
+	</string>
+	<string id="mil_sniper_to_player_warning">
+		<text>Ten cuidado, Marcado, o te coser n a balazos...</text>
+	</string>

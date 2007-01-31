@@ -64,7 +64,7 @@
 		<text>Error</text>
 	</string>
 	<string id="ui_st_file_exist_owerwrite_q">
-		<text>The file with this name already exist. Do you want to overwrite it?</text>
+		<text>The file with this name already exists. Do you want to overwrite it?</text>
 	</string>
 	<string id="ui_st_file_name_is_empty">
 		<text>The file name is empty</text>
@@ -151,7 +151,7 @@
 		<text>Loading textures</text>
 	</string>
 	<string id="st_client_synchronising">
-		<text>CLIENT: Synchronising</text>
+		<text>CLIENT: Synchronizing</text>
 	</string>
 	<string id="st_server_starting">
 		<text>SERVER: Starting</text>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="cit_doctor_escape_dialog_0">
+		<text>Ich brauche Antworten auf mehrere Fragen.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1">
+		<text>Dann schie  los. Ich versuch dir zu helfen.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_11">
+		<text>Wo sind meine Sachen?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_111">
+		<text>Normalerweise bewahrt der Anf hrer alle beschlagnahmten Sachen auf. Sein Zimmer ist in der obersten Etage. Als sie mich fingen, hatten sie meine Sachen auch dorthin gebracht.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1111">
+		<text>Danke!</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_12">
+		<text>Wie komme ich hier raus?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_121">
+		<text>Als sie mich hier herumgef hrt haben, habe ich ein Abflussgitter unter der Treppe in der ersten Etage bemerkt … Wenn du die Zelle aufbekommst, d rfte es ein Leichtes sein, durch diesen Kanal zu entkommen. Am besten gehst du nach Westen und benutzt den Tunnel als Weg zur Freiheit.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1211">
+		<text>Danke f r die Informationen.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_14">
+		<text>Wer hat uns gefangen?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_141">
+		<text>Wir werden von den S ldnern gefangen gehalten. Niemand wei  so recht, wer sie sind, aber es gibt Ger chte, dass sie mit Nachrichtendiensten anderer L nder zusammenarbeiten. Die Position dieser Basis ist streng geheim - niemand wei , wie man in die Totenstadt hineinkommt. Viele Leute interessieren sich f r diese Information, insbesondere Freiheit und W chter.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1411">
+		<text>Erz hl weiter.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_14111">
+		<text>Wenn du an eine Karte von der Totenstadt herankommst, sollte ein erfolgreicher  berfall m glich sein. Vermutlich haben die S ldner oder die Banditen eine. Du k nntest versuchen, sie zu bekommen.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_141111">
+		<text>Danke f r die Informationen.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_15">
+		<text>Was wei t du  ber diesen Ort?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_151">
+		<text>Die Stadt ist in zwei Teile unterteilt. Wir sind auf der S ldnerseite. Um S den, hinter dem Platz, befinden sich die Banditen. Die haben sich im Schulgeb ude im S dwesten der Stadt eingerichtet. Zwischen den beiden Basen gibt es ein zerst rtes f nfst ckiges und ein paar relativ intakte Geb ude. Wenn die Kacke am Dampfen ist, kannst du dort ausharren. Da sind auch ein paar Garagen und ein paar kleine H user in der Gegend. Bei den Banditen gibt es auch einige f nfst ckige Geb ude und ein Dutzend Garagen. Das ehemalige Stadtratsgeb ude befindet sich auf der anderen Seite des Platzes.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1511">
+		<text>Danke f r die Informationen.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_16">
+		<text>Wer hat hier das Sagen?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_161">
+		<text>Ein echt fieser Typ namens Dushman. Ich habe mehrere Male gesehen, wie er eine Mappe mit Dokumenten durch die Gegen schleppte. Ich vermute, da stehen interessante Sachen drin.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1611">
+		<text>Danke f r die Informationen.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_17">
+		<text>N , nichts.</text>
+	</string>
+	<string id="cit_doctor_hello_dialog_11">
+		<text>Strelok! Wo zum Teufel bist du gewesen??? Ich habe dich und die Jungs seit dem letzten  berfall nicht mehr gesehen! Ich habe schon angefangen, mir Sorgen zu machen!</text>
+	</string>
+	<string id="cit_doctor_hello_dialog_21">
+		<text>Und, f hlst du dich jetzt besser? Kannst du wieder klare Gedanken fassen?</text>
+	</string>
+	<string id="cit_doctor_main_dialog_0">
+		<text>Strelok???</text>
+	</string>
+	<string id="cit_doctor_main_dialog_1">
+		<text>Ja, du bist Strelok, wer sonst? Ich bin Dok, erkennst du mich nicht? Was ist mit dir passiert, mein Freund. Du siehst nicht gut aus. Wir sind 2 Jahre lang zusammen durch die Zone gegangen. Erinnerst du dich wirklich nicht an mich?</text>
+	</string>
+	<string id="cit_doctor_main_dialog_11">
+		<text>Nein, wirklich nicht.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_2">
+		<text>Nicht??? Strelok, was zum … Du redest keinen Schei , oder? Mann … was ist mit den Jungs, unseren Jungs? Fang, Ghost? Du erinnerst dich doch an sie, oder?</text>
+	</string>
+	<string id="cit_doctor_main_dialog_21">
+		<text>An Fang kann ich mich nicht erinnern und Ghost ist tot - Ich habe seinen Leichnam in Jantar gefunden.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_3">
+		<text>Ghost!!?!?! Tot??!! Gottverdammt, wie konnte das passieren? Sie … sie waren die Besten. Was ist mit dir geschehen?</text>
+	</string>
+	<string id="cit_doctor_main_dialog_31">
+		<text>Ich wei  nicht, was geschehen ist. Ich kann mich nicht erinnern.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_4">
+		<text>Moment, ich muss mich ein wenig beruhigen. Das sind echt beschissene Neuigkeiten, Mann. Ich glaube, es h ngt alles mit deinem letzten Trip in die Zone zusammen. Als wir uns das letzte Mal sahen, gabst du mir den Schl ssel zum Versteck in Prypjat und die Karte, die dorthin f hrt. Ich habe es geschafft, beides zu behalten - hab sie vor dem S ldnern versteckt. Hier, nimm. Versteck sie gut. Vielleicht findest du dort etwas. Du hattest auch gesagt, dass es da einen Trick mit dem Monolithen gibt. Aber ich habe nicht verstanden, worum es dabei ging. Und du auch nicht.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_41">
+		<text>Ich verstehe. Wo sind wir? Ich kann mich nicht daran erinnern, wie ich hierher gekommen bin.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_5">
+		<text>Wir sind in der Totenstadt! Im Lager der S ldner.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_6">
+		<text>Wir sind in der Totenstadt! Im Lager der S ldner.</text>
+	</string>
+	<string id="quest_cit_reward_0">
+		<text>Ach,  brigens, ich habe Informationen  ber die S ldner. Interessiert?</text>
+	</string>
+	<string id="quest_cit_reward_1">
+		<text>H ngt von den Informationen ab.</text>
+	</string>
+	<string id="quest_cit_reward_11">
+		<text>Ich habe eine Karte, auf der die Position ihrer Basis und ihrer Wachposten angegeben ist. Au erdem ist ein Weg darauf vermerkt, auf dem man unbemerkt eindringen kann und vieles mehr.</text>
+	</string>
+	<string id="quest_cit_reward_111">
+		<text>Klingt wertvoll. Ich gebe dir 3000 daf r.</text>
+	</string>
+	<string id="quest_cit_reward_1111">
+		<text>Abgemacht. Hier.</text>
+	</string>
+	<string id="quest_cit_reward_11111">
+		<text>Sehr gut! Hier ist deine Belohnung. Schon bald werden die Stalker dar ber diskutieren, ob es die S ldner  berhaupt jemals gegeben hat!</text>
+	</string>
+	<string id="quest_cit_reward_1112">
+		<text>Nein, das reicht nicht.</text>
+	</string>
+	<string id="quest_cit_reward_11121">
+		<text>Wie du willst, aber mehr gebe ich dir nicht.</text>
+	</string>
+	<string id="quest_cit_reward_13">
+		<text>Nichts Besonderes. Nur der  bliche Tratsch. Tut mir Leid.</text>
+	</string>
+	<string id="quest_cit_reward_131">
+		<text>Wenn du etwas Spezielleres herausfinden solltest, dann komm wieder. Ich bezahle daf r.</text>
+	</string>
+</string_table>

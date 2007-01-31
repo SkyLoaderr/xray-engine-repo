@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="ui_map_desc_mp_agroprom_large">
+		<text>Ein seltsamer Ort. Das stille Geb ude birgt viele Geheimnisse, doch die Stalker werden trotz der Gefahr von den vielen Artefakten hier angezogen. Mit Flinkheit und pr zisen Sch ssen werden Sie zum Lieblingsstalker des Gl cks.</text>
+	</string>
+	<string id="ui_map_desc_mp_agroprom_short">
+		<text>Ein seltsamer Ort. Das stille Geb ude birgt viele Geheimnisse, doch die Stalker werden trotz der Gefahr von den vielen Artefakten hier angezogen.</text>
+	</string>
+	<string id="ui_map_desc_mp_atp_large">
+		<text>Der Bus- und Wagenpark ist das Vorzimmer der Zone. Traktoren, Busse und Lastwagen, f r immer angehalten. Es hat hier nie Artefakte gegeben, doch der Ort ist bei erfahrenen Stalkern beliebt, um dort Anf nger fertig zu machen und zu bestehlen. Gehen Sie in den Geb uden und hinter Ausr stung in Deckung, und achten Sie auf die D cher.</text>
+	</string>
+	<string id="ui_map_desc_mp_atp_short">
+		<text>Der Bus- und Wagenpark ist das Vorzimmer der Zone. Traktoren, Busse und Lastwagen, f r immer angehalten.</text>
+	</string>
+	<string id="ui_map_desc_mp_bath_large">
+		<text>Dieser geheimnisvolle Ort zieht Leute seltsam an. Wer den experimentellen Pool gebaut hat und wozu - das bleibt ewig ein Geheimnis. Hier gibt es keine Artefakte. Nur  berreste seltsamer Maschinen und Ger te locken Stalker hierher. Achten Sie auf die D cher und denken Sie daran, dass die Strahlung in diesem Bereich extrem hoch ist.</text>
+	</string>
+	<string id="ui_map_desc_mp_bath_short">
+		<text>Dieser geheimnisvolle Ort zieht Leute seltsam an. Wer den experimentellen Pool gebaut hat und wozu - das bleibt ewig ein Geheimnis. </text>
+	</string>
+	<string id="ui_map_desc_mp_factory_large">
+		<text>Eine d stere, verlassene Fabrik. Niemand wei , wie viele Stalker in diesen Mauern umgekommen sind. Es wimmelt hier von jeder Art Anomalie, und dennoch zieht der Ort Stalker wie ein Magnet an, da hier wertvolle Artefakte sind. Achten Sie auf die Strahlung!</text>
+	</string>
+	<string id="ui_map_desc_mp_factory_short">
+		<text>Eine d stere, verlassene Fabrik. Niemand wei , wie viele Stalker in diesen Mauern umgekommen sind. </text>
+	</string>
+	<string id="ui_map_desc_mp_garbage_large">
+		<text>Das ist ein Teil der riesigen M llhalde, wo nach der Katastrophe '86 Berge radioaktiven M lls gelagert wurden ... verfallene Kr ne, Hardware und so weiter. Sie k nnen Teile alter Einrichtungen und einen riesigen Hangar finden. Es ist nicht weit zum Zoneneingang und viele Artefakte liegen hier. Deshalb suchen hier Stalker nach leichter Beute.</text>
+	</string>
+	<string id="ui_map_desc_mp_garbage_short">
+		<text>Das ist ein Teil der riesigen M llhalde, wo nach der Katastrophe '86 Berge radioaktiven M lls gelagert wurden ... verfallene Kr ne, Hardware, und so weiter.</text>
+	</string>
+	<string id="ui_map_desc_mp_lost_village_large">
+		<text>Ein aufgegebenes, gottverlassenes Dorf tief in der Zone. Der kleine, flache, rostbraune T mpel voller Autowracks erzeugt in den Erforschern der Zone unbewusst Angst. Achten Sie auf Scharfsch tzen, doch in der Zone  berleben nur die Tapferen. </text>
+	</string>
+	<string id="ui_map_desc_mp_lost_village_short">
+		<text>Ein aufgegebenes, gottverlassenes Dorf tief in der Zone. Der kleine, flache, rostbraune T mpel voller Autowracks erzeugt in den Erforschern der Zone unbewusst Angst. </text>
+	</string>
+	<string id="ui_map_desc_mp_military_1_large">
+		<text>Eine abgehalfterte Milit rbasis mit kaputten Lastwagen und Transportern, die bei den Ruinen eines Kommandozentrums und der Kasernen verrotten. Die Basis ist reich an Artefakten und der Feind kann  berall lauern. Beweisen Sie Ihre St rke und heimsen Sie die Belohnung ein!</text>
+	</string>
+	<string id="ui_map_desc_mp_military_1_short">
+		<text>Eine abgehalfterte Milit rbasis mit kaputten Lastwagen und Transportern, die bei den Ruinen eines Kommandozentrums und der Kasernen verrotten. </text>
+	</string>
+	<string id="ui_map_desc_mp_military_2_large">
+		<text>Der alte Weiler ist ein d sterer Ort und eine Todesfalle. Doch wenn Sie trotz aller Risiken so weit gekommen sind, bereiten Sie sich auf einen pl tzlichen Tod vor. Hier ist es nirgends sicher. M gen Ihr Zielfernrohr und Ihr Schalld mpfer Ihnen beistehen.</text>
+	</string>
+	<string id="ui_map_desc_mp_military_2_short">
+		<text>Der alte Weiler ist ein d sterer Ort und eine Todesfalle. Doch wenn Sie trotz aller Risiken so weit gekommen sind, bereiten Sie sich auf einen pl tzlichen Tod vor.</text>
+	</string>
+	<string id="ui_map_desc_mp_prypiat_large">
+		<text>Die Stadt Prypjat, ehemals eine Arbeitersiedlung der AES, oder deren  berreste. Die Industrieruine birgt ordentliches Gefahrenpotential. Sie m ssen hier auf Ihr  berleben achten.</text>
+	</string>
+	<string id="ui_map_desc_mp_prypiat_short">
+		<text>Die Stadt Prypjat liegt nicht weit entfernt von der AES - ein Erbe Tschernobyls.</text>
+	</string>
+	<string id="ui_map_desc_mp_railraod_short">
+		<text>Ein kleiner Bahnhof bei der Fabrik Rostok.</text>
+	</string>
+	<string id="ui_map_desc_mp_railroad_large">
+		<text>Ein kleiner Bahnhof bei der Fabrik Rostok. Die rostigen Waggons und Diesellokomotiven stehen ewig an einer Weiche. Die vielen hier zu findenden Artefakte locken verzweifelte Stalker aus der ganzen Zone an.</text>
+	</string>
+	<string id="ui_map_desc_mp_rostok_large">
+		<text>Unter den Metallhaufen und hinter den Betonw nden herrscht in dieser Fabrik eine besondere Stille. Im letzten Jahrhundert pulsierte hier die Hektik, Arbeiter eilten zur Schicht, w hrend Parolen aus den Lautsprechern dr hnten ... doch die Arbeit in der Fabrik ist getan.</text>
+	</string>
+	<string id="ui_map_desc_mp_rostok_short">
+		<text>In der verlassenen Fabrik herrscht unter Metallhaufen und hinter Betonw nden tiefe Stille.</text>
+	</string>
+	<string id="ui_map_desc_mp_workshop_large">
+		<text>Die Randbereiche der Rostok-Fabrik vor der Ankunft der W chter. Die elende Gegend ist dennoch reich an Artefakten. In den leeren Hangars und Lagern wimmelt es bei jedem Schritt von hundert Gefahren. Geben Sie gut Acht, und achten Sie auf den wei en Turm.</text>
+	</string>
+	<string id="ui_map_desc_mp_workshop_short">
+		<text>Die Randbereiche der Rostok-Fabrik vor der Ankunft der W chter. Die elende Gegend ist dennoch reich an Artefakten. </text>
+	</string>
+</string_table>

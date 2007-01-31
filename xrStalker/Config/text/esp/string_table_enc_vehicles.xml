@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="btr-70">
+		<text>BTR-70</text>
+	</string>
+	<string id="enc_vehicles_btr-70">
+		<text>Veh culo blindado de transporte de tropas.</text>
+	</string>
+	<string id="enc_vehicles_kamaz">
+		<text>Cami n utilizado habitualmente por las tropas sovi ticas.</text>
+	</string>
+	<string id="enc_vehicles_mi-24">
+		<text>Helic ptero de asalto del ej rcito.</text>
+	</string>
+	<string id="enc_vehicles_niva">
+		<text>Veh culo todo terreno.</text>
+	</string>
+	<string id="enc_vehicles_uaz">
+		<text>Jeep del ej rcito sovi tico.</text>
+	</string>
+	<string id="enc_vehicles_zaporozh">
+		<text>Veh culo peque o del ej rcito sovi tico.</text>
+	</string>
+	<string id="Kamaz">
+		<text>Cami n KAMAZ</text>
+	</string>
+	<string id="mi-24">
+		<text>Helic ptero Mi-24</text>
+	</string>
+	<string id="Niva">
+		<text>Niva</text>
+	</string>
+	<string id="Uaz">
+		<text>UAZ</text>
+	</string>
+	<string id="Vehicles">
+		<text>Transporte</text>
+	</string>
+	<string id="Zaporozh">
+		<text>ZAZ</text>
+	</string>
+</string_table>

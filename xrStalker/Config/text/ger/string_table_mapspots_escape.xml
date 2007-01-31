@@ -1,0 +1,48 @@
+	<string id="blokpost_case">
+		<text>Aktentasche</text>
+	</string>
+	<string id="esc_fox">
+		<text>Verwundeter Fuchs</text>
+	</string>
+	<string id="esc_mill">
+		<text>Verlassene M hle. Der verwundete Bruder wurde zuletzt irgendwo hier gesehen.</text>
+	</string>
+	<string id="escape_trader">
+		<text>H ndler</text>
+	</string>
+	<string id="factory_bandits">
+		<text>Banditen in der Fabrik.</text>
+	</string>
+	<string id="killers_team">
+		<text>Eine unbekannte S ldnergruppe.</text>
+	</string>
+	<string id="novice_leader">
+		<text>Anf hrer des Ausbildungslagers.</text>
+	</string>
+	<string id="soldiers_bridge">
+		<text>Milit rposten an der zerst rten Br cke. Die Soldaten sind bekannt daf r, bestechlich zu sein und Leute passieren zu lassen.</text>
+	</string>
+	<string id="tutorial_artefact">
+		<text>Artefakt.</text>
+	</string>
+	<string id="tutorial_bandits">
+		<text>Banditen, die unseren Sp her gestellt haben.</text>
+	</string>
+	<string id="tutorial_secret">
+		<text>Versteck des toten Stalkers.</text>
+	</string>
+	<string id="tutorial_secret_place1">
+		<text>Versteck des toten Stalkers.</text>
+	</string>
+	<string id="tutorial_secret_shustryi">
+		<text>Nimbles Versteck.</text>
+	</string>
+	<string id="tutorial_wounded">
+		<text>Nimble, ein Gefangener.</text>
+	</string>
+	<string id="volk">
+		<text>Wolf, der Anf hrer des Ausbildungslagers.</text>
+	</string>
+	<string id="wolfs_rangers">
+		<text>Wolfs Sp her.</text>
+	</string>

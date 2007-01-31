@@ -1,0 +1,1332 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="bar_arena_man_job_0">
+		<text>Contin a...</text>
+	</string>
+	<string id="bar_arena_man_job_11">
+		<text>Entones,  es tu primera pelea? Tu rival es un pedazo de carne como t . Est  aqu  por sus deudas y solo tiene dos opciones: pelear o desaparecer en una anomal a. Va a luchar como una bestia acorralada. A ver,  qu  vamos a usar hoy…? Vale,  por qu  no us is pistolas PMM? Dos cargadores cada uno deber an bastar. O le das una paliza o te conviertes en comida para perros. No tienes opci n. Al tema.</text>
+	</string>
+	<string id="bar_arena_man_job_111">
+		<text>Estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_112">
+		<text>No estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_12">
+		<text>Tu  ltima pelea no vali  nada. Sigues siendo el mismo pedazo de carne que antes y nadie con dos dedos de frente apostar a ni un c ntimo por ti. Si quieres ganar algo de dinero tendr s que participar en unos cuantos combates m s. Tu pr ximo rival tambi n pas  la primera ronda y pelea mucho m s duro que t . Si te soy sincero, no me gusta. Mata demasiado r pido y el p blico no disfruta. As  que sal ah  y demuestra lo que vales. Las apuestas subir n despu s de esta pelea. Solo tienes que seguir con vida.  Venga!</text>
+	</string>
+	<string id="bar_arena_man_job_121">
+		<text>Estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_122">
+		<text>No estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_13">
+		<text>Vaya, vaya... No eres tan nenaza como parec a. Ha llegado el momento de probarte en un combate de verdad. Te enfrentar s con dos tipos. El primero se llama Sueco y del segundo no recuerdo el nombre. Est n emparejados a prop sito, porque se odian a muerte, as  que no te preocupes por que se al en contra ti. Es m s probable que se ataquen entre ellos. Hoy es el d a del fusil, as  que guarda las distancias o tendremos que recogerte con cuchara. Las apuestas est n 10 a 1. Si ganas te llevar s una buena pasta.  All  vamos!</text>
+	</string>
+	<string id="bar_arena_man_job_131">
+		<text>Estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_132">
+		<text>No estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_14">
+		<text>Bueno, ahora puedo decir que eres un luchador de verdad. Est s listo para un combate en equipo. Vas a luchar junto a dos novatos. No han luchado nunca, pero son hermanos, as  que he tenido que colocarlos en un combate por equipos. Yo no esperar a mucha ayuda de ellos. Os enfrent is a un equipo con experiencia, son aspirantes a la final de esta temporada. Un peligro andante. Utilizan varias armas, pero uno tiene una escopeta autom tica, cuidado con  l. Buena suerte, colega... la vas a necesitar.</text>
+	</string>
+	<string id="bar_arena_man_job_141">
+		<text>Estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_142">
+		<text>No estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_15">
+		<text>Hoy tienes un combate especial.  Hasta el ej rcito ha o do hablar de ti! No te extra es, tambi n pelean aqu . Hasta hay un general entre el p blico. Estos tipos son de la Spetsnaz o del OMON. Est n bien armados y su protecci n es de primera. Pero no temas, yo tampoco te voy a dejar desamparado. Tendr s un chaleco de los que usan en Libertad. Es ligero, no te ralentizar . Vamos, demu strales que los stalkers no son unos lloricas.  Buena suerte!</text>
+	</string>
+	<string id="bar_arena_man_job_151">
+		<text>Estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_152">
+		<text>No estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_16">
+		<text>Es hora de demostrar lo que vales. Deber ha capturado a un grupo de bandidos que estaban dando problemas a los stalkers cerca de Rostok. Los cogieron por la noche, y la mayor a est n vivos. Les iban a ejecutar de todos modos, as  que he conseguido que les den una oportunidad. Si alguno sobrevive ir  al trullo fuera de la Zona, que es mejor que morir aqu . No est n bien armados, solo unas pistolas y alguna recortada, pero son seis, as  que cuidado.  Vamos, al l o!</text>
+	</string>
+	<string id="bar_arena_man_job_161">
+		<text>Estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_162">
+		<text>No estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_17">
+		<text>Bueno, est s casi en la final. Ahora te enfrentar s a un stalker de verdad. Est  solo, pero tiene un FT 200M y est  protegido por un exoesqueleto. Si te alcanza, te fr e. Tambi n hay una sorpresa que no te puedo desvelar... Un consejo: prep rate, va a ser duro. Quien gane pasa a la final. Lucha a muerte,  vamos!</text>
+	</string>
+	<string id="bar_arena_man_job_171">
+		<text>Estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_172">
+		<text>No estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_18">
+		<text> Enhorabuena, est s en la final! Te queda un combate a muerte, cada uno por su lado. Luchar n otros cuatro stalkers: todos verdaderos profesionales equipados con exoesqueletos y GP-37, pero estar  igualado, t  tendr s lo mismo. La  nica pega es que no dispones de botiquines o vendas.  Listo?  Demuestra que eres el mejor!,  VAMOS!</text>
+	</string>
+	<string id="bar_arena_man_job_181">
+		<text>Estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_job_182">
+		<text>No estoy listo.</text>
+	</string>
+	<string id="bar_arena_man_start_11">
+		<text> Hey! Tengo un nuevo combate para ti.</text>
+	</string>
+	<string id="bar_arena_man_start_21">
+		<text>Ve a tomar algo, el campo de batalla a n no est  listo.</text>
+	</string>
+	<string id="bar_arena_man_start_31">
+		<text> Ya te has convertido en profesional!</text>
+	</string>
+	<string id="bar_arena_man_start_41">
+		<text> Has ganado! Aqu  est  tu recompensa.</text>
+	</string>
+	<string id="bar_arena_man_start_51">
+		<text>No tienes experiencia suficiente para este combate.</text>
+	</string>
+	<string id="bar_bar_barman_ecolog_flash_done_0">
+		<text>Aqu  est  la unidad que el profesor Kruglov me dio.</text>
+	</string>
+	<string id="bar_bar_barman_ecolog_flash_done_21">
+		<text>Buen chico. Creo que Deber estar  muy agradecido por esta informaci n. Tu recompensa.</text>
+	</string>
+	<string id="bar_bar_barman_ecolog_flash_done_31">
+		<text>Vaya, vaya.  Informaci n?  Directa del profesor Kruglov?  Me est s tomando el pelo? "Soy el profesor Kruglov y estoy borrando informes sobre nuestras investigaciones en beneficio de la ciencia y la humanidad..."  Y esta es la informaci n que ten as que conseguir? Vaya... Estoy seguro de que Deber quedar  "contento" con esto.</text>
+	</string>
+	<string id="bar_bar_barman_killer_ambush_0">
+		<text>He cumplido mi misi n. Aqu  est  la PDA de Tirano.</text>
+	</string>
+	<string id="bar_bar_barman_killer_ambush_1">
+		<text> Guau, Marcado!  Buen trabajo!  Qu  puedo decir? Me has hecho feliz, t o. Sinceramente, no estaba seguro de que fueras a lograrlo...  pero est s vivo y ellos no!</text>
+	</string>
+	<string id="bar_bar_barman_killer_ambush_2">
+		<text> Qu  hay de mi recompensa?</text>
+	</string>
+	<string id="bar_bar_barman_killer_ambush_3">
+		<text>Toma. Est  todo, como acordamos.</text>
+	</string>
+	<string id="bar_bar_barman_veterans_finish_0">
+		<text>Aqu  est  la PDA de Afortunado. He hecho lo que me has pedido.</text>
+	</string>
+	<string id="bar_bar_barman_veterans_finish_1">
+		<text>Bueno, Marcado.  Buen trabajo!  Qu  puedo decir? Me has hecho feliz, t o. Sinceramente, no estaba seguro de que fueras a lograrlo...  pero est s vivo y ellos no!</text>
+	</string>
+	<string id="bar_bar_barman_veterans_finish_11">
+		<text> Qu  hay de la recompensa?</text>
+	</string>
+	<string id="bar_bar_barman_veterans_finish_111">
+		<text>Eres un h roe, t o, un verdadero h roe. Toma, te lo has ganado.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_0">
+		<text> Tienes alg n trabajo especial?</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_111">
+		<text>No, no hay nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_21">
+		<text>Al grano.  Qu  tengo que hacer?</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_221">
+		<text>No, no hay nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_2311">
+		<text>Tengo una misi n seria. Un grupo de asesinos veteranos ha vuelto a aparecer en el Territorio salvaje. Algunos hombres de Deber me han pedido que me ocupe de esos veteranos. Deber tiene pruebas de que se han cargado a stalkers que trabajan en solitario. El problema es que entre Deber y estos veteranos existen un viejo acuerdo que no pueden romper, pero estos tipos se lo est n buscando. B sicamente, Deber los quiere eliminar de manera discreta. No va a ser f cil, pero pagar an un mont n de pasta.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_23111">
+		<text> Algo m s? Parece extra o que Deber les deje salirse con la suya.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_231111">
+		<text>Deber valora su reputaci n, por eso necesita que sea un trabajo discreto. Solo tienes que matar a su l der, Afortunado, y traerme su PDA como prueba.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_2311111">
+		<text>Lo har . Aunque espero no arrepentirme de haber aceptado.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_23111111">
+		<text>Buena decisi n, amigo. No te arrepentir s.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_2311112">
+		<text>No lo voy a coger.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_23111121">
+		<text>All  t , pero recuerda que es una buena oportunidad para ganarte la gratitud de Deber.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_24">
+		<text>Al grano.  Qu  tengo que hacer?</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_241">
+		<text>Tu misi n consiste en matar a Tirano, el l der de los mercenarios. Su equipo ha conseguido llegar al Territorio salvaje y ha instalado una base en las obras. Ten cuidado, algunos de sus luchadores han tendido emboscadas de camino al lugar. Tr eme la PDA de Tirano y la recompensa ser  tuya.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_2411">
+		<text>Lo har . Aunque espero no arrepentirme de haber aceptado.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_24111">
+		<text>Buena decisi n, amigo. No te arrepentir s.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_2412">
+		<text>No lo voy a coger.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_24121">
+		<text>Como quieras.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_251">
+		<text>No, no hay nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_261">
+		<text>Tu misi n consiste en matar a Tirano, el l der de los Mercenarios. Su equipo ha conseguido llegar al Territorio salvaje y ha instalado una base en las obras. Ten cuidado, algunos de sus luchadores han tendido emboscadas de camino al lugar. Tr eme la PDA de Tirano y la recompensa ser  tuya.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_2611">
+		<text>Lo har . Aunque espero no arrepentirme de haber aceptado.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_26111">
+		<text>Buena decisi n, amigo. No te arrepentir s.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_2612">
+		<text>No lo voy a coger.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_26121">
+		<text>Como quieras.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_266">
+		<text>No, no hay nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_271">
+		<text>No te emociones, Marcado. Buscas trabajo pero todav a no te has ocupado de los veteranos...</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_311">
+		<text>No, nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_321">
+		<text>Tengo una misi n seria. Un grupo de asesinos veteranos ha vuelto a aparecer en el Territorio salvaje. Algunos hombres de Deber me han pedido que me ocupe de esos veteranos. Deber tiene pruebas de que se han cargado a stalkers que trabajan en solitario. El problema es que entre Deber y estos veteranos existen un viejo acuerdo que no pueden romper, pero estos tipos se lo est n buscando. B sicamente, Deber los quiere eliminar de manera discreta. No va a ser f cil, pero pagar an un mont n de pasta.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_3211">
+		<text> Algo m s?</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_32111">
+		<text>Deber valora su reputaci n, por eso necesita que sea un trabajo discreto. Solo tienes que matar a su l der, Afortunado, y traerme su PDA como prueba.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_32112">
+		<text>Lo har .</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_321121">
+		<text>Buena decisi n, amigo. No te arrepentir s.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_32113">
+		<text>No lo voy a coger.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_321131">
+		<text>All  t , pero recuerda que es una buena oportunidad para ganarte la gratitud de Deber.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_32121">
+		<text>default text</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_331">
+		<text>Tu misi n consiste en matar a Tirano, el l der de los mercenarios. Su equipo ha conseguido llegar al Territorio salvaje y ha instalado una base en las obras. Ten cuidado, algunos de sus luchadores han tendido emboscadas de camino al lugar. Tr eme la PDA de Tirano y la recompensa ser  tuya.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_3312">
+		<text>Lo har .</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_33121">
+		<text>Buena decisi n, amigo. No te arrepentir s.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_3313">
+		<text>No lo voy a coger.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_33131">
+		<text>Como quieras.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_341">
+		<text>No, nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_351">
+		<text>No, nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_361">
+		<text>No, nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_371">
+		<text>No, no hay nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_41">
+		<text>Todav a no, la pr xima vez.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_441">
+		<text>Tengo un encargo para un profesional.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_442">
+		<text>Al grano.  Qu  tengo que hacer?</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_443">
+		<text>Tu misi n consiste en matar a Tirano, el l der de los mercenarios. Su equipo ha conseguido llegar al Territorio salvaje y ha instalado una base en las obras. Ten cuidado, algunos de sus luchadores han tendido emboscadas de camino al lugar. Tr eme la PDA de Tirano y la recompensa ser  tuya.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_4431">
+		<text>Lo har . Aunque espero no arrepentirme de haber aceptado.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_44311">
+		<text>Buena decisi n, amigo. No te arrepentir s.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_4432">
+		<text>No lo voy a coger.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_44321">
+		<text>Como quieras.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_444">
+		<text>No, ahora mismo no me interesa.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_52">
+		<text>No, no hay nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_531">
+		<text>No, no hay nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_541">
+		<text>No, no hay nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_62">
+		<text>No, no hay nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_jobs_72">
+		<text>No, no hay nada para hoy.</text>
+	</string>
+	<string id="bar_bar_barmen_start_1111">
+		<text> Empecemos!  Listo?</text>
+	</string>
+	<string id="bar_bar_barmen_start_1131">
+		<text>Mmm...  De d nde has salido?</text>
+	</string>
+	<string id="bar_bar_barmen_start_121">
+		<text>Bueno,  has conseguido los documentos del X16, Marcado?</text>
+	</string>
+	<string id="bar_bar_barmen_start_1211">
+		<text>S . Aqu .</text>
+	</string>
+	<string id="bar_bar_barmen_start_1212">
+		<text>No.</text>
+	</string>
+	<string id="bar_bar_barmen_start_12121">
+		<text> Maldita sea!  Me estoy dejando el culo mientras t  pierdes el tiempo!  Ve a por los pu eteros documentos o no haremos ning n progreso!</text>
+	</string>
+	<string id="bar_bar_barmen_start_121211">
+		<text>Vale.</text>
+	</string>
+	<string id="bar_bar_barmen_start_131">
+		<text>Bueno, Marcado, ahora solo hay que ocuparse del Cauterizador y abrir el camino hacia el Norte.  Est s listo?</text>
+	</string>
+	<string id="bar_bar_barmen_start_1312">
+		<text>S .</text>
+	</string>
+	<string id="bar_bar_barmen_start_13121">
+		<text>Bueno, Marcado, tienes el prototipo protector, as  que estar s a salvo de las emisiones. Tengo las coordenadas del b nker. No olvides que el prototipo no te proteger  eternamente. Tienes que entrar al b nker lo m s r pido posible y desactivar el Cauterizador. No s  qu  pasar  despu s, pero estoy seguro de que valdr  la pena. Lo  nico seguro es que la carretera hacia el centro de la Zona estar  abierta.</text>
+	</string>
+	<string id="bar_bar_barmen_start_1313">
+		<text>Vamos.</text>
+	</string>
+	<string id="bar_bar_barmen_start_1314">
+		<text>Todo lo que tenemos que hacer es llegar a las antenas e inutilizarlas.  Entendido?</text>
+	</string>
+	<string id="bar_bar_barmen_start_1315">
+		<text>Entendido.</text>
+	</string>
+	<string id="bar_bar_barmen_start_1316">
+		<text> Ah, s !  Una cosa m s! El l der de Deber, te lo he marcado en el mapa, necesita un voluntario para llevar a cabo algunas misiones en los almacenes militares. Si te interesa, d jate caer por all . Hablar  con los guardias para que te dejen entrar.</text>
+	</string>
+	<string id="bar_bar_barmen_start_132">
+		<text>No, a n no estoy listo.</text>
+	</string>
+	<string id="bar_bar_barmen_start_1321">
+		<text> Prep rate, Marcado!  Esto no puede esperar!</text>
+	</string>
+	<string id="bar_bar_barmen_start_151">
+		<text>Bueno, los documentos que trajiste del Instituto aclaran las cosas un poco m s, pero a n no tenemos la informaci n que necesitamos para comprenderlo todo. Se menciona un laboratorio llamado X18, cuya descripci n encaja con las criptas subterr neas del Valle Oscuro. Creo que tendr s que ir all  y conseguir la informaci n que necesitamos. El laboratorio est  cerrado, y necesitar s dos claves electr nicas para entrar. Yo te dar  una, pero la otra la tendr s que conseguir de Boar en el Valle Oscuro. </text>
+	</string>
+	<string id="bar_bar_barmen_start_1511">
+		<text>Vamos.</text>
+	</string>
+	<string id="bar_bar_barmen_start_15111">
+		<text>Lo que tienes que hacer es conseguir la segunda clave del Laboratorio X18, entrar y recuperar el segundo lote de documentos. No olvides ponerte un traje protector o no podr s acceder de ning n modo al laboratorio.  Lo har s?</text>
+	</string>
+	<string id="bar_bar_barmen_start_15112">
+		<text>Lo intentar .</text>
+	</string>
+	<string id="bar_bar_barmen_start_15113">
+		<text> Bien! Estar  esperando.</text>
+	</string>
+	<string id="bar_bar_barmen_start_15114">
+		<text>No, todav a no quiero hacerlo.</text>
+	</string>
+	<string id="bar_bar_barmen_start_15115">
+		<text>All  t , pero recuerda: este es el  nico modo de despejar la carretera hacia el Norte.</text>
+	</string>
+	<string id="bar_bar_barmen_start_161">
+		<text> Qu  quieres, Marcado?</text>
+	</string>
+	<string id="bar_bar_barmen_start_162">
+		<text> Eh, Marcado! Los tiempos cambian, pero t  no, siempre malhumorado y distante. Ven, si ntate y echa un trago, te har  m s amable...</text>
+	</string>
+	<string id="bar_bar_barmen_start_171">
+		<text>Bueno,  has conseguido los documentos del X18, Marcado?</text>
+	</string>
+	<string id="bar_bar_barmen_start_172">
+		<text>S . Aqu .</text>
+	</string>
+	<string id="bar_bar_barmen_start_1721">
+		<text>Bien, la situaci n se est  aclarando. Como esperaba, este Cauterizador cerebral es sint tico. Es un emisor experimental Kaymanov y los componentes se fabricaron exactamente en el X18. Estos documentos se refieren al laboratorio X16, donde enviaron algunos componentes. Seg n esto, el X16 est  ubicado en la zona del complejo de producci n, en el lago Yantar. Los cient ficos han instalado un laboratorio m vil en esa zona, as  que quiz s nos puedan ayudar.</text>
+	</string>
+	<string id="bar_bar_barmen_start_17211">
+		<text>Vamos.</text>
+	</string>
+	<string id="bar_bar_barmen_start_17212">
+		<text>No es tan sencillo. Tienes que llegar hasta los cient ficos y averiguar d nde est  el X16 para conseguir los documentos que faltan.  Te apuntas?</text>
+	</string>
+	<string id="bar_bar_barmen_start_17213">
+		<text>S .</text>
+	</string>
+	<string id="bar_bar_barmen_start_172131">
+		<text> Bien! Estar  esperando.</text>
+	</string>
+	<string id="bar_bar_barmen_start_17214">
+		<text>Todav a no estoy listo.</text>
+	</string>
+	<string id="bar_bar_barmen_start_172141">
+		<text> Pues ya puedes ir prepar ndote, Marcado! Este tipo de trabajo no puede esperar.</text>
+	</string>
+	<string id="bar_bar_barmen_start_173">
+		<text>No.</text>
+	</string>
+	<string id="bar_bar_barmen_start_1731">
+		<text> Por qu  pierdes el tiempo?  Ve a por esos pu eteros documentos o no haremos ning n progreso!</text>
+	</string>
+	<string id="bar_bar_barmen_start_181">
+		<text> Qu  quieres, Marcado?</text>
+	</string>
+	<string id="bar_bar_barmen_start_182">
+		<text> Eh, Marcado! Los tiempos cambian, pero t  no, siempre malhumorado y distante. Ven, si ntate y echa un trago, te har  m s amable...</text>
+	</string>
+	<string id="bar_bar_barmen_start_2">
+		<text>Eh, Marcado.  Has tra do los documentos del Instituto?</text>
+	</string>
+	<string id="bar_bar_barmen_start_21">
+		<text>No, a n no tengo los documentos del Instituto.</text>
+	</string>
+	<string id="bar_bar_barmen_start_211">
+		<text>Eso no est  bien, Marcado, no est  nada bien... Comprendes lo mucho que los necesitamos,  no? Los necesitamos de verdad.  El Cauterizador cerebral est  delante de nuestras narices, pero ni siquiera sabemos qu  es! Ve ahora mismo a por los documentos, luego hablaremos.</text>
+	</string>
+	<string id="bar_bar_barmen_start_2111">
+		<text>Creo que lo entiendo.</text>
+	</string>
+	<string id="bar_bar_barmen_start_22">
+		<text>Aqu  est n los documentos del Instituto.</text>
+	</string>
+	<string id="bar_bar_barmen_start_221">
+		<text>Un trabajo excelente, Marcado. Por fin tenemos los documentos. Ahora tengo que echarles un vistazo, quiz s me den una idea dobre c mo llegar al Norte. Por cierto, si andas corto de pasta puedes participar en combates. El organizador se llama Arny, te he enviado su informaci n de contacto. </text>
+	</string>
+	<string id="bar_bar_barmen_start_2211">
+		<text>Vale.</text>
+	</string>
+	<string id="bar_bar_barmen_start_22111">
+		<text> Ahora escucha!</text>
+	</string>
+	<string id="bar_bar_barmen_start_3">
+		<text> Qu  quieres, Marcado?</text>
+	</string>
+	<string id="bar_bar_barmen_start_4">
+		<text> Eh, Marcado! Los tiempos cambian, pero t  no, siempre malhumorado y distante. Ven, si ntate y echa un trago, te har  m s amable...</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_0">
+		<text>Quiero saber algo.</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_1">
+		<text> Qu  es?</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_10">
+		<text>Gracias.</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_3">
+		<text> Qu  sabes sobre Strelok?</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_31">
+		<text>Un stalker experto, por lo que s . Sol a "trabajar" en las salidas del norte de la Zona. Era dif cil verle, pero se dice que llev  a su grupo hasta el centro de la Zona.</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_4">
+		<text> Qu  sabes sobre un stalker llamado Ghost?</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_41">
+		<text>Es uno de los hombres de Strelok. Dicen que puede entrar en cualquier sitio sin ser visto. He o do que elimin  al l der de un grupo de locos...  c mo se llamaban? Ah, "El  ltimo d a", esos eran. Esos tipos eran un poco salvajes... Ah, por cierto, he o do que Ghost est  haciendo un encargo para los cient ficos, as  que, si lo buscas, prueba en el laboratorio m vil del lago Yantar.</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_51">
+		<text>Es un viejo stalker retirado. Vive en el pantano, te lo marcar  en el mapa. Sol a ser del grupo de Strelok.</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_6">
+		<text> Qu  sabes de un stalker llamado Fang?</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_61">
+		<text>Hab a un tipo con ese nombre, uno que ceceaba... era un poco raro. Hablaba solo y eso... Pero era buen tipo. Hace mucho tiempo que no le veo por el bar.</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_7">
+		<text>H blame sobre los laboratorios m viles.</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_71">
+		<text>Los cient ficos los montan de vez en cuando. Se trata de b nkeres de metal aislados con todo lo necesario para vivir. Estamos en contacto con uno de estos laboratorios en Yantar. Los cient ficos son buena gente, nos cuentan muchas cosas interesantes y nosotros les ayudamos cuando podemos... Una cadena de favores...</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_8">
+		<text> Qu  es el Genio?</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_81">
+		<text> Oh! Una pregunta interesante... Ojal  supiera la respuesta. Puedo contarte la leyenda del Genio, si quieres. Lo que te creas de ella es cosa tuya.  Quieres o rla?</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_811">
+		<text>Vaya, eso es muy interesante.</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_8111">
+		<text>Esta es la leyenda del Monolito, que pudo ser el origen de la Zona. Cuando la Zona explot  en 2006, evacuaron a todo el que viviera alrededor y el ej rcito acordon  la Zona. La gente fue presa del p nico, nadie sab a lo que ocurr a,  la Zona se expand a y los laboratorios no pod an hacer nada! Muri  mucha gente. Todos tem an una radiaci n que pod a afectar a media Europa. Unos a os despu s, empezaron a llegar tipos temerarios, como t . Se hac an llamar stalkers. Empezaron a cruzar los cordones del ej rcito para buscar objetos que cre an que les har an ricos. Poco a poco, sacaron cosas muy extra as, artefactos que crearon mucha demanda. Los cient ficos los solicitaban como locos. Pagaban grandes cantidades de dinero por una baratija, no como ahora.</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_81111">
+		<text>Contin a...</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_811111">
+		<text>Despu s de un tiempo, empezaron a circular las primeras leyendas sobre lo que hay en la Zona, cerca de la central nuclear. Fue tambi n entonces cuando uno de los veteranos nos cont  la historia de un monolito que supuestamente te concede deseos. Menuda histeria se desat : hasta lo m s experimentados y sensatos quer an intentar alcanzar el centro, todo el mundo quer a pedir alg n deseo. Tenemos algunos detalles morbosos del primer stalker que lo consigui ...</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_8111111">
+		<text>Venga... Cu ntame m s.</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_81111111">
+		<text>Cuando la Zona apareci , mucha gente qued  atrapada dentro y desconectada del mundo exterior. La mayor a muri  r pido, pero algunos afortunados supervivientes intentaron buscar una soluci n. Uno de ellos se encontraba cerca de la estaci n y observ  una extra a luz dentro. Sin m s opciones, decidi  acercarse. Vio la tapa rota del sarc fago y una luz que sal a de  l. Trep  por la pared y mir  dentro. Entre los restos fundidos de metal y cemento se encontraba una roca negra gigante. Era el Monolito. Cuando el stalker se recuper  de la impresi n se dio cuenta de que hab a llegado muy cerca del sarc fago, altamente radiactivo. Se mor a de miedo, pero a pesar de ello, pod a sentir la llamada del Monolito. Le estaba llamando, y lleg  a ver en su cabeza cosas extra as, incre bles, sobre aquella roca misteriosa...</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_811111111">
+		<text>Vaya...</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_811111112">
+		<text>No s  cu nto hay de cierto en esta historia, pero el caso es que al tipo se le cumpli  un deseo que formul , al tiempo que la Zona crec a 5 kil metros. Parece que la Zona se traga porciones de tierra por cada deseo concedido... Pero eso no va a detener a fen menos como t . Siguen intentando entrar con sus preciados deseos en sus corazones...</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_812">
+		<text>Ahora mismo me interesan m s otras cosas.</text>
+	</string>
+	<string id="bar_bar_barmen_talk_info_8121">
+		<text>All  t , t o.  Qu  quieres saber exactamente?</text>
+	</string>
+	<string id="bar_bar_drunk_dolg_start_11">
+		<text>Hip...  maldita sea! S ,  estoy borracho! Quieren... quieren echarme de Deber si fracaso tambi n en esta tarea...  sabes? Pero no... hip... no me encuentro... hip... muy bien ahora mismo...  sabes?</text>
+	</string>
+	<string id="bar_bar_drunk_dolg_start_111">
+		<text>Lo entiendo.</text>
+	</string>
+	<string id="bar_bar_drunk_dolg_start_21">
+		<text> Qu  pasa?  Algo nuevo? No has machacado a ese pedazo de mierda, lo veo en tus ojos. Qu  asco... Escucha, por lo menos t mate algo conmigo,  eh, colega? </text>
+	</string>
+	<string id="bar_bar_drunk_dolg_start_31">
+		<text>T iiio... hip... t ... t ...  me has ayudado!  A la salud de Deber! Y...  Oh!</text>
+	</string>
+	<string id="bar_bar_hunter_quest_finish_0">
+		<text>Lo encontr . Aqu  est  tu fusil.</text>
+	</string>
+	<string id="bar_bar_hunter_quest_finish_1">
+		<text> Vaya!  Has encontrado mi fusil?  No tengo palabras, t o!  Muchas gracias!  GRACIAS!  Te lo agradezco! Me has ayudado mucho, en serio. Toma esto, no es mucho, pero es todo lo que tengo. No olvidar  tu ayuda y espero poder devolverte el favor. Escucha, voy a decirte una cosa. Hay una casa muy rara precintada cerca del sitio donde encontraste mi fusil. Nadie sabe lo que hay dentro, pero por las ventanas se ven cantidad de anomal as. Puede que tambi n haya artefactos... Aunque no s  c mo entrar.</text>
+	</string>
+	<string id="bar_bar_hunter_quest_start_0">
+		<text>Contin a.</text>
+	</string>
+	<string id="bar_bar_hunter_quest_start_1">
+		<text>Te dar  lo que sea, pero devu lveme el fusil, te lo ruego. Lo perd  por ese sitio donde viven los malditos chupasangre, aqu  tienes las coordenadas. Pero ten cuidado. Los chupasangre no son muy simp ticos.</text>
+	</string>
+	<string id="bar_bar_hunter_quest_start_11">
+		<text>Vale, intentar  recuperar tu fusil.</text>
+	</string>
+	<string id="bar_bar_hunter_quest_start_111">
+		<text>No te estoy timando.</text>
+	</string>
+	<string id="bar_bar_hunter_quest_start_1111">
+		<text>Te conviene. </text>
+	</string>
+	<string id="bar_bar_hunter_quest_start_12">
+		<text>No. Tengo cosas m s importantes que hacer.</text>
+	</string>
+	<string id="bar_bar_hunter_quest_start_121">
+		<text>All  t ... pero espero que cambies de opini n.</text>
+	</string>
+	<string id="bar_bar_hunter_quest_start_1212">
+		<text>Ya veremos.</text>
+	</string>
+	<string id="bar_bar_hunter_start_11">
+		<text> T o, tengo un problem n! Yo... He perdido el fusil de mi familia en el Territorio salvaje. Quer a cargarme algunos chupasangres, pero escap  por los pelos. Mierda… Escucha, colega... Si lo recuperas te pagar . He conseguido un poco de pasta, es tuya si me traes el fusil. Es el fusil de mi familia, ya sabes, ha pasado de padres a hijos...  Y lo he perdido! Estoy acostumbrado a  l, es como una extensi n de mi brazo...</text>
+	</string>
+	<string id="bar_bar_hunter_start_21">
+		<text> Eh!  Algo nuevo?  Lo has encontrado?</text>
+	</string>
+	<string id="bar_bar_hunter_start_31">
+		<text> Gracias, t o!  Nunca olvidar  tu ayuda!</text>
+	</string>
+	<string id="bar_bar_osvedomitel_reward_0">
+		<text>Wolfhound me ha dicho que tienes algo para m .</text>
+	</string>
+	<string id="bar_bar_osvedomitel_reward_1">
+		<text>Claro. Aqu  tienes un lanzagranadas que te ayudar  con Kruglov y 1.000 en met lico. Y adem s te dar  una propina en forma de informaci n gratis.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_reward_2">
+		<text>Gracias.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_reward_3">
+		<text>Ah  va la informaci n. Has ayudado a Libertad y has tomado la decisi n correcta. Ahora tu destino est  vinculado a Libertad, y Deber te tiene en su punto de mira. Creo que deber as ir a la base militar abandonada y unirte a Libertad, necesitan buenos soldados. Pronto habr  tiroteos entre los grupos y quien elija la facci n correcta no lo lamentar .</text>
+	</string>
+	<string id="bar_bar_osvedomitel_start_11">
+		<text>Trabajo como informante. Vendo informaci n importante y compro mapas, documentos y registros del laboratorio.  Mi informaci n es valiosa y muy  til!</text>
+	</string>
+	<string id="bar_bar_osvedomitel_start_21">
+		<text>Hola, Marcado. Has ayudado a Libertad y has tomado la decisi n correcta. Ahora tu destino est  vinculado a Libertad y Deber te tiene en su punto de mira. Te sugiero que vayas a la base militar abandonada y te unas a Libertad, necesitan buenos soldados.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_start_211">
+		<text>Lo pensar .</text>
+	</string>
+	<string id="bar_bar_osvedomitel_start_2111">
+		<text>Vaya Marcado,  qu  te trae por aqu ?  Vienes a comprar informaci n o traes algo para vender?</text>
+	</string>
+	<string id="bar_bar_osvedomitel_talk_0">
+		<text> As  que te has vinculado con Libertad?</text>
+	</string>
+	<string id="bar_bar_osvedomitel_talk_1">
+		<text>Ahora no puedo contestar a esa pregunta. Todo lo que puedo decir es que no soy miembro de ninguna facci n.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_talk_about_freedom_0">
+		<text>H blame sobre la facci n Libertad.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_talk_about_freedom_1">
+		<text> Claro, sin problema! Libertad es uno de los grupos m s antiguos de la Zona, y es el  nico que se opone abiertamente a las tropas del gobierno y a los equipos de investigaci n. Sus fundadores murieron durante un ba o de sangre ocurrido cuando el ej rcito envi  una fuerza de asalto enorme a la Zona. Al mismo tiempo, se perdi  la capacidad para controlar la Zona desde el exterior. Hay pruebas que sugieren que la primera Zona se utilizaba como  rea secreta de pruebas armament sticas del ej rcito. Si eso es cierto, tienen que haber utilizado una mierda muy potente. Bueno,  qu  iba diciendo...? Ah, s , Libertad es el  nico grupo que intenta evitar que el gobierno retome el control del  rea de pruebas. Dios sabe lo que podr a pasar si empiezan a probar su mierda otra vez, as  que Libertad intenta aguantar a toda costa.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_talk_about_freedom_2">
+		<text> Qu  pasa con Deber?</text>
+	</string>
+	<string id="bar_bar_osvedomitel_talk_about_freedom_3">
+		<text>Deber est  controlado desde el exterior por el gobierno. Su objetivo actual es limpiar el territorio de mutantes y destruir Libertad, que es lo que est n haciendo ahora. Llegado el momento, enviar n una tropa de asalto enorme a la Zona y tomar n el control del  rea.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_talk_about_freedom_4">
+		<text>Gracias por la informaci n.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_0">
+		<text>Quiero comprar informaci n.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_21">
+		<text>Ahora mismo puedo venderte informaci n sobre el grupo de Strelok por casi nada: 1.500 rublos.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_211">
+		<text>Trato hecho. Ah  van 1.500.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_2111">
+		<text>Se encuentra en el Instituto Agroprom, hay un compartimento secreto bajo tierra. Puede que contenga informaci n sobre los planes del grupo y una lista de sus miembros. Te incluyo las coordenadas del compartimento.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_212">
+		<text>No, he cambiado de idea.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_2121">
+		<text>All  t . Ven al bar si cambias de opini n. Siempre estoy aqu .</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_31">
+		<text>Ahora tengo informaci n sobre un grupo que ha conseguido llegar al centro de la Zona. Es un regalo: solo 3.000 rublos.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_311">
+		<text>Vale, acepto. Ah  van 3.000.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_3111">
+		<text>Strelok, Ghost y Fang han llegado al centro de la Zona. Nadie sabe lo que encontraron, pero Strelok desapareci  mientras que Ghost y Fang volvieron cabizbajos y desanimados. Lo  ltimo que se sabe de Ghost es que se fue al laboratorio m vil del lago Yantar. Te incluyo las coordenadas del campamento de los cient ficos.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_312">
+		<text>No, he cambiado de idea.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_3121">
+		<text>All  t . Ven al bar si cambias de opini n. Siempre estoy aqu .</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_41">
+		<text>Tengo informaci n sobre el secreto del lago Yantar. El precio es simb lico: 4.500 rublos.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_411">
+		<text>Trato hecho. Toma 4500.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_4111">
+		<text>El secreto del lago Yantar es similar al secreto del Cauterizador, y sus efectos son muy parecidos. Alg n tipo de emisi n convierte en zombi a quien entra en contacto con ella. Los stalkers zombis se mueven alrededor de un emisor y atacan a todo el mundo. Cierta informaci n sugiere que la soluci n al enigma del lago Yantar est  bajo tierra. Estas son las coordenadas del emisor del lago Yantar y las del Cauterizador.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_412">
+		<text>No, he cambiado de idea.</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_4121">
+		<text>All  t . Ven al bar si cambias de opini n. Siempre estoy aqu .</text>
+	</string>
+	<string id="bar_bar_osvedomitel_trade_info_999">
+		<text>De momento no dispongo de informaci n nueva.</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_11">
+		<text> Ya era hora de que alguien machacara a Borov! Si supiera qui n ha sido, le invitar a a un trago.</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_111">
+		<text>S , ya era hora.</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_21">
+		<text>Alguien ha cabreado mucho a Libertad: dicen que uno de sus grupos en el Territorio salvaje ha ca do...  Qui n habr  sido?</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_211">
+		<text>S , ojal  lo supiera...</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_31">
+		<text>Por fin alguien ha tenido agallas para eliminar a los chupasangre del Territorio salvaje...  Qu  ha estado haciendo Deber todo este tiempo?</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_311">
+		<text> Qu  estaba haciendo Deber? Ocuparse de Libertad,  qu  va a ser? </text>
+	</string>
+	<string id="bar_bar_visitors_1_start_41">
+		<text>He o do que alguien ha machacado al l der de Libertad. Les espera una temporada dura. Deber les va a acorralar...</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_411">
+		<text>Eso espero.</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_51">
+		<text> As  que has barrido a esos veteranos?  Bien hecho, amigo! Hace poco desaparecieron seis stalkers en esa  rea... Sospech bamos de esos veteranos. Me alegro de que te ocuparas de ellos.</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_511">
+		<text>S , mucha gente quer a que esos veteranos " desaparecieran".</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_61">
+		<text> Has acabado con las emisiones de Yantar? Vaya... Eres un chiflado con suerte,  me alegro de que por fin alguien se ocupara de esa basura! No te puedes imaginar cu ntos de los nuestros han muerto all ... Ahora los cient ficos investigar n qu  demonios era eso. Puede que hasta podamos ocuparnos del Cauterizador...</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_611">
+		<text>Quiero pensar que se puede apagar el Cauterizador. </text>
+	</string>
+	<string id="bar_bar_visitors_1_start_71">
+		<text> Qu  quieres? Intento relajarme...</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_711">
+		<text> Qu  hay?</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_7111">
+		<text>He o do que Strelok ha vuelto. Tiene todo el material que necesito para llegar al Genio... Aunque ahora est  escondido, mucha gente le busca. Unos lo dicen abiertamente, otros intentan mantenerlo en secreto. Se rumorea que incluso Deber y Libertad se han unido a la caza... cada uno con una intenci n.</text>
+	</string>
+	<string id="bar_bar_visitors_1_start_71111">
+		<text>Parece que Strelok hace bien en esconderse.</text>
+	</string>
+	<string id="bar_bar_visitors_10_start_71">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_10_start_711">
+		<text> Puedes decirme algo  til para un novato?</text>
+	</string>
+	<string id="bar_bar_visitors_10_start_7111">
+		<text>  til para un novato? Bien, escucha. Al Norte, no muy lejos del Cauterizador, Libertad ha establecido su cuartel general, en una antigua base militar. Son famosos nihilistas, anarquistas y criminales que luchan por la libertad, unos pu eteros guerrilleros. No hacen m s que sabotear grupos de investigaci n, atacar a unidades del ej rcito y pelear con Deber. Esos enfrentamientos han pasado a convertirse en una guerra a peque a escala por la supervivencia. Deja que te d  un consejo: no te mezcles con ellos. Solo te aceptar n si est s completamente loco y tu cabeza tiene precio. Ja, ja, ja...  No es incre ble?</text>
+	</string>
+	<string id="bar_bar_visitors_10_start_71111">
+		<text>Gracias por el consejo.</text>
+	</string>
+	<string id="bar_bar_visitors_12_start_71">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_12_start_711">
+		<text> Puedes decirme algo  til para un novato?</text>
+	</string>
+	<string id="bar_bar_visitors_12_start_7111">
+		<text>Bueno, hab a un grupo liderado por Strelok. Corr an todo tipo de leyendas sobre sus merodeos por la Zona... buenas y malas, pero pocos sab an realmente la verdad. La verdad es que quer an investigar la Zona, averiguar qu  la cre . Por eso los stalkers militares les persegu an, pero no sab an d nde buscar. El gobierno no quer a que los stalkers convencionales averiguasen algo que no deb an. Un d a, Strelok encontr  algo muy importante y avanz  hacia el centro de la Zona con algunos de sus chicos. La mitad del grupo muri  por el camino, pero el resto lo consiguieron... Nadie sabe lo que les ocurri . Parece que desaparecieron. Al resto del grupo los cogieron y los mataron... No creo que quede ninguno. Una historia triste,  verdad?</text>
+	</string>
+	<string id="bar_bar_visitors_12_start_71111">
+		<text>S , es como si alguien se empe ara en que la Zona no se investigue...</text>
+	</string>
+	<string id="bar_bar_visitors_13_start_71">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_13_start_711">
+		<text> Puedes decirme algo  til para un novato?</text>
+	</string>
+	<string id="bar_bar_visitors_13_start_7111">
+		<text>Los mercenarios son como Libertad, pero peores. Libertad al menos tiene ideales, pero esos perros hacen cualquier cosa por dinero. Alguien tiene que matarlos antes de que saquen algo realmente peligroso de la Zona al mundo normal. Tienen su base en la Ciudad Muerta, donde hay un francotirador en cada edificio. No les gustan los extra os.</text>
+	</string>
+	<string id="bar_bar_visitors_13_start_71111">
+		<text>Ya veo, parece que hay que tener cuidado en la Ciudad Muerta.</text>
+	</string>
+	<string id="bar_bar_visitors_14_start_71">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_14_start_711">
+		<text> Puedes decirme algo  til para un novato?</text>
+	</string>
+	<string id="bar_bar_visitors_14_start_7111">
+		<text>Si no has participado en combates, te lo recomiendo. Es un buen modo de ganar dinero y demostrar a todo el mundo lo que vales. Es una pena, pero no todo el mundo tiene agallas para enfrentarse al pr ximo monstruo. T o, en cuanto ahorre dinero suficiente para un blindaje decente, estoy ah .</text>
+	</string>
+	<string id="bar_bar_visitors_14_start_81">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_14_start_82">
+		<text> Eres Baldy? Necesito hablar contigo.</text>
+	</string>
+	<string id="bar_bar_visitors_14_start_83">
+		<text>Ese soy yo.  Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_14_start_84">
+		<text>Granos se salv  del Bosque Rojo, pero Chepa muri . </text>
+	</string>
+	<string id="bar_bar_visitors_14_start_85">
+		<text> Maldita sea!</text>
+	</string>
+	<string id="bar_bar_visitors_14_start_86">
+		<text>Granos est  fatal, su cerebro ya no funciona. Quiz s podr as hablar con  l. Necesitamos encontrar el programa del Cauterizador.</text>
+	</string>
+	<string id="bar_bar_visitors_14_start_87">
+		<text> No! No me pidas que haga eso. Chepa ha muerto por mi culpa y tambi n soy culpable de lo que le pas  a Granos.  Les dej  tirados, les traicion  y hu !  No puedo mirar a Granos a la cara despu s de aquello!</text>
+	</string>
+	<string id="bar_bar_visitors_14_start_88">
+		<text>Venga, t o. Cu ntame qu  pas .</text>
+	</string>
+	<string id="bar_bar_visitors_14_start_89">
+		<text>Los tres est bamos prepar ndonos para pasar hacia el Norte. No sab amos en qu  momento eran m s bajas las emisiones del Cauterizador, pero Granos se las apa   para conseguir la informaci n, no s  c mo... Est bamos a medio camino por el sector cuando, de pronto, el Cauterizador se puso otra vez en marcha. Granos se desmay  y cay  por la colina. Me entr  el p nico y les dije que deb amos abandonar y volver. Chepa mantuvo la calma y dijo que ten amos que sacar a Granos... Yo le dije: "Eres idiota,  acaso quieres morir? Desp dete de Granos,  no querr s que carguemos con  l el camino de vuelta?". Cuando logr  convencerme y empezaba a bajar para coger a Granos... vino otra onda. Cuando me despert  estaba en la base militar... Supuse que Chepa y Granos se hab an quedado... Pero  l le sac  y yo no lo hice...  l le sac ...</text>
+	</string>
+	<string id="bar_bar_visitors_14_start_90">
+		<text>Vale, Baldy, Vale. C lmate, t o. Gracias por contarme lo que pas . Hablar  con Granos yo mismo.</text>
+	</string>
+	<string id="bar_bar_visitors_14_start_91">
+		<text>Lo siento, colega. No tengo ganas de hablar... Prefiero tomar otra copa.</text>
+	</string>
+	<string id="bar_bar_visitors_2_start_71">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_2_start_711">
+		<text> Qu  hay?</text>
+	</string>
+	<string id="bar_bar_visitors_2_start_7111">
+		<text>Hab a un tipo... Ceceaba y caminaba encorvado, por eso le llamaban Chepa. Estaba un poco loco... hablaba solo y con los animales... Pero, aparte de eso, era un buen tipo. Desapareci  hace tiempo en el centro junto con Strelok, y dicen que Strelok ha vuelto.</text>
+	</string>
+	<string id="bar_bar_visitors_2_start_71111">
+		<text> D nde estar  ahora?</text>
+	</string>
+	<string id="bar_bar_visitors_3_start_71">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_3_start_711">
+		<text> Qu  hay?</text>
+	</string>
+	<string id="bar_bar_visitors_3_start_7111">
+		<text> El Territorio salvaje est  infestado de chupasangres! Salen por la noche. He o do que hay algo muy importante en la f brica cercana, algo vital para alguien. Deber envi  a algunos hombres hace poco, pero todos murieron y sus gritos pod an o rse a kil metros.</text>
+	</string>
+	<string id="bar_bar_visitors_3_start_71111">
+		<text>Gracias por la informaci n.</text>
+	</string>
+	<string id="bar_bar_visitors_4_start_71">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_4_start_711">
+		<text> Qu  oyes?</text>
+	</string>
+	<string id="bar_bar_visitors_4_start_7111">
+		<text>Si rodeas el lago Yantar te encontrar s con el campamento de los cient ficos; llevan a cabo experimentos por all . Les dejaron all  en helic ptero y reciben suministros con regularidad. Se lo han montado bien... Tambi n puedes tratar con ellos. Compran artefactos e incluso puede que te den trabajo.</text>
+	</string>
+	<string id="bar_bar_visitors_4_start_71111">
+		<text>Gracias por la informaci n.</text>
+	</string>
+	<string id="bar_bar_visitors_5_start_71">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_5_start_711">
+		<text> Qu  oyes?</text>
+	</string>
+	<string id="bar_bar_visitors_5_start_7111">
+		<text>Nadie ha llegado hasta el desguace por culpa del Cauterizador. Algunos vieron a un stalker pasar la frontera invisible, caer, levantarse en un par de minutos y luego dirigirse hacia el centro del desguace. Desde entonces no le han vuelto a ver...</text>
+	</string>
+	<string id="bar_bar_visitors_5_start_71111">
+		<text>Interesante...</text>
+	</string>
+	<string id="bar_bar_visitors_6_start_71">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_6_start_711">
+		<text> Qu  oyes?</text>
+	</string>
+	<string id="bar_bar_visitors_6_start_7111">
+		<text>Los stalkers vuelven de vez en cuando. Es una vista espeluznante, te lo aviso: mascullan algo y buscan sus armas, perdidas en alguna parte... Uno lleg  a una avanzadilla de Deber hace tiempo y se congreg  una multitud para mirar. Alguien incluso le reconoci ... Era terror fico... Los ojos rojos, inyectados en sangre, todo magullado... No pod a ni hablar, solo gem a como un animal y daba vueltas. Deber lo recogi , pero muri  un par de d as despu s. Algo le pasa a la gente en la Zona,  qu  ser ?</text>
+	</string>
+	<string id="bar_bar_visitors_6_start_71111">
+		<text>A m  tambi n me gustar a saberlo.</text>
+	</string>
+	<string id="bar_bar_visitors_7_start_71">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_7_start_711">
+		<text> Qu  oyes?</text>
+	</string>
+	<string id="bar_bar_visitors_7_start_7111">
+		<text>Hay un mont n de zombis alrededor del lago Yantar. Vagan y atacan a cualquier humano que ven. Si te ven es mejor que corras para salvar la vida. Muchos de ellos eran stalkers antes... Murieron en el lago y eso es lo que qued  de ellos.</text>
+	</string>
+	<string id="bar_bar_visitors_7_start_71111">
+		<text>S , no me gustar a unirme a ellos.</text>
+	</string>
+	<string id="bar_bar_visitors_8_start_71">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_8_start_711">
+		<text> Qu  oyes?</text>
+	</string>
+	<string id="bar_bar_visitors_8_start_7111">
+		<text>Los comerciantes dicen que hay un verdadero bot n de artefactos en el centro de la Zona, as  que cualquiera que consiga llegar ganar  dinero suficiente como para vivir dos vidas. Personalmente, creo que hay algo m s. Obviamente, los comerciantes piensan en su propio inter s, pero corren extra os rumores. Parece ser que hay algo mejor que artefactos, algo que no es de este mundo, algo extra o o de otra dimensi n. Lo llaman el Genio. He o do una leyenda sobre un stalker que lleg  a  l. Lo que ocurre es que cada vez que alguien formula un deseo, la Zona crece y ninguno de los que llegan a  l utiliza su deseo para hacerla desaparecer. Supongo que cuando llegas al final los dem s te importan una mierda.</text>
+	</string>
+	<string id="bar_bar_visitors_8_start_71111">
+		<text>Eso es triste.</text>
+	</string>
+	<string id="bar_bar_visitors_9_start_71">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_bar_visitors_9_start_711">
+		<text> Qu  oyes?</text>
+	</string>
+	<string id="bar_bar_visitors_9_start_7111">
+		<text>Todo el que cree en el monolito est  chiflado. Est n obsesionados con  l, pero nadie sabe de verdad lo que hay en el centro de la Zona. Un cristal invisible que cay  del cielo...  Ja, ja, ja! Supongo que uno de los laboratorios secretos explot ; algunos stalkers sol an trabajar en algunos de ellos. Pero, obviamente, no puedes bombardear la Zona. Adem s de extender la radiaci n por todo el planeta, media Europa quedar a arrasada por la reacci n de la Zona. "Alguien" se ha vuelto completamente loco. Dicen que est n matando a stalkers normales sin raz n ninguna.  Qu  te parece? Malditos fan ticos.</text>
+	</string>
+	<string id="bar_bar_visitors_9_start_71111">
+		<text>Creo que merece alguna atenci n.</text>
+	</string>
+	<string id="bar_dolg_base_guard_acces_0">
+		<text>Quiero unirme a Deber.  Qu  tengo que hacer?</text>
+	</string>
+	<string id="bar_dolg_base_guard_acces_1">
+		<text>Paga 1.000 rublos. Conseguir s un pase. Ll vaselo a Voronin al b nker y  l preparar  una prueba para ti.</text>
+	</string>
+	<string id="bar_dolg_base_guard_acces_11">
+		<text>Vale, aqu  est  el dinero.</text>
+	</string>
+	<string id="bar_dolg_base_guard_acces_111">
+		<text>Muy bien, toma tu pase. Ve a ver a Petrenko, el administrador. Lo he marcado en tu mapa.</text>
+	</string>
+	<string id="bar_dolg_base_guard_acces_12">
+		<text>No, he cambiado de idea.</text>
+	</string>
+	<string id="bar_dolg_base_guard_acces_121">
+		<text>All  t , t o. Nos vemos.</text>
+	</string>
+	<string id="bar_dolg_base_guard_acces_21">
+		<text>Porque no hay sitio para esos bandidos de Libertad en la Zona. Deben ser destruidos. Si te interesa, dile al tabernero que te lo explique todo. Yo estoy ocupado.</text>
+	</string>
+	<string id="bar_dolg_base_guard_acces_31">
+		<text>Paga 1.000 rublos y conseguir s un pase. Ll vaselo al administrador de Deber y  l te preparar  las pruebas.</text>
+	</string>
+	<string id="bar_dolg_base_guard_acces_311">
+		<text>Vale, aqu  est  el dinero.</text>
+	</string>
+	<string id="bar_dolg_base_guard_acces_3111">
+		<text>Muy bien, toma tu pase. Ve a ver a Petrenko, el administrador. Lo he marcado en tu mapa.</text>
+	</string>
+	<string id="bar_dolg_base_guard_acces_312">
+		<text>No, he cambiado de idea.</text>
+	</string>
+	<string id="bar_dolg_base_guard_acces_3121">
+		<text>All  t , t o. Nos vemos.</text>
+	</string>
+	<string id="bar_dolg_base_guard_rules_0">
+		<text>El tabernero me ha dicho que tu jefe tiene alg n tipo de misi n para m .</text>
+	</string>
+	<string id="bar_dolg_base_guard_rules_1">
+		<text>S , nos ha hablado de ti, pero antes de dejarte entrar tienes que conocer nuestras reglas. As  que, escucha, son simples. Primero: prohibido disparar en nuestro territorio. Si rompes esta regla dos veces, nuestra patrulla empezar  a dispararte. Aunque tengas oportunidad, no vas a volver a pisar nuestro territorio, nuestros guardias se asegurar n de ello. Si act as con calma no tendr s ning n problema. </text>
+	</string>
+	<string id="bar_dolg_base_guard_rules_2">
+		<text>Entendido.  Eso es todo?</text>
+	</string>
+	<string id="bar_dolg_base_guard_rules_3">
+		<text>S , con eso basta. Puedes pasar.</text>
+	</string>
+	<string id="bar_dolg_base_guard_rules_4">
+		<text>Est  claro.  Algo m s?</text>
+	</string>
+	<string id="bar_dolg_base_guard_rules_5">
+		<text>Eso es todo. Si quieres intentar unirte a Deber, no dejes de hacerlo. Necesitamos buenos hombres, pero te aviso: antes de aceptarte, tendr s que realizar alg n trabajo peligroso. No necesitamos peleles, por eso probamos a todo el mundo.</text>
+	</string>
+	<string id="bar_dolg_base_guard_start_11">
+		<text> Alto!  No puedes entrar en la base de Deber!</text>
+	</string>
+	<string id="bar_dolg_base_guard_start_21">
+		<text> Qu  haces ah  parado? Andando.</text>
+	</string>
+	<string id="bar_dolg_base_guard_start_31">
+		<text>Venga, t o. Recuerda que la misi n de Deber es limpiar.</text>
+	</string>
+	<string id="bar_dolg_base_guard_talk_0">
+		<text> Por qu  no se puede pasar?</text>
+	</string>
+	<string id="bar_dolg_base_guard_talk_1">
+		<text> De d nde sale gente tan ingenua?  Estamos en medio de una guerra!  Luchamos contra la escoria de Libertad! Tenemos enfrentamientos frecuentes con sus soldados en el Territorio salvaje.</text>
+	</string>
+	<string id="bar_dolg_base_guard_talk_2">
+		<text> En guerra con Libertad?  Por qu ?</text>
+	</string>
+	<string id="bar_dolg_base_guard_talk_3">
+		<text>Porque no hay sitio para esos bandidos de Libertad en la Zona. Deben ser destruidos. Si te interesa, dile al tabernero que te lo explique todo. Yo estoy ocupado.</text>
+	</string>
+	<string id="bar_dolg_guard_bunker_start_11">
+		<text> Alto!  Ah  solo pueden entrar miembros! No puedes entrar en el b nker sin un pase especial. Ve a ver al coronel Petrenko si quieres uno. Est  en el  rea de administraci n, al otro lado del patio.</text>
+	</string>
+	<string id="bar_dolg_guard_bunker_start_21">
+		<text> Qu  haces ah  parado? Andando.</text>
+	</string>
+	<string id="bar_dolg_guard_bunker_start_31">
+		<text>Venga, t o. Recuerda que la misi n de Deber es limpiar.</text>
+	</string>
+	<string id="bar_dolg_ivancov_start_11">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_dolg_ivancov_start_21">
+		<text>Te escucho.</text>
+	</string>
+	<string id="bar_dolg_ivancov_start_31">
+		<text>Hola, colega.</text>
+	</string>
+	<string id="bar_dolg_leader_job_0">
+		<text> Qu  puedo hacer por Deber?</text>
+	</string>
+	<string id="bar_dolg_leader_job_1">
+		<text>Buena pregunta, Marcado, y tengo una respuesta igual de buena: matar a los anarquistas de Libertad. Tendr s recompensa por cada PDA que traigas, y puede que te asciendan. Ll vale a Petrenko todas las PDA que consigas,  l reparte las recompensas.</text>
+	</string>
+	<string id="bar_dolg_leader_join_0">
+		<text>El tabernero me ha dicho que tienes alguna misi n para m  en los almacenes militares...</text>
+	</string>
+	<string id="bar_dolg_leader_join_1">
+		<text>Quiero que hagas una cosa para m ,  vale? Estamos en pleno conflicto territorial con la facci n Libertad y necesitamos armas m s potentes que las que tenemos. Libertad tiene unos lanzagranadas Bulldog 6 excelentes. Si consigues introducirte en su territorio y robar al menos un lanzagranadas, te recompensar  generosamente. Como no perteneces a nuestra facci n, te ganar s la confianza de Libertad r pido y, con suerte, podr s apoderarte del Bulldog 6.</text>
+	</string>
+	<string id="bar_dolg_leader_join_11">
+		<text>Contin a.</text>
+	</string>
+	<string id="bar_dolg_leader_join_111">
+		<text>Te cargar  la ubicaci n de la Base de Libertad. Tienes que encontrar al cocinero, un miembro de Libertad. Sabe d nde guardan los Bulldog 6. Le gusta beber, as  que acu rdate de llevar contigo mucho vodka.  Lo har s?</text>
+	</string>
+	<string id="bar_dolg_leader_join_1111">
+		<text>Vale, intentar  robar un Bulldog 6 de Libertad.</text>
+	</string>
+	<string id="bar_dolg_leader_join_11111">
+		<text>Ah, y una cosa m s: el coronel Calavera y sus hombres desobedecieron mis  rdenes y atacaron la base de Libertad sin autorizaci n. Esos pu eteros suicidas ya recoger n lo que han sembrado... No te metas en sus combates. Solo tienes que traerme el Bulldog 6, el resto no importa.</text>
+	</string>
+	<string id="bar_dolg_leader_join_1112">
+		<text>A n no estoy preparado para proezas as .</text>
+	</string>
+	<string id="bar_dolg_leader_join_11121">
+		<text>All  t .</text>
+	</string>
+	<string id="bar_dolg_leader_prisyaga_0">
+		<text>Estoy listo para el juramento.</text>
+	</string>
+	<string id="bar_dolg_leader_prisyaga_1">
+		<text> Buen chico! Repite despu s de m : "Yo, el stalker Marcado, juro defender los objetivos e ideales de Deber".</text>
+	</string>
+	<string id="bar_dolg_leader_prisyaga_2">
+		<text>Yo, el stalker Marcado, juro defender los objetivos e ideales de Deber.</text>
+	</string>
+	<string id="bar_dolg_leader_prisyaga_3">
+		<text>Proteger la Tierra de los peligros de la Zona, buscar y destruir cualquier cosa que genere dentro y m s all  de sus fronteras.</text>
+	</string>
+	<string id="bar_dolg_leader_prisyaga_4">
+		<text>Proteger la Tierra de los peligros de la Zona, buscar y destruir cualquier cosa que genere dentro y m s all  de sus fronteras.</text>
+	</string>
+	<string id="bar_dolg_leader_prisyaga_5">
+		<text>Luchar contra los inconformistas, sean stalkers individuales o en grupo.</text>
+	</string>
+	<string id="bar_dolg_leader_prisyaga_6">
+		<text>Luchar contra los inconformistas, sean stalkers individuales o en grupo.</text>
+	</string>
+	<string id="bar_dolg_leader_prisyaga_7">
+		<text> Y dar mi vida en nombre del orden y la justicia en la Tierra!</text>
+	</string>
+	<string id="bar_dolg_leader_prisyaga_8">
+		<text> Y dar mi vida en nombre del orden y la justicia en la Tierra!</text>
+	</string>
+	<string id="bar_dolg_leader_prisyaga_9">
+		<text> Enhorabuena! Ya eres un miembro de pleno derecho de Deber.</text>
+	</string>
+	<string id="bar_dolg_leader_quest_rg6_finish_0">
+		<text>He completado la misi n. He tra do el Bulldog 6.</text>
+	</string>
+	<string id="bar_dolg_leader_quest_rg6_finish_1">
+		<text>Buen trabajo, stalker. Esto es exactamente lo que necesitamos. Bien, Marcado, has conseguido lo que te ped , a cambio te puedes quedar este traje. Creo que te gustar .</text>
+	</string>
+	<string id="bar_dolg_leader_start_11">
+		<text>Te escucho.</text>
+	</string>
+	<string id="bar_dolg_leader_start_21">
+		<text> Qu  te trae por aqu , colega?</text>
+	</string>
+	<string id="bar_dolg_leader_start_31">
+		<text> Has tra do el Bulldog 6?</text>
+	</string>
+	<string id="bar_dolg_leader_start_311">
+		<text>S , aqu  est  el Bulldog 6.</text>
+	</string>
+	<string id="bar_dolg_leader_start_3111">
+		<text>Buen trabajo, stalker. Esto es exactamente lo que necesitamos. Bien, Marcado, has conseguido lo que te ped , a cambio te puedes quedar este traje. Creo que te gustar .</text>
+	</string>
+	<string id="bar_dolg_leader_start_41">
+		<text> Qu  te ha tra do hasta m , amigo?</text>
+	</string>
+	<string id="bar_dolg_leader_start_51">
+		<text>La guerra con Libertad est  llegando a su fin, Marcado. Has tomado parte en la lucha por la causa y ahora quiero que acabe la guerra. Quiero que mates al l der de Libertad.</text>
+	</string>
+	<string id="bar_dolg_leader_start_81">
+		<text> Qu  te trae por aqu , colega? Mataste al l der de esos anarquistas de Libertad y su grupo se desmorona. La guerra no ha terminado, pero el resultado parece claro. Tus incre bles haza as no caer n en el olvido.</text>
+	</string>
+	<string id="bar_dolg_newbie_start_11">
+		<text>Hola, stalker.  nete a Deber. Necesitamos buenos soldados. Yo me un  hace poco y mira este pedazo de uniforme que me han dado.</text>
+	</string>
+	<string id="bar_dolg_newbie_start_21">
+		<text>Hola, Marcado. Me alegro de que est s con nosotros. Deber va a necesitar buenos soldados pronto. </text>
+	</string>
+	<string id="bar_dolg_novice_start_2">
+		<text> Eh, stalker!</text>
+	</string>
+	<string id="bar_dolg_novice_start_3">
+		<text>H blame sobre Deber.</text>
+	</string>
+	<string id="bar_dolg_novice_start_31">
+		<text>Hemos estado aqu  desde el principio. El primer grupo estaba formado por los miembros supervivientes de las unidades especiales enviadas a la Zona para encontrar su origen. Las pasamos canutas y, despu s de que la mitad de la unidad muriera en horribles circunstancias, los que sobrevivieron juraron que no se marchar an hasta averiguar lo que ocurre en la Zona. Hasta que la vencieran.</text>
+	</string>
+	<string id="bar_dolg_novice_start_4">
+		<text>H blame sobre Libertad.</text>
+	</string>
+	<string id="bar_dolg_novice_start_41">
+		<text>Son matones que no entienden que la Zona es una  lcera en el cuerpo de la Tierra. Quieren extenderla por el mundo, un poco en cada casa. Har an cualquier cosa por conseguir ese objetivo; me muero de ganas de destruirla.</text>
+	</string>
+	<string id="bar_dolg_novice_start_5">
+		<text> Quieres acabar con la Zona?</text>
+	</string>
+	<string id="bar_dolg_novice_start_51">
+		<text>S , y lo estamos consiguiendo, hasta cierto punto. Durante las operaciones de limpieza se destruye a montones de mutantes de camino al centro de la Zona.</text>
+	</string>
+	<string id="bar_dolg_novice_start_6">
+		<text>Gracias.</text>
+	</string>
+	<string id="bar_dolg_petrenko_start_11">
+		<text>Te escucho.</text>
+	</string>
+	<string id="bar_dolg_petrenko_start_21">
+		<text> C mo puedo ayudar?</text>
+	</string>
+	<string id="bar_dolg_petrenko_start_31">
+		<text>Hola, colega.  Qu  te trae a m ?</text>
+	</string>
+	<string id="bar_dolg_veteran_start_2">
+		<text> Qu  quieres?</text>
+	</string>
+	<string id="bar_dolg_zastava_11">
+		<text>Venga, mu vete.  Qu  est s mirando?</text>
+	</string>
+	<string id="bar_dolg_zastava_21">
+		<text> Eh, colega! Me alegro de que todav a no te hayan comido los mutantes.</text>
+	</string>
+	<string id="bar_dolg_zastava_about_zastava_0">
+		<text>Ha habido una masacre en la avanzadilla.  Qu  ha pasado?</text>
+	</string>
+	<string id="bar_dolg_zastava_about_zastava_1">
+		<text>Esa es la  ltima onda de mutantes que vino antes de la tormenta. Se est  tranquilo tres o cuatro d as y luego viene otra tanda. Si no fuera por nosotros, no habr a bar, no habr a Deber. Somos el  ltimo obst culo en el camino de esos locos mutantes. Muchos de nuestros hombres han muerto aqu .</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_0">
+		<text>Me gustar a saber algo.</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_1">
+		<text> Qu  quieres saber?</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_2">
+		<text>Es la primera vez que estoy aqu .  Puedes contarme algo sobre este lugar?</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_21">
+		<text>Antes del accidente del 86, esta era una zona industrial. Como puedes ver, no queda mucho de ella... En un s tano cercano al hangar est  el bar Los 100 rads: el local lo lleva el comerciante de la zona, que es adem s tabernero. Es el lugar indicado para hacer negocios, charlar, conseguir una misi n o enterarte de las  ltimas noticias. Tambi n est  el campo de batalla, donde puedes luchar y conseguir algo de dinero. La base de Deber no est  muy lejos del campo de batalla. Si quieres unirte a Deber, ve derecho all  y ellos te dir n con qui n tienes que hablar. Por cierto, toda esta zona est  protegida por los de Deber, as  que ten cuidado y mant n tu arma enfundada. Si empiezas a disparar, la patrulla te "ayudar  a calmarte" de inmediato.</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_211">
+		<text>Dijiste que hab a un bar.  Puedes decirme d nde est  exactamente?</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_2111">
+		<text>En un s tano tras el hangar... Te lo se alar  en el mapa.</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_21111">
+		<text>Gracias por la informaci n.</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_212">
+		<text>Dijiste que la base de Deber estaba aqu .  C mo puedo llegar hasta ella?</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_2121">
+		<text>No est  muy lejos del campo de batalla. Te la he se alado en el mapa.</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_21211">
+		<text>Gracias por la informaci n.</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_213">
+		<text> El campo de batalla no estaba por aqu ?  D nde est  exactamente?</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_2131">
+		<text>Sal del hangar que tiene el tejado roto y lo encontrar s justo enfrente. Lo he se alado en tu mapa.</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_21311">
+		<text>Gracias por la informaci n.</text>
+	</string>
+	<string id="bar_dolg_zastava_talk_214">
+		<text>Gracias por la informaci n.</text>
+	</string>
+	<string id="bar_dolg_zavskald_reward_0">
+		<text>Estoy aqu  por negocios.</text>
+	</string>
+	<string id="bar_dolg_zavskald_reward_1">
+		<text> Debo suponer que quieres algo de m ?</text>
+	</string>
+	<string id="bar_dolg_zavskald_reward_11">
+		<text>Me he cargado a un cerdo de camino hacia aqu . Dicen que vale su peso en oro.</text>
+	</string>
+	<string id="bar_dolg_zavskald_reward_111">
+		<text>He o do que disparaste a Borov. Mereces algo de dinero y un arma decente por eso.  Haz justicia a tu nueva arma!</text>
+	</string>
+	<string id="bar_dolg_zavskald_reward_1111">
+		<text>No te preocupes por eso.</text>
+	</string>
+	<string id="bar_dolg_zavskald_reward_12">
+		<text>Tuve una "charla" con Tirano, de los mercenarios. Admiti  su error y prometi  portarse bien en el futuro. Estoy seguro de que no romper  su palabra: los muertos no mienten.</text>
+	</string>
+	<string id="bar_dolg_zavskald_reward_121">
+		<text>Tirano era realmente insoportable. Me alegro de que nos libraras de  l. Aqu  tienes tu recompensa, nuestra marca de la casa: una Groza OC-14. </text>
+	</string>
+	<string id="bar_dolg_zavskald_reward_1211">
+		<text>No est  mal. Me tengo que ir a seguir con lo mismo. Nos vemos.</text>
+	</string>
+	<string id="bar_dolg_zavskald_reward_13">
+		<text> Es que Voronin no te cont  nada?</text>
+	</string>
+	<string id="bar_dolg_zavskald_reward_131">
+		<text> Caramba, enhorabuena! Matar al l der de Libertad es toda una haza a. Lo que dar a por ser tan duro como t .</text>
+	</string>
+	<string id="bar_dolg_zavskald_reward_1311">
+		<text>Haz mucho ejercicio, c mete tus cereales y haz caso a tu madre. Gracias por el material nuevo. Me voy.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_0">
+		<text>Me gustar a saber algo.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_1">
+		<text> Qu  quieres saber?</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_11">
+		<text> Qui n eres, y c mo acabaste aqu ?</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_111">
+		<text>Me llamo Kruglov. Soy bi logo y estudio la Zona. Ayer, por ejemplo, encontr  un animal de particular inter s: Antropomorfus Dendromutantus Vulgaris. Me dedico a buscar y documentar especies nuevas de animales mutantes, sus caracter sticas y rasgos distintivos. La informaci n se estudia en profundidad y despu s se transmite al mundo exterior. Y, por supuesto, algo le llega al tabernero. Mis descubrimientos han ayudado a salvar las vidas de muchos stalkers. Llevaba los resultados de mi  ltima investigaci n al laboratorio que hay cerca del lago Yantar cuando el helic ptero fue atacado.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_12">
+		<text>Cu ntame algo sobre la Zona.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_121">
+		<text>La Zona es un preciado regalo para la humanidad. Por supuesto, es imposible que alguien viva all  debido a los altos niveles de radiaci n, las anomal as y los mutantes agresivos. Todas estas cosas son extremadamente peligrosas, pero tambi n tienen un gran valor cient fico. La Zona es casi un experimento natural, un tesoro para los cient ficos. Si se estudiara a fondo la Zona, los conocimientos de la humanidad alcanzar an cotas inimaginables. La tecnolog a, la medicina, nuevas plantas (con fines m dicos y comestibles), la biotecnolog a, el remedio a enfermedades incurables...  cualquier cosa! Quiz  podr amos resolver el problema del hambre en todo el planeta.  Si la gente no se entrometiese, la ciencia conducir a a la humanidad a una nueva era dorada!</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_1211">
+		<text>Los de Deber no opinan lo mismo, e incluso los de Libertad no parecen querer ayudarte.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_12111">
+		<text>Eres simplemente incapaz de imaginar el contexto. Tus problemas inmediatos te parecen mucho m s importantes que el futuro de la humanidad.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_1212">
+		<text>Puede que el estudio de la Zona sirva de algo.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_12121">
+		<text> Tambi n entiendes eso? Es estupendo descubrir que algunos de vosotros no sois gente simple y con prejuicios. Siempre he dicho que es importante valorar un tema desde una perspectiva amplia, para as  distanciarnos de las simples medidas humanas.  Aunque la Zona haya hecho da o a la humanidad, tambi n puede sernos muy  til!</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_13">
+		<text> Por qu  buscan los mercenarios esta informaci n? </text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_131">
+		<text>Espero que no te ofenda, pero muchos stalkers son como cr os. Se toman demasiado en serio sus descubrimientos. Solo piensa en todas esas leyendas sobre un monolito que concede todo lo que le pides.  Qu  gracia! El problema es que esos cr os juegan con armas reales que matan. La gente infantil se enfada a menudo porque alguien no comparte todo con ellos, incluida la informaci n que no les concierne. No se cortan en usar la fuerza, disparan sin pensar y matan a los que estudian la Zona. Piensan que esta informaci n les servir  para encontrar el camino hasta el centro de la Zona.  Son idiotas, idiotas peligrosos e ingenuos! </text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_14">
+		<text>Busco el laboratorio X16.  Puedes decirme d nde est ?</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_141">
+		<text> El laboratorio X16? Um... Sajarov mencion  algo as  de pasada, pero no recuerdo exactamente lo que dijo. Quiz s ser a mejor que le preguntases t  mismo... Ahora est  en el laboratorio m vil del lago Yantar.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_give_info_dp_15">
+		<text>Por desgracia, tengo que irme. Buena suerte.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_101">
+		<text> Marcado, detenlos o nos matar n!</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_1011">
+		<text>No te muevas. Nos ocuparemos de ellos.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_10111">
+		<text>Vale.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_1012">
+		<text> En marcha! Intentaremos atravesarlo...</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_10121">
+		<text>D monos prisa.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_11">
+		<text> Stalker, te lo suplico! Volv amos de Yantar cuando los mercenarios derribaron nuestro helic ptero. He o do que buscan informaci n, pero s  que nos matar n. Ay dame a llegar al lago y te contar  todo lo que se del Cauterizador cerebral. El tabernero te pagar  bien por esa informaci n.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_111">
+		<text>Vale.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_1111">
+		<text>Gracias, amigo. No soy muy buen guerrero, pero conozco el camino, as  que yo ir  delante y t  nos cubrir s. </text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_112">
+		<text>No. Ap  atelas t  solo para salir de aqu .</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_1121">
+		<text>No. S  que no lo dices en serio. Nunca lograr  salir de aqu  solo. Si cambias de idea, estar  aqu ... si sigo con vida.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_21">
+		<text>Deprisa, hay que salir de aqu  r pido.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_31">
+		<text> Uf!  Estamos a salvo?  Por fin! Muchas gracias por tu ayuda. Estoy en deuda contigo, pero por ahora acepta esta unidad de informaci n. Contiene los resultados de mi  ltima expedici n. Estoy seguro que el tabernero te pagar a bien por ella.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_311">
+		<text>S , estamos aqu .</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_3111">
+		<text>Marcado, si visitas nuestro laboratorio m vil, te daremos un traje de cient fico.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_31111">
+		<text>Veremos.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_41">
+		<text>Hola, stalker.  Perm teme expresarte mi gratitud en nombre de toda la ciencia!</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_51">
+		<text> Marcado, detenlos o nos matar n!</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_511">
+		<text>No te muevas. Nos ocuparemos de ellos.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_5111">
+		<text>Vale.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_512">
+		<text> En marcha! Intentaremos pasar...</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_5121">
+		<text> Vamos!</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_61">
+		<text> Marcado, detenlos o nos matar n!</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_611">
+		<text>No te muevas. Nos ocuparemos de ellos.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_6111">
+		<text>De acuerdo, esperar  aqu .</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_612">
+		<text> En marcha! Intentaremos pasar...</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_6121">
+		<text>De acuerdo, d monos prisa.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_71">
+		<text>Marcado, ten cuidado con el fuego. Mi traje me proteger , pero t  har as mejor en evitarlo.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_711">
+		<text>Gracias por el consejo.</text>
+	</string>
+	<string id="bar_ecolog_crush_professor_start_91">
+		<text>Deprisa, Marcado. No es momento de hablar.</text>
+	</string>
+	<string id="bar_ecolog_dialog_11">
+		<text>Stalker, habla con el profesor Kruglov y ay dale a salir.</text>
+	</string>
+	<string id="bar_ecolog_dialog_21">
+		<text>Se acab .  Han matado a Kruglov!</text>
+	</string>
+</string_table>

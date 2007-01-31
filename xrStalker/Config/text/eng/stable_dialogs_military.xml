@@ -70,7 +70,7 @@
 		<text>And what if you cut to the chase?</text>
 	</string>
 	<string id="mil_cook_common2_205">
-		<text>Hey, relax! Hold on… well… it's just a normal place! A quiet one. All good, all around. Yeah…you relax, alight? Don't get all worked up…</text>
+		<text>Hey, relax! Hold on… well… it's just a normal place! A quiet one. All good all around. Yeah…you relax, alight? Don't get all worked up…</text>
 	</string>
 	<string id="mil_cook_common3_0">
 		<text>And who might you be?</text>
@@ -94,7 +94,7 @@
 		<text>I got it.</text>
 	</string>
 	<string id="mil_cook_common3_307">
-		<text>French bread… ketchup… eggs… brown bread… cheese. What have you. Wieners, too! And sausages! Fowl… cold, not flying.</text>
+		<text>French bread… ketchup… eggs… brown bread… cheese, what have you. Wieners, too! And sausages! Fowl… cold, not flying.</text>
 	</string>
 	<string id="mil_cook_common3_308">
 		<text>OK, fine, I understand! Tell me your name at least.</text>
@@ -214,13 +214,13 @@
 		<text>Let me look…</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_3_0">
-		<text>OK… this will be the last one, aight?... That's all I can handle tonight…</text>
+		<text>OK… this will be the last one, alright?... That's all I can handle tonight…</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_3_1">
 		<text>Give it h-h-h-eee… hheere!</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_3_2">
-		<text>Whoa… look at you… Did you consum---mate all of that on your own?...</text>
+		<text>Whoa… look at you… Did you drink all of that on your own?...</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_3_3">
 		<text>Hic! Tha-a-at, bro, is the bbb... bottom! Mmmm… Hhhhhm…</text>
@@ -259,7 +259,7 @@
 		<text>Nah… that you can't… anything you want, friend, but not that… No can do!</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_2_4">
-		<text>Umm, ok… I, umm… didn't mean nothing! Just asked…</text>
+		<text>Umm, ok… I, umm… didn't mean anything by it! Just asking…</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_3_0">
 		<text>Hic! Bulldog 6, huh?</text>
@@ -394,7 +394,7 @@
 		<text>What do I have to do?</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_507">
-		<text>Have a chat with the other snipers while we deal with these bastards. I can see you're good at that kind of thing.</text>
+		<text>Take care of the other snipers while we deal with these bastards. I can see you're good at that kind of thing.</text>
 	</string>
 	<string id="mil_dolg_skull_dialog_5070">
 		<text>Some other time.</text>
@@ -430,7 +430,7 @@
 		<text>Three assholes down, just like that! You came just in time: didn't blow our cover and came out safe and sound. By the way, I think no one has to know about this, eh?</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_1">
-		<text>I concur.</text>
+		<text>I don't think so.</text>
 	</string>
 	<string id="mil_dolg_soldier_dialog_2">
 		<text>Perfect. Are you looking for a way to earn some dough, stalker?</text>
@@ -475,7 +475,7 @@
 		<text>I will.</text>
 	</string>
 	<string id="mil_freedom_commander_1003">
-		<text>Great! Go to the tower, there's a Dragunov and a bunch of ammo. Pick them off from above and don't come down, or you run the risk of getting it from our own guys. Is the assignment clear?</text>
+		<text>Great! Go to the tower, there's a sniper rifle and a bunch of ammo. Pick them off from above and don't come down, or you run the risk of getting it from our own guys. Is the assignment clear?</text>
 	</string>
 	<string id="mil_freedom_commander_1004">
 		<text>As clean as a whistle.</text>
@@ -565,7 +565,7 @@
 		<text>What problem?</text>
 	</string>
 	<string id="mil_guard_arsenal_dialog_2002">
-		<text>Don't sweat, it's nothing terrible. The lock is jammed, that's all. If you really can't wait, just shoot it to pieces, I'll replace it later.</text>
+		<text>Don't sweat it, it's nothing terrible. The lock is jammed, that's all. If you really can't wait, just shoot it to pieces, I'll replace it later.</text>
 	</string>
 	<string id="mil_guard_arsenal_dialog_2003">
 		<text>I see.</text>
@@ -574,7 +574,7 @@
 		<text>Skinflint sent me here to clear off the bloodsuckers.</text>
 	</string>
 	<string id="mil_hunter_dialog_101">
-		<text>So, stalker, what brought you to this sinister place? My advice is - run for your life before it's too late!</text>
+		<text>So, stalker, what brought you to this sinister place? My advice is run for your life before it's too late!</text>
 	</string>
 	<string id="mil_hunter_dialog_2">
 		<text>Ahh, now that's another matter… Hell knows what's going on here! A couple of our folks went into the village and never came back. Heck, we're not keen on dying yet! We're sitting here, deciding what to do next.</text>
@@ -586,7 +586,7 @@
 		<text>Meaning?</text>
 	</string>
 	<string id="mil_hunter_dialog_203">
-		<text>We were sitting around, looking around, and there you go barging in, pissed drunk! And you barge in right into the village, right into those bloodsuckers! Good thing we were there to put some brakes on you and make you sleep it off.</text>
+		<text>We were just sitting around and then you barge in piss drunk! And you barge right into the village, right into those bloodsuckers! Good thing we were there to put some brakes on you and make you sleep it off.</text>
 	</string>
 	<string id="mil_hunter_dialog_204">
 		<text>And what are you doing here?</text>
@@ -601,10 +601,10 @@
 		<text>So? How did it go?</text>
 	</string>
 	<string id="mil_hunter_dialog_302">
-		<text>I eradicated them.</text>
+		<text>I got rid of them.</text>
 	</string>
 	<string id="mil_hunter_dialog_303">
-		<text>Wow! Dude, you rock! Heck, you came out alive, so the next round of drinks is on you!</text>
+		<text>Wow! You rock! Heck, you came out alive, so the next round of drinks is on you!</text>
 	</string>
 	<string id="mil_hunter_dialog_304">
 		<text>Thank you.</text>
@@ -721,7 +721,7 @@
 		<text>Thank you.</text>
 	</string>
 	<string id="mil_leader_start_dialog_10001">
-		<text>Since you helped our guys at the Barrier, you can count on getting some rest on our territory, as well as our help. Oh, and my personal appreciation - a bit of legal tender for you. From this moment, I'm enlisting you in our group.</text>
+		<text>Since you helped our guys at the Barrier, you can count on getting some rest on our territory, as well as our help. Oh, and my personal appreciation - a bit of legal tender for you - from this moment on, I'm enlisting you in our group.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1001">
 		<text>Hey, stalker. What do you need?</text>
@@ -736,7 +736,7 @@
 		<text>I saw a group of Duty members in a farmstead near your base. About eight men, well equipped.</text>
 	</string>
 	<string id="mil_leader_start_dialog_11001">
-		<text>Why the hell did you split from the Barrier? Bugger off and don't let me catch sight of you near my base ever again.</text>
+		<text>Why the hell did you split from the Barrier? Get out of here and don't let me catch sight of you near my base ever again.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1101">
 		<text>Damn, these punks just won't settle down! Fine, we'll have to teach them a lesson. Hey, stalker, want to help us for a reward? Talk to Max, our chief. You two will get a crew together and root out those suckers.</text>
@@ -979,7 +979,7 @@
 		<text>OK.</text>
 	</string>
 	<string id="mil_patrol_dialog1_0">
-		<text>Mate, you're in the Freedom base! Relax, make yourself at home!</text>
+		<text>Man, you're in the Freedom base! Relax, make yourself at home!</text>
 	</string>
 	<string id="mil_patrol_dialog1_1">
 		<text>I see.</text>
@@ -1033,7 +1033,7 @@
 		<text>Got it.</text>
 	</string>
 	<string id="mil_screw_dialog_1000">
-		<text>You got something that's broken, mate?</text>
+		<text>You got something that's broken, man?</text>
 	</string>
 	<string id="mil_screw_dialog_1001">
 		<text>Broken?</text>
@@ -1117,7 +1117,7 @@
 		<text>Go on.</text>
 	</string>
 	<string id="mil_trader_dialog_3007">
-		<text>A couple of guys went to the village and didn't come back, and the other three are just sitting there on the outskirts. If you destroy the bloodsuckers, I'll give you a Crystal. Do you agree?</text>
+		<text>A couple of guys went to the village and didn't come back, and the other three are just sitting there on the outskirts. If you destroy the bloodsuckers, I'll give you a Crystal. What do you say?</text>
 	</string>
 	<string id="mil_trader_dialog_30071">
 		<text>Not right now.</text>
@@ -1324,7 +1324,7 @@
 		<text>Go to the main building and you'll find it on the first floor.</text>
 	</string>
 	<string id="mil_zoneguard_dialog_6">
-		<text>Whasssup, rambling man? Looking to drop in at our place, huh?</text>
+		<text>Whassup, rambling man? Looking to drop in at our place, huh?</text>
 	</string>
 	<string id="mil_zoneguard_dialog_601">
 		<text>Something like that.</text>

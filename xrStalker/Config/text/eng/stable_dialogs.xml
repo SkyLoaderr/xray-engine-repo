@@ -22,18 +22,18 @@
 		<text>Sorry, I don't have any.</text>
 	</string>
 	<string id="actor_help_wounded_131">
-		<text>So how do you go around the Zone then? What if you're infected or something? You won't even be able to cure yourself!</text>
+		<text>So how do you go around the Zone then? What if you're infected or something? You won't even be able to heal yourself!</text>
 	</string>
 	<string id="actor_help_wounded_14">
-		<text>Heh, bad luck, man. Sorry but if I give you mine I won't have any left for myself.</text>
+		<text>Sorry man. But if I give you mine I won't have any left for myself.</text>
 	</string>
 	<string id="actor_help_wounded_141">
-		<text>It's your business, dude, but it doesn't do you any credit.</text>
+		<text>It's your business, but it doesn't do you any good.</text>
 	</string>
 	<string id="hello_dialog_2">
 		<text>Hey!</text>
 	</string>
 	<string id="hello_dialog_3">
-		<text>Help me out dude, would you?</text>
+		<text>Help me out, would you?</text>
 	</string>
 </string_table>

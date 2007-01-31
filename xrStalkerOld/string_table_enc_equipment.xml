@@ -135,6 +135,9 @@
 	<string id="Sci2">
 		<text>Научный EXP-4</text>
 	</string>
+	<string id="Vodka">
+		<text>Водка "Казаки"</text>
+	</string>
 	<string id="st_detector">
 		<text>Детектор аномалий</text>
 	</string>
@@ -143,8 +146,5 @@
 	</string>
 	<string id="st_grenade_gd5">
 		<text>Дымовая граната</text>
-	</string>
-	<string id="Vodka">
-		<text>Водка "Казаки"</text>
 	</string>
 </string_table>

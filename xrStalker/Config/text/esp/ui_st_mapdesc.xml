@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="ui_map_desc_mp_agroprom_large">
+		<text>Un lugar extra o. El silencioso edificio tiene sus propios secretos, pero a los stalkers les atraen los numerosos artefactos que se pueden encontrar aqu , a pesar del peligro. Los movimientos r pidos y los disparos precisos te convertir n en el stalker favorito de la dama Fortuna.</text>
+	</string>
+	<string id="ui_map_desc_mp_agroprom_short">
+		<text>Un lugar extra o. El silencioso edificio tiene sus propios secretos, pero a los stalkers les atraen los numerosos artefactos que se pueden encontrar aqu , a pesar del peligro.</text>
+	</string>
+	<string id="ui_map_desc_mp_atp_large">
+		<text>El parque de veh culos se encuentra a la entrada a la Zona. Tractores, autobuses y camiones que nunca volver n a ponerse en marcha. Nunca se han encontrado artefactos, pero el lugar est  plagado de stalkers experimentados que se dedican a cazar novatos y botines de todo tipo. Ponte a cubierto en los edificios y con los equipamientos, y mucho ojo con los enemigos apostados en los tejados.</text>
+	</string>
+	<string id="ui_map_desc_mp_atp_short">
+		<text>El parque de veh culos se encuentra a la entrada a la Zona. Tractores, autobuses y camiones que nunca volver n a ponerse en marcha.</text>
+	</string>
+	<string id="ui_map_desc_mp_bath_large">
+		<text>Este lugar ejerce una extra a atracci n sobre la gente.  Qui n construy  la piscina experimental y con qu  prop sito? Nunca conoceremos la respuesta. Aqu  no hay artefactos. Solo los restos de extra as m quinas y dispositivos atraen aqu  a los stalkers. No pierdas de vista los tejados y recuerda que el nivel de radiaci n es muy alto en esta zona.</text>
+	</string>
+	<string id="ui_map_desc_mp_bath_short">
+		<text>Este lugar ejerce una extra a atracci n sobre la gente.  Qui n construy  la piscina experimental y con qu  prop sito? Nunca conoceremos la respuesta.</text>
+	</string>
+	<string id="ui_map_desc_mp_factory_large">
+		<text>L gubre f brica abandonada. El n mero de stalkers que han perdido la vida tras sus muros es incalculable. Est  plagada de anomal as, pero sus artefactos siguen atrayendo a los stalkers como un im n.  Cuidado con los niveles de radiaci n!</text>
+	</string>
+	<string id="ui_map_desc_mp_factory_short">
+		<text>L gubre f brica abandonada. El n mero de stalkers que han perdido la vida tras sus muros es incalculable.</text>
+	</string>
+	<string id="ui_map_desc_mp_garbage_large">
+		<text>Es una secci n del enorme vertedero donde se desecharon montones de basura radiactiva tras el desastre del 86... Gr as ruinosas, maquinaria, etc. Se pueden ver los restos de las antiguas instalaciones y un gran hangar. Est  cerca de la entrada de la Zona y hay artefactos por todas partes. Hasta all  se acercan los stalkers que buscan un bot n f cil.</text>
+	</string>
+	<string id="ui_map_desc_mp_garbage_short">
+		<text>Es una secci n del enorme vertedero donde se desecharon montones de basura radiactiva tras el desastre del 86... Gr as ruinosas, maquinaria, etc.</text>
+	</string>
+	<string id="ui_map_desc_mp_lost_village_large">
+		<text>Es un pueblo desierto, dejado de la mano de dios, que se encuentra en las entra as de la Zona. Su peque o lago poco profundo y del color del  xido rebosa de coches averiados e infunde un temor inconsciente en los corazones de los exploradores de la Zona. Ten cuidado con los francotiradores y recuerda que en la Zona siempre triunfan los valientes.</text>
+	</string>
+	<string id="ui_map_desc_mp_lost_village_short">
+		<text>Es un pueblo desierto, dejado de la mano de dios, que se encuentra en las entra as de la Zona. Su peque o lago poco profundo y del color del  xido rebosa de coches averiados e infunde un temor inconsciente en los corazones de los exploradores de la Zona.</text>
+	</string>
+	<string id="ui_map_desc_mp_military_1_large">
+		<text>Base militar abandonada, llena de camiones y veh culos blindados abandonados. Hay un centro de mando y unos barracones en ruinas. Pero no todo es lo que parece. La base est  llena de artefactos y el enemigo acecha detr s de cada esquina.  Demuestra tu valor y tendr s tu recompensa!</text>
+	</string>
+	<string id="ui_map_desc_mp_military_1_short">
+		<text>Base militar abandonada, llena de camiones y veh culos blindados abandonados. Hay un centro de mando y unos barracones en ruinas.</text>
+	</string>
+	<string id="ui_map_desc_mp_military_2_large">
+		<text>Esta vieja aldea es un lugar siniestro y una trampa mortal. Si has logrado llegar hasta aqu  a pesar de todos los riesgos..., prep rate para un muerte repentina. Aqu  no hay lugares seguros; utiliza la mira y el silenciador para mantenerte de una sola pieza.</text>
+	</string>
+	<string id="ui_map_desc_mp_military_2_short">
+		<text>Esta vieja aldea es un lugar siniestro y una trampa mortal. Si has logrado llegar hasta aqu  a pesar de todos los riesgos..., prep rate para un muerte repentina.</text>
+	</string>
+	<string id="ui_map_desc_mp_prypiat_large">
+		<text>Ciudad de Pripyat, antiguo lugar de residencia de los trabajadores de la central nuclear, o lo que queda de ella. Las ruinas de este esqueleto industrial albergan peligros inmediatos. Deber s andar con precauci n para seguir con vida.</text>
+	</string>
+	<string id="ui_map_desc_mp_prypiat_short">
+		<text>La ciudad de Pripyat no est  lejos de la central nuclear: la zona 0 de la cat strofe de Chern bil.</text>
+	</string>
+	<string id="ui_map_desc_mp_railraod_short">
+		<text>Peque a estaci n de ferrocarril de la f brica de Rostok.</text>
+	</string>
+	<string id="ui_map_desc_mp_railroad_large">
+		<text>Peque a estaci n de ferrocarril de la f brica de Rostok. Los vagones de tren oxidados y las locomotoras diesel ahora descansan en una bifurcaci n eterna de la carretera. Los numerosos artefactos que se encuentran aqu  atraen a stalkers desesperados de toda la Zona.</text>
+	</string>
+	<string id="ui_map_desc_mp_rostok_large">
+		<text>Bajo monta as de chatarra y tras muros de hormig n, se encuentra esta f brica, envuelta en un silencio inquietante. En el siglo pasado herv a de actividad, con los trabajadores corriendo a sus puestos y los altavoces bombardeando consignas... Ahora todo ha terminado.</text>
+	</string>
+	<string id="ui_map_desc_mp_rostok_short">
+		<text>Un profundo silencio envuelve esta f brica abandonada, tras sus muros de hormig n y bajo monta as de chatarra.</text>
+	</string>
+	<string id="ui_map_desc_mp_workshop_large">
+		<text>Alrededores de la f brica de Rostok antes de la llegada de Deber. A pesar de todo, esta zona ruinosa es muy rica en artefactos. En los hangares y almacenes vac os aguardan cientos de peligros a cada paso. Ten mucho cuidado y no pierdas de vista la torre blanca.</text>
+	</string>
+	<string id="ui_map_desc_mp_workshop_short">
+		<text>Alrededores de la f brica de Rostok antes de la llegada de Deber. A pesar de todo, esta zona ruinosa es muy rica en artefactos.</text>
+	</string>
+</string_table>

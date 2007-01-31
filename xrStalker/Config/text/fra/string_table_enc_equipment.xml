@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="Antirad">
+		<text>M dicaments antirad</text>
+	</string>
+	<string id="Arm-heavy">
+		<text> quipement lourd de Stalker</text>
+	</string>
+	<string id="Arm-light">
+		<text> quipement l ger de Stalker</text>
+	</string>
+	<string id="Arm-medium">
+		<text> quipement interm diaire de Stalker</text>
+	</string>
+	<string id="bandage">
+		<text>Bandages</text>
+	</string>
+	<string id="Binocul">
+		<text>Jumelles</text>
+	</string>
+	<string id="Bread">
+		<text>Pain</text>
+	</string>
+	<string id="cit_deadcity_maps_desc">
+		<text>Carte r pertoriant la ville morte, y compris les positions des Mercenaires</text>
+	</string>
+	<string id="cit_deadcity_maps_name">
+		<text>Carte de la ville morte</text>
+	</string>
+	<string id="cit_doctors_key_desc">
+		<text>La cl  d'acc s   une planque secr te de Pripyat du Doc</text>
+	</string>
+	<string id="cit_doctors_key_short_desc">
+		<text>Cl  du Doc</text>
+	</string>
+	<string id="Conserva">
+		<text>D lice du touriste</text>
+	</string>
+	<string id="Detect1">
+		<text>D tecteur anomalies</text>
+	</string>
+	<string id="Devic">
+		<text>Appareils</text>
+	</string>
+	<string id="device-pda">
+		<text>PDA</text>
+	</string>
+	<string id="device-torch">
+		<text>Lampe de poche</text>
+	</string>
+	<string id="enc_equipment_armors_arm-heavy">
+		<text>Combinaison de protection. Poids : 18kg. Fiche technique : prot ge le corps de la gel e, de la flore ardente, de la plupart des anomalies et d g ts physiques. Le torse et le dos sont prot g s par des plaques bio-m talliques int gr es. La combinaison est  quip e d'un casque herm tique en plastique renforc e muni de deux bouteilles d'oxyg ne. Remarque : cette combinaison se d chire et se d grade en cas d'utilisation prolong e.</text>
+	</string>
+	<string id="enc_equipment_armors_arm-light">
+		<text>Combinaison de protection. Poids : 8 kg. Fiche technique : prot ge le corps contre les petites anomalies et d g ts physiques. Munie d'un masque   oxyg ne. Remarque : cette combinaison se d chire et se d grade en cas d'utilisation prolong e.</text>
+	</string>
+	<string id="enc_equipment_armors_arm-medium">
+		<text>Combinaison de protection. Poids : 12 kg. Fiche technique : prot ge la personne qui la porte de la gel e, de la flore ardente, de nombreuses anomalies et d g ts physiques. Munie d'un casque herm tique et d'une bouteille d'oxyg ne. Remarque : cette combinaison se d chire et se d grade en cas d'utilisation prolong e.</text>
+	</string>
+	<string id="enc_equipment_armors_sci2">
+		<text>Combinaison pressuris e avec casque herm tique. Poids : 11 kg. Fiche technique : prot ge le corps contre le feu, les attaques acides, le gaz, les diff rentes anomalies, la flore ardente et les d g ts m caniques. Munie de deux bouteilles d'oxyg ne. Remarque : cette combinaison se d chire et se d grade en cas d'utilisation prolong e.</text>
+	</string>
+	<string id="enc_equipment_devic_binocul1">
+		<text>Jumelles militaires</text>
+	</string>
+	<string id="enc_equipment_devic_detect1">
+		<text>Un dispositif qui d tecte les champs et les perturbations des anomalies. Une alerte sonore signale leur pr sence. Il doit  tre attach    la ceinture et activ  pour fonctionner.</text>
+	</string>
+	<string id="enc_equipment_devic_device-pda1">
+		<text>Personal Digital Assistant, litt ralement assistant num rique personnel : accessoire indispensable dans la Zone.</text>
+	</string>
+	<string id="enc_equipment_devic_device-torch1">
+		<text>Puissante lampe de poche, tr s utile dans les endroits   faible luminosit .</text>
+	</string>
+	<string id="enc_equipment_devic_device-torch1_m1">
+		<text>Puissante lampe de poche. Temps de rechargement des batteries r duit gr ce   un transformateur modernis .</text>
+	</string>
+	<string id="enc_equipment_energydrink">
+		<text>Cette excellente boisson  nerg tique contient de la caf ine, de la taurine et un savant m lange de vitamines de vitamines rajeunissantes. Un excellent rem de en cas de coup de pompe !</text>
+	</string>
+	<string id="enc_equipment_food_bread1">
+		<text>Difficile de dire qui a r ussi   concocter ce pain dans la Zone, mais il n'est pas contamin  et tout   fait comestible. Du moins, aucun des Stalkers ne s'en est plaint.</text>
+	</string>
+	<string id="enc_equipment_food_conserva1">
+		<text>De la nourriture en conserve qui provient d'un entrep t militaire d valis  par des Stalkers. La date de p remption n'est pas d pass e.</text>
+	</string>
+	<string id="enc_equipment_food_kolbasa1">
+		<text>Cette saucisse   base de poulet et de soja est souvent au menu des Stalkers au petit-d jeuner, au d jeuner et au d ner... faute de mieux.</text>
+	</string>
+	<string id="enc_equipment_food_vodka1">
+		<text>La Vodka fabriqu e par GSC descend facilement et r duit consid rablement les effets des radiations.   boire avec mod ration, tout de m me !.</text>
+	</string>
+	<string id="enc_equipment_medi_antirad1">
+		<text>R duit les effets des radiations.</text>
+	</string>
+	<string id="enc_equipment_medi_bandage1">
+		<text>Bandages. Ils aident   stopper les saignements.</text>
+	</string>
+	<string id="enc_equipment_medi_medkit1">
+		<text>Ce kit m dical universel est utile pour tout genre de blessures plus ou moins graves : les plaies, les br lures, les empoisonnements, etc.</text>
+	</string>
+	<string id="enc_equipment_medi_medkit2">
+		<text>Trousse m dicale con ue pour lutter contre les d g ts physiques et les saignements. Elle comprend un anticoagulant, des antibiotiques, des stimulants immunitaires ainsi que des calmants. </text>
+	</string>
+	<string id="enc_equipment_medi_medkit3">
+		<text>Trousse m dical con ue pour la Zone. Elle permet de soigner les blessures et d' liminer les radionucl ides de l'organisme. Elle emp che le d veloppement de maladies radioactives et diminue la dose de radiations accumul es. </text>
+	</string>
+	<string id="energy_drink_name">
+		<text>Boisson  nerg tique</text>
+	</string>
+	<string id="energy_drink_short_name">
+		<text>Boisson  nerg tique</text>
+	</string>
+	<string id="Equipment">
+		<text>Mat riel/Nourriture</text>
+	</string>
+	<string id="Food">
+		<text>Nourriture</text>
+	</string>
+	<string id="Kolbasa">
+		<text>Saucisse di t tique</text>
+	</string>
+	<string id="Medi">
+		<text>M dicaments</text>
+	</string>
+	<string id="Medkit">
+		<text>Kit m dical</text>
+	</string>
+	<string id="Medkit_army">
+		<text>Kit premiers secours</text>
+	</string>
+	<string id="Medkit_scientific">
+		<text>Kit m dical scient.</text>
+	</string>
+	<string id="Sci2">
+		<text>Combinaison EXP-4</text>
+	</string>
+	<string id="Vodka">
+		<text>La vodka cosaque</text>
+	</string>
+	<string id="st_detector">
+		<text>D tecteur d'anomalies</text>
+	</string>
+	<string id="st_detector_descr">
+		<text>Con u pour d tecter les zones anormales et les foyers de pollution radioactive.</text>
+	</string>
+	<string id="st_grenade_gd5">
+		<text>Grenade fumig ne</text>
+	</string>
+</string_table>

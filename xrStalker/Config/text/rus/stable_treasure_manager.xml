@@ -984,9 +984,6 @@
 	<string id="ros_secret_0025_name">
 		<text>–юкзак</text>
 	</string>
-	<string id="st_found_new_treasure">
-		<text>»нформаци€ о схроне</text>
-	</string>
 	<string id="val_secret_0000_description">
 		<text>ѕод крестом, возле горы, закопал хабара чуток</text>
 	</string>
@@ -1292,5 +1289,8 @@
 	</string>
 	<string id="yan_secret_0013_name">
 		<text>ящик с добром</text>
+	</string>
+	<string id="st_found_new_treasure">
+		<text>»нформаци€ о схроне</text>
 	</string>
 </string_table>

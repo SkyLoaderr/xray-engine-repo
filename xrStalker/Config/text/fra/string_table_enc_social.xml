@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="Army">
+		<text>Arm e</text>
+	</string>
+	<string id="Bandits">
+		<text>Bandits</text>
+	</string>
+	<string id="Duty">
+		<text>Faction du Devoir</text>
+	</string>
+	<string id="enc_social_military_army">
+		<text>Les soldats de l'arm e r guli re prot gent les alentours de la Zone, patrouillent dans le p rim tre et tuent les mutants et les pillards. \n Les Spetsnaz sont des troupes d' lite, r parties dans la Zone pour mener des op rations de sauvetage et d'autres missions sp ciales.</text>
+	</string>
+	<string id="enc_social_military_milstalkers">
+		<text>Soldats ayant suivi un entra nement sp cial   apr s avoir servi dans la Zone ou Stalkers ayant volontairement sign  un contrat avec l'arm e. G n ralement dot s de divers  quipements et bien arm s. Principalement utilis s pour  tudier les causes et les effets de la catastrophe et de cartographier la zone. Ils peuvent travailler seuls ou en petits d tachements de cinq individus maximum. Les Stalkers militaires refuse de se faire approcher des Stalkers normaux et tirent   vue.</text>
+	</string>
+	<string id="enc_social_scientists_mobile-groups">
+		<text>Effac </text>
+	</string>
+	<string id="enc_social_scientists_mobile-labs">
+		<text>Un labo mobile ressemble   un petit bunker blind  dot  de minuscules fen tres en verre teint . Ce labo peut encaisser des d g ts consid rables et, gr ce   ses syst mes vitaux d'une grande fiabilit , fonctionner en totale autonomie pendant plusieurs mois. Le bunker est achemin  dans la Zone par h licopt re. Son personnel n'accepte jamais de visiteurs au-del  de la chambre ext rieure et, d s lors, aucun Stalker n'y est jamais entr .</text>
+	</string>
+	<string id="enc_social_stalker-clans_bandits">
+		<text>Les bandits sont des membres d'un r seau criminel qui s'est install  dans la Zone pour diff rentes raisons : pour gagner de l'argent en vendant des artefacts, pour  chapper   la loi, pour acheter ou vendre des armes. La Zone fourmille de malfaiteurs, des voyous les plus inoffensifs aux criminels les plus endurcis. M me s'ils ne se regroupent pas en bande unie et organis e dans la Zone, ces bandits posent de s rieux probl mes aux Stalkers classiques.</text>
+	</string>
+	<string id="enc_social_stalker-clans_duty">
+		<text>Les membres de ce groupe tr s paramilitaire sont connus pour leur discipline et leur code de conduite. Seul le groupe du Devoir refuse de vendre au monde ext rieur des objets rares trouv s dans la Zone. Selon les rumeurs, tous les artefacts r cup r s par les membres du groupe sont donn s aux scientifiques. Chaque membre consid re que son r le est de prot ger le monde de la Zone. La plupart des op rations de la faction du Devoir ont pour objectif de d truire les monstres, ce qui rend un fier service aux Stalkers. Depuis longtemps, la faction du Devoir est en guerre avec celle de la Libert .</text>
+	</string>
+	<string id="enc_social_stalker-clans_freedom">
+		<text>Ces anarchistes et casse-cou revendiquent un acc s libre   la Zone et se retrouvent donc tout le temps en conflit avec l'arm e, les Stalkers militaires et la faction du Devoir. Pour ces combattants de la Libert , les informations sur la Zone ne doivent pas  tre cach es   l'humanit . Ils remettent en question le monopole de l' tat sur les secrets et les merveilles dont rec le la Zone.</text>
+	</string>
+	<string id="enc_social_stalker-clans_killers">
+		<text>Ils repr sentent le groupe le plus clandestin de la Zone. Il est si secret que son existence n'est m me pas prouv e ! Il para t que certains utilisent leurs services de vrais professionnels, capables de g rer efficacement n'importe quel Stalker et d' liminer un petit groupe. Ils seraient m me fabuleusement r compens s en cash ou en artefacts. L'emplacement de leur base reste inconnu, mais elle se trouve certainement en plein centre de la Zone.</text>
+	</string>
+	<string id="enc_social_stalker-clans_loners">
+		<text>Les Stalkers solitaires explorent la Zone tout seuls. La plupart des Stalkers travaillent ainsi, car devenir membre d'un groupe prend du temps et le temps est pr cieux. Et certains Stalkers appr cient simplement la solitude et l'ind pendance.</text>
+	</string>
+	<string id="enc_social_stalker-clans_monolith">
+		<text>Ce groupe a beaucoup de caract ristiques communes avec une secte religieuse. Ses membres croient en l'existence du Monolithe, un cristal extraterrestre au c ur de la Zone qui serait d'une importance fondamentale dans l' volution des esp ces. La plupart des Stalkers d daignent les adeptes du Monolithe et les prennent pour des fous. Depuis le d but, le groupe tente d'interdire l'acc s au centre de la Zone par crainte des mauvaises intentions des Stalkers concernant le Monolithe. D'apr s les rumeurs, le groupe poss de une grande base pr s du centre de la Zone, mais son emplacement pr cis n'est connu que de ses membres.</text>
+	</string>
+	<string id="enc_social_stalker-clans_zomstalkers">
+		<text>Pauvres  mes soumise   une exposition prolong e dans le camp de Yantar et dans quelques autres secteurs. Les Stalkers imprudents deviennent vite fous et se transforment en cadavres ambulants. Beaucoup de ces cadavres errent dans la Zone et certains atteignent m me le p rim tre. Quoiqu'il en soit, il est impossible de leur venir en aide, puisque le processus de destruction est irr versible. M me si des Stalkers zombifi s sont encore capables d'utiliser une arme, ils sont tout de m me stupides et ils marmonnent des choses absurdes. Les Stalkers zombifi s perdent petit   petit leurs capacit s et deviennent des zombies. Ils sont g n ralement tr s agressifs et repr sentent une s rieuse menace quand ils se retrouvent en grand nombre.</text>
+	</string>
+	<string id="Freedom">
+		<text>Faction de la Libert </text>
+	</string>
+	<string id="Killers">
+		<text>Mercenaires</text>
+	</string>
+	<string id="Loners">
+		<text>Stalkers solitaires</text>
+	</string>
+	<string id="Military">
+		<text>Unit s militaris es</text>
+	</string>
+	<string id="Milstalkers">
+		<text>Stalkers militaires</text>
+	</string>
+	<string id="Mobile-groups">
+		<text>Groupes de recherche</text>
+	</string>
+	<string id="Mobile-labs">
+		<text>Labo scientifique mobile</text>
+	</string>
+	<string id="Monolith">
+		<text>Faction Monolithe</text>
+	</string>
+	<string id="Scientists">
+		<text>Scientifiques</text>
+	</string>
+	<string id="Social">
+		<text>Factions</text>
+	</string>
+	<string id="Stalker-clans">
+		<text>Clans de Stalkers</text>
+	</string>
+	<string id="Zomstalkers">
+		<text>Stalkers zombifi s</text>
+	</string>
+</string_table>

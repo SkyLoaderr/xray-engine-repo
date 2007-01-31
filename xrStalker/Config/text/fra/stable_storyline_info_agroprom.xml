@@ -1,0 +1,48 @@
+	<string id="agr_find_ghost_descr">
+		<text>… ai d couvert qu'un des types de Strelok s'appelle Spectre. Enfin un indice. Si je r ussis   trouver ce Spectre, je r ussirai   trouver Strelok.</text>
+	</string>
+	<string id="agr_journal_cache">
+		<text>Eh bien, visiblement, la planque m'a mis sur une autre voie. J'ai trouv  une cl  USB contenant ce qui ressemble au journal du groupe de Strelok. Malgr  le peu d'entr es, j'ai r ussi   comprendre que le groupe  tait constitu  de deux autres membres : le Spectre et les Crocs. Ce journal fait  galement mention   un "ami mutuel", mais je ne sais pas s'il faisait parti de ce groupe. Certes, il les a beaucoup aid s. D'apr s l'entr e de Spectre, les Crocs est mort lors de l'embuscade. Et j'ai enfin quelque chose de solide : le nom de quelqu'un qui conna t Strelok – le Spectre. Quant   Strelok, il doit se trouver quelque part au nord de la zone.</text>
+	</string>
+	<string id="agr_journal_krot">
+		<text>Eh bien, cette rencontre avec la Taupe a pay … Il semble que la planque du groupe existe bel et bien et qu'elle se trouve dans les catacombes, sous l'institut... Je vais y aller. Je ne sais pas ce que j'y trouverai… Mais j'esp re que cette planque m'aidera   percer mon propre myst re...</text>
+	</string>
+	<string id="agr_krot_secret_info">
+		<text>... Suis l'escalier en spirale jusqu'  la salle abritant les colonnes. Traverse la pi ce en direction de la sortie et entre dans une grande pi ce avec des tuyaux au plafond. Descends vers la deuxi me sortie, entre dans le tunnel et tourne   gauche. Tout au bout, tu verras un virage   droite. Cherche un trou dans le mur de gauche,   c t  de l' criteau "Ne pas entrer – Danger de mort". C'est l'entr e de la planque de Strelok.</text>
+	</string>
+	<string id="agr_krot_secret_info_name">
+		<text>Planque de Strelok</text>
+	</string>
+	<string id="agr_military_case">
+		<text>\nRapport d'enqu te.\n   usage officiel uniquement.\n Au colonel du Service de S curit  ukrainien V.M. Kruchelnikov, responsable du projet "V RIT ".\n Du capitaine D.F. Maksimenko, \ncommandant du groupe "Recherche-2".\n\n M mo.\n Notre groupe, compos  de 3 enqu teurs et d'une  quipe des forces sp ciales du Service de S curit  ukrainien, a men  des recherches   Agroprom, l'ancien Institut de Recherche pour l'Agriculture sur les sols irradi s, du 12.05.2012 au 25.05.2012. La plupart des appareils et de la documentation  taient manquants, mais les  l ments que nous avons trouv s nous am nent   la conclusion suivante : de 2005   2008, l'Institut n'a pas men  de recherches dans un domaine de sp cialisation officiel. Les r sultats de ses "recherches", envoy s au Minist re de l'Agriculture, ont  t  falsifi s. Simultan ment, la direction de l'Institut, notamment Petr Danilovich Strizh, a continu  de recevoir des financements d' tat, du mat riel et des consommables, ces derniers ayant  t  transf r s vers un laboratoire appel   X18 via des bordereaux d'exp dition contrefaits, ce qui a permis de couvrir l'op ration en indiquant que ces  l ments  taient transf r s vers une autre installation   des fins d'exp rimentation. X18 s'av re  tre un nom de code adopt  par les personnes impliqu es dans cette affaire, car notre base de donn es ne fait pas mention   ce laboratoire. L'analyse des documents trouv s indique que ce laboratoire se trouve   une heure de voiture de l'Institut. Il doit s'agir d'une installation clandestine et je sollicite donc l'implication de notre d partement analytique. Le domaine de recherche du laboratoire n'est pas clair et les documents disponibles ne nous fournissent pas d'indices   ce sujet, mais font r f rence au tristement c l bre professeur Chubko ainsi qu'  un "groupe". Je crois qu'on tient quelque chose et que le d partement analytique va maintenant avoir du pain sur la planche.\n\n Tu trouveras ci-joint un fichier archiv  contenant les bordereaux d'exp dition des consommables et  quipement transf r  vers une installation auxiliaire ainsi qu'un extrait de la correspondance entre Strizh et Chubko.\n\n Capitaine D.F. Maksimenko 26.05.2012\n Au professeur V.M. Chubko. De P.D. Strizh, responsable de l'Institut de Recherche Agroprom, Docteur en sciences agricoles. Cher Vadim Mikhailovich, Comme convenu, j'envoie   notre installation exp rimentale un nouveau lot de consommables et  quipements pour vous aider dans vos recherches, ce qui est indispensable   l'agriculture. Je me suis occup  du financement des exp riences en les d crivant comme les exp riences pilotes de l'Institue, et d s lors, il ne devrait pas y avoir de probl mes avec le Minist re. O  en sont ces exp riences ? Je suis tr s impressionn  par ce que vous m'avez montr  la derni re fois. Cordialement, Docteur P.D. Strizh   P.D. Strizh Je vous suis tr s reconnaissant, Petr Danilovich, nous avons tout re u. Mon  quipe est tr s impressionn e par le spectrom tre laser. Sans vous, j'aurais mis des ann es   obtenir ce mod le. Bien s r, le Minist re de l'Agriculture sera ravi de recevoir NOS r sultats... Vous m'avez bien fait rire ! Les exp riences se poursuivent normalement et la situation a  volu . Venez me voir plus souvent. C'est toujours un plaisir pour moi et ce n'est qu'  une heure de voiture de notre "installation exp rimentale" comme vous l'appelez. Ah, j'allais oublier, j'ai des nouvelles pour vous. Lundi prochain, je d battrai de votre candidature avec le groupe. Je pense qu'il me soutiendra. Cordialement, professeur V.M. Chubko Au professeur V.M. Chubko de P.D. Strizh, responsable de l'Institut de Recherche Agroprom, Docteur en Sciences agricoles Cher Vadim Mikhailovich, Merci pour votre confiance. J'en suis tr s touch  et je ferai tout pour vous satisfaire. Je crois que c'est le r ve de tout scientifique de participer   une telle exp rience et je serai ravi de rejoindre le groupe. Cordialement, P.D. Strizh</text>
+	</string>
+	<string id="agr_military_case_name">
+		<text>Rapport d'enqu te</text>
+	</string>
+	<string id="agr_nii_security_plan">
+		<text>La carte d taille les patrouilles, sentinelles et postes de garde. Le QG se trouve au troisi me  tage de l'Institut et abrite les documents. En journ e, la zone grouille de patrouilles. Celles-ci sont moins nombreuses de nuit et la rel ve des gardes a lieu   23h00.   cette heure l , il n'y a pas beaucoup de monde dans le b timent principal. Si tu veux rejoindre la base, choisis les catacombes ; la porte n' tant pas envisageable.</text>
+	</string>
+	<string id="agr_nii_security_plan_name">
+		<text>Carte de l'Institut de Recherche Agroprom</text>
+	</string>
+	<string id="agr_rats_n_soldiers_text">
+		<text>L'arm e a fort   faire avec tous les rats qui s' chappent des collecteurs. En guise de punition, les soldats sont envoy s dans ces collecteurs.</text>
+	</string>
+	<string id="agr_task_case">
+		<text>Marchand : "Apr s avoir vol  a mallette de l'Institut, apporte-la au Barman. Il tient le Rads 100, le bar des Stalkers qui se trouve   l'endroit de l'ancienne usine de Rostok."</text>
+	</string>
+	<string id="article_agr_krot_sos">
+		<text>SOS, l'arm e flingue un Stalker ! Les gars, si vous m'entendez,   l'aide ! </text>
+	</string>
+	<string id="article_agr_krot_sos_name">
+		<text>Rencontre avec la Taupe</text>
+	</string>
+	<string id="article_agr_krot_sos1">
+		<text>La Taupe : "  l'aide, je vais y passer !"</text>
+	</string>
+	<string id="st_operation_agroprom">
+		<text>L'op ration Agroprom</text>
+	</string>
+	<string id="storyline_gunslinger_flash_info">
+		<text>Message de Spectre : \n \n Strelok, j'ai une mauvaise nouvelle. Les Crocs est mort. Ils nous attendaient au village, pr s des entrep ts, et je crois qu'ils  taient l  depuis un bout de temps. Ils  taient trois. Ils ressemblaient   des neutres. Les Crocs avaient senti leur pr sence. Il avait un sixi me sens. On en a eu deux (s rement des bandits), mais le troisi me  tait plus malin que les autres. Il nous visait avec un Vintar BC   une centaine de m tres de l . Bref, les Crocs n'est plus l . La prochaine fois qu'on ira dans le centre, on sera que tous les deux. Autre chose : ces deux bandits avaient nos descriptions. J'ignore qui veut nous tuer. Ceci dit, il y a un paquet de gens qui ont de quoi nous en vouloir. J'ai laiss  le troisi me s'enfuir - je crois que c' tait un Mercenaire. Il avait une grande balafre sur le visage et des yeux noisette. Je vais essayer de le retrouver. \n Voil  toute l'histoire. Sois vigilant et bonne chance. \n Spectre \n \n   Spectre \n\n "Salut, mon pote. \n Je te laisse des infos, n'essaie pas de me contacter, je crois que quelqu'un me suit. \n </text>
+	</string>

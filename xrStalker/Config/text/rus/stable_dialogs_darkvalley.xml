@@ -93,21 +93,6 @@
 	<string id="val_escort_nap1_dialog_41">
 		<text>Спасибо, за помощь! Что ты хотел узнать ещё?</text>
 	</string>
-	<string id="val_escort_nap1_dialog_4111">
-		<text>Я твой должник, а долги я возвращаю. Идем.</text>
-	</string>
-	<string id="val_escort_nap1_dialog_41111">
-		<text>Отлично. Теперь мы всех порвем.</text>
-	</string>
-	<string id="val_escort_nap1_dialog_4112">
-		<text>Извини, у меня другие планы.</text>
-	</string>
-	<string id="val_escort_nap1_dialog_41121">
-		<text>Что ж, тогда удачи тебе.</text>
-	</string>
-	<string id="val_escort_nap1_dialog_412">
-		<text>Пока.</text>
-	</string>
 	<string id="val_escort_nap1_dialog_61">
 		<text>Ты отказался помочь, когда я просил. Вали отсюда, не о чем нам разговаривать...</text>
 	</string>
@@ -182,5 +167,20 @@
 	</string>
 	<string id="val_sos_dialog_211">
 		<text>Спасибо за информацию.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_4111">
+		<text>Я твой должник, а долги я возвращаю. Идем.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_41111">
+		<text>Отлично. Теперь мы всех порвем.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_4112">
+		<text>Извини, у меня другие планы.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_41121">
+		<text>Что ж, тогда удачи тебе.</text>
+	</string>
+	<string id="val_escort_nap1_dialog_412">
+		<text>Пока.</text>
 	</string>
 </string_table>

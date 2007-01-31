@@ -1,0 +1,51 @@
+	<string id="mil_actor_main_quest_descr">
+		<text>D'apr s le g n ral Voronin, seule la Libert  poss de ce genre d'armes. Comment je me la suis procur e,  a me regarde. On m'a dit qu'il fallait que je fr quente un Stalker de la Libert , un certain Chef. D'apr s le g n ral, il a tendance   boire. Je vais pr voir de la vodka au cas o .</text>
+	</string>
+	<string id="mil_blockpost_job_descr">
+		<text>Il faut   tout prix prot ger la Barri re des attaques  manant du lobotomisateur.</text>
+	</string>
+	<string id="mil_blockpost_job2_descr">
+		<text>Lukash : "Essaie de rejoindre le poste de contr le de la s curit  par la sortie de la For t rouge. Visiblement, ils s'attendent   voir arriver des mutants ou le Monolithe</text>
+	</string>
+	<string id="mil_courier_doc_descr">
+		<text>La Libert  s'est procur e des lance-grenades Bulldog 6. Deux. Il y en a un dans l'arsenal et l'autre, quelque part dans le village.\n\n</text>
+	</string>
+	<string id="mil_courier_job_descr">
+		<text>Lukash : "C'est terrible, il y a une Balance parmi nous… Il s'appelle Pavlik. Il envoie des informations   l'ennemi et  a ne peut pas continuer. Tu vas devoir le suivre jusqu'  la ferme pour savoir   qui il donne ces informations. Il est parti il y a pas longtemps et tu devrais pouvoir le rattraper. Attention, tu peux et tu dois l' liminer, mais pas avant de savoir   qui il donne ces informations. Et lui aussi, tu devras l' liminer."</text>
+	</string>
+	<string id="mil_crazy_flash_info">
+		<text>... Aujourd'hui, on est encore all s au village. C'est toujours la m me chose. \n\n D'o  venait cette b te ? Elle a d  se faufiler   travers la For t rouge. Les gars sont morts et je suis le seul   tenir encore debout… Je vais t cher d'y aller cette nuit… \n\n Je sais pas comment je m'en suis sorti. C' tait l'enfer... Des tas d'images d filent et des tas de bruits r sonnent dans ma t te et je ne sais pas d'o  ils viennent. Fichues radiations. Et pour couronner le tout, le d tecteur marche plus. Un peu de repos et  a ira mieux.</text>
+	</string>
+	<string id="mil_dolg_kill_lukash_descr">
+		<text>P n tre sur la base avec les membres du Devoir.\n  limine trois snipers. \nTue Lukash.</text>
+	</string>
+	<string id="mil_dolg_kill_sniper_descr">
+		<text>Tue le sniper de la tour. Mais attention, ne te fais pas descendre.</text>
+	</string>
+	<string id="mil_flash_bandit_descr">
+		<text>Bon sang, ces enfoir s du Devoir nous ont chass s de ce fichu endroit. Ils s' taient retranch s pr s de notre ferme. On a m me pas eu le temps de r cup rer les trucs qu'on avait au grenier. Enfin, c'est pas grave… La base de la Libert  est pas loin, et ils vont pas rester bien longtemps.</text>
+	</string>
+	<string id="mil_flash_max_descr">
+		<text>Aujourd'hui, on a descendu quelques soldats qui se dirigeaient vers la For t rouge  quip s de Bulldog 6. Ils sont redoutables. Lukash en a pris un et le Magouilleur en a cach  un autre dans un des souterrains du village.</text>
+	</string>
+	<string id="mil_flash_ugrumy_descr">
+		<text>1. Le diable m'a entra n  dans la For t rouge. J'y suis   peine arriv … J' tais   deux doigts de me liqu fier.\n\n 2. Quatre voyous m'ont encercl  comme si j' tais un gamin de trois ans. J'ai pas vu leur pi ge. Si j'ai r ussi   m'en sortir, c'est gr ce   leur b tise. Au lieu de m' touffer, ils m'ont saut  dessus pour me d shabiller et je me suis accroch e   ma combi. Mais un deux m'a d gomm  avec une balle... Ah, je me fais vieux...\n\n 3. Quand je suis arriv , le messager de Strelok ne respirait plus. Ces sangsues sont redoutables, mais ce type en avait eu quatre, et des traces de sang menaient vers diff rentes directions. La seule information qu'il avait sur lui, c'est un code de porte (19840519), mais trouver cette porte semble impossible.\n\n 4. On a intercept  plusieurs militaires qui se dirigeaient vers la For t rouge. Ils n'avaient ni documents ni ordres, mais  taient dr lement bien  quip s. Je crois que je vais laisser ce Bulldog 6 dans le souterrain tant que j'en ai pas besoin.</text>
+	</string>
+	<string id="mil_freedom_rg6_task_descr">
+		<text>Voronin : "L'ennemi poss de plusieurs excellents lance-grenades Bulldog 6. Si tu r ussissais   t'en procurer t'en procurer un, je te r compenserais comme il se doit. Puisque tu ne fais pas partie de notre faction, tu devrais pouvoir approcher la Libert  et, avec un peu de chance, lui piquer un Bulldog 6. Je te r compenserai pour le tuyau sur l'endroit o  se trouve la Libert . L , il faudra que tu trouves un certain Chef, un membre du groupe ; il sait o  sont stock s les Bulldog 6. Il a tendance   boire, alors essaie de le saouler. Pour  a, apporte beaucoup de vodka."</text>
+	</string>
+	<string id="mil_go_to_miser_descr">
+		<text>Hrm. Le Radin va me donner ma r compense… Joli nom ! J'esp re un boite de viande avec une date de p remption datant de l'ann e derni re.</text>
+	</string>
+	<string id="mil_hunters_task_descr">
+		<text> limine les sangsues du village. Fais gaffe, sinon elles vont me vider de mon sang et me laisser pour mort.</text>
+	</string>
+	<string id="mil_hunters_task_descr2">
+		<text> limine les sangsues du village. Fais gaffe, sinon elles vont me vider de mon sang et me laisser pour mort.</text>
+	</string>
+	<string id="mil_lukash_job_descr">
+		<text>Lukash a d cid  de contre-attaquer le d tachement du Devoir. Max, un des v t rans de la Libert , va diriger l'op ration. Je dois lui pr ter main-forte.</text>
+	</string>
+	<string id="mil_mad_flash_job_descr">
+		<text>Je me demande ce que ce dingue du mar cage peut bien savoir. Je vais trouver. Mais il faut   tout prix  viter ces vieilles mines. D'accord, elles sont rouill es, mais  a ne les emp che pas d'exploser.</text>
+	</string>

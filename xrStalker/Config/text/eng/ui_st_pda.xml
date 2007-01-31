@@ -10,7 +10,7 @@
 		<text>Contacts</text>
 	</string>
 	<string id="Encyclopedia">
-		<text>Encyclopaedia</text>
+		<text>Encyclopedia</text>
 	</string>
 	<string id="global_map_btn_hint">
 		<text>To map of the Zone</text>
@@ -46,10 +46,10 @@
 		<text>Show player's diary</text>
 	</string>
 	<string id="pda_btn_encyclopedia">
-		<text>Encyclopaedia</text>
+		<text>Encyclopedia</text>
 	</string>
 	<string id="pda_btn_encyclopedia_hint">
-		<text>Show the Zone encyclopaedia</text>
+		<text>Show the Zone encyclopedia</text>
 	</string>
 	<string id="pda_btn_failed">
 		<text>Failed</text>
@@ -190,7 +190,7 @@
 		<text>Message</text>
 	</string>
 	<string id="svoboda_outfit_description_m1">
-		<text>There is a metal wire mesh integrated into the suit which protects from electric and magnetic fields. The set also includes an instrument for night vision.</text>
+		<text>Metal wire mesh is integrated into the suit for protection from electric and magnetic fields. The set also includes an instrument for night vision.</text>
 	</string>
 	<string id="Tasks">
 		<text>Tasks</text>

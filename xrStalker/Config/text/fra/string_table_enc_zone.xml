@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="af-ameba-mica">
+		<text>Gel e</text>
+	</string>
+	<string id="af-ameba-slime">
+		<text>Slime</text>
+	</string>
+	<string id="af-ameba-slug">
+		<text>Limace</text>
+	</string>
+	<string id="af-blood">
+		<text>R g n rateur base</text>
+	</string>
+	<string id="af-cristall">
+		<text>Cristal</text>
+	</string>
+	<string id="af-cristall-flower">
+		<text>Fleur protectrice</text>
+	</string>
+	<string id="af-drops">
+		<text>Gouttelettes</text>
+	</string>
+	<string id="af-dummy-battery">
+		<text>Batterie</text>
+	</string>
+	<string id="af-dummy-dummy">
+		<text>Coquille</text>
+	</string>
+	<string id="af-dummy-glassbeads">
+		<text>Goutt. nourrici res</text>
+	</string>
+	<string id="af-dummy-pellicle">
+		<text>Pellicule</text>
+	</string>
+	<string id="af-dummy-spring">
+		<text>Ressort</text>
+	</string>
+	<string id="af-electra-flash">
+		<text>Flash</text>
+	</string>
+	<string id="af-electra-moonlight">
+		<text>Clair de lune</text>
+	</string>
+	<string id="af-electra-sparkler">
+		<text> tincelle</text>
+	</string>
+	<string id="af-fireball">
+		<text>Bolide</text>
+	</string>
+	<string id="af-fuzz-kolobok">
+		<text>Boulette</text>
+	</string>
+	<string id="af-gold-fish">
+		<text>Garde du corps</text>
+	</string>
+	<string id="af-gravi">
+		<text>Gravi</text>
+	</string>
+	<string id="af-medusa">
+		<text>M duse</text>
+	</string>
+	<string id="af-mincer-meat">
+		<text>Morceau de viande</text>
+	</string>
+	<string id="af-night-star">
+		<text> toile phospho.</text>
+	</string>
+	<string id="af-rusty-kristall">
+		<text> pine cristalline</text>
+	</string>
+	<string id="af-rusty-sea-urchin">
+		<text>Oursin</text>
+	</string>
+	<string id="af-rusty-thorn">
+		<text> pine</text>
+	</string>
+	<string id="af-soul">
+		<text>Super g n rateur</text>
+	</string>
+	<string id="af-vyvert">
+		<text>Tortillon</text>
+	</string>
+	<string id="Agroprom">
+		<text>Agroprom</text>
+	</string>
+	<string id="Ameba">
+		<text>Le champignon visqueux</text>
+	</string>
+	<string id="Anomalies">
+		<text>Anomalies</text>
+	</string>
+	<string id="Artifacts">
+		<text>Artefacts </text>
+	</string>
+	<string id="Bald">
+		<text>Tremplin</text>
+	</string>
+	<string id="Bar">
+		<text>Bar</text>
+	</string>
+	<string id="Darkdolina">
+		<text>Vall e obscure</text>
+	</string>
+	<string id="Deadcity">
+		<text>Effac </text>
+	</string>
+	<string id="Electra">
+		<text> lectrica</text>
+	</string>
+	<string id="enc_weapons1_wpn-winchester_m1">
+		<text>Variation du Chaser. Un petit fragment de l'artefact "gravi" a  t  int gr    son canon et positionn  de mani re   am liorer la vitesse de trajectoire des balles. </text>
+	</string>
+	<string id="enc_zone_anomalies_ameba">
+		<text>Cette anomalie est d'origine inconnue. Quand elle entre en contact avec un corps humain, elle le br le comme un puissant acide. Trois types d'artefacts proviennent de cette anomalie : "le slime", "la limace" et "la gel e".</text>
+	</string>
+	<string id="enc_zone_anomalies_bald">
+		<text>C'est une des premi res anomalies r pertori es : un champ de gravit  modifi  qui inflige un choc aux individus   proximit . Stationnaire pendant une semaine environ, la force du choc varie si l'anomalie est plus ou moins neuve. Elle peut entra ner des contusions l g res tout comme des blessures graves, voire m me la mort instantan e. Elle est facile   rep rer en plein jour, gr ce au flux de l'air au-dessus de l'anomalie, aux mouvements des feuilles et aux t ches cramoisies par terre. Pour la rep rer, servez-vous de n'importe quel d tecteur ou jetez-lui des objets dessus. Elle forme trois types d'artefacts : "la m duse", "la fleur protectrice" et "l' toile phosphorescente".</text>
+	</string>
+	<string id="enc_zone_anomalies_electra">
+		<text>Cette anomalie d'environ 10 m tres de diam tre accumule de l' lectricit  statique en grande quantit . Quand elle se d clenche, elle  met des dizaines d' clairs miniatures, entra nant un choc  lectrique, presque toujours mortel pour les  tres vivants. Le halo bleut  qui plane au-dessus aide   la rep rer en plein jour. La nuit, l'" lectrica" est d cel e par n'importe quel type de d tecteurs ou en jetant des objets m talliques dessus. Elle forme trois types d'artefacts : "l' tincelle", "le flash" et "le clair de lune".</text>
+	</string>
+	<string id="enc_zone_anomalies_fuzz">
+		<text>Cette v g tation mutante r agit quand des  tres vivants s'approchent vite. Elle  met alors un nuage de projectiles qui blesse s v rement la peau nue ou l g rement prot g e par simple contact. Elle ne r agit pas aux cibles qui se d placent lentement. Elle est   l'origine de trois types d'artefacts (probablement ses semences) : "l' pine", "l' pine cristalline" et "l'oursin". </text>
+	</string>
+	<string id="enc_zone_anomalies_gravi">
+		<text>Quand cette anomalie, sans doute de nature gravitationnelle, se d clenche, la puissance  norme du "vortex" attire tout ce qui se trouve dans un rayon de 10   15 m tres. Les victimes attir es au centre n'ont aucune chance de survivre : les corps des animaux comme des  tres humains sont rapidement comprim s avant d' tre  ject s un peu plus tard par une puissante d charge  lectrique. L'anomalie reste stationnaire le temps de sa dur e (une semaine environ). En plein jour, elle est visible gr ce au flux d'air, aux mouvements des feuilles, aux fragments de cadavres d membr s qui gisent autour, et   la t che sombre si particuli re au centre. Extr mement dangereuse la nuit, car elle n'est alors rep rable qu'avec un d tecteur, ou en jetant des objets m talliques. Le vortex est   l'origine de trois types d'artefacts : "le tortillon", "le gravi" et "le garde du corps".</text>
+	</string>
+	<string id="enc_zone_anomalies_lift">
+		<text>Cette anomalie inoffensive annule temporairement les lois de la gravit . Il s'agit d'une zone, g n ralement de plusieurs m tres de diam tre, o  les forces gravitationnelles de la Terre sont consid rablement r duites. Elle forme l'artefact de "la pellicule".</text>
+	</string>
+	<string id="enc_zone_anomalies_meat">
+		<text>Le nom de cette anomalie provient du fait qu'elle attrape et  l ve tout  tre vivant dans les airs pour le faire tournoyer   une telle vitesse que le cou se brise. La nature exacte du "hachoir" reste ind termin e. L'anomalie se reconna t au petit tourbillon de poussi re et aux fragments de corps diss min s alentour. La victime peut s'en sortir avec des blessures l g res si elle se trouve assez loin du noyau o  l'effet est maximum. Cette anomalie est   l'origine de trois types d'artefacts : "le r g n rateur de base", "le morceau de viande" et "le super r g n rateur".</text>
+	</string>
+	<string id="enc_zone_anomalies_radioactive">
+		<text>Une zone   fort taux de radiation, plus de 50 mR/h. Il est vivement d conseill  de rester longtemps dans une zone irradi e.</text>
+	</string>
+	<string id="enc_zone_anomalies_time">
+		<text>Cette anomalie est un vrai petit miracle : dans une zone de plusieurs m tres de diam tre, le cours du temps est consid rablement diminu . Il semblerait qu'aucun effet n gatif soit   d plorer sur la sant  de l'homme. Cependant, il peut  tre tr s difficile d'en sortir. Bizarrement, la suppression des "gouttelettes nourrici res", un artefact g n ralement trouv  au centre de l'anomalie, provoque la disparition de cette "machine   explorer le temps".</text>
+	</string>
+	<string id="enc_zone_anomalies_zharka">
+		<text>Inactive, l'anomalie est un nuage d'air chaud   peine visible. Quand elle est d clench e par un objet ou un  tre vivant, sa temp rature augmente jusqu'  atteindre plus de 1500 K. La nuit, elle se rep re gr ce   de puissants d tecteurs ou en jetant des objets m talliques dessus. Elle forme trois types d'artefacts : "les gouttelettes", "la boule de feu" et "le cristal".</text>
+	</string>
+	<string id="enc_zone_artifact_af-ameba-mica">
+		<text>L'anomalie "champignon visqueux" peut cr er un artefact dans des conditions physiques les plus rares et les plus extr mes. Il en r sulte un objet dur et semi-transparent. Un artefact rare et co teux.</text>
+	</string>
+	<string id="enc_zone_artifact_af-ameba-slime">
+		<text>Cet artefact est le r sultat de l'anomalie "champignon visqueux". Il r duit les saignements, mais la personne qui en b n ficie est plus vuln rable aux br lures.</text>
+	</string>
+	<string id="enc_zone_artifact_af-ameba-slug">
+		<text>Form  par l'anomalie "champignon visqueux". Les qualit s n gatives de cet artefact sont compens es par le fait qu'il augment la qualit  de coagulation du sang. Cet artefact est rare et se monnaie bien.</text>
+	</string>
+	<string id="enc_zone_artifact_af-blood">
+		<text>Cet artefact se trouve pr s de l'anomalie "hachoir". Il s'agit d'un objet rouge tre compos  de plantes, de terres et d'ossements curieusement entrem l s. Assez r pandu, mais pas tr s efficace.</text>
+	</string>
+	<string id="enc_zone_artifact_af-cristall">
+		<text>Cr   lorsque des m taux lourds se heurtent   l'anomalie "colonne de feu". Cet artefact neutralise   la perfection les radiations. Les Stalkers en raffolent et il est dur   trouver.</text>
+	</string>
+	<string id="enc_zone_artifact_af-cristall-flower">
+		<text>Issu de l'anomalie "tremplin", cet artefact se trouve   divers endroits de la Zone. Ses pi ces de m tal cr e un magnifique jeu de lumi re.  tudier cet artefact de nuit, au coin du feu, est tr s reposant. </text>
+	</string>
+	<string id="enc_zone_artifact_af-drops">
+		<text>Form  par l'anomalie "colonne de feu"   haute temp rature. De l'ext rieure, ressemble   une goutte d'eau   la surface luisante et fissur e.</text>
+	</string>
+	<string id="enc_zone_artifact_af-dummy-battery">
+		<text>L'origine de cet objet est teint e de myst re scientifique. De toute  vidence, il est compos  d' l ments di lectriques, mais les scientifiques ne connaissent pas les conditions physiques li es   sa cr ation.</text>
+	</string>
+	<string id="enc_zone_artifact_af-dummy-dummy">
+		<text>Cet artefact ralentit le processus de d naturalisation des prot ines. En d'autres termes, la chair peut supporter de plus hautes temp ratures et moins br ler. Il s'agit l  d'un artefact co teux et rare.</text>
+	</string>
+	<string id="enc_zone_artifact_af-dummy-glassbeads">
+		<text>Un merveilleux artefact. Prenez-en soin car il est dot  de qualit s positives. Les scientifiques ne savent pas comment cr er un tel artefact en laboratoire.</text>
+	</string>
+	<string id="enc_zone_artifact_af-dummy-pellicle">
+		<text>Cet artefact est si rare que de nombreux chercheurs ne peuvent m me pas s'imaginer qu'une telle substance existe dans la nature. Il  met des composants chimiques acides.</text>
+	</string>
+	<string id="enc_zone_artifact_af-dummy-spring">
+		<text>  en croire certains chercheurs, cet artefact est un hybride entre batteries et coquilles.</text>
+	</string>
+	<string id="enc_zone_artifact_af-electra-flash">
+		<text>L' lectrica donne parfois naissance cet artefact. Les Stalkers l'utilisent volontiers pour ses qualit s int ressantes. Les collectionneurs le convoitent pour son prix raisonnable et sa jolie forme.</text>
+	</string>
+	<string id="enc_zone_artifact_af-electra-moonlight">
+		<text>Cas de d g n rescence de l'anomalie " lectrica". Sa jolie forme arrondie serait due aux influences thermiques qui affectent l'anomalie. Un artefact co teux.</text>
+	</string>
+	<string id="enc_zone_artifact_af-electra-sparkler">
+		<text>Situ    proximit  de l'anomalie " lectrica". Un artefact assez r pandu et peu co teux. Les chercheurs de la Zone l'appr cient pour ses qualit s.</text>
+	</string>
+	<string id="enc_zone_artifact_af-fireball">
+		<text>Cristallise l'anomalie "colonne de feu". Combat efficacement la radioactivit , mais le taux  lev  d' change d' nergie affaiblit les muscles de l'appareil en mouvement. Incapable de courir bien longtemps. Cet artefact  met de la chaleur.</text>
+	</string>
+	<string id="enc_zone_artifact_af-fuzz-kolobok">
+		<text>Lorsque vous tenez ce myst re de la Zone entre les mains, votre peau devient plus dure et moins sensible. Vous pouvez le transpercer d'une balle, mais il est bien plus difficile de le d couper.</text>
+	</string>
+	<string id="enc_zone_artifact_af-gold-fish">
+		<text>Artefact issu de l'anomalie "vortex". Il est activ  par la chaleur corporelle.   vous de choisir entre ces deux maux : les radiations ou les coups de couteau. Quoi qu'il en soit, cet artefact se vend bien.</text>
+	</string>
+	<string id="enc_zone_artifact_af-gravi">
+		<text>Se trouve pr s des anomalies "vortex" ou entre les mains d'un autre Stalker. Lorsque vous le portez, certaines radiations sont stock es dans le corps et les autres, diss min es tout autour de celui-ci. Un bon prix.</text>
+	</string>
+	<string id="enc_zone_artifact_af-medusa">
+		<text>Form  dans l'anomalie "tremplin". Cr e un champ de protection avec une faible radiation pour effet secondaire. Cet artefact est r pandu et peu recherch .</text>
+	</string>
+	<string id="enc_zone_artifact_af-mincer-meat">
+		<text>Form  par l'anomalie "hachoir". Renforce la croissance cellulaire. En revanche, les nouvelles cellules sont plus sensibles aux effets de l'uranium physique. Cet artefact n'est pas tr s r pandu, sans  tre rare pour autant.</text>
+	</string>
+	<string id="enc_zone_artifact_af-night-star">
+		<text>Ce fantastique artefact est form  par l'anomalie "tremplin". Son utilisation implique la neutralisation des radiations. Co teux et rare, cet artefact se r v le particuli rement int ressant lors des exp ditions scientifiques et autres recherches men es dans la Zone.</text>
+	</string>
+	<string id="enc_zone_artifact_af-rusty-kristall">
+		<text>Cristallise l'anomalie "flore ardente".  limine naturellement les radiations de l'organisme.    savoir, par les oreilles avec quelques saignements. R pandu et relativement efficace, cet artefact affiche un prix stable sur le march .</text>
+	</string>
+	<string id="enc_zone_artifact_af-rusty-sea-urchin">
+		<text>L'anomalie "flore ardente" donne rarement naissance   cet artefact. La tension art rielle augmente et le corps se d barrasse de nombreuses cellules rouges et ce faisant, des radiations. Dans son ouvrage, intitul  "Ionisation et polarisation des composants issus des artefacts rares ", Saharov a not  que cette formation se r v le particuli rement stable et que la cr ation d'un tel artefact en laboratoire, au cours des dix prochaines ann es, n'est pas envisageable.</text>
+	</string>
+	<string id="enc_zone_artifact_af-rusty-thorn">
+		<text>R sultat de l'interaction entre l'anomalie "flore ardente" et le corps d'un Stalker irr fl chi. L'artefact " pnie" troue le corps de son propri taire, mais contribue  galement   le d barrasser des radionucl ides. Relativement r pandu et bon march .</text>
+	</string>
+	<string id="enc_zone_artifact_af-soul">
+		<text>Artefact extr mement rare situ  pr s de l'anomalie "hachoir". Rares sont ceux qui parviennent   mettre la main sur cet artefact ou   le voir. Il a une jolie forme et un prix tout aussi joli.</text>
+	</string>
+	<string id="enc_zone_artifact_af-vyvert">
+		<text>Situ  dans l'anomalie "vortex". Au contact du corps, il d cime les radiations, prot geant des blessures li es aux armes. Cet artefact n'est pas difficile   trouver et ne co te, d s lors, pas tr s cher.</text>
+	</string>
+	<string id="enc_zone_locations_agroprom">
+		<text>Zone hautement contamin e. Si vous vous y enfoncez, vous remarquerez un lac peu profond dont le rivage est jonch  de mat riel et d bris abandonn s. Vous pouvez  galement jeter un coup d' il dans l'Institut abandonn  et l'usine, mais l'arm e y est r cemment venue.</text>
+	</string>
+	<string id="enc_zone_locations_bar">
+		<text>La faction du Devoir a  tabli un camp aux abord de la plaine et les Stalkers qui souhaitent s'y reposer y sont les bienvenues. Une oasis d sertique, un lieu d pourvu d'anomalies et de mutants. Ne manquez pas le 100 Rads, un bar situ  dans les souterrains ; tous les Stalkers de la Zone s'y retrouvent. Ce bar est tenu par un marchand local et si vous souhaitez acheter ou vendre quelque chose, allez-y. Au nord de ce bar, se trouve la base militaire, et au sud, la D charge.</text>
+	</string>
+	<string id="enc_zone_locations_darkdolina">
+		<text>Toujours lugubre, brumeuse et pluvieuse. Les Stalkers qui s'aventurent dans la Vall e obscure y trouvent souvent de pr cieux artefacts, la mort subite, voire les deux. Un endroit fr quent  par des durs   cuire, voire par quelques bandits. Il abriterait un labo souterrain, alors n'h sitez pas   y rechercher une entr e secr te. Personne n'en est jamais revenu vivant et personne ne peut dire ce qui vous y attend.</text>
+	</string>
+	<string id="enc_zone_locations_escape">
+		<text>Voyez cela comme l'antichambre de la Zone… Un endroit id al pour les nouveaux. Pr s de l'avant-poste militaire, derri re le village, vous trouverez des souterrains abritant un marchand. N'h sitez pas   discuter avec lui. Mais tenez-vous   l' cart de l'avant-poste. Vous ne voudriez quand m me pas que les soldats vous rep rent car ils ont la g chette facile. Enfin, comme toujours, vous pouvez en soudoyer certains,   condition le grad  d tourne le regard. Ne vous risquez pas   attaquer les soldats, sauf s'ils constituent une menace directe.</text>
+	</string>
+	<string id="enc_zone_locations_garbage">
+		<text>Vaste casse.   la suite du premier accident, des tas de d chets radioactifs y ont  t  d vers s. Principalement des d combres infest s de mutants. Tout comme les abords de la Zone, cet endroit grouille de nouveaux Stalkers et de bandits occasionnels pr t   tenter leur chance. On y trouve quelques artefacts, mais peu int ressants pour la plupart. N'y perdez pas votre temps. Au nord, se trouvent les Terres abandonn es,   l'ouest, la Vall e obscure et   l'est, la route menant   l'Institut de Recherche Agroprom.</text>
+	</string>
+	<string id="enc_zone_locations_military-loc">
+		<text>Base militaire d sert e situ e pr s d'un hameau d labr  et d'un petit mar cage. Ce sinistre village grouille de mutants ; les sangsues y sont l gions. Les Stalkers s'efforcent de ne pas s'en approcher, m me s'il leur faut faire des kilom tres pour le contourner. Les anarchistes de la faction de la Libert  ont  lu domicile sur la base militaire. La route qui la relie   la Zone est gard e par le lobotomisateur qui bloque l'acc s   Pripyat et   Tchernobyl. </text>
+	</string>
+	<string id="enc_zone_locations_pripiat">
+		<text>Cette ville abritait autrefois les ing nieurs de Tchernobyl et grouille maintenant de mutants et de zombies. Visiblement, il est impossible de s'y rendre ; le lobotomisateur en bloque l'acc s. </text>
+	</string>
+	<string id="enc_zone_locations_radar">
+		<text>Terrible endroit. C'est facile de se volatiliser sans laisser de trace ici, m me si par le pass , la chance vous a souri. Tous ceux qui s'approchent du lobotomisateur sombrent dans la folie, se transforment en zombies et errent   jamais dans la Zone. Tous ceux qui s'y sont risqu s ont perdu la raison. </text>
+	</string>
+	<string id="enc_zone_locations_rostok">
+		<text>Les Terres abandonn es abritaient autrefois une grosse usine, aujourd'hui en ruine. De tr s nombreux Stalkers y ont trouv  la mort ; ces terres grouillent de toutes sortes de monstres.   ce qu'on dit, elles abriteraient quelque chose de tr s important et c'est pour  a que des hordes de casse-cou viennent y tenter leur chance. </text>
+	</string>
+	<string id="enc_zone_locations_stancia">
+		<text>Site de la centrale nucl aire mondialement connue. Le c ur de la Zone. Si vous croyez aux l gendes, c'est aussi le site du Monolithe, un chose teint e de myst re capable d'exaucer de tous les v ux. </text>
+	</string>
+	<string id="enc_zone_locations_yantar">
+		<text>Lac l gendaire du secteur du m me nom ass ch  depuis bien longtemps et remplac  par un mar cage. Cet endroit est morbide et hant  par la mort. De grands dangers guettent tous les aventuriers qui s'en approchent. Tous ceux qui s'y enfoncent sombrent dans la folie. Des drones de zombies arpentent le secteur, avides de nouvelles victimes. Si vous contournez le lac et d pass  les zombies, vous tomberez sur le camp des scientifiques o  des intellos transport s par h licopt res y m nent des recherches. Vous pouvez discuter avec eux ; ils ach tent des artefacts et peuvent vous confier des missions.</text>
+	</string>
+	<string id="enc_zone_zone-story_story-2006">
+		<text>La zone contamin e brillait de mille feux presque insupportables   regarder. On pouvait y voir les nuages se transformer en vapeur. Apr s un silence de mort, le tonnerre se mit   gronder, puis la terre   trembler. Les gens se mirent   terre, plissant les yeux et se couvrant les yeux. Ceux qui tenaient encore tent rent de fuir. C' tait comme si tout le combustible nucl aire enseveli sous le sarcophage avait soudainement explos . Le lendemain, l'arm e boucla la nouvelle Zone. Les satellites permirent d' tablir que l' picentre de l'explosion ne se trouvait pas aux environs des r acteurs de Tchernobyl, mais   un demi-kilom tre de l . Le personnel de la centrale est cens  avoir trouv  la mort sur le coup, mais beaucoup de survivants de trouvaient encore dans la zone boucl e. L'op ration de sauvetage se r v la tr s vite inutile, toutes les personnes pr sentes sur place  tant condamn es   mourir. Un peu apr s la catastrophe, le p rim tre de la Zone s' largit de quelques kilom tres. La plupart des troupes du gouvernement gardant la fronti re et les  quipes de chercheurs moururent instantan ment. Pris de panique, la population local prit la fuite. Les habitants des villes et villages voisins furent  vacu s   la h te. Un immense danger p se sur le monde et on ne peut qu'augurer de son r el impact.</text>
+	</string>
+	<string id="enc_zone_zone-story_story-2008">
+		<text>Deux ans ont pass  depuis la catastrophe dans la zone contamin e de Tchernobyl. D'innombrables morts et disparus, des b timents en ruine, des for ts ravag s…   ce jour, les scientifiques n'ont pas d'explications sur ce qui s'est r ellement produit   Tchernobyl. Entre-temps, d'incroyables anomalies ont  t  d couvertes dans le secteur, et la Zone n'a de cesse de s' tendre. Les rares exp ditions se heurtent   des esp ces d'animaux mutants dot s d'inconcevables facult s.</text>
+	</string>
+	<string id="enc_zone_zone-story_story-2010">
+		<text>Embo tant le pas   ces audacieux solitaires que l'on appelle Stalkers des exp ditions tentent une fois de plus d' tudier en profondeur la Zone. Mais le p rim tre gard  par l'arm e abrite d'autres dangereux habitants parmi lesquels les habituels braconniers et les pires bandits. La plupart des Stalkers errent dans la Zone   la recherche d'anomalies et d'artefacts qui leur vaudront quelques b n fices.</text>
+	</string>
+	<string id="enc_zone_zone-story_story-raid">
+		<text>L'arm e, y compris les forces sp ciales command es par des d tachements de Stalkers paramilitaires, a lanc  un grand raid dans la Zone. Elle entendait par l  faire une perc e   Tchernobyl et neutraliser les champs anormaux ou, du moins, obtenir des informations sur ce qui s'y passe. Cette entreprise, impliquant un millier de personnes et des engins lourds, fut un v ritable fiasco. Des groupes isol s de survivants furent contraints de s'installer dans la Zone, sans grand espoir d' tre secourus.</text>
+	</string>
+	<string id="Escape">
+		<text>Avant-poste</text>
+	</string>
+	<string id="Fuzz">
+		<text>Flore ardente</text>
+	</string>
+	<string id="Garbage">
+		<text>D charge</text>
+	</string>
+	<string id="Gravi">
+		<text>Vortex</text>
+	</string>
+	<string id="Lift">
+		<text>Ascenseur</text>
+	</string>
+	<string id="Locations">
+		<text>Endroits</text>
+	</string>
+	<string id="Meat">
+		<text>Hachoir</text>
+	</string>
+	<string id="Military-loc">
+		<text>Base militaire</text>
+	</string>
+	<string id="Pripiat">
+		<text>Pripyat</text>
+	</string>
+	<string id="Radar">
+		<text>Le lobotomisateur</text>
+	</string>
+	<string id="Radioactive">
+		<text>Une source de radioactivit </text>
+	</string>
+	<string id="Rostok">
+		<text>Les Terres abandonn es</text>
+	</string>
+	<string id="Stancia">
+		<text>Tchernobyl</text>
+	</string>
+	<string id="Story-2006">
+		<text>12 avril 2008, 14h33</text>
+	</string>
+	<string id="Story-2008">
+		<text>Ann e 2010</text>
+	</string>
+	<string id="Story-2010">
+		<text>Ann e 2011</text>
+	</string>
+	<string id="Story-raid">
+		<text>Raid de l'arm e dans la Zone. 2011</text>
+	</string>
+	<string id="Time_machine">
+		<text>Variateur temporel</text>
+	</string>
+	<string id="Yantar">
+		<text>Yantar</text>
+	</string>
+	<string id="Zharka">
+		<text>Colonne de feu</text>
+	</string>
+	<string id="Zone">
+		<text>La Zone</text>
+	</string>
+	<string id="Zone-story">
+		<text>Histoire de la Zone</text>
+	</string>
+</string_table>

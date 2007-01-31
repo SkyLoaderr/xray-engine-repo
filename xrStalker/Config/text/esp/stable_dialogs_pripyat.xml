@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="pri_followers_start_dlg_21">
+		<text>Vayamos por la calle. Si ocurre algo, c breme.</text>
+	</string>
+	<string id="pri_followers_start_dlg_211">
+		<text>De acuerdo.</text>
+	</string>
+	<string id="pri_followers_start_dlg_31">
+		<text>Gracias por la ayuda, Marcado. Fue un duro combate. Podemos descansar aqu . Si quieres continuar, te contar  m s cosas sobre esta  rea. Si retrocedes y giras a la derecha, llegar s a la estaci n de autobuses. Se trata de un espacio abierto y no es muy seguro. Si contin as, acabar s delante del hotel. A la derecha se encuentra la base de Monolith. Esos t os no tienen l mite. Detr s de la base est  el estadio. Est bamos planeando atravesarlo para llegar a la estaci n. Eso es todo.</text>
+	</string>
+	<string id="pri_followers_start_dlg_311">
+		<text>Gracias.</text>
+	</string>
+	<string id="pri_followers_start_dlg_41">
+		<text>Gracias por la ayuda. Buena suerte.</text>
+	</string>
+	<string id="pri_followers_start_dlg_411">
+		<text>Adi s.</text>
+	</string>
+</string_table>

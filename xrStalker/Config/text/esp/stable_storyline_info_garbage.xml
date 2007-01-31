@@ -1,0 +1,63 @@
+	<string id="gar_seryi_info">
+		<text>Mole y compa  a han descubierto el escondite de Strelok en Agroprom, no muy lejos de la f brica en ruinas.  Por qu  no vas a averiguar qu  est  pasando all ? Al fin y al cabo,  l nos invit  a unirnos a la investigaci n. </text>
+	</string>
+	<string id="memuars">
+		<text>Nota personal</text>
+	</string>
+	<string id="sl_beginning">
+		<text> Qui n soy?</text>
+	</string>
+	<string id="sl_beginning_text">
+		<text>Maldita sea, tengo muchas lagunas… Recuerdo un coche… Me llevaron a alg n lugar; el viaje fue muy largo y me dol a todo el cuerpo… Estaba oscuro…  Qu  pas  antes de eso? No tengo ni idea… Estoy tan confundido… Ahora ese gordo me llama Marcado, probablemente por el extra o tatuaje que tengo en el brazo. Y luego est  en mi PDA esa extra a misi n en la que hay que matar a un tal Strelok... Si es que esa PDA es m a... Miro la foto de Strelok y no estoy seguro de si lo conozco o no...  Maldita sea! Es como una pesadilla de la que no te puedes despertar.  Qu  hago?  D nde voy? Y lo peor de todo:  qui n soy? Vale, vale, c lmate, contr late. Lo primero que tengo que hacer son unos trabajos para ese tal Sidorovich. Despu s de todo, dice que me ha salvado la vida... Seguro que todo va bien. Voy a darme un paseo y a calmarme; a lo mejor as  se me aclara la cabeza.</text>
+	</string>
+	<string id="sl_first_deep_raid">
+		<text>La primera incursi n en profundidad.</text>
+	</string>
+	<string id="sl_first_deep_raid_text">
+		<text>Bueno, voy a tener mi primera incursi n profunda en la Zona. El objetivo es el Instituto Agroprom. Tengo que recuperar unos documentos que pertenecen a una expedici n militar. Aparte de la misi n, el comerciante me dio informaci n sobre un lugar donde "hierven los cerebros", al Norte, de camino al centro de la Zona… Seguramente ser  m s una leyenda que un hecho en s , pero ya que est  claro que algo me anda mal en la cabeza, deber a echar un vistazo y hablar con gente. Nunca se sabe; quiz s ya he estado all  antes… Adem s, el comerciante dijo que Strelok hab a descubierto un camino para llegar a ese sector y los comerciantes quieren saber cu l es. Sus razones son claras: acceder a campos de artefactos intactos. Bueno, no pasar  nada si les ayudo.</text>
+	</string>
+	<string id="sl_first_opinions">
+		<text>Primeras impresiones.</text>
+	</string>
+	<string id="sl_first_opinions_text">
+		<text>Bueno... He tomado aire fresco y he visto la fauna y la flora de los alrededores... Parece que las cosas me suenan de algo, pero tengo muchas lagunas... He tenido oportunidad de probar las "diversiones" de la zona, las llamadas anomal as… Teniendo en cuenta que he sobrevivido, lo m s seguro es que me las haya encontrado antes, pero mi cerebro se niega a recordar... Sidorovich es un t o listo. Sabe que puede utilizarme casi gratis y eso es exactamente lo que est  haciendo. En fin, quiz s me ayude a encontrar al maldito Strelok…  l es el  nico v nculo con mi pasado.</text>
+	</string>
+	<string id="sl_fox_meet">
+		<text>Encuentro con Fox.</text>
+	</string>
+	<string id="sl_fox_meet_text">
+		<text>He estado con Fox. Tengo buenas y malas noticias. Las malas es que sabe muy poco sobre Strelok. Las buenas es que su hermano Seriy sabe m s que  l. Parece que Seriy est  en un hangar a unos 2 kil metros al norte de aqu , en un vertedero lleno de residuos radiactivos. Mi tarea est  clara: llegar all  antes de que se marche.</text>
+	</string>
+	<string id="sl_monolith_off">
+		<text>Desactiva el Monolito.</text>
+	</string>
+	<string id="sl_monolith_off_text">
+		<text>Estoy a solo un paso de los que crearon esta maldita red de psicounidades por toda la Zona. Parece que el Monolito es simplemente otro zombificador, con la excepci n de que alguien se tom  la molestia de instalar un holograma con la forma de un cristal enorme dentro del sarc fago. Cuando los "afortunados" se acercan, les manipula el cerebro. Quiz s hasta les haga creer que sus sue os se han cumplido,  qui n sabe?  Me ha afectado a m  esta mierda antes? No estoy seguro, pero quienquiera que est  detr s de todo esto responder  muy pronto a mis preguntas. Incluso me han invitado… Bueno,  all  voy, mamones!</text>
+	</string>
+	<string id="sl_provodnik">
+		<text>Gu a</text>
+	</string>
+	<string id="sl_provodnik_text">
+		<text>Gu a dijo que Doc cree que le han estado siguiendo y que se quedar  en el antiguo escondite de Strelok. Bueno, supongo que tendr  que ir a hacerle una visita.</text>
+	</string>
+	<string id="sl_seryi_meet">
+		<text>Encuentro con Seriy.</text>
+	</string>
+	<string id="sl_seryi_meet_text">
+		<text>A n tendr  que esperar m s para enterarme de algo sobre Strelok: Seriy me ha enviado al encuentro de un stalker llamado Mole, que supuestamente conoce la ubicaci n del escondite secreto de Strelok… No es mucho, pero si est  en lo cierto, tendr  algo al menos…  Qui n sabe?, quiz  me enter  de algo  til all .</text>
+	</string>
+	<string id="sl_usefull_info">
+		<text>La informaci n del comerciante.</text>
+	</string>
+	<string id="sl_usefull_info_text">
+		<text>Mmm… El comerciante no me fall  y le estoy muy agradecido porque me ech  un cable con la b squeda de Strelok. Ha aparecido por aqu  cerca un stalker llamado Fox que necesita ayuda. Sidorovich cree que Fox podr a conocer a Strelok.</text>
+	</string>
+	<string id="sl_wishmaster_legend">
+		<text>La leyenda del Genio.</text>
+	</string>
+	<string id="sl_wishmaster_legend_text">
+		<text>He aprendido un poco de folclore local: la leyenda cuenta que hay un Genio en lo m s profundo de la Zona. Se desconoce su ubicaci n exacta, pero est  en alg n lugar del centro. Seg n parece, si consigues llegar hasta all ... de repente tu vida empieza a ser mucho m s f cil. Mmm...  Qu  tal si lo encontrara y le dijera "quiero recordar todo mi pasado"? Pero claro, no quiero gastar un deseo.  Y si lo recuerdo todo y resulta que soy un aut ntico mamonazo? Eso ser a una faena.  Cu ntos deseos podr  conceder...?</text>
+	</string>
+	<string id="storyline_seriy_flash_info">
+		<text>Bruiser escribe a Seriy: Mole y compa  a han descubierto el escondite de Strelok en el Instituto. Averigua qu  est  pasando. Seriy a Bruiser: Ir n m s tarde al bar, de todas formas, as  que les esperar  en el camino del vertedero.</text>
+	</string>

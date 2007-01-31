@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="mp_art_destroyed">
+		<text>Das Artefakt wurde zerst rt.</text>
+	</string>
+	<string id="mp_art_spowned">
+		<text>Das Artefakt wurde neugestartet. Bringen Sie es in die Basis, um einen Punkt zu bekommen.</text>
+	</string>
+	<string id="mp_artefacts">
+		<text>Artefakte</text>
+	</string>
+	<string id="mp_artefacts_upcase">
+		<text>Artefakte</text>
+	</string>
+	<string id="mp_auto_select">
+		<text>Auto-Auswahl</text>
+	</string>
+	<string id="mp_back">
+		<text>Zur ck</text>
+	</string>
+	<string id="mp_ban">
+		<text>Sperren</text>
+	</string>
+	<string id="mp_by_anomaly">
+		<text>mit einer Anomalie</text>
+	</string>
+	<string id="mp_cancel">
+		<text>Abbrechen</text>
+	</string>
+	<string id="mp_change_map">
+		<text>Karte  ndern</text>
+	</string>
+	<string id="mp_change_weather">
+		<text>Wetter  ndern</text>
+	</string>
+	<string id="mp_chat">
+		<text>Chat</text>
+	</string>
+	<string id="mp_connected">
+		<text>verbunden</text>
+	</string>
+	<string id="mp_deaths">
+		<text>Gestorben</text>
+	</string>
+	<string id="mp_description">
+		<text>Beschreibung</text>
+	</string>
+	<string id="mp_disconnected">
+		<text>nicht verbunden</text>
+	</string>
+	<string id="mp_enter_text">
+		<text>Abstimmungstext eingeben</text>
+	</string>
+	<string id="mp_entered_game">
+		<text>ist dem Spiel beigetreten</text>
+	</string>
+	<string id="mp_first_eye">
+		<text>(Erste Person-Ansicht)</text>
+	</string>
+	<string id="mp_frags">
+		<text>Kills</text>
+	</string>
+	<string id="mp_frags_upcase">
+		<text>Kills</text>
+	</string>
+	<string id="mp_free_fly">
+		<text>(Freie Kamera)</text>
+	</string>
+	<string id="mp_free_look">
+		<text>(Dritte Person-Ansicht)</text>
+	</string>
+	<string id="mp_from">
+		<text>mit</text>
+	</string>
+	<string id="mp_go">
+		<text>LOS!</text>
+	</string>
+	<string id="mp_has_drop_art">
+		<text>hat das Artefakt %s fallengelassen</text>
+	</string>
+	<string id="mp_has_tak_art">
+		<text>hat das Artefakt %s genommen</text>
+	</string>
+	<string id="mp_headhuntrs">
+		<text>S ldner</text>
+	</string>
+	<string id="mp_is_now">
+		<text>ist jetzt</text>
+	</string>
+	<string id="mp_joined">
+		<text>ist angemeldet</text>
+	</string>
+	<string id="mp_kick">
+		<text>Fallenlassen</text>
+	</string>
+	<string id="mp_look_at">
+		<text>(DP Rotation)</text>
+	</string>
+	<string id="mp_map_desc">
+		<text>Kartenbeschreibung</text>
+	</string>
+	<string id="mp_match_started">
+		<text>Match hat begonnen!</text>
+	</string>
+	<string id="mp_modes">
+		<text>Modi</text>
+	</string>
+	<string id="mp_name">
+		<text>Name</text>
+	</string>
+	<string id="mp_next">
+		<text>Weiter</text>
+	</string>
+	<string id="mp_no_voted">
+		<text>Nicht abgestimmt</text>
+	</string>
+	<string id="mp_ping">
+		<text>Ping</text>
+	</string>
+	<string id="mp_player_wins">
+		<text>Spieler %s hat das Match gewonnen!</text>
+	</string>
+	<string id="mp_players">
+		<text>Spieler</text>
+	</string>
+	<string id="mp_press_fire2spectator">
+		<text>Zum Wechseln in den Zuschauermodus 'Feuern' dr cken.</text>
+	</string>
+	<string id="mp_press_jump2pay_spaw">
+		<text>Zum Kaufen eines sofortigen Neustarts 'Springen' dr cken.</text>
+	</string>
+	<string id="mp_press_jump2select_skin">
+		<text>Zum Ausw hlen eines Skins 'Springen' dr cken.</text>
+	</string>
+	<string id="mp_press_jump2select_team">
+		<text>Zum Ausw hlen der Teams 'Springen' dr cken.</text>
+	</string>
+	<string id="mp_press_jump2spawn">
+		<text>Zum Neuzustarten 'Springen' dr cken.</text>
+	</string>
+	<string id="mp_press_jump2start">
+		<text>Zum Starten 'Springen' dr cken.</text>
+	</string>
+	<string id="mp_press_to_buy">
+		<text>Zum  ffnen des Kaufen-Men s ($$ACTION_BUY_MENU$$) dr cken.</text>
+	</string>
+	<string id="mp_press_yes2pay">
+		<text>%d$ verf gbar. Neustart: %d$. Zum Neustart 'Ja' klicken.</text>
+	</string>
+	<string id="mp_ready">
+		<text>Bereit ...</text>
+	</string>
+	<string id="mp_restart">
+		<text>Neustart</text>
+	</string>
+	<string id="mp_restart_fast">
+		<text>Schneller Neustart</text>
+	</string>
+	<string id="mp_scores">
+		<text>sammelte 1 Punkt</text>
+	</string>
+	<string id="mp_select_ban">
+		<text>Zu sperrenden Spieler f r Abstimmung ausw hlen</text>
+	</string>
+	<string id="mp_select_category">
+		<text>Kategorie zur Abstimmung ausw hlen</text>
+	</string>
+	<string id="mp_select_kick">
+		<text>Spieler f r Abstimmung ausw hlen, die rausgeworfen werden sollen</text>
+	</string>
+	<string id="mp_select_kick_player">
+		<text>Spieler f r Abstimmung ausw hlen, die rausgeworfen werden sollen</text>
+	</string>
+	<string id="mp_select_map">
+		<text>Karte zur Abstimmung ausw hlen</text>
+	</string>
+	<string id="mp_skin_selection">
+		<text>Skin-Auswahl</text>
+	</string>
+	<string id="mp_spectator">
+		<text>Zuschauer</text>
+	</string>
+	<string id="mp_spectators">
+		<text>ZUSCHAUER</text>
+	</string>
+	<string id="mp_status">
+		<text>Status</text>
+	</string>
+	<string id="mp_switched_to">
+		<text>ist  bergelaufen zu</text>
+	</string>
+	<string id="mp_team_free_stalkers">
+		<text>Freiheit</text>
+	</string>
+	<string id="mp_team_selection">
+		<text>Teamauswahl</text>
+	</string>
+	<string id="mp_team_wins">
+		<text>Team %s hat GEWONNEN!</text>
+	</string>
+	<string id="mp_text">
+		<text>Text</text>
+	</string>
+	<string id="mp_time2respawn">
+		<text>Zeit bis zum Neustart</text>
+	</string>
+	<string id="mp_time2start">
+		<text>Zeit bis zum Start:</text>
+	</string>
+	<string id="mp_timeleft">
+		<text>Restzeit: %d:%d; Zustimmung %.2f%</text>
+	</string>
+	<string id="mp_vote_no">
+		<text>Nein</text>
+	</string>
+	<string id="mp_vote_yes">
+		<text>Ja</text>
+	</string>
+	<string id="mp_voted">
+		<text>stimmte</text>
+	</string>
+	<string id="mp_voted_no">
+		<text>dagegen</text>
+	</string>
+	<string id="mp_voted_yes">
+		<text>daf r</text>
+	</string>
+	<string id="mp_voting_broken">
+		<text>Abstimmung wurde vom Server abgebrochen!</text>
+	</string>
+	<string id="mp_voting_started">
+		<text>Abstimmung '%s' wurde von %s begonnen.</text>
+	</string>
+	<string id="mp_voting_started_msg">
+		<text>Abstimmung hat begonnen!</text>
+	</string>
+	<string id="mp_weather_clear">
+		<text>Klar</text>
+	</string>
+	<string id="mp_weather_cloudy">
+		<text>Bew lkt</text>
+	</string>
+	<string id="mp_weather_night">
+		<text>Nacht</text>
+	</string>
+	<string id="mp_weather_rain">
+		<text>Regen</text>
+	</string>
+	<string id="mp_with_backstab">
+		<text>In den R cken!</text>
+	</string>
+	<string id="mp_with_headshot">
+		<text>Volltreffer!</text>
+	</string>
+	<string id="mp_your_rank">
+		<text>Sie sind jetzt:</text>
+	</string>
+	<string id="ui_st_description">
+		<text>Beschreibung</text>
+	</string>
+	<string id="ui_st_team1_name">
+		<text>Freiheit</text>
+	</string>
+	<string id="ui_st_team2_name">
+		<text>S ldner</text>
+	</string>
+	<string id="af_neutral">
+		<text>Artefakt</text>
+	</string>
+	<string id="self">
+		<text>Du bist es.</text>
+	</string>
+	<string id="friend">
+		<text>Verb ndeter</text>
+	</string>
+	<string id="team_base_1">
+		<text>Freiheitsbasis</text>
+	</string>
+	<string id="team_base_2">
+		<text>S ldnerbasis</text>
+	</string>
+</string_table>

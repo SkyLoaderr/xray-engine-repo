@@ -38,10 +38,10 @@
 		<text>Talk to the commander of the rookies</text>
 	</string>
 	<string id="esc_dinamit_to_volk">
-		<text>Kill the bandits at the bus depot</text>
+		<text>Kill the bandits at the car park</text>
 	</string>
 	<string id="esc_dinamit_to_volk_0">
-		<text>Kill the bandits at the bus depot and report to Wolf.</text>
+		<text>Kill the bandits at the car park and report to Wolf.</text>
 	</string>
 	<string id="esc_dinamit_to_volk_1">
 		<text>Meet with Wolf's people</text>

@@ -1,0 +1,60 @@
+	<string id="esc_direction_fire">
+		<text>On ne tire pas tant que je n'en ai pas donn  l'ordre. Pas de faux pas, OK ?</text>
+	</string>
+	<string id="esc_fanat_victory">
+		<text>Victoire !!! Approchez tous. Viens, le Tatou . Il faut qu'on parle.</text>
+	</string>
+	<string id="esc_return_dv">
+		<text>Bien, le Tatou . Content de te savoir en vie. Viens par ici, on va discuter. J'ai un truc int ressant   te dire.</text>
+	</string>
+	<string id="esc_tutorial_end">
+		<text>Excellent, votre mission est termin e. Vous avez acquis les comp tences de base.</text>
+	</string>
+	<string id="esc_wolf_thanks">
+		<text>Le Tatou , les portes du camp te sont grandes ouvertes. Viens, on va discuter.</text>
+	</string>
+	<string id="escape_fox_quest">
+		<text>Un petit mot sur Strelok, le Tatou . Un Stalker rentre d'un long raid. Il s'appelle Fox. Apparemment, il en a bav  et il a besoin d'aide. De dr les de b tes sont sur ses traces. Il dit qu'il va avoir du mal   tenir. Je crois qu'il sait quelque chose sur Strelok. Voici ses coordonn es. Mais d p che-toi.</text>
+	</string>
+	<string id="escape_stalker_death">
+		<text>Pas terrible, le Tatou . Les hommes sont morts, mais tu n'y es pour rien. Ce sont des choses qui arrivent dans la Zone. En tout cas, tu as r ussi l' preuve. Rentre et on parlera affaires.</text>
+	</string>
+	<string id="escape_stalker_helped">
+		<text>Bien jou , le Tatou . Continue comme  a et tu vas te faire des amis. Viens me voir, on va parler affaires.</text>
+	</string>
+	<string id="escape_stalker_killed">
+		<text>Ce n' tait pas tr s malin, le Tatou . Tu as r ussi l' preuve, mais maintenant, tu vas devoir te d brouiller tout seul avec le Loup et ses gorilles. Enfin, je t'attends. Il faut qu'on parle boulot.</text>
+	</string>
+	<string id="info_esc_give_agroprom_task">
+		<text>Le Tatou , le militaire a d nich  quelque chose d'int ressant   l'Institut de Recherche Agroprom. J'aimerais bien mettre la main dessus, comme toi je suppose. Trouve les infos et transmets-les au barman du bar des Stalkers. Allez, grouille-toi !</text>
+	</string>
+	<string id="tips_esc_trader_about_anomalies">
+		<text>Attention ! Il y a des anomalies pr s de vous. Utilisez vos boulons pour  valuer leur position exacte et leur forme.</text>
+	</string>
+	<string id="tips_esc_trader_about_pda">
+		<text>Appuyez sur Contact ($$ACTION_CONTACTS$$). Les personnes situ es   250 m tres autour de vous et dont le PDA est activ  seront visibles dans les Contacts et sur la carte miniature de votre viseur. Vous conna trez ainsi leur attitude   votre  gard et pourrez rep rer des ennemis potentiels. Mais g n ralement, les bandits et les mutants n'activent pas leur PDA, alors prudence !</text>
+	</string>
+	<string id="tips_esc_trader_activate_map">
+		<text>Pour activer la carte, appuyez sur '$$ACTION_MAP$$'.</text>
+	</string>
+	<string id="tips_esc_trader_activate_pda">
+		<text>Pour activer le PDA, appuyez sur '$$ACTION_ACTIVE_JOBS$$'.</text>
+	</string>
+	<string id="tips_esc_trader_how_to_talk">
+		<text>Pour parler   un personnage, visez-le et appuyez sur '$$ACTION_USE$$'.</text>
+	</string>
+	<string id="tips_esc_trader_quest_1">
+		<text>Trouvez l'artefact dans le secteur d sign  sur la carte et apportez-le au marchand.</text>
+	</string>
+	<string id="tutorial_flash_anomaly_alarm">
+		<text>Attention, le Tatou . La prochaine fois,  a pourrait  tre vous.</text>
+	</string>
+	<string id="tutorial_trader_give_medikit">
+		<text>Donnez un kit m dical   ce cr tin.</text>
+	</string>
+	<string id="tutorial_trader_look_vagon">
+		<text>Le Tatou  ! Oubliez l'artefact, vous le d poserez plus tard. Allez imm diatement   la caravane, au bord de la route. Mes hommes ont besoin d'aide. Ces imb ciles ont ouvert le feu sur un h lico. Je vous ai envoy  les coordonn es.</text>
+	</string>
+	<string id="tutorial_trader_search_corpses">
+		<text>Fouillez les corps. Vous trouverez peut- tre quelque chose d'utile.</text>
+	</string>

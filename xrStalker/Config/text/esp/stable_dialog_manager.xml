@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="dm_action_info_0">
+		<text> Qu  novedades va a haber aqu ? Piensa en esto como si se tratara del jard n de infancia, o incluso preescolar. Cierto, si no te quedas por aqu , te expulsan en cinco minutos. Los m s listos aguantan aqu  un tiempo, y despu s se van qui n sabe ad nde. Adem s, aqu  la cosa es usar munici n y armas; no hay que cuestion rselo. Todo el mundo lo hace.</text>
+	</string>
+	<string id="dm_action_info_1">
+		<text>Todo lo que tengo que hacer es esperar a que esos mariquitas de uniforme salgan a comer... Aqu  no pinto nada; tengo que ir al exterior, pero no me dejar n bajo ning n concepto. Tampoco soy el  nico que intenta salir, pero la verdad es que a n no podemos colarnos.</text>
+	</string>
+	<string id="dm_action_info_10">
+		<text>No lejos de aqu , los tipos de uniforme necesitaban algo. No sol an venir por aqu : este sitio lo hab an pelado completamente hace ya tiempo. Y ahora parece que han encontrado algo... Ni siquiera pude acercarme al edificio; se percataron de mi presencia y empezaron a disparar. Por suerte, escap  sin que me dieran. </text>
+	</string>
+	<string id="dm_action_info_100">
+		<text>Nada. Aqu  intent ndolo, eso es todo.</text>
+	</string>
+	<string id="dm_action_info_11">
+		<text>Estamos reuniendo un equipo de gente que no tenga miedo a descender bajo tierra en la Zona. Hay una vieja f brica, y bajo ella est n todas las l neas el ctricas. Dicen que hay un pu ado de cosas valiosas que est n esperando a que alguien las inspeccione. Muy interesante...</text>
+	</string>
+	<string id="dm_action_info_12">
+		<text>No nuevas; antiguas. Dicen que la antigua base de Strelok estaba por aqu . Me pregunto qu  tipo de pistas se podr an encontrar de aquella  poca si realmente se buscase con atenci n.</text>
+	</string>
+	<string id="dm_action_info_13">
+		<text> Puedes creerlo?  Hace tan solo una hora casi me meto en un l o! Hace seis meses esto era un remanso de paz, pero ahora  esos cabezas rapadas est n detr s de cada arbusto! Es una locura, t o...</text>
+	</string>
+	<string id="dm_action_info_14">
+		<text>Stalker, tienes suerte de que los bandidos no te atraparan: su base est  muy cerca de aqu .  Oh! La habr a destruido si hubiera podido..., pero por ahora solo observamos. Esta es su base de apoyo; el cuartel general est  m s cerca del centro de la Zona.</text>
+	</string>
+	<string id="dm_action_info_15">
+		<text>Dicen que aqu  hab a un laboratorio impresionante camuflado.  Oh!... Por un lado ser a magn fico encontrar la entrada... Apuesto a que hay un mont n de cosas all . Pero, por otro lado, solo de pensarlo me dan escalofr os...</text>
+	</string>
+	<string id="dm_action_info_16">
+		<text> Sab as que en lo que ahora conocemos como el Valle Oscuro, antes de la cat strofe hab a un complejo subterr neo de investigaciones cient ficas? No s  qu  es lo que hac an, pero seguro que nada bueno. Circulan muchas historias diferentes, pero la mayor a son malas. Es algo terrible.</text>
+	</string>
+	<string id="dm_action_info_17">
+		<text> Y qu ?  Qu  quieres saber? Te dir  lo siguiente: los de Deber son definitivamente los polis y saben c mo mantener el orden, eso seguro. Pero, en general, no me gustan demasiado. Son como cualquier due o: no cojas esto, no saques aquello fuera de la Zona...  Y no solo eso, sino que ya han determinado de antemano lo que puedes decir en el exterior y lo que se supone que es confidencial! Mucho hablar, pero, de hecho, lo que quieren es destruir la Zona poco a poco. Bueno, eso no me sorprende viniendo de antiguos soldados... Son todos unos so adores... Y lo peor de todo es que se supone que les apoyan desde arriba.</text>
+	</string>
+	<string id="dm_action_info_18">
+		<text>Este sector ahora lo controla Deber, y las reglas de Deber son ley en este territorio. Controlamos las fronteras de la zona y calmamos a los impulsivos: esos pobres locos llegan aqu  en caravanas enteras; son aficionados y rom nticos... Y mueren en grupos el primer d a. </text>
+	</string>
+	<string id="dm_action_info_19">
+		<text> Has estado en nuestro campamento intermedio? Vale, no es nuestro: puedes toparte con casi cualquiera ah . Lo importante es que es un buen lugar: no hay basura, y todas las noticias de la Zona acaban ah . Casi siempre puedes o r algo  til, o al menos charlar con la gente. Qu  mala suerte que Baldy y su grupo se fueran anteayer... Esta vez ni siquiera pude verle.</text>
+	</string>
+	<string id="dm_action_info_2">
+		<text>Vamos al campamento; all  te enterar s de todos los rumores. Todos los que est n haciendo esto por primera vez –los novatos como t –, se pasan por ah  para pillar consejos o descansar un rato. Hay soldados cerca. No te asustes de ellos, pero tampoco te interpongas en su camino: pueden disparar y no se lo piensan dos veces... Aqu , cerca del comerciante –bueno, el minorista local–, hay un lugar agradable y tranquilo donde puedes descansar. </text>
+	</string>
+	<string id="dm_action_info_20">
+		<text>Stalker, ahora mismo este lugar es seguro, y estamos intentando que lo siga siendo. Hay mucha gente aqu : para algunos este es su hogar y no salen del  rea circundante; otros est n de paso, prepar ndose para una nueva incursi n. Es una pena que Irokez no volviera. Le gustaba poner a novatos como t  en el buen camino. </text>
+	</string>
+	<string id="dm_action_info_21">
+		<text> Sabes que Deber ha anunciado que est  reclutando a nuevos miembros? Lo pens  durante un minuto, pero luego decid  que al diablo con ello. En breve me llamar n... Y no necesito esa clase de disciplina. Ya serv  durante dos a os, y eso fue m s que suficiente...</text>
+	</string>
+	<string id="dm_action_info_22">
+		<text>Si no lo has o do todav a, que lo sepas: estamos reclutando nuevos miembros. Si tienes experiencia, ven. No lo lamentar s. En la base pregunta por Petrenko.</text>
+	</string>
+	<string id="dm_action_info_23">
+		<text> Has venido a echar un vistazo a los combates?  Quieres apostar o algo as ? Bueno,  qu  te parece!  En alg n sitio de por aqu  hay un campo de batalla, y es un todo o nada! Atiende: los miembros de Deber atrapan mutantes,  vale? Despu s de la investigaci n, si las bestias contin an con vida, las sueltan para los combates. Y los animalitos tienen todo tipo de formas y tama os; con algunos te mueres de la risa y con otros te cagas en los pantalones.</text>
+	</string>
+	<string id="dm_action_info_24">
+		<text>No sirven m s que para proporcionar carne fresca a los combates. Entretienen a la gente y para nosotros supone ganar un peque o porcentaje de las apuestas. Demostraremos a los stalkers que los de Deber no hablamos por hablar, sino que vamos en serio.</text>
+	</string>
+	<string id="dm_action_info_25">
+		<text> Oye!,  has estado en Rostok?  Antes era un lugar tranquilo, pero ahora es peligroso ir all  solo: hay demasiados mutantes. Vamos juntos.  Qu  me dices?... De todas formas... No te conozco y t  tampoco a m .  Y si...? Lo siento, t o. Es mejor que nos separemos.</text>
+	</string>
+	<string id="dm_action_info_26">
+		<text>Acabamos de volver de Rostok. No es bueno aparecer por all , sobre todo si vas solo.  Quieres seguir vivo? Entonces es mejor que no vayas.</text>
+	</string>
+	<string id="dm_action_info_27">
+		<text>Estaba pensando en ir a Yantar; pero cuando lo volv  a pensar, desist . All  los cerebritos han instalado una base cient fica en toda regla. Est n todo el d a buscando qui n sabe qu , mientras los zombis campan a sus anchas en el exterior del complejo.  Dios m o!  Qu  id lico!</text>
+	</string>
+	<string id="dm_action_info_28">
+		<text>Hace poco estaban purgando la zona de Yantar...  S , la verdad es que la han limpiado muy, pero que muy bien! Tienen laboratorios de investigaci n, pero hay demasiados zombis pululando por los alrededores. As  que tenemos que ir regularmente para ayudar a salir a los cient ficos.</text>
+	</string>
+	<string id="dm_action_info_29">
+		<text>Cerca de los antiguos almacenes,  sabes?, est  la base de Libertad. Son tipos felices, tienen sentimientos; es agradable charlar con ellos bebiendo una botella de vino. Y Deber no est  por all  todo el tiempo, como alrededor del bar.</text>
+	</string>
+	<string id="dm_action_info_3">
+		<text>Hay una antigua f brica en los alrededores, y solemos mantenerla limpia de bandidos,  aunque siempre vuelven! No ha pasado ni un mes desde la  ltima vez, y ya est n aqu  otra vez. Procura ir con cuidado...</text>
+	</string>
+	<string id="dm_action_info_30">
+		<text>Libertad se oculta tras los antiguos almacenes... Hay que acabar con esos malditos chalados...</text>
+	</string>
+	<string id="dm_action_info_31">
+		<text> M rchate antes de que oscurezca! Durante el d a es m s o menos pasable, pero cuando anochece...</text>
+	</string>
+	<string id="dm_action_info_32">
+		<text>Stalker,  vete! Nosotros nos vamos... Por ahora solo estamos durante el d a y nos vamos cuando anochece.  De noche es espeluznante!</text>
+	</string>
+	<string id="dm_action_info_33">
+		<text>Ver s, durante la noche tienes que esconderte, y preferiblemente detr s de una puerta bien recia. Cuando anochece, b sicamente nos asedian.</text>
+	</string>
+	<string id="dm_action_info_34">
+		<text>Amigo, parece que no est s al corriente. Por la noche tienes que ir a echarte una cabezada lejos de aqu . En este lugar a oscuras ni siquiera un lanzagranadas te servir a de mucho.</text>
+	</string>
+	<string id="dm_action_info_35">
+		<text> Sabes qu ? Que los tipos de Deber, los de Libertad y los merodeadores decidan a qui n pertenece esta parte.  A m  qu  m s me da? Al diablo con todo...</text>
+	</string>
+	<string id="dm_action_info_36">
+		<text>Stalker, ahora trabajamos aqu . No solo han anidado en el sector ese pu ado de despojos, sino que adem s se inmiscuyen los capullos de los mercenarios y los tontainas de la facci n de Libertad...</text>
+	</string>
+	<string id="dm_action_info_37">
+		<text>Tengo que advertirte de que esto no es seguro ni siquiera de d a. De vez en cuando hay un tiroteo, y, por lo que s , es debido a conflictos que tienen desde hace tiempo las distintas facciones de bandidos.</text>
+	</string>
+	<string id="dm_action_info_38">
+		<text>Escucha, este es nuestro territorio,  no? Nos resulta m s f cil rechazar a los despojos que vienen del centro de la Zona,  verdad? Los cerebritos pueden entretenerse tratando de descubrir qui n les est  molestando, pero los de Deber y los merodeadores mejor que salgan disparados de aqu .</text>
+	</string>
+	<string id="dm_action_info_39">
+		<text> No lo sabes? Han abierto un camino nuevo para evitar la patrulla de Deber y poder pasar las mercanc as hasta la frontera. Si vienes hasta aqu  desde Yantar y usas las carreteras secundarias hasta Agroprom, estar s all  enseguida.</text>
+	</string>
+	<string id="dm_action_info_4">
+		<text>Nada. No lo s . Voy cogiendo de aqu  y all , intentando que sea suficiente para ganarme el pan. Al diablo con la Zona, es horrible ir all . En casa tampoco hay trabajo y, al menos en mi caso, tengo que mantener a mi esposa. Aqu  en el vertedero, si estas atento cada d a, puedes ir reuniendo algunos artefactos. Y eso basta para ganarse el pan.</text>
+	</string>
+	<string id="dm_action_info_40">
+		<text> Y t  por qu  est s aqu ?  Planeas ir a Yantar o estas intentando pasar alg n artefacto?</text>
+	</string>
+	<string id="dm_action_info_41">
+		<text>No negar  el hecho de que tus colegas stalkers nos traen a veces algunas formaciones an malas muy interesantes; o artefactos, si prefieres llamarlas as . Debido a... digamos... el poco control sobre ellos..., estos lugares son una ruta de contrabando bastante concurrida. </text>
+	</string>
+	<string id="dm_action_info_42">
+		<text> Qu  pasa, colega? Hemos abierto un camino para no tener que encontrarnos con los de Deber si queremos ir al exterior a por algo. Aunque pasan por aqu  de vez en cuando, no saben nada todav a y se les puede evitar.</text>
+	</string>
+	<string id="dm_action_info_43">
+		<text>Acabo de volver de Yantar. Pens  que les pasar a algo a los cient ficos, como de costumbre, pero se han encerrado en sus b nkeres y no salen ni de d a, como mucho para ir hasta un helic ptero. As  que si est s planeando ir en esa direcci n, casi mejor que cambies de rumbo...</text>
+	</string>
+	<string id="dm_action_info_44">
+		<text>En la zona de Yantar se realizan investigaciones, pero  ltimamente hay muchos m s zombis vagando por el sector. As  que estamos defendiendo las entradas.</text>
+	</string>
+	<string id="dm_action_info_45">
+		<text>Ni siquiera s  qu  decirte. Quer a volver a nuestro complejo; como probablemente sabes, se llama Yantar. Y la gente est  diciendo que si hace un tiempo era simplemente peligroso, ahora resulta imposible llegar.  Ser n exageraciones?</text>
+	</string>
+	<string id="dm_action_info_46">
+		<text>Estuve en Yantar, y los cient ficos no est n en muy buenas condiciones: andan a hurtadillas, se esconden... Viven  nicamente de los suministros que les lanzan desde helic pteros. Por otra parte, aquello est  ahora plagado de zombis. Si pasas una semana con ellos, empezar s a esconderte hasta de ti mismo. As  es ese sitio. No es nada agradable.</text>
+	</string>
+	<string id="dm_action_info_47">
+		<text>Que se vaya al demonio.   Qui n se ha cre do que es para tontear con zombis?! Hay muchos en ese est pido complejo; y contin an llegando m s. Y su n mero crece a pasos agigantados.</text>
+	</string>
+	<string id="dm_action_info_48">
+		<text>Intentamos detener el flujo de zombis desde el complejo del laboratorio. Puedo decir con toda sinceridad que no me importar a que te unieses a nuestro grupo; andamos escasos de hombres...</text>
+	</string>
+	<string id="dm_action_info_49">
+		<text> Sabes que tambi n nos dedicamos a recopilar datos...? Por ejemplo, yo investigo las formas b sicas en las que se extienden los pseudo vivos (los zombis, seg n vuestra terminolog a).  Estar as dispuesto a compartir tus descubrimientos?</text>
+	</string>
+	<string id="dm_action_info_5">
+		<text>S ... Algunos se abastecen en el vertedero y recogen trastos, otros se adentran a n m s en la Zona. Naturalmente, all  puedes encontrar cosas mucho mejores, pero no todo el mundo quiere ir. No es un lugar para novatos; y si no dispones de munici n, qu tate la idea de la cabeza: es una causa perdida. </text>
+	</string>
+	<string id="dm_action_info_50">
+		<text> Llegaste a disparar a los zombis que hab a por las ventanas del laboratorio? Bueno, es mejor que tengas cuidado: no le temen a nada, no sienten dolor, no tienen cerebro...</text>
+	</string>
+	<string id="dm_action_info_51">
+		<text> Voy a solicitar un trabajo en el laboratorio! Eh, tranquilo, que era broma.  Sabes que si deambulas por esta zona, est s pr cticamente muerto...? En el mejor de los casos, te convertir s en un zombi.</text>
+	</string>
+	<string id="dm_action_info_52">
+		<text>Te lo advierto: no vayas al laboratorio. Bueno, si realmente quieres ir, ve; no voy a retenerte a la fuerza. Pero nadie vuelve de all  con vida.</text>
+	</string>
+	<string id="dm_action_info_53">
+		<text>Ver s, solo quiero advertirte. No deber as ir al laboratorio. De hecho, nadie deber a ir: se sufren alteraciones graves en la psicolog a y en el metabolismo, y me temo que estos efectos son irreversibles.</text>
+	</string>
+	<string id="dm_action_info_54">
+		<text> Eh! Voy a arrojar algo de luz en tu mente... a iluminarte... B sicamente, voy a salvar a la oveja perdida. Bueno, pues esto es lo que hay: no vayas al complejo del laboratorio. Aquello es siniestro, muy siniestro. La gente desaparece y luego regresa para asustarte por la noche. No son historietas de terror sobre vampiros, sino la cruda verdad sobre los zombis. Eso es todo.</text>
+	</string>
+	<string id="dm_action_info_55">
+		<text> Has visto a nuestros listillos, la flor y nata de las malditas Naciones Unidas?  ltimamente se est n rajando. Avisan a todo el regimiento y a la fuerza a rea para que los protejan cada vez que dan un paso fuera de la base.</text>
+	</string>
+	<string id="dm_action_info_56">
+		<text> Y a ti qu  m s te da? No los molestes con preguntas est pidas y ellos te dejar n a ti tranquilo.</text>
+	</string>
+	<string id="dm_action_info_57">
+		<text>Ver s, normalmente no salimos el b nker sin la debida protecci n: las condiciones del territorio circundante no lo permiten. Yo soy una excepci n; no me gustan las expediciones grandes con tanta parafernalia, soldados... En cualquier caso, me temo que no puedo decirte nada que te sirva de ayuda de momento.</text>
+	</string>
+	<string id="dm_action_info_58">
+		<text> Me encantan los frutos de nuestra querida ciencia! Me pirran, colega. Normalmente no salen fuera del b nker. Pero incluso si lo hacen, como el otro d a:  Dios m o! Hab a tropas por todas partes, veh culos propulsados y ultra blindados. Puede que incluso tengan un acorazado o, al menos, un tren blindado.</text>
+	</string>
+	<string id="dm_action_info_59">
+		<text>Es el tercer d a que paso aqu , observando. Hay un laboratorio,  verdad? No ha entrado nadie desde el primer d a; los de Deber se cargaban a los zombis de arriba, y ahora han dejado de hacerlo,  vale? Pero los cient ficos han tenido que entrar ah . Eso significa que encontraron un modo de protegerse a s  mismos, qui n sabe de qu . As  que estaba pensando en ir a fisgonear un poco; apuesto a que aquello estar  petado de mercanc a.</text>
+	</string>
+	<string id="dm_action_info_6">
+		<text>En los  ltimos d as han aparecido manadas enteras de animales procedentes del Valle Oscuro. No est  claro que es lo que les impulsa a irse de all , pero est n huyendo de aquel lugar como si hubiera un incendio. Y en el sector oriental los mutantes est n multiplic ndose como moscas. Lo  nico que podemos hacer es seguir mat ndolos a tiros. As  que esto es lo que hay.</text>
+	</string>
+	<string id="dm_action_info_60">
+		<text> Y qu  est s buscando por aqu ?  Tambi n intentas llegar al laboratorio?  Has o do una historia sobre instrumentos m gicos y montones de artefactos? T o...,  aprender n los idiotas alg n d a?</text>
+	</string>
+	<string id="dm_action_info_61">
+		<text>Trabajo aqu , chaval. Simplemente trabajo aqu , desempe ando mi deber para con la ciencia y la humanidad. Y si quieres saber algo del laboratorio abandonado, te dir  lo mismo que le digo a todo stalker que me encuentro: no s  nada y no quiero saberlo. Este asunto no me interesa ni nunca me ha interesado.   Est  claro?!</text>
+	</string>
+	<string id="dm_action_info_62">
+		<text> Es posible que los cient ficos descubrieran alg n tipo de instrumento excepcional? Me pregunto qu  se esconde en ese condenado laboratorio. Incluso si no hay mercanc a, sigue siendo interesante.</text>
+	</string>
+	<string id="dm_action_info_63">
+		<text>Me pregunto si deber a unirme a Libertad. Ah  est  su base, en los viejos almacenes del ej rcito.  Y por qu  no? Parecen tipos listos.  Qu  pasa porque est n un poco desorganizados? As  es incluso mejor: no necesito ser disciplinado. S  lo que se supone que estoy haciendo, no es como si fuera mi primer mes aqu .</text>
+	</string>
+	<string id="dm_action_info_64">
+		<text>No eres demasiado partidario de Libertad,  verdad? Bueno, bueno. No nos enfademos. Creo que pronto los echaremos de los almacenes. No tienen organizaci n ni disciplina; son un hatajo de animales. Unos anarquistas. Y se atreven a enfrent rsenos, esos ni atos de la OTAN.</text>
+	</string>
+	<string id="dm_action_info_65">
+		<text>Me encuentro con uno de los hombres de Deber cuando hay un alto el fuego. Y charlamos. El t o es listo, pero, mierda, cerrado de mente como  l solo. Nuestra filosof a es completamente diferente de la suya: solo puedes domar la Zona, asimilarla, pero no destruirla. Para ello, hay que tener acceso total a toda la informaci n: al final, a alguien se le ocurrir  algo. Pero para ellos todo gira en torno a "cerrarla" y "aislarla" y "que no se sepa"... Idiotas, completos idiotas. Por otro lado, tiene sentido: cuando tienes a toda la maquinaria pol tica detr s, se supone que no debes salirte del redil.</text>
+	</string>
+	<string id="dm_action_info_66">
+		<text>Hay por aqu  una casita que sol a ser tranquila, pero ahora hay bichos reproduci ndose. Es mejor dar un rodeo, y eso es lo que estoy haciendo... Eh, colega, no digas que no te lo advert .</text>
+	</string>
+	<string id="dm_action_info_67">
+		<text>Lo primero de todo, stalker, quiero advertirte: hace tiempo que los chupasangres tienen una guarida en el pueblo y quiz  algo peor; as  que ten cuidado.</text>
+	</string>
+	<string id="dm_action_info_68">
+		<text>Sin novedades. Aqu  ya no quedan artefactos, y acabamos con los chupasangres que viv an en esas casitas lo mejor que pudimos. Iba a ir, pero no pude llegar al lugar. Quiz  fuera una intuici n, pero no puedo y punto. Ni en broma. All  hay muerte...</text>
+	</string>
+	<string id="dm_action_info_69">
+		<text> Me largo de aqu  ahora mismo! Dando vueltas sin sentido durante cuatro semanas en la frontera... Ya est ...  Ya he tenido bastante! No dejan de llegar fan ticos desde la zona del Cauterizador, y cada d a m s y m s...</text>
+	</string>
+	<string id="dm_action_info_7">
+		<text>Ahora muchos se han convertido en "basureros". Antes ni si quiera se molestaban en mirar en los montones: la radiaci n era tan alta que se pod an cocer huevos en medio minuto. Y ahora que es m s dif cil encontrar mercanc a, se enfundan sus protecciones, se toman unas pastillas y trepan para echar un ojo. Aparecen todo tipo de cosas ah  arriba, pero casi siempre es chatarrilla.</text>
+	</string>
+	<string id="dm_action_info_70">
+		<text>Si vienes aqu , a nuestro bloqueo, mereces mi respeto. Si no,  fuera de mi pu etera vista! Necesitamos hombres de verdad y no nenazas: ya he tenido suficientes de esas...</text>
+	</string>
+	<string id="dm_action_info_71">
+		<text> Has venido por el bloqueo, t o? Mejor que mejor: al menos habr  una persona normal m s aqu . Organizamos y mantuvimos el asunto bastante bien..., pero entonces aparecieron las bestias... Ahora la cosa se ha puesto dif cil y cada arma cuenta.</text>
+	</string>
+	<string id="dm_action_info_72">
+		<text> No te han puesto al d a? Se ha abierto el paso al centro de la Zona. O bien se ha abierto solo o alguien se ha tomado muchas molestias; si es as , le estoy muy agradecido.  Ahora, todo lo que hay que hacer es conseguir la mejor mercanc a!</text>
+	</string>
+	<string id="dm_action_info_73">
+		<text>Podr as haber esperado, stalker. No corras detr s de todo lo que se mueva. Dime:  sabes lo que hay ah ? Claro que no. No sabes si hay algo o no. Tampoco sabes qu  tipo de trampas te esperan. Entonces,  por qu  demonios intentas entrar a toda costa?</text>
+	</string>
+	<string id="dm_action_info_74">
+		<text>El camino al centro est  despejado,   entiendes?!  Ya se puede ir directamente al mismo centro! Ahora todo el mundo va a ir para all  corriendo.  Lo importante es llegar entre los primeros para pillar mejor que nadie!</text>
+	</string>
+	<string id="dm_action_info_75">
+		<text>No te detengas,  lo ver s todo por ti mismo!  No quieres ver por ti mismo lo que est  pasando ah ? Bueno, entonces eres un... bendito.  Tiene que haber tantas cosas! Por ejemplo, habr s o do hablar del Genio,  no?</text>
+	</string>
+	<string id="dm_action_info_76">
+		<text> Igual que chiquillos, por Dios! "Genio", "montones de artefactos"... No me lo puedo creer.</text>
+	</string>
+	<string id="dm_action_info_77">
+		<text> Quiero descubrir por m  mismo qu  hay m s all  del horizonte, colega!  Qu  suceder a si pudi ramos descubrir de golpe todas las respuestas de por qu  la Zona es as ?</text>
+	</string>
+	<string id="dm_action_info_78">
+		<text> Has visto los rascacielos? Eso ya es Pripyat. La central est  justo detr s. Ay, c mo me gustar a entrar... Pero a saber lo que est  pasando ah  hoy en d a.</text>
+	</string>
+	<string id="dm_action_info_79">
+		<text>Deja que te explique. Est  Pripyat. Tras ella, la central nuclear de Chern bil. Lo que sucede ah  y qui n habita esa zona, no se sabe. Ese es nuestro lugar. Como siempre, descubriremos algo.</text>
+	</string>
+	<string id="dm_action_info_8">
+		<text> No est s al d a! Y yo estaba yendo al bar a hablar con la gente.  C mo?  Nunca has estado?  Dios m o! Bueno, pues se va as : tal y como est s, sigue hacia el norte. El bar est  a la vuelta de la esquina. Es muy  til pasarse por all , sobre todo para los novatos como t ; deber ais hacerlo todos por prescripci n m dica: all  hay hombres experimentados que, qui n sabe, quiz  puedan ayudarte, decirte algo, darte instrucciones. Una cosa: te encontrar s con nuestros amigos de Deber de camino all ... Y es cuesti n de suerte: si la tienes, les gustar s. Y si no la tienes, pues no.</text>
+	</string>
+	<string id="dm_action_info_80">
+		<text> Pripyat!  Dime que no estoy so ando!  Por fin! Estamos bastante cerca de la central. Pero es dif cil saber con qui n te puedes encontrar aqu ; qu  criatura estar  afil ndose los dientes al acecho.</text>
+	</string>
+	<string id="dm_action_info_81">
+		<text>Escucha, amigo...  T  tambi n oyes una voz en tu cabeza o estoy alucinando? No deja de murmurar algo una y otra vez...</text>
+	</string>
+	<string id="dm_action_info_82">
+		<text>Maldita sea, otro m s... A ver, esto es lo que hay. Intentar  explicar por billon sima vez el tipo de efecto telep tico que experimenta la gente aqu . Voces que no se oyen desde el exterior llaman a la gente constantemente atray ndola al centro de la Zona; prometen conceder todos los deseos al que consiga tocar el...  c mo se dice?... ah, s , una especie de monolito.</text>
+	</string>
+	<string id="dm_action_info_83">
+		<text> Oyes una voz? Genial, es como un reproductor en tu cabeza. La pena es que solo tenga una canci n: ven a m  y obtendr s una felicidad inmensa. Dos horas dando la brasa con lo mismo.</text>
+	</string>
+	<string id="dm_action_info_84">
+		<text> Y no te puedes imaginar qu  es? T  est s intentando entrar en la central. Nosotros tambi n,  qu  novedad! Siempre que podamos despejar el camino de estos retrasados...</text>
+	</string>
+	<string id="dm_action_info_85">
+		<text> El territorio de la central est  muy cerca! Por ahora no podemos controlar la resistencia de los monolitoadictos.</text>
+	</string>
+	<string id="dm_action_info_86">
+		<text>Ah  est , la central nuclear de Chern bil al alcance de nuestras manos. Ya solo queda un poco, pero esos desgraciados son tan tercos;  no nos dejar n pasar! No hay problema,  podemos quitarlos de en medio en un santiam n!</text>
+	</string>
+	<string id="dm_action_info_9">
+		<text>Escucha, amigo,  t  no sabr s nada del Agroprom? Yo quer a ir all , pero todos empezaron a re rse de m : ya no queda nada all , limpiaron el lugar hace tiempo y solo hay anomal as.  Sabes si lo dicen en serio o est n de broma? Soy bastante nuevo y me creo lo que me cuenta la gente de por aqu ...  Podr a ser que estuvieran todos compinchados para tomarme el pelo?  A la m nima de cambio est n parti ndose de risa esos capullos!</text>
+	</string>
+	<string id="dm_action_info_94">
+		<text> Espera! Ve r pido, pero no demasiado. Hay tipos de Monolith por todas partes; conocen cada palmo de la ciudad y han puesto montones de trampas. Tienes que andarte con cuidado. </text>
+	</string>
+	<string id="dm_action_info_95">
+		<text>Te lo advierto: ahora una gran parte de la ciudad est  bajo el control de la facci n de Monolith. Hay montones de trampas y conocen la ciudad como la palma de su mano. Estate atento y ten las armas a punto.</text>
+	</string>
+	<string id="dm_action_info_96">
+		<text>Ah, lo que me encantar a hacer es barrer la ciudad con bombas. Cerdos... El  nico lugar en el que no est n agazapados son las cajas de arena de los gatos y las macetas.  Cu nta gente ha muerto ya a manos de esos monstruos!</text>
+	</string>
+	<string id="dm_action_info_97">
+		<text>Mira, qui n sabe... Ese genio quiz  no sea eterno y no habr  suficiente para todos.  Y qu  tiene que hacer uno?  Ponerse a cuatro patas? Y a ti, t o, te prometo una cosa: si llegamos, t  vas detr s de m ...</text>
+	</string>
+	<string id="dm_action_info_98">
+		<text>Deber tiene que abrirse paso hasta el centro, si no el primero, de los primeros. Imag natelo, stalker, un psic pata, –y todos vosotros sois psic ticos, paranoicos u oligofr nicos– llega hasta la cosa, y la cosa de verdad puede conceder cualquier deseo,  vale?  Y entonces qu ?</text>
+	</string>
+	<string id="dm_action_info_99">
+		<text>La noticia del siglo:  todo el que puede andar y llevar un arma est  aqu !  Cualquier cosa es posible en este lugar! M tetelo en la cabeza:  cualquier cosa que desees! Y alguien llegar  y dir : "Deseo que la Zona desaparezca para siempre".  Eh?  Te das cuenta de las dimensiones de la tragedia?  Vamos a acabar todos en medio de la nada!</text>
+	</string>
+	<string id="dm_cool_info_0">
+		<text> Alguna novedad? Al infierno con las novedades cuando hay tanta mierda antigua para dar y tomar.  Los bandidos se han vuelto locos, los muy cerdos! Nos metemos en las anomal as para intentar hacernos con los artefactos y ellos se ponen a robar cosas a la gente...  Capullos! Ten cuidado y no vayas al vertedero... Ese es exactamente el tipo de sitio que les gusta.</text>
+	</string>
+	<string id="dm_cool_info_1">
+		<text>Estoy atrapado aqu ,  entiendes?  Atrapado! Quiero irme a casa y no me dejan. Esas son las novedades. Los tipos que se han adentrado en la Zona, los que han estado cerca, dicen otras cosas. Y, a veces, cuando traen la mercanc a... te dar a envidia. Dicen que hay lugares que son como minas de oro: todo se puede coger. Pero claro, all  no llegan demasiados, y todav a menos vuelven con lo que han encontrado.</text>
+	</string>
+	<string id="dm_cool_info_10">
+		<text>Hace una semana Otter se abras  en el Cauterizador. Tendr a sentido si le hubiera pasado a un novato cobardica, pero  l llevaba siendo stalker muchos a os. Incluso dicen que estaba en el equipo de Strelok. Y, entonces, de repente...</text>
+	</string>
+	<string id="dm_cool_info_100">
+		<text>Bueno, la verdad es que no estoy muy informado de las  ltimas novedades.</text>
+	</string>
+	<string id="dm_cool_info_11">
+		<text>Dime, stalker:  por qu  vosotros, los independientes, os volv is locos a veces?  No ten is una disciplina b sica? La otra semana uno decidi  sobrepasar el Cauterizador. Y dicen que era alguien experimentado... Hay una forma m s f cil de perder el cerebro: un ca  n en la boca y a disparar.</text>
+	</string>
+	<string id="dm_cool_info_12">
+		<text>Esos mercenarios son idiotas. Llevan mucho tiempo chup ndonos la sangre y ahora la han tomado tambi n con los cerebritos.  Y por qu  han consentido?  Por un rescate?  Para compartir sus premios Nobel?</text>
+	</string>
+	<string id="dm_cool_info_13">
+		<text> ltimamente los mercenarios est n mucho m s activos. Tambi n los llamamos merodeadores. Hay otro tipo de cerdos por aqu ; no s  si lo habr s o do. Son como los bandidos, pero expertos en el arte de la guerra. Lo raro es que antes prefer an atacar a los stalkers, pero  ltimamente se interesan m s por los cient ficos. Aunque...  ndate con ojo en cualquier caso; yo tampoco les dar a la oportunidad de pegarme un tiro.</text>
+	</string>
+	<string id="dm_cool_info_14">
+		<text>Corre el rumor de que los cerebritos han descubierto algo asombroso. Y, de repente, todo el mundo se ha vuelto loco: las tropas y los mercenarios, e incluso los tipos de Deber, que no les andan a la zaga.</text>
+	</string>
+	<string id="dm_cool_info_15">
+		<text>Si quieres lo mismo que la gente que me ha estado molestando los  ltimos dos d as, entonces:  que te den! Si lo supiera y no me lo hubieran prohibido, lo hubiera dicho. Pero el caso es que no lo s , no s  nada de nada.  Qu  encontraron esos cient ficos?  Ad nde se han ido nuestros l deres?   Qu  tiene que ver todo eso conmigo?! Est n de vacaciones y no tienen que responder ante nosotros ni darnos explicaciones.</text>
+	</string>
+	<string id="dm_cool_info_16">
+		<text> Ja!  Por aqu  todo el mundo se ha vuelto loco! El Confederado y su grupo han vuelto de su incursi n, y se han tra do un pu ado de artefactos:  madre m a! Por supuesto, el Confederado guarda silencio, no dice ni una palabra, como siempre, y todos sus hombres est n de juerga como si hubieran encontrado El Dorado...  Los muy cerdos! </text>
+	</string>
+	<string id="dm_cool_info_17">
+		<text>Durante los  ltimos d as han estado viniendo todas esas criaturas de la zona del Cauterizador. La gente de cerca de los viejos almacenes construy  una barrera; por el momento parecen apa  rselas. Si no afloja... tendr n que buscar refuerzos, no quedar  m s remedio...</text>
+	</string>
+	<string id="dm_cool_info_18">
+		<text> Has o do los rumores que corren sobre que la Zona est  creciendo? Creo que son verdad. Vi junto a la frontera un monstruo humanoide terror fico que antes solo podr as haberte encontrado cerca del centro de la Zona. Las cosas no pintan bien,  verdad?</text>
+	</string>
+	<string id="dm_cool_info_19">
+		<text>Es muy posible que no est n mintiendo sobre los chupasangres de la frontera de la Zona. Pero  qu  tiene eso que ver con el crecimiento de la Zona?  Porque un grupo llegue hasta la frontera? A veces tenemos que pasar varios d as seguidos patrullando. Y trabajamos bien. Porque m s all  de la frontera nadie grita:  ayuda, los mutantes nos rodean!</text>
+	</string>
+	<string id="dm_cool_info_2">
+		<text>S , la verdad es que es un poco triste. El otro d a Otter muri  sin motivo. No me lo puedo creer... Y t  no has o do hablar de Otter,  verdad? Bueno, era pr cticamente un catedr tico; llevaba aqu  desde el primer a o, conoc a la zona como la palma de su mano... Y, de repente, as  por las buenas... Hay algunos stalkers con mucha experiencia ah  fuera, pero la Zona sigue acabando con ellos. Hay otros que terminan volviendo al exterior. </text>
+	</string>
+	<string id="dm_cool_info_20">
+		<text> T  qu  crees?  Sabr  el tabernero detalles sobre lo que han descubierto los cient ficos? Quiz  hasta se haya asociado con ellos. Parece que  ltimamente encuentra stalkers m s experimentados y les hace encargos extra os. No explica nada, solo dice: ve ah  y ah ... y los sitios son peligrosos y no hay artefactos a la vista.  Qu  demonios andar  buscando?</text>
+	</string>
+	<string id="dm_cool_info_21">
+		<text>Est  pasando algo raro. Los zombis, que antes ten an miedo de salir a la luz, ahora se arrastran por todas partes.   De qu  demonios va esto?!</text>
+	</string>
+	<string id="dm_cool_info_22">
+		<text>Por alguna raz n, los zombis se han vuelto m s agresivos y activos. Antes nos deshac amos de ellos en el propio complejo, pero ahora solo podemos vigilar las entradas. Yo no te he dicho nada,  entendido?</text>
+	</string>
+	<string id="dm_cool_info_23">
+		<text>Ten cuidado porque esos muertos vivientes han inundado todo el territorio. No tienen cerebro y son muy agresivos. Nos asedian constantemente, d a y noche. As  que este lugar es muy peligroso, jovencito.</text>
+	</string>
+	<string id="dm_cool_info_24">
+		<text>Oooh, apuesto a que los cerebritos han metido la pata con algo en ese laboratorio suyo. Antes no era f cil encontrarse con un zombi, pero ahora salen a montones del complejo. Y lo que es m s importante, se mueven como si hubieran perdido algo y lo estuvieran buscando.</text>
+	</string>
+	<string id="dm_cool_info_25">
+		<text>Corren rumores de que los cient ficos contrataron a uno de los nuestros para que fuera al laboratorio. Le dieron algo... una especie de equipo de protecci n... y nada m s, ning n detalle.</text>
+	</string>
+	<string id="dm_cool_info_26">
+		<text>Se murmuran todo tipo de cosas. Incluso se dice que un chalado habl  con un cient fico y, por alg n motivo, acept  ir al laboratorio. Vaya, eso s  que es una chorrada.</text>
+	</string>
+	<string id="dm_cool_info_27">
+		<text> Y esta es la broma de la semana! Los cerebritos le dieron una beca buen sima a uno de los vuestros y  l fue al laboratorio con uno de sus instrumentos. Otra v ctima m s,  mierda!</text>
+	</string>
+	<string id="dm_cool_info_28">
+		<text>Creo que algo se est  cociendo otra vez. Los cerebritos han descubierto algo que trae a todo el mundo de cabeza, lo que significa que tampoco nosotros tendremos paz. </text>
+	</string>
+	<string id="dm_cool_info_29">
+		<text> Qui n sabe? Han empezado a acosarnos el doble que antes... y tambi n hay un aumento importante en el n mero de tropas en la Zona.</text>
+	</string>
+	<string id="dm_cool_info_3">
+		<text>Es muy triste, es todo lo que s . Siempre ha habido montones de gente en la periferia, pero la mitad de ellos nunca han estado en lo m s profundo de la Zona y no hay artefactos suficientes para todos. Incluso arrancan y se llevan todo lo que pueden de los laboratorios y las f bricas. Pronto no habr  nada que hacer aqu  salvo abrir un restaurante... con vistas y comida ex tica.</text>
+	</string>
+	<string id="dm_cool_info_30">
+		<text>No s  ni qu  decirte... Siempre ocurre algo aqu , pero dentro de los l mites de lo razonable. Aunque en el exterior no piensen lo mismo, t  y yo estamos en una zona an mala, por as  decirlo.</text>
+	</string>
+	<string id="dm_cool_info_31">
+		<text>Los cerebritos se huelen algo. Dios sabe con qu  secreto se han encontrado, pero lo cierto es que tienen a las tropas controladas. Y est n inspeccionando el Instituto Agroprom y el Valle Oscuro, busca que te busca intentando encontrar algo...</text>
+	</string>
+	<string id="dm_cool_info_32">
+		<text>Cada d a sale m s y m s mierda de la zona del Cauterizador, y los chicos de Deber y Libertad han decidido hacer el tonto otra vez. Se matan los unos a los otros y despu s,  qu ?  Cu nto tiempo podremos mantener la frontera nosotros solos?</text>
+	</string>
+	<string id="dm_cool_info_33">
+		<text>Los mutantes intentan cada vez con m s ah nco cruzar la Barrera.  ltimamente ha sido muy duro. Si alguna gente dejara de hacer el tonto, tendr amos m s  xito.</text>
+	</string>
+	<string id="dm_cool_info_34">
+		<text>Los de Deber siguen gritando a los cuatro vientos sus actos superheroicos en la Barrera. Si alguien los creyera... Nosotros fuimos los que empezamos esto y somos los que lo mantenemos en marcha, y adem s muchos independientes como t  se quedaron atr s voluntariamente. Pero esos tipos de Deber... Los muy idiotas...  Que se vayan al infierno!</text>
+	</string>
+	<string id="dm_cool_info_35">
+		<text>Los de Deber son unos vendidos. Siguen diciendo cosas como: "Somos voluntarios que quieren restablecer el orden y la seguridad en la Zona"... S , claro,  voluntarios! Alg n patrocinador dio a esos denominados "voluntarios" un mont n de munici n y unas armas que te morir as de la envidia. Son unos vendidos.</text>
+	</string>
+	<string id="dm_cool_info_36">
+		<text> Qu  rumores est n corriendo? Te lo dir  sin rumores: pronto habr  m s orden. Purgaremos la zona de todo tipo de bestias y tambi n de algunos idiotas...</text>
+	</string>
+	<string id="dm_cool_info_37">
+		<text> Has o do lo que dicen que van a hacer con nosotros los tipos de Deber? "Pulverizarnos", y eso es lo m nimo. Todo esto me preocupa... Sobre todo desde que la gente dice que se han rearmado con lo  ltimo en equipo.</text>
+	</string>
+	<string id="dm_cool_info_38">
+		<text> Que qu  hay de nuevo? Nos sentamos aqu , los animales vienen y nosotros los matamos; luego vienen otra vez, pero m s fuertes. Vale, y un par de veces pasaron por aqu  helic pteros militares, e incluso sobrevolaron el Cauterizador.</text>
+	</string>
+	<string id="dm_cool_info_39">
+		<text>Qu  novedades puede haber... Lo de siempre, lo de siempre. Mutantes, Libertad... Aunque  ltimamente han empezado a pasar soldados en helic pteros. Al menos podr an haber disparado a alguna bestia... Pero no, nada de eso...</text>
+	</string>
+	<string id="dm_cool_info_4">
+		<text> Novedades?  A qui n le importa lo que digan! No se puede creer todo lo que dice la gente. Por ejemplo, dicen que un stalker experimentado sali  de las zonas interiores, trajo algo que nadie hab a visto antes e impresion  a un mont n de nenas... Bueno, me puedo inventar cien historias como esa.</text>
+	</string>
+	<string id="dm_cool_info_40">
+		<text>He visto helic pteros militares: imag natelo, sobrevolaron y fueron m s all  del Cauterizador cerebral. Pens : se van a estrellar. Pero no, siguieron. Se quedaron por ah  un rato, dieron la vuelta y volvieron. Lo normal,  no?</text>
+	</string>
+	<string id="dm_cool_info_41">
+		<text>Ahora que hay formas de llegar al centro de la Zona con relativa seguridad, los stalkers acuden all  como moscas a la miel. S , la avaricia no es realmente una de las grandes cualidades del hombre.</text>
+	</string>
+	<string id="dm_cool_info_42">
+		<text>Ahora que hay formas de llegar al centro de la Zona con relativa seguridad, los stalkers acuden all  como moscas a la miel. S , la avaricia no es realmente una de las grandes cualidades del hombre.</text>
+	</string>
+	<string id="dm_cool_info_43">
+		<text> Esto es vida!  Mientras llegan los del bar y los de la frontera, nos podemos hacer con el mejor material! Cogeremos lo mejorcito y dejaremos las sobras para los que vengan detr s.</text>
+	</string>
+	<string id="dm_cool_info_44">
+		<text>Bueno, se dice que el Genio existe de verdad. Algunos ya han conseguido llegar hasta  l y le han pedido un mont n de deseos...</text>
+	</string>
+	<string id="dm_cool_info_45">
+		<text>Escucha, amigo, yo s  que cualquier cosa es posible en la Zona. Lo he visto personalmente. Pero esos cuentos acerca de la inmediata obtenci n de deseos, como unas vacaciones en el Caribe, son una completa tonter a y nada m s. </text>
+	</string>
+	<string id="dm_cool_info_46">
+		<text> No lo sabes? Dos de nuestros hombres, de los primeros que llegaron al centro, encontraron al Genio  y consiguieron sus deseos! Durante toda la vida hab an so ado con retirarse a una isla en alg n mar c lido, as  que deben de estar tomando el sol en alg n lugar de los tr picos.</text>
+	</string>
+	<string id="dm_cool_info_47">
+		<text>Hemos encontrado a un h roe, el principal hombre de Libertad. Todos pensaban que hab a vuelto al exterior, pero se ve que se las arregl  para llevar a un peque o equipo m s all  del Cauterizador.  Eso s  que es un hombre!</text>
+	</string>
+	<string id="dm_cool_info_48">
+		<text>Se ha descubierto a uno de los destacamentos de Libertad en la zona que antes era inaccesible.  Como lograr an llegar hasta all  indemnes y adem s sobrevivir varias semanas? No logro imaginarlo. Creo que subestimamos a esos tipos.</text>
+	</string>
+	<string id="dm_cool_info_49">
+		<text>Imag natelo:  encontraron a nuestro Mikluha! Y los que iban con  l tambi n sobrevivieron. Consiguieron evitar el Cauterizador, y luego se pasaron un mes matando el tiempo porque no pod an volver a salir.</text>
+	</string>
+	<string id="dm_cool_info_5">
+		<text>Se est  cociendo algo. Circulan rumores de que el l der de la facci n de Deber, el pez gordo, no dej  la Zona solo por negocios, sino que hizo un trato con la facci n Libertad. Podr an haber hecho el trato a las claras, porque ahora est  todo hecho un l o. Las cosas no tienen buen cariz. Por otra parte, los tipos m s veteranos dicen que empezaron a luchar otra vez durante el d a sin raz n aparente. Solo espero que los chupatintas del exterior no nos vuelvan a meter en otra masacre.</text>
+	</string>
+	<string id="dm_cool_info_50">
+		<text>  Te has enterado?! Las tropas hicieron lo que estaba previsto.  Llegar n aqu  pronto!  Descubrieron que el Cauterizador no funcionaba y decidieron llevarse toda la mercanc a!</text>
+	</string>
+	<string id="dm_cool_info_51">
+		<text>Acaba de llegar nueva informaci n: va a producirse un despliegue a gran escala de tropas del ej rcito en la central. Mi consejo es que si quieres rapi ar alguna cosa te des prisa.</text>
+	</string>
+	<string id="dm_cool_info_52">
+		<text> Es un caos, eso es lo que es! Se abre un paso, se purga la central de todo tipo de basura; y los militares est n dispuestos a beneficiarse de ello. No tienen verg enza ni conciencia. </text>
+	</string>
+	<string id="dm_cool_info_53">
+		<text>No pillo una cosa:  c mo pudieron aguantar aqu  durante un mes los miembros de la facci n Libertad?  Tienen capas de invisibilidad o algo as ?  Si no, no lo entiendo!</text>
+	</string>
+	<string id="dm_cool_info_54">
+		<text> Has visto lo que ha pasado aqu ? Ahora respeto m s a Mikluha. Imag nate: sobrevivir cuatro semanas en este agujero y sin perder a uno solo de tus hombres.</text>
+	</string>
+	<string id="dm_cool_info_55">
+		<text>Aqu  algunos se volvieron locos. Y da qu  pensar: todos eran tipos duros, pero ahora babean como tontos.  Qu  siniestro!</text>
+	</string>
+	<string id="dm_cool_info_56">
+		<text>Cuanto m s te acercas a la central, m s intensa es la fuerza telep tica desconocida. Algunos han empezado a volverse locos, otros est n traumatizados y ven cosas. Puede que sea el momento de retirarse...</text>
+	</string>
+	<string id="dm_cool_info_57">
+		<text>Escucha, la gente de aqu  se est  volviendo realmente loca. Uno ve una piedra y empieza a gritar que ese artefacto le pertenece, que lo vio primero y que los dem s mejor har an en largarse al sur. Otro ve a Dja en una nube abrazando a sus camaradas desaparecidos hace a os... No, definitivamente aqu  est  ocurriendo algo muy malo.</text>
+	</string>
+	<string id="dm_cool_info_6">
+		<text>Las tropas est n peinando el  rea, buscando y rastreando. Antes, los helic pteros volaban solo a Yantar: proteg an a los cient ficos y transportaban suministros y tecnolog a. Pero ahora est n invadi ndolo pr cticamente todo, planeando todo tipo de expediciones, dando vueltas por ah  en los APC. Ya los he visto en Agroprom y en el Valle Oscuro. No lo entiendo.</text>
+	</string>
+	<string id="dm_cool_info_7">
+		<text>Dicen que alguien ha vuelto a intentar pasar por el Cauterizador. Bueno, obviamente nunca volvi ...  Que no has o do hablar nunca del Cauterizador cerebral? Pero  a ti qu  te pasa, t o?  Es el mayor peligro de por aqu ! El problema es que casi todos los horrores que cuentan sobre  l son ciertos. </text>
+	</string>
+	<string id="dm_cool_info_8">
+		<text>Aqu , adem s de los bandidos, tambi n empezaron a merodear las tropas por alguna raz n. Antes ve as un helic ptero una vez cada cien a os, pero ahora sobrevuelan continuamente la Zona.  Es que se les ha perdido algo o qu ?</text>
+	</string>
+	<string id="dm_cool_info_9">
+		<text>Quiero advertirte, stalker. Los soldados de por aqu  parecen haber perdido el juicio  ltimamente. Antes proteg an a los cient ficos de forma calmada, pero ahora es como si les picara el trasero o algo as : corren de un lado a otro apresurados..., y no de la forma m s pac fica: ya han disparado a tu gente m s de una vez, e incluso nosotros hemos tenido un par de heridos la semana pasada.</text>
+	</string>
+	<string id="dm_help_thanks_1">
+		<text>Muchas gracias.</text>
+	</string>
+	<string id="dm_intro_0">
+		<text> Qu  haces andando por ah  sin protecci n ninguna? Te has cansado de vivir,  no? Hay una anomal a detr s de cada arbusto:  si lo sacudes est s muerto! Para no pillar radiaci n, aqu  no van ni a mear sin protecci n.</text>
+	</string>
+	<string id="dm_intro_1">
+		<text>Parece como si a n no conocieras bien esto, as  que te aconsejar  como amigo: no te acerques a los militares. Cuando veas a uno, l rgate a toda prisa, porque son unos descerebrados. Primero te disparan unas cuantas balas y luego te piden que te identifiques.</text>
+	</string>
+	<string id="dm_intro_10">
+		<text>Aqu  los que mandan son los de Deber. Son nuestras amadas fuerzas policiales o algo por el estilo. Tenlo en cuenta para evitar problemas. </text>
+	</string>
+	<string id="dm_intro_100">
+		<text>Buenos d as.</text>
+	</string>
+	<string id="dm_intro_101">
+		<text>Buenos d as.</text>
+	</string>
+	<string id="dm_intro_102">
+		<text>Que te vaya bien.</text>
+	</string>
+	<string id="dm_intro_103">
+		<text> Eh, colega!</text>
+	</string>
+	<string id="dm_intro_104">
+		<text> Eh!</text>
+	</string>
+	<string id="dm_intro_105">
+		<text> Eh, oye!</text>
+	</string>
+	<string id="dm_intro_106">
+		<text>Hola.</text>
+	</string>
+	<string id="dm_intro_107">
+		<text> Saludos!</text>
+	</string>
+	<string id="dm_intro_108">
+		<text>Hola, stalker.</text>
+	</string>
+	<string id="dm_intro_109">
+		<text>Saludos, stalker.</text>
+	</string>
+	<string id="dm_intro_11">
+		<text>Est s en una zona en la que el orden lo mantiene el grupo Deber. Deber s colaborar con la patrulla sin oponer resistencia alguna; se te dar n las explicaciones pertinentes en caso de que sea necesario. Aunque el c digo de conducta aqu  es sencillo: trata a todo el mundo con cortes a y todo ir  bien.</text>
+	</string>
+	<string id="dm_intro_110">
+		<text> Eh t , stalker!</text>
+	</string>
+	<string id="dm_intro_111">
+		<text>Hola.</text>
+	</string>
+	<string id="dm_intro_112">
+		<text> Vaya!   A qui n tenemos aqu ?!</text>
+	</string>
+	<string id="dm_intro_113">
+		<text> Y qui n es este que tenemos aqu ?</text>
+	</string>
+	<string id="dm_intro_114">
+		<text>Hola, t o.</text>
+	</string>
+	<string id="dm_intro_12">
+		<text>Si tienes alguna pregunta, dir gete al bar y no me molestes. All  te lo contar n todo, responder n a tus preguntas y te har n las suyas. Perdona, voy justo de tiempo.</text>
+	</string>
+	<string id="dm_intro_13">
+		<text> Es tu primera vez aqu ? Entonces te sugiero que vayas al bar: all  tus colegas te pondr n al d a de las  ltimas noticias.</text>
+	</string>
+	<string id="dm_intro_14">
+		<text>Intenta no acercarte demasiado a los zombis, y no vayas al laboratorio,  lo has pillado?</text>
+	</string>
+	<string id="dm_intro_15">
+		<text>No te recomiendo que te acerques al laboratorio: hay demasiados zombis.</text>
+	</string>
+	<string id="dm_intro_16">
+		<text> Sabes?, te sugiero que te mantengas a distancia del complejo del laboratorio.</text>
+	</string>
+	<string id="dm_intro_17">
+		<text>Estate atento a los zombis: son idiotas y no temen a nada. Y es mejor que no vayas al laboratorio: han anidado all  o algo parecido...</text>
+	</string>
+	<string id="dm_intro_18">
+		<text>Ten en cuenta que el Cauterizador cerebral est  cerca. Y ni se te ocurra dirigirte al Norte.</text>
+	</string>
+	<string id="dm_intro_19">
+		<text>Ten cuidado: si no quieres quedarte tonto, no des un paso m s hacia el Norte.</text>
+	</string>
+	<string id="dm_intro_2">
+		<text>Ten cuidado al cruzar el puente,  entendido? Hay muchos perros salvajes por all . Si no est s atento, te despedazar n en un momento.</text>
+	</string>
+	<string id="dm_intro_20">
+		<text> Ten mucho cuidado! Ya sabes que el Cauterizador est  muy pr ximo; si sigues hacia el norte, te convertir s en otro retrasado total.</text>
+	</string>
+	<string id="dm_intro_21">
+		<text>Es como si atravesaras un campo de minas, solo que peor. Solo Dios sabe lo que ocurre aqu ; no puedes despistarte ni un segundo.</text>
+	</string>
+	<string id="dm_intro_22">
+		<text>Te sugiero que est s especialmente atento, y una vez lo hayas hecho, te mantengas as  y no te relajes. Si te relajas un minuto, ser s hombre muerto; te cazar n en el acto. </text>
+	</string>
+	<string id="dm_intro_23">
+		<text> Aqu  tienes que andar atento todo el rato!  Duerme con un ojo abierto! En cualquier momento puede caerte encima un marr n.</text>
+	</string>
+	<string id="dm_intro_24">
+		<text> Ten cuidado con ellos! Son como las cucarachas,  hay toneladas de ellos!</text>
+	</string>
+	<string id="dm_intro_25">
+		<text>C rgate a los de Monolith tan pronto como los veas. Son muy peligrosos,  aut nticos fan ticos!</text>
+	</string>
+	<string id="dm_intro_26">
+		<text>Hay algunos retrasados aqu  que pertenecen al grupo Monolith... Son adeptos a lo que llaman el Monolito... B sicamente, no temen el dolor. Si se quedan sin munici n, se tirar n encima de ti para intentar desgarrarte la garganta a mordiscos. As  que si ves a uno, no te lo pienses dos veces y dispara directamente.</text>
+	</string>
+	<string id="dm_intro_3">
+		<text>Escucha. Si ves un t nel no entres en  l. Te lo digo as  de claro porque no todo el mundo tiene la capacidad de no meterse en l os. Ni siquiera podr n sacarte de all  despu s; tus restos quedar n esparcidos por las paredes. Eso ya es la Zona,  de acuerdo?</text>
+	</string>
+	<string id="dm_intro_4">
+		<text> Por qu  vas de vac o?  Te cruzaste tambi n con esos tipos bajo el puente?  Malditos! Casi me matan hace un momento.  Tuve que darles casi toda mi mercanc a! Y ah  est n, patrullando. Da igual que sean los bandidos o las tropas de los puntos de control: no hay diferencia ninguna. </text>
+	</string>
+	<string id="dm_intro_5">
+		<text> Por qu  vas solo? Esto es peligroso; pueden caer sobre ti en cualquier momento.  ltimamente he o do que se han desmadrado del todo, e incluso atacan los puestos de control de seguridad.</text>
+	</string>
+	<string id="dm_intro_6">
+		<text>Te lo advierto por si no est s al d a:  ltimamente los bandidos han estado por aqu . Este ya es el segundo tiroteo con ellos esta semana. Ten cuidado y estate alerta; ya han mandado al otro barrio a seis independientes. </text>
+	</string>
+	<string id="dm_intro_7">
+		<text> Por casualidad no sabr s qu  es lo que necesitaban las tropas en el Instituto de investigaci n?</text>
+	</string>
+	<string id="dm_intro_8">
+		<text>Procura ir con m s cuidado por aqu . Los "sin l mite" se esconden en el edificio principal. En una palabra, son chacales; no tienen conciencia ni piedad... Matar an a cualquiera.</text>
+	</string>
+	<string id="dm_intro_9">
+		<text>No deber as ir al Valle Oscuro solo. Hay una guarida de bandidos en uno de los edificios; a n no se les ha podido sacar de all . Ten cuidado de no cruzarte con ellos, t o.</text>
+	</string>
+	<string id="dm_intro_help_1">
+		<text> Socorro, amigo!</text>
+	</string>
+	<string id="dm_intro_help_10">
+		<text> Que alguien me ayude!</text>
+	</string>
+	<string id="dm_intro_help_11">
+		<text> Guardias!  Estoy herido!  Venid aqu !</text>
+	</string>
+	<string id="dm_intro_help_12">
+		<text> Socorro!  Me muero!</text>
+	</string>
+	<string id="dm_intro_help_2">
+		<text> Chicos, traed el botiqu n!</text>
+	</string>
+	<string id="dm_intro_help_3">
+		<text> El botiqu n, por favor!</text>
+	</string>
+	<string id="dm_intro_help_4">
+		<text> Chicos, un antichoque!  R pido!</text>
+	</string>
+	<string id="dm_intro_help_5">
+		<text> Necesito el botiqu n!</text>
+	</string>
+	<string id="dm_intro_help_6">
+		<text> Que alguien me traiga el botiqu n!</text>
+	</string>
+	<string id="dm_intro_help_7">
+		<text>Amigo, el botiqu n...  el botiqu n!</text>
+	</string>
+	<string id="dm_intro_help_8">
+		<text> Ayuda, t o! </text>
+	</string>
+	<string id="dm_intro_help_9">
+		<text>Eh, amigo, puedes compartir tu botiqu n,  verdad?</text>
+	</string>
+</string_table>

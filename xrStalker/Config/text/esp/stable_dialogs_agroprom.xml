@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="agr_factory_krot_start_0">
+		<text> Gracias por la ayuda, stalker! Si no fuera por ti, ahora estar a muerto.</text>
+	</string>
+	<string id="agr_factory_krot_start_10001">
+		<text>Busco informaci n sobre Strelok. Puede que t  sepas algo.</text>
+	</string>
+	<string id="agr_factory_krot_start_10002">
+		<text> C mo puedo llegar al s tano?</text>
+	</string>
+	<string id="agr_factory_krot_start_15001">
+		<text> El compartimento secreto de Strelok?</text>
+	</string>
+	<string id="agr_factory_krot_start_15002">
+		<text>Gracias por la informaci n.</text>
+	</string>
+	<string id="agr_factory_krot_start_1501">
+		<text>S , algo he o do sobre eso. Incluso dicen que sol a "trabajar" por aqu  y el compartimento de Strelok est  en el s tano del local. Se dice que la base de su grupo tambi n estaba aqu .</text>
+	</string>
+	<string id="agr_factory_krot_start_1502">
+		<text>Esta es una de las muchas salidas que te llevar n a los s tanos interconectados. En cuanto entres, est s solo. No tengo mapa y la red de s tanos es enorme y confusa.</text>
+	</string>
+	<string id="agr_factory_krot_start_2">
+		<text>Busco informaci n sobre Strelok, Seriy me ha dicho que sabes algo sobre  l.</text>
+	</string>
+	<string id="agr_factory_krot_start_30001">
+		<text>Gracias.</text>
+	</string>
+	<string id="agr_factory_krot_start_3001">
+		<text>S , tambi n lo busc bamos, pero fue en vano. Te enviar  informaci n. Esto es todo lo que tenemos sobre el compartimento.</text>
+	</string>
+	<string id="agr_factory_stalker_about_0">
+		<text> Qu  ocurre aqu ?</text>
+	</string>
+	<string id="agr_factory_stalker_about_1">
+		<text>Luchamos, o m s bien nos exponemos como un blanco f cil. Habla con Mole si quieres saber m s,  l manda aqu .</text>
+	</string>
+	<string id="agr_factory_stalker_start_0">
+		<text>T o, eso s  que ha sido acci n, no se lo desear a ni a mi peor enemigo.  Esos soldados se est n volviendo unos chulos!</text>
+	</string>
+	<string id="agr_krot_about_agroprom_0">
+		<text> D nde est  el Instituto Agroprom?</text>
+	</string>
+	<string id="agr_krot_about_agroprom_10">
+		<text>No est  lejos. Sigue la carretera hacia el Oeste y llegar s a las puertas del Instituto.</text>
+	</string>
+	<string id="agr_krot_about_agroprom_100">
+		<text>He o do que el ej rcito ha establecido una base all .</text>
+	</string>
+	<string id="agr_krot_about_agroprom_120">
+		<text>Gracias por la informaci n.</text>
+	</string>
+	<string id="agr_krot_about_agroprom_20">
+		<text>S , as  es. No estoy seguro del n mero exacto, pero habr  al menos una secci n. Est n bien armados, es imposible entrar. Te derribar n antes de que decir "hola, camaradas". El mejor modo de entrar es de noche, porque durante el d a la base est  bien vigilada. Tienen puntos de control por todas partes, pero he o do que un desertor de la base se esconde en el pantano. Si lo encuentras podr s sacarle informaci n  til.</text>
+	</string>
+	<string id="agr_krot_actor_hasnot_met_seriy_0">
+		<text> Qu  ocurre?</text>
+	</string>
+	<string id="agr_krot_actor_hasnot_met_seriy_100">
+		<text>Mis chicos y yo hemos encontrado un  rea llena de artefactos, pero esos cabrones del ej rcito nos han atacado. No s  lo que quer an de nosotros...</text>
+	</string>
+	<string id="agr_krot_actor_hasnot_met_seriy_200">
+		<text>S , he o do hablar de  l. Creo que sol a "ganarse la vida" en esta  rea. La verdad, es un buen lugar. Se march  hace tiempo. No s  cu ndo exactamente, y no tengo ni idea de ad nde fue. Eso es todo lo que te puedo decir.</text>
+	</string>
+	<string id="agr_krot_actor_hasnot_met_seriy_2000">
+		<text>No estabas aqu  esperando por nada,  no? Si no,  por qu  ha aparecido la Spetsnaz?</text>
+	</string>
+	<string id="agr_krot_actor_hasnot_met_seriy_250">
+		<text>Vale, s  algo sobre Strelok.</text>
+	</string>
+	<string id="agr_krot_actor_hasnot_met_seriy_2500">
+		<text> S ?  Tengo que saberlo!</text>
+	</string>
+	<string id="agr_krot_actor_hasnot_met_seriy_3500">
+		<text> Si me mientes, te encontrar  y acabar  el trabajo de los soldados!</text>
+	</string>
+	<string id="agr_krot_actor_hasnot_met_seriy_400">
+		<text>No estoy mintiendo. Aqu  nadie conf a en nadie, as  que no tienes elecci n.</text>
+	</string>
+	<string id="agr_krot_actor_met_seriy_100">
+		<text> Seriy? Bueno, escucha. Dicen que Strelok merodeaba por aqu . Adem s, su escondite est  por aqu , bajo tierra. He o do que su grupo hasta tiene su base aqu . Tambi n hemos buscado el escondite y no hemos encontrado un carajo. Te dar  la informaci n, puede que tengas m s suerte. Esto es todo lo que tenemos sobre el compartimento.</text>
+	</string>
+	<string id="agr_krot_actor_met_seriy_2000">
+		<text> Qu  m s sabes?</text>
+	</string>
+	<string id="agr_krot_actor_met_seriy_250">
+		<text>No s  nada m s, te he dicho todo lo que s . Ahora te lo tendr s que currar t  solo. Buena suerte, colega.</text>
+	</string>
+	<string id="agr_krot_help_0">
+		<text> Ayuda, stalker!</text>
+	</string>
+	<string id="agr_krot_help_10">
+		<text>Vale.</text>
+	</string>
+	<string id="agr_ratcatcher_start_0">
+		<text> No dispares, t o!</text>
+	</string>
+	<string id="agr_stalker_esc_0">
+		<text> Qu  est s haciendo?</text>
+	</string>
+	<string id="agr_stalker_esc_20">
+		<text>Vengo de la f brica que se encuentra un poco m s abajo. No s  c mo, pero el ej rcito ha localizado a nuestro grupo. No esper  a que aparecieran y me largu  en cuanto pude. Espero que nuestros chicos lograran salir, porque, si no, no durar n mucho, en vista de esos helic pteros.</text>
+	</string>
+	<string id="agr_stalker_esc_300">
+		<text>Vale, gracias.</text>
+	</string>
+	<string id="agr_stalker_esc_400">
+		<text>Vale, gracias.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher_0">
+		<text>Tengo un par de preguntas.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher_10">
+		<text> Qu  quieres saber?</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher_1000">
+		<text> Algo interesante en el  rea?</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher_120">
+		<text> Cu nto necesitas?</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher_130">
+		<text>Aqu  tienes el dinero. Ahora, dime d nde est .</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher_131">
+		<text> A la mierda!</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher_140">
+		<text>Gracias.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher_20">
+		<text>S , hay un par de sitios, pero tendr s que compartir tus riquezas, amigo.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher_21">
+		<text>Se estaba bastante tranquilo, pero ahora el ej rcito se ha puesto nervioso y ha empezado a cargarse a todo el mundo. Han hecho salir a los bandidos hace poco y he o do que algunos han conseguido escapar por las catacumbas.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher_30">
+		<text>Treinta,  hecho?</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher_40">
+		<text>La salida del t nel est  por aqu  cerca. El t nel sin salida es bastante seguro. Al menos, todav a no se han comido a nadie mientras dorm a. Tambi n encontrar s, al noroeste de la f brica, un vag n en un pantano. Puedes meterte ah  sin problemas. Lo  nico es que est  plagado de radiaci n, as  que es mejor acercarse desde la zona occidental. Ah, y una cosa m s: han visto a un soldado por all . Parece ser de la base militar del Instituto. El pobre insensato se ha vuelto loco, ha estado all  un par de d as y no creo que sobreviva mucho m s a solas.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher_9999">
+		<text> Adi s!</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_0">
+		<text> Algo interesante por aqu ?</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_1">
+		<text> Qu  sabes de Exterminador? La informaci n te costar  30.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_11">
+		<text>Trato hecho.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_111">
+		<text>Tenemos un h roe local llamado Exterminador. Vive en el pantano. El t o cri  tantas ratas en los colectores que pronto acabar n devorando a los cabrones del ej rcito.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_1111">
+		<text>Genial. Gracias.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_1112">
+		<text>H blame sobre los colectores.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_11121">
+		<text>Los colectores no son m s que cloacas apestosas que llevan los residuos del Instituto al embalse m s cercano.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_111211">
+		<text>Genial. Nos vemos, cu date.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_12">
+		<text>Eso ya lo s . Gracias.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_121">
+		<text>No tengo nada m s que contar.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_13">
+		<text>No tengo suficiente dinero.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_14">
+		<text>No me interesa.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_3">
+		<text> Algo interesante por aqu ?</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_31">
+		<text>Nada. Absolutamente nada.</text>
+	</string>
+	<string id="agr_stalker_talk_about_ratcatcher1_311">
+		<text>Vale.  Adi s!</text>
+	</string>
+	<string id="agr_stalker_talk_level_0">
+		<text>H blame de este lugar.</text>
+	</string>
+	<string id="agr_stalker_talk_level_1">
+		<text>Esta es el  rea que rodea el Instituto Agroprom. El Instituto est  al Suroeste. La f brica, que sirve como instalaci n de producci n t cnica del Instituto, est  al Norte. Los edificios llevan abandonados mucho tiempo y no hay nada, pero el ej rcito ha estado buscado con ah nco  ltimamente.</text>
+	</string>
+	<string id="agr_stalker_talk_level_2">
+		<text>Cu ntame m s cosas sobre el Instituto.</text>
+	</string>
+	<string id="agr_stalker_talk_level_21">
+		<text>Se cuentan muchas leyendas sobre el Instituto. Antes del accidente de 1986, aqu  solo estaba el Instituto de 
+Selecci n de Cultivos y Gen tica. El  rea donde se encuentra ahora la f brica se usaba como campo de cultivo experimental. Despu s del accidente, cerraron el Instituto y quemaron los campos. M s tarde se acordaron del tema, arreglaron el edificio, pusieron una valla a su alrededor y construyeron algunos barracones. No s  lo que hac an en el Instituto, pero no les faltaba financiaci n, eso seguro.</text>
+	</string>
+	<string id="agr_stalker_talk_level_3">
+		<text>Cu ntame m s cosas sobre la f brica.</text>
+	</string>
+	<string id="agr_stalker_talk_level_31">
+		<text>La f brica se construy  a finales de la d cada de 1980. Dec an que se utilizar a para fabricar y probar maquinas que trataran terreno afectado por la radiaci n. Por lo que s , nadie ha visto ni una sola m quina salir de la planta. Ahora est  totalmente vac a, lo que la convierte en un lugar apreciado por los stalkers. He o do que el lugar es bastante seguro, siempre que evites las esquinas oscuras.</text>
+	</string>
+	<string id="agr_stalker_talk_level_4">
+		<text>Gracias.</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks_0">
+		<text> Qu  est s haciendo?</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks_10">
+		<text>Me escondo, no quiero problemas.</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks_100">
+		<text> De qui n te escondes?</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks_120">
+		<text> Catacumbas?</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks_130">
+		<text> Sabes d nde guardan los documentos del Instituto?</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks_140">
+		<text> Qu  vas a hacer ahora?</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks_141">
+		<text> Qu  vas a hacer ahora?</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks_20">
+		<text>Soy de la unidad de reconocimiento. Nos enviaron a las catacumbas para ver lo que ocurre bajo la base. Ah  abajo est  el infierno, t o, de verdad. Solo yo he podido salir... Los dem s estar n criando malvas ya. No quiero volver a la base. Esos cabrones siempre nos usan para tapar los agujeros de esta maldita Zona.</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks_30">
+		<text>T neles subterr neos. Recorren el  rea que rodea el instituto. Te ense ar  las entradas. No tengo mapas de las catacumbas.</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks_40">
+		<text>En el cuartel general. Est  en la segunda planta del Instituto. All  guardan esos malditos papeles. Pero es complicado llegar all . De d a, el  rea est  repleta de patrullas, por la noche hay menos. Esto te lo digo gratis: si quieres entrar, tendr  que ser por las catacumbas; por la puerta es totalmente imposible.</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks_50">
+		<text>Mmm. No lo s . Seg n el c digo militar soy un desertor, y tengo que salir de la Zona de alg n modo. Cuando llegamos aqu  hab a un ZAZ que casi funcionaba en el garaje. Tard  media hora en ponerlo en marcha, pero ese maldito capit n se lo qued , bas ndose en el c digo. Condujo por una carretera cercana y lo dej  junto a la puerta en medio de la lluvia. Si pudiera conseguir ese coche...  las huidas son m s seguras sobre ruedas!</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks1_0">
+		<text>Hola.</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks1_01">
+		<text> Qu  pasa?</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks1_011">
+		<text>H blame sobre el colector.  C mo puedo entrar?  D nde est n las entradas y salidas?</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks1_0111">
+		<text>El interior del colector es peligroso. Hay seis entradas, y dos de ellas se encuentran en el  rea cercana al Instituto donde los militares han establecido una base. Esa  rea est  en continua vigilancia y el capit n guarda la lista de turnos de patrullas en su armer a.</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks1_01111">
+		<text> C mo sabes todo eso?</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks1_011111">
+		<text>Me lo han dicho las ratas.</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks1_0111111">
+		<text>Ya veo.  Adi s! Que tengas suerte.</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks1_012">
+		<text> Para qu  necesito la suerte?  Nos vemos!</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks1_013">
+		<text> Qui n eres?</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks1_0134">
+		<text>Vivo aqu , si a esto se le puede llamar vida. Cr o ratas en el colector para molestar a los militares del Instituto.</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks1_0135">
+		<text>Soy Exterminador.</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks1_01351">
+		<text> Qu  haces en este pantano?</text>
+	</string>
+	<string id="agr_swamp_ratcatcher_talks1_123">
+		<text>Ah... Ya veo... Bueno, lo m o es otra historia. Ja, ja, ja...</text>
+	</string>
+</string_table>

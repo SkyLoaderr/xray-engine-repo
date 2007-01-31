@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="cit_doctor_escape_dialog_0">
+		<text>Necesito respuestas a varias preguntas.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1">
+		<text>Pregunta lo que sea, tratar  de ayudarte.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_11">
+		<text> D nde est n mis cosas?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_111">
+		<text>El l der normalmente se queda con toda la mercanc a confiscada. Su habitaci n est  en el piso de arriba. Llevaron mis cosas all  cuando me capturaron.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1111">
+		<text> Gracias!</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_12">
+		<text> C mo puedo salir de aqu ?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_121">
+		<text>Cuando me llevaban all  me fij  en que hab a una tapa de alcantarilla bajo las escaleras de la planta baja... Si logras abrir la celda, podr as escapar por la alcantarilla... Dir gete al Oeste y despu s usa el t nel para llegar al  rea de Libertad.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1211">
+		<text>Gracias por la informaci n.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_14">
+		<text> Qui n nos captur ?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_141">
+		<text>Nos retienen los mercenarios. Nadie sabe qui nes son, aunque se dice que colaboran con los servicios de inteligencia extranjeros. La ubicaci n de su base es un misterio; nadie sabe c mo llegar a la Ciudad Muerta. Hay mucha gente interesada en saberlo, especialmente los de Libertad y Deber. </text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1411">
+		<text>Contin a. </text>
+	</string>
+	<string id="cit_doctor_escape_dialog_14111">
+		<text>Si consigues un mapa de la Ciudad Muerta, podr a efectuarse un asalto con  xito. Probablemente los mercenarios o los bandidos tengan uno. Podr as intentar conseguirlo.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_141111">
+		<text>Gracias por la informaci n.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_15">
+		<text> Qu  sabes de este lugar?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_151">
+		<text>La ciudad est  dividida en dos sectores. Nosotros estamos en la zona de los mercenarios. Al Sur, m s all  de la plaza, est  la de los bandidos. Se esconden en el edificio de la escuela, al sudoeste de la ciudad. Entre las bases hay un edificio en ruinas de cinco plantas y unos cuantos relativamente intactos. Si las cosas se complican puedes ir all . Por all  tambi n hay algunos garajes y un par de casas peque as. En la zona de los bandidos tambi n hay un par de edificios de cinco plantas y una docena de garajes. El edificio del antiguo ayuntamiento est  al otro lado de la plaza.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1511">
+		<text>Gracias por la informaci n.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_16">
+		<text> Qui n manda aqu ?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_161">
+		<text>Un personaje bastante desagradable llamado Dushman. Le he visto un par de veces con una carpeta de documentos. En ella debe de haber algo interesante.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1611">
+		<text>Gracias por la informaci n.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_17">
+		<text>De nada.</text>
+	</string>
+	<string id="cit_doctor_hello_dialog_11">
+		<text> Strelok!  D nde demonios te hab as metido?  No he sabido nada de ti ni de nuestra gente desde la  ltima incursi n!  Estaba empezando a preocuparme!</text>
+	</string>
+	<string id="cit_doctor_hello_dialog_21">
+		<text> Est s mejor?  Puedes pensar con claridad?</text>
+	</string>
+	<string id="cit_doctor_main_dialog_0">
+		<text> Strelok?</text>
+	</string>
+	<string id="cit_doctor_main_dialog_1">
+		<text>S , eres Strelok,  qui n si no? Soy Doc,  no me reconoces?  Qu  te ha ocurrido, amigo? Tienes mal aspecto. Estuvimos juntos en la Zona durante dos a os.  De verdad no te acuerdas de m ?</text>
+	</string>
+	<string id="cit_doctor_main_dialog_11">
+		<text>No, no me acuerdo.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_2">
+		<text> Que no? Strelok,  qu  te ocurre? Me tomas el pelo,  verdad? Dios...  Qu  hay de la gente, nuestro grupo?  Fang, Ghost? Te acuerdas de ellos,  no?</text>
+	</string>
+	<string id="cit_doctor_main_dialog_21">
+		<text>No me acuerdo de Fang y Ghost est  muerto; encontr  su cad ver en Yantar.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_3">
+		<text>  Ghost!?   Muerto!?  Maldici n!  C mo ha sido? Ellos... eran los mejores.  Qu  te ocurri  a ti?</text>
+	</string>
+	<string id="cit_doctor_main_dialog_31">
+		<text>No s  lo que me ocurri . No me acuerdo.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_4">
+		<text>Espera, deja que me tranquilice. Son unas noticias terribles. Creo que todo est  relacionado con tu  ltima operaci n en la Zona. La  ltima vez que nos vimos me diste la clave del compartimento de Pripyat y el plano para encontrarlo. He conseguido que los mercenarios no lo encontraran. Toma, esc ndelo bien. Quiz s encuentres algo interesante all . Tambi n dec as que algo no cuadraba con el Monolito, pero no lo comprend a; ni t  mismo sab as a qu  te refer as.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_41">
+		<text>Vale.  D nde estamos? No recuerdo c mo he llegado hasta aqu .</text>
+	</string>
+	<string id="cit_doctor_main_dialog_5">
+		<text> Estamos en la Ciudad Muerta! En el campamento mercenario.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_6">
+		<text> Estamos en la Ciudad Muerta! En el campamento mercenario...</text>
+	</string>
+	<string id="quest_cit_reward_0">
+		<text>A prop sito, tengo informaci n sobre los mercenarios.  Te interesa?</text>
+	</string>
+	<string id="quest_cit_reward_1">
+		<text>Depende de cu l sea la informaci n.</text>
+	</string>
+	<string id="quest_cit_reward_11">
+		<text>Tengo un mapa con detalles de la localizaci n de su base, los puestos de guardias, el modo de entrar sin ser detectado y muchas cosas m s.</text>
+	</string>
+	<string id="quest_cit_reward_111">
+		<text>Suena bien. Te dar  3000.</text>
+	</string>
+	<string id="quest_cit_reward_1111">
+		<text>De acuerdo. Aqu  tienes.</text>
+	</string>
+	<string id="quest_cit_reward_11111">
+		<text> Genial! Aqu  tienes tu recompensa.  Pronto los stalkers discutir n si los mercenarios existieron alguna vez!</text>
+	</string>
+	<string id="quest_cit_reward_1112">
+		<text>No, eso no basta.</text>
+	</string>
+	<string id="quest_cit_reward_11121">
+		<text>Como quieras, no voy a darte m s.</text>
+	</string>
+	<string id="quest_cit_reward_13">
+		<text>Nada de especial. Solo los cotilleos habituales. Lo siento.</text>
+	</string>
+	<string id="quest_cit_reward_131">
+		<text>Vuelve si descubres algo m s jugoso. Te pagar .</text>
+	</string>
+</string_table>

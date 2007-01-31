@@ -46,7 +46,7 @@
 		<text>Описание</text>
 	</string>
 	<string id="mp_disconnected">
-		<text>отсоединился</text>
+		<text>осоеденился</text>
 	</string>
 	<string id="mp_enter_text">
 		<text>Введите текст для голосования</text>

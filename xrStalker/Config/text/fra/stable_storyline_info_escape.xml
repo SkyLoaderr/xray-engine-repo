@@ -1,0 +1,81 @@
+	<string id="about_enciclopedia">
+		<text>Voici l'encyclop die. Au fil de votre progression, vous y trouverez de pr cieuses informations, class es par rubrique.</text>
+	</string>
+	<string id="about_pda">
+		<text>  propos de l'encyclop die</text>
+	</string>
+	<string id="Bandit's flash">
+		<text>PDA du bandit</text>
+	</string>
+	<string id="blokpost_case_text">
+		<text>Marchand : rejoins l'avant-poste militaire et vole la mallette contenant le rapport relatif   l'exp dition men e dans la partie nord de la Zone.</text>
+	</string>
+	<string id="Dead novice's flash">
+		<text>PDA du nouveau mort</text>
+	</string>
+	<string id="defend_lager_text">
+		<text>Fanatique : Aide-nous   nous d fendre des Mercenaires qui ont ordonn  aux nouveaux de d truire le camp. Voil  le plan. Tout le monde se cache pour faire croire aux Mercenaires que le camp est d sert. Et l , lorsque le capitaine en donne l'ordre, on attaque.</text>
+	</string>
+	<string id="doctor_meet">
+		<text>PDA du Pionnier</text>
+	</string>
+	<string id="doctor_meet_2">
+		<text>Rencontre avec le Doc</text>
+	</string>
+	<string id="doctor_meet_quest_text">
+		<text>Doc : J'attends un type qui revient de Strelok pour rejoindre la planque utilis e par Strelok et ses hommes. C'est notre homme, il conna tra les lieux.</text>
+	</string>
+	<string id="doctor_meet_text">
+		<text>OK, je vais retrouver l'homme du Spectre. Je l'attendrai dans la planque de Strelok. S'il est un des n tres, il saura o  me trouver. Doc.</text>
+	</string>
+	<string id="esc_flash_task_descr">
+		<text>Marchand : "… mes gars revenaient de mission et se sont volatilis s. L'un d'entre eux, un certain Allegro, m'apportait quelques nouvelles… Et ils se sont tous volatilis s car ils ont loup  le pont. Je sais pas quoi en penser. Quoi qu'il en soit, retrouve Allegro, mort ou vif, du moment qu'il ait la cl  USB. Apporte-la-moi. Allegro faisait partie des hommes du Loup et le Loup est ici, au camp. Interroge-le, il sait s rement quelque chose. Il te fournira des armes et du mat riel."</text>
+	</string>
+	<string id="esc_fox_info">
+		<text>Seriy   Fox : un ami veut m'aider   m'occuper des Stalkers qui ont d couvert la planque de Strelok. Avec mes gars, on se dirige vers le hangar de la d charge. C'est l  que tu me trouveras. </text>
+	</string>
+	<string id="esc_kolyan_lost">
+		<text>Hier, un de mes fr res est all  reconna tre le moulin d sert , mais depuis, plus de nouvelles. Il faut qu'on y aille pour en savoir plus.</text>
+	</string>
+	<string id="factory_dynamit_text">
+		<text>Loup : apporte la dynamite vol e par les bandits   l'usine. Pour t'aider, il y a des  claireurs sous le pont, va les voir et dit : "Bonjour de l'enfer", c'est le mot de passe. M ne-les au combat.</text>
+	</string>
+	<string id="factory_trader_text">
+		<text>Loup :  limine les bandits de l'usine avec l'aide des  claireurs situ s sous le ont, puis reviens et fais un rapport.</text>
+	</string>
+	<string id="Flash dead stalker">
+		<text>PDA du Stalker mort</text>
+	</string>
+	<string id="gunslinger_clan_cache">
+		<text>… a surgi dans le repaire, je me souviens plus de rien. J'avais juste un PDA sur moi avec la photo d'un autre type. Il n'y a qu'un message dans le PDA - tuer Strelok.</text>
+	</string>
+	<string id="help_to_fox">
+		<text>Marchand : Fox est revenu de son raid pour demander de l'aide. Il sait peut- tre quelque chose   propos de Strelok.</text>
+	</string>
+	<string id="meet_seryi_text">
+		<text>Fox : le Grison se trouve dans le hangar de la D charge, il en sait plus sur Strelok.</text>
+	</string>
+	<string id="military_case_text">
+		<text>Marchand : vole le rapport de l'exp dition   l'Institut de Recherche Agroprom, rapporte-le au 100 Rads et remets-le au Barman.</text>
+	</string>
+	<string id="Seryi flash">
+		<text>PDA de Fox</text>
+	</string>
+	<string id="storyline_fox_flash_info">
+		<text>Journal de Tolik. Le marchand nous a envoy s espionner les militaires de l'Institut de Recherche Agroprom. On y est all  et on a tu  tout le monde, bandits et militaires confondus. J'ai d nich  des trucs int ressants, je vais m'occuper du reste du *charabia qui ressemble   un code*.</text>
+	</string>
+	<string id="storyline_seryi_info">
+		<text>Le Grison   Fox : Un type que je connais voudrait qu'on retrouve le groupe de Stalkers qui a d nich  la planque de Strelok. Je serai   la D charge. Rejoins-moi si tu veux.</text>
+	</string>
+	<string id="Tolik flash">
+		<text>PDA de Tolik</text>
+	</string>
+	<string id="tutorial_artefact_find">
+		<text>Marchand : Il y a un champ d'anomalies "hachoir" dans le coin, avec un artefact en son centre. R cup re-le.</text>
+	</string>
+	<string id="tutorial_moving_anomaly_text">
+		<text>Il y a ici une anomalie tr s  trange. Elle a l'air de se d placer. J'essaie de calculer sa fr quence et sa trajectoire, parce que je n'ai pas les moyens de payer les soldats pour passer.</text>
+	</string>
+	<string id="tutorial_secret_place">
+		<text>J'ai cach  un peu de nourriture et des munitions dans une petite planque,   la ferme d sert e. Je suis trop faible pour les transporter. Je suis pas s r de pouvoir rejoindre le camp.</text>
+	</string>

@@ -18,18 +18,6 @@
 	<string id="bandit">
 		<text>Бандит</text>
 	</string>
-	<string id="Btn_Cancel">
-		<text>Отменить</text>
-	</string>
-	<string id="Btn_No">
-		<text>Нет</text>
-	</string>
-	<string id="Btn_OK">
-		<text>OK</text>
-	</string>
-	<string id="Btn_Yes">
-		<text>Да</text>
-	</string>
 	<string id="dolg">
 		<text>Долг</text>
 	</string>
@@ -56,9 +44,6 @@
 	</string>
 	<string id="friendly">
 		<text>друг</text>
-	</string>
-	<string id="global_map">
-		<text>Карта Зоны</text>
 	</string>
 	<string id="good">
 		<text>хорошо</text>
@@ -120,23 +105,8 @@
 	<string id="novice">
 		<text>новичок</text>
 	</string>
-	<string id="st_autosave">
-		<text>Автосохранение...</text>
-	</string>
-	<string id="st_game_over">
-		<text>Игра окончена.</text>
-	</string>
-	<string id="st_item_used">
-		<text>Использован</text>
-	</string>
 	<string id="st_no_active_task">
 		<text>Нет активного задания</text>
-	</string>
-	<string id="st_not_enough_money">
-		<text>Недостаточно денег</text>
-	</string>
-	<string id="st_not_enough_money_npc">
-		<text>у НПС недостаточно денег</text>
 	</string>
 	<string id="st_time_till_surge">
 		<text>Время до выброса</text>
@@ -152,9 +122,6 @@
 	</string>
 	<string id="ui_st_community">
 		<text>группировка</text>
-	</string>
-	<string id="ui_st_opponent_items">
-		<text>Вещи оппонента</text>
 	</string>
 	<string id="ui_st_price">
 		<text>Цена</text>
@@ -180,12 +147,42 @@
 	<string id="zombied">
 		<text>Зомбированный</text>
 	</string>
-
+	<string id="Btn_Cancel">
+		<text>Отменить</text>
+	</string>
+	<string id="Btn_No">
+		<text>Нет</text>
+	</string>
+	<string id="Btn_OK">
+		<text>OK</text>
+	</string>
+	<string id="Btn_Yes">
+		<text>Да</text>
+	</string>
+	<string id="global_map">
+		<text>Карта Зоны</text>
+	</string>
+	<string id="st_autosave">
+		<text>Автосохранение...</text>
+	</string>
+	<string id="st_game_over">
+		<text>Игра окончена.</text>
+	</string>
+	<string id="st_item_used">
+		<text>Использован</text>
+	</string>
+	<string id="st_not_enough_money">
+		<text>Недостаточно денег</text>
+	</string>
+	<string id="st_not_enough_money_npc">
+		<text>у НПС недостаточно денег</text>
+	</string>
+	<string id="ui_st_opponent_items">
+		<text>Вещи оппонента</text>
+	</string>
 	<string id="st_search_treasure">
 		<text>Обыскать тайник ($$ACTION_USE$$)</text>
 	</string>
-
-
 	<string id="inventory_item_use">
 		<text>Поднять предмет ($$ACTION_USE$$)</text>
 	</string>
@@ -195,7 +192,6 @@
 	<string id="ui_mm_alternative">
 		<text>Альтернатива</text>
 	</string>
-
 	<string id="ui_inv_health">
 		<text>Здоровье</text>
 	</string>
@@ -211,7 +207,6 @@
 	<string id="ui_inv_bleeding">
 		<text>Кровотечение</text>
 	</string>
-
 	<string id="st_mp_say_to_all">
 		<text>Всем</text>
 	</string>
@@ -227,16 +222,13 @@
 	<string id="st_mp_no_current_voting">
 		<text>Сейчас нет активных голосований.</text>
 	</string>
+	<string id="st_mp_ready">
+		<text>готов</text>
+	</string>
 	<string id="st_mp_voting_succeed">
 		<text>Голосование прошло успешно!</text>
 	</string>
 	<string id="st_mp_voting_failed">
 		<text>Голосование провалено!</text>
 	</string>
-	<string id="st_mp_ready">
-		<text>готов</text>
-	</string>
-
-
-
 </string_table>

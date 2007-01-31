@@ -1,0 +1,51 @@
+	<string id="descr_bar_crazy_veterans_quest">
+		<text>Barman : "Le Devoir a la r putation de faire observer la loi et c'est pour  a qu'ils veulent que  a se passe dans le calme. Tu dois juste neutraliser le chef, le Chanceux, et rapporter son PDA en guise de preuve."</text>
+	</string>
+	<string id="descr_bar_dolg_community_quest">
+		<text>Pour rejoindre le Devoir, il te faudra l'approbation d'un des combattants les plus respect s du groupe et prouver   leur chef que tu en es digne.</text>
+	</string>
+	<string id="descr_bar_dolg_svoboda_ambush_quest">
+		<text>Barman : "Ta mission est de tuer Tyran, le chef des Mercenaires. Ses hommes sont entr s dans les Terres abandonn es et y ont install  une base sur le chantier. Fais gaffe, ses hommes sont en embuscade sur le chemin du site. Rapporte-moi le PDA de Tyran et la r compense est   toi."</text>
+	</string>
+	<string id="descr_bar_dolg_svoboda_leader_kill_quest">
+		<text>G n ral Voronin : "La guerre contre la Libert  touche   sa fin, le Tatou . Tu as jou  ton r le dans ce combat et maintenant, je veux en finir avec cette guerre. Je veux que tu tues le leader de la Libert ."</text>
+	</string>
+	<string id="descr_bar_dolg_test_quest">
+		<text>Capitaine Ivantsov : "... avant de conclure, tu vas devoir te soumettre   une  preuve simple. Procure-toi un dossier dans le b timent abandonn  voisin. Ce n'est pas difficile, rentre, prends le dossier et apporte-le-moi. Un jeu d'enfant, pas vrai ? Lorsque ce sera chose faite, on choisira ou non de d'int grer au Devoir."</text>
+	</string>
+	<string id="descr_bar_hunter_rifle">
+		<text>Chasseur : "Rapporte le fusil. Je l'ai perdu non loin de l  o  vivent ces sangsues. Je vais te transmettre les coordonn es. Mais fais gaffe, ces ordures sont redoutables."</text>
+	</string>
+	<string id="descr_bar_kill_professor">
+		<text>Doberman: "On a quelque chose   faire ici. On a coinc  des scientifiques l , derri re l'h lico. Mes gars tirent quelques salves pour veiller   ce qu'ils ne s'enfuient pas. Viens nous rejoindre, on est sur le point d'entrer pour les liquider. Si tu nous aides, je te donnerai la combi des scientifiques… qu'on a trouv e dans l'h lico. Ta cible est le professeur Kruglov. Tue-le sinon pour ne pas qu'il tente de s' chapper, je connais ce type. Tue-le et la combinaison est   toi."</text>
+	</string>
+	<string id="descr_bar_radar_deactivate">
+		<text>Barman : "Tu disposes du prototype de protection pour  chapper au lobotomisateur, je connais les coordonn es d'un bunker. N'oublie pas que ce prototype ne prot ge pas des  missions ind finiment, rejoins le bunker sous les antennes et  limine le lobotomisateur. Allez, fonce jusqu'au antennes et neutralise-les."</text>
+	</string>
+	<string id="descr_bar_resque_information">
+		<text>Kruglov : "Vous, Stalker, aidez-nous ! Les Mercenaires nous ont attaqu s, ils ont tu  la moiti  de notre  quipe. Aidez-nous, vous ne le regretterez pas"\n \n "... attention, ils sont une quinzaine... On n'est pas tr s s rs"</text>
+	</string>
+	<string id="descr_bar_resque_information_2">
+		<text>Kruglov : "On revient de Yantar o  on s'est fait attaquer par les Mercenaires. Visiblement, ils auraient besoin d'informations, mais je sais qu'ils vont tenter de tous nous abattre. Conduisez-moi   Yantar ; je vous dirai tout ce que je sais sur votre lobotomisateur et le Barman vous r compensera comme il se doit. Je ne suis pas un tr s bon combattant, mais je connais le chemin. Je vous guiderai et vous me prot gerez."</text>
+	</string>
+	<string id="descr_bar_x16_documents">
+		<text>Barman : "Rejoins les scientifiques et trouve le Labo X16 pour r cup rer les documents manquants."</text>
+	</string>
+	<string id="journal_after_agroprom_documents">
+		<text>J'ai consult  les documents trouv s   l'Institut. Visiblement, cet institut a servi de fa ade   un labo officieux appel  X18 pendant les dix ann es qui ont pr c d  l'accident. Des exp riences des plus inhabituelles y ont  t  men es. Son emplacement n'est pas clair et les militaires n'ont pas l'air d'en savoir grand-chose. Eh bien… Le complet se pr cise... Mais c'est peut- tre le point de d part dont les marchands ont besoin. Bon, maintenant, il faut que j'aille vers le nord pour rencontrer le Barman.</text>
+	</string>
+	<string id="journal_bar_darklab_documents">
+		<text>Pff... Pas dr le ce Labo X18... Ni ses occupants actuels... Je savais pas que  a existait de tels trucs. J'ai trouv  des documents… J'ai pas bien compris ce qui  tait  crit mais ils contenaient les sp cifications techniques de certains composants des  metteurs de Kaimanov. Ce qui est int ressant, c'est que ces pi ces  taient destin es   un autre labo portant le nom de code X16, un labo secret s rement.</text>
+	</string>
+	<string id="journal_bar_x16_documents">
+		<text>Hmm... Les marchands ont trouv  des tas d'informations sur ces laboratoires. Le Barman n' tait pas surpris d'apprendre pour les  metteurs et le X16. Maintenant, il est convaincu que le lobotomisateur est une cr ation humaine. Il pense que le labo X16 se trouve pr s du camp des scientifiques, au lac de Yantar. C'est int ressant qu'ils  tudient des  missions qui ressemblent aux effets du lobotomisateur. Il faut que je rende une petite visite aux scientifiques de la Zone.</text>
+	</string>
+	<string id="journal_before_darklab_documents">
+		<text>J'ai rencontr  le Barman. D'apr s les documents de l'Institut, il pense que ce X18 se trouve dans la Vall e obscure et m'a demand  d'aller y chercher des informations et des documents. Il a dit qu'il avait envoy  des  claireurs du Devoir dans les souterrains, mais qu'ils avaient disparu. Le Barman pense qu'ils ont  t  enlev s par les bandits d'une base voisine. Si c'est vrai, tout ce que ces types du Devoir ont trouv  est tomb  entre les mains de Borov, le chef des bandits. Le Barman m'a demand  de faire gaffe et… ne m'a certainement pas tout dit sur les souterrains. Eh bien, au travail : d'abord, il faut que j'aille voir Borov et si la "conversation" se passe bien, j'explorerai les souterrains.</text>
+	</string>
+	<string id="journal_before_radar_task">
+		<text>Eh bien, je suis pr t   aller jusqu'au lobotomisateur. Le fou m'a indiqu  les moments pendant lesquels les niveaux des  missions diminuaient. Il m'a aussi parl  d'un endroit s r o  je pouvais attendre. Ma protection psi ne fonctionnera pas pendant ces moments l , de toute fa on. Il faut que je trouve un moyen d'acc der au laboratoire souterrain X19. L , je devrais pouvoir mettre la main sur les commandes des antennes du lobotomisateur.</text>
+	</string>
+	<string id="st_gordon_diary">
+		<text>PDA de Gordon</text>
+	</string>

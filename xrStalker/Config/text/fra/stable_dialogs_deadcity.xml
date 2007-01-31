@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="cit_doctor_escape_dialog_0">
+		<text>J'ai besoin de r ponses.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1">
+		<text>Demande-moi, je pourrai peut- tre t'aider.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_11">
+		<text>O  sont mes affaires ?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_111">
+		<text>Le chef a l'habitude de conserver tous les objets confisqu s. Sa chambre est au dernier  tage. Mes affaires ont  t  entrepos es l -haut quand ils m'ont captur .</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1111">
+		<text>Merci !</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_12">
+		<text>Comment je sors d'ici ?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_121">
+		<text>Quand ils "m'escortaient", j'ai remarqu  une plaque d' gout au rez-de-chauss e, sous l'escalier... Si tu r ussis   ouvrir la cellule, tu pourras t'enfuir par les  gouts... aller vers l'ouest et puis le tunnel te m nera au territoire de la Libert .</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1211">
+		<text>Merci pour l'info.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_14">
+		<text>Qui nous a captur s ?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_141">
+		<text>Ceux qui nous retiennent prisonniers sont les Mercenaires. Personne ne sait vraiment qui ils sont, mais des rumeurs circulent sur leur collaboration avec les Renseignements  trangers. L'emplacement de cette base est tenu secret ; personne ne sait comment entrer dans la ville morte. Beaucoup de gens souhaitent conna tre cette information, surtout les groupes de la Libert  et du Devoir.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1411">
+		<text>Et ?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_14111">
+		<text>Si tu r ussis   obtenir une carte de la ville morte, on pourra l'attaquer efficacement. Les Mercenaires ou les bandits en ont s rement une. Tu pourrais tenter de la d rober.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_141111">
+		<text>Merci pour l'info.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_15">
+		<text>Qu'est-ce que tu sais sur cet endroit ?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_151">
+		<text>La ville est divis e en deux. On est sur le terrain des Mercenaires. Au sud, apr s la place, c'est le c t  des bandits. Ils se sont abrit s dans une  cole au sud-ouest de la ville. Entre les bases, il y a un b timent de quatre  tages en ruine et quelques autres   peu pr s intacts. Si  a devient vraiment la merde, c'est le bon endroit pour attendre que  a passe. Il y a aussi des garages et quelques petites maisons par l -bas. Sur le terrain des bandits se trouvent aussi deux ou trois immeubles de quatre  tages et une dizaine de garages. L'ancien h tel de ville est de l'autre c t  de la place.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1511">
+		<text>Merci pour l'info.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_16">
+		<text>Qui commande ici ?</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_161">
+		<text>Un homme vraiment m chant du nom de Dushman. Je l'ai vu passer par ici deux ou trois fois, avec un dossier sous le bras. Je suis s r qu'il contient des documents int ressants.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_1611">
+		<text>Merci pour l'info.</text>
+	</string>
+	<string id="cit_doctor_escape_dialog_17">
+		<text>Non, rien.</text>
+	</string>
+	<string id="cit_doctor_hello_dialog_11">
+		<text>Strelok ! O  t' tais pass  ??? J'ai vu ni toi, ni personne depuis la derni re attaque ! Je m'inqui tais !</text>
+	</string>
+	<string id="cit_doctor_hello_dialog_21">
+		<text>Alors, tu te sens mieux ? T'as les id es claires ?</text>
+	</string>
+	<string id="cit_doctor_main_dialog_0">
+		<text>Strelok ???</text>
+	</string>
+	<string id="cit_doctor_main_dialog_1">
+		<text>Ouais, t'es Strelok, c'est s r ! C'est moi, Doc, tu me reconnais pas ? Qu'est-ce qui t'est arriv , mon ami ? T'as pas l'air bien. On a parcouru la Zone ensemble pendant 2 ans. Tu te souviens vraiment pas de moi ?</text>
+	</string>
+	<string id="cit_doctor_main_dialog_11">
+		<text>Non.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_2">
+		<text>C'est vrai ??? Strelok, mais qu'est-ce... ? Tu te casses pas quand m me ? Mais... tu laisses tomber les autres ? Les potes ? Les Crocs, Spectre ? Tu te souviens d'eux au moins?</text>
+	</string>
+	<string id="cit_doctor_main_dialog_21">
+		<text>J'ai oubli  les Crocs et Spectre est mort. J'ai retrouv  son cadavre   Yantar.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_3">
+		<text>Spectre !!?!?! Mort ??!!! Et merde, comment  a a pu arriver ?! C' tait un as ! Qu'est-ce qui t'est arriv  ?</text>
+	</string>
+	<string id="cit_doctor_main_dialog_31">
+		<text>J'ignore ce qui s'est pass , je me souviens de rien.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_4">
+		<text>Attends un peu que je me reprenne. C'est quand m me une sacr e mauvaise nouvelle ! Tout doit  tre li    ta derni re exp dition dans la Zone. Quand on s'est vus la derni re fois, tu m'as confi  la cl  de la planque   Pripyat et la carte avec son emplacement. J'ai r ussi   emp cher les Mercenaires de me les voler. Tiens, prends-les et cache-les bien. Peut- tre que tu d couvriras quelque chose l -bas. Tu disais aussi qu'il y avait un truc louche avec le Monolithe. Mais j'arrive pas   d terminer ce que c'est et toi non plus, tu le savais pas.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_41">
+		<text>Je vois. O  on est ? Je me souviens pas de comment je suis arriv  ici.</text>
+	</string>
+	<string id="cit_doctor_main_dialog_5">
+		<text>On est dans la ville morte, dans le camp des Mercenaires !</text>
+	</string>
+	<string id="cit_doctor_main_dialog_6">
+		<text>On est dans la ville morte, dans le camp des Mercenaires...</text>
+	</string>
+	<string id="quest_cit_reward_0">
+		<text>Au fait, j'ai des informations sur les Mercenaires. Envie de savoir ?</text>
+	</string>
+	<string id="quest_cit_reward_1">
+		<text> a d pend des informations.</text>
+	</string>
+	<string id="quest_cit_reward_11">
+		<text>J'ai une carte qui montre pr cis ment o  se trouvent leur base, les postes de garde, les acc s discrets et bien plus.</text>
+	</string>
+	<string id="quest_cit_reward_111">
+		<text> a a l'air pas mal. Je t'en donne 3000 roubles.</text>
+	</string>
+	<string id="quest_cit_reward_1111">
+		<text>March  conclu ! Tiens !</text>
+	</string>
+	<string id="quest_cit_reward_11111">
+		<text>Super ! Voici ta r compense. Bient t des Stalkers d battront sur l'existence m me des Mercenaires !</text>
+	</string>
+	<string id="quest_cit_reward_1112">
+		<text>D sol , c'est pas assez.</text>
+	</string>
+	<string id="quest_cit_reward_11121">
+		<text>Comme tu veux, mais je t'en donnerai pas plus.</text>
+	</string>
+	<string id="quest_cit_reward_13">
+		<text>Rien de bien int ressant, seulement les potins habituels. D sol .</text>
+	</string>
+	<string id="quest_cit_reward_131">
+		<text>Si tu d couvres des  l ments plus pr cis, reviens. Je te paierai.</text>
+	</string>
+</string_table>

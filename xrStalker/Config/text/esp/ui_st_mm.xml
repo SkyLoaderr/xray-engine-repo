@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="Clear">
+		<text>despejado</text>
+	</string>
+	<string id="Cloudy">
+		<text>nublado</text>
+	</string>
+	<string id="Default">
+		<text>media</text>
+	</string>
+	<string id="Extreme">
+		<text>m xima</text>
+	</string>
+	<string id="gd_master">
+		<text>maestro</text>
+	</string>
+	<string id="gd_novice">
+		<text>novato</text>
+	</string>
+	<string id="gd_stalker">
+		<text>stalker</text>
+	</string>
+	<string id="gd_veteran">
+		<text>veterano</text>
+	</string>
+	<string id="High">
+		<text>alta</text>
+	</string>
+	<string id="Low">
+		<text>baja</text>
+	</string>
+	<string id="Minimum">
+		<text>m nima</text>
+	</string>
+	<string id="mm_mp_check_cdkey">
+		<text>verificar la clave del CD</text>
+	</string>
+	<string id="Nigth">
+		<text>noche</text>
+	</string>
+	<string id="Rain">
+		<text>lluvioso</text>
+	</string>
+	<string id="renderer_r1">
+		<text>Iluminaci n est tica</text>
+	</string>
+	<string id="renderer_r2">
+		<text>Iluminaci n din mica completa</text>
+	</string>
+	<string id="renderer_r2a">
+		<text>Iluminaci n din mica de objetos</text>
+	</string>
+	<string id="st_artefacthunt">
+		<text>Caza de artefactos</text>
+	</string>
+	<string id="st_deathmatch">
+		<text>Todos contra todos</text>
+	</string>
+	<string id="st_rank_experienced">
+		<text>experimentado</text>
+	</string>
+	<string id="st_rank_legend">
+		<text>stalker legendario</text>
+	</string>
+	<string id="st_rank_novice">
+		<text>novato</text>
+	</string>
+	<string id="st_rank_professional">
+		<text>profesional</text>
+	</string>
+	<string id="st_rank_veteran">
+		<text>veterano</text>
+	</string>
+	<string id="st_team_deathmatch">
+		<text>Juego en equipo</text>
+	</string>
+	<string id="testers_mp_agroprom">
+		<text>F brica de Agroprom</text>
+	</string>
+	<string id="testers_mp_atp">
+		<text>Aparcamiento  </text>
+	</string>
+	<string id="testers_mp_darkvalley">
+		<text>Valle Oscuro</text>
+	</string>
+	<string id="testers_mp_factory">
+		<text>F brica de Yantar</text>
+	</string>
+	<string id="testers_mp_lost_village">
+		<text>Pueblo desolado</text>
+	</string>
+	<string id="testers_mp_military_1">
+		<text>Almacenes militares</text>
+	</string>
+	<string id="testers_mp_pool">
+		<text>Piscina</text>
+	</string>
+	<string id="testers_mp_railroad">
+		<text>Estaci n de ferrocarril</text>
+	</string>
+	<string id="testers_mp_rostok">
+		<text>F brica de Rostok</text>
+	</string>
+	<string id="testers_mp_workshop">
+		<text>F brica desierta</text>
+	</string>
+	<string id="ui_mm_60_hz">
+		<text>Frecuencia 60 Hz</text>
+	</string>
+	<string id="ui_mm_action">
+		<text>acci n</text>
+	</string>
+	<string id="ui_mm_advanced">
+		<text>Avanzadas</text>
+	</string>
+	<string id="ui_mm_anisotropic">
+		<text>Filtro anisotr pico</text>
+	</string>
+	<string id="ui_mm_apply">
+		<text>Usar</text>
+	</string>
+	<string id="ui_mm_back">
+		<text>Atr s</text>
+	</string>
+	<string id="ui_mm_blood">
+		<text>Sangre</text>
+	</string>
+	<string id="ui_mm_brightness">
+		<text>Brillo</text>
+	</string>
+	<string id="ui_mm_cancel">
+		<text>Cancelar</text>
+	</string>
+	<string id="ui_mm_contrast">
+		<text>Contraste</text>
+	</string>
+	<string id="ui_mm_controls">
+		<text>Controles</text>
+	</string>
+	<string id="ui_mm_credits">
+		<text>Cr ditos</text>
+	</string>
+	<string id="ui_mm_crosshair_distance">
+		<text>Distancia del objetivo</text>
+	</string>
+	<string id="ui_mm_delete">
+		<text>Borrar</text>
+	</string>
+	<string id="ui_mm_difficulty">
+		<text>Dificultad</text>
+	</string>
+	<string id="ui_mm_disconnect">
+		<text>Desconectar</text>
+	</string>
+	<string id="ui_mm_disconnect_message">
+		<text> Seguro que quieres desconectar?</text>
+	</string>
+	<string id="ui_mm_dyn_crosshair">
+		<text>Punto de mira din mico</text>
+	</string>
+	<string id="ui_mm_eax">
+		<text>EAX</text>
+	</string>
+	<string id="ui_mm_fullscreen">
+		<text>Pantalla completa</text>
+	</string>
+	<string id="ui_mm_gameplay">
+		<text>Partida</text>
+	</string>
+	<string id="ui_mm_gamma">
+		<text>Gamma</text>
+	</string>
+	<string id="ui_mm_geometry_lod">
+		<text>Detalle de los objetos</text>
+	</string>
+	<string id="ui_mm_invert_mouse">
+		<text>Invertir rat n</text>
+	</string>
+	<string id="ui_mm_key">
+		<text>bot n</text>
+	</string>
+	<string id="ui_mm_keyboard_setup">
+		<text>Configuraci n del teclado</text>
+	</string>
+	<string id="ui_mm_last_save">
+		<text> ltimo guardado</text>
+	</string>
+	<string id="ui_mm_light_distance">
+		<text>Distancia de iluminaci n</text>
+	</string>
+	<string id="ui_mm_load">
+		<text>Cargar</text>
+	</string>
+	<string id="ui_mm_load_game">
+		<text>Cargar partida</text>
+	</string>
+	<string id="ui_mm_master">
+		<text>Maestro</text>
+	</string>
+	<string id="ui_mm_master_volume">
+		<text>Volumen</text>
+	</string>
+	<string id="ui_mm_mouse_sense">
+		<text>Sensibilidad del rat n</text>
+	</string>
+	<string id="ui_mm_multiplayer">
+		<text>JUEGO EN RED</text>
+	</string>
+	<string id="ui_mm_multiplayer_n">
+		<text>Juego en red</text>
+	</string>
+	<string id="ui_mm_music_volume">
+		<text>Volumen m sica</text>
+	</string>
+	<string id="ui_mm_need_restart">
+		<text>Los cambios se aplicar n cuando se reinicie el juego</text>
+	</string>
+	<string id="ui_mm_newgame">
+		<text>Nueva partida</text>
+	</string>
+	<string id="ui_mm_novice">
+		<text>Novato</text>
+	</string>
+	<string id="ui_mm_npc_torch">
+		<text>Linternas de PNJ</text>
+	</string>
+	<string id="ui_mm_options">
+		<text>OPCIONES</text>
+	</string>
+	<string id="ui_mm_options_n">
+		<text>Opciones</text>
+	</string>
+	<string id="ui_mm_particles_distance">
+		<text>Distancia de las part culas</text>
+	</string>
+	<string id="ui_mm_quality_presets">
+		<text>Ajustes de calidad</text>
+	</string>
+	<string id="ui_mm_quit_game">
+		<text>Salir de la partida</text>
+	</string>
+	<string id="ui_mm_quit_game_message">
+		<text> Seguro que quieres salir de la partida?</text>
+	</string>
+	<string id="ui_mm_quit_windows_message">
+		<text> Seguro que quieres salir a Windows?</text>
+	</string>
+	<string id="ui_mm_quit2windows">
+		<text>Salir a Windows</text>
+	</string>
+	<string id="ui_mm_renderer">
+		<text>Renderizaci n</text>
+	</string>
+	<string id="ui_mm_resolution">
+		<text>Resoluci n</text>
+	</string>
+	<string id="ui_mm_return_game">
+		<text>Volver a la partida</text>
+	</string>
+	<string id="ui_mm_save">
+		<text>Guardar</text>
+	</string>
+	<string id="ui_mm_save_game">
+		<text>Guardar partida</text>
+	</string>
+	<string id="ui_mm_show_crosshair">
+		<text>Mostrar punto de mira</text>
+	</string>
+	<string id="ui_mm_show_weapon">
+		<text>Mostrar arma</text>
+	</string>
+	<string id="ui_mm_simply">
+		<text>b sicas</text>
+	</string>
+	<string id="ui_mm_sound">
+		<text>Sonido</text>
+	</string>
+	<string id="ui_mm_sound_quality">
+		<text>Calidad de sonido</text>
+	</string>
+	<string id="ui_mm_stalker">
+		<text>Stalker</text>
+	</string>
+	<string id="ui_mm_sun_quality">
+		<text>Calidad de las sombras</text>
+	</string>
+	<string id="ui_mm_supersample">
+		<text>Antialiasing</text>
+	</string>
+	<string id="ui_mm_switch_torch">
+		<text>IA usa linternas</text>
+	</string>
+	<string id="ui_mm_texture_quality">
+		<text>Detalle de las texturas</text>
+	</string>
+	<string id="ui_mm_tips">
+		<text>Identificaci n de PNJ</text>
+	</string>
+	<string id="ui_mm_veteran">
+		<text>Veterano</text>
+	</string>
+	<string id="ui_mm_video">
+		<text>V deo</text>
+	</string>
+	<string id="ui_mm_vis_distance">
+		<text>Distancia de visi n</text>
+	</string>
+	<string id="ui_mm_vsync">
+		<text>Sincronizaci n vertical</text>
+	</string>
+	<string id="ui_st_last_set">
+		<text> ltima selecci n</text>
+	</string>
+	<string id="ui_st_preset1">
+		<text>Selecci n 1</text>
+	</string>
+	<string id="ui_st_preset2">
+		<text>Selecci n 2</text>
+	</string>
+	<string id="ui_st_preset3">
+		<text>Selecci n 3</text>
+	</string>
+	<string id="ui_st_reset">
+		<text>Reiniciar</text>
+	</string>
+	<string id="ui_st_sell_all">
+		<text>Vender todo</text>
+	</string>
+</string_table>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="gar_dolg_blokpost_11">
+		<text>Halt, Stalker. Hier geht es nicht weiter!</text>
+	</string>
+	<string id="gar_dolg_blokpost_111">
+		<text>Warum?</text>
+	</string>
+	<string id="gar_dolg_blokpost_1111">
+		<text>Weil das unser Territorium ist - W chterterritorium. Und wir sind sehr w hlerisch, wen wir zu unserer Basis durchlassen. Wenn du nichts Wichtiges mit unseren Anf hrern zu besprechen hast, kommst du hier nicht weiter.</text>
+	</string>
+	<string id="gar_dolg_blokpost_11111">
+		<text>Ich verstehe.</text>
+	</string>
+	<string id="gar_dolg_blokpost_111111">
+		<text>Das sind die Regeln.</text>
+	</string>
+	<string id="gar_dolg_blokpost_11112">
+		<text>Ich muss aber durch, ich habe etwas mit dem Wirt zu erledigen.</text>
+	</string>
+	<string id="gar_dolg_blokpost_111121">
+		<text>Ja, der Wirt hat uns von dir erz hlt. Du kannst durch.</text>
+	</string>
+	<string id="gar_dolg_blokpost_1111211">
+		<text>Ich zahle lieber. Hier.</text>
+	</string>
+	<string id="gar_dolg_blokpost_11112111">
+		<text>Gut! Du kannst gehen, aber dein Gesch ft mit dem Wirt sollte wirklich wichtig sein, h rst du? Und sei vorsichtig - vor dir liegen eine Menge Anomalien.</text>
+	</string>
+	<string id="gar_dolg_blokpost_1111212">
+		<text>Was ist das f r ein Gefallen?</text>
+	</string>
+	<string id="gar_dolg_blokpost_11112121">
+		<text>Nichts Gro es. In der N he streunt eine Herde Wildschweine umher. Die m ssen umgelegt werden. Mach sie kalt, dann ist deine Schuld beglichen.</text>
+	</string>
+	<string id="gar_dolg_blokpost_111121211">
+		<text>Abgemacht.</text>
+	</string>
+	<string id="gar_dolg_blokpost_1111212111">
+		<text>Viel Gl ck, Stalker.</text>
+	</string>
+	<string id="gar_dolg_blokpost_111121212">
+		<text>Ich habe das Geld nicht.</text>
+	</string>
+	<string id="gar_dolg_blokpost_1111212121">
+		<text>Nun, dann solltest du besser anfangen, danach zu suchen.</text>
+	</string>
+	<string id="gar_dolg_blokpost_111122">
+		<text>Ich habe das Geld nicht.</text>
+	</string>
+	<string id="gar_dolg_blokpost_111123">
+		<text>Tja, dann darfst du auch nicht durch zur Bar.</text>
+	</string>
+	<string id="gar_dolg_blokpost_1231">
+		<text>Danke, dass du uns gegen die Wildschweine geholfen hast. Hier, das hast du verdient.</text>
+	</string>
+	<string id="gar_dolg_blokpost_12311">
+		<text>Danke!</text>
+	</string>
+	<string id="gar_dolg_blokpost_22">
+		<text>Und? Hast du diese Wildschweine schon erledigt?</text>
+	</string>
+	<string id="gar_dolg_blokpost_221">
+		<text>Noch nicht.</text>
+	</string>
+	<string id="gar_dolg_blokpost_2211">
+		<text>Mist. Wenn du anf ngst, sie zu zerlegen, dann bring mir eins, okay?</text>
+	</string>
+	<string id="gar_dolg_blokpost_222">
+		<text>Ja, hab sie alle umgelegt.</text>
+	</string>
+	<string id="gar_dolg_blokpost_2221">
+		<text>Na gut, dann geh weiter. Und gr   den Wirt von mir, okay?</text>
+	</string>
+	<string id="gar_dolg_blokpost_33">
+		<text>Gr   den Wirt von mir, wenn du ihn siehst. Ach, und vergiss nicht: Auf dem Weg gibt es viele Anomalien, sei also vorsichtig.</text>
+	</string>
+	<string id="gar_dramm_novice_start_0">
+		<text>Danke, Kumpel - du hast mir wirklich geholfen. Das werde ich dir nicht vergessen.</text>
+	</string>
+	<string id="gar_dramm_novice_start_1">
+		<text>Was geht hier vor sich?</text>
+	</string>
+	<string id="gar_dramm_novice_start_11">
+		<text>In Ordnung.</text>
+	</string>
+	<string id="gar_dramm_novice_start_2">
+		<text>Wir versuchen, die M llhalde von Banditen zu s ubern. Meine Freunde legen gerade in der N he einen Hinterhalt f r einen Banditentrupp. Wenn wir die nicht aufhalten,  bernehmen sie die Kontrolle  ber die M llhalde und keiner wird mehr in der Lage sein, tiefer in die Zone zu gehen. Sprich mit unserem Kommandanten. Er und seine M nner sind ganz in der N he, beim Maschinenschrottplatz. Ich muss selbst auch dorthin - wir k nnen zusammen gehen, wenn du willst.</text>
+	</string>
+	<string id="gar_dramm_novice_start_21">
+		<text>Dann lass uns gehen.</text>
+	</string>
+	<string id="gar_dramm_novice_start_3">
+		<text>Kannst du mir etwas  ber die M llhalde erz hlen?</text>
+	</string>
+	<string id="gar_dramm_novice_start_31">
+		<text>Da gibt es nicht viel zu erz hlen, Kumpel. Die M llhalde ist … eine M llhalde. K mpfer der W chter bewachen die Nordstra e zur Bar. Denen solltest du ausweichen - bei den W chtern gibt es jede Menge fieser Typen. Zur Rechten sind die Wege ins Dunkle Tal, aber die Strahlungswerte sind dort sehr hoch. Etwas n her befindet sich das Modermoor - schreckliche S mpfe voller Anomalien. Man sagt, es sei leicht, dort ein paar ordentliche Artefakte zu finden, noch einfacher kann man da aber Probleme finden. Na ja, wenigstens gibt es keinen Hund von Baskerville im Moor.</text>
+	</string>
+	<string id="gar_dramm_novice_start_311">
+		<text>Erz hl weiter.</text>
+	</string>
+	<string id="gar_dramm_novice_start_3111">
+		<text>Zur Rechten, bei dem Moor, gibt es ein Geheimversteck. Dort siehst du eine Metallkonstruktion, die  ber einem Sumpfteich h ngt. Mein Versteck ist genau darunter … Ich habe es dort vor einer ganzen Weile angelegt, aber du hast mein Leben gerettet und brauchst es wahrscheinlich sowieso dringender als ich. Benutze es also ruhig, wenn du willst.</text>
+	</string>
+	<string id="gar_dramm_novice_start_31111">
+		<text>Danke, Kumpel. Das sind recht n tzliche Informationen.</text>
+	</string>
+	<string id="gar_dramm_novice_start_312">
+		<text>Das ist interessant, danke.</text>
+	</string>
+	<string id="gar_hellcar_start_11">
+		<text>He, Stalker, du kommst gerade rechtzeitig! Wir k nnten deine Hilfe wirklich gut gebrauchen. Diese Banditenbastarde versuchen die Kontrolle  ber die M llhalde an sich zu rei en. Wir hatten vor einer halben Stunde eine Schie erei und konnten dabei drei von den Hunden erledigen. Die anderen haben sich zur ckgezogen, aber ich bin mir sicher, dass sie jeden Moment mit Verst rkung zur ckkommmen. Wir sind nicht mehr viele, und ein zus tzlicher Mann k nnte nicht schaden.</text>
+	</string>
+	<string id="gar_hellcar_start_111">
+		<text>Erz hl weiter.</text>
+	</string>
+	<string id="gar_hellcar_start_1111">
+		<text>Wir haben hier einen Hinterhalt f r sie gelegt. Sie werden von Westen kommen, vom Agroprom Forschungsinstitut. Hilf uns, ihre Verst rkung zu erledigen. Du wirst es nicht bereuen!</text>
+	</string>
+	<string id="gar_hellcar_start_11111">
+		<text>In Ordnung, ich helfe euch.</text>
+	</string>
+	<string id="gar_hellcar_start_111111">
+		<text>Sehr sch n.</text>
+	</string>
+	<string id="gar_hellcar_start_11112">
+		<text>Das geht mich nichts an und ich m chte nichts damit zu tun haben.</text>
+	</string>
+	<string id="gar_hellcar_start_111121">
+		<text>Wie du willst. Du wirst deine Dummheit noch jedes Mal verfluchen, wenn du diese Dickk pfe auf dem Weg in die Zone bezahlst.</text>
+	</string>
+	<string id="gar_hellcar_start_11113">
+		<text>Ich habe sie alle umgelegt.</text>
+	</string>
+	<string id="gar_hellcar_start_111131">
+		<text>Du bist mein Mann! Aber ich gehe auf Nummer sicher, nur f r den Fall.</text>
+	</string>
+	<string id="gar_hellcar_start_21">
+		<text>Wir haben nichts zu besprechen.</text>
+	</string>
+	<string id="gar_hellcar_start_3111">
+		<text>Danke, Kumpel, du hast uns wirklich sehr geholfen. M chtest du als Zeichen unserer Dankbarkeit ein bisschen Bargeld haben?</text>
+	</string>
+	<string id="gar_hellcar_start_31111">
+		<text>Klar.</text>
+	</string>
+	<string id="gar_hellcar_start_311111">
+		<text>Hier, damit solltest du die medizinische Behandlung bezahlen k nnen, damit du wieder fit wirst.</text>
+	</string>
+	<string id="gar_hellcar_start_3111111">
+		<text>Danke.</text>
+	</string>
+	<string id="gar_hellcar_start_31113">
+		<text>Erz hle mir etwas  ber dich selbst.</text>
+	</string>
+	<string id="gar_hellcar_start_311131">
+		<text>Mein Name ist Bes. Ich bin vor drei Jahren hierher gekommen. Wie viele von den Jungs in der Zone, bin ich auf der Flucht. Ich werde wegen zwei Morden und schwerer K rperverletzung gesucht. Vor ein paar Jahren wurde ein Kumpel von mir  bel zusammengeschlagen - die mussten ihn im Krankenhaus buchst blich wieder zusammenflicken. Also lie  ich die Mistkerle daf r bezahlen. Als die Bullen auftauchten, musste ich einen davon erschie en und sprang aus einem Fenster im dritten Stock - seitdem bin ich hier. Ich habe mich hier ganz gut eingelebt, aber die Liste meiner Straftaten ist auch l nger geworden. Ich versuche, die Gesetzlosen zu bek mpfen - genau, wie ich es drau en auch gemacht habe. Ich bilde die Neulinge aus und bringe ihnen bei, in der Zone zu  berleben.</text>
+	</string>
+	<string id="gar_hellcar_start_3111311">
+		<text>Warum schlie t du dich denn nicht den W chtern an, wenn du schon die gleiche Gesinnung hast?</text>
+	</string>
+	<string id="gar_hellcar_start_31113111">
+		<text>Die W chter k mpfen gegen die Zone, ich k mpfe f r Leute. Au erdem stehen sie in enger Verbindung mir der Regierung und der Armee. Ich m chte nicht eines Tages in einer kalten Zelle aufwachen.</text>
+	</string>
+	<string id="gar_hellcar_start_311131111">
+		<text>Ich w nsch dir viel Gl ck.</text>
+	</string>
+	<string id="gar_hellcar_start_31114">
+		<text>Was ist das f r ein Ort?</text>
+	</string>
+	<string id="gar_hellcar_start_311141">
+		<text>Die M llhalde. Wir sind hier zuhause. Siehst du diese Stapel aus Schrott? Da willst du gar nicht hin, glaube mir. So verstrahlt, dass der Geigerz hler nicht mitkommt. Dies ist der einzige brauchbare Weg in die Zone, und die Banditen werden hier in letzter Zeit immer aktiver. Die schei en sich in die Hose bei dem Gedanken, weiter in die Zone, ins Gebiet der W chter zu gehen. Aber sie lieben es, die Neulinge hier auszunehmen. Wenn das also sonst niemanden k mmert, m ssen wir uns selbst gegen sie zur Wehr setzen.</text>
+	</string>
+	<string id="gar_hellcar_start_3111411">
+		<text>Erz hl weiter.</text>
+	</string>
+	<string id="gar_hellcar_start_31114111">
+		<text> berall - und insbesondere hier - hast du dich wie ein Mensch zu benehmen, nicht wie ein triebgesteuertes Tier. Das ist meine Sicht des Lebens.</text>
+	</string>
+	<string id="gar_hellcar_start_311141112">
+		<text>Gibt es gro e Geb ude auf der M llhalde?</text>
+	</string>
+	<string id="gar_hellcar_start_31114111211">
+		<text>Danke.</text>
+	</string>
+	<string id="gar_hellcar_start_31115">
+		<text>Danke, ich brauche nichts von dir.</text>
+	</string>
+	<string id="gar_hellcar_start_3112">
+		<text>Ich wei  eine ganze Menge. Ich k nnte dir so einiges erz hlen.</text>
+	</string>
+	<string id="gar_hellcar_start_41">
+		<text>Der Job ist noch nicht erledigt. Lass uns ihn zu Ende bringen und danach reden.</text>
+	</string>
+	<string id="gar_hellcar_start_51">
+		<text>He, Gezeichneter.</text>
+	</string>
+	<string id="gar_seriy_start_11">
+		<text>Verdammt, Mann, jetzt ist nicht die Zeit zum Reden! In ein paar Sekunden werden nur noch Waffen sprechen. Hilf mir, die Hunde zu bek mpfen, dann k nnen wir uns immer noch unterhalten.</text>
+	</string>
+	<string id="gar_seriy_start_22">
+		<text>Danke f r die Hilfe, das war schon ziemlich haarig. Was machst du hier eigentlich?</text>
+	</string>
+	<string id="gar_seriy_start_221">
+		<text>Ich suche nach Informationen  ber Strelok. Fox hat mir von dir erz hlt, deshalb bin ich f r ein Gespr ch hierher gekommen.</text>
+	</string>
+	<string id="gar_seriy_start_2211">
+		<text>In Ordnung, du hast mir einfach so geholfen, daher werde ich dir was erz hlen. Einer der Typen, ein ehemaliger "Gr ber" namens Maulwurf wartet auf mich. Er hat Streloks Versteck ausgehoben, aber ich wei  nicht, ob er dort irgendwas gefunden hat. Hier sind die Koordinaten von unserem Treffpunkt. Sag ihm, dass ich dich geschickt habe. Die werden jetzt nach mir Ausschau halten, daher werde ich f r eine Weile untertauchen. Hier hast du auch noch etwas Bargeld f r deine Hilfe.</text>
+	</string>
+	<string id="gar_seriy_start_2212">
+		<text>Danke f r die Informationen.</text>
+	</string>
+	<string id="gar_seriy_start_222">
+		<text>Ich suche nach Informationen  ber Strelok. Wei t du vielleicht etwas?</text>
+	</string>
+	<string id="gar_seriy_start_2221">
+		<text>In Ordnung, du hast mir einfach so geholfen, daher werde ich dir was erz hlen. Einer der Typen, ein ehemaliger "Gr ber" namens Maulwurf wartet auf mich. Er hat Streloks Versteck ausgehoben und Dokumente gefunden, die ein paar Dinge erkl ren. Er wurde von Banditen verfolgt, daher musste er die Dokumente zur cklassen. Aber er kann sich an die Stelle erinnern. Die werden nach mir Ausschau halten, daher werde ich f r eine Weile untertauchen. Hier sind die Koordinaten f r meinen Treffpunkt mit Maulwurf. Sag ihm, dass ich dich geschickt habe. Ich werde ein paar Informationen auf deinen PDA hochladen. Und hier ist noch etwas Bargeld f r deine Hilfe.</text>
+	</string>
+	<string id="gar_seriy_start_2222">
+		<text>Danke f r die Informationen.</text>
+	</string>
+	<string id="gar_seriy_start_33">
+		<text>He, Kumpel! Hier wurde es eben ziemlich haarig, muss ich sagen. Was macht du denn  berhaupt hier?</text>
+	</string>
+	<string id="gar_seriy_start_44">
+		<text>Ein sicherer Weg, Stalker. Ein sicherer Weg an den Anomalien vorbei und direkt zu den Artefakten.</text>
+	</string>
+	<string id="gar_seriy_start_441">
+		<text>Was kann man auf der M llhalde finden?</text>
+	</string>
+	<string id="gar_seriy_start_4411">
+		<text>Du kannst ziemlich schnell viel  rger finden, so viel ist sicher. Aber, da du so neugierig bist, werde ich dir sagen, was ich wei .  stlich von hier liegt ein kleiner Wald. Dort gibt es nichts Interessantes und er ist voller Hunde, sei also vorsichtig. Die Bahnstrecke f hrt zu einem Tunnel, dort gibt es viele Anomalien. Vielleicht auch noch etwas anderes, aber davon wei  ich nichts - hab nie so genau hingeschaut. Vom W chterposten im Norden wirst du ja vermutlich schon wissen. Das ist im Grunde alles, was ich  ber diesen Ort hier wei .</text>
+	</string>
+	<string id="gar_seriy_start_44112">
+		<text>Danke f r die Informationen.</text>
+	</string>
+	<string id="gar_seryi_about_garbage_0">
+		<text>H r zu, Mann. Was kann ich auf dieser M llhalde finden?</text>
+	</string>
+	<string id="gar_seryi_about_garbage_1">
+		<text>Du kannst ziemlich schnell viel  rger finden, so viel ist sicher. Aber, da du so neugierig bist, werde ich dir sagen, was ich wei .  stlich von hier liegt ein kleiner Wald. Dort gibt es nichts Interessantes und er ist voller Hunde, sei also vorsichtig. Die Bahnstrecke f hrt zu einem Tunnel, dort gibt es viele Anomalien. Vielleicht auch noch etwas anderes, aber davon wei  ich nichts - hab nie so genau hingeschaut. Vom W chterposten im Norden wirst du ja vermutlich schon wissen. Das ist im Grunde alles, was ich  ber diesen Ort hier wei .</text>
+	</string>
+	<string id="gar_seryi_about_garbage_11">
+		<text>Danke f r die Informationen. Ich werde es mir merken.</text>
+	</string>
+	<string id="gar_stalker_about_level_0">
+		<text>Kannst du mir irgendwas  ber diesen Ort erz hlen?</text>
+	</string>
+	<string id="gar_stalker_about_level_1">
+		<text>Nun, h r zu.  berall, wo du guckst, gibt es ein wenig stinkenden M ll. Nach dem Unfall von 1986 haben sie radioaktiven Schrott, Kr ne und all die zerst rten Maschinen hierher gebracht. Eigentlich liegt hier nur nutzloser Schrott, und es gibt hier und da ein paar Anomalien. Du kannst sogar Artefakte finden, aber die sind nicht so besonders, daher wirst du hier in der Gegend haupts chlich Anf nger vorfinden. Viele Anf nger bedeutet aber auch viele Banditen, daher sollte man hier am besten nicht zu lange herumh ngen. Weiter im Osten sind jede Menge Strahlungstaschen; ohne Schutz kannst du dort nicht hingehen. Im S den erreichst du die Grenze der Zone. Im Norden kommst du irgendwann zur Rostok Fabrik und der Stalker-Bar. Im Osten ist das Dunkle Tal, ein unheimlicher und nebliger Ort. Im Westen ist das Agroprom Forschungsinstitut. Ich trage dir auf deiner Karte sichere Wege ein.</text>
+	</string>
+	<string id="gar_hellcar_start_3111411121">
+		<text>Im Zentrum ist ein gro er Hangar, da ist es meist ziemlich still. Wenn's hart auf hart kommt, kannst du da pennen. Wenn du nach Westen gehst, in Richtung Agroprom, st  t du auf ein Banditenlager. Da kamen die Freaks her, die wir vor 'ner Weile kaltgemacht haben. Aber ich hab das Gef hl, von denen gibt's da noch mehr.</text>
+	</string>
+</string_table>
