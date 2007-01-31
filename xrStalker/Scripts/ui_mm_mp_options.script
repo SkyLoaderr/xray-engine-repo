@@ -38,7 +38,7 @@ function mp_options:InitControls(x, y, xml, handler)
 	xml:InitStatic("tab_options:cap_rate_of_change",	self)
 	
 	handler.check_public_server			= xml:InitCheck("tab_options:check_public_server", 			self)
-	handler.check_verify_cdkey			= xml:InitCheck("tab_options:check_verify_cdkey", 			self)
+--	handler.check_verify_cdkey			= xml:InitCheck("tab_options:check_verify_cdkey", 			self)
 	
 	handler.check_spectator				= xml:InitCheck("tab_options:check_spectator",				self)
 	handler.check_allow_voting			= xml:InitCheck("tab_options:check_allow_voting",			self)
@@ -80,7 +80,7 @@ function mp_options:InitControls(x, y, xml, handler)
 	
 	handler.check_spectator:SetDependControl(handler.spin_spectator)
 	
-	handler.check_public_server:SetDependControl(handler.check_verify_cdkey)	
+--	handler.check_public_server:SetDependControl(handler.check_verify_cdkey)	
 	
 end
 
