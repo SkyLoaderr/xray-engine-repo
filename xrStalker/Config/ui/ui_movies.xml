@@ -10,11 +10,10 @@
 		<item type="video">
 			<delay>1</delay>
 			<pause_state>on</pause_state>
+			<sound>intro\thq_logo_audio</sound>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
-				<texture>intro\intro_thq</texture>
-				<_texture>test\outro 50keys</_texture>
-				<_texture>test\1st_ki8</_texture>
-				<_texture>test\1st</_texture>
+				<_texture>intro\intro_thq</_texture>
+				<texture x="0" y="0" width="720" height="486">intro\thq_logo_hyuv</texture>
 			</video_wnd>
 		</item>
 		<item type="video">
