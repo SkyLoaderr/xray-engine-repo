@@ -190,7 +190,7 @@ function actor_binder:task_callback(_task, _objective, _state)
 			news_manager.send_task(db.actor, "new", _task, _objective)
 		end
 	else
-		if  _task:get_objective(0):get_state() ~= task.completed then
+		if _task:get_objective(0):get_state() == task.in_progress then
 			news_manager.send_task(db.actor, "update", _task, _objective)
 		end
 	end
