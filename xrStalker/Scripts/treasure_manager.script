@@ -78,6 +78,7 @@ function CTreasure:__init()
 		
 		--' Отметим тайник как новый
 		self.treasure_info[id].active = false
+		self.treasure_info[id].done = false
 
 		--print_table(self.treasure_info)
 	end
@@ -95,21 +96,23 @@ function CTreasure:use(npc)
 	local avail = {}
 	local tr_sum = 0
 	for k,v in pairs(self.treasure_info) do
-		local treasure_prob = xr_logic.pick_section_from_condlist(db.actor, npc, v.condlist)
+		if v.done == false then
+			local treasure_prob = xr_logic.pick_section_from_condlist(db.actor, npc, v.condlist)
 
-		if treasure_prob == "" or treasure_prob == nil then
-			treasure_prob = 0
-		end
+			if treasure_prob == "" or treasure_prob == nil then
+				treasure_prob = 0
+			end
 
-		if tonumber(treasure_prob) >= 0 and
-		   v.community[npc:character_community()] == true and
-		   v.active == false
-		then
-			if tonumber(treasure_prob) == 100 then
-				self:give_treasure(k)
-			else
-				table.insert(avail, {k = k, prob = treasure_prob})
-				tr_sum = tr_sum + treasure_prob
+			if tonumber(treasure_prob) >= 0 and
+			v.community[npc:character_community()] == true and
+			v.active == false
+			then
+				if tonumber(treasure_prob) == 100 then
+					self:give_treasure(k)
+				else
+					table.insert(avail, {k = k, prob = treasure_prob})
+					tr_sum = tr_sum + treasure_prob
+				end
 			end
 		end
 	end
@@ -171,6 +174,7 @@ function CTreasure:give_treasure(k)
 		
 		--' Пометим тайник как выданный
 		self.treasure_info[k].active = true
+		self.treasure_info[k].done = true
 	else
 		abort("TREASURE %s, target doesnt exist", k)
 	end
@@ -198,6 +202,7 @@ function CTreasure:save(p)
 	for k,v in pairs(self.treasure_info) do
 		p:w_stringZ(k)
 		p:w_bool(v.active)
+		p:w_bool(v.done)
 	end
 end
 --' Загрузка
@@ -206,6 +211,7 @@ function CTreasure:load(p)
 	for i = 1,t do
 		local k = p:r_stringZ()
 		self.treasure_info[k].active = p:r_bool()
+		self.treasure_info[k].done = p:r_bool()
 	end
 end
 
