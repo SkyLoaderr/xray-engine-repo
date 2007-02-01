@@ -10,6 +10,28 @@ local level_scripts = {
 	pripyat_tasks
 }
 
+
+local jump_level_by_name = {
+	l01_escape				= "l02_garbage",
+	l02_garbage				= "l03_agroprom",
+	l03_agroprom			= "l03u_agr_underground",
+	l03u_agr_underground	= "l04_darkvalley",
+	l04_darkvalley			= "l04u_labx18",
+	l04u_labx18				= "l05_bar",
+	l05_bar					= "l06_Rostok",
+	l06_Rostok				= "l07_military",
+	l07_military			= "l08_yantar",
+	l08_yantar				= "l08u_brainlab",
+	l08u_brainlab			= "l10_radar",
+	l10_radar				= "l10u_bunker",
+	l10u_bunker				= "l11_pripyat",
+	l11_pripyat				= "l12_stancia",
+	l12_stancia				= "l12u_sarcofag",
+	l12u_sarcofag			= "l12u_control_monolith",
+	l12u_control_monolith	= "l12_stancia_2",
+	l12_stancia_2			= "l01_escape"
+}
+
 function proceed()
 	if db.actor == nil then
 		return
@@ -17,6 +39,18 @@ function proceed()
 	for k, v in pairs( level_scripts ) do
 		v.proceed()
 	end
+
+	if db.actor:has_info("autojump_enabled") then
+		local jname = jump_level_by_name[level.name()]
+		if jname ~= nil then
+			get_console():execute("flush")
+			get_console():execute("jump_to_level "..jname)
+		end
+	end
+end
+
+function autojump()
+	db.actor:give_info_portion("autojump_enabled")
 end
 
 function process_info_portion(info_id)
