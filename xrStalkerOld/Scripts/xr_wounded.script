@@ -319,6 +319,9 @@ function add_to_binder (object, ini, scheme, section, st)
    
     action = manager:action (xr_actions_id.alife)
     action:add_precondition (world_property(properties["wounded"],			false))
+
+    action = manager:action (stalker_ids.action_gather_items)
+    action:add_precondition (world_property(properties["wounded"],			false))
     
     action = manager:action (stalker_ids.action_combat_planner)
     action:add_precondition (world_property(properties["can_fight"],       true))
