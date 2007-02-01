@@ -454,16 +454,16 @@ function CRandomTask:task_fail(p1, p2)
 			abort("WRONG RANDOM TASK %s %s", tostring(p1), tostring(p2))
 		end
 
+		if sel_task.status == "refused" or sel_task.status == "failed" then
+			self.task_info[self.active_task_by_type[p1]].last_task_time = game.get_game_time()
+			return true
+		end
 		if string.find(p1, "defend_lager") ~= nil then
 			if alife():object(sel_task.selected_target).gulag:get_population_comed() == 0 then
 				self.task_info[self.active_task_by_type[p1]].status = "failed"
 				self.task_info[self.active_task_by_type[p1]].last_task_time = game.get_game_time()
 				return true
 			end
-		end
-		if sel_task.status == "refused" or sel_task.status == "failed" then
-			self.task_info[self.active_task_by_type[p1]].last_task_time = game.get_game_time()
-			return true
 		end
 	end
 	return false
