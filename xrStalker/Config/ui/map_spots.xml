@@ -50,8 +50,6 @@
 	</blue_spot>
 	<blue_mini_spot  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture>ui_icons_newPDA_SmallBlue</texture>
-		<_texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_below>
-		<_texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_above>		
 	</blue_mini_spot>
 
 	<green_location>
@@ -63,8 +61,6 @@
 	</green_spot>
 	<green_mini_spot  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture>ui_icons_newPDA_SmallGreen</texture>
-		<_texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_below>
-		<_texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_above>
 	</green_mini_spot>
 	
 	<red_location>
@@ -76,8 +72,6 @@
 	</red_spot>
 	<red_mini_spot  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture>ui_icons_newPDA_SmallRed</texture>
-		<_texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_below>
-		<_texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</_texture_above>		
 	</red_mini_spot>
 
 
@@ -90,8 +84,8 @@
 	</eliminate_lager_spot>
 	<eliminate_lager_spot_mini  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture>ui_sm_mapQuest_camp_destroy</texture>
-		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
-		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
+		<texture_below r="0" g="255" b="0">ui_mini_af_spot_below</texture_below>
+		<texture_above r="0" g="255" b="0">ui_mini_af_spot_above</texture_above>
 	</eliminate_lager_spot_mini>
 
 	<defend_lager_location>
@@ -103,8 +97,8 @@
 	</defend_lager_spot>
 	<defend_lager_spot_mini  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture>ui_sm_mapQuest_camp_defend</texture>
-		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
-		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
+		<texture_below r="0" g="255" b="0">ui_mini_af_spot_below</texture_below>
+		<texture_above r="0" g="255" b="0">ui_mini_af_spot_above</texture_above>
 	</defend_lager_spot_mini>
 
 	<artefact_location>
@@ -116,8 +110,8 @@
 	</artefact_spot>
 	<artefact_spot_mini  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture>ui_sm_mapQuest_artefact</texture>
-		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
-		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
+		<texture_below r="0" g="255" b="0">ui_mini_af_spot_below</texture_below>
+		<texture_above r="0" g="255" b="0">ui_mini_af_spot_above</texture_above>
 	</artefact_spot_mini>
 
 	<kill_stalker_location>
@@ -129,8 +123,8 @@
 	</kill_stalker_spot>
 	<kill_stalker_spot_mini  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture>ui_sm_mapQuest_stalker_destroy</texture>
-		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
-		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
+		<texture_below r="0" g="255" b="0">ui_mini_af_spot_below</texture_below>
+		<texture_above r="0" g="255" b="0">ui_mini_af_spot_above</texture_above>
 	</kill_stalker_spot_mini>
 
 	<monster_part_location>
@@ -142,8 +136,8 @@
 	</monster_part_spot>
 	<monster_part_spot_mini  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture>ui_sm_mapQuest_monster_find</texture>
-		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
-		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
+		<texture_below r="0" g="255" b="0">ui_mini_af_spot_below</texture_below>
+		<texture_above r="0" g="255" b="0">ui_mini_af_spot_above</texture_above>
 	</monster_part_spot_mini>
 
 	<find_item_location>
@@ -155,8 +149,8 @@
 	</find_item_spot>
 	<find_item_spot_mini  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture>ui_sm_mapQuest_item</texture>
-		<texture_below x="0" y="4" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_below>
-		<texture_above x="0" y="0" width="8" height="4" r="0" g="255" b="0" stretch = "1">ui\ui_mini_af_spot</texture_above>
+		<texture_below r="0" g="255" b="0">ui_mini_af_spot_below</texture_below>
+		<texture_above r="0" g="255" b="0">ui_mini_af_spot_above</texture_above>
 	</find_item_spot_mini>
 
 
