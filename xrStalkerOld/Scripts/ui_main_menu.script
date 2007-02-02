@@ -233,6 +233,12 @@ function main_menu:OnMsgNo()
 	msg_box:Hide()
 end
 
+function main_menu:Dispatch(cmd, param)  --virtual function
+	if cmd == 1 then
+		self:OnButton_multiplayer_clicked()
+	end
+	return true
+end
 
 function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
