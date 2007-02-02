@@ -99,6 +99,11 @@
     <texture id="ui_table_button_h_b" x="147" y="160" width="5" height="19" />
     <texture id="ui_table_button_h_back" x="152" y="160" width="28" height="19" />
     <texture id="ui_table_button_h_e" x="180" y="160" width="5" height="19" />
+
+    <texture id="ui_table_button_o_b"		x="147" y="160" width="4"	height="19" />
+    <texture id="ui_table_button_o_back"	x="151" y="160" width="30"	height="19" />
+    <texture id="ui_table_button_o_e"		x="181" y="160" width="4"	height="19" />
+
     <texture id="ui_table_button_t_b" x="147" y="179" width="5" height="19" />
     <texture id="ui_table_button_t_back" x="152" y="179" width="28" height="19" />
     <texture id="ui_table_button_t_e" x="180" y="179" width="5" height="19" />
