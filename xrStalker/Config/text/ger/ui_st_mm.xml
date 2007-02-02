@@ -4,7 +4,7 @@
 		<text>klar</text>
 	</string>
 	<string id="Cloudy">
-		<text>bew lkt</text>
+		<text>bewölkt</text>
 	</string>
 	<string id="Default">
 		<text>Mittel</text>
@@ -16,7 +16,7 @@
 		<text>Meister</text>
 	</string>
 	<string id="gd_novice">
-		<text>Anf nger</text>
+		<text>Anfänger</text>
 	</string>
 	<string id="gd_stalker">
 		<text>Stalker</text>
@@ -34,7 +34,7 @@
 		<text>Minimum</text>
 	</string>
 	<string id="mm_mp_check_cdkey">
-		<text>CD-Key  berpr fen</text>
+		<text>CD-Key überprüfen</text>
 	</string>
 	<string id="Nigth">
 		<text>Nacht</text>
@@ -64,7 +64,7 @@
 		<text>Stalkerlegende</text>
 	</string>
 	<string id="st_rank_novice">
-		<text>Anf nger</text>
+		<text>Anfänger</text>
 	</string>
 	<string id="st_rank_professional">
 		<text>Profi-Stalker</text>
@@ -91,7 +91,7 @@
 		<text>Verlassenes Dorf</text>
 	</string>
 	<string id="testers_mp_military_1">
-		<text>Milit rlager</text>
+		<text>Militärlager</text>
 	</string>
 	<string id="testers_mp_pool">
 		<text>Schwimmbecken</text>
@@ -121,7 +121,7 @@
 		<text>Benutzen</text>
 	</string>
 	<string id="ui_mm_back">
-		<text>Zur ck</text>
+		<text>Zurück</text>
 	</string>
 	<string id="ui_mm_blood">
 		<text>Blut</text>
@@ -145,7 +145,7 @@
 		<text>Entfernung des Fadenkreuzes</text>
 	</string>
 	<string id="ui_mm_delete">
-		<text>L schen</text>
+		<text>Löschen</text>
 	</string>
 	<string id="ui_mm_difficulty">
 		<text>Schwierigkeit</text>
@@ -154,7 +154,7 @@
 		<text>Verbindung trennen</text>
 	</string>
 	<string id="ui_mm_disconnect_message">
-		<text>M chten Sie die Verbindung wirklich trennen?</text>
+		<text>Möchten Sie die Verbindung wirklich trennen?</text>
 	</string>
 	<string id="ui_mm_dyn_crosshair">
 		<text>Dynamisches Fadenkreuz</text>
@@ -199,7 +199,7 @@
 		<text>Meister</text>
 	</string>
 	<string id="ui_mm_master_volume">
-		<text>Lautst rke</text>
+		<text>Lautstärke</text>
 	</string>
 	<string id="ui_mm_mouse_sense">
 		<text>Mausempfindlichkeit</text>
@@ -211,16 +211,16 @@
 		<text>Netzwerkspiel</text>
 	</string>
 	<string id="ui_mm_music_volume">
-		<text>Lautst rke Musik</text>
+		<text>Lautstärke Musik</text>
 	</string>
 	<string id="ui_mm_need_restart">
-		<text>Die  nderungen werden beim n chsten Neustart des Spiels  bernommen.</text>
+		<text>Die Änderungen werden beim nächsten Neustart des Spiels übernommen.</text>
 	</string>
 	<string id="ui_mm_newgame">
 		<text>Neues Spiel</text>
 	</string>
 	<string id="ui_mm_novice">
-		<text>Anf nger</text>
+		<text>Anfänger</text>
 	</string>
 	<string id="ui_mm_npc_torch">
 		<text>NSC-Taschenlampe</text>
@@ -235,28 +235,28 @@
 		<text>Partikelentfernung</text>
 	</string>
 	<string id="ui_mm_quality_presets">
-		<text>Qualit tseinstellungen</text>
+		<text>Qualitätseinstellungen</text>
 	</string>
 	<string id="ui_mm_quit_game">
 		<text>Spiel beenden</text>
 	</string>
 	<string id="ui_mm_quit_game_message">
-		<text>M chten Sie das Spiel wirklich beenden?</text>
+		<text>Möchten Sie das Spiel wirklich beenden?</text>
 	</string>
 	<string id="ui_mm_quit_windows_message">
-		<text>M chten Sie das Spiel wirklich verlassen und zu Windows zur ckkehren?</text>
+		<text>Möchten Sie das Spiel wirklich verlassen und zu Windows zurückkehren?</text>
 	</string>
 	<string id="ui_mm_quit2windows">
-		<text>Zu Windows zur ckkehren</text>
+		<text>Zu Windows zurückkehren</text>
 	</string>
 	<string id="ui_mm_renderer">
 		<text>Render</text>
 	</string>
 	<string id="ui_mm_resolution">
-		<text>Aufl sung</text>
+		<text>Auflösung</text>
 	</string>
 	<string id="ui_mm_return_game">
-		<text>Zur ck zum Spiel</text>
+		<text>Zurück zum Spiel</text>
 	</string>
 	<string id="ui_mm_save">
 		<text>Speichern</text>
@@ -277,13 +277,13 @@
 		<text>Sound</text>
 	</string>
 	<string id="ui_mm_sound_quality">
-		<text>Soundqualit t</text>
+		<text>Soundqualität</text>
 	</string>
 	<string id="ui_mm_stalker">
 		<text>Stalker</text>
 	</string>
 	<string id="ui_mm_sun_quality">
-		<text>Schattenqualit t</text>
+		<text>Schattenqualität</text>
 	</string>
 	<string id="ui_mm_supersample">
 		<text>Antialiasing</text>
@@ -322,7 +322,7 @@
 		<text>Set 3</text>
 	</string>
 	<string id="ui_st_reset">
-		<text>Zur cksetzen</text>
+		<text>Zurücksetzen</text>
 	</string>
 	<string id="ui_st_sell_all">
 		<text>Alles verkaufen</text>

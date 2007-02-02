@@ -5,13 +5,13 @@
 		<text>Profibandit</text>
 	</string>
 	<string id="bandit_novice">
-		<text>Anf ngerbandit</text>
+		<text>Anfängerbandit</text>
 	</string>
 	<string id="bandit_veteran">
 		<text>Meisterbandit</text>
 	</string>
 	<string id="bloodsucker_normal">
-		<text> ber-Blutsauger</text>
+		<text>Über-Blutsauger</text>
 	</string>
 	<string id="bloodsucker_strong">
 		<text>Dunkelblutsauger</text>
@@ -44,13 +44,13 @@
 		<text>Wildhund</text>
 	</string>
 	<string id="dolg_experienced">
-		<text>Erfahrener W chter</text>
+		<text>Erfahrener Wächter</text>
 	</string>
 	<string id="dolg_master">
-		<text>W chterexperte</text>
+		<text>Wächterexperte</text>
 	</string>
 	<string id="dolg_veteran">
-		<text>W chterveteran</text>
+		<text>Wächterveteran</text>
 	</string>
 	<string id="ecolog_experienced">
 		<text>Erfahrener Wissenschaftler</text>
@@ -77,13 +77,13 @@
 		<text>Freiheitler-Kriegshund</text>
 	</string>
 	<string id="killer_experienced">
-		<text>Ausgebildeter S ldner</text>
+		<text>Ausgebildeter Söldner</text>
 	</string>
 	<string id="killer_master">
-		<text>Z her S ldner</text>
+		<text>Zäher Söldner</text>
 	</string>
 	<string id="killer_veteran">
-		<text>S ldnerveteran</text>
+		<text>Söldnerveteran</text>
 	</string>
 	<string id="military_experienced">
 		<text>Feldwebel</text>
@@ -104,7 +104,7 @@
 		<text>Monolitherexperte</text>
 	</string>
 	<string id="monolith_novice">
-		<text>Anf ngermonolither</text>
+		<text>Anfängermonolither</text>
 	</string>
 	<string id="monolith_veteran">
 		<text>Monolitherveteran</text>
@@ -137,7 +137,7 @@
 		<text>Pseudohund</text>
 	</string>
 	<string id="psy_dog">
-		<text>D sterer Pseudohund</text>
+		<text>Düsterer Pseudohund</text>
 	</string>
 	<string id="snork_normal">
 		<text>Schnork-Sammler</text>
@@ -167,7 +167,7 @@
 		<text>Zombiestalkerexperte</text>
 	</string>
 	<string id="zombied_novice">
-		<text>Anf nger-Zombiestalker</text>
+		<text>Anfänger-Zombiestalker</text>
 	</string>
 	<string id="zombied_veteran">
 		<text>Zombiestalkerveteran</text>

@@ -11,7 +11,7 @@
 		<text>Dem Maulwurf dabei helfen, die Soldaten abzuwehren.</text>
 	</string>
 	<string id="agr_help_krot_1">
-		<text>Die Soldaten t ten.</text>
+		<text>Die Soldaten töten.</text>
 	</string>
 	<string id="agr_help_krot_2">
 		<text>Den Maulwurf retten.</text>
@@ -23,7 +23,7 @@
 		<text>Den Stalkern dabei helfen, die Soldaten abzuwehren.</text>
 	</string>
 	<string id="agr_help_stalkers_1">
-		<text>Die Soldaten t ten.</text>
+		<text>Die Soldaten töten.</text>
 	</string>
 	<string id="agr_help_stalkers_2">
 		<text>Den Stalkern dabei helfen, die Soldaten abzuwehren.</text>
@@ -32,7 +32,7 @@
 		<text>Mit den Stalkern treffen.</text>
 	</string>
 	<string id="agr_meet_krot_band">
-		<text>Informationen  ber Strelok beschaffen.</text>
+		<text>Informationen über Strelok beschaffen.</text>
 	</string>
 	<string id="agr_meet_krot_band_0">
 		<text>Informationen vom Maulwurf beschaffen.</text>
@@ -53,7 +53,7 @@
 		<text>Das Versteck finden.</text>
 	</string>
 	<string id="agroprom_find_gunslinger_cache_2">
-		<text>Im Versteck nach Informationen  ber Strelok suchen.</text>
+		<text>Im Versteck nach Informationen über Strelok suchen.</text>
 	</string>
 	<string id="agroprom_find_gunslinger_cache_3">
 		<text>Den Untergrund verlassen.</text>
@@ -62,16 +62,16 @@
 		<text>Ghost finden.</text>
 	</string>
 	<string id="agroprom_find_stalker_phantom_0">
-		<text>Ghost wei , wo Strelok ist.</text>
+		<text>Ghost weiß, wo Strelok ist.</text>
 	</string>
 	<string id="agroprom_get_military_documents">
-		<text>Die Milit rdokumente finden.</text>
+		<text>Die Militärdokumente finden.</text>
 	</string>
 	<string id="agroprom_get_military_documents_0">
 		<text>Agroprom-Forschungsinstitut</text>
 	</string>
 	<string id="agroprom_get_military_documents_1">
-		<text>Die Milit rdokumente stehlen.</text>
+		<text>Die Militärdokumente stehlen.</text>
 	</string>
 	<string id="agroprom_get_military_documents_2">
 		<text>Die Dokumente zum Wirt bringen.</text>

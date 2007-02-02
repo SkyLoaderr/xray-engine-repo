@@ -1,11 +1,11 @@
 	<string id="mil_blockpost_help">
-		<text>Den Barrieren-Au enposten der Freiheitsfraktion unterst tzen.</text>
+		<text>Den Barrieren-Außenposten der Freiheitsfraktion unterstützen.</text>
 	</string>
 	<string id="mil_courier">
 		<text>Informant</text>
 	</string>
 	<string id="mil_courier_job">
-		<text>Um den Informanten k mmern.</text>
+		<text>Um den Informanten kümmern.</text>
 	</string>
 	<string id="mil_courier_phase1">
 		<text>Zum Bauernhof gehen.</text>
@@ -23,37 +23,37 @@
 		<text>Berichte Lukasch von der Mission.</text>
 	</string>
 	<string id="mil_crazy">
-		<text>Verr ckter Stalker.</text>
+		<text>Verrückter Stalker.</text>
 	</string>
 	<string id="mil_dolg">
-		<text>W chterfraktion</text>
+		<text>Wächterfraktion</text>
 	</string>
 	<string id="mil_dolg_assault_freedom">
-		<text>Der W chterfraktion dabei helfen Lukasch zu eliminieren.</text>
+		<text>Der Wächterfraktion dabei helfen Lukasch zu eliminieren.</text>
 	</string>
 	<string id="mil_dolg_assault_headquarter">
 		<text>Lukasch ausschalten.</text>
 	</string>
 	<string id="mil_dolg_assault_support">
-		<text>Den Scharfsch tzen loswerden.</text>
+		<text>Den Scharfschützen loswerden.</text>
 	</string>
 	<string id="mil_dolg_return_to_khutor">
-		<text>Zum Bauernhof der W chter zur ckkehren und die Belohnung kassieren.</text>
+		<text>Zum Bauernhof der Wächter zurückkehren und die Belohnung kassieren.</text>
 	</string>
 	<string id="mil_dolg_return_to_skull">
-		<text>Zur ck zu Sch del.</text>
+		<text>Zurück zu Schädel.</text>
 	</string>
 	<string id="mil_fblockpost_commander">
-		<text>Au enposten-Kommandant Cap</text>
+		<text>Außenposten-Kommandant Cap</text>
 	</string>
 	<string id="mil_fblockpost_phase2">
 		<text>Dabei helfen, den Monolith-Angriffstrupp zu erledigen.</text>
 	</string>
 	<string id="mil_fblockpost_phase3">
-		<text>Mit dem Kommandanten des Barrieren-Au enpostens reden.</text>
+		<text>Mit dem Kommandanten des Barrieren-Außenpostens reden.</text>
 	</string>
 	<string id="mil_find_cook">
-		<text>Den Koch in der Freiheits-Basis aufsp ren.</text>
+		<text>Den Koch in der Freiheits-Basis aufspüren.</text>
 	</string>
 	<string id="mil_freedom_rg6_task">
 		<text>Ein Bulldog 6 von der Freiheitsfraktion beschaffen.</text>
@@ -65,7 +65,7 @@
 		<text>Zur Freiheits-Basis gehen, um von Geizhals die Belohnung zu kassieren.</text>
 	</string>
 	<string id="mil_go_to_miser_task_main">
-		<text>Eine Belohnung f r die erlegten Blutsauger abholen.</text>
+		<text>Eine Belohnung für die erlegten Blutsauger abholen.</text>
 	</string>
 	<string id="mil_hunters_phase1">
 		<text>Murk im Dorf finden.</text>
@@ -74,7 +74,7 @@
 		<text>Die Blutsauger erledigen.</text>
 	</string>
 	<string id="mil_hunters_phase3">
-		<text>Zu Geizhals zur ckkehren wegen des Artefakts.</text>
+		<text>Zu Geizhals zurückkehren wegen des Artefakts.</text>
 	</string>
 	<string id="mil_hunters_task">
 		<text>Die Blutsauger im Dorf erledigen.</text>
@@ -86,7 +86,7 @@
 		<text>Die Blutsauger erledigen.</text>
 	</string>
 	<string id="mil_kill_dolg">
-		<text>Die W chtertruppe vernichten.</text>
+		<text>Die Wächtertruppe vernichten.</text>
 	</string>
 	<string id="mil_lukash">
 		<text>Lukasch</text>
@@ -98,13 +98,13 @@
 		<text>Max das Laufwerk geben.</text>
 	</string>
 	<string id="mil_quest_kill_sniper">
-		<text>Den Scharfsch tzen auf dem Turm t ten.</text>
+		<text>Den Scharfschützen auf dem Turm töten.</text>
 	</string>
 	<string id="mil_quest_report_dolg">
-		<text>Dem W chtertrupp von der Mission berichten.</text>
+		<text>Dem Wächtertrupp von der Mission berichten.</text>
 	</string>
 	<string id="mil_return_lukash">
-		<text>Zu Lukasch zur ckkehren.</text>
+		<text>Zu Lukasch zurückkehren.</text>
 	</string>
 	<string id="mil_return_to_ugrumy">
 		<text>Murk von der Mission berichten.</text>
@@ -119,16 +119,16 @@
 		<text>Banditenlager.</text>
 	</string>
 	<string id="mil_sniper">
-		<text>Scharfsch tze.</text>
+		<text>Scharfschütze.</text>
 	</string>
 	<string id="mil_take_flash">
-		<text>Ein Laufwerk vom verr ckten Scharfsch tzen besorgen.</text>
+		<text>Ein Laufwerk vom verrückten Scharfschützen besorgen.</text>
 	</string>
 	<string id="mil_talk_cook">
 		<text>Mit Koch sprechen.</text>
 	</string>
 	<string id="mil_talk_with_cap">
-		<text>Mit Cap, dem Kommandanten des Au enpostens der Freiheitsfraktion, reden.</text>
+		<text>Mit Cap, dem Kommandanten des Außenpostens der Freiheitsfraktion, reden.</text>
 	</string>
 	<string id="mil_test_task_phase1">
 		<text>Restriktor 1 betreten</text>
@@ -137,7 +137,7 @@
 		<text>Restriktor 2 betreten</text>
 	</string>
 	<string id="mil_test_task_phase3">
-		<text>Den Bulldog 6 Granatwerfer in die Luft strecken, wenn die Mission erf llt ist. Im Falle eines Fehlschlags das TRs 301 in die Luft halten.</text>
+		<text>Den Bulldog 6 Granatwerfer in die Luft strecken, wenn die Mission erfüllt ist. Im Falle eines Fehlschlags das TRs 301 in die Luft halten.</text>
 	</string>
 	<string id="mil_test_task_title">
 		<text>Test-Mission</text>
@@ -146,5 +146,5 @@
 		<text>Murk</text>
 	</string>
 	<string id="mil_lukash_job">
-		<text>Die W chtertruppe erledigen.</text>
+		<text>Die Wächtertruppe erledigen.</text>
 	</string>

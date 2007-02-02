@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="item test1">
-		<text>Dies ist ein Test-String f r Gegenst nde.</text>
+		<text>Dies ist ein Test-String fьr Gegenstдnde.</text>
 	</string>
 	<string id="item test2">
-		<text>Dies ist noch ein Test-String f r Gegenst nde.</text>
+		<text>Dies ist noch ein Test-String fьr Gegenstдnde.</text>
 	</string>
 	<string id="item_case_esc_desc">
 		<text>Feuerfeste Aktentasche mit Dokumenten.</text>
 	</string>
 	<string id="item_decoder_desc">
-		<text>Leistungsstarker elektronischer Dietrich. Schon seltsam, dass dies kein Allzweckinstrument von Dieben ist. Er scheint eher f r eine bestimmte Art elektronisches Schloss entworfen zu sein und kann nicht  berall eingesetzt werden.</text>
+		<text>Leistungsstarker elektronischer Dietrich. Schon seltsam, dass dies kein Allzweckinstrument von Dieben ist. Er scheint eher fьr eine bestimmte Art elektronisches Schloss entworfen zu sein und kann nicht ьberall eingesetzt werden.</text>
 	</string>
 	<string id="item_decoder_name">
 		<text>Dekoder</text>
@@ -22,7 +22,7 @@
 		<text>PP-4a Sensor</text>
 	</string>
 	<string id="item_doc_x16_desc">
-		<text>Dokumentenakte. Man br uchte einen Doktortitel in Biologie, um zu verstehen, was da drin steht.</text>
+		<text>Dokumentenakte. Man brдuchte einen Doktortitel in Biologie, um zu verstehen, was da drin steht.</text>
 	</string>
 	<string id="item_doc_x16_name">
 		<text>Labor-X16-Dokumente</text>
@@ -46,7 +46,7 @@
 		<text>Labor-X18-Dokumente, Teil 5</text>
 	</string>
 	<string id="item_docs_hiden_pri_desc">
-		<text>Abgegriffenes Manuskript mit Ledereinband. Von Strelok h chstpers nlich verfasst. Nach dem, was man den  berschriften entnehmen kann, k nnten hier ein paar Geheimnisse der Zone erkl rt sein.</text>
+		<text>Abgegriffenes Manuskript mit Ledereinband. Von Strelok hцchstpersцnlich verfasst. Nach dem, was man den Ьberschriften entnehmen kann, kцnnten hier ein paar Geheimnisse der Zone erklдrt sein.</text>
 	</string>
 	<string id="item_docs_hiden_pri_name">
 		<text>Dokumente aus dem Versteck in Prypjat</text>
@@ -82,22 +82,22 @@
 		<text>Streloks Laufwerk</text>
 	</string>
 	<string id="item_key_x18_desc">
-		<text>Elektronischer Schl ssel zum Untergrundlabor X18.</text>
+		<text>Elektronischer Schlьssel zum Untergrundlabor X18.</text>
 	</string>
 	<string id="item_key_x18_name">
-		<text>Borows Schl ssel</text>
+		<text>Borows Schlьssel</text>
 	</string>
 	<string id="item_krot_flash">
 		<text>Maulwurfs Laufwerk</text>
 	</string>
 	<string id="item_pda_lucky_desc">
-		<text>Ein Pers nlicher Digitaler Assistent. In der Zone einfach unerl sslich.</text>
+		<text>Ein Persцnlicher Digitaler Assistent. In der Zone einfach unerlдsslich.</text>
 	</string>
 	<string id="item_pda_lucky_name">
-		<text>Gl ckspilz' PDA</text>
+		<text>Glьckspilz' PDA</text>
 	</string>
 	<string id="item_pda_tiran_desc">
-		<text>Ein Pers nlicher Digitaler Assistent. In der Zone einfach unerl sslich.</text>
+		<text>Ein Persцnlicher Digitaler Assistent. In der Zone einfach unerlдsslich.</text>
 	</string>
 	<string id="item_pda_tiran_name">
 		<text>Tyrans PDA</text>
@@ -106,19 +106,19 @@
 		<text>Eine feuerfeste Aktentasche mit Dokumenten.</text>
 	</string>
 	<string id="item_quest_case_02_name">
-		<text>Milit rdokumente aus dem Agroprom Forschungsinstitut</text>
+		<text>Militдrdokumente aus dem Agroprom Forschungsinstitut</text>
 	</string>
-	<string id="item_сase_esc_name">
-		<text>Dokumente vom Au enposten</text>
+	<string id="item_?ase_esc_name">
+		<text>Dokumente vom AuЯenposten</text>
 	</string>
 	<string id="yan_bad_psy_helmet_desc">
-		<text>Prototyp, der von Wissenschaftlern entwickelt wurde, um Menschen vor PSI-Emissionen zu sch tzen. Nicht justiert.</text>
+		<text>Prototyp, der von Wissenschaftlern entwickelt wurde, um Menschen vor PSI-Emissionen zu schьtzen. Nicht justiert.</text>
 	</string>
 	<string id="yan_bad_psy_helmet_name">
 		<text>PSI-Helm, nicht justiert</text>
 	</string>
 	<string id="yan_good_psy_helmet_desc">
-		<text>Funktionierender Prototyp, der von Wissenschaftlern entwickelt wurde, um Menschen vor PSI-Emissionen zu sch tzen.</text>
+		<text>Funktionierender Prototyp, der von Wissenschaftlern entwickelt wurde, um Menschen vor PSI-Emissionen zu schьtzen.</text>
 	</string>
 	<string id="yan_good_psy_helmet_name">
 		<text>PSI-Helm, funktionsf.</text>

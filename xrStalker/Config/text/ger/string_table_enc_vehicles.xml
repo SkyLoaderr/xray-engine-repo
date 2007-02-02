@@ -7,16 +7,16 @@
 		<text>Ein gepanzerter Truppentransporter</text>
 	</string>
 	<string id="enc_vehicles_kamaz">
-		<text>Ein  blicher Sowjet-Truck</text>
+		<text>Ein üblicher Sowjet-Truck</text>
 	</string>
 	<string id="enc_vehicles_mi-24">
-		<text>Ein Milit rhubschrauber</text>
+		<text>Ein Militärhubschrauber</text>
 	</string>
 	<string id="enc_vehicles_niva">
-		<text>Ein Gel ndewagen</text>
+		<text>Ein Geländewagen</text>
 	</string>
 	<string id="enc_vehicles_uaz">
-		<text>Sowjet-Milit rgel ndewagen</text>
+		<text>Sowjet-Militärgeländewagen</text>
 	</string>
 	<string id="enc_vehicles_zaporozh">
 		<text>Ein kleines Sowjet-Auto</text>

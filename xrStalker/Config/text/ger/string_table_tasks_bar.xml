@@ -1,26 +1,26 @@
 	<string id="bar_bring_hunter_rifle">
-		<text>Das Familiengewehr des J gers zur ckbringen.</text>
+		<text>Das Familiengewehr des Jägers zurückbringen.</text>
 	</string>
 	<string id="bar_bring_pda_lucky">
-		<text>Den PDA des Anf hrers zum Wirt bringen.</text>
+		<text>Den PDA des Anführers zum Wirt bringen.</text>
 	</string>
 	<string id="bar_crazy_veterans_quest">
-		<text>Die verr ckten Veteranen t ten.</text>
+		<text>Die verrückten Veteranen töten.</text>
 	</string>
 	<string id="bar_dolg_base_rules">
-		<text>Beim Wachkommandanten der W chter melden.</text>
+		<text>Beim Wachkommandanten der Wächter melden.</text>
 	</string>
 	<string id="bar_dolg_base_rules_fin">
-		<text>Zum Wirt zur ckkehren.</text>
+		<text>Zum Wirt zurückkehren.</text>
 	</string>
 	<string id="bar_dolg_base_rules_talk">
-		<text>Den Wachkommandanten der W chter finden und registrieren lassen.</text>
+		<text>Den Wachkommandanten der Wächter finden und registrieren lassen.</text>
 	</string>
 	<string id="bar_dolg_bring_rg6">
-		<text>Ein Bulldog 6 f r General Woronin besorgen.</text>
+		<text>Ein Bulldog 6 für General Woronin besorgen.</text>
 	</string>
 	<string id="bar_dolg_community_quest">
-		<text>Den W chtern beitreten.</text>
+		<text>Den Wächtern beitreten.</text>
 	</string>
 	<string id="bar_dolg_community_quest_prisyaga">
 		<text>Den Schwur ablegen.</text>
@@ -29,7 +29,7 @@
 		<text>Eine Referenz von Hauptmann Iwantsow beschaffen.</text>
 	</string>
 	<string id="bar_dolg_community_quest_vernost">
-		<text>Loyalit t den W chtern gegen ber beweisen.</text>
+		<text>Loyalität den Wächtern gegenüber beweisen.</text>
 	</string>
 	<string id="bar_dolg_find_cook">
 		<text>Das Vertrauen des Kochs der Freiheitsfraktion verdienen und herausfinden, wo der Bulldog 6 Granatwerfer ist.</text>
@@ -38,22 +38,22 @@
 		<text>Die Basis der Freiheit unterwandern und den Bulldog 6 Granatwerfer finden und stehlen.</text>
 	</string>
 	<string id="bar_dolg_info_gain">
-		<text>Die Information  ber Labor X18 finden.</text>
+		<text>Die Information über Labor X18 finden.</text>
 	</string>
 	<string id="bar_dolg_kill_tiran">
-		<text>Tyran eliminieren, den Anf hrer der Truppe.</text>
+		<text>Tyran eliminieren, den Anführer der Truppe.</text>
 	</string>
 	<string id="bar_dolg_return_info">
-		<text>Informationen  ber Labor X18 zu General Woronin bringen.</text>
+		<text>Informationen über Labor X18 zu General Woronin bringen.</text>
 	</string>
 	<string id="bar_dolg_return_rg6">
 		<text>General Woronin den Bulldog 6 Granatwerfer bringen.</text>
 	</string>
 	<string id="bar_dolg_rg6_quest">
-		<text>Mission erforderlich zum Beitreten der W chterfraktion</text>
+		<text>Mission erforderlich zum Beitreten der Wächterfraktion</text>
 	</string>
 	<string id="bar_dolg_svoboda_ambush_quest">
-		<text>Die S ldner ausschalten.</text>
+		<text>Die Söldner ausschalten.</text>
 	</string>
 	<string id="bar_dolg_svoboda_ambush_return">
 		<text>General Woronin die Streifen geben.</text>
@@ -65,19 +65,19 @@
 		<text>Das Familiengewehr finden.</text>
 	</string>
 	<string id="bar_hunter_return_rifle">
-		<text>Das Gewehr zum J ger in der Bar zur ckbringen.</text>
+		<text>Das Gewehr zum Jäger in der Bar zurückbringen.</text>
 	</string>
 	<string id="bar_hunter_rifle">
 		<text>Das Familiengewehr finden.</text>
 	</string>
 	<string id="bar_kill_crazy_veterans">
-		<text>Den Anf hrer der Veteranen eliminieren.</text>
+		<text>Den Anführer der Veteranen eliminieren.</text>
 	</string>
 	<string id="bar_kill_crazy_veterans_pda">
-		<text>Den PDA des Anf hrers nehmen.</text>
+		<text>Den PDA des Anführers nehmen.</text>
 	</string>
 	<string id="bar_kill_veterans">
-		<text>Das Lager der verr ckten Veteranen zerst ren.</text>
+		<text>Das Lager der verrückten Veteranen zerstören.</text>
 	</string>
 	<string id="bar_radar_deactivate">
 		<text>Den Hirnschmelzer deaktivieren.</text>
@@ -86,7 +86,7 @@
 		<text>Mit Kruglow treffen.</text>
 	</string>
 	<string id="bar_resque_information_2">
-		<text>Kruglow nach Jantar f hren.</text>
+		<text>Kruglow nach Jantar führen.</text>
 	</string>
 	<string id="bar_resque_scientific_follow">
 		<text>Kruglow herausbringen.</text>

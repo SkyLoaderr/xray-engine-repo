@@ -19,7 +19,7 @@
 		<text>Artefakteroberung</text>
 	</string>
 	<string id="mm_mp_artefdelay">
-		<text>Artefaktverz gerung (s)</text>
+		<text>Artefaktverzögerung (s)</text>
 	</string>
 	<string id="mm_mp_artefnum">
 		<text>Anzahl der Artefakte</text>
@@ -34,7 +34,7 @@
 		<text>Automatischer Teamwechsel</text>
 	</string>
 	<string id="mm_mp_avail_maps">
-		<text>VERF GBARE KARTEN</text>
+		<text>VERFÜGBARE KARTEN</text>
 	</string>
 	<string id="mm_mp_cancel">
 		<text>Abbrechen</text>
@@ -52,7 +52,7 @@
 		<text>Unverwundbarkeit</text>
 	</string>
 	<string id="mm_mp_damageblockindicator">
-		<text>Anzeige f r Unverwundbarkeit</text>
+		<text>Anzeige für Unverwundbarkeit</text>
 	</string>
 	<string id="mm_mp_deaths">
 		<text>Gestorben</text>
@@ -133,7 +133,7 @@
 		<text>Spieler</text>
 	</string>
 	<string id="mm_mp_publicserver">
-		<text> ffentlicher Server</text>
+		<text>Öffentlicher Server</text>
 	</string>
 	<string id="mm_mp_quickrefresh">
 		<text>Schnelle Aktualisierung</text>
@@ -145,13 +145,13 @@
 		<text>Alle aktualisieren</text>
 	</string>
 	<string id="mm_mp_reinforcement">
-		<text>Verst rkung (s)</text>
+		<text>Verstärkung (s)</text>
 	</string>
 	<string id="mm_mp_respawnoptions">
 		<text>Neustartoptionen</text>
 	</string>
 	<string id="mm_mp_sel_maps">
-		<text>AUSGEW HLTE KARTEN</text>
+		<text>AUSGEWÄHLTE KARTEN</text>
 	</string>
 	<string id="mm_mp_server">
 		<text>Server</text>
@@ -202,7 +202,7 @@
 		<text>Zeitlimit (min)</text>
 	</string>
 	<string id="mm_mp_warmuptime">
-		<text>Aufw rmen (s)</text>
+		<text>Aufwärmen (s)</text>
 	</string>
 	<string id="mm_mp_weatheroptions">
 		<text>Wetteroptionen</text>
@@ -220,7 +220,7 @@
 		<text>Passwort verwenden</text>
 	</string>
 	<string id="mp_vote_hint">
-		<text>Daf r-[$$ACTION_VOTE_YES$$]\nDagegen-[$$ACTION_VOTE_NO$$]\nErgebnis-[$$ACTION_VOTE$$]</text>
+		<text>Dafür-[$$ACTION_VOTE_YES$$]\nDagegen-[$$ACTION_VOTE_NO$$]\nErgebnis-[$$ACTION_VOTE$$]</text>
 	</string>
 	<string id="ping">
 		<text>PING</text>

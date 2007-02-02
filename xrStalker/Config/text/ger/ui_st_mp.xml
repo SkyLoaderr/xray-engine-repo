@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="mp_art_destroyed">
-		<text>Das Artefakt wurde zerst rt.</text>
+		<text>Das Artefakt wurde zerstцrt.</text>
 	</string>
 	<string id="mp_art_spowned">
 		<text>Das Artefakt wurde neugestartet. Bringen Sie es in die Basis, um einen Punkt zu bekommen.</text>
@@ -16,7 +16,7 @@
 		<text>Auto-Auswahl</text>
 	</string>
 	<string id="mp_back">
-		<text>Zur ck</text>
+		<text>Zurьck</text>
 	</string>
 	<string id="mp_ban">
 		<text>Sperren</text>
@@ -28,10 +28,10 @@
 		<text>Abbrechen</text>
 	</string>
 	<string id="mp_change_map">
-		<text>Karte  ndern</text>
+		<text>Karte дndern</text>
 	</string>
 	<string id="mp_change_weather">
-		<text>Wetter  ndern</text>
+		<text>Wetter дndern</text>
 	</string>
 	<string id="mp_chat">
 		<text>Chat</text>
@@ -82,7 +82,7 @@
 		<text>hat das Artefakt %s genommen</text>
 	</string>
 	<string id="mp_headhuntrs">
-		<text>S ldner</text>
+		<text>Sцldner</text>
 	</string>
 	<string id="mp_is_now">
 		<text>ist jetzt</text>
@@ -124,28 +124,28 @@
 		<text>Spieler</text>
 	</string>
 	<string id="mp_press_fire2spectator">
-		<text>Zum Wechseln in den Zuschauermodus 'Feuern' dr cken.</text>
+		<text>Zum Wechseln in den Zuschauermodus 'Feuern' drьcken.</text>
 	</string>
 	<string id="mp_press_jump2pay_spaw">
-		<text>Zum Kaufen eines sofortigen Neustarts 'Springen' dr cken.</text>
+		<text>Zum Kaufen eines sofortigen Neustarts 'Springen' drьcken.</text>
 	</string>
 	<string id="mp_press_jump2select_skin">
-		<text>Zum Ausw hlen eines Skins 'Springen' dr cken.</text>
+		<text>Zum Auswдhlen eines Skins 'Springen' drьcken.</text>
 	</string>
 	<string id="mp_press_jump2select_team">
-		<text>Zum Ausw hlen der Teams 'Springen' dr cken.</text>
+		<text>Zum Auswдhlen der Teams 'Springen' drьcken.</text>
 	</string>
 	<string id="mp_press_jump2spawn">
-		<text>Zum Neuzustarten 'Springen' dr cken.</text>
+		<text>Zum Neuzustarten 'Springen' drьcken.</text>
 	</string>
 	<string id="mp_press_jump2start">
-		<text>Zum Starten 'Springen' dr cken.</text>
+		<text>Zum Starten 'Springen' drьcken.</text>
 	</string>
 	<string id="mp_press_to_buy">
-		<text>Zum  ffnen des Kaufen-Men s ($$ACTION_BUY_MENU$$) dr cken.</text>
+		<text>Zum Цffnen des Kaufen-Menьs ($$ACTION_BUY_MENU$$) drьcken.</text>
 	</string>
 	<string id="mp_press_yes2pay">
-		<text>%d$ verf gbar. Neustart: %d$. Zum Neustart 'Ja' klicken.</text>
+		<text>%d$ verfьgbar. Neustart: %d$. Zum Neustart 'Ja' klicken.</text>
 	</string>
 	<string id="mp_ready">
 		<text>Bereit ...</text>
@@ -160,19 +160,19 @@
 		<text>sammelte 1 Punkt</text>
 	</string>
 	<string id="mp_select_ban">
-		<text>Zu sperrenden Spieler f r Abstimmung ausw hlen</text>
+		<text>Zu sperrenden Spieler fьr Abstimmung auswдhlen</text>
 	</string>
 	<string id="mp_select_category">
-		<text>Kategorie zur Abstimmung ausw hlen</text>
+		<text>Kategorie zur Abstimmung auswдhlen</text>
 	</string>
 	<string id="mp_select_kick">
-		<text>Spieler f r Abstimmung ausw hlen, die rausgeworfen werden sollen</text>
+		<text>Spieler fьr Abstimmung auswдhlen, die rausgeworfen werden sollen</text>
 	</string>
 	<string id="mp_select_kick_player">
-		<text>Spieler f r Abstimmung ausw hlen, die rausgeworfen werden sollen</text>
+		<text>Spieler fьr Abstimmung auswдhlen, die rausgeworfen werden sollen</text>
 	</string>
 	<string id="mp_select_map">
-		<text>Karte zur Abstimmung ausw hlen</text>
+		<text>Karte zur Abstimmung auswдhlen</text>
 	</string>
 	<string id="mp_skin_selection">
 		<text>Skin-Auswahl</text>
@@ -187,7 +187,7 @@
 		<text>Status</text>
 	</string>
 	<string id="mp_switched_to">
-		<text>ist  bergelaufen zu</text>
+		<text>ist ьbergelaufen zu</text>
 	</string>
 	<string id="mp_team_free_stalkers">
 		<text>Freiheit</text>
@@ -223,7 +223,7 @@
 		<text>dagegen</text>
 	</string>
 	<string id="mp_voted_yes">
-		<text>daf r</text>
+		<text>dafьr</text>
 	</string>
 	<string id="mp_voting_broken">
 		<text>Abstimmung wurde vom Server abgebrochen!</text>
@@ -238,7 +238,7 @@
 		<text>Klar</text>
 	</string>
 	<string id="mp_weather_cloudy">
-		<text>Bew lkt</text>
+		<text>Bewцlkt</text>
 	</string>
 	<string id="mp_weather_night">
 		<text>Nacht</text>
@@ -247,7 +247,7 @@
 		<text>Regen</text>
 	</string>
 	<string id="mp_with_backstab">
-		<text>In den R cken!</text>
+		<text>In den Rьcken!</text>
 	</string>
 	<string id="mp_with_headshot">
 		<text>Volltreffer!</text>
@@ -262,7 +262,7 @@
 		<text>Freiheit</text>
 	</string>
 	<string id="ui_st_team2_name">
-		<text>S ldner</text>
+		<text>Sцldner</text>
 	</string>
 	<string id="af_neutral">
 		<text>Artefakt</text>
@@ -271,12 +271,12 @@
 		<text>Du bist es.</text>
 	</string>
 	<string id="friend">
-		<text>Verb ndeter</text>
+		<text>Verbьndeter</text>
 	</string>
 	<string id="team_base_1">
 		<text>Freiheitsbasis</text>
 	</string>
 	<string id="team_base_2">
-		<text>S ldnerbasis</text>
+		<text>Sцldnerbasis</text>
 	</string>
 </string_table>

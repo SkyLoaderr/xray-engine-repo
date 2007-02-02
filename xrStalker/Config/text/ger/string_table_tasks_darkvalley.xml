@@ -2,7 +2,7 @@
 		<text>Die Dokumente im unterirdischen Labor finden.</text>
 	</string>
 	<string id="bar_darklab_documents_1">
-		<text>Borow den Schl ssel zum Labor abnehmen.</text>
+		<text>Borow den Schlüssel zum Labor abnehmen.</text>
 	</string>
 	<string id="bar_darklab_documents_2">
 		<text>Aus dem Banditenlager verschwinden.</text>
@@ -23,50 +23,50 @@
 		<text>Die Dokumente zum Wirt bringen.</text>
 	</string>
 	<string id="dar_codedoor_1">
-		<text>Die T r finden, die mit einem Code gesichert ist.</text>
+		<text>Die Tür finden, die mit einem Code gesichert ist.</text>
 	</string>
 	<string id="dar_codedoor_1_1">
-		<text>Den Code finden, der die T r  ffnet.</text>
+		<text>Den Code finden, der die Tür öffnet.</text>
 	</string>
 	<string id="dar_codedoor_1_2">
-		<text>Die T r mit dem Code  ffnen.</text>
+		<text>Die Tür mit dem Code öffnen.</text>
 	</string>
 	<string id="dar_codedoor_2">
-		<text>Die T r zum Kontrollzentrum  ffnen.</text>
+		<text>Die Tür zum Kontrollzentrum öffnen.</text>
 	</string>
 	<string id="dar_codedoor_2_1">
-		<text>Den Code finden, der die T r  ffnet.</text>
+		<text>Den Code finden, der die Tür öffnet.</text>
 	</string>
 	<string id="dar_codedoor_2_2">
-		<text>Die T r mit dem Code  ffnen.</text>
+		<text>Die Tür mit dem Code öffnen.</text>
 	</string>
 	<string id="val_captive_help">
-		<text>Den W chter befreien.</text>
+		<text>Den Wächter befreien.</text>
 	</string>
 	<string id="val_captive_help_1">
 		<text>Bullet zum Ort des Hinterhalts folgen.</text>
 	</string>
 	<string id="val_captive_help_2">
-		<text>Die Banditen t ten und den W chter befreien.</text>
+		<text>Die Banditen töten und den Wächter befreien.</text>
 	</string>
 	<string id="val_come_to_trader">
-		<text>Zum H ndler zur ckkehren.</text>
+		<text>Zum Händler zurückkehren.</text>
 	</string>
 	<string id="val_come_to_trader_0">
-		<text>Zum H ndler zur ckkehren.</text>
+		<text>Zum Händler zurückkehren.</text>
 	</string>
 	<string id="val_come_to_trader_1">
 		<text>Das dunkle Tal verlassen.</text>
 	</string>
 	<string id="val_come_to_trader_2">
-		<text>Dem H ndler die Dokumente zeigen.</text>
+		<text>Dem Händler die Dokumente zeigen.</text>
 	</string>
 	<string id="val_prisoner_help">
-		<text>Den W chter aus dem Gef ngnis befreien.</text>
+		<text>Den Wächter aus dem Gefängnis befreien.</text>
 	</string>
 	<string id="val_prisoner_help_0">
-		<text>Den W chter aus dem Gef ngnis der Banditen befreien.</text>
+		<text>Den Wächter aus dem Gefängnis der Banditen befreien.</text>
 	</string>
 	<string id="val_prisoner_help_main">
-		<text>Den W chter aus dem Gef ngnis der Banditen befreien.</text>
+		<text>Den Wächter aus dem Gefängnis der Banditen befreien.</text>
 	</string>

@@ -4,13 +4,13 @@
 		<text>Hol das Artefakt.</text>
 	</string>
 	<string id="barmen_defend_camp_1">
-		<text>Das Lager der Stalker an der M llhalde gegen den Angriff der Banditen verteidigen.</text>
+		<text>Das Lager der Stalker an der Müllhalde gegen den Angriff der Banditen verteidigen.</text>
 	</string>
 	<string id="barmen_defend_camp_1_descr">
-		<text>Das Lager der Stalker an der M llhalde gegen den Angriff der Banditen verteidigen.</text>
+		<text>Das Lager der Stalker an der Müllhalde gegen den Angriff der Banditen verteidigen.</text>
 	</string>
 	<string id="barmen_defend_camp_1_text">
-		<text>Eine Gruppe von Stalkern ist auf dem Weg zu mir. Ihre sichere Ankunft ist mir pers nlich wichtig. Sie werden in der N he der Bar bleiben. Ein reum tiges kriminelles Element hat uns beinahe freiwillig dar ber informiert, dass sie bald angegriffen werden. Brich also in diese Richtung auf und verteidige ihr Lager gegen den Angriff.</text>
+		<text>Eine Gruppe von Stalkern ist auf dem Weg zu mir. Ihre sichere Ankunft ist mir persönlich wichtig. Sie werden in der Nähe der Bar bleiben. Ein reumütiges kriminelles Element hat uns beinahe freiwillig darüber informiert, dass sie bald angegriffen werden. Brich also in diese Richtung auf und verteidige ihr Lager gegen den Angriff.</text>
 	</string>
 	<string id="barmen_defend_camp_2">
 		<text>Den Stalkern dabei helfen, die Banditen bei Agroprom abzuwehren.</text>
@@ -19,25 +19,25 @@
 		<text>Den Stalkern dabei helfen, die Banditen bei Agroprom abzuwehren.</text>
 	</string>
 	<string id="barmen_defend_camp_2_text">
-		<text>So sieht's aus: Eine Gruppe von Stalkern ist zu Agroprom aufgebrochen. Bei unserem letzten Kontakt haben sie berichtet, dass unter der Erde etwas Wertvolles sei, sie wurden jedoch von Banditen bedr ngt. Sie halten durch, kommen aber nicht raus. Hilfst du ihnen?</text>
+		<text>So sieht's aus: Eine Gruppe von Stalkern ist zu Agroprom aufgebrochen. Bei unserem letzten Kontakt haben sie berichtet, dass unter der Erde etwas Wertvolles sei, sie wurden jedoch von Banditen bedrängt. Sie halten durch, kommen aber nicht raus. Hilfst du ihnen?</text>
 	</string>
 	<string id="barmen_eliminate_camp_1">
-		<text>Die Banditen an der M llhalde ausschalten.</text>
+		<text>Die Banditen an der Müllhalde ausschalten.</text>
 	</string>
 	<string id="barmen_eliminate_camp_1_descr">
-		<text>Die Banditen ausschalten, die sich an der M llhalde niedergelassen haben. Die Operation muss schnell und effektiv sein ...</text>
+		<text>Die Banditen ausschalten, die sich an der Müllhalde niedergelassen haben. Die Operation muss schnell und effektiv sein ...</text>
 	</string>
 	<string id="barmen_eliminate_camp_1_text">
-		<text>Ein Job, was? Mal sehen, was wir haben ... Aha, hier haben wir was: Kannst du dieses Banditenpack an der M llhalde ausschalten? Die W chter kriegen es trotz all ihrer Reden  ber Recht und Gesetz nicht hin. Das ist ein blo  Abschaum, sie werden nicht lange durchhalten. Aber der Erste, der sie kriegt, r umt richtig ab. Und der Schnaps geht nat rlich auf mich!</text>
+		<text>Ein Job, was? Mal sehen, was wir haben ... Aha, hier haben wir was: Kannst du dieses Banditenpack an der Müllhalde ausschalten? Die Wächter kriegen es trotz all ihrer Reden über Recht und Gesetz nicht hin. Das ist ein bloß Abschaum, sie werden nicht lange durchhalten. Aber der Erste, der sie kriegt, räumt richtig ab. Und der Schnaps geht natürlich auf mich!</text>
 	</string>
 	<string id="barmen_eliminate_camp_2">
-		<text>Die S ldner und Banditen in Rostok ausschalten.</text>
+		<text>Die Söldner und Banditen in Rostok ausschalten.</text>
 	</string>
 	<string id="barmen_eliminate_camp_2_descr">
-		<text>Die Gruppe von S ldnern und Banditen vernichten, die die Route nach Rostok blockieren.</text>
+		<text>Die Gruppe von Söldnern und Banditen vernichten, die die Route nach Rostok blockieren.</text>
 	</string>
 	<string id="barmen_eliminate_camp_2_text">
-		<text>Nicht weit entfernt, in Rostok, befindet sich eine S ldnerbande. Die k nnen gut mit den Banditen, und jetzt haben sie vor, den Weg durchs Kraftwerk zu sperren. Ich muss ja wohl nicht erkl ren, was das f r ein  rgernis ist. Das Problem muss sofort gel st werden. Die W chter und ein paar Veteranen sind schon losgezogen, um denen 'ne Lektion zu erteilen, aber wir haben lange nichts von ihnen geh rt ... Also, warum gehst du nicht ...  hm ... nachsehen, wo sie stecken? Die Bezahlung ist gut.</text>
+		<text>Nicht weit entfernt, in Rostok, befindet sich eine Söldnerbande. Die können gut mit den Banditen, und jetzt haben sie vor, den Weg durchs Kraftwerk zu sperren. Ich muss ja wohl nicht erklären, was das für ein Ärgernis ist. Das Problem muss sofort gelöst werden. Die Wächter und ein paar Veteranen sind schon losgezogen, um denen 'ne Lektion zu erteilen, aber wir haben lange nichts von ihnen gehört ... Also, warum gehst du nicht ... ähm ... nachsehen, wo sie stecken? Die Bezahlung ist gut.</text>
 	</string>
 	<string id="barmen_eliminate_camp_3">
 		<text>die Banditen auf dem Bauernhof eliminieren.</text>
@@ -49,13 +49,13 @@
 		<text>Da ist der Bauernhof, bei den alten Lagern. War mal der perfekte Treffpunkt, um Waren auszutauschen, wenn du verstehst ... so was eben. Aber jetzt haben die Banditen ihn eingenommen und es macht nicht den Eindruck, als wollten sie bald weiter. Das passt mir gar nicht. Ich brauch den Bauernhof, und zwar pronto. Ist mir egal, was aus den Untermietern wird.</text>
 	</string>
 	<string id="barmen_eliminate_camp_4">
-		<text>Das Banditenlager im Wildgebiet r umen.</text>
+		<text>Das Banditenlager im Wildgebiet räumen.</text>
 	</string>
 	<string id="barmen_eliminate_camp_4_descr">
-		<text>Das Banditenlager im Wildgebiet r umen.</text>
+		<text>Das Banditenlager im Wildgebiet räumen.</text>
 	</string>
 	<string id="barmen_eliminate_camp_4_text">
-		<text>Im Wildgebiet hausen Banditen. Wir k nnen nicht zulassen, dass dieser Abschaum seinen Dreck so nah bei der Bar ausbreitet. Das Lager muss ausgel scht werden.</text>
+		<text>Im Wildgebiet hausen Banditen. Wir können nicht zulassen, dass dieser Abschaum seinen Dreck so nah bei der Bar ausbreitet. Das Lager muss ausgelöscht werden.</text>
 	</string>
 	<string id="barmen_eliminate_camp_5">
 		<text>Das Versteck der wilden Mutantenhunde im Wildgebiet vernichten.</text>
@@ -64,7 +64,7 @@
 		<text>Das Versteck der wilden Mutantenhunde im Wildgebiet vernichten.</text>
 	</string>
 	<string id="barmen_eliminate_camp_5_text">
-		<text>Einige unserer Jungs waren auf Expedition. Sie kamen vereinzelt wieder - mit zerrissenen Klamotten, blutverschmiert und mit glasigen Augen. Sind wohl auf Hunde gesto en. Da ist ein ganzes Rudel! Finde ihr Versteck und mach sie kalt.</text>
+		<text>Einige unserer Jungs waren auf Expedition. Sie kamen vereinzelt wieder - mit zerrissenen Klamotten, blutverschmiert und mit glasigen Augen. Sind wohl auf Hunde gestoßen. Da ist ein ganzes Rudel! Finde ihr Versteck und mach sie kalt.</text>
 	</string>
 	<string id="barmen_eliminate_camp_6">
 		<text>Die Banditengruppe beim Agroprom vernichten.</text>
@@ -73,16 +73,16 @@
 		<text>Die Banditengruppe beim Agroprom vernichten.</text>
 	</string>
 	<string id="barmen_eliminate_camp_6_text">
-		<text>Damals, '94, hatten mich die Gangster am Wickel. "Spuck's aus", haben sie gesagt. Mann, bin ich damals durch die H lle gegangen! Ich hatte ein Restaurant. Damals war's unm glich, sie ranzukriegen! Und jetzt ist dieselbe Gang im Agroprom aktiv und verdient sich mit den Artefakten eine goldene Nase. Aber diesmal kann ich etwas tun. Ich wei , wo sie sich verstecken. Tu mir einen Gefallen: Bestrafe sie.</text>
+		<text>Damals, '94, hatten mich die Gangster am Wickel. "Spuck's aus", haben sie gesagt. Mann, bin ich damals durch die Hölle gegangen! Ich hatte ein Restaurant. Damals war's unmöglich, sie ranzukriegen! Und jetzt ist dieselbe Gang im Agroprom aktiv und verdient sich mit den Artefakten eine goldene Nase. Aber diesmal kann ich etwas tun. Ich weiß, wo sie sich verstecken. Tu mir einen Gefallen: Bestrafe sie.</text>
 	</string>
 	<string id="barmen_eliminate_camp_7">
-		<text>Das Versteck der Schnorks im Dunklen Tal zerst ren.</text>
+		<text>Das Versteck der Schnorks im Dunklen Tal zerstören.</text>
 	</string>
 	<string id="barmen_eliminate_camp_7_descr">
-		<text>Das Versteck der Schnorks im Dunklen Tal zerst ren.</text>
+		<text>Das Versteck der Schnorks im Dunklen Tal zerstören.</text>
 	</string>
 	<string id="barmen_eliminate_camp_7_text">
-		<text>Tja ... sieht aus, als h tten die Leute Recht, die meinen, dass die Zone w chst. Sie haben einige Schnorks im Dunklen Tal entdeckt, die hatten sie da vorher nie gesehen. Einige sind in Panik geraten. Die W chter haben versprochen, die Schnorks zu vernichten, aber dazu scheinen sie noch nicht gekommen zu sein.  bernimmst du das?</text>
+		<text>Tja ... sieht aus, als hätten die Leute Recht, die meinen, dass die Zone wächst. Sie haben einige Schnorks im Dunklen Tal entdeckt, die hatten sie da vorher nie gesehen. Einige sind in Panik geraten. Die Wächter haben versprochen, die Schnorks zu vernichten, aber dazu scheinen sie noch nicht gekommen zu sein. Übernimmst du das?</text>
 	</string>
 	<string id="barmen_find_artefact_1">
 		<text>Das Artefakt "Fleischklumpen" finden.</text>
@@ -91,25 +91,25 @@
 		<text>Das Artefakt "Fleischklumpen" finden, das Krankheiten und Verletzungen heilt.</text>
 	</string>
 	<string id="barmen_find_artefact_1_text">
-		<text>Ein paar Padres waren da und haben einen Fleischklumpen bestellt. Wei t du, sie haben Interesse an dem Heilungsartefakt ... die verdammten Wunderwirker! Wie auch immer ... Machst du's? Ist deine Entscheidung.</text>
+		<text>Ein paar Padres waren da und haben einen Fleischklumpen bestellt. Weißt du, sie haben Interesse an dem Heilungsartefakt ... die verdammten Wunderwirker! Wie auch immer ... Machst du's? Ist deine Entscheidung.</text>
 	</string>
 	<string id="barmen_find_artefact_2">
 		<text>Das Artefakt "Dornenkristall" finden.</text>
 	</string>
 	<string id="barmen_find_artefact_2_descr">
-		<text>Das Artefakt "Dornenkristall" finden, das gegen PSI-Angriffe sch tzt.</text>
+		<text>Das Artefakt "Dornenkristall" finden, das gegen PSI-Angriffe schützt.</text>
 	</string>
 	<string id="barmen_find_artefact_2_text">
-		<text>Ein "Horn"? Nein, das ist es nicht. "Dornenkristall"? Nein, auch wieder falsch ... Schei e! "Dornenkristall", richtig! So sieht's aus: Ich hab 'ne Bestellung f r ein Artefakt bekommen, den "Dornenkristall". Schon mal davon geh rt? Es hei t, wer einen hat, dem kann keiner im Kopf rumpfuschen. Was meinst du?</text>
+		<text>Ein "Horn"? Nein, das ist es nicht. "Dornenkristall"? Nein, auch wieder falsch ... Scheiße! "Dornenkristall", richtig! So sieht's aus: Ich hab 'ne Bestellung für ein Artefakt bekommen, den "Dornenkristall". Schon mal davon gehört? Es heißt, wer einen hat, dem kann keiner im Kopf rumpfuschen. Was meinst du?</text>
 	</string>
 	<string id="barmen_find_artefact_3">
 		<text>Das Artefakt "Nachtstern" finden.</text>
 	</string>
 	<string id="barmen_find_artefact_3_descr">
-		<text>Das Artefakt "Nachtstern" finden und der nationalen Milit rforschung helfen.</text>
+		<text>Das Artefakt "Nachtstern" finden und der nationalen Militärforschung helfen.</text>
 	</string>
 	<string id="barmen_find_artefact_3_text">
-		<text>Ich brauch das Artefakt "Nachtstern". Leider erf llt es keine W nsche, aber es kann einen reich machen. Wissenschaftler zahlen viel daf r. Sie sagen, sie k nnten daraus was Milit risches machen ... also, bist du dabei?</text>
+		<text>Ich brauch das Artefakt "Nachtstern". Leider erfüllt es keine Wünsche, aber es kann einen reich machen. Wissenschaftler zahlen viel dafür. Sie sagen, sie könnten daraus was Militärisches machen ... also, bist du dabei?</text>
 	</string>
 	<string id="barmen_find_artefact_4">
 		<text>Das Artefakt "Blitz" finden.</text>
@@ -127,7 +127,7 @@
 		<text>Das Artefakt "Goldfisch" finden.</text>
 	</string>
 	<string id="barmen_find_artefact_5_text">
-		<text>Gezeichneter, kennst du das M rchen vom Goldfisch? Ja, genau das. Dar ber wurden schon 'ne Menge Witze gemacht. Wie auch immer: Da ist also dieser alte Mann, der ihn unbedingt fangen will. Um's kurz zu machen: Ich brauch das einmalige Artefakt "Goldfisch". Der Kunde ist von au erhalb, respektabel. Kannst du helfen?</text>
+		<text>Gezeichneter, kennst du das Märchen vom Goldfisch? Ja, genau das. Darüber wurden schon 'ne Menge Witze gemacht. Wie auch immer: Da ist also dieser alte Mann, der ihn unbedingt fangen will. Um's kurz zu machen: Ich brauch das einmalige Artefakt "Goldfisch". Der Kunde ist von außerhalb, respektabel. Kannst du helfen?</text>
 	</string>
 	<string id="barmen_find_item_1">
 		<text>Den Psi-Anzug finden.</text>
@@ -136,7 +136,7 @@
 		<text>Den Anzug finden, der als Schutz gegen PSI-Emissionen dient. Am besten in den verlassenen Labors im Dunklen Tal suchen.</text>
 	</string>
 	<string id="barmen_find_item_1_text">
-		<text>In diesen Labors des Dunklen Tals wollten sie lernen, menschliche Gehirne gegen PSI-Emissionen zu sch tzen. Sie haben sich Zeit gelassen, kein Zweifel ... Jedenfalls war ein Versuch sogar erfolgreich, und irgendwo soll's einen Anzug geben, den man tragen kann und womit man sogar den Telepathen k ssen kann. Ja, das ist gut. Wenn du mir das Teil besorgst, vergesse ich dir das nie.</text>
+		<text>In diesen Labors des Dunklen Tals wollten sie lernen, menschliche Gehirne gegen PSI-Emissionen zu schützen. Sie haben sich Zeit gelassen, kein Zweifel ... Jedenfalls war ein Versuch sogar erfolgreich, und irgendwo soll's einen Anzug geben, den man tragen kann und womit man sogar den Telepathen küssen kann. Ja, das ist gut. Wenn du mir das Teil besorgst, vergesse ich dir das nie.</text>
 	</string>
 	<string id="barmen_find_item_2">
 		<text>Die Kanone des Fremden finden.</text>
@@ -145,7 +145,7 @@
 		<text>Ein interessanter Auftrag. Der Name kommt mir bekannt vor ... Aber woher kenne ich ihn?</text>
 	</string>
 	<string id="barmen_find_item_2_text">
-		<text>Da war mal ein Fremder in der Gegend ... Hie  er nicht Gordon? Er wirkte wie ein erfahrener Stalker, aber er behauptete, noch nie in der Zone gewesen zu sein. Aber das ist jetzt nicht der springende Punkt. Am Ende ist er irgendwo in der Zone verschwunden. Er hatte dieses seltsame Ding, den Schwarzen Drachen. Wenn ich mir den mal ansehen k nnte ...</text>
+		<text>Da war mal ein Fremder in der Gegend ... Hieß er nicht Gordon? Er wirkte wie ein erfahrener Stalker, aber er behauptete, noch nie in der Zone gewesen zu sein. Aber das ist jetzt nicht der springende Punkt. Am Ende ist er irgendwo in der Zone verschwunden. Er hatte dieses seltsame Ding, den Schwarzen Drachen. Wenn ich mir den mal ansehen könnte ...</text>
 	</string>
 	<string id="barmen_find_item_3">
 		<text>Das modifizierte Vintar finden.</text>
@@ -154,52 +154,52 @@
 		<text>Das modifizierte Vintar finden. Anscheinend muss im Roten Wald gesucht werden.</text>
 	</string>
 	<string id="barmen_find_item_3_text">
-		<text>Da war 'ne seltsame Geschichte. Da taucht ein Kerl auf, die Taschen voll Knete, und heuert sich 'ne Gang an - keine Veteranen, eher flinke Typen. Kauft jede Menge Zeug. Ich hatte dieses nagelneue Vintar, eine tolle Knarre! War bl d genug, es ihm zu verkaufen. Ich l g dich nicht an, ich hab einiges dran verdient ... nur wurde die ganze Truppe nah beim Roten Wald niedergemacht. Was soll ich sagen, sie sind umsonst gestorben. Aber das ist f r alle eine gute Lektion: Man kann sich den Weg durch die Zone nicht mit Geld ebnen. Wie auch immer - ich kann nicht aufh ren, an dieses Vintar zu denken. So 'ne tolle Kanone, und irgendwo da drau en rostet es! Kannst du es f r mich suchen? Ich zahle gut!</text>
+		<text>Da war 'ne seltsame Geschichte. Da taucht ein Kerl auf, die Taschen voll Knete, und heuert sich 'ne Gang an - keine Veteranen, eher flinke Typen. Kauft jede Menge Zeug. Ich hatte dieses nagelneue Vintar, eine tolle Knarre! War blöd genug, es ihm zu verkaufen. Ich lüg dich nicht an, ich hab einiges dran verdient ... nur wurde die ganze Truppe nah beim Roten Wald niedergemacht. Was soll ich sagen, sie sind umsonst gestorben. Aber das ist für alle eine gute Lektion: Man kann sich den Weg durch die Zone nicht mit Geld ebnen. Wie auch immer - ich kann nicht aufhören, an dieses Vintar zu denken. So 'ne tolle Kanone, und irgendwo da draußen rostet es! Kannst du es für mich suchen? Ich zahle gut!</text>
 	</string>
 	<string id="barmen_kill_stalker_1">
 		<text>Den Soldaten ausschalten.</text>
 	</string>
 	<string id="barmen_kill_stalker_1_descr">
-		<text>Da muss ein Soldat ins Gras bei en. Das ist kinderleicht, nur ... Es ist seltsam, dass das Ziel Uniformtr ger ist. Und der Kunde schnaubt f rmlich vor Wut.</text>
+		<text>Da muss ein Soldat ins Gras beißen. Das ist kinderleicht, nur ... Es ist seltsam, dass das Ziel Uniformträger ist. Und der Kunde schnaubt förmlich vor Wut.</text>
 	</string>
 	<string id="barmen_kill_stalker_1_text">
-		<text>Du musst f r mich diesen Stiernacken umlegen. Frag nicht, wer er ist. Ist mir doch egal! Tu's einfach. Also? Kann ich dir vertrauen?</text>
+		<text>Du musst für mich diesen Stiernacken umlegen. Frag nicht, wer er ist. Ist mir doch egal! Tu's einfach. Also? Kann ich dir vertrauen?</text>
 	</string>
 	<string id="barmen_kill_stalker_2">
 		<text>Den Stalker eliminieren.</text>
 	</string>
 	<string id="barmen_kill_stalker_2_descr">
-		<text>Einen Stalker kaltmachen ... Tod dem Betr ger, so lautet die Rache des H ndlers.</text>
+		<text>Einen Stalker kaltmachen ... Tod dem Betrüger, so lautet die Rache des Händlers.</text>
 	</string>
 	<string id="barmen_kill_stalker_2_text">
-		<text>Es gibt einen Typ von Mann, gegen den kannst du nichts sagen. Du vertraust ihm, wie du dir selbst vertraust, klar? Du verl sst dich auf ihn - aber pl tzlich findest du raus, dass er der gemeinste, niedertr chtigste Hurensohn ist ... Also Folgendes: Da gibt's 'nen Fall zu kl ren. Erledige das, ich k mmere mich um den Rest.</text>
+		<text>Es gibt einen Typ von Mann, gegen den kannst du nichts sagen. Du vertraust ihm, wie du dir selbst vertraust, klar? Du verlässt dich auf ihn - aber plötzlich findest du raus, dass er der gemeinste, niederträchtigste Hurensohn ist ... Also Folgendes: Da gibt's 'nen Fall zu klären. Erledige das, ich kümmere mich um den Rest.</text>
 	</string>
 	<string id="barmen_kill_stalker_3">
 		<text>Den Stalker der Monolithengruppe eliminieren.</text>
 	</string>
 	<string id="barmen_kill_stalker_3_descr">
-		<text>Den ehemaligen Freund des H ndlers finden und ausschalten.</text>
+		<text>Den ehemaligen Freund des Händlers finden und ausschalten.</text>
 	</string>
 	<string id="barmen_kill_stalker_3_text">
-		<text>Ich hatte einen Freund ... kaum zu glauben, oder? Wir kamen zusammen in die Zone, als dieses Zeug noch nicht hier war. Wir haben Dinge getan, Orte besucht ... Na ja, wir waren jung und nichts hat uns gejuckt. Aber er konnte nie genug kriegen. Er wollte ins Zentrum der Zone und mich auch  berreden, aber ich hab mich geweigert, und das war richtig so. Wir haben uns richtig gezofft, und er ist alleine los ... Ich hab geh rt, dass ihn jemand dort gesehen hat. Er ist jetzt bei der Monolithengruppe. Also, Gezeichneter: Tu das f r mich, als Freund. Finde ihn und ... er soll nicht leiden, es wird schlimm genug sein. Er war mir wie ein Bruder, verstehst du?</text>
+		<text>Ich hatte einen Freund ... kaum zu glauben, oder? Wir kamen zusammen in die Zone, als dieses Zeug noch nicht hier war. Wir haben Dinge getan, Orte besucht ... Na ja, wir waren jung und nichts hat uns gejuckt. Aber er konnte nie genug kriegen. Er wollte ins Zentrum der Zone und mich auch überreden, aber ich hab mich geweigert, und das war richtig so. Wir haben uns richtig gezofft, und er ist alleine los ... Ich hab gehört, dass ihn jemand dort gesehen hat. Er ist jetzt bei der Monolithengruppe. Also, Gezeichneter: Tu das für mich, als Freund. Finde ihn und ... er soll nicht leiden, es wird schlimm genug sein. Er war mir wie ein Bruder, verstehst du?</text>
 	</string>
 	<string id="barmen_kill_stalker_4">
-		<text>Den Stalker namens Vampir t ten.</text>
+		<text>Den Stalker namens Vampir töten.</text>
 	</string>
 	<string id="barmen_kill_stalker_4_descr">
 		<text>Der Stalker namens Vampir muss gefunden und eliminiert werden.</text>
 	</string>
 	<string id="barmen_kill_stalker_4_text">
-		<text>Jetzt reicht's, ich hab genug von diesem Schweinehund! Ich rede von Vampir; kennst du ihn? Der Bastard saugt Leuten statt Blut das Gl ck aus. Wer mit ihm zieht, stirbt, aber er kommt immer heil zur ck! Und das jetzt schon zum f nften Mal! Das ist unrecht, findest du nicht auch? Ich w rd gern Blumen auf sein Grab legen ... Also, nimmst du den Auftrag an?</text>
+		<text>Jetzt reicht's, ich hab genug von diesem Schweinehund! Ich rede von Vampir; kennst du ihn? Der Bastard saugt Leuten statt Blut das Glück aus. Wer mit ihm zieht, stirbt, aber er kommt immer heil zurück! Und das jetzt schon zum fünften Mal! Das ist unrecht, findest du nicht auch? Ich würd gern Blumen auf sein Grab legen ... Also, nimmst du den Auftrag an?</text>
 	</string>
 	<string id="barmen_kill_stalker_5">
 		<text>Den Stalker namens Spatz eliminieren.</text>
 	</string>
 	<string id="barmen_kill_stalker_5_descr">
-		<text>Der Tod eines anderen Stalkers durch Spatz muss ger cht werden.</text>
+		<text>Der Tod eines anderen Stalkers durch Spatz muss gerächt werden.</text>
 	</string>
 	<string id="barmen_kill_stalker_5_text">
-		<text>Verdammte Musketiere! Immer spielen sie den D'Artagnan, die Arschl cher! Als ob's nicht genug w re, Anomalien zu umkreisen und sich vor Kugeln zu ducken, jetzt tragen die Idioten auch noch Duelle aus! Zieh dir das rein: Da gab's diesen Streit ... keiner wei  genau, womit er anfing. Diese beiden Bl dm nner wollen also Blut vergie en. Und schon liegt einer tot da ... noch dazu ein guter Stalker! Der andere, Spatz, hat sich verzogen, weil er wei , dass ich ihm 'ne Kugel durch den Kopf jagen will. Finde ihn. Er ist sicher noch in der Zone. Machst du's?</text>
+		<text>Verdammte Musketiere! Immer spielen sie den D'Artagnan, die Arschlöcher! Als ob's nicht genug wäre, Anomalien zu umkreisen und sich vor Kugeln zu ducken, jetzt tragen die Idioten auch noch Duelle aus! Zieh dir das rein: Da gab's diesen Streit ... keiner weiß genau, womit er anfing. Diese beiden Blödmänner wollen also Blut vergießen. Und schon liegt einer tot da ... noch dazu ein guter Stalker! Der andere, Spatz, hat sich verzogen, weil er weiß, dass ich ihm 'ne Kugel durch den Kopf jagen will. Finde ihn. Er ist sicher noch in der Zone. Machst du's?</text>
 	</string>
 	<string id="barmen_monster_part_1">
 		<text>Das Fleischauge beschaffen.</text>
@@ -217,34 +217,34 @@
 		<text>Wildschwein-Huf besorgen.</text>
 	</string>
 	<string id="barmen_monster_part_2_text">
-		<text>Wusstest du, dass wir H rner und Hufe pr parieren? Eine gro e Seltenheit. Aus den mutierten Hufen wird guter Schmuck gemacht. Ich kenne einen interessierten Juwelier. Also los, besorg den Huf des Wildschweins und deine Taschen f llen sich.</text>
+		<text>Wusstest du, dass wir Hörner und Hufe präparieren? Eine große Seltenheit. Aus den mutierten Hufen wird guter Schmuck gemacht. Ich kenne einen interessierten Juwelier. Also los, besorg den Huf des Wildschweins und deine Taschen füllen sich.</text>
 	</string>
 	<string id="dolg_defend_lager_1">
-		<text>Den Sicherheitsposten der W chter sch tzen.</text>
+		<text>Den Sicherheitsposten der Wächter schützen.</text>
 	</string>
 	<string id="dolg_defend_lager_1_descr">
-		<text>Der Sicherheitsposten der W chter bei der M llhalde muss besch tzt werden.</text>
+		<text>Der Sicherheitsposten der Wächter bei der Müllhalde muss beschützt werden.</text>
 	</string>
 	<string id="dolg_defend_lager_1_text">
-		<text>So, du bist sicher unseren Jungs an der M llhalde begegnet. Die sind als so eine Art Au enposten da und sch tzen die Bar gegen Mutanten aus dem Dunklen Tal. Es gibt Informationen, dass die kranken Wildschweine sich ihnen n hern. Hilf ihnen, die Mutanten abzuwehren, und ich schulde dir was.</text>
+		<text>So, du bist sicher unseren Jungs an der Müllhalde begegnet. Die sind als so eine Art Außenposten da und schützen die Bar gegen Mutanten aus dem Dunklen Tal. Es gibt Informationen, dass die kranken Wildschweine sich ihnen nähern. Hilf ihnen, die Mutanten abzuwehren, und ich schulde dir was.</text>
 	</string>
 	<string id="dolg_eliminate_lager_1">
 		<text>Den Zombie vernichten.</text>
 	</string>
 	<string id="dolg_eliminate_lager_1_descr">
-		<text>Die Zombie-Langleber bei Jantar m ssen vernichtet werden.</text>
+		<text>Die Zombie-Langleber bei Jantar müssen vernichtet werden.</text>
 	</string>
 	<string id="dolg_eliminate_lager_1_text">
-		<text>Wir haben k rzlich eine Gruppe nach Jantar geschickt. Leider ist keiner zur ckgekehrt. Ich hab geh rt, dass Zombie-Stalker der Gruppe nicht unweit vom mobilen Labor der Wissenschaftler in Jantar gesehen wurden. Wir k nnen sie nicht in diesem schrecklichen Zustand lassen. Dein Auftrag: Finde und zerst re das, was aus ihnen geworden ist.</text>
+		<text>Wir haben kürzlich eine Gruppe nach Jantar geschickt. Leider ist keiner zurückgekehrt. Ich hab gehört, dass Zombie-Stalker der Gruppe nicht unweit vom mobilen Labor der Wissenschaftler in Jantar gesehen wurden. Wir können sie nicht in diesem schrecklichen Zustand lassen. Dein Auftrag: Finde und zerstöre das, was aus ihnen geworden ist.</text>
 	</string>
 	<string id="dolg_eliminate_lager_10">
 		<text>Das Hunderudel loswerden.</text>
 	</string>
 	<string id="dolg_eliminate_lager_10_descr">
-		<text>Das Hunderudel bei der M llhalde muss ausgerottet werden.</text>
+		<text>Das Hunderudel bei der Müllhalde muss ausgerottet werden.</text>
 	</string>
 	<string id="dolg_eliminate_lager_10_text">
-		<text>Nat rlich geben wir fremden Stalkern keine Auftr ge. Andererseits ist das hier ein leichter, also m ssen wir unsere Jungs nicht dazu zwingen. Also h r zu: Du musst ein kleines Versteck von Bestien bei der M llhalde ausl schen. Eine unserer Gruppen arbeitet schon da, wenn es also  rger gibt, kannst du dich zu ihnen zur ckziehen. Andererseits sollte es keinen  rger geben, denn es sind nicht so viele Bestien - nicht mehr als zehn. Vermutlich Hunde. Neulich war die Rede von einem gro en Rudel in der Gegend. Du kannst diesen Auftrag ausf hren.</text>
+		<text>Natürlich geben wir fremden Stalkern keine Aufträge. Andererseits ist das hier ein leichter, also müssen wir unsere Jungs nicht dazu zwingen. Also hör zu: Du musst ein kleines Versteck von Bestien bei der Müllhalde auslöschen. Eine unserer Gruppen arbeitet schon da, wenn es also Ärger gibt, kannst du dich zu ihnen zurückziehen. Andererseits sollte es keinen Ärger geben, denn es sind nicht so viele Bestien - nicht mehr als zehn. Vermutlich Hunde. Neulich war die Rede von einem großen Rudel in der Gegend. Du kannst diesen Auftrag ausführen.</text>
 	</string>
 	<string id="dolg_eliminate_lager_11">
 		<text>Das Lager der Stalker vernichten.</text>
@@ -253,34 +253,34 @@
 		<text>Das Lager der Stalker beim Agroprom muss vernichtet werden.</text>
 	</string>
 	<string id="dolg_eliminate_lager_11_text">
-		<text>Es gibt da eine delikate Sache, in die unsere Jungs nicht verwickelt werden sollten. Die Gegenwart von Neutralen an der Fabrik bei Agroprom ist f r unsere Verb ndeten unvorteilhaft. Der Auftrag: Befreie das Industriegebiet von den Stalkern, wer sie auch sind und zu welcher Gruppe sie auch geh ren. Verstanden?</text>
+		<text>Es gibt da eine delikate Sache, in die unsere Jungs nicht verwickelt werden sollten. Die Gegenwart von Neutralen an der Fabrik bei Agroprom ist für unsere Verbündeten unvorteilhaft. Der Auftrag: Befreie das Industriegebiet von den Stalkern, wer sie auch sind und zu welcher Gruppe sie auch gehören. Verstanden?</text>
 	</string>
 	<string id="dolg_eliminate_lager_12">
-		<text>Die S ldnerabteilung vernichten.</text>
+		<text>Die Söldnerabteilung vernichten.</text>
 	</string>
 	<string id="dolg_eliminate_lager_12_descr">
-		<text>Die S ldnerabteilung bei Rostok vernichten.</text>
+		<text>Die Söldnerabteilung bei Rostok vernichten.</text>
 	</string>
 	<string id="dolg_eliminate_lager_12_text">
-		<text>Hier dein Auftrag: Vernichte die Scharfsch tzen der S ldner. Die Lage: Die Scharfsch tzen besetzen den letzten Stock der Baustelle. Angenommene Anzahl: Zwischen zwei und f nf. Allem Anschein nach sind sie bewaffnet mit Dragunow-Scharfsch tzengewehren. Vorschlag: Zeig dein Gesicht tags ber nicht.</text>
+		<text>Hier dein Auftrag: Vernichte die Scharfschützen der Söldner. Die Lage: Die Scharfschützen besetzen den letzten Stock der Baustelle. Angenommene Anzahl: Zwischen zwei und fünf. Allem Anschein nach sind sie bewaffnet mit Dragunow-Scharfschützengewehren. Vorschlag: Zeig dein Gesicht tagsüber nicht.</text>
 	</string>
 	<string id="dolg_eliminate_lager_13">
-		<text>Die Banditenbasis besch tzen.</text>
+		<text>Die Banditenbasis beschützen.</text>
 	</string>
 	<string id="dolg_eliminate_lager_13_descr">
 		<text>Die Banditenbasis im Dunklen Tal braucht Schutz.</text>
 	</string>
 	<string id="dolg_eliminate_lager_13_text">
-		<text>Es ist von gr  ter Wichtigkeit, die Hauptbasis der Banditen zu  berfallen und so viele Gegner wie m glich zu vernichten. Sie liegt im Dunklen Tal, dort, wo auch das unfertige Wissenschaftszentrum liegt. Der Feind z hlt zurzeit drei ig K mpfer mit leichten Automatikwaffen, Schusswaffen und Schrotflinten. Alles klar?</text>
+		<text>Es ist von größter Wichtigkeit, die Hauptbasis der Banditen zu überfallen und so viele Gegner wie möglich zu vernichten. Sie liegt im Dunklen Tal, dort, wo auch das unfertige Wissenschaftszentrum liegt. Der Feind zählt zurzeit dreißig Kämpfer mit leichten Automatikwaffen, Schusswaffen und Schrotflinten. Alles klar?</text>
 	</string>
 	<string id="dolg_eliminate_lager_14">
 		<text>Die Schnorks vernichten.</text>
 	</string>
 	<string id="dolg_eliminate_lager_14_descr">
-		<text>Die Tunnel im Jantar-Sektor vor Schnorks sch tzen.</text>
+		<text>Die Tunnel im Jantar-Sektor vor Schnorks schützen.</text>
 	</string>
 	<string id="dolg_eliminate_lager_14_text">
-		<text>Diesmal musst du aufr umen. Die Tunnel im Jantar-Sektor zerbersten vor Schnorks - da sind ungef hr zehn St ck. Ja, jetzt kannst du den Sturm nicht  berdauern wie vorher ...</text>
+		<text>Diesmal musst du aufräumen. Die Tunnel im Jantar-Sektor zerbersten vor Schnorks - da sind ungefähr zehn Stück. Ja, jetzt kannst du den Sturm nicht überdauern wie vorher ...</text>
 	</string>
 	<string id="dolg_eliminate_lager_2">
 		<text>Die Fleisch-Herde vernichten.</text>
@@ -289,34 +289,34 @@
 		<text>Die Fleisch-Herde muss auf dem Wildgebiet verschwinden.</text>
 	</string>
 	<string id="dolg_eliminate_lager_2_text">
-		<text>Wir haben eine gro e Herde von Bestien verfolgt ... Ekelhafte, schweinsartige Mutanten, die man nur "Fleisch" nennt. Jetzt sind sie in der M llhaldengegend. Unsere Leute sind alle besch ftigt, aber die Bestien m ssen vernichtet werden. Es ist ein besonderer Auftrag - wir zahlen daf r.</text>
+		<text>Wir haben eine große Herde von Bestien verfolgt ... Ekelhafte, schweinsartige Mutanten, die man nur "Fleisch" nennt. Jetzt sind sie in der Müllhaldengegend. Unsere Leute sind alle beschäftigt, aber die Bestien müssen vernichtet werden. Es ist ein besonderer Auftrag - wir zahlen dafür.</text>
 	</string>
 	<string id="dolg_eliminate_lager_3">
 		<text>Die Pseudohunde vernichten.</text>
 	</string>
 	<string id="dolg_eliminate_lager_3_descr">
-		<text>Die Pseudohunde bei den Milit rlagerh usern vernichten.</text>
+		<text>Die Pseudohunde bei den Militärlagerhäusern vernichten.</text>
 	</string>
 	<string id="dolg_eliminate_lager_3_text">
-		<text>Unsere Verb ndeten haben von der Entdeckung eines Monsterverstecks bei den Milit rlagern berichtet. Wir denken, dass es sich um ein Rudel Pseudohunde handelt. In dem Gebiet sollten wir uns jetzt nicht einmischen, das ist ein Auftrag f r einen Neutralen. Bist du dabei?</text>
+		<text>Unsere Verbündeten haben von der Entdeckung eines Monsterverstecks bei den Militärlagern berichtet. Wir denken, dass es sich um ein Rudel Pseudohunde handelt. In dem Gebiet sollten wir uns jetzt nicht einmischen, das ist ein Auftrag für einen Neutralen. Bist du dabei?</text>
 	</string>
 	<string id="dolg_eliminate_lager_4">
-		<text>Den Sicherheitsposten der S ldner vernichten.</text>
+		<text>Den Sicherheitsposten der Söldner vernichten.</text>
 	</string>
 	<string id="dolg_eliminate_lager_4_descr">
-		<text>Den Sicherheitsposten der S ldner unweit der Milit rlagerh user vernichten.</text>
+		<text>Den Sicherheitsposten der Söldner unweit der Militärlagerhäuser vernichten.</text>
 	</string>
 	<string id="dolg_eliminate_lager_4_text">
-		<text>In letzter Zeit gab es vermehrte Aktivit ten von S ldnergruppen. Einige Wissenschaftler, die in der Zone arbeiten, wurden angegriffen. Das kann nicht ungestraft bleiben. Wir m ssen eine kleine Strafoperation durchf hren. Das Ziel: Der Sicherheitsposten der S ldner bei den Milit rlagerh usern hinter dem verlassenen Dorf.</text>
+		<text>In letzter Zeit gab es vermehrte Aktivitäten von Söldnergruppen. Einige Wissenschaftler, die in der Zone arbeiten, wurden angegriffen. Das kann nicht ungestraft bleiben. Wir müssen eine kleine Strafoperation durchführen. Das Ziel: Der Sicherheitsposten der Söldner bei den Militärlagerhäusern hinter dem verlassenen Dorf.</text>
 	</string>
 	<string id="dolg_eliminate_lager_5">
-		<text>Die S ldner im Wildgebiet vernichten.</text>
+		<text>Die Söldner im Wildgebiet vernichten.</text>
 	</string>
 	<string id="dolg_eliminate_lager_5_descr">
-		<text>Die S ldner im Wildgebiet m ssen vernichtet werden.</text>
+		<text>Die Söldner im Wildgebiet müssen vernichtet werden.</text>
 	</string>
 	<string id="dolg_eliminate_lager_5_text">
-		<text>Eine Gruppe von Wissenschaftlern plant eine Studie des Wildgebietes. In letzter Zeit war es dort jedoch nicht sicher, die S ldner waren aktiv. Stellen Sie sicher, dass im Wildgebiet keine S ldner mehr sind.</text>
+		<text>Eine Gruppe von Wissenschaftlern plant eine Studie des Wildgebietes. In letzter Zeit war es dort jedoch nicht sicher, die Söldner waren aktiv. Stellen Sie sicher, dass im Wildgebiet keine Söldner mehr sind.</text>
 	</string>
 	<string id="dolg_eliminate_lager_6">
 		<text>Die Banditen eliminieren.</text>
@@ -325,7 +325,7 @@
 		<text>Die Banditen eliminieren, die in das Wildgebiet eingedrungen sind.</text>
 	</string>
 	<string id="dolg_eliminate_lager_6_text">
-		<text>Ich fasse mich kurz. Die Banditen haben unsere Sicherheitsposten an der Bar umgangen und sind jetzt im Wildgebiet. Sie m ssen eliminiert werden.</text>
+		<text>Ich fasse mich kurz. Die Banditen haben unsere Sicherheitsposten an der Bar umgangen und sind jetzt im Wildgebiet. Sie müssen eliminiert werden.</text>
 	</string>
 	<string id="dolg_eliminate_lager_7">
 		<text>Den Telepathen vernichten.</text>
@@ -334,35 +334,35 @@
 		<text>Den Telepathen bei Jantar muss vernichtet werden.</text>
 	</string>
 	<string id="dolg_eliminate_lager_7_text">
-		<text>F r diese Aufgabe braucht man Spezialeinheiten. Den Berichten der Wissenschaftler nach gibt es bei Jantar einen Telapathen, am Eingang zum unterirdischen Labor (im Zentralgeb ude).
-Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
+		<text>Für diese Aufgabe braucht man Spezialeinheiten. Den Berichten der Wissenschaftler nach gibt es bei Jantar einen Telapathen, am Eingang zum unterirdischen Labor (im Zentralgebäude).
+Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 	</string>
 	<string id="dolg_eliminate_lager_8">
-		<text>Die Freiheitsk mpfer treiben.</text>
+		<text>Die Freiheitskämpfer treiben.</text>
 	</string>
 	<string id="dolg_eliminate_lager_8_descr">
-		<text>Die Freiheitsk mpfer m ssen aus dem verlassenen Dorf bei den milit rischen Lagerh usern getrieben werden.</text>
+		<text>Die Freiheitskämpfer müssen aus dem verlassenen Dorf bei den militärischen Lagerhäusern getrieben werden.</text>
 	</string>
 	<string id="dolg_eliminate_lager_8_text">
-		<text>Die Aktivit t der Freiheitsk mpfer beim verlassenen Dorf in der N he der milit rischen Lagerh user hat zugenommen. Vertreib die K mpfer aus dem Dorf. Nach dieser Aufgabe wartet eine besondere Belohnung auf dich.</text>
+		<text>Die Aktivität der Freiheitskämpfer beim verlassenen Dorf in der Nähe der militärischen Lagerhäuser hat zugenommen. Vertreib die Kämpfer aus dem Dorf. Nach dieser Aufgabe wartet eine besondere Belohnung auf dich.</text>
 	</string>
 	<string id="dolg_eliminate_lager_9">
 		<text>Die Banditen vernichten.</text>
 	</string>
 	<string id="dolg_eliminate_lager_9_descr">
-		<text>Banditen an der M llhalde vernichten.</text>
+		<text>Banditen an der Müllhalde vernichten.</text>
 	</string>
 	<string id="dolg_eliminate_lager_9_text">
-		<text>Die aktuelle Lage ist ung nstig, die Banditen sammeln sich bei der M llhalde und im Dunklen Tal. Am besten f hren wir gleichzeitig zwei Pr ventivschl ge aus. Unsere K mpfer  bernehmen das Tal, du kriegst die M llhalde.</text>
+		<text>Die aktuelle Lage ist ungünstig, die Banditen sammeln sich bei der Müllhalde und im Dunklen Tal. Am besten führen wir gleichzeitig zwei Präventivschläge aus. Unsere Kämpfer übernehmen das Tal, du kriegst die Müllhalde.</text>
 	</string>
 	<string id="dolg_find_item_1">
 		<text>Das verbesserte Gewehr finden.</text>
 	</string>
 	<string id="dolg_find_item_1_descr">
-		<text>Das verbesserte TRs 301 bei den milit rischen Lagerh usern finden.</text>
+		<text>Das verbesserte TRs 301 bei den militärischen Lagerhäusern finden.</text>
 	</string>
 	<string id="dolg_find_item_1_text">
-		<text>Jemand hilft den S ldnern. Seit kurzem haben sie Maschinengewehre mit Scharfsch tzenoption. Das ist gef hrliches Spielzeug, verstehst du? Tja, ich will so ein Gewehr. Und meine Dankbarkeit ist von Dauer.</text>
+		<text>Jemand hilft den Söldnern. Seit kurzem haben sie Maschinengewehre mit Scharfschützenoption. Das ist gefährliches Spielzeug, verstehst du? Tja, ich will so ein Gewehr. Und meine Dankbarkeit ist von Dauer.</text>
 	</string>
 	<string id="dolg_kill_stalker_1">
 		<text>Den Banditen neutralisieren.</text>
@@ -371,34 +371,34 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Der Banditen Poker muss neutralisiert werden.</text>
 	</string>
 	<string id="dolg_kill_stalker_1_text">
-		<text>Spitzname des Subjekts - Poker. Einer der grausamsten Banditenanf hrer, ein Schwein und Vergewaltiger. Anscheinend spinnt er: Es hei t, er h tte aus der Zone eine seltsame Krankheit. Er leidet an h ufigem Ged chtnisverlust, und wenn er zu sich kommt, wei  er nicht mehr, wer und wo er ist. Aber er ist immer bewaffnet und sehr aggressiv. Vermuteter Aufenthaltsort: Dunkles Tal. Bist du bereit?</text>
+		<text>Spitzname des Subjekts - Poker. Einer der grausamsten Banditenanführer, ein Schwein und Vergewaltiger. Anscheinend spinnt er: Es heißt, er hätte aus der Zone eine seltsame Krankheit. Er leidet an häufigem Gedächtnisverlust, und wenn er zu sich kommt, weiß er nicht mehr, wer und wo er ist. Aber er ist immer bewaffnet und sehr aggressiv. Vermuteter Aufenthaltsort: Dunkles Tal. Bist du bereit?</text>
 	</string>
 	<string id="drunk_dolg_find_item">
-		<text>Die Waffe des W chters finden.</text>
+		<text>Die Waffe des Wächters finden.</text>
 	</string>
 	<string id="drunk_dolg_find_item_descr">
-		<text>Der W chter m chte seine Waffe haben, die er auf Erkundung irgendwo im Dunklen Tal verloren hat.</text>
+		<text>Der Wächter möchte seine Waffe haben, die er auf Erkundung irgendwo im Dunklen Tal verloren hat.</text>
 	</string>
 	<string id="drunk_dolg_find_item_text">
-		<text>Ich h tte nicht so ausrasten sollen. Die Zone pfuscht einem ins Hirn. Ich dachte, ich h tte gute Nerven, vor nichts Angst, und jetzt das. Dieses Heulen in den Ohren. Alles war wie sonst. Ein Erkundungsauftrag ins Dunkle Tal, wir sind mit Kriwoi in den Graben runter, um den Rest der Gruppe zu decken, und dann auf einmal dieses Heulen. Ich hatte Panik. Verdammt, ich wei  nicht mal mehr, wie ich zu den Koordinaten bin. Als ich zu Basis zur ck bin, hat Woronin mich fast auf der Stelle erschossen: er hatte mir gerade eine verbesserte Kanone gegeben, so als Belohnung. Und ich ... habe Panik bekommen, bin abgehauen und habe die Kanone da vergessen. K nntest du sie mir holen, denn wo sollte ich ohne eine ordentliche Waffe hin?</text>
+		<text>Ich hätte nicht so ausrasten sollen. Die Zone pfuscht einem ins Hirn. Ich dachte, ich hätte gute Nerven, vor nichts Angst, und jetzt das. Dieses Heulen in den Ohren. Alles war wie sonst. Ein Erkundungsauftrag ins Dunkle Tal, wir sind mit Kriwoi in den Graben runter, um den Rest der Gruppe zu decken, und dann auf einmal dieses Heulen. Ich hatte Panik. Verdammt, ich weiß nicht mal mehr, wie ich zu den Koordinaten bin. Als ich zu Basis zurück bin, hat Woronin mich fast auf der Stelle erschossen: er hatte mir gerade eine verbesserte Kanone gegeben, so als Belohnung. Und ich ... habe Panik bekommen, bin abgehauen und habe die Kanone da vergessen. Könntest du sie mir holen, denn wo sollte ich ohne eine ordentliche Waffe hin?</text>
 	</string>
 	<string id="ecolog_eliminate_lager_1">
-		<text>Das Lager der Schnorks ausr uchern.</text>
+		<text>Das Lager der Schnorks ausräuchern.</text>
 	</string>
 	<string id="ecolog_eliminate_lager_1_descr">
-		<text>Das Lager der Schnorks in Jantar muss ausger uchert werden.</text>
+		<text>Das Lager der Schnorks in Jantar muss ausgeräuchert werden.</text>
 	</string>
 	<string id="ecolog_eliminate_lager_1_text">
-		<text>Ich m chte dir Geld anbieten, das du bekommst, wenn die Schnorks im Sumpf aufh ren, mich und meine Kollegen zu terrorisieren. Manchmal k nnen wir uns bei den Experimenten nicht mal konzentrieren.</text>
+		<text>Ich möchte dir Geld anbieten, das du bekommst, wenn die Schnorks im Sumpf aufhören, mich und meine Kollegen zu terrorisieren. Manchmal können wir uns bei den Experimenten nicht mal konzentrieren.</text>
 	</string>
 	<string id="ecolog_eliminate_lager_2">
-		<text>Das Lager der Wildhunde zerst ren.</text>
+		<text>Das Lager der Wildhunde zerstören.</text>
 	</string>
 	<string id="ecolog_eliminate_lager_2_descr">
-		<text>Lager der Wildhunde im Wildgebiet zerst ren.</text>
+		<text>Lager der Wildhunde im Wildgebiet zerstören.</text>
 	</string>
 	<string id="ecolog_eliminate_lager_2_text">
-		<text>Da ist ein Lager mutierter Wildhunde beim Wildgebiet. Ich will, dass du da hingehst und mal aufr umst. Diese Mutanten sind besonders gef hrlich f r unsere Expeditionen. Vielleicht w re ein Zoologe anderer Meinung, aber schlie lich ist das kein Zoo hier. Diese Biester verbreiten Tollwut, Seuchen und wer wei  was sonst noch.</text>
+		<text>Da ist ein Lager mutierter Wildhunde beim Wildgebiet. Ich will, dass du da hingehst und mal aufräumst. Diese Mutanten sind besonders gefährlich für unsere Expeditionen. Vielleicht wäre ein Zoologe anderer Meinung, aber schließlich ist das kein Zoo hier. Diese Biester verbreiten Tollwut, Seuchen und wer weiß was sonst noch.</text>
 	</string>
 	<string id="ecolog_find_artefact_1">
 		<text>Das Artefakt "Feuerball" liefern.</text>
@@ -407,25 +407,25 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Die Wissenschaftler brauchen das Artefakt "Feuerball" zur Erforschung.</text>
 	</string>
 	<string id="ecolog_find_artefact_1_text">
-		<text>Wir haben das Artefakt unter Laborbedingungen hergestellt! Das ist ein Durchbruch! Jetzt wird alle Welt von unserem Erfolg h ren. Der Nobelpreis ist ganz nah! Dies ist das einzigartige Artefakt "Pellicula", es sch tzt vor Ver tzungen. Ich kann es dir im Namen der Wissenschaft  berreichen. Ich verlange jedoch eine Gegenleistung - ich brauche als Entsch digung das Artefakt "Feuerball", hast du davon geh rt? Die einzigartigen thermischen Eigenschaften seiner Oberfl che m ssen gr ndlich erforscht werden.</text>
+		<text>Wir haben das Artefakt unter Laborbedingungen hergestellt! Das ist ein Durchbruch! Jetzt wird alle Welt von unserem Erfolg hören. Der Nobelpreis ist ganz nah! Dies ist das einzigartige Artefakt "Pellicula", es schützt vor Verätzungen. Ich kann es dir im Namen der Wissenschaft überreichen. Ich verlange jedoch eine Gegenleistung - ich brauche als Entschädigung das Artefakt "Feuerball", hast du davon gehört? Die einzigartigen thermischen Eigenschaften seiner Oberfläche müssen gründlich erforscht werden.</text>
 	</string>
 	<string id="ecolog_find_artefact_2">
 		<text>Das Artefakt "Gravit" finden.</text>
 	</string>
 	<string id="ecolog_find_artefact_2_descr">
-		<text>Das Artefakt "Gravit" muss in die H nde der Wissenschaftler gelangen.</text>
+		<text>Das Artefakt "Gravit" muss in die Hände der Wissenschaftler gelangen.</text>
 	</string>
 	<string id="ecolog_find_artefact_2_text">
-		<text>Wir stehen kurz davor, die Natur der Schwerkraft zu begreifen, und bald k nnen wir einen neue Generation von Maschinen erschaffen, die auf Anti-Schwerkraft beruhen und uns h chstwahrscheinlich zu den Sternen f hren werden. Daher brauchen wir das Artefakt "Gravit", und das schnell.</text>
+		<text>Wir stehen kurz davor, die Natur der Schwerkraft zu begreifen, und bald können wir einen neue Generation von Maschinen erschaffen, die auf Anti-Schwerkraft beruhen und uns höchstwahrscheinlich zu den Sternen führen werden. Daher brauchen wir das Artefakt "Gravit", und das schnell.</text>
 	</string>
 	<string id="ecolog_find_artefact_3">
 		<text>Das Artefakt "Qualle" finden.</text>
 	</string>
 	<string id="ecolog_find_artefact_3_descr">
-		<text>Die Wissenschaftler ben tigen das Artefakt "Qualle" f r Forschungen am Raum-Zeit-Kontinuum.</text>
+		<text>Die Wissenschaftler benötigen das Artefakt "Qualle" für Forschungen am Raum-Zeit-Kontinuum.</text>
 	</string>
 	<string id="ecolog_find_artefact_3_text">
-		<text>Unser Forschungsteam steht kurz davor, das R tsel von Raum und Zeit zu l sen. Teleportation wird bald kein Traum mehr sein! Der Vortex ist eine Anomalie, die den Raum quetscht, und nicht nur Objekte gravit tisch beeinflusst, wie meine verkalkten Gegner meinen, die in ihrem beheizten Institut sitzen und Kreide fressen. Denen werden die Brillen beschlagen, wenn sie sehen, was Feldforschung zu leisten im Stande ist! Bitte hol mir das Artefakt "Qualle".</text>
+		<text>Unser Forschungsteam steht kurz davor, das Rätsel von Raum und Zeit zu lösen. Teleportation wird bald kein Traum mehr sein! Der Vortex ist eine Anomalie, die den Raum quetscht, und nicht nur Objekte gravitätisch beeinflusst, wie meine verkalkten Gegner meinen, die in ihrem beheizten Institut sitzen und Kreide fressen. Denen werden die Brillen beschlagen, wenn sie sehen, was Feldforschung zu leisten im Stande ist! Bitte hol mir das Artefakt "Qualle".</text>
 	</string>
 	<string id="ecolog_find_artefact_4">
 		<text>Das Artefakt "Mondlicht" finden.</text>
@@ -434,52 +434,52 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Den Wissenschaftlern von Jantar brauchen das Artefakt "Mondlicht". Ein gutes Artefakt ...</text>
 	</string>
 	<string id="ecolog_find_artefact_4_text">
-		<text>Wir brauchen unbedingt Material, um unsere Energieforschungen fortzusetzen. Wei t du, wir produzieren mit Hilfe von Artefakten Energie. Nat rlich funktioniert das nur bei niedrigem Wirkungsgrad. Die besten Ergebnisse haben wir mit dem Artekfakt "Mondlicht" erzielt. Bitte bring uns eine Probe davon f r unsere Experimente.</text>
+		<text>Wir brauchen unbedingt Material, um unsere Energieforschungen fortzusetzen. Weißt du, wir produzieren mit Hilfe von Artefakten Energie. Natürlich funktioniert das nur bei niedrigem Wirkungsgrad. Die besten Ergebnisse haben wir mit dem Artekfakt "Mondlicht" erzielt. Bitte bring uns eine Probe davon für unsere Experimente.</text>
 	</string>
 	<string id="ecolog_find_artefact_5">
 		<text>Das Artefakt "Seeigel" finden.</text>
 	</string>
 	<string id="ecolog_find_artefact_5_descr">
-		<text>Die Wissenschaftler brauchen das Artefakt "Seeigel" f r ihre Anz ge.</text>
+		<text>Die Wissenschaftler brauchen das Artefakt "Seeigel" für ihre Anzüge.</text>
 	</string>
 	<string id="ecolog_find_artefact_5_text">
-		<text>Dir ist sicher bewusst, dass unsere Anz ge den besten Schutz vor Strahlung bieten. Das Geheimnis ist, dass wir sie mit einer Lauge aus einem seltenen Artefakt s ttigen. Um eine weitere Reihe dieser Anz ge herzustellen, brauchen wir ein solches Artefakt. Man nennt es "Seeigel".</text>
+		<text>Dir ist sicher bewusst, dass unsere Anzüge den besten Schutz vor Strahlung bieten. Das Geheimnis ist, dass wir sie mit einer Lauge aus einem seltenen Artefakt sättigen. Um eine weitere Reihe dieser Anzüge herzustellen, brauchen wir ein solches Artefakt. Man nennt es "Seeigel".</text>
 	</string>
 	<string id="ecolog_find_item_1">
 		<text>Den einzigartigen Anzug beschaffen.</text>
 	</string>
 	<string id="ecolog_find_item_1_descr">
-		<text>Der ungew hnlichen Anzug aus dem Untergrundlabor X16 muss beschafft werden.</text>
+		<text>Der ungewöhnlichen Anzug aus dem Untergrundlabor X16 muss beschafft werden.</text>
 	</string>
 	<string id="ecolog_find_item_1_text">
-		<text>Wir m ssen uns unterhalten. Wir haben vor kurzem einen Stalker angeheuert, der ins Labor gehen sollte. Mir fiel sein ungew hnlicher Anzug auf - er strahlte Hitze aus. Der Stalker sagte, der Anzug selbst k nne Wunden heilen. Egal - der Stalker kehrte nicht aus dem Labor zur ck. Nein - denk nicht mal daran! Wir haben nichts damit zu tun! Und sein Anzug ist wahrscheinlich noch da. Ich h tte ihn sehr gern f r die Forschung.</text>
+		<text>Wir müssen uns unterhalten. Wir haben vor kurzem einen Stalker angeheuert, der ins Labor gehen sollte. Mir fiel sein ungewöhnlicher Anzug auf - er strahlte Hitze aus. Der Stalker sagte, der Anzug selbst könne Wunden heilen. Egal - der Stalker kehrte nicht aus dem Labor zurück. Nein - denk nicht mal daran! Wir haben nichts damit zu tun! Und sein Anzug ist wahrscheinlich noch da. Ich hätte ihn sehr gern für die Forschung.</text>
 	</string>
 	<string id="ecolog_monster_part_1">
 		<text>Einen Teil der Schnorkleiche holen.</text>
 	</string>
 	<string id="ecolog_monster_part_1_descr">
-		<text>Es ist ein Kinderspiel, in dieser Gegend ein St ck Schnork zu kriegen.</text>
+		<text>Es ist ein Kinderspiel, in dieser Gegend ein Stück Schnork zu kriegen.</text>
 	</string>
 	<string id="ecolog_monster_part_1_text">
-		<text>Oh, junger Mann! Wei t du, wir ben tigen den K rperteil einer bestimmten Kreatur. Deine Kollegen nennen sie Zombie, und ich muss sagen, dieser Name ist sehr unpassend f r einen K rper, der sich selbst derart modifiziert hat und ... egal, wir brauchen einen Arm. Du sollst wissen: Unser Team arbeitet daran, die Gliedma en von ...  h ... Zombies auf Leute zu  bertragen, die einen Arm oder ein Bein verloren haben. Des Weiteren wollen wir die Organe nutzen; im Moment ist das alles jedoch noch pure Theorie. Also, der Arm! H ttest du Interesse, junger Mann?</text>
+		<text>Oh, junger Mann! Weißt du, wir benötigen den Körperteil einer bestimmten Kreatur. Deine Kollegen nennen sie Zombie, und ich muss sagen, dieser Name ist sehr unpassend für einen Körper, der sich selbst derart modifiziert hat und ... egal, wir brauchen einen Arm. Du sollst wissen: Unser Team arbeitet daran, die Gliedmaßen von ... äh ... Zombies auf Leute zu übertragen, die einen Arm oder ein Bein verloren haben. Des Weiteren wollen wir die Organe nutzen; im Moment ist das alles jedoch noch pure Theorie. Also, der Arm! Hättest du Interesse, junger Mann?</text>
 	</string>
 	<string id="ecolog_monster_part_2">
 		<text>Ein Fleisch-Auge beschaffen.</text>
 	</string>
 	<string id="ecolog_monster_part_2_descr">
-		<text>Ich halte meinen Hintern besser von diesem Eierk pfen fern! Na sch n, ich hole ihnen ein Fleisch-Auge, und mit ihren Freiwilligen sollen sie machen, was sie wollen.</text>
+		<text>Ich halte meinen Hintern besser von diesem Eierköpfen fern! Na schön, ich hole ihnen ein Fleisch-Auge, und mit ihren Freiwilligen sollen sie machen, was sie wollen.</text>
 	</string>
 	<string id="ecolog_monster_part_2_text">
-		<text>Gute Nachrichten, junger Mann: Wir haben einen interessanten Auftrag f r dich! Als intellektuelles und erfahrenes Wesen wirst du die Theorien meiner Kollegen zu sch tzen wissen. Es ist so, dass die Augen jener Kreaturen, die gew hnlich "Fleisch" genannt werden, ausgestattet sind mit ... h rst du zu? ... mit olfaktorischen Rezeptoren! Ihre Augen sehen nicht nur, sie riechen auch! Tja, wir bereiten eine Operation vor, bei der so ein wundersames Auge einem unserer ... ich glaube freiwilligen Assistenten  bertragen wird. Das wird noch ein Trend! Da wir gerade davon sprechen, m chtest du so ein wunderbares Auge eingesetzt bekommen?</text>
+		<text>Gute Nachrichten, junger Mann: Wir haben einen interessanten Auftrag für dich! Als intellektuelles und erfahrenes Wesen wirst du die Theorien meiner Kollegen zu schätzen wissen. Es ist so, dass die Augen jener Kreaturen, die gewöhnlich "Fleisch" genannt werden, ausgestattet sind mit ... hörst du zu? ... mit olfaktorischen Rezeptoren! Ihre Augen sehen nicht nur, sie riechen auch! Tja, wir bereiten eine Operation vor, bei der so ein wundersames Auge einem unserer ... ich glaube freiwilligen Assistenten übertragen wird. Das wird noch ein Trend! Da wir gerade davon sprechen, möchtest du so ein wunderbares Auge eingesetzt bekommen?</text>
 	</string>
 	<string id="ecolog_monster_part_3">
 		<text>Den Schwanz eines Schattenhundes beschaffen.</text>
 	</string>
 	<string id="ecolog_monster_part_3_descr">
-		<text>Sieh mal an, die Wissenschaft! Ein zweites Hirn f r die Menschen? Arme Hunde, einer davon hat jetzt keinen Schwanz mehr.</text>
+		<text>Sieh mal an, die Wissenschaft! Ein zweites Hirn für die Menschen? Arme Hunde, einer davon hat jetzt keinen Schwanz mehr.</text>
 	</string>
 	<string id="ecolog_monster_part_3_text">
-		<text>Guten Tag, lieber Junge! H r mal, hilfst du uns wieder? Ich hoffe, du wei t, dass Hunde Wirbeltiere sind ... Das hei t, ihre Wirbels ule verl uft vom Kopf zum Schwanz. Und jetzt kommt es! Einer meiner jungen Kollegen hat in der Theorie bewiesen, dass die Wirbels ule von Schattenhunden, wie ihr sie nennt, im Schwanz beginnt, nicht im Kopf! Denk nur, das dreht all unsere Mutma ungen  ber dieses Wissensgebiet um. Es gibt bereits gewagte Theorien, dass auch Menschen in der Gegend des Kreuzbeins ein ...  h, dar ber kann man viel diskutieren. Um es kurz zu machen, wir brauchen den Kopf des Schattenhundes, den wir aus Unwissenheit f r seinen Schwanz hielten.</text>
+		<text>Guten Tag, lieber Junge! Hör mal, hilfst du uns wieder? Ich hoffe, du weißt, dass Hunde Wirbeltiere sind ... Das heißt, ihre Wirbelsäule verläuft vom Kopf zum Schwanz. Und jetzt kommt es! Einer meiner jungen Kollegen hat in der Theorie bewiesen, dass die Wirbelsäule von Schattenhunden, wie ihr sie nennt, im Schwanz beginnt, nicht im Kopf! Denk nur, das dreht all unsere Mutmaßungen über dieses Wissensgebiet um. Es gibt bereits gewagte Theorien, dass auch Menschen in der Gegend des Kreuzbeins ein ... äh, darüber kann man viel diskutieren. Um es kurz zu machen, wir brauchen den Kopf des Schattenhundes, den wir aus Unwissenheit für seinen Schwanz hielten.</text>
 	</string>
 	<string id="ecolog_monster_part_4">
 		<text>Das Bein eines Wildschweins beschaffen.</text>
@@ -488,16 +488,16 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Feinschmecker-Adrenalinjunkies ... na gut, auf zum Schinken.</text>
 	</string>
 	<string id="ecolog_monster_part_4_text">
-		<text>Willkommen,  h ... Reisender! Ich bin so froh, dich zu sehen - wir brauchen jemanden f r ein sehr wichtiges Experiment. Mein Kollege Brenter will versuchen, aus der  rtlichen Fauna eine Mahlzeit zuzubereiten, als praktisches Experiment, um den Einfluss mutierten Proteins auf den menschlichen K rper zu studieren. Wir h tten gern Wildschwein. Das Bein eines Wildschweins, verstehst du? Und, wenn es geht, vom ges ndesten Exemplar.</text>
+		<text>Willkommen, äh ... Reisender! Ich bin so froh, dich zu sehen - wir brauchen jemanden für ein sehr wichtiges Experiment. Mein Kollege Brenter will versuchen, aus der örtlichen Fauna eine Mahlzeit zuzubereiten, als praktisches Experiment, um den Einfluss mutierten Proteins auf den menschlichen Körper zu studieren. Wir hätten gern Wildschwein. Das Bein eines Wildschweins, verstehst du? Und, wenn es geht, vom gesündesten Exemplar.</text>
 	</string>
 	<string id="ecolog_monster_part_5">
 		<text>Die Pfote eines Schnorks beschaffen.</text>
 	</string>
 	<string id="ecolog_monster_part_5_descr">
-		<text>Die Schnorks heilen ... was f r Eierk pfe! Na gut, wenigstens h pfen die Monster dann nicht mehr herum.</text>
+		<text>Die Schnorks heilen ... was für Eierköpfe! Na gut, wenigstens hüpfen die Monster dann nicht mehr herum.</text>
 	</string>
 	<string id="ecolog_monster_part_5_text">
-		<text>Gute Nachrichten, lieber Stalker! Wir haben unser Gehirn  ber folgender Frage zermartert: Warum schweben Schnorks geradezu  ber dem Boden, krabbeln W nde hinauf, springen erstaunlich weit ... Die L sung war sehr einfach, junger Mann! Schnorks leiden an Bodenangst! An Geophobie! Die Rezeptoren an den Enden ihrer Gliedma en senden einen starken Reiz aus, wenn sie mit dem Boden oder einer mehr oder weniger horizontalen Fl che in Kontakt sind. Wir brauchen eine Schnork-Pfote: wir wollen einen Impfstoff verabreichen, der die armen Wesen vielleicht heilen kann.</text>
+		<text>Gute Nachrichten, lieber Stalker! Wir haben unser Gehirn über folgender Frage zermartert: Warum schweben Schnorks geradezu über dem Boden, krabbeln Wände hinauf, springen erstaunlich weit ... Die Lösung war sehr einfach, junger Mann! Schnorks leiden an Bodenangst! An Geophobie! Die Rezeptoren an den Enden ihrer Gliedmaßen senden einen starken Reiz aus, wenn sie mit dem Boden oder einer mehr oder weniger horizontalen Fläche in Kontakt sind. Wir brauchen eine Schnork-Pfote: wir wollen einen Impfstoff verabreichen, der die armen Wesen vielleicht heilen kann.</text>
 	</string>
 	<string id="eliminate_lager">
 		<text>Lager vernichten</text>
@@ -506,76 +506,76 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Den Gegenstand finden.</text>
 	</string>
 	<string id="freedom_defend_lager_1">
-		<text>Die Stalker am Forschungsinstitut besch tzen.</text>
+		<text>Die Stalker am Forschungsinstitut beschützen.</text>
 	</string>
 	<string id="freedom_defend_lager_1_descr">
-		<text>Der Banditenangriff auf das Lager der Stalker am Forschungsinstitut muss zur ckgeschlagen werden.</text>
+		<text>Der Banditenangriff auf das Lager der Stalker am Forschungsinstitut muss zurückgeschlagen werden.</text>
 	</string>
 	<string id="freedom_defend_lager_1_text">
-		<text>Eine Gruppe von Stalkern lebt am Forschungsinstitut. Ganz normale Typen, die meinen, dass die Zone ein Ort der Freiheit ist, Gesetze hier nicht gelten und man einfach nur nach seiner eigenen Moral leben sollte. Und jetzt denken sie dar ber nach, ob sie sich uns vielleicht anschlie en sollten. Hilfst du ihnen, die Banditen zu bek mpfen? Wir schicken dir Munition.</text>
+		<text>Eine Gruppe von Stalkern lebt am Forschungsinstitut. Ganz normale Typen, die meinen, dass die Zone ein Ort der Freiheit ist, Gesetze hier nicht gelten und man einfach nur nach seiner eigenen Moral leben sollte. Und jetzt denken sie darüber nach, ob sie sich uns vielleicht anschließen sollten. Hilfst du ihnen, die Banditen zu bekämpfen? Wir schicken dir Munition.</text>
 	</string>
 	<string id="freedom_defend_lager_2">
 		<text>Die Grenze verteidigen.</text>
 	</string>
 	<string id="freedom_defend_lager_2_descr">
-		<text>Die Grenze nahe der Milit rlagerh user muss gegen Monstern verteidigt werden.</text>
+		<text>Die Grenze nahe der Militärlagerhäuser muss gegen Monstern verteidigt werden.</text>
 	</string>
 	<string id="freedom_defend_lager_2_text">
-		<text>Die Monster kommen wieder hinter dem Schmelzer hervor. Hilf den Typen an der Grenze, sie zur ckzuhalten. Ich garantiere eine Belohnung.</text>
+		<text>Die Monster kommen wieder hinter dem Schmelzer hervor. Hilf den Typen an der Grenze, sie zurückzuhalten. Ich garantiere eine Belohnung.</text>
 	</string>
 	<string id="freedom_eliminate_camp_1">
-		<text>Das Milit rlager zerst ren.</text>
+		<text>Das Militärlager zerstören.</text>
 	</string>
 	<string id="freedom_eliminate_camp_1_descr">
-		<text>Das Milit rlager am Agroprom-Forschungsinstitut muss zerst rt werden.</text>
+		<text>Das Militärlager am Agroprom-Forschungsinstitut muss zerstört werden.</text>
 	</string>
 	<string id="freedom_eliminate_camp_1_text">
-		<text>Die Armee will nach und nach die Zone  bernehmen. Wir m ssen sie aufhalten, sonst wird die Zone zu einem Forschungszoo. Eins der Milit rlager ist am Agroprom-Forschungsinstitut. Wenn du dort ein bisschen aufr umst, k nnen wir die  bernahme aufhalten.</text>
+		<text>Die Armee will nach und nach die Zone übernehmen. Wir müssen sie aufhalten, sonst wird die Zone zu einem Forschungszoo. Eins der Militärlager ist am Agroprom-Forschungsinstitut. Wenn du dort ein bisschen aufräumst, können wir die Übernahme aufhalten.</text>
 	</string>
 	<string id="freedom_eliminate_camp_2">
-		<text>Das Lager der S ldner zerst ren.</text>
+		<text>Das Lager der Söldner zerstören.</text>
 	</string>
 	<string id="freedom_eliminate_camp_2_descr">
-		<text>Das Lager der S ldner bei den Lagerh usern muss zerst rt werden.</text>
+		<text>Das Lager der Söldner bei den Lagerhäusern muss zerstört werden.</text>
 	</string>
 	<string id="freedom_eliminate_camp_2_text">
-		<text>So sieht es aus: Das Lager der S ldner muss zerst rt werden. Wir k nnten sie in Ruhe lassen, das sind gute Sch tzen ... nur leider wollen sie es nicht anders. Schleichen st ndig in unser Gebiet und versuchen, meine Leute zu bestechen. Es wird Zeit, ihnen eine Lektion zu erteilen. Bist du dabei? </text>
+		<text>So sieht es aus: Das Lager der Söldner muss zerstört werden. Wir könnten sie in Ruhe lassen, das sind gute Schützen ... nur leider wollen sie es nicht anders. Schleichen ständig in unser Gebiet und versuchen, meine Leute zu bestechen. Es wird Zeit, ihnen eine Lektion zu erteilen. Bist du dabei? </text>
 	</string>
 	<string id="freedom_eliminate_camp_3">
-		<text>Das S uberungskommando der W chter ausschalten.</text>
+		<text>Das Säuberungskommando der Wächter ausschalten.</text>
 	</string>
 	<string id="freedom_eliminate_camp_3_descr">
-		<text>Das S uberungskommando der W chter in Rostok muss ausgeschaltet werden.</text>
+		<text>Das Säuberungskommando der Wächter in Rostok muss ausgeschaltet werden.</text>
 	</string>
 	<string id="freedom_eliminate_camp_3_text">
-		<text>Lust auf eine Jagd? Das S uberungskommando der W chter ist in Rostok aufgetaucht. Das bietet eine gro artige Chance, sie zu  berraschen. Die W chter schicken Leute aus, die Monster jagen, aber dabei erschie en sie alle, deren Nase ihnen nicht passt. Das Kommando muss erledigt sein, bevor die W chter Rostok erreichen. Es sollten nicht zu viele Leute dabei sein: Drei oder vier Veteranen und ein paar Anf nger.</text>
+		<text>Lust auf eine Jagd? Das Säuberungskommando der Wächter ist in Rostok aufgetaucht. Das bietet eine großartige Chance, sie zu überraschen. Die Wächter schicken Leute aus, die Monster jagen, aber dabei erschießen sie alle, deren Nase ihnen nicht passt. Das Kommando muss erledigt sein, bevor die Wächter Rostok erreichen. Es sollten nicht zu viele Leute dabei sein: Drei oder vier Veteranen und ein paar Anfänger.</text>
 	</string>
 	<string id="freedom_eliminate_camp_4">
-		<text>Den W chter-Au enposten zerst ren.</text>
+		<text>Den Wächter-Außenposten zerstören.</text>
 	</string>
 	<string id="freedom_eliminate_camp_4_descr">
-		<text>Der W chter-Au enposten an der M llhalde muss schnellstens zerst rt werden.</text>
+		<text>Der Wächter-Außenposten an der Müllhalde muss schnellstens zerstört werden.</text>
 	</string>
 	<string id="freedom_eliminate_camp_4_text">
-		<text>Es gibt einen sehr dringenden Auftrag. Die Einheit der W chter muss vom Weg zwischen der M llhalde bis zur Bar verschwinden ... Sie verstecken sich dort und rauben Vorbeikommende aus. Wir erwarten eine wichtige Lieferung, aber es kann nicht ausgeschlossen werden, dass die W chter bereits Bescheid wissen  ber unseren Kurier und versuchen werden, ihm aufzulauern. Wir m ssen diese Wegblockade wegschaffen, und wenn es nur f r kurze Zeit ist. Ok?</text>
+		<text>Es gibt einen sehr dringenden Auftrag. Die Einheit der Wächter muss vom Weg zwischen der Müllhalde bis zur Bar verschwinden ... Sie verstecken sich dort und rauben Vorbeikommende aus. Wir erwarten eine wichtige Lieferung, aber es kann nicht ausgeschlossen werden, dass die Wächter bereits Bescheid wissen über unseren Kurier und versuchen werden, ihm aufzulauern. Wir müssen diese Wegblockade wegschaffen, und wenn es nur für kurze Zeit ist. Ok?</text>
 	</string>
 	<string id="freedom_eliminate_camp_5">
-		<text>Das Dorf s ubern.</text>
+		<text>Das Dorf säubern.</text>
 	</string>
 	<string id="freedom_eliminate_camp_5_descr">
-		<text>Das Dorf muss von den Blutsaugern befreit und wenn m glich der Telepathen vernichtet werden.</text>
+		<text>Das Dorf muss von den Blutsaugern befreit und wenn möglich der Telepathen vernichtet werden.</text>
 	</string>
 	<string id="freedom_eliminate_camp_5_text">
-		<text>Mann, sieh sich einer diese blutsaugenden Monster an, von denen das Dorf wimmelt! Niemand geht n her als hundert Meter ran, au er komplette Vollidioten. Und manche sagen, sie h tten dort Dinge gesehen ... Was wir jetzt brauchen ist ein Telepath! Es wird jedenfalls Zeit, dem ein Ende zu machen. Ich zwinge dich nicht, und um die Wahrheit zu sagen, w rde ich selber nicht dorthin gehen. Aber wenn du keine Angst hast, wird meine Dankbarkeit grenzenlos sein.</text>
+		<text>Mann, sieh sich einer diese blutsaugenden Monster an, von denen das Dorf wimmelt! Niemand geht näher als hundert Meter ran, außer komplette Vollidioten. Und manche sagen, sie hätten dort Dinge gesehen ... Was wir jetzt brauchen ist ein Telepath! Es wird jedenfalls Zeit, dem ein Ende zu machen. Ich zwinge dich nicht, und um die Wahrheit zu sagen, würde ich selber nicht dorthin gehen. Aber wenn du keine Angst hast, wird meine Dankbarkeit grenzenlos sein.</text>
 	</string>
 	<string id="freedom_eliminate_camp_6">
-		<text>Die Fleisch- und Wildschweinherde zerst ren.</text>
+		<text>Die Fleisch- und Wildschweinherde zerstören.</text>
 	</string>
 	<string id="freedom_eliminate_camp_6_descr">
-		<text>Die Fleisch- und Wildschweinherde bei den Milit rlagerh usern muss vernichten werden.</text>
+		<text>Die Fleisch- und Wildschweinherde bei den Militärlagerhäusern muss vernichten werden.</text>
 	</string>
 	<string id="freedom_eliminate_camp_6_text">
-		<text>Unser Scharfsch tze sitzt am Eingang der Basis. Eines nachts sitzt er in dem Turm - Es ist eine ruhige Nacht - und pl tzlich gibt es eine Explosion, wildes Kreischen und ein Blitz! Was zum ...! Es stellte sich heraus, dass Wildschweine und andere Wesen durch das Minenfeld streifen. Wei  der Teufel, warum sie das tun, aber mindestens einmal pro Woche wird eines von ihnen durch eine Mine zerfetzt. Der Auftrag ist einfach. Erledige sie alle, in Ordnung?</text>
+		<text>Unser Scharfschütze sitzt am Eingang der Basis. Eines nachts sitzt er in dem Turm - Es ist eine ruhige Nacht - und plötzlich gibt es eine Explosion, wildes Kreischen und ein Blitz! Was zum ...! Es stellte sich heraus, dass Wildschweine und andere Wesen durch das Minenfeld streifen. Weiß der Teufel, warum sie das tun, aber mindestens einmal pro Woche wird eines von ihnen durch eine Mine zerfetzt. Der Auftrag ist einfach. Erledige sie alle, in Ordnung?</text>
 	</string>
 	<string id="freedom_eliminate_camp_7">
 		<text>Die Nagerherde vernichten.</text>
@@ -584,16 +584,16 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Die Nagerherde im Wildgebiet muss vernichtet werden.</text>
 	</string>
 	<string id="freedom_eliminate_camp_7_text">
-		<text>In der N he unserer Basis gibt es keine Nager und diese Viecher k nnen  berall hin gelangen. Vor kurzem waren hier so viele, das w rdest du kaum glauben. Zwei Monate mussten wir uns mit ihnen rumschlagen, ha, ha, ha. Wir haben also versucht herauszufinden, von wo die Nager in unsere Basis eingedrungen sind. Aus dem Wildgebiet, verstehst du?  Ich f rchte, dass sich diese springenden Ratten vermehren und zur ckkommen. Jemand muss sich darum k mmern. Bist du dabei?</text>
+		<text>In der Nähe unserer Basis gibt es keine Nager und diese Viecher können überall hin gelangen. Vor kurzem waren hier so viele, das würdest du kaum glauben. Zwei Monate mussten wir uns mit ihnen rumschlagen, ha, ha, ha. Wir haben also versucht herauszufinden, von wo die Nager in unsere Basis eingedrungen sind. Aus dem Wildgebiet, verstehst du?  Ich fürchte, dass sich diese springenden Ratten vermehren und zurückkommen. Jemand muss sich darum kümmern. Bist du dabei?</text>
 	</string>
 	<string id="freedom_find_item_1">
-		<text>Das Scharfsch tzengewehr stehlen.</text>
+		<text>Das Scharfschützengewehr stehlen.</text>
 	</string>
 	<string id="freedom_find_item_1_descr">
-		<text>Das modifizierte SVDm 2 aus dem Lagerhaus der W chter muss zerst rt werden.</text>
+		<text>Das modifizierte SVDm 2 aus dem Lagerhaus der Wächter muss zerstört werden.</text>
 	</string>
 	<string id="freedom_find_item_1_text">
-		<text>Das ist ein besonderer Auftrag ... und auch ein schwieriger. Du musst eine verbesserte Dragunow aus dem Lagerhaus der W chter klauen. Das Ding hat auch einen bestimmten Namen, aber egal. Das Wichtigste ist, dass du mit dem hervorragenden Zielfernrohr und dem R cksto puffer einem Eichh rnchen aus 400 Meter Entfernung ins Auge schie en kannst. Du machst es also?</text>
+		<text>Das ist ein besonderer Auftrag ... und auch ein schwieriger. Du musst eine verbesserte Dragunow aus dem Lagerhaus der Wächter klauen. Das Ding hat auch einen bestimmten Namen, aber egal. Das Wichtigste ist, dass du mit dem hervorragenden Zielfernrohr und dem Rückstoßpuffer einem Eichhörnchen aus 400 Meter Entfernung ins Auge schießen kannst. Du machst es also?</text>
 	</string>
 	<string id="freedom_find_item_2">
 		<text>Das modifizierte Chaser 13 holen.</text>
@@ -602,7 +602,7 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Die modifizierte Chaser 13 von den Wissenschaftlern beschaffen.</text>
 	</string>
 	<string id="freedom_find_item_2_text">
-		<text>Ich habe geh rt, dass diese Eierk pfe es geschafft haben das Chaser durch ein Artefakt zu verbessern. Die Durchschlagskraft ist der einer Haubitze ebenb rtig. Warum besuchst du sie nicht einmal und versuchst mit ihnen zu verhandeln. Ich komme f r alle Kosten auf!</text>
+		<text>Ich habe gehört, dass diese Eierköpfe es geschafft haben das Chaser durch ein Artefakt zu verbessern. Die Durchschlagskraft ist der einer Haubitze ebenbürtig. Warum besuchst du sie nicht einmal und versuchst mit ihnen zu verhandeln. Ich komme für alle Kosten auf!</text>
 	</string>
 	<string id="freedom_find_item_3">
 		<text>Die kugelsichere Weste beschaffen.</text>
@@ -611,34 +611,34 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Das neue Modell der kugelsicheren Weste besorgen.</text>
 	</string>
 	<string id="freedom_find_item_3_text">
-		<text>Es gibt Ger chte  ber eine neuartige schussfeste Weste. Das Innenfutter ist mit einem Heilmittel getr nkt, oder so. Jedenfalls heilen kleinere Wunden dadurch extrem schnell. Und stell dir mal vor: Letztens sind zehn Jungs nach Jantar reingelaufen und nur sechs sind zur ckgekommen. Und die trugen drei weitere auf den Schultern. Verstehst du? Einer wurde zur ckgelassen. Wenn du seine kugelsichere Weste findest, k nnen wir sie untersuchen und nachbauen.</text>
+		<text>Es gibt Gerüchte über eine neuartige schussfeste Weste. Das Innenfutter ist mit einem Heilmittel getränkt, oder so. Jedenfalls heilen kleinere Wunden dadurch extrem schnell. Und stell dir mal vor: Letztens sind zehn Jungs nach Jantar reingelaufen und nur sechs sind zurückgekommen. Und die trugen drei weitere auf den Schultern. Verstehst du? Einer wurde zurückgelassen. Wenn du seine kugelsichere Weste findest, können wir sie untersuchen und nachbauen.</text>
 	</string>
 	<string id="freedom_kill_stalker_1">
-		<text>Den Sicherheitschef der W chter ausschalten.</text>
+		<text>Den Sicherheitschef der Wächter ausschalten.</text>
 	</string>
 	<string id="freedom_kill_stalker_1_descr">
-		<text>Der Sicherheitschef der W chter muss so leise wie m glich erledigt werden.</text>
+		<text>Der Sicherheitschef der Wächter muss so leise wie möglich erledigt werden.</text>
 	</string>
 	<string id="freedom_kill_stalker_1_text">
-		<text>Es w re gut, wenn der Sicherheitschef der W chter m glichst leise beiseite geschafft werden w rde. Wenn sie dann absolut im Chaos versinken, kann ich ein paar meiner Jungs in ihre Fraktion einschleusen. Und dann ist alles m glich ... Ok, ich bin lieber still. K mmere dich am besten aus sicherer Entfernung um ihn, ohne gro es Aufsehen.</text>
+		<text>Es wäre gut, wenn der Sicherheitschef der Wächter möglichst leise beiseite geschafft werden würde. Wenn sie dann absolut im Chaos versinken, kann ich ein paar meiner Jungs in ihre Fraktion einschleusen. Und dann ist alles möglich ... Ok, ich bin lieber still. Kümmere dich am besten aus sicherer Entfernung um ihn, ohne großes Aufsehen.</text>
 	</string>
 	<string id="freedom_kill_stalker_2">
-		<text>Hauptmann Iwantsow t ten.</text>
+		<text>Hauptmann Iwantsow töten.</text>
 	</string>
 	<string id="freedom_kill_stalker_2_descr">
-		<text>Hauptmann Iwantsow, die rechte Hand des W chteranf hrers, muss verschwinden.</text>
+		<text>Hauptmann Iwantsow, die rechte Hand des Wächteranführers, muss verschwinden.</text>
 	</string>
 	<string id="freedom_kill_stalker_2_text">
-		<text>Es ist ein schwieriger Auftrag, das sage ich dir im Voraus, aber er ist es wert. Iwantsow, die rechte Hand des W chteranf hrers will es wirklich wissen. Er macht die dreckigsten Jobs: Strafmissionen,  berf lle, ... Wenn du w sstest, wie viele unserer Jungs er auf dem Gewissen hat! Es wird Zeit, dass wir uns um diesen Dreckskerl k mmern. Wenn du diesen Auftrag annimmst, r ste dich gut aus.</text>
+		<text>Es ist ein schwieriger Auftrag, das sage ich dir im Voraus, aber er ist es wert. Iwantsow, die rechte Hand des Wächteranführers will es wirklich wissen. Er macht die dreckigsten Jobs: Strafmissionen, Überfälle, ... Wenn du wüsstest, wie viele unserer Jungs er auf dem Gewissen hat! Es wird Zeit, dass wir uns um diesen Dreckskerl kümmern. Wenn du diesen Auftrag annimmst, rüste dich gut aus.</text>
 	</string>
 	<string id="freedom_kill_stalker_3">
 		<text>Oberst Petrenko erledigen.</text>
 	</string>
 	<string id="freedom_kill_stalker_3_descr">
-		<text>Oberst Petrenko, einer der Gr nder der W chterfraktion, muss eliminiert werden.</text>
+		<text>Oberst Petrenko, einer der Gründer der Wächterfraktion, muss eliminiert werden.</text>
 	</string>
 	<string id="freedom_kill_stalker_3_text">
-		<text>Oberst Petrenko ... Ich wei  nicht, ob du von ihm geh rt hast, oder ihn getroffen hast, aber du solltest dich mal mit ihm unterhalten. Dieser Mann ist einer der Gr nder der W chterfraktion und einer unserer schlimmsten Feinde. Lass w hrend der Unterhaltung so schnell wie m glich die Waffen sprechen, in Ordnung?</text>
+		<text>Oberst Petrenko ... Ich weiß nicht, ob du von ihm gehört hast, oder ihn getroffen hast, aber du solltest dich mal mit ihm unterhalten. Dieser Mann ist einer der Gründer der Wächterfraktion und einer unserer schlimmsten Feinde. Lass während der Unterhaltung so schnell wie möglich die Waffen sprechen, in Ordnung?</text>
 	</string>
 	<string id="freedom_kill_stalker_4">
 		<text>Den neutralen Stalker erledigen.</text>
@@ -647,16 +647,16 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Den neutralen Stalker finden und ausschalten.</text>
 	</string>
 	<string id="freedom_kill_stalker_4_text">
-		<text>Da l uft so ein Kerl in der N he herum. Er hat einen von unseren Jungs niedergeschossen. Und das k nnen wir nicht vergeben. Nimmst du den Auftrag an? Keine Sorge, wir bezahlen dich.</text>
+		<text>Da läuft so ein Kerl in der Nähe herum. Er hat einen von unseren Jungs niedergeschossen. Und das können wir nicht vergeben. Nimmst du den Auftrag an? Keine Sorge, wir bezahlen dich.</text>
 	</string>
 	<string id="freedom_kill_stalker_5">
-		<text>Einen der W chterkommandanten erledigen.</text>
+		<text>Einen der Wächterkommandanten erledigen.</text>
 	</string>
 	<string id="freedom_kill_stalker_5_descr">
-		<text>Einen der W chterkommandanten erledigen.</text>
+		<text>Einen der Wächterkommandanten erledigen.</text>
 	</string>
 	<string id="freedom_kill_stalker_5_text">
-		<text>Ich bezahle f r den Kopf von einem beliebigen W chterkommandanten! Bring ihn her, dann bekommst du die Belohnung.</text>
+		<text>Ich bezahle für den Kopf von einem beliebigen Wächterkommandanten! Bring ihn her, dann bekommst du die Belohnung.</text>
 	</string>
 	<string id="freedom_kill_stalker_6">
 		<text>Den Stalker erledigen, der Vogelscheuche genannt wird.</text>
@@ -665,16 +665,16 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Den Stalker erledigen, den sie Vogelscheuche nennen.</text>
 	</string>
 	<string id="freedom_kill_stalker_6_text">
-		<text>Wir eliminieren auch Monster, nur dass es bei uns rein um das  berleben geht, nicht um Profit. Mutanten sind nicht sehr zahlreich und au erdem sind es auch Lebewesen, daher k nnen wir nicht zulassen, dass sie ausgerottet werden. Manche verstehen das nicht, wie zum Beispiel dieser Stalker Vogelscheuche. Er hat den Spitznamen, weil er ausgestopfte Mutanten verkauft. Wir haben ihn gewarnt, doch es war nutzlos. Wirst du Mutter Natur diesen Dienst erweisen?</text>
+		<text>Wir eliminieren auch Monster, nur dass es bei uns rein um das Überleben geht, nicht um Profit. Mutanten sind nicht sehr zahlreich und außerdem sind es auch Lebewesen, daher können wir nicht zulassen, dass sie ausgerottet werden. Manche verstehen das nicht, wie zum Beispiel dieser Stalker Vogelscheuche. Er hat den Spitznamen, weil er ausgestopfte Mutanten verkauft. Wir haben ihn gewarnt, doch es war nutzlos. Wirst du Mutter Natur diesen Dienst erweisen?</text>
 	</string>
 	<string id="freedom_kill_stalker_7">
 		<text>Den Stalker namens Barin ausschalten.</text>
 	</string>
 	<string id="freedom_kill_stalker_7_descr">
-		<text>De Quartiermeister der W chterfraktion, genannt Barin, muss erledigt werden.</text>
+		<text>De Quartiermeister der Wächterfraktion, genannt Barin, muss erledigt werden.</text>
 	</string>
 	<string id="freedom_kill_stalker_7_text">
-		<text>Ein hochn siger, heuchlerischer, feiger Schleimer ... das ist Barin f r dich. Also ein Mann mir herausragendem Charakter, was ihn an die Spitze der W chter gebracht hat. Er  berwacht momentan die Vorr te der Fraktion und nimmt hin und wieder an  berf llen teil. Wir m ssen ihn loswerden, vor allem, weil er die gesamte W chterlogistik organisiert.</text>
+		<text>Ein hochnäsiger, heuchlerischer, feiger Schleimer ... das ist Barin für dich. Also ein Mann mir herausragendem Charakter, was ihn an die Spitze der Wächter gebracht hat. Er überwacht momentan die Vorräte der Fraktion und nimmt hin und wieder an Überfällen teil. Wir müssen ihn loswerden, vor allem, weil er die gesamte Wächterlogistik organisiert.</text>
 	</string>
 	<string id="freedom_monster_part_1">
 		<text>Eine Wildschweinkeule besorgen.</text>
@@ -686,49 +686,49 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Wir wollen Bob Marleys Geburtstag feiern. Warum bringst du uns nicht ein bisschen leckeren Schinken? Je mehr, desto besser! Jah wird es dir vergelten!</text>
 	</string>
 	<string id="hunter_eliminate_lager">
-		<text>Das Lager der Blutsauger zerst ren.</text>
+		<text>Das Lager der Blutsauger zerstören.</text>
 	</string>
 	<string id="hunter_eliminate_lager_descr">
-		<text>Der J ger fragt, ob das Lager der Blutsauger in dem Dorf in der N he der Milit rlagerh user ausger uchert werden kann. Im Gegenzug verspricht er ein seltenes Artefakt.</text>
+		<text>Der Jäger fragt, ob das Lager der Blutsauger in dem Dorf in der Nähe der Militärlagerhäuser ausgeräuchert werden kann. Im Gegenzug verspricht er ein seltenes Artefakt.</text>
 	</string>
 	<string id="hunter_eliminate_lager_text">
-		<text>Bist du jemals einem Blutsauger  ber den Weg gelaufen? Furchtbar, oder? Tja, letztens war ich in dem Dorf bei den Milit rlagerh usern und habe nach ein paar Artefakten gesucht. Stell dir das vor: Pl tzlich sehe ich einen Blutsauger. Ganz schwarz und  berall mit Narben  berzogen. Er sitzt  ber einem Leichnam und sieht mich nicht. Ich bin in Panik geraten und weggerannt. Das war allerdings nicht so gut, denn er h rte mich und rannte hinter mir her. Dann war da  berall dieses Heulen. Er war wohl nicht allein. Ich glaube dort ist ein Lager von ihnen. Wenn du sie von dort vertreiben k nntest, w rde ich dir ein seltenes Artefakt geben, das ich vor kurzem gefunden habe.</text>
+		<text>Bist du jemals einem Blutsauger über den Weg gelaufen? Furchtbar, oder? Tja, letztens war ich in dem Dorf bei den Militärlagerhäusern und habe nach ein paar Artefakten gesucht. Stell dir das vor: Plötzlich sehe ich einen Blutsauger. Ganz schwarz und überall mit Narben überzogen. Er sitzt über einem Leichnam und sieht mich nicht. Ich bin in Panik geraten und weggerannt. Das war allerdings nicht so gut, denn er hörte mich und rannte hinter mir her. Dann war da überall dieses Heulen. Er war wohl nicht allein. Ich glaube dort ist ein Lager von ihnen. Wenn du sie von dort vertreiben könntest, würde ich dir ein seltenes Artefakt geben, das ich vor kurzem gefunden habe.</text>
 	</string>
 	<string id="kill_stalker">
-		<text>Den Stalker t ten.</text>
+		<text>Den Stalker töten.</text>
 	</string>
 	<string id="lisiy_kill_stalker">
-		<text>Den Verr ter t ten.</text>
+		<text>Den Verräter töten.</text>
 	</string>
 	<string id="lisiy_kill_stalker_descr">
 		<text>Der Glatzkopf will, dass ein Stalker erledigt wird, der mit einem seltenen Artefakt entkommen ist.</text>
 	</string>
 	<string id="lisiy_kill_stalker_text">
-		<text>Vor einiger Zeit suchte ich mit einem anderen Stalker direkt neben dem Schmelzer nach einem Artefakt. Wir haben eine Menge gefunden, sogar Artefakte, die ich noch nie zuvor gesehen hatte. Dieser Hundesohn hat mich aber reingelegt. W hrend der letzten Nacht hat er die meisten wertvollen Sachen versteckt. Dann hat er versucht, mich davon zu  berzeugen, dass sie von allein verschwunden w ren. Vor ein paar Tagen sah ich dann eins dieser Artefakte beim Wirt. Ich war so sauer ... Egal, wenn du ihn findest, Stalker, schick ihm einen t dlichen Gru  von mir. Und wenn du gerade dabei bist, findest du ja vielleicht auch sein Geheimversteck mit dem zweiten Artefakt. Es ist einiges wert.</text>
+		<text>Vor einiger Zeit suchte ich mit einem anderen Stalker direkt neben dem Schmelzer nach einem Artefakt. Wir haben eine Menge gefunden, sogar Artefakte, die ich noch nie zuvor gesehen hatte. Dieser Hundesohn hat mich aber reingelegt. Während der letzten Nacht hat er die meisten wertvollen Sachen versteckt. Dann hat er versucht, mich davon zu überzeugen, dass sie von allein verschwunden wären. Vor ein paar Tagen sah ich dann eins dieser Artefakte beim Wirt. Ich war so sauer ... Egal, wenn du ihn findest, Stalker, schick ihm einen tödlichen Gruß von mir. Und wenn du gerade dabei bist, findest du ja vielleicht auch sein Geheimversteck mit dem zweiten Artefakt. Es ist einiges wert.</text>
 	</string>
 	<string id="mercenary_kill_stalker">
 		<text>Den Meister-Stalker erledigen.</text>
 	</string>
 	<string id="mercenary_kill_stalker_descr">
-		<text>Der S ldner wird f r jeden erledigten Meister gut bezahlen. Je weniger Meister es gibt, desto besser f r die S ldner.</text>
+		<text>Der Söldner wird für jeden erledigten Meister gut bezahlen. Je weniger Meister es gibt, desto besser für die Söldner.</text>
 	</string>
 	<string id="mercenary_kill_stalker_text">
-		<text>Es ist nicht in unserem Interesse, dass in der gesamten Zone lebende Panzer herumlaufen - Stalker, die bis an die Z hne bewaffnet und mit Exoskelett gesch tzt sind. Sie machen die Arbeit unn tig kompliziert und gef hrlich. Je weniger es von ihnen gibt, desto besser f r uns. Wenn du einen von ihnen erledigst, bekommst du eine Belohnung.</text>
+		<text>Es ist nicht in unserem Interesse, dass in der gesamten Zone lebende Panzer herumlaufen - Stalker, die bis an die Zähne bewaffnet und mit Exoskelett geschützt sind. Sie machen die Arbeit unnötig kompliziert und gefährlich. Je weniger es von ihnen gibt, desto besser für uns. Wenn du einen von ihnen erledigst, bekommst du eine Belohnung.</text>
 	</string>
 	<string id="monster_part">
-		<text>Ein K rperteil eines Monsters besorgen.</text>
+		<text>Ein Körperteil eines Monsters besorgen.</text>
 	</string>
 	<string id="petrenko_kill_stalker">
-		<text>Den  bergelaufenen Stalker beseitigen.</text>
+		<text>Den übergelaufenen Stalker beseitigen.</text>
 	</string>
 	<string id="petrenko_kill_stalker_descr">
-		<text>Ein Stalker, der fr her zu den W chtern geh rte, ist vor kurzem zur Freiheitsfraktion  bergelaufen. Er kannte viele wichtige Details  ber Prypjat. Er muss sterben, bevor er zu viel verr t.</text>
+		<text>Ein Stalker, der früher zu den Wächtern gehörte, ist vor kurzem zur Freiheitsfraktion übergelaufen. Er kannte viele wichtige Details über Prypjat. Er muss sterben, bevor er zu viel verrät.</text>
 	</string>
 	<string id="petrenko_kill_stalker_text">
-		<text>Zuh ren. Wir haben Karten von Prypjat, die allerdings schon etwas  lter sind, aus den fr hen 90er Jahren. Das Wichtige an diesen Karten ist jedoch, dass s mtliche Milit reinrichtungen darauf eingezeichnet sind: unterirdische Lager, Luftschutzbunker usw. Im Moment n tzen sie uns wenig, aber wenn wir einen Weg nach Prypjat finden sollten, werden diese Informationen unbezahlbar sein. Da gibt es allerdings ein Problem. Einer der Offiziere ist zur Freiheitsfraktion  bergelaufen und er kannte diese Informationen. Er muss also eliminiert werden, bevor er zu viel verraten kann.</text>
+		<text>Zuhören. Wir haben Karten von Prypjat, die allerdings schon etwas älter sind, aus den frühen 90er Jahren. Das Wichtige an diesen Karten ist jedoch, dass sämtliche Militäreinrichtungen darauf eingezeichnet sind: unterirdische Lager, Luftschutzbunker usw. Im Moment nützen sie uns wenig, aber wenn wir einen Weg nach Prypjat finden sollten, werden diese Informationen unbezahlbar sein. Da gibt es allerdings ein Problem. Einer der Offiziere ist zur Freiheitsfraktion übergelaufen und er kannte diese Informationen. Er muss also eliminiert werden, bevor er zu viel verraten kann.</text>
 	</string>
 	<string id="return_for_reward">
-		<text>Zur ckkehren und die Belohnung kassieren.</text>
+		<text>Zurückkehren und die Belohnung kassieren.</text>
 	</string>
 	<string id="return_for_reward_bring">
 		<text>Dem Kunden bringen, was ihm versprochen wurde.</text>
@@ -737,16 +737,16 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Den vollendeten Anzug finden.</text>
 	</string>
 	<string id="shustriy_find_item_descr">
-		<text>Nimble berichtete uns von dem Banditenlager, wo sie den Habar versteckt halten. Er m chte den gestohlenen Anzug zur ck haben, gegen eine Belohnung, nat rlich.</text>
+		<text>Nimble berichtete uns von dem Banditenlager, wo sie den Habar versteckt halten. Er möchte den gestohlenen Anzug zurück haben, gegen eine Belohnung, natürlich.</text>
 	</string>
 	<string id="shustriy_find_item_text">
-		<text>W hrend ich in Gefangenschaft war, h rte ich, wie die Banditen sich  ber ihr Versteck unterhielten, in dem sie den Habar aufbewahren. Angeblich verstecken sie dort auch einen ziemlich abgefahrenen Mantel. Aber am n chsten Tag hat ein Monster es sich im Versteck gem tlich gemacht. Nun trauen sich die Banditen nicht mehr dort hin. Tu mir einen Gefallen und bring den Anzug zur ck, ich werde dich gut bezahlen.</text>
+		<text>Während ich in Gefangenschaft war, hörte ich, wie die Banditen sich über ihr Versteck unterhielten, in dem sie den Habar aufbewahren. Angeblich verstecken sie dort auch einen ziemlich abgefahrenen Mantel. Aber am nächsten Tag hat ein Monster es sich im Versteck gemütlich gemacht. Nun trauen sich die Banditen nicht mehr dort hin. Tu mir einen Gefallen und bring den Anzug zurück, ich werde dich gut bezahlen.</text>
 	</string>
 	<string id="tm_barman_has_no_job">
 		<text>Ich hab im Moment nicht anzubieten.</text>
 	</string>
 	<string id="tm_barman_job_ask">
-		<text>Und wor ber willst du reden?</text>
+		<text>Und worüber willst du reden?</text>
 	</string>
 	<string id="tm_barman_job_complete">
 		<text>Gute Arbeit. Du hast dir die Belohung redlich verdient!</text>
@@ -758,16 +758,16 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Schau mal, was wir hier haben:</text>
 	</string>
 	<string id="tm_defend_camp_1">
-		<text>Die Einheit der W chter gegen den Angriff der Banditen im dunklen Tal unterst tzen.</text>
+		<text>Die Einheit der Wächter gegen den Angriff der Banditen im dunklen Tal unterstützen.</text>
 	</string>
 	<string id="tm_defend_camp_1_descr">
-		<text>Die Einheit der W chter gegen den Angriff der Banditen im dunklen Tal unterst tzen.</text>
+		<text>Die Einheit der Wächter gegen den Angriff der Banditen im dunklen Tal unterstützen.</text>
 	</string>
 	<string id="tm_defend_camp_1_text">
-		<text>Ich habe es endlich in die Dicksch del der W chter bekommen, dass es dringend an er Zeit ist, die M llhalde von den Banditen zu befreien. Die W chter vergr  ern so ihr Gebiet, und meine Kunden haben etwas mehr Ruhe vor Banditen. So sieht's aus: Die F hrung der W chter hatte beschlossen, dass sie f r den Anfang den Nachschub der Banditen aus dem dunklen Tal abschneiden. Also schickten sie eine Einheit f r die Blockade und stellten fest, dass die Banditen gar nicht begeistert waren. Wer h tte das erwartet? Ich frage mich, ob du ihnen beim Sichern des Eingans zum dunklen Tal behilflich sein kannst? Ich werde dich ordentlich entlohnen.</text>
+		<text>Ich habe es endlich in die Dickschädel der Wächter bekommen, dass es dringend an er Zeit ist, die Müllhalde von den Banditen zu befreien. Die Wächter vergrößern so ihr Gebiet, und meine Kunden haben etwas mehr Ruhe vor Banditen. So sieht's aus: Die Führung der Wächter hatte beschlossen, dass sie für den Anfang den Nachschub der Banditen aus dem dunklen Tal abschneiden. Also schickten sie eine Einheit für die Blockade und stellten fest, dass die Banditen gar nicht begeistert waren. Wer hätte das erwartet? Ich frage mich, ob du ihnen beim Sichern des Eingans zum dunklen Tal behilflich sein kannst? Ich werde dich ordentlich entlohnen.</text>
 	</string>
 	<string id="tm_dolg_has_no_job">
-		<text>Derzeit sind keine Auftr ge verf gbar.</text>
+		<text>Derzeit sind keine Aufträge verfügbar.</text>
 	</string>
 	<string id="tm_dolg_job_ask">
 		<text>Was willst du besprechen?</text>
@@ -776,19 +776,19 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Guter Junge! Reife Leistung.</text>
 	</string>
 	<string id="tm_dolg_job_what">
-		<text>Ich h r zu.</text>
+		<text>Ich hör zu.</text>
 	</string>
 	<string id="tm_dolg_list_job">
-		<text>Hier sind die aktuellen Auftr ge:</text>
+		<text>Hier sind die aktuellen Aufträge:</text>
 	</string>
 	<string id="tm_drunk_dolg_has_no_job">
 		<text>Zurzeit gibt es nichts.</text>
 	</string>
 	<string id="tm_drunk_dolg_job_ask">
-		<text> ber welchen Auftrag m chtest du reden?</text>
+		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_drunk_dolg_job_complete">
-		<text>Auftrag erf llt - und hier ist die Belohnung!</text>
+		<text>Auftrag erfüllt - und hier ist die Belohnung!</text>
 	</string>
 	<string id="tm_drunk_dolg_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -797,28 +797,28 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Da gibt es etwas:</text>
 	</string>
 	<string id="tm_ecolog_has_no_job">
-		<text>Tut mir Leid, aber zurzeit haben wir keinerlei Auftr ge.</text>
+		<text>Tut mir Leid, aber zurzeit haben wir keinerlei Aufträge.</text>
 	</string>
 	<string id="tm_ecolog_job_ask">
-		<text>Welcher Auftrag ist es,  ber den du reden willst?</text>
+		<text>Welcher Auftrag ist es, über den du reden willst?</text>
 	</string>
 	<string id="tm_ecolog_job_complete">
-		<text>Das hast du gro artig hingekriegt! Hier ist deine Belohnung.</text>
+		<text>Das hast du großartig hingekriegt! Hier ist deine Belohnung.</text>
 	</string>
 	<string id="tm_ecolog_job_what">
-		<text>Ich h re.</text>
+		<text>Ich höre.</text>
 	</string>
 	<string id="tm_ecolog_list_job">
 		<text>Folgendes kann ich dir anbieten:</text>
 	</string>
 	<string id="tm_eliminate_camp_1">
-		<text>Das Banditenlager auf der M llhalde vernichten.</text>
+		<text>Das Banditenlager auf der Müllhalde vernichten.</text>
 	</string>
 	<string id="tm_eliminate_camp_1_descr">
-		<text>Die Banditen auf der M llhalde, die Stalker auf ihrem R ckweg aus der Zone ausrauben, m ssen eliminiert werden. Die H ndler w ren dar ber sehr erfreut.</text>
+		<text>Die Banditen auf der Müllhalde, die Stalker auf ihrem Rückweg aus der Zone ausrauben, müssen eliminiert werden. Die Händler wären darüber sehr erfreut.</text>
 	</string>
 	<string id="tm_eliminate_camp_1_text">
-		<text>In letzter Zeit organisieren sich die Banditen und stellen sich dem ehrlichen Handel in den Weg. Mach dich also unverz glich auf den Weg zur M llhalde. Mir ist zu Ohren gekommen, dass diese Schweinehunde sich nahe des Schrottplatzes niedergelassen haben. K mmere dich um diese Angelegenheit, dann wird dir jeder hier dankbar sein. Au erdem werde ich dich gro z gig belohnen. In Ordnung?</text>
+		<text>In letzter Zeit organisieren sich die Banditen und stellen sich dem ehrlichen Handel in den Weg. Mach dich also unverzüglich auf den Weg zur Müllhalde. Mir ist zu Ohren gekommen, dass diese Schweinehunde sich nahe des Schrottplatzes niedergelassen haben. Kümmere dich um diese Angelegenheit, dann wird dir jeder hier dankbar sein. Außerdem werde ich dich großzügig belohnen. In Ordnung?</text>
 	</string>
 	<string id="tm_eliminate_camp_2">
 		<text>Das Banditenlager am Parkplatz vernichten.</text>
@@ -827,16 +827,16 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Die Banditen am Parkplatz beseitigen. Scheinbar sind sie noch neu in der Zone, es sollte also einfach sein.</text>
 	</string>
 	<string id="tm_eliminate_camp_2_text">
-		<text>Die Banditen lungern schon wieder am Parkplatz herum. Du ahnst sicher schon, worum es bei diesem Auftrag geht? Also dann, ab mit dir!  berbring ihnen herzliche Gr  e von uns und komm wieder, dann werde ich dich belohnen. Abgemacht?</text>
+		<text>Die Banditen lungern schon wieder am Parkplatz herum. Du ahnst sicher schon, worum es bei diesem Auftrag geht? Also dann, ab mit dir! Überbring ihnen herzliche Grüße von uns und komm wieder, dann werde ich dich belohnen. Abgemacht?</text>
 	</string>
 	<string id="tm_eliminate_camp_3">
 		<text>Die Banditen beim Agroprom-Forschungsinstitut ausschalten.</text>
 	</string>
 	<string id="tm_eliminate_camp_3_descr">
-		<text>Die Banditen beim Agroprom-Forschungsinstitut eliminieren. Mit den H ndlern stellt man sich besser gut.</text>
+		<text>Die Banditen beim Agroprom-Forschungsinstitut eliminieren. Mit den Händlern stellt man sich besser gut.</text>
 	</string>
 	<string id="tm_eliminate_camp_3_text">
-		<text>Einige Banditen sind am Agroprom-Forschungsinstitut aufgetaucht. Sie st ren meine Gr ber beim Sortieren des Plunders. L se das Problem, dann schulde ich dir was.</text>
+		<text>Einige Banditen sind am Agroprom-Forschungsinstitut aufgetaucht. Sie stören meine Gräber beim Sortieren des Plunders. Löse das Problem, dann schulde ich dir was.</text>
 	</string>
 	<string id="tm_eliminate_camp_4">
 		<text>Die Gegend von Mutanten befreien.</text>
@@ -845,25 +845,25 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Die Gegend von Mutanten befreien.</text>
 	</string>
 	<string id="tm_eliminate_camp_4_text">
-		<text>Es gibt was, leichte Sache. Sie wollen einen ausl ndischen Touristen hier ber bringen. Er hat meinen Jungs etwas Geld geboten, um sich die Zone mal ansehen zu k nnen. Und die Gegend, die sie ihm zeigen werden, m sste von Mutanten befreit werden. Kannst du dich darum k mmern?</text>
+		<text>Es gibt was, leichte Sache. Sie wollen einen ausländischen Touristen hierüber bringen. Er hat meinen Jungs etwas Geld geboten, um sich die Zone mal ansehen zu können. Und die Gegend, die sie ihm zeigen werden, müsste von Mutanten befreit werden. Kannst du dich darum kümmern?</text>
 	</string>
 	<string id="tm_eliminate_camp_5">
-		<text>Die zwei Banditen bei der M llhalde ausschalten.</text>
+		<text>Die zwei Banditen bei der Müllhalde ausschalten.</text>
 	</string>
 	<string id="tm_eliminate_camp_5_descr">
-		<text>Die Stra e, die zu einem der besten Pl tze der ganzen Zone f hrt, muss f r alle zug nglich gemacht werden.</text>
+		<text>Die Straße, die zu einem der besten Plätze der ganzen Zone führt, muss für alle zugänglich gemacht werden.</text>
 	</string>
 	<string id="tm_eliminate_camp_5_text">
-		<text>Zuletzt wurde einer der besten Pl tze der Zone unzug nglich f r alle Liebhaber des Sch nen. Auf der M llhalde ... ja, der M llhalde, gibt es einen sch nen kleinen Ort, absolut unvergleichlich. Dort kann man sich von all seiner Bedr ckung l sen, f r einen Moment den Dreck, das Geld und das ganze Blut vergessen. Das Problem ist, dass nun zwei dreckige Halunken dort sitzen, die damit drohen, jeden umzubringen, der den Platz ohne Bezahlung betreten will. Beseitige sie! Wo soll ich sonst die Touristen hinf hren?</text>
+		<text>Zuletzt wurde einer der besten Plätze der Zone unzugänglich für alle Liebhaber des Schönen. Auf der Müllhalde ... ja, der Müllhalde, gibt es einen schönen kleinen Ort, absolut unvergleichlich. Dort kann man sich von all seiner Bedrückung lösen, für einen Moment den Dreck, das Geld und das ganze Blut vergessen. Das Problem ist, dass nun zwei dreckige Halunken dort sitzen, die damit drohen, jeden umzubringen, der den Platz ohne Bezahlung betreten will. Beseitige sie! Wo soll ich sonst die Touristen hinführen?</text>
 	</string>
 	<string id="tm_eliminate_camp_6">
-		<text>Den Blutsauger im dunklen Tal t ten.</text>
+		<text>Den Blutsauger im dunklen Tal töten.</text>
 	</string>
 	<string id="tm_eliminate_camp_6_descr">
-		<text>Den Blutsauger im dunklen Tal t ten.</text>
+		<text>Den Blutsauger im dunklen Tal töten.</text>
 	</string>
 	<string id="tm_eliminate_camp_6_text">
-		<text>Man sagt, dass die Truppen das Dunkle Tal verlassen haben. Und nun tauchen aus jeder Spalte Monster auf. Die Stalker haben dort bereits einen Blutsauger gesichtet, einen au ergew hnlichen noch dazu: Er hat keine Angst vor offenen Pl tzen. Sollten die Wissenschaftler davon erfahren, werden sie den Blutsauger mit Sicherheit untersuchen wollen. Und ich will derjenige sein, der ihnen die Leiche bringt. T te du den Blutsauger, ich k mmere mich um den Rest.</text>
+		<text>Man sagt, dass die Truppen das Dunkle Tal verlassen haben. Und nun tauchen aus jeder Spalte Monster auf. Die Stalker haben dort bereits einen Blutsauger gesichtet, einen außergewöhnlichen noch dazu: Er hat keine Angst vor offenen Plätzen. Sollten die Wissenschaftler davon erfahren, werden sie den Blutsauger mit Sicherheit untersuchen wollen. Und ich will derjenige sein, der ihnen die Leiche bringt. Töte du den Blutsauger, ich kümmere mich um den Rest.</text>
 	</string>
 	<string id="tm_find_artefact_1">
 		<text>Das Artefakt "Qualle" finden.</text>
@@ -872,25 +872,25 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Das Artefakt "Qualle" finden, das in der Anomalie "Sprungbrett" entsteht.</text>
 	</string>
 	<string id="tm_find_artefact_1_text">
-		<text>Ein Typ aus dem Gro en Land fragte nach einer Qualle. Bringt zwar nicht viel Geld, ist aber auch keine M he. K mmere dich darum!</text>
+		<text>Ein Typ aus dem Großen Land fragte nach einer Qualle. Bringt zwar nicht viel Geld, ist aber auch keine Mühe. Kümmere dich darum!</text>
 	</string>
 	<string id="tm_find_artefact_2">
 		<text>Das Artefakt "Steinblume" finden.</text>
 	</string>
 	<string id="tm_find_artefact_2_descr">
-		<text>Das Artefakt "Steinblume" finden, das in der Anomalie "Sprungbrett" entsteht. Die Bezahlung sollte ziemlich  ppig sein.</text>
+		<text>Das Artefakt "Steinblume" finden, das in der Anomalie "Sprungbrett" entsteht. Die Bezahlung sollte ziemlich üppig sein.</text>
 	</string>
 	<string id="tm_find_artefact_2_text">
-		<text>Ich habe eine Nachfrage nach einer Steinblume. Der Auftrag stammt  brigens von den Juwelieren, also sollten wir versuchen, die h bschen Damen gl cklich zu machen, oder? Wenn du es schaffst, bekommst du das Geld und eine Flasche, um auf ihre Gesundheit anzusto en ...</text>
+		<text>Ich habe eine Nachfrage nach einer Steinblume. Der Auftrag stammt übrigens von den Juwelieren, also sollten wir versuchen, die hübschen Damen glücklich zu machen, oder? Wenn du es schaffst, bekommst du das Geld und eine Flasche, um auf ihre Gesundheit anzustoßen ...</text>
 	</string>
 	<string id="tm_find_artefact_3">
 		<text>Das Artefakt "Nachtstern" finden.</text>
 	</string>
 	<string id="tm_find_artefact_3_descr">
-		<text>Das Artefakt "Nachtstern" finden - was f r ein seltenes und teures Artefakt.</text>
+		<text>Das Artefakt "Nachtstern" finden - was für ein seltenes und teures Artefakt.</text>
 	</string>
 	<string id="tm_find_artefact_3_text">
-		<text>Da w re noch dieser kleine Auftrag ... eher unangenehm. Scheinbar stammt er vom Milit r, sie arbeiten an einer neuen R stung. Jedenfalls haben sie einen Nachtstern bestellt. Es ist ein ziemlich seltenes Artefakt, aber es bietet  beraus guten Schutz vor Kugeln ... K mmerst du dich darum? Ich bezahle gut daf r!</text>
+		<text>Da wäre noch dieser kleine Auftrag ... eher unangenehm. Scheinbar stammt er vom Militär, sie arbeiten an einer neuen Rüstung. Jedenfalls haben sie einen Nachtstern bestellt. Es ist ein ziemlich seltenes Artefakt, aber es bietet überaus guten Schutz vor Kugeln ... Kümmerst du dich darum? Ich bezahle gut dafür!</text>
 	</string>
 	<string id="tm_find_artefact_4">
 		<text>Das Artefakt finden, das Fleischklumpen genannt wird.</text>
@@ -899,19 +899,19 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Das wundheilende Artefakt finden, das Fleischklumpen genannt wird.</text>
 	</string>
 	<string id="tm_find_artefact_4_text">
-		<text>Es gibt eine Anfrage nach einem Artefakt, das Wunden heilen kann. Es wird Fleischklumpen genannt. Die Kunden betreiben wohl eine Art Klinik. Wenn du es besorgen kannst, wirst du daf r bezahlt und hast gleichzeitig Gutes vollbracht.</text>
+		<text>Es gibt eine Anfrage nach einem Artefakt, das Wunden heilen kann. Es wird Fleischklumpen genannt. Die Kunden betreiben wohl eine Art Klinik. Wenn du es besorgen kannst, wirst du dafür bezahlt und hast gleichzeitig Gutes vollbracht.</text>
 	</string>
 	<string id="tm_find_item_1">
 		<text>Die perfekte Pistole finden.</text>
 	</string>
 	<string id="tm_find_item_1_descr">
-		<text>Die Pistole mit der Bezeichnung Fort muss her, die Ger chten zufolge eine gr  ere Anzahl Patronen in ihrem Magazin fasst. Ihr letzter bekannter Besitzer war der Kommandant des Milit rpostens unter der zusammengebrochenen Br cke.</text>
+		<text>Die Pistole mit der Bezeichnung Fort muss her, die Gerüchten zufolge eine größere Anzahl Patronen in ihrem Magazin fasst. Ihr letzter bekannter Besitzer war der Kommandant des Militärpostens unter der zusammengebrochenen Brücke.</text>
 	</string>
 	<string id="tm_find_item_1_text">
-		<text>Das Verwenden aufger steter Waffen scheint in Mode gekommen zu sein. Niemand scheint mehr eine gew hnliche Waffe benutzen zu wollen, nicht mal Anf nger! Jedenfalls habe ich hier eine Anfrage nach einer verbesserten Waffe. Angeblich soll der Kommandant der Soldaten, der immer Geld f r das Passieren unter der Br cke genommen hat, eine Fort mit vergr  ertem Magazin besitzen. Kannst du sie besorgen?</text>
+		<text>Das Verwenden aufgerüsteter Waffen scheint in Mode gekommen zu sein. Niemand scheint mehr eine gewöhnliche Waffe benutzen zu wollen, nicht mal Anfänger! Jedenfalls habe ich hier eine Anfrage nach einer verbesserten Waffe. Angeblich soll der Kommandant der Soldaten, der immer Geld für das Passieren unter der Brücke genommen hat, eine Fort mit vergrößertem Magazin besitzen. Kannst du sie besorgen?</text>
 	</string>
 	<string id="tm_freedom_has_no_job">
-		<text>Im Moment gibt es nicht wirklich neue Auftr ge ...</text>
+		<text>Im Moment gibt es nicht wirklich neue Aufträge ...</text>
 	</string>
 	<string id="tm_freedom_job_ask">
 		<text>Also, was willst du nun besprechen?</text>
@@ -929,10 +929,10 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Im Moment gibt es nichts.</text>
 	</string>
 	<string id="tm_hunter_job_ask">
-		<text> ber welchen Auftrag m chtest du reden?</text>
+		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_hunter_job_complete">
-		<text>Auftrag erf llt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
 	</string>
 	<string id="tm_hunter_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -947,67 +947,67 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Den Auftrag nehme ich nicht an.</text>
 	</string>
 	<string id="tm_kill_stalker_1">
-		<text>Den Anf hrer der Banditen t ten.</text>
+		<text>Den Anführer der Banditen töten.</text>
 	</string>
 	<string id="tm_kill_stalker_1_descr">
-		<text>Den Anf hrer der Banditen t ten, der dem H ndler im Weg steht. Wahrscheinlich ist er nicht alleine ... Ist ein harter Job, aber die Bezahlung entsch digt f r alles. Er befindet sich im dunklen Tal.</text>
+		<text>Den Anführer der Banditen töten, der dem Händler im Weg steht. Wahrscheinlich ist er nicht alleine ... Ist ein harter Job, aber die Bezahlung entschädigt für alles. Er befindet sich im dunklen Tal.</text>
 	</string>
 	<string id="tm_kill_stalker_1_text">
-		<text>Du musst diesen Mistkerl t ten, einen der Anf hrer der Banditen. Eines Tages haben die Banditen auf sein Gehei  hin meinen Boten abgefangen und ihn ausgenommen. Ich verhandle nicht mit denen, die meine Leute angreifen ... Kurz gesagt, wenn du dich darum k mmerst, werde ich den Gefallen schon erwidern. Kann ich auf dich z hlen?</text>
+		<text>Du musst diesen Mistkerl töten, einen der Anführer der Banditen. Eines Tages haben die Banditen auf sein Geheiß hin meinen Boten abgefangen und ihn ausgenommen. Ich verhandle nicht mit denen, die meine Leute angreifen ... Kurz gesagt, wenn du dich darum kümmerst, werde ich den Gefallen schon erwidern. Kann ich auf dich zählen?</text>
 	</string>
 	<string id="tm_kill_stalker_2">
-		<text>Den handeltreibenden Stalker t ten.</text>
+		<text>Den handeltreibenden Stalker töten.</text>
 	</string>
 	<string id="tm_kill_stalker_2_descr">
-		<text>Einen Stalker zu t ten ist nicht gerade der beste Job - die Hand gegen seinesgleichen zu erheben ... Wenigstens ist die Bezahlung gut, und darauf kommt es an.</text>
+		<text>Einen Stalker zu töten ist nicht gerade der beste Job - die Hand gegen seinesgleichen zu erheben ... Wenigstens ist die Bezahlung gut, und darauf kommt es an.</text>
 	</string>
 	<string id="tm_kill_stalker_2_text">
-		<text>Ich habe eine Auseinandersetzung mit einem bestimmten H ndler. Zur H lle mit ihm, wenn er nicht kooperieren will! Aber ich lasse nicht zu, dass jemand schmutzige Ger chte  ber mich verbreitet. Er muss also beseitigt werden, damit die anderen nicht au er Kontrolle geraten. Zeig ihnen allen, wer hier der Boss ist ...</text>
+		<text>Ich habe eine Auseinandersetzung mit einem bestimmten Händler. Zur Hölle mit ihm, wenn er nicht kooperieren will! Aber ich lasse nicht zu, dass jemand schmutzige Gerüchte über mich verbreitet. Er muss also beseitigt werden, damit die anderen nicht außer Kontrolle geraten. Zeig ihnen allen, wer hier der Boss ist ...</text>
 	</string>
 	<string id="tm_kill_stalker_3">
-		<text>Den Stalker-Neuling t ten.</text>
+		<text>Den Stalker-Neuling töten.</text>
 	</string>
 	<string id="tm_kill_stalker_3_descr">
-		<text>Den Stalker-Neuling erledigen, der wom glich gar kein Neuling ist ...  Aber wer ist er dann? Egal, so lange der Job nur gut abl uft.</text>
+		<text>Den Stalker-Neuling erledigen, der womöglich gar kein Neuling ist ...  Aber wer ist er dann? Egal, so lange der Job nur gut abläuft.</text>
 	</string>
 	<string id="tm_kill_stalker_3_text">
-		<text>Hier lungert so ein Typ herum, der ein Neuling zu sein vorgibt, aber irgendwas stimmt nicht mit ihm ... Jedenfalls f nde ich es prime, wenn er pl tzlich verschwinden sollte. Du verstehst, worauf ich hinaus will?</text>
+		<text>Hier lungert so ein Typ herum, der ein Neuling zu sein vorgibt, aber irgendwas stimmt nicht mit ihm ... Jedenfalls fände ich es prime, wenn er plötzlich verschwinden sollte. Du verstehst, worauf ich hinaus will?</text>
 	</string>
 	<string id="tm_kill_stalker_4">
-		<text>Den Stalker t ten, den man Teufel nennt.</text>
+		<text>Den Stalker töten, den man Teufel nennt.</text>
 	</string>
 	<string id="tm_kill_stalker_4_descr">
 		<text>Einen von Sidorowitschs Konkurrenten ausschalten, einen Stalker namens Teufel.</text>
 	</string>
 	<string id="tm_kill_stalker_4_text">
-		<text>Der Teufel, alias Oleg Gusarow, diente fr her in der Speznas. Ich hatte keine Probleme mit ihm, so lange er sich um seine eigenen Angelegenheiten k mmerte. Ein Einzelg nger ist halt ein Einzelg nger. Aber wie ich h rte, stellt er gerade eine Truppe zusammen, mit der er das Kordon zerst ren will, um die Kontrolle  ber den Schmuggel aus der Zone zu  bernehmen. Das ist ein ernstes Problem und muss schleunigst gel st werden.  bernimmst du das?</text>
+		<text>Der Teufel, alias Oleg Gusarow, diente früher in der Speznas. Ich hatte keine Probleme mit ihm, so lange er sich um seine eigenen Angelegenheiten kümmerte. Ein Einzelgänger ist halt ein Einzelgänger. Aber wie ich hörte, stellt er gerade eine Truppe zusammen, mit der er das Kordon zerstören will, um die Kontrolle über den Schmuggel aus der Zone zu übernehmen. Das ist ein ernstes Problem und muss schleunigst gelöst werden. Übernimmst du das?</text>
 	</string>
 	<string id="tm_kill_stalker_5">
-		<text>Pater Diodor t ten.</text>
+		<text>Pater Diodor töten.</text>
 	</string>
 	<string id="tm_kill_stalker_5_descr">
-		<text>Den Mann t ten, der in der Zone gegen das Sammeln von Artefakten und den Handel damit predigt.</text>
+		<text>Den Mann töten, der in der Zone gegen das Sammeln von Artefakten und den Handel damit predigt.</text>
 	</string>
 	<string id="tm_kill_stalker_5_text">
-		<text>Ich war schon der Meinung, dass Gesch fte und Religion sich nicht vertragen. Sie lassen sich nicht vereinen und sollten sich auch nie in die Quere kommen! Nur dieser Pater Diodor, der Herr m ge mir verzeihen, ... nun ... er scheint diese schlichte Wahrheit nicht zu erkennen. Er wettert st ndig gegen die Jagd nach Artefakten und behauptet, dass der Handel mit Artefakten die Menschen in die S ndhaftigkeit treibt und so weiter. H r dir das an, er predigt die Vernichtung s mtlicher Artefakte!! Siehst du, was er vorhat? Das Schlimmste daran ist, dass er sogar Anh nger hat! Ich habe schon alles versucht, um mit Diodor  bereinzukommen, aber er l sst nicht locker. Hier ist mein Vorschlag: Bef rdere den Mann eine Etage h her, da kann er predigen, was er will ... Du verstehst mich? Daf r gebe ich dir ein geniales Artefakt. Kommen wir ins Gesch ft?</text>
+		<text>Ich war schon der Meinung, dass Geschäfte und Religion sich nicht vertragen. Sie lassen sich nicht vereinen und sollten sich auch nie in die Quere kommen! Nur dieser Pater Diodor, der Herr möge mir verzeihen, ... nun ... er scheint diese schlichte Wahrheit nicht zu erkennen. Er wettert ständig gegen die Jagd nach Artefakten und behauptet, dass der Handel mit Artefakten die Menschen in die Sündhaftigkeit treibt und so weiter. Hör dir das an, er predigt die Vernichtung sämtlicher Artefakte!! Siehst du, was er vorhat? Das Schlimmste daran ist, dass er sogar Anhänger hat! Ich habe schon alles versucht, um mit Diodor übereinzukommen, aber er lässt nicht locker. Hier ist mein Vorschlag: Befördere den Mann eine Etage höher, da kann er predigen, was er will ... Du verstehst mich? Dafür gebe ich dir ein geniales Artefakt. Kommen wir ins Geschäft?</text>
 	</string>
 	<string id="tm_kill_stalker_6">
-		<text>Den "Handelsvertreter" t ten.</text>
+		<text>Den "Handelsvertreter" töten.</text>
 	</string>
 	<string id="tm_kill_stalker_6_descr">
-		<text>Den "Handelsvertreter" t ten - der H ndler sorgt sich um seinen Ruf.</text>
+		<text>Den "Handelsvertreter" töten - der Händler sorgt sich um seinen Ruf.</text>
 	</string>
 	<string id="tm_kill_stalker_6_text">
-		<text>Stell dir vor: Da rennt so eine Pfeife rum, die sich als mein Handelsvertreter ausgibt, meinen Ruf missbraucht und dann seine zweitklassige Ware verscherbeln will! Gebrochene L ufe, auseinanderfallende R stungen, abgelaufene Konserven. Bei mir haben sich schon etliche Kunden beschwert. Ich brauch jemanden, der sich mal mit diesem "Handelsvertreter" unterh lt.</text>
+		<text>Stell dir vor: Da rennt so eine Pfeife rum, die sich als mein Handelsvertreter ausgibt, meinen Ruf missbraucht und dann seine zweitklassige Ware verscherbeln will! Gebrochene Läufe, auseinanderfallende Rüstungen, abgelaufene Konserven. Bei mir haben sich schon etliche Kunden beschwert. Ich brauch jemanden, der sich mal mit diesem "Handelsvertreter" unterhält.</text>
 	</string>
 	<string id="tm_lisiy_has_no_job">
 		<text>Im Moment gibt es nichts.</text>
 	</string>
 	<string id="tm_lisiy_job_ask">
-		<text> ber welchen Auftrag m chtest du reden?</text>
+		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_lisiy_job_complete">
-		<text>Auftrag erf llt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
 	</string>
 	<string id="tm_lisiy_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -1019,10 +1019,10 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Im Moment gibt es nichts.</text>
 	</string>
 	<string id="tm_mercenary_job_ask">
-		<text> ber welchen Auftrag m chtest du reden?</text>
+		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_mercenary_job_complete">
-		<text>Auftrag erf llt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
 	</string>
 	<string id="tm_mercenary_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -1034,10 +1034,10 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Das Gebiss des Blutsaugers besorgen.</text>
 	</string>
 	<string id="tm_monster_part_1_descr">
-		<text>Die Z hne eines Blutsaugers sollen Gl ck bringen. Dem Blutsauger jedoch vermutlich nicht.</text>
+		<text>Die Zähne eines Blutsaugers sollen Glück bringen. Dem Blutsauger jedoch vermutlich nicht.</text>
 	</string>
 	<string id="tm_monster_part_1_text">
-		<text>Angeblich bringt einem der Zahn eines Blutsaugers Gl ck. Wer so einen Zahn um den Hals tr gt, soll unbeschadet durch die Anomalien kommen und Artefakte sollen ihm direkt in die Arme fallen. Das ist absoluter Quatsch, aber es gibt Schwachk pfe, die das alles glauben und gut daf r bezahlen. Bring mir das Gebiss eines Blutsaugers, ich bezahle dich gut.</text>
+		<text>Angeblich bringt einem der Zahn eines Blutsaugers Glück. Wer so einen Zahn um den Hals trägt, soll unbeschadet durch die Anomalien kommen und Artefakte sollen ihm direkt in die Arme fallen. Das ist absoluter Quatsch, aber es gibt Schwachköpfe, die das alles glauben und gut dafür bezahlen. Bring mir das Gebiss eines Blutsaugers, ich bezahle dich gut.</text>
 	</string>
 	<string id="tm_monster_part_2">
 		<text>Den Schwanz eines Pseudohundes besorgen.</text>
@@ -1046,16 +1046,16 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Den Schwanz eines Pseudohundes besorgen.</text>
 	</string>
 	<string id="tm_monster_part_2_text">
-		<text>Der Winter bricht bald ein. Und was tragen M dchen auf aller Welt am liebsten im Winter? Richtig: Pelz. Zurzeit gibt es einen neuen Modetrend, die Herstellung aller m glichen Accessoires aus den Schw nzen von Pseudohunden. Ist wohl eine besondere Art Pelz! Jedenfalls gibt es eine Anfrage nach so einem Schwanz. Erledigst du das?</text>
+		<text>Der Winter bricht bald ein. Und was tragen Mädchen auf aller Welt am liebsten im Winter? Richtig: Pelz. Zurzeit gibt es einen neuen Modetrend, die Herstellung aller möglichen Accessoires aus den Schwänzen von Pseudohunden. Ist wohl eine besondere Art Pelz! Jedenfalls gibt es eine Anfrage nach so einem Schwanz. Erledigst du das?</text>
 	</string>
 	<string id="tm_petrenko_has_no_job">
 		<text>Im Moment gibt es nichts.</text>
 	</string>
 	<string id="tm_petrenko_job_ask">
-		<text> ber welchen Auftrag m chtest du reden?</text>
+		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_petrenko_job_complete">
-		<text>Auftrag erf llt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
 	</string>
 	<string id="tm_petrenko_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -1067,7 +1067,7 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Ich bin hier wegen des Auftrags.</text>
 	</string>
 	<string id="tm_seek_job_abandon">
-		<text>Derartige Auftr ge interessieren mich nicht.</text>
+		<text>Derartige Aufträge interessieren mich nicht.</text>
 	</string>
 	<string id="tm_seek_job_no">
 		<text>Ein anderes Mal.</text>
@@ -1076,16 +1076,16 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Ich bin dabei.</text>
 	</string>
 	<string id="tm_seek_new_job">
-		<text>Ich brauch einen Auftrag. Hast du etwas f r mich?</text>
+		<text>Ich brauch einen Auftrag. Hast du etwas für mich?</text>
 	</string>
 	<string id="tm_shustriy_has_no_job">
-		<text>Zurzeit gibt es keine Auftr ge.</text>
+		<text>Zurzeit gibt es keine Aufträge.</text>
 	</string>
 	<string id="tm_shustriy_job_ask">
-		<text> ber welchen Auftrag m chtest du reden?</text>
+		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_shustriy_job_complete">
-		<text>Auftrag erf llt. Hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt. Hier ist deine Belohung!</text>
 	</string>
 	<string id="tm_shustriy_job_what">
 		<text>Was ist mit dem Auftrag?</text>
@@ -1097,10 +1097,10 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Im Moment gibt es nichts.</text>
 	</string>
 	<string id="tm_trader_job_ask">
-		<text> ber welchen Auftrag m chtest du reden?</text>
+		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_trader_job_complete">
-		<text>Auftrag erf llt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
 	</string>
 	<string id="tm_trader_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -1112,10 +1112,10 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Im Moment gibt es nichts.</text>
 	</string>
 	<string id="tm_wolf_job_ask">
-		<text> ber welchen Auftrag m chtest du reden?</text>
+		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_wolf_job_complete">
-		<text>Auftrag erf llt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
 	</string>
 	<string id="tm_wolf_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -1127,10 +1127,10 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Im Moment gibt es nichts.</text>
 	</string>
 	<string id="tm_zastava_commander_job_ask">
-		<text> ber welchen Auftrag m chtest du reden?</text>
+		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_zastava_commander_job_complete">
-		<text>Auftrag erf llt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
 	</string>
 	<string id="tm_zastava_commander_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -1142,28 +1142,28 @@ Telepathen sind sehr gef hrlich, aber du wirst es schaffen.</text>
 		<text>Bau der Wildschweine vernichten.</text>
 	</string>
 	<string id="wolf_eliminate_lager_1_descr">
-		<text>Die Wildschweine haben einen Bau errichtet, ganz in der N he des Lagers von Wolf und seinem Freund. Wolf m chte den Bau ausgehoben sehen. Er verspricht eine f rstliche Belohnung.</text>
+		<text>Die Wildschweine haben einen Bau errichtet, ganz in der Nähe des Lagers von Wolf und seinem Freund. Wolf möchte den Bau ausgehoben sehen. Er verspricht eine fürstliche Belohnung.</text>
 	</string>
 	<string id="wolf_eliminate_lager_1_text">
-		<text>Mein Freund und ich hatten hier ein Lager, nicht weit vom Parkplatz entfernt, wo der Wald dichter ist. Was man halt so braucht. Aber k rzlich haben die Wildschweine dort einen Bau errichtet und nun k nnen wir nicht mehr in unser Lager. Bitte hilf uns. T te die Wildschweine und ich werde dir dankbar sein, auch im Namen meines Freundes.</text>
+		<text>Mein Freund und ich hatten hier ein Lager, nicht weit vom Parkplatz entfernt, wo der Wald dichter ist. Was man halt so braucht. Aber kürzlich haben die Wildschweine dort einen Bau errichtet und nun können wir nicht mehr in unser Lager. Bitte hilf uns. Töte die Wildschweine und ich werde dir dankbar sein, auch im Namen meines Freundes.</text>
 	</string>
 	<string id="wolf_eliminate_lager_2">
 		<text>Die Mutanten beim Bauernhof vernichten.</text>
 	</string>
 	<string id="wolf_eliminate_lager_2_descr">
-		<text>Wolf m chte den Bauernhof von den Mutanten befreit haben, um dort einen Au enposten errichten zu k nnen.</text>
+		<text>Wolf möchte den Bauernhof von den Mutanten befreit haben, um dort einen Außenposten errichten zu können.</text>
 	</string>
 	<string id="wolf_eliminate_lager_2_text">
-		<text>Hier ist zwar noch das Grenzgebiet der Zone, aber Neulinge haben es auch hier schwer. Die Banditen sind nur das halbe Problem; wenigstens sprechen sie Russisch. Aber mit den Mutanten ist es wirklich schwierig. Sie haben sich ein Lager auf dem verlassenen Bauernhof eingerichtet und so den einzig geeigneten Ort f r einen Au enposten eingenommen. Wenn du die Mutanten vom Bauernhof vertreibst, schulde ich dir etwas.</text>
+		<text>Hier ist zwar noch das Grenzgebiet der Zone, aber Neulinge haben es auch hier schwer. Die Banditen sind nur das halbe Problem; wenigstens sprechen sie Russisch. Aber mit den Mutanten ist es wirklich schwierig. Sie haben sich ein Lager auf dem verlassenen Bauernhof eingerichtet und so den einzig geeigneten Ort für einen Außenposten eingenommen. Wenn du die Mutanten vom Bauernhof vertreibst, schulde ich dir etwas.</text>
 	</string>
 	<string id="zastava_commander_eliminate_lager">
-		<text>Das Hundelager ausr uchern.</text>
+		<text>Das Hundelager ausräuchern.</text>
 	</string>
 	<string id="zastava_commander_eliminate_lager_descr">
-		<text>Bei der Bar nahe des s dlichen Postens hat sich ein Rudel Hunde angesiedelt. Der Leiter des Postens m chte, dass die Hunde beseitigt werden. Er verspricht eine Belohung.</text>
+		<text>Bei der Bar nahe des südlichen Postens hat sich ein Rudel Hunde angesiedelt. Der Leiter des Postens möchte, dass die Hunde beseitigt werden. Er verspricht eine Belohung.</text>
 	</string>
 	<string id="zastava_commander_eliminate_lager_text">
-		<text>Trotz unserer Bem hungen schaffen es immer noch ein paar Monster von der M llhalde bis hierher. Wahrscheinlich hast du selber schon das Hunderudel s dlich von uns gesehen. Wenn du sie alle t test, bekommst du eine Belohnung.</text>
+		<text>Trotz unserer Bemühungen schaffen es immer noch ein paar Monster von der Müllhalde bis hierher. Wahrscheinlich hast du selber schon das Hunderudel südlich von uns gesehen. Wenn du sie alle tötest, bekommst du eine Belohnung.</text>
 	</string>
 	<string id="defend_lager">
 		<text>Lagerverteidigung</text>

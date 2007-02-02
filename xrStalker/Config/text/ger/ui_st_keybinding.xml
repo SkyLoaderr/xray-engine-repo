@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="kb_active_jobs">
-		<text>Aktive Auftr ge im PDA</text>
+		<text>Aktive Auftrдge im PDA</text>
 	</string>
 	<string id="kb_always_run">
 		<text>Robben</text>
@@ -10,13 +10,13 @@
 		<text>Artefakt</text>
 	</string>
 	<string id="kb_backward">
-		<text>Zur ck</text>
+		<text>Zurьck</text>
 	</string>
 	<string id="kb_binoculars">
 		<text>Fernglas</text>
 	</string>
 	<string id="kb_buy_menu">
-		<text>Kaufen-Men </text>
+		<text>Kaufen-Menь</text>
 	</string>
 	<string id="kb_chat">
 		<text>Chat</text>
@@ -46,13 +46,13 @@
 		<text>Feuern</text>
 	</string>
 	<string id="kb_firemode_next">
-		<text>N chster Feuermodus</text>
+		<text>Nдchster Feuermodus</text>
 	</string>
 	<string id="kb_firemode_prev">
 		<text>Vorheriger Feuermodus</text>
 	</string>
 	<string id="kb_forward">
-		<text>Vorw rts</text>
+		<text>Vorwдrts</text>
 	</string>
 	<string id="kb_func">
 		<text>Granatenwerfer</text>
@@ -88,13 +88,13 @@
 		<text>Nach links lehnen</text>
 	</string>
 	<string id="kb_left_strafe">
-		<text>Seitw rts nach links</text>
+		<text>Seitwдrts nach links</text>
 	</string>
 	<string id="kb_map">
 		<text>PDA-Karte</text>
 	</string>
 	<string id="kb_next_slot">
-		<text>Waffe im n chsten Slot</text>
+		<text>Waffe im nдchsten Slot</text>
 	</string>
 	<string id="kb_night_vision">
 		<text>Nachtsicht</text>
@@ -124,7 +124,7 @@
 		<text>Nach rechts lehnen</text>
 	</string>
 	<string id="kb_right_strafe">
-		<text>Seitw rts nach rechts</text>
+		<text>Seitwдrts nach rechts</text>
 	</string>
 	<string id="kb_scores">
 		<text>Punkte</text>
@@ -133,13 +133,13 @@
 		<text>Screenshot</text>
 	</string>
 	<string id="kb_skin_menu">
-		<text>Skin-Men </text>
+		<text>Skin-Menь</text>
 	</string>
 	<string id="kb_sprint">
 		<text>Sprinten</text>
 	</string>
 	<string id="kb_team_menu">
-		<text>Teammen </text>
+		<text>Teammenь</text>
 	</string>
 	<string id="kb_torch">
 		<text>Taschenlampe</text>
@@ -190,7 +190,7 @@
 		<text>Waffe 6</text>
 	</string>
 	<string id="kb_wpn_next">
-		<text>Munitionstyp  ndern</text>
+		<text>Munitionstyp дndern</text>
 	</string>
 	<string id="kb_wpn_prev">
 		<text>Vorherige Waffe dieses Typs</text>

@@ -23,13 +23,13 @@
 		<text>Gefangener</text>
 	</string>
 	<string id="val_come_to_trader_1_hint">
-		<text>S dtor</text>
+		<text>Südtor</text>
 	</string>
 	<string id="val_come_to_trader_2_hint">
-		<text>H ndler</text>
+		<text>Händler</text>
 	</string>
 	<string id="val_prisoner_help_main_hint">
-		<text>Gefangener W chter</text>
+		<text>Gefangener Wächter</text>
 	</string>
 	<string id="val_sos_help_main_hint">
 		<text>Verwundeter Stalker</text>

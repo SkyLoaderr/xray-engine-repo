@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="actor">
-		<text>Einzelg nger</text>
+		<text>Einzelgдnger</text>
 	</string>
 	<string id="actor_dolg">
-		<text>W chter</text>
+		<text>Wдchter</text>
 	</string>
 	<string id="actor_freedom">
 		<text>Freiheit</text>
 	</string>
 	<string id="arena_enemy">
-		<text>S ldner</text>
+		<text>Sцldner</text>
 	</string>
 	<string id="bad">
 		<text>schlecht</text>
@@ -19,10 +19,10 @@
 		<text>Bandit</text>
 	</string>
 	<string id="dolg">
-		<text>W chter</text>
+		<text>Wдchter</text>
 	</string>
 	<string id="ecolog">
-		<text> kologe</text>
+		<text>Цkologe</text>
 	</string>
 	<string id="enemy">
 		<text>Feind</text>
@@ -52,13 +52,13 @@
 		<text>neutral</text>
 	</string>
 	<string id="killer">
-		<text>S ldner</text>
+		<text>Sцldner</text>
 	</string>
 	<string id="l01_escape">
 		<text>Kordon</text>
 	</string>
 	<string id="l02_garbage">
-		<text>M llhalde</text>
+		<text>Mьllhalde</text>
 	</string>
 	<string id="l03_agroprom">
 		<text>Agroprom-Forschungsinstitut</text>
@@ -94,7 +94,7 @@
 		<text>Experte</text>
 	</string>
 	<string id="military">
-		<text>Milit r</text>
+		<text>Militдr</text>
 	</string>
 	<string id="monolith">
 		<text>Monolith</text>
@@ -103,22 +103,22 @@
 		<text>neutral</text>
 	</string>
 	<string id="novice">
-		<text>Anf nger</text>
+		<text>Anfдnger</text>
 	</string>
 	<string id="st_no_active_task">
-		<text>Keine laufenden Auftr ge</text>
+		<text>Keine laufenden Auftrдge</text>
 	</string>
 	<string id="st_time_till_surge">
 		<text>Zeit bis zur Eruption</text>
 	</string>
 	<string id="stalker">
-		<text>Einzelg nger</text>
+		<text>Einzelgдnger</text>
 	</string>
 	<string id="terrible">
-		<text>f rchterlich</text>
+		<text>fьrchterlich</text>
 	</string>
 	<string id="trader">
-		<text>H ndler</text>
+		<text>Hдndler</text>
 	</string>
 	<string id="ui_st_community">
 		<text>Gruppe</text>
@@ -217,7 +217,7 @@
 		<text>Messer</text>
 	</string>
 	<string id="st_mp_disabled_voting">
-		<text>Abstimmungen sind auf diesem Server nicht verf gbar.</text>
+		<text>Abstimmungen sind auf diesem Server nicht verfьgbar.</text>
 	</string>
 	<string id="st_mp_no_current_voting">
 		<text>Keine aktiven Abstimmungen.</text>

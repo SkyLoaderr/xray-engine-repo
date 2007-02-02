@@ -43,16 +43,16 @@
 		<text>Ja</text>
 	</string>
 	<string id="ui_st_cant_run_r2">
-		<text>Render 2 auf diesem PC nicht ausf hrbar.</text>
+		<text>Render 2 auf diesem PC nicht ausführbar.</text>
 	</string>
 	<string id="ui_st_conn_invalid_host">
-		<text>Verbindungsfehler: Host ung ltig</text>
+		<text>Verbindungsfehler: Host ungültig</text>
 	</string>
 	<string id="ui_st_conn_invalid_pass">
-		<text>Verbindungsfehler: Passwort ung ltig</text>
+		<text>Verbindungsfehler: Passwort ungültig</text>
 	</string>
 	<string id="ui_st_conn_rejected_server">
-		<text>Verbindungsfehler: Verbindungsanfrage wurde vom Server zur ckgewiesen</text>
+		<text>Verbindungsfehler: Verbindungsanfrage wurde vom Server zurückgewiesen</text>
 	</string>
 	<string id="ui_st_conn_sess_full">
 		<text>Verbindungsfehler: Sitzung ist voll</text>
@@ -64,7 +64,7 @@
 		<text>Fehler</text>
 	</string>
 	<string id="ui_st_file_exist_owerwrite_q">
-		<text>Es existiert bereits eine Datei mit diesem Namen. Soll diese Datei  berschrieben werden?</text>
+		<text>Es existiert bereits eine Datei mit diesem Namen. Soll diese Datei überschrieben werden?</text>
 	</string>
 	<string id="ui_st_file_name_is_empty">
 		<text>Der Dateiname ist leer.</text>
@@ -88,13 +88,13 @@
 		<text>Sek.</text>
 	</string>
 	<string id="ui_st_select_one_map">
-		<text>W hlen Sie bitte mindestens eine Karte aus.</text>
+		<text>Wählen Sie bitte mindestens eine Karte aus.</text>
 	</string>
 	<string id="ui_st_take_all">
 		<text>Alles nehmen</text>
 	</string>
 	<string id="ui_st_time_remains">
-		<text> brig</text>
+		<text>Übrig</text>
 	</string>
 	<string id="ui_st_trade">
 		<text>Handeln</text>
@@ -103,19 +103,19 @@
 		<text>Abstimmungen sind deaktiviert</text>
 	</string>
 	<string id="ui_st_want_to_leave_game_q">
-		<text>M chten Sie das Spiel wirklich verlassen?</text>
+		<text>Möchten Sie das Spiel wirklich verlassen?</text>
 	</string>
 	<string id="ui_st_your_items">
 		<text>Eigene Objekte</text>
 	</string>
 	<string id="st_game_over_press_jump">
-		<text> ($$ACTION_JUMP$$) dr cken, um zum Hauptmen  zu gelangen.</text>
+		<text> ($$ACTION_JUMP$$) drücken, um zum Hauptmenü zu gelangen.</text>
 	</string>
 	<string id="st_level">
 		<text>Level</text>
 	</string>
 	<string id="st_opening_stream">
-		<text>Datenstrom wird ge ffnet</text>
+		<text>Datenstrom wird geöffnet</text>
 	</string>
 	<string id="st_loading_cform">
 		<text>CFORM wird geladen</text>
@@ -136,7 +136,7 @@
 		<text>Spielstand wird geladen</text>
 	</string>
 	<string id="st_validating_cdkey">
-		<text>DVD-Schl ssel wird  berpr ft</text>
+		<text>DVD-Schlüssel wird überprüft</text>
 	</string>
 	<string id="st_loading_ai_objects">
 		<text>KI-Objekte werden geladen</text>

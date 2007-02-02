@@ -10,13 +10,13 @@
 		<text>Kontakte</text>
 	</string>
 	<string id="Encyclopedia">
-		<text>Enzyklop die</text>
+		<text>Enzyklopädie</text>
 	</string>
 	<string id="global_map_btn_hint">
 		<text>Zur Zonenkarte</text>
 	</string>
 	<string id="level_changer_invitation">
-		<text>Den n chsten Level betreten?</text>
+		<text>Den nächsten Level betreten?</text>
 	</string>
 	<string id="Name">
 		<text>Name</text>
@@ -25,13 +25,13 @@
 		<text>Erledigt</text>
 	</string>
 	<string id="pda_btn_accomplished_hint">
-		<text>Erledigte Auftr ge anzeigen</text>
+		<text>Erledigte Aufträge anzeigen</text>
 	</string>
 	<string id="pda_btn_active">
 		<text>Aktiv</text>
 	</string>
 	<string id="pda_btn_active_hint">
-		<text>Aktive Auftr ge anzeigen</text>
+		<text>Aktive Aufträge anzeigen</text>
 	</string>
 	<string id="pda_btn_contacts">
 		<text>Kontakte</text>
@@ -46,16 +46,16 @@
 		<text>Spielertagebuch anzeigen</text>
 	</string>
 	<string id="pda_btn_encyclopedia">
-		<text>Enzyklop die</text>
+		<text>Enzyklopädie</text>
 	</string>
 	<string id="pda_btn_encyclopedia_hint">
-		<text>Zonen-Enzyklop die anzeigen</text>
+		<text>Zonen-Enzyklopädie anzeigen</text>
 	</string>
 	<string id="pda_btn_failed">
 		<text>Fehlgeschlagen</text>
 	</string>
 	<string id="pda_btn_failed_hint">
-		<text>Verfehlte Auftr ge anzeigen</text>
+		<text>Verfehlte Aufträge anzeigen</text>
 	</string>
 	<string id="pda_btn_info">
 		<text>Information</text>
@@ -64,7 +64,7 @@
 		<text>Logbuch</text>
 	</string>
 	<string id="pda_btn_journal_hint">
-		<text>Spielereintr ge anzeigen</text>
+		<text>Spielereinträge anzeigen</text>
 	</string>
 	<string id="pda_btn_map">
 		<text>Karte</text>
@@ -88,7 +88,7 @@
 		<text>Meine Marker auf der Karte anzeigen</text>
 	</string>
 	<string id="pda_btn_quests">
-		<text>Auftr ge</text>
+		<text>Aufträge</text>
 	</string>
 	<string id="pda_btn_quests_hint">
 		<text>Aufgabeninformationen anzeigen</text>
@@ -112,7 +112,7 @@
 		<text>Beschreibung bearbeiten</text>
 	</string>
 	<string id="pda_remove_btn_hint">
-		<text>Marker l schen</text>
+		<text>Marker löschen</text>
 	</string>
 	<string id="pda_show_descr_btn_hint">
 		<text>Los</text>
@@ -130,7 +130,7 @@
 		<text>Rang</text>
 	</string>
 	<string id="remove_spot_btn_hint">
-		<text>Marker l schen</text>
+		<text>Marker löschen</text>
 	</string>
 	<string id="st_detail_list_for_artefacts">
 		<text>Gewonnene Artefakte</text>
@@ -142,7 +142,7 @@
 		<text>Erlegte Mutanten</text>
 	</string>
 	<string id="st_detail_list_for_quests">
-		<text>Erf llte Aufgaben</text>
+		<text>Erfüllte Aufgaben</text>
 	</string>
 	<string id="st_detail_list_for_stalkerkills">
 		<text>Erledigte Stalker</text>
@@ -166,7 +166,7 @@
 		<text>Spielerstatistiken</text>
 	</string>
 	<string id="st_pda_quest_complete">
-		<text>Erf llte Aufgaben</text>
+		<text>Erfüllte Aufgaben</text>
 	</string>
 	<string id="st_pda_stalker_kills">
 		<text>Erledigte Stalker</text>
@@ -190,10 +190,10 @@
 		<text>Nachricht</text>
 	</string>
 	<string id="svoboda_outfit_description_m1">
-		<text>In den Anzug ist ein Metallgeflecht eingearbeitet, das vor elektrischen und Magnetfeldern sch tzt. Das Set beinhaltet auch ein Nachtsichtger t.</text>
+		<text>In den Anzug ist ein Metallgeflecht eingearbeitet, das vor elektrischen und Magnetfeldern schützt. Das Set beinhaltet auch ein Nachtsichtgerät.</text>
 	</string>
 	<string id="Tasks">
-		<text>Auftr ge</text>
+		<text>Aufträge</text>
 	</string>
 	<string id="Time">
 		<text>Zeit</text>

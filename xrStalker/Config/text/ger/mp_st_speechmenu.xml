@@ -25,7 +25,7 @@
 		<text>Brauche Hilfe.</text>
 	</string>
 	<string id="speech_needmoney">
-		<text>Kein Geld, kauf Ausr stung.</text>
+		<text>Kein Geld, kauf Ausrüstung.</text>
 	</string>
 	<string id="speech_no">
 		<text>Nein.</text>
@@ -37,7 +37,7 @@
 		<text>Lagebericht, sofort!</text>
 	</string>
 	<string id="speech_retreat">
-		<text>R ckzug!</text>
+		<text>Rückzug!</text>
 	</string>
 	<string id="speech_roger">
 		<text>Roger.</text>

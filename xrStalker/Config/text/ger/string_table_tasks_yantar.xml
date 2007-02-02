@@ -11,7 +11,7 @@
 		<text>Ins Labor X16 gelangen.</text>
 	</string>
 	<string id="yan_find_scientist">
-		<text>Strahlenmessungen durchf hren.</text>
+		<text>Strahlenmessungen durchführen.</text>
 	</string>
 	<string id="yan_find_vasilyev">
 		<text>Wasiliews Leiche durchsuchen.</text>
@@ -68,5 +68,5 @@
 		<text>Wasiliews PDA.</text>
 	</string>
 	<string id="yan_zombie_zone">
-		<text>Gesch tzter Standort von Labor X16.</text>
+		<text>Geschätzter Standort von Labor X16.</text>
 	</string>

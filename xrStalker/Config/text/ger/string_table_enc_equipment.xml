@@ -4,16 +4,16 @@
 		<text>Strahlenschutzmittel</text>
 	</string>
 	<string id="Arm-heavy">
-		<text>Schwere Stalkerausr stung</text>
+		<text>Schwere Stalkerausrüstung</text>
 	</string>
 	<string id="Arm-light">
-		<text>Leichte Stalkerausr stung</text>
+		<text>Leichte Stalkerausrüstung</text>
 	</string>
 	<string id="Arm-medium">
-		<text>Mittlere Stalkerausr stung</text>
+		<text>Mittlere Stalkerausrüstung</text>
 	</string>
 	<string id="bandage">
-		<text>Verb nde</text>
+		<text>Verbände</text>
 	</string>
 	<string id="Binocul">
 		<text>Fernglas</text>
@@ -22,16 +22,16 @@
 		<text>Brot</text>
 	</string>
 	<string id="cit_deadcity_maps_desc">
-		<text>Eine genaue Karte der Totenstadt mit S ldnerpositionen.</text>
+		<text>Eine genaue Karte der Totenstadt mit Söldnerpositionen.</text>
 	</string>
 	<string id="cit_deadcity_maps_name">
 		<text>Karte der Totenstadt</text>
 	</string>
 	<string id="cit_doctors_key_desc">
-		<text>Schl ssel des Doktors zum geheimen Versteck bei Prypjat</text>
+		<text>Schlüssel des Doktors zum geheimen Versteck bei Prypjat</text>
 	</string>
 	<string id="cit_doctors_key_short_desc">
-		<text>Schl ssel des Doktors</text>
+		<text>Schlüssel des Doktors</text>
 	</string>
 	<string id="Conserva">
 		<text>Touristenfreude</text>
@@ -40,7 +40,7 @@
 		<text>Anomaliedetektor</text>
 	</string>
 	<string id="Devic">
-		<text>Instrumente und Ger te</text>
+		<text>Instrumente und Geräte</text>
 	</string>
 	<string id="device-pda">
 		<text>PDA</text>
@@ -49,61 +49,61 @@
 		<text>Taschenlampe</text>
 	</string>
 	<string id="enc_equipment_armors_arm-heavy">
-		<text>Schutzanzug. Gewicht: 18 kg. Details: Sch tzt vor Schleim, Brennflaum, den meisten Anomalien und physischem Schaden. Torso und R cken haben eingebaute biometallische Platten. Zum Anzug geh ren ein luftdichter verst rkter Plastikhelm und zwei Sauerstoffflaschen. Hinweis: Bei extensivem Gebrauch rei t der Anzug und wird allm hlich unbrauchbar.</text>
+		<text>Schutzanzug. Gewicht: 18 kg. Details: Schützt vor Schleim, Brennflaum, den meisten Anomalien und physischem Schaden. Torso und Rücken haben eingebaute biometallische Platten. Zum Anzug gehören ein luftdichter verstärkter Plastikhelm und zwei Sauerstoffflaschen. Hinweis: Bei extensivem Gebrauch reißt der Anzug und wird allmählich unbrauchbar.</text>
 	</string>
 	<string id="enc_equipment_armors_arm-light">
-		<text>Schutzanzug. Gewicht: 8 kg. Details: Sch tzt vor schwachen Anomalien und physischem Schaden. Zum Anzug geh rt eine Sauerstoffmaske. Hinweis: Bei extensivem Gebrauch rei t der Anzug und wird allm hlich unbrauchbar.</text>
+		<text>Schutzanzug. Gewicht: 8 kg. Details: Schützt vor schwachen Anomalien und physischem Schaden. Zum Anzug gehört eine Sauerstoffmaske. Hinweis: Bei extensivem Gebrauch reißt der Anzug und wird allmählich unbrauchbar.</text>
 	</string>
 	<string id="enc_equipment_armors_arm-medium">
-		<text>Schutzanzug: Gewicht:12 kg. Details: Sch tzt den Tr ger vor Schleim, Brennflaum, vielen Anomalien und physischem Schaden. Zum Anzug geh ren ein luftdichter Helm und eine Sauerstoffflasche. Hinweis: Bei extensivem Gebrauch rei t der Anzug und wird allm hlich unbrauchbar.</text>
+		<text>Schutzanzug: Gewicht:12 kg. Details: Schützt den Träger vor Schleim, Brennflaum, vielen Anomalien und physischem Schaden. Zum Anzug gehören ein luftdichter Helm und eine Sauerstoffflasche. Hinweis: Bei extensivem Gebrauch reißt der Anzug und wird allmählich unbrauchbar.</text>
 	</string>
 	<string id="enc_equipment_armors_sci2">
-		<text>Ein roter S.C.A.P.E.-Anzug mit luftdichtem Helm. Gewicht: 11 kg. Beschreibung: Sch tzt vor Feuer, S ure, Giftgas, verschiedenen Anomalien, Brennflaum und physischem Schaden. Mit zwei Sauerstoffflaschen. Hinweis: Bei extensivem Gebrauch rei t der Anzug und wird allm hlich unbrauchbar.</text>
+		<text>Ein roter S.C.A.P.E.-Anzug mit luftdichtem Helm. Gewicht: 11 kg. Beschreibung: Schützt vor Feuer, Säure, Giftgas, verschiedenen Anomalien, Brennflaum und physischem Schaden. Mit zwei Sauerstoffflaschen. Hinweis: Bei extensivem Gebrauch reißt der Anzug und wird allmählich unbrauchbar.</text>
 	</string>
 	<string id="enc_equipment_devic_binocul1">
-		<text>Milit risches Fernglas</text>
+		<text>Militärisches Fernglas</text>
 	</string>
 	<string id="enc_equipment_devic_detect1">
-		<text>Ein Ger t zur Ortung von Anomalien und St rungen. Zeigt deren N he akkustisch an. Muss am G rtel befestigt und aktiviert werden, damit es funktioniert.</text>
+		<text>Ein Gerät zur Ortung von Anomalien und Störungen. Zeigt deren Nähe akkustisch an. Muss am Gürtel befestigt und aktiviert werden, damit es funktioniert.</text>
 	</string>
 	<string id="enc_equipment_devic_device-pda1">
-		<text>Pers nlicher Digitaler Assistent - unverzichtbar in der Zone.</text>
+		<text>Persönlicher Digitaler Assistent - unverzichtbar in der Zone.</text>
 	</string>
 	<string id="enc_equipment_devic_device-torch1">
-		<text>Eine starke Taschenlampe. Sehr n tzlich in dunklen Bereichen.</text>
+		<text>Eine starke Taschenlampe. Sehr nützlich in dunklen Bereichen.</text>
 	</string>
 	<string id="enc_equipment_devic_device-torch1_m1">
-		<text>Eine starke Taschenlampe. Dank eines modernen Transformators wurde die Aufladezeit der Akkus verk rzt.</text>
+		<text>Eine starke Taschenlampe. Dank eines modernen Transformators wurde die Aufladezeit der Akkus verkürzt.</text>
 	</string>
 	<string id="enc_equipment_energydrink">
-		<text>Non-Stop ist ein hervorragender Energiedrink aus Koffein, Taurin und erfrischenden Vitaminen. Genau das Richtige, wenn man im Stehen einschl ft!</text>
+		<text>Non-Stop ist ein hervorragender Energiedrink aus Koffein, Taurin und erfrischenden Vitaminen. Genau das Richtige, wenn man im Stehen einschläft!</text>
 	</string>
 	<string id="enc_equipment_food_bread1">
-		<text>Schwer zu sagen, wer es schafft, in der Zone Brot zu backen, aber das Brot ist unverseucht und gut essbar. Jedenfalls hat sich noch kein Stalker dar ber beschwert.</text>
+		<text>Schwer zu sagen, wer es schafft, in der Zone Brot zu backen, aber das Brot ist unverseucht und gut essbar. Jedenfalls hat sich noch kein Stalker darüber beschwert.</text>
 	</string>
 	<string id="enc_equipment_food_conserva1">
-		<text>Konservennahrung, das Stalker aus einem Milit rlagerhaus gestohlen haben. Das Haltbarkeitsdatum ist noch nicht abgelaufen.</text>
+		<text>Konservennahrung, das Stalker aus einem Militärlagerhaus gestohlen haben. Das Haltbarkeitsdatum ist noch nicht abgelaufen.</text>
 	</string>
 	<string id="enc_equipment_food_kolbasa1">
-		<text>Die N hrstoffwurst aus Huhn und Soja ist mangels Alternativen f r einen Stalker oft Fr hst ck, Mittag- und Abendessen in einem.</text>
+		<text>Die Nährstoffwurst aus Huhn und Soja ist mangels Alternativen für einen Stalker oft Frühstück, Mittag- und Abendessen in einem.</text>
 	</string>
 	<string id="enc_equipment_food_vodka1">
-		<text>Wodka vom Hersteller GSC. S ffig, hilft sp rbar gegen die Auswirkung der Strahlung, sollte aber aus offensichtlichen Gr nden nur in Ma en genossen werden.</text>
+		<text>Wodka vom Hersteller GSC. Süffig, hilft spürbar gegen die Auswirkung der Strahlung, sollte aber aus offensichtlichen Gründen nur in Maßen genossen werden.</text>
 	</string>
 	<string id="enc_equipment_medi_antirad1">
 		<text>Reduziert die Strahlungswirkung.</text>
 	</string>
 	<string id="enc_equipment_medi_bandage1">
-		<text>Verb nde. Stillen Blutungen.</text>
+		<text>Verbände. Stillen Blutungen.</text>
 	</string>
 	<string id="enc_equipment_medi_medkit1">
-		<text>Ein Allzweck-Medkit. Man behandelt damit verschiedene Arten von Verletzungen - Wunden, Verbrennungen, Giftunf lle, usw.</text>
+		<text>Ein Allzweck-Medkit. Man behandelt damit verschiedene Arten von Verletzungen - Wunden, Verbrennungen, Giftunfälle, usw.</text>
 	</string>
 	<string id="enc_equipment_medi_medkit2">
 		<text>Ein spezielles Medkit gegen physischen Schaden und Blutverlust. Darin enthalten sind ein blutgerinnendes Mittel, Antiobiotika, Immunstimulatoren und Schmerzmittel.</text>
 	</string>
 	<string id="enc_equipment_medi_medkit3">
-		<text>Medkit, speziell entworfen f r die Zone. Das Kit enth lt Mittel zur Wundheilung wie zur Eliminierung von Radionukliden aus dem K rper. Verhindert das Entstehen der Strahlenkrankheit und senkt die Dosis der gesamtabsorbierten Strahlung.</text>
+		<text>Medkit, speziell entworfen für die Zone. Das Kit enthält Mittel zur Wundheilung wie zur Eliminierung von Radionukliden aus dem Körper. Verhindert das Entstehen der Strahlenkrankheit und senkt die Dosis der gesamtabsorbierten Strahlung.</text>
 	</string>
 	<string id="energy_drink_name">
 		<text>Energiedrink</text>
@@ -112,13 +112,13 @@
 		<text>Energiedrink</text>
 	</string>
 	<string id="Equipment">
-		<text>Ausr stung & Nahrung</text>
+		<text>Ausrüstung & Nahrung</text>
 	</string>
 	<string id="Food">
 		<text>Nahrung</text>
 	</string>
 	<string id="Kolbasa">
-		<text>N hrstoffwurst</text>
+		<text>Nährstoffwurst</text>
 	</string>
 	<string id="Medi">
 		<text>Medikamente</text>

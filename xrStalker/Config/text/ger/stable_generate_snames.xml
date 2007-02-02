@@ -14,7 +14,7 @@
 		<text>Spion</text>
 	</string>
 	<string id="lname_bandit_102">
-		<text>B ffel</text>
+		<text>Büffel</text>
 	</string>
 	<string id="lname_bandit_103">
 		<text>Biber</text>
@@ -98,10 +98,10 @@
 		<text>Trumpf</text>
 	</string>
 	<string id="lname_bandit_128">
-		<text>Kn chel</text>
+		<text>Knöchel</text>
 	</string>
 	<string id="lname_bandit_129">
-		<text>T te</text>
+		<text>Tüte</text>
 	</string>
 	<string id="lname_bandit_13">
 		<text>Leichnam</text>
@@ -131,7 +131,7 @@
 		<text>Nickel</text>
 	</string>
 	<string id="lname_bandit_138">
-		<text>Schw nze</text>
+		<text>Schwänze</text>
 	</string>
 	<string id="lname_bandit_139">
 		<text>Tod</text>
@@ -146,7 +146,7 @@
 		<text>Ass</text>
 	</string>
 	<string id="lname_bandit_142">
-		<text>Mei el</text>
+		<text>Meißel</text>
 	</string>
 	<string id="lname_bandit_143">
 		<text>Dummian</text>
@@ -170,7 +170,7 @@
 		<text>Wurm</text>
 	</string>
 	<string id="lname_bandit_15">
-		<text>Hutst nder</text>
+		<text>Hutständer</text>
 	</string>
 	<string id="lname_bandit_150">
 		<text>Barmalei</text>
@@ -230,10 +230,10 @@
 		<text>Zerlegter</text>
 	</string>
 	<string id="lname_bandit_168">
-		<text>Ausgesto ener</text>
+		<text>Ausgestoßener</text>
 	</string>
 	<string id="lname_bandit_169">
-		<text>Kn chel</text>
+		<text>Knöchel</text>
 	</string>
 	<string id="lname_bandit_17">
 		<text>Verbrannter</text>
@@ -242,7 +242,7 @@
 		<text>Trumpf</text>
 	</string>
 	<string id="lname_bandit_171">
-		<text>T te</text>
+		<text>Tüte</text>
 	</string>
 	<string id="lname_bandit_172">
 		<text>Tropfen</text>
@@ -293,7 +293,7 @@
 		<text>Monster</text>
 	</string>
 	<string id="lname_bandit_23">
-		<text>Kr ppel</text>
+		<text>Krüppel</text>
 	</string>
 	<string id="lname_bandit_24">
 		<text>Frost</text>
@@ -314,7 +314,7 @@
 		<text>Grimm</text>
 	</string>
 	<string id="lname_bandit_3">
-		<text>R uber</text>
+		<text>Räuber</text>
 	</string>
 	<string id="lname_bandit_30">
 		<text>Anwohner</text>
@@ -326,7 +326,7 @@
 		<text>Schrumpel</text>
 	</string>
 	<string id="lname_bandit_33">
-		<text>Ein ugiger</text>
+		<text>Einäugiger</text>
 	</string>
 	<string id="lname_bandit_34">
 		<text>Bastard</text>
@@ -335,7 +335,7 @@
 		<text>Parasit</text>
 	</string>
 	<string id="lname_bandit_36">
-		<text>Windf hnchen</text>
+		<text>Windfähnchen</text>
 	</string>
 	<string id="lname_bandit_37">
 		<text>Schakal</text>
@@ -365,7 +365,7 @@
 		<text>Teddy</text>
 	</string>
 	<string id="lname_bandit_45">
-		<text>Gro er</text>
+		<text>Großer</text>
 	</string>
 	<string id="lname_bandit_46">
 		<text>Dosenfleisch</text>
@@ -380,7 +380,7 @@
 		<text>Joker</text>
 	</string>
 	<string id="lname_bandit_5">
-		<text>Kn ppel</text>
+		<text>Knüppel</text>
 	</string>
 	<string id="lname_bandit_50">
 		<text>Lahmer</text>
@@ -392,10 +392,10 @@
 		<text>Wunderlich</text>
 	</string>
 	<string id="lname_bandit_53">
-		<text> sthet</text>
+		<text>Ästhet</text>
 	</string>
 	<string id="lname_bandit_54">
-		<text>St mmiger</text>
+		<text>Stämmiger</text>
 	</string>
 	<string id="lname_bandit_55">
 		<text>Anwalt</text>
@@ -404,13 +404,13 @@
 		<text>Tunichgut</text>
 	</string>
 	<string id="lname_bandit_57">
-		<text>K nstler</text>
+		<text>Künstler</text>
 	</string>
 	<string id="lname_bandit_58">
 		<text>Hochstapler</text>
 	</string>
 	<string id="lname_bandit_59">
-		<text>B nker</text>
+		<text>Bänker</text>
 	</string>
 	<string id="lname_bandit_6">
 		<text>Landstreicher</text>
@@ -419,7 +419,7 @@
 		<text>Baron</text>
 	</string>
 	<string id="lname_bandit_61">
-		<text>Dr cker</text>
+		<text>Drücker</text>
 	</string>
 	<string id="lname_bandit_62">
 		<text>Heide</text>
@@ -461,10 +461,10 @@
 		<text>Despot</text>
 	</string>
 	<string id="lname_bandit_74">
-		<text>H hlenmann</text>
+		<text>Höhlenmann</text>
 	</string>
 	<string id="lname_bandit_75">
-		<text>W rger</text>
+		<text>Würger</text>
 	</string>
 	<string id="lname_bandit_76">
 		<text>Jurist</text>
@@ -473,7 +473,7 @@
 		<text>Spieler</text>
 	</string>
 	<string id="lname_bandit_78">
-		<text>Schmei er</text>
+		<text>Schmeißer</text>
 	</string>
 	<string id="lname_bandit_79">
 		<text>Pate</text>
@@ -491,7 +491,7 @@
 		<text>Wahnsinniger</text>
 	</string>
 	<string id="lname_bandit_83">
-		<text>Totengr ber</text>
+		<text>Totengräber</text>
 	</string>
 	<string id="lname_bandit_84">
 		<text>Metzger</text>
@@ -530,7 +530,7 @@
 		<text>Denker</text>
 	</string>
 	<string id="lname_bandit_95">
-		<text>Zuh lter</text>
+		<text>Zuhälter</text>
 	</string>
 	<string id="lname_bandit_96">
 		<text>Tiranas</text>
@@ -3032,10 +3032,10 @@
 		<text>Gatsula</text>
 	</string>
 	<string id="lname_stalker_0">
-		<text>Wei </text>
+		<text>Weiß</text>
 	</string>
 	<string id="lname_stalker_1">
-		<text>Gr n</text>
+		<text>Grün</text>
 	</string>
 	<string id="lname_stalker_10">
 		<text>Unsterblicher</text>
@@ -3077,7 +3077,7 @@
 		<text>Teddy</text>
 	</string>
 	<string id="lname_stalker_111">
-		<text>Gro er</text>
+		<text>Großer</text>
 	</string>
 	<string id="lname_stalker_112">
 		<text>Bitter</text>
@@ -3089,7 +3089,7 @@
 		<text>Trocken</text>
 	</string>
 	<string id="lname_stalker_115">
-		<text>Gl ckspilz</text>
+		<text>Glückspilz</text>
 	</string>
 	<string id="lname_stalker_116">
 		<text>Stiller</text>
@@ -3128,7 +3128,7 @@
 		<text>Unverbesserlicher</text>
 	</string>
 	<string id="lname_stalker_127">
-		<text>D nner</text>
+		<text>Dünner</text>
 	</string>
 	<string id="lname_stalker_128">
 		<text>Zyniker</text>
@@ -3143,13 +3143,13 @@
 		<text>Wunderlich</text>
 	</string>
 	<string id="lname_stalker_131">
-		<text>Rechtsh nder</text>
+		<text>Rechtshänder</text>
 	</string>
 	<string id="lname_stalker_132">
-		<text> sthet</text>
+		<text>Ästhet</text>
 	</string>
 	<string id="lname_stalker_133">
-		<text>St mmiger</text>
+		<text>Stämmiger</text>
 	</string>
 	<string id="lname_stalker_134">
 		<text>Grad</text>
@@ -3170,13 +3170,13 @@
 		<text>Tunichgut</text>
 	</string>
 	<string id="lname_stalker_14">
-		<text>R uber</text>
+		<text>Räuber</text>
 	</string>
 	<string id="lname_stalker_140">
 		<text>Apostel</text>
 	</string>
 	<string id="lname_stalker_141">
-		<text>K nstler</text>
+		<text>Künstler</text>
 	</string>
 	<string id="lname_stalker_142">
 		<text>Asket</text>
@@ -3185,7 +3185,7 @@
 		<text>Hochstapler</text>
 	</string>
 	<string id="lname_stalker_144">
-		<text>B nker</text>
+		<text>Bänker</text>
 	</string>
 	<string id="lname_stalker_145">
 		<text>Barde</text>
@@ -3194,13 +3194,13 @@
 		<text>Baron</text>
 	</string>
 	<string id="lname_stalker_147">
-		<text>Dr cker</text>
+		<text>Drücker</text>
 	</string>
 	<string id="lname_stalker_148">
 		<text>Heide</text>
 	</string>
 	<string id="lname_stalker_149">
-		<text>L ufer</text>
+		<text>Läufer</text>
 	</string>
 	<string id="lname_stalker_15">
 		<text>Held</text>
@@ -3224,7 +3224,7 @@
 		<text>Bourgeois</text>
 	</string>
 	<string id="lname_stalker_156">
-		<text>B rokrat</text>
+		<text>Bürokrat</text>
 	</string>
 	<string id="lname_stalker_157">
 		<text>Vandale</text>
@@ -3263,7 +3263,7 @@
 		<text>Reisender</text>
 	</string>
 	<string id="lname_stalker_168">
-		<text>Schw tzer</text>
+		<text>Schwätzer</text>
 	</string>
 	<string id="lname_stalker_169">
 		<text>Reiter</text>
@@ -3299,10 +3299,10 @@
 		<text>Deserteur</text>
 	</string>
 	<string id="lname_stalker_179">
-		<text>H ndler</text>
+		<text>Händler</text>
 	</string>
 	<string id="lname_stalker_18">
-		<text>Kn ppel</text>
+		<text>Knüppel</text>
 	</string>
 	<string id="lname_stalker_180">
 		<text>Geck</text>
@@ -3314,7 +3314,7 @@
 		<text>Despot</text>
 	</string>
 	<string id="lname_stalker_183">
-		<text>H hlenmann</text>
+		<text>Höhlenmann</text>
 	</string>
 	<string id="lname_stalker_184">
 		<text>Diplomat</text>
@@ -3329,7 +3329,7 @@
 		<text>Dozent</text>
 	</string>
 	<string id="lname_stalker_188">
-		<text>W rger</text>
+		<text>Würger</text>
 	</string>
 	<string id="lname_stalker_189">
 		<text>Waldmann</text>
@@ -3344,7 +3344,7 @@
 		<text>FLAK</text>
 	</string>
 	<string id="lname_stalker_192">
-		<text>Schw tzer</text>
+		<text>Schwätzer</text>
 	</string>
 	<string id="lname_stalker_193">
 		<text>Spieler</text>
@@ -3359,7 +3359,7 @@
 		<text>Hauptmann</text>
 	</string>
 	<string id="lname_stalker_197">
-		<text>Schmei er</text>
+		<text>Schmeißer</text>
 	</string>
 	<string id="lname_stalker_198">
 		<text>Clown</text>
@@ -3386,13 +3386,13 @@
 		<text>Komantsche</text>
 	</string>
 	<string id="lname_stalker_204">
-		<text>K nig</text>
+		<text>König</text>
 	</string>
 	<string id="lname_stalker_205">
 		<text>Pate</text>
 	</string>
 	<string id="lname_stalker_206">
-		<text>H ndler</text>
+		<text>Händler</text>
 	</string>
 	<string id="lname_stalker_207">
 		<text>Raucher</text>
@@ -3407,16 +3407,16 @@
 		<text>Lieri</text>
 	</string>
 	<string id="lname_stalker_210">
-		<text>Legion r</text>
+		<text>Legionär</text>
 	</string>
 	<string id="lname_stalker_211">
 		<text>Heiler</text>
 	</string>
 	<string id="lname_stalker_212">
-		<text>F rster</text>
+		<text>Förster</text>
 	</string>
 	<string id="lname_stalker_213">
-		<text>F rst</text>
+		<text>Fürst</text>
 	</string>
 	<string id="lname_stalker_214">
 		<text>Magnat</text>
@@ -3440,7 +3440,7 @@
 		<text>Wichtiger</text>
 	</string>
 	<string id="lname_stalker_220">
-		<text>Totengr ber</text>
+		<text>Totengräber</text>
 	</string>
 	<string id="lname_stalker_221">
 		<text>Moderator</text>
@@ -3467,10 +3467,10 @@
 		<text>Operator</text>
 	</string>
 	<string id="lname_stalker_229">
-		<text>R ster</text>
+		<text>Rüster</text>
 	</string>
 	<string id="lname_stalker_23">
-		<text>Gl cksritter</text>
+		<text>Glücksritter</text>
 	</string>
 	<string id="lname_stalker_230">
 		<text>Padischach</text>
@@ -3494,22 +3494,22 @@
 		<text>Pastor</text>
 	</string>
 	<string id="lname_stalker_237">
-		<text>Sch fer</text>
+		<text>Schäfer</text>
 	</string>
 	<string id="lname_stalker_238">
-		<text>Ehrw rden</text>
+		<text>Ehrwürden</text>
 	</string>
 	<string id="lname_stalker_239">
-		<text>Pfl ger</text>
+		<text>Pflüger</text>
 	</string>
 	<string id="lname_stalker_24">
-		<text>Gl ckspilz</text>
+		<text>Glückspilz</text>
 	</string>
 	<string id="lname_stalker_240">
 		<text>Pazifist</text>
 	</string>
 	<string id="lname_stalker_241">
-		<text>Tr ger</text>
+		<text>Träger</text>
 	</string>
 	<string id="lname_stalker_242">
 		<text>Pianist</text>
@@ -3536,7 +3536,7 @@
 		<text>Gleiter</text>
 	</string>
 	<string id="lname_stalker_25">
-		<text>Gro er Kumpel</text>
+		<text>Großer Kumpel</text>
 	</string>
 	<string id="lname_stalker_250">
 		<text>Polarforscher</text>
@@ -3545,7 +3545,7 @@
 		<text>Botschafter</text>
 	</string>
 	<string id="lname_stalker_252">
-		<text>Brieftr ger</text>
+		<text>Briefträger</text>
 	</string>
 	<string id="lname_stalker_253">
 		<text>Poet</text>
@@ -3602,13 +3602,13 @@
 		<text>Kontaktmann</text>
 	</string>
 	<string id="lname_stalker_27">
-		<text>Gro  ugiger</text>
+		<text>Großäugiger</text>
 	</string>
 	<string id="lname_stalker_270">
 		<text>Priester</text>
 	</string>
 	<string id="lname_stalker_271">
-		<text>Sekret r</text>
+		<text>Sekretär</text>
 	</string>
 	<string id="lname_stalker_272">
 		<text>Herzschlag</text>
@@ -3617,7 +3617,7 @@
 		<text>Simulant</text>
 	</string>
 	<string id="lname_stalker_274">
-		<text>T te</text>
+		<text>Tüte</text>
 	</string>
 	<string id="lname_stalker_275">
 		<text>Bahnbrecher</text>
@@ -3653,7 +3653,7 @@
 		<text>Sultan</text>
 	</string>
 	<string id="lname_stalker_285">
-		<text>Zuh lter</text>
+		<text>Zuhälter</text>
 	</string>
 	<string id="lname_stalker_286">
 		<text>Buchhalter</text>
@@ -3662,7 +3662,7 @@
 		<text>Tanker</text>
 	</string>
 	<string id="lname_stalker_288">
-		<text>T nzer</text>
+		<text>Tänzer</text>
 	</string>
 	<string id="lname_stalker_289">
 		<text>Tiranas</text>
@@ -3695,7 +3695,7 @@
 		<text>Footballer</text>
 	</string>
 	<string id="lname_stalker_298">
-		<text>Scharfsch tze</text>
+		<text>Scharfschütze</text>
 	</string>
 	<string id="lname_stalker_299">
 		<text>Chemiker</text>
@@ -3713,7 +3713,7 @@
 		<text>Maler</text>
 	</string>
 	<string id="lname_stalker_302">
-		<text>Sch fer</text>
+		<text>Schäfer</text>
 	</string>
 	<string id="lname_stalker_303">
 		<text>Schamane</text>
@@ -3761,7 +3761,7 @@
 		<text>Pavian</text>
 	</string>
 	<string id="lname_stalker_317">
-		<text>B ffel</text>
+		<text>Büffel</text>
 	</string>
 	<string id="lname_stalker_318">
 		<text>Lemming</text>
@@ -3776,7 +3776,7 @@
 		<text>Bulldogge</text>
 	</string>
 	<string id="lname_stalker_321">
-		<text>Eichh rnchen</text>
+		<text>Eichhörnchen</text>
 	</string>
 	<string id="lname_stalker_322">
 		<text>Bulle</text>
@@ -3794,13 +3794,13 @@
 		<text>Muskrat</text>
 	</string>
 	<string id="lname_stalker_327">
-		<text>N rgeler</text>
+		<text>Nörgeler</text>
 	</string>
 	<string id="lname_stalker_328">
 		<text>Kobold</text>
 	</string>
 	<string id="lname_stalker_329">
-		<text>Kr he</text>
+		<text>Krähe</text>
 	</string>
 	<string id="lname_stalker_33">
 		<text>Bitter</text>
@@ -3827,7 +3827,7 @@
 		<text>Stachelschwein</text>
 	</string>
 	<string id="lname_stalker_337">
-		<text>K fer</text>
+		<text>Käfer</text>
 	</string>
 	<string id="lname_stalker_338">
 		<text>Kaninchen</text>
@@ -3845,7 +3845,7 @@
 		<text>Auroch</text>
 	</string>
 	<string id="lname_stalker_342">
-		<text>T rke</text>
+		<text>Türke</text>
 	</string>
 	<string id="lname_stalker_343">
 		<text>Wildschwein</text>
@@ -3878,7 +3878,7 @@
 		<text>Krokodil</text>
 	</string>
 	<string id="lname_stalker_352">
-		<text>Grash pfer</text>
+		<text>Grashüpfer</text>
 	</string>
 	<string id="lname_stalker_353">
 		<text>Nark</text>
@@ -3890,13 +3890,13 @@
 		<text>Mammut</text>
 	</string>
 	<string id="lname_stalker_356">
-		<text>B r</text>
+		<text>Bär</text>
 	</string>
 	<string id="lname_stalker_357">
 		<text>Mikrobe</text>
 	</string>
 	<string id="lname_stalker_358">
-		<text>M cke</text>
+		<text>Mücke</text>
 	</string>
 	<string id="lname_stalker_359">
 		<text>Ameise</text>
@@ -3944,13 +3944,13 @@
 		<text>Uhu</text>
 	</string>
 	<string id="lname_stalker_372">
-		<text>K chenschabe</text>
+		<text>Küchenschabe</text>
 	</string>
 	<string id="lname_stalker_373">
 		<text>Tarantula</text>
 	</string>
 	<string id="lname_stalker_374">
-		<text>W stenspringmaus</text>
+		<text>Wüstenspringmaus</text>
 	</string>
 	<string id="lname_stalker_375">
 		<text>Boa</text>
@@ -4004,7 +4004,7 @@
 		<text>Laufvogel</text>
 	</string>
 	<string id="lname_stalker_390">
-		<text>Br tchen</text>
+		<text>Brötchen</text>
 	</string>
 	<string id="lname_stalker_391">
 		<text>Vakuum</text>
@@ -4037,7 +4037,7 @@
 		<text>Rothaariger</text>
 	</string>
 	<string id="lname_stalker_40">
-		<text>Hutst nder</text>
+		<text>Hutständer</text>
 	</string>
 	<string id="lname_stalker_400">
 		<text>Muschel</text>
@@ -4058,7 +4058,7 @@
 		<text>Sarg</text>
 	</string>
 	<string id="lname_stalker_406">
-		<text>D rfler</text>
+		<text>Dörfler</text>
 	</string>
 	<string id="lname_stalker_407">
 		<text>Zeiger</text>
@@ -4103,10 +4103,10 @@
 		<text>Kleber</text>
 	</string>
 	<string id="lname_stalker_42">
-		<text>Vielfra </text>
+		<text>Vielfraß</text>
 	</string>
 	<string id="lname_stalker_420">
-		<text>Schl ssel</text>
+		<text>Schlüssel</text>
 	</string>
 	<string id="lname_stalker_421">
 		<text>Peitsche</text>
@@ -4118,7 +4118,7 @@
 		<text>Kapuze</text>
 	</string>
 	<string id="lname_stalker_424">
-		<text>Holzf ller</text>
+		<text>Holzfäller</text>
 	</string>
 	<string id="lname_stalker_425">
 		<text>Cognac</text>
@@ -4133,13 +4133,13 @@
 		<text>Kosmos</text>
 	</string>
 	<string id="lname_stalker_429">
-		<text>Kn chel</text>
+		<text>Knöchel</text>
 	</string>
 	<string id="lname_stalker_43">
 		<text>Kriecher</text>
 	</string>
 	<string id="lname_stalker_430">
-		<text>T te</text>
+		<text>Tüte</text>
 	</string>
 	<string id="lname_stalker_431">
 		<text>Kreuz</text>
@@ -4148,7 +4148,7 @@
 		<text>Haken</text>
 	</string>
 	<string id="lname_stalker_433">
-		<text>Ausl ser</text>
+		<text>Auslöser</text>
 	</string>
 	<string id="lname_stalker_434">
 		<text>Tropfen</text>
@@ -4175,7 +4175,7 @@
 		<text>Nachtaktiver</text>
 	</string>
 	<string id="lname_stalker_441">
-		<text>Abges gte Flinte</text>
+		<text>Abgesägte Flinte</text>
 	</string>
 	<string id="lname_stalker_442">
 		<text>Aspirin</text>
@@ -4199,7 +4199,7 @@
 		<text>Knetmasse</text>
 	</string>
 	<string id="lname_stalker_449">
-		<text>Schie pulver</text>
+		<text>Schießpulver</text>
 	</string>
 	<string id="lname_stalker_45">
 		<text>Schwirrer</text>
@@ -4223,13 +4223,13 @@
 		<text>Sieb</text>
 	</string>
 	<string id="lname_stalker_456">
-		<text>Schw nze</text>
+		<text>Schwänze</text>
 	</string>
 	<string id="lname_stalker_457">
 		<text>Roboter</text>
 	</string>
 	<string id="lname_stalker_458">
-		<text>K fer</text>
+		<text>Käfer</text>
 	</string>
 	<string id="lname_stalker_459">
 		<text>Schippe</text>
@@ -4253,7 +4253,7 @@
 		<text>Gespenst</text>
 	</string>
 	<string id="lname_stalker_465">
-		<text>Mei el</text>
+		<text>Meißel</text>
 	</string>
 	<string id="lname_stalker_466">
 		<text>Fass</text>
@@ -4268,7 +4268,7 @@
 		<text>Hintern</text>
 	</string>
 	<string id="lname_stalker_47">
-		<text>Besch ftigter</text>
+		<text>Beschäftigter</text>
 	</string>
 	<string id="lname_stalker_470">
 		<text>Gleiter</text>
@@ -4277,7 +4277,7 @@
 		<text>Ass</text>
 	</string>
 	<string id="lname_stalker_472">
-		<text>B ndel</text>
+		<text>Bündel</text>
 	</string>
 	<string id="lname_stalker_473">
 		<text>Faktor</text>
@@ -4286,7 +4286,7 @@
 		<text>Laterne</text>
 	</string>
 	<string id="lname_stalker_475">
-		<text>Mei el</text>
+		<text>Meißel</text>
 	</string>
 	<string id="lname_stalker_476">
 		<text>Made</text>
@@ -4319,7 +4319,7 @@
 		<text>Joint</text>
 	</string>
 	<string id="lname_stalker_485">
-		<text>N ster</text>
+		<text>Nüster</text>
 	</string>
 	<string id="lname_stalker_486">
 		<text>Bajonett</text>
@@ -4361,13 +4361,13 @@
 		<text>Schwanz</text>
 	</string>
 	<string id="lname_stalker_498">
-		<text>R ckgrat</text>
+		<text>Rückgrat</text>
 	</string>
 	<string id="lname_stalker_499">
 		<text>Wurm</text>
 	</string>
 	<string id="lname_stalker_5">
-		<text>Silberr cken</text>
+		<text>Silberrücken</text>
 	</string>
 	<string id="lname_stalker_50">
 		<text>Geizkragen</text>
@@ -4421,7 +4421,7 @@
 		<text>Kaschei</text>
 	</string>
 	<string id="lname_stalker_515">
-		<text>C sar</text>
+		<text>Cäsar</text>
 	</string>
 	<string id="lname_stalker_516">
 		<text>Landser</text>
@@ -4475,7 +4475,7 @@
 		<text>Flint</text>
 	</string>
 	<string id="lname_stalker_531">
-		<text>C sar</text>
+		<text>Cäsar</text>
 	</string>
 	<string id="lname_stalker_532">
 		<text>Chapajew</text>
@@ -4526,7 +4526,7 @@
 		<text>Bulldozer</text>
 	</string>
 	<string id="lname_stalker_547">
-		<text>Bl dmann</text>
+		<text>Blödmann</text>
 	</string>
 	<string id="lname_stalker_548">
 		<text>Ravioli</text>
@@ -4571,7 +4571,7 @@
 		<text>Frosti</text>
 	</string>
 	<string id="lname_stalker_560">
-		<text>Ausgesto ener</text>
+		<text>Ausgestoßener</text>
 	</string>
 	<string id="lname_stalker_561">
 		<text>Kagor</text>
@@ -4583,7 +4583,7 @@
 		<text>Karbid</text>
 	</string>
 	<string id="lname_stalker_564">
-		<text>Kn chel</text>
+		<text>Knöchel</text>
 	</string>
 	<string id="lname_stalker_565">
 		<text>Trumpf</text>
@@ -4592,10 +4592,10 @@
 		<text>Kommodore</text>
 	</string>
 	<string id="lname_stalker_567">
-		<text>K nig</text>
+		<text>König</text>
 	</string>
 	<string id="lname_stalker_568">
-		<text>T te</text>
+		<text>Tüte</text>
 	</string>
 	<string id="lname_stalker_569">
 		<text>Tropfen</text>
@@ -4667,7 +4667,7 @@
 		<text>Eigenbrauer</text>
 	</string>
 	<string id="lname_stalker_59">
-		<text>Kr ppel</text>
+		<text>Krüppel</text>
 	</string>
 	<string id="lname_stalker_590">
 		<text>Garnele</text>
@@ -4685,7 +4685,7 @@
 		<text>Ass</text>
 	</string>
 	<string id="lname_stalker_595">
-		<text>K rbis</text>
+		<text>Kürbis</text>
 	</string>
 	<string id="lname_stalker_596">
 		<text>Ghul</text>
@@ -4784,7 +4784,7 @@
 		<text>Jammerer</text>
 	</string>
 	<string id="lname_stalker_85">
-		<text>Ein ugiger</text>
+		<text>Einäugiger</text>
 	</string>
 	<string id="lname_stalker_86">
 		<text>Bastard</text>
@@ -4796,13 +4796,13 @@
 		<text>Paranoider</text>
 	</string>
 	<string id="lname_stalker_89">
-		<text>Windf hnchen</text>
+		<text>Windfähnchen</text>
 	</string>
 	<string id="lname_stalker_9">
 		<text>Unbesiegbarer</text>
 	</string>
 	<string id="lname_stalker_90">
-		<text>Betr ger</text>
+		<text>Betrüger</text>
 	</string>
 	<string id="lname_stalker_91">
 		<text>Schakal</text>

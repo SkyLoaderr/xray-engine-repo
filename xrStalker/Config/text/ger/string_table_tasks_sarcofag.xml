@@ -1,5 +1,5 @@
 	<string id="sar_monolith">
-		<text>Wunschg nner</text>
+		<text>Wunschgönner</text>
 	</string>
 	<string id="sar_monolith_0">
 		<text>Zum Monolithen gelangen.</text>
@@ -8,7 +8,7 @@
 		<text>Unter den Mantel schleichen.</text>
 	</string>
 	<string id="sar_monolith_2">
-		<text>Den Wunschg nner finden.</text>
+		<text>Den Wunschgönner finden.</text>
 	</string>
 	<string id="sar_monolith_destroy">
 		<text>Das Monolith-Geheimnis.</text>
@@ -17,10 +17,10 @@
 		<text>In das geheime Labor eindringen.</text>
 	</string>
 	<string id="sar_monolith_destroy_1">
-		<text>Das Monolith-Geheimnis l sen.</text>
+		<text>Das Monolith-Geheimnis lösen.</text>
 	</string>
 	<string id="sar_monolith_destroy_2">
-		<text>Die Generatoren des Monolithen zerst ren.</text>
+		<text>Die Generatoren des Monolithen zerstören.</text>
 	</string>
 	<string id="sar_perception">
 		<text>Das Geheimnis der Zone.</text>
@@ -38,11 +38,11 @@
 		<text>Den geheimen Bunker betreten.</text>
 	</string>
 	<string id="sar_secret_lab_1">
-		<text>Die versteckte T r finden.</text>
+		<text>Die versteckte Tür finden.</text>
 	</string>
 	<string id="sar_secret_lab_2">
-		<text>Die T r mit Hilfe des Dekoders  ffnen.</text>
+		<text>Die Tür mit Hilfe des Dekoders öffnen.</text>
 	</string>
 	<string id="sar_secret_lab_3">
-		<text>Herausfinden, was sich hinter der T r befindet.</text>
+		<text>Herausfinden, was sich hinter der Tür befindet.</text>
 	</string>

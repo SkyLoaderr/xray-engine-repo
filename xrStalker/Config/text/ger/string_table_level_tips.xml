@@ -4,16 +4,16 @@
 		<text>Wildgebiet - Rostok</text>
 	</string>
 	<string id="car_character_use">
-		<text>T r  ffnen ($$ACTION_USE$$)</text>
+		<text>Tür öffnen ($$ACTION_USE$$)</text>
 	</string>
 	<string id="character_use">
 		<text>Reden ($$ACTION_USE$$)</text>
 	</string>
 	<string id="dead_character_use">
-		<text>K rper durchsuchen ($$ACTION_USE$$) \n K rper schleifen (UMSCHALTEN+$$ACTION_USE$$)</text>
+		<text>Körper durchsuchen ($$ACTION_USE$$) \n Körper schleifen (UMSCHALTEN+$$ACTION_USE$$)</text>
 	</string>
 	<string id="general_complete_task">
-		<text>Auftrag erf llt:</text>
+		<text>Auftrag erfüllt:</text>
 	</string>
 	<string id="general_fail_task">
 		<text>Auftrag fehlgeschlagen:</text>
@@ -31,7 +31,7 @@
 		<text>Neuer Tagebucheintrag:</text>
 	</string>
 	<string id="general_new_encyclopedy">
-		<text>Neuer Enzyklop die-Eintrag:</text>
+		<text>Neuer Enzyklopädie-Eintrag:</text>
 	</string>
 	<string id="general_new_task">
 		<text>Neuer Auftrag:</text>
@@ -70,7 +70,7 @@
 		<text>Zum Kordon</text>
 	</string>
 	<string id="to_garbage">
-		<text>Zur M llhalde</text>
+		<text>Zur Müllhalde</text>
 	</string>
 	<string id="to_military">
 		<text>Zu den Lagern</text>
@@ -94,7 +94,7 @@
 		<text>PSI-Emissionsniveau kritisch. Gefahrenzone sofort verlassen.</text>
 	</string>
 	<string id="st_radiation_danger">
-		<text>Gef hrliches Strahlenniveau. Zutritt nur mit Schutzkleidung.</text>
+		<text>Gefährliches Strahlenniveau. Zutritt nur mit Schutzkleidung.</text>
 	</string>
 	<string id="st_found_new_pda">
 		<text>Gefundene Informationen:</text>
