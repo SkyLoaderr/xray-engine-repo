@@ -66,6 +66,9 @@
 	<string id="ui_st_conn_cdkey_disabled">
 		<text>Connection error: Your CD Key is disabled. Contact customer service.</text>
 	</string>	
+	<string id="ui_st_conn_version_differs">
+		<text>Connection error: Different version.</text>
+	</string>	
 	<string id="ui_st_days">
 		<text>Days</text>
 	</string>
