@@ -162,4 +162,8 @@ function actor_set_freedom (actor, npc)
     end
 end
 
+function mil_leader_dialog_check (actor, npc)
+	return has_alife_info("mil_lukash_delay") or has_alife_info("mil_lukash_dolg_task_complete")
+end
+
 --db.actor:set_character_community("actor_dolg", 0, 0)
