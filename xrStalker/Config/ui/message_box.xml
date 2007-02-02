@@ -274,6 +274,57 @@
 		</button_ok>
 	</message_box_server_reject>
 	
+	<message_box_cdkey_invalid type="ok" x="200" y="250" width="510" height="206">
+		<texture>ui_frame_error</texture>
+		
+		<picture x="35" y="65" width="77" height="77">
+			<texture>ui_frame_error_sign_red</texture>
+		</picture>
+		
+		<message_text x="170" y="40" width="310" height="60">
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_cdkey_invalid</text>
+		</message_text>
+		
+		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
+			<texture>ui_button_ordinary</texture>
+		</button_ok>
+	</message_box_cdkey_invalid>
+	
+	<message_box_cdkey_in_use type="ok" x="200" y="250" width="510" height="206">
+		<texture>ui_frame_error</texture>
+		
+		<picture x="35" y="65" width="77" height="77">
+			<texture>ui_frame_error_sign_red</texture>
+		</picture>
+		
+		<message_text x="170" y="40" width="310" height="60">
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_cdkey_in_use</text>
+		</message_text>
+		
+		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
+			<texture>ui_button_ordinary</texture>
+		</button_ok>
+	</message_box_cdkey_in_use>
+	
+	<message_box_cdkey_disabled type="ok" x="200" y="250" width="510" height="206">
+		<texture>ui_frame_error</texture>
+		
+		<picture x="35" y="65" width="77" height="77">
+			<texture>ui_frame_error_sign_red</texture>
+		</picture>
+		
+		<message_text x="170" y="40" width="310" height="60">
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_cdkey_disabled</text>
+		</message_text>
+		
+		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
+			<texture>ui_button_ordinary</texture>
+		</button_ok>
+	</message_box_cdkey_disabled>
+	
 	<cant_vote type="ok" x="200" y="250" width="510" height="206">
 		<texture>ui_frame_error</texture>
 		
