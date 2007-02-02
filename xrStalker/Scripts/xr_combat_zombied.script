@@ -216,7 +216,7 @@ function action_zombie_go_to_danger:execute()
 		self.was_hit = false
 		self.hit_reaction_end_time = time_global() + 5000
 
-		self:set_state( "guard_fire", nil, self.enemy_last_seen_pos )
+		self:set_state( "raid_fire", nil, self.enemy_last_seen_pos )
 
 	elseif self.hit_reaction_end_time > time_global() then
 		-- продолжать идти и стрелять в точку, из которой был нанесён хит
