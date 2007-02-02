@@ -16,7 +16,7 @@ going_speed          = 6.0                      ; option for ALife Simulator
 current_level_going_speed		= 1;2					; option for ALife Simulator
 search_speed         = .5                       ; option for ALife Simulator
 visual				 = monsters\flesh\flesh
-corpse_visual		 = monsters\flesh\flesh
+corpse_visual		 = monsters\flesh\flesh_dead
 icon				 = ui_npc_monster_flesh
 MaxHealthValue		     = 1.0			; range [0..200]
 DynamicObjectsCount	 = 32
@@ -344,6 +344,7 @@ stand_attack_3 =	  	0.40,		0.40,		    150,        0.0, 0.5, 1.0,		 -1.0, 1.0, -1
 [flesh_weak]:m_flesh_e
 $spawn					= "monsters\fleshes\flesh_01_weak"
 visual					= monsters\flesh\flesh
+corpse_visual			= monsters\flesh\flesh_dead
 icon					= ui_npc_monster_flesh
 panic_threshold			= 0.2
 rank					= 0
@@ -381,6 +382,7 @@ stand_attack_3 =	  	0.40,		0.40,		    150,        0.0, 0.5, 1.0,		 -1.0, 1.0, -1
 [flesh_normal]:m_flesh_e
 $spawn				= "monsters\fleshes\flesh_02_normal"
 visual				= monsters\flesh\flesh
+corpse_visual		= monsters\flesh\flesh_dead
 icon				= ui_npc_monster_flesh
 panic_threshold		= 0.2
 rank				= 401

@@ -13,7 +13,7 @@ going_speed          = 6.0                      ; option for ALife Simulator
 current_level_going_speed		= 1;2					; option for ALife Simulator
 search_speed         = .5                       ; option for ALife Simulator
 visual				 = monsters\pseudodog\pseudodog
-corpse_visual		 = monsters\pseudodog\pseudodog
+corpse_visual		 = monsters\pseudodog\pseudodog_dead
 icon				 = ui_npc_monster_pseudodog
 MaxHealthValue		     = 1.0			; range [0..200]
 DynamicObjectsCount	 = 32
@@ -401,6 +401,7 @@ run_jamp_1		=		0.55,		0.25,		    320,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1
 [pseudodog_strong]:m_pseudodog_e
 $spawn				= "monsters\pseudodogs\pseudodog_03_strong"
 visual				= monsters\pseudodog\pseudodog_grey
+corpse_visual		= monsters\pseudodog\pseudodog_grey_dead
 icon				= ui_npc_monster_pseudodog_grey
 panic_threshold		= 0.05	
 rank				= 801

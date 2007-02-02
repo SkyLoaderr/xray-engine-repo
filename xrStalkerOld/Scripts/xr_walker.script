@@ -30,15 +30,15 @@ function action_walker_activity:initialize()
 	action_base.initialize(self)
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
-	self:reset_scheme()
+	self:reset_scheme(nil, self.object)
 end
 
-function action_walker_activity:activate_scheme()
+function action_walker_activity:activate_scheme(loading, npc)
 	self.st.signals = {}
-	self:reset_scheme()
+	self:reset_scheme(loading, npc)
 end
 
-function action_walker_activity:reset_scheme()
+function action_walker_activity:reset_scheme(loading, npc)
 	if self.st.path_walk_info == nil then			
 		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
 	end
@@ -47,7 +47,7 @@ function action_walker_activity:reset_scheme()
 	end
 
 	self.move_mgr:reset(self.st.path_walk, self.st.path_walk_info, self.st.path_look, self.st.path_look_info, self.st.team, self.st.suggested_state)
-	xr_sound.set_sound(self.object, self.st.sound_idle)
+	xr_sound.set_sound(npc, self.st.sound_idle)
 end
 
 function action_walker_activity:execute()

@@ -380,9 +380,9 @@ function activate_by_section(npc, ini, section, loading)
 			-- чтобы избежать дальнейшего движения по пути при установке рестрикторов
 			utils.send_to_nearest_accessible_vertex(npc, npc:level_vertex_id())
 
-			issue_event(npc, db.storage[npc_id][scheme], "activate_scheme", loading)
+			issue_event(npc, db.storage[npc_id][scheme], "activate_scheme", loading, npc)
 		else
-			issue_event(npc, db.storage[npc_id][scheme], "reset_scheme", loading)
+			issue_event(npc, db.storage[npc_id][scheme], "reset_scheme", loading, npc)
 		end
 	else
 		abort("object '%s': activate_by_section: section '%s' does not exist",

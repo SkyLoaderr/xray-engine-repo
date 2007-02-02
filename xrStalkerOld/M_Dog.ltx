@@ -13,7 +13,7 @@ going_speed          = 6.0                      ; option for ALife Simulator
 current_level_going_speed		= 1;2					; option for ALife Simulator
 search_speed         = .5                       ; option for ALife Simulator
 visual				 = monsters\dog\dog
-corpse_visual		 = monsters\dog\dog
+corpse_visual		 = monsters\dog\dog_dead
 icon				 = ui_npc_monster_dog
 MaxHealthValue		     = 100			; range [0..200]
 DynamicObjectsCount	 = 32
@@ -380,6 +380,7 @@ bip01_l_thigh
 [dog_weak]:m_dog_e
 $spawn				= "monsters\dogs\dog_01_weak"
 visual				= monsters\dog\dog
+corpse_visual		= monsters\dog\dog_dead
 icon				= ui_npc_monster_dog
 panic_threshold		= 0.2
 rank				= 0
@@ -422,6 +423,7 @@ stand_attack_3 =	  	0.45,		0.10,	    50,        1.0, 0.1, 0.0,		 -0.5, 0.5, -1.0
 [dog_normal]:m_dog_e
 $spawn				= "monsters\dogs\dog_02_normal"
 visual				= monsters\dog\dog_red
+corpse_visual		= monsters\dog\dog_red_dead
 icon				= ui_npc_monster_dog_red
 panic_threshold		= 0.2
 rank				= 401
@@ -459,6 +461,7 @@ stand_attack_3 =	  	0.45,		0.15,	    50,        1.0, 0.1, 0.0,		 -0.5, 0.5, -1.0
 [dog_strong]:m_dog_e
 $spawn				= "monsters\dogs\dog_03_strong"
 visual				= monsters\dog\dog_white
+corpse_visual		= monsters\dog\dog_white_dead
 icon				= ui_npc_monster_dog_white
 panic_threshold		= 0.2
 rank				= 801
