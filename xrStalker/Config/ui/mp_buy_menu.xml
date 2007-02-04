@@ -51,8 +51,8 @@
 		<text font="graffiti32" color="green" align="c" vert_align="c"/>
 	</static_diff_money>
 	
-	<static_curr_items_money x="750" y="10" width="112" height="34">
-		<text font="graffiti32" color="green" align="c" vert_align="c"/>
+	<static_curr_items_money x="745" y="10" width="112" height="34">
+		<text font="graffiti32" color="ui_clr_2" vert_align="c"/>
 	</static_curr_items_money>
 
 	<static_preset_money_last x="880" y="476" width="73" height="27">
