@@ -140,7 +140,7 @@ end
 
 function options_dialog:OnBtnCheckUpdates()
 	local console			= get_console()
-	console:execute			("check_for_updates")
+	console:execute			("check_for_updates 1")
 end
 
 function options_dialog:OnBtnDefault()

@@ -363,6 +363,23 @@
 		</button_no>
 	</msg_box_new_patch>
 	
+	<msg_box_no_new_patch type="ok" x="200" y="250" width="510" height="206">
+		<texture>ui_frame_error</texture>
+		
+		<picture x="35" y="65" width="77" height="77">
+			<texture>ui_frame_error_sign_info</texture>
+		</picture>
+		
+		<message_text x="170" y="40" width="310" height="60">
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_no_new_patch</text>
+		</message_text>
+		
+		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_st_btn_ok</text>
+			<texture>ui_button_ordinary</texture>
+		</button_ok>
+	</msg_box_no_new_patch>
+	
 	<cant_vote type="ok" x="200" y="250" width="510" height="206">
 		<texture>ui_frame_error</texture>
 		

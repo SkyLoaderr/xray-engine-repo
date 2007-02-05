@@ -72,6 +72,9 @@
 	<string id="ui_st_conn_new_patch">
 		<text>New patch is available.\n Version: %s\n Location: %s\nDo you want to download it now?</text>
 	</string>	
+	<string id="ui_st_conn_no_new_patch">
+		<text>No new patch is available for now</text>
+	</string>	
 	<string id="ui_st_days">
 		<text>Days</text>
 	</string>
