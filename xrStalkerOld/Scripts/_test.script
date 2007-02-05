@@ -133,7 +133,7 @@ end
 function main()
 	local task = CGameTask()
 
-	task:load("artefact_trader")
+	task:load("artefact")
 	task:set_title("artefact_trader")
 	
 	local objective = SGameTaskObjective(task,1)
