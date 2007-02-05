@@ -32,7 +32,7 @@
 	</progress_bar_armor>
 	
 	<static_weapon x="860" y="692" width="120" height="65">
-		<text complex_mode="0" align="c" x="10" y="0" font="letterica16" r="255" g="255" b="255" a="130"/>
+		<text complex_mode="0" x="40" y="0" font="letterica16" r="255" g="255" b="255" a="130"/>
 		<texture>ui_hud_frame_patron</texture>
 	</static_weapon>
 	
