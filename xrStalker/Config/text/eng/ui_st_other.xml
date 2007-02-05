@@ -69,6 +69,9 @@
 	<string id="ui_st_conn_version_differs">
 		<text>Connection error: Different version.</text>
 	</string>	
+	<string id="ui_st_conn_new_patch">
+		<text>New patch is available.\n Version: %s\n Location: %s\nDo you want to download it now?</text>
+	</string>	
 	<string id="ui_st_days">
 		<text>Days</text>
 	</string>
