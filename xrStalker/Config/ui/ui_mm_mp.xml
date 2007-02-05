@@ -46,7 +46,7 @@
 		<button x="0" y="0" width="114" height="26">
 			<texture_offset x="0" y="-7"/>
 			<texture>ui_button_tablist</texture>
-			<text font="normal" align="c" complex_mode="0">mm_mp_client</text>
+			<text font="graffiti19" align="c" complex_mode="0">mm_mp_client</text>
 			<text_color>
 				<e r="106" g="95" b="91"/>
 				<t r="227" g="199" b="178"/>
@@ -56,7 +56,7 @@
 		<button x="114" y="0" width="114" height="26">
 			<texture_offset x="0" y="-7"/>
 			<texture>ui_button_tablist</texture>
-			<text font="normal" align="c" complex_mode="0">mm_mp_server</text>
+			<text font="graffiti19" align="c" complex_mode="0">mm_mp_server</text>
 			<text_color>
 				<e r="106" g="95" b="91"/>				
 				<t r="227" g="199" b="178"/>				
@@ -66,7 +66,7 @@
 		<button x="228" y="0" width="116" height="26">			
 			<texture_offset x="0" y="-7"/>
 			<texture>ui_button_tablist</texture>
-			<text font="normal" align="c" complex_mode="0">mm_mp_options</text>
+			<text font="graffiti19" align="c" complex_mode="0">mm_mp_options</text>
 			<text_color>
 				<e r="106" g="95" b="91"/>				
 				<t r="227" g="199" b="178"/>				
@@ -85,7 +85,7 @@
 	</frame>
 	
 	<btn_create x="393" y="646" width="157" height="48">
-		<text font="normal" align="c">mm_mp_create</text>
+		<text font="graffiti19" align="c">mm_mp_create</text>
 		<texture>ui_button_main01</texture>
 		<text_color>
 			<e r="227" g="199" b="178"/> <t r="180" g="153" b="155"/> <d r="106" g="95" b="91"/> <h r="0" g="0" b="0"/>		
@@ -93,7 +93,7 @@
 	</btn_create>
 	
 	<btn_join x="549" y="646" width="157" height="48">
-		<text font="normal" align="c">mm_mp_join</text>
+		<text font="graffiti19" align="c">mm_mp_join</text>
 		<texture>ui_button_main02</texture>
 		<text_color>
 			<e r="227" g="199" b="178"/> <t r="180" g="153" b="155"/> <d r="106" g="95" b="91"/> <h r="0" g="0" b="0"/>		
@@ -101,7 +101,7 @@
 	</btn_join>
 	
 	<btn_cancel x="705" y="646" width="157" height="48">
-		<text font="normal" align="c">mm_mp_cancel</text>
+		<text font="graffiti19" align="c">mm_mp_cancel</text>
 		<texture>ui_button_main03</texture>
 		<text_color>
 			<e r="227" g="199" b="178"/> <t r="180" g="153" b="155"/> <d r="106" g="95" b="91"/> <h r="0" g="0" b="0"/>		

@@ -94,7 +94,7 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" align="c">ui_inv_pistols</text>
+			<text font="graffiti19" align="c">ui_inv_pistols</text>
 			<text_color>
 				<e r="181" g="170" b="148"/>
 				<d r="181" g="170" b="148"/>
@@ -119,7 +119,7 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" align="c">ui_inv_primary_weapons</text>
+			<text font="graffiti19" align="c">ui_inv_primary_weapons</text>
 			<text_color>
 				<e r="181" g="170" b="148"/>
 				<d r="181" g="170" b="148"/>
@@ -143,7 +143,7 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" align="c">ui_inv_granades</text>
+			<text font="graffiti19" align="c">ui_inv_granades</text>
 			<text_color>
 				<e r="181" g="170" b="148"/>
 				<d r="181" g="170" b="148"/>
@@ -167,7 +167,7 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" align="c">ui_inv_outfits</text>
+			<text font="graffiti19" align="c">ui_inv_outfits</text>
 			<text_color>
 				<e r="181" g="170" b="148"/>
 				<d r="181" g="170" b="148"/>
@@ -191,7 +191,7 @@
 			<texture_e>ui\ui_btn_mp_e</texture_e>
 			<texture_d>ui\ui_btn_mp_d</texture_d>
 			<texture_h>ui\ui_btn_mp_h</texture_h>
-			<text font="normal" align="c">ui_inv_equipment</text>
+			<text font="graffiti19" align="c">ui_inv_equipment</text>
 			<text_color>
 				<e r="181" g="170" b="148"/>
 				<d r="181" g="170" b="148"/>
@@ -216,7 +216,7 @@
 			<texture_t>ui\ui_btn_shotgun_t</texture_t>
 			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_shotgun_t</texture_h>
-			<text font="normal" align="c">ui_inv_shotguns</text>
+			<text font="graffiti19" align="c">ui_inv_shotguns</text>
 			<text_color>
 				<e r="181" g="170" b="148"/>
 				<h r="255" g="187" b="51"/>
@@ -239,7 +239,7 @@
 			<texture_t>ui\ui_btn_assault_t</texture_t>
 			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_assault_t</texture_h>
-			<text font="normal" align="c">ui_inv_rifles</text>
+			<text font="graffiti19" align="c">ui_inv_rifles</text>
 			<text_color>
 				<e r="181" g="170" b="148"/>
 				<h r="255" g="187" b="51"/>
@@ -262,7 +262,7 @@
 			<texture_t>ui\ui_btn_sniper_t</texture_t>
 			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_sniper_t</texture_h>
-			<text font="normal" align="c">ui_inv_sniper_rifles</text>
+			<text font="graffiti19" align="c">ui_inv_sniper_rifles</text>
 			<text_color>
 				<e r="181" g="170" b="148"/>
 				<h r="255" g="187" b="51"/>
@@ -285,7 +285,7 @@
 			<texture_t>ui\ui_btn_heavy_t</texture_t>
 			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_heavy_t</texture_h>
-			<text font="normal" align="c">ui_inv_heavy_weapons</text>
+			<text font="graffiti19" align="c">ui_inv_heavy_weapons</text>
 			<text_color>
 				<e r="181" g="170" b="148"/>
 				<h r="255" g="187" b="51"/>

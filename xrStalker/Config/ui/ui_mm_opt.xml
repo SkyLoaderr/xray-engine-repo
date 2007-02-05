@@ -13,14 +13,14 @@
 			<text font="graffiti22" r="215" g="195" b="170">ui_mm_options</text>
 		</cap_options>
 		<btn_accept x="219" y="429" width="157" height="48">
-			<text font="normal" align="c">ui_mm_apply</text>
+			<text font="graffiti19" align="c">ui_mm_apply</text>
 			<texture>ui_button_main02</texture>
 			<text_color>
 				<e r="227" g="199" b="178"/> <t r="180" g="153" b="155"/> <d r="106" g="95" b="91"/> <h r="0" g="0" b="0"/>
 			</text_color>
 		</btn_accept>
 		<btn_cancel x="375" y="429" width="157" height="48">
-			<text font="normal" align="c">ui_mm_cancel</text>
+			<text font="graffiti19" align="c">ui_mm_cancel</text>
 			<texture>ui_button_main03</texture>
 			<text_color>
 				<e r="227" g="199" b="178"/> <t r="180" g="153" b="155"/> <d r="106" g="95" b="91"/> <h r="0" g="0" b="0"/>
@@ -30,7 +30,7 @@
 			<button x="0" y="0" width="116" height="26">
 				<texture_offset x="0" y="-7"/>
 				<texture>ui_button_tablist</texture>
-				<text font="normal" align="c">ui_mm_video</text>				
+				<text font="graffiti19" align="c">ui_mm_video</text>				
 				<text_color>
 					<e r="106" g="95" b="91"/> <t r="227" g="199" b="178"/> <h r="180" g="153" b="155"/>
 				</text_color>
@@ -38,7 +38,7 @@
 			<button x="116" y="0" width="116" height="26">
 				<texture_offset x="0" y="-7"/>
 				<texture>ui_button_tablist</texture>
-				<text font="normal" align="c">ui_mm_sound</text>
+				<text font="graffiti19" align="c">ui_mm_sound</text>
 				<text_color>
 					<e r="106" g="95" b="91"/> <t r="227" g="199" b="178"/> <h r="180" g="153" b="155"/>
 				</text_color>
@@ -46,7 +46,7 @@
 			<button x="232" y="0" width="116" height="26">
 				<texture_offset x="0" y="-7"/>
 				<texture>ui_button_tablist</texture>
-				<text font="normal" align="c">ui_mm_gameplay</text>
+				<text font="graffiti19" align="c">ui_mm_gameplay</text>
 				<text_color>
 					<e r="106" g="95" b="91"/> <t r="227" g="199" b="178"/> <h r="180" g="153" b="155"/>
 				</text_color>
@@ -54,7 +54,7 @@
 			<button x="348" y="0" width="116" height="26">
 				<texture_offset x="0" y="-7"/>
 				<texture>ui_button_tablist</texture>
-				<text font="normal" align="c">ui_mm_controls</text>
+				<text font="graffiti19" align="c">ui_mm_controls</text>
 				<text_color>
 					<e r="106" g="95" b="91"/> <t r="227" g="199" b="178"/> <h r="180" g="153" b="155"/>
 				</text_color>

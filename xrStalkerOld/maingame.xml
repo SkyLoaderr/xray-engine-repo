@@ -41,14 +41,14 @@
 	</static_ammo>
 	
 	<static_wpn_icon x="0" y="13" width="80" height="42">
-		<text font="normal" r="239" g="154" b="29" a="230"/>
+		<text font="graffiti19" r="239" g="154" b="29" a="230"/>
 	</static_wpn_icon>
 
 	<car_panel x="860" y="584" width="150" height="200"/>
 	
 	<static_pda_online x="138" y="167" width="35" height="28" light_anim="ui_pda_contacts" la_cyclic="0" la_texture="0" la_text="1" la_alpha="1">
 		<texture>ui_hud_map_counter</texture>
-		<text y="6" align="c" font="normal" r="238" g="155" b="23" a="255"/>
+		<text y="6" align="c" font="graffiti19" r="238" g="155" b="23" a="255"/>
 	</static_pda_online>
 	
 	

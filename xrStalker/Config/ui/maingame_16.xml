@@ -45,7 +45,7 @@
 	
 	<static_pda_online x="104" y="167" width="27" height="28" light_anim="ui_pda_contacts" la_cyclic="0" la_texture="0" la_text="1" la_alpha="1" stretch="1">
 		<texture>ui_hud_map_counter</texture>
-		<text y="4" align="c" font="normal" r="238" g="155" b="23" a="255"/>
+		<text y="4" align="c" font="graffiti19" r="238" g="155" b="23" a="255"/>
 	</static_pda_online>
 	
 	
