@@ -51,7 +51,7 @@ end
 function PsyAntenna:update_psy_hit(dt)
 	local hud = get_hud()
 	local custom_static = hud:GetCustomStatic("cs_psy_danger")
-	if self.hit_intensity > 0.5 then
+	if self.hit_intensity > 0.01 then
 		if custom_static == nil then
 			hud:AddCustomStatic("cs_psy_danger", true)
 			hud:GetCustomStatic("cs_psy_danger"):wnd():SetTextST("st_psy_danger")
@@ -69,7 +69,7 @@ function PsyAntenna:update_psy_hit(dt)
 --		printf("HIT: power = %s", tostring(power))
 		if power > 0 then
 			local psy_hit 				= hit()
-			psy_hit.power 				= power * 0.01
+			psy_hit.power 				= power
 			psy_hit.direction 			= vector():set( 0, 0, 0 )
 			psy_hit.impulse 			= 0
 			psy_hit.draftsman 			= db.actor

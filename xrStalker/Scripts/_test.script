@@ -108,13 +108,13 @@ function wwwww_main()
 	game.start_tutorial("part_1_pda")
 end
 
-function main()
+function __main()
    local h 		= hit()
-   h.power 		= 0.3
+   h.power 		= 0.05
    h.direction 	= vector():set(0, 0, 1)
    h.impulse 	= 0
    h.draftsman 	= db.actor
-   h.type 		= hit.fire_wound
+   h.type 		= hit.wound
    db.actor:hit(h)
 
 --burn  		1
@@ -128,4 +128,22 @@ function main()
 --explosion
 
 
+end
+
+function main()
+	local task = CGameTask()
+
+	task:load("artefact_trader")
+	task:set_title("artefact_trader")
+	
+	local objective = SGameTaskObjective(task,1)
+	objective:set_description("artefact_trader")
+	objective:set_article_id("tm_eliminate_camp_1_descr")
+	task:add_objective(objective)
+
+	objective = SGameTaskObjective(task,2)
+	objective:set_description("artefact_trader_return")
+
+	local time = 24*60*60*1000
+	db.actor:give_task(task,time,false)
 end
