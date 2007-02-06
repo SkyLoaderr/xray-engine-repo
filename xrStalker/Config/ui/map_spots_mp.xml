@@ -73,6 +73,9 @@
 		<texture r="255" g="0" b="0">ui_mini_af_spot</texture>
 	</mp_af_enemy_level_spot>
 	
+	<mp_af_neutral_level_spot width="16" height="16" stretch = "1" alignment="c" light_anim="ui_mp_minimap_af_neutral">
+		<texture r="255" g="255" b="255">ui_mini_af_spot</texture>
+	</mp_af_neutral_level_spot>	
 
 	<!-- multiplayer -->
 	<mp_team_base_1_mini_spot x="0" y="0" width="16" stretch = "1" height="16" alignment="c"> 
@@ -91,27 +94,24 @@
 		<texture x="525" y="904" width="32" height="32">ui\ui_common</texture>
 	</mp_friend_radio_mini_spot>
 	
-	<mp_af_friend_mini_spot width="8" height="8" stretch = "1" alignment="c" light_anim="ui_mp_minimap_af_friend"> 
+	<mp_af_friend_mini_spot width="16" height="16" stretch = "1" alignment="c" light_anim="ui_mp_minimap_af_friend"> 
 		<texture r="0" g="255" b="0">ui_mini_af_spot</texture>
 		<texture_below r="0" g="255" b="0">ui_mini_af_spot_below</texture_below>
 		<texture_above r="0" g="255" b="0">ui_mini_af_spot_above</texture_above>
 	</mp_af_friend_mini_spot>
 
-	<mp_af_enemy_mini_spot width="8" height="8" stretch = "1" alignment="c" light_anim="ui_mp_minimap_af_enemy"> 
+	<mp_af_enemy_mini_spot width="16" height="16" stretch = "1" alignment="c" light_anim="ui_mp_minimap_af_enemy"> 
 		<texture r="255" g="64" b="64">ui_mini_af_spot</texture>
 		<texture_below r="255" g="0" b="0">ui_mini_af_spot_below</texture_below>
 		<texture_above r="255" g="0" b="0">ui_mini_af_spot_above</texture_above>
 	</mp_af_enemy_mini_spot>
 	
-	<mp_af_neutral_mini_spot width="9" height="9" stretch = "1" alignment="c" light_anim="ui_mp_minimap_af_neutral">
+	<mp_af_neutral_mini_spot width="16" height="16" stretch = "1" alignment="c" light_anim="ui_mp_minimap_af_neutral">
 		<texture r="255" g="255" b="255">ui_mini_af_spot</texture>
 		<texture_below r="255" g="0" b="255">ui_mini_af_spot_below</texture_below>
 		<texture_above r="255" g="255" b="0">ui_mini_af_spot_above</texture_above>
 	</mp_af_neutral_mini_spot>
 
-	<mp_af_neutral_level_spot width="16" height="16" stretch = "1" alignment="c" light_anim="ui_mp_minimap_af_neutral">
-		<texture r="255" g="255" b="255">ui_mini_af_spot</texture>
-	</mp_af_neutral_level_spot>	
 	
 	<mp_hit_sector_mini_spot x="0" y="0" width="80" height="256" heading="1" alignment="c"> 
 		<texture x="305" y="762" width="80" height="256">ui\ui_hud</texture>
