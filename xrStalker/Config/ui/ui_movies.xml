@@ -122,6 +122,7 @@
 		<play_each_item>1</play_each_item>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<window_name>back</window_name>
 				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
@@ -140,6 +141,7 @@
 		<play_each_item>1</play_each_item>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<window_name>back</window_name>
 				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
@@ -158,6 +160,7 @@
 		<play_each_item>1</play_each_item>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<window_name>back</window_name>
 				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
@@ -176,6 +179,7 @@
 		<play_each_item>1</play_each_item>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<window_name>back</window_name>
 				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
@@ -194,6 +198,7 @@
 		<play_each_item>1</play_each_item>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<window_name>back</window_name>
 				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
@@ -212,6 +217,7 @@
 		<play_each_item>1</play_each_item>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<window_name>back</window_name>
 				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
@@ -230,6 +236,7 @@
 		<play_each_item>1</play_each_item>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<window_name>back</window_name>
 				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
@@ -248,6 +255,7 @@
 		<play_each_item>1</play_each_item>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<window_name>back</window_name>
 				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
@@ -266,6 +274,7 @@
 		<play_each_item>1</play_each_item>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<window_name>back</window_name>
 				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
@@ -284,6 +293,7 @@
 		<play_each_item>1</play_each_item>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<window_name>back</window_name>
 				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
@@ -302,6 +312,7 @@
 		<play_each_item>1</play_each_item>
 		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
+				<window_name>back</window_name>
 				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
