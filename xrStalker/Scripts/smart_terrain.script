@@ -426,6 +426,10 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 		return false
 	end
 
+--'	if self:name() == "bar_zastava" then
+--'		printf("before checking: pop = %s, cap = %s", tostring(self.gulag:get_non_exclusive_population()), tostring(self.gulag.capacity_non_exclusive))
+--'	end
+
 	if obj_agreement == agreed_exclusive or
 	   self.gulag:get_non_exclusive_population() < self.gulag.capacity_non_exclusive
 	then
@@ -434,38 +438,43 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
         --' Проверка что смарттеррейн и НПС находятся в одном кластере уровней (чтобы не ходили через БАР)
         local smart_level_group = self:get_level_name()
         local npc_level_group = alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id())
+
+--'		if self:name() == "bar_zastava" then
+--'			printf("smart=%s stalker=%s", tostring(smart_level_group), tostring(npc_level_group))
+--'		end
+
         if level_groups[smart_level_group] ~= level_groups[npc_level_group] then
             return false
         end
     
 
---		if obj:name() == "sim_stalker_master_diador" then
---			printf( "comm=%s is_stalker=%s", community, tostring( is_stalker ) )
---		end
+--'		if self:name() == "bar_zastava" then
+--'			printf( "comm=%s is_stalker=%s", community, tostring( is_stalker ) )
+--'		end
 
 		if self.accepted_communities and not self.accepted_communities[community] then
 			return false
 		end
 
---		if obj:name() == "sim_stalker_master_diador" then
---			printf( "profile=%s rank=%d reputation=%d", obj:profile_name(), obj:rank(), obj:reputation() )
---		end
+--'		if self:name() == "bar_zastava" then
+--'			printf( "community=%s rank=%d reputation=%d", community, obj:rank(), obj:reputation() )
+--'		end
 	
 		if not self:check_preset( community, obj:rank(), self.gparams.preset_name ) then
 			return false
 		end
 
---		if obj:name() == "sim_stalker_master_diador" then
---			printf( "check_preset ok" )
---		end
+--'		if self:name() == "bar_zastava" then
+--'			printf( "check_preset ok" )
+--'		end
 
 		if not xr_gulag.checkNpc( community, is_stalker, self.gparams.type, obj:rank(), obj ) then
 			return false
 		end
 
---		if obj:name() == "sim_stalker_master_diador" then
---			printf( "checkNpc ok" )
---		end
+--'		if self:name() == "bar_zastava" then
+--'			printf( "checkNpc ok" )
+--'		end
 
 		return self.gulag:is_there_any_suitable_job( self:fill_npc_info( obj ), obj_agreement == agreed_exclusive )
 	else
@@ -525,11 +534,15 @@ function se_smart_terrain:enabled(obj)
 	if self:is_gulag_available() and not self.population_locked then
 		local b = self:obj_accepts_smart_terrain( obj )
 		local a = self:smart_terrain_accepts_obj( obj, b )
-		if a == true then
---			printf("[smart_terrain %s] ENABLED obj=%s exclusive=%s", self:name(), obj:name(), tostring(b))
-		else
---			printf("[smart_terrain %s] DISABLED obj=%s  accept_obj = %s", self:name(), obj:name(), tostring(b))
+
+		if self:name() == "bar_zastava" then
+			if a == true then
+--'				printf("[smart_terrain %s] ENABLED obj=%s exclusive=%s", self:name(), obj:name(), tostring(b))
+			else
+--'				printf("[smart_terrain %s] DISABLED obj=%s  accept_obj = %s", self:name(), obj:name(), tostring(b))
+			end
 		end
+
 		return a
 	else
 		return false
@@ -635,6 +648,24 @@ end
 function se_smart_terrain:unregister_npc( obj )
 	local n = self.npc_info[obj.id]
 
+	--' Если анрегистрим мертвого эксклюзивного НПС, нужно уменьшить счетчик эксклюзивности
+	if not obj:alive() and obj.smart_terrain_conditions then
+		local any_exclusive = false
+		local s
+
+		for name, condlist in pairs(obj.smart_terrain_conditions) do
+			s = xr_logic.pick_section_from_condlist( db.actor_proxy, obj, condlist )
+
+			if s ~= nil then
+			 	if name == self:name() then
+					--' уменьшаем счетчик
+					self.exclusives = self.exclusives - 1
+					self.gulag.capacity_non_exclusive = self.gulag.capacity_non_exclusive + 1
+				end
+			end
+		end
+	end
+
 	if not n then
 		printf( "self.npc_info[obj.id] = nil !!! obj.id=%d", obj.id )
 		self:print()
@@ -692,7 +723,7 @@ function se_smart_terrain:task( obj )
 		return CALifeSmartTerrainTask("simulation_default_path")
 	end
 
-	printf("SEETING TASK PATH %s = %s", obj:name(), path_name)
+--'	printf("SEETING TASK PATH %s = %s", obj:name(), path_name)
 
 	return CALifeSmartTerrainTask( path_name )
 end
