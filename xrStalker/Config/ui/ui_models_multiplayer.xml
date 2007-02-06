@@ -14,4 +14,9 @@
     <texture id="stalker_sv_rukzak_3" x="256" y="705" width="128" height="320" />
     <texture id="stalker_sv_rukzak_2" x="384" y="705" width="128" height="320" />
     <texture id="stalker_killer_head_1" x="0" y="380" width="128" height="325" />
+    
+    <texture id="stalker_killer_mask_de" x="0" y="380" width="128" height="325" />
+    <texture id="stalker_killer_mask_us" x="0" y="380" width="128" height="325" />
+    <texture id="stalker_killer_mask_fr" x="256" y="705" width="128" height="320" />
+    <texture id="stalker_killer_mask_uk" x="256" y="705" width="128" height="320" />
 </ui_texture>
