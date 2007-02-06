@@ -144,11 +144,11 @@ inv_name	        			= wpn-ak74u_m1
 inv_name_short					= wpn-ak74u_m1
 silencer_status					= 1
 condition_shot_dec 				= 0.00003
-;snd_shoot						= weapons\w_ak74_shot1 
-;snd_silncer_shot				= weapons\w_ak74_shot1
 inv_grid_x						= 5
 inv_grid_y						= 20
 inv_grid_width					= 5
+silencer_smoke_particles 	= weapons\generic_shoot_00
+snd_shoot					= weapons\w_ak74_shot1 
 
 [wpn_mp5_m1]:wpn_mp5	;Модифицированный МП5
 $spawn             				= "weapons\uniq\wpn_mp5_m1"
@@ -216,6 +216,8 @@ silencer_status					= 1
 condition_shot_dec 				= 0.00005
 inv_grid_x						= 0
 inv_grid_y						= 26
+silencer_smoke_particles 	= weapons\generic_shoot_00
+snd_shoot					= weapons\w_ak74_shot1 
 
 [wpn_svd_m1]:wpn_svd	;СВД "Дальнобойщик"
 $spawn             				= "weapons\uniq\wpn_svd_m1"	
@@ -263,6 +265,9 @@ silencer_status					= 1
 condition_shot_dec 				= 0.00033
 inv_grid_x						= 18
 inv_grid_y						= 20
+smoke_particles 	= weapons\generic_shoot_00
+snd_shoot			= weapons\pb_shoot
+
 
 [wpn_val_m1]:wpn_val	;Модифицированный Вал
 $spawn             				= "weapons\uniq\wpn_val_m1"	
@@ -286,6 +291,8 @@ condition_shot_dec 				= 0.00003
 inv_grid_x						= 5
 inv_grid_y						= 22
 inv_grid_width					= 4
+silencer_smoke_particles 	= weapons\generic_shoot_00
+snd_shoot					= weapons\w_ak74_shot1 
 
 [wpn_abakan_m2]:wpn_abakan	;АH-94 штурмовой
 $spawn              			= "weapons\uniq\wpn_abakan_m2"	
@@ -308,6 +315,10 @@ inv_weight						= 3
 condition_shot_dec 				= 0.00005
 inv_grid_x						= 0
 inv_grid_y						= 24
+silencer_smoke_particles 	= weapons\generic_shoot_00
+snd_shoot					= weapons\w_ak74_shot1 
+
+
 
 [wpn_sig_m2]:wpn_sig550	;SiG снайперский
 $spawn             				= "weapons\uniq\wpn_sig_m2"	
