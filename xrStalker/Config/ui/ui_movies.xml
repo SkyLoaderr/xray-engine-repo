@@ -120,9 +120,9 @@
 	
 	<intro_game>
 		<play_each_item>1</play_each_item>
-		<global_wnd x="0" y="0" width="1" height="1">
+		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<window_name>back</window_name>
+				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
 		
@@ -138,9 +138,9 @@
 
 	<x18_dream>
 		<play_each_item>1</play_each_item>
-		<global_wnd x="0" y="0" width="1" height="1">
+		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<window_name>back</window_name>
+				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
 		
@@ -156,9 +156,9 @@
 
 	<radar_dream>
 		<play_each_item>1</play_each_item>
-		<global_wnd x="0" y="0" width="1" height="1">
+		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<window_name>back</window_name>
+				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
 		
@@ -174,9 +174,9 @@
 
 	<yantar_dream>
 		<play_each_item>1</play_each_item>
-		<global_wnd x="0" y="0" width="1" height="1">
+		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<window_name>back</window_name>
+				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
 		
@@ -192,9 +192,9 @@
 
 	<mov_desire_1>
 		<play_each_item>1</play_each_item>
-		<global_wnd x="0" y="0" width="1" height="1">
+		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<window_name>back</window_name>
+				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
 		
@@ -210,9 +210,9 @@
 
 	<mov_desire_2>
 		<play_each_item>1</play_each_item>
-		<global_wnd x="0" y="0" width="1" height="1">
+		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<window_name>back</window_name>
+				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
 		
@@ -228,9 +228,9 @@
 
 	<mov_desire_3>
 		<play_each_item>1</play_each_item>
-		<global_wnd x="0" y="0" width="1" height="1">
+		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<window_name>back</window_name>
+				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
 		
@@ -246,9 +246,9 @@
 
 	<mov_desire_4>
 		<play_each_item>1</play_each_item>
-		<global_wnd x="0" y="0" width="1" height="1">
+		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<window_name>back</window_name>
+				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
 		
@@ -264,9 +264,9 @@
 
 	<mov_desire_5>
 		<play_each_item>1</play_each_item>
-		<global_wnd x="0" y="0" width="1" height="1">
+		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<window_name>back</window_name>
+				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
 		
@@ -282,9 +282,9 @@
 
 	<mov_join_osoznanie>
 		<play_each_item>1</play_each_item>
-		<global_wnd x="0" y="0" width="1" height="1">
+		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<window_name>back</window_name>
+				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
 		
@@ -300,9 +300,9 @@
 	
 	<mov_refuse_osoznanie>
 		<play_each_item>1</play_each_item>
-		<global_wnd x="0" y="0" width="1" height="1">
+		<global_wnd x="0" y="0" width="1024" height="768">
 			<auto_static x="0" y="0" width="1024" height="768" stretch="1">
-				<window_name>back</window_name>
+				<texture>intro\intro_back</texture>
 			</auto_static>
 		</global_wnd>
 		
