@@ -215,7 +215,7 @@
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		<money min="200" max="600" infinitive="0"></money>
 		
-		<rank>289</rank>
+		<rank>307</rank>
 		<reputation>0</reputation>
  
 		<visual>actors\dolg\stalker_do_mask_1</visual>
@@ -1011,7 +1011,7 @@
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		<money min="200" max="600" infinitive="0"></money>
 		
-		<rank>282</rank>
+		<rank>310</rank>
 		<reputation>20</reputation>
 
 		<panic_threshold>0.0</panic_threshold>
@@ -1080,7 +1080,7 @@
 		<community>dolg</community> <terrain_sect>stalker_dolg_terrain</terrain_sect>
 		<money min="200" max="600" infinitive="0"></money>
 		
-		<rank>245</rank>
+		<rank>340</rank>
 		<reputation>20</reputation>
 
 		<visual>actors\dolg\stalker_do_mask_1</visual>
