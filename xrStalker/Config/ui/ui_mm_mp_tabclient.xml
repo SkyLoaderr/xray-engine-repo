@@ -6,7 +6,7 @@
 			<texture>rust_bot_client</texture>
 		</rust_01>
 		<server_list x="8" y="99" width="539" height="310">			
-			<sizes icon="46" server="155" map="100" game="80" players="59" ping="34" version="34"/>
+			<sizes icon="46" server="155" map="100" game="80" players="59" ping="34" version="63"/>
 			<frame x="0" y="20" width="515" height="290">
 				<texture>ui_cb_listbox</texture>
 			</frame>
