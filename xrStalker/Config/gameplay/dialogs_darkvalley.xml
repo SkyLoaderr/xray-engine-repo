@@ -239,7 +239,7 @@
             </phrase>
             <phrase id="111">
                 <text>val_sos_dialog_111</text>
-                <precondition>dialogs.medikit_yes</precondition>
+                <precondition>dialogs.actor_have_medkit</precondition>
                 <action>dialogs.transfer_medkit</action>
                 <action>dialogs.break_dialog</action>
                 <give_info>val_sos_got_medkit</give_info>

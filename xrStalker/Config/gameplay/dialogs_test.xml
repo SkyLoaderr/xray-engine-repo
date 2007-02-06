@@ -54,33 +54,24 @@
         <phrase_list>
             <phrase id="1">
                 <text></text>
-                <precondition>dialogs.medikit_yes</precondition>
                 <next>11</next>
             </phrase>
             <phrase id="11">
                 <text></text>
-                <action>dialogs.transfer_medikit</action>
-                <action>dialogs.disable_wounded</action>
             </phrase>
             <phrase id="2">
                 <text></text>
-                <precondition>dialogs.medikit_yes</precondition>
                 <next>21</next>
                 <next>22</next>
             </phrase>
             <phrase id="21">
                 <text></text>
-                <precondition>dialogs.have_money</precondition>
-                <action>dialogs.wounded_trade</action>
-                <action>dialogs.sell_medikit</action>
             </phrase>
             <phrase id="22">
                 <text></text>
-                <precondition>dialogs.not_have_money</precondition>
             </phrase>
             <phrase id="3">
                 <text></text>
-                <precondition>dialogs.medikit_no</precondition>
             </phrase>
             <phrase id="0">
                 <text></text>
