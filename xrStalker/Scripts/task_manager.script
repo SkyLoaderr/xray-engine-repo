@@ -101,7 +101,7 @@ function CRandomTask:__init()
 
 		local sss = utils.cfg_get_string(self.task_ini, id, "reward_item", nil, false, "")
 		if sss ~= nil then
-			self.task_info[id].reward_item = parse_names(sss) 
+			self.task_info[id].reward_item = se_respawn.parse_names(sss) 
 		else
 			self.task_info[id].reward_item = sss
 		end
