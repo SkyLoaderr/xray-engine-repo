@@ -20,9 +20,6 @@
 					<e r="227" g="199" b="178"/>
 					<d r="215" g="195" b="170"/>					
 				</text_color>
-				<_texture_e>ui_table_button_e_back</_texture_e>
-				<_texture_h>ui_table_button_h_back</_texture_h>
-				<_texture_t>ui_table_button_t_back</_texture_t>				
 			</header>
 			
 			<header_frames x="0" y="0" width="19" height="19">
@@ -35,9 +32,12 @@
 			<filter>
 				<text font="letterica16" r="215" g="195" b="170" complex_mode="0"/>
 			</filter>
-			<edit_gs_filter x="46" y2="167" y="277" width="488" height="21">
+			<edit_gs_filter x="66" y2="167" y="277" width="468" height="21">
 				<text font="letterica16" r="235" g="219" b="185" complex_mode="0"/>
 				<texture>ui_linetextSmall_e</texture>
+				<auto_static x="-60" y="0" width="50" height="21">
+					<text font="letterica16" r="188" g="153" b="123" complex_mode="0">st_mp_gsfilter</text>
+				</auto_static>
 			</edit_gs_filter>
 			<cap_server_properties x="0" y="191" width="329" height="17">
 				<text font="arial_14" r="215" g="195" b="170" x="2" y="1" vert_align="c" complex_mode="0">mm_mp_server_prop</text>
