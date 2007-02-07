@@ -291,10 +291,12 @@ function CRandomTask:action_give_task(actor, npc, p1, p2)
 	
 	task:load(task_desc.complex_type)
 	task:set_title(task_desc.type)
+
+	local oo = task:get_objective(0)
+	oo:set_article_id(task_desc.description)
 	
 	local objective = SGameTaskObjective(task,1)
 	objective:set_description(task_desc.name)
-	objective:set_article_id(task_desc.description)
 
 	--' Выбираем текущую цель квеста
 	if task_desc.target_objects ~= nil then
