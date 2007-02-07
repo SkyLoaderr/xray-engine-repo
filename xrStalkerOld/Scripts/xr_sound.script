@@ -112,7 +112,7 @@ function set_sound(npc, sound, now, into_timeout)
 end
 
 function set_sound_play(npc, sound, timeout)
---	printf("*SND* play SND to [%s] for [%s]", utils.to_str(sound), npc:name())
+	printf("*SND* play SND to [%s] for [%s]", utils.to_str(sound), npc:name())
 	local npc_id = npc:id()
 	if db.sound[npc_id] == nil then db.sound[npc_id] = {} end
 	if db.sound[npc_id].last_snd == nil then
