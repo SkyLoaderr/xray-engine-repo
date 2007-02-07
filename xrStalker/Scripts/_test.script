@@ -135,10 +135,11 @@ function main()
 
 	task:load("artefact")
 	task:set_title("artefact_trader artefact_trader")
+	local o0		= task:get_objective(0)
+	o0:set_article_id("tm_artefact_test")
 	
 	local objective = SGameTaskObjective(task,1)
 	objective:set_description("artefact_trader")
-	objective:set_article_id("tm_artefact_test")
 	task:add_objective(objective)
 
 	objective = SGameTaskObjective(task,2)
@@ -153,10 +154,11 @@ function main()
 
 	task:load("artefact")
 	task:set_title("artefact_trader artefact_trader")
+	o0			= task:get_objective(0)
+	o0:set_article_id("tm_artefact_test2")
 	
 	objective = SGameTaskObjective(task,1)
 	objective:set_description("artefact_trader")
-	objective:set_article_id("tm_artefact_test2")
 	task:add_objective(objective)
 
 	objective = SGameTaskObjective(task,2)
