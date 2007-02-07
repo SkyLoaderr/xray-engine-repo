@@ -200,10 +200,10 @@
 					<text align="l" font="graffiti32" color="ui_clr_1">st_vladimir_korunchak2</text>	
 				</auto_static>
 				<auto_static start_time="37" length_sec="10" x="124" y="250" width="300" height="40" light_anim="credits_head" la_cyclic="0" la_texture="0" la_alpha="1">
-					<text align="r" font="graffiti32" color="ui_clr_1">st_olga_korunchak</text>	
+					<text align="r" font="graffiti32" color="ui_clr_1">st_kravcova</text>	
 				</auto_static>
 				<auto_static start_time="37" length_sec="10" x="436" y="250" width="0" height="40" light_anim="credits_head" la_cyclic="0" la_texture="0" la_alpha="1">
-					<text align="l" font="graffiti32" color="ui_clr_1">st_olga_korunchak2</text>	
+					<text align="l" font="graffiti32" color="ui_clr_1">st_kravcova2</text>	
 				</auto_static>
 				<auto_static start_time="37" length_sec="10" x="124" y="290" width="300" height="40" light_anim="credits_head" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="r" font="graffiti32" color="ui_clr_1">st_sergiy_volchanov</text>	
