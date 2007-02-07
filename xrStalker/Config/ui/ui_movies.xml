@@ -12,8 +12,7 @@
 			<pause_state>on</pause_state>
 			<sound>intro\thq_logo_audio</sound>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
-				<_texture>intro\intro_thq</_texture>
-				<texture x="0" y="0" width="720" height="486">intro\thq_logo_hyuv</texture>
+				<texture x="0" y="1" width="720" height="484">intro\thq_logo_hyuv</texture>
 			</video_wnd>
 		</item>
 		<item type="video">
