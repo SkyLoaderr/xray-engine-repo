@@ -1,7 +1,7 @@
-<article id="tm_artefact_test" name="artefact" group="artefact/1" article_type="task">
+<article id="tm_artefact_test" name="artefact" article_type="task">
         <text>tm_eliminate_camp_1_descr</text>
 </article>
-<article id="tm_artefact_test2" name="artefact" group="artefact/1" article_type="task">
+<article id="tm_artefact_test2" name="artefact" article_type="task">
         <text>tm_eliminate_camp_1_descr</text>
 </article>
 
