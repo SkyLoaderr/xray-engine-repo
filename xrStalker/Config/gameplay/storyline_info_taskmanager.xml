@@ -1,3 +1,11 @@
+<article id="tm_artefact_test" name="artefact" group="artefact/1" article_type="task">
+        <text>tm_eliminate_camp_1_descr</text>
+</article>
+<article id="tm_artefact_test2" name="artefact" group="artefact/1" article_type="task">
+        <text>tm_eliminate_camp_1_descr</text>
+</article>
+
+
 ;--------Defend Lager------------
 ;----------Dolg------------
 <article id="dolg_defend_lager_1_descr" name="eliminate_lager" group="eliminate_lager_dolg/1" article_type="task">

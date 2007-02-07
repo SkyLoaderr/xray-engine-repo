@@ -134,16 +134,34 @@ function main()
 	local task = CGameTask()
 
 	task:load("artefact")
-	task:set_title("artefact_trader")
+	task:set_title("artefact_trader artefact_trader")
 	
 	local objective = SGameTaskObjective(task,1)
 	objective:set_description("artefact_trader")
-	objective:set_article_id("tm_eliminate_camp_1_descr")
+	objective:set_article_id("tm_artefact_test")
 	task:add_objective(objective)
 
 	objective = SGameTaskObjective(task,2)
 	objective:set_description("artefact_trader_return")
 
-	local time = 24*60*60*1000
+	local time = 1*60*60*1000
+	db.actor:give_task(task,time,false)
+
+	--'
+
+	task = CGameTask()
+
+	task:load("artefact")
+	task:set_title("artefact_trader artefact_trader")
+	
+	objective = SGameTaskObjective(task,1)
+	objective:set_description("artefact_trader")
+	objective:set_article_id("tm_artefact_test2")
+	task:add_objective(objective)
+
+	objective = SGameTaskObjective(task,2)
+	objective:set_description("artefact_trader_return")
+
+	local time = 1*60*60*1000
 	db.actor:give_task(task,time,false)
 end
