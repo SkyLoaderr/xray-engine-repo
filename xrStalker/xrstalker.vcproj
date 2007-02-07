@@ -93,6 +93,9 @@
 				RelativePath=".\Config\external.ltx">
 			</File>
 			<File
+				RelativePath=".\Config\extracontent.ltx">
+			</File>
+			<File
 				RelativePath=".\Config\fonts.ltx">
 			</File>
 			<File
