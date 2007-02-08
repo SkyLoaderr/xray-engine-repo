@@ -3,6 +3,9 @@
 	<string id="version">
 		<text>Version</text>
 	</string>
+	<string id="st_mp_gsfilter">
+		<text>Filter:</text>
+	</string>
 	<string id="game type">
 		<text>GAME TYPE</text>
 	</string>
