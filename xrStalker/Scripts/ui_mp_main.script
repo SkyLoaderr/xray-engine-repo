@@ -84,6 +84,8 @@ function mp_main:InitControls()
 	
 	self.message_box = CUIMessageBoxEx()
 	self:Register(self.message_box, "msg_box")	
+	
+	self:OnRadio_NetChanged()
 end
 
 function mp_main:UpdateControls()
@@ -116,6 +118,7 @@ function mp_main:InitCallBacks()
 	self:AddCallback("btn_refresh",			ui_events.BUTTON_CLICKED,	self.OnBtn_Refresh,	self)
 	self:AddCallback("btn_quick_refresh",	ui_events.BUTTON_CLICKED,	self.OnBtn_RefreshQuick,self)
 	self:AddCallback("btn_server_info",		ui_events.BUTTON_CLICKED,	self.OnBtn_SrvInfo,self)	
+	self:AddCallback("radio_net_conn",		ui_events.TAB_CHANGED,		self.OnRadio_NetChanged,self)	
 	
 	-- msg_box
 	self:AddCallback("msg_box",				ui_events.MESSAGE_BOX_YES_CLICKED,			self.OnDirectIP_yes,self)
@@ -176,6 +179,11 @@ function mp_main:OnTabChange()
 		self.dlg_server:Show(true)
 		self.btn_create:Enable(true)
 	end
+end
+
+function mp_main:OnRadio_NetChanged()
+	local i = self.radio_net_connection:GetActiveIndex()
+	self.server_list:NetRadioChanged(i~=0)
 end
 
 function mp_main:OnBtn_Refresh()
