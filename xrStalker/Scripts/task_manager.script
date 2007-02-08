@@ -574,7 +574,7 @@ function CRandomTask:check_task_props(task_id)
 		end
 		for k,v in pairs(self.task_info[task_id].target_objects) do
 			local gulag = alife():object(v).gulag
-			if gulag:get_population() > 0 then
+			if gulag:get_population_comed() > 0 then
 				self.task_info[task_id].enabled_props = true
 				return 
 			end
