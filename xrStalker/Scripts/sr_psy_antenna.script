@@ -62,12 +62,12 @@ function PsyAntenna:update_psy_hit(dt)
 		end
 	end
 
-	if time_global() - self.hit_time > 1000 then
+	if time_global() - self.hit_time > 5000 then
 		self.hit_time					= time_global()
 
 		local power						= self.hit_amplitude*self.hit_intensity
 --		printf("HIT: power = %s", tostring(power))
-		if power > 0 then
+		if power > 0.01 then
 			local psy_hit 				= hit()
 			psy_hit.power 				= power
 			psy_hit.direction 			= vector():set( 0, 0, 0 )
