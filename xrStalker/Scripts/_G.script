@@ -1238,6 +1238,7 @@ end
 ammo_section = {}
 ammo_section["ammo_9x18_fmj"]		= true
 ammo_section["ammo_9x18_pbp"]		= true
+ammo_section["ammo_9x18_pmm"]		= true
 ammo_section["ammo_9x19_fmj"]		= true
 ammo_section["ammo_9x19_pbp"]		= true
 ammo_section["ammo_5.45x39_fmj"]	= true
