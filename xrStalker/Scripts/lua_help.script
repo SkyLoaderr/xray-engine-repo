@@ -8046,11 +8046,11 @@ namespace  {
     function show_condition(ini_file*, string);
     function cast_planner_to_action(action_planner*);
     function GetFontLetterica25();
-    function editor();
     function GetFontMedium();
     function GetTextureInfo(string, string);
     function flush();
     function GetFontGraffiti22Russian();
+    function editor();
     function cast_action_to_planner(action_base*);
     function verify_if_thread_is_running();
     function prefetch(string);
