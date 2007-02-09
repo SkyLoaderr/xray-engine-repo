@@ -484,5 +484,8 @@
 	<texture id="ui_mini_af_spot" x="757" y="854" width="13" height="15" />
     <texture id="ui_mini_af_spot_below" x="757" y="861" width="13" height="15" />
     <texture id="ui_mini_af_spot_above" x="757" y="847" width="13" height="15" />
+	
+    <texture id="ui_mini_sn_spot_below" x="757" y="861" width="11" height="11" />
+    <texture id="ui_mini_sn_spot_above" x="757" y="858" width="11" height="11" />
 
 </ui_texture>
