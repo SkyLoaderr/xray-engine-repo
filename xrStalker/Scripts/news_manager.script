@@ -103,45 +103,22 @@ pda_task = xr_sound.get_safe_sound_object([[device\pda\pda_objective]])
 
 tips_icons = {
 	default  = { 0, 658},
-	trader	 = { 0, 658},
+	trader	 = { 332, 893},
 	dolg     = { 0, 658},
 	freedom  = { 0, 658},
-	ecolog   = { 0, 752},
-	arena    = { 0, 658},
+	ecolog   = { 498, 0},
+	arena    = { 332, 141},
 	stalker  = { 0, 658},
-	krot     = { 0, 658},
-	barman   = { 0, 658},
-	wolf	 = { 0, 799 },
-	o_soznanie = { 0, 658},
+	krot     = { 332, 47},
+	barman   = { 332, 235},
+	wolf	 = { 332, 940},
+	o_soznanie = { 498, 893},
 	monolith = { 0, 658},
-    saharov  = { 0, 658},
+    saharov  = { 332, 470},
     prizrak  = { 0, 658},
-    killer   = { 0, 799}
+    killer   = { 0, 658}
 }
 
-
-function send_news(actor, news_id, timeout, showtime)
-	if db.actor == nil or news_id == nil then return false end
-
-	if timeout == nil then timeout = 0 end
-	if showtime == nil then showtime = 5000 end
-	
-	--' Играем дефолтный звук
-	pda_news:play(db.actor, timeout, sound_object.s2d)	
-	if news[news_id] ~= nil then
-		--' Играем звук забитый	
-		news[news_id]:play(db.actor, timeout+1, sound_object.s2d)
-		
-		--' Необходимо поставить время показа по длине сцены
-		local length = news[news_id]:length()
-		if length > showtime then
-			showtime = length
-		end
-	end
-
-	local news_text = "%c[255,160,160,160]"..game.translate_string("st_news").."\\n".."%c[default]"..game.translate_string(news_id)
-	db.actor:give_game_news(news_text, "ui\\ui_icons_task", Frect():set(0,100,50,50) ,timeout*1000, showtime)
-end
 
 function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 	if news_id == nil then return false end
