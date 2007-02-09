@@ -50,6 +50,8 @@
 	</blue_spot>
 	<blue_mini_spot  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture>ui_icons_newPDA_SmallBlue</texture>
+		<texture_below r="255" g="255" b="255">ui_mini_af_spot_below</texture_below>
+		<texture_above r="255" g="255" b="255">ui_mini_af_spot_above</texture_above>
 	</blue_mini_spot>
 
 	<green_location>
@@ -61,6 +63,8 @@
 	</green_spot>
 	<green_mini_spot  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture>ui_icons_newPDA_SmallGreen</texture>
+		<texture_below r="0" g="255" b="0">ui_mini_af_spot_below</texture_below>
+		<texture_above r="0" g="255" b="0">ui_mini_af_spot_above</texture_above>
 	</green_mini_spot>
 	
 	<red_location>
@@ -72,6 +76,8 @@
 	</red_spot>
 	<red_mini_spot  x="0" y="0" width="11" height="11" stretch="1" alignment="c" xform_anim="map_spot_new_xform" xform_anim_cyclic="0">
 		<texture>ui_icons_newPDA_SmallRed</texture>
+		<texture_below r="255" g="0" b="0">ui_mini_af_spot_below</texture_below>
+		<texture_above r="255" g="0" b="0">ui_mini_af_spot_above</texture_above>
 	</red_mini_spot>
 
 

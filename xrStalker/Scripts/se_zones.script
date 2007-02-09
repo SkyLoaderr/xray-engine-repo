@@ -92,3 +92,10 @@ function se_zone_visual:STATE_Read( packet, size )
 		self.last_spawn_time = utils.r_CTime(packet)
 	end
 end
+
+
+
+--' Рестрикторы
+class "se_restrictor" (cse_alife_space_restrictor)
+function se_restrictor:__init (section) super (section)
+end

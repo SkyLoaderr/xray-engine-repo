@@ -203,3 +203,12 @@ function se_stalker:fill_exclusives()
 		end
 	end
 end
+
+
+
+
+
+--'Торговец
+class "se_trader" (cse_alife_trader)
+function se_trader:__init (section) super (section)
+end

@@ -69,7 +69,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
-	if npc:clsid() ~= clsid.trader then
+	if npc:clsid() ~= clsid.script_trader then
 		abort("object '%s': attempt to use mob_trade script on non-trader mobile", npc:name())
 	end
 
@@ -83,7 +83,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 end
 
 function disable_scheme(npc, scheme)
-	if npc:clsid() == clsid.trader then
+	if npc:clsid() == clsid.script_trader then
 		npc:set_callback(callback.trade_start, nil)
 		npc:set_callback(callback.trade_stop, nil)
 		npc:set_callback(callback.trade_perform_operation, nil)

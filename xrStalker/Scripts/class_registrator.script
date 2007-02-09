@@ -18,6 +18,12 @@ function register(object_factory)
 	cs_register	(object_factory, "ce_switcher.ce_switcher",	"se_switcher.cse_switcher",	"O_SWITCH",	"switcher")	
 	
 	cs_register	(object_factory, "CAI_Stalker", "se_stalker.se_stalker",				"AI_STL_S", "script_stalker")
+	cs_register	(object_factory, "CAI_Trader", "se_stalker.se_trader",					"AI_TRD_S", "script_trader")
+	cs_register	(object_factory, "CHelicopter", "se_car.se_heli",						"C_HLCP_S", "script_heli")
+	
+	cs_register	(object_factory, "CSpaceRestrictor", "se_zones.se_restrictor",			"SPC_RS_S", "script_restr")
+	cs_register	(object_factory, "CPhysicObject", "se_item.se_physic",					"O_PHYS_S", "script_phys")
+
 	
 	cs_register (object_factory, "CElectricBall",   "se_artefact.se_artefact",  "SCRPTART", "artefact_s")
 

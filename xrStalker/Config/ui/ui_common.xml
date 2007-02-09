@@ -477,7 +477,7 @@
     
 	<texture id="ui_teambase" x="749" y="880" width="29" height="29" />
     <texture id="ui_mini_af_spot" x="751" y="910" width="9" height="9" />
-    <texture id="ui_mini_af_spot_above" x="751" y="910" width="9" height="4" />
-    <texture id="ui_mini_af_spot_below" x="751" y="915" width="9" height="4" />
+    <texture id="ui_mini_af_spot_above" x="751" y="910" width="9" height="5" />
+    <texture id="ui_mini_af_spot_below" x="751" y="914" width="9" height="5" />
     
 </ui_texture>

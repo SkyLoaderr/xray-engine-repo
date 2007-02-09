@@ -818,7 +818,7 @@ function object_type(obj)
 
     if  otype == clsid.actor or
         otype == clsid.script_stalker or
-        otype == clsid.trader
+        otype == clsid.script_trader
     then
         type = "stalker"
     elseif  otype == clsid.crow or

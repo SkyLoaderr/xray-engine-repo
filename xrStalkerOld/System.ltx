@@ -132,7 +132,7 @@ script_binding      = bind_physic_object.init
 GroupControlSection	= spawn_group
 $spawn 				= "physics\object"
 $prefetch 			= 8
-class				= O_PHYSIC
+class				= O_PHYSIC ;O_PHYS_S
 remove_time			= 60; after this time  unbreaked removable bone will be removed
 script_binding      = bind_physic_object.init
 
@@ -576,7 +576,7 @@ current_server_entity_version = 5
 GroupControlSection		= spawn_group_restrictor
 $spawn					= "ai\space_restrictor"
 ;$prefetch 				= 64
-class					= SPACE_RS
+class					= SPACE_RS ;SPC_RS_S
 script_binding          = bind_restrictor.bind
 
 [collision_damage]

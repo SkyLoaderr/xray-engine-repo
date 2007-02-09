@@ -23,3 +23,11 @@ function se_car:can_switch_online ()
 	return xr_spawner.check_spawn (self)
 end    
 --------------------
+
+
+
+--'Helicopter
+class "se_heli" (cse_alife_helicopter)
+--------------------
+function se_heli:__init (section) super (section)
+end
