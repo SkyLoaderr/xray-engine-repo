@@ -51,7 +51,9 @@ function mp_main:InitControls()
 	xml:InitStatic("static_player_name",self)
 	self.player_name = xml:InitEditBox("edit_player_name", self)
 	xml:InitStatic("cap_cd_key",self)
-	xml:InitCDkey("edit_cd_key", self)
+	self.cdkey = xml:InitCDkey("edit_cd_key", self)
+	self:Register(self.cdkey, "edit_cd_key")
+	
 		
 	self.dlg_join = ui_mm_mp_join.mp_join()
 	self.dlg_join:InitControls(121,224, xml, self)
@@ -122,6 +124,8 @@ function mp_main:InitCallBacks()
 	
 	-- msg_box
 	self:AddCallback("msg_box",				ui_events.MESSAGE_BOX_YES_CLICKED,			self.OnDirectIP_yes,self)
+	
+	self:AddCallback("edit_cd_key",			ui_events.EDIT_TEXT_COMMIT,	self.OnCDKeyChanged, self)
 end
 
 function mp_main:OnBtn_DirectIP()
@@ -137,6 +141,14 @@ function mp_main:OnDirectIP_yes()
 		console:execute(cmd)
 	end
 
+end
+
+function mp_main:OnCDKeyChanged()
+	local cmdstr = ""
+	tmp	= self.cdkey:GetText()
+	cmdstr = "cdkey " .. tmp
+	local console = get_console()	
+	console:execute(cmdstr)
 end
 
 function mp_main:OnBtn_SrvInfo()
