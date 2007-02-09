@@ -34,11 +34,11 @@ function action_tip:update(delta)
 		   xr_logic.pick_section_from_condlist(actor, nil, self.st.conditions.condlist) ~= nil
 		then
 		    if self.st.tips_sended == false then
-			   if self.st.type == "tips" then
+--'			   if self.st.type == "tips" then
   			      news_manager.send_tip( actor, self.st.info, self.st.timeout, self.st.sender, self.st.showtime )
-			   elseif self.st.type == "news" then
-				  news_manager.send_news( actor, self.st.info, self.st.timeout, self.st.showtime )
-			   end
+--'			   elseif self.st.type == "news" then
+--'				  news_manager.send_news( actor, self.st.info, self.st.timeout, self.st.showtime )
+--'			   end
 			   if self.st.single == true then
 			      self.st.signals["tip_sended"] = true  
 			      self.st.tips_sended = true

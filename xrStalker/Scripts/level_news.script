@@ -137,10 +137,6 @@ function get_random_news()
 	if table.getn(avail) > 0 then
 		local t = avail[math.random(table.getn(avail))]
 		news[t].begin = game.time()
-		--' Выдать инфо поршн
-		if actor ~= nil then
-			--news_manager:send_news(actor, news[t].info)
-		end
 	end
 	
 --	print_table(news)

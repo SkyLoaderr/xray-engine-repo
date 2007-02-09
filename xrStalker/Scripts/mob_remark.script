@@ -117,7 +117,7 @@ function mob_remark:update(delta)
 		self.tip_sent = true
 		if self.st.tip then
 			--actor:give_game_news(self.st.tip, "ui_icons_npc", 50, 0, 50, 50)
-			news_manager.send_news(actor, self.st.tip)
+			news_manager.send_tip(actor, self.st.tip)
 		end
 	end
 

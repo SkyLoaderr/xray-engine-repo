@@ -247,8 +247,6 @@ function update()
 --				sim:set_switch_online( wounded_id, true )
 --			end
 
---			actor:give_info_portion( "tutorial_wounded_start" )
---			news_manager.send_news( actor, "tutorial_trader_look_vagon" )
 
 			-- отправить вертолёт патрулировать уровень
 			heli_mgr:set_path( "heli_path_patrol" )
