@@ -11,19 +11,7 @@ theme = {}
 ph_snd_themes = {}           
 ph_snd_themes["music"] = {  "characters_voice\\scenario\\megafon\\megafon_music_1",
 	                        "characters_voice\\scenario\\megafon\\megafon_music_2",
-	                        "characters_voice\\scenario\\megafon\\megafon_music_3",
-	                        "characters_voice\\scenario\\megafon\\megafon_music_4",
-	                        "characters_voice\\scenario\\megafon\\megafon_music_5",
-	                        "characters_voice\\scenario\\megafon\\megafon_music_6",
-	                        "characters_voice\\scenario\\megafon\\megafon_music_7",
-	                        "characters_voice\\scenario\\megafon\\megafon_music_8",
-	                        "characters_voice\\scenario\\megafon\\megafon_music_9",
-	                        "characters_voice\\scenario\\megafon\\megafon_music_10",
-	                        "characters_voice\\scenario\\megafon\\megafon_music_11",
-	                        "characters_voice\\scenario\\megafon\\megafon_music_12",
-	                        "characters_voice\\scenario\\megafon\\megafon_music_13",
-	                        "characters_voice\\scenario\\megafon\\megafon_music_14",
-	                        "characters_voice\\scenario\\megafon\\megafon_music_15"
+	                        "characters_voice\\scenario\\megafon\\megafon_music_3"
 	                        }
 ph_snd_themes["humor"] = {  "characters_voice\\scenario\\escape\\comandir_megafon_1",
 							"characters_voice\\scenario\\escape\\comandir_megafon_2",
@@ -76,15 +64,7 @@ ph_snd_themes["dolg_speech"]		= {[[characters_voice\scenario\bar\barman_megafon\
 									   [[characters_voice\scenario\bar\dolg_megafon\mega_duty_propaganda_5]],
 									   [[characters_voice\scenario\megafon\megafon_music_1]],
 									   [[characters_voice\scenario\megafon\megafon_music_2]],
-									   [[characters_voice\scenario\megafon\megafon_music_3]],
-									   [[characters_voice\scenario\megafon\megafon_music_5]],
-									   [[characters_voice\scenario\megafon\megafon_music_7]],
-									   [[characters_voice\scenario\megafon\megafon_music_8]],
-									   [[characters_voice\scenario\megafon\megafon_music_9]],
-									   [[characters_voice\scenario\megafon\megafon_music_12]],
-									   [[characters_voice\scenario\megafon\megafon_music_14]],
-									   [[characters_voice\scenario\megafon\megafon_music_15]],
-									   [[characters_voice\scenario\bar\arena_megafon\mega_arena_new_fight]]}
+									   [[characters_voice\scenario\megafon\megafon_music_3]]}
 ph_snd_themes["dolg_alarm"]			= {[[characters_voice\scenario\bar\dolg_megafon\megaphone_duty_alarm]]}
 ph_snd_themes["dolg_megafon_1_hit"] = {[[characters_voice\scenario\bar\dolg_megafon\duty_gunfire_mega_1]]}
 ph_snd_themes["dolg_megafon_2_hit"] = {[[characters_voice\scenario\bar\dolg_megafon\duty_gunfire_mega_2]]}
