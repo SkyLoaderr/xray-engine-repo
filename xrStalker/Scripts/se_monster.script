@@ -180,7 +180,7 @@ function se_monster:on_register()
 	--' Нарисовать мапспот с собой
 	if self:alive() and sim_statistic.show_monster_spot == true then
 		local community, rank = sim_statistic.getNpcType(self)
-		level.map_add_object_spot_ser(self.id, "alife_presentation_monstr", self:name().."\n"..community)
+		level.map_add_object_spot_ser(self.id, "alife_presentation_monstr", self:name().." "..community)
 	end
 end
 --------------------

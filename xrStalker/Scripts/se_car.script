@@ -31,3 +31,6 @@ class "se_heli" (cse_alife_helicopter)
 --------------------
 function se_heli:__init (section) super (section)
 end
+function se_heli:keep_saved_data_anyway()
+	return true
+end

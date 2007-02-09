@@ -724,6 +724,17 @@ function se_smart_terrain:task( obj )
 	end
 
 --'	printf("SEETING TASK PATH %s = %s", obj:name(), path_name)
+	--' Пробуем проапдейтить типс чувака на карте
+	if sim_statistic.show_stalker_spot == true and obj:alive() then
+		local community, rank = sim_statistic.getNpcType(obj)
+		local spot = "alife_presentation_monstr"
+		if IsStalker(obj) then
+			spot = "alife_presentation_"..community
+		end
+		local str = self:name().." "..community.."\\n"..path_name
+
+		level.map_change_spot_hint(obj.id, spot, str)		
+	end
 
 	return CALifeSmartTerrainTask( path_name )
 end

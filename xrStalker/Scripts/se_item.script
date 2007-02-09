@@ -146,7 +146,9 @@ end
 class "se_physic" (cse_alife_object_physic)
 function se_physic:__init (section) super (section)
 end
-
+function se_physic:keep_saved_data_anyway()
+	return true
+end
 
 
 function stats()
