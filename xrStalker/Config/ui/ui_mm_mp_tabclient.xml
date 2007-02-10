@@ -142,4 +142,6 @@
 			<texture>ui_button_ordinary</texture>
 			<texture_offset x="-3"/>
 		</btn_server_info>
+
 	</tab_client>
+	

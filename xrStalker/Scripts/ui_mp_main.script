@@ -88,6 +88,14 @@ function mp_main:InitControls()
 	self:Register(self.message_box, "msg_box")	
 	
 	self:OnRadio_NetChanged()
+	
+	self.cap_download				= xml:InitStatic		("cap_download",self)
+	self.download_progress			= xml:InitProgressBar	("progress_download", self)
+	self.btn_cancel_download		= xml:Init3tButton		("btn_cancel_download", self)
+	self:Register					(btn, "btn_cancel_download")
+	self.btn_cancel_download:Show	(false)
+	
+	xml:InitStatic					("static_gs_logo",self)
 end
 
 function mp_main:UpdateControls()
@@ -126,9 +134,12 @@ function mp_main:InitCallBacks()
 	self:AddCallback("msg_box",				ui_events.MESSAGE_BOX_YES_CLICKED,			self.OnDirectIP_yes,self)
 	
 	self:AddCallback("edit_cd_key",			ui_events.EDIT_TEXT_COMMIT,	self.OnCDKeyChanged, self)
+	
+	self:AddCallback("btn_cancel_download",	ui_events.BUTTON_CLICKED,	self.OnBtn_CalncelDownload,	self)
 end
 
 function mp_main:OnBtn_DirectIP()
+
 	self.message_box:Init("message_box_direct_ip")
 	self:GetHolder():start_stop_menu(self.message_box,true)
 end
@@ -429,4 +440,30 @@ function mp_main:OnKeyboard(dik, keyboard_action)
 	end
    
 	return true
+end
+
+function mp_main:Update()
+	CUIScriptWnd.Update(self)
+	
+	local mm = main_menu.get_main_menu()
+	local sss = mm:GetPatchProgress()
+	
+	if sss:GetInProgress() then
+		self.cap_download:Show					(true)
+		self.download_progress:Show				(true)
+		local _progr							= sss:GetProgress()
+		self.download_progress:SetProgressPos	(_progr)
+		local str								= string.format("%.0f/100 [%s]",_progr,sss:GetFlieName())
+		self.cap_download:SetText				(str)
+		self.btn_cancel_download:Show			(true)
+	else
+		self.cap_download:Show					(false)
+		self.download_progress:Show				(false)
+		self.btn_cancel_download:Show			(false)
+	end
+end
+
+function mp_main:OnBtn_CalncelDownload()
+	local mm = main_menu.get_main_menu()
+	mm:CancelDownload()
 end

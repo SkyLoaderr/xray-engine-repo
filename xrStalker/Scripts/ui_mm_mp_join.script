@@ -19,11 +19,12 @@ function mp_join:__finalize()
 end
 
 function mp_join:InitControls(x, y, xml, handler)
-	self:Init(x,y, 738, 416)
-	self:SetAutoDelete(true)
+	self:SetAutoDelete		(true)
+
+	self:Init				(x,y, 738, 416)
 		
-	self.bk = xml:InitFrame("frame", self)
-	xml:InitFrameLine("tab_client:vert_separator",self)
+	self.bk = xml:InitFrame	("frame", self)
+	xml:InitFrameLine		("tab_client:vert_separator",self)
 
 	handler.server_list = xml:InitServerList("tab_client:server_list", self)
 	
@@ -91,5 +92,5 @@ function mp_join:InitControls(x, y, xml, handler)
 	
 	btn = xml:Init3tButton("tab_client:btn_server_info", self)
 	handler:Register(btn, "btn_server_info")
-	
+
 end

@@ -2899,6 +2899,12 @@
 						RelativePath=".\Config\ui\ui_mm_mp.xml">
 					</File>
 					<File
+						RelativePath=".\Config\ui\ui_mm_mp_gs_ext.xml">
+					</File>
+					<File
+						RelativePath=".\Config\ui\ui_mm_mp_gs_ext_16.xml">
+					</File>
+					<File
 						RelativePath=".\Config\ui\ui_mm_mp_tabclient.xml">
 					</File>
 					<File
