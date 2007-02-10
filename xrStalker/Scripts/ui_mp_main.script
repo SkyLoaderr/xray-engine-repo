@@ -196,6 +196,12 @@ end
 function mp_main:OnRadio_NetChanged()
 	local i = self.radio_net_connection:GetActiveIndex()
 	self.server_list:NetRadioChanged(i~=0)
+	if i == 0 then
+		self.server_list:RefreshList(false)
+	else
+		self.server_list:RefreshList(true)
+	end
+	self:OnFilterChange()
 end
 
 function mp_main:OnBtn_Refresh()
