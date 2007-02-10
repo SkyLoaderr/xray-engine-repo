@@ -212,3 +212,6 @@ end
 class "se_trader" (cse_alife_trader)
 function se_trader:__init (section) super (section)
 end
+function se_trader:keep_saved_data_anyway()
+	return true
+end
