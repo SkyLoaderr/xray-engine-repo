@@ -2029,12 +2029,16 @@ function game_over(actor, npc)
 		return
 	end
 	local c = get_console()
-	c:execute("disconnect")
+--	c:execute("disconnect")
+	printf("main_menu on console command is executed")
+	c:execute("main_menu on")
 end
 
 function pri_game_over(actor, npc)
 	local c = get_console()
-	c:execute("disconnect")
+--	c:execute("disconnect")
+	printf("main_menu on console command is executed")
+	c:execute("main_menu on")
 end
 
 function esc_init_dialod ()
@@ -2089,5 +2093,7 @@ end
 
 function on_tutor_gameover_stop()
 	local c = get_console()
-	c:execute("disconnect")
+--	c:execute("disconnect")
+	printf("main_menu on console command is executed")
+	c:execute("main_menu on")
 end
