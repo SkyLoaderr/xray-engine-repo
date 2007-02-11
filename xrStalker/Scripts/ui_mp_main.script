@@ -135,7 +135,7 @@ function mp_main:InitCallBacks()
 	
 	self:AddCallback("edit_cd_key",			ui_events.EDIT_TEXT_COMMIT,	self.OnCDKeyChanged, self)
 	
-	self:AddCallback("btn_cancel_download",	ui_events.BUTTON_CLICKED,	self.OnBtn_CalncelDownload,	self)
+	self:AddCallback("btn_cancel_download",	ui_events.BUTTON_CLICKED,	self.OnBtn_CancelDownload,	self)
 end
 
 function mp_main:OnBtn_DirectIP()
@@ -463,7 +463,7 @@ function mp_main:Update()
 	end
 end
 
-function mp_main:OnBtn_CalncelDownload()
+function mp_main:OnBtn_CancelDownload()
 	local mm = main_menu.get_main_menu()
 	mm:CancelDownload()
 end
