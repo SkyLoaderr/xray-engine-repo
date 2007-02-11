@@ -1238,7 +1238,8 @@ end
 function getGulagPopulation( name_or_sid )
 	local gulag = get_gulag( name_or_sid )
 
-	return ( gulag and gulag:get_population() ) or 0
+--'	return ( gulag and gulag:get_population() ) or 0
+	return ( gulag and gulag:get_population_comed() ) or 0
 end
 
 -- получить кол-во населения смарта по имени (только пришедшие персонажи)
