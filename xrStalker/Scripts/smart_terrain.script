@@ -598,7 +598,7 @@ function se_smart_terrain:suitable( obj )
 --'		        obj:name(),
 --'				v,
 --'		        tostring(obj.was_in_smart_terrain) )
-	end
+--'	end
 
 	return v
 end
