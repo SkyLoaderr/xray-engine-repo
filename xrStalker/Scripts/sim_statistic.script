@@ -216,7 +216,7 @@ end
 
 
 --' Статистика смарттеррейнов
-show_smart_spot = false
+show_smart_spot = true
 function unmark_all_smarts()
 	show_smart_spot = false
 end

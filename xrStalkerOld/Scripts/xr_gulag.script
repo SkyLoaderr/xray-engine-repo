@@ -435,7 +435,7 @@ function gulag:update_objs()
 			self:object_setup_offline( obj_id )
 		end
 
-		obj = cl_obj or npc_info.se_obj
+		--'obj = cl_obj or npc_info.se_obj
 	end
 end
 
@@ -583,7 +583,7 @@ function gulag:prepare_available_jobs()
 
 			table.insert( Job_avail, job )
 		else
-			printf( "job unavailable: %d %s", job.num, job.section )
+			--'printf( "job unavailable: %d %s", job.num, job.section )
 		end
 	end
 
@@ -1149,8 +1149,6 @@ end
 -- установить логику и сообщить смарту, что объект перешёл в онлайн.
 -- вызывается из net_spawn() объектов
 function setup_gulag_and_logic_on_spawn( obj, st, sobject, stype, loaded )
---	printf( "setup_gulag_and_logic_on_spawn obj=%s", obj:name() )
-
 	local sim = alife()
 	if sim then
 		local strn_id
@@ -1160,6 +1158,8 @@ function setup_gulag_and_logic_on_spawn( obj, st, sobject, stype, loaded )
 		else
 			strn_id = 65535
 		end
+
+		printf( "setup_gulag_and_logic_on_spawn obj=%s, strn_id=%s", obj:name(), tostring(strn_id) )
 
 		if strn_id ~= 65535 then
 			local strn                   = sim:object( strn_id )

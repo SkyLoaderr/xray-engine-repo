@@ -395,7 +395,7 @@ end
 
 -- true, если гулага с таким именем (или story id) не существует или в нём нет никого
 function gulag_empty(actor, npc, p)
-	return ( not p[1] ) or ( xr_gulag.getGulagPopulation( p[1] ) == 0 )
+	return ( not p[1] ) or ( xr_gulag.getGulagPopulationComed( p[1] ) == 0 )
 end
 
 -- true, если  в указанном гулаге народу меньше чем надо.
