@@ -548,7 +548,7 @@ function se_smart_terrain:enabled(obj)
 		local b = self:obj_accepts_smart_terrain( obj )
 		local a = self:smart_terrain_accepts_obj( obj, b )
 
---'		if self:name() == "bar_zastava" then
+--'		if obj:name() == "esc_killer1" then
 --'			if a == true then
 --'				printf("[smart_terrain %s] ENABLED obj=%s exclusive=%s", self:name(), obj:name(), tostring(b))
 --'			else
@@ -558,6 +558,10 @@ function se_smart_terrain:enabled(obj)
 
 		return a
 	else
+
+--'		if obj:name() == "esc_killer1" then
+--'			printf("[smart_terrain %s] DISABLED not_enabled", self:name())
+--'		end
 		return false
 	end
 end
@@ -570,7 +574,7 @@ end
 --   2) иначе ближе - лучше
 -- TODO Оптимизировать
 function se_smart_terrain:suitable( obj )
---'	if obj:name() == "gar_bandit_agr_10" then
+--'	if obj:name() == "esc_killer1" then
 --'		printf("[%s] suitable [%s]", self:name(), obj:name())
 --'	end
 
@@ -588,15 +592,15 @@ function se_smart_terrain:suitable( obj )
 		end
 	end
 
---'	if obj:name() == "gar_bandit_agr_10" then
+--'	if obj:name() == "esc_killer1" then
 --'		printf( "[smart_terrain %s] obj=%s suitable=%d was_in_smart_terrain=%s",
 --'		        self:name(),
 --'		        obj:name(),
---'		        1000000 - v,
+--'				v,
 --'		        tostring(obj.was_in_smart_terrain) )
---'	end
+	end
 
-	return 1000000 - v
+	return v
 end
 
 -- добавить npc в smart terrain.
