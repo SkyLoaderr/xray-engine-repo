@@ -93,4 +93,6 @@
     <texture id="ui_mg_progress_efficiency_full" x="161" y="363" width="120" height="17" />
     <texture id="ui_mg_progress_efficiency_empty" x="161" y="381" width="120" height="17" />
 
+	<texture id="ui_patch_back" x="421" y="239" width="603" height="51" />
+    <texture id="ui_patch_progress" x="621" y="227" width="403" height="10" />
 </ui_texture>

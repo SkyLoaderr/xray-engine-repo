@@ -89,11 +89,11 @@ function mp_main:InitControls()
 	
 	self:OnRadio_NetChanged()
 	
-	self.cap_download				= xml:InitStatic		("cap_download",self)
+	self.cap_download				= xml:InitStatic		("download_static",self)
+	self.text_download				= xml:InitStatic		("download_text",self)
 	self.download_progress			= xml:InitProgressBar	("progress_download", self)
 	self.btn_cancel_download		= xml:Init3tButton		("btn_cancel_download", self)
 	self:Register					(self.btn_cancel_download, "btn_cancel_download")
-	self.btn_cancel_download:Show	(false)
 	
 	xml:InitStatic					("static_gs_logo",self)
 end
@@ -449,14 +449,16 @@ function mp_main:Update()
 	local sss = mm:GetPatchProgress()
 	
 	if sss:GetInProgress() then
+		self.text_download:Show					(true)
 		self.cap_download:Show					(true)
 		self.download_progress:Show				(true)
 		local _progr							= sss:GetProgress()
 		self.download_progress:SetProgressPos	(_progr)
-		local str								= string.format("%.0f/100 [%s]",_progr,sss:GetFlieName())
-		self.cap_download:SetText				(str)
+		local str								= string.format("%.0f%%(%s)",_progr,sss:GetFlieName())
+		self.text_download:SetText				(str)
 		self.btn_cancel_download:Show			(true)
 	else
+		self.text_download:Show					(false)
 		self.cap_download:Show					(false)
 		self.download_progress:Show				(false)
 		self.btn_cancel_download:Show			(false)
