@@ -92,7 +92,7 @@ function mp_main:InitControls()
 	self.cap_download				= xml:InitStatic		("cap_download",self)
 	self.download_progress			= xml:InitProgressBar	("progress_download", self)
 	self.btn_cancel_download		= xml:Init3tButton		("btn_cancel_download", self)
-	self:Register					(btn, "btn_cancel_download")
+	self:Register					(self.btn_cancel_download, "btn_cancel_download")
 	self.btn_cancel_download:Show	(false)
 	
 	xml:InitStatic					("static_gs_logo",self)
