@@ -42,7 +42,7 @@ type				= flamer
 ; Physics
 ;---------------------------------------------------------------------
 ph_box0_center 		 = 0.0,  0.2,  0.0	;0.0,  0.9,  0.0
-ph_box0_size 		 = 0.50, 0.4,  0.50	
+ph_box0_size 		 = 0.50, 0.4,  0.50
 ph_box1_center 		 = 0.0,  0.2,  0.0
 ph_box1_size 		 = 0.50, 0.4,  0.50
 ph_crash_speed_min			= 10
@@ -69,15 +69,15 @@ ph_skel_shot_up_factor        = 0.25
 ;----------------------------------------------------------------------------
 ; speed factors			linear | angular_real | angular_path | min |  max
 Velocity_Stand			= 0,		5.0,			5.0,		0.2,	0.5
-Velocity_WalkFwdNormal	= 1.7,		2.0,			2.0,		0.2,	2.0	
-Velocity_WalkFwdDamaged	= 1.5,		3.0,			3.0,		0.8,	2.0	
-Velocity_RunFwdNormal	= 4.0,		3.0,			3.0,		0.4,	1.0	
+Velocity_WalkFwdNormal	= 1.7,		2.0,			2.0,		0.2,	2.0
+Velocity_WalkFwdDamaged	= 1.5,		3.0,			3.0,		0.8,	2.0
+Velocity_RunFwdNormal	= 4.0,		3.0,			3.0,		0.4,	1.0
 Velocity_RunFwdDamaged	= 2.5,  	3.2,			3.2,		0.4,	1
 Velocity_Drag			= 0.6,		3.0,			3.0,		1,		1
 Velocity_Steal			= 1.5,		3.0,			3.0,		1,		1
 
 ; Speed factors while invisible
-Velocity_Invisible_Linear		= 5.0 
+Velocity_Invisible_Linear		= 5.0
 Velocity_Invisible_Angular		= 3.5
 
 ; acceleration
@@ -98,12 +98,12 @@ as_step					= 0.3
 ;-------------------------------------------------------------------------
 ; Entity Conditions
 ;-------------------------------------------------------------------------
-DayTime_Begin		= 0		
-DayTime_End			= 21	
-Min_Satiety			= 0.7	
-Max_Satiety			= 0.95	
+DayTime_Begin		= 0
+DayTime_End			= 21
+Min_Satiety			= 0.7
+Max_Satiety			= 0.95
 
-distance_to_corpse	= 1.8	
+distance_to_corpse	= 1.8
 
 terrain				 = poltergeist_terrain
 
@@ -113,8 +113,8 @@ hit_type = strike
 
 satiety_v 			= 0.0001				;скорость уменьшения сытости со временем
 radiation_v 		= 0.00001				;скорость уменьшения радиации
-satiety_power_v 	= 0.005					;увеличение силы при уменьшении сытости 
-satiety_health_v 	= 0.001					;увеличение здоровья при уменьшении сытости 
+satiety_power_v 	= 0.005					;увеличение силы при уменьшении сытости
+satiety_health_v 	= 0.001					;увеличение здоровья при уменьшении сытости
 satiety_critical 	= -1.0					;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
 radiation_health_v 	= 0.0001				;уменьшение здоровья при воздействии радиации
 morale_v			= 0.1					;скорость восстановления морали
@@ -135,9 +135,9 @@ sleep_satiety 		= 1.0
 sleep_radiation 	= 1.0
 sleep_psy_health 	= 1.0
 
-eat_freq			=	5.0		
-eat_slice			=	0.01	
-eat_slice_weight	=	10.0	
+eat_freq			=	5.0
+eat_slice			=	0.01
+eat_slice_weight	=	10.0
 
 satiety_threshold	= 0.5							; below this value monster fill hunger
 
@@ -166,7 +166,7 @@ attack_sound_delay		= 0
 
 sound_distant_idle			= monsters\biting\def_
 distant_idle_sound_delay	= 80000
-distant_idle_sound_range	= 100.0	
+distant_idle_sound_range	= 100.0
 
 SoundThreshold		 = 0.06						; range [0..1]
 max_hear_dist		 = 60
@@ -176,7 +176,7 @@ max_hear_dist		 = 60
 ;-------------------------------------------------------------------------
 
 eye_fov				 = 100	;120
-eye_range			 = 40 ;60	
+eye_range			 = 40 ;60
 
 DynamicObjectsCount		= 32
 
@@ -223,15 +223,15 @@ damage					= m_poltergeist_damage
 ;---------------------------
 
 Invisible_Energy_Restore_Velocity				= 0.1
-Invisible_Energy_Decline_Velocity				= 0.0 
+Invisible_Energy_Decline_Velocity				= 0.0
 Invisible_Energy_Critical_Value					= 0.01
 Invisible_Energy_Activate_Value					= 0.99
 Invisible_Energy_Aggressive_Restore_Velocity	= 0.1
 
 Particles_Damage				= monsters\polter_damage
 Particles_Death					= monsters\polter_death
-Particles_Idle					= monsters\polter_idle 
-Particles_Hidden				= monsters\polter_idle ;monsters\polter_linza
+Particles_Idle					= monsters\polter_idle
+Particles_Hidden				= monsters\polter_linza
 
 ;-- Delays -------------------
 
@@ -261,7 +261,7 @@ critical_wound_decrease_quant	= 0.
 
 [m_Poltergeist_damage]
 ;bone_name		 = <hit_scale>,-1,<wound_scale>
-;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
+;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья)
 ;<wound_scale>	- коэфф. изменения величины открытой раны
 
 default				= 1.0,	-1,	0.1
@@ -297,10 +297,10 @@ time_attack		= 0.05		; fade in
 time_release	 = 0.25		; fade out
 
 ; camera effects
-ce_time				= 0.45 ;time 
-ce_amplitude		= -15.0 
-ce_period_number	= 1.5 ;2.0 
-ce_power			= 1.5 ;0.7 ; power 
+ce_time				= 0.45 ;time
+ce_amplitude		= -15.0
+ce_period_number	= 1.5 ;2.0
+ce_power			= 1.5 ;0.7 ; power
 
 [m_poltergeist_step_params]                left             right            right           left
 ;------------------------------------------------------------------------------------------------------------------
@@ -316,12 +316,12 @@ stand_run_dmg_0			=		1,		0.2,      1,	  	0.25,    1,		 0.7,	 1,			0.75,		1
 ;===========================================================================
 [poltergeist_terrain]
 	255,000,255,255
-	
+
 ;===========================================================================
 ; IMMUNITIES
 ;===========================================================================
 [poltergeist_immunities]
-burn_immunity 		= 0.3					;коэффициенты иммунитета 
+burn_immunity 		= 0.3					;коэффициенты иммунитета
 strike_immunity 	= 0.7
 shock_immunity 		= 0.5
 wound_immunity 		= 0.3
@@ -365,11 +365,11 @@ Tele_Delay_Between_Objects_Raise_Time	= 200
 
 Particles_Damage				= monsters\polter_damage
 Particles_Death					= monsters\polter_death
-Particles_Idle					= monsters\polter_idle 
-Particles_Hidden				= monsters\polter_idle ;monsters\polter_linza
+Particles_Idle					= monsters\polter_idle
+Particles_Hidden				= monsters\polter_linza
 
 
-Hidden_Particles				= monsters\polter_idle ;monsters\polter_linza	;monsters\polter_hidden
+Hidden_Particles				= monsters\polter_linza
 ;Hide_Particles					= monsters\polter_yadro;monsters\polter_hide
 
 Sound_Idle						= monsters\poltergeist\tele_idle_0
@@ -395,7 +395,7 @@ $spawn               = "monsters\poltergeists\poltergeist_normal_flame"
 
 type					= flamer
 
-flame_sound				= monsters\poltergeist\attack_hit_flame		
+flame_sound				= monsters\poltergeist\attack_hit_flame
 flame_particles_prepare	= monsters\polter_yadro
 flame_particles_fire	= static\monsters_fire_idle
 flame_particles_stop	= static\monsters_fire_stop
@@ -426,10 +426,10 @@ flame_max_height		= 1.0
 Particles_Damage				= monsters\polter_damage
 Particles_Death					= monsters\polter_death_00
 Particles_Idle					= monsters\polter_idle_00
-Particles_Hidden				= monsters\polter_idle_00 ;monsters\polter_linza_00
+Particles_Hidden				= monsters\polter_linza_00
 
 
-Hidden_Particles				= monsters\polter_idle_00 ;monsters\polter_linza	;monsters\polter_hidden
+Hidden_Particles				= monsters\polter_linza_00	;monsters\polter_hidden
 Sound_Idle						= monsters\poltergeist\fire_idle_0
 
 [m_poltergeist_scan_effector]
@@ -455,7 +455,7 @@ immunities_sect		= poltergeist_immunities_strong
 flame_hit_value			= 0.7
 
 [poltergeist_immunities_strong]
-burn_immunity 		= 0.3					;коэффициенты иммунитета 
+burn_immunity 		= 0.3					;коэффициенты иммунитета
 strike_immunity 	= 0.7
 shock_immunity 		= 0.5
 wound_immunity 		= 0.3
