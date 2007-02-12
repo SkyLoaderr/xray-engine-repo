@@ -35,10 +35,14 @@ function action_light:update(delta)
 end
 function action_light:check_stalker(stalker)
     if self.active == false then 
-       return false
+       return false, false
     end
     
-	return self.object:inside(stalker:position())
+	if self.object:inside(stalker:position()) then
+		return self.st.light, true
+	end
+
+	return false, false
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -58,15 +62,18 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------
 function check_light(stalker)
+	--'printf("[check_light %s] start", stalker:name())
     if stalker == nil then 
        return 
     end
 
+	--'printf("[check_light %s] start_passed", stalker:name())
     local torch = stalker:object("device_torch")
     if torch == nil then
        return
     end
 
+	--'printf("[check_light %s] torch_passed", stalker:name())
 	local light = false
 	local forced = false
 
@@ -75,18 +82,18 @@ function check_light(stalker)
 		forced = true
 	end
 
+	--'printf("[check_light %s] alive_passed: light=%s, forced=%s", stalker:name(), tostring(light), tostring(forced))
     --' Проверка по лайтзонам
     if not forced then
 	    for k,v in pairs(light_zones) do
-			if v:check_stalker(stalker) == true then
-				light = true
-			else 
-				light = false
+			light, forced = v:check_stalker(stalker)
+			if forced == true then
+				break
 			end
-			forced = true
 	    end
 	end
 
+	--'printf("[check_light %s] lightzone_passed: light=%s, forced=%s", stalker:name(), tostring(light), tostring(forced))
 	if not forced then
 		--' Проверка по времени суток (ночью всегда включено)
 		local htime = level.get_time_hours()
@@ -100,8 +107,9 @@ function check_light(stalker)
 				light = true
 			end
 		end
-	end
-			
+	end			
+
+	--'printf("[check_light %s] timezone_passed: light=%s, forced=%s", stalker:name(), tostring(light), tostring(forced))
 	--' Проверка по активному действию
 	if not forced and light == true then
 		--' Фонарики должны быть выключены у костра
@@ -113,7 +121,8 @@ function check_light(stalker)
 			forced = true
 		end
 	end
-	
+
+	--'printf("[check_light %s] scheme_passed: light=%s, forced=%s", stalker:name(), tostring(light), tostring(forced))	
 --	if not forced and light == true then
 --		--' Фонарики должны быть выключены в бою. Но если в бою идет поиск врага - то включены.
 --		if stalker:best_enemy() ~= nil then
