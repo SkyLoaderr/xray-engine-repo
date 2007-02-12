@@ -503,14 +503,13 @@ function se_smart_terrain:obj_accepts_smart_terrain( obj )
 			s = xr_logic.pick_section_from_condlist( db.actor_proxy, obj, condlist )
 
 			if s ~= nil then
-			 	if name == self:name() then
+				if name == "none" then				
+					return disagreed
+			 	elseif name == self:name() then
 --'					if obj:name() == "gar_bandit_agr_10" then
 --'						printf("[%s] obj_accepts_smart_terrain[%s] = agreed_exclusive", self:name(), obj:name())
 --'					end
 					return agreed_exclusive
---'				else
-					--' Проверяем что эксклюзивный доступен
---'					any_exclusive = true
 				end
 			end
 		end
