@@ -3,13 +3,11 @@
 <game_information_portions>
 
 	<info_portion id="mil_freedom_rg6_task">
-		<article>mil_actor_main_quest</article>
 	</info_portion>
     <info_portion id="mil_freedom_rg6_task_complete"></info_portion>
 
 	<!-- Сообщение в дневник -->
 	<info_portion id="mil_actor_main_quest">
-		<article>mil_actor_main_quest</article>
 	</info_portion>
 
 	<!-- Выключение матюгальника -->
