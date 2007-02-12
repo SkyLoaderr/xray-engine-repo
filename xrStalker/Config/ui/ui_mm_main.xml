@@ -18,10 +18,10 @@
 				<texture>ui\ui_magnifier</texture>
 			</magnifire>
 			
-			<left_anim x="16" y="10" width="55" height="55" stretch="1" heading="1">
+			<left_anim x="43" y="37" width="55" height="55" stretch="1" heading="1" alignment="c">
 				<texture>ui_menu_bigroll_l</texture>
 			</left_anim>			
-			<right_anim x="313" y="11" width="55" height="55" stretch="1" heading="1">
+			<right_anim x="340" y="37" width="55" height="55" stretch="1" heading="1" alignment="c">
 				<texture>ui_menu_bigroll_r</texture>
 			</right_anim>
 			<left_grating x="0" y="4" width="55" height="67">
