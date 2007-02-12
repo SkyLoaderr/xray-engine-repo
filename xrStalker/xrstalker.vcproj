@@ -3289,6 +3289,9 @@
 					RelativePath=".\Config\weathers\weather_sarkofag.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\weathers\weather_stancia.ltx">
+				</File>
+				<File
 					RelativePath=".\config\weathers\weather_surge.ltx">
 				</File>
 				<File
