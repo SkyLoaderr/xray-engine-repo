@@ -1124,6 +1124,7 @@ function se_smart_terrain:update()
 --'				self.gulag:update()
 --'			end
 --'		end
+		self.gulag:update()
 	else
 		self:remove_gulag()
 	end
