@@ -47,6 +47,7 @@ function action_zombie_shoot:initialize()
 	self.enemy_last_seen_vid = be:level_vertex_id()
 
 	self.last_vid   = nil
+	self.valid_path = false
 
 	self.turn_time  = 0
 
@@ -76,24 +77,32 @@ function action_zombie_shoot:execute()
 	local be  = self.object:best_enemy()
 	local see = self.object:see( be )
 
+	--' ≈сли видим врага - то запоминаем его позицию и ноду
 	if see then
 		self.enemy_last_seen_pos = be:position()
 		self.enemy_last_seen_vid = be:level_vertex_id()
 	end
 
+	if self.last_vid ~= self.enemy_last_seen_vid then
+		self.last_vid = self.enemy_last_seen_vid
+		self.valid_path = false
+		--' «апоминаем позицию, куда нам надо будет идти
+		if not self.object:accessible(self.enemy_last_seen_vid) then
+			self.enemy_last_accessible_vid, self.enemy_last_accessible_position  = self.object:accessible_nearest(level.vertex_position(self.enemy_last_seen_vid), vector())
+		else
+			self.enemy_last_accessible_vid, self.enemy_last_accessible_position  = self.enemy_last_seen_vid, self.enemy_last_seen_pos
+		end
+	
+	end
+
 	self.object:set_path_type( game_object.level_path )
 
-	if self.object:position():distance_to_sqr( self.enemy_last_seen_pos ) > 9 then
---		printf( "dist > 9" )
-
-		if self.last_vid ~= self.enemy_last_seen_vid then
-			self.last_vid = self.enemy_last_seen_vid
-
-			utils.send_to_nearest_accessible_vertex( self.object, self.last_vid )
-
---			printf( "send to nearest" )
+	--' ≈сли мы дальше чем в 3 метрах от позиции, идем в нее.
+	if self.object:position():distance_to_sqr( self.enemy_last_accessible_position ) > 9 then
+		if self.valid_path == false then
+			self.valid_path = true
+			self.object:set_dest_level_vertex_id(self.enemy_last_accessible_vid)
 		end
-
 		if see then
 			self:set_state( "raid_fire", be )
 
@@ -104,7 +113,7 @@ function action_zombie_shoot:execute()
 			self:set_state( "raid_fire", nil, self.enemy_last_seen_pos )
 
 		elseif self.hit_reaction_end_time > time_global() then
-			-- продолжать идти и стрел€ть в точку, из которой был нанесЄн хит
+			--' продолжать идти и стрел€ть в точку, из которой был нанесЄн хит
 
 		else
 			self:set_state( "raid",      nil, self.enemy_last_seen_pos )
@@ -112,11 +121,13 @@ function action_zombie_shoot:execute()
 
 		self.turn_time = 0
     else
+		--' —тоим в позиции.
 		if see then
 			self:set_state( "threat_fire",  be )
 
 			self.turn_time = 0
 		else
+			--' ¬рем€ от времени поворачиваем в случайном направлении, типа осматриваемс€.
 			if self.was_hit then
 				self.was_hit = false
 
@@ -124,6 +135,7 @@ function action_zombie_shoot:execute()
 
 				self:set_state( "threat_na", nil, self.enemy_last_seen_pos )
 			elseif self.turn_time < time_global() then
+				--'printf("[zombied_combat %s] turning", self.object:name())
 				self.turn_time = time_global() + math.random( 3000, 5000 )
 
 				self:set_state( "threat_na", nil, self:calc_random_direction() )
