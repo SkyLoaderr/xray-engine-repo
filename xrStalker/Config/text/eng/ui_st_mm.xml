@@ -321,6 +321,10 @@
 	<string id="ui_st_preset3">
 		<text>Preset 3</text>
 	</string>
+	<string id="ui_st_preset_def">
+		<text>Default</text>
+	</string>
+
 	<string id="ui_st_reset">
 		<text>Reset</text>
 	</string>
