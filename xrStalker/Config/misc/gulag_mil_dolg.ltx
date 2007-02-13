@@ -127,6 +127,7 @@ combat_ignore_cond = always
 on_signal = action_end | camper2@mil_dolg_soldier2 %+mil_patrol_kill_continue%
 on_info = {+mil_patrol_dead} follower1@mil_dolg_soldier2
 meet = no_meet
+danger = danger_condition@mil_dolg
 
 [camper2@mil_dolg_soldier2]
 path_walk = ambush_walk1_2
@@ -137,7 +138,7 @@ on_info = {+mil_patrol_dead} follower1@mil_dolg_soldier2
 no_retreat = true
 show_spot = false
 attack_sound = false
-danger = danger_condition
+danger = danger_condition@mil_dolg
 meet = no_meet
 
 [follower1@mil_dolg_soldier2]
@@ -649,7 +650,7 @@ no_move = true
 no_rotate = true
 anim = hide
 on_signal = action_end | walker1@mil_dolg_soldier1_attack
-danger = danger_condition
+danger = danger_condition@mil_dolg
 meet = no_meet
 
 [camper1@mil_dolg_soldier1_attack]
