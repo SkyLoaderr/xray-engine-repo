@@ -137,7 +137,7 @@
 		<text>Supera il delimitatore 2</text>
 	</string>
 	<string id="mil_test_task_phase3">
-		<text>Solleva in aria il Bulldog 6 se la missione   riuscita oppure il TRs 301 se   fallita.</text>
+		<text>Solleva in aria il Bulldog 6 se la missione è riuscita oppure il TRs 301 se è fallita.</text>
 	</string>
 	<string id="mil_test_task_title">
 		<text>Missione di prova</text>

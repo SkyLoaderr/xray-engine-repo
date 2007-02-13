@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="mp_art_destroyed">
-		<text>Il reperto   stato distrutto.</text>
+		<text>Il reperto и stato distrutto.</text>
 	</string>
 	<string id="mp_art_spowned">
 		<text>Reperto generato. Portalo alla base per segnare un punto.</text>
@@ -52,7 +52,7 @@
 		<text>Inserisci testo per il voto</text>
 	</string>
 	<string id="mp_entered_game">
-		<text>si   unito alla partita</text>
+		<text>si и unito alla partita</text>
 	</string>
 	<string id="mp_first_eye">
 		<text>(Visione in prima persona)</text>
@@ -85,10 +85,10 @@
 		<text>Mercenari</text>
 	</string>
 	<string id="mp_is_now">
-		<text>ora  </text>
+		<text>ora и</text>
 	</string>
 	<string id="mp_joined">
-		<text>si   unito ai</text>
+		<text>si и unito ai</text>
 	</string>
 	<string id="mp_kick">
 		<text>Lascia</text>
@@ -103,7 +103,7 @@
 		<text>Partita iniziata!</text>
 	</string>
 	<string id="mp_modes">
-		<text>Modalit </text>
+		<text>Modalitа</text>
 	</string>
 	<string id="mp_name">
 		<text>nome</text>
@@ -118,13 +118,13 @@
 		<text>ping</text>
 	</string>
 	<string id="mp_player_wins">
-		<text>Il giocatore %s   il vincitore!</text>
+		<text>Il giocatore %s и il vincitore!</text>
 	</string>
 	<string id="mp_players">
 		<text>Giocatori</text>
 	</string>
 	<string id="mp_press_fire2spectator">
-		<text>Premi Spara per passare alla modallit  Spettatore</text>
+		<text>Premi Spara per passare alla modallitа Spettatore</text>
 	</string>
 	<string id="mp_press_jump2pay_spaw">
 		<text>Premi Salto per comprare una rigenerazione istantanea</text>
@@ -145,10 +145,10 @@
 		<text>Premi ($$ACTION_BUY_MENU$$) per accedere a menu Compravendita</text>
 	</string>
 	<string id="mp_press_yes2pay">
-		<text>Hai %d$. Puoi essere rigenerato con %d$. Fai clic su S  per pagare.</text>
+		<text>Hai %d$. Puoi essere rigenerato con %d$. Fai clic su Sм per pagare.</text>
 	</string>
 	<string id="mp_ready">
-		<text>Pronto…</text>
+		<text>Pronto...</text>
 	</string>
 	<string id="mp_restart">
 		<text>Riavvia</text>
@@ -214,7 +214,7 @@
 		<text>No</text>
 	</string>
 	<string id="mp_vote_yes">
-		<text>S </text>
+		<text>Sм</text>
 	</string>
 	<string id="mp_voted">
 		<text>ha votato</text>
@@ -253,7 +253,7 @@
 		<text>Colpito alla testa!!!</text>
 	</string>
 	<string id="mp_your_rank">
-		<text>Ora il tuo livello  </text>
+		<text>Ora il tuo livello и</text>
 	</string>
 	<string id="ui_st_description">
 		<text>Descrizione</text>

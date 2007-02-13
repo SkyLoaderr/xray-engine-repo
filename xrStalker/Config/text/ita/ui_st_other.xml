@@ -16,7 +16,7 @@
 		<text>Predefinito</text>
 	</string>
 	<string id="ui_mm_detail_density">
-		<text>Densit  erba</text>
+		<text>Densità erba</text>
 	</string>
 	<string id="ui_mm_r2_sun">
 		<text>Ombre solari</text>
@@ -40,7 +40,7 @@
 		<text>OK</text>
 	</string>
 	<string id="ui_st_btn_yes">
-		<text>S </text>
+		<text>Sì</text>
 	</string>
 	<string id="ui_st_cant_run_r2">
 		<text>Impossibile avviare Render 2</text>
@@ -64,7 +64,7 @@
 		<text>Errore</text>
 	</string>
 	<string id="ui_st_file_exist_owerwrite_q">
-		<text>Esiste gi  un file con questo nome. Sovrascriverlo?</text>
+		<text>Esiste già un file con questo nome. Sovrascriverlo?</text>
 	</string>
 	<string id="ui_st_file_name_is_empty">
 		<text>Nome file vuoto</text>

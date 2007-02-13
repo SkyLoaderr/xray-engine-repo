@@ -127,7 +127,7 @@
 		<text>Sangue</text>
 	</string>
 	<string id="ui_mm_brightness">
-		<text>Luminosit </text>
+		<text>Luminosità</text>
 	</string>
 	<string id="ui_mm_cancel">
 		<text>Annulla</text>
@@ -148,7 +148,7 @@
 		<text>Elimina</text>
 	</string>
 	<string id="ui_mm_difficulty">
-		<text>Difficolt </text>
+		<text>Difficoltà</text>
 	</string>
 	<string id="ui_mm_disconnect">
 		<text>Disconnetti</text>
@@ -202,7 +202,7 @@
 		<text>Volume</text>
 	</string>
 	<string id="ui_mm_mouse_sense">
-		<text>Sensibilit  mouse</text>
+		<text>Sensibilità mouse</text>
 	</string>
 	<string id="ui_mm_multiplayer">
 		<text>PARTITA IN RETE</text>
@@ -235,7 +235,7 @@
 		<text>Distanza particelle</text>
 	</string>
 	<string id="ui_mm_quality_presets">
-		<text>Impostazioni qualit </text>
+		<text>Impostazioni qualità</text>
 	</string>
 	<string id="ui_mm_quit_game">
 		<text>Esci dal gioco</text>
@@ -277,13 +277,13 @@
 		<text>Audio</text>
 	</string>
 	<string id="ui_mm_sound_quality">
-		<text>Qualit  audio</text>
+		<text>Qualità audio</text>
 	</string>
 	<string id="ui_mm_stalker">
 		<text>Stalker</text>
 	</string>
 	<string id="ui_mm_sun_quality">
-		<text>Qualit  ombre</text>
+		<text>Qualità ombre</text>
 	</string>
 	<string id="ui_mm_supersample">
 		<text>Antialiasing</text>

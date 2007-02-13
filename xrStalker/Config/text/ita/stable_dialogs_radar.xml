@@ -31,13 +31,13 @@
 		<text>Che cosa sai di Pripjat?</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_2_10">
-		<text>  una vecchia citt  abbandonata del periodo comunista. Un pezzo di storia! Credo che ora sia piena di mostri e di orde di Monolith! Non ci   mai tornato vivo nessuno. </text>
+		<text>È una vecchia città abbandonata del periodo comunista. Un pezzo di storia! Credo che ora sia piena di mostri e di orde di Monolith! Non ci è mai tornato vivo nessuno. </text>
 	</string>
 	<string id="rad_find_stalkers_dialog_2_100">
 		<text>Pensi che sia pericoloso?</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_2_20">
-		<text>Non ne ho alcun dubbio: nessuno   mai tornato da quel posto.</text>
+		<text>Non ne ho alcun dubbio: nessuno è mai tornato da quel posto.</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_3_0">
 		<text>Hai visto dei soldati in giro?</text>
@@ -55,10 +55,10 @@
 		<text>Pensi che i militari abbiano bloccato la strada per la Foresta Rossa?</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_3_30">
-		<text>Non credo siano stati i militari: non ne vedo da molto tempo, ma potrebbero essere stati gli stalker militari! Non sprecano tempo. Sono tipi decisi, lavorano in fretta e sono molto efficienti, sia in squadra che da soli...   strano che non abbiano bloccato la strada qui prima.</text>
+		<text>Non credo siano stati i militari: non ne vedo da molto tempo, ma potrebbero essere stati gli stalker militari! Non sprecano tempo. Sono tipi decisi, lavorano in fretta e sono molto efficienti, sia in squadra che da soli... è strano che non abbiano bloccato la strada qui prima.</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_3_300">
-		<text>Perch  non sono andati a Pripjat o non hanno bloccato la strada laggi ?</text>
+		<text>Perché non sono andati a Pripjat o non hanno bloccato la strada laggiù?</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_3_40">
 		<text>Non lo so. Forse hanno paura o si stanno preparando per qualcosa. Posso solo fare delle supposizioni.</text>
@@ -67,7 +67,7 @@
 		<text>Hai una missione per me?</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_4_10">
-		<text>Beh, ne ho una ma non   facile... lo faresti?</text>
+		<text>Beh, ne ho una ma non è facile... lo faresti?</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_4_100">
 		<text>Il fatto che non sia facile non mi spaventa.</text>
@@ -79,7 +79,7 @@
 		<text>Capisco. Ho paura anch'io... preferisco pagare qualcuno che non mandarci i miei ragazzi o pensarci da me.</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_4_20">
-		<text>Bene! Devi trovare i miei esploratori, il Palanchino e il Ciocco. Sono andati a Pripjat perch  avevo deciso di non entrare in forze, cos  ho mandato avanti i miei uomini migliori. Trovali: se sono ancora vivi, riportali qui. Se sono morti riportami le loro armi. Ne avrai 2000 se farai questo per me!!!</text>
+		<text>Bene! Devi trovare i miei esploratori, il Palanchino e il Ciocco. Sono andati a Pripjat perché avevo deciso di non entrare in forze, così ho mandato avanti i miei uomini migliori. Trovali: se sono ancora vivi, riportali qui. Se sono morti riportami le loro armi. Ne avrai 2000 se farai questo per me!!!</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_4_200">
 		<text>OK, affare fatto!</text>
@@ -88,10 +88,10 @@
 		<text>Non basta. Che cosa ne dici di 4000?</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_4_21">
-		<text>  tutto quello che posso offrirti per questo lavoro!</text>
+		<text>È tutto quello che posso offrirti per questo lavoro!</text>
 	</string>
 	<string id="rad_find_stalkers_dialog_4_30">
-		<text>OK, ti aspetter  qui!</text>
+		<text>OK, ti aspetterò qui!</text>
 	</string>
 	<string id="rad_found_deputy_dialog_1_0">
 		<text>Missione compiuta!</text>
@@ -130,10 +130,10 @@
 		<text>Ho trovato i tuoi ragazzi. Sono morti, ma ho le loro armi.</text>
 	</string>
 	<string id="rad_found_stalkers_dialog_1_100">
-		<text>Grazie, e cos  sono morti. Non penso che abbia pi  senso andare a Pripjat ora! Per  c'  un problema: non ho il denaro per te. Il mio vice   scomparso: aveva lui tutti i soldi.</text>
+		<text>Grazie, e così sono morti. Non penso che abbia più senso andare a Pripjat ora! Però c'è un problema: non ho il denaro per te. Il mio vice è scomparso: aveva lui tutti i soldi.</text>
 	</string>
 	<string id="rad_found_stalkers_dialog_1_1001">
-		<text>OK, lo trover ! Dimmi dove pu  essere andato. E non pensare di fregarmi i miei soldi questa volta!!!</text>
+		<text>OK, lo troverò! Dimmi dove può essere andato. E non pensare di fregarmi i miei soldi questa volta!!!</text>
 	</string>
 	<string id="rad_found_stalkers_dialog_1_200">
 		<text>Non penso che sia andato molto lontano. Potrebbe essere qui oppure qui: te lo segno sulla mappa. Quando lo trovi, riportami lui o il suo palmare!</text>

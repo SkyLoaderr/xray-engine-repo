@@ -49,10 +49,10 @@
 		<text>Crea</text>
 	</string>
 	<string id="mm_mp_damageblock">
-		<text>Invulnerabilit </text>
+		<text>Invulnerabilità</text>
 	</string>
 	<string id="mm_mp_damageblockindicator">
-		<text>Indicatore invulnerabilit </text>
+		<text>Indicatore invulnerabilità</text>
 	</string>
 	<string id="mm_mp_deaths">
 		<text>Morti</text>
@@ -91,7 +91,7 @@
 		<text>Pieni</text>
 	</string>
 	<string id="mm_mp_gamemode">
-		<text>Modalit </text>
+		<text>Modalità</text>
 	</string>
 	<string id="mm_mp_host_port">
 		<text>IP/host:porta</text>
@@ -160,7 +160,7 @@
 		<text>Elenco server</text>
 	</string>
 	<string id="mm_mp_server_prop">
-		<text>Propriet  server</text>
+		<text>Proprietà server</text>
 	</string>
 	<string id="mm_mp_serverinfo">
 		<text>Informazioni server</text>

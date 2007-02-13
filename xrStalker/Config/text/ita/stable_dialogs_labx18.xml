@@ -4,13 +4,13 @@
 		<text>Sono in missione.</text>
 	</string>
 	<string id="dar_explorer_dialog_11">
-		<text>Uhm. Che tipo di missione? Stai cercando qualcosa? O l'hai gi  trovata? Ho sentito che ci sono un sacco di cose interessanti qui...</text>
+		<text>Uhm. Che tipo di missione? Stai cercando qualcosa? O l'hai già trovata? Ho sentito che ci sono un sacco di cose interessanti qui...</text>
 	</string>
 	<string id="dar_explorer_dialog_111">
 		<text>Mi spiace, non posso dirtelo e comunque non ho tempo.</text>
 	</string>
 	<string id="dar_explorer_dialog_1111">
-		<text>Aspetta, non andartene cos . Avrai altre occasioni... Che cosa hai trovato? Quanto a me, non me ne sto qui per niente, sai?</text>
+		<text>Aspetta, non andartene così. Avrai altre occasioni... Che cosa hai trovato? Quanto a me, non me ne sto qui per niente, sai?</text>
 	</string>
 	<string id="dar_explorer_dialog_11111">
 		<text>Quello che ho trovato io sono affari miei.</text>
@@ -22,7 +22,7 @@
 		<text>No, non ho trovato niente.</text>
 	</string>
 	<string id="dar_explorer_dialog_2">
-		<text>Non so neanche perch  sono finito qui. E non vedo l'ora di andarmene.</text>
+		<text>Non so neanche perché sono finito qui. E non vedo l'ora di andarmene.</text>
 	</string>
 	<string id="dar_explorer_dialog_21">
 		<text>Non hai trovato niente di utile qui, vero? Dicono che ci siano delle informazioni su alcuni esperimenti scientifici. Valgono un sacco di soldi...</text>
@@ -31,25 +31,25 @@
 		<text>No.</text>
 	</string>
 	<string id="dar_explorer_dialog_2111">
-		<text>Davvero?.. E se ci pensi bene bene bene? Non   che mi stai nascondendo qualcosa?</text>
+		<text>Davvero?.. E se ci pensi bene bene bene? Non è che mi stai nascondendo qualcosa?</text>
 	</string>
 	<string id="dar_explorer_dialog_21111">
 		<text>No.</text>
 	</string>
 	<string id="dar_explorer_dialog_21112">
-		<text>Che razza di domanda  ?</text>
+		<text>Che razza di domanda è?</text>
 	</string>
 	<string id="dar_explorer_dialog_21113">
 		<text>Mi stai minacciando?</text>
 	</string>
 	<string id="dar_explorer_dialog_212">
-		<text>Al diavolo le informazioni.   gi  tanto che sono vivo, quaggi .</text>
+		<text>Al diavolo le informazioni. È già tanto che sono vivo, quaggiù.</text>
 	</string>
 	<string id="dar_explorer_dialog_2121">
 		<text>Molto bene, allora vai. Se trovi qualcosa, sai dove trovarmi...</text>
 	</string>
 	<string id="dar_explorer_dialog_25">
-		<text>Senti, amico: ho scampato il fuoco, le anomalie e i mostri in questa Zona fetente e come puoi vedere, sono ancora vivo. Quindi non dirmi quello che posso o non posso dire. Sono venuto qui per i documenti e non me ne andr  a mani vuote. Se li hai tu, ti avverto: o me li dai o riposerai in pace in questo buco! Chiaro?</text>
+		<text>Senti, amico: ho scampato il fuoco, le anomalie e i mostri in questa Zona fetente e come puoi vedere, sono ancora vivo. Quindi non dirmi quello che posso o non posso dire. Sono venuto qui per i documenti e non me ne andrò a mani vuote. Se li hai tu, ti avverto: o me li dai o riposerai in pace in questo buco! Chiaro?</text>
 	</string>
 	<string id="dar_explorer_dialog_251">
 		<text>Chiaro.</text>
@@ -61,16 +61,16 @@
 		<text>Va bene, e la prossima volta, attento a come parli. Ora puoi andare. Ma se trovi qualcosa, sono qui...</text>
 	</string>
 	<string id="dar_explorer_dialog_253">
-		<text>La conversazione   finita. Levati di torno.</text>
+		<text>La conversazione è finita. Levati di torno.</text>
 	</string>
 	<string id="dar_explorer_dialog_26">
 		<text>Non ho nessun documento.</text>
 	</string>
 	<string id="dar_explorer_dialog_271">
-		<text>Cos  va meglio, vecchio mio. Ora dammi tutte le informazioni che hai, ogni minima cosa, anche il pi  minuscolo pezzo di carta. E non cercare di fare il furbo, perch  potrebbe essere l'ultima volta che ci provi...</text>
+		<text>Così va meglio, vecchio mio. Ora dammi tutte le informazioni che hai, ogni minima cosa, anche il più minuscolo pezzo di carta. E non cercare di fare il furbo, perché potrebbe essere l'ultima volta che ci provi...</text>
 	</string>
 	<string id="dar_explorer_dialog_51">
-		<text>Ti ho detto di smetterla! Non ho intenzione di vagare in questo buco per niente. Smetti di tergiversare e dimmi che cosa hai trovato. Potremmo anche dividere…</text>
+		<text>Ti ho detto di smetterla! Non ho intenzione di vagare in questo buco per niente. Smetti di tergiversare e dimmi che cosa hai trovato. Potremmo anche dividere...</text>
 	</string>
 	<string id="dar_explorer_dialog_511">
 		<text>Io non divido niente con nessuno.</text>
@@ -82,7 +82,7 @@
 		<text>Mi stai minacciando?</text>
 	</string>
 	<string id="dar_explorer_dialog_5121">
-		<text>OK, OK, calma... Come faccio il curioso hai gi  l'arma in mano! Basta domande. Fai attenzione,   tutto.</text>
+		<text>OK, OK, calma... Come faccio il curioso hai già l'arma in mano! Basta domande. Fai attenzione, è tutto.</text>
 	</string>
 	<string id="dar_explorer_dialog_61">
 		<text>Documenti, eh? Vedi, sono venuto esattamente per questo. Ora li consegnerai a me e te ne andrai per la tua strada. Capito?</text>
@@ -91,13 +91,13 @@
 		<text>Ho qualcosa da offrire.</text>
 	</string>
 	<string id="dar_explorer_dialog_6121">
-		<text>Senti, amico, smetti di incasinarmi il cervello. Facciamo un patto. Ti dar  un bel po' di soldi... non te ne pentirai.</text>
+		<text>Senti, amico, smetti di incasinarmi il cervello. Facciamo un patto. Ti darò un bel po' di soldi... non te ne pentirai.</text>
 	</string>
 	<string id="dar_explorer_dialog_6131">
-		<text>Ascolta, la mia vita dipende da quei documenti. Vediamo che cos'hai…Penso che potremmo raggiungere un accordo...</text>
+		<text>Ascolta, la mia vita dipende da quei documenti. Vediamo che cos'hai...Penso che potremmo raggiungere un accordo...</text>
 	</string>
 	<string id="dar_explorer_dialog_8011">
-		<text>  cos  buio qui, non vedo niente. Tumulatori dappertutto... Perch  diavolo ho accettato?! E tu? Com'  che sei finito qui?</text>
+		<text>È così buio qui, non vedo niente. Tumulatori dappertutto... Perché diavolo ho accettato?! E tu? Com'è che sei finito qui?</text>
 	</string>
 	<string id="dar_explorer_dialog_8021">
 		<text>Continua a camminare, stalker.</text>
@@ -109,6 +109,6 @@
 		<text>Non sopporto di essere interrotto quando parlo. Dammi quei documenti, se non vuoi dire addio alla vita.</text>
 	</string>
 	<string id="dar_explorer_dialog_9">
-		<text>Me lo ricorder .</text>
+		<text>Me lo ricorderò.</text>
 	</string>
 </string_table>

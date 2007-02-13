@@ -13,7 +13,7 @@
 		<text>Mappa globale</text>
 	</string>
 	<string id="gun_jammed">
-		<text>L'arma   inceppata. Devi ricaricarla.</text>
+		<text>L'arma è inceppata. Devi ricaricarla.</text>
 	</string>
 	<string id="inventory_box_use">
 		<text>Fruga nella scatola ($$ACTION_USE$$)</text>
@@ -34,7 +34,7 @@
 		<text>Premi ($$ACTION_USE$$) per chiudere la porta.</text>
 	</string>
 	<string id="tip_door_coded">
-		<text>La porta   bloccata da un codice.</text>
+		<text>La porta è bloccata da un codice.</text>
 	</string>
 	<string id="tip_door_decode">
 		<text>Premi ($$ACTION_USE$$) per decriptare il codice.</text>
@@ -43,7 +43,7 @@
 		<text>Decodificazione in corso</text>
 	</string>
 	<string id="tip_door_locked">
-		<text>La porta   bloccata.</text>
+		<text>La porta è bloccata.</text>
 	</string>
 	<string id="tip_door_open">
 		<text>Premi ($$ACTION_USE$$) per aprire la porta.</text>
@@ -52,7 +52,7 @@
 		<text>Premi ($$ACTION_USE$$) per chiudere il cancello.</text>
 	</string>
 	<string id="tip_gate_locked">
-		<text>Il cancello   bloccato.</text>
+		<text>Il cancello è bloccato.</text>
 	</string>
 	<string id="tip_gate_open">
 		<text>Premi ($$ACTION_USE$$) per aprire il cancello</text>

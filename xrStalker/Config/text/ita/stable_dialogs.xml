@@ -13,7 +13,7 @@
 		<text>Ecco, prendi questo kit medico.</text>
 	</string>
 	<string id="actor_help_wounded_111">
-		<text>Grazie, bello, me ne ricorder .</text>
+		<text>Grazie, bello, me ne ricorderò.</text>
 	</string>
 	<string id="actor_help_wounded_12">
 		<text>Tieni, prendi questa benda.</text>
@@ -22,10 +22,10 @@
 		<text>Mi dispiace, non ne ho.</text>
 	</string>
 	<string id="actor_help_wounded_131">
-		<text>E tu vorresti andartene in giro per la Zona cos ? E se ti becchi un'infezione o roba del genere? Non potrai neanche curarti!</text>
+		<text>E tu vorresti andartene in giro per la Zona così? E se ti becchi un'infezione o roba del genere? Non potrai neanche curarti!</text>
 	</string>
 	<string id="actor_help_wounded_14">
-		<text>Eh eh, caschi male, bello. Mi dispiace, ma se ti do il mio, rester  senza.</text>
+		<text>Eh eh, caschi male, bello. Mi dispiace, ma se ti do il mio, resterò senza.</text>
 	</string>
 	<string id="actor_help_wounded_141">
 		<text>Sono affari tuoi, bello, ma non ti fa certo onore.</text>

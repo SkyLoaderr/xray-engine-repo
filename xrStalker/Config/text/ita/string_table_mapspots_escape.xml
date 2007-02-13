@@ -5,7 +5,7 @@
 		<text>Volpe ferito.</text>
 	</string>
 	<string id="esc_mill">
-		<text>Mulino abbandonato. Il fratello ferito   stato visto da queste parti l'ultima volta.</text>
+		<text>Mulino abbandonato. Il fratello ferito è stato visto da queste parti l'ultima volta.</text>
 	</string>
 	<string id="escape_trader">
 		<text>Trafficante.</text>
@@ -20,7 +20,7 @@
 		<text>Capo dell'accampamento reclute.</text>
 	</string>
 	<string id="soldiers_bridge">
-		<text>Checkpoint militare vicino al ponte distrutto.   risaputo che i soldati lasciano passare la gente in cambio di tangenti.</text>
+		<text>Checkpoint militare vicino al ponte distrutto. È risaputo che i soldati lasciano passare la gente in cambio di tangenti.</text>
 	</string>
 	<string id="tutorial_artefact">
 		<text>Reperto.</text>

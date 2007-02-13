@@ -37,7 +37,7 @@
 		<text>Sempre accovacciato</text>
 	</string>
 	<string id="kb_down">
-		<text>Gi </text>
+		<text>Giù</text>
 	</string>
 	<string id="kb_drop">
 		<text>Lascia l'arma utilizzata</text>
@@ -46,10 +46,10 @@
 		<text>Spara</text>
 	</string>
 	<string id="kb_firemode_next">
-		<text>Modalit  di fuoco successiva</text>
+		<text>Modalità di fuoco successiva</text>
 	</string>
 	<string id="kb_firemode_prev">
-		<text>Modalit  di fuoco precedente</text>
+		<text>Modalità di fuoco precedente</text>
 	</string>
 	<string id="kb_forward">
 		<text>Avanti</text>
@@ -166,7 +166,7 @@
 		<text>Vota</text>
 	</string>
 	<string id="kb_vote_no">
-		<text>Vota "S "</text>
+		<text>Vota "Sì"</text>
 	</string>
 	<string id="kb_vote_yes">
 		<text>Vota "No"</text>

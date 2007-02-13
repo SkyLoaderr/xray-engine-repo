@@ -22,10 +22,10 @@
 		<text>Pane</text>
 	</string>
 	<string id="cit_deadcity_maps_desc">
-		<text>Una mappa dettagliata della Citt  dei Morti, con le posizioni dei mercenari.</text>
+		<text>Una mappa dettagliata della Città dei Morti, con le posizioni dei mercenari.</text>
 	</string>
 	<string id="cit_deadcity_maps_name">
-		<text>Mappa della Citt  dei Morti</text>
+		<text>Mappa della Città dei Morti</text>
 	</string>
 	<string id="cit_doctors_key_desc">
 		<text>La chiave del dottore che apre un nascondiglio segreto a Pripjat</text>
@@ -49,7 +49,7 @@
 		<text>Torcia</text>
 	</string>
 	<string id="enc_equipment_armors_arm-heavy">
-		<text>Tuta protettiva. Peso: 18 kg. Dettagli: protegge il corpo da Gelatina, Bruciatura peli, da gran parte delle anomalie e da danni fisici. Il torace e la schiena vengono protetti da placche incorporate bio-metalliche. La tuta   completa di casco a tenuta d'aria in plastica rinforzata e due bombolette di ossigeno. Nota: l'uso prolungato danneggia la tuta fino a renderla inutilizzabile.</text>
+		<text>Tuta protettiva. Peso: 18 kg. Dettagli: protegge il corpo da Gelatina, Bruciatura peli, da gran parte delle anomalie e da danni fisici. Il torace e la schiena vengono protetti da placche incorporate bio-metalliche. La tuta è completa di casco a tenuta d'aria in plastica rinforzata e due bombolette di ossigeno. Nota: l'uso prolungato danneggia la tuta fino a renderla inutilizzabile.</text>
 	</string>
 	<string id="enc_equipment_armors_arm-light">
 		<text>Tuta protettiva. Peso: 8 kg. Dettagli: protegge il corpo dalle anomalie e dai danni fisici meno gravi. Completa di maschera per ossigeno. Nota: l'uso prolungato danneggia la tuta fino a renderla inutilizzabile.</text>
@@ -73,22 +73,22 @@
 		<text>Una torcia potente. Molto utile nelle aree prive di adeguata illuminazione.</text>
 	</string>
 	<string id="enc_equipment_devic_device-torch1_m1">
-		<text>Una torcia potente. Il tempo di ricarica della batteria   stato ridotto grazie a un moderno trasformatore.</text>
+		<text>Una torcia potente. Il tempo di ricarica della batteria è stato ridotto grazie a un moderno trasformatore.</text>
 	</string>
 	<string id="enc_equipment_energydrink">
-		<text>Non-Stop   un eccellente reintegratore a base di caffeina, taurina e di una miscela di vitamine rinvigorenti ed energizzanti. Quello che ci vuole quando sei troppo stanco per continuare!</text>
+		<text>Non-Stop è un eccellente reintegratore a base di caffeina, taurina e di una miscela di vitamine rinvigorenti ed energizzanti. Quello che ci vuole quando sei troppo stanco per continuare!</text>
 	</string>
 	<string id="enc_equipment_food_bread1">
-		<text>Difficile dire chi riesca a infornare queste pagnotte nella Zona, ma non sono contaminate e sono perfettamente commestibili. Be', quanto meno nessuno degli stalker se n'  mai lamentato.</text>
+		<text>Difficile dire chi riesca a infornare queste pagnotte nella Zona, ma non sono contaminate e sono perfettamente commestibili. Be', quanto meno nessuno degli stalker se n'è mai lamentato.</text>
 	</string>
 	<string id="enc_equipment_food_conserva1">
-		<text>Cibo in scatola proveniente da un magazzino militare saccheggiato dagli stalker. E non   ancora scaduto.</text>
+		<text>Cibo in scatola proveniente da un magazzino militare saccheggiato dagli stalker. E non è ancora scaduto.</text>
 	</string>
 	<string id="enc_equipment_food_kolbasa1">
-		<text>Per uno stalker, la salsiccia "dietetica" a base di pollo e soia   spesso, e in mancanza d'altro, colazione, pranzo e cena insieme.</text>
+		<text>Per uno stalker, la salsiccia "dietetica" a base di pollo e soia è spesso, e in mancanza d'altro, colazione, pranzo e cena insieme.</text>
 	</string>
 	<string id="enc_equipment_food_vodka1">
-		<text>Vodka prodotta dalla GSC. Va gi  come l'acqua e riduce in misura significativa gli effetti delle radiazioni, ma per ovvi motivi dovrebbe essere consumata con moderazione.</text>
+		<text>Vodka prodotta dalla GSC. Va giù come l'acqua e riduce in misura significativa gli effetti delle radiazioni, ma per ovvi motivi dovrebbe essere consumata con moderazione.</text>
 	</string>
 	<string id="enc_equipment_medi_antirad1">
 		<text>Riduce gli effetti delle radiazioni.</text>
@@ -97,7 +97,7 @@
 		<text>Bende. Contribuiscono a contenere le emorragie.</text>
 	</string>
 	<string id="enc_equipment_medi_medkit1">
-		<text>Kit medico universale. Utilizzato per curare lesioni di vario tipo e gravit  come ferite, ustioni, avvelenamenti, ecc.</text>
+		<text>Kit medico universale. Utilizzato per curare lesioni di vario tipo e gravità come ferite, ustioni, avvelenamenti, ecc.</text>
 	</string>
 	<string id="enc_equipment_medi_medkit2">
 		<text>Kit medico speciale contro lesioni fisiche e perdita di sangue. Comprende un anticoagulante, antibiotici, agenti immunostimolanti e antidolorifici. </text>

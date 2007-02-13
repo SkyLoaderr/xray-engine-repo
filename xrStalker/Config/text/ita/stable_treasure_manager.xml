@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="agr_secret_0000_descr">
-		<text>Per ora il nostro nascondiglio sar  dentro la galleria.   un ottimo posto, lo conoscono in pochi e le anomalie terranno gli altri alla larga.</text>
+		<text>Per ora il nostro nascondiglio sarа dentro la galleria. И un ottimo posto, lo conoscono in pochi e le anomalie terranno gli altri alla larga.</text>
 	</string>
 	<string id="agr_secret_0000_name">
 		<text>Nascondiglio del Grigio</text>
 	</string>
 	<string id="agr_secret_0001_descr">
-		<text>L'ho nascosto nel ceppo vicino alla galleria. Dentro c'  un bel buco.</text>
+		<text>L'ho nascosto nel ceppo vicino alla galleria. Dentro c'и un bel buco.</text>
 	</string>
 	<string id="agr_secret_0001_name">
 		<text>Ceppo con il buco</text>
@@ -16,7 +16,7 @@
 		<text>Ho sotterrato della cosette sotto la croce vicino ai cespugli.</text>
 	</string>
 	<string id="agr_secret_0002_name">
-		<text>Il segno   sotto la croce</text>
+		<text>Il segno и sotto la croce</text>
 	</string>
 	<string id="agr_secret_0003_descr">
 		<text>Ho mollato lo zaino sotto l'albero caduto.</text>
@@ -25,19 +25,19 @@
 		<text>Zaino sotto l'albero</text>
 	</string>
 	<string id="agr_secret_0004_descr">
-		<text>Ho infilato lo zaino nel tubo vicino alla fabbrica. Non lo trover  nessuno.</text>
+		<text>Ho infilato lo zaino nel tubo vicino alla fabbrica. Non lo troverа nessuno.</text>
 	</string>
 	<string id="agr_secret_0004_name">
 		<text>Zaino di uno spazzacamino</text>
 	</string>
 	<string id="agr_secret_0005_descr">
-		<text>Ho nascosto la cassa sul tetto della fabbrica, cos  non la trover  nessuno. Solo che finir  per arrugginirsi sotto la pioggia.</text>
+		<text>Ho nascosto la cassa sul tetto della fabbrica, cosм non la troverа nessuno. Solo che finirа per arrugginirsi sotto la pioggia.</text>
 	</string>
 	<string id="agr_secret_0005_name">
 		<text>Cassa sul tetto</text>
 	</string>
 	<string id="agr_secret_0006_descr">
-		<text>Sparavano da tutte le parti, ho dovuto mollare lo zaino sotto il vagone, dietro al sedile. Almeno sono riuscito a scamparla. Torner  dopo a prenderlo.</text>
+		<text>Sparavano da tutte le parti, ho dovuto mollare lo zaino sotto il vagone, dietro al sedile. Almeno sono riuscito a scamparla. Tornerт dopo a prenderlo.</text>
 	</string>
 	<string id="agr_secret_0006_name">
 		<text>Zaino dell'ubriacone</text>
@@ -52,7 +52,7 @@
 		<text>Ho messo lo zaino in alto nella fabbrica, in modo che nessuno lo veda. Solo che non mi ricordo esattamente dove l'ho lasciato. </text>
 	</string>
 	<string id="agr_secret_0008_name">
-		<text>Lo zaino   nell'obl </text>
+		<text>Lo zaino и nell'oblт</text>
 	</string>
 	<string id="agr_secret_0009_descr">
 		<text>Ho nascosto le mie cose in una cassa all'interno della fabbrica.</text>
@@ -61,22 +61,22 @@
 		<text>Cassa radioattiva</text>
 	</string>
 	<string id="agr_secret_0010_descr">
-		<text>Nella cassa sotto le scale c'  della roba nascosta.</text>
+		<text>Nella cassa sotto le scale c'и della roba nascosta.</text>
 	</string>
 	<string id="agr_secret_0010_name">
 		<text>Cassa nella tromba delle scale</text>
 	</string>
 	<string id="agr_secret_0011_descr">
-		<text>L'ho nascosto nella cassa, comunque nessuno andr  a controllare.</text>
+		<text>L'ho nascosto nella cassa, comunque nessuno andrа a controllare.</text>
 	</string>
 	<string id="agr_secret_0011_name">
 		<text>Cassa della fabbrica</text>
 	</string>
 	<string id="agr_secret_0012_descr">
-		<text>Ho lanciato la borsa fuori dalla finestra. La recuperer  dopo.</text>
+		<text>Ho lanciato la borsa fuori dalla finestra. La recupererт dopo.</text>
 	</string>
 	<string id="agr_secret_0012_name">
-		<text>La borsa   sul supporto</text>
+		<text>La borsa и sul supporto</text>
 	</string>
 	<string id="agr_secret_0013_descr">
 		<text>Kolyan ed io abbiamo fatto una bella passeggiata fino all'Istituto Agroprom. Abbiamo trovato un po' di robaccia, ma siamo riusciti a nascondere alcune cose. Abbiamo messo la cassa nel bidone della spazzatura.</text>
@@ -85,31 +85,31 @@
 		<text>Bidone della spazzatura</text>
 	</string>
 	<string id="agr_secret_0014_descr">
-		<text>Ho trovato una cassaforte sotto un albero abbattuto. Nasconder  tutto l  per il momento.</text>
+		<text>Ho trovato una cassaforte sotto un albero abbattuto. Nasconderт tutto lм per il momento.</text>
 	</string>
 	<string id="agr_secret_0014_name">
 		<text>Cassaforte sotto l'albero</text>
 	</string>
 	<string id="agr_secret_0015_descr">
-		<text>Ho buttato la roba nel tubo, torner  dopo a prenderla. Non avevo scelta, se non volevo portarmela dietro. Spero solo che non si bagni.</text>
+		<text>Ho buttato la roba nel tubo, tornerт dopo a prenderla. Non avevo scelta, se non volevo portarmela dietro. Spero solo che non si bagni.</text>
 	</string>
 	<string id="agr_secret_0015_name">
 		<text>Oggetti nel tubo</text>
 	</string>
 	<string id="agr_secret_0016_descr">
-		<text>La merce   nel vecchio tubo, dovremo dirlo ai ragazzi. Io non mi ci arrampico l  dentro.</text>
+		<text>La merce и nel vecchio tubo, dovremo dirlo ai ragazzi. Io non mi ci arrampico lа dentro.</text>
 	</string>
 	<string id="agr_secret_0016_name">
 		<text>Tubo radioattivo</text>
 	</string>
 	<string id="agr_secret_0017_descr">
-		<text>Sono scappato dalla base, che vadano al diavolo, arrampicandomi sotto il fuoco degli stalker. Ho nascosto la mia roba in un tubo, nel cumulo. Rester  qui finch  non se ne saranno andati, poi andr  a prenderla.</text>
+		<text>Sono scappato dalla base, che vadano al diavolo, arrampicandomi sotto il fuoco degli stalker. Ho nascosto la mia roba in un tubo, nel cumulo. Resterт qui finchй non se ne saranno andati, poi andrт a prenderla.</text>
 	</string>
 	<string id="agr_secret_0017_name">
 		<text>Il cumulo</text>
 	</string>
 	<string id="agr_secret_0018_descr">
-		<text>C'  una cassaforte semisotterrata sotto i cespugli.   l  che nascondo tutto.</text>
+		<text>C'и una cassaforte semisotterrata sotto i cespugli. И lм che nascondo tutto.</text>
 	</string>
 	<string id="agr_secret_0018_name">
 		<text>Cassaforte sotto i cespugli</text>
@@ -127,7 +127,7 @@
 		<text>Sotto la botola</text>
 	</string>
 	<string id="agr_secret_0021_descr">
-		<text>C'  una cassaforte semisotterrata sotto i cespugli.   l  che nascondo tutto.</text>
+		<text>C'и una cassaforte semisotterrata sotto i cespugli. И lм che nascondo tutto.</text>
 	</string>
 	<string id="agr_secret_0021_name">
 		<text>Sotto i cespugli vicino al muro</text>
@@ -145,7 +145,7 @@
 		<text>Cassaforte Agroprom</text>
 	</string>
 	<string id="agr_secret_0024_descr">
-		<text>Ho buttato la mia roba nel tubo; la prender  dopo.</text>
+		<text>Ho buttato la mia roba nel tubo; la prenderт dopo.</text>
 	</string>
 	<string id="agr_secret_0024_name">
 		<text>La scocca del camion</text>
@@ -169,19 +169,19 @@
 		<text>Attrezzatura meccanica</text>
 	</string>
 	<string id="agr_u_secret_0000_descr">
-		<text>I banditi tengono nascosto qualcosa sotto il tubo. Meglio dare un'occhiata. Da quanto ho capito,   evidente che tengono l  le loro scorte.</text>
+		<text>I banditi tengono nascosto qualcosa sotto il tubo. Meglio dare un'occhiata. Da quanto ho capito, и evidente che tengono lм le loro scorte.</text>
 	</string>
 	<string id="agr_u_secret_0000_name">
 		<text>"Fondo" comune dei banditi</text>
 	</string>
 	<string id="agr_u_secret_0001_descr">
-		<text>Ho nascosto lo zaino dietro le lastre di cemento, viaggio leggero. Mi verr  anche fame, ma almeno sono vivo.</text>
+		<text>Ho nascosto lo zaino dietro le lastre di cemento, viaggio leggero. Mi verrа anche fame, ma almeno sono vivo.</text>
 	</string>
 	<string id="agr_u_secret_0001_name">
 		<text>Lo zaino si trova in una via laterale</text>
 	</string>
 	<string id="agr_u_secret_0002_descr">
-		<text>La cassa si trova sotto un "barile" arrugginito nel sottosuolo.   tutto l  dentro, ma non ci torno neanche morto.   un miracolo che sia riuscito a fregare il succhiasangue. Non so neanche come ho fatto.</text>
+		<text>La cassa si trova sotto un "barile" arrugginito nel sottosuolo. И tutto lм dentro, ma non ci torno neanche morto. И un miracolo che sia riuscito a fregare il succhiasangue. Non so neanche come ho fatto.</text>
 	</string>
 	<string id="agr_u_secret_0002_name">
 		<text>Cassa del succhiasangue</text>
@@ -199,7 +199,7 @@
 		<text>Tana della Talpa</text>
 	</string>
 	<string id="bar_secret_0000_description">
-		<text>Ho nascosto lo zaino alla base dei Duty. Lo prender  pi  tardi.</text>
+		<text>Ho nascosto lo zaino alla base dei Duty. Lo prenderт piщ tardi.</text>
 	</string>
 	<string id="bar_secret_0000_name">
 		<text>Zaino nascosto</text>
@@ -217,7 +217,7 @@
 		<text>Nascondiglio sotto la croce</text>
 	</string>
 	<string id="bar_secret_0003_description">
-		<text>Ho mollato il mio zaino qui. Cos  sar  pi  facile.</text>
+		<text>Ho mollato il mio zaino qui. Cosм sarа piщ facile.</text>
 	</string>
 	<string id="bar_secret_0003_name">
 		<text>Zaino</text>
@@ -235,7 +235,7 @@
 		<text>Nascondiglio</text>
 	</string>
 	<string id="bar_secret_0006_description">
-		<text>Tutto questo apparteneva a lui, pu  anche rimanere qui per il momento.</text>
+		<text>Tutto questo apparteneva a lui, puт anche rimanere qui per il momento.</text>
 	</string>
 	<string id="bar_secret_0006_name">
 		<text>Nascondiglio sotto la croce</text>
@@ -253,7 +253,7 @@
 		<text>Pannello di comando con nascondiglio</text>
 	</string>
 	<string id="bar_secret_0009_description">
-		<text>Ho infilato la cassa in cima alla torre davanti ai Duty; non la noter  nessuno.</text>
+		<text>Ho infilato la cassa in cima alla torre davanti ai Duty; non la noterа nessuno.</text>
 	</string>
 	<string id="bar_secret_0009_name">
 		<text>Nascondiglio sulla torre</text>
@@ -265,7 +265,7 @@
 		<text>Nascondiglio</text>
 	</string>
 	<string id="bar_secret_0011_description">
-		<text>Ho nascosto la roba non lontano dal bar, dietro le anomalie. Non si avviciner  nessuno. E anche se lo facessero, non saprebbero come aprirlo. Eppure   molto semplice: basta accostarsi leggermente alla porta e si apre.</text>
+		<text>Ho nascosto la roba non lontano dal bar, dietro le anomalie. Non si avvicinerа nessuno. E anche se lo facessero, non saprebbero come aprirlo. Eppure и molto semplice: basta accostarsi leggermente alla porta e si apre.</text>
 	</string>
 	<string id="bar_secret_0011_name">
 		<text>Nascondiglio di Arny</text>
@@ -313,7 +313,7 @@
 		<text>Nascondiglio</text>
 	</string>
 	<string id="bar_secret_0019_description">
-		<text>C'  un nascondiglio sotto la croce.</text>
+		<text>C'и un nascondiglio sotto la croce.</text>
 	</string>
 	<string id="bar_secret_0019_name">
 		<text>Nascondiglio</text>
@@ -337,31 +337,31 @@
 		<text>Croce presso l'accampamento dei banditi</text>
 	</string>
 	<string id="esc_secret_0003_descr">
-		<text>La cassa rubata dai banditi   stata trovata nelle cantine dell'edificio centrale, bisogna inviare un distaccamento a recuperarla.</text>
+		<text>La cassa rubata dai banditi и stata trovata nelle cantine dell'edificio centrale, bisogna inviare un distaccamento a recuperarla.</text>
 	</string>
 	<string id="esc_secret_0003_name">
 		<text>Deposito dei banditi</text>
 	</string>
 	<string id="esc_secret_0004_descr">
-		<text>Quando i miei amici ed io combattevamo contro le canaglie in uniforme, ho sottorrato delle cose sotto il ponte. Lasciamole l  per il momento.</text>
+		<text>Quando i miei amici ed io combattevamo contro le canaglie in uniforme, ho sottorrato delle cose sotto il ponte. Lasciamole lм per il momento.</text>
 	</string>
 	<string id="esc_secret_0004_name">
 		<text>Sotto la croce</text>
 	</string>
 	<string id="esc_secret_0005_descr">
-		<text>Ho infilato lo zaino in cantina. Torner  pi  tardi a prenderlo, adesso non posso.</text>
+		<text>Ho infilato lo zaino in cantina. Tornerт piщ tardi a prenderlo, adesso non posso.</text>
 	</string>
 	<string id="esc_secret_0005_name">
 		<text>Rifugio in cantina</text>
 	</string>
 	<string id="esc_secret_0006_descr">
-		<text>Ho trovato una cassaforte sotterrata per met . Per il momento lascer  l  la merce.</text>
+		<text>Ho trovato una cassaforte sotterrata per metа. Per il momento lascerт lм la merce.</text>
 	</string>
 	<string id="esc_secret_0006_name">
 		<text>Cassaforte nella fattoria</text>
 	</string>
 	<string id="esc_secret_0007_descr">
-		<text>Un uccellino mi ha detto che qualcuno ha nascosto qualcosa nel vagone sul ponte. Sar  il caso di dare una controllatina tornando. Chiss  chi…</text>
+		<text>Un uccellino mi ha detto che qualcuno ha nascosto qualcosa nel vagone sul ponte. Sarа il caso di dare una controllatina tornando. Chissа chi...</text>
 	</string>
 	<string id="esc_secret_0007_name">
 		<text>Contenitore nel vagone</text>
@@ -373,31 +373,31 @@
 		<text>Merce del tiratore</text>
 	</string>
 	<string id="esc_secret_0009_descr">
-		<text>Ho nascosto la mia roba in una delle casse non lontano dal ponte.   tutto, io mi ritiro, lascio la Zona. Addio, fratelli! Non dimenticher  mai la madre terra.</text>
+		<text>Ho nascosto la mia roba in una delle casse non lontano dal ponte. И tutto, io mi ritiro, lascio la Zona. Addio, fratelli! Non dimenticherт mai la madre terra.</text>
 	</string>
 	<string id="esc_secret_0009_name">
 		<text>Cose vicino al ponte</text>
 	</string>
 	<string id="esc_secret_0010_descr">
-		<text>Uno degli stalker   soffocato all'accampamento dei novellini, bisogna recuperare la sua roba.</text>
+		<text>Uno degli stalker и soffocato all'accampamento dei novellini, bisogna recuperare la sua roba.</text>
 	</string>
 	<string id="esc_secret_0010_name">
 		<text>Lo zaino si trova vicino al villaggio</text>
 	</string>
 	<string id="esc_secret_0011_descr">
-		<text>Ho saputo da Lihoi che il nascondiglio   in cantina. Era uno che parlava troppo, ma l'abbiamo messo a tacere una volta per tutte.</text>
+		<text>Ho saputo da Lihoi che il nascondiglio и in cantina. Era uno che parlava troppo, ma l'abbiamo messo a tacere una volta per tutte.</text>
 	</string>
 	<string id="esc_secret_0011_name">
 		<text>Cantina del villaggio</text>
 	</string>
 	<string id="esc_secret_0012_descr">
-		<text>Ho trovato un ottimo nascondiglio in cantina. Aspetter  finch  qualcuno ci lascer  qualcosa.</text>
+		<text>Ho trovato un ottimo nascondiglio in cantina. Aspetterт finchй qualcuno ci lascerа qualcosa.</text>
 	</string>
 	<string id="esc_secret_0012_name">
 		<text>Un ottimo posto</text>
 	</string>
 	<string id="esc_secret_0013_descr">
-		<text>Ho saputo da Vorpal che c'  un nascondiglio in cantina. I nostri uomini stavano conducendo un'esplorazione della regione. Andiamo a vedere.</text>
+		<text>Ho saputo da Vorpal che c'и un nascondiglio in cantina. I nostri uomini stavano conducendo un'esplorazione della regione. Andiamo a vedere.</text>
 	</string>
 	<string id="esc_secret_0013_name">
 		<text>Nascondiglio di Vorpal</text>
@@ -415,25 +415,25 @@
 		<text>Vicino a una strada di campagna</text>
 	</string>
 	<string id="esc_secret_0016_descr">
-		<text>La merce   nascosta nella cantina dei banditi. Non c'era nessuno fino ad ora. Adesso dovremo aspettare il momento giusto per penderla.</text>
+		<text>La merce и nascosta nella cantina dei banditi. Non c'era nessuno fino ad ora. Adesso dovremo aspettare il momento giusto per penderla.</text>
 	</string>
 	<string id="esc_secret_0016_name">
 		<text>La cantina dei banditi</text>
 	</string>
 	<string id="esc_secret_0017_descr">
-		<text>Ho scoperto la merce nel tubo, non lontano dalla fattoria. Non appena il periodo di prigionia sar  finito, torner  di sicuro.</text>
+		<text>Ho scoperto la merce nel tubo, non lontano dalla fattoria. Non appena il periodo di prigionia sarа finito, tornerт di sicuro.</text>
 	</string>
 	<string id="esc_secret_0017_name">
 		<text>Tubo del gas</text>
 	</string>
 	<string id="esc_secret_0018_descr">
-		<text>Ho buttato il mio zaino non lontano dal posto di guardia, devo andare a prenderlo al pi  presto, prima che il comandante ci trasferisca altrove.</text>
+		<text>Ho buttato il mio zaino non lontano dal posto di guardia, devo andare a prenderlo al piщ presto, prima che il comandante ci trasferisca altrove.</text>
 	</string>
 	<string id="esc_secret_0018_name">
 		<text>Cose nascoste</text>
 	</string>
 	<string id="esc_secret_0019_descr">
-		<text>Ho lasciato la cassa alla torre per il momento. La prender  appena possibile.</text>
+		<text>Ho lasciato la cassa alla torre per il momento. La prenderт appena possibile.</text>
 	</string>
 	<string id="esc_secret_0019_name">
 		<text>Torre del checkpoint</text>
@@ -445,13 +445,13 @@
 		<text>Deposito dei banditi</text>
 	</string>
 	<string id="gar_secret_0001_descr">
-		<text>Vasya e siamo andati a controllare la roba e un proiettile l'ha colpito. Io non c'entravo proprio niente.   stato quel maledetto proiettile. Ho nascosto la roba in un tubo.</text>
+		<text>Vasya e siamo andati a controllare la roba e un proiettile l'ha colpito. Io non c'entravo proprio niente. И stato quel maledetto proiettile. Ho nascosto la roba in un tubo.</text>
 	</string>
 	<string id="gar_secret_0001_name">
 		<text>Vecchia gru</text>
 	</string>
 	<string id="gar_secret_0002_descr">
-		<text>Grizzly   crepato con tutta la sua roba alla Discarica, nella galleria dietro la motrice. Povero Grizzly.</text>
+		<text>Grizzly и crepato con tutta la sua roba alla Discarica, nella galleria dietro la motrice. Povero Grizzly.</text>
 	</string>
 	<string id="gar_secret_0002_name">
 		<text>Cose di Grizzly</text>
@@ -487,25 +487,25 @@
 		<text>Zaino di nessuno</text>
 	</string>
 	<string id="gar_secret_0008_descr">
-		<text>Abbiamo accoppato il traditore alla palude, e l'abbiamo sepolto l . Ho lasciato i suoi averi sotto la croce; avevo cose pi  importanti di cui occuparmi.</text>
+		<text>Abbiamo accoppato il traditore alla palude, e l'abbiamo sepolto lм. Ho lasciato i suoi averi sotto la croce; avevo cose piщ importanti di cui occuparmi.</text>
 	</string>
 	<string id="gar_secret_0008_name">
 		<text>Gli averi dell'assassinato</text>
 	</string>
 	<string id="gar_secret_0009_descr">
-		<text>C'  un nascondiglio nell'ombra, un ottimo posto</text>
+		<text>C'и un nascondiglio nell'ombra, un ottimo posto</text>
 	</string>
 	<string id="gar_secret_0009_name">
 		<text>Ceppo marcio</text>
 	</string>
 	<string id="gar_secret_0010_descr">
-		<text>C'  un tronco nella foresta con una tana all'interno. Nella cavit  c'  un tesoro ed   arrivato il momento di prenderlo.</text>
+		<text>C'и un tronco nella foresta con una tana all'interno. Nella cavitа c'и un tesoro ed и arrivato il momento di prenderlo.</text>
 	</string>
 	<string id="gar_secret_0010_name">
 		<text>Tronco nella foresta</text>
 	</string>
 	<string id="gar_secret_0011_descr">
-		<text>Petrenko voleva far sapere al mondo che alla Discarica ci sono delle informazioni riguardo il nascondiglio della fazione di Strelok. Qui nella valle deve esserci un tombino, e ci ha spiegato che c'  un trucco per aprirlo. Non appena la situazione si sar  calmata, dobbiamo andare a vedere.</text>
+		<text>Petrenko voleva far sapere al mondo che alla Discarica ci sono delle informazioni riguardo il nascondiglio della fazione di Strelok. Qui nella valle deve esserci un tombino, e ci ha spiegato che c'и un trucco per aprirlo. Non appena la situazione si sarа calmata, dobbiamo andare a vedere.</text>
 	</string>
 	<string id="gar_secret_0011_name">
 		<text>Deposito della fazione di Strelok</text>
@@ -529,7 +529,7 @@
 		<text>Scorte varie</text>
 	</string>
 	<string id="gar_secret_0015_descr">
-		<text>C'  una cassaforte semi-sepolta da un cumulo di spazzatura.   tutto l  dentro. Meglio non dimenticare di cosa si tratta.</text>
+		<text>C'и una cassaforte semi-sepolta da un cumulo di spazzatura. И tutto lм dentro. Meglio non dimenticare di cosa si tratta.</text>
 	</string>
 	<string id="gar_secret_0015_name">
 		<text>Cassaforte del cumulo sud</text>
@@ -547,13 +547,13 @@
 		<text>Scorte nella cassa</text>
 	</string>
 	<string id="gar_secret_0018_descr">
-		<text>Ho infilato la tangente nel tubo alla discarica. Non ci rimarr  a lungo.</text>
+		<text>Ho infilato la tangente nel tubo alla discarica. Non ci rimarrа a lungo.</text>
 	</string>
 	<string id="gar_secret_0018_name">
 		<text>Tubo vicino all'autobus</text>
 	</string>
 	<string id="gar_secret_0019_descr">
-		<text>  facile nascondere lo zaino fra le rovine. Non sar  difficile recuperarlo, sempre che i banditi non si mettano in mezzo.</text>
+		<text>И facile nascondere lo zaino fra le rovine. Non sarа difficile recuperarlo, sempre che i banditi non si mettano in mezzo.</text>
 	</string>
 	<string id="gar_secret_0019_name">
 		<text>Zaino fra le rovine.</text>
@@ -571,22 +571,22 @@
 		<text>Zaino del Mingherlino</text>
 	</string>
 	<string id="gar_secret_0022_descr">
-		<text>Per il momento nasconder  la merce nella buca. Speriamo che non la trovino.</text>
+		<text>Per il momento nasconderт la merce nella buca. Speriamo che non la trovino.</text>
 	</string>
 	<string id="gar_secret_0022_name">
 		<text>Borsa di corda nella buca</text>
 	</string>
 	<string id="gar_secret_0023_descr">
-		<text>Un'anomalia ha beccato qualcuno vicino alla ruspa. Lo zaino   in vista, ma difficile da raggiungere.</text>
+		<text>Un'anomalia ha beccato qualcuno vicino alla ruspa. Lo zaino и in vista, ma difficile da raggiungere.</text>
 	</string>
 	<string id="gar_secret_0023_name">
 		<text>Sotto la benna della ruspa</text>
 	</string>
 	<string id="gar_secret_0024_descr">
-		<text>Ce l'ho fatta per un pelo sotto i raggi, ma almeno lo zaino   nascosto bene. Nessuno si azzarder  ad arrampicarsi.</text>
+		<text>Ce l'ho fatta per un pelo sotto i raggi, ma almeno lo zaino и nascosto bene. Nessuno si azzarderа ad arrampicarsi.</text>
 	</string>
 	<string id="gar_secret_0024_name">
-		<text>Il denaro extra   sotto i blocchi di cemento.</text>
+		<text>Il denaro extra и sotto i blocchi di cemento.</text>
 	</string>
 	<string id="mil_secret_0000_description">
 		<text>Ho nascosto la merce nel tronco, non penso che la troveranno.</text>
@@ -613,19 +613,19 @@
 		<text>Tesoro sotto la croce</text>
 	</string>
 	<string id="mil_secret_0004_description">
-		<text>Ho lanciato le mie cose nel tubo, le prender  pi  tardi.</text>
+		<text>Ho lanciato le mie cose nel tubo, le prenderт piщ tardi.</text>
 	</string>
 	<string id="mil_secret_0004_name">
 		<text>Nascondiglio nel tubo</text>
 	</string>
 	<string id="mil_secret_0005_description">
-		<text>La roba   nascosta nella cassa dentro la torre dell'acqua.</text>
+		<text>La roba и nascosta nella cassa dentro la torre dell'acqua.</text>
 	</string>
 	<string id="mil_secret_0005_name">
 		<text>Tesoro della torre</text>
 	</string>
 	<string id="mil_secret_0006_description">
-		<text>Ho infilato lo zaino nell'altoforno, mi torner  utile pi  avanti.</text>
+		<text>Ho infilato lo zaino nell'altoforno, mi tornerа utile piщ avanti.</text>
 	</string>
 	<string id="mil_secret_0006_name">
 		<text>Nascondiglio nell'altoforno</text>
@@ -661,7 +661,7 @@
 		<text>Nascondiglio su una collina</text>
 	</string>
 	<string id="mil_secret_0012_description">
-		<text>Un elicottero   caduto vicino alla base militare, e la cassa si trova proprio l , sotto l'elicottero. C'  un problema per : ci sono anomalie e radiazioni dappertutto.</text>
+		<text>Un elicottero и caduto vicino alla base militare, e la cassa si trova proprio lм, sotto l'elicottero. C'и un problema perт: ci sono anomalie e radiazioni dappertutto.</text>
 	</string>
 	<string id="mil_secret_0012_name">
 		<text>Cassa dell'elicottero</text>
@@ -673,19 +673,19 @@
 		<text>Nascondiglio nella lapide</text>
 	</string>
 	<string id="mil_secret_0014_description">
-		<text>C'  un nascondiglio nel ceppo d'albero.   un posto sicuro.</text>
+		<text>C'и un nascondiglio nel ceppo d'albero. И un posto sicuro.</text>
 	</string>
 	<string id="mil_secret_0014_name">
 		<text>Ceppo segreto</text>
 	</string>
 	<string id="mil_secret_0015_description">
-		<text>Ho lasciato lo zaino nella cabina della gru. Lo prender  pi  tardi.</text>
+		<text>Ho lasciato lo zaino nella cabina della gru. Lo prenderт piщ tardi.</text>
 	</string>
 	<string id="mil_secret_0015_name">
 		<text>Nascondiglio del manovratore di gru</text>
 	</string>
 	<string id="mil_secret_0016_description">
-		<text>   tutto nella cassa, in un vagone non lontano dalla base. Ci siamo accordati cos , ora dobbiamo solo aspettare.</text>
+		<text>И  tutto nella cassa, in un vagone non lontano dalla base. Ci siamo accordati cosм, ora dobbiamo solo aspettare.</text>
 	</string>
 	<string id="mil_secret_0016_name">
 		<text>Il nascondiglio concordato</text>
@@ -739,7 +739,7 @@
 		<text>Nascondiglio nel tronco</text>
 	</string>
 	<string id="mil_secret_0025_description">
-		<text>Ho buttato la merce in una cassa. Torner  a prenderla pi  tardi.</text>
+		<text>Ho buttato la merce in una cassa. Tornerт a prenderla piщ tardi.</text>
 	</string>
 	<string id="mil_secret_0025_name">
 		<text>Nascondiglio temporaneo</text>
@@ -751,7 +751,7 @@
 		<text>Nascondiglio di acciaio</text>
 	</string>
 	<string id="mil_secret_0027_description">
-		<text>Ho buttato la merce in una cassa. Torner  a prenderla pi  tardi.</text>
+		<text>Ho buttato la merce in una cassa. Tornerт a prenderla piщ tardi.</text>
 	</string>
 	<string id="mil_secret_0027_name">
 		<text>Cassa contenente la merce</text>
@@ -781,25 +781,25 @@
 		<text>Vecchio nascondiglio</text>
 	</string>
 	<string id="pri_secret_0003_description">
-		<text>Hanno sepolto Zanna a Pripjat, sotto un monumento. Tutti i suoi averi sono stati sepolti con lui. Non   giusto rubare ai morti.</text>
+		<text>Hanno sepolto Zanna a Pripjat, sotto un monumento. Tutti i suoi averi sono stati sepolti con lui. Non и giusto rubare ai morti.</text>
 	</string>
 	<string id="pri_secret_0003_name">
 		<text>Averi di Zanna</text>
 	</string>
 	<string id="pri_secret_0004_description">
-		<text>Le utlime notizie sul suo conto dicevano che fosse l'unico sopravvissuto al Bruciacervella. Ha lasciato tutte le sue scorte in un vecchio supermercato, e se n'  andato. Le cose non sono andate come previsto, ma lui   stato il miglior capo dei Freedom della storia.</text>
+		<text>Le utlime notizie sul suo conto dicevano che fosse l'unico sopravvissuto al Bruciacervella. Ha lasciato tutte le sue scorte in un vecchio supermercato, e se n'и andato. Le cose non sono andate come previsto, ma lui и stato il miglior capo dei Freedom della storia.</text>
 	</string>
 	<string id="pri_secret_0004_name">
 		<text>Scorte del capo dei Freedom</text>
 	</string>
 	<string id="rad_secret_0000_description">
-		<text>La croce   sulla strada che conduce al Bruciacervella, non sono andato oltre, ho nascosto tutto l  sotto.</text>
+		<text>La croce и sulla strada che conduce al Bruciacervella, non sono andato oltre, ho nascosto tutto lа sotto.</text>
 	</string>
 	<string id="rad_secret_0000_name">
 		<text>Tesoro dello Scuro</text>
 	</string>
 	<string id="rad_secret_0001_description">
-		<text>Uno stalker   morto da queste parti e la sua merce   ancora sparsa in giro, nessuno sa come recuperarla.</text>
+		<text>Uno stalker и morto da queste parti e la sua merce и ancora sparsa in giro, nessuno sa come recuperarla.</text>
 	</string>
 	<string id="rad_secret_0001_name">
 		<text>Merce dello stalker morto</text>
@@ -811,13 +811,13 @@
 		<text>Merce nella cassaforte</text>
 	</string>
 	<string id="rad_secret_0003_description">
-		<text>Li avevano avvisati di non volare sopra il Bruciacervella, ma che ci vuoi fare. Sono atterrati al centro della foresta ed   improbabile che sia sopravvisutto qualcuno. E con loro c'  tutta la roba che avrebbero dovuto recuprare.</text>
+		<text>Li avevano avvisati di non volare sopra il Bruciacervella, ma che ci vuoi fare. Sono atterrati al centro della foresta ed и improbabile che sia sopravvisutto qualcuno. E con loro c'и tutta la roba che avrebbero dovuto recuprare.</text>
 	</string>
 	<string id="rad_secret_0003_name">
 		<text>Pacco per i Duty</text>
 	</string>
 	<string id="rad_secret_0004_description">
-		<text>Si diche che le scorte della fazione che stava cercando di raggiungere il centro della Zona si trovino ancora l , proprio sotto le radiazioni del Bruciacervella. Non   tornato indietro nessuno, e le scorte sono rimaste l , in attesa che qualcuno le recuperi.</text>
+		<text>Si diche che le scorte della fazione che stava cercando di raggiungere il centro della Zona si trovino ancora lм, proprio sotto le radiazioni del Bruciacervella. Non и tornato indietro nessuno, e le scorte sono rimaste lм, in attesa che qualcuno le recuperi.</text>
 	</string>
 	<string id="rad_secret_0004_name">
 		<text>Scorte del gruppo imprudente</text>
@@ -847,13 +847,13 @@
 		<text>Cassa sotto la casetta</text>
 	</string>
 	<string id="ros_secret_0003_description">
-		<text>Ho infilato lo zaino sotto i gradini, quando sono spuntati quegli stronzi. Accidenti, come far  a riprenderlo?</text>
+		<text>Ho infilato lo zaino sotto i gradini, quando sono spuntati quegli stronzi. Accidenti, come farт a riprenderlo?</text>
 	</string>
 	<string id="ros_secret_0003_name">
 		<text>Zaino dello stalker</text>
 	</string>
 	<string id="ros_secret_0004_description">
-		<text>C'  una cassaforte semi-sotterrata nell'angolo dietro l'albero. Per il momento tengo l  tutta la mia roba.</text>
+		<text>C'и una cassaforte semi-sotterrata nell'angolo dietro l'albero. Per il momento tengo lм tutta la mia roba.</text>
 	</string>
 	<string id="ros_secret_0004_name">
 		<text>Nascondiglio dietro l'albero</text>
@@ -883,7 +883,7 @@
 		<text>Cassetta in un posto sicuro</text>
 	</string>
 	<string id="ros_secret_0009_description">
-		<text>Il mio zaino si trova esattamente sotto il tetto. Cos  si ripara dalla pioggia.</text>
+		<text>Il mio zaino si trova esattamente sotto il tetto. Cosм si ripara dalla pioggia.</text>
 	</string>
 	<string id="ros_secret_0009_name">
 		<text>Nascondiglio di Strelok</text>
@@ -895,7 +895,7 @@
 		<text>Cassaforte nella casetta</text>
 	</string>
 	<string id="ros_secret_0011_description">
-		<text>L'ho nascosto dentro la casa, in un tubo. Occhio, per ,   un casino l  dentro.</text>
+		<text>L'ho nascosto dentro la casa, in un tubo. Occhio, perт, и un casino lа dentro.</text>
 	</string>
 	<string id="ros_secret_0011_name">
 		<text>Nascondiglio nel tubo</text>
@@ -931,7 +931,7 @@
 		<text>Nychka</text>
 	</string>
 	<string id="ros_secret_0017_description">
-		<text>Ho infilato tutto in un tubo, torner  pi  tardi a riprenderlo.</text>
+		<text>Ho infilato tutto in un tubo, tornerт piщ tardi a riprenderlo.</text>
 	</string>
 	<string id="ros_secret_0017_name">
 		<text>Nascondiglio nel tubo</text>
@@ -997,7 +997,7 @@
 		<text>Nascondiglio nel tronco</text>
 	</string>
 	<string id="val_secret_0002_description">
-		<text>Ho infilato lo zaino sotto il ponte, lasciamolo l  per il momento.</text>
+		<text>Ho infilato lo zaino sotto il ponte, lasciamolo lм per il momento.</text>
 	</string>
 	<string id="val_secret_0002_name">
 		<text>Zaino sotto il ponte</text>
@@ -1009,19 +1009,19 @@
 		<text>Macchina con la merce nascosta</text>
 	</string>
 	<string id="val_secret_0004_description">
-		<text>C'  della roba nascosta in un ceppo d'albero; un ottimo nascondiglio.</text>
+		<text>C'и della roba nascosta in un ceppo d'albero; un ottimo nascondiglio.</text>
 	</string>
 	<string id="val_secret_0004_name">
 		<text>Nascondiglio nel ceppo</text>
 	</string>
 	<string id="val_secret_0005_description">
-		<text>Ho trovato una cassa fantastica alla fattoria, terr  l  le scorte per il momento.</text>
+		<text>Ho trovato una cassa fantastica alla fattoria, terrт lм le scorte per il momento.</text>
 	</string>
 	<string id="val_secret_0005_name">
 		<text>Cassa con le scorte</text>
 	</string>
 	<string id="val_secret_0006_description">
-		<text>Ho buttato le mie cose nel tubo, torner  dopo a prenderle.</text>
+		<text>Ho buttato le mie cose nel tubo, tornerт dopo a prenderle.</text>
 	</string>
 	<string id="val_secret_0006_name">
 		<text>Merce nascosta nel tubo</text>
@@ -1033,7 +1033,7 @@
 		<text>Nascondiglio sotto il pino</text>
 	</string>
 	<string id="val_secret_0008_description">
-		<text>Il novellino   riuscito a rubare la cassa ai banditi e l'ha caricata sulla Niva, sottosopra. Dice che dall'aspetto sembrerebbe una cassa del governo. Dobbiamo armare i nostri uomini e andare a prenderla.</text>
+		<text>Il novellino и riuscito a rubare la cassa ai banditi e l'ha caricata sulla Niva, sottosopra. Dice che dall'aspetto sembrerebbe una cassa del governo. Dobbiamo armare i nostri uomini e andare a prenderla.</text>
 	</string>
 	<string id="val_secret_0008_name">
 		<text>Cassa del governo</text>
@@ -1057,37 +1057,37 @@
 		<text>Zaino dello stalker</text>
 	</string>
 	<string id="val_secret_0012_description">
-		<text>Ho messo la mia roba in un tubo, torner  dopo a prenderla.</text>
+		<text>Ho messo la mia roba in un tubo, tornerт dopo a prenderla.</text>
 	</string>
 	<string id="val_secret_0012_name">
 		<text>Roba nascosta</text>
 	</string>
 	<string id="val_secret_0013_description">
-		<text>Tutto quello che ho rubato a Borov l'ho nascosto in una cassaforte sotto il pino. Ora aspetter  finch  non si saranno dati tutti una calmata.</text>
+		<text>Tutto quello che ho rubato a Borov l'ho nascosto in una cassaforte sotto il pino. Ora aspetterт finchй non si saranno dati tutti una calmata.</text>
 	</string>
 	<string id="val_secret_0013_name">
 		<text>Cassaforte nascosta</text>
 	</string>
 	<string id="val_secret_0014_description">
-		<text>Il quartier generale provvisorio   nel vagone, come pure la cassa con le scorte.</text>
+		<text>Il quartier generale provvisorio и nel vagone, come pure la cassa con le scorte.</text>
 	</string>
 	<string id="val_secret_0014_name">
 		<text>Deposito nel vagone</text>
 	</string>
 	<string id="val_secret_0015_description">
-		<text>C'  l'ho fatta per un pelo a raggiungere il tubo sotto la strada. Ora ho un posto dove nascondere il mio zaino.</text>
+		<text>C'и l'ho fatta per un pelo a raggiungere il tubo sotto la strada. Ora ho un posto dove nascondere il mio zaino.</text>
 	</string>
 	<string id="val_secret_0015_name">
 		<text>Posto segreto nel tubo</text>
 	</string>
 	<string id="val_secret_0016_description">
-		<text>Ho buttato la merce nella cassa, torner  dopo a prenderla.</text>
+		<text>Ho buttato la merce nella cassa, tornerт dopo a prenderla.</text>
 	</string>
 	<string id="val_secret_0016_name">
 		<text>Cassa con la merce</text>
 	</string>
 	<string id="val_secret_0017_description">
-		<text>Nascondo la merce sotto il tubo.   difficile arrivarci, ma almeno non me la fregheranno sotto il naso.</text>
+		<text>Nascondo la merce sotto il tubo. И difficile arrivarci, ma almeno non me la fregheranno sotto il naso.</text>
 	</string>
 	<string id="val_secret_0017_name">
 		<text>Nascondiglio sotto il tubo</text>
@@ -1105,13 +1105,13 @@
 		<text>Merce nascosta nella cassa</text>
 	</string>
 	<string id="val_secret_0020_description">
-		<text>Ho nascosto lo zaino del novellino, non lo trover  mai.</text>
+		<text>Ho nascosto lo zaino del novellino, non lo troverа mai.</text>
 	</string>
 	<string id="val_secret_0020_name">
 		<text>Zaino nascosto</text>
 	</string>
 	<string id="val_secret_0021_description">
-		<text>La cassa   rimasta sul furgone. Bisogna andare a prenderla.</text>
+		<text>La cassa и rimasta sul furgone. Bisogna andare a prenderla.</text>
 	</string>
 	<string id="val_secret_0021_name">
 		<text>Cassa dimenticata</text>
@@ -1135,7 +1135,7 @@
 		<text>Cassaforte alla stazione di benzina</text>
 	</string>
 	<string id="val_secret_0025_description">
-		<text>C'  una cassa nell'auto che si trova all'accampento dei banditi. Dobbiamo infilarci nell'auto e controllare; ho la sensazione che ci sia dentro qualcosa.</text>
+		<text>C'и una cassa nell'auto che si trova all'accampento dei banditi. Dobbiamo infilarci nell'auto e controllare; ho la sensazione che ci sia dentro qualcosa.</text>
 	</string>
 	<string id="val_secret_0025_name">
 		<text>Cassa nell'auto</text>
@@ -1147,13 +1147,13 @@
 		<text>Cassa nel nascondiglio</text>
 	</string>
 	<string id="val_secret_0027_description">
-		<text>Ho lasciato lo zaino in un edificio abbandonato.   un posto sicuro, non ci va nessuno.</text>
+		<text>Ho lasciato lo zaino in un edificio abbandonato. И un posto sicuro, non ci va nessuno.</text>
 	</string>
 	<string id="val_secret_0027_name">
 		<text>Lo zaino abbandonato</text>
 	</string>
 	<string id="val_secret_0028_description">
-		<text>Metteremo la merce dentro la cassaforte, in un posto poco in vista. Se non oggi, i soldati saranno qui domani, metteranno tutti in riga, ma non guarderanno in giro troppo a lungo e la roba pi  preziosa sar  mia.</text>
+		<text>Metteremo la merce dentro la cassaforte, in un posto poco in vista. Se non oggi, i soldati saranno qui domani, metteranno tutti in riga, ma non guarderanno in giro troppo a lungo e la roba piщ preziosa sarа mia.</text>
 	</string>
 	<string id="val_secret_0028_name">
 		<text>Nascondiglio di Borov</text>
@@ -1171,7 +1171,7 @@
 		<text>Cassa non identificata</text>
 	</string>
 	<string id="val_secret_0031_description">
-		<text>Ho nascosto lo zaino sotto la macchina. L  sotto non controller  nessuno.</text>
+		<text>Ho nascosto lo zaino sotto la macchina. Lа sotto non controllerа nessuno.</text>
 	</string>
 	<string id="val_secret_0031_name">
 		<text>Zaino nascosto</text>
@@ -1183,7 +1183,7 @@
 		<text>Nascondiglio nella macchina</text>
 	</string>
 	<string id="x16_secret_0000_description">
-		<text>Corre voce che uno stalker sia riuscito a penetrare nel laboratorio e abbia nascosto i suoi tesori nelle prese elettriche della fossa dell'ascensore, ma al momento di riprenderli non c'  riuscito.</text>
+		<text>Corre voce che uno stalker sia riuscito a penetrare nel laboratorio e abbia nascosto i suoi tesori nelle prese elettriche della fossa dell'ascensore, ma al momento di riprenderli non c'и riuscito.</text>
 	</string>
 	<string id="x16_secret_0000_name">
 		<text>Tesori nelle prese elettriche</text>
@@ -1207,7 +1207,7 @@
 		<text>Zaino abbandonato</text>
 	</string>
 	<string id="yan_secret_0000_description">
-		<text>La croce si trova su una collina e lo zaino   sepolto l  sotto.</text>
+		<text>La croce si trova su una collina e lo zaino и sepolto lа sotto.</text>
 	</string>
 	<string id="yan_secret_0000_name">
 		<text>Nascondiglio sotto la croce</text>
@@ -1243,10 +1243,10 @@
 		<text>Nascondiglio sull'autobus</text>
 	</string>
 	<string id="yan_secret_0006_description">
-		<text>Il malloppo   nascosto nella macchina, non lontatno dal territorio. Le radiazioni non sono molto elevate.</text>
+		<text>Il malloppo и nascosto nella macchina, non lontatno dal territorio. Le radiazioni non sono molto elevate.</text>
 	</string>
 	<string id="yan_secret_0006_name">
-		<text>Il bottino   nella macchina</text>
+		<text>Il bottino и nella macchina</text>
 	</string>
 	<string id="yan_secret_0007_description">
 		<text>Pare che ci siano i tesori di qualcuno, ma non riesco a prenderli per via delle radiazioni.</text>
@@ -1261,13 +1261,13 @@
 		<text>Nascondiglio di una fazione</text>
 	</string>
 	<string id="yan_secret_0009_description">
-		<text>Un altro stalker volontario ha tirato le cuoia, perch  un altro prototipo non   riuscito a proteggerlo dalle radiazioni. Ha raggiunto il centro del territorio, e li   rimasto. Sakharov vuole eseguire delle rilevazioni pi  precise, ma io non ci vado, altrimenti finir  per rimanerci anch'io, non lontanto dal territorio.</text>
+		<text>Un altro stalker volontario ha tirato le cuoia, perchй un altro prototipo non и riuscito a proteggerlo dalle radiazioni. Ha raggiunto il centro del territorio, e li и rimasto. Sakharov vuole eseguire delle rilevazioni piщ precise, ma io non ci vado, altrimenti finirт per rimanerci anch'io, non lontanto dal territorio.</text>
 	</string>
 	<string id="yan_secret_0009_name">
 		<text>Zaino del collaudatore</text>
 	</string>
 	<string id="yan_secret_0010_description">
-		<text>Dicono che ci sia la tangente di qualcuno, ma non c'   modo di arrivarci per via delle raziazioni.</text>
+		<text>Dicono che ci sia la tangente di qualcuno, ma non c'и  modo di arrivarci per via delle raziazioni.</text>
 	</string>
 	<string id="yan_secret_0010_name">
 		<text>Vecchio nascondiglio</text>
@@ -1285,7 +1285,7 @@
 		<text>Tesoro in un tronco</text>
 	</string>
 	<string id="yan_secret_0013_description">
-		<text>Dicono che ci sia una cassaforte da queste parti, ma non c'  modo di raggiungerla, per via delle radiazioni.</text>
+		<text>Dicono che ci sia una cassaforte da queste parti, ma non c'и modo di raggiungerla, per via delle radiazioni.</text>
 	</string>
 	<string id="yan_secret_0013_name">
 		<text>Cassa con la merce</text>
