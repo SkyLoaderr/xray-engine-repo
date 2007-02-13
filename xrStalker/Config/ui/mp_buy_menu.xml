@@ -71,6 +71,10 @@
 		<text font="graffiti22" color="ui_clr_3" align="c" vert_align="c"/>
 	</static_preset_money_3>
 	
+	<static_preset_money_def x="880" y="566" width="73" height="27">
+		<text font="graffiti22" color="ui_clr_3" align="c" vert_align="c"/>
+	</static_preset_money_def>
+	
 	<static_player_rank x="867" y="25" width="46" height="47" stretch="1"/>
 
 	<static_item_rank x="300" y="610" width="44" height="44" stretch="1"/>

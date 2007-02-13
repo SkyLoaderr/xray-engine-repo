@@ -175,6 +175,13 @@
 	<sound_t>weapons\generic_close</sound_t>
 </btn_last_set>
 
+<btn_preset_def x="870" y="520" width="157" height="48" hint="ui_inv_last_buy(F5)" accel="kF5">
+	<window_name>btn_preset_def</window_name>
+	<texture>ui_button_main01</texture>
+	<text font="graffiti22" color="ui_clr_2">ui_st_preset_def</text>
+	<sound_t>weapons\generic_close</sound_t>
+</btn_preset_def>
+
 
 <!------------- -->
 <btn_save_preset_1 x="970" y="207" width="37" height="25" check_mode="0">
