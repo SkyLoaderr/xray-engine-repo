@@ -2958,12 +2958,6 @@
 					Name="character_desc"
 					Filter="">
 					<File
-						RelativePath=".\Config\ui\follower_character.xml">
-					</File>
-					<File
-						RelativePath=".\Config\ui\inventory_character.xml">
-					</File>
-					<File
 						RelativePath=".\Config\ui\pda_character.xml">
 					</File>
 					<File

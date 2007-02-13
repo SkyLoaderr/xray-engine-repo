@@ -6,15 +6,6 @@
 --
 -- copyright 2005 GSC Game World
 
-function main()
-	local dlg = ui_mp_main.mp_main()
-	level.start_stop_menu(dlg,true)
-	while true do
-		wait(3000)
-	end
-end
-
-
 class "mp_main" (CUIScriptWnd)
 
 function mp_main:__init() super()
@@ -87,7 +78,6 @@ function mp_main:InitControls()
 	self.message_box = CUIMessageBoxEx()
 	self:Register(self.message_box, "msg_box")	
 	
-	self:OnRadio_NetChanged()
 	
 	self.cap_download				= xml:InitStatic		("download_static",self)
 	self.text_download				= xml:InitStatic		("download_text",self)
@@ -96,6 +86,7 @@ function mp_main:InitControls()
 	self:Register					(self.btn_cancel_download, "btn_cancel_download")
 	
 	xml:InitStatic					("static_gs_logo",self)
+
 end
 
 function mp_main:UpdateControls()
@@ -464,6 +455,8 @@ function mp_main:Update()
 		self.btn_cancel_download:Show			(false)
 	end
 end
+
+
 
 function mp_main:OnBtn_CancelDownload()
 	local mm = main_menu.get_main_menu()
