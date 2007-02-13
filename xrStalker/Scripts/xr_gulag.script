@@ -950,10 +950,10 @@ end
 -- установить объекту рестрикторы в онлайне.
 -- obj - game_object
 function gulag:set_restrictions(obj, r_out, r_in, r_info)
---'	printf( "RESTR [%s] HAVE (IN)  : %s", obj:name(), obj:in_restrictions() )
---'	printf( "RESTR [%s] HAVE (OUT) : %s", obj:name(), obj:out_restrictions() )
---'	printf( "RESTR [%s] NEED (IN)  : %s", obj:name(), r_in )
---'	printf( "RESTR [%s] NEED (OUT) : %s", obj:name(), r_out )
+	printf( "RESTR [%s] HAVE (IN)  : %s", obj:name(), obj:in_restrictions() )
+	printf( "RESTR [%s] HAVE (OUT) : %s", obj:name(), obj:out_restrictions() )
+	printf( "RESTR [%s] NEED (IN)  : %s", obj:name(), r_in )
+	printf( "RESTR [%s] NEED (OUT) : %s", obj:name(), r_out )
 
 	-- узнать, какие рестрикторы уже были назначены этим гулагом
 	local restr = self.restrictors[obj:id()]
