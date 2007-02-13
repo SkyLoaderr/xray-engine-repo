@@ -997,6 +997,7 @@ function gulag:set_restrictions(obj, r_out, r_in, r_info)
 	end
 
 	if change_r_in ~= "" or change_r_out ~= "" then
+		printf( "RESTR [%s] SET: %s, %s", obj:name(), change_r_out, change_r_in)
 		obj:add_restrictions( change_r_out, change_r_in )
 	end
 

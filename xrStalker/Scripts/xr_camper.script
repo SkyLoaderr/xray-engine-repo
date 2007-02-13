@@ -22,6 +22,9 @@ function evaluator_end:__init(name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_end:evaluate()
+	if self.object:name() == "mil_freedom_stalker0010" then
+		printf("%s evaluate camper_end [%s]", self.object:name(), tostring(not xr_logic.is_active(self.object, self.a)))
+	end
 	return not xr_logic.is_active(self.object, self.a)
 end
 
@@ -32,6 +35,10 @@ function evaluator_close_combat:__init(name, storage) super (nil, name)
 	self.close_combat = false
 end
 function evaluator_close_combat:evaluate()
+	if self.object:name() == "mil_freedom_stalker0010" then
+		printf("%s evaluate close_combat [%s]", self.object:name(), tostring(not xr_logic.is_active(self.object, self.a)))
+	end
+
 	if not xr_logic.is_active(self.object, self.a) then
 		return true
 	end
