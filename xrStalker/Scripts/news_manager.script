@@ -1,9 +1,5 @@
 news = {
-	tips_esc_trader_about_pda		= xr_sound.get_safe_sound_object([[characters_voice\scenario\trader\trader_tutorial_contacts_1]]),
 	tips_esc_trader_about_anomalies	= xr_sound.get_safe_sound_object([[characters_voice\scenario\trader\trader_tutorial_anomalies_1]]),
-	escape_stalker_killed			= xr_sound.get_safe_sound_object([[characters_voice\scenario\trader\trader_tutorial_end_2]]),
-	escape_stalker_helped			= xr_sound.get_safe_sound_object([[characters_voice\scenario\trader\trader_tutorial_end_1]]),
-	tutorial_trader_look_vagon		= xr_sound.get_safe_sound_object([[characters_voice\scenario\trader\trader_tutorial_go_help_tolik_1]]),
 	gar_dolg_warning				= xr_sound.get_safe_sound_object([[characters_voice\scenario\duty\duty_warning1]]),
 	esc_return_dv					= xr_sound.get_safe_sound_object([[characters_voice\scenario\trader\return_from_dv]]),
 	escape_fox_quest				= xr_sound.get_safe_sound_object([[characters_voice\scenario\trader\trader_pda_fox]]),
@@ -50,7 +46,6 @@ news = {
 	yan_scientist_probe_2			= xr_sound.get_safe_sound_object([[characters_voice\scenario\yantar\kruglov_radiation_quest_12]]),
 	yan_scientist_probe_3			= xr_sound.get_safe_sound_object([[characters_voice\scenario\yantar\kruglov_radiation_quest_6]]),
 	
-	test_mega_remark 				= xr_sound.get_safe_sound_object([[characters_voice\scenario\yantar\pda_professor_brain_quest_good_2]]),
 	rostok_kruglov_follow			= xr_sound.get_safe_sound_object([[characters_voice\scenario\Rostok\pda_kruglov_help_6]]),
 	bar_freedom_chase			= xr_sound.get_safe_sound_object([[characters_voice\scenario\Rostok\pda_kruglov_stop_enemy_1]]),
 	rostok_kruglov_follow_2			= xr_sound.get_safe_sound_object([[characters_voice\scenario\Rostok\pda_kruglov_stop_enemy_2]]),
@@ -79,7 +74,6 @@ news = {
 
 	esc_direction_fire				= xr_sound.get_safe_sound_object([[characters_voice\scenario\escape\lager_fanat_attack]]),
 	esc_fanat_victory				= xr_sound.get_safe_sound_object([[characters_voice\scenario\escape\lager_fanat_victory]]),
-	esc_wolf_thanks					= xr_sound.get_safe_sound_object([[characters_voice\scenario\escape\wolf_to_dialog]]),
 	
 	rad_barman_spam					= xr_sound.get_safe_sound_object([[characters_voice\scenario\radar\rad_barman_message]]),
 
