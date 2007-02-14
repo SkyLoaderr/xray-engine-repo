@@ -63,7 +63,7 @@ function action_go_position:execute ()
 		self.a.pos_vertex = tmp_pos_vertex
 		
 		if not self.object:accessible(self.a.pos_vertex) then
-			printf("[%s] KAMP NODE NOT ACCESSIBLE. Get accessible nearest", self.object:name())
+			--'printf("[%s] KAMP NODE NOT ACCESSIBLE. Get accessible nearest", self.object:name())
 			local ttp = vector():set(0,0,0)
 			self.a.pos_vertex = self.object:accessible_nearest(level.vertex_position(self.a.pos_vertex), ttp)
 		end
@@ -155,7 +155,7 @@ function CKampManager:__init(path)
 				if value.dir then
 					yaw = yaw_degree(dir, value.dir)
 					if yaw <=23 then
-						printf("KAMP node[%s], sector[%s,] yaw[%s]", k, key, yaw_degree(dir, value.dir))
+						--'printf("KAMP node[%s], sector[%s,] yaw[%s]", k, key, yaw_degree(dir, value.dir))
 						value.used = -1
 						break						
 					end
