@@ -8,9 +8,10 @@ local trade_manager = {
 
 
 function trade_init(npc, cfg)
-	if trade_manager[npc:id()] == nil then
+	printf("TRADE INIT[%s]", npc:name())
+--'	if trade_manager[npc:id()] == nil then
 		trade_manager[npc:id()] = {}
-	end
+--'	end
 
 	trade_manager[npc:id()].cfg_ltx = cfg
 	trade_manager[npc:id()].config = ini_file(cfg)
@@ -85,6 +86,7 @@ function save(obj, packet)
 
 	--' Сохраняем присутствует ли инициализированная торговля в принципе.
 	if tt == nil then
+		printf("TRADE SAVE [%s]: ignored", obj:name())
 		packet:w_bool(false)
 		return
 	else
@@ -132,6 +134,7 @@ end
 function load(obj, packet)
 	local a = packet:r_bool()
 	if a == false then
+		printf("TRADE LOAD [%s]: ignored", obj:name())
 		return
 	end
 
