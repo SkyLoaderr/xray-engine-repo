@@ -90,21 +90,26 @@ function save_dialog:InitControls()
 		
 	ctrl = xml:Init3tButton("form:btn_save",	self.form)	
 	self:Register(ctrl, "button_ok")
+
+	ctrl = xml:Init3tButton("form:btn_delete",	self.form)	
+	self:Register(ctrl, "button_del")
 	
 	ctrl = xml:Init3tButton("form:btn_cancel",	self.form)
 	self:Register(ctrl, "button_cancel")	
 	
 	self.message_box = CUIMessageBoxEx()
 	self:Register(self.message_box,"message_box")
+
+	self.mbox_mode	= 0	
 end
 
 function save_dialog:InitCallBacks()
     // main frame buttons
 	self:AddCallback("button_ok",     ui_events.BUTTON_CLICKED, 			self.OnButton_ok_clicked,		self)
 	self:AddCallback("button_cancel", ui_events.BUTTON_CLICKED, 			self.OnButton_cancel_clicked,	self)
-	// message box buttons
+	self:AddCallback("button_del",	  ui_events.BUTTON_CLICKED,             self.OnButton_del_clicked,	self)
+
 	self:AddCallback("message_box", ui_events.MESSAGE_BOX_YES_CLICKED,		self.OnMsgYes,					self)
-	// list box click
 	self:AddCallback("list_window", ui_events.LIST_ITEM_CLICKED, 			self.OnListItemClicked,			self)
 end
 
@@ -119,9 +124,40 @@ function save_dialog:OnListItemClicked()
 end
 
 function save_dialog:OnMsgYes()
-	self:SaveFile(self.new_save)
-	self:GetHolder():start_stop_menu(self, true)
-	self.owner:Show(true)
+	if self.mbox_mode == 1 then
+		self:SaveFile(self.new_save)
+		self:GetHolder():start_stop_menu(self, true)
+		self.owner:Show(true)
+	elseif self.mbox_mode == 2 then
+		self:delete_selected_file()
+	end	
+end
+
+function save_dialog:OnButton_del_clicked()
+
+	local list		= self:GetListWnd		("list_window")	
+	local index		= list:GetSelectedItem	()
+	
+	if index == -1 then return end
+
+	self.mbox_mode = 2
+	self.message_box:Init("message_box_delete_file_name")		
+	self:GetHolder():start_stop_menu(self.message_box, true)
+end
+
+function save_dialog:delete_selected_file()
+	local list		= self:GetListWnd		("list_window")	
+	local index		= list:GetSelectedItem	()
+	
+	if index == -1 then return end
+
+	local item				= list:GetItem(index)
+	local filename			= item.fn:GetText()
+	
+	ui_load_dialog.delete_save_game(filename)
+	
+	list:RemoveItem			(index)
+	self:OnListItemClicked	()
 end
 
 function save_dialog:OnButton_ok_clicked()
@@ -135,6 +171,7 @@ function save_dialog:OnButton_ok_clicked()
 	
 	// check for empty name
 	if string.len(self.new_save) == 0 then
+		self.mbox_mode = 0
 		self.message_box:Init("message_box_empty_file_name")		
 		self:GetHolder():start_stop_menu(self.message_box, true)
 		return
@@ -146,6 +183,7 @@ function save_dialog:OnButton_ok_clicked()
 	local file_struct = f:exist("$game_saves$", self.new_save .. ".sav" )
 
 	if file_struct ~= nil then
+		self.mbox_mode = 1
 		self.message_box:Init("message_box_file_already_exist")
 		self:GetHolder():start_stop_menu(self.message_box, true)
 		
