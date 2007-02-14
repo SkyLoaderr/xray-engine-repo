@@ -31,17 +31,11 @@ function main_menu:InitControls()
     local xml = CScriptXmlInit()
     xml:ParseFile("ui_mm_main.xml")
      
-	local st = xml:InitStatic("back_video", self)
-	math.randomseed(time_global())
-	local vid_file ="ui\\ui_vid_back_0" .. math.random(1,4)
-	st:InitTexture(vid_file)
+    xml:InitStatic("back_movie", self)
     xml:InitStatic("background", self)
     xml:InitStatic("fire_movie", self)
     self.shniaga = xml:InitMMShniaga("shniaga_wnd",self);
 	
---	local cmb = CUIComboBox()	
---	cmb:Init(50, 50, 100, 0)
---	self:AttachChild(cmb)
 	self.message_box = CUIMessageBoxEx()
 	self:Register(self.message_box, "msg_box")	
 end

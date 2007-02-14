@@ -3,7 +3,7 @@
 		<global_wnd x="0" y="0" width="1024" height="768">
 			
 			<auto_static x="0" y="0" width="728" height="660" stretch = "1">		
-						<texture>ui\credits_back_512_v10</texture>
+						<texture x="0" y="0" width="728" height="660">ui\ui_mm_credits_back</texture>
 			</auto_static>
 			
 			

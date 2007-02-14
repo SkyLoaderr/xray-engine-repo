@@ -5,12 +5,31 @@
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
 -- Version:     0.9
 
-function main()
-	local dlg = ui_load_dialog.load_dialog()
-	level.start_stop_menu(dlg,true)
-	while true do
-		wait(3000)
-	end
+class "spawn_item" (CUIListItemEx)
+
+function spawn_item:__init() super()
+	self:SetWndRect		(0,0,430,22)
+	
+	local ca = 255
+	local cr = 216
+	local cg = 186
+	local cb = 140
+	
+	self.fn					= CUIStatic	()
+	self.fn:SetAutoDelete	(true)
+	self:AttachChild		(self.fn)
+	self.fn:SetWndRect		(0,0,230,22)
+	self.fn:SetText			("filename")
+	self.fn:SetFont			(GetFontLetterica18Russian())
+	self.fn:SetTextColor	(ca,cr,cg,cb)
+
+	self.fage				= CUIStatic	()
+	self.fage:SetAutoDelete	(true)
+	self:AttachChild		(self.fage)
+	self.fage:SetWndRect	(230,0,200,22)
+	self.fage:SetText		("fileage")
+	self.fage:SetFont		(GetFontLetterica16Russian())
+	self.fage:SetTextColor	(ca,cr,cg,cb)
 end
 
 class "spawn_dialog" (ui_base_dialog.base_dialog)
@@ -94,8 +113,8 @@ function spawn_dialog:InitControls()
 	btn:Init(self.btn_left.texture,self.btn_left.x, self.btn_left.y, self.btn_left.width, self.btn_left.height)
     btn:SetText("Load")
 	btn:SetFont(self.button_font)
-	btn:SetTextAlign(CGameFont.alCenter) 
-	btn:SetTextY(self.button_indent) 
+--	btn:SetTextAlign(CGameFont.alCenter) 
+--	btn:SetTextY(self.button_indent) 
 	self:Register(btn) --for event-handling
 	self.main_frame:AttachChild(btn)
 	
@@ -106,8 +125,8 @@ function spawn_dialog:InitControls()
 	btn:Init(self.btn_center.texture, self.btn_center.x, self.btn_center.y, self.btn_center.width, self.btn_center.height)
     btn:SetText("Delete")
 	btn:SetFont(self.button_font)
-	btn:SetTextAlign(CGameFont.alCenter) 
-	btn:SetTextY(self.button_indent) 
+--	btn:SetTextAlign(CGameFont.alCenter) 
+--	btn:SetTextY(self.button_indent) 
 	btn:Enable(false)
 	self:Register(btn) --for event-handling
 	self.main_frame:AttachChild(btn)
@@ -119,8 +138,8 @@ function spawn_dialog:InitControls()
 	btn:Init(self.btn_right.texture,self.btn_right.x, self.btn_right.y, self.btn_right.width, self.btn_right.height) 	
 	btn:SetText("Back")
 	btn:SetFont(self.button_font)
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(self.button_indent)
+--	btn:SetTextAlign(CGameFont.alCenter)
+--	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
 end
@@ -162,7 +181,7 @@ function spawn_dialog:OnButton_load_clicked()
 	if index == -1 then return end
 		
 	local item  = list:GetItem(index)
-	local fname = item:GetText()
+	local fname = item.fn:GetText()
 
 	console:execute("disconnect")
 	console:execute("main_menu off")
@@ -189,19 +208,13 @@ function spawn_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 end
 
 function spawn_dialog:AddItemToList(file_name, date_time)
-	local new_item = CUIListItemPair()
 	
-	new_item:SetTextFileName(file_name)
-	new_item:SetTextDateTime(date_time)
-	new_item:SetFontFileName(self.list_file_font)
-	new_item:SetFontDateTime(self.list_date_font)
-	
-	--new_item:SetText(file_name)
-	
-	
-	local list_box = self:GetListWnd("list_window")
-	
-	list_box:AddItem(new_item)
+	local _itm			= spawn_item()
+	_itm.fn:SetText		(file_name)
+	_itm.fage:SetText	(date_time)
+
+	local list_box		= self:GetListWnd("list_window")
+	list_box:AddItem	(_itm)
 	
 end
 

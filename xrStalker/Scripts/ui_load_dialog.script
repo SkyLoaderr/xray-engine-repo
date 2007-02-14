@@ -5,13 +5,34 @@
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
 -- Version:     0.5
 
-function main()
-	local dlg = ui_load_dialog.load_dialog()
-	level.start_stop_menu(dlg,true)
-	while true do
-		wait(3000)
-	end
+class "load_item" (CUIListItemEx)
+
+function load_item:__init() super()
+	self.file_name		= "filename"
+	self:SetWndRect		(0,0,430,22)
+	
+	local ca = 255
+	local cr = 216
+	local cg = 186
+	local cb = 140
+	
+	self.fn					= CUIStatic	()
+	self.fn:SetAutoDelete	(true)
+	self:AttachChild		(self.fn)
+	self.fn:SetWndRect		(0,0,230,22)
+	self.fn:SetText			("filename")
+	self.fn:SetFont			(GetFontLetterica18Russian())
+	self.fn:SetTextColor	(ca,cr,cg,cb)
+
+	self.fage				= CUIStatic	()
+	self.fage:SetAutoDelete	(true)
+	self:AttachChild		(self.fage)
+	self.fage:SetWndRect	(230,0,200,22)
+	self.fage:SetText		("fileage")
+	self.fage:SetFont		(GetFontLetterica16Russian())
+	self.fage:SetTextColor	(ca,cr,cg,cb)
 end
+
 
 class "load_dialog" (CUIScriptWnd)
 
@@ -53,12 +74,10 @@ function load_dialog:InitControls()
 	local ctrl
 	xml:ParseFile("ui_mm_load_dlg.xml")
 	
-	local st = xml:InitStatic("back_video", self)
---	math.randomseed(time_global())
---	local vid_file ="ui\\credits_back_512_v10" -- .. math.random(1,4)
---	st:InitTexture(vid_file)
+	xml:InitStatic("back_video", self)
 	
 	xml:InitStatic("background",				self)	
+	xml:InitStatic("newspaper_video",			self)	
 
 	self.form = xml:InitStatic("form",			self)
 	
@@ -166,23 +185,23 @@ function file_data(fname)
 end
 
 function load_dialog:OnListItemClicked()
-	local list_box = self:GetListWnd("list_window")
-	local picture  = self:GetStatic("static_pict")	
+	local list_box		= self:GetListWnd("list_window")
+	local picture		= self:GetStatic("static_pict")	
 	
-	local itm_index = list_box:GetSelectedItem()
+	local itm_index		= list_box:GetSelectedItem()
 	
-	local item = list_box:GetItem(itm_index)
+	local item			= list_box:GetItem(itm_index)
 
 	if item == nil then
-		self.file_caption:SetText("")
-		self.file_data:SetText("")
-		picture:InitTexture("ui\\ui_noise")
+		self.file_caption:SetText	("")
+		self.file_data:SetText		("")
+		picture:InitTexture			("ui\\ui_noise")
 		return
 	end
 	
-	local item_text = item:GetText()
-	self.file_caption:SetText(item_text)
-	self.file_data:SetText(file_data(item_text))
+	local item_text				= item.fn:GetText()
+	self.file_caption:SetText	(item_text)
+	self.file_data:SetText		(file_data(item_text))
 	
 	if file_exist(item_text .. ".sav") ~= true then
 		list_box:RemoveItem(itm_index)
@@ -228,7 +247,7 @@ function load_dialog:OnButton_load_clicked()
 	if index == -1 then return end
 		
 	local item  = list:GetItem(index)
-	local fname = item:GetText()
+	local fname = item.fn:GetText()
 	
 --	console:execute("main_menu off")
 	if (alife() == nil) then
@@ -250,10 +269,10 @@ function load_dialog:OnButton_del_clicked()
 	
 	if index == -1 then return end
 		
-	local item  = list:GetItem(index)
-	local fname = item:GetText()
-	local save_file = fname .. ".sav"
-	local dds_file = fname .. ".dds"
+	local item			= list:GetItem(index)
+	local filename		= item.fn:GetText()
+	local save_file		= filename .. ".sav"
+	local dds_file		= filename .. ".dds"
 	
 	local f = getFS()
 	
@@ -263,7 +282,7 @@ function load_dialog:OnButton_del_clicked()
 		f:file_delete("$game_saves$", dds_file)
 	end
 	
-	list:RemoveItem(index)
+	list:RemoveItem		(index)
 	
 	self:OnListItemClicked()
 
@@ -284,20 +303,12 @@ function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 end
 
 function load_dialog:AddItemToList(file_name, date_time)
-	local new_item = CUIListItemPair()
+	local _itm				= load_item()
+	_itm.fn:SetText			(file_name)
+	_itm.fage:SetText		(date_time)
 	
-	new_item:SetTextFileName(file_name)
-	new_item:SetTextDateTime(date_time)
---	new_item:SetFontFileName(self.list_file_font)
---	new_item:SetFontDateTime(self.list_date_font)
-	
-	--new_item:SetText(file_name)
-	
-	
-	local list_box = self:GetListWnd("list_window")
-	
-	list_box:AddItem(new_item)
-	
+	local list_box			= self:GetListWnd("list_window")
+	list_box:AddItem		(_itm)
 end
 
 

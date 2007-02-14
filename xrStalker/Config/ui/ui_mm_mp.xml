@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <window>
-	<back_video x="0" y="0" width="1024" height="512" stretch="1"/>		
+	<back_video x="0" y="0" width="1024" height="430">
+		<texture x="0" y="0" width="1024" height="430">ui\ui_mm_window_back_crop</texture>
+	</back_video>
 	<background x="0" y="0" width="1024" height="768">
 		<texture>ui\ui_mp_main</texture>
 	</background>
