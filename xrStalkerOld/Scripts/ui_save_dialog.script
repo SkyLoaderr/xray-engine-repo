@@ -120,6 +120,8 @@ end
 
 function save_dialog:OnMsgYes()
 	self:SaveFile(self.new_save)
+	self:GetHolder():start_stop_menu(self, true)
+	self.owner:Show(true)
 end
 
 function save_dialog:OnButton_ok_clicked()
@@ -147,7 +149,6 @@ function save_dialog:OnButton_ok_clicked()
 		self.message_box:Init("message_box_file_already_exist")
 		self:GetHolder():start_stop_menu(self.message_box, true)
 		
-		--self.stub:Show(true)
 		flist:Free()	
 		return
 	end
