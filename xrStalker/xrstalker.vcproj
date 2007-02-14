@@ -123,6 +123,9 @@
 				RelativePath=".\Config\game_story_ids.ltx">
 			</File>
 			<File
+				RelativePath=".\Config\localization.ltx">
+			</File>
+			<File
 				RelativePath=".\Config\rspec_default.ltx">
 			</File>
 			<File
