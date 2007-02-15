@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <window>	
-	<back_video x="0" y="0" width="1024" height="430">
+	<_back_video x="0" y="0" width="1024" height="430">
 		<texture x="0" y="0" width="1024" height="430">ui\ui_mm_window_back_crop</texture>
+	</_back_video>
+
+	<back_video x="0" y="0" width="1024" height="512" stretch="1">
+		<texture>ui\ui_vid_back_02</texture>
 	</back_video>
 
 	<background x="0" y="0" width="1024" height="768">
 		<texture>ui\ui_static_mm_back_03</texture>
 	</background>
+
+	<rug_video x="275" y="425" width="128" height="256">
+		<texture>ui\ui_mm_rug02</texture>
+	</rug_video>
 	<main_dialog>
-		<dialog x="233" y="157" width="548" height="461">
+		<dialog x="415" y="168" width="548" height="461">
 			<texture>ui_menu_options_dlg</texture>
 		</dialog>
 		<cap_options x="45" y="9" width="378" height="33">

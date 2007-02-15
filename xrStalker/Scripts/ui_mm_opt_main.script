@@ -29,6 +29,7 @@ function options_dialog:InitControls()
 
 	xml:InitStatic("back_video", self)
 	xml:InitStatic("background", self)
+	xml:InitStatic("rug_video", self)
 	self.dialog = xml:InitStatic("main_dialog:dialog", self)
 	
 	xml:InitStatic("main_dialog:cap_options", self.dialog)
