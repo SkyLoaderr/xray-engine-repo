@@ -176,7 +176,7 @@ function CTreasure:give_treasure(k)
 		self.treasure_info[k].active = true
 		self.treasure_info[k].done = true
 	else
-		abort("TREASURE %s, target doesnt exist", k)
+		printf("TREASURE %s, target doesnt exist", k)
 	end
 end
 --' Снимаем отметку с тайника
