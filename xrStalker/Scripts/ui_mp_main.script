@@ -229,6 +229,11 @@ function mp_main:OnBtn_Create()
 		self:GetHolder():start_stop_menu(self.message_box,true)
 		return 
 	end
+	local mm = main_menu.get_main_menu()
+	if false == mm:ValidateCDKey()	then
+	 return
+	end
+	
 	local opt = COptionsManager()
 	local console = get_console()	
 	opt:SaveValues("mm_mp_server")
