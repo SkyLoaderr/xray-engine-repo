@@ -1014,7 +1014,7 @@ end
 -- вызвать спавнер, если настроен.
 function se_smart_terrain:call_respawn()
 	if self.gparams.respawn then
---'		se_respawn.spawn( self.gparams.respawn )
+		se_respawn.spawn( self.gparams.respawn )
 	end
 end
 
