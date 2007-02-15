@@ -54,6 +54,7 @@
 		<btn name="btn_veteran"		caption="ui_mm_veteran" />
 		<btn name="btn_master"		caption="ui_mm_master" />
 		<btn name="btn_new_back"	caption="ui_mm_back" />
+	</menu_new_game>
 	
 	<menu_main_single btn_height="30" font="graffiti22" a="255" r="0" g="0" b="0">
 		<btn name="btn_ret"			caption="ui_mm_return_game" />
