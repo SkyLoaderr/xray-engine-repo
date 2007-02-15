@@ -17,6 +17,7 @@
 #include "text\ita\stable_storyline_info_darkvalley.xml"
 #include "text\ita\stable_storyline_info_deadcity.xml"
 #include "text\ita\stable_storyline_info_bar.xml"
+#include "text\ita\stable_storyline_info_bar-rostok.xml"
 #include "text\ita\stable_storyline_info_military.xml"
 #include "text\ita\stable_storyline_info_radar.xml"
 #include "text\ita\stable_storyline_info_aes.xml"
