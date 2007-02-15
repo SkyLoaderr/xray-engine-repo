@@ -143,6 +143,8 @@ function load(obj, packet)
 	local tt = trade_manager[obj:id()]
 
 	tt.cfg_ltx = packet:r_stringZ()
+	printf("TRADE LOAD [%s]: cfg_ltx = %s", obj:name(), tostring(tt.cfg_ltx))
+
 	tt.config = ini_file(tt.cfg_ltx)
 
 	a = packet:r_stringZ()
