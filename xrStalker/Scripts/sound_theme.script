@@ -91,13 +91,13 @@ ph_snd_themes["mon_monolith_heavy_damaged"]		= {[[characters_voice\scenario\sarc
 ph_snd_themes["mon_monolith_alarm"]				= {[[characters_voice\scenario\sarcofag\monolith_alarm]]}
 ph_snd_themes["mon_monolith_recharged"]			= {[[characters_voice\scenario\sarcofag\monolith_recharged]]}
 
-ph_snd_themes["sar_monolith_call"]			= {{[[characters_voice\scenario\sarcofag\monolith_call_1]]}, --' Стереозвук
-												{[[characters_voice\scenario\sarcofag\monolith_call_2]]},
-												{[[characters_voice\scenario\sarcofag\monolith_call_3]]},
-												{[[characters_voice\scenario\sarcofag\monolith_call_4]]},
-												{[[characters_voice\scenario\sarcofag\monolith_call_5]]},
-												{[[characters_voice\scenario\sarcofag\monolith_call_6]]},
-												{[[characters_voice\scenario\sarcofag\monolith_call_7]]}}
+ph_snd_themes["sar_monolith_call"]			= {[[characters_voice\scenario\sarcofag\monolith_call_1]],
+												[[characters_voice\scenario\sarcofag\monolith_call_2]],
+												[[characters_voice\scenario\sarcofag\monolith_call_3]],
+												[[characters_voice\scenario\sarcofag\monolith_call_4]],
+												[[characters_voice\scenario\sarcofag\monolith_call_5]],
+												[[characters_voice\scenario\sarcofag\monolith_call_6]],
+												[[characters_voice\scenario\sarcofag\monolith_call_7]]}
 
 ph_snd_themes["gar_seryi_shooting"]	= {[[characters_voice\scenario\garbage\distance_shooting]]}
 ph_snd_themes["gar_seryi_shooting_2"]	= {[[characters_voice\scenario\bandits\bandit_replic_2]]}
