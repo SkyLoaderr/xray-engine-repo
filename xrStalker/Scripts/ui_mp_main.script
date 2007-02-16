@@ -166,7 +166,7 @@ function mp_main:OnFilterChange()
 	sf.with_pass		= self.filters.btn_check_with_pass:GetCheck()
 	sf.without_pass		= self.filters.btn_check_without_pass:GetCheck()
 	sf.without_ff		= self.filters.btn_check_without_ff:GetCheck()
-	sf.without_pb		= self.filters.btn_check_without_pb:GetCheck()
+--	sf.without_pb		= self.filters.btn_check_without_pb:GetCheck()
 	sf.listen_servers	= self.filters.btn_check_listen_servers:GetCheck()
 	
 	self.server_list:SetFilters(sf)
