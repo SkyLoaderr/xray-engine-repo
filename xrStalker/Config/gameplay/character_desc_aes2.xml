@@ -82,7 +82,7 @@
     <rank>700</rank>
     <reputation>0</reputation>
 
-    <snd_config>characters_voice\human_02\monolith\</snd_config>
+    <snd_config>characters_voice\human_03\monolith\</snd_config>
 	<crouch_type>-1</crouch_type>
 
     <visual>actors\monolit\stalker_mo_hood_9</visual>
