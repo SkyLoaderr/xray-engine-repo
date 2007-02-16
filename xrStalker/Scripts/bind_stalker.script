@@ -22,6 +22,8 @@ end
 function actor_binder:net_spawn(data)
 	printf("actor net spawn")		
 
+	level.show_indicators()
+
 	self.bCheckStart = true
 	self.weapon_hide = false -- спрятано или нет оружие при разговоре.
 	weapon_hide = false -- устанавливаем глобальный дефолтовый флаг.
