@@ -512,6 +512,11 @@ function se_smart_terrain:obj_accepts_smart_terrain( obj )
 --'					end
 					return agreed_exclusive
 				end
+			else
+				--' Если текущий смарттеррейн эксклюзивный и недоступен
+				if name == self:name() then
+					return disagreed
+				end
 			end
 		end
 
