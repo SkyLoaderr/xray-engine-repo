@@ -275,6 +275,7 @@ function se_smart_terrain:fill_npc_info( obj, npc_info )
 	if npc_info.profile_name then
 		npc_info.is_sniper = string.find( npc_info.profile_name, "sniper" ) ~= nil
 	end
+	npc_info.is_sniper_name = string.find( npc_info.name, "sniper" ) ~= nil
 
 	local t               = obj.smart_terrain_conditions
 	if t then
