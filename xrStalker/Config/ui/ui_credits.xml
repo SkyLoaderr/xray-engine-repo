@@ -1307,7 +1307,7 @@
 
 				<!-- next frame -->	
 				<auto_static start_time="276" length_sec="15" x="185" y="120" width="500" height="40" light_anim="credits_head" la_cyclic="0" la_texture="0" la_alpha="1">
-					<text align="c" font="letterica25" color="ui_clr_1">st_cd_centre</text>
+					<text align="c" font="graffiti32" color="white">st_cd_centre</text>
 				</auto_static>		
 				<auto_static start_time="276" length_sec="5" x="185" y="180" width="500" height="40" light_anim="credits_head" la_cyclic="0" la_texture="0" la_alpha="1">
 					<text align="c" font="letterica25" color="ui_clr_1">st_pm</text>
