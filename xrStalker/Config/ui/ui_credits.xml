@@ -24,7 +24,8 @@
 			<pause_state>on</pause_state>
 			<function_on_stop>xr_effects.after_credits</function_on_stop>
 			<guard_key/>
-			<sound/>
+			<pause_sound>on</pause_sound>
+			<sound>Music\credits</sound>
 			<cursor_pos/>
 			<pda_section/>
 			<grab_input>1</grab_input>
