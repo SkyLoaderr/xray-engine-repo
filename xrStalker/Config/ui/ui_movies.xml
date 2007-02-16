@@ -10,13 +10,13 @@
 		<item type="video">
 			<delay>1</delay>
 			<pause_state>on</pause_state>
-			<sound>intro\thq_logo_audio</sound>
+			<sound>characters_voice\scenario\video\thq_logo_audio</sound>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture x="0" y="1" width="720" height="484">intro\thq_logo_hyuv</texture>
 			</video_wnd>
 		</item>
 		<item type="video">
-			<sound>intro\intro_gsc</sound>
+			<sound>characters_voice\scenario\video\intro_gsc</sound>
 			<delay>1</delay>
 			<pause_state>on</pause_state>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
@@ -40,21 +40,21 @@
 		</item>
 <!--  TEST, DONT DELETE this block		
 		<item type="video">
-			<sound>intro\intro_stalker</sound>
+			<sound>characters_voice\scenario\video\intro_stalker</sound>
 			<pause_state>on</pause_state>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture x="0" y="1" width="512" height="286">intro\intro_stalker</texture>
 			</video_wnd>
 		</item>
 		<item type="video">
-			<sound>intro\dream_rats</sound>
+			<sound>characters_voice\scenario\video\dream_rats</sound>
 			<pause_state>on</pause_state>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture x="0" y="1" width="512" height="286">intro\dream_rats</texture>
 			</video_wnd>
 		</item>
 		<item type="video">
-			<sound>intro\dream_sarcofag</sound>
+			<sound>characters_voice\scenario\video\dream_sarcofag</sound>
 			<pause_state>on</pause_state>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture x="0" y="1" width="512" height="286">intro\dream_sarcofag</texture>
@@ -67,35 +67,35 @@
 			</video_wnd>
 		</item>
 		<item type="video">
-			<sound>intro\final_blind</sound>
+			<sound>characters_voice\scenario\video\final_blind</sound>
 			<pause_state>on</pause_state>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture x="0" y="1" width="512" height="286">intro\final_blind</texture>
 			</video_wnd>
 		</item>
 		<item type="video">
-			<sound>intro\final_gold</sound>
+			<sound>characters_voice\scenario\video\final_gold</sound>
 			<pause_state>on</pause_state>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture x="0" y="1" width="512" height="286">intro\final_gold</texture>
 			</video_wnd>
 		</item>
 		<item type="video">
-			<sound>intro\final_to_monolith</sound>
+			<sound>characters_voice\scenario\video\final_to_monolith</sound>
 			<pause_state>on</pause_state>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture x="0" y="1" width="512" height="286">intro\final_to_monolith</texture>
 			</video_wnd>
 		</item>
 		<item type="video">
-			<sound>intro\final_apocal</sound>
+			<sound>characters_voice\scenario\video\final_apocal</sound>
 			<pause_state>on</pause_state>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture x="0" y="1" width="512" height="286">intro\final_apocal</texture>
 			</video_wnd>
 		</item>
 		<item type="video">
-			<sound>intro\final_immortal</sound>
+			<sound>characters_voice\scenario\video\final_immortal</sound>
 			<pause_state>on</pause_state>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture x="0" y="1" width="512" height="286">intro\final_immortal</texture>
@@ -108,7 +108,7 @@
 			</video_wnd>
 		</item>
 		<item type="video">
-			<sound>intro\final_peace</sound>
+			<sound>characters_voice\scenario\video\final_peace</sound>
 			<pause_state>on</pause_state>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture x="0" y="1" width="512" height="286">intro\final_peace</texture>
@@ -127,7 +127,7 @@
 		</global_wnd>
 		
 		<item type="video">
-			<sound>intro\intro_stalker</sound>
+			<sound>characters_voice\scenario\video\intro_stalker</sound>
 			<pause_state>on</pause_state>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture x="0" y="1" width="512" height="286">intro\intro_stalker</texture>
@@ -146,7 +146,7 @@
 		</global_wnd>
 		
 		<item type="video">
-			<sound>intro\dream_rats</sound>
+			<sound>characters_voice\scenario\video\dream_rats</sound>
 			<pause_state>on</pause_state>
 			<function_on_stop>xr_effects.end_x18_dream</function_on_stop>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
@@ -165,7 +165,7 @@
 		</global_wnd>
 		
 		<item type="video">
-			<sound>intro\dream_sarcofag</sound>
+			<sound>characters_voice\scenario\video\dream_sarcofag</sound>
 			<pause_state>on</pause_state>
 			<function_on_stop>xr_effects.end_radar_dream</function_on_stop>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
@@ -184,7 +184,7 @@
 		</global_wnd>
 		
 		<item type="video">
-			<!--sound>intro\dream_doctor</sound-->
+			<sound>characters_voice\scenario\video\dream_doctor</sound>
 			<pause_state>on</pause_state>
 			<function_on_stop>xr_effects.end_yantar_dream</function_on_stop>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
@@ -203,7 +203,7 @@
 		</global_wnd>
 		
 		<item type="video">
-			<sound>intro\final_blind</sound>
+			<sound>characters_voice\scenario\video\final_blind</sound>
 			<pause_state>on</pause_state>
 			<function_on_stop>xr_effects.game_credits</function_on_stop>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
@@ -222,7 +222,7 @@
 		</global_wnd>
 		
 		<item type="video">
-			<sound>intro\final_gold</sound>
+			<sound>characters_voice\scenario\video\final_gold</sound>
 			<pause_state>on</pause_state>
 			<function_on_stop>xr_effects.game_credits</function_on_stop>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
@@ -241,7 +241,7 @@
 		</global_wnd>
 		
 		<item type="video">
-			<sound>intro\final_to_monolith</sound>
+			<sound>characters_voice\scenario\video\final_to_monolith</sound>
 			<pause_state>on</pause_state>
 			<function_on_stop>xr_effects.game_credits</function_on_stop>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
@@ -260,7 +260,7 @@
 		</global_wnd>
 		
 		<item type="video">
-			<sound>intro\final_apocal</sound>
+			<sound>characters_voice\scenario\video\final_apocal</sound>
 			<pause_state>on</pause_state>
 			<function_on_stop>xr_effects.game_credits</function_on_stop>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
@@ -279,7 +279,7 @@
 		</global_wnd>
 		
 		<item type="video">
-			<sound>intro\final_immortal</sound>
+			<sound>characters_voice\scenario\video\final_immortal</sound>
 			<pause_state>on</pause_state>
 			<function_on_stop>xr_effects.game_credits</function_on_stop>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
@@ -298,7 +298,7 @@
 		</global_wnd>
 		
 		<item type="video">
-			<!--sound>intro\dream_doctor_2</sound-->
+			<sound>characters_voice\scenario\video\dream_doctor_2</sound>
 			<pause_state>on</pause_state>
 			<function_on_stop>xr_effects.game_credits</function_on_stop>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
@@ -317,7 +317,7 @@
 		</global_wnd>
 		
 		<item type="video">
-			<sound>intro\final_peace</sound>
+			<sound>characters_voice\scenario\video\final_peace</sound>
 			<pause_state>on</pause_state>
 			<function_on_stop>xr_effects.game_credits</function_on_stop>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
