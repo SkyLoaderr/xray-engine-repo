@@ -61,7 +61,6 @@ function PsyAntenna:update_psy_hit(dt)
 			hud:RemoveCustomStatic("cs_psy_danger")
 		end
 	end
-
 	if time_global() - self.hit_time > 5000 then
 		self.hit_time					= time_global()
 
@@ -205,6 +204,7 @@ end
 
 local state_outside = 0 -- актер снаружи
 local state_inside  = 1 -- актер внутри
+local state_void  = 2 -- неизвестный статус
 
 psy_antenna = false
 
@@ -213,20 +213,21 @@ class "action_psy_antenna"
 function action_psy_antenna:__init( obj, storage )
 	self.object = obj
 	self.st     = storage
-	self.state  = state_outside -- еще не ясно, в зоне он, или нет
+	self.state  = state_void --' еще не ясно, в зоне он, или нет
 end
 function action_psy_antenna:reset_scheme( loading )
-	if loading then
-		self.state = xr_logic.pstor_retrieve( self.object, "inside"  )
-	else
+--'	if loading then
+--'		self.state = xr_logic.pstor_retrieve( self.object, "inside"  )
+--'	else
 		if self.state == state_inside then
 			self:zone_leave()
 		end
 
-		self.state = state_outside
+		self.state = state_void
 
 		self:switch_state(db.actor)
-	end
+--'	end
+--'	printf("[psy_antenna] reset_scheme %s, inside %s", tostring(loading), tostring(self.state))
 end
 function action_psy_antenna:deactivate()
 	if self.state == state_inside then
@@ -239,20 +240,15 @@ function action_psy_antenna:update( delta )
 	if xr_logic.try_switch_to_another_section( self.object, self.st, actor ) then
 		return
 	end
-
 	self:switch_state( actor )
 end
 function action_psy_antenna:switch_state( actor )
-	local state = self.state
-
-	if state == state_outside then
+	if self.state ~= state_inside then
 		if self.object:inside( actor:position() ) then
 			self:zone_enter()
 			return
 		end
-	end
-
-	if state == state_inside then
+	else		
 		if not self.object:inside( actor:position() ) then
 			self:zone_leave()
 			return
@@ -260,12 +256,15 @@ function action_psy_antenna:switch_state( actor )
 	end
 end
 function action_psy_antenna:zone_enter()
+--'	printf("[psy_antenna] zone_enter")
 	self.state = state_inside
 
 	psy_antenna.sound_intensity_base = psy_antenna.sound_intensity_base + self.st.intensity
 	psy_antenna.mute_sound_threshold = psy_antenna.mute_sound_threshold + self.st.mute_sound_threshold
 	psy_antenna.hit_intensity  = psy_antenna.hit_intensity  + self.st.hit_intensity
 	psy_antenna.phantom_spawn_probability = psy_antenna.phantom_spawn_probability + self.st.phantom_prob
+
+--'	printf("[psy_antenna] zone_enter. hit_intensity=%s", tostring(psy_antenna.hit_intensity))
 
 	if self.st.postprocess == "nil" then
 		return
@@ -280,6 +279,7 @@ function action_psy_antenna:zone_enter()
 	psy_antenna.postprocess[self.st.postprocess].intensity_base = psy_antenna.postprocess[self.st.postprocess].intensity_base + self.st.intensity		
 end
 function action_psy_antenna:zone_leave()
+--'		printf("[psy_antenna] zone_leave. hit_intensity=%s", tostring(psy_antenna.hit_intensity))
 	self.state = state_outside
 
 	psy_antenna.sound_intensity_base = psy_antenna.sound_intensity_base - self.st.intensity
@@ -288,6 +288,8 @@ function action_psy_antenna:zone_leave()
 
 	psy_antenna.phantom_spawn_probability = psy_antenna.phantom_spawn_probability - self.st.phantom_prob
 	
+--'	printf("[psy_antenna] zone_leave. hit_intensity=%s, minus=%s", tostring(psy_antenna.hit_intensity), tostring(self.st.hit_intensity))
+
 	if self.st.postprocess == "nil" then
 		return
 	end
@@ -297,7 +299,7 @@ function action_psy_antenna:zone_leave()
 	end
 end
 function action_psy_antenna:save()
-	xr_logic.pstor_store( self.object, "inside", self.state )
+	--'xr_logic.pstor_store( self.object, "inside", self.state )
 end
 
 ---------------------------------------------------------------------------------------------------------------------
