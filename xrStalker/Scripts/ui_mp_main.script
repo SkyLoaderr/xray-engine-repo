@@ -103,7 +103,7 @@ function mp_main:InitCallBacks()
 	self:AddCallback("check_with_pass",		ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)
 	self:AddCallback("check_without_pass",	ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)
 	self:AddCallback("check_without_ff",	ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)
-	self:AddCallback("check_without_pb",	ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)
+--	self:AddCallback("check_without_pb",	ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)
 	self:AddCallback("check_listen_servers",ui_events.BUTTON_CLICKED,	self.OnFilterChange,self)	
 	
 	self:AddCallback("btn_direct_ip",		ui_events.BUTTON_CLICKED,	self.OnBtn_DirectIP,self)
