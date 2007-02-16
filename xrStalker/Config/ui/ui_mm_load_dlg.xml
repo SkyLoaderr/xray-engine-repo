@@ -45,7 +45,7 @@
 			<texture>ui_frame_01</texture>
 		</list_frame>
 		
-		<list x="46" y="212" width="429" height="180" item_height="20">
+		<list x="46" y="212" width="429" height="180" item_height="18">
 			<font font="letterica16" r="216" g="186" b="140" />
 		</list>
 				

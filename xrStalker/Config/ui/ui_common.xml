@@ -488,4 +488,12 @@
     <texture id="ui_mini_sn_spot_below" x="757" y="861" width="11" height="11" />
     <texture id="ui_mini_sn_spot_above" x="757" y="858" width="11" height="11" />
 
+    <texture id="ui_listline2_b"		x="946" y="108"	width="4" height="16" />
+    <texture id="ui_listline2_back"		x="950" y="108" width="28" height="16" />
+    <texture id="ui_listline2_e"		x="978" y="108" width="4" height="16" />
+
+    <texture id="ui_listline3_b"		x="986" y="108" width="4" height="16" />
+    <texture id="ui_listline3_back"		x="990" y="108" width="28" height="16" />
+    <texture id="ui_listline3_e"		x="1008" y="108" width="4" height="16" />
+
 </ui_texture>

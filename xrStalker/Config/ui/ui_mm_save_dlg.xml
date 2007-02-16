@@ -34,7 +34,7 @@
 			<texture>ui_frame_01</texture>
 		</list_frame>
 		
-		<list x="46" y="87" width="429" height="287" item_height="20"/>
+		<list x="46" y="87" width="429" height="287" item_height="18"/>
 				
 		<btn_save x="36" y="408" width="157" height="48">
 			<texture>ui_button_main01</texture>
